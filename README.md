@@ -7,7 +7,7 @@ companion notebook with computer-science applications.
 | Tome | Title | Theme | Status |
 | --- | --- | --- | --- |
 | 0 | Back in Shape | The MP toolkit, relearned through problems | Complete draft (8 chapters) |
-| 1 | The Integers | Elementary and algebraic number theory | Planned |
+| 1 | The Integers | Elementary and algebraic number theory | Chapter 1 drafted |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Planned |
 | 3 | Chance | Probability, from counting to martingales | Planned |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Planned |
@@ -18,7 +18,8 @@ companion notebook with computer-science applications.
 ```
 common/                 shared LaTeX preamble (PDF) and EPUB preamble
 tome0-back-in-shape/    main.tex + chapters/*.tex (solutions at the end of each chapter)
-python/tome0/           one Jupyter notebook per chapter
+tome1-integers/         same layout, one folder per tome
+python/tomeN/           one Jupyter notebook per chapter
 tools/                  EPUB conversion helpers (pandoc filter, CSS)
 build.sh                builds dist/<tome>.pdf and dist/<tome>.epub
 ```

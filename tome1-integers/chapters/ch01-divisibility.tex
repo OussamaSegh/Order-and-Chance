@@ -1,0 +1,164 @@
+\chapter{Divisibility and the Euclidean Algorithm}
+
+\begin{center}\itshape
+The oldest non-trivial algorithm still in daily use is Euclid's, from around 300 BC.\\
+Its worst case is governed by the Fibonacci numbers, as Lam\'e proved in 1844, in the first analysis of an algorithm's complexity.
+\end{center}
+
+\section{Division and ideals of \texorpdfstring{$\Z$}{Z}}
+
+\begin{theorem}[Euclidean division]\label{thm:div}
+For $a\in\Z$ and $b\in\N^*$ there is a unique pair $(q,r)\in\Z^2$ with $a=bq+r$ and $0\le r<b$.
+\end{theorem}
+\begin{proof}
+Existence: the set $\{a-bq:q\in\Z\}\cap\N$ is non-empty (take $q=-|a|$), so it has a least element $r=a-bq$. If $r\ge b$ then $r-b=a-b(q+1)$ would be a smaller element. Uniqueness: if $bq+r=bq'+r'$ with $0\le r,r'<b$, then $b\mid r-r'$ and $|r-r'|<b$, so $r=r'$ and $q=q'$.
+\end{proof}
+
+\begin{proposition}\label{prop:subgroups}
+Every subgroup of $(\Z,+)$ is of the form $d\Z$ for a unique $d\in\N$.
+\end{proposition}
+\begin{proof}
+Let $H\ne\{0\}$ be a subgroup and $d$ its least positive element. Then $d\Z\subset H$. For $a\in H$, divide: $a=dq+r$ with $r=a-dq\in H$ and $0\le r<d$, so $r=0$. Uniqueness: $d$ is the least positive element of $d\Z$.
+\end{proof}
+
+\begin{definition}
+For $a,b\in\Z$ not both zero, $a\Z+b\Z$ is a subgroup of $\Z$, hence equal to $d\Z$ for a unique $d\ge1$: this $d$ is the \emph{greatest common divisor} $\gcd(a,b)$.
+\end{definition}
+
+The name is justified: $d$ divides $a$ and $b$ (they lie in $d\Z$), and any common divisor of $a$ and $b$ divides every element of $a\Z+b\Z$, in particular $d$. Two immediate but fundamental consequences:
+
+\begin{theorem}[B\'ezout]\label{thm:bezout}
+There are $u,v\in\Z$ with $au+bv=\gcd(a,b)$. In particular $a$ and $b$ are coprime if and only if $au+bv=1$ for some integers $u,v$.
+\end{theorem}
+
+\begin{theorem}[Gauss' lemma]\label{thm:gauss}
+If $a\mid bc$ and $\gcd(a,b)=1$, then $a\mid c$. In particular, if a prime $p$ divides $bc$, it divides $b$ or $c$.
+\end{theorem}
+\begin{proof}
+Write $au+bv=1$. Then $c=acu+bcv$, and $a$ divides both terms. For the second statement, if $p\nmid b$ then $\gcd(p,b)=1$.
+\end{proof}
+
+\begin{theorem}[fundamental theorem of arithmetic]\label{thm:fta}
+Every integer $n\ge2$ is a product of primes, uniquely up to the order of the factors.
+\end{theorem}
+\begin{proof}
+Existence was proved by minimal counterexample in Tome~0, Chapter~1. Uniqueness, by induction on $n$: if $p_1\cdots p_r=q_1\cdots q_s$, then $p_1$ divides the product of the $q_j$, so by Gauss' lemma (iterated) it divides some $q_j$, hence equals it. Cancel and apply the induction hypothesis.
+\end{proof}
+
+For a prime $p$ and $n\ne0$, the \emph{$p$-adic valuation} $v_p(n)$ is the exponent of $p$ in $n$. Uniqueness of factorisation gives $v_p(ab)=v_p(a)+v_p(b)$, and
+\[
+\gcd(a,b)=\prod_pp^{\min(v_p(a),v_p(b))},\qquad\operatorname{lcm}(a,b)=\prod_pp^{\max(v_p(a),v_p(b))},\qquad\gcd(a,b)\operatorname{lcm}(a,b)=|ab|.
+\]
+
+\section{The Euclidean algorithm}
+
+Since $\gcd(a,b)=\gcd(b,a-bq)$ (the two pairs generate the same subgroup), we may replace $(a,b)$ by $(b,r)$ where $r$ is the remainder of $a$ divided by $b$. Starting with $r_0=a$, $r_1=b$ and dividing repeatedly,
+\[
+r_{k-1}=q_kr_k+r_{k+1},\qquad0\le r_{k+1}<r_k,
+\]
+the remainders decrease strictly, so some $r_{n+1}$ is $0$, and $\gcd(a,b)=r_n$, the last non-zero remainder.
+
+\textbf{Extended version.} Keep track of coefficients with $r_k=au_k+bv_k$: start with $(u_0,v_0)=(1,0)$, $(u_1,v_1)=(0,1)$, and set $u_{k+1}=u_{k-1}-q_ku_k$, $v_{k+1}=v_{k-1}-q_kv_k$. At the end, $au_n+bv_n=\gcd(a,b)$.
+
+\begin{example}
+For $(a,b)=(240,46)$: $240=5\cdot46+10$, $46=4\cdot10+6$, $10=1\cdot6+4$, $6=1\cdot4+2$, $4=2\cdot2$. So $\gcd=2$, and running the coefficients gives $240\cdot(-9)+46\cdot47=2$.
+\end{example}
+
+\begin{theorem}[Lam\'e]\label{thm:lame}
+If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}$ and $a\ge F_{n+2}$, where $(F_k)$ is the Fibonacci sequence.
+\end{theorem}
+\begin{proof}
+The divisions produce $r_0=a>r_1=b>\dots>r_{n-1}>r_n\ge1$ and $r_{n+1}=0$. We show $r_k\ge F_{n+2-k}$ by descending induction on $k$. For $k=n$: $r_n\ge1=F_2$. For $k=n-1$: $r_{n-1}>r_n\ge1$ so $r_{n-1}\ge2=F_3$. Then each $q_k\ge1$, so $r_{k-1}=q_kr_k+r_{k+1}\ge r_k+r_{k+1}\ge F_{n+2-k}+F_{n+1-k}=F_{n+3-k}$.
+\end{proof}
+
+So the worst inputs are consecutive Fibonacci numbers, and since $F_{k}\approx\varphi^k/\sqrt5$, the number of steps is $O(\log b)$ (Exercise~\ref{ex:lame5}).
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:bez}
+Find all $(x,y)\in\Z^2$ with $91x+35y=7$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gcdn}
+For $n\in\N$, compute $\gcd\left(n^2+1,(n+1)^2+1\right)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:zeros}
+\emph{Legendre's formula.} Show that $v_p(n!)=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor$, and find the number of zeros at the end of $1000!$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sqrt}
+Show that $\sqrt n$ is rational only when $n\in\N$ is a perfect square. More generally, show that if $x\in\Q$ is a root of a monic polynomial with integer coefficients, then $x\in\Z$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:mersgcd}
+Show that $\gcd\left(2^a-1,2^b-1\right)=2^{\gcd(a,b)}-1$ for $a,b\ge1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lame5}
+Deduce from Lam\'e's theorem that the number of divisions is at most $5$ times the number of decimal digits of $b$.
+\emph{Use $F_{k+1}\ge\varphi^{k-1}$ and $\varphi^5>10$.}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:frob}
+\emph{The coin problem.} Let $a,b\ge1$ be coprime. Show that the largest integer that cannot be written $ax+by$ with $x,y\in\N$ is $ab-a-b$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:supercat}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\lfloor2x\rfloor+\lfloor2y\rfloor\ge\lfloor x\rfloor+\lfloor y\rfloor+\lfloor x+y\rfloor$ for all real $x,y$.
+\item Deduce that $\dfrac{(2m)!\,(2n)!}{m!\,n!\,(m+n)!}$ is an integer for all $m,n\in\N$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:n2n}
+Show that for every integer $n\ge2$, $n$ does not divide $2^n-1$. \emph{Hint: let $p$ be the smallest prime factor of $n$, and use Exercise~\ref{ex:mersgcd} and Fermat's little theorem.}
+\end{exercise}
+
+\begin{beauty}
+Every result of this chapter comes from one fact: the subgroups of $\Z$ are the $d\Z$. In Tome~2 this becomes ``$\Z$ is a principal ideal domain'', and the same argument works verbatim for polynomials over a field, Gaussian integers, and every Euclidean ring. B\'ezout's coefficients are how RSA computes private keys (Chapter~3's notebook), and the coin problem with three or more coins, the \emph{Frobenius problem}, has no closed formula and is NP-hard in general.
+\end{beauty}
+
+\section{Solutions}
+
+\begin{solution}{ex:bez}
+Euclid: $91=2\cdot35+21$, $35=21+14$, $21=14+7$, $14=2\cdot7$, so $\gcd(91,35)=7$, and back-substituting,
+$7=21-14=2\cdot21-35=2\cdot91-5\cdot35$. So $(2,-5)$ is a solution. If $(x,y)$ is another, $91(x-2)=-35(y+5)$, so $13(x-2)=-5(y+5)$. By Gauss' lemma $5\mid x-2$: $x=2+5k$, and then $y=-5-13k$. Conversely these all work: the solutions are $(2+5k,-5-13k)$, $k\in\Z$.
+\end{solution}
+
+\begin{solution}{ex:gcdn}
+Let $d$ be the gcd. It divides $(n+1)^2+1-(n^2+1)=2n+1$. Since $2n+1$ is odd, $d=\gcd(n^2+1,2n+1)$ also divides $4(n^2+1)-(2n+1)(2n-1)=5$. So $d\in\{1,5\}$. If $d=5$ then $5\mid2n+1$, so $n\equiv2\pmod5$. Conversely, if $n=5k+2$ then $n^2+1=25k^2+20k+5$ and $(n+1)^2+1=25k^2+30k+10$ are multiples of $5$. So the gcd is $5$ if $n\equiv2\pmod5$ and $1$ otherwise.
+\end{solution}
+
+\begin{solution}{ex:zeros}
+$v_p(n!)=\sum_{m=1}^nv_p(m)=\sum_{m=1}^n\sum_{k\ge1}\mathbf 1_{p^k\mid m}=\sum_{k\ge1}\#\{m\le n:p^k\mid m\}=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor$.
+The number of final zeros is $\min(v_2,v_5)=v_5(1000!)=200+40+8+1=249$.
+\end{solution}
+
+\begin{solution}{ex:sqrt}
+If $\sqrt n=\frac pq$ then $nq^2=p^2$, so $v_\ell(n)=2v_\ell(p)-2v_\ell(q)$ is even for every prime $\ell$, and $n$ is a square. In general, let $x=\frac pq$ in lowest terms with $q\ge1$ be a root of $X^d+c_{d-1}X^{d-1}+\dots+c_0$. Multiplying by $q^d$: $p^d=-q\left(c_{d-1}p^{d-1}+\dots+c_0q^{d-1}\right)$, so $q\mid p^d$. As $\gcd(q,p)=1$, Gauss' lemma (iterated) gives $q\mid1$, so $x\in\Z$. The case $X^2-n$ recovers the first statement.
+\end{solution}
+
+\begin{solution}{ex:mersgcd}
+For $a\ge b$, $2^a-1=2^{a-b}\left(2^b-1\right)+\left(2^{a-b}-1\right)$, so $\gcd(2^a-1,2^b-1)=\gcd(2^{a-b}-1,2^b-1)$. The map $(a,b)\mapsto\gcd(2^a-1,2^b-1)$ thus follows the subtractive Euclidean algorithm on the exponents, which ends at $(\gcd(a,b),0)$ and gives $\gcd\left(2^{\gcd(a,b)}-1,0\right)=2^{\gcd(a,b)}-1$.
+\end{solution}
+
+\begin{solution}{ex:lame5}
+By induction, $F_{k+1}\ge\varphi^{k-1}$: true for $k=1,2$ ($F_2=1$, $F_3=2\ge\varphi$), and $F_{k+2}=F_{k+1}+F_k\ge\varphi^{k-1}+\varphi^{k-2}=\varphi^k$ since $\varphi^2=\varphi+1$. If $b$ has $d$ digits and the algorithm takes $n$ steps, then $10^d>b\ge F_{n+1}\ge\varphi^{n-1}$. As $\varphi^5\approx11.09>10$, we get $\varphi^{n-1}<10^d<\varphi^{5d}$, so $n-1<5d$, that is $n\le5d$.
+\end{solution}
+
+\begin{solution}{ex:frob}
+If $ax+by=ax'+by'$ then $a(x-x')=b(y'-y)$, so $b\mid x-x'$ by Gauss' lemma: all representations of $m$ in $\Z^2$ are $(x-kb,\,y+ka)$, $k\in\Z$. By B\'ezout there is one, so there is exactly one with $0\le x\le b-1$; call it canonical.
+If its $y$ is negative, then any representation with $y+ka\ge0$ has $k\ge1$, hence $x-kb<0$. So $m$ is a non-negative combination if and only if its canonical $y$ is $\ge0$.
+For $m=ab-a-b=a(b-1)+b\cdot(-1)$ the canonical $y$ is $-1$: not representable. For $m>ab-a-b$ with canonical $(x,y)$, $by=m-ax\ge m-a(b-1)>-b$, so $y>-1$, that is $y\ge0$: representable.
+\end{solution}
+
+\begin{solution}{ex:supercat}
+(a) Write $x=a+\alpha$, $y=b+\beta$ with $a,b\in\Z$ and $\alpha,\beta\in[0,1[$. The inequality becomes $\lfloor2\alpha\rfloor+\lfloor2\beta\rfloor\ge\lfloor\alpha+\beta\rfloor$. If $\alpha+\beta<1$ the right side is $0$. Otherwise $\max(\alpha,\beta)\ge\frac12$, so the left side is at least $1=\lfloor\alpha+\beta\rfloor$.
+
+(b) By Legendre's formula, the $p$-adic valuation of the fraction is $\sum_k\left(\left\lfloor\frac{2m}{p^k}\right\rfloor+\left\lfloor\frac{2n}{p^k}\right\rfloor-\left\lfloor\frac m{p^k}\right\rfloor-\left\lfloor\frac n{p^k}\right\rfloor-\left\lfloor\frac{m+n}{p^k}\right\rfloor\right)$, which is $\ge0$ by (a) with $x=\frac m{p^k}$, $y=\frac n{p^k}$. A rational with all valuations $\ge0$ is an integer.
+\end{solution}
+
+\begin{solution}{ex:n2n}
+Suppose $n\mid2^n-1$; then $n$ is odd, so its smallest prime factor $p$ is odd and $p\mid2^n-1$. By Fermat (Tome~0, Exercise~1.6), $p\mid2^{p-1}-1$. By Exercise~\ref{ex:mersgcd}, $p$ divides $\gcd(2^n-1,2^{p-1}-1)=2^{\gcd(n,p-1)}-1$. But every prime factor of $n$ is $\ge p>p-1$, so $\gcd(n,p-1)=1$, and $p\mid2^1-1=1$: contradiction.
+\end{solution}
