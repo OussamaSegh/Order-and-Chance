@@ -1,0 +1,360 @@
+\chapter{The Symmetric Group}
+
+\begin{center}\itshape
+Take the $15$-puzzle in its box, swap the tiles $14$ and $15$, and try to slide the tiles back into order.\\
+In 1880 thousands of people tried. Nobody succeeded, and a one-line parity argument explains why.
+\end{center}
+
+By Cayley's theorem (Theorem~\ref{thm:cayley}) every finite group lives inside some $\mathfrak S_n$, so the symmetric groups contain all finite groups. They are also the groups we understand best: their elements can be written down, their conjugacy classes are counted by partitions, and their subgroups $A_n$ give the first infinite family of simple groups. The simplicity of $A_5$ is the group-theoretic heart of the impossibility of solving the quintic by radicals (Chapter~10).
+
+We compose permutations like functions: $\sigma\tau$ means ``first $\tau$, then $\sigma$''. The sign $\varepsilon:\mathfrak S_n\to\{\pm1\}$ and its properties come from Tome~0, Chapter~7: $\varepsilon$ is a homomorphism, every transposition has sign $-1$, and every permutation is a product of transpositions. The \emph{alternating group} is its kernel $A_n=\ker\varepsilon$, a normal subgroup of index $2$ for $n\ge2$.
+
+\section{Cycles}
+
+\begin{definition}\label{def:cycle}
+Let $a_1,\dots,a_k$ be distinct elements of $\{1,\dots,n\}$, $k\ge2$. The \emph{$k$-cycle} $(a_1\,a_2\,\dots\,a_k)$ is the permutation sending $a_1\mapsto a_2\mapsto\dots\mapsto a_k\mapsto a_1$ and fixing every other point. Its \emph{support} is $\{a_1,\dots,a_k\}$. Two cycles are \emph{disjoint} if their supports are.
+\end{definition}
+
+The same cycle has $k$ names: $(a_1\,a_2\,\dots\,a_k)=(a_2\,\dots\,a_k\,a_1)$. Disjoint cycles commute, because each one moves only points that the other fixes.
+
+\begin{proposition}[cycle decomposition]\label{prop:cycles}
+Every $\sigma\in\mathfrak S_n$ is a product of pairwise disjoint cycles, and this decomposition is unique up to the order of the factors.
+\end{proposition}
+\begin{proof}
+The cyclic group $\langle\sigma\rangle$ acts on $\{1,\dots,n\}$; its orbits partition this set (Theorem~\ref{thm:orbstab}). Let $O$ be an orbit, $a\in O$, and $k$ the least integer $\ge1$ with $\sigma^k(a)=a$ (it exists since $\sigma$ has finite order). The points $a,\sigma(a),\dots,\sigma^{k-1}(a)$ are distinct (if $\sigma^i(a)=\sigma^j(a)$ with $0\le i<j<k$ then $\sigma^{j-i}(a)=a$ with $0<j-i<k$), and every $\sigma^m(a)$ is one of them (divide $m$ by $k$). So $O=\{a,\sigma(a),\dots,\sigma^{k-1}(a)\}$ and $\sigma$ acts on $O$ as the cycle $c_O=(a\,\sigma(a)\,\dots\,\sigma^{k-1}(a))$. The product of the $c_O$ over the orbits with at least $2$ points agrees with $\sigma$ on every point, so it equals $\sigma$.
+
+Uniqueness: if $\sigma=c_1\cdots c_r$ with disjoint cycles, then on the support of $c_i$ the permutation $\sigma$ acts as $c_i$, so the support of $c_i$ is an orbit of $\langle\sigma\rangle$ with at least $2$ points, and $c_i=c_O$ for that orbit $O$. Hence the $c_i$ are exactly the $c_O$.
+\end{proof}
+
+The \emph{cycle type} of $\sigma$ is the list of the lengths of its cycles, fixed points counted as cycles of length $1$, in decreasing order: a partition of $n$. For instance $(1\,4\,2)(3\,5)\in\mathfrak S_6$ has cycle type $(3,2,1)$, written $3\,2\,1$, and the identity of $\mathfrak S_5$ has type $1^5$.
+
+\begin{corollary}\label{cor:ordersign}
+Let $\sigma$ have cycle type $(k_1,\dots,k_r)$ (so $k_1+\dots+k_r=n$). Then
+\begin{enumerate}[label=(\alph*)]
+\item the order of $\sigma$ is $\operatorname{lcm}(k_1,\dots,k_r)$;
+\item $\varepsilon(\sigma)=\prod_i(-1)^{k_i-1}=(-1)^{n-r}$. In particular a $k$-cycle is even iff $k$ is odd.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) Write $\sigma=c_1\cdots c_r$ (including $1$-cycles, which are the identity). The $c_i$ commute, so $\sigma^m=c_1^m\cdots c_r^m$, and since the supports are disjoint, $\sigma^m=e$ iff every $c_i^m=e$. A $k$-cycle has order $k$ (the computation in the proof of Proposition~\ref{prop:cycles}), so $\sigma^m=e$ iff every $k_i$ divides $m$.
+
+(b) One checks that
+\[
+(a_1\,a_2\,\dots\,a_k)=(a_1\,a_k)(a_1\,a_{k-1})\cdots(a_1\,a_2):
+\]
+reading from the right, $a_1$ goes to $a_2$, which no later factor moves; $a_j$ ($2\le j<k$) goes to $a_1$ under $(a_1\,a_j)$, then to $a_{j+1}$ under $(a_1\,a_{j+1})$, and no later factor moves $a_{j+1}$; $a_k$ is moved only by the last factor, to $a_1$. So a $k$-cycle is a product of $k-1$ transpositions and has sign $(-1)^{k-1}$. Multiply over the cycles: $\sum_i(k_i-1)=n-r$.
+\end{proof}
+
+\section{Conjugacy classes}
+
+\begin{proposition}\label{prop:conjSn}
+\begin{enumerate}[label=(\alph*)]
+\item For $\tau\in\mathfrak S_n$,
+\[
+\tau\,(a_1\,\dots\,a_k)\,\tau^{-1}=(\tau(a_1)\,\dots\,\tau(a_k)).
+\]
+So conjugating $\sigma$ by $\tau$ means renaming the points in its cycle notation by $\tau$.
+\item Two permutations are conjugate in $\mathfrak S_n$ iff they have the same cycle type. The conjugacy classes of $\mathfrak S_n$ are in bijection with the partitions of $n$.
+\item If $\lambda$ has $m_i$ parts equal to $i$ for each $i$, the class of type $\lambda$ has
+\[
+\frac{n!}{z_\lambda}\ \text{ elements, where }\ z_\lambda=\prod_i i^{m_i}\,m_i!,
+\]
+and $z_\lambda$ is the order of the centraliser $C(\sigma)=\{\pi:\pi\sigma=\sigma\pi\}$ of any $\sigma$ of type $\lambda$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Let $\gamma=(a_1\,\dots\,a_k)$. For $x=\tau(a_j)$, $\tau\gamma\tau^{-1}(x)=\tau(\gamma(a_j))=\tau(a_{j+1})$ (indices mod $k$). For $x$ not of this form, $\tau^{-1}(x)$ is not in the support of $\gamma$, so $\tau\gamma\tau^{-1}(x)=x$.
+
+(b) Conjugation is a homomorphism, so $\tau\sigma\tau^{-1}$ is the product of the conjugates of the disjoint cycles of $\sigma$, which by (a) are disjoint cycles of the same lengths: the cycle type is preserved. Conversely, if $\sigma$ and $\sigma'$ have the same type, write their cycle notations one above the other, cycles of equal length matched and fixed points included as $1$-cycles. The map $\tau$ sending each point in the top row to the point below it is a permutation, and by (a) $\tau\sigma\tau^{-1}=\sigma'$.
+
+(c) Fix the pattern of brackets for type $\lambda$, and fill its $n$ slots with $1,\dots,n$ in all $n!$ ways. Every permutation of type $\lambda$ arises, and exactly $z_\lambda$ times: the filling of each cycle can be rotated ($i$ ways for a cycle of length $i$), and the $m_i$ cycles of length $i$ can be permuted among themselves ($m_i!$ ways), and these are the only fillings giving the same permutation (Proposition~\ref{prop:cycles}). So the class has $n!/z_\lambda$ elements. By the orbit--stabiliser theorem for the action by conjugation, the class has $n!/|C(\sigma)|$ elements, so $|C(\sigma)|=z_\lambda$.
+\end{proof}
+
+\begin{think}
+How many conjugacy classes has $\mathfrak S_5$, and how big is each? List the partitions of $5$ first. Then, before reading on: which classes lie in $A_5$, and do their sizes add up to $60$?
+\end{think}
+
+For $\mathfrak S_5$ the seven classes and their sizes are drawn in Figure~\ref{fig:fifteen}. For instance the $5$-cycles have $z=5$, so there are $120/5=24$ of them, and the type $2^2 1$ has $z=2^2\cdot2!\cdot1=8$, so $120/8=15$ elements.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-fifteen}
+\caption{Left: the $15$-puzzle with $14$ and $15$ swapped. Colour the board like a chessboard with the bottom-right cell white. A move exchanges the blank with a neighbouring tile: it composes the arrangement with a transposition and moves the blank to a cell of the other colour. Right: the $7$ conjugacy classes of $\mathfrak S_5$, labelled by cycle type; the even ones make up $A_5$.}
+\label{fig:fifteen}
+\end{figure}
+
+\section{Generators}
+
+\begin{proposition}\label{prop:gens}
+\begin{enumerate}[label=(\alph*)]
+\item $\mathfrak S_n$ is generated by the adjacent transpositions $(1\,2),(2\,3),\dots,(n-1\;n)$.
+\item For $n\ge3$, $A_n$ is generated by the $3$-cycles.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Every permutation is a product of transpositions, so it suffices to get every $(i\,j)$ with $i<j$, by induction on $j-i$. For $j-i=1$ it is a generator. For $j-i\ge2$, by Proposition~\ref{prop:conjSn}(a),
+\[
+(j-1\;\,j)\,(i\;\,j-1)\,(j-1\;\,j)=(i\;\,j),
+\]
+and $(i\;j-1)$ is a product of generators by induction.
+
+(b) A $3$-cycle is even (Corollary~\ref{cor:ordersign}). Conversely an even permutation is a product of an even number of transpositions; group them in pairs. For distinct $a,b,c,d$,
+\[
+\begin{gathered}
+(a\,b)(a\,b)=e,\qq(a\,b)(b\,c)=(a\,b\,c),\\
+(a\,b)(c\,d)=(a\,b)(b\,c)\,(b\,c)(c\,d)=(a\,b\,c)(b\,c\,d),
+\end{gathered}
+\]
+and a pair sharing one point can be written $(a\,b)(b\,c)$ after renaming. (Check $(a\,b)(b\,c)$: $c\mapsto b\mapsto a$, $b\mapsto c$, $a\mapsto b$.)
+\end{proof}
+
+\begin{proposition}\label{prop:a4}
+$A_4$ has order $12$ and no subgroup of order $6$. So the converse of Lagrange's theorem is false.
+\end{proposition}
+\begin{proof}
+Suppose $H\le A_4$ has order $6$. It has index $2$, so it is normal (Proposition~\ref{prop:normal}) and $A_4/H$ has order $2$. For every $g\in A_4$, $(gH)^2=H$, so $g^2\in H$. If $g$ is a $3$-cycle, $g=g^4=(g^2)^2\in H$. But $A_4$ contains $8$ three-cycles ($\binom43\cdot2$), more than $|H|=6$.
+\end{proof}
+
+\section{The 15-puzzle}
+
+The puzzle has $15$ numbered tiles and one empty cell, the \emph{blank}, in a $4\times4$ box. Number the cells $1$ to $16$ in reading order, so that cell $16$ is the bottom-right corner. In the solved position tile $k$ is in cell $k$ and the blank in cell $16$. A \emph{move} slides a tile into the blank from a neighbouring cell. Give the blank the label $16$; a position is then a permutation $\sigma\in\mathfrak S_{16}$, with $\sigma(k)$ the cell holding label $k$. Colour the cells like a chessboard with cell $16$ white.
+
+\begin{think}
+Before reading the theorem: a move swaps the blank with a tile, so it changes the parity of $\sigma$. What else changes at every move, so that the two changes cancel?
+\end{think}
+
+\begin{theorem}\label{thm:fifteen}
+For a position $\sigma$, let $\delta(\sigma)=+1$ if the blank is on a white cell and $-1$ otherwise.
+\begin{enumerate}[label=(\alph*)]
+\item $\varepsilon(\sigma)\delta(\sigma)$ does not change under moves.
+\item A position can be reached from the solved position iff $\varepsilon(\sigma)\delta(\sigma)=1$. Exactly half of the $16!$ positions can be reached; the position with $14$ and $15$ swapped cannot.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) A move exchanges the contents of two neighbouring cells $x,y$, so it replaces $\sigma$ by $(x\,y)\sigma$, which changes $\varepsilon$; and it moves the blank to a cell of the other colour, which changes $\delta$.
+
+(b) The solved position has $\varepsilon\delta=1$, so by (a) every reachable position has $\varepsilon\delta=1$. With $14$ and $15$ swapped, $\sigma=(14\;15)$ and the blank is on cell $16$: $\varepsilon\delta=-1$.
+
+For the converse, let $\sigma$ have $\varepsilon(\sigma)\delta(\sigma)=1$. Moves can be undone, so ``reachable from each other'' is an equivalence relation, and we may first slide the blank to cell $16$ along any path; by (a) we still have $\varepsilon\delta=1$, and now $\delta=1$, so $\sigma$ is even and fixes $16$. It remains to show that every such position is reachable.
+
+\emph{Loops.} A walk $W$ of the blank from cell $16$ back to cell $16$ moves the contents of the cells by a permutation $h_W$ of the cells $1,\dots,15$ that does not depend on the position (each step exchanges the contents of two given cells): the tile in cell $x$ ends up in cell $h_W(x)$. Doing $W$ then $W'$ gives $h_{W'}h_W$, and walking $W$ backwards gives $h_W^{-1}$. So the $h_W$ form a subgroup $H$ of the permutations of $X=\{1,\dots,15\}$, and the positions with the blank at $16$ that are reachable from the solved one are exactly those given by the elements of $H$. By (a), $H\subseteq A(X)$, the even permutations of $X$. We show $H=A(X)$.
+
+\emph{Rectangles.} Let $R$ be a rectangle of cells, at least $2\times2$, with cell $16$ as its bottom-right corner, and let the blank go once around the border of $R$, through cells $16,x_1,x_2,\dots,x_m,16$ (first left along the bottom row). Each step pulls one tile one cell along the border: the tile of $x_1$ goes to $16$, then the tile of $x_2$ to $x_1$, \dots, the tile of $x_m$ to $x_{m-1}$, and finally the tile now in $16$ goes to $x_m$. So $h_R$ is the $m$-cycle $x_m\mapsto x_{m-1}\mapsto\dots\mapsto x_1\mapsto x_m$, an element of $H$.
+
+\emph{Growing.} For $S\subseteq X$ write $A(S)$ for the even permutations of $X$ that fix every point outside $S$. We use two facts.
+\begin{enumerate}[label=(\roman*)]
+\item If $|S|=3$, $A(S)\subseteq H$, and some $h\in H$ has $|h(S)\cap S|=2$, then $A(S\cup h(S))\subseteq H$. Indeed, let $\gamma$ be a $3$-cycle on $S$; then $h\gamma h^{-1}$ is a $3$-cycle on $h(S)\ne S$ (Proposition~\ref{prop:conjSn}(a)). Both lie in $A(T)$, $T=S\cup h(S)$, which is a copy of $A_4$. The subgroup they generate contains two different subgroups of order $3$, so its order is a multiple of $3$, larger than $3$, and divides $12$; by Proposition~\ref{prop:a4} it is not $6$, so it is all of $A(T)$.
+\item If $|S|\ge4$, $A(S)\subseteq H$, and some $h\in H$ and distinct $x,y,z\in S$ have $h(x),h(y)\in S$ and $w=h(z)\notin S$, then $A(S\cup\{w\})\subseteq H$. Indeed, $h\,(x\,y\,z)\,h^{-1}=(u_0\,v_0\,w)\in H$ with $u_0=h(x)$, $v_0=h(y)\in S$. Given distinct $u,v\in S$, take a permutation $\pi$ of $S$ with $\pi(u_0)=u$, $\pi(v_0)=v$; if it is odd, compose it with the transposition of two other points of $S$ (there are such, as $|S|\ge4$). Then $\pi\in A(S)\subseteq H$ fixes $w$, and $\pi(u_0\,v_0\,w)\pi^{-1}=(u\,v\,w)\in H$. Every $3$-cycle on $S\cup\{w\}$ either lies in $A(S)$ or can be written $(u\,v\,w)$, so $H$ contains them all, and they generate $A(S\cup\{w\})$ by Proposition~\ref{prop:gens}(b).
+\end{enumerate}
+
+Now we grow $S$ until $S=X$. The $2\times2$ square with corners $11$ and $16$ gives the $3$-cycle $h:15\mapsto12\mapsto11\mapsto15$, so $A(S)\subseteq H$ for $S=\{11,12,15\}$. Each rectangle below is named by its top-left corner (its bottom-right corner is $16$); we write its loop $h_R$ by following arrows $x\to h_R(x)$, read off from the formula above.
+\begin{itemize}
+\item Corner $10$: $14\to15\to12\to11\to10\to14$. Here $h(S)=\{12,11,10\}$ meets $S$ in two cells, so fact (i) adds $10$. Then fact (ii) with $z=10$, $x=11$, $y=12$ adds $h(10)=14$.
+\item Corner $9$: $13\to14\to15\to12\to11\to10\to9\to13$. Fact (ii) with $x,y=11,12$ and $z=10$ adds $9$; then with $x,y=10,11$ and $z=9$ adds $13$.
+\item Corner $7$: $11\to15\to12\to8\to7\to11$. With $x,y=11,15$: $z=12$ adds $8$, then $z=8$ adds $7$.
+\item Corner $3$: $11\to15\to12\to8\to4\to3\to7\to11$. With $x,y=11,15$: $z=8$ adds $4$, then $z=4$ adds $3$.
+\item Corner $5$: $13\to14\to15\to12\to8\to7\to6\to5\to9\to13$. With $x,y=13,14$: $z=7$ adds $6$, then $z=6$ adds $5$.
+\item Corner $1$ (the whole board): $13\to14\to15\to12\to8\to4\to3\to2\to1\to5\to9\to13$. With $x,y=13,14$: $z=3$ adds $2$, then $z=2$ adds $1$.
+\end{itemize}
+Now $S=X$, so $H=A(X)$: every position with the blank at $16$ and an even $\sigma$ is reachable, which proves the converse. Finally, exchanging the tiles $1$ and $2$ ($\sigma\mapsto\sigma\,(1\,2)$) changes $\varepsilon$ and not $\delta$, so it is a bijection between the positions with $\varepsilon\delta=1$ and those with $\varepsilon\delta=-1$: exactly $16!/2$ positions are reachable.
+\end{proof}
+
+\begin{remark}
+The puzzle swept the United States and Europe in 1880, and the first analysis, by Johnson and Story, appeared in the \emph{American Journal of Mathematics} in 1879. The popular story that Sam Loyd invented it and offered \$1000 for solving the $14$--$15$ position does not survive the historical record (Slocum and Sonneveld, cited at the end of the chapter).
+\end{remark}
+
+\section{Simple groups}
+
+A group $G\ne\{e\}$ is \emph{simple} if its only normal subgroups are $\{e\}$ and $G$. The abelian simple groups are the $\Z/p\Z$ with $p$ prime: in an abelian group every subgroup is normal; a group whose only subgroups are $\{e\}$ and itself is generated by any $x\ne e$, so it is cyclic; and a cyclic group of composite or infinite order has other subgroups (Theorem~\ref{thm:cyclic}), while one of prime order has none (Corollary~\ref{cor:lagrange}). Simple groups are to finite groups what primes are to integers, and $A_5$ is the smallest non-abelian one.
+
+\begin{lemma}\label{lem:split}
+Let $\sigma\in A_n$ and let $C$ be its conjugacy class in $\mathfrak S_n$. If the centraliser $C(\sigma)$ in $\mathfrak S_n$ contains an odd permutation, $C$ is a single conjugacy class of $A_n$. Otherwise $C$ splits into two classes of $A_n$ of size $|C|/2$ each.
+\end{lemma}
+\begin{proof}
+$A_n$ is normal, so it acts on $C$ by conjugation; the orbit of $\tau\in C$ has $|A_n|/|C(\tau)\cap A_n|$ elements (Theorem~\ref{thm:orbstab}). $C(\tau)\cap A_n$ is the kernel of $\varepsilon$ restricted to $C(\tau)$, so it is $C(\tau)$ or has index $2$ in it. If $\tau=\pi\sigma\pi^{-1}$ then $C(\tau)=\pi C(\sigma)\pi^{-1}$, which contains an odd permutation iff $C(\sigma)$ does. If it does, every orbit has $\frac{n!/2}{|C(\sigma)|/2}=|C|$ elements: one class. If not, every orbit has $\frac{n!/2}{|C(\sigma)|}=|C|/2$ elements: two classes.
+\end{proof}
+
+\begin{theorem}\label{thm:a5}
+$A_5$ is simple. Its conjugacy classes have sizes $1,15,20,12,12$.
+\end{theorem}
+\begin{proof}
+The even classes of $\mathfrak S_5$ are $1^5$, $2^21$ ($15$ elements), $3\,1^2$ ($20$) and $5$ ($24$). The element $(1\,2)(3\,4)$ commutes with the odd $(1\,2)$, and $(1\,2\,3)$ with the odd $(4\,5)$, so these classes stay whole in $A_5$ (Lemma~\ref{lem:split}). The centraliser of $(1\,2\,3\,4\,5)$ has order $z_{(5)}=5$, so it is $\langle(1\,2\,3\,4\,5)\rangle$, all even: the $24$ five-cycles split into two classes of $12$.
+
+A normal subgroup $N$ is a union of conjugacy classes (if $x\in N$, all its conjugates are), it contains the class $\{e\}$, and $|N|$ divides $60$. The possible sums $1+\dots$ of distinct terms among $15,20,12,12$ are
+\[
+1,\ 13,\ 16,\ 21,\ 25,\ 28,\ 33,\ 36,\ 40,\ 45,\ 48,\ 60,
+\]
+and among them only $1$ and $60$ divide $60$. So $N=\{e\}$ or $N=A_5$.
+\end{proof}
+
+\begin{think}
+The proof above used only class sizes. Why can't the same count work for $A_n$ in general? (Look at how many classes $A_n$ has.) The proof below uses commutators instead: if $N$ is normal, $\sigma\in N$ and $\tau$ is anything, then $\tau\sigma\tau^{-1}\sigma^{-1}\in N$, and this element may move far fewer points than $\sigma$.
+\end{think}
+
+\begin{theorem}\label{thm:an}
+$A_n$ is simple for every $n\ge5$.
+\end{theorem}
+\begin{proof}
+Let $N\ne\{e\}$ be normal in $A_n$.
+
+\emph{Step 1: all $3$-cycles are conjugate in $A_n$.} Given $3$-cycles $\gamma,\gamma'$, there is $\pi\in\mathfrak S_n$ with $\pi\gamma\pi^{-1}=\gamma'$ (Proposition~\ref{prop:conjSn}). If $\pi$ is odd, replace it by $\pi(d\,e)$, where $d,e$ lie outside the support of $\gamma$ (possible as $n\ge5$); $(d\,e)$ commutes with $\gamma$, so this is an even permutation conjugating $\gamma$ to $\gamma'$. Hence, if $N$ contains one $3$-cycle, it contains all of them, and $N=A_n$ by Proposition~\ref{prop:gens}(b).
+
+\emph{Step 2: $N$ contains a $3$-cycle.} Take $\sigma\in N$, $\sigma\ne e$. For any $3$-cycle $\tau$, the commutator $[\tau,\sigma]=\tau\,(\sigma\tau^{-1}\sigma^{-1})$ lies in $N$, and by Proposition~\ref{prop:conjSn}(a), $\sigma\tau^{-1}\sigma^{-1}$ is the cycle $\tau^{-1}$ with its points renamed by $\sigma$. We look at the cycle type of $\sigma$, writing $a_1,a_2,\dots$ for distinct points.
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{$\sigma$ has a cycle of length $\ge4$}, $\sigma=(a_1\,a_2\,a_3\,a_4\,\dots)\cdots$. With $\tau=(a_1\,a_2\,a_3)$: $\sigma\tau^{-1}\sigma^{-1}=(a_2\,a_4\,a_3)$ and $[\tau,\sigma]=(a_1\,a_2\,a_3)(a_2\,a_4\,a_3)=(a_1\,a_2\,a_4)$.
+\item \emph{$\sigma$ has two $3$-cycles}, $\sigma=(a_1\,a_2\,a_3)(a_4\,a_5\,a_6)\cdots$. With $\tau=(a_1\,a_2\,a_4)$: $\sigma\tau^{-1}\sigma^{-1}=(a_2\,a_5\,a_3)$ and
+\[
+[\tau,\sigma]=(a_1\,a_2\,a_4)(a_2\,a_5\,a_3)=(a_1\,a_2\,a_5\,a_3\,a_4),
+\]
+a $5$-cycle in $N$; apply case (1) to it.
+\item \emph{$\sigma$ has exactly one $3$-cycle, and otherwise only transpositions}: $\sigma^2$ is that $3$-cycle squared, a $3$-cycle.
+\item \emph{$\sigma$ is a product of disjoint transpositions}, at least two since $\sigma$ is even: $\sigma=(a_1\,a_2)(a_3\,a_4)\cdots$. With $\tau=(a_1\,a_2\,a_3)$: $\sigma\tau^{-1}\sigma^{-1}=(a_2\,a_4\,a_1)$ and $[\tau,\sigma]=(a_1\,a_3)(a_2\,a_4)=:\rho\in N$. Take $a_5$ outside $\{a_1,\dots,a_4\}$ ($n\ge5$) and $\kappa=(a_1\,a_3\,a_5)$: $\rho\kappa^{-1}\rho^{-1}=(a_3\,a_5\,a_1)=\kappa$, so $[\kappa,\rho]=\kappa^2=(a_1\,a_5\,a_3)\in N$.
+\end{enumerate}
+These cases cover every $\sigma\ne e$ in $A_n$: either some cycle has length $\ge4$, or all have length $\le3$ and there are at least two, exactly one, or no $3$-cycles. Each product of two cycles above is checked by following the points one by one, as in the proof of Proposition~\ref{prop:gens}; for instance in (1), $a_1\mapsto a_1\mapsto a_2$, $a_2\mapsto a_4\mapsto a_4$, $a_4\mapsto a_3\mapsto a_1$, $a_3\mapsto a_2\mapsto a_3$.
+\end{proof}
+
+\begin{beauty}
+Three later stories start here. In Chapter~5 the simplicity of $A_5$ shows that $\mathfrak S_5$ is not \emph{solvable}, and in Chapter~10 this becomes the reason why no formula with radicals solves $x^5-4x+2=0$. In Tome~3, shuffling a deck of cards is a random walk on $\mathfrak S_{52}$: the conjugacy classes and characters of $\mathfrak S_n$ (Chapter~11) are what Diaconis and Shahshahani used to prove that about $\frac12n\log n$ random transpositions mix $n$ cards. And the classification of finite simple groups, finished around 2004, says that every finite simple group is cyclic of prime order, alternating, a group of Lie type, or one of $26$ sporadic groups, the largest being the Monster, of order about $8\times10^{53}$.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:landau}
+What is the largest order of an element of $\mathfrak S_7$? Of $\mathfrak S_{10}$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:order2}
+How many elements of order $2$ does $\mathfrak S_6$ have? How many of them are even?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gens12n}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathfrak S_n$ is generated by $(1\,2)$ and $(1\,2\,\dots\,n)$.
+\item Show that $(1\,3)$ and $(1\,2\,3\,4)$ generate a subgroup of order $8$ of $\mathfrak S_4$ only.
+\item Let $p$ be prime. Show that $\mathfrak S_p$ is generated by any transposition together with any $p$-cycle. (This is the fact used in Chapter~10 to show that a Galois group is all of $\mathfrak S_5$.)
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:v4}
+Let $V=\{e,(1\,2)(3\,4),(1\,3)(2\,4),(1\,4)(2\,3)\}$. Show that $V$ is a normal subgroup of $\mathfrak S_4$ and that $\mathfrak S_4/V\cong\mathfrak S_3$. (Let $\mathfrak S_4$ act on the three ways of splitting $\{1,2,3,4\}$ into two pairs.) Deduce that $A_4$ is not simple.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:normalSn}
+Let $n\ge5$. Show that the only normal subgroups of $\mathfrak S_n$ are $\{e\}$, $A_n$ and $\mathfrak S_n$, and that $A_n$ is the only subgroup of index $2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rubik}
+Rubik's cube has $12$ edge pieces and $8$ corner pieces; a move is a quarter turn of one of the six faces $U,D,F,B,L,R$ (up, down, front, back, left, right).
+\begin{enumerate}[label=(\alph*)]
+\item Show that every move induces an odd permutation of the $8$ corner positions and an odd permutation of the $12$ edge positions. Deduce that no sequence of moves swaps two edge pieces and leaves every other piece in place.
+\item Each edge position has two facets; call \emph{primary} the facet on the $U$ or $D$ face if there is one, and otherwise the facet on the $F$ or $B$ face. Each edge piece has a primary sticker, chosen by the same rule using its colours in the solved cube. Say a piece is \emph{flipped} if its primary sticker is not on the primary facet of its position. Show that the moves $U,D,L,R$ flip no piece, and $F,B$ change the flipped state of exactly $4$ pieces. Deduce that no sequence of moves flips one edge piece in place and leaves everything else solved.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:shuffle}
+A deck of $52$ cards is cut into two halves of $26$, which are interleaved perfectly. In an \emph{out-shuffle} the top card stays on top; in an \emph{in-shuffle} it becomes second. Number the positions $0$ (top) to $51$. Show that the out-shuffle sends the card in position $i$ to position $2i\bmod 51$ for $i\le50$, and fixes position $51$; then show that $8$ out-shuffles restore the deck. How many in-shuffles are needed? (Use Tome~1.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:split}
+Show that the class of type $\lambda$ in $\mathfrak S_n$ ($\lambda$ an even type, $n\ge2$) splits into two classes of $A_n$ iff the parts of $\lambda$ are odd and pairwise distinct. Check the case of $A_5$ against Theorem~\ref{thm:a5}, and find the first $n$ where a class other than an $n$-cycle splits.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:landau}
+The order is the lcm of the parts of a partition of $n$. Show that one can assume the parts are powers of distinct primes, padded with $1$s.
+\end{hint}
+\begin{hint}{ex:order2}
+Order $2$ means all cycles have length $1$ or $2$, at least one of length $2$. Use Proposition~\ref{prop:conjSn}(c).
+\end{hint}
+\begin{hint}{ex:gens12n}
+(a) Conjugate $(1\,2)$ by powers of $c=(1\,2\,\dots\,n)$. (b) Number the corners of a square. (c) Reduce to (a) by relabelling: if the transposition is $(a\,b)$, which power of the $p$-cycle sends $a$ to $b$?
+\end{hint}
+\begin{hint}{ex:v4}
+Compute the action of $(1\,2)$ and $(1\,2\,3)$ on the three splittings, and find the kernel.
+\end{hint}
+\begin{hint}{ex:normalSn}
+Intersect a normal subgroup $N$ with $A_n$ and use Theorem~\ref{thm:an}. If $N\cap A_n=\{e\}$, then $|N|\le2$. Can a transposition be central?
+\end{hint}
+\begin{hint}{ex:rubik}
+(a) A quarter turn moves $4$ corners in one cycle and $4$ edges in one cycle. (b) Follow the four edges of each face: where does a $U$ facet go under $R$? under $F$? Then add up the flipped states mod $2$.
+\end{hint}
+\begin{hint}{ex:shuffle}
+For the in-shuffle, number the positions $1$ to $52$ instead, and look for multiplication by $2$ modulo $53$. Is $2$ a square modulo $53$?
+\end{hint}
+\begin{hint}{ex:split}
+By Lemma~\ref{lem:split}, decide when $C(\sigma)$ contains an odd permutation. An even part gives an odd cycle commuting with $\sigma$; two equal parts can be swapped. If the parts are odd and distinct, show that anything commuting with $\sigma$ maps each cycle to itself and acts on it as a power of that cycle.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:landau}
+\idea Write the order as an lcm and ask how cheaply (in total length) a given lcm can be produced.
+\writeup Let $\sigma$ have type $(k_1,\dots,k_r)$, of order $L=\operatorname{lcm}(k_i)=\prod_pp^{e_p}$. For each prime $p\mid L$, $p^{e_p}$ divides some $k_i$. The prime powers dividing the same $k_i$ are pairwise coprime, so their product divides $k_i$, and since $a+b\le ab$ for $a,b\ge2$, their sum is at most their product, hence at most $k_i$. So $\sum_pp^{e_p}\le\sum k_i=n$, and the type made of the parts $p^{e_p}$ and $n-\sum_pp^{e_p}$ ones also has order $L$. So the maximum is the largest product of powers of distinct primes with sum $\le n$.
+
+For $n=7$: the candidates are $7$; $5+2$ (order $10$); $4+3$ ($12$); $3+2$ ($6$); and smaller. The maximum is $12$, e.g.\ $(1\,2\,3\,4)(5\,6\,7)$. For $n=10$: $2+3+5=10$ gives $30$; the other candidates are $7+3$ ($21$), $7+2$ ($14$), $5+4$ ($20$), $8$, $9$, $4+3$ plus ones ($12$), $9$ alone, and none beats $30$. So the answer is $30$, e.g.\ $(1\,2)(3\,4\,5)(6\,7\,8\,9\,10)$. This maximum $g(n)$ is \emph{Landau's function}; Landau proved in 1903 that $\log g(n)\sim\sqrt{n\log n}$.
+\end{solution}
+
+\begin{solution}{ex:order2}
+\idea Order $2$ means type $2^k1^{n-2k}$ with $k\ge1$; count each class with $n!/z_\lambda$.
+\writeup Type $2\,1^4$: $z=2\cdot4!=48$, so $720/48=15$. Type $2^21^2$: $z=2^2\cdot2!\cdot2!=16$, so $45$. Type $2^3$: $z=2^3\cdot3!=48$, so $15$. Total $75$. By Corollary~\ref{cor:ordersign}, the type $2^k1^{n-2k}$ has sign $(-1)^k$, so only the $45$ double transpositions are even.
+\end{solution}
+
+\begin{solution}{ex:gens12n}
+\idea A cycle moves a transposition along by conjugation; then use Proposition~\ref{prop:gens}(a).
+\writeup (a) Let $c=(1\,2\,\dots\,n)$. By Proposition~\ref{prop:conjSn}(a), $c^k(1\,2)c^{-k}=(1+k\;\,2+k)$ for $0\le k\le n-2$. So the subgroup generated by $(1\,2)$ and $c$ contains all adjacent transpositions, hence is $\mathfrak S_n$.
+
+(b) Put $1,2,3,4$ at the corners of a square, in this order around it. Then $(1\,2\,3\,4)$ is the quarter turn and $(1\,3)$ the reflection in the diagonal through $2$ and $4$. Both are symmetries of the square, so the subgroup they generate lies in the image of $D_4$, of order $8$; it contains the rotation of order $4$ and a reflection, so it is that whole group of order $8$, not $\mathfrak S_4$.
+
+(c) Let $(a\,b)$ be the transposition and $c$ the $p$-cycle. Some power $c^k$, $1\le k\le p-1$, sends $a$ to $b$. Since $p$ is prime, $c^k$ is again a $p$-cycle (its order is $p$, and in $\mathfrak S_p$ an element of order $p$ is a $p$-cycle by Corollary~\ref{cor:ordersign}(a)), and $\langle c^k\rangle=\langle c\rangle$. Write $c^k=(a\;b\;\dots)$ and rename the points so that $c^k=(1\,2\,\dots\,p)$, with $a=1$, $b=2$. By (a), $(1\,2)$ and $c^k$ generate $\mathfrak S_p$, so $(a\,b)$ and $c$ do.
+\end{solution}
+
+\begin{solution}{ex:v4}
+\idea A homomorphism with kernel $V$ proves both normality and the quotient at once (Theorem~\ref{thm:iso1}).
+\writeup Let $P_1=\{12|34\}$, $P_2=\{13|24\}$, $P_3=\{14|23\}$ be the three splittings. A permutation maps a splitting into two pairs to another one, so $\mathfrak S_4$ acts on $\{P_1,P_2,P_3\}$, giving a homomorphism $\varphi:\mathfrak S_4\to\mathfrak S_3$. The transposition $(1\,2)$ fixes $P_1$ and exchanges $P_2,P_3$; the $3$-cycle $(1\,2\,3)$ sends $P_1\mapsto\{23|14\}=P_3\mapsto\{31|24\}=P_2\mapsto\{21|34\}=P_1$. So the image contains elements of orders $2$ and $3$; its order is divisible by $6$, so $\varphi$ is onto. The kernel has $24/6=4$ elements. Each element of $V$ fixes each $P_i$ (for instance $(1\,2)(3\,4)$ maps $\{13|24\}$ to $\{24|13\}$), so $V\subseteq\ker\varphi$, and equality holds by counting. Hence $V$ is normal and $\mathfrak S_4/V\cong\mathfrak S_3$. Since $V\subseteq A_4$ and $V$ is normal in $\mathfrak S_4$, it is normal in $A_4$, with $\{e\}\ne V\ne A_4$. (This homomorphism reappears in Chapter~10 as the ``resolvent cubic'' that solves the quartic.)
+\end{solution}
+
+\begin{solution}{ex:normalSn}
+\idea Theorem~\ref{thm:an} controls $N\cap A_n$; the rest is a small group sitting in $\mathfrak S_n/A_n$.
+\writeup Let $N$ be normal in $\mathfrak S_n$. Then $N\cap A_n$ is normal in $A_n$, so it is $A_n$ or $\{e\}$. In the first case $A_n\subseteq N$, and $N/A_n$ is a subgroup of $\mathfrak S_n/A_n$, of order $2$, so $N=A_n$ or $\mathfrak S_n$. In the second case $\varepsilon$ restricted to $N$ is injective, so $|N|\le2$. If $N=\{e,\tau\}$, then $\pi\tau\pi^{-1}\in N\setminus\{e\}$, so $\pi\tau\pi^{-1}=\tau$ for all $\pi$: $\tau$ is central. But the centre of $\mathfrak S_n$ is trivial for $n\ge3$: if $\tau(a)=b\ne a$, take $c\notin\{a,b\}$; then $(b\,c)\tau(b\,c)$ sends $a$ to $c\ne b$, so it is not $\tau$. Hence $N=\{e\}$.
+
+A subgroup of index $2$ is normal (Proposition~\ref{prop:normal}), so it is $A_n$ by the above.
+\end{solution}
+
+\begin{solution}{ex:rubik}
+\idea Find quantities that each move changes in a controlled way: here two parities, and a sum of flips mod $2$.
+\writeup (a) A quarter turn of a face moves its $4$ corners in a $4$-cycle and its $4$ edges in a $4$-cycle, and moves no other piece. A $4$-cycle is odd (Corollary~\ref{cor:ordersign}). So after any sequence of $m$ moves, the corner permutation and the edge permutation both have sign $(-1)^m$: they have the same sign. Swapping two edges and fixing the rest would give an odd edge permutation and the identity on corners: impossible.
+
+(b) Under $U$ or $D$, the four edges of that face stay in the face, and the facet on $U$ (or $D$) stays on it: primary facets go to primary facets, so nothing is flipped. Under $R$, the edge at $UR$ goes to $BR$ (or $FR$, depending on the direction) carrying its $U$ facet to the $B$ (or $F$) facet, which is primary for that middle-layer position; similarly the $F$ or $B$ facet of a middle-layer edge goes to a $U$ or $D$ facet, and the $D$ facet of $DR$ goes to a $B$ or $F$ facet. Primary goes to primary, so $R$ (and likewise $L$) flips nothing. Under $F$, the edge at $UF$ goes to $RF$ or $LF$: its $U$ facet (primary) lands on an $R$ or $L$ facet (not primary there), and its $F$ facet (not primary at $UF$) lands on the $F$ facet of $RF$ or $LF$ (primary there). The same exchange of primary and non-primary facets happens for the four edges of the $F$ face, so each of these $4$ pieces changes its flipped state; likewise for $B$. Hence the number of flipped pieces stays even. Solved, it is $0$; flipping one edge in place would make it $1$.
+
+So the edges of a scrambled cube carry two hidden ``checksums''. Together with a third one for the corners (the total twist of the corners is $0$ mod $3$), they cut the $8!\cdot3^8\cdot12!\cdot2^{12}$ ways to put the pieces in by a factor $2\cdot2\cdot3=12$, and it is known that every arrangement satisfying the three conditions can be reached: the Rubik's cube group has $43\,252\,003\,274\,489\,856\,000$ elements (see the notebook).
+\end{solution}
+
+\begin{solution}{ex:shuffle}
+\idea Write the shuffle as a formula on positions; it becomes multiplication by $2$ in $\Z/51\Z$ or $\Z/53\Z$, and the number of shuffles is a multiplicative order.
+\writeup Out-shuffle: the top half (positions $0$ to $25$) goes to the even positions, $i\mapsto2i$, and the bottom half ($26$ to $51$) to the odd positions, $i\mapsto2(i-26)+1=2i-51$. In both cases the new position is $2i\bmod51$ for $i\le50$, and $51\mapsto51$. So $k$ out-shuffles act as $i\mapsto2^ki\bmod51$, and the deck is restored iff $2^k\equiv1\pmod{51}$ (take $i=1$). The order of $2$ modulo $51$: $2^2=4$, $2^4=16$, $2^8=256=5\cdot51+1$. It divides $8$ and is not $1,2,4$, so it is $8$.
+
+In-shuffle: the top half goes to the odd positions, $i\mapsto2i+1$, and the bottom half to the even ones, $i\mapsto2(i-26)$. With positions $j=i+1$ from $1$ to $52$, both become $j\mapsto2j\bmod53$. Since $53$ is prime and $53\equiv5\pmod8$, $2$ is not a square modulo $53$ (the second supplementary law, Tome~1), so $2^{26}\equiv-1\pmod{53}$ by Euler's criterion. The order of $2$ divides $52$ and does not divide $26$, so it is $4$ or $52$; and $2^4=16\not\equiv1$. So $52$ in-shuffles are needed: $2$ is a primitive root modulo $53$.
+\end{solution}
+
+\begin{solution}{ex:split}
+\idea By Lemma~\ref{lem:split}, the class splits iff the centraliser contains no odd permutation. Look for odd permutations commuting with $\sigma$, and when none is visible, describe the whole centraliser.
+\writeup If $\lambda$ has an even part, the corresponding cycle $\gamma$ of $\sigma$ is odd (Corollary~\ref{cor:ordersign}) and commutes with $\sigma$, since it commutes with itself and with the other, disjoint, cycles. If $\lambda$ has a repeated odd part $k$, with cycles $(a_1\,\dots\,a_k)$ and $(b_1\,\dots\,b_k)$ of $\sigma$, let $\pi=(a_1\,b_1)\cdots(a_k\,b_k)$, a product of $k$ disjoint transpositions, so odd. By Proposition~\ref{prop:conjSn}(a), $\pi\sigma\pi^{-1}$ exchanges the names of the two cycles and leaves the others alone, so it is $\sigma$. In both cases the class does not split. (This includes fixed points: two $1$-cycles $a,b$ give the transposition $(a\,b)$.)
+
+Now suppose the parts $k_1>k_2>\dots>k_r$ are odd and distinct, with cycles $\gamma_1,\dots,\gamma_r$, and let $\pi$ commute with $\sigma$. Then $\pi\sigma\pi^{-1}=\sigma$, and by Proposition~\ref{prop:conjSn}(a) $\pi$ maps each cycle of $\sigma$ to a cycle of the same length, hence to itself as the lengths are distinct. Fix $a$ in the support of $\gamma_i$; then $\pi(a)=\gamma_i^m(a)$ for some $m$, and for every $j$, $\pi(\sigma^j(a))=\sigma^j(\pi(a))=\gamma_i^{j+m}(a)$, so $\pi$ agrees with $\gamma_i^m$ on that support. Therefore $\pi=\gamma_1^{m_1}\cdots\gamma_r^{m_r}$ is a product of powers of odd-length cycles, which are even. So $C(\sigma)\subseteq A_n$ and the class splits.
+
+In $A_5$: the type $5$ has distinct odd parts and splits ($24=12+12$); $3\,1^2$ repeats the part $1$ and $2^21$ has even parts, so they do not split, as in Theorem~\ref{thm:a5}. The smallest type with distinct odd parts and at least two parts is $3\,1$, for $n=4$: the $8$ three-cycles of $A_4$ form two classes of $4$, and $A_4$ has classes of sizes $1,3,4,4$. (So $A_4$ is a group where $x$ and $x^{-1}$ need not be conjugate: $(1\,2\,3)$ and $(1\,3\,2)$ are not.)
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item W.~W.~Johnson and W.~E.~Story, \emph{Notes on the ``15'' puzzle}, Amer.\ J.\ Math.\ 2 (1879), 397--404. The parity invariant and the first proof that half the positions are solvable.
+\item A.~F.~Archer, \emph{A modern treatment of the 15 puzzle}, Amer.\ Math.\ Monthly 106 (1999), 793--799. A short proof for all rectangular boards, by a different route from Theorem~\ref{thm:fifteen}.
+\item J.~Slocum and D.~Sonneveld, \emph{The 15 Puzzle}, Slocum Puzzle Foundation, 2006. The history of the 1880 craze, and of Sam Loyd's claims.
+\item D.~Joyner, \emph{Adventures in Group Theory}, 2nd ed., Johns Hopkins University Press, 2008. Rubik's cube and other puzzles as permutation groups, including the order of the cube group.
+\item T.~Rokicki, H.~Kociemba, M.~Davidson and J.~Dethridge, \emph{The diameter of the Rubik's cube group is twenty}, SIAM J.\ Discrete Math.\ 27 (2013), 1082--1105. Every position can be solved in at most $20$ face turns.
+\item P.~Diaconis, R.~L.~Graham and W.~M.~Kantor, \emph{The mathematics of perfect shuffles}, Adv.\ Appl.\ Math.\ 4 (1983), 175--196. The group generated by in- and out-shuffles, for every deck size.
+\item D.~S.~Dummit and R.~M.~Foote, \emph{Abstract Algebra}, 3rd ed., Wiley, 2004, Sections~3.5 and~4.6. Cycle types, and another proof that $A_n$ is simple.
+\end{itemize}
