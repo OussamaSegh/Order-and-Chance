@@ -30,6 +30,7 @@ def main(src: str, dst: str) -> None:
     # texmath (pandoc's math converter) does not know \bigl/\Bigl sizes.
     text = re.sub(r"\\[Bb]ig(g?)l(?![a-z])", r"\\left", text)
     text = re.sub(r"\\[Bb]ig(g?)r(?![a-z])", r"\\right", text)
+    text = re.sub(r"\\[dt]binom(?![a-z])", r"\\binom", text)
     Path(dst).write_text(text, encoding="utf-8")
 
 
