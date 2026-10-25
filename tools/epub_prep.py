@@ -30,6 +30,8 @@ def main(src: str, dst: str, figdir: str) -> None:
     # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
+    # The EPUB cover is set by pandoc's --epub-cover-image instead.
+    text = text.replace("\\makecover\n", "")
     text = re.sub(r"\\begin\{(exercise|reminder)\}\[([^\]]*)\]",
                   r"\\begin{\1}\\textbf{OPTARG:\2}", text)
     # texmath (pandoc's math converter) does not know \bigl/\Bigl sizes.

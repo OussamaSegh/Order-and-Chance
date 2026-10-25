@@ -8,6 +8,7 @@ import html
 import os
 import re
 import shutil
+import subprocess
 import sys
 from pathlib import Path
 
@@ -30,6 +31,8 @@ PAGE = """<!doctype html>
   .lead {{ color:var(--muted); margin:0 0 2em; }}
   .tome {{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 20px; margin:14px 0;
           display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }}
+  .tome img {{ width:96px; height:154px; border-radius:3px; box-shadow:0 2px 8px rgba(0,0,0,.25); }}
+  .tome .info {{ flex:1; min-width:180px; }}
   .tome h2 {{ font-size:1.15em; margin:0; }}
   .tome p {{ margin:2px 0 0; color:var(--muted); font-size:.92em; }}
   .links a {{ display:inline-block; margin-left:8px; padding:6px 14px; border:1px solid var(--accent); border-radius:6px;
@@ -54,7 +57,7 @@ Python companion notebooks are in the repository's <code>python/</code> folder.<
 </html>
 """
 
-CARD = """<div class="tome"><div><h2>{title}</h2><p>{subtitle} · {size}</p></div>
+CARD = """<div class="tome">{cover}<div class="info"><h2>{title}</h2><p>{subtitle} · {size}</p></div>
 <div class="links"><a href="{pdf}">PDF</a><a href="{epub}">EPUB</a></div></div>"""
 
 
@@ -76,8 +79,15 @@ def main(dist: str, out: str) -> None:
         if epub.exists():
             shutil.copy(epub, out_dir / epub.name)
         size = f"{pdf.stat().st_size / 1e6:.1f} MB PDF"
+        # Cover thumbnail, rendered from the cover page that build.sh made.
+        cover = ""
+        cover_pdf = ROOT / "build" / tome / "cover.pdf"
+        if cover_pdf.exists():
+            subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to-x", "300", "-scale-to-y", "480",
+                            str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
+            cover = f'<img src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         cards.append(CARD.format(title=html.escape(rest or series), subtitle=html.escape(series if rest else ""),
-                                 size=size, pdf=pdf.name, epub=epub.name))
+                                 size=size, cover=cover, pdf=pdf.name, epub=epub.name))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/numbers-structures-chance")

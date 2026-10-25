@@ -66,7 +66,7 @@ pip install -r requirements.txt  # for the notebooks
 ```
 
 Every push builds the PDF and EPUB on GitHub Actions (the run's **books** artifact); pushes to `main` also publish them
-to the download page and the `books` release. Figures are TikZ files in `<tome>/figures/`, converted to SVG for the EPUB.
+to the download page and the `books` release. Figures are TikZ files in `<tome>/figures/`, converted to SVG for the EPUB. Each tome has a cover (`tools/cover.tex`, with the central picture written by `tools/cover_motifs.py` into `<tome>/cover-motif.tex`); it is the first page of the PDF and the EPUB cover image shown by e-readers. A new tome needs a picture in `tools/cover_motifs.py`.
 
 ## Writing conventions
 

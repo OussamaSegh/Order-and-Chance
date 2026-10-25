@@ -11,9 +11,20 @@ for tome in "${tomes[@]}"; do
   echo "== $tome"
   out="$root/build/$tome"
   mkdir -p "$out"
+  # The cover (tools/cover.tex with the tome's picture from tools/cover_motifs.py): a PDF page
+  # for the book and a 1600x2560 PNG for the EPUB, which e-readers and Kindle show as the cover.
+  title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
+  num=$(sed -n 's/^.*Tome \([0-9]*\):.*/\1/p' <<<"$title")
+  (cd "$root" &&
+    pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
+      "\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
+      >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
+  pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
+
   (cd "$root/$tome" &&
     for _ in 1 2 3; do
-      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" main.tex >"$out/pdflatex.log" ||
+      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
+        "\\def\\COVER{$out/cover.pdf}\\input{main.tex}" >"$out/pdflatex.log" ||
         { tail -40 "$out/pdflatex.log"; exit 1; }
     done)
   cp "$out/main.pdf" "$root/dist/$tome.pdf"
@@ -31,10 +42,9 @@ for tome in "${tomes[@]}"; do
   done
 
   python3 "$root/tools/epub_prep.py" "$root/$tome/main.tex" "$out/epub.tex" "$out/figures"
-  title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   (cd "$root/$tome" &&
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
-      --split-level=1 --number-sections \
+      --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
       --metadata title="${title:-$tome}" --metadata lang=en \
       -o "$root/dist/$tome.epub")
