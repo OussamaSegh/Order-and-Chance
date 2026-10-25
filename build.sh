@@ -21,13 +21,18 @@ for tome in "${tomes[@]}"; do
       >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
   pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
 
-  (cd "$root/$tome" &&
-    for _ in 1 2 3; do
-      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
-        "\\def\\COVER{$out/cover.pdf}\\input{main.tex}" >"$out/pdflatex.log" ||
-        { tail -40 "$out/pdflatex.log"; exit 1; }
-    done)
-  cp "$out/main.pdf" "$root/dist/$tome.pdf"
+  # Three PDFs: A4 (dist/<tome>.pdf), phone (-phone.pdf) and 7-inch e-reader (-kindle.pdf).
+  for format in a4 phone kindle; do
+    job=main; [ "$format" = a4 ] || job="main-$format"
+    (cd "$root/$tome" &&
+      for _ in 1 2 3; do
+        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="$job" \
+          "\\def\\FORMAT{$format}\\def\\COVER{$out/cover.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
+          { tail -40 "$out/$job.stdout"; exit 1; }
+      done)
+    suffix=""; [ "$format" = a4 ] || suffix="-$format"
+    cp "$out/$job.pdf" "$root/dist/$tome$suffix.pdf"
+  done
 
   # Each figure also becomes an SVG for the EPUB (needs pdftocairo, from poppler-utils).
   mkdir -p "$out/figures"
@@ -49,5 +54,5 @@ for tome in "${tomes[@]}"; do
       --metadata title="${title:-$tome}" --metadata lang=en \
       -o "$root/dist/$tome.epub")
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
-  echo "   dist/$tome.pdf  dist/$tome.epub"
+  echo "   dist/$tome.pdf  dist/$tome-phone.pdf  dist/$tome-kindle.pdf  dist/$tome.epub"
 done

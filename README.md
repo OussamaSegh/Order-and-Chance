@@ -6,10 +6,16 @@ companion notebook with computer-science applications.
 ## Download the books
 
 - **Download page:** https://oussamasegh.github.io/numbers-structures-chance/
-- **Direct links (latest build):** [Tome 0 PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.pdf) ·
-  [Tome 0 EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.epub) ·
-  [Tome 1 PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.pdf) ·
-  [Tome 1 EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.epub)
+- **Direct links (latest build):**
+
+  | Tome | PDF (A4) | PDF for phones | PDF for Kindle | EPUB |
+  |---|---|---|---|---|
+  | 0. Back in Shape | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.epub) |
+  | 1. The Integers | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.epub) |
+
+Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
+for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
+Paperwhite); and a reflowable EPUB with its cover, for any e-reader.
 
 Every push to `main` rebuilds all the books and republishes them, both on the download page and on the
 [`books` release](https://github.com/OussamaSegh/numbers-structures-chance/releases/tag/books).
@@ -52,7 +58,7 @@ tome0-back-in-shape/    main.tex + chapters/*.tex (solutions at the end of each 
 tome1-integers/         same layout, one folder per tome
 python/tomeN/           one Jupyter notebook per chapter
 tools/                  EPUB conversion helpers (pandoc filter, CSS)
-build.sh                builds dist/<tome>.pdf and dist/<tome>.epub
+build.sh                builds dist/<tome>.pdf, -phone.pdf, -kindle.pdf and .epub
 ```
 
 ## Building

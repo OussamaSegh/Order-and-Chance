@@ -2,12 +2,43 @@
 \usepackage[utf8]{inputenc}
 \usepackage{mathpazo}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-\usepackage[a4paper,margin=2.6cm]{geometry}
+% Page format, chosen by build.sh through \FORMAT: A4 (default), a phone screen
+% (Galaxy S25 Ultra, 9:19.5) or a 7-inch e-reader (Kindle Paperwhite, 1264x1680 pixels).
+\providecommand{\FORMAT}{a4}
+\def\formatphone{phone}\def\formatkindle{kindle}
+\ifx\FORMAT\formatphone
+  \usepackage[paperwidth=90mm,paperheight=195mm,hmargin=4mm,top=6mm,bottom=9mm,headsep=3mm,footskip=5mm]{geometry}
+\else\ifx\FORMAT\formatkindle
+  \usepackage[paperwidth=107mm,paperheight=142mm,hmargin=4mm,top=5mm,bottom=8mm,headsep=3mm,footskip=5mm]{geometry}
+\else
+  \usepackage[a4paper,margin=2.6cm]{geometry}
+\fi\fi
+% On small screens: plain page numbers, and wide displayed formulas \[...\] shrink to the line width.
+\newif\ifsmallformat
+\ifx\FORMAT\formatphone\smallformattrue\fi
+\ifx\FORMAT\formatkindle\smallformattrue\fi
+% Line breaks that only happen on small screens, for use inside displays:
+% \qq separates independent formulas (a \qquad on A4), \eqbr breaks a chain of
+% equalities inside aligned (nothing on A4).
+\ifsmallformat
+  \newcommand{\qq}{\\}\newcommand{\eqbr}{\\&}
+\else
+  \newcommand{\qq}{\qquad}\newcommand{\eqbr}{}
+\fi
+\ifsmallformat
+  \AtBeginDocument{\pagestyle{plain}%
+    \def\[#1\]{\begin{equation*}\sbox0{$\displaystyle#1$}%
+      \ifdim\wd0>\linewidth\typeout{SHRINK \the\wd0\space > \the\linewidth\space at line \the\inputlineno}%
+        \resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi\end{equation*}}}
+\fi
+\usepackage[final]{microtype}
+\setlength{\emergencystretch}{3em}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \usepackage[most]{tcolorbox}
 \input{../common/figure-packages}
 \usepackage{pdfpages}
+\usepackage{adjustbox}
 % The cover page, made by build.sh from tools/cover.tex (skipped when \COVER is not defined).
 \newcommand{\makecover}{\ifdefined\COVER\includepdf[fitpaper]{\COVER}\fi}
 \usepackage[colorlinks=true,linkcolor=MidnightBlue,urlcolor=MidnightBlue]{hyperref}
@@ -47,7 +78,7 @@
   \par\smallskip\noindent\textbf{\color{Plum!70!black}Hint for Exercise~\ref{#1}.}\quad}%
   {\par\smallskip}
 % Figures: \fig{name} draws figures/name.tex (a tikzpicture); the EPUB uses an SVG of it.
-\newcommand{\fig}[1]{\input{figures/#1}}
+\newcommand{\fig}[1]{\adjustbox{max width=\linewidth}{\input{figures/#1}}}
 
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}

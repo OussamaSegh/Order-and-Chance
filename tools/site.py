@@ -1,7 +1,8 @@
 """Build the download page published on GitHub Pages.
 
 Usage: python3 tools/site.py <dist dir> <output dir>
-Copies every dist/<tome>.pdf and .epub into the output directory and writes index.html.
+Copies every dist/<tome>.pdf (with its -phone and -kindle variants) and .epub into the
+output directory and writes index.html.
 """
 import datetime
 import html
@@ -35,7 +36,7 @@ PAGE = """<!doctype html>
   .tome .info {{ flex:1; min-width:180px; }}
   .tome h2 {{ font-size:1.15em; margin:0; }}
   .tome p {{ margin:2px 0 0; color:var(--muted); font-size:.92em; }}
-  .links a {{ display:inline-block; margin-left:8px; padding:6px 14px; border:1px solid var(--accent); border-radius:6px;
+  .links a {{ display:inline-block; margin:4px 0 4px 8px; padding:6px 14px; border:1px solid var(--accent); border-radius:6px;
              color:var(--accent); text-decoration:none; font-family:system-ui, sans-serif; font-size:.9em; }}
   .links a:hover {{ background:var(--accent); color:var(--card); }}
   footer {{ margin-top:2.5em; color:var(--muted); font-size:.88em; }}
@@ -58,7 +59,11 @@ Python companion notebooks are in the repository's <code>python/</code> folder.<
 """
 
 CARD = """<div class="tome">{cover}<div class="info"><h2>{title}</h2><p>{subtitle} · {size}</p></div>
-<div class="links"><a href="{pdf}">PDF</a><a href="{epub}">EPUB</a></div></div>"""
+<div class="links"><a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div></div>"""
+
+# Extra PDF layouts made by build.sh, with their button labels.
+VARIANTS = [("phone", "Phone PDF", "Pages sized for a large phone screen (Galaxy S25 Ultra)"),
+            ("kindle", "Kindle PDF", "Pages sized for a 7-inch e-reader (Kindle Paperwhite)")]
 
 
 def main(dist: str, out: str) -> None:
@@ -66,6 +71,8 @@ def main(dist: str, out: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     cards = []
     for pdf in sorted(dist_dir.glob("*.pdf")):
+        if any(pdf.stem.endswith("-" + v) for v, _, _ in VARIANTS):
+            continue
         tome = pdf.stem
         epub = pdf.with_suffix(".epub")
         main_tex = ROOT / tome / "main.tex"
@@ -76,6 +83,12 @@ def main(dist: str, out: str) -> None:
                 title = m.group(1)
         series, _, rest = title.partition(". ")
         shutil.copy(pdf, out_dir / pdf.name)
+        variants = ""
+        for v, label, tip in VARIANTS:
+            extra = dist_dir / f"{tome}-{v}.pdf"
+            if extra.exists():
+                shutil.copy(extra, out_dir / extra.name)
+                variants += f'<a href="{extra.name}" title="{tip}">{label}</a>'
         if epub.exists():
             shutil.copy(epub, out_dir / epub.name)
         size = f"{pdf.stat().st_size / 1e6:.1f} MB PDF"
@@ -87,7 +100,7 @@ def main(dist: str, out: str) -> None:
                             str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
             cover = f'<img src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         cards.append(CARD.format(title=html.escape(rest or series), subtitle=html.escape(series if rest else ""),
-                                 size=size, cover=cover, pdf=pdf.name, epub=epub.name))
+                                 size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/numbers-structures-chance")
