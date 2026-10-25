@@ -34,9 +34,15 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 13 | Primes in Depth | Analytic and additive number theory | Planned |
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
 | 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | Planned |
+| C1 | Discrete Structures | Logic, combinatorics, graph theory, orders | Planned |
+| C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised and algebraic algorithms | Planned |
+| C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Planned |
+| C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
+| C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
 
 Tomes 0–5 are the foundations, 6–9 the graduate toolbox, and 10–15 the road to research in probability,
-probabilistic number theory and algebra. The detailed plan of every tome lives in the series plan document.
+probabilistic number theory and algebra. The Computing track C1–C5 runs alongside and treats the
+mathematics of computer science in the same spirit. The detailed plan of every tome lives in the series plan document.
 
 ## Layout
 
