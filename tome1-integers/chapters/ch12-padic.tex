@@ -1,0 +1,317 @@
+\chapter{The \texorpdfstring{$p$}{p}-adic Numbers}
+
+\begin{center}\itshape
+In the $2$-adic world, $1+2+4+8+\cdots=-1$, and $-7$ has a square root.\\
+Both statements are true, and they say that ``being close'' can mean ``being congruent modulo a high power of $p$''.
+\end{center}
+
+Fix a prime $p$. Chapters~3 and~6 taught us to solve equations modulo $p$, then modulo $p^2,p^3,\dots$ by Hensel's lemma. The $p$-adic numbers are what you get when you never stop: a $5$-adic integer is a coherent list of residues modulo $5,25,125,\dots$, just as a real number is a coherent list of decimal approximations. In this chapter we build them, compute with them, and see why there are no other ways to measure size on $\Q$.
+
+\section{The \texorpdfstring{$p$}{p}-adic absolute value}
+
+For $x\in\Q^*$, write $x=p^v\frac ab$ with $p\nmid ab$; the integer $v=v_p(x)$ is the \emph{$p$-adic valuation} of $x$ (for integers, Chapter~1). It is well defined, since $v_p(x)=v_p(\text{numerator})-v_p(\text{denominator})$ for any fraction representing $x$. The \emph{$p$-adic absolute value} is
+\[
+|x|_p=p^{-v_p(x)}\quad(x\ne0),\qquad|0|_p=0.
+\]
+So $x$ is $p$-adically small when it is divisible by a high power of $p$.
+
+\begin{think}
+Which of $1$, $25$, $\frac15$, $5^{100}$, $10^{100}$ is closest to $0$ for $|\cdot|_5$? Which two of the numbers $1$, $26$, $126$ are closest to each other?
+\end{think}
+
+\begin{proposition}\label{prop:ultra}
+For $x,y\in\Q$:
+\begin{enumerate}[label=(\alph*)]
+\item $|xy|_p=|x|_p\,|y|_p$;
+\item (ultrametric inequality) $|x+y|_p\le\max(|x|_p,|y|_p)$, with equality when $|x|_p\ne|y|_p$;
+\item (product formula) for $x\ne0$, $\displaystyle|x|_\infty\prod_p|x|_p=1$, where $|x|_\infty$ is the usual absolute value and the product (over all primes) has finitely many factors different from $1$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $v_p(xy)=v_p(x)+v_p(y)$, by uniqueness of factorisation of numerators and denominators. (b) We may assume $x,y,x+y\ne0$ and $v_p(x)\le v_p(y)$. Write $x=p^{v}\frac ab$ and $y=p^{v}\frac cd$ with $v=v_p(x)$, $p\nmid abd$ (and possibly $p\mid c$). Then $x+y=p^v\frac{ad+bc}{bd}$ with $p\nmid bd$, so $v_p(x+y)\ge v$, which is the inequality. If $v_p(y)>v$, then $p\mid c$, so $p\nmid ad+bc$ and $v_p(x+y)=v$. (c) Write $x=\pm\prod_pp^{v_p(x)}$; then $|x|_\infty=\prod_pp^{v_p(x)}$ and $\prod_p|x|_p=\prod_pp^{-v_p(x)}$.
+\end{proof}
+
+The ultrametric inequality makes $p$-adic geometry strange and pleasant. Define the distance $d(x,y)=|x-y|_p$ and the ball $B(a,r)=\{x:|x-a|_p\le r\}$.
+
+\begin{proposition}\label{prop:balls}
+\begin{enumerate}[label=(\alph*)]
+\item Every triangle is isosceles: among $|x-y|_p$, $|y-z|_p$, $|x-z|_p$, the two largest are equal.
+\item Every point of a ball is a centre: if $b\in B(a,r)$ then $B(b,r)=B(a,r)$.
+\item Two balls are either disjoint or one contains the other.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $x-z=(x-y)+(y-z)$; by Proposition~\ref{prop:ultra}(b), if $|x-y|_p\ne|y-z|_p$ then $|x-z|_p$ equals the larger of the two. (b) If $|x-a|_p\le r$ then $|x-b|_p\le\max(|x-a|_p,|a-b|_p)\le r$; the converse is symmetric. (c) If $B(a,r)$ and $B(b,s)$ with $r\le s$ share a point $c$, then by (b) they are $B(c,r)\subseteq B(c,s)$.
+\end{proof}
+
+In $\Z$, the ball $B(a,p^{-k})$ is the residue class of $a$ modulo $p^k$. So the balls form a tree: each class modulo $p^k$ splits into $p$ classes modulo $p^{k+1}$ (Figure~\ref{fig:tree}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-tree}
+\caption{The $2$-adic integers as an infinite binary tree. A node at depth $k$ is a residue class modulo $2^k$ (a ball of radius $2^{-k}$), and an infinite path from the root is a $2$-adic integer, read off as its binary digits. The red path, all digits $1$, is $-1$; the blue one is $\frac13=1+2+0\cdot4+8+0\cdot16+\cdots$.}
+\label{fig:tree}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-ruler}
+\caption{$|n|_2$ for $1\le n\le 64$: the ``ruler function''. Most integers have $2$-adic size $1$; the multiples of high powers of $2$ are the small ones.}
+\label{fig:ruler}
+\end{figure}
+
+\section{The \texorpdfstring{$p$}{p}-adic integers}
+
+A real number is determined by its decimal approximations. A $p$-adic integer is determined by its residues.
+
+\begin{definition}
+A \emph{$p$-adic integer} is a sequence $x=(x_n)_{n\ge1}$ with $x_n\in\Z/p^n\Z$ and $x_{n+1}\equiv x_n\pmod{p^n}$ for all $n$. They form a ring $\Z_p$ under termwise addition and multiplication (the compatibility is preserved, since reduction modulo $p^n$ is a ring morphism). The integer $m$ is identified with $(m\bmod p^n)_n$; this embeds $\Z$ in $\Z_p$, since only $0$ is divisible by every $p^n$.
+\end{definition}
+
+For each $x\in\Z_p$, let $m_n\in\{0,\dots,p^n-1\}$ represent $x_n$. Compatibility says $m_{n+1}=m_n+a_np^n$ with a \emph{digit} $a_n\in\{0,\dots,p-1\}$, so $x$ is the same thing as an infinite sequence of digits $a_0,a_1,a_2,\dots$, with $m_n=a_0+a_1p+\dots+a_{n-1}p^{n-1}$. We will justify the notation $x=\sum_{i\ge0}a_ip^i$ in a moment. The \emph{valuation} $v(x)$ of $x\ne0$ is the index of its first non-zero digit, that is, the largest $v$ with $x_v=0$ (and $v=0$ if $x_1\ne0$); set $|x|_p=p^{-v(x)}$ and $|0|_p=0$. For $x\in\Z$ this is the old $v_p$, because $x_n=0$ means $p^n\mid x$.
+
+\begin{proposition}\label{prop:Zp}
+\begin{enumerate}[label=(\alph*)]
+\item $x\in\Z_p$ is a unit if and only if its first digit is non-zero. Every $x\ne0$ is $p^{v(x)}u$ for a unique unit $u$.
+\item $\Z_p$ is an integral domain, $|xy|_p=|x|_p|y|_p$ and $|x+y|_p\le\max(|x|_p,|y|_p)$.
+\item $\Z$ is dense: $|x-m_n|_p\le p^{-n}$, so $m_n\to x$, which justifies $x=\sum_ia_ip^i$.
+\item $\Z_p$ is complete: every Cauchy sequence converges.
+\item $\Z_p$ is compact: every sequence has a convergent subsequence.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) If $xy=1$ then $x_1y_1=1$ in $\Z/p\Z$, so $x_1\ne0$. Conversely, if $x_1\ne0$, every $m_n$ is prime to $p$, hence invertible modulo $p^n$; the inverses $y_n$ are compatible (the inverse of $x_{n+1}$, reduced modulo $p^n$, is an inverse of $x_n$, and inverses are unique), and $y=(y_n)$ is the inverse of $x$. Now let $x\ne0$ with $v=v(x)$. For each $n$, $x_{n+v}\equiv x_v=0\pmod{p^v}$, so $m_{n+v}=p^vw_n$ with $w_n$ an integer determined modulo $p^n$; let $u_n=w_n\bmod p^n$. These are compatible, $u_1\ne0$ because $x_{v+1}\ne0$, and $(p^vu)_n=p^vw_n\bmod p^n=m_{n+v}\bmod p^n=x_n$. So $x=p^vu$ with $u$ a unit.
+
+(b) If $u$ is a unit, $p^ku\ne0$: its residue modulo $p^{k+1}$ is $p^ku_1\ne0$; and its first non-zero digit is at index $k$, so $v(p^ku)=k$. Hence for $x=p^vu$, $y=p^wu'$ non-zero, $xy=p^{v+w}uu'\ne0$ with $uu'$ a unit, so $v(xy)=v(x)+v(y)$. In particular the decomposition in (a) is unique: $p^vu=p^wu'$ forces $v=w$ (compare valuations), then $p^v(u-u')=0$ and $u=u'$. For the inequality, if $x_n=y_n=0$ then $(x+y)_n=0$, so $v(x+y)\ge\min(v(x),v(y))$.
+
+(c) $(x-m_n)_n=x_n-x_n=0$, so $v(x-m_n)\ge n$.
+
+(d) Let $(x^{(k)})$ be Cauchy. For each $n$ there is $K_n$ with $|x^{(k)}-x^{(l)}|_p<p^{-n}$ for $k,l\ge K_n$, that is, $x^{(k)}_n=x^{(l)}_n$; we may take $K_1\le K_2\le\cdots$. Put $x_n=x^{(K_n)}_n$. Then $x_{n+1}=x^{(K_{n+1})}_{n+1}\equiv x^{(K_{n+1})}_n=x^{(K_n)}_n=x_n\pmod{p^n}$, so $x\in\Z_p$, and for $k\ge K_n$, $x^{(k)}_n=x_n$, i.e.\ $|x^{(k)}-x|_p\le p^{-n}$.
+
+(e) Among the terms of a sequence, infinitely many have the same first digit; among those, infinitely many have the same second digit; and so on. Choosing the $j$-th term of the subsequence among those agreeing in the first $j$ digits (diagonal extraction) gives a subsequence that is Cauchy, hence convergent by (d).
+\end{proof}
+
+A series $\sum c_n$ of $p$-adic integers converges if and only if $c_n\to0$. Indeed, the condition is necessary as for real series, and it is sufficient because, by the ultrametric inequality, $\left|\sum_{l<n\le m}c_n\right|_p\le\max_{l<n\le m}|c_n|_p$, so the partial sums are Cauchy. No ``harmonic series'' can diverge here.
+
+\begin{example}
+In $\Z_p$, $(1-p)(1+p+\dots+p^{n-1})=1-p^n\to1$, so $\displaystyle\frac1{1-p}=\sum_{i\ge0}p^i$. Multiplying by $p-1$: $-1=\sum_{i\ge0}(p-1)p^i$, the number whose digits are all $p-1$. For $p=2$: $1+2+4+8+\cdots=-1$. Your computer agrees: in two's complement arithmetic, $-1$ is stored as $\dots11111111$.
+\end{example}
+
+Finally, $\Q_p$, the field of \emph{$p$-adic numbers}, is the field of fractions of the integral domain $\Z_p$, built from $\Z_p$ as $\Q$ is built from $\Z$. Since every non-zero element of $\Z_p$ is $p^v$ times a unit, every non-zero element of $\Q_p$ is uniquely $p^vu$ with $v\in\Z$ and $u\in\Z_p^\times$; we set $|p^vu|_p=p^{-v}$, which extends the absolute value of $\Z_p$ and that of $\Q\subset\Q_p$, and still satisfies Proposition~\ref{prop:ultra}(a)(b). Then $\Z_p=\{x\in\Q_p:|x|_p\le1\}$, every $p$-adic number is a series $\sum_{i\ge v}a_ip^i$ with finitely many negative powers, $\Q$ is dense in $\Q_p$, and $\Q_p$ is complete (a Cauchy sequence is bounded, so $p^k$ times it lies in $\Z_p$ for some $k$).
+
+\begin{proposition}\label{prop:periodic}
+A $p$-adic number is rational if and only if its digit sequence is eventually periodic.
+\end{proposition}
+\begin{proof}
+If the digits are eventually periodic with period $\ell$, then, after subtracting a rational number (finitely many terms) and dividing by a power of $p$, we are left with $x=c\,(1+p^\ell+p^{2\ell}+\cdots)=\frac c{1-p^\ell}$ with $c\in\Z$: rational. Conversely, let $x=\frac ab$ be rational; multiplying by a power of $p$ (which shifts the digits), we may assume $p\nmid b$, $b\ge1$. The first digit $a_0$ is the residue of $ab^{-1}$ modulo $p$, and $\frac{x-a_0}p=\frac{a'}b$ with $a'=\frac{a-a_0b}p\in\Z$: the same denominator. Iterating produces the digits from a sequence of numerators $a,a',a'',\dots$ with
+\[
+|a'|\le\frac{|a|+(p-1)b}p.
+\]
+If $|a|>b$, this gives $|a'|<\frac{|a|+(p-1)|a|}p=|a|$; if $|a|\le b$, it gives $|a'|\le b$. So the numerators decrease until they enter $[-b,b]$ and then stay there. A finite set of states, each determining the next one, must eventually cycle, so the digits are eventually periodic.
+\end{proof}
+
+\section{Hensel's lemma, Newton's way}
+
+Chapter~3 lifted a root modulo $p$ with $f'(a)\not\equiv0\pmod p$ to every $p^k$. In $\Z_p$ the lifts converge to an actual root, and Newton's method does it with quadratic speed, even in some cases where $f'(a)\equiv0\pmod p$.
+
+\begin{think}
+$x^2+7$ has $x=1$ as a root modulo $8$, but $f'(1)=2$ is not a unit in $\Z_2$, so Chapter~3's lemma does not apply. Does $-7$ have a square root in $\Z_2$? Try to find one modulo $16$, $32$, $64$.
+\end{think}
+
+\begin{theorem}[Hensel's lemma, Newton's form]\label{thm:henselnewton}
+Let $f\in\Z_p[X]$ and $a\in\Z_p$ with $|f(a)|_p<|f'(a)|_p^2$. Then there is a unique $\alpha\in\Z_p$ with $f(\alpha)=0$ and $|\alpha-a|_p<|f'(a)|_p$. Moreover $|\alpha-a|_p\le\left|\frac{f(a)}{f'(a)}\right|_p$.
+\end{theorem}
+\begin{proof}
+Write $|\cdot|$ for $|\cdot|_p$. Taylor's formula for polynomials gives $f(x+h)=f(x)+f'(x)h+h^2g(x,h)$ and $f'(x+h)=f'(x)+h\,k(x,h)$, with $g,k$ polynomials with coefficients in $\Z_p$ (the coefficients of $\frac{f^{(j)}}{j!}$ are binomial multiples of those of $f$). So for $x,h\in\Z_p$: $|g(x,h)|,|k(x,h)|\le1$.
+
+Let $\delta=|f'(a)|>0$ and $t=\frac{|f(a)|}{\delta^2}<1$. Newton's method sets $a_0=a$ and $a_{j+1}=a_j+h_j$ with $h_j=-\frac{f(a_j)}{f'(a_j)}$. We show by induction that $a_j\in\Z_p$, $|f'(a_j)|=\delta$ and $|f(a_j)|\le\delta^2t^{2^j}$. For $j=0$ this is the hypothesis. Given it for $j$: $|h_j|\le\delta t^{2^j}<\delta\le1$, so $a_{j+1}\in\Z_p$; $f'(a_{j+1})=f'(a_j)+h_jk$ with $|h_jk|<\delta=|f'(a_j)|$, so $|f'(a_{j+1})|=\delta$ (Proposition~\ref{prop:ultra}(b)); and $f(a_{j+1})=f(a_j)+f'(a_j)h_j+h_j^2g=h_j^2g$, so $|f(a_{j+1})|\le|h_j|^2\le\delta^2t^{2^{j+1}}$.
+
+Hence $|a_{j+1}-a_j|=|h_j|\le\delta t^{2^j}\to0$, so $(a_j)$ is Cauchy and converges to some $\alpha\in\Z_p$ (Proposition~\ref{prop:Zp}(d)), and $f(\alpha)=\lim f(a_j)=0$ since polynomials are continuous. Also $|\alpha-a|\le\max_j|h_j|\le\delta t=\left|\frac{f(a)}{f'(a)}\right|<\delta$.
+
+Uniqueness: let $f(\beta)=0$ with $|\beta-a|<\delta$, and $h=\beta-\alpha$, so $|h|<\delta$. As above $|f'(\alpha)|=\delta$. Then $0=f(\beta)=f(\alpha)+f'(\alpha)h+h^2g(\alpha,h)=h\big(f'(\alpha)+hg(\alpha,h)\big)$, and the bracket is non-zero because $|hg|<\delta=|f'(\alpha)|$. So $h=0$.
+\end{proof}
+
+The proof shows that the number of correct digits roughly doubles at each step, exactly as for Newton's method over $\R$; the notebook watches it happen.
+
+\begin{corollary}[squares in $\Q_p$]\label{cor:squares}
+A non-zero $x=p^vu\in\Q_p$ ($u$ a unit) is a square if and only if $v$ is even and
+\begin{itemize}
+\item for $p$ odd: $u\bmod p$ is a square modulo $p$;
+\item for $p=2$: $u\equiv1\pmod8$.
+\end{itemize}
+In particular $\sqrt{-7}\in\Z_2$, and $\sqrt{-1}\in\Z_p$ if and only if $p\equiv1\pmod4$.
+\end{corollary}
+\begin{proof}
+If $x=y^2$ with $y=p^wu'$, then $v=2w$ and $u=u'^2$, so $u\bmod p$ is a square, and for $p=2$, $u'$ is odd and odd squares are $\equiv1\pmod8$ ($(2k+1)^2=4k(k+1)+1$ with $k(k+1)$ even). Conversely, it suffices to show $u$ is a square. For $p$ odd, choose $b\in\Z$ with $b^2\equiv u\pmod p$ and $f=X^2-u$: $|f(b)|\le p^{-1}<1=|2b|^2=|f'(b)|^2$. For $p=2$ and $u\equiv1\pmod 8$, take $b=1$: $|f(1)|=|1-u|\le2^{-3}<2^{-2}=|f'(1)|^2$. In both cases Theorem~\ref{thm:henselnewton} gives a root. The last claims: $-7\equiv1\pmod8$, and $-1$ is a square modulo $p$ if and only if $p\equiv1\pmod4$ (Chapter~6); for $p=2$, $-1\not\equiv1\pmod8$.
+\end{proof}
+
+\begin{corollary}[roots of unity]\label{cor:teich}
+$\Z_p$ contains exactly $p-1$ roots of the polynomial $X^{p-1}-1$, one congruent to each $a\in\{1,\dots,p-1\}$ modulo $p$.
+\end{corollary}
+\begin{proof}
+For $f=X^{p-1}-1$ and $a\in\{1,\dots,p-1\}$: $f(a)\equiv0\pmod p$ by Fermat, and $f'(a)=(p-1)a^{p-2}$ is a unit, so Theorem~\ref{thm:henselnewton} gives a root $\omega(a)\equiv a\pmod p$, the unique one in $B(a,p^{-1})$. Roots in different classes are different, and a polynomial of degree $p-1$ over the integral domain $\Z_p$ has at most $p-1$ roots (the argument of Tome~0, Proposition~3.2, works in any integral domain).
+\end{proof}
+
+So $\Q_5$ contains $i$ and $\Q_7$ contains $e^{2i\pi/3}$, in the algebraic sense: roots of $X^2+1$ and $X^2+X+1$. The numbers $\omega(a)$ are the \emph{Teichm\"uller representatives}; Exercise~\ref{ex:teich} computes them as limits.
+
+\section{Ostrowski's theorem}
+
+An \emph{absolute value} on $\Q$ is a map $\|\cdot\|:\Q\to[0,+\infty)$ with $\|x\|=0\iff x=0$, $\|xy\|=\|x\|\,\|y\|$ and $\|x+y\|\le\|x\|+\|y\|$. Examples: the \emph{trivial} one ($\|x\|=1$ for $x\ne0$), $|\cdot|_\infty$, the $|\cdot|_p$, and their powers $|\cdot|_\infty^s$ ($0<s\le1$) and $|\cdot|_p^s$ ($s>0$), which define the same notion of convergence.
+
+\begin{think}
+Is there any other natural way to say that two rational numbers are close? Before reading on, try to invent one, say from the digits in base $10$, and check whether it is multiplicative.
+\end{think}
+
+\begin{theorem}[Ostrowski, 1916]\label{thm:ostrowski}
+Every non-trivial absolute value on $\Q$ is $|\cdot|_\infty^s$ for some $0<s\le1$, or $|\cdot|_p^s$ for a prime $p$ and some $s>0$.
+\end{theorem}
+\begin{proof}
+First, $\|1\|=\|1\|^2$ gives $\|1\|=1$, and $\|-1\|^2=1$ gives $\|-1\|=1$, so $\|-x\|=\|x\|$; by multiplicativity it suffices to know $\|n\|$ for integers $n\ge2$.
+
+\emph{Case 1: $\|n_0\|>1$ for some integer $n_0\ge2$.} Let $m,n\ge2$. Write $m^k$ in base $n$: $m^k=\sum_{i=0}^Lc_in^i$ with $0\le c_i\le n-1$ and $L\le k\frac{\log m}{\log n}$. Then
+\[
+\|m\|^k\le\sum_{i=0}^L\|c_i\|\,\|n\|^i\le(L+1)(n-1)\max(1,\|n\|)^L,
+\]
+since $\|c\|\le c$ for integers $c\ge0$ (triangle inequality). Taking $k$-th roots and letting $k\to\infty$, $(L+1)^{1/k}\to1$ and
+\[
+\|m\|\le\max(1,\|n\|)^{\log m/\log n}.\qquad(\ast)
+\]
+If some $\|n\|\le1$, $(\ast)$ gives $\|m\|\le1$ for every $m$, contradicting $\|n_0\|>1$. So $\|n\|>1$ for all $n\ge2$, and $(\ast)$ reads $\|m\|^{1/\log m}\le\|n\|^{1/\log n}$. Exchanging $m,n$, these are equal: $\|n\|=n^s$ for a constant $s>0$, that is, $\|x\|=|x|_\infty^s$. Finally $2^s=\|2\|\le\|1\|+\|1\|=2$ forces $s\le1$.
+
+\emph{Case 2: $\|n\|\le1$ for all integers $n$.} Then $\|\cdot\|$ is ultrametric: for $x,y\in\Q$ and $k\ge1$,
+\[
+\|x+y\|^k=\Big\|\sum_{i=0}^k\binom kix^iy^{k-i}\Big\|\le(k+1)\max(\|x\|,\|y\|)^k,
+\]
+and $k$-th roots give $\|x+y\|\le\max(\|x\|,\|y\|)$. Since the absolute value is non-trivial, some integer $n\ge2$ has $\|n\|<1$ (otherwise all non-zero integers, hence all non-zero rationals, have absolute value $1$). The set $I=\{n\in\Z:\|n\|<1\}$ is then an ideal of $\Z$ (stable under sums by the ultrametric inequality, and under multiplication by integers since $\|m\|\le1$), different from $\Z$ ($\|1\|=1$) and from $\{0\}$. It is prime: if $\|ab\|<1$ then $\|a\|<1$ or $\|b\|<1$, as both are $\le1$. So $I=p\Z$ for a prime $p$ (Chapter~1). Now write $n=p^vm$ with $p\nmid m$: $\|m\|=1$, so $\|n\|=\|p\|^v=(p^{-v})^s$ with $s=-\frac{\log\|p\|}{\log p}>0$. Hence $\|x\|=|x|_p^s$.
+\end{proof}
+
+So $\R$ and the $\Q_p$ are \emph{all} the completions of $\Q$. Number theorists call them the \emph{places} of $\Q$, and the product formula of Proposition~\ref{prop:ultra} ties them together.
+
+\section{Local and global}
+
+\begin{think}
+If an equation with integer coefficients has a rational solution, it has solutions in $\R$ and in every $\Q_p$. What about the converse? Look at $x^2+y^2=3z^2$ modulo $9$ before reading on.
+\end{think}
+
+A rational solution is a \emph{global} solution, a solution in $\R$ or $\Q_p$ a \emph{local} one. Local solutions are easy to decide: in $\R$ by inequalities, in $\Q_p$ by congruences and Hensel's lemma. The \emph{Hasse principle} asks whether local solvability everywhere implies global solvability.
+
+\begin{proposition}\label{prop:noconic}
+The equation $x^2+y^2=3z^2$ has no solution in $\Q_3$ other than $(0,0,0)$. Hence it has no non-zero rational solution, although it has real ones.
+\end{proposition}
+\begin{proof}
+Suppose $(x,y,z)\ne0$ in $\Q_3^3$. Multiplying by a power of $3$, we may assume $x,y,z\in\Z_3$, not all divisible by $3$. Squares modulo $3$ are $0,1$, so $x^2+y^2\equiv0\pmod 3$ forces $3\mid x$ and $3\mid y$. Then $9\mid3z^2$, so $3\mid z$: a contradiction.
+\end{proof}
+
+\begin{remark}
+For quadratic forms the converse holds: by the \emph{Hasse--Minkowski theorem} (1921), a quadratic form with rational coefficients represents $0$ non-trivially over $\Q$ if and only if it does so over $\R$ and over every $\Q_p$. It is proved in Tome~12, and it decides every conic by finitely many congruence checks. For cubics it fails: Selmer (1951) showed that $3x^3+4y^3+5z^3=0$ has non-zero solutions in $\R$ and in every $\Q_p$, but none in $\Q$. Measuring this failure (the Tate--Shafarevich group) is one of the deepest themes of modern number theory.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:padicdigits}
+Find the $2$-adic digits of $\frac13$ and of $-\frac13$, and the $5$-adic digits of $\frac14$. Check Proposition~\ref{prop:periodic} on these examples.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nfact}
+Show that $\sum_{n\ge0}n!$ converges in every $\Z_p$, and that $\sum_{n\ge0}n\cdot n!=-1$ in every $\Z_p$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sqrtm7}
+Compute the last $8$ binary digits of the two square roots of $-7$ in $\Z_2$, with Newton's method started at $a=1$ and at $a=3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sqclasses}
+Which of $-1,2,3,5,-7$ are squares in $\Q_2$, in $\Q_3$, in $\Q_5$? Show that $\Q_p^\times/(\Q_p^\times)^2$ has $4$ elements for $p$ odd and $8$ for $p=2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:padicexp}
+Using Legendre's formula (Exercise~\ref{ex:zeros}), show that $v_p(n!)=\frac{n-s_p(n)}{p-1}$, where $s_p(n)$ is the sum of the base-$p$ digits of $n$. Deduce that $\exp(x)=\sum_{n\ge0}\frac{x^n}{n!}$ converges in $\Q_p$ if and only if $|x|_p<p^{-1/(p-1)}$. Where does it converge in $\Q_2$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hasse}
+Show that $x^2-2y^2=3z^2$ has no non-zero rational solution, and that $x^2+y^2=7z^2$ has none either. Which prime is responsible in each case?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:teich}
+Let $a\in\Z$ with $p\nmid a$. Show that if $x\equiv y\pmod{p^k}$ with $k\ge1$, then $x^p\equiv y^p\pmod{p^{k+1}}$. Deduce that $(a^{p^n})_{n\ge0}$ converges in $\Z_p$, and that its limit is the Teichm\"uller representative $\omega(a)$ of Corollary~\ref{cor:teich}. Compute $\omega(2)$ in $\Z_5$ modulo $125$.
+\end{exercise}
+
+\begin{beauty}
+The $p$-adic numbers turn congruences into analysis: Hensel's lemma is Newton's method, and the compactness of $\Z_p$ is the reason why a congruence solvable modulo every $p^k$ has a $p$-adic solution. Ostrowski's theorem says that $\R$ is just one of infinitely many equally legitimate completions of $\Q$, and the modern point of view treats them all at once, in the ring of \emph{ad\`eles} (Tome~12). The $p$-adics are also everywhere in computing: two's complement integers are $2$-adic numbers truncated to $64$ digits, and exact linear algebra and polynomial factorisation work modulo $p^k$ and lift (notebook). And deep results live here: the Skolem--Mahler--Lech theorem on zeros of linear recurrences and Kummer's congruences for Bernoulli numbers are both proved by $p$-adic analysis.
+\end{beauty}
+
+\section{Hints}
+
+\begin{hint}{ex:padicdigits}
+For $\frac13$ in $\Z_2$, solve $3x\equiv1$ modulo $2,4,8,16$, or use $\frac13=\frac{-1}{1-4}$.
+\end{hint}
+\begin{hint}{ex:nfact}
+A $p$-adic series converges if and only if its terms tend to $0$. For the second sum, telescope: $n\cdot n!=(n+1)!-n!$.
+\end{hint}
+\begin{hint}{ex:sqrtm7}
+Newton's step for $X^2+7$ is $a\mapsto\frac{a^2-7}{2a}$; compute modulo $2^{10}$ to keep track of the precision lost in the division by $2$.
+\end{hint}
+\begin{hint}{ex:sqclasses}
+Use Corollary~\ref{cor:squares}. A square class is determined by the parity of $v$ and the class of $u$ modulo squares.
+\end{hint}
+\begin{hint}{ex:padicexp}
+Write $n=\sum c_ip^i$ and compute $\sum_k\lfloor n/p^k\rfloor$ digit by digit. Then $v_p\left(\frac{x^n}{n!}\right)=n\,v_p(x)-\frac{n-s_p(n)}{p-1}$.
+\end{hint}
+\begin{hint}{ex:hasse}
+Find a prime $p$ and a power $p^k$ modulo which the only solution is the trivial one, as in Proposition~\ref{prop:noconic}.
+\end{hint}
+\begin{hint}{ex:teich}
+For the lemma, write $x=y+tp^k$ and expand with the binomial theorem. Then $a^{p^{n+1}}$ and $a^{p^n}$ are congruent modulo $p^{n+1}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:padicdigits}
+\idea Two methods. Either write the fraction as $\frac c{1-p^\ell}$, whose expansion repeats the digits of $c$ every $\ell$ places; or compute digits one at a time: the first digit $a_0$ is $x\bmod p$, then replace $x$ by $\frac{x-a_0}p$ and repeat, as in the proof of Proposition~\ref{prop:periodic}.
+\writeup $-\frac13=\frac1{1-4}=1+4+16+64+\cdots$, so the $2$-adic digits of $-\frac13$ (from $2^0$ upward) are $1,0,1,0,1,0,\dots$. Then $\frac13=1+2\cdot\left(-\frac13\right)=1+2+8+32+\cdots$, with digits $1,1,0,1,0,1,\dots$. Check: $1+2+8+32=43$ and $3\cdot43=129\equiv1\pmod{64}$. For $\frac14$ in $\Z_5$, digit by digit: $\frac14\equiv4\pmod5$ (as $4\cdot4=16\equiv1$), and $\frac{1/4-4}5=-\frac34$. Next $-\frac34\equiv3\pmod5$ (as $4\cdot3=12\equiv-3$), and $\frac{-3/4-3}5=-\frac34$ again. So the digits are $4,3,3,3,\dots$, i.e.\ $\frac14=4+3\cdot5+3\cdot25+\cdots$. Check: $4+15+75=94$ and $4\cdot94=376=3\cdot125+1$. All three expansions are eventually periodic, as Proposition~\ref{prop:periodic} predicts.
+\end{solution}
+
+\begin{solution}{ex:nfact}
+\idea In $\Z_p$, $n!\to0$ because $n!$ is divisible by more and more factors $p$. The second sum telescopes, and its partial sums are $(N+1)!-1$.
+\writeup By Legendre's formula, $v_p(n!)\ge\lfloor n/p\rfloor\to\infty$, so $|n!|_p\to0$ and $\sum n!$ converges. Next, $n\cdot n!=(n+1)!-n!$, so $\sum_{n=0}^Nn\cdot n!=(N+1)!-0!=(N+1)!-1$, which tends to $-1$ in $\Z_p$ because $(N+1)!\to0$.
+\end{solution}
+
+\begin{solution}{ex:sqrtm7}
+\idea Run Newton's iteration $a\mapsto a-\frac{a^2+7}{2a}=\frac{a^2-7}{2a}$ in exact rational arithmetic (the denominators stay odd), and reduce modulo $2^8$ only at the end. The proof of Theorem~\ref{thm:henselnewton} tells us how many steps are needed.
+\writeup For $f=X^2+7$ and $a=1$: $|f'(1)|_2=\frac12$ and $|f(1)|_2=|8|_2=\frac18<\frac14$, so the theorem applies with $t=\frac12$, and $|f(a_j)|_2\le\frac14\cdot2^{-2^j}$. From $a_0=1$: $a_1=-3$, $a_2=-\frac13$, $a_3=\frac{31}3$, $a_4=\frac{449}{93}$. Indeed $a_4^2+7=\frac{262144}{8649}=\frac{2^{18}}{93^2}$, so $a_4$ is a square root of $-7$ modulo $2^{18}$, hence modulo $2^8$ the root is $449\cdot93^{-1}\equiv181\pmod{256}$; check: $181^2+7=32768=2^{15}$. In binary, $181=10110101$. The other root is $-181\equiv75=01001011$ in binary, and Newton's method started at $a_0=3$ reaches it: $3,\frac13,-\frac{31}3,-\frac{449}{93},\dots$ Note how the two roots are negatives of each other: their binary expansions are two's complements.
+\end{solution}
+
+\begin{solution}{ex:sqclasses}
+\idea Corollary~\ref{cor:squares} reduces everything to a congruence on the unit part: modulo $p$ for odd $p$, modulo $8$ for $p=2$. Counting square classes is then counting the possible (parity of $v$, class of $u$) pairs.
+\writeup In $\Q_2$: $-1\equiv7$, $3$, $5\pmod8$ are not $1$, and $2$ has odd valuation, so none of $-1,2,3,5$ is a square, while $-7\equiv1\pmod8$ is. In $\Q_3$: the squares modulo $3$ are $\{1\}$; $-1\equiv2$ and $5\equiv2$ are not squares, $-7\equiv2$ neither, $2$ is not, and $3$ has odd valuation; none is a square. In $\Q_5$: squares modulo $5$ are $\{1,4\}$; $-1\equiv4$ is a square, $2$ and $3$ are not, $5$ has odd valuation, and $-7\equiv3$ is not. For the count with $p$ odd: $x=p^vu$ is determined modulo squares by $v\bmod2$ and by whether $u\bmod p$ is a square, and Corollary~\ref{cor:squares} shows these two bits are independent and both occur: $4$ classes, represented by $1,\varepsilon,p,\varepsilon p$ with $\varepsilon$ a non-square unit. For $p=2$: $v\bmod2$, and the class of $u$ modulo $8$ among $1,3,5,7$, since $u$ is a square times $u'$ if and only if $u\equiv u'\pmod8$; this gives $2\cdot4=8$ classes, represented by $\pm1,\pm5,\pm2,\pm10$.
+\end{solution}
+
+\begin{solution}{ex:padicexp}
+\idea Legendre's formula counts multiples of $p,p^2,\dots$; written in base $p$, each $\lfloor n/p^k\rfloor$ is $n$ with its last $k$ digits erased, and summing over $k$ telescopes into a formula with the digit sum. Then the exponential series converges if and only if its terms tend to $0$, which is a comparison of two linear rates.
+\writeup Write $n=\sum_{i=0}^rc_ip^i$. Then $\lfloor n/p^k\rfloor=\sum_{i\ge k}c_ip^{i-k}$ and
+\[
+v_p(n!)=\sum_{k\ge1}\sum_{i\ge k}c_ip^{i-k}=\sum_ic_i(p^{i-1}+\dots+1)=\sum_ic_i\frac{p^i-1}{p-1}=\frac{n-s_p(n)}{p-1}.
+\]
+So $v_p\left(\frac{x^n}{n!}\right)=n\left(v_p(x)-\frac1{p-1}\right)+\frac{s_p(n)}{p-1}$. If $v_p(x)>\frac1{p-1}$, this tends to $+\infty$ (as $s_p(n)\ge1$), so the terms tend to $0$ and the series converges. If $v_p(x)\le\frac1{p-1}$, take $n=p^m$ ($s_p(n)=1$): the valuation is $\le\frac1{p-1}$, so the terms do not tend to $0$. Since $v_p(x)>\frac1{p-1}$ means $|x|_p<p^{-1/(p-1)}$, we are done. In $\Q_2$: $|x|_2<\frac12$, that is, $x\in4\Z_2$.
+\end{solution}
+
+\begin{solution}{ex:hasse}
+\idea As in Proposition~\ref{prop:noconic}: assume a primitive solution in $\Z_p$ (not all coordinates divisible by $p$) and look for a contradiction modulo $p$ or $p^2$. The good prime divides a coefficient and makes the form ``anisotropic'' modulo $p$: for $x^2-2y^2=3z^2$ try $p=3$, since $2$ is not a square modulo $3$; for $x^2+y^2=7z^2$ try $p=7$, since $-1$ is not a square modulo $7$.
+\writeup For $x^2-2y^2=3z^2$ with a primitive solution in $\Z_3$: modulo $3$, $x^2\equiv2y^2$. If $3\nmid y$ then $2\equiv(x/y)^2$ is a square modulo $3$, false; so $3\mid y$, then $3\mid x$, then $9\mid3z^2$ and $3\mid z$: contradiction. For $x^2+y^2=7z^2$ in $\Z_7$: if $7\nmid y$ then $-1\equiv(x/y)^2\pmod7$, false since $7\equiv3\pmod4$; so $7\mid x,y$, then $49\mid7z^2$ and $7\mid z$: contradiction. In both cases there is no non-zero solution in $\Q_p$ for $p=3$, resp.\ $p=7$, hence none in $\Q$; both equations have real solutions, so the obstruction is purely $p$-adic.
+\end{solution}
+
+\begin{solution}{ex:teich}
+\idea The key lemma says that raising to the power $p$ improves a congruence by one power of $p$. Starting from Fermat, $a^p\equiv a\pmod p$, it gives $a^{p^{n+1}}\equiv a^{p^n}\pmod{p^{n+1}}$, so the sequence is Cauchy. Its limit is a $(p-1)$-th root of unity congruent to $a$, which by uniqueness in Corollary~\ref{cor:teich} must be $\omega(a)$.
+\writeup If $x=y+tp^k$, then $x^p=y^p+py^{p-1}tp^k+\sum_{j\ge2}\binom pjy^{p-j}t^jp^{jk}$. The second term is divisible by $p^{k+1}$, and so are the others: for $2\le j\le p-1$, $p\mid\binom pj$ and $jk\ge k+1$; for $j=p$, $pk\ge k+1$. By Fermat $a^p\equiv a\pmod p$; applying the lemma $n$ times, $a^{p^{n+1}}\equiv a^{p^n}\pmod{p^{n+1}}$. So $|a^{p^{n+1}}-a^{p^n}|_p\le p^{-n-1}$, the sequence is Cauchy, and it has a limit $\omega$. Then $\omega\equiv a^{p^n}\equiv a\pmod p$ (Fermat again), and $\omega^p=\lim a^{p^{n+1}}=\omega$, so $\omega^{p-1}=1$ since $\omega$ is a unit. By the uniqueness in Corollary~\ref{cor:teich}, $\omega=\omega(a)$. For $p=5$, $a=2$, modulo $125$: $2^{25}\bmod125$. We have $2^7=128\equiv3$, $2^{21}\equiv27$, $2^{25}=2^{21}\cdot16\equiv432\equiv57\pmod{125}$. So $\omega(2)\equiv57\pmod{125}$; check: $57^2=3249\equiv-1\pmod{125}$ ($3250=26\cdot125$), as it should be, since $\omega(2)$ is a primitive fourth root of unity ($2$ has order $4$ modulo $5$).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item F.~Q.~Gouv\^ea, \emph{$p$-adic Numbers: An Introduction}, 3rd ed., Universitext, Springer, 2020. The friendliest full introduction; our proof of Ostrowski's theorem follows the standard one given there.
+\item N.~Koblitz, \emph{$p$-adic Numbers, $p$-adic Analysis, and Zeta-Functions}, 2nd ed., Graduate Texts in Mathematics~58, Springer, 1984. From the basics to $p$-adic zeta functions and Kummer's congruences.
+\item J.-P.~Serre, \emph{A Course in Arithmetic}, Graduate Texts in Mathematics~7, Springer, 1973 (French original: \emph{Cours d'arithm\'etique}, PUF, 1970). Chapters~II--IV: $\Q_p$, the Hilbert symbol and Hasse--Minkowski, in a hundred perfect pages.
+\item S.~Katok, \emph{$p$-adic Analysis Compared with Real}, Student Mathematical Library~37, AMS, 2007. Real and $p$-adic analysis side by side.
+\item J.~W.~S.~Cassels, \emph{Local Fields}, London Mathematical Society Student Texts~3, Cambridge University Press, 1986. Includes Skolem--Mahler--Lech and many applications.
+\item E.~S.~Selmer, ``The Diophantine equation $ax^3+by^3+cz^3=0$'', \emph{Acta Mathematica} 85 (1951), 203--362. The counterexample to the Hasse principle for cubics.
+\end{itemize}
