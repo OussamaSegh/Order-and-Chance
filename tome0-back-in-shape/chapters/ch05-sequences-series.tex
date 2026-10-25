@@ -7,14 +7,29 @@ and the sum becomes $\frac12\ln2$. Infinite sums are not as innocent as finite o
 
 \section{Sequences}
 
-\begin{reminder}[convergence of real sequences]
-\begin{itemize}
-\item A monotone sequence converges if and only if it is bounded.
-\item \textbf{Adjacent sequences}: if $(u_n)$ increases, $(v_n)$ decreases and $v_n-u_n\to0$, both converge to the same limit.
+Everything in this chapter rests on one axiom about $\R$.
+
+\begin{reminder}[completeness of $\R$]
+Every non-empty subset of $\R$ that is bounded above has a least upper bound (a \emph{supremum}).
+\end{reminder}
+
+\begin{proposition}[convergence criteria]\label{prop:seqcrit}
+\begin{enumerate}[label=(\alph*)]
+\item A non-decreasing sequence converges if and only if it is bounded above (and then to its supremum).
+\item \textbf{Adjacent sequences}: if $(u_n)$ is non-decreasing, $(v_n)$ non-increasing and $v_n-u_n\to0$, both converge to the same limit $\ell$, and $u_n\le\ell\le v_n$.
 \item \textbf{Bolzano--Weierstrass}: every bounded sequence has a convergent subsequence.
 \item \textbf{Cauchy}: $(u_n)$ converges if and only if $\sup_{p,q\ge n}|u_p-u_q|\to0$.
-\end{itemize}
-\end{reminder}
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) A convergent sequence is bounded. Conversely let $\ell=\sup_nu_n$ and $\varepsilon>0$: $\ell-\varepsilon$ is not an upper bound, so $u_N>\ell-\varepsilon$ for some $N$, and then $\ell-\varepsilon<u_n\le\ell$ for all $n\ge N$.
+
+(b) $v_n-u_n$ is non-increasing with limit $0$, so $v_n\ge u_n$; hence $u_0\le u_n\le v_n\le v_0$. By (a), $u_n\to\ell$ and $v_n\to\ell'$, and $\ell'-\ell=\lim(v_n-u_n)=0$. Monotonicity gives $u_n\le\ell\le v_n$.
+
+(c) Call $n$ a \emph{peak} if $u_n\ge u_m$ for all $m>n$. If there are infinitely many peaks $n_1<n_2<\cdots$, then $(u_{n_k})$ is non-increasing. Otherwise, past the last peak each index $n$ has some $m>n$ with $u_m>u_n$, which builds an increasing subsequence. Either way we get a bounded monotone subsequence, which converges by (a).
+
+(d) If $u_n\to\ell$, then $|u_p-u_q|\le|u_p-\ell|+|\ell-u_q|$ is small for $p,q$ large. Conversely, a Cauchy sequence is bounded (take $\varepsilon=1$: all terms past some $N$ are within $1$ of $u_N$), so by (c) a subsequence $u_{n_k}$ tends to some $\ell$. Given $\varepsilon$, choose $N$ with $|u_p-u_q|\le\varepsilon$ for $p,q\ge N$ and $k$ with $n_k\ge N$, $|u_{n_k}-\ell|\le\varepsilon$: then $|u_p-\ell|\le2\varepsilon$ for $p\ge N$.
+\end{proof}
 
 \begin{theorem}[Ces\`aro]\label{thm:cesaro}
 If $u_n\to\ell\in\R$, then $\dfrac{u_1+\dots+u_n}n\to\ell$.
@@ -27,20 +42,46 @@ Replacing $u_n$ by $u_n-\ell$ we may assume $\ell=0$. Let $\varepsilon>0$ and $N
 and the first term tends to $0$, so the average is at most $2\varepsilon$ in absolute value for $n$ large.
 \end{proof}
 
-A useful corollary: if $u_{n+1}-u_n\to\ell$ then $u_n/n\to\ell$ (apply Ces\`aro to the differences).
+A useful corollary: if $u_{n+1}-u_n\to\ell$ then $u_n/n\to\ell$ (apply Ces\`aro to the differences: $\frac{u_n-u_0}n$ is their average).
 
 \section{Series}
 
-\begin{reminder}[series]
-\begin{itemize}
-\item For $u_n\ge0$, $\sum u_n$ converges if and only if its partial sums are bounded. Hence \textbf{comparison}: if $0\le u_n\le v_n$ and $\sum v_n$ converges, so does $\sum u_n$; and if $u_n\sim v_n$ with $v_n\ge0$, the two series have the same nature.
+\begin{proposition}[series of non-negative terms]\label{prop:posseries}
+Let $u_n,v_n\ge0$.
+\begin{enumerate}[label=(\alph*)]
+\item $\sum u_n$ converges if and only if its partial sums are bounded.
+\item \textbf{Comparison}: if $u_n\le v_n$ and $\sum v_n$ converges, so does $\sum u_n$. If $u_n\sim v_n$, the two series have the same nature.
+\item \textbf{Series and integrals}: if $f\ge0$ is continuous and non-increasing on $[1,\infty[$, then $\sum f(n)$ converges if and only if $\int_1^Nf$ is bounded.
 \item \textbf{Riemann}: $\sum\frac1{n^\alpha}$ converges if and only if $\alpha>1$.
-\item \textbf{Ratio test} (d'Alembert): if $u_n>0$ and $\frac{u_{n+1}}{u_n}\to\ell$, the series converges if $\ell<1$ and diverges if $\ell>1$.
-\item Absolute convergence implies convergence.
+\item \textbf{Ratio test}: if $u_n>0$ and $\frac{u_{n+1}}{u_n}\to\ell$, the series converges if $\ell<1$ and diverges if $\ell>1$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The partial sums are non-decreasing: apply Proposition~\ref{prop:seqcrit}(a).
+(b) The partial sums of $\sum u_n$ are bounded by $\sum v_n$. If $u_n\sim v_n$, then $\frac12v_n\le u_n\le2v_n$ for $n$ large; compare both ways (finitely many terms do not matter).
+(c) For $k\le t\le k+1$, $f(k+1)\le f(t)\le f(k)$; integrating, $f(k+1)\le\int_k^{k+1}f\le f(k)$. Summing, $\sum_{k=2}^{N}f(k)\le\int_1^Nf\le\sum_{k=1}^{N-1}f(k)$, so the partial sums and the integrals are bounded together.
+(d) Apply (c) to $t^{-\alpha}$ (for $\alpha\le0$ the terms do not tend to $0$): $\int_1^Nt^{-\alpha}\dd t$ is $\ln N$ for $\alpha=1$ and $\frac{N^{1-\alpha}-1}{1-\alpha}$ otherwise, bounded iff $\alpha>1$.
+(e) If $\ell<1$, pick $r\in]\ell,1[$: for $n\ge N$, $u_{n+1}\le ru_n$, so $u_n\le u_Nr^{n-N}$, and compare with a geometric series. If $\ell>1$, $u_n$ eventually increases, so it does not tend to $0$ and the partial sums are unbounded.
+\end{proof}
+
+\begin{proposition}[signed series]\label{prop:signedseries}
+\begin{enumerate}[label=(\alph*)]
+\item If $\sum|u_n|$ converges, so does $\sum u_n$ (for real or complex $u_n$).
 \item \textbf{Alternating series}: if $(a_n)$ decreases to $0$, $\sum(-1)^na_n$ converges, and the remainder $R_n=\sum_{k>n}(-1)^ka_k$ has the sign of its first term and satisfies $|R_n|\le a_{n+1}$.
-\item \textbf{Series and integrals}: if $f\ge0$ decreases on $[1,\infty[$, then $\sum f(n)$ and $\int_1^\infty f$ have the same nature.
-\end{itemize}
-\end{reminder}
+\item \textbf{Cauchy product}: if $\sum a_n$ and $\sum b_n$ converge absolutely, then with $c_n=\sum_{k=0}^na_kb_{n-k}$, $\sum c_n$ converges absolutely and $\sum c_n=\left(\sum a_n\right)\left(\sum b_n\right)$. In particular $\exp(a+b)=\exp a\exp b$ for $a,b\in\C$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $|S_p-S_q|\le\sum_{q<k\le p}|u_k|$, which is small for $p>q$ large since the partial sums of $\sum|u_k|$ converge; apply Cauchy's criterion (to real and imaginary parts).
+
+(b) Let $S_n=\sum_{k\le n}(-1)^ka_k$. Then $S_{2n+2}-S_{2n}=a_{2n+2}-a_{2n+1}\le0$ and $S_{2n+3}-S_{2n+1}=a_{2n+2}-a_{2n+3}\ge0$, and $S_{2n}-S_{2n+1}=a_{2n+1}\to0$. So $(S_{2n})$ and $(S_{2n+1})$ are adjacent with limit $S$, and $S_{2n+1}\le S\le S_{2n}$. Hence $S_n\to S$, and $S$ lies between any two consecutive partial sums: $|R_n|=|S-S_n|\le|S_{n+1}-S_n|=a_{n+1}$, and $R_n$ has the sign of $S_{n+1}-S_n=(-1)^{n+1}a_{n+1}$.
+
+(c) Let $A_N=\sum_{n\le N}|a_n|$, $B_N=\sum_{n\le N}|b_n|$. The square $\{0\le k,l\le N\}$ contains the triangle $\{k+l\le N\}$ and is contained in the triangle $\{k+l\le2N\}$. So $\sum_{n\le N}|c_n|\le\sum_{k+l\le N}|a_k||b_l|\le A_NB_N$: absolute convergence. And
+\[
+\Bigl|\sum_{n\le2N}c_n-\Bigl(\sum_{k\le N}a_k\Bigr)\Bigl(\sum_{l\le N}b_l\Bigr)\Bigr|\le\sum_{\substack{k+l\le2N\\ \max(k,l)>N}}|a_k||b_l|\le\sum_{k>N}|a_k|\cdot B+A\cdot\sum_{l>N}|b_l|\to0,
+\]
+with $A=\sum|a_k|$, $B=\sum|b_l|$. For the exponential, $\sum_{k}\frac{a^k}{k!}\frac{b^{n-k}}{(n-k)!}=\frac{(a+b)^n}{n!}$ by the binomial formula.
+\end{proof}
 
 \begin{proposition}[Euler's constant]\label{prop:gamma}
 Let $H_n=\sum_{k=1}^n\frac1k$. There is a constant $\gamma\approx0.5772$ such that $H_n=\ln n+\gamma+o(1)$.
@@ -56,7 +97,9 @@ and $u_n-v_n=\ln\left(1+\frac1n\right)\to0$. The sequences are adjacent and conv
 \begin{theorem}[Stirling]\label{thm:stirling}
 $n!\sim\sqrt{2\pi n}\left(\dfrac ne\right)^n$.
 \end{theorem}
-Exercise~\ref{ex:stirling} proves that $n!\sim C\sqrt n\left(\frac ne\right)^n$ for some constant $C>0$; Theorem~\ref{thm:stirlingC} in the next chapter identifies $C=\sqrt{2\pi}$ with Wallis' integrals.
+\begin{proof}
+Exercise~\ref{ex:stirling} proves that $n!\sim C\sqrt n\left(\frac ne\right)^n$ for some constant $C>0$; Theorem~\ref{thm:stirlingC} in the next chapter shows $C=\sqrt{2\pi}$ with Wallis' integrals.
+\end{proof}
 
 \section{Exercises}
 
@@ -110,26 +153,30 @@ Exercise~\ref{ex:rearr} is a concrete case of Riemann's theorem: a series that c
 \section{Solutions}
 
 \begin{solution}{ex:nature}
-With $u_n=\frac{n!}{n^n}$, $\frac{u_{n+1}}{u_n}=\frac{(n+1)\,n^n}{(n+1)^{n+1}}=\left(1+\frac1n\right)^{-n}\to\frac1e<1$: the series converges.
-For $|x|<1$, differentiating $\sum x^n=\frac1{1-x}$ and multiplying by $x$ gives $\sum nx^n=\frac x{(1-x)^2}$; doing it again,
+\idea Factorials and powers $n^n$ are made for the ratio test, because the ratio $\frac{u_{n+1}}{u_n}$ simplifies dramatically. For $\sum\frac{n^2}{2^n}$, the factor $n^2$ is what the operator $x\frac{d}{dx}$ produces twice from $x^n$; so start from the geometric series and apply it twice (legitimate inside the radius of convergence, Chapter~6).
+\writeup With $u_n=\frac{n!}{n^n}$, $\frac{u_{n+1}}{u_n}=\frac{(n+1)\,n^n}{(n+1)^{n+1}}=\left(1+\frac1n\right)^{-n}\to\frac1e<1$: the series converges by the ratio test.
+For $|x|<1$, differentiating $\sum x^n=\frac1{1-x}$ termwise and multiplying by $x$ gives $\sum nx^n=\frac x{(1-x)^2}$; doing it again,
 $\sum n^2x^n=\frac{x(1+x)}{(1-x)^3}$. At $x=\frac12$: $\frac{\frac12\cdot\frac32}{\frac18}=6$.
 \end{solution}
 
 \begin{solution}{ex:bertrand}
-Both $t\mapsto\frac1{t\ln t}$ and $t\mapsto\frac1{t\ln^2t}$ are positive and decreasing on $[2,\infty[$, with antiderivatives $\ln\ln t\to\infty$ and
-$-\frac1{\ln t}\to0$. By comparison with integrals, the first series diverges and the second converges.
+\idea These terms decrease too slowly for the ratio test (the ratio tends to $1$) and are not comparable to a Riemann series. But they have explicit antiderivatives ($\ln\ln t$ and $-\frac1{\ln t}$), so compare with integrals.
+\writeup Both $t\mapsto\frac1{t\ln t}$ and $t\mapsto\frac1{t\ln^2t}$ are positive and decreasing on $[2,\infty[$, with antiderivatives $\ln\ln t\to\infty$ and
+$-\frac1{\ln t}\to0$. By Proposition~\ref{prop:posseries}(c), the first series diverges and the second converges.
 \end{solution}
 
 \begin{solution}{ex:ln2}
-Separating even and odd terms,
+\idea We know the asymptotics of $H_n$ precisely (Proposition~\ref{prop:gamma}), so express the alternating partial sum through harmonic numbers: all terms minus twice the even terms. Then handle odd-index partial sums separately.
+\writeup Separating even and odd terms,
 \[
-S_{2n}=\sum_{k=1}^{2n}\frac1k-2\sum_{k=1}^n\frac1{2k}=H_{2n}-H_n=\ln(2n)+\gamma-\ln n-\gamma+o(1)\to\ln2
+S_{2n}=\sum_{k=1}^{2n}\frac1k-2\sum_{k=1}^n\frac1{2k}=H_{2n}-H_n=\ln(2n)+\gamma-\ln n-\gamma+o(1)\to\ln2.
 \]
-by Proposition~\ref{prop:gamma}. Since $S_{2n+1}-S_{2n}=\frac1{2n+1}\to0$, $S_n\to\ln2$.
+Since $S_{2n+1}-S_{2n}=\frac1{2n+1}\to0$, $S_n\to\ln2$.
 \end{solution}
 
 \begin{solution}{ex:sin}
-(a) Since $0<\sin x<x$ for $x>0$, $(u_n)$ is positive and decreasing, so it converges to some $\ell\in\left[0,\frac\pi2\right]$ with $\sin\ell=\ell$, hence $\ell=0$.
+\idea (a) A recurrence $u_{n+1}=f(u_n)$ with $f(x)<x$: the sequence decreases, and its limit is a fixed point. (b) To find an equivalent of a sequence tending to $0$, look for a power $u_n^\beta$ whose increments converge to a non-zero constant; Ces\`aro then gives $u_n^\beta\sim cn$. Since $\sin x=x-\frac{x^3}6+\cdots$, the natural choice is $\beta=-2$: the cubic correction becomes a constant increment of $\frac1{u^2}$.
+\writeup (a) Since $0<\sin x<x$ for $0<x\le\frac\pi2$, $(u_n)$ is positive and decreasing, so it converges to some $\ell\in\left[0,\frac\pi2\right]$ with $\sin\ell=\ell$ (continuity of $\sin$), hence $\ell=0$.
 
 (b) As $x\to0$, $\sin^2x=x^2-\frac{x^4}3+O(x^6)$, so
 \[
@@ -139,7 +186,8 @@ With $x=u_n\to0$ this gives the first claim. By the corollary of Ces\`aro, $\fra
 \end{solution}
 
 \begin{solution}{ex:kempner}
-There are $8\cdot9^{k-1}$ integers with $k$ digits and no digit $9$ (the first digit has $8$ choices, the others $9$), and each is at least $10^{k-1}$.
+\idea Positive terms: it suffices to bound the partial sums. Group the integers by number of digits: there are few admissible $k$-digit numbers ($\approx9^k$ instead of $10^k$), and each term is at most $10^{-(k-1)}$. The ratio $\frac9{10}$ makes the grouped series geometric.
+\writeup There are $8\cdot9^{k-1}$ integers with $k$ digits and no digit $9$ (the first digit has $8$ choices, the others $9$), and each is at least $10^{k-1}$.
 The terms are positive, so the partial sums are bounded by
 \[
 \sum_{k=1}^\infty\frac{8\cdot9^{k-1}}{10^{k-1}}=\frac8{1-\frac9{10}}=80.
@@ -148,23 +196,25 @@ The terms are positive, so the partial sums are bounded by
 \end{solution}
 
 \begin{solution}{ex:rearr}
-Write $O_m=\sum_{k=1}^m\frac1{2k-1}=H_{2m}-\frac12H_m$ and $E_m=\sum_{k=1}^m\frac1{2k}=\frac12H_m$. By Proposition~\ref{prop:gamma},
+\idea As in Exercise~\ref{ex:ln2}, everything reduces to harmonic numbers. After $n$ blocks we have used $pn$ odd terms and $qn$ even terms, so the partial sum is (sum of the first $pn$ odd reciprocals) $-$ (sum of the first $qn$ even reciprocals). The $\ln$ terms do not cancel completely because $pn\ne qn$: that leftover $\frac12\ln\frac pq$ is the whole phenomenon.
+\writeup Write $O_m=\sum_{k=1}^m\frac1{2k-1}=H_{2m}-\frac12H_m$ and $E_m=\sum_{k=1}^m\frac1{2k}=\frac12H_m$. By Proposition~\ref{prop:gamma},
 \[
 O_m=\ln2+\frac12\ln m+\frac\gamma2+o(1),\qquad E_m=\frac12\ln m+\frac\gamma2+o(1).
 \]
 After $n$ complete blocks, the partial sum is
 $O_{pn}-E_{qn}=\ln2+\frac12\ln\frac{pn}{qn}+o(1)\to\ln2+\frac12\ln\frac pq$.
-A partial sum that stops inside a block differs from one taken at the end of a block by at most $p+q$ terms, each tending to $0$, so the whole sequence of
+A partial sum that stops inside a block differs from one taken at the end of the previous block by at most $p+q$ terms, each tending to $0$, so the whole sequence of
 partial sums has the same limit.
 \end{solution}
 
 \begin{solution}{ex:stirling}
-(a) $d_n-d_{n+1}=-\ln(n+1)-\left(n+\frac12\right)\ln n+\left(n+\frac32\right)\ln(n+1)-1=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1$. With
+\idea To show a sequence $d_n$ converges, show that $\sum(d_n-d_{n+1})$ converges absolutely. The differences are computable in closed form because $\ln(n+1)!-\ln n!=\ln(n+1)$; then a Taylor expansion of $\ln(1+\frac1n)$ shows they are $O(\frac1{n^2})$. The term $\frac12\ln n$ in $d_n$ was chosen precisely to kill the $\frac1n$ term.
+\writeup (a) $d_n-d_{n+1}=-\ln(n+1)-\left(n+\frac12\right)\ln n+\left(n+\frac32\right)\ln(n+1)-1=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1$. With
 $\ln(1+x)=x-\frac{x^2}2+\frac{x^3}3+O(x^4)$ at $x=\frac1n$:
 \[
 \left(n+\frac12\right)\left(\frac1n-\frac1{2n^2}+\frac1{3n^3}+O\left(\frac1{n^4}\right)\right)-1
 =\left(\frac13-\frac14\right)\frac1{n^2}+O\left(\frac1{n^3}\right)=\frac1{12n^2}+O\left(\frac1{n^3}\right).
 \]
-(b) So $\sum(d_n-d_{n+1})$ converges absolutely by comparison with $\sum\frac1{n^2}$, and $d_n\to d\in\R$. Exponentiating,
+(b) So $\sum(d_n-d_{n+1})$ converges absolutely by comparison with $\sum\frac1{n^2}$, and $d_n=d_1-\sum_{k<n}(d_k-d_{k+1})\to d\in\R$. Exponentiating,
 $\frac{n!}{\sqrt n\,(n/e)^n}=e^{d_n}\to e^d=C>0$.
 \end{solution}

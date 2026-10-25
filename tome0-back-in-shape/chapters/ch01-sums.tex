@@ -7,16 +7,25 @@ By the end of this chapter you will have three reasons why it is not.
 
 \section{Induction, in three flavours}
 
-\begin{reminder}[induction]
-Let $P(n)$ be a statement depending on $n\in\N$.
-\begin{itemize}
+Let $P(n)$ be a statement depending on $n\in\N$. We take as the basic property of $\N$ the following axiom.
+
+\begin{reminder}[well ordering]
+Every non-empty subset of $\N$ has a least element.
+\end{reminder}
+
+\begin{proposition}[induction principles]\label{prop:induction}
+\begin{enumerate}[label=(\roman*)]
 \item \textbf{Weak induction.} If $P(0)$ holds and $P(n)\Rightarrow P(n+1)$ for all $n$, then $P(n)$ holds for all $n$.
 \item \textbf{Strong induction.} If, for every $n$, $\bigl(P(k)\text{ for all }k<n\bigr)\Rightarrow P(n)$, then $P(n)$ holds for all $n$.
-\item \textbf{Well ordering.} Every non-empty subset of $\N$ has a least element.
-\end{itemize}
-The three are equivalent. The third is the engine of proofs \emph{by minimal counterexample} and
-of Fermat's \emph{infinite descent}.
-\end{reminder}
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(ii) Suppose the set $E=\{n\in\N:P(n)\text{ is false}\}$ is non-empty, and let $n$ be its least element. Then $P(k)$ holds for every $k<n$ (such $k$ are not in $E$), so by hypothesis $P(n)$ holds: contradiction. So $E=\varnothing$.
+
+(i) Assume the hypotheses of (i). We check those of (ii). Let $n\in\N$ with $P(k)$ for all $k<n$. If $n=0$, $P(0)$ holds by assumption. If $n\ge1$, then $P(n-1)$ holds, hence $P(n)$. So (ii) applies.
+\end{proof}
+
+Conversely, weak induction implies well ordering: if $A\subset\N$ has no least element, weak induction on $Q(n)$: ``$0,1,\dots,n\notin A$'' shows $A=\varnothing$ ($0\notin A$, else it would be the least element; and if $0,\dots,n\notin A$, then $n+1\notin A$ for the same reason). So the three principles are equivalent. The well-ordering form is the engine of proofs \emph{by minimal counterexample} and of Fermat's \emph{infinite descent}.
 
 \begin{example}
 Every integer $n\ge 2$ is a product of primes. Suppose not, and let $n$ be the least counterexample.
@@ -26,10 +35,14 @@ so is $n$: contradiction.
 
 \section{Telescoping}
 
-\begin{reminder}[telescoping sums]
-If $u_k=v_{k+1}-v_k$ then $\displaystyle\sum_{k=0}^{n-1}u_k=v_n-v_0$.
+\begin{proposition}[telescoping sums]\label{prop:telescope}
+If $u_k=v_{k+1}-v_k$ for all $k$, then $\displaystyle\sum_{k=0}^{n-1}u_k=v_n-v_0$.
+\end{proposition}
+\begin{proof}
+Induction on $n$: for $n=0$ both sides are $0$, and $\sum_{k=0}^{n}u_k=(v_n-v_0)+(v_{n+1}-v_n)=v_{n+1}-v_0$.
+\end{proof}
+
 The whole art is to \emph{find} $v$: partial fractions, trigonometric identities, or a lucky guess checked by induction.
-\end{reminder}
 
 \begin{example}
 Since $\dfrac{1}{k(k+1)}=\dfrac1k-\dfrac1{k+1}$, we get $\displaystyle\sum_{k=1}^n\frac1{k(k+1)}=1-\frac1{n+1}$.
@@ -37,17 +50,29 @@ Since $\dfrac{1}{k(k+1)}=\dfrac1k-\dfrac1{k+1}$, we get $\displaystyle\sum_{k=1}
 
 \section{Binomial coefficients}
 
-\begin{reminder}[binomial coefficients]
-$\binom nk$ is the number of $k$-element subsets of an $n$-element set, and
-\[
-\binom nk=\frac{n!}{k!\,(n-k)!},\qquad \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}\ \text{(Pascal)},\qquad
-(x+y)^n=\sum_{k=0}^n\binom nk x^ky^{n-k}.
-\]
-Two proof strategies cover almost every identity: \emph{double counting} (count one set in two ways)
-and \emph{generating functions} (compare coefficients in a polynomial identity).
-\end{reminder}
+Define $\binom nk$ as the number of $k$-element subsets of an $n$-element set (so $\binom nk=0$ if $k>n$ or $k<0$).
 
-\begin{proposition}[Vandermonde]
+\begin{proposition}\label{prop:binom}
+For $n\ge1$ and $k\in\Z$:
+\[
+\text{(a)}\ \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}\ \text{(Pascal)},\qquad
+\text{(b)}\ \binom nk=\frac{n!}{k!\,(n-k)!}\ (0\le k\le n),\qquad
+\text{(c)}\ (x+y)^n=\sum_{k=0}^n\binom nk x^ky^{n-k}
+\]
+for $x,y$ in any commutative ring.
+\end{proposition}
+\begin{proof}
+(a) Fix an element $a$ of the $n$-element set $E$. A $k$-subset either contains $a$ (it is then $\{a\}$ plus a $(k-1)$-subset of $E\setminus\{a\}$) or does not (it is a $k$-subset of $E\setminus\{a\}$).
+
+(b) Count the sequences of $k$ distinct elements of $E$. Choosing them in order gives $n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}$. Choosing first the underlying set ($\binom nk$ ways) and then an order on it ($k!$ ways) gives $k!\binom nk$.
+
+(c) Expand the product $(x+y)(x+y)\cdots(x+y)$ of $n$ factors: it is the sum, over all ways of choosing $x$ or $y$ in each factor, of the products obtained. The ways that pick $x$ in exactly $k$ factors correspond to the $k$-subsets of the $n$ factors, and give $x^ky^{n-k}$ (commutativity is used here). So the coefficient is $\binom nk$.
+\end{proof}
+
+Two proof strategies cover almost every identity: \emph{double counting} (count one set in two ways, as in (b))
+and \emph{generating functions} (compare coefficients in a polynomial identity).
+
+\begin{proposition}[Vandermonde]\label{prop:vandermonde}
 For $m,n,r\in\N$, $\displaystyle\sum_{k=0}^{r}\binom mk\binom n{r-k}=\binom{m+n}r$.
 \end{proposition}
 \begin{proof}
@@ -117,31 +142,35 @@ Lucas sequences and primality tests.
 \section{Solutions}
 
 \begin{solution}{ex:cubes}
-For $n=1$ both sides equal $1$. Assume the formula for $n$. Then
+\idea The statement is given, so there is nothing to discover: induction is the natural tool for a closed formula indexed by $n$. The only skill is in the algebra of the inductive step: factor out the common part $(n+1)^2$ \emph{before} expanding, so that the target $\bigl((n+1)(n+2)/2\bigr)^2$ appears.
+\writeup For $n=1$ both sides equal $1$. Assume the formula for $n$. Then
 \[
 \sum_{k=1}^{n+1}k^3=\frac{n^2(n+1)^2}4+(n+1)^3=\frac{(n+1)^2\,(n^2+4n+4)}4=\left(\frac{(n+1)(n+2)}2\right)^2.
 \]
 \end{solution}
 
 \begin{solution}{ex:tel3}
-We have $\dfrac1{k(k+1)}-\dfrac1{(k+1)(k+2)}=\dfrac{(k+2)-k}{k(k+1)(k+2)}=\dfrac2{k(k+1)(k+2)}$, so the sum telescopes:
+\idea A sum of rational fractions in $k$ asks for telescoping (Proposition~\ref{prop:telescope}). The example $\frac1{k(k+1)}=\frac1k-\frac1{k+1}$ suggests trying the same shape one level up: compute the difference of consecutive terms of $v_k=\frac1{k(k+1)}$ and see whether it is a multiple of $\frac1{k(k+1)(k+2)}$.
+\writeup We have $\dfrac1{k(k+1)}-\dfrac1{(k+1)(k+2)}=\dfrac{(k+2)-k}{k(k+1)(k+2)}=\dfrac2{k(k+1)(k+2)}$, so the sum telescopes:
 \[
 S_n=\frac12\left(\frac1{1\cdot2}-\frac1{(n+1)(n+2)}\right)=\frac14-\frac1{2(n+1)(n+2)}\xrightarrow[n\to\infty]{}\frac14.
 \]
 \end{solution}
 
 \begin{solution}{ex:kbinom}
-Differentiating $(1+x)^n=\sum_k\binom nkx^k$ gives $n(1+x)^{n-1}=\sum_k k\binom nkx^{k-1}$; set $x=1$.
+\idea The factor $k$ in front of $x^k$ is what differentiation produces: $\frac{d}{dx}x^k=kx^{k-1}$. So differentiate the binomial formula and evaluate at $x=1$. For double counting, ask: what does $k\binom nk$ count? A $k$-subset together with one of its $k$ elements, i.e.\ a committee with a chair. Then count the same objects by choosing the chair first.
+\writeup Differentiating $(1+x)^n=\sum_k\binom nkx^k$ gives $n(1+x)^{n-1}=\sum_k k\binom nkx^{k-1}$; set $x=1$.
 Double counting: count pairs (committee, chair) among $n$ people. Choosing a committee of size $k$ and then
 its chair gives $\sum_k k\binom nk$; choosing the chair first ($n$ ways) and then any subset of the
 remaining $n-1$ people to join gives $n2^{n-1}$.
 \end{solution}
 
 \begin{solution}{ex:hockey}
-Induction on $n\ge r$: for $n=r$ both sides are $1$, and by Pascal
-$\binom{n+1}{r+1}+\binom{n+1}{r}=\binom{n+2}{r+1}$.
+\idea The sum on the left grows by one term when $n$ grows by one, and the right side should then grow by exactly that term: this is Pascal's rule, so try induction. For a combinatorial view, sort the $(r+1)$-subsets by their largest element. For the cubes, the formula expresses $k^3$ in the basis $\binom k3,\binom k2,\binom k1$, which the hockey stick sums at once.
+\writeup Induction on $n\ge r$: for $n=r$ both sides are $1$, and by Pascal
+$\binom{n+1}{r+1}+\binom{n+1}{r}=\binom{n+2}{r+1}$, which is the step from $n$ to $n+1$.
 (Combinatorially: a $(r+1)$-subset of $\{1,\dots,n+1\}$ with largest element $k+1$ is determined by an
-$r$-subset of $\{1,\dots,k\}$.)
+$r$-subset of $\{1,\dots,k\}$, and $k$ ranges from $r$ to $n$.)
 For the cubes, the identity $k^3=6\binom k3+6\binom k2+\binom k1$ is checked by expanding:
 $k(k-1)(k-2)+3k(k-1)+k=k^3$. Summing with the hockey stick,
 \[
@@ -152,36 +181,39 @@ which is $\bigl(n(n+1)/2\bigr)^2$.
 \end{solution}
 
 \begin{solution}{ex:squares}
-Apply Vandermonde with $m=n=r$ and use $\binom n{n-k}=\binom nk$.
-For the inequality, by Cauchy--Schwarz on the $n+1$ numbers $\binom nk$,
+\idea A sum of products of two binomials, with indices adding to a constant, is the shape of Vandermonde. Here the indices are $k$ and $k$, not $k$ and $r-k$, but the symmetry $\binom nk=\binom n{n-k}$ fixes that. For the inequality, we know $\sum\binom nk=2^n$ and want a lower bound on $\sum\binom nk^2$: comparing a sum and a sum of squares is the job of Cauchy--Schwarz.
+\writeup Apply Vandermonde with $m=n=r$: $\binom{2n}n=\sum_k\binom nk\binom n{n-k}=\sum_k\binom nk^2$.
+For the inequality, by Cauchy--Schwarz on the $n+1$ numbers $\binom nk$ (paired with $1,\dots,1$),
 \[
 4^n=\left(\sum_{k=0}^n\binom nk\right)^2\le(n+1)\sum_{k=0}^n\binom nk^2=(n+1)\binom{2n}n.
 \]
 \end{solution}
 
 \begin{solution}{ex:fermat}
-(a) $k!\,(p-k)!\binom pk=p!$ is divisible by $p$, while $k!\,(p-k)!$ is a product of integers
-smaller than $p$, hence prime to $p$. By Gauss' lemma, $p\mid\binom pk$.
+\idea (a) The formula $\binom pk=\frac{p!}{k!(p-k)!}$ has a $p$ upstairs and only numbers smaller than $p$ downstairs, so the $p$ cannot cancel. Making ``cannot cancel'' rigorous is exactly Gauss' lemma. (b) We want a statement about all $a$, and (a) says that $(a+1)^p$ is $a^p+1$ modulo $p$: this is an inductive step waiting to be used.
+\writeup (a) By Proposition~\ref{prop:binom}, $k!\,(p-k)!\binom pk=p!$, which is divisible by $p$. The integer $k!\,(p-k)!$ is a product of integers between $1$ and $p-1$, none divisible by $p$, so it is prime to $p$ (a prime dividing a product divides a factor). By Gauss' lemma (if $p\mid ab$ and $\gcd(p,a)=1$ then $p\mid b$; proved in Tome~1, Chapter~1), $p\mid\binom pk$.
 
-(b) Induction on $a$: true for $a=0$. By (a),
+(b) Induction on $a$: true for $a=0$. By the binomial formula and (a), all middle terms vanish modulo $p$:
 $(a+1)^p=\sum_k\binom pka^k\equiv a^p+1\equiv a+1\pmod p$.
 \end{solution}
 
 \begin{solution}{ex:fibgcd}
-(a) Fix $m\ge1$ and use induction on $n$ (two initial values). For $n=0$: $F_m=F_mF_1+F_{m-1}F_0$.
+\idea (a) The recurrence links three consecutive terms, so an induction on $n$ needs two base cases and two hypotheses. (b) A common divisor of two consecutive terms divides their difference, which is the previous term: walk down. (c) The rule $\gcd(F_m,F_n)=\gcd(F_{m-n},F_n)$ would make $\gcd(F_m,F_n)$ follow Euclid's algorithm exactly as $\gcd(m,n)$ does. Formula (a) expresses $F_m$ in terms of $F_n$ and $F_{m-n}$, which is what we need.
+\writeup (a) Fix $m\ge1$ and use induction on $n$. For $n=0$: $F_m=F_mF_1+F_{m-1}F_0$.
 For $n=1$: $F_{m+1}=F_mF_2+F_{m-1}F_1=F_m+F_{m-1}$. If it holds for $n$ and $n+1$, adding the two
-equalities and using the recurrence gives it for $n+2$.
+equalities and using the recurrence on each column gives it for $n+2$.
 
 (b) A common divisor of $F_n$ and $F_{n+1}$ divides $F_{n+1}-F_n=F_{n-1}$; descending, it divides $F_1=1$.
 
 (c) By (a) with $m$ replaced by $n$ and $n$ by $m-n$ (for $m>n\ge1$): $F_m=F_nF_{m-n+1}+F_{n-1}F_{m-n}$.
-So $\gcd(F_m,F_n)=\gcd(F_{n-1}F_{m-n},F_n)=\gcd(F_{m-n},F_n)$, the last step because $F_{n-1}$ is prime to $F_n$ by (b).
+So $\gcd(F_m,F_n)=\gcd(F_{n-1}F_{m-n},F_n)=\gcd(F_{m-n},F_n)$, the last step because $F_{n-1}$ is prime to $F_n$ by (b) (Gauss' lemma again).
 Thus $(m,n)\mapsto\gcd(F_m,F_n)$ obeys the same subtraction rule as $\gcd(m,n)$; running Euclid's
 algorithm by subtraction ends at $\gcd(F_d,F_0)=F_d$ with $d=\gcd(m,n)$.
 \end{solution}
 
 \begin{solution}{ex:cubesgeo}
-The region $L_k$ consists of the row segment $(k,j)$, $j\le k$, and the column segment $(i,k)$, $i<k$. Its sum is
+\idea The table total is known, so it suffices to compute the sum over each piece. An L-shape is a row segment plus a column segment, both of the form $k\times(1+2+\dots)$, so each piece is a sum of two arithmetic progressions.
+\writeup The region $L_k$ consists of the row segment $(k,j)$, $j\le k$, and the column segment $(i,k)$, $i<k$. Its sum is
 \[
 k\sum_{j=1}^kj+k\sum_{i=1}^{k-1}i=k\cdot\frac{k(k+1)}2+k\cdot\frac{(k-1)k}2=k^3.
 \]
@@ -190,8 +222,9 @@ $\sum_k k^3=\bigl(\sum_k k\bigr)^2$.
 \end{solution}
 
 \begin{solution}{ex:harmonic}
-Let $2^s$ be the largest power of $2$ with $2^s\le n$; $s\ge1$ since $n\ge2$. Among $1,\dots,n$, only $k=2^s$
-is divisible by $2^s$ (the next multiple, $2^{s+1}$, exceeds $n$). Let $L=\operatorname{lcm}(1,\dots,n)$,
-so $2^s\,\|\,L$. Then $L\,H_n=\sum_k L/k$, and $L/k$ is even for every $k\ne2^s$, while $L/2^s$ is odd.
+\idea To show a fraction is not an integer, look at one prime and show the denominator keeps a factor of it. Which prime? $2$ is the most frequent, and the hint suggests that the term $\frac1{2^s}$ is special: it is the only term whose denominator contains $2^s$. Multiply everything by a common denominator and look at parity.
+\writeup Let $2^s$ be the largest power of $2$ with $2^s\le n$; $s\ge1$ since $n\ge2$. Among $1,\dots,n$, only $k=2^s$
+is divisible by $2^s$: any other multiple of $2^s$ is at least $2\cdot2^s=2^{s+1}>n$. Let $L=\operatorname{lcm}(1,\dots,n)$,
+so the exponent of $2$ in $L$ is exactly $s$. Then $L\,H_n=\sum_k L/k$, and $L/k$ is even for every $k\ne2^s$ (as $k$ contains at most $2^{s-1}$), while $L/2^s$ is odd.
 So $L\,H_n$ is odd. If $H_n$ were an integer, $L\,H_n$ would be even since $L$ is. Contradiction.
 \end{solution}

@@ -7,22 +7,47 @@ Both come out of one humble family of integrals, which also completes Stirling's
 
 \section{Tools}
 
-\begin{reminder}[integration]
-\begin{itemize}
-\item \textbf{Integration by parts}: for $u,v$ of class $C^1$ on $[a,b]$, $\int_a^bu'v=[uv]_a^b-\int_a^buv'$.
-\item \textbf{Change of variables}: for $\varphi$ of class $C^1$ and $f$ continuous, $\int_{\varphi(a)}^{\varphi(b)}f(x)\dd x=\int_a^bf(\varphi(t))\,\varphi'(t)\dd t$.
-\item \textbf{Riemann sums}: for $f$ continuous on $[0,1]$, $\frac1n\sum_{k=1}^nf\left(\frac kn\right)\to\int_0^1f$.
-\end{itemize}
-\end{reminder}
+We take from the analysis course the existence of the integral $\int_a^bf$ of a continuous function on a segment, with its basic properties: it is linear, monotone ($f\le g\Rightarrow\int_a^bf\le\int_a^bg$ for $a\le b$), additive ($\int_a^b+\int_b^c=\int_a^c$), and $\int_a^bc\dd t=c(b-a)$. Everything else is proved from these.
 
-\begin{reminder}[Taylor formulas]
+\begin{proposition}[integration toolkit]\label{prop:inttools}
+Let $f$ be continuous on an interval $I$ and $a\in I$.
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Fundamental theorem}: $F(x)=\int_a^xf$ is differentiable with $F'=f$. Hence $\int_a^bg'=g(b)-g(a)$ for $g$ of class $C^1$.
+\item \textbf{Integration by parts}: for $u,v$ of class $C^1$ on $[a,b]$, $\int_a^bu'v=[uv]_a^b-\int_a^buv'$.
+\item \textbf{Change of variables}: for $\varphi$ of class $C^1$ on $[a,b]$ with values in $I$, $\int_{\varphi(a)}^{\varphi(b)}f(x)\dd x=\int_a^bf(\varphi(t))\,\varphi'(t)\dd t$.
+\item \textbf{Riemann sums}: for $f$ of class $C^1$ on $[0,1]$, $\left|\frac1n\sum_{k=1}^nf\left(\frac kn\right)-\int_0^1f\right|\le\frac{\sup|f'|}{n}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) For $h\ne0$, $\frac{F(x+h)-F(x)}h-f(x)=\frac1h\int_x^{x+h}(f(t)-f(x))\dd t$, which is at most $\sup_{|t-x|\le|h|}|f(t)-f(x)|$ in absolute value by monotonicity, and this tends to $0$ by continuity of $f$ at $x$. For the consequence, $G(x)=\int_a^xg'-g(x)$ has zero derivative, so it is constant (mean value theorem), equal to $G(a)=-g(a)$.
+
+(b) Apply (a) to $(uv)'=u'v+uv'$, continuous.
+
+(c) Both sides, as functions of the upper limit $b$, vanish at $b=a$ and have the same derivative $f(\varphi(b))\varphi'(b)$, by (a) and the chain rule.
+
+(d) On $\left[\frac{k-1}n,\frac kn\right]$, $|f(t)-f(\frac kn)|\le\frac{\sup|f'|}n$ by the mean value theorem, so $\left|\int_{(k-1)/n}^{k/n}f-\frac1nf\left(\frac kn\right)\right|\le\frac{\sup|f'|}{n^2}$. Sum over $k$.
+\end{proof}
+
+Statement (d) holds for every continuous $f$ (with an unquantified $o(1)$); the proof is the same with the uniform continuity of $f$ (Heine's theorem from topology) in place of the mean value theorem. We only use it for $C^1$ functions.
+
+\begin{theorem}[Taylor formulas]\label{thm:taylor}
 Let $f$ be of class $C^{n+1}$ on an interval containing $a$ and $x$, and $T_n(x)=\sum_{k=0}^n\frac{f^{(k)}(a)}{k!}(x-a)^k$.
-\begin{itemize}
+\begin{enumerate}[label=(\alph*)]
 \item \textbf{Integral remainder}: $f(x)=T_n(x)+\displaystyle\int_a^x\frac{(x-t)^n}{n!}f^{(n+1)}(t)\dd t$.
 \item \textbf{Taylor--Lagrange inequality}: $|f(x)-T_n(x)|\le\dfrac{|x-a|^{n+1}}{(n+1)!}\sup|f^{(n+1)}|$, the sup over the segment $[a,x]$.
-\item \textbf{Taylor--Young}: $f(x)=T_n(x)+o\left((x-a)^n\right)$ (only $C^n$ is needed).
-\end{itemize}
-\end{reminder}
+\item \textbf{Taylor--Young}: if $f$ is only $C^n$, $f(x)=T_n(x)+o\left((x-a)^n\right)$ as $x\to a$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Induction on $n$. For $n=0$ it is Proposition~\ref{prop:inttools}(a). If it holds at order $n-1$ for a $C^{n+1}$ function, integrate the remainder by parts with $u=-\frac{(x-t)^n}{n!}$, $u'=\frac{(x-t)^{n-1}}{(n-1)!}$, $v=f^{(n)}$:
+\[
+\int_a^x\frac{(x-t)^{n-1}}{(n-1)!}f^{(n)}(t)\dd t=\frac{(x-a)^n}{n!}f^{(n)}(a)+\int_a^x\frac{(x-t)^n}{n!}f^{(n+1)}(t)\dd t.
+\]
+(b) Bound the integrand of (a) by $\frac{|x-t|^n}{n!}\sup|f^{(n+1)}|$ and integrate: $\int_a^x\frac{|x-t|^n}{n!}\dd t=\frac{|x-a|^{n+1}}{(n+1)!}$ in absolute value.
+
+(c) Apply (a) at order $n-1$ and subtract $\frac{f^{(n)}(a)}{n!}(x-a)^n=\int_a^x\frac{(x-t)^{n-1}}{(n-1)!}f^{(n)}(a)\dd t$:
+$|f(x)-T_n(x)|\le\frac{|x-a|^n}{n!}\sup_{t\in[a,x]}|f^{(n)}(t)-f^{(n)}(a)|$, and the sup tends to $0$ by continuity of $f^{(n)}$.
+\end{proof}
 
 \section{Wallis integrals}
 
@@ -106,25 +131,29 @@ $\sqrt{2\pi}$. Riemann--Lebesgue (Exercise~\ref{ex:rl}) is the first step of Fou
 \section{Solutions}
 
 \begin{solution}{ex:xnlnx}
-On $[\varepsilon,1]$, integrate by parts with $u'=x^n$, $v=\ln x$:
+\idea A product of a power and a logarithm: integrate by parts so as to \emph{differentiate} the logarithm, which turns it into $\frac1x$ and leaves a pure power. The integral is improper at $0$, so work on $[\varepsilon,1]$ and let $\varepsilon\to0$.
+\writeup On $[\varepsilon,1]$, integrate by parts with $u'=x^n$, $v=\ln x$:
 $\int_\varepsilon^1x^n\ln x\dd x=\left[\frac{x^{n+1}}{n+1}\ln x\right]_\varepsilon^1-\int_\varepsilon^1\frac{x^n}{n+1}\dd x$.
 As $\varepsilon\to0$, $\varepsilon^{n+1}\ln\varepsilon\to0$, and the integral equals $-\dfrac1{(n+1)^2}$.
 \end{solution}
 
 \begin{solution}{ex:riemann}
-$\sum_{k=1}^n\frac n{n^2+k^2}=\frac1n\sum_{k=1}^n\frac1{1+(k/n)^2}\to\int_0^1\frac{\mathrm dx}{1+x^2}=\frac\pi4$.
-For the product, take logarithms: $\frac1n\sum_{k=1}^n\ln\left(1+\frac kn\right)\to\int_0^1\ln(1+x)\dd x=\left[(1+x)\ln(1+x)-x\right]_0^1=2\ln2-1$, so the limit is $e^{2\ln2-1}=\frac4e$.
+\idea A sum of $n$ terms whose general term is a function of $\frac kn$, times $\frac1n$, is a Riemann sum. Factor out $n^2$ in the first to see $\frac1n\cdot\frac1{1+(k/n)^2}$. For a product, take logarithms to get a sum.
+\writeup $\sum_{k=1}^n\frac n{n^2+k^2}=\frac1n\sum_{k=1}^n\frac1{1+(k/n)^2}\to\int_0^1\frac{\mathrm dx}{1+x^2}=\frac\pi4$ by Proposition~\ref{prop:inttools}(d).
+For the product, take logarithms: $\frac1n\sum_{k=1}^n\ln\left(1+\frac kn\right)\to\int_0^1\ln(1+x)\dd x=\left[(1+x)\ln(1+x)-x\right]_0^1=2\ln2-1$, so the limit is $e^{2\ln2-1}=\frac4e$ by continuity of $\exp$.
 \end{solution}
 
 \begin{solution}{ex:taylorln}
-(a) Taylor--Lagrange at $a=0$ with $\sup_{[-|x|,|x|]}|\exp^{(n+1)}|=e^{|x|}$: the error is at most $\frac{|x|^{n+1}}{(n+1)!}e^{|x|}\to0$ (the ratio of consecutive terms tends to $0$).
+\idea (a) Showing that a function equals its Taylor series means showing the remainder tends to $0$; for $\exp$ all derivatives are $\exp$, so Taylor--Lagrange gives a bound $\frac{|x|^{n+1}}{(n+1)!}e^{|x|}$, and factorials beat powers. (This reconciles the real exponential of analysis, the solution of $y'=y$, $y(0)=1$, with the series used to define $e^{i\theta}$ in Chapter~2.) (b) The identity is a finite geometric sum, so it is exact; integrating it gives the partial sum of the alternating series plus an explicit error integral, easy to bound.
+\writeup (a) Theorem~\ref{thm:taylor}(b) at $a=0$ with $\sup_{[-|x|,|x|]}|\exp^{(n+1)}|=e^{|x|}$: the error is at most $\frac{|x|^{n+1}}{(n+1)!}e^{|x|}$, which tends to $0$ because the ratio of consecutive terms, $\frac{|x|}{n+2}$, tends to $0$.
 
 (b) Integrating over $[0,1]$: $\ln2=\sum_{k=0}^{n-1}\frac{(-1)^k}{k+1}+(-1)^n\int_0^1\frac{t^n}{1+t}\dd t$, and
 $0\le\int_0^1\frac{t^n}{1+t}\dd t\le\int_0^1t^n\dd t=\frac1{n+1}$. So the partial sums of $\sum\frac{(-1)^{k+1}}k$ are within $\frac1{n+1}$ of $\ln2$.
 \end{solution}
 
 \begin{solution}{ex:eirr}
-Suppose $e=\frac pq$ with $p,q\ge1$. Then $A=q!\left(e-\sum_{k=0}^q\frac1{k!}\right)$ is an integer, since $q!e=(q-1)!\,p$ and $\frac{q!}{k!}\in\N$ for $k\le q$. But
+\idea Irrationality proofs follow one pattern: assume $x=\frac pq$, build an integer from it, and show that integer lies strictly between $0$ and $1$. The series of $e$ converges very fast, so the tail after $\frac1{q!}$ is tiny; multiplying by $q!$ makes the head an integer and keeps the tail below $1$.
+\writeup Suppose $e=\frac pq$ with $p,q\ge1$. Then $A=q!\left(e-\sum_{k=0}^q\frac1{k!}\right)$ is an integer, since $q!e=(q-1)!\,p$ and $\frac{q!}{k!}\in\N$ for $k\le q$. But
 \[
 0<A=\sum_{k>q}\frac{q!}{k!}=\frac1{q+1}+\frac1{(q+1)(q+2)}+\cdots<\sum_{j\ge1}\frac1{(q+1)^j}=\frac1q\le1.
 \]
@@ -132,7 +161,8 @@ No integer lies strictly between $0$ and $1$.
 \end{solution}
 
 \begin{solution}{ex:wallisprod}
-By monotonicity, $W_{2p+1}\le W_{2p}\le W_{2p-1}$, so $1\le\frac{W_{2p}}{W_{2p+1}}\le\frac{W_{2p-1}}{W_{2p+1}}=\frac{2p+1}{2p}\to1$. By Proposition~\ref{prop:wallis}(ii),
+\idea The ratio $\frac{W_{2p}}{W_{2p+1}}$ is squeezed between $1$ and $\frac{W_{2p-1}}{W_{2p+1}}$ by monotonicity, and the recurrence computes the latter exactly. Then write the ratio with the closed forms (ii) and reorganise the factorials into a product over $k$.
+\writeup By monotonicity, $W_{2p+1}\le W_{2p}\le W_{2p-1}$, so $1\le\frac{W_{2p}}{W_{2p+1}}\le\frac{W_{2p-1}}{W_{2p+1}}=\frac{2p+1}{2p}\to1$. By Proposition~\ref{prop:wallis}(ii),
 \[
 \frac{W_{2p}}{W_{2p+1}}=\frac\pi2\cdot\frac{(2p)!\,(2p+1)!}{16^p\,(p!)^4}=\frac\pi2\prod_{k=1}^p\frac{(2k-1)(2k+1)}{(2k)^2},
 \]
@@ -140,16 +170,18 @@ because $(2p)!=\prod_{k=1}^p(2k-1)(2k)$, $(2p+1)!=(2p)!\,(2p+1)$ and $\prod_{k=1
 \end{solution}
 
 \begin{solution}{ex:rl}
-Integrate by parts:
+\idea A rapidly oscillating factor $\sin\lambda t$ has a small antiderivative, $-\frac{\cos\lambda t}\lambda$. Integrating by parts moves the derivative onto $f$ (which is why we assume $C^1$) and produces a factor $\frac1\lambda$.
+\writeup Integrate by parts:
 $\int_a^bf(t)\sin(\lambda t)\dd t=\left[-f(t)\frac{\cos\lambda t}\lambda\right]_a^b+\frac1\lambda\int_a^bf'(t)\cos(\lambda t)\dd t$.
 Both terms are bounded by $\frac1\lambda\left(|f(a)|+|f(b)|+\int_a^b|f'|\right)\to0$.
 \end{solution}
 
 \begin{solution}{ex:gaussian}
-(a) With $u=\frac{x^2}n$: $\ln(1-u)\le-u$ for $0\le u<1$ gives the first inequality (and it is trivial at $u=1$); $\ln(1+u)\le u$ gives $(1+u)^n\le e^{nu}=e^{x^2}$, the second.
+\idea We know $\left(1\pm\frac{x^2}n\right)^{\pm n}\to e^{-x^2}$, and the integrals of these approximations are Wallis integrals after a trigonometric substitution ($1-\sin^2=\cos^2$ and $1+\tan^2=\frac1{\cos^2}$). So squeeze $e^{-x^2}$ between them, and let the known asymptotics $W_n\sim\sqrt{\frac\pi{2n}}$ finish. The inequalities in (a) are the concavity bound $\ln(1+u)\le u$.
+\writeup (a) With $u=\frac{x^2}n$: $\ln(1-u)\le-u$ for $0\le u<1$ gives $n\ln(1-u)\le-x^2$, the first inequality (it is trivial at $u=1$); $\ln(1+u)\le u$ gives $(1+u)^n\le e^{nu}=e^{x^2}$, the second.
 
 (b) Substitute $x=\sqrt n\sin\theta$, $\theta\in\left[0,\frac\pi2\right]$: $\left(1-\frac{x^2}n\right)^n\dd x=\cos^{2n}\theta\cdot\sqrt n\cos\theta\dd\theta$, giving $\sqrt nW_{2n+1}$.
-Substitute $x=\sqrt n\tan\theta$, $\theta\in\left[0,\frac\pi2\right[$: $\left(1+\frac{x^2}n\right)^{-n}\dd x=\cos^{2n}\theta\cdot\frac{\sqrt n}{\cos^2\theta}\dd\theta$, giving $\sqrt nW_{2n-2}$.
+Substitute $x=\sqrt n\tan\theta$, $\theta\in\left[0,\frac\pi2\right[$: $\left(1+\frac{x^2}n\right)^{-n}\dd x=\cos^{2n}\theta\cdot\frac{\sqrt n}{\cos^2\theta}\dd\theta$, giving $\sqrt nW_{2n-2}$ (an improper integral; apply the change of variables on $[0,A]$ and let $A\to\infty$).
 
 (c) Let $I=\int_0^\infty e^{-x^2}\dd x$ (it converges since $e^{-x^2}\le e^{-x}$ for $x\ge1$). By (a) and (b),
 $\sqrt nW_{2n+1}\le\int_0^{\sqrt n}e^{-x^2}\dd x\le I\le\sqrt nW_{2n-2}$. By Proposition~\ref{prop:wallis}(iii),

@@ -7,14 +7,47 @@ And how can the roots of a polynomial compute $1+\frac14+\frac19+\frac1{16}+\cdo
 
 \section{Division, roots and multiplicities}
 
-\begin{reminder}[polynomials over a field $\mathbb K$]
-\begin{itemize}
-\item \textbf{Euclidean division.} For $A,B\in\mathbb K[X]$ with $B\ne0$ there is a unique pair $(Q,R)$ with $A=BQ+R$ and $\deg R<\deg B$.
-\item \textbf{Roots.} $a$ is a root of $P$ if and only if $(X-a)\mid P$. A non-zero polynomial of degree $n$ has at most $n$ roots, counted with multiplicity.
-\item \textbf{Multiplicity} (in characteristic $0$). $a$ is a root of multiplicity at least $m$ if and only if $P(a)=P'(a)=\dots=P^{(m-1)}(a)=0$.
-\item \textbf{D'Alembert--Gauss.} Every non-constant polynomial of $\C[X]$ has a root, so it splits into linear factors. Over $\R$, the irreducibles are the linear polynomials and the quadratics with negative discriminant.
-\end{itemize}
-\end{reminder}
+Throughout, $\mathbb K$ is a field and $\mathbb K[X]$ the ring of polynomials over it; $\deg(AB)=\deg A+\deg B$ since leading coefficients multiply to a non-zero number.
+
+\begin{proposition}[Euclidean division]\label{prop:polydiv}
+For $A,B\in\mathbb K[X]$ with $B\ne0$ there is a unique pair $(Q,R)$ with $A=BQ+R$ and $\deg R<\deg B$ (with $\deg0=-\infty$).
+\end{proposition}
+\begin{proof}
+\emph{Existence}, by strong induction on $\deg A$. If $\deg A<\deg B$, take $Q=0$, $R=A$. Otherwise let $a,b$ be the leading coefficients and $d=\deg A-\deg B$; then $A_1=A-\frac abX^dB$ has degree $<\deg A$, so $A_1=BQ_1+R$, and $A=B\left(Q_1+\frac abX^d\right)+R$.
+\emph{Uniqueness}: if $BQ+R=BQ'+R'$, then $B(Q-Q')=R'-R$ has degree $<\deg B$, which forces $Q=Q'$, hence $R=R'$.
+\end{proof}
+
+\begin{proposition}[roots]\label{prop:rootsfactor}
+Let $P\in\mathbb K[X]$ be non-zero of degree $n$.
+\begin{enumerate}[label=(\alph*)]
+\item $a$ is a root of $P$ if and only if $(X-a)\mid P$.
+\item If $x_1,\dots,x_r$ are distinct roots of $P$, then $\prod_{i=1}^r(X-x_i)$ divides $P$. In particular $P$ has at most $n$ roots.
+\item (Characteristic $0$.) Let the \emph{multiplicity} of $a$ be the largest $m$ with $(X-a)^m\mid P$. Then $a$ has multiplicity at least $m$ if and only if $P(a)=P'(a)=\dots=P^{(m-1)}(a)=0$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Divide: $P=(X-a)Q+c$ with $c$ constant, and evaluate at $a$: $c=P(a)$.
+
+(b) Induction on $r$. By (a), $P=(X-x_r)Q$. For $i<r$, $0=P(x_i)=(x_i-x_r)Q(x_i)$ and $x_i-x_r\ne0$, so $Q(x_i)=0$ ($\mathbb K$ has no zero divisors). By induction $\prod_{i<r}(X-x_i)\mid Q$. Comparing degrees, $r\le n$.
+
+(c) \emph{Taylor's formula for polynomials}: $P=\sum_{k=0}^n\frac{P^{(k)}(a)}{k!}(X-a)^k$. Both sides are linear in $P$, so it suffices to check it on the basis $(X-a)^j$, $0\le j\le n$, for which the $k$-th derivative at $a$ is $j!$ if $k=j$ and $0$ otherwise. Hence $(X-a)^m\mid P$ iff the first $m$ Taylor coefficients vanish (the remaining sum is divisible by $(X-a)^m$; conversely, if some $P^{(k)}(a)\ne0$ with $k<m$, take the least such $k$: $P=(X-a)^kU$ with $U(a)\ne0$, so $(X-a)^m\nmid P$ by (a) applied to $U$).
+\end{proof}
+
+\begin{theorem}[d'Alembert--Gauss]\label{thm:dalembert}
+Every non-constant $P\in\C[X]$ has a root. Consequently $P$ splits as $c\prod(X-x_i)$ in $\C[X]$, and the irreducible polynomials of $\R[X]$ are those of degree $1$ and those of degree $2$ with negative discriminant.
+\end{theorem}
+\begin{proof}
+We use one fact from topology: a continuous real function on a closed disc attains its minimum.
+Since $|P(z)|\ge|z|^n\left(|c_n|-\sum_{k<n}|c_k||z|^{k-n}\right)\to\infty$, there is $\rho$ with $|P(z)|>|P(0)|$ for $|z|>\rho$; the minimum of $|P|$ on the disc $|z|\le\rho$ is therefore a global minimum, attained at some $z_0$.
+
+Suppose $P(z_0)\ne0$. Expand around $z_0$: $P(z_0+h)=P(z_0)+ch^k+h^{k+1}S(h)$ with $c\ne0$, $k\ge1$, $S$ a polynomial. By Proposition~\ref{prop:expform} there is $u\in\C$ with $u^k=-P(z_0)/c$ (write $-P(z_0)/c=\rho e^{i\theta}$ and take $u=\rho^{1/k}e^{i\theta/k}$). For real $t\in]0,1[$,
+\[
+|P(z_0+tu)|=\left|P(z_0)(1-t^k)+t^{k+1}u^{k+1}S(tu)\right|\le|P(z_0)|(1-t^k)+Mt^{k+1},
+\]
+with $M=\sup_{t\le1}|u^{k+1}S(tu)|$. For $t<|P(z_0)|/M$ this is $<|P(z_0)|$: contradiction. So $P(z_0)=0$.
+
+Splitting follows by induction on the degree with Proposition~\ref{prop:rootsfactor}(a). Over $\R$: a real polynomial of degree $\ge3$ has a complex root $z$; if $z\in\R$, $X-z$ is a factor; if not, $\bar z$ is also a root (conjugate $P(z)=0$), and $(X-z)(X-\bar z)=X^2-2\operatorname{Re}z\,X+|z|^2\in\R[X]$ is a factor by (b). So it is reducible. A real quadratic is irreducible iff it has no real root, iff its discriminant is negative.
+\end{proof}
 
 \begin{proposition}[Vi\`ete's relations]
 If $P=a_nX^n+a_{n-1}X^{n-1}+\dots+a_0=a_n\prod_{i=1}^n(X-x_i)$ with $a_n\ne0$, the elementary symmetric functions
@@ -56,18 +89,33 @@ The $n$ numbers $\cos\frac{(2k+1)\pi}{2n}$ are distinct and are roots since $\co
 
 \section{Integer polynomials}
 
-\begin{reminder}[irreducibility over $\Q$]
-\begin{itemize}
-\item \textbf{Rational roots.} If $p/q$ in lowest terms is a root of $a_nX^n+\dots+a_0\in\Z[X]$, then $p\mid a_0$ and $q\mid a_n$.
-\item \textbf{Gauss' lemma.} A polynomial of $\Z[X]$ that factors in $\Q[X]$ factors in $\Z[X]$ with factors of the same degrees.
-\item \textbf{Eisenstein's criterion.} Let $P=a_nX^n+\dots+a_0\in\Z[X]$ and $p$ a prime with $p\nmid a_n$, $p\mid a_i$ for $i<n$, and $p^2\nmid a_0$. Then $P$ is irreducible in $\Q[X]$.
-\end{itemize}
-\end{reminder}
+\begin{proposition}[rational roots]\label{prop:ratroot}
+If $p/q$ in lowest terms is a root of $a_nX^n+\dots+a_0\in\Z[X]$, then $p\mid a_0$ and $q\mid a_n$.
+\end{proposition}
+\begin{proof}
+Multiply by $q^n$: $a_np^n+a_{n-1}p^{n-1}q+\dots+a_0q^n=0$. Every term but the last is divisible by $p$, so $p\mid a_0q^n$, and $p\mid a_0$ by Gauss' lemma for integers since $\gcd(p,q)=1$. Symmetrically $q\mid a_np^n$, so $q\mid a_n$.
+\end{proof}
 
-\begin{proof}[Proof of Eisenstein]
-By Gauss' lemma, suppose $P=BC$ in $\Z[X]$ with $\deg B,\deg C\ge1$. Reduce modulo $p$: $\bar P=\bar a_nX^n=\bar B\bar C$ in $(\Z/p\Z)[X]$.
-Since $\Z/p\Z$ is a field, unique factorisation forces $\bar B=\beta X^k$, $\bar C=\gamma X^{n-k}$ with $k,n-k\ge1$ (degrees cannot drop because $p\nmid a_n$).
-So $p$ divides the constant terms of both $B$ and $C$, and $p^2\mid a_0$: contradiction.
+Call $P\in\Z[X]$ \emph{primitive} if its coefficients have no common prime factor.
+
+\begin{proposition}[Gauss' lemma for polynomials]\label{prop:gausspoly}
+\begin{enumerate}[label=(\alph*)]
+\item A product of primitive polynomials is primitive.
+\item If $P\in\Z[X]$ factors as $P=BC$ in $\Q[X]$, then $P=B_1C_1$ with $B_1,C_1\in\Z[X]$ of the same degrees as $B,C$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Let $B=\sum b_iX^i$, $C=\sum c_jX^j$ be primitive and $p$ a prime. Let $i_0$, $j_0$ be the least indices with $p\nmid b_{i_0}$, $p\nmid c_{j_0}$. The coefficient of $X^{i_0+j_0}$ in $BC$ is $b_{i_0}c_{j_0}$ plus terms $b_ic_j$ with $i<i_0$ or $j<j_0$, all divisible by $p$; and $p\nmid b_{i_0}c_{j_0}$. So $p$ does not divide all coefficients of $BC$.
+
+(b) Clearing denominators and contents, $B=\beta B_0$ and $C=\gamma C_0$ with $\beta,\gamma\in\Q$ and $B_0,C_0\in\Z[X]$ primitive. Write $\beta\gamma=\frac uv$ in lowest terms with $v\ge1$: $vP=uB_0C_0$. A prime $p\mid v$ does not divide $u$, so it would divide every coefficient of $B_0C_0$, contradicting (a). So $v=1$, and $P=(uB_0)\,C_0$.
+\end{proof}
+
+\begin{theorem}[Eisenstein's criterion]\label{thm:eisenstein}
+Let $P=a_nX^n+\dots+a_0\in\Z[X]$ with $n\ge1$, and $p$ a prime with $p\nmid a_n$, $p\mid a_i$ for $i<n$, and $p^2\nmid a_0$. Then $P$ is irreducible in $\Q[X]$.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:gausspoly}, suppose $P=BC$ with $B=\sum_{i\le r}b_iX^i$, $C=\sum_{j\le s}c_jX^j$ in $\Z[X]$, $r,s\ge1$, $r+s=n$. Since $p\mid a_0=b_0c_0$ and $p^2\nmid a_0$, $p$ divides exactly one of $b_0,c_0$, say $p\mid b_0$ and $p\nmid c_0$. Not every $b_i$ is divisible by $p$, since $p\nmid a_n=b_rc_s$. Let $k$ be the least index with $p\nmid b_k$; then $1\le k\le r<n$, and
+$a_k=b_kc_0+b_{k-1}c_1+\dots+b_0c_k\equiv b_kc_0\not\equiv0\pmod p$, contradicting $p\mid a_k$.
 \end{proof}
 
 \section{Exercises}
@@ -130,44 +178,51 @@ $T_n$ rather than at equally spaced points, as the notebook shows.
 \section{Solutions}
 
 \begin{solution}{ex:rem}
-Write $X^n=(X-1)(X-2)Q+aX+b$. Evaluating at $1$ and $2$: $a+b=1$ and $2a+b=2^n$. So the remainder is $(2^n-1)X+2-2^n$.
+\idea We do not need the quotient, only the remainder, which has degree $<2$: two unknowns $a,b$. Evaluating the division identity at the roots $1$ and $2$ of the divisor kills the unknown quotient and gives two equations.
+\writeup Write $X^n=(X-1)(X-2)Q+aX+b$ (Proposition~\ref{prop:polydiv}). Evaluating at $1$ and $2$: $a+b=1$ and $2a+b=2^n$. So the remainder is $(2^n-1)X+2-2^n$.
 \end{solution}
 
 \begin{solution}{ex:viete}
-Here $\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$. Then $\sum x_i^2=\sigma_1^2-2\sigma_2=2$. Each root satisfies $x_i^3=x_i-1$, so
-$\sum x_i^3=\sum x_i-3=-3$.
+\idea Symmetric expressions in the roots are polynomials in the $\sigma_k$, which Vi\`ete reads off the coefficients. For $\sum x_i^2$ use $(\sum x_i)^2=\sum x_i^2+2\sigma_2$. For cubes there is a shortcut: each root satisfies the equation, so $x_i^3$ can be replaced by a lower-degree expression.
+\writeup Here $\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$. Then $\sum x_i^2=\sigma_1^2-2\sigma_2=2$. Each root satisfies $x_i^3=x_i-1$, so
+$\sum x_i^3=\sum x_i-3=\sigma_1-3=-3$.
 \end{solution}
 
 \begin{solution}{ex:simple}
-A multiple root $a$ satisfies $a^n+a+1=0$ and $na^{n-1}+1=0$. Multiplying the second by $a$, $na^n=-a$, and substituting $a^n=-a-1$ gives
+\idea By Proposition~\ref{prop:rootsfactor}(c), a multiple root is a common root of $P$ and $P'$. Two equations in one unknown $a$: eliminate the high power $a^n$ between them to get a linear equation, which pins $a$ down; then check that this value is impossible, here by comparing moduli.
+\writeup A multiple root $a$ satisfies $a^n+a+1=0$ and $na^{n-1}+1=0$. Multiplying the second by $a$, $na^n=-a$, and substituting $a^n=-a-1$ gives
 $-n(a+1)=-a$, so $a=-\frac n{n-1}$. Then $|a|=\frac n{n-1}>1$, so $|a|^{n-1}>1$; but $na^{n-1}=-1$ forces $|a|^{n-1}=\frac1n<1$. Contradiction.
 \end{solution}
 
 \begin{solution}{ex:lagsum}
-For $k\le n$, the polynomial $X^k$ has degree at most $n$, so by uniqueness in Theorem~\ref{thm:lagrange}, $X^k=\sum_ix_i^kL_i$.
+\idea The denominators $\prod_{j\ne i}(x_i-x_j)$ are exactly those of the Lagrange basis polynomials $L_i$; in fact $\frac1{\prod_{j\ne i}(x_i-x_j)}$ is the leading coefficient of $L_i$. So the sum is the leading coefficient of $\sum_ix_i^kL_i$, the interpolation polynomial of $X^k$, which is $X^k$ itself by uniqueness.
+\writeup For $k\le n$, the polynomial $X^k$ has degree at most $n$, so by uniqueness in Theorem~\ref{thm:lagrange}, $X^k=\sum_ix_i^kL_i$.
 The coefficient of $X^n$ in $L_i$ is $1/\prod_{j\ne i}(x_i-x_j)$, so the coefficient of $X^n$ on the right is exactly the sum in question.
 On the left it is $0$ for $k<n$ and $1$ for $k=n$.
 \end{solution}
 
 \begin{solution}{ex:eisen}
-(a) Eisenstein with $p=5$: $5\nmid1$, $5$ divides $0,0,10,5$, and $25\nmid5$.
+\idea Irreducibility over $\Q$ of an integer polynomial: look for a prime that divides every coefficient but the leading one, with the constant term not divisible by its square. For (a) the coefficients $10,5$ point to $5$. For $\Phi_p$ no prime works directly (all coefficients are $1$), but a change of variable $X\mapsto X+1$ does not affect irreducibility and turns the coefficients into binomial coefficients $\binom pk$, all divisible by $p$.
+\writeup (a) Theorem~\ref{thm:eisenstein} with $p=5$: $5\nmid1$, $5$ divides $0,0,10,5$, and $25\nmid5$.
 
 (b) $\Phi_p=\frac{X^p-1}{X-1}$, so $\Phi_p(X+1)=\frac{(X+1)^p-1}X=\sum_{k=1}^p\binom pkX^{k-1}$. It is monic, its other coefficients
 $\binom pk$ ($1\le k\le p-1$) are divisible by $p$ (Exercise~\ref{ex:fermat}), and its constant term is $\binom p1=p$, not divisible by $p^2$.
-So $\Phi_p(X+1)$ is irreducible by Eisenstein, and so is $\Phi_p$, since a factorisation $\Phi_p=BC$ would give $\Phi_p(X+1)=B(X+1)C(X+1)$.
+So $\Phi_p(X+1)$ is irreducible by Eisenstein, and so is $\Phi_p$, since a factorisation $\Phi_p=BC$ into non-constant factors would give one of $\Phi_p(X+1)=B(X+1)C(X+1)$.
 \end{solution}
 
 \begin{solution}{ex:minimax}
-For $P=2^{1-n}T_n$: it is monic by Proposition~\ref{prop:cheb}, and $|T_n(\cos\theta)|=|\cos n\theta|\le1$ with equality at $\theta=0$, so $\sup|P|=2^{1-n}$.
+\idea Equality is the easy part. For the inequality, argue by contradiction: if some monic $P$ did better than $2^{1-n}T_n$, the difference $Q$ would have degree $\le n-1$ (leading terms cancel). Now $2^{1-n}T_n$ reaches $\pm2^{1-n}$ alternately at $n+1$ points, and $P$ stays strictly inside, so $Q$ alternates in sign $n+1$ times: $n$ sign changes means $n$ roots, too many.
+\writeup For $P=2^{1-n}T_n$: it is monic by Proposition~\ref{prop:cheb}, and $|T_n(\cos\theta)|=|\cos n\theta|\le1$ with equality at $\theta=0$, so $\sup|P|=2^{1-n}$.
 
-Now suppose $P$ is monic of degree $n$ with $\sup_{[-1,1]}|P|<2^{1-n}$, and let $Q=2^{1-n}T_n-P$, of degree at most $n-1$ (the leading terms cancel).
+Now suppose $P$ is monic of degree $n$ with $\sup_{[-1,1]}|P|<2^{1-n}$, and let $Q=2^{1-n}T_n-P$, of degree at most $n-1$.
 At $y_k=\cos\frac{k\pi}n$, $0\le k\le n$, we have $2^{1-n}T_n(y_k)=2^{1-n}(-1)^k$, so $Q(y_k)$ has the sign of $(-1)^k$, strictly.
-By the intermediate value theorem $Q$ vanishes in each of the $n$ intervals $]y_{k+1},y_k[$, so $Q$ has $n$ roots and degree at most $n-1$: $Q=0$,
+By the intermediate value theorem $Q$ vanishes in each of the $n$ disjoint intervals $]y_{k+1},y_k[$, so $Q$ has $n$ roots and degree at most $n-1$: $Q=0$ by Proposition~\ref{prop:rootsfactor},
 which contradicts $\sup|P|<2^{1-n}=\sup|2^{1-n}T_n|$.
 \end{solution}
 
 \begin{solution}{ex:basel}
-(a) By the binomial theorem, the imaginary part of $(\cos\theta+i\sin\theta)^N$ collects the odd powers of $i\sin\theta$:
+\idea The plan of attack is in the question, but it is worth seeing why it works. Vi\`ete computes \emph{sums of roots} exactly. So we want numbers related to $\frac1{k^2}$ that are the roots of an explicit polynomial: $\cot^2\frac{k\pi}N$ are such numbers, because $\sin N\theta=0$ at $\theta=\frac{k\pi}N$ and $\sin N\theta$ is a polynomial in $\cot\theta$ (times $\sin^N\theta$). Then $\cot x\approx\frac1x$ for small $x$ connects them to $\frac{N^2}{k^2\pi^2}$, and a squeeze finishes.
+\writeup (a) By de Moivre and the binomial theorem, the imaginary part of $(\cos\theta+i\sin\theta)^N$ collects the odd powers of $i\sin\theta$:
 \[
 \sin N\theta=\sum_{j=0}^m\binom N{2j+1}(-1)^j\cos^{N-2j-1}\theta\,\sin^{2j+1}\theta
 =\sin^N\theta\sum_{j=0}^m(-1)^j\binom N{2j+1}\cot^{N-2j-1}\theta,
@@ -180,7 +235,7 @@ By Vi\`ete,
 \[
 \sum_{k=1}^m\cot^2\theta_k=\frac{\binom N3}{\binom N1}=\frac{(2m+1)(2m)(2m-1)}{6(2m+1)}=\frac{m(2m-1)}3.
 \]
-(c) The inequality follows from $0<\sin x<x<\tan x$ on $\left]0,\frac\pi2\right[$, since $\frac1{\sin^2x}=1+\cot^2x$.
+(c) The inequality follows from $0<\sin x<x<\tan x$ on $\left]0,\frac\pi2\right[$ (square and invert), since $\frac1{\sin^2x}=1+\cot^2x$.
 Apply it at $x=\theta_k$ and sum over $1\le k\le m$:
 \[
 \frac{m(2m-1)}3<\frac{N^2}{\pi^2}\sum_{k=1}^m\frac1{k^2}<m+\frac{m(2m-1)}3.
@@ -189,10 +244,11 @@ Multiply by $\frac{\pi^2}{N^2}=\frac{\pi^2}{(2m+1)^2}$. Both bounds tend to $\fr
 \end{solution}
 
 \begin{solution}{ex:sos}
-If $P=0$ take $A=B=0$. Otherwise, a real root of odd multiplicity would make $P$ change sign there, so every real root has even multiplicity;
-and the leading coefficient $c$ is positive since $P(x)\to\pm\infty$ with the sign of $c$ (the degree is even). Over $\C$, the non-real roots come in conjugate pairs, so
+\idea Factor $P$ over $\C$ (Theorem~\ref{thm:dalembert}) and see what positivity says about the factors: real roots must have even multiplicity, non-real roots come in conjugate pairs. A pair contributes $|x-z|^2$, which is a sum of two squares; and products of sums of two squares are sums of two squares, because $|uv|^2=|u|^2|v|^2$ (the same identity as Brahmagupta's). So group all the $X-z_j$ into one complex polynomial $U+iV$.
+\writeup If $P=0$ take $A=B=0$. Otherwise, a real root of odd multiplicity $m$ would make $P$ change sign there (near $a$, $P=(X-a)^mU$ with $U(a)\ne0$), so every real root has even multiplicity;
+and the leading coefficient $c$ is positive since $P(x)$ has the sign of $c$ for large $x$. Over $\C$, the non-real roots come in conjugate pairs, so
 \[
-P=c\,R^2\prod_{j=1}^s(X-z_j)(X-\bar z_j),\qquad R=\prod_i(X-a_i)^{m_i}\in\R[X].
+P=c\,R^2\prod_{j=1}^s(X-z_j)(X-\bar z_j),\qquad R=\prod_i(X-a_i)^{m_i/2}\in\R[X].
 \]
 Write $\prod_j(X-z_j)=U+iV$ with $U,V\in\R[X]$. Then $\prod_j(X-\bar z_j)=U-iV$ and the product is $U^2+V^2$.
 So $P=(\sqrt c\,RU)^2+(\sqrt c\,RV)^2$.

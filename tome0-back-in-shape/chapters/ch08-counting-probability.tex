@@ -7,14 +7,22 @@ tends to $\frac1e\approx0.368$, whether there are ten guests or ten million.
 
 \section{Counting}
 
-\begin{reminder}[basic counts]
-For finite sets with $|E|=n$:
-\begin{itemize}
-\item maps $F\to E$ with $|F|=k$: $n^k$; injections: $\frac{n!}{(n-k)!}$; bijections $E\to E$ (permutations): $n!$;
-\item subsets of size $k$: $\binom nk$; multisets of size $k$ (``stars and bars''): $\binom{n+k-1}k$;
-\item \textbf{pigeonhole}: if $m>n$ objects go into $n$ boxes, some box holds at least two (more precisely, at least $\lceil m/n\rceil$).
-\end{itemize}
-\end{reminder}
+\begin{proposition}[basic counts]\label{prop:counts}
+Let $|E|=n$ and $|F|=k$.
+\begin{enumerate}[label=(\alph*)]
+\item There are $n^k$ maps $F\to E$, $\frac{n!}{(n-k)!}$ injections ($k\le n$), and $n!$ permutations of $E$.
+\item There are $\binom nk$ subsets of size $k$ and $\binom{n+k-1}k$ multisets of size $k$ (``stars and bars'').
+\item \textbf{Pigeonhole}: if $m$ objects go into $n$ boxes, some box holds at least $\lceil m/n\rceil$ of them.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Enumerate $F=\{f_1,\dots,f_k\}$; a map chooses an image for each $f_i$ independently ($n$ choices each); an injection chooses distinct images, with $n,n-1,\dots,n-k+1$ choices in turn; a permutation is an injection with $k=n$.
+
+(b) Subsets: Proposition~\ref{prop:binom}. A multiset of size $k$ on $E=\{e_1,\dots,e_n\}$ is a choice of multiplicities $m_1+\dots+m_n=k$; encode it as a word of $k$ stars and $n-1$ bars ($m_1$ stars, a bar, $m_2$ stars, \dots). This is a bijection onto the words of length $n+k-1$ with $k$ stars, which are determined by the positions of the stars: $\binom{n+k-1}k$.
+
+(c) If every box held at most $\lceil m/n\rceil-1<m/n$ objects, the total would be $<m$.
+\end{proof}
+
 
 \begin{theorem}[inclusion--exclusion]\label{thm:incexc}
 For finite sets $A_1,\dots,A_n$, writing $A_I=\bigcap_{i\in I}A_i$,
@@ -40,14 +48,22 @@ $\sum_{k=1}^n(-1)^{k+1}\binom nk(n-k)!=n!\sum_{k=1}^n\frac{(-1)^{k+1}}{k!}$; sub
 
 \section{Finite probability}
 
-\begin{reminder}[probability on a finite set]
-\begin{itemize}
-\item A probability on a finite $\Omega$ is $P:\mathcal P(\Omega)\to[0,1]$ with $P(\Omega)=1$ and $P(A\cup B)=P(A)+P(B)$ for disjoint $A,B$. Uniform: $P(A)=|A|/|\Omega|$.
-\item Conditional probability $P(A\mid B)=\frac{P(A\cap B)}{P(B)}$; \textbf{Bayes}: $P(B\mid A)=\frac{P(A\mid B)P(B)}{P(A)}$; independence: $P(A\cap B)=P(A)P(B)$.
-\item A random variable $X:\Omega\to\R$ has expectation $\mathbb E[X]=\sum_\omega X(\omega)P(\{\omega\})=\sum_xx\,P(X=x)$, and variance $\operatorname{Var}X=\mathbb E[X^2]-\mathbb E[X]^2$.
-\item \textbf{Linearity}: $\mathbb E[X+Y]=\mathbb E[X]+\mathbb E[Y]$, with \emph{no independence needed}. For an event $A$, $\mathbb E[\mathbf 1_A]=P(A)$.
-\end{itemize}
-\end{reminder}
+A \emph{probability} on a finite set $\Omega$ is a map $P:\mathcal P(\Omega)\to[0,1]$ with $P(\Omega)=1$ and $P(A\cup B)=P(A)+P(B)$ for disjoint $A,B$; the \emph{uniform} probability is $P(A)=|A|/|\Omega|$. For $P(B)>0$, the \emph{conditional probability} is $P(A\mid B)=\frac{P(A\cap B)}{P(B)}$, and $A,B$ are \emph{independent} if $P(A\cap B)=P(A)P(B)$. A random variable $X:\Omega\to\R$ has \emph{expectation} $\mathbb E[X]=\sum_\omega X(\omega)P(\{\omega\})$ and \emph{variance} $\operatorname{Var}X=\mathbb E\left[(X-\mathbb E X)^2\right]$.
+
+\begin{proposition}[first rules]\label{prop:proba}
+\begin{enumerate}[label=(\alph*)]
+\item $P(A)=\sum_{\omega\in A}P(\{\omega\})$, and \textbf{Bayes}: $P(B\mid A)=\frac{P(A\mid B)P(B)}{P(A)}$ when $P(A),P(B)>0$.
+\item $\mathbb E[X]=\sum_xx\,P(X=x)$, the sum over the values of $X$.
+\item \textbf{Linearity}: $\mathbb E[X+Y]=\mathbb E[X]+\mathbb E[Y]$ and $\mathbb E[cX]=c\,\mathbb E[X]$, with \emph{no independence needed}. For an event $A$, $\mathbb E[\mathbf 1_A]=P(A)$.
+\item $\operatorname{Var}X=\mathbb E[X^2]-\mathbb E[X]^2$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Additivity, by induction on $|A|$. Bayes: both sides equal $\frac{P(A\cap B)}{P(A)}$.
+(b) Group the $\omega$ according to the value $x=X(\omega)$ and use (a).
+(c) The definition of $\mathbb E$ is a sum over $\omega$ of $X(\omega)P(\{\omega\})$, linear in $X$; and $\sum_\omega\mathbf 1_A(\omega)P(\{\omega\})=P(A)$.
+(d) Expand $(X-m)^2$ with $m=\mathbb E X$ and use (c): $\mathbb E[X^2]-2m^2+m^2$.
+\end{proof}
 
 The indicator trick: to compute the expectation of a count, write the count as a sum of indicators and add their probabilities.
 
@@ -89,7 +105,7 @@ Let $C$ be the number of cycles of a uniformly random permutation of $\{1,\dots,
 
 \begin{exercise}[$\star\star\star$]\label{ex:coupon}
 \emph{The coupon collector.} Each cereal box contains one of $n$ coupons, uniformly at random and independently. Show that the expected number of boxes needed to collect all $n$
-coupons is $nH_n\sim n\ln n$. \emph{You may use that if each trial succeeds with probability $p$ independently, the expected number of trials until the first success is $\frac1p$.}
+coupons is $nH_n\sim n\ln n$. \emph{You may use that if each trial succeeds with probability $p$ independently, the expected number of trials until the first success is $\frac1p$ (this is justified in the solution).}
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:erdos}
@@ -106,24 +122,28 @@ method of Tome~3, where one proves that an object exists by showing that a rando
 \section{Solutions}
 
 \begin{solution}{ex:stars}
-A solution is a row of $n$ stars split by $k-1$ bars into $k$ groups (possibly empty), so there are $\binom{n+k-1}{k-1}$. For positive solutions, put $y_i=x_i-1$:
+\idea A solution of $x_1+\dots+x_k=n$ in $\N^k$ is a multiset of size $n$ on $k$ labels ($x_i$ = how many times label $i$ is used): this is stars and bars. For positive solutions, shift each variable by $1$ to fall back on the first case.
+\writeup A solution is a row of $n$ stars split by $k-1$ bars into $k$ groups (possibly empty), so by Proposition~\ref{prop:counts}(b) there are $\binom{n+k-1}{n}=\binom{n+k-1}{k-1}$. For positive solutions, put $y_i=x_i-1$:
 $y_1+\dots+y_k=n-k$ in $\N^k$, giving $\binom{n-1}{k-1}$.
 \end{solution}
 
 \begin{solution}{ex:birthday}
-The probability is $\prod_{k=0}^{n-1}\left(1-\frac k{365}\right)\le\exp\left(-\sum_{k=0}^{n-1}\frac k{365}\right)=e^{-n(n-1)/730}$.
+\idea Count favourable outcomes as injections: the probability is a product of factors $1-\frac k{365}$. Products are hard to estimate, sums are easy: the hint $1-x\le e^{-x}$ turns the product into the exponential of a sum. (The hint itself is the tangent-line inequality for the convex function $e^{-x}$, Proposition~\ref{prop:convex}.)
+\writeup With $\Omega$ the $365^n$ birthday assignments (uniform), the favourable ones are the injections, $\frac{365!}{(365-n)!}$ of them, so the probability is $\prod_{k=0}^{n-1}\left(1-\frac k{365}\right)\le\exp\left(-\sum_{k=0}^{n-1}\frac k{365}\right)=e^{-n(n-1)/730}$.
 For $n=23$, $\frac{23\cdot22}{730}=\frac{506}{730}=0.693151\ldots$, just above $\ln2=0.693147\ldots$, so the bound is below $\frac12$.
 The exact probability is about $0.4927$.
 \end{solution}
 
 \begin{solution}{ex:pigeon}
-Split $\{1,\dots,2n\}$ into the $n$ pairs $\{2k-1,2k\}$. Two of the $n+1$ chosen numbers lie in the same pair; they are consecutive, hence coprime.
+\idea ``Among $n+1$ objects, two share a property'' is pigeonhole with $n$ boxes; the art is to design the boxes. For coprimality, the boxes should contain coprime pairs: consecutive integers are coprime. For divisibility, the boxes should be chains under divisibility: $\{m,2m,4m,\dots\}$ with $m$ odd, and there are exactly $n$ odd numbers available.
+\writeup Split $\{1,\dots,2n\}$ into the $n$ pairs $\{2k-1,2k\}$. Two of the $n+1$ chosen numbers lie in the same pair; they are consecutive, hence coprime (a common divisor divides their difference $1$).
 For divisibility, write each chosen number as $2^am$ with $m$ odd. There are only $n$ odd numbers in $\{1,\dots,2n\}$, so two chosen numbers $2^am$ and $2^bm$ share the same $m$;
 the one with the smaller power of $2$ divides the other.
 \end{solution}
 
 \begin{solution}{ex:phi}
-Let $A_i$ be the set of multiples of $p_i$ in $\{1,\dots,n\}$. For $I\subset\{1,\dots,r\}$, $A_I$ is the set of multiples of $\prod_{i\in I}p_i$, so $|A_I|=n/\prod_{i\in I}p_i$.
+\idea Counting elements that avoid several properties is the complement of a union, which inclusion--exclusion computes from the sizes of intersections. Here the intersections are easy: being divisible by several distinct primes means being divisible by their product. Finally, recognise the alternating sum as an expanded product.
+\writeup Let $A_i$ be the set of multiples of $p_i$ in $\{1,\dots,n\}$. For $I\subset\{1,\dots,r\}$, $A_I$ is the set of multiples of $\prod_{i\in I}p_i$ (distinct primes all divide $x$ iff their product does), so $|A_I|=n/\prod_{i\in I}p_i$.
 An integer is coprime to $n$ if and only if it lies in no $A_i$, so by inclusion--exclusion
 \[
 \varphi(n)=n-\sum_{\emptyset\ne I}(-1)^{|I|+1}\frac n{\prod_{i\in I}p_i}=n\sum_{I}\prod_{i\in I}\left(-\frac1{p_i}\right)=n\prod_{i=1}^r\left(1-\frac1{p_i}\right).
@@ -131,26 +151,32 @@ An integer is coprime to $n$ if and only if it lies in no $A_i$, so by inclusion
 \end{solution}
 
 \begin{solution}{ex:fixedvar}
-Write $X=\sum_i\mathbf 1_{\sigma(i)=i}$. Then $X^2=\sum_i\mathbf 1_{\sigma(i)=i}+\sum_{i\ne j}\mathbf 1_{\sigma(i)=i,\,\sigma(j)=j}$. A permutation fixing $i\ne j$ is a permutation of the other $n-2$ points,
+\idea The indicator trick computes $\mathbb E[X]$; for the variance we need $\mathbb E[X^2]$, and squaring a sum of indicators gives indicators of \emph{pairs} of events. So we need the probability that two given points are both fixed, a simple count.
+\writeup Write $X=\sum_i\mathbf 1_{\sigma(i)=i}$. Then $X^2=\sum_i\mathbf 1_{\sigma(i)=i}+\sum_{i\ne j}\mathbf 1_{\sigma(i)=i,\,\sigma(j)=j}$ (as $\mathbf 1_A^2=\mathbf 1_A$ and $\mathbf 1_A\mathbf 1_B=\mathbf 1_{A\cap B}$). A permutation fixing $i\ne j$ is a permutation of the other $n-2$ points,
 so $P(\sigma(i)=i,\sigma(j)=j)=\frac{(n-2)!}{n!}$. Hence $\mathbb E[X^2]=1+n(n-1)\frac{(n-2)!}{n!}=2$ and $\operatorname{Var}X=2-1^2=1$.
 \end{solution}
 
 \begin{solution}{ex:cycles}
-(a) A permutation whose cycle through $1$ has length $\ell$ is given by the ordered list $\sigma(1),\sigma^2(1),\dots,\sigma^{\ell-1}(1)$ of distinct elements other than $1$
+\idea (a) To show a law is uniform, count the permutations with $L=\ell$ and observe the count does not depend on $\ell$. Build such a permutation by first walking along the cycle of $1$, then permuting the rest. (b) Counting cycles directly is awkward, but each element can ``own'' a share $\frac1\ell$ of its cycle of length $\ell$, so the shares of a cycle add up to $1$. This rewrites $C$ as a sum, and linearity applies.
+\writeup (a) A permutation whose cycle through $1$ has length $\ell$ is given by the ordered list $\sigma(1),\sigma^2(1),\dots,\sigma^{\ell-1}(1)$ of distinct elements other than $1$
 ($\frac{(n-1)!}{(n-\ell)!}$ choices) and an arbitrary permutation of the $n-\ell$ remaining points ($(n-\ell)!$ choices): $(n-1)!$ permutations in all, for each $\ell$. So $P(L=\ell)=\frac{(n-1)!}{n!}=\frac1n$.
 
-(b) Each cycle of length $\ell$ contributes $\ell\cdot\frac1\ell=1$ to $\sum_i\frac1{L_i}$, so the sum counts cycles. By symmetry every $L_i$ has the law of $L$, and by linearity
+(b) Each cycle of length $\ell$ contributes $\ell\cdot\frac1\ell=1$ to $\sum_i\frac1{L_i}$, so the sum counts cycles. By symmetry (relabel $i$ as $1$) every $L_i$ has the law of $L$, and by linearity
 $\mathbb E[C]=n\,\mathbb E\left[\frac1L\right]=n\cdot\frac1n\sum_{\ell=1}^n\frac1\ell=H_n$, which is $\sim\ln n$ by Proposition~\ref{prop:gamma}.
 \end{solution}
 
 \begin{solution}{ex:coupon}
+\idea The waiting time is long because the last coupons are hard to get. Cut it into phases, ``from $k$ to $k+1$ distinct coupons'': each phase is a wait for a first success with an explicit probability, and linearity adds the phase expectations. The harmonic sum appears because the success probabilities are $\frac nn,\frac{n-1}n,\dots,\frac1n$.
+\writeup First the fact admitted in the statement, granting that the infinite sequence of trials can be modelled (Tome~3 constructs it): if $T$ is the index of the first success, $P(T>k)=(1-p)^k$ (the first $k$ trials fail), and $\mathbb E[T]=\sum_{k\ge0}P(T>k)=\sum_{k\ge0}(1-p)^k=\frac1p$, because $T=\sum_{k\ge0}\mathbf 1_{T>k}$.
+
 Let $T_k$ be the number of boxes bought while holding exactly $k$ distinct coupons, $0\le k\le n-1$. During that phase each box brings a new coupon with probability $\frac{n-k}n$,
 independently, so $\mathbb E[T_k]=\frac n{n-k}$. The total is $T=\sum_kT_k$, and by linearity
-$\mathbb E[T]=\sum_{k=0}^{n-1}\frac n{n-k}=n\sum_{j=1}^n\frac1j=nH_n$.
+$\mathbb E[T]=\sum_{k=0}^{n-1}\frac n{n-k}=n\sum_{j=1}^n\frac1j=nH_n\sim n\ln n$.
 \end{solution}
 
 \begin{solution}{ex:erdos}
-For each term $a_i$, let $u_i$ (resp.\ $d_i$) be the length of the longest increasing (resp.\ decreasing) subsequence ending at $a_i$. If $i<j$ then $(u_i,d_i)\ne(u_j,d_j)$:
-if $a_i<a_j$, appending $a_j$ gives $u_j\ge u_i+1$; if $a_i>a_j$, then $d_j\ge d_i+1$. If all the $u_i,d_i$ were at most $n$, the $n^2+1$ distinct pairs would lie in
+\idea $n^2+1$ and $n^2$ suggest pigeonhole with $n^2$ boxes, the pairs in $\{1,\dots,n\}^2$. So label each term with a pair of numbers that are at most $n$ if there is no long monotone subsequence, and show the labels are distinct. The hint's pair (longest increasing, longest decreasing ending here) works because a later term can always extend one of the two subsequences of an earlier term.
+\writeup For each term $a_i$, let $u_i$ (resp.\ $d_i$) be the length of the longest increasing (resp.\ decreasing) subsequence ending at $a_i$. If $i<j$ then $(u_i,d_i)\ne(u_j,d_j)$:
+if $a_i<a_j$, appending $a_j$ to an increasing subsequence ending at $a_i$ gives $u_j\ge u_i+1$; if $a_i>a_j$, then $d_j\ge d_i+1$ likewise. If all the $u_i,d_i$ were at most $n$, the $n^2+1$ distinct pairs would lie in
 $\{1,\dots,n\}^2$, which has $n^2$ elements: impossible by pigeonhole. So some $u_i$ or $d_i$ is at least $n+1$.
 \end{solution}

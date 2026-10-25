@@ -7,14 +7,44 @@ Matrices answer questions that do not mention matrices.
 
 \section{Determinants}
 
-\begin{reminder}[determinants]
-\begin{itemize}
-\item $\det$ is the unique multilinear, alternating function of the columns with $\det I_n=1$.
-\item $\det(AB)=\det A\det B$, $\det A^{\mathsf T}=\det A$, and $A$ is invertible if and only if $\det A\ne0$.
-\item Adding to a row (or column) a multiple of another does not change the determinant; the determinant of a triangular matrix is the product of its diagonal.
-\item \textbf{Rank--nullity}: for $u:E\to F$ linear with $\dim E<\infty$, $\dim\ker u+\operatorname{rk}u=\dim E$.
-\end{itemize}
-\end{reminder}
+This section rebuilds the determinant from scratch, in a page. Let $\mathfrak S_n$ be the group of permutations of $\{1,\dots,n\}$.
+
+\begin{lemma}[sign of a permutation]\label{lem:sign}
+$\varepsilon(\sigma)=\prod_{i<j}\frac{\sigma(j)-\sigma(i)}{j-i}$ is $\pm1$ and satisfies $\varepsilon(\sigma\tau)=\varepsilon(\sigma)\varepsilon(\tau)$. Every transposition has sign $-1$, and every permutation is a product of transpositions.
+\end{lemma}
+\begin{proof}
+The quotient $\frac{\sigma(j)-\sigma(i)}{j-i}$ does not change when $i$ and $j$ are swapped, so it depends only on the pair $\{i,j\}$, and $\varepsilon(\sigma)=\prod_{\text{pairs}}\frac{\sigma(j)-\sigma(i)}{j-i}$. As $\{i,j\}$ runs over the pairs, so does $\{\sigma(i),\sigma(j)\}$: numerator and denominator are the same product up to sign, so $\varepsilon(\sigma)=\pm1$. Next,
+\[
+\varepsilon(\sigma\tau)=\prod_{\text{pairs}}\frac{\sigma(\tau(j))-\sigma(\tau(i))}{\tau(j)-\tau(i)}\cdot\prod_{\text{pairs}}\frac{\tau(j)-\tau(i)}{j-i}=\varepsilon(\sigma)\varepsilon(\tau),
+\]
+the first product being $\varepsilon(\sigma)$ written over the pairs $\{\tau(i),\tau(j)\}$. For the transposition $(1\,2)$, only the pair $\{1,2\}$ gives a negative factor, so $\varepsilon=-1$; any transposition $(a\,b)$ equals $\pi(1\,2)\pi^{-1}$ for some $\pi$, so it has sign $\varepsilon(\pi)(-1)\varepsilon(\pi)^{-1}=-1$. Finally, by induction on $n$: if $\sigma(n)=k\ne n$, then $(k\,n)\sigma$ fixes $n$ and is a product of transpositions of $\{1,\dots,n-1\}$.
+\end{proof}
+
+\begin{theorem}[determinant]\label{thm:det}
+\begin{enumerate}[label=(\alph*)]
+\item There is a unique function $\det:M_n(\mathbb K)\to\mathbb K$ that is linear in each column, vanishes when two columns are equal (\emph{alternating}), and satisfies $\det I_n=1$; it is $\det A=\sum_{\sigma\in\mathfrak S_n}\varepsilon(\sigma)\prod_{j=1}^na_{\sigma(j),j}$. Every multilinear alternating $D$ satisfies $D(A)=D(I_n)\det A$.
+\item $\det(AB)=\det A\det B$ and $\det A^{\mathsf T}=\det A$; in particular everything said about columns holds for rows.
+\item $A$ is invertible if and only if $\det A\ne0$.
+\item Adding to a column a multiple of another does not change the determinant, and the determinant of a triangular matrix is the product of its diagonal.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Let $D$ be multilinear and alternating. Expanding $D(x+y,x+y)=0$ in two columns shows that $D$ changes sign when two columns are swapped. Write column $j$ of $A$ as $\sum_ia_{ij}e_i$ and expand by multilinearity: $D(A)=\sum_{f}\prod_ja_{f(j),j}\,D(e_{f(1)},\dots,e_{f(n)})$ over all maps $f$. Terms with $f$ non-injective vanish; for $f=\sigma$ a permutation, writing $\sigma$ as a product of $t$ transpositions and undoing them one at a time gives $D(e_{\sigma(1)},\dots,e_{\sigma(n)})=(-1)^tD(I_n)=\varepsilon(\sigma)D(I_n)$. This proves uniqueness and the formula $D(A)=D(I_n)\det A$.
+Conversely, the formula is multilinear (each term contains one entry of each column). If columns $k\ne l$ are equal, let $\tau=(k\,l)$; the map $\sigma\mapsto\sigma\tau$ pairs the permutations, and $\prod_ja_{\sigma\tau(j),j}=\prod_ja_{\sigma(j),j}$ (the columns $k,l$ are equal) while $\varepsilon(\sigma\tau)=-\varepsilon(\sigma)$: the terms cancel in pairs. And $\det I_n=1$ (only $\sigma=\mathrm{id}$ contributes).
+
+(b) For fixed $A$, $X\mapsto\det(AX)$ is multilinear and alternating in the columns of $X$ (column $j$ of $AX$ is $A$ times column $j$ of $X$), so by (a) it equals $\det(A)\det X$. For the transpose, substitute $\sigma\to\sigma^{-1}$ in the formula, using $\varepsilon(\sigma^{-1})=\varepsilon(\sigma)$ and $\prod_ja_{\sigma(j),j}=\prod_ia_{i,\sigma^{-1}(i)}$.
+
+(c) If $AA^{-1}=I_n$ then $\det A\det A^{-1}=1$. If $A$ is not invertible, its columns are dependent, say $C_k=\sum_{j\ne k}\lambda_jC_j$; by linearity in column $k$, $\det A$ is a sum of determinants with two equal columns, so $0$.
+
+(d) The first claim is linearity in that column plus alternation. For an upper triangular matrix, a non-zero term of the formula needs $\sigma(j)\le j$ for all $j$, which forces $\sigma=\mathrm{id}$ (by induction from $j=1$). Lower triangular: transpose.
+\end{proof}
+
+\begin{proposition}[rank--nullity]\label{prop:ranknullity}
+For $u:E\to F$ linear with $\dim E<\infty$, $\dim\ker u+\operatorname{rk}u=\dim E$.
+\end{proposition}
+\begin{proof}
+Take a basis $(k_1,\dots,k_p)$ of $\ker u$ and extend it to a basis $(k_1,\dots,k_p,e_1,\dots,e_r)$ of $E$. The vectors $u(e_i)$ span $\operatorname{Im}u$ (the $u(k_i)$ vanish), and they are independent: $\sum\lambda_iu(e_i)=0$ puts $\sum\lambda_ie_i$ in $\ker u$, so it is a combination of the $k_i$, and all coefficients vanish. So $\operatorname{rk}u=r=\dim E-p$.
+\end{proof}
 
 \begin{proposition}[Vandermonde]\label{prop:vdm}
 For $x_1,\dots,x_n\in\mathbb K$,
@@ -23,28 +53,47 @@ V(x_1,\dots,x_n)=\det\left(x_i^{\,j-1}\right)_{1\le i,j\le n}=\prod_{1\le i<j\le
 \]
 \end{proposition}
 \begin{proof}
-Induction on $n$; $n=1$ is clear. If two of the $x_i$ are equal both sides vanish. Otherwise, replacing $x_n$ by a variable $X$ and expanding along the last row,
-$P(X)=V(x_1,\dots,x_{n-1},X)$ is a polynomial of degree at most $n-1$ whose coefficient of $X^{n-1}$ is $V(x_1,\dots,x_{n-1})$. It vanishes at $x_1,\dots,x_{n-1}$ (two equal rows),
-so $P=V(x_1,\dots,x_{n-1})\prod_{i<n}(X-x_i)$. Evaluate at $X=x_n$ and apply the induction hypothesis.
+Induction on $n$; $n=1$ is clear. If two of the $x_i$ are equal both sides vanish. Otherwise, replacing $x_n$ by a variable $X$ and expanding the formula of Theorem~\ref{thm:det} (each term contains exactly one entry of the last row),
+$P(X)=V(x_1,\dots,x_{n-1},X)$ is a polynomial of degree at most $n-1$ whose coefficient of $X^{n-1}$ is $V(x_1,\dots,x_{n-1})$ (the terms with $\sigma(n)=n$). It vanishes at $x_1,\dots,x_{n-1}$ (two equal rows),
+so $P=V(x_1,\dots,x_{n-1})\prod_{i<n}(X-x_i)$ by Proposition~\ref{prop:rootsfactor}. Evaluate at $X=x_n$ and apply the induction hypothesis.
 \end{proof}
 
 (The circulant determinant of Exercise~\ref{ex:circulant} is another closed form, obtained by diagonalising.)
 
 \section{Reduction}
 
-\begin{reminder}[eigenvalues and diagonalisation]
-Let $A\in M_n(\mathbb K)$ and $\chi_A(X)=\det(XI_n-A)$, of degree $n$, with $\chi_A=X^n-\operatorname{tr}(A)X^{n-1}+\dots+(-1)^n\det A$.
-\begin{itemize}
-\item The eigenvalues of $A$ are the roots of $\chi_A$ in $\mathbb K$. Over $\C$, $\operatorname{tr}A$ and $\det A$ are the sum and the product of the eigenvalues, counted with multiplicity.
-\item $A$ is diagonalisable if and only if it is cancelled by a split polynomial with simple roots (equivalently, its minimal polynomial is split with simple roots).
-\item \textbf{Cayley--Hamilton}: $\chi_A(A)=0$.
-\item \textbf{Spectral theorem}: a real symmetric matrix $S$ has real eigenvalues and an orthonormal basis of eigenvectors: $S=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal.
-\end{itemize}
-\end{reminder}
+Let $A\in M_n(\mathbb K)$ and $\chi_A(X)=\det(XI_n-A)$.
+
+\begin{proposition}[characteristic polynomial]\label{prop:charpoly}
+$\chi_A=X^n-\operatorname{tr}(A)X^{n-1}+\dots+(-1)^n\det A$, and the eigenvalues of $A$ are its roots in $\mathbb K$. Over $\C$, $\operatorname{tr}A$ and $\det A$ are the sum and the product of the eigenvalues, counted with multiplicity as roots of $\chi_A$. Similar matrices have the same $\chi$.
+\end{proposition}
+\begin{proof}
+In the formula for $\det(XI_n-A)$, a permutation $\sigma\ne\mathrm{id}$ moves at least two indices, so its term contains at most $n-2$ diagonal entries $X-a_{jj}$ and has degree $\le n-2$. So the coefficients of $X^n$ and $X^{n-1}$ come from $\prod_j(X-a_{jj})$: they are $1$ and $-\operatorname{tr}A$. The constant term is $\chi_A(0)=\det(-A)=(-1)^n\det A$. Next, $\lambda$ is an eigenvalue iff $\ker(\lambda I_n-A)\ne\{0\}$ iff $\det(\lambda I_n-A)=0$ (Theorem~\ref{thm:det}(c)). Over $\C$, $\chi_A$ splits (Theorem~\ref{thm:dalembert}), and Vi\`ete gives the sum and product of the roots. Finally $\det(XI-P^{-1}AP)=\det\left(P^{-1}(XI-A)P\right)=\chi_A$.
+\end{proof}
+
+\begin{theorem}[diagonalisability]\label{thm:diag}
+$A$ is diagonalisable if and only if $P(A)=0$ for some polynomial $P=\prod_{i=1}^r(X-\lambda_i)$ with distinct $\lambda_i\in\mathbb K$. In that case $\mathbb K^n=\bigoplus_i\ker(A-\lambda_iI_n)$.
+\end{theorem}
+\begin{proof}
+If $A=QDQ^{-1}$ with $D$ diagonal, let $\lambda_1,\dots,\lambda_r$ be the distinct diagonal entries: $\prod(D-\lambda_iI)=0$ (each diagonal entry is killed by one factor), hence $\prod(A-\lambda_iI)=Q\prod(D-\lambda_iI)Q^{-1}=0$.
+Conversely let $L_i$ be the Lagrange polynomials on the points $\lambda_1,\dots,\lambda_r$ (Theorem~\ref{thm:lagrange}). Interpolating the constant $1$ gives $\sum_iL_i=1$, so every $v\in\mathbb K^n$ is $v=\sum_iL_i(A)v$. And $(X-\lambda_i)L_i$ is a constant multiple of $P$, so $(A-\lambda_iI)L_i(A)v=0$: $L_i(A)v\in\ker(A-\lambda_iI)$. So the eigenspaces span $\mathbb K^n$. The sum is direct: if $\sum v_i=0$ with $Av_i=\lambda_iv_i$, apply $L_j(A)$, which acts on $v_i$ as multiplication by $L_j(\lambda_i)=\delta_{ij}$: $v_j=0$. A basis adapted to the decomposition diagonalises $A$.
+\end{proof}
+
+\begin{remark}
+Cayley--Hamilton ($\chi_A(A)=0$) and the theory of the minimal polynomial are not needed in this tome; they are proved in Tome~2, as consequences of the structure of modules over $\mathbb K[X]$.
+\end{remark}
+
+\begin{theorem}[spectral theorem]\label{thm:spectral}
+A real symmetric matrix $S$ has real eigenvalues and an orthonormal basis of eigenvectors: $S=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal.
+\end{theorem}
+\begin{proof}
+Let $\lambda\in\C$ be a root of $\chi_S$ and $z\in\C^n\setminus\{0\}$ with $Sz=\lambda z$. Then $\bar z^{\mathsf T}Sz=\lambda\|z\|^2$, and this number is real: its conjugate is $z^{\mathsf T}S\bar z$, which is the same scalar transposed ($S^{\mathsf T}=S$). So $\lambda\in\R$, and $\ker(S-\lambda I)$ contains a real unit vector $u$.
+Induction on $n$: the hyperplane $H=u^\perp$ is stable under $S$, since $x\perp u$ implies $\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0$. The restriction of $S$ to $H$ is symmetric for the induced inner product, so $H$ has an orthonormal basis of eigenvectors; add $u$.
+\end{proof}
 
 \begin{example}[linear recurrences]
 If $u_{n+2}=au_{n+1}+bu_n$, then $\binom{u_{n+1}}{u_n}=M^n\binom{u_1}{u_0}$ with $M=\begin{pmatrix}a&b\\1&0\end{pmatrix}$, whose characteristic polynomial is $X^2-aX-b$.
-When it has two distinct roots $r_1,r_2$, $M$ is diagonalisable and $u_n=\alpha r_1^n+\beta r_2^n$ for constants $\alpha,\beta$ fixed by $u_0,u_1$.
+When it has two distinct roots $r_1,r_2$, $M$ is diagonalisable by Theorem~\ref{thm:diag}, and $u_n=\alpha r_1^n+\beta r_2^n$ for constants $\alpha,\beta$ fixed by $u_0,u_1$.
 \end{example}
 
 \section{Exercises}
@@ -100,39 +149,45 @@ The Hilbert matrix is positive definite, yet its determinant is so small that co
 \section{Solutions}
 
 \begin{solution}{ex:fibmat}
-(a) True for $n=1$ (with $F_0=0$), and $M^{n+1}=M^nM=\begin{pmatrix}F_{n+1}+F_n&F_{n+1}\\F_n+F_{n-1}&F_n\end{pmatrix}$ has the right form.
-Taking determinants, $F_{n+1}F_{n-1}-F_n^2=(\det M)^n=(-1)^n$.
+\idea A two-term recurrence is a matrix power, so identities about $F_{n\pm1},F_n$ are identities about $M^n$; Cassini's left side looks like a $2\times2$ determinant, and $\det M^n=(\det M)^n$ is free. For Binet, diagonalising $M$ shows every entry of $M^n$ is a combination of $\varphi^n,\psi^n$; two initial values fix the coefficients.
+\writeup (a) True for $n=1$ (with $F_0=0$), and $M^{n+1}=M^nM=\begin{pmatrix}F_{n+1}+F_n&F_{n+1}\\F_n+F_{n-1}&F_n\end{pmatrix}$ has the right form.
+Taking determinants (Theorem~\ref{thm:det}(b)), $F_{n+1}F_{n-1}-F_n^2=(\det M)^n=(-1)^n$.
 
-(b) $\chi_M=X^2-X-1$ has roots $\varphi\ne\psi$, so $M$ is diagonalisable: $M=PDP^{-1}$ and $M^n=PD^nP^{-1}$. Each entry of $M^n$ is therefore of the form
+(b) $\chi_M=X^2-X-1$ has roots $\varphi\ne\psi$, so $M$ is diagonalisable (Theorem~\ref{thm:diag}): $M=PDP^{-1}$ and $M^n=PD^nP^{-1}$. Each entry of $M^n$ is therefore of the form
 $\alpha\varphi^n+\beta\psi^n$; for $F_n$, the values $F_0=0$, $F_1=1$ give $\alpha+\beta=0$, $\alpha\varphi+\beta\psi=1$, so $\alpha=-\beta=\frac1{\varphi-\psi}=\frac1{\sqrt5}$.
 \end{solution}
 
 \begin{solution}{ex:nilp}
-If $A^k=0$ and $Av=\lambda v$ with $v\ne0$, then $0=A^kv=\lambda^kv$, so $\lambda=0$. Over $\C$, $\chi_A$ splits, and all its roots are $0$: $\chi_A=X^n$. Hence
-$\operatorname{tr}A=0$, and the eigenvalues of $I_n+A$ are all $1$ (as $\chi_{I+A}(X)=\chi_A(X-1)=(X-1)^n$), so $\det(I_n+A)=1$.
+\idea Trace and determinant are read off the eigenvalues (Proposition~\ref{prop:charpoly}), so find the eigenvalues of a nilpotent matrix: apply $A^k=0$ to an eigenvector. Then $I_n+A$ has its eigenvalues shifted by $1$.
+\writeup If $A^k=0$ and $Av=\lambda v$ with $v\ne0$, then $0=A^kv=\lambda^kv$, so $\lambda=0$. Over $\C$, $\chi_A$ splits, and all its roots are $0$: $\chi_A=X^n$. Hence
+$\operatorname{tr}A=0$, and $\chi_{I+A}(X)=\det((X-1)I-A)=\chi_A(X-1)=(X-1)^n$, whose constant term $(-1)^n$ equals $(-1)^n\det(I_n+A)$: so $\det(I_n+A)=1$.
 \end{solution}
 
 \begin{solution}{ex:mindet}
-For $i=n,n-1,\dots,2$ in that order, subtract row $i-1$ from row $i$. The new row $i$ has entries $\min(i,j)-\min(i-1,j)$, which is $1$ for $j\ge i$ and $0$ for $j<i$.
+\idea The entries $\min(i,j)$ grow by $1$ from one row to the next, but only in the columns $j\ge i$. So the difference of consecutive rows is a row of $0$s then $1$s, and row operations (Theorem~\ref{thm:det}(d)) should make the matrix triangular. Work from the bottom up so that each subtraction uses an original row.
+\writeup For $i=n,n-1,\dots,2$ in that order, subtract row $i-1$ from row $i$. The new row $i$ has entries $\min(i,j)-\min(i-1,j)$, which is $1$ for $j\ge i$ and $0$ for $j<i$.
 The matrix becomes upper triangular with ones on the diagonal: the determinant is $1$.
 \end{solution}
 
 \begin{solution}{ex:annul}
-$A(3I_n-A)=2I_n$, so $A$ is invertible with $A^{-1}=\frac12(3I_n-A)$. The polynomial $X^2-3X+2=(X-1)(X-2)$ is split with simple roots and cancels $A$,
-so $A$ is diagonalisable, with eigenvalues in $\{1,2\}$ (any eigenvalue $\lambda$ satisfies $\lambda^2-3\lambda+2=0$).
+\idea An annihilating polynomial with non-zero constant term gives the inverse: isolate the constant and factor $A$ out of the rest. The polynomial factors as $(X-1)(X-2)$, split with simple roots, which is exactly the criterion of Theorem~\ref{thm:diag}.
+\writeup $A(3I_n-A)=2I_n$, so $A$ is invertible with $A^{-1}=\frac12(3I_n-A)$. The polynomial $X^2-3X+2=(X-1)(X-2)$ is split with simple roots and cancels $A$,
+so $A$ is diagonalisable, with eigenvalues in $\{1,2\}$ (if $Av=\lambda v$, $v\ne0$, then $0=(A^2-3A+2I)v=(\lambda^2-3\lambda+2)v$). Both values occur, for example for $I_n$, $2I_n$ and $\operatorname{diag}(1,2,\dots)$.
 \end{solution}
 
 \begin{solution}{ex:abba}
-If $A$ is invertible, $BA=A^{-1}(AB)A$ is similar to $AB$, so they have the same characteristic polynomial. In general, $A+tI_n$ is invertible for all but finitely many $t\in\C$
+\idea When $A$ is invertible, $BA$ is a conjugate of $AB$, and similar matrices have the same $\chi$. The general case is a \emph{density argument}: perturb $A$ to $A+tI$, invertible for all but finitely many $t$, and use that a polynomial identity in $t$ true at infinitely many points is true everywhere.
+\writeup If $A$ is invertible, $BA=A^{-1}(AB)A$ is similar to $AB$, so they have the same characteristic polynomial (Proposition~\ref{prop:charpoly}). In general, $A+tI_n$ is invertible for all but finitely many $t\in\C$
 (those $-t$ that are eigenvalues of $A$). For such $t$ and every $x$,
 \[
 \det\left(xI_n-(A+tI_n)B\right)=\det\left(xI_n-B(A+tI_n)\right).
 \]
-For fixed $x$, both sides are polynomials in $t$ that agree at infinitely many points, so they agree at $t=0$.
+For fixed $x$, both sides are polynomials in $t$ that agree at infinitely many points, so they are equal (Proposition~\ref{prop:rootsfactor}), in particular at $t=0$.
 \end{solution}
 
 \begin{solution}{ex:rayleigh}
-(a) Write $S=PDP^{\mathsf T}$ and $y=P^{\mathsf T}x$; $P$ is orthogonal so $\|y\|=\|x\|=1$, and $x^{\mathsf T}Sx=y^{\mathsf T}Dy=\sum\lambda_iy_i^2$. This lies between $\lambda_1\sum y_i^2=\lambda_1$
+\idea Questions about a symmetric matrix become questions about a diagonal one in an orthonormal eigenbasis (Theorem~\ref{thm:spectral}), and orthogonal changes of basis preserve unit vectors. Then $x^{\mathsf T}Sx$ is a weighted average $\sum\lambda_iy_i^2$ with weights $y_i^2$ summing to $1$. For (b), take square roots of the eigenvalues, which is possible since they are $\ge0$ by (a).
+\writeup (a) Write $S=PDP^{\mathsf T}$ and $y=P^{\mathsf T}x$; $P$ is orthogonal so $\|y\|=\|x\|=1$, and $x^{\mathsf T}Sx=y^{\mathsf T}Dy=\sum\lambda_iy_i^2$. This lies between $\lambda_1\sum y_i^2=\lambda_1$
 and $\lambda_n$, and the bounds are attained at unit eigenvectors.
 
 (b) By (a) all $\lambda_i\ge0$. Let $R=P\sqrt DP^{\mathsf T}$ where $\sqrt D=\operatorname{diag}(\sqrt{\lambda_i})$. Then $R$ is symmetric, $R^2=PDP^{\mathsf T}=S$, and its eigenvalues
@@ -140,13 +195,15 @@ $\sqrt{\lambda_i}\ge0$ give $x^{\mathsf T}Rx\ge0$ by (a).
 \end{solution}
 
 \begin{solution}{ex:hilbert}
-$\langle x^{i-1},x^{j-1}\rangle=\int_0^1x^{i+j-2}\dd x=\frac1{i+j-1}$. For a Gram matrix $G=\left(\langle e_i,e_j\rangle\right)$ of linearly independent vectors and $c\in\R^n\setminus\{0\}$,
-$c^{\mathsf T}Gc=\left\|\sum c_ie_i\right\|^2>0$, because $\sum c_ie_i\ne0$. So $G$ is symmetric with all eigenvalues positive (by Exercise~\ref{ex:rayleigh}), and $\det G$, their product, is positive.
-The monomials are linearly independent, so $\det H_n>0$.
+\idea Recognising $\frac1{i+j-1}$ as $\int_0^1x^{i-1}x^{j-1}\dd x$ turns the matrix into a Gram matrix. Gram matrices of independent vectors are positive definite, because $c^{\mathsf T}Gc$ is a squared norm; positive definite symmetric matrices have positive eigenvalues, hence positive determinant.
+\writeup $\langle x^{i-1},x^{j-1}\rangle=\int_0^1x^{i+j-2}\dd x=\frac1{i+j-1}$. For a Gram matrix $G=\left(\langle e_i,e_j\rangle\right)$ of linearly independent vectors and $c\in\R^n\setminus\{0\}$,
+$c^{\mathsf T}Gc=\left\|\sum c_ie_i\right\|^2>0$, because $\sum c_ie_i\ne0$. So $G$ is symmetric with all eigenvalues positive (by Exercise~\ref{ex:rayleigh}(a), the least one is $\min_{\|c\|=1}c^{\mathsf T}Gc>0$), and $\det G$, their product, is positive.
+The monomials $1,x,\dots,x^{n-1}$ are linearly independent (a non-zero polynomial has finitely many roots), so $\det H_n>0$.
 \end{solution}
 
 \begin{solution}{ex:codiag}
-Let $\lambda_1,\dots,\lambda_r$ be the distinct eigenvalues of $A$ and $E_k=\ker(A-\lambda_kI_n)$; since $A$ is diagonalisable, $\C^n=E_1\oplus\dots\oplus E_r$.
+\idea Commuting matrices preserve each other's eigenspaces. So decompose the space into eigenspaces of $A$ and diagonalise $B$ inside each one. That $B$ stays diagonalisable on a stable subspace follows from the polynomial criterion: a polynomial that kills $B$ kills its restriction.
+\writeup Let $\lambda_1,\dots,\lambda_r$ be the distinct eigenvalues of $A$ and $E_k=\ker(A-\lambda_kI_n)$; since $A$ is diagonalisable, $\C^n=E_1\oplus\dots\oplus E_r$ (Theorem~\ref{thm:diag}).
 Each $E_k$ is stable under $B$: if $Av=\lambda_kv$ then $A(Bv)=BAv=\lambda_kBv$. A polynomial with simple roots that cancels $B$ also cancels its restriction $B_k$ to $E_k$,
-so $B_k$ is diagonalisable: $E_k$ has a basis of eigenvectors of $B$, which are automatically eigenvectors of $A$ (for $\lambda_k$). Gathering these bases gives a basis of $\C^n$ made of common eigenvectors.
+so $B_k$ is diagonalisable: $E_k$ has a basis of eigenvectors of $B$, which are automatically eigenvectors of $A$ (for $\lambda_k$). Gathering these bases gives a basis of $\C^n$ made of common eigenvectors; let $P$ have them as columns.
 \end{solution}
