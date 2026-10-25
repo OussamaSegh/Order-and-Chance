@@ -21,15 +21,6 @@ jobs:
             texlive-latex-extra texlive-fonts-recommended tex-gyre texlive-pictures pandoc poppler-utils
       - name: Build PDF and EPUB
         run: ./build.sh
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run the notebooks
-        run: |
-          pip install -r requirements.txt
-          for nb in python/*/*.ipynb; do
-            jupyter nbconvert --to notebook --execute "$nb" --output-dir build/notebooks
-          done
       - uses: actions/upload-artifact@v4
         with:
           name: books
@@ -40,6 +31,24 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: build/site
+
+  # The companion notebooks are checked separately, so that a slow or failing notebook
+  # never holds back the books.
+  notebooks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run the notebooks
+        run: |
+          pip install -r requirements.txt
+          for nb in python/*/*.ipynb; do
+            echo "== $nb"
+            jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 "$nb" --output-dir build/notebooks
+          done
 
   # On main, publish the books for visitors: a GitHub Pages download page and a rolling release.
   publish:
