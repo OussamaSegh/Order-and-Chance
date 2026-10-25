@@ -6,7 +6,7 @@ companion notebook with computer-science applications.
 
 | Tome | Title | Theme | Status |
 | --- | --- | --- | --- |
-| 0 | Back in Shape | The MP toolkit, relearned through problems | Chapters 1–4 drafted |
+| 0 | Back in Shape | The MP toolkit, relearned through problems | Chapters 1–5 drafted |
 | 1 | The Integers | Elementary and algebraic number theory | Planned |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Planned |
 | 3 | Chance | Probability, from counting to martingales | Planned |
