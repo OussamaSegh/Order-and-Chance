@@ -12,6 +12,7 @@ companion notebook with computer-science applications.
   |---|---|---|---|---|
   | 0. Back in Shape | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome0-back-in-shape.epub) |
   | 1. The Integers | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome1-integers.epub) |
+  | 2. Structures (in progress) | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -26,7 +27,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | --- | --- | --- | --- |
 | 0 | Back in Shape | The MP toolkit, relearned through problems | Complete draft (8 chapters) |
 | 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
-| 2 | Structures | Groups, rings, fields, Galois, representations | Planned |
+| 2 | Structures | Groups, rings, fields, Galois, representations | In progress (chapter 1 of 12) |
 | 3 | Chance | Probability, from counting to martingales | Planned |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Planned |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Planned |
