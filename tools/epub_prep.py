@@ -18,13 +18,18 @@ def inline(path: Path) -> str:
             target = target.with_suffix(".tex")
         if target.name == "preamble.tex":
             target = target.with_name("epub-preamble.tex")
+        if target.name == "figure-packages.tex":
+            return ""
         return inline(target)
 
     return re.sub(r"\\input\{([^}]*)\}", repl, text)
 
 
-def main(src: str, dst: str) -> None:
+def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
+    # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
+    text = re.sub(r"\\fig\{([^}]*)\}",
+                  lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
     text = re.sub(r"\\begin\{(exercise|reminder)\}\[([^\]]*)\]",
                   r"\\begin{\1}\\textbf{OPTARG:\2}", text)
     # texmath (pandoc's math converter) does not know \bigl/\Bigl sizes.
@@ -38,4 +43,4 @@ def main(src: str, dst: str) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2])
+    main(sys.argv[1], sys.argv[2], sys.argv[3])

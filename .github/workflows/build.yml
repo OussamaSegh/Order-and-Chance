@@ -3,6 +3,7 @@ name: Build books
 on:
   push:
   pull_request:
+  workflow_dispatch:
 
 concurrency:
   group: build-${{ github.ref }}
@@ -13,11 +14,11 @@ jobs:
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
-      - name: Install LaTeX and pandoc
+      - name: Install LaTeX, pandoc and poppler
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends texlive-latex-base texlive-latex-recommended \
-            texlive-latex-extra texlive-fonts-recommended pandoc
+            texlive-latex-extra texlive-fonts-recommended texlive-pictures pandoc poppler-utils
       - name: Build PDF and EPUB
         run: ./build.sh
       - uses: actions/setup-python@v5
@@ -33,3 +34,41 @@ jobs:
         with:
           name: books
           path: dist/
+      - name: Build the download page
+        run: python3 tools/site.py dist build/site
+      - uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+        with:
+          path: build/site
+
+  # On main, publish the books for visitors: a GitHub Pages download page and a rolling release.
+  publish:
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: books
+          path: dist
+      - name: Update the "books" release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          gh release delete books --yes --cleanup-tag || true
+          gh release create books dist/*.pdf dist/*.epub --target "$GITHUB_SHA" --latest \
+            --title "Books (latest build)" \
+            --notes "PDF and EPUB of every tome, rebuilt automatically from commit ${GITHUB_SHA::7}."
+      # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
+      - name: Deploy the download page
+        id: deploy
+        continue-on-error: true
+        uses: actions/deploy-pages@v4

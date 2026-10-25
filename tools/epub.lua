@@ -3,6 +3,8 @@
 local chapter = 0
 local exnum = {}      -- label -> "c.n"
 local count = 0
+local fignum = {}     -- label -> "c.n"
+local figcount = 0
 
 local function optarg(blocks)
   -- Remove a leading OPTARG marker (from tools/epub_prep.py) and return its content.
@@ -38,12 +40,18 @@ local function number_pass(doc)
     if b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
       chapter = chapter + 1
       count = 0
+      figcount = 0
     elseif b.t == "Div" and b.classes:includes("exercise") then
       count = count + 1
       local l = label_of(b.content)
       local n = chapter .. "." .. count
       b.attributes["number"] = n
       if l then exnum[l] = n end
+    elseif b.t == "Figure" then
+      figcount = figcount + 1
+      local n = chapter .. "." .. figcount
+      b.attributes["number"] = n
+      if b.identifier ~= "" then fignum[b.identifier] = n end
     end
   end
 end
@@ -70,21 +78,36 @@ local function rewrite(b)
   elseif b.classes:includes("beauty") then
     b.content:insert(1, title_para("beauty", { pandoc.Strong({ pandoc.Str("Why this is beautiful") }) }))
     return b
-  elseif b.classes:includes("solution") then
+  elseif b.classes:includes("think") then
+    b.content:insert(1, title_para("think", { pandoc.Strong({ pandoc.Str("Pause and think") }) }))
+    return b
+  elseif b.classes:includes("solution") or b.classes:includes("hint") then
     local para = b.content[1]
     local first = para and para.content[1]
     if first and first.t == "Span" and first.content[1] then
       local l = pandoc.utils.stringify(first.content)
       local n = exnum[l] or l
-      para.content[1] = pandoc.Link({ pandoc.Strong({ pandoc.Str("Solution of Exercise " .. n .. ".") }) }, "#" .. l)
+      local what = b.classes:includes("hint") and "Hint for Exercise " or "Solution of Exercise "
+      para.content[1] = pandoc.Link({ pandoc.Strong({ pandoc.Str(what .. n .. ".") }) }, "#" .. l)
     end
     return b
   end
 end
 
+local function number_figure(b)
+  local n = b.attributes["number"]
+  if not n then return nil end
+  local cap = b.caption.long[1]
+  if cap and (cap.t == "Plain" or cap.t == "Para") then
+    cap.content:insert(1, pandoc.Strong({ pandoc.Str("Figure " .. n .. ".") }))
+    cap.content:insert(2, pandoc.Space())
+  end
+  return b
+end
+
 local function fix_ref(el)
   if el.attributes["reference-type"] == "ref" then
-    local n = exnum[el.attributes["reference"]]
+    local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]]
     if n then
       el.content = { pandoc.Str(n) }
       el.target = "#" .. el.attributes["reference"]
@@ -95,7 +118,7 @@ end
 
 function Pandoc(doc)
   number_pass(doc)
-  doc = doc:walk({ Div = rewrite })
+  doc = doc:walk({ Div = rewrite, Figure = number_figure })
   doc = doc:walk({ Link = fix_ref })
   return doc
 end
