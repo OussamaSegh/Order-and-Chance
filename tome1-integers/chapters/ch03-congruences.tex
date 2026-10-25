@@ -30,6 +30,10 @@ If $\gcd(a,n)=1$ then $a^{\varphi(n)}\equiv1\pmod n$. In particular, for $p$ pri
 Multiplication by $\bar a$ is a bijection of the finite group $(\Z/n\Z)^\times$ (its inverse is multiplication by $\bar a^{-1}$). So the product of all units $x$ equals the product of all $\bar ax$, which is $\bar a^{\varphi(n)}$ times the same product. Cancel that unit.
 \end{proof}
 
+\begin{think}
+Compute $(p-1)!\bmod p$ for $p=5,7,11$. What do you notice? In $\Z/7\Z$, pair each of $1,\dots,6$ with its inverse: which numbers are left alone, and why can there be no others?
+\end{think}
+
 \begin{theorem}[Wilson]\label{thm:wilson}
 For $p$ prime, $(p-1)!\equiv-1\pmod p$.
 \end{theorem}
@@ -39,12 +43,25 @@ In the field $\Z/p\Z$, $x^2=1$ means $(x-1)(x+1)=0$, so $x=\pm1$: only $1$ and $
 
 \section{The Chinese remainder theorem}
 
+\begin{think}
+Draw a grid with $3$ rows and $4$ columns, and write each $x=0,1,\dots,11$ in row $x\bmod3$ and column $x\bmod4$. Does every cell receive exactly one number? Now try $2$ rows and $4$ columns with $x=0,\dots,7$. What property of the pair of moduli makes the difference?
+\end{think}
+
 \begin{theorem}[Chinese remainder theorem]\label{thm:crt}
 If $m,n\ge1$ are coprime, the map $\Z/mn\Z\to\Z/m\Z\times\Z/n\Z$, $x\mapsto(x\bmod m,\ x\bmod n)$ is a ring isomorphism. Explicitly, if $mu+nv=1$, the solution of $x\equiv a\pmod m$, $x\equiv b\pmod n$ is $x\equiv anv+bmu\pmod{mn}$.
 \end{theorem}
 \begin{proof}
 The map is a well-defined ring morphism. It is injective: if $m\mid x$ and $n\mid x$ with $m,n$ coprime then $mn\mid x$ (Gauss). Both sides have $mn$ elements, so it is bijective. For the formula: $nv\equiv1\pmod m$ and $nv\equiv0\pmod n$, and symmetrically for $mu$.
 \end{proof}
+
+Figure~\ref{fig:crt} shows the theorem as a walk: adding $1$ moves one step down and one step right, wrapping around the edges like on a torus. When the moduli are coprime, the walk visits every cell before coming back.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-crt}
+\caption{Left: $x\mapsto(x\bmod3,x\bmod4)$ for $x=0,\dots,11$. Each step $x\to x+1$ moves diagonally (the arrows show the steps that do not wrap around), and every cell is hit exactly once. Right: with the non-coprime moduli $2$ and $4$, the walk closes up after $\operatorname{lcm}(2,4)=4$ steps, so half the cells (grey) are never reached and the others are hit twice.}
+\label{fig:crt}
+\end{figure}
 
 Units correspond to pairs of units, so $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$. With $\varphi(p^k)=p^k-p^{k-1}$ (the non-multiples of $p$), this recovers $\varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right)$ from Tome~0.
 
@@ -56,6 +73,10 @@ Solvability means $b\in a\Z+n\Z=d\Z$. If $d\mid b$, divide through: $\frac adx\e
 \end{proof}
 
 \section{Lifting modulo prime powers}
+
+\begin{think}
+Modulo $5$, $x=2$ solves $x^2\equiv-1$. Look for a solution modulo $25$ of the form $2+5t$. Expand the square: why does the term $25t^2$ not matter, and why is there exactly one good $t$ in $\{0,\dots,4\}$?
+\end{think}
 
 \begin{theorem}[Hensel's lemma]\label{thm:hensel}
 Let $f\in\Z[X]$, $p$ prime, $k\ge1$, and $a\in\Z$ with $f(a)\equiv0\pmod{p^k}$ and $f'(a)\not\equiv0\pmod p$. Then there is a unique $t\in\{0,\dots,p-1\}$ such that $f(a+tp^k)\equiv0\pmod{p^{k+1}}$.
@@ -116,6 +137,36 @@ with $\binom{n_i}{k_i}=0$ when $k_i>n_i$. \emph{Hint: in $(\Z/p\Z)[X]$, $(1+X)^p
 The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modulo each prime power of $n$, independently. It makes RSA decryption four times faster (notebook), and in Tome~2 it becomes a statement about products of rings. Hensel's lemma is the door to the $p$-adic numbers of Chapter~12, where $\sqrt{-1}$ exists as a genuine $5$-adic number, the limit of $2,7,57,\dots$ from Exercise~\ref{ex:hensel}.
 \end{beauty}
 
+\section{Hints}
+
+\begin{hint}{ex:last2}
+Last two digits means modulo $100$. Compute $7^2$ and $7^4$ modulo $100$ before reaching for $\varphi(100)$.
+\end{hint}
+\begin{hint}{ex:sunzi}
+Solve the first two congruences together (list the numbers $\equiv3\pmod5$ below $15$), then add the third.
+\end{hint}
+\begin{hint}{ex:digits}
+What are $10\bmod9$ and $10\bmod11$? Then reduce $\sum_id_i10^i$.
+\end{hint}
+\begin{hint}{ex:sqrt1}
+(a) $p^k$ divides $(x-1)(x+1)$, and an odd prime cannot divide both factors: their difference is $2$. (b) By the Chinese remainder theorem, choose the sign independently modulo each prime power.
+\end{hint}
+\begin{hint}{ex:wilsonconv}
+Write $n=ab$ with $1<a\le b<n$. When do $a$ and $b$ both appear in $(n-1)!$ as different factors? If $a=b$, use $a$ and $2a$.
+\end{hint}
+\begin{hint}{ex:hensel}
+Start from $x\equiv2\pmod5$ and apply the lifting step of Theorem~\ref{thm:hensel} twice, exactly as in the last thinking prompt.
+\end{hint}
+\begin{hint}{ex:tower}
+Modulo $100$, a power of $3$ only depends on its exponent modulo $\varphi(100)=40$. So first find $3^{27}\bmod40$; note that $3^4=81$.
+\end{hint}
+\begin{hint}{ex:korselt}
+By the Chinese remainder theorem it is enough to prove $a^n\equiv a\pmod p$ for each prime $p\mid n$. Treat $p\mid a$ and $p\nmid a$ separately, and use Fermat with $n-1=(p-1)q$.
+\end{hint}
+\begin{hint}{ex:lucas}
+Write $(1+X)^n=\prod_i\left((1+X)^{p^i}\right)^{n_i}=\prod_i\left(1+X^{p^i}\right)^{n_i}$ in $(\Z/p\Z)[X]$, and find the coefficient of $X^k$ on both sides. Uniqueness of base-$p$ expansions does the rest.
+\end{hint}
+
 \section{Solutions}
 
 \begin{solution}{ex:last2}
@@ -168,3 +219,13 @@ The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modu
 \]
 Expanding, each exponent $k$ arises from exactly one choice of digits $j=k_i\le n_i$ (uniqueness of base-$p$ expansion, since all $j\le n_i<p$), with coefficient $\prod_i\binom{n_i}{k_i}$; if some $k_i>n_i$, $X^k$ does not appear. Compare with the coefficient $\binom nk$ of $X^k$. For $p=2$, $\binom{n_i}{k_i}$ is $0$ exactly when $k_i=1$, $n_i=0$.
 \end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer, 1990, Chapter~3. Congruences, the Chinese remainder theorem and the structure of $\Z/n\Z$.
+\item I.~Niven, H.~S.~Zuckerman and H.~L.~Montgomery, \emph{An Introduction to the Theory of Numbers}, 5th ed., Wiley, 1991, Chapter~2. A wealth of exercises on congruences, including Hensel lifting.
+\item V.~Shoup, \emph{A Computational Introduction to Number Theory and Algebra}, 2nd ed., Cambridge University Press, 2009, Chapters~2 and~4. Modular arithmetic as algorithms: inverses, the Chinese remainder theorem, fast exponentiation.
+\item A.~Granville, Arithmetic properties of binomial coefficients~I: binomial coefficients modulo prime powers, \emph{Canadian Mathematical Society Conference Proceedings} 20 (1997), 253--275. Lucas' theorem (Exercise~\ref{ex:lucas}) and its far-reaching generalisations.
+\item W.~R.~Alford, A.~Granville and C.~Pomerance, There are infinitely many Carmichael numbers, \emph{Annals of Mathematics} 139 (1994), 703--722. The research paper that settled the question behind Exercise~\ref{ex:korselt}.
+\end{itemize}
