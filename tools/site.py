@@ -42,7 +42,7 @@ PAGE = """<!doctype html>
 <body>
 <main>
 <h1>Numbers, Structures and Chance</h1>
-<p class="lead">A series of books of beautiful mathematics, written for pleasure, from a refresher of prépa mathematics
+<p class="lead">A series of books of beautiful mathematics, written for pleasure, from a refresher of undergraduate mathematics
 toward research in probability, probabilistic number theory and algebra. Every statement is proved, and every exercise
 has a solution that explains how to find it.</p>
 {tomes}
