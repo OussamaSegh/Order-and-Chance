@@ -31,6 +31,7 @@ def main(src: str, dst: str) -> None:
     text = re.sub(r"\\[Bb]ig(g?)l(?![a-z])", r"\\left", text)
     text = re.sub(r"\\[Bb]ig(g?)r(?![a-z])", r"\\right", text)
     text = re.sub(r"\\[dt]binom(?![a-z])", r"\\binom", text)
+    text = re.sub(r"\\cfrac(?![a-z])", r"\\dfrac", text)
     # enumitem labels -> enumerate-package style, which pandoc understands
     text = text.replace(r"[label=(\alph*)]", "[(a)]").replace(r"[label=(\roman*)]", "[(i)]")
     Path(dst).write_text(text, encoding="utf-8")
