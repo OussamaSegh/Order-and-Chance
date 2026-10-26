@@ -1,0 +1,493 @@
+\chapter{The Fourier Transform and Poisson Summation}
+
+\begin{center}\itshape
+I have had my results for a long time: but I do not yet know how I am to arrive at them.\\
+\upshape --- attributed to Gauss
+\end{center}
+
+On the circle, frequencies are integers; on the line, every real number is a frequency, and Fourier series become
+Fourier integrals. The theory runs parallel to Chapter~6, with one new hero, the Gaussian, which is its own transform and
+serves as a universal smoothing device. The other new player is the link between the two worlds: the \emph{Poisson
+summation formula} $\sum_nf(n)=\sum_n\hat f(n)$, which says that the integers are, for Fourier analysis, their own dual.
+
+Poisson summation is the most powerful identity in this tome. It turns a slowly convergent sum into a fast one (the theta
+transformation, the key to the zeta function in Chapter~10), reproves Euler's partial fractions for $\pi\cot\pi x$, and settles
+a question that tormented Gauss for four years: the sign of the quadratic Gauss sum, promised in Tome~0 and Tome~1. At the
+end we meet two theorems about information: a band-limited signal is determined by its samples (Shannon), and a function
+and its transform cannot both be concentrated (Heisenberg).
+
+\begin{think}
+On the circle, the coefficients $c_n(f)$ are indexed by $\Z$. On the line, $\hat f(\xi)$ is defined for every real $\xi$. What
+should $\sum_{n\in\Z}f(n)$ have to do with $\hat f$? Try $f(x)=e^{-\pi tx^2}$ for a very small $t$: the sum is a slowly varying Riemann
+sum, so it is close to $\int f$, which is one value of $\hat f$.
+\end{think}
+
+\section{The Fourier transform}
+
+In this chapter \emph{integrable} means continuous on $\R$ with $\int_{\R}|f|<\infty$, and $\|f\|_1=\int|f|$.
+
+\begin{definition}
+The \emph{Fourier transform} of an integrable $f$ is
+\[
+\hat f(\xi)=\int_{\R}f(x)e^{-2\pi ix\xi}\dd x\qquad(\xi\in\R).
+\]
+\end{definition}
+
+The factor $2\pi$ in the exponent makes the formulas symmetric; frequencies are measured in cycles per unit length.
+
+\begin{proposition}\label{prop:ftbasic}
+Let $f$ be integrable. Then $\hat f$ is continuous and $|\hat f|\le\|f\|_1$. For real $a$ and $\lambda>0$:
+\begin{enumerate}[label=(\alph*)]
+\item $f(x-a)$ has transform $e^{-2\pi ia\xi}\hat f(\xi)$, and $e^{2\pi iax}f(x)$ has transform $\hat f(\xi-a)$;
+\item $f(x/\lambda)$ has transform $\lambda\hat f(\lambda\xi)$;
+\item if $f$ is $C^1$ and $f'$ is integrable, then $\widehat{f'}(\xi)=2\pi i\xi\hat f(\xi)$;
+\item if $xf(x)$ is integrable, then $\hat f$ is $C^1$ and $\hat f\,'$ is the transform of $-2\pi ixf(x)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Continuity and the bound follow from Theorem~\ref{thm:domination}, with the bound $|f(x)|$ independent of $\xi$. (a) and (b) are the
+substitutions $x\mapsto x+a$ and $x\mapsto\lambda x$. (c) Since $f'$ is integrable, $f(x)=f(0)+\int_0^xf'$ has limits at $\pm\infty$, and they are $0$
+because $f$ is integrable. Integrating by parts on $[-A,B]$ and letting $A,B\to\infty$ gives $\int f'(x)e^{-2\pi ix\xi}\dd x=2\pi i\xi\int f(x)e^{-2\pi ix\xi}\dd x$.
+(d) The $\xi$-derivative of the integrand is $-2\pi ixf(x)e^{-2\pi ix\xi}$, bounded by $2\pi|xf(x)|$; apply Theorem~\ref{thm:domination}.
+\end{proof}
+
+So differentiation becomes multiplication by $2\pi i\xi$, and smoothness of $f$ becomes decay of $\hat f$: if $f,\dots,f^{(k)}$ are integrable,
+$|\hat f(\xi)|\le\frac{\|f^{(k)}\|_1}{(2\pi|\xi|)^k}$.
+
+\begin{theorem}\label{thm:gaussianft}
+The Gaussian $g(x)=e^{-\pi x^2}$ satisfies $\hat g=g$. More generally, for $a>0$, $e^{-\pi x^2/a^2}$ has transform $ae^{-\pi a^2\xi^2}$.
+\end{theorem}
+\begin{proof}
+Since $g'(x)=-2\pi xg(x)$, Proposition~\ref{prop:ftbasic}(d) and~(c) give
+\[
+\begin{aligned}\hat g\,'(\xi)&=\widehat{-2\pi ixg}(\xi)=i\,\widehat{g'}(\xi)\eqbr=i\cdot2\pi i\xi\,\hat g(\xi)=-2\pi\xi\hat g(\xi).\end{aligned}
+\]
+So $\bigl(e^{\pi\xi^2}\hat g\bigr)'=0$, and $\hat g(\xi)=\hat g(0)e^{-\pi\xi^2}$ with $\hat g(0)=\int e^{-\pi x^2}\dd x=1$ (Example~\ref{ex:gaussfeynman}, with $x=u/\sqrt\pi$). The general
+case is Proposition~\ref{prop:ftbasic}(b) with $\lambda=a$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-gaussians}
+\caption{Left: $e^{-\pi x^2/a^2}$ for $a=\frac12,1,2$. Right: their transforms $ae^{-\pi a^2\xi^2}$, in the same colours. A narrow Gaussian has a wide
+transform and conversely; for $a=1$ the function is its own transform.}
+\label{fig:gaussians}
+\end{figure}
+
+\section{Inversion and Plancherel}
+
+Two tools come first: an interchange of integrals on the whole plane, which reduces to Fubini's theorem on rectangles,
+and approximate identities.
+
+\begin{lemma}[Fubini on the plane]\label{lem:fubiniplane}
+Let $h$ be continuous on $\R^2$ with $|h(x,y)|\le a(x)b(y)$, where $a,b\ge0$ are integrable. Then $x\mapsto\int h(x,y)\dd y$ and $y\mapsto\int h(x,y)\dd x$ are
+continuous and integrable, and $\int\bigl(\int h(x,y)\dd y\bigr)\dd x=\int\bigl(\int h(x,y)\dd x\bigr)\dd y$.
+\end{lemma}
+\begin{proof}
+On a bounded interval of $x$, $a$ is bounded by some $M$ and $|h|\le Mb(y)$, so $x\mapsto\int h(x,y)\dd y$ is continuous by Theorem~\ref{thm:domination}; it is at
+most $a(x)\|b\|_1$ in modulus, hence integrable. The same holds with the roles exchanged. On the square $[-R,R]^2$ the two iterated
+integrals agree by Theorem~\ref{thm:fubinirect}, and each full iterated integral differs from its value on the square by at most
+$\|b\|_1\int_{|x|>R}a+\|a\|_1\int_{|y|>R}b$, which tends to $0$ as $R\to\infty$.
+\end{proof}
+
+\begin{lemma}[Gaussian approximate identity]\label{lem:approxid}
+For $\varepsilon>0$ let $G_\varepsilon(u)=\frac1\varepsilon e^{-\pi u^2/\varepsilon^2}$, so that $G_\varepsilon>0$ and $\int G_\varepsilon=1$. If $f$ is integrable, then for every $x$,
+\[
+\int_{\R}f(x-u)G_\varepsilon(u)\dd u\xrightarrow[\varepsilon\to0]{}f(x).
+\]
+\end{lemma}
+\begin{proof}
+Given $\eta>0$, choose $\delta>0$ with $|f(x-u)-f(x)|\le\eta$ for $|u|\le\delta$. The difference between the integral and $f(x)$ is at most
+\[
+\begin{aligned}\eta&+\int_{|u|>\delta}|f(x-u)|G_\varepsilon(u)\dd u\eqbr+|f(x)|\int_{|u|>\delta}G_\varepsilon(u)\dd u.\end{aligned}
+\]
+For $|u|>\delta$, $G_\varepsilon(u)\le\frac1\varepsilon e^{-\pi\delta^2/\varepsilon^2}$, so the middle term is at most $\frac{\|f\|_1}\varepsilon e^{-\pi\delta^2/\varepsilon^2}\to0$. The last integral is
+$\int_{|v|>\delta/\varepsilon}e^{-\pi v^2}\dd v\to0$. So the difference is at most $2\eta$ for $\varepsilon$ small.
+\end{proof}
+
+\begin{theorem}[Fourier inversion]\label{thm:ftinversion}
+Let $f$ be integrable with $\hat f$ integrable. Then for every $x$,
+\[
+f(x)=\int_{\R}\hat f(\xi)e^{2\pi ix\xi}\dd\xi.
+\]
+In particular $f$ is bounded by $\|\hat f\|_1$, and an integrable function with $\hat f=0$ is zero.
+\end{theorem}
+\begin{proof}
+Fix $x$, and for $\varepsilon>0$ let
+\[
+I_\varepsilon=\int\hat f(\xi)e^{-\pi\varepsilon^2\xi^2}e^{2\pi ix\xi}\dd\xi.
+\]
+As $\varepsilon\to0$, $I_\varepsilon$ tends to $\int\hat f(\xi)e^{2\pi ix\xi}\dd\xi$ by Theorem~\ref{thm:domination}, with the bound $|\hat f(\xi)|$. On the other hand, write $\hat f$ as an integral. The function $h(\xi,y)=f(y)e^{-2\pi iy\xi}e^{-\pi\varepsilon^2\xi^2}e^{2\pi ix\xi}$
+satisfies $|h|\le|f(y)|e^{-\pi\varepsilon^2\xi^2}$, so by Lemma~\ref{lem:fubiniplane}
+\[
+\begin{aligned}I_\varepsilon&=\int_{\R}f(y)\Bigl(\int_{\R}e^{-\pi\varepsilon^2\xi^2}e^{2\pi i(x-y)\xi}\dd\xi\Bigr)\dd y\eqbr=\int_{\R}f(y)G_\varepsilon(x-y)\dd y,\end{aligned}
+\]
+the inner integral being computed by Theorem~\ref{thm:gaussianft} (with $a=\frac1\varepsilon$, and evenness). By Lemma~\ref{lem:approxid}, $I_\varepsilon\to f(x)$.
+\end{proof}
+
+\begin{theorem}[Plancherel]\label{thm:plancherel}
+Let $f$ be integrable with $\hat f$ integrable. Then $|f|^2$ and $|\hat f|^2$ are integrable, and $\int|f|^2=\int|\hat f|^2$.
+\end{theorem}
+\begin{proof}
+$f$ and $\hat f$ are bounded (Theorem~\ref{thm:ftinversion} and Proposition~\ref{prop:ftbasic}) and integrable, so their squares are integrable. Apply
+Lemma~\ref{lem:fubiniplane} to $h(\xi,x)=\overline{\hat f(\xi)}f(x)e^{-2\pi ix\xi}$, which satisfies $|h|\le|\hat f(\xi)||f(x)|$:
+\[
+\begin{aligned}\int|\hat f|^2&=\int\overline{\hat f(\xi)}\Bigl(\int f(x)e^{-2\pi ix\xi}\dd x\Bigr)\dd\xi\\&=\int f(x)\overline{\Bigl(\int\hat f(\xi)e^{2\pi ix\xi}\dd\xi\Bigr)}\dd x\eqbr=\int|f|^2,\end{aligned}
+\]
+the last step by inversion.
+\end{proof}
+
+As on the circle, Plancherel is conservation of energy between a signal and its spectrum. Tome~7 extends the transform to
+all square-integrable functions, where it becomes a unitary operator.
+
+\section{The heat equation on the line}
+
+\begin{proposition}\label{prop:heatline}
+Let $f$ be integrable and bounded, and for $t>0$ let $H_t(x)=\frac1{\sqrt{4\pi t}}e^{-x^2/(4t)}$ and $u(t,x)=\int_{\R}f(y)H_t(x-y)\dd y$. Then $\partial_tu=\partial_x^2u$ for
+$t>0$, $|u|\le\sup|f|$, and $u(t,x)\to f(x)$ as $t\to0^+$.
+\end{proposition}
+\begin{proof}
+A direct computation gives $\partial_xH_t=-\frac x{2t}H_t$ and $\partial_tH_t=\partial_x^2H_t=\bigl(\frac{x^2}{4t^2}-\frac1{2t}\bigr)H_t$. For $t$ in a compact interval of $\left]0,\infty\right[$ these
+derivatives are bounded functions of $(t,x)$, so Theorem~\ref{thm:domination}, with the bound a constant times $|f(y)|$, allows differentiating
+under the integral sign, and $u$ satisfies the heat equation. Since $H_t>0$ and $\int H_t=1$, $|u|\le\sup|f|$. Finally $H_t=G_\varepsilon$ with $\varepsilon=\sqrt{4\pi t}$, so
+Lemma~\ref{lem:approxid} gives the limit.
+\end{proof}
+
+By Theorem~\ref{thm:gaussianft}, $\widehat{H_t}(\xi)=e^{-4\pi^2t\xi^2}$: on the Fourier side, the heat equation multiplies the frequency $\xi$ by $e^{-4\pi^2t\xi^2}$, so
+fine details (large $\xi$) disappear first, exactly as on the circle (Exercise~\ref{ex:heat}). The heat kernel $H_t$ is also the density of the
+normal distribution of variance $2t$: heat diffuses like a Brownian motion (Tome~11).
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-heat}
+\caption{The heat kernel $H_t$ for $t=0.01$, $0.05$ and $0.25$. The total heat stays $1$ while it spreads; the width grows like $\sqrt t$.}
+\label{fig:heat}
+\end{figure}
+
+\section{The Poisson summation formula}
+
+\begin{theorem}[Poisson summation]\label{thm:poisson}
+Let $f$ be continuous with $|f(x)|\le\frac C{(1+|x|)^2}$ and $|\hat f(\xi)|\le\frac C{(1+|\xi|)^2}$ for some constant $C$. Then for every real $x$,
+\[
+\sum_{n\in\Z}f(x+n)=\sum_{m\in\Z}\hat f(m)e^{2\pi imx},
+\]
+both series converging absolutely and uniformly. In particular $\sum_nf(n)=\sum_m\hat f(m)$.
+\end{theorem}
+\begin{proof}
+On $[0,1]$, $|f(x+n)|\le\frac C{\max(1,|n|-1)^2}$, so $F(x)=\sum_nf(x+n)$ converges uniformly on $[0,1]$, and by periodicity on $\R$. $F$ is continuous
+and $1$-periodic. Its Fourier coefficients are $c_m(F)=\int_0^1F(x)e^{-2\pi imx}\dd x$, and by termwise integration
+\[
+\begin{aligned}c_m(F)&=\sum_n\int_0^1f(x+n)e^{-2\pi imx}\dd x\\&=\sum_n\int_n^{n+1}f(y)e^{-2\pi imy}\dd y=\hat f(m).\end{aligned}
+\]
+The series $P(x)=\sum_m\hat f(m)e^{2\pi imx}$ converges uniformly since $\sum|\hat f(m)|<\infty$, and has the same coefficients. So $F-P$ is continuous,
+$1$-periodic, with all Fourier coefficients zero, and $F=P$ by Corollary~\ref{cor:fejer}(b) (applied to $x\mapsto(F-P)(\frac x{2\pi})$).
+\end{proof}
+
+\begin{corollary}[theta transformation]\label{cor:theta}
+For $t>0$ let $\theta(t)=\sum_{n\in\Z}e^{-\pi n^2t}$. Then
+\[
+\theta\Bigl(\frac1t\Bigr)=\sqrt t\,\theta(t).
+\]
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:poisson} at $x=0$ to $f(x)=e^{-\pi tx^2}$, whose transform is $t^{-1/2}e^{-\pi\xi^2/t}$ by Theorem~\ref{thm:gaussianft} with $a=t^{-1/2}$. Both decay faster
+than any power. So $\theta(t)=t^{-1/2}\theta(1/t)$.
+\end{proof}
+
+For small $t$ the left side converges slowly (about $\frac1{\sqrt t}$ terms matter), the right side very fast: $\theta(0.01)=10\,\theta(100)$, and
+$\theta(100)=1+2e^{-100\pi}+\cdots$ differs from $1$ by about $10^{-136}$. Riemann used this identity in 1859 to extend $\zeta$ to the whole
+plane; Chapter~10 follows him. Jacobi's theta function also counts sums of squares (Tome~5) and describes heat on a circle.
+
+As a second application we reprove Euler's partial fractions for the cotangent (Theorem~\ref{thm:cot}).
+
+\begin{proposition}\label{prop:sinsquare}
+For every real $x\notin\Z$, $\displaystyle\sum_{n\in\Z}\frac1{(x+n)^2}=\frac{\pi^2}{\sin^2\pi x}$.
+\end{proposition}
+\begin{proof}
+Let $\Lambda(t)=\max(0,1-|t|)$, the triangle function. It is continuous, vanishes outside $[-1,1]$, and
+\[
+\begin{aligned}\widehat\Lambda(\xi)&=2\int_0^1(1-t)\cos2\pi t\xi\dd t\eqbr=\frac{1-\cos2\pi\xi}{2\pi^2\xi^2}=\Bigl(\frac{\sin\pi\xi}{\pi\xi}\Bigr)^2\end{aligned}
+\]
+for $\xi\ne0$, and $\widehat\Lambda(0)=1$. So $\widehat\Lambda$ is integrable with $|\widehat\Lambda(\xi)|\le\frac C{(1+|\xi|)^2}$, and by inversion the transform of $\widehat\Lambda$ is
+$\Lambda(-t)=\Lambda(t)$. Theorem~\ref{thm:poisson} applied to $\widehat\Lambda$ (whose transform is $\Lambda$) gives
+\[
+\begin{aligned}\sum_{n\in\Z}\widehat\Lambda(x+n)&=\sum_{m\in\Z}\Lambda(m)e^{2\pi imx}\eqbr=\Lambda(0)=1.\end{aligned}
+\]
+Since $\sin^2\pi(x+n)=\sin^2\pi x$ for every $n$, the left side equals $\frac{\sin^2\pi x}{\pi^2}$ times $\sum_n\frac1{(x+n)^2}$.
+\end{proof}
+
+\begin{corollary}[Theorem~\ref{thm:cot} again]
+For $0<|x|<1$, $\pi\cot\pi x=\frac1x+\sum_{n\ge1}\frac{2x}{x^2-n^2}$.
+\end{corollary}
+\begin{proof}
+Let $h(x)=\pi\cot\pi x-\frac1x-\sum_{n\ge1}\frac{2x}{x^2-n^2}$ on $\left]-1,1\right[$, with $h(0)=0$; it is odd and continuous, since $\pi\cot\pi x-\frac1x\to0$ at $0$. Since
+$\frac{2x}{x^2-n^2}=\frac1{x-n}+\frac1{x+n}$, the derivatives of the terms are $-\frac1{(x-n)^2}-\frac1{(x+n)^2}$, bounded by $\frac2{(n-a)^2}$ on $[-a,a]$ for $a<1$; so
+by Lemma~\ref{lem:uniform} the series can be differentiated term by term, and for $x\ne0$
+\[
+h'(x)=-\frac{\pi^2}{\sin^2\pi x}+\frac1{x^2}+\sum_{n\ne0}\frac1{(x+n)^2}=0
+\]
+by Proposition~\ref{prop:sinsquare}. So $h$ is constant on $\left]0,1\right[$ and on $\left]-1,0\right[$, and by continuity at $0$ it is $h(0)=0$.
+\end{proof}
+
+Both sides of Theorem~\ref{thm:cot} are $1$-periodic (Chapter~3), so this proof covers every $x\notin\Z$.
+
+\section{The sign of the Gauss sum}
+
+For $n\ge1$ let $G(n)=\sum_{k=0}^{n-1}e^{2\pi ik^2/n}$. For an odd prime $p$, $G(p)$ is the Gauss sum $g$ of Proposition~\ref{prop:gaussfourier}, so $|G(p)|^2=p$, and
+Tome~1 showed $G(p)^2=\bigl(\frac{-1}p\bigr)p$. Hence $G(p)=\pm\sqrt p$ if $p\equiv1\pmod4$, and $G(p)=\pm i\sqrt p$ if $p\equiv3\pmod4$.
+
+\begin{think}
+Why can no algebraic manipulation decide the sign? Replace $e^{2\pi i/p}$ by $e^{2\pi ia/p}$ with $a$ a non-residue modulo $p$: every algebraic
+identity between the powers of $e^{2\pi i/p}$ survives, and $G(p)$ becomes $\sum_ke^{2\pi iak^2/p}$. What is this new sum?
+\end{think}
+
+Gauss stated the answer in 1801 and found a proof only in 1805 (``as a sudden flash of lightning, the riddle was solved'').
+The proof below is Dirichlet's (1835): an analytic proof, whose only input is the value of one integral.
+
+\begin{lemma}[a Fresnel integral]\label{lem:fresnel}
+The improper integral $\int_0^\infty u^{-1/2}e^{iu}\dd u$ converges and equals $\sqrt\pi\,e^{i\pi/4}$. Consequently, for $n\ge1$,
+\[
+\int_{-\infty}^\infty e^{2\pi iy^2/n}\dd y=\frac{1+i}2\sqrt n.
+\]
+\end{lemma}
+\begin{proof}
+For $t\ge0$ and $0<A<B$, the function $u^{-1/2}e^{-tu}$ is positive and decreasing, so the proof of Lemma~\ref{lem:secondmean} (with $e^{iu}$ in place of
+$\sin u$) gives $\bigl|\int_A^Bu^{-1/2}e^{-tu}e^{iu}\dd u\bigr|\le2A^{-1/2}$, uniformly in $t\ge0$. With $t=0$ this is the Cauchy criterion, so the integral converges;
+call $J_t$ its value with the factor $e^{-tu}$. As in the proof of Theorem~\ref{thm:dirichletint}, for $A>0$,
+\[
+\begin{aligned}|J_t-J_0|&\le\int_0^Au^{-1/2}(1-e^{-tu})\dd u+4A^{-1/2}\eqbr\le\frac23tA^{3/2}+4A^{-1/2},\end{aligned}
+\]
+so $J_t\to J_0$ as $t\to0^+$.
+
+Now fix $t>0$ and, for real $b$, let $z=t-ib$ and $K(b)=\int_0^\infty u^{-1/2}e^{-zu}\dd u$. By Theorem~\ref{thm:domination}, $K'(b)=i\int_0^\infty u^{1/2}e^{-zu}\dd u$, and
+an integration by parts gives $\int_0^\infty u^{1/2}e^{-zu}\dd u=\frac1{2z}K(b)$. Let $s(b)$ be the square root of $z$ with positive real part; it is
+differentiable, and differentiating $s^2=z$ gives $2ss'=-i$. Then
+\[
+(sK)'=s'K+sK'=-\frac i{2s}K+\frac{is}{2z}K=0,
+\]
+since $z=s^2$. So $s(b)K(b)=s(0)K(0)=\sqrt t\cdot\Gamma\bigl(\frac12\bigr)t^{-1/2}=\sqrt\pi$, and $J_t=K(1)=\frac{\sqrt\pi}{s(1)}$. As $t\to0$, $s(1)=\sqrt{t-i}$ tends to the square root
+of $-i$ with positive real part, $e^{-i\pi/4}$; so $J_0=\sqrt\pi\,e^{i\pi/4}$.
+
+For the consequence, the integral is twice the integral over $\left]0,\infty\right[$, and $u=\frac{2\pi y^2}n$ turns it into
+$\sqrt{\frac n{2\pi}}\,J_0=\sqrt{\frac n2}\,e^{i\pi/4}=\frac{1+i}2\sqrt n$.
+\end{proof}
+
+\begin{theorem}[Gauss, 1805]\label{thm:gausssign}
+For every $n\ge1$,
+\[
+G(n)=\frac{(1+i)(1+i^{-n})}2\sqrt n,
+\]
+that is,
+\[
+G(n)=\begin{cases}\sqrt n&\text{if }n\equiv1\pmod4,\\0&\text{if }n\equiv2\pmod4,\\i\sqrt n&\text{if }n\equiv3\pmod4,\\(1+i)\sqrt n&\text{if }n\equiv0\pmod4.\end{cases}
+\]
+In particular $G(p)=\sqrt p$ for primes $p\equiv1\pmod4$ and $G(p)=i\sqrt p$ for primes $p\equiv3\pmod4$.
+\end{theorem}
+\begin{proof}
+Let $f(x)=e^{2\pi ix^2/n}$ and let $F$ be the $1$-periodic function with $F(x)=\sum_{k=0}^{n-1}f(x+k)$ for $0\le x<1$. It is piecewise $C^1$, and since
+$f(n)=f(0)=1$, its limit from the left at $0$, $\sum_{k=1}^nf(k)$, equals its value $F(0)=G(n)$. So $F$ is continuous at $0$, and by
+Theorem~\ref{thm:dirichletfourier} (rescaled to period $1$), $G(n)=\lim_N\sum_{|j|\le N}c_j$, where
+\[
+c_j=\int_0^1F(x)e^{-2\pi ijx}\dd x=\int_0^ne^{2\pi i(x^2/n-jx)}\dd x.
+\]
+Complete the square: $\frac{x^2}n-jx=\frac{(x-jn/2)^2}n-\frac{j^2n}4$. If $j$ is even, $e^{-2\pi ij^2n/4}=1$; if $j$ is odd, $j^2\equiv1\pmod8$ and $e^{-2\pi ij^2n/4}=e^{-i\pi n/2}=i^{-n}$.
+So, with $\Phi(a,b)=\int_a^be^{2\pi iy^2/n}\dd y$, and $\varepsilon_j=1$ for $j$ even, $\varepsilon_j=i^{-n}$ for $j$ odd,
+\[
+c_j=\varepsilon_j\,\Phi\Bigl(-\frac{jn}2,n-\frac{jn}2\Bigr),
+\]
+Take $N=2L+1$. The intervals $[-\frac{jn}2,n-\frac{jn}2]$ for even $j$ with $|j|\le N$ are $[-ln,n-ln]$, $|l|\le L$, which tile $[-Ln,(L+1)n]$; for odd $j$ with $|j|\le N$
+they tile $[-Ln-\frac n2,(L+1)n+\frac n2]$. So
+\[
+\begin{aligned}\sum_{|j|\le N}c_j&=\Phi\bigl(-Ln,(L+1)n\bigr)\eqbr+i^{-n}\,\Phi\Bigl(-Ln-\frac n2,(L+1)n+\frac n2\Bigr),\end{aligned}
+\]
+and as $L\to\infty$ both integrals tend to $\int_{\R}e^{2\pi iy^2/n}\dd y=\frac{1+i}2\sqrt n$ by Lemma~\ref{lem:fresnel}. Hence $G(n)=(1+i^{-n})\frac{1+i}2\sqrt n$; the
+four cases follow from $i^{-n}=1,-i,-1,i$.
+\end{proof}
+
+\begin{beauty}
+A finite sum of roots of unity, a purely arithmetic object, is evaluated by an integral over the real line. The sign
+that algebra cannot see (the think box: a non-residue $a$ turns $G(p)$ into $-G(p)$) is fixed by analysis, through the
+ordering of the reals that the integral $\int e^{iu}u^{-1/2}\dd u$ quietly uses. Exercise~\ref{ex:reciprocity} turns the result into
+yet another proof of quadratic reciprocity.
+\end{beauty}
+
+\section{Sampling and uncertainty}
+
+\begin{think}
+Human hearing stops around $20$ kHz, and compact discs store $44\,100$ samples per second. Why that number, and not
+$20\,000$?
+\end{think}
+
+A signal is \emph{band-limited} to $W$ if $\hat f(\xi)=0$ for $|\xi|>W$. Let $\operatorname{sinc}(t)=\frac{\sin\pi t}{\pi t}$, with $\operatorname{sinc}(0)=1$; it vanishes at every
+non-zero integer.
+
+\begin{theorem}[Shannon--Whittaker--Kotelnikov]\label{thm:shannon}
+Let $f$ be integrable and band-limited to $W$. Then for every $x$,
+\[
+f(x)=\sum_{n\in\Z}f\Bigl(\frac n{2W}\Bigr)\operatorname{sinc}(2Wx-n),
+\]
+the symmetric partial sums converging. So $f$ is determined by its samples at the rate $2W$ per unit length.
+\end{theorem}
+\begin{proof}
+$\hat f$ is continuous with support in $[-W,W]$, hence integrable, and by inversion $f(x)=\int_{-W}^W\hat f(\xi)e^{2\pi ix\xi}\dd\xi$. Extend $\varphi=\hat f$ and
+$\psi(\xi)=e^{-2\pi ix\xi}$ from $[-W,W[$ to $2W$-periodic piecewise continuous functions, and apply the general form of Parseval's identity,
+Theorem~\ref{thm:parseval}, rescaled to period $2W$, with coefficients $c_n(\cdot)=\frac1{2W}\int_{-W}^W(\cdot)\,e^{-2\pi in\xi/(2W)}\dd\xi$. By inversion,
+$c_n(\varphi)=\frac1{2W}f\bigl(-\frac n{2W}\bigr)$, and a direct integration gives $c_n(\psi)=\operatorname{sinc}(2Wx+n)$, a real number. So
+\[
+\begin{aligned}\frac1{2W}f(x)&=\frac1{2W}\int_{-W}^W\varphi\bar\psi=\sum_nc_n(\varphi)\overline{c_n(\psi)}\\&=\frac1{2W}\sum_nf\Bigl(-\frac n{2W}\Bigr)\operatorname{sinc}(2Wx+n),\end{aligned}
+\]
+and replacing $n$ by $-n$ gives the formula.
+\end{proof}
+
+The rate $2W$ is the \emph{Nyquist rate}. Sampling more slowly loses information: the frequencies $\xi$ and $\xi\pm2W$ produce the
+same samples and cannot be told apart, the \emph{aliasing} of Proposition~\ref{prop:aliasing} (Figure~\ref{fig:alias}). This answers the think
+box: $20$ kHz needs at least $40\,000$ samples per second, and the extra $10\%$ leaves room for the analogue filter that removes
+the frequencies above $20$ kHz before sampling, since no real filter cuts off sharply.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-alias}
+\caption{A tone of $9$ cycles per unit (blue) sampled $10$ times per unit (dots) gives exactly the samples of a tone of $-1$ cycle
+per unit (orange). Below the Nyquist rate, high frequencies masquerade as low ones.}
+\label{fig:alias}
+\end{figure}
+
+\begin{theorem}[Heisenberg's inequality]\label{thm:heisenberg}
+Let $f$ be of class $C^3$, with $f^{(k)}(x)=O\bigl((1+|x|)^{-3}\bigr)$ for $0\le k\le3$. Then
+\[
+\begin{aligned}\Bigl(\int_{\R}x^2|f(x)|^2\dd x\Bigr)&\Bigl(\int_{\R}\xi^2|\hat f(\xi)|^2\dd\xi\Bigr)\eqbr\ge\frac1{16\pi^2}\Bigl(\int_{\R}|f|^2\Bigr)^2,\end{aligned}
+\]
+with equality for $f(x)=e^{-\pi x^2}$.
+\end{theorem}
+\begin{proof}
+All integrals converge by the decay hypothesis, and $|\hat f(\xi)|\le\frac{\|f'''\|_1}{(2\pi|\xi|)^3}$, so $\xi\hat f(\xi)$ is integrable. Integrating by parts,
+with the boundary terms $x|f(x)|^2\to0$,
+\[
+\begin{aligned}\int|f|^2&=-\int x\bigl(|f|^2\bigr)'\dd x\eqbr=-2\operatorname{Re}\int x\bar f(x)f'(x)\dd x\\&\le2\Bigl(\int x^2|f|^2\Bigr)^{1/2}\Bigl(\int|f'|^2\Bigr)^{1/2}\end{aligned}
+\]
+by Cauchy--Schwarz. Now $\widehat{f'}=2\pi i\xi\hat f$ is integrable, so Plancherel applies to $f'$: $\int|f'|^2=4\pi^2\int\xi^2|\hat f|^2$. Squaring gives the
+inequality. For $f=e^{-\pi x^2}=\hat f$ both factors on the left equal $\int x^2e^{-2\pi x^2}\dd x=\frac1{4\pi\sqrt2}$, and $\int|f|^2=\frac1{\sqrt2}$: equality.
+\end{proof}
+
+If $|f|^2$ is the density of a probability distribution, the inequality says that the variances of $|f|^2$ and $|\hat f|^2$ have a
+product at least $\frac1{16\pi^2}$. In quantum mechanics, where position and momentum are a Fourier pair, this is the uncertainty
+principle; in signal processing, a short pulse must have a broad spectrum.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:lorentz}
+Let $a>0$. Show that $e^{-2\pi a|x|}$ has transform $\frac a{\pi(a^2+\xi^2)}$, and deduce from Theorem~\ref{thm:ftinversion} that $\frac1{1+x^2}$ has transform $\pi e^{-2\pi|\xi|}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:hermite}
+Show that $xe^{-\pi x^2}$ has transform $-i\xi e^{-\pi\xi^2}$. Compare with Exercise~\ref{ex:dftorder}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:coth}
+Using Theorem~\ref{thm:poisson} and Exercise~\ref{ex:lorentz}, show that for $a>0$
+\[
+\sum_{n\in\Z}\frac1{n^2+a^2}=\frac\pi a\coth\pi a,
+\]
+and recover $\zeta(2)=\frac{\pi^2}6$ by letting $a\to0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:periodize}
+Let $f$ satisfy the hypotheses of Theorem~\ref{thm:poisson}, and $L>0$. Show that $\sum_nf(x+nL)=\frac1L\sum_m\hat f\bigl(\frac mL\bigr)e^{2\pi imx/L}$. Explain why, as $L\to\infty$,
+this is the Fourier series of the $L$-periodic function $\sum_nf(x+nL)$ turning into the inversion formula of Theorem~\ref{thm:ftinversion}.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:reciprocity}
+(Quadratic reciprocity from the Gauss sum.) Let $p\ne q$ be odd primes and, for $a$ prime to $m$, $G_a(m)=\sum_{k=0}^{m-1}e^{2\pi iak^2/m}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $G_a(p)=\bigl(\frac ap\bigr)G(p)$.
+\item Writing $k=aq+bp$ with $a$ modulo $p$ and $b$ modulo $q$, show that $G(pq)=G_q(p)G_p(q)$.
+\item Deduce from Theorem~\ref{thm:gausssign} that $\bigl(\frac pq\bigr)\bigl(\frac qp\bigr)=(-1)^{\frac{p-1}2\frac{q-1}2}$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:lorentz}
+$2\int_0^\infty e^{-cx}\cos(\omega x)\dd x=\frac{2c}{c^2+\omega^2}$. For the second part, apply inversion to $e^{-2\pi|x|}$.
+\end{hint}
+\begin{hint}{ex:hermite}
+Proposition~\ref{prop:ftbasic}(d) with $f=e^{-\pi x^2}$.
+\end{hint}
+\begin{hint}{ex:coth}
+Take $f(x)=e^{-2\pi a|x|}$; the left side of Poisson's formula is a geometric series. Then $\coth y=\frac1y+\frac y3+O(y^3)$.
+\end{hint}
+\begin{hint}{ex:periodize}
+Apply Theorem~\ref{thm:poisson} to $x\mapsto f(Lx)$. For the limit, $\frac1L\sum_m\hat f(\frac mL)e^{2\pi imx/L}$ is a Riemann sum with step $\frac1L$.
+\end{hint}
+\begin{hint}{ex:reciprocity}
+(a) The proof of Proposition~\ref{prop:gaussfourier}. (b) $k^2\equiv a^2q^2+b^2p^2\pmod{pq}$. (c) Write $G(m)=\varepsilon_m\sqrt m$ with $\varepsilon_m\in\{1,i\}$ for odd $m$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:lorentz}
+\idea The function is even, so its transform is a cosine integral of a decaying exponential, which is elementary.
+\writeup Let $F_a$ be the transform of $e^{-2\pi a|x|}$. Using the hint (the real part of $\int_0^\infty e^{-(c-i\omega)x}\dd x=\frac1{c-i\omega}$),
+\[
+\begin{aligned}F_a(\xi)&=2\int_0^\infty e^{-2\pi ax}\cos(2\pi x\xi)\dd x\eqbr=\frac{2\cdot2\pi a}{(2\pi a)^2+(2\pi\xi)^2}=\frac a{\pi(a^2+\xi^2)}.\end{aligned}
+\]
+With $a=1$, $f=e^{-2\pi|x|}$ and $\hat f=\frac1{\pi(1+\xi^2)}$ are both integrable, so by Theorem~\ref{thm:ftinversion}
+$e^{-2\pi|x|}=\int\frac{e^{2\pi ix\xi}}{\pi(1+\xi^2)}\dd\xi$. Replacing $x$ by $-x$ and exchanging the names of the variables, the transform of $\frac1{1+x^2}$ is $\pi e^{-2\pi|\xi|}$.
+Chapter~9 recomputes it with residues.
+\end{solution}
+
+\begin{solution}{ex:hermite}
+\idea Multiplication by $x$ becomes differentiation on the other side, and the Gaussian is a fixed point.
+\writeup By Proposition~\ref{prop:ftbasic}(d), the transform of $-2\pi ixe^{-\pi x^2}$ is $\frac{\mathrm d}{\mathrm d\xi}e^{-\pi\xi^2}=-2\pi\xi e^{-\pi\xi^2}$. Dividing by $-2\pi i$, the transform of
+$xe^{-\pi x^2}$ is $\frac{\xi}ie^{-\pi\xi^2}=-i\xi e^{-\pi\xi^2}$. So $xe^{-\pi x^2}$ is an eigenfunction with eigenvalue $-i$. As for the DFT, the Fourier transform satisfies
+$\mathcal F^4=\mathrm{id}$ (by inversion, $\mathcal F^2f(x)=f(-x)$), and its eigenvalues are $1,-i,-1,i$, taken by the Hermite functions $H_k(x)e^{-\pi x^2}$ of
+degree $k=0,1,2,3$ modulo $4$.
+\end{solution}
+
+\begin{solution}{ex:coth}
+\idea Poisson's formula trades the sum of $\frac1{n^2+a^2}$, a Lorentzian sampled at the integers, for the sum of its transform at the
+integers, a two-sided geometric series.
+\writeup Let $f(x)=e^{-2\pi a|x|}$: continuous, exponentially decaying, with $\hat f(\xi)=\frac a{\pi(a^2+\xi^2)}=O(\xi^{-2})$. By Theorem~\ref{thm:poisson} at $x=0$,
+\[
+\begin{aligned}\sum_m\frac a{\pi(a^2+m^2)}&=\sum_ne^{-2\pi a|n|}=1+\frac{2e^{-2\pi a}}{1-e^{-2\pi a}}\eqbr=\frac{1+e^{-2\pi a}}{1-e^{-2\pi a}}=\coth\pi a.\end{aligned}
+\]
+Multiply by $\frac\pi a$. Separating $m=0$, $\sum_{m\ge1}\frac1{m^2+a^2}=\frac\pi{2a}\coth\pi a-\frac1{2a^2}$. As $a\to0$, the left side tends to $\zeta(2)$ (uniform convergence,
+the terms being bounded by $\frac1{m^2}$), and with $\coth y=\frac1y+\frac y3+O(y^3)$ the right side is $\frac\pi{2a}\bigl(\frac1{\pi a}+\frac{\pi a}3+O(a^3)\bigr)-\frac1{2a^2}=\frac{\pi^2}6+O(a^2)$.
+\end{solution}
+
+\begin{solution}{ex:periodize}
+\idea Rescale the variable so that the period becomes $1$.
+\writeup $g(x)=f(Lx)$ satisfies the hypotheses, with $\hat g(\xi)=\frac1L\hat f(\frac\xi L)$ by Proposition~\ref{prop:ftbasic}(b). Poisson for $g$ at the point $\frac xL$ gives
+$\sum_nf(x+nL)=\frac1L\sum_m\hat f(\frac mL)e^{2\pi imx/L}$. The left side is $L$-periodic, and the right side is its Fourier series: the frequencies
+$\frac mL$ fill the line more and more densely as $L$ grows. For fixed $x$ and large $L$, the left side is $f(x)$ plus terms $f(x+nL)$, $n\ne0$,
+which are $O(L^{-2})$ each and $O(L^{-1})$ in total, while the right side is a Riemann sum for $\int\hat f(\xi)e^{2\pi ix\xi}\dd\xi$. In the limit we obtain the
+inversion formula: Fourier integrals are Fourier series of infinite period.
+\end{solution}
+
+\begin{solution}{ex:reciprocity}
+\idea Compute $G(pq)$ twice: by the Chinese remainder theorem it splits into a product of two twisted Gauss sums, which are
+Legendre symbols times $G(p)$ and $G(q)$; by Gauss's theorem all three sums are known.
+\writeup (a) Let $\chi=\bigl(\frac\cdot p\bigr)$ and $\omega=e^{2\pi i/p}$. The number of $k$ with $k^2\equiv m$ is $1+\chi(m)$, so $G_a(p)=\sum_m(1+\chi(m))\omega^{am}=\sum_m\chi(m)\omega^{am}$,
+and substituting $m=a^{-1}m'$ gives $\chi(a^{-1})g=\chi(a)G(p)$, as in the proof of Proposition~\ref{prop:gaussfourier}.
+
+(b) As $a$ runs modulo $p$ and $b$ modulo $q$, $k=aq+bp$ runs once over the residues modulo $pq$ (Chinese remainder theorem). Since $k^2\equiv a^2q^2+b^2p^2$
+modulo $pq$, $e^{2\pi ik^2/(pq)}=e^{2\pi iqa^2/p}e^{2\pi ipb^2/q}$, and summing gives $G(pq)=G_q(p)G_p(q)$.
+
+(c) By (a) and (b), $G(pq)=\bigl(\frac qp\bigr)\bigl(\frac pq\bigr)G(p)G(q)$. For odd $m$, Theorem~\ref{thm:gausssign} gives $G(m)=\varepsilon_m\sqrt m$ with $\varepsilon_m=1$ if $m\equiv1$ and $\varepsilon_m=i$ if
+$m\equiv3\pmod4$. So $\bigl(\frac pq\bigr)\bigl(\frac qp\bigr)=\frac{\varepsilon_{pq}}{\varepsilon_p\varepsilon_q}$. If $p$ or $q$ is $\equiv1\pmod4$, then $\varepsilon_{pq}=\varepsilon_p\varepsilon_q$ (one factor is $1$, and $pq$ has the
+residue of the other) and the ratio is $1$; if both are $\equiv3$, then $pq\equiv1$ and the ratio is $\frac1{i\cdot i}=-1$. This is $(-1)^{\frac{p-1}2\frac{q-1}2}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~Stein and R.~Shakarchi, \emph{Fourier Analysis: An Introduction}, Princeton University Press, 2003, Chapters~5
+and~6 (the transform on $\R$, Poisson summation, theta functions, Heisenberg).
+\item H.~Dym and H.~P.~McKean, \emph{Fourier Series and Integrals}, Academic Press, 1972.
+\item B.~C.~Berndt and R.~J.~Evans, \emph{The determination of Gauss sums}, Bulletin of the AMS 5 (1981), 107--129. The
+history of Gauss's four years, and many proofs.
+\item P.~G.~L.~Dirichlet, \emph{\"Uber eine neue Anwendung bestimmter Integrale auf die Summation endlicher oder unendlicher
+Reihen} (1835), in \emph{Werke}, vol.~1, Reimer, Berlin, 1889. The analytic evaluation of $G(n)$ followed here.
+\item C.~E.~Shannon, \emph{Communication in the presence of noise}, Proceedings of the IRE 37 (1949), 10--21.
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer, 1990, Chapter~6.
+\end{itemize}
