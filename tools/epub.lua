@@ -79,8 +79,23 @@ local function number_pass(doc)
   end
 end
 
+-- Unnumbered theorem-like environments (\newtheorem*): pandoc numbers them anyway; drop the number.
+local unnumbered = { remark = true, theoremx = true, propositionx = true, lemmax = true,
+                     corollaryx = true, definitionx = true, examplex = true }
+
 local function rewrite(b)
   if b.t ~= "Div" then return nil end
+  for _, cls in ipairs(b.classes) do
+    if unnumbered[cls] then
+      local para = b.content[1]
+      local first = para and para.content and para.content[1]
+      if first and first.t == "Strong" then
+        first.content = pandoc.Inlines({ pandoc.Str((pandoc.utils.stringify(first.content):gsub("%s*[%d%.]+$", ""))) })
+        para.content[1] = first
+      end
+      return b
+    end
+  end
   if b.classes:includes("exercise") then
     local level = optarg(b.content)
     local t = pandoc.Inlines({ pandoc.Strong({ pandoc.Str(exname .. " " .. b.attributes["number"]) }) })
@@ -103,6 +118,9 @@ local function rewrite(b)
     return b
   elseif b.classes:includes("think") then
     b.content:insert(1, title_para("think", { pandoc.Strong({ pandoc.Str("Pause and think") }) }))
+    return b
+  elseif b.classes:includes("challenge") then
+    b.content:insert(1, title_para("challenge", { pandoc.Strong({ pandoc.Str("Challenges") }) }))
     return b
   elseif b.classes:includes("solution") or b.classes:includes("hint") then
     local para = b.content[1]
