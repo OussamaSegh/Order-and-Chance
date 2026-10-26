@@ -1,0 +1,607 @@
+\chapter{Continuous Martingales}
+
+\begin{center}\itshape
+A fair game watched continuously is a continuous martingale. Each one carries its own clock,\\
+the quadratic variation, which ticks exactly as fast as the game is wild.\\
+For Brownian motion the clock is ordinary time; for every other martingale it is a random time.
+\end{center}
+
+In the eighteenth century a \emph{martingale} was a betting system, the most famous one: bet one coin on red; if you lose, double the stake; stop at the first win. Whatever happens, the first
+win pays back every loss and one coin more, so the gambler wins one coin with probability one. The catch, of course, is that the losses on the way can be as large as you like, and no
+casino and no purse are infinite. Where the word itself comes from is not settled. The historian Roger Mansuy collected the candidates in 2009: the strap of a horse's harness that stops it
+from throwing its head, a style of trousers fastened at the back, and the inhabitants of Martigues in Provence, who were reputed, unfairly no doubt, to be naive enough to play such a system.
+
+The word entered mathematics in 1939, in the doctoral thesis of Jean Ville, \emph{\'Etude critique de la notion de collectif}. Ville was attacking Richard von Mises's definition of a random
+sequence, and his weapon was a precise notion of a fair game: a sequence of capitals in which, given the past, the expected next capital is the present one. He called it a martingale and
+proved the inequality that bears his name, which we met in Tome~10: a non-negative martingale starting at $1$ exceeds $c$ with probability at most $1/c$. Joseph Doob read Ville and
+turned the idea into a theory in the 1940s: convergence, optional stopping, the maximal inequalities of Tome~3. His book \emph{Stochastic Processes} (1953) made Ville's word the standard one.
+
+This chapter moves martingales from integer times to continuous time. Much of the theory comes for free from the discrete one, by looking at dyadic times and using the continuity of the
+paths. One result is genuinely new and is the hinge of everything that follows: every continuous martingale $M$ has a \emph{quadratic variation} $\langle M\rangle$, an increasing process such
+that $M^2-\langle M\rangle$ is again a martingale, and which is the limit of the sums of squared increments, exactly as $\langle B\rangle_t=t$ for Brownian motion (Tome~3). Its existence
+for general martingales was proved by Paul-Andr\'e Meyer in 1962, as a consequence of his decomposition of submartingales, and the calculus of brackets $\langle M,N\rangle$ was developed by
+Hiroshi Kunita and Shinzo Watanabe in 1967. In Chapter~4 it will become the clock of the It\^o integral, and we shall see that a continuous martingale is nothing but a Brownian motion run with
+the clock $\langle M\rangle$.
+
+On the way we meet the \emph{exponential martingales} $e^{\lambda B_t-\lambda^2t/2}$, which give the laws of hitting times with almost no computation, and the \emph{local martingales},
+processes which are martingales until they are stopped and which, surprisingly, need not be martingales at all.
+
+\begin{reminder}[from Tomes 3 and 10]
+\emph{Discrete martingales.} Doob's maximal inequality (Tome~3, Theorem~10.15): if $X$ is a non-negative submartingale and $X^*_n=\max_{k\le n}X_k$, then $\lambda P(X^*_n\ge\lambda)\le\mathbb E X_n$, and
+$\mathbb E(X^*_n)^2\le4\,\mathbb EX_n^2$. A martingale bounded in $L^2$ converges almost surely and in $L^2$ to $M_\infty$, and $M_n=\mathbb E[M_\infty\mid\mathcal F_n]$ (Tome~3, Theorem~10.18).
+Increments of a square integrable martingale are orthogonal. Optional stopping for uniformly integrable martingales (Tome~10, Theorem~9.5): $M_T=\mathbb E[M_\infty\mid\mathcal F_T]$ for every
+stopping time $T$. Conditional expectations of one integrable variable form a uniformly integrable family (Tome~10, Lemma~9.1), and uniformly integrable sequences that converge almost
+surely converge in $L^1$. \emph{Brownian motion.} $\langle B\rangle_t=t$: the sums of squared increments along partitions of $[0,t]$ tend to $t$ (Tome~3, Theorem~11.8); $B_t/t\to0$ as $t\to\infty$, by
+time inversion (Tome~3, Proposition~11.7).
+\end{reminder}
+
+\section{Filtrations and stopping times}
+
+A \emph{filtration} is an increasing family $(\mathcal F_t)_{t\ge0}$ of sub-$\sigma$-algebras of $\mathcal F$. A process $X$ is \emph{adapted} if each $X_t$ is $\mathcal F_t$-measurable. We set
+$\mathcal F_{t+}=\bigcap_{s>t}\mathcal F_s$ and $\mathcal F_\infty=\sigma\bigl(\bigcup_t\mathcal F_t\bigr)$.
+
+\begin{definition}\label{def:usual}
+A filtration satisfies the \emph{usual conditions} if it is \emph{right-continuous}, $\mathcal F_{t+}=\mathcal F_t$ for all $t$, and \emph{complete}: $\mathcal F_0$ contains every subset of a
+null set of $\mathcal F$. A continuous adapted process $B$ is an \emph{$(\mathcal F_t)$-Brownian motion} if $B_0=0$ and, for all $s<t$, $B_t-B_s$ is $N(0,t-s)$ and independent of $\mathcal F_s$.
+\end{definition}
+
+Completeness is a convenience: a limit that exists almost surely can be declared adapted without worrying about the exceptional set. Right-continuity is more interesting: it says that
+nothing is learned by peeking an instant into the future. For Brownian motion this costs nothing, by the argument of Blumenthal's zero--one law.
+
+\begin{proposition}\label{prop:brownfilt}
+Let $B$ be a Brownian motion, $\mathcal F^0_t=\sigma(B_s:s\le t)$, $\mathcal N$ the null sets of $\mathcal F$ and $\mathcal F_t=\sigma(\mathcal F^0_t\cup\mathcal N)$. Then $(\mathcal F_t)$ satisfies the usual conditions and
+$B$ is an $(\mathcal F_t)$-Brownian motion. We call it the \emph{Brownian filtration}.
+\end{proposition}
+
+\begin{proof}
+Adding null sets does not change independence, so $B$ is an $(\mathcal F_t)$-Brownian motion. For right-continuity, fix $s\ge0$ and let $\xi$ be bounded and $\mathcal F^0_\infty$-measurable. We claim
+that $\mathbb E[\xi\mid\mathcal F^0_{s+}]=\mathbb E[\xi\mid\mathcal F^0_s]$ almost surely. The events $A$ for which the claim holds with $\xi=\mathbf 1_A$ form a $\lambda$-system, so by the $\pi$-$\lambda$ theorem (Tome~10, Lemma~1.1) it suffices to treat the events
+$\{(B_{r_i})_i\in U,(B_{t_i}-B_s)_i\in V\}$ with $U,V$ open; their indicators are increasing limits of products of bounded continuous functions, and conditional monotone convergence reduces us to
+\[
+\xi=h(B_{r_1},\dots,B_{r_j})\,f(B_{t_1}-B_s,\dots,B_{t_k}-B_s),\qquad r_i\le s<t_1<\dots<t_k,
+\]
+with $h,f$ bounded, continuous and non-negative; bounded $\xi$ then follow by linearity and uniform approximation. For $0<\varepsilon<t_1-s$, independence of the increments after $s+\varepsilon$ gives
+$\mathbb E[\xi\mid\mathcal F^0_{s+\varepsilon}]=h(B_{r_1},\dots,B_{r_j})\,\varphi_\varepsilon(B_{s+\varepsilon}-B_s)$, where $\varphi_\varepsilon(x)=\mathbb E f\bigl(x+B_{t_1}-B_{s+\varepsilon},\dots,x+B_{t_k}-B_{s+\varepsilon}\bigr)$.
+Conditioning on the smaller $\sigma$-algebra $\mathcal F^0_{s+}$,
+\[
+\mathbb E[\xi\mid\mathcal F^0_{s+}]=h(B_{r_1},\dots,B_{r_j})\,\mathbb E\bigl[\varphi_\varepsilon(B_{s+\varepsilon}-B_s)\bigm|\mathcal F^0_{s+}\bigr].
+\]
+As $\varepsilon\to0$, $\varphi_\varepsilon(B_{s+\varepsilon}-B_s)=\mathbb E'f\bigl(x+B'_{t_i}-B'_{s+\varepsilon}\bigr)|_{x=B_{s+\varepsilon}-B_s}$ (with $B'$ an independent copy) tends to $c=\mathbb Ef(B_{t_1}-B_s,\dots,B_{t_k}-B_s)$
+by continuity of the paths and bounded convergence. Conditional bounded convergence gives $\mathbb E[\xi\mid\mathcal F^0_{s+}]=c\,h(B_{r_1},\dots,B_{r_j})=\mathbb E[\xi\mid\mathcal F^0_s]$.
+
+Now let $A\in\mathcal F^0_{s+}$. Then $\mathbf 1_A=\mathbb E[\mathbf 1_A\mid\mathcal F^0_{s+}]=\mathbb E[\mathbf 1_A\mid\mathcal F^0_s]$ almost surely, so $A$ differs from the $\mathcal F^0_s$-set $\{\mathbb E[\mathbf 1_A\mid\mathcal F^0_s]=1\}$ by a null set:
+$\mathcal F^0_{s+}\subseteq\mathcal F_s$. Finally let $A\in\bigcap_{n}\mathcal F_{s+1/n}$. For each $n$ there is $A_n\in\mathcal F^0_{s+1/n}$ with $P(A\,\triangle\,A_n)=0$. The set $A'=\limsup_nA_n$ lies in
+$\mathcal F^0_{s+1/m}$ for every $m$ (drop the first terms), hence in $\mathcal F^0_{s+}\subseteq\mathcal F_s$, and $A\,\triangle\,A'\subseteq\bigcup_n(A\,\triangle\,A_n)$ is null. So $A\in\mathcal F_s$.
+\end{proof}
+
+\emph{From now on, filtrations satisfy the usual conditions}, and Brownian motions are $(\mathcal F_t)$-Brownian motions; the Brownian filtration is the default.
+
+\begin{definition}\label{def:stoptime}
+A \emph{stopping time} is a random variable $\tau$ with values in $[0,\infty]$ such that $\{\tau\le t\}\in\mathcal F_t$ for every $t$. Its \emph{past} is
+$\mathcal F_\tau=\{A\in\mathcal F_\infty:A\cap\{\tau\le t\}\in\mathcal F_t\text{ for all }t\}$. The \emph{stopped process} is $X^\tau_t=X_{\tau\wedge t}$.
+\end{definition}
+
+\begin{lemma}\label{lem:stopping}
+Let $\sigma,\tau$ be stopping times and $X$ a continuous adapted process with values in $\R^d$.
+\begin{enumerate}[label=(\alph*)]
+\item $\sigma\wedge\tau$ and $\sigma\vee\tau$ are stopping times, and if $\sigma\le\tau$ then $\mathcal F_\sigma\subseteq\mathcal F_\tau$.
+\item $X$ is \emph{progressive}: for each $t$, $(s,\omega)\mapsto X_s(\omega)$ on $[0,t]\times\Omega$ is $\mathcal B[0,t]\otimes\mathcal F_t$-measurable. Consequently $X_\tau\mathbf 1_{\{\tau<\infty\}}$ is
+$\mathcal F_\tau$-measurable, and $X^\tau$ is continuous and adapted.
+\item For a closed set $F$, $\tau_F=\inf\{t\ge0:X_t\in F\}$ is a stopping time; for an open set $G$, so is $\inf\{t\ge0:X_t\in G\}$.
+\item $\tau_n=2^{-n}(\lfloor2^n\tau\rfloor+1)$ (with $\tau_n=\infty$ where $\tau=\infty$) is a stopping time with values in $2^{-n}\N\cup\{\infty\}$, and $\tau_n\downarrow\tau$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) $\{\sigma\wedge\tau\le t\}=\{\sigma\le t\}\cup\{\tau\le t\}$ and $\{\sigma\vee\tau\le t\}=\{\sigma\le t\}\cap\{\tau\le t\}$. If $\sigma\le\tau$ and $A\in\mathcal F_\sigma$, then
+$A\cap\{\tau\le t\}=\bigl(A\cap\{\sigma\le t\}\bigr)\cap\{\tau\le t\}\in\mathcal F_t$.
+
+(b) Fix $t$ and let $X^{(n)}_s=X_{kt2^{-n}}$ for $s\in\,](k-1)t2^{-n},kt2^{-n}]$, $X^{(n)}_0=X_0$. Each $X^{(n)}$ is a finite sum of indicators of intervals times $\mathcal F_t$-measurable variables, so it is
+$\mathcal B[0,t]\otimes\mathcal F_t$-measurable, and $X^{(n)}_s\to X_s$ by continuity. For the second claim, $\tau\wedge t$ is $\mathcal F_t$-measurable, so $\omega\mapsto(\tau(\omega)\wedge t,\omega)$ is measurable
+from $\mathcal F_t$ to $\mathcal B[0,t]\otimes\mathcal F_t$, and its composition with $X$ shows that $X_{\tau\wedge t}$ is $\mathcal F_t$-measurable. Hence $X^\tau$ is adapted, and for a Borel set $\Gamma$,
+$\{X_\tau\in\Gamma\}\cap\{\tau\le t\}=\{X_{\tau\wedge t}\in\Gamma\}\cap\{\tau\le t\}\in\mathcal F_t$.
+
+(c) The function $s\mapsto d(X_s,F)$ is continuous and the set $\{s:X_s\in F\}$ is closed, so $\tau_F\le t$ if and only if $\inf_{s\le t}d(X_s,F)=0$, if and only if the infimum over the countable set
+$(\Q\cap[0,t])\cup\{t\}$ is $0$: an event of $\mathcal F_t$. For $G$ open, $\{\inf\{s:X_s\in G\}<t\}=\bigcup_{s\in\Q,s<t}\{X_s\in G\}\in\mathcal F_t$ by continuity, and then
+$\{\,\cdot\le t\}=\bigcap_n\{\,\cdot<t+1/n\}\in\mathcal F_{t+}=\mathcal F_t$.
+
+(d) $\tau_n=k2^{-n}$ exactly when $(k-1)2^{-n}\le\tau<k2^{-n}$, so $\{\tau_n\le t\}=\{\tau<2^{-n}\lfloor2^nt\rfloor\}$, and $\{\tau<u\}=\bigcup_m\{\tau\le u-1/m\}\in\mathcal F_u$. Clearly
+$\tau<\tau_n\le\tau+2^{-n}$, and $\tau_{n+1}\le\tau_n$.
+\end{proof}
+
+The hitting time of an open set needs right-continuity, and it is the reason for the usual conditions: the path may touch the boundary of $G$ at time $t$ and enter $G$ only at times
+$t+\varepsilon$, a fact decided by $\mathcal F_{t+}$ and not by $\mathcal F_t$.
+
+\section{Continuous martingales}
+
+A \emph{martingale} (resp.\ submartingale) is an adapted process $M$ with $\mathbb E|M_t|<\infty$ and $\mathbb E[M_t\mid\mathcal F_s]=M_s$ (resp.\ $\ge M_s$) for $s<t$. A Brownian motion is a martingale, and so are
+$B_t^2-t$ and, for independent coordinates, $B^i_tB^j_t$ ($i\ne j$): expand around time $s$ and use the independence of the increments.
+
+\begin{theorem}[Doob's inequalities in continuous time]\label{thm:doobcont}
+Let $X$ be a continuous non-negative submartingale and $t,\lambda>0$. Then
+\[
+\lambda\,P\Bigl(\sup_{s\le t}X_s\ge\lambda\Bigr)\le\mathbb EX_t,\qquad\mathbb E\Bigl[\sup_{s\le t}X_s^2\Bigr]\le4\,\mathbb E X_t^2 .
+\]
+In particular, for a continuous martingale $M$, $\mathbb E\bigl[\sup_{s\le t}M_s^2\bigr]\le4\,\mathbb EM_t^2$.
+\end{theorem}
+
+\begin{proof}
+Let $D_n=\{kt2^{-n}:0\le k\le2^n\}$. Along $D_n$, $X$ is a discrete non-negative submartingale ending at $X_t$, so Tome~3, Theorem~10.15 gives $\lambda'P(\max_{D_n}X\ge\lambda')\le\mathbb EX_t$ and
+$\mathbb E\max_{D_n}X^2\le4\,\mathbb EX_t^2$. By continuity, $\max_{D_n}X\uparrow\sup_{[0,t]}X$. Monotone convergence gives the second inequality. For the first, $\{\sup_{[0,t]}X>\lambda'\}$ is the increasing union of
+the events $\{\max_{D_n}X>\lambda'\}$, so $\lambda'P(\sup_{[0,t]}X>\lambda')\le\mathbb EX_t$, and we let $\lambda'\uparrow\lambda$. For a martingale $M$, $|M|$ is a non-negative submartingale by the conditional Jensen
+inequality.
+\end{proof}
+
+\begin{theorem}[optional stopping]\label{thm:ostcont}
+Let $M$ be a continuous martingale and $\sigma\le\tau$ bounded stopping times. Then $M_\tau$ is integrable and $\mathbb E[M_\tau\mid\mathcal F_\sigma]=M_\sigma$.
+\end{theorem}
+
+\begin{proof}
+Let $\tau\le K$ with $K$ an integer, and let $\sigma_n,\tau_n$ be the dyadic approximations of Lemma~\ref{lem:stopping}(d), so $\sigma_n\le\tau_n\le K+1$. Along the times $2^{-n}\N$, $M$ is a discrete martingale, and
+stopped at the constant $(K+1)2^{n}$ it is uniformly integrable with final value $M_{K+1}$. Tome~10, Theorem~9.5 applied to the stopping times $2^n\sigma_n\le2^n\tau_n$ gives
+\[
+M_{\tau_n}=\mathbb E[M_{K+1}\mid\mathcal F_{\tau_n}],\qquad M_{\sigma_n}=\mathbb E[M_{K+1}\mid\mathcal F_{\sigma_n}]=\mathbb E[M_{\tau_n}\mid\mathcal F_{\sigma_n}],
+\]
+the last by the tower property, since $\mathcal F_{\sigma_n}\subseteq\mathcal F_{\tau_n}$. (The past of $\tau_n$ in the discrete sense is the same as in Definition~\ref{def:stoptime}, because $\tau_n$ takes
+dyadic values.) By Tome~10, Lemma~9.1, the families $(M_{\tau_n})_n$ and $(M_{\sigma_n})_n$ are uniformly integrable; by continuity they converge almost surely to $M_\tau$ and $M_\sigma$, hence in $L^1$. Now let
+$A\in\mathcal F_\sigma\subseteq\mathcal F_{\sigma_n}$ (Lemma~\ref{lem:stopping}(a)). Then $\mathbb E[M_{\tau_n}\mathbf 1_A]=\mathbb E[M_{\sigma_n}\mathbf 1_A]$, and letting $n\to\infty$,
+$\mathbb E[M_\tau\mathbf 1_A]=\mathbb E[M_\sigma\mathbf 1_A]$. Since $M_\sigma$ is $\mathcal F_\sigma$-measurable (Lemma~\ref{lem:stopping}(b)), this is the claim.
+\end{proof}
+
+\begin{corollary}\label{cor:stopped}
+If $M$ is a continuous martingale and $\tau$ a stopping time, the stopped process $M^\tau$ is a continuous martingale.
+\end{corollary}
+
+\begin{proof}
+Let $s<t$ and $A\in\mathcal F_s$. The set $A\cap\{\tau>s\}$ belongs to $\mathcal F_{\tau\wedge s}$: its intersection with $\{\tau\wedge s\le u\}$ is empty if $u<s$ and equals $A\cap\{\tau>s\}\in\mathcal F_s\subseteq\mathcal F_u$ if
+$u\ge s$. Theorem~\ref{thm:ostcont} with $\tau\wedge s\le\tau\wedge t$ gives $\mathbb E[M_{\tau\wedge t}\mathbf 1_{A\cap\{\tau>s\}}]=\mathbb E[M_{\tau\wedge s}\mathbf 1_{A\cap\{\tau>s\}}]$. On $\{\tau\le s\}$, $M_{\tau\wedge t}=M_{\tau\wedge s}$.
+Adding, $\mathbb E[M_{\tau\wedge t}\mathbf 1_A]=\mathbb E[M_{\tau\wedge s}\mathbf 1_A]$.
+\end{proof}
+
+\begin{theorem}[convergence in $L^2$]\label{thm:L2cont}
+Let $M$ be a continuous martingale with $\sup_t\mathbb EM_t^2<\infty$. There is $M_\infty\in L^2$ with $M_t\to M_\infty$ almost surely and in $L^2$ as $t\to\infty$, and $M_t=\mathbb E[M_\infty\mid\mathcal F_t]$ for every $t$.
+\end{theorem}
+
+\begin{proof}
+At integer times, Tome~3, Theorem~10.18 gives $M_\infty$ with $M_n\to M_\infty$ almost surely and in $L^2$, and $M_n=\mathbb E[M_\infty\mid\mathcal F_n]$; for $t\le n$, $M_t=\mathbb E[M_n\mid\mathcal F_t]=\mathbb E[M_\infty\mid\mathcal F_t]$.
+For integers $k<N$, $(M_{k+s}-M_k)_{s\ge0}$ is a continuous martingale for $(\mathcal F_{k+s})$, so by Theorem~\ref{thm:doobcont}, and because $M_N-M_k=\mathbb E[M_\infty-M_k\mid\mathcal F_N]$,
+\[
+\mathbb E\sup_{k\le t\le N}(M_t-M_k)^2\le4\,\mathbb E(M_N-M_k)^2\le4\,\mathbb E(M_\infty-M_k)^2 .
+\]
+Let $N\to\infty$ and put $\Delta_k=\sup_{t\ge k}|M_t-M_k|+|M_k-M_\infty|$: then $\mathbb E\Delta_k^2\le10\,\mathbb E(M_\infty-M_k)^2\to0$. For $t\ge k$, $|M_t-M_\infty|\le\Delta_k$. So $\limsup_t|M_t-M_\infty|\le\inf_k\Delta_k$,
+which is $0$ almost surely because a subsequence of $(\Delta_k)$ tends to $0$ almost surely; and $\mathbb E(M_t-M_\infty)^2\le\mathbb E\Delta_k^2$ for $t\ge k$.
+\end{proof}
+
+\section{Local martingales}
+
+Many natural processes are martingales only as long as they are kept on a leash. The It\^o integral of Chapter~4 is the main example, and the definition below is built to contain it.
+
+\begin{definition}\label{def:localmart}
+A continuous adapted process $M$ is a \emph{continuous local martingale} if there are stopping times $\tau_n\uparrow\infty$ almost surely such that, for each $n$, $M^{\tau_n}-M_0$ is a martingale.
+The sequence $(\tau_n)$ is said to \emph{reduce} $M$.
+\end{definition}
+
+\begin{proposition}\label{prop:localmart}
+Let $M$ be a continuous local martingale.
+\begin{enumerate}[label=(\alph*)]
+\item Every continuous martingale is a continuous local martingale, and so is $M^\sigma$ for every stopping time $\sigma$. Sums of continuous local martingales are continuous local martingales.
+\item The stopping times $\sigma_n=\inf\{t:|M_t-M_0|\ge n\}$ reduce $M$, and $|M^{\sigma_n}-M_0|\le n$.
+\item If $\mathbb E\sup_{s\le t}|M_s-M_0|<\infty$ for every $t$, then $M-M_0$ is a martingale. In particular, a bounded continuous local martingale is a martingale.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Take $\tau_n=\infty$. If $(\tau_n)$ reduces $M$, then $(M^\sigma)^{\tau_n}-M_0=(M^{\tau_n}-M_0)^\sigma$ is a martingale by Corollary~\ref{cor:stopped}. If $(\tau_n)$ reduces $M$ and $(\rho_n)$ reduces $N$, then $\tau_n\wedge\rho_n$
+reduces both, hence $M+N$.
+
+(b) By Lemma~\ref{lem:stopping}(c), $\sigma_n$ is a stopping time, and $\sigma_n\uparrow\infty$ by continuity. If $(\tau_k)$ reduces $M$, then $(M^{\tau_k}-M_0)^{\sigma_n}$ is a martingale bounded by $n$. As $k\to\infty$,
+it converges pointwise to $M^{\sigma_n}-M_0$, and conditional bounded convergence preserves the martingale property.
+
+(c) Same argument with $\tau_k$ reducing $M$: $M_{\tau_k\wedge t}-M_0\to M_t-M_0$, dominated by the integrable variable $\sup_{s\le t}|M_s-M_0|$, and conditional dominated convergence applies.
+\end{proof}
+
+\begin{remark}
+Integrability of each $M_t$ is \emph{not} enough for (c). Exercise~\ref{ex:strict} builds a continuous local martingale bounded above, with $M_0=0$ and $M_1=1$: a perfectly fair game in every bounded
+stretch that nevertheless wins for sure. The doubling strategy of the opening is its discrete ancestor. A non-negative continuous local martingale with integrable initial value is always a supermartingale (Exercise~\ref{ex:superm}),
+which is the honest half of fairness that survives.
+\end{remark}
+
+\section{The quadratic variation}
+
+The key observation is that a continuous martingale cannot be smooth. If its paths had bounded variation, the martingale would not move at all.
+
+\begin{lemma}\label{lem:variation}
+Let $f:[0,T]\to\R$ be continuous with finite total variation $V(t)=\sup\sum_i|f(t_i)-f(t_{i-1})|$ (supremum over partitions of $[0,t]$). Then $V$ is continuous, and $V(t)$ is the limit of the sums along the dyadic
+partitions $\{kt2^{-n}\}$ of $[0,t]$.
+\end{lemma}
+
+\begin{proof}
+Write $V(s,t)=V(t)-V(s)$ for the variation over $[s,t]$. Fix $t<T$ and $\varepsilon>0$. Choose a partition $t=s_0<s_1<\dots<s_m=T$ with $\sum_i|f(s_i)-f(s_{i-1})|>V(t,T)-\varepsilon$; adding a point does not decrease the
+sum, so we may assume $|f(s_1)-f(t)|<\varepsilon$. Then $V(t,T)-\varepsilon<\varepsilon+V(s_1,T)$, so $V(t,s_1)<2\varepsilon$, and $V$ is right-continuous at $t$. Left-continuity is the same argument on $[0,t]$.
+For the dyadic sums: refining a partition does not decrease the sum, and given a partition $\pi$ of $[0,t]$ with $m$ points and sum $>V(t)-\varepsilon$, moving each point of $\pi$ to the nearest point of
+level $n$ changes the sum by at most $2m\,\omega(t2^{-n})$, where $\omega$ is the modulus of uniform continuity of $f$. The moved partition is coarser than the dyadic one of level $n$, so the dyadic sum
+of level $n$ exceeds $V(t)-2\varepsilon$ for $n$ large.
+\end{proof}
+
+\begin{theorem}\label{thm:fvconstant}
+A continuous local martingale $M$ with $M_0=0$ whose paths have finite variation on every bounded interval is identically zero: almost surely, $M_t=0$ for all $t$.
+\end{theorem}
+
+\begin{proof}
+Let $V_t$ be the variation of $M$ on $[0,t]$. By Lemma~\ref{lem:variation}, $V$ is continuous, and adapted as a limit of $\mathcal F_t$-measurable dyadic sums. So $\tau_n=\inf\{t:V_t\ge n\}$ is a stopping time,
+$\tau_n\uparrow\infty$, and $N=M^{\tau_n}$ satisfies $|N_t|\le V_{t\wedge\tau_n}\le n$; by Proposition~\ref{prop:localmart}, $N$ is a bounded martingale. Fix $t$ and a partition $0=t_0<\dots<t_k=t$. The increments of the
+martingale $N$ are orthogonal, so
+\[
+\mathbb EN_t^2=\mathbb E\sum_{i=1}^k(N_{t_i}-N_{t_{i-1}})^2\le\mathbb E\Bigl[\max_i|N_{t_i}-N_{t_{i-1}}|\cdot\sum_i|N_{t_i}-N_{t_{i-1}}|\Bigr]\le n\,\mathbb E\max_i|N_{t_i}-N_{t_{i-1}}| .
+\]
+As the mesh tends to $0$, the maximum tends to $0$ by uniform continuity, and it is bounded by $2n$; so $\mathbb EN_t^2=0$. Hence $M_{t\wedge\tau_n}=0$ almost surely for all rational $t$ and all $n$, and by
+continuity $M\equiv0$.
+\end{proof}
+
+The existence of the clock rests on one estimate on squared increments, in which the martingale property is used twice.
+
+\begin{lemma}\label{lem:fourth}
+Let $M$ be a continuous martingale with $|M|\le C$, and $0=s_0<s_1<\dots<s_m$. Then
+\[
+\mathbb E\Bigl[\Bigl(\sum_{i=1}^m(M_{s_i}-M_{s_{i-1}})^2\Bigr)^2\Bigr]\le48\,C^4 .
+\]
+\end{lemma}
+
+\begin{proof}
+Write $D_i=M_{s_i}-M_{s_{i-1}}$, so $|D_i|\le2C$. Expanding the square, $\bigl(\sum D_i^2\bigr)^2=\sum_iD_i^4+2\sum_iD_i^2\sum_{j>i}D_j^2$. By orthogonality of the increments after $s_i$,
+$\mathbb E\bigl[\sum_{j>i}D_j^2\bigm|\mathcal F_{s_i}\bigr]=\mathbb E\bigl[(M_{s_m}-M_{s_i})^2\bigm|\mathcal F_{s_i}\bigr]\le4C^2$, and $D_i^4\le4C^2D_i^2$. Hence
+\[
+\mathbb E\Bigl(\sum D_i^2\Bigr)^2\le4C^2\,\mathbb E\sum D_i^2+8C^2\,\mathbb E\sum D_i^2=12C^2\,\mathbb E(M_{s_m}-M_0)^2\le48C^4 .
+\]
+\end{proof}
+
+\begin{theorem}[the quadratic variation]\label{thm:qvexist}
+Let $M$ be a continuous local martingale with $M_0=0$. There is a unique (up to indistinguishability) continuous increasing adapted process $\langle M\rangle$ with $\langle M\rangle_0=0$ such that
+$M^2-\langle M\rangle$ is a continuous local martingale. If $M$ is a bounded martingale, $M^2-\langle M\rangle$ is a martingale and $\mathbb E\langle M\rangle_t^2<\infty$ for all $t$.
+\end{theorem}
+
+\begin{proof}
+\emph{Uniqueness.} If $A$ and $A'$ both qualify, $A-A'=(M^2-A')-(M^2-A)$ is a continuous local martingale (Proposition~\ref{prop:localmart}(a)) of finite variation, zero at time $0$; it vanishes by
+Theorem~\ref{thm:fvconstant}.
+
+\emph{Existence for bounded $M$, on a finite horizon.} Let $|M|\le C$ and fix $K>0$. Let $t^n_i=iK2^{-n}$ for $0\le i\le2^n$ and, for $t\in[0,K]$,
+\[
+X^n_t=\sum_{i=1}^{2^n}M_{t^n_{i-1}}\bigl(M_{t^n_i\wedge t}-M_{t^n_{i-1}\wedge t}\bigr).
+\]
+Each term is a continuous martingale: it vanishes for $t\le t^n_{i-1}$, and for $s<t$ the conditional expectation given $\mathcal F_s$ is computed by first conditioning on $\mathcal F_{t^n_{i-1}}$ when $s<t^n_{i-1}$, and
+directly when $s\ge t^n_{i-1}$. The algebraic identity $b^2-a^2=2a(b-a)+(b-a)^2$, summed along the partition, gives for every $t\in[0,K]$
+\begin{equation}\label{eq:qvidentity}
+M_t^2-M_0^2=2X^n_t+\sum_{i=1}^{2^n}\bigl(M_{t^n_i\wedge t}-M_{t^n_{i-1}\wedge t}\bigr)^2 .
+\end{equation}
+\emph{The $X^n$ form a Cauchy sequence.} Let $m<n$, and for a point $u$ of level $n$ let $\underline u$ be the largest point of level $m$ with $\underline u\le u$. Splitting each interval of level $m$ into intervals
+of level $n$,
+\[
+X^n_K-X^m_K=\sum_{i=1}^{2^n}\bigl(M_{t^n_{i-1}}-M_{\underline{t^n_{i-1}}}\bigr)\bigl(M_{t^n_i}-M_{t^n_{i-1}}\bigr).
+\]
+The terms are of the form $H_iD_i$ with $H_i$ bounded and $\mathcal F_{t^n_{i-1}}$-measurable, and they are orthogonal (condition on $\mathcal F_{t^n_{j-1}}$ for the term with the larger index $j$). Let
+$\omega_m=\sup\{|M_u-M_v|:u,v\le K,\ |u-v|\le K2^{-m}\}$, which tends to $0$ as $m\to\infty$ by uniform continuity, and is bounded by $2C$. Cauchy--Schwarz and Lemma~\ref{lem:fourth} give
+\[
+\mathbb E(X^n_K-X^m_K)^2=\mathbb E\sum_iH_i^2D_i^2\le\mathbb E\Bigl[\omega_m^2\sum_iD_i^2\Bigr]\le\bigl(\mathbb E\omega_m^4\bigr)^{1/2}\bigl(48C^4\bigr)^{1/2}\xrightarrow[m\to\infty]{}0 .
+\]
+By Doob's inequality (Theorem~\ref{thm:doobcont}) for the martingale $X^n-X^m$, $\mathbb E\sup_{t\le K}(X^n_t-X^m_t)^2\to0$. Choose $n_1<n_2<\cdots$ with $\mathbb E\sup_{t\le K}(X^{n_{k+1}}_t-X^{n_k}_t)^2\le4^{-k}$.
+Then $\mathbb E\sum_k\sup_{t\le K}|X^{n_{k+1}}_t-X^{n_k}_t|<\infty$, so almost surely $X^{n_k}$ converges uniformly on $[0,K]$ to a continuous process $Y$, which is adapted because the filtration is complete. For each
+$t$, $X^n_t\to Y_t$ in $L^2$, and $L^2$ limits of martingales are martingales, because conditional expectation is continuous in $L^2$. So $Y$ is a continuous martingale on $[0,K]$, square integrable.
+
+\emph{The clock.} Put $A_t=M_t^2-M_0^2-2Y_t$ for $t\le K$. It is continuous, adapted, $A_0=0$, $\mathbb EA_t^2<\infty$, and $M^2-A=M_0^2+2Y$ is a martingale on $[0,K]$. It is increasing: if $s<t$ are points of some
+level $\ell$, then for $n\ge\ell$ both are points of level $n$, and by \eqref{eq:qvidentity} $M^2_u-2X^n_u$ at $u=t$ exceeds its value at $u=s$ by the sum of the squared increments between $s$ and $t$. Letting
+$n=n_k\to\infty$, $A_t\ge A_s$. So $A$ is increasing on the dyadic points of $[0,K]$, hence everywhere by continuity.
+
+\emph{All times.} Let $A^K$ denote the process just built. For $K<K'$, the process $\bigl(A^{K'}_{t\wedge K}-A^K_{t\wedge K}\bigr)_{t\ge0}$ is a continuous martingale (a difference of two martingales stopped at $K$) of finite
+variation, so it vanishes by Theorem~\ref{thm:fvconstant}: the $A^K$ are consistent, and together they define $\langle M\rangle$ on $[0,\infty[$.
+
+\emph{Local martingales.} Let $\sigma_n=\inf\{t:|M_t|\ge n\}$. By Proposition~\ref{prop:localmart}(b), $M^{\sigma_n}$ is a bounded martingale; let $A^{(n)}=\langle M^{\sigma_n}\rangle$. Stopping at $\sigma_n$ the martingale
+$(M^{\sigma_{n+1}})^2-A^{(n+1)}$ (Corollary~\ref{cor:stopped}) shows that $(M^{\sigma_n})^2-(A^{(n+1)})^{\sigma_n}$ is a martingale, so by uniqueness $(A^{(n+1)})^{\sigma_n}=A^{(n)}$. Hence there is a continuous increasing
+process $\langle M\rangle$ with $\langle M\rangle^{\sigma_n}=A^{(n)}$ for every $n$, and $(M^2-\langle M\rangle)^{\sigma_n}=(M^{\sigma_n})^2-A^{(n)}$ is a martingale: $(\sigma_n)$ reduces $M^2-\langle M\rangle$.
+\end{proof}
+
+For an $(\mathcal F_t)$-Brownian motion, $B^2_t-t$ is a martingale, so uniqueness gives $\langle B\rangle_t=t$. The name ``quadratic variation'' is justified by the next result, which extends Tome~3, Theorem~11.8
+from Brownian motion to every continuous local martingale.
+
+\begin{proposition}\label{prop:qvsums}
+Let $M$ be a continuous local martingale with $M_0=0$, $t>0$, and $\pi_n=\{0=t^n_0<\dots<t^n_{k_n}=t\}$ partitions whose mesh tends to $0$. Then
+\[
+Q_n=\sum_{i=1}^{k_n}\bigl(M_{t^n_i}-M_{t^n_{i-1}}\bigr)^2\longrightarrow\langle M\rangle_t\quad\text{in probability},
+\]
+and in $L^2$ if $M$ is bounded.
+\end{proposition}
+
+\begin{proof}
+Suppose first $|M|\le C$, and write $A=\langle M\rangle$, $D_i=M_{t_i}-M_{t_{i-1}}$, $a_i=A_{t_i}-A_{t_{i-1}}$ (dropping $n$). Then $Q_n-A_t=\sum_iZ_i$ with $Z_i=D_i^2-a_i$, and
+$\mathbb E[Z_i\mid\mathcal F_{t_{i-1}}]=\mathbb E\bigl[M_{t_i}^2-M_{t_{i-1}}^2-a_i\bigm|\mathcal F_{t_{i-1}}\bigr]=0$ because $M^2-A$ is a martingale. So the $Z_i$ are orthogonal and
+\[
+\mathbb E(Q_n-A_t)^2=\sum_i\mathbb EZ_i^2\le2\,\mathbb E\Bigl[\max_iD_i^2\cdot Q_n\Bigr]+2\,\mathbb E\Bigl[\max_ia_i\cdot A_t\Bigr].
+\]
+The first term is at most $2(\mathbb E\max_iD_i^4)^{1/2}(48C^4)^{1/2}$ by Lemma~\ref{lem:fourth}, and $\max_iD_i\to0$ boundedly. In the second, $\max_ia_i\to0$ by uniform continuity of $A$ on $[0,t]$, and $\max_ia_i\cdot A_t\le A_t^2$,
+which is integrable: dominated convergence. In general, let $\sigma_k=\inf\{s:|M_s|\ge k\}$. On $\{\sigma_k>t\}$, $Q_n$ and $\langle M\rangle_t$ coincide with the same quantities for the bounded martingale $M^{\sigma_k}$, whose
+bracket is $\langle M\rangle^{\sigma_k}$. Hence
+$P(|Q_n-\langle M\rangle_t|>\varepsilon)\le P(\sigma_k\le t)+P\bigl(|Q_n(M^{\sigma_k})-\langle M^{\sigma_k}\rangle_t|>\varepsilon\bigr)$. Choose $k$ to make the first term small, then $n$ large.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-qv}
+\caption{Top: Brownian motion stopped when it leaves $]-0.8,0.8[$, a continuous martingale $M$. Bottom: the sums of squared increments of $M$ along the dyadic partitions of $[0,t]$ of levels $3$, $5$ and
+$7$ (thin lines, darker for finer), against the clock $\langle M\rangle_t=t\wedge\tau$ (thick). The clock stops when the game stops.}
+\label{fig:qv}
+\end{figure}
+
+\begin{beauty}
+The clock $\langle M\rangle$ is a pathwise object: it is read off a single path, as a limit of sums of squares, with no expectation in sight. Yet it is pinned down by an expectation, the requirement that
+$M^2-\langle M\rangle$ be a martingale. Brownian motion is the martingale whose clock is the clock on the wall.
+\end{beauty}
+
+The clock controls the size of the martingale in the strongest possible sense.
+
+\begin{corollary}\label{cor:L2bracket}
+Let $M$ be a continuous local martingale with $M_0=0$.
+\begin{enumerate}[label=(\alph*)]
+\item If $\mathbb E\langle M\rangle_\infty<\infty$, then $M$ is a martingale bounded in $L^2$, $M^2-\langle M\rangle$ is a uniformly integrable martingale, and $\mathbb EM_\infty^2=\mathbb E\langle M\rangle_\infty$.
+\item Conversely, if $M$ is a martingale bounded in $L^2$, then $\mathbb E\langle M\rangle_\infty=\mathbb EM_\infty^2<\infty$.
+\end{enumerate}
+In particular, if $\mathbb E\langle M\rangle_t<\infty$, then $\mathbb EM_t^2=\mathbb E\langle M\rangle_t$.
+\end{corollary}
+
+\begin{proof}
+(a) Let $\sigma_n=\inf\{s:|M_s|\ge n\}$. As in the proof of Theorem~\ref{thm:qvexist}, $(M^{\sigma_n})^2-\langle M\rangle^{\sigma_n}$ is a martingale, so $\mathbb EM^2_{\sigma_n\wedge t}=\mathbb E\langle M\rangle_{\sigma_n\wedge t}\le\mathbb E\langle M\rangle_\infty$,
+and Doob's inequality gives $\mathbb E\sup_{s\le t}M^2_{\sigma_n\wedge s}\le4\,\mathbb E\langle M\rangle_\infty$. Letting $n\to\infty$ (Fatou) and then $t\to\infty$, $\mathbb E\sup_sM_s^2\le4\,\mathbb E\langle M\rangle_\infty$. By
+Proposition~\ref{prop:localmart}(c), $M$ is a martingale, bounded in $L^2$; and $|M_t^2-\langle M\rangle_t|\le\sup_sM_s^2+\langle M\rangle_\infty$, so the local martingale $M^2-\langle M\rangle$ is a uniformly integrable
+martingale. Thus $\mathbb EM_t^2=\mathbb E\langle M\rangle_t$; as $t\to\infty$, $M_t\to M_\infty$ in $L^2$ (Theorem~\ref{thm:L2cont}) and $\langle M\rangle_t\uparrow\langle M\rangle_\infty$.
+
+(b) $\mathbb E\langle M\rangle_{\sigma_n\wedge t}=\mathbb EM^2_{\sigma_n\wedge t}\le\mathbb E\sup_sM_s^2\le4\sup_s\mathbb EM_s^2$ by Doob's inequality; monotone convergence gives $\mathbb E\langle M\rangle_\infty<\infty$, and (a) applies.
+For the last claim, apply (a) to $M^t$, whose bracket is $\langle M\rangle^t$ (stop the local martingale $M^2-\langle M\rangle$ at $t$ and use uniqueness).
+\end{proof}
+
+Two martingales also have a joint clock. For continuous local martingales $M,N$ with $M_0=N_0=0$, define the \emph{bracket}
+\[
+\langle M,N\rangle=\tfrac14\bigl(\langle M+N\rangle-\langle M-N\rangle\bigr).
+\]
+
+\begin{proposition}\label{prop:bracket}
+$\langle M,N\rangle$ is the unique continuous adapted process of finite variation, zero at $0$, such that $MN-\langle M,N\rangle$ is a continuous local martingale. It is symmetric and bilinear,
+$\langle M,M\rangle=\langle M\rangle$, and along partitions of $[0,t]$ with mesh tending to $0$, $\sum_i(M_{t_i}-M_{t_{i-1}})(N_{t_i}-N_{t_{i-1}})\to\langle M,N\rangle_t$ in probability.
+\end{proposition}
+
+\begin{proof}
+The identity $MN=\frac14\bigl((M+N)^2-(M-N)^2\bigr)$ shows that $MN-\langle M,N\rangle$ is a continuous local martingale, and $\langle M,N\rangle$ has finite variation as a difference of increasing processes. Uniqueness
+follows from Theorem~\ref{thm:fvconstant}, as in Theorem~\ref{thm:qvexist}; symmetry and bilinearity follow from uniqueness, since a bilinear combination of qualifying processes qualifies. The same identity on the
+increments, $\Delta M\Delta N=\frac14\bigl((\Delta M+\Delta N)^2-(\Delta M-\Delta N)^2\bigr)$, and Proposition~\ref{prop:qvsums} give the limit of the sums.
+\end{proof}
+
+\begin{example}\label{ex:ddimbm}
+If $B=(B^1,\dots,B^d)$ is a $d$-dimensional $(\mathcal F_t)$-Brownian motion (its coordinates are $(\mathcal F_t)$-Brownian motions and the vector of increments $B_t-B_s$ is independent of $\mathcal F_s$, with
+independent coordinates), then $\langle B^i,B^j\rangle_t=\delta_{ij}t$: for $i\ne j$, $B^iB^j$ is a martingale, as noted at the start of this section.
+\end{example}
+
+\section{Exponential martingales and hitting times}
+
+\begin{proposition}\label{prop:expmart}
+Let $B$ be an $(\mathcal F_t)$-Brownian motion and $\lambda\in\R$. Then $\mathcal E^\lambda_t=\exp\bigl(\lambda B_t-\frac{\lambda^2}2t\bigr)$ is a continuous martingale with mean $1$.
+\end{proposition}
+
+\begin{proof}
+For $s<t$, $B_t-B_s$ is $N(0,t-s)$ and independent of $\mathcal F_s$, and $\mathbb Ee^{\lambda N(0,u)}=e^{\lambda^2u/2}$, so
+$\mathbb E[\mathcal E^\lambda_t\mid\mathcal F_s]=\mathcal E^\lambda_s\,e^{-\lambda^2(t-s)/2}\,\mathbb Ee^{\lambda(B_t-B_s)}=\mathcal E^\lambda_s$.
+\end{proof}
+
+\begin{think}
+Every path of $\mathcal E^1_t=e^{B_t-t/2}$ tends to $0$, since $B_t/t\to0$. Yet $\mathbb E\mathcal E^1_t=1$ for all $t$. Where has the mass gone? (Compute the median of $\mathcal E^1_t$, and look at
+Figure~\ref{fig:expmart}.)
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-expmart}
+\caption{Forty paths of the exponential martingale $e^{B_t-t/2}$ on $[0,8]$ (clipped at height $4$), its median $e^{-t/2}$ (dashed), and the empirical mean of $2000$ paths (thick). The true mean is $1$
+at all times, carried by paths too rare to be sampled: at $t=8$ the median is $0.018$.}
+\label{fig:expmart}
+\end{figure}
+
+\begin{corollary}[hitting times]\label{cor:hitlaplace}
+Let $a>0$ and $\tau_a=\inf\{t:B_t=a\}$. Then $\tau_a<\infty$ almost surely and $\mathbb Ee^{-\mu\tau_a}=e^{-a\sqrt{2\mu}}$ for every $\mu\ge0$.
+\end{corollary}
+
+\begin{proof}
+Let $\lambda=\sqrt{2\mu}>0$. The stopped martingale $(\mathcal E^\lambda)^{\tau_a}$ (Corollary~\ref{cor:stopped}) is bounded by $e^{\lambda a}$ and has mean $1$. As $t\to\infty$, on $\{\tau_a<\infty\}$ it tends to
+$e^{\lambda a-\mu\tau_a}$, and on $\{\tau_a=\infty\}$ it is at most $e^{\lambda a-\mu t}\to0$. By bounded convergence, $\mathbb E\bigl[e^{\lambda a-\mu\tau_a}\mathbf 1_{\{\tau_a<\infty\}}\bigr]=1$. Let $\mu\downarrow0$:
+$P(\tau_a<\infty)=1$.
+\end{proof}
+
+By Tome~3, Theorem~11.12, $\tau_a$ has density $\frac{a}{\sqrt{2\pi t^3}}e^{-a^2/2t}$; the corollary is its Laplace transform, obtained without an integral. Tilting the exponent gives the law of the
+maximum of Brownian motion with drift, an exact formula used in queueing theory and in insurance mathematics.
+
+\begin{corollary}[the maximum of a drifting walk]\label{cor:driftmax}
+Let $\mu>0$. Then $\sup_{t\ge0}(B_t-\mu t)$ is exponential with mean $\frac1{2\mu}$: $P\bigl(\sup_t(B_t-\mu t)\ge a\bigr)=e^{-2\mu a}$ for $a\ge0$.
+\end{corollary}
+
+\begin{proof}
+Let $X_t=B_t-\mu t$ and $\tau=\inf\{t:X_t=a\}$. With $\lambda=2\mu$, $\mathcal E^{\lambda}_t=\exp(2\mu B_t-2\mu^2t)=e^{2\mu X_t}$ is a martingale, and stopped at $\tau$ it is bounded by $e^{2\mu a}$. On $\{\tau=\infty\}$,
+$X_t=t(B_t/t-\mu)\to-\infty$, so $e^{2\mu X_t}\to0$. Bounded convergence gives $1=e^{2\mu a}P(\tau<\infty)$.
+\end{proof}
+
+\begin{proposition}[Wald's identities]\label{prop:wald}
+Let $\tau$ be a stopping time with $\mathbb E\tau<\infty$. Then $\mathbb EB_\tau=0$ and $\mathbb EB_\tau^2=\mathbb E\tau$.
+\end{proposition}
+
+\begin{proof}
+$B^\tau$ is a continuous martingale, and $(B^\tau)^2-(\tau\wedge t)=(B^2-t)^\tau$ is a martingale, so $\langle B^\tau\rangle_t=\tau\wedge t$ and $\mathbb E\langle B^\tau\rangle_\infty=\mathbb E\tau<\infty$. By
+Corollary~\ref{cor:L2bracket}(a), $B^\tau$ is bounded in $L^2$ and its limit, which is $B_\tau$ since $\tau<\infty$ almost surely, satisfies $\mathbb EB_\tau^2=\mathbb E\tau$; and
+$\mathbb EB_\tau=\lim_t\mathbb EB_{\tau\wedge t}=0$ by $L^2$ convergence.
+\end{proof}
+
+\begin{remark}
+The hypothesis cannot be dropped: $\mathbb EB_{\tau_1}=1$, so $\mathbb E\tau_1=\infty$, which the density $\frac1{\sqrt{2\pi t^3}}e^{-1/2t}$ confirms. This is the doubling strategy once more, in continuous time:
+wait until you are one coin ahead. It takes forever on average. The sharp condition is $\mathbb E\sqrt\tau<\infty$, a consequence of the Burkholder--Davis--Gundy inequalities (Revuz and Yor, Chapter~IV),
+which we shall not need.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:lastzero}
+(a) Show that if $\tau$ is a stopping time and $s\ge0$, then $\tau+s$ is a stopping time. (b) Let $B$ be a Brownian motion with its Brownian filtration and $g=\sup\{t\le1:B_t=0\}$, the last zero before
+time $1$. Show that $g$ is $\mathcal F_1$-measurable but is not a stopping time. (Looking into the future is exactly what a stopping time may not do.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:exit}
+Let $a,b>0$ and $\tau=\inf\{t:B_t\notin\,]-a,b[\,\}$. (a) Show that $\mathbb E[\tau\wedge t]\le\max(a,b)^2$ for all $t$, so $\mathbb E\tau<\infty$. (b) Show that $P(B_\tau=b)=\frac a{a+b}$ and $\mathbb E\tau=ab$.
+Compare with the gambler's ruin of Tome~3, Theorem~7.9.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cosh}
+Let $a>0$ and $\tau=\inf\{t:|B_t|=a\}$. (a) Show that $\cosh(\lambda B_t)e^{-\lambda^2t/2}$ is a martingale, and deduce $\mathbb Ee^{-\mu\tau}=1/\cosh(a\sqrt{2\mu})$ for $\mu\ge0$. (b) Show that $P(\tau>n)\le q^n$
+for some $q<1$, and deduce from (a) that $\mathbb E\tau=a^2$ and $\mathbb E\tau^2=\frac53a^4$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:correlated}
+Let $(B^1,B^2)$ be a two-dimensional $(\mathcal F_t)$-Brownian motion, $\rho\in[-1,1]$ and $W=\rho B^1+\sqrt{1-\rho^2}\,B^2$. Show that $W$ is an $(\mathcal F_t)$-Brownian motion and that $\langle W,B^1\rangle_t=\rho t$.
+For which $\rho$ are $W$ and $B^1$ independent?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:superm}
+Let $M$ be a non-negative continuous local martingale with $\mathbb EM_0<\infty$. Show that $M$ is a supermartingale, and that it is a martingale if and only if $\mathbb EM_t=\mathbb EM_0$ for all $t$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:driftruin}
+Let $\mu>0$, $X_t=B_t+\mu t$, $a,b>0$ and $\tau=\inf\{t:X_t\notin\,]-a,b[\,\}$. (a) Show that $e^{-2\mu X_t}$ is a martingale. (b) Show that
+\[
+P(X_\tau=b)=\frac{e^{2\mu a}-1}{e^{2\mu a}-e^{-2\mu b}} .
+\]
+(c) Let $b\to\infty$ and compare with Corollary~\ref{cor:driftmax}. This is the continuous version of the gambler who plays against the house (Tome~10, Exercise~9.6), seen from the house.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pvariation}
+Let $\pi_n$ be partitions of $[0,t]$ with mesh tending to $0$ and $p>0$. Show that $\sum_i|B_{t_i}-B_{t_{i-1}}|^p$ tends to $0$ in probability if $p>2$, and to $+\infty$ in probability if $p<2$. So $2$ is the only exponent for which
+the variation of a Brownian path is finite and non-zero; in particular ($p=1$) the path has infinite variation on every interval.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:strict}
+Let $W$ be a Brownian motion with its Brownian filtration $(\mathcal F_u)$, $\tau=\inf\{u:W_u=1\}$ and $u(t)=t/(1-t)$ for $t<1$. Define $M_t=W_{\tau\wedge u(t)}$ for $t<1$ and $M_t=1$ for $t\ge1$, with the
+filtration $\mathcal G_t=\mathcal F_{u(t)}$ for $t<1$ and $\mathcal G_t=\mathcal F_\infty$ for $t\ge1$. (a) Show that $M$ is continuous and adapted. (b) Show that $\sigma_n=\inf\{t:M_t\le-n\}$ reduces $M$. (c) Show
+that $M$ is not a martingale. What is $t\mapsto\mathbb EM_t$, and why is it discontinuous although $M$ is continuous?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:lastzero}
+(b) $\{g\le\frac12\}$ is the event that $B$ has no zero in $]\frac12,1]$. By the Markov property at time $\frac12$ and the solution of Exercise~2.4, its conditional probability given $\mathcal F_{1/2}$ is a function of
+$B_{1/2}$ with values in $]0,1[$.
+\end{hint}
+
+\begin{hint}{ex:exit}
+(a) $B^2-t$ is a martingale; stop it at $\tau$. (b) Wald.
+\end{hint}
+
+\begin{hint}{ex:cosh}
+(a) $\cosh(\lambda x)=\frac12(e^{\lambda x}+e^{-\lambda x})$. (b) To stay in $]-a,a[$ during $[k,k+1]$, the increment $B_{k+1}-B_k$ must be smaller than $2a$ in absolute value. Then expand both sides of (a) in powers of $\mu$.
+\end{hint}
+
+\begin{hint}{ex:correlated}
+Brackets are bilinear. Two jointly Gaussian processes are independent when their covariances vanish.
+\end{hint}
+
+\begin{hint}{ex:superm}
+Conditional Fatou along a reducing sequence. For the converse, a non-negative variable with mean zero vanishes.
+\end{hint}
+
+\begin{hint}{ex:driftruin}
+$e^{-2\mu X_t}=\mathcal E^{-2\mu}_t$. Stop at $\tau$, which is finite because $X_t\to\infty$.
+\end{hint}
+
+\begin{hint}{ex:pvariation}
+$\sum|\Delta B|^p$ lies between $Q_n\cdot(\max|\Delta B|)^{p-2}$ and the same with the inequality reversed, according to the sign of $p-2$.
+\end{hint}
+
+\begin{hint}{ex:strict}
+(b) $M^{\sigma_n}_t=W_{\rho_n\wedge u(t)}$ with $\rho_n=\tau\wedge\inf\{u:W_u=-n\}$ (and $u(t)=\infty$ for $t\ge1$), and $W^{\rho_n}$ is a bounded martingale. Why is $\sigma_n=\infty$ for $n$ large?
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:lastzero}
+\idea A stopping time must be decidable from the past. The last zero before $1$ can only be recognized at time $1$, so asking whether it has already happened at time $\frac12$ is a question about the future,
+and the Markov property makes the answer genuinely random given the past.
+\writeup (a) $\{\tau+s\le t\}$ is empty if $t<s$, and equals $\{\tau\le t-s\}\in\mathcal F_{t-s}\subseteq\mathcal F_t$ otherwise.
+(b) For $s<1$, $\{g<s\}=\{\min_{u\in[s,1]}|B_u|>0\}\in\mathcal F_1$, so $g$ is $\mathcal F_1$-measurable. Suppose $\{g\le\frac12\}\in\mathcal F_{1/2}$. Up to the null event $\{B_1=0\}$, this event is
+$E=\{B\text{ has no zero in }]\frac12,1]\}$. Given $\mathcal F_{1/2}$, the path after $\frac12$ is $B_{1/2}+W$ with $W$ a Brownian motion independent of $\mathcal F_{1/2}$, and as in the solution of Exercise~2.4,
+$P(E\mid\mathcal F_{1/2})=\varphi(B_{1/2})$ with $\varphi(x)=P(|W_{1/2}|<|x|)$. If $E$ were in $\mathcal F_{1/2}$ we would have $\varphi(B_{1/2})=\mathbf 1_E\in\{0,1\}$ almost surely; but $B_{1/2}\ne0$ almost surely and
+$0<\varphi(x)<1$ for $x\ne0$. So $g$ is not a stopping time.
+\end{solution}
+
+\begin{solution}{ex:exit}
+\idea Two martingales, two unknowns: $B$ gives the exit probabilities, $B^2-t$ gives the mean exit time. The only care needed is to know that $\tau$ is integrable before using Wald.
+\writeup (a) $\tau$ is a stopping time (Lemma~\ref{lem:stopping}(c)). By Corollary~\ref{cor:stopped}, $\mathbb E[B^2_{\tau\wedge t}-\tau\wedge t]=0$, and $|B_{\tau\wedge t}|\le\max(a,b)$; so
+$\mathbb E[\tau\wedge t]\le\max(a,b)^2$, and monotone convergence gives $\mathbb E\tau\le\max(a,b)^2$. (b) By Proposition~\ref{prop:wald}, with $p=P(B_\tau=b)$, $0=\mathbb EB_\tau=pb-(1-p)a$, so $p=\frac a{a+b}$; and
+$\mathbb E\tau=\mathbb EB_\tau^2=\frac a{a+b}b^2+\frac b{a+b}a^2=ab$. For the simple random walk, Tome~3, Theorem~7.9 gave the same answers, $\frac a{a+b}$ and $ab$ steps.
+\end{solution}
+
+\begin{solution}{ex:cosh}
+\idea Symmetry suggests averaging the exponential martingales for $\lambda$ and $-\lambda$; the result depends on $B$ only through $|B|$, which is known at the exit time. The moments then come from the Taylor
+series, once we know that $\tau$ has exponential moments.
+\writeup (a) $\cosh(\lambda B_t)e^{-\lambda^2t/2}=\frac12(\mathcal E^\lambda_t+\mathcal E^{-\lambda}_t)$ is a martingale. Stopped at $\tau$ it is bounded by $\cosh(\lambda a)$; $\tau<\infty$ almost surely by Exercise~\ref{ex:exit}, and at
+$\tau$ it equals $\cosh(\lambda a)e^{-\lambda^2\tau/2}$. Bounded convergence gives $\cosh(\lambda a)\,\mathbb Ee^{-\lambda^2\tau/2}=1$; put $\lambda=\sqrt{2\mu}$.
+(b) If $\tau>n+1$ then $|B_{n+1}-B_n|<2a$, and this increment is independent of $\{\tau>n\}\in\mathcal F_n$. So $P(\tau>n+1)\le qP(\tau>n)$ with $q=P(|Z|<2a)<1$, and $P(\tau>n)\le q^n$. Hence
+$\mathbb Ee^{\varepsilon\tau}<\infty$ for small $\varepsilon>0$, and $\mu\mapsto\mathbb Ee^{-\mu\tau}=\sum_k\frac{(-\mu)^k}{k!}\mathbb E\tau^k$ is given by its Taylor series near $0$. On the other side, with $x=a\sqrt{2\mu}$,
+$1/\cosh x=1-\frac{x^2}2+\frac5{24}x^4-\cdots=1-a^2\mu+\frac56a^4\mu^2-\cdots$. Comparing coefficients: $\mathbb E\tau=a^2$ (as in Exercise~\ref{ex:exit} with $a=b$) and $\frac12\mathbb E\tau^2=\frac56a^4$.
+\end{solution}
+
+\begin{solution}{ex:correlated}
+\idea A Brownian motion is determined by Gaussian increments independent of the past; a linear combination of independent Brownian motions with squared coefficients summing to $1$ has exactly that. The
+bracket is computed by bilinearity.
+\writeup $W$ is continuous and adapted, $W_0=0$, and $W_t-W_s=\rho(B^1_t-B^1_s)+\sqrt{1-\rho^2}(B^2_t-B^2_s)$ is independent of $\mathcal F_s$ and Gaussian with variance $(\rho^2+1-\rho^2)(t-s)=t-s$. By Proposition~\ref{prop:bracket}
+and Example~\ref{ex:ddimbm}, $\langle W,B^1\rangle_t=\rho\langle B^1\rangle_t+\sqrt{1-\rho^2}\langle B^2,B^1\rangle_t=\rho t$. The pair $(W,B^1)$ is a Gaussian process with $\mathbb E[W_sB^1_t]=\rho(s\wedge t)$, so
+$W$ and $B^1$ are independent if and only if $\rho=0$ (Tome~3, Theorem~6.15).
+\end{solution}
+
+\begin{solution}{ex:superm}
+\idea Along a reducing sequence the process is a martingale, and Fatou's lemma can only lose mass in the limit, never create it. Losing mass is what a supermartingale does.
+\writeup Let $(\tau_n)$ reduce $M$. Since $M_0$ is integrable and $\mathcal F_s$-measurable, $\mathbb E[M_{\tau_n\wedge t}\mid\mathcal F_s]=M_{\tau_n\wedge s}$ for $s<t$. As $n\to\infty$, $M_{\tau_n\wedge t}\to M_t$, and by the
+conditional Fatou lemma (the variables are non-negative), $\mathbb E[M_t\mid\mathcal F_s]\le\liminf_nM_{\tau_n\wedge s}=M_s$. Taking expectations, $\mathbb EM_t\le\mathbb EM_0<\infty$. If $\mathbb EM_t=\mathbb EM_0$ for all $t$,
+then $M_s-\mathbb E[M_t\mid\mathcal F_s]$ is non-negative with mean $\mathbb EM_s-\mathbb EM_t=0$, so it vanishes. The converse is clear.
+\end{solution}
+
+\begin{solution}{ex:driftruin}
+\idea Find the exponential that makes the drifting walk fair: $e^{\lambda X_t}=e^{\lambda B_t+\lambda\mu t}$ is a martingale when $\lambda\mu=-\lambda^2/2$, that is $\lambda=-2\mu$. Then optional stopping gives one linear
+equation for the one unknown probability.
+\writeup (a) $e^{-2\mu X_t}=\exp(-2\mu B_t-2\mu^2t)=\mathcal E^{-2\mu}_t$ (Proposition~\ref{prop:expmart}). (b) Since $X_t/t\to\mu>0$, $\tau<\infty$ almost surely. The stopped martingale is bounded by $e^{2\mu a}$, so by
+bounded convergence, with $p=P(X_\tau=b)$, $pe^{-2\mu b}+(1-p)e^{2\mu a}=1$, which is the formula. (c) As $b\to\infty$, $1-p\to e^{-2\mu a}$: the probability that $X$ ever reaches $-a$. Since $-X_t=-B_t-\mu t$ and
+$-B$ is a Brownian motion, this is $P(\sup_t(B_t-\mu t)\ge a)=e^{-2\mu a}$, as in Corollary~\ref{cor:driftmax}.
+\end{solution}
+
+\begin{solution}{ex:pvariation}
+\idea Squared increments add up to $t$; the largest single increment tends to $0$. Raising to a power $p\ne2$ multiplies each term by a power of something tiny, small or huge according to the sign of $p-2$.
+\writeup Let $Q_n=\sum_i|\Delta B_i|^2\to t$ in probability (Proposition~\ref{prop:qvsums}) and $m_n=\max_i|\Delta B_i|\to0$ almost surely, by uniform continuity. If $p>2$, $\sum|\Delta B_i|^p\le m_n^{p-2}Q_n\to0$ in probability.
+If $p<2$, $\sum|\Delta B_i|^p\ge m_n^{p-2}Q_n$, and $m_n^{p-2}\to\infty$ while $Q_n\to t>0$, so the sum tends to $\infty$ in probability. With $p=1$ the variation over $[s,t]$ dominates these sums for every partition,
+so it is infinite almost surely, for each pair of rationals $s<t$ simultaneously.
+\end{solution}
+
+\begin{solution}{ex:strict}
+\idea Squeeze the whole infinite future of a Brownian motion, stopped at level $1$, into the time interval $[0,1[$. Every bounded stretch of the game is fair, but the game is over by time $1$, and it ends
+at $1$, because Brownian motion reaches $1$ eventually. Fairness is lost only through the unbounded losses that might occur before winning.
+\writeup (a) For $t<1$, $M_t=W_{\tau\wedge u(t)}$ is $\mathcal F_{u(t)}$-measurable (Lemma~\ref{lem:stopping}(b)) and continuous in $t$. Since $\tau<\infty$ almost surely (Corollary~\ref{cor:hitlaplace}), $u(t)>\tau$ for $t$ close
+to $1$, and then $M_t=W_\tau=1$: so $M$ is continuous at $1$. ($\mathcal G$ satisfies the usual conditions because $(\mathcal F_u)$ does and $u$ is continuous and increasing.)
+(b) $\sigma_n$ is a $(\mathcal G_t)$-stopping time (Lemma~\ref{lem:stopping}(c)). Let $\rho_n=\tau\wedge\inf\{u:W_u=-n\}$. If $\sigma_n<\infty$ then $M$ reaches $-n$ before reaching $1$, so $W$ hits $-n$ before $\tau$; in
+all cases $M^{\sigma_n}_t=W_{\rho_n\wedge u(t)}$, with $u(t)=\infty$ for $t\ge1$. The martingale $W^{\rho_n}$ is bounded by $n$, so by Theorem~\ref{thm:L2cont} it has a limit $W_{\rho_n}$ with
+$W_{\rho_n\wedge u}=\mathbb E[W_{\rho_n}\mid\mathcal F_u]$; hence for $s<t$, $\mathbb E[M^{\sigma_n}_t\mid\mathcal G_s]=W_{\rho_n\wedge u(s)}=M^{\sigma_n}_s$. Finally, $\min_{u\le\tau}W_u$ is finite, so $\sigma_n=\infty$ as soon as
+$n>-\min_{u\le\tau}W_u$: $\sigma_n\uparrow\infty$.
+(c) $\mathbb EM_t=\mathbb EW_{\tau\wedge u(t)}=0$ for $t<1$ (optional stopping at a bounded time), but $\mathbb EM_t=1$ for $t\ge1$. The mean jumps because the family $(M_t)_{t<1}$ is not uniformly integrable:
+$\mathbb E\sup_{t<1}|M_t|\ge\mathbb E\bigl(-\min_{u\le\tau}W_u\bigr)$, and $P(-\min_{u\le\tau}W_u\ge n)=\frac1{n+1}$ (Exercise~\ref{ex:exit} with $a=n$, $b=1$), whose sum over $n$ diverges.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} J.~Ville, \emph{\'Etude critique de la notion de collectif}, Gauthier-Villars, 1939: the word ``martingale'' and Ville's inequality. R.~Mansuy, ``The origins of the word `martingale''',
+\emph{Electronic Journal for History of Probability and Statistics} 5(1), 2009, the source of the etymologies in the opening; the same issue, edited by L.~Mazliak and G.~Shafer, is devoted to the history of
+martingales. J.~L.~Doob, \emph{Stochastic Processes}, Wiley, 1953. P.-A.~Meyer, ``A decomposition theorem for supermartingales'', \emph{Illinois Journal of Mathematics} 6 (1962), 193--205.
+H.~Kunita and S.~Watanabe, ``On square integrable martingales'', \emph{Nagoya Mathematical Journal} 30 (1967), 209--245.
+\item J.-F.~Le~Gall, \emph{Brownian Motion, Martingales, and Stochastic Calculus}, Springer, 2016, Chapters~3 and~4. The route followed here, including the construction of the quadratic variation for
+bounded martingales.
+\item D.~Revuz and M.~Yor, \emph{Continuous Martingales and Brownian Motion}, 3rd ed., Springer, 1999, Chapters~II and~IV. Everything, with the Burkholder--Davis--Gundy inequalities.
+\item I.~Karatzas and S.~E.~Shreve, \emph{Brownian Motion and Stochastic Calculus}, 2nd ed., Springer, 1991, Chapter~1. Filtrations, stopping times and the usual conditions in detail.
+\item For the companion notebook: H.~Robbins, ``Statistical methods related to the law of the iterated logarithm'', \emph{Annals of Mathematical Statistics} 41 (1970), 1397--1409 (mixture martingales);
+S.~R.~Howard, A.~Ramdas, J.~McAuliffe and J.~Sekhon, ``Time-uniform, nonparametric, nonasymptotic confidence sequences'', \emph{Annals of Statistics} 49 (2021), 1055--1080.
+\end{itemize}
