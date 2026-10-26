@@ -1,0 +1,463 @@
+\chapter{Markov Processes and L\'evy Processes}
+
+\begin{center}\itshape
+A Markov process is a machine with no memory, and its generator is the instruction it executes at each instant.\\
+A L\'evy process is the simplest such machine that can jump: a Brownian motion, a drift, and a rain of jumps\\
+falling according to a Poisson law, sorted by size.
+\end{center}
+
+In 1934 Paul L\'evy published in the \emph{Annali della Scuola Normale Superiore di Pisa} a long memoir on what he called integrals whose elements are independent random variables: processes in
+continuous time with independent increments. He found that such a process is made of two pieces that have nothing to do with each other. One is continuous, and it is a Brownian motion with a drift.
+The other is a cloud of jumps; the jumps of size between $a$ and $b$ arrive like the calls at a telephone exchange, at the times of a Poisson process, and the different sizes do not influence each
+other. The small jumps can be infinitely many, so many that their sum diverges, and L\'evy saw that it converges after each is corrected by its average. His argument was a masterpiece of intuition and was
+not easy to follow.
+
+Eight years later, Kiyosi It\^o, then working at the Statistics Bureau of the Cabinet in Tokyo, rewrote L\'evy's decomposition with a new object, the \emph{Poisson random measure}, and made each
+step a theorem. His paper \emph{On stochastic processes (I)} (1942) is the source of the L\'evy--It\^o decomposition. The same years produced the second half of this chapter. Einar Hille and K\^osaku Yosida proved in 1948, independently, which operators generate semigroups, and William Feller, at
+Princeton, used their theorem in the early 1950s to describe all the one-dimensional diffusions by their generators: a second-order differential operator plus boundary conditions, a complete
+dictionary between processes and analysis.
+
+This chapter builds both halves at the level we need. Markov semigroups and their generators, Dynkin's martingale, and the martingale problem for $\frac12\Delta$, which characterises Brownian motion;
+then Poisson random measures, L\'evy processes, the L\'evy--It\^o decomposition proved in both directions, subordinators, and the $\frac12$-stable subordinator, which keeps the promise of Chapter~4: the
+clock that counts the excursions of Brownian motion.
+
+\begin{reminder}[from Tomes 3 and 10]
+\emph{Poisson processes} (Tome~3, Chapter~9): the colouring lemma (Tome~3, Lemma~9.5) says that if $N$ is Poisson$(\mu)$ and, given $N=n$, $(N_1,\dots,N_k)$ is multinomial$(n;p_1,\dots,p_k)$, then the $N_j$ are
+independent Poisson$(\mu p_j)$. \emph{L\'evy--Khintchine} (Tome~10, Theorem~5.3): the infinitely divisible characteristic functions are exactly the $e^{\psi}$ with
+\[
+\psi(\xi)=ib\xi-\frac{\sigma^2\xi^2}2+\int\bigl(e^{i\xi x}-1-i\xi x\mathbf 1_{\{|x|\le1\}}\bigr)\Pi(\mathrm dx),
+\]
+where $b\in\R$, $\sigma^2\ge0$ and the \emph{L\'evy measure} $\Pi$ on $\R\setminus\{0\}$ satisfies $\int(x^2\wedge1)\Pi(\mathrm dx)<\infty$; the triple $(b,\sigma^2,\Pi)$ is determined by the law. A continuous function
+$\varphi$ with $\varphi(0)=1$ and no zero has a unique continuous logarithm vanishing at $0$ (Tome~10, Lemma~5.1). \emph{Hitting times} (Tome~10, Theorem~5.10): $\mathbb Ee^{-\lambda T_a}=e^{-a\sqrt{2\lambda}}$.
+\end{reminder}
+
+\section{Semigroups and generators}
+
+Let $C_0=C_0(\R^d)$ be the space of continuous functions tending to $0$ at infinity, with the norm $\|f\|=\sup|f|$.
+
+\begin{definition}\label{def:feller}
+A \emph{Feller semigroup} is a family $(P_t)_{t\ge0}$ of linear operators on $C_0$ such that $P_0=I$, $P_{t+s}=P_tP_s$, $0\le P_tf\le1$ whenever $0\le f\le1$, and $\|P_tf-f\|\to0$ as $t\to0$ for every
+$f\in C_0$. Its \emph{generator} $A$ is defined on the set $\mathcal D(A)$ of the $f\in C_0$ for which $\frac1t(P_tf-f)$ converges in $C_0$ as $t\downarrow0$, by $Af=\lim\frac1t(P_tf-f)$. An adapted process $X$ with
+right-continuous paths is a \emph{Markov process} with semigroup $(P_t)$ if $\mathbb E[f(X_{t+s})\mid\mathcal F_t]=P_sf(X_t)$ for all $f\in C_0$ and $s,t\ge0$.
+\end{definition}
+
+Each $P_t$ is a contraction ($|P_tf|\le P_t|f|\le\|f\|$, by positivity applied to $|f|\pm f$ and to $|f|/\|f\|$), so $t\mapsto P_tf$ is continuous on $[0,\infty[$: $\|P_{t+h}f-P_tf\|\le\|P_hf-f\|$. Brownian
+motion is the example: $P_tf(x)=\mathbb Ef(x+B_t)$ maps $C_0$ into $C_0$ by dominated convergence, and $\|P_tf-f\|\le\sup_x\mathbb E|f(x+B_t)-f(x)|\to0$ by uniform continuity of $f$. Its Markov property is the independence of
+increments.
+
+\begin{proposition}\label{prop:generator}
+Let $(P_t)$ be a Feller semigroup with generator $A$ and $f\in\mathcal D(A)$. Then $P_tf\in\mathcal D(A)$, $AP_tf=P_tAf$, $t\mapsto P_tf$ is differentiable in $C_0$ with derivative $P_tAf$, and
+$P_tf-f=\int_0^tP_sAf\dd s$.
+\end{proposition}
+
+\begin{proof}
+$\frac1h(P_hP_tf-P_tf)=P_t\frac1h(P_hf-f)\to P_tAf$ because $P_t$ is a contraction. This is the right derivative of $s\mapsto P_sf$ at $t$. For the left derivative, $\frac1h(P_tf-P_{t-h}f)-P_tAf=P_{t-h}\bigl(\frac1h(P_hf-f)-Af\bigr)+(P_{t-h}Af-P_tAf)$, and both terms tend to $0$. A continuous function with a continuous derivative is the
+integral of its derivative.
+\end{proof}
+
+\begin{theorem}[Dynkin's martingale]\label{thm:dynkin}
+Let $X$ be a Markov process with Feller semigroup $(P_t)$ and $f\in\mathcal D(A)$. Then $M_t=f(X_t)-f(X_0)-\int_0^tAf(X_s)\dd s$ is a martingale. Consequently, for every bounded stopping time $\tau$,
+$\mathbb Ef(X_\tau)=\mathbb Ef(X_0)+\mathbb E\int_0^\tau Af(X_s)\dd s$ (Dynkin's formula).
+\end{theorem}
+
+\begin{proof}
+$M_t$ is bounded on bounded intervals. By the Markov property, Fubini and Proposition~\ref{prop:generator},
+\[
+\mathbb E[M_{t+s}-M_t\mid\mathcal F_t]=P_sf(X_t)-f(X_t)-\int_0^sP_uAf(X_t)\dd u=0 .
+\]
+For a stopping time $\tau\le T$, the dyadic stopping times $\tau_m=2^{-m}\lceil2^m\tau\rceil$ take finitely many values, so $\mathbb EM_{\tau_m}=0$ by discrete optional stopping; as $m\to\infty$, $\tau_m\downarrow\tau$, $M_{\tau_m}\to M_\tau$ by
+right-continuity, and bounded convergence gives $\mathbb EM_\tau=0$.
+\end{proof}
+
+The generator determines the semigroup. For $\lambda>0$ and $g\in C_0$ let $R_\lambda g=\int_0^\infty e^{-\lambda t}P_tg\dd t$ (a Riemann integral of a continuous bounded function with values in $C_0$), the \emph{resolvent}.
+
+\begin{proposition}\label{prop:resolvent}
+$R_\lambda$ maps $C_0$ into $\mathcal D(A)$, $(\lambda-A)R_\lambda g=g$, and $R_\lambda(\lambda-A)f=f$ for $f\in\mathcal D(A)$. Two Feller semigroups with the same generator (same domain, same $A$) are equal.
+\end{proposition}
+
+\begin{proof}
+Shifting the variable of integration,
+\[
+\frac{(P_h-I)R_\lambda g}h=\frac{e^{\lambda h}-1}h\int_h^\infty e^{-\lambda t}P_tg\dd t-\frac1h\int_0^he^{-\lambda t}P_tg\dd t\longrightarrow\lambda R_\lambda g-g .
+\] For $f\in\mathcal D(A)$,
+$R_\lambda Af=\int_0^\infty e^{-\lambda t}\frac{\mathrm d}{\mathrm dt}P_tf\dd t=\lambda R_\lambda f-f$ by integration by parts. If $(P_t)$ and $(Q_t)$ have the same generator $A$, with resolvents $R_\lambda$ and $S_\lambda$, then
+$S_\lambda g\in\mathcal D(A)$ and $S_\lambda g=R_\lambda(\lambda-A)S_\lambda g=R_\lambda g$. So for each $x$ and $g$, the bounded continuous functions $t\mapsto P_tg(x)$ and $t\mapsto Q_tg(x)$ have the same Laplace transform, hence are
+equal: if $h$ is bounded and continuous with $\int_0^\infty e^{-nt}h(t)\dd t=0$ for $n=1,2,\dots$, then $g(u)=h(-\log u)$ satisfies $\int_0^1u^kg(u)\dd u=0$ for all $k\ge0$, so $g=0$ by Weierstrass' approximation theorem.
+\end{proof}
+
+\begin{theorem}[the generator of Brownian motion]\label{thm:bmgenerator}
+Let $(P_t)$ be the Brownian semigroup in $\R^d$. Every $f\in C^2$ such that $f$, its first and second derivatives belong to $C_0$ is in $\mathcal D(A)$, and $Af=\frac12\Delta f$.
+\end{theorem}
+
+\begin{proof}
+By It\^o's formula $f(x+B_t)=f(x)+\int_0^t\nabla f(x+B_s)\cdot\dd B_s+\frac12\int_0^t\Delta f(x+B_s)\dd s$, and the stochastic integral has a bounded integrand, hence mean $0$. So $P_tf-f=\int_0^tP_sg\dd s$ with
+$g=\frac12\Delta f\in C_0$, and $\|\frac1t(P_tf-f)-g\|\le\frac1t\int_0^t\|P_sg-g\|\dd s\to0$.
+\end{proof}
+
+The class of functions in the theorem is not all of $\mathcal D(A)$, but it is enough to pin down the process. Stroock and Varadhan (1969) turned this into a method: a process \emph{solves the martingale
+problem} for an operator $L$ if $f(X_t)-\int_0^tLf(X_s)\dd s$ is a martingale for every $f$ in a class of test functions, and one studies existence and uniqueness of solutions in law. For $\frac12\Delta$ uniqueness is
+L\'evy's characterisation in disguise.
+
+\begin{theorem}[the martingale problem for $\frac12\Delta$]\label{thm:martprob}
+Let $X$ be a continuous adapted process in $\R^d$ with $X_0=0$, such that $f(X_t)-\frac12\int_0^t\Delta f(X_s)\dd s$ is a martingale for every $f\in C^2_c(\R^d)$. Then $X$ is a Brownian motion.
+\end{theorem}
+
+\begin{proof}
+Let $\tau_k=\inf\{t:|X_t|\ge k\}$. For $f\in C^2(\R^d)$ choose $f_k\in C^2_c$ equal to $f$ on the ball $\bar B(0,k)$; then $f(X_{t\wedge\tau_k})-\frac12\int_0^{t\wedge\tau_k}\Delta f(X_s)\dd s$ is the stopped martingale for $f_k$. So
+$f(X_t)-\frac12\int_0^t\Delta f(X_s)\dd s$ is a continuous local martingale for every $f\in C^2$. With $f(x)=x_i$: $X^i$ is a continuous local martingale. With $f(x)=x_ix_j$: $X^iX^j-\delta_{ij}t$ is a continuous local
+martingale, so $\langle X^i,X^j\rangle_t=\delta_{ij}t$ (Proposition~\ref{prop:bracket}). L\'evy's characterisation (Theorem~\ref{thm:levychar}) concludes.
+\end{proof}
+
+\begin{remark}
+The same proof shows that for $L=b\cdot\nabla+\frac12\sum_{i,j}a_{ij}\partial_{ij}$, with $a=\sigma\sigma^{\mathsf T}$, every continuous solution of the martingale problem has $X-\int b(X)\dd s$ a continuous local martingale with bracket
+$\int a(X)\dd s$, and is then a solution of $\dd X=b(X)\dd t+\sigma(X)\dd W$ for some Brownian motion $W$, possibly on an enlarged probability space (a \emph{weak solution}). Uniqueness in law for the SDE is
+equivalent to uniqueness for the martingale problem; when $b$ and $\sigma$ are Lipschitz it follows from Theorem~\ref{thm:sdeexist} and the Yamada--Watanabe principle that pathwise uniqueness implies uniqueness in law. Stroock and Varadhan proved
+uniqueness when $a$ is merely continuous and uniformly positive definite (Stroock and Varadhan, 1979).
+\end{remark}
+
+\section{Poisson random measures}
+
+\begin{definition}\label{def:prm}
+Let $(E,\mathcal E,\mu)$ be a $\sigma$-finite measure space. A \emph{Poisson random measure} with intensity $\mu$ is a random measure $N$ on $E$ with values in $\{0,1,2,\dots\}\cup\{\infty\}$ such that, for pairwise disjoint
+$A_1,\dots,A_k\in\mathcal E$, the variables $N(A_1),\dots,N(A_k)$ are independent, and $N(A)$ is Poisson$(\mu(A))$ (meaning $N(A)=\infty$ almost surely if $\mu(A)=\infty$).
+\end{definition}
+
+\begin{theorem}\label{thm:prmexist}
+For every $\sigma$-finite $\mu$ there is a Poisson random measure with intensity $\mu$. If $\mu(E)<\infty$, one is $N=\sum_{k=1}^K\delta_{Y_k}$, where $K$ is Poisson$(\mu(E))$ and the $Y_k$ are independent with law
+$\mu/\mu(E)$, independent of $K$.
+\end{theorem}
+
+\begin{proof}
+If $\mu(E)<\infty$ and $A_1,\dots,A_k$ is a partition of $E$, then given $K=n$ the vector $(N(A_1),\dots,N(A_k))$ is multinomial with $n$ trials and probabilities $\mu(A_j)/\mu(E)$, so the colouring lemma gives the independence and the laws; disjoint sets that do
+not cover $E$ are completed by their complement. In general write $E=\bigcup_jE_j$ with disjoint $E_j$ of finite measure, build independent Poisson random measures $N_j$ with intensities $\mu(\cdot\cap E_j)$, and
+put $N=\sum_jN_j$. For disjoint $A_i$, the family $(N_j(A_i\cap E_j))_{i,j}$ is independent, and $N(A_i)=\sum_jN_j(A_i\cap E_j)$ is a sum of independent Poisson variables with means adding up to $\mu(A_i)$:
+Poisson$(\mu(A_i))$, and almost surely infinite if $\mu(A_i)=\infty$ (because $P(N(A_i)\le m)$ is at most the probability that a Poisson variable of mean $\sum_{j\le J}\mu(A_i\cap E_j)$ is at most $m$, which tends to $0$ as $J\to\infty$).
+\end{proof}
+
+For a measurable $f$ we write $N(f)=\int f\dd N=\sum f(\text{atoms})$ when it makes sense.
+
+\begin{proposition}[exponential formula]\label{prop:campbell}
+Let $N$ be a Poisson random measure with intensity $\mu$.
+\begin{enumerate}[label=(\alph*)]
+\item For measurable $f\ge0$, $\mathbb Ee^{-N(f)}=\exp\bigl(-\int(1-e^{-f})\dd\mu\bigr)$ and $\mathbb EN(f)=\int f\dd\mu$.
+\item If $\int(|f|\wedge1)\dd\mu<\infty$, then $N(|f|)<\infty$ almost surely and $\mathbb Ee^{iN(f)}=\exp\bigl(\int(e^{if}-1)\dd\mu\bigr)$.
+\item If $f\in L^1(\mu)\cap L^2(\mu)$, then $\mathbb E\bigl(N(f)-\int f\dd\mu\bigr)^2=\int f^2\dd\mu$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) For $f=\sum_ja_j\mathbf 1_{A_j}$ simple with disjoint $A_j$ of finite measure, independence and $\mathbb Ee^{-aN(A)}=e^{-\mu(A)(1-e^{-a})}$ give the formula; a non-negative measurable $f$ is an increasing limit of such
+functions (on a $\sigma$-finite space), and monotone convergence passes to the limit on both sides. Replacing $f$ by $sf$ and differentiating at $s=0$ (monotone convergence again) gives the mean.
+
+(b) By (a), $\mathbb EN(|f|\mathbf 1_{\{|f|\le1\}})$ and $\mathbb EN(\{|f|>1\})$ are finite, so $N$ has finitely many atoms in $\{|f|>1\}$ and $N(|f|)<\infty$ almost surely. The characteristic function is computed for simple $f$ as in (a),
+and the general case follows by dominated convergence, approximating $f$ by simple $f_n$ with $|f_n|\le|f|$, $f_n\to f$: $|e^{if_n}-1|\le2\wedge|f|$ is $\mu$-integrable.
+
+(c) For simple $f$, $N(f)-\int f\dd\mu=\sum_ja_j(N(A_j)-\mu(A_j))$ is a sum of independent centred variables with variances $a_j^2\mu(A_j)$. For general $f$, take simple $f_n\to f$ in $L^1\cap L^2$ with
+$|f_n|\le|f|$: by (a) applied to $|f-f_n|$, $N(f_n)\to N(f)$ in $L^1$, and the $N(f_n)-\int f_n\dd\mu$ form a Cauchy sequence in $L^2$ by the simple case, so the identity passes to the limit.
+\end{proof}
+
+\section{L\'evy processes}
+
+\begin{definition}\label{def:levyproc}
+A \emph{L\'evy process} is a real process $X$ with $X_0=0$, right-continuous paths with left limits (\emph{c\`adl\`ag}), and stationary independent increments: for $0\le t_0<\dots<t_k$, the increments
+$X_{t_j}-X_{t_{j-1}}$ are independent, and the law of $X_{t+h}-X_t$ depends only on $h$.
+\end{definition}
+
+Brownian motion with drift, the Poisson process and the compound Poisson processes are L\'evy processes, and so is $(T_a)_{a\ge0}$, the hitting times of Brownian motion indexed by the level (Theorem~\ref{thm:halfstable}).
+
+\begin{proposition}\label{prop:levyexp}
+If $X$ is a L\'evy process, there is a unique triple $(b,\sigma^2,\Pi)$ such that $\mathbb Ee^{i\xi X_t}=e^{t\psi(\xi)}$ for all $t\ge0$ and $\xi\in\R$, with $\psi$ the L\'evy--Khintchine exponent of the triple. Moreover $P_tf(x)=\mathbb Ef(x+X_t)$ is a
+Feller semigroup, and $X$ is a Markov process with this semigroup for its natural filtration.
+\end{proposition}
+
+\begin{proof}
+Let $\varphi_t(\xi)=\mathbb Ee^{i\xi X_t}$. Independence and stationarity give $\varphi_{t+s}=\varphi_t\varphi_s$. Since $X_{t+h}-X_t$ has the law of $X_h$, which tends to $0$ in probability as $h\downarrow0$ by right-continuity,
+$t\mapsto\varphi_t(\xi)$ is continuous. If $\varphi_1(\xi)=0$, then $\varphi_{1/n}(\xi)=0$ for all $n$, contradicting $\varphi_{1/n}(\xi)\to1$. Let $\psi$ be the continuous logarithm of $\varphi_1$. The function
+$\varphi_{1/n}e^{-\psi/n}$ is continuous, equal to $1$ at $\xi=0$, and its $n$-th power is $1$: it takes values in the $n$-th roots of unity, so it is the constant $1$. Hence $\varphi_t=e^{t\psi}$ for rational $t$, and for all $t$ by
+continuity. $X_1$ is the sum of the $n$ i.i.d.\ increments over $[\frac{k-1}n,\frac kn]$, so it is infinitely divisible, and L\'evy--Khintchine gives the triple. The Feller property is proved as for Brownian motion, using
+$X_t\to0$ in probability as $t\to0$; the Markov property is the independence of $X_{t+s}-X_t$ from $(X_u)_{u\le t}$.
+\end{proof}
+
+\begin{proposition}[generator of a L\'evy process]\label{prop:levygen}
+For $f$ in the Schwartz class $\mathcal S(\R)$, $f\in\mathcal D(A)$ and
+\[
+Af(x)=bf'(x)+\frac{\sigma^2}2f''(x)+\int\bigl(f(x+y)-f(x)-yf'(x)\mathbf 1_{\{|y|\le1\}}\bigr)\Pi(\mathrm dy).
+\]
+\end{proposition}
+
+\begin{proof}
+Write $f(x)=\frac1{2\pi}\int\hat f(\xi)e^{i\xi x}\dd\xi$ with $\hat f\in\mathcal S$. Then $P_tf(x)=\frac1{2\pi}\int\hat f(\xi)e^{t\psi(\xi)}e^{i\xi x}\dd\xi$ by Fubini, and
+\[
+\Bigl|\frac{P_tf(x)-f(x)}t-\frac1{2\pi}\int\hat f(\xi)\psi(\xi)e^{i\xi x}\dd\xi\Bigr|\le\frac1{2\pi}\int|\hat f(\xi)|\,\Bigl|\frac{e^{t\psi(\xi)}-1}t-\psi(\xi)\Bigr|\dd\xi .
+\]
+Since $\operatorname{Re}\psi\le0$, $|e^{z}-1-z|\le|z|^2/2$ and $|e^z-1|\le|z|$ for $\operatorname{Re}z\le0$; so the integrand is at most $2|\hat f||\psi|$ and tends to $0$ pointwise, and $|\psi(\xi)|\le C(1+\xi^2)$ (bound the integrand of
+$\psi$ by $\frac{\xi^2x^2}2$ for $|x|\le1$ and by $2$ for $|x|>1$). Dominated convergence gives uniform convergence in $x$. Finally, $\frac1{2\pi}\int\hat f\psi e^{i\xi x}\dd\xi$ is the right side: the drift and Gaussian
+terms are $bf'$ and $\frac{\sigma^2}2f''$, and for the integral term Fubini is allowed since $|e^{i\xi y}-1-i\xi y\mathbf 1_{\{|y|\le1\}}|\le(\xi^2y^2/2)\vee2$, which is integrable for $|\hat f(\xi)|\dd\xi\,\Pi(\mathrm dy)$.
+\end{proof}
+
+The generator reads like the L\'evy--Khintchine formula: drift, diffusion, and for each possible jump $y$, at rate $\Pi(\mathrm dy)$, the change $f(x+y)-f(x)$, corrected for the small jumps. The next theorem says that the process
+itself is built in exactly this way.
+
+\begin{theorem}[L\'evy--It\^o, 1934--1942]\label{thm:levyito}
+\begin{enumerate}[label=(\alph*)]
+\item Let $(b,\sigma^2,\Pi)$ be a triple, $W$ a Brownian motion and $N$ an independent Poisson random measure on $[0,\infty[\times\R^*$, where $\R^*=\R\setminus\{0\}$, with intensity $\mathrm dt\otimes\Pi$. For
+$0<\varepsilon\le1$ let $D_\varepsilon=\{\varepsilon<|x|\le1\}$ and $D=\{|x|>1\}$, and put
+\begin{gather*}
+Y^\varepsilon_t=\int_{[0,t]\times D_\varepsilon}x\,N(\mathrm ds,\mathrm dx)-t\int_{D_\varepsilon}x\,\Pi(\mathrm dx),\\
+Z_t=\int_{[0,t]\times D}x\,N(\mathrm ds,\mathrm dx).
+\end{gather*}
+Then, along a sequence $\varepsilon_k\downarrow0$, $Y^{\varepsilon_k}$ converges almost surely, uniformly on compact intervals, to a c\`adl\`ag process $Y$, and $X_t=bt+\sigma W_t+Y_t+Z_t$ is a L\'evy process with exponent $\psi$.
+Its jumps are the atoms of $N$: $N=\sum_{s:\,\Delta X_s\ne0}\delta_{(s,\Delta X_s)}$.
+\item Conversely, let $X$ be a L\'evy process with triple $(b,\sigma^2,\Pi)$, and $N^X=\sum_{s:\,\Delta X_s\ne0}\delta_{(s,\Delta X_s)}$ its jump measure. Then $N^X$ is a Poisson random measure with intensity $\mathrm dt\otimes\Pi$, the process
+$X_t-bt-Y_t-Z_t$, with $Y,Z$ built from $N^X$ as in (a), is $\sigma W$ for a Brownian motion $W$ independent of $N^X$, and the convergence of (a) holds.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) \emph{Large jumps.} $\Pi(|x|>1)<\infty$, so $N$ has finitely many atoms in $[0,t]\times\{|x|>1\}$ (Proposition~\ref{prop:campbell}(a)), and $Z$ is a piecewise constant c\`adl\`ag process, a compound Poisson process. The
+same holds for $Y^\varepsilon$, plus a linear drift. By Proposition~\ref{prop:campbell}(b), for $s<t$,
+\begin{gather*}
+\mathbb Ee^{i\xi(Z_t-Z_s)}=\exp\Bigl((t-s)\int_D(e^{i\xi x}-1)\Pi(\mathrm dx)\Bigr),\\
+\mathbb Ee^{i\xi(Y^\varepsilon_t-Y^\varepsilon_s)}=e^{(t-s)\psi_\varepsilon(\xi)},\\\psi_\varepsilon(\xi)=\int_{D_\varepsilon}(e^{i\xi x}-1-i\xi x)\Pi(\mathrm dx),
+\end{gather*}
+and increments over disjoint time intervals, or of $Z$ and $Y^\varepsilon$, are built from $N$ on disjoint sets, hence independent.
+
+\emph{Small jumps.} $Y^\varepsilon$ has independent centred increments, so it is a martingale for the filtration $\mathcal G_t$ generated by $W$ and the restriction of $N$ to $[0,t]\times\R$, and by Proposition~\ref{prop:campbell}(c),
+for $\varepsilon'<\varepsilon$, $\mathbb E(Y^{\varepsilon'}_t-Y^\varepsilon_t)^2=t\int_{\varepsilon'<|x|\le\varepsilon}x^2\Pi(\mathrm dx)$. Doob's inequality, which holds for c\`adl\`ag martingales with the same proof as Theorem~\ref{thm:doobcont}
+(apply the discrete inequality on finite sets increasing to a countable dense set), gives
+\[
+\mathbb E\sup_{s\le t}|Y^{\varepsilon'}_s-Y^\varepsilon_s|^2\le4t\int_{\varepsilon'<|x|\le\varepsilon}x^2\Pi(\mathrm dx).
+\]
+The right side tends to $0$ as $\varepsilon\to0$, since $\int_{|x|\le1}x^2\Pi<\infty$. Choose $\varepsilon_k\downarrow0$ with $\int_{|x|\le\varepsilon_k}x^2\Pi\le4^{-k}$: then $\sum_k\mathbb E\sup_{s\le t}|Y^{\varepsilon_{k+1}}_s-Y^{\varepsilon_k}_s|\le\sum_k2\sqrt t\,2^{-k}<\infty$,
+so $\sum_k\sup_{s\le t}|Y^{\varepsilon_{k+1}}_s-Y^{\varepsilon_k}_s|<\infty$ almost surely, and $Y^{\varepsilon_k}$ converges uniformly on $[0,t]$ to a c\`adl\`ag limit $Y$ (a uniform limit of c\`adl\`ag functions is c\`adl\`ag). Independence and stationarity of increments pass to the limit, and
+$\mathbb Ee^{i\xi Y_t}=\exp(t\int_{|x|\le1}(e^{i\xi x}-1-i\xi x)\Pi(\mathrm dx))$ by dominated convergence ($|e^{i\xi x}-1-i\xi x|\le\xi^2x^2/2$). Multiplying the characteristic functions of the independent pieces gives $e^{t\psi}$.
+
+\emph{Jumps.} Almost surely no two atoms of $N$ have the same time coordinate: on $[0,T]\times\{|x|>\varepsilon\}$ the intensity is finite, and by Theorem~\ref{thm:prmexist} the atoms there are finitely many independent points
+whose time coordinates are uniform on $[0,T]$, hence distinct. So each $Y^\varepsilon+Z$ jumps exactly at the atoms $(s,x)$ with $|x|>\varepsilon$, by $x$. At a time $s$, the uniform limit $Y+Z$ has jump $\lim_k\Delta(Y^{\varepsilon_k}+Z)_s$, which is $x$ if $(s,x)$ is an atom and
+$0$ otherwise. $W$ is continuous.
+
+(b) Let $X'$ be the process constructed in (a) from the same triple. $X$ and $X'$ have the same finite-dimensional laws, since both have independent stationary increments with $\mathbb Ee^{i\xi X_t}=e^{t\psi(\xi)}$ (Proposition~\ref{prop:levyexp}).
+A c\`adl\`ag path is determined by its values at rational times, and so are its jumps: for $a<b$ with $0\notin[a,b]$ and $t$ rational, the number of jumps in $[0,t]$ with size in $]a,b[$ is a limit of counts of rational
+increments, and the processes $Y^\varepsilon,Z$ built from the jump measure, the supremum over $[0,t]$ of $|X-bt-Y^{\varepsilon}-Z-(X'-\dots)|$, and so on, are measurable functions of the values at rational times. Therefore the
+joint law of $(X,N^X,(Y^{\varepsilon_k})_k,Z)$ is the joint law of the same objects for $X'$. For $X'$, part (a) shows that $N^{X'}=N$ is a Poisson random measure with intensity $\mathrm dt\otimes\Pi$, that $Y^{\varepsilon_k}$
+converges uniformly on compacts, and that $X'-bt-Y-Z=\sigma W$ with $W$ a Brownian motion independent of $N$. These are properties of the joint law, so they hold for $X$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-subordinator}
+\caption{Top: a Brownian path $B$ and its running maximum $M$ on $[0,1]$. Bottom: the hitting times $a\mapsto T_a$, $0\le a\le M_1$, a $\frac12$-stable subordinator. Each jump of $T$ is the length of an interval on which $M$
+is constant: a flat stretch of the top picture becomes a vertical step of the bottom one.}
+\label{fig:subordinator}
+\end{figure}
+
+\section{Subordinators and the clock of Brownian excursions}
+
+A \emph{subordinator} is a L\'evy process with non-decreasing paths: a random clock.
+
+\begin{corollary}\label{cor:subordinator}
+A L\'evy process $X$ is a subordinator if and only if $\sigma^2=0$, $\Pi$ is carried by $]0,\infty[$, $\int(x\wedge1)\Pi(\mathrm dx)<\infty$ and $d=b-\int_{]0,1]}x\,\Pi(\mathrm dx)\ge0$. Then
+$X_t=dt+\sum_{s\le t}\Delta X_s$ and $\mathbb Ee^{-\lambda X_t}=e^{-t\Phi(\lambda)}$ with $\Phi(\lambda)=d\lambda+\int(1-e^{-\lambda x})\Pi(\mathrm dx)$, the \emph{Laplace exponent}.
+\end{corollary}
+
+\begin{proof}
+If $X$ is non-decreasing, its jumps are positive, so $\Pi(]-\infty,0[)=0$ by Theorem~\ref{thm:levyito}(b), and $J_t=\sum_{s\le t}\Delta X_s\le X_t<\infty$. By Proposition~\ref{prop:campbell}(a),
+$\mathbb Ee^{-J_t}=\exp(-t\int(1-e^{-x})\Pi(\mathrm dx))$ is positive, so $\int(1-e^{-x})\Pi<\infty$, which is $\int(x\wedge1)\Pi<\infty$. Then $Y_t=J^{\le1}_t-t\int_{]0,1]}x\Pi$, where $J^{\le1}$ is the sum of the jumps of size at most $1$
+(the compensated sums converge to this, by monotone convergence and Proposition~\ref{prop:campbell}(a)), and Theorem~\ref{thm:levyito}(b) gives $X_t=J_t+dt+\sigma W_t$. The process $X_t-J_t=dt+\sigma W_t$ is non-decreasing (a jump of
+$X$ is exactly matched in $J$), which forces $\sigma=0$ (Brownian motion has infinite variation) and $d\ge0$. Conversely such an $X$ is non-decreasing. The Laplace transform follows from Proposition~\ref{prop:campbell}(a).
+\end{proof}
+
+\begin{theorem}[the $\frac12$-stable subordinator]\label{thm:halfstable}
+Let $B$ be a Brownian motion and $T_a=\inf\{t:B_t>a\}$ for $a\ge0$. Then $(T_a)_{a\ge0}$ is a subordinator with Laplace exponent $\Phi(\lambda)=\sqrt{2\lambda}$, no drift, and L\'evy measure
+\[
+\Pi(\mathrm dx)=\frac{\mathrm dx}{\sqrt{2\pi}\,x^{3/2}}\qquad(x>0).
+\]
+It is $\frac12$-stable: $(T_{ca})_{a\ge0}$ has the law of $(c^2T_a)_{a\ge0}$.
+\end{theorem}
+
+\begin{proof}
+$T_0=0$ almost surely (Blumenthal, Theorem~\ref{thm:blumenthal}). $a\mapsto T_a$ is non-decreasing and right-continuous: $\{T_a<t\}=\bigcup_n\{T_{a+1/n}<t\}$ follows from $\{T_a<t\}=\{\max_{s\le t'}B_s>a\text{ for some }t'<t\}$.
+For $a<a'$, $T_{a'}-T_a$ is the first time $B_{T_a+\cdot}-B_{T_a}$ exceeds $a'-a$ (since $B_{T_a}=a$ by continuity); by the strong Markov property (Proposition~\ref{prop:strongmarkovd}) it is independent of $\mathcal F_{T_a}$, which contains
+$(T_u)_{u\le a}$, and has the law of $T_{a'-a}$. So $(T_a)$ is a subordinator, with $\mathbb Ee^{-\lambda T_a}=e^{-a\sqrt{2\lambda}}$ (Tome~10, Theorem~5.10). Integrating by parts,
+$\int_0^\infty(1-e^{-\lambda x})x^{-3/2}\dd x=\int_0^\infty2x^{-1/2}\lambda e^{-\lambda x}\dd x=2\sqrt{\pi\lambda}$, so the stated $\Pi$ and $d=0$ give $\Phi(\lambda)=\sqrt{2\lambda}$; the Laplace transform determines the law of $T_1$, which determines its triple (Tome~10, Theorem~5.3(c)), hence $d$ and $\Pi$. Scaling: $(c^{-1}B_{c^2t})$ is a Brownian motion whose hitting time of $a$ is $c^{-2}T_{ca}$.
+\end{proof}
+
+The jumps of $T$ are the lengths of the intervals on which the running maximum $M$ is constant: the excursions of $B$ below its maximum (Figure~\ref{fig:subordinator}). By Theorem~\ref{thm:levyito}(b), the number of
+these excursions longer than $x$ completed before $B$ first exceeds $a$ is Poisson with mean $a\,\Pi(]x,\infty[)=a\sqrt{\frac2{\pi x}}$. Infinitely many short ones, a few long ones, independent of each other: this is the
+structure that It\^o turned in 1970 into his theory of \emph{excursions}, a Poisson random measure whose atoms are whole excursions.
+
+\begin{corollary}[the inverse local time]\label{cor:invlocal}
+Let $L$ be the local time at $0$ of a Brownian motion and $\tau_\ell=\inf\{t:L_t>\ell\}$. Then $(\tau_\ell)_{\ell\ge0}$ is a $\frac12$-stable subordinator with Laplace exponent $\sqrt{2\lambda}$.
+\end{corollary}
+
+\begin{proof}
+By L\'evy's theorem (Theorem~\ref{thm:levyMB}), the process $L$ has the law of the running maximum $M$, and $\tau_\ell$ is the same functional of $L$ as $T_\ell=\inf\{t:M_t>\ell\}$ is of $M$.
+\end{proof}
+
+\begin{beauty}
+Local time is a clock that only ticks when the Brownian particle is at $0$; turned inside out, $\tau_\ell$ is a clock indexed by local time, and it runs by jumps, one for each excursion away from $0$. The law of
+these jumps, $\frac{\mathrm dx}{\sqrt{2\pi}x^{3/2}}$, is forced by scaling alone: a Brownian excursion of length $x$ and one of length $c^2x$ differ by the factor $c$ in height, and only the exponent $\frac32$ is compatible.
+One can show that the zero set of Brownian motion, of dimension $\frac12$ (Corollary~\ref{cor:zerodim}), is the closure of the range of this subordinator.
+\end{beauty}
+
+\begin{think}
+The $\frac12$-stable subordinator has infinitely many jumps in every interval, yet its value $T_a$ is finite. Which property of $\Pi$ makes both true at once? What would a L\'evy measure $\frac{\mathrm dx}{x^2}$ on $]0,\infty[$
+give?
+\end{think}
+
+\begin{remark}
+Stable processes of every index $\alpha\in]0,2[$ arise the same way: $\Pi(\mathrm dx)=c_\pm|x|^{-1-\alpha}\mathrm dx$ on each half-line gives, with a suitable drift, a process with $X_{ct}\overset{d}=c^{1/\alpha}X_t$, and Brownian motion evaluated at
+an independent $\frac12$-stable clock is the Cauchy process, of index $1$ (Exercise~\ref{ex:cauchy}). Bertoin's book is the reference.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:poissongen}
+Let $N$ be a Poisson process of rate $\lambda$. Show that it is a L\'evy process with triple $(\lambda,0,\lambda\delta_1)$, and that its generator is $Af(x)=\lambda(f(x+1)-f(x))$ on all of $C_0$. Write Dynkin's martingale for
+$f$ and check it directly for $f(x)=x$ (locally).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:driftbm}
+Show that $X_t=B_t+\mu t$ is a Feller process with generator $\frac12f''+\mu f'$ on $C^2$ functions with $f,f',f''\in C_0$. Using Dynkin's formula with $f(x)=e^{-2\mu x}$ (suitably modified outside an interval), recover the probability that $X$
+reaches $-a$ before $c$ (Chapter~3).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gammasub}
+Let $\Pi(\mathrm dx)=x^{-1}e^{-x}\mathrm dx$ on $]0,\infty[$. Show that the subordinator with this L\'evy measure and no drift has $X_t$ with the Gamma$(t,1)$ law. It has infinitely many jumps on every interval; what is the
+expected number of jumps larger than $x$ on $[0,1]$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:mehler}
+Let $P_tf(x)=\mathbb Ef(e^{-t}x+\sqrt{1-e^{-2t}}Z)$, $Z\sim N(0,1)$ (the Ornstein--Uhlenbeck semigroup, Proposition~\ref{prop:ou} with $\theta=1$, $\sigma=\sqrt2$). Show that $(P_t)$ is a Feller semigroup and that
+$Af=f''-xf'$ for $f\in C^2_c$. Show that $\int P_tf\,\mathrm d\gamma=\int f\dd\gamma$ for the standard Gaussian measure $\gamma$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:stable}
+Let $0<\alpha<2$ and $\Pi(\mathrm dx)=|x|^{-1-\alpha}\mathrm dx$ on $\R\setminus\{0\}$, $b=\sigma=0$. Show that $\psi(\xi)=-k_\alpha|\xi|^\alpha$ with $k_\alpha=\int(1-\cos u)|u|^{-1-\alpha}\dd u$, and that $(X_{ct})_t$ has the law of $(c^{1/\alpha}X_t)_t$. For which
+$\alpha$ is $\mathbb E|X_1|<\infty$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cauchy}
+Let $T$ be the $\frac12$-stable subordinator of Theorem~\ref{thm:halfstable} and $W$ an independent Brownian motion. Show that $C_a=W_{T_a}$ is a L\'evy process with $\mathbb Ee^{i\xi C_a}=e^{-a|\xi|}$: a Cauchy process. Relate this to
+Exercise~\ref{ex:halfplane}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:compound}
+Let $X$ be a compound Poisson process: $X_t=\sum_{k\le N_t}\xi_k$, with $N$ a Poisson process of rate $\lambda$ and $\xi_k$ i.i.d.\ with law $\nu$, independent of $N$. Find its triple, and show that if $\nu$ has a finite mean $m$, then $X_t-\lambda mt$
+is a martingale. With $\nu$ on $]0,\infty[$, $X$ is the total claim of an insurance company; show that $u+ct-X_t$ (capital $u$, premium rate $c>\lambda m$) satisfies $\mathbb E[\text{capital at }t]\to\infty$, and discuss why ruin can still happen.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:excursions}
+(a) Show that the number of jumps of $(T_a)_{a\le1}$ larger than $x$ is Poisson with mean $\sqrt{2/(\pi x)}$, and deduce the law of the largest jump $J$: $P(J\le x)=e^{-\sqrt{2/(\pi x)}}$.
+(b) Interpret $J$ as the longest excursion of $B$ below its running maximum before $B$ first exceeds $1$, and show that $\mathbb E\sqrt{J}=\infty$ but $\mathbb EJ^{\beta}<\infty$ for $\beta<\frac12$.
+(c) Show that $T_1=\sum(\text{jumps})$ and that $P(T_1>t)$ and $P(J>t)$ are both of order $t^{-1/2}$ as $t\to\infty$: a large $T_1$ is made of one large jump.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:poissongen}
+$\mathbb Ee^{i\xi N_t}=e^{\lambda t(e^{i\xi}-1)}$. For the generator, $P_tf(x)=\sum_ke^{-\lambda t}\frac{(\lambda t)^k}{k!}f(x+k)$.
+\end{hint}
+
+\begin{hint}{ex:driftbm}
+$e^{-2\mu x}$ is annihilated by $\frac12f''+\mu f'$. Modify it outside $[-a-1,c+1]$ to lie in $C_0$, and stop at the exit time of $]-a,c[$.
+\end{hint}
+
+\begin{hint}{ex:gammasub}
+$\int_0^\infty(1-e^{-\lambda x})x^{-1}e^{-x}\dd x=\log(1+\lambda)$ (differentiate in $\lambda$).
+\end{hint}
+
+\begin{hint}{ex:mehler}
+Write $P_tf(x)$ as an integral against a Gaussian density. For the generator, It\^o's formula for the OU process, or a Taylor expansion. For invariance, if $X_0\sim\gamma$ then $X_t\sim\gamma$.
+\end{hint}
+
+\begin{hint}{ex:stable}
+The integrand of $\psi$ is odd in its imaginary part. Substitute $u=|\xi|x$. Scaling: compare the exponents of $X_{ct}$ and $c^{1/\alpha}X_t$.
+\end{hint}
+
+\begin{hint}{ex:cauchy}
+Condition on $T$: $\mathbb E[e^{i\xi W_{T_a}}\mid T]=e^{-\xi^2T_a/2}$.
+\end{hint}
+
+\begin{hint}{ex:compound}
+Proposition~\ref{prop:campbell}(b) with $\mu=\lambda\,\mathrm dt\otimes\nu$. For ruin, the capital can drop below $0$ at a jump.
+\end{hint}
+
+\begin{hint}{ex:excursions}
+(a) Theorem~\ref{thm:levyito}(b) for the set $[0,1]\times]x,\infty[$. (b) $\mathbb EJ^\beta=\int_0^\infty\beta x^{\beta-1}P(J>x)\dd x$ and $1-e^{-y}\sim y$. (c) $P(T_1>t)=P(M_t<1)$, and the reflection principle.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:poissongen}
+\idea A Poisson process is the purest jump process: drift $0$ except for the bookkeeping of the truncation, no Gaussian part, and jumps of size $1$ at rate $\lambda$.
+\writeup Independent Poisson increments give stationarity and independence, and $\log\mathbb Ee^{i\xi N_1}=\lambda(e^{i\xi}-1)=i\lambda\xi+\int(e^{i\xi x}-1-i\xi x\mathbf 1_{\{|x|\le1\}})\lambda\delta_1(\mathrm dx)$, so the triple is
+$(\lambda,0,\lambda\delta_1)$. For $f\in C_0$, $\frac1t(P_tf-f)(x)=\frac{e^{-\lambda t}-1}tf(x)+\lambda e^{-\lambda t}f(x+1)+O(t)\|f\|$, uniformly in $x$, so $Af=\lambda(f(\cdot+1)-f)$ for every $f\in C_0$. Dynkin's martingale is
+$f(N_t)-f(0)-\lambda\int_0^t(f(N_s+1)-f(N_s))\dd s$; for $f(x)=x$ (which is not in $C_0$, but the computation is the same after stopping when $N$ reaches a level), it is $N_t-\lambda t$, the compensated Poisson process.
+\end{solution}
+
+\begin{solution}{ex:driftbm}
+\idea Adding a drift adds a first-order term to the generator, and the function killed by the generator turns the exit problem into a linear equation.
+\writeup The Feller property and the generator follow as in Theorem~\ref{thm:bmgenerator}, with It\^o's formula for $f(x+B_t+\mu t)$, which has the extra term $\int\mu f'\dd s$. Let $h(x)=e^{-2\mu x}$, so $\frac12h''+\mu h'=0$, and $g\in C^2$
+with $g,g',g''\in C_0$ equal to $h$ on $[-a,c]$. With $\tau$ the exit time of $]-a,c[$ (finite with finite mean, since $X$ exits by Brownian fluctuations alone) and $t\wedge\tau$, Dynkin's formula gives $\mathbb Eh(X_{t\wedge\tau})=1$, and
+letting $t\to\infty$, $p\,e^{2\mu a}+(1-p)e^{-2\mu c}=1$ with $p=P(X_\tau=-a)$. So $p=\frac{1-e^{-2\mu c}}{e^{2\mu a}-e^{-2\mu c}}$, as in Exercise~\ref{ex:driftruin}.
+\end{solution}
+
+\begin{solution}{ex:gammasub}
+\idea A Gamma law is infinitely divisible with Laplace transform $(1+\lambda)^{-t}$; reading $\log(1+\lambda)$ as $\int(1-e^{-\lambda x})\Pi(\mathrm dx)$ produces the L\'evy measure.
+\writeup $\int(x\wedge1)x^{-1}e^{-x}\dd x<\infty$, so Corollary~\ref{cor:subordinator} applies, with $\Phi(\lambda)=\int_0^\infty(1-e^{-\lambda x})x^{-1}e^{-x}\dd x$. Then $\Phi(0)=0$ and $\Phi'(\lambda)=\int_0^\infty e^{-(1+\lambda)x}\dd x=\frac1{1+\lambda}$, so
+$\Phi(\lambda)=\log(1+\lambda)$ and $\mathbb Ee^{-\lambda X_t}=(1+\lambda)^{-t}$, the Laplace transform of Gamma$(t,1)$. The number of jumps larger than $x$ on $[0,1]$ is Poisson with mean $\int_x^\infty y^{-1}e^{-y}\dd y=E_1(x)\sim\log\frac1x$ as
+$x\to0$: infinitely many small jumps, but logarithmically few.
+\end{solution}
+
+\begin{solution}{ex:mehler}
+\idea The Ornstein--Uhlenbeck process pulls towards $0$ with force $-x$ and diffuses with $f''$; the Gaussian measure is its equilibrium.
+\writeup $P_tf(x)=\int f(e^{-t}x+\sqrt{1-e^{-2t}}z)\gamma(\mathrm dz)$: by dominated convergence $P_tf\in C_0$ when $f\in C_0$, and $\|P_tf-f\|\le\sup_x\mathbb E|f(e^{-t}x+\sqrt{1-e^{-2t}}Z)-f(x)|\to0$ by uniform continuity of $f$, together with $\sup_x|f(e^{-t}x)-f(x)|\to0$ for $f\in C_0$ (split $|x|\le R$ and $|x|>R$). Positivity is clear and $P_tP_s=P_{t+s}$ is the Markov property of Proposition~\ref{prop:ou}
+(Theorem~\ref{thm:sdemarkov}). For $f\in C^2_c$, Exercise~\ref{ex:sdegenerator} with $b(x)=-x$, $\sigma=\sqrt2$ gives pointwise convergence to $f''-xf'$; uniformity holds because $f$ has compact support and
+$\frac1t\mathbb E|X^x_s-x|^2$ is bounded on compacts while for large $|x|$ both sides are small. Invariance: if $X_0\sim\gamma$ is independent of $Z$, then $e^{-t}X_0+\sqrt{1-e^{-2t}}Z\sim\gamma$, so $\int P_tf\dd\gamma=\int f\dd\gamma$.
+\end{solution}
+
+\begin{solution}{ex:stable}
+\idea The L\'evy measure $|x|^{-1-\alpha}\mathrm dx$ is invariant, up to the factor $c^{\alpha}$, under $x\mapsto cx$: so the process is invariant under the matching change of space and time scales.
+\writeup $\int(x^2\wedge1)|x|^{-1-\alpha}\dd x<\infty$ exactly when $0<\alpha<2$. By symmetry of $\Pi$ the terms $i\sin$ and $-i\xi x\mathbf 1$ integrate to $0$, so $\psi(\xi)=-\int(1-\cos\xi x)|x|^{-1-\alpha}\dd x=-|\xi|^\alpha k_\alpha$
+after $u=|\xi|x$. Then $\mathbb Ee^{i\xi X_{ct}}=e^{-ctk_\alpha|\xi|^\alpha}=\mathbb Ee^{i(c^{1/\alpha}\xi)X_t}$, and since both processes have independent stationary increments, their finite-dimensional laws agree. $\mathbb E|X_1|<\infty$
+iff $\int_{|x|>1}|x|\Pi(\mathrm dx)<\infty$ (the large jumps form an independent compound Poisson process, and the rest has all moments), that is iff $\alpha>1$.
+\end{solution}
+
+\begin{solution}{ex:cauchy}
+\idea Running a Brownian motion on an independent random clock is subordination; the Gaussian characteristic function turns into the Laplace transform of the clock.
+\writeup Given $T$, the increments $W_{T_{a_j}}-W_{T_{a_{j-1}}}$ are independent centred Gaussians with variances $T_{a_j}-T_{a_{j-1}}$, which are themselves independent and stationary; so $C$ has independent stationary increments, and
+$\mathbb Ee^{i\xi C_a}=\mathbb Ee^{-\xi^2T_a/2}=e^{-a\sqrt{\xi^2}}=e^{-a|\xi|}$. $C$ is c\`adl\`ag since $T$ is and $W$ is continuous. This is the law of Exercise~\ref{ex:halfplane}: a planar Brownian motion $(W,\beta)$ started at height
+$a$ hits the axis at time $T_a$ of $\beta$ (reflected), and its abscissa there is $W_{T_a}$, Cauchy with scale $a$; as $a$ grows, these hitting points form the Cauchy process.
+\end{solution}
+
+\begin{solution}{ex:compound}
+\idea A compound Poisson process is a Poisson random measure on time $\times$ marks, summed; martingales come from subtracting the mean rate.
+\writeup $N^X=\sum_k\delta_{(T_k,\xi_k)}$ is a Poisson random measure with intensity $\lambda\,\mathrm dt\otimes\nu$ (marking, as in Theorem~\ref{thm:prmexist}), so $\mathbb Ee^{i\xi X_t}=\exp(t\lambda\int(e^{i\xi x}-1)\nu(\mathrm dx))$ and the triple is
+$(\lambda\int_{|x|\le1}x\,\nu(\mathrm dx),0,\lambda\nu)$. With a finite mean, $\mathbb EX_t=\lambda mt$ and independent increments make $X_t-\lambda mt$ a martingale. The expected capital $u+(c-\lambda m)t$ tends to $\infty$, but a large claim
+early on (or an unlucky run) can take the capital below $0$; this is the Cram\'er--Lundberg model, in which the ruin probability is positive and decays exponentially in $u$ when $\nu$ has exponential moments (Asmussen, \emph{Ruin
+Probabilities}, 2000).
+\end{solution}
+
+\begin{solution}{ex:excursions}
+\idea A $\frac12$-stable subordinator is the sum of its jumps, and its tail comes from the single largest one, as for sums of heavy-tailed variables.
+\writeup (a) By Theorem~\ref{thm:levyito}(b) and Theorem~\ref{thm:halfstable}, $N^T([0,1]\times]x,\infty[)$ is Poisson with mean $\int_x^\infty\frac{\mathrm dy}{\sqrt{2\pi}y^{3/2}}=\sqrt{\frac2{\pi x}}$, and $\{J\le x\}$ is the event that it vanishes.
+(b) The jumps of $T$ on $[0,1]$ are the lengths of the maximal intervals before $T_1$ on which $M$ is constant. $P(J>x)=1-e^{-\sqrt{2/(\pi x)}}\sim\sqrt{2/(\pi x)}$ as $x\to\infty$, so $\mathbb EJ^\beta=\int_0^\infty\beta x^{\beta-1}P(J>x)\dd x$ is finite iff
+$\beta-1-\frac12<-1$, that is $\beta<\frac12$. (c) $T$ has no drift, so $T_1$ is the sum of its jumps (Corollary~\ref{cor:subordinator}). $P(T_1>t)=P(M_t<1)=P(|B_t|<1)\sim\sqrt{\frac2{\pi t}}$ by the reflection principle, the same order
+as $P(J>t)$, and in fact the same constant: the event $T_1>t$ is, to first order, the event that one jump exceeds $t$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} P.~L\'evy, ``Sur les int\'egrales dont les \'el\'ements sont des variables al\'eatoires ind\'ependantes'', \emph{Annali della Scuola Normale Superiore di Pisa} (2) 3 (1934), 337--366. K.~It\^o, ``On stochastic
+processes (I) (Infinitely divisible laws of probability)'', \emph{Japanese Journal of Mathematics} 18 (1942), 261--301, and ``Poisson point processes attached to Markov processes'', \emph{Proceedings of the Sixth Berkeley
+Symposium} 3 (1970), 225--239 (excursions). E.~Hille, \emph{Functional Analysis and Semi-Groups}, American Mathematical Society, 1948; K.~Yosida,
+``On the differentiability and the representation of one-parameter semi-group of linear operators'', \emph{Journal of the Mathematical Society of Japan} 1 (1948), 15--21. W.~Feller, ``The parabolic differential equations
+and the associated semi-groups of transformations'', \emph{Annals of Mathematics} 55 (1952), 468--519. D.~W.~Stroock and S.~R.~S.~Varadhan, ``Diffusion processes with continuous coefficients'', \emph{Communications on Pure
+and Applied Mathematics} 22 (1969), 345--400 and 479--530, and \emph{Multidimensional Diffusion Processes}, Springer, 1979.
+\item J.~Bertoin, \emph{L\'evy Processes}, Cambridge University Press, 1996. Subordinators, stable processes, fluctuation theory and excursions.
+\item K.~Sato, \emph{L\'evy Processes and Infinitely Divisible Distributions}, Cambridge University Press, 1999. The L\'evy--It\^o decomposition with full details.
+\item A.~E.~Kyprianou, \emph{Fluctuations of L\'evy Processes with Applications}, 2nd edition, Springer, 2014. A readable path to the applications, including insurance and finance.
+\item S.~N.~Ethier and T.~G.~Kurtz, \emph{Markov Processes: Characterization and Convergence}, Wiley, 1986. Semigroups, generators and martingale problems.
+\end{itemize}
