@@ -105,7 +105,7 @@ def main(dist: str, out: str) -> None:
                                  size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
-    repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/numbers-structures-chance")
+    repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/Order-and-Chance")
     (out_dir / "index.html").write_text(
         PAGE.format(tomes="\n".join(cards), repo=repo, date=datetime.date.today().isoformat(), commit=commit),
         encoding="utf-8")
