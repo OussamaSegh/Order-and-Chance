@@ -146,12 +146,30 @@ def fourier_square(levels=(1, 3, 9, 41)):
     return "\n".join(lines) + "\n"
 
 
+def sierpinski_carpet(level=4):
+    """Sierpinski carpet: keep the 8 outer squares of a 3x3 grid, recursively. Its Hausdorff
+    dimension is log 8 / log 3 = 1.89..., between a curve and a surface (Tome 6, Chapter 11)."""
+    side = 2 * R / 2 ** 0.5 * 0.92  # inscribed in the disc of radius R, with a margin
+    lines = [f"% Sierpinski carpet at level {level}: 8^{level} squares, dimension log 8 / log 3."]
+    squares = [(-side / 2, -side / 2, side)]
+    for _ in range(level):
+        squares = [(x + i * s / 3, y + j * s / 3, s / 3) for x, y, s in squares
+                   for i in range(3) for j in range(3) if (i, j) != (1, 1)]
+    gap = 0.12 * squares[0][2]
+    for x, y, s in squares:
+        lines.append(r"\fill[accent] (%.4fin,%.4fin) rectangle +(%.4fin,%.4fin);" % (x + gap / 2, y + gap / 2, s - gap, s - gap))
+    lines.append(r"\draw[accent,line width=0.6pt,opacity=0.8] (%.4fin,%.4fin) rectangle +(%.4fin,%.4fin);"
+                 % (-side / 2 - 0.08, -side / 2 - 0.08, side + 0.16, side + 0.16))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
     "tome3-chance": galton_board,
     "tome4-calculation": fourier_square,
+    "tome6-spaces": sierpinski_carpet,
 }
 
 if __name__ == "__main__":
