@@ -1,0 +1,615 @@
+\chapter{Counting and Paradoxes}
+
+\begin{center}\itshape
+Three doors; behind one of them, a car. You pick door~1. The host, who knows where the car is,\\
+opens door~3 and shows a goat. Should you switch to door~2?
+\end{center}
+
+Probability began in 1654 with letters between Pascal and Fermat about a gambling problem: how to split the
+stakes of a game interrupted before its end. For almost three centuries it remained a collection of brilliant
+calculations without a firm foundation, and its paradoxes, some of which open this book, were taken as signs
+that the subject was not quite mathematics. In 1933 Kolmogorov gave it axioms: a probability is a measure of
+total mass~$1$. Every paradox of this chapter dissolves once the probability space is written down.
+
+This chapter sets up those axioms and the rules that follow from them, then uses them on five classical
+problems: the birthday problem, Monty Hall, Bertrand's chords, the ballot theorem and Buffon's needle. Most
+sample spaces here are finite, and probability is counting; Buffon's needle and Bertrand's chords use areas,
+which Chapter~5 puts on a rigorous footing.
+
+\section{Probability spaces}
+
+Tome~0 (Chapter~8) defined a probability on a finite set. To speak of infinitely many coin tosses, or of a point
+chosen at random in a disc, one needs infinite sample spaces, and one must decide which subsets are events.
+
+\begin{definition}
+Let $\Omega$ be a set. A \emph{$\sigma$-algebra} on $\Omega$ is a family $\mathcal F$ of subsets of $\Omega$ that
+contains $\Omega$, is stable under complement, and is stable under countable unions. A \emph{probability} on
+$(\Omega,\mathcal F)$ is a map $P:\mathcal F\to[0,1]$ with $P(\Omega)=1$ that is \emph{countably additive}: for
+pairwise disjoint $A_1,A_2,\ldots\in\mathcal F$,
+\[
+P\Bigl(\bigcup_{n\ge1}A_n\Bigr)=\sum_{n\ge1}P(A_n).
+\]
+The triple $(\Omega,\mathcal F,P)$ is a \emph{probability space}; the elements of $\mathcal F$ are \emph{events}.
+\end{definition}
+
+A $\sigma$-algebra is also stable under countable intersections, since $\bigcap A_n$ is the complement of
+$\bigcup A_n^c$, and it contains $\varnothing=\Omega^c$. When $\Omega$ is countable, one takes
+$\mathcal F=\mathcal P(\Omega)$, all subsets. For uncountable $\Omega$ such as $[0,1]$, Chapter~5 shows that no
+reasonable uniform probability can be defined on all subsets: this is why the axioms name $\mathcal F$.
+
+\begin{proposition}\label{prop:rules}
+On a probability space, for events $A$, $B$, $A_n$:
+\begin{enumerate}[label=(\alph*)]
+\item $P(\varnothing)=0$, and $P(A\cup B)=P(A)+P(B)$ if $A\cap B=\varnothing$;
+\item $P(A^c)=1-P(A)$, and $A\subseteq B$ implies $P(A)\le P(B)$;
+\item $P(A\cup B)=P(A)+P(B)-P(A\cap B)$;
+\item \emph{union bound}: $P\bigl(\bigcup_nA_n\bigr)\le\sum_nP(A_n)$, for finitely or countably many events;
+\item \emph{continuity}: if $A_1\subseteq A_2\subseteq\cdots$ then $P\bigl(\bigcup_nA_n\bigr)=\lim_nP(A_n)$; if
+$A_1\supseteq A_2\supseteq\cdots$ then $P\bigl(\bigcap_nA_n\bigr)=\lim_nP(A_n)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Countable additivity with all $A_n=\varnothing$ gives $P(\varnothing)=\sum_nP(\varnothing)$, a finite
+number, so $P(\varnothing)=0$. Then take $A_1=A$, $A_2=B$ and $A_n=\varnothing$ for $n\ge3$.
+
+(b) $A$ and $A^c$ are disjoint with union $\Omega$, so $P(A)+P(A^c)=1$. If $A\subseteq B$, then $B$ is the
+disjoint union of $A$ and $B\cap A^c$, so $P(B)=P(A)+P(B\cap A^c)\ge P(A)$.
+
+(c) $A\cup B$ is the disjoint union of $A$ and $B\cap A^c$, and $B$ is the disjoint union of $B\cap A$ and
+$B\cap A^c$. Subtracting the two instances of (a) gives $P(A\cup B)-P(B)=P(A)-P(A\cap B)$.
+
+(d) Let $B_1=A_1$ and $B_n=A_n\cap(A_1\cup\dots\cup A_{n-1})^c$. The $B_n$ are disjoint events, $B_n\subseteq A_n$,
+and $\bigcup B_n=\bigcup A_n$ (a point of the union lies in $B_n$ for the first $n$ with $\omega\in A_n$). So
+$P(\bigcup A_n)=\sum P(B_n)\le\sum P(A_n)$ by (b).
+
+(e) For an increasing sequence, the $B_n$ of (d) are $A_n\cap A_{n-1}^c$, and $A_N=B_1\cup\dots\cup B_N$. So
+$P(\bigcup A_n)=\sum_{n\ge1}P(B_n)=\lim_N\sum_{n\le N}P(B_n)=\lim_NP(A_N)$. For a decreasing sequence, apply this
+to the increasing sequence $A_n^c$ and use (b).
+\end{proof}
+
+The simplest probability spaces are discrete. Tome~0, Chapter~5, showed that a series of non-negative terms can
+be summed in any order and grouped in any way without changing its value; this is all one needs.
+
+\begin{proposition}\label{prop:discrete}
+Let $\Omega$ be countable and $p:\Omega\to[0,1]$ with $\sum_{\omega\in\Omega}p(\omega)=1$. Then
+$P(A)=\sum_{\omega\in A}p(\omega)$ defines a probability on $(\Omega,\mathcal P(\Omega))$, and every probability on
+$(\Omega,\mathcal P(\Omega))$ is of this form, with $p(\omega)=P(\{\omega\})$.
+\end{proposition}
+\begin{proof}
+$P(A)$ is a sum of non-negative terms bounded by $1$, and $P(\Omega)=1$. If $A=\bigcup A_n$ with disjoint $A_n$,
+the family $(p(\omega))_{\omega\in A}$ is the union of the disjoint families $(p(\omega))_{\omega\in A_n}$, and
+summing a non-negative family by packets gives $\sum_{\omega\in A}p(\omega)=\sum_n\sum_{\omega\in A_n}p(\omega)$.
+Conversely, a countable set $A$ is the disjoint countable union of its singletons, so countable additivity
+forces $P(A)=\sum_{\omega\in A}P(\{\omega\})$.
+\end{proof}
+
+\begin{remark}[infinitely many coin tosses]
+A sequence of fair coin tosses $(\omega_1,\omega_2,\ldots)\in\{0,1\}^{\N^*}$ cannot live on a countable space: every
+single infinite sequence has probability at most $2^{-n}$ for every $n$ (its first $n$ tosses are prescribed),
+hence probability $0$, and a countable union of null events is null. So the space of infinite sequences is
+uncountable and the probability is not a sum over points. That a probability space carrying infinitely many
+independent fair coins exists is \emph{admitted (proved in Tome~6)}; it is equivalent to the existence of the
+uniform probability on $[0,1]$, through binary expansions.
+\end{remark}
+
+\section{Conditioning and independence}
+
+\begin{definition}
+If $P(B)>0$, the \emph{conditional probability} of $A$ given $B$ is $P(A\mid B)=P(A\cap B)/P(B)$. Events
+$(A_i)_{i\in I}$ are \emph{independent} if $P(A_{i_1}\cap\dots\cap A_{i_k})=P(A_{i_1})\cdots P(A_{i_k})$ for every
+finite set $\{i_1,\dots,i_k\}$ of distinct indices.
+\end{definition}
+
+\begin{proposition}\label{prop:bayes}
+Let $B$ be an event with $P(B)>0$.
+\begin{enumerate}[label=(\alph*)]
+\item $A\mapsto P(A\mid B)$ is a probability on $(\Omega,\mathcal F)$.
+\item \emph{Chain rule}: $P(A_1\cap\dots\cap A_n)=P(A_1)P(A_2\mid A_1)\cdots P(A_n\mid A_1\cap\dots\cap A_{n-1})$ when
+$P(A_1\cap\dots\cap A_{n-1})>0$.
+\item \emph{Total probability}: if $(B_k)$ is a finite or countable partition of $\Omega$ into events with
+$P(B_k)>0$, then $P(A)=\sum_kP(A\mid B_k)P(B_k)$.
+\item \emph{Bayes}: in the situation of (c), $P(B_j\mid A)=\dfrac{P(A\mid B_j)P(B_j)}{\sum_kP(A\mid B_k)P(B_k)}$ when $P(A)>0$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $P(\Omega\mid B)=1$, and if the $A_n$ are disjoint, so are the $A_n\cap B$, whose union is
+$(\bigcup A_n)\cap B$; divide countable additivity by $P(B)$.
+(b) The right-hand side telescopes: each factor $P(A_k\mid A_1\cap\dots\cap A_{k-1})$ is a quotient whose
+denominator cancels the previous numerator.
+(c) $A$ is the disjoint union of the $A\cap B_k$, and $P(A\cap B_k)=P(A\mid B_k)P(B_k)$.
+(d) $P(B_j\mid A)=P(A\cap B_j)/P(A)$; write the numerator as $P(A\mid B_j)P(B_j)$ and the denominator by (c).
+\end{proof}
+
+\begin{think}
+A disease affects $1\%$ of the population. A test detects it in $99\%$ of sick people, and gives a false alarm
+for $5\%$ of healthy people. You test positive. Guess the probability that you are sick before reading on.
+\end{think}
+
+\begin{example}\label{ex:medical}
+Let $S$ be ``sick'' and $T$ ``the test is positive''. By Bayes,
+\[
+\begin{aligned}P(S\mid T)&=\frac{0.99\times0.01}{0.99\times0.01+0.05\times0.99}\eqbr=\frac{0.0099}{0.0594}=\frac16.\end{aligned}
+\]
+Five positive results out of six are false alarms. The reason is visible in a population of $10\,000$: $100$ are
+sick and $99$ of them test positive, but $9\,900$ are healthy and $495$ of them test positive too. A rare
+condition makes even a good test unreliable on its own; Exercise~\ref{ex:twotests} shows what a second test
+does.
+\end{example}
+
+Independence of a family is stronger than independence of each pair. Toss two fair coins and let $A$ be ``the
+first is heads'', $B$ ``the second is heads'', $C$ ``the two coins agree''. Each has probability $\frac12$, each
+pair has an intersection of probability $\frac14$ (for instance $A\cap C$ is ``two heads''), but
+$P(A\cap B\cap C)=\frac14\ne\frac18$. Exercise~\ref{ex:pairwise} turns this example into a tool of computer
+science.
+
+\begin{proposition}\label{prop:indepcomp}
+If $(A_i)_{i\in I}$ are independent, so are the events obtained by replacing any of the $A_i$ by their
+complements.
+\end{proposition}
+\begin{proof}
+It suffices to replace one event, say $A_1$, and to check the product formula for a finite family
+$A_1^c,A_2,\dots,A_k$ (families not containing $A_1^c$ are unchanged). With $D=A_2\cap\dots\cap A_k$,
+$P(A_1^c\cap D)=P(D)-P(A_1\cap D)=P(A_2)\cdots P(A_k)\bigl(1-P(A_1)\bigr)=P(A_1^c)P(A_2)\cdots P(A_k)$. Replacing
+the events one at a time handles any number of them.
+\end{proof}
+
+\section{Birthdays and collisions}
+
+\begin{think}
+How many people must be in a room for the probability that two share a birthday to exceed $\frac12$? And how many
+for a probability that someone shares \emph{your} birthday to exceed $\frac12$?
+\end{think}
+
+Assume that birthdays are independent and uniform among $N=365$ days. More generally, throw $n$ balls
+independently and uniformly into $N$ boxes: this is also a hash function that sends $n$ keys to $N$ slots, and a
+\emph{collision} is two balls in the same box.
+
+\begin{proposition}\label{prop:birthday}
+Let $q_n$ be the probability that there is no collision among $n$ balls in $N$ boxes. Then
+\[
+q_n=\prod_{k=1}^{n-1}\Bigl(1-\frac kN\Bigr)\le\exp\Bigl(-\frac{n(n-1)}{2N}\Bigr),
+\]
+and, if $n(n-1)\le2N$,
+\[
+\Bigl(1-\frac1e\Bigr)\frac{n(n-1)}{2N}\le1-q_n\le\frac{n(n-1)}{2N}.
+\]
+\end{proposition}
+\begin{proof}
+The sample space is $\{1,\dots,N\}^n$ with the uniform probability. The outcomes without collision are the
+injective maps, $N(N-1)\cdots(N-n+1)$ of them; dividing by $N^n$ gives the product. Since $1-x\le e^{-x}$ for all
+real $x$ (the exponential is convex and $1-x$ is its tangent at $0$), $q_n\le\exp(-\sum_{k<n}k/N)$, and
+$\sum_{k=1}^{n-1}k=\frac{n(n-1)}2$.
+
+Upper bound on $1-q_n$: a collision means that some pair $\{i,j\}$ of balls shares a box, an event of probability
+$\frac1N$ (whatever box $i$ lands in, $j$ lands there with probability $\frac1N$). The union bound over the
+$\binom n2$ pairs gives $1-q_n\le\binom n2\frac1N$. Lower bound: $1-q_n\ge1-e^{-x}$ with $x=\frac{n(n-1)}{2N}\in[0,1]$,
+and $1-e^{-x}\ge(1-e^{-1})x$ on $[0,1]$ because $x\mapsto1-e^{-x}$ is concave, hence above its chord from $0$ to $1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-birthday}
+\caption{The probability $1-q_n$ of a shared birthday among $n$ people, and the approximation $1-e^{-n(n-1)/730}$.
+It passes $\frac12$ at $n=23$ and $99\%$ at $n=57$.}
+\label{fig:birthday}
+\end{figure}
+
+With $N=365$, $q_{23}=0.4927$, so a shared birthday is more likely than not among $23$ people
+(Figure~\ref{fig:birthday}). The surprise comes from counting the wrong thing: $23$ people form $253$ pairs, and
+each pair has a chance of $\frac1{365}$. In contrast, the probability that one of $n$ other people shares your own
+birthday is $1-(364/365)^n$, which passes $\frac12$ only at $n=253$ (Exercise~\ref{ex:mybirthday}).
+
+\begin{beauty}
+Collisions appear after about $\sqrt N$ balls, not $N$. This square root is everywhere in computer science.
+A hash table with $N$ slots starts to see collisions after about $\sqrt N$ insertions. A cryptographic hash with
+$b$-bit outputs can be broken by the \emph{birthday attack}, which finds two inputs with the same hash after
+about $2^{b/2}$ trials: this is why $128$-bit security needs $256$-bit hashes. Pollard's rho method for factoring finds a factor $p$ of $n$ after about $\sqrt p$ steps for the same reason: a random-looking sequence
+modulo $p$ repeats after about $\sqrt p$ terms.
+\end{beauty}
+
+\section{Monty Hall}
+
+The question that opens this chapter was published in 1975 by Steve Selvin, and became famous in 1990 when the
+columnist Marilyn vos Savant answered ``switch'' and received thousands of letters, many from mathematicians,
+explaining that she was wrong. She was right; the subtlety is in what the host does.
+
+\begin{proposition}\label{prop:monty}
+The car is behind door $C$, uniform in $\{1,2,3\}$. The player picks door $1$. The host opens a door $H$ that is
+neither door~$1$ nor door~$C$; when he has two choices (that is, when $C=1$), he picks one uniformly. Then
+$P(C=1\mid H=3)=\frac13$ and $P(C=2\mid H=3)=\frac23$: switching doubles the chance of winning.
+\end{proposition}
+\begin{proof}
+By total probability over the three values of $C$, $P(H=3)=\frac13\cdot\frac12+\frac13\cdot1+\frac13\cdot0=\frac12$: if
+$C=1$ the host opens door~$3$ half the time, if $C=2$ he must open door~$3$, and if $C=3$ he cannot. Bayes gives
+$P(C=1\mid H=3)=\frac{\frac13\cdot\frac12}{\frac12}=\frac13$ and $P(C=2\mid H=3)=\frac{\frac13\cdot1}{\frac12}=\frac23$.
+\end{proof}
+
+The answer depends on the host's rule, not only on what is seen. If the host does not know where the car is and
+opens door~$2$ or~$3$ at random, then the event ``he opens door~$3$ and it hides a goat'' has probability
+$\frac13\cdot\frac12+\frac13\cdot\frac12=\frac13$ (car behind door~$1$ or door~$2$, and he picks door~$3$), and
+$P(C=1\mid\text{door 3, goat})=\frac{1/6}{1/3}=\frac12$. Same doors, same goat, different answer: the
+information carried by an observation depends on how it was produced.
+
+\section{Bertrand's paradox}
+
+In his \emph{Calcul des probabilités} (1889), Joseph Bertrand asked: what is the probability that a chord drawn
+at random in a circle is longer than the side of the inscribed equilateral triangle? He gave three answers.
+
+\begin{proposition}\label{prop:bertrand}
+In the unit circle, whose inscribed equilateral triangle has side $\sqrt3$:
+\begin{enumerate}[label=(\alph*)]
+\item if the two endpoints of the chord are independent and uniform on the circle, $P(\text{length}>\sqrt3)=\frac13$;
+\item if the chord is perpendicular to a radius chosen uniformly and crosses it at a uniform distance $r\in[0,1]$
+from the centre, the probability is $\frac12$;
+\item if the midpoint of the chord is uniform in the disc, the probability is $\frac14$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+A chord at distance $r$ from the centre has length $2\sqrt{1-r^2}$, which exceeds $\sqrt3$ iff $r<\frac12$.
+
+(a) By rotation, fix the first endpoint at angle $0$; the second is at a uniform angle $\varphi\in[0,2\pi)$, and
+the chord has length $2\sin\frac\varphi2$. This exceeds $\sqrt3$ iff $\sin\frac\varphi2>\frac{\sqrt3}2$, that is
+$\frac\varphi2\in(\frac\pi3,\frac{2\pi}3)$, an interval of length $\frac{2\pi}3$ out of $2\pi$ for $\varphi$:
+probability $\frac13$.
+
+(b) The distance to the centre is $r$, uniform on $[0,1]$, and $r<\frac12$ has probability $\frac12$.
+
+(c) The midpoint is the foot of the perpendicular from the centre, so the distance of the chord to the centre
+is the distance of the midpoint to the centre. It is less than $\frac12$ iff the midpoint lies in the disc of
+radius $\frac12$, whose area is a quarter of the unit disc's.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-bertrand}
+\caption{Sixty random chords for each of Bertrand's three methods; chords longer than the side of the inscribed
+triangle (dashed) are orange. The three pictures look different, and they are: they are three different
+probabilities on the set of chords.}
+\label{fig:bertrand}
+\end{figure}
+
+There is no contradiction: ``a chord at random'' does not specify a probability on the set of chords, and the
+three methods specify three different ones (Figure~\ref{fig:bertrand}). The paradox is a warning that every
+problem in probability starts by naming its probability space.
+
+\begin{remark}
+In 1973 E.~T.~Jaynes argued that method~(b) is the natural one: it is the only one whose answer does not change
+when the circle is moved or rescaled while the random lines are thrown from far away, as with straws thrown on a
+circle drawn on the floor. Experiments with straws agree with $\frac12$.
+\end{remark}
+
+\section{The ballot theorem}
+
+\begin{think}
+In an election, candidate A gets $a$ votes and B gets $b<a$ votes. The ballots are counted one by one in a random
+order. What is the probability that A is strictly ahead during the whole count? Try $a=2$, $b=1$ by hand.
+\end{think}
+
+Encode a count as a path: start at height $0$, go up one step for a vote for A and down one for B. After all
+votes the path is at height $a-b$. More generally, a \emph{path} from $(0,x)$ to $(n,y)$ is a sequence of heights
+$x=s_0,s_1,\dots,s_n=y$ with $s_{k}-s_{k-1}=\pm1$; it has $u$ up-steps and $d$ down-steps with $u+d=n$ and
+$u-d=y-x$, so there are $\binom nu$ of them, with $u=\frac{n+y-x}2$ (and none if this is not an integer in
+$[0,n]$).
+
+\begin{lemma}[reflection principle]\label{lem:reflection}
+Let $x,y>0$. The paths from $(0,x)$ to $(n,y)$ that touch height $0$ are in bijection with all the paths from
+$(0,-x)$ to $(n,y)$.
+\end{lemma}
+\begin{proof}
+For a path $s$ from $x$ to $y$ that touches $0$, let $T$ be the first time with $s_T=0$, and reflect the part
+before $T$: $s'_k=-s_k$ for $k\le T$, $s'_k=s_k$ for $k\ge T$. This is a path from $-x$ to $y$. Conversely, a
+path from $-x<0$ to $y>0$ must pass through $0$; reflecting it before its first visit to $0$ gives back a path
+from $x$ to $y$ touching $0$, and the two maps are inverse to each other because the first visit to $0$ is the
+same time $T$ for $s$ and $s'$ (before $T$, $s_k\ne0$ iff $s'_k\ne0$).
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-reflection}
+\caption{The reflection principle: the part of the path before its first visit $T$ to $0$ is reflected, turning
+a path from $a$ to $b$ that touches $0$ into a path from $-a$ to $b$.}
+\label{fig:reflection}
+\end{figure}
+
+\begin{theorem}[Bertrand's ballot theorem, 1887]\label{thm:ballot}
+If A receives $a$ votes and B receives $b<a$ votes, and all $\binom{a+b}a$ orders of the ballots are equally likely,
+the probability that A is strictly ahead throughout the count is $\dfrac{a-b}{a+b}$.
+\end{theorem}
+\begin{proof}
+Let $n=a+b$. A good count is a path from $(0,0)$ to $(n,a-b)$ with $s_k>0$ for $1\le k\le n$. Its first step is
+up, and the rest is a path from $(1,1)$ to $(n,a-b)$ that never touches $0$. Paths from $(1,1)$ to $(n,a-b)$ have
+$n-1$ steps with $a-1$ up-steps: there are $\binom{n-1}{a-1}=\binom{n-1}b$ of them. By the reflection principle (shifted
+by one unit of time), those that touch $0$ are as many as the paths from $(1,-1)$ to $(n,a-b)$, which have $a$
+up-steps and $b-1$ down-steps: $\binom{n-1}{b-1}$ of them. So the number of good counts is
+$\binom{n-1}b-\binom{n-1}{b-1}$, and dividing by $\binom nb$,
+\[
+\frac{\binom{n-1}b}{\binom nb}-\frac{\binom{n-1}{b-1}}{\binom nb}=\frac{n-b}n-\frac bn=\frac{a-b}{a+b}.
+\]
+\end{proof}
+
+For $a=2$, $b=1$ the orders are AAB, ABA, BAA and only the first is good: $\frac13=\frac{2-1}{2+1}$.
+Exercise~\ref{ex:catalan} deduces the Catalan numbers from the theorem, and Chapter~7 uses the reflection
+principle again to study random walks.
+
+\section{Buffon's needle}
+
+In 1777 Georges-Louis Leclerc, comte de Buffon, asked for the probability that a needle thrown on a floor of
+parallel boards crosses a line between two boards. It was the first problem of \emph{geometric probability}, where
+probabilities are ratios of areas. Here we take the rule ``a uniform point in a rectangle falls in a region with
+probability equal to the ratio of areas'' as the model; Chapter~5 constructs the uniform probability and shows
+that it agrees with the Riemann integral on regions bounded by graphs of continuous functions.
+
+\begin{think}
+A needle of length $\ell$ is thrown on lines spaced $d\ge\ell$ apart. The answer contains $\pi$. Where could
+$\pi$ come from in a problem about straight lines?
+\end{think}
+
+\begin{theorem}[Buffon]\label{thm:buffon}
+Let $\ell\le d$. Describe a needle of length $\ell$ by the distance $x\in[0,\frac d2]$ from its midpoint to the
+nearest line and by the acute angle $\theta\in[0,\frac\pi2]$ it makes with the lines, and assume that $(\theta,x)$ is
+uniform in the rectangle $[0,\frac\pi2]\times[0,\frac d2]$. Then the needle crosses a line with probability
+$\dfrac{2\ell}{\pi d}$.
+\end{theorem}
+\begin{proof}
+The half-needle on the side of the nearest line reaches a distance $\frac\ell2\sin\theta$ from the midpoint,
+measured perpendicularly to the lines. So the needle crosses that line iff $x\le\frac\ell2\sin\theta$; it cannot
+reach the other neighbouring line, at distance $d-x\ge\frac d2\ge\frac\ell2$, except with $\theta=\frac\pi2$ and
+$x=\frac d2=\frac\ell2$, a case of zero area. The favourable region lies under the graph of
+$\theta\mapsto\frac\ell2\sin\theta$ (Figure~\ref{fig:buffon}), whose area is $\int_0^{\pi/2}\frac\ell2\sin\theta\dd\theta=\frac\ell2$.
+The rectangle has area $\frac\pi2\cdot\frac d2$, and the ratio is $\frac{\ell/2}{\pi d/4}=\frac{2\ell}{\pi d}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-buffon}
+\caption{Left: forty needles with $\ell=0.8$ on lines one unit apart; the crossing ones are orange. Right: in the
+rectangle of $(\theta,x)$, the needle crosses iff the point lies under $x=\frac\ell2\sin\theta$.}
+\label{fig:buffon}
+\end{figure}
+
+So $\pi$ comes from the uniform angle, and throwing needles is a way to measure~$\pi$: if $c$ of $n$ needles
+cross, $\frac{2\ell n}{dc}$ estimates $\pi$. It is a poor method: Chapter~6 shows that the error after $n$ throws is
+of order $\frac1{\sqrt n}$, so a million throws give about three correct digits. Exercise~\ref{ex:noodle} gives a
+second, astonishing proof of Buffon's formula in which no integral appears.
+
+\begin{remark}[a suspicious experiment]
+In 1901 the Italian mathematician Mario Lazzarini reported $3408$ throws of a needle with $\ell/d=\frac56$ and
+$1808$ crossings, giving $\pi\approx\frac{2\cdot5\cdot3408}{6\cdot1808}=\frac{355}{113}=3.1415929\ldots$, correct to
+six decimals. That is far too good: with $3408$ throws the typical error is in the second decimal. The number of
+throws was chosen so that $\frac{355}{113}$, a famous approximation of $\pi$, could come out exactly, and the
+experiment was presumably stopped at the right moment. Statistics can detect results that are too good to be true.
+\end{remark}
+
+\begin{beauty}
+Kolmogorov's axioms say nothing about what probability \emph{means}: frequencies in repeated experiments,
+degrees of belief, or symmetries of a physical system. They only say how probabilities combine. This modesty is
+their strength. The paradoxes of this chapter were not failures of logic but failures to say which probability
+was meant, and once it is named, the rest is mathematics: counting in this chapter, integration from Chapter~5 on.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:mybirthday}
+How many other people must be in a room for the probability that one of them shares your birthday to exceed
+$\frac12$? Compare with the $23$ of the birthday problem and explain the difference.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:twochildren}
+A family has two children, each a boy or a girl with probability $\frac12$, independently. (a) Given that at
+least one is a boy, what is the probability that both are boys? (b) Given that at least one is a boy born on a
+Tuesday (each day of the week having probability $\frac17$, independently of everything else), what is the
+probability that both are boys?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:twotests}
+In Example~\ref{ex:medical}, you take a second test, whose errors are independent of the first given your state
+of health, and it is positive too. What is now the probability that you are sick?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:penney}
+A fair coin is tossed until either HHH or THH appears as three consecutive tosses. Show that THH comes first with
+probability $\frac78$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:montyn}
+There are $n\ge3$ doors and one car. You pick a door; the host, who knows where the car is, opens $k\le n-2$ other
+doors hiding goats, chosen uniformly among the possible ones. You then switch to one of the $n-k-1$ other closed
+doors, chosen uniformly. Show that you win with probability $\frac{n-1}{n(n-k-1)}$, and that switching is always
+better than staying.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pairwise}
+Let $X_1,\dots,X_k$ be independent fair bits. For each non-empty $S\subseteq\{1,\dots,k\}$, let $A_S$ be the event
+$\sum_{i\in S}X_i\equiv0\pmod2$. Show that the $2^k-1$ events $A_S$ each have probability $\frac12$ and are pairwise
+independent, but that no three of the form $A_S,A_T,A_{S\triangle T}$ are independent. (In computer science, this
+turns $k$ random bits into $2^k-1$ pairwise independent ones, which is enough for many algorithms.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:catalan}
+A path of length $2n$ from $0$ to $0$ is a \emph{Dyck path} if it never goes below $0$. Using the ballot theorem
+with $a=n+1$ and $b=n$, show that there are $C_n=\frac1{n+1}\binom{2n}n$ Dyck paths of length $2n$ (the Catalan
+numbers).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:secretary}
+\emph{The secretary problem.} $n$ candidates with distinct values arrive in a uniformly random order. After each
+interview you must accept or reject the candidate, for ever, and you win if you accept the best one. For
+$2\le r\le n$, the \emph{threshold strategy} rejects the first $r-1$ candidates and accepts the first later one
+who is better than all before. (a) Show that it wins with probability $p_r=\frac{r-1}n\sum_{k=r}^n\frac1{k-1}$.
+(b) Show that $\max_rp_r\to\frac1e$ as $n\to\infty$, attained for $r\approx n/e$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:noodle}
+\emph{Buffon's noodle} (Barbier, 1860). Lines are spaced $d$ apart. For a rigid plane curve $\Gamma$ thrown at
+random (with a uniform random position and orientation, as in Theorem~\ref{thm:buffon}), let $N(\Gamma)$ be the
+number of its intersection points with the lines.
+(a) Using only linearity of expectation, show that for a polygonal line, $\mathbb E[N(\Gamma)]=c\cdot\text{length}(\Gamma)$
+for a constant $c$ that does not depend on $\Gamma$. (You may admit that $\mathbb E[N]$ of a segment is
+an increasing function of its length that is additive under subdivision, which the model makes clear.)
+(b) A circle of diameter $d$ meets the lines in exactly $2$ points with probability $1$. Comparing it with
+inscribed and circumscribed regular polygons, show that $c=\frac2{\pi d}$, and deduce Buffon's theorem again.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:mybirthday}
+Each other person misses your birthday with probability $\frac{364}{365}$, independently.
+\end{hint}
+\begin{hint}{ex:twochildren}
+List the equally likely outcomes. In (b), count the pairs (sex, day) for two children: $14^2$ outcomes.
+\end{hint}
+\begin{hint}{ex:twotests}
+Apply Bayes with the likelihoods $0.99^2$ and $0.05^2$, or apply Example~\ref{ex:medical} again with the prior $\frac16$.
+\end{hint}
+\begin{hint}{ex:penney}
+When can HHH appear before THH? Look at the toss just before the first HHH.
+\end{hint}
+\begin{hint}{ex:montyn}
+Condition on whether your first door hides the car.
+\end{hint}
+\begin{hint}{ex:pairwise}
+For $S\ne T$, pick $i\in S\setminus T$ (or $T\setminus S$) and condition on all the other bits.
+\end{hint}
+\begin{hint}{ex:catalan}
+A good count for $a=n+1$, $b=n$ starts with a vote for A; what does the rest look like?
+\end{hint}
+\begin{hint}{ex:secretary}
+The strategy picks the best candidate if the best is at position $k\ge r$ and the best of the first $k-1$ is
+among the first $r-1$. Compare the sum with an integral.
+\end{hint}
+\begin{hint}{ex:noodle}
+(a) Each segment of the polygon contributes its own expected number of crossings. (b) A line meets a convex polygon
+in at most two points, and if it crosses the circle it crosses a circumscribed polygon twice.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:mybirthday}
+\idea ``Someone shares my birthday'' fixes the day, so there is no square root: we need about $365\log2$ people,
+not $\sqrt{365}$.
+\writeup The probability that none of $n$ people has your birthday is $(364/365)^n$, which is less than $\frac12$
+iff $n>\frac{\log2}{\log(365/364)}=252.65\ldots$; so $n=253$. In the birthday problem every pair of people can
+collide, and $23$ people form $\binom{23}2=253$ pairs: the same number, which is no coincidence, since both
+situations need about $253$ ``chances of $\frac1{365}$''.
+\end{solution}
+
+\begin{solution}{ex:twochildren}
+\idea Write the sample space and count; conditioning on ``at least one'' keeps several outcomes, and extra
+details change how many.
+\writeup (a) The four outcomes BB, BG, GB, GG are equally likely, and ``at least one boy'' keeps three of them,
+of which one is BB: probability $\frac13$.
+(b) Each child is one of $14$ equally likely (sex, day) pairs, so there are $196$ outcomes. Those where no child is
+a Tuesday boy number $13^2=169$, so ``at least one Tuesday boy'' has $27$ outcomes. Among them, both are boys in
+$7^2-6^2=13$ outcomes (two boys, not both born on other days). The probability is $\frac{13}{27}$, close to
+$\frac12$: the more specific the information about one child, the closer it is to ``the first child is a boy''.
+\end{solution}
+
+\begin{solution}{ex:twotests}
+\idea Bayes again: the posterior after the first test is the prior for the second.
+\writeup With independent errors, $P(T_1\cap T_2\mid S)=0.99^2$ and $P(T_1\cap T_2\mid S^c)=0.05^2$, so
+\[
+\begin{aligned}P(S\mid T_1\cap T_2)&=\frac{0.9801\times0.01}{0.9801\times0.01+0.0025\times0.99}\\&=\frac{0.009801}{0.012276}\approx0.798.\end{aligned}
+\]
+Equivalently, the odds of being sick are multiplied by $\frac{0.99}{0.05}=19.8$ at each positive test: from $\frac1{99}$
+to $\frac15$ to $3.96$, a probability of $\frac{3.96}{4.96}\approx0.798$.
+\end{solution}
+
+\begin{solution}{ex:penney}
+\idea Ask what precedes the first HHH.
+\writeup If HHH has not appeared in the first three tosses, look at its first appearance, at tosses
+$k,k+1,k+2$ with $k\ge2$. Toss $k-1$ is not H, otherwise HHH would have appeared at $k-1$; so it is T, and THH
+appeared at tosses $k-1,k,k+1$, before HHH. So HHH wins only if the first three tosses are HHH, which has
+probability $\frac18$. THH does appear eventually with probability $1$: the tosses $3m+1,3m+2,3m+3$ for
+$m=0,1,\ldots$ are independent triples, each equal to THH with probability $\frac18$, so the probability that none
+of the first $M$ of them is THH is $(\frac78)^M\to0$. Hence THH comes first with probability $\frac78$.
+\end{solution}
+
+\begin{solution}{ex:montyn}
+\idea If your first door hides the car, switching loses; otherwise the car is behind one of the remaining closed
+doors.
+\writeup With probability $\frac1n$ your door hides the car and switching loses. With probability $\frac{n-1}n$ it
+does not; the host opens $k$ goat doors, so the car is behind one of the $n-k-1$ other closed doors, and you pick
+it with probability $\frac1{n-k-1}$. So switching wins with probability $\frac{n-1}{n(n-k-1)}$, which is larger
+than the $\frac1n$ of staying since $n-1>n-k-1$ for $k\ge1$.
+\end{solution}
+
+\begin{solution}{ex:pairwise}
+\idea A parity involving a bit that nothing else involves is a fair coin, whatever the other bits are.
+\writeup For $S\ne\varnothing$, pick $i\in S$; given all the other bits, $\sum_{j\in S}X_j$ is a fixed number plus
+$X_i$, which is even with probability $\frac12$; by total probability, $P(A_S)=\frac12$. For $S\ne T$, say
+$i\in S\setminus T$ (otherwise swap them). Given all bits other than $X_i$, the parity on $T$ is determined, and
+the parity on $S$ is even with probability $\frac12$; so $P(A_S\cap A_T\mid\text{others})=\frac12\mathbf
+1_{A_T}$, and averaging, $P(A_S\cap A_T)=\frac12P(A_T)=\frac14$. Finally, the sum over $S\triangle T$ is congruent
+to the sum over $S$ plus the sum over $T$ modulo $2$ (elements of $S\cap T$ are counted twice), so $A_S\cap A_T\subseteq
+A_{S\triangle T}$ and $P(A_S\cap A_T\cap A_{S\triangle T})=\frac14\ne\frac18$.
+\end{solution}
+
+\begin{solution}{ex:catalan}
+\idea A strict lead for A when $a=b+1$ is a Dyck path lifted by one step.
+\writeup With $a=n+1$ and $b=n$, a good count starts with an A, after which the path is at $1$ and must stay at
+least at $1$ for the remaining $2n$ steps, ending at $1$. Shifting down by $1$, these remainders are exactly the
+Dyck paths of length $2n$. By the ballot theorem their number is
+\[
+\begin{aligned}\frac{a-b}{a+b}\binom{a+b}a&=\frac1{2n+1}\binom{2n+1}{n}\eqbr=\frac1{2n+1}\cdot\frac{(2n+1)!}{n!\,(n+1)!}\\&=\frac{(2n)!}{n!\,(n+1)!}=\frac1{n+1}\binom{2n}n.\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:secretary}
+\idea Decompose according to the position $k$ of the best candidate; the strategy then succeeds iff it does not
+stop before $k$.
+\writeup (a) Let the best candidate be at position $k$; this has probability $\frac1n$ for each $k$. If $k<r$ the
+strategy rejects it. If $k\ge r$, the strategy accepts it iff it has not stopped at a position $j\in[r,k-1]$, that
+is, iff no candidate between $r$ and $k-1$ beats all the earlier ones; this happens iff the best of the first $k-1$
+candidates is among the first $r-1$. By symmetry the best of the first $k-1$ is at a uniform position among
+them (and this is independent of where the overall best is), so this has probability $\frac{r-1}{k-1}$. Summing,
+$p_r=\sum_{k=r}^n\frac1n\cdot\frac{r-1}{k-1}$.
+(b) Write $r-1=xn$. Then $\sum_{k=r}^n\frac1{k-1}=\sum_{j=r-1}^{n-1}\frac1j$ lies between $\log\frac n{r-1}$ and
+$\log\frac{n-1}{r-2}$ (compare with $\int\frac{\mathrm dt}t$, Tome~0, Chapter~5), and the two bounds differ by at most $\log\frac{r-1}{r-2}\le\frac1{r-2}$; so $p_r=x\log\frac1x+o(1)$
+uniformly for $x\in[\frac1{\sqrt n},1]$, while for smaller $x$ both $p_r\le\frac{r-1}n(1+\log n)$ and
+$x\log\frac1x$ tend to $0$. The function $x\log\frac1x$ has its maximum $\frac1e$ at $x=\frac1e$, so
+$\max_rp_r\to\frac1e$, with $r\approx\frac ne$. (One can show that no strategy does better than the best threshold
+strategy, Lindley 1961.)
+\end{solution}
+
+\begin{solution}{ex:noodle}
+\idea A curve made of pieces crosses the lines as often as its pieces do, so the expected count is additive in
+length. The constant is found on one curve where the count is known for sure: a circle of diameter $d$.
+\writeup (a) Let $f(\ell)=\mathbb E[N]$ for a segment of length $\ell$. Cutting a segment into two collinear pieces
+of lengths $\ell_1,\ell_2$, every intersection point is on one piece (an endpoint shared by both lies on a line with
+probability $0$), so $f(\ell_1+\ell_2)=f(\ell_1)+f(\ell_2)$. Then $f(m\ell)=mf(\ell)$ for integers $m\ge1$, and $kf(\frac mk\ell)=f(m\ell)$, so $f(q\ell)=qf(\ell)$ for rational $q>0$; since $f$ is increasing, $f(\ell)=c\ell$ with $c=f(1)$: for irrational $\ell$,
+squeeze it between rationals. A polygonal line is thrown as a rigid body, so each of its segments is a thrown
+segment with a uniform position and orientation; by linearity of expectation, $\mathbb E[N]$ is the sum over
+the segments, $c$ times the total length.
+(b) The lines cut the plane into strips of width $d$. A circle of diameter $d$ whose centre is not on a line
+meets exactly one line (the one at distance less than $\frac d2$ from the centre, unless the centre is exactly
+halfway, a null event) in exactly two points. Let $P_m$ and $Q_m$ be the regular $m$-gons inscribed in and
+circumscribed about the circle, thrown together with it. A line meets the convex polygon $P_m$ in at most $2$
+points, and only if it meets the circle; so $N(P_m)\le N(\text{circle})=2$ almost surely. A line crossing the
+circle crosses $Q_m$ in $2$ points, so $N(Q_m)\ge2$. Taking expectations, $c\cdot\text{per}(P_m)\le2\le c\cdot\text{per}(Q_m)$.
+Both perimeters tend to $\pi d$ (they are $md\sin\frac\pi m$ and $md\tan\frac\pi m$), so $c=\frac2{\pi d}$. For a needle of
+length $\ell\le d$, $N\in\{0,1\}$, so $P(\text{crossing})=\mathbb E[N]=\frac{2\ell}{\pi d}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item A.~N.~Kolmogorov, \emph{Grundbegriffe der Wahrscheinlichkeitsrechnung}, Springer, 1933 (English:
+\emph{Foundations of the Theory of Probability}, Chelsea, 1950). The axioms, in sixty pages.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968,
+Chapters~I--V and~III.1 for the ballot theorem and the reflection principle.
+\item J.~Bertrand, \emph{Calcul des probabilités}, Gauthier-Villars, 1889. The chord paradox (pp.~4--5) and the
+ballot problem.
+\item G.-L.~Leclerc de Buffon, \emph{Essai d'arithmétique morale}, Supplément à l'Histoire naturelle, vol.~4, 1777.
+The needle; J.-É.~Barbier, \emph{Note sur le problème de l'aiguille et le jeu du joint couvert}, Journal de
+Mathématiques Pures et Appliquées 5 (1860), 273--286, for the noodle.
+\item E.~T.~Jaynes, \emph{The well-posed problem}, Foundations of Physics 3 (1973), 477--492. Invariance resolves
+Bertrand's paradox.
+\item S.~Selvin, \emph{A problem in probability} (letter), The American Statistician 29 (1975), 67; and
+J.~P.~Morgan, N.~R.~Chaganty, R.~C.~Dahiya and M.~J.~Doviak, \emph{Let's make a deal: the player's dilemma},
+The American Statistician 45 (1991), 284--287. Monty Hall and the role of the host's rule.
+\item L.~Badger, \emph{Lazzarini's lucky approximation of $\pi$}, Mathematics Magazine 67 (1994), 83--91.
+\item M.~Mitzenmacher and E.~Upfal, \emph{Probability and Computing}, 2nd ed., Cambridge University Press, 2017,
+Chapter~5. Birthdays, balls into bins and hashing.
+\item D.~V.~Lindley, \emph{Dynamic programming and decision theory}, Applied Statistics 10 (1961), 39--51; and
+T.~S.~Ferguson, \emph{Who solved the secretary problem?}, Statistical Science 4 (1989), 282--296.
+\end{itemize}

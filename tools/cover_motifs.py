@@ -87,10 +87,50 @@ def buckyball():
     return "\n".join(lines) + "\n"
 
 
+def galton_board(rows=12, balls=40):
+    """A Galton board: balls fall through a triangle of pegs, turning left or right with
+    probability 1/2, and pile up as a binomial histogram under the Gaussian curve."""
+    import random
+    rng = random.Random(3)
+    dx, dy = 0.30, 0.17
+    top = 1.95
+    peg = lambda r, k: ((k - r / 2) * dx, top - r * dy)
+    lines = ["% Galton board: binomial(12, 1/2) under its Gaussian limit."]
+    for _ in range(balls):  # faint paths of individual balls
+        k, pts = 0, [peg(0, 0)]
+        for r in range(1, rows + 1):
+            k += rng.random() < 0.5
+            pts.append(peg(r, k))
+        lines.append(r"\draw[accent,line width=0.35pt,opacity=0.22] " +
+                     "--".join("(%.4fin,%.4fin)" % pt for pt in pts) + ";")
+    for r in range(rows + 1):
+        for k in range(r + 1):
+            x, y = peg(r, k)
+            lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.022in);" % (x, y))
+    base = top - rows * dy - 2.05
+    height = 1.75
+    pmax = math.comb(rows, rows // 2) / 2**rows
+    for k in range(rows + 1):
+        x = (k - rows / 2) * dx
+        h = height * math.comb(rows, k) / 2**rows / pmax
+        lines.append(r"\fill[accent,opacity=0.55] (%.4fin,%.4fin) rectangle (%.4fin,%.4fin);"
+                     % (x - 0.42 * dx, base, x + 0.42 * dx, base + h))
+    sigma = math.sqrt(rows) / 2
+    curve = []
+    for t in range(-130, 131):
+        u = t / 130 * (rows / 2 + 1.2)
+        curve.append("(%.4fin,%.4fin)" % (u * dx, base + height * math.exp(-u * u / (2 * sigma**2))))
+    lines.append(r"\draw[accent,line width=1.1pt] " + "--".join(curve) + ";")
+    lines.append(r"\draw[accent,line width=0.6pt] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                 % (-(rows / 2 + 1.2) * dx, base, (rows / 2 + 1.2) * dx, base))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
+    "tome3-chance": galton_board,
 }
 
 if __name__ == "__main__":
