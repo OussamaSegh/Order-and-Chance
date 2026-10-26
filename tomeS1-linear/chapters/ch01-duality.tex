@@ -1,0 +1,721 @@
+\chapter{Spaces, Quotients and Duality}
+
+\begin{center}\itshape
+I have every confidence that the effort I have applied to the science reported upon here, which has occupied a
+considerable span of my lifetime and demanded the most intense exertions of my powers, is not to be lost.
+\upshape(Hermann Grassmann, foreword to the \emph{Ausdehnungslehre} of 1862)
+\end{center}
+
+In 1844 a schoolteacher from Stettin published a book that nobody could read. Hermann Grassmann had never studied
+mathematics at a university; he had studied theology and philology, taught at a secondary school, and worked out on his
+own a theory of ``extensive magnitudes'' that could be added and stretched, in any number of dimensions. His
+\emph{Ausdehnungslehre} contained, in philosophical prose, vector spaces, linear independence, dimension, subspaces and
+their sums and intersections, the exterior product, and the formula $\dim(U+W)+\dim(U\cap W)=\dim U+\dim W$. It sold
+almost no copies. M\"obius, asked to review it, confessed he could not get through it. Grassmann applied for a
+university chair and was turned down; the referee, Kummer, praised the content and found the form impossible. In 1862 he rewrote the whole book in a more mathematical style. It sold even fewer copies. Grassmann
+then turned to Sanskrit, translated the Rig Veda, and wrote a dictionary of it that is still in print. The linguists
+gave him an honorary doctorate; the mathematicians caught up only after his death, when Peano, in 1888, extracted from
+Grassmann's work the axioms of a vector space that every student now learns.
+
+This chapter revisits the beginning of linear algebra in the spirit of Grassmann: not matrices first, but spaces and
+the maps between them. We rebuild bases and dimension, then meet two constructions that a first course often skips and
+that the rest of the book uses constantly. The \emph{quotient} $V/W$ makes precise the idea of ``computing modulo $W$''.
+The \emph{dual space} $V^*$ is the space of all linear measurements of $V$, and it turns every statement about a map into
+a statement about its \emph{transpose}. The chapter ends with a method that is pure Grassmann: to bound the size of a
+family of objects, turn them into vectors and show that they are linearly independent. Their number can then not
+exceed the dimension.
+
+\begin{think}
+A town has $32$ inhabitants who love forming clubs, but the town council imposes two rules: every club must have an
+\emph{odd} number of members, and any two different clubs must have an \emph{even} number of members in common. How many
+clubs can there be at most? Can you find $32$? Can you find $33$? Section~\ref{sec:dimarg} settles the question in
+four lines.
+\end{think}
+
+\section{Spaces and bases}
+
+Throughout, $\mathbb K$ is a field: $\Q$, $\R$, $\C$ or the finite field $\mathbb F_p=\Z/p\Z$, and later any finite field.
+A \emph{vector space} over $\mathbb K$ is a set $V$ with an addition making it an abelian group and a multiplication by
+scalars satisfying $1\cdot v=v$, $\lambda(\mu v)=(\lambda\mu)v$, $(\lambda+\mu)v=\lambda v+\mu v$ and
+$\lambda(v+w)=\lambda v+\lambda w$. These are Peano's axioms, and everything in this book follows from them. The
+examples to keep in mind are $\mathbb K^n$, the matrices $M_{m,n}(\mathbb K)$, the polynomials $\mathbb K[X]$ and
+$\mathbb K[X]_{\le n}$ (degree at most $n$), and the space $\mathbb K^S$ of all functions from a set $S$ to $\mathbb K$.
+
+A family $(v_i)_{i\in I}$ is \emph{free} (linearly independent) if the only finite linear combination
+$\sum\lambda_iv_i$ that vanishes is the one with all $\lambda_i=0$; it \emph{spans} $V$ if every vector is a finite
+linear combination of the $v_i$; it is a \emph{basis} if both hold, that is, if every vector is in exactly one way a
+finite combination of the $v_i$. The whole theory of dimension rests on one lemma.
+
+\begin{lemma}[Steinitz exchange]\label{lem:steinitz}
+If $v_1,\dots,v_m$ are linearly independent in the span of $w_1,\dots,w_n$, then $m\le n$, and after renumbering the
+$w_j$, the family $v_1,\dots,v_m,w_{m+1},\dots,w_n$ spans the same space as $w_1,\dots,w_n$.
+\end{lemma}
+\begin{proof}
+By induction on $m$, the case $m=0$ being empty. Assume the statement for $v_1,\dots,v_{m-1}$: so $m-1\le n$ and
+$v_1,\dots,v_{m-1},w_m,\dots,w_n$ spans the space $E=\operatorname{span}(w_1,\dots,w_n)$. Write
+$v_m=\sum_{i<m}\alpha_iv_i+\sum_{j\ge m}\beta_jw_j$. If all $\beta_j$ were zero (in particular if $m-1=n$ and there is no
+$w_j$ left), $v_m$ would be a combination of $v_1,\dots,v_{m-1}$, contradicting independence. So $m\le n$ and some
+$\beta_j\ne0$; renumber so that $\beta_m\ne0$. Then $w_m=\beta_m^{-1}\bigl(v_m-\sum_{i<m}\alpha_iv_i-\sum_{j>m}\beta_jw_j\bigr)$
+lies in the span of $v_1,\dots,v_m,w_{m+1},\dots,w_n$, which therefore contains all of $v_1,\dots,v_{m-1},w_m,\dots,w_n$
+and so equals $E$.
+\end{proof}
+
+\begin{theorem}[dimension]\label{thm:dim}
+Let $V$ be spanned by finitely many vectors. Then $V$ has a finite basis, and all bases have the same number of elements,
+the \emph{dimension} $\dim V$. Every free family can be completed into a basis, every spanning family contains a basis,
+and in a space of dimension $n$ a family of $n$ vectors is free if and only if it spans.
+\end{theorem}
+\begin{proof}
+Take a spanning family $w_1,\dots,w_n$ and remove vectors that are combinations of the others, one at a time, until none
+is: the remaining family spans and is free (a vanishing combination with some $\lambda_i\ne0$ would express that $v_i$
+through the others). Two bases $B,B'$ have $|B|\le|B'|$ and $|B'|\le|B|$ by Lemma~\ref{lem:steinitz}. A free family
+$v_1,\dots,v_m$ completes into a basis by the exchange lemma applied with a basis $w_1,\dots,w_n$: the family
+$v_1,\dots,v_m,w_{m+1},\dots,w_n$ spans and has $n$ elements, and a spanning family of $n=\dim V$ elements is free,
+because a spanning family contains a basis, which has $n$ elements, so it is the whole family. The same remark shows that
+a free family of $n$ vectors, completed into a basis of $n$ vectors, was already a basis.
+\end{proof}
+
+Grassmann's formula follows at once: take a basis of $U\cap W$, complete it into a basis of $U$ and, separately, into a
+basis of $W$; the union of the three pieces is a basis of $U+W$ (check it!), which gives
+\[
+\dim(U+W)+\dim(U\cap W)=\dim U+\dim W.
+\]
+
+\begin{remark}
+A space that is not spanned by finitely many vectors is \emph{infinite-dimensional}. Every vector space still has a
+basis, but the proof needs Zorn's lemma (Tome~6, Chapter~1), and the basis cannot in general be written down: nobody
+has ever exhibited a basis of $\R$ as a vector space over $\Q$. That $\R$ is infinite-dimensional over $\Q$ is easy,
+though: a $\Q$-space of finite dimension $n$ is in bijection with $\Q^n$, hence countable, while $\R$ is not. In this
+book infinite dimension appears only in such remarks; its proper home is Tome~7.
+\end{remark}
+
+\section{Sums, complements and quotients}\label{sec:quotients}
+
+Subspaces $W_1,\dots,W_k$ of $V$ form a \emph{direct sum} $W_1\oplus\dots\oplus W_k$ if every vector of $W_1+\dots+W_k$ is
+in exactly one way a sum $w_1+\dots+w_k$ with $w_i\in W_i$; for two subspaces this means $W_1\cap W_2=\{0\}$. A
+\emph{complement} of $W$ in $V$ is a subspace $C$ with $V=W\oplus C$. In finite dimension complements exist: complete a
+basis of $W$ into a basis of $V$ and let $C$ be the span of the added vectors. But there are many complements (every
+line through the origin other than $W$ is a complement of a line $W$ in the plane), and none is better than the others.
+The quotient is the canonical object that all complements are copies of.
+
+\begin{definition}\label{def:quotient}
+Let $W$ be a subspace of $V$. Two vectors are \emph{congruent modulo $W$}, $v\equiv v'\pmod W$, if $v-v'\in W$. This is
+an equivalence relation; the class of $v$ is the affine subspace $v+W=\{v+w:w\in W\}$. The set of classes is the
+\emph{quotient} $V/W$, with the operations $(v+W)+(v'+W)=(v+v')+W$ and $\lambda(v+W)=\lambda v+W$.
+\end{definition}
+
+The operations are well defined: if $v\equiv u$ and $v'\equiv u'$ then $(v+v')-(u+u')=(v-u)+(v'-u')\in W$ and
+$\lambda v-\lambda u\in W$. The axioms of a vector space hold in $V/W$ because they hold in $V$, and the map
+$\pi:V\to V/W$, $v\mapsto v+W$, is linear and onto, with kernel $W$. Figure~\ref{fig:quotient} shows the picture to keep
+in mind: when $W$ is a line in the plane, the points of $V/W$ are the lines parallel to $W$, and they are added and
+scaled like the points where they cross any fixed complement.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-quotient}
+\caption{The quotient of the plane by a line $W$: its elements are the lines parallel to $W$. Any complement $C$ meets
+each of them once, so $C\to V/W$ is an isomorphism; the quotient itself does not depend on the choice of $C$.}
+\label{fig:quotient}
+\end{figure}
+
+\begin{theorem}[quotients]\label{thm:quotient}
+Let $W\subseteq V$, with $V$ finite-dimensional.
+\begin{enumerate}[label=(\alph*)]
+\item $\dim V/W=\dim V-\dim W$; more precisely, for every complement $C$ of $W$, the restriction $\pi|_C:C\to V/W$ is an
+isomorphism.
+\item (Universal property.) A linear map $f:V\to U$ with $W\subseteq\ker f$ factors in a unique way as $f=\bar f\circ\pi$
+with $\bar f:V/W\to U$ linear.
+\item (First isomorphism theorem.) For every linear $f:V\to U$, $\bar f:V/\ker f\to\operatorname{Im}f$ is an
+isomorphism. In particular $\dim V=\dim\ker f+\operatorname{rank}f$.
+\item (Third isomorphism theorem.) If $W\subseteq W'\subseteq V$, then $W'/W$ is a subspace of $V/W$ and
+$(V/W)/(W'/W)\cong V/W'$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) If $c\in C$ and $\pi(c)=0$ then $c\in W\cap C=\{0\}$, so $\pi|_C$ is injective. Every $v$ writes $w+c$, and
+$\pi(v)=\pi(c)$, so $\pi|_C$ is onto. Hence $\dim V/W=\dim C=\dim V-\dim W$.
+
+(b) The only possible definition is $\bar f(v+W)=f(v)$, and it is well defined: if $v-v'\in W$ then $f(v)-f(v')=f(v-v')=0$.
+It is linear because $f$ is.
+
+(c) By (b) with $W=\ker f$, $\bar f$ exists and has image $\operatorname{Im}f$. It is injective: $\bar f(v+\ker f)=0$ means
+$f(v)=0$, that is, $v+\ker f$ is the zero class. The dimension formula is (a).
+
+(d) $W'/W=\pi(W')$ is a subspace. The map $V/W\to V/W'$, $v+W\mapsto v+W'$, is well defined by (b) (applied to the
+projection $V\to V/W'$, whose kernel $W'$ contains $W$), onto, with kernel $\{v+W:v\in W'\}=W'/W$; apply (c).
+\end{proof}
+
+The quotient is how mathematicians ``compute modulo'' something. Three examples will recur.
+
+\begin{example}\label{ex:quotients}
+(1) The congruences of Tome~1 are quotients of groups; the vector space version is $\mathbb K[X]/(P)$, the
+polynomials modulo the multiples of a polynomial $P$ of degree $d$. Euclidean division shows that every class contains
+exactly one polynomial of degree $<d$, so $\mathbb K[X]_{<d}$ is a complement of $(P)$ and $\dim\mathbb K[X]/(P)=d$.
+For $P=X^2+1$ over $\R$, the class of $X$ squares to $-1$: this quotient is $\C$, and this is how Cauchy defined the
+complex numbers in 1847.
+
+(2) Let $S$ be a set, $T\subseteq S$ and $W=\{f\in\mathbb K^S:f|_T=0\}$. The restriction map $\mathbb K^S\to\mathbb K^T$
+is onto with kernel $W$, so $\mathbb K^S/W\cong\mathbb K^T$: a function modulo those vanishing on $T$ is just its
+restriction to $T$.
+
+(3) A linear system $Ax=b$ with $A\in M_{m,n}(\mathbb K)$ is solvable if and only if $b\in\operatorname{Im}A$, that is,
+if and only if $b$ is zero in the \emph{cokernel} $\mathbb K^m/\operatorname{Im}A$. The dimension of the cokernel,
+$m-\operatorname{rank}A$, counts the independent conditions on $b$. Section~\ref{sec:transpose} will tell us which
+conditions.
+\end{example}
+
+\section{The dual space}
+
+\begin{definition}\label{def:dual}
+A \emph{linear form} on $V$ is a linear map $V\to\mathbb K$. The linear forms make a vector space $V^*$, the \emph{dual}
+of $V$. If $e_1,\dots,e_n$ is a basis of $V$, the \emph{coordinate forms} $e_1^*,\dots,e_n^*$ are defined by
+$e_i^*(e_j)=\delta_{ij}$: so $e_i^*(v)$ is the $i$-th coordinate of $v$.
+\end{definition}
+
+A linear form is a linear \emph{measurement}: a way to extract one number from a vector, compatibly with addition and
+scaling. Evaluating a polynomial at a point, integrating a function, taking the trace of a matrix, reading the $i$-th
+coordinate: all are linear forms.
+
+\begin{proposition}[dual basis]\label{prop:dualbasis}
+If $e_1,\dots,e_n$ is a basis of $V$, then $e_1^*,\dots,e_n^*$ is a basis of $V^*$, the \emph{dual basis}, and every
+$\varphi\in V^*$ equals $\sum_i\varphi(e_i)\,e_i^*$. In particular $\dim V^*=\dim V$.
+\end{proposition}
+\begin{proof}
+Both sides of $\varphi=\sum_i\varphi(e_i)e_i^*$ are linear and take the value $\varphi(e_j)$ at each $e_j$, so they are
+equal; hence the $e_i^*$ span. If $\sum_i\lambda_ie_i^*=0$, evaluating at $e_j$ gives $\lambda_j=0$.
+\end{proof}
+
+So $V$ and $V^*$ are isomorphic, but the isomorphism $e_i\mapsto e_i^*$ depends on the basis: change $e_1$ into $2e_1$
+and $e_1^*$ becomes $\tfrac12e_1^*$. There is no natural way to turn a vector into a measurement (without extra
+structure, such as the inner product of Chapter~4). Remarkably, the other direction is natural: a vector \emph{is} a
+measurement of measurements.
+
+\begin{theorem}[the double dual]\label{thm:bidual}
+For finite-dimensional $V$, the map $\iota:V\to V^{**}$, $\iota(v)(\varphi)=\varphi(v)$, is an isomorphism, and it is
+defined without choosing a basis.
+\end{theorem}
+\begin{proof}
+$\iota(v)$ is linear in $\varphi$, and $\iota$ is linear in $v$. If $\iota(v)=0$, then $\varphi(v)=0$ for all
+$\varphi$; completing $v\ne0$ into a basis $v=e_1,e_2,\dots$ we would get $e_1^*(v)=1$, so $v=0$. Thus $\iota$ is
+injective between spaces of the same dimension $n$ (Proposition~\ref{prop:dualbasis} twice), hence bijective.
+\end{proof}
+
+\begin{remark}
+In infinite dimension, $\iota$ is still injective but never onto, and $V^*$ is strictly bigger than $V$: for instance the
+dual of $\mathbb K[X]$ is the space $\mathbb K^{\N}$ of all sequences (a form is determined by its values on
+$1,X,X^2,\dots$, which are arbitrary), and for $\mathbb K=\Q$ the first is countable and the second is not. Functional
+analysis (Tome~7) restricts to \emph{continuous} linear forms to recover a good theory.
+\end{remark}
+
+Dual bases have a computational meaning: \emph{to find the coordinates of a vector in a basis, find the dual basis.}
+Here is the most famous instance.
+
+\begin{example}[Lagrange interpolation]\label{ex:lagrange}
+Let $x_0,\dots,x_n\in\mathbb K$ be distinct and $V=\mathbb K[X]_{\le n}$. The evaluations $\varepsilon_i(P)=P(x_i)$ are
+$n+1$ linear forms on a space of dimension $n+1$. The \emph{Lagrange polynomials}
+\[
+L_j(X)=\prod_{k\ne j}\frac{X-x_k}{x_j-x_k}
+\]
+satisfy $\varepsilon_i(L_j)=\delta_{ij}$. Hence the $L_j$ are linearly independent (apply $\varepsilon_i$ to a vanishing
+combination), so they form a basis of $V$, and $(\varepsilon_i)$ is its dual basis. Proposition~\ref{prop:dualbasis}
+read in $V$ gives the interpolation formula: every $P$ of degree at most $n$ is $P=\sum_jP(x_j)L_j$. In particular,
+values $y_0,\dots,y_n$ can be prescribed arbitrarily at the $x_i$ by a unique polynomial of degree at most $n$.
+\end{example}
+
+The dual of a matrix space is described by the trace. For $A\in M_{n,m}(\mathbb K)$, let $\tau_A(X)=\operatorname{tr}(AX)$
+for $X\in M_{m,n}(\mathbb K)$.
+
+\begin{proposition}[the trace pairing]\label{prop:trace}
+The map $A\mapsto\tau_A$ is an isomorphism $M_{n,m}(\mathbb K)\to M_{m,n}(\mathbb K)^*$: every linear form on matrices is
+$X\mapsto\operatorname{tr}(AX)$ for a unique $A$.
+\end{proposition}
+\begin{proof}
+$\operatorname{tr}(AX)=\sum_{i,j}a_{ij}x_{ji}$, so $\tau_A(E_{ji})=a_{ij}$ for the elementary matrices $E_{ji}$. Hence
+$\tau_A=0$ forces $A=0$, and the map is an injective linear map between spaces of the same dimension $mn$.
+\end{proof}
+
+\section{Annihilators and the transpose}\label{sec:transpose}
+
+\begin{definition}
+The \emph{annihilator} of a subset $S\subseteq V$ is $S^\circ=\{\varphi\in V^*:\varphi(s)=0\text{ for all }s\in S\}$, the
+measurements that do not see $S$. For a linear map $f:V\to U$, the \emph{transpose} $f^{\mathsf T}:U^*\to V^*$ is
+$f^{\mathsf T}(\psi)=\psi\circ f$: to measure $v$ through $f$, measure $f(v)$.
+\end{definition}
+
+\begin{theorem}[annihilators]\label{thm:annihilator}
+Let $V$ have dimension $n$ and $W\subseteq V$ be a subspace.
+\begin{enumerate}[label=(\alph*)]
+\item $\dim W^\circ=n-\dim W$, and $W^\circ\cong(V/W)^*$ canonically.
+\item Under the identification $V=V^{**}$ of Theorem~\ref{thm:bidual}, $W^{\circ\circ}=W$. Equivalently, $W$ is the set of
+common zeros of the forms vanishing on $W$: every subspace of codimension $k$ is an intersection of $k$ hyperplanes
+$\ker\varphi_1\cap\dots\cap\ker\varphi_k$.
+\item $(W_1+W_2)^\circ=W_1^\circ\cap W_2^\circ$ and $(W_1\cap W_2)^\circ=W_1^\circ+W_2^\circ$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) A form vanishing on $W$ factors through $\pi:V\to V/W$ (Theorem~\ref{thm:quotient}(b)), and conversely each
+$\bar\varphi\in(V/W)^*$ gives $\bar\varphi\circ\pi\in W^\circ$; these maps are inverse to each other. So
+$\dim W^\circ=\dim(V/W)^*=n-\dim W$.
+
+(b) Clearly $W\subseteq W^{\circ\circ}$ (each $w$ kills every form killing $W$), and by (a) applied twice
+$\dim W^{\circ\circ}=n-(n-\dim W)=\dim W$. For the second statement, take a basis $\varphi_1,\dots,\varphi_k$ of
+$W^\circ$ ($k=n-\dim W$): a vector killed by all $\varphi_i$ is killed by all of $W^\circ$, so lies in $W^{\circ\circ}=W$.
+
+(c) The first equality is immediate. For the second, $W_1^\circ+W_2^\circ\subseteq(W_1\cap W_2)^\circ$, and both have
+dimension $n-\dim(W_1\cap W_2)$, by Grassmann's formula in $V^*$, by (a), and by the first equality:
+$\dim(W_1^\circ+W_2^\circ)=(n-\dim W_1)+(n-\dim W_2)-(n-\dim(W_1+W_2))=n-\dim(W_1\cap W_2)$.
+\end{proof}
+
+\begin{theorem}[the transpose]\label{thm:transpose}
+Let $f:V\to U$ be linear between finite-dimensional spaces.
+\begin{enumerate}[label=(\alph*)]
+\item If $f$ has matrix $A$ in bases $(e_j)$ of $V$ and $(u_i)$ of $U$, then $f^{\mathsf T}$ has matrix $A^{\mathsf T}$ in
+the dual bases.
+\item $\ker f^{\mathsf T}=(\operatorname{Im}f)^\circ$ and $\operatorname{Im}f^{\mathsf T}=(\ker f)^\circ$.
+\item $\operatorname{rank}f^{\mathsf T}=\operatorname{rank}f$. In matrix terms: the row rank of a matrix equals its column
+rank.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) The $(j,i)$ entry of the matrix of $f^{\mathsf T}$ is the $e_j$-coordinate of $f^{\mathsf T}(u_i^*)$, namely
+$f^{\mathsf T}(u_i^*)(e_j)=u_i^*(f(e_j))=a_{ij}$.
+
+(b) $\psi\in\ker f^{\mathsf T}$ means $\psi(f(v))=0$ for all $v$, that is, $\psi\in(\operatorname{Im}f)^\circ$. Next, if
+$\varphi=\psi\circ f$ then $\varphi$ kills $\ker f$, so $\operatorname{Im}f^{\mathsf T}\subseteq(\ker f)^\circ$. By the
+first part and Theorem~\ref{thm:annihilator}(a),
+$\operatorname{rank}f^{\mathsf T}=\dim U-\dim(\operatorname{Im}f)^\circ=\operatorname{rank}f$, while
+$\dim(\ker f)^\circ=\dim V-\dim\ker f=\operatorname{rank}f$. Equal dimensions give equality, and this proves (c) too.
+\end{proof}
+
+The equality of row rank and column rank, which looks like a coincidence of computation when proved by Gaussian
+elimination, is here a structural fact: the transpose is the same map seen from the side of measurements. Part (b) is the
+precise answer to Example~\ref{ex:quotients}(3).
+
+\begin{corollary}[Fredholm alternative]\label{cor:fredholm}
+For $A\in M_{m,n}(\mathbb K)$ and $b\in\mathbb K^m$, the system $Ax=b$ has a solution if and only if $y^{\mathsf T}b=0$ for
+every $y$ with $A^{\mathsf T}y=0$. Exactly one of the following happens: $Ax=b$ is solvable, or there is $y$ with
+$A^{\mathsf T}y=0$ and $y^{\mathsf T}b=1$.
+\end{corollary}
+\begin{proof}
+Identify $(\mathbb K^m)^*$ with row vectors $y^{\mathsf T}$. By Theorem~\ref{thm:transpose}(b),
+$\ker A^{\mathsf T}=(\operatorname{Im}A)^\circ$, and by Theorem~\ref{thm:annihilator}(b), $\operatorname{Im}A$ is the set
+of vectors killed by $(\operatorname{Im}A)^\circ$. If some $y\in\ker A^{\mathsf T}$ has $y^{\mathsf T}b\ne0$, rescale it so that
+$y^{\mathsf T}b=1$.
+\end{proof}
+
+The certificate $y$ is worth noticing. If a system has a solution, exhibiting it convinces anyone; the alternative says
+that if it has none, there is also a short convincing proof of that: a combination of the equations that reads $0=1$.
+This is the seed of duality in linear programming (Tome~C2) and of Delsarte's bounds in Chapter~9.
+
+\begin{example}[Lights Out]\label{ex:lightsout}
+In the electronic game \emph{Lights Out} (Tiger Electronics, 1995), a $5\times5$ grid of lights is given, some on and
+some off. Pressing a light toggles it and its horizontal and vertical neighbours (Figure~\ref{fig:lightsout}). The goal
+is to switch all lights off. Over $\mathbb F_2$, pressing a set of buttons $x\in\mathbb F_2^{25}$ toggles the
+configuration $Ax$, where $A$ is the symmetric $25\times25$ matrix with $a_{ij}=1$ when $i=j$ or $i,j$ are neighbours.
+Pressing twice is like not pressing, and the order does not matter, so a configuration $b$ can be switched off if and only
+if $Ax=b$ is solvable. A computation (by hand with patience, or in the notebook) shows that $\ker A$ has dimension $2$,
+spanned by two ``quiet patterns'' $q_1,q_2$ that change nothing when pressed. By the Fredholm alternative and
+$A^{\mathsf T}=A$:
+\[
+b\text{ is solvable}\iff q_1\cdot b=q_2\cdot b=0\quad\text{in }\mathbb F_2 .
+\]
+So exactly a quarter of the $2^{25}$ configurations can be solved, a parity check on $b$ tells which, and each solvable
+configuration has exactly $4$ solutions, differing by quiet patterns. On a $3\times3$ or $6\times6$ board, $A$ is
+invertible and every configuration is solvable; on $4\times4$ the kernel has dimension $4$.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-lightsout}
+\caption{Lights Out. Left: pressing the marked button toggles it and its four neighbours. Right: one of the two quiet
+patterns of the $5\times5$ board; pressing all its lit buttons changes nothing, and every solvable configuration has an
+even number of lit lights in common with it.}
+\label{fig:lightsout}
+\end{figure}
+
+\section{The dimension argument}\label{sec:dimarg}
+
+We come to the method announced at the beginning: \emph{to bound the size of a family, find a space in which its
+members are linearly independent.} It is one of the most powerful ideas in combinatorics, and Tome~C1, Chapter~11
+develops it at length. Here are three instances, the first of which answers the opening question.
+
+\begin{theorem}[Oddtown; Berlekamp, 1969]\label{thm:oddtown}
+Let $C_1,\dots,C_m$ be subsets of $\{1,\dots,n\}$ such that each $|C_i|$ is odd and each $|C_i\cap C_j|$, $i\ne j$, is
+even. Then $m\le n$.
+\end{theorem}
+\begin{proof}
+Let $v_i\in\mathbb F_2^n$ be the indicator vector of $C_i$. With the dot product $u\cdot v=\sum u_kv_k$ computed in
+$\mathbb F_2$, $v_i\cdot v_j=|C_i\cap C_j|\bmod2$, which is $1$ if $i=j$ and $0$ otherwise. If $\sum_i\lambda_iv_i=0$,
+taking the dot product with $v_j$ gives $\lambda_j=0$. So the $v_i$ are independent in $\mathbb F_2^n$ and $m\le n$.
+\end{proof}
+
+So the town of $32$ can have $32$ clubs (the $32$ single-member clubs will do) but never $33$. The proof is the same
+as the one that showed the Lagrange polynomials independent: a family $(v_i)$ together with measurements $(\varphi_j)$
+such that $\varphi_j(v_i)=\delta_{ij}$. It works just as well when the matrix $(\varphi_j(v_i))$ is only triangular with
+non-zero diagonal; this \emph{triangular criterion} is the workhorse of the method.
+
+\begin{proposition}[triangular criterion]\label{prop:triangular}
+Let $v_1,\dots,v_m\in V$ and $\varphi_1,\dots,\varphi_m\in V^*$ satisfy $\varphi_i(v_i)\ne0$ and $\varphi_i(v_j)=0$ for $j<i$.
+Then $v_1,\dots,v_m$ are linearly independent, and so are $\varphi_1,\dots,\varphi_m$.
+\end{proposition}
+\begin{proof}
+Suppose $\sum_j\lambda_jv_j=0$ with some $\lambda_j\ne0$, and let $k$ be the largest index with $\lambda_k\ne0$. Apply
+$\varphi_k$: the terms $j<k$ vanish by hypothesis and the terms $j>k$ have $\lambda_j=0$, leaving
+$\lambda_k\varphi_k(v_k)=0$, a contradiction. For the forms, suppose $\sum_i\mu_i\varphi_i=0$ with some $\mu_i\ne0$, let $k$
+be the smallest index with $\mu_k\ne0$ and evaluate at $v_k$: the terms $i>k$ vanish and the terms $i<k$ have $\mu_i=0$.
+\end{proof}
+
+The second instance is a cleverly chosen dual basis. A \emph{hyperplane} of $V$ is a subspace of codimension $1$, that is,
+the kernel of a non-zero linear form (Theorem~\ref{thm:annihilator}(b) with $k=1$).
+
+\begin{theorem}\label{thm:hyperplane}
+For $n\ge2$, every hyperplane of $M_n(\mathbb K)$ contains an invertible matrix.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:trace} the hyperplane is $H=\{X:\operatorname{tr}(AX)=0\}$ for some $A\ne0$. Let $r=\operatorname{rank}A\ge1$.
+By Gaussian elimination on rows and columns there are invertible $P,Q$ with $A=PJ_rQ$, where $J_r$ is the diagonal matrix
+with $r$ ones followed by zeros. Let $C$ be the permutation matrix of the cycle $e_1\mapsto e_2\mapsto\dots\mapsto e_n\mapsto
+e_1$; it is invertible, and since $n\ge2$ its diagonal is zero. Put $X=Q^{-1}CP^{-1}$, which is invertible. Then
+$\operatorname{tr}(AX)=\operatorname{tr}(PJ_rCP^{-1})=\operatorname{tr}(J_rC)=\sum_{i\le r}c_{ii}=0$, so $X\in H$.
+\end{proof}
+
+For $n=1$ the statement fails, since the only hyperplane of $M_1(\mathbb K)=\mathbb K$ is $\{0\}$. The theorem says that
+the singular matrices, although they form a set defined by one equation $\det X=0$, contain no hyperplane; Exercise
+\ref{ex:singularspace} shows how large a subspace of singular matrices can be.
+
+The third instance shows that the dimension argument can find points as well as bound families.
+
+\begin{proposition}[unisolvent points]\label{prop:unisolvent}
+Let $V$ be an $n$-dimensional space of functions $S\to\mathbb K$. There exist points $s_1,\dots,s_n\in S$ such that every
+choice of values $y_1,\dots,y_n$ is taken at the $s_i$ by exactly one function of $V$.
+\end{proposition}
+\begin{proof}
+The evaluations $\varepsilon_s(f)=f(s)$, $s\in S$, are linear forms on $V$. The subspace of $V^*$ they span has annihilator
+$\{f\in V:f(s)=0\text{ for all }s\}=\{0\}$, so by Theorem~\ref{thm:annihilator}(a) it is all of $V^*$. Extract a basis
+$\varepsilon_{s_1},\dots,\varepsilon_{s_n}$ of $V^*$ (Theorem~\ref{thm:dim}). Then the map $V\to\mathbb K^n$,
+$f\mapsto(f(s_1),\dots,f(s_n))$, is injective (an $f$ killed by a basis of $V^*$ is killed by all of $V^*$, so is $0$),
+hence bijective.
+\end{proof}
+
+For $V=\mathbb K[X]_{\le n}$, any $n+1$ distinct points work, and we recover Lagrange interpolation. For the trigonometric
+polynomials $\sum_{|k|\le N}c_ke^{ikx}$ any $2N+1$ distinct points of $[0,2\pi)$ work (Exercise~\ref{ex:trig}). In two
+variables things are subtler: six points on a circle are never unisolvent for the polynomials of degree at most $2$,
+since the equation of the circle vanishes at all of them. The proposition guarantees that \emph{some} six points work.
+
+\begin{beauty}
+Grassmann's insight, that a space should be studied through its subspaces and the maps out of it, turns into a
+symmetry of the whole theory. Every subspace $W$ of $V$ has a partner $W^\circ$ in $V^*$; sums become intersections,
+inclusions are reversed, dimensions are complemented, and the partner of the partner is the original. Every theorem
+about subspaces and maps has a dual theorem, proved for free. The same reflection, in projective geometry, exchanges
+points and lines (Tome~S2, Chapter~4), and in optimisation, it exchanges a problem and its certificate of optimality.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:logs}
+Show that $\log2$, $\log3$ and $\log5$ are linearly independent over $\Q$. More generally, show that the logarithms of
+the primes are linearly independent over $\Q$, and deduce again that $\R$ is infinite-dimensional over $\Q$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:grassmann}
+Let $U,W$ be subspaces of dimension $6$ in a space of dimension $10$. What are the possible dimensions of $U\cap W$?
+Show that $U+W\cong(U\oplus W)/D$ for a subspace $D$ of $U\oplus W$ isomorphic to $U\cap W$, and deduce Grassmann's
+formula from Theorem~\ref{thm:quotient}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:quotientdual}
+Let $W\subseteq V$. Show that $V^*/W^\circ\cong W^*$ canonically (restrict forms to $W$).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:traceform}
+(a) Show that the linear forms $\varphi$ on $M_n(\mathbb K)$ with $\varphi(XY)=\varphi(YX)$ for all $X,Y$ are the multiples of the
+trace. (b) Deduce that the span of the commutators $XY-YX$ is the hyperplane of matrices of trace $0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:symanti}
+For the pairing $(A,X)\mapsto\operatorname{tr}(AX)$ on $M_n(\R)$, find the annihilator of the symmetric matrices and of the
+upper triangular matrices.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:shift}
+Find all linear forms $\varphi$ on $\R[X]_{\le n}$ such that $\varphi(P(X+1))=\varphi(P(X))$ for every $P$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quadrature}
+(a) Show that for distinct $x_0,\dots,x_n\in[0,1]$ there are unique weights $w_0,\dots,w_n$ such that
+$\int_0^1P(t)\dd t=\sum_iw_iP(x_i)$ for all $P$ of degree at most $n$. (b) Compute them for $n=2$ and the points
+$0,\frac12,1$: this is Simpson's rule. Show that it is in fact exact up to degree $3$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:trig}
+Show that every $2N+1$ distinct points of $[0,2\pi)$ are unisolvent for the trigonometric polynomials
+$\sum_{|k|\le N}c_ke^{ikx}$ with complex coefficients.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lights3}
+Show without a computer that every configuration of the $3\times3$ Lights Out game can be switched off, by finding, for
+each single light, a set of buttons that toggles exactly that light. Why does this suffice?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:eventown}
+(Reverse Oddtown.) Let $C_1,\dots,C_m\subseteq\{1,\dots,n\}$ have even sizes and pairwise odd intersections. Show that
+$m\le n+1$, and that $m\le n$ when $m$ is even. (Hint: the Gram matrix over $\mathbb F_2$ is $J-I$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:singularspace}
+(a) Find a subspace of $M_n(\mathbb K)$ of dimension $n(n-1)$ consisting of singular matrices. (b) Show that a subspace
+of $M_n(\mathbb K)$ in which every non-zero matrix is invertible has dimension at most $n$, and find one of dimension $2$
+in $M_2(\R)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hyperplanes}
+Let $\varphi,\varphi_1,\dots,\varphi_k\in V^*$. Show that $\varphi$ is a linear combination of $\varphi_1,\dots,\varphi_k$ if and only if
+$\ker\varphi_1\cap\dots\cap\ker\varphi_k\subseteq\ker\varphi$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hamel}
+Assume, as Zorn's lemma allows (Tome~6, Chapter~1), that $\R$ has a basis $B$ over $\Q$. Show that there is a function
+$f:\R\to\R$ with $f(x+y)=f(x)+f(y)$ for all $x,y$ that is not of the form $f(x)=cx$. Show that such an $f$ is unbounded
+on every interval.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:fisher}
+(Fisher's inequality, the uniform case.) Let $C_1,\dots,C_m$ be distinct subsets of $\{1,\dots,n\}$ such that all pairwise
+intersections have the same size $\lambda\ge1$. Show that $m\le n$. (Work over $\R$ with the Gram matrix of the indicator
+vectors.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:logs}
+A rational relation can be cleared of denominators; exponentiate and use unique factorisation.
+\end{hint}
+\begin{hint}{ex:grassmann}
+Consider the map $U\oplus W\to V$, $(u,w)\mapsto u+w$, and its kernel.
+\end{hint}
+\begin{hint}{ex:quotientdual}
+The restriction map $V^*\to W^*$ is onto (extend forms using a complement); find its kernel.
+\end{hint}
+\begin{hint}{ex:traceform}
+Write $\varphi=\operatorname{tr}(A\,\cdot)$ and test the condition on elementary matrices $E_{ij}$. For (b), compute the
+annihilator of the span of the commutators.
+\end{hint}
+\begin{hint}{ex:symanti}
+$\operatorname{tr}(AS)=0$ for all symmetric $S$: test on $E_{ii}$ and $E_{ij}+E_{ji}$.
+\end{hint}
+\begin{hint}{ex:shift}
+Write the condition as $\varphi\circ(T-I)=0$ with $T(P)=P(X+1)$, so $\varphi\in(\operatorname{Im}(T-I))^\circ$.
+\end{hint}
+\begin{hint}{ex:quadrature}
+$P\mapsto\int_0^1P$ is a linear form; expand it in the dual basis of the evaluations.
+\end{hint}
+\begin{hint}{ex:trig}
+Multiply by $e^{iNx}$ and substitute $z=e^{ix}$.
+\end{hint}
+\begin{hint}{ex:lights3}
+By symmetry three cases suffice: a corner, an edge and the centre. The solutions form a vector space.
+\end{hint}
+\begin{hint}{ex:eventown}
+Compute $(J-I)^2$ over $\mathbb F_2$, and note that the rank of a Gram matrix of vectors in $\mathbb F_2^n$ is at most $n$.
+\end{hint}
+\begin{hint}{ex:singularspace}
+(a) Matrices with a zero first column. (b) A subspace of dimension $n+1$ meets the subspace of matrices with zero first
+column.
+\end{hint}
+\begin{hint}{ex:hyperplanes}
+Consider $f:V\to\mathbb K^k$, $f(v)=(\varphi_1(v),\dots,\varphi_k(v))$ and the transpose of $f$.
+\end{hint}
+\begin{hint}{ex:hamel}
+Define $f$ on the basis arbitrarily and extend $\Q$-linearly. For the second part, an additive function bounded on an
+interval is linear.
+\end{hint}
+\begin{hint}{ex:fisher}
+The Gram matrix is $\lambda J+D$ with $D$ diagonal, $d_i=|C_i|-\lambda\ge0$, and at most one $d_i$ is zero.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:logs}
+\idea A linear relation between logarithms is a multiplicative relation between numbers, and unique factorisation
+forbids those.
+\writeup Suppose $\sum_i q_i\log p_i=0$ with rationals $q_i$ not all zero, $p_i$ distinct primes. Multiplying by a common
+denominator we may assume $q_i\in\Z$. Moving the negative terms to the other side and exponentiating gives
+$\prod_{q_i>0}p_i^{q_i}=\prod_{q_i<0}p_i^{-q_i}$, two factorisations of the same integer into distinct primes. By unique
+factorisation all exponents are $0$, a contradiction. Since there are infinitely many primes, $\R$ contains an infinite
+free family over $\Q$, so it is infinite-dimensional (a space of finite dimension $n$ contains no $n+1$ independent
+vectors by Lemma~\ref{lem:steinitz}).
+\end{solution}
+
+\begin{solution}{ex:grassmann}
+\idea Grassmann's formula is a rank--nullity statement for the addition map.
+\writeup The map $s:U\oplus W\to V$, $s(u,w)=u+w$, has image $U+W$ and kernel $D=\{(x,-x):x\in U\cap W\}$, which is
+isomorphic to $U\cap W$. By Theorem~\ref{thm:quotient}(c), $U+W\cong(U\oplus W)/D$, hence
+$\dim(U+W)=\dim U+\dim W-\dim(U\cap W)$. With $\dim U=\dim W=6$ and $\dim(U+W)\le10$ we get $\dim(U\cap W)\ge2$, and of
+course $\dim(U\cap W)\le6$. All values $2,\dots,6$ occur: with a basis $e_1,\dots,e_{10}$, take $U=\operatorname{span}(e_1,\dots,e_6)$
+and $W=\operatorname{span}(e_{7-k},\dots,e_{12-k})$ for $k=2,\dots,6$, whose intersection is spanned by $e_{7-k},\dots,e_6$.
+\end{solution}
+
+\begin{solution}{ex:quotientdual}
+\idea Restriction is a natural map $V^*\to W^*$; compute its kernel and image.
+\writeup Let $r:V^*\to W^*$, $r(\varphi)=\varphi|_W$. Its kernel is $W^\circ$ by definition. It is onto: given $\psi\in W^*$,
+choose a complement $C$ of $W$ and set $\varphi(w+c)=\psi(w)$. By the first isomorphism theorem, $V^*/W^\circ\cong W^*$. No
+choice enters the isomorphism itself; the complement was only used to prove surjectivity.
+\end{solution}
+
+\begin{solution}{ex:traceform}
+\idea The trace pairing turns a form into a matrix $A$; the condition becomes a condition on $A$ that elementary
+matrices make concrete.
+\writeup (a) By Proposition~\ref{prop:trace}, $\varphi(X)=\operatorname{tr}(AX)$. The condition says
+$\operatorname{tr}(AXY)=\operatorname{tr}(AYX)=\operatorname{tr}(XAY)$, that is, $\operatorname{tr}((AX-XA)Y)=0$ for all $Y$, so
+$AX=XA$ for all $X$ (Proposition~\ref{prop:trace} again). Taking $X=E_{ij}$: $AE_{ij}$ has column $j$ equal to column $i$ of
+$A$, and $E_{ij}A$ has row $i$ equal to row $j$ of $A$, the rest zero. Comparing entries, $a_{ki}=0$ for $k\ne i$ and
+$a_{ii}=a_{jj}$. So $A=cI$ and $\varphi=c\operatorname{tr}$. Conversely the trace satisfies $\operatorname{tr}(XY)=\operatorname{tr}(YX)$.
+(b) Let $K$ be the span of the commutators. A form vanishes on $K$ exactly when $\varphi(XY)=\varphi(YX)$ for all $X,Y$, so
+$K^\circ=\mathbb K\operatorname{tr}$ has dimension $1$. By Theorem~\ref{thm:annihilator}, $\dim K=n^2-1$ and $K=K^{\circ\circ}$
+is the set of matrices killed by the trace.
+\end{solution}
+
+\begin{solution}{ex:symanti}
+\idea Test the condition on a basis of the subspace.
+\writeup $\operatorname{tr}(AE_{ii})=a_{ii}$ and $\operatorname{tr}(A(E_{ij}+E_{ji}))=a_{ji}+a_{ij}$. So $A$ annihilates the
+symmetric matrices if and only if $a_{ii}=0$ and $a_{ij}=-a_{ji}$: the annihilator is the space of antisymmetric
+matrices (dimension $n(n-1)/2=n^2-n(n+1)/2$, as it should be). For the upper triangular matrices,
+$\operatorname{tr}(AE_{ij})=a_{ji}$ for $i\le j$ must vanish: the annihilator is the strictly upper triangular matrices.
+\end{solution}
+
+\begin{solution}{ex:shift}
+\idea The invariance says that $\varphi$ kills every $P(X+1)-P(X)$; so $\varphi$ lies in the annihilator of the image of
+the difference operator, and we only need that image.
+\writeup Let $\Delta P=P(X+1)-P(X)$. The condition is $\varphi\circ\Delta=0$, that is, $\varphi\in(\operatorname{Im}\Delta)^\circ$.
+$\Delta$ lowers degrees by exactly one ($\Delta X^k=kX^{k-1}+\dots$), so it maps $\R[X]_{\le n}$ into $\R[X]_{\le n-1}$, and
+its kernel is the constants (a non-constant $P$ has $\deg\Delta P=\deg P-1\ge0$). By rank--nullity its image has dimension
+$n$, so it is all of $\R[X]_{\le n-1}$. The annihilator of $\R[X]_{\le n-1}$ in the dual of $\R[X]_{\le n}$ is spanned by
+the form ``coefficient of $X^n$''. The answer: $\varphi(P)=c\cdot[X^n]P$, $c\in\R$.
+\end{solution}
+
+\begin{solution}{ex:quadrature}
+\idea Integration is a linear form; every linear form is a combination of the dual basis (here, evaluations), with
+coefficients obtained by evaluating it on the basis (here, the Lagrange polynomials).
+\writeup (a) The evaluations $\varepsilon_i$ form a basis of $(\R[X]_{\le n})^*$ (Example~\ref{ex:lagrange}), so the form
+$I(P)=\int_0^1P$ is uniquely $\sum_iw_i\varepsilon_i$, and Proposition~\ref{prop:dualbasis} gives $w_i=I(L_i)$.
+(b) With $x_0,x_1,x_2=0,\frac12,1$: $L_0=2(X-\frac12)(X-1)$, $L_1=-4X(X-1)$, $L_2=2X(X-\frac12)$, and integrating,
+$w_0=\frac16$, $w_1=\frac23$, $w_2=\frac16$. So $\int_0^1P\approx\frac16\bigl(P(0)+4P(\frac12)+P(1)\bigr)$. For $P=X^3$:
+$\frac16(0+\frac12+1)=\frac14=\int_0^1t^3\dd t$. Since both sides are linear and agree on $1,X,X^2,X^3$, the rule is exact
+up to degree $3$ (the symmetry of the points around $\frac12$ is the reason; Chapter~4 explains Gauss's optimal choice).
+\end{solution}
+
+\begin{solution}{ex:trig}
+\idea A trigonometric polynomial of degree $N$ is, after multiplying by $e^{iNx}$, an ordinary polynomial of degree $2N$
+in $z=e^{ix}$.
+\writeup The space has dimension $2N+1$ (the $e^{ikx}$, $|k|\le N$, are independent; see Chapter~9 or Tome~4,
+Chapter~6). If $f=\sum c_ke^{ikx}$ vanishes at $2N+1$ distinct points $x_j$, then $Q(z)=\sum_kc_kz^{k+N}$, a polynomial of
+degree at most $2N$, vanishes at the $2N+1$ distinct points $z_j=e^{ix_j}$ ($x\mapsto e^{ix}$ is injective on $[0,2\pi)$),
+so $Q=0$ and $f=0$. The evaluation map to $\C^{2N+1}$ is thus injective, hence bijective.
+\end{solution}
+
+\begin{solution}{ex:lights3}
+\idea The configurations that can be switched off are those of the form $Ax$: they form a subspace, the image of $A$. If
+this subspace contains the nine single lights, it contains every configuration. Guessing button sets is fragile; the
+reliable way is to solve the linear system, using the symmetry of the board to cut down the unknowns.
+\writeup Number the cells $(r,c)$, $1\le r,c\le3$. To toggle the corner $(1,1)$ alone, look for a solution $x$ of
+$Ax=e_{(1,1)}$ that is symmetric under the reflection in the main diagonal (this reflection maps the problem to itself, so
+it maps solutions to solutions; we look for a symmetric one and will find it). Write $a=x_{11}$, $b=x_{12}=x_{21}$,
+$c=x_{13}=x_{31}$, $d=x_{22}$, $e=x_{23}=x_{32}$, $f=x_{33}$. Cell $(r,c)$ is toggled by the presses at itself and its
+neighbours, so the equations at $(1,1)$, $(1,2)$, $(1,3)$, $(2,2)$, $(2,3)$, $(3,3)$ read, in $\mathbb F_2$,
+\[
+\begin{gathered}a+2b=1,\qquad a+b+c+d=0,\qquad b+c+e=0,\\ 2b+d+2e=0,\qquad c+d+e+f=0,\qquad 2e+f=0 .\end{gathered}
+\]
+Since $2=0$: $a=1$, $d=0$, $f=0$; then $b+c=1$ and $b+c+e=0$ give $e=1$; $c+d+e+f=0$ gives $c=1$, hence $b=0$. So:
+\emph{press $(1,1),(1,3),(3,1),(2,3),(3,2)$}. Check directly: $(1,1)$ is toggled only by its own press; each of the eight
+other cells is toggled exactly twice (for instance $(2,2)$ by $(2,3)$ and $(3,2)$, and $(3,3)$ by $(2,3)$ and $(3,2)$).
+The same method gives the other two cases: pressing $(2,2),(3,1),(3,2),(3,3)$ toggles only the edge cell $(1,2)$, and
+pressing $(1,2),(2,1),(2,2),(2,3),(3,2)$ toggles only the centre, which is toggled five times while every outer cell is
+toggled twice or not at all. The symmetries of the square carry these three solutions to solutions for all nine cells.
+So $\operatorname{Im}A$ contains a basis of $\mathbb F_2^9$, $A$ is invertible, and every configuration can be switched
+off, in exactly one way up to pressing a button twice.
+\end{solution}
+
+\begin{solution}{ex:eventown}
+\idea Copy the proof of Oddtown: the Gram matrix of the indicator vectors over $\mathbb F_2$ is now $J-I$, and its rank
+bounds $m$ from below in terms of $n$.
+\writeup Let $v_i\in\mathbb F_2^n$ be the indicator vectors and $G=(v_i\cdot v_j)$ their Gram matrix, so $G=J-I$ ($J$ the
+all-ones $m\times m$ matrix). If $M$ is the $m\times n$ matrix with rows $v_i$, then $G=MM^{\mathsf T}$, so
+$\operatorname{rank}G\le\operatorname{rank}M\le n$. Over $\mathbb F_2$, $J^2=mJ$, so $(J-I)^2=J^2-2J+I=mJ+I$. If $m$ is
+even this is $I$, so $G$ is invertible, $\operatorname{rank}G=m$ and $m\le n$. If $m$ is odd, the rows of $G$ sum to
+$(m-1)(1,\dots,1)=0$, so $\operatorname{rank}G\le m-1$; on the other hand the top-left $(m-1)\times(m-1)$ block of $G$ is
+$J_{m-1}-I_{m-1}$ with $m-1$ even, invertible by the first case, so $\operatorname{rank}G=m-1\le n$ and $m\le n+1$.
+\end{solution}
+
+\begin{solution}{ex:singularspace}
+\idea For (a), force a common kernel vector. For (b), any large subspace must meet the space found in (a), by
+Grassmann's formula.
+\writeup (a) The matrices whose first column is zero form a subspace $Z$ of dimension $n^2-n$, and they all kill $e_1$,
+so they are singular. (b) If $L$ is a subspace with $\dim L\ge n+1$ then $\dim(L\cap Z)\ge(n+1)+(n^2-n)-n^2=1$, so $L$
+contains a non-zero singular matrix. In $M_2(\R)$, $L=\left\{\begin{pmatrix}a&-b\\b&a\end{pmatrix}\right\}$ works:
+$\det=a^2+b^2>0$ unless $a=b=0$. (This copy of $\C$ inside $M_2(\R)$ is the reason; in $M_4(\R)$ the quaternions give a
+$4$-dimensional example, Tome~2, Chapter~12.)
+\end{solution}
+
+\begin{solution}{ex:hyperplanes}
+\idea ``$\varphi$ is a combination of the $\varphi_i$'' says $\varphi\in\operatorname{Im}f^{\mathsf T}$ for the map $f$ that
+records all the $\varphi_i$; Theorem~\ref{thm:transpose}(b) identifies that image with an annihilator.
+\writeup Let $f:V\to\mathbb K^k$, $f(v)=(\varphi_i(v))_i$. In the dual basis $(\varepsilon_i)$ of $\mathbb K^k$,
+$f^{\mathsf T}(\varepsilon_i)=\varepsilon_i\circ f=\varphi_i$, so $\operatorname{Im}f^{\mathsf T}=\operatorname{span}(\varphi_1,\dots,\varphi_k)$.
+By Theorem~\ref{thm:transpose}(b) this is $(\ker f)^\circ=(\ker\varphi_1\cap\dots\cap\ker\varphi_k)^\circ$. So $\varphi$ is a
+combination of the $\varphi_i$ if and only if it vanishes on $\bigcap\ker\varphi_i$.
+\end{solution}
+
+\begin{solution}{ex:hamel}
+\idea An additive function is $\Q$-linear, and a $\Q$-linear map can be prescribed arbitrarily on a $\Q$-basis. Pick
+values that break proportionality.
+\writeup An additive $f$ satisfies $f(nx)=nf(x)$ for $n\in\Z$ (induction), hence $f(qx)=qf(x)$ for $q\in\Q$ (write
+$q=a/b$ and use $bf(qx)=f(ax)=af(x)$): additive means $\Q$-linear. Choose two distinct elements $b_1,b_2$ of the basis $B$
+and define $f(b_1)=b_1$, $f(b)=0$ for $b\ne b_1$, extended $\Q$-linearly. Then $f$ is additive; if $f(x)=cx$, then
+$c=f(b_1)/b_1=1$ and $c=f(b_2)/b_2=0$, a contradiction.
+
+Now suppose $|f|\le M$ on an interval $[u,u+\delta]$. For $|t|\le\delta$, write $t=s-s'$ with $s,s'\in[u,u+\delta]$
+(take $s=u+\max(t,0)$, $s'=u+\max(-t,0)$), so $|f(t)|\le2M$. Let $c=f(1)$ and $g(x)=f(x)-cx$, additive, bounded by
+$2M+|c|\delta$ on $[-\delta,\delta]$, and zero on $\Q$. For any $x$ and rational $r$ with $|x-r|\le\delta/n$:
+$|g(x)|=|g(x-r)|=\frac1n|g(n(x-r))|\le\frac{2M+|c|\delta}n$. Letting $n\to\infty$, $g=0$ and $f(x)=cx$. So a non-linear
+additive function is unbounded on every interval; its graph is in fact dense in the plane.
+\end{solution}
+
+\begin{solution}{ex:fisher}
+\idea The Oddtown trick over $\R$: compute the Gram matrix of the indicator vectors, and show it is invertible; then
+$m\le\operatorname{rank}\le n$.
+\writeup Let $v_i\in\R^n$ be the indicator vectors and $G=(v_i\cdot v_j)$. Then $G=\lambda J+D$, where $D$ is diagonal with
+$d_i=|C_i|-\lambda$. Since $C_i\supseteq C_i\cap C_j$, $d_i\ge0$; and if $d_i=d_j=0$ for $i\ne j$ then $C_i=C_i\cap C_j=C_j$,
+contradicting distinctness. So at most one $d_i$ vanishes. For $x\in\R^m$,
+\[
+x^{\mathsf T}Gx=\lambda\Bigl(\sum_ix_i\Bigr)^2+\sum_id_ix_i^2 .
+\]
+If this is $0$, then $\sum_id_ix_i^2=0$ forces $x_i=0$ whenever $d_i>0$, so at most one coordinate, say $x_k$, can be
+non-zero, and then $\lambda x_k^2=0$ forces $x_k=0$. Hence $x^{\mathsf T}Gx>0$ for $x\ne0$, $G$ is invertible, and since
+$G=MM^{\mathsf T}$ with $M$ of size $m\times n$, $m=\operatorname{rank}G\le n$. (In design theory this is Fisher's inequality of 1940:
+a block design has at least as many blocks as points. Tome~C1, Chapter~11 proves the non-uniform version and much more.)
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Grassmann, \emph{Die lineale Ausdehnungslehre}, Wigand, Leipzig, 1844; English translation by L.~C.~Kannenberg,
+\emph{A New Branch of Mathematics}, Open Court, 1995. The story of its reception is told in D.~Fearnley-Sander,
+\emph{Hermann Grassmann and the creation of linear algebra}, American Mathematical Monthly 86 (1979), 809--817.
+\item G.~Peano, \emph{Calcolo geometrico secondo l'Ausdehnungslehre di H.~Grassmann}, Bocca, Turin, 1888. Chapter~IX gives
+the axioms of a vector space.
+\item S.~Axler, \emph{Linear Algebra Done Right}, 4th ed., Springer, 2024. Chapter~3 for quotients, duality and the
+transpose, in the basis-free spirit of this chapter.
+\item P.~R.~Halmos, \emph{Finite-Dimensional Vector Spaces}, 2nd ed., Van Nostrand, 1958. The classic treatment of
+annihilators and the double dual.
+\item L.~Babai and P.~Frankl, \emph{Linear Algebra Methods in Combinatorics}, preliminary version, University of Chicago,
+1992. Chapter~1 opens with Oddtown and Eventown.
+\item E.~R.~Berlekamp, \emph{On subsets with intersections of even cardinality}, Canadian Mathematical Bulletin 12 (1969),
+471--474.
+\item K.~Sutner, \emph{Linear cellular automata and the Garden-of-Eden}, Mathematical Intelligencer 11 (1989), 49--53, for
+the linear algebra of Lights Out on general boards.
+\item H.~Flanders, \emph{On spaces of linear transformations with bounded rank}, Journal of the London Mathematical Society
+37 (1962), 10--16: a subspace of singular $n\times n$ matrices has dimension at most $n(n-1)$, which shows that
+Exercise~\ref{ex:singularspace}(a) is optimal.
+\item R.~A.~Fisher, \emph{An examination of the different possible solutions of a problem in incomplete blocks}, Annals of
+Eugenics 10 (1940), 52--75.
+\end{itemize}

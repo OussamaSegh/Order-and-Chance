@@ -20,6 +20,7 @@ companion notebook with computer-science applications.
   | 5. Where It All Meets (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.epub) |
   | 12. Arithmetic (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.epub) |
   | C1. Discrete Structures (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.epub) |
+  | S1. Linear Algebra in Depth (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -53,10 +54,14 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Planned |
 | C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
 | C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
+| S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | In progress (1 of 12 chapters) |
+| S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Planned |
+| S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Planned |
+| S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
 
 Tomes 0–5 are the foundations, 6–9 the graduate toolbox, and 10–15 the road to research in probability,
 probabilistic number theory and algebra. The Computing track C1–C5 runs alongside and treats the
-mathematics of computer science in the same spirit. The detailed plan of every tome lives in the series plan document.
+mathematics of computer science in the same spirit. The Companion shelf S1–S4 serves the whole series: linear algebra and geometry in depth, a book of open problems, and a map of every theorem. The detailed plan of every tome lives in the series plan document.
 
 ## Layout
 

@@ -259,6 +259,53 @@ def boolean_lattice(n=5):
         lines.append(r"\fill[navy] (%.4fin,%.4fin) circle (0.028in);" % (x, y))
     return "\n".join(lines) + "\n"
 
+
+def lozenge_tiling(a=28, sweeps=8000, seed=7):
+    """A uniformly random lozenge tiling of the hexagon of side a, seen as a random plane
+    partition in an a x a x a box (Tome S1, Chapter 2: Lindstrom-Gessel-Viennot). The heights
+    are sampled by heat-bath Glauber dynamics on a checkerboard: given its four neighbours, the
+    height of a column is uniform on the allowed interval. The corners freeze and the centre
+    stays disordered, inside the 'arctic circle'. Three shades for the three orientations make
+    the stepped surface look like a pile of cubes."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
+    h = np.full((a, a), a // 2, dtype=int)
+    I, J = np.indices((a, a))
+    masks = [(I + J) % 2 == 0, (I + J) % 2 == 1]
+    for _ in range(sweeps):
+        for m in masks:
+            p = np.pad(h, 1, constant_values=0)
+            p[0, :] = a; p[:, 0] = a          # the box walls behind
+            up = np.minimum(p[:-2, 1:-1], p[1:-1, :-2])
+            lo = np.maximum(p[2:, 1:-1], p[1:-1, 2:])
+            new = lo + (rng.random((a, a)) * (up - lo + 1)).astype(int)
+            h[m] = new[m]
+    h = h.tolist()
+    H = lambda i, j: a if i < 0 or j < 0 else (0 if i >= a or j >= a else h[i][j])
+    u = 2.25 / a                                  # inches per unit edge
+    c, s = math.cos(math.pi / 6), 0.5
+    P = lambda x, y, z: (u * c * (x - y), u * (z - s * (x + y)))
+    faces = []
+    for i in range(a):
+        for j in range(a):
+            z = h[i][j]
+            faces.append((0.80, [P(i, j, z), P(i + 1, j, z), P(i + 1, j + 1, z), P(i, j + 1, z)]))
+    for i in range(a + 1):                        # faces facing +x, in the plane x = i
+        for j in range(a):
+            for z in range(H(i, j), H(i - 1, j)):
+                faces.append((0.42, [P(i, j, z), P(i, j + 1, z), P(i, j + 1, z + 1), P(i, j, z + 1)]))
+    for j in range(a + 1):                        # faces facing +y, in the plane y = j
+        for i in range(a):
+            for z in range(H(i, j), H(i, j - 1)):
+                faces.append((0.18, [P(i, j, z), P(i + 1, j, z), P(i + 1, j, z + 1), P(i, j, z + 1)]))
+    # shift so that the hexagon is centred at the origin
+    cy = (P(0, 0, a)[1] + P(a, a, 0)[1]) / 2
+    lines = ["%% A random lozenge tiling of the hexagon of side %d (a random plane partition in a box)." % a]
+    for op, pts in faces:
+        path = "--".join("(%.4fin,%.4fin)" % (x, y - cy) for x, y in pts)
+        lines.append(r"\filldraw[fill=accent,fill opacity=%.2f,draw=navy,line width=0.2pt] %s--cycle;" % (op, path))
+    return "\n".join(lines) + "\n"
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -269,6 +316,7 @@ MOTIFS = {
     "tome6-spaces": sierpinski_carpet,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
+    "tomeS1-linear": lozenge_tiling,
 }
 
 if __name__ == "__main__":
