@@ -1,0 +1,599 @@
+\chapter{The It\^o Integral}
+
+\begin{center}\itshape
+A Brownian path has no derivative, so $\int f(B_s)\dd B_s$ makes no sense path by path.\\
+It\^o made it make sense on average, and found that the chain rule acquires a second-order term:\\
+$\mathrm df(B)=f'(B)\dd B+\frac12f''(B)\dd t$. The roughness of the path is a law of calculus.
+\end{center}
+
+In 1942, in a mimeographed journal circulated among Japanese mathematicians, a young statistician of the Cabinet Statistics Bureau in Tokyo, Kiyosi It\^o, proposed to describe a Markov
+process not by its transition probabilities, as Kolmogorov and Feller did, but path by path, as the solution of a differential equation driven by Brownian motion. To do so he needed an
+integral against $\dd B$, and he built it in a note of 1944, \emph{Stochastic integral}, written while the war made contact with the rest of the world almost impossible. His idea was to
+evaluate the integrand at the \emph{left} end of each small interval. With that convention the Riemann sums $\sum f(B_{t_{i-1}})(B_{t_i}-B_{t_{i-1}})$ are martingales, and their limit
+exists in $L^2$ although it exists for no single path. The chain rule for this integral, \emph{It\^o's formula}, appeared in 1951. In the foreword to his selected papers (1987), It\^o explained
+that he had wanted to look at the paths of Markov processes the way L\'evy looked at sums of independent variables.
+
+Another man had been there first. In February 1940, Wolfgang Doeblin, a twenty-five-year-old French mathematician of German birth serving as a telephone operator in the Ardennes, sent the
+Acad\'emie des Sciences a sealed envelope, a \emph{pli cachet\'e}, titled \emph{Sur l'\'equation de Kolmogoroff}. He died in June 1940, by his own hand, as his unit was about to be captured.
+The envelope stayed sealed for sixty years. When it was opened in 2000, at the request of his brother, it was found to contain a construction of diffusions by a random time change of Brownian
+motion and a version of It\^o's formula. Bernard Bru and Marc Yor told the story in 2002.
+
+This chapter builds the integral $\int H\dd M$ against any continuous local martingale $M$, proves It\^o's formula in several variables (the formula promised in Tome~3, Chapter~11), and draws
+the first consequences, each of which became a theorem with a name: L\'evy's characterisation of Brownian motion by its clock, the theorem of Dambis, Dubins and Schwarz that every continuous
+martingale is a time-changed Brownian motion, the inequalities of Burkholder, and Tanaka's formula for $|B_t|$, which introduces the \emph{local time} at $0$ and proves the theorem of L\'evy announced
+in Chapter~2: $M-B$ and $|B|$ have the same law as processes. With it, the zero set of Brownian motion has dimension exactly one half.
+
+\begin{reminder}[from Chapter 3]
+Filtrations satisfy the usual conditions. For continuous local martingales $M,N$ with $M_0=N_0=0$: the bracket $\langle M,N\rangle$ is the unique continuous adapted finite variation process with
+$MN-\langle M,N\rangle$ a local martingale, and $\sum\Delta M\Delta N\to\langle M,N\rangle$ in probability along partitions (Propositions~\ref{prop:qvsums} and~\ref{prop:bracket}). A continuous local martingale of finite
+variation is constant (Theorem~\ref{thm:fvconstant}). If $\mathbb E\langle M\rangle_\infty<\infty$, $M$ is a martingale bounded in $L^2$ with $\mathbb EM_\infty^2=\mathbb E\langle M\rangle_\infty$, and conversely
+(Corollary~\ref{cor:L2bracket}). A non-negative continuous local martingale with integrable initial value is a supermartingale (Exercise~\ref{ex:superm}). For a bounded martingale and partitions with
+mesh tending to $0$, $\sum_i\mathbb E\bigl[\bigl((\Delta M_i)^2-\Delta\langle M\rangle_i\bigr)^2\bigr]\to0$, and these terms are orthogonal (proof of Proposition~\ref{prop:qvsums}).
+\end{reminder}
+
+\section{Brackets, stopping and the Kunita--Watanabe inequality}
+
+Two technical facts about brackets come first.
+
+\begin{lemma}\label{lem:bracketstop}
+Let $M,N$ be continuous local martingales with $M_0=N_0=0$ and $\tau$ a stopping time. Then $\langle M^\tau,N\rangle=\langle M,N\rangle^\tau$.
+\end{lemma}
+
+\begin{proof}
+By stopping $M$ and $N$ at $\inf\{t:|M_t|+|N_t|\ge n\}$ we may assume them bounded (Proposition~\ref{prop:localmart}). Write $M^\tau N-\langle M,N\rangle^\tau=(MN-\langle M,N\rangle)^\tau+Y$ with
+$Y_t=M_{\tau\wedge t}(N_t-N_{\tau\wedge t})$. The first term is a martingale (Corollary~\ref{cor:stopped}). For $Y$, let $s<t$ and $A\in\mathcal F_s$. On $C=A\cap\{\tau\le s\}$, $Y_t-Y_s=M_{\tau\wedge s}(N_t-N_s)$ and
+$M_{\tau\wedge s}\mathbf 1_C$ is $\mathcal F_s$-measurable, so $\mathbb E[(Y_t-Y_s)\mathbf 1_C]=0$. On $D=A\cap\{\tau>s\}$, $Y_s=0$; as shown in the proof of Corollary~\ref{cor:stopped}, $D\in\mathcal F_{\tau\wedge s}\subseteq\mathcal F_{\tau\wedge t}$,
+so $\mathbb E[Y_t\mathbf 1_D]=\mathbb E\bigl[M_{\tau\wedge t}\mathbf 1_D\,\mathbb E[N_t-N_{\tau\wedge t}\mid\mathcal F_{\tau\wedge t}]\bigr]=0$ by optional stopping (Theorem~\ref{thm:ostcont}). So $Y$ is a martingale, and uniqueness of
+the bracket concludes.
+\end{proof}
+
+\begin{lemma}[Kunita--Watanabe inequality, 1967]\label{lem:kw}
+Let $M,N$ be continuous local martingales with $M_0=N_0=0$, and $H,K$ measurable processes. Almost surely,
+\[
+\int_0^\infty|H_sK_s|\,|\mathrm d\langle M,N\rangle_s|\le\Bigl(\int_0^\infty H_s^2\dd\langle M\rangle_s\Bigr)^{1/2}\Bigl(\int_0^\infty K_s^2\dd\langle N\rangle_s\Bigr)^{1/2},
+\]
+where $|\mathrm d\langle M,N\rangle|$ is the total variation measure of $\langle M,N\rangle$.
+\end{lemma}
+
+\begin{proof}
+For rationals $s<t$ and $r$, $\langle M+rN\rangle_t-\langle M+rN\rangle_s\ge0$ almost surely, that is $a+2rc+r^2b\ge0$ with $a,b,c$ the increments of $\langle M\rangle$, $\langle N\rangle$, $\langle M,N\rangle$ over $[s,t]$.
+Outside a null set this holds for all rationals, hence (by continuity) for all real $r$ and all $s<t$, and the discriminant gives $|c|\le\sqrt{ab}$. Fix $\omega$ outside this null set and $T>0$, and on $[0,T]$ let
+$\alpha=\mathrm d\langle M\rangle$, $\nu=\mathrm d\langle N\rangle$ and $\mu=|\mathrm d\langle M,N\rangle|$. For an interval $I$, splitting it into pieces $I_k$ and using Cauchy--Schwarz,
+$\sum_k|c(I_k)|\le\sum_k\sqrt{\alpha(I_k)\nu(I_k)}\le\sqrt{\alpha(I)\nu(I)}$, so $\mu(I)\le\sqrt{\alpha(I)\nu(I)}\le\frac12\bigl(r^2\alpha(I)+r^{-2}\nu(I)\bigr)$ for every $r>0$.
+
+This inequality between the measures $\mu$ and $\frac12(r^2\alpha+r^{-2}\nu)$ extends from intervals to open sets (countable disjoint unions of intervals) and then to all Borel sets $A$, by outer regularity of finite
+Borel measures (Tome~6, Lemma~10.10). Minimising over $r$ gives $\mu(A)\le\sqrt{\alpha(A)\nu(A)}$. For simple functions $f=\sum_jc_j\mathbf 1_{A_j}$ and $g=\sum_jd_j\mathbf 1_{A_j}$ on a common partition,
+\[
+\int|fg|\dd\mu\le\sum_j|c_jd_j|\sqrt{\alpha(A_j)\nu(A_j)}\le\Bigl(\sum_jc_j^2\alpha(A_j)\Bigr)^{1/2}\Bigl(\sum_jd_j^2\nu(A_j)\Bigr)^{1/2}.
+\]
+Monotone limits give the inequality for $|H(\cdot,\omega)|$ and $|K(\cdot,\omega)|$ on $[0,T]$; let $T\to\infty$.
+\end{proof}
+
+\section{The integral}
+
+\begin{definition}\label{def:H2}
+$\mathbb H^2$ is the space of continuous martingales $M$ with $M_0=0$ that are bounded in $L^2$, with the norm $\|M\|_{\mathbb H^2}=(\mathbb EM_\infty^2)^{1/2}=(\mathbb E\langle M\rangle_\infty)^{1/2}$. For $M\in\mathbb H^2$,
+$L^2(M)$ is the space of progressive processes $H$ with $\|H\|^2_{L^2(M)}=\mathbb E\int_0^\infty H_s^2\dd\langle M\rangle_s<\infty$ (up to equality $\mathrm d\langle M\rangle\,\mathrm dP$-almost everywhere). An \emph{elementary process}
+is $H=\sum_{i=0}^{p-1}H_i\mathbf 1_{]t_i,t_{i+1}]}$ with $0\le t_0<\dots<t_p$ and $H_i$ bounded and $\mathcal F_{t_i}$-measurable.
+\end{definition}
+
+The two norms on $\mathbb H^2$ agree by Corollary~\ref{cor:L2bracket}. A progressive process is in particular measurable on $[0,\infty[\times\Omega$, and $\int_0^tH_s\dd A_s$ is then $\mathcal F_t$-measurable for every
+continuous adapted increasing $A$ (a monotone class argument, starting from $H=\mathbf 1_{[0,u]\times C}$, $C\in\mathcal F_t$).
+
+\begin{lemma}\label{lem:H2complete}
+$\mathbb H^2$ is a Hilbert space, and $L^2(M)$ is a Hilbert space in which elementary processes are dense.
+\end{lemma}
+
+\begin{proof}
+Let $(M^n)$ be Cauchy in $\mathbb H^2$. Then $M^n_\infty\to Y$ in $L^2$, and by Doob's inequality $\mathbb E\sup_t(M^n_t-M^m_t)^2\le4\|M^n-M^m\|^2$, so a subsequence converges uniformly almost surely to a continuous
+adapted $M$, with $M_t=\lim M^n_t=\mathbb E[Y\mid\mathcal F_t]$ in $L^2$. So $M\in\mathbb H^2$, $M_\infty=Y$ (Theorem~\ref{thm:L2cont}) and $M^n\to M$. The space $L^2(M)$ is an $L^2$ space for the measure
+$\mathrm d\langle M\rangle\,\mathrm dP$ restricted to the progressive $\sigma$-algebra, hence complete (Tome~6, Theorem~9.4).
+
+For density, let $K\in L^2(M)$ be orthogonal to every elementary process. Since $\mathbb E\int|K|\dd\langle M\rangle\le\|K\|(\mathbb E\langle M\rangle_\infty)^{1/2}<\infty$, the process $X_t=\int_0^tK_s\dd\langle M\rangle_s$ is
+continuous, adapted, integrable and of finite variation. Orthogonality to $F\mathbf 1_{]s,t]}$, with $F$ bounded and $\mathcal F_s$-measurable, says $\mathbb E[F(X_t-X_s)]=0$: $X$ is a martingale. By
+Theorem~\ref{thm:fvconstant}, $X=0$, so the signed measure $K\dd\langle M\rangle$ vanishes on intervals, hence everywhere (Tome~6, Theorem~6.5, applied to its positive and negative parts), and
+$\|K\|^2=\mathbb E\int K\cdot K\dd\langle M\rangle=0$.
+\end{proof}
+
+For an elementary $H$ and $M\in\mathbb H^2$ set $(H\cdot M)_t=\sum_iH_i\bigl(M_{t_{i+1}\wedge t}-M_{t_i\wedge t}\bigr)$, and for a process $A$ of finite variation let $(H\cdot A)_t=\int_0^tH_s\dd A_s$.
+
+\begin{lemma}\label{lem:elementary}
+For elementary $H$ and $M,N\in\mathbb H^2$: $H\cdot M\in\mathbb H^2$, $\langle H\cdot M,N\rangle=H\cdot\langle M,N\rangle$, and $\|H\cdot M\|_{\mathbb H^2}=\|H\|_{L^2(M)}$.
+\end{lemma}
+
+\begin{proof}
+Fix $i$ and let $Z=(M^{t_{i+1}}-M^{t_i})N-\bigl(\langle M,N\rangle^{t_{i+1}}-\langle M,N\rangle^{t_i}\bigr)$, a martingale by Lemma~\ref{lem:bracketstop}, which vanishes on $[0,t_i]$. Then $H_iZ$ is a martingale: for
+$s\ge t_i$ take $H_i$ out of the conditional expectation, and for $s<t_i$ condition first on $\mathcal F_{t_i}$. Summing over $i$, $(H\cdot M)N-H\cdot\langle M,N\rangle$ is a martingale. Similarly $H\cdot M$ is a
+martingale. With $N=M$ this gives $\langle H\cdot M,M\rangle=H\cdot\langle M\rangle$; with $N=H\cdot M$ and symmetry, $\langle H\cdot M\rangle=H\cdot\langle M,H\cdot M\rangle=H\cdot(H\cdot\langle M\rangle)=H^2\cdot\langle M\rangle$.
+This is bounded by $(\max_i\|H_i\|_\infty)^2\langle M\rangle_\infty$, which is integrable, so Corollary~\ref{cor:L2bracket} gives $H\cdot M\in\mathbb H^2$ and $\|H\cdot M\|^2=\mathbb E\langle H\cdot M\rangle_\infty=\|H\|^2_{L^2(M)}$.
+\end{proof}
+
+\begin{theorem}[the It\^o integral]\label{thm:itoH2}
+Let $M\in\mathbb H^2$ and $H\in L^2(M)$. There is a unique $H\cdot M\in\mathbb H^2$ such that
+\[
+\langle H\cdot M,N\rangle=H\cdot\langle M,N\rangle\qquad\text{for every }N\in\mathbb H^2 .
+\]
+The map $H\mapsto H\cdot M$ is a linear isometry from $L^2(M)$ to $\mathbb H^2$ that extends the elementary integral. We write $(H\cdot M)_t=\int_0^tH_s\dd M_s$.
+\end{theorem}
+
+\begin{proof}
+\emph{Uniqueness.} If $X,X'$ qualify, $\langle X-X',N\rangle=0$ for all $N$; with $N=X-X'$, $\mathbb E(X_\infty-X'_\infty)^2=\mathbb E\langle X-X'\rangle_\infty=0$, and Doob's inequality gives $X=X'$.
+
+\emph{Existence.} By Lemma~\ref{lem:H2complete} choose elementary $H^n\to H$ in $L^2(M)$. By Lemma~\ref{lem:elementary}, $(H^n\cdot M)$ is Cauchy in $\mathbb H^2$; let $X$ be its limit. Fix $N\in\mathbb H^2$ and $t$. By
+Lemma~\ref{lem:kw} and Cauchy--Schwarz,
+\[
+\mathbb E\bigl|\langle H^n\cdot M-X,N\rangle_t\bigr|\le\|H^n\cdot M-X\|\,\|N\|,\qquad\mathbb E\Bigl|\int_0^t(H^n_s-H_s)\dd\langle M,N\rangle_s\Bigr|\le\|H^n-H\|\,\|N\|,
+\]
+and both tend to $0$. Since $\langle H^n\cdot M,N\rangle_t=\int_0^tH^n\dd\langle M,N\rangle$, we get $\langle X,N\rangle_t=\int_0^tH\dd\langle M,N\rangle$ almost surely for each $t$, hence for all $t$ by continuity. The
+isometry passes to the limit, and linearity follows from uniqueness.
+\end{proof}
+
+\begin{proposition}\label{prop:itoprops}
+Let $M,N\in\mathbb H^2$, $H\in L^2(M)$, $K\in L^2(N)$ and $\tau$ a stopping time.
+\begin{enumerate}[label=(\alph*)]
+\item $\langle H\cdot M,K\cdot N\rangle=HK\cdot\langle M,N\rangle$. In particular $\langle H\cdot M\rangle=H^2\cdot\langle M\rangle$ and $\mathbb E\bigl[(\int_0^tH\dd M)^2\bigr]=\mathbb E\int_0^tH_s^2\dd\langle M\rangle_s$.
+\item If $G$ is progressive and $GH\in L^2(M)$, then $G\in L^2(H\cdot M)$ and $G\cdot(H\cdot M)=GH\cdot M$.
+\item $(H\cdot M)^\tau=H\mathbf 1_{[0,\tau]}\cdot M=H\cdot M^\tau$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+All three follow from the uniqueness in Theorem~\ref{thm:itoH2} and the associativity of Stieltjes integrals, $G\cdot(H\cdot A)=GH\cdot A$. (a) $\langle H\cdot M,K\cdot N\rangle=H\cdot\langle M,K\cdot N\rangle=H\cdot(K\cdot\langle M,N\rangle)$.
+(b) $\int G^2\dd\langle H\cdot M\rangle=\int G^2H^2\dd\langle M\rangle$, and $\langle G\cdot(H\cdot M),N\rangle=G\cdot(H\cdot\langle M,N\rangle)=GH\cdot\langle M,N\rangle$. (c) By Lemma~\ref{lem:bracketstop},
+$\langle(H\cdot M)^\tau,N\rangle=(H\cdot\langle M,N\rangle)^\tau=H\mathbf 1_{[0,\tau]}\cdot\langle M,N\rangle$, and also $=H\cdot\langle M,N\rangle^\tau=H\cdot\langle M^\tau,N\rangle$.
+\end{proof}
+
+\section{Local martingales, semimartingales and Riemann sums}
+
+\begin{theorem}\label{thm:itoloc}
+Let $M$ be a continuous local martingale with $M_0=0$, and $H$ a progressive process with $\int_0^tH_s^2\dd\langle M\rangle_s<\infty$ for all $t$, almost surely. There is a unique continuous local martingale
+$H\cdot M$, zero at $0$, with $\langle H\cdot M,N\rangle=H\cdot\langle M,N\rangle$ for every continuous local martingale $N$. Proposition~\ref{prop:itoprops} holds in this setting. If
+$\mathbb E\int_0^tH^2\dd\langle M\rangle<\infty$, then $(H\cdot M)^t\in\mathbb H^2$ and $\mathbb E(\int_0^tH\dd M)^2=\mathbb E\int_0^tH^2\dd\langle M\rangle$.
+\end{theorem}
+
+\begin{proof}
+Let $\tau_n=\inf\{t:\int_0^t(1+H_s^2)\dd\langle M\rangle_s\ge n\}$, which increases to $\infty$. Then $\langle M^{\tau_n}\rangle\le n$, so $M^{\tau_n}\in\mathbb H^2$, and $H\in L^2(M^{\tau_n})$. Let $X^n=H\cdot M^{\tau_n}$. By
+Proposition~\ref{prop:itoprops}(c), $(X^{n+1})^{\tau_n}=H\cdot M^{\tau_n}=X^n$, so there is a continuous process $X$ with $X^{\tau_n}=X^n$ for all $n$: a continuous local martingale. For a continuous local martingale $N$,
+stopped at $\sigma_m$ so that $N^{\sigma_m}\in\mathbb H^2$, Lemma~\ref{lem:bracketstop} gives $\langle X,N\rangle^{\tau_n\wedge\sigma_m}=\langle X^n,N^{\sigma_m}\rangle=H\cdot\langle M^{\tau_n},N^{\sigma_m}\rangle=(H\cdot\langle M,N\rangle)^{\tau_n\wedge\sigma_m}$;
+let $n,m\to\infty$. If $X'$ also qualifies, $D=X-X'$ has $\langle D\rangle=0$, so $D^2$ is a non-negative local martingale with $D_0=0$, a supermartingale with mean $0$ (Exercise~\ref{ex:superm}): $D=0$. The
+properties follow by the same localisation, and the last claim from Corollary~\ref{cor:L2bracket}.
+\end{proof}
+
+\begin{definition}\label{def:semimart}
+A \emph{continuous semimartingale} is a process $X=X_0+M+A$ with $X_0$ $\mathcal F_0$-measurable, $M$ a continuous local martingale and $A$ a continuous adapted process of finite variation, $M_0=A_0=0$. The
+decomposition is unique (Theorem~\ref{thm:fvconstant}). For two semimartingales, $\langle X,Y\rangle=\langle M,N\rangle$. For $H$ progressive and \emph{locally bounded} ($\sup_{s\le t}|H_s|<\infty$ for each $t$, for example
+continuous and adapted), $\int_0^tH\dd X=\int_0^tH\dd M+\int_0^tH\dd A$.
+\end{definition}
+
+Brownian motion is a semimartingale, and so is $f(t,B_t)$ for smooth $f$, as It\^o's formula will show; the integrals above are the only ones we need. The next result says that It\^o's integral is the limit
+of the left-point Riemann sums, which is how It\^o defined it.
+
+\begin{proposition}[Riemann sums]\label{prop:riemann}
+Let $X$ be a continuous semimartingale, $H$ a continuous adapted process, and $\pi_n$ partitions of $[0,t]$ with mesh tending to $0$. Then, in probability,
+\[
+\sum_iH_{t_{i-1}}\bigl(X_{t_i}-X_{t_{i-1}}\bigr)\longrightarrow\int_0^tH\dd X,\qquad\sum_iH_{t_{i-1}}\bigl(X_{t_i}-X_{t_{i-1}}\bigr)^2\longrightarrow\int_0^tH\dd\langle X\rangle .
+\]
+By polarisation, $\sum_iH_{t_{i-1}}\Delta X_i\Delta Y_i\to\int_0^tH\dd\langle X,Y\rangle$ for two semimartingales.
+\end{proposition}
+
+\begin{proof}
+Let $\tau_k=\inf\{s:|H_s|+|M_s|+\langle M\rangle_s+V_s\ge k\}$, with $V$ the variation of $A$. All the quantities agree on $\{\tau_k>t\}$ with those of the stopped processes, and $P(\tau_k\le t)\to0$; so we may assume
+$|H|,|M|,\langle M\rangle,V\le k$. The process $H^\pi=\sum_iH_{t_{i-1}}\mathbf 1_{]t_{i-1},t_i]}$ is elementary, $\int_0^tH^\pi\dd M$ is the martingale part of the first sum, and $H^\pi\to H$ pointwise with $|H^\pi|\le k$. By the isometry,
+$\mathbb E(\int_0^t(H^\pi-H)\dd M)^2=\mathbb E\int_0^t(H^\pi-H)^2\dd\langle M\rangle\to0$ by dominated convergence, and $\int_0^tH^\pi\dd A\to\int_0^tH\dd A$ path by path.
+
+For the second sum, $(\Delta X_i)^2=(\Delta M_i)^2+2\Delta M_i\Delta A_i+(\Delta A_i)^2$, and the last two terms contribute at most $k(2\max_i|\Delta M_i|+\max_i|\Delta A_i|)V_t\to0$. Let $Z_i=(\Delta M_i)^2-\Delta\langle M\rangle_i$.
+The terms $H_{t_{i-1}}Z_i$ are orthogonal, since $\mathbb E[Z_i\mid\mathcal F_{t_{i-1}}]=0$, so $\mathbb E(\sum_iH_{t_{i-1}}Z_i)^2\le k^2\sum_i\mathbb EZ_i^2\to0$ (reminder). Finally
+$\sum_iH_{t_{i-1}}\Delta\langle M\rangle_i\to\int_0^tH\dd\langle M\rangle$, a Riemann--Stieltjes sum of a continuous function.
+\end{proof}
+
+\section{It\^o's formula}
+
+\begin{theorem}[It\^o's formula, 1951]\label{thm:itoformula}
+Let $X=(X^1,\dots,X^d)$ be continuous semimartingales and $f\in C^2(\R^d)$. Almost surely, for all $t\ge0$,
+\[
+f(X_t)=f(X_0)+\sum_{k=1}^d\int_0^t\partial_kf(X_s)\dd X^k_s+\frac12\sum_{k,l=1}^d\int_0^t\partial_k\partial_lf(X_s)\dd\langle X^k,X^l\rangle_s .
+\]
+In particular $f(X)$ is a continuous semimartingale.
+\end{theorem}
+
+\begin{proof}
+Both sides are continuous in $t$, so it suffices to prove the identity almost surely for each fixed $t$. Stopping at $\inf\{s:|X_s|\ge k\}$ (and letting $k\to\infty$) we may assume that $X$ stays in a ball $\bar B(0,k)$, on
+which $f$ and its first two derivatives are bounded and the second derivatives have a modulus of uniform continuity $\omega$. Taylor's formula with integral remainder gives, for $x,y$ in the ball,
+\[
+f(y)-f(x)=\sum_k\partial_kf(x)(y-x)_k+\frac12\sum_{k,l}\partial_k\partial_lf(x)(y-x)_k(y-x)_l+R(x,y),
+\]
+with $|R(x,y)|\le\frac{d^2}2\,\omega(|y-x|)\,|y-x|^2$.
+Apply it along a partition of $[0,t]$ with $x=X_{t_{i-1}}$, $y=X_{t_i}$, and sum over $i$. By Proposition~\ref{prop:riemann}, the first-order terms converge in probability to $\sum_k\int_0^t\partial_kf(X)\dd X^k$ and the
+second-order terms to $\frac12\sum_{k,l}\int_0^t\partial_k\partial_lf(X)\dd\langle X^k,X^l\rangle$. The remainders sum to at most $\frac{d^2}2\,\omega(\max_i|\Delta X_i|)\sum_i|\Delta X_i|^2$; the sum converges in probability to
+$\sum_k\langle X^k\rangle_t$ and $\omega(\max_i|\Delta X_i|)\to0$ by uniform continuity of the paths. So the total tends to $0$ in probability, and the identity holds almost surely.
+\end{proof}
+
+For one Brownian motion this is the formula of Tome~3, Chapter~11: $f(B_t)=f(0)+\int_0^tf'(B_s)\dd B_s+\frac12\int_0^tf''(B_s)\dd s$. With time as an extra coordinate ($X^0_t=t$, of finite variation, so all its
+brackets vanish), $f(t,B_t)=f(0,0)+\int_0^t\partial_xf\dd B+\int_0^t(\partial_t+\frac12\partial_x^2)f\dd s$: the heat operator appears, and $f(t,B_t)$ is a local martingale exactly when $f$ solves the backward heat equation.
+Complex-valued $f$ are handled by taking real and imaginary parts.
+
+\begin{think}
+Compute $\int_0^tB_s\dd B_s$ with $f(x)=x^2$. Ordinary calculus would give $\frac12B_t^2$. Which sums converge to that answer instead (Exercise~\ref{ex:bdb})?
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-sums}
+\caption{Along one Brownian path on $[0,2]$ with $2^{12}$ steps, the running sums $\sum B_{t_{i-1}}\Delta B_i$ (It\^o, left point), $\sum\frac12(B_{t_{i-1}}+B_{t_i})\Delta B_i$ (Stratonovich, midpoint) and $\sum B_{t_i}\Delta B_i$
+(right point), against $\frac12(B_t^2-t)$, $\frac12B_t^2$ and $\frac12(B_t^2+t)$ (thin black). The three conventions differ by $\frac12\sum(\Delta B_i)^2\approx\frac t2$: the quadratic variation.}
+\label{fig:sums}
+\end{figure}
+
+\section{L\'evy's characterisation and time changes}
+
+\begin{theorem}[L\'evy's characterisation, 1948]\label{thm:levychar}
+Let $M=(M^1,\dots,M^d)$ be continuous local martingales with $M_0=0$ and $\langle M^k,M^l\rangle_t=\delta_{kl}t$. Then $M$ is a $d$-dimensional $(\mathcal F_t)$-Brownian motion.
+\end{theorem}
+
+\begin{proof}
+Fix $\xi\in\R^d$ and let $f(t,x)=\exp\bigl(i\xi\cdot x+\frac12|\xi|^2t\bigr)$. It\^o's formula, with $\partial_tf=\frac12|\xi|^2f$ and $\frac12\sum_k\partial_k^2f=-\frac12|\xi|^2f$, gives
+$f(t,M_t)=1+\sum_ki\xi_k\int_0^tf(s,M_s)\dd M^k_s$, a complex continuous local martingale. It is bounded by $e^{|\xi|^2T/2}$ on $[0,T]$, hence a martingale (Proposition~\ref{prop:localmart}(c)), and for $s<t$
+\[
+\mathbb E\bigl[e^{i\xi\cdot(M_t-M_s)}\bigm|\mathcal F_s\bigr]=e^{-\frac12|\xi|^2(t-s)} .
+\]
+So for $A\in\mathcal F_s$ with $P(A)>0$, the law of $M_t-M_s$ under $P(\cdot\mid A)$ has the characteristic function of $N(0,(t-s)I_d)$: the increment is Gaussian with this covariance and independent of $\mathcal F_s$.
+\end{proof}
+
+The theorem is remarkable for what it does not assume: no Gaussian law, no independence, only continuity and the clock. A fair game that moves continuously and whose squared fluctuations accumulate at
+unit rate \emph{is} Brownian motion. The same computation with a real exponent gives the exponential martingales of Chapter~3 for every local martingale.
+
+\begin{proposition}[exponential martingales]\label{prop:expmartgen}
+Let $M$ be a continuous local martingale with $M_0=0$ and $\lambda\in\R$. Then $\mathcal E^\lambda(M)_t=\exp\bigl(\lambda M_t-\frac{\lambda^2}2\langle M\rangle_t\bigr)=1+\lambda\int_0^t\mathcal E^\lambda(M)_s\dd M_s$ is a continuous local martingale and
+a supermartingale. For $a,c>0$,
+\[
+P\Bigl(\sup_{t\ge0}M_t\ge a,\ \langle M\rangle_\infty\le c\Bigr)\le e^{-a^2/2c}.
+\]
+\end{proposition}
+
+\begin{proof}
+It\^o's formula for $f(x,y)=e^{\lambda x-\lambda^2y/2}$ with $X=(M,\langle M\rangle)$ gives $\mathrm df=\lambda f\dd M-\frac{\lambda^2}2f\dd\langle M\rangle+\frac{\lambda^2}2f\dd\langle M\rangle$; it is a supermartingale by
+Exercise~\ref{ex:superm}. Let $\tau=\inf\{t:M_t\ge a\}$. The stopped process $\mathcal E^\lambda(M)^\tau$ is again a non-negative local martingale, so $\mathbb E\,\mathcal E^\lambda(M)_{\tau\wedge t}\le1$. On the event
+$\{\tau\le t,\ \langle M\rangle_\infty\le c\}$, $\mathcal E^\lambda(M)_{\tau\wedge t}\ge e^{\lambda a-\lambda^2c/2}$. Hence $P(\tau\le t,\langle M\rangle_\infty\le c)\le e^{-\lambda a+\lambda^2c/2}$. Let $t\to\infty$ and take $\lambda=a/c$.
+\end{proof}
+
+This is the continuous version of the Azuma--Hoeffding inequality of Tome~3, Theorem~10.24, and it is sharp: for $M=B^{c}$ (Brownian motion stopped at time $c$) the left side is $P(\max_{s\le c}B_s\ge a)=2P(B_c\ge a)$,
+which is $e^{-a^2/2c}$ up to a polynomial factor.
+
+The clock of Chapter~3 can be used to change time. Two lemmas prepare the theorem.
+
+\begin{lemma}\label{lem:ostL2}
+Let $X$ be a continuous martingale with $\mathbb E\sup_t|X_t|<\infty$ which converges almost surely to a limit $X_\infty$ (for instance, a martingale bounded in $L^2$). If $\sigma\le\tau$ are stopping times, possibly infinite, then $\mathbb E[X_\tau\mid\mathcal F_\sigma]=X_\sigma$.
+\end{lemma}
+
+\begin{proof}
+For $A\in\mathcal F_\sigma$, $A\cap\{\sigma\le n\}\in\mathcal F_{\sigma\wedge n}$ (check on $\{\sigma\wedge n\le u\}$), so Theorem~\ref{thm:ostcont} gives $\mathbb E[X_{\tau\wedge n}\mathbf 1_{A\cap\{\sigma\le n\}}]=\mathbb E[X_{\sigma\wedge n}\mathbf 1_{A\cap\{\sigma\le n\}}]$. All
+variables are dominated by the integrable $\sup_t|X_t|$. Letting $n\to\infty$, $\mathbb E[X_\tau\mathbf 1_{A\cap\{\sigma<\infty\}}]=\mathbb E[X_\sigma\mathbf 1_{A\cap\{\sigma<\infty\}}]$. On $\{\sigma=\infty\}$, $X_\tau=X_\infty=X_\sigma$.
+\end{proof}
+
+\begin{lemma}\label{lem:constancy}
+Let $M$ be a continuous local martingale. Almost surely, $M$ is constant on every interval on which $\langle M\rangle$ is constant.
+\end{lemma}
+
+\begin{proof}
+For rational $q$ let $\sigma_q=\inf\{t>q:\langle M\rangle_t>\langle M\rangle_q\}$ and $N=\mathbf 1_{]q,\sigma_q]}\cdot M=M^{\sigma_q}-M^q$. Then $\langle N\rangle=\mathbf 1_{]q,\sigma_q]}\cdot\langle M\rangle=0$, so $N=0$ (as in the proof of
+Theorem~\ref{thm:itoloc}): $M$ is constant on $[q,\sigma_q]$, for all rational $q$ at once, almost surely. If $\langle M\rangle$ is constant on $[s,t]$ with $s<t$, then $\sigma_q\ge t$ for every rational $q\in\,]s,t[$, so $M$ is
+constant on $[q,t]$; let $q\downarrow s$.
+\end{proof}
+
+\begin{theorem}[Dambis, Dubins--Schwarz, 1965]\label{thm:dds}
+Let $M$ be a continuous local martingale with $M_0=0$ and $\langle M\rangle_\infty=\infty$ almost surely. Let $T_s=\inf\{t:\langle M\rangle_t>s\}$. Then $\beta_s=M_{T_s}$ is a Brownian motion for the filtration
+$(\mathcal F_{T_s})_{s\ge0}$, and $M_t=\beta_{\langle M\rangle_t}$ for all $t$.
+\end{theorem}
+
+\begin{proof}
+Each $T_s$ is a finite stopping time ($\{T_s<t\}=\{\langle M\rangle_t>s\}$, and the filtration is right-continuous), $s\mapsto T_s$ is increasing and right-continuous, and $\langle M\rangle_{T_s}=s$. The filtration
+$\mathcal G_s=\mathcal F_{T_s}$ satisfies the usual conditions: if $A\in\bigcap_n\mathcal G_{s+1/n}$, then $A\cap\{T_s<t\}=\bigcup_nA\cap\{T_{s+1/n}<t\}\in\mathcal F_t$, and so $A\cap\{T_s\le t\}\in\mathcal F_{t+}=\mathcal F_t$.
+
+\emph{Continuity.} If $T_{s-}<T_s$, then $\langle M\rangle=s$ on $[T_{s-},T_s]$, so $M$ is constant there by Lemma~\ref{lem:constancy}, and $\beta_{s-}=M_{T_{s-}}=M_{T_s}=\beta_s$. So $\beta$ is continuous, and adapted to $(\mathcal G_s)$
+by Lemma~\ref{lem:stopping}(b).
+
+\emph{Brownian motion.} Fix $u>0$. The local martingale $M^{T_u}$ has bracket $\langle M\rangle^{T_u}\le u$, so by Corollary~\ref{cor:L2bracket} it is bounded in $L^2$ and $(M^{T_u})^2-\langle M\rangle^{T_u}$ is a uniformly integrable
+martingale. Both converge as $t\to\infty$ (Theorem~\ref{thm:L2cont}, and $\langle M\rangle^{T_u}$ is increasing and bounded) and are dominated by $\sup_tM_{T_u\wedge t}^2+u$, which is integrable by Doob's inequality. Lemma~\ref{lem:ostL2}, applied to $T_s\le T_t$ for $s<t\le u$, gives
+$\mathbb E[\beta_t\mid\mathcal G_s]=\beta_s$ and $\mathbb E[\beta_t^2-t\mid\mathcal G_s]=\beta_s^2-s$. So $\beta$ is a continuous $(\mathcal G_s)$-martingale with $\langle\beta\rangle_s=s$: a Brownian motion by Theorem~\ref{thm:levychar}.
+Finally $T_{\langle M\rangle_t}\ge t$ and $\langle M\rangle$ is constant on $[t,T_{\langle M\rangle_t}]$, so $\beta_{\langle M\rangle_t}=M_{T_{\langle M\rangle_t}}=M_t$.
+\end{proof}
+
+\begin{beauty}
+Every continuous fair game, however it is built, is Brownian motion watched with a different clock. The variety of continuous martingales is the variety of clocks, and the clock is the quadratic
+variation. Doeblin's sealed envelope contained exactly this idea, a quarter of a century before Dambis, Dubins and Schwarz.
+\end{beauty}
+
+\begin{remark}
+If $\langle M\rangle_\infty<\infty$ with positive probability, the same holds after enlarging the probability space with an independent Brownian motion to run after time $\langle M\rangle_\infty$ (Revuz and Yor, Chapter~V,
+Theorem~1.7). In several dimensions, Knight's theorem (1971) says that orthogonal continuous martingales, each with infinite clock, become \emph{independent} Brownian motions after their separate time changes.
+\end{remark}
+
+\section{Burkholder's inequality}
+
+How large is a martingale, compared with its clock? For $p=2$ the answer is Doob's inequality and Corollary~\ref{cor:L2bracket}: $\mathbb E\langle M\rangle_t\le\mathbb E\sup_{s\le t}M_s^2\le4\,\mathbb E\langle M\rangle_t$. It\^o's formula
+gives the other powers. We first extend Doob's inequality.
+
+\begin{lemma}[Doob's $L^p$ inequality]\label{lem:doobp}
+Let $p>1$ and $X$ a continuous non-negative submartingale. Then $\mathbb E\sup_{s\le t}X_s^p\le\bigl(\frac p{p-1}\bigr)^p\mathbb EX_t^p$.
+\end{lemma}
+
+\begin{proof}
+By dyadic approximation and monotone convergence (as in Theorem~\ref{thm:doobcont}) it suffices to treat a discrete submartingale $X_0,\dots,X_n$, with $X^*=\max_kX_k$ and $\mathbb EX_n^p<\infty$; replacing $X^*$ by $X^*\wedge K$
+and letting $K\to\infty$ at the end, we may assume $\mathbb E(X^*)^p<\infty$. The strong form of Tome~3, Theorem~10.15, $\lambda P(X^*\ge\lambda)\le\mathbb E[X_n\mathbf 1_{\{X^*\ge\lambda\}}]$, and Fubini give
+\[
+\mathbb E(X^*)^p=\int_0^\infty p\lambda^{p-1}P(X^*\ge\lambda)\dd\lambda\le\mathbb E\Bigl[X_n\int_0^{X^*}p\lambda^{p-2}\dd\lambda\Bigr]=\frac p{p-1}\mathbb E\bigl[X_n(X^*)^{p-1}\bigr],
+\]
+and by H\"older's inequality the right side is at most
+\[
+\frac p{p-1}(\mathbb EX_n^p)^{1/p}\bigl(\mathbb E(X^*)^p\bigr)^{1-1/p}.
+\]
+Divide. (With $X^*\wedge K$ in place of $X^*$ the same computation holds, since
+$\{X^*\wedge K\ge\lambda\}=\{X^*\ge\lambda\}$ for $\lambda\le K$.)
+\end{proof}
+
+\begin{theorem}[Burkholder, 1966]\label{thm:bdg}
+Let $p\ge2$ and $C_p=\bigl(\frac{p}{2}(p-1)\bigr)^{p/2}\bigl(\frac p{p-1}\bigr)^{p^2/2}$. For every continuous local martingale $M$ with $M_0=0$ and every $t$,
+\[
+\mathbb E\sup_{s\le t}|M_s|^p\le C_p\,\mathbb E\langle M\rangle_t^{p/2}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $M^*_t=\sup_{s\le t}|M_s|$. Stopping at $\inf\{s:|M_s|+\langle M\rangle_s\ge n\}$ and letting $n\to\infty$ at the end (monotone convergence on both sides), we may assume $M$ and $\langle M\rangle$ bounded. Since $x\mapsto|x|^p$
+is $C^2$ for $p\ge2$, It\^o's formula gives
+\[
+|M_t|^p=\int_0^tp|M_s|^{p-1}\operatorname{sgn}(M_s)\dd M_s+\frac{p(p-1)}2\int_0^t|M_s|^{p-2}\dd\langle M\rangle_s .
+\]
+The stochastic integral has a bounded integrand and a bounded clock, so it is a martingale with mean $0$. Hence, by H\"older's inequality with exponents $\frac p{p-2}$ and $\frac p2$,
+\[
+\mathbb E|M_t|^p\le\frac{p(p-1)}2\,\mathbb E\bigl[(M^*_t)^{p-2}\langle M\rangle_t\bigr]\le\frac{p(p-1)}2\bigl(\mathbb E(M^*_t)^p\bigr)^{1-2/p}\bigl(\mathbb E\langle M\rangle_t^{p/2}\bigr)^{2/p}.
+\]
+By Lemma~\ref{lem:doobp} applied to $|M|$, $\mathbb E(M^*_t)^p\le(\frac p{p-1})^p\mathbb E|M_t|^p$. Combining and dividing by $(\mathbb E(M^*_t)^p)^{1-2/p}$ (if it is $0$ there is nothing to prove) gives
+$(\mathbb E(M^*_t)^p)^{2/p}\le(\frac p{p-1})^p\frac{p(p-1)}2(\mathbb E\langle M\rangle_t^{p/2})^{2/p}$; raise to the power $\frac p2$.
+\end{proof}
+
+\begin{remark}
+The reverse inequality $\mathbb E\langle M\rangle_t^{p/2}\le c_p\,\mathbb E\sup_{s\le t}|M_s|^p$ also holds, and both hold for every $p>0$: these are the Burkholder--Davis--Gundy inequalities (1972), proved for
+continuous martingales by a ``good $\lambda$'' argument (Revuz and Yor, Chapter~IV, Theorem~4.1). The constant above is far from optimal; its order of growth $p^{p/2}$ is the right one, as Brownian motion shows.
+\end{remark}
+
+\section{Tanaka's formula and the local time}
+
+The function $|x|$ is not $C^2$: its second derivative is twice the Dirac mass at $0$. It\^o's formula for $|B_t|$ should therefore contain a term that grows only when $B$ is at $0$. That term is the
+\emph{local time}, introduced by L\'evy and made into a process by Hiroshi Tanaka in 1963.
+
+\begin{theorem}[Tanaka's formula]\label{thm:tanaka}
+Let $B$ be a Brownian motion. There is a continuous increasing process $L$ with $L_0=0$, the \emph{local time at $0$}, which increases only on the zero set $\mathcal Z=\{t:B_t=0\}$ (it is constant on every interval where
+$B$ does not vanish), such that
+\[
+|B_t|=\int_0^t\operatorname{sgn}(B_s)\dd B_s+L_t\qquad(t\ge0),
+\]
+where $\operatorname{sgn}(0)=0$. Moreover $\beta_t=\int_0^t\operatorname{sgn}(B_s)\dd B_s$ is a Brownian motion.
+\end{theorem}
+
+\begin{proof}
+Let $\varphi$ be a smooth even probability density supported in $[-1,1]$, $\varphi_\varepsilon(x)=\varphi(x/\varepsilon)/\varepsilon$, and $f_\varepsilon(x)=\int|x-y|\varphi_\varepsilon(y)\dd y$. Then $f_\varepsilon'(x)=\int\operatorname{sgn}(x-y)\varphi_\varepsilon(y)\dd y=2\Phi_\varepsilon(x)-1$,
+with $\Phi_\varepsilon$ the distribution function of $\varphi_\varepsilon$, so $f_\varepsilon''=2\varphi_\varepsilon$ and $f_\varepsilon$ is smooth. Moreover $|f_\varepsilon(x)-|x||\le\varepsilon$, $|f_\varepsilon'|\le1$, and $f_\varepsilon'(x)=\operatorname{sgn}x$ for $|x|\ge\varepsilon$. By
+It\^o's formula,
+\[
+f_\varepsilon(B_t)=f_\varepsilon(0)+\int_0^tf_\varepsilon'(B_s)\dd B_s+\int_0^t\varphi_\varepsilon(B_s)\dd s .
+\]
+Fix $T$. By Doob's inequality and the isometry,
+\[
+\mathbb E\sup_{t\le T}\Bigl(\int_0^t\bigl(f_\varepsilon'(B_s)-\operatorname{sgn}B_s\bigr)\dd B_s\Bigr)^2\le4\,\mathbb E\int_0^T\mathbf 1_{\{0<|B_s|<\varepsilon\}}\dd s\xrightarrow[\varepsilon\to0]{}0 .
+\]
+So $L^\varepsilon_t=\int_0^t\varphi_\varepsilon(B_s)\dd s$ converges, uniformly on $[0,T]$ in $L^2$, to $L_t=|B_t|-\beta_t$; along a sequence $\varepsilon_n\to0$ the convergence is uniform on $[0,T]$ almost surely. Hence $L$ is continuous,
+$L_0=0$, and increasing, as a limit of increasing functions. If $B\ne0$ on $[u,v]\subseteq[0,T]$, then $|B|\ge\delta>0$ there, $L^{\varepsilon_n}_v-L^{\varepsilon_n}_u=0$ as soon as $\varepsilon_n<\delta$, and $L_v=L_u$. Let $T\to\infty$
+along the integers.
+
+Finally $\beta$ is a continuous local martingale with $\langle\beta\rangle_t=\int_0^t\operatorname{sgn}(B_s)^2\dd s=\int_0^t\mathbf 1_{\{B_s\ne0\}}\dd s=t$, because the zero set has Lebesgue measure zero (Chapter~2). By
+Theorem~\ref{thm:levychar}, $\beta$ is a Brownian motion.
+\end{proof}
+
+The proof shows that $L_t=\lim_{\varepsilon\to0}\int_0^t\varphi_\varepsilon(B_s)\dd s$ for every smoothing kernel $\varphi$: $L$ is the density at $0$ of the time spent by $B$ near $0$. With $\varphi=\frac12\mathbf 1_{[-1,1]}$ this is L\'evy's
+original definition, $L_t=\lim_{\varepsilon\to0}\frac1{2\varepsilon}\lambda\{s\le t:|B_s|<\varepsilon\}$ (Exercise~\ref{ex:occupation}). The next lemma, due to Anatoliy Skorokhod (1961), identifies $L$ from the decomposition alone.
+
+\begin{lemma}[Skorokhod's reflection lemma]\label{lem:skorokhod}
+Let $y$ be a continuous function on $[0,\infty[$ with $y_0=0$. Suppose $x=y+\ell$, where $x\ge0$ and $\ell$ is continuous and increasing with $\ell_0=0$, constant on every interval where $x>0$. Then
+$\ell_t=\max_{s\le t}(-y_s)$ for all $t$.
+\end{lemma}
+
+\begin{proof}
+For $s\le t$, $\ell_t\ge\ell_s=x_s-y_s\ge-y_s$, so $\ell_t\ge m_t:=\max_{s\le t}(-y_s)$ (which is $\ge0$ since $y_0=0$). Conversely, if $x$ has no zero in $[0,t]$, then $\ell$ is constant on $[0,t]$ and $\ell_t=0\le m_t$. Otherwise let
+$g=\max\{s\le t:x_s=0\}$. Then $\ell$ is constant on $]g,t]$, so by continuity $\ell_t=\ell_g=x_g-y_g=-y_g\le m_t$.
+\end{proof}
+
+\begin{theorem}[L\'evy, 1948]\label{thm:levyMB}
+Let $B$ be a Brownian motion, $M_t=\max_{s\le t}B_s$, and $L$ the local time at $0$. Then the processes $(M_t-B_t,M_t)_{t\ge0}$ and $(|B_t|,L_t)_{t\ge0}$ have the same law. In particular $M-B$ and $|B|$ have the same
+law as processes, and $L_t$ has the law of $|B_t|$ for each $t$.
+\end{theorem}
+
+\begin{proof}
+Apply Lemma~\ref{lem:skorokhod} to Tanaka's formula, path by path, with $x=|B|$, $y=\beta$ and $\ell=L$: $L_t=\max_{s\le t}(-\beta_s)$. So with $W=-\beta$, a Brownian motion, and $S_t=\max_{s\le t}W_s$,
+\[
+\bigl(|B_t|,L_t\bigr)=\bigl(S_t-W_t,S_t\bigr)\qquad\text{for all }t\text{, almost surely.}
+\]
+The right side is the same measurable function of the Brownian motion $W$ as $(M-B,M)$ is of $B$, so the two pairs have the same law.
+\end{proof}
+
+\begin{corollary}[the dimension of the zero set]\label{cor:zerodim}
+Almost surely, $\dim_H(\mathcal Z\cap[0,1])=\frac12$.
+\end{corollary}
+
+\begin{proof}
+In the proof of Theorem~\ref{thm:levyMB}, $B_t=0$ if and only if $W_t=S_t$: the zero set of $B$ is \emph{equal}, path by path, to the record set of the Brownian motion $W$. By Theorem~\ref{thm:dimension} applied to $W$,
+its intersection with $[0,1]$ has dimension $\frac12$ almost surely.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-tanaka}
+\caption{Top: a Brownian path $B$ on $[0,1]$. Bottom: $|B|$ (thin), its local time at $0$ (thick), and the running maximum of $W=-\int\operatorname{sgn}(B)\dd B$ (dashed, visible only where it differs from the
+local time by the discretisation), and L\'evy's occupation estimate $\frac1{2\varepsilon}\lambda\{s\le t:|B_s|<\varepsilon\}$ with $\varepsilon=0.01$ (dotted). The local time grows only on the zero set, and $|B|=S-W$: the reflected path is a path seen from its running maximum.}
+\label{fig:tanaka}
+\end{figure}
+
+So the zero set carries a natural measure, $\mathrm dL$, which plays for $\mathcal Z$ the role that $\mathrm dM$ played for the record set in Chapter~2.
+In Chapter~7 the inverse local time $\tau_\ell=\inf\{t:L_t>\ell\}$ will reappear as the $\frac12$-stable subordinator, the clock that counts excursions.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:bdb}
+(a) Show that $\int_0^tB_s\dd B_s=\frac12(B_t^2-t)$. (b) Show that the right-point sums $\sum B_{t_i}\Delta B_i$ converge in probability to $\frac12(B_t^2+t)$ and the midpoint sums $\sum\frac12(B_{t_{i-1}}+B_{t_i})\Delta B_i$ to
+$\frac12B_t^2$. Which of the three limits is a martingale?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:moments}
+(a) With It\^o's formula, show that $\mathbb EB_t^4=3t^2$ and, more generally, $\mathbb EB_t^{2k}=k(2k-1)\int_0^t\mathbb EB_s^{2k-2}\dd s$. (b) Let $N_t=B_t^2-t$. Show that $\langle N\rangle_t=4\int_0^tB_s^2\dd s$ and recover $\operatorname{Var}B_t^2=2t^2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ibp}
+(a) Prove the integration by parts formula $X_tY_t=X_0Y_0+\int_0^tX\dd Y+\int_0^tY\dd X+\langle X,Y\rangle_t$ for continuous semimartingales. (b) Deduce $tB_t=\int_0^ts\dd B_s+\int_0^tB_s\dd s$, and that
+$\int_0^1B_s\dd s$ is $N(0,\frac13)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:wienerito}
+Let $f\in L^2[0,\infty[$ be deterministic and $X_t=\int_0^tf(s)\dd B_s$ (It\^o's integral). (a) Show that $X_t$ equals the Wiener integral $\int f\mathbf 1_{[0,t]}\dd B$ of Theorem~\ref{thm:wienerint}, so that $X$ is a continuous
+Gaussian martingale with independent increments. (b) Show that $\exp\bigl(i\xi X_t+\frac{\xi^2}2\int_0^tf^2\bigr)$ is a martingale, and recover the law of $X_t$. (c) If $f(s)=e^{s}$, express $X$ as a time-changed Brownian motion.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rotation}
+(a) Let $B$ be a $d$-dimensional Brownian motion and $O$ a progressive process with values in the orthogonal matrices. Show that $W_t=\int_0^tO_s\dd B_s$ is a $d$-dimensional Brownian motion. (b) Let
+$\beta_t=\int_0^t\frac{B_s}{|B_s|}\cdot\dd B_s$ (with $\frac00=0$). Show that $\beta$ is a one-dimensional Brownian motion and that $|B_t|^2=2\int_0^t|B_s|\dd\beta_s+dt$. (The process $|B|^2$ is the
+\emph{squared Bessel process} of dimension $d$; it reappears in Chapter~6.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:occupation}
+Show that $\frac1{2\varepsilon}\lambda\{s\le t:|B_s|<\varepsilon\}\to L_t$ in probability as $\varepsilon\to0$. More generally, show that $\int_0^tg_\varepsilon(B_s)\dd s\to L_t$ for every probability density $g$ supported in $[-1,1]$, smooth or
+not, where $g_\varepsilon(x)=g(x/\varepsilon)/\varepsilon$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:locallaw}
+(a) Show that $\mathbb EL_t=\mathbb E|B_t|=\sqrt{2t/\pi}$, in two ways: from Tanaka's formula and from Theorem~\ref{thm:levyMB}. (b) Show that $L_t\to\infty$ almost surely as $t\to\infty$. (c) Show that $P(L_t=0)=0$ for $t>0$,
+and interpret.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:martslln}
+Let $M$ be a continuous local martingale with $M_0=0$. (a) Show that $M_t$ converges almost surely, as $t\to\infty$, on the event $\{\langle M\rangle_\infty<\infty\}$. (b) If $\langle M\rangle_\infty=\infty$ almost surely, show that
+$M_t/\langle M\rangle_t\to0$ almost surely, and that $\limsup_t M_t=+\infty$ and $\liminf_tM_t=-\infty$. (c) Apply (b) to $M_t=\int_0^tB_s\dd B_s$ to show that $\int_0^tB_s^2\dd s\to\infty$, a fact that is easy to see
+directly, and that $B_t^2-t$ changes sign infinitely often.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:bdb}
+(a) $f(x)=x^2$. (b) The right sum minus the left sum is $\sum(\Delta B_i)^2$.
+\end{hint}
+
+\begin{hint}{ex:moments}
+(a) The stochastic integral $\int_0^t2kB_s^{2k-1}\dd B_s$ has an integrand in $L^2$ on $[0,t]$, so it has mean zero. (b) $N=2\int B\dd B$; use Proposition~\ref{prop:itoprops}(a).
+\end{hint}
+
+\begin{hint}{ex:ibp}
+(a) It\^o's formula for $f(x,y)=xy$, or polarisation from $X^2$. (b) $X_t=t$ has no bracket. The integral $\int_0^ts\dd B_s$ is a Wiener integral (Exercise~\ref{ex:wienerito}).
+\end{hint}
+
+\begin{hint}{ex:wienerito}
+(a) Both integrals are linear isometries from $L^2[0,t]$ that agree on step functions. (c) $\langle X\rangle_t=\frac12(e^{2t}-1)$.
+\end{hint}
+
+\begin{hint}{ex:rotation}
+(a) Compute $\langle W^k,W^l\rangle$ with Proposition~\ref{prop:itoprops}(a) and apply L\'evy's characterisation. (b) $\langle\beta\rangle_t=\int_0^t\mathbf 1_{\{B_s\ne0\}}\dd s$; It\^o's formula for $|x|^2$.
+\end{hint}
+
+\begin{hint}{ex:occupation}
+Squeeze $g$ between smooth kernels: for $\delta>0$ there are smooth $\varphi^-\le g\le\varphi^+$, supported in $[-1-\delta,1+\delta]$, with $\int\varphi^\pm$ within $\delta$ of $1$ (for $g=\frac12\mathbf 1_{[-1,1]}$ this is easy to draw), and the proof of
+Theorem~\ref{thm:tanaka} works for any non-negative smooth kernel with compact support, giving the limit $(\int\varphi)L_t$.
+\end{hint}
+
+\begin{hint}{ex:locallaw}
+(b) In the proof of Theorem~\ref{thm:levyMB}, $L$ is the running maximum of a Brownian motion $W$. (c) Use the equality in law of (a).
+\end{hint}
+
+\begin{hint}{ex:martslln}
+(a) Stop at $\sigma_n=\inf\{t:\langle M\rangle_t\ge n\}$. (b) Dambis--Dubins--Schwarz and $\beta_s/s\to0$, and the oscillation of Brownian motion at infinity (Corollary~\ref{cor:infinity}).
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:bdb}
+\idea The three sums differ only in where the integrand is evaluated, and the differences are sums of squared increments, which do not vanish: they converge to the clock. Only the left point makes each term a
+fair bet, because the integrand is then known before the increment.
+\writeup (a) It\^o's formula with $f(x)=x^2$: $B_t^2=2\int_0^tB\dd B+t$. (b) $\sum B_{t_i}\Delta B_i=\sum B_{t_{i-1}}\Delta B_i+\sum(\Delta B_i)^2\to\frac12(B_t^2-t)+t$ by Proposition~\ref{prop:riemann}, and the midpoint sum is the
+average of the left and right sums, $\frac12B_t^2$; alternatively it telescopes exactly: $\sum\frac12(B_{t_{i-1}}+B_{t_i})(B_{t_i}-B_{t_{i-1}})=\frac12\sum(B_{t_i}^2-B_{t_{i-1}}^2)=\frac12B_t^2$. Only the It\^o limit $\frac12(B_t^2-t)$ is a
+martingale. The midpoint convention, \emph{Stratonovich's}, obeys the ordinary chain rule, at the price of losing the martingale property.
+\end{solution}
+
+\begin{solution}{ex:moments}
+\idea It\^o's formula turns a moment into the integral of a lower moment, because the stochastic integral has mean zero. The bracket of an integral is the integral of the squared integrand against the clock.
+\writeup (a) $B_t^{2k}=\int_0^t2kB_s^{2k-1}\dd B_s+k(2k-1)\int_0^tB_s^{2k-2}\dd s$. The integrand of the stochastic integral satisfies $\mathbb E\int_0^tB_s^{4k-2}\dd s<\infty$, so by Theorem~\ref{thm:itoloc} the integral is in $\mathbb H^2$ on
+$[0,t]$ and has mean $0$. Taking expectations, $\mathbb EB_t^{2k}=k(2k-1)\int_0^t\mathbb EB_s^{2k-2}\dd s$; for $k=2$, $6\int_0^ts\dd s=3t^2$. (b) $N_t=2\int_0^tB\dd B$ by Exercise~\ref{ex:bdb}, so $\langle N\rangle_t=4\int_0^tB_s^2\dd s$, and
+$\operatorname{Var}B_t^2=\mathbb EN_t^2=\mathbb E\langle N\rangle_t=4\int_0^ts\dd s=2t^2$, in agreement with $3t^2-t^2$.
+\end{solution}
+
+\begin{solution}{ex:ibp}
+\idea The product is a smooth function of two semimartingales with constant second derivatives; the cross term of It\^o's formula is the bracket.
+\writeup (a) For $f(x,y)=xy$, $\partial_x\partial_yf=1$ and $\partial_x^2f=\partial_y^2f=0$, so It\^o's formula gives $\mathrm d(XY)=X\dd Y+Y\dd X+\frac12\cdot2\dd\langle X,Y\rangle$. (b) With $X_t=t$ and $Y=B$, $\langle X,B\rangle=0$:
+$tB_t=\int_0^ts\dd B_s+\int_0^tB_s\dd s$. At $t=1$, $\int_0^1B_s\dd s=\int_0^1(1-s)\dd B_s$, a Wiener integral, Gaussian with variance $\int_0^1(1-s)^2\dd s=\frac13$.
+\end{solution}
+
+\begin{solution}{ex:wienerito}
+\idea For a deterministic integrand, It\^o's construction and Wiener's coincide: both start from step functions and extend by isometry. Then L\'evy's computation with $\exp(i\xi X)$ shows the Gaussian law directly, and
+Dambis--Dubins--Schwarz turns the process into Brownian motion with a deterministic clock.
+\writeup (a) For a step function $f=\sum c_i\mathbf 1_{]t_i,t_{i+1}]}$, both integrals equal $\sum c_i(B_{t_{i+1}}-B_{t_i})$. Both are isometries from $L^2[0,t]$ into $L^2(P)$ (Theorem~\ref{thm:wienerint} and
+Theorem~\ref{thm:itoloc}), and step functions are dense in $L^2[0,t]$, so they agree. So $X$ is a continuous martingale, and Gaussian with independent increments by Theorem~\ref{thm:wienerint} (indicators of disjoint
+intervals times $f$ are orthogonal). (b) As in the proof of Theorem~\ref{thm:levychar}, It\^o's formula for $\exp(i\xi x+\frac{\xi^2}2y)$ with $X$ and $y=\langle X\rangle_t=\int_0^tf^2$ gives a bounded local martingale on $[0,t]$, hence
+$\mathbb Ee^{i\xi X_t}=e^{-\frac{\xi^2}2\int_0^tf^2}$: $X_t$ is $N(0,\int_0^tf^2)$. (c) $\langle X\rangle_t=\int_0^te^{2s}\dd s=\frac12(e^{2t}-1)$, which tends to infinity, so by Theorem~\ref{thm:dds} $X_t=\beta_{(e^{2t}-1)/2}$ for a Brownian
+motion $\beta$. (Then $e^{-t}X_t$ is an Ornstein--Uhlenbeck process; compare Exercise~\ref{ex:ou}.)
+\end{solution}
+
+\begin{solution}{ex:rotation}
+\idea L\'evy's characterisation only asks for the clocks, and a rotation does not change clocks: the brackets of the rotated motion are $OO^{\mathsf T}=I$ times $t$.
+\writeup (a) $W^k=\sum_m\int O^{km}\dd B^m$, so by Proposition~\ref{prop:itoprops}(a) and $\langle B^m,B^n\rangle_t=\delta_{mn}t$, $\langle W^k,W^l\rangle_t=\int_0^t\sum_mO^{km}_sO^{lm}_s\dd s=\int_0^t(O_sO_s^{\mathsf T})_{kl}\dd s=\delta_{kl}t$.
+By Theorem~\ref{thm:levychar}, $W$ is a Brownian motion. (b) $\beta=\sum_k\int\frac{B^k}{|B|}\dd B^k$ is a continuous local martingale with $\langle\beta\rangle_t=\int_0^t\sum_k\frac{(B^k_s)^2}{|B_s|^2}\mathbf 1_{\{B_s\ne0\}}\dd s=t$, since
+$\{s:B_s=0\}\subseteq\{s:B^1_s=0\}$ has measure zero. So $\beta$ is a Brownian motion. It\^o's formula for $|x|^2$ gives $|B_t|^2=\sum_k2\int_0^tB^k\dd B^k+dt$, and $\sum_kB^k\dd B^k=|B|\dd\beta$ by
+Proposition~\ref{prop:itoprops}(b) (on $\{B=0\}$ both integrands vanish).
+\end{solution}
+
+\begin{solution}{ex:occupation}
+\idea The local time does not care how we smooth: any kernel of total mass one sees the same density at $0$. Sandwiching a rough kernel between smooth ones transfers the result.
+\writeup The proof of Theorem~\ref{thm:tanaka} used only that $\varphi$ is smooth, non-negative, supported in a compact interval $[-a,a]$, with $\int\varphi=1$ (and then $|f_\varepsilon(x)-|x||\le a\varepsilon$). For a smooth non-negative $\psi$
+with compact support and mass $m>0$, apply it to $\psi/m$: $\int_0^t\psi_\varepsilon(B_s)\dd s\to mL_t$, uniformly on compacts in probability. Given $g$ and $\delta$, choose smooth $\varphi^-\le g\le\varphi^+$ with masses $m^\pm$ in
+$[1-\delta,1+\delta]$. Then $\int_0^t\varphi^-_\varepsilon(B)\le\int_0^tg_\varepsilon(B)\le\int_0^t\varphi^+_\varepsilon(B)$, and the outer terms tend to $m^\pm L_t$. So, for $\eta>0$, with probability tending to $1$,
+$(1-\delta)L_t-\eta\le\int_0^tg_\varepsilon(B_s)\dd s\le(1+\delta)L_t+\eta$. Since $\delta$ and $\eta$ are arbitrary and $L_t$ is finite, $\int_0^tg_\varepsilon(B)\dd s\to L_t$ in probability. With $g=\frac12\mathbf 1_{[-1,1]}$,
+$\int_0^tg_\varepsilon(B_s)\dd s=\frac1{2\varepsilon}\lambda\{s\le t:|B_s|<\varepsilon\}$, up to the null set $\{|B_s|=\varepsilon\}$.
+\end{solution}
+
+\begin{solution}{ex:locallaw}
+\idea The local time is the compensator of $|B|$, so they have the same mean; L\'evy's theorem says more, that they have the same law at each time.
+\writeup (a) $\beta$ is a martingale with mean $0$ (it is in $\mathbb H^2$ on $[0,t]$), so $\mathbb EL_t=\mathbb E|B_t|=\sqrt t\,\mathbb E|Z|=\sqrt{2t/\pi}$. By Theorem~\ref{thm:levyMB}, $L_t$ has the law of $|B_t|$ directly. (b) $L_t=S_t$, the
+running maximum of a Brownian motion $W$, which tends to infinity because $\limsup W_t=+\infty$ (Corollary~\ref{cor:infinity}). (c) $P(L_t=0)=P(|B_t|=0)=0$. The local time starts growing immediately: $B$ returns to $0$
+infinitely often in every interval $[0,\varepsilon]$ (Corollary~\ref{cor:oscillate}), and these returns accumulate positive local time, as they must, since $W$ has records immediately after time $0$.
+\end{solution}
+
+\begin{solution}{ex:martslln}
+\idea On a finite clock, the martingale is a Brownian motion observed on a bounded time interval, which converges at the end. On an infinite clock, it is a whole Brownian path, and the law of large numbers for
+Brownian motion transfers through the time change.
+\writeup (a) $M^{\sigma_n}$ has bracket at most $n$, so it is bounded in $L^2$ and converges almost surely (Corollary~\ref{cor:L2bracket}, Theorem~\ref{thm:L2cont}). On $\{\langle M\rangle_\infty<n\}$, $\sigma_n=\infty$ and $M=M^{\sigma_n}$.
+Taking the union over $n$ gives (a). (b) By Theorem~\ref{thm:dds}, $M_t=\beta_{\langle M\rangle_t}$ with $\beta$ a Brownian motion, and $\langle M\rangle_t\to\infty$. Since $\beta_s/s\to0$ (Tome~3, Proposition~11.7), $M_t/\langle M\rangle_t\to0$; and
+since $\limsup_s\beta_s=+\infty$, $\liminf_s\beta_s=-\infty$ (Corollary~\ref{cor:infinity}) and $\langle M\rangle_t$ runs through all of $[0,\infty[$ continuously, $M$ has the same $\limsup$ and $\liminf$. (c) $M=\int B\dd B$ has
+$\langle M\rangle_t=\int_0^tB_s^2\dd s$. If this stayed bounded with positive probability, $M_t=\frac12(B_t^2-t)$ would converge there by (a), which is impossible since $B_t^2-t\to-\infty$ along times when $B$ is at $0$; so
+$\langle M\rangle_\infty=\infty$ almost surely (that is the direct fact), and then by (b) $\limsup M_t=+\infty$ and $\liminf M_t=-\infty$: $B_t^2-t$ changes sign infinitely often.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} K.~It\^o, ``Stochastic integral'', \emph{Proceedings of the Imperial Academy Tokyo} 20 (1944), 519--524, and ``On a formula concerning stochastic differentials'', \emph{Nagoya Mathematical Journal} 3
+(1951), 55--65. K.~It\^o, \emph{Selected Papers}, edited by D.~W.~Stroock and S.~R.~S.~Varadhan, Springer, 1987, with It\^o's foreword. W.~Doeblin, ``Sur l'\'equation de Kolmogoroff'', pli cachet\'e of 1940,
+\emph{Comptes Rendus de l'Acad\'emie des Sciences}, S\'erie~I, 331 (2000), special issue. B.~Bru and M.~Yor, ``Comments on the life and mathematical legacy of Wolfgang Doeblin'', \emph{Finance and Stochastics} 6
+(2002), 3--47. P.~L\'evy, \emph{Processus stochastiques et mouvement brownien}, Gauthier-Villars, 1948. H.~Tanaka, ``Note on continuous additive functionals of the 1-dimensional Brownian path'',
+\emph{Zeitschrift f\"ur Wahrscheinlichkeitstheorie} 1 (1963), 251--257. A.~V.~Skorokhod, ``Stochastic equations for diffusion processes in a bounded region'', \emph{Theory of Probability and its Applications} 6 (1961),
+264--274. K.~E.~Dambis, ``On the decomposition of continuous submartingales'', \emph{Theory of Probability and its Applications} 10 (1965), 401--410; L.~E.~Dubins and G.~Schwarz, ``On continuous martingales'',
+\emph{Proceedings of the National Academy of Sciences USA} 53 (1965), 913--916. D.~L.~Burkholder, ``Martingale transforms'', \emph{Annals of Mathematical Statistics} 37 (1966), 1494--1504;
+D.~L.~Burkholder, B.~J.~Davis and R.~F.~Gundy, ``Integral inequalities for convex functions of operators on martingales'', \emph{Proceedings of the Sixth Berkeley Symposium} 2 (1972), 223--240.
+\item J.-F.~Le~Gall, \emph{Brownian Motion, Martingales, and Stochastic Calculus}, Springer, 2016, Chapters~5 and~9. The construction followed here, through the characterisation by brackets.
+\item D.~Revuz and M.~Yor, \emph{Continuous Martingales and Brownian Motion}, 3rd ed., Springer, 1999, Chapters~IV, V and VI. Time changes, the BDG inequalities, local times in full.
+\item I.~Karatzas and S.~E.~Shreve, \emph{Brownian Motion and Stochastic Calculus}, 2nd ed., Springer, 1991, Chapters~3 and~6.
+\item P.~M\"orters and Y.~Peres, \emph{Brownian Motion}, Cambridge University Press, 2010, Chapters~6 and~7. Local times, L\'evy's theorem and the zero set from the point of view of path properties.
+\end{itemize}

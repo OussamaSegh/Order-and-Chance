@@ -52,7 +52,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups | Complete (10 chapters) |
 | 9 | Structures II | Categories, commutative and homological algebra, representations | In progress (9 of 11 chapters) |
 | 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (12 chapters) |
-| 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | In progress (3 of 12 chapters) |
+| 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | In progress (4 of 12 chapters) |
 | 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | In progress (5 of 14 chapters) |
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
