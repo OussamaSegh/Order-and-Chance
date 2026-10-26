@@ -1,0 +1,430 @@
+\chapter{Generating Functions}
+
+\begin{center}\itshape
+In 1873 Francis Galton asked in the \emph{Educational Times} why so many family names of the English\\
+aristocracy had died out. If each man has $0$, $1$ or $2$ sons with probabilities $\frac14$, $\frac14$, $\frac12$,\\
+the population grows on average by a quarter per generation. Can the name still disappear?
+\end{center}
+
+A law on $\N$ is a sequence of numbers $p_0,p_1,p_2,\ldots$, and a sequence can be packed into a function:
+$G(s)=\sum_kp_ks^k$. This chapter shows that the packing is worth it. Adding independent variables multiplies
+their generating functions; a random number of random terms composes them; and the family tree of a population
+in which everybody reproduces independently, the \emph{Galton--Watson process}, is described by iterating one
+function. Galton's question then reduces to looking for the fixed points of a convex function on $[0,1]$.
+
+The chapter ends with the Catalan numbers, which count Dyck paths, plane trees and the family trees of a
+critical branching process, and with the one fact about power series that we need, proved from scratch.
+
+\section{Probability generating functions}
+
+\begin{definition}
+Let $X$ be a random variable with values in $\N$ and $p_k=P(X=k)$. Its \emph{probability generating function}
+(PGF) is
+\[
+G_X(s)=\mathbb E[s^X]=\sum_{k\ge0}p_ks^k,\qquad s\in[-1,1].
+\]
+\end{definition}
+
+The series converges absolutely on $[-1,1]$ since $\sum p_k=1$, and the two expressions agree by the transfer
+formula (Proposition~\ref{prop:transfer}). For instance, Bernoulli$(p)$ has PGF $1-p+ps$; binomial$(n,p)$ has
+$(1-p+ps)^n$ by the binomial formula; geometric$(p)$ has $\sum_{k\ge1}(1-p)^{k-1}ps^k=\frac{ps}{1-(1-p)s}$; and
+Poisson$(\lambda)$ has $\sum_ke^{-\lambda}\frac{(\lambda s)^k}{k!}=e^{\lambda(s-1)}$.
+
+We need two facts about power series. Tome~0 did not prove that a power series can be differentiated term by term,
+so we prove what we use.
+
+\begin{lemma}\label{lem:powerseries}
+Let $f(s)=\sum_{k\ge0}a_ks^k$ with $\sum_k|a_k|r^k<\infty$ for some $r>0$.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Uniqueness}: if $f(s)=0$ for all $s\in[0,\varepsilon[$ for some $\varepsilon>0$, then all $a_k=0$.
+\item \emph{Differentiation}: on $]-r,r[$, $f$ is differentiable and $f'(s)=\sum_{k\ge1}ka_ks^{k-1}$, a series that satisfies the
+same hypothesis with any $r'<r$ in place of $r$. So $f$ has derivatives of all orders on $]-r,r[$, obtained term by term.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Suppose not, and let $j$ be the smallest index with $a_j\ne0$. For $0<s<\min(\varepsilon,r)$,
+$0=f(s)/s^j=a_j+\sum_{k>j}a_ks^{k-j}$, and $\bigl|\sum_{k>j}a_ks^{k-j}\bigr|\le\frac s{r^{j+1}}\sum_{k>j}|a_k|r^k$, which tends to $0$ as
+$s\to0$. So $a_j=0$, a contradiction.
+
+(b) Fix $\rho<r$. Since $k^2(\rho/r)^k\to0$, it is bounded by some $B$, so $\sum_kk^2|a_k|\rho^k\le B\sum_k|a_k|r^k<\infty$; in particular
+the series $\sum ka_ks^{k-1}$ converges absolutely for $|s|\le\rho$. For $|s|,|t|\le\rho$, Taylor's formula with integral
+remainder (Tome~0, Chapter~6) applied to $x\mapsto x^k$, whose second derivative is bounded by $k(k-1)\rho^{k-2}$ between $s$
+and $t$, gives $|t^k-s^k-ks^{k-1}(t-s)|\le\frac{k(k-1)}2\rho^{k-2}|t-s|^2$. Summing,
+\[
+\begin{aligned}&\Bigl|f(t)-f(s)-(t-s)\sum_kka_ks^{k-1}\Bigr|\eqbr\le\frac{|t-s|^2}{2\rho^2}\sum_kk^2|a_k|\rho^k,\end{aligned}
+\]
+which is $o(|t-s|)$. This is the derivative formula at every $s$ with $|s|<\rho$, and $\rho<r$ is arbitrary.
+\end{proof}
+
+\begin{proposition}\label{prop:pgf}
+Let $X$ take values in $\N$, with PGF $G$.
+\begin{enumerate}[label=(\alph*)]
+\item $G$ determines the law of $X$: $p_k=G^{(k)}(0)/k!$.
+\item $G$ is continuous, non-decreasing and convex on $[0,1]$, with $G(1)=1$.
+\item $\mathbb E[X]=\lim_{s\to1^-}G'(s)$ and $\mathbb E[X(X-1)]=\lim_{s\to1^-}G''(s)$, in $[0,+\infty]$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) By Lemma~\ref{lem:powerseries}(b) with $r=1$, $G^{(k)}(0)=k!\,p_k$.
+
+(b) On $[0,1[$, $G'=\sum kp_ks^{k-1}\ge0$ and $G''=\sum k(k-1)p_ks^{k-2}\ge0$. At $s=1$: for $0\le s\le1$ and any $K$,
+$|G(1)-G(s)|\le\sum_{k\le K}p_k(1-s^k)+\sum_{k>K}p_k$; the first sum tends to $0$ as $s\to1$ and the second is small for
+$K$ large, so $G(s)\to G(1)=1$. Monotonicity and convexity extend to $[0,1]$ by continuity.
+
+(c) Let $m=\sum_kkp_k\in[0,\infty]$. For $s<1$, $G'(s)\le m$. For each $K$, $G'(s)\ge\sum_{k\le K}kp_ks^{k-1}\to\sum_{k\le K}kp_k$ as $s\to1$,
+so $\liminf_{s\to1}G'(s)\ge\sum_{k\le K}kp_k$ for every $K$, hence $\ge m$. Since $G'$ is non-decreasing, its limit at $1$ exists and
+equals $m$. The same argument applies to $G''$ and $\sum k(k-1)p_k$.
+\end{proof}
+
+\section{Sums and random sums}
+
+\begin{proposition}\label{prop:pgfsum}
+\begin{enumerate}[label=(\alph*)]
+\item If $X$ and $Y$ are independent with values in $\N$, then $G_{X+Y}=G_XG_Y$.
+\item \emph{Random sums}: let $X_1,X_2,\ldots$ be independent with the same law, of PGF $G_X$, and $N$ be independent of
+them, with values in $\N$ and PGF $G_N$. Then $S_N=X_1+\dots+X_N$ (with $S_0=0$) has PGF $G_N\circ G_X$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) For $s\in[-1,1]$, $s^X$ and $s^Y$ are bounded and independent (Proposition~\ref{prop:indepfun}), so
+$\mathbb E[s^{X+Y}]=\mathbb E[s^X]\mathbb E[s^Y]$ by Theorem~\ref{thm:linearity}(c).
+
+(b) By (a) and induction, $S_n=X_1+\dots+X_n$ has PGF $G_X^n$. By total probability over the values of $N$, and
+because $S_n$ is a function of $X_1,\dots,X_n$, independent of $N$,
+\[
+\begin{aligned}P(S_N=k)&=\sum_nP(N=n,S_n=k)\eqbr=\sum_nP(N=n)P(S_n=k).\end{aligned}
+\]
+Multiply by $s^k$ with $0\le s\le1$ and sum over $k$; exchanging the sums of non-negative terms,
+$G_{S_N}(s)=\sum_nP(N=n)G_X(s)^n=G_N(G_X(s))$. Two PGFs that agree on $[0,1]$ agree on $[-1,1]$ by
+Proposition~\ref{prop:pgf}(a).
+\end{proof}
+
+\begin{corollary}\label{cor:wald}
+If $X_1$ and $X_2$ are independent Poisson of parameters $\lambda,\mu$, then $X_1+X_2$ is Poisson$(\lambda+\mu)$. In the situation of
+Proposition~\ref{prop:pgfsum}(b), \emph{Wald's identity} holds: $\mathbb E[S_N]=\mathbb E[N]\,\mathbb E[X_1]$.
+\end{corollary}
+\begin{proof}
+$e^{\lambda(s-1)}e^{\mu(s-1)}=e^{(\lambda+\mu)(s-1)}$, and a PGF determines the law. For Wald, differentiate
+$G_N(G_X(s))$ for $s<1$: $G_N'(G_X(s))G_X'(s)$, and let $s\to1$, using Proposition~\ref{prop:pgf}(c) and $G_X(s)\to1^-$ (if
+$G_X(s)=1$ for some $s<1$, then $X=0$ almost surely and both sides vanish).
+\end{proof}
+
+\section{Galton--Watson processes}
+
+\begin{definition}
+Let $(\xi_{n,i})_{n\ge0,i\ge1}$ be independent random variables with the same law $(p_k)_{k\ge0}$ on $\N$, the
+\emph{offspring law}, with PGF $G$ and mean $m=\sum kp_k$. The \emph{Galton--Watson process} is $Z_0=1$ and
+$Z_{n+1}=\sum_{i=1}^{Z_n}\xi_{n,i}$: the $i$-th individual of generation $n$ has $\xi_{n,i}$ children. The event
+$\{Z_n=0\text{ for some }n\}$ is \emph{extinction}.
+\end{definition}
+
+(The existence of infinitely many independent offspring variables is admitted, as in Chapter~1; every event
+below involves finitely many of them.)
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-tree}
+\caption{Seven generations of a Galton--Watson tree with offspring law $(\frac14,\frac14,\frac12)$ on $\{0,1,2\}$. Orange
+individuals have no children. This tree survives, but each run of this process dies out with probability $\frac12$.}
+\label{fig:gwtree}
+\end{figure}
+
+\begin{proposition}\label{prop:gwgen}
+$Z_n$ has PGF $G_n=G\circ G\circ\dots\circ G$ ($n$ times), and $\mathbb E[Z_n]=m^n$ when $m<\infty$.
+\end{proposition}
+\begin{proof}
+$Z_{n+1}$ is a random sum of the independent variables $\xi_{n,1},\xi_{n,2},\ldots$, with a random number of terms
+$Z_n$ that is a function of the $\xi_{j,i}$ with $j<n$, hence independent of them. Proposition~\ref{prop:pgfsum}(b) gives
+$G_{n+1}=G_n\circ G$, and by induction $G_n=G^{\circ n}$. Wald's identity gives $\mathbb E[Z_{n+1}]=m\,\mathbb E[Z_n]$.
+\end{proof}
+
+So the mean population grows geometrically when $m>1$. That does not prevent extinction: with probability $p_0$ the
+first individual has no child at all.
+
+\begin{think}
+Let $q_n=P(Z_n=0)$. Express $q_{n+1}$ in terms of $q_n$ and $G$, then guess the limit of $q_n$ from a picture of
+the graph of $G$ and the diagonal. What decides whether the graph crosses the diagonal before $s=1$?
+\end{think}
+
+\begin{theorem}[extinction]\label{thm:extinction}
+The probability of extinction $q$ is the smallest solution of $G(s)=s$ in $[0,1]$. If $p_1<1$, then $q=1$ if
+$m\le1$, and $q<1$ if $m>1$.
+\end{theorem}
+\begin{proof}
+The events $\{Z_n=0\}$ increase with $n$ (an extinct population stays extinct), and their union is extinction, so
+$q=\lim q_n$ with $q_n=P(Z_n=0)=G_n(0)$ by continuity (Proposition~\ref{prop:rules}(e)). Then
+$q_{n+1}=G(G_n(0))=G(q_n)$, and letting $n\to\infty$ with $G$ continuous, $q=G(q)$. If $r\in[0,1]$ is any solution of
+$G(r)=r$, then $q_0=0\le r$, and if $q_n\le r$ then $q_{n+1}=G(q_n)\le G(r)=r$ because $G$ is non-decreasing. So all
+$q_n\le r$, and $q\le r$: $q$ is the smallest fixed point.
+
+Let $f(s)=G(s)-s$ on $[0,1]$, so $f(1)=0$ and $f(0)=p_0\ge0$. If $p_0+p_1=1$, $G(s)=p_0+p_1s$ and $m=p_1<1$; then $f(s)=p_0(1-s)>0$ for
+$s<1$ (as $p_0=1-p_1>0$), and $q=1$. Otherwise some $p_k>0$ with $k\ge2$, so $G''(s)>0$ on $]0,1[$ and $f'$ is increasing
+there, with $f'(s)\to m-1$ as $s\to1$ (Proposition~\ref{prop:pgf}(c)).
+
+If $m\le1$, then $f'(s)<m-1\le0$ on $]0,1[$, so $f$ is decreasing on $[0,1]$ and $f(s)>f(1)=0$ for $s<1$: the only fixed point
+is $1$, and $q=1$. If $m>1$ (possibly $m=\infty$), then $f'(s)>0$ for $s$ close to $1$, so $f(s)<f(1)=0$ there; since $f(0)\ge0$,
+the intermediate value theorem gives a fixed point in $[0,1[$, and $q<1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-cobweb}
+\caption{The iteration $q_{n+1}=G(q_n)$ from $q_0=0$ climbs the staircase between the graph of $G$ and the diagonal.
+Left: offspring law $(\frac12,\frac14,\frac14)$, mean $\frac34$, and the staircase goes to $1$. Right: $(\frac14,\frac14,\frac12)$, mean $\frac54$,
+and it stops at the first crossing $q=\frac12$.}
+\label{fig:cobweb}
+\end{figure}
+
+For Galton's question, $G(s)=\frac14+\frac14s+\frac12s^2$, and $G(s)=s$ becomes $2s^2-3s+1=0$, with roots $\frac12$ and $1$: despite
+an average growth of $25\%$ per generation, the name dies out with probability $\frac12$ (Figure~\ref{fig:cobweb}). In the
+\emph{critical} case $m=1$ extinction is certain even though the mean population stays equal to $1$: rare runs
+grow large and compensate the many that die. In 1931, Alfred Lotka fitted the law
+$p_0=0.4825$, $p_k=0.2126\times0.5893^{k-1}$ ($k\ge1$) to American census data on sons; its mean is about $1.26$ and the
+extinction probability of a male line is about $0.82$ (Exercise~\ref{ex:lotka}).
+
+\begin{remark}
+On survival, the population does not linger: Chapter~10 shows that $Z_n/m^n$ converges, and that for $m>1$ and
+$\mathbb E[\xi\ln\xi]<\infty$ its limit is positive exactly on survival (the Kesten--Stigum theorem). So a surviving population grows
+like $m^n$, as the naive mean suggests.
+\end{remark}
+
+\section{Catalan numbers, paths and trees}
+
+The Catalan numbers $C_n=\frac1{n+1}\binom{2n}n$ count the Dyck paths of length $2n$ (Exercise~\ref{ex:catalan}). Generating
+functions give them a second life.
+
+\begin{proposition}\label{prop:catalanrec}
+$C_0=1$ and $C_{n+1}=\sum_{k=0}^nC_kC_{n-k}$. Consequently $C(x)=\sum_nC_nx^n$ satisfies $C(x)=1+xC(x)^2$ for
+$|x|\le\frac14$, and $C(\frac14)=2$.
+\end{proposition}
+\begin{proof}
+Decompose a Dyck path of length $2n+2$ at its first return to $0$, at time $2k+2$: it is an up-step, a Dyck path of length
+$2k$ lifted by one, a down-step, then a Dyck path of length $2(n-k)$. This is a bijection with pairs of Dyck paths of
+lengths $2k$ and $2(n-k)$, which gives the recursion. By Stirling's formula (Tome~0, Theorem~5.6),
+$C_n\sim\frac{4^n}{\sqrt\pi n^{3/2}}$, so $\sum C_n4^{-n}<\infty$ and $C$ converges absolutely for $|x|\le\frac14$. The recursion says that the
+coefficients of $xC(x)^2$ (computed by the Cauchy product of absolutely convergent series, which is a sum by packets)
+are those of $C(x)-1$. At $x=\frac14$, $c=C(\frac14)$ satisfies $c^2-4c+4=0$, so $c=2$.
+\end{proof}
+
+Solving the quadratic gives $C(x)=\frac{1-\sqrt{1-4x}}{2x}$, the sign being fixed by $C(0)=1$; Exercise~\ref{ex:binseries}
+extracts $C_n$ from it again.
+
+A \emph{plane tree} is a rooted tree in which the children of each vertex are ordered from left to right. Walk around
+a plane tree with $n$ edges, starting at the root, going down the leftmost unexplored edge whenever possible and up
+otherwise, and record the depth after each step: this \emph{contour walk} crosses every edge once down and once up,
+and never goes below the root. It is a Dyck path of length $2n$ (Figure~\ref{fig:contour}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-contour}
+\caption{A plane tree with $9$ vertices and its contour walk, a Dyck path of length $16$.}
+\label{fig:contour}
+\end{figure}
+
+\begin{proposition}\label{prop:planetrees}
+The contour walk is a bijection between plane trees with $n$ edges and Dyck paths of length $2n$. So there are
+$C_n$ plane trees with $n+1$ vertices.
+\end{proposition}
+\begin{proof}
+By induction on $n$, the case $n=0$ being clear. A plane tree with $n\ge1$ edges is a root whose first child carries a
+plane tree $A$, together with the plane tree $B$ formed by the root and its other children's subtrees. Its contour walk
+is: up, the contour walk of $A$ lifted by one, down, then the contour walk of $B$. This is exactly the first-return
+decomposition of Proposition~\ref{prop:catalanrec}, and it is reversible: from a Dyck path, the first return determines the
+pair of shorter Dyck paths, hence by induction the pair of trees $(A,B)$, hence the tree.
+\end{proof}
+
+Now the link with branching. Take the offspring law $p_k=2^{-(k+1)}$, $k\ge0$ (geometric on $\N$, mean $1$, PGF $\frac1{2-s}$).
+Since $m=1$, the tree is finite with probability $1$, and it is a random plane tree (order the children of each individual).
+
+\begin{theorem}\label{thm:criticalgw}
+For the Galton--Watson process with offspring law $p_k=2^{-(k+1)}$, every plane tree with $n$ vertices has probability
+$2^{-(2n-1)}$ of being the family tree. Hence the total progeny $T$ satisfies $P(T=n)=C_{n-1}\,2^{-(2n-1)}$.
+\end{theorem}
+\begin{proof}
+The family tree equals a given plane tree $t$ iff every vertex $v$ of $t$ has exactly $k_v$ children, its number of
+children in $t$; by independence this has probability $\prod_v2^{-(k_v+1)}=2^{-\sum_v(k_v+1)}$. A tree with $n$ vertices has
+$n-1$ edges, each counted once as a child, so $\sum_vk_v=n-1$ and the exponent is $2n-1$. Summing over the $C_{n-1}$ plane trees
+with $n$ vertices gives the law of $T$.
+\end{proof}
+
+Since extinction is certain, these probabilities add up to $1$, which is the identity $\frac12C(\frac14)=1$ again. And since
+\[
+P(T=n)\sim\frac1{2\sqrt\pi}\,n^{-3/2},
+\]
+the mean total progeny is infinite: a critical population dies out surely, but after a
+total number of individuals with infinite mean.
+
+\begin{beauty}
+One quadratic equation, $C=1+xC^2$, describes Dyck paths, plane trees, the triangulations of a polygon, the ways to
+bracket a product, the stack-sortable permutations and the family trees of a critical population, and Stanley's
+book lists more than two hundred families counted by the same numbers. Generating functions see the common
+structure that the pictures hide: an object is either empty, or a root with two smaller objects of the same kind.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:thinning}
+\emph{Thinning.} A Poisson$(\lambda)$ number of eggs are laid, and each hatches independently with probability $p$. Using
+Proposition~\ref{prop:pgfsum}(b), show that the number of hatched eggs is Poisson$(\lambda p)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:golden}
+Each individual has $0$ or $3$ children with probability $\frac12$ each. Show that the extinction probability is
+$\frac{\sqrt5-1}2=\frac1\varphi$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lotka}
+For Lotka's offspring law $p_0=0.4825$, $p_k=0.2126\times0.5893^{k-1}$ ($k\ge1$), compute $G$ in closed form and find the
+extinction probability. (The published numbers are rounded, so $\sum p_k=1.00015$; ignore this.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:randomsumvar}
+In the situation of Proposition~\ref{prop:pgfsum}(b), assume $\mathbb E[N^2]$ and $\mathbb E[X^2]$ finite. Show that
+$\operatorname{Var}S_N=\mathbb E[N]\operatorname{Var}X+\operatorname{Var}N\,(\mathbb EX)^2$, and deduce $\operatorname{Var}Z_n$ for a Galton--Watson process with $m\ne1$ and offspring
+variance $\sigma^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:progeny}
+Let $T=\sum_{n\ge0}Z_n$ be the total progeny of a Galton--Watson process with $m<1$. Show that $\mathbb E[T]=\frac1{1-m}$, and that
+its PGF $H$ satisfies $H(s)=s\,G(H(s))$ for $s\in[0,1]$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:firstpassage}
+A walk starts at $0$ and moves $+1$ with probability $p$ and $-1$ with probability $q=1-p$, independently. Let $\tau$ be the
+first time it reaches $1$ ($\tau=\infty$ if never). Show that $F(s)=\mathbb E[s^\tau\mathbf 1_{\tau<\infty}]$ satisfies $F(s)=ps+qsF(s)^2$ for
+$0\le s<1$, deduce $F$, and show that $P(\tau<\infty)=\min(1,\frac pq)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:binseries}
+(a) For $|x|<\frac14$, let $g(x)=\sum_{n\ge0}\binom{1/2}n(-4x)^n$, where $\binom{1/2}n=\frac{\frac12(\frac12-1)\cdots(\frac12-n+1)}{n!}$. Show that
+$(1-4x)g'(x)=-2g(x)$ and deduce $g(x)=\sqrt{1-4x}$. (b) Deduce from $C(x)=\frac{1-\sqrt{1-4x}}{2x}$ that $C_n=\frac1{n+1}\binom{2n}n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:poissongw}
+Let the offspring law be Poisson$(c)$ with $c>1$, and $\rho=1-q$ the survival probability. (a) Show that $\rho$ is the unique
+solution in $]0,1[$ of $1-\rho=e^{-c\rho}$, and compute it for $c=2$. (b) Show that $\rho\sim2(c-1)$ as $c\to1^+$. (Chapter~12 meets this
+number again as the size of the giant component of a random graph.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:thinning}
+The PGF of Bernoulli$(p)$ is $1-p+ps$; compose.
+\end{hint}
+\begin{hint}{ex:golden}
+$1$ is always a root of $G(s)-s$; factor it out.
+\end{hint}
+\begin{hint}{ex:lotka}
+$G(s)=p_0+\frac{as}{1-rs}$; the fixed-point equation is quadratic.
+\end{hint}
+\begin{hint}{ex:randomsumvar}
+Differentiate $G_N\circ G_X$ twice and use $\mathbb E[X(X-1)]=G''(1^-)$.
+\end{hint}
+\begin{hint}{ex:progeny}
+Condition on the number of children of the root: each child starts an independent copy of the whole tree.
+\end{hint}
+\begin{hint}{ex:firstpassage}
+To go from $0$ to $1$, either step up at once, or step down and then go up twice, each time like a fresh walk.
+\end{hint}
+\begin{hint}{ex:binseries}
+(a) Use Lemma~\ref{lem:powerseries}(b) and check the recursion of the coefficients; then differentiate $g(x)/\sqrt{1-4x}$.
+\end{hint}
+\begin{hint}{ex:poissongw}
+(a) $G(s)=e^{c(s-1)}$. (b) Expand $e^{-c\rho}$ to second order in $\rho$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:thinning}
+\idea A thinned population is a random sum of Bernoulli variables, so its PGF is a composition.
+\writeup The number of hatched eggs is $S_N=X_1+\dots+X_N$ with $N$ Poisson$(\lambda)$ and $X_i$ Bernoulli$(p)$, independent. Its PGF
+is $G_N(G_X(s))=e^{\lambda(1-p+ps-1)}=e^{\lambda p(s-1)}$, the PGF of Poisson$(\lambda p)$, and a PGF determines the law. (Moreover the
+hatched and unhatched counts are independent Poisson variables: see the notebook and Chapter~9.)
+\end{solution}
+
+\begin{solution}{ex:golden}
+\idea Write the fixed-point equation and remove the trivial root $s=1$.
+\writeup $G(s)=\frac12+\frac12s^3$, and $G(s)=s$ iff $s^3-2s+1=0$, i.e.\ $(s-1)(s^2+s-1)=0$. The roots of $s^2+s-1$ are $\frac{-1\pm\sqrt5}2$,
+and the one in $[0,1]$ is $\frac{\sqrt5-1}2=\frac1\varphi\approx0.618$. Since $m=\frac32>1$, Theorem~\ref{thm:extinction} says it is the extinction
+probability.
+\end{solution}
+
+\begin{solution}{ex:lotka}
+\idea The geometric tail sums to a rational function, so the fixed-point equation is a quadratic.
+\writeup With $a=0.2126$ and $r=0.5893$, $G(s)=p_0+\sum_{k\ge1}ar^{k-1}s^k=p_0+\frac{as}{1-rs}$. Then $G(s)=s$ becomes
+$(p_0-s)(1-rs)+as=0$, i.e.\ $rs^2-(1+rp_0-a)s+p_0=0$. Its roots are about $0.8193$ and $0.9994$ (the latter is $1$ up to the rounding of
+the data), so $q\approx0.82$: more than four male lines out of five eventually die out, although $m=\frac a{(1-r)^2}\approx1.26$.
+\end{solution}
+
+\begin{solution}{ex:randomsumvar}
+\idea Variances come from second derivatives of PGFs at $1$.
+\writeup Write $H=G_N\circ G_X$. For $s<1$, $H''=G_N''(G_X)G_X'^2+G_N'(G_X)G_X''$. Letting $s\to1$ (Proposition~\ref{prop:pgf}(c)),
+$\mathbb E[S_N(S_N-1)]=\mathbb E[N(N-1)]\mu^2+\mathbb E[N]\,\mathbb E[X(X-1)]$ with $\mu=\mathbb EX$. Adding $\mathbb E[S_N]=\mathbb E[N]\mu$ and subtracting $(\mathbb E[N]\mu)^2$,
+\[
+\begin{aligned}\operatorname{Var}S_N&=\mu^2\bigl(\mathbb E[N^2]-\mathbb E[N]^2\bigr)\eqbr+\mathbb E[N]\bigl(\mathbb E[X^2]-\mu^2\bigr)\\&=\mu^2\operatorname{Var}N+\mathbb E[N]\operatorname{Var}X.\end{aligned}
+\]
+For Galton--Watson, $v_{n+1}=m^2v_n+m^n\sigma^2$ with $v_0=0$. Dividing by $m^{2(n+1)}$, $\frac{v_{n+1}}{m^{2n+2}}=\frac{v_n}{m^{2n}}+\frac{\sigma^2}{m^{n+2}}$, so
+$v_n=\sigma^2m^{2n-2}\sum_{j=0}^{n-1}m^{-j}=\sigma^2m^{n-1}\frac{m^n-1}{m-1}$.
+\end{solution}
+
+\begin{solution}{ex:progeny}
+\idea The tree below each child of the root is a copy of the whole tree, independent of the others.
+\writeup $\mathbb E[T]=\sum_n\mathbb E[Z_n]=\sum_nm^n=\frac1{1-m}$ (Proposition~\ref{prop:gwgen} and linearity for non-negative terms). For the PGF,
+$T=1+T_1+\dots+T_{\xi}$, where $\xi=\xi_{0,1}$ is the number of children of the root and $T_i$ is the total progeny of the $i$-th
+child. The $T_i$ are independent copies of $T$, independent of $\xi$: the subtree of child $i$ is built from offspring
+variables that no other subtree uses. Here the variables $\xi_{n,i}$ are re-indexed along the tree, which does not change
+their joint law; $T$ is finite almost surely since $q=1$. By Proposition~\ref{prop:pgfsum}(b), $\mathbb E[s^{T}]=s\,G(H(s))$.
+\end{solution}
+
+\begin{solution}{ex:firstpassage}
+\idea First-step analysis: after one step down, reaching $1$ means reaching $0$ and then $1$, two independent copies of
+the original problem.
+\writeup With probability $p$ the first step reaches $1$: $\tau=1$. With probability $q$ it goes to $-1$; then $\tau=1+\tau'+\tau''$, where $\tau'$
+is the time to climb from $-1$ to $0$ and $\tau''$ from $0$ to $1$. By the independence of the steps, $\tau'$ and $\tau''$ are independent
+copies of $\tau$ (each depends on its own block of steps, and the walk is the same from any starting point). So, for
+$0\le s<1$, $F(s)=ps+qsF(s)^2$. Solving, $F(s)=\frac{1-\sqrt{1-4pqs^2}}{2qs}$, the root that stays bounded as $s\to0$ (the other one
+tends to $+\infty$). Letting $s\to1$, $P(\tau<\infty)=F(1^-)=\frac{1-\sqrt{1-4pq}}{2q}=\frac{1-|p-q|}{2q}$, since
+$1-4pq=(p+q)^2-4pq=(p-q)^2$. If $p\ge q$ this is $\frac{2q}{2q}=1$; if $p<q$ it is $\frac{2p}{2q}=\frac pq$.
+\end{solution}
+
+\begin{solution}{ex:binseries}
+\idea A power series is pinned down by a first-order linear differential equation, and the square root solves the
+same one.
+\writeup (a) Let $b_n=\binom{1/2}n(-4)^n$. Then $\frac{b_{n+1}}{b_n}=\frac{(\frac12-n)(-4)}{n+1}=\frac{4n-2}{n+1}$, so $|b_n|\le4^n$ and $g$ converges for $|x|<\frac14$.
+By Lemma~\ref{lem:powerseries}(b), $(1-4x)g'(x)+2g(x)=\sum_n\bigl((n+1)b_{n+1}-4nb_n+2b_n\bigr)x^n=0$, since $(n+1)b_{n+1}=(4n-2)b_n$. Then
+$h(x)=g(x)(1-4x)^{-1/2}$ has $h'=(1-4x)^{-3/2}\bigl((1-4x)g'+2g\bigr)=0$, so $h=h(0)=1$.
+(b) $1-\sqrt{1-4x}=-\sum_{n\ge1}b_nx^n$, so by uniqueness of coefficients $C_n=-\frac{b_{n+1}}2$. Now
+$-b_{n+1}=-\binom{1/2}{n+1}(-4)^{n+1}=\frac{2^{n+1}\cdot1\cdot3\cdots(2n-1)}{(n+1)!}$, using $\frac12(\frac12-1)\cdots(\frac12-n)=(-1)^n\frac{1\cdot3\cdots(2n-1)}{2^{n+1}}$. Since
+$1\cdot3\cdots(2n-1)=\frac{(2n)!}{2^nn!}$, this gives $C_n=\frac{(2n)!}{(n+1)!\,n!}=\frac1{n+1}\binom{2n}n$.
+\end{solution}
+
+\begin{solution}{ex:poissongw}
+\idea The survival probability is the non-trivial crossing of $e^{c(s-1)}$ with the diagonal; near criticality the crossing is
+close to $1$ and a second-order expansion finds it.
+\writeup (a) $G(s)=\sum e^{-c}\frac{c^ks^k}{k!}=e^{c(s-1)}$ and $m=c>1$, so $q<1$ is the smallest fixed point, and by the proof of
+Theorem~\ref{thm:extinction} it is the only one in $[0,1[$ ($f=G-\mathrm{id}$ is strictly convex, so it has at most two zeros). With $\rho=1-q$:
+$1-\rho=e^{-c\rho}$. For $c=2$, iterating $\rho\mapsto1-e^{-2\rho}$ from $\rho=1$ gives $\rho\approx0.7968$.
+(b) Let $\varphi(\rho)=1-\rho-e^{-c\rho}$. Since $e^{-u}=1-u+\frac{u^2}2-\frac{u^3}6e^{-\theta u}$ for some $\theta\in]0,1[$, $\varphi(\rho)=(c-1)\rho-\frac{c^2\rho^2}2+O(\rho^3)$ with a
+uniform constant for $c\le2$. As $c\to1^+$, $\rho\to0$ (otherwise along a subsequence $\rho\to\rho_0>0$ with $1-\rho_0=e^{-\rho_0}$, impossible
+since $e^{-u}>1-u$ for $u>0$). Dividing $\varphi(\rho)=0$ by $\rho$, $(c-1)=\frac{c^2\rho}2+O(\rho^2)$, so $\rho\sim\frac{2(c-1)}{c^2}\sim2(c-1)$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~W.~Watson and F.~Galton, \emph{On the probability of the extinction of families}, Journal of the
+Anthropological Institute 4 (1875), 138--144. The original paper, whose conclusion that every family dies out was wrong
+for $m>1$; the correct statement is due to J.~F.~Steffensen (1930).
+\item A.~J.~Lotka, \emph{The extinction of families}, Journal of the Washington Academy of Sciences 21 (1931),
+377--380 and 453--459.
+\item K.~B.~Athreya and P.~E.~Ney, \emph{Branching Processes}, Springer, 1972. The standard reference, including the
+Kesten--Stigum theorem.
+\item H.~S.~Wilf, \emph{generatingfunctionology}, 3rd ed., A K Peters, 2006 (free online). Generating functions as a
+way of life.
+\item R.~P.~Stanley, \emph{Catalan Numbers}, Cambridge University Press, 2015. Two hundred and fourteen
+interpretations.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968,
+Chapters~XI--XII. Generating functions, random sums and branching.
+\item D.~Aldous, \emph{The continuum random tree I}, Annals of Probability 19 (1991), 1--28. Large critical
+Galton--Watson trees, seen from far away, converge to a random fractal tree.
+\end{itemize}
