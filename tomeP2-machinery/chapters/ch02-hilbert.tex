@@ -1,0 +1,1201 @@
+\chapter{Hilbert Spaces at Work}
+
+\begin{center}\itshape
+The creation of the theory of almost periodic functions of a real variable was a performance of extraordinary power.\\
+\upshape --- E.~C.~Titchmarsh, obituary of Harald Bohr, \emph{Journal of the London Mathematical Society} (1953)
+\end{center}
+
+In the summer of 1908 Denmark won the silver medal for football at the Olympic Games in London. One of its players, Harald Bohr, was
+a mathematics student in Copenhagen, and his biographers like to report that when he defended his doctoral dissertation, more
+football fans than mathematicians wanted a seat. His subject was Dirichlet series, and in 1911 he asked a question that sounds
+idle: fix $\sigma>1$; which values does $\zeta(\sigma+it)$ take as $t$ runs along the line? The series $\sum n^{-\sigma-it}$ converges
+absolutely there, so nothing dramatic can happen, and yet the answer is subtle. Bohr saw that the Euler product turns it into
+geometry. Since $\zeta(\sigma+it)=\prod_p(1-p^{-\sigma}p^{-it})^{-1}$, everything depends on the points $p^{-it}$ on the unit circle,
+and because the numbers $\log p$ are linearly independent over $\Q$ (that is unique factorisation), Kronecker's theorem lets these
+points wander independently of one another. The values of $\zeta$ on the line are then, up to closure, the values of an infinite
+product with \emph{independent} phases. Two years later Bohr went further and treated a Dirichlet series as a power series in
+infinitely many variables, one for each prime; in the 1920s he built from the same ideas his theory of almost periodic functions,
+which Titchmarsh praised in the words above.
+
+Half a century later the question returned in a sharper form. For $\sigma>1$, is $\operatorname{Re}\zeta(\sigma+it)$ always positive?
+For $\sigma\ge2$ it is, trivially, since $\zeta(\sigma+it)$ is within $\zeta(\sigma)-1<1$ of $1$. In 1983 Jan van de Lune found the
+exact threshold: $\operatorname{Re}\zeta(\sigma+it)>0$ for every $t$ exactly when $\sigma\ge\sigma_0=1.19234\ldots$, the root of
+$\sum_p\arcsin(p^{-\sigma})=\frac\pi2$, a series over the primes. Problem~\ref{pb:vandelune} proves it.
+
+This chapter puts the geometry of Hilbert space to work. The tools are those of Tome~7, Chapter~2 (orthogonality, projections,
+Riesz's representation, kernels) and of Tome~7, Chapter~5 (Plancherel), with measure theory from Tome~6. The first section is about
+vectors that are \emph{almost} orthogonal, and what Bessel's inequality becomes for them: inequalities of Selberg and Halász,
+Ingham's inequality for non-harmonic Fourier series, and a mean value theorem for Dirichlet polynomials. The second studies Hilbert
+spaces in which point evaluation is continuous, and the extremal problems they solve at once. The third puts arithmetic into
+$L^2$: Franel's integral, Ramanujan's expansion of $\frac{\sigma(n)}n$, and a famous criterion for the Riemann hypothesis. The fourth
+is Bohr's, and the last is about Hilbert spaces of random variables.
+
+\begin{think}
+Take $N$ unit vectors in the plane. How small can the largest of the numbers $|\langle u_i,u_j\rangle|$, $i\ne j$, be? With $N=3$
+you can reach $\frac12$; can $N=4$ do better than $\frac1{\sqrt2}$? And in $\R^3$, how many lines through the origin can make equal
+angles with one another?
+\end{think}
+
+Throughout, $H$ is a complex Hilbert space with inner product $\langle\cdot,\cdot\rangle$, linear in the first variable. $e(t)=e^{2\pi it}$,
+$\|t\|$ is the distance from $t$ to the nearest integer, $B(x)=\{x\}-\frac12$ is the sawtooth, and $s=\sigma+it$ is a complex variable.
+For an arithmetic function $f$, the mean value is $M(f)=\lim_{N\to\infty}\frac1N\sum_{n\le N}f(n)$ when the limit exists. We use the
+elementary bound
+\begin{equation}\label{eq:dirichletkernel}
+\Bigl|\sum_{n=1}^Ne(n\theta)\Bigr|=\Bigl|\frac{\sin\pi N\theta}{\sin\pi\theta}\Bigr|\le\min\Bigl(N,\frac1{2\|\theta\|}\Bigr)\qquad(\theta\notin\Z),
+\end{equation}
+which follows from $|\sin\pi\theta|\ge2\|\theta\|$ (concavity of $\sin$ on $[0,\frac\pi2]$).
+
+\section{Almost orthogonal vectors}
+
+If $\varphi_1,\dots,\varphi_R$ are orthonormal, Bessel's inequality says $\sum_r|\langle f,\varphi_r\rangle|^2\le\|f\|^2$. In analysis and
+number theory the vectors one meets are rarely orthogonal (exponentials $e(\lambda_nt)$ with real frequencies, the functions $n^{-it}$,
+characters evaluated at a few points), but they are often \emph{nearly} so. This section measures the price of the defect.
+
+\begin{exercise}[$\star$]\label{pb:selberg}
+\emph{Selberg's inequality.} Let $\varphi_1,\dots,\varphi_R$ be non-zero vectors of $H$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for every $f\in H$,
+\[
+\sum_{r=1}^R|\langle f,\varphi_r\rangle|^2\le\|f\|^2\max_{r}\sum_{s=1}^R|\langle\varphi_r,\varphi_s\rangle|.
+\]
+\item Let $\alpha_1,\dots,\alpha_R$ be real numbers with $\|\alpha_r-\alpha_s\|\ge\delta>0$ for $r\ne s$, and $S(\alpha)=\sum_{n=1}^Na_ne(n\alpha)$.
+Deduce that $\sum_r|S(\alpha_r)|^2\le\bigl(N+\frac{1+\log R}\delta\bigr)\sum_n|a_n|^2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:welch}
+\emph{Nearly orthogonal vectors.} Let $u_1,\dots,u_R$ be unit vectors in $\C^n$, with $R>n$, and $\varepsilon=\max_{r\ne s}|\langle u_r,u_s\rangle|$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\varepsilon^2\ge\frac{R-n}{n(R-1)}$.
+\item Equivalently, if $n\varepsilon^2<1$, then $R\le\frac{n(1-\varepsilon^2)}{1-n\varepsilon^2}$.
+\item Show that both are equalities for the three unit vectors of the plane at angles $0,\frac{2\pi}3,\frac{4\pi}3$, and for six unit vectors
+along the diagonals of a regular icosahedron (the lines through opposite vertices).
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:gerzon}
+\emph{Equiangular lines.} Lines $\R u_1,\dots,\R u_R$ through the origin of $\R^n$, with $|u_i|=1$, are \emph{equiangular} if
+$|\langle u_i,u_j\rangle|=\alpha$ for all $i\ne j$, with $0\le\alpha<1$.
+\begin{enumerate}[label=(\alph*)]
+\item In the real Hilbert space of symmetric $n\times n$ matrices with $\langle A,B\rangle=\operatorname{tr}(AB)$, compute the Gram matrix of the
+matrices $P_i=u_iu_i^{\mathsf T}$.
+\item Deduce that $R\le\frac{n(n+1)}2$.
+\item Show that the bound is reached for $n=2$ and $n=3$.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-icosa}
+\caption{The six diagonals of the regular icosahedron (Problems~\ref{pb:welch} and~\ref{pb:gerzon}): any two of them make the same angle,
+$\arccos\frac1{\sqrt5}\approx63.4^\circ$. Six is the most that equiangular lines in $\R^3$ allow, and the most that Problem~\ref{pb:welch}
+allows for vectors with $|\langle u_r,u_s\rangle|\le\frac1{\sqrt5}$.}\label{fig:icosa}
+\end{figure}
+
+\begin{exercise}[$\star\star$]\label{pb:halasz}
+\emph{Few large character sums.} Let $\varphi_1,\dots,\varphi_R\in H$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for every $f\in H$,
+\[
+\Bigl(\sum_{r=1}^R|\langle f,\varphi_r\rangle|\Bigr)^2\le\|f\|^2\sum_{r,s=1}^R|\langle\varphi_r,\varphi_s\rangle|.
+\]
+\item Let $q$ be prime, $1\le N<q$, $a_1,\dots,a_N$ complex with $A=\sum_n|a_n|^2$, and let $X$ be a set of $R$ Dirichlet characters modulo $q$ such
+that $\bigl|\sum_{n\le N}a_n\chi(n)\bigr|\ge V>0$ for every $\chi\in X$. Show that
+\[
+R\le\frac{2AN}{V^2}\qquad\text{whenever}\qquad V^2\ge2A\sqrt q\,(1+\log q).
+\]
+\item Show that $\sum_\chi\bigl|\sum_{n\le N}a_n\chi(n)\bigr|^2=(q-1)A$, the sum running over all characters modulo $q$, and compare the bound on $R$ that this
+gives with (b) when $N$ is much smaller than $q$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:ingham}
+\emph{Ingham's inequality.} Let $\lambda_1<\lambda_2<\dots<\lambda_N$ be real with $\lambda_{n+1}-\lambda_n\ge\gamma>0$, and $f(t)=\sum_na_ne^{i\lambda_nt}$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $k(t)=\cos\frac{\pi t}{2T}$ for $|t|\le T$ and $k(t)=0$ otherwise. Compute $K(\lambda)=\int k(t)e^{i\lambda t}\dd t$.
+\item Show that if $T>\frac\pi\gamma$, then
+\[
+\int_{-T}^T|f(t)|^2\dd t\ge\frac{4T}\pi\Bigl(1-\frac{\pi^2}{\gamma^2T^2}\Bigr)\sum_n|a_n|^2.
+\]
+\item Show that if $T\ge\frac\pi{2\gamma}$, then $\int_{-T}^T|f|^2\le\frac{8\sqrt2\,T}\pi\bigl(1+\frac{\pi^2}{4\gamma^2T^2}\bigr)\sum_n|a_n|^2$.
+\item Let $\lambda_n=n+\delta_n$ for $n\in\Z$, with $|\delta_n|\le\frac14$, and $T>2\pi$. Show that there are constants $0<c\le C$, depending only on $T$,
+such that $c\sum|a_n|^2\le\int_{T_0-T}^{T_0+T}|f|^2\le C\sum|a_n|^2$ for every $T_0\in\R$ and every finite combination $f=\sum a_ne^{i\lambda_nt}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:mvt}
+\emph{Mean values without a logarithm.} Let $\lambda_1,\dots,\lambda_N$ be real with $|\lambda_m-\lambda_n|\ge\Delta>0$ for $m\ne n$, and $F(t)=\sum_na_ne(\lambda_nt)$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $k(t)=\Delta\bigl(\frac{\sin\pi\Delta t}{\pi\Delta t}\bigr)^2$. Show that $\int k=1$ and that $\hat k(\xi)=\int k(t)e(-\xi t)\dd t=\max\bigl(0,1-\frac{|\xi|}\Delta\bigr)$.
+\item Let $T_0\in\R$, $T,U>0$, and $w=\mathbf 1_{[T_0-U,T_0+T+U]}*k$. Show that $\int w|F|^2=(T+2U)\sum_n|a_n|^2$ and that
+$w\ge1-\frac2{\pi^2\Delta U}$ on $[T_0,T_0+T]$. Deduce that if $\pi^2\Delta U>2$,
+\[
+\int_{T_0}^{T_0+T}|F(t)|^2\dd t\le\frac{T+2U}{1-\frac2{\pi^2\Delta U}}\sum_n|a_n|^2.
+\]
+\item Let $N\ge2$ and $T\ge16N$. Show that for all complex $a_n$,
+\[
+\int_{T_0}^{T_0+T}\Bigl|\sum_{n\le N}a_nn^{-it}\Bigr|^2\dd t\le\bigl(T+5\sqrt{TN}\bigr)\sum_{n\le N}|a_n|^2.
+\]
+\item Show that the leading term $T\sum|a_n|^2$ cannot be improved, and compare (c) with Tome~13, Lemma~1.3.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-majorant}
+\caption{The weight of Problem~\ref{pb:mvt}(b) with $\Delta=1$, $T=6$, $U=2$ (blue), the indicator of $[0,T]$ (grey) and the kernel $k$ (red, dashed). The
+weight is not above $1$ everywhere on $[0,T]$, but it is above $1-\frac2{\pi^2\Delta U}\approx0.90$; in exchange, its Fourier transform vanishes outside
+$[-\Delta,\Delta]$, so every cross term $a_m\overline{a_n}$ disappears exactly.}\label{fig:majorant}
+\end{figure}
+
+\section{Spaces with a kernel}
+
+In a reproducing kernel Hilbert space, Riesz's theorem turns every point evaluation into an inner product, $f(x)=\langle f,K_x\rangle$
+(Tome~7, Chapter~2). Cauchy--Schwarz then solves an extremal problem at once: the largest value of $|f(x)|$ on the unit ball is
+$K(x,x)^{1/2}$, reached only by multiples of $K_x$. Each problem below computes a kernel and reads off what it says.
+
+\begin{exercise}[$\star$]\label{pb:christoffel}
+\emph{The Christoffel function.} Let $\Pi_n$ be the space of real polynomials of degree at most $n$ with $\langle p,q\rangle=\int_{-1}^1pq$, and $P_k$ the
+Legendre polynomials, normalised by $P_k(1)=1$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\Pi_n$ has the reproducing kernel $K_n(x,y)=\sum_{k=0}^n(k+\frac12)P_k(x)P_k(y)$.
+\item Show that $p(1)^2\le\frac{(n+1)^2}2\int_{-1}^1p^2$ for every $p\in\Pi_n$, with equality only for multiples of $K_n(\cdot,1)$.
+\item For $n=2$, write the extremal polynomial explicitly and check (b). Compute also the best constant $c$ in $p(0)^2\le c\int_{-1}^1p^2$ for $p\in\Pi_2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:bergman}
+\emph{The Bergman space.} Let $\mathbb D$ be the open unit disc and $A^2$ the space of holomorphic $f$ on $\mathbb D$ with $\|f\|^2=\int_{\mathbb D}|f|^2\dd A<\infty$,
+where $\dd A$ is area measure.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $|f(z)|^2\le\frac{\|f\|^2}{\pi(1-|z|)^2}$, and deduce that $A^2$ is a closed subspace of $L^2(\mathbb D)$ on which point evaluations are continuous.
+\item Show that if $f(z)=\sum_na_nz^n$, then $\|f\|^2=\pi\sum_n\frac{|a_n|^2}{n+1}$. Deduce that the kernel of $A^2$ is $K(z,w)=\frac1{\pi(1-z\bar w)^2}$.
+\item Show that $|f(z)|\le\frac{\|f\|}{\sqrt\pi\,(1-|z|^2)}$ and $|f'(0)|\le\sqrt{\frac2\pi}\,\|f\|$, and that both are sharp.
+\item Let $f$ be holomorphic and injective on $\mathbb D$, with $f(0)=0$ and $f'(0)=1$. Show that the area of $f(\mathbb D)$ is at least $\pi$, with equality
+only for $f(z)=z$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:fock}
+\emph{The Fock space.} Let $\mathcal F$ be the space of entire functions with $\|f\|^2=\frac1\pi\int_\C|f(z)|^2e^{-|z|^2}\dd A(z)<\infty$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that if $f(z)=\sum_na_nz^n$ is entire, then $\|f\|^2=\sum_nn!\,|a_n|^2$.
+\item Show that the kernel of $\mathcal F$ is $e^{z\bar w}$, and that $|f(z)|\le\|f\|e^{|z|^2/2}$, with equality possible at every $z$.
+\item For $a\in\C$, show that $e^{az^2}\in\mathcal F$ if and only if $|a|<\frac12$, and that then $\|e^{az^2}\|^2=(1-4|a|^2)^{-1/2}$.
+\item Show that $\langle f',g\rangle=\langle f,zg\rangle$ for polynomials $f,g$: differentiation and multiplication by $z$ are adjoint, and
+$\frac{\mathrm d}{\mathrm dz}(zf)-zf'=f$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:sobolev}
+\emph{A sharp Sobolev constant.} Let $L>0$ and $H$ be the real Hilbert space $H^1(]0,L[)$ with $\langle u,v\rangle=\int_0^L(uv+u'v')$ (Tome~7, Chapter~6);
+its elements are continuous on $[0,L]$.
+\begin{enumerate}[label=(\alph*)]
+\item For $0\le y\le L$ let $K_y(x)=\frac{\cosh(\min(x,y))\cosh(L-\max(x,y))}{\sinh L}$. Show that $K_y\in H$ and $\langle u,K_y\rangle=u(y)$ for all $u\in H$.
+\item Deduce that $\sup_{[0,L]}|u|^2\le\coth(L)\,\|u\|^2$, that the constant is the best possible, and find the extremal functions.
+\item Show that $u(\frac L2)^2\le\frac12\coth\frac L2\,\|u\|^2$, sharply. What happens as $L\to\infty$? Compare with Tome~7, Exercise~6.5.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:dirichlet}
+\emph{A Hilbert space of Dirichlet series.} Let $\mathcal H$ be the space of Dirichlet series $F(s)=\sum_{n\ge1}a_nn^{-s}$ with $\|F\|^2=\sum_n|a_n|^2<\infty$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that every $F\in\mathcal H$ converges absolutely on $\operatorname{Re}s>\frac12$, with $|F(s)|^2\le\zeta(2\sigma)\|F\|^2$, and that $\mathcal H$ is a reproducing
+kernel Hilbert space on this half-plane with kernel $K(s,w)=\zeta(s+\bar w)$.
+\item Show that the bound in (a) is sharp at every point, and that no $F\in\mathcal H$ other than $0$ vanishes on the whole half-plane.
+\item Let $a,b>\frac12$. Show that $\zeta(s+a)\zeta(s+b)\in\mathcal H$ and
+\[
+\|\zeta(s+a)\zeta(s+b)\|^2=\frac{\zeta(2a)\,\zeta(2b)\,\zeta(a+b)^2}{\zeta(2a+2b)}.
+\]
+\end{enumerate}
+\end{exercise}
+
+\section{Arithmetic in \texorpdfstring{$L^2$}{L2}}
+
+\begin{exercise}[$\star\star\star$]\label{pb:franel}
+\emph{Franel's integral.} Recall that $B(x)=\{x\}-\frac12$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for all integers $m,n\ge1$,
+\[
+\int_0^1B(mx)B(nx)\dd x=\frac{\gcd(m,n)^2}{12mn}.
+\]
+\item Deduce that the matrix $\bigl(\frac{\gcd(m,n)^2}{mn}\bigr)_{1\le m,n\le N}$ is positive definite.
+\item Show that
+\[
+\int_0^1\Bigl(\sum_{n\le N}B(nx)\Bigr)^2\dd x=\frac N4+O(\log^2N),
+\]
+three times what the diagonal terms alone would give. You may use Euler's identity $\sum_{k\ge1}\frac{H_k}{k^2}=2\zeta(3)$, where $H_k=1+\frac12+\dots+\frac1k$, after
+proving it.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:ramanujan}
+\emph{Ramanujan's expansion.} Let $c_q(n)=\sum_{1\le a\le q,\,(a,q)=1}e(\frac{an}q)$ be the Ramanujan sum, so that $c_q(n)=\sum_{d\mid(q,n)}\mu(\frac qd)d$ and
+$\frac1N\sum_{n=1}^Nc_q(n)c_r(n)=\varphi(q)\mathbf 1_{q=r}$ when $q$ and $r$ divide $N$ (Problem Book~I, Problem~2.3).
+\begin{enumerate}[label=(\alph*)]
+\item Show that for every $n\ge1$, with an absolutely convergent series,
+\[
+\frac{\sigma(n)}n=\zeta(2)\sum_{q\ge1}\frac{c_q(n)}{q^2}.
+\]
+\item Show that $M(c_qc_r)=\varphi(q)\mathbf 1_{q=r}$, and that $\frac1N\sum_{n\le N}|c_q(n)c_r(n)|\le\sigma_{1/2}(q)\,\sigma_{1/2}(r)$ for every $N$, where
+$\sigma_{1/2}(q)=\sum_{d\mid q}\sqrt d$.
+\item Deduce Parseval's identity for this expansion, and Ramanujan's theorem
+\[
+\frac1N\sum_{n\le N}\Bigl(\frac{\sigma(n)}n\Bigr)^2\longrightarrow\frac52\zeta(3).
+\]
+(The notebook finds $3.00510$ for $N=2\cdot10^6$; $\frac52\zeta(3)=3.00514\ldots$)
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:zetamellin}
+\emph{Plancherel on the critical line.} For measurable $g$ on $]0,\infty[$ and $\sigma\in\R$, the \emph{Mellin transform} is $\mathcal Mg(s)=\int_0^\infty g(u)u^{s-1}\dd u$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that if $\int_0^\infty|g(u)|u^{\sigma-1}\dd u<\infty$ and $\int_0^\infty|g(u)|^2u^{2\sigma-1}\dd u<\infty$, then
+$\frac1{2\pi}\int_{-\infty}^\infty|\mathcal Mg(\sigma+it)|^2\dd t=\int_0^\infty|g(u)|^2u^{2\sigma-1}\dd u$.
+\item Show that $\frac{\zeta(s)}s=-\int_0^\infty\bigl\{\frac1u\bigr\}u^{s-1}\dd u$ for $0<\operatorname{Re}s<1$.
+\item Deduce that
+\[
+\frac1{2\pi}\int_{-\infty}^\infty\frac{|\zeta(\frac12+it)|^2}{\frac14+t^2}\dd t=\log(2\pi)-\gamma=1.2606\ldots
+\]
+\item Deduce the (weak but explicit) bound $\int_{-T}^T|\zeta(\frac12+it)|^2\dd t\le2\pi(\log2\pi-\gamma)(T^2+\frac14)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:nyman}
+\emph{The easy half of the Nyman--Beurling criterion.} For $0<\theta\le1$ let $\rho_\theta(x)=\{\frac\theta x\}-\theta\{\frac1x\}$ on $]0,1[$, and let $\mathcal N$ be the closed
+linear span of the $\rho_\theta$ in $L^2(]0,1[)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\rho_\theta$ vanishes for $x>1$ if extended by the same formula, and that for $0<\operatorname{Re}s<1$,
+$\int_0^1\rho_\theta(x)x^{s-1}\dd x=-\frac{\zeta(s)}s(\theta^s-\theta)$.
+\item Let $\zeta(s_0)=0$ with $\frac12<\sigma_0=\operatorname{Re}s_0<1$. Show that $\|\mathbf 1-f\|_2\ge\frac{\sqrt{2\sigma_0-1}}{|s_0|}$ for every $f\in\mathcal N$.
+\item Deduce that if the constant function $\mathbf 1$ belongs to $\mathcal N$, then $\zeta$ has no zero in $\operatorname{Re}s>\frac12$.
+\end{enumerate}
+\end{exercise}
+
+\section{Kronecker and Bohr}
+
+In this section $\sigma>1$, and $\mathbb T=\{z\in\C:|z|=1\}$. For $z=(z_p)_p\in\mathbb T^{\mathcal P}$, indexed by the primes, put
+$Z_\sigma(z)=\prod_p(1-p^{-\sigma}z_p)^{-1}$, so that $\zeta(\sigma+it)=Z_\sigma\bigl((p^{-it})_p\bigr)$.
+
+\begin{exercise}[$\star\star$]\label{pb:bohrvalues}
+\emph{Bohr's theorem on the values of $\zeta$.}
+\begin{enumerate}[label=(\alph*)]
+\item Show that the product $Z_\sigma(z)$ converges for every $z$, that $Z_\sigma$ is continuous on the compact space $\mathbb T^{\mathcal P}$, and hence that
+$E_\sigma=Z_\sigma(\mathbb T^{\mathcal P})$ is compact.
+\item Let $p_1,\dots,p_k$ be distinct primes, $w_1,\dots,w_k\in\mathbb T$, $\varepsilon>0$ and $t_0\in\R$. Show that there is $t>t_0$ with $|p_j^{-it}-w_j|<\varepsilon$
+for all $j$.
+\item Deduce that the closure of $\{\zeta(\sigma+it):t\in\R\}$ is $E_\sigma$.
+\item Deduce that $\sup_t|\zeta(\sigma+it)|=\zeta(\sigma)$ and $\inf_t|\zeta(\sigma+it)|=\frac{\zeta(2\sigma)}{\zeta(\sigma)}$. What are these numbers for $\sigma=2$?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:almostperiodic}
+\emph{$\zeta$ is almost periodic.} A set $S\subseteq\R$ is \emph{relatively dense} if there is $L>0$ such that every interval of length $L$ meets $S$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $\alpha\in\R^k$ and $\eta>0$. Show that $\{\tau\in\R:\|\tau\alpha_j\|<\eta\text{ for }j=1,\dots,k\}$ is relatively dense. (No independence is assumed.)
+\item Let $\sigma_1>1$ and $\varepsilon>0$. Show that the set of $\tau$ with $|\zeta(s+i\tau)-\zeta(s)|<\varepsilon$ for \emph{all} $s$ with $\operatorname{Re}s\ge\sigma_1$ is relatively
+dense.
+\item Deduce that for fixed $\sigma>1$ the function $t\mapsto|\zeta(\sigma+it)|$ comes back within $\varepsilon$ of $\zeta(\sigma)$ in every long enough interval, but has no
+limit as $t\to\infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:vandelune}
+\emph{The sign of $\operatorname{Re}\zeta$.} Let $A(\sigma)=\sum_p\arcsin(p^{-\sigma})$ for $\sigma>1$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $0<r<1$. Show that as $z$ runs over $\mathbb T$, $(1-rz)^{-1}$ runs over a circle in the half-plane $\operatorname{Re}w>0$, and its argument (in
+$]-\frac\pi2,\frac\pi2[$) runs over $[-\arcsin r,\arcsin r]$.
+\item Show that $A$ is continuous and strictly decreasing, that $A(\sigma)\to\infty$ as $\sigma\to1^+$ and $A(\sigma)\to0$ as $\sigma\to\infty$. Let $\sigma_0$ be the
+root of $A(\sigma_0)=\frac\pi2$.
+\item Show that $\operatorname{Re}\zeta(\sigma+it)>0$ for all $t$ if $\sigma>\sigma_0$.
+\item Show that $\operatorname{Re}\zeta(\sigma+it)<0$ for some $t$ if $1<\sigma<\sigma_0$.
+\item The notebook finds $\sigma_0=1.19234$. Why is this number much harder to compute than $\zeta(\sigma_0)$?
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-zetavalues}
+\caption{The sets $E_\sigma$ of Problem~\ref{pb:bohrvalues} for $\sigma=1.1$ (red), $\sigma=\sigma_0=1.19234$ (orange) and $\sigma=1.5$ (blue), sampled with the primes
+$p<10^4$ (the other $z_p$ equal to $1$) in two ways: dots for independent uniform phases $z_p$, which fill the middle of each set, and curves through the points where every
+factor is turned by the same fraction of its largest angle $\arcsin p^{-\sigma}$, which reach the extreme arguments. By Bohr's theorem these are, up to closure, the values of $\zeta(\sigma+it)$. The red set
+crosses the imaginary axis (dashed); the blue one stays far from it; the orange one would touch it only with all the primes (Problem~\ref{pb:vandelune}).}\label{fig:zetavalues}
+\end{figure}
+
+\section{Hilbert spaces of chance}
+
+\begin{exercise}[$\star\star$]\label{pb:khinchinrec}
+\emph{Khinchin's recurrence theorem.} Let $T$ be a measure-preserving map of a probability space $(X,\mathcal A,\mu)$, and $A\in\mathcal A$ with $\mu(A)=a>0$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\frac1N\sum_{n<N}\mu(A\cap T^{-n}A)$ converges, and that its limit is at least $a^2$.
+\item Deduce that for every $\varepsilon>0$, the set of $n$ with $\mu(A\cap T^{-n}A)>a^2-\varepsilon$ has lower density at least $\frac\varepsilon{a-a^2+\varepsilon}$.
+\item For the rotation $Tx=x+\alpha$ of $\R/\Z$ with $\alpha$ irrational and $A=[0,a[$, $a\le\frac12$, compute $\mu(A\cap T^{-n}A)$ and the limit in (a). Give a
+system in which the limit is larger than $a^2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:norate}
+\emph{No rate in the mean ergodic theorem.} Let $a_1\ge a_2\ge\dots>0$ with $a_N\to0$. Construct a unitary operator $U$ on a Hilbert space and a vector $x$
+with $Px=0$, where $P$ is the projection on the fixed vectors of $U$, such that $\bigl\|\frac1N\sum_{n<N}U^nx\bigr\|\ge a_N$ for every $N\ge1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:wiener}
+\emph{Wiener's theorem on atoms.} Let $\mu$ be a finite Borel measure on $\R/\Z$ and $\hat\mu(n)=\int e(-nx)\dd\mu(x)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that
+\[
+\frac1{2N+1}\sum_{|n|\le N}|\hat\mu(n)|^2\longrightarrow\sum_x\mu(\{x\})^2.
+\]
+\item Deduce that the Cantor measure of Problem~\ref{pb:cantorfourier} has $\frac1{2N+1}\sum_{|n|\le N}|\hat\mu(n)|^2\to0$, although $|\hat\mu(3^m)|=0.37143\ldots$ for all $m$.
+\item Let $X$ and $X'$ be independent real random variables with the same law and characteristic function $\phi$. Show that
+$\frac1{2T}\int_{-T}^T|\phi(t)|^2\dd t\to P(X=X')$ as $T\to\infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:gebelein}
+\emph{Gebelein's inequality.} Let $\gamma$ be the standard Gaussian law on $\R$, and define the Hermite polynomials $\mathrm{He}_n$ by
+$e^{sx-s^2/2}=\sum_{n\ge0}\mathrm{He}_n(x)\frac{s^n}{n!}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\bigl(\mathrm{He}_n/\sqrt{n!}\bigr)_{n\ge0}$ is a Hilbert basis of $L^2(\gamma)$.
+\item Let $(X,Y)$ be a centred Gaussian pair with unit variances and correlation $\rho$. Show that $\mathbb E[\mathrm{He}_m(X)\mathrm{He}_n(Y)]=n!\,\rho^n\mathbf 1_{m=n}$.
+\item Deduce that for $f,g\in L^2(\gamma)$ with $\mathbb E f(X)=\mathbb E g(Y)=0$,
+\[
+\bigl|\mathbb E[f(X)g(Y)]\bigr|\le|\rho|\,\|f\|_{L^2(\gamma)}\|g\|_{L^2(\gamma)}.
+\]
+No function of $X$ is more correlated with a function of $Y$ than $X$ is with $Y$.
+\item Show that the operator $f\mapsto\mathbb E[f(Y)\mid X=\cdot\,]$ on $L^2(\gamma)$ has the eigenvalues $\rho^n$, and compute the correlation of $X^2$ and $Y^2$.
+\end{enumerate}
+\end{exercise}
+
+\section*{Hints}
+
+\begin{hint}{pb:selberg}
+Put $c_r=\langle f,\varphi_r\rangle$ and write $\sum_r|c_r|^2=\langle f,\sum_rc_r\varphi_r\rangle$. Then bound $\|\sum_rc_r\varphi_r\|^2$ with $|c_rc_s|\le\frac12(|c_r|^2+|c_s|^2)$. For (b),
+take $f=(a_n)\in\C^N$ and order the other points by their distance to $\alpha_r$.
+\end{hint}
+
+\begin{hint}{pb:welch}
+Let $G$ be the Gram matrix $(\langle u_s,u_r\rangle)$. It has rank at most $n$ and trace $R$; compare $\operatorname{tr}G^2$ with $(\operatorname{tr}G)^2$ using the
+eigenvalues. For the icosahedron, take the vertices $(0,\pm1,\pm\varphi)$ and their cyclic permutations, with $\varphi$ the golden ratio.
+\end{hint}
+
+\begin{hint}{pb:gerzon}
+$\operatorname{tr}(u_iu_i^{\mathsf T}u_ju_j^{\mathsf T})=\langle u_i,u_j\rangle^2$. A Gram matrix that is invertible means linearly independent vectors. What is the dimension of the
+space of symmetric matrices?
+\end{hint}
+
+\begin{hint}{pb:halasz}
+For (a), choose unimodular $\xi_r$ with $|\langle f,\varphi_r\rangle|=\langle f,\xi_r\varphi_r\rangle$, and apply Cauchy--Schwarz once. For (b), take $\varphi_\chi=(\overline{\chi(n)})_{n\le N}$
+and use the Pólya--Vinogradov inequality for $\chi\overline\psi$.
+\end{hint}
+
+\begin{hint}{pb:ingham}
+Since $|f|^2\ge0$ and $0\le k\le\mathbf 1_{[-T,T]}$, $\int_{-T}^T|f|^2\ge\int k|f|^2=\sum_{m,n}a_m\overline{a_n}K(\lambda_m-\lambda_n)$. Use $\sum_{j\ge1}\frac1{4j^2-1}=\frac12$. For (c), use the kernel
+on $[-2T,2T]$, which is at least $\frac1{\sqrt2}$ on $[-T,T]$.
+\end{hint}
+
+\begin{hint}{pb:mvt}
+For (a), $\hat k$ is a triangle; compute its inverse transform. For (b), $\int w|F|^2=\sum_{m,n}a_m\overline{a_n}\hat w(\lambda_n-\lambda_m)$ and $\hat w$ vanishes outside $[-\Delta,\Delta]$.
+For (c), $|\log m-\log n|\ge\frac1N$ for distinct $m,n\le N$, and take $U=\sqrt{TN}$.
+\end{hint}
+
+\begin{hint}{pb:christoffel}
+Expand $p$ in the orthogonal basis $(P_k)$. Then $p(1)=\langle p,K_n(\cdot,1)\rangle$, and Cauchy--Schwarz.
+\end{hint}
+
+\begin{hint}{pb:bergman}
+For (a), the mean value property over the disc of radius $1-|z|$ about $z$. For (b), integrate on $|z|<r$ in polar coordinates and let $r\to1$. For (d), the
+change of variables theorem gives the area as $\int_{\mathbb D}|f'|^2$.
+\end{hint}
+
+\begin{hint}{pb:fock}
+For (a), use polar coordinates; the substitution $t=r^2$ gives $\int_0^\infty r^{2n+1}e^{-r^2}\dd r=\frac{n!}2$. For (c), expand $e^{az^2}$: the squared norm is $\sum_k\binom{2k}k|a|^{2k}$. Compare $\binom{2k}k$ with $4^k$, and find a differential equation for the sum.
+\end{hint}
+
+\begin{hint}{pb:sobolev}
+$K_y$ solves $-K''+K=0$ on each side of $y$, with $K'(0)=K'(L)=0$, and its derivative jumps by $-1$ at $y$. Integrate $u'K_y'$ by parts on $[0,y]$ and $[y,L]$.
+\end{hint}
+
+\begin{hint}{pb:dirichlet}
+For (a), Cauchy--Schwarz. For (c), the coefficients are multiplicative; compute the Euler factor at $p$ with $u=p^{-a}$, $v=p^{-b}$, using
+$\sum_{k\ge0}\bigl(\frac{u^{k+1}-v^{k+1}}{u-v}\bigr)^2=\frac{1+uv}{(1-u^2)(1-v^2)(1-uv)}$.
+\end{hint}
+
+\begin{hint}{pb:franel}
+For (a), the Fourier series $B(x)=-\sum_{k\ge1}\frac{\sin2\pi kx}{\pi k}$ and Parseval. For (c), write $\gcd(m,n)^2=\sum_{d\mid m,\,d\mid n}J_2(d)$ with $J_2=\mu*\mathrm{id}^2$, so that
+the sum becomes $\sum_d\frac{J_2(d)}{d^2}H_{\lfloor N/d\rfloor}^2$. For Euler's identity, compute $\sum_{m,n\ge1}\frac1{mn(m+n)}$ in two ways.
+\end{hint}
+
+\begin{hint}{pb:ramanujan}
+For (a), insert the formula for $c_q(n)$ and sum over $q=dm$ first. For (b), $c_qc_r$ is periodic modulo $qr$. For the bound, $|c_q(n)|\le\sum_{d\mid(q,n)}d$ and
+$\gcd(d,e)\le\sqrt{de}$. For (c), dominated convergence for series.
+\end{hint}
+
+\begin{hint}{pb:zetamellin}
+For (a), put $u=e^{-x}$: the Mellin transform becomes a Fourier transform. For (b), start from $\zeta(s)=s\int_1^\infty\lfloor x\rfloor x^{-s-1}\dd x$ for $\operatorname{Re}s>1$. For (c),
+Problem Book~I, Problem~9.12.
+\end{hint}
+
+\begin{hint}{pb:nyman}
+For (a), substitute $x=\theta u$. For (b), the linear form $g\mapsto\int_0^1g(x)x^{s_0-1}\dd x$ is continuous on $L^2(]0,1[)$.
+\end{hint}
+
+\begin{hint}{pb:bohrvalues}
+For (b), the numbers $\frac{\log p_j}{2\pi}$ are linearly independent over $\Q$; choose $c>0$ such that $1$ and the $\frac{c\log p_j}{2\pi}$ are independent, and apply
+Kronecker--Weyl to $t=nc$. For (c), the tail of the product is uniformly close to $1$.
+\end{hint}
+
+\begin{hint}{pb:almostperiodic}
+For (a), cover the closure of the orbit $\{\tau\alpha\bmod\Z^k\}$ in the torus by finitely many balls of radius $\frac\eta2$ centred at orbit points $\tau_i\alpha$. For (b),
+truncate the series, and note $|n^{-i\tau}-1|\le\sum_{p^k\parallel n}k|p^{-i\tau}-1|$.
+\end{hint}
+
+\begin{hint}{pb:vandelune}
+For (a), $1-rz$ runs over the circle of centre $1$ and radius $r$. For (c), $\zeta=\exp(\log\zeta)$ with $\operatorname{Im}\log\zeta(s)=\sum_p\arg(1-p^{-s})^{-1}$. For (d), a point of
+$E_\sigma$ with argument just above $\frac\pi2$, and Problem~\ref{pb:bohrvalues}.
+\end{hint}
+
+\begin{hint}{pb:khinchinrec}
+$\mu(A\cap T^{-n}A)=\langle U^n\mathbf 1_A,\mathbf 1_A\rangle$ with $Uf=f\circ T$; von Neumann's theorem, then Cauchy--Schwarz against the constant $\mathbf 1$.
+\end{hint}
+
+\begin{hint}{pb:norate}
+Multiplication by $e(\theta)$ on $L^2(\R/\Z)$. Then $\|A_Ng\|^2=\int|D_N(\theta)|^2|g(\theta)|^2\dd\theta$ with $D_N$ the normalised Dirichlet kernel, which is at least $\frac2\pi$ for
+$|\theta|\le\frac1{2N}$. Choose $|g|^2$ with enough mass near $0$ but no atom.
+\end{hint}
+
+\begin{hint}{pb:wiener}
+Write $|\hat\mu(n)|^2$ as a double integral over $\mu\otimes\mu$ and average in $n$ first.
+\end{hint}
+
+\begin{hint}{pb:gebelein}
+For (a), compare coefficients in $\mathbb E[e^{sX-s^2/2}e^{uX-u^2/2}]=e^{su}$, and use Tome~7, Theorem~5.5 for completeness. For (b), the same with $Y$. For (c), expand $f$ and $g$.
+\end{hint}
+
+\section*{Solutions}
+
+\begin{solution}{pb:selberg}
+\idea Bessel's inequality is a statement about the coefficients $c_r$, and duality turns it into a statement about the combination $\sum c_r\varphi_r$. The norm of
+that combination is a quadratic form in the $c_r$ whose matrix is the Gram matrix, and the crudest bound for a Hermitian matrix, its largest row sum, is already good.
+
+\writeup (a) Let $c_r=\langle f,\varphi_r\rangle$ and $C=\sum_r|c_r|^2$. Then
+$C=\sum_rc_r\overline{\langle f,\varphi_r\rangle}=\sum_rc_r\langle\varphi_r,f\rangle=\langle g,f\rangle$ with $g=\sum_rc_r\varphi_r$, so $C\le\|f\|\,\|g\|$ by Cauchy--Schwarz. Now
+\[
+\|g\|^2=\sum_{r,s}c_r\overline{c_s}\langle\varphi_r,\varphi_s\rangle\le\sum_{r,s}\frac{|c_r|^2+|c_s|^2}2|\langle\varphi_r,\varphi_s\rangle|=\sum_r|c_r|^2\sum_s|\langle\varphi_r,\varphi_s\rangle|\le CM,
+\]
+where $M=\max_r\sum_s|\langle\varphi_r,\varphi_s\rangle|$, using the symmetry $|\langle\varphi_r,\varphi_s\rangle|=|\langle\varphi_s,\varphi_r\rangle|$. Hence $C\le\|f\|\sqrt{CM}$, that is
+$C\le\|f\|^2M$ (trivially if $C=0$).
+
+(b) In $H=\C^N$ take $f=(a_n)$ and $\varphi_r=(e(-n\alpha_r))_{n\le N}$, so that $\langle f,\varphi_r\rangle=S(\alpha_r)$ and $\|f\|^2=\sum|a_n|^2$. For $r\ne s$,
+$|\langle\varphi_r,\varphi_s\rangle|=|\sum_ne(n(\alpha_s-\alpha_r))|\le\frac1{2\|\alpha_r-\alpha_s\|}$ by \eqref{eq:dirichletkernel}, and $\langle\varphi_r,\varphi_r\rangle=N$. Fix $r$. On each side of
+$\alpha_r$ on the circle $\R/\Z$, the $k$-th nearest other point is at distance at least $k\delta$, so
+\[
+\sum_s|\langle\varphi_r,\varphi_s\rangle|\le N+2\sum_{k=1}^{R-1}\frac1{2k\delta}\le N+\frac{1+\log R}\delta.
+\]
+Part (a) gives the claim.
+
+\tools{Tome~7, Chapter~2 (Cauchy--Schwarz, Bessel's inequality); the bound \eqref{eq:dirichletkernel}.}
+\leads The inequality (a) is Selberg's; Bombieri's monograph \emph{Le grand crible dans la théorie analytique des nombres} (1974) made it known. With more care (Beurling--Selberg functions, Chapter~4) the factor
+$N+\frac{1+\log R}\delta$ in (b) becomes $N-1+\frac1\delta$, the sharp \emph{large sieve} constant of Tome~13, Chapter~4. The point of (a) is its generality: it
+applies to any family of vectors whose Gram matrix one can estimate.
+\end{solution}
+
+\begin{solution}{pb:welch}
+\idea $R$ unit vectors in an $n$-dimensional space cannot all be nearly orthogonal when $R>n$: the Gram matrix has trace $R$ but rank at most $n$, so its eigenvalues
+are large, and so is the sum of squares of its entries.
+
+\writeup (a) Let $G=(\langle u_s,u_r\rangle)_{r,s}$, the matrix of the map $x\mapsto(\langle x,u_r\rangle)_r$ composed with its adjoint; $G$ is Hermitian, positive semi-definite, of rank
+at most $n$. Let $\mu_1,\dots,\mu_n\ge0$ be its eigenvalues, the others being $0$. Then $\sum\mu_i=\operatorname{tr}G=R$ and
+$\sum\mu_i^2=\operatorname{tr}G^2=\sum_{r,s}|\langle u_r,u_s\rangle|^2\le R+R(R-1)\varepsilon^2$. By Cauchy--Schwarz, $R^2=(\sum_{i\le n}\mu_i)^2\le n\sum\mu_i^2$. So
+$\frac{R^2}n\le R+R(R-1)\varepsilon^2$, that is $\varepsilon^2\ge\frac{R/n-1}{R-1}=\frac{R-n}{n(R-1)}$.
+
+(b) The inequality $\frac Rn-1\le(R-1)\varepsilon^2$ reads $R(\frac1n-\varepsilon^2)\le1-\varepsilon^2$, which gives the bound when $\frac1n-\varepsilon^2>0$.
+
+(c) In the plane ($n=2$, $R=3$), the inner products are $\cos\frac{2\pi}3=-\frac12$, so $\varepsilon^2=\frac14=\frac{3-2}{2\cdot2}$. For the icosahedron, the twelve vertices
+$(0,\pm1,\pm\varphi)$, $(\pm1,\pm\varphi,0)$, $(\pm\varphi,0,\pm1)$, with $\varphi^2=\varphi+1$, come in six opposite pairs, with directions $(0,1,\pm\varphi)$, $(1,\pm\varphi,0)$,
+$(\pm\varphi,0,1)$, all of squared length $1+\varphi^2=\varphi+2$. Any two of these six vectors have inner product $\pm\varphi$ (for instance $(0,1,\varphi)\cdot(0,1,-\varphi)=1-\varphi^2=-\varphi$
+and $(0,1,\varphi)\cdot(1,\varphi,0)=\varphi$), so $\varepsilon=\frac\varphi{\varphi+2}=\frac1{\sqrt5}$ (indeed $5\varphi^2=(\varphi+2)^2$ reduces to $5\varphi+5=\varphi+1+4\varphi+4$). And
+$\frac{6-3}{3\cdot5}=\frac15$: equality.
+
+\tools{Tome~0, Chapter~7 and Tome~S1, Chapter~4 (Gram matrices, spectral theorem for Hermitian matrices).}
+\leads (a) is the \emph{Welch bound} (1974), used to design spreading sequences for radio communication whose cross-correlations are as small as possible. Equality forces all non-zero
+eigenvalues of $G$ to be equal, that is $\sum_r|\langle x,u_r\rangle|^2=\frac Rn\|x\|^2$ for all $x$: the vectors form a \emph{tight frame}, a basis-like system that is not a basis.
+\end{solution}
+
+\begin{solution}{pb:gerzon}
+\idea Squaring the inner products linearises the problem: the matrices $u_iu_i^{\mathsf T}$ have Gram matrix $(1-\alpha^2)I+\alpha^2J$, which is invertible, so they are linearly independent in
+a space of known dimension.
+
+\writeup (a) $\langle P_i,P_j\rangle=\operatorname{tr}(u_iu_i^{\mathsf T}u_ju_j^{\mathsf T})=(u_i^{\mathsf T}u_j)\operatorname{tr}(u_iu_j^{\mathsf T})=(u_i^{\mathsf T}u_j)^2$, which is $1$ for $i=j$ and $\alpha^2$ for $i\ne j$. The Gram matrix
+is $(1-\alpha^2)I+\alpha^2J$, with $J$ the all-ones matrix.
+
+(b) Its eigenvalues are $1-\alpha^2>0$ (on vectors with zero sum) and $1-\alpha^2+R\alpha^2>0$ (on the constant vector), so it is positive definite. A positive definite Gram matrix means
+linearly independent vectors: if $\sum c_iP_i=0$ then $c^{\mathsf T}Gc=\|\sum c_iP_i\|^2=0$, so $c=0$. The $R$ matrices $P_i$ lie in the space of symmetric matrices, of dimension
+$\frac{n(n+1)}2$, so $R\le\frac{n(n+1)}2$.
+
+(c) For $n=2$, three lines at mutual angles $60^\circ$ give $R=3=\frac{2\cdot3}2$. For $n=3$, the six diagonals of the icosahedron (Problem~\ref{pb:welch}(c), Figure~\ref{fig:icosa})
+give $R=6=\frac{3\cdot4}2$.
+
+\tools{Tome~0, Chapter~7 (dimension, Gram matrices); Tome~S1, Chapter~4.}
+\leads This is \emph{Gerzon's bound}, published by Lemmens and Seidel (1973). It is reached for $n=2,3,7,23$ and for no other $n$ known, and for $n>3$ it can be reached only if $n+2$ is the square
+of an odd integer. In 2021 Jiang, Tidor, Yao, Zhang and Zhao determined the maximum number of equiangular lines
+with a \emph{fixed} angle in high dimension, which grows only linearly in $n$.
+\end{solution}
+
+\begin{solution}{pb:halasz}
+\idea Halász's inequality is Cauchy--Schwarz applied once, to a combination of the $\varphi_r$ with unimodular coefficients. For character sums, the diagonal terms are of size $N$
+and the off-diagonal ones are bounded by Pólya--Vinogradov, uniformly; when the values we count are large, the off-diagonal terms cannot keep up.
+
+\writeup (a) Choose $\xi_r$ with $|\xi_r|=1$ and $\overline{\xi_r}\langle f,\varphi_r\rangle=|\langle f,\varphi_r\rangle|$. Then
+$\sum_r|\langle f,\varphi_r\rangle|=\langle f,g\rangle$ with $g=\sum_r\xi_r\varphi_r$, which is at most $\|f\|\|g\|$, and
+$\|g\|^2=\sum_{r,s}\xi_r\overline{\xi_s}\langle\varphi_r,\varphi_s\rangle\le\sum_{r,s}|\langle\varphi_r,\varphi_s\rangle|$.
+
+(b) In $\C^N$ let $f=(a_n)$ and $\varphi_\chi=(\overline{\chi(n)})_{n\le N}$, so $\langle f,\varphi_\chi\rangle=\sum_na_n\chi(n)$. As $n\le N<q$, all $n$ are prime to $q$, and
+$\langle\varphi_\chi,\varphi_\psi\rangle=\sum_{n\le N}\psi\overline\chi(n)$ equals $N$ if $\chi=\psi$. If $\chi\ne\psi$, then $\psi\overline\chi$ is a non-principal character modulo the prime $q$, hence
+primitive, and Pólya--Vinogradov (Tome~5, Theorem~11.11) bounds the sum by $G=\sqrt q(1+\log q)$. By (a),
+\[
+R^2V^2\le\Bigl(\sum_{\chi\in X}\Bigl|\sum_na_n\chi(n)\Bigr|\Bigr)^2\le A\bigl(RN+R(R-1)G\bigr)\le ARN+AR^2G.
+\]
+If $V^2\ge2AG$, then $AR^2G\le\frac12R^2V^2$, so $\frac12R^2V^2\le ARN$, that is $R\le\frac{2AN}{V^2}$.
+
+(c) Expanding,
+\[
+\sum_\chi\Bigl|\sum_na_n\chi(n)\Bigr|^2=\sum_{m,n\le N}a_m\overline{a_n}\sum_\chi\chi(m)\overline{\chi(n)},
+\]
+and the inner sum is $q-1$ if $m\equiv n\pmod q$ and $0$ otherwise
+(orthogonality of characters, Tome~5, Chapter~3). Since $m,n\le N<q$, this means $m=n$, and the total is $(q-1)A$. Counting only the $R$ large terms,
+$RV^2\le(q-1)A$, so $R\le\frac{(q-1)A}{V^2}$. Part (b) replaces the modulus $q-1$ by the length $2N$: when $N=q^{0.6}$, say, the gain is a factor $q^{0.4}/2$, provided $V$ is
+large enough for (b) to apply.
+
+\tools{Tome~7, Chapter~2 (Cauchy--Schwarz); Tome~5, Chapter~3 (orthogonality of characters) and Theorem~11.11 (Pólya--Vinogradov).}
+\leads The inequality goes back to Halász and Montgomery, who made it the \emph{large values method} (Montgomery, \emph{Topics in Multiplicative Number Theory}, 1971):
+applied to Dirichlet polynomials $\sum a_nn^{-it}$ at well-spaced points, with bounds for $\zeta$ on the critical line playing the part of Pólya--Vinogradov, it gives zero-density
+estimates for $\zeta$ (Tome~13, Chapter~1). Guth and Maynard (2024) improved such large values estimates, and with them the density bounds.
+\end{solution}
+
+\begin{solution}{pb:ingham}
+\idea Integrating $|f|^2$ against a weight $k\le\mathbf 1_{[-T,T]}$ replaces the cross terms by values of $\hat k$ at the differences $\lambda_m-\lambda_n$. Choose $k$ so that $\hat k$ decays like
+$\lambda^{-2}$, and the separation makes the cross terms a convergent series dominated by the diagonal.
+
+\writeup (a) $k$ is even, so with $a=\frac\pi{2T}$,
+\[
+K(\lambda)=\int_{-T}^T\cos(at)\cos(\lambda t)\dd t=\frac{\sin((a+\lambda)T)}{a+\lambda}+\frac{\sin((a-\lambda)T)}{a-\lambda}=\cos(\lambda T)\Bigl(\frac1{a+\lambda}+\frac1{a-\lambda}\Bigr)=\frac{4\pi T\cos\lambda T}{\pi^2-4\lambda^2T^2},
+\]
+using $\sin(\frac\pi2\pm\lambda T)=\cos\lambda T$ (and by continuity at $\lambda=\pm a$). In particular $K(0)=\frac{4T}\pi$, and $|K(\lambda)|\le\frac{4\pi T}{4\lambda^2T^2-\pi^2}$ when $2|\lambda|T>\pi$.
+
+(b) As $0\le k\le\mathbf 1_{[-T,T]}$ and $K$ is real and even,
+\[
+\int_{-T}^T|f|^2\ge\int k|f|^2=\sum_{m,n}a_m\overline{a_n}K(\lambda_m-\lambda_n)\ge K(0)\sum_n|a_n|^2-\sum_{m\ne n}|a_ma_n|\,|K(\lambda_m-\lambda_n)|.
+\]
+By $|a_ma_n|\le\frac12(|a_m|^2+|a_n|^2)$ and symmetry, the last sum is at most $\sum_m|a_m|^2\sum_{n\ne m}|K(\lambda_m-\lambda_n)|$. Now $|\lambda_m-\lambda_n|\ge|m-n|\gamma$, and with
+$x=\frac{\gamma T}\pi>1$,
+\[
+\sum_{n\ne m}|K(\lambda_m-\lambda_n)|\le2\sum_{j\ge1}\frac{4\pi T}{4j^2\gamma^2T^2-\pi^2}=\frac{8T}\pi\sum_{j\ge1}\frac1{4j^2x^2-1}\le\frac{8T}{\pi x^2}\sum_{j\ge1}\frac1{4j^2-1}=\frac{4T}{\pi x^2},
+\]
+since $4j^2x^2-1\ge x^2(4j^2-1)$ for $x\ge1$, and $\sum_j\frac1{4j^2-1}=\frac12\sum_j(\frac1{2j-1}-\frac1{2j+1})=\frac12$. Hence $\int_{-T}^T|f|^2\ge\frac{4T}\pi(1-\frac1{x^2})\sum|a_n|^2$, as claimed.
+
+(c) Let $k_2(t)=\cos\frac{\pi t}{4T}$ on $[-2T,2T]$, so $k_2\ge\cos\frac\pi4=\frac1{\sqrt2}$ on $[-T,T]$ and $k_2\ge0$. Its transform is the $K$ of (a) with $2T$ for $T$: $K_2(0)=\frac{8T}\pi$, and by
+the same computation with $y=\frac{2\gamma T}\pi\ge1$, $\sum_{n\ne m}|K_2(\lambda_m-\lambda_n)|\le\frac{8T}{\pi y^2}$. So
+$\int_{-T}^T|f|^2\le\sqrt2\int k_2|f|^2\le\sqrt2\,\frac{8T}\pi\bigl(1+\frac1{y^2}\bigr)\sum|a_n|^2$, which is the claim.
+
+(d) The gaps are at least $\gamma=1-2\cdot\frac14=\frac12$, so (b) applies for $T>2\pi$ and (c) for $T\ge\pi$. Translating, $f(T_0+t)=\sum_n(a_ne^{i\lambda_nT_0})e^{i\lambda_nt}$ has coefficients of
+the same moduli. So $c=\frac{4T}\pi(1-\frac{4\pi^2}{T^2})$ and $C=\frac{8\sqrt2T}\pi(1+\frac{\pi^2}{T^2})$ work for every finite combination.
+
+\tools{Tome~4, Chapter~4 (integrals); Tome~7, Chapter~2 (Gram matrices).}
+\leads Ingham proved (b) in 1936, and the threshold $\frac\pi\gamma$ cannot be lowered in general. Part (d) says that the perturbed exponentials
+form a \emph{Riesz sequence} in $L^2$ of any interval of length greater than $4\pi$. Kadec's $\frac14$-theorem (1964) is much sharper: if $|\delta_n|<\frac14$ they even form a Riesz \emph{basis} of
+$L^2(-\pi,\pi)$, and $\frac14$ cannot be replaced by a larger number. Ingham's inequality is used in control theory, to prove that vibrating strings and beams can be steered to rest.
+\end{solution}
+
+\begin{solution}{pb:mvt}
+\idea Integrating $|F|^2$ against a weight whose Fourier transform vanishes outside $[-\Delta,\Delta]$ kills every cross term exactly, because the frequencies are $\Delta$ apart. Such a weight cannot
+be an indicator function, but it can be the indicator of a slightly longer interval, smoothed by a Fejér kernel; then it is nearly $1$ on the interval we care about, and we lose only the
+margin $U$.
+
+\writeup (a) Let $\Lambda(\xi)=\max(0,1-\frac{|\xi|}\Delta)$. Then
+\[
+\int\Lambda(\xi)e(\xi t)\dd\xi=2\int_0^\Delta\Bigl(1-\frac\xi\Delta\Bigr)\cos(2\pi\xi t)\dd\xi=\frac{1-\cos2\pi\Delta t}{2\pi^2\Delta t^2}=\frac{\sin^2\pi\Delta t}{\pi^2\Delta t^2}=k(t),
+\]
+integrating by parts once. Since $\Lambda$ and $k$ are integrable and continuous, Fourier inversion (Tome~7, Theorem~5.2) gives $\hat k=\Lambda$ ($k$ is even), and $\int k=\hat k(0)=1$.
+
+(b) Let $I=[T_0-U,T_0+T+U]$, of length $T+2U$. Then $w=\mathbf 1_I*k\ge0$ is integrable and $\hat w=\hat{\mathbf 1}_I\,\Lambda$ vanishes for $|\xi|\ge\Delta$, while $\hat w(0)=T+2U$. Expanding
+$|F|^2$,
+\[
+\int w|F|^2=\sum_{m,n}a_m\overline{a_n}\int w(t)e((\lambda_m-\lambda_n)t)\dd t=\sum_{m,n}a_m\overline{a_n}\hat w(\lambda_n-\lambda_m)=(T+2U)\sum_n|a_n|^2,
+\]
+since $|\lambda_n-\lambda_m|\ge\Delta$ for $m\ne n$. For $t\in[T_0,T_0+T]$, $w(t)=\int_{t-T_0-T-U}^{t-T_0+U}k$, an integral over an interval containing $[-U,U]$, so
+\[
+w(t)\ge1-2\int_U^\infty k\ge1-2\int_U^\infty\frac{\dd v}{\pi^2\Delta v^2}=1-\frac2{\pi^2\Delta U},
+\]
+using $k(v)\le\frac1{\pi^2\Delta v^2}$. As $w\ge0$ everywhere, $\bigl(1-\frac2{\pi^2\Delta U}\bigr)\int_{T_0}^{T_0+T}|F|^2\le\int w|F|^2$, which gives the inequality.
+
+(c) Write $n^{-it}=e(\lambda_nt)$ with $\lambda_n=-\frac{\log n}{2\pi}$. For $1\le n<m\le N$, $\log\frac mn\ge\log\frac N{N-1}\ge\frac1N$, so $\Delta=\frac1{2\pi N}$ works. Take $U=\sqrt{TN}$. Then
+$\frac2{\pi^2\Delta U}=\frac4\pi\sqrt{\frac NT}=:r\le\frac1\pi$ as $T\ge16N$, and $\frac1{1-r}=1+\frac r{1-r}\le1+\frac\pi{\pi-1}r\le1+1.467r$. By (b),
+\[
+\int_{T_0}^{T_0+T}|F|^2\le(T+2\sqrt{TN})(1+1.467r)\sum|a_n|^2,
+\]
+and $(T+2\sqrt{TN})\,1.467r=1.467\cdot\frac4\pi\sqrt{TN}\bigl(1+2\sqrt{N/T}\bigr)\le1.868\cdot1.5\sqrt{TN}\le2.81\sqrt{TN}$. The total is at most $(T+4.81\sqrt{TN})\sum|a_n|^2$.
+
+(d) With $N=1$ the integral equals $T|a_1|^2$, so no bound $(cT+o(T))\sum|a_n|^2$ with $c<1$ is possible. Tome~13, Lemma~1.3 gives, for a block $M<n\le2M$, the factor
+$T+8M(1+\log M)$; (c) with $N=2M$ gives $T+5\sqrt{2TM}$, which is better for $T$ up to about $M\log^2M$ and loses no logarithm. Neither is optimal.
+
+\tools{Tome~7, Theorem~5.2 (Fourier inversion) and Chapter~5 (convolution); Tome~6, Chapter~7.}
+\leads Montgomery and Vaughan (1974) proved the optimal form $\int_0^T|\sum a_nn^{-it}|^2\dd t=\sum_n(T+O(n))|a_n|^2$, from a generalisation of Hilbert's inequality. Replacing the Fejér kernel
+by the extremal functions of Beurling and Selberg, which majorise $\mathbf 1_{[0,T]}$ with Fourier transform supported in $[-\Delta,\Delta]$ and integral $T+\frac1\Delta$, gives
+$\int_0^T|F|^2\le(T+\frac1\Delta)\sum|a_n|^2$ exactly (Chapter~4).
+\end{solution}
+
+\begin{solution}{pb:christoffel}
+\idea In a finite-dimensional space with an orthonormal basis $(e_k)$, the kernel is $\sum_ke_k(x)e_k(y)$. Everything else is Cauchy--Schwarz.
+
+\writeup (a) The Legendre polynomials are orthogonal with $\int_{-1}^1P_k^2=\frac2{2k+1}$ (Tome~7, Proposition~2.8), so $e_k=\sqrt{k+\frac12}\,P_k$, $0\le k\le n$, is an orthonormal
+basis of $\Pi_n$. If $p=\sum_kc_ke_k$, then $\langle p,K_n(\cdot,y)\rangle=\sum_kc_ke_k(y)=p(y)$, since $K_n(\cdot,y)=\sum_ke_k(y)e_k$.
+
+(b) $p(1)=\langle p,K_n(\cdot,1)\rangle\le\|p\|\,\|K_n(\cdot,1)\|$, with equality only when $p$ is a multiple of $K_n(\cdot,1)$, and
+$\|K_n(\cdot,1)\|^2=\langle K_n(\cdot,1),K_n(\cdot,1)\rangle=K_n(1,1)=\sum_{k=0}^n(k+\frac12)=\frac{n(n+1)}2+\frac{n+1}2=\frac{(n+1)^2}2$.
+
+(c) With $P_0=1$, $P_1=x$, $P_2=\frac{3x^2-1}2$,
+\[
+K_2(x,1)=\tfrac12+\tfrac32x+\tfrac52\cdot\tfrac{3x^2-1}2=\frac{15x^2+6x-3}4.
+\]
+Its value at $1$ is $\frac92$, and $\int_{-1}^1\bigl(\frac{15x^2+6x-3}4\bigr)^2\dd x=\frac1{16}\int_{-1}^1(225x^4-54x^2+9)\dd x=\frac{90-36+18}{16}=\frac92$ (the odd terms vanish), so
+$p(1)^2/\int p^2=\frac{81/4}{9/2}=\frac92=\frac{(2+1)^2}2$. At $0$, the best constant is $c=K_2(0,0)=\frac12+0+\frac52P_2(0)^2=\frac12+\frac58=\frac98$, reached by
+$K_2(x,0)=\frac12-\frac58(3x^2-1)=\frac{9-15x^2}8$.
+
+\tools{Tome~7, Proposition~2.8 (Legendre polynomials) and Chapter~2 (kernels, Cauchy--Schwarz).}
+\leads $\lambda_n(x)=1/K_n(x,x)$ is the \emph{Christoffel function}. The constant at the end point, of order $n^2$, is much larger than inside, where
+$K_n(x,x)\sim\frac n{\pi\sqrt{1-x^2}}$ (checked in the notebook): polynomials can be large near $\pm1$ at little cost in mean square, which is Markov's inequality in another form. The asymptotics of
+$\lambda_n$ for general weights are a central subject of the theory of orthogonal polynomials (Nevai, \emph{Géza Freud, orthogonal polynomials and Christoffel functions}, J.~Approx.\ Theory 48, 1986).
+\end{solution}
+
+\begin{solution}{pb:bergman}
+\idea The mean value property makes point evaluation continuous, and polar coordinates show that the monomials are orthogonal. Their norms give the kernel, and the
+area of an image is a Bergman norm.
+
+\writeup (a) Let $r=1-|z|$. By Cauchy's formula (Tome~4, Theorem~9.10), $f(z)=\frac1{2\pi}\int_0^{2\pi}f(z+\rho e^{i\theta})\dd\theta$ for $0<\rho<r$; multiplying by $\rho$ and
+integrating over $\rho\in[0,r]$ gives $f(z)=\frac1{\pi r^2}\int_{D(z,r)}f\dd A$. By Cauchy--Schwarz, $|f(z)|^2\le\frac1{\pi r^2}\int_{D(z,r)}|f|^2\dd A\le\frac{\|f\|^2}{\pi r^2}$. If
+$f_k\in A^2$ converge in $L^2(\mathbb D)$ to $g$, the bound shows that $(f_k)$ is uniformly Cauchy on each disc $|z|\le\rho<1$, so $f_k$ converges uniformly on compact sets to a
+holomorphic $f$ (Tome~4, Theorem~9.15). A subsequence converges to $g$ almost everywhere (Tome~6, Chapter~9), so $f=g$ almost everywhere and $g\in A^2$.
+
+(b) On the circle $|z|=\rho<1$, the Taylor series converges uniformly, and Parseval gives $\int_0^{2\pi}|f(\rho e^{i\theta})|^2\dd\theta=2\pi\sum_n|a_n|^2\rho^{2n}$. In polar
+coordinates,
+\[
+\int_{|z|<r}|f|^2\dd A=\int_0^r2\pi\sum_n|a_n|^2\rho^{2n+1}\dd\rho=\pi\sum_n\frac{|a_n|^2r^{2n+2}}{n+1},
+\]
+and letting $r\to1$ (monotone convergence on both sides) gives the formula. Polarising, $\langle z^m,z^n\rangle=\frac\pi{n+1}\mathbf 1_{m=n}$, so $e_n=\sqrt{\frac{n+1}\pi}z^n$ is orthonormal,
+and it is a basis since $\|f-\sum_{n\le N}a_nz^n\|^2=\pi\sum_{n>N}\frac{|a_n|^2}{n+1}\to0$. Hence $K_w=\sum_n\overline{e_n(w)}e_n$, that is
+\[
+K(z,w)=\frac1\pi\sum_{n\ge0}(n+1)(z\bar w)^n=\frac1{\pi(1-z\bar w)^2}.
+\]
+
+(c) $|f(z)|^2\le K(z,z)\|f\|^2=\frac{\|f\|^2}{\pi(1-|z|^2)^2}$, with equality for $f=K_z$. And $f'(0)=a_1$, while $\|f\|^2\ge\frac\pi2|a_1|^2$ by (b), with equality for $f=z$.
+
+(d) By Lemma~9.20 of Tome~7, $f'$ has no zero and $f:\mathbb D\to f(\mathbb D)$ is a holomorphic bijection with holomorphic inverse. Its Jacobian is $|f'|^2$ (Cauchy--Riemann equations, Tome~4,
+Proposition~9.2), so the change of variables formula (Tome~6, Theorem~8.8) gives $\operatorname{area}f(\mathbb D)=\int_{\mathbb D}|f'|^2\dd A$. If this is finite, $f'\in A^2$ and by (b),
+with $f=\sum_{n\ge1}a_nz^n$ and $f'=\sum_n(n+1)a_{n+1}z^n$,
+\[
+\operatorname{area}f(\mathbb D)=\pi\sum_{n\ge0}(n+1)|a_{n+1}|^2=\pi\sum_{n\ge1}n|a_n|^2\ge\pi|a_1|^2=\pi,
+\]
+with equality only if $a_n=0$ for $n\ge2$, that is $f(z)=z$.
+
+\tools{Tome~4, Theorems~9.10 and~9.15 (Cauchy's formula, locally uniform limits); Tome~6, Theorem~8.8 (change of variables); Tome~7, Chapter~2 (kernels) and Lemma~9.20 (injective
+holomorphic maps).}
+\leads Stefan Bergman introduced these spaces in his 1921 thesis, published in 1922. For a simply connected domain $\Omega$ the kernel produces the Riemann map: if $F:\Omega\to\mathbb D$
+is the conformal map with $F(w)=0$, $F'(w)>0$, then $F'(z)=\sqrt{\pi/K_\Omega(w,w)}\,K_\Omega(z,w)$. Part (d) is the easy half of the \emph{area theorem}, which leads to
+Bieberbach's bound $|a_2|\le2$ (Hedenmalm, Korenblum and Zhu, \emph{Theory of Bergman Spaces}, 2000).
+\end{solution}
+
+\begin{solution}{pb:fock}
+\idea The weight $e^{-|z|^2}$ is radial, so monomials are orthogonal again; now $\|z^n\|^2=n!$, and the space is a weighted $\ell^2$ in disguise.
+
+\writeup (a) As in Problem~\ref{pb:bergman}(b), Parseval on circles and Tonelli (Tome~6, Theorem~8.5) give
+\[
+\frac1\pi\int_\C|f|^2e^{-|z|^2}\dd A=\frac1\pi\int_0^\infty2\pi\sum_n|a_n|^2r^{2n+1}e^{-r^2}\dd r=\sum_nn!\,|a_n|^2,
+\]
+since $\int_0^\infty r^{2n+1}e^{-r^2}\dd r=\frac12\int_0^\infty t^ne^{-t}\dd t=\frac{n!}2$. Both sides may be infinite.
+
+(b) By (a), $f\mapsto(\sqrt{n!}\,a_n)_n$ is an isometry from $\mathcal F$ into $\ell^2$, and it is onto: for $(b_n)\in\ell^2$, $a_n=b_n/\sqrt{n!}$ satisfies $|a_n|^{1/n}\to0$, so
+$\sum a_nz^n$ is entire. So $\mathcal F$ is a Hilbert space with orthonormal basis $z^n/\sqrt{n!}$, and its kernel is $\sum_n\frac{z^n\bar w^n}{n!}=e^{z\bar w}$. Hence
+$|f(z)|^2\le K(z,z)\|f\|^2=e^{|z|^2}\|f\|^2$, with equality for $f=e^{\,\cdot\,\bar z}$.
+
+(c) $e^{az^2}=\sum_k\frac{a^k}{k!}z^{2k}$, so $\|e^{az^2}\|^2=\sum_k\frac{(2k)!}{k!^2}|a|^{2k}=\sum_k\binom{2k}k|a|^{2k}$. Since $\frac{4^k}{2k+1}\le\binom{2k}k\le4^k$ (the middle term is
+the largest of the $2k+1$ terms summing to $4^k$), the series converges for $|a|<\frac12$ and diverges for $|a|\ge\frac12$. Let $b_k=\binom{2k}k$ and $\phi(x)=\sum_kb_kx^k$ for $|x|<\frac14$. From $(k+1)b_{k+1}=(4k+2)b_k$ we get $\phi'=4x\phi'+2\phi$, so
+$\bigl((1-4x)^{1/2}\phi\bigr)'=0$ and $\phi(x)=(1-4x)^{-1/2}$. So $\|e^{az^2}\|^2=(1-4|a|^2)^{-1/2}$.
+
+(d) Polarising (a), $\langle f,g\rangle=\sum_nn!\,a_n\overline{b_n}$ for $f=\sum a_nz^n$ and $g=\sum b_nz^n$. The coefficient of $z^n$ is $(n+1)a_{n+1}$ in $f'$ and $b_{n-1}$ in $zg$, so
+$\langle f',g\rangle=\sum_n(n+1)!\,a_{n+1}\overline{b_n}=\langle f,zg\rangle$. The commutation relation is the product rule.
+
+\tools{Tome~6, Theorem~8.5 (Tonelli); Tome~7, Chapter~2 (kernels, isometries onto $\ell^2$); Tome~4, Chapter~2 (power series).}
+\leads Vladimir Fock used this space in 1928 to quantise the harmonic oscillator, and Valentine Bargmann made it rigorous in 1961 (\emph{Comm.\ Pure Appl.\ Math.}\ 14, 187--214):
+$\frac{\mathrm d}{\mathrm dz}$ and $z$ are the annihilation and creation operators. Neither is bounded ($\|z\cdot z^n\|/\|z^n\|=\sqrt{n+1}$), and they cannot be: by a theorem of
+Wielandt, no two bounded operators satisfy $AB-BA=I$. The Bargmann transform carries $L^2(\R)$ onto $\mathcal F$ and the Hermite functions of Tome~7, Theorem~5.5 onto the monomials.
+\end{solution}
+
+\begin{solution}{pb:sobolev}
+\idea $K_y$ is the Green function of $-u''+u$ with Neumann conditions: it solves the equation away from $y$, and the unit jump of its derivative at $y$ produces $u(y)$
+after an integration by parts.
+
+\writeup (a) On $[0,y]$, $K_y(x)=\frac{\cosh x\cosh(L-y)}{\sinh L}$; on $[y,L]$, $K_y(x)=\frac{\cosh y\cosh(L-x)}{\sinh L}$. The two formulas agree at $x=y$, so $K_y$ is continuous and
+piecewise $C^\infty$, hence in $H$. On each piece $K_y''=K_y$; moreover $K_y'(0)=K_y'(L)=0$, and
+\[
+K_y'(y^-)-K_y'(y^+)=\frac{\sinh y\cosh(L-y)+\cosh y\sinh(L-y)}{\sinh L}=1.
+\]
+For $u\in H$, integrating by parts on each piece (Tome~7, Chapter~6: $u$ is absolutely continuous),
+\[
+\int_0^Lu'K_y'=\bigl[uK_y'\bigr]_0^{y^-}+\bigl[uK_y'\bigr]_{y^+}^L-\int_0^LuK_y''=u(y)\bigl(K_y'(y^-)-K_y'(y^+)\bigr)-\int_0^LuK_y.
+\]
+So $\langle u,K_y\rangle=u(y)$.
+
+(b) $|u(y)|^2\le K_y(y)\|u\|^2$ with equality for multiples of $K_y$, and
+\[
+K_y(y)=\frac{\cosh y\cosh(L-y)}{\sinh L}=\frac{\cosh L+\cosh(2y-L)}{2\sinh L},
+\]
+which is largest at $y=0$ and $y=L$, where it equals $\coth L$. So $\sup|u|^2\le\coth L\,\|u\|^2$. If equality holds, the supremum is reached at some $y$ (by continuity) with
+$K_y(y)=\coth L$, so $y\in\{0,L\}$ and $u$ is a multiple of $K_0\propto\cosh(L-x)$ or of $K_L\propto\cosh x$; and these do give equality, as their maximum is at $0$ or $L$.
+
+(c) We have
+\[
+K_{L/2}(L/2)=\frac{\cosh^2(L/2)}{\sinh L}=\frac{\cosh^2(L/2)}{2\sinh(L/2)\cosh(L/2)}=\frac12\coth\frac L2,
+\]
+reached by $K_{L/2}$. As $L\to\infty$ the constant tends to $\frac12$, while
+the constant at the end points tends to $1$. On the whole line, Tome~7, Exercise~6.5 and $\sqrt{ab}\le\frac{a+b}2$ give $\|u\|_\infty^2\le\|u\|_2\|u'\|_2\le\frac12(\|u\|_2^2+\|u'\|_2^2)$, with the
+same constant $\frac12$ and the extremal $e^{-|x|}$, the limit of $K_{L/2}$ up to a factor and a translation. An end point counts double: reflecting a function on $[0,L]$ across $0$ doubles its
+norm but not its value at $0$.
+
+\tools{Tome~7, Chapter~2 (kernels) and Chapter~6 (Sobolev spaces, absolute continuity), Exercise~6.5.}
+\leads Every Sobolev space $H^s$ with $s>\frac d2$ on a nice domain of $\R^d$ is a reproducing kernel Hilbert space, and its kernel is the Green function of the corresponding elliptic
+operator. Best constants in Sobolev inequalities are a subject of their own; for $\R^d$ and $\dot H^1$ they were found by Aubin and Talenti (1976). Kernels of Sobolev spaces are also the
+\emph{Matérn kernels} of spatial statistics (Berlinet and Thomas-Agnan, \emph{Reproducing Kernel Hilbert Spaces in Probability and Statistics}, 2004).
+\end{solution}
+
+\begin{solution}{pb:dirichlet}
+\idea $\mathcal H$ is $\ell^2$ with the coefficients as coordinates, and the evaluation at $s$ is the inner product with $(n^{-\bar s})_n$. Products of zeta functions have
+multiplicative coefficients, so the norm is an Euler product.
+
+\writeup (a) By Cauchy--Schwarz,
+\[
+\sum_n|a_nn^{-s}|\le\Bigl(\sum_n|a_n|^2\Bigr)^{1/2}\Bigl(\sum_nn^{-2\sigma}\Bigr)^{1/2}=\|F\|\zeta(2\sigma)^{1/2}.
+\] The map $F\mapsto(a_n)$ is an isometry onto
+$\ell^2$, so $\mathcal H$ is a Hilbert space. For $\operatorname{Re}w>\frac12$, $K_w=\sum_nn^{-\bar w}n^{-s}$ lies in $\mathcal H$ and $\langle F,K_w\rangle=\sum_na_nn^{-w}=F(w)$. So
+$K(s,w)=K_w(s)=\sum_nn^{-s-\bar w}=\zeta(s+\bar w)$.
+
+(b) For $F=K_s$, $F(s)=\zeta(2\sigma)$ and $\|F\|^2=K(s,s)=\zeta(2\sigma)$: equality. If $F$ vanishes on the half-plane, then $a_1=\lim_{\sigma\to\infty}F(\sigma)=0$ by dominated
+convergence, then $a_2=\lim2^\sigma F(\sigma)=0$, and so on: if $a_m=0$ for $m<n$, then $n^\sigma F(\sigma)=a_n+\sum_{m>n}a_m(n/m)^\sigma\to a_n$. (This is the uniqueness of Tome~4,
+Proposition~10.2.)
+
+(c) $\zeta(s+a)\zeta(s+b)=\sum_nc_nn^{-s}$ with $c_n=\sum_{de=n}d^{-a}e^{-b}$, a Dirichlet convolution of two multiplicative functions, hence multiplicative. With $u=p^{-a}$ and $v=p^{-b}$,
+\[
+c_{p^k}=\sum_{j=0}^ku^jv^{k-j}=h_k=\frac{u^{k+1}-v^{k+1}}{u-v}\qquad(h_k=(k+1)u^k\text{ if }u=v).
+\]
+For $u\ne v$, summing three geometric series,
+\[
+(u-v)^2\sum_{k\ge0}h_k^2=\frac{u^2}{1-u^2}-\frac{2uv}{1-uv}+\frac{v^2}{1-v^2}=\frac{(u-v)^2(1+uv)}{(1-u^2)(1-v^2)(1-uv)},
+\]
+as one checks by clearing denominators (and by continuity for $u=v$). Since $c_n^2$ is multiplicative and non-negative, unique factorisation gives $\sum_{n\le P}c_n^2\le\prod_{p\le P}\sum_kc_{p^k}^2$, and the product below
+converges, so $\sum_nc_n^2<\infty$; then Tome~4, Theorem~10.3 (with $f=c^2$ and $s=0$) gives $\sum_nc_n^2=\prod_p\sum_kc_{p^k}^2$. With $\frac{1+x}{1-x}=\frac{1-x^2}{(1-x)^2}$ and $x=p^{-a-b}$,
+\[
+\sum_nc_n^2=\prod_p\frac1{1-p^{-2a}}\cdot\frac1{1-p^{-2b}}\cdot\frac{1-p^{-2a-2b}}{(1-p^{-a-b})^2}=\frac{\zeta(2a)\zeta(2b)\zeta(a+b)^2}{\zeta(2a+2b)},
+\]
+all products converging because $2a,2b,a+b>1$. In particular the norm is finite.
+
+\tools{Tome~4, Proposition~10.2 and Theorem~10.3 (Dirichlet series, Euler products); Tome~7, Chapter~2 (kernels).}
+\leads (c) is a case of Ramanujan's formula (1916)
+\[
+\sum_n\frac{\sigma_\alpha(n)\sigma_\beta(n)}{n^s}=\frac{\zeta(s)\zeta(s-\alpha)\zeta(s-\beta)\zeta(s-\alpha-\beta)}{\zeta(2s-\alpha-\beta)}.
+\] Hedenmalm, Lindqvist and
+Seip (\emph{Duke Math.\ J.}\ 86, 1997) used the space $\mathcal H$ to study dilations $f(x),f(2x),f(3x),\dots$ in $L^2(0,1)$, the problem of Problem~\ref{pb:franel}. Bohr's idea of
+Problem~\ref{pb:bohrvalues} identifies $\mathcal H$ with the Hardy space of the infinite-dimensional torus, $n^{-s}$ becoming the monomial $z_2^{k_2}z_3^{k_3}\cdots$ when $n=2^{k_2}3^{k_3}\cdots$.
+\end{solution}
+
+\begin{solution}{pb:franel}
+\idea The Fourier series of $B(mx)$ lives on the multiples of $m$, so two dilates only interact through the common multiples of $m$ and $n$. The sum of the Gram
+matrix is then an exercise in Möbius inversion.
+
+\writeup (a) For $j\ne0$, $\int_0^1xe(-jx)\dd x=\frac{i}{2\pi j}$ by parts, so $\hat B(j)=\frac i{2\pi j}$ and $\hat B(0)=0$. Substituting $y=mx$ and splitting $[0,m]$ into unit intervals,
+\[
+\int_0^1B(mx)e(-jx)\dd x=\frac1m\sum_{r=0}^{m-1}e\Bigl(-\frac{jr}m\Bigr)\int_0^1B(y)e\Bigl(-\frac jmy\Bigr)\dd y,
+\]
+which is $0$ unless $m\mid j$, and then $\frac{im}{2\pi j}$. By Parseval (Tome~7, Theorem~2.7), with $\ell=\operatorname{lcm}(m,n)$,
+\[
+\int_0^1B(mx)B(nx)\dd x=\sum_{\ell\mid j,\,j\ne0}\frac{im}{2\pi j}\cdot\frac{-in}{2\pi j}=\frac{2mn}{4\pi^2\ell^2}\sum_{k\ge1}\frac1{k^2}=\frac{mn}{12\ell^2}=\frac{\gcd(m,n)^2}{12mn}.
+\]
+
+(b) The matrix is $12$ times the Gram matrix of $B(x)$, $B(2x)$, \dots, $B(Nx)$, so it is positive semi-definite; it is definite if these functions are independent. If
+$\sum_{m\le N}c_mB(mx)=0$, its Fourier coefficient at $j\ge1$ gives $\sum_{m\mid j}c_mm=0$. For $j=1$ this is $c_1=0$, and by induction on $j$, if $c_m=0$ for $m<j$ then $jc_j=0$.
+
+(c) By (a), the integral is $\frac1{12}S(N)$ with $S(N)=\sum_{m,n\le N}\frac{\gcd(m,n)^2}{mn}$. Write $\gcd(m,n)^2=\sum_{d\mid\gcd(m,n)}J_2(d)$ with $J_2=\mu*\mathrm{id}^2$. Then
+\[
+S(N)=\sum_{d\le N}J_2(d)\Bigl(\sum_{d\mid m\le N}\frac1m\Bigr)^2=\sum_{d\le N}\frac{J_2(d)}{d^2}H_{\lfloor N/d\rfloor}^2=\sum_{e\le N}\frac{\mu(e)}{e^2}\,T\Bigl(\frac Ne\Bigr),
+\]
+using $\frac{J_2(d)}{d^2}=\sum_{e\mid d}\frac{\mu(e)}{e^2}$ and writing $d=ek$, where $T(x)=\sum_{k\le x}H_{\lfloor x/k\rfloor}^2$. Now $H_j^2=\sum_{i\le j}w_i$ with $w_i=H_i^2-H_{i-1}^2=\frac{2H_i-1/i}i$,
+so, exchanging the sums,
+\[
+T(x)=\sum_{i\le x}w_i\Bigl\lfloor\frac xi\Bigr\rfloor=x\sum_{i\le x}\frac{w_i}i-\sum_{i\le x}w_i\Bigl\{\frac xi\Bigr\}.
+\]
+The last sum is between $0$ and $\sum_{i\le x}w_i=H_{\lfloor x\rfloor}^2\le(1+\log x)^2$. Since $w_i\le\frac{2(1+\log i)}i$, $x\sum_{i>x}\frac{w_i}i=O(1+\log x)$. And
+$\sum_i\frac{w_i}i=2\sum_i\frac{H_i}{i^2}-\zeta(3)=3\zeta(3)$ by Euler's identity. So $T(x)=3\zeta(3)x+O((1+\log x)^2)$ for $x\ge1$, and
+\[
+S(N)=3\zeta(3)N\sum_{e\le N}\frac{\mu(e)}{e^3}+O\Bigl(\log^2N\sum_e\frac1{e^2}\Bigr)=3N+O(\log^2N),
+\]
+since $\sum_{e\le N}\frac{\mu(e)}{e^3}=\frac1{\zeta(3)}+O(N^{-2})$ (Tome~4, Corollary~10.4). Dividing by $12$ gives $\frac N4+O(\log^2N)$; the diagonal alone gives $\frac N{12}$.
+
+\emph{Euler's identity.} Let $E=\sum_{m,n\ge1}\frac1{mn(m+n)}$. First, $\frac1{mn}=\frac1{m+n}\bigl(\frac1m+\frac1n\bigr)$, so by symmetry
+$E=2\sum_{m,n}\frac1{m(m+n)^2}=2\sum_{k\ge2}\frac{H_{k-1}}{k^2}$. Second, $\frac1{m+n}=\int_0^1x^{m+n-1}\dd x$, so by Tonelli
+\[
+E=\int_0^1\frac{\log^2(1-x)}x\dd x=\int_0^1\frac{\log^2u}{1-u}\dd u=\sum_{k\ge0}\int_0^1u^k\log^2u\dd u=\sum_{k\ge0}\frac2{(k+1)^3}=2\zeta(3).
+\]
+So $\sum_k\frac{H_{k-1}}{k^2}=\zeta(3)$ and $\sum_k\frac{H_k}{k^2}=\zeta(3)+\sum_k\frac1{k^3}=2\zeta(3)$.
+
+\tools{Tome~7, Theorem~2.7 (Parseval); Tome~6, Theorem~8.5 (Tonelli); Tome~4, Corollary~10.4 and Chapter~10 (Dirichlet series, Möbius inversion); Tome~1, Chapter~6 (multiplicative functions).}
+\leads Franel computed (a) in 1924, in a note on Farey fractions and the Riemann hypothesis, and Landau gave the asymptotics in the same issue of the \emph{Göttinger Nachrichten}. How large
+can $\sum\frac{\gcd(m,n)^2}{mn}$ be for $N$ distinct integers $m,n$? Gál (1949) showed that the answer is of order $N(\log\log N)^2$, and large sums of this kind now produce large values of $\zeta$ on the critical line
+(Bondarenko and Seip, \emph{Duke Math.\ J.}\ 166, 2017).
+\end{solution}
+
+\begin{solution}{pb:ramanujan}
+\idea The Ramanujan sums are orthogonal for the mean value $M$, like characters, and they are bounded on average. So a function with an absolutely convergent
+expansion satisfies Parseval's identity, and $\sigma(n)/n$ is such a function.
+
+\writeup (a) $|c_q(n)|\le\sum_{d\mid n}d=\sigma(n)$, so the series converges absolutely. Writing $q=dm$ with $d\mid n$,
+\[
+\begin{aligned}
+\sum_{q\ge1}\frac{c_q(n)}{q^2}&=\sum_{d\mid n}d\sum_{m\ge1}\frac{\mu(m)}{d^2m^2}\\
+&=\frac1{\zeta(2)}\sum_{d\mid n}\frac1d=\frac{\sigma(n)}{n\,\zeta(2)},
+\end{aligned}
+\]
+the rearrangement being justified by the convergence of $\sum_{d\mid n}\sum_m\frac d{d^2m^2}$, and $\sum_m\frac{\mu(m)}{m^2}=\frac1{\zeta(2)}$ (Tome~4, Corollary~10.4).
+
+(b) $c_q(n)$ depends only on $n$ modulo $q$, so $c_qc_r$ has period $qr$, and the mean value of a periodic function exists and equals its average over one period. As $q$ and $r$ divide
+$qr$, Problem Book~I, Problem~2.3 gives $M(c_qc_r)=\frac1{qr}\sum_{n\le qr}c_q(n)c_r(n)=\varphi(q)\mathbf 1_{q=r}$ ($c_r$ is real). For the bound,
+\[
+\frac1N\sum_{n\le N}|c_q(n)c_r(n)|\le\sum_{d\mid q,\,e\mid r}de\cdot\frac1N\#\{n\le N:d\mid n,\,e\mid n\}\le\sum_{d\mid q,\,e\mid r}\frac{de}{\operatorname{lcm}(d,e)}=\sum_{d\mid q,\,e\mid r}\gcd(d,e),
+\]
+and $\gcd(d,e)\le\sqrt{de}$.
+
+(c) Let $f(n)=\frac{\sigma(n)}n$. Squaring (a), $\frac1N\sum_{n\le N}f(n)^2=\zeta(2)^2\sum_{q,r}\frac{A_N(q,r)}{q^2r^2}$ with $A_N(q,r)=\frac1N\sum_{n\le N}c_q(n)c_r(n)$. By (b),
+$|A_N(q,r)|\le\sigma_{1/2}(q)\sigma_{1/2}(r)$, and $\sum_q\frac{\sigma_{1/2}(q)}{q^2}=\zeta(2)\zeta(\frac32)<\infty$, so dominated convergence (Tome~6, Theorem~7.9, for the counting measure on pairs
+$(q,r)$) lets $N\to\infty$ inside the sum:
+\[
+M(f^2)=\zeta(2)^2\sum_{q\ge1}\frac{\varphi(q)}{q^4}=\zeta(2)^2\frac{\zeta(3)}{\zeta(4)}=\frac{\pi^4/36}{\pi^4/90}\zeta(3)=\frac52\zeta(3),
+\]
+using $\sum_q\varphi(q)q^{-s}=\frac{\zeta(s-1)}{\zeta(s)}$ (Tome~4, Corollary~10.4). This is Parseval's identity: $M(f^2)=\sum_q|\hat f(q)|^2\varphi(q)$ with $\hat f(q)=\frac{\zeta(2)}{q^2}$.
+
+\tools{Tome~4, Corollary~10.4 (Dirichlet series of $\mu$ and $\varphi$); Tome~6, Theorem~7.9 (dominated convergence); Problem Book~I, Problem~2.3.}
+\leads Ramanujan published these expansions in 1918 (\emph{Trans.\ Cambridge Philos.\ Soc.}\ 22, 259--276), together with expansions of $\varphi(n)/n$ and of $r_2(n)$. Two years
+earlier he had stated $\sum_{n\le x}\sigma(n)^2=\frac56\zeta(3)x^3+O(x^2\log^2x)$, which is (c) after partial summation. Carmichael (1932) and Wintner built the general theory: a
+function whose mean values along arithmetic progressions behave well has a Ramanujan expansion, and Parseval holds under conditions like those of (c).
+\end{solution}
+
+\begin{solution}{pb:zetamellin}
+\idea On the multiplicative group $]0,\infty[$, the Mellin transform is the Fourier transform, so Plancherel holds. The integral representation of $\zeta$ in the strip
+then turns a mean square of $\zeta$ into an elementary integral, computed in Problem Book~I.
+
+\writeup (a) Put $u=e^{-x}$ and $h(x)=g(e^{-x})e^{-\sigma x}$. Then $\int_\R|h|=\int_0^\infty|g(u)|u^{\sigma-1}\dd u<\infty$, $\int_\R|h|^2=\int_0^\infty|g(u)|^2u^{2\sigma-1}\dd u<\infty$, and
+$\mathcal Mg(\sigma+2\pi i\xi)=\int_\R h(x)e^{-2\pi ix\xi}\dd x=\hat h(\xi)$. Plancherel (Tome~7, Theorem~5.4) gives $\int|\hat h(\xi)|^2\dd\xi=\int|h|^2$, and $t=2\pi\xi$ gives the claim.
+
+(b) For $\operatorname{Re}s>1$, $n^{-s}=s\int_n^\infty x^{-s-1}\dd x$, so by Fubini $\zeta(s)=s\int_1^\infty\lfloor x\rfloor x^{-s-1}\dd x=\frac s{s-1}-s\int_1^\infty\{x\}x^{-s-1}\dd x$.
+The last integral converges absolutely for $\operatorname{Re}s>0$ and is holomorphic there (Tome~4, Theorem~9.15), so by the identity theorem (Tome~4, Theorem~9.18) the formula holds on
+$\operatorname{Re}s>0$, $s\ne1$, with $\zeta$ continued as in Tome~4, Chapter~10. For $0<\operatorname{Re}s<1$, $\int_0^1\{x\}x^{-s-1}\dd x=\int_0^1x^{-s}\dd x=\frac1{1-s}$, so
+$\frac s{s-1}=-s\int_0^1\{x\}x^{-s-1}\dd x$ and $\zeta(s)=-s\int_0^\infty\{x\}x^{-s-1}\dd x$. The substitution $x=\frac1u$ turns this into $\frac{\zeta(s)}s=-\int_0^\infty\{\frac1u\}u^{s-1}\dd u$.
+
+(c) Take $g(u)=\{\frac1u\}$ and $\sigma=\frac12$. Since $0\le g\le\min(1,\frac1u)$, both integrals of (a) are finite. So
+\[
+\frac1{2\pi}\int_\R\frac{|\zeta(\frac12+it)|^2}{\frac14+t^2}\dd t=\int_0^\infty\Bigl\{\frac1u\Bigr\}^2\dd u=\int_0^1\Bigl\{\frac1u\Bigr\}^2\dd u+\int_1^\infty\frac{\dd u}{u^2}=(\log2\pi-\gamma-1)+1,
+\]
+by Problem Book~I, Problem~9.12(b).
+
+(d) For $|t|\le T$, $1\le\frac{T^2+1/4}{t^2+1/4}$; multiply by $|\zeta(\frac12+it)|^2$, integrate over $[-T,T]$ and use (c).
+
+\tools{Tome~7, Theorem~5.4 (Plancherel); Tome~4, Theorems~9.15 and~9.18 and Chapter~10 (continuation of $\zeta$); Problem Book~I, Problem~9.12.}
+\leads The bound (d) is weak: Hardy and Littlewood (1916) proved $\int_0^T|\zeta(\frac12+it)|^2\dd t\sim T\log T$. But (c) is exact, and the same method computes many such weighted means.
+This is the Hilbert space in which the Nyman--Beurling criterion of the next problem lives.
+\end{solution}
+
+\begin{solution}{pb:nyman}
+\idea A zero $s_0$ of $\zeta$ gives a continuous linear form that kills every $\rho_\theta$ but not $\mathbf 1$; so $\mathbf 1$ stays at a positive distance from their span.
+
+\writeup (a) For $x>1$, $\frac\theta x$ and $\frac1x$ lie in $]0,1[$, so $\rho_\theta(x)=\frac\theta x-\frac\theta x=0$. Hence $\int_0^1\rho_\theta x^{s-1}=\int_0^\infty\rho_\theta x^{s-1}$. Each of the two terms
+is integrable separately for $0<\operatorname{Re}s<1$, since $0\le\{\frac1u\}\le\min(1,\frac1u)$, and $x=\theta u$ gives $\int_0^\infty\{\frac\theta x\}x^{s-1}\dd x=\theta^s\int_0^\infty\{\frac1u\}u^{s-1}\dd u$. By
+Problem~\ref{pb:zetamellin}(b), the transform is $-\frac{\zeta(s)}s\theta^s+\theta\frac{\zeta(s)}s$.
+
+(b) Let $\Lambda(g)=\int_0^1g(x)x^{s_0-1}\dd x$. By Cauchy--Schwarz, $|\Lambda(g)|\le\|g\|_2\bigl(\int_0^1x^{2\sigma_0-2}\dd x\bigr)^{1/2}=\frac{\|g\|_2}{\sqrt{2\sigma_0-1}}$, so $\Lambda$ is continuous
+on $L^2(]0,1[)$. By (a), $\Lambda(\rho_\theta)=0$ for all $\theta$, so $\Lambda$ vanishes on $\mathcal N$ by linearity and continuity. And $\Lambda(\mathbf 1)=\frac1{s_0}$. For $f\in\mathcal N$,
+$\frac1{|s_0|}=|\Lambda(\mathbf 1-f)|\le\frac{\|\mathbf 1-f\|_2}{\sqrt{2\sigma_0-1}}$.
+
+(c) If $\mathbf 1\in\mathcal N$, (b) with $f=\mathbf 1$ gives $0\ge\frac{\sqrt{2\sigma_0-1}}{|s_0|}>0$ for any zero with $\frac12<\sigma_0<1$, so there is none. There is no zero with $\sigma_0>1$ (Euler
+product) or $\sigma_0=1$ (Tome~5, Theorem~5.2).
+
+\tools{Tome~7, Chapter~2 (continuous linear forms, closed spans); Tome~5, Theorem~5.2; Problem~\ref{pb:zetamellin}.}
+\leads Nyman (thesis, Uppsala, 1950) and Beurling (\emph{Proc.\ Nat.\ Acad.\ Sci.}\ 41, 1955) proved the converse: the Riemann hypothesis \emph{holds} if and only if $\mathbf 1\in\mathcal N$.
+Báez-Duarte (2003) showed that the dilations $\theta=\frac1k$ suffice, and Burnol (2002) proved that the distance $d_N$ from $\mathbf 1$ to the span of $\rho_{1/k}$, $k\le N$, is at least of
+order $1/\sqrt{\log N}$; the notebook computes $d_N$ for small $N$. So the criterion is a statement about the speed of an approximation in a Hilbert space.
+\end{solution}
+
+\begin{solution}{pb:bohrvalues}
+\idea Unique factorisation makes the phases $p^{-it}$ independent, so by Kronecker they behave like a point of the infinite torus that can be put almost anywhere. The
+value set of $\zeta$ on a vertical line is then the image of a compact space.
+
+\writeup (a) For $|w|\le\frac12$, $|\log(1-w)^{-1}|\le\sum_k\frac{|w|^k}k\le2|w|$. So $\log Z_\sigma(z)=\sum_p\log(1-p^{-\sigma}z_p)^{-1}$ is a series of continuous functions on
+$\mathbb T^{\mathcal P}$, each depending on one coordinate, dominated by $\sum_p2p^{-\sigma}<\infty$; it converges uniformly, and $Z_\sigma=\exp(\log Z_\sigma)$ is continuous. The space
+$\mathbb T^{\mathcal P}$ is compact by Tychonoff (Tome~6, Theorem~4.11), so its continuous image $E_\sigma$ is compact.
+
+(b) The numbers $\beta_j=\frac{\log p_j}{2\pi}$ are linearly independent over $\Q$: $\sum_jr_j\log p_j=0$ with integers $r_j$ means $\prod_jp_j^{r_j}=1$, so all $r_j=0$ by unique
+factorisation. A relation $r_0+\sum_{j\ge1}r_jc\beta_j=0$ with $(r_1,\dots,r_k)\ne0$ forces $c=-r_0/\sum_jr_j\beta_j$, a countable set of values; so we may choose $c>0$ such that $1$
+and the $c\beta_j$ are independent. Write $w_j=e(-\theta_j)$. By Kronecker--Weyl (Tome~7, Theorem~2.9), the proportion of $n<N$ with $\|nc\beta_j-\theta_j\|<\frac\varepsilon{2\pi}$ for all $j$
+tends to a positive limit, so there are such $n$ with $nc>t_0$. For $t=nc$, $|p_j^{-it}-w_j|=|e(-t\beta_j)-e(-\theta_j)|\le2\pi\|t\beta_j-\theta_j\|<\varepsilon$.
+
+(c) $\zeta(\sigma+it)=Z_\sigma((p^{-it})_p)\in E_\sigma$, and $E_\sigma$ is closed, so the closure of the values lies in $E_\sigma$. Conversely let $z\in\mathbb T^{\mathcal P}$ and
+$\varepsilon>0$. Let $Z^{(P)}$ be the product over $p\le P$; by the uniform convergence in (a), choose $P$ with $|Z_\sigma-Z^{(P)}|<\varepsilon$ everywhere. $Z^{(P)}$ is a continuous
+function of finitely many coordinates, so there is $\delta>0$ with $|Z^{(P)}(w)-Z^{(P)}(z)|<\varepsilon$ when $|w_p-z_p|<\delta$ for $p\le P$. By (b) there is $t$ (as large as we wish) with
+$|p^{-it}-z_p|<\delta$ for $p\le P$; with $w=(p^{-it})_p$,
+\[
+|\zeta(\sigma+it)-Z_\sigma(z)|\le|Z_\sigma(w)-Z^{(P)}(w)|+|Z^{(P)}(w)-Z^{(P)}(z)|+|Z^{(P)}(z)-Z_\sigma(z)|<3\varepsilon.
+\]
+
+(d) Each factor satisfies $\frac1{1+p^{-\sigma}}\le|1-p^{-\sigma}z_p|^{-1}\le\frac1{1-p^{-\sigma}}$, with the extremes at $z_p=-1$ and $z_p=1$. So $\max_{E_\sigma}|w|=\prod_p(1-p^{-\sigma})^{-1}=\zeta(\sigma)$ and
+\[
+\min_{E_\sigma}|w|=\prod_p\frac1{1+p^{-\sigma}}=\prod_p\frac{1-p^{-\sigma}}{1-p^{-2\sigma}}=\frac{\zeta(2\sigma)}{\zeta(\sigma)}.
+\]
+By (c) these are the supremum and the infimum of $|\zeta(\sigma+it)|$. For $\sigma=2$: $\zeta(2)=\frac{\pi^2}6=1.6449\ldots$ and $\frac{\zeta(4)}{\zeta(2)}=\frac{\pi^4/90}{\pi^2/6}=\frac{\pi^2}{15}=0.6579\ldots$
+The supremum is reached at $t=0$; the infimum is not reached, since $2^{-it}=3^{-it}=-1$ would make $\frac{\log3}{\log2}$ a quotient of odd integers.
+
+\tools{Tome~6, Theorem~4.11 (Tychonoff); Tome~7, Theorem~2.9 (Kronecker--Weyl); Tome~1, Chapter~2 (unique factorisation).}
+\leads Bohr proved (c) in 1911--1913, and with Jessen (\emph{Acta Math.}\ 54, 1930 and 58, 1932) showed that $\zeta(\sigma+it)$ has a \emph{limiting distribution}: the image of the Haar
+measure of $\mathbb T^{\mathcal P}$ by $Z_\sigma$. They proved it also for $\frac12<\sigma\le1$, where the product diverges; there the values of $\zeta(\sigma+it)$ are dense in $\C$ (Bohr and Courant, 1914). Voronin
+(1975) went further: in the strip $\frac12<\sigma<1$, $\zeta$ approximates every non-vanishing holomorphic function on small discs, after a vertical shift (\emph{universality}).
+\end{solution}
+
+\begin{solution}{pb:almostperiodic}
+\idea A finite cover of a compact group by translates of a small ball gives returns with bounded gaps. A Dirichlet series is uniformly close to a polynomial in
+finitely many phases $p^{-i\tau}$, and returns of those phases are returns of the series.
+
+\writeup (a) Use the distance $\|x\|=\max_j\|x_j\|$ on $\mathbb T^k=\R^k/\Z^k$. The closure $O$ of $\{\tau\alpha\bmod\Z^k:\tau\in\R\}$ is a closed subgroup of $\mathbb T^k$, hence compact,
+and the open balls $B(\tau\alpha,\frac\eta2)$ cover it; extract a finite subcover with centres $\tau_1\alpha,\dots,\tau_m\alpha$, and let $M=\max|\tau_i|$. For any $a\in\R$, $-a\alpha\in O$ lies in some
+$B(\tau_i\alpha,\frac\eta2)$, that is $\|(a+\tau_i)\alpha\|<\frac\eta2$. So every interval $[a-M,a+M]$ contains a point $a+\tau_i$ of the set: it is relatively dense with $L=2M$.
+
+(b) Choose $N$ with $\sum_{n>N}n^{-\sigma_1}<\frac\varepsilon4$. For $\operatorname{Re}s\ge\sigma_1$,
+$|\zeta(s+i\tau)-\zeta(s)|\le\sum_{n\le N}|n^{-i\tau}-1|+\frac\varepsilon2$. For unimodular $a_i$, $|\prod a_i-1|\le\sum|a_i-1|$ (telescoping) and $|a^k-1|\le k|a-1|$, so if $n=\prod p^{k_p}\le N$,
+\[
+|n^{-i\tau}-1|\le\sum_pk_p|p^{-i\tau}-1|\le\log_2N\cdot\max_{p\le N}|p^{-i\tau}-1|\le2\pi\log_2N\cdot\max_{p\le N}\Bigl\|\frac{\tau\log p}{2\pi}\Bigr\|.
+\]
+By (a) with $\alpha=(\frac{\log p}{2\pi})_{p\le N}$ and $\eta=\frac\varepsilon{4\pi N\log_2N}$, the $\tau$ with all these distances below $\eta$ form a relatively dense set, and for them
+$|\zeta(s+i\tau)-\zeta(s)|<\varepsilon$ on the whole half-plane.
+
+(c) With $s=\sigma$, the $\tau$ of (b) give $|\zeta(\sigma+i\tau)|>\zeta(\sigma)-\varepsilon$, in every interval of length $L$. If $|\zeta(\sigma+it)|$ had a limit, it would be $\zeta(\sigma)$; but by
+Problem~\ref{pb:bohrvalues}(c), applied with $t$ large, $|\zeta(\sigma+it)|$ comes arbitrarily close to $\frac{\zeta(2\sigma)}{\zeta(\sigma)}<\zeta(\sigma)$ for arbitrarily large $t$.
+
+\tools{Tome~6, Chapter~4 (compactness); Problem~\ref{pb:bohrvalues}.}
+\leads A continuous $f$ on $\R$ whose $\varepsilon$-almost periods $\{\tau:\sup|f(\cdot+\tau)-f|<\varepsilon\}$ are relatively dense for every $\varepsilon$ is \emph{almost periodic}. Bohr proved
+(\emph{Acta Math.}\ 45--47, 1925--1926) that these are exactly the uniform limits of trigonometric polynomials $\sum c_ke^{i\lambda_kt}$ with real frequencies, a Parseval theory with an
+uncountable orthonormal family $(e^{i\lambda t})_{\lambda\in\R}$ for the mean value. Here the frequencies are $-\log n$.
+\end{solution}
+
+\begin{solution}{pb:vandelune}
+\idea $\operatorname{Re}\zeta>0$ as soon as $|\arg\zeta|<\frac\pi2$, and the argument of the Euler product is a sum of independent angles, each bounded by $\arcsin p^{-\sigma}$. When the
+bounds add up to more than $\frac\pi2$, Bohr's theorem lets the angles conspire.
+
+\writeup (a) $v=1-rz$ runs over the circle of centre $1$ and radius $r<1$, which lies in $\operatorname{Re}v>0$. The tangents from $0$ to this circle make the angles $\pm\arcsin r$ with
+the real axis, so $\arg v$ runs over $[-\arcsin r,\arcsin r]$. Inversion $v\mapsto\frac1v$ maps circles not through $0$ to circles, preserves $\operatorname{Re}>0$ and changes the sign of
+the argument.
+
+(b) Each term is continuous and strictly decreasing in $\sigma$, and $x\le\arcsin x\le\frac\pi2x$ on $[0,1]$. On $\sigma\ge\sigma_1>1$ the series is dominated by $\frac\pi2\sum_pp^{-\sigma_1}$, so $A$
+is continuous; $A(\sigma)\le\frac\pi2(\zeta(\sigma)-1)\to0$ as $\sigma\to\infty$; and $A(\sigma)\ge\sum_pp^{-\sigma}\to\sum_p\frac1p=\infty$ as $\sigma\to1^+$, by monotone convergence and Tome~4,
+Corollary~10.5. The intermediate value theorem gives a unique root $\sigma_0$.
+
+(c) For $\sigma>1$, $L(s)=\sum_p\log(1-p^{-s})^{-1}$ (principal logarithms) converges and $e^{L(s)}=\zeta(s)$ by the Euler product. By (a) with $r=p^{-\sigma}$, $z=p^{-it}$, the imaginary part of the
+$p$-th term lies in $[-\arcsin p^{-\sigma},\arcsin p^{-\sigma}]$. So $|\operatorname{Im}L(s)|\le A(\sigma)<\frac\pi2$ when $\sigma>\sigma_0$, and $\zeta(s)=e^{L(s)}$ has positive real part.
+
+(d) Now $A(\sigma)>\frac\pi2$, so there is $P$ with $S=\sum_{p\le P}\arcsin p^{-\sigma}>\frac\pi2$. Fix $\theta\in\,]\frac\pi2,\min(\pi,S)[$ and $\lambda=\theta/S\in\,]0,1[$. By (a) and the intermediate
+value theorem, choose $z_p\in\mathbb T$ for $p\le P$ with $\arg(1-p^{-\sigma}z_p)^{-1}=\lambda\arcsin p^{-\sigma}$, and $z_p=1$ for $p>P$ (positive real factors). Then $Z_\sigma(z)$ has argument
+$\theta$, so $\operatorname{Re}Z_\sigma(z)<0$. By Problem~\ref{pb:bohrvalues}(c), $\zeta(\sigma+it)$ comes as close as we like to $Z_\sigma(z)$, so $\operatorname{Re}\zeta(\sigma+it)<0$ for some $t$.
+
+(e) $\zeta(\sigma_0)$ is a sum over integers, which Euler--Maclaurin accelerates at will. $A(\sigma_0)$ is a sum over primes, and by the prime number theorem $\sum_{p>x}p^{-\sigma_0}$ is close to
+$\int_x^\infty\frac{t^{-\sigma_0}}{\log t}\dd t$, which is still $8\cdot10^{-4}$ for $x=10^{12}$ and $5\cdot10^{-6}$ for $x=10^{22}$, because $\sigma_0-1$ is small: a direct sum gives two or
+three digits. The way out is to expand
+$\arcsin x=\sum_k\frac{\binom{2k}k}{4^k(2k+1)}x^{2k+1}$, so that $A(\sigma)=\sum_k\frac{\binom{2k}k}{4^k(2k+1)}P((2k+1)\sigma)$ with $P(s)=\sum_pp^{-s}$, and to compute the \emph{prime zeta
+function} from $\log\zeta(s)=\sum_{m\ge1}\frac{P(ms)}m$ by Möbius inversion: $P(s)=\sum_m\frac{\mu(m)}m\log\zeta(ms)$, a series converging like $2^{-ms}$. The notebook finds
+$\sigma_0=1.19234\,73371\,86193\ldots$, in agreement with Arias de Reyna, Brent and van de Lune.
+
+\tools{Tome~4, Corollary~10.5 and Theorem~10.3 (Euler product); Problem~\ref{pb:bohrvalues}; Tome~5 (the prime number theorem).}
+\leads Bohr and Landau knew that $\operatorname{Re}\zeta(\sigma+it)>0$ for $\sigma$ large. Van de Lune (1983) located the threshold $\sigma_0$, and Arias de Reyna, Brent and van de Lune
+(arXiv:1112.4910) computed it to many digits, together with the zeros of $\operatorname{Re}\zeta$ that cross the line $\sigma=\sigma_0$.
+\end{solution}
+
+\begin{solution}{pb:khinchinrec}
+\idea The correlations $\mu(A\cap T^{-n}A)$ are the matrix coefficients $\langle U^n\mathbf 1_A,\mathbf 1_A\rangle$ of an isometry, so their averages converge to $\|P\mathbf 1_A\|^2$, and a projection
+that fixes the constants cannot shrink $\mathbf 1_A$ below its mean.
+
+\writeup (a) $Uf=f\circ T$ is an isometry of $L^2(\mu)$, since $T$ preserves $\mu$, and $\mu(A\cap T^{-n}A)=\int\mathbf 1_A\,\mathbf 1_A\circ T^n\dd\mu=\langle U^n\mathbf 1_A,\mathbf 1_A\rangle$. By the mean ergodic
+theorem (Tome~7, Theorem~2.10), $\frac1N\sum_{n<N}U^n\mathbf 1_A\to P\mathbf 1_A$ in $L^2$, where $P$ is the orthogonal projection on the fixed vectors. So the averages converge to
+$\langle P\mathbf 1_A,\mathbf 1_A\rangle=\|P\mathbf 1_A\|^2$. Since $U\mathbf 1=\mathbf 1$, $\langle P\mathbf 1_A,\mathbf 1\rangle=\langle\mathbf 1_A,P\mathbf 1\rangle=a$, and Cauchy--Schwarz gives
+$a^2\le\|P\mathbf 1_A\|^2\|\mathbf 1\|^2=\|P\mathbf 1_A\|^2$.
+
+(b) Let $x_n=\mu(A\cap T^{-n}A)\in[0,a]$, $G=\{n:x_n>a^2-\varepsilon\}$ and $d_N=\frac1N\#(G\cap[0,N[)$. Then
+$\frac1N\sum_{n<N}x_n\le ad_N+(a^2-\varepsilon)(1-d_N)=a^2-\varepsilon+(a-a^2+\varepsilon)d_N$. Taking the lower limit and using (a), $a^2\le a^2-\varepsilon+(a-a^2+\varepsilon)\liminf d_N$.
+
+(c) $T^{-n}A=A-n\alpha$, and two arcs of length $a\le\frac12$ whose starting points are at distance $d=\|n\alpha\|\le\frac12$ overlap in length $\max(0,a-d)$ (the other gap, $1-d\ge a$, gives no
+overlap). The function $x\mapsto\max(0,a-\|x\|)$ is continuous on $\R/\Z$ and $(n\alpha)$ is equidistributed (Tome~4, Theorem~6.13), so the averages tend to
+$\int_0^1\max(0,a-\|x\|)\dd x=2\int_0^a(a-y)\dd y=a^2$: the bound of (a) is sharp. For the identity map, $\mu(A\cap T^{-n}A)=a>a^2$.
+
+\tools{Tome~7, Theorem~2.10 (mean ergodic theorem); Tome~4, Theorem~6.13 (Weyl's criterion).}
+\leads Khinchin's theorem (1935) sharpens Poincaré's recurrence theorem, which only gives $\mu(A\cap T^{-n}A)>0$ for some $n$. For ergodic systems Bergelson, Host and Kra (2005) proved that
+$\mu(A\cap T^{-n}A\cap T^{-2n}A)>a^3-\varepsilon$ on a set of $n$ with bounded gaps, and the same for four sets with $a^4$, but that the analogue fails for five. Furstenberg's multiple
+recurrence theorem (1977), which only asks for positivity, is equivalent to Szemerédi's theorem on arithmetic progressions.
+\end{solution}
+
+\begin{solution}{pb:norate}
+\idea For multiplication by $e(\theta)$ on $L^2(\R/\Z)$, the ergodic average is multiplication by a Dirichlet kernel, which stays large on a window of width $\frac1N$ around $0$.
+Putting enough, but not too much, mass of $|g|^2$ near $0$ slows the convergence down as much as we like.
+
+\writeup Let $H=L^2(\R/\Z)$ and $(Ug)(\theta)=e(\theta)g(\theta)$, a unitary operator. If $Ug=g$ then $(e(\theta)-1)g(\theta)=0$ almost everywhere, so $g=0$: $P=0$. And
+$\frac1N\sum_{n<N}U^ng=D_Ng$ with $D_N(\theta)=\frac1N\sum_{n<N}e(n\theta)$, $|D_N(\theta)|=\frac{|\sin\pi N\theta|}{N|\sin\pi\theta|}$. For $|\theta|\le\frac1{2N}$, $|\sin\pi N\theta|\ge2N|\theta|$ and
+$|\sin\pi\theta|\le\pi|\theta|$, so $|D_N(\theta)|\ge\frac2\pi$ and
+\[
+\|D_Ng\|^2\ge\frac4{\pi^2}F\Bigl(\frac1{2N}\Bigr),\qquad F(r)=\int_{|\theta|\le r}|g|^2.
+\]
+So it suffices to find $g\in H$ with $F(\frac1{2N})\ge\frac{\pi^2}4a_N^2$ for all $N\ge1$. Let $F$ be the continuous function on $[0,\frac12]$ that is $0$ at $0$, equal to $\frac{\pi^2}4a_N^2$ at
+$\frac1{2N}$, and linear on each $[\frac1{2N+2},\frac1{2N}]$. It is non-decreasing, because $(a_N)$ is non-increasing and the nodes decrease to $0$ while $a_N\to0$, and Lipschitz on each
+$[\delta,\frac12]$. Put $|g(\theta)|^2=\frac12F'(|\theta|)$ where the derivative exists, that is $g=\sqrt{F'(|\theta|)/2}$. Then $\int_{|\theta|\le r}|g|^2=F(r)-F(0^+)=F(r)$ and
+$\|g\|^2=F(\frac12)=\frac{\pi^2}4a_1^2<\infty$. With $x=g$, $\|\frac1N\sum_{n<N}U^nx\|\ge\frac2\pi\cdot\frac\pi2a_N=a_N$.
+
+\tools{Tome~7, Theorem~2.10 and Chapter~4 (multiplication operators); the bound \eqref{eq:dirichletkernel} in reverse.}
+\leads The construction shows that the speed in the mean ergodic theorem is governed by the mass of the spectral measure of $x$ near the eigenvalue $1$:
+$\|\frac1N\sum U^nx\|^2=\int|D_N|^2\dd\mu_x$. Krengel (1978) proved that in every ergodic system on a non-atomic probability space the convergence can be arbitrarily slow; Kachurovskii's survey (\emph{Russian Math.\ Surveys} 51, 1996) collects what can be said about rates.
+\end{solution}
+
+\begin{solution}{pb:wiener}
+\idea $|\hat\mu(n)|^2$ is the Fourier coefficient of $\mu$ convolved with its reflection, a double integral over $\mu\otimes\mu$. Averaging $e(-n(x-y))$ over $n$ produces the indicator of the diagonal
+$x=y$, whose $\mu\otimes\mu$-measure is the sum of the squares of the atoms.
+
+\writeup (a) By Fubini (Tome~6, Theorem~8.6), $|\hat\mu(n)|^2=\iint e(-n(x-y))\dd\mu(x)\dd\mu(y)$, so
+\[
+\frac1{2N+1}\sum_{|n|\le N}|\hat\mu(n)|^2=\iint F_N(x-y)\dd\mu(x)\dd\mu(y),\qquad F_N(\theta)=\frac1{2N+1}\sum_{|n|\le N}e(-n\theta).
+\]
+$|F_N|\le1$, $F_N=1$ on $\Z$, and $F_N(\theta)=\frac{\sin((2N+1)\pi\theta)}{(2N+1)\sin\pi\theta}\to0$ for $\theta\notin\Z$. By dominated convergence on the finite measure $\mu\otimes\mu$, the average
+tends to $(\mu\otimes\mu)(\{x=y\})=\int\mu(\{x\})\dd\mu(x)$ (Tonelli), and the function $x\mapsto\mu(\{x\})$ vanishes outside the countable set of atoms, so this is $\sum_x\mu(\{x\})^2$.
+
+(b) The Cantor measure has no atoms: a point lies in one of the $2^k$ triadic intervals of level $k$ that carry $\mu$, each of measure $2^{-k}$. So the averages tend to $0$, although
+$|\hat\mu(n)|=|\hat\mu(1)|=0.37143\ldots$ on the sparse set $n=3^m$ (Problem~\ref{pb:cantorfourier}). Large Fourier coefficients on a set of density $0$ are compatible with (a).
+
+(c) $|\phi(t)|^2=\phi(t)\overline{\phi(t)}=\mathbb E[e^{it(X-X')}]$ by independence. Then $\frac1{2T}\int_{-T}^Te^{itu}\dd t=\frac{\sin Tu}{Tu}$ (and $1$ at $u=0$), bounded by $1$ and tending to
+$\mathbf 1_{u=0}$; Fubini and dominated convergence give the limit $P(X-X'=0)$.
+
+\tools{Tome~6, Theorems~7.9, 8.5 and~8.6 (dominated convergence, Tonelli, Fubini).}
+\leads Wiener proved (a) in 1924, in a paper on the quadratic variation of functions. A measure without atoms need not have $\hat\mu(n)\to0$, as (b) shows, and a singular measure may
+have $\hat\mu(n)\to0$ (Menshov, 1916): such \emph{Rajchman measures} are at the heart of the uniqueness problem for trigonometric series. In (c), $P(X=X')=\sum_xP(X=x)^2$, so the limit is $0$ exactly when the law of
+$X$ has no atoms: a test for atoms that only uses $|\phi|$.
+\end{solution}
+
+\begin{solution}{pb:gebelein}
+\idea The generating function makes all computations one-line: for Gaussian variables $\mathbb E[e^{sX-s^2/2}e^{uY-u^2/2}]=e^{\rho su}$, and comparing coefficients diagonalises the
+correlation. A centred function has no component on $\mathrm{He}_0$, so it gains at least one factor $\rho$.
+
+\writeup (a) We have
+\[
+\mathbb E\bigl[e^{sX-s^2/2}e^{uX-u^2/2}\bigr]=e^{-(s^2+u^2)/2}\,\mathbb E\bigl[e^{(s+u)X}\bigr]=e^{-(s^2+u^2)/2}e^{(s+u)^2/2}=e^{su}.
+\]
+Expanding both exponentials in the left side and comparing the
+coefficients of $s^mu^n$ gives $\mathbb E[\mathrm{He}_m(X)\mathrm{He}_n(X)]=n!\,\mathbf 1_{m=n}$. The exchange of $\mathbb E$ and the double series is justified because the series of absolute
+values is dominated by $e^{(|s|+|u|)|X|+(|s|^2+|u|^2)/2}$, which is integrable. So the $\mathrm{He}_n/\sqrt{n!}$ are orthonormal, and since $\mathrm{He}_n$ has degree exactly $n$, they span the
+polynomials. For completeness, the map $f\mapsto F$, $F(y)=f(2\sqrt\pi\,y)e^{-\pi y^2}$, satisfies $\int_\R|F|^2\dd y=\frac1{\sqrt2}\int|f|^2\dd\gamma$ (substitute $x=2\sqrt\pi y$), so it is a
+multiple of an isometry from $L^2(\gamma)$ onto $L^2(\R)$, and it maps the polynomials onto the functions $q(y)e^{-\pi y^2}$, whose span contains the Hermite functions of Tome~7,
+Theorem~5.5 and is therefore dense. So the polynomials are dense in $L^2(\gamma)$.
+
+(b) Let $Z$ be standard Gaussian, independent of $X$. Then $(X,\rho X+\sqrt{1-\rho^2}Z)$ is a centred Gaussian vector with the same covariance as $(X,Y)$, hence the same law (Tome~3,
+Theorem~6.15), and
+\[
+\mathbb E\bigl[e^{sX-s^2/2}e^{uY-u^2/2}\bigr]=e^{-(s^2+u^2)/2}\,\mathbb E\bigl[e^{(s+\rho u)X}\bigr]\,\mathbb E\bigl[e^{u\sqrt{1-\rho^2}Z}\bigr]=e^{\rho su}.
+\]
+Comparing coefficients as in (a) gives $\mathbb E[\mathrm{He}_m(X)\mathrm{He}_n(Y)]=n!\,\rho^n\mathbf 1_{m=n}$.
+
+(c) By Cauchy--Schwarz, $|\mathbb E[f(X)g(Y)]|\le\|f\|\,\|g\|$, since $X$ and $Y$ both have law $\gamma$; so the bilinear form is continuous and may be computed on the expansions
+$f=\sum_{n\ge1}f_n\frac{\mathrm{He}_n}{\sqrt{n!}}$, $g=\sum_{n\ge1}g_n\frac{\mathrm{He}_n}{\sqrt{n!}}$ (no $n=0$ term, the means being $0$). By (b),
+$\mathbb E[f(X)g(Y)]=\sum_{n\ge1}\rho^nf_ng_n$, whose modulus is at most $|\rho|\sum_n|f_ng_n|\le|\rho|\,\|f\|\,\|g\|$.
+
+(d) With $Y=\rho X+\sqrt{1-\rho^2}Z$, the conditional expectation is $(Qf)(x)=\mathbb E[f(\rho x+\sqrt{1-\rho^2}Z)]$, and
+$\mathbb E\bigl[e^{u(\rho x+\sqrt{1-\rho^2}Z)-u^2/2}\bigr]=e^{(\rho u)x-(\rho u)^2/2}=\sum_n\mathrm{He}_n(x)\frac{\rho^nu^n}{n!}$. So $Q\mathrm{He}_n=\rho^n\mathrm{He}_n$, and as the $\mathrm{He}_n$ form a basis, the
+eigenvalues are exactly the $\rho^n$. Since $X^2=\mathrm{He}_2(X)+1$, $\operatorname{Cov}(X^2,Y^2)=\mathbb E[\mathrm{He}_2(X)\mathrm{He}_2(Y)]=2\rho^2$ and $\operatorname{Var}X^2=2$: the correlation is $\rho^2$.
+
+\tools{Tome~3, Theorem~6.15 (Gaussian vectors); Tome~7, Theorem~5.5 (Hermite functions) and Chapter~2 (Hilbert bases).}
+\leads Gebelein proved (c) in 1941; the supremum of $\operatorname{corr}(f(X),g(Y))$ is the \emph{maximal correlation}, one of Rényi's axioms for a measure of dependence (1959), and
+for Gaussian pairs it equals $|\rho|$. The operator $Q$ is the Ornstein--Uhlenbeck semigroup at time $-\log\rho$, with kernel given by Mehler's formula (1866). Nelson (1973) proved that $Q$ is
+a contraction from $L^2(\gamma)$ into $L^p(\gamma)$ for $p=1+\rho^{-2}$: \emph{hypercontractivity}, a pillar of the analysis of Boolean functions.
+\end{solution}
+
+\section*{Map of the chapter}
+
+\begin{center}
+\small
+\adjustbox{max width=\linewidth}{\begin{tabular}{lll}
+Problem & Topic & Tomes used\\\hline
+\ref{pb:selberg} & Selberg's inequality for almost orthogonal vectors & 7\\
+\ref{pb:welch} & the Welch bound and the icosahedron & 0, 7, S1\\
+\ref{pb:gerzon} & Gerzon's bound on equiangular lines & 0, 7, S1\\
+\ref{pb:halasz} & few large character sums & 5, 7\\
+\ref{pb:ingham} & Ingham's inequality for non-harmonic Fourier series & 4, 7\\
+\ref{pb:mvt} & a mean value theorem for Dirichlet polynomials & 7, 13\\
+\ref{pb:christoffel} & the Christoffel function of Legendre polynomials & 7\\
+\ref{pb:bergman} & the Bergman space and the area of univalent images & 4, 6, 7\\
+\ref{pb:fock} & the Fock space & 4, 6, 7\\
+\ref{pb:sobolev} & a sharp Sobolev constant on an interval & 7\\
+\ref{pb:dirichlet} & a Hilbert space of Dirichlet series & 4, 7\\
+\ref{pb:franel} & Franel's integral and $\gcd$ sums & 1, 4, 6, 7\\
+\ref{pb:ramanujan} & Ramanujan's expansion of $\sigma(n)/n$ & 4, 6, P1\\
+\ref{pb:zetamellin} & Plancherel for $\zeta$ on the critical line & 4, 7, P1\\
+\ref{pb:nyman} & the easy half of the Nyman--Beurling criterion & 5, 7\\
+\ref{pb:bohrvalues} & Bohr's theorem on the values of $\zeta$ & 1, 6, 7\\
+\ref{pb:almostperiodic} & $\zeta$ is almost periodic & 6\\
+\ref{pb:vandelune} & the sign of $\operatorname{Re}\zeta$ and van de Lune's constant & 4, 5\\
+\ref{pb:khinchinrec} & Khinchin's recurrence theorem & 4, 7\\
+\ref{pb:norate} & no rate in the mean ergodic theorem & 7\\
+\ref{pb:wiener} & Wiener's theorem on atoms & 6\\
+\ref{pb:gebelein} & Gebelein's inequality and Hermite polynomials & 3, 7\\
+\end{tabular}}
+\end{center}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~C.~Titchmarsh, Harald Bohr, \emph{Journal of the London Mathematical Society} 28 (1953), 113--115 (the epigraph); J.~J.~O'Connor and E.~F.~Robertson, Harald August Bohr,
+\emph{MacTutor History of Mathematics Archive}, University of St Andrews (football, the thesis defence).
+\item H.~Bohr, Über das Verhalten von $\zeta(s)$ in der Halbebene $\sigma>1$, \emph{Nachrichten der Gesellschaft der Wissenschaften zu Göttingen, Math.-Phys.\ Klasse} (1911), 409--428;
+Über die Bedeutung der Potenzreihen unendlich vieler Variabeln in der Theorie der Dirichletschen Reihen $\sum a_n/n^s$, ibid.\ (1913), 441--488; Zur Theorie der fastperiodischen
+Funktionen I, \emph{Acta Mathematica} 45 (1925), 29--127; H.~Bohr and B.~Jessen, Über die Werteverteilung der Riemannschen Zetafunktion, \emph{Acta Mathematica} 54 (1930), 1--35
+and 58 (1932), 1--55 (Problems~\ref{pb:bohrvalues} and~\ref{pb:almostperiodic}).
+\item J.~van de Lune, \emph{Some observations concerning the zero-curves of the real and imaginary parts of Riemann's zeta function}, Report ZW 201/83, Mathematisch Centrum,
+Amsterdam, 1983; J.~Arias de Reyna, R.~P.~Brent and J.~van de Lune, On the sign of the real part of the Riemann zeta function, arXiv:1112.4910 (Problem~\ref{pb:vandelune}).
+\item E.~Bombieri, \emph{Le grand crible dans la théorie analytique des nombres}, Astérisque 18, 1974; H.~L.~Montgomery, \emph{Topics in Multiplicative Number Theory}, Lecture
+Notes in Mathematics 227, Springer, 1971; H.~L.~Montgomery and R.~C.~Vaughan, Hilbert's inequality, \emph{Journal of the London Mathematical Society} 8 (1974), 73--82; J.~D.~Vaaler,
+Some extremal functions in Fourier analysis, \emph{Bulletin of the AMS} 12 (1985), 183--216 (Selberg, Halász, mean values).
+\item L.~R.~Welch, Lower bounds on the maximum cross correlation of signals, \emph{IEEE Transactions on Information Theory} 20 (1974), 397--399; P.~W.~H.~Lemmens and J.~J.~Seidel,
+Equiangular lines, \emph{Journal of Algebra} 24 (1973), 494--512; Z.~Jiang, J.~Tidor, Y.~Yao, S.~Zhang and Y.~Zhao, Equiangular lines with a fixed angle, \emph{Annals of Mathematics}
+194 (2021), 729--743.
+\item A.~E.~Ingham, Some trigonometrical inequalities with applications to the theory of series, \emph{Mathematische Zeitschrift} 41 (1936), 367--379; M.~I.~Kadec, The exact value of
+the Paley--Wiener constant, \emph{Soviet Mathematics Doklady} 5 (1964), 559--561; R.~M.~Young, \emph{An Introduction to Nonharmonic Fourier Series}, revised ed., Academic Press, 2001.
+\item N.~Aronszajn, Theory of reproducing kernels, \emph{Transactions of the AMS} 68 (1950), 337--404; A.~Berlinet and C.~Thomas-Agnan, \emph{Reproducing Kernel Hilbert Spaces in
+Probability and Statistics}, Kluwer, 2004; H.~Hedenmalm, B.~Korenblum and K.~Zhu, \emph{Theory of Bergman Spaces}, Graduate Texts in Mathematics 199, Springer, 2000;
+V.~Bargmann, On a Hilbert space of analytic functions and an associated integral transform, \emph{Communications on Pure and Applied Mathematics} 14 (1961), 187--214.
+\item H.~Hedenmalm, P.~Lindqvist and K.~Seip, A Hilbert space of Dirichlet series and systems of dilated functions in $L^2(0,1)$, \emph{Duke Mathematical Journal} 86 (1997), 1--37;
+J.~Franel, Les suites de Farey et le problème des nombres premiers, and E.~Landau, Bemerkungen zu der vorstehenden Abhandlung von Herrn Franel, \emph{Nachrichten der Gesellschaft der
+Wissenschaften zu Göttingen} (1924), 198--201 and 202--206; A.~Bondarenko and K.~Seip, Large greatest common divisor sums and extreme values of the Riemann zeta function, \emph{Duke
+Mathematical Journal} 166 (2017), 1685--1701.
+\item S.~Ramanujan, On certain trigonometrical sums and their applications in the theory of numbers, \emph{Transactions of the Cambridge Philosophical Society} 22 (1918), 259--276;
+Some formulae in the analytic theory of numbers, \emph{Messenger of Mathematics} 45 (1916), 81--84; R.~D.~Carmichael, Expansions of arithmetical functions in infinite series,
+\emph{Proceedings of the London Mathematical Society} 34 (1932), 1--26.
+\item E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed., revised by D.~R.~Heath-Brown, Oxford, 1986 (mean values, Problem~\ref{pb:zetamellin});
+A.~Beurling, A closure problem related to the Riemann zeta-function, \emph{Proceedings of the National Academy of Sciences USA} 41 (1955), 312--314; L.~Báez-Duarte, A strengthening of
+the Nyman--Beurling criterion for the Riemann hypothesis, \emph{Atti della Accademia Nazionale dei Lincei} 14 (2003), 5--11; J.-F.~Burnol, A lower bound in an approximation problem
+involving the zeros of the Riemann zeta function, \emph{Advances in Mathematics} 170 (2002), 56--70.
+\item A.~Khintchine, Eine Verschärfung des Poincaréschen ``Wiederkehrsatzes'', \emph{Compositio Mathematica} 1 (1935), 177--179; V.~Bergelson, B.~Host and B.~Kra, Multiple recurrence
+and nilsequences, \emph{Inventiones Mathematicae} 160 (2005), 261--303; U.~Krengel, On the speed of convergence in the ergodic theorem, \emph{Monatshefte für Mathematik} 86 (1978), 3--6.
+\item N.~Wiener, The quadratic variation of a function and its Fourier coefficients, \emph{Journal of Mathematics and Physics (MIT)} 3 (1924), 72--94; H.~Gebelein, Das statistische
+Problem der Korrelation als Variations- und Eigenwertproblem und sein Zusammenhang mit der Ausgleichsrechnung, \emph{Zeitschrift für Angewandte Mathematik und Mechanik} 21 (1941),
+364--379; A.~Rényi, On measures of dependence, \emph{Acta Mathematica Academiae Scientiarum Hungaricae} 10 (1959), 441--451; E.~Nelson, The free Markoff field, \emph{Journal of
+Functional Analysis} 12 (1973), 211--227.
+\item Further sources for the leads: V.~Fock, Verallgemeinerung und Lösung der Diracschen statistischen Gleichung, \emph{Zeitschrift für Physik} 49 (1928), 339--357; G.~H.~Hardy and
+J.~E.~Littlewood, Contributions to the theory of the Riemann zeta-function and the theory of the distribution of primes, \emph{Acta Mathematica} 41 (1916), 119--196; I.~S.~Gál, A theorem
+concerning Diophantine approximations, \emph{Nieuw Archief voor Wiskunde} 23 (1949), 13--38; H.~Bohr and R.~Courant, Neue Anwendungen der Theorie der Diophantischen Approximationen auf
+die Riemannsche Zetafunktion, \emph{Journal für die reine und angewandte Mathematik} 144 (1914), 249--274; S.~M.~Voronin, Theorem on the ``universality'' of the Riemann zeta-function,
+\emph{Izvestiya Akademii Nauk SSSR, Ser.\ Mat.}\ 39 (1975), 475--486; P.~Nevai, Géza Freud, orthogonal polynomials and Christoffel functions: a case study, \emph{Journal of Approximation
+Theory} 48 (1986), 3--167; A.~G.~Kachurovskii, The rate of convergence in ergodic theorems, \emph{Russian Mathematical Surveys} 51 (1996), 653--703.
+\end{itemize}

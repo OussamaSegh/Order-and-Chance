@@ -70,7 +70,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Complete (12 chapters) |
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Complete (10 chapters, regenerated from the other tomes at every build) |
 | P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
-| P2 | Machinery | 300 harder problems across Tomes 6–9 | In progress (1 of 14 chapters) |
+| P2 | Machinery | 300 harder problems across Tomes 6–9 | In progress (2 of 14 chapters) |
 | P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |
 
 Tomes 0–5 are the foundations, 6–9 the graduate toolbox, and 10–15 the road to research in probability,
