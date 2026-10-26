@@ -448,6 +448,59 @@ def stick_breaking(rings=13, seed=10):
     return "\n".join(lines) + "\n"
 
 
+def farey_tessellation(depth=8, nmax=40):
+    """The Farey tessellation of the hyperbolic disc: the geodesics joining p/q and r/s whenever
+    ps - qr = +-1, carried from the upper half-plane by the Cayley map z -> (z-i)/(z+i). They cut
+    the disc into ideal triangles, all images of one triangle under the modular group SL2(Z)
+    (Tome 8, Chapter 9)."""
+    from fractions import Fraction
+
+    def to_angle(x):                   # boundary point of the half-plane -> angle on the circle
+        if x is None:
+            return 0.0
+        w = complex(x, -1) / complex(x, 1)
+        return math.atan2(w.imag, w.real)
+
+    def arc(a, b, n=60):
+        d = (b - a + math.pi) % (2 * math.pi) - math.pi   # signed angular gap in (-pi, pi]
+        if abs(abs(d) - math.pi) < 1e-9:
+            return [(R * math.cos(a), R * math.sin(a)), (R * math.cos(b), R * math.sin(b))], math.pi
+        m = a + d / 2
+        dist = 1 / math.cos(d / 2)
+        rad = abs(math.tan(d / 2))
+        cx, cy = dist * math.cos(m), dist * math.sin(m)
+        # the arc runs inside the disc, from e^{ia} to e^{ib}, on the circle centred at (cx, cy)
+        ta = math.atan2(math.sin(a) - cy, math.cos(a) - cx)
+        tb = math.atan2(math.sin(b) - cy, math.cos(b) - cx)
+        dt = (tb - ta + math.pi) % (2 * math.pi) - math.pi
+        pts = [(R * (cx + rad * math.cos(ta + dt * k / n)), R * (cy + rad * math.sin(ta + dt * k / n)))
+               for k in range(n + 1)]
+        return pts, abs(d)
+
+    edges = [(Fraction(n), None) for n in range(-nmax, nmax + 1)]
+    stack = [((n, 1), (n + 1, 1), 0) for n in range(-nmax, nmax)]
+    while stack:
+        (p, q), (r, t), k = stack.pop()
+        edges.append((Fraction(p, q), Fraction(r, t)))
+        if k < depth:
+            m = (p + r, q + t)
+            stack.append(((p, q), m, k + 1))
+            stack.append((m, (r, t), k + 1))
+    lines = ["%% Farey tessellation in the disc: geodesics p/q -- r/s with ps-qr=+-1, depth %d." % depth,
+             r"\draw[accent,line width=0.9pt] (0,0) circle (%.4fin);" % R]
+    for x, y in edges:
+        a, b = to_angle(x), to_angle(y)
+        gap0 = abs((b - a + math.pi) % (2 * math.pi) - math.pi)
+        if gap0 < 0.012:
+            continue
+        pts, gap = arc(a, b, n=max(6, int(70 * gap0 / math.pi)))
+        if gap < 0.012:
+            continue
+        w = max(0.12, min(1.1, 1.6 * gap))
+        lines.append(r"\draw[accent,line width=%.2fpt] " % w + "--".join("(%.4fin,%.4fin)" % pt for pt in pts) + ";")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -457,6 +510,7 @@ MOTIFS = {
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
     "tome7-analysis": confocal_grid,
+    "tome8-shapes": farey_tessellation,
     "tome10-chance2": stick_breaking,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
