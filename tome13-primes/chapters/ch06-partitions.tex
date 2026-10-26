@@ -1,0 +1,251 @@
+\chapter{The Circle Method I: Partitions}
+\begin{center}\itshape
+Four can be written as $4$, $3+1$, $2+2$, $2+1+1$ and $1+1+1+1$:\\
+five ways. Two hundred can be written in nearly four trillion ways,\\
+and a formula from 1918 gets every one of its thirteen digits right.
+\end{center}
+
+Percy MacMahon, a former major of the Royal Artillery and the leading expert on partitions in England, sat down with Euler's pentagonal recurrence and computed, by hand, the number $p(n)$ of partitions of $n$ for every $n\le200$. He did it for two colleagues at Trinity College, Cambridge, who wanted to test a formula. Godfrey Harold Hardy and Srinivasa Ramanujan had guessed that $p(n)$ grows like $e^{\pi\sqrt{2n/3}}$, and then had done something nobody had done before: they wrote $p(n)$ as a contour integral around the unit circle, looked at every point of the circle where the generating function blows up, and added the contributions. The result, published in 1918 with MacMahon's table at the end, was a series whose first few terms give $p(200)=3\,972\,999\,029\,388$ to within a fraction of a unit. Littlewood later wrote that ``a severe numerical test was now made, which elicited the astonishing facts about $p(100)$ and $p(200)$''. 
+The method, which Hardy and Littlewood then turned on Waring's problem and on Goldbach, is the \emph{circle method}. This chapter does the simplest case completely. The generating function of partitions is a modular form in disguise, so its behaviour near $1$ is known exactly, by Dedekind's transformation of $\eta$. Near $1$ lies the \emph{major arc}, which gives the main term; on the rest of the circle, the \emph{minor arc}, the function is exponentially smaller. Chapter~7 does the same for sums of primes and of powers, where nothing is known exactly and Chapter~5 has to supply the estimates.
+
+\begin{reminder}[from Tomes 4 and 5]
+\emph{Partitions} (Tome~4, Chapter~2). $P(z)=\sum_{n\ge0}p(n)z^n=\prod_{m\ge1}\frac1{1-z^m}$ for $|z|<1$, and Euler's pentagonal theorem gives $p(n)=\sum_{k\ne0}(-1)^{k+1}p(n-\frac{k(3k-1)}2)$, with $p(m)=0$ for $m<0$.
+\emph{An upper bound} (Tome~4, Exercise~11.5). $\log P(e^{-t})\le\frac{\pi^2}{6t}$ for $t>0$.
+\emph{Dedekind's eta function} (Tome~5, Theorem~12.7). For $\operatorname{Im}\tau>0$, $\eta(\tau)=e^{\pi i\tau/12}\prod_{m\ge1}(1-e^{2\pi im\tau})$ satisfies $\eta(-\frac1\tau)=\sqrt{-i\tau}\,\eta(\tau)$, with the principal square root.
+\end{reminder}
+
+\section{Partitions and the eta function}
+
+Since $P(e^{2\pi i\tau})=\frac{e^{\pi i\tau/12}}{\eta(\tau)}$, the transformation of $\eta$ is a transformation of $P$.
+
+\begin{lemma}\label{lem:ptrans}
+For $\operatorname{Im}\tau>0$,
+\[
+P(e^{2\pi i\tau})=\sqrt{-i\tau}\;e^{\frac{\pi i}{12\tau}}\,e^{\frac{\pi i\tau}{12}}\,P\bigl(e^{-2\pi i/\tau}\bigr).
+\]
+In particular, for real $t>0$,
+\[
+P(e^{-t})=\sqrt{\frac t{2\pi}}\;\exp\Bigl(\frac{\pi^2}{6t}-\frac t{24}\Bigr)\,P\bigl(e^{-4\pi^2/t}\bigr).
+\]
+\end{lemma}
+\begin{proof}
+Apply $P(e^{2\pi i\sigma})=e^{\pi i\sigma/12}\eta(\sigma)^{-1}$ at $\sigma=\tau$ and at $\sigma=-\frac1\tau$, which also lies in the upper half-plane. Dedekind's theorem gives
+\[
+P(e^{2\pi i\tau})=\frac{e^{\pi i\tau/12}}{\eta(\tau)}=\frac{e^{\pi i\tau/12}\sqrt{-i\tau}}{\eta(-1/\tau)}=e^{\pi i\tau/12}\sqrt{-i\tau}\;e^{\frac{\pi i}{12\tau}}P\bigl(e^{-2\pi i/\tau}\bigr),
+\]
+since $\eta(-\frac1\tau)^{-1}=e^{\pi i/(12\tau)}P(e^{-2\pi i/\tau})$. For the second form take $\tau=\frac{it}{2\pi}$: then $e^{2\pi i\tau}=e^{-t}$, $\sqrt{-i\tau}=\sqrt{\frac t{2\pi}}$, $e^{\pi i\tau/12}=e^{-t/24}$, $\frac{\pi i}{12\tau}=\frac{\pi^2}{6t}$ and $e^{-2\pi i/\tau}=e^{-4\pi^2/t}$.
+\end{proof}
+
+When $t$ is small, $e^{-4\pi^2/t}$ is tiny and $P(e^{-4\pi^2/t})$ is $1$ to many decimals. So the lemma says that $\log P(e^{-t})=\frac{\pi^2}{6t}+\frac12\log\frac t{2\pi}-\frac t{24}+O(e^{-4\pi^2/t})$: the crude bound of Tome~4 was right to leading order, and now we have every term. At $t=0.01$, $P(e^{-t})$ is about $10^{70}$, and the lemma computes it from the value of $P$ at $e^{-3948}$.
+
+\section{The theorem of Hardy and Ramanujan}
+
+\begin{theorem}[Hardy and Ramanujan, 1918]\label{thm:hr}
+As $n\to\infty$,
+\[
+p(n)=\frac{e^{\pi\sqrt{2n/3}}}{4\sqrt3\,n}\Bigl(1+O\bigl(n^{-1/4}\bigr)\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{The integral.} Fix $y>0$, to be chosen, and put $\tau=x+iy$. Cauchy's formula on the circle $|z|=e^{-2\pi y}$, with $z=e^{2\pi i\tau}$ and $\dd z=2\pi iz\dd x$, gives
+\[
+p(n)=\int_{-1/2}^{1/2}P(e^{2\pi i\tau})\,e^{-2\pi in\tau}\dd x.
+\]
+Let $N'=n-\frac1{24}$. By Lemma~\ref{lem:ptrans} the integrand is $\sqrt{-i\tau}\exp\bigl(\frac{\pi i}{12\tau}-2\pi iN'\tau\bigr)P(w)$, with $w=e^{-2\pi i/\tau}$: the factor $e^{\pi i\tau/12}$ has turned $n$ into $N'$. Choose
+\[
+y=\frac1{\sqrt{24N'}},\qq a=\frac\pi{12y}=2\pi N'y=\pi\sqrt{\frac{N'}6},
+\]
+so that $2a=\pi\sqrt{2N'/3}$. We assume $n\ge17$, so that $y\le\frac1{20}$ and $a\ge3$.
+
+\emph{The exponent.} Write $x=yt$, so that $\tau=iy(1-it)$ and $\dd x=y\dd t$. Then $\frac{\pi i}{12\tau}=\frac{a}{1-it}=\frac{a(1+it)}{1+t^2}$ and $-2\pi iN'\tau=a-iat$, and the sum is
+\[
+a\,\frac{1+it+(1-it)(1+t^2)}{1+t^2}=a\,\frac{2+t^2-it^3}{1+t^2}=2a-\frac{at^2}{1+t^2}-\frac{iat^3}{1+t^2}.
+\]
+Also $|w|=\exp\bigl(-\frac{2\pi}{y(1+t^2)}\bigr)$, since $-\frac{2\pi i}\tau=-\frac{2\pi(1+it)}{y(1+t^2)}$.
+
+\emph{The major arc, $|x|\le y$.} Here $|t|\le1$, and the contribution is $y^{3/2}e^{2a}J$, where
+\[
+J=\int_{-1}^1(1-it)^{1/2}\exp\Bigl(-\frac{at^2}{1+t^2}-\frac{iat^3}{1+t^2}\Bigr)P(w)\dd t.
+\]
+We compare $J$ with $\int_{\R}e^{-at^2}\dd t=\sqrt{\pi/a}$. Three facts are needed for $|t|\le1$.
+First, $|(1-it)^{1/2}-1|=\frac{|t|}{|(1-it)^{1/2}+1|}\le|t|$, because the principal root has positive real part.
+Second, $|e^{-i\varphi}-1|\le|\varphi|$ for real $\varphi$, so the phase differs from $1$ by at most $a|t|^3$.
+Third, $|w|\le e^{-\pi/y}$, and $p(m)\le2^{m-1}$ (a partition of $m$ is determined by the composition obtained by ordering its parts, and there are $2^{m-1}$ compositions), so $|P(w)-1|\le\sum_{m\ge1}2^{m-1}|w|^m=\frac{|w|}{1-2|w|}\le2|w|$ whenever $|w|\le\frac14$; in particular $|P(w)|\le2$.
+Writing $(1-it)^{1/2}e^{-i\varphi}P(w)-1$ as $((1-it)^{1/2}-1)e^{-i\varphi}P(w)+(e^{-i\varphi}-1)P(w)+(P(w)-1)$, its modulus is at most $2|t|+2a|t|^3+2e^{-\pi/y}$. Moreover $\frac{t^2}{1+t^2}\ge\frac{t^2}2$ on $[-1,1]$, and
+\[
+0\le e^{-\frac{at^2}{1+t^2}}-e^{-at^2}=e^{-\frac{at^2}{1+t^2}}\Bigl(1-e^{-\frac{at^4}{1+t^2}}\Bigr)\le at^4e^{-at^2/2}.
+\]
+With $\int_{\R}|t|e^{-at^2/2}\dd t=\frac2a$, $\int_{\R}|t|^3e^{-at^2/2}\dd t=\frac4{a^2}$, $\int_\R t^4e^{-at^2/2}\dd t=3\sqrt{2\pi}\,a^{-5/2}$ and $\int_{|t|>1}e^{-at^2}\dd t\le\int_{|t|>1}|t|e^{-at^2}\dd t=\frac{e^{-a}}a$,
+\[
+\Bigl|J-\sqrt{\frac\pi a}\Bigr|\le\frac4a+\frac8a+2e^{-\pi/y}\sqrt{\frac{2\pi}a}+\frac{3\sqrt{2\pi}}{a^{3/2}}+\frac{e^{-a}}a\le\frac{20}a,
+\]
+since $a\ge3$ and $\frac\pi y=12a$.
+So the major arc contributes $y^{3/2}e^{2a}\sqrt{\pi/a}\,(1+\theta\frac{20}{\sqrt{\pi a}})$ with $|\theta|\le1$. As $\sqrt{\pi/a}=\sqrt{12y}$, the main term is $\sqrt{12}\,y^2e^{2a}=\frac{e^{2a}}{4\sqrt3\,N'}$.
+
+\emph{The minor arc, $y\le|x|\le\frac12$.} Let $r=e^{-2\pi y}$, so $z=re(x)$. Expanding $-\log(1-z^k)$ and summing over $k$ first,
+\[
+\log P(z)=\sum_{m\ge1}\frac1m\,\frac{z^m}{1-z^m},
+\]
+and each term has modulus at most the corresponding term $\frac1m\frac{r^m}{1-r^m}$ of $\log P(r)$. Keeping only $m=1$,
+\[
+\log P(r)-\log|P(z)|\ge\frac r{1-r}-\frac r{|1-z|}.
+\]
+Now $|1-z|^2=(1-r)^2+4r\sin^2\pi x\ge(1-r)^2+16rx^2$, as $|\sin\pi x|\ge2|x|$ for $|x|\le\frac12$; and $|x|\ge y\ge\frac{1-r}{2\pi}$, since $1-e^{-u}\le u$. So $|1-z|\ge(1-r)(1+\frac{4r}{\pi^2})^{1/2}$. For $y\le\frac1{20}$, $r\ge e^{-\pi/10}>0.73$, so $(1+\frac{4r}{\pi^2})^{-1/2}<0.879$, and $\frac r{1-r}\ge\frac{0.73}{2\pi y}$; the gain is at least $\frac{0.73\times0.121}{2\pi y}>\frac1{80y}$. By the reminder, $\log P(r)\le\frac{\pi^2}{12\pi y}=a$, and $e^{2\pi ny}=e^{2\pi N'y+\pi y/12}\le e^{a+1}$. So on the minor arc the integrand is at most $e^{2a+1-1/(80y)}$, and the minor arc contributes at most $e^{2a+1-\sqrt{24N'}/80}$.
+
+\emph{Conclusion.} The main term is $\frac{e^{2a}}{4\sqrt3N'}$, the major arc error is $O(a^{-1/2})$ times it, and the minor arc is $e^{2a}$ times a quantity that decreases faster than any power of $n$. So $p(n)=\frac{e^{\pi\sqrt{2N'/3}}}{4\sqrt3N'}(1+O(n^{-1/4}))$. Finally $\sqrt{N'}=\sqrt n-\frac1{48\sqrt n}+O(n^{-3/2})$, so $e^{\pi\sqrt{2N'/3}}=e^{\pi\sqrt{2n/3}}(1+O(n^{-1/2}))$ and $\frac1{N'}=\frac1n(1+O(\frac1n))$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-ratio}
+\caption{The ratio of $p(n)$ to $\frac{e^{\pi\sqrt{2n/3}}}{4\sqrt3n}$, computed exactly for $n\le5000$ from the pentagonal recurrence. It is $0.873$ at $n=10$, $0.956$ at $n=100$, $0.986$ at $n=1000$ and $0.9937$ at $n=5000$. The dashed curve is $1-\frac{0.4432}{\sqrt n}$, where $0.4432=\frac1C+\frac C{48}$ with $C=\pi\sqrt{2/3}$: the true relative error is of order $n^{-1/2}$, better than the $n^{-1/4}$ of the proof.}
+\label{fig:hrratio}
+\end{figure}
+
+\begin{think}
+Where did the proof lose a factor $n^{1/4}$? In the bound $|(1-it)^{1/2}-1|\le|t|$. The first-order term of $(1-it)^{1/2}$ is $-\frac{it}2$, an odd function of $t$, and it integrates to zero against the even Gaussian. Only the second-order terms survive, and they are of size $\frac1a$ relative to the main term, not $\frac1{\sqrt a}$. Figure~\ref{fig:hrratio} shows the true behaviour: $1-\frac{p(n)}{\mathrm{HR}(n)}$ times $\sqrt n$ settles near $0.443$. Where do the two pieces $\frac1C$ and $\frac C{48}$ of this constant come from?
+\end{think}
+
+\section{The other arcs, and an exact formula}
+
+The minor arc bound threw away a lot. Figure~\ref{fig:circlearcs} shows $\log|P(re(x))|$ at $r=0.99$ along the whole circle. Besides the huge peak at $x=0$ there are peaks at every fraction: at $\frac12$, about a quarter of the height of the main peak; at $\frac13$ and $\frac23$, about a ninth; at $\frac hk$, about $\frac1{k^2}$. Exercise~\ref{ex:minusone} proves this at $x=\frac12$. The reason is that $\eta$ transforms under every matrix of $\mathrm{SL}_2(\Z)$, not only under $\tau\mapsto-\frac1\tau$, and the matrix sending $\frac hk$ to $\infty$ shows that near $e(\frac hk)$, $P$ behaves like $\exp(\frac{\pi^2}{6k^2(1-r)})$ times a root of unity.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-circle}
+\caption{$\log|P(re(x))|/\log P(r)$ for $r=0.99$ and $0\le x\le1$, where $\log P(0.99)=160.45$. The main peak at $x=0$ leaves the picture. Red marks show heights $\frac1{k^2}$ above $x=\frac1k$. The measured peak heights are $0.237$ at $\frac12$, $0.096$ at $\frac13$, $0.048$ at $\frac14$ and $0.026$ at $\frac15$; they approach $\frac1{k^2}$ as $r\to1$, slowly, because of lower-order terms.}
+\label{fig:circlearcs}
+\end{figure}
+
+Hardy and Ramanujan put a major arc around every $\frac hk$ with $k$ up to about $\sqrt n$, and obtained an asymptotic series whose $k$-th term is of size $e^{\pi\sqrt{2n/3}/k}$. In 1937 Derrick Henry Lehmer proved that their series, continued indefinitely, diverges. In the same year Hans Rademacher replaced their arcs by a dissection of the circle by Farey fractions and their approximation of the integrand by an exact transformation, and obtained a convergent series.
+
+\begin{theorem}[Rademacher, 1937; quoted]\label{thm:rademacher}
+For $n\ge1$,
+\[
+p(n)=\frac1{\pi\sqrt2}\sum_{k\ge1}A_k(n)\sqrt k\,\frac{\mathrm d}{\mathrm dn}\Biggl(\frac{\sinh\bigl(\frac\pi k\sqrt{\frac23(n-\frac1{24})}\bigr)}{\sqrt{n-\frac1{24}}}\Biggr),
+\]
+where $A_k(n)=\sum_{0\le h<k,\,(h,k)=1}e^{\pi is(h,k)-2\pi inh/k}$ and $s(h,k)=\sum_{r=1}^{k-1}\frac rk\bigl(\{\frac{hr}k\}-\frac12\bigr)$ is a Dedekind sum.
+\end{theorem}
+
+The sums $A_k(n)$ are close cousins of the Kloosterman sums of Chapter~5, and bounds for them control how fast the series converges. Numerically, for $n=200$: the term $k=1$ alone gives $p(200)$ with an error of $36202$, out of almost four trillion; two terms leave an error of $81$, three terms $6.7$, five terms $0.14$, eight terms $0.024$. The exponent $n-\frac1{24}$ is the same shift $N'$ as in our proof.
+
+\begin{beauty}
+A partition is about as elementary an object as mathematics has: a way of breaking a pile of pebbles into smaller piles. Its count is governed by the symmetry $\tau\mapsto-\frac1\tau$ of the upper half-plane, by $\pi$ and $\sqrt{2/3}$, by the mysterious $\frac1{24}$ which is $-\frac12\zeta(-1)$, and, in Rademacher's formula, by Dedekind sums and exponential sums. Ramanujan, looking at MacMahon's table, saw a different structure as well: $p(5m+4)$, $p(7m+5)$ and $p(11m+6)$ are divisible by $5$, $7$ and $11$. The first congruence is proved in Problem Book~I, Chapter~7, and the companion notebook checks all three up to $n=5000$.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:ratio}
+Deduce from Theorem~\ref{thm:hr} that $\frac{p(n+1)}{p(n)}\to1$, and that $\log p(n)=\pi\sqrt{2n/3}-\log n+O(1)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:saddle}
+\emph{A one-line upper bound.} Show that $p(n)\le e^{nt}P(e^{-t})$ for every $t>0$. With Lemma~\ref{lem:ptrans} and $t=\frac\pi{\sqrt{6n}}$, deduce that $p(n)\le2(24n)^{-1/4}e^{\pi\sqrt{2n/3}}$ for every $n\ge1$. By what power of $n$ is this off?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:minusone}
+\emph{The arc at $\frac12$.} Show that $P(-q)=\frac{P(q^2)^3}{P(q)P(q^4)}$ for $|q|<1$. Deduce that $\log P(-r)\sim\frac{\pi^2}{24(1-r)}$ as $r\to1^-$, a quarter of $\log P(r)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ones}
+\emph{How many ones?} Show that the total number of parts equal to $1$, over all partitions of $n$, is $\sum_{k=1}^np(n-k)$. Deduce that the average number of ones in a partition of $n$ is asymptotic to $\frac{\sqrt{6n}}\pi$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:distinct}
+\emph{Distinct parts.} Let $q(n)$ be the number of partitions of $n$ into distinct parts, with generating function $Q(z)=\prod_{m\ge1}(1+z^m)$. Prove that
+\[
+q(n)\sim\frac{e^{\pi\sqrt{n/3}}}{4\cdot3^{1/4}\,n^{3/4}}.
+\]
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:ratio}
+$\sqrt{n+1}-\sqrt n\to0$.
+\end{hint}
+
+\begin{hint}{ex:saddle}
+All coefficients of $P$ are positive. With this $t$, $\frac{\pi^2}{6t}=nt=\pi\sqrt{n/6}$.
+\end{hint}
+
+\begin{hint}{ex:minusone}
+Split $\prod(1-(-q)^m)$ into even and odd $m$, and use $\prod(1+q^m)=\frac{P(q)}{P(q^2)}$. Then apply Lemma~\ref{lem:ptrans} at $t$, $2t$ and $4t$.
+\end{hint}
+
+\begin{hint}{ex:ones}
+Removing $k$ ones is a bijection from the partitions of $n$ with at least $k$ ones onto the partitions of $n-k$. For the asymptotics, $\frac{p(n-k)}{p(n)}\approx e^{-Ck/(2\sqrt n)}$ with $C=\pi\sqrt{2/3}$ when $k$ is small, and $p$ is increasing.
+\end{hint}
+
+\begin{hint}{ex:distinct}
+$Q(z)=\frac{P(z)}{P(z^2)}$, so Lemma~\ref{lem:ptrans} at $\tau$ and $2\tau$ gives $Q(e^{2\pi i\tau})=2^{-1/2}e^{\frac{\pi i}{24\tau}}e^{-\frac{\pi i\tau}{12}}\frac{P(e^{-2\pi i/\tau})}{P(e^{-\pi i/\tau})}$. Follow the proof of Theorem~\ref{thm:hr} with $N''=n+\frac1{24}$ and $y=(48N'')^{-1/2}$. On the minor arc, use $-\log(1-u)\ge u$ to compare $|1+z^m|$ with $1+r^m$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:ratio}
+\idea The leading factor $e^{C\sqrt n}$ changes by a factor tending to $1$ when $n$ grows by $1$, because $\sqrt n$ is so flat.
+\writeup Let $C=\pi\sqrt{2/3}$. By Theorem~\ref{thm:hr},
+\[
+\frac{p(n+1)}{p(n)}=e^{C(\sqrt{n+1}-\sqrt n)}\,\frac n{n+1}\,\frac{1+O(n^{-1/4})}{1+O(n^{-1/4})},
+\]
+and $0<\sqrt{n+1}-\sqrt n=\frac1{\sqrt{n+1}+\sqrt n}\to0$, so every factor tends to $1$. Taking logarithms in the theorem, $\log p(n)=C\sqrt n-\log n-\log(4\sqrt3)+\log(1+O(n^{-1/4}))$, and the last two terms are bounded.
+\end{solution}
+
+\begin{solution}{ex:saddle}
+\idea One coefficient of a power series with positive coefficients is at most the whole sum; choosing the radius well is the saddle point method without the integral.
+\writeup For $0<x<1$, $p(n)x^n\le\sum_mp(m)x^m=P(x)$, so $p(n)\le e^{nt}P(e^{-t})$ with $x=e^{-t}$. By Lemma~\ref{lem:ptrans}, $P(e^{-t})\le\sqrt{\frac t{2\pi}}e^{\pi^2/(6t)}P(e^{-4\pi^2/t})$. With $t=\frac\pi{\sqrt{6n}}$, $\frac{\pi^2}{6t}=\frac{\pi\sqrt{6n}}6=\pi\sqrt{\frac n6}$ and $nt=\pi\sqrt{\frac n6}$; their sum is $2\pi\sqrt{\frac n6}=\pi\sqrt{\frac{2n}3}$. Next, $\frac t{2\pi}=\frac1{2\sqrt{6n}}=(24n)^{-1/2}$. Finally $\frac{4\pi^2}t=4\pi\sqrt{6n}\ge30$, so $P(e^{-4\pi^2/t})\le1+2e^{-30}\le2$ by the bound $|P(w)-1|\le2|w|$ from the proof of Theorem~\ref{thm:hr}. Hence $p(n)\le2(24n)^{-1/4}e^{\pi\sqrt{2n/3}}$. Compared with Theorem~\ref{thm:hr}, the bound is too large by a factor of order $n^{3/4}$: $n^{-1/4}$ against $n^{-1}$. The integral over the circle recovers the missing $n^{-3/4}$, which is the width $\sqrt{\pi/a}\asymp n^{-1/4}$ of the Gaussian times the circumference factor $y\asymp n^{-1/2}$. (At $n=1000$ the bound is $1129$ times $p(n)$, and $1000^{3/4}\approx178$.)
+\end{solution}
+
+\begin{solution}{ex:minusone}
+\idea At $q\to-1$ the product splits into a part at $q^2\to1$, which is large, and a part that cancels most of it.
+\writeup For $|q|<1$, $\frac1{P(-q)}=\prod_m(1-(-q)^m)=\prod_{m\text{ even}}(1-q^m)\prod_{m\text{ odd}}(1+q^m)$. The first product is $\frac1{P(q^2)}$. Since $1+q^m=\frac{1-q^{2m}}{1-q^m}$, $\prod_m(1+q^m)=\frac{P(q)}{P(q^2)}$, and the odd factors are this product divided by the even ones, $\prod_m(1+q^{2m})=\frac{P(q^2)}{P(q^4)}$. So $\prod_{m\text{ odd}}(1+q^m)=\frac{P(q)P(q^4)}{P(q^2)^2}$ and $\frac1{P(-q)}=\frac{P(q)P(q^4)}{P(q^2)^3}$.
+By Lemma~\ref{lem:ptrans}, $\log P(e^{-t})=\frac{\pi^2}{6t}+O(\log\frac1t)$ as $t\to0^+$. With $r=e^{-t}$,
+\[
+\begin{aligned}\log P(-r)&=3\log P(e^{-2t})-\log P(e^{-t})-\log P(e^{-4t})\\&=\frac{\pi^2}t\Bigl(\frac14-\frac16-\frac1{24}\Bigr)+O\Bigl(\log\frac1t\Bigr)\\&=\frac{\pi^2}{24t}+O\Bigl(\log\frac1t\Bigr).\end{aligned}
+\]
+As $t=-\log r\sim1-r$, $\log P(-r)\sim\frac{\pi^2}{24(1-r)}=\frac14\cdot\frac{\pi^2}{6(1-r)}$. This is the peak of height $\frac14$ at $x=\frac12$ in Figure~\ref{fig:circlearcs}.
+\end{solution}
+
+\begin{solution}{ex:ones}
+\idea Counting pairs (partition, one of its ones) by the position of the one gives a sum of $p(n-k)$; the asymptotic formula turns that sum into a geometric series with ratio $e^{-C/(2\sqrt n)}$.
+\writeup \emph{The identity.} Let $m_1(\lambda)$ be the number of ones in $\lambda$. Then $\sum_{\lambda\vdash n}m_1(\lambda)=\sum_{k\ge1}\#\{\lambda\vdash n:m_1(\lambda)\ge k\}$, and removing $k$ ones is a bijection from $\{\lambda\vdash n:m_1(\lambda)\ge k\}$ onto the partitions of $n-k$, with inverse ``add $k$ ones''. So the total is $\sum_{k=1}^np(n-k)$, and the average is $M_n=\sum_{k=1}^n\frac{p(n-k)}{p(n)}$.
+\emph{The asymptotics.} Let $C=\pi\sqrt{2/3}$ and $K=\lfloor n^{3/5}\rfloor$. For $k\le K$, $\sqrt{n-k}-\sqrt n=-\frac k{2\sqrt n}+O(\frac{k^2}{n^{3/2}})$ and $\frac{k^2}{n^{3/2}}\le n^{-3/10}$, so by Theorem~\ref{thm:hr}, applied to $n$ and $n-k\ge\frac n2$,
+\[
+\frac{p(n-k)}{p(n)}=e^{-\frac{Ck}{2\sqrt n}}\bigl(1+O(n^{-1/4})\bigr)
+\]
+uniformly in $k\le K$. With $\delta=\frac C{2\sqrt n}$, $\sum_{k=1}^Ke^{-k\delta}=\frac{e^{-\delta}(1-e^{-K\delta})}{1-e^{-\delta}}\sim\frac1\delta=\frac{2\sqrt n}C$, because $\delta\to0$ and $K\delta\asymp n^{1/10}\to\infty$. For $k>K$, $p(n-k)\le p(n-K)$, since $p$ is non-decreasing (adding a part $1$ is an injection), so these terms add up to at most $n\frac{p(n-K)}{p(n)}\le2ne^{-K\delta}\to0$. So $M_n\sim\frac{2\sqrt n}C=\frac{\sqrt{6n}}\pi$. Numerically, $M_{1000}=24.47$ against $\frac{\sqrt{6000}}\pi=24.66$.
+\end{solution}
+
+\begin{solution}{ex:distinct}
+\idea The same circle method, with two differences: the transformed function has no factor $\sqrt{-i\tau}$, which changes the power of $n$, and the shift is $+\frac1{24}$ instead of $-\frac1{24}$.
+\writeup \emph{Transformation.} Since $1+z^m=\frac{1-z^{2m}}{1-z^m}$, $Q(z)=\frac{P(z)}{P(z^2)}$. Lemma~\ref{lem:ptrans} at $\tau$ and at $2\tau$ gives
+\[
+\begin{aligned}Q(e^{2\pi i\tau})&=\frac{\sqrt{-i\tau}\,e^{\frac{\pi i}{12\tau}}e^{\frac{\pi i\tau}{12}}P(w_1)}{\sqrt{-2i\tau}\,e^{\frac{\pi i}{24\tau}}e^{\frac{\pi i\tau}6}P(w_2)}\\&=\frac1{\sqrt2}e^{\frac{\pi i}{24\tau}}e^{-\frac{\pi i\tau}{12}}\frac{P(w_1)}{P(w_2)},\end{aligned}
+\]
+with $w_1=e^{-2\pi i/\tau}$ and $w_2=e^{-\pi i/\tau}$.
+\emph{Set-up.} As before $q(n)=\int_{-1/2}^{1/2}Q(e^{2\pi i\tau})e^{-2\pi in\tau}\dd x$. Let $N''=n+\frac1{24}$, $y=(48N'')^{-1/2}$ and $b=\frac\pi{24y}=2\pi N''y=\pi\sqrt{N''/12}$. With $x=yt$, $\tau=iy(1-it)$, exactly the computation of the theorem gives the exponent
+\[
+\frac{\pi i}{24\tau}-2\pi iN''\tau=2b-\frac{bt^2}{1+t^2}-\frac{ibt^3}{1+t^2}.
+\]
+Assume $n\ge9$, so that $y\le\frac1{20}$ and $b\ge1$.
+\emph{Major arc.} For $|t|\le1$, $|w_1|\le e^{-\pi/y}$ and $|w_2|=\exp(-\frac\pi{y(1+t^2)})\le e^{-\pi/(2y)}$. Since $|P(w)-1|\le2|w|$, $|P(w_2)|\ge\frac12$ and $|\frac{P(w_1)}{P(w_2)}-1|\le2(|P(w_1)-1|+|P(w_2)-1|)\le8e^{-\pi/(2y)}$. As in the theorem, without the factor $(1-it)^{1/2}$, the major arc is $\frac y{\sqrt2}e^{2b}(\sqrt{\pi/b}+O(\frac1b))$. With $\sqrt{\pi/b}=\sqrt{24y}$, the main term is
+\[
+\frac y{\sqrt2}\sqrt{24y}\,e^{2b}=\sqrt{12}\,y^{3/2}e^{2b}=\frac{2\sqrt3}{8\cdot3^{3/4}N''^{3/4}}e^{2b}=\frac{e^{\pi\sqrt{N''/3}}}{4\cdot3^{1/4}N''^{3/4}},
+\]
+using $48^{3/4}=8\cdot3^{3/4}$.
+\emph{Minor arc.} Let $r=e^{-2\pi y}$, $z=re(x)$, $\theta=2\pi x$. Since $(1+r^m)^2-|1+z^m|^2=2r^m(1-\cos m\theta)$ and $-\log(1-u)\ge u$,
+\[
+\log(1+r^m)-\log|1+z^m|=-\frac12\log\Bigl(1-\frac{2r^m(1-\cos m\theta)}{(1+r^m)^2}\Bigr)\ge\frac{r^m(1-\cos m\theta)}4.
+\]
+Summing over $m$, $\log Q(r)-\log|Q(z)|\ge\frac14\bigl(\frac r{1-r}-\operatorname{Re}\frac z{1-z}\bigr)\ge\frac14\bigl(\frac r{1-r}-\frac r{|1-z|}\bigr)$, which for $y\le|x|\le\frac12$ and $y\le\frac1{20}$ is at least $\frac1{4\cdot80y}$ by the minor arc computation of the theorem. For $\log Q(r)$, Lemma~\ref{lem:ptrans} at $t$ and $2t$ gives $Q(e^{-t})=\frac1{\sqrt2}e^{\pi^2/(12t)+t/24}\frac{P(e^{-4\pi^2/t})}{P(e^{-2\pi^2/t})}\le e^{\pi^2/(12t)+t/24}$, as $P$ is increasing on $[0,1[$. With $t=2\pi y$, $\frac{\pi^2}{12t}=b$, so $\log Q(r)\le b+1$. As $e^{2\pi ny}=e^{2\pi N''y-\pi y/12}\le e^b$, the minor arc contributes at most $e^{2b+1-1/(320y)}=e^{2b+1-\sqrt{48N''}/320}$, which is $o(y^{3/2}e^{2b})$.
+\emph{Conclusion.} $q(n)\sim\frac{e^{\pi\sqrt{N''/3}}}{4\cdot3^{1/4}N''^{3/4}}$, and $\sqrt{N''}-\sqrt n\to0$ allows us to replace $N''$ by $n$. Numerically, $q(1000)=8\,635\,565\,795\,744\,155\,161\,506$, and the ratio to the asymptotic formula is $0.9946$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Hardy and Ramanujan.} G.~H.~Hardy and S.~Ramanujan, ``Asymptotic formulae in combinatory analysis'', \emph{Proc.\ London Math.\ Soc.}\ (2) 17 (1918), 75--115; MacMahon's table of $p(n)$ for $n\le200$ is Table~IV, pp.~114--115. S.~Ramanujan, ``Some properties of $p(n)$, the number of partitions of $n$'', \emph{Proc.\ Cambridge Philos.\ Soc.}\ 19 (1919), 207--210. G.~H.~Hardy, \emph{Ramanujan: Twelve Lectures on Subjects Suggested by His Life and Work}, Cambridge, 1940, Chapter~VIII. Littlewood's remark is from his review of Ramanujan's \emph{Collected Papers}, \emph{Math.\ Gazette} 14 (1929), 427--428, quoted in G.~E.~Andrews, \emph{The Theory of Partitions}.
+\item \emph{Rademacher and Lehmer.} H.~Rademacher, ``A convergent series for the partition function $p(n)$'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 23 (1937), 78--84. D.~H.~Lehmer, ``On the Hardy--Ramanujan series for the partition function'', \emph{J.\ London Math.\ Soc.}\ 12 (1937), 171--176. G.~E.~Andrews, \emph{The Theory of Partitions}, Cambridge, 1998, Chapters~5 and~10. T.~M.~Apostol, \emph{Modular Functions and Dirichlet Series in Number Theory}, 2nd ed., Springer GTM~41, 1990, Chapter~5.
+\item \emph{The proof.} Our treatment of the major and minor arcs follows the elementary version in D.~J.~Newman, \emph{Analytic Number Theory}, Springer GTM~177, 1998, Chapter~I, with the transformation of $\eta$ in place of Newman's estimates.
+\end{itemize}
