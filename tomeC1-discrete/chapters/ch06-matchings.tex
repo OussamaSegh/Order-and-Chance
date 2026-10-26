@@ -1,0 +1,712 @@
+\chapter{Matchings and Flows}
+
+\begin{center}\itshape
+There is always a way to marry everybody so that no man and woman would both rather be married to each other.\\
+\upshape(Gale and Shapley, 1962)
+\end{center}
+
+In the 1940s, American hospitals fought over medical graduates. Each wanted the best interns, so each made its offers a
+little earlier than its rivals; by 1945 students were signing contracts two years before they graduated, before anyone could
+tell how good they were. Deadlines were then imposed, and the market collapsed the other way: offers came with a few hours to
+answer, students on a waiting list held out for their first choice while other hospitals' offers expired, and telephones rang
+all night. In 1952 the hospitals gave up and created a clearing house. Students and hospitals sent in their ranked lists, and
+an algorithm produced the assignment. Remarkably, participation was voluntary, and almost everybody accepted the result.
+
+Ten years later David Gale and Lloyd Shapley, who had never heard of the clearing house, published a six-page paper on
+``college admissions and the stability of marriage''. They asked for an assignment that nobody would want to break: no student
+and hospital should both prefer each other to what they got. They proved that such a \emph{stable} assignment always exists, gave
+a simple algorithm to find it, and showed that the algorithm is the best possible for the side that makes the offers. In 1984 Alvin
+Roth discovered that the 1952 algorithm was exactly theirs: the doctors had found it by trial and error, and stability was why
+the market held together. Roth and Shapley received the 2012 Nobel prize in economics for this theory; the same algorithm now
+assigns pupils to schools in New York and Boston, and Roth's related designs organise kidney exchanges.
+
+This chapter is about pairing things up. It starts with the purest form of the question, the matchings of a graph, and
+Berge's principle that a matching can be improved exactly when an augmenting path exists. From it come Hall's marriage
+theorem, K\H onig's theorem and a second proof of Dilworth's theorem from Chapter~2. Then come networks and flows, where
+Menger's theorem of Chapter~5 becomes the max-flow min-cut theorem; Birkhoff's theorem on doubly stochastic matrices; Tutte's
+theorem for graphs that are not bipartite; and finally the stable marriages that opened the chapter.
+
+\begin{think}
+Four students must share two double rooms. Each ranks the three others. Is there always a pairing in which no two students
+in different rooms prefer each other to their roommates? And if there are two boys and two girls, and only mixed rooms are
+allowed, with each student ranking the two others of the other sex?
+\end{think}
+
+\section{Matchings and augmenting paths}
+
+A \emph{matching} of a graph $G$ is a set $M$ of edges no two of which share a vertex. The vertices covered by $M$ are \emph{matched},
+the others are \emph{free}, and the matching is \emph{perfect} if it covers every vertex. A matching is \emph{maximum} if no matching has more
+edges; this is stronger than \emph{maximal} (no edge can be added): in a path with three edges, the middle edge is a maximal
+matching but not a maximum one. We write $\nu(G)$ for the size of a maximum matching.
+
+An \emph{$M$-alternating path} is a path whose edges are alternately in $M$ and not in $M$; it is \emph{$M$-augmenting} if it joins two free
+vertices (it then starts and ends with edges not in $M$, and has one more edge outside $M$ than inside). Swapping the two kinds
+of edges along an augmenting path $P$ gives the matching $M\triangle P$, with one edge more (Figure~\ref{fig:augmenting}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-augmenting}
+\caption{A matching of size $2$ (thick) and an augmenting path $x_1y_1x_2y_2x_3y_3$ (dashed), whose ends $x_1$ and $y_3$ are free.
+Swapping matched and unmatched edges along the path gives a matching of size $3$.}
+\label{fig:augmenting}
+\end{figure}
+
+\begin{theorem}[Berge, 1957]\label{thm:berge}
+A matching $M$ of a graph $G$ is maximum if and only if there is no $M$-augmenting path.
+\end{theorem}
+\begin{proof}
+If there is an augmenting path $P$, then $M\triangle P$ is a larger matching. Conversely, suppose $M'$ is a matching with $|M'|>|M|$, and
+look at the edges of $M\triangle M'$. Each vertex meets at most one edge of $M$ and one of $M'$, so in the graph formed by $M\triangle M'$ every
+vertex has degree at most $2$, and the components are paths and cycles whose edges alternate between $M$ and $M'$. An alternating
+cycle has as many edges of $M$ as of $M'$. Since $M\triangle M'$ has more edges of $M'$ than of $M$, some component is a path with more
+edges of $M'$ than of $M$: it starts and ends with edges of $M'$, and its two end vertices meet no edge of $M$ in $M\triangle M'$. They meet no edge
+of $M\cap M'$ either, since they already meet an edge of $M'$. So they are free for $M$, and the path is $M$-augmenting.
+\end{proof}
+
+Berge's theorem is an algorithm in waiting: start with any matching, look for an augmenting path, swap, repeat. At most
+$\frac n2$ rounds are needed. The difficulty is to \emph{find} an augmenting path. In a bipartite graph it is easy, by a search
+that alternates between the two sides, as we shall see. In general graphs, odd cycles make the search loop back on
+itself; Jack Edmonds solved this in 1965 by shrinking the odd cycles (``blossoms''), in a paper that also proposed
+polynomial time as the definition of an efficient algorithm. Tome~C2 tells that story.
+
+\section{Hall's marriage theorem and K\H onig's theorem}
+
+From now until Section~\ref{sec:tutte}, $G$ is a bipartite graph with sides $X$ and $Y$: every edge joins $X$ to $Y$. For $S\subseteq X$, the
+\emph{neighbourhood} $N(S)$ is the set of vertices of $Y$ adjacent to some vertex of $S$. If $M$ matches every vertex of $X$, the partners of $S$ are
+$|S|$ distinct vertices of $N(S)$, so $|N(S)|\ge|S|$. This obvious necessary condition is enough.
+
+\begin{theorem}[Hall's marriage theorem, 1935]\label{thm:hall}
+A bipartite graph with sides $X$ and $Y$ has a matching covering $X$ if and only if
+$|N(S)|\ge|S|$ for every $S\subseteq X$.
+\end{theorem}
+
+The traditional reading: $X$ is a set of women, $Y$ a set of men, edges join women to the men they would accept; everybody can be
+married if and only if every group of $k$ women knows at least $k$ acceptable men. The theorem is so central that it is worth
+proving three times, by three different philosophies.
+
+\begin{proof}[First proof (Halmos and Vaughan, 1950)]
+Induction on $|X|$; the case $|X|\le1$ is clear. Suppose first that $|N(S)|\ge|S|+1$ for every non-empty $S\subsetneq X$. Match any
+vertex $x$ to any neighbour $y$, and delete both. In the remaining graph every non-empty $S\subseteq X\setminus\{x\}$ has lost at most the
+neighbour $y$, so it still has at least $|S|$ neighbours, and induction matches $X\setminus\{x\}$.
+
+Otherwise some non-empty $S_0\subsetneq X$ has $|N(S_0)|=|S_0|$. Hall's condition holds in the subgraph $G_0$ induced by $S_0\cup N(S_0)$
+(the neighbours of a subset of $S_0$ are in $N(S_0)$), and $|S_0|<|X|$, so induction matches $S_0$ into $N(S_0)$. In the subgraph $G_1$ induced by
+$(X\setminus S_0)\cup(Y\setminus N(S_0))$, a set $T\subseteq X\setminus S_0$ has neighbourhood $N(T\cup S_0)\setminus N(S_0)$, of size at least
+$|T|+|S_0|-|S_0|=|T|$. So induction matches $X\setminus S_0$ in $G_1$, and the two matchings together cover $X$.
+\end{proof}
+
+\begin{proof}[Second proof (augmenting paths)]
+Let $M$ be a maximum matching and suppose that a vertex $x\in X$ is free. Let $Z$ be the set of vertices reachable from $x$ by
+$M$-alternating paths starting at $x$, and let $S=Z\cap X$ and $T=Z\cap Y$. Every $y\in T$ is matched, otherwise the alternating path from $x$
+to $y$ would be augmenting, contradicting Berge's theorem; and the partner of $y$ is in $S$, since the path can be continued along
+the matching edge. Conversely every vertex of $S$ other than $x$ is reached through its matching edge, so its partner is in $T$.
+Hence $M$ pairs $T$ with $S\setminus\{x\}$, and $|S|=|T|+1$. Finally $N(S)=T$: a neighbour $y$ of $s\in S$ is reached by going to $s$ (along a path that
+ends with a matching edge, or the empty path if $s=x$) and then along the edge $sy$, which is not in $M$ unless $y$ is the partner of $s$,
+itself in $T$. So $|N(S)|=|S|-1$, and Hall's condition fails.
+\end{proof}
+
+The third proof, from the max-flow min-cut theorem, comes in Section~\ref{sec:flows}. The second proof is the efficient one: if
+Hall's condition holds, a search from a free vertex finds an augmenting path; if it fails, the same search returns a set $S$ with
+too few neighbours, a certificate that no matching exists. One computation, two possible answers, each checkable at a glance.
+
+\begin{corollary}[Frobenius, 1917; K\H onig, 1916]\label{cor:regular}
+Let $k\ge1$. A $k$-regular bipartite multigraph has a perfect matching, and its edges can be partitioned into $k$ perfect matchings.
+\end{corollary}
+\begin{proof}
+Counting edges, $k|X|=k|Y|$, so $|X|=|Y|$. For $S\subseteq X$, the $k|S|$ edges leaving $S$ all end in $N(S)$, which receives $k|N(S)|$ edges in total;
+so $k|S|\le k|N(S)|$ and Hall's condition holds (parallel edges do not matter for it). A perfect matching exists; removing it leaves a
+$(k-1)$-regular bipartite multigraph, and induction on $k$ gives the partition.
+\end{proof}
+
+A \emph{vertex cover} is a set $K$ of vertices meeting every edge. Each edge of a matching needs its own vertex in $K$, so
+$\nu(G)\le|K|$ for every matching and every cover. In the triangle, $\nu=1$ and the smallest cover has $2$ vertices. In a bipartite
+graph there is never a gap.
+
+\begin{theorem}[K\H onig, 1931; Egerv\'ary, 1931]\label{thm:konig}
+In a bipartite graph, the maximum size of a matching equals the minimum size of a vertex cover.
+\end{theorem}
+\begin{proof}
+Let $M$ be a maximum matching, let $U$ be the set of free vertices of $X$, and let $Z$ be the set of vertices reachable from $U$ by
+$M$-alternating paths starting in $U$ (including $U$ itself). Put
+\[
+K=(X\setminus Z)\cup(Y\cap Z).
+\]
+$K$ is a cover. Let $xy$ be an edge, $x\in X$. If $x\notin Z$, then $x\in K$. If $x\in Z$ and $xy\notin M$, the alternating path to $x$ ends with an edge of $M$ (or
+is empty, if $x\in U$), so it continues along $xy$, and $y\in Z$. If $x\in Z$ and $xy\in M$, then $x\notin U$, the path reaching $x$ arrives through its
+matching edge, and so $y\in Z$ as well. In each case $xy$ meets $K$.
+
+$|K|=|M|$. Every $y\in Y\cap Z$ is matched (otherwise there is an augmenting path), and its partner is in $Z$. Every $x\in X\setminus Z$ is matched, since
+$U\subseteq Z$, and its partner is not in $Z$ (otherwise $x$ would be reached through it). So every vertex of $K$ is matched, and each edge $xy$ of
+$M$ has exactly one end in $K$: $y$ if $y\in Z$ (then $x\in Z$ too), $x$ if $y\notin Z$ (then $x\notin Z$, since a vertex $x\in Z$ matched to $y$
+is reached through $y$). Hence $|K|=|M|$, and since every cover has at least $\nu(G)$ vertices, $K$ is a minimum cover.
+\end{proof}
+
+Again the proof is a certificate: the matching $M$ and the cover $K$, of the same size, prove each other optimal. In the
+language of Tome~C5 this is the strong duality of a pair of linear programs, and the theorem is the first example of a
+\emph{min-max} theorem, of which this chapter contains half a dozen. Here is one that we met before.
+
+\begin{proof}[Second proof of Dilworth's theorem (Theorem~\ref{thm:dilworth}), after Fulkerson, 1956]
+Let $P$ be a finite poset with $n$ elements. Build a bipartite graph with two copies $X=\{x^-:x\in P\}$ and $Y=\{y^+:y\in P\}$ of $P$, and an edge
+$x^-y^+$ whenever $x<y$. A matching $M$ is a choice, for some elements $x$, of a ``successor'' $y>x$, with no element chosen twice as a
+successor. Following successors, the elements fall into chains (each element has at most one successor and at most one predecessor),
+and each edge of $M$ glues two of the $n$ singletons together: the number of chains is $n-|M|$.
+
+Now take a maximum matching $M$ and, by K\H onig's theorem, a cover $K$ with $|K|=|M|$. Let $A$ be the set of $x\in P$ such that neither
+$x^-$ nor $x^+$ is in $K$; then $|A|\ge n-|K|$. If $x<y$ were both in $A$, the edge $x^-y^+$ would not be covered: so $A$ is an antichain. Hence
+$P$ has a partition into $n-|M|\le|A|$ chains, and an antichain of size $|A|$; since an antichain meets each chain at most once, the
+minimum number of chains equals the maximum size of an antichain.
+\end{proof}
+
+This proof is an algorithm: a maximum bipartite matching takes polynomial time (Tome~C2), and the chains and the antichain
+come out of it. The same construction on a directed acyclic graph computes the smallest number of paths covering its
+vertices (Exercise~\ref{ex:pathcover}), a problem met in scheduling.
+
+\section{Flows in networks}\label{sec:flows}
+
+In 1955 two analysts of the RAND Corporation, T.~E.~Harris and F.~S.~Ross, wrote a secret report for the US Air Force on the
+rail network linking the Soviet Union to Eastern Europe: $44$ regions, $105$ links, each with a capacity in tons per day. How much
+could the network carry, and which links should a bomber cut to stop it most cheaply? Their colleagues Lester Ford and Delbert
+Fulkerson turned the question into a theorem the next year. The report was declassified in 1999.
+
+A \emph{network} is a directed graph $D=(V,A)$ with two vertices, a \emph{source} $s$ and a \emph{sink} $t\ne s$, and a \emph{capacity} $c(a)\ge0$
+on each arc. A \emph{flow} is a function $f:A\to\R$ with
+\begin{itemize}
+\item $0\le f(a)\le c(a)$ for every arc (capacity), and
+\item $f^{\mathrm{in}}(v)=f^{\mathrm{out}}(v)$ for every $v\ne s,t$ (conservation),
+\end{itemize}
+where $f^{\mathrm{out}}(v)$ and $f^{\mathrm{in}}(v)$ are the sums of $f$ over the arcs leaving and entering $v$. Its \emph{value} is
+$|f|=f^{\mathrm{out}}(s)-f^{\mathrm{in}}(s)$. A \emph{cut} is a set $S$ of vertices with $s\in S$, $t\notin S$; its \emph{capacity} $c(S)$ is the sum
+of the capacities of the arcs leaving $S$.
+
+\begin{lemma}\label{lem:weakduality}
+For every flow $f$ and every cut $S$, $|f|=f^{\mathrm{out}}(S)-f^{\mathrm{in}}(S)\le c(S)$, where $f^{\mathrm{out}}(S)$ and $f^{\mathrm{in}}(S)$ are the
+sums of $f$ over the arcs leaving and entering $S$.
+\end{lemma}
+\begin{proof}
+Sum $f^{\mathrm{out}}(v)-f^{\mathrm{in}}(v)$ over $v\in S$. Only $s$ contributes, giving $|f|$. On the other hand an arc with both ends in $S$ contributes
+$+f(a)$ at its tail and $-f(a)$ at its head; what remains is $f^{\mathrm{out}}(S)-f^{\mathrm{in}}(S)$, which is at most
+$f^{\mathrm{out}}(S)\le c(S)$.
+\end{proof}
+
+Given a flow $f$, an \emph{augmenting path} is a path from $s$ to $t$ in the underlying undirected graph, in which every arc traversed
+forwards has $f(a)<c(a)$ and every arc traversed backwards has $f(a)>0$. If $\delta>0$ is the smallest of the slacks $c(a)-f(a)$ (forward
+arcs) and $f(a)$ (backward arcs), adding $\delta$ on forward arcs and subtracting $\delta$ on backward arcs gives a flow: capacities hold by the
+choice of $\delta$, and at each inner vertex of the path the two changes cancel (check the four cases: in and out, both forward,
+both backward, or one of each). The value grows by $\delta$, since the first arc leaves $s$ forwards or enters it backwards.
+
+\begin{theorem}[Max-flow min-cut; Ford and Fulkerson, 1956; Elias, Feinstein and Shannon, 1956]\label{thm:maxflow}
+In every network:
+\begin{enumerate}
+\item a flow is maximum if and only if it has no augmenting path, and then the set $S$ of vertices reachable from $s$ by
+augmenting-type paths is a cut with $c(S)=|f|$;
+\item the maximum value of a flow equals the minimum capacity of a cut;
+\item if all capacities are integers, there is a maximum flow with integer values, and the augmenting path algorithm started
+from the zero flow finds one.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(1) An augmenting path increases the value, so a maximum flow has none. Conversely, let $f$ have no augmenting path, and let $S$
+be the set of vertices $v$ that can be reached from $s$ by a path of the same type as an augmenting path (forward arcs not full,
+backward arcs not empty). Then $s\in S$ and $t\notin S$. An arc $uv$ leaving $S$ is full, $f(uv)=c(uv)$, otherwise $v$ would be reachable;
+an arc $vu$ entering $S$ is empty, otherwise $v$ would be reachable backwards. By Lemma~\ref{lem:weakduality}, $|f|=c(S)$; and since every
+flow has value at most $c(S)$, $f$ is maximum and $S$ is a minimum cut.
+
+(2) The flows form a closed and bounded subset of $\R^A$ (defined by finitely many linear equations and inequalities), which is
+non-empty (the zero flow) and compact. The value is a continuous function, so a maximum flow exists; by (1) its value is the
+capacity of some cut, which is minimum by Lemma~\ref{lem:weakduality}.
+
+(3) Start from the zero flow. If capacities and flow are integers, the slack $\delta$ of an augmenting path is a positive integer,
+so the new flow is integral and its value grows by at least $1$. The value is at most $c(\{s\})$, so after at most $c(\{s\})$
+augmentations no augmenting path remains, and by (1) the integral flow obtained is maximum.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-flow}
+\caption{A maximum flow, each arc labelled flow/capacity, of value $19$. The cut $S=\{s,c\}$ (dashed) is crossed forwards by
+$s\to a$ and $c\to d$, both full, of total capacity $10+9=19$, and backwards by $a\to c$, which is empty: the cut certifies that no
+flow does better.}
+\label{fig:flow}
+\end{figure}
+
+The compactness argument in (2) is there for a reason: with irrational capacities and an unlucky choice of augmenting paths,
+the algorithm can run forever, and its values may even converge to less than the maximum (Ford and Fulkerson gave such an
+example; Uri Zwick found the smallest ones in 1995). Choosing a \emph{shortest} augmenting path each time, as Edmonds and Karp proposed
+in 1972, makes the algorithm terminate after at most $|V||A|$ augmentations whatever the capacities; Tome~C2 proves this and
+goes on to the modern algorithms.
+
+Part (3), the \emph{integrality theorem}, is what makes flows a combinatorial tool: whenever a problem asks for an integer
+assignment subject to capacity constraints, one may solve the continuous problem and get the integer answer for free. To read
+paths in a flow we need one more lemma.
+
+\begin{lemma}\label{lem:decomp}
+If all capacities are $1$ and $f$ is an integral flow of value $k\ge0$, the arcs with $f(a)=1$ contain $k$ arc-disjoint directed paths from $s$ to $t$.
+\end{lemma}
+\begin{proof}
+Induction on $k$, the case $k=0$ being empty. Let $H$ be the set of arcs with $f(a)=1$. In $H$, every vertex other than $s$ and $t$ has as
+many arcs in as out, and $s$ has $k\ge1$ more arcs out than in. Walk from $s$ along arcs of $H$, never using an arc twice. Each time the walk enters a
+vertex $v\ne s,t$, it has used one more arc into $v$ than out of it, so an unused arc leaves $v$; each time it is at $s$, it has used as many arcs out of $s$ as
+into it, so again an unused arc leaves. As $H$ is finite, the walk stops, hence at $t$. By Lemma~\ref{lem:walkpath}, which works
+the same way for directed walks, it contains a directed path $Q$ from $s$ to $t$. Setting $f=0$ on the arcs of $Q$ gives an integral flow of
+value $k-1$ (conservation is kept at the inner vertices of $Q$), whose arcs contain $k-1$ arc-disjoint paths by induction; with $Q$, that makes $k$.
+\end{proof}
+
+\begin{corollary}[Menger's theorem for arcs]\label{cor:edgemenger}
+In a directed graph, the maximum number of arc-disjoint directed paths from $s$ to $t$ equals the minimum number of arcs whose
+removal leaves no directed path from $s$ to $t$.
+\end{corollary}
+\begin{proof}
+Give every arc capacity $1$. A set $F$ of arcs meeting every $s$--$t$ path contains all the arcs leaving the cut $S$ formed by the
+vertices still reachable from $s$ in $D-F$, so $|F|\ge c(S)$; conversely the arcs leaving any cut meet every $s$--$t$ path. So the
+minimum in the statement is the minimum capacity of a cut. By Theorem~\ref{thm:maxflow} there is an integral flow of that value, and
+Lemma~\ref{lem:decomp} turns it into as many arc-disjoint paths. Fewer cannot be: each path uses an arc of each such $F$.
+\end{proof}
+
+For an undirected graph, replace every edge by two opposite arcs. If two of the paths obtained use the arcs $uv$ and $vu$ of the
+same edge, exchange their tails after $u$ and $v$ and drop the two arcs: the paths become walks in the same graph, from which
+paths can be extracted, and the number of edges used goes down. So the edge version of Menger's theorem holds for graphs too, and
+splitting each vertex into an arc of capacity $1$ gives the vertex version, Theorem~\ref{thm:menger}, once more. Hall's theorem is
+also a cut in disguise.
+
+\begin{proof}[Third proof of Hall's theorem]
+Add a source $s$ with an arc $s\to x$ of capacity $1$ to each $x\in X$, a sink $t$ with an arc $y\to t$ of capacity $1$ from each $y\in Y$, and
+orient each edge from $X$ to $Y$ with capacity $|X|+1$. An integral flow of value $|X|$ sends one unit through each $x\in X$, along one edge,
+to distinct vertices of $Y$: a matching covering $X$. By Theorem~\ref{thm:maxflow} it suffices that every cut has capacity at least
+$|X|$. Let $S$ be a cut and $A=S\cap X$, $B=S\cap Y$. If an edge goes from $A$ to $Y\setminus B$, then $c(S)\ge|X|+1$. Otherwise $N(A)\subseteq B$,
+and the arcs leaving $S$ include the arcs $s\to x$ for $x\in X\setminus A$ and $y\to t$ for $y\in B$:
+$c(S)\ge|X\setminus A|+|B|\ge|X|-|A|+|N(A)|\ge|X|$.
+\end{proof}
+
+Flows model far more than pipes and railways. Exercise~\ref{ex:baseball} decides whether a baseball team can still finish first,
+and Exercise~\ref{ex:closure} chooses the most profitable set of projects subject to prerequisites; the same minimum cuts separate
+an object from its background in image segmentation.
+
+\section{Doubly stochastic matrices}
+
+A square matrix with non-negative entries is \emph{doubly stochastic} if every row and every column sums to $1$; it is the transition
+matrix of a Markov chain (Tome~3) whose uniform distribution is stationary. The permutation matrices are doubly stochastic, and so
+is any average of them, for instance $\frac1n J$, the matrix with all entries $\frac1n$. The converse is the content of the following theorem.
+
+\begin{theorem}[Birkhoff, 1946; von Neumann, 1953]\label{thm:birkhoff}
+Every doubly stochastic matrix is a convex combination of permutation matrices. If it has $p$ positive entries, at most
+$p-n+1$ permutation matrices are needed.
+\end{theorem}
+\begin{proof}
+Let $A$ be doubly stochastic of size $n$, and $G$ the bipartite graph with rows and columns as sides and an edge $ij$ whenever $a_{ij}>0$.
+For a set $S$ of rows, the entries of these rows add up to $|S|$, and they all lie in the columns of $N(S)$, whose entries add up to $|N(S)|$;
+so $|S|\le|N(S)|$. By Hall's theorem $G$ has a perfect matching, that is a permutation $\sigma$ with $a_{i\sigma(i)}>0$ for all $i$. Let $P$ be its
+permutation matrix and $\lambda=\min_ia_{i\sigma(i)}$, so $0<\lambda\le1$.
+
+We induct on $p\ge n$ (each row has a positive entry). If $p=n$, each row has a single positive entry, equal to $1$, so $A=P$ and
+$1=p-n+1$ matrix suffices. If $p>n$, then $A\ne P$, so $\lambda<1$, and
+\[
+A'=\frac{A-\lambda P}{1-\lambda}
+\]
+has non-negative entries and row and column sums $\frac{1-\lambda}{1-\lambda}=1$: it is doubly stochastic, with at least one positive entry fewer
+(where the minimum $\lambda$ is attained). By induction $A'$ is a convex combination of at most $(p-1)-n+1$ permutation matrices,
+and $A=\lambda P+(1-\lambda)A'$ of at most $p-n+1$.
+\end{proof}
+
+Since $p\le n^2$, at most $n^2-n+1$ permutation matrices are needed; a dimension count (Carath\'eodory's theorem, Tome~C5) brings this down
+to $(n-1)^2+1$ (Marcus and Ree, 1959).
+
+\begin{beauty}
+The assignment problem asks for a permutation $\sigma$ minimising a cost $\sum_ic_{i\sigma(i)}$: $n$ workers, $n$ jobs, $n!$ possibilities.
+Relax it to doubly stochastic matrices, minimising the linear function $\sum_{i,j}c_{ij}a_{ij}$ over a convex set: a linear program,
+solvable fast. Nothing is lost. By Birkhoff's theorem the cost of $A=\sum_k\lambda_kP_k$ is the average $\sum_k\lambda_k\,\mathrm{cost}(P_k)$,
+so some permutation is at least as cheap as $A$. A problem that looks like a search through $n!$ cases is secretly convex.
+\end{beauty}
+
+\section{Perfect matchings in general graphs}\label{sec:tutte}
+
+Without bipartiteness Hall's condition is meaningless, and odd cycles get in the way: a triangle has no perfect matching
+although every vertex has two neighbours. The obstruction is an odd component. If $G-S$ (remove the vertices of $S$) has a
+component with an odd number of vertices, a perfect matching must match one of its vertices with a vertex of $S$. Write $o(H)$ for
+the number of components of $H$ with an odd number of vertices. If $o(G-S)>|S|$, there are not enough vertices in $S$ to go round
+(Figure~\ref{fig:sylvester}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-sylvester}
+\caption{A graph in which every vertex has degree $3$, but with no perfect matching: removing the vertex $s$ leaves three
+components of $5$ vertices each, and $s$ can be matched into only one of them. Its three edges at $s$ are bridges.}
+\label{fig:sylvester}
+\end{figure}
+
+\begin{theorem}[Tutte, 1947]\label{thm:tutte}
+A graph $G$ has a perfect matching if and only if $o(G-S)\le|S|$ for every set $S$ of vertices.
+\end{theorem}
+\begin{proof}[Proof (Lov\'asz, 1975)]
+Necessity was explained above: each odd component of $G-S$ sends a matching edge to its own vertex of $S$. For sufficiency,
+suppose that $G$ satisfies Tutte's condition but has no perfect matching. With $S=\varnothing$, the condition says that $G$ has no odd component,
+so $n=|V|$ is even. Add edges to $G$, one at a time, as long as there is still no perfect matching; we reach a graph $G^*$ on the same vertices,
+without perfect matching, such that adding any missing edge creates one. Adding an edge never increases $o(G-S)$ (it may merge two
+components: two odd ones become one even one, an odd and an even one an odd one), so $G^*$ still satisfies Tutte's condition. We now
+work in $G^*$, and call $S$ the set of vertices adjacent to all other vertices.
+
+\emph{If every component of $G^*-S$ is a complete graph}, we build a perfect matching, a contradiction. Match the vertices of each
+even component among themselves. In each odd component, match all vertices but one among themselves, and match the remaining
+vertex with a vertex of $S$, a different one for each component; this is possible since $o(G^*-S)\le|S|$ and the vertices of $S$ are
+adjacent to everything. The vertices of $S$ left over are pairwise adjacent, and their number $|S|-o(G^*-S)$ is even, because
+$n=|S|+\sum_C|C|\equiv|S|+o(G^*-S)\pmod2$ and $n$ is even. Match them in pairs.
+
+\emph{Otherwise} some component of $G^*-S$ is not complete. A connected graph that is not complete contains vertices $a,b,a'$ with $ab$ and
+$ba'$ edges but $aa'$ not an edge (take two non-adjacent vertices at distance $2$). Since $b\notin S$, some vertex $c$ is not adjacent to $b$. By the
+maximality of $G^*$, the graph $G^*+aa'$ has a perfect matching $M_1$, which contains $aa'$, and $G^*+bc$ has a perfect matching $M_2$, which contains $bc$.
+As in Berge's proof, $M_1\triangle M_2$ is a disjoint union of cycles alternating between $M_1$ and $M_2$ (both matchings are perfect, so
+there are no paths). Let $C$ be the cycle containing $bc$. Note that if $a$ or $a'$ is on $C$, then so is the edge $aa'$, the $M_1$-edge at $a$.
+\begin{itemize}
+\item If $aa'$ is not on $C$, take $M_1$ on the vertices of $C$ and $M_2$ elsewhere. This is a perfect matching which avoids $bc$ (an $M_2$-edge
+of $C$) and $aa'$ (not on $C$, and not in $M_2$), so it lies in $G^*$: a contradiction.
+\item If $aa'$ is on $C$, walk along $C$ from $b$, starting with the $M_1$-edge at $b$, until the first vertex $d\in\{a,a'\}$, and let $d'$ be the
+other one. This path $P$ starts with an $M_1$-edge and ends with an $M_2$-edge (the $M_1$-edge at $d$ is $dd'$, and $d'$ comes later), and it
+does not contain $c$, the last vertex before the walk returns to $b$ (and $c\ne a,a'$, as $c$ is not adjacent to $b$). Take the $M_2$-edges of
+$P$, which cover every vertex of $P$ except $b$; the edge $bd'$, which is in $G^*$ since $b$ is adjacent to $a$ and $a'$; and the $M_1$-edges with
+no end on $P\cup\{d'\}$, which cover all other vertices (the $M_1$-partners of the vertices of $P$ other than $d$ are on $P$, and that of $d$ is
+$d'$). This is a perfect matching of $G^*$, using neither $bc$ nor $aa'$: a contradiction again.
+\end{itemize}
+\end{proof}
+
+Tutte's original proof used Pfaffians, the square roots of determinants of skew-symmetric matrices, and the idea survives in a
+fast randomised test for perfect matchings by Lov\'asz (1979) that Tome~C3 presents. Here is the oldest theorem of the subject,
+of which Figure~\ref{fig:sylvester} shows that its hypothesis cannot be dropped.
+
+\begin{corollary}[Petersen, 1891]\label{cor:petersen}
+Every $3$-regular graph without a bridge has a perfect matching.
+\end{corollary}
+\begin{proof}
+Let $S$ be a set of vertices and $C$ an odd component of $G-S$. The degrees in $C$ add up to $3|C|$, which is odd, and count twice the
+edges inside $C$ plus the edges from $C$ to $S$ (there are no edges to other components). So the number $e(C,S)$ of edges from $C$ to $S$ is odd.
+It is not $1$, since that edge would be a bridge (it would be the only edge between $C$ and the rest of $G$), so $e(C,S)\ge3$. The edges from
+odd components to $S$ number at most $3|S|$, since each vertex of $S$ has degree $3$; hence $3\,o(G-S)\le3|S|$, which is Tutte's condition.
+\end{proof}
+
+\begin{remark}
+The Gallai--Edmonds structure theorem (1963--65) goes further and describes all maximum matchings of a graph through a
+canonical set $S$ attaining the maximum of $o(G-S)-|S|$; the Tutte--Berge formula $\nu(G)=\frac12\bigl(n-\max_S(o(G-S)-|S|)\bigr)$
+follows from Theorem~\ref{thm:tutte} as Exercise~\ref{ex:konigore} follows from Hall's theorem. See Lov\'asz and Plummer's book.
+\end{remark}
+
+\section{Stable marriages}
+
+Back to the doctors. There are $n$ \emph{proposers} and $n$ \emph{receivers}; each proposer ranks all receivers in a strict order, and
+each receiver ranks all proposers. A perfect matching $M$ between the two sides is \emph{unstable} if some proposer $p$ and receiver $r$,
+not matched together, both prefer each other to their partners in $M$; the pair $(p,r)$ is then \emph{blocking}. Otherwise $M$ is
+\emph{stable}. Gale and Shapley's algorithm, called \emph{deferred acceptance}, runs as follows.
+\begin{itemize}
+\item While some proposer $p$ is free, $p$ proposes to the receiver $r$ it ranks highest among those it has not yet proposed to.
+\item The receiver $r$ holds the proposal it prefers among the one it holds (if any) and the new one, and rejects the other; the
+rejected proposer becomes free.
+\end{itemize}
+The word ``deferred'' is the key: a receiver never accepts definitively, so it can trade up until the end.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-galeshapley}
+\caption{Preferences of four proposers and four receivers, best first. Deferred acceptance gives every proposer the receiver in
+bold in its list, and its outcome $Ax$, $Bz$, $Cw$, $Dy$ is stable. Matching every receiver with its first choice (bold on the right),
+that is $Bw$, $Cx$, $Ay$, $Dz$, is stable too.}
+\label{fig:galeshapley}
+\end{figure}
+
+On the preferences of Figure~\ref{fig:galeshapley}, $A$ proposes to $x$, $B$ to $y$ and $C$ to $z$, and all are held. Then $D$ proposes to $y$,
+who prefers $D$ to $B$ and rejects $B$. Now $B$ tries $x$, who keeps $A$; then $z$, who prefers $B$ to $C$. Rejected, $C$ tries $w$, who is free.
+After seven proposals everybody is matched: $Ax$, $Bz$, $Cw$, $Dy$.
+
+\begin{theorem}[Gale and Shapley, 1962]\label{thm:galeshapley}
+Deferred acceptance stops after at most $n^2$ proposals, and the matching it produces is stable. In particular a stable matching
+always exists.
+\end{theorem}
+\begin{proof}
+A proposer never proposes twice to the same receiver, so there are at most $n^2$ proposals. A receiver who has received a proposal
+holds one from then on, and the proposals it holds get better and better (for it). A proposer $p$ is never rejected by every receiver: if
+$p$ had been rejected by all $n$ receivers, all of them would have received a proposal and would hold one, from the $n-1$ other proposers, which
+is impossible. So when the algorithm stops, no proposer is free, and the held proposals form a perfect matching $M$.
+
+Suppose that $p$ prefers $r$ to its partner in $M$. Then $p$ proposed to $r$ before proposing to its final partner, and was rejected by $r$,
+either at once or later, in favour of a proposer that $r$ preferred. Since the proposals held by $r$ only improve, $r$ prefers its final partner to
+$p$. So $(p,r)$ is not blocking, and $M$ is stable.
+\end{proof}
+
+\begin{theorem}[Gale and Shapley, 1962; McVitie and Wilson, 1971]\label{thm:proposeroptimal}
+Call a receiver \emph{achievable} for a proposer if some stable matching pairs them. The matching produced by deferred acceptance
+gives every proposer its best achievable receiver, and every receiver its worst achievable proposer. In particular it does
+not depend on the order in which free proposers are chosen.
+\end{theorem}
+\begin{proof}
+We show that no proposer is ever rejected by an achievable receiver. Suppose the contrary, and consider the first time it
+happens during the run: $r$ rejects $p$ (at once or later) in favour of $p'$, which $r$ prefers to $p$, although some stable matching $M$ pairs $p$
+with $r$. In $M$, $p'$ has a partner $r'\ne r$. When $p'$ proposed to $r$, it had already been rejected by every receiver it ranks above $r$, and
+all those rejections came before the first rejection by an achievable receiver; so none of these receivers is achievable for $p'$,
+and $r'$, which is achievable for $p'$, is not among them: $p'$ prefers $r$ to $r'$. But $r$ prefers $p'$ to $p$, its partner in $M$. So $(p',r)$ blocks $M$,
+a contradiction.
+
+Hence every proposer, proposing in decreasing order of preference and never rejected by an achievable receiver, ends with a
+receiver at least as good as all its achievable ones; and its final receiver is achievable, since the output is stable. So it gets
+its best achievable receiver. Now let $M_0$ be the output, and suppose a receiver $r$ is matched with $p$ in $M_0$ and prefers $p$ to its partner
+$p''$ in some stable matching $M$. In $M$, $p$ has a partner $r''\ne r$, achievable for $p$, so $p$ prefers $r$, its best achievable receiver, to $r''$.
+Then $(p,r)$ blocks $M$, a contradiction: $r$ gets its worst achievable proposer. Since the output has been described without
+reference to the order of proposals, it does not depend on that order.
+\end{proof}
+
+So the side that proposes wins, and wins as much as stability permits; in Figure~\ref{fig:galeshapley}, if the receivers propose,
+every one of them gets its first choice, and three of the four proposers their last. When the residency match was redesigned in
+1998, the students were made the proposing side. Proposers also have no reason to lie: misreporting one's preferences never helps a
+proposer (Dubins and Freedman, 1981), whereas a receiver can gain by lying (Exercise~\ref{ex:lying}).
+
+How good is the outcome for random preferences? Knuth showed that the expected number of proposals is about $n\ln n$, a coupon
+collector in disguise; Pittel showed that the proposers get on average their receiver of rank about $\ln n$, and the receivers their
+proposer of rank about $n/\ln n$. The notebook measures both.
+
+Real matching markets have more structure. In the hospitals-residents problem, each hospital has a number of positions; cloning
+each hospital into as many copies as it has positions, each with the same preferences, reduces it to the problem above, and
+students may also declare some hospitals unacceptable. With couples who want to be placed together, stable matchings may fail to
+exist, and deciding whether one exists is NP-complete (Ronn, 1990), a reason why the real match uses heuristics for them. And when
+everybody is on the same side, as in the room-sharing question at the start of the chapter, a stable pairing may not exist at all
+(Exercise~\ref{ex:roommates}); Irving gave in 1985 an algorithm that finds one when it exists.
+
+\begin{beauty}
+Stable matchings have the structure of a lattice. Given two stable matchings, give every proposer the better of its two partners:
+the result is again a stable matching, in which every receiver gets the worse of its two (Exercise~\ref{ex:lattice}). The
+proposer-optimal and receiver-optimal matchings are the top and bottom of this lattice, and every finite distributive lattice
+arises this way (Blair, 1984). The same order-theoretic structure as in Chapter~2 governs a problem from economics.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:latin}
+A \emph{$k\times n$ Latin rectangle} is a $k\times n$ array of symbols $1,\dots,n$ in which every row contains each symbol once and no column contains a
+symbol twice. Show that if $k<n$, it can be extended to a $(k+1)\times n$ Latin rectangle, and so, row by row, to a Latin square.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cards}
+A deck of $52$ cards is dealt into $13$ piles of $4$ cards. Show that one can pick one card from each pile so that the $13$ cards picked
+contain one card of each rank, Ace to King.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:konigore}
+\emph{The deficiency version.} In a bipartite graph with sides $X$ and $Y$, show that
+$\nu(G)=|X|-\max_{S\subseteq X}\bigl(|S|-|N(S)|\bigr)$ (the maximum is at least $0$, from $S=\varnothing$).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:edgecolour}
+\emph{K\H onig's edge colouring theorem, 1916.} Show that the edges of a bipartite graph of maximum degree $\Delta$ can be coloured with $\Delta$ colours so
+that edges sharing a vertex get different colours. Deduce how to schedule a round of exams in the fewest time slots, when each exam involves one student
+and one examiner.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pathcover}
+Show that the vertices of a directed acyclic graph with $n$ vertices can be covered by $n-\nu$ vertex-disjoint directed paths, and not fewer,
+where $\nu$ is the maximum size of a matching in the bipartite graph with an edge $u^-v^+$ for each arc $u\to v$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:baseball}
+\emph{Baseball elimination (Schwartz, 1966).} Teams $1,\dots,m$ have $w_i$ wins so far, and $g_{ij}$ games left between $i$ and $j$; there are no draws. Team $k$ has $r_k$
+games left; let $W=w_k+r_k$. Assume $W\ge w_i$ for all $i$. Build a network with a source $s$, a vertex for each pair $\{i,j\}$ of teams other than $k$, joined from $s$ by an arc
+of capacity $g_{ij}$, arcs of capacity $g_{ij}$ from $\{i,j\}$ to $i$ and to $j$, and an arc of capacity $W-w_i$ from each team $i\ne k$ to the sink $t$. Show that team $k$ can still
+end with at least as many wins as every other team if and only if the maximum flow saturates every arc leaving $s$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:closure}
+\emph{Project selection.} Projects $1,\dots,m$ have profits $p_i\in\R$ (costs if negative), and some projects require others: choosing $i$
+forces choosing $j$ when $i\to j$ is a requirement. Build a network with an arc $s\to i$ of capacity $p_i$ for $p_i>0$, an arc $i\to t$ of capacity
+$-p_i$ for $p_i<0$, and an arc $i\to j$ of capacity $+\infty$ for every requirement (or $1+\sum_i|p_i|$). Show that the largest total profit of an
+allowed set of projects is $\sum_{p_i>0}p_i$ minus the minimum capacity of a cut.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:birkhoffext}
+Show that the permutation matrices are exactly the doubly stochastic matrices that are not the midpoint $\frac12(B+C)$ of two different doubly
+stochastic matrices (the extreme points of the Birkhoff polytope).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:errera}
+\emph{Errera, 1922.} Show that the graph of Figure~\ref{fig:sylvester} is $3$-regular without a perfect matching, and that a $3$-regular graph with at most
+two bridges has a perfect matching.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:roommates}
+Four students $a,b,c,d$ share two double rooms. Student $a$ prefers $b$ to $c$ to $d$, student $b$ prefers $c$ to $a$ to $d$, student $c$ prefers $a$ to $b$ to $d$,
+and $d$ has any preferences. Show that every pairing has a blocking pair. Then answer the mixed-rooms question at the start of the chapter.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lattice}
+Let $M$ and $M'$ be stable matchings. Give each proposer the better of its partners in $M$ and $M'$. Show that the result is a perfect matching,
+that it is stable, and that each receiver gets the worse of its two partners.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lying}
+Proposers $A,B,C$ rank the receivers $x\,y\,z$, $x\,z\,y$ and $y\,x\,z$ respectively (best first); receivers $x,y,z$ rank the proposers $C\,A\,B$, $A\,B\,C$ and $A\,B\,C$.
+Run deferred acceptance. Then show that $x$, by reporting $C\,B\,A$ instead of its true ranking, ends with a partner it truly prefers.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:latin}
+Join each column to the symbols missing from it, and count degrees.
+\end{hint}
+\begin{hint}{ex:cards}
+A bipartite multigraph between piles and ranks, one edge per card.
+\end{hint}
+\begin{hint}{ex:konigore}
+Add $d$ new vertices to $Y$, adjacent to all of $X$.
+\end{hint}
+\begin{hint}{ex:edgecolour}
+Embed the graph in a $\Delta$-regular bipartite multigraph.
+\end{hint}
+\begin{hint}{ex:pathcover}
+Read a matching as a choice of successors, as in the second proof of Dilworth's theorem.
+\end{hint}
+\begin{hint}{ex:baseball}
+A unit of flow through $\{i,j\}$ and $i$ is a game between $i$ and $j$ won by $i$. Use integrality.
+\end{hint}
+\begin{hint}{ex:closure}
+A cut of finite capacity is $\{s\}$ plus an allowed set of projects.
+\end{hint}
+\begin{hint}{ex:birkhoffext}
+For one direction use Theorem~\ref{thm:birkhoff}; for the other, look at the entries equal to $0$ and $1$.
+\end{hint}
+\begin{hint}{ex:errera}
+As in Corollary~\ref{cor:petersen}; parity of $n$ helps at the end.
+\end{hint}
+\begin{hint}{ex:roommates}
+By symmetry, it is enough to examine who shares a room with $d$.
+\end{hint}
+\begin{hint}{ex:lattice}
+If two proposers got the same receiver, one got it from $M$ and the other from $M'$; use the stability of both.
+\end{hint}
+\begin{hint}{ex:lying}
+Trace the proposals one by one in both runs.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:latin}
+\idea Adding a row means choosing, for each column, a missing symbol, all different: a perfect matching between columns and symbols.
+\writeup Join column $j$ to each symbol not yet in column $j$. Each column misses $n-k$ symbols. Each symbol appears once in each of the $k$ rows, in $k$ different
+columns, so it is missing from $n-k$ columns. The bipartite graph is $(n-k)$-regular with $n-k\ge1$, so by Corollary~\ref{cor:regular} it has a perfect
+matching, which is a new row: each symbol once, and no repetition in a column.
+\end{solution}
+
+\begin{solution}{ex:cards}
+\idea Each pile has $4$ cards, each rank has $4$ cards: this is regularity.
+\writeup Join each pile to the rank of each of its cards, with multiplicity. Every pile has degree $4$, and every rank has degree $4$, since its four
+cards are somewhere. By Corollary~\ref{cor:regular} there is a perfect matching: one card per pile, one per rank.
+\end{solution}
+
+\begin{solution}{ex:konigore}
+\idea Each deficient set leaves vertices unmatched; conversely, a few universal extra partners repair Hall's condition.
+\writeup Let $d=\max_S(|S|-|N(S)|)\ge0$. Any matching matches at most $|N(S)|$ vertices of $S$, so leaves at least $d$ vertices of $X$ free for the best $S$:
+$\nu\le|X|-d$. Add $d$ new vertices to $Y$, adjacent to every vertex of $X$. Now $|N'(S)|=|N(S)|+d\ge|S|$ for non-empty $S$, so Hall's theorem gives a matching covering $X$;
+at most $d$ of its edges use new vertices, so the others form a matching of $G$ of size at least $|X|-d$.
+\end{solution}
+
+\begin{solution}{ex:edgecolour}
+\idea A $\Delta$-regular bipartite multigraph splits into $\Delta$ perfect matchings, the colour classes.
+\writeup Add isolated vertices to the smaller side so that $|X|=|Y|$. While some vertex has degree less than $\Delta$, there is one on each side: the degrees on each side add up to the number $m$ of edges, and if a vertex of $X$ has degree
+less than $\Delta$, then $m<\Delta|X|=\Delta|Y|$, so some vertex of $Y$ has degree less than $\Delta$. Add an edge (possibly parallel) between two such
+vertices. We reach a $\Delta$-regular bipartite multigraph containing $G$. By Corollary~\ref{cor:regular} its
+edges split into $\Delta$ perfect matchings; colour each with its own colour and keep the edges of $G$. For the exams: students and examiners are the two
+sides, exams the edges, and a colour is a time slot in which nobody has two exams. At least $\Delta$ slots are needed, and $\Delta$ suffice.
+\end{solution}
+
+\begin{solution}{ex:pathcover}
+\idea A matching edge $u^-v^+$ says ``$v$ comes right after $u$ on its path''.
+\writeup In a matching $M$ each vertex has at most one chosen successor and at most one chosen predecessor, so the chosen arcs form disjoint
+directed paths and cycles; there are no cycles, as the graph is acyclic. Each matching edge joins two of the $n$ trivial paths, so the
+vertices are covered by $n-|M|$ paths. Conversely, a cover by $q$ disjoint paths uses $n-q$ arcs, which form a matching; so $q\ge n-\nu$.
+\end{solution}
+
+\begin{solution}{ex:baseball}
+\idea Integrality turns a flow into an outcome of the remaining games.
+\writeup Let $k$ win all its remaining games, which is clearly best for it, and let $G=\sum_{\{i,j\}}g_{ij}$, the sum over pairs not containing $k$. An outcome of the
+other games in which every team $i$ ends with at most $W$ wins gives a flow of value $G$: send from $\{i,j\}$ to $i$ the number of games $i$ wins against $j$;
+team $i$ receives its number of new wins, at most $W-w_i$. Conversely, an integral flow of value $G$ (one exists if the maximum flow is $G$, by the
+integrality theorem) tells how many of the $g_{ij}$ games each of $i$ and $j$ wins, and the capacities $W-w_i$ ensure that nobody passes $W$.
+\end{solution}
+
+\begin{solution}{ex:closure}
+\idea A finite cut cannot cut an infinite arc, so it respects the requirements; its capacity counts lost profits and paid costs.
+\writeup Let $Q=1+\sum_i|p_i|$ play the role of $+\infty$. For a cut $S$, let $C=S\setminus\{s\}$. If $C$ is allowed (no requirement leaves $C$), the arcs leaving $S$ are
+$s\to i$ for $i\notin C$ with $p_i>0$, and $i\to t$ for $i\in C$ with $p_i<0$, so
+\[
+c(S)=\sum_{i\notin C,\,p_i>0}p_i+\sum_{i\in C,\,p_i<0}(-p_i)=\sum_{p_i>0}p_i-\sum_{i\in C}p_i.
+\]
+This is less than $Q$. If $C$ is not allowed, an arc of capacity $Q$ leaves $S$, so $c(S)\ge Q$, more than the cut $\{s\}$, of capacity at most $\sum_{p_i>0}p_i<Q$. So the
+minimum cut is attained by an allowed $C$, and it minimises $\sum_{p_i>0}p_i-\mathrm{profit}(C)$.
+\end{solution}
+
+\begin{solution}{ex:birkhoffext}
+\idea A $0$ entry of an average of non-negative matrices forces $0$ in each; an entry $1$ forces $1$ in each.
+\writeup If $P=\frac12(B+C)$ with $P$ a permutation matrix and $B,C$ doubly stochastic, then where $P$ has $0$, $B$ and $C$ have non-negative entries adding up to $0$,
+hence $0$; where $P$ has $1$, both entries are at most $1$ and average $1$, hence equal to $1$. So $B=C=P$. Conversely, if $A$ is not a permutation matrix,
+Theorem~\ref{thm:birkhoff} writes $A=\lambda P+(1-\lambda)A'$ with $0<\lambda<1$ and $A'$ doubly stochastic, $A'\ne P$. For small $\varepsilon>0$, the matrices
+$A\pm\varepsilon(P-A')$ lie on the segment from $A'$ to $P$, so they are doubly stochastic, they differ, and $A$ is their midpoint.
+\end{solution}
+
+\begin{solution}{ex:errera}
+\idea Bridges are the only odd components that cost $S$ just one edge; with two of them the count still closes, by parity.
+\writeup In Figure~\ref{fig:sylvester}, each blob is $K_4$ with one edge subdivided by a vertex joined to $s$; all degrees are $3$, and $S=\{s\}$ gives $o(G-S)=3>1$.
+Now let $G$ be $3$-regular with at most two bridges, and $S$ a set of vertices. As in Corollary~\ref{cor:petersen}, $e(C,S)$ is odd for every odd component $C$ of
+$G-S$, and if $e(C,S)=1$ that edge is a bridge, a different one for each $C$. So at most two odd components have $e(C,S)=1$, the others $e(C,S)\ge3$, and
+\[
+3\,o(G-S)-4\le\sum_Ce(C,S)\le3|S|.
+\]
+So $o(G-S)\le|S|+\frac43$, that is $o(G-S)\le|S|+1$. But $n$ is even ($3n$ is twice the number of edges), and $n\equiv|S|+o(G-S)\pmod 2$; so $o(G-S)\ne|S|+1$,
+and $o(G-S)\le|S|$. Tutte's theorem concludes.
+\end{solution}
+
+\begin{solution}{ex:roommates}
+\idea Everybody's last choice is $d$, and $a,b,c$ chase each other in a circle.
+\writeup The roles of $a,b,c$ are cyclic ($a\to b\to c\to a$ in first choices), so it suffices to treat $d$ with $a$, the others following by rotation. Then $b$
+and $c$ share. Student $c$ prefers $a$ to $b$, and $a$ prefers $c$ to $d$: $(a,c)$ blocks. So no pairing is stable. The mixed version is a marriage problem
+with two proposers and two receivers, and Theorem~\ref{thm:galeshapley} gives a stable matching: bipartiteness is what saves stability,
+as it saved Hall's condition.
+\end{solution}
+
+\begin{solution}{ex:lattice}
+\idea A receiver claimed twice would have to be preferred both ways; a blocking pair for the new matching would block $M$ or $M'$.
+\writeup Write $p\vee$ for the better of $M(p)$ and $M'(p)$ for $p$. Suppose $p\ne q$ both get $r$, with $r=M(p)$ and $r=M'(q)$ (it cannot come from the same matching
+twice). Since $p$ chose $M(p)$, $p$ prefers $r$ to $M'(p)$ (strictly: $M'(p)\ne r=M'(q)$); stability of $M'$ forces $r$ to prefer $M'(r)=q$ to $p$. Likewise $q$ prefers $r$ to $M(q)$, and
+stability of $M$ forces $r$ to prefer $M(r)=p$ to $q$. Contradiction: the new assignment is injective, hence a perfect matching.
+
+Each receiver $r$ gets the worse of $M(r)$ and $M'(r)$. If they are equal there is nothing to prove. Otherwise let $p=M(r)\ne q=M'(r)$; the
+receiver $r$ is now assigned to $p$ or to $q$, say to $p$ (the other case is symmetric). Then $p$ prefers $r=M(p)$ to $M'(p)$, and since $(p,r)$ does not block
+$M'$, the receiver $r$ prefers $M'(r)=q$ to $p$: it got the worse of the two.
+
+Stability: suppose that $(p,r)$ blocks the new matching. Then $p$ prefers $r$ to its new partner, hence to both $M(p)$ and $M'(p)$; and $r$ prefers $p$ to
+its new partner, which is $M(r)$ or $M'(r)$. In the first case $(p,r)$ blocks $M$, in the second it blocks $M'$: a contradiction.
+\end{solution}
+
+\begin{solution}{ex:lying}
+\idea A receiver's only power is to reject; rejecting its held proposer can set off a chain that brings back a better one.
+\writeup Truthful run: $A$ proposes to $x$ (held), $B$ to $x$ ($x$ prefers $A$, rejects $B$), $C$ to $y$ (held), $B$ to $z$ (held). Outcome $Ax$, $Cy$, $Bz$: $x$ gets $A$, its second choice.
+With $x$ reporting $C\,B\,A$: $A$ to $x$ (held); $B$ to $x$, who now rejects $A$; $C$ to $y$ (held); $A$ to $y$, who prefers $A$ and rejects $C$; $C$ to $x$, who rejects $B$; $B$ to $z$.
+Outcome $Cx$, $Ay$, $Bz$: $x$ gets $C$, its true first choice. The rejection of $A$ sent $A$ to $y$, which released $C$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item D.~Gale and L.~S.~Shapley, \emph{College admissions and the stability of marriage}, American Mathematical Monthly 69 (1962),
+9--15; A.~E.~Roth, \emph{The evolution of the labor market for medical interns and residents: a case study in game theory},
+Journal of Political Economy 92 (1984), 991--1016; A.~E.~Roth, \emph{Who Gets What and Why}, Houghton Mifflin Harcourt, 2015, a
+lively account for everyone.
+\item D.~G.~McVitie and L.~B.~Wilson, \emph{The stable marriage problem}, Communications of the ACM 14 (1971), 486--490; L.~E.~Dubins and
+D.~A.~Freedman, \emph{Machiavelli and the Gale--Shapley algorithm}, American Mathematical Monthly 88 (1981), 485--494; D.~E.~Knuth,
+\emph{Mariages stables}, Presses de l'Universit\'e de Montr\'eal, 1976 (English translation, AMS, 1997); B.~Pittel, \emph{On likely solutions
+of a stable marriage problem}, Annals of Applied Probability 2 (1992), 358--401; D.~Gusfield and R.~W.~Irving, \emph{The Stable Marriage
+Problem: Structure and Algorithms}, MIT Press, 1989.
+\item C.~Berge, \emph{Two theorems in graph theory}, Proceedings of the National Academy of Sciences 43 (1957), 842--844; P.~Hall,
+\emph{On representatives of subsets}, Journal of the London Mathematical Society 10 (1935), 26--30; P.~R.~Halmos and H.~E.~Vaughan,
+\emph{The marriage problem}, American Journal of Mathematics 72 (1950), 214--215.
+\item L.~R.~Ford and D.~R.~Fulkerson, \emph{Maximal flow through a network}, Canadian Journal of Mathematics 8 (1956), 399--404;
+A.~Schrijver, \emph{On the history of the transportation and maximum flow problems}, Mathematical Programming 91 (2002), 437--445,
+which tells the story of the Harris--Ross report.
+\item G.~Birkhoff, \emph{Tres observaciones sobre el \'algebra lineal}, Universidad Nacional de Tucum\'an, Revista Serie A 5 (1946), 147--151.
+\item W.~T.~Tutte, \emph{The factorization of linear graphs}, Journal of the London Mathematical Society 22 (1947), 107--111; L.~Lov\'asz,
+\emph{Three short proofs in graph theory}, Journal of Combinatorial Theory B 19 (1975), 269--271; J.~Petersen, \emph{Die Theorie der
+regul\"aren Graphs}, Acta Mathematica 15 (1891), 193--220; J.~Edmonds, \emph{Paths, trees, and flowers}, Canadian Journal of Mathematics
+17 (1965), 449--467.
+\item L.~Lov\'asz and M.~D.~Plummer, \emph{Matching Theory}, North-Holland, 1986 (reprinted by the AMS, 2009); A.~Schrijver,
+\emph{Combinatorial Optimization: Polyhedra and Efficiency}, Springer, 2003, the encyclopaedia of the subject.
+\end{itemize}
