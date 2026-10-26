@@ -1,0 +1,247 @@
+\chapter{Writing It Down}
+\label{ch:writing}
+
+\begin{center}\itshape
+A theorem nobody can read is a theorem nobody has.\\
+Writing is the last step of a proof,\\
+and very often the step where you find the mistake.
+\end{center}
+
+In 1887 Camille Jordan, in the third volume of his \emph{Cours d'analyse}, stated a theorem that every child believes: a closed curve in the plane that does not cross itself separates
+the plane into two regions, an inside and an outside. He gave a proof. For most of the twentieth century his proof had a bad reputation. Oswald Veblen, in 1905, presented his own
+proof as the first rigorous one, and generations of textbooks repeated that Jordan's argument was incomplete or wrong. In 2007 Thomas Hales, who had just checked the Jordan curve
+theorem in the proof assistant HOL Light, went back and read Jordan's text with the care that a formalisation forces. His verdict: the proof is essentially correct, with gaps that are
+easy to fill and that Jordan himself treated as routine. The reputation came from readers, not from the proof.
+
+This chapter is about the readers. It covers what a research paper looks like, how it is posted, refereed and published, how errors are found, and how to write to an expert. And it
+proves Jordan's theorem in the case he would have checked first: polygons. The proof is short, but it is a good place to practise the one skill this chapter is really about, which is saying
+exactly what is needed and nothing more.
+
+\section{The anatomy of a paper}
+
+A paper in pure mathematics has a shape that readers rely on, so that they can find what they want without reading everything.
+\begin{itemize}
+\item \emph{Title and abstract.} The abstract states the main result in words, in a few sentences, with no references and as little notation as possible. It is what appears in search results and in the daily arXiv listing.
+\item \emph{Introduction.} The main theorem is stated, precisely, on the first or second page. Then comes its context: what was known before, what is new, and why it matters. Then a sketch of the proof
+and of the new ideas, and an outline of the paper. Many readers read only this section; write it last, and rewrite it most.
+\item \emph{Preliminaries.} Notation and the known results that will be used, each with a precise reference (theorem number, not just a book).
+\item \emph{The proof,} split into lemmas whose statements can be read on their own. A lemma that is only used once and whose statement is longer than its proof should usually be inlined.
+\item \emph{Further remarks and open problems,} and the \emph{references}.
+\end{itemize}
+Paul Halmos's essay \emph{How to write mathematics} (1970) remains the best short guide. Its central advice is to write for a reader, decide what that reader knows, and
+organise everything around a few ideas. On notation he is blunt: ``the best notation is no notation; whenever it is possible to avoid the use of a complicated alphabetic apparatus, avoid it''.
+Jean-Pierre Serre's lecture \emph{How to write mathematics badly} (2003) gives the same advice in reverse, with examples, and is very funny.
+
+\emph{Posting and publishing.} Almost every paper is first posted on the arXiv (\url{https://arxiv.org}), the open preprint server started by Paul Ginsparg in 1991; new authors need an
+endorsement from an existing author in the subject area. Then it is submitted to a journal, whose editor sends it to one or more referees. A referee report says whether the result is correct, new and
+interesting, and lists corrections; it usually takes months. Referees check the argument, but they are human: the Kepler conjecture story of Chapter~\ref{ch:lean} shows the limits, and errors
+in published papers are not rare.
+
+\emph{Writing to an expert.} An email to a stranger should be short and specific: who you are in one line, the precise question or result in two or three lines, a link to a written version, and no request to read
+fifty pages. Experts receive many such messages; the ones that get answered are the ones that can be answered in five minutes.
+
+\section{Errors, found and unfound}
+
+Three stories show three different ways errors are discovered.
+
+\begin{itemize}
+\item \emph{By another reader, after a decade.} Alfred Kempe's 1879 proof of the four colour theorem was accepted for eleven years, until Percy Heawood found the flaw in 1890 (the argument is analysed in Tome~C1).
+Heawood salvaged from it a proof of the five colour theorem.
+\item \emph{By the author, during refereeing.} Andrew Wiles announced a proof of Fermat's Last Theorem in June 1993. During refereeing a gap appeared in the construction of an Euler system. After a year of work,
+Wiles and his former student Richard Taylor found a way around it, and the two papers appeared in the \emph{Annals of Mathematics} in 1995.
+\item \emph{By the author, years later.} In 1991 Mikhail Kapranov and Vladimir Voevodsky published a paper on $\infty$-groupoids and homotopy types. In 1998 Carlos Simpson posted a preprint claiming a counterexample to its main result; the authors believed their proof, and only in the autumn of 2013 did Voevodsky
+become convinced that the paper was wrong. He wrote that the experience was one of the main reasons he turned to computer-checked proofs and to the univalent foundations of mathematics.
+\end{itemize}
+
+The lesson is not that mathematics is unreliable. It is that a proof is checked by being read, and that writing so that a proof can be read is part of proving it.
+
+\section{A worked case: Jordan's theorem for polygons}
+
+A \emph{polygon} $P$ is a closed path $v_1v_2\cdots v_nv_1$ made of $n\ge3$ segments (the \emph{edges} $e_i=[v_i,v_{i+1}]$, indices modulo $n$). It is \emph{simple} if two edges meet only when
+they are consecutive, and then only at their common vertex; consecutive edges are not collinear. We identify $P$ with the union of its edges, a compact subset of $\R^2$.
+
+\begin{theorem}[Jordan's theorem for polygons]\label{thm:jordanpoly}
+If $P$ is a simple polygon, then $\R^2\setminus P$ has exactly two connected components. One is bounded and the other is not, and $P$ is the boundary of each.
+\end{theorem}
+
+\begin{figure}[ht]\centering\fig{ch10-polygon}
+\caption{The parity of the number of crossings of a ray with $P$ tells inside from outside: $3$ for the point $x$, $2$ for the point $y$.}\label{fig:polygon}
+\end{figure}
+
+The proof has two halves. Counting crossings of a ray (Figure~\ref{fig:polygon}) shows that there are \emph{at least} two components; walking along both sides of $P$ shows that there are \emph{at most} two.
+Here ``connected'' means path-connected, and the components of an open subset of the plane are open.
+
+\subsection*{At least two components: a parity}
+
+Choose a unit vector $d$ that is parallel to no edge and to no line through two vertices; only finitely many directions are excluded. For a vertex $v$, call the line $v+\R d$ a \emph{bad line}; there are $n$ of them,
+and each contains exactly one vertex. For $x\notin P$ off the bad lines, the ray $x+\R_{\ge0}d$ meets no vertex; it meets each edge in at most one point (it is not parallel to the edge), and there it crosses the
+edge from one side to the other. Let $c(x)$ be the number of edges it meets, and $\pi(x)=c(x)\bmod2$.
+
+\begin{lemma}\label{lem:parity}
+Every $x\in\R^2\setminus P$ has a disc neighbourhood $D$, disjoint from $P$, on which $\pi$ is constant (on the points of $D$ off the bad lines).
+\end{lemma}
+
+\begin{proof}
+Let $x\notin P$. The ray from $x$ meets at most one vertex. Let $\rho>0$ be smaller than the distance from $x$ to $P$, and from the ray at $x$ to every vertex not on it. Then for $x'$ in the disc $D$ of
+radius $\rho$ about $x$, the ray from $x'$ is a translate of the ray from $x$ by less than $\rho$.
+
+If the ray from $x$ meets no vertex, then (taking $\rho$ smaller if needed, by compactness of the edges and transversality) the ray from $x'$ meets exactly the edges met by the ray from $x$, and $\pi(x')=\pi(x)$. If it meets the vertex $v$,
+between the edges $e$ and $f$, the same holds for all edges except $e$ and $f$. Points $x'$ of $D$ off the bad line through $v$ lie on one of its two sides, and the ray from $x'$ passes $v$ on that side. An edge at $v$ is met by
+the ray from $x'$ exactly when the edge leaves $v$ towards the side of the bad line where $x'$ is... more simply: when $x'$ crosses the bad line, the ray sweeps across $v$, and it stops meeting the edges at $v$ on one side and starts
+meeting those on the other side. If $e$ and $f$ lie on the same side of the bad line, the count of these two edges changes from $0$ to $2$ or from $2$ to $0$; if they lie on opposite sides, it stays $1$. In all cases $\pi$ does not change.
+\end{proof}
+
+By the lemma, $\pi$ extends to a function on all of $\R^2\setminus P$ that is constant on a neighbourhood of every point: put $\pi(x)=\pi(x')$ for any $x'$ near $x$ off the bad lines. A locally constant function is constant along
+any path (the set of times where it equals its initial value is open and closed in $[0,1]$), hence on each component.
+
+Now take a point $m$ in the interior of an edge $e$, off the bad lines, and $\varepsilon>0$ so small that the segment $[m-\varepsilon d,m+\varepsilon d]$ meets $P$ only at $m$ and its endpoints are off the bad lines. The ray from $m-\varepsilon d$ is the
+segment $[m-\varepsilon d,m+\varepsilon d)$ followed by the ray from $m+\varepsilon d$, and it meets $P$ in one more point, $m$. So $\pi(m-\varepsilon d)\ne\pi(m+\varepsilon d)$: these two points lie in different components, and there are at least two.
+
+\subsection*{At most two components: the two sides}
+
+Let $r>0$ be smaller than half the length of every edge and than half the distance from each vertex to every edge not containing it (positive, since $P$ is simple). Let $B_v$ be the open disc of radius $r$ about the vertex $v$.
+In polar coordinates about $v$, $B_v\cap P$ is two radii, in the directions of the two edges at $v$. They cut $B_v\setminus P$ into two open circular sectors, each path-connected (it is an interval of angles times $(0,r)$).
+
+For an edge $e=[v,w]$, let $e'$ be the part of $e$ at distance at least $\frac r2$ from both $v$ and $w$. It is a compact segment disjoint from all other edges, so it has positive distance $\delta_e$ from them. Let $R_e$ be the open rectangle of points whose orthogonal projection on the line of $e$ lies in the interior of $e'$ and whose distance to that line is less than $h$, with $h<\min(\delta_e,\frac r4)$ and so small that the ends of $R_e$ near $v$ and $w$ stay inside $B_v$ and $B_w$ away from the other edge there. Then $R_e\cap P=e'$, and $R_e\setminus P$ is two open
+rectangles $R_e^+$ and $R_e^-$, one on each side of $e$, each convex.
+
+\begin{lemma}\label{lem:sides}
+Each of $R_e^\pm$ meets exactly one sector at each end; at each vertex, the two sides of an edge meet different sectors.
+\end{lemma}
+
+\begin{proof}
+The end of $R_e^+$ near $v$ is a connected subset of $B_v\setminus P$, so it lies in one sector. In polar coordinates about $v$, the points of $R_e^\pm$ near $v$ have angles just above and just below the direction of $e$. The two directions of the edges at $v$ cut the circle of
+angles into two arcs, and the direction of $e$ is an endpoint of both; angles just above it lie in one arc and angles just below in the other. So $R_e^+$ and $R_e^-$ meet different sectors.
+\end{proof}
+
+Build a graph whose $4n$ nodes are the $2n$ sides $R_e^\pm$ and the $2n$ sectors, with an edge when they intersect. By Lemma~\ref{lem:sides}, each side has degree $2$ (one sector at each end), and each sector, at a vertex where the edges $e$ and $f$ meet, contains exactly one side of $e$ and one side of $f$, so it has degree $2$ too.
+A graph in which every node has degree $2$ is a union of disjoint cycles. Start from $R_{e_1}^+$ and walk: sector at $v_2$, a side of $e_2$, sector at $v_3$, and so on around $P$, back to a side of $e_1$ after visiting one side of every edge. Either the walk returns to $R_{e_1}^+$, and the
+other $2n$ nodes form a second cycle, or it returns to $R_{e_1}^-$ and continues through the remaining nodes. So there are at most two cycles. The union of the nodes of a cycle is path-connected (each node is, and consecutive nodes intersect), so we get at most two path-connected sets $S_1,S_2\subseteq\R^2\setminus P$ (possibly equal).
+
+The sets $B_v$ and $R_e$ are open and cover $P$, and each of them minus $P$ is contained in $S_1\cup S_2$. Let $U$ be a component of $\R^2\setminus P$. It is open and not the whole plane, and the plane is connected, so $U$ has a boundary point $p$, which lies in $P$ (a point of another
+component has a neighbourhood disjoint from $U$). The open set of the cover containing $p$ meets $U$, so $U$ meets $S_1$ or $S_2$, and therefore contains it. Hence there are at most two components.
+
+\begin{proof}[Proof of Theorem~\ref{thm:jordanpoly}]
+There are at least two components and at most two, so exactly two, and each contains one of $S_1$, $S_2$; in particular $S_1\ne S_2$, so we are in the case of two cycles, and each component contains one side of every edge and one sector at every vertex. Hence every point of $P$ is a limit
+of points of each component, and the boundary of each component, which lies in $P$, is all of $P$. Finally, $P$ lies in a disc $B$; the complement of $B$ is path-connected and disjoint from $P$, so it lies in one component, the unbounded one, and the other component is contained in $B$.
+\end{proof}
+
+\begin{remark}[the general theorem]\label{rem:jordangeneral}
+For an arbitrary continuous simple closed curve the theorem is true but much harder: one approximates the curve by polygons, and the difficulty is to control the components in the limit. Hales's 2007 formal proof in HOL Light follows this route,
+and his article on Jordan's original text explains which steps Jordan took for granted. The polygonal case already shows what readers of Jordan argued about: the treatment of rays through vertices (Lemma~\ref{lem:parity}), which Jordan regarded as obvious.
+\end{remark}
+
+Look back at the proof of Lemma~\ref{lem:parity}: it contains a sentence that starts one way and then says ``more simply''. That is how first drafts look, and it is the first thing to fix (Exercise~\ref{ex:rewritelemma}).
+
+\begin{think}
+Where exactly was simplicity of $P$ used? Try the proof on a figure eight and see which step fails, and how many components there are.
+\end{think}
+
+\begin{beauty}
+Jordan's theorem is the archetype of a statement that is obvious and hard. The polygonal proof is honest about why: all the difficulty sits at the vertices, in one parity check and one
+picture of two sectors, and once those are written down carefully there is nothing left to believe. Writing well is the art of putting the difficulty where the reader can see it.
+\end{beauty}
+
+\section{Exercises}
+
+The exercises of this chapter are mostly rewriting exercises. There is no unique answer; the solutions give one version and say why.
+
+\begin{exercise}[$\star$]\label{ex:rewritelemma}
+Rewrite the second paragraph of the proof of Lemma~\ref{lem:parity} so that it says what it means the first time, with the case analysis at the vertex stated as a separate claim.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:abstract}
+Write an abstract (at most four sentences, no formulas beyond one) and the first paragraph of an introduction for a paper whose main result is Proposition~\ref{prop:booker} and Corollary~\ref{cor:booker}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:badproof}
+Here is a correct but badly written proof that $n^2+n$ is even. ``Let $n$ be any integer. We consider $n^2+n$. Suppose first that $n=2k$, where $k$ is an integer, as is possible if $n$ is even, then $n^2=4k^2$, and $n=2k$, so that $n^2+n=4k^2+2k=2(2k^2+k)$, which is even, since $2k^2+k$ is an integer. On the other hand if $n$ is odd we can write it as $2k+1$ with $k\in\Z$ and then the computation gives $n^2+n=(2k+1)^2+(2k+1)=4k^2+4k+1+2k+1=4k^2+6k+2$, which is again divisible by $2$ as all coefficients are even. So in all cases $n^2+n$ is even, as was to be shown.'' List its faults and rewrite it in one line.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:figureeight}
+Let $P$ be the closed polygon $(0,0),(2,2),(2,0),(0,2),(0,0)$, which crosses itself. Find the components of $\R^2\setminus P$ and the parity $\pi$ on each. Which step of the proof of Theorem~\ref{thm:jordanpoly} fails?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:convexinside}
+Show that if $P$ is a convex polygon (the boundary of the convex hull of its vertices, in order), the bounded component is the interior of the convex hull, and that a ray from an inside point meets $P$ exactly once.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:referee}
+Write a referee report, of at most one page, on the following ``theorem'': \emph{every simple polygon has a diagonal lying inside it}, with the proof ``take the leftmost vertex $v$ and join its two neighbours''. Is the statement true? Is the proof? What would you ask the author to change?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:rewritelemma}
+Isolate the claim: ``as $x'$ crosses the bad line through $v$, the number of edges at $v$ met by the ray changes by $0$ or $\pm2$''.
+\end{hint}
+
+\begin{hint}{ex:abstract}
+Say what problem, what is new (an almost linear search), and what it made possible.
+\end{hint}
+
+\begin{hint}{ex:badproof}
+$n^2+n=n(n+1)$.
+\end{hint}
+
+\begin{hint}{ex:figureeight}
+The two segments $(0,0)$--$(2,2)$ and $(2,0)$--$(0,2)$ cross at $(1,1)$.
+\end{hint}
+
+\begin{hint}{ex:convexinside}
+A line meets a convex set in a segment.
+\end{hint}
+
+\begin{hint}{ex:referee}
+The segment joining the two neighbours of $v$ may pass through another vertex, or leave the polygon. What other segment from $v$ could you use?
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:rewritelemma}
+\idea State the local claim first, then use it.
+\writeup ``Suppose the ray from $x$ meets the vertex $v$, where the edges $e$ and $f$ meet. Every other edge is met by the ray from $x'$ if and only if it is met by the ray from $x$. \emph{Claim:} the number of edges among $e,f$ met by the ray from $x'$ is the same, modulo $2$, on both sides of the bad line through $v$. Indeed, the ray from $x'$ is parallel to the bad line and passes $v$ on the side of $x'$, at small distance; so an edge at $v$ is met by it exactly when the edge lies on the side of $x'$. If $e$ and $f$ lie on the same side, the count is $0$ on one side of the bad line and $2$ on the other; if they lie on opposite sides, it is $1$ on both. Hence $\pi$ is constant on $D$.'' The original sentence tried to give the reason and the conclusion at once; separating the claim from its proof is almost always the fix.
+\end{solution}
+
+\begin{solution}{ex:abstract}
+\idea The abstract is the result in words; the first paragraph is the problem and why it is hard.
+\writeup \emph{Abstract.} We give an algorithm that finds all representations of an integer $n$ as a sum of three cubes whose smallest term is at most $B$ in absolute value, in time $B$ times a power of $\log B$. Unlike earlier searches, which bound all three terms, it allows the other two to be arbitrarily large. The algorithm rests on an elementary factorisation. Implemented with a sieve, it finds the first representation of $33$.
+
+\emph{Introduction, first paragraph.} Which integers are sums of three cubes? Congruences modulo $9$ rule out $n\equiv\pm4$, and Heath-Brown's heuristic predicts that every other $n$ has infinitely many representations, but they can be enormous: for $n=30$ the smallest has ten digits. The question is therefore as much algorithmic as arithmetic. In this paper we show that the search can be organised around the smallest coordinate, and that this makes it almost linear (Theorem~1).
+
+The main theorem is named on the first page, the context is in three sentences, and nothing is said that is not needed.
+\end{solution}
+
+\begin{solution}{ex:badproof}
+\idea A short proof is usually hiding inside a long one.
+\writeup Faults: it announces what it is going to do instead of doing it (``We consider''); it repeats $n=2k$; it gives reasons after conclusions; the odd case is computed further than needed; and the closing sentence adds nothing. Rewrite: ``$n^2+n=n(n+1)$ is a product of two consecutive integers, one of which is even.''
+\end{solution}
+
+\begin{solution}{ex:figureeight}
+\idea The proof's two halves fail at different places.
+\writeup The polygon is two triangles with common vertex $(1,1)$, the crossing point: the left triangle $(0,0),(1,1),(0,2)$ and the right triangle $(2,0),(1,1),(2,2)$ (the edges $(2,2)$--$(2,0)$ and $(0,2)$--$(0,0)$ close them). The complement has three components: the inside of each triangle and the outside. With a direction $d$ as in the proof, a ray from inside either triangle meets $P$ once (odd), and a ray from outside an even number of times; so the parity still exists (Lemma~\ref{lem:parity} did not use simplicity, only that $d$ avoids the edge directions), but it does not separate the two inner components. The second half fails: at $(1,1)$ four edges meet, $B_{(1,1)}\setminus P$ has four sectors, and the cycle argument (two sides meeting two sectors) breaks down.
+\end{solution}
+
+\begin{solution}{ex:convexinside}
+\idea Use convexity twice: for the inside and for the ray.
+\writeup Let $K$ be the convex hull, a compact convex set with nonempty interior $K^\circ$, whose boundary is $P$. The interior $K^\circ$ is convex, hence path-connected, and disjoint from $P$; it is bounded. The complement of $K$ is disjoint from $P$ and contains the outside of a large disc, so it lies in the unbounded component. Since there are exactly two components, $K^\circ$ is the bounded one. For $x\in K^\circ$, the ray from $x$ meets $K$ in a segment $[x,y]$ with $y\in P$ (compact convex), and its points before $y$ are interior points of $K$ (a segment from an interior point to a point of $K$ lies in the interior except possibly for its endpoint), so the ray meets $P$ only at $y$.
+\end{solution}
+
+\begin{solution}{ex:referee}
+\idea Separate the truth of the statement from the correctness of the proof, and offer a fix.
+\writeup The statement is true (for $n\ge4$; for a triangle there are no diagonals) and is the key lemma in the proof that every simple polygon can be triangulated. The proof is incomplete: the segment joining the neighbours $u,w$ of the leftmost vertex $v$ may contain other vertices of $P$ or cross $P$. A report would say so, and suggest the standard repair: if the triangle $uvw$ contains no other vertex, $uw$ is a diagonal; otherwise, among the vertices inside the triangle take the one farthest from the line $uw$, say $z$, and then $vz$ is a diagonal, because no edge of $P$ can cross it without bringing a vertex farther from $uw$ into the triangle. The report should also ask the author to prove that the leftmost vertex is convex (its interior angle is less than $\pi$), which the argument uses. A good report is specific, polite, and separates ``this is wrong'' from ``this is unclear''.
+\end{solution}
+
+\section{Sources}
+
+\begin{itemize}
+\item C.~Jordan, \emph{Cours d'analyse de l'\'Ecole polytechnique}, vol.~3, Gauthier-Villars, 1887.
+\item O.~Veblen, Theory on plane curves in non-metrical analysis situs, \emph{Trans.\ AMS} 6 (1905), 83--98.
+\item T.~C.~Hales, Jordan's proof of the Jordan curve theorem, \emph{Studies in Logic, Grammar and Rhetoric} 10(23) (2007), 45--60; and The Jordan curve theorem, formally and informally, \emph{Amer.\ Math.\ Monthly} 114 (2007), 882--894.
+\item P.~R.~Halmos, How to write mathematics, \emph{L'Enseignement Math.} 16 (1970), 123--152.
+\item J.-P.~Serre, How to write mathematics badly, lecture, 2003 (video available online).
+\item D.~E.~Knuth, T.~Larrabee, P.~M.~Roberts, \emph{Mathematical Writing}, MAA Notes 14, 1989.
+\item A.~B.~Kempe, On the geographical problem of the four colours, \emph{Amer.\ J.\ Math.} 2 (1879), 193--200; P.~J.~Heawood, Map-colour theorem, \emph{Quart.\ J.\ Math.} 24 (1890), 332--338.
+\item A.~Wiles, Modular elliptic curves and Fermat's Last Theorem, and R.~Taylor, A.~Wiles, Ring-theoretic properties of certain Hecke algebras, \emph{Ann.\ of Math.} 141 (1995), 443--551 and 553--572.
+\item V.~Voevodsky, The origins and motivations of univalent foundations, \emph{The Institute Letter}, Institute for Advanced Study, Summer 2014.
+\end{itemize}
