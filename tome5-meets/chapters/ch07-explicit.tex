@@ -1,0 +1,512 @@
+\chapter{The Explicit Formula and the Riemann Hypothesis}
+
+\begin{center}\itshape
+If I were to awaken after having slept for a thousand years, my first question would be: has the Riemann hypothesis been proven?\\
+\upshape --- attributed to David Hilbert
+\end{center}
+
+Near the end of his eight pages, Riemann wrote down a formula that nobody before him could have imagined. On the left side stands the prime counting
+function, a staircase that climbs by one at every prime and is flat in between. On the right side stands a smooth main term, minus a sum of waves, one for each
+zero of $\zeta$ in the critical strip. The staircase, with all its corners, \emph{is} the sum of the waves. Riemann did not prove it. Von Mangoldt did, in 1895,
+for a slightly better-behaved staircase: the function $\psi$, which climbs by $\log p$ at every prime power $p^k$. In that form the formula reads
+\[
+\psi(x)=x-\sum_\rho\frac{x^\rho}\rho-\log2\pi-\frac12\log\Bigl(1-\frac1{x^2}\Bigr),
+\]
+the sum running over the non-trivial zeros $\rho$, taken in conjugate pairs. Each pair contributes $-2\operatorname{Re}\frac{x^\rho}\rho$. Writing $\rho=\beta+i\gamma$ and $x=e^u$, this is a wave of
+amplitude $\frac{2e^{\beta u}}{|\rho|}$ and frequency $\gamma$ in the variable $u=\log x$. The zeros are the notes, and the primes are the music they make together.
+
+Figure~\ref{fig:explicit} plays the music. With ten pairs of zeros the staircase is a wobbly ramp; with a hundred, the corners appear, exactly at the prime powers, with
+steps of height exactly $\log p$. Nothing in the zeros seems to know about primes, and yet they draw them.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-explicit}
+\caption{The staircase $\psi(x)$ (blue) for $1.5\le x\le30$, and the right side of the explicit formula truncated to the first $10$ pairs of zeros (green, dashed) and to the
+first $100$ pairs (orange). With $100$ pairs, the error is below $0.34$ at all points more than $0.3$ away from an integer.}
+\label{fig:explicit}
+\end{figure}
+
+The formula also explains why the zeros matter so much. A zero with real part $\beta$ makes a wave of size about $x^\beta$; the prime number theorem says that
+$\psi(x)-x$ is small compared with $x$, and the waves say how small, in terms of how far to the right the zeros go. This chapter proves the formula, then draws
+three consequences: the error term of de la Vallée Poussin (1899), the equivalence between the Riemann hypothesis and the best possible error term (von Koch, 1901),
+and the explanation, promised in Chapter~4, of why primes $\equiv3\pmod4$ win the race against primes $\equiv1\pmod4$ almost all the time.
+
+The method is the one of Chapter~5 with sharper tools: write $\psi$ as a contour integral of $-\frac{\zeta'}\zeta$, push the contour to the left across the critical strip,
+and collect a residue at every zero. Chapter~6 supplied what this needs: the partial fractions of $\frac{\zeta'}\zeta$, the count of the zeros, and a zero-free region.
+
+\begin{think}
+Look at the formula above at a prime $p$. The left side jumps by $\log p$; the terms $x$, $\log2\pi$ and $\frac12\log(1-x^{-2})$ are continuous. So the sum over zeros must jump.
+But each term $\frac{x^\rho}\rho$ is a smooth function of $x$. What does this tell you about the convergence of $\sum_\rho\frac{x^\rho}\rho$?
+\end{think}
+
+\section{Perron's formula}
+
+The first step turns a sum over integers into an integral. The tool is a single integral that acts as a switch: it equals $1$ when $y>1$ and $0$ when $y<1$.
+For $y>0$ let $\delta(y)=1$ if $y>1$, $\delta(1)=\frac12$, and $\delta(y)=0$ if $y<1$. For $c>0$ and $T>0$ let
+\[
+I(y,T)=\frac1{2\pi i}\int_{c-iT}^{c+iT}\frac{y^s}s\dd s,
+\]
+where $y^s=e^{s\log y}$ and the path is the vertical segment.
+
+\begin{lemma}[Perron]\label{lem:perron}
+Let $y>0$, $c>0$, $T>0$. If $y\ne1$,
+\[
+\bigl|I(y,T)-\delta(y)\bigr|\le y^c\min\Bigl(1,\frac1{\pi T|\log y|}\Bigr).
+\]
+If $y=1$, $\bigl|I(1,T)-\frac12\bigr|\le\frac c{\pi T}$.
+\end{lemma}
+\begin{proof}
+\emph{Case $y>1$.} Then $|y^s|=y^{\operatorname{Re}s}$ is small far to the left, so we push the segment to the left. For $U>0$, the function $\frac{y^s}s$ is holomorphic except for a simple pole
+at $0$ with residue $1$. By the residue theorem (Tome~4, Theorem~9.26) on the rectangle with vertices $c\pm iT$ and $-U\pm iT$, $I(y,T)-1$ is $-\frac1{2\pi i}$ times the integral over
+the three other sides, traversed from $c+iT$ to $-U+iT$ to $-U-iT$ to $c-iT$. On a horizontal side, $|s|\ge T$, so its integral is at most
+$\frac1T\int_{-\infty}^cy^\sigma\dd\sigma=\frac{y^c}{T\log y}$. The left side has length $2T$ and the integrand is at most $\frac{y^{-U}}U$ there, which tends to $0$ as $U\to\infty$. So
+$|I(y,T)-1|\le\frac1{2\pi}\cdot\frac{2y^c}{T\log y}=\frac{y^c}{\pi T\log y}$.
+
+For the other bound, replace the rectangle by the arc of the circle $|s|=R$, $R=|c+iT|$, that goes from $c+iT$ to $c-iT$ through the left half-plane. The segment and the arc enclose $0$. On the
+arc, $\operatorname{Re}s\le c$, so $\bigl|\frac{y^s}s\bigr|\le\frac{y^c}R$, and the arc has length less than $2\pi R$. So $|I(y,T)-1|\le\frac1{2\pi}\cdot2\pi R\cdot\frac{y^c}R=y^c$.
+
+\emph{Case $y<1$.} Now $|y^s|$ is small far to the right. The same two contours, drawn to the right of the segment, enclose no pole, and the same estimates give
+$|I(y,T)|\le\frac{y^c}{\pi T|\log y|}$ and $|I(y,T)|\le y^c$.
+
+\emph{Case $y=1$.} Directly, with $s=c+it$,
+\[
+\begin{aligned}I(1,T)&=\frac1{2\pi}\int_{-T}^T\frac{\mathrm dt}{c+it}=\frac1{2\pi}\int_{-T}^T\frac{c\dd t}{c^2+t^2}\\&=\frac1\pi\arctan\frac Tc,\end{aligned}
+\]
+the odd part $\frac{-it}{c^2+t^2}$ integrating to $0$. So $\frac12-I(1,T)=\frac1\pi\bigl(\frac\pi2-\arctan\frac Tc\bigr)=\frac1\pi\arctan\frac cT\le\frac c{\pi T}$.
+\end{proof}
+
+The switch is not perfect: near $y=1$ it is blurred over a window of width about $\frac1T$ in $\log y$. That blur is the price of truncating at height $T$, and it is what the error terms
+below pay for.
+
+Since $\psi$ jumps at prime powers, the natural value there is the midpoint. Let
+\[
+\psi_0(x)=\psi(x)-\frac12\Lambda(x)
+\]
+when $x$ is an integer, and $\psi_0(x)=\psi(x)$ otherwise. For $x\ge2$, let $\langle x\rangle$ be the distance from $x$ to the nearest prime power \emph{other than} $x$ itself.
+
+\begin{proposition}[truncated Perron formula]\label{prop:truncperron}
+Let $x\ge2$, $T\ge2$, and $c=1+\frac1{\log x}$. Then
+\[
+\begin{aligned}\psi_0(x)&=\frac1{2\pi i}\int_{c-iT}^{c+iT}\Bigl(-\frac{\zeta'}\zeta(s)\Bigr)\frac{x^s}s\dd s\eqbr+O\Bigl(\frac{x\log^2x}T+\log x\min\Bigl(1,\frac x{T\langle x\rangle}\Bigr)\Bigr).\end{aligned}
+\]
+The implied constant is absolute.
+\end{proposition}
+\begin{proof}
+On the line $\operatorname{Re}s=c$, $-\frac{\zeta'}\zeta(s)=\sum_n\Lambda(n)n^{-s}$ converges absolutely and uniformly (Lemma~\ref{lem:logderiv}), so we may integrate term by term:
+the integral is $\sum_n\Lambda(n)I(\frac xn,T)$. Since $\psi_0(x)=\sum_n\Lambda(n)\delta(\frac xn)$, Lemma~\ref{lem:perron} bounds the difference $R$ by
+\[
+\begin{aligned}|R|&\le\sum_{n\ne x}\Lambda(n)\Bigl(\frac xn\Bigr)^c\min\Bigl(1,\frac1{\pi T|\log\frac xn|}\Bigr)\eqbr+\frac{c\Lambda(x)}{\pi T},\end{aligned}
+\]
+with $\Lambda(x)=0$ if $x$ is not an integer. Note $x^c=ex$ and $c\le1+\frac1{\log2}<3$. The last term is $O(\frac{\log x}T)$. Split the sum.
+
+\emph{Far from $x$: $n\le\frac x2$ or $n\ge2x$.} Then $|\log\frac xn|\ge\log2$, and these terms contribute at most
+\[
+\frac{x^c}{\pi T\log2}\sum_n\frac{\Lambda(n)}{n^c}=\frac{ex}{\pi T\log2}\Bigl(-\frac{\zeta'}\zeta(c)\Bigr).
+\]
+By the second inequality in the proof of Theorem~\ref{thm:zerofree}, $-\frac{\zeta'}\zeta(c)\le\frac1{c-1}+A=\log x+A$ when $c\le2$, and it is bounded by $\sum_n\Lambda(n)n^{-2}$ when $c\ge2$. This part is $O(\frac{x\log x}T)$.
+
+\emph{Near $x$: $\frac x2<n<2x$, $n\ne x$.} Here $(\frac xn)^c\le2^3$ and $\Lambda(n)\le\log2x$. Write $n=x(1+u)$ with $-\frac12<u<1$. For $u>0$, $\log(1+u)\ge\frac u{1+u}\ge\frac u2$; for $u<0$,
+$|\log(1+u)|\ge|u|$. So $|\log\frac xn|\ge\frac{|n-x|}{2x}$. The integers $n$ with $|n-x|\ge1$ in this range contribute at most
+\[
+8\log(2x)\sum_{1\le|n-x|<2x}\frac{2x}{\pi T|n-x|}=O\Bigl(\frac{x\log^2x}T\Bigr),
+\]
+since for each $k\ge1$ at most two integers have $k\le|n-x|<k+1$. At most two integers $n\ne x$ have $|n-x|<1$. If such an $n$ is a prime power, then $|n-x|\ge\langle x\rangle$ and its term
+is at most $8\log(2x)\min\bigl(1,\frac{2x}{\pi T\langle x\rangle}\bigr)$.
+\end{proof}
+
+\section{The explicit formula}
+
+Now we move the segment to the left, all the way to $-\infty$. Three things must be controlled: the integrand on the far left, on the horizontal sides crossing the strip, and the residues.
+The horizontal sides are the delicate part, since they cut through the critical strip where $\frac{\zeta'}\zeta$ has poles. The trick is to choose the height so that it passes
+between the zeros, as far from all of them as their density allows.
+
+\begin{lemma}[good heights]\label{lem:goodT}
+There is an absolute constant $C$ such that for every $T\ge3$ there is $T'\in[T,T+1]$ with
+\[
+\Bigl|\frac{\zeta'}\zeta(\sigma\pm iT')\Bigr|\le C\log^2T\qquad(-1\le\sigma\le3).
+\]
+\end{lemma}
+\begin{proof}
+By Corollary~\ref{cor:nunit}, the number $m$ of ordinates in $[T,T+1]$ is at most $C_0\log T$. They cut $[T,T+1]$ into at most $m+1$ intervals, one of which has length at least $\frac1{m+1}$; let $T'$ be
+its midpoint. Every ordinate $\gamma$ lies outside the open interval, so $|T'-\gamma|\ge\frac1{2(m+1)}$. For $-1\le\sigma\le2$, Proposition~\ref{prop:nearzeros} writes $\frac{\zeta'}\zeta(\sigma+iT')$ as
+$\sum_{|\gamma-T'|\le1}\frac1{s-\rho}+O(\log T)$. The sum has $O(\log T)$ terms (Corollary~\ref{cor:nunit} again), each of modulus at most $\frac1{|T'-\gamma|}\le2(m+1)=O(\log T)$. For $2\le\sigma\le3$,
+$|\frac{\zeta'}\zeta(s)|\le\sum_n\Lambda(n)n^{-2}$. Finally $\frac{\zeta'}\zeta(\overline s)=\overline{\frac{\zeta'}\zeta(s)}$ handles $-T'$.
+\end{proof}
+
+On the far left, the functional equation reflects $\frac{\zeta'}\zeta$ into the half-plane of absolute convergence, and only the Gamma factors remain.
+
+\begin{lemma}[the left half-plane]\label{lem:leftzeta}
+For $\operatorname{Re}s\le-1$ and $|s+2k|\ge1$ for every integer $k\ge1$,
+\[
+\frac{\zeta'}\zeta(s)=O\bigl(\log(|s|+2)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+Take the logarithmic derivative of $\pi^{-s/2}\Gamma(\frac s2)\zeta(s)=\pi^{-(1-s)/2}\Gamma(\frac{1-s}2)\zeta(1-s)$ (Tome~4, Theorem~10.8):
+\[
+\begin{aligned}\frac{\zeta'}\zeta(s)&=\log\pi-\frac12\psi_\Gamma\Bigl(\frac s2\Bigr)\eqbr-\frac12\psi_\Gamma\Bigl(\frac{1-s}2\Bigr)-\frac{\zeta'}\zeta(1-s).\end{aligned}
+\]
+Here $\operatorname{Re}(1-s)\ge2$, so $|\frac{\zeta'}\zeta(1-s)|\le\sum_n\Lambda(n)n^{-2}$. The point $\frac{1-s}2$ has real part at least $1$, so Theorem~\ref{thm:stirlingc}(c) (with $\delta=\frac\pi2$) gives
+$\psi_\Gamma(\frac{1-s}2)=\log\frac{1-s}2+O(1)=O(\log(|s|+2))$. For $\psi_\Gamma(\frac s2)$ we first reflect. Taking the logarithmic derivative of $\Gamma(z)\Gamma(1-z)=\frac\pi{\sin\pi z}$
+(Tome~4, Theorem~5.13) gives $\psi_\Gamma(z)=\psi_\Gamma(1-z)-\pi\cot\pi z$. With $z=\frac s2$: $1-\frac s2$ has real part at least $\frac32$, so $\psi_\Gamma(1-\frac s2)=O(\log(|s|+2))$ as before. And $z$
+stays at distance at least $\frac12$ from the integers $\le-1$, and at distance at least $\frac12$ from $0$ and the positive integers since $\operatorname{Re}z\le-\frac12$. The function $\cot\pi z$ is $1$-periodic,
+continuous away from the integers, and tends to $\mp i$ as $\operatorname{Im}z\to\pm\infty$, so it is bounded on this set.
+\end{proof}
+
+Two constants will appear in the residues. First, $\zeta(0)=-\frac12\ne0$ (Tome~4, Chapter~10), and
+\begin{equation}\label{eq:zetaprime0}
+\frac{\zeta'}\zeta(0)=\log2\pi.
+\end{equation}
+Indeed, in \eqref{eq:zetapf} let $s\to0$. The sum over zeros vanishes at $s=0$, $-\frac1{s-1}\to1$, and $\psi_\Gamma(z)=\psi_\Gamma(z+1)-\frac1z=-\frac1z-\gamma+O(z)$ (from $\Gamma(z+1)=z\Gamma(z)$ and
+$\psi_\Gamma(1)=-\gamma$), so $-\frac1s-\frac12\psi_\Gamma(\frac s2)\to\frac\gamma2$. Hence $\frac{\zeta'}\zeta(0)=B+1+\frac12\log\pi+\frac\gamma2$, and with $B=\frac12\log4\pi-1-\frac\gamma2$
+(Exercise~\ref{ex:digammahalf}) this is $\frac12\log4\pi+\frac12\log\pi=\log2\pi$. Second, the trivial zeros $-2,-4,\dots$ are simple: they are the poles of $\Gamma(\frac s2)$, which are simple, at points
+where $\xi\ne0$.
+
+\begin{theorem}[the explicit formula, von Mangoldt 1895]\label{thm:explicit}
+For $x\ge2$ and $T\ge3$,
+\[
+\begin{aligned}\psi_0(x)&=x-\sum_{|\gamma|<T}\frac{x^\rho}\rho-\log2\pi-\frac12\log\Bigl(1-\frac1{x^2}\Bigr)\eqbr+O\Bigl(\frac{x\log^2(xT)}T+\log x\min\Bigl(1,\frac x{T\langle x\rangle}\Bigr)\Bigr),\end{aligned}
+\]
+the sum running over the non-trivial zeros $\rho=\beta+i\gamma$ with $|\gamma|<T$, counted with multiplicity. The implied constant is absolute.
+\end{theorem}
+\begin{proof}
+\emph{A good height.} Take $T'\in[T,T+1]$ as in Lemma~\ref{lem:goodT}. Proposition~\ref{prop:truncperron} with $T'$ in place of $T$ has the same error term, up to a constant. The zeros with
+$T\le|\gamma|<T'$ are $O(\log T)$ in number (Corollary~\ref{cor:nunit}), each with $|\frac{x^\rho}\rho|\le\frac xT$; so we may sum over $|\gamma|<T'$ instead of $|\gamma|<T$, at a cost $O(\frac{x\log T}T)$.
+
+\emph{The rectangle.} Let $K\ge1$ be an integer, $U=2K+1$, and let $\mathcal R$ be the rectangle with vertices $c\pm iT'$ and $-U\pm iT'$, where $c=1+\frac1{\log x}$. The function
+$F(s)=-\frac{\zeta'}\zeta(s)\frac{x^s}s$ has no pole on $\partial\mathcal R$: there are no zeros on $\operatorname{Re}s=c>1$, the height $T'$ is not an ordinate, and $-U$ is odd. Inside, its poles and residues are:
+\begin{itemize}
+\item at $s=1$, where $-\frac{\zeta'}\zeta$ has a simple pole with residue $1$: residue $x$;
+\item at each non-trivial zero $\rho$ of multiplicity $m$, where $-\frac{\zeta'}\zeta$ has residue $-m$: residue $-m\frac{x^\rho}\rho$;
+\item at $s=0$, where $-\frac{\zeta'}\zeta$ is holomorphic: residue $-\frac{\zeta'}\zeta(0)=-\log2\pi$;
+\item at $s=-2k$, $1\le k\le K$: residue $-\frac{x^{-2k}}{-2k}=\frac{x^{-2k}}{2k}$.
+\end{itemize}
+By the residue theorem, $\frac1{2\pi i}\int_{c-iT'}^{c+iT'}F$ equals the sum of these residues minus $\frac1{2\pi i}$ times the integral of $F$ over the three other sides.
+
+\emph{The other sides.} On the left side, $|F(s)|\le C\log(U+T')\frac{x^{-U}}U$ by Lemma~\ref{lem:leftzeta}, and the side has length $2T'$: its integral tends to $0$ as $K\to\infty$. On the horizontal sides,
+$|s|\ge T'$. For $-1\le\sigma\le c$, Lemma~\ref{lem:goodT} gives $|F(s)|\le C\log^2T\frac{x^\sigma}T$, and $\int_{-1}^cx^\sigma\dd\sigma\le\frac{x^c}{\log x}=\frac{ex}{\log x}$. For $\sigma\le-1$,
+Lemma~\ref{lem:leftzeta} applies (the side is at height $T'\ge3$), so $|F(s)|\le C\log(|\sigma|+T+3)\frac{x^\sigma}T$, whose integral over $\sigma\le-1$ is $O(\frac{\log T}{xT})$. Altogether the horizontal sides
+contribute $O\bigl(\frac{x\log^2T}{T\log x}\bigr)$.
+
+\emph{Conclusion.} Let $K\to\infty$. The trivial zeros contribute $\sum_{k\ge1}\frac{x^{-2k}}{2k}=-\frac12\log(1-x^{-2})$. Collecting the errors, $\frac{x\log^2x}T+\frac{x\log T}T+\frac{x\log^2T}{T\log x}=O\bigl(\frac{x\log^2(xT)}T\bigr)$.
+\end{proof}
+
+Letting $T\to\infty$ with $x$ fixed, the error tends to $0$, because $\langle x\rangle>0$. This proves the formula of the introduction.
+
+\begin{corollary}[the exact formula]\label{cor:exactexplicit}
+For $x\ge2$,
+\[
+\begin{aligned}\psi_0(x)&=x-\lim_{T\to\infty}\sum_{|\gamma|<T}\frac{x^\rho}\rho\eqbr-\log2\pi-\frac12\log\Bigl(1-\frac1{x^2}\Bigr).\end{aligned}
+\]
+\end{corollary}
+
+This answers the opening puzzle. The series $\sum\frac{x^\rho}\rho$ does not converge absolutely: $\sum\frac1{|\rho|}$ diverges (Exercise~\ref{ex:zerosums}). It converges only in the symmetric sense of
+the limit, and not uniformly near a prime power, where the sum of smooth functions builds a jump, exactly like the Fourier series of a square wave. The Gibbs overshoot is
+visible in Figure~\ref{fig:explicit}. Exercise~\ref{ex:cesaro} gives a smoothed version in which the series converges absolutely.
+
+\begin{remark}[Riemann's formula]
+Riemann's own formula was for $\pi(x)$, and it is more intricate. Let $J(x)=\sum_{p^k\le x}\frac1k$, which counts prime powers with weight $\frac1k$ (with the midpoint convention at the jumps). Then
+$\pi(x)=\sum_{n\ge1}\frac{\mu(n)}nJ(x^{1/n})$ by Möbius inversion, and Riemann stated
+\[
+\begin{aligned}J(x)&=\operatorname{li}(x)-\sum_\rho\operatorname{li}(x^\rho)-\log2\eqbr+\int_x^\infty\frac{\mathrm dt}{t(t^2-1)\log t},\end{aligned}
+\]
+where $\operatorname{li}$ is the logarithmic integral, suitably continued to complex arguments. This version was proved by von Mangoldt too; Edwards's book (Chapters~1 and~3) tells the story and gives the
+proof. The $\psi$ version is simpler because $\frac{\zeta'}\zeta$ has simple poles with integer residues, whereas $J$ corresponds to $\log\zeta$, which has logarithmic singularities.
+\end{remark}
+
+\section{The error term in the prime number theorem}
+
+The formula says that $\psi(x)-x$ is a superposition of waves $\frac{x^\rho}\rho$, of size $\frac{x^\beta}{|\rho|}$. A zero-free region bounds every $\beta$, hence every wave. The only difficulty is that there
+are infinitely many waves, and the region of Theorem~\ref{thm:zerofree} narrows as $\gamma$ grows; the truncation at height $T$ balances the two.
+
+\begin{lemma}\label{lem:sumrho}
+For $T\ge3$, $\sum_{|\gamma|<T}\frac1{|\rho|}=O(\log^2T)$.
+\end{lemma}
+\begin{proof}
+No zero is $0$ (since $\zeta(0)\ne0$), and only finitely many have $|\gamma|<1$: they contribute $O(1)$. By Corollary~\ref{cor:nunit} and symmetry, the zeros with $k\le|\gamma|<k+1$ number $O(\log(k+2))$, and
+each has $|\rho|\ge k$. The sum is $O\bigl(1+\sum_{k<T}\frac{\log(k+2)}k\bigr)=O(\log^2T)$.
+\end{proof}
+
+\begin{theorem}[de la Vallée Poussin, 1899]\label{thm:pnterror}
+There is a constant $c>0$ such that
+\[
+\psi(x)=x+O\bigl(xe^{-c\sqrt{\log x}}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+Let $x$ be large. Since $|\psi(x)-\psi_0(x)|\le\log x$ and the minimum in Theorem~\ref{thm:explicit} is at most $1$,
+\[
+|\psi(x)-x|\le\sum_{|\gamma|<T}\frac{x^\beta}{|\rho|}+O\Bigl(\frac{x\log^2(xT)}T+\log x\Bigr).
+\]
+By Theorem~\ref{thm:zerofree}, every zero with $|\gamma|<T$ has $\beta\le1-\frac{c_1}{\log T}$, so $x^\beta\le x\exp\bigl(-c_1\frac{\log x}{\log T}\bigr)$, and by Lemma~\ref{lem:sumrho}
+\[
+\begin{aligned}|\psi(x)-x|&=O\Bigl(x\log^2T\,e^{-c_1\frac{\log x}{\log T}}\eqbr+\frac{x\log^2(xT)}T+\log x\Bigr).\end{aligned}
+\]
+Now choose $T$ to balance the two main terms: $\log T=\sqrt{\log x}$. The first term becomes $x\log x\,e^{-c_1\sqrt{\log x}}$ and the second $O\bigl(x\log^2x\,e^{-\sqrt{\log x}}\bigr)$. Any $c<\min(c_1,1)$ works.
+\end{proof}
+
+The error $xe^{-c\sqrt{\log x}}$ is smaller than $\frac x{\log^kx}$ for every $k$, but larger than $x^{1-\varepsilon}$ for every $\varepsilon>0$. To get a power saving one would need a zero-free strip
+$\beta\le1-\eta$ of fixed width, which nobody has.
+
+\begin{corollary}\label{cor:pnterrorpi}
+With a smaller $c>0$, $\pi(x)=\operatorname{Li}(x)+O\bigl(xe^{-c\sqrt{\log x}}\bigr)$.
+\end{corollary}
+\begin{proof}
+By Lemma~\ref{lem:abelint} with $a_p=\log p$, $f(t)=\frac1{\log t}$ and $y=2$ (and $\theta(2)=\log2$), $\pi(x)=\frac{\theta(x)}{\log x}+\int_2^x\frac{\theta(t)}{t\log^2t}\dd t$. Integrating by parts,
+$\operatorname{Li}(x)=\frac x{\log x}-\frac2{\log2}+\int_2^x\frac{\mathrm dt}{\log^2t}$. Subtracting,
+\[
+\begin{aligned}\pi(x)-\operatorname{Li}(x)&=\frac{\theta(x)-x}{\log x}+\frac2{\log2}\eqbr+\int_2^x\frac{\theta(t)-t}{t\log^2t}\dd t.\end{aligned}
+\]
+Since $\psi(x)-\theta(x)=O(\sqrt x\log x)$ (Chapter~1), $\theta(t)-t=O(te^{-c\sqrt{\log t}})$. The integral is then at most a constant times $\int_2^{\sqrt x}\mathrm dt+\int_{\sqrt x}^xe^{-c\sqrt{\log t}}\dd t\le\sqrt x+xe^{-c\sqrt{(\log x)/2}}$.
+\end{proof}
+
+\section{The Riemann hypothesis as a statement about primes}
+
+The explicit formula makes the Riemann hypothesis concrete. If all zeros have $\beta=\frac12$, every wave has amplitude $\frac{\sqrt x}{|\rho|}$, and the waves together cannot exceed $\sqrt x$ by more than
+a power of $\log x$. Conversely, a single zero with $\beta>\frac12$ would make a wave of size $x^\beta$, and nothing could cancel it forever. So the Riemann hypothesis, which is a statement about
+where a complex function vanishes, is \emph{the same thing} as a statement about how regularly the primes are spread.
+
+\begin{theorem}[von Koch, 1901]\label{thm:rhequiv}
+The following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item the Riemann hypothesis: every non-trivial zero has real part $\frac12$;
+\item $\psi(x)=x+O(\sqrt x\log^2x)$;
+\item for every $\varepsilon>0$, $\psi(x)=x+O(x^{\frac12+\varepsilon})$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a)$\Rightarrow$(b). Take $T=x$ in Theorem~\ref{thm:explicit}. Each $|x^\rho|=\sqrt x$, so by Lemma~\ref{lem:sumrho} the sum over zeros is $O(\sqrt x\log^2x)$, and the error term is
+$O(\frac{x\log^2(x^2)}x+\log x)=O(\log^2x)$. Also $|\psi-\psi_0|\le\log x$.
+
+(b)$\Rightarrow$(c) is clear.
+
+(c)$\Rightarrow$(a). For $\operatorname{Re}s>1$, Lemma~\ref{lem:abelint} with $a_n=\Lambda(n)$ and $f(t)=t^{-s}$, then $X\to\infty$ (note $\psi(X)X^{-s}\to0$ since $\psi(X)=O(X)$), gives
+\[
+\begin{aligned}-\frac{\zeta'}\zeta(s)&=s\int_1^\infty\frac{\psi(t)}{t^{s+1}}\dd t\\&=\frac s{s-1}+s\int_1^\infty\frac{\psi(t)-t}{t^{s+1}}\dd t.\end{aligned}
+\]
+Fix $\varepsilon>0$. Under (c), the last integral converges absolutely and uniformly on every half-plane $\operatorname{Re}s\ge\frac12+2\varepsilon$, so it is holomorphic on $\operatorname{Re}s>\frac12+\varepsilon$ (Tome~4,
+Theorem~9.15). So the right side $G(s)$ is holomorphic on $H=\{\operatorname{Re}s>\frac12+\varepsilon\}$ except at $1$. The set $H'$ obtained from $H$ by removing $1$ and the zeros of $\zeta$ is open and connected (we
+remove a discrete set), and $-\frac{\zeta'}\zeta$ and $G$ are holomorphic on $H'$ and agree for $\operatorname{Re}s>1$; by the identity theorem they agree on $H'$. If $\zeta(\rho)=0$ with $\rho\in H$, then $-\frac{\zeta'}\zeta$
+has a pole at $\rho$, while $G$ is bounded near $\rho$: a contradiction. So every zero has $\beta\le\frac12+\varepsilon$, for every $\varepsilon$, hence $\beta\le\frac12$. By the symmetry $\rho\mapsto1-\overline\rho$ (Proposition~\ref{prop:xi}),
+$\beta\ge\frac12$ too.
+\end{proof}
+
+\begin{think}
+The proof of (c)$\Rightarrow$(a) uses (c) only to make an integral converge. Run it with the hypothesis $\psi(x)-x=O(x^\theta)$ for some $\theta<\frac12$. What do you get, and why is that absurd?
+(Exercise~\ref{ex:omegahalf}.) So $\sqrt x$ is the true size of the error, up to logarithms, if the Riemann hypothesis holds; and it is the floor below which no error term can go, whether it holds or not.
+\end{think}
+
+\begin{remark}[how good is it in practice?]
+Schoenfeld (1976) made (a)$\Rightarrow$(b) explicit: if the Riemann hypothesis holds, then $|\psi(x)-x|<\frac1{8\pi}\sqrt x\log^2x$ for all $x\ge73.2$. The notebook checks this bound up to $10^7$; the largest ratio
+$\frac{|\psi(x)-x|}{\sqrt x\log^2x}$ there is $0.0365$, against $\frac1{8\pi}=0.0398$. In fact $\frac{|\psi(x)-x|}{\sqrt x}$ stays below $0.81$ for $10^3\le x\le10^7$. The truth is believed to be a little larger than
+$\sqrt x$: Littlewood proved in 1914 that $\psi(x)-x$ is infinitely often larger than a constant times $\sqrt x\log\log\log x$, and infinitely often smaller than its negative.
+\end{remark}
+
+\section{Chebyshev's bias}
+
+In 1853 Chebyshev wrote to Fuss that there seem to be more primes of the form $4n+3$ than of the form $4n+1$. Figure~\ref{fig:race} of Chapter~4 shows how right he was: up to $26860$, class $3$
+is ahead or tied at every single $x$. At $x=26861$ class $1$ takes the lead for the first time, for exactly one prime; Leech found this crossing in 1957, with a computer. Up to $10^7$ class $1$ leads
+at only $3406$ integers. And yet the prime number theorem for progressions says the two classes are equally large. What is going on?
+
+The answer is a story about squares. Every odd square is $\equiv1\pmod4$. The function $\psi(x;4,1)$, which counts prime \emph{powers} with weights, is boosted by the squares of all odd primes; the
+counts of primes alone are not. The natural ``fair'' object, the one whose explicit formula has no main term, is $\psi(x,\chi_{-4})=\sum_{n\le x}\chi_{-4}(n)\Lambda(n)$, and it includes the squares. So the
+fair race is between prime powers, and in a race between primes alone, class $1$ has been robbed of its squares.
+
+Let $\theta(x;q,a)=\sum_{p\le x,\ p\equiv a\,(q)}\log p$.
+
+\begin{proposition}\label{prop:biasidentity}
+For $x\ge2$, with $\chi=\chi_{-4}$,
+\[
+\begin{aligned}\theta(x;4,3)-\theta(x;4,1)&=\theta(\sqrt x)-\psi(x,\chi)\eqbr+O(x^{1/3}\log x).\end{aligned}
+\]
+In particular $\dfrac{\theta(x;4,3)-\theta(x;4,1)}{\sqrt x}=1-\dfrac{\psi(x,\chi)}{\sqrt x}+o(1)$.
+\end{proposition}
+\begin{proof}
+Write $\psi(x,\chi)$ as $\sum_{p^k\le x}\chi(p^k)\log p$ and group the terms by the exponent $k$. For $k=1$ we get $\sum_{p\le x}\chi(p)\log p=\theta(x;4,1)-\theta(x;4,3)$. For $k=2$, $\chi(p^2)=\chi(p)^2=1$ for odd $p$ and
+$0$ for $p=2$, so we get $\theta(\sqrt x)-\log2$ (when $x\ge4$). For $k\ge3$, the terms add up to at most $\sum_{3\le k\le\log_2x}\theta(x^{1/k})\le\log_2x\cdot\theta(x^{1/3})=O(x^{1/3}\log x)$ by
+Proposition~\ref{prop:chebyshev}. Rearranging gives the identity. Finally $\theta(\sqrt x)\sim\sqrt x$ by the prime number theorem.
+\end{proof}
+
+So the race between primes is the race between prime powers, $-\psi(x,\chi)$, plus a head start of $\sqrt x$ for class $3$. Who wins depends on the size of $\psi(x,\chi)$ compared with $\sqrt x$.
+That is exactly the scale of the waves.
+
+\begin{remark}[the waves of $L(s,\chi_{-4})$]
+The method of this chapter applies to $L(s,\chi)$ for a primitive character, with the functional equation of $L(s,\chi)$ in place of that of $\zeta$; see Davenport, Chapters~9 and~19. Since $L(s,\chi_{-4})$ has
+no pole, there is no main term: for $x\ge2$,
+\[
+\psi_0(x,\chi_{-4})=-\lim_{T\to\infty}\sum_{|\gamma|<T}\frac{x^\rho}\rho+O(1),
+\]
+the sum over the non-trivial zeros of $L(s,\chi_{-4})$. The first of them, on the critical line, is $\frac12+6.0209i$. If they all lie on the line (the generalized Riemann hypothesis for $\chi_{-4}$), then,
+with $x=e^u$, Proposition~\ref{prop:biasidentity} becomes
+\[
+\frac{\theta(e^u;4,3)-\theta(e^u;4,1)}{e^{u/2}}\approx1+\sum_\gamma\frac{e^{i\gamma u}}{\frac12+i\gamma}.
+\]
+The sum is an oscillation in $u$ with mean $0$, made of waves with frequencies $6.02$, $10.24$, $12.99$, \dots{} The constant $1$ is the bias. Class $1$ can lead only when the oscillation dips below $-1$,
+which requires many waves to line up; it happens, but rarely.
+\end{remark}
+
+How rarely? Rubinstein and Sarnak (1994), assuming the generalized Riemann hypothesis and that the ordinates $\gamma>0$ are linearly independent over $\Q$, proved that the set of $x$ where
+$\pi(x;4,3)>\pi(x;4,1)$ has logarithmic density $0.9959\ldots$: in the variable $u=\log x$, class $3$ leads $99.59\%$ of the time. Littlewood had proved in 1914, unconditionally, that the lead changes
+infinitely often. Both results rest on the formula above: the waves are almost periodic in $u$, so with enough patience they all line up. The bias is there for every modulus $q$: non-squares
+modulo $q$ lead squares (Exercise~\ref{ex:bias}).
+
+\begin{think}
+Primes $\equiv1\pmod3$ and $\equiv2\pmod3$ also race. Which class do you expect to lead most of the time, and why? Check with the notebook, then with Exercise~\ref{ex:bias}.
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:sumgamma}
+Show that $\sum_{0<\gamma\le T}\frac1\gamma=\frac1{4\pi}\log^2T+O(\log T)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:omegahalf}
+Show that $\psi(x)-x$ is not $O(x^\theta)$ for any $\theta<\frac12$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:mertensRH}
+Let $M(x)=\sum_{n\le x}\mu(n)$. Show that if $M(x)=O(x^{\frac12+\varepsilon})$ for every $\varepsilon>0$, then the Riemann hypothesis holds. (The converse is also true.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:shortprime}
+(a) Show that for every $A>0$, the interval $\bigl]x,x+\frac x{\log^Ax}\bigr]$ contains $\sim\frac x{\log^{A+1}x}$ primes as $x\to\infty$.
+(b) Show that the Riemann hypothesis implies that $]x,x+\sqrt x\log^3x]$ contains a prime for all large $x$. (Cramér, 1920.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:vonkoch}
+Show that the Riemann hypothesis implies $\pi(x)=\operatorname{Li}(x)+O(\sqrt x\log x)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$, the signature exercise]\label{ex:bias}
+(a) Show that $\theta(x;3,2)-\theta(x;3,1)=\theta(\sqrt x)-\psi(x,\chi_{-3})+O(x^{1/3}\log x)$.
+(b) Modulo $8$ there are four classes of odd numbers, $1,3,5,7$, and every odd square is $\equiv1\pmod8$. Using the four characters modulo $8$, show that for $a\in\{1,3,5,7\}$,
+\[
+\begin{aligned}\theta(x;8,a)&=\frac{\theta(x)}4-\frac{\varepsilon_a}4\theta(\sqrt x)\\&\quad+\frac14\sum_{\chi\ne\chi_0}\chi(a)\psi(x,\chi)\eqbr+O(x^{1/3}\log x),\end{aligned}
+\]
+with $\varepsilon_1=3$ and $\varepsilon_a=-1$ for $a\ne1$. Which class is behind?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:cesaro}
+Show that for $x\ge2$,
+\[
+\begin{aligned}\sum_{n\le x}\Lambda(n)\Bigl(1-\frac nx\Bigr)&=\frac x2-\sum_\rho\frac{x^\rho}{\rho(\rho+1)}\eqbr-\log2\pi+\frac{\zeta'(-1)}{\zeta(-1)\,x}\\&\quad-\sum_{k\ge1}\frac{x^{-2k}}{2k(2k-1)},\end{aligned}
+\]
+where now the sum over zeros converges absolutely. (At $x=10$ the left side is $3.37642$, and the right side, with $200$ pairs of zeros, is $3.37645$; here $\frac{\zeta'(-1)}{\zeta(-1)}=1.98505$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:sumgamma}
+Write $\frac1\gamma=\frac1T+\int_\gamma^T\frac{\mathrm dt}{t^2}$ and sum: $\sum\frac1\gamma=\frac{N(T)}T+\int\frac{N(t)}{t^2}\dd t$. Then use Theorem~\ref{thm:rvm}.
+\end{hint}
+\begin{hint}{ex:omegahalf}
+Follow (c)$\Rightarrow$(a) in Theorem~\ref{thm:rhequiv}. Tome~4 found a zero at $\frac12+14.1347\ldots i$.
+\end{hint}
+\begin{hint}{ex:mertensRH}
+For $\operatorname{Re}s>1$, $\frac1{\zeta(s)}$ is $\sum\mu(n)n^{-s}$, which is $s\int_1^\infty M(t)t^{-s-1}\dd t$.
+\end{hint}
+\begin{hint}{ex:shortprime}
+Apply Theorem~\ref{thm:pnterror} (resp.\ Theorem~\ref{thm:rhequiv}) at $x+h$ and at $x$, and subtract. Remove the prime powers $p^k$, $k\ge2$, with Proposition~\ref{prop:chebyshev}.
+\end{hint}
+\begin{hint}{ex:vonkoch}
+Use the identity for $\pi(x)-\operatorname{Li}(x)$ in the proof of Corollary~\ref{cor:pnterrorpi}.
+\end{hint}
+\begin{hint}{ex:bias}
+(a) Copy the proof of Proposition~\ref{prop:biasidentity}; $3$ plays the role of $2$. (b) Let $\theta(x,\chi)=\sum_{p\le x}\chi(p)\log p$. Orthogonality gives $\theta(x;8,a)=\frac14\sum_\chi\chi(a)\theta(x,\chi)$, and
+$\sum_{\chi\ne\chi_0}\chi(a)=4\cdot\mathbf1_{a\equiv1}-1$. The characters modulo $8$ are real.
+\end{hint}
+\begin{hint}{ex:cesaro}
+First show that for $c>0$ the integral $\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\frac{y^s}{s(s+1)}\dd s$ equals $(1-\frac1y)\mathbf1_{y\ge1}$. Then shift the contour as in Theorem~\ref{thm:explicit}; the factor $\frac1{s(s+1)}$ makes everything converge.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:sumgamma}
+\idea A sum over zeros weighted by a smooth function is an integral against $\mathrm dN(t)$; the main term of $N$ does the work, its error term costs $O(\log T)$.
+\writeup Finitely many ordinates lie in $]0,3[$; they contribute $O(1)$. For $3\le\gamma\le T$, $\frac1\gamma=\frac1T+\int_\gamma^T\frac{\mathrm dt}{t^2}$; summing (a finite sum),
+\[
+\begin{aligned}\sum_{3\le\gamma\le T}\frac1\gamma&=\frac{N(T)-N(3^-)}T\eqbr+\int_3^T\frac{N(t)-N(3^-)}{t^2}\dd t.\end{aligned}
+\]
+By Theorem~\ref{thm:rvm}, $\frac{N(T)}T=O(\log T)$ and $N(t)=\frac t{2\pi}\log\frac t{2\pi e}+O(\log t)$. The error contributes $\int_3^\infty\frac{\log t}{t^2}\dd t=O(1)$, and the main term
+\[
+\begin{aligned}\int_3^T\frac{\log(t/2\pi e)}{2\pi t}\dd t&=\frac1{4\pi}\Bigl[\log^2\frac t{2\pi e}\Bigr]_3^T\\&=\frac1{4\pi}\log^2T+O(\log T).\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:omegahalf}
+\idea A power saving in the error term pushes the analytic continuation of $\frac{\zeta'}\zeta$ to the left, and the continuation runs into a zero.
+\writeup Suppose $\psi(x)-x=O(x^\theta)$ with $\theta<\frac12$. As in the proof of Theorem~\ref{thm:rhequiv}, $\frac s{s-1}+s\int_1^\infty(\psi(t)-t)t^{-s-1}\dd t$ is holomorphic on $\operatorname{Re}s>\theta$ except at $1$, and equals
+$-\frac{\zeta'}\zeta$ wherever both are holomorphic. But $\zeta$ vanishes at $\rho_1=\frac12+14.1347\ldots i$ (Tome~4 located it by a sign change of Hardy's $Z$), and $\operatorname{Re}\rho_1=\frac12>\theta$, so
+$-\frac{\zeta'}\zeta$ has a pole there while the integral is bounded nearby. Contradiction. So for every $\theta<\frac12$, $|\psi(x)-x|>x^\theta$ for arbitrarily large $x$.
+\end{solution}
+
+\begin{solution}{ex:mertensRH}
+\idea Same mechanism as Theorem~\ref{thm:rhequiv}, with $\frac1\zeta$ in place of $-\frac{\zeta'}\zeta$: a zero of $\zeta$ is a pole of $\frac1\zeta$.
+\writeup For $\operatorname{Re}s>1$, Lemma~\ref{lem:abelint} with $a_n=\mu(n)$, $f(t)=t^{-s}$, and $M(X)X^{-s}\to0$, gives $\frac1{\zeta(s)}=s\int_1^\infty M(t)t^{-s-1}\dd t$ (Euler's product gives $\frac1\zeta=\sum\mu(n)n^{-s}$,
+Tome~4, Corollary~10.4). If $M(t)=O(t^{\frac12+\varepsilon})$, the integral is holomorphic on $\operatorname{Re}s>\frac12+\varepsilon$ (Tome~4, Theorem~9.15), so $\frac1\zeta$ extends holomorphically there, by the
+identity theorem on the connected set where $\zeta\ne0$. A zero of $\zeta$ with $\beta>\frac12+\varepsilon$ would be a pole of this extension. So $\beta\le\frac12$ for all zeros, and $\beta\ge\frac12$ by symmetry.
+\end{solution}
+
+\begin{solution}{ex:shortprime}
+\idea The number of primes in an interval is the difference of two values of $\psi$, divided by about $\log x$. It is accurate when the length $h$ beats the error term.
+\writeup (a) Let $h=\frac x{\log^Ax}$. By Theorem~\ref{thm:pnterror}, $\psi(x+h)-\psi(x)=h+O(xe^{-c\sqrt{\log x}})=h(1+o(1))$, since $e^{-c\sqrt{\log x}}\log^Ax\to0$. The prime powers $p^k\le2x$ with $k\ge2$ contribute at
+most $\psi(2x)-\theta(2x)=O(\sqrt x\log x)=o(h)$, so $\theta(x+h)-\theta(x)\sim h$. Each prime in $]x,x+h]$ has $\log x<\log p\le\log2x$, so their number is between $\frac{\theta(x+h)-\theta(x)}{\log2x}$ and
+$\frac{\theta(x+h)-\theta(x)}{\log x}$, both $\sim\frac h{\log x}$.
+
+(b) Let $h=\sqrt x\log^3x$. Under the Riemann hypothesis, $\psi(x+h)-\psi(x)=h+O(\sqrt x\log^2x)$, which is positive for large $x$. Prime powers with $k\ge2$ in $]x,x+h]$: there are at most
+$\frac h{2\sqrt x}+1$ squares there (consecutive squares near $x$ are $2\sqrt x$ apart), and at most one $k$-th power for each $k\ge3$ (consecutive $k$-th powers are farther than $h$ apart for large $x$).
+They contribute $O\bigl((\log^3x+\log x)\log x\bigr)=o(h)$. So $\theta(x+h)-\theta(x)>0$: there is a prime.
+\end{solution}
+
+\begin{solution}{ex:vonkoch}
+\idea The passage from $\psi$ to $\pi$ costs a factor $\log x$ in the main term and nothing worse in the error.
+\writeup Under the Riemann hypothesis, $\theta(x)-x=\psi(x)-x+O(\sqrt x\log x)=O(\sqrt x\log^2x)$ by Theorem~\ref{thm:rhequiv} and Chapter~1. In the identity of the proof of Corollary~\ref{cor:pnterrorpi},
+the first term is $O(\sqrt x\log x)$, the constant is $O(1)$, and the integral is $O\bigl(\int_2^x\frac{\sqrt t\log^2t}{t\log^2t}\dd t\bigr)=O(\sqrt x)$. So $\pi(x)-\operatorname{Li}(x)=O(\sqrt x\log x)$.
+\end{solution}
+
+\begin{solution}{ex:bias}
+\idea Prime powers race fairly; primes alone are handicapped in the classes that contain squares. Modulo $8$, all odd squares fall into one class, so that class carries the whole handicap.
+\writeup (a) $\chi_{-3}(p^2)=1$ for $p\ne3$ and $0$ for $p=3$, so the squares contribute $\theta(\sqrt x)-\log3$ to $\psi(x,\chi_{-3})$ (for $x\ge9$). The primes contribute $\theta(x;3,1)-\theta(x;3,2)$, and the
+higher powers $O(x^{1/3}\log x)$. Rearranging gives the identity: class $2$ is favoured, by about $\sqrt x$.
+
+(b) Let $\theta(x,\chi)=\sum_{p\le x}\chi(p)\log p$, so $\theta(x,\chi_0)=\theta(x)-\log2$. By orthogonality (Chapter~3), $\theta(x;8,a)=\frac14\sum_\chi\chi(a)\theta(x,\chi)$, the characters being real. For
+$\chi\ne\chi_0$, exactly as in Proposition~\ref{prop:biasidentity}, $\psi(x,\chi)=\theta(x,\chi)+\theta(\sqrt x)-\log2+O(x^{1/3}\log x)$, since $\chi(p^2)=1$ for odd $p$. Hence
+\[
+\begin{aligned}\theta(x;8,a)&=\frac{\theta(x)}4+\frac14\sum_{\chi\ne\chi_0}\chi(a)\psi(x,\chi)\eqbr-\frac{\theta(\sqrt x)}4\sum_{\chi\ne\chi_0}\chi(a)+O(x^{1/3}\log x).\end{aligned}
+\]
+By orthogonality, $\sum_\chi\chi(a)=4\cdot\mathbf1_{a\equiv1}$, so $\sum_{\chi\ne\chi_0}\chi(a)=3$ if $a\equiv1$ and $-1$ otherwise. Class $1$ is behind each of the others by about $\sqrt x$ on average: the $\psi(x,\chi)$ are
+oscillations of the same size without a preferred sign. At $x=10^6$ the notebook finds $\frac{\theta(x;8,a)-\theta(x)/4}{\sqrt x}=-0.84$, $0.34$, $-0.07$, $0.57$ for $a=1,3,5,7$: the oscillations are large. Averaged over $\log x\in[\log10^3,\log10^7]$ they
+become $-0.72$, $0.23$, $0.25$, $0.23$, against the predicted $-0.75$, $0.25$, $0.25$, $0.25$.
+\end{solution}
+
+\begin{solution}{ex:cesaro}
+\idea Weighting by $1-\frac nx$ instead of the sharp cut-off replaces $\frac1s$ by $\frac1{s(s+1)}$ in Perron's formula. The extra decay in $|t|$ makes the integral absolutely convergent, so no truncation
+error appears, and the residue at each zero gets the extra factor $\frac1{\rho+1}$.
+\writeup \emph{The kernel.} For $y>1$, shift $\int_{c-iT}^{c+iT}\frac{y^s}{s(s+1)}\dd s$ to the left as in Lemma~\ref{lem:perron}: the residues at $0$ and $-1$ are $1$ and $-\frac1y$, and the other sides are
+$O(\frac{y^c}{T^2})$ and tend to $0$. For $y<1$ shift right: no residue. For $y=1$ use continuity of both sides in $y$ (dominated convergence: the integrand is bounded by $\frac{\max(y,1)^c}{|s|^2}$). So the kernel is
+$(1-\frac1y)\mathbf1_{y\ge1}$, and with $y=\frac xn$ and term by term integration on $\operatorname{Re}s=c>1$,
+\[
+\begin{aligned}\sum_{n\le x}\Lambda(n)\Bigl(1-\frac nx\Bigr)&=\frac1{2\pi i}\int_{c-i\infty}^{c+i\infty}\Bigl(-\frac{\zeta'}\zeta(s)\Bigr)\eqbr\quad\times\frac{x^s}{s(s+1)}\dd s.\end{aligned}
+\]
+\emph{The shift.} Take the rectangle of Theorem~\ref{thm:explicit} with a good height $T'$. The residues are: $\frac x2$ at $1$; $-\frac{x^\rho}{\rho(\rho+1)}$ at each zero; $-\frac{\zeta'}\zeta(0)=-\log2\pi$ at $0$;
+$-\frac{\zeta'}\zeta(-1)\cdot\frac{x^{-1}}{-1}=\frac{\zeta'(-1)}{\zeta(-1)x}$ at $-1$ (where $\zeta(-1)=-\frac1{12}\ne0$); and $-\frac{x^{-2k}}{(-2k)(-2k+1)}=-\frac{x^{-2k}}{2k(2k-1)}$ at $-2k$, $k\ge1$. The left side tends to $0$ as before. The horizontal sides
+are now $O\bigl(\frac{x\log^2T}{T^2\log x}\bigr)$ by Lemmas~\ref{lem:goodT} and~\ref{lem:leftzeta}, and the vertical tail $|t|>T'$ is $O\bigl(\frac{x\log x}{T}\bigr)$ since $-\frac{\zeta'}\zeta(c+it)$ is bounded by $\log x+A$. Everything tends to $0$ as $T\to\infty$.
+Finally $\sum_\rho\frac1{|\rho(\rho+1)|}\le\sum_\rho\frac1{|\rho|^2}<\infty$ (Exercise~\ref{ex:zerosums} gives much more), and $|x^\rho|\le x$: the series converges absolutely.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~von Mangoldt, \emph{Zu Riemanns Abhandlung ``Über die Anzahl der Primzahlen unter einer gegebenen Grösse''}, Journal für die reine und angewandte Mathematik 114 (1895), 255--305.
+\item C.-J.~de la Vallée Poussin, \emph{Sur la fonction $\zeta(s)$ de Riemann et le nombre des nombres premiers inférieurs à une limite donnée}, Mémoires couronnés de l'Académie royale de Belgique 59 (1899).
+\item H.~von Koch, \emph{Sur la distribution des nombres premiers}, Acta Mathematica 24 (1901), 159--182.
+\item J.~E.~Littlewood, \emph{Sur la distribution des nombres premiers}, Comptes Rendus de l'Académie des Sciences 158 (1914), 1869--1872.
+\item H.~Cramér, \emph{Some theorems concerning prime numbers}, Arkiv för Matematik, Astronomi och Fysik 15 (1920), 1--33.
+\item J.~Leech, \emph{Note on the distribution of prime numbers}, Journal of the London Mathematical Society 32 (1957), 56--58.
+\item L.~Schoenfeld, \emph{Sharper bounds for the Chebyshev functions $\theta(x)$ and $\psi(x)$. II}, Mathematics of Computation 30 (1976), 337--360.
+\item M.~Rubinstein and P.~Sarnak, \emph{Chebyshev's bias}, Experimental Mathematics 3 (1994), 173--197.
+\item A.~Granville and G.~Martin, \emph{Prime number races}, American Mathematical Monthly 113 (2006), 1--33. A delightful survey, the best next read.
+\item H.~Davenport, \emph{Multiplicative Number Theory}, 3rd ed., Springer GTM~74, 2000, Chapters~17--20 (the explicit formulae for $\zeta$ and $L(s,\chi)$, the prime number theorem with error term).
+\item H.~L.~Montgomery and R.~C.~Vaughan, \emph{Multiplicative Number Theory I}, Cambridge, 2007, Chapters~12, 13 and~15 (explicit formulae, conditional estimates, oscillation theorems).
+\item H.~M.~Edwards, \emph{Riemann's Zeta Function}, Academic Press, 1974, Chapters~1 and~10 (Riemann's formula for $\pi(x)$).
+\end{itemize}
