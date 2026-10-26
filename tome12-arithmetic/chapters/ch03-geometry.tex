@@ -1,0 +1,529 @@
+\chapter{The Geometry of Numbers}
+
+\begin{center}\itshape
+A convex region of the plane, symmetric about $0$, with area greater than $4$, always contains a point of $\Z^2$\\
+other than $0$. This innocent statement proves that every class group is finite.
+\end{center}
+
+Tome~1 proved that the class group of a quadratic field is finite with a pigeonhole argument (Tome~1, Lemma~11.12 and
+Theorem~11.13), and the bound it gave was poor. In 1891 Minkowski found a better idea: look at $\mathcal O_K$ as a
+lattice in $\R^n$ (Chapter~1, Figure~\ref{fig:mink}) and use volume. A convex body that is symmetric and large compared
+with the lattice must contain a lattice point. Choose the body so that all its points have small norm, and you get an
+element of small norm in any ideal you like.
+
+This one idea gives four theorems. The class group is finite, with an explicit bound, the \emph{Minkowski bound}, that
+makes class numbers computable by hand. Every number field other than $\Q$ has a ramified prime. There are only
+finitely many number fields of bounded discriminant (Hermite). And, in Chapter~4, the unit group is as large as it can
+be (Dirichlet). Minkowski called the method the ``geometry of numbers''. It is also the start of a modern subject with
+cryptographic uses: finding short vectors in lattices, which the notebook explores with the LLL algorithm.
+
+\begin{reminder}[from Tome 6 and Chapters 1--2]
+\emph{Lebesgue measure} $\lambda$ on $\R^n$ (Tome~6, Chapter~6) is countably additive and invariant under translation, and
+gives the box $\prod[a_i,b_i]$ its volume $\prod(b_i-a_i)$. Closed sets and open sets are measurable. \emph{Linear maps}
+(Tome~6, Chapter~8): $\lambda(T(A))=|\det T|\,\lambda(A)$ for $T$ linear. \emph{Fubini--Tonelli and polar coordinates}
+(Tome~6, Chapter~8): volumes can be computed slice by slice, and for $g\ge0$ measurable,
+$\int_{\R^2}g(|z|)\dd z=2\pi\int_0^\infty g(\rho)\rho\dd\rho$. \emph{Chapter~1.} The signature $(r_1,r_2)$, $n=r_1+2r_2$;
+the discriminant $d_K$ of an integral basis. \emph{Chapter~2.} Unique factorisation of ideals, the norm
+$N(I)=[\mathcal O:I]$, multiplicative, with $N(\alpha\mathcal O)=|N(\alpha)|$; the class group $\operatorname{Cl}(K)$;
+a prime ramifies if and only if it divides $d_K$.
+\end{reminder}
+
+\section{Lattices and Minkowski's theorem}
+
+\begin{definition}
+A \emph{lattice} in $\R^n$ is a subgroup $L=A\Z^n$, where $A\in\mathrm{GL}_n(\R)$; the columns of $A$ are a
+\emph{basis} of $L$. Its \emph{fundamental parallelotope} is $F=A[0,1)^n$, and its \emph{covolume} is
+$\operatorname{covol}(L)=\lambda(F)=|\det A|$.
+\end{definition}
+
+The covolume does not depend on the basis: two bases differ by a matrix of $\mathrm{GL}_n(\Z)$, of determinant $\pm1$. If
+$L'\subseteq L$ are lattices, $[L:L']$ is finite and $\operatorname{covol}(L')=[L:L']\operatorname{covol}(L)$: in a basis
+of $L$, $L'$ is $C\Z^n$ with $C\in M_n(\Z)$, $[L:L']=|\det C|$ (Tome~2, Corollary~7.8), and $\det(AC)=\det A\det C$.
+
+Two facts about a lattice $L=A\Z^n$ are used all the time. It is \emph{discrete}: a bounded set $B$ contains finitely
+many points of $L$, because $A^{-1}B$ is bounded and contains finitely many points of $\Z^n$. And the translates $F+\ell$,
+$\ell\in L$, \emph{tile} $\R^n$: every $x$ is uniquely $f+\ell$ with $f\in F$, $\ell\in L$ (write $A^{-1}x=y$ and split
+each coordinate of $y$ into its integer and fractional parts).
+
+\begin{lemma}[Blichfeldt]\label{lem:blichfeldt}
+Let $L$ be a lattice and $S\subseteq\R^n$ measurable with $\lambda(S)>\operatorname{covol}(L)$. Then there are $x\ne y$ in
+$S$ with $x-y\in L$.
+\end{lemma}
+\begin{proof}
+By the tiling, $S$ is the disjoint union of the countably many sets $S_\ell=S\cap(F+\ell)$, $\ell\in L$. The translates
+$S_\ell-\ell$ lie in $F$, and $\sum_\ell\lambda(S_\ell-\ell)=\sum_\ell\lambda(S_\ell)=\lambda(S)>\lambda(F)$ by translation
+invariance and countable additivity. If the sets $S_\ell-\ell$ were pairwise disjoint, their union would be a subset of
+$F$ of measure $>\lambda(F)$. So two of them meet: $x-\ell=y-\ell'$ with $x\in S_\ell$, $y\in S_{\ell'}$, $\ell\ne\ell'$.
+Then $x\ne y$ (they lie in different tiles) and $x-y=\ell-\ell'\in L$.
+\end{proof}
+
+\begin{theorem}[Minkowski's convex body theorem]\label{thm:minkowski}
+Let $L\subseteq\R^n$ be a lattice and $S\subseteq\R^n$ a measurable set that is convex and symmetric ($x\in S\Rightarrow
+-x\in S$).
+\begin{enumerate}[label=(\alph*)]
+\item If $\lambda(S)>2^n\operatorname{covol}(L)$, then $S$ contains a point of $L\setminus\{0\}$.
+\item If $S$ is moreover compact, the same holds when $\lambda(S)\ge2^n\operatorname{covol}(L)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) The set $\frac12S$ has measure $2^{-n}\lambda(S)>\operatorname{covol}(L)$. By Blichfeldt there are $x\ne y$ in
+$\frac12S$ with $x-y\in L$. Now $2x$ and $-2y$ are in $S$ (symmetry), so their midpoint $x-y$ is in $S$ (convexity), and
+it is a non-zero point of $L$.
+
+(b) For each $k\ge1$, $(1+\frac1k)S$ is convex, symmetric, of measure $(1+\frac1k)^n\lambda(S)>2^n\operatorname{covol}(L)$,
+so it contains some $\ell_k\in L\setminus\{0\}$. All the $\ell_k$ lie in the bounded set $2S$, which contains finitely
+many lattice points, so some $\ell\ne0$ equals $\ell_k$ for infinitely many $k$. Then $\ell\in(1+\frac1k)S$ for
+arbitrarily large $k$, that is $\frac{k}{k+1}\ell\in S$, and as $S$ is closed, $\ell\in S$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-minkowski}
+\caption{A lattice $L$ with its fundamental parallelogram (shaded), and a symmetric convex body $S$ of area
+$4.4\operatorname{covol}(L)>2^2\operatorname{covol}(L)$. Minkowski's theorem guarantees the red points. Shrink $S$ to
+half its size, and the proof's Blichfeldt step finds two points of $\frac12S$ differing by a lattice vector.}
+\label{fig:mink3}
+\end{figure}
+
+\begin{think}
+Each hypothesis is needed. Find a symmetric but non-convex set, and a convex but non-symmetric one, of area as large
+as you like, containing no point of $\Z^2\setminus\{0\}$. Then find a compact convex symmetric set of area exactly $4$
+whose only lattice points are on its boundary.
+\end{think}
+
+The constant $2^n$ is sharp: the open cube $(-1,1)^n$ has volume $2^n$ and contains no non-zero point of $\Z^n$.
+
+\begin{example}[Fermat's two squares, again]\label{exa:twosq}
+Let $p\equiv1\pmod 4$ and $u$ with $u^2\equiv-1\pmod p$ (Tome~1, Chapter~5). The set $L=\{(a,b)\in\Z^2:a\equiv ub\pmod p\}$
+is a subgroup of index $p$ in $\Z^2$ (it is the kernel of the onto map $(a,b)\mapsto a-ub\bmod p$), hence a lattice of
+covolume $p$. The disc $a^2+b^2<2p$ has area $2\pi p>4p$, so it contains $(a,b)\in L\setminus\{0\}$. Then $a^2+b^2\equiv
+u^2b^2+b^2\equiv0\pmod p$ and $0<a^2+b^2<2p$, so $a^2+b^2=p$. Exercise~\ref{ex:foursq} gives four squares the same way.
+\end{example}
+
+\section{The Minkowski embedding}
+
+Let $K$ have signature $(r_1,r_2)$, with real embeddings $\sigma_1,\dots,\sigma_{r_1}$ and one embedding $\tau_j$ chosen
+in each pair of complex ones. The \emph{Minkowski embedding} is
+\[
+j:K\to\R^{r_1}\times\C^{r_2}\cong\R^n,\qquad x\mapsto\bigl(\sigma_1(x),\dots,\sigma_{r_1}(x),\tau_1(x),\dots,
+\tau_{r_2}(x)\bigr),
+\]
+where $\C$ is identified with $\R^2$ by $z\mapsto(\operatorname{Re}z,\operatorname{Im}z)$. It is an injective ring
+homomorphism (coordinatewise operations on the right), and $\Q$-linear.
+
+\begin{proposition}\label{prop:covol}
+$j(\mathcal O_K)$ is a lattice of covolume $2^{-r_2}\sqrt{|d_K|}$, and for an ideal $I$, $j(I)$ is a lattice of covolume
+$2^{-r_2}\sqrt{|d_K|}\,N(I)$.
+\end{proposition}
+\begin{proof}
+Let $\omega_1,\dots,\omega_n$ be an integral basis and $A$ the real $n\times n$ matrix whose columns are the
+$j(\omega_k)$. Its rows are $\sigma_i(\omega_k)$ for the real embeddings, and the pairs $\operatorname{Re}\tau_j(\omega_k)
+=\frac{\tau_j+\bar\tau_j}2(\omega_k)$, $\operatorname{Im}\tau_j(\omega_k)=\frac{\tau_j-\bar\tau_j}{2i}(\omega_k)$. Replacing
+each such pair of rows by the rows $\tau_j(\omega_k)$, $\bar\tau_j(\omega_k)$ is a row operation with determinant
+$\det\begin{psmallmatrix}1/2&1/2\\1/(2i)&-1/(2i)\end{psmallmatrix}=\frac{-1}{2i}$, of absolute value $\frac12$. So
+$|\det A|=2^{-r_2}|\det(\sigma(\omega_k))|=2^{-r_2}\sqrt{|d_K|}$, which is not zero: $j(\mathcal O_K)=A\Z^n$ is a
+lattice. Finally $j(I)$ is a subgroup of index $[\mathcal O:I]=N(I)$ in $j(\mathcal O_K)$, a lattice of covolume
+$N(I)$ times larger.
+\end{proof}
+
+For $\Z[\sqrt{-5}]$, $n=2$, $r_2=1$, $d_K=-20$, the lattice $\Z+\Z\sqrt5\,i\subseteq\C$ has covolume $\sqrt5=\frac12\sqrt{20}$,
+and the ideal $P=(2,1+\sqrt{-5})$, of norm $2$, has covolume $2\sqrt5$ (Figure~\ref{fig:ideal3}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-ideal}
+\caption{$\Z[\sqrt{-5}]$ in $\C$ (all dots) and its ideal $P=(2,1+\sqrt{-5})$ (red dots: $a+b\sqrt{-5}$ with $a\equiv b
+\pmod 2$). The fundamental parallelogram of $P$, spanned by $2$ and $1+\sqrt{-5}$, has twice the area of that of $\Z[\sqrt{-5}]$,
+spanned by $1$ and $\sqrt{-5}$: the covolume grows by the index $N(P)=2$.}
+\label{fig:ideal3}
+\end{figure}
+
+\section{The Minkowski bound and the class group}
+
+To find elements of small norm, we need a convex symmetric set on which the norm is small. The norm of $x$ is
+$|N(x)|=\prod_i|\sigma_i(x)|\prod_j|\tau_j(x)|^2$, a product of $n$ absolute values when complex coordinates are counted
+twice, and the arithmetic--geometric mean inequality bounds a product by a sum.
+
+\begin{lemma}\label{lem:volume}
+For $t>0$ let $B_t=\{(y,z)\in\R^{r_1}\times\C^{r_2}:\sum_i|y_i|+2\sum_j|z_j|\le t\}$. It is compact, convex and
+symmetric, and
+\[
+\lambda(B_t)=2^{r_1}\Bigl(\frac\pi2\Bigr)^{r_2}\frac{t^n}{n!}.
+\]
+For $x\in K$ with $j(x)\in B_t$, $|N(x)|\le t^n/n^n$.
+\end{lemma}
+\begin{proof}
+$B_t$ is closed and bounded, symmetric, and convex because $(y,z)\mapsto\sum|y_i|+2\sum|z_j|$ is a norm. Write
+$V_{r_1,r_2}(t)$ for its volume. Scaling by $t$ multiplies volume by $t^n$, so $V_{r_1,r_2}(t)=c_{r_1,r_2}t^n$, and
+$c_{1,0}=2$ (the interval $[-1,1]$), $c_{0,1}=\pi/4$ (the disc of radius $\frac12$). Slicing along one real coordinate
+(Fubini),
+\[
+V_{r_1+1,r_2}(t)=\int_{-t}^tV_{r_1,r_2}(t-|y|)\dd y=2c_{r_1,r_2}\int_0^t(t-y)^n\dd y=\frac{2c_{r_1,r_2}}{n+1}t^{n+1}.
+\]
+Slicing along one complex coordinate and using polar coordinates, then $u=2\rho$,
+\[
+V_{r_1,r_2+1}(t)=\int_{2|z|\le t}c_{r_1,r_2}(t-2|z|)^n\dd z=2\pi c_{r_1,r_2}\int_0^{t/2}(t-2\rho)^n\rho\dd\rho=
+\frac\pi2c_{r_1,r_2}\int_0^t(t-u)^nu\dd u=\frac\pi2\cdot\frac{c_{r_1,r_2}\,t^{n+2}}{(n+1)(n+2)},
+\]
+the last integral by one integration by parts. Starting from $c_{0,0}=1$ (with $V_{0,0}=1$ in dimension $0$), each real
+coordinate multiplies by $2$ and each complex one by $\frac\pi2$, while the factorials accumulate to $\frac1{n!}$.
+
+For the norm, apply the arithmetic--geometric mean inequality to the $n$ numbers $|\sigma_i(x)|$ and $|\tau_j(x)|$ (each
+$|\tau_j(x)|$ twice): $|N(x)|^{1/n}\le\frac1n\bigl(\sum|\sigma_i(x)|+2\sum|\tau_j(x)|\bigr)\le\frac tn$.
+\end{proof}
+
+\begin{theorem}[Minkowski's bound]\label{thm:minkbound}
+Let
+\[
+M_K=\Bigl(\frac4\pi\Bigr)^{r_2}\frac{n!}{n^n}\sqrt{|d_K|}.
+\]
+Every ideal $I$ contains a non-zero $\alpha$ with $|N(\alpha)|\le M_K\,N(I)$, and every ideal class contains an ideal of
+norm at most $M_K$. In particular the class group is finite.
+\end{theorem}
+\begin{proof}
+Choose $t$ with $\lambda(B_t)=2^n\operatorname{covol}(j(I))$, that is, by Proposition~\ref{prop:covol} and
+Lemma~\ref{lem:volume},
+\[
+2^{r_1}\Bigl(\frac\pi2\Bigr)^{r_2}\frac{t^n}{n!}=2^{n-r_2}\sqrt{|d_K|}\,N(I),\qquad\text{so}\qquad
+t^n=2^{n-r_1-2r_2}\Bigl(\frac4\pi\Bigr)^{r_2}n!\sqrt{|d_K|}\,N(I)=\Bigl(\frac4\pi\Bigr)^{r_2}n!\sqrt{|d_K|}\,N(I).
+\]
+By Theorem~\ref{thm:minkowski}(b) there is $\alpha\in I$, $\alpha\ne0$, with $j(\alpha)\in B_t$, and then $|N(\alpha)|
+\le t^n/n^n=M_KN(I)$.
+
+Now let $C$ be an ideal class and $I$ an ideal in the inverse class $C^{-1}$ (every class contains ideals: multiply a
+fractional ideal by a suitable integer). Take $\alpha$ as above. Since $\alpha\mathcal O\subseteq I$, $\alpha\mathcal O=IJ$
+for an ideal $J$ (Corollary~\ref{cor:divides}), whose class is $C$, and $N(J)=|N(\alpha)|/N(I)\le M_K$. Finally there are
+only finitely many ideals of norm at most $M_K$: each contains its norm (Proposition~\ref{prop:normideal}), and an
+integer $m$ lies in only finitely many ideals (Proposition~\ref{prop:noeth}).
+\end{proof}
+
+The theorem turns the class group into a finite computation: $\operatorname{Cl}(K)$ is generated by the classes of the
+primes of norm at most $M_K$, which lie above the prime numbers $p\le M_K$, and Theorem~\ref{thm:kd} finds them. Then one
+looks for relations among them, coming from elements of small norm.
+
+\begin{example}[{$\Q(\sqrt{-5})$}]
+$n=2$, $r_2=1$, $d_K=-20$: $M_K=\frac4\pi\cdot\frac24\sqrt{20}=\frac{4\sqrt5}\pi\approx2.85$. So the class group is
+generated by the primes above $2$: $2\mathcal O=P^2$ with $P=(2,1+\sqrt{-5})$, not principal since $a^2+5b^2=2$ has no
+solution. As $P^2=(2)$ is principal, $\operatorname{Cl}(K)\cong\Z/2\Z$ and $h_K=2$, as Tome~1 found by a longer route.
+\end{example}
+
+\begin{example}[{$\Q(\sqrt[3]2)$ and $\Q(\sqrt[3]{10})$}]
+For $\Q(\sqrt[3]2)$, $(r_1,r_2)=(1,1)$, $d_K=-108$, $M_K=\frac4\pi\cdot\frac6{27}\sqrt{108}\approx2.94$, and the only
+prime of norm $\le2$ is $(\sqrt[3]2)$, principal: $h_K=1$. For $\Q(\sqrt[3]{10})$, $d_K=-300$ gives $M_K\approx4.90$, so we
+must look at the primes above $2$ and $3$; Exercise~\ref{ex:h10} finds that they are all principal, so $h_K=1$ again.
+For $\Q(\sqrt[3]7)$, on the other hand, $h_K=3$ (the notebook checks it).
+\end{example}
+
+\section{Discriminants: Minkowski and Hermite}
+
+\begin{theorem}[Minkowski]\label{thm:dkbig}
+If $K\ne\Q$, then
+\[
+\sqrt{|d_K|}\ \ge\ \Bigl(\frac\pi4\Bigr)^{r_2}\frac{n^n}{n!}\ \ge\ \Bigl(\frac\pi4\Bigr)^{n/2}\frac{n^n}{n!}>1.
+\]
+In particular $|d_K|>1$, so at least one prime ramifies in $K$.
+\end{theorem}
+\begin{proof}
+Every ideal has norm $\ge1$, so applying Theorem~\ref{thm:minkbound} to $I=\mathcal O$ gives $1\le|N(\alpha)|\le M_K$,
+which is the first inequality. The second uses $\frac\pi4<1$ and $r_2\le\frac n2$. For the third let
+$a_n=(\frac\pi4)^{n/2}\frac{n^n}{n!}$. Then $a_2=\frac\pi4\cdot2=\frac\pi2>1$ and $\frac{a_{n+1}}{a_n}=\sqrt{\frac\pi4}
+\bigl(1+\frac1n\bigr)^n\ge\sqrt{\frac\pi4}\cdot2>1$. So $a_n>1$ for $n\ge2$. A prime dividing $d_K$ ramifies by
+Theorem~\ref{thm:ramdisc}.
+\end{proof}
+
+Since $\frac{n^n}{n!}\ge\frac{e^n}{e\sqrt n}$ roughly (Stirling, Tome~4), $|d_K|$ grows at least exponentially in the
+degree: a field of large degree has a large discriminant. Exercise~\ref{ex:discbound} gives the clean bound
+$|d_K|\ge\frac\pi3\bigl(\frac{3\pi}4\bigr)^{n-1}$. The ramification statement is the arithmetic analogue of a
+topological fact: $\Q$ has no unramified extension, just as the sphere has no connected unramified (covering) map onto it
+other than the identity (Chapter~10 takes up this analogy).
+
+\begin{theorem}[Hermite]\label{thm:hermite}
+For every $X>0$ there are only finitely many number fields $K\subseteq\C$ with $|d_K|\le X$.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:dkbig}, $(\frac\pi4)^{n/2}\frac{n^n}{n!}\le\sqrt X$, and the left side tends to infinity with $n$, so
+the degree is bounded. Fix $n$ and the signature $(r_1,r_2)$. We find $\theta\in\mathcal O_K$ generating $K$ whose
+conjugates are bounded in terms of $X$ only; its minimal polynomial then has bounded integer coefficients, and there are
+finitely many such polynomials, each with finitely many roots.
+
+\emph{If $r_1\ge1$}, let $S$ be the set of $(y,z)$ with $|y_1|\le C$, $|y_i|\le\frac12$ for $2\le i\le r_1$, and
+$|z_j|\le\frac12$ for all $j$. It is compact, convex, symmetric, of volume $2C\cdot(\frac\pi4)^{r_2}$. Choose $C$ so that
+this equals $2^{n-r_2}\sqrt{|d_K|}$; then $C\le C_X=2^{n-r_2-1}(\frac4\pi)^{r_2}\sqrt X$. Theorem~\ref{thm:minkowski}
+gives $\theta\in\mathcal O_K\setminus\{0\}$ with $j(\theta)\in S$. As $|N(\theta)|\ge1$ and all conjugates but
+$\sigma_1(\theta)$ have absolute value $\le\frac12$, $|\sigma_1(\theta)|\ge2^{n-1}>\frac12$. So $\sigma_1(\theta)$ is
+different from every other conjugate $\sigma(\theta)$.
+
+\emph{If $r_1=0$}, let $S$ be the set where $|\operatorname{Re}z_1|\le\frac12$, $|\operatorname{Im}z_1|\le C$, and $|z_j|
+\le\frac12$ for $j\ge2$, of volume $2C(\frac\pi4)^{r_2-1}$, and choose $C$ as before. We get $\theta$ with $|\tau_1(\theta)|^2
+\ge4^{r_2-1}\ge1$; as $|\operatorname{Re}\tau_1(\theta)|\le\frac12$, $\tau_1(\theta)$ is not real, so it differs from
+its conjugate $\bar\tau_1(\theta)$, and it differs from the other conjugates, which have absolute value $\le\frac12$.
+
+In both cases some embedding takes on $\theta$ a value taken by no other embedding. Now the values $\sigma_i(\theta)$
+are the roots of $\chi_\theta=m_\theta^{n/d}$, $d=[\Q(\theta):\Q]$ (Proposition~\ref{prop:charpoly}), so each of them is
+taken $n/d$ times. Hence $n/d=1$ and $K=\Q(\theta)$. All conjugates of $\theta$
+have absolute value at most $\max(C_X,1)$, so the coefficients of $m_\theta$, elementary symmetric functions of the
+conjugates, are integers bounded by $\binom nk\max(C_X,1)^k$.
+\end{proof}
+
+Hermite's theorem raises a counting question: how many fields of degree $n$ have $|d_K|\le X$? For $n=2$ the answer is
+about $\frac6{\pi^2}X$ (squarefree numbers, Tome~5), for $n=3$ about $\frac X{3\zeta(3)}$ (Davenport--Heilbronn), and
+Malle's conjecture predicts the answer for every Galois group. Tome~14 returns to these \emph{arithmetic statistics}.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:convexity}
+Answer the think box: give a symmetric non-convex set and a convex non-symmetric set, both of infinite area, containing no
+point of $\Z^2\setminus\{0\}$, and a compact convex symmetric set of area $4$ whose only non-zero lattice points are on its
+boundary.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:foursq}
+\emph{Four squares.} Let $p$ be an odd prime. Show that there are $u,v$ with $u^2+v^2+1\equiv0\pmod p$. Show that
+$L=\{(a,b,c,d)\in\Z^4:a\equiv uc+vd,\ b\equiv ud-vc\pmod p\}$ has covolume $p^2$ and that $a^2+b^2+c^2+d^2\equiv0\pmod p$
+on $L$. The ball of radius $r$ in $\R^4$ has volume $\frac{\pi^2}2r^4$; deduce that $p$ is a sum of four squares.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:h23}
+Show that the class group of $\Q(\sqrt{-23})$ is cyclic of order $3$, generated by a prime above $2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:h47}
+Show that the class group of $\Q(\sqrt{-47})$ is cyclic of order $5$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:h1}
+Show that $\Q(\sqrt{-19})$, $\Q(\sqrt{-43})$ and $\Q(\sqrt{-67})$ have class number $1$. Do the same for $\Q(\sqrt{-163})$
+(the bound is about $8.1$). What does this say about the values of $n^2+n+41$ for $0\le n\le39$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sqrt10}
+Show that $\Q(\sqrt{10})$ has class number $2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:h10}
+Show that $\Q(\sqrt[3]{10})$ has class number $1$. \emph{(Use the integral basis $1,\theta,\beta$ of
+Example~\ref{exa:cuberoot10}, and look for elements of norm $2$ and $3$.)}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:discbound}
+Show that $|d_K|\ge\frac\pi3\bigl(\frac{3\pi}4\bigr)^{n-1}$ for $n\ge2$. Deduce that $|d_K|\ge3$ for quadratic fields and
+$|d_K|\ge13$ for cubic fields (the true minima are $3$ and $23$). Which number field of degree $n\le4$ could have
+$|d_K|<100$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quadmin}
+\emph{A quadratic form version.} Let $Q(x,y)=ax^2+bxy+cy^2$ be positive definite with integer coefficients and
+discriminant $D=b^2-4ac<0$. Show with Minkowski's theorem that $Q$ represents a non-zero value at most
+$\frac2\pi\sqrt{|D|}$. Compare with the bound $\sqrt{|D|/3}$ given by Gauss's reduction (Tome~1, Chapter~7).
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:simult}
+\emph{Simultaneous approximation (Dirichlet).} Let $\alpha_1,\dots,\alpha_k$ be real and $N\ge1$. Show that there are integers
+$q$ with $1\le q\le N^k$ and $p_1,\dots,p_k$ with $|q\alpha_i-p_i|\le\frac1N$ for all $i$. \emph{(A box in $\R^{k+1}$.)}
+\end{exercise}
+
+\begin{beauty}
+Minkowski's theorem is a few lines of measure theory, and yet it decides the finiteness of class groups, the existence of
+ramified primes and, in the next chapter, the structure of the unit group. The reason is that $\mathcal O_K$ is not just
+a ring but a \emph{lattice} with a natural geometry, and arithmetic questions become questions about short vectors. The
+twentieth century took this further. Siegel computed the average number of lattice points in a body over the space of
+all lattices; Hermite's and Minkowski's constants for the densest lattice packings of spheres were found in dimensions
+$8$ and $24$ by Viazovska (Fields Medal, 2022), with modular forms (Chapter~14). And the hardness of finding short
+vectors in high-dimensional lattices is now the basis of post-quantum cryptography, as the notebook explains.
+\end{beauty}
+
+\section{Hints}
+
+Try each exercise for a while before reading its hint, and read the hint before the solution.
+
+\begin{hint}{ex:convexity}
+Think of a thin cross along the axes but avoiding them; a half-plane; the square $[-1,1]^2$.
+\end{hint}
+\begin{hint}{ex:foursq}
+The sets $\{u^2\}$ and $\{-1-v^2\}$ modulo $p$ each have $\frac{p+1}2$ elements. $L$ is the kernel of a map
+$\Z^4\to(\Z/p\Z)^2$ that is onto.
+\end{hint}
+\begin{hint}{ex:h23}
+$M_K\approx3.05$. The integers are $x+y\omega$, $\omega=\frac{1+\sqrt{-23}}2$, with norm $x^2+xy+6y^2$. Look for elements
+of norm $6$ and $8$.
+\end{hint}
+\begin{hint}{ex:h47}
+$M_K\approx4.36$. The norm form is $x^2+xy+12y^2$; it takes the values $12$ and $32$ but not $2$, $3$, $6$, $8$.
+\end{hint}
+\begin{hint}{ex:h1}
+For $d\equiv5\pmod8$, $2$ is inert. Check that the small primes are inert, with Legendre symbols.
+\end{hint}
+\begin{hint}{ex:sqrt10}
+$M_K=\sqrt{10}$. The norm $x^2-10y^2$ is never $\pm2$ or $\pm3$ (look modulo $5$), but $N(4+\sqrt{10})=6$.
+\end{hint}
+\begin{hint}{ex:h10}
+$M_K\approx4.90$. Kummer--Dedekind with $\theta$ works at $2$, and with $\beta$ at $3$. The norm of $\theta-a$ is
+$10-a^3$, and $\beta$ has norm $3$.
+\end{hint}
+\begin{hint}{ex:discbound}
+Use $r_2\le\frac n2$ and show that $b_n=(\frac\pi4)^n(\frac{n^n}{n!})^2$ satisfies $b_{n+1}/b_n\ge\frac{3\pi}4$.
+\end{hint}
+\begin{hint}{ex:quadmin}
+$Q(x,y)\le r$ is an ellipse of area $\frac{2\pi r}{\sqrt{|D|}}$.
+\end{hint}
+\begin{hint}{ex:simult}
+Apply Theorem~\ref{thm:minkowski}(b) to $\Z^{k+1}$ and the box $|x_0|\le N^k$, $|x_0\alpha_i-x_i|\le\frac1N$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:convexity}
+\idea Each hypothesis rules out one kind of escape: a set made of thin pieces avoiding the lattice for convexity, a set
+on one side of a line for symmetry, and points on the boundary for the strict inequality.
+\writeup \emph{Symmetric, not convex.} Take the set of points with $0<x<1$ or $-1<x<0$, that is $\{0<|x|<1\}$. It is symmetric, of infinite area, and its
+points have $x\notin\Z$, so it contains no lattice point; it is not convex (it misses the segment joining $(\frac12,0)$
+and $(-\frac12,0)$ at $x=0$).
+
+\emph{Convex, not symmetric.} The strip $\{0<x<1\}$ is convex, of infinite area, and contains no lattice point, as $x$
+would be an integer strictly between $0$ and $1$.
+
+\emph{Area exactly $4$.} The square $[-1,1]^2$ is compact, convex, symmetric, of area $4$, and its non-zero lattice points
+$(\pm1,0)$, $(0,\pm1)$, $(\pm1,\pm1)$ are on its boundary; its interior $(-1,1)^2$ has area $4$ and contains no non-zero
+lattice point, so part (a) of Theorem~\ref{thm:minkowski} needs the strict inequality.
+\end{solution}
+
+\begin{solution}{ex:foursq}
+\idea Same as Example~\ref{exa:twosq}: a sublattice of index $p^2$ on which the quadratic form vanishes modulo $p$, and a
+ball large enough to contain a non-zero point of it, but small enough that the only multiple of $p$ available is $p$.
+\writeup The squares modulo $p$ take $\frac{p+1}2$ values, so do the numbers $-1-v^2$, and $\frac{p+1}2+\frac{p+1}2>p$: two of
+them coincide, $u^2\equiv-1-v^2$. The map $\Z^4\to(\Z/p\Z)^2$, $(a,b,c,d)\mapsto(a-uc-vd,\ b-ud+vc)$, is onto (take
+$c=d=0$), so its kernel $L$ has index $p^2$ and covolume $p^2$. On $L$,
+\[
+a^2+b^2\equiv(uc+vd)^2+(ud-vc)^2=(u^2+v^2)(c^2+d^2)\equiv-(c^2+d^2)\pmod p,
+\]
+so $a^2+b^2+c^2+d^2\equiv0$. The open ball $a^2+b^2+c^2+d^2<2p$ has volume $\frac{\pi^2}2(2p)^2=2\pi^2p^2>16p^2=2^4
+\operatorname{covol}(L)$, since $2\pi^2\approx19.7$. So it contains a non-zero point of $L$, whose sum of squares is a
+multiple of $p$ in $(0,2p)$: it is $p$. By Euler's four-square identity (Tome~2, Chapter~12), products of sums of four
+squares are sums of four squares, and $2=1+1+0+0$; so every positive integer is a sum of four squares.
+\end{solution}
+
+\begin{solution}{ex:h23}
+\idea Below the Minkowski bound only the primes above $2$ and $3$ matter. Elements of norm $6$ and $8$ give the relations,
+and the absence of elements of norm $2$, $3$, $4$ (other than $\pm2$) shows that the class of a prime above $2$ has order
+exactly $3$.
+\writeup Here $d_K=-23$, $r_2=1$, $M_K=\frac4\pi\cdot\frac24\sqrt{23}=\frac2\pi\sqrt{23}\approx3.05$. Since $-23\equiv1
+\pmod 8$, $2$ splits: $2\mathcal O=P\bar P$ (Theorem~\ref{thm:kd} with $X^2-X+6\equiv X(X-1)\pmod2$). Since $-23\equiv1\pmod3$
+is a square, $3$ splits: $3\mathcal O=Q\bar Q$ ($X^2-X+6\equiv X(X-1)\pmod 3$). These four primes generate
+$\operatorname{Cl}(K)$. The norm of $x+y\omega$ is $x^2+xy+6y^2=(x+\frac y2)^2+\frac{23}4y^2$, which is $\ge\frac{23}4>5$
+when $y\ne0$; so the values $2$, $3$ are not taken, and $4$ only by $\pm2$. Hence $P,Q$ are not principal, and $P^2$ is not
+principal ($P^2\ne P\bar P=(2)$).
+
+The element $\omega$ has norm $6$, so $(\omega)$ is a product of a prime above $2$ and one above $3$; renaming, $(\omega)=PQ$,
+so $[Q]=[P]^{-1}$. The element $1+\omega=\frac{3+\sqrt{-23}}2$ has norm $1+1+6=8$, so $(1+\omega)$ is a product of three
+primes above $2$. It is not divisible by $(2)=P\bar P$, since $\frac{1+\omega}2\notin\mathcal O$; so it is $P^3$ or $\bar
+P^3$. Either way $[P]^3=1$ (as $[\bar P]=[P]^{-1}$). Since $[P]\ne1$, $[P]$ has order $3$, and $\operatorname{Cl}(K)$,
+generated by $[P]$, $[\bar P]=[P]^{-1}$, $[Q]=[P]^{-1}$, $[\bar Q]=[P]$, is cyclic of order $3$.
+\end{solution}
+
+\begin{solution}{ex:h47}
+\idea As for $-23$: primes above $2$ and $3$; the element of norm $32$ shows that $[P]^5=1$, and the missing norms show
+that no smaller power is trivial.
+\writeup $M_K=\frac2\pi\sqrt{47}\approx4.36$, so the primes above $2$ and $3$ generate. As $-47\equiv1\pmod8$ and $-47\equiv1
+\pmod 3$, both split: $2=P\bar P$, $3=Q\bar Q$ (the polynomial $X^2-X+12$ has the roots $0,1$ modulo $2$ and modulo $3$).
+The norm $x^2+xy+12y^2$ is $\ge\frac{47}4$ for $y\ne0$, so the values below $12$ are only the squares $x^2$: no element has
+norm $2$, $3$, $6$ or $8$, and the elements of norm $4$, $9$ are $\pm2$, $\pm3$.
+
+Now $\omega$ has norm $12$, so $(\omega)$ is a product of two primes above $2$ and one above $3$, not divisible by $(2)$
+($\frac\omega2\notin\mathcal O$); renaming, $(\omega)=P^2Q$, so $[Q]=[P]^{-2}$. And $4+\omega=\frac{9+\sqrt{-47}}2$ has
+norm $16+4+12=32$; it is not divisible by $2$, so $(4+\omega)=P^5$ or $\bar P^5$, and $[P]^5=1$. The class group is
+generated by $[P]$ (as $[\bar P]=[P]^{-1}$, $[Q]=[P]^{-2}$, $[\bar Q]=[P]^2$), so its order divides $5$; and $[P]\ne1$
+since nothing has norm $2$. So it is cyclic of order $5$.
+\end{solution}
+
+\begin{solution}{ex:h1}
+\idea If every prime below the bound is inert, the only ideals of small norm are generated by integers.
+\writeup For $d=-19,-43,-67,-163$, $M_K=\frac2\pi\sqrt{|d|}\approx2.77,\ 4.17,\ 5.21,\ 8.13$. All four $d$ are $\equiv5
+\pmod8$, so $2$ is inert ($X^2-X+\frac{1-d}4$ has no root modulo $2$, its constant term being odd). For an odd prime
+$p<M_K$, $p$ is inert when $\left(\frac dp\right)=-1$: for $d=-43$, $-43\equiv2\pmod 3$; for $d=-67$, $-67\equiv2\pmod3$ and
+$-67\equiv3\pmod5$, a non-square; for $d=-163$, $-163\equiv2\pmod3$, $\equiv2\pmod5$, $\equiv5\pmod7$, all non-squares.
+So every prime of norm $\le M_K$ is $(p)$, principal, and $h_K=1$.
+
+For $d=-163$, $\omega=\frac{1+\sqrt{-163}}2$ and the norm of $x+y\omega$ is $x^2+xy+41y^2$, which is $\ge\frac{163}4>40$
+when $y\ne0$. So no element has norm a prime $p<41$. Since $h_K=1$, a prime $p<41$ that split, $p\mathcal O=P\bar P$,
+would have $P=(\alpha)$ with $N(\alpha)=p$: impossible. The only ramified prime is $163$. So every prime $p<41$ is inert.
+Now let $0\le n\le39$ and $m=n^2+n+41=N(n+\omega)$. If $m$ were composite, it would have a prime factor $p\le\sqrt m<41$
+(as $m\le39^2+39+41=1601<41^2$). An inert $p$ dividing $N(n+\omega)=(n+\omega)(n+\bar\omega)$ divides one of the two
+factors, as $p\mathcal O$ is prime, so $\frac{n+\omega}p$ or its conjugate is in $\mathcal O=\Z+\Z\omega$, which is false since
+the coefficient of $\omega$ is $\frac1p$. So $n^2+n+41$ is prime for $0\le n\le39$, Euler's famous observation
+(Rabinowitsch proved in 1913 that this property is equivalent to $h_K=1$).
+\end{solution}
+
+\begin{solution}{ex:sqrt10}
+\idea Primes above $2$ and $3$; congruences modulo $5$ show they are not principal; an element of norm $6$ links them.
+\writeup $d_K=40$, $(r_1,r_2)=(2,0)$, $M_K=\frac2{4}\sqrt{40}=\sqrt{10}\approx3.16$. $2\mathcal O=P^2$ with $P=(2,\sqrt{10})$;
+$3$ splits since $10\equiv1$ is a square modulo $3$: $3=Q\bar Q$. Modulo $5$, $x^2-10y^2\equiv x^2\in\{0,\pm1\}$, never
+$\pm2$ or $\pm3$: so nothing has norm $\pm2$ or $\pm3$, and $P$, $Q$, $\bar Q$ are not principal. $N(4+\sqrt{10})=6$, so
+$(4+\sqrt{10})=PQ$ after renaming, and $[Q]=[P]^{-1}=[P]$ (as $P^2=(2)$). Similarly $[\bar Q]=[Q]^{-1}=[P]$. So
+$\operatorname{Cl}(K)=\{1,[P]\}$ has order $2$.
+\end{solution}
+
+\begin{solution}{ex:h10}
+\idea Below the Minkowski bound lie only the primes above $2$ and $3$. Find their factorisations, then hunt for elements
+of norm $2$ and $3$: if they exist, the primes are principal.
+\writeup $(r_1,r_2)=(1,1)$, $d_K=-300$, $M_K=\frac4\pi\cdot\frac6{27}\sqrt{300}\approx4.90$: the class group is generated
+by the primes above $2$ and $3$. At $2$: the index of $\Z[\theta]$ is $3$, prime to $2$, and $X^3-10\equiv X^3\pmod2$, so
+$2\mathcal O=\mathfrak p_2^3$ with $\mathfrak p_2=(2,\theta)$ (Theorem~\ref{thm:kd}). At $3$ the index of $\Z[\theta]$ is
+divisible by $3$, so we use $\beta$: its minimal polynomial $X^3-X^2-3X-3$ has discriminant $-300=d_K$, so
+$\Z[\beta]=\mathcal O$, and modulo $3$ it is $X^2(X-1)$. So $3\mathcal O=\mathfrak q^2\mathfrak q'$ with $\mathfrak
+q=(3,\beta)$ and $\mathfrak q'=(3,\beta-1)$, both of norm $3$.
+
+Since the minimal polynomial of $\theta-a$ is $(X+a)^3-10$, $N(\theta-a)=10-a^3$; for $a=2$, $N(\theta-2)=2$. A principal
+ideal of norm $2$ is a prime above $2$, so $(\theta-2)=\mathfrak p_2$. The constant term of the minimal polynomial of
+$\beta$ gives $N(\beta)=3$, and $\beta\in\mathfrak q$, so $(\beta)=\mathfrak q$. Finally $\mathfrak q'=3\mathcal O\cdot
+\mathfrak q^{-2}=(3/\beta^2)$ is principal too. All generators of $\operatorname{Cl}(K)$ are trivial: $h_K=1$.
+\end{solution}
+
+\begin{solution}{ex:discbound}
+\idea Minkowski's inequality gives $|d_K|\ge b_n$; an induction on $n$ with a crude lower bound for $(1+\frac1n)^{2n}$
+does the rest.
+\writeup By Theorem~\ref{thm:dkbig} and $r_2\le\frac n2$, $|d_K|\ge b_n=(\frac\pi4)^{2r_2}(\frac{n^n}{n!})^2\ge(\frac\pi4)^n
+(\frac{n^n}{n!})^2$. Then $b_2=\frac{\pi^2}{16}\cdot4=\frac{\pi^2}4=\frac\pi3\cdot\frac{3\pi}4$, and $\frac{b_{n+1}}{b_n}=
+\frac\pi4\bigl(1+\frac1n\bigr)^{2n}\ge\frac\pi4\bigl(\frac32\bigr)^4=\frac{81\pi}{64}\ge\frac{3\pi}4$ for $n\ge2$ (the
+sequence $(1+\frac1n)^n$ increases). By induction $b_n\ge\frac\pi3(\frac{3\pi}4)^{n-1}$. For $n=2$: $|d_K|\ge\frac{\pi^2}4
+\approx2.47$, so $|d_K|\ge3$. For $n=3$ use the sharper $r_2\le1$: $|d_K|\ge(\frac\pi4)^2(\frac{27}6)^2\approx12.5$, so
+$|d_K|\ge13$. For $n=4$, $|d_K|\ge(\frac\pi4)^4(\frac{256}{24})^2\approx43.1$, and for $n=5$, $\ge(\frac\pi4)^4(\frac{3125}
+{120})^2\approx258$. So a field with $|d_K|<100$ has degree at most $4$. (The true minima are $3$, $23$, $117$ and $1609$
+for degrees $2$ to $5$; in degree $4$, $117$ already exceeds $100$, a fact the bound cannot see.)
+\end{solution}
+
+\begin{solution}{ex:quadmin}
+\idea The region $Q\le r$ is an ellipse; its area is computed by a linear change of variables, and Minkowski does the rest.
+\writeup Write $Q(x,y)=a(x+\frac b{2a}y)^2+\frac{|D|}{4a}y^2$ ($a>0$ since $Q$ is positive definite). The linear map
+$(x,y)\mapsto(\sqrt a(x+\frac b{2a}y),\frac{\sqrt{|D|}}{2\sqrt a}y)$ has determinant $\frac{\sqrt{|D|}}2$ and sends
+$\{Q\le r\}$ onto the disc of radius $\sqrt r$, of area $\pi r$. So $\lambda(\{Q\le r\})=\frac{2\pi r}{\sqrt{|D|}}$. It is
+compact, convex, symmetric; it has area $\ge4$ when $r=\frac2\pi\sqrt{|D|}$, so it contains $(x,y)\in\Z^2\setminus\{0\}$
+with $0<Q(x,y)\le\frac2\pi\sqrt{|D|}$. Gauss's reduced forms have $a\le\sqrt{|D|/3}\approx0.577\sqrt{|D|}$, better than
+$\frac2\pi\approx0.637$: for two variables the geometry of numbers is not optimal, but it works in every dimension.
+\end{solution}
+
+\begin{solution}{ex:simult}
+\idea A thin, long box: long in the direction of $q$, thin in the directions of the errors; its volume is exactly $2^{k+1}$.
+\writeup Let $S=\{x\in\R^{k+1}:|x_0|\le N^k,\ |x_0\alpha_i-x_i|\le\frac1N\ (1\le i\le k)\}$. It is compact, convex and
+symmetric; it is the image of the box $[-N^k,N^k]\times[-\frac1N,\frac1N]^k$ under the linear map $(x_0,e)\mapsto(x_0,
+x_0\alpha-e)$ of determinant $\pm1$, so $\lambda(S)=2N^k\cdot(\frac2N)^k=2^{k+1}$. Theorem~\ref{thm:minkowski}(b) gives
+$(q,p_1,\dots,p_k)\in\Z^{k+1}\setminus\{0\}$ in $S$. For $N=1$ the statement is trivial ($q=1$, $p_i$ the integer part
+of $\alpha_i$). For $N\ge2$, if $q=0$ then $|p_i|\le\frac1N<1$ forces $p_i=0$ for all $i$, which is excluded; so $q\ne0$. Replacing the point
+by its opposite if needed, $1\le q\le N^k$ and $|q\alpha_i-p_i|\le\frac1N$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Minkowski, \emph{Geometrie der Zahlen}, Teubner, Leipzig, 1896 (and 1910). The origin of the chapter.
+\item D.~A.~Marcus, \emph{Number Fields}, 2nd ed., Springer, 2018, Chapter~5. The Minkowski bound, with many class
+number computations; the source of Exercise~\ref{ex:discbound}.
+\item J.~Neukirch, \emph{Algebraic Number Theory}, Springer, 1999, Chapter~I, \S\S4--6 and \S2 of Chapter~III (Hermite).
+\item J.~W.~S.~Cassels, \emph{An Introduction to the Geometry of Numbers}, Springer Classics, 1997. The theory beyond
+convex bodies: successive minima, Mahler's compactness theorem.
+\item H.~Cohen, \emph{A Course in Computational Algebraic Number Theory}, GTM~138, Springer, 1993, \S5.4 and \S6.5.
+Computing class groups in practice; tables of class numbers.
+\item M.~Bhargava, ``The density of discriminants of quartic rings and fields'', \emph{Ann.\ of Math.}\ 162 (2005),
+1031--1063. Counting fields by discriminant, the subject Hermite's theorem opens (Tome~14).
+\item A.~K.~Lenstra, H.~W.~Lenstra, Jr.\ and L.~Lov\'asz, ``Factoring polynomials with rational coefficients'',
+\emph{Math.\ Ann.}\ 261 (1982), 515--534. The LLL algorithm of the notebook.
+\end{itemize}
