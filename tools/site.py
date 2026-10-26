@@ -2,8 +2,9 @@
 
 Usage: python3 tools/site.py <dist dir> <output dir>
 Copies every dist/<tome>.pdf (with its -phone and -kindle variants) and .epub into the
-output directory and writes index.html. Each tome's card also links its Amazon KDP files from
-dist/kdp/: the Kindle cover, the paperback cover, the paperback interior and the listing.
+output directory, the online reader dist/html/<tome>/ into read/<tome>/, and writes index.html.
+Each tome's card also links its Amazon KDP files from dist/kdp/: the Kindle cover, the paperback
+cover, the paperback interior and the listing.
 """
 import datetime
 import html
@@ -42,7 +43,7 @@ PAGE = """<!doctype html>
              color:var(--accent); text-decoration:none; font-family:system-ui, sans-serif; font-size:.9em; }}
   .kdp {{ flex-basis:100%; font-family:system-ui, sans-serif; font-size:.82em; color:var(--muted); }}
   .kdp a {{ color:var(--accent); margin-left:10px; }}
-  .links a:hover {{ background:var(--accent); color:var(--card); }}
+  .links a:hover, .links a.read {{ background:var(--accent); color:var(--card); }}
   footer {{ margin-top:2.5em; color:var(--muted); font-size:.88em; }}
   footer a {{ color:var(--accent); }}
 </style>
@@ -64,7 +65,7 @@ Python companion notebooks are in the repository's <code>python/</code> folder.<
 """
 
 CARD = """<div class="tome">{cover}<div class="info"><h2>{title}</h2><p>{subtitle} · {size}</p></div>
-<div class="links"><a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div>
+<div class="links">{read}<a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div>
 {kdp}</div>"""
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
@@ -109,6 +110,11 @@ def main(dist: str, out: str) -> None:
                 variants += f'<a href="{extra.name}" title="{tip}">{label}</a>'
         if epub.exists():
             shutil.copy(epub, out_dir / epub.name)
+        read = ""
+        reader = dist_dir / "html" / tome
+        if (reader / "index.html").exists():
+            shutil.copytree(reader, out_dir / "read" / tome, dirs_exist_ok=True)
+            read = f'<a class="read" href="read/{tome}/" title="Read in the browser, one page per chapter">Read online</a>'
         kdp = []
         for suffix, label, tip in KDP:
             src = dist_dir / "kdp" / f"{tome}-{suffix}"
@@ -127,7 +133,7 @@ def main(dist: str, out: str) -> None:
                             str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
             cover = f'<img src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         cards.append(CARD.format(title=html.escape(rest or series), subtitle=html.escape(series if rest else ""),
-                                 size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name,
+                                 size=size, cover=cover, read=read, pdf=pdf.name, variants=variants, epub=epub.name,
                                  kdp=kdp))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""

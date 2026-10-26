@@ -5,6 +5,8 @@ local exnum = {}      -- label -> "c.n"
 local count = 0
 local fignum = {}     -- label -> "c.n"
 local figcount = 0
+local eqnum = {}      -- label -> "c.n", numbered equations (all of them carry a \label)
+local eqcount = 0
 local exname = "Exercise"  -- what the book calls its exercises
 
 local function optarg(blocks)
@@ -37,18 +39,38 @@ local function title_para(cls, inlines)
 end
 
 local function number_pass(doc)
-  for _, b in ipairs(doc.blocks) do
+  for i, b in ipairs(doc.blocks) do
     if b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
       chapter = chapter + 1
       count = 0
       figcount = 0
+      eqcount = 0
     elseif b.t == "Div" and b.classes:includes("exercise") then
       count = count + 1
       local l = label_of(b.content)
       local n = chapter .. "." .. count
       b.attributes["number"] = n
       if l then exnum[l] = n end
-    elseif b.t == "Figure" then
+    end
+    if b.t ~= "Header" then
+      -- A display with a \label is a numbered equation: show its number as a \tag, as in the PDF.
+      b = b:walk({ Math = function(m)
+        local l = m.mathtype == "DisplayMath" and m.text:match("\\label{([^}]*)}")
+        if not l then return nil end
+        eqcount = eqcount + 1
+        eqnum[l] = chapter .. "." .. eqcount
+        m.text = m.text:gsub("\\label{[^}]*}", "", 1)
+        if FORMAT:match("html") then  -- the online reader (KaTeX)
+          m.text = m.text .. "\\tag{" .. eqnum[l] .. "}"
+          return pandoc.Span({ m }, pandoc.Attr(l))
+        end
+        -- The EPUB's MathML drops \tag, so the number follows the display.
+        return pandoc.Span({ m, pandoc.Span({ pandoc.Str("(" .. eqnum[l] .. ")") }, pandoc.Attr("", { "eqno" })) },
+                           pandoc.Attr(l))
+      end })
+      doc.blocks[i] = b
+    end
+    if b.t == "Figure" then
       figcount = figcount + 1
       local n = chapter .. "." .. figcount
       b.attributes["number"] = n
@@ -107,6 +129,12 @@ local function number_figure(b)
 end
 
 local function fix_ref(el)
+  local eq = eqnum[el.attributes["reference"]]
+  if eq then
+    el.content = { pandoc.Str(el.attributes["reference-type"] == "eqref" and "(" .. eq .. ")" or eq) }
+    el.target = "#" .. el.attributes["reference"]
+    return el
+  end
   if el.attributes["reference-type"] == "ref" then
     local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]]
     if n then
