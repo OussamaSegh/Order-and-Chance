@@ -1,0 +1,437 @@
+\chapter{The Large Sieve and Bombieri--Vinogradov}
+\begin{center}\itshape
+One modulus at a time, the Riemann hypothesis is out of reach.\\
+On average over the moduli up to $\sqrt x$, it is a theorem.\\
+The tool is a sieve that throws away half of everything.
+\end{center}
+
+In 1941, in a two-page note in the \emph{Doklady} of the Soviet Academy, Yuri Linnik asked how often the least quadratic non-residue modulo a prime $p$ can be large. Vinogradov had shown in 1927 that it is at most a little more than $p^{0.3}$; the truth is believed to be $O(\log^2p)$, and nobody could, or can, prove anything like that for a single $p$. Linnik proved that it is true for \emph{almost all} $p$, in a strong sense: for each $\varepsilon>0$, only a bounded number of primes $p\le x$ have no non-residue below $x^\varepsilon$. His method sifted the integers by about half of the residue classes modulo each prime, far more than Brun's sieve removes, and he called it the \emph{large sieve}. Alfréd Rényi, who spent 1946--47 in Leningrad with Linnik, turned it into a general principle; Klaus Roth and Enrico Bombieri sharpened it in 1965 into an inequality of the kind proved in Tome~5, Theorem~8.8.
+
+Bombieri then used it to prove the theorem that bears his name with that of Askold Vinogradov, who found it independently the same year: the primes are well distributed in the progressions modulo $q$, with an error as good as the generalised Riemann hypothesis would give, for \emph{almost all} $q$ up to $\sqrt x$. Bombieri received the Fields Medal in 1974. The proof we give is Robert Vaughan's from 1977, which cuts $\Lambda$ into pieces that are either short or bilinear; it has become the template for every later theorem of this kind, including the ones that, in Chapters~8 and~9, will produce bounded gaps between primes.
+
+\begin{reminder}[from Tome~5 and Chapter~2]
+\emph{Characters} (Tome~5, Chapter~3). For $\chi$ modulo $q$ and $(a,q)=1$, $\frac1{\varphi(q)}\sum_\chi\overline{\chi(a)}\chi(n)=\mathbf 1_{n\equiv a\,(q)}$, and $\sum_{n\bmod q}\chi(n)=0$ for $\chi\ne\chi_0$ (Proposition~3.1). Every $\chi$ is induced by exactly one primitive character $\chi^*$, modulo the conductor of $\chi$, which divides $q$ (Proposition~3.4). For $\chi$ primitive modulo $q$, $\sum_{a=1}^q\chi(a)e(\frac{an}q)=\overline{\chi(n)}\tau(\chi)$ for every $n$, with $|\tau(\chi)|=\sqrt q$ (Theorem~3.5); here $e(t)=e^{2\pi it}$. \emph{Pólya--Vinogradov} (Theorem~11.11): for $\chi$ primitive modulo $q>1$, $|\sum_{M<n\le M+N}\chi(n)|\le\sqrt q(1+\log q)$.
+\emph{The large sieve} (Theorem~8.8 and (8.1)). For $S(\alpha)=\sum_{M<n\le M+N}a_ne(n\alpha)$ and $Q\ge2$,
+$\sum_{q\le Q}\sum_{(a,q)=1}|S(\frac aq)|^2\le(\pi N+Q^2)\sum|a_n|^2$. \emph{Montgomery's form} (Theorem~8.10): if $\mathcal A\subseteq\left]M,M+N\right]$ meets at most $p-\omega(p)$ classes modulo each prime $p\le Q$, with $0\le\omega(p)<p$, then $|\mathcal A|\le\frac{\pi N+Q^2}L$, $L=\sum_{q\le Q}\mu^2(q)\prod_{p\mid q}\frac{\omega(p)}{p-\omega(p)}$.
+\emph{Perron} (Lemma~7.1). For $c,T>0$ let $I(y,T)=\frac1{2\pi i}\int_{c-iT}^{c+iT}\frac{y^s}s\dd s$; for $y\ne1$, $|I(y,T)-\mathbf 1_{y>1}|\le y^c\min(1,\frac1{\pi T|\log y|})$.
+\emph{Primes}. $\psi(x)=x+O(xe^{-c\sqrt{\log x}})$ (Theorem~7.8). In Chapter~2: Theorem~\ref{thm:pntchar} (the prime number theorem for $\psi(x,\chi)$, $q\le e^{\sqrt{\log x}}$, up to an exceptional zero) and Corollary~\ref{cor:siegelzero} (Siegel: $1-\beta\ge c'(\varepsilon)q^{-\varepsilon}$).
+\end{reminder}
+
+Throughout, $\psi(y,\chi)$ is the sum of $\Lambda(n)\chi(n)$ over $n\le y$, $\psi(y;q,a)$ the sum of $\Lambda(n)$ over $n\le y$ with $n\equiv a\pmod q$, and $\sum^*_{\chi\bmod q}$ is a sum over the primitive characters modulo $q$. The only character modulo $1$ is the constant $1$, which is primitive; modulo $q\ge2$ a primitive character is never principal.
+
+\section{The large sieve for characters}
+
+The large sieve of Tome~5 is about exponential sums at the fractions $\frac aq$. Gauss sums translate it into a statement about character sums, at almost no cost.
+
+\begin{theorem}[the multiplicative large sieve]\label{thm:lschar}
+Let $Q\ge1$, $M\ge0$ and $N\ge1$ be integers, and $a_n$ complex numbers for $M<n\le M+N$. Then
+\[
+\sum_{q\le Q}\frac q{\varphi(q)}\sum^*_{\chi\bmod q}\Bigl|\sum_{M<n\le M+N}a_n\chi(n)\Bigr|^2\le(\pi N+Q^2)\sum_n|a_n|^2.
+\]
+\end{theorem}
+\begin{proof}
+Let $S(\alpha)=\sum_na_ne(n\alpha)$ and let $\chi$ be primitive modulo $q$. Then $\overline\chi$ is primitive too, and by Gauss's theorem applied to $\overline\chi$, $\sum_{a=1}^q\overline\chi(a)e(\frac{an}q)=\chi(n)\tau(\overline\chi)$ for every $n$. Multiply by $a_n$ and sum over $n$:
+\[
+\tau(\overline\chi)\sum_na_n\chi(n)=\sum_{a=1}^q\overline\chi(a)S\Bigl(\frac aq\Bigr)=\sum_{\substack{a\le q\\(a,q)=1}}\overline\chi(a)S\Bigl(\frac aq\Bigr).
+\]
+Since $|\tau(\overline\chi)|^2=q$,
+\[
+q\,\Bigl|\sum_na_n\chi(n)\Bigr|^2=\Bigl|\sum_{(a,q)=1}\overline\chi(a)S\Bigl(\frac aq\Bigr)\Bigr|^2.
+\]
+Now add the non-negative terms of the non-primitive characters and expand the square: by orthogonality, for $a,b$ prime to $q$, $\sum_\chi\overline\chi(a)\chi(b)=\varphi(q)\mathbf 1_{a\equiv b}$, so
+\[
+\begin{aligned}q\sum^*_{\chi\bmod q}\Bigl|\sum_na_n\chi(n)\Bigr|^2&\le\sum_{\chi\bmod q}\Bigl|\sum_{(a,q)=1}\overline\chi(a)S\Bigl(\frac aq\Bigr)\Bigr|^2\eqbr=\varphi(q)\sum_{(a,q)=1}\Bigl|S\Bigl(\frac aq\Bigr)\Bigr|^2.\end{aligned}
+\]
+Divide by $\varphi(q)$ and sum over $q\le Q$. For $Q\ge2$, Tome~5, (8.1) concludes. For $Q=1$ the left side is $|\sum_na_n|^2\le N\sum|a_n|^2$ by Cauchy--Schwarz.
+\end{proof}
+
+The weight $\frac q{\varphi(q)}\ge1$ is a small bonus; what matters is the shape. There are roughly $Q^2$ primitive characters with conductor up to $Q$ (Exercise~\ref{ex:lssharp} shows there are at least $\gg\frac{Q^2}{\log Q}$), and the theorem says that, on average over all of them, a character sum of length $N$ is no larger than $\sqrt N\|a\|$, the size of a random sum, as soon as $Q^2\le N$. A single character can correlate perfectly with a sequence; a large family cannot all do so at once.
+
+Two elementary sums will be used repeatedly.
+
+\begin{lemma}\label{lem:phisum}
+For $R\ge1$, $\sum_{r\le R}\frac r{\varphi(r)}\le eR$ and $\sum_{r\le R}\frac1{\varphi(r)}\le e(1+\log R)$. For integers $q_1,r\ge1$, $\varphi(q_1r)\ge\varphi(q_1)\varphi(r)$. For $N\ge1$, $\sum_{m\le N}\tau(m)^2\le N(1+\log N)^4$.
+\end{lemma}
+\begin{proof}
+Since $\frac r{\varphi(r)}=\prod_{p\mid r}(1+\frac1{p-1})=\sum_{k\mid r}\frac{\mu^2(k)}{\varphi(k)}$,
+\[
+\sum_{r\le R}\frac r{\varphi(r)}=\sum_{k\le R}\frac{\mu^2(k)}{\varphi(k)}\Bigl\lfloor\frac Rk\Bigr\rfloor\le R\sum_k\frac{\mu^2(k)}{k\varphi(k)}=R\prod_p\Bigl(1+\frac1{p(p-1)}\Bigr),
+\]
+and the product is at most $\exp\sum_{n\ge2}\frac1{n(n-1)}=e$. In the same way
+\[
+\sum_{r\le R}\frac1{\varphi(r)}=\sum_{k\le R}\frac{\mu^2(k)}{k\varphi(k)}\sum_{m\le R/k}\frac1m\le e(1+\log R).
+\] Next, $\varphi(q_1r)=q_1r\prod_{p\mid q_1r}(1-\frac1p)$, and every prime factor of $q_1r$ divides $q_1$ or $r$, so the product is at least $\prod_{p\mid q_1}(1-\frac1p)\prod_{p\mid r}(1-\frac1p)$.
+Finally, $\tau(p^a)^2=(a+1)^2\le\binom{a+3}3=\tau_4(p^a)$, because $(a+2)(a+3)-6(a+1)=a^2-a\ge0$, so $\tau^2\le\tau_4$, the number of ordered factorisations into four factors. And
+\[
+\sum_{m\le N}\tau_4(m)\le N\sum_{m\le N}\frac{\tau_4(m)}m\le N\Bigl(\sum_{a\le N}\frac1a\Bigr)^4\le N(1+\log N)^4,
+\]
+since every factorisation $m=a_1a_2a_3a_4$ with $m\le N$ has all $a_i\le N$.
+\end{proof}
+
+\section{Vaughan's identity and bilinear forms}
+
+To bound $\psi(y,\chi)=\sum_{n\le y}\Lambda(n)\chi(n)$ on average over $\chi$, we would like to apply Theorem~\ref{thm:lschar} to the sequence $\Lambda(n)$; but that only gives the mean square of the $\psi(y,\chi)$, about $x\log x\cdot(x+Q^2)$, which is far too big to say anything about each one. The large sieve is powerful for \emph{products}: if a sum factors as $\sum_ma_m\chi(m)\cdot\sum_nb_n\chi(n)$, Cauchy--Schwarz and the large sieve applied to each factor give a saving from both. Vaughan's identity writes $\Lambda$ as a sum of pieces that are either short or have this product shape.
+
+\begin{lemma}[Vaughan, 1977]\label{lem:vaughan}
+Let $U,V\ge1$. For every $n\ge1$, $\Lambda(n)=a_1(n)+a_2(n)+a_3(n)+a_4(n)$, where
+\[
+\begin{aligned}
+a_1(n)&=\Lambda(n)\mathbf 1_{n\le U},& a_2(n)&=\sum_{\substack{bd=n\\b\le V}}\mu(b)\log d,\\
+a_3(n)&=-\sum_{\substack{bcd=n\\b\le V,\,c\le U}}\mu(b)\Lambda(c),& a_4(n)&=\sum_{\substack{km=n\\k>U,\,m>V}}\Lambda(k)c(m),
+\end{aligned}
+\]
+with $c(m)=\sum_{b\mid m,\,b>V}\mu(b)$. Moreover $|c(m)|\le\tau(m)$.
+\end{lemma}
+\begin{proof}
+For $\operatorname{Re}s>1$ let $F(s)=\sum_{m\le U}\Lambda(m)m^{-s}$ and $G(s)=\sum_{b\le V}\mu(b)b^{-s}$. Then
+\[
+-\frac{\zeta'}\zeta=F-\zeta'G-\zeta FG+\Bigl(-\frac{\zeta'}\zeta-F\Bigr)(1-\zeta G),
+\]
+as one checks by expanding the last product: it is $-\frac{\zeta'}\zeta+\zeta'G-F+\zeta FG$. All four terms are absolutely convergent Dirichlet series, and the coefficients of $F$, $-\zeta'G$ and $-\zeta FG$ are $a_1$, $a_2$, $a_3$. For the last, $-\frac{\zeta'}\zeta-F=\sum_{k>U}\Lambda(k)k^{-s}$, and the coefficient of $m^{-s}$ in $1-\zeta G$ is $\mathbf 1_{m=1}-\sum_{b\mid m,\,b\le V}\mu(b)=\sum_{b\mid m,\,b>V}\mu(b)=c(m)$, using $\sum_{b\mid m}\mu(b)=\mathbf 1_{m=1}$; so $c(m)=0$ for $m\le V$ and the product has coefficients $a_4$. By uniqueness of the coefficients of an absolutely convergent Dirichlet series (Tome~5, Chapter~2), the identity holds coefficient by coefficient. Finally $|c(m)|$ is at most the number of divisors of $m$.
+\end{proof}
+
+The pieces $a_1$, $a_2$ and the part of $a_3$ with $bc\le U$ are \emph{type~I}: a smooth variable $d$ runs freely, so the sum over $d$ of $\chi(d)$ or $\chi(d)\log d$ is a complete character sum, controlled by Pólya--Vinogradov. The rest of $a_3$ and all of $a_4$ are \emph{type~II}: both variables are longer than $U$, and we treat them as bilinear forms.
+
+\begin{proposition}[bilinear forms]\label{prop:bilinear}
+There is an absolute constant $C_8$ such that the following holds. Let $x\ge2$, $Q\ge1$, $M,N\ge1$ with $MN\le x$, and let $a_m$, $b_n$ be complex numbers supported on the integers $m\in\left]M,2M\right]$ and $n\in[1,N]$. Then
+\[
+\sum_{q\le Q}\frac q{\varphi(q)}\sum^*_{\chi\bmod q}\max_{y\le x}\Bigl|\sum_{mn\le y}a_mb_n\chi(mn)\Bigr|\le C_8(M+Q^2)^{\frac12}(N+Q^2)^{\frac12}\|a\|\|b\|\log(4x),
+\]
+where $\|a\|^2=\sum|a_m|^2$ and $\|b\|^2=\sum|b_n|^2$.
+\end{proposition}
+\begin{proof}
+The condition $mn\le y$ ties the two variables together; Perron's formula unties them. Fix $\chi$ and $y\in[1,x]$ (for $y<1$ the sum is empty), and let $y'=\lfloor y\rfloor+\frac12$, so that $mn\le y$ if and only if $mn<y'$. Take $c=\frac1{\log4x}$ and $T=x^{3/2}$, and put $w=\frac{y'}{mn}$. Every pair has $mn\le2MN\le2x$ and $y'\le x+\frac12\le2x$, so $w^c\le(2x)^c\le e$; and $|y'-mn|\ge\frac12$, so $|\log w|\ge\frac{|y'-mn|}{\max(y',mn)}\ge\frac1{4x}$. By Perron's lemma, $|\mathbf 1_{mn<y'}-I(w,T)|\le\frac{4ex}{\pi T}$. Writing $A(s)=\sum_ma_m\chi(m)m^{-s}$ and $B(s)=\sum_nb_n\chi(n)n^{-s}$,
+\[
+\sum_{mn\le y}a_mb_n\chi(mn)=\frac1{2\pi}\int_{-T}^TA(c+it)B(c+it)\frac{y'^{\,c+it}}{c+it}\dd t+R,
+\]
+where, by Cauchy--Schwarz and $MN\le x$,
+\[
+|R|\le\frac{4ex}{\pi T}\sum_m|a_m|\sum_n|b_n|\le\frac{4ex}{\pi T}(2MN)^{\frac12}\|a\|\|b\|\le\frac{4\sqrt2e}\pi\|a\|\|b\|.
+\] Since $|y'^{\,c+it}|\le e$ and $|c+it|\ge\max(c,|t|)$,
+\[
+\begin{aligned}\max_{y\le x}\Bigl|\sum_{mn\le y}a_mb_n\chi(mn)\Bigr|&\le\frac e{2\pi}\int_{-T}^T\frac{|A(c+it)||B(c+it)|}{\max(c,|t|)}\dd t\eqbr+\frac{4\sqrt2e}\pi\|a\|\|b\|:\end{aligned}
+\]
+the point is that the right side no longer depends on $y$. Now sum over $q$ and $\chi$ with the weights $\frac q{\varphi(q)}$. For each $t$, Cauchy--Schwarz over the pairs $(q,\chi)$ and Theorem~\ref{thm:lschar}, applied to the coefficients $a_mm^{-c-it}$ (at most $M+1\le2M$ consecutive integers, and $|a_mm^{-c-it}|\le|a_m|$) and $b_nn^{-c-it}$, give
+\[
+\sum_{q\le Q}\frac q{\varphi(q)}\sum^*_\chi|A||B|\le(2\pi M+Q^2)^{\frac12}(\pi N+Q^2)^{\frac12}\|a\|\|b\|\le\sqrt2\pi(M+Q^2)^{\frac12}(N+Q^2)^{\frac12}\|a\|\|b\|.
+\]
+Moreover $\int_{-T}^T\frac{\dd t}{\max(c,|t|)}=2(1+\log\frac Tc)\le6\log4x$, since $\log T+\log\log4x\le\frac52\log4x$ and $1\le\frac12\log4x$. Finally the number of primitive characters modulo $q$ is at most $\varphi(q)$, so $\sum_{q\le Q}\frac q{\varphi(q)}\sum^*_\chi1\le\sum_{q\le Q}q\le Q^2\le(M+Q^2)^{1/2}(N+Q^2)^{1/2}$. Adding up, the left side of the proposition is at most
+\[
+\Bigl(\frac{6\sqrt2\,e}{2}\log4x+\frac{4\sqrt2e}\pi\Bigr)(M+Q^2)^{\frac12}(N+Q^2)^{\frac12}\|a\|\|b\|,
+\]
+and $C_8=15$ will do, since $\log4x\ge2$.
+\end{proof}
+
+\section{The main estimate}
+
+\begin{theorem}\label{thm:mainest}
+There is an absolute constant $C_9$ such that, for $x\ge3$ and $1\le Q\le\sqrt x$,
+\[
+\sum_{2\le q\le Q}\frac q{\varphi(q)}\sum^*_{\chi\bmod q}\max_{y\le x}|\psi(y,\chi)|\le C_9\bigl(x+x^{5/6}Q+x^{1/2}Q^2\bigr)(\log x)^5.
+\]
+\end{theorem}
+\begin{proof}
+Let $U=V=\min(x^{1/3},\frac x{Q^2})$, so $1\le U\le x^{1/3}$. Fix a primitive $\chi$ modulo $q$, $2\le q\le Q$, and $y\le x$. By Lemma~\ref{lem:vaughan}, $\psi(y,\chi)=S_1+S_2+S_3+S_4$ with $S_i=\sum_{n\le y}a_i(n)\chi(n)$. Write $\mathcal L=\log x$, and $P(z)=\sum_{d\le z}\chi(d)$, so that $|P(z)|\le\sqrt q(1+\log q)\le2\sqrt q\,\mathcal L$ by Pólya--Vinogradov.
+
+\emph{Type I.} First, $|S_1|\le\psi(U)\le C'U$ for an absolute $C'$ (Tome~5, Theorem~7.8). Next, by Abel summation $\sum_{d\le z}\chi(d)\log d=P(z)\log z-\int_1^zP(t)\frac{\dd t}t$, of modulus at most $4\sqrt q\,\mathcal L^2$, so
+\[
+|S_2|=\Bigl|\sum_{b\le V}\mu(b)\chi(b)\sum_{d\le y/b}\chi(d)\log d\Bigr|\le4V\sqrt q\,\mathcal L^2.
+\]
+In $S_3$ group $t=bc$: $S_3=-\sum_{t\le UV}\lambda_t\chi(t)P(\frac yt)$ with $\lambda_t=\sum_{bc=t,\,b\le V,\,c\le U}\mu(b)\Lambda(c)$, and $|\lambda_t|\le\sum_{c\mid t}\Lambda(c)=\log t\le\mathcal L$. Split $S_3=S_3'+S_3''$ according as $t\le U$ or $U<t\le U^2$. Then $|S_3'|\le U\mathcal L\cdot2\sqrt q\,\mathcal L$. So $|S_1|+|S_2|+|S_3'|\le(C'+6)U\sqrt q\,\mathcal L^2$, and since the weighted number of primitive characters modulo $q$ is at most $q$,
+\[
+\sum_{q\le Q}\frac q{\varphi(q)}\sum^*_\chi\max_y\bigl(|S_1|+|S_2|+|S_3'|\bigr)\le(C'+6)UQ^{5/2}\mathcal L^2.
+\]
+\emph{Type II.} Cut the range of $t$ in $S_3''$ into dyadic blocks $\left]M,2M\right]$, $M=2^jU$, $M<U^2$. On each block, $S_3''$ restricted to the block is $-\sum_{td\le y}\alpha_t\beta_d\chi(td)$ with $\alpha_t=\lambda_t$ on the block (and $t\le U^2$), $\beta_d=1$ for $d\le N=\frac xM$; the coefficients do not depend on $y$, and $\|\alpha\|\le(2M)^{1/2}\mathcal L$, $\|\beta\|\le N^{1/2}$. Similarly cut $S_4=\sum_{km\le y}\Lambda(k)\mathbf 1_{k>U}\,c(m)\mathbf 1_{m>V}\chi(km)$ into blocks $k\in\left]M,2M\right]$, $M=2^jU<\frac xV$, with $m\le N=\frac xM$; here $\|\alpha\|\le(2M)^{1/2}\mathcal L$ and $\|\beta\|\le N^{1/2}(1+\mathcal L)^2$ by Lemma~\ref{lem:phisum}. There are at most $2\mathcal L$ blocks of each kind. On each block, Proposition~\ref{prop:bilinear} gives at most a constant times
+\[
+\mathcal L^4(M+Q^2)^{\frac12}\Bigl(\frac xM+Q^2\Bigr)^{\frac12}(MN)^{\frac12}\le\mathcal L^4\Bigl(x+Q\sqrt{xM}+\frac{Qx}{\sqrt M}+Q^2\sqrt x\Bigr),
+\]
+using $\sqrt{u+v}\le\sqrt u+\sqrt v$ and $MN=x$. In $S_3''$, $U\le M<U^2$, so $Q\sqrt{xM}\le QU\sqrt x$ and $\frac{Qx}{\sqrt M}\le\frac{Qx}{\sqrt U}$; in $S_4$, $U\le M<\frac xU$, so both are at most $\frac{Qx}{\sqrt U}$. Altogether, since the maximum over $y$ of a sum is at most the sum of the maxima,
+\[
+\sum_{2\le q\le Q}\frac q{\varphi(q)}\sum^*_\chi\max_{y\le x}|\psi(y,\chi)|\ll\Bigl(x+QU\sqrt x+\frac{Qx}{\sqrt U}+Q^2\sqrt x+UQ^{5/2}\Bigr)\mathcal L^5.
+\]
+\emph{The choice of $U$.} If $Q\le x^{1/3}$, then $U=x^{1/3}$: $QU\sqrt x=\frac{Qx}{\sqrt U}=Qx^{5/6}$, and $UQ^{5/2}=x^{1/3}Q^{1/2}Q^2\le x^{1/2}Q^2$. If $x^{1/3}<Q\le\sqrt x$, then $U=\frac x{Q^2}$: $\frac{Qx}{\sqrt U}=Q^2\sqrt x$, $QU\sqrt x=\frac{x^{3/2}}Q<x^{7/6}<Q^2\sqrt x$, and $UQ^{5/2}=xQ^{1/2}\le Q^2\sqrt x$ because $Q^{3/2}\ge\sqrt x$. In both cases the bracket is $\ll x+x^{5/6}Q+x^{1/2}Q^2$.
+\end{proof}
+
+Compare with what each character could give alone. A single $\psi(x,\chi)$ is trivially at most $\psi(x)\approx x$; the generalised Riemann hypothesis would give $\sqrt x\log^2x$. The theorem gives, for the roughly $Q^2$ primitive characters with conductor up to $Q$, an \emph{average} of $\frac{x}{Q^2}+\frac{x^{5/6}}Q+\sqrt x$, up to logarithms: for $x^{1/4}\le Q\le\sqrt x$ that is within logarithms of the Riemann hypothesis, without a single zero in sight.
+
+\section{The Bombieri--Vinogradov theorem}
+
+The small moduli are not covered by the large sieve, but they are covered by Siegel's theorem.
+
+\begin{lemma}\label{lem:smallq}
+For every $D,A>0$ there is a constant $C(D,A)$ such that for $x\ge3$ and every non-principal character $\chi$ modulo $q\le(\log x)^D$, $\max_{y\le x}|\psi(y,\chi)|\le C(D,A)\frac x{(\log x)^A}$. The constant cannot be computed by the proof.
+\end{lemma}
+\begin{proof}
+It suffices to treat $x\ge x_0(D,A)$, since $|\psi(y,\chi)|\le\psi(x)\ll x$. For $y\le x(\log x)^{-A}$, $|\psi(y,\chi)|\le\psi(y)\ll x(\log x)^{-A}$. For larger $y$ and $x$ large, $\log y\ge\frac12\log x$, so $q\le(\log x)^D\le e^{\sqrt{\log y}}$, and Theorem~\ref{thm:pntchar} gives $|\psi(y,\chi)|\le2y^{\beta_1}+O(ye^{-c_3\sqrt{\log y}})$, the first term only if there is an exceptional zero $\beta_1$; then $\chi$ is real, and Corollary~\ref{cor:siegelzero} with $\varepsilon=\frac1{2D}$ gives $1-\beta_1\ge c'q^{-1/(2D)}\ge c'(\log x)^{-1/2}$. So $y^{\beta_1}\le y\exp(-c'\frac{\log y}{\sqrt{\log x}})\le x\exp(-\frac{c'}2\sqrt{\log x})$, and $ye^{-c_3\sqrt{\log y}}\le xe^{-c_3\sqrt{\log x/2}}$. Both are $O_{D,A}(x(\log x)^{-A})$.
+\end{proof}
+
+\begin{theorem}[Bombieri, A.~I.~Vinogradov, 1965]\label{thm:bv}
+For every $A>0$ there is a constant $C(A)$ such that, for $x\ge3$ and $Q=\sqrt x\,(\log x)^{-A-6}$,
+\[
+\sum_{q\le Q}\max_{(a,q)=1}\max_{y\le x}\Bigl|\psi(y;q,a)-\frac y{\varphi(q)}\Bigr|\le C(A)\frac x{(\log x)^A}.
+\]
+The constant cannot be computed by the proof.
+\end{theorem}
+\begin{proof}
+We may take $x$ large. Write $E^*(q)$ for the double maximum and $\mathcal L=\log x$. For $(a,q)=1$, orthogonality gives $\psi(y;q,a)=\frac1{\varphi(q)}\sum_\chi\overline\chi(a)\psi(y,\chi)$, so
+\[
+E^*(q)\le\frac1{\varphi(q)}\max_{y\le x}|\psi(y,\chi_0)-y|+\frac1{\varphi(q)}\sum_{\chi\ne\chi_0}\max_{y\le x}|\psi(y,\chi)|.
+\]
+\emph{Reduction to primitive characters.} If $\chi$ modulo $q$ is induced by $\chi^*$, the two agree on $n$ prime to $q$, so $|\psi(y,\chi)-\psi(y,\chi^*)|\le\sum_{p\mid q}\sum_{p^k\le y}\log p\le\omega(q)\log y\le2\mathcal L^2$; the same bound holds for $\psi(y,\chi_0)-\psi(y)$. Each non-principal $\chi$ modulo $q$ is induced by a primitive $\chi^*$ modulo some $q_1\mid q$ with $q_1>1$, and different $\chi$ have different $\chi^*$. With $R(x)=\max_{y\le x}|\psi(y)-y|\ll xe^{-c\sqrt{\mathcal L}}$, therefore
+\[
+E^*(q)\le\frac{R(x)+2\mathcal L^2}{\varphi(q)}+2\mathcal L^2+\frac1{\varphi(q)}\sum_{\substack{q_1\mid q\\q_1>1}}\ \sum^*_{\chi\bmod q_1}\max_{y\le x}|\psi(y,\chi)|.
+\]
+Sum over $q\le Q$. By Lemma~\ref{lem:phisum}, the first two terms give at most $e(1+\mathcal L)(R(x)+2\mathcal L^2)+2Q\mathcal L^2\ll x\mathcal L^{-A}$. In the last, write $q=q_1r$; since $\varphi(q_1r)\ge\varphi(q_1)\varphi(r)$ and $\sum_{r\le Q}\frac1{\varphi(r)}\le e(1+\mathcal L)$, it is at most
+\[
+e(1+\mathcal L)\sum_{1<q_1\le Q}\frac1{\varphi(q_1)}\sum^*_{\chi\bmod q_1}\max_{y\le x}|\psi(y,\chi)|.
+\]
+\emph{Small moduli.} Let $L=\mathcal L^{A+6}$. For $q_1\le L$ use Lemma~\ref{lem:smallq} with $D=A+6$ and $2A+7$ in place of $A$: as there are at most $\varphi(q_1)$ characters, these $q_1$ contribute at most $L\cdot C\,x\mathcal L^{-2A-7}=Cx\mathcal L^{-A-1}$.
+
+\emph{Large moduli.} Cut $\left]L,Q\right]$ into at most $\mathcal L$ blocks $\left]R,2R\right]$, $R=2^jL$. On a block, $\frac1{\varphi(q_1)}\le\frac1R\frac{q_1}{\varphi(q_1)}$, and $2R<2Q\le\sqrt x$, so Theorem~\ref{thm:mainest} with $2R$ in place of $Q$ bounds the block by
+\[
+\frac{C_9}R\bigl(x+2x^{5/6}R+4x^{1/2}R^2\bigr)\mathcal L^5=C_9\Bigl(\frac xR+2x^{5/6}+4x^{1/2}R\Bigr)\mathcal L^5.
+\]
+Summed over the blocks, $\sum\frac xR\le\frac{2x}L$ and $\sum R\le2Q$, so the large moduli contribute $\ll(\frac xL+x^{5/6}\mathcal L+\sqrt xQ)\mathcal L^5\ll x\mathcal L^{-A-1}$. Multiplying by $e(1+\mathcal L)$ ends the proof.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-bv}
+\caption{The sum $\sum_{q\le Q}E(x;q)$, where $E(x;q)=\max_{(a,q)=1}|\theta(x;q,a)-\frac x{\varphi(q)}|$, divided by $x$, against $\frac Q{\sqrt x}$ (logarithmic scale), for $x=10^6$ and $x=10^7$. At $Q=\sqrt x$ it is $0.35x$ and $0.31x$. The trivial bound, $\sum_{q\le Q}\frac x{\varphi(q)}$, is about $13.4x$ and $15.6x$ there: on average over $q\le\sqrt x$ the error is some forty times smaller than the main term $\frac x{\varphi(q)}$ itself. Beyond $\sqrt x$ the curves keep climbing, and no theorem says how fast.}
+\label{fig:bv}
+\end{figure}
+
+The theorem implies that for most moduli $q\le\sqrt x(\log x)^{-B}$ the primes up to $x$ are equidistributed modulo $q$ with a relative error of a power of $\log x$ (Exercise~\ref{ex:goodmoduli}). For a single modulus, Siegel--Walfisz gives this only for $q\le(\log x)^D$. The generalised Riemann hypothesis would give it for each $q\le\sqrt x(\log x)^{-3}$ (Exercise~\ref{ex:grhbv}); so Bombieri--Vinogradov is often described as ``GRH on average''. In applications one usually needs the version for primes.
+
+\begin{corollary}\label{cor:bvpi}
+For every $A>0$, with $Q=\sqrt x(\log x)^{-A-6}$ and $\operatorname{li}(x)=\int_2^x\frac{\dd t}{\log t}$,
+\[
+\sum_{q\le Q}\max_{(a,q)=1}\Bigl|\pi(x;q,a)-\frac{\operatorname{li}(x)}{\varphi(q)}\Bigr|\ll_A\frac x{(\log x)^A}.
+\]
+\end{corollary}
+\begin{proof}
+For $(a,q)=1$ let $E(t)=\theta(t;q,a)-\frac t{\varphi(q)}$, where $\theta(t;q,a)=\sum_{p\le t,\,p\equiv a}\log p$. Since $0\le\psi(t;q,a)-\theta(t;q,a)\le\psi(x)-\theta(x)\ll\sqrt x$ for $t\le x$, $\max_{t\le x}|E(t)|\le E^*(q)+O(\sqrt x)$, where $E^*(q)$ is the double maximum in Theorem~\ref{thm:bv}. By partial summation,
+$\pi(x;q,a)=\frac{\theta(x;q,a)}{\log x}+\int_2^x\frac{\theta(t;q,a)}{t\log^2t}\dd t$, and integrating by parts, $\operatorname{li}(x)=\frac x{\log x}-\frac2{\log2}+\int_2^x\frac{\dd t}{\log^2t}$. Subtracting,
+\[
+\pi(x;q,a)-\frac{\operatorname{li}(x)}{\varphi(q)}=\frac{E(x)}{\log x}+\int_2^x\frac{E(t)}{t\log^2t}\dd t+\frac2{\varphi(q)\log2},
+\]
+whose modulus is at most $\max_{t\le x}|E(t)|\bigl(\frac1{\log x}+\frac1{\log2}\bigr)+\frac3{\varphi(q)}\le3E^*(q)+O(\sqrt x)+\frac3{\varphi(q)}$. Sum over $q\le Q$ with Theorem~\ref{thm:bv} and Lemma~\ref{lem:phisum}: the error terms give $O(Q\sqrt x+\log x)$.
+\end{proof}
+
+\begin{remark}[beyond $\sqrt x$]
+Elliott and Halberstam conjectured in 1968 that Theorem~\ref{thm:bv} holds with $Q=x^{1-\varepsilon}$, for every $\varepsilon>0$. It cannot hold with $Q=x(\log x)^{-B}$: Friedlander and Granville showed in 1989 that the primes are then measurably biased in some progressions. The level $\frac12$ has never been passed for the maximum over $a$; Bombieri, Friedlander and Iwaniec passed it in 1986 for a fixed residue $a$ and well-factorable weights, and Yitang Zhang's theorem of 2013 rests on a variant for smooth moduli, as Chapter~8 will explain. What Elliott--Halberstam would buy is spectacular: Chapter~9 shows that it gives infinitely many gaps between primes of at most $12$.
+\end{remark}
+
+\section{Variance: Barban, Davenport and Halberstam}
+
+If we ask only for the mean square over all residue classes, rather than the maximum, the large sieve alone suffices, and the range of $Q$ goes all the way up to $x$.
+
+\begin{theorem}[Barban; Davenport and Halberstam, 1966]\label{thm:bdh}
+For every $A>0$ there is $C(A)$ such that for $x\ge3$ and $x(\log x)^{-A}\le Q\le x$,
+\[
+\sum_{q\le Q}\ \sum_{\substack{a=1\\(a,q)=1}}^q\Bigl(\psi(x;q,a)-\frac x{\varphi(q)}\Bigr)^2\le C(A)\,Qx\log x.
+\]
+\end{theorem}
+\begin{proof}
+We may take $x$ large; write $\mathcal L=\log x$. Fix $q$ and let $c_\chi=\psi(x,\chi)-x\mathbf 1_{\chi=\chi_0}$, so that $\psi(x;q,a)-\frac x{\varphi(q)}=\frac1{\varphi(q)}\sum_\chi\overline\chi(a)c_\chi$. Expanding the square and using $\sum_{(a,q)=1}\overline\chi(a)\chi'(a)=\varphi(q)\mathbf 1_{\chi=\chi'}$ (Tome~5, Proposition~3.1(a) applied to $\overline\chi\chi'$), the inner sum is $\frac1{\varphi(q)}\sum_\chi|c_\chi|^2$. As in the proof of Theorem~\ref{thm:bv}, $|c_{\chi_0}|\le R(x)+2\mathcal L^2$, and for $\chi\ne\chi_0$ induced by $\chi^*$, $|c_\chi|^2\le2|\psi(x,\chi^*)|^2+8\mathcal L^4$. So the left side is at most
+\[
+e(1+\mathcal L)(R(x)+2\mathcal L^2)^2+8Q\mathcal L^4+2e\sum_{1<q_1\le Q}\frac{1+\log(Q/q_1)}{\varphi(q_1)}\sum^*_{\chi\bmod q_1}|\psi(x,\chi)|^2,
+\]
+where we used $\sum_{r\le Q/q_1}\frac1{\varphi(q_1r)}\le\frac{e(1+\log(Q/q_1))}{\varphi(q_1)}$. The first two terms are $\ll x^2\mathcal L^{-A}+Q\mathcal L^4\ll Qx$.
+
+Let $L=\mathcal L^{A+1}$. The $q_1\le L$ contribute, by Lemma~\ref{lem:smallq} with $D=A+1$ and $A+1$ in place of $A$, at most $2eL(1+\mathcal L)C^2x^2\mathcal L^{-2A-2}\ll x^2\mathcal L^{-A}\le Qx$.
+Cut the $q_1\in\left]L,Q\right]$ into blocks $\left]R,2R\right]$ with $R=2^{-j-1}Q$, $j\ge0$, $R\ge\frac L2$. On such a block $\frac{1+\log(Q/q_1)}{\varphi(q_1)}\le\frac{(j+2)}R\frac{q_1}{\varphi(q_1)}$, and Theorem~\ref{thm:lschar} with $a_n=\Lambda(n)$, $n\le x$, gives
+\[
+\sum_{q_1\le2R}\frac{q_1}{\varphi(q_1)}\sum^*_{\chi}|\psi(x,\chi)|^2\le(\pi x+4R^2)\sum_{n\le x}\Lambda(n)^2\le(\pi x+4R^2)\,\mathcal L\,\psi(x)\ll(x+R^2)x\mathcal L.
+\]
+So the block contributes $\ll(j+2)(\frac xR+R)x\mathcal L$. Summing over $j$, $\sum_j(j+2)R\ll Q$, and $\sum_j(j+2)\frac xR\ll\frac xL\mathcal L$, because $\frac xR=\frac{2^{j+1}x}Q$ grows geometrically up to $\frac{2x}L$ and there are at most $\mathcal L$ values of $j$. The total is $\ll Qx\mathcal L+\frac{x^2\mathcal L^2}L=Qx\mathcal L+x^2\mathcal L^{1-A}\ll Qx\mathcal L$.
+\end{proof}
+
+Each of the about $\frac{Q^2}2$ terms in the sum is the square of a deviation, so the theorem says that the typical deviation $|\psi(x;q,a)-\frac x{\varphi(q)}|$ is about $\sqrt{\frac xq\log x}$: the square root of the expected count, times $\sqrt{\log x}$. This is what independent random choices would give, and it holds for $q$ right up to $x$, where a class has only a handful of primes.
+
+\begin{remark}[the asymptotic]\label{rem:hooley}
+Montgomery found in 1970 that the sum is in fact $Qx\log Q+O(Qx\log\frac{2x}Q)$ in this range, and Hooley in 1975 found the next term:
+\[
+\sum_{q\le Q}\sum_{(a,q)=1}\Bigl(\psi(x;q,a)-\frac x{\varphi(q)}\Bigr)^2=Qx\log Q-c\,Qx+O\bigl(Q^{5/4}x^{3/4}+x^2(\log x)^{-A}\bigr)\quad[\text{quoted}],
+\]
+with $c=\gamma+\log2\pi+1+\sum_p\frac{\log p}{p(p-1)}=4.1704\ldots$. Figure~\ref{fig:bdh} shows how sharp this is, even at $Q=\frac x{50}$.
+\end{remark}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-bdh}
+\caption{The variance $\sum_{q\le Q}\sum_{(a,q)=1}(\theta(x;q,a)-\frac x{\varphi(q)})^2$ divided by $Qx$, against $Q$, for $x=10^6$ (up to $Q=20000$) and $x=10^7$ (up to $Q=4000$). The dashed curve is Hooley's $\log Q-c$. The data minus the curve is $0.20$, $0.07$, $0.02$ at $Q=1000$, $4000$, $20000$ for $x=10^6$, and $0.16$, $0.06$ at $Q=1000$, $4000$ for $x=10^7$. For small $Q$ the formula is not meant to apply.}
+\label{fig:bdh}
+\end{figure}
+
+\section{Linnik's theorem on non-residues}
+
+We end where the large sieve began. For an odd prime $p$, let $n_2(p)$ be the least positive quadratic non-residue modulo $p$; it is a prime, since a product of residues is a residue. Vinogradov's bound is $n_2(p)\ll p^{1/(2\sqrt e)}\log^2p$, Burgess improved the exponent in 1957 to $\frac1{4\sqrt e}+\varepsilon\approx0.152$, and there it has stayed. Under GRH, $n_2(p)<2\log^2p$ (Bach, 1990). Linnik's theorem says that, unconditionally, the exceptions to much stronger bounds are very rare.
+
+\begin{theorem}[Linnik, 1941]\label{thm:linnik}
+For every $\varepsilon>0$ there is $C(\varepsilon)$ such that, for every $x\ge2$, at most $C(\varepsilon)$ primes $p\le x$ have $n_2(p)>x^\varepsilon$.
+\end{theorem}
+\begin{proof}
+Let $\mathcal E$ be the set of odd primes $p\le x$ with $n_2(p)>x^\varepsilon$. As $n_2(p)<p$, every $p\in\mathcal E$ exceeds $x^\varepsilon$, and every prime $\ell\le x^\varepsilon$ is a quadratic residue modulo $p$. Let $\mathcal A$ be the set of $x^\varepsilon$-smooth integers in $[1,x^2]$, those whose prime factors are all at most $x^\varepsilon$. For $p\in\mathcal E$, an element of $\mathcal A$ is prime to $p$ and is a product of residues, so it lies in one of the $\frac{p-1}2$ classes of non-zero squares: $\mathcal A$ meets at most $p-\omega(p)$ classes, with $\omega(p)=\frac{p+1}2$. Put $\omega(p)=0$ for the other primes. Montgomery's sieve (Tome~5, Theorem~8.10) with $N=\lfloor x^2\rfloor$ and $Q=x$, keeping only $q=1$ and the primes $q\in\mathcal E$ in $L$, gives
+\[
+|\mathcal A|\le\frac{\pi x^2+x^2}L,\qquad L\ge\sum_{p\in\mathcal E}\frac{(p+1)/2}{(p-1)/2}>|\mathcal E|.
+\]
+So $|\mathcal E|<(\pi+1)x^2/\Psi(x^2,x^\varepsilon)$. By Dickman's theorem (Tome~10, Corollary~12.18) with $u=\frac2\varepsilon$, $\Psi(x^2,(x^2)^{1/u})\ge\frac12\rho(\frac2\varepsilon)x^2$ for $x\ge x_0(\varepsilon)$, where $\rho>0$. Hence $|\mathcal E|\le\frac{2(\pi+1)}{\rho(2/\varepsilon)}$ for $x\ge x_0(\varepsilon)$, and $|\mathcal E|\le\pi(x_0(\varepsilon))$ otherwise.
+\end{proof}
+
+The proof is a little miracle of counting. If many primes had all small primes as residues, the smooth numbers, which are plentiful, would be squeezed into half of the classes modulo each of those primes, and a set squeezed in this way modulo many primes at once must be thin.
+
+\begin{beauty}
+The large sieve is an \emph{uncertainty principle}. A sequence that is concentrated in few residue classes modulo many primes has large Fourier coefficients at many fractions $\frac aq$; but a sequence of length $N$ has only so much Fourier mass, $N\sum|a_n|^2$ in total, to spread over $Q^2$ well-spaced points. Linnik's application uses it on a set (smooth numbers in squares), the Bombieri--Vinogradov theorem on a function (the primes twisted by characters): the same inequality controls both how a set can sit in residue classes and how the primes can conspire with a family of characters.
+\end{beauty}
+
+\begin{think}
+In Linnik's proof we took $N=x^2$ and $Q=x$, so that $\pi N$ and $Q^2$ balance. What goes wrong if one takes $N=x$? What would be needed to bound the number of $p\le x$ with $n_2(p)>(\log x)^{10}$, say?
+\end{think}
+
+\paragraph{Computing square roots.} Tonelli's algorithm of 1891, rediscovered by Shanks in 1973, extracts square roots modulo a prime $p$ in $O(\log^2p)$ multiplications, \emph{once one quadratic non-residue $z$ is known}. Nobody knows a deterministic polynomial-time way of finding $z$ without GRH; in practice one tries $z=2,3,5,\ldots$, and the notebook confirms that this is fast: among the $78497$ odd primes below $10^6$, the proportion with $n_2(p)=p_k$ is within $2\%$ of $2^{-k}$ for $k\le8$ (Exercise~\ref{ex:erdosn2}), the average of $n_2(p)$ is $3.65$, and the largest value is $n_2(366791)=43$. Linnik's theorem is the guarantee that the search fails to be quick only for a bounded number of primes at each scale.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:lssharp}
+(a) With $Q=1$ and $a_n=1$ for $1\le n\le N$, compare the two sides of Theorem~\ref{thm:lschar}. (b) With $N=1$ and $a_1=1$, show that the left side is at least $\sum_{3\le p\le Q}(p-2)$, and that this is $\gg\frac{Q^2}{\log Q}$. Conclude that neither term of $\pi N+Q^2$ can be replaced by a much smaller one.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:linnikll}
+Show that for every $\varepsilon>0$ the number of primes $p\le x$ with $n_2(p)>p^\varepsilon$ is $O_\varepsilon(\log\log x)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:grhbv}
+Suppose that $|\psi(y;q,a)-\frac y{\varphi(q)}|\le C_1\sqrt y\log^2y$ for all $y\ge2$, $q\le y$ and $(a,q)=1$ (a consequence of GRH). Show that the conclusion of Theorem~\ref{thm:bv} holds with $Q=\sqrt x(\log x)^{-A-2}$ and an effective constant. For which $q$ does the hypothesis say something non-trivial about a single progression?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:goodmoduli}
+(a) Let $A,C>0$ and $Q\le\sqrt x(\log x)^{-A-6}$. Show that all but $O_{A}(Q(\log x)^{C-A})$ moduli $q\le Q$ satisfy $|\psi(y;q,a)-\frac y{\varphi(q)}|\le\frac x{\varphi(q)(\log x)^C}$ for all $y\le x$ and $(a,q)=1$.
+(b) Show that for large $Q$, all but $O(\frac Q{\log Q})$ moduli $q\le Q$ have the property: every class $a$ modulo $q$ with $(a,q)=1$ contains a prime $p\le Q^2(\log Q)^{20}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:erdosn2}
+Let $p_1=2<p_2<\cdots$ be the primes and $k\ge1$.
+(a) Show that for $p>p_k$, $n_2(p)>p_k$ if and only if every prime $\ell\le p_k$ is a quadratic residue modulo $p$.
+(b) Show that the proportion of primes $p\le x$ with $n_2(p)>p_k$ tends to $2^{-k}$.
+(c) Deduce that $\liminf_{x\to\infty}\frac1{\pi(x)}\sum_{2<p\le x}n_2(p)\ge\sum_{k\ge1}\frac{p_k}{2^k}=3.6746\ldots$
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:phisum}
+Show that $\sum_{d\le D}\frac1{\varphi(d)}=C\log D+O(1)$ for $D\ge1$, where
+$C=\prod_p\bigl(1+\frac1{p(p-1)}\bigr)=\frac{\zeta(2)\zeta(3)}{\zeta(6)}=1.9435\ldots$
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:titchmarsh}
+(The Titchmarsh divisor problem.) Show that
+\[
+\sum_{p\le x}\tau(p-1)=\frac{\zeta(2)\zeta(3)}{\zeta(6)}\,x+O\Bigl(\frac{x\log\log x}{\log x}\Bigr).
+\]
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:lssharp}
+(b) Modulo a prime $p$, every non-principal character is primitive. Use the primes in $\left]\frac Q2,Q\right]$.
+\end{hint}
+
+\begin{hint}{ex:linnikll}
+Cut the primes into the ranges $\left]x^{2^{-j-1}},x^{2^{-j}}\right]$ and apply Linnik's theorem on each, with $\frac\varepsilon2$.
+\end{hint}
+
+\begin{hint}{ex:grhbv}
+Treat $y<q$ separately: then the class of $a$ contains at most one integer up to $y$.
+\end{hint}
+
+\begin{hint}{ex:goodmoduli}
+(a) $\varphi(q)\le Q$. (b) Take $x=Q^2(\log Q)^{20}$, $A=2$, $C=1$, and compare $\psi$ with $\theta$.
+\end{hint}
+
+\begin{hint}{ex:erdosn2}
+(b) Expand $\prod_{\ell\le p_k}\frac{1+(\ell/p)}2$. By quadratic reciprocity, $p\mapsto\bigl(\frac dp\bigr)$ is a character modulo $8d$; show it is non-principal for squarefree $d>1$.
+\end{hint}
+
+\begin{hint}{ex:phisum}
+Write $\frac1{\varphi(d)}=\frac1d\sum_{k\mid d}\frac{\mu^2(k)}{\varphi(k)}$, and use $\sum_k\frac{\mu^2(k)\sqrt k}{k\varphi(k)}<\infty$.
+\end{hint}
+
+\begin{hint}{ex:titchmarsh}
+$\tau(n)=2\#\{d\mid n:d<\sqrt n\}+\mathbf 1_{n=\square}$. Count pairs $(d,p)$ with $p\equiv1\pmod d$ and $p>d^2+1$; use Corollary~\ref{cor:bvpi} for $d\le\sqrt x(\log x)^{-7}$ and Brun--Titchmarsh (Corollary~\ref{cor:btap}) beyond.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:lssharp}
+\idea Each term of $\pi N+Q^2$ is forced by one extreme case: one character and a long sum, or many characters and a sum of length one.
+\writeup (a) For $q=1$ the only character is $1$, so the left side is $|\sum_{n\le N}1|^2=N^2$, and the right side is $(\pi N+1)N$. If $\pi N$ were replaced by $\delta N$ with $\delta<1$, the inequality would fail for large $N$.
+(b) For $N=1$ and $a_1=1$, every term is $|\chi(1)|^2=1$, so the left side is $\sum_{q\le Q}\frac q{\varphi(q)}\#\{\chi\text{ primitive mod }q\}$. For a prime $q=p\ge3$, a character modulo $p$ induced by a character modulo a proper divisor of $p$ is induced from modulus $1$, so is principal; the $p-2$ others are primitive. Hence the left side is at least $\sum_{3\le p\le Q}\frac p{p-1}(p-2)\ge\sum_{3\le p\le Q}(p-2)$. Each prime $p\in\left]\frac Q2,Q\right]$ contributes at least $\frac Q2-2$, and there are $\pi(Q)-\pi(\frac Q2)\gg\frac Q{\log Q}$ of them by the prime number theorem, so the sum is $\gg\frac{Q^2}{\log Q}$. The right side is $(\pi+Q^2)$: the term $Q^2$ cannot be replaced by $Q^{2-\delta}$ for any $\delta>0$.
+\end{solution}
+
+\begin{solution}{ex:linnikll}
+\idea Linnik's theorem bounds the exceptions at one scale; $\log\log x$ scales cover all primes up to $x$.
+\writeup Let $x_j=x^{2^{-j}}$ for $j\ge0$, and $J$ the least $j$ with $x_{j+1}<2$, so $J\le\log_2\log_2x$. Every prime $p\le x$ lies in some $\left]x_{j+1},x_j\right]$ with $j\le J$. For such $p$, $p^\varepsilon>x_{j+1}^\varepsilon=x_j^{\varepsilon/2}$, so $n_2(p)>p^\varepsilon$ implies $n_2(p)>x_j^{\varepsilon/2}$; by Theorem~\ref{thm:linnik} at $x_j$ with $\frac\varepsilon2$, at most $C(\frac\varepsilon2)$ primes $p\le x_j$ do this. Summing over $j\le J$, there are at most $C(\frac\varepsilon2)(1+\log_2\log_2x)$ exceptions.
+\end{solution}
+
+\begin{solution}{ex:grhbv}
+\idea The hypothesis gives each modulus an error $\sqrt x\log^2x$; summing over $Q$ moduli costs a factor $Q$, which is affordable up to $Q\approx\sqrt x$ divided by logarithms.
+\writeup Fix $q\le Q$ and $(a,q)=1$. For $q\le y\le x$ the deviation is at most $C_1\sqrt x\log^2x$. For $y<q$, at most one $n\le y$ is $\equiv a\pmod q$, so $\psi(y;q,a)\le\log y$, and $\frac y{\varphi(q)}<\frac q{\varphi(q)}=\sum_{k\mid q}\frac{\mu^2(k)}{\varphi(k)}\le\sum_{k\le q}\frac1{\varphi(k)}\le e(1+\log x)$ by Lemma~\ref{lem:phisum}. In all cases the deviation is $\ll\sqrt x\log^2x$, so the sum over $q\le Q$ is $\ll Q\sqrt x\log^2x=x(\log x)^{-A}$ for $Q=\sqrt x(\log x)^{-A-2}$, with an explicit constant.
+For one progression, the main term $\frac x{\varphi(q)}$ beats the error $C_1\sqrt x\log^2x$ only when $\varphi(q)$ is below $\frac{\sqrt x}{C_1\log^2x}$: GRH controls each single modulus up to about $\sqrt x/\log^2x$, a range that Bombieri--Vinogradov reaches only on average.
+\end{solution}
+
+\begin{solution}{ex:goodmoduli}
+\idea A sum of non-negative terms that is small can have only few large terms (Markov's inequality, in arithmetic dress).
+\writeup (a) Let $\mathcal B$ be the set of bad $q\le Q$. For $q\in\mathcal B$, $E^*(q)>\frac x{\varphi(q)(\log x)^C}\ge\frac x{Q(\log x)^C}$, since $\varphi(q)\le q\le Q$. By Theorem~\ref{thm:bv} (the sum only grows with $Q$), $|\mathcal B|\frac x{Q(\log x)^C}\le C(A)\frac x{(\log x)^A}$, that is $|\mathcal B|\le C(A)Q(\log x)^{C-A}$.
+(b) Let $x=Q^2(\log Q)^{20}$. For large $Q$, $\log x\le3\log Q$, so $\sqrt x(\log x)^{-8}\ge Q(\log Q)^{10}(3\log Q)^{-8}\ge Q$, and (a) applies with $A=2$, $C=1$: all but $O(\frac Q{\log x})=O(\frac Q{\log Q})$ moduli $q\le Q$ are good. For a good $q$ and $(a,q)=1$, $\psi(x;q,a)\ge\frac x{\varphi(q)}(1-\frac1{\log x})\ge\frac x{2Q}=\frac12Q(\log Q)^{20}$. The prime powers $p^k$ with $k\ge2$ contribute at most $\psi(x)-\theta(x)\ll\sqrt x=Q(\log Q)^{10}$, which is smaller for large $Q$. So $\theta(x;q,a)>0$: some prime $p\le x$ is $\equiv a\pmod q$.
+\end{solution}
+
+\begin{solution}{ex:erdosn2}
+\idea Being a residue modulo $p$ is, for a fixed small prime $\ell$, a condition on $p$ modulo $4\ell$ or $8$; the $k$ conditions are independent characters, each satisfied half of the time.
+\writeup (a) If $n_2(p)>p_k$, every integer up to $p_k$ is a residue, in particular every prime $\ell\le p_k$. Conversely, if every prime $\ell\le p_k$ is a residue, then so is every $n\le p_k$ (it is prime to $p$ since $p>p_k$, and a product of such $\ell$), so $n_2(p)>p_k$.
+(b) Let $m=8\prod_{3\le\ell\le p_k}\ell$, and for $d\mid P=\prod_{\ell\le p_k}\ell$ and $p\nmid m$ let $\chi_d(p)=\prod_{\ell\mid d}\bigl(\frac\ell p\bigr)$. By the second supplementary law, $\bigl(\frac2p\bigr)$ depends only on $p\bmod8$, and by quadratic reciprocity, for odd $\ell$, $\bigl(\frac\ell p\bigr)=\bigl(\frac p\ell\bigr)(-1)^{\frac{\ell-1}2\frac{p-1}2}$ depends only on $p\bmod4\ell$. These formulas define $\chi_d$ on all of $(\Z/m\Z)^\times$ as a character. It is non-principal for $d>1$: if $d$ has an odd prime factor $\ell_0$, choose by the Chinese remainder theorem a class $b$ modulo $m$ with $b\equiv1\pmod8$, $b\equiv1$ modulo every odd $\ell\mid d$, $\ell\ne\ell_0$, and $b$ a non-residue modulo $\ell_0$; then every factor of $\chi_d(b)$ is $1$ except $\bigl(\frac{b}{\ell_0}\bigr)=-1$. If $d=2$, take $b\equiv5\pmod8$.
+For $p>p_k$, the indicator that all $\ell\le p_k$ are residues is $\prod_{\ell\le p_k}\frac{1+(\ell/p)}2=2^{-k}\sum_{d\mid P}\chi_d(p)$. For a fixed modulus $m$, the Siegel--Walfisz theorem (Corollary~\ref{cor:sw}) and partial summation give $\pi(x;m,b)\sim\frac{\pi(x)}{\varphi(m)}$ for each $b$ prime to $m$, so $\sum_{p\le x}\chi_d(p)=\sum_b\chi_d(b)\pi(x;m,b)+O(1)=o(\pi(x))$ for $d>1$, by $\sum_b\chi_d(b)=0$. Only $d=1$ survives: the proportion is $2^{-k}+o(1)$.
+(c) Let $p_0=0$. For $K\ge1$ and every odd $p$, $n_2(p)\ge\sum_{k=0}^{K-1}(p_{k+1}-p_k)\mathbf 1_{n_2(p)>p_k}$: if $n_2(p)=p_i$, the sum telescopes to $p_{\min(i,K)}\le p_i$. Averaging over $p\le x$ and using (b) for each $k\ge1$ (and $p_1-p_0=2$ with indicator $1$),
+\[
+\liminf_{x\to\infty}\frac1{\pi(x)}\sum_{2<p\le x}n_2(p)\ge\sum_{k=0}^{K-1}\frac{p_{k+1}-p_k}{2^k}.
+\]
+Let $K\to\infty$: since $p_k\le2^{k}$, the series converges, and $\sum_{k\ge0}\frac{p_{k+1}-p_k}{2^k}=\sum_{k\ge1}\frac{2p_k}{2^k}-\sum_{k\ge1}\frac{p_k}{2^k}=\sum_{k\ge1}\frac{p_k}{2^k}$. Erdős proved in 1961, with Linnik's large sieve to control the primes with large $n_2(p)$, that the average actually converges to this constant.
+\end{solution}
+
+\begin{solution}{ex:phisum}
+\idea $\frac1{\varphi(d)}$ is $\frac1d$ times a function with a convergent mean, so its sum is a constant times the harmonic sum.
+\writeup As in Lemma~\ref{lem:phisum}, $\frac1{\varphi(d)}=\frac1d\cdot\frac d{\varphi(d)}=\frac1d\sum_{k\mid d}\frac{\mu^2(k)}{\varphi(k)}$. With $g(k)=\frac{\mu^2(k)}{k\varphi(k)}$ and $d=km$,
+\[
+\sum_{d\le D}\frac1{\varphi(d)}=\sum_{k\le D}g(k)\sum_{m\le D/k}\frac1m=\sum_{k\le D}g(k)\Bigl(\log\frac Dk+O(1)\Bigr).
+\]
+The series $\sum_kg(k)\sqrt k=\prod_p(1+\frac{\sqrt p}{p(p-1)})$ converges. So $\sum_kg(k)\log k\le2\sum_kg(k)\sqrt k<\infty$, and $\sum_{k>D}g(k)\le D^{-1/2}\sum_kg(k)\sqrt k$, whence $\log D\sum_{k>D}g(k)=O(1)$. Therefore the sum is $\log D\sum_kg(k)+O(1)$, and $\sum_kg(k)=\prod_p(1+\frac1{p(p-1)})$. Finally, $\frac{1-p^{-6}}{(1-p^{-2})(1-p^{-3})}=\frac{1+p^{-3}}{1-p^{-2}}=\frac{p^3+1}{p(p^2-1)}=\frac{p^2-p+1}{p(p-1)}=1+\frac1{p(p-1)}$, and the Euler products give $\frac{\zeta(2)\zeta(3)}{\zeta(6)}$.
+\end{solution}
+
+\begin{solution}{ex:titchmarsh}
+\idea Each divisor $d$ of $p-1$ pairs with $\frac{p-1}d$, so it is enough to count the small divisors; counting the primes $p\equiv1\pmod d$ for $d$ up to $\sqrt x$ is exactly what Bombieri--Vinogradov does on average, and Brun--Titchmarsh mops up the last logarithmic range.
+\writeup Let $\mathcal L=\log x$ and $C=\frac{\zeta(2)\zeta(3)}{\zeta(6)}$. For $n\ge2$, the divisors of $n$ pair up as $d\leftrightarrow\frac nd$, so $\tau(n)=2\#\{d\mid n:d<\sqrt n\}+\mathbf 1_{n\text{ is a square}}$. The squares contribute $O(\sqrt x)$, and $d<\sqrt{p-1}$ means $p>d^2+1$, so
+\[
+\sum_{p\le x}\tau(p-1)=2\sum_{d<\sqrt x}\bigl(\pi(x;d,1)-\pi(d^2+1;d,1)\bigr)+O(\sqrt x).
+\]
+\emph{Main range.} Let $D=\sqrt x\,\mathcal L^{-7}$. By Corollary~\ref{cor:bvpi} with $A=1$ and Exercise~\ref{ex:phisum},
+\[
+\sum_{d\le D}\pi(x;d,1)=\operatorname{li}(x)\sum_{d\le D}\frac1{\varphi(d)}+O\Bigl(\frac x{\mathcal L}\Bigr)=\operatorname{li}(x)\Bigl(\frac C2\mathcal L-7C\log\mathcal L+O(1)\Bigr)+O\Bigl(\frac x{\mathcal L}\Bigr).
+\]
+Since $\operatorname{li}(x)=\frac x{\mathcal L}+\int_2^x\frac{\dd t}{\log^2t}+O(1)$, and the integral is $O(\sqrt x)+O(\frac x{\mathcal L^2})$ (split at $\sqrt x$), this is $\frac C2x+O(\frac{x\log\mathcal L}{\mathcal L})$.
+\emph{Upper range.} For $D<d<\sqrt x$, Corollary~\ref{cor:btap} (with $d\le x^{3/4}$) gives $\pi(x;d,1)\le C_7\frac x{\varphi(d)\mathcal L}$, and by Exercise~\ref{ex:phisum}, $\sum_{D<d\le\sqrt x}\frac1{\varphi(d)}=C\log\frac{\sqrt x}D+O(1)=O(\log\mathcal L)$. This range contributes $O(\frac{x\log\mathcal L}{\mathcal L})$.
+\emph{The subtracted terms.} For $d\le x^{1/4}$, $\pi(d^2+1;d,1)\le d^2+1$, a total of $O(x^{3/4})$. For $x^{1/4}<d<\sqrt x$, Corollary~\ref{cor:btap} at $d^2+1$ (where $d\le(d^2+1)^{3/4}$) gives
+\[
+\pi(d^2+1;d,1)\le C_7\frac{d^2+1}{\varphi(d)\log(d^2+1)}\le\frac{4C_7}{\mathcal L}\cdot\sqrt x\cdot\frac d{\varphi(d)},
+\]
+using $d^2+1\le2d^2$, $d<\sqrt x$ and $\log(d^2+1)\ge2\log d\ge\frac12\mathcal L$. By Lemma~\ref{lem:phisum}, $\sum_{d\le\sqrt x}\frac d{\varphi(d)}\le e\sqrt x$, so these terms total $O(\frac x{\mathcal L})$.
+Adding up, $\sum_{p\le x}\tau(p-1)=2\cdot\frac C2x+O(\frac{x\log\log x}{\log x})$. Numerically, $\sum_{p\le x}\tau(p-1)/x$ is $1.9268$ at $x=10^6$ and $1.9324$ at $x=10^7$, against $C=1.9436$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The large sieve.} Yu.~V.~Linnik, ``The large sieve'', \emph{C.\ R.\ (Doklady) Acad.\ Sci.\ URSS} 30 (1941), 292--294. A.~Rényi, ``On the representation of an even number as the sum of a single prime and a single almost-prime number'', \emph{Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.}\ 12 (1948), 57--78. K.~F.~Roth, ``On the large sieves of Linnik and Rényi'', \emph{Mathematika} 12 (1965), 1--9. H.~L.~Montgomery, ``The analytic principle of the large sieve'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 84 (1978), 547--567: the survey, with the history.
+\item \emph{Bombieri--Vinogradov.} E.~Bombieri, ``On the large sieve'', \emph{Mathematika} 12 (1965), 201--225. A.~I.~Vinogradov, ``The density hypothesis for Dirichlet $L$-series'', \emph{Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.}\ 29 (1965), 903--934 (in Russian). R.~C.~Vaughan, ``Sommes trigonométriques sur les nombres premiers'', \emph{C.\ R.\ Acad.\ Sci.\ Paris Sér.\ A} 285 (1977), 981--983. Our proof follows H.~Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H.~L.~Montgomery, Springer GTM~74, 2000, Chapters~27--28.
+\item \emph{Beyond $\sqrt x$.} P.~D.~T.~A.~Elliott and H.~Halberstam, ``A conjecture in prime number theory'', \emph{Symposia Mathematica} 4 (1968/69), 59--72. J.~Friedlander and A.~Granville, ``Limitations to the equi-distribution of primes~I'', \emph{Ann.\ of Math.}\ 129 (1989), 363--382. E.~Bombieri, J.~B.~Friedlander and H.~Iwaniec, ``Primes in arithmetic progressions to large moduli'', \emph{Acta Math.}\ 156 (1986), 203--251.
+\item \emph{Variance.} H.~Davenport and H.~Halberstam, ``Primes in arithmetic progressions'', \emph{Michigan Math.\ J.}\ 13 (1966), 485--489. M.~B.~Barban, ``The large sieve method and its applications in the theory of numbers'', \emph{Russian Math.\ Surveys} 21 (1966), 49--103. H.~L.~Montgomery, ``Primes in arithmetic progressions'', \emph{Michigan Math.\ J.}\ 17 (1970), 33--39. C.~Hooley, ``On the Barban--Davenport--Halberstam theorem~I'', \emph{J.\ Reine Angew.\ Math.}\ 274/275 (1975), 206--223. The form of Hooley's asymptotic and its constant are as stated in D.~Fiorilli, ``The distribution of the variance of primes in arithmetic progressions'', \emph{Int.\ Math.\ Res.\ Not.}\ 2015, 4421--4448 (arXiv:1301.5663).
+\item \emph{Non-residues.} D.~A.~Burgess, ``The distribution of quadratic residues and non-residues'', \emph{Mathematika} 4 (1957), 106--112. E.~Bach, ``Explicit bounds for primality testing and related problems'', \emph{Math.\ Comp.}\ 55 (1990), 355--380. P.~Erdős, ``Remarks on number theory~I'', \emph{Mat.\ Lapok} 12 (1961), 10--16 (in Hungarian). P.~Pollack, ``The average least quadratic nonresidue modulo $m$ and other variations on a theme of Erdős'', \emph{J.\ Number Theory} 132 (2012), 1185--1202. D.~Shanks, ``Five number-theoretic algorithms'', \emph{Proc.\ Second Manitoba Conference on Numerical Mathematics} (1973), 51--70.
+\item \emph{Titchmarsh's divisor problem.} E.~C.~Titchmarsh, ``A divisor problem'', \emph{Rend.\ Circ.\ Mat.\ Palermo} 54 (1930), 414--429 (under GRH). Yu.~V.~Linnik, \emph{The Dispersion Method in Binary Additive Problems}, AMS, 1963 (unconditionally). H.~Halberstam, ``Footnote to the Titchmarsh--Linnik divisor problem'', \emph{Proc.\ Amer.\ Math.\ Soc.}\ 18 (1967), 187--188 (via Bombieri--Vinogradov).
+\end{itemize}
