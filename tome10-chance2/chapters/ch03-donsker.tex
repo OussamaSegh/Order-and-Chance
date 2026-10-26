@@ -1,0 +1,589 @@
+\chapter{Weak Convergence and Donsker's Theorem}
+\begin{center}\itshape
+Take any random walk whose steps have mean $0$ and variance $1$, and look at its first $n$ steps from far away,\\
+shrinking time by $n$ and space by $\sqrt n$. As $n$ grows, the picture becomes Brownian motion,\\
+whatever the law of the steps. So any question about the walk at large scale has the answer it has for Brownian motion.
+\end{center}
+
+In 1946 Paul Erd\H{o}s and Mark Kac wanted the limiting law of the maximum of the partial sums $S_1,\dots,S_n$ of i.i.d.\ variables. They
+noticed something odd: the limit did not depend on the law of the steps, as long as the variance was finite. So they could compute it for
+the simplest walk, the coin-tossing walk, where combinatorics gives exact formulas, and then transfer the answer to every other walk. They
+called this an \emph{invariance principle}, and they did the same for the number of positive partial sums, recovering L\'evy's arcsine
+law. Their proofs were clever but special: each statistic needed its own argument.
+
+Monroe Donsker saw what was behind the trick. In a memoir of 1951, drawn from his thesis, he proved that the whole rescaled path of the walk, as a random continuous
+function, converges in distribution to Brownian motion. Then every statistic that is a continuous function of the path converges, at
+once, to the same statistic of Brownian motion: the maximum, the time spent positive, the time of the last zero, and any other you care to
+name. Two years earlier Joseph Doob had made the same observation heuristically for the Kolmogorov--Smirnov statistic of goodness of fit,
+whose limit law Kolmogorov had computed in 1933 by a long calculation; Donsker's theorem for empirical processes, in 1952, made Doob's
+heuristic a proof. Since then ``Donsker'' has been the name of a whole industry: the functional limit theorems of probability and
+statistics.
+
+This chapter proves Donsker's theorem in the way discovered by Anatoliy Skorokhod in 1961, which avoids the general theory of tightness in
+spaces of functions. Skorokhod showed that any centred law with a finite variance can be realised as the position of a Brownian motion at a
+well-chosen stopping time. Running Brownian motion and stopping it again and again produces a random walk with any step law you like, sitting
+inside the Brownian path. Then the walk and the Brownian motion are close, path by path, and Donsker's theorem follows from the strong law
+of large numbers. The same embedding gives the \emph{law of the iterated logarithm} of Philip Hartman and Aurel Wintner (1941): the walk
+reaches $\sqrt{2n\log\log n}$ infinitely often and exceeds it by any fixed factor only finitely often, a statement that Khintchine had found in
+1924 for coin tossing.
+
+Before that we need the language: weak convergence in $\R^d$, where L\'evy's continuity theorem turns characteristic functions into limit
+theorems, and weak convergence in the space $C[0,1]$ of continuous paths.
+
+\begin{reminder}[from Tomes 3 and 6]
+\emph{Weak convergence} (Tome~6, Chapter~11): probabilities $\mu_n$ on a metric space converge weakly, $\mu_n\Rightarrow\mu$, if $\int f\dd\mu_n\to\int f\dd\mu$
+for bounded continuous $f$. By the \emph{portmanteau theorem} (Tome~6, Theorem~11.4) it is enough to test bounded Lipschitz $f$, or to check
+$\limsup\mu_n(F)\le\mu(F)$ for closed $F$. A sequence of probabilities on $\R^d$ is \emph{tight} if for every $\varepsilon$ some compact set has mass
+$\ge1-\varepsilon$ under all of them; \emph{Prokhorov's theorem} (Tome~6, Theorem~11.7): a tight sequence on $\R^d$ has a weakly convergent subsequence.
+\emph{Brownian motion} (Tome~3, Chapter~11): $B_0=0$, continuous paths, independent increments $B_t-B_s\sim N(0,t-s)$; it exists (Theorem~11.4); its
+finite-dimensional laws are centred Gaussian with covariance $\min(s,t)$ (Proposition~11.2); $c^{-1}B_{c^2t}$ and $B_{s+t}-B_s$ are Brownian motions, the
+latter independent of $\mathcal F_s=\sigma(B_r,r\le s)$ (Proposition~11.5); $B_t$ and $B_t^2-t$ are martingales (Proposition~11.11); the maximum
+$M_t=\max_{s\le t}B_s$ has the law of $|B_t|$ (Theorem~11.12). \emph{Simple random walk} (Tome~3, Chapter~7): $u_{2n}=P(S_{2n}=0)$, the first-return
+decomposition $u_{2n}=\sum_{r\le n}f_{2r}u_{2n-2r}$ (Lemma~7.2), $P(S_1\ge0,\dots,S_{2n}\ge0)=u_{2n}$ (Theorem~7.3), and the arcsine limit of
+$\sum_{an\le k\le bn}u_{2k}u_{2n-2k}$ (Theorem~7.7).
+\end{reminder}
+
+\section{L\'evy's continuity theorem}
+
+For a random vector $X$ in $\R^d$, the characteristic function is $\varphi_X(t)=\mathbb E e^{i\langle t,X\rangle}$, $t\in\R^d$. Tome~3 proved that it
+determines the law in dimension~$1$. In any dimension, a Gaussian smoothing does it.
+
+\begin{lemma}[uniqueness]\label{lem:chfunique}
+Two random vectors of $\R^d$ with the same characteristic function have the same law.
+\end{lemma}
+\begin{proof}
+Let $Z$ be a standard Gaussian vector of $\R^d$ independent of $X$, and $\sigma>0$. The density of $\sigma Z$ is
+$g_\sigma(y)=(2\pi)^{-d}\int e^{-i\langle t,y\rangle}e^{-\sigma^2|t|^2/2}\dd t$ (Fourier inversion of the Gaussian characteristic function, coordinate by
+coordinate, Tome~3, Theorem~6.8). So $X+\sigma Z$ has the density
+\[
+p_\sigma(x)=\mathbb E\,g_\sigma(x-X)=(2\pi)^{-d}\int e^{-i\langle t,x\rangle}\varphi_X(t)\,e^{-\sigma^2|t|^2/2}\dd t,
+\]
+by Fubini, which applies since the integrand is bounded by $e^{-\sigma^2|t|^2/2}$. Thus $\varphi_X$ determines the law of $X+\sigma Z$ for every $\sigma>0$.
+As $\sigma\to0$, $X+\sigma Z\to X$ surely, hence in distribution, and weak limits are unique. So $\varphi_X$ determines the law of $X$.
+\end{proof}
+
+The next inequality turns the behaviour of $\varphi$ near $0$ into control of the tails.
+
+\begin{lemma}[truncation inequality]\label{lem:truncineq}
+For a real random variable $X$ and $u>0$,
+\[
+P\Bigl(|X|\ge\frac2u\Bigr)\le\frac1u\int_{-u}^u\bigl(1-\varphi_X(t)\bigr)\dd t .
+\]
+\end{lemma}
+\begin{proof}
+For real $x\ne0$, $\frac1{2u}\int_{-u}^u(1-e^{itx})\dd t=1-\frac{\sin ux}{ux}$, which is $\ge0$ always and $\ge\frac12$ when $|ux|\ge2$, since then
+$|\frac{\sin ux}{ux}|\le\frac12$; for $x=0$ it is $0$. Take expectations and use Fubini: $\frac1{2u}\int_{-u}^u(1-\varphi_X(t))\dd t\ge\frac12P(|uX|\ge2)$.
+\end{proof}
+
+\begin{theorem}[L\'evy's continuity theorem]\label{thm:levycont}
+Let $X_n$ be random vectors of $\R^d$ with characteristic functions $\varphi_n$. If $\varphi_n(t)\to\varphi(t)$ for every $t$, and $\varphi$ is continuous at
+$0$, then $\varphi$ is the characteristic function of a random vector $X$ and $X_n\Rightarrow X$. Conversely, $X_n\Rightarrow X$ implies $\varphi_n\to\varphi_X$
+pointwise.
+\end{theorem}
+\begin{proof}
+The converse holds because $x\mapsto e^{i\langle t,x\rangle}$ is bounded and continuous.
+
+\emph{Tightness.} Let $\varepsilon>0$ and let $e_j$ be the $j$-th basis vector. The coordinate $X_n^{(j)}$ has characteristic function $s\mapsto\varphi_n(se_j)$.
+Since $\varphi(0)=\lim\varphi_n(0)=1$ and $\varphi$ is continuous at $0$, there is $u>0$ with $\frac1u\int_{-u}^u|1-\varphi(se_j)|\dd s<\varepsilon$ for all $j$. By
+dominated convergence ($|1-\varphi_n|\le2$), $\frac1u\int_{-u}^u(1-\varphi_n(se_j))\dd s\to\frac1u\int_{-u}^u(1-\varphi(se_j))\dd s$, so by
+Lemma~\ref{lem:truncineq}, $P(|X_n^{(j)}|\ge2/u)<2\varepsilon$ for all $n\ge n_0$ and all $j$. Enlarging the box $[-2/u,2/u]^d$ to cover the finitely many
+$n<n_0$ as well, we get a compact set of mass at least $1-2d\varepsilon$ under every law of $X_n$.
+
+\emph{Identification.} By Prokhorov, every subsequence of $(X_n)$ has a further subsequence converging in distribution to some $Y$; then $\varphi_Y=\lim\varphi_n
+=\varphi$ along it. So $\varphi$ is a characteristic function, of $X$ say, and by Lemma~\ref{lem:chfunique} every such limit $Y$ has the law of $X$. If
+$X_n\not\Rightarrow X$, there would be a bounded continuous $f$, an $\eta>0$ and a subsequence with $|\mathbb E f(X_n)-\mathbb E f(X)|\ge\eta$; a further
+subsequence converges to the law of $X$, a contradiction.
+\end{proof}
+
+\begin{corollary}[Cram\'er--Wold device]\label{cor:cramerwold}
+$X_n\Rightarrow X$ in $\R^d$ if and only if $\langle t,X_n\rangle\Rightarrow\langle t,X\rangle$ for every $t\in\R^d$.
+\end{corollary}
+\begin{proof}
+$\varphi_{X_n}(t)=\varphi_{\langle t,X_n\rangle}(1)$. If the projections converge, the characteristic functions converge pointwise to $\varphi_X$, which is
+continuous; the theorem applies. The converse is the continuous mapping $x\mapsto\langle t,x\rangle$.
+\end{proof}
+
+So a multivariate limit theorem reduces to one-dimensional ones, and in particular the central limit theorem for i.i.d.\ vectors with a covariance
+$\Sigma$ follows from Tome~3's: $\frac1{\sqrt n}\sum_{k\le n}(X_k-\mathbb E X_k)\Rightarrow N(0,\Sigma)$, because each projection $\langle t,\cdot\rangle$ is a real
+CLT with variance $t^{\mathsf T}\Sigma t$, and $N(0,\Sigma)$ has the characteristic function $e^{-t^{\mathsf T}\Sigma t/2}$ (Tome~3, Theorem~6.15). Chapter~4
+returns to this with rates.
+
+\section{Random continuous functions}
+
+Let $C=C[0,1]$ with the norm $\|f\|=\max_{t\le1}|f(t)|$. It is a complete separable metric space: polynomials with rational coefficients are dense by
+Weierstrass's theorem.
+
+\begin{lemma}\label{lem:cborel}
+The Borel $\sigma$-algebra of $C$ is generated by the evaluations $\pi_t:f\mapsto f(t)$, $t\in[0,1]$. Consequently a process $(X_t)_{t\le1}$ with continuous paths
+is a random element of $C$, and its law on $C$ is determined by its finite-dimensional distributions.
+\end{lemma}
+\begin{proof}
+Each $\pi_t$ is continuous, hence Borel. Conversely, the closed ball $\{f:\|f-g\|\le r\}$ equals $\bigcap_{t\in\Q\cap[0,1]}\{f:|f(t)-g(t)|\le r\}$ by continuity,
+so it lies in $\sigma(\pi_t)$. Every open set of the separable space $C$ is a countable union of such balls (with centres in a countable dense set and rational
+radii), so open sets, hence all Borel sets, lie in $\sigma(\pi_t)$. If $X$ has continuous paths, $\{X\in A\}$ is an event for $A$ in the generating family
+$\{\pi_t^{-1}(B)\}$, hence for all Borel $A$. Finally, the sets $\{f:(f(t_1),\dots,f(t_k))\in B\}$ form a $\pi$-system generating the Borel sets, and two laws
+agreeing on it agree everywhere (Tome~6, Theorem~6.5).
+\end{proof}
+
+Two tools transfer weak convergence. For $h:S\to S'$ between metric spaces, let $D_h$ be its set of discontinuity points.
+
+\begin{proposition}[continuous mapping]\label{prop:contmap}
+If $X_n\Rightarrow X$ in $S$, $h:S\to S'$ is measurable, and $D_h$ is contained in a Borel set $N$ with $P(X\in N)=0$, then $h(X_n)\Rightarrow h(X)$.
+\end{proposition}
+\begin{proof}
+Let $F\subseteq S'$ be closed. If $x$ is in the closure of $h^{-1}(F)$ and $h$ is continuous at $x$, then $h(x)\in F$; so $\overline{h^{-1}(F)}\subseteq h^{-1}(F)\cup N$. By
+the portmanteau theorem,
+\[
+\limsup_nP(h(X_n)\in F)\le\limsup_nP\bigl(X_n\in\overline{h^{-1}(F)}\bigr)\le P\bigl(X\in\overline{h^{-1}(F)}\bigr)\le P(h(X)\in F).
+\]
+\end{proof}
+
+\begin{lemma}[converging together]\label{lem:together}
+Let $X_n,Y_n$ be random elements of a metric space $(S,d)$ on the same probability space, with $Y_n\Rightarrow Y$ and $d(X_n,Y_n)\to0$ in probability. Then
+$X_n\Rightarrow Y$.
+\end{lemma}
+\begin{proof}
+For $f$ bounded and $L$-Lipschitz and $\varepsilon>0$, $|\mathbb E f(X_n)-\mathbb E f(Y_n)|\le L\varepsilon+2\|f\|_\infty P(d(X_n,Y_n)>\varepsilon)$, whose $\limsup$ is
+$L\varepsilon$. So $\mathbb E f(X_n)\to\mathbb E f(Y)$ for every bounded Lipschitz $f$, which suffices by the portmanteau theorem.
+\end{proof}
+
+\section{The strong Markov property and Skorokhod's embedding}
+
+Let $B$ be a Brownian motion, and let $\mathcal G_t=\sigma(\mathcal G_0,B_s:s\le t)$, where $\mathcal G_0$ is a $\sigma$-algebra independent of $B$ (it will carry
+auxiliary randomness). Then $B_{s+t}-B_s$ is independent of $\mathcal G_s$: it is independent of $\sigma(B_r,r\le s)$ by Tome~3, Proposition~11.5, and the pair is
+independent of $\mathcal G_0$ (grouping, Proposition~\ref{prop:grouping}). A \emph{stopping time} is a random $\tau\in[0,\infty]$ with $\{\tau\le t\}\in\mathcal G_t$ for
+all $t$, and $\mathcal G_\tau$ is the family of events $A$ with $A\cap\{\tau\le t\}\in\mathcal G_t$ for all $t$.
+
+\begin{theorem}[strong Markov property]\label{thm:strongmarkov}
+Let $\tau$ be an almost surely finite stopping time. Then $W_t=B_{\tau+t}-B_\tau$ is a Brownian motion, independent of $\mathcal G_\tau$.
+\end{theorem}
+\begin{proof}
+Let $\tau_m=(\lfloor2^m\tau\rfloor+1)2^{-m}$, the first dyadic time of level $m$ strictly after $\tau$; then $\tau_m\downarrow\tau$. Fix $A\in\mathcal G_\tau$, times
+$0\le t_1<\dots<t_k$ and a bounded continuous $g:\R^k\to\R$. For $j\ge1$, the event $\{\tau_m=j2^{-m}\}=\{(j-1)2^{-m}\le\tau<j2^{-m}\}$ lies in
+$\mathcal G_{j2^{-m}}$, and so does $A\cap\{\tau<s\}=\bigcup_{q<s,\,q\in\Q}(A\cap\{\tau\le q\})$ for $s=j2^{-m}$. With $W^m_t=B_{\tau_m+t}-B_{\tau_m}$, the Markov
+property at the fixed time $s=j2^{-m}$ gives
+\[
+\begin{gathered}
+\mathbb E\bigl[g(W^m_{t_1},\dots,W^m_{t_k})\mathbf 1_A\bigr]=\sum_{j\ge1}\mathbb E\bigl[g(B_{s+t_1}-B_s,\dots)\mathbf 1_{A\cap\{\tau_m=s\}}\bigr]\qq
+=\sum_{j\ge1}P(A\cap\{\tau_m=s\})\,\mathbb E\,g(B_{t_1},\dots,B_{t_k})=P(A)\,\mathbb E\,g(B_{t_1},\dots,B_{t_k}).
+\end{gathered}
+\]
+As $m\to\infty$, $W^m_t\to W_t$ by continuity of paths, and bounded convergence gives $\mathbb E[g(W_{t_1},\dots,W_{t_k})\mathbf 1_A]=P(A)\,\mathbb E\,g(B_{t_1},\dots,B_{t_k})$.
+With $A=\Omega$, $W$ has the finite-dimensional laws of Brownian motion; it has continuous paths and $W_0=0$, so it is a Brownian motion. And since bounded
+continuous $g$ determine laws, $(W_{t_1},\dots,W_{t_k})$ is independent of $\mathcal G_\tau$ for all times, hence $W$ is (Lemma~\ref{lem:pisuffice}).
+\end{proof}
+
+We also need optional stopping in continuous time.
+
+\begin{lemma}\label{lem:ostbm}
+For a stopping time $\tau$ and $K>0$: $\mathbb E B_{\tau\wedge K}=0$ and $\mathbb E B_{\tau\wedge K}^2=\mathbb E[\tau\wedge K]$.
+\end{lemma}
+\begin{proof}
+Let $\sigma=\tau\wedge K$ and $\sigma_m=(\lfloor2^m\sigma\rfloor+1)2^{-m}$, a stopping time for the discrete filtration $(\mathcal G_{j2^{-m}})_j$, bounded by $K+1$.
+The sequences $(B_{j2^{-m}})_j$ and $(B_{j2^{-m}}^2-j2^{-m})_j$ are martingales for this filtration, so by discrete optional stopping (Tome~3, Theorem~10.12),
+$\mathbb E B_{\sigma_m}=0$ and $\mathbb E B_{\sigma_m}^2=\mathbb E\sigma_m$. As $m\to\infty$, $B_{\sigma_m}\to B_\sigma$ and $\sigma_m\to\sigma$, with $|B_{\sigma_m}|\le M^*=\max_{s\le K+1}|B_s|$.
+Since $M^*\le\max_sB_s+\max_s(-B_s)$ and each maximum has the law of $|B_{K+1}|$, $\mathbb E(M^*)^2\le4(K+1)<\infty$, and dominated convergence concludes.
+\end{proof}
+
+\begin{proposition}[exit from an interval]\label{prop:exit}
+Let $a<0<b$ and $\tau=\inf\{t:B_t\notin(a,b)\}$. Then $\tau<\infty$ almost surely, $P(B_\tau=b)=\frac{-a}{b-a}$, and $\mathbb E\tau=-ab$.
+\end{proposition}
+\begin{proof}
+$\tau$ is a stopping time: $\{\tau\le t\}=\{\min_{s\le t}B_s\le a\}\cup\{\max_{s\le t}B_s\ge b\}$, and by continuity these extrema are attained over rational $s$ and $s=t$. It is
+finite because the independent increments $B_{k+1}-B_k$ exceed $b-a$ infinitely often. By Lemma~\ref{lem:ostbm}, $\mathbb E B_{\tau\wedge K}=0$ and $\mathbb E[\tau\wedge K]=\mathbb E
+B_{\tau\wedge K}^2$. Let $K\to\infty$: $|B_{\tau\wedge K}|\le\max(-a,b)$, so $\mathbb E B_\tau=0$, which gives $bP(B_\tau=b)+a(1-P(B_\tau=b))=0$; and by monotone convergence on the left,
+$\mathbb E\tau=\mathbb E B_\tau^2=b^2\frac{-a}{b-a}+a^2\frac b{b-a}=-ab$.
+\end{proof}
+
+\begin{theorem}[Skorokhod's embedding, 1961]\label{thm:skorokhod}
+Let $X$ be a random variable with $\mathbb E X=0$ and $\mathbb E X^2<\infty$. There is a stopping time $\tau$ (for a filtration $\mathcal G_t$ as above, with suitable
+$\mathcal G_0$) such that $B_\tau$ has the law of $X$ and $\mathbb E\tau=\mathbb E X^2$.
+\end{theorem}
+\begin{proof}
+Let $\mu$ be the law of $X$, and $c=\mathbb E X^+=\mathbb E X^-$; if $c=0$ then $X=0$ and $\tau=0$ works. Otherwise let $(U,V)$ be a random pair independent of $B$, generating
+$\mathcal G_0$, with law
+\[
+P\bigl((U,V)\in\dd u\,\dd v\bigr)=\frac{(v-u)}c\,\mu(\dd u)\,\mu(\dd v)\quad(u<0<v),\qquad P\bigl((U,V)=(0,0)\bigr)=\mu(\{0\}).
+\]
+The total mass is
+\[
+\begin{gathered}
+\frac1c\Bigl(\mu(0,\infty)\int_{u<0}(-u)\,\mu(\dd u)+\mu(-\infty,0)\int_{v>0}v\,\mu(\dd v)\Bigr)+\mu(\{0\})\\
+=\mu(\R\setminus\{0\})+\mu(\{0\})=1.
+\end{gathered}
+\]
+Let $\tau$
+be the exit time of $(U,V)$, with $\tau=0$ when $U=V=0$. It is a stopping time for $(\mathcal G_t)$. Given $(U,V)=(u,v)$, Proposition~\ref{prop:exit} (applied to $B$, which is
+independent of $\mathcal G_0$) says $B_\tau=v$ with probability $\frac{-u}{v-u}$. So for a Borel set $A\subseteq(0,\infty)$,
+\[
+P(B_\tau\in A)=\int_{v\in A}\int_{u<0}\frac{v-u}c\cdot\frac{-u}{v-u}\,\mu(\dd u)\,\mu(\dd v)=\mu(A)\cdot\frac1c\int_{u<0}(-u)\,\mu(\dd u)=\mu(A),
+\]
+and symmetrically for $A\subseteq(-\infty,0)$; and $P(B_\tau=0)=\mu(\{0\})$. Finally
+\[
+\begin{gathered}
+\mathbb E\tau=\mathbb E[-UV]=\frac1c\int_{v>0}\int_{u<0}(-uv)(v-u)\,\mu(\dd u)\,\mu(\dd v)\qq=\int_{v>0}v^2\mu(\dd v)+\int_{u<0}u^2\mu(\dd u)=\mathbb E X^2.
+\end{gathered}
+\]
+\end{proof}
+
+\begin{corollary}[embedding a random walk]\label{cor:embedwalk}
+Let $X_1,X_2,\dots$ be i.i.d.\ with mean $0$ and variance $\sigma^2$. On a suitable probability space there are a Brownian motion $B$ and stopping times
+$0=T_0\le T_1\le T_2\le\cdots$ such that $(B_{T_n})_{n\ge0}$ has the law of $(S_n)_{n\ge0}$, and the increments $T_n-T_{n-1}$ are i.i.d.\ with mean $\sigma^2$.
+\end{corollary}
+\begin{proof}
+Take a Brownian motion $B$ and an independent i.i.d.\ sequence of pairs $(U_k,V_k)$ with the law of the proof above, and $\mathcal G_0=\sigma((U_k,V_k)_{k\ge1})$. Let $T_1$ be
+the stopping time built from $B$ and $(U_1,V_1)$. By Theorem~\ref{thm:strongmarkov}, $B^{(1)}_t=B_{T_1+t}-B_{T_1}$ is a Brownian motion independent of
+$\mathcal G_{T_1}$, which contains $\mathcal G_0$; build $T_2-T_1$ from $B^{(1)}$ and $(U_2,V_2)$ in the same way, and so on. By construction the pairs $(T_n-T_{n-1},
+B_{T_n}-B_{T_{n-1}})$ are independent, each with the law of $(\tau,B_\tau)$ in Theorem~\ref{thm:skorokhod}.
+\end{proof}
+
+\section{Donsker's theorem}
+
+Let $X_1,X_2,\dots$ be i.i.d.\ with mean $0$ and variance $1$, and $S_n=X_1+\dots+X_n$. Let $S(t)$ be the linear interpolation of the walk: $S(k)=S_k$ at integers, linear
+in between. For each $n$, the random function
+\[
+X^n(t)=\frac{S(nt)}{\sqrt n},\qquad0\le t\le1,
+\]
+is a random element of $C$.
+
+\begin{theorem}[Donsker's invariance principle, 1951]\label{thm:donsker}
+$X^n\Rightarrow B$ in $C[0,1]$, where $B$ is a Brownian motion on $[0,1]$.
+\end{theorem}
+\begin{proof}
+By Corollary~\ref{cor:embedwalk}, we may assume that $S_k=B_{T_k}$ for a Brownian motion $B$ and stopping times $T_k$ with i.i.d.\ increments of mean $1$. Let
+$W^n(t)=B_{nt}/\sqrt n$; by scaling it is a Brownian motion, so it suffices, by Lemma~\ref{lem:together}, to show that $\|X^n-W^n\|\to0$ in probability.
+
+By the strong law, $T_k/k\to1$ almost surely, and hence $\delta_n=\frac1n\max_{k\le n+1}|T_k-k|\to0$ almost surely. (Given $\eta>0$, $|T_k-k|\le\eta k$ for $k\ge k_0(\omega)$, so
+$\delta_n\le\frac1n\max_{k<k_0}|T_k-k|+\eta\frac{n+1}n$.)
+
+For $t\in[\frac kn,\frac{k+1}n]$, $X^n(t)$ lies between $S_k/\sqrt n$ and $S_{k+1}/\sqrt n$, so
+\[
+|X^n(t)-W^n(t)|\le\frac1{\sqrt n}\max\bigl(|B_{T_k}-B_{nt}|,|B_{T_{k+1}}-B_{nt}|\bigr).
+\]
+Here $|T_k-nt|\le|T_k-k|+1$ and the same for $k+1$, so on the event $\{\delta_n\le\delta\}$, with $n\ge1/\delta$, both times differ from $nt$ by at most $2\delta n$, and all
+times involved are at most $2n$. Hence on that event
+\[
+\|X^n-W^n\|\le\sup\Bigl\{\frac{|B_r-B_s|}{\sqrt n}:r,s\le2n,\ |r-s|\le2\delta n\Bigr\},
+\]
+and the right side has the law of $w(2\delta)=\sup\{|B_r-B_s|:r,s\le2,|r-s|\le2\delta\}$, by scaling. So
+\[
+P(\|X^n-W^n\|>\varepsilon)\le P(\delta_n>\delta)+P(w(2\delta)>\varepsilon).
+\]
+The first term tends to $0$ as $n\to\infty$. The second tends to $0$ as $\delta\to0$, because Brownian paths are uniformly continuous on $[0,2]$, so $w(2\delta)\to0$ surely.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch03-donsker}
+\caption{One random walk with steps uniform on $[-\sqrt3,\sqrt3]$ (variance $1$), drawn as $X^n$ for $n=16$, $256$ and $65\,536$: the same walk, seen from further and
+further away. The steps disappear and a Brownian path emerges (Theorem~\ref{thm:donsker}).}
+\label{fig:donsker}
+\end{figure}
+
+Every functional $h:C\to\R$ continuous at almost every Brownian path now yields a limit theorem, valid for all walks at once, with the limit law of $h(B)$. And the
+computation can be done for whichever walk is easiest, or for Brownian motion itself.
+
+\begin{corollary}[the maximum]\label{cor:max}
+For every walk with mean $0$ and variance $\sigma^2>0$, and $x\ge0$, $P(\max_{k\le n}S_k\ge x\sigma\sqrt n)\to P(|Z|\ge x)$ with $Z\sim N(0,1)$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:donsker} to $X_k/\sigma$. The map $h(f)=\max_{t\le1}f(t)$ is $1$-Lipschitz on $C$, and
+\[
+h(X^n)=\max_{k\le n}S_k/(\sigma\sqrt n),
+\]
+since the maximum of a piecewise linear function is attained at a vertex. So $h(X^n)\Rightarrow\max_{t\le1}B_t$, which has the law of $|B_1|$ (Tome~3, Theorem~11.12). That law has a
+density, so every point is a continuity point of its distribution function.
+\end{proof}
+
+The arcsine law of the time spent positive is subtler, because the functional is not continuous. Let
+\[
+h(f)=\lambda\{t\in[0,1]:f(t)>0\},
+\]
+with $\lambda$ the Lebesgue measure.
+
+\begin{lemma}\label{lem:occupcont}
+$h$ is measurable and continuous at every $f$ with $\lambda\{t:f(t)=0\}=0$. Brownian motion satisfies $\lambda\{t\le1:B_t=0\}=0$ almost surely.
+\end{lemma}
+\begin{proof}
+$h(f)=\int_0^1\mathbf 1_{f(t)>0}\dd t$, and $(f,t)\mapsto\mathbf 1_{f(t)>0}$ is Borel on $C\times[0,1]$ (the evaluation $(f,t)\mapsto f(t)$ is continuous), so $h$ is measurable by Fubini. If
+$f_n\to f$ uniformly, then $\mathbf 1_{f_n(t)>0}\to\mathbf 1_{f(t)>0}$ at every $t$ with $f(t)\ne0$, so by dominated convergence $h(f_n)\to h(f)$ when $\lambda\{f=0\}=0$. For Brownian
+motion, Fubini gives $\mathbb E\lambda\{t:B_t=0\}=\int_0^1P(B_t=0)\dd t=0$.
+\end{proof}
+
+For the simple random walk ($X_k=\pm1$), $h(X^{2n})$ is the fraction of the $2n$ edges of the path lying above the axis (an edge from $S_{k-1}$ to $S_k$ lies above
+when $S_{k-1}+S_k>0$). Its law is a gem of combinatorics.
+
+\begin{lemma}[Chung--Feller]\label{lem:chungfeller}
+For the simple random walk, the probability $b_{2k,2n}$ that exactly $2k$ of the first $2n$ edges lie above the axis is $u_{2k}u_{2n-2k}$, for $0\le k\le n$.
+\end{lemma}
+\begin{proof}
+The number of edges above is even, because the path is above between consecutive returns to $0$, and these occur at even times. We argue by induction on $n$. For
+$k=n$, all edges are above exactly when $S_1,\dots,S_{2n}\ge0$, which has probability $u_{2n}=u_{2n}u_0$ by Tome~3, Theorem~7.3; $k=0$ is the same by symmetry. This
+covers $n=1$. Let $1\le k\le n-1$. Then the path has edges on both sides, so it returns to $0$; let $2r$ be the first return time, $P(T=2r)=f_{2r}$, and the first excursion
+is above or below with probability $\frac12$ each, independently of $T$. After time $2r$ the walk starts afresh. If the first excursion is above, it contributes $2r$ edges
+above, so $2r\le2k$; if below, it contributes none, so $2n-2r\ge2k$. Hence
+\[
+b_{2k,2n}=\frac12\sum_{r=1}^kf_{2r}b_{2k-2r,2n-2r}+\frac12\sum_{r=1}^{n-k}f_{2r}b_{2k,2n-2r}.
+\]
+By induction, $b_{2k-2r,2n-2r}=u_{2k-2r}u_{2n-2k}$ and $b_{2k,2n-2r}=u_{2k}u_{2n-2r-2k}$. The first-return decomposition (Tome~3, Lemma~7.2)
+\[
+\textstyle\sum_{r\le m}f_{2r}u_{2m-2r}=u_{2m},
+\]
+used with $m=k$ and $m=n-k$, turns the two sums into $\frac12u_{2n-2k}u_{2k}+\frac12u_{2k}u_{2n-2k}$.
+\end{proof}
+
+\begin{theorem}[L\'evy's arcsine law, 1939; Erd\H{o}s--Kac, 1947]\label{thm:arcsine}
+For every walk with mean $0$ and finite positive variance, the fraction of time $h(X^n)$ that the rescaled path spends above $0$ converges in distribution to the
+arcsine law of density $\frac1{\pi\sqrt{x(1-x)}}$ on $(0,1)$; and $\lambda\{t\le1:B_t>0\}$ has the arcsine law.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:donsker}, Lemma~\ref{lem:occupcont} and Proposition~\ref{prop:contmap}, $h(X^n)\Rightarrow h(B)$ for every such walk. For the simple random walk along
+even $n$, Lemma~\ref{lem:chungfeller} says that $h(X^{2n})=k/n$ with probability $u_{2k}u_{2n-2k}$, and Tome~3, Theorem~7.7 says exactly that
+$P(a\le h(X^{2n})\le b)\to\frac2\pi(\arcsin\sqrt b-\arcsin\sqrt a)$ for $0<a<b<1$. The limit law of a weakly convergent sequence is unique and determined by these values, so
+$h(B)$ has the arcsine law, and then so does the limit for every walk.
+\end{proof}
+
+\begin{think}
+The arcsine density is largest near $0$ and $1$. So in a fair game of $1000$ rounds, what is more likely: that the leader changes often and each player leads about half the
+time, or that one player leads for more than $90\%$ of the time? Compute $P(h(B)>0.9)+P(h(B)<0.1)$, and then guess how often the lead changes in $1000$ rounds of
+coin tossing. The notebook checks.
+\end{think}
+
+\begin{remark}[Kolmogorov--Smirnov]
+The same philosophy governs goodness-of-fit tests. If $U_1,\dots,U_n$ are i.i.d.\ uniform on $[0,1]$ and $F_n$ is their empirical distribution function, then
+$\sqrt n(F_n(t)-t)$ converges in distribution, as a random function, to the \emph{Brownian bridge} $B_t-tB_1$ (Donsker, 1952), and so
+$\sqrt n\sup_t|F_n(t)-t|$ converges to $\sup_t|B_t-tB_1|$, whose distribution function Kolmogorov had found in 1933:
+$1-2\sum_{k\ge1}(-1)^{k-1}e^{-2k^2x^2}$. The proof needs a space of functions with jumps, which we do not develop; see Billingsley's book in the Sources. The notebook tests
+random number generators with this statistic.
+\end{remark}
+
+\section{The law of the iterated logarithm}
+
+Let $h(t)=\sqrt{2t\log\log t}$ for $t\ge3$. We use the Gaussian tail bounds, for $x>0$ and $Z\sim N(0,1)$,
+\begin{equation}\label{eq:gausstail}
+\frac x{1+x^2}\frac{e^{-x^2/2}}{\sqrt{2\pi}}\le P(Z\ge x)\le\frac12e^{-x^2/2},
+\end{equation}
+the left one from $\frac{\dd}{\dd x}\bigl(-\frac x{1+x^2}e^{-x^2/2}\bigr)\le e^{-x^2/2}$ (Exercise~\ref{ex:gausstail}), the right one from $P(Z\ge x)\le\mathbb E e^{x(Z-x)}\mathbf 1_{Z\ge x}$
+and the shift $Z\mapsto Z+x$ of the Gaussian density, which turns that expectation into $e^{-x^2/2}P(Z\ge0)$.
+
+\begin{theorem}[law of the iterated logarithm for Brownian motion]\label{thm:lilbm}
+$\displaystyle\limsup_{t\to\infty}\frac{B_t}{h(t)}=1$ almost surely, and the same holds along the integers.
+\end{theorem}
+\begin{proof}
+\emph{Upper bound.} Let $\varepsilon>0$, $1<q<(1+\varepsilon)^2$, and $t_k=q^k$. By the reflection principle and~\eqref{eq:gausstail},
+\[
+P\Bigl(\max_{s\le t_{k+1}}B_s\ge(1+\varepsilon)h(t_k)\Bigr)=2P\bigl(B_{t_{k+1}}\ge(1+\varepsilon)h(t_k)\bigr)\le\exp\Bigl(-\frac{(1+\varepsilon)^2h(t_k)^2}{2t_{k+1}}\Bigr)
+=\bigl(k\log q\bigr)^{-(1+\varepsilon)^2/q}.
+\]
+The exponent exceeds $1$, so the series converges and, by Borel--Cantelli, for all large $k$ and all $t\in[t_k,t_{k+1}]$, $B_t<(1+\varepsilon)h(t_k)\le(1+\varepsilon)h(t)$. So
+$\limsup B_t/h(t)\le1+\varepsilon$.
+
+\emph{Lower bound.} Let $\varepsilon\in(0,1)$, $q>1$ large, and $t_k=\lceil q^k\rceil$, integers. The increments $D_k=B_{t_k}-B_{t_{k-1}}$ are independent, $N(0,t_k-t_{k-1})$. Let
+$x_k=(1-\varepsilon)h(t_k)/\sqrt{t_k-t_{k-1}}$. Since $t_k-t_{k-1}\ge t_k(1-\frac2q)$ for large $k$,
+\[
+\frac{x_k^2}2\le\frac{(1-\varepsilon)^2}{1-2/q}\log\log t_k=\gamma\log\log t_k,\qquad\gamma=\frac{(1-\varepsilon)^2}{1-2/q},
+\]
+and we choose $q$ so large that $\gamma<1$. By~\eqref{eq:gausstail}, $P(D_k\ge(1-\varepsilon)h(t_k))\ge\frac c{x_k}(\log t_k)^{-\gamma}\ge\frac{c'}{\sqrt{\log k}\,k^\gamma}$, whose sum diverges. By the
+second Borel--Cantelli lemma, $D_k\ge(1-\varepsilon)h(t_k)$ infinitely often. By the upper bound applied to $-B$, $B_{t_{k-1}}\ge-2h(t_{k-1})$ for large $k$, and $h(t_{k-1})\le
+\frac2{\sqrt q}h(t_k)$ for large $k$. So infinitely often
+\[
+B_{t_k}=D_k+B_{t_{k-1}}\ge\Bigl(1-\varepsilon-\frac4{\sqrt q}\Bigr)h(t_k).
+\]
+Since $\varepsilon$ is arbitrary and $q$ can be taken arbitrarily large,
+\[
+\limsup_kB_{t_k}/h(t_k)\ge1,
+\]
+along integer times.
+\end{proof}
+
+\begin{theorem}[Hartman--Wintner, 1941]\label{thm:hartmanwintner}
+Let $X_k$ be i.i.d.\ with mean $0$ and variance $\sigma^2>0$. Then
+\[
+\limsup_{n\to\infty}\frac{S_n}{\sigma\sqrt{2n\log\log n}}=1\quad\text{and}\quad\liminf_{n\to\infty}\frac{S_n}{\sigma\sqrt{2n\log\log n}}=-1\quad\text{almost surely.}
+\]
+\end{theorem}
+\begin{proof}
+We may take $\sigma=1$ and, by Corollary~\ref{cor:embedwalk}, $S_n=B_{T_n}$. The $\liminf$ follows from the $\limsup$ applied to $-X_k$. By Theorem~\ref{thm:lilbm} along integers, it
+suffices to show $|B_{T_n}-B_n|/h(n)\to0$ almost surely.
+
+Let $0<\varepsilon\le\frac14$ and $r=1+\varepsilon$. By the strong law, $|T_n-n|\le\varepsilon n$ for large $n$. For $n\in[r^k,r^{k+1}]$, both $n$ and $T_n$ lie in $[r^{k-2},r^{k+2}]$,
+because $(1-\varepsilon)r^2\ge1$ and $(1+\varepsilon)\le r$. So $|B_{T_n}-B_n|\le2M_k$, where $M_k=\max_{0\le u\le L_k}|B_{r^{k-2}+u}-B_{r^{k-2}}|$ and $L_k=r^{k+2}-r^{k-2}\le
+r^k\bigl(r^2-r^{-2}\bigr)\le5\varepsilon r^k$. By the Markov property and the reflection principle applied to $B$ and $-B$, $P(M_k\ge x)\le4P(B_{L_k}\ge x)\le2e^{-x^2/2L_k}$. With
+$x=\delta h(r^k)$ and $\delta^2=20\varepsilon$,
+\[
+P\bigl(M_k\ge\delta h(r^k)\bigr)\le2\exp\Bigl(-\frac{20\varepsilon\cdot2r^k\log\log r^k}{2\cdot5\varepsilon r^k}\Bigr)=2(k\log r)^{-4},
+\]
+summable. So for large $k$, $M_k<\delta h(r^k)\le\delta h(n)$, and $\limsup|B_{T_n}-B_n|/h(n)\le2\sqrt{20\varepsilon}$. Let $\varepsilon\to0$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch03-lil}
+\caption{Four coin-tossing walks, as $S_n/\sqrt n$ against $n$ on a logarithmic scale, with the envelopes $\pm\sqrt{2\log\log n}$ of Theorem~\ref{thm:hartmanwintner}. The
+walks cross the envelope from time to time, but at the scale of the theorem, $\log\log n$, a million steps is still very short: $\sqrt{2\log\log10^6}=2.29$.}
+\label{fig:lil}
+\end{figure}
+
+\begin{beauty}
+Donsker's theorem is the central limit theorem for whole paths, and the reason it holds is almost physical: Brownian motion contains every random walk with finite variance,
+stopped at the right times, and on a large scale the stopping times tick like a clock, by the strong law. So one universal object answers infinitely many questions, and each
+answer can be computed wherever it is easiest: by counting lattice paths, by reflecting Brownian motion, or by a computer.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:gausstail}
+Prove the Gaussian tail bounds~\eqref{eq:gausstail}. (For the lower bound, differentiate $-\frac x{1+x^2}e^{-x^2/2}$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:multinomial}
+Let $(N_1,\dots,N_d)$ be multinomial with $n$ trials and probabilities $p_1,\dots,p_d$. Show with the Cram\'er--Wold device that $\bigl((N_i-np_i)/\sqrt n\bigr)_i\Rightarrow N(0,\Sigma)$
+with $\Sigma=\operatorname{diag}(p)-pp^{\mathsf T}$. Deduce that Pearson's statistic $\sum_i(N_i-np_i)^2/(np_i)$ converges in distribution to $\chi^2_{d-1}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bridge}
+Show that $B_t-tB_1$, $0\le t\le1$, is a centred Gaussian process with covariance $s(1-t)$ for $s\le t$, independent of $B_1$. Deduce from Donsker's theorem that
+$X^n(t)-tX^n(1)\Rightarrow B_t-tB_1$ in $C[0,1]$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:exitvar}
+For the exit time $\tau$ of $(-1,1)$ by Brownian motion, show that $B_t^4-6tB_t^2+3t^2$ is a martingale and deduce $\mathbb E\tau^2=\frac53$, so $\operatorname{Var}\tau=\frac23$. (These
+are the times between steps when the simple random walk is embedded in Brownian motion.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:clusterset}
+Under the hypotheses of Theorem~\ref{thm:hartmanwintner}, show that almost surely the set of limit points of $S_n/(\sigma\sqrt{2n\log\log n})$ is the whole interval $[-1,1]$.
+(Show first that $X_n/\sqrt n\to0$ almost surely.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lastzero}
+Let $g=\sup\{t\le1:B_t=0\}$. Show that $g$ has the arcsine law by computing $P(g<s)=P(B_u\ne0\text{ for }u\in[s,1])$ with the Markov property at time $s$ and the reflection
+principle: $P(g<s)=\mathbb E\bigl[P(|Z|\sqrt{1-s}<|B_s|)\bigr]$ with $Z$ independent of $B_s$, then evaluate the probability that a planar Gaussian vector lies in a cone.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:modulus}
+Show that Brownian paths are not H\"older continuous of order $\frac12$: almost surely, for every $c<\sqrt2$, there are infinitely many $m$ such that
+$\max_{k\le2^m}|B_{k2^{-m}}-B_{(k-1)2^{-m}}|>c\sqrt{m2^{-m}\log2}$. (Use independence of the increments, the lower bound in~\eqref{eq:gausstail}, $1-y\le e^{-y}$, and
+Borel--Cantelli.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:gausstail}
+The derivative of $-\frac x{1+x^2}e^{-x^2/2}$ is $\bigl(1-\frac2{(1+x^2)^2}\bigr)e^{-x^2/2}\le e^{-x^2/2}$; integrate from $x$ to $\infty$. For the upper bound, $\mathbf 1_{Z\ge x}\le e^{x(Z-x)}\mathbf 1_{Z\ge x}$
+and compute $\mathbb E[e^{xZ}\mathbf 1_{Z\ge x}]$ by completing the square.
+\end{hint}
+\begin{hint}{ex:multinomial}
+$N=\sum_{k\le n}\xi_k$ with $\xi_k$ i.i.d.\ unit vectors $e_i$ with probability $p_i$. For the $\chi^2$ part, write the statistic as $|D^{-1/2}Y|^2$ and diagonalise
+$D^{-1/2}\Sigma D^{-1/2}$, a projection of rank $d-1$.
+\end{hint}
+\begin{hint}{ex:bridge}
+Compute covariances; a Gaussian vector with uncorrelated blocks has independent blocks. The map $f\mapsto f-tf(1)$ is continuous on $C$.
+\end{hint}
+\begin{hint}{ex:exitvar}
+Expand $\mathbb E[(B_s+N)^4\mid\mathcal F_s]$. Apply optional stopping at $\tau\wedge K$ (justify as in Lemma~\ref{lem:ostbm}) and let $K\to\infty$; $\mathbb E\tau=1$.
+\end{hint}
+\begin{hint}{ex:clusterset}
+$\sum P(X_n^2>\varepsilon^2n)\le\mathbb E X^2/\varepsilon^2$. Then consecutive values of $S_n/h(n)$ differ by a quantity tending to $0$, and the sequence goes from near $1$ to near $-1$
+infinitely often.
+\end{hint}
+\begin{hint}{ex:lastzero}
+Given $B_s=x$, the probability of no zero in $[s,1]$ is $P(\max_{u\le1-s}W_u<|x|)=P(|W_{1-s}|<|x|)$. The pair $(B_s/\sqrt s,Z)$ is a standard planar Gaussian, rotation invariant.
+\end{hint}
+\begin{hint}{ex:modulus}
+$P(\text{all }2^m\text{ increments}\le c\sqrt{m2^{-m}\log2})=\bigl(1-P(|Z|>c\sqrt{m\log2})\bigr)^{2^m}\le\exp\bigl(-2^mP(|Z|>c\sqrt{m\log2})\bigr)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:gausstail}
+\idea Both bounds compare the Gaussian tail integral with something explicit: an exact antiderivative of a slightly smaller function for the lower bound, an exponential
+moment for the upper bound.
+\writeup Let $\phi(x)=e^{-x^2/2}/\sqrt{2\pi}$ and $G(x)=-\frac x{1+x^2}\phi(x)$. Then $G'(x)=\bigl(\frac{x^2}{1+x^2}-\frac{1-x^2}{(1+x^2)^2}\bigr)\phi(x)=\bigl(1-\frac2{(1+x^2)^2}\bigr)\phi(x)\le\phi(x)$. Integrating
+from $x$ to $\infty$, where $G\to0$: $\frac x{1+x^2}\phi(x)=-G(x)=\int_x^\infty G'\le\int_x^\infty\phi=P(Z\ge x)$. For the upper bound, $P(Z\ge x)\le\mathbb E[e^{x(Z-x)}\mathbf 1_{Z\ge x}]=
+e^{-x^2}\int_x^\infty e^{xz}\phi(z)\dd z=e^{-x^2/2}\int_x^\infty\phi(z-x)\dd z=\frac12e^{-x^2/2}$.
+\end{solution}
+
+\begin{solution}{ex:multinomial}
+\idea A multinomial vector is a sum of $n$ i.i.d.\ indicator vectors, so this is a multivariate central limit theorem, which Cram\'er--Wold reduces to the real one. The
+$\chi^2$ limit is then a continuous mapping.
+\writeup Write $N=\sum_{k\le n}\xi_k$ with $\xi_k$ i.i.d., $P(\xi_k=e_i)=p_i$. Then $\mathbb E\xi_k=p$ and $\operatorname{Cov}\xi_k=\mathbb E[\xi\xi^{\mathsf T}]-pp^{\mathsf T}=\operatorname{diag}(p)-pp^{\mathsf T}=\Sigma$. For each
+$t$, $\langle t,\xi_k\rangle$ are i.i.d.\ real with variance $t^{\mathsf T}\Sigma t$, so by Tome~3's CLT $\langle t,(N-np)/\sqrt n\rangle\Rightarrow N(0,t^{\mathsf T}\Sigma t)$, which is the law of
+$\langle t,Y\rangle$ for $Y\sim N(0,\Sigma)$. By Corollary~\ref{cor:cramerwold}, $(N-np)/\sqrt n\Rightarrow Y$. Pearson's statistic is $g\bigl((N-np)/\sqrt n\bigr)$ with $g(y)=|D^{-1/2}y|^2$,
+$D=\operatorname{diag}(p)$, continuous, so it converges to $|D^{-1/2}Y|^2$. Now $D^{-1/2}Y\sim N(0,P)$ with $P=I-\sqrt p\sqrt p^{\mathsf T}$, where $\sqrt p$ is the unit vector $(\sqrt{p_i})$:
+$P$ is the orthogonal projection onto $\sqrt p^\perp$, of rank $d-1$. In an orthonormal basis adapted to it, $D^{-1/2}Y$ has $d-1$ independent standard coordinates and one zero coordinate,
+so $|D^{-1/2}Y|^2\sim\chi^2_{d-1}$.
+\end{solution}
+
+\begin{solution}{ex:bridge}
+\idea Everything is Gaussian, so independence is a covariance computation, and the convergence is a continuous mapping of Donsker's theorem.
+\writeup $(B_{t_1}-t_1B_1,\dots,B_{t_k}-t_kB_1,B_1)$ is a linear image of a Gaussian vector, hence Gaussian (Tome~3, Theorem~6.15). For $s\le t$,
+$\operatorname{Cov}(B_s-sB_1,B_t-tB_1)=s-st-st+st=s(1-t)$, and $\operatorname{Cov}(B_t-tB_1,B_1)=t-t=0$. Uncorrelated blocks of a Gaussian vector are independent, so the bridge is independent
+of $B_1$ (Lemma~\ref{lem:pisuffice} extends this from finitely many times to the whole process). The map $\Phi(f)(t)=f(t)-tf(1)$ is linear and satisfies $\|\Phi f\|\le2\|f\|$, so it is
+continuous on $C$, and $\Phi(X^n)\Rightarrow\Phi(B)$ by Proposition~\ref{prop:contmap}.
+\end{solution}
+
+\begin{solution}{ex:exitvar}
+\idea Fourth moments of $\tau$-stopped Brownian motion come from a polynomial martingale of degree four, the next one in the family $B_t$, $B_t^2-t$; its coefficients are forced by
+the Gaussian moments.
+\writeup With $N=B_t-B_s\sim N(0,u)$, $u=t-s$, independent of $\mathcal F_s$, $\mathbb E[B_t^4\mid\mathcal F_s]=B_s^4+6B_s^2u+3u^2$ and $\mathbb E[B_t^2\mid\mathcal F_s]=B_s^2+u$. So
+\[
+\begin{gathered}
+\mathbb E[B_t^4-6tB_t^2+3t^2\mid\mathcal F_s]=B_s^4+6B_s^2u+3u^2-6t(B_s^2+u)+3t^2\qq=B_s^4-6sB_s^2+3s^2,
+\end{gathered}
+\]
+since $6u-6t=-6s$ and $3u^2-6tu+3t^2=3s^2$. Optional stopping at $\tau\wedge K$ (the dyadic approximation of Lemma~\ref{lem:ostbm} works, with the domination
+$\max_{s\le K+1}B_s^4+(K+1)^2\max_sB_s^2$, integrable) gives $\mathbb E B_{\tau\wedge K}^4+3\mathbb E(\tau\wedge K)^2=6\mathbb E[(\tau\wedge K)B_{\tau\wedge K}^2]$. Since $|B_{\tau\wedge K}|\le1$,
+$3\mathbb E(\tau\wedge K)^2\le6\mathbb E\tau=6$, so $\mathbb E\tau^2<\infty$, and dominated convergence as $K\to\infty$ gives $1+3\mathbb E\tau^2=6\mathbb E\tau=6$, since $B_\tau^2=1$. So $\mathbb E\tau^2=\frac53$
+and $\operatorname{Var}\tau=\frac53-1=\frac23$.
+\end{solution}
+
+\begin{solution}{ex:clusterset}
+\idea A sequence whose consecutive gaps tend to $0$ and which goes from near $+1$ to near $-1$ infinitely often must pass near every point in between.
+\writeup Let $h_n=\sigma\sqrt{2n\log\log n}$ and $y_n=S_n/h_n$. Since $\sum_nP(X_n^2>\varepsilon^2n)=\sum_nP(X^2/\varepsilon^2>n)\le\mathbb E X^2/\varepsilon^2<\infty$, Borel--Cantelli gives
+$|X_n|\le\varepsilon\sqrt n$ eventually, so $X_n/\sqrt n\to0$ and $X_{n+1}/h_{n+1}\to0$. Moreover $|S_n|/h_n$ is bounded (it tends to at most $1$ in $\limsup$), and $h_n/h_{n+1}\to1$, so
+$y_{n+1}-y_n=\frac{X_{n+1}}{h_{n+1}}+y_n\bigl(\frac{h_n}{h_{n+1}}-1\bigr)\to0$. By Theorem~\ref{thm:hartmanwintner}, $y_n>1-\eta$ and $y_n<-1+\eta$ each happen infinitely often. Given
+$c\in(-1,1)$ and $\eta>0$, between a time when $y_n<c$ and a later time when $y_n>c$ the sequence crosses $c$ with steps eventually smaller than $\eta$, so it lands in $(c-\eta,c+\eta)$.
+Hence every $c\in[-1,1]$ is a limit point (the endpoints by the theorem itself), and no point outside $[-1,1]$ is one.
+\end{solution}
+
+\begin{solution}{ex:lastzero}
+\idea ``No zero after time $s$'' is a statement about the Brownian motion started afresh at time $s$ from the point $B_s$, which the reflection principle answers; what is left is
+the probability that one Gaussian is larger than another, which is an angle.
+\writeup By the Markov property at $s$, $W_u=B_{s+u}-B_s$ is a Brownian motion independent of $B_s$. On $\{B_s=x\}$ with $x>0$, there is no zero in $[s,1]$ iff $\min_{u\le1-s}W_u>-x$,
+of probability $P(|W_{1-s}|<x)$ by the reflection principle and symmetry; likewise for $x<0$. So $P(g<s)=P(\sqrt{1-s}\,|Z|<\sqrt s\,|Z'|)$ with $Z,Z'$ independent standard
+Gaussians. The vector $(Z',Z)$ has a rotation-invariant law; the event $|Z|<\sqrt{\frac s{1-s}}|Z'|$ is a double cone of half-angle $\theta=\arctan\sqrt{\frac s{1-s}}=\arcsin\sqrt s$ around the
+$Z'$-axis, so its probability is $\frac{4\theta}{2\pi}=\frac2\pi\arcsin\sqrt s$. This is the arcsine distribution function.
+\end{solution}
+
+\begin{solution}{ex:modulus}
+\idea On level $m$ there are $2^m$ independent increments of variance $2^{-m}$; the largest of $N$ independent standard Gaussians is about $\sqrt{2\log N}$. So the largest increment is
+about $\sqrt{2\log(2^m)\,2^{-m}}$, and anything smaller by a constant factor fails with a probability small enough to sum.
+\writeup Let $x_m=c\sqrt{m\log2}$. The normalised increments $2^{m/2}(B_{k2^{-m}}-B_{(k-1)2^{-m}})$, $k\le2^m$, are i.i.d.\ standard Gaussians. So the probability that all of them are at most
+$x_m$ in absolute value is
+\[
+\bigl(1-P(|Z|>x_m)\bigr)^{2^m}\le\exp\bigl(-2^mP(|Z|>x_m)\bigr).
+\]
+By~\eqref{eq:gausstail}, $P(|Z|>x_m)\ge\frac{c_1}{\sqrt m}e^{-x_m^2/2}=\frac{c_1}{\sqrt m}2^{-c^2m/2}$, so $2^mP(|Z|>x_m)\ge\frac{c_1}{\sqrt m}2^{m(1-c^2/2)}$, which grows exponentially in
+$m$ since $c^2<2$. The probabilities $\exp(-\cdots)$ are therefore summable, and by Borel--Cantelli, for all large $m$ some increment exceeds $x_m2^{-m/2}=c\sqrt{m2^{-m}\log2}$. Taking
+$c=\sqrt2-\frac1j$ for $j=1,2,\dots$ handles all $c<\sqrt2$ at once. In particular $|B_t-B_s|\le C|t-s|^{1/2}$ fails for every $C$: with $|t-s|=2^{-m}$ the ratio is at least
+$c\sqrt{m\log2}\to\infty$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} P.~Erd\H{o}s and M.~Kac, ``On certain limit theorems of the theory of probability'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 52 (1946), 292--302, and ``On the number of
+positive sums of independent random variables'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 53 (1947), 1011--1020. M.~D.~Donsker, ``An invariance principle for certain probability limit theorems'',
+\emph{Mem.\ Amer.\ Math.\ Soc.}\ 6 (1951); ``Justification and extension of Doob's heuristic approach to the Kolmogorov--Smirnov theorems'', \emph{Ann.\ Math.\ Statist.}\ 23 (1952),
+277--281. J.~L.~Doob, ``Heuristic approach to the Kolmogorov--Smirnov theorems'', \emph{Ann.\ Math.\ Statist.}\ 20 (1949), 393--403. A.~N.~Kolmogorov, ``Sulla determinazione empirica di una
+legge di distribuzione'', \emph{Giorn.\ Ist.\ Ital.\ Attuari} 4 (1933), 83--91. A.~V.~Skorokhod, \emph{Studies in the Theory of Random Processes}, Kiev, 1961 (English translation,
+Addison-Wesley, 1965). A.~Khintchine, ``\"Uber einen Satz der Wahrscheinlichkeitsrechnung'', \emph{Fund.\ Math.}\ 6 (1924), 9--20. P.~Hartman and A.~Wintner, ``On the law of the iterated
+logarithm'', \emph{Amer.\ J.\ Math.}\ 63 (1941), 169--176. P.~L\'evy, ``Sur certains processus stochastiques homog\`enes'', \emph{Compositio Math.}\ 7 (1939), 283--339 (the arcsine laws).
+K.~L.~Chung and W.~Feller, ``On fluctuations in coin-tossing'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 35 (1949), 605--608.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Section~3.3 (L\'evy's theorem) and Chapters~7--8 (Brownian motion, Skorokhod embedding, Donsker, the
+law of the iterated logarithm). The route followed here.
+\item P.~Billingsley, \emph{Convergence of Probability Measures}, 2nd ed., Wiley, 1999. Tightness in $C$ and in the space $D$ of functions with jumps; empirical processes and
+Kolmogorov--Smirnov.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, vol.~I, 3rd ed., Wiley, 1968, Chapter~III. The Chung--Feller theorem and the surprising
+fluctuations of coin tossing.
+\item P.~M\"orters and Y.~Peres, \emph{Brownian Motion}, Cambridge University Press, 2010, Chapters~2 and~5. The strong Markov property, embeddings and the law of the iterated logarithm.
+\end{itemize}
