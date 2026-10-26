@@ -5,13 +5,36 @@ $n$ guests leave their hats at the door and get them back at random. The probabi
 tends to $\frac1e\approx0.368$, whether there are ten guests or ten million.
 \end{center}
 
-In 1708 Pierre R\'emond de Montmort, a French gentleman with a taste for card games, asked a question that sounds like a party game: shuffle a pack of
-cards numbered $1$ to $n$, deal them out, and count the cards that land in their own position. What is the chance that none does? With Nicolaus
-Bernoulli he found the answer, and it is astonishing: about $\frac1e$, whatever $n$ is, as soon as $n$ is bigger than five or six. Counting problems like
-this one are where probability began, and in this chapter we count carefully, with bijections and inclusion--exclusion,
-before turning the counts into probabilities.
+Probability was born of a quarrel about money. In the summer of 1654 a gambler, the Chevalier de M\'er\'e, asked Blaise Pascal how to divide the
+stakes of a game interrupted before its end, when one player needed two more points and the other three. Pascal wrote to Pierre de Fermat in Toulouse;
+the letters they exchanged between July and October of that year, counting the equally likely ways the unplayed rounds could go, are the first
+calculations in the theory. Christiaan Huygens learnt of them in Paris and wrote the first textbook in 1657, sixteen pages long. In 1708 Pierre
+R\'emond de Montmort, a French gentleman with a taste for card games, asked a question that sounds like a party game: shuffle a pack of cards numbered
+$1$ to $n$, deal them out, and count the cards that land in their own position. What is the chance that none does? With Nicolaus Bernoulli, in
+letters printed in the second edition of his book in 1713, he found the answer, and it is astonishing: about $\frac1e$, whatever $n$ is, as soon as
+$n$ is bigger than five or six. Euler took up the same \emph{jeu de rencontre} in 1753 and gave it the alternating series of the epigraph. That same
+year 1713 saw the posthumous \emph{Ars Conjectandi} of Jacob Bernoulli, Nicolaus's uncle, with the theorem he had been proudest of and had called golden:
+that the frequency of an event in many independent trials settles down to its probability. We prove it at the end of this chapter, as the weak
+law of large numbers, with a proof that fits in four lines thanks to an inequality of Chebyshev from 1867.
 
-\section{Counting}
+Counting problems like Montmort's are where probability began, and in this chapter we count carefully, with bijections and inclusion--exclusion,
+before turning the counts into probabilities. Along the way come some of the most surprising facts in elementary mathematics: that $23$ people
+suffice for two of them to probably share a birthday (a calculation Richard von Mises published in 1939); that collecting $n$ coupons takes about
+$n\ln n$ boxes; that any $n^2+1$ numbers contain a monotone run of $n+1$ (Erd\H os and Szekeres, 1935); and that in a famous game show it pays to
+switch doors, a claim which, when Marilyn vos Savant made it in a magazine column in 1990, brought her some ten thousand letters, many from
+people with doctorates, telling her she was wrong. She was right, and Bayes' formula will show why.
+
+\portraits{fermat}{Pierre de Fermat (1601--1665). Portrait, seventeenth century, artist unknown. Public domain, via Wikimedia Commons.}{jbernoulli}{Jacob Bernoulli (1655--1705). Portrait by his brother Nicolaus Bernoulli, 1687. Public domain, via Wikimedia Commons.}
+
+\section{Counting, from scratch}
+
+\begin{reminder}[the three rules of counting]
+For finite sets, $|A\cup B|=|A|+|B|$ when $A\cap B=\emptyset$ (\emph{sum rule}), $|A\times B|=|A|\,|B|$ (\emph{product rule}, which extends to ``a choice made in $k$ stages with $n_1,\dots,n_k$ options at each stage can be made in $n_1\cdots n_k$ ways'', even when the options at a stage depend on the earlier choices, as long as their \emph{number} does not), and $|A|=|B|$ whenever there is a bijection $A\to B$ (\emph{bijection rule}). Almost every count in this chapter is one of these three, applied with care; the most common mistake is to count something twice, and the cure is to check that the stages of a product-rule count really determine the object and are determined by it.
+\end{reminder}
+
+\begin{examplex}[counting with the three rules]
+How many five-letter words (any letters) contain at least one vowel? Counting those with a vowel directly leads into cases; count the complement instead: $26^5$ words in all, $21^5$ with no vowel, so $26^5-21^5=7{,}797{,}275$. How many ways to seat $8$ people at a round table, two seatings being the same if one is a rotation of the other? Fix one person's seat, then order the $7$ others: $7!=5040$; or divide $8!$ by the $8$ rotations. How many diagonals has a convex $n$-gon? Pairs of vertices, minus sides: $\binom n2-n=\frac{n(n-3)}2$. How many subsets of $\{1,\dots,n\}$ contain no two consecutive integers? Call the count $f_n$: a subset either avoids $n$ (counted by $f_{n-1}$) or contains $n$ and hence avoids $n-1$ (counted by $f_{n-2}$), so $f_n=f_{n-1}+f_{n-2}$ with $f_1=2$, $f_2=3$: Fibonacci again, $f_n=F_{n+2}$.
+\end{examplex}
 
 \begin{proposition}[basic counts]\label{prop:counts}
 Let $|E|=n$ and $|F|=k$.
@@ -29,6 +52,8 @@ Let $|E|=n$ and $|F|=k$.
 (c) If every box held at most $\lceil m/n\rceil-1<m/n$ objects, the total would be $<m$.
 \end{proof}
 
+The pigeonhole principle looks too obvious to deserve a name. Dirichlet made it famous in 1842 by using it to prove that every irrational number $\alpha$ has infinitely many rational approximations $\frac pq$ with $\left|\alpha-\frac pq\right|<\frac1{q^2}$ (Tome~1): the pigeons are the fractional parts of $\alpha,2\alpha,\dots,N\alpha$, the boxes the $N$ intervals of length $\frac1N$. Its power is that it proves existence without finding anything, and Exercises~\ref{ex:pigeon} and~\ref{ex:erdos} show how far that goes.
+
 \begin{think}
 How many integers in $\{1,\dots,100\}$ are divisible by $2$, $3$ or $5$? Adding $50+33+20$ counts some numbers twice or three times. Correct the count step by step, and watch the pattern of signs appear.
 \end{think}
@@ -45,6 +70,15 @@ For $x$ in the union, $1-\prod_{i=1}^n\left(1-\mathbf 1_{A_i}(x)\right)=1$. Expa
 and this also holds (both sides $0$) outside the union. Sum over $x$.
 \end{proof}
 
+\begin{figure}[ht]
+\centering
+\fig{ch08-venn}
+\caption{Inclusion--exclusion for the multiples of $2$, $3$ and $5$ in $\{1,\dots,100\}$. The seven regions hold the numbers divisible by exactly the primes indicated (for instance $3$ numbers, $30$, $60$ and $90$, are divisible by all three). The union has $50+33+20-16-10-6+3=74$ elements, so $26$ numbers up to $100$ have no prime factor below $7$: the number $1$ and the $25$ primes from $7$ to $97$, and nothing else, since a composite number below $100$ has a prime factor $\le\sqrt{100}=10$. This is the sieve of Eratosthenes written as a formula, and Tome~5 is about what happens to it for large $n$.}
+\label{fig:venn}
+\end{figure}
+
+The proof is worth a second look: it proves an identity between \emph{functions}, $\mathbf 1_{\bigcup A_i}=\sum(-1)^{|I|+1}\mathbf 1_{A_I}$, and then sums it. Summing against a probability instead of counting gives the same formula for $P(A_1\cup\dots\cup A_n)$, which we use below without further comment; and keeping only the first few terms gives inequalities (Exercise~\ref{ex:bonferroni}).
+
 \begin{think}
 Before reading on, guess: as the number $n$ of guests grows, does the probability that nobody gets their own hat tend to $0$, to $1$, or to something in between? Each guest is less and less likely to get their hat ($\frac1n$), but there are more and more guests.
 \end{think}
@@ -60,7 +94,7 @@ Let $A_i$ be the set of permutations fixing $i$. For $|I|=k$, $|A_I|=(n-k)!$. By
 $\sum_{k=1}^n(-1)^{k+1}\binom nk(n-k)!=n!\sum_{k=1}^n\frac{(-1)^{k+1}}{k!}$; subtract from $n!$. The limit is the series of $e^{-1}$ (Exercise~\ref{ex:taylorln}).
 \end{proof}
 
-The convergence is extremely fast: by the alternating series bound (Proposition~\ref{prop:signedseries}), $\left|\frac{D_n}{n!}-\frac1e\right|\le\frac1{(n+1)!}$. Already for $n=10$ the two agree to seven decimals (Figure~\ref{fig:derang}).
+The convergence is extremely fast: by the alternating series bound (Proposition~\ref{prop:signedseries}), $\left|\frac{D_n}{n!}-\frac1e\right|\le\frac1{(n+1)!}$. Already for $n=10$ the two agree to seven decimals (Figure~\ref{fig:derang}). Since $D_n$ is an integer and the error is below $\frac12$ for $n\ge1$, $D_n$ is the integer nearest to $\frac{n!}e$: $D_1,\dots,D_8=0,1,2,9,44,265,1854,14833$. The recurrence $D_n=(n-1)(D_{n-1}+D_{n-2})$, which Euler found, is Exercise~\ref{ex:derangrec}.
 
 \begin{figure}[ht]
 \centering
@@ -71,7 +105,9 @@ The convergence is extremely fast: by the alternating series bound (Proposition~
 
 \section{Finite probability}
 
-A \emph{probability} on a finite set $\Omega$ is a map $P:\mathcal P(\Omega)\to[0,1]$ with $P(\Omega)=1$ and $P(A\cup B)=P(A)+P(B)$ for disjoint $A,B$; the \emph{uniform} probability is $P(A)=|A|/|\Omega|$. For $P(B)>0$, the \emph{conditional probability} is $P(A\mid B)=\frac{P(A\cap B)}{P(B)}$, and $A,B$ are \emph{independent} if $P(A\cap B)=P(A)P(B)$. A random variable $X:\Omega\to\R$ has \emph{expectation} $\mathbb E[X]=\sum_\omega X(\omega)P(\{\omega\})$ and \emph{variance} $\operatorname{Var}X=\mathbb E\left[(X-\mathbb E X)^2\right]$.
+\begin{reminder}[the vocabulary]
+A \emph{probability} on a finite set $\Omega$ (the \emph{sample space}, whose elements are the possible outcomes) is a map $P:\mathcal P(\Omega)\to[0,1]$ with $P(\Omega)=1$ and $P(A\cup B)=P(A)+P(B)$ for disjoint $A,B$; subsets of $\Omega$ are \emph{events}. The \emph{uniform} probability is $P(A)=|A|/|\Omega|$, ``favourable cases over possible cases'', and it is the model whenever the outcomes are symmetric: a fair die, a well-shuffled pack, a random permutation. For $P(B)>0$, the \emph{conditional probability} is $P(A\mid B)=\frac{P(A\cap B)}{P(B)}$, the probability of $A$ once $B$ is known to have happened; and $A,B$ are \emph{independent} if $P(A\cap B)=P(A)P(B)$, that is, if knowing $B$ does not change the probability of $A$. A \emph{random variable} is a map $X:\Omega\to\R$, its \emph{law} is the list of the probabilities $P(X=x)$, its \emph{expectation} is $\mathbb E[X]=\sum_\omega X(\omega)P(\{\omega\})$ (the average of $X$ weighted by probability) and its \emph{variance} $\operatorname{Var}X=\mathbb E\left[(X-\mathbb E X)^2\right]$ measures how far $X$ typically strays from its mean; $\sigma(X)=\sqrt{\operatorname{Var}X}$ is the \emph{standard deviation}. \emph{Independent repetition} of an experiment with outcomes in $E$ is modelled on $\Omega=E^n$ with $P(\{(\omega_1,\dots,\omega_n)\})=p(\omega_1)\cdots p(\omega_n)$: the trials are then independent in the sense that events depending on different coordinates are independent (multiply out the sum).
+\end{reminder}
 
 \begin{proposition}[first rules]\label{prop:proba}
 \begin{enumerate}[label=(\alph*)]
@@ -88,6 +124,23 @@ A \emph{probability} on a finite set $\Omega$ is a map $P:\mathcal P(\Omega)\to[
 (d) Expand $(X-m)^2$ with $m=\mathbb E X$ and use (c): $\mathbb E[X^2]-2m^2+m^2$.
 \end{proof}
 
+Two more rules that follow at once and are used constantly: $P(A^c)=1-P(A)$, and the \textbf{law of total probability}, $P(A)=\sum_iP(A\mid B_i)P(B_i)$ whenever $B_1,\dots,B_k$ partition $\Omega$ into events of positive probability (split $A$ along the $B_i$ and apply the definition of conditional probability). Bayes' formula is one line of algebra, but it is the line that turns probability into a theory of \emph{learning}: it tells how the probability of a hypothesis $B$ is to be revised when the evidence $A$ is observed. The game show is the classic test.
+
+\begin{examplex}[Monty Hall]
+Three doors hide one car and two goats. You pick door $1$. The host, who knows where the car is, opens one of the other two doors to reveal a goat (choosing at random if both hide goats), and offers you to switch to the remaining closed door. Should you? Let $C_i$ be the event ``the car is behind door $i$'', each of probability $\frac13$, and $H_3$ the event ``the host opens door $3$''. Then $P(H_3\mid C_1)=\frac12$ (he chooses between doors $2$ and $3$), $P(H_3\mid C_2)=1$ (door $2$ hides the car, he must open $3$), $P(H_3\mid C_3)=0$. By total probability $P(H_3)=\frac13\cdot\frac12+\frac13\cdot1+0=\frac12$, and by Bayes
+\[
+P(C_2\mid H_3)=\frac{P(H_3\mid C_2)P(C_2)}{P(H_3)}=\frac{1\cdot\frac13}{\frac12}=\frac23,\qquad P(C_1\mid H_3)=\frac{\frac12\cdot\frac13}{\frac12}=\frac13 .
+\]
+Switching wins with probability $\frac23$ (Figure~\ref{fig:monty}). The intuition ``two doors left, so fifty-fifty'' forgets that the host's choice was not random: he was forbidden to open the door with the car, and that constraint carries information. Exercise~\ref{ex:monty} varies the rules and shows that the answer depends on exactly what the host knows and does, which is why the argument has to be made with conditional probabilities and not with feelings.
+\end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-monty}
+\caption{The Monty Hall game as a tree, when you first pick door $1$. Each branch carries its probability; the leaves give the probability of each (car, opened door) pair. Given that door $3$ is opened (shaded leaves, total probability $\frac12$), the car is behind door $2$ with conditional probability $\frac{1/3}{1/2}=\frac23$. The same tree with ``the host opens door $2$'' gives the same conclusion by symmetry: switching wins two times in three.}
+\label{fig:monty}
+\end{figure}
+
 The indicator trick: to compute the expectation of a count, write the count as a sum of indicators and add their probabilities.
 
 \begin{think}
@@ -97,6 +150,116 @@ On average, how many guests get their own hat back when there are $10$ guests? A
 \begin{example}
 In a uniformly random permutation of $\{1,\dots,n\}$, the expected number of fixed points is $\sum_{i=1}^nP(\sigma(i)=i)=n\cdot\frac1n=1$.
 \end{example}
+
+The example is worth savouring. The law of the number of fixed points is complicated (Figure~\ref{fig:derang}, right), and nobody would compute the expectation from it; linearity sidesteps the law entirely. The indicators $\mathbf 1_{\sigma(i)=i}$ are not independent, and it does not matter. Exercises~\ref{ex:fixedvar}, \ref{ex:cycles}, \ref{ex:coupon} and~\ref{ex:records} are variations on this one idea, which is the single most useful tool of discrete probability.
+
+\section{Laws, variance and concentration}
+
+Expectation says where a random quantity sits on average; variance says how far from there it typically lands. The theorems of this section
+make that precise, first for sums of independent variables, then as an inequality valid for any random variable at all, and finally as Bernoulli's
+golden theorem. None of them needs more than finite sums.
+
+\begin{definitionx}[independent random variables, covariance]
+Random variables $X$ and $Y$ on $\Omega$ are \emph{independent} if $P(X=x,\,Y=y)=P(X=x)P(Y=y)$ for all values $x,y$; a family $X_1,\dots,X_n$ is \emph{pairwise independent} if any two of them are, and \emph{independent} if $P(X_1=x_1,\dots,X_n=x_n)=\prod P(X_i=x_i)$ for all $x_i$. The \emph{covariance} of $X$ and $Y$ is $\operatorname{Cov}(X,Y)=\mathbb E\big[(X-\mathbb E X)(Y-\mathbb E Y)\big]=\mathbb E[XY]-\mathbb E[X]\,\mathbb E[Y]$ (expand, as for the variance), so that $\operatorname{Var}X=\operatorname{Cov}(X,X)$.
+\end{definitionx}
+
+\begin{proposition}[products and sums]\label{prop:varsum}
+\begin{enumerate}[label=(\alph*)]
+\item If $X$ and $Y$ are independent, $\mathbb E[XY]=\mathbb E[X]\,\mathbb E[Y]$, that is, $\operatorname{Cov}(X,Y)=0$. The converse is false.
+\item $\operatorname{Var}(aX+b)=a^2\operatorname{Var}X$, and $\operatorname{Var}(X+Y)=\operatorname{Var}X+\operatorname{Var}Y+2\operatorname{Cov}(X,Y)$.
+\item If $X_1,\dots,X_n$ are pairwise independent, $\operatorname{Var}(X_1+\dots+X_n)=\operatorname{Var}X_1+\dots+\operatorname{Var}X_n$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Grouping the outcomes by the pair of values, as in Proposition~\ref{prop:proba}(b),
+\[
+\begin{aligned}\mathbb E[XY]&=\sum_{x,y}xy\,P(X=x,Y=y)=\sum_{x,y}xy\,P(X=x)P(Y=y)\\&=\Big(\sum_xxP(X=x)\Big)\Big(\sum_yyP(Y=y)\Big).\end{aligned}
+\]
+For the converse: let $X$ be uniform on $\{-1,0,1\}$ and $Y=X^2$. Then $\mathbb E[XY]=\mathbb E[X^3]=0=\mathbb E[X]\mathbb E[Y]$, but $P(X=0,Y=0)=\frac13\ne P(X=0)P(Y=0)=\frac13\cdot\frac13$.
+
+(b) $aX+b-\mathbb E[aX+b]=a(X-\mathbb EX)$, and squaring gives the first claim. For the second, with $X'=X-\mathbb EX$ and $Y'=Y-\mathbb EY$, $\operatorname{Var}(X+Y)=\mathbb E[(X'+Y')^2]=\mathbb E[X'^2]+\mathbb E[Y'^2]+2\mathbb E[X'Y']$.
+
+(c) By induction on $n$ using (b): $\operatorname{Var}(S_{n-1}+X_n)=\operatorname{Var}S_{n-1}+\operatorname{Var}X_n+2\operatorname{Cov}(S_{n-1},X_n)$, and $\operatorname{Cov}(S_{n-1},X_n)=\sum_{i<n}\operatorname{Cov}(X_i,X_n)=0$ by (a), covariance being linear in each argument (it is a difference of expectations, which are linear).
+\end{proof}
+
+Variance adds for independent variables, standard deviations do not: the sum of $n$ independent copies of $X$ has standard deviation $\sqrt n\,\sigma(X)$, while its mean is $n\,\mathbb E X$. This $\sqrt n$ is the most important number in statistics, and the next proposition shows it in the three classical laws.
+
+\begin{proposition}[the classical laws]\label{prop:laws}
+\begin{enumerate}[label=(\alph*)]
+\item (\textbf{Bernoulli}) If $P(X=1)=p$ and $P(X=0)=1-p$, then $\mathbb E X=p$ and $\operatorname{Var}X=p(1-p)\le\frac14$.
+\item (\textbf{binomial}) Let $S$ be the number of successes in $n$ independent trials, each succeeding with probability $p$. Then
+\[
+P(S=k)=\binom nkp^k(1-p)^{n-k}\ (0\le k\le n),\qquad\mathbb E S=np,\qquad\operatorname{Var}S=np(1-p).
+\]
+\item (\textbf{hypergeometric}) Draw $n$ objects without replacement from $N$ objects of which $K$ are marked, and let $X$ be the number of marked objects drawn. Then
+\[
+P(X=k)=\frac{\binom Kk\binom{N-K}{n-k}}{\binom Nn},\qquad\mathbb E X=n\frac KN,\qquad\operatorname{Var}X=n\frac KN\Big(1-\frac KN\Big)\frac{N-n}{N-1}.
+\]
+\item (\textbf{uniform}) If $X$ is uniform on $\{1,\dots,n\}$, then $\mathbb EX=\frac{n+1}2$ and $\operatorname{Var}X=\frac{n^2-1}{12}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $\mathbb EX=p$, $\mathbb E[X^2]=p$, so $\operatorname{Var}X=p-p^2$, which is at most $\frac14$ (the maximum of $p(1-p)$).
+
+(b) In the product model $\Omega=\{0,1\}^n$, a particular sequence with $k$ successes has probability $p^k(1-p)^{n-k}$, and there are $\binom nk$ such sequences (choose the positions of the successes). Now $S=X_1+\dots+X_n$ with $X_i$ the indicator of success at trial $i$, a Bernoulli variable; the $X_i$ are independent (events on different coordinates), so linearity and Proposition~\ref{prop:varsum}(c) give $\mathbb ES=np$ and $\operatorname{Var}S=np(1-p)$.
+
+(c) Take the $\binom Nn$ subsets of size $n$ as equally likely; those with $k$ marked objects are chosen by picking $k$ marked and $n-k$ unmarked ones. For the moments, draw the objects one at a time (a uniformly random \emph{ordered} selection, which induces the uniform law on subsets) and let $I_i$ be the indicator that the $i$th draw is marked. The $i$th object drawn is uniform among the $N$ (by symmetry between positions), so $P(I_i=1)=\frac KN$; and for $i\ne j$ the pair of objects drawn at times $i$ and $j$ is uniform among the $N(N-1)$ ordered pairs, so $P(I_i=I_j=1)=\frac{K(K-1)}{N(N-1)}$. Then $\mathbb EX=n\frac KN$, and $\mathbb E[X^2]=\sum_i\mathbb E[I_i]+\sum_{i\ne j}\mathbb E[I_iI_j]=n\frac KN+n(n-1)\frac{K(K-1)}{N(N-1)}$; with $q=\frac KN$ this gives
+\[
+\begin{aligned}\operatorname{Var}X&=nq\Big(1+\frac{(n-1)(K-1)}{N-1}-nq\Big)\\&=\frac{nq}{N-1}\big(N-1+nK-n-K+1-nK+nq\big)\\&=\frac{nq}{N-1}(N-n)(1-q),\end{aligned}
+\]
+using $nq(N-1)=nK-nq$ in the middle step.
+
+(d) $\mathbb EX=\frac1n\sum_{k=1}^nk=\frac{n+1}2$ and $\mathbb E[X^2]=\frac1n\sum k^2=\frac{(n+1)(2n+1)}6$ (Chapter~1); subtract.
+\end{proof}
+
+The factor $\frac{N-n}{N-1}$ in (c) is the \emph{finite population correction}: drawing without replacement is less variable than with replacement, and for $n=N$ (draw everything) the variance is $0$, as it must be. When $N$ is huge compared with $n$ the correction is invisible, which is why a poll of $1000$ people is as informative in a country of $60$ million as in one of $300$ million; Exercise~\ref{ex:poll} makes this quantitative.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-binomial}
+\caption{Left: the law of the \emph{frequency} $S/n$ of heads in $n$ tosses of a fair coin, for $n=10$, $50$ and $200$ (bars of width $\frac1n$, scaled to compare areas). The mass concentrates around $\frac12$, in a window of width about $\frac1{\sqrt n}$: the standard deviation of $S/n$ is $\frac1{2\sqrt n}$. Right: the running frequency of heads in three simulated sequences of $1000$ tosses (coloured), with the band $\frac12\pm\frac1{2\sqrt n}$ (grey). Each path wanders and then settles: Bernoulli's theorem in action.}
+\label{fig:binomial}
+\end{figure}
+
+\begin{think}
+A fair coin is tossed $100$ times. Without any computation beyond the mean $50$ and the standard deviation $5$, how surprised should you be to see $70$ or more heads? And $30$ or fewer? The next theorem gives a bound that uses nothing but those two numbers.
+\end{think}
+
+\begin{theorem}[Markov and Chebyshev]\label{thm:chebyshev}
+Let $X$ be a random variable and $a>0$.
+\begin{enumerate}[label=(\alph*)]
+\item (\textbf{Markov}) If $X\ge0$, then $P(X\ge a)\le\dfrac{\mathbb E X}a$.
+\item (\textbf{Chebyshev}) $P\big(|X-\mathbb EX|\ge a\big)\le\dfrac{\operatorname{Var}X}{a^2}$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) The inequality $a\,\mathbf 1_{X\ge a}\le X$ holds at every outcome (if $X(\omega)\ge a$ the left side is $a\le X(\omega)$; otherwise it is $0\le X(\omega)$). Take expectations, which preserve inequalities (a sum of non-negative terms is non-negative), and use $\mathbb E[\mathbf 1_A]=P(A)$.
+
+(b) Apply (a) to the non-negative variable $(X-\mathbb EX)^2$ and the threshold $a^2$: the event $(X-\mathbb EX)^2\ge a^2$ is the event $|X-\mathbb EX|\ge a$.
+\end{proof}
+
+For the coin, $P(|S-50|\ge20)\le\frac{25}{400}=\frac1{16}$. The true value is about $8\times10^{-5}$, eight hundred times smaller: Chebyshev's inequality is crude. Its glory is that it is \emph{universal}, true for every random variable with a variance, however strange its law, and that it is sharp in that generality (Exercise~\ref{ex:poll}(c)). Tome~3 proves the sharper, specific bounds (Chernoff, Hoeffding) that explain the true value.
+
+\begin{theorem}[weak law of large numbers]\label{thm:wlln}
+Let $X_1,\dots,X_n$ be pairwise independent random variables with the same expectation $m$ and the same variance $\sigma^2$, and $\overline X_n=\frac1n(X_1+\dots+X_n)$ their mean. Then for every $\varepsilon>0$,
+\[
+P\big(|\overline X_n-m|\ge\varepsilon\big)\le\frac{\sigma^2}{n\varepsilon^2}.
+\]
+In particular (\textbf{Bernoulli's theorem}), the frequency $S/n$ of successes in $n$ independent trials of probability $p$ satisfies $P\big(\left|\frac Sn-p\right|\ge\varepsilon\big)\le\frac{p(1-p)}{n\varepsilon^2}\le\frac1{4n\varepsilon^2}$, which tends to $0$ as $n\to\infty$.
+\end{theorem}
+\begin{proof}
+$\mathbb E\overline X_n=m$ by linearity, and $\operatorname{Var}\overline X_n=\frac1{n^2}\sum\operatorname{Var}X_i=\frac{\sigma^2}n$ by Proposition~\ref{prop:varsum}(b),(c). Apply Chebyshev. For the coin, $\sigma^2=p(1-p)\le\frac14$ by Proposition~\ref{prop:laws}(a).
+\end{proof}
+
+This is the theorem Jacob Bernoulli spent twenty years on, and his proof, by direct estimates on binomial coefficients, fills pages; Chebyshev's inequality reduces it to four lines, at the price of a worse bound. The theorem is what gives probability its meaning in the world: ``this coin has probability $0.5$ of heads'' can be checked, approximately, by tossing it many times, and the theorem says how many. Notice what it does \emph{not} say: not that the number of heads gets close to $n/2$ (the typical gap $|S-n/2|$ grows like $\sqrt n$, Figure~\ref{fig:binomial}), not that a run of tails makes heads ``due'' (the trials are independent, and the coin has no memory), only that the \emph{proportion} converges. The precise sense of ``converges'' for an infinite sequence of tosses, and the strong law, which says the proportion converges for almost every sequence, need the measure theory of Tome~3.
+
+\begin{beauty}
+Proposition~\ref{prop:derang} is the first appearance of the Poisson law: the number of fixed points of a random permutation converges to a Poisson variable of
+parameter $1$ (Tome~3). The formula for $\varphi$ opens Tome~1, and the indicator trick of Exercises~\ref{ex:fixedvar} to~\ref{ex:coupon} grows into the probabilistic
+method of Tome~3, where one proves that an object exists by showing that a random one works with positive probability: Exercise~\ref{ex:ramsey} is Erd\H os's original 1947 example, four lines that no constructive argument has yet matched. Chebyshev's inequality and the law of large numbers are the seed of all of statistics: a poll, a clinical trial, a Monte Carlo simulation are all Theorem~\ref{thm:wlln} with a budget.
+\end{beauty}
+
+\portraits{chebyshev}{Pafnuty Chebyshev (1821--1894). Photograph, c.\,1890. Public domain, via Wikimedia Commons.}{erdos}{Paul Erd\H os (1913--1996) in Budapest, 1992. Photograph by Topsy Kretts, CC BY 3.0, via Wikimedia Commons.}
 
 \section{Exercises}
 
@@ -108,6 +271,13 @@ How many solutions in $\N^k$ does $x_1+\dots+x_k=n$ have? And in $(\N^*)^k$?
 \emph{The birthday problem.} Show that the probability that $n$ people (with birthdays uniform and independent among 365 days) all have different birthdays is at most
 $e^{-n(n-1)/730}$, and deduce that it is less than $\frac12$ for $n=23$.
 \end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-birthday}
+\caption{Left: the probability that among $n$ people two share a birthday (blue, exact), with the bound $1-e^{-n(n-1)/730}$ of Exercise~\ref{ex:birthday} (dashed). It crosses $\frac12$ at $n=23$ and exceeds $0.99$ at $n=57$. Right: the expected number of boxes in the coupon collector's problem of Exercise~\ref{ex:coupon}, $nH_n$ (red), against the simulated average of $2000$ runs (dots); the dashed curve is $n\ln n$.}
+\label{fig:birthday}
+\end{figure}
 
 \begin{exercise}[$\star\star$]\label{ex:pigeon}
 Choose $n+1$ distinct integers in $\{1,\dots,2n\}$. Show that two of them are coprime, and that one of them divides another.
@@ -139,11 +309,87 @@ coupons is $nH_n\sim n\ln n$. \emph{You may use that if each trial succeeds with
 \emph{Erd\H{o}s--Szekeres.} Show that every sequence of $n^2+1$ distinct real numbers has a monotone subsequence of length $n+1$.
 \end{exercise}
 
-\begin{beauty}
-Proposition~\ref{prop:derang} is the first appearance of the Poisson law: the number of fixed points of a random permutation converges to a Poisson variable of
-parameter $1$ (Tome~3). The formula for $\varphi$ opens Tome~1, and the indicator trick of Exercises~\ref{ex:fixedvar} to~\ref{ex:coupon} grows into the probabilistic
-method of Tome~3, where one proves that an object exists by showing that a random one works with positive probability.
-\end{beauty}
+\begin{figure}[ht]
+\centering
+\fig{ch08-erdos}
+\caption{A sequence of $10=3^2+1$ distinct numbers, plotted as points $(i,a_i)$, with the pair $(u_i,d_i)$ of Exercise~\ref{ex:erdos} written under each point: the lengths of the longest increasing and longest decreasing subsequence ending there. The ten pairs are distinct, so they cannot all fit in $\{1,2,3\}^2$; here $u_{10}=4$, and the increasing subsequence of length $4$ is highlighted. The sequence $3,2,1,6,5,4,9,8,7$ shows that $n^2$ terms are not enough.}
+\label{fig:erdos}
+\end{figure}
+
+\subsection*{Further exercises}
+
+\begin{exercise}[$\star$]\label{ex:monty}
+\emph{Monty Hall, with variations.} You pick door $1$ and the host opens door $3$, revealing a goat.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{The forgetful host} does not know where the car is and opens one of the two other doors at random; it happened to show a goat. Show that switching now wins with probability $\frac12$.
+\item \emph{The biased host} knows where the car is and, when he has a choice, opens door $3$ with probability $q$ (and door $2$ with probability $1-q$). Show that switching wins with probability $\frac1{1+q}$, and that it is never worse than staying.
+\item With $100$ doors, one car, and a host who opens $98$ goat doors, what is the probability of winning by switching?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:multinomial}
+\emph{Multinomial coefficients.} Let $k_1+\dots+k_r=n$ with $k_i\ge0$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the number of ways to split $\{1,\dots,n\}$ into labelled boxes of sizes $k_1,\dots,k_r$ is $\binom n{k_1,\dots,k_r}=\frac{n!}{k_1!\cdots k_r!}$, and that this is also the number of words with $k_i$ letters of type $i$. How many anagrams has MISSISSIPPI?
+\item Prove the multinomial theorem $(x_1+\dots+x_r)^n=\sum\binom n{k_1,\dots,k_r}x_1^{k_1}\cdots x_r^{k_r}$, the sum over all $(k_i)$ with $\sum k_i=n$, and deduce the number of terms.
+\item In $n$ independent rolls of a fair die, what is the probability of seeing each face exactly $n/6$ times (for $n$ a multiple of $6$)? Estimate it for $n=600$ with Stirling's formula.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:derangrec}
+\emph{Euler's recurrence.} Show directly (by a bijection, not from the formula) that the derangement numbers satisfy $D_n=(n-1)(D_{n-1}+D_{n-2})$ for $n\ge3$, and deduce $D_n=nD_{n-1}+(-1)^n$. Check both against the values in the text.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:surj}
+\emph{Surjections.} Show that the number of surjections from a $k$-element set onto an $n$-element set is
+\[
+S(k,n)=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k ,
+\]
+and deduce that $\sum_{j=0}^n(-1)^j\binom nj(n-j)^k=0$ for $k<n$ and $=n!$ for $k=n$. (Compare with Newton's forward differences, Theorem~\ref{thm:newton}.) How many surjections are there from $5$ elements onto $3$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bonferroni}
+\emph{Bonferroni's inequalities.} For events $A_1,\dots,A_n$, show that
+\[
+\sum_iP(A_i)-\sum_{i<j}P(A_i\cap A_j)\ \le\ P\Big(\bigcup_iA_i\Big)\ \le\ \sum_iP(A_i).
+\]
+(Prove the corresponding inequalities between indicator functions at a point lying in exactly $m$ of the sets.) Use the upper bound, the \emph{union bound}, to show that if $n$ independent events each have probability $\le\frac1{2n}$, then with probability at least $\frac12$ none of them occurs.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:records}
+\emph{Records.} In a uniformly random permutation $(a_1,\dots,a_n)$ of $\{1,\dots,n\}$, position $i$ is a \emph{record} if $a_i>a_j$ for all $j<i$. Let $R_i$ be the indicator of a record at $i$ and $R=\sum R_i$ the number of records.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P(R_i=1)=\frac1i$, and deduce $\mathbb ER=H_n$.
+\item Show that for $i<j$, $P(R_i=R_j=1)=\frac1{ij}$: the record indicators are pairwise independent. Deduce $\operatorname{Var}R=H_n-\sum_{i\le n}\frac1{i^2}$.
+\item Use Chebyshev to show that the number of records among $10^6$ random values is between $4$ and $25$ with probability at least $0.9$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:poll}
+\emph{A poll.} A fraction $p$ of a large population intends to vote for a candidate. You ask $n$ people chosen at random (with replacement, say) and record the fraction $\overline X_n$ who say yes.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P(|\overline X_n-p|\ge0.03)\le\frac1{4n(0.03)^2}$, and find $n$ such that this is at most $0.05$.
+\item Why does the size of the population not appear? What changes if you sample without replacement?
+\item Show that Chebyshev's inequality cannot be improved in general: for every $a>0$ exhibit a random variable with $P(|X-\mathbb EX|\ge a)=\frac{\operatorname{Var}X}{a^2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:ballot}
+\emph{Bertrand's ballot problem.} In an election, $A$ receives $a$ votes and $B$ receives $b<a$ votes. The ballots are counted in uniformly random order. Show that the probability that $A$ is strictly ahead throughout the count is $\frac{a-b}{a+b}$. (Represent a count as a path with steps $+1$ for $A$ and $-1$ for $B$. Count the bad paths that start with a $+1$ by reflecting the part of the path up to its first return to $0$: D\'esir\'e Andr\'e's reflection, 1887.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:ramsey}
+\emph{Erd\H os's lower bound for Ramsey numbers.} Colour each of the $\binom n2$ edges of the complete graph on $n$ vertices red or blue, independently with probability $\frac12$ each.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the expected number of sets of $k$ vertices whose $\binom k2$ edges all have the same colour is $\binom nk2^{1-\binom k2}$.
+\item Show that this is $<1$ when $n=\lfloor2^{k/2}\rfloor$ and $k\ge3$, and conclude that there is a colouring of the complete graph on $n$ vertices with no monochromatic set of $k$ vertices: in the notation of Ramsey theory, $R(k,k)>2^{k/2}$.
+\item Why does the argument prove existence without producing a colouring? For $k=3$, find by hand a colouring of the complete graph on $5$ vertices with no monochromatic triangle, and show that every colouring on $6$ vertices has one: $R(3,3)=6$.
+\end{enumerate}
+\end{exercise}
+
+\begin{challenge}
+\textbf{Three questions to take further.} (1) \emph{The problem of the m\'enages} (Lucas, 1891): in how many ways can $n$ married couples sit at a round table, men and women alternating, no one next to their spouse? Inclusion--exclusion works, but the intersections are harder to count than for derangements; Touchard found the closed formula $\sum_k(-1)^k\frac{2n}{2n-k}\binom{2n-k}k(n-k)!$ in 1934. (2) \emph{Ramsey numbers.} $R(3,3)=6$ is a party puzzle (among six people, three know each other or three are mutual strangers); $R(4,4)=18$ was found in 1955; $R(5,5)$ is unknown, between $43$ and $46$ at the time of writing. Erd\H os liked to say that if aliens demanded $R(5,5)$ on pain of destroying the Earth, we should put every computer to work, but if they asked for $R(6,6)$, we should attack. Why is the exponential lower bound of Exercise~\ref{ex:ramsey}, found in 1947, still essentially the best known? (3) \emph{Expected waiting for a shared birthday.} Show that the expected number of people one must gather until two share a birthday is $\sum_{k\ge0}\prod_{j<k}\big(1-\frac j{365}\big)\approx24.6$, and find its asymptotics for a year of $N$ days: it is $\sqrt{\pi N/2}+\frac23+o(1)$, by a Laplace-type estimate (Chapter~6) of the sum.
+\end{challenge}
 
 \section{Hints}
 
@@ -170,6 +416,33 @@ Cut the wait into phases: with $k$ distinct coupons in hand, a new box brings a 
 \end{hint}
 \begin{hint}{ex:erdos}
 Attach to each term the lengths of the longest increasing and decreasing subsequences ending there. Show that two different terms get different pairs.
+\end{hint}
+\begin{hint}{ex:monty}
+Redo the computation of the example with the new values of $P(H_3\mid C_i)$. In (a), $P(H_3\mid C_3)$ is no longer $0$, but the event ``door $3$ shows a goat'' is.
+\end{hint}
+\begin{hint}{ex:multinomial}
+(a) Choose the first box, then the second among what remains. (b) Expand the product and count the ways to obtain each monomial. (c) The probability is $\binom n{n/6,\dots,n/6}6^{-n}$; Stirling (Theorem~\ref{thm:stirling}).
+\end{hint}
+\begin{hint}{ex:derangrec}
+In a derangement, $n$ is sent to some $k\ne n$ ($n-1$ choices). Either $k$ is sent back to $n$, or not; in the second case, pretend that $k$'s image is ``what $n$ would have had''.
+\end{hint}
+\begin{hint}{ex:surj}
+Let $A_j$ be the set of maps missing the $j$th element of the target; count the maps in no $A_j$.
+\end{hint}
+\begin{hint}{ex:bonferroni}
+At a point in exactly $m\ge1$ of the sets, the three expressions are $m-\binom m2$, $1$ and $m$. For the application, use $P(A_i^c\cap\dots)=1-P(\bigcup A_i)$; independence is not even needed.
+\end{hint}
+\begin{hint}{ex:records}
+(a) Position $i$ is a record iff the largest of $a_1,\dots,a_i$ is at position $i$; by symmetry each position is equally likely. (b) Condition on the record at $j$: the relative order of $a_1,\dots,a_{j-1}$ is still uniform. (c) $H_n\approx14.4$ and $\sum1/i^2<1.65$.
+\end{hint}
+\begin{hint}{ex:poll}
+(a) Theorem~\ref{thm:wlln}. (b) Proposition~\ref{prop:laws}(c). (c) Three values: $-a$, $0$, $a$.
+\end{hint}
+\begin{hint}{ex:ballot}
+There are $\binom{a+b}a$ equally likely paths. Those that start with $-1$ are bad; show that the bad paths starting with $+1$ are in bijection with the paths starting with $-1$. Good paths: $\binom{a+b-1}{a-1}-\binom{a+b-1}{a}$.
+\end{hint}
+\begin{hint}{ex:ramsey}
+(a) Indicators. (b) $\binom nk\le\frac{n^k}{k!}$. (c) An expectation below $1$ for a non-negative integer variable forces a zero somewhere.
 \end{hint}
 
 \section{Solutions}
@@ -238,13 +511,119 @@ if $a_i<a_j$, appending $a_j$ to an increasing subsequence ending at $a_i$ gives
 $\{1,\dots,n\}^2$, which has $n^2$ elements: impossible by pigeonhole. So some $u_i$ or $d_i$ is at least $n+1$.
 \end{solution}
 
+
+\begin{solution}{ex:monty}
+\idea Nothing changes in the method: list the hypotheses $C_1,C_2,C_3$, write the probability of the observed evidence under each, and apply Bayes. What changes is the evidence. In (a) the evidence is ``door $3$ was opened \emph{and} showed a goat'', which is no longer certain under $C_1,C_2$ and impossible under $C_3$ only because of the goat, not because of the host's knowledge.
+\writeup (a) The forgetful host opens door $2$ or $3$ with probability $\frac12$ each, whatever the car does. The evidence is $G=H_3\cap C_3^c$ (door $3$ opened, goat seen). $P(G)=P(H_3)-P(H_3\cap C_3)=\frac12-\frac12\cdot\frac13=\frac13$, and $P(C_2\mid G)=\frac{P(C_2\cap H_3)}{P(G)}=\frac{\frac13\cdot\frac12}{\frac13}=\frac12$. Switching and staying are now equivalent: a host who could have revealed the car, and did not, carries only the information ``the car is not behind door $3$'', which is symmetric in doors $1$ and $2$.
+
+(b) Now $P(H_3\mid C_1)=q$, $P(H_3\mid C_2)=1$, $P(H_3\mid C_3)=0$, so $P(H_3)=\frac q3+\frac13$ and
+\[
+P(C_2\mid H_3)=\frac{1\cdot\frac13}{\frac{1+q}3}=\frac1{1+q}\ \ge\ \frac12 ,
+\]
+with equality only for $q=1$ (a host who always opens door $3$ when he can: then his opening door $3$ tells nothing about door $1$). For $q=0$, the host opening door $3$ means he had no choice, and switching wins surely.
+
+(c) The car is behind door $1$ with probability $\frac1{100}$. Whatever happens, the host leaves exactly one of the other $99$ doors closed, and if the car is among those $99$ doors (probability $\frac{99}{100}$) it is behind the closed one, since he may only open goat doors. So switching wins with probability $\frac{99}{100}$: the host has done the contestant's search for them. (Conditioning on \emph{which} $98$ doors he opened changes nothing, by symmetry among the $99$ doors.)
+\end{solution}
+
+\begin{solution}{ex:multinomial}
+\idea (a) Fill the boxes one after the other with the product rule; the binomial coefficients telescope. The word count is the same object seen as a map ``position $\mapsto$ letter''. (b) The expansion of a power is a sum over words, exactly as for the binomial theorem. (c) The probability is a single multinomial coefficient over $6^n$, and Stirling's formula turns factorials into powers.
+\writeup (a) Choose the $k_1$ elements of box $1$ ($\binom n{k_1}$ ways), then the $k_2$ elements of box $2$ among the remaining $n-k_1$, and so on:
+\[
+\binom n{k_1}\binom{n-k_1}{k_2}\cdots\binom{k_r}{k_r}=\frac{n!}{k_1!(n-k_1)!}\cdot\frac{(n-k_1)!}{k_2!(n-k_1-k_2)!}\cdots=\frac{n!}{k_1!\cdots k_r!}.
+\]
+A word of length $n$ with $k_i$ letters of type $i$ is the same as the assignment of each position to the box of its letter. MISSISSIPPI has $11$ letters, with multiplicities $1,4,4,2$: $\frac{11!}{1!\,4!\,4!\,2!}=34650$ anagrams.
+
+(b) Expanding $(x_1+\dots+x_r)^n$ chooses one $x_i$ from each of the $n$ factors: each word of length $n$ in the letters $1,\dots,r$ contributes one term, and the word with $k_i$ letters $i$ contributes $x_1^{k_1}\cdots x_r^{k_r}$. Grouping by the multiplicities gives the multinomial coefficient. The number of monomials is the number of $(k_1,\dots,k_r)\in\N^r$ with sum $n$: $\binom{n+r-1}{r-1}$ by Exercise~\ref{ex:stars}.
+
+(c) Each of the $6^n$ sequences of rolls is equally likely, and those with each face $m=n/6$ times number $\binom n{m,\dots,m}$. By Stirling's formula (Theorem~\ref{thm:stirling}), $n!\sim\sqrt{2\pi n}(n/e)^n$ and $m!^6\sim(2\pi m)^3(m/e)^{6m}=(2\pi n/6)^3(n/e)^n6^{-n}$, so
+\[
+\frac{n!}{m!^6\,6^n}\sim\frac{\sqrt{2\pi n}}{(2\pi n/6)^3}=\frac{216}{(2\pi n)^{5/2}} ,
+\]
+about $2.5\times10^{-7}$ for $n=600$ (the exact value is $2.46\times10^{-7}$). The ``most likely'' outcome is very unlikely: the probability is spread over the roughly $\binom{605}5\approx6.6\times10^{11}$ possible count vectors, and even the peak gets only a tiny share.
+\end{solution}
+
+\begin{solution}{ex:derangrec}
+\idea Classify derangements by what happens to $n$: it goes to some $k$, and the question is whether $k$ goes back to $n$ (then the pair is a $2$-cycle and the rest is a smaller derangement) or not (then $n$ can be ``spliced out'' of its cycle, leaving a derangement of $n-1$ elements, and the splice can be undone if we remember $k$). The second recurrence is a one-line consequence once one looks at $D_n-nD_{n-1}$.
+\writeup Let $\sigma$ be a derangement of $\{1,\dots,n\}$ and $k=\sigma(n)\ne n$: $n-1$ choices. \emph{Case 1}: $\sigma(k)=n$. Then $\sigma$ swaps $k$ and $n$, and restricted to the other $n-2$ elements it is a derangement; conversely any derangement of those elements extends to one of this kind. Count: $D_{n-2}$ for each $k$. \emph{Case 2}: $\sigma(k)\ne n$. Let $i=\sigma^{-1}(n)$, so $i\ne k$ and $i\ne n$. Define $\tau$ on $\{1,\dots,n-1\}$ by $\tau(i)=k$ and $\tau(j)=\sigma(j)$ for $j\ne i$ (these $\sigma(j)$ are all $\ne n$ since $j\ne i$, and $\ne k$ since $k=\sigma(n)$ and $j\ne n$). Then $\tau$ is a permutation of $\{1,\dots,n-1\}$ without fixed point: $\tau(j)=\sigma(j)\ne j$ for $j\ne i$, and $\tau(i)=k\ne i$. Conversely, given $k$ and a derangement $\tau$ of $\{1,\dots,n-1\}$, set $i=\tau^{-1}(k)$, $\sigma(n)=k$, $\sigma(i)=n$ and $\sigma=\tau$ elsewhere: a derangement with $\sigma(k)=\tau(k)\ne n$. The two constructions are inverse, so case~2 contributes $D_{n-1}$ for each $k$. Hence $D_n=(n-1)(D_{n-1}+D_{n-2})$.
+
+For the second form, put $E_n=D_n-nD_{n-1}$. Then $E_n=(n-1)D_{n-1}+(n-1)D_{n-2}-nD_{n-1}=-(D_{n-1}-(n-1)D_{n-2})=-E_{n-1}$, and $E_2=D_2-2D_1=1$, so $E_n=(-1)^n$. Check: $D_4=3(2+1)=9=4\cdot2+1$, $D_5=4(9+2)=44=5\cdot9-1$.
+\end{solution}
+
+\begin{solution}{ex:surj}
+\idea ``Surjective'' means ``misses no element'', the complement of a union of $n$ events ``misses element $j$'', and the intersections of those events are easy to count: a map missing a given set of $j$ elements is a map into the other $n-j$. Inclusion--exclusion does the rest. The vanishing for $k<n$ is then a combinatorial fact (there are no surjections) proved by an algebraic identity, or the reverse: both readings are instructive.
+\writeup Let $A_j$ be the set of maps $\{1,\dots,k\}\to\{1,\dots,n\}$ whose image misses $j$. For $J$ of size $j$, $A_J$ is the set of maps into the $n-j$ elements outside $J$: $|A_J|=(n-j)^k$. The surjections are the maps in no $A_j$, so by Theorem~\ref{thm:incexc}
+\[
+S(k,n)=n^k-\sum_{j=1}^n(-1)^{j+1}\binom nj(n-j)^k=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k .
+\]
+For $k<n$ there is no surjection (the image has at most $k<n$ elements), so the sum is $0$; for $k=n$ a surjection between sets of the same size is a bijection, so the sum is $n!$. In the language of Chapter~1, the sum is the $n$th forward difference of the polynomial $x^k$ evaluated at $0$ (up to sign), which vanishes for $\deg<n$ and equals $n!$ times the leading coefficient for $\deg=n$: Theorem~\ref{thm:newton} and Proposition~\ref{prop:counts} say the same thing. From $5$ elements onto $3$: $3^5-3\cdot2^5+3\cdot1^5=243-96+3=150$.
+\end{solution}
+
+\begin{solution}{ex:bonferroni}
+\idea Inclusion--exclusion was proved pointwise, by an identity between indicator functions; truncating that identity gives inequalities, also pointwise, and taking expectations turns them into inequalities between probabilities. The whole content is the behaviour of $m-\binom m2$ for integers $m\ge1$.
+\writeup Fix an outcome $\omega$ lying in exactly $m$ of the sets. The three quantities $\sum_i\mathbf 1_{A_i}-\sum_{i<j}\mathbf 1_{A_i\cap A_j}$, $\mathbf 1_{\bigcup A_i}$ and $\sum_i\mathbf 1_{A_i}$ take at $\omega$ the values $m-\binom m2$, $\mathbf 1_{m\ge1}$ and $m$. For $m=0$ all three are $0$. For $m\ge1$, $m\ge1$ and $m-\binom m2=\frac{m(3-m)}2\le1$ (it equals $1$ for $m=1,2$ and is $\le0$ for $m\ge3$). So the inequalities hold between functions on $\Omega$, and taking expectations (which preserve inequalities and are linear, with $\mathbb E[\mathbf 1_A]=P(A)$) gives the stated ones. For the application, $P(\bigcup A_i)\le\sum P(A_i)\le n\cdot\frac1{2n}=\frac12$, so $P(\text{none})=1-P(\bigcup A_i)\ge\frac12$. Independence was not used; the union bound is the crudest and most used inequality of the probabilistic method, precisely because it asks nothing of the events.
+\end{solution}
+
+\begin{solution}{ex:records}
+\idea A record at $i$ depends only on which of the first $i$ positions holds their maximum, and by symmetry that position is uniform. For pairs, the key is that conditioning on ``the maximum of the first $j$ is at $j$'' leaves the relative order of the first $j-1$ values uniform, so a record at $i<j$ is unaffected. With pairwise independence the variance is a sum, and Chebyshev finishes.
+\writeup (a) $R_i=1$ iff the largest of $a_1,\dots,a_i$ sits at position $i$. For $s\le i$, swapping the entries at positions $s$ and $i$ is a bijection of the set of permutations that exchanges the events ``largest of the first $i$ at $s$'' and ``\dots at $i$'', so these $i$ events are equally likely, and disjoint with union $\Omega$: $P(R_i=1)=\frac1i$. By linearity $\mathbb ER=\sum_{i=1}^n\frac1i=H_n$.
+
+(b) Let $i<j$. Count the permutations with records at $i$ and $j$: choose the set of values occupying positions $1,\dots,j$ ($\binom nj$ ways); put its largest at position $j$; arrange the remaining $j-1$ values in positions $1,\dots,j-1$ so that the largest of the first $i$ is at $i$, which by (a) applied to $j-1$ positions can be done in $\frac{(j-1)!}i$ ways; arrange the other $n-j$ values arbitrarily. Total $\binom nj\frac{(j-1)!}i(n-j)!=\frac{n!}{ij}$, so $P(R_i=R_j=1)=\frac1{ij}=P(R_i=1)P(R_j=1)$. Two indicators with $P(R_i=R_j=1)=P(R_i=1)P(R_j=1)$ are independent (the other three joint probabilities follow by complements), so Proposition~\ref{prop:varsum}(c) applies: $\operatorname{Var}R=\sum_i\operatorname{Var}R_i=\sum_i\frac1i\big(1-\frac1i\big)=H_n-\sum_i\frac1{i^2}$.
+
+(c) For $n=10^6$, $H_n=\ln n+\gamma+o(1)\approx14.39$ (Proposition~\ref{prop:gamma}) and $\sum_{i\le n}\frac1{i^2}<\frac{\pi^2}6\approx1.645$, so $\operatorname{Var}R\approx12.75$. Chebyshev with $a=11.3$: $P(|R-14.39|\ge11.3)\le\frac{12.75}{127.7}<0.1$. So with probability at least $0.9$, $3.09<R<25.69$, that is $4\le R\le25$. A million random values, and typically a dozen records: this is why ``record-breaking'' events are rare and why their frequency is a test of whether a sequence of measurements is really stationary.
+\end{solution}
+
+\begin{solution}{ex:poll}
+\idea Each answer is a Bernoulli variable of parameter $p$; the poll is $n$ independent trials, and Theorem~\ref{thm:wlln} is exactly the statement asked. The population size is absent because sampling with replacement from a population is the same as repeating an experiment. For sharpness, the proof of Chebyshev loses only where $(X-\mathbb EX)^2$ exceeds $a^2$ by more than needed, so a variable that takes only the values $\mathbb EX\pm a$ and $\mathbb EX$ loses nothing.
+\writeup (a) By Bernoulli's theorem with $\varepsilon=0.03$, $P(|\overline X_n-p|\ge0.03)\le\frac1{4n\cdot0.0009}=\frac{277.8}n$, which is $\le0.05$ as soon as $n\ge5556$. (The true requirement, by the central limit theorem of Tome~3, is about $n\ge1070$ for a margin of $\pm3$ points at $95\%$ confidence, the figure one reads in newspapers; Chebyshev overestimates by a factor five, the price of universality.)
+
+(b) The answers are independent Bernoulli($p$) variables whatever the population size, because sampling with replacement is independent repetition; only $p$ and $n$ enter. Without replacement the count is hypergeometric, and Proposition~\ref{prop:laws}(c) gives the variance $\frac{p(1-p)}n\cdot\frac{N-n}{N-1}$ for $\overline X_n$: smaller, so the bound only improves, and for $N$ in the millions and $n$ in the thousands the factor is indistinguishable from $1$. A poll of a thousand people is as good for China as for Luxembourg.
+
+(c) Let $X$ take the values $-a$, $0$, $a$ with probabilities $\frac t2$, $1-t$, $\frac t2$, for some $t\in(0,1]$. Then $\mathbb EX=0$, $\operatorname{Var}X=a^2t$, and $P(|X|\ge a)=t=\frac{\operatorname{Var}X}{a^2}$: equality in Chebyshev. (Chebyshev's inequality is therefore the best possible statement that uses only the mean and the variance.)
+\end{solution}
+
+\begin{solution}{ex:ballot}
+\idea Translate the count into a lattice path and the question into ``the path stays strictly above the axis''. The paths that fail are of two kinds: those that start with a vote for $B$ (easy to count) and those that start with a vote for $A$ but later touch the axis; Andr\'e's reflection pairs the second kind with the first, and the rest is arithmetic with binomial coefficients.
+\writeup A counting order is a sequence of $a$ steps $+1$ and $b$ steps $-1$; all $\binom{a+b}a$ sequences are equally likely (Proposition~\ref{prop:counts}(b), or counting paths as in Proposition~\ref{prop:paths}), and the partial sums form a path from $(0,0)$ to $(a+b,a-b)$. The count is \emph{good} if all partial sums are $>0$. A bad path either starts with $-1$ (there are $\binom{a+b-1}a$ of these: place the $a$ up-steps among the remaining $a+b-1$ positions) or starts with $+1$ and touches $0$ later. For a path of the second kind, let $t$ be the first time it hits $0$, and reflect its first $t$ steps (change their signs): the result starts with $-1$, hits $0$ at time $t$ for the first time, and continues as before. Conversely every path starting with $-1$ hits $0$ (it ends at $a-b>0$), and reflecting it up to its first return gives a path starting with $+1$ that touches $0$. The two operations are inverse, so the bad paths of the second kind are as many as those of the first, and
+\[
+P(\text{good})=1-\frac{2\binom{a+b-1}a}{\binom{a+b}a}=1-\frac{2b}{a+b}=\frac{a-b}{a+b},
+\]
+using $\binom{a+b-1}a=\frac{(a+b-1)!}{a!\,(b-1)!}=\frac b{a+b}\binom{a+b}a$. For $a=3$, $b=2$: one count in five, which the reader can verify by listing the $10$ orders.
+\end{solution}
+
+\begin{solution}{ex:ramsey}
+\idea A random colouring has an expected number of monochromatic $k$-sets which is easy to compute by the indicator trick; if that expectation is below $1$, some colouring has none. The argument never says which, and this is the probabilistic method in its purest form: existence by averaging.
+\writeup (a) For each $k$-set $S$ of vertices, let $I_S$ be the indicator that all $\binom k2$ edges inside $S$ have the same colour. All red has probability $2^{-\binom k2}$, all blue the same, so $\mathbb E[I_S]=2^{1-\binom k2}$, and by linearity the expected number of monochromatic $k$-sets is $\binom nk2^{1-\binom k2}$.
+
+(b) With $n=\lfloor2^{k/2}\rfloor$, $\binom nk\le\frac{n^k}{k!}\le\frac{2^{k^2/2}}{k!}$, so the expectation is at most $\frac{2^{k^2/2+1-k(k-1)/2}}{k!}=\frac{2^{1+k/2}}{k!}$, which is $\frac{2^{5/2}}6<1$ for $k=3$ and decreases with $k$ (the ratio of consecutive terms is $\frac{\sqrt2}{k+1}<1$). A non-negative integer-valued random variable with expectation $<1$ takes the value $0$ with positive probability (otherwise it would be $\ge1$ everywhere and its expectation $\ge1$): some colouring has no monochromatic $k$-set. By definition $R(k,k)$ is the least $N$ such that every two-colouring of the complete graph on $N$ vertices has a monochromatic $k$-set, so $R(k,k)>n=\lfloor2^{k/2}\rfloor$, hence $R(k,k)>2^{k/2}$.
+
+(c) The expectation is an average over all $2^{\binom n2}$ colourings, and an average below $1$ guarantees a term equal to $0$ without locating it; finding one explicitly is a different and much harder problem (challenge (2)). For $k=3$: on five vertices placed on a circle, colour the five sides of the pentagon red and the five diagonals blue; a triangle uses three of the ten edges, and no three sides form a triangle, no three diagonals either (the diagonals form a pentagram, which has no triangle), so $R(3,3)>5$. On six vertices, pick a vertex $v$: of its five edges, three have the same colour, say red, going to $x,y,z$. If one of the edges $xy,yz,xz$ is red it closes a red triangle with $v$; otherwise $xyz$ is a blue triangle. So $R(3,3)=6$.
+\end{solution}
+
+\subsection*{Notes on the challenges}
+
+(1) The m\'enages problem is in \'Edouard Lucas's \emph{Th\'eorie des nombres} of 1891, and Touchard's formula was proved in his note of 1934; the inclusion--exclusion runs over the forbidden adjacencies, and the difficulty is to count the ways to choose $k$ pairwise compatible ``spouse next to spouse'' events around a circle, which is where the coefficient $\frac{2n}{2n-k}\binom{2n-k}k$ comes from (it counts the $k$-subsets of a $2n$-cycle with no two adjacent, by a stars-and-bars argument around a circle). Bogart and Doyle gave a short non-sexist proof in 1986.
+
+(2) $R(4,4)=18$ is from Greenwood and Gleason (1955), who used a construction with quadratic residues modulo $17$ for the lower bound. For $R(5,5)$ the bounds are $43$ (Exoo, 1989) and $46$ (Angeltveit and McKay, 2024). Erd\H os's 1947 bound $R(k,k)>2^{k/2}$ has been improved only in lower-order factors; no explicit construction is known that beats $2^{\varepsilon k}$ for a fixed small $\varepsilon$ by elementary means, and finding one is a central open problem. Erd\H os's story about the aliens is told by Joel Spencer in his \emph{Ten Lectures on the Probabilistic Method}.
+
+(3) $\mathbb E[T]=\sum_{k\ge0}P(T>k)$ as in Exercise~\ref{ex:coupon}, and $P(T>k)=\prod_{j<k}(1-\frac jN)\approx e^{-k^2/2N}$; the sum $\sum_ke^{-k^2/2N}\approx\int_0^\infty e^{-x^2/2N}\,dx=\sqrt{\pi N/2}$ by Exercise~\ref{ex:gaussian}, and the constant $\frac23$ comes from the next terms of the expansion of the product. Ramanujan found the same constant in his $Q$-function in 1911, before anybody had asked about birthdays.
+
 \section*{Sources and further reading}
 
 \begin{itemize}
 \item R.~L.~Graham, D.~E.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994, Chapters~5 and~8. Binomial coefficients, derangements, harmonic numbers and discrete probability, with a computer scientist's eye.
-\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968, Chapter~IV. The matching problem (hats), the occupancy problems and inclusion--exclusion in probability.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968, Chapters~II--IV and~IX. The matching problem (hats), the occupancy problems, inclusion--exclusion in probability, the ballot problem and the law of large numbers.
 \item P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009 (free online). Cycles, fixed points and records of random permutations, through generating functions; the road from this chapter to Tome~3.
-\item M.~Mitzenmacher and E.~Upfal, \emph{Probability and Computing}, 2nd ed., Cambridge University Press, 2017. The birthday problem, the coupon collector and the indicator trick, applied to algorithms.
-\item P.~Erd\H{o}s and G.~Szekeres, \emph{A combinatorial problem in geometry}, Compositio Math.\ 2 (1935), 463--470. The original paper of Exercise~\ref{ex:erdos}.
-\item P.~R.~de Montmort, \emph{Essay d'analyse sur les jeux de hazard}, Paris, 1708; 2nd ed.\ 1713, with the correspondence with Nicolaus Bernoulli on the \emph{probl\`eme des rencontres}.
+\item M.~Mitzenmacher and E.~Upfal, \emph{Probability and Computing}, 2nd ed., Cambridge University Press, 2017. The birthday problem, the coupon collector, the indicator trick and Chebyshev, applied to algorithms.
+\item N.~Alon and J.~H.~Spencer, \emph{The Probabilistic Method}, 4th ed., Wiley, 2016; and J.~Spencer, \emph{Ten Lectures on the Probabilistic Method}, 2nd ed., SIAM, 1994. Exercise~\ref{ex:ramsey} is the first page of both.
+\item F.~N.~David, \emph{Games, Gods and Gambling}, Griffin, 1962. The Pascal--Fermat letters of 1654 (translated in full), Huygens's \emph{De ratiociniis in ludo aleae} (1657), Montmort and the Bernoullis.
+\item P.~R.~de Montmort, \emph{Essay d'analyse sur les jeux de hazard}, Paris, 1708; 2nd ed.\ 1713, with the correspondence with Nicolaus Bernoulli on the \emph{probl\`eme des rencontres}. L.~Euler, \emph{Calcul de la probabilit\'e dans le jeu de rencontre}, M\'emoires de l'Acad\'emie des sciences de Berlin 7 (1751, printed 1753), 255--270, for the series and the recurrence of Exercise~\ref{ex:derangrec}.
+\item J.~Bernoulli, \emph{Ars Conjectandi}, Basel, 1713; English translation by E.~D.~Sylla, Johns Hopkins University Press, 2006. Part~IV contains the ``golden theorem'' of Theorem~\ref{thm:wlln}, with the twenty-year story in the translator's introduction.
+\item P.~L.~Chebyshev, \emph{Des valeurs moyennes}, J.\ Math.\ Pures Appl.\ 12 (1867), 177--184; the inequality was published earlier by I.-J.~Bienaym\'e, C.\ R.\ Acad.\ Sci.\ Paris 37 (1853), 309--324, which is why it is often called the Bienaym\'e--Chebyshev inequality.
+\item R.~von Mises, \emph{\"Uber Aufteilungs- und Besetzungs-Wahrscheinlichkeiten}, Revue de la Facult\'e des Sciences de l'Universit\'e d'Istanbul 4 (1939), 145--163. The birthday problem.
+\item P.~Erd\H{o}s and G.~Szekeres, \emph{A combinatorial problem in geometry}, Compositio Math.\ 2 (1935), 463--470; P.~Erd\H os, \emph{Some remarks on the theory of graphs}, Bull.\ Amer.\ Math.\ Soc.\ 53 (1947), 292--294. Exercises~\ref{ex:erdos} and~\ref{ex:ramsey}. R.~E.~Greenwood and A.~M.~Gleason, Canad.\ J.\ Math.\ 7 (1955), 1--7, for $R(4,4)=18$; V.~Angeltveit and B.~D.~McKay, \emph{$R(5,5)\le46$}, preprint, 2024.
+\item S.~Selvin, \emph{A problem in probability}, Amer.\ Statist.\ 29 (1975), 67, where the Monty Hall problem was first posed; M.~vos Savant, \emph{Ask Marilyn}, Parade, 9 September 1990 and the following months, for the storm of letters.
+\item J.~Bertrand, C.\ R.\ Acad.\ Sci.\ Paris 105 (1887), 369, and D.~Andr\'e, ibid., 436--437. The ballot problem and the reflection.
+\item C.~E.~Bonferroni, \emph{Teoria statistica delle classi e calcolo delle probabilit\`a}, Pubbl.\ R.\ Ist.\ Sup.\ Sci.\ Econ.\ Comm.\ Firenze 8 (1936), 3--62. A.~R\'enyi, \emph{Th\'eorie des \'el\'ements saillants d'une suite d'observations}, Ann.\ Fac.\ Sci.\ Univ.\ Clermont 8 (1962), 7--13, for records.
+\item \'E.~Lucas, \emph{Th\'eorie des nombres}, Gauthier-Villars, 1891, p.~491; J.~Touchard, C.\ R.\ Acad.\ Sci.\ Paris 198 (1934), 631--633; K.~P.~Bogart and P.~G.~Doyle, \emph{Non-sexist solution of the m\'enage problem}, Amer.\ Math.\ Monthly 93 (1986), 514--519.
+\item P.~G.~L.~Dirichlet, \emph{Verallgemeinerung eines Satzes aus der Lehre von den Kettenbr\"uchen}, Bericht Berlin Akad.\ (1842), 93--95. The pigeonhole principle applied to rational approximation.
 \end{itemize}

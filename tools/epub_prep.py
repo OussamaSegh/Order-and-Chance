@@ -59,6 +59,34 @@ def main(src: str, dst: str, figdir: str) -> None:
     # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
+    # Portraits (\\portrait{file}{credit}, \\portraits{f1}{c1}{f2}{c2} of tome0's main.tex): the EPUB
+    # shows the JPEG with its credit below, as a plain paragraph so that the figures keep their numbers.
+    photodir = Path(src).resolve().parent / "photos"
+
+    def portraits(text):
+        out, i = [], 0
+        while True:
+            m = re.search(r"\\portraits?\{", text[i:])
+            if not m:
+                return "".join(out) + text[i:]
+            out.append(text[i:i + m.start()])
+            j = i + m.end() - 1
+            args = []
+            while text[j] == "{":
+                depth, k = 0, j
+                while True:
+                    depth += {"{": 1, "}": -1}.get(text[k], 0)
+                    k += 1
+                    if depth == 0:
+                        break
+                args.append(text[j + 1:k - 1])
+                j = k
+            for name, credit in zip(args[::2], args[1::2]):
+                out.append("\n\\includegraphics[width=0.45\\textwidth]{" + str(photodir / (name + ".jpg"))
+                           + "}\\\\ {\\small " + credit + "}\n\n")
+            i = j
+
+    text = portraits(text)
     # Small-screen line breaks of the PDF (common/preamble.tex) mean nothing in an EPUB.
     text = re.sub(r"\\qq(?![a-z])", r"\\qquad ", text)
     text = re.sub(r"\\eqbr(?![a-z])", "", text)

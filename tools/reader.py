@@ -34,7 +34,7 @@ def main(tome: str, build: str, out: str) -> None:
                if p.name.startswith("-") or ":" in p.name}
     for old, new in renames.items():
         (out_dir / old).rename(out_dir / new)
-    # Figures: build.sh made one SVG per figure; copy them next to the pages.
+    # Figures: build.sh made one SVG per figure; copy them, and the portrait JPEGs, next to the pages.
     figdir = out_dir / "figures"
     figdir.mkdir()
     for page in out_dir.glob("*.html"):
@@ -47,7 +47,7 @@ def main(tome: str, build: str, out: str) -> None:
             shutil.copy(src, figdir / src.name)
             return f'src="figures/{src.name}"'
 
-        text = re.sub(r'src="(/[^"]*\.svg)"', figure, text)
+        text = re.sub(r'src="(/[^"]*\.(?:svg|jpg))"', figure, text)
         page.write_text(text, encoding="utf-8")
     (out_dir / "sitemap.json").unlink(missing_ok=True)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
