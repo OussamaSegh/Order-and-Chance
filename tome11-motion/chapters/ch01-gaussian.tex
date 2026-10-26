@@ -1,0 +1,557 @@
+\chapter{Gaussian Processes and the Birth of Brownian Motion}
+
+\begin{center}\itshape
+A random function is a family of random numbers, one for each time. Kolmogorov showed that any consistent way of choosing\\
+finitely many of them at once defines the whole family. But continuity is a property of uncountably many times,\\
+and to see it one needs one more idea: control the increments, and the path will hold together.
+\end{center}
+
+In the summer of 1827 the Scottish botanist Robert Brown put grains of pollen of the wild flower \emph{Clarkia pulchella} in water under his microscope and saw
+the tiny particles that came out of them jiggling without rest. He suspected life, so he tried dead material: pollen kept for a century in a herbarium, then
+powdered glass, granite, and even a fragment of the Sphinx. Everything small enough danced. He published his ``brief account of microscopical observations'' the next year,
+and could not explain what he had seen.
+
+The explanation took eighty years. In 1905 Albert Einstein, then a clerk at the patent office in Bern, argued that if water is made of molecules in thermal agitation,
+a suspended particle must be kicked by them at random, and its displacement over a time $t$ must have a mean square proportional to $t$, not to $t^2$ as for
+a steady motion. The constant of proportionality involves the number of molecules in a mole, Avogadro's number. So by watching a grain of resin under a
+microscope one could count molecules. Jean Perrin did exactly that in 1908 and 1909, following particles of gamboge by hand with a camera lucida, and his
+values of Avogadro's number agreed with those found by entirely different methods. The reality of atoms, still doubted by eminent chemists in 1900, was no longer
+in question, and Perrin received the Nobel Prize in 1926. In his book \emph{Les Atomes} (1913) Perrin drew the paths of his particles, and remarked that the true
+path, looked at more and more closely, would reveal ever finer zigzags: it is the kind of curve without tangents that mathematicians had invented as a curiosity
+(this is a paraphrase of his preface). Meanwhile, in 1900, Louis Bachelier had used the same process in his thesis on the speculation in the Paris stock
+exchange, with nobody noticing for half a century.
+
+The first mathematical construction came from Norbert Wiener in 1923. Wiener built a measure on the space of continuous functions under which the increments are
+independent Gaussians, the measure that probabilists now call \emph{Wiener measure}. His methods were those of the integration theory of the time, and they were
+heavy. Ten years later Kolmogorov's \emph{Grundbegriffe} gave the general framework: a random process is a probability on a space of functions, determined by its
+finite-dimensional laws. But Kolmogorov's measure lives on all functions, and the set of continuous functions is not even an event for it. The bridge was a
+criterion that Kolmogorov found and Evgeny Slutsky published in 1937: if increments are small in mean, at the right rate, the process has a continuous version.
+And Wiener's own favourite description, written with Raymond Paley and Antoni Zygmund in 1933, is the most concrete of all: Brownian motion is a Fourier series
+with independent Gaussian coefficients,
+\[B_t=\xi_0t+\sqrt2\sum_{n\ge1}\xi_n\frac{\sin n\pi t}{n\pi}.\]
+
+Tome~3 built Brownian motion by L\'evy's midpoint method and studied its first properties. This chapter builds it twice more, in the two ways just described,
+because each construction reveals something the other hides: Kolmogorov's criterion gives the H\"older regularity of the path, and the Fourier series shows
+that Brownian motion is a sum of independent sine waves. Along the way we meet the general Gaussian process and its most famous relative after Brownian motion,
+the fractional Brownian motion of Kolmogorov and Mandelbrot, whose increments remember the past.
+
+\begin{reminder}[from Tomes 3, 4, 6 and 7]
+\emph{Gaussian vectors} (Tome~3, Theorem~6.15): a random vector $X$ of $\R^d$ is Gaussian if every linear form $\langle u,X\rangle$ is Gaussian. Its law is determined by its mean $m$ and covariance
+$\Sigma$, since its characteristic function is $e^{i\langle u,m\rangle-u^{\mathsf T}\Sigma u/2}$; every symmetric positive semi-definite $\Sigma$ is the covariance of a Gaussian vector; uncorrelated components of a
+Gaussian vector are independent; and $AX+b$ is Gaussian. \emph{Brownian motion} (Tome~3, Definition~11.1 and Proposition~11.2): a process with $B_0=0$, continuous paths and independent Gaussian increments
+$B_t-B_s\sim N(0,t-s)$; equivalently a centred Gaussian process with continuous paths and covariance $\min(s,t)$. It exists (Tome~3, Theorem~11.4), it is nowhere differentiable (Tome~3,
+Theorem~11.10), and random walks converge to it (Tome~10, Theorem~3.13). \emph{Kolmogorov's extension theorem} (Tome~6, Theorem~11.8): consistent probabilities $\mu_n$ on $\R^n$ (the image of
+$\mu_{n+1}$ by the projection forgetting the last coordinate is $\mu_n$) come from a unique probability on $\R^\N$ with its product $\sigma$-algebra. \emph{Parseval} (Tome~4, Theorem~6.11): for
+piecewise continuous $2\pi$-periodic $f,g$, $\frac1{2\pi}\int_{-\pi}^{\pi}f\bar g=\sum_{k\in\Z}c_k(f)\overline{c_k(g)}$. \emph{Density} (Tome~6, Theorem~9.7): continuous functions with compact support are dense in $L^2(\R)$; since such a function is a uniform limit of step functions supported in a fixed compact set,
+step functions are dense too. The \emph{Karhunen--Lo\`eve modes} of Brownian motion on $[0,1]$ (Tome~7, Chapter~4): $\sqrt2\sin((n-\frac12)\pi t)$, with eigenvalues $((n-\frac12)\pi)^{-2}$.
+\end{reminder}
+
+\section{Gaussian processes}
+
+A \emph{process} indexed by a set $T$ is a family $(X_t)_{t\in T}$ of random variables on one probability space. Its \emph{finite-dimensional laws} are the laws of the vectors $(X_{t_1},\dots,X_{t_k})$. It is
+\emph{Gaussian} if all of them are Gaussian, and then everything is determined by the mean $m(t)=\mathbb E X_t$ and the covariance $K(s,t)=\operatorname{Cov}(X_s,X_t)$. Such a $K$ is symmetric and
+\emph{positive semi-definite}: $\sum_{j,k}c_jc_kK(t_j,t_k)=\operatorname{Var}\bigl(\sum_jc_jX_{t_j}\bigr)\ge0$ for all finite families. Does every such kernel come from a process? Kolmogorov's theorem
+answers yes, once it is extended from sequences to arbitrary index sets.
+
+For $F\subseteq G\subseteq T$ let $\pi^G_F:\R^G\to\R^F$ be the restriction of functions, and $\pi_F=\pi^T_F$. On $\R^T$ we use the \emph{product $\sigma$-algebra}, generated by the coordinates
+$x\mapsto x(t)$.
+
+\begin{theorem}[Kolmogorov's extension theorem, any index set]\label{thm:kolmext}
+Let $T$ be a set and, for every finite $F\subseteq T$, let $\mu_F$ be a probability on $\R^F$. Suppose the family is \emph{consistent}: for $F\subseteq G$ finite, the image of $\mu_G$ by $\pi^G_F$ is $\mu_F$.
+Then there is a unique probability $\mu$ on $\R^T$ whose image by $\pi_F$ is $\mu_F$ for every finite $F$.
+\end{theorem}
+
+\begin{proof}
+\emph{Countable index sets.} If $S=\{s_1,s_2,\dots\}\subseteq T$ is countable, the laws $\mu_{\{s_1,\dots,s_n\}}$, read on $\R^n$, are consistent in the sense of Tome~6, Theorem~11.8, which gives a probability $\mu_S$ on
+$\R^S\cong\R^\N$ with the right images on the sets $\{s_1,\dots,s_n\}$, and then on every finite $F\subseteq S$ (contained in some $\{s_1,\dots,s_n\}$). By uniqueness (Tome~6, Theorem~6.5, the cylinder sets
+forming a $\pi$-system), $\mu_S$ does not depend on the enumeration, and for countable $S\subseteq S'$ the image of $\mu_{S'}$ by $\pi^{S'}_S$ is $\mu_S$, since both have the images $\mu_F$.
+
+\emph{Events depend on countably many coordinates.} Let $\mathcal A$ be the family of sets $\pi_S^{-1}(A)$ with $S\subseteq T$ countable and $A$ in the product $\sigma$-algebra of $\R^S$. It contains the
+coordinate events, it is stable under complement, and under countable unions: given $\pi_{S_n}^{-1}(A_n)$, let $S=\bigcup S_n$, still countable, and note $\pi_{S_n}^{-1}(A_n)=\pi_S^{-1}\bigl((\pi^S_{S_n})^{-1}A_n\bigr)$.
+So $\mathcal A$ is the whole product $\sigma$-algebra.
+
+\emph{Definition of $\mu$.} Put $\mu(\pi_S^{-1}A)=\mu_S(A)$. If $\pi_S^{-1}A=\pi_{S'}^{-1}A'$, let $S''=S\cup S'$; since $\pi_{S''}$ is onto, $(\pi^{S''}_S)^{-1}A=(\pi^{S''}_{S'})^{-1}A'$, and both sides have
+$\mu_{S''}$-measure $\mu_S(A)=\mu_{S'}(A')$ by the consistency just proved. So $\mu$ is well defined. Countably many events $\pi_{S_n}^{-1}(A_n)$ can be written over the single countable set
+$S=\bigcup S_n$, where $\mu$ is the measure $\mu_S$ transported; so $\mu$ is countably additive. Uniqueness: two such measures agree on the $\pi$-system of finite-dimensional cylinders, which
+generates the product $\sigma$-algebra.
+\end{proof}
+
+\begin{corollary}[Gaussian processes exist]\label{cor:gaussexist}
+For every set $T$, every function $m:T\to\R$ and every symmetric positive semi-definite kernel $K$ on $T$, there is a Gaussian process indexed by $T$ with mean $m$ and covariance $K$, and its
+law on $\R^T$ is unique.
+\end{corollary}
+
+\begin{proof}
+For finite $F$, let $\mu_F$ be the Gaussian law on $\R^F$ with mean $(m(t))_{t\in F}$ and covariance matrix $(K(s,t))_{s,t\in F}$, which is positive semi-definite (Tome~3, Theorem~6.15(b)). The restriction
+$\pi^G_F$ is linear, so the image of $\mu_G$ is Gaussian with the restricted mean and the sub-matrix of covariances (Theorem~6.15(d)), that is $\mu_F$. Apply Theorem~\ref{thm:kolmext} and take $X_t(x)=x(t)$ on
+$\R^T$. Uniqueness: two such laws agree on cylinders.
+\end{proof}
+
+\begin{example}\label{ex:kernels}
+Four kernels on $[0,\infty[$, each positive semi-definite because it is the covariance of something we can build by hand.
+\begin{enumerate}[label=(\alph*)]
+\item $\min(s,t)$: $\min(s,t)=\int_0^\infty\mathbf 1_{[0,s]}\mathbf 1_{[0,t]}$, so $\sum c_jc_k\min(t_j,t_k)=\int\bigl(\sum c_j\mathbf 1_{[0,t_j]}\bigr)^2\ge0$. This is \emph{Brownian motion}, as far as the finite-dimensional laws go.
+\item $\min(s,t)-st$ on $[0,1]$: the covariance of $B_t-tB_1$, the \emph{Brownian bridge}.
+\item $e^{-|t-s|}$: the covariance of the \emph{stationary Ornstein--Uhlenbeck process} $e^{-t}W_{e^{2t}}$ for a Brownian motion $W$, as $\operatorname{Cov}=e^{-s-t}\min(e^{2s},e^{2t})=e^{-|t-s|}$.
+\item $\frac12(s^{2H}+t^{2H}-|t-s|^{2H})$ with $0<H<1$: \emph{fractional Brownian motion}, built in Section~\ref{sec:fbm}.
+\end{enumerate}
+\end{example}
+
+The process of Corollary~\ref{cor:gaussexist} lives on $\R^T$, and here lies a real difficulty when $T=[0,1]$.
+
+\begin{think}
+Is the set $C[0,1]$ of continuous functions an event of the product $\sigma$-algebra of $\R^{[0,1]}$? (By the proof of Theorem~\ref{thm:kolmext}, every event is determined by the values at countably
+many points.)
+\end{think}
+
+It is not: an event $\pi_S^{-1}(A)$ with $S$ countable contains, together with any continuous function, all functions that agree with it on $S$, among them discontinuous ones. So ``the path is
+continuous'' has no probability under Kolmogorov's measure, and in fact nothing can be said about it from the finite-dimensional laws alone: if $U$ is uniform on $[0,1]$, the processes
+$X_t=0$ and $Y_t=\mathbf 1_{\{t=U\}}$ have the same finite-dimensional laws, and one is continuous while the other never is. The way out is to change each $X_t$ on a null set.
+
+\begin{definition}\label{def:modification}
+A process $\tilde X$ is a \emph{modification} of $X$ (on the same space) if $P(\tilde X_t=X_t)=1$ for every $t$. Then $X$ and $\tilde X$ have the same finite-dimensional laws.
+\end{definition}
+
+\section{Kolmogorov's continuity criterion}
+
+The idea is to look at the process only at dyadic points first, where there are countably many, and to show that it is uniformly continuous there.
+
+\begin{theorem}[Kolmogorov and Chentsov]\label{thm:kolmcont}
+Let $(X_t)_{t\in[0,1]^d}$ be a real process, and suppose there are $p,\beta,C>0$ with
+\[
+\mathbb E|X_t-X_s|^p\le C|t-s|^{d+\beta}\qquad\text{for all }s,t\in[0,1]^d,
+\]
+where $|\cdot|$ is the max norm. Then $X$ has a modification $\tilde X$ whose paths are H\"older continuous of every order $\gamma<\beta/p$: for each such $\gamma$ there is a random $K_\gamma<\infty$ with
+$|\tilde X_t-\tilde X_s|\le K_\gamma|t-s|^\gamma$ for all $s,t$.
+\end{theorem}
+
+\begin{proof}
+Fix $\gamma<\beta/p$. Let $D_n=2^{-n}\Z^d\cap[0,1]^d$, the dyadic points of level $n$, and $D=\bigcup_nD_n$. Call $s,t\in D_n$ \emph{neighbours} if $|t-s|\le2^{-n}$. There are at most $(2^n+1)^d3^d$ ordered pairs
+of neighbours, so by Markov's inequality
+\[
+P\Bigl(\max_{\text{neighbours }s,t\in D_n}|X_t-X_s|>2^{-\gamma n}\Bigr)\le(2^n+1)^d3^d\,C2^{-n(d+\beta)}2^{\gamma pn}\le C6^d2^{-n(\beta-\gamma p)}.
+\]
+The right side is summable, so by Borel--Cantelli there is an almost surely finite $N$ with $|X_t-X_s|\le2^{-\gamma n}$ for all neighbours $s,t\in D_n$ and all $n\ge N$.
+
+\emph{Chaining.} Let $m\ge N$ and $s,t\in D$ with $|t-s|\le2^{-m}$. For $n\ge m$ let $s_n=2^{-n}\lfloor2^ns\rfloor$ (coordinatewise), and similarly $t_n$. Each coordinate of $2^ns_n$ and $2^nt_n$ differs by at most
+$1$, because the coordinates of $2^ns$ and $2^nt$ differ by at most $1$; so $s_m,t_m$ are neighbours in $D_m$. And $s_n,s_{n+1}$ are neighbours in $D_{n+1}$, each coordinate of $s_{n+1}-s_n$ being $0$ or
+$2^{-n-1}$. Since $s,t\in D$, $s_n=s$ and $t_n=t$ for $n$ large. Telescoping,
+\[
+|X_t-X_s|\le|X_{t_m}-X_{s_m}|+\sum_{n\ge m}\bigl(|X_{s_{n+1}}-X_{s_n}|+|X_{t_{n+1}}-X_{t_n}|\bigr)\le2^{-\gamma m}+2\sum_{n>m}2^{-\gamma n}\le c_\gamma2^{-\gamma m},
+\]
+with $c_\gamma=1+\frac2{2^\gamma-1}$. Now let $s,t\in D$ with $0<|t-s|\le2^{-N}$, and choose $m\ge N$ with $2^{-m-1}<|t-s|\le2^{-m}$: then $|X_t-X_s|\le c_\gamma2^{-\gamma m}\le2^\gamma c_\gamma|t-s|^\gamma$.
+Being uniformly continuous on the dense subset $D$ of the compact cube, $X|_D$ is bounded, by $R$ say, and for $|t-s|>2^{-N}$, $|X_t-X_s|\le2R\le2R\,2^{\gamma N}|t-s|^\gamma$. So on the event
+$\{N<\infty\}$ the restriction of $X$ to $D$ is H\"older of order $\gamma$, with the random constant $K_\gamma=\max(2^\gamma c_\gamma,2R2^{\gamma N})$.
+
+\emph{Extension.} On $\{N<\infty\}$, $X|_D$ is uniformly continuous on the dense set $D$, so it has a unique continuous extension $\tilde X$ to $[0,1]^d$, still $\gamma$-H\"older with the same constant; on the null
+set $\{N=\infty\}$ put $\tilde X=0$. Each $\tilde X_t$ is a random variable, as a pointwise limit of $X_{t_n}$ with $t_n\in D$ (and $0$ on an event). For $t\in D$, $\tilde X_t=X_t$ almost surely. For other $t$, take $t_n\in D$ with
+$t_n\to t$: $X_{t_n}\to\tilde X_t$ almost surely, and $X_{t_n}\to X_t$ in probability since $P(|X_{t_n}-X_t|>\varepsilon)\le C\varepsilon^{-p}|t_n-t|^{d+\beta}$. A sequence converging in probability has a subsequence
+converging almost surely, so $\tilde X_t=X_t$ almost surely. Finally the event $\{N<\infty\}$ and the constant $K_\gamma$ can be chosen to work for $\gamma=\gamma_j$ along a sequence $\gamma_j\uparrow\beta/p$, hence for all
+$\gamma<\beta/p$ at once.
+\end{proof}
+
+The proof deserves a second look, because it is the prototype of \emph{chaining}: a supremum over a continuum is bounded by a sum, over scales, of maxima over finite sets, and at each scale a union bound
+suffices because the increments get small fast enough to beat the number of pairs.
+
+\begin{corollary}[Brownian motion, a second time]\label{cor:bmholder}
+There is a Brownian motion $(B_t)_{t\ge0}$, and almost surely its paths are H\"older continuous of every order $\gamma<\frac12$ on every bounded interval.
+\end{corollary}
+
+\begin{proof}
+Let $X$ be the centred Gaussian process with covariance $\min(s,t)$ on $[0,\infty[$ (Example~\ref{ex:kernels}(a)). For $s<t$, $X_t-X_s$ is centred Gaussian with variance $t-2s+s=t-s$, so
+$\mathbb E|X_t-X_s|^{2k}=(2k-1)!!\,|t-s|^k$ for every integer $k\ge1$. On $[j,j+1]$ (a translate of $[0,1]$), Theorem~\ref{thm:kolmcont} with $d=1$, $p=2k$, $\beta=k-1$ gives a continuous modification, H\"older of
+every order $<\frac{k-1}{2k}$; letting $k\to\infty$, of every order $<\frac12$. Two continuous modifications on overlapping intervals agree almost surely at the rational points, hence everywhere, so they glue into a
+continuous modification on $[0,\infty[$, with $B_0=X_0=0$ almost surely (we may force $B_0=0$ by setting $B=0$ on a null event). A centred Gaussian process with continuous paths and covariance $\min(s,t)$ is a
+Brownian motion (Tome~3, Proposition~11.2).
+\end{proof}
+
+Order $\frac12$ itself is out of reach: Tome~10, Exercise~3.7 shows that $\sup_{|t-s|\le h}|B_t-B_s|/\sqrt h$ is unbounded, and Chapter~2 finds the exact modulus of continuity $\sqrt{2h\log(1/h)}$.
+The same theorem in dimension two builds the \emph{Brownian sheet}, a random surface (Exercise~\ref{ex:sheet}).
+
+\section{Brownian motion as a Fourier series}
+
+Here is a third construction, in the spirit of Paley, Wiener and Zygmund. Let $(e_n)$ be an orthonormal family in $L^2[0,1]$ and $(\xi_n)$ independent standard Gaussians. The candidate is
+\[
+W_t=\sum_n\xi_n\int_0^te_n(u)\dd u=\sum_n\xi_n\langle\mathbf 1_{[0,t]},e_n\rangle,
+\]
+a sum of independent Gaussians with variances $\langle\mathbf 1_{[0,t]},e_n\rangle^2$, whose sum is at most $\|\mathbf 1_{[0,t]}\|^2=t$ by Bessel's inequality. So the series converges in $L^2$ for each $t$ (the partial sums
+form a Cauchy sequence, their increments being orthogonal). If the family is complete,
+\[
+\operatorname{Cov}(W_s,W_t)=\sum_n\langle\mathbf 1_{[0,s]},e_n\rangle\langle\mathbf 1_{[0,t]},e_n\rangle=\langle\mathbf 1_{[0,s]},\mathbf 1_{[0,t]}\rangle=\min(s,t):
+\]
+the right covariance. We need two concrete orthonormal families, and only the identity of covariances for indicator functions, which Parseval's theorem provides.
+
+\begin{lemma}\label{lem:twobases}
+For $s,t\in[0,1]$:
+\begin{enumerate}[label=(\alph*)]
+\item with $c_0=1$ and $c_n(u)=\sqrt2\cos n\pi u$ ($n\ge1$):
+\[\sum_{n\ge0}\langle\mathbf 1_{[0,s]},c_n\rangle\langle\mathbf 1_{[0,t]},c_n\rangle=st+2\sum_{n\ge1}\frac{\sin n\pi s\,\sin n\pi t}{n^2\pi^2}=\min(s,t);\]
+\item with $k_n(u)=\sqrt2\cos\bigl((n-\frac12)\pi u\bigr)$ ($n\ge1$):
+\[\sum_{n\ge1}\langle\mathbf 1_{[0,s]},k_n\rangle\langle\mathbf 1_{[0,t]},k_n\rangle=\sum_{n\ge1}\frac{2\sin((n-\frac12)\pi s)\sin((n-\frac12)\pi t)}{(n-\frac12)^2\pi^2}=\min(s,t).\]
+\end{enumerate}
+Both families are orthonormal in $L^2[0,1]$.
+\end{lemma}
+
+\begin{proof}
+Orthonormality is a direct computation with $2\cos a\cos b=\cos(a-b)+\cos(a+b)$. The inner products are $\langle\mathbf 1_{[0,s]},c_n\rangle=\sqrt2\frac{\sin n\pi s}{n\pi}$ and
+$\langle\mathbf 1_{[0,s]},k_n\rangle=\sqrt2\frac{\sin((n-\frac12)\pi s)}{(n-\frac12)\pi}$, which gives the middle expressions.
+
+(a) Let $f$, $g$ be the functions on $\R$ of period $2$, even, equal to $\mathbf 1_{[0,s]}$ and $\mathbf 1_{[0,t]}$ on $[0,1]$. They are piecewise continuous; after the change of variable $u=x/\pi$, Parseval reads
+$\frac12\int_{-1}^1fg=\sum_kc_k(f)c_k(g)$ with $c_k(f)=\frac12\int_{-1}^1f(u)e^{-ik\pi u}\dd u=\int_0^1\mathbf 1_{[0,s]}(u)\cos k\pi u\dd u$ by evenness. The left side is $\min(s,t)$. On the right, $c_0(f)c_0(g)=st$ and the terms $k$ and $-k$
+together give $2\langle\mathbf 1_{[0,s]},\cos n\pi\cdot\rangle\langle\mathbf 1_{[0,t]},\cos n\pi\cdot\rangle=\langle\mathbf 1_{[0,s]},c_n\rangle\langle\mathbf 1_{[0,t]},c_n\rangle$.
+
+(b) is proved in the same way, with an extension of period $4$ that is odd about $u=1$, so that only the frequencies $(n-\frac12)\pi$ survive.
+\end{proof}
+
+\begin{proof}[Proof of (b)]
+Let $f$ be the function on $\R$ of period $4$ with $f(u)=\mathbf 1_{[0,s]}(u)$ for $0\le u\le1$, $f(u)=-f(2-u)$ for $1<u\le2$, and $f(-u)=f(u)$. It is even and piecewise continuous, and its
+coefficients are $c_k(f)=\frac12\int_0^2f(u)\cos\frac{k\pi u}2\dd u$. On $[1,2]$, the substitution $u=2-v$ gives $\int_1^2f(u)\cos\frac{k\pi u}2\dd u=-(-1)^k\int_0^1f(v)\cos\frac{k\pi v}2\dd v$, so
+$c_k(f)=0$ for even $k$, and for odd $k=2n-1$,
+\[c_{2n-1}(f)=\int_0^1\mathbf 1_{[0,s]}(u)\cos\bigl((n-\tfrac12)\pi u\bigr)\dd u=\tfrac1{\sqrt2}\langle\mathbf 1_{[0,s]},k_n\rangle .\]
+With $g$ built from $t$ in the same way, $fg=\mathbf 1_{[0,s]}\mathbf 1_{[0,t]}$ on $[0,1]$ and on its three images in $[-2,2]$, so $\frac14\int_{-2}^2fg=\min(s,t)$. On the right of Parseval, the odd
+indices $k=\pm(2n-1)$ contribute $2\cdot\frac12\langle\mathbf 1_{[0,s]},k_n\rangle\langle\mathbf 1_{[0,t]},k_n\rangle$.
+\end{proof}
+
+Uniform convergence of the series needs two tools. The first is an inequality of L\'evy for symmetric sums: the maximum of the partial sums is controlled by the last one. It holds for random elements of
+$C[0,1]$ with the sup norm $\|\cdot\|$; a \emph{random continuous function} is a process with continuous paths, and then $\|X\|=\sup_{t\in\Q\cap[0,1]}|X_t|$ is a random variable.
+
+\begin{lemma}[L\'evy's maximal inequality]\label{lem:levymax}
+Let $Y_1,\dots,Y_N$ be independent random continuous functions on $[0,1]$, each symmetric ($-Y_j$ has the law of $Y_j$), and $S_k=Y_1+\dots+Y_k$. For every $x>0$,
+\[
+P\Bigl(\max_{k\le N}\|S_k\|>x\Bigr)\le2P(\|S_N\|>x).
+\]
+\end{lemma}
+
+\begin{proof}
+Let $\tau$ be the first $k$ with $\|S_k\|>x$, and $R_k=S_N-S_k$. Since $S_k=\frac12\bigl((S_k+R_k)+(S_k-R_k)\bigr)$, on $\{\tau=k\}$ either $\|S_k+R_k\|=\|S_N\|>x$ or $\|S_k-R_k\|>x$. The vector
+$(Y_1,\dots,Y_k,-Y_{k+1},\dots,-Y_N)$ has the law of $(Y_1,\dots,Y_N)$, by independence and symmetry; the event $\{\tau=k\}$ depends only on $Y_1,\dots,Y_k$, and $S_k-R_k$ is the $S_N$ of the flipped vector. Hence
+$P(\tau=k,\|S_k-R_k\|>x)=P(\tau=k,\|S_N\|>x)$, and
+\[P(\tau=k)\le P(\tau=k,\|S_N\|>x)+P(\tau=k,\|S_k-R_k\|>x)=2P(\tau=k,\|S_N\|>x).\]
+Sum over $k\le N$.
+\end{proof}
+
+The second tool bounds the maximum of many Gaussians, which grows only like the square root of the logarithm of their number.
+
+\begin{lemma}[maxima of Gaussians]\label{lem:gaussmax}
+If $G_1,\dots,G_M$ are centred Gaussians (not necessarily independent) with variances at most $\sigma^2$, then $\mathbb E\max_i|G_i|\le\sigma\sqrt{2\log(2M)}$.
+\end{lemma}
+
+\begin{proof}
+For $\lambda>0$, $\mathbb E e^{\lambda|G_i|}\le\mathbb E e^{\lambda G_i}+\mathbb E e^{-\lambda G_i}\le2e^{\lambda^2\sigma^2/2}$. By Jensen's inequality for the convex function $\exp$,
+\[
+e^{\lambda\mathbb E\max_i|G_i|}\le\mathbb E e^{\lambda\max_i|G_i|}\le\sum_i\mathbb E e^{\lambda|G_i|}\le2Me^{\lambda^2\sigma^2/2},
+\]
+so $\mathbb E\max|G_i|\le\frac{\log(2M)}\lambda+\frac{\lambda\sigma^2}2$. Take $\lambda=\sqrt{2\log(2M)}/\sigma$.
+\end{proof}
+
+\begin{theorem}[Paley--Wiener--Zygmund; the Karhunen--Lo\`eve series]\label{thm:wienerseries}
+Let $(\xi_n)_{n\ge0}$ be independent standard Gaussians. Almost surely, the series
+\[
+W_t=\xi_0t+\sqrt2\sum_{n\ge1}\xi_n\frac{\sin n\pi t}{n\pi}\qquad\text{and}\qquad V_t=\sqrt2\sum_{n\ge1}\xi_n\frac{\sin((n-\frac12)\pi t)}{(n-\frac12)\pi}
+\]
+converge uniformly on $[0,1]$, and their sums $(W_t)_{t\le1}$ and $(V_t)_{t\le1}$ are Brownian motions.
+\end{theorem}
+
+\begin{proof}
+Both series have the form $\sum_n\xi_nf_n(t)$ with $f_n(t)=a_n\sin(b_nt)$, where $|a_n|\le\frac2{n}$ and $0<b_n\le\pi n$ for $n\ge1$ (the term $\xi_0t$ is harmless). Group the terms in dyadic blocks
+\[
+D_k(t)=\sum_{2^k\le n<2^{k+1}}\xi_nf_n(t),\qquad k\ge0.
+\]
+\emph{Size of a block.} Let $h=2^{-3k}$ and let $G$ be the grid $\{jh:0\le j\le2^{3k}\}$. Every $t\in[0,1]$ is within $h$ of a grid point, and $|D_k'(u)|\le\sum_{\text{block}}|\xi_n||a_n|b_n\le2\pi\sum_{\text{block}}|\xi_n|$, so
+\[
+\|D_k\|\le\max_{g\in G}|D_k(g)|+2\pi h\sum_{2^k\le n<2^{k+1}}|\xi_n|.
+\]
+Each $D_k(g)$ is centred Gaussian with variance $\sum_{\text{block}}a_n^2\sin^2(b_ng)\le\sum_{n\ge2^k}\frac4{n^2}\le8\cdot2^{-k}$, and $G$ has at most $2^{3k+1}$ points. By Lemma~\ref{lem:gaussmax}, and $\mathbb E|\xi_n|\le1$,
+\[
+\mathbb E\|D_k\|\le\sqrt{8\cdot2^{-k}}\sqrt{2\log(2^{3k+2})}+2\pi2^{-3k}2^k\le c\sqrt k\,2^{-k/2}
+\]
+for $k\ge1$ and a constant $c$.
+
+\emph{Inside a block.} Each term $\xi_nf_n$ is a symmetric random continuous function, and the terms are independent. By Lemma~\ref{lem:levymax} and Markov's inequality,
+\[
+P\Bigl(\max_{2^k\le m<2^{k+1}}\Bigl\|\sum_{2^k\le n\le m}\xi_nf_n\Bigr\|>2^{-k/4}\Bigr)\le2P(\|D_k\|>2^{-k/4})\le2c\sqrt k\,2^{-k/4},
+\]
+which is summable in $k$. By Borel--Cantelli, almost surely, for all $k$ large, every partial sum inside the $k$-th block has norm at most $2^{-k/4}$. Then for $M<M'$ in blocks $k\le k'$, with $k$ large,
+$\bigl\|\sum_{M<n\le M'}\xi_nf_n\bigr\|\le2\sum_{j\ge k}2^{-j/4}$, which tends to $0$: the partial sums form a Cauchy sequence in $C[0,1]$, and converge uniformly to a continuous function.
+
+\emph{The limit is a Brownian motion.} For each $t$, the partial sums also converge in $L^2$, as noted above, so the uniform limit is their $L^2$ limit almost surely. The vectors of partial sums at $t_1,\dots,t_k$ are centred
+Gaussian; their characteristic functions $e^{-u^{\mathsf T}\Sigma_Nu/2}$ converge to that of the limit (as $|e^{ia}-e^{ib}|\le|a-b|$ and $L^2$ convergence implies convergence in mean), and the covariance matrices
+$\Sigma_N$ converge to the covariances of the limit, which are $\min(s,t)$ by Lemma~\ref{lem:twobases}. So the limit is a centred Gaussian process with covariance $\min(s,t)$ and continuous paths, a Brownian motion
+on $[0,1]$ (Tome~3, Proposition~11.2).
+\end{proof}
+
+The second series is the Karhunen--Lo\`eve expansion of Tome~7, Chapter~4, whose uniform convergence was promised there. It is the expansion that converges fastest in mean square: no other orthonormal
+family captures more of the variance with its first $N$ terms (Tome~7). Figure~\ref{fig:wienerseries} shows how few terms already give a convincing Brownian path.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-wienerseries}
+\caption{Partial sums of the Karhunen--Lo\`eve series of Theorem~\ref{thm:wienerseries}, with the same Gaussian coefficients: $N=4$ (smooth, dashed), $N=32$, and $N=1024$ terms. The first mode alone carries
+$\frac8{\pi^2}\approx81\%$ of the variance; the rest is the roughness, spread over all frequencies.}
+\label{fig:wienerseries}
+\end{figure}
+
+\begin{remark}
+Kiyosi It\^o and Makiko Nisio proved in 1968 that the series $\sum_n\xi_n\int_0^te_n$ converges uniformly almost surely for \emph{every} complete orthonormal family $(e_n)$ of $L^2[0,1]$, in whatever order the terms are taken.
+Their theorem is the infinite-dimensional version of the following fact, which the proof above already used in a special case: for sums of independent symmetric random vectors in a separable Banach space,
+convergence in probability, almost sure convergence, and convergence in law are equivalent. L\'evy's own construction of Tome~3 is the same series for the family of \emph{Haar functions}, which makes uniform
+convergence easy because the functions of one level have disjoint supports (Exercise~\ref{ex:haar}).
+\end{remark}
+
+\section{The Wiener integral}\label{sec:wienerint}
+
+The series $W_t=\sum\xi_n\langle\mathbf 1_{[0,t]},e_n\rangle$ suggests a more general object: for $f\in L^2$, the Gaussian variable $\sum\xi_n\langle f,e_n\rangle$, which deserves the name $\int f\dd B$. We define it
+directly from a Brownian motion. For a step function $f=\sum_{j=1}^ka_j\mathbf 1_{]t_{j-1},t_j]}$ with $0\le t_0<\dots<t_k$, let
+\[
+I(f)=\sum_{j=1}^ka_j(B_{t_j}-B_{t_{j-1}}).
+\]
+This does not depend on how $f$ is written (refining the subdivision does not change the sum), it is linear in $f$, and since the increments are independent with variances $t_j-t_{j-1}$, $I(f)$ is centred
+Gaussian with $\mathbb E I(f)^2=\sum a_j^2(t_j-t_{j-1})=\|f\|_2^2$. By polarization $\mathbb E I(f)I(g)=\langle f,g\rangle$.
+
+\begin{theorem}[the Wiener integral]\label{thm:wienerint}
+The map $I$ extends uniquely to a linear isometry $f\mapsto\int_0^\infty f\dd B$ from $L^2[0,\infty[$ into $L^2(P)$. Every finite family $\bigl(\int f_1\dd B,\dots,\int f_k\dd B\bigr)$ is a centred Gaussian vector with
+covariances $\langle f_j,f_l\rangle$. In particular $\int f\dd B$ and $\int g\dd B$ are independent when $f\perp g$.
+\end{theorem}
+
+\begin{proof}
+Step functions are dense in $L^2[0,\infty[$ (reminder). An isometry defined on a dense subspace sends Cauchy sequences to Cauchy sequences, so it extends uniquely and continuously, by completeness of $L^2(P)$
+(Tome~6, Theorem~9.4), and the extension is still a linear isometry. For step functions $f_1,\dots,f_k$ the vector $(I(f_j))_j$ is Gaussian, being a linear image of finitely many independent increments; for general
+$f_j$, approximate each by step functions in $L^2$ and pass to the limit in the characteristic functions, as in the proof of Theorem~\ref{thm:wienerseries}. Uncorrelated components of a Gaussian vector are
+independent.
+\end{proof}
+
+So $\int_0^tf\dd B$ is a Gaussian process with independent increments, of variance $\int_0^tf^2$, and one can check that it has a continuous modification (Exercise~\ref{ex:ou}). Two classical consequences:
+integration by parts, $\int_0^1t\dd B_t=B_1-\int_0^1B_t\dd t$ (Exercise~\ref{ex:intbyparts}), and the \emph{Brownian motion on the whole line}: take two independent Brownian motions $B^+$, $B^-$ and set
+$B_t=B^+_t$ for $t\ge0$, $B_t=B^-_{-t}$ for $t<0$. For $f\in L^2(\R)$, $\int_\R f\dd B=\int_0^\infty f(u)\dd B^+_u+\int_0^\infty f(-u)\dd B^-_u$ is again an isometry, from $L^2(\R)$, and its law is invariant under
+translations of $f$: the covariances $\langle f(\cdot+a),g(\cdot+a)\rangle=\langle f,g\rangle$ do not change. This invariance, together with scaling, is what the next section exploits.
+
+\begin{beauty}
+The Wiener integral makes Brownian motion into a geometric object: the map $f\mapsto\int f\dd B$ is an isometric copy of the Hilbert space $L^2$ inside the space of random variables, and every Gaussian question
+about $B$ becomes a question about angles and lengths of functions. Independence is orthogonality, the covariance is the inner product, and the three constructions of this chapter are three choices of orthonormal
+basis for one and the same object.
+\end{beauty}
+
+\section{Fractional Brownian motion}\label{sec:fbm}
+
+In 1951 the British hydrologist Harold Edwin Hurst, who had spent decades measuring the Nile to plan its dams, published a puzzling statistic. Over a period of length $n$, the range of the cumulated deviations of
+the yearly river flow from its mean, divided by the standard deviation, grew like $n^H$ with $H$ near $0.73$, not like $n^{1/2}$ as independent years would give. Wet years cluster, and so do dry ones, over spans of
+decades. In 1968 Beno\^it Mandelbrot and John Van Ness explained Hurst's law by a Gaussian process with stationary increments that scales like $t^H$. Kolmogorov had already met it in 1940, studying turbulence.
+
+\begin{theorem}[fractional Brownian motion]\label{thm:fbm}
+Let $0<H<1$. There is a centred Gaussian process $(X_t)_{t\ge0}$ with continuous paths and covariance
+\[
+\operatorname{Cov}(X_s,X_t)=\tfrac12\bigl(s^{2H}+t^{2H}-|t-s|^{2H}\bigr).
+\]
+It has stationary increments ($X_{t+h}-X_h$ has the law of $X_t$, as a process in $t$), it is self-similar ($c^{-H}X_{ct}$ has the law of $X_t$, as a process), and its paths are H\"older continuous of every order $\gamma<H$.
+For $H=\frac12$ it is Brownian motion.
+\end{theorem}
+
+\begin{proof}
+Let $B$ be a Brownian motion on the whole line, and for $t\ge0$ put
+\[
+g_t(u)=(t-u)_+^{H-1/2}-(-u)_+^{H-1/2},\qquad u\in\R,
+\]
+where $x_+=\max(x,0)$ and $0^{H-1/2}$ is read as $0$ (for $H=\frac12$, $g_t=\mathbf 1_{]0,t]}$). The function $g_t$ is in $L^2(\R)$: near $u=t$ and $u=0$ its square behaves like $|u-t|^{2H-1}$ or $|u|^{2H-1}$, integrable since
+$2H-1>-1$; for $u\to-\infty$, the mean value theorem gives $|g_t(u)|\le|H-\frac12|\,t\,|u|^{H-3/2}$, and $|u|^{2H-3}$ is integrable at infinity since $2H-3<-1$. Let $Y_t=\int_\R g_t\dd B$, a centred Gaussian process
+(Theorem~\ref{thm:wienerint}).
+
+\emph{Stationary increments.} $g_{t+h}-g_h=g_t(\cdot-h)$, a translate. Since the covariances of a Wiener integral are inner products, which translations preserve, the process $(Y_{t+h}-Y_h)_t$ has the same covariances as
+$(Y_t)_t$, hence the same law. \emph{Scaling.} $g_{ct}(u)=c^{H-1/2}g_t(u/c)$, so $\|g_{ct}\|^2=c^{2H-1}\cdot c\|g_t\|^2=c^{2H}\|g_t\|^2$, and more generally $\langle g_{cs},g_{ct}\rangle=c^{2H}\langle g_s,g_t\rangle$. Hence
+$\operatorname{Var}Y_t=\kappa^2t^{2H}$ with $\kappa=\|g_1\|>0$, and $\operatorname{Var}(Y_t-Y_s)=\operatorname{Var}Y_{|t-s|}=\kappa^2|t-s|^{2H}$. Polarization,
+$\operatorname{Cov}(Y_s,Y_t)=\frac12\bigl(\operatorname{Var}Y_s+\operatorname{Var}Y_t-\operatorname{Var}(Y_t-Y_s)\bigr)$, gives $\kappa^2$ times the announced covariance. Put $X=Y/\kappa$.
+
+\emph{Continuity.} $\mathbb E|X_t-X_s|^{2k}=(2k-1)!!\,|t-s|^{2Hk}$, so Theorem~\ref{thm:kolmcont} with $p=2k$, $\beta=2Hk-1$ (positive for $k$ large) gives a continuous modification, H\"older of every order
+$<H-\frac1{2k}$, on each $[j,j+1]$; let $k\to\infty$ and glue as in Corollary~\ref{cor:bmholder}. The modification does not change the finite-dimensional laws, so stationarity and scaling hold for it. For $H=\frac12$ the
+covariance is $\frac12(s+t-|t-s|)=\min(s,t)$.
+\end{proof}
+
+\begin{think}
+For $H\neq\frac12$, are the increments over disjoint intervals positively or negatively correlated? Compute $\operatorname{Cov}(X_1-X_0,X_2-X_1)$ before reading on.
+\end{think}
+
+Polarization gives $\operatorname{Cov}(X_1,X_2-X_1)=\frac12(2^{2H}-2)$, positive for $H>\frac12$ and negative for $H<\frac12$. More generally the correlation of $X_1-X_0$ with $X_{n+1}-X_n$ behaves like
+$H(2H-1)n^{2H-2}$ (Exercise~\ref{ex:fbmcorr}). For $H>\frac12$ the correlations decay so slowly that they are not summable: the process has \emph{long memory}, Hurst's Nile. For $H<\frac12$ it is anti-persistent, each
+step tending to undo the last, and its paths are rougher than Brownian ones (Figure~\ref{fig:fbm}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-fbm}
+\caption{Fractional Brownian motions on $[0,1]$ with $H=0.25$, $0.5$ (Brownian motion) and $0.75$, sampled exactly at $512$ points from their covariance (Cholesky factorization). Rough and anti-persistent, then
+Brownian, then smooth and persistent.}
+\label{fig:fbm}
+\end{figure}
+
+\begin{remark}
+Fractional Brownian motion is not a martingale and, for $H\neq\frac12$, its quadratic variation along fine partitions is $0$ or infinite (Exercise~\ref{ex:fbmqv}). The stochastic calculus of Chapters~3--4, built on
+martingales, does not apply to it, which is one reason why Brownian motion, with $H=\frac12$ exactly, is the canonical random motion.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:notevent}
+Let $X_t=0$ and $Y_t=\mathbf 1_{\{t=U\}}$ for $t\in[0,1]$, with $U$ uniform on $[0,1]$. Show that $Y$ is a modification of $X$, that $P(Y\text{ is continuous})=0$, and that the set $\{x:\sup_tx(t)\ge1\}$ is not in the product $\sigma$-algebra of $\R^{[0,1]}$. So the law of a
+process on $\R^{[0,1]}$ cannot tell whether its paths reach $1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bridgeseries}
+Show that $W_t-tW_1=\sqrt2\sum_{n\ge1}\xi_n\frac{\sin n\pi t}{n\pi}$ for the series $W$ of Theorem~\ref{thm:wienerseries}, and deduce the expansion of the Brownian bridge (Example~\ref{ex:kernels}(b)) as a random
+Fourier sine series. Use it to show that $\int_0^1(B_t-tB_1)^2\dd t$ has the law of $\sum_{n\ge1}\frac{\xi_n^2}{n^2\pi^2}$, and compute its mean.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:intbyparts}
+Show that $\int_0^1t\dd B_t=B_1-\int_0^1B_t\dd t$, where the last integral is a Riemann integral of the continuous path. Deduce that $\int_0^1B_t\dd t$ is $N(0,\frac13)$, and compute its covariance with $B_1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sheet}
+\emph{The Brownian sheet.} Show that $K((s_1,s_2),(t_1,t_2))=\min(s_1,t_1)\min(s_2,t_2)$ is positive semi-definite on $[0,1]^2$, and that the Gaussian process with this covariance has a continuous modification,
+H\"older of every order $<\frac12$. (Bound $\mathbb E(X_t-X_s)^2$ by $2|t-s|$ in the max norm.) Show that along each horizontal line $s_2=c>0$, $X_{(\cdot,c)}/\sqrt c$ is a Brownian motion.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ou}
+Let $f\in L^2_{\mathrm{loc}}[0,\infty[$ (square integrable on bounded intervals). Show that $M_t=\int_0^tf\dd B$ has a continuous modification. (Write $M_t=W_{A(t)}$ in law with $A(t)=\int_0^tf^2$, or apply
+Theorem~\ref{thm:kolmcont} after a time change.) Then show that $X_t=e^{-t}\bigl(X_0+\sqrt2\int_0^te^u\dd B_u\bigr)$, with $X_0\sim N(0,1)$ independent of $B$, is a centred Gaussian process with covariance $e^{-|t-s|}$:
+the stationary Ornstein--Uhlenbeck process of Example~\ref{ex:kernels}(c).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:haar}
+\emph{L\'evy's construction as a series.} The Haar functions on $[0,1]$ are $h_0=1$ and $h_{n,k}=2^{n/2}\bigl(\mathbf 1_{[2k2^{-n-1},(2k+1)2^{-n-1}[}-\mathbf 1_{[(2k+1)2^{-n-1},(2k+2)2^{-n-1}[}\bigr)$ for $n\ge0$, $0\le k<2^n$.
+Their integrals $s_{n,k}(t)=\int_0^th_{n,k}$ are tents of height $2^{-n/2-1}$ with disjoint supports for fixed $n$. Show that $\sum_{n,k}\xi_{n,k}s_{n,k}$ converges uniformly almost surely, using only
+$\|\sum_k\xi_{n,k}s_{n,k}\|=2^{-n/2-1}\max_k|\xi_{n,k}|$. (That the limit is a Brownian motion would follow from completeness of the Haar system, which you may admit; Tome~3 proved it differently.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fbmcorr}
+For fractional Brownian motion with index $H$, show that $\rho(n)=\operatorname{Cov}(X_1-X_0,X_{n+1}-X_n)=\frac12\bigl((n+1)^{2H}-2n^{2H}+(n-1)^{2H}\bigr)$ for $n\ge1$, and that $\rho(n)\sim H(2H-1)n^{2H-2}$ as $n\to\infty$. For
+which $H$ is $\sum_n|\rho(n)|$ finite? Show that $\operatorname{Var}\bigl(\sum_{j=1}^n(X_j-X_{j-1})\bigr)=n^{2H}$, and explain Hurst's observation.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:fbmqv}
+Let $X$ be a fractional Brownian motion of index $H$ and $Q_n=\sum_{j=1}^n(X_{j/n}-X_{(j-1)/n})^2$. Show that $\mathbb E Q_n=n^{1-2H}$. For $H>\frac12$ deduce that $Q_n\to0$ in $L^1$. For $H<\frac12$, show that
+$\operatorname{Var}Q_n=2n^{-4H}\sum_{j,k\le n}\rho(|j-k|)^2$ with $\rho(0)=1$ and $\rho$ as in Exercise~\ref{ex:fbmcorr}, that this is $O(n^{1-4H})$, and deduce that $Q_n\to\infty$ in probability.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:notevent}
+For the last part, every event of the product $\sigma$-algebra is determined by countably many coordinates (proof of Theorem~\ref{thm:kolmext}).
+\end{hint}
+
+\begin{hint}{ex:bridgeseries}
+$\xi_0t$ is the only term not vanishing at $t=1$, and every term $\sin n\pi t$ vanishes there. For the integral, use the orthogonality of the sines on $[0,1]$.
+\end{hint}
+
+\begin{hint}{ex:intbyparts}
+Check it for the step function approximations $\sum_j t_{j-1}\mathbf 1_{]t_{j-1},t_j]}$ of $t$, by summation by parts, and pass to the limit.
+\end{hint}
+
+\begin{hint}{ex:sheet}
+The kernel is $\int\mathbf 1_{[0,s_1]\times[0,s_2]}\mathbf 1_{[0,t_1]\times[0,t_2]}$, an inner product in $L^2([0,1]^2)$.
+\end{hint}
+
+\begin{hint}{ex:ou}
+For the covariance of $X$, compute $\mathbb E X_sX_t$ with Theorem~\ref{thm:wienerint}, for $s\le t$.
+\end{hint}
+
+\begin{hint}{ex:haar}
+Use $P(\max_{k<2^n}|\xi_{n,k}|>2\sqrt n)\le2^ne^{-2n}$.
+\end{hint}
+
+\begin{hint}{ex:fbmcorr}
+Write the increments' covariance with polarization: $2\operatorname{Cov}(a,b)=\operatorname{Var}(a+b)-\operatorname{Var}a-\operatorname{Var}b$, with $a=X_1-X_0$ and $b=X_{n+1}-X_n$ grouped as differences of $X$ over
+intervals of lengths $n+1$, $n$ and $n-1$. For the asymptotics, it is a second difference of $x^{2H}$.
+\end{hint}
+
+\begin{hint}{ex:fbmqv}
+For centred jointly Gaussian $U,V$, $\operatorname{Cov}(U^2,V^2)=2\operatorname{Cov}(U,V)^2$. Then use $\sum_{k<n}\rho(k)^2=O(1)$ when $4H-4<-1$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:notevent}
+\idea The two processes differ only at one random time, which no fixed time can catch; but a supremum over all times does catch it, and such a supremum looks at uncountably many coordinates.
+\writeup For fixed $t$, $P(Y_t\neq X_t)=P(U=t)=0$, so $Y$ is a modification of $X$. Every path of $Y$ jumps from $0$ to $1$ at $t=U$, so $P(Y\text{ continuous})=0$. Suppose
+$E=\{x:\sup_tx(t)\ge1\}$ were in the product $\sigma$-algebra; then $E=\pi_S^{-1}(A)$ for a countable $S$ and some $A$. Pick $t_0\in[0,1]\setminus S$. The zero function and the indicator of $\{t_0\}$ agree on $S$, so
+either both are in $E$ or neither is; but the indicator is in $E$ and $0$ is not. Since $X$ and $Y$ have the same law on $\R^{[0,1]}$ while $\sup X=0$ and $\sup Y=1$, the law alone indeed cannot see the supremum: continuity and
+suprema must come from a good choice of modification.
+\end{solution}
+
+\begin{solution}{ex:bridgeseries}
+\idea The bridge is what remains after removing the straight line from $0$ to $B_1$; in the series, the line is exactly the first term.
+\writeup At $t=1$ all the sines vanish, so $W_1=\xi_0$ and $W_t-tW_1=\sqrt2\sum_{n\ge1}\xi_n\frac{\sin n\pi t}{n\pi}$, uniformly convergent. Since $W$ is a Brownian motion, the left side is a Brownian bridge. The functions
+$\sqrt2\sin n\pi t$ are orthonormal on $[0,1]$, and the series converges uniformly, so we may integrate the square term by term (the cross terms vanish by orthogonality):
+$\int_0^1(W_t-tW_1)^2\dd t=\sum_{n\ge1}\frac{\xi_n^2}{n^2\pi^2}$. Its mean is $\sum\frac1{n^2\pi^2}=\frac16$, which agrees with $\int_0^1t(1-t)\dd t=\frac16$.
+\end{solution}
+
+\begin{solution}{ex:intbyparts}
+\idea Summation by parts is integration by parts for step functions; both sides are continuous in $L^2$, so the identity survives the limit.
+\writeup Let $0=t_0<\dots<t_m=1$ with mesh $\to0$, and $f_m=\sum_jt_{j-1}\mathbf 1_{]t_{j-1},t_j]}$, which tends to $t\mapsto t$ in $L^2[0,1]$. Summation by parts:
+$\sum_jt_{j-1}(B_{t_j}-B_{t_{j-1}})=B_1-\sum_jB_{t_j}(t_j-t_{j-1})$. As the mesh tends to $0$, the left side tends to $\int_0^1t\dd B_t$ in $L^2$ by the isometry, and the Riemann sum on the right tends to
+$\int_0^1B_t\dd t$ surely, by continuity of the path; limits in $L^2$ and almost sure limits agree almost surely. So $\int_0^1B_t\dd t=\int_0^1(1-t)\dd B_t$, a Wiener integral, hence Gaussian, centred, with variance
+$\int_0^1(1-t)^2\dd t=\frac13$, and its covariance with $B_1=\int_0^11\dd B$ is $\int_0^1(1-t)\dd t=\frac12$.
+\end{solution}
+
+\begin{solution}{ex:sheet}
+\idea Positive semi-definiteness is easiest when the kernel is an inner product of indicators; continuity comes from Kolmogorov in dimension $d=2$ with high moments.
+\writeup With $R_s=[0,s_1]\times[0,s_2]$, $K(s,t)=\lambda(R_s\cap R_t)=\langle\mathbf 1_{R_s},\mathbf 1_{R_t}\rangle$, so $\sum c_jc_kK(t_j,t_k)=\|\sum c_j\mathbf 1_{R_{t_j}}\|^2\ge0$, and the process exists by
+Corollary~\ref{cor:gaussexist}. Then $\mathbb E(X_t-X_s)^2=\|\mathbf 1_{R_t}-\mathbf 1_{R_s}\|^2=\lambda(R_t\triangle R_s)$, and the symmetric difference of two rectangles in $[0,1]^2$ with corners at max-distance $\delta$ has
+area at most $2\delta$. Gaussianity gives $\mathbb E|X_t-X_s|^{2k}\le(2k-1)!!(2|t-s|)^k$, so Theorem~\ref{thm:kolmcont} with $d=2$, $p=2k$, $\beta=k-2$ gives H\"older continuity of every order $<\frac{k-2}{2k}$, hence of
+every order $<\frac12$. On the line $s_2=c$, $\operatorname{Cov}(X_{(s,c)},X_{(t,c)})=c\min(s,t)$, so $X_{(\cdot,c)}/\sqrt c$ is a centred Gaussian process with continuous paths and covariance $\min(s,t)$: a Brownian motion.
+\end{solution}
+
+\begin{solution}{ex:ou}
+\idea A Wiener integral $\int_0^tf\dd B$ has independent increments of variance $\int_s^tf^2$: it is a Brownian motion run with the clock $A(t)$, and Kolmogorov's criterion sees this through its moments.
+\writeup Fix $T$ and let $A(t)=\int_0^tf^2$, continuous and non-decreasing. Then $\mathbb E|M_t-M_s|^{2k}=(2k-1)!!(A(t)-A(s))^k$. Run the process with the clock $A$: for $a\in[0,A(T)]$ let
+$\tau(a)=\min\{t:A(t)\ge a\}$, so that $A(\tau(a))=a$, and $Z_a=M_{\tau(a)}$. Then $\mathbb E|Z_a-Z_b|^{2k}=(2k-1)!!|a-b|^k$, and Theorem~\ref{thm:kolmcont} gives a continuous modification $\tilde Z$. Put
+$\tilde M_t=\tilde Z_{A(t)}$, continuous in $t$. For fixed $t$, $\tilde M_t=Z_{A(t)}=M_{\tau(A(t))}$ almost surely, and $M_{\tau(A(t))}-M_t$ has variance $A(t)-A(\tau(A(t)))=0$; so $\tilde M$ is a modification of $M$.
+For the Ornstein--Uhlenbeck process, with $s\le t$ and the independence of $X_0$ and $B$,
+\[
+\mathbb E X_sX_t=e^{-s-t}\Bigl(1+2\int_0^se^{2u}\dd u\Bigr)=e^{-s-t}\bigl(1+e^{2s}-1\bigr)=e^{-(t-s)}.
+\]
+\end{solution}
+
+\begin{solution}{ex:haar}
+\idea At level $n$ the tents do not overlap, so the norm of the level is the largest coefficient times the height of one tent; the largest of $2^n$ Gaussians is about $\sqrt{2n\log2}$, tiny against $2^{n/2}$.
+\writeup For fixed $n$, the supports of $s_{n,k}$ are disjoint, so $\|\sum_k\xi_{n,k}s_{n,k}\|=2^{-n/2-1}\max_k|\xi_{n,k}|$. By a union bound and $P(|\xi|>x)\le e^{-x^2/2}$ for $x\ge1$,
+$P(\max_k|\xi_{n,k}|>2\sqrt n)\le2^ne^{-2n}$, summable. By Borel--Cantelli, almost surely $\max_k|\xi_{n,k}|\le2\sqrt n$ for $n$ large, and then $\sum_n\|\sum_k\xi_{n,k}s_{n,k}\|\le\sum_n\sqrt n2^{-n/2}<\infty$. The series of levels
+converges absolutely in $C[0,1]$, uniformly.
+\end{solution}
+
+\begin{solution}{ex:fbmcorr}
+\idea Everything about fractional Brownian motion follows from one formula: the variance of an increment over an interval of length $\ell$ is $\ell^{2H}$. Express any covariance of increments through variances of
+increments, and the answer is a second difference.
+\writeup By stationarity, $\operatorname{Var}(X_b-X_a)=|b-a|^{2H}$. With $a=X_1-X_0$, $b=X_{n+1}-X_n$: $a+b+(X_n-X_1)=X_{n+1}-X_0$, and the identity
+$2\operatorname{Cov}(X_1-X_0,X_{n+1}-X_n)=\operatorname{Var}(X_{n+1}-X_0)+\operatorname{Var}(X_n-X_1)-\operatorname{Var}(X_{n}-X_0)-\operatorname{Var}(X_{n+1}-X_1)$ (expand all four in terms of $X_0,X_1,X_n,X_{n+1}$)
+gives $\rho(n)=\frac12((n+1)^{2H}+(n-1)^{2H}-2n^{2H})$. With $\phi(x)=x^{2H}$, this is $\frac12(\phi(n+1)-2\phi(n)+\phi(n-1))=\frac12\phi''(\theta)$ for some $\theta\in(n-1,n+1)$, and
+$\frac12\phi''(\theta)=H(2H-1)\theta^{2H-2}\sim H(2H-1)n^{2H-2}$. So $\sum|\rho(n)|<\infty$ exactly when $2H-2<-1$, i.e.\ $H<\frac12$ (and $\rho=0$ for $H=\frac12$). Finally the sum of the first $n$ increments is $X_n-X_0$,
+of variance $n^{2H}$: the cumulated deviations of $n$ years grow like $n^H$, and with $H\approx0.73$ the years are positively correlated over long spans, which is what Hurst saw in the Nile.
+\end{solution}
+
+\begin{solution}{ex:fbmqv}
+\idea The mean is immediate from scaling. For $H<\frac12$ the mean blows up, and one needs the variance to be small compared with the square of the mean, which the decay of correlations provides.
+\writeup Each increment over $[\frac{j-1}n,\frac jn]$ has variance $n^{-2H}$, so $\mathbb E Q_n=n\cdot n^{-2H}$, which tends to $0$ when $H>\frac12$: $Q_n\to0$ in $L^1$. For centred jointly Gaussian $U,V$ with
+$\operatorname{Cov}(U,V)=c$, write $V=\frac c{\operatorname{Var}U}U+V'$ with $V'$ independent of $U$; then $\operatorname{Cov}(U^2,V^2)=2c^2$. The normalized increments $n^H(X_{j/n}-X_{(j-1)/n})$ have, by scaling, the joint
+law of the integer increments, whose covariances are $\rho(|j-k|)$. Hence $\operatorname{Var}Q_n=n^{-4H}\sum_{j,k\le n}2\rho(|j-k|)^2\le2n^{1-4H}\sum_{m\ge0}\rho(m)^2\cdot2$, and $\sum\rho(m)^2<\infty$ since
+$\rho(m)^2=O(m^{4H-4})$ and $4H-4<-1$. Therefore $\operatorname{Var}Q_n/(\mathbb E Q_n)^2=O(n^{1-4H}/n^{2-4H})=O(1/n)\to0$, and by Chebyshev, $P(Q_n<\frac12\mathbb E Q_n)\to0$, while $\mathbb E Q_n=n^{1-2H}\to\infty$. So
+$Q_n\to\infty$ in probability.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} R.~Brown, ``A brief account of microscopical observations made in the months of June, July and August, 1827, on the particles contained in the pollen of plants; and on the general existence of
+active molecules in organic and inorganic bodies'', \emph{Philosophical Magazine} 4 (1828), 161--173. A.~Einstein, ``\"Uber die von der molekularkinetischen Theorie der W\"arme geforderte Bewegung von in ruhenden
+Fl\"ussigkeiten suspendierten Teilchen'', \emph{Annalen der Physik} 17 (1905), 549--560. J.~Perrin, ``Mouvement brownien et r\'ealit\'e mol\'eculaire'', \emph{Annales de Chimie et de Physique} (8) 18 (1909), 5--114
+(English translation by F.~Soddy, \emph{Brownian Movement and Molecular Reality}, Taylor and Francis, 1910), and \emph{Les Atomes}, Alcan, Paris, 1913, whose preface contains the remark on curves without tangents
+paraphrased in the opening. L.~Bachelier, ``Th\'eorie de la sp\'eculation'', \emph{Annales scientifiques de l'\'Ecole Normale Sup\'erieure} (3) 17 (1900), 21--86. N.~Wiener, ``Differential-space'', \emph{Journal of
+Mathematics and Physics} 2 (1923), 131--174. R.~E.~A.~C.~Paley, N.~Wiener and A.~Zygmund, ``Notes on random functions'', \emph{Mathematische Zeitschrift} 37 (1933), 647--668. A.~N.~Kolmogorov, \emph{Grundbegriffe der
+Wahrscheinlichkeitsrechnung}, Springer, 1933. E.~Slutsky, ``Alcune proposizioni sulla teoria delle funzioni aleatorie'', \emph{Giornale dell'Istituto Italiano degli Attuari} 8 (1937), 183--199 (the continuity criterion,
+credited there to Kolmogorov). N.~N.~Chentsov, ``Weak convergence of stochastic processes whose trajectories have no discontinuities of the second kind'', \emph{Theory of Probability and its Applications} 1 (1956),
+140--144. K.~Karhunen, ``\"Uber lineare Methoden in der Wahrscheinlichkeitsrechnung'', \emph{Annales Academiae Scientiarum Fennicae} A I 37 (1947). K.~It\^o and M.~Nisio, ``On the convergence of sums of independent Banach
+space valued random variables'', \emph{Osaka Journal of Mathematics} 5 (1968), 35--48. H.~E.~Hurst, ``Long-term storage capacity of reservoirs'', \emph{Transactions of the American Society of Civil Engineers} 116 (1951),
+770--799. B.~B.~Mandelbrot and J.~W.~Van Ness, ``Fractional Brownian motions, fractional noises and applications'', \emph{SIAM Review} 10 (1968), 422--437. A.~N.~Kolmogorov, ``Wienersche Spiralen und einige andere
+interessante Kurven im Hilbertschen Raum'', \emph{Doklady Akad.\ Nauk SSSR} 26 (1940), 115--118.
+\item J.-F.~Le Gall, \emph{Brownian Motion, Martingales, and Stochastic Calculus}, Springer, 2016, Chapters~1--2. Gaussian spaces, the Wiener integral and Kolmogorov's criterion, the route followed here.
+\item P.~M\"orters and Y.~Peres, \emph{Brownian Motion}, Cambridge University Press, 2010, Chapter~1. Constructions and first properties, with the Paley--Wiener series as an exercise.
+\item J.-P.~Kahane, \emph{Some Random Series of Functions}, 2nd ed., Cambridge University Press, 1985. Random Fourier series in depth, from L\'evy's inequality to the Salem--Zygmund theorems.
+\item D.~Nualart, \emph{The Malliavin Calculus and Related Topics}, 2nd ed., Springer, 2006, Chapter~5. Fractional Brownian motion and its stochastic calculus.
+\item S.~G.~Brush, ``A history of random processes I: Brownian movement from Brown to Perrin'', \emph{Archive for History of Exact Sciences} 5 (1968), 1--36. The physics story told with care.
+\end{itemize}

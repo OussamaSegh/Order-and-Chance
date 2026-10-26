@@ -642,6 +642,66 @@ def prime_constellations(rings=56, r0=0.55):
     return "\n".join(lines) + "\n"
 
 
+def dyson_fan(n=16, steps=700, seed=11):
+    """Dyson Brownian motion: the eigenvalues of a Hermitian matrix Brownian motion started at 0, plotted
+    against time. The n paths are born together, repel, never cross, and spread inside the curves
+    +-2 sqrt(t), the edges of the semicircle law (Tome 11, Chapters 6 and 10). Time runs left to right."""
+    import random
+    rnd = random.Random(seed)
+    dt = 1.0 / steps
+    H = [[0j] * n for _ in range(n)]
+    paths = [[0.0] * n]
+    def eig(M):                          # Hermitian eigenvalues by Jacobi rotations on the real 2n form
+        import cmath
+        m = 2 * n
+        A = [[0.0] * m for _ in range(m)]
+        for i in range(n):
+            for j in range(n):
+                a, b = M[i][j].real, M[i][j].imag
+                A[i][j] = a; A[i + n][j + n] = a; A[i][j + n] = -b; A[i + n][j] = b
+        for _ in range(60):
+            off = 0.0
+            for p in range(m):
+                for q in range(p + 1, m):
+                    if abs(A[p][q]) < 1e-12:
+                        continue
+                    off += A[p][q] ** 2
+                    th = 0.5 * math.atan2(2 * A[p][q], A[q][q] - A[p][p])
+                    c, s_ = math.cos(th), math.sin(th)
+                    for k in range(m):
+                        apk, aqk = A[p][k], A[q][k]
+                        A[p][k], A[q][k] = c * apk - s_ * aqk, s_ * apk + c * aqk
+                    for k in range(m):
+                        akp, akq = A[k][p], A[k][q]
+                        A[k][p], A[k][q] = c * akp - s_ * akq, s_ * akp + c * akq
+            if off < 1e-18:
+                break
+        ev = sorted(A[i][i] for i in range(m))
+        return ev[::2]                   # each eigenvalue appears twice in the real form
+    sd = math.sqrt(dt / n)
+    for st in range(1, steps + 1):
+        for i in range(n):
+            H[i][i] += rnd.gauss(0, sd)
+            for j in range(i + 1, n):
+                z = complex(rnd.gauss(0, sd / math.sqrt(2)), rnd.gauss(0, sd / math.sqrt(2)))
+                H[i][j] += z; H[j][i] = H[i][j].conjugate()
+        if st % 7 == 0 or st == steps:
+            paths.append(eig(H))
+    T = len(paths) - 1
+    xs = [-1.75 + 3.5 * (k / T) for k in range(T + 1)]
+    ky = 0.72
+    lines = ["%% Dyson Brownian motion, %d eigenvalue paths of a Hermitian matrix Brownian motion (seed %d)." % (n, seed)]
+    edge = lambda t: 2 * math.sqrt(t)
+    for sg in (1, -1):
+        pts = ["(%.4fin,%.4fin)" % (-1.75 + 3.5 * u / 100, sg * ky * edge(u / 100)) for u in range(101)]
+        lines.append(r"\draw[accent,line width=0.5pt,opacity=0.45,dashed] " + "--".join(pts) + ";")
+    for j in range(n):
+        w = 1.25 - 0.6 * abs(j - (n - 1) / 2) / ((n - 1) / 2)
+        pts = ["(%.4fin,%.4fin)" % (xs[k], ky * paths[k][j]) for k in range(T + 1)]
+        lines.append(r"\draw[accent,line width=%.2fpt,opacity=0.9,line join=round] " % w + "--".join(pts) + ";")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -654,6 +714,7 @@ MOTIFS = {
     "tome8-shapes": farey_tessellation,
     "tome9-structures2": plancherel_young,
     "tome10-chance2": stick_breaking,
+    "tome11-motion": dyson_fan,
     "tome12-arithmetic": ford_circles,
     "tome13-primes": prime_constellations,
     "tomeC1-discrete": boolean_lattice,
