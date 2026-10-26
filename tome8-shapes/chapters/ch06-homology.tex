@@ -1,0 +1,536 @@
+\chapter{Homology}
+
+\begin{center}\itshape
+Count the vertices of a cube, subtract its edges, add its faces: $8-12+6=2$. Do the same for a tetrahedron, an icosahedron or a soccer ball and you get
+$2$ again. Drill a tunnel through the solid and you get $0$. Homology explains the miracle: the alternating count does not see the faces at all, only the
+holes, counted dimension by dimension. With it we prove that an open set of $\R^n$ cannot be an open set of $\R^m$ unless $m=n$, and that at every moment
+two opposite points of the Earth have the same temperature and the same pressure.
+\end{center}
+
+On 14 November 1750, Leonhard Euler wrote to Christian Goldbach from Berlin about a discovery he found astonishing for its simplicity: in every solid
+bounded by plane faces, the number of solid angles plus the number of faces exceeds the number of edges by two. He could not prove it in general, and
+the proof he published in 1758, by slicing off corners one at a time, has a gap. Legendre gave a proof by spherical geometry in 1794, Cauchy another by
+flattening the polyhedron into a plane network in 1813.
+
+Then the counterexamples arrived. In 1813 Simon Lhuilier, a mathematician in Geneva, pointed out solids for which the formula fails: a picture frame,
+whose central tunnel makes $V-E+F=0$; a cube with a smaller cube sitting on top of one face, whose top face is a square with a hole; a solid with a
+hollow inside. Each time the definition of ``polyhedron'' was adjusted to exclude the monster, and each time a new monster appeared. In the 1960s the
+philosopher Imre Lakatos turned this history into \emph{Proofs and Refutations}, a dialogue in a classroom where students rediscover every
+counterexample, and argued that mathematics grows exactly this way: proofs suggest the right definitions, and counterexamples suggest the right proofs.
+
+The right definition was homology. Poincar\'e's Betti numbers counted independent cycles: closed curves that do not bound a piece of surface, closed
+surfaces that do not bound a solid, and so on. For thirty years they were numbers, manipulated with matrices. In the mid-1920s Emmy Noether, in
+G\"ottingen, insisted in lectures and conversations that the cycles modulo the boundaries form a \emph{group}, and that the Betti numbers and the torsion
+coefficients are just its invariants. Heinz Hopf used her viewpoint in 1928 to give a short algebraic proof of the Euler--Poincar\'e formula; Pavel
+Alexandroff and Hopf recorded her influence in the preface of their \emph{Topologie} of 1935. Every theorem of this chapter is a statement about
+these groups.
+
+We build singular homology, which is defined for every space and is obviously a topological invariant, and simplicial homology, which is defined by
+finite matrices and is obviously computable, and we prove that they agree. Then we compute spheres and surfaces, prove invariance of domain and the
+Borsuk--Ulam theorem, and identify the Euler characteristic.
+
+\section{Chain complexes}
+
+\begin{definition}
+A \emph{chain complex} $C$ is a sequence of abelian groups and homomorphisms $\cdots\to C_{k+1}\xrightarrow{\partial}C_k\xrightarrow{\partial}C_{k-1}\to\cdots$ with $\partial\circ\partial=0$, and $C_k=0$ for $k<0$.
+Elements of $Z_k=\ker(\partial\colon C_k\to C_{k-1})$ are \emph{cycles}, elements of $B_k=\partial(C_{k+1})$ are \emph{boundaries}, and the \emph{homology} is $H_k(C)=Z_k/B_k$. A \emph{chain map}
+$f\colon C\to C'$ is a family of homomorphisms with $\partial f=f\partial$; it maps cycles to cycles and boundaries to boundaries, hence induces $f_*\colon H_k(C)\to H_k(C')$. Two chain maps
+$f,g$ are \emph{chain homotopic} if there are $P\colon C_k\to C'_{k+1}$ with $\partial P+P\partial=g-f$; then $f_*=g_*$, because for a cycle $z$, $g(z)-f(z)=\partial P(z)$ is a boundary.
+\end{definition}
+
+A sequence of homomorphisms is \emph{exact} if the image of each map is the kernel of the next. A \emph{short exact sequence} of chain complexes $0\to A\xrightarrow{i}B\xrightarrow{j}C\to0$ consists of chain
+maps with $0\to A_k\to B_k\to C_k\to0$ exact for each $k$.
+
+\begin{lemma}[the zigzag lemma]\label{lem:zigzag}
+A short exact sequence of chain complexes $0\to A\xrightarrow iB\xrightarrow jC\to0$ gives a long exact sequence
+\[\cdots\to H_k(A)\xrightarrow{i_*}H_k(B)\xrightarrow{j_*}H_k(C)\xrightarrow{\delta}H_{k-1}(A)\xrightarrow{i_*}H_{k-1}(B)\to\cdots\to H_0(C)\to0,\]
+where $\delta[c]=[a]$ for $c=j(b)$ and $i(a)=\partial b$. It is natural: a commutative diagram of short exact sequences gives a commutative diagram of long exact sequences.
+\end{lemma}
+
+\begin{proof}
+\emph{$\delta$ is defined.} Given a cycle $c\in C_k$, write $c=j(b)$; then $j(\partial b)=\partial c=0$, so $\partial b=i(a)$ for a unique $a$, and $i(\partial a)=\partial\partial b=0$ gives $\partial a=0$. Another choice $b'=b+i(a')$
+changes $a$ by $\partial a'$, and replacing $c$ by $c+\partial c'$ with $c'=j(b'')$ changes $b$ by $\partial b''$ (plus an element of $i(A)$), which does not change $\partial b$. So $\delta[c]=[a]$ is well defined, and clearly a homomorphism.
+
+\emph{Exactness at $H_k(B)$.} $j_*i_*=0$ since $ji=0$. If $j(b)=\partial c'$ with $c'=j(b')$, then $j(b-\partial b')=0$, so $b-\partial b'=i(a)$, and $a$ is a cycle because $i$ is injective; so $[b]=i_*[a]$.
+
+\emph{At $H_k(C)$.} $\delta j_*[b]=0$ since $\partial b=0$. If $\delta[c]=0$, then $a=\partial a'$, and $b-i(a')$ is a cycle with $j(b-i(a'))=c$.
+
+\emph{At $H_{k-1}(A)$.} $i_*\delta[c]=[\partial b]=0$. If $i(a)=\partial b$, then $c=j(b)$ is a cycle ($\partial c=j\partial b=ji(a)=0$) with $\delta[c]=[a]$.
+
+Naturality: each map in the definition of $\delta$ commutes with the given chain maps.
+\end{proof}
+
+\begin{lemma}[the five lemma]\label{lem:five}
+In a commutative diagram of abelian groups with exact rows
+\[\begin{array}{ccccccccc}A_1&\to&A_2&\to&A_3&\to&A_4&\to&A_5\\ \downarrow\alpha_1&&\downarrow\alpha_2&&\downarrow\alpha_3&&\downarrow\alpha_4&&\downarrow\alpha_5\\ B_1&\to&B_2&\to&B_3&\to&B_4&\to&B_5\end{array}\]
+if $\alpha_1,\alpha_2,\alpha_4,\alpha_5$ are isomorphisms, so is $\alpha_3$.
+\end{lemma}
+
+\begin{proof}
+Write $f_i$, $g_i$ for the horizontal maps out of $A_i$, $B_i$. \emph{Injective:} if $\alpha_3(x)=0$, then $\alpha_4f_3(x)=0$, so $f_3(x)=0$ and $x=f_2(y)$. Then $g_2\alpha_2(y)=0$, so
+$\alpha_2(y)=g_1(z')=g_1\alpha_1(z)=\alpha_2f_1(z)$, hence $y=f_1(z)$ and $x=f_2f_1(z)=0$. \emph{Surjective:} given $w\in B_3$, $g_3(w)=\alpha_4(u)$; then $\alpha_5f_4(u)=g_4g_3(w)=0$, so $f_4(u)=0$ and $u=f_3(x)$.
+Now $g_3(w-\alpha_3(x))=0$, so $w-\alpha_3(x)=g_2(\alpha_2(y))=\alpha_3(f_2(y))$, and $w=\alpha_3(x+f_2(y))$.
+\end{proof}
+
+\section{Simplicial homology}
+
+\begin{definition}
+A (finite, ordered) \emph{simplicial complex} $K$ is a finite totally ordered set of vertices and a family of nonempty subsets, the \emph{simplices}, containing all singletons and all
+nonempty subsets of its members. A simplex with $k+1$ vertices has dimension $k$ and is written $[v_0,\dots,v_k]$ with $v_0<\dots<v_k$. Its \emph{realization} is the convex hull of the
+corresponding basis vectors of $\R^{\text{vertices}}$, and $|K|$ is the union of these, a compact space. A \emph{subcomplex} is a subfamily that is itself a simplicial complex. A
+\emph{triangulation} of a space $X$ is a homeomorphism $|K|\to X$.
+\end{definition}
+
+Let $R$ be $\Z$, $\Q$ or $\Z/2$. The group $C^\Delta_k(K;R)$ of simplicial $k$-chains is the free $R$-module on the $k$-simplices, and
+\[\partial[v_0,\dots,v_k]=\sum_{i=0}^k(-1)^i[v_0,\dots,\widehat{v_i},\dots,v_k],\]
+the hat meaning omission. Each $(k-2)$-face $[\dots\widehat{v_i}\dots\widehat{v_j}\dots]$, $i<j$, appears twice in $\partial\partial$, with signs $(-1)^j(-1)^i$ (removing $v_j$ first) and $(-1)^i(-1)^{j-1}$ (removing
+$v_i$ first, which shifts the position of $v_j$), so $\partial\partial=0$. The \emph{simplicial homology} is $H^\Delta_k(K;R)=H_k(C^\Delta(K;R))$; for a subcomplex $L$, the relative homology $H^\Delta_k(K,L)$ is the
+homology of the quotient complex $C^\Delta(K)/C^\Delta(L)$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-torus}
+\caption{A triangulation of the torus: a $3\times3$ grid of squares, each cut by a diagonal, with opposite sides of the big square glued (the vertex labels show the
+gluing). It has $V=9$, $E=27$, $F=18$, and $V-E+F=0$. A coarser grid would not do: with a $2\times2$ grid, two different triangles would have the same three vertices.}
+\label{fig:torustriang}
+\end{figure}
+
+For coefficients $\Z$, the boundary maps are integer matrices, and homology is computed by the Smith normal form of Tome~2, Theorem~7.4.
+
+\begin{proposition}\label{prop:smithhomology}
+Let $c_k$ be the number of $k$-simplices, $r_k$ the rank of $\partial\colon C_k\to C_{k-1}$, and $d_1\mid\dots\mid d_{r_{k+1}}$ the nonzero invariant factors of $\partial\colon C_{k+1}\to C_k$. Then
+\[H^\Delta_k(K;\Z)\cong\Z^{b_k}\oplus\bigoplus_{d_i>1}\Z/d_i,\qquad b_k=c_k-r_k-r_{k+1}.\]
+Consequently (the Euler--Poincar\'e formula)
+\[\chi(K):=\sum_k(-1)^kc_k=\sum_k(-1)^kb_k.\]
+\end{proposition}
+
+\begin{proof}
+By the Smith normal form, there are bases $(f_j)$ of $C_{k+1}$ and $(e_i)$ of $C_k$ with $\partial f_i=d_ie_i$ for $i\le r=r_{k+1}$ and $\partial f_j=0$ for $j>r$. Then $B_k=\bigoplus_{i\le r}d_i\Z e_i$. For $i\le r$,
+$d_i\partial e_i=\partial\partial f_i=0$, so $\partial e_i=0$: the $e_i$, $i\le r$, are cycles, and $Z_k=\bigoplus_{i\le r}\Z e_i\oplus Z'$ with $Z'=Z_k\cap\operatorname{span}(e_{r+1},\dots)$, a free group whose rank is
+$\operatorname{rank}Z_k-r=(c_k-r_k)-r_{k+1}$. So $H_k=Z_k/B_k\cong\bigoplus_{i\le r}\Z/d_i\oplus Z'$. In the alternating sum of the $b_k$, the ranks $r_k$ cancel in pairs.
+\end{proof}
+
+The $b_k$ are the \emph{Betti numbers}. With coefficients in a field $R=\Q$ or $\Z/2$ the same proof, with Gaussian elimination instead of the Smith form, gives $H^\Delta_k(K;R)\cong R^{c_k-r_k-r_{k+1}}$ (ranks
+computed over $R$), and the same Euler characteristic. The torus of Figure~\ref{fig:torustriang} has $\chi=9-27+18=0$; the boundary of a tetrahedron has $\chi=4-6+4=2$. Nothing yet says that
+two triangulations of the same space have the same $\chi$; that will follow from singular homology.
+
+\section{Singular homology}
+
+Let $\Delta^n$ be the standard simplex, the convex hull of the basis vectors $e_0,\dots,e_n$ of $\R^{n+1}$. A \emph{singular $n$-simplex} in a space $X$ is a map $\sigma\colon\Delta^n\to X$. The group $C_n(X;R)$ is the
+free $R$-module on all singular $n$-simplices, an enormous group, and
+\[\partial\sigma=\sum_{i=0}^n(-1)^i\,\sigma|[e_0,\dots,\widehat{e_i},\dots,e_n],\]
+where $\sigma|[w_0,\dots,w_{n-1}]$ denotes $\sigma$ composed with the affine map $\Delta^{n-1}\to\Delta^n$ sending $e_j$ to $w_j$. The computation that gave $\partial\partial=0$ for simplicial chains applies word for
+word. The \emph{singular homology} $H_n(X;R)$ is the homology of this complex; we drop $R$ when it is $\Z$. A map $f\colon X\to Y$ induces $f_\#\sigma=f\circ\sigma$, a chain map, so $f_*$ is defined on homology,
+with $(gf)_*=g_*f_*$: homeomorphic spaces have isomorphic homology.
+
+For a subspace $A\subset X$, $C(A)$ is a subcomplex of $C(X)$, and the \emph{relative homology} $H_n(X,A)$ is the homology of $C(X)/C(A)$; a relative cycle is a chain whose boundary lies in $A$. By
+the zigzag lemma there is a long exact sequence of the pair,
+\[\cdots\to H_n(A)\to H_n(X)\to H_n(X,A)\xrightarrow{\delta}H_{n-1}(A)\to\cdots,\]
+natural for maps of pairs. The \emph{reduced homology} $\tilde H_n(X)$ is the homology of the complex augmented by $\varepsilon\colon C_0(X)\to R$, $\varepsilon(\sigma)=1$; it equals $H_n(X)$ for $n>0$, and
+$H_0(X)\cong\tilde H_0(X)\oplus R$ for $X\ne\emptyset$.
+
+\begin{proposition}\label{prop:H0}
+$H_0(X;R)$ is free on the path components of $X$. If $X$ is a point, $\tilde H_n(X)=0$ for all $n$.
+\end{proposition}
+
+\begin{proof}
+A $0$-simplex is a point, and a $1$-simplex is a path $\sigma$ with $\partial\sigma=\sigma(e_1)-\sigma(e_0)$. So two points are homologous exactly when they are joined by a chain of paths, and $H_0$ is free on
+the path components. For a point, there is one singular simplex $\sigma_n$ in each dimension, and $\partial\sigma_n=\sum_i(-1)^i\sigma_{n-1}$ is $\sigma_{n-1}$ for $n$ even and positive, $0$ for $n$ odd. The augmented
+complex $\cdots\to R\xrightarrow{1}R\xrightarrow0R\xrightarrow1R\xrightarrow0R\xrightarrow{\varepsilon}R$ is exact.
+\end{proof}
+
+\begin{theorem}[homotopy invariance]\label{thm:homotopyH}
+If $f,g\colon X\to Y$ are homotopic, then $f_*=g_*$. Consequently a homotopy equivalence induces isomorphisms in homology, and a contractible space has $\tilde H_*=0$.
+\end{theorem}
+
+\begin{proof}
+Let $F\colon X\times I\to Y$ be the homotopy. In $\Delta^n\times I$ let $v_i=(e_i,0)$ and $w_i=(e_i,1)$. The \emph{prism operator} is
+\[P(\sigma)=\sum_{i=0}^n(-1)^i\,F\circ(\sigma\times\mathrm{id})|[v_0,\dots,v_i,w_i,\dots,w_n]\in C_{n+1}(Y),\]
+where $|[\dots]$ is again composition with the affine map from $\Delta^{n+1}$. Write $\Phi=F\circ(\sigma\times\mathrm{id})$. Then
+\[\partial P\sigma=\sum_{j\le i}(-1)^{i+j}\Phi|[v_0,..,\widehat{v_j},..,v_i,w_i,..,w_n]+\sum_{j\ge i}(-1)^{i+j+1}\Phi|[v_0,..,v_i,w_i,..,\widehat{w_j},..,w_n].\]
+In the terms with $j=i$, $\Phi|[v_0,..,v_{i-1},w_i,..,w_n]$ appears with sign $+$ from the first sum (index $i$) and with sign $-$ from the second sum (index $i-1$), so these cancel, except
+$\Phi|[w_0,\dots,w_n]=g\circ\sigma$ from $i=0$ and $-\Phi|[v_0,\dots,v_n]=-f\circ\sigma$ from $i=n$. The terms with $j\ne i$ are exactly $-P(\partial\sigma)$, as one sees by expanding $P$ on each face of $\sigma$ (the face
+missing $e_j$ contributes the prisms with $i<j$ with sign $(-1)^i(-1)^j$, and those with $i>j$ with the index shifted). So $\partial P+P\partial=g_\#-f_\#$, a chain homotopy.
+
+If $gf\simeq\mathrm{id}$ and $fg\simeq\mathrm{id}$ then $g_*f_*=\mathrm{id}$ and $f_*g_*=\mathrm{id}$. A contractible space is homotopy equivalent to a point.
+\end{proof}
+
+The prism operator maps chains in a subspace $A$ to chains in any subspace containing $F(A\times I)$; so homotopy invariance holds for maps of pairs $f,g\colon(X,A)\to(Y,B)$ homotopic through maps of
+pairs. With the five lemma, if $A\subset X$ is a deformation retract then $H_n(X,A)=0$, and if $A\subset A'$ is a deformation retract of $A'$ then $H_n(X,A)\to H_n(X,A')$ is an isomorphism.
+
+\section{Small chains and Mayer--Vietoris}
+
+The key technical fact is that homology can be computed with arbitrarily small simplices. Let $\mathcal U=\{U_j\}$ be a family of subsets of $X$ whose interiors cover $X$, and $C^{\mathcal U}(X)$ the
+subcomplex of chains made of singular simplices each lying in some $U_j$.
+
+\begin{theorem}[small chains]\label{thm:smallchains}
+The inclusion $\iota\colon C^{\mathcal U}(X)\to C(X)$ induces isomorphisms in homology.
+\end{theorem}
+
+\begin{proof}
+\emph{Linear chains.} In a convex set $Y\subset\R^N$, call \emph{linear} the singular simplices $[w_0,\dots,w_n]$ that are affine maps, and $LC(Y)$ the chains they span. For a point $b$, the \emph{cone}
+$b[w_0,\dots,w_n]=[b,w_0,\dots,w_n]$ satisfies $\partial(b\lambda)=\lambda-b(\partial\lambda)$ for $n\ge1$, and $\partial(b\lambda)=\lambda-\varepsilon(\lambda)[b]$ for $n=0$. Define the \emph{barycentric subdivision}
+$S\colon LC_n(Y)\to LC_n(Y)$ by $S=\mathrm{id}$ on $0$-chains and $S\lambda=b_\lambda(S\partial\lambda)$ for a simplex $\lambda$ with barycentre $b_\lambda$, and $T\colon LC_n\to LC_{n+1}$ by $T=0$ on $0$-chains and
+$T\lambda=b_\lambda(\lambda-T\partial\lambda)$. By induction on $n$, $\partial S=S\partial$ and $\partial T+T\partial=\mathrm{id}-S$: for instance $\partial T\lambda=\lambda-T\partial\lambda-b_\lambda(\partial\lambda-\partial T\partial\lambda)$, and by induction
+$\partial T\partial\lambda=\partial\lambda-S\partial\lambda-T\partial\partial\lambda=\partial\lambda-S\partial\lambda$, so $\partial T\lambda=\lambda-T\partial\lambda-S\lambda$. By induction, every simplex of $S\lambda$ has vertices $b_{F_0},\dots,b_{F_n}$, the
+barycentres of a chain of faces $F_n\subset\dots\subset F_0=\lambda$. If $F\subset G$ are faces and $G$ has vertices $w_0,\dots,w_k$, then $|b_G-b_F|\le\max_i|b_G-w_i|$ (a convex function on the convex hull is
+largest at a vertex) and $|b_G-w_i|=\frac1{k+1}|\sum_j(w_j-w_i)|\le\frac k{k+1}\operatorname{diam}G$. So each simplex of $S\lambda$ has diameter at most $\frac n{n+1}\operatorname{diam}\lambda$, and those of $S^m\lambda$
+at most $(\frac n{n+1})^m\operatorname{diam}\lambda$.
+
+\emph{General chains.} For $\sigma\colon\Delta^n\to X$, let $S\sigma=\sigma_\#S(\mathrm{id}_{\Delta^n})$ and $T\sigma=\sigma_\#T(\mathrm{id}_{\Delta^n})$, where $\mathrm{id}_{\Delta^n}$ is a linear simplex in the convex set $\Delta^n$. Since $S$
+and $T$ on linear chains commute with affine maps (which preserve barycentres), these agree with the previous definitions on linear chains, and the identities $\partial S=S\partial$ and
+$\partial T+T\partial=\mathrm{id}-S$ carry over (apply them to $\mathrm{id}_{\Delta^n}$ and push forward by $\sigma_\#$). Let $D_m=\sum_{0\le i<m}TS^i$; then $\partial D_m+D_m\partial=\mathrm{id}-S^m$. Each simplex of $T\sigma$ and of $S\sigma$ has
+image inside the image of $\sigma$.
+
+\emph{Choosing $m$.} For each $\sigma$, the sets $\sigma^{-1}(\operatorname{int}U_j)$ cover the compact $\Delta^n$; by the Lebesgue number and the diameter bound there is a least $m(\sigma)$ such that every simplex of
+$S^{m(\sigma)}\sigma$ lies in some $U_j$; $m(\sigma)=0$ if $\sigma$ itself does, and $m(\tau)\le m(\sigma)$ for every face $\tau$ of $\sigma$. Define $D\sigma=D_{m(\sigma)}\sigma$ and $\rho=\mathrm{id}-\partial D-D\partial$. Then
+\[\rho\sigma=S^{m(\sigma)}\sigma+\sum_\tau\pm\bigl(D_{m(\sigma)}-D_{m(\tau)}\bigr)\tau,\]
+summed over the faces $\tau$ of $\sigma$, and
+\[\bigl(D_{m(\sigma)}-D_{m(\tau)}\bigr)\tau=\sum_{m(\tau)\le i<m(\sigma)}TS^i\tau\]
+is a chain in $C^{\mathcal U}(X)$, because the simplices of $S^i\tau$ lie in sets $U_j$ for $i\ge m(\tau)$ and $T$
+keeps a simplex inside the image of the simplex it comes from. So $\rho$ maps $C(X)$ into $C^{\mathcal U}(X)$; it is a chain map, because $\partial\rho=\partial-\partial D\partial=\rho\partial$; and $\rho\iota=\mathrm{id}$ because $D=0$ on
+$C^{\mathcal U}(X)$. Finally $\mathrm{id}-\iota\rho=\partial D+D\partial$. So $\iota_*$ and $\rho_*$ are inverse isomorphisms.
+\end{proof}
+
+\begin{theorem}[Mayer--Vietoris]\label{thm:mv}
+If $X=\operatorname{int}A\cup\operatorname{int}B$, there is a long exact sequence
+\[\cdots\to H_n(A\cap B)\xrightarrow{(i_{A*},\,i_{B*})}H_n(A)\oplus H_n(B)\xrightarrow{j_{A*}-j_{B*}}H_n(X)\xrightarrow{\delta}H_{n-1}(A\cap B)\to\cdots\]
+with all maps induced by inclusions except $\delta$, and the same in reduced homology when $A\cap B\ne\emptyset$. If $z=x+y$ is a cycle with $x$ in $A$ and $y$ in $B$, then $\delta[z]=[\partial x]$.
+\end{theorem}
+
+\begin{proof}
+The sequence $0\to C(A\cap B)\to C(A)\oplus C(B)\to C^{\{A,B\}}(X)\to0$, with maps $c\mapsto(c,c)$ and $(a,b)\mapsto a-b$, is exact: a chain in both $C(A)$ and $C(B)$ is a chain in $A\cap B$. Apply the
+zigzag lemma and replace $H(C^{\{A,B\}}(X))$ by $H(X)$, using Theorem~\ref{thm:smallchains}. For reduced homology, augment each complex in degree $-1$ by $0\to R\to R\oplus R\to R\to0$.
+\end{proof}
+
+\begin{corollary}[excision]\label{cor:excision}
+If $Z\subset A\subset X$ with the closure of $Z$ inside the interior of $A$, then the inclusion $(X\setminus Z,A\setminus Z)\to(X,A)$ induces isomorphisms $H_n(X\setminus Z,A\setminus Z)\cong H_n(X,A)$.
+\end{corollary}
+
+\begin{proof}
+Let $B=X\setminus Z$; then $\operatorname{int}A\cup\operatorname{int}B=X$. The quotient $C^{\{A,B\}}(X)/C(A)$ equals $C(B)/C(A\cap B)$, since a chain made of simplices in $A$ or in $B$ is, modulo $C(A)$, a chain in $B$.
+The inclusion $C^{\{A,B\}}(X)\to C(X)$ induces isomorphisms in homology (Theorem~\ref{thm:smallchains}) and is the identity on $C(A)$, so by the long exact sequences of $C(A)\subset C^{\{A,B\}}(X)$ and
+$C(A)\subset C(X)$ and the five lemma, it induces isomorphisms $H(C^{\{A,B\}}(X)/C(A))\cong H_n(X,A)$.
+\end{proof}
+
+\section{Spheres, degree and the agreement of the two theories}
+
+\begin{theorem}\label{thm:spheres}
+$\tilde H_k(S^n;R)\cong R$ for $k=n$ and $0$ otherwise. More precisely, let $U_\pm$ be the open sets $\pm x_{n+1}>-\frac12$ of $S^n$ and $S^{n-1}$ the equator $x_{n+1}=0$. The Mayer--Vietoris map
+$\delta\colon\tilde H_k(S^n)\to\tilde H_{k-1}(U_+\cap U_-)\cong\tilde H_{k-1}(S^{n-1})$ is an isomorphism, natural for maps $S^n\to S^n$ that preserve $U_+$, $U_-$ and the equator.
+\end{theorem}
+
+\begin{proof}
+$U_\pm$ are contractible (they deformation retract onto the poles), and $U_+\cap U_-$ deformation retracts onto the equator $S^{n-1}$. In reduced Mayer--Vietoris the terms $\tilde H(U_\pm)$ vanish, so
+$\delta\colon\tilde H_k(S^n)\cong\tilde H_{k-1}(S^{n-1})$ for all $k$. For $S^0=\{\pm1\}$, $\tilde H_0$ is $R$, generated by $[1]-[-1]$, and all other groups vanish. Induction finishes.
+\end{proof}
+
+A map $f\colon S^n\to S^n$, $n\ge1$, acts on $H_n(S^n;\Z)=\Z$ as multiplication by an integer, its \emph{degree}. By Theorem~\ref{thm:homotopyH} the degree is a homotopy invariant; $\deg(fg)=\deg f\deg g$;
+$\deg\mathrm{id}=1$; a map that is not onto has degree $0$, since it factors through $S^n\setminus\{p\}\cong\R^n$, which is contractible. For $n=1$, the degree is the winding number, as we will see in
+Example~\ref{ex:surfacesH}.
+
+\begin{proposition}\label{prop:reflection}
+A reflection of $S^n$, such as
+\[r(x_1,\dots,x_{n+1})=(-x_1,x_2,\dots,x_{n+1}),\]
+has degree $-1$, and the antipodal map has degree $(-1)^{n+1}$.
+\end{proposition}
+
+\begin{proof}
+$r$ preserves $U_\pm$ and commutes with the Mayer--Vietoris sequence, so by Theorem~\ref{thm:spheres} its degree equals that of the same reflection of $S^{n-1}$, and so on down to $S^0$, where $r$
+exchanges $1$ and $-1$ and so maps the generator $[1]-[-1]$ of $\tilde H_0$ to its negative. Reflections in other coordinate hyperplanes are conjugate to $r$ by a permutation of coordinates $h$, and
+$\deg(hrh^{-1})=\deg r$. The antipodal map is the composite of the $n+1$ coordinate reflections.
+\end{proof}
+
+\begin{corollary}\label{cor:brouwerH}
+There is no retraction of the closed ball $\bar B^{n+1}$ onto $S^n$, and every map of $\bar B^{n+1}$ to itself has a fixed point. If $m\ne n$ ($m,n\ge1$), no nonempty open subset of $\R^m$ is homeomorphic to an open
+subset of $\R^n$.
+\end{corollary}
+
+\begin{proof}
+A retraction $r$ with inclusion $i$ would give $\mathrm{id}=r_*i_*$ on $\tilde H_n(S^n)=\Z$, factoring through $\tilde H_n(\bar B^{n+1})=0$. The fixed point theorem follows as in Chapter~3
+(Theorem~\ref{thm:brouwern}), now with no smoothness needed. If $U\subset\R^m$ and $V\subset\R^n$ are homeomorphic by $h$, and $x\in U$, then by excision (cut away the complement of a small ball)
+$H_k(U,U\setminus\{x\})\cong H_k(\R^m,\R^m\setminus\{x\})$, which by the long exact sequence is $\tilde H_{k-1}(\R^m\setminus\{x\})=\tilde H_{k-1}(S^{m-1})$: nonzero exactly for $k=m$. The homeomorphism carries
+$(U,U\setminus\{x\})$ to $(V,V\setminus\{h(x)\})$, so $m=n$.
+\end{proof}
+
+We now compare the two theories. For a finite ordered simplicial complex $K$, send each simplex $[v_0,\dots,v_k]$ to the affine singular simplex $\Delta^k\to|K|$ with $e_i\mapsto v_i$. This is a chain map
+$\varphi\colon C^\Delta(K;R)\to C(|K|;R)$, compatible with subcomplexes.
+
+\begin{theorem}\label{thm:simplicialsingular}
+$\varphi_*\colon H^\Delta_k(K;R)\to H_k(|K|;R)$ is an isomorphism for every $k$, and likewise for pairs $(K,L)$.
+\end{theorem}
+
+\begin{proof}
+Induction on the number of simplices. Suppose the theorem holds for complexes with fewer simplices than $K$, and let $\sigma$ be a simplex of $K$ of largest dimension $k$, and $L$ the subcomplex obtained by
+removing it; all proper faces of $\sigma$ lie in $L$. Let $\bar\sigma$ be the complex of all faces of $\sigma$ and $\partial\bar\sigma$ that of its proper faces. By the five lemma applied to the long exact sequences
+of the pairs $(K,L)$ (the zigzag lemma is natural with respect to $\varphi$), it is enough to know that $\varphi_*$ is an isomorphism for $L$ (true by induction) and for the pair $(K,L)$.
+
+\emph{The simplex.} $H^\Delta(\bar\sigma)$ is $R$ in degree $0$ and $0$ elsewhere: if $v$ is the first vertex, $h(\tau)=[v,\tau]$ for $v\notin\tau$ and $h(\tau)=0$ for $v\in\tau$ satisfies $\partial h+h\partial=\mathrm{id}$ in positive degrees
+(check on $\tau$ with and without $v$). Also $|\bar\sigma|$ is convex, so contractible. So $\varphi_*$ is an isomorphism for $\bar\sigma$, and by induction for $\partial\bar\sigma$ (fewer simplices); by the five lemma, for the
+pair $(\bar\sigma,\partial\bar\sigma)$.
+
+\emph{Comparing the pairs.} On the simplicial side, $C^\Delta(\bar\sigma)/C^\Delta(\partial\bar\sigma)$ and $C^\Delta(K)/C^\Delta(L)$ are both $R$, generated by $\sigma$ in degree $k$, so the inclusion is an isomorphism.
+On the singular side, let $b$ be the barycentre of $\sigma$ and $U=|K|\setminus\{b\}$. Since $\sigma$ is not a face of another simplex, its interior is open in $|K|$, and $U$ and $|\sigma|$ have interiors covering $|K|$.
+Radial projection from $b$ (the identity on $|L|$) shows that $|L|$ is a deformation retract of $U$ and $|\partial\sigma|$ one of $|\sigma|\setminus\{b\}$. So $H(|K|,|L|)\cong H(|K|,U)$ and
+$H(|\sigma|,|\partial\sigma|)\cong H(|\sigma|,|\sigma|\setminus\{b\})$. Excision (Corollary~\ref{cor:excision}) used twice, removing $Z=|L|$ from $A=U$ in $|K|$ and $Z=|\partial\sigma|$ from $A=|\sigma|\setminus\{b\}$ in $|\sigma|$,
+identifies both $H(|K|,U)$ and $H(|\sigma|,|\sigma|\setminus\{b\})$ with $H(\operatorname{int}\sigma,\operatorname{int}\sigma\setminus\{b\})$, all maps being induced by inclusions. So $(|\sigma|,|\partial\sigma|)\to(|K|,|L|)$ induces isomorphisms, and in the commutative
+square formed with $\varphi_*$ three maps are isomorphisms, hence the fourth. The statement for pairs follows by the five lemma.
+\end{proof}
+
+\begin{corollary}\label{cor:euler}
+The Betti numbers and the Euler characteristic of a finite simplicial complex depend only on the homotopy type of $|K|$. In particular all triangulations of a space have the same $V-E+F-\cdots$,
+and for every convex polyhedron in $\R^3$, $V-E+F=2$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:simplicialsingular}, $b_k$ is the rank of $H_k(|K|)$, and Proposition~\ref{prop:smithhomology} gives $\chi$ from the $b_k$. The boundary of a convex polyhedron, triangulated by cutting its faces into triangles
+(which changes $E-F$ by nothing: each new diagonal adds one edge and one face), is homeomorphic to $S^2$ by radial projection from an interior point; so $\chi=b_0-b_1+b_2=1-0+1$.
+\end{proof}
+
+\begin{example}\label{ex:surfacesH}
+\emph{Loops and $H_1$.} A loop $\gamma$ is a singular $1$-simplex with $\partial\gamma=0$. If $\gamma,\delta$ are loops at the same point, the singular $2$-simplex that runs $\gamma$ on $[e_0,e_1]$, $\delta$ on $[e_1,e_2]$
+and $\gamma\cdot\delta$ on $[e_0,e_2]$ (compose $\gamma\cdot\delta$ with the affine map $\Delta^2\to[0,1]$ sending $e_0,e_1,e_2$ to $0,\frac12,1$) has boundary $\delta-\gamma\cdot\delta+\gamma$; and a homotopy of loops gives, by the
+prism operator, a homology. So $[\gamma]\mapsto[\gamma]$ is a homomorphism $h\colon\pi_1(X,x_0)\to H_1(X)$. For the circle, Mayer--Vietoris with two arcs gives $H_1(S^1)\cong\tilde H_0(\text{two points})=\Z$,
+and the loop $\omega_1$ maps to a generator (its two halves give $\delta[\omega_1]=\pm([p]-[q])$). So $h$ is the isomorphism $\pi_1(S^1)\cong H_1(S^1)$, and the degree of a map of the circle is its winding number.
+
+\emph{Surfaces.} By induction with Mayer--Vietoris, $H_1$ of a wedge of $n$ circles is $\Z^n$, generated by the images of the $n$ loops, and $H_2=0$. Let $\Sigma_g$ be the polygon model of
+Example~\ref{ex:surfaces}, $V$ a small open disc in the polygon and $U$ the complement of its centre. Then $U$ deformation retracts onto the wedge of $2g$ circles, $V$ is contractible, and $U\cap V$
+deformation retracts onto a circle, whose generator maps in $H_1(U)$ to $h$ of the boundary word, $a_1+b_1-a_1-b_1+\dots=0$. Reduced Mayer--Vietoris reads
+\[0\to H_2(\Sigma_g)\to H_1(S^1)=\Z\xrightarrow{0}\Z^{2g}\to H_1(\Sigma_g)\to\tilde H_0(S^1)=0,\]
+so $H_2(\Sigma_g)=\Z$, $H_1(\Sigma_g)=\Z^{2g}$, $H_0=\Z$, and $\chi(\Sigma_g)=2-2g$. This is the value of the index sum of Chapter~4 for the pretzel with $g$ holes, which is homeomorphic to
+$\Sigma_g$ (this follows from the classification of surfaces, a remark here).
+\end{example}
+
+\begin{remark}
+Every compact surface admits a triangulation (Rad\'o, 1925), and every compact connected orientable surface is homeomorphic to exactly one $\Sigma_g$ (the classification, completed by Dehn and Heegaard,
+1907, and Brahana, 1921). Together with Corollary~\ref{cor:euler} and Example~\ref{ex:surfacesH}, this identifies the index sum of Chapter~4 with $V-E+F$ for every compact orientable surface:
+both are $2-2g$. A direct proof, building on each triangle a vector field with one zero at each vertex, edge and face, is in Hopf's 1926 paper.
+\end{remark}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-mv}
+\caption{Mayer--Vietoris on the sphere: two open caps $U_+$ and $U_-$, each contractible, overlap in a band that retracts onto the equator. A cycle on $S^n$ is the sum of a chain in $U_+$
+and a chain in $U_-$; its image under $\delta$ is their common boundary, a cycle in the band, one dimension lower. So every sphere carries exactly one hole, in its top dimension.}
+\label{fig:mvsphere}
+\end{figure}
+
+\section{Invariance of domain and Borsuk--Ulam}
+
+\begin{proposition}\label{prop:jordanbrouwer}
+Let $n\ge1$. (a) If $h\colon\bar B^k\to S^n$ is an embedding (a continuous injection; a homeomorphism onto its image, $\bar B^k$ being compact), then $\tilde H_i(S^n\setminus h(\bar B^k))=0$ for all $i$.
+(b) If $h\colon S^k\to S^n$ is an embedding with $k<n$, then $\tilde H_i(S^n\setminus h(S^k))$ is $\Z$ for $i=n-k-1$ and $0$ otherwise. In particular (Jordan--Brouwer) the complement of an embedded $S^{n-1}$
+in $S^n$ has exactly two path components, and the complement of an embedded ball is path-connected.
+\end{proposition}
+
+\begin{proof}
+(a) Replace $\bar B^k$ by the cube $I^k$, which is homeomorphic to it. All the complements below are nonempty, since the image of a cube is contractible and $S^n$ is not. Induction on $k$; for $k=0$, $S^n$ minus a point is $\R^n$. Suppose $\alpha\ne0$ in $\tilde H_i(S^n\setminus h(I^k))$. Let
+$A=S^n\setminus h(I^{k-1}\times[0,\frac12])$ and $B=S^n\setminus h(I^{k-1}\times[\frac12,1])$, open sets with $A\cap B=S^n\setminus h(I^k)$ and $A\cup B=S^n\setminus h(I^{k-1}\times\{\frac12\})$, which has zero reduced homology by
+induction. By Mayer--Vietoris, $\tilde H_i(A\cap B)\to\tilde H_i(A)\oplus\tilde H_i(B)$ is an isomorphism, so $\alpha$ stays nonzero in $A$ or in $B$. Repeating with the half-interval found, we get nested intervals
+$I_m$ of length $2^{-m}$, shrinking to a point $p$, with $\alpha\ne0$ in $\tilde H_i(S^n\setminus h(I^{k-1}\times I_m))$ for every $m$. But by induction $\alpha$ is zero in $S^n\setminus h(I^{k-1}\times\{p\})$, the increasing union of
+these open sets: a cycle representing $\alpha$ is the boundary of a chain there, and that chain, made of
+finitely many simplices with compact images, lies in one $S^n\setminus h(I^{k-1}\times I_m)$. Contradiction.
+
+(b) Induction on $k$. For $k=0$, $S^n$ minus two points is $\R^n$ minus a point, homotopy equivalent to $S^{n-1}$. For $k\ge1$, write $S^k=D_+\cup D_-$, two closed hemispheres meeting in $S^{k-1}$, and apply
+Mayer--Vietoris to $A=S^n\setminus h(D_+)$ and $B=S^n\setminus h(D_-)$: their reduced homology vanishes by (a), $A\cap B=S^n\setminus h(S^k)$, $A\cup B=S^n\setminus h(S^{k-1})$, so
+$\tilde H_i(S^n\setminus h(S^k))\cong\tilde H_{i+1}(S^n\setminus h(S^{k-1}))$. The last statements are the case $i=0$: an open subset of $S^n$ has path components that are open, and $\tilde H_0$ has rank one less than their number.
+\end{proof}
+
+\begin{theorem}[invariance of domain; Brouwer, 1912]\label{thm:invariancedomain}
+If $U\subset\R^n$ is open and $h\colon U\to\R^n$ is continuous and injective, then $h(U)$ is open, and $h$ is a homeomorphism onto it.
+\end{theorem}
+
+\begin{proof}
+Regard $\R^n$ as $S^n$ minus a point. Let $x\in U$ and $D\subset U$ a closed ball around $x$ with boundary sphere $S$. By Proposition~\ref{prop:jordanbrouwer}, $S^n\setminus h(S)$ has two path components, which are open.
+It is the disjoint union of $S^n\setminus h(D)$, path-connected by (a), and $h(D\setminus S)$, path-connected as the image of an open ball. So these two sets are the two components, and $h(D\setminus S)$ is
+open in $S^n$, contained in $h(U)$ and containing $h(x)$. So $h(U)$ is open, and $h$ maps open sets to open sets, so $h^{-1}$ is continuous.
+\end{proof}
+
+\begin{beauty}
+Tome~6 promised this theorem, and it is worth pausing on how strange it is. Nothing in the hypothesis is about openness: $h$ is just a continuous injection. Yet the image of an open set must
+be open, because a sphere drawn in the domain still separates space into an inside and an outside after $h$ has deformed it, and the inside is exactly where the ball went. The proof never
+looks at $h$ closely; it only counts holes in complements. For a manifold, the theorem says that the dimension is a topological invariant: no injective continuous map can squash a
+$3$-dimensional open set into a $2$-dimensional one, as Peano's space-filling curve might lead one to fear.
+\end{beauty}
+
+For the Borsuk--Ulam theorem we need coefficients $\Z/2$ and the projective spaces. Everything proved so far holds for any coefficients, with the same proofs.
+
+\begin{lemma}\label{lem:rpn}
+$H_k(\R P^n;\Z/2)=0$ for $k>n$.
+\end{lemma}
+
+\begin{proof}
+Induction on $n$, with $\R P^0$ a point. Let $p=[0:\dots:0:1]$. On $U=\R P^n\setminus\{p\}$, $([x_0:\dots:x_n],t)\mapsto[x_0:\dots:x_{n-1}:(1-t)x_n]$ is a deformation retraction onto $\R P^{n-1}=\{x_n=0\}$ (it is
+well defined because $x_0,\dots,x_{n-1}$ are not all zero). Let $V=\{[x]:|x_n|>\frac12|x|\}$, an open ball around $p$ in the chart $x_n=1$, and $U\cap V=V\setminus\{p\}\simeq S^{n-1}$. For $k>n$, the Mayer--Vietoris
+sequence $H_k(U)\oplus H_k(V)\to H_k(\R P^n)\to H_{k-1}(U\cap V)$ has outer terms $0$ (by induction, contractibility of $V$, and $k-1>n-1$).
+\end{proof}
+
+\begin{theorem}[Borsuk--Ulam]\label{thm:borsukulam}
+For $n\ge1$ there is no continuous map $g\colon S^n\to S^{n-1}$ with $g(-x)=-g(x)$. Equivalently, every continuous $f\colon S^n\to\R^n$ satisfies $f(x)=f(-x)$ for some $x$.
+\end{theorem}
+
+\begin{proof}
+For $n=1$, $S^0$ is two points and $S^1$ is connected. Let $n\ge2$; all homology has coefficients $\Z/2$. Let $q\colon S^n\to\R P^n$ be the quotient map, a two-sheeted covering. Every singular simplex $\sigma$ in
+$\R P^n$ has exactly two lifts to $S^n$ (Theorem~\ref{thm:liftcrit}: $\Delta^k$ is simply connected), $\tilde\sigma$ and $-\tilde\sigma$; let $\tau(\sigma)=\tilde\sigma+(-\tilde\sigma)$. Then $\tau$ is a chain map (the faces of the lifts are the lifts of the faces),
+and
+\[0\to C(\R P^n)\xrightarrow{\tau}C(S^n)\xrightarrow{q_\#}C(\R P^n)\to0\]
+is exact: $q_\#$ is onto since every simplex lifts; $q_\#\tau=2=0$; and a chain $\sum a_{\tilde\sigma}\tilde\sigma$ is killed by $q_\#$ exactly when the two lifts of each $\sigma$ have equal coefficients, that is, when it is in the
+image of $\tau$. The zigzag lemma gives the \emph{transfer sequence}
+\[\cdots\to H_k(\R P^n)\xrightarrow{\tau_*}H_k(S^n)\xrightarrow{q_*}H_k(\R P^n)\xrightarrow{\delta}H_{k-1}(\R P^n)\to\cdots.\]
+Now $H_k(S^n)=0$ for $0<k<n$, and $q_*$ is an isomorphism on $H_0=\Z/2$ (both spaces are path-connected). Reading the sequence: $\delta\colon H_k(\R P^n)\to H_{k-1}(\R P^n)$ is an isomorphism for
+$1\le k\le n-1$ (at $k=1$, $\tau_*=0$ on $H_0$ because $q_*$ is injective there). At the top, $H_{n+1}(\R P^n)=0$ by Lemma~\ref{lem:rpn}, so $0\to H_n(\R P^n)\xrightarrow{\tau_*}H_n(S^n)=\Z/2\xrightarrow{q_*}H_n(\R P^n)\xrightarrow\delta H_{n-1}(\R P^n)\to0$
+is exact. If $H_n(\R P^n)$ were $0$ the middle term would be both the kernel of $q_*$ and the image of $\tau_*=0$; so $\tau_*$ is an isomorphism, $q_*=0$, and $\delta$ is an isomorphism. Hence
+$H_k(\R P^n)=\Z/2$ for $0\le k\le n$, with all these maps isomorphisms.
+
+Suppose $g$ exists, and let $f\colon S^n\to S^n$ be $g$ followed by the inclusion of the equator. Then $f$ is odd, so it induces $\bar f\colon\R P^n\to\R P^n$, and $f_\#\tau=\tau\bar f_\#$ (the lifts of $\bar f\circ\sigma$ are
+$f\circ\tilde\sigma$ and $f\circ(-\tilde\sigma)$). By naturality, $\bar f_*$ commutes with $\delta$ and $f_*\tau_*=\tau_*\bar f_*$. Now $\bar f_*$ is an isomorphism on $H_0$, hence on every $H_k(\R P^n)$, $k\le n$, by the isomorphisms
+$\delta$; and then $f_*=\tau_*\bar f_*\tau_*^{-1}$ is an isomorphism on $H_n(S^n)$. But $f$ is not onto, so $f_*=0$ on $H_n(S^n)$. Contradiction.
+
+Equivalence: if $f(x)\ne f(-x)$ for all $x$, then $g(x)=\frac{f(x)-f(-x)}{|f(x)-f(-x)|}$ is odd; conversely, an odd $g\colon S^n\to S^{n-1}\subset\R^n$ never satisfies $g(x)=g(-x)$.
+\end{proof}
+
+\begin{corollary}[the ham sandwich theorem]\label{cor:hamsandwich}
+Let $A_1,\dots,A_n$ be bounded Lebesgue measurable subsets of $\R^n$. There is an affine hyperplane that cuts each of them into two halves of equal measure.
+\end{corollary}
+
+\begin{proof}
+For $u=(u_0,u')\in S^n\subset\R\times\R^n$, let $H_u^+=\{x:\langle u',x\rangle>u_0\}$ and $f_i(u)=\lambda(A_i\cap H_u^+)$. For $u'\ne0$ the hyperplane $\langle u',x\rangle=u_0$ has measure zero, so $f_i$ is continuous by
+dominated convergence (Tome~6); at $u=(\pm1,0)$, $H_u^+$ is empty or everything, and continuity there follows from the boundedness of $A_i$. By Theorem~\ref{thm:borsukulam} there is $u$ with $f_i(u)=f_i(-u)$ for all
+$i$. Since $H_{-u}^+$ is the complement of $H_u^+$ up to a null set, $f_i(u)+f_i(-u)=\lambda(A_i)$, so $f_i(u)=\frac12\lambda(A_i)$. If $u=(\pm1,0)$ all the $A_i$ are null and any hyperplane works; otherwise
+$\langle u',x\rangle=u_0$ is the hyperplane.
+\end{proof}
+
+Three measurable sets in space, the bread, the ham and the cheese, can be bisected by one plane cut. Hugo Steinhaus posed the problem in Lw\'ow, and
+Stefan Banach solved it by reducing it to the Borsuk--Ulam theorem; a note in the Polish journal \emph{Mathesis Polska} recorded both in 1938, and Stone and Tukey proved the
+$n$-dimensional version in 1942.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:kleinrp2}
+\emph{The projective plane and the Klein bottle.} (a) The projective plane is a disc with its boundary glued by the word $aa$ (antipodal points). Show that $H_1(\R P^2)=\Z/2$ and $H_2(\R P^2)=0$, while
+$H_2(\R P^2;\Z/2)=\Z/2$. (b) The Klein bottle is a square with sides glued by $aba^{-1}b$. Show that $H_1=\Z\oplus\Z/2$, $H_2=0$, and $\chi=0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hairydegree}
+\emph{The hairy ball theorem by degree.} (a) Show that if $X$ is a tangent vector field on $S^n$ with no zero, then $(x,t)\mapsto\cos(\pi t)\,x+\sin(\pi t)\frac{X(x)}{|X(x)|}$ is a homotopy from the identity to the antipodal
+map. (b) Deduce from Proposition~\ref{prop:reflection} that $n$ is odd, recovering Theorem~\ref{thm:hairyball} for continuous fields. (c) Show that a map $f\colon S^n\to S^n$ with no fixed point is homotopic to the
+antipodal map, and that one with $f(x)\ne-x$ for all $x$ is homotopic to the identity. Deduce that if $n$ is even, every map $S^n\to S^n$ has a fixed point or sends some point to its antipode.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lhuilier}
+\emph{Lhuilier's picture frame.} (a) A picture frame made of four square beams has an outer surface that can be triangulated as a torus. Check that $V-E+F=0$ on Figure~\ref{fig:torustriang}, and explain
+with Corollary~\ref{cor:euler} why no triangulation of a torus gives $2$. (b) For a graph without loops or multiple edges (a $1$-dimensional simplicial complex) show that $b_0-b_1=V-E$, and compare with
+Theorem~\ref{thm:wedge}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:coveringchi}
+\emph{Euler characteristic of a covering.} Let $p\colon\tilde X\to|K|$ be a $k$-sheeted covering of a finite simplicial complex. (a) Show that each simplex of $K$ has exactly $k$ lifts, and that the lifts form a simplicial
+complex triangulating $\tilde X$. (b) Deduce $\chi(\tilde X)=k\chi(K)$. (c) Deduce again that a subgroup of index $k$ in $F_n$ has rank $1+k(n-1)$, and that a $k$-sheeted covering of $\Sigma_g$ by a surface $\Sigma_h$ has
+$2-2h=k(2-2g)$, as the remark of Chapter~5 announced.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lusternik}
+\emph{Lusternik--Schnirelmann.} Show that if $S^n$ is covered by $n+1$ closed sets $F_1,\dots,F_{n+1}$, one of them contains a pair of antipodal points. (Use $f(x)=(d(x,F_1),\dots,d(x,F_n))$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pancakes}
+\emph{Cutting points and pancakes.} (a) Two pancakes of any shapes lie on a plate. Show that one straight cut halves both. (b) Show that for any two finite sets of points in the plane there is a line such
+that each open side contains at most half of each set. (Replace each point by a tiny disc and use (a); then shrink the discs.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:kleinrp2}
+Use the method of Example~\ref{ex:surfacesH}: the complement of a point retracts onto the $1$-skeleton, and the boundary circle maps to the boundary word in $H_1$ of the $1$-skeleton.
+\end{hint}
+
+\begin{hint}{ex:hairydegree}
+For (c), push $f(x)$ towards $-x$ along the great circle from $f(x)$ that avoids $x$.
+\end{hint}
+
+\begin{hint}{ex:lhuilier}
+For (a), count by rows. For (b), compute $H_0$ and $H_1$ of a graph from Theorem~\ref{thm:wedge}, or directly from Proposition~\ref{prop:smithhomology}.
+\end{hint}
+
+\begin{hint}{ex:coveringchi}
+For (a), a simplex is simply connected, so it lifts; two lifts with a common vertex coincide by uniqueness of lifts.
+\end{hint}
+
+\begin{hint}{ex:lusternik}
+Apply Borsuk--Ulam to $f$ and look at which $F_i$ contains $x$ and $-x$.
+\end{hint}
+
+\begin{hint}{ex:pancakes}
+(a) is the ham sandwich theorem for $n=2$. For (b), a line meets each tiny disc in at most half its area unless it passes near the centre.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:kleinrp2}
+\idea Glue a disc to a wedge of circles and its boundary becomes a relation; in $H_1$ the relation is the boundary word, written additively.
+\writeup (a) The $1$-skeleton is a circle $a$, with $H_1=\Z$. The boundary of the disc runs around it twice, so in Mayer--Vietoris the map $H_1(S^1)=\Z\to H_1(a)=\Z$ is multiplication by $2$:
+$0\to H_2(\R P^2)\to\Z\xrightarrow{\times2}\Z\to H_1(\R P^2)\to0$. Multiplication by $2$ is injective with cokernel $\Z/2$, so $H_2=0$ and $H_1=\Z/2$. With coefficients $\Z/2$ it is the zero map: $H_2=H_1=\Z/2$, as
+Theorem~\ref{thm:borsukulam} found for all $\R P^n$. (b) The $1$-skeleton is a wedge of two circles $a,b$ (all four corners are identified), and the boundary word $aba^{-1}b$ gives $a+b-a+b=2b$. The map
+$\Z\to\Z^2$, $1\mapsto(0,2)$, is injective with cokernel $\Z\oplus\Z/2$. So $H_2=0$, $H_1=\Z\oplus\Z/2$, and $\chi=1-1+0=0$.
+\end{solution}
+
+\begin{solution}{ex:hairydegree}
+\idea A field with no zero gives every point a direction to walk in, and walking half a great circle in that direction takes every point to its antipode, continuously.
+\writeup (a) Since $X(x)\perp x$, the point $\cos(\pi t)x+\sin(\pi t)\frac{X(x)}{|X(x)|}$ has norm $1$; it is $x$ at $t=0$ and $-x$ at $t=1$. (b) So $\deg(-\mathrm{id})=1$, while Proposition~\ref{prop:reflection} gives
+$(-1)^{n+1}$; hence $n$ is odd. (c) If $f(x)\ne x$, the segment from $f(x)$ to $-x$ does not pass through $0$ (that would require $f(x)$ to be a positive multiple of $x$, so $f(x)=x$), and
+$\frac{(1-t)f(x)-tx}{|(1-t)f(x)-tx|}$ is a homotopy from $f$ to $-\mathrm{id}$. Similarly, if $f(x)\ne-x$ then $\frac{(1-t)f(x)+tx}{|\cdots|}$ joins $f$ to $\mathrm{id}$. If $n$ is even, $\deg(-\mathrm{id})=-1\ne1=\deg\mathrm{id}$, so no map
+can satisfy both conditions: either $f$ has a fixed point (else $\deg f=-1$) or it sends a point to its antipode (else $\deg f=1$).
+\end{solution}
+
+\begin{solution}{ex:lhuilier}
+\idea Faces never matter, only holes: the torus has $b_0=1$, $b_1=2$, $b_2=1$.
+\writeup (a) In Figure~\ref{fig:torustriang} each of the $9$ vertices of the torus is the lower left corner of one small square, which contributes three edges (bottom, left, diagonal) and two triangles, all
+different after gluing: $V-E+F=9-27+18=0$. By Corollary~\ref{cor:euler}, $\chi$ is the same for all triangulations, and Example~\ref{ex:surfacesH} gives $1-2+1=0$: a solid whose surface is a torus, such
+as Lhuilier's frame, can never satisfy Euler's formula. (b) Proposition~\ref{prop:smithhomology} with $c_k=0$ for $k\ge2$ gives $b_0-b_1=c_0-c_1=V-E$. For a connected graph $b_0=1$, so $b_1=E-V+1$, the rank of
+the free group $\pi_1$ of Theorem~\ref{thm:wedge}.
+\end{solution}
+
+\begin{solution}{ex:coveringchi}
+\idea Every simplex is simply connected, so it lifts to $k$ disjoint copies, and the counts $V$, $E$, $F$, \dots{} all multiply by $k$.
+\writeup (a) A simplex $|\sigma|$ is simply connected and locally path-connected, so by Theorem~\ref{thm:liftcrit} its inclusion lifts with any prescribed value over one point: exactly $k$ lifts, one through each
+point of the fibre over a vertex, and by Lemma~\ref{lem:uniquelift} two lifts of $\sigma$ that share a point coincide. The lifts of the faces of a lift are faces of that lift. Two lifted simplices with the same
+vertices lie over the same simplex (whose vertex set they determine) and share a point, so they coincide. Order the lifted vertices compatibly with the order downstairs (break ties within a fibre
+arbitrarily); the lifted simplices form a simplicial complex $\tilde K$, and the map $|\tilde K|\to\tilde X$ that sends each lifted simplex to its image is a continuous bijection from a compact space to a Hausdorff space,
+a homeomorphism. (b) Each $c_j$ is multiplied by $k$. (c) For $R_n$ with a triangulation (subdivide each circle into three edges), $\chi=1-n$, and the covering graph has $\chi=1-\operatorname{rank}$; so
+$1-\operatorname{rank}=k(1-n)$. For surfaces, $\chi(\Sigma_g)=2-2g$ by Example~\ref{ex:surfacesH}, and $\Sigma_g$ has a triangulation (subdivide the polygon model).
+\end{solution}
+
+\begin{solution}{ex:lusternik}
+\idea Borsuk--Ulam gives a point that $f$ cannot tell from its antipode; then $x$ and $-x$ sit in the same first $n$ sets, or both outside all of them.
+\writeup The map $f$ is continuous, so there is $x$ with $f(x)=f(-x)$. If $f_i(x)=0$ for some $i\le n$, then $d(x,F_i)=d(-x,F_i)=0$, and since $F_i$ is closed both $x$ and $-x$ lie in $F_i$. Otherwise neither $x$ nor $-x$
+lies in $F_1\cup\dots\cup F_n$, so both lie in $F_{n+1}$.
+\end{solution}
+
+\begin{solution}{ex:pancakes}
+\idea Every bisection problem with as many objects as dimensions is a ham sandwich.
+\writeup (a) Corollary~\ref{cor:hamsandwich} with $n=2$. (b) Let $\varepsilon>0$ be less than half the smallest distance between two distinct points of $P\cup Q$, and replace each point by the open disc of radius
+$\varepsilon$ around it; these discs are disjoint and have equal areas. By (a), some line $\ell_\varepsilon$ halves the total area of the discs of $P$ and that of the discs of $Q$. The discs of the points at
+distance at least $\varepsilon$ from $\ell_\varepsilon$ lie entirely on one side, so each open side of $\ell_\varepsilon$ contains at most half of the points of $P$ at distance $\ge\varepsilon$ from it, and likewise for $Q$. Write
+$\ell_\varepsilon=\{x:\langle u_\varepsilon,x\rangle=c_\varepsilon\}$ with $|u_\varepsilon|=1$; the line meets a fixed disc containing all the points, so the $c_\varepsilon$ are bounded, and for $\varepsilon=\frac1m$ a subsequence converges to
+$(u,c)$, defining a line $\ell$. A point at positive distance from $\ell$ on one side lies, for $m$ large, on the same side of $\ell_{1/m}$ at distance more than $\frac1m$. So each open side of $\ell$ contains
+at most half of $P$ and at most half of $Q$. Such discrete ham sandwich cuts are the basis of geometric divide-and-conquer algorithms; Lo, Matou\v sek and Steiger (1994) compute them in linear time in
+the plane.
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+Euler's letter to Goldbach of 14 November 1750 is in \emph{Leonhard Euler und Christian Goldbach: Briefwechsel 1729--1764}, ed.\ A.~P.~Juškevič and E.~Winter (Akademie-Verlag, 1965); his proofs
+are ``Elementa doctrinae solidorum'' and ``Demonstratio nonnullarum insignium proprietatum quibus solida hedris planis inclusa sunt praedita'', \emph{Novi Comm.\ Acad.\ Sci.\ Petrop.} 4 (1752/53, printed 1758),
+109--140 and 140--160. S.~Lhuilier, ``M\'emoire sur la poly\'edrom\'etrie'', \emph{Ann.\ Math.\ Pures Appl.} 3 (1812--13), 169--189. I.~Lakatos, \emph{Proofs and Refutations} (Cambridge University Press, 1976);
+D.~Richeson, \emph{Euler's Gem} (Princeton University Press, 2008), tells the whole story. On Emmy Noether: P.~Alexandroff and H.~Hopf, \emph{Topologie I} (Springer, 1935), preface; H.~Hopf, ``Eine
+Verallgemeinerung der Euler--Poincar\'eschen Formel'', \emph{Nachr.\ Ges.\ Wiss.\ G\"ottingen} (1928), 127--136; C.~McLarty, ``Emmy Noether's set-theoretic topology'', in \emph{The Architecture of Modern
+Mathematics} (Oxford University Press, 2006).
+
+W.~Mayer, ``\"Uber abstrakte Topologie'', \emph{Monatsh.\ Math.\ Phys.} 36 (1929), 1--42 and 219--258; L.~Vietoris, ``\"Uber die Homologiegruppen der Vereinigung zweier Komplexe'', \emph{Monatsh.\ Math.\ Phys.}
+37 (1930), 159--162. L.~E.~J.~Brouwer, ``Beweis der Invarianz des $n$-dimensionalen Gebiets'', \emph{Math.\ Ann.} 71 (1912), 305--313. K.~Borsuk, ``Drei S\"atze \"uber die $n$-dimensionale euklidische Sph\"are'',
+\emph{Fund.\ Math.} 20 (1933), 177--190; A.~H.~Stone and J.~W.~Tukey, ``Generalized `sandwich' theorems'', \emph{Duke Math.\ J.} 9 (1942), 356--359; W.~A.~Beyer and A.~Zardecki, ``The early history of the ham sandwich theorem'', \emph{Amer.\ Math.\ Monthly} 111 (2004), 58--61, which translates the 1938 note. C.-Y.~Lo, J.~Matou\v sek and W.~Steiger, ``Algorithms for ham-sandwich cuts'', \emph{Discrete Comput.\ Geom.} 11 (1994), 433--452.
+
+The proofs follow A.~Hatcher, \emph{Algebraic Topology} (Cambridge University Press, 2002), Sections~2.1--2.2 and~2.B (small chains, invariance of domain, and the transfer proof of Borsuk--Ulam),
+with the comparison of simplicial and singular homology done by induction on simplices. J.~Matou\v sek, \emph{Using the Borsuk--Ulam Theorem} (Springer, 2003), is a delightful tour of the combinatorial
+applications.
