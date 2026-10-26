@@ -1,0 +1,589 @@
+\chapter{Elliptic Curves}
+\begin{center}\itshape
+The right triangle with sides $3,4,5$ has area $6$.\\
+So does the one with sides $\frac7{10},\frac{120}7,\frac{1201}{70}$.\\
+Where did that come from, and is there a third?
+\end{center}
+
+Around 972, an anonymous Arab manuscript asked which whole numbers are the area of a right triangle with rational sides. Such numbers
+are called \emph{congruent numbers}. In 1225 Leonardo of Pisa, Fibonacci, was challenged at the court of Frederick~II to show that $5$ is
+one, and found the triangle $\frac32,\frac{20}3,\frac{41}6$. Four centuries later Fermat proved that $1$ is not, by his method of infinite
+descent (Tome~1, Theorem~9.2): no right triangle with rational sides has a square area. Which numbers are congruent is still not fully
+known; the answer, if a conjecture worth a million dollars is true, was found by Tunnell in 1983.
+
+The problem is about a curve. A right triangle of area $n$ is the same thing as a rational point with $y\neq0$ on the cubic
+\[
+y^2=x^3-n^2x,
+\]
+and the triangle $\frac7{10},\frac{120}7,\frac{1201}{70}$ comes from the point $(12,36)$ that the $3$-$4$-$5$ triangle gives on $y^2=x^3-36x$, by
+the oldest trick in the subject: draw the tangent at a rational point, and its third intersection with the cubic is rational again. Diophantus did this
+around 250, Bachet and Fermat in the seventeenth century, Newton saw that chords and tangents make the rational points of a cubic into
+something like an arithmetic, and Poincar\'e asked in 1901 whether finitely many points always generate all the others. Mordell proved it in 1922.
+
+This chapter builds the arithmetic: the group law, proved associative with the nine-point theorem of Chapter~11; the torsion points, which are
+integral (Nagell--Lutz) and inject into the curve modulo $p$; Mordell's theorem, by a descent that needs the finiteness of class groups and the unit
+theorem of Chapters~3 and~4; and the congruent number problem, with a complete proof that $1$ is not congruent, hence Fermat's theorem
+$x^4+y^4\ne z^4$ once more, now as the statement that a certain elliptic curve has rank $0$.
+
+\begin{reminder}[from Chapter 11 and Tome 1]
+A smooth plane cubic $C$ has genus $1$; for every point $O$, each divisor of degree $0$ is linearly equivalent to $P-O$ for a unique $P$, and two cubics
+whose divisors on $C$ share eight points share the ninth (Corollary~\ref{cor:genus1}). A line meets a plane cubic not containing it in three points
+counted with multiplicity (Corollary~\ref{cor:bezoutcons}), and Lemma~\ref{lem:finite} holds over any field (its proof uses only that $K[y]$ is a
+PID and Gauss's lemma). \emph{Tome~1.} Fermat's theorem: $x^4+y^4=z^2$ has no solution in positive integers (Tome~1, Theorem~9.2); the right triangles
+with integer sides (Tome~1, Theorem~9.1). In this chapter $K$ is a field of characteristic $\ne2,3$ and $\overline K$ an algebraic closure.
+\end{reminder}
+
+\section{The group law}
+
+An \emph{elliptic curve} over $K$ is a curve
+\[
+E:\ y^2=x^3+ax+b,\qquad a,b\in K,\qquad 4a^3+27b^2\ne0,
+\]
+with its point at infinity $O=(0:1:0)$; projectively $Y^2Z=X^3+aXZ^2+bZ^3$. The condition says that $f(x)=x^3+ax+b$ has three distinct roots in
+$\overline K$ (its discriminant is $-(4a^3+27b^2)$), and this is exactly smoothness: an affine singular point has $2y=0$ and $f'(x)=0$, so $x$ is a double
+root of $f$; at infinity, $F_Z=Y^2+\dots=1\ne0$. By Exercise~\ref{ex:weierstrass}, the line at infinity $Z=0$ meets $E$ only at $O$, with multiplicity
+$3$: $O$ is a \emph{flex}. Every smooth cubic with a rational flex can be brought to this \emph{Weierstrass form} by a change of coordinates over $K$
+(send the flex to $(0:1:0)$ and its tangent to $Z=0$, then complete the square and the cube); we take it as the definition. For a field $L\supseteq K$,
+$E(L)$ is the set of points with coordinates in $L$, together with $O$.
+
+\subsection*{Chords and tangents}
+
+For $P,Q\in E(\overline K)$, the line through $P$ and $Q$ (the tangent if $P=Q$) meets $E$ in a third point, counted with multiplicity
+(Corollary~\ref{cor:bezoutcons}); call it $P*Q$. If $P,Q\in E(L)$ then $P*Q\in E(L)$: when $P,Q$ are affine and the line is $y=\lambda x+\nu$ with
+$\lambda,\nu\in L$, substituting gives
+\[
+x^3+ax+b-(\lambda x+\nu)^2=(x-x_P)(x-x_Q)(x-x_{P*Q}),
+\]
+and comparing the coefficients of $x^2$, $x_{P*Q}=\lambda^2-x_P-x_Q\in L$. (The roots of this cubic are the intersection points with their
+multiplicities, because along the line, $x$ is a uniformiser at each affine point; Proposition~\ref{prop:smoothdvr}.) Vertical lines $x=c$ pass through $O$
+(the line $X=cZ$ contains $(0:1:0)$), so if $x_P=x_Q$ and $Q\ne P$, then $P*Q=O$.
+
+\begin{definition}
+$P+Q=O*(P*Q)$.
+\end{definition}
+
+Concretely, the line through $O$ and $R=(x,y)$ is the vertical $x=x_R$, so $O*R=(x,-y)$: to add $P$ and $Q$, draw the line, take the third point, and
+reflect it in the $x$-axis (Figure~\ref{fig:chord}). In formulas, for $P=(x_1,y_1)$, $Q=(x_2,y_2)$ affine with $Q\ne-P$,
+\begin{equation}\label{eq:addformula}
+\begin{gathered}
+\lambda=\begin{cases}\dfrac{y_2-y_1}{x_2-x_1}&(x_1\ne x_2)\\[2ex]\dfrac{3x_1^2+a}{2y_1}&(P=Q)\end{cases}\qq
+x_3=\lambda^2-x_1-x_2,\quad y_3=-y_1-\lambda(x_3-x_1),
+\end{gathered}
+\end{equation}
+and $P+Q=(x_3,y_3)$; also $P+O=P$ and $(x,y)+(x,-y)=O$.
+
+\begin{figure}[ht]
+\centering\fig{ch12-chord}
+\caption{The group law on $y^2=x^3-x+1$. The line through $P=(-1,1)$ and $Q=(1,1)$ meets the curve again at $P*Q=(0,1)$; reflecting gives
+$P+Q=(0,-1)$. The tangent at $P$ gives $2P=(3,-5)$.}
+\label{fig:chord}
+\end{figure}
+
+\begin{think}
+Why does the definition need $O$ at all? Try to define $P+Q$ as $P*Q$: is there a neutral element? And where is $O$ on Figure~\ref{fig:chord}: what
+is the third point of a vertical line?
+\end{think}
+
+\begin{theorem}\label{thm:grouplaw}
+$(E(L),+)$ is an abelian group with neutral element $O$, and $-(x,y)=(x,-y)$. Three points $P,Q,R$ satisfy $P+Q+R=O$ iff they are the intersection of
+$E$ with a line (with multiplicities).
+\end{theorem}
+\begin{proof}
+$E(L)$ is stable by the remarks above. Commutativity is clear (the line through $P,Q$ is the line through $Q,P$). $P+O=O*(P*O)=P$: the line through $P$ and
+$O$ meets $E$ in $P,O,P*O$, so the third point of the line through $O$ and $P*O$ is $P$. The inverse of $P$ is $P'=O*P$: the line through $P$ and $P'$
+passes through $O$ (since $O,P,P'$ are collinear), so $P*P'=O$, and $P+P'=O*O=O$, because the tangent at the flex $O$ meets $E$ only at $O$. If
+$P,Q,R$ lie on a line, then $P*Q=R$ and $P+Q=O*R=-R$; conversely, if $P+Q=-R$, then $O*(P*Q)=O*R$, so $P*Q=R$.
+
+\emph{Associativity.} Let $P,Q,R\in E(L)$. Introduce the points
+\[
+S'=P*Q,\ S=P+Q,\ T'=S*R,\qquad U'=Q*R,\ U=Q+R,\ T''=P*U,
+\]
+so that $(P+Q)+R=O*T'$ and $P+(Q+R)=O*T''$; it suffices to show $T'=T''$. Consider the six lines
+\[
+\ell_1=PQS',\quad\ell_2=SRT',\quad\ell_3=U'OU,\qquad m_1=S'OS,\quad m_2=QRU',\quad m_3=PUT'',
+\]
+each named by its three intersection points with $E$. The cubics $A=\ell_1\ell_2\ell_3$ and $B=m_1m_2m_3$ have
+\[
+\operatorname{div}(A)=P+Q+S'+S+R+T'+U'+O+U,\qquad\operatorname{div}(B)=S'+O+S+Q+R+U'+P+U+T''.
+\]
+They share the eight points $P,Q,R,S,S',U,U',O$ (as divisors), so by the nine-point theorem (Corollary~\ref{cor:genus1}(d)), $T'=T''$.
+\end{proof}
+
+The proof is Figure-free and multiplicity-safe because the nine-point theorem was proved for divisors. In particular it covers $P=Q$ and all the
+degenerate configurations, which a proof by explicit formulas would have to check one by one.
+
+\begin{corollary}\label{cor:pic}
+The map $P\mapsto[P-O]$ is an isomorphism from $E(\overline K)$ to the group of divisor classes of degree $0$ on $E$. A divisor $\sum n_iP_i$ of degree $0$ is
+principal iff $\sum n_iP_i=O$ in the group $E$.
+\end{corollary}
+\begin{proof}
+If $\ell$ is the line through $P,Q,P*Q$ and $\ell'$ the line through $P*Q,O,P+Q$, then
+$\operatorname{div}(\ell/\ell')=P+Q-O-(P+Q)$, so $(P+Q)-O\equiv(P-O)+(Q-O)$: the map is a homomorphism. It is bijective by Corollary~\ref{cor:genus1}(c).
+For the second statement, $\sum n_iP_i=\sum n_i(P_i-O)\equiv(\sum n_iP_i)_E-O$, which is principal iff $(\sum n_iP_i)_E=O$ (Corollary~\ref{cor:genus1}(b)).
+\end{proof}
+
+\section{Torsion points}
+
+From now on, $E:y^2=x^3+ax+b$ with $a,b\in\Z$, and $D=4a^3+27b^2\ne0$. A point $P$ has \emph{finite order} if $mP=O$ for some $m\ge1$; these form
+the \emph{torsion subgroup} $E(\Q)_{\mathrm{tors}}$. For instance on $y^2=x^3+1$, $(-1,0)$ has order $2$, $(0,\pm1)$ have order $3$ (they are flexes,
+Exercise~\ref{ex:flex}) and $(2,\pm3)$ have order $6$.
+
+\subsection*{Denominators}
+
+Let $p$ be a prime and $P=(x,y)\in E(\Q)$ with $v_p(x)<0$. Then $v_p(x^3+ax+b)=3v_p(x)$, so $2v_p(y)=3v_p(x)$, and there is an integer $\nu\ge1$ with
+$v_p(x)=-2\nu$, $v_p(y)=-3\nu$. Write $x=m/e^2$, $y=n/e^3$ with $e\ge1$ and $\gcd(m,e)=\gcd(n,e)=1$: the denominators of rational points are squares and
+cubes. For $\nu\ge1$ let
+\[
+E_\nu=\{P\in E(\Q):v_p(x(P))\le-2\nu\}\cup\{O\},
+\]
+the points that are $p$-adically close to $O$. Near $O$ use the coordinates $t=x/y$, $s=1/y$ (the chart $Y=1$), in which $O=(0,0)$ and
+\[
+E:\ s=t^3+ats^2+bs^3 .
+\]
+For $P\ne O$ in $E_\nu$, with $v_p(x)=-2\nu'$ ($\nu'\ge\nu$), we have $v_p(t)=\nu'$ and $v_p(s)=3\nu'$; so $P\in E_{\nu''}$ iff $v_p(t(P))\ge\nu''$. Conversely,
+any point with $v_p(s)\ge3\nu$ lies in $E_\nu$: then $v_p(y)<0$, which forces $v_p(x)<0$ (if $v_p(x)\ge0$ then $y^2=f(x)$ is $p$-integral), and
+$v_p(y)=-3\nu'$ with $3\nu'\ge3\nu$. We put $t(O)=s(O)=0$.
+
+\begin{proposition}[the $p$-adic filtration]\label{prop:filtration}
+Each $E_\nu$ is a subgroup of $E(\Q)$, and $t$ induces an injective homomorphism $E_\nu/E_{3\nu}\to p^\nu\Z_{(p)}/p^{3\nu}\Z_{(p)}$. Consequently $E_1$
+contains no point of finite order other than $O$.
+\end{proposition}
+\begin{proof}
+\emph{The curve is a graph over $t$.} Let $P_1,P_2\in E_\nu$ have the same $t$. Subtracting their equations,
+$s_2-s_1=(s_2-s_1)\bigl[at(s_1+s_2)+b(s_1^2+s_1s_2+s_2^2)\bigr]$, and the bracket has positive valuation, so $s_1=s_2$: $P_1=P_2$.
+
+\emph{The line.} Let $P_1,P_2\in E_\nu$, not both $O$, and let $s=\alpha t+\beta$ be the line through them in the $(t,s)$-plane (the tangent if $P_1=P_2$; by the
+previous point it is not vertical). If $t_1\ne t_2$, subtract the two equations and divide by $t_2-t_1$, using
+$t_2s_2^2-t_1s_1^2=(t_2-t_1)s_2^2+t_1(s_2-s_1)(s_2+s_1)$:
+\[
+\alpha=\frac{s_2-s_1}{t_2-t_1}=\frac{t_1^2+t_1t_2+t_2^2+as_2^2}{1-at_1(s_1+s_2)-b(s_1^2+s_1s_2+s_2^2)} .
+\]
+The same formula with $t_1=t_2$, $s_1=s_2$ gives the slope of the tangent (implicit differentiation). The denominator is a $p$-adic unit, so
+$v_p(\alpha)\ge2\nu$, and $\beta=s_1-\alpha t_1$ has $v_p(\beta)\ge3\nu$.
+
+\emph{The third point.} Substituting $s=\alpha t+\beta$ in the equation gives a cubic in $t$ whose roots are $t_1,t_2,t_3$, the $t$-coordinates of the three
+intersection points:
+\[
+(1+a\alpha^2+b\alpha^3)\,t^3+(2a\alpha\beta+3b\alpha^2\beta)\,t^2+\dots=0,
+\qquad t_1+t_2+t_3=-\frac{2a\alpha\beta+3b\alpha^2\beta}{1+a\alpha^2+b\alpha^3}.
+\]
+So $v_p(t_1+t_2+t_3)\ge5\nu$; in particular $v_p(t_3)\ge\nu$ and $s_3=\alpha t_3+\beta$ has $v_p(s_3)\ge3\nu$, so the third point $P_3$ is in $E_\nu$ (or is $O$). Since
+$P_1+P_2=-P_3$ and $-(x,y)=(x,-y)$ changes the signs of $t$ and $s$,
+\[
+t(P_1+P_2)=-t_3\equiv t(P_1)+t(P_2)\pmod{p^{5\nu}} .
+\]
+Together with $t(-P)=-t(P)$, this shows that $E_\nu$ is a subgroup and that $t$ is a homomorphism modulo $p^{5\nu}$, hence modulo $p^{3\nu}$. Its
+kernel modulo $p^{3\nu}$ is $\{P:v_p(t(P))\ge3\nu\}=E_{3\nu}$.
+
+\emph{No torsion.} Let $P\in E_1$ have finite order $m>1$, and $P\in E_\nu\setminus E_{\nu+1}$, so $v_p(t(P))=\nu$. If $p\nmid m$, then
+$0=t(mP)\equiv m\,t(P)\pmod{p^{5\nu}}$, which is absurd since $v_p(m\,t(P))=\nu<5\nu$. If $p\mid m$, replace $P$ by $P'=\frac mpP$, a point of order
+$p$, in some $E_{\nu'}\setminus E_{\nu'+1}$ ($E_1$ is a group): $0=t(pP')\equiv p\,t(P')\pmod{p^{5\nu'}}$ with $v_p(p\,t(P'))=\nu'+1<5\nu'$. Absurd again.
+\end{proof}
+
+\begin{theorem}[Nagell--Lutz, 1935--1937]\label{thm:nagelllutz}
+If $P=(x,y)\in E(\Q)$ has finite order, then $x,y\in\Z$, and either $y=0$ or $y^2\mid4a^3+27b^2$.
+\end{theorem}
+\begin{proof}
+For every prime $p$, $P\notin E_1$ by Proposition~\ref{prop:filtration}, so $v_p(x)\ge0$: $x\in\Z$, and $y^2=f(x)\in\Z$ forces $y\in\Z$. Suppose $y\ne0$. Then
+$2P\ne O$ is also of finite order, so $x(2P)\in\Z$. By \eqref{eq:addformula}, $x(2P)=\lambda^2-2x$ with $\lambda=f'(x)/2y$; so $\lambda^2\in\Z$, hence
+$\lambda\in\Z$, and $f'(x)=2y\lambda$ is divisible by $y$. The polynomial identity
+\[
+4a^3+27b^2=(3x^2+4a)\,f'(x)^2-27(x^3+ax-b)\,f(x),
+\]
+which one checks by expanding, then shows $y^2\mid4a^3+27b^2$, since $y^2\mid f'(x)^2$ and $y^2=f(x)$.
+\end{proof}
+
+So the torsion is finite and can be listed: try the finitely many $y$ with $y=0$ or $y^2\mid D$, solve for integral $x$, and test which points have finite
+order. Many curves are disposed of at once: on $y^2=x^3+2$, $D=108$, and the candidates $y\in\{\pm1,\pm2,\pm3,\pm6\}$ give no integral $x$ except
+$y=\pm1$, $x=-1$; and $P=(-1,1)$ has $2P=(\frac{17}4,-\frac{71}8)$, not integral, so $P$ has infinite order. The torsion of $y^2=x^3+2$ is trivial, and its rank is
+at least $1$.
+
+\subsection*{Reduction modulo $p$}
+
+For $p\nmid2D$, the reduced curve $\tilde E:y^2=x^3+\bar ax+\bar b$ over $\mathbb F_p$ is an elliptic curve. Reduction sends $P=(x,y)\in E(\Q)$ to
+$\tilde P=(\bar x,\bar y)$ if $v_p(x)\ge0$, and to $\tilde O$ if $P\in E_1$ or $P=O$.
+
+\begin{proposition}\label{prop:reduction}
+For $p\nmid2D$, reduction $E(\Q)\to\tilde E(\mathbb F_p)$ is a homomorphism with kernel $E_1$. It is injective on $E(\Q)_{\mathrm{tors}}$; in particular
+$|E(\Q)_{\mathrm{tors}}|$ divides $|\tilde E(\mathbb F_p)|$.
+\end{proposition}
+\begin{proof}
+In projective coordinates, write each point of $E(\Q)$ as $(X:Y:Z)$ with coprime integers; reduction is then $(X:Y:Z)\mapsto(\bar X:\bar Y:\bar Z)$, which
+agrees with the description above. Let $P,Q,R$ be the intersection of $E$ with a line $\ell:uX+vY+wZ=0$, $u,v,w$ coprime integers. Choose a basis
+$A,B\in\Z^3$ of the lattice $\ell\cap\Z^3$ (it has rank $2$, and is saturated: $\Z^3/(\ell\cap\Z^3)$ is torsion-free), so that every point of $\ell$ is
+$\sigma A+\tau B$, $(\sigma:\tau)\in\mathbb P^1$; the reductions $\bar A,\bar B$ are independent (they span the plane $\bar u X+\bar vY+\bar wZ=0$, since $A,B$
+extend to a basis of $\Z^3$). The binary cubic $\varphi(\sigma,\tau)=F(\sigma A+\tau B)$ has integer coefficients and factors over $\Q$ as
+$c\prod_{P}(\tau_P\sigma-\sigma_P\tau)$ over the three points with their multiplicities, with $(\sigma_P,\tau_P)$ coprime integers; by Gauss's lemma, $c\in\Z$.
+Reduce: $\bar\varphi=\bar c\prod(\bar\tau_P\sigma-\bar\sigma_P\tau)$, and $\bar c\ne0$ because $\tilde E$ is irreducible and so does not contain the line
+$\bar\ell$. The roots of $\bar\varphi$ are the intersection points of $\bar\ell$ with $\tilde E$, with multiplicities (as in the affine argument above), so they are
+$\tilde P,\tilde Q,\tilde R$, and $\tilde P+\tilde Q+\tilde R=\tilde O$ by Theorem~\ref{thm:grouplaw}. Since $\tilde O$ reduces from $O$ and $-P$ reduces
+to $-\tilde P$, this shows that reduction is a homomorphism. Its kernel is $E_1\cup\{O\}=E_1$, which has no non-trivial torsion
+(Proposition~\ref{prop:filtration}).
+\end{proof}
+
+For example, for $E:y^2=x^3+1$, $D=27$, and $\tilde E(\mathbb F_5)$ and $\tilde E(\mathbb F_{11})$ have $6$ and $12$ points (Exercise~\ref{ex:supersing}); so
+$|E(\Q)_{\mathrm{tors}}|$ divides $6$, and the six points listed above are all of it.
+
+\begin{remark}
+Mazur proved in 1977 that $E(\Q)_{\mathrm{tors}}$ is one of $\Z/m$ for $1\le m\le10$ or $m=12$, or $\Z/2\times\Z/2m$ for $1\le m\le4$, and all fifteen occur.
+The proof uses modular curves, the objects of Chapter~14.
+\end{remark}
+
+\section{Mordell's theorem}
+
+\begin{theorem}[Mordell, 1922]\label{thm:mordell}
+$E(\Q)$ is a finitely generated abelian group: $E(\Q)\cong E(\Q)_{\mathrm{tors}}\times\Z^r$. The integer $r$ is the \emph{rank} of $E$.
+\end{theorem}
+
+The proof has two halves: $E(\Q)/2E(\Q)$ is finite (the \emph{weak} Mordell--Weil theorem), and a \emph{height} function measures the size of
+points in a way that halving decreases. Fermat's infinite descent is the model: a point is written as $Q_i+2P_1$ with $Q_i$ from a finite list and
+$P_1$ smaller, and so on until the points are too small to go on.
+
+\subsection*{The weak Mordell--Weil theorem}
+
+Write $f(x)=(x-e_1)(x-e_2)(x-e_3)$ with $e_i\in\overline{\Q}$, distinct algebraic integers, and let $K=\Q(e_1,e_2,e_3)$, a number field of degree $1,2,3$ or $6$,
+over which the three points $T_i=(e_i,0)$ of order $2$ are rational. For $i=1,2,3$ and $\{i,j,k\}=\{1,2,3\}$ define
+$\delta_i:E(K)\to K^\times/K^{\times2}$ by
+\[
+\delta_i(x,y)=x-e_i\ (x\ne e_i),\qquad\delta_i(T_i)=(e_i-e_j)(e_i-e_k),\qquad\delta_i(O)=1 .
+\]
+
+\begin{lemma}\label{lem:deltahom}
+Each $\delta_i$ is a homomorphism, and $P\in2E(K)$ iff $\delta_1(P),\delta_2(P),\delta_3(P)$ are all squares.
+\end{lemma}
+\begin{proof}
+\emph{Homomorphism.} As $\delta_i(-P)=\delta_i(P)$ and the target has exponent $2$, it suffices to show that $\delta_i(P)\delta_i(Q)\delta_i(R)$ is a square
+when $P+Q+R=O$. If one of them is $O$, the other two are opposite and the product is $\delta_i(P)^2$. Otherwise $P,Q,R$ lie on a non-vertical line
+$y=\lambda x+\nu$, and $f(x)-(\lambda x+\nu)^2=(x-x_P)(x-x_Q)(x-x_R)$. At $x=e_i$:
+\[
+(x_P-e_i)(x_Q-e_i)(x_R-e_i)=(\lambda e_i+\nu)^2 .
+\]
+If none of the three points is $T_i$, the right side is non-zero and we are done. If $P=T_i$, then $\lambda e_i+\nu=0$, so $\lambda x+\nu=\lambda(x-e_i)$ and
+$(x-x_Q)(x-x_R)=(x-e_j)(x-e_k)-\lambda^2(x-e_i)$; at $x=e_i$, $(x_Q-e_i)(x_R-e_i)=(e_i-e_j)(e_i-e_k)=\delta_i(T_i)$. Neither $Q$ nor $R$ is $T_i$ (the line would
+be tangent at $T_i$, whose tangent is vertical), so $\delta_i(Q)\delta_i(R)=\delta_i(T_i)$ and the product of the three is a square.
+
+\emph{Kernel.} If $P=2Q$, then $\delta_i(P)=\delta_i(Q)^2$. Conversely, let $P=(x,y)$ with all $\delta_i(P)$ squares; then each $x-e_i$ is a square $r_i^2$ in $K$
+(for $P=T_i$, $x-e_i=0$, and $x-e_j=e_i-e_j=\delta_j(T_i)$). We look for the tangent line $y=\lambda X+\nu$ at a point $Q$ with $2Q=\pm P$; it must satisfy
+$f(X)-(\lambda X+\nu)^2=(X-x_Q)^2(X-x)$. Choose signs $\varepsilon_i=\pm1$ such that the linear system
+\[
+\varepsilon_ir_i\,(e_i-x_Q)=\lambda e_i+\nu\qquad(i=1,2,3)
+\]
+in the unknowns $x_Q,\lambda,\nu$ has a non-zero determinant $\sum_{\text{cyclic}}\varepsilon_ir_i(e_j-e_k)$: if it vanished for all signs, flipping
+$\varepsilon_1$ would give $r_1(e_2-e_3)=0$, and similarly $r_2=r_3=0$, so $x=e_1=e_2=e_3$, absurd. Solve it in $K$. The polynomial
+$h(X)=f(X)-(\lambda X+\nu)^2-(X-x_Q)^2(X-x)$ has degree $\le2$ and vanishes at the three $e_i$, since $(e_i-x_Q)^2(e_i-x)=-r_i^2(e_i-x_Q)^2=-(\lambda e_i+\nu)^2$.
+So $h=0$, the line meets $E$ at $Q=(x_Q,\lambda x_Q+\nu)\in E(K)$ doubly and at a point with first coordinate $x$, which is $P$ or $-P$. Hence $2Q=-(\pm P)$, and
+$P=2Q$ or $P=2(-Q)$.
+\end{proof}
+
+\begin{lemma}\label{lem:Sfinite}
+Let $S$ be the set of primes of $\mathcal O_K$ dividing $2(e_1-e_2)(e_1-e_3)(e_2-e_3)$. Each $\delta_i$ takes values in the group
+\[
+K(S,2)=\{\alpha\in K^\times/K^{\times2}:\ v_{\mathfrak p}(\alpha)\text{ is even for every prime }\mathfrak p\notin S\},
+\]
+which is finite.
+\end{lemma}
+\begin{proof}
+Let $P=(x,y)\in E(K)$, $P\ne T_i$, and $\mathfrak p\notin S$. If $v_{\mathfrak p}(x)<0$, then $v_{\mathfrak p}(x-e_i)=v_{\mathfrak p}(x)$ for all $i$ ($e_i$ is
+integral), and $3v_{\mathfrak p}(x)=2v_{\mathfrak p}(y)$, so it is even. If $v_{\mathfrak p}(x)\ge0$, at most one of the $x-e_i$ is divisible by $\mathfrak p$
+(otherwise $\mathfrak p$ divides some $e_i-e_j$), and $\sum_iv_{\mathfrak p}(x-e_i)=2v_{\mathfrak p}(y)$ is even, so each is even. The values $\delta_i(T_i)$ only
+involve primes of $S$.
+
+Finiteness. Every $\alpha$ with even valuations outside $S$ has $(\alpha)=\mathfrak a^2\prod_{\mathfrak p\in S}\mathfrak p^{n_{\mathfrak p}}$. The map
+$\alpha\mapsto(n_{\mathfrak p}\bmod2)_{\mathfrak p\in S}$ is well defined on $K(S,2)$, with values in a group of order $2^{|S|}$. On its kernel,
+$(\alpha)=\mathfrak b^2$ (put the even powers of the primes of $S$ into $\mathfrak b$), and $\alpha\mapsto[\mathfrak b]$ is a homomorphism to the $2$-torsion of the
+class group (changing $\alpha$ by $\gamma^2$ changes $\mathfrak b$ by $(\gamma)$), which is finite (Theorem~\ref{thm:minkbound}). On the kernel of this second
+map, $\mathfrak b=(\beta)$, so $\alpha=u\beta^2$ with $u$ a unit: the class of $\alpha$ is that of a unit, and $\mathcal O_K^\times/\mathcal O_K^{\times2}$ is finite
+because $\mathcal O_K^\times$ is finitely generated (Theorem~\ref{thm:dirichlet}). So $|K(S,2)|\le2^{|S|}\,|\mathrm{Cl}_K[2]|\,|\mathcal O_K^\times/\mathcal O_K^{\times2}|$.
+\end{proof}
+
+\begin{theorem}[weak Mordell--Weil]\label{thm:weakmw}
+$E(\Q)/2E(\Q)$ is finite.
+\end{theorem}
+\begin{proof}
+By the two lemmas, $\delta=(\delta_1,\delta_2,\delta_3)$ maps $E(K)/2E(K)$ injectively into the finite group $K(S,2)^3$, so $E(K)/2E(K)$ is finite. It remains to see
+that $E(\Q)/2E(\Q)\to E(K)/2E(K)$ has finite kernel $(E(\Q)\cap2E(K))/2E(\Q)$. Let $G=\operatorname{Gal}(K/\Q)$; it acts on $E(K)$ by acting on coordinates, by
+group automorphisms (the formulas \eqref{eq:addformula} have rational coefficients). For $P\in E(\Q)\cap2E(K)$ choose $Q_P\in E(K)$ with $2Q_P=P$. For
+$\sigma\in G$, $2(\sigma Q_P-Q_P)=\sigma P-P=O$, so $\sigma\mapsto\sigma Q_P-Q_P$ is a map $G\to E[2]$, the four points of order dividing $2$. There are at most
+$4^{|G|}$ such maps. If $P$ and $P'$ give the same map, then $Q_P-Q_{P'}$ is fixed by $G$, so it lies in $E(\Q)$, and $P-P'=2(Q_P-Q_{P'})\in2E(\Q)$. So the kernel
+has at most $4^{|G|}$ elements.
+\end{proof}
+
+\subsection*{Heights}
+
+For a rational number $r=m/n$ in lowest terms, let $H(r)=\max(|m|,|n|)$, and for $P\in E(\Q)$ let $h(P)=\log H(x(P))$, $h(O)=0$. For every $B$, the set
+$\{P:h(P)\le B\}$ is finite: finitely many $x$, and two $y$ for each.
+
+\begin{lemma}\label{lem:heightadd}
+For every $P_0\in E(\Q)$ there is $c_1$ with $h(P+P_0)\le2h(P)+c_1$ for all $P$.
+\end{lemma}
+\begin{proof}
+We may exclude the finitely many $P$ with $P\in\{O,P_0,-P_0\}$ and assume $P_0\ne O$. Write $x=x(P)=m/e^2$, $y=n/e^3$ as above, so $H(x)=\max(|m|,e^2)$ (the
+fraction $m/e^2$ is in lowest terms). From $n^2=m^3+ame^4+be^6$, $|n|\le C\max(|m|,e^2)^{3/2}$ with $C$ depending on $a,b$. The addition formula gives, for $x\ne x_0$,
+\[
+x(P+P_0)=\Bigl(\frac{y-y_0}{x-x_0}\Bigr)^2-x-x_0=\frac{(xx_0+a)(x+x_0)+2b-2yy_0}{(x-x_0)^2}
+\]
+(use $y^2=f(x)$, $y_0^2=f(x_0)$ and expand). Multiply numerator and denominator by $e^4$ and by a suitable integer $N$ depending only on $P_0$: they become integers,
+$N\bigl[(mx_0+ae^2)(m+x_0e^2)+2be^4-2ney_0\bigr]$ and $N(m-x_0e^2)^2$, of absolute value at most $C'\max(|m|,e^2)^2$, using $|ne|\le C\max(|m|,e^2)^{3/2}e\le
+C\max(|m|,e^2)^2$. Cancelling common factors only decreases them, so $H(x(P+P_0))\le C'H(x)^2$.
+\end{proof}
+
+\begin{lemma}\label{lem:heightdouble}
+There is $c_2$ with $h(2P)\ge4h(P)-c_2$ for all $P\in E(\Q)$.
+\end{lemma}
+\begin{proof}
+The finitely many $P$ with $2P=O$ only affect $c_2$. For $P\notin E[2]$, $x(2P)=\varphi(x)/\psi(x)$ with $\varphi=x^4-2ax^2-8bx+a^2$ and $\psi=4f(x)$, by \eqref{eq:addformula}: $\lambda^2-2x=\frac{f'(x)^2-8xf(x)}{4f(x)}$.
+The polynomials $\varphi,\psi$ are coprime, since a common root of $\psi$ is a root $e$ of $f$, where $\varphi(e)=\frac{f'(e)^2}4\ne0$. Homogenise: $\Phi(m,n)=n^4\varphi(m/n)$,
+$\Psi(m,n)=n^4\psi(m/n)$, binary forms of degree $4$ with integer coefficients and no common zero in $\mathbb P^1(\C)$ ($\Phi(1,0)=1$). By Lemma~\ref{lem:finite}
+(over $\Q$), the ideal $(\Phi,\Psi)$ of $\Q[m,n]$ contains a non-zero polynomial in $m$ alone, and, being generated by forms, each homogeneous part of it: so it
+contains a power $m^N$, and likewise $n^N$. Clearing denominators, $R\,m^N$ and $R\,n^N$ are combinations of $\Phi,\Psi$ with integer coefficients, for some
+integer $R\ne0$. So for coprime integers $m,n$, $\gcd(\Phi(m,n),\Psi(m,n))$ divides $R$. Next, $(u,v)\mapsto\max(|\Phi(u,v)|,|\Psi(u,v)|)$ is continuous and positive on
+the compact set $\max(|u|,|v|)=1$, so it is $\ge c>0$ there, and by homogeneity $\max(|\Phi(m,n)|,|\Psi(m,n)|)\ge c\max(|m|,|n|)^4$. With $x=m/n$ in lowest
+terms, $H(x(2P))\ge\max(|\Phi|,|\Psi|)/|R|\ge(c/|R|)H(x)^4$.
+\end{proof}
+
+\begin{proof}[Proof of Mordell's theorem]
+Let $Q_1,\dots,Q_s$ represent the finitely many classes of $E(\Q)/2E(\Q)$ (Theorem~\ref{thm:weakmw}), and let $c_1$ be the largest constant of
+Lemma~\ref{lem:heightadd} for $P_0=-Q_1,\dots,-Q_s$. Given $P$, write $P=Q_{i_1}+2P_1$, $P_1=Q_{i_2}+2P_2$, and so on. Then
+\[
+4h(P_j)-c_2\le h(2P_j)=h(P_{j-1}-Q_{i_j})\le2h(P_{j-1})+c_1,
+\qquad\text{so}\qquad h(P_j)\le\tfrac12h(P_{j-1})+c,\quad c=\tfrac{c_1+c_2}4 .
+\]
+By induction $h(P_j)\le2^{-j}h(P)+2c$, so some $P_j$ lies in the finite set $\mathcal F=\{Q:h(Q)\le2c+1\}$. Unwinding, $P$ is a combination of the $Q_i$ and of an
+element of $\mathcal F$: the finite set $\{Q_1,\dots,Q_s\}\cup\mathcal F$ generates $E(\Q)$. The structure theorem for finitely generated abelian groups
+(Tome~2) gives the decomposition.
+\end{proof}
+
+\begin{remark}
+Weil extended the theorem in 1928 to abelian varieties over number fields (\emph{Mordell--Weil}). The height has a better version, the \emph{canonical height}
+$\hat h(P)=\lim4^{-n}h(2^nP)$, a positive definite quadratic form on $E(\Q)\otimes\R$, which the notebook computes. The proof gives no algorithm for $r$: the
+descent bounds $|E(\Q)/2E(\Q)|$ from above, and the gap between this bound and the truth is measured by the mysterious Tate--Shafarevich group.
+\end{remark}
+
+\section{Congruent numbers}
+
+\begin{proposition}\label{prop:congruent}
+Let $n\ge1$ be an integer. The right triangles with rational sides $a,b,c$ and area $n$ (with $a,b>0$) and the points of $E_n:y^2=x^3-n^2x$ are related as follows: the maps
+\[
+(a,b,c)\mapsto\Bigl(\frac{n(a+c)}b,\ \frac{2n^2(a+c)}{b^2}\Bigr),\qquad(x,y)\mapsto\Bigl(\frac{x^2-n^2}{y},\ \frac{2nx}y,\ \frac{x^2+n^2}{y}\Bigr).
+\]
+are inverse bijections between the rational triples with $a^2+b^2=c^2$ and $ab=2n$, and the points of $E_n(\Q)$ with $y\ne0$. In particular $n$ is congruent iff
+$E_n(\Q)$ has a point with $y\ne0$.
+\end{proposition}
+\begin{proof}
+If $(x,y)\in E_n(\Q)$ with $y\ne0$, the three numbers $a=\frac{x^2-n^2}y$, $b=\frac{2nx}y$, $c=\frac{x^2+n^2}y$ satisfy
+$a^2+b^2=\frac{(x^2-n^2)^2+4n^2x^2}{y^2}=c^2$ and $\frac{ab}2=\frac{n(x^3-n^2x)}{y^2}=n$; replacing $a,b$ by $|a|,|b|$ gives a triangle. Conversely, if $a^2+b^2=c^2$ and $ab=2n$, then $b\ne0$, and $a+c\ne0$ (otherwise $b=0$). Put $x=\frac{n(a+c)}b$ and $y=\frac{2n^2(a+c)}{b^2}$. Using
+$c^2-b^2=a^2$ and then $2n=ab$ twice,
+\[
+\begin{aligned}
+x^2-n^2&=\frac{n^2\bigl((a+c)^2-b^2\bigr)}{b^2}=\frac{2n^2a(a+c)}{b^2},\\
+x^3-n^2x&=\frac{2n^3a(a+c)^2}{b^3}=\frac{n^2a^2(a+c)^2}{b^2}=\frac{4n^4(a+c)^2}{b^4}=y^2 .
+\end{aligned}
+\]
+The maps are inverse to each other. Starting from $(x,y)$: $a+c=\frac{2x^2}y$, so $\frac{n(a+c)}b=\frac{2nx^2/y}{2nx/y}=x$, and similarly $y$ comes back. Starting from
+$(a,b,c)$: $\frac{x^2-n^2}y=a$ by the first line above, $\frac{2nx}y=b$, and
+\[
+\frac{x^2+n^2}y=a+\frac{2n^2}y=a+\frac{b^2}{a+c}=\frac{a^2+ac+b^2}{a+c}=c .
+\]
+\end{proof}
+
+For $n=6$, the $3$-$4$-$5$ triangle gives $P=(12,36)$. Then $2P=\bigl(\frac{25}4,-\frac{35}8\bigr)$ gives the triangle $\frac7{10},\frac{120}7,\frac{1201}{70}$, and
+$4P=\bigl(\frac{1442401}{19600},\dots\bigr)$ gives one with hypotenuse $\frac{2094350404801}{241717895860}$ (Figure~\ref{fig:area6}). Each doubling roughly quadruples
+the number of digits (Lemma~\ref{lem:heightdouble}), and since $E_6(\Q)$ will turn out to have points of infinite order, there are infinitely many triangles of area
+$6$.
+
+\begin{figure}[ht]
+\centering\fig{ch12-area6}
+\caption{Three right triangles of area $6$, from the points $P$, $2P$, $4P$ on $y^2=x^3-36x$, drawn to the same scale. The legs of the third are
+about $1.40$ and $8.55$.}
+\label{fig:area6}
+\end{figure}
+
+\begin{proposition}\label{prop:entors}
+The torsion subgroup of $E_n(\Q)$ is $E_n[2]$, made of $O$, $(0,0)$, $(n,0)$ and $(-n,0)$. Hence $n$ is congruent iff $E_n(\Q)$ has positive rank.
+\end{proposition}
+\begin{proof}
+For a prime $p\equiv3\pmod4$ with $p\nmid2n$, $\tilde E_n(\mathbb F_p)$ has $p+1$ points: $g(x)=x^3-n^2x$ is odd, $-1$ is not a square modulo $p$, so for each of the
+$\frac{p-3}2$ pairs $\{x,-x\}$ with $g(x)\ne0$, exactly one of $g(x),g(-x)=-g(x)$ is a non-zero square and gives two points; with the three points of order $2$ and $O$,
+the total is $(p-3)+3+1=p+1$. The discriminant is $4(-n^2)^3=-4n^6$, so Proposition~\ref{prop:reduction} applies, and $|T|$ divides $p+1$ for all such $p$, where
+$T=E_n(\Q)_{\mathrm{tors}}\supseteq E_n[2]$, of order $4$. If an odd prime $\ell$ divides $|T|$, choose by Dirichlet's theorem a prime $p\nmid2n$ with $p\equiv3\pmod4$
+and $p\equiv1\pmod\ell$ (Theorem~\ref{thm:dirichletF} for $K=\Q$): then $\ell\mid p+1\equiv2\pmod\ell$, absurd. If $8\mid|T|$, take $p\equiv3\pmod8$: then $p+1\equiv4\pmod8$.
+So $|T|=4$. The last statement follows from Proposition~\ref{prop:congruent}, since the points of order $2$ are those with $y=0$.
+\end{proof}
+
+\begin{theorem}[Fermat]\label{thm:onecongruent}
+$E_1:y^2=x^3-x$ has rank $0$: $E_1(\Q)=\{O,(0,0),(1,0),(-1,0)\}$. Hence $1$ is not a congruent number, no right triangle with rational sides has square area, and
+the equations $x^4-y^4=z^2$ and $x^4+y^4=z^4$ have no solution in positive integers.
+\end{theorem}
+\begin{proof}
+Here $e_1=0$, $e_2=1$, $e_3=-1$, $K=\Q$, and $S=\{2\}$ (with the sign, $K(S,2)=\{\pm1,\pm2\}$ modulo squares). Since $\delta_1\delta_2\delta_3$ is a square
+($=y^2$ for affine points not of order $2$; check the $T_i$), $\delta_3$ is determined by $\delta_1,\delta_2$, and Lemma~\ref{lem:deltahom} shows that
+$(\delta_1,\delta_2):E_1(\Q)/2E_1(\Q)\to\{\pm1,\pm2\}^2$ is injective. On the torsion:
+\[
+\delta(O)=(1,1),\quad\delta(0,0)=(-1,-1),\quad\delta(1,0)=(1,2),\quad\delta(-1,0)=(-1,-2),
+\]
+using $\delta_1(T_1)=(0-1)(0+1)=-1$, $\delta_2(T_2)=(1-0)(1+1)=2$, and so on. These four values form a subgroup $V$. We show that the image of $\delta$ is $V$.
+
+Let $P=(x,y)$ with $y\ne0$, and $x=d_1u^2$, $x-1=d_2v^2$, $x+1=d_1d_2w^2$ with $d_1,d_2\in\{\pm1,\pm2\}$ and $u,v,w\in\Q^\times$. \emph{Signs.} $x(x-1)(x+1)=y^2>0$, so either
+$x>1$ (then $d_1,d_2>0$) or $-1<x<0$ (then $d_1,d_2<0$). \emph{Powers of $2$.} Suppose $|d_1|=2$; then $v_2(x)$ is odd. If $v_2(x)>0$, then $x-1$ and $x+1$ are
+$2$-adic units, so $d_2$ (of even valuation) is $\pm1$ and $v_2(x+1)=v_2(d_1d_2)+2v_2(w)$ is odd: absurd. If $v_2(x)<0$, then
+$v_2(x-1)=v_2(x+1)=v_2(x)$ is odd, so $|d_2|=2$ and $v_2(x+1)=v_2(d_1d_2)+2v_2(w)$ is even: absurd. So $d_1=\pm1$, with the sign of $d_2$, and $(d_1,d_2)$ is
+one of $(1,1),(1,2),(-1,-1),(-1,-2)$: it is in $V$.
+
+So $|E_1(\Q)/2E_1(\Q)|=|V|=4$. But $E_1(\Q)\cong T\times\Z^r$ with $T=(\Z/2)^2$ (Proposition~\ref{prop:entors}), so $E_1(\Q)/2E_1(\Q)\cong(\Z/2)^{2+r}$: $r=0$.
+
+Consequences. By Propositions~\ref{prop:congruent} and~\ref{prop:entors}, $1$ is not congruent. A rational right triangle with area $s^2$ would give, after scaling by $1/s$,
+one with area $1$. If $x^4-y^4=z^2$ with $x,y,z>0$, the point $(X,Y)=\bigl(\frac{x^2}{y^2},\frac{xz}{y^3}\bigr)$ satisfies $Y^2=\frac{x^2(x^4-y^4)}{y^6}=X^3-X$ and $Y\ne0$:
+impossible. And $x^4+y^4=z^4$ gives $z^4-y^4=(x^2)^2$.
+\end{proof}
+
+\begin{beauty}
+Fermat's descent for $x^4+y^4=z^2$ (Tome~1) and the proof above are the same argument in different clothes: the map $\delta$ is Fermat's factorisation, and
+``smaller'' is the height. What the elliptic curve adds is structure. A failed descent is no longer a dead end but a group $E(\Q)/2E(\Q)$ to be computed,
+and the same proof works for every $n$, for every curve, and, with Weil's generalisation, for curves of any genus inside their Jacobians.
+\end{beauty}
+
+\begin{remark}[Birch--Swinnerton-Dyer, Tunnell]
+Running the descent for many curves, Birch and Swinnerton-Dyer noticed in the early 1960s that the rank seemed to be governed by the numbers $N_p=|\tilde E(\mathbb F_p)|$:
+$\prod_{p\le X}N_p/p$ grows like $(\log X)^r$. In terms of the $L$-function $L(E,s)=\prod_p(1-a_pp^{-s}+p^{1-2s})^{-1}$, $a_p=p+1-N_p$ (for good $p$), their conjecture
+says that $L(E,s)$ has a zero of order exactly $r$ at $s=1$. It is one of the Clay Millennium problems. For $E_n$, Tunnell (1983) computed $L(E_n,1)$ with modular forms
+of weight $\frac32$: if $n$ is odd and squarefree and congruent, then the number of solutions of $n=2x^2+y^2+32z^2$ is half the number of solutions of $n=2x^2+y^2+8z^2$; and
+the converse holds if the conjecture holds for $E_n$. Every $n\equiv5,6,7\pmod8$ should be congruent; this is known for primes $p\equiv5,7\pmod8$ (Heegner, Monsky).
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:x3plus1}
+Show that the torsion subgroup of $y^2=x^3+1$ is cyclic of order $6$, generated by $(2,3)$, using Theorem~\ref{thm:nagelllutz} alone.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:five}
+Show that $5$ and $7$ are congruent: find points on $E_5$ and $E_7$ (try $x=-4$ and $x=25$) and the corresponding triangles.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:flex}
+Show that a point $P\ne O$ of $E$ has order $3$ iff it is a flex, that is, the tangent at $P$ meets $E$ at $P$ with multiplicity $3$. Find the points of order $3$ of
+$y^2=x^3+1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bachet}
+(Bachet, 1621.) On $y^2=x^3+c$, show that $x(2P)=\dfrac{x^4-8cx}{4y^2}$. Starting from $3^3=27=5^2+2$, find a second rational solution of $y^2=x^3-2$, and
+show that the point $(3,5)$ has infinite order.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:supersing}
+Let $p\equiv2\pmod3$ be a prime and $c\not\equiv0\pmod p$. Show that $y^2=x^3+c$ has exactly $p+1$ points over $\mathbb F_p$ (including $O$). Deduce that the torsion
+subgroup of $y^2=x^3+c$ over $\Q$ has order dividing $6$ when $c$ is an integer.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:torsion7}
+Show that $P=(3,8)$ on $y^2=x^3-43x+166$ has order $7$ and that it generates the torsion subgroup. (Compute $2P,3P,4P$, and count points modulo $3$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:twonotcong}
+Show that $2$ is not a congruent number, by adapting the proof of Theorem~\ref{thm:onecongruent} to $y^2=x^3-4x$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:x3plus1}
+$D=27$: the possible $y$ are $0,\pm1,\pm3$. Then compute multiples of $(2,3)$.
+\end{hint}
+\begin{hint}{ex:five}
+Use the inverse map of Proposition~\ref{prop:congruent}.
+\end{hint}
+\begin{hint}{ex:flex}
+$3P=O$ iff $2P=-P$ iff $P*P=P$.
+\end{hint}
+\begin{hint}{ex:bachet}
+Use \eqref{eq:addformula} with $a=0$. For infinite order, compute $2P$ and use Theorem~\ref{thm:nagelllutz}.
+\end{hint}
+\begin{hint}{ex:supersing}
+When $p\equiv2\pmod3$, $x\mapsto x^3$ is a bijection of $\mathbb F_p$. For the deduction, use Proposition~\ref{prop:reduction} with two primes.
+\end{hint}
+\begin{hint}{ex:torsion7}
+$3P$ and $4P$ have the same $x$. Modulo $3$ the curve is $y^2=x^3-x+1$.
+\end{hint}
+\begin{hint}{ex:twonotcong}
+Here $e_i=0,2,-2$, and $\delta(T)$ for the three points of order $2$ are $(-1,-2)$, $(2,2)$, $(-2,-1)$. Exclude the other pairs of the right signs by looking at
+$v_2(x)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:x3plus1}
+\idea List the Nagell--Lutz candidates, then check orders with the addition formula.
+\writeup $D=4\cdot0+27=27$, so a torsion point has $y=0$ or $y^2\mid27$: $y\in\{0,\pm1,\pm3\}$. Then $x^3=y^2-1\in\{-1,0,8\}$: the points $(-1,0)$, $(0,\pm1)$, $(2,\pm3)$.
+For $P=(2,3)$: $\lambda=\frac{3\cdot4}{6}=2$, $x(2P)=4-4=0$, $y(2P)=-3-2(0-2)=1$: $2P=(0,1)$. Then $3P=P+2P$: $\lambda=\frac{1-3}{0-2}=1$, $x_3=1-2-0=-1$, $y_3=-3-1\cdot(-1-2)=0$:
+$3P=(-1,0)$, of order $2$. So $P$ has order $6$, and its six multiples $O,(2,3),(0,1),(-1,0),(0,-1),(2,-3)$ exhaust the candidates; all are torsion, so the torsion
+subgroup is $\langle P\rangle\cong\Z/6$.
+\end{solution}
+
+\begin{solution}{ex:five}
+\idea Points are easy to check; the triangle comes from the formulas of Proposition~\ref{prop:congruent}.
+\writeup On $y^2=x^3-25x$: $x=-4$ gives $-64+100=36$, $y=6$. Then $a=\frac{16-25}6=-\frac32$, $b=\frac{2\cdot5\cdot(-4)}6=-\frac{20}3$, $c=\frac{16+25}6=\frac{41}6$: the
+triangle $\frac32,\frac{20}3,\frac{41}6$, Fibonacci's, with $\frac94+\frac{400}9=\frac{1681}{36}$ and area $\frac12\cdot\frac32\cdot\frac{20}3=5$. On $y^2=x^3-49x$: $x=25$ gives
+$15625-1225=14400=120^2$. Then $a=\frac{625-49}{120}=\frac{24}5$, $b=\frac{2\cdot7\cdot25}{120}=\frac{35}{12}$, $c=\frac{674}{120}=\frac{337}{60}$, and $\frac12\cdot\frac{24}5\cdot\frac{35}{12}=7$.
+\end{solution}
+
+\begin{solution}{ex:flex}
+\idea Translate $3P=O$ into a statement about the tangent line.
+\writeup $3P=O$ iff $2P=-P$. Now $2P=O*(P*P)$ and $-P=O*P$, and $R\mapsto O*R$ is injective (it is $(x,y)\mapsto(x,-y)$), so $2P=-P$ iff $P*P=P$, that is, iff the
+tangent at $P$ meets $E$ a third time at $P$: the intersection multiplicity at $P$ is $3$. (If $2P=O$, the tangent is vertical and $P*P=O\ne P$.) For $y^2=x^3+1$:
+at $(0,\pm1)$ the tangent is horizontal ($\lambda=\frac{3\cdot0}{\pm2}=0$), the line $y=\pm1$, and $x^3+1-1=x^3$ has a triple root at $0$: these are flexes, of order $3$.
+Any other point of order $3$ would be torsion, hence one of the six points of Exercise~\ref{ex:x3plus1}; only $(0,\pm1)$ have order $3$.
+\end{solution}
+
+\begin{solution}{ex:bachet}
+\idea Doubling is the tangent construction; Nagell--Lutz detects infinite order through a non-integral multiple.
+\writeup With $a=0$, $\lambda=\frac{3x^2}{2y}$ and $x(2P)=\frac{9x^4}{4y^2}-2x=\frac{9x^4-8xy^2}{4y^2}=\frac{9x^4-8x(x^3+c)}{4y^2}=\frac{x^4-8cx}{4y^2}$. For $c=-2$ and $(3,5)$:
+$x(2P)=\frac{81+48}{100}=\frac{129}{100}$, and $y(2P)=-5-\frac{27}{10}\bigl(\frac{129}{100}-3\bigr)=-5+\frac{27\cdot171}{1000}=\frac{-5000+4617}{1000}=-\frac{383}{1000}$. Check:
+$\bigl(\frac{383}{1000}\bigr)^2=\frac{146689}{10^6}$ and $\bigl(\frac{129}{100}\bigr)^3-2=\frac{2146689-2000000}{10^6}$. Since $2P$ has non-integral coordinates, it is not torsion
+(Theorem~\ref{thm:nagelllutz}), so neither is $P$.
+\end{solution}
+
+\begin{solution}{ex:supersing}
+\idea A bijective cube map makes $x^3+c$ run through $\mathbb F_p$ exactly once.
+\writeup As $p\equiv2\pmod3$, $\gcd(3,p-1)=1$, so $x\mapsto x^3$ is a bijection of $\mathbb F_p$ (its kernel on $\mathbb F_p^\times$ is trivial), and so is $x\mapsto x^3+c$.
+The number of affine points is $\sum_{u\in\mathbb F_p}\#\{y:y^2=u\}=\sum_u\bigl(1+\bigl(\frac up\bigr)\bigr)=p$, as the Legendre symbol sums to $0$. With $O$: $p+1$. For
+$c\in\Z$, $c\ne0$, $D=27c^2$, so by Proposition~\ref{prop:reduction} $|T|$ divides $p+1$ for every prime $p\equiv2\pmod3$ with $p\nmid6c$. If a prime $\ell\ge5$ divided $|T|$, Dirichlet's theorem gives such a
+$p$ with $p\equiv1\pmod\ell$ (a condition modulo $3\ell$), and then $\ell\mid p+1\equiv2$: absurd. If $4\mid|T|$, take $p\equiv5\pmod{12}$, so $p+1\equiv6\pmod{12}$ is not divisible by $4$. If $9\mid|T|$, take $p\equiv2\pmod9$:
+$p+1\equiv3\pmod9$. So $|T|$ divides $6$.
+\end{solution}
+
+\begin{solution}{ex:torsion7}
+\idea Find the order by computing multiples; bound the torsion with a reduction.
+\writeup With $a=-43$: at $P=(3,8)$, $\lambda=\frac{27-43}{16}=-1$, $x(2P)=1-6=-5$, $y(2P)=-8+1\cdot(-5-3)=-16$: $2P=(-5,-16)$. Then $P+2P$: $\lambda=\frac{-16-8}{-5-3}=3$,
+$x=9-3+5=11$, $y=-8-3(11-3)=-32$: $3P=(11,-32)$. And $4P=2(2P)$: $\lambda=\frac{75-43}{-32}=-1$, $x=1+10=11$, $y=16+1\cdot(11+5)=32$: $4P=(11,32)=-3P$. So $7P=O$ and $P$ has
+order $7$. Here $D=4(-43)^3+27\cdot166^2=425984=2^{15}\cdot13$, so $p=3$ is a good prime, and $\tilde E:y^2=x^3-x+1$ over $\mathbb F_3$: $x^3-x+1=1$ for all $x\in\mathbb F_3$,
+so each $x$ gives two points: $6+1=7$ points. Hence $|T|$ divides $7$ (Proposition~\ref{prop:reduction}), and $T=\langle P\rangle$.
+\end{solution}
+
+\begin{solution}{ex:twonotcong}
+\idea Same descent. The image of $\delta$ lies between the torsion image $V$ and the group $\Sigma$ of pairs with equal signs, and $[\Sigma:V]=2$; so it is enough to
+exclude a single pair, and a congruence modulo $8$ does it.
+\writeup For $y^2=x^3-4x$: $e_1=0$, $e_2=2$, $e_3=-2$, $S=\{2\}$, and $(\delta_1,\delta_2)$ is injective on $E_2(\Q)/2E_2(\Q)$ with values in $\{\pm1,\pm2\}^2$. On the torsion:
+$\delta(0,0)=\bigl((0-2)(0+2),\,0-2\bigr)=(-4,-2)\equiv(-1,-2)$; $\delta(2,0)=(2,(2-0)(2+2))=(2,8)\equiv(2,2)$; $\delta(-2,0)=(-2,-4)\equiv(-2,-1)$. With $(1,1)$ these form
+a subgroup $V$ of order $4$. For $P=(x,y)$ with $y\ne0$, $x(x-2)(x+2)>0$ forces $x>2$ or $-2<x<0$, so $\delta_1(P)$ and $\delta_2(P)=x-2$ have the same sign. Hence the
+image of $\delta$ lies in the subgroup $\Sigma$ of pairs with equal signs, of order $8$, and contains $V$. It is $V$ unless it contains $(1,2)\in\Sigma\setminus V$.
+
+Suppose $\delta(P)=(1,2)$; then $y\ne0$ (points of order $2$ map into $V$), and $x=u^2$, $x-2=2v^2$, $x+2=2w^2$ with $u,v,w\in\Q$. Write $v=V/N$, $w=W/N$ with
+$N\ge1$ minimal, so $\gcd(V,W,N)=1$. From $w^2-v^2=2$, $W^2-V^2=2N^2$; from $u^2=2v^2+2$, $(uN)^2=2(V^2+N^2)$, so $uN$ is an integer. If $N$ is odd, $W^2-V^2\equiv2\pmod8$,
+impossible since squares are $0,1,4$ modulo $8$ and no two differ by $2$. If $N$ is even, $W^2\equiv V^2\pmod8$, so $W,V$ have the same parity; both even contradicts
+$\gcd(V,W,N)=1$, so both are odd, and then $2(V^2+N^2)\equiv2\pmod8$ is not a square. So $(1,2)$ is not in the image, the image is $V$, and $E_2(\Q)/2E_2(\Q)$ has order $4$.
+As in Theorem~\ref{thm:onecongruent} (the torsion is $E_2[2]$ by Proposition~\ref{prop:entors}), the rank is $0$, and $2$ is not congruent.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~H.~Silverman and J.~Tate, \emph{Rational Points on Elliptic Curves}, 2nd ed., Springer UTM, 2015. The filtration, Nagell--Lutz, heights and Mordell's
+theorem with rational $2$-torsion; the friendliest introduction.
+\item J.~H.~Silverman, \emph{The Arithmetic of Elliptic Curves}, 2nd ed., Springer GTM~106, 2009, Chapters~III, VII, VIII and~X. Weak Mordell--Weil over number fields,
+the Kummer map, descent in general.
+\item N.~Koblitz, \emph{Introduction to Elliptic Curves and Modular Forms}, 2nd ed., Springer GTM~97, 1993. The congruent number problem from Fibonacci to Tunnell.
+\item L.~C.~Washington, \emph{Elliptic Curves: Number Theory and Cryptography}, 2nd ed., CRC, 2008. The explicit halving argument of Lemma~\ref{lem:deltahom}, and
+cryptography.
+\item J.~B.~Tunnell, ``A classical Diophantine problem and modular forms of weight $3/2$'', \emph{Invent.\ Math.} 72 (1983), 323--334.
+\item B.~Mazur, ``Modular curves and the Eisenstein ideal'', \emph{Publ.\ Math.\ IH\'ES} 47 (1977), 33--186.
+\item B.~J.~Birch and H.~P.~F.~Swinnerton-Dyer, ``Notes on elliptic curves II'', \emph{J.\ reine angew.\ Math.} 218 (1965), 79--108.
+\end{itemize}
