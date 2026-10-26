@@ -1,0 +1,479 @@
+\chapter{Categories}
+
+\begin{center}\itshape
+What do a free group, the abelianisation of a group, the double dual of a vector space and currying a function of two variables have in common? Each is the best possible
+solution of a problem about maps. Category theory is the language in which such statements become precise, and its first theorem, Yoneda's lemma, says that an object is
+known completely by the maps into it.
+\end{center}
+
+In the early 1940s Saunders Mac Lane gave an invited lecture at the University of Michigan on group extensions: given two abelian groups $A$ and $B$, classify the groups $E$
+containing $A$ with $E/A\cong B$. His answer was a group he called $\operatorname{Ext}(B,A)$. In the audience sat Samuel Eilenberg, a young topologist who had left Poland in 1939,
+and he saw at once that Mac Lane's group answered a question of Norman Steenrod about the homology of the complement of a strange space, the $p$-adic solenoid. A long
+collaboration began. To explain why their isomorphisms were not accidents of a choice of basis, they needed a word for what
+mathematicians had always called ``natural'' without defining it. In 1945 they published ``General theory of natural equivalences''. Mac Lane later summed up the logic:
+categories were defined in order to define functors, and functors in order to define natural transformations.
+
+For a decade the subject was regarded as a convenient bookkeeping, ``general abstract nonsense'' as its own users fondly called it. Then came a conversation in Paris. Nobuo
+Yoneda, a young Japanese mathematician travelling in Europe, met Mac Lane in a café of the Gare du Nord; the interview went on in Yoneda's train until it left the station,
+and what Yoneda explained there is the lemma that bears his name. In 1958 Daniel Kan defined adjoint functors, and the bookkeeping turned out to contain theorems.
+
+This chapter sets up the language that the rest of this tome speaks: categories, functors and natural transformations (Tome~2, Chapter~12 promised them), universal
+properties, the Yoneda lemma, and adjunctions. Every definition comes with examples from the earlier tomes, because the point of the language is that they were already
+there.
+
+\section{Categories}
+
+\begin{definition}\label{def:category}
+A \emph{category} $\mathcal C$ consists of a class of \emph{objects}; for any two objects $A,B$ a set $\operatorname{Hom}_{\mathcal C}(A,B)$ of \emph{morphisms} (or \emph{arrows}) from $A$ to $B$,
+written $f\colon A\to B$; and for any three objects a \emph{composition} $\operatorname{Hom}(B,C)\times\operatorname{Hom}(A,B)\to\operatorname{Hom}(A,C)$, $(g,f)\mapsto g\circ f$, such that
+\begin{enumerate}[label=(\roman*)]
+\item composition is associative: $h\circ(g\circ f)=(h\circ g)\circ f$;
+\item every object $A$ has an \emph{identity} $\mathrm{id}_A\in\operatorname{Hom}(A,A)$ with $f\circ\mathrm{id}_A=f$ and $\mathrm{id}_B\circ f=f$ for all $f\colon A\to B$.
+\end{enumerate}
+\end{definition}
+
+The objects of $\mathbf{Set}$ do not form a set (there is no set of all sets, Tome~6, Chapter~1), which is why the definition says ``class''. We shall never need more than this
+word: every argument of this chapter takes place inside finitely many $\operatorname{Hom}$-sets.
+
+\begin{example}\label{ex:categories}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item The \emph{concrete} categories: $\mathbf{Set}$ (sets and maps), $\mathbf{Grp}$ (groups and homomorphisms), $\mathbf{Ab}$ (abelian groups), $\mathbf{Ring}$ (rings with $1$ and
+homomorphisms preserving $1$), $\mathbf{CRing}$ (commutative rings), $R\text{-}\mathbf{Mod}$ (modules over a ring $R$ and $R$-linear maps), $\mathbf{Vect}_K$ (vector spaces over a field $K$),
+$\mathbf{Top}$ (topological spaces and continuous maps), $\mathbf{Top}_*$ (spaces with a base point and maps preserving it). Composition is composition of maps.
+\item A \emph{poset} $(P,\le)$ is a category with one morphism $x\to y$ when $x\le y$ and none otherwise; reflexivity gives the identities and transitivity the composition.
+\item A \emph{monoid} $M$ is a category with one object $\bullet$ and $\operatorname{Hom}(\bullet,\bullet)=M$, composition being the product of $M$. A group is a one-object category in which every
+morphism has an inverse.
+\item $\mathbf{Mat}_K$ has the natural numbers as objects, the $m\times n$ matrices as morphisms $n\to m$, and the product of matrices as composition. Nothing in it is a set with
+structure: a morphism is not a map between anything.
+\item The \emph{opposite} category $\mathcal C^{\mathrm{op}}$ has the objects of $\mathcal C$, $\operatorname{Hom}_{\mathcal C^{\mathrm{op}}}(A,B)=\operatorname{Hom}_{\mathcal C}(B,A)$, and composition reversed.
+\end{enumerate}
+\end{example}
+
+A morphism $f\colon A\to B$ is an \emph{isomorphism} if there is $g\colon B\to A$ with $g\circ f=\mathrm{id}_A$ and $f\circ g=\mathrm{id}_B$. Such a $g$ is unique (if $g'$ is another,
+$g'=g'\circ f\circ g=g$), and is written $f^{-1}$. In $\mathbf{Set}$ the isomorphisms are the bijections, in $\mathbf{Grp}$ the group isomorphisms, in $\mathbf{Top}$ the homeomorphisms,
+which are not the same as the continuous bijections. A morphism $f$ is a \emph{monomorphism} if $f\circ g=f\circ h$ implies $g=h$, and an \emph{epimorphism} if $g\circ f=h\circ f$ implies $g=h$.
+In $\mathbf{Set}$ these are the injections and the surjections, but Exercise~\ref{ex:zq} shows that a morphism of rings can be both without being an isomorphism.
+
+\begin{think}
+In the poset category, when is a morphism an isomorphism? What is an isomorphism in $\mathbf{Mat}_K$, and why are there no isomorphisms $m\to n$ for $m\ne n$?
+\end{think}
+
+\section{Functors}
+
+\begin{definition}\label{def:functor}
+A \emph{functor} $F\colon\mathcal C\to\mathcal D$ assigns to each object $A$ of $\mathcal C$ an object $F(A)$ of $\mathcal D$, and to each morphism $f\colon A\to B$ a morphism $F(f)\colon F(A)\to F(B)$, so that
+\[F(g\circ f)=F(g)\circ F(f)\qquad\text{and}\qquad F(\mathrm{id}_A)=\mathrm{id}_{F(A)}.\]
+A \emph{contravariant functor} from $\mathcal C$ to $\mathcal D$ is a functor $\mathcal C^{\mathrm{op}}\to\mathcal D$: it reverses arrows, $F(g\circ f)=F(f)\circ F(g)$.
+\end{definition}
+
+\begin{example}\label{ex:functors}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Forgetful functors} $U\colon\mathbf{Grp}\to\mathbf{Set}$, $\mathbf{Ring}\to\mathbf{Ab}$, $\mathbf{Top}\to\mathbf{Set}$, which forget part of the structure.
+\item \emph{Abelianisation} $\mathbf{Grp}\to\mathbf{Ab}$, $G\mapsto G^{\mathrm{ab}}=G/G'$, where $G'$ is the subgroup generated by the commutators $aba^{-1}b^{-1}$ (Tome~2, Exercise~2.4). A homomorphism $f\colon G\to H$ maps commutators to commutators, hence $G'$ into $H'$, and induces $f^{\mathrm{ab}}\colon gG'\mapsto f(g)H'$.
+\item The units $R\mapsto R^\times$ and $R\mapsto\mathrm{GL}_n(R)$ are functors $\mathbf{CRing}\to\mathbf{Grp}$: a ring homomorphism, applied to each entry, maps invertible matrices to invertible
+matrices.
+\item The fundamental group $\pi_1\colon\mathbf{Top}_*\to\mathbf{Grp}$ (Tome~8, Chapter~5), and the homology groups $H_n\colon\mathbf{Top}\to\mathbf{Ab}$ (Tome~8, Chapter~6). That $H_n(g\circ f)=H_n(g)\circ H_n(f)$
+was proved there; it is exactly the statement that $H_n$ is a functor.
+\item Duality $V\mapsto V^*=\operatorname{Hom}(V,K)$, $f\mapsto f^*=(\varphi\mapsto\varphi\circ f)$, is a contravariant functor $\mathbf{Vect}_K\to\mathbf{Vect}_K$: $(g\circ f)^*=f^*\circ g^*$.
+\item For an object $A$ of any category, the functor $h^A=\operatorname{Hom}(A,-)$ from $\mathcal C$ to $\mathbf{Set}$ sends $B$ to $\operatorname{Hom}(A,B)$ and $g\colon B\to C$ to $g\circ-$. Likewise
+the contravariant functor $h_A=\operatorname{Hom}(-,A)$ sends $g\colon B\to C$ to the map $-\circ g$ from $\operatorname{Hom}(C,A)$ to $\operatorname{Hom}(B,A)$.
+\item A functor between two posets is an order-preserving map; a functor between two groups, seen as one-object categories, is a homomorphism.
+\end{enumerate}
+\end{example}
+
+\begin{proposition}\label{prop:functoriso}
+A functor maps isomorphisms to isomorphisms: $F(f^{-1})=F(f)^{-1}$.
+\end{proposition}
+
+\begin{proof}
+$F(f^{-1})\circ F(f)=F(f^{-1}\circ f)=F(\mathrm{id}_A)=\mathrm{id}_{F(A)}$, and likewise in the other order.
+\end{proof}
+
+This one-line statement is the engine of algebraic topology: to prove that two spaces are not homeomorphic, find a functor that takes them to non-isomorphic groups. The same idea
+proves things about maps.
+
+\begin{example}[Brouwer, functorially]\label{ex:brouwer}
+There is no continuous retraction $r\colon D^2\to S^1$ of the closed disc onto its boundary circle. If there were, with $i\colon S^1\to D^2$ the inclusion, $r\circ i=\mathrm{id}_{S^1}$, and applying
+the functor $H_1$ gives $H_1(r)\circ H_1(i)=\mathrm{id}_{H_1(S^1)}$. But $H_1(i)$ goes through $H_1(D^2)=0$ while $H_1(S^1)\cong\Z$ (Tome~8, Chapter~6): the identity of $\Z$ would factor through
+the zero group. As Tome~8 showed, this gives Brouwer's fixed point theorem, since a map $D^2\to D^2$ without fixed point yields a retraction by pushing each point away from its image to the boundary.
+\end{example}
+
+\section{Natural transformations}
+
+\begin{definition}\label{def:nat}
+Let $F,G\colon\mathcal C\to\mathcal D$ be functors. A \emph{natural transformation} $\eta\colon F\Rightarrow G$ is a family of morphisms $\eta_A\colon F(A)\to G(A)$, one for each object $A$, such that
+for every $f\colon A\to B$ the square of Figure~\ref{fig:universal} commutes:
+\[G(f)\circ\eta_A=\eta_B\circ F(f).\]
+It is a \emph{natural isomorphism} if every $\eta_A$ is an isomorphism; then $(\eta_A^{-1})$ is a natural transformation $G\Rightarrow F$, as one sees by composing the square with $\eta_A^{-1}$ and $\eta_B^{-1}$.
+\end{definition}
+
+A natural transformation is a construction that works the same way for all objects at once, without looking inside them. Here are two that the reader has met.
+
+\begin{example}\label{ex:nattrans}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item The quotient maps $\pi_G\colon G\to G^{\mathrm{ab}}$ form a natural transformation from the identity functor of $\mathbf{Grp}$ to abelianisation (followed by the inclusion of $\mathbf{Ab}$ in
+$\mathbf{Grp}$): $f^{\mathrm{ab}}(\pi_G(g))=f(g)H'=\pi_H(f(g))$.
+\item The determinant $\det_R\colon\mathrm{GL}_n(R)\to R^\times$ is natural in the commutative ring $R$: for a ring homomorphism $\varphi$, $\det(\varphi(M))=\varphi(\det M)$, because the
+determinant is a polynomial with integer coefficients in the entries.
+\end{enumerate}
+\end{example}
+
+\begin{think}
+Let $f\colon H\to K$ be a morphism. Check that the maps $-\circ f\colon\operatorname{Hom}(K,X)\to\operatorname{Hom}(H,X)$, one for each object $X$, form a natural transformation $h^K\Rightarrow h^H$ between functors
+$\mathcal C\to\mathbf{Set}$. In which direction does it go, compared with $f$?
+\end{think}
+
+The first precise theorem of the subject is the one Eilenberg and Mac Lane wrote it for. Tome~S1, Theorem~1.8 showed that the map $\iota_V\colon V\to V^{**}$, $\iota_V(v)(\varphi)=\varphi(v)$,
+is an isomorphism for finite-dimensional $V$, and remarked that $V\cong V^*$ holds too but only through a choice of basis. The language of this chapter turns this remark into a theorem.
+
+\begin{theorem}[the double dual is natural]\label{thm:bidualnat}
+On the category $\mathbf{FinVect}_K$ of finite-dimensional vector spaces over $K$, the maps $\iota_V$ form a natural isomorphism from the identity functor to the functor $V\mapsto V^{**}$,
+$f\mapsto f^{**}$.
+\end{theorem}
+
+\begin{proof}
+Each $\iota_V$ is an isomorphism by Tome~S1, Theorem~1.8. For $f\colon V\to W$ linear, $v\in V$ and $\psi\in W^*$,
+\[f^{**}(\iota_V(v))(\psi)=\iota_V(v)(f^*\psi)=\iota_V(v)(\psi\circ f)=\psi(f(v))=\iota_W(f(v))(\psi),\]
+so $f^{**}\circ\iota_V=\iota_W\circ f$.
+\end{proof}
+
+For the dual itself, the question needs care, because $V\mapsto V^*$ is contravariant and the identity functor covariant. Both become covariant on the category $\mathbf{Iso}_K$ whose objects are
+finite-dimensional spaces and whose morphisms are the linear isomorphisms only, if the dual acts on $f$ by $(f^*)^{-1}$. A natural isomorphism $V\cong V^*$ would then be a family of
+isomorphisms $\eta_V\colon V\to V^*$ with $(f^*)^{-1}\circ\eta_V=\eta_W\circ f$, that is,
+\begin{equation}\label{eq:dualnat}
+\eta_V=f^*\circ\eta_W\circ f
+\end{equation}
+for every isomorphism $f\colon V\to W$.
+
+\begin{theorem}[$V$ is not naturally its dual]\label{thm:notnatural}
+If the field $K$ has more than three elements, there is no family of isomorphisms $\eta_V\colon V\to V^*$, for $V$ in $\mathbf{Iso}_K$, satisfying \eqref{eq:dualnat}. Indeed \eqref{eq:dualnat} already fails
+for every non-zero $V$ and the maps $f=\lambda\,\mathrm{id}_V$.
+\end{theorem}
+
+\begin{proof}
+Let $V\ne0$ and $\lambda\in K^\times$. For $f=\lambda\,\mathrm{id}_V$ we have $f^*=\lambda\,\mathrm{id}_{V^*}$, so \eqref{eq:dualnat} with $W=V$ reads $\eta_V=\lambda^2\eta_V$. Since $\eta_V$ is an isomorphism
+of a non-zero space, $\eta_V\ne0$, hence $\lambda^2=1$ for every $\lambda\in K^\times$. A polynomial of degree~$2$ has at most two roots in a field, so $|K^\times|\le2$ and $|K|\le3$, a contradiction.
+\end{proof}
+
+The restriction on $K$ is not a weakness of the proof: over $\mathbb F_2$ the planes do have a natural isomorphism with their duals (Exercise~\ref{ex:f2plane}). Theorem~\ref{thm:bidualnat} and
+Theorem~\ref{thm:notnatural} together are the precise form of an intuition every student has: a vector is a measurement of measurements, while turning a vector into a measurement needs extra
+structure, such as an inner product.
+
+\section{Universal properties}
+
+Many objects of algebra are defined by a construction, then characterised by what maps out of them or into them do. The second description is the one that matters.
+
+\begin{definition}\label{def:initial}
+An object $I$ of $\mathcal C$ is \emph{initial} if for every object $X$ there is exactly one morphism $I\to X$, and \emph{terminal} if for every $X$ there is exactly one morphism $X\to I$.
+\end{definition}
+
+In $\mathbf{Set}$ the empty set is initial and every one-point set terminal; in $\mathbf{Grp}$ the trivial group is both; in $\mathbf{Ring}$, $\Z$ is initial (the only ring homomorphism $\Z\to R$
+sends $n$ to $n\cdot1$) and the zero ring terminal; in a poset an initial object is a least element.
+
+\begin{proposition}\label{prop:initialunique}
+Two initial objects $I,I'$ are isomorphic, by a unique isomorphism. The same holds for terminal objects.
+\end{proposition}
+
+\begin{proof}
+There are unique morphisms $u\colon I\to I'$ and $v\colon I'\to I$. Then $v\circ u$ and $\mathrm{id}_I$ are two morphisms $I\to I$, and there is only one, so $v\circ u=\mathrm{id}_I$; likewise $u\circ v=\mathrm{id}_{I'}$.
+Uniqueness of the isomorphism is part of the hypothesis. Terminal objects of $\mathcal C$ are the initial objects of $\mathcal C^{\mathrm{op}}$.
+\end{proof}
+
+Almost every universal property says that some object is initial or terminal in a suitable auxiliary category, and Proposition~\ref{prop:initialunique} then gives its uniqueness for free.
+
+\begin{definition}\label{def:product}
+A \emph{product} of two objects $A,B$ is an object $P$ with morphisms $p_A\colon P\to A$, $p_B\colon P\to B$ such that for every object $X$ and morphisms $f\colon X\to A$, $g\colon X\to B$ there is exactly one
+morphism $h\colon X\to P$ with $p_A\circ h=f$ and $p_B\circ h=g$ (Figure~\ref{fig:universal}). We write $P=A\times B$ and $h=(f,g)$. A \emph{coproduct} $A\sqcup B$ is a product in $\mathcal C^{\mathrm{op}}$: morphisms
+$i_A\colon A\to A\sqcup B$, $i_B\colon B\to A\sqcup B$ such that every pair $f\colon A\to X$, $g\colon B\to X$ is $h\circ i_A$, $h\circ i_B$ for exactly one $h\colon A\sqcup B\to X$.
+\end{definition}
+
+A product of $A$ and $B$ is a terminal object in the category whose objects are triples $(X,f,g)$ and whose morphisms $(X,f,g)\to(X',f',g')$ are the $k\colon X\to X'$ with $f'\circ k=f$ and $g'\circ k=g$. So, by
+Proposition~\ref{prop:initialunique}, \emph{the product is unique up to a unique isomorphism compatible with the projections}, and we may speak of \emph{the} product.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-universal}
+\caption{Left: the universal property of the product. Every pair of arrows $f$, $g$ out of $X$ factors through one arrow $h=(f,g)$ into $A\times B$. Right: the naturality square of a
+natural transformation $\eta\colon F\Rightarrow G$. Going right then down equals going down then right.}
+\label{fig:universal}
+\end{figure}
+
+\begin{example}\label{ex:products}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item In $\mathbf{Set}$, $\mathbf{Grp}$, $\mathbf{Ring}$ and $R\text{-}\mathbf{Mod}$ the product is the cartesian product with componentwise operations: $h(x)=(f(x),g(x))$ is the only possibility, and it is a
+morphism.
+\item In $\mathbf{Top}$ the product is $A\times B$ with the product topology, and the universal property explains the definition of that topology: it is the coarsest one making both projections
+continuous, which is exactly what is needed for every $(f,g)$ with $f$, $g$ continuous to be continuous.
+\item In a poset, $x\times y$ is the greatest lower bound $\inf(x,y)$, and $x\sqcup y$ the least upper bound, when they exist. In the poset of positive integers ordered by divisibility, they are the
+$\gcd$ and the $\operatorname{lcm}$.
+\item In $\mathbf{Set}$ the coproduct is the disjoint union. In $R\text{-}\mathbf{Mod}$ it is the direct sum $A\oplus B$ with $i_A(a)=(a,0)$, $i_B(b)=(0,b)$ and $h(a,b)=f(a)+g(b)$: the same object as the product,
+a coincidence special to additive categories. In $\mathbf{Grp}$ the formula $h(a,b)=f(a)g(b)$ is not a homomorphism unless the images commute, and the coproduct is the free product $A*B$ of Tome~8,
+Proposition~5.17, whose universal property is exactly the one required.
+\end{enumerate}
+\end{example}
+
+A universal property can also characterise a single object with a map. Abelianisation is the first example.
+
+\begin{proposition}[universal property of abelianisation]\label{prop:abuniv}
+Let $G$ be a group. Every homomorphism $f\colon G\to A$ to an abelian group factors as $f=\bar f\circ\pi_G$ for exactly one homomorphism $\bar f\colon G^{\mathrm{ab}}\to A$.
+\end{proposition}
+
+\begin{proof}
+Since $A$ is abelian,
+\[f(aba^{-1}b^{-1})=f(a)f(b)f(a)^{-1}f(b)^{-1}=1,\]
+so the kernel of $f$ contains every commutator, hence $G'$. By the factorisation theorem for quotients (Tome~2, Chapter~2), $\bar f(gG')=f(g)$ is a
+well-defined homomorphism with $\bar f\circ\pi_G=f$. It is the only one, since $\pi_G$ is surjective and $\bar f$ is determined by its values on $\pi_G(G)=G^{\mathrm{ab}}$.
+\end{proof}
+
+In other words, $(G^{\mathrm{ab}},\pi_G)$ is initial among homomorphisms from $G$ to abelian groups: it is the best abelian approximation of $G$. Free objects are defined the same way: the free $R$-module on
+a set $S$ is a module $R^{(S)}$ with a map $S\to R^{(S)}$ such that every map from $S$ to a module $M$ extends uniquely to a linear map $R^{(S)}\to M$; it is the module of finitely supported functions
+$S\to R$, and the extension of $x\colon S\to M$ is $\sum_s c_s e_s\mapsto\sum_s c_s x(s)$.
+
+\section{The Yoneda lemma}
+
+Let $F\colon\mathcal C\to\mathbf{Set}$ be a functor and $A$ an object. Every element $x\in F(A)$ produces maps $\operatorname{Hom}(A,B)\to F(B)$, one for each $B$: send $f\colon A\to B$ to $F(f)(x)$. The Yoneda lemma
+says that every natural transformation out of $h^A$ arises in this way, from exactly one $x$.
+
+\begin{theorem}[Yoneda's lemma]\label{thm:yoneda}
+Let $F\colon\mathcal C\to\mathbf{Set}$ be a functor and $A$ an object of $\mathcal C$. The map
+\[\Phi\colon\operatorname{Nat}(h^A,F)\to F(A),\qquad\alpha\mapsto\alpha_A(\mathrm{id}_A),\]
+is a bijection. Its inverse sends $x\in F(A)$ to the natural transformation $\alpha^x$ with $\alpha^x_B(f)=F(f)(x)$ for $f\colon A\to B$.
+\end{theorem}
+
+\begin{proof}
+First, $\alpha^x$ is natural: for $g\colon B\to C$ and $f\in\operatorname{Hom}(A,B)$, $\alpha^x_C(h^A(g)(f))=F(g\circ f)(x)=F(g)(F(f)(x))=F(g)(\alpha^x_B(f))$, by functoriality of $F$. Next,
+$\Phi(\alpha^x)=F(\mathrm{id}_A)(x)=x$. Finally, let $\alpha$ be any natural transformation and $x=\alpha_A(\mathrm{id}_A)$. For $f\colon A\to B$, naturality of $\alpha$ applied to $f$ and to the element $\mathrm{id}_A$
+of $h^A(A)$ gives
+\[\alpha_B(f)=\alpha_B(f\circ\mathrm{id}_A)=\alpha_B\bigl(h^A(f)(\mathrm{id}_A)\bigr)=F(f)\bigl(\alpha_A(\mathrm{id}_A)\bigr)=F(f)(x)=\alpha^x_B(f),\]
+so $\alpha=\alpha^{\Phi(\alpha)}$. The two maps are inverse to each other.
+\end{proof}
+
+The whole proof rests on one observation: every morphism $f\colon A\to B$ is the image of $\mathrm{id}_A$ under $h^A(f)$, so a natural transformation out of $h^A$ is determined by what it does to $\mathrm{id}_A$.
+Apply the lemma to $\mathcal C^{\mathrm{op}}$: for a contravariant $F$, natural transformations $h_A\Rightarrow F$ correspond to elements of $F(A)$, by the same formula.
+
+\begin{corollary}[an object is known by its maps]\label{cor:yonedaemb}
+For objects $A,B$, the natural transformations $h^A\Rightarrow h^B$ are exactly the maps $-\circ u$ for $u\in\operatorname{Hom}(B,A)$, and $h^A$ and $h^B$ are naturally isomorphic if and only if $A\cong B$. Likewise,
+the natural transformations $h_A\Rightarrow h_B$ are the maps $u\circ-$ for $u\in\operatorname{Hom}(A,B)$, and $h_A\cong h_B$ if and only if $A\cong B$.
+\end{corollary}
+
+\begin{proof}
+Take $F=h^B$ in Theorem~\ref{thm:yoneda}: $\operatorname{Nat}(h^A,h^B)$ is in bijection with $h^B(A)=\operatorname{Hom}(B,A)$, the transformation attached to $u$ being $f\mapsto h^B(f)(u)=f\circ u$. Under this bijection
+composition of transformations corresponds to composition of morphisms in the opposite order: the transformation of $u$ followed by that of $v\colon C\to B$ sends $f$ to $f\circ u\circ v$, which is the transformation
+of $u\circ v$. Inverse natural transformations therefore correspond to morphisms $u\colon B\to A$, $u'\colon A\to B$ with $u\circ u'=\mathrm{id}_A$ and $u'\circ u=\mathrm{id}_B$. The statement for $h_A$ is the same one in $\mathcal C^{\mathrm{op}}$.
+\end{proof}
+
+Two examples show that this abstract statement holds real content.
+
+\begin{example}[Cayley's theorem]\label{ex:cayley}
+Let $G$ be a group, seen as a category with one object $\bullet$. A functor $F\colon G\to\mathbf{Set}$ is a set $X=F(\bullet)$ with a map $F(g)\colon X\to X$ for each $g$, such that $F(gh)=F(g)F(h)$ and $F(1)=\mathrm{id}$: a $G$-set
+(Tome~2, Chapter~3). A natural transformation between two $G$-sets is a map commuting with the actions. The functor $h^\bullet$ is $G$ acting on itself by left multiplication. By Corollary~\ref{cor:yonedaemb}, the maps
+$G\to G$ commuting with all left multiplications are exactly the right multiplications $x\mapsto xu$, and Theorem~\ref{thm:yoneda} with $F=h^\bullet$ shows that distinct $g$ give distinct permutations
+$x\mapsto gx$ of $G$. The second statement is Cayley's theorem: every group is a group of permutations of its own elements.
+\end{example}
+
+\begin{example}[the natural operations on groups]\label{ex:natops}
+Which operations $G\to G$, $g\mapsto w_G(g)$, can be defined on every group, compatibly with all homomorphisms, that is, with $f(w_G(g))=w_H(f(g))$ for every $f\colon G\to H$? Such a family is exactly a natural
+transformation $U\Rightarrow U$, where $U\colon\mathbf{Grp}\to\mathbf{Set}$ is the forgetful functor. Now $U$ is representable: $U\cong h^{\Z}$, since a homomorphism $f\colon\Z\to G$ is the same as the element $f(1)$. By Yoneda,
+\[\operatorname{Nat}(U,U)\cong\operatorname{Nat}(h^{\Z},U)\cong U(\Z)=\Z.\]
+The transformation attached to $n\in\Z$ sends $g=f(1)$ to $f(n)=g^n$. So the only operations on one element that make sense in every group are the powers $g\mapsto g^n$: there is no other formula, however
+clever. Exercise~\ref{ex:words} does the same for operations on two elements.
+\end{example}
+
+\begin{think}
+The forgetful functor $\mathbf{CRing}\to\mathbf{Set}$ is represented by the polynomial ring $\Z[X]$, because a ring homomorphism $\Z[X]\to R$ is determined by the image of $X$, which can be any element. What does Yoneda
+say about the operations $R\to R$ that make sense in every commutative ring and commute with all ring homomorphisms?
+\end{think}
+
+\section{Adjunctions}
+
+The free module, abelianisation and the cartesian product share one more pattern, which Daniel Kan isolated in 1958.
+
+\begin{definition}\label{def:adjunction}
+Functors $F\colon\mathcal C\to\mathcal D$ and $G\colon\mathcal D\to\mathcal C$ are \emph{adjoint}, $F$ \emph{left adjoint} to $G$ and $G$ \emph{right adjoint} to $F$, written $F\dashv G$, if there are bijections
+\[\varphi_{A,B}\colon\operatorname{Hom}_{\mathcal D}(F(A),B)\to\operatorname{Hom}_{\mathcal C}(A,G(B)),\]
+natural in $A$ and $B$: for $a\colon A'\to A$, $b\colon B\to B'$ and $h\colon F(A)\to B$, $\varphi_{A',B'}(b\circ h\circ F(a))=G(b)\circ\varphi_{A,B}(h)\circ a$.
+\end{definition}
+
+\begin{example}\label{ex:adjunctions}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Free and forgetful.} The free module functor $S\mapsto R^{(S)}$ is left adjoint to the forgetful functor $U\colon R\text{-}\mathbf{Mod}\to\mathbf{Set}$: linear maps $R^{(S)}\to M$ correspond to maps $S\to U(M)$, by restriction to the
+basis. The same holds for the free group on a set (Tome~8, Chapter~5) and the polynomial ring $\Z[X_s:s\in S]$, free commutative ring on $S$.
+\item \emph{Abelianisation.} By Proposition~\ref{prop:abuniv}, $G\mapsto G^{\mathrm{ab}}$ is left adjoint to the inclusion $\mathbf{Ab}\to\mathbf{Grp}$: $\operatorname{Hom}_{\mathbf{Ab}}(G^{\mathrm{ab}},A)\cong\operatorname{Hom}_{\mathbf{Grp}}(G,A)$ by $\bar f\mapsto\bar f\circ\pi_G$.
+\item \emph{Currying.} In $\mathbf{Set}$, for a fixed set $B$, maps $A\times B\to C$ correspond to maps $A\to C^B$ (the set of maps $B\to C$): $h\mapsto(a\mapsto h(a,-))$. So $-\times B\dashv(-)^B$. Programmers call this
+\emph{currying}, after Haskell Curry.
+\item \emph{Topologies.} The discrete topology $\mathbf{Set}\to\mathbf{Top}$ is left adjoint to the forgetful functor (every map out of a discrete space is continuous), and the indiscrete topology is right adjoint to it (every
+map into an indiscrete space is continuous).
+\item \emph{Galois connections.} Between posets, an adjunction $F\dashv G$ means $F(x)\le y\iff x\le G(y)$. For a finite Galois extension $L/K$ with group $\Gamma$, the maps $H\mapsto L^H$ from subgroups of $\Gamma$ to
+intermediate fields, and $E\mapsto\operatorname{Gal}(L/E)$, both reverse inclusions, and $E\subseteq L^H\iff H\subseteq\operatorname{Gal}(L/E)$: an adjunction between the poset of subgroups and the opposite of the poset of
+intermediate fields. The general notion is named after this example; the fundamental theorem of Galois theory (Tome~2, Chapter~10) says that here the adjunction is an equivalence.
+\end{enumerate}
+\end{example}
+
+Adjoint functors are rigid: each determines the other, and a right adjoint inherits good behaviour from the bijection. The proofs are two applications of Yoneda.
+
+\begin{theorem}[uniqueness of adjoints]\label{thm:adjunique}
+If $G$ and $G'$ are both right adjoint to $F$, then $G\cong G'$: there is a natural isomorphism $G\Rightarrow G'$.
+\end{theorem}
+
+\begin{proof}
+For each $B$, the composite bijections
+\[\operatorname{Hom}(A,G(B))\cong\operatorname{Hom}(F(A),B)\cong\operatorname{Hom}(A,G'(B))\]
+are natural in $A$, so they form a natural isomorphism $h_{G(B)}\Rightarrow h_{G'(B)}$. By
+Corollary~\ref{cor:yonedaemb} it is $u_B\circ-$ for an isomorphism $u_B\colon G(B)\to G'(B)$, namely the image of $\mathrm{id}_{G(B)}$. For $b\colon B\to B'$, naturality of both bijections in $B$ shows that
+$G'(b)\circ u_B$ and $u_{B'}\circ G(b)$ are both the image of $G(b)$ under the composite bijection for the pair $(G(B),B')$; hence they are equal, and $u$ is natural.
+\end{proof}
+
+\begin{theorem}[right adjoints preserve products]\label{thm:rapl}
+Let $F\dashv G$ and let $B_1\times B_2$ be a product in $\mathcal D$, with projections $p_1,p_2$. Then $G(B_1\times B_2)$, with the projections $G(p_1),G(p_2)$, is a product of $G(B_1)$ and $G(B_2)$ in $\mathcal C$.
+\end{theorem}
+
+\begin{proof}
+Let $A$ be an object of $\mathcal C$, with $f_1\colon A\to G(B_1)$ and $f_2\colon A\to G(B_2)$. Write $\psi=\varphi^{-1}$. By the universal property in $\mathcal D$ there is exactly one $k\colon F(A)\to B_1\times B_2$ with $p_j\circ k=\psi(f_j)$
+for $j=1,2$. By naturality in $B$, $\varphi(p_j\circ k)=G(p_j)\circ\varphi(k)$, so $h=\varphi(k)$ satisfies $G(p_j)\circ h=f_j$. Conversely, if $h'\colon A\to G(B_1\times B_2)$ satisfies $G(p_j)\circ h'=f_j$, then
+$k'=\psi(h')$ satisfies $\varphi(p_j\circ k')=G(p_j)\circ h'=f_j$, that is $p_j\circ k'=\psi(f_j)$, so $k'=k$ and $h'=h$.
+\end{proof}
+
+So the underlying set of a product of groups, rings, modules or spaces is the product of the underlying sets: all these forgetful functors have left adjoints. Dually, left adjoints preserve coproducts
+(Exercise~\ref{ex:leftadj}), which explains at once why the free module on a disjoint union is a direct sum, and why the free group on $S\sqcup T$ is the free product of the free groups on $S$ and on $T$.
+Abelianisation, a left adjoint, turns the coproduct of $\mathbf{Grp}$ into that of $\mathbf{Ab}$: $(A*B)^{\mathrm{ab}}\cong A^{\mathrm{ab}}\oplus B^{\mathrm{ab}}$, a fact one would otherwise prove by manipulating words.
+
+\begin{beauty}
+Mac Lane's slogan is that ``adjoint functors arise everywhere'', and this tome bears it out. In Chapter~2 the tensor product is left adjoint to $\operatorname{Hom}$, and this alone explains which exact sequences it preserves.
+In Chapter~4, localisation is left adjoint to a forgetful functor. In Chapter~8, inducing a representation from a subgroup is left adjoint to restricting one, and this adjunction is Frobenius reciprocity, discovered by
+Frobenius in 1898 as an identity between characters. Even computer science found the idea on its own: in 1991 Eugenio Moggi proposed to model the side effects of programs (exceptions, state, input and output) by
+\emph{monads}, the structure that every adjunction $F\dashv G$ induces on the composite $G\circ F$, and Philip Wadler showed programmers how to use them; they became the way the language Haskell handles everything that is not a pure function.
+The list type, with its ``flatten'', is the monad of the free monoid adjunction.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:zq}
+Show that in $\mathbf{Ring}$ the inclusion $\Z\to\Q$ is a monomorphism and an epimorphism, but not an isomorphism. Is it an epimorphism in $\mathbf{Set}$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nofieldproduct}
+In the category of fields and ring homomorphisms, show that $\mathbb F_2$ and $\mathbb F_3$ have no product and no coproduct.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:words}
+Let $U\colon\mathbf{Grp}\to\mathbf{Set}$ be the forgetful functor and $U^2\colon G\mapsto G\times G$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $U^2$ is represented by the free group $F_2$ on two letters $a,b$, and deduce that the natural operations $G\times G\to G$ are exactly the maps $(g,h)\mapsto w(g,h)$ for a word $w\in F_2$.
+\item Under the bijection $\operatorname{Nat}(U,U)\cong\Z$ of Example~\ref{ex:natops}, which integer is inversion? What does composition of natural operations become?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:matrixpoly}
+Let $M_n\colon\mathbf{CRing}\to\mathbf{Set}$ send $R$ to the set of $n\times n$ matrices over $R$. Show that $M_n$ is represented by the polynomial ring $\Z[X_{ij}:1\le i,j\le n]$, and deduce that the families of maps
+$M_n(R)\to R$ natural in $R$ are exactly the polynomials with integer coefficients in the entries. Name two of them.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:leftadj}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item Prove that a left adjoint preserves coproducts. (Avoid work: use Theorem~\ref{thm:rapl} in the opposite categories.)
+\item Deduce that $R^{(S\sqcup T)}\cong R^{(S)}\oplus R^{(T)}$, and that for sets $A\times(B\sqcup C)\cong(A\times B)\sqcup(A\times C)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:f2plane}
+Let $K=\mathbb F_2$. For a plane $V$ (a two-dimensional space over $\mathbb F_2$) and $v,w\in V$, let $\eta_V(v)(w)=1$ if $v,w$ are linearly independent and $0$ otherwise.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\eta_V(v)$ is a linear form, that $\eta_V\colon V\to V^*$ is a linear isomorphism, and that \eqref{eq:dualnat} holds for every isomorphism $f$ between planes.
+\item Where does the proof of Theorem~\ref{thm:notnatural} break down?
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:zq}
+A ring homomorphism out of $\Q$ is determined by its values on $\Z$, because $\varphi(1/n)$ must be the inverse of $\varphi(n)$.
+\end{hint}
+
+\begin{hint}{ex:nofieldproduct}
+A ring homomorphism between fields is injective and preserves the characteristic.
+\end{hint}
+
+\begin{hint}{ex:words}
+A homomorphism $F_2\to G$ is determined by the images of $a$ and $b$, which can be any two elements.
+\end{hint}
+
+\begin{hint}{ex:matrixpoly}
+A ring homomorphism $\Z[X_{ij}]\to R$ is the same as a choice of $n^2$ elements of $R$.
+\end{hint}
+
+\begin{hint}{ex:leftadj}
+If $F\dashv G$ then $G^{\mathrm{op}}\dashv F^{\mathrm{op}}$ between the opposite categories, and a coproduct is a product in the opposite category.
+\end{hint}
+
+\begin{hint}{ex:f2plane}
+A plane over $\mathbb F_2$ has three non-zero vectors, any two of which are independent.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:zq}
+\idea Check the definitions with the hint: maps out of $\Q$ are already decided on $\Z$.
+\writeup An injective map is a monomorphism in any concrete category (if $i\circ g=i\circ h$ then $g=h$ pointwise). Let $\varphi,\psi\colon\Q\to R$ agree on $\Z$. For $n\ne0$, $\varphi(n)\varphi(1/n)=\varphi(1)=1$, so $\varphi(n)$ is invertible and
+$\varphi(m/n)=\varphi(m)\varphi(n)^{-1}$; the same formula holds for $\psi$, so $\varphi=\psi$. Hence the inclusion is an epimorphism. It is not an isomorphism, since there is no ring homomorphism $\Q\to\Z$ at all: $1/2$ would have to go to an inverse
+of $2$ in $\Z$. In $\mathbf{Set}$ the epimorphisms are the surjections (if $f$ misses $y$, the maps $g,h$ to $\{0,1\}$ that differ only at $y$ satisfy $g\circ f=h\circ f$), so the inclusion is not an epimorphism there: being an epimorphism depends on the category.
+\end{solution}
+
+\begin{solution}{ex:nofieldproduct}
+\idea A product needs maps to both fields, a coproduct maps from both, and a field has only one characteristic.
+\writeup A ring homomorphism $\varphi\colon K\to L$ between fields is injective (its kernel is an ideal not containing $1$, hence $0$), so $K$ and $L$ have the same characteristic: $p\cdot1=0$ in $K$ if and only if it holds in $L$. A product
+$P$ would come with homomorphisms $P\to\mathbb F_2$ and $P\to\mathbb F_3$, forcing $P$ to have characteristic $2$ and $3$. A coproduct $C$ would receive homomorphisms $\mathbb F_2\to C$ and $\mathbb F_3\to C$, with the same contradiction.
+\end{solution}
+
+\begin{solution}{ex:words}
+\idea Repeat Example~\ref{ex:natops} with two generators.
+\writeup (a) The map $\operatorname{Hom}(F_2,G)\to G\times G$, $f\mapsto(f(a),f(b))$, is a bijection by the universal property of the free group, and it is natural in $G$: for $u\colon G\to H$, $(u(f(a)),u(f(b)))$ is the image of $u\circ f$. So
+$U^2\cong h^{F_2}$, and by Theorem~\ref{thm:yoneda}, $\operatorname{Nat}(U^2,U)\cong\operatorname{Nat}(h^{F_2},U)\cong U(F_2)=F_2$. The transformation attached to a word $w$ sends $(g,h)=(f(a),f(b))$ to $f(w)=w(g,h)$, the word with $g$ and $h$
+substituted. For instance $ab$ gives the product, $aba^{-1}b^{-1}$ the commutator.
+(b) Inversion is $g\mapsto g^{-1}$, the integer $-1$. The composite of $g\mapsto g^m$ and $g\mapsto g^n$ is $g\mapsto g^{mn}$: composition of natural operations is multiplication in $\Z$, so $\operatorname{Nat}(U,U)$ is the monoid $(\Z,\times)$.
+\end{solution}
+
+\begin{solution}{ex:matrixpoly}
+\idea Same pattern: matrices are $n^2$ elements, and $n^2$ elements are a homomorphism out of the polynomial ring in $n^2$ variables.
+\writeup Sending $f\colon\Z[X_{ij}]\to R$ to the matrix $(f(X_{ij}))$ is a bijection $\operatorname{Hom}(\Z[X_{ij}],R)\to M_n(R)$, natural in $R$ (both sides transform by applying a homomorphism entrywise). So $M_n\cong h^{\Z[X_{ij}]}$ and
+$\operatorname{Nat}(M_n,U)\cong U(\Z[X_{ij}])=\Z[X_{ij}]$, where $U$ is the forgetful functor. The transformation attached to a polynomial $P$ sends the matrix $(m_{ij})$ to $P(m_{ij})$. The determinant and the trace are two of them; so is the
+coefficient of $t^k$ in the characteristic polynomial, for each $k$. This explains why identities like $\det(AB)=\det A\det B$ or Cayley--Hamilton, once proved over $\C$, hold over every commutative ring: both sides are natural, hence given by integer
+polynomials, and polynomials that agree on all complex matrices are equal.
+\end{solution}
+
+\begin{solution}{ex:leftadj}
+\idea Duality turns the statement into Theorem~\ref{thm:rapl}.
+\writeup (a) Let $F\dashv G$ with bijections $\varphi_{A,B}$. Read in the opposite categories, the inverse bijections become
+\[\operatorname{Hom}_{\mathcal C^{\mathrm{op}}}(G(B),A)\to\operatorname{Hom}_{\mathcal D^{\mathrm{op}}}(B,F(A)),\]
+natural in both variables: $G^{\mathrm{op}}\dashv F^{\mathrm{op}}$. So $F^{\mathrm{op}}$ is a right adjoint and preserves products by Theorem~\ref{thm:rapl};
+products in the opposite categories are coproducts. (b) The free module functor is a left adjoint (Example~\ref{ex:adjunctions}(a)), and the coproduct of sets is $S\sqcup T$, the coproduct of modules $\oplus$. In $\mathbf{Set}$, $A\times-$ is
+left adjoint to $(-)^A$ by currying (with the factors swapped), so it maps the coproduct $B\sqcup C$ to the coproduct of $A\times B$ and $A\times C$.
+\end{solution}
+
+\begin{solution}{ex:f2plane}
+\idea List everything: a plane over $\mathbb F_2$ has four vectors, $0,u,v,u+v$.
+\writeup (a) Let $v\ne0$. The vectors independent of $v$ are exactly the two vectors outside $\{0,v\}$, so $\eta_V(v)$ is the function equal to $0$ on the line $\{0,v\}$ and $1$ off it: the unique non-zero linear form vanishing on $v$.
+And $\eta_V(0)=0$. So $\eta_V$ sends the three non-zero vectors to the three non-zero forms, injectively (distinct lines have distinct kernels). It is additive: for distinct non-zero $v_1,v_2$, the form $\eta(v_1)+\eta(v_2)$ is non-zero (it takes the value
+$1$ at $v_1$) and vanishes at $v_1+v_2$, since $\eta(v_1)(v_1+v_2)=\eta(v_1)(v_2)=1=\eta(v_2)(v_1)=\eta(v_2)(v_1+v_2)$; so it is $\eta(v_1+v_2)$. The remaining cases ($v_1=v_2$, or one of them zero) are immediate. Over $\mathbb F_2$
+additivity is linearity, so $\eta_V$ is a linear isomorphism. Finally an isomorphism $f$ preserves linear independence, so $\eta_W(f(v))(f(w))=\eta_V(v)(w)$, which is \eqref{eq:dualnat}.
+(b) The proof used a scalar $\lambda$ with $\lambda^2\ne1$; in $\mathbb F_2$ the only non-zero scalar is $1$. (In dimension $3$ and more, a longer argument shows that no natural isomorphism exists over any field.)
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+S.~Eilenberg and S.~Mac Lane, ``Group extensions and homology'', \emph{Ann.\ of Math.} 43 (1942), 758--831, and ``General theory of natural equivalences'', \emph{Trans.\ Amer.\ Math.\ Soc.} 58 (1945), 231--294. The story of the
+Michigan lecture and Steenrod's solenoid is told by Mac Lane himself in H.~Bass, H.~Cartan, P.~Freyd, A.~Heller and S.~Mac Lane, ``Samuel Eilenberg 1913--1998'', \emph{Biographical Memoirs of the National Academy of
+Sciences} 79 (2001). The meeting at the Gare du Nord is recalled by Y.~Kinoshita in his note on Yoneda's death, posted to the categories mailing list on 23 April 1996. D.~M.~Kan, ``Adjoint functors'', \emph{Trans.\ Amer.\ Math.\ Soc.} 87 (1958),
+294--329.
+
+E.~Moggi, ``Notions of computation and monads'', \emph{Information and Computation} 93 (1991), 55--92; P.~Wadler, ``Monads for functional programming'', in \emph{Advanced Functional Programming}, Lecture Notes in Computer
+Science 925 (Springer, 1995).
+
+For more: S.~Mac Lane, \emph{Categories for the Working Mathematician} (Springer, 2nd ed.\ 1998), Chapters~I--IV; T.~Leinster, \emph{Basic Category Theory} (Cambridge University Press, 2014), short and very clear, freely available
+from its author; E.~Riehl, \emph{Category Theory in Context} (Dover, 2016), with examples from every part of mathematics.

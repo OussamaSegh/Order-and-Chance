@@ -570,6 +570,45 @@ def mod3_automaton():
     return "\n".join(lines) + "\n"
 
 
+def plancherel_young(n=1500, seed=9):
+    """A random Young diagram with n cells, the RSK shape of a uniform random permutation (Plancherel
+    measure), drawn in Russian convention and scaled by 1/sqrt(n). Its boundary hugs the Logan-Shepp and
+    Vershik-Kerov limit curve Omega(u) = (2/pi)(u arcsin(u/2) + sqrt(4-u^2)), drawn thicker (Tome 9, Chapter 9)."""
+    import bisect
+    import random
+    rnd = random.Random(seed)
+    perm = list(range(n)); rnd.shuffle(perm)
+    rows = []
+    for x in perm:                      # Robinson-Schensted row insertion; only the shape is kept
+        for row in rows:
+            i = bisect.bisect_right(row, x)
+            if i == len(row):
+                row.append(x); x = None; break
+            row[i], x = x, row[i]
+        if x is not None:
+            rows.append([x])
+    lam = [len(r) for r in rows]
+    cols = [sum(1 for l in lam if l > j) for j in range(lam[0])]
+    sq = math.sqrt(n)
+    k = 0.95 * R / math.sqrt(5)
+    def pt(x, y):                       # French coordinates (column x, row y) -> rotated, scaled, centred
+        u, v = (x - y) / sq, (x + y) / sq
+        return k * u, k * (v - 1)
+    seg = lambda a, b: r"\draw[accent,line width=0.22pt,opacity=0.75] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (*pt(*a), *pt(*b))
+    lines = ["%% Random Young diagram with %d cells (RSK shape of a random permutation), Russian convention, with its limit shape." % n]
+    for i in range(len(lam) + 1):       # the line y = i carries the top edges of row i-1 (and row 0's bottom)
+        lines.append(seg((0, i), (lam[max(i - 1, 0)], i)))
+    for j in range(len(cols) + 1):      # the line x = j likewise for columns
+        lines.append(seg((j, 0), (j, cols[max(j - 1, 0)])))
+    # the two axes, continued to the limit curve's ends, and the limit curve
+    ax = lambda u, v: (k * u, k * (v - 1))
+    lines.append(r"\draw[accent,line width=0.5pt] (%.4fin,%.4fin)--(%.4fin,%.4fin)--(%.4fin,%.4fin);" % (*ax(-2.2, 2.2), *ax(0, 0), *ax(2.2, 2.2)))
+    om = lambda u: 2 / math.pi * (u * math.asin(u / 2) + math.sqrt(max(0.0, 4 - u * u)))
+    pts = ["(%.4fin,%.4fin)" % ax(u, om(u)) for u in [-2 + 4 * t / 200 for t in range(201)]]
+    lines.append(r"\draw[accent,line width=1.1pt] " + "--".join(pts) + ";")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -580,6 +619,7 @@ MOTIFS = {
     "tome6-spaces": sierpinski_carpet,
     "tome7-analysis": confocal_grid,
     "tome8-shapes": farey_tessellation,
+    "tome9-structures2": plancherel_young,
     "tome10-chance2": stick_breaking,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
