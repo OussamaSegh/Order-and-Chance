@@ -50,7 +50,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 6 | Spaces | Sets, topology, measure and integration | Complete (11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (10 chapters) |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups | Complete (10 chapters) |
-| 9 | Structures II | Categories, commutative and homological algebra, representations | In progress (4 of 11 chapters) |
+| 9 | Structures II | Categories, commutative and homological algebra, representations | In progress (5 of 11 chapters) |
 | 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (12 chapters) |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Planned |
 | 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
