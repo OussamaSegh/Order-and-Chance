@@ -422,6 +422,32 @@ def bitonic_network(n=16):
     return "\n".join(lines) + "\n"
 
 
+def stick_breaking(rings=13, seed=10):
+    """Poisson-Dirichlet stick-breaking: each ring is one sample of the GEM(1) law, the circle
+    broken at a uniform point, the rest broken again, and so on. The arc lengths are the cycle
+    proportions of a large random permutation, and of the prime factors of a large random
+    integer (Tome 10, Chapter 12). Drawn with a fixed seed so the cover is reproducible."""
+    import random
+    rng = random.Random(seed)
+    lines = ["%% Stick-breaking (GEM(1)) samples, one per ring, seed %d." % seed, r"\begin{scope}"]
+    for i in range(rings):
+        r = R * (0.22 + 0.76 * i / (rings - 1))
+        w = 6.5 * (0.6 + 0.4 * i / (rings - 1))
+        left, start = 1.0, 90.0 + rng.uniform(0, 360)
+        while left > 0.004:
+            piece = left * rng.random()
+            left -= piece
+            sweep = 360.0 * piece
+            if sweep > 2.2:
+                a, b = start + 0.9, start + sweep - 0.9
+                op = 0.35 + 0.65 * min(1.0, piece * 2.2)
+                lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] (%.3f:%.4fin) arc (%.3f:%.3f:%.4fin);"
+                             % (w, op, a, r, a, b, r))
+            start += sweep
+    lines.append(r"\end{scope}")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -431,6 +457,7 @@ MOTIFS = {
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
     "tome7-analysis": confocal_grid,
+    "tome10-chance2": stick_breaking,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
     "tomeC2-algorithms": bitonic_network,

@@ -1,0 +1,553 @@
+\chapter{Independence and Zero--One Laws}
+\begin{center}\itshape
+The harmonic series $1+\frac12+\frac13+\cdots$ diverges, and $1-\frac12+\frac13-\cdots$ converges to $\log2$.\\
+Choose every sign by tossing a fair coin. With probability one the series converges,\\
+and the density of its sum at $2$ is within $10^{-42}$ of $\frac18$.
+\end{center}
+
+In 1909 \'Emile Borel published a paper with a provocative title, \emph{Les probabilit\'es d\'enombrables et leurs applications
+arithm\'etiques}. Until then probability had dealt with finitely many trials, or with continuous quantities treated by
+geometry. Borel asked about infinitely many: what is the probability that, in an infinite sequence of coin tosses, heads
+eventually stops appearing? That the frequency of heads tends to one half? He answered, and deduced that almost every real
+number is \emph{normal}, every digit appearing with its fair frequency in every base. His arguments had gaps, and he knew
+it: nobody had yet said what ``the probability of an event involving infinitely many tosses'' means.
+
+Fourteen years later Hugo Steinhaus gave the answer. A sequence of fair coin tosses is the same thing as the binary digits
+of a point chosen uniformly in $[0,1]$, and the probability of an event is the Lebesgue measure of the set of points
+whose digits realise it. The year before, Hans Rademacher had proved, in the language of orthogonal functions, that the
+series $\sum a_n\varepsilon_n$ with signs $\varepsilon_n$ given by the binary digits converges for almost every point when
+$\sum a_n^2<\infty$; Khintchine and Kolmogorov proved the converse in 1925. And in 1933 Andrei Kolmogorov's
+\emph{Grundbegriffe der Wahrscheinlichkeitsrechnung} put the whole subject on measure theory: a probability is a measure
+of total mass one, an event is a measurable set, independence is a product formula. In an appendix of that small book he
+proved a strange theorem. An event that depends on a sequence of independent variables, but on no finite part of it, has
+probability $0$ or $1$. Nothing in between.
+
+The zero--one law is a theorem about knowledge: it tells you that a question has a definite answer before telling you
+what the answer is. Does a random series converge? Is the radius of convergence of a random power series larger than
+$\frac12$? Does a random walk come back to $0$ infinitely often? Each of these has probability $0$ or $1$, and the work
+is to find out which. In 1955 Edwin Hewitt and Leonard Savage extended the law to events that may depend on the first
+variables, provided they are unchanged by any shuffle of finitely many of them, and this is exactly what a random walk
+needs. This chapter proves both laws, shows that the convergence of a series of independent terms in probability already
+forces almost sure convergence (Paul L\'evy), and settles the random sign problem of Rademacher, Khintchine and
+Kolmogorov. It ends with the random harmonic series of the epigraph and its smooth, strange density.
+
+\begin{reminder}[from Tomes 3 and 6]
+\emph{Independence} (Tome~3, Chapter~5; Tome~6, Chapter~6). Events $A_1,\dots,A_n$ are independent if
+$P(\bigcap_{i\in I}A_i)=\prod_{i\in I}P(A_i)$ for every $I\subseteq\{1,\dots,n\}$. \emph{Dynkin's $\pi$--$\lambda$
+theorem} (Tome~6, Theorem~6.4): a $\lambda$-system (closed under complements and countable disjoint unions, containing
+$\Omega$) that contains a $\pi$-system (closed under finite intersections) contains the $\sigma$-algebra it generates.
+\emph{Existence} (Tome~6, Theorems~6.17 and~11.8): for any probability measures $\mu_1,\mu_2,\dots$ on $\R$ there is a
+probability space carrying independent random variables $X_n$ of laws $\mu_n$. \emph{Borel--Cantelli} (Tome~3,
+Theorem~4.11): if $\sum P(A_n)<\infty$ then $P(A_n\text{ i.o.})=0$; if the $A_n$ are independent and $\sum P(A_n)=\infty$
+then $P(A_n\text{ i.o.})=1$. \emph{Martingales} (Tome~3, Chapter~10): Kolmogorov's inequality $P(\max_{k\le n}|S_k|\ge
+a)\le\operatorname{Var}(S_n)/a^2$ (Corollary~10.16) and the convergence of martingales bounded in $L^2$ (Theorem~10.18).
+\emph{Characteristic functions} (Tome~3, Chapter~6): convergence in distribution implies pointwise convergence of
+characteristic functions, and an integrable characteristic function $\varphi$ has the continuous density
+$\frac1{2\pi}\int e^{-itx}\varphi(t)\dd t$ (Theorem~6.8).
+\end{reminder}
+
+\section{Independent $\sigma$-algebras}
+
+Throughout, $(\Omega,\mathcal F,P)$ is a probability space. Sub-$\sigma$-algebras $\mathcal G_1,\dots,\mathcal G_n$ of
+$\mathcal F$ are \emph{independent} if $P(G_1\cap\dots\cap G_n)=P(G_1)\cdots P(G_n)$ whenever $G_i\in\mathcal G_i$; an
+infinite family is independent if each finite subfamily is. Random variables are independent when the $\sigma$-algebras
+$\sigma(X_i)=\{X_i^{-1}(B)\}$ they generate are. Checking the product formula on all of $\mathcal G_i$ is rarely possible;
+the following lemma says that generators are enough.
+
+\begin{lemma}[$\pi$-systems suffice]\label{lem:pisuffice}
+Let $\mathcal P_1,\dots,\mathcal P_n$ be $\pi$-systems with $\Omega\in\mathcal P_i$, such that $P(A_1\cap\dots\cap A_n)=
+\prod P(A_i)$ for all $A_i\in\mathcal P_i$. Then $\sigma(\mathcal P_1),\dots,\sigma(\mathcal P_n)$ are independent.
+\end{lemma}
+\begin{proof}
+Fix $A_2\in\mathcal P_2,\dots,A_n\in\mathcal P_n$ and let $\mathcal L$ be the class of $A\in\mathcal F$ with
+$P(A\cap A_2\cap\dots\cap A_n)=P(A)P(A_2)\cdots P(A_n)$. It contains $\Omega$ and $\mathcal P_1$. It is closed under
+complements: subtract the identity for $A$ from the identity for $\Omega$. It is closed under countable disjoint unions, by
+countable additivity on both sides. So $\mathcal L$ is a $\lambda$-system containing $\mathcal P_1$, hence $\sigma(
+\mathcal P_1)$, by Dynkin's theorem. Thus the hypothesis holds with $\mathcal P_1$ replaced by $\sigma(\mathcal P_1)$, which is
+again a $\pi$-system containing $\Omega$. Repeat with the second index, and so on. Taking some $A_i=\Omega$ gives the
+product formula for every subfamily.
+\end{proof}
+
+For a random variable, $\{X\le x\}$, $x\in\R$, together with $\Omega$, is a $\pi$-system generating $\sigma(X)$, so
+$X_1,\dots,X_n$ are independent as soon as $P(X_1\le x_1,\dots,X_n\le x_n)=\prod P(X_i\le x_i)$: the definition of Tome~3
+agrees with this one.
+
+\begin{proposition}[grouping]\label{prop:grouping}
+Let $(\mathcal G_i)_{i\in I}$ be independent, and let $I=\bigsqcup_jI_j$ be a partition. Then the $\sigma$-algebras
+$\mathcal H_j=\sigma\bigl(\bigcup_{i\in I_j}\mathcal G_i\bigr)$ are independent.
+\end{proposition}
+\begin{proof}
+Let $\mathcal P_j$ be the class of finite intersections $G_{i_1}\cap\dots\cap G_{i_r}$ with distinct $i_k\in I_j$ and
+$G_{i_k}\in\mathcal G_{i_k}$. It is a $\pi$-system containing $\Omega$ and generating $\mathcal H_j$. For finitely many
+distinct $j$, a product of elements of the $\mathcal P_j$ is a finite intersection of sets from distinct $\mathcal G_i$, so
+its probability is the product of the probabilities, which regroups as $\prod_jP(\text{element of }\mathcal P_j)$. Lemma~\ref{lem:pisuffice}
+ concludes.
+\end{proof}
+
+So if $X_1,X_2,\dots$ are independent, then $f(X_1,\dots,X_5)$, $g(X_6,X_7)$ and $h(X_8,X_9,\dots)$ are independent for all
+measurable $f,g,h$, a fact used constantly and silently from now on.
+
+\section{Kolmogorov's zero--one law}
+
+\begin{definition}
+Let $X_1,X_2,\dots$ be random variables. The \emph{tail $\sigma$-algebra} is
+\[
+\mathcal T=\bigcap_{n\ge1}\sigma(X_n,X_{n+1},\dots).
+\]
+An event of $\mathcal T$ is a \emph{tail event}: for each $n$, whether it happens is decided by $X_n,X_{n+1},\dots$ alone.
+\end{definition}
+
+With $S_n=X_1+\dots+X_n$, the event $\{\sum X_n\text{ converges}\}$ is a tail event, since convergence does not depend on
+the first terms. So are $\{X_n>1\text{ i.o.}\}$ and $\{\limsup S_n/n\le c\}$, since $S_n/n$ and $(S_n-S_m)/n$ have the same
+$\limsup$. The event $\{S_n>0\text{ i.o.}\}$ is not a tail event in general: changing $X_1$ can change it.
+
+\begin{theorem}[Kolmogorov's zero--one law, 1933]\label{thm:kolmogorov01}
+If $X_1,X_2,\dots$ are independent, every tail event has probability $0$ or $1$.
+\end{theorem}
+\begin{proof}
+Let $A\in\mathcal T$ and $n\ge1$. Then $A$ lies in $\sigma(X_{n+1},X_{n+2},\dots)$, which is independent of $\sigma(X_1,\dots,X_n)$ by
+grouping. So $A$ is independent of every event of the union $\mathcal A$ of the $\sigma$-algebras $\sigma(X_1,\dots,X_n)$, which is a
+$\pi$-system (an increasing union of $\sigma$-algebras) and generates $\sigma(X_1,X_2,\dots)$, so by Lemma~\ref{lem:pisuffice},
+$A$ is independent of $\sigma(X_1,X_2,\dots)$, which contains $A$. Hence $P(A)=P(A\cap A)=P(A)^2$.
+\end{proof}
+
+The proof is a little scandalous: $A$ is independent of itself. A tail event is so far in the future that knowing all
+of the present tells you nothing about it, and yet it is determined by the whole sequence.
+
+\begin{corollary}\label{cor:tailconst}
+If $X_1,X_2,\dots$ are independent and $Y$ is a $\mathcal T$-measurable random variable with values in $[-\infty,\infty]$,
+then $Y$ is almost surely constant. In particular, $\limsup S_n/a_n$ and $\liminf S_n/a_n$ are almost surely constant for
+every sequence $a_n\to\infty$, and $\sum X_n$ converges with probability $0$ or $1$.
+\end{corollary}
+\begin{proof}
+The function $c\mapsto P(Y\le c)$ takes only the values $0$ and $1$, is non-decreasing and right-continuous; let
+$c_0=\inf\{c:P(Y\le c)=1\}\in[-\infty,\infty]$. Then $P(Y\le c)=1$ for $c>c_0$ and $0$ for $c<c_0$, so $Y=c_0$ almost surely.
+For the examples, $\limsup_n S_n/a_n=\limsup_n(S_n-S_m)/a_n$ for each $m$, which is $\sigma(X_{m+1},\dots)$-measurable.
+\end{proof}
+
+\begin{think}
+Let $X_n$ be independent with $P(X_n=n)=P(X_n=-n)=\frac12$. Is $\{\lim S_n/n^2\text{ exists}\}$ a tail event? What is its
+probability? Now let $X_n$ be independent and uniform on $[0,1]$: what is the probability that infinitely many of them are
+below $\frac1n$? Below $\frac1{n^2}$? The zero--one law guarantees the answers are $0$ or $1$; Borel--Cantelli finds them.
+\end{think}
+
+\section{Exchangeable events and random walks}
+
+A \emph{finite permutation} is a bijection $\pi$ of $\{1,2,\dots\}$ that moves only finitely many integers. It acts on
+sequences by $(\pi x)_i=x_{\pi(i)}$. An event $A\in\sigma(X_1,X_2,\dots)$ is \emph{exchangeable} if it is unchanged by every
+finite permutation of the variables: $A=\{(X_n)\in B\}$ for a measurable $B\subseteq\R^{\N}$ with $\pi^{-1}B=B$ for every
+finite $\pi$. Tail events are exchangeable, but so is $\{S_n>0\text{ i.o.}\}$: a permutation of $X_1,\dots,X_m$ leaves
+$S_n$ unchanged for $n\ge m$.
+
+We need one approximation lemma.
+
+\begin{lemma}\label{lem:approx}
+Let $\mathcal A$ be an algebra of sets (closed under complements and finite unions) and $A\in\sigma(\mathcal A)$. For every
+$\varepsilon>0$ there is $A'\in\mathcal A$ with $P(A\,\triangle\,A')<\varepsilon$.
+\end{lemma}
+\begin{proof}
+Let $\mathcal L$ be the class of sets that can be so approximated. It contains $\mathcal A$, and is closed under complements
+since $A^c\triangle A'^c=A\triangle A'$. If $A_1,A_2,\dots\in\mathcal L$ are disjoint with union $A$, choose $N$ with
+$\sum_{k>N}P(A_k)<\varepsilon/2$ and $A'_k\in\mathcal A$ with $P(A_k\triangle A_k')<\varepsilon/2N$; then
+$A'=A_1'\cup\dots\cup A_N'\in\mathcal A$ and $A\triangle A'\subseteq\bigcup_{k\le N}(A_k\triangle A_k')\cup\bigcup_{k>N}A_k$,
+of probability less than $\varepsilon$. So $\mathcal L$ is a $\lambda$-system containing the $\pi$-system $\mathcal A$, and
+Dynkin's theorem gives $\mathcal L\supseteq\sigma(\mathcal A)$.
+\end{proof}
+
+\begin{theorem}[Hewitt--Savage, 1955]\label{thm:hewittsavage}
+If $X_1,X_2,\dots$ are independent and identically distributed, every exchangeable event has probability $0$ or $1$.
+\end{theorem}
+\begin{proof}
+Let $A=\{X\in B\}$ be exchangeable, where $X=(X_n)$, and let $\varepsilon>0$. By Lemma~\ref{lem:approx} applied to the
+algebra $\bigcup_n\sigma(X_1,\dots,X_n)$, there are $n$ and a measurable $C\subseteq\R^n$ such that $A_n=\{(X_1,\dots,X_n)\in
+C\}$ satisfies $P(A\triangle A_n)<\varepsilon$. Let $\pi$ be the finite permutation exchanging $k$ and $n+k$ for $1\le k\le n$,
+and let $B_n=\{(X_{n+1},\dots,X_{2n})\in C\}=\{\pi X\in C\times\R^{\N}\}$.
+
+The sequences $X$ and $\pi X$ have the same law, since they are both i.i.d.\ with the same marginal (the law of an i.i.d.\
+sequence is determined by its finite-dimensional distributions, Tome~6, Theorem~11.8). Since $\pi^{-1}B=B$, the event
+$A$ is also $\{\pi X\in B\}$, so
+\[
+P(A\triangle B_n)=P\bigl(\pi X\in B\triangle(C\times\R^\N)\bigr)=P\bigl(X\in B\triangle(C\times\R^\N)\bigr)=P(A\triangle A_n)<\varepsilon.
+\]
+Now $A_n$ and $B_n$ are independent, depending on disjoint blocks. Since $|P(E)-P(F)|\le P(E\triangle F)$, and $(A_n\cap
+B_n)\triangle A\subseteq(A_n\triangle A)\cup(B_n\triangle A)$,
+\[
+|P(A)-P(A)^2|\le|P(A)-P(A_n\cap B_n)|+|P(A_n)P(B_n)-P(A)^2|\le2\varepsilon+2\varepsilon.
+\]
+As $\varepsilon$ is arbitrary, $P(A)=P(A)^2$.
+\end{proof}
+
+The zero--one law is about \emph{events}; its most famous consequence is about \emph{paths}.
+
+\begin{theorem}[the fate of a random walk]\label{thm:trichotomy}
+Let $X_1,X_2,\dots$ be i.i.d.\ and $S_n=X_1+\dots+X_n$. Exactly one of the following holds almost surely:
+\begin{enumerate}
+\item $S_n=0$ for all $n$ (this is the case $X_1=0$ a.s.);
+\item $S_n\to+\infty$;
+\item $S_n\to-\infty$;
+\item $\liminf S_n=-\infty$ and $\limsup S_n=+\infty$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+The random variable $L=\limsup S_n$ is measurable for the exchangeable events: $\{L\le c\}$ is unchanged by a finite
+permutation, which changes only finitely many $S_n$. By Hewitt--Savage, $L=c$ almost surely for a constant
+$c\in[-\infty,\infty]$. Let $S'_n=X_2+\dots+X_{n+1}$. The sequence $(S'_n)$ has the same law as $(S_n)$, so $\limsup S'_n=c$
+almost surely too. But $S_{n+1}=X_1+S'_n$, so $c=X_1+c$ almost surely. If $c$ is finite, then $X_1=0$ almost surely, which
+is case~1. Otherwise $c=\pm\infty$; similarly $\liminf S_n=c'\in\{\pm\infty\}$. The combinations $c=-\infty$ (so $S_n\to-\infty$),
+$c'=+\infty$ (so $S_n\to+\infty$) and $c'=-\infty<c=+\infty$ are cases 3, 2 and~4.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch01-trichotomy}
+\caption{Three random walks with Gaussian steps of variance $1$ and means $0.12$, $0$ and $-0.12$. Theorem~\ref{thm:trichotomy} says
+these are the only possible fates. With a mean, the strong law decides; without one, the walk swings ever wider in both
+directions (Corollary~\ref{cor:oscillate}).}
+\label{fig:trichotomy}
+\end{figure}
+
+Which case occurs? If $\mathbb E|X_1|<\infty$ and $\mathbb E X_1>0$, the strong law of large numbers (Tome~3, Corollary~4.12 in
+the bounded case, Chapter~2 in general) gives $S_n/n\to\mathbb E X_1>0$, hence case~2. Centred walks oscillate:
+
+\begin{corollary}\label{cor:oscillate}
+If $\mathbb E X_1=0$ and $0<\mathbb E X_1^2<\infty$, then $\limsup S_n/\sqrt n=+\infty$ and $\liminf S_n/\sqrt n=-\infty$
+almost surely. In particular, a centred walk with finite variance crosses every level infinitely often.
+\end{corollary}
+\begin{proof}
+Let $\sigma^2=\mathbb E X_1^2$ and $M>0$. The event $E=\{S_n>M\sqrt n\text{ i.o.}\}$ is exchangeable. By Fatou's lemma applied to
+indicators, $P(E)\ge\limsup_nP(S_n>M\sqrt n)$, and by the central limit theorem this is $P(Z>M/\sigma)>0$ for a standard
+Gaussian $Z$. So $P(E)>0$, hence $P(E)=1$. Taking $M=1,2,3,\dots$ gives $\limsup S_n/\sqrt n=+\infty$; the $\liminf$ is the
+same with $-X$.
+\end{proof}
+
+How fast does the walk swing? Not like $\sqrt n$, which it exceeds by every factor infinitely often, but only a little more:
+the law of the iterated logarithm of Chapter~3 says $\limsup S_n/\sqrt{2n\log\log n}=\sigma$.
+
+\section{Series of independent terms}
+
+For independent summands, three modes of convergence of $\sum X_n$ coincide: almost sure, in probability, and (Chapter~4)
+in distribution. The first equivalence rests on a maximal inequality.
+
+\begin{lemma}[Ottaviani's inequality]\label{lem:ottaviani}
+Let $X_1,\dots,X_n$ be independent, $S_k=X_1+\dots+X_k$, $a>0$, and $c=\max_{k\le n}P(|S_n-S_k|\ge a)<1$. Then
+\[
+P\Bigl(\max_{k\le n}|S_k|\ge2a\Bigr)\le\frac{P(|S_n|\ge a)}{1-c}.
+\]
+\end{lemma}
+\begin{proof}
+Let $\tau$ be the first $k\le n$ with $|S_k|\ge2a$ ($\tau=\infty$ if there is none). The event $\{\tau=k\}$ depends on
+$X_1,\dots,X_k$, and $S_n-S_k$ on $X_{k+1},\dots,X_n$. On $\{\tau=k\}\cap\{|S_n-S_k|<a\}$ we have $|S_n|\ge|S_k|-|S_n-S_k|>a$.
+These events are disjoint for different $k$, so
+\[
+\begin{gathered}
+P(|S_n|\ge a)\ge\sum_{k\le n}P(\tau=k)\,P(|S_n-S_k|<a)\\\ge(1-c)\sum_{k\le n}P(\tau=k)=(1-c)\,P\Bigl(\max_{k\le n}|S_k|\ge2a\Bigr).
+\end{gathered}
+\]
+Divide by $1-c$.
+\end{proof}
+
+\begin{theorem}[L\'evy, 1937]\label{thm:levyequiv}
+Let $X_1,X_2,\dots$ be independent. If $S_n$ converges in probability, it converges almost surely.
+\end{theorem}
+\begin{proof}
+Let $S_n\to S$ in probability, and let $\varepsilon,\delta\in(0,\frac12)$. Since $|S_j-S_i|\le|S_j-S|+|S-S_i|$, there is $m$
+such that $P(|S_j-S_i|\ge\varepsilon)\le\delta$ for all $j\ge i\ge m$. Apply Ottaviani's inequality to the independent variables
+$X_{m+1},\dots,X_n$, whose partial sums are $S_k-S_m$: here $c\le\delta$, so
+\[
+P\Bigl(\max_{m\le k\le n}|S_k-S_m|\ge2\varepsilon\Bigr)\le\frac{\delta}{1-\delta}\le2\delta .
+\]
+Let $n\to\infty$: $P(\sup_{k\ge m}|S_k-S_m|\ge2\varepsilon)\le2\delta$, hence $P(\sup_{k,l\ge m}|S_k-S_l|\ge4\varepsilon)\le2\delta$. The
+event $D_\varepsilon=\bigcap_m\{\sup_{k,l\ge m}|S_k-S_l|\ge4\varepsilon\}$ therefore has probability at most $2\delta$ for every
+$\delta$, so $P(D_\varepsilon)=0$. The sequence $(S_n)$ fails to be Cauchy exactly on $\bigcup_{j\ge1}D_{1/j}$, a null set.
+\end{proof}
+
+Independence is essential: Exercise~\ref{ex:levyindep} gives dependent summands whose partial sums converge in probability but
+nowhere. With Tome~3 we already have the simplest sufficient condition:
+
+\begin{proposition}[Kolmogorov's $L^2$ criterion]\label{prop:l2series}
+If $X_n$ are independent, $\mathbb E X_n=0$ and $\sum\mathbb E X_n^2<\infty$, then $\sum X_n$ converges almost surely and in $L^2$.
+\end{proposition}
+\begin{proof}
+$S_n$ is a martingale for the filtration $\sigma(X_1,\dots,X_n)$, and $\mathbb E S_n^2=\sum_{k\le n}\mathbb E X_k^2$ is bounded,
+so Tome~3, Theorem~10.18 applies.
+\end{proof}
+
+The next chapter turns this into a necessary and sufficient condition for all independent series, Kolmogorov's three-series
+theorem. Here we settle the most symmetric case first.
+
+\section{Random signs}
+
+Let $\varepsilon_1,\varepsilon_2,\dots$ be independent with $P(\varepsilon_n=1)=P(\varepsilon_n=-1)=\frac12$: \emph{Rademacher
+variables}, the binary digits of a uniform point in disguise. For real $a_n$, when does $\sum a_n\varepsilon_n$ converge?
+Proposition~\ref{prop:l2series} says: if $\sum a_n^2<\infty$. The converse needs a lower bound on the size of a sum of random
+signs, which we get from a simple and widely useful inequality.
+
+\begin{lemma}[Paley--Zygmund]\label{lem:pz}
+If $Y\ge0$ and $0<\mathbb E Y^2<\infty$, then for $0\le\theta<1$,
+\[
+P(Y>\theta\,\mathbb E Y)\ge(1-\theta)^2\frac{(\mathbb E Y)^2}{\mathbb E Y^2}.
+\]
+\end{lemma}
+\begin{proof}
+$\mathbb E Y=\mathbb E[Y\mathbf 1_{Y\le\theta\mathbb E Y}]+\mathbb E[Y\mathbf 1_{Y>\theta\mathbb E Y}]\le\theta\,\mathbb E Y+
+\sqrt{\mathbb E Y^2\,P(Y>\theta\mathbb E Y)}$ by Cauchy--Schwarz. Rearrange and square.
+\end{proof}
+
+\begin{lemma}[moments of a Rademacher sum]\label{lem:radmoments}
+For real $a_1,\dots,a_n$ and $T=\sum_{k\le n}a_k\varepsilon_k$, $\sigma^2=\sum a_k^2$: $\mathbb E T^2=\sigma^2$, $\mathbb E T^4\le3\sigma^4$,
+and $P(T^2>\frac12\sigma^2)\ge\frac1{12}$.
+\end{lemma}
+\begin{proof}
+Expand: $\mathbb E[\varepsilon_i\varepsilon_j\varepsilon_k\varepsilon_l]$ is $1$ when the indices pair up and $0$ otherwise. So
+$\mathbb E T^4=\sum_ia_i^4+3\sum_{i\ne j}a_i^2a_j^2\le3\bigl(\sum a_i^2\bigr)^2$. Apply Paley--Zygmund to $Y=T^2$ with $\theta=\frac12$:
+$P(T^2>\frac12\sigma^2)\ge\frac14\cdot\frac{\sigma^4}{3\sigma^4}$.
+\end{proof}
+
+\begin{theorem}[Rademacher, 1922; Khintchine--Kolmogorov, 1925]\label{thm:rademacher}
+The series $\sum a_n\varepsilon_n$ converges almost surely if $\sum a_n^2<\infty$, and diverges almost surely if $\sum a_n^2=\infty$.
+\end{theorem}
+\begin{proof}
+The first half is Proposition~\ref{prop:l2series}. Suppose $\sum a_n^2=\infty$, and suppose the series converges with positive
+probability. Convergence is a tail event, so the series converges almost surely, and its partial sums $S_n$ form a Cauchy
+sequence in probability: there is $m_0$ with $P(|S_n-S_m|\ge\frac12)<\frac1{12}$ for all $n>m\ge m_0$. But since $\sum a_k^2$
+diverges, there is $n>m_0$ with $\sigma^2=\sum_{m_0<k\le n}a_k^2\ge1$, and Lemma~\ref{lem:radmoments} applied to
+$T=S_n-S_{m_0}$ gives $P(|T|>\frac1{\sqrt2})\ge\frac1{12}$, a contradiction since $\frac1{\sqrt2}>\frac12$. So the series
+converges with probability $0$.
+\end{proof}
+
+So $\sum\pm\frac1{n^\alpha}$ with random signs converges almost surely exactly when $\alpha>\frac12$, against $\alpha>1$ for
+absolute convergence and $\alpha>0$ for alternating signs. Random signs sit in between: their cancellation is the square
+root cancellation of the central limit theorem, and the dividing line $\sum a_n^2$ is the variance.
+
+\begin{remark}[random power series]
+Theorem~\ref{thm:rademacher} applied to $\sum a_n\varepsilon_nz^n$ at each fixed $z$, together with the zero--one law, shows that
+the radius of convergence of a random power series is almost surely constant (Exercise~\ref{ex:radius} does the i.i.d.\ case).
+Much more is true: if $\sum a_nz^n$ has radius $1$, then almost surely $\sum\varepsilon_na_nz^n$ cannot be continued analytically
+across any arc of the unit circle (a theorem of Paley and Zygmund; Steinhaus had proved the analogue for random phases). We shall not need this; see
+Kahane's book in the Sources, Chapter~4.
+\end{remark}
+
+\section{The random harmonic series}
+
+Let $X=\sum_{n\ge1}\frac{\varepsilon_n}n$. By Theorem~\ref{thm:rademacher}, it converges almost surely, and $\mathbb E X=0$,
+$\mathbb E X^2=\sum\frac1{n^2}=\frac{\pi^2}6$. What does its law look like?
+
+\begin{proposition}\label{prop:harmonic}
+The characteristic function of $X$ is $\varphi(t)=\prod_{n\ge1}\cos\frac tn$, and for $|t|\ge\pi$,
+\[
+|\varphi(t)|\le e^{-\pi|t|/6}.
+\]
+Consequently $X$ has a density $g$ which is even, of class $C^\infty$, and given by $g(x)=\frac1\pi\int_0^\infty\cos(xt)\varphi(t)\dd t$.
+\end{proposition}
+\begin{proof}
+$\mathbb E e^{it\varepsilon_n/n}=\cos\frac tn$, so the partial sum $S_N$ has characteristic function $\prod_{n\le N}\cos\frac tn$.
+Since $S_N\to X$ almost surely, $e^{itS_N}\to e^{itX}$, and dominated convergence gives the product formula.
+
+For the bound we use $\cos x\le e^{-x^2/2}$ for $|x|\le\frac\pi2$: the function $h(x)=\log\cos x+\frac{x^2}2$ has $h(0)=0$ and
+$h'(x)=x-\tan x\le0$ on $[0,\frac\pi2)$. Let $t\ge\pi$ (the function is even) and $M=\lfloor2t/\pi\rfloor$. For $n>M$ we have
+$t/n<\frac\pi2$, and for $n\le M$ we bound $|\cos\frac tn|\le1$. So
+\[
+|\varphi(t)|\le\exp\Bigl(-\frac{t^2}2\sum_{n>M}\frac1{n^2}\Bigr)\le\exp\Bigl(-\frac{t^2}2\cdot\frac1{M+1}\Bigr)\le
+\exp\Bigl(-\frac{t^2}{2(2t/\pi+1)}\Bigr)\le e^{-\pi t/6},
+\]
+using $\sum_{n>M}n^{-2}\ge\int_{M+1}^\infty x^{-2}\dd x$ and, in the last step, $2t/\pi+1\le3t/\pi$ for $t\ge\pi$.
+
+So $|t|^k\varphi(t)$ is integrable for every $k$. By Tome~3, Theorem~6.8, $X$ has the continuous density
+$g(x)=\frac1{2\pi}\int e^{-ixt}\varphi(t)\dd t$, which equals $\frac1\pi\int_0^\infty\cos(xt)\varphi(t)\dd t$ because $\varphi$ is even
+and real. Differentiating $k$ times under the integral is allowed, since $|t^k\varphi(t)|$ is an integrable bound independent of $x$
+(Tome~6, Theorem~7.17). Finally $g$ is even because $X$ and $-X$ have the same law.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch01-harmonic}
+\caption{The density $g$ of $\sum\pm\frac1n$, computed from Proposition~\ref{prop:harmonic}. It is flat-topped near $0$, where
+$g(0)=0.249994\ldots$, just below $\frac14$, and at $x=2$ it passes through $\frac18$ to within $10^{-42}$ (Schmuland, 2003),
+without being exactly $\frac18$. The notebook computes both values.}
+\label{fig:harmonic}
+\end{figure}
+
+\begin{think}
+The density in Figure~\ref{fig:harmonic} is almost constant on $[-\frac12,\frac12]$, where it stays between $0.2495$ and $0.25$. Look at the first two terms:
+$\varepsilon_1+\frac{\varepsilon_2}2$ takes the four values $\pm\frac12,\pm\frac32$. Can you guess why the density of the sum
+should be nearly flat on $[-\frac12,\frac12]$, and why $g(x)$ near $x=2$ should be close to half of its value near $0$? (Schmuland's
+paper investigates the near miss at $x=2$; it is a beautiful piece of numerical detective work.)
+\end{think}
+
+\begin{beauty}
+Zero--one laws give certainty for free. Without computing anything, they tell you that a random series converges almost surely or
+diverges almost surely, that a random walk drifts away or swings forever, that a random power series has a deterministic radius.
+The price is that they never tell you which. The rest of this book is, in a sense, the art of paying that price: of finding, for each
+question the zero--one laws declare decided, the probability that decides it.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:tailevents}
+Let $X_1,X_2,\dots$ be independent and $S_n=X_1+\dots+X_n$. Which of the following events are tail events? (a) $\{\sum X_n$ converges$\}$;
+(b) $\{\sum X_n$ converges and its sum is $0\}$; (c) $\{X_n>1$ i.o.$\}$; (d) $\{S_n>0$ i.o.$\}$; (e) $\{\lim S_n/n$ exists and equals $5\}$.
+For those that are not, find independent $X_n$ for which the event has probability strictly between $0$ and~$1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:subgauss}
+Let $X=\sum_n\varepsilon_n/n$. Prove that $\mathbb E e^{\lambda X}=\prod_n\cosh\frac\lambda n\le e^{\pi^2\lambda^2/12}$ and deduce
+$P(X\ge x)\le e^{-3x^2/\pi^2}$ for $x\ge0$. How does this compare with $P(X\ge4)$ for a Gaussian of the same variance?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:polya}
+Hewitt--Savage needs independence. In P\'olya's urn (Tome~3, Theorem~10.21), start with one red and one green ball; at each step draw
+a ball, return it with another of the same colour, and let $X_n=1$ if the $n$-th ball drawn is red. Show that the sequence $(X_n)$ is
+exchangeable (its law is invariant under finite permutations), but that the exchangeable event $\{\lim\frac1n\sum_{k\le n}X_k>\frac12\}$
+has probability $\frac12$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:levyindep}
+L\'evy's theorem needs independence. On $[0,1]$ with Lebesgue measure, list the dyadic intervals $[0,1],[0,\frac12],[\frac12,1],
+[0,\frac14],\dots$ as $I_1,I_2,\dots$, and let $S_n=\mathbf 1_{I_n}$, $X_1=S_1$, $X_n=S_n-S_{n-1}$. Show that $S_n\to0$ in probability but
+that $S_n(\omega)$ converges for no $\omega$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:radius}
+Let $X_0,X_1,\dots$ be i.i.d., not almost surely $0$, and let $R$ be the radius of convergence of $\sum X_nz^n$. Show that $R$ is almost surely
+constant, that $R=1$ almost surely if $\mathbb E\log^+|X_0|<\infty$, and that $R=0$ almost surely otherwise.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:infmean}
+Let $X_1,X_2,\dots$ be i.i.d.\ with $\mathbb E|X_1|=\infty$. Show that $\limsup|S_n|/n=\infty$ almost surely. (So the strong law of large
+numbers cannot hold with any finite limit: the integrability assumption of Chapter~2 is necessary.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:unbounded}
+Let $\sum a_n^2=\infty$ and $S_n=\sum_{k\le n}a_k\varepsilon_k$. Theorem~\ref{thm:rademacher} says $S_n$ diverges almost surely. Prove the
+stronger statement $\limsup S_n=+\infty$ and $\liminf S_n=-\infty$ almost surely, even when $a_n\to0$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:tailevents}
+Changing one $X_k$ changes the sum of a convergent series. For (d), take $X_1$ with two values and $X_n=0$ for $n\ge2$.
+\end{hint}
+\begin{hint}{ex:subgauss}
+Compare the Taylor series of $\cosh y$ and $e^{y^2/2}$ term by term, then use Markov's inequality on $e^{\lambda X}$ and optimise in $\lambda$.
+\end{hint}
+\begin{hint}{ex:polya}
+Compute the probability of a given sequence of colours: it depends only on the numbers of reds and greens. Then use the uniform limit of
+Tome~3.
+\end{hint}
+\begin{hint}{ex:levyindep}
+Every $\omega$ lies in infinitely many of the $I_n$ and outside infinitely many.
+\end{hint}
+\begin{hint}{ex:radius}
+$1/R=\limsup|X_n|^{1/n}$. For $c>1$, $\sum P(|X_0|>c^n)$ is finite or infinite according as $\mathbb E\log^+|X_0|$ is.
+\end{hint}
+\begin{hint}{ex:infmean}
+$\sum_nP(|X_1|>Cn)\ge\mathbb E|X_1|/C-1$, and $X_n=S_n-S_{n-1}$.
+\end{hint}
+\begin{hint}{ex:unbounded}
+Use Lemma~\ref{lem:radmoments} on $S_n$ itself to show that $\{\sup_n|S_n|=\infty\}$ has positive probability, then the zero--one law, then
+the symmetry $\varepsilon\mapsto-\varepsilon$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:tailevents}
+\idea A tail event is one that cannot be changed by changing finitely many variables, while staying a measurable function of the rest.
+Test each event by modifying $X_1$.
+\writeup (a) is a tail event: for each $m$, convergence of $\sum_nX_n$ is equivalent to convergence of $\sum_{n>m}X_n$. (c) is a tail
+event: $\{X_n>1\text{ i.o.}\}=\{X_n>1\text{ for infinitely many }n>m\}$ for every $m$. (e) is a tail event, because $S_n/n-(S_n-S_m)/n=
+S_m/n\to0$, so the event is $\{\lim(S_n-S_m)/n=5\}$, measurable with respect to $\sigma(X_{m+1},\dots)$.
+
+(b) is not: take $X_1=\pm1$ with probability $\frac12$ each, $X_2=1$ and $X_n=0$ for $n\ge3$; then $\sum X_n=X_1+1$ vanishes with
+probability $\frac12$. (d) is not: take $X_1=\pm1$ with probability $\frac12$ and $X_n=0$ for $n\ge2$; then $S_n=X_1$ for all $n$ and
+$P(S_n>0\text{ i.o.})=\frac12$. (Both are exchangeable events, but these variables are not identically distributed.)
+\end{solution}
+
+\begin{solution}{ex:subgauss}
+\idea Bound the moment generating function by that of a Gaussian, then use the exponential Markov inequality, as in Chernoff's method
+(Tome~3, Theorem~4.6).
+\writeup $\cosh y=\sum\frac{y^{2k}}{(2k)!}\le\sum\frac{y^{2k}}{2^kk!}=e^{y^2/2}$, since $(2k)!\ge2^kk!$. By independence,
+$\mathbb E e^{\lambda S_N}=\prod_{n\le N}\cosh\frac\lambda n\le\exp\bigl(\frac{\lambda^2}2\sum_n\frac1{n^2}\bigr)=e^{\pi^2\lambda^2/12}$. Since
+$e^{\lambda S_N}\to e^{\lambda X}$ almost surely, Fatou's lemma gives $\mathbb E e^{\lambda X}\le\liminf_N\mathbb E e^{\lambda S_N}\le e^{\pi^2\lambda^2/12}$.
+(The equality $\mathbb E e^{\lambda X}=\prod\cosh\frac\lambda n$ also holds, by uniform integrability, but the inequality suffices.) For $\lambda>0$,
+Markov's inequality gives $P(X\ge x)\le e^{-\lambda x}\mathbb E e^{\lambda X}\le e^{-\lambda x+\pi^2\lambda^2/12}$, which is smallest at $\lambda=6x/\pi^2$,
+where it equals $e^{-3x^2/\pi^2}$.
+
+For $x=4$ the bound is $e^{-48/\pi^2}\approx7.7\times10^{-3}$. A Gaussian with variance $\pi^2/6$, standard deviation $1.2825$, exceeds $4$ with
+probability $P(N(0,1)\ge3.119)\approx9.1\times10^{-4}$. The truth is much smaller still: integrating the density of Proposition~\ref{prop:harmonic},
+the notebook finds $P(X\ge4)\approx2.0\times10^{-7}$. The tails of $X$ are much thinner than Gaussian, and this exercise captures only their
+Gaussian part: the variance $\frac{\pi^2}6$ comes mostly from the first few terms, and reaching $4$ needs many terms to conspire.
+\end{solution}
+
+\begin{solution}{ex:polya}
+\idea Exchangeability is about the law of finite strings of colours; Hewitt--Savage fails because the colours are not independent, they
+share an unknown limiting proportion.
+\writeup After $r$ reds and $g$ greens have been drawn, the urn holds $r+1$ red and $g+1$ green balls among $r+g+2$. Hence the probability of any
+particular sequence of $n$ draws with $r$ reds and $g=n-r$ greens is
+\[
+\frac{1\cdot2\cdots r\cdot1\cdot2\cdots g}{2\cdot3\cdots(n+1)}=\frac{r!\,g!}{(n+1)!},
+\]
+since the red numerators are $1,2,\dots,r$ in whatever order they occur, and likewise the green ones. This depends only on $r$, so the law
+of $(X_1,\dots,X_n)$ is invariant under permutations; this holds for every $n$, so the law of the sequence is invariant under finite
+permutations. The proportion of red balls is a martingale converging almost surely to a uniform random variable $U$ on $[0,1]$ (Tome~3,
+Theorem~10.21), and $\frac1n\sum_{k\le n}X_k$ has the same limit (the number of reds drawn is the number of reds in the urn minus one). So
+the event has probability $P(U>\frac12)=\frac12$. It is exchangeable, since the limit of averages is unchanged by permuting finitely many
+terms.
+\end{solution}
+
+\begin{solution}{ex:levyindep}
+\idea The typewriter sequence moves an indicator across $[0,1]$ again and again with shrinking width: small in measure, but every point is
+visited forever.
+\writeup The intervals of generation $j$ have length $2^{-j}$ and cover $[0,1]$. So $P(S_n\ne0)=|I_n|\to0$, which is convergence in
+probability to $0$. For each $\omega$ and each generation $j$, some interval of generation $j$ contains $\omega$, and some (for $j\ge1$)
+does not, so $S_n(\omega)=1$ and $S_n(\omega)=0$ both happen infinitely often. The $X_n$ are of course dependent.
+\end{solution}
+
+\begin{solution}{ex:radius}
+\idea The radius is given by the Cauchy--Hadamard formula, a $\limsup$ of the terms, so it is a tail variable; then the question is how often
+$|X_n|$ exceeds $c^n$, a Borel--Cantelli question.
+\writeup $1/R=\limsup|X_n|^{1/n}$ is unchanged by changing finitely many $X_n$, so it is tail measurable and almost surely constant by
+Corollary~\ref{cor:tailconst}. For $c>0$, $\{|X_n|^{1/n}>c\}=\{\log|X_n|>n\log c\}$. For $Y\ge0$ we have $\sum_{n\ge1}P(Y>n)\le\mathbb E Y\le
+\sum_{n\ge0}P(Y>n)$, by taking expectations in $\sum_{n\ge1}\mathbf 1_{Y>n}\le Y\le\sum_{n\ge0}\mathbf 1_{Y>n}$. Take $c>1$ and $Y=\log^+|X_0|/\log c$: if $\mathbb E\log^+|X_0|<\infty$ then $\sum P(|X_n|>c^n)<\infty$, so by
+Borel--Cantelli $|X_n|^{1/n}\le c$ eventually, and $\limsup|X_n|^{1/n}\le1$. Conversely, $P(X_0\ne0)>0$ gives $\delta>0$ with $P(|X_0|>\delta)>0$,
+so $|X_n|>\delta$ infinitely often (second Borel--Cantelli), and $\delta^{1/n}\to1$ gives $\limsup|X_n|^{1/n}\ge1$. So $R=1$. If
+$\mathbb E\log^+|X_0|=\infty$, then for every $c>1$, $\sum P(|X_n|>c^n)=\infty$, and by the second Borel--Cantelli lemma $|X_n|^{1/n}>c$
+infinitely often; so $\limsup|X_n|^{1/n}=\infty$ and $R=0$.
+\end{solution}
+
+\begin{solution}{ex:infmean}
+\idea If the terms themselves are often larger than $Cn$, the partial sums cannot all stay below $Cn/2$.
+\writeup Fix $C>0$. Since $\mathbb E|X_1|/C=\mathbb E[|X_1|/C]\le\sum_{n\ge0}P(|X_1|>Cn)$, the series $\sum_nP(|X_n|>Cn)=\sum_nP(|X_1|>Cn)$ diverges.
+The events $\{|X_n|>Cn\}$ are independent, so by the second Borel--Cantelli lemma $|X_n|>Cn$ infinitely often. Since $|X_n|\le|S_n|+|S_{n-1}|$,
+for each such $n$ either $|S_n|>Cn/2$ or $|S_{n-1}|>Cn/2\ge C(n-1)/2$. So $\limsup|S_n|/n\ge C/2$ almost surely, for every $C$.
+\end{solution}
+
+\begin{solution}{ex:unbounded}
+\idea Divergence alone allows bounded oscillation. To get unboundedness, show directly that $|S_n|$ is large with probability bounded below
+(the Paley--Zygmund bound does exactly this), turn ``with positive probability'' into ``almost surely'' with a zero--one law, and use the symmetry
+of the signs to split between $+\infty$ and $-\infty$.
+\writeup Let $\sigma_n^2=\sum_{k\le n}a_k^2\to\infty$. By Lemma~\ref{lem:radmoments}, $P(|S_n|>\sigma_n/\sqrt2)\ge\frac1{12}$ for every $n$. For any
+$M$, $\{|S_n|>M\}\supseteq\{|S_n|>\sigma_n/\sqrt2\}$ once $\sigma_n\ge\sqrt2M$, so $P(|S_n|>M\text{ i.o.})\ge\limsup_nP(|S_n|>M)\ge\frac1{12}$ (Fatou
+for indicators). Hence $E=\{\sup_n|S_n|=\infty\}$ has probability at least $\frac1{12}$. Changing finitely many signs changes every $S_n$ by at most a
+fixed amount, so $E$ is a tail event, and $P(E)=1$.
+
+Now $E\subseteq\{\limsup S_n=+\infty\}\cup\{\liminf S_n=-\infty\}$. Both events are tail events by the same remark, and they have the same probability
+$p$, since $(\varepsilon_n)$ and $(-\varepsilon_n)$ have the same law. So $1\le2p$, which forces $p=1$ by the zero--one law.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} \'E.~Borel, ``Les probabilit\'es d\'enombrables et leurs applications arithm\'etiques'', \emph{Rend.\ Circ.\ Mat.\ Palermo} 27
+(1909), 247--271. H.~Steinhaus, ``Les probabilit\'es d\'enombrables et leur rapport \`a la th\'eorie de la mesure'', \emph{Fund.\ Math.}\ 4 (1923),
+286--310. H.~Rademacher, ``Einige S\"atze \"uber Reihen von allgemeinen Orthogonalfunktionen'', \emph{Math.\ Ann.}\ 87 (1922), 112--138.
+A.~Khintchine and A.~Kolmogorov, ``\"Uber Konvergenz von Reihen, deren Glieder durch den Zufall bestimmt werden'', \emph{Mat.\ Sb.}\ 32 (1925), 668--677.
+A.~N.~Kolmogorov, \emph{Grundbegriffe der Wahrscheinlichkeitsrechnung}, Springer, 1933 (the zero--one law is in the appendix); English translation
+\emph{Foundations of the Theory of Probability}, Chelsea, 1956. E.~Hewitt and L.~J.~Savage, ``Symmetric measures on Cartesian products'',
+\emph{Trans.\ Amer.\ Math.\ Soc.}\ 80 (1955), 470--501. P.~L\'evy, \emph{Th\'eorie de l'addition des variables al\'eatoires}, Gauthier-Villars, 1937.
+For the story of Borel's paper and its gaps, see G.~Shafer and V.~Vovk, ``The sources of Kolmogorov's Grundbegriffe'', \emph{Statist.\ Sci.}\ 21 (2006), 70--98.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Sections~2.5 and~4.1. The route followed here for
+the zero--one laws and the fate of a random walk.
+\item O.~Kallenberg, \emph{Foundations of Modern Probability}, 3rd ed., Springer, 2021, Chapters~4 and~5. Ottaviani's inequality and L\'evy's theorem.
+\item J.-P.~Kahane, \emph{Some Random Series of Functions}, 2nd ed., Cambridge University Press, 1985. Random signs, Khintchine's inequalities,
+random power series and their natural boundaries.
+\item B.~Schmuland, ``Random harmonic series'', \emph{Amer.\ Math.\ Monthly} 110 (2003), 407--416. The density of Figure~\ref{fig:harmonic}, its value
+at $0$ and its near miss at $2$.
+\end{itemize}
