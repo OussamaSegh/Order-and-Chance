@@ -90,6 +90,8 @@ for tome in "${tomes[@]}"; do
       --metadata subject=Mathematics \
       -o "$root/dist/$tome.epub")
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
-  echo "   dist/$tome.pdf  dist/$tome-phone.pdf  dist/$tome-kindle.pdf  dist/$tome.epub"
+  # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
+  python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
+  echo "   dist/$tome.pdf  dist/$tome-phone.pdf  dist/$tome-kindle.pdf  dist/$tome.epub  dist/html/$tome/"
   echo "   KDP: dist/kdp/$tome-print.pdf ($pages pages)  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
 done

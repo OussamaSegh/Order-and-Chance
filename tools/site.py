@@ -2,7 +2,7 @@
 
 Usage: python3 tools/site.py <dist dir> <output dir>
 Copies every dist/<tome>.pdf (with its -phone and -kindle variants) and .epub into the
-output directory and writes index.html.
+output directory, the online reader dist/html/<tome>/ into read/<tome>/, and writes index.html.
 """
 import datetime
 import html
@@ -39,7 +39,7 @@ PAGE = """<!doctype html>
   .tome p {{ margin:2px 0 0; color:var(--muted); font-size:.92em; }}
   .links a {{ display:inline-block; margin:4px 0 4px 8px; padding:6px 14px; border:1px solid var(--accent); border-radius:6px;
              color:var(--accent); text-decoration:none; font-family:system-ui, sans-serif; font-size:.9em; }}
-  .links a:hover {{ background:var(--accent); color:var(--card); }}
+  .links a:hover, .links a.read {{ background:var(--accent); color:var(--card); }}
   footer {{ margin-top:2.5em; color:var(--muted); font-size:.88em; }}
   footer a {{ color:var(--accent); }}
 </style>
@@ -61,7 +61,7 @@ Python companion notebooks are in the repository's <code>python/</code> folder.<
 """
 
 CARD = """<div class="tome">{cover}<div class="info"><h2>{title}</h2><p>{subtitle} · {size}</p></div>
-<div class="links"><a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div></div>"""
+<div class="links">{read}<a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div></div>"""
 
 # Extra PDF layouts made by build.sh, with their button labels.
 VARIANTS = [("phone", "Phone PDF", "Pages sized for a large phone screen (Galaxy S25 Ultra)"),
@@ -99,6 +99,11 @@ def main(dist: str, out: str) -> None:
                 variants += f'<a href="{extra.name}" title="{tip}">{label}</a>'
         if epub.exists():
             shutil.copy(epub, out_dir / epub.name)
+        read = ""
+        reader = dist_dir / "html" / tome
+        if (reader / "index.html").exists():
+            shutil.copytree(reader, out_dir / "read" / tome, dirs_exist_ok=True)
+            read = f'<a class="read" href="read/{tome}/" title="Read in the browser, one page per chapter">Read online</a>'
         size = f"{pdf.stat().st_size / 1e6:.1f} MB PDF"
         # Cover thumbnail, rendered from the cover page that build.sh made.
         cover = ""
@@ -108,7 +113,7 @@ def main(dist: str, out: str) -> None:
                             str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
             cover = f'<img src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         cards.append(CARD.format(title=html.escape(rest or series), subtitle=html.escape(series if rest else ""),
-                                 size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name))
+                                 size=size, cover=cover, read=read, pdf=pdf.name, variants=variants, epub=epub.name))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/Order-and-Chance")
