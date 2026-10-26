@@ -1,0 +1,660 @@
+\chapter{Curves over Finite Fields}
+\begin{center}\itshape
+How many solutions has $x^3+y^3=1$ modulo $p$?\\
+About $p$, give or take $2\sqrt p$.\\
+It took from Gauss to Weil to see why it is never more.
+\end{center}
+
+In Article 358 of the \emph{Disquisitiones Arithmeticae} (1801), Gauss counted the solutions of a cubic congruence, in effect the points of the
+curve $x^3+y^3=1$ modulo a prime $p\equiv1\pmod3$, and found an exact formula in terms of the representation $4p=L^2+27M^2$. Thirteen years later, on
+9~July 1814, he wrote the last of the 146 entries of his mathematical diary: if $a+bi$ is a Gaussian prime with $a-1+bi$ divisible by $2+2i$, the number of
+solutions of $1=x^2+y^2+x^2y^2$ modulo $a+bi$ is $(a-1)^2+b^2$. In both cases the number of points is $p$ plus an error that is at most about $2\sqrt p$.
+
+A century later, in his 1921 thesis, Emil Artin attached a zeta function to curves $y^2=f(x)$ over $\mathbb F_p$, imitating Dedekind's, and checked
+on some forty examples that its zeros satisfy the analogue of the Riemann hypothesis. In 1932 Harold Davenport and Louis Mordell were bounding character
+sums, which count points on curves; Artin told Hasse that the best possible bound, over all finite extensions of the field, is exactly the Riemann hypothesis for
+these zeta functions, and early in 1933 Hasse proved it for elliptic curves. The general case was the work of Andr\'e Weil. In 1940, held in the military prison
+of Rouen for failing to report for service, he worked so well that he wrote to his wife that he might have to arrange to spend two or three months locked
+up every year; the note he sent from there to the \emph{Comptes Rendus} announced the Riemann hypothesis for all curves over finite fields, and the proof
+appeared in 1948. In 1949, recalling Gauss's cubic congruences, Weil conjectured the same for varieties of every dimension. Deligne proved this in 1974.
+
+Weil's proof used the geometry of correspondences on $C\times C$ and of the Jacobian of the curve. In 1969 Sergei Stepanov found an elementary method for $y^2=f(x)$, using an
+auxiliary polynomial with many zeros, the trick of transcendence theory. Enrico Bombieri turned it in 1973 into a two-page proof of the upper bound for all
+curves, using nothing but the Riemann--Roch theorem. This chapter proves the rationality and the functional equation of the zeta function of a smooth plane
+curve with the Riemann--Roch theorem of Chapter~11, Bombieri's upper bound, and the full Riemann hypothesis for the curves $y^m=f(x)$, which include
+elliptic curves (Hasse's theorem) and Fermat curves.
+
+\begin{reminder}[from Chapter 11]
+$k$ is an algebraically closed field; here $k=\overline{\mathbb F}_q$. $C$ is a smooth plane curve $F=0$ of degree $n$ and genus $g=\frac{(n-1)(n-2)}2$, with function
+field $k(C)$, valuations $\operatorname{ord}_P$, divisors, $L(D)$ and $\ell(D)=\dim_kL(D)$. Principal divisors have degree $0$, and a function without poles is
+constant (Proposition~\ref{prop:divbasic}); $\ell(D+P)\le\ell(D)+1$ (Proposition~\ref{prop:ellbasic}); Riemann--Roch, $\ell(D)-\ell(W-D)=\deg D+1-g$ with
+$W=(n-3)E$, $E=\operatorname{div}(L)$ for a line $L$ (Theorem~\ref{thm:rr}); in particular $\ell(D)=\deg D+1-g$ when $\deg D>2g-2$. If $\operatorname{div}(G)\ge\operatorname{div}(H)$
+for forms $G,H$ prime to $F$, then $G=AF+BH$ with $B$ a form (Corollary~\ref{cor:noethersmooth}). The finite field $\mathbb F_{q^r}$ is the set of roots of
+$x^{q^r}-x$ in $k$, and $x\mapsto x^q$ is an automorphism of $k$ fixing exactly $\mathbb F_q$ (Tome~2).
+\end{reminder}
+
+\section{Frobenius and rational divisors}
+
+Throughout, $q$ is a power of a prime $p$, $k=\overline{\mathbb F}_q$, and $C$ is a smooth plane curve $F=0$ of degree $n$ whose equation $F$ has coefficients in
+$\mathbb F_q$; we say that $C$ is \emph{defined over $\mathbb F_q$}. The \emph{Frobenius} of $\mathbb P^2$ is
+\[
+\varphi(a:b:c)=(a^q:b^q:c^q).
+\]
+It is a bijection (with inverse the $q$-th root, $k$ being perfect), and $F(\varphi P)=F(P)^q$ because the coefficients of $F$ are fixed by $x\mapsto x^q$, so
+$\varphi$ maps $C$ onto $C$. A point is fixed by $\varphi^r$ iff it has a representative with coordinates in $\mathbb F_{q^r}$ (normalise its first non-zero
+coordinate to $1$). Let
+\[
+N_r=|C(\mathbb F_{q^r})|=\#\{P\in C:\varphi^rP=P\}.
+\]
+Every point of $C$ has algebraic coordinates, so it lies in some $C(\mathbb F_{q^r})$: the orbits of $\varphi$ are finite. An orbit is a \emph{closed point} $\mathfrak P$,
+and its size is its \emph{degree} $\deg\mathfrak P$. A point $P$ lies in $C(\mathbb F_{q^r})$ iff the size of its orbit divides $r$, so, with $B_d$ the number of closed
+points of degree $d$,
+\begin{equation}\label{eq:NrBd}
+N_r=\sum_{d\mid r}dB_d .
+\end{equation}
+A divisor $D=\sum n_PP$ is \emph{rational} if $\varphi_*D=D$, where $\varphi_*D=\sum n_P\,\varphi(P)$: its coefficients are constant on orbits, so the rational
+divisors are the integer combinations of closed points (each $\mathfrak P$ read as the sum of its points).
+
+\subsection*{Frobenius on functions}
+
+For a form $G$, let $G^\sigma$ be the form obtained by raising every coefficient of $G$ to the power $q$; then $G^\sigma(\varphi P)=G(P)^q$, and $F^\sigma=F$.
+For $z=G/H\in k(C)$ set $z^\sigma=G^\sigma/H^\sigma$. This is well defined, since $F\mid GH'-G'H$ implies $F=F^\sigma\mid(GH'-G'H)^\sigma$, and
+$z\mapsto z^\sigma$ is a bijective ring map of $k(C)$ with $(cz)^\sigma=c^qz^\sigma$ for constants $c$. The functions \emph{defined over $\mathbb F_q$} are
+\[
+k(C)_q=\{G/H:\ G,H\text{ forms with coefficients in }\mathbb F_q\},
+\]
+a subfield of $k(C)$ fixed by $\sigma$, whose constants are $k\cap k(C)_q=\mathbb F_q$ (a constant $c$ with $c^q=c$ is in $\mathbb F_q$).
+
+\begin{lemma}\label{lem:frobdiv}
+For $z\in k(C)^\times$, $\operatorname{div}(z^\sigma)=\varphi_*\operatorname{div}(z)$. If $z$ is regular at $P$, then $z^\sigma$ is regular at $\varphi P$ and
+$z^\sigma(\varphi P)=z(P)^q$. In particular, if $z\in k(C)_q$ and $P\in C(\mathbb F_q)$ is not a pole of $z$, then $z(P)\in\mathbb F_q$.
+\end{lemma}
+\begin{proof}
+It suffices to treat a form $G$ prime to $F$. Let $P$ be a point, say with $Z\ne0$ (then $\varphi P$ too), and work with dehomogenised polynomials. The ring
+automorphism $h\mapsto h^\sigma$ of $k[x,y]$ satisfies $h^\sigma(\varphi P)=h(P)^q$, so it maps the local ring $\mathcal O_P(\mathbb P^2)$ onto
+$\mathcal O_{\varphi P}(\mathbb P^2)$ and the ideal $(F,G)$ onto $(F,G^\sigma)$. It induces an additive bijection
+$\mathcal O_P(\mathbb P^2)/(F,G)\to\mathcal O_{\varphi P}(\mathbb P^2)/(F,G^\sigma)$ with $\sigma(cv)=c^q\sigma(v)$, which maps a $k$-basis to a $k$-basis (if
+$\sum c_i\sigma(e_i)=0$, apply $\sigma^{-1}$). So $I(\varphi P,F\cap G^\sigma)=I(P,F\cap G)$, which is the first claim. If $z=G/H$ with $H(P)\ne0$, then
+$H^\sigma(\varphi P)=H(P)^q\ne0$ and $z^\sigma(\varphi P)=G(P)^q/H(P)^q$. For the last claim, $z^\sigma=z$ and $\varphi P=P$ give $z(P)=z(P)^q$.
+\end{proof}
+
+\subsection*{Descent}
+
+The space $L(D)$ is a vector space over $k$. When $D$ is rational, we want the functions of $L(D)$ that are defined over $\mathbb F_q$, and to know that there
+are as many as there should be. Everything rests on a piece of linear algebra.
+
+\begin{lemma}\label{lem:descentlin}
+Let $W\subseteq k^M$ be a subspace with $\sigma(W)\subseteq W$, where $\sigma$ raises each coordinate to the power $q$. Then $W$ has a basis of vectors with
+coordinates in $\mathbb F_q$.
+\end{lemma}
+\begin{proof}
+Let $s=\dim W$. Some $s$ coordinates $I\subseteq\{1,\dots,M\}$ are independent on $W$, that is, the projection $\pi_I:W\to k^I$ is an isomorphism (take $s$
+independent columns of a matrix whose rows form a basis of $W$). For $i\in I$ let $w_i\in W$ be the vector with $\pi_I(w_i)=e_i$, the $i$-th unit vector.
+Then $\sigma(w_i)\in W$ and $\pi_I(\sigma(w_i))=\sigma(e_i)=e_i$, so $\sigma(w_i)=w_i$: the coordinates of $w_i$ satisfy $c^q=c$, so they lie in
+$\mathbb F_q$. The $w_i$ form a basis of $W$.
+\end{proof}
+
+\begin{lemma}\label{lem:normform}
+For every rational divisor $D$ there is a form $H_0$ with coefficients in $\mathbb F_q$, not divisible by $F$, with $\operatorname{div}(H_0)\ge D$.
+\end{lemma}
+\begin{proof}
+It suffices to find, for each closed point $\mathfrak P$ of degree $d$, such a form $H_{\mathfrak P}$ vanishing at all points of $\mathfrak P$; a product of powers of
+these then dominates $D$. Let $P\in\mathfrak P$; its coordinates can be taken in $\mathbb F_{q^d}$. Let $M$ be a line through $P$ with coefficients in $\mathbb F_{q^d}$,
+other than $C$ itself if $C$ is a line (for $P=(a:b:1)$, one of $X-aZ$, $Y-bZ$ works; similarly in the other charts). Put
+\[
+H_{\mathfrak P}=M\,M^\sigma M^{\sigma^2}\cdots M^{\sigma^{d-1}}.
+\]
+Since $M^{\sigma^d}=M$, $\sigma$ permutes the factors, so $H_{\mathfrak P}^\sigma=H_{\mathfrak P}$ and its coefficients lie in $\mathbb F_q$. The factor $M^{\sigma^j}$
+vanishes at $\varphi^jP$. If $F\mid H_{\mathfrak P}$, then $F$, being irreducible, would be a scalar multiple of some $M^{\sigma^j}$, so $n=1$ and $C=M^{\sigma^j}$;
+applying $\sigma^{-j}$ (which fixes $F$) gives $C=M$, excluded.
+\end{proof}
+
+\begin{proposition}[descent]\label{prop:descent}
+Let $D$ be a rational divisor.
+\begin{enumerate}[label=(\alph*)]
+\item The space $L_q(D)=L(D)\cap k(C)_q$ over $\mathbb F_q$ has dimension $\ell(D)$, and every $\mathbb F_q$-basis of it is a $k$-basis of $L(D)$.
+\item If $z\in k(C)$ satisfies $z^\sigma=z$, then $z\in k(C)_q$.
+\item If $D'$ is a rational divisor with $D'\equiv D$, then $D'=D+\operatorname{div}(w)$ for some $w\in k(C)_q^\times$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) \emph{Elements of $k(C)_q$ that are independent over $\mathbb F_q$ are independent over $k$.} Otherwise take a relation $\sum c_iz_i=0$ with the fewest
+non-zero $c_i$, and scale it so that some $c_{i_0}=1$. Applying $\sigma$ gives $\sum c_i^qz_i=0$, and subtracting, $\sum(c_i^q-c_i)z_i=0$ has fewer non-zero
+coefficients (the $i_0$-th is $0$). So all $c_i^q=c_i$, the $c_i$ lie in $\mathbb F_q$, and the $z_i$ are dependent over $\mathbb F_q$. Hence
+$\dim_{\mathbb F_q}L_q(D)\le\ell(D)$.
+
+\emph{Enough functions.} Take $H_0$ as in Lemma~\ref{lem:normform}, of degree $d$, and $D_0=\operatorname{div}(H_0)-D\ge0$, a rational divisor. Let $R_d$ be the
+forms of degree $d$ and
+\[
+V=\{G\in R_d:\ G/H_0\in L(D)\}=\{G:\ F\mid G\text{ or }\operatorname{div}(G)\ge D_0\}.
+\]
+Every $z\in L(D)$ is of the form $G/H_0$ with $G\in V$: write $z=G_1/H_1$; then
+$\operatorname{div}(G_1H_0)=(\operatorname{div}(z)+D)+D_0+\operatorname{div}(H_1)\ge\operatorname{div}(H_1)$, so $G_1H_0=AF+GH_1$ with $G\in R_d$
+(Corollary~\ref{cor:noethersmooth}), and $z=G/H_0$ in $k(C)$. So $G\mapsto G/H_0$ maps $V$ onto $L(D)$, with kernel $U=F\cdot R_{d-n}$, and
+$\ell(D)=\dim V-\dim U$. Both $V$ and $U$ are stable under $\sigma$: if $\operatorname{div}(G)\ge D_0$ then
+$\operatorname{div}(G^\sigma)=\varphi_*\operatorname{div}(G)\ge\varphi_*D_0=D_0$ by Lemma~\ref{lem:frobdiv}. Let $V_q$ and $U_q$ be the forms of $V$ and $U$ with
+coefficients in $\mathbb F_q$. By Lemma~\ref{lem:descentlin}, $V_q$ contains a $k$-basis of $V$, so $\dim_{\mathbb F_q}V_q\ge\dim V$; and vectors with entries in
+$\mathbb F_q$ that are independent over $\mathbb F_q$ are independent over $k$ (the rank of a matrix is computed by Gaussian elimination inside $\mathbb F_q$), so
+$\dim_{\mathbb F_q}V_q=\dim V$, and likewise $\dim_{\mathbb F_q}U_q=\dim U$. The map $V_q\to L_q(D)$, $G\mapsto G/H_0$, has kernel $V_q\cap U=U_q$, so
+$\dim_{\mathbb F_q}L_q(D)\ge\dim V-\dim U=\ell(D)$. With the first step, $\dim_{\mathbb F_q}L_q(D)=\ell(D)$, and an $\mathbb F_q$-basis of $L_q(D)$ is a family of
+$\ell(D)$ elements independent over $k$: a $k$-basis of $L(D)$.
+
+(b) By Lemma~\ref{lem:frobdiv}, $\operatorname{div}(z)$ is rational, so the divisor $D$ of poles of $z$ is rational and $z\in L(D)$. Write $z=\sum c_iz_i$ in an
+$\mathbb F_q$-basis of $L_q(D)$, which is a $k$-basis of $L(D)$ by (a). Applying $\sigma$, $z=\sum c_i^qz_i$, so $c_i^q=c_i$, $c_i\in\mathbb F_q$, and
+$z\in k(C)_q$.
+
+(c) Write $D'-D=\operatorname{div}(z)$. Then $\operatorname{div}(z^\sigma)=\varphi_*(D'-D)=\operatorname{div}(z)$, so $z^\sigma/z$ has no zeros or poles: it is a
+constant $\lambda\ne0$ (Proposition~\ref{prop:divbasic}). As $k$ is algebraically closed, there is $\mu$ with $\mu^{q-1}=\lambda^{-1}$, and
+$w=\mu z$ satisfies $w^\sigma=\mu^q\lambda z=w$. By (b), $w\in k(C)_q$, and $\operatorname{div}(w)=\operatorname{div}(z)$.
+\end{proof}
+
+Part (c) is a disguised form of Hilbert's Theorem~90: the ``cocycle'' $\lambda$ is a coboundary because every element of $k^\times$ is a $(q-1)$-th power.
+
+\section{The zeta function}
+
+\begin{definition}
+Let $A_d$ be the number of effective rational divisors of degree $d$. The \emph{zeta function} of $C$ over $\mathbb F_q$ is the power series
+\[
+Z(T)=\sum_{d\ge0}A_dT^d .
+\]
+\end{definition}
+
+$A_d$ is finite, since an effective rational divisor of degree $d$ is a sum of closed points of degree $\le d$, and there are at most $N_j$ closed points of degree
+$j$. Setting $T=q^{-s}$, $\zeta_C(s)=Z(q^{-s})=\sum_D N(D)^{-s}$ with $N(D)=q^{\deg D}$ is the exact analogue of the Dedekind zeta function of Chapter~8, a sum over
+the ``ideals'' $D$ of their norms.
+
+\begin{proposition}[Euler product]\label{prop:euler}
+As formal power series,
+\[
+Z(T)=\prod_{\mathfrak P}\frac1{1-T^{\deg\mathfrak P}}=\exp\Bigl(\sum_{r\ge1}\frac{N_r}rT^r\Bigr).
+\]
+\end{proposition}
+\begin{proof}
+An effective rational divisor is $\sum_{\mathfrak P}n_{\mathfrak P}\mathfrak P$ with $n_{\mathfrak P}\ge0$, uniquely; expanding the product gives each divisor of
+degree $d$ once as a term $T^d$ (only finitely many closed points have degree $\le d$, so each coefficient is a finite sum). Taking the logarithmic derivative,
+\[
+T\frac{Z'(T)}{Z(T)}=\sum_{\mathfrak P}\frac{\deg\mathfrak P\,T^{\deg\mathfrak P}}{1-T^{\deg\mathfrak P}}=\sum_{\mathfrak P}\sum_{j\ge1}\deg\mathfrak P\,T^{j\deg\mathfrak P}
+=\sum_{r\ge1}\Bigl(\sum_{d\mid r}dB_d\Bigr)T^r,
+\]
+which is $\sum_rN_rT^r$ by \eqref{eq:NrBd}. Both sides of the claimed identity have constant term $1$ and the same logarithmic derivative.
+\end{proof}
+
+For a line, $C=\mathbb P^1$, $N_r=q^r+1$ and
+\[
+Z(T)=\exp\Bigl(\sum_r\frac{(qT)^r}r+\sum_r\frac{T^r}r\Bigr)=\frac1{(1-T)(1-qT)} .
+\]
+Exercise~\ref{ex:zetaP1} recovers it from the definition. The theorem below says that every curve is a modification of this one by a polynomial.
+
+\begin{lemma}\label{lem:classcount}
+Two rational divisors are \emph{equivalent} if they differ by $\operatorname{div}(w)$, $w\in k(C)_q^\times$; by Proposition~\ref{prop:descent}(c), this is linear
+equivalence. Let $D$ be rational. The number of effective rational divisors equivalent to $D$ is $\dfrac{q^{\ell(D)}-1}{q-1}$.
+\end{lemma}
+\begin{proof}
+They are the divisors $D+\operatorname{div}(w)$ with $w\in L_q(D)$, $w\ne0$, and $w,w'$ give the same divisor iff $w'/w$ is a constant in $k(C)_q$, that is, an
+element of $\mathbb F_q^\times$. By Proposition~\ref{prop:descent}(a), $L_q(D)$ has $q^{\ell(D)}$ elements.
+\end{proof}
+
+\begin{theorem}[F.~K.~Schmidt; rationality and functional equation]\label{thm:rationality}
+Let $C$ be a smooth plane curve of genus $g$ defined over $\mathbb F_q$.
+\begin{enumerate}[label=(\alph*)]
+\item There are rational divisors of degree $1$, and the number $h$ of classes of rational divisors of degree $0$ is finite.
+\item $Z(T)=\dfrac{P(T)}{(1-T)(1-qT)}$, where $P$ is a polynomial of degree $2g$ with integer coefficients, $P(0)=1$ and $P(1)=h$.
+\item $Z\bigl(\frac1{qT}\bigr)=q^{1-g}T^{2-2g}Z(T)$; equivalently $P(T)=q^gT^{2g}P\bigl(\frac1{qT}\bigr)$.
+\item Writing $P(T)=\prod_{i=1}^{2g}(1-\alpha_iT)$ with $\alpha_i\in\C$, the map $\alpha\mapsto q/\alpha$ permutes the $\alpha_i$ (with multiplicities), and
+for all $r\ge1$,
+\[
+N_r=q^r+1-\sum_{i=1}^{2g}\alpha_i^r .
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{Finiteness.} The degrees of rational divisors form a subgroup $\delta\Z$ of $\Z$, $\delta\ge1$; fix a rational $D_1$ of degree $\delta$. Subtracting
+$jD_1$ is a bijection from the classes of degree $j\delta$ to the classes of degree $0$. When $j\delta\ge g$, every class of degree $j\delta$ contains an effective
+divisor (Riemann's inequality gives $\ell(D)\ge1$, and Lemma~\ref{lem:classcount}), so there are at most $A_{j\delta}$ such classes. Hence $h\le A_{j\delta}$ is finite.
+
+\emph{The series.} $A_d=0$ unless $\delta\mid d$, and grouping the effective divisors of degree $d$ by class (Lemma~\ref{lem:classcount}),
+\begin{equation}\label{eq:Adclasses}
+A_d=\sum_{[D],\ \deg D=d}\frac{q^{\ell(D)}-1}{q-1}.
+\end{equation}
+For $d>2g-2$, $\ell(D)=d+1-g$ for every $D$ of degree $d$ (Riemann--Roch), so $A_d=h\,\frac{q^{d+1-g}-1}{q-1}$ when moreover $\delta\mid d$. So
+\[
+Z(T)=\sum_{d\le2g-2}A_dT^d+\frac h{q-1}\sum_{\substack{d>2g-2\\\delta\mid d}}\bigl(q^{d+1-g}-1\bigr)T^d .
+\]
+The second sum is a combination of geometric series in $T^\delta$ and $(qT)^\delta$, so $Z$ is a rational function. Near $T=1$, the series in $(qT)^\delta$ is
+holomorphic (its poles are at $|T|=1/q$), while $\sum_{\delta\mid d,\,d>2g-2}T^d=T^{d_0}/(1-T^\delta)$ has a simple pole at $T=1$, where $d_0$ is the least such $d$. As $h\ge1$, $Z$ has a \emph{simple pole at $T=1$}.
+
+\emph{$\delta=1$.} Let $Z_\delta$ be the zeta function of $C$ over $\mathbb F_{q^\delta}$; its numbers of points are $N_{\delta s}$. For any $r$, with $\zeta$ running over
+the $r$-th roots of unity,
+\[
+\prod_{\zeta}Z(\zeta T)=\exp\Bigl(\sum_{n\ge1}\frac{N_n}nT^n\sum_\zeta\zeta^n\Bigr)=\exp\Bigl(\sum_{s\ge1}\frac{N_{rs}}{s}T^{rs}\Bigr)=Z_r(T^r),
+\]
+since $\sum_\zeta\zeta^n$ is $r$ if $r\mid n$ and $0$ otherwise. Take $r=\delta$: as $Z(T)$ is a series in $T^\delta$, $Z(\zeta T)=Z(T)$, and $Z_\delta(T^\delta)=Z(T)^\delta$.
+The right side has a pole of order $\delta$ at $T=1$. The left side has a simple pole there, because $Z_\delta$ has a simple pole at $1$ (what was just proved, over
+$\mathbb F_{q^\delta}$) and $T\mapsto T^\delta$ has a simple zero of $T^\delta-1$ at $T=1$. So $\delta=1$.
+
+\emph{The polynomial.} If $g=0$, then $A_d=h\frac{q^{d+1}-1}{q-1}$ for all $d\ge0$, so $Z(T)=\frac h{q-1}\bigl(\frac q{1-qT}-\frac1{1-T}\bigr)=\frac h{(1-T)(1-qT)}$,
+and $Z(0)=1$ gives $h=1$, $P=1$; (c) and (d) are immediate. Let $g\ge1$. With $\delta=1$, split \eqref{eq:Adclasses} as $Z(T)=\frac1{q-1}F_1(T)+G(T)$ with
+\[
+F_1(T)=\sum_{[D],\ 0\le\deg D\le2g-2}q^{\ell(D)}T^{\deg D},
+\qq
+G(T)=\frac h{q-1}\Bigl(\frac{q^gT^{2g-1}}{1-qT}-\frac1{1-T}\Bigr);
+\]
+indeed $G$ collects the terms $-\frac h{q-1}T^d$ for $0\le d\le2g-2$ and $\frac h{q-1}(q^{d+1-g}-1)T^d$ for $d\ge2g-1$. Then $P(T)=(1-T)(1-qT)Z(T)$ is a polynomial
+of degree $\le2g$, with $P(0)=A_0=1$, and integer coefficients since $Z$ has them. At $T=1$, $(1-T)(1-qT)F_1(T)$ vanishes and $(1-T)(1-qT)G(T)\to\frac h{q-1}(q-1)=h$:
+so $P(1)=h$.
+
+\emph{Functional equation.} Choose the line $L$ defining $W=(n-3)\operatorname{div}(L)$ with coefficients in $\mathbb F_q$ (one of $X,Y,Z$ is not $C$); then $W$ is
+rational, of degree $2g-2$. By Riemann--Roch, $q^{\ell(D)}=q^{\deg D+1-g}q^{\ell(W-D)}$, and $[D]\mapsto[W-D]$ permutes the classes of degree between $0$ and
+$2g-2$, sending degree $d$ to $2g-2-d$. So
+\[
+F_1\Bigl(\frac1{qT}\Bigr)=\sum_{[D]}q^{1-g}q^{\ell(W-D)}T^{-\deg D}=q^{1-g}T^{2-2g}\sum_{[D]}q^{\ell(W-D)}T^{\deg(W-D)}=q^{1-g}T^{2-2g}F_1(T).
+\]
+A direct computation gives the same for $G$:
+\[
+G\Bigl(\frac1{qT}\Bigr)=\frac h{q-1}\Bigl(\frac{qT}{1-qT}-\frac{q^{1-g}T^{2-2g}}{1-T}\Bigr)=q^{1-g}T^{2-2g}G(T).
+\]
+This is (c) for $Z$. Since $(1-\frac1{qT})(1-\frac1T)=\frac{(1-qT)(1-T)}{qT^2}$, it becomes $P(T)=q^gT^{2g}P(\frac1{qT})$. Comparing the coefficients of $T^{2g}$,
+the leading coefficient of $P$ is $q^gP(0)=q^g\ne0$, so $\deg P=2g$.
+
+(d) If $P(1/\alpha)=0$, then $P(\alpha/q)=q^g(\alpha/q)^{2g}P(1/\alpha)=0$, so $q/\alpha$ is an $\alpha_j$; since (c) is an identity of polynomials, multiplicities
+match. Finally, taking logarithms in $Z=P/((1-T)(1-qT))$ and comparing with Proposition~\ref{prop:euler},
+\[
+\sum_r\frac{N_r}rT^r=-\sum_r\frac{\sum_i\alpha_i^r}rT^r+\sum_r\frac{T^r}r+\sum_r\frac{q^rT^r}r .
+\]
+\end{proof}
+
+\begin{remark}
+Since $\prod\alpha_i=q^g$ and the $\alpha_i$ come in pairs $\alpha,q/\alpha$, the statement $|\alpha_i|=\sqrt q$ for all $i$ is equivalent to: all zeros of
+$\zeta_C(s)=Z(q^{-s})$ lie on the line $\operatorname{Re}s=\frac12$ (a zero is $q^{s}=\alpha_i$). This is the \emph{Riemann hypothesis for $C$}. It implies the
+\emph{Hasse--Weil bound}
+\[
+|N_r-q^r-1|\le2g\,q^{r/2}.
+\]
+For an elliptic curve $E$, $P(T)=1-aT+qT^2$ with $a=q+1-N_1$, and $h=P(1)=N_1$: the classes of degree $0$ are the points of $E(\mathbb F_q)$, as
+Corollary~\ref{cor:pic} predicts.
+\end{remark}
+
+Over $\mathbb F_q$, the numbers $N_1,\dots,N_g$ determine $P$, hence all $N_r$: the coefficients of $T^j$ for $j\le g$ come from $N_1,\dots,N_j$ by Newton's
+identities, and (c) gives the others. A curve over a finite field knows its point counts over all extensions from finitely many of them.
+
+\section{Counting with characters}
+
+Before any general theory, let us count points on one curve exactly, as Gauss did.
+
+\begin{proposition}[Gauss]\label{prop:gausscubic}
+Let $p\ne3$ be a prime and $N$ the number of points of $X^3+Y^3=Z^3$ over $\mathbb F_p$. If $p\equiv2\pmod3$, $N=p+1$. If $p\equiv1\pmod3$, then
+\[
+N=p+1+L,
+\]
+where $L$ is the unique integer with $L\equiv1\pmod3$ and $4p=L^2+27M^2$ for some integer $M$. In particular $|N-p-1|<2\sqrt p$.
+\end{proposition}
+\begin{proof}
+The curve is smooth (its partial derivatives $3X^2,3Y^2,-3Z^2$ vanish together only at $0$). If $p\equiv2\pmod3$, cubing is a bijection of $\mathbb F_p$
+(its kernel on $\mathbb F_p^\times$ is trivial), so $y^3=1-x^3$ has one solution $y$ for each $x$, and at infinity $X^3=-Y^3$ gives the one point $(1:-1:0)$.
+
+Let $p\equiv1\pmod3$, and let $\chi$ be a character of order $3$ of $\mathbb F_p^\times$, extended by $\chi(0)=0$, and $\chi^0$ the trivial character with
+$\chi^0(0)=1$. The number of $x$ with $x^3=a$ is $1+\chi(a)+\overline\chi(a)$: for $a=0$ it is $1$, and for $a\ne0$ it is $3$ if $a$ is a cube and $0$ otherwise.
+So the affine count is
+\[
+\sum_{a+b=1}\Bigl(\sum_{i=0}^2\chi^i(a)\Bigr)\Bigl(\sum_{j=0}^2\chi^j(b)\Bigr)=\sum_{i,j}J(\chi^i,\chi^j),\qquad J(\psi,\psi')=\sum_{a+b=1}\psi(a)\psi'(b).
+\]
+Here $J(\chi^0,\chi^0)=p$, $J(\chi^0,\chi^j)=\sum_b\chi^j(b)=0$ for $j\ne0$, and $J(\chi,\overline\chi)=\sum_{a\ne0,1}\chi\bigl(\frac a{1-a}\bigr)=-\chi(-1)=-1$,
+because $a\mapsto\frac a{1-a}$ maps $\mathbb F_p\setminus\{0,1\}$ onto $\mathbb F_p\setminus\{0,-1\}$ and $\chi(-1)=1$. So the affine count is
+$p-2+J(\chi,\chi)+\overline{J(\chi,\chi)}$. At infinity, $(X/Y)^3=-1$ has three solutions, since $-1$ is a cube and $\mathbb F_p$ has three cube roots of $1$.
+Hence $N=p+1+2\operatorname{Re}J(\chi,\chi)$.
+
+Now use Chapter~10, Lemma~\ref{lem:jacobi}, with $\chi=\chi_\pi$ for a primary prime $\pi$ of norm $p$ in $D=\Z[\omega]$ (any cubic character is $\chi_\pi$ or its
+conjugate, which give the same $N$): $J(\chi,\chi)=\pi=a+b\omega$ with $a\equiv2$, $b\equiv0\pmod3$. Then $2\operatorname{Re}\pi=2a-b=:L\equiv1\pmod3$ and
+$4p=4(a^2-ab+b^2)=(2a-b)^2+3b^2=L^2+27M^2$ with $b=3M$. For uniqueness, if $4p=L'^2+27M'^2$ with $L'\equiv1\pmod 3$, then $L'\equiv M'\pmod2$ and
+$\beta=\frac{L'+3M'}2+3M'\omega\in D$ has $2\operatorname{Re}\beta=L'$ and norm $\frac{L'^2+27M'^2}4=p$. So $\beta$ is an associate of $\pi$ or $\overline\pi$
+($D$ is a UFD), and it is primary ($\frac{L'+3M'}2\equiv2L'\equiv2\pmod3$); by Lemma~\ref{lem:primary}, $\beta\in\{\pi,\overline\pi\}$ and $L'=L$. Finally
+$L^2<4p$ since $M\ne0$ ($4p$ is not a square).
+\end{proof}
+
+For $p=7$: $28=1+27$, $L=1$, $N=9$. For $p=13$: $52=25+27$, $L=-5$, $N=9$. For $p=31$: $124=16+108$, $L=4$, $N=36$. The bound $|N-p-1|\le2\sqrt p$ fell out
+of the arithmetic of $\Z[\omega]$ for free: it is the Riemann hypothesis for this curve, of genus $1$, proved a century before anyone formulated it. Exercise~\ref{ex:jacobicount}
+does the same for $y^2=x^3+1$.
+
+\begin{think}
+For the curve $y^2=x^3-x+1$, the number of points over $\mathbb F_p$ is $p+1+\sum_x\bigl(\frac{x^3-x+1}p\bigr)$. If the $p$ Legendre symbols were independent fair
+coin tosses $\pm1$, how large would the sum typically be, and how often would it exceed $2\sqrt p$? Compare with Figure~\ref{fig:hasse}: in $667$ primes the
+dots never leave the parabola.
+\end{think}
+
+\begin{figure}[ht]
+\centering\fig{ch13-hasse}
+\caption{$a_p=p+1-N_p$ for $y^2=x^3-x+1$ and the primes $3\le p<5000$, $p\ne23$. All dots lie between the parabolas $\pm2\sqrt p$ (Corollary~\ref{cor:hasse}); the largest
+ratio $|a_p|/2\sqrt p$ is $0.977$.}
+\label{fig:hasse}
+\end{figure}
+
+\section{Bombieri's upper bound}
+
+The idea of Stepanov's method is the idea of transcendence proofs: to show that a set $S$ is small, build a non-zero function that vanishes to high order at every
+point of $S$ and has few poles. Its degree, zeros minus poles, is $0$, so $|S|$ times the order of vanishing is at most the number of poles. The difficulty is to
+make a function vanish to high order at $q$ points without paying for it: the Frobenius does that for free, because $v^q$ is a $q$-th power.
+
+\begin{theorem}[Stepanov, Bombieri]\label{thm:bombieri}
+Let $C$ be a smooth plane curve of genus $g$ defined over $\mathbb F_q$, where $q=q_0^2$ is a square and $q>(g+1)^4$. Then
+\[
+N_1\le q+(2g+1)\sqrt q .
+\]
+\end{theorem}
+\begin{proof}
+Assume $N_1\ge1$ and fix $P_0\in C(\mathbb F_q)$. Put $m=q_0-1$ and $n=q_0+2g$.
+
+\emph{A basis with distinct pole orders.} For $j=0,1,\dots,m$, the spaces $L_q(jP_0)$ increase, and their dimensions $\ell(jP_0)$ grow by at most $1$ at each step
+(Proposition~\ref{prop:ellbasic}, Proposition~\ref{prop:descent}(a)). For each $j$ where the dimension grows, choose $u\in L_q(jP_0)\setminus L_q((j-1)P_0)$
+(take $u=1$ for $j=0$): it has a pole of order exactly $j$ at $P_0$. This gives $u_1,\dots,u_\rho\in k(C)_q$ with distinct pole orders $s_i\in[0,m]$ at $P_0$, no
+other poles, and $\rho=\ell(mP_0)\ge m+1-g=q_0-g$ by Riemann's inequality.
+
+\emph{The auxiliary function.} Consider the $\mathbb F_q$-linear map
+\[
+\Phi:\ L_q(nP_0)^\rho\to L_q\bigl((q_0m+n)P_0\bigr),\qquad(v_1,\dots,v_\rho)\mapsto\sum_{i=1}^\rho u_i^{q_0}v_i .
+\]
+As $n>2g-2$ and $q_0m+n=q+2g$, Riemann--Roch and Proposition~\ref{prop:descent}(a) give the dimensions $n+1-g=q_0+g+1$ and $q+g+1$. Now
+\[
+\rho(q_0+g+1)-(q+g+1)\ge(q_0-g)(q_0+g+1)-q-g-1=q_0-(g+1)^2>0,
+\]
+because $q_0>(g+1)^2$. So $\Phi$ has a non-zero kernel element $(v_1,\dots,v_\rho)$, and we set
+\[
+A=\sum_{i=1}^\rho u_i^{q_0}v_i^{q}=\Bigl(\sum_{i=1}^\rho u_iv_i^{q_0}\Bigr)^{q_0},
+\]
+the second form because raising to the power $q_0$, a power of $p$, is additive.
+
+\emph{$A\ne0$.} At $P_0$, the term $u_iv_i^{q_0}$ with $v_i\ne0$ has a pole of order $s_i+q_0t_i$, where $t_i\ge0$ is the pole order of $v_i$. Since $0\le s_i<q_0$
+and the $s_i$ are distinct, these orders are distinct for distinct $i$; so the term of largest order cannot be cancelled, and $\sum u_iv_i^{q_0}\ne0$.
+
+\emph{Zeros.} Let $P\in C(\mathbb F_q)$, $P\ne P_0$. All $u_i,v_i$ are regular at $P$, and $v_i(P)\in\mathbb F_q$ by Lemma~\ref{lem:frobdiv}, so $v_i(P)^q=v_i(P)$
+and
+\[
+A(P)=\sum u_i(P)^{q_0}v_i(P)^q=\sum u_i(P)^{q_0}v_i(P)=\Phi(v)(P)=0 .
+\]
+As $A$ is a $q_0$-th power of a function regular at $P$, $\operatorname{ord}_P(A)\ge q_0$.
+
+\emph{Counting.} $A$ has poles only at $P_0$, of order at most $q_0m+qn$. Since $\deg\operatorname{div}(A)=0$,
+\[
+q_0(N_1-1)\le q_0m+qn,\qquad N_1\le1+m+q_0n=q+(2g+1)q_0 .
+\]
+\end{proof}
+
+The bound is applied to $C$ over $\mathbb F_{q^r}$ for every even $r$ with $q^r>(g+1)^4$, where it gives $N_r\le q^r+(2g+1)q^{r/2}$: the $\alpha_i$ cannot conspire to make
+$-\sum\alpha_i^r$ much larger than $q^{r/2}$. That is only half of what is needed.
+
+\section{The Riemann hypothesis}
+
+\begin{lemma}\label{lem:boundsRH}
+Let $\alpha_1,\dots,\alpha_s\in\C$ and $S_r=\sum_i\alpha_i^r$. If there are $K$ and $r_1$ with $|S_r|\le Kq^{r/2}$ for all even $r\ge r_1$, then $|\alpha_i|\le\sqrt q$
+for all $i$.
+\end{lemma}
+\begin{proof}
+Let $\beta_i=\alpha_i^2$ and group equal values: $\sum_{t\ge1}S_{2t}T^t=\sum_\beta m_\beta\frac{\beta T}{1-\beta T}$, the sum over the distinct non-zero $\beta$, with
+multiplicities $m_\beta\ge1$. The left side converges for $|T|<1/q$, since $|S_{2t}T^t|\le K(q|T|)^t$ for $2t\ge r_1$. The right side is a rational function with a
+pole at each $1/\beta$ (the residues $-m_\beta/\beta$ do not cancel), and its Taylor series at $0$ converges exactly up to the nearest pole. So $|1/\beta|\ge1/q$ for
+every $\beta$: $|\alpha_i|^2\le q$.
+\end{proof}
+
+With Theorem~\ref{thm:rationality}(d), an upper bound $|\alpha_i|\le\sqrt q$ for all $i$ is the whole Riemann hypothesis: the pairing $\alpha\mapsto q/\alpha$ then gives
+$|\alpha_i|\ge\sqrt q$ too. But Lemma~\ref{lem:boundsRH} needs a \emph{two-sided} bound on $S_r=q^r+1-N_r$, and Theorem~\ref{thm:bombieri} bounds $N_r$ only from above.
+This is not a technicality: $\alpha=\frac{7+\sqrt{13}}2$, $\overline\alpha=\frac{7-\sqrt{13}}2$ satisfy $\alpha\overline\alpha=9$, and $q^r+1-\alpha^r-\overline\alpha^r\le9^r+1$
+for all $r$, yet $|\alpha|>3$. A curve with too few points is as bad as one with too many. For a family of curves, the missing half comes from counting
+all the twists at once.
+
+\begin{proposition}[twists]\label{prop:twists}
+Let $m\ge2$ with $p\nmid m$, and $f\in\mathbb F_Q[x]$ without repeated roots, of degree $m$ or $m+1$. For $c\in\mathbb F_Q^\times$, the projective closure $C_c$ of
+$y^m=cf(x)$ is a smooth plane curve of degree $\max(m,\deg f)$, defined over $\mathbb F_Q$. Let $e=\gcd(m,Q-1)$ and $c_1,\dots,c_e$ representatives of the cosets
+of the subgroup $H=\{y^m:y\in\mathbb F_Q^\times\}$ of index $e$. Then
+\[
+\sum_{j=1}^e|C_{c_j}(\mathbb F_Q)|=e(Q+1).
+\]
+\end{proposition}
+\begin{proof}
+\emph{Smoothness.} At an affine singular point, $my^{m-1}=0$ and $cf'(x)=0$, so $y=0$, $f(x)=0=f'(x)$: impossible. If $\deg f=m+1$, the equation is
+$Y^mZ=cf^*(X,Z)$, which meets $Z=0$ only at $(0:1:0)$; there the derivative in $Z$ is $1$, since every term of $f^*$ has degree $m+1\ge2$ in $X,Z$. If
+$\deg f=m$, the equation is $Y^m=cf^*(X,Z)$; at infinity $Y^m=ca_mX^m$, the points are $(1:\zeta:0)$ with $\zeta^m=ca_m\ne0$, and the derivative in $Y$ is
+$m\zeta^{m-1}\ne0$.
+
+\emph{Counting.} The group $\mathbb F_Q^\times$ is cyclic of order $Q-1$, so $y\mapsto y^m$ has kernel of order $e$ and image $H$ of index $e$. Hence for
+$b\in\mathbb F_Q$ the equation $y^m=b$ has $1$ solution if $b=0$, $e$ if $b\in H$, $0$ otherwise. For fixed $x$ with $f(x)\ne0$, exactly one of the $c_jf(x)$
+lies in $H$, and if $f(x)=0$ each curve has the single point $(x,0)$; so the $e$ curves together have $e$ affine points above each $x$, $eQ$ in all. At infinity: if $\deg f=m+1$, each curve has one point; if $\deg f=m$,
+the curve $C_{c_j}$ has $e$ points if $c_ja_m\in H$ and none otherwise, and exactly one $j$ has $c_ja_m\in H$. In both cases the points at infinity add up to $e$.
+\end{proof}
+
+\begin{theorem}[Riemann hypothesis for $y^m=f(x)$]\label{thm:rhfamily}
+Let $C$ be the curve $y^m=f(x)$ over $\mathbb F_q$, with $m,f$ as in Proposition~\ref{prop:twists}, of genus $g$. Then $|\alpha_i|=\sqrt q$ for $i=1,\dots,2g$.
+\end{theorem}
+\begin{proof}
+Let $r$ be even with $Q=q^r>(g+1)^4$; $Q$ is a square. Apply Proposition~\ref{prop:twists} over $\mathbb F_Q$ with $c_1=1$, so that $C_{c_1}=C$ and
+$|C(\mathbb F_Q)|=N_r$. Every $C_{c_j}$ is a smooth plane curve over $\mathbb F_Q$ of the same degree, hence of genus $g$, so Theorem~\ref{thm:bombieri} gives
+$|C_{c_j}(\mathbb F_Q)|\le Q+(2g+1)\sqrt Q$. For $j=1$ this is the upper bound, and the twist identity gives the lower one:
+\[
+N_r=e(Q+1)-\sum_{j\ge2}|C_{c_j}(\mathbb F_Q)|\ge e(Q+1)-(e-1)\bigl(Q+(2g+1)\sqrt Q\bigr)\ge Q+1-(e-1)(2g+1)\sqrt Q .
+\]
+So $|S_r|=|q^r+1-N_r|\le m(2g+1)q^{r/2}$ for all such $r$. By Lemma~\ref{lem:boundsRH}, $|\alpha_i|\le\sqrt q$, and by the pairing of
+Theorem~\ref{thm:rationality}(d), $|\alpha_i|=\sqrt q$.
+\end{proof}
+
+\begin{corollary}[Hasse, 1933]\label{cor:hasse}
+For $C$ as in Theorem~\ref{thm:rhfamily}, $|N_r-q^r-1|\le2g\,q^{r/2}$ for all $r$. In particular, if $q$ is odd and $f$ is a cubic without repeated roots,
+the elliptic curve $y^2=f(x)$ has
+\[
+\bigl|\,|E(\mathbb F_q)|-q-1\,\bigr|\le2\sqrt q .
+\]
+\end{corollary}
+\begin{proof}
+$|\sum_i\alpha_i^r|\le2g\,q^{r/2}$. For the elliptic curve, $m=2$, $\deg f=3=m+1$ and $g=1$.
+\end{proof}
+
+The Fermat curves $x^m+y^m=1$ ($f=1-x^m$) are covered too, and so the curve of Proposition~\ref{prop:gausscubic}, whose bound we already knew.
+
+\begin{beauty}
+The proof of the Riemann hypothesis for these curves uses no complex analysis at all, only Riemann--Roch, the Frobenius and a dimension count; the complex numbers
+appear only at the end, to say where the roots of a polynomial with integer coefficients lie. And the Frobenius, the map $v\mapsto v^q$, plays two opposite roles:
+it is the symmetry whose fixed points are being counted, and it is the tool that makes the auxiliary function vanish to high order at all of them at once.
+\end{beauty}
+
+\begin{remark}[Weil's theorem]
+The Riemann hypothesis holds for every smooth projective curve over $\mathbb F_q$ (Weil, announced in 1940, proved in 1948 with the intersection theory of
+correspondences on $C\times C$). Theorem~\ref{thm:bombieri} holds for all of them, with the same proof, once Riemann--Roch is known for all smooth curves. What is
+missing here for a general plane curve is the lower bound. Bombieri obtains it from a Galois covering $C'\to\mathbb P^1$ through which $C$ factors: the
+twists of $C'$ by the elements of the Galois group play the role of the curves $C_{c_j}$, and the count on $\mathbb P^1$, exactly $Q+1$, plays the role of
+$e(Q+1)$. The curve $C'$ is in general not a plane curve, which is why we stop at the family $y^m=f(x)$. We use Weil's theorem in general only in remarks.
+\end{remark}
+
+\begin{remark}[the Weil conjectures]
+For a smooth projective variety $X$ of dimension $d$ over $\mathbb F_q$, Weil conjectured in 1949 that $Z_X(T)=\exp(\sum|X(\mathbb F_{q^r})|T^r/r)$ is rational,
+satisfies a functional equation, has the shape $\prod_{j=0}^{2d}P_j(T)^{(-1)^{j+1}}$ with the zeros of $P_j$ of absolute value $q^{-j/2}$, and that the degrees of the
+$P_j$ are the Betti numbers of the corresponding complex variety. Dwork proved rationality in 1960 by $p$-adic analysis; Grothendieck built \'etale cohomology to
+explain the rest, and Deligne proved the Riemann hypothesis in 1974. One consequence is Ramanujan's conjecture $|\tau(p)|\le2p^{11/2}$ for the coefficients of the
+discriminant modular form (Chapter~14).
+\end{remark}
+
+\begin{remark}[Sato--Tate]
+By Corollary~\ref{cor:hasse}, for an elliptic curve over $\Q$ and a good prime $p$, $a_p=p+1-N_p=2\sqrt p\cos\theta_p$ for an angle $\theta_p\in[0,\pi]$. How are
+the angles distributed? Figure~\ref{fig:satotate} shows $\cos\theta_p$ for $y^2=x^3-x+1$ and the $78\,496$ primes $p<10^6$ other than $23$: not uniform, but along a
+semicircle. Sato and Tate conjectured in the 1960s that for curves without complex multiplication, the $\theta_p$ are equidistributed for the measure
+$\frac2\pi\sin^2\theta\,\mathrm d\theta$; this was proved by Clozel, Harris, Shepherd-Barron and Taylor (2008) for curves with non-integral $j$-invariant, and by
+Barnet-Lamb, Geraghty, Harris and Taylor (2011) for all of them. For curves with complex multiplication, half the $a_p$ vanish (Exercise~\ref{ex:supersing}).
+\end{remark}
+
+\begin{figure}[ht]
+\centering\fig{ch13-satotate}
+\caption{Histogram of $a_p/2\sqrt p$ for $y^2=x^3-x+1$, $p<10^6$ ($20$ bins), and the Sato--Tate density $\frac2\pi\sqrt{1-x^2}$.}
+\label{fig:satotate}
+\end{figure}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:zetaP1}
+For $C=\mathbb P^1$ over $\mathbb F_q$, show that $A_d=\frac{q^{d+1}-1}{q-1}$ by counting directly (an effective divisor of degree $d$ is the zero set of a binary form of
+degree $d$ over $\mathbb F_q$, up to a scalar), and recover $Z(T)=\frac1{(1-T)(1-qT)}$. Deduce from Theorem~\ref{thm:rationality} that every smooth plane conic defined
+over $\mathbb F_q$ has exactly $q^r+1$ points over $\mathbb F_{q^r}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ellNr}
+For an elliptic curve with $N_1=q+1-a$, show that $N_r=q^r+1-\alpha^r-\overline\alpha^r$, where $\alpha,\overline\alpha$ are the roots of $x^2-ax+q$. Count the points of
+$y^2=x^3-x+1$ over $\mathbb F_5$ by hand, and deduce $N_2$ and $N_3$ without counting.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:jacobicount}
+Let $p\equiv1\pmod3$, $\rho$ the Legendre symbol and $\chi$ a cubic character modulo $p$. Show that $y^2=x^3+1$ has $p+1+2\operatorname{Re}J(\rho,\chi)$ points over
+$\mathbb F_p$, and that $|J(\rho,\chi)|=\sqrt p$ (show $g(\rho)g(\chi)=J(\rho,\chi)g(\rho\chi)$ and use $|g(\psi)|=\sqrt p$, Tome~5, Theorem~3.5). Deduce Hasse's bound for this
+curve.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:moment}
+For $a,b\in\mathbb F_p$ ($p$ odd) let $s(a,b)=\sum_{x\in\mathbb F_p}\bigl(\frac{x^3+ax+b}p\bigr)$. Show that
+\[
+\sum_{a,b\in\mathbb F_p}s(a,b)^2=p^2(p-1).
+\]
+Interpret: on average over all curves, $a_p^2$ is about $p$. What does the Sato--Tate measure predict for the average of $(2\sqrt p\cos\theta)^2$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:supersingp2}
+Let $p\equiv2\pmod3$, $p>2$. Using Exercise~\ref{ex:supersing}, find the zeta function of $y^2=x^3+1$ over $\mathbb F_p$, and show that over $\mathbb F_{p^2}$ it has
+$(p+1)^2$ points. Which values of $r$ give $N_r=p^r+1$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:maximal}
+Let $q$ be a power of $p$ and $C$ the Fermat curve $X^{q+1}+Y^{q+1}=Z^{q+1}$ over $\mathbb F_{q^2}$. Show that it has genus $\frac{q(q-1)}2$ and $q^3+1$ points over
+$\mathbb F_{q^2}$ (use the norm map $x\mapsto x^{q+1}$ from $\mathbb F_{q^2}^\times$ onto $\mathbb F_q^\times$). Deduce from Theorem~\ref{thm:rhfamily} that $C$ is
+\emph{maximal}: $P(T)=(1+qT)^{2g}$. (This curve is isomorphic to the Hermitian curve of Exercise~\ref{ex:hermitian}.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:klein}
+The Klein quartic is $X^3Y+Y^3Z+Z^3X=0$, over $\mathbb F_2$. Show that it is smooth, of genus $3$, that $N_1=3$ and $N_2=5$, and, given $N_3=24$ (check it with the
+notebook), that $P(T)=1+5T^3+8T^6$. Deduce $N_r$ for all $r$, and show that over $\mathbb F_8$ the curve has $q+1+g\lfloor2\sqrt q\rfloor$ points, the most allowed by
+Serre's refinement of the Hasse--Weil bound.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:zetaP1}
+Binary forms of degree $d$: $q^{d+1}-1$ non-zero ones. For the conic, $g=0$, so $P=1$.
+\end{hint}
+\begin{hint}{ex:ellNr}
+$P(T)=1-aT+qT^2=(1-\alpha T)(1-\overline\alpha T)$. Over $\mathbb F_5$ the squares are $0,1,4$.
+\end{hint}
+\begin{hint}{ex:jacobicount}
+Count $y^2=u$, $x^3=-v$ with $u+v=1$, as in Proposition~\ref{prop:gausscubic}. For the Gauss sums, expand $g(\rho)g(\chi)$ and group by $s+t$.
+\end{hint}
+\begin{hint}{ex:moment}
+Expand the square. For $x\ne x'$, $(a,b)\mapsto(x^3+ax+b,x'^3+ax'+b)$ is a bijection of $\mathbb F_p^2$.
+\end{hint}
+\begin{hint}{ex:supersingp2}
+$N_1=p+1$ gives $a=0$, so $\alpha=i\sqrt p$.
+\end{hint}
+\begin{hint}{ex:maximal}
+The equation is $y^{q+1}=1-x^{q+1}$. If $\sum_{i=1}^{2g}\alpha_i=-2gq$ and $|\alpha_i|=q$, every $\alpha_i$ is $-q$.
+\end{hint}
+\begin{hint}{ex:klein}
+In characteristic $2$, a singular point has $X^2Y=Z^3$, $X^3=Y^2Z$, $Y^3=Z^2X$; show $X^7=Y^7=Z^7$, then evaluate $F$. Over $\mathbb F_4$, $t^3=1$ for $t\ne0$.
+For $P$: Newton's identities and the functional equation.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:zetaP1}
+\idea Divisors on $\mathbb P^1$ are zero sets of binary forms; then compare with the formula of Proposition~\ref{prop:euler}.
+\writeup A closed point of $\mathbb P^1$ of degree $d$ is the zero set of an irreducible binary form $h(X,Z)$ of degree $d$ over $\mathbb F_q$, up to a scalar:
+$Z$ for the point at infinity, $Z^d\pi(X/Z)$ with $\pi$ monic irreducible otherwise (the orbit of a root of $\pi$). So an effective rational divisor of degree $d$ is a
+non-zero binary form of degree $d$ up to $\mathbb F_q^\times$, by unique factorisation: $A_d=\frac{q^{d+1}-1}{q-1}$. Then
+\[
+Z(T)=\frac1{q-1}\sum_d(q\cdot q^dT^d-T^d)=\frac1{q-1}\Bigl(\frac q{1-qT}-\frac1{1-T}\Bigr)=\frac1{(1-T)(1-qT)},
+\]
+as found from $N_r=q^r+1$. A smooth conic has $n=2$, $g=0$, so $P$ has degree $0$ and $P(0)=1$: $P=1$, and Theorem~\ref{thm:rationality}(d) gives
+$N_r=q^r+1$. In particular every smooth conic over $\mathbb F_q$ has a rational point, and then (projecting from it) it is a copy of $\mathbb P^1$.
+\end{solution}
+
+\begin{solution}{ex:ellNr}
+\idea With $g=1$, $P$ has two coefficients determined by $N_1$ and the functional equation.
+\writeup $P(T)=1+c_1T+c_2T^2$ with $c_2=q$ by Theorem~\ref{thm:rationality}(c) (leading coefficient $q^g$), and $N_1=q+1-(\alpha+\overline\alpha)=q+1+c_1$, so
+$c_1=-a$ and $P=1-aT+qT^2$, whose inverse roots are the roots of $x^2-ax+q$. Theorem~\ref{thm:rationality}(d) gives $N_r$.
+
+For $f(x)=x^3-x+1$ over $\mathbb F_5$: $f(0)=1$, $f(1)=1$, $f(2)=7\equiv2$, $f(3)=25\equiv0$, $f(4)=61\equiv1$. The squares modulo $5$ are $0,1,4$, so the number of $y$
+is $2,2,0,1,2$: $7$ affine points, $N_1=8$, $a=-2$. Then $\alpha+\overline\alpha=-2$, $\alpha\overline\alpha=5$,
+\[
+\alpha^2+\overline\alpha^2=4-10=-6,\qquad\alpha^3+\overline\alpha^3=(-2)^3-3\cdot5\cdot(-2)=22,
+\]
+so $N_2=26+6=32$ and $N_3=126-22=104$ (the notebook confirms both).
+\end{solution}
+
+\begin{solution}{ex:jacobicount}
+\idea Each count $\#\{y:y^2=u\}$, $\#\{x:x^3=v\}$ is a sum of characters, and the cross terms are Jacobi sums.
+\writeup The affine points are the pairs with $y^2=u$, $x^3=-v$, $u+v=1$; replacing $x$ by $-x$, $\#\{x:x^3=-v\}=\#\{x:x^3=v\}=1+\chi(v)+\overline\chi(v)$, and
+$\#\{y:y^2=u\}=1+\rho(u)$. Expanding,
+\[
+\sum_{u+v=1}(1+\rho(u))(1+\chi(v)+\overline\chi(v))=p+J(\rho,\chi)+J(\rho,\overline\chi),
+\]
+since $\sum_u\rho(u)=\sum_v\chi(v)=0$. Also $J(\rho,\overline\chi)=\overline{J(\rho,\chi)}$, and the point at infinity adds $1$: $N=p+1+2\operatorname{Re}J(\rho,\chi)$.
+
+For non-trivial $\psi,\psi'$ with $\psi\psi'$ non-trivial, $g(\psi)g(\psi')=\sum_u\zeta^u\sum_{s+t=u}\psi(s)\psi'(t)$. For $u\ne0$, substituting $s=us'$, $t=ut'$, the
+inner sum is $\psi\psi'(u)J(\psi,\psi')$; for $u=0$ it is $\psi'(-1)\sum_s\psi\psi'(s)=0$. So $g(\psi)g(\psi')=J(\psi,\psi')g(\psi\psi')$, and taking absolute values
+(Tome~5, Theorem~3.5), $|J(\psi,\psi')|=\sqrt p\sqrt p/\sqrt p=\sqrt p$. With $\psi=\rho$, $\psi'=\chi$ ($\rho\chi$ has order $6$), $|N-p-1|\le2\sqrt p$.
+\end{solution}
+
+\begin{solution}{ex:moment}
+\idea Squaring a character sum and summing over the family turns it into a count of pairs $(x,x')$, and most pairs cancel.
+\writeup $\sum_{a,b}s(a,b)^2=\sum_{x,x'}\sum_{a,b}\rho(x^3+ax+b)\rho(x'^3+ax'+b)$. For $x=x'$ the inner sum counts the $(a,b)$ with $x^3+ax+b\ne0$: $p^2-p$. For
+$x\ne x'$, the map $(a,b)\mapsto(x^3+ax+b,x'^3+ax'+b)$ is affine with determinant $x-x'\ne0$, a bijection of $\mathbb F_p^2$, so the inner sum is
+$(\sum_u\rho(u))^2=0$. Total: $p(p^2-p)=p^2(p-1)$. For the $p^2$ pairs, the mean of $a_p^2=s^2$ is $p-1$. Under Sato--Tate,
+$\int_0^\pi4p\cos^2\theta\cdot\frac2\pi\sin^2\theta\,\mathrm d\theta=\frac{2p}\pi\int_0^\pi\sin^22\theta\,\mathrm d\theta=p$: the same.
+\end{solution}
+
+\begin{solution}{ex:supersingp2}
+\idea $N_1$ gives $P$, and $P$ gives everything.
+\writeup By Exercise~\ref{ex:supersing}, $N_1=p+1$, so $a=0$, $P(T)=1+pT^2$, $Z(T)=\frac{1+pT^2}{(1-T)(1-pT)}$, and $\alpha=i\sqrt p$, $\overline\alpha=-i\sqrt p$.
+Then $\alpha^r+\overline\alpha^r=(i\sqrt p)^r(1+(-1)^r)$: it is $0$ for odd $r$ and $2(-p)^{r/2}$ for even $r$. So $N_r=p^r+1$ for odd $r$, and for $r=2$,
+$N_2=p^2+1+2p=(p+1)^2$; for $r\equiv0\pmod4$, $N_r=p^r+1-2p^{r/2}=(p^{r/2}-1)^2$, the minimum allowed.
+\end{solution}
+
+\begin{solution}{ex:maximal}
+\idea Count with the norm map; a point count at the Weil bound forces all $\alpha_i$ to be equal.
+\writeup The curve has degree $q+1$, so $g=\frac{q(q-1)}2$, and it is $y^{q+1}=f(x)$ with $f=1-x^{q+1}$, $m=q+1$ prime to $p$, $f$ without repeated roots
+($f'=-x^q$ vanishes only at $0$, and $f(0)=1$). The map $N(x)=x^{q+1}$ sends $\mathbb F_{q^2}^\times$ onto $\mathbb F_q^\times$ (its image has order
+$\frac{q^2-1}{q+1}=q-1$ and lies in $\mathbb F_q$, since $N(x)^q=N(x)$), each fibre having $q+1$ elements, and $N(0)=0$. The affine points are the pairs with
+$N(x)=u$, $N(y)=v$, $u+v=1$ in $\mathbb F_q$: the pairs $(0,1)$ and $(1,0)$ give $q+1$ points each, and the $q-2$ others $(q+1)^2$ each, in all
+$(q+1)\bigl(2+(q-2)(q+1)\bigr)=q^3-q$. At infinity, $N(X/Y)=-1$ has $q+1$ solutions. So $N_1=q^3+1=q^2+1+2gq$.
+
+By Theorem~\ref{thm:rationality}(d), $\sum\alpha_i=q^2+1-N_1=-2gq$, and $|\alpha_i|=q$ by Theorem~\ref{thm:rhfamily} (over $\mathbb F_{q^2}$, $\sqrt{q^2}=q$). Then
+$\sum\operatorname{Re}\alpha_i=-2gq$ with each $\operatorname{Re}\alpha_i\ge-q$ forces $\alpha_i=-q$ for all $i$: $P(T)=(1+qT)^{2g}$, and $N_r=q^{2r}+1-2g(-q)^r$.
+\end{solution}
+
+\begin{solution}{ex:klein}
+\idea Smoothness by direct elimination; then three point counts and the functional equation pin down the six coefficients of $P$.
+\writeup \emph{Smoothness.} In characteristic $2$, $F_X=X^2Y+Z^3$, $F_Y=X^3+Y^2Z$, $F_Z=Y^3+Z^2X$. If $X=0$ at a singular point, then $Z=0$ and $Y=0$; so
+by cyclic symmetry all coordinates are non-zero, and we may take $Z=1$. Then $Y=X^{-2}$ from $F_X$, and $F_Y$ gives $X^3=X^{-4}$, $X^7=1$. Now
+$F=X^3Y+Y^3+X=X+X^{-6}+X=X^{-6}=X\ne0$, so the point is not on the curve. The genus is $3$.
+
+\emph{Counts.} Over $\mathbb F_2$, the points with a zero coordinate are $(1:0:0),(0:1:0),(0:0:1)$ (if $Z=0$ then $X^3Y=0$), and $(1:1:1)$ gives $F=1$: $N_1=3$. Over
+$\mathbb F_4$, the points with all coordinates non-zero and $Z=1$ satisfy $X^3=Y^3=1$, so $F=Y+1+X$: $X+Y=1$ with $X,Y\ne0$ gives $(\omega,\omega^2)$ and
+$(\omega^2,\omega)$, so $N_2=5$.
+
+\emph{Zeta.} $s_r=\sum\alpha_i^r=q^r+1-N_r$: $s_1=0$, $s_2=0$, $s_3=9-24=-15$. With $P(T)=1-e_1T+e_2T^2-e_3T^3+\dots$, Newton's identities give $e_1=s_1=0$,
+$e_2=\frac{s_1^2-s_2}2=0$, $e_3=\frac{s_1^3-3s_1s_2+2s_3}6=-5$. The functional equation $c_{6-j}=q^{3-j}c_j$ gives $c_4=2c_2=0$, $c_5=4c_1=0$, $c_6=8$:
+$P(T)=1+5T^3+8T^6$. So $P(T)=Q(T^3)$ with $Q(U)=1+5U+8U^2$, the $\alpha_i$ are the cube roots of the inverse roots $\beta,\overline\beta$ of $Q$, and
+$N_r=2^r+1$ when $3\nmid r$ (the sum of the $r$-th powers of the three cube roots of $\beta$ vanishes), while $N_{3s}=8^s+1-3(\beta^s+\overline\beta^s)$, with
+$\beta+\overline\beta=-5$, $\beta\overline\beta=8$. For $s=1$, $N_3=9+15=24$, and $\lfloor2\sqrt8\rfloor=5$, so $N_3=8+1+3\cdot5$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item C.~F.~Gauss, \emph{Disquisitiones Arithmeticae}, 1801, Article~358; the diary entry of 9~July 1814 is no.~146 of his \emph{Tagebuch}. See also K.~Ireland and
+M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer GTM~84, 1990, Chapters~8 and~11, for the Jacobi sum counts.
+\item P.~Roquette, ``The Riemann hypothesis in characteristic $p$, its origin and development. Part~1'', \emph{Mitt.\ Math.\ Ges.\ Hamburg} 21 (2002); Part~2, 22 (2004).
+Artin's thesis, Davenport and Mordell, Artin's remark to Hasse in 1932, and Hasse's proof of 1933.
+\item A.~Weil, ``Sur les fonctions alg\'ebriques \`a corps de constantes fini'', \emph{C.\ R.\ Acad.\ Sci.\ Paris} 210 (1940), 592--594; ``Numbers of solutions of
+equations in finite fields'', \emph{Bull.\ AMS} 55 (1949), 497--508. Weil's letter from Rouen prison to his wife is quoted in the MacTutor History of Mathematics
+archive, ``Andr\'e Weil writes from Rouen prison''.
+\item S.~A.~Stepanov, ``On the number of points of a hyperelliptic curve over a finite prime field'', \emph{Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.} 33 (1969), 1171--1181.
+\item E.~Bombieri, ``Counting points on curves over finite fields (d'apr\`es S.~A.~Stepanov)'', S\'eminaire Bourbaki, expos\'e 430 (1972/73), Springer LNM~383, 1974.
+The proof of Theorem~\ref{thm:bombieri}, and the lower bound by Galois coverings.
+\item H.~Stichtenoth, \emph{Algebraic Function Fields and Codes}, 2nd ed., Springer GTM~254, 2009, Chapter~5. Rationality, functional equation and the Riemann
+hypothesis for all curves, in the language of function fields; Serre's bound.
+\item W.~M.~Schmidt, \emph{Equations over Finite Fields: An Elementary Approach}, Springer LNM~536, 1976. Stepanov's method in full generality.
+\item P.~Deligne, ``La conjecture de Weil.~I'', \emph{Publ.\ Math.\ IH\'ES} 43 (1974), 273--307.
+\item L.~Clozel, M.~Harris and R.~Taylor, ``Automorphy for some $\ell$-adic lifts of automorphic mod~$\ell$ Galois representations'', \emph{Publ.\ Math.\ IH\'ES} 108 (2008);
+T.~Barnet-Lamb, D.~Geraghty, M.~Harris and R.~Taylor, ``A family of Calabi--Yau varieties and potential automorphy~II'', \emph{Publ.\ RIMS} 47 (2011), 29--98.
+The Sato--Tate conjecture.
+\end{itemize}
