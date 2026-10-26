@@ -770,6 +770,7 @@ def hilbert_curve(order=6):
     return "\n".join(lines) + "\n"
 
 
+<<<<<<< Updated upstream
 
 def multiplicative_walks(N=3000, walks=3, seed=14):
     """Partial sums S(n) = f(1)+...+f(n) of Steinhaus random multiplicative functions, drawn as
@@ -808,6 +809,43 @@ def multiplicative_walks(N=3000, walks=3, seed=14):
     lines.append(r"\fill[accent] (0,0) circle (2.2pt);")
     return "\n".join(lines) + "\n"
 
+=======
+def brw_barrier(depth=11, seed=15):
+    """Tome 15: a binary branching random walk (each particle splits in two, each child moves by an
+    independent Gaussian step), drawn with time running left to right, and the critical line
+    k*sqrt(2 log 2) above which almost no path ever goes. Paths that stay just below this barrier carry
+    the critical multiplicative chaos behind Harper's theorem on random multiplicative functions
+    (Tome 15, Chapter 6). The path of the highest particle is drawn thicker."""
+    import random
+    rnd = random.Random(seed)
+    pos = [[0.0]]
+    for k in range(depth):
+        pos.append([p + rnd.gauss(0, 1) for p in pos[-1] for _ in range(2)])
+    c = math.sqrt(2 * math.log(2))
+    sx = 3.7 / depth
+    sy = 1.95 / (c * depth)
+    X = lambda k: -1.85 + sx * k
+    lines = ["%% Binary branching random walk of depth %d (seed %d) with the critical barrier." % (depth, seed),
+             r"\draw[accent,line width=0.7pt,dashed,opacity=0.8] (%.4fin,0in)--(%.4fin,%.4fin);" % (X(0), X(depth), sy * c * depth),
+             r"\draw[accent,line width=0.7pt,dashed,opacity=0.8] (%.4fin,0in)--(%.4fin,%.4fin);" % (X(0), X(depth), -sy * c * depth)]
+    top = max(range(len(pos[depth])), key=lambda i: pos[depth][i])
+    best = {(depth, top)}
+    i = top
+    for k in range(depth, 0, -1):
+        i //= 2
+        best.add((k - 1, i))
+    for k in range(depth):
+        w = 0.55 - 0.035 * k
+        for i, p in enumerate(pos[k]):
+            for j in (2 * i, 2 * i + 1):
+                q = pos[k + 1][j]
+                hl = (k, i) in best and (k + 1, j) in best
+                lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                             % (1.6 if hl else max(w, 0.18), 1.0 if hl else 0.7, X(k), sy * p, X(k + 1), sy * q))
+    return "\n".join(lines) + "\n"
+
+
+>>>>>>> Stashed changes
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -823,6 +861,7 @@ MOTIFS = {
     "tome11-motion": dyson_fan,
     "tome12-arithmetic": ford_circles,
     "tome13-primes": prime_constellations,
+    "tome15-workshop": brw_barrier,
     "tomeC1-discrete": boolean_lattice,
     "tomeC2-algorithms": bitonic_network,
     "tomeC3-complexity": mod3_automaton,

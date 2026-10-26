@@ -1,0 +1,477 @@
+\chapter{How Research Works}
+\label{ch:research}
+
+\begin{center}\itshape
+Choose $n$ positive integers so that no two different selections of them have the same sum.\\
+How small can the largest one be? A young Erd\H os asked in 1931.\\
+Ninety-five years later the answer is still not known, and the story is not over.
+\end{center}
+
+Every research problem has a life. Somebody asks a question, often in passing. A first argument gives a bound; somebody else
+finds a construction going the other way; the two bounds refuse to meet; the question is written down in a list of open
+problems, a prize is attached, and for decades people chip away at the constants. Then, one day, something new happens. This
+chapter follows one problem through that whole life, because it is the best way to see what researchers actually do all day:
+they read, they compute, they bound, they construct, they check, and they write.
+
+The problem is the one Paul Erd\H os called ``perhaps my first serious problem''. In a paper of 1998 he dated it to
+1931, when he was eighteen; the quotation and the date are recorded on the first page of the Erd\H os problems database, whose
+problem number~$1$ it is. Erd\H os offered $500$ dollars for its solution. His first result on it, with Leo Moser, was announced at
+a colloquium in Brussels in 1955 and printed in 1956; in 1985 he offered another $100$ dollars to anyone who improved the constant
+$\frac14$ in their bound. The constant was improved by Guy, Elkies, Bae, Aliev, Elkies and Gleason, and finally Dubroff, Fox and
+Xu, whose two-page note of 2021 is the paper we shall read line by line in the next chapter.
+
+And in September 2026, as this book was being written, the conjecture fell, disproved by a construction found by an
+artificial intelligence system and explained to humans by the mathematician who runs the database. We shall check some pieces of
+that construction ourselves at the end of the chapter, because checking a new proof is also part of the job.
+
+\begin{reminder}[from Tome~3 and Tome~C1]
+\emph{Chebyshev's inequality} (Tome~3, Chapter~4): $P(|X-\mathbb EX|\ge t)\le\operatorname{Var}X/t^2$. \emph{Variance of a sum of independent
+variables} is the sum of the variances. A \emph{lattice} in $\R^d$ is a discrete subgroup; its \emph{covolume} is the volume of a fundamental domain,
+$|\det M|$ when it is $M\Z^d$ (Tome~12, Chapter~3).
+\end{reminder}
+
+\section{The problem}
+
+\begin{definition}\label{def:dissociated}
+A finite set $A$ of positive integers is \emph{dissociated}, or has \emph{distinct subset sums}, if the $2^{|A|}$ sums
+$\sum_{a\in S}a$, $S\subseteq A$, are pairwise different. For $n\ge1$ let $a(n)$ be the least possible value of $\max A$ over all dissociated sets $A$
+with $n$ elements.
+\end{definition}
+
+The powers of $2$, $\{1,2,4,\dots,2^{n-1}\}$, are dissociated: a subset sum is a number written in binary, and binary
+expansions are unique. So $a(n)\le2^{n-1}$. Erd\H os's conjecture was that this is the truth up to a constant:
+\[
+a(n)\ge c\,2^n\quad\text{for some absolute constant }c>0 .
+\]
+
+An equivalent way to say ``dissociated'' will be used all the time: $A=\{a_1,\dots,a_n\}$ is dissociated if and only if
+\begin{equation}\label{eq:dissocsigned}
+\sum_{i=1}^n c_ia_i\neq0\quad\text{for every }c\in\{-1,0,1\}^n\setminus\{0\}.
+\end{equation}
+Indeed two subsets $S\ne T$ have equal sums exactly when $\sum_{S\setminus T}a_i-\sum_{T\setminus S}a_i=0$, which is a relation~\eqref{eq:dissocsigned} with $c_i=1$ on $S\setminus T$, $-1$ on
+$T\setminus S$ and $0$ elsewhere; and every nonzero $c\in\{-1,0,1\}^n$ arises in this way from $S=\{c_i=1\}$, $T=\{c_i=-1\}$.
+
+\begin{think}
+Before reading on: can you beat the powers of $2$ for $n=4$, that is, find four positive integers, all at most $7$, with distinct
+subset sums? And why can't you do it with four integers at most $5$?
+\end{think}
+
+\begin{proposition}[the counting bound]\label{prop:counting}
+$a(n)\ge\dfrac{2^n-1}n$.
+\end{proposition}
+
+\begin{proof}
+If $A$ is dissociated with $n$ elements and largest element $N$, its $2^n$ subset sums are distinct integers in $\{0,1,\dots,nN\}$, a set of
+$nN+1$ elements. So $2^n\le nN+1$.
+\end{proof}
+
+So $\frac{2^n}n\lesssim a(n)\le2^{n-1}$, and the whole problem lives in the factor $n$ between the two bounds.
+
+\begin{proposition}[doubling]\label{prop:doubling}
+If $A$ is dissociated, so is $\{1\}\cup2A$. Hence $a(n+1)\le2a(n)$.
+\end{proposition}
+
+\begin{proof}
+A subset sum of $\{1\}\cup2A$ is $\varepsilon+2s$ with $\varepsilon\in\{0,1\}$ and $s$ a subset sum of $A$. Its parity gives $\varepsilon$, then $s$ is determined, and $s$
+determines the subset of $A$. The largest element of $\{1\}\cup2A$ is $2\max A$ (if $\max A\ge1$).
+\end{proof}
+
+Small cases can be found by hand or by a short search (the notebook does it). For $n=4$ the set $\{3,5,6,7\}$ works: its sixteen subset sums
+\[
+0,3,5,6,7,8,9,10,11,12,13,14,15,16,18,21
+\]
+are distinct, and no set inside $\{1,\dots,6\}$ works (Exercise~\ref{ex:afour}). Exhaustive searches give the first values:
+\begin{center}
+\begin{tabular}{c|cccccccccc}
+$n$&$1$&$2$&$3$&$4$&$5$&$6$&$7$&$8$&$9$&$10$\\\hline
+$a(n)$&$1$&$2$&$4$&$7$&$13$&$24$&$44$&$84$&$161$&$309$\\
+$a(n)/2^n$&$0.50$&$0.50$&$0.50$&$0.44$&$0.41$&$0.38$&$0.34$&$0.33$&$0.31$&$0.30$
+\end{tabular}
+\end{center}
+Small cases were computed by Lunnon (1988) and others; the value $a(10)=309$ was settled by a computation of Paul Dyson in October 2025,
+as recorded in the OEIS (sequence A276661), which lists the references. The notebook recomputes the values up to $n=7$ in a few seconds.
+
+\section{Constructions: the Conway--Guy sequence}
+
+In 1968 John Conway and Richard Guy announced, in a short abstract in the \emph{Notices of the AMS}, a family of sets that seemed to beat the
+powers of $2$ by a growing margin. Define $u_0=0$, $u_1=1$ and
+\[
+u_{m+1}=2u_m-u_{m-r},\qquad r=\operatorname{round}\bigl(\sqrt{2m}\bigr)\qquad(m\ge1),
+\]
+and let $A_n=\{u_n-u_{n-i}:1\le i\le n\}$. The first sequences are $\{1\}$, $\{1,2\}$, $\{2,3,4\}$, $\{3,5,6,7\}$, $\{6,9,11,12,13\}$, $\{11,17,20,22,23,24\}$,
+and their largest elements $1,2,4,7,13,24,44,84,161,309$ are exactly the optimal values $a(n)$ of the table, for every $n\le10$. A computer
+confirms that $A_n$ is dissociated for every $n\le24$ (the notebook checks $2^{24}$ sums), and the ratio $\max A_n/2^n$ keeps decreasing:
+\begin{center}
+\begin{tabular}{c|cccccc}
+$n$&$12$&$15$&$18$&$21$&$24$\\\hline
+$\max A_n/2^n$&$0.2842$&$0.2688$&$0.2594$&$0.2529$&$0.2487$
+\end{tabular}
+\end{center}
+
+\begin{remark}
+Tom Bohman proved in 1996 that every Conway--Guy set $A_n$ is dissociated, and in 1998 he found a different construction giving
+$a(n)\le0.22002\cdot2^n$ for all large $n$. Neither result is proved in this book; both are good examples of research papers whose
+statements are easy and whose proofs are long case analyses. Conway and Guy also conjectured that their sets are optimal for all large
+$n$; the counterexample of Section~\ref{sec:astra} disproves this.
+\end{remark}
+
+\section{The second moment bound}
+
+Erd\H os and Moser's idea is probabilistic, and it was one of the first uses of what is now called the \emph{second moment method}.
+Choose the signs at random. Let $\varepsilon_1,\dots,\varepsilon_n$ be independent and uniform in $\{-1,1\}$, and
+\[
+X=\varepsilon_1a_1+\dots+\varepsilon_na_n .
+\]
+Then $X$ takes each of its values with probability exactly $2^{-n}$, because $X=2s-\sum a_i$ where $s$ is the subset sum of
+$\{a_i:\varepsilon_i=1\}$, and these $2^n$ sums are distinct. All values of $X$ have the parity of $\sum a_i$, so two of them differ by at least $2$.
+And $X$ is centred, with variance $\sigma^2=\sum a_i^2\le na_n^2$.
+
+So $X$ is a random variable with $2^n$ equally likely values, spread out by at least $2$, and with a small variance. That is a
+contradiction if the variance is too small: a small variance concentrates the mass in a short window, but a short window
+contains few values, each carrying only $2^{-n}$.
+
+\begin{theorem}[Erd\H os and Moser, in a sharpened form]\label{thm:erdosmoser}
+For every dissociated set $\{a_1<\dots<a_n\}$,
+\[
+a_n\ge\frac2{3\sqrt3}\cdot\frac{2^n}{\sqrt n}-\frac1{\sqrt{3n}}.
+\]
+In particular $a(n)\ge(0.384-o(1))\,2^n/\sqrt n$.
+\end{theorem}
+
+\begin{proof}
+Let $\lambda>1$. By Chebyshev's inequality, $P(|X|<\lambda\sigma)\ge1-\lambda^{-2}$. The values of $X$ in the open interval $(-\lambda\sigma,\lambda\sigma)$ are spaced by at least $2$,
+so there are at most $\lambda\sigma+1$ of them, each of probability $2^{-n}$. Hence
+\[
+1-\frac1{\lambda^2}\le(\lambda\sigma+1)2^{-n},\qquad\text{that is}\qquad\sigma\ge\frac{(1-\lambda^{-2})2^n-1}\lambda .
+\]
+The function $\lambda\mapsto(1-\lambda^{-2})/\lambda$ is maximal at $\lambda=\sqrt3$, where it equals $\frac2{3\sqrt3}$. With this choice, and $\sigma\le\sqrt n\,a_n$, we get the
+inequality.
+\end{proof}
+
+Erd\H os and Moser stated the constant $\frac14$; the optimisation over $\lambda$ is a remark of the kind every reader of a paper should make
+(Exercise~\ref{ex:chebopt} asks for the version with the exact count of values). Figure~\ref{fig:sums} shows what the proof sees.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-sums}
+\caption{Histogram of the $2^{14}$ values of $X=\sum\pm a_i$ for the Conway--Guy set $A_{14}$ (largest element $4484$), with the normal density of
+the same variance. Chebyshev guarantees that at least two thirds of the values fall in the shaded window $|x|<\sqrt3\,\sigma$; in fact about
+$92\%$ do. Since the values are at least $2$ apart, the window must be long, so $\sigma$, and with it $a_{14}$, cannot be too small.}
+\label{fig:sums}
+\end{figure}
+
+\begin{think}
+The histogram looks Gaussian. If $X$ were \emph{exactly} normal, a window of length $2\ell$ around $0$ would carry probability about
+$\sqrt{2/\pi}\,\ell/\sigma$ for small $\ell$, much less than Chebyshev's bound suggests. What lower bound on $a_n$ would that give? (This is the idea of the paper of the
+next chapter.)
+\end{think}
+
+\begin{beauty}
+The argument never looks at a single subset. It replaces a question about $2^n$ sums by one number, the variance, and wins
+because a variance is easy to compute and hard to fool. Erd\H os used the same move, a random object whose average is
+computable, in a dozen other problems, and the method now fills whole books.
+\end{beauty}
+
+\section{The tools of the trade}
+
+How would you have learned all of the above if you had met the problem yesterday? This is what a researcher does in the first week
+with a new question.
+
+\emph{Find the problem's name and its literature.} Search engines are bad at mathematics written in formulas, so search for words: here
+``distinct subset sums'' or ``sum-distinct sets''. The two great reviewing databases list almost every research paper in mathematics since the
+nineteenth century, with a short review: \emph{zbMATH Open} (free to everyone since January 2021) and the American Mathematical Society's
+\emph{MathSciNet}. Their key feature is that they record who cites whom. From one good paper, go \emph{backward} through its references to the
+history, and \emph{forward} through the papers citing it to the current state of the art. Lists of open problems help: Richard Guy's
+\emph{Unsolved Problems in Number Theory} has this one as problem~C8, and since 2023 Thomas Bloom's database \texttt{erdosproblems.com} collects
+more than a thousand problems of Erd\H os with their status, references, and a discussion forum added in August 2025.
+
+\emph{Read the preprints.} Almost every paper now appears first on the \emph{arXiv}, the preprint server started by the physicist Paul Ginsparg in
+August 1991. Its daily listings (for this problem \texttt{math.CO} and \texttt{math.NT}) are how researchers follow their field, months or years
+before journal publication. A preprint is not refereed: read it as a colleague's letter, not as gospel.
+
+\emph{Compute.} The Online Encyclopedia of Integer Sequences, which Neil Sloane began as a graduate student in 1964 and put online in 1996, turns
+a list of numbers into a list of references: typing $1,2,4,7,13,24,44$ into it finds sequence A276661, with all the history above. Here the
+computer also checks small cases, tests conjectured constructions and estimates constants, as in the tables of this chapter.
+
+\emph{Ask.} \emph{MathOverflow}, started in September 2009 by Anton Geraschenko and David Zureick-Brown, then graduate students at Berkeley, is a
+question-and-answer site for research-level questions; a precise question with a reference to what you already know often gets an answer
+from an expert within a day. Seminars, now often online and recorded, and plain e-mail to the author of a paper (short, precise, polite)
+are the other ways to ask.
+
+\emph{Write it down.} Keep a research notebook: dated entries, the question as you currently understand it, every attempt including the failed
+ones (especially those: a failed attempt recorded with the reason it failed saves a week a year later), the computations with the code that
+produced them, and the references read, each with one line saying what it contains. The notebooks of this tome are meant to be used that way.
+
+\section{September 2026: the conjecture falls}\label{sec:astra}
+
+Since 2023 the Erd\H os problems database has seen a flood of activity, much of it involving artificial intelligence, as told by
+Konstantin Kakaes in \emph{Quanta Magazine} in August 2026: language models were first used to search the literature (and found that several
+``open'' problems had been solved long ago, sometimes after an embarrassing claim of a new proof), then to find genuinely new proofs, checked by
+humans and sometimes by proof assistants (Chapter~\ref{ch:lean} of this tome).
+
+On the page of Problem~$1$, edited on 3 September 2026, the statement is marked as \emph{disproved}: according to the page, a system called GPT-6
+Astra proved that for every $\epsilon>0$ there are arbitrarily large $n$ with $a(n)\le\epsilon\,2^n$. Thomas Bloom posted an exposition of the
+construction, which he describes as a sketch, written in language quite far from the original write-up, and ``currently non-quantitative''. The
+lower bound of order $2^n/\sqrt n$ is untouched, so the truth now lies somewhere between $2^n/\sqrt n$ and $o(2^n)$, and the problem has a new life.
+
+What should a reader do with such news? Check the pieces. The exposition reduces the problem to three steps, and two of them are short
+and elementary. We prove them now; the third is stated as a remark.
+
+\begin{definition}
+Let $Q\ge2$ be an integer. A finite sequence of positive integers $u_1,\dots,u_m$ is \emph{$Q$-dissociated} if $\sum c_iu_i\neq0$ for every
+nonzero $c\in\Z^m$ with $|c_i|<Q$ for all $i$.
+\end{definition}
+
+So ``dissociated'' is ``$2$-dissociated'', by~\eqref{eq:dissocsigned}. Being $Q$-dissociated for a large $Q$ is a much stronger property, and the first step
+shows that it is cheaper per element.
+
+\begin{proposition}[from $Q$-dissociated to dissociated]\label{prop:qdissoc}
+Let $Q=2^l$ and let $u_1,\dots,u_m$ be $Q$-dissociated, with largest element $Y$. Then the $lm$ numbers $2^ju_i$ ($0\le j<l$, $1\le i\le m$) form a
+dissociated set with largest element $2^{l-1}Y<QY$. Consequently, since $2^{lm}=Q^m$,
+\[
+\frac{a(lm)}{2^{lm}}<\frac{QY}{Q^m}=\frac Y{Q^{m-1}} .
+\]
+\end{proposition}
+
+\begin{proof}
+Take $\varepsilon_{ij}\in\{-1,0,1\}$, not all zero, and suppose $\sum_{i,j}\varepsilon_{ij}2^ju_i=0$. Then $\sum_ic_iu_i=0$ with $c_i=\sum_{j<l}\varepsilon_{ij}2^j$, and
+$|c_i|\le2^l-1<Q$. So all $c_i=0$ by $Q$-dissociation. But $c_i=0$ forces $\varepsilon_{ij}=0$ for all $j$: the lowest $j$ with $\varepsilon_{ij}\ne0$ would make $c_i$ equal to
+$\pm2^j$ plus a multiple of $2^{j+1}$, which is not zero. So all $\varepsilon_{ij}=0$, a contradiction, and the set is dissociated by~\eqref{eq:dissocsigned} (its
+elements are also distinct, since equal elements would give a relation with two nonzero coefficients). Its largest element is $2^{l-1}Y<QY$.
+\end{proof}
+
+So to make $a(n)/2^n$ small, it is enough to find, for some large $Q$, a $Q$-dissociated sequence with $Y/Q^{m-1}$ small. Trivially the powers
+$1,Q,\dots,Q^{m-1}$ are $Q$-dissociated with $Y/Q^{m-1}=1$; the question is to beat the base-$Q$ digits by a large factor. The second step
+translates this into the geometry of lattices.
+
+\begin{proposition}[lattices give $Q$-dissociated sequences]\label{prop:latticeq}
+Let $u\in\Z^m$ have positive coordinates, and let $L=\{c\in\Z^m:c\cdot u=0\}$. If $L\cap(-Q,Q)^m=\{0\}$, then $u_1,\dots,u_m$ is $Q$-dissociated.
+\end{proposition}
+
+\begin{proof}
+A relation $\sum c_iu_i=0$ with $|c_i|<Q$ says $c\in L\cap(-Q,Q)^m$, so $c=0$.
+\end{proof}
+
+When $u$ is primitive (its coordinates have no common factor), $L$ is a lattice of rank $m-1$ in the hyperplane $u^\perp$, of covolume
+$\|u\|_2$; so we want a lattice in a hyperplane with no nonzero point in the cube $(-Q,Q)^m$ and the smallest possible covolume. The
+construction starts from a remarkable small lattice. Let $b\ge3$ be odd, index coordinates of $\R^b$ by $\Z/b\Z$, let $P$ be the cyclic shift
+$(Pz)_i=z_{i-1}$, and $T=I+\frac12P$, so $(Tz)_i=z_i+\frac12z_{i-1}$.
+
+\begin{lemma}[the odd cycle]\label{lem:oddcycle}
+If $b$ is odd, $z\in\Z^b$, $\sum z_i=0$ and $|z_i+\frac12z_{i-1}|<1$ for all $i$, then $z=0$. Moreover $\det T=1+2^{-b}$.
+\end{lemma}
+
+\begin{proof}
+If some $|z_i|\ge2$, take $i$ with $|z_i|$ maximal: then $|z_i+\frac12z_{i-1}|\ge|z_i|-\frac12|z_i|\ge1$, a contradiction. So $z_i\in\{-1,0,1\}$. If $z_i=1$ then
+$1+\frac12z_{i-1}<1$ forces $z_{i-1}=-1$; if $z_i=-1$ then $z_{i-1}=1$ likewise. So as soon as one coordinate is nonzero, going backwards around the cycle
+the coordinates are all nonzero and alternate in sign; after $b$ steps we return to $z_i$ with the sign changed $b$ times, an odd number, so
+$z_i=-z_i$, a contradiction. Hence $z=0$ (the condition $\sum z_i=0$ is not even needed for this part; it places $z$ in the hyperplane where the
+construction lives).
+
+For the determinant, $P$ is diagonalisable with eigenvalues the $b$-th roots of unity $\omega$, so $\det T=\prod_{\omega^b=1}(1+\frac\omega2)$. Since
+$\prod_\omega(x-\omega)=x^b-1$, taking $x=-2$ gives $\prod_\omega(-2-\omega)=(-2)^b-1$, so $\prod_\omega(2+\omega)=-((-2)^b-1)=2^b+1$ for odd $b$, and
+$\det T=2^{-b}(2^b+1)=1+2^{-b}$.
+\end{proof}
+
+So $T(\Z^b)$ is a lattice of covolume barely above $1$ that meets the open unit cube only at $0$: almost as dense as $\Z^b$, and yet
+avoiding the cube, thanks to an odd cycle of signs that cannot close up. Exercise~\ref{ex:evencycle} shows that the parity of $b$ is essential.
+
+\begin{remark}[the rest of the construction]
+Bloom's exposition then builds lattices in $\R^{b^s}$ by an iteration that feeds $T$ into itself $s$ times; each level divides the relevant
+ratio by $\frac32$ and multiplies it by $(1+2^{-b})^{\text{(number of blocks)}}$, so choosing $s$ large and then $b$ large makes it as small as we like.
+The last step turns these real lattices into lattices of the form $L$ above, with an integer primitive $u$; for this the exposition invokes a
+density theorem for primitive lattices (citing work of Horesh and Karasik, 2023), which is why the result is not yet quantitative. We do not
+prove these steps here, and the exposition itself is a sketch; at the time of writing the community is still digesting the argument, and
+the forum of the problem lists people working on making it effective. This is research as it happens.
+\end{remark}
+
+\begin{think}
+In Proposition~\ref{prop:qdissoc} the ratio of the new set is exactly $\frac{2^{l-1}Y}{2^{lm}}=\frac12\cdot\frac Y{Q^{m-1}}$. Starting from the trivial $Q$-dissociated
+sequence $1,Q,\dots,Q^{m-1}$, which set do you get, and what ratio? So the whole game is to beat the base-$Q$ digits by a large factor.
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:afour}
+Show that no $4$-element subset of $\{1,\dots,6\}$ is dissociated, so $a(4)=7$. (No computer.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:conwayfive}
+Check by hand that the Conway--Guy set $\{6,9,11,12,13\}$ is dissociated. Can you organise the check so that it uses fewer than the $\binom{32}2$ comparisons?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:chebopt}
+In the proof of Theorem~\ref{thm:erdosmoser}, replace Chebyshev's inequality by the exact identity $\mathbb EX^2=\sigma^2$ and the knowledge that $X$ has $2^n$ equally likely
+values, symmetric about $0$, spaced by at least $2$. Show that $\sigma^2\ge\frac{4^n-1}3$, and deduce $a_n\ge\frac{2^n}{\sqrt{3n}}(1-o(1))$. (This is Moser's variance
+bound, used in the next chapter.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:realversion}
+Erd\H os and Graham also asked the question for real numbers: $0<a_1<\dots<a_n$ such that any two distinct subset sums differ by at least $1$.
+Show that the counting bound and Theorem~\ref{thm:erdosmoser} still hold. Which step of Proposition~\ref{prop:doubling} needs a change?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:evencycle}
+Show that Lemma~\ref{lem:oddcycle} fails for every even $b$: find a nonzero $z\in\Z^b$ with $\sum z_i=0$ and $|z_i+\frac12z_{i-1}|<1$ for all $i$. Compute $\det T$ for even $b$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:qthree}
+Show that $1,Q,\dots,Q^{m-1}$ is $Q$-dissociated but not $(Q+1)$-dissociated. Show that $(5,16,21)$ is not even $2$-dissociated, and that $(10,13,14)$ is
+$4$-dissociated. Apply Proposition~\ref{prop:qdissoc} to $(10,13,14)$: which dissociated $6$-set do you get, and how does its largest element compare with the one
+obtained from the base-$4$ digits $(1,4,16)$, and with $a(6)=24$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:greedy}
+\emph{The greedy construction is bad.} Build a set by taking $a_1=1$ and, at each step, the least integer larger than the previous ones that keeps
+the set dissociated. Show that this produces exactly the powers of $2$. Show that a dissociated set containing $1$ can nevertheless beat the powers of $2$:
+$\{1,6,10,12,14\}$ is dissociated. What does the greedy algorithm give when started from $a_1=3$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:litsearch}
+\emph{A literature search.} Using zbMATH Open or MathSciNet, find the papers that cite N.~D.~Elkies, ``An improved lower bound on the greatest
+element of a sum-distinct set of fixed order'' (1986). Which of them improves the constant? Record the result in a research notebook entry, as
+described in the chapter.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:afour}
+A dissociated $4$-set has $16$ distinct sums in $\{0,\dots,\text{sum of the set}\}$, so the sum of the set is at least $15$. Inside $\{1,\dots,6\}$ that leaves
+very few sets.
+\end{hint}
+
+\begin{hint}{ex:conwayfive}
+Two subset sums are equal if and only if a signed combination~\eqref{eq:dissocsigned} vanishes. Sort the $32$ sums.
+\end{hint}
+
+\begin{hint}{ex:chebopt}
+Among all sets of $2^n$ reals, symmetric about $0$ and spaced by at least $2$, which minimises the sum of squares?
+\end{hint}
+
+\begin{hint}{ex:realversion}
+Count with spacing instead of with integers. For doubling, keep $\{1\}\cup2A$ and check the spacing of its sums directly.
+\end{hint}
+
+\begin{hint}{ex:evencycle}
+Alternate signs.
+\end{hint}
+
+\begin{hint}{ex:qthree}
+For the powers, look at the lowest nonzero coefficient modulo $Q$. For $(10,13,14)$, take a relation $10c_1+13c_2+14c_3=0$ with $|c_i|\le3$ and reduce it
+modulo $2$, then modulo $13$.
+\end{hint}
+
+\begin{hint}{ex:greedy}
+By induction, after choosing $1,2,\dots,2^{k-1}$ every integer up to $2^k-1$ is a subset sum.
+\end{hint}
+
+\begin{hint}{ex:litsearch}
+Search for the title; on the result page, the ``cited by'' or ``citations'' link lists the forward references.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:afour}
+\idea The counting bound is weak in general but strong for small sets: it forces the total sum to be large, and inside $\{1,\dots,6\}$ only
+sets with large elements have a large sum.
+\writeup If $A$ is dissociated with $4$ elements, its $16$ subset sums are distinct integers between $0$ and $s=\sum A$, so $s\ge15$. The $4$-subsets of
+$\{1,\dots,6\}$ with sum at least $15$ are $\{3,4,5,6\}$ (sum $18$), $\{2,4,5,6\}$ ($17$), $\{1,4,5,6\}$ and $\{2,3,5,6\}$ ($16$), and $\{1,3,5,6\}$, $\{2,3,4,6\}$ ($15$).
+Each has a coincidence: $3+6=4+5$; $2+4=6$; $1+5=6$; $2+3=5$; $1+5=6$; $2+4=6$. So no $4$-subset of $\{1,\dots,6\}$ is dissociated, while
+$\{3,5,6,7\}$ is, as its list of sums shows. Hence $a(4)=7$.
+\end{solution}
+
+\begin{solution}{ex:conwayfive}
+\idea Compute the sums once, sort them, and look for repeats: one pass instead of all pairs.
+\writeup The subset sums of $\{6,9,11,12,13\}$, sorted, are $0$, $6$, $9$, $11$, $12$, $13$, $15$, $17$, $18$, $19$, $20$, $21$, $22$, $23$, $24$, $25$, $26$, $27$, $28$, $29$, $30$, $31$, $32$, $33$, $34$, $36$, $38$, $39$, $40$, $42$, $45$, $51$. These are $32$ distinct numbers, so the set
+is dissociated. Generating them takes $32$ additions and sorting $32\log_232=160$ comparisons. The notebook does the same for $n=24$, with
+$2^{24}$ sums.
+\end{solution}
+
+\begin{solution}{ex:chebopt}
+\idea The spacing pushes the values of $X$ away from $0$; the most concentrated configuration is the progression $\pm1,\pm3,\dots$, whose variance can be
+computed exactly.
+\writeup The $2^n$ values of $X$ form a set symmetric about $0$ with an even number of elements, so $0$ is not one of them (the others would pair up). Let
+$x_1<x_2<\dots<x_{2^{n-1}}$ be the positive values. As $-x_1$ is also a value, $2x_1\ge2$, so $x_1\ge1$, and by the spacing $x_k\ge2k-1$. Hence
+\[
+\sigma^2=\mathbb EX^2\ge2\cdot2^{-n}\sum_{k=1}^{2^{n-1}}(2k-1)^2=2^{1-n}\cdot\frac{2^{n-1}(2^n-1)(2^n+1)}3=\frac{4^n-1}3 ,
+\]
+using $\sum_{k\le m}(2k-1)^2=\frac{m(2m-1)(2m+1)}3$. With $\sigma^2\le na_n^2$ this gives $a_n\ge\sqrt{(4^n-1)/(3n)}$, better than Theorem~\ref{thm:erdosmoser}: the constant is
+$\frac1{\sqrt3}=0.577\ldots$ instead of $0.384\ldots$. The moral: Chebyshev's inequality throws information away, and the exact structure of the problem
+(equally likely, well spaced values) can be used directly.
+\end{solution}
+
+\begin{solution}{ex:realversion}
+\idea Integers were only used to say that distinct sums are at least $1$ apart; that is exactly the new hypothesis.
+\writeup The $2^n$ subset sums lie in $[0,na_n]$ and are $1$ apart, so $(2^n-1)\cdot1\le na_n$: the counting bound holds. In Theorem~\ref{thm:erdosmoser}, the values of $X=2s-\sum a_i$ are
+$2$ apart, so at most $\lambda\sigma+1$ of them lie in $(-\lambda\sigma,\lambda\sigma)$, and the proof is unchanged. In Proposition~\ref{prop:doubling} the parity argument has no meaning for
+real numbers, and is replaced by a spacing argument for the same set $\{1\}\cup2A$: its sums are $\varepsilon+2s$, two of them with the same $\varepsilon$ and different $s$ differ by
+$2|s-s'|\ge2$, and two with different $\varepsilon$ differ by $|1\pm2(s-s')|$, which is $1$ if $s=s'$ and at least $2|s-s'|-1\ge1$ otherwise. So the doubling holds for real
+sets too.
+\end{solution}
+
+\begin{solution}{ex:evencycle}
+\idea The proof of the lemma used the odd length only at the end, to get a contradiction from alternating signs. With an even length,
+alternating signs close up.
+\writeup For even $b$, take $z_i=(-1)^i$. Then $\sum z_i=0$ and $z_i+\frac12z_{i-1}=(-1)^i(1-\frac12)=\pm\frac12$, of absolute value less than $1$. For the determinant,
+$\prod_\omega(2+\omega)=-((-2)^b-1)=1-2^b$ for even $b$, so $\det T=2^{-b}(1-2^b)$ has absolute value $1-2^{-b}$. (Indeed $T$ has the eigenvalue $1-\frac12$ on the
+alternating vector.)
+\end{solution}
+
+\begin{solution}{ex:qthree}
+\idea $Q$-dissociation is the uniqueness of a representation with digits in $(-Q,Q)$; for the powers of $Q$ this is numeration in base $Q$. For a concrete
+triple, congruences cut the finitely many candidate relations down to a few.
+\writeup If $\sum c_iQ^{i-1}=0$ with $|c_i|<Q$ and $j$ is the least index with $c_j\ne0$, reducing modulo $Q^j$ gives $c_jQ^{j-1}\equiv0\pmod{Q^j}$, so $Q\mid c_j$, impossible
+since $0<|c_j|<Q$. So the powers are $Q$-dissociated; the relation $Q\cdot1-1\cdot Q=0$ has coefficients of size at most $Q<Q+1$, so they are not
+$(Q+1)$-dissociated. The triple $(5,16,21)$ has the relation $5+16-21=0$.
+
+For $(10,13,14)$, suppose $10c_1+13c_2+14c_3=0$ with $|c_i|\le3$. Modulo $2$, $c_2$ is even. Modulo $13$, $10c_1+c_3\equiv0$, that is $c_3\equiv3c_1$; since
+$|3c_1-c_3|\le12$, this forces $c_3=3c_1$, hence $|c_1|\le1$. Then $52c_1+13c_2=0$ gives $c_2=-4c_1$, so $c_1=0$ (as $|c_2|\le3$), and $c_2=c_3=0$. So the triple is $4$-dissociated.
+With $l=2$, the proposition gives the dissociated set $\{10,13,14,20,26,28\}$ (the notebook lists its $64$ distinct sums), with largest element $28$, against $32$
+for the set $\{1,2,4,8,16,32\}$ obtained from the digits $(1,4,16)$. It is worse than the optimum $a(6)=24$, but it beats the powers of $2$ with an
+object found by a search for a good $Q$-dissociated triple: the idea of the September 2026 construction in miniature.
+\end{solution}
+
+\begin{solution}{ex:greedy}
+\idea After the first $k$ powers of $2$, every number up to $2^k-1$ is already a subset sum, so any new element below $2^k$ collides with one of them.
+Greedy algorithms commit too early.
+\writeup Induction: if the greedy set is $\{1,2,\dots,2^{k-1}\}$, its subset sums are all of $\{0,\dots,2^k-1\}$, so a new element $x<2^k$ equals an existing
+sum, a collision with the subset $\{x\}$, while $x=2^k$ works. The set $\{1,6,10,12,14\}=\{1\}\cup2\{3,5,6,7\}$ is dissociated by Proposition~\ref{prop:doubling}, with maximum
+$14<16$. Started from $3$, the greedy algorithm accepts $4$ and $5$ (the sums $0,3,4,5,7,8,9,12$ are distinct), then rejects $6,7,8,9$ ($6+3=4+5$, $7=3+4$, $8=3+5$,
+$9=4+5$) and accepts $10$; from then on it doubles: $3,4,5,10,20,40,80,\dots$ (the notebook checks it). Already for four elements its maximum $10$ is worse than the optimal
+$7$. Good sets are found by search, or by structure, not by greed.
+\end{solution}
+
+\begin{solution}{ex:litsearch}
+\idea Forward citation search is the fastest way from an old paper to the present.
+\writeup In zbMATH Open, search for the title; the entry has a list of citing documents, and so does MathSciNet's. The list is long and changes over
+time, so the answer is a method rather than a list; among the citing papers you will find Dubroff, Fox and Xu (2021), whose reference [5] is Elkies's
+paper, and Aliev (2008), whose constant $\sqrt{3/(2\pi)}\approx0.69$ was the best published before 2021. A notebook entry might read: ``26 Oct.: forward search from
+Elkies 1986. Aliev 2008 uses Siegel's lemma, constant $0.69$. DFX 2021: two proofs of $\sqrt{2/\pi}\approx0.80$, one via Berry--Esseen, one via Harper's
+isoperimetric inequality. To read next: DFX.''
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The problem.} T.~F.~Bloom, Erd\H os Problem \#1, \texttt{https://www.erdosproblems.com/1}, accessed 26 October 2026: the statement, the
+quotation ``perhaps my first serious problem'' and the date 1931 from P.~Erd\H os, ``Some of my new and almost new problems and results in combinatorial
+number theory'' (1998), the prizes (500 dollars; 100 dollars for the constant, from Erd\H os 1985), the status ``disproved'' and Bloom's exposition
+(last edited 3 September 2026). R.~K.~Guy, \emph{Unsolved Problems in Number Theory}, 3rd ed., Springer, 2004, problem C8.
+\item \emph{Bounds and constructions.} P.~Erd\H os, ``Problems and results in additive number theory'', Colloque sur la Th\'eorie des Nombres, Bruxelles,
+1955 (1956), 127--137 (the Erd\H os--Moser bound). J.~H.~Conway and R.~K.~Guy, ``Sets of natural numbers with distinct sums'', \emph{Notices Amer.\ Math.\
+Soc.}\ 15 (1968), 345. W.~F.~Lunnon, ``Integer sets with distinct subset-sums'', \emph{Math.\ Comp.}\ 50 (1988), 297--320. T.~Bohman, ``A sum packing problem of
+Erd\H os and the Conway--Guy sequence'', \emph{Proc.\ Amer.\ Math.\ Soc.}\ 124 (1996), 3627--3636, and ``A construction for sets of integers with distinct subset sums'',
+\emph{Electron.\ J.\ Combin.}\ 5 (1998), R3. N.~D.~Elkies, \emph{J.\ Combin.\ Theory Ser.~A} 41 (1986), 89--94. I.~Aliev, ``Siegel's lemma and sum-distinct sets'',
+\emph{Discrete Comput.\ Geom.}\ 39 (2008), 59--66. Q.~Dubroff, J.~Fox and M.~W.~Xu, ``A note on the Erd\H os distinct subset sums problem'', \emph{SIAM J.\ Discrete Math.}\
+35 (2021), 322--324 (Chapter~\ref{ch:reading}). S.~Steinerberger, ``Some remarks on the Erd\H os distinct subset sums problem'', \emph{Int.\ J.\ Number Theory} (2023), with a history of
+the constants.
+\item \emph{Data.} OEIS A276661 (values of $a(n)$, Lunnon's computations, Dyson's computation of $a(10)$ in October 2025).
+\item \emph{The tools and the community.} K.~Kakaes, ``How AI tore through a mathematical community'', \emph{Quanta Magazine}, 3 August 2026 (the history of
+\texttt{erdosproblems.com} since early 2023, the discussion forum of August 2025, the use of language models for literature search and proofs).
+On MathOverflow's founding in September 2009: the Simons Foundation article ``The Global Math Commons'' (2011). P.~Ginsparg, ``It was twenty years ago
+today\ldots'', arXiv:1108.2700 (2011), on the arXiv's start in August 1991. N.~J.~A.~Sloane, ``The On-Line Encyclopedia of Integer Sequences'', \emph{Notices Amer.\
+Math.\ Soc.}\ 65 (2018), 1062--1074, on the 1964 card file.
+\item \emph{The second moment method.} N.~Alon and J.~H.~Spencer, \emph{The Probabilistic Method}, 4th ed., Wiley, 2016, Chapter~4, which opens with this
+problem.
+\end{itemize}
