@@ -57,7 +57,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Planned |
 | C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
 | C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
-| S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | In progress (1 of 12 chapters) |
+| S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | In progress (3 of 12 chapters) |
 | S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Planned |
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Planned |
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
