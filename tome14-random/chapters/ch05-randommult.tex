@@ -1,0 +1,293 @@
+\chapter{Random Multiplicative Functions}\label{ch:randommult}
+\begin{center}\itshape
+Toss a coin for every prime, and multiply.\\
+The Riemann hypothesis comes true at once, almost surely;\\
+the central limit theorem, surprisingly, does not.
+\end{center}
+
+The Möbius function looks random. It is $+1$ or $-1$ on the squarefree integers, according to the parity of the number of prime factors, and nobody has ever found a pattern in its signs. The Riemann hypothesis is equivalent to the statement that its partial sums $M(x)=\sum_{n\le x}\mu(n)$ are $O(x^{1/2+\varepsilon})$ for every $\varepsilon>0$ (Tome~5, Exercise~7.3 proves one direction): square-root cancellation, the size of the sum of $x$ independent signs. In 1944 Aurel Wintner took the analogy literally. He replaced $\mu(p)=-1$ by an independent fair coin $f(p)=\pm1$ at each prime, kept the multiplicative structure, and proved that the resulting \emph{random multiplicative function} satisfies the analogue of the Riemann hypothesis with probability one.
+
+Wintner's model is not a sum of independent variables: $f(6)=f(2)f(3)$ depends on $f(2)$ and on $f(3)$. Is $\sum_{n\le x}f(n)$, divided by $\sqrt x$, approximately Gaussian, as it would be for independent signs? Partial results pointed both ways: the sums over the integers with a fixed number of prime factors are asymptotically Gaussian (Harper, 2013), but the fourth moment of the full sum is too large for a Gaussian (Section~5.3). In 2010 Henry Helson conjectured the opposite, in a paper on Hankel forms: the first moment $\mathbb E|\sum_{n\le x}f(n)|$ should be $o(\sqrt x)$, smaller than for any Gaussian with the same variance. In 2017 Adam Harper proved it, with the precise rate $\sqrt x/(\log\log x)^{1/4}$, by connecting the problem to the \emph{critical multiplicative chaos} of Tome~11. A few years later he showed that the partial sums almost surely reach $\sqrt x(\log\log x)^{1/4+o(1)}$ infinitely often, proving a conjecture of Erd\H{o}s and answering a question of Halász. Random multiplicative functions cancel slightly better than square root on average, and fluctuate slightly worse than square root at their extremes.
+
+This chapter proves the classical part of the story with complete arguments: Wintner's theorem by high moments (Section~5.2), the exact fourth moment, which already shows that the partial sums are not Gaussian in the way independent sums are (Section~5.3), and a central limit theorem with a random variance for the sums over integers with a large prime factor (Section~5.4), the mechanism behind Harper's theorems. Section~5.5 describes the recent results.
+
+\begin{reminder}[from Chapter~2 and Tomes~3, 5 and~10]
+\emph{Divisor functions} (Lemma~\ref{lem:taupower}). $\tau_K(n)^2\le\tau_{K^2}(n)$ and $\sum_{n\le y}\tau_K(n)\le y(1+\log y)^K$ for $y\ge1$.
+\emph{Borel--Cantelli} (Tome~3, Theorem~4.11). If $\sum_NP(E_N)<\infty$, then almost surely only finitely many $E_N$ occur.
+\emph{Lévy's continuity theorem} (Tome~10, Theorem~3.3). If the characteristic functions of random vectors converge pointwise to a function continuous at $0$, the vectors converge in law.
+\emph{Mertens} (Tome~5, Theorem~1.5). $\sum_{p\le x}\frac1p=\log\log x+M+O(\frac1{\log x})$.
+\end{reminder}
+
+\section{Two models}
+
+\begin{definition}\label{def:rmf}
+Let $(f(p))_p$ be independent random variables indexed by the primes.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Steinhaus model}: each $f(p)$ is uniform on the unit circle $\{|z|=1\}$, and $f$ is extended to a completely multiplicative function: $f(n)=\prod_pf(p)^{a_p}$ if $n=\prod_pp^{a_p}$.
+\item \emph{Rademacher model}: $P(f(p)=1)=P(f(p)=-1)=\frac12$, and $f(n)=\prod_{p\mid n}f(p)$ if $n$ is squarefree, $f(n)=0$ otherwise.
+\end{enumerate}
+In both cases $S(x)=\sum_{n\le x}f(n)$.
+\end{definition}
+
+The Rademacher model imitates $\mu$; the Steinhaus model imitates $n^{-it}$ for a random $t$, since the values $p^{-it}$ for distinct primes behave like independent points on the circle when $t$ is large (Chapter~6 makes this precise). In 1930 Hugo Steinhaus studied power series $\sum a_ke^{2\pi i\theta_k}z^k$ with independent uniform phases $\theta_k$, hence the name. The two models share their second moments.
+
+\begin{proposition}\label{prop:orth}
+In the Steinhaus model, $\mathbb E f(n)\overline{f(m)}=\mathbf 1\{n=m\}$, so $\mathbb E|S(x)|^2=\lfloor x\rfloor$. In the Rademacher model, $\mathbb Ef(n)f(m)=\mathbf 1\{n=m\text{ squarefree}\}$, so $\mathbb ES(x)^2$ is the number $Q(x)$ of squarefree $n\le x$.
+\end{proposition}
+\begin{proof}
+Steinhaus: $f(n)\overline{f(m)}=\prod_pf(p)^{a_p-b_p}$, where $a_p,b_p$ are the exponents of $p$ in $n,m$, and $\overline{f(p)}=f(p)^{-1}$. By independence the expectation is $\prod_p\mathbb Ef(p)^{a_p-b_p}$, and $\mathbb Ef(p)^k=\frac1{2\pi}\int_0^{2\pi}e^{ik\theta}\dd\theta$ is $0$ for $k\ne0$ and $1$ for $k=0$. So the expectation is $1$ if $a_p=b_p$ for all $p$, and $0$ otherwise. Rademacher: if $n,m$ are squarefree, $f(n)f(m)=\prod_{p\mid nm}f(p)^{e_p}$ with $e_p\in\{1,2\}$ the number of the two that $p$ divides; $\mathbb Ef(p)=0$ and $f(p)^2=1$, so the expectation is $1$ if every $e_p=2$, that is $n=m$, and $0$ otherwise. Expand $|S(x)|^2=\sum_{n,m\le x}f(n)\overline{f(m)}$ and $S(x)^2$.
+\end{proof}
+
+So $S(x)$ has the variance of a sum of $\lfloor x\rfloor$ (or $Q(x)\sim\frac6{\pi^2}x$) independent signs. Figure~\ref{fig:rmfpaths} shows three samples of $\frac{S(x)}{\sqrt x}$ in the Rademacher model.
+
+\begin{figure}[ht]
+\centering\fig{ch05-paths}
+\caption{$S(x)/\sqrt x$ for three independent Rademacher random multiplicative functions, $1\le x\le10^6$ (logarithmic scale). The paths stay of order $1$, as Proposition~\ref{prop:orth} suggests; they move on the scale of $\log x$, because $f$ on $[x,2x]$ is strongly correlated with $f$ on $[1,x]$.}
+\label{fig:rmfpaths}
+\end{figure}
+
+\section{Wintner's theorem}
+
+Square-root cancellation with probability one follows from high moments, which are bounded by counting solutions of multiplicative equations.
+
+\begin{lemma}\label{lem:highmoments}
+Let $k\ge1$ be an integer and $x\ge1$. In the Steinhaus model $\mathbb E|S(x)|^{2k}\le x^k(1+k\log x)^{k^2}$; in the Rademacher model $\mathbb ES(x)^{2k}\le x^k(1+k\log x)^{4^k}$.
+\end{lemma}
+\begin{proof}
+\emph{Steinhaus.} Expanding, $\mathbb E|S(x)|^{2k}$ is the sum of $\mathbb Ef(n_1\cdots n_k)\overline{f(m_1\cdots m_k)}$ over $n_i,m_i\le x$, which by Proposition~\ref{prop:orth} is the number of solutions of $n_1\cdots n_k=m_1\cdots m_k$. Let $r(N)$ be the number of $k$-tuples of integers $\le x$ with product $N$; then $r(N)\le\tau_k(N)$, $r(N)=0$ for $N>x^k$, and by Lemma~\ref{lem:taupower} the number of solutions is
+\[
+\sum_Nr(N)^2\le\sum_{N\le x^k}\tau_k(N)^2\le\sum_{N\le x^k}\tau_{k^2}(N)\le x^k(1+k\log x)^{k^2}.
+\]
+
+\emph{Rademacher.} Here $\mathbb ES(x)^{2k}=\sum\mathbb E\prod_{i\le2k}f(n_i)$ over squarefree $n_1,\dots,n_{2k}\le x$, and $\prod_if(n_i)=\prod_pf(p)^{c_p}$ with $c_p=\#\{i:p\mid n_i\}$. As in Proposition~\ref{prop:orth}, the expectation is $1$ if every $c_p$ is even and $0$ otherwise. For such a tuple and each nonempty set $A\subseteq\{1,\dots,2k\}$ of even size, let $D_A$ be the product of the primes $p$ with $\{i:p\mid n_i\}=A$. Then $n_i=\prod_{A\ni i}D_A$, so the tuple is determined by the family $(D_A)$, and
+\[
+\prod_AD_A^2\le\prod_AD_A^{|A|}=\prod_in_i\le x^{2k},
+\]
+so $\prod_AD_A\le x^k$. There are $m=2^{2k-1}-1<4^k$ sets $A$, and the number of $m$-tuples of positive integers with product at most $x^k$ is $\sum_{N\le x^k}\tau_m(N)\le x^k(1+k\log x)^m$.
+\end{proof}
+
+\begin{theorem}[Wintner, 1944]\label{thm:wintner}
+In either model and for every $\varepsilon>0$, almost surely $S(x)=O(x^{1/2+\varepsilon})$: there is a random $x_0$ such that $|S(x)|\le x^{1/2+\varepsilon}$ for all $x\ge x_0$.
+\end{theorem}
+\begin{proof}
+Fix an integer $k>\frac1\varepsilon$ and let $c_k=4^k$. For each integer $N\ge1$, by Markov's inequality applied to $|S(N)|^{2k}$ and Lemma~\ref{lem:highmoments},
+\[
+P\bigl(|S(N)|>N^{1/2+\varepsilon}\bigr)\le\frac{N^k(1+k\log N)^{c_k}}{N^{k+2k\varepsilon}}\le\frac{(1+k\log N)^{c_k}}{N^2},
+\]
+since $2k\varepsilon>2$. The right side is summable over $N$, so by Borel--Cantelli, almost surely $|S(N)|\le N^{1/2+\varepsilon}$ for all $N\ge N_0$. For real $x\ge N_0$, $S(x)=S(\lfloor x\rfloor)$ and $\lfloor x\rfloor\le x$.
+\end{proof}
+
+Wintner's theorem is a statement about a random function, not about $\mu$: it does not make the Riemann hypothesis more likely, but it shows that the hypothesis is what ``no conspiracy among the primes'' predicts. With Exercise~\ref{ex:dirichlet}, it says that the random Dirichlet series $\sum_nf(n)n^{-s}$ converges and is holomorphic on $\Re s>\frac12$ almost surely, and that it cannot be expected to extend much further (Exercise~\ref{ex:dirichlet}(b)).
+
+\begin{remark}
+The truth is close to $\sqrt x$ but not equal to it. Halász (1983) proved that almost surely $S(x)\ll\sqrt x\exp(A\sqrt{\log\log x\log\log\log x})$ in the Rademacher model, and Lau, Tenenbaum and Wu (2013) improved this to $\sqrt x(\log\log x)^{2+\varepsilon}$. Harper (2020) proved that almost surely $|S(x)|\ge\sqrt x(\log\log x)^{1/4+o(1)}$ for arbitrarily large $x$, in both models. Whether $\frac14$ is the right exponent for the upper bound is open. See the Sources.
+\end{remark}
+
+\section{The fourth moment}
+
+For a sum of $x$ independent uniform points on the circle, $\mathbb E|S|^4=2x^2-x$. For the Steinhaus model the fourth moment counts the solutions of $ab=cd$ with $a,b,c,d\le x$, which is the multiplication table of Chapter~4 seen from the other side: there are few distinct products, so each is hit many times.
+
+\begin{theorem}\label{thm:fourth}
+In the Steinhaus model, for $x\ge2$,
+\[
+\mathbb E|S(x)|^4=\frac{12}{\pi^2}\,x^2\log x+O(x^2).
+\]
+\end{theorem}
+\begin{proof}
+\emph{Parametrisation.} As in Lemma~\ref{lem:highmoments}, $\mathbb E|S(x)|^4$ is the number of $(a,b,c,d)$ with $a,b,c,d\le x$ and $ab=cd$. Given a solution, let $u=\gcd(a,c)$, $a=uv$, $c=uw$ with $\gcd(v,w)=1$. Then $uvb=uwd$, so $vb=wd$; since $w$ is prime to $v$, $w\mid b$, and with $b=wz$ we get $d=vz$. Conversely every $(u,v,w,z)$ with $\gcd(v,w)=1$ gives the solution $(uv,wz,uw,vz)$, and $u=\gcd(uv,uw)$ recovers it. So the solutions correspond to the quadruples with $\gcd(v,w)=1$, $u\max(v,w)\le x$ and $z\max(v,w)\le x$, and
+\[
+\mathbb E|S(x)|^4=\sum_{\substack{v,w\ge1\\\gcd(v,w)=1}}\Bigl\lfloor\frac x{\max(v,w)}\Bigr\rfloor^2=\sum_{m\le x}c_m\Bigl\lfloor\frac xm\Bigr\rfloor^2,
+\]
+where $c_m$ is the number of coprime pairs with $\max(v,w)=m$: $c_1=1$, and $c_m=2\varphi(m)$ for $m\ge2$ (one of $v,w$ equals $m$, the other is smaller and prime to $m$).
+
+\emph{Evaluation.} Since $y^2-2y\le\lfloor y\rfloor^2\le y^2$ and $c_m\le2m$, replacing $\lfloor\frac xm\rfloor^2$ by $\frac{x^2}{m^2}$ costs at most $\sum_{m\le x}2m\cdot\frac{2x}m\le4x^2$. So $\mathbb E|S(x)|^4=2x^2\sum_{m\le x}\frac{\varphi(m)}{m^2}+O(x^2)$. Finally, with $\frac{\varphi(m)}m=\sum_{d\mid m}\frac{\mu(d)}d$ and $m=de$,
+\[
+\sum_{m\le x}\frac{\varphi(m)}{m^2}=\sum_{d\le x}\frac{\mu(d)}{d^2}\sum_{e\le x/d}\frac1e=\sum_{d\le x}\frac{\mu(d)}{d^2}\Bigl(\log\frac xd+O(1)\Bigr)=\frac6{\pi^2}\log x+O(1),
+\]
+because $\sum_d\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}=\frac6{\pi^2}$, $\sum_{d>x}\frac1{d^2}\le\frac2x$, and $\sum_d\frac{\log d}{d^2}$ converges.
+\end{proof}
+
+\begin{corollary}\label{cor:kurtosis}
+In the Steinhaus model, $\dfrac{\mathbb E|S(x)|^4}{(\mathbb E|S(x)|^2)^2}\sim\dfrac{12}{\pi^2}\log x\to\infty$, while for a standard complex Gaussian $Z$, $\frac{\mathbb E|Z|^4}{(\mathbb E|Z|^2)^2}=2$.
+\end{corollary}
+\begin{proof}
+Combine Theorem~\ref{thm:fourth} with Proposition~\ref{prop:orth}. For $Z=X+iY$ with $X,Y$ independent $\mathcal N(0,\frac12)$, $|Z|^2$ is exponential with mean $1$, so $\mathbb E|Z|^4=2$.
+\end{proof}
+
+\begin{think}
+Does Corollary~\ref{cor:kurtosis} prove that $\frac{S(x)}{\sqrt x}$ does not converge in law to a complex Gaussian? A sequence can converge in law while its fourth moments explode: consider $Z+\sqrt[4]{\log x}\,\xi_x$ where $\xi_x$ is $1$ with probability $\frac1{\log x}$\ldots\ What extra information would settle the question? (Exercise~\ref{ex:notgauss}.)
+\end{think}
+
+The divergence comes from rare samples where $|S(x)|$ is much larger than $\sqrt x$: the fourth moment of Figure~\ref{fig:fourth}, averaged over $200$ samples, falls far below its true value, because the samples that carry it are too rare to be seen. Paley and Zygmund's inequality turns the two moments into a lower bound for the probability of large values (Exercise~\ref{ex:pz}).
+
+\begin{figure}[ht]
+\centering\fig{ch05-fourth}
+\caption{$\mathbb E|S(x)|^4/x^2$ in the Steinhaus model: the exact value $\frac1{x^2}\sum_mc_m\lfloor\frac xm\rfloor^2$ from the proof of Theorem~\ref{thm:fourth} (red, $16.3$ at $x=10^6$) and the average over $200$ independent samples (blue), against the Gaussian value $2$. The simulated average is erratic and too small: most of the fourth moment comes from events of probability less than $\frac1{200}$.}
+\label{fig:fourth}
+\end{figure}
+
+\section{A central limit theorem with a random variance}\label{sec:condclt}
+
+The integers $n\le x$ with a prime factor $p>\sqrt x$ have exactly one such factor, and $n=pm$ with $m\le\frac xp<\sqrt x$. So
+\begin{equation}\label{eq:largeprime}
+T(x)=\sum_{\substack{n\le x\\P^+(n)>\sqrt x}}f(n)=\sum_{\sqrt x<p\le x}f(p)\,S\Bigl(\frac xp\Bigr),
+\end{equation}
+and every $S(\frac xp)$ in the sum depends only on the values $f(q)$ with $q<\sqrt x$, while the $f(p)$ with $p>\sqrt x$ are independent of them. Conditionally on the small primes, $T(x)$ is a sum of \emph{independent} terms with fixed coefficients $S(\frac xp)$. This is the right setting for a central limit theorem; the price is that the variance is random:
+\[
+V(x)=\sum_{\sqrt x<p\le x}\Bigl|S\Bigl(\frac xp\Bigr)\Bigr|^2.
+\]
+By Proposition~\ref{prop:orth} and Mertens, $\mathbb EV(x)=\sum_{\sqrt x<p\le x}\lfloor\frac xp\rfloor=x\log2+O(\frac x{\log x})$, about $69\%$ of $\mathbb E|S(x)|^2$: about $\log2$ of the integers up to $x$ have a prime factor above $\sqrt x$ (Tome~10, Corollary~12.18, with $\rho(2)=1-\log2$).
+
+\begin{lemma}\label{lem:circleclt}
+Let $\xi_1,\dots,\xi_J$ be independent and uniform on the unit circle, $a_1,\dots,a_J$ complex numbers, $V=\sum_j|a_j|^2>0$, $\mu=\max_j\frac{|a_j|}{\sqrt V}$, and $W=\frac1{\sqrt V}\sum_ja_j\xi_j$. For every $w\in\C$,
+\[
+\Bigl|\mathbb E\,e^{i\Re(\overline wW)}-e^{-|w|^2/4}\Bigr|\le\frac{|w|^3\mu}6+\frac{|w|^4\mu^2}{32}.
+\]
+The right side of the main term is $\mathbb Ee^{i\Re(\overline wZ)}$ for a standard complex Gaussian $Z$.
+\end{lemma}
+\begin{proof}
+Let $X_j=\frac1{\sqrt V}\Re(\overline wa_j\xi_j)$. These are independent, with $|X_j|\le\frac{|w||a_j|}{\sqrt V}$, $\mathbb EX_j=0$, and $s_j^2=\mathbb EX_j^2=\frac{|w|^2|a_j|^2}{2V}$ (the real part of a uniform point of the circle of radius $r$ has variance $\frac{r^2}2$). Then $\Re(\overline wW)=\sum_jX_j$ and $\sum_js_j^2=\frac{|w|^2}2$. From $|e^{iy}-1-iy+\frac{y^2}2|\le\frac{|y|^3}6$, $|\mathbb Ee^{iX_j}-(1-\frac{s_j^2}2)|\le\frac{\mathbb E|X_j|^3}6\le\frac{|w|^3|a_j|^3}{6V^{3/2}}$; from $|e^{-t}-1+t|\le\frac{t^2}2$ for $t\ge0$, $|e^{-s_j^2/2}-(1-\frac{s_j^2}2)|\le\frac{s_j^4}8=\frac{|w|^4|a_j|^4}{32V^2}$. For complex numbers of modulus at most $1$, $|\prod\alpha_j-\prod\beta_j|\le\sum|\alpha_j-\beta_j|$ (change one factor at a time). With $\alpha_j=\mathbb Ee^{iX_j}$ and $\beta_j=e^{-s_j^2/2}$,
+\[
+\Bigl|\mathbb Ee^{i\sum X_j}-e^{-|w|^2/4}\Bigr|\le\sum_j\Bigl(\frac{|w|^3|a_j|^3}{6V^{3/2}}+\frac{|w|^4|a_j|^4}{32V^2}\Bigr)\le\frac{|w|^3\mu}6+\frac{|w|^4\mu^2}{32},
+\]
+using $\sum_j|a_j|^3\le\mu\sqrt V\cdot V$ and $\sum_j|a_j|^4\le\mu^2V\cdot V$. Finally, if $Z=X+iY$ with $X,Y$ independent $\mathcal N(0,\frac12)$, then $\Re(\overline wZ)$ is $\mathcal N(0,\frac{|w|^2}2)$, with characteristic function $e^{-|w|^2/4}$ at $1$.
+\end{proof}
+
+\begin{theorem}\label{thm:condclt}
+In the Steinhaus model, $\dfrac{T(x)}{\sqrt{V(x)}}$ converges in law, as $x\to\infty$, to a standard complex Gaussian $Z$ ($\mathbb E|Z|^2=1$).
+\end{theorem}
+\begin{proof}
+\emph{The variance is not too small.} For a prime $p\in(\frac x2,x]$, $1\le\frac xp<2$ and $S(\frac xp)=f(1)=1$. So $V(x)\ge\pi(x)-\pi(\frac x2)\ge\frac x{3\log x}$ for $x\ge x_1$, by the prime number theorem.
+
+\emph{No coefficient dominates.} By Theorem~\ref{thm:wintner} with $\varepsilon=\frac18$, almost surely there is a random $C$ with $|S(y)|\le Cy^{5/8}$ for all $y\ge1$. Then
+\[
+\mu_x=\max_{\sqrt x<p\le x}\frac{|S(x/p)|}{\sqrt{V(x)}}\le\frac{Cx^{5/16}}{\sqrt{x/(3\log x)}}\longrightarrow0\qquad\text{almost surely.}
+\]
+
+\emph{Conditioning.} Let $\mathcal F_x$ be generated by the $f(q)$ with $q\le\sqrt x$. The coefficients $S(\frac xp)$, hence $V(x)$ and $\mu_x$, are $\mathcal F_x$-measurable, and the $f(p)$ with $p>\sqrt x$ are independent of $\mathcal F_x$, independent and uniform on the circle. By Lemma~\ref{lem:circleclt} applied conditionally on $\mathcal F_x$, for every $w\in\C$,
+\[
+\Bigl|\mathbb E\Bigl[e^{i\Re(\overline wT(x)/\sqrt{V(x)})}\Bigm|\mathcal F_x\Bigr]-e^{-|w|^2/4}\Bigr|\le\min\Bigl(2,\frac{|w|^3\mu_x}6+\frac{|w|^4\mu_x^2}{32}\Bigr).
+\]
+Take expectations: the right side tends to $0$ almost surely and is at most $2$, so by dominated convergence $\mathbb Ee^{i\Re(\overline wT(x)/\sqrt{V(x)})}\to e^{-|w|^2/4}$. Identifying $\C$ with $\R^2$, these are the characteristic functions of $\frac{T(x)}{\sqrt{V(x)}}$ at the points $w$, and the limit is that of $Z$. Lévy's continuity theorem concludes.
+\end{proof}
+
+So $T(x)\approx\sqrt{V(x)}\,Z$: a Gaussian whose variance is itself random, determined by the small primes. If $V(x)/x$ converged in probability to the constant $\log2$, $T(x)/\sqrt x$ would be asymptotically Gaussian. It does not: $V(x)$ is a sum of $|S(y)|^2$ over many $y$, and these are strongly correlated, through the solutions of $ac=bd$, so its variance is at least of order $x^2\log x$, much larger than $(\mathbb EV(x))^2$ (Exercise~\ref{ex:varV}). The law of $T(x)/\sqrt x$ is a \emph{mixture} of Gaussians. In $500$ samples at $x=10^5$ (see the notebook), $V(x)/x$ has mean $0.69$, as it should, but median $0.35$, and $10\%$ of the samples are above $1.4$; normalised by $\sqrt{V(x)}$, $T(x)$ has fourth moment $1.99$, the Gaussian value $2$, and normalised by $\sqrt{x\log2}$ it has fourth moment $5.4$.
+
+\begin{beauty}
+Conditioning on all but the largest primes is the probabilistic form of a familiar trick of number theory: factor out the largest prime. Here it turns a sum of dependent terms into a sum of independent ones, with a random variance that carries all the dependence. Harper's theorems, Helson's conjecture and the limit law of Gorodetsky and Wong all start from this decomposition, applied over and over, prime range by prime range.
+\end{beauty}
+
+\section{Better than square root}
+
+What is the random variance? Iterating the conditioning of Section~\ref{sec:condclt} over the ranges of primes $(x^{1/2^{j+1}},x^{1/2^j}]$ leads to the random Euler product $F(s)=\prod_{p}(1-f(p)p^{-s})^{-1}$ near the line $\Re s=\frac12$: by Parseval's formula for Dirichlet series, $V(x)$ and its relatives are approximated by integrals such as $x\int|F(\frac12+\frac1{\log x}+it)|^2\frac{\dd t}{|\frac12+it|^2}$. And $\log|F(\frac12+\sigma+it)|$, as a function of $t$, is an approximately Gaussian, log-correlated random field, the object of Tome~11, Chapter~12. Its exponential, suitably normalised, is a \emph{critical multiplicative chaos}, and the factor $(\log\log x)^{-1/4}$ is the signature of criticality.
+
+\begin{remark}
+These results are quoted for culture; see the Sources.
+\begin{enumerate}[label=(\alph*)]
+\item (Harper, 2020; Helson's conjecture) In both models, $\mathbb E|S(x)|\asymp\frac{\sqrt x}{(\log\log x)^{1/4}}$, and more generally $\mathbb E|S(x)|^{2q}\asymp_q(\frac x{\sqrt{\log\log x}})^q$ for every fixed $0\le q<1$; the paper finds the order of magnitude uniformly in $0\le q\le1$.
+\item (Harper, 2019) For real $q\ge1$, $\mathbb E|S(x)|^{2q}$ grows like $x^q(\log x)^{(q-1)^2}$ up to factors depending on $q$, in the Steinhaus model.
+\item (Gorodetsky and Wong, 2025) In the Steinhaus model, $\frac{(\log\log x)^{1/4}}{\sqrt x}S(x)$ converges in law to $\sqrt{V_\infty}\,Z$, where $Z$ is a standard complex Gaussian and $V_\infty$ is an independent positive random variable built from a critical multiplicative chaos.
+\end{enumerate}
+\end{remark}
+
+Part (b) with $q=2$ agrees with Theorem~\ref{thm:fourth}: $(\log x)^{(2-1)^2}=\log x$. Figure~\ref{fig:firstmoment} shows the first moment drifting slowly below the Gaussian value $\frac{\sqrt\pi}2$, consistent with the order of magnitude $(\log\log x)^{-1/4}$: this factor decreases by $25\%$ between $x=10$ and $x=10^6$, and the simulated first moment by $22\%$.
+
+\begin{figure}[ht]
+\centering\fig{ch05-firstmoment}
+\caption{Averages over $200$ samples of the Steinhaus model: $\mathbb E|S(x)|^2/x$ (grey), which is exactly $\frac{\lfloor x\rfloor}x$, and $\mathbb E|S(x)|/\sqrt x$ (blue), against the value $\frac{\sqrt\pi}2=0.886$ it would have if $S(x)/\sqrt x$ were a standard complex Gaussian. The first moment falls from $0.90$ at $x=10$ to about $0.70$ at $x=10^6$: better than square-root cancellation, as Helson predicted and Harper proved.}
+\label{fig:firstmoment}
+\end{figure}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:dirichlet}
+(a) Deduce from Theorem~\ref{thm:wintner} and partial summation that, almost surely, the series $\sum_nf(n)n^{-s}$ converges for every $s$ with $\Re s>\frac12$ and defines a holomorphic function there. (b) In the Steinhaus model, show that it equals $\prod_p(1-f(p)p^{-s})^{-1}$ for $\Re s>1$. Why can it not be continued to a function holomorphic on a disc around $\frac12$ for every sample? (Only a heuristic is asked for (b).)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pz}
+Using Proposition~\ref{prop:orth}, Theorem~\ref{thm:fourth} and the Paley--Zygmund inequality $P(Y\ge\frac12\mathbb EY)\ge\frac{(\mathbb EY)^2}{4\mathbb EY^2}$ for $Y\ge0$, show that $P(|S(x)|^2\ge\frac12\lfloor x\rfloor)\gg\frac1{\log x}$ in the Steinhaus model. Is this a good lower bound?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:notgauss}
+Assume Harper's theorem $\mathbb E|S(x)|\ll\frac{\sqrt x}{(\log\log x)^{1/4}}$. Show that $\frac{S(x)}{\sqrt x}\to0$ in probability, although $\mathbb E\frac{|S(x)|^2}x\to1$. Deduce that $\frac{S(x)}{\sqrt x}$ does not converge in law to a complex Gaussian, and that the second moment is carried by events of probability tending to $0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rademacherclt}
+State and prove the analogue of Theorem~\ref{thm:condclt} in the Rademacher model, where the limit is a standard real Gaussian.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:tablelink}
+(a) Show that, in the Steinhaus model, $\mathbb E|S(x)|^4\ge\frac{\lfloor x\rfloor^4}{D(\lfloor x\rfloor)}$, where $D(N)$ is the number of distinct entries of the $N\times N$ multiplication table (Section~4.4), and deduce from Theorem~\ref{thm:multtable} that $\mathbb E|S(x)|^4\gg x^2(\log x)^\delta$. (b) Compute $\mathbb E|S(10)|^4$ exactly with the formula of the proof of Theorem~\ref{thm:fourth}, and compare with this lower bound and with the value $2\cdot10^2-10$ for $10$ independent uniform points of the circle.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:varV}
+Show that $\mathbb EV(x)^2\ge cx^2\log x$ for $x$ large, so that $\frac{\mathrm{Var}\,V(x)}{(\mathbb EV(x))^2}\to\infty$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:dirichlet}
+(a) $\sum_{n\le N}f(n)n^{-s}=S(N)N^{-s}+s\int_1^NS(t)t^{-s-1}\dd t$. (b) Near $s=\frac12$, $\log F(s)\approx\sum_pf(p)p^{-s}$, whose variance at $s=\frac12+\sigma$ is $\frac12\sum_pp^{-1-2\sigma}\to\infty$ as $\sigma\to0$.
+\end{hint}
+\begin{hint}{ex:pz}
+$Y=|S(x)|^2$. Compare with the probability $e^{-1/2}$ for a Gaussian.
+\end{hint}
+\begin{hint}{ex:notgauss}
+Markov's inequality for the first point. If $X_x\Rightarrow Z$ and $X_x\to0$ in probability, then $Z=0$.
+\end{hint}
+\begin{hint}{ex:rademacherclt}
+Replace $\xi_j$ by independent signs; $\Re(\overline wW)$ becomes $wW$ with $w$ real. For $p>\sqrt x$ and $m<\sqrt x$, $f(pm)=f(p)f(m)$ since $p\nmid m$.
+\end{hint}
+\begin{hint}{ex:tablelink}
+$\mathbb E|S(x)|^4=\sum_Nr(N)^2$ with $\sum_Nr(N)=\lfloor x\rfloor^2$; Cauchy--Schwarz over the $N$ with $r(N)>0$.
+\end{hint}
+\begin{hint}{ex:varV}
+$\mathbb E|S(y)|^2|S(z)|^2$ counts $ac=bd$ with $a,b\le y$, $c,d\le z$; parametrise as in Theorem~\ref{thm:fourth} and restrict $p,q$ to $(\sqrt x,x^{3/4}]$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:dirichlet}
+\idea A function that grows like $t^{1/2+\varepsilon}$ is a harmless weight for $t^{-s-1}$ as soon as $\Re s>\frac12+\varepsilon$.
+\writeup (a) Fix a sample in the almost sure event of Theorem~\ref{thm:wintner} for $\varepsilon=\frac1j$, for every $j$ (a countable intersection). By partial summation, $\sum_{n\le N}f(n)n^{-s}=S(N)N^{-s}+s\int_1^NS(t)t^{-s-1}\dd t$. If $\sigma=\Re s>\frac12+\varepsilon$, then $|S(N)N^{-s}|\le C_\varepsilon N^{1/2+\varepsilon-\sigma}\to0$, and the integral converges absolutely and uniformly on $\Re s\ge\frac12+2\varepsilon$, $|s|\le R$, since $|S(t)t^{-s-1}|\le C_\varepsilon t^{-1-\varepsilon}$. So the series converges locally uniformly on $\Re s>\frac12$, and its sum is holomorphic, as a locally uniform limit of entire functions. (b) For $\Re s>1$ the series converges absolutely and $f$ is completely multiplicative, so the Euler product follows as in Tome~5. Near $\frac12$: for $\sigma>0$, $\log F(\frac12+\sigma)=\sum_pf(p)p^{-1/2-\sigma}+O(1)$, a sum of independent terms whose real part has variance $\frac12\sum_pp^{-1-2\sigma}\sim\frac12\log\frac1\sigma$. So $|F(\frac12+\sigma)|$ fluctuates by factors $e^{\pm c\sqrt{\log(1/\sigma)}}$ as $\sigma\to0$, which a function holomorphic at $\frac12$ cannot do unless it vanishes there; a law of the iterated logarithm makes this rigorous, and Exercise~\ref{ex:dirichlet}(b) is only the heuristic.
+\end{solution}
+
+\begin{solution}{ex:pz}
+\idea Second and fourth moments give a lower bound for large values, and the large fourth moment makes it weak.
+\writeup With $Y=|S(x)|^2$, $\mathbb EY=\lfloor x\rfloor$ and $\mathbb EY^2=\mathbb E|S(x)|^4\le Cx^2\log x$ for $x\ge2$ (Theorem~\ref{thm:fourth}). Paley--Zygmund gives $P(Y\ge\frac12\lfloor x\rfloor)\ge\frac{\lfloor x\rfloor^2}{4Cx^2\log x}\ge\frac1{16C\log x}$. For a standard complex Gaussian, $P(|Z|^2\ge\frac12)=e^{-1/2}=0.61$. The truth lies in between: by Exercise~\ref{ex:notgauss} the probability tends to $0$, but in the notebook it is still about $0.35$ at $x=10^6$ ($300$ samples). The bound $\frac1{\log x}$ is poor, because the fourth moment is dominated by rare large values that say little about typical ones.
+\end{solution}
+
+\begin{solution}{ex:notgauss}
+\idea A first moment that is $o(\sqrt x)$ forces $S(x)/\sqrt x$ to be small most of the time, and then the second moment, which is exactly $1$, must come from the exceptions.
+\writeup By Markov, $P(|S(x)|\ge\eta\sqrt x)\le\frac{\mathbb E|S(x)|}{\eta\sqrt x}\ll\frac1{\eta(\log\log x)^{1/4}}\to0$ for each $\eta>0$. If $X_x=\frac{S(x)}{\sqrt x}$ converged in law to $Z$, then since $X_x\to0$ in probability, also in law, the limits coincide and $Z=0$, which is not a standard complex Gaussian. And $\mathbb E|X_x|^2=\frac{\lfloor x\rfloor}x\to1$: for any $\eta>0$, $\mathbb E[|X_x|^2\mathbf 1\{|X_x|\le\eta\}]\le\eta^2$, so $\mathbb E[|X_x|^2\mathbf 1\{|X_x|>\eta\}]\ge1-\eta^2-o(1)$, while $P(|X_x|>\eta)\to0$. This does not contradict Theorem~\ref{thm:condclt}, whose limit is a Gaussian with the random variance $V(x)$: a mixture of Gaussians can be small with high probability and still have a fixed second moment.
+\end{solution}
+
+\begin{solution}{ex:rademacherclt}
+\idea The same conditioning works, with signs instead of points of the circle.
+\writeup In the Rademacher model, every $n\le x$ with $P^+(n)>\sqrt x$ is $pm$ with $p>\sqrt x>m$, and $f(n)=f(p)f(m)$ if $m$ is squarefree, $0$ otherwise; so $T(x)=\sum_{\sqrt x<p\le x}f(p)S(\frac xp)$ again, with $V(x)=\sum_pS(\frac xp)^2\ge\pi(x)-\pi(\frac x2)$. For independent signs $\xi_j$ and real $a_j$, the proof of Lemma~\ref{lem:circleclt} with $X_j=\frac{wa_j\xi_j}{\sqrt V}$, $w\in\R$, $s_j^2=\frac{w^2a_j^2}V$, gives $|\mathbb Ee^{iwW}-e^{-w^2/2}|\le\frac{|w|^3\mu}6+\frac{w^4\mu^2}8$. Theorem~\ref{thm:wintner} holds in the Rademacher model, so $\mu_x\to0$ almost surely, and the conditioning argument gives $\frac{T(x)}{\sqrt{V(x)}}\Rightarrow\mathcal N(0,1)$.
+\end{solution}
+
+\begin{solution}{ex:tablelink}
+\idea Few distinct products force many repetitions: the fourth moment is the number of collisions in the multiplication table.
+\writeup (a) Let $M=\lfloor x\rfloor$ and $r(N)=\#\{(a,b):a,b\le M,\ ab=N\}$. Then $\mathbb E|S(x)|^4=\#\{ab=cd\}=\sum_Nr(N)^2$, $\sum_Nr(N)=M^2$, and $r(N)>0$ for exactly $D(M)$ values of $N$. By Cauchy--Schwarz, $M^4=(\sum_Nr(N))^2\le D(M)\sum_Nr(N)^2$. With $D(M)\ll\frac{M^2}{(\log M)^\delta}$ this gives $\mathbb E|S(x)|^4\gg M^2(\log M)^\delta\gg x^2(\log x)^\delta$ for $x\ge3$. Theorem~\ref{thm:fourth} is much stronger, $x^2\log x$: the products are not only few, they are hit very unevenly. (b) With $c_1=1$, $c_m=2\varphi(m)$: $\sum_{m\le10}c_m\lfloor\frac{10}m\rfloor^2=100+2\cdot25+4\cdot9+4\cdot4+8\cdot4+4+12+8+12+8=278$. The Cauchy--Schwarz bound gives $\frac{10^4}{42}=238.1$, and independent points would give $190$. Already at $x=10$ the multiplicative structure adds almost $50\%$ to the fourth moment.
+\end{solution}
+
+\begin{solution}{ex:varV}
+\idea Two partial sums $S(y)$ and $S(z)$ are correlated through the solutions of $ac=bd$, and summing these correlations over pairs of primes gives an extra $\log x$.
+\writeup Let $2\le y\le z$. As in the proof of Theorem~\ref{thm:fourth}, $\mathbb E|S(y)|^2|S(z)|^2$ is the number of $(a,b,c,d)$ with $a,b\le y$, $c,d\le z$ and $ac=bd$; writing $a=gv$, $b=gw$ with $g=\gcd(a,b)$ and $\gcd(v,w)=1$, we get $c=wt$, $d=vt$, and the count is $\sum_{\gcd(v,w)=1}\lfloor\frac y{\max(v,w)}\rfloor\lfloor\frac z{\max(v,w)}\rfloor=\sum_{m\le y}c_m\lfloor\frac ym\rfloor\lfloor\frac zm\rfloor$. Using $\lfloor t\rfloor\ge\frac t2$ for $t\ge1$ and $c_m\ge\varphi(m)$, this is at least $\frac{yz}4\sum_{m\le y}\frac{\varphi(m)}{m^2}\ge c_1yz\log y$ by the proof of Theorem~\ref{thm:fourth}, for $y\ge y_0$. Now all terms of $V(x)^2=\sum_{p,q}|S(\frac xp)|^2|S(\frac xq)|^2$ are non-negative, so restricting to $\sqrt x<p,q\le x^{3/4}$, where $\frac xp,\frac xq\ge x^{1/4}$,
+\[
+\mathbb EV(x)^2\ge c_1\sum_{\sqrt x<p,q\le x^{3/4}}\frac{x^2}{pq}\cdot\frac{\log x}4=\frac{c_1}4x^2\log x\Bigl(\sum_{\sqrt x<p\le x^{3/4}}\frac1p\Bigr)^2,
+\]
+and the last sum tends to $\log\frac32$ by Mertens. Since $\mathbb EV(x)\sim x\log2$, $\mathrm{Var}\,V(x)=\mathbb EV(x)^2-(\mathbb EV(x))^2\ge c_2x^2\log x$ for $x$ large, and the ratio tends to infinity.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Steinhaus.} H.~Steinhaus, ``Über die Wahrscheinlichkeit dafür, daß der Konvergenzkreis einer Potenzreihe ihre natürliche Grenze ist'', \emph{Math.\ Z.}\ 31 (1930), 408--416.
+\item \emph{Wintner's model.} A.~Wintner, ``Random factorizations and Riemann's hypothesis'', \emph{Duke Math.\ J.}\ 11 (1944), 267--275.
+\item \emph{Almost sure bounds.} G.~Halász, ``On random multiplicative functions'', in \emph{Hubert Delange Colloquium} (Orsay, 1982), Publ.\ Math.\ Orsay 83-4, Université de Paris-Sud, 1983, 74--96. Y.-K.~Lau, G.~Tenenbaum and J.~Wu, ``On mean values of random multiplicative functions'', \emph{Proc.\ Amer.\ Math.\ Soc.}\ 141 (2013), 409--420. A.~J.~Harper, ``Almost sure large fluctuations of random multiplicative functions'', preprint arXiv:2012.15809 (2020), for the lower bound, the conjecture of Erd\H{o}s and the question of Halász. D.~Mastrostefano, ``An almost sure upper bound for random multiplicative functions on integers with a large prime factor'', \emph{Electron.\ J.\ Probab.}\ 27 (2022), paper no.~32, for the sums $T(x)$ of Section~\ref{sec:condclt}.
+\item \emph{Moments and limit laws.} A.~J.~Harper, ``On the limit distributions of some sums of a random multiplicative function'', \emph{J.\ Reine Angew.\ Math.}\ 678 (2013), 95--124, where martingale methods were introduced. S.~Chatterjee and K.~Soundararajan, ``Random multiplicative functions in short intervals'', \emph{Int.\ Math.\ Res.\ Not.}\ 2012, 479--492. A.~J.~Harper, ``Moments of random multiplicative functions, II: High moments'', \emph{Algebra Number Theory} 13 (2019), 2277--2321.
+\item \emph{Better than square root.} H.~Helson, ``Hankel forms'', \emph{Studia Math.}\ 198 (2010), 79--84, for the conjecture. A.~J.~Harper, ``Moments of random multiplicative functions, I: Low moments, better than squareroot cancellation, and critical multiplicative chaos'', \emph{Forum Math.\ Pi} 8 (2020), e1 (first posted in 2017). O.~Gorodetsky and M.~D.~Wong, ``On the limiting distribution of sums of random multiplicative functions'', preprint arXiv:2508.12956 (2025).
+\item \emph{Surveys.} A.~J.~Harper, ``Moments of random multiplicative functions, III: A short review'', preprint arXiv:2410.11523 (2024).
+\end{itemize}
