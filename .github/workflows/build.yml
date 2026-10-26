@@ -1,7 +1,10 @@
 name: Build books
 
 on:
+  # Branches are built through their pull request only: a push to a PR branch used to start two runs,
+  # and GitHub's free plan runs at most 20 jobs at a time across the repository.
   push:
+    branches: [main]
   pull_request:
   workflow_dispatch:
 
@@ -104,9 +107,11 @@ jobs:
           path: build/site
 
   # The companion notebooks are checked separately, one job per folder, so that a slow or
-  # failing notebook never holds back the books.
+  # failing notebook never holds back the books. They start once the books are built, so that
+  # the build jobs get the runners first.
   notebooks:
-    needs: list
+    needs: [list, build]
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
