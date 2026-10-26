@@ -1,0 +1,779 @@
+\chapter{Conditional Expectation and Martingales}
+
+\begin{center}\itshape
+A monkey types random capital letters, one per second.\\
+It needs on average $26^{11}+26^4+26$ seconds to type ABRACADABRA,\\
+and a casino full of fair gamblers explains why.
+\end{center}
+
+A \emph{martingale} is the fortune of a player in a fair game: whatever has happened so far, the expected fortune after
+the next round equals the present one. Sums of independent centred variables are martingales, but so are many
+processes with strong dependence: the fraction of red balls in an urn that reinforces itself, a branching population
+divided by its mean, the conditional expectation of any quantity as information accumulates. Martingale theory, created
+by Joseph Doob around 1940 from ideas of Paul L\'evy and Jean Ville, is the most flexible tool of modern probability.
+
+To define a fair game we need the expectation of a variable given the information available at a time, that is,
+\emph{conditional expectation} given a $\sigma$-algebra. We build it as an orthogonal projection in the space $L^2$, after
+proving that this space is complete, and then extend it to integrable variables. Then come the three great theorems of
+Doob: \emph{optional stopping} (a fair game stays fair when you choose when to stop, within limits), the \emph{maximal
+inequality} (a martingale cannot wander far without its final value noticing), and \emph{convergence} (a martingale that
+stays bounded on average converges). Each comes with applications: the waiting time for a word, a second proof of the
+gambler's ruin, P\'olya's urn, the growth of branching populations. Azuma's inequality closes the chapter: Hoeffding's
+bound of Chapter~4 holds for martingales, which proves concentration for quantities that depend on many independent
+inputs, none of them too much.
+
+\begin{think}
+In a casino with fair games, a player decides to stop as soon as she is one euro ahead. Since a fair random walk
+returns to every level, she is sure to leave with a profit. Does this contradict the fairness of the games? What
+would you need to forbid to restore it?
+\end{think}
+
+\section{Conditioning on a partition}
+
+Let $A_1,A_2,\ldots$ be a finite or countable partition of $\Omega$ into events, and $\mathcal G$ the $\sigma$-algebra of all unions of blocks $A_k$. Knowing
+$\mathcal G$ means knowing which block occurred. For an integrable $X$, the natural guess for $X$ given this information is its
+average over the block that occurred:
+\[
+\mathbb E[X\mid\mathcal G]=\sum_{k:\,P(A_k)>0}\frac{\mathbb E[X\mathbf 1_{A_k}]}{P(A_k)}\,\mathbf 1_{A_k}.
+\]
+This is a random variable, constant on each block. For example, if $X$ is a die roll and $\mathcal G$ tells whether it is even, then
+$\mathbb E[X\mid\mathcal G]$ is $4$ on $\{X\text{ even}\}$ and $3$ on $\{X\text{ odd}\}$. If $Y$ is a discrete random variable, the blocks $\{Y=y\}$ give $\mathbb E[X\mid Y]$, a
+function of $Y$: the conditional expectations of Chapter~2, put together into one random variable.
+
+Two properties characterise this variable $Y=\mathbb E[X\mid\mathcal G]$: it is constant on the blocks, and for every $A\in\mathcal G$,
+\[
+\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A].
+\]
+For $A=A_k$ both sides are $\mathbb E[X\mathbf 1_{A_k}]$, and a general $A$ is a countable union of blocks: sum over them, by dominated convergence
+(the partial sums are bounded by $|X|$ on one side, and by $\sum_k\frac{|\mathbb E[X\mathbf 1_{A_k}]|}{P(A_k)}\mathbf 1_{A_k}$, of expectation at most $\mathbb E|X|$, on the other). On blocks
+of probability $0$ the value of $Y$ is arbitrary; this harmless ambiguity will reappear as ``almost surely''.
+
+There is a third description. If $\mathbb E[X^2]<\infty$, the constant $c$ that minimises $\mathbb E[(X-c)^2\mathbf 1_{A_k}]$ is the average $\frac{\mathbb E[X\mathbf 1_{A_k}]}{P(A_k)}$ (expand the square),
+so $\mathbb E[X\mid\mathcal G]$ is the variable constant on the blocks that is closest to $X$ in mean square. For a general $\sigma$-algebra
+$\mathcal G$, which need not come from a partition (the information ``the value of a Gaussian variable'' does not), the
+first description makes no sense, but the other two do. We take the third as the definition, which requires some
+geometry in a space of random variables.
+
+\section{The space \texorpdfstring{$L^2$}{L2}}
+
+Let $L^2$ be the set of random variables $X$ with $\mathbb E[X^2]<\infty$, two variables being identified when they are equal almost surely.
+For $X,Y\in L^2$, $|XY|\le\frac12(X^2+Y^2)$ is integrable, and
+\[
+\langle X,Y\rangle=\mathbb E[XY],\qquad\|X\|=\sqrt{\mathbb E[X^2]}
+\]
+define an inner product and its norm: $\|X\|=0$ only if $X=0$ almost surely. Cauchy--Schwarz $|\mathbb E[XY]|\le\|X\|\,\|Y\|$ holds (Chapter~5), and
+expanding $\|X+Y\|^2$ with it gives the triangle inequality $\|X+Y\|\le\|X\|+\|Y\|$. So $L^2$ is a Euclidean space as in Tome~0, Chapter~7, except
+that its dimension is infinite. Convergence in $L^2$ (Chapter~6) is convergence for this norm. The decisive property of
+$L^2$ is that it has no holes.
+
+\begin{theorem}[Riesz--Fischer]\label{thm:complete}
+$L^2$ is complete: if $(X_n)$ is a Cauchy sequence in $L^2$ (for every $\varepsilon>0$ there is $N$ with $\|X_m-X_n\|\le\varepsilon$ for $m,n\ge N$), then there is
+$X\in L^2$ with $\|X_n-X\|\to0$. Moreover a subsequence of $(X_n)$ converges to $X$ almost surely.
+\end{theorem}
+\begin{proof}
+Choose $n_1<n_2<\cdots$ such that $\|X_m-X_n\|\le2^{-k}$ for $m,n\ge n_k$. Let $G=\sum_k|X_{n_{k+1}}-X_{n_k}|$, a sum of non-negative terms. Its partial sums $G_K$ satisfy
+$\|G_K\|\le\sum_{k<K}2^{-k}\le2$ by the triangle inequality, and $G_K^2$ increases to $G^2$, so $\mathbb E[G^2]\le4$ by monotone convergence. Hence $G<\infty$ almost
+surely, and on this event the series $\sum_k(X_{n_{k+1}}-X_{n_k})$ converges absolutely: $X_{n_k}$ has a limit. Let $X$ be this limit where it exists, and $0$
+elsewhere; it is a random variable (Proposition~\ref{prop:measurable}). For $n\ge n_j$, Fatou's lemma gives
+\[
+\mathbb E[(X_n-X)^2]\le\liminf_k\mathbb E[(X_n-X_{n_k})^2]\le4^{-j}.
+\]
+So $X_n-X\in L^2$, hence $X\in L^2$, and $\|X_n-X\|\to0$.
+\end{proof}
+
+A \emph{closed subspace} $H$ of $L^2$ is a linear subspace that contains the limits in $L^2$ of its convergent sequences.
+
+\begin{theorem}[orthogonal projection]\label{thm:projection}
+Let $H$ be a closed subspace of $L^2$ and $X\in L^2$. There is $Y\in H$, unique up to almost sure equality, such that
+\[
+\|X-Y\|=\min_{Z\in H}\|X-Z\|.
+\]
+It is characterised by: $Y\in H$ and $\mathbb E[(X-Y)Z]=0$ for every $Z\in H$.
+\end{theorem}
+\begin{proof}
+Let $d$ be the infimum of $\|X-Z\|$ over $Z\in H$, and $Z_n\in H$ with $\|X-Z_n\|^2\to d^2$. The parallelogram identity $\|a+b\|^2+\|a-b\|^2=2\|a\|^2+2\|b\|^2$
+with $a=X-Z_m$ and $b=X-Z_n$ gives, with $\delta_n=\|X-Z_n\|^2$ and since $V=\frac12(Z_m+Z_n)$ is in $H$,
+\[
+\begin{aligned}\|Z_n-Z_m\|^2&=2\delta_m+2\delta_n-4\|X-V\|^2\eqbr\le2\delta_m+2\delta_n-4d^2,\end{aligned}
+\]
+which tends to $0$. So $(Z_n)$ is a Cauchy sequence, which converges to some $Y$ (Theorem~\ref{thm:complete}), and $Y\in H$ since $H$ is
+closed. By the triangle inequality $\|X-Y\|=\lim\|X-Z_n\|=d$.
+
+If $Y$ is a minimiser and $Z\in H$, then for all real $t$, $\|X-Y-tZ\|^2\ge\|X-Y\|^2$, that is $t^2\|Z\|^2-2t\,\mathbb E[(X-Y)Z]\ge0$; this forces $\mathbb E[(X-Y)Z]=0$.
+Conversely, if $Y'\in H$ and $X-Y'$ is orthogonal to $H$, then for $Z\in H$ Pythagoras gives $\|X-Z\|^2=\|X-Y'\|^2+\|Y'-Z\|^2\ge\|X-Y'\|^2$, so $Y'$ is a
+minimiser. Finally, if $Y$ and $Y'$ both satisfy the orthogonality, then $\mathbb E[(Y'-Y)Z]=0$ for all $Z\in H$, and $Z=Y'-Y$ gives $Y=Y'$ almost surely.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-projection}
+\caption{Conditional expectation as a projection: $\mathbb E[X\mid\mathcal G]$ is the point of the subspace $L^2(\mathcal G)$ closest to $X$, and
+the error $X-\mathbb E[X\mid\mathcal G]$ is orthogonal to every $\mathcal G$-measurable variable.}
+\label{fig:projection}
+\end{figure}
+
+\section{Conditional expectation}
+
+Let $\mathcal G\subseteq\mathcal F$ be a $\sigma$-algebra, the information available. A random variable $Z$ is \emph{$\mathcal G$-measurable} if $\{Z\le t\}\in\mathcal G$ for every $t$:
+its value is known once we know which events of $\mathcal G$ occurred. By Proposition~\ref{prop:measurable} applied on $(\Omega,\mathcal G)$, sums, products,
+limits and continuous functions of $\mathcal G$-measurable variables are $\mathcal G$-measurable. Let $L^2(\mathcal G)$ be the set of $X\in L^2$ that are almost
+surely equal to a $\mathcal G$-measurable variable.
+
+\begin{lemma}\label{lem:closed}
+$L^2(\mathcal G)$ is a closed subspace of $L^2$.
+\end{lemma}
+\begin{proof}
+It is a linear subspace. Let $X_n\in L^2(\mathcal G)$ converge to $X$ in $L^2$, and let $X_n'$ be $\mathcal G$-measurable with $X_n'=X_n$ almost surely. Then
+$X_n'\to X$ in $L^2$, and by Theorem~\ref{thm:complete} (whose limit is unique up to null sets) a subsequence $X_{n_k}'$ converges to $X$ almost surely.
+The variable $X'=\limsup_kX'_{n_k}$ where it is finite, $0$ elsewhere, is $\mathcal G$-measurable and equal to $X$ almost surely.
+\end{proof}
+
+\begin{theorem}[conditional expectation]\label{thm:condexp}
+Let $X$ be integrable. There is an integrable $\mathcal G$-measurable $Y$ such that
+\[
+\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A]\qquad\text{for every }A\in\mathcal G,
+\]
+and it is unique up to almost sure equality. It is written $\mathbb E[X\mid\mathcal G]$. If $X\in L^2$, it is the orthogonal projection of $X$ on
+$L^2(\mathcal G)$. If $X\ge0$, then $\mathbb E[X\mid\mathcal G]\ge0$ almost surely.
+\end{theorem}
+\begin{proof}
+\emph{Uniqueness.} If $Y$ and $Y'$ both qualify, $A=\{Y>Y'\}$ is in $\mathcal G$ and $\mathbb E[(Y-Y')\mathbf 1_A]=0$. The variable $(Y-Y')\mathbf 1_A$ is non-negative with
+expectation $0$, so it is $0$ almost surely, that is $P(Y>Y')=0$. By symmetry $Y=Y'$ almost surely.
+
+\emph{Square-integrable $X$.} Let $Y$ be a $\mathcal G$-measurable version of the projection of $X$ on $L^2(\mathcal G)$ (Lemma~\ref{lem:closed} and
+Theorem~\ref{thm:projection}). For $A\in\mathcal G$, $\mathbf 1_A\in L^2(\mathcal G)$, so $\mathbb E[(X-Y)\mathbf 1_A]=0$. And $Y$ is integrable, as $|Y|\le\frac12(1+Y^2)$. If $X\ge0$, take
+$A=\{Y<0\}$: then $\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A]\ge0$ while $Y\mathbf 1_A\le0$, so $Y\mathbf 1_A=0$ almost surely and $Y\ge0$ almost surely.
+
+\emph{Integrable $X\ge0$.} Let $X_n=\min(X,n)\in L^2$ and $Y_n$ the variable just built for $X_n$. By uniqueness $Y_{n+1}-Y_n$ is the one for $X_{n+1}-X_n\ge0$,
+so it is non-negative almost surely. Off a null set $N\in\mathcal G$, $(Y_n)$ is non-negative and non-decreasing; let $Y=\lim Y_n$ there and $Y=0$ on
+$N$. For $A\in\mathcal G$, monotone convergence on both sides of $\mathbb E[Y_n\mathbf 1_A]=\mathbb E[X_n\mathbf 1_A]$ gives $\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$. With $A=\Omega$, $\mathbb E[Y]=\mathbb E[X]<\infty$,
+so $Y$ is finite almost surely, and we may set $Y=0$ where it is infinite.
+
+\emph{Integrable $X$.} Write $X=X^+-X^-$ and take the difference of the two variables just built.
+\end{proof}
+
+For a random variable or vector $V$, we write $\mathbb E[X\mid V]$ for $\mathbb E[X\mid\sigma(V)]$, where $\sigma(V)$ is the $\sigma$-algebra of the events $\{V\in B\}$
+($B$ Borel). If $V$ is discrete, $\sigma(V)$ comes from the partition into the events $\{V=v\}$ and $\mathbb E[X\mid V]$ is the variable of Section~1, since that
+variable has the defining property.
+
+\begin{proposition}\label{prop:cerules}
+Let $X$, $X'$ be integrable and $a$, $b$ real. Almost surely:
+\begin{enumerate}[label=(\alph*)]
+\item $\mathbb E[aX+bX'\mid\mathcal G]=a\,\mathbb E[X\mid\mathcal G]+b\,\mathbb E[X'\mid\mathcal G]$;
+\item if $X\le X'$ then $\mathbb E[X\mid\mathcal G]\le\mathbb E[X'\mid\mathcal G]$; and $\bigl|\mathbb E[X\mid\mathcal G]\bigr|\le\mathbb E\bigl[|X|\,\big|\,\mathcal G\bigr]$;
+\item $\mathbb E\bigl[\mathbb E[X\mid\mathcal G]\bigr]=\mathbb E[X]$;
+\item if $X$ is $\mathcal G$-measurable, $\mathbb E[X\mid\mathcal G]=X$; if $X$ is independent of $\mathcal G$, $\mathbb E[X\mid\mathcal G]=\mathbb E[X]$;
+\item (\emph{taking out what is known}) if $Z$ is $\mathcal G$-measurable and $ZX$ is integrable, $\mathbb E[ZX\mid\mathcal G]=Z\,\mathbb E[X\mid\mathcal G]$;
+\item (\emph{tower property}) if $\mathcal H\subseteq\mathcal G$ is a $\sigma$-algebra, $\mathbb E\bigl[\mathbb E[X\mid\mathcal G]\,\big|\,\mathcal H\bigr]=\mathbb E[X\mid\mathcal H]$;
+\item if $X\in L^2$, then $\mathbb E[X\mid\mathcal G]^2\le\mathbb E[X^2\mid\mathcal G]$, and in particular $\mathbb E[X\mid\mathcal G]\in L^2$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Each time we check that the proposed variable is $\mathcal G$-measurable and has the defining property, and conclude by uniqueness.
+Write $Y=\mathbb E[X\mid\mathcal G]$.
+(a) Linearity of $\mathbb E$. (b) $X'-X\ge0$, so $\mathbb E[X'-X\mid\mathcal G]\ge0$ by the theorem; apply this to $-|X|\le X\le|X|$ for the second statement.
+(c) Take $A=\Omega$. (d) The first statement is the definition. For the second, ``independent of $\mathcal G$'' means that $X$ is independent of
+$\mathbf 1_A$ for each $A\in\mathcal G$, so $\mathbb E[X\mathbf 1_A]=\mathbb E[X]P(A)$ by Proposition~\ref{prop:indepcdf}.
+
+(e) If $Z=\mathbf 1_B$ with $B\in\mathcal G$, then $\mathbb E[\mathbf 1_BX\mathbf 1_A]=\mathbb E[X\mathbf 1_{A\cap B}]=\mathbb E[Y\mathbf 1_{A\cap B}]=\mathbb E[\mathbf 1_BY\mathbf 1_A]$; by linearity the formula holds
+for simple $\mathcal G$-measurable $Z\ge0$. If $Z\ge0$ and $X\ge0$, then $Y\ge0$; take simple $Z_n$ increasing to $Z$ (as in Chapter~5) and apply
+monotone convergence to both sides of $\mathbb E[Z_nX\mathbf 1_A]=\mathbb E[Z_nY\mathbf 1_A]$: so $\mathbb E[ZX\mathbf 1_A]=\mathbb E[ZY\mathbf 1_A]$, and with $A=\Omega$, $ZY$ is integrable.
+In general split $Z=Z^+-Z^-$ and $X=X^+-X^-$: the four products $Z^\pm X^\pm$ are bounded by $|ZX|$, and the formula holds for each.
+
+(f) For $A\in\mathcal H$, also $A\in\mathcal G$, so $\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A]=\mathbb E\bigl[\mathbb E[X\mid\mathcal H]\mathbf 1_A\bigr]$: the variable $\mathbb E[X\mid\mathcal H]$ has the defining
+property of the conditional expectation of $Y$ given $\mathcal H$.
+
+(g) For each rational $q$, $(X-q)^2\ge0$ gives $\mathbb E[(X-q)^2\mid\mathcal G]\ge0$, that is, by (a) and (d), $\mathbb E[X^2\mid\mathcal G]-2qY+q^2\ge0$ almost surely. Off a
+null set this holds for all rational $q$ at once, hence by continuity for all real $q$, in particular for $q=Y(\omega)$: $\mathbb E[X^2\mid\mathcal G]\ge Y^2$.
+Then $\mathbb E[Y^2]\le\mathbb E[X^2]$ by (c).
+\end{proof}
+
+Rule (e) says that what is known at the time of conditioning behaves as a constant; rule (f) says that the coarser
+information wins. Here is a computation that uses only the definition and a symmetry.
+
+\begin{example}\label{ex:exchange}
+Let $X_1,\dots,X_n$ be independent with the same law, integrable, and $S=X_1+\dots+X_n$. Then $\mathbb E[X_1\mid S]=\frac Sn$. Indeed, for a Borel set $B$, the
+vectors $(X_1,S)$ and $(X_i,S)$ have the same law (swapping $X_1$ and $X_i$ does not change the law of $(X_1,\dots,X_n)$, a product law), so
+$\mathbb E[X_i\mathbf 1_{\{S\in B\}}]$ does not depend on $i$. Summing over $i$, $n\,\mathbb E[X_1\mathbf 1_{\{S\in B\}}]=\mathbb E[S\mathbf 1_{\{S\in B\}}]$, which is the defining property of $\frac Sn$.
+Knowing only the total, each term is expected to be its fair share, whatever the law.
+\end{example}
+
+\section{Martingales}
+
+\begin{definition}\label{def:martingale}
+A \emph{filtration} is a non-decreasing sequence of $\sigma$-algebras $\mathcal F_0\subseteq\mathcal F_1\subseteq\cdots\subseteq\mathcal F$: $\mathcal F_n$ is the information available at time
+$n$. A sequence $(X_n)_{n\ge0}$ is \emph{adapted} if each $X_n$ is $\mathcal F_n$-measurable. An adapted sequence of integrable variables is
+a \emph{martingale} if
+\[
+\mathbb E[X_{n+1}\mid\mathcal F_n]=X_n\qquad\text{for all }n\ge0,
+\]
+a \emph{supermartingale} if $\mathbb E[X_{n+1}\mid\mathcal F_n]\le X_n$, and a \emph{submartingale} if $\mathbb E[X_{n+1}\mid\mathcal F_n]\ge X_n$.
+\end{definition}
+
+A supermartingale is an unfavourable game (the casino is right to like the word). By the tower property, a
+martingale satisfies $\mathbb E[X_m\mid\mathcal F_n]=X_n$ for all $m\ge n$, and $\mathbb E[X_n]=\mathbb E[X_0]$ for all $n$. When no filtration is mentioned, $\mathcal F_n$ is
+generated by the variables that drive the process up to time $n$.
+
+\begin{example}\label{ex:martingales}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Sums.} If $\xi_1,\xi_2,\ldots$ are independent, integrable and centred, and $\mathcal F_n=\sigma(\xi_1,\dots,\xi_n)$, then $S_n=\xi_1+\dots+\xi_n$ is a
+martingale: $\mathbb E[S_{n+1}\mid\mathcal F_n]=S_n+\mathbb E[\xi_{n+1}]$ by (a) and (d).
+\item \emph{Squares.} If moreover $\mathbb E[\xi_k^2]=\sigma^2$ for all $k$, then $S_n^2-n\sigma^2$ is a martingale. Indeed
+$S_{n+1}^2=S_n^2+2S_n\xi_{n+1}+\xi_{n+1}^2$, and $\mathbb E[S_n\xi_{n+1}\mid\mathcal F_n]=S_n\mathbb E[\xi_{n+1}]=0$ by (e) and (d), while $\mathbb E[\xi_{n+1}^2\mid\mathcal F_n]=\sigma^2$.
+\item \emph{Products.} If $\xi_1,\xi_2,\ldots$ are independent, non-negative, with mean $1$, then $P_n=\xi_1\cdots\xi_n$ is a martingale. With $\xi_k$ equal to $0$
+or $2$ with probability $\frac12$, $P_n$ is the fortune of a player who stakes everything on a fair coin at each round: $P_n\to0$ almost surely
+while $\mathbb E[P_n]=1$.
+\item \emph{Information.} If $X$ is integrable and $(\mathcal F_n)$ any filtration, $M_n=\mathbb E[X\mid\mathcal F_n]$ is a martingale, by the tower property: the
+best guess of $X$ is revised fairly as information arrives.
+\item \emph{Exponential martingale of a walk.} If $S_n$ is the walk with steps $+1$ with probability $p$ and $-1$ with probability $q=1-p$, then
+$(\frac qp)^{S_n}$ is a martingale, as $p\frac qp+q\frac pq=1$; it is a product as in (c).
+\end{enumerate}
+\end{example}
+
+A \emph{betting strategy} for a game with outcomes $X_k-X_{k-1}$ is a sequence $(H_k)_{k\ge1}$ where $H_k$, the stake on round $k$, is decided
+before the round: $H_k$ is $\mathcal F_{k-1}$-measurable. Such a sequence is called \emph{predictable}. The player's gain after $n$ rounds is
+\[
+(H\cdot X)_n=\sum_{k=1}^nH_k(X_k-X_{k-1}),
+\]
+a discrete version of the stochastic integral of Chapter~11.
+
+\begin{proposition}[no system beats a fair game]\label{prop:transform}
+Let $(H_k)$ be predictable and bounded, $|H_k|\le K$. If $X$ is a martingale, $H\cdot X$ is a martingale. If $X$ is a supermartingale
+and $0\le H_k\le K$, then $H\cdot X$ is a supermartingale; similarly for submartingales.
+\end{proposition}
+\begin{proof}
+$(H\cdot X)_n$ is adapted, and integrable since it is bounded by $K\sum_{k\le n}|X_k-X_{k-1}|$. By rule (e),
+$\mathbb E[(H\cdot X)_{n+1}-(H\cdot X)_n\mid\mathcal F_n]=H_{n+1}\,\mathbb E[X_{n+1}-X_n\mid\mathcal F_n]$, which is $0$ for a martingale, and $\le0$ for a supermartingale when $H_{n+1}\ge0$.
+\end{proof}
+
+\section{Stopping times and optional stopping}
+
+\begin{definition}\label{def:stopping}
+A \emph{stopping time} is a random variable $T$ with values in $\{0,1,2,\ldots\}\cup\{\infty\}$ such that $\{T=n\}\in\mathcal F_n$ for every $n$: whether to stop at
+time $n$ is decided with the information available at time $n$.
+\end{definition}
+
+The first time an adapted process enters a Borel set $B$ is a stopping time, since $\{T\le n\}=\bigcup_{k\le n}\{X_k\in B\}\in\mathcal F_n$. The last time it is in $B$ is
+in general not: deciding it requires the future. The process \emph{stopped} at $T$ is $X^T_n=X_{T\wedge n}$, where $T\wedge n=\min(T,n)$.
+
+\begin{proposition}\label{prop:stopped}
+If $X$ is a martingale (or a supermartingale) and $T$ a stopping time, the stopped process $X^T$ is a martingale (or a supermartingale).
+In particular $\mathbb E[X_{T\wedge n}]=\mathbb E[X_0]$ for a martingale, and $\mathbb E[X_{T\wedge n}]\le\mathbb E[X_0]$ for a supermartingale.
+\end{proposition}
+\begin{proof}
+$X_{T\wedge n}=X_0+\sum_{k=1}^n\mathbf 1_{\{T\ge k\}}(X_k-X_{k-1})$, and $H_k=\mathbf 1_{\{T\ge k\}}$ is predictable, since $\{T\ge k\}$ is the complement of $\{T\le k-1\}\in\mathcal F_{k-1}$.
+Apply Proposition~\ref{prop:transform} with $0\le H_k\le1$.
+\end{proof}
+
+\begin{theorem}[optional stopping, Doob]\label{thm:ost}
+Let $X$ be a martingale and $T$ a stopping time. In each of the following cases, $X_T$ is integrable and $\mathbb E[X_T]=\mathbb E[X_0]$:
+\begin{enumerate}[label=(\alph*)]
+\item $T\le N$ for a constant $N$;
+\item $T<\infty$ almost surely, and $|X_{T\wedge n}|\le K$ for all $n$, for a constant $K$;
+\item $\mathbb E[T]<\infty$, and $|X_n-X_{n-1}|\le c$ for all $n$, for a constant $c$.
+\end{enumerate}
+For a supermartingale, the same holds with $\mathbb E[X_T]\le\mathbb E[X_0]$.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:stopped}, $\mathbb E[X_{T\wedge n}]=\mathbb E[X_0]$ for every $n$ (or $\le$). (a) Take $n=N$. In (b) and (c), $T<\infty$ almost surely, so $X_{T\wedge n}\to X_T$
+almost surely. In (b), dominated convergence with the bound $K$ concludes. In (c),
+$|X_{T\wedge n}-X_0|\le\sum_{k\le T\wedge n}|X_k-X_{k-1}|\le cT$, and $cT+|X_0|$ is an integrable bound: dominated convergence again.
+\end{proof}
+
+The hypotheses cannot simply be dropped. For the simple random walk started at $0$, let $T$ be the first time it reaches $1$.
+By the gambler's ruin (Theorem~\ref{thm:ruin}), the walk reaches $1$ before $-N$ with probability $\frac N{N+1}$, for every $N$; so $T<\infty$ almost surely.
+Yet $S_T=1$, and $\mathbb E[S_T]=1\ne0$. The stopped walk is unbounded below, and by case (c) $\mathbb E[T]=\infty$. This answers the opening question:
+the player who stops when one euro ahead needs unlimited credit and an infinite expected playing time; with either a
+credit limit or a time limit, case (b) or (a) applies and the game is fair again.
+
+Optional stopping gives a second proof of the symmetric gambler's ruin, without solving any recurrence.
+
+\begin{proposition}\label{prop:ruinost}
+Let $S$ be the simple random walk started at $a\in\{0,\dots,N\}$, and $T$ the first time it hits $0$ or $N$. Then $P(S_T=N)=\frac aN$ and $\mathbb E[T]=a(N-a)$.
+\end{proposition}
+\begin{proof}
+By Lemma~\ref{lem:exit}, $T<\infty$ almost surely. The walk $S_n$ is a martingale (Example~\ref{ex:martingales}(a), shifted by $a$), and $|S_{T\wedge n}|\le N$; by case (b),
+$a=\mathbb E[S_T]=N\,P(S_T=N)$. Next, $S_n^2-n$ is a martingale (Example~\ref{ex:martingales}(b): $(S_n-a)^2-n$ is one, and $S_n^2-n$ differs from it by $2a(S_n-a)+a^2$), so by Proposition~\ref{prop:stopped}
+$\mathbb E[S_{T\wedge n}^2]-\mathbb E[T\wedge n]=a^2$. As $n\to\infty$, $\mathbb E[S^2_{T\wedge n}]\to\mathbb E[S_T^2]=N^2\cdot\frac aN$ by dominated convergence, and $\mathbb E[T\wedge n]\to\mathbb E[T]$ by monotone
+convergence. So $\mathbb E[T]=aN-a^2$.
+\end{proof}
+
+Now the monkey. Fix an alphabet of $m$ letters and a word $w=w_1\cdots w_\ell$. Say that $k\in\{1,\dots,\ell\}$ is an \emph{overlap} of $w$ if the
+first $k$ letters of $w$ are also its last $k$ letters: $w_1\cdots w_k=w_{\ell-k+1}\cdots w_\ell$. The word itself ($k=\ell$) is always an overlap.
+
+\begin{theorem}[waiting for a word]\label{thm:abra}
+Letters $U_1,U_2,\ldots$ are independent and uniform on an alphabet of $m$ letters. Let $T$ be the first $n$ such that $U_{n-\ell+1}\cdots U_n=w$. Then
+\[
+\mathbb E[T]=\sum_{k\text{ overlap of }w}m^k.
+\]
+\end{theorem}
+\begin{proof}
+\emph{The casino.} Just before each time $j=1,2,\ldots$ a new gambler arrives with $1$ euro. At time $j$ she stakes it on $U_j=w_1$, at fair odds:
+the casino pays $m$ times the stake if she is right, and keeps it otherwise. If she wins, she stakes all her fortune on
+$U_{j+1}=w_2$, and so on, until she loses everything or has won $\ell$ times; then she stops betting. Let $W^j_n$ be her fortune after time
+$n$ ($W^j_n=1$ for $n<j$). Each $W^j$ is a martingale for $\mathcal F_n=\sigma(U_1,\dots,U_n)$: if she bets at time $n+1$ on the letter $w_r$ (an event and an index
+known at time $n$), then $W^j_{n+1}=W^j_n\cdot m\mathbf 1_{\{U_{n+1}=w_r\}}$, and $\mathbb E[m\mathbf 1_{\{U_{n+1}=w_r\}}\mid\mathcal F_n]=1$ by rules (d) and (e); otherwise $W^j_{n+1}=W^j_n$.
+So the total net gain of the gamblers,
+\[
+M_n=\sum_{j\le n}(W^j_n-1)=\Bigl(\sum_{j\le n}W^j_n\Bigr)-n,
+\]
+is a martingale with $M_0=0$. At most $\ell$ gamblers are betting at any time, each with a fortune at most $m^\ell$, so $|M_{n+1}-M_n|\le\ell m^\ell+1$.
+
+\emph{Integrability of $T$.} Cut time into blocks of $\ell$ letters. Each block spells $w$ with probability $m^{-\ell}$, independently, so
+$P(T>k\ell)\le(1-m^{-\ell})^k$ and $\mathbb E[T]=\sum_nP(T>n)\le\ell\sum_k(1-m^{-\ell})^k=\ell m^\ell$.
+
+\emph{Stopping.} By Theorem~\ref{thm:ost}(c), $\mathbb E[M_T]=0$, that is $\mathbb E[T]=\mathbb E\bigl[\sum_{j\le T}W^j_T\bigr]$. At time $T$, the gambler who arrived at time $j=T-k+1$, for
+$1\le k\le\ell$, has made $k$ bets on $w_1,\dots,w_k$ against the letters $U_j\cdots U_T=w_{\ell-k+1}\cdots w_\ell$; she has won them all, with fortune $m^k$, exactly
+when $k$ is an overlap. A gambler who arrived at $j\le T-\ell$ is ruined: she cannot have won $\ell$ bets before time $T$ (the word would have
+appeared earlier), so she lost one. Hence $\sum_{j\le T}W^j_T=\sum_{k\text{ overlap}}m^k$, a constant.
+\end{proof}
+
+ABRACADABRA has overlaps $1$ (A), $4$ (ABRA) and $11$, so the monkey needs on average $26^{11}+26^4+26=3\,670\,344\,487\,444\,778$ letters, about
+$116$ million years at one letter per second. The word ABRACADABRX, with no overlap but itself, takes only $26^{11}$.
+Yet both words appear with the same long-run frequency, $26^{-11}$ per position: occurrences of ABRACADABRA come in clumps
+(ABRACADABRACADABRA contains two), so the gaps between clumps are longer.
+
+\begin{beauty}
+The proof never computes a probability. Instead of asking when the word appears, it asks who has won when it does, and
+fairness converts the answer into an expectation. The same casino computes the expected waiting time for any pattern
+in any sequence of independent symbols, a question of daily importance in DNA analysis and in string matching.
+\end{beauty}
+
+\section{Doob's maximal inequality}
+
+Chebyshev's inequality bounds the probability that $S_n$ is large at the final time $n$. For a martingale, the same bound holds
+for the maximum over all times up to $n$.
+
+\begin{theorem}[Doob's maximal inequality]\label{thm:doob}
+Let $X$ be a non-negative submartingale, $X^*_n=\max_{k\le n}X_k$ and $\lambda>0$. Then
+\[
+\lambda\,P(X_n^*\ge\lambda)\le\mathbb E\bigl[X_n\mathbf 1_{\{X^*_n\ge\lambda\}}\bigr]\le\mathbb E[X_n].
+\]
+If moreover each $X_n$ is in $L^2$, then $\mathbb E[(X^*_n)^2]\le4\,\mathbb E[X_n^2]$.
+\end{theorem}
+\begin{proof}
+Let $T$ be the first $k$ with $X_k\ge\lambda$ (a stopping time, $T=\infty$ if there is none), and $A=\{X^*_n\ge\lambda\}=\{T\le n\}$. Then $X_n-X_{T\wedge n}=\sum_{k\le n}\mathbf 1_{\{T<k\}}(X_k-X_{k-1})$,
+with $H_k=\mathbf 1_{\{T\le k-1\}}$ predictable and in $[0,1]$; by Proposition~\ref{prop:transform} this is a submartingale vanishing at $0$, so $\mathbb E[X_{T\wedge n}]\le\mathbb E[X_n]$.
+On $A$, $X_{T\wedge n}=X_T\ge\lambda$; on $A^c$, $X_{T\wedge n}=X_n$. Hence
+\[
+\lambda P(A)+\mathbb E[X_n\mathbf 1_{A^c}]\le\mathbb E[X_{T\wedge n}]\le\mathbb E[X_n],
+\]
+and subtracting $\mathbb E[X_n\mathbf 1_{A^c}]$ gives the first inequality.
+
+For the second, $Y=X^*_n$ is in $L^2$, since $Y^2\le\sum_{k\le n}X_k^2$. As $Y^2=\int_0^\infty2\lambda\mathbf 1_{\{Y\ge\lambda\}}\dd\lambda$, Tonelli's theorem (A2) and the first inequality give
+\[
+\begin{aligned}\mathbb E[Y^2]&=\int_0^\infty2\lambda P(Y\ge\lambda)\dd\lambda\eqbr\le\int_0^\infty2\,\mathbb E\bigl[X_n\mathbf 1_{\{Y\ge\lambda\}}\bigr]\dd\lambda\\&=2\,\mathbb E[X_nY]\le2\|X_n\|\,\|Y\|\end{aligned}
+\]
+by Tonelli again and Cauchy--Schwarz. If $\|Y\|>0$, divide by it: $\|Y\|\le2\|X_n\|$.
+\end{proof}
+
+\begin{corollary}[Kolmogorov's inequality]\label{cor:kolmogorov}
+If $M$ is a martingale with $M_n\in L^2$, then for $\lambda>0$,
+\[
+P\Bigl(\max_{k\le n}|M_k|\ge\lambda\Bigr)\le\frac{\mathbb E[M_n^2]}{\lambda^2}.
+\]
+\end{corollary}
+\begin{proof}
+$M_k^2$ is a non-negative submartingale: $\mathbb E[M_{k+1}^2\mid\mathcal F_k]\ge\mathbb E[M_{k+1}\mid\mathcal F_k]^2=M_k^2$ by rule (g). Apply Theorem~\ref{thm:doob} to it, with $\lambda^2$.
+\end{proof}
+
+\section{Convergence in \texorpdfstring{$L^2$}{L2}}
+
+\begin{lemma}\label{lem:orth}
+Let $M$ be a martingale with $M_n\in L^2$ for all $n$, and $D_k=M_k-M_{k-1}$. Then $\mathbb E[D_kZ]=0$ for every $Z\in L^2$ that is $\mathcal F_{k-1}$-measurable. In particular the
+increments are orthogonal to each other and to $M_0$, and
+\[
+\mathbb E[M_n^2]=\mathbb E[M_0^2]+\sum_{k=1}^n\mathbb E[D_k^2].
+\]
+\end{lemma}
+\begin{proof}
+$D_kZ$ is integrable by Cauchy--Schwarz, and by rules (c) and (e), $\mathbb E[D_kZ]=\mathbb E\bigl[Z\,\mathbb E[D_k\mid\mathcal F_{k-1}]\bigr]=0$. For $j<k$, $D_j$ and $M_0$ are $\mathcal F_{k-1}$-measurable.
+Expand the square of $M_n=M_0+D_1+\dots+D_n$.
+\end{proof}
+
+\begin{theorem}[convergence in $L^2$]\label{thm:L2conv}
+Let $M$ be a martingale bounded in $L^2$: $\sup_n\mathbb E[M_n^2]<\infty$. Then there is $M_\infty\in L^2$ such that $M_n\to M_\infty$ almost surely and in $L^2$, and
+$M_n=\mathbb E[M_\infty\mid\mathcal F_n]$ for every $n$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:orth}, $\sum_k\mathbb E[D_k^2]<\infty$; let $r_m=\sum_{k>m}\mathbb E[D_k^2]$, which tends to $0$. For $m<n$, $\|M_n-M_m\|^2=\sum_{m<k\le n}\mathbb E[D_k^2]\le r_m$, so $(M_n)$ is a
+Cauchy sequence in $L^2$, with a limit $M_\infty$ by Theorem~\ref{thm:complete}.
+
+\emph{Almost sure convergence.} For fixed $m$, $(M_{m+k}-M_m)_{k\ge0}$ is a martingale for the filtration $(\mathcal F_{m+k})_k$, so by Corollary~\ref{cor:kolmogorov},
+$P(\max_{m\le k\le n}|M_k-M_m|\ge\varepsilon)\le\frac{r_m}{\varepsilon^2}$. These events increase with $n$; their union gives
+\[
+P\Bigl(\sup_{k\ge m}|M_k-M_m|\ge\varepsilon\Bigr)\le\frac{r_m}{\varepsilon^2}.
+\]
+Let $V_m=\sup_{j,k\ge m}|M_j-M_k|\le2\sup_{k\ge m}|M_k-M_m|$. It decreases with $m$ to a limit $V$, and $P(V\ge2\varepsilon)\le P(V_m\ge2\varepsilon)\le\frac{r_m}{\varepsilon^2}\to0$.
+So $V=0$ almost surely (take $\varepsilon=\frac1j$ for all $j$): almost surely $(M_n)$ is a Cauchy sequence of reals, hence converges. Its limit is
+$M_\infty$ almost surely, since a subsequence converges almost surely to $M_\infty$ (Theorem~\ref{thm:complete}).
+
+\emph{Closure.} For $A\in\mathcal F_n$ and $m\ge n$, $\mathbb E[M_m\mathbf 1_A]=\mathbb E[M_n\mathbf 1_A]$, and $|\mathbb E[M_m\mathbf 1_A]-\mathbb E[M_\infty\mathbf 1_A]|\le\|M_m-M_\infty\|\to0$ by Cauchy--Schwarz.
+So $\mathbb E[M_\infty\mathbf 1_A]=\mathbb E[M_n\mathbf 1_A]$.
+\end{proof}
+
+For example, if $\varepsilon_1,\varepsilon_2,\ldots$ are independent fair signs $\pm1$ and $\sum_na_n^2<\infty$, then $\sum_n\varepsilon_na_n$ converges almost surely: its partial
+sums form a martingale with $\mathbb E[M_n^2]=\sum_{k\le n}a_k^2$. The harmonic series with random signs $\sum_n\frac{\varepsilon_n}n$ converges almost surely, although
+$\sum_n\frac1n$ diverges.
+
+\section{Upcrossings and almost sure convergence}
+
+Boundedness in $L^2$ is a strong hypothesis. Doob found a way to prove almost sure convergence from boundedness in
+$L^1$ alone, by counting oscillations. Fix $a<b$. An \emph{upcrossing} of $[a,b]$ by $X_0,\dots,X_n$ is a passage from a value $\le a$ to a later
+value $\ge b$; let $U_n[a,b]$ be the number of completed upcrossings, the largest $k$ such that there are times
+$s_1<t_1<s_2<t_2<\dots<s_k<t_k\le n$ with $X_{s_i}\le a$ and $X_{t_i}\ge b$.
+
+\begin{lemma}[Doob's upcrossing inequality]\label{lem:upcrossing}
+If $X$ is a supermartingale, then $(b-a)\,\mathbb E\bigl[U_n[a,b]\bigr]\le\mathbb E\bigl[(X_n-a)^-\bigr]$.
+\end{lemma}
+\begin{proof}
+Consider the strategy ``buy low, sell high'': start holding one unit as soon as $X\le a$, hold it until $X\ge b$, then wait until
+$X\le a$ again, and so on. Formally, $H_1=\mathbf 1_{\{X_0\le a\}}$, and for $k\ge1$, $H_{k+1}=1$ if either $H_k=1$ and $X_k<b$, or $H_k=0$ and $X_k\le a$; otherwise $H_{k+1}=0$.
+By induction $H_k$ is $\mathcal F_{k-1}$-measurable, with values in $\{0,1\}$. Each completed upcrossing contributes at least $b-a$ to $(H\cdot X)_n$; a
+holding period still open at time $n$, started at a time $s$ with $X_s\le a$, contributes $X_n-X_s\ge X_n-a\ge-(X_n-a)^-$. So
+\[
+(H\cdot X)_n\ge(b-a)\,U_n[a,b]-(X_n-a)^-.
+\]
+By Proposition~\ref{prop:transform}, $H\cdot X$ is a supermartingale vanishing at $0$, so $\mathbb E[(H\cdot X)_n]\le0$, and the inequality follows.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-upcross}
+\caption{The upcrossings of $[a,b]$ by a path: the shaded periods are those where the strategy ``buy at or below $a$, sell at or
+above $b$'' holds the asset. Each completed upcrossing earns at least $b-a$.}
+\label{fig:upcross}
+\end{figure}
+
+\begin{theorem}[martingale convergence, Doob]\label{thm:supconv}
+Let $X$ be a supermartingale with $\sup_n\mathbb E|X_n|<\infty$. Then $X_n$ converges almost surely to an integrable limit $X_\infty$. In particular,
+every non-negative supermartingale, and every non-negative martingale, converges almost surely.
+\end{theorem}
+\begin{proof}
+Let $K=\sup_n\mathbb E|X_n|$. As $n\to\infty$, $U_n[a,b]$ increases to the total number $U_\infty[a,b]$ of upcrossings, and $(X_n-a)^-\le|X_n|+|a|$, so by monotone
+convergence and the lemma $(b-a)\,\mathbb E[U_\infty[a,b]]\le K+|a|$. Hence $U_\infty[a,b]<\infty$ almost surely. On the event $\{\liminf X_n<a<b<\limsup X_n\}$ the path
+crosses $[a,b]$ upwards infinitely often, so this event is null. The union of these events over rational $a<b$ is null, and off it
+$\liminf X_n=\limsup X_n$ in $[-\infty,+\infty]$. By Fatou's lemma $\mathbb E[\liminf|X_n|]\le K$, so the limit is finite almost surely and integrable. For a
+non-negative supermartingale, $\mathbb E|X_n|=\mathbb E[X_n]\le\mathbb E[X_0]$.
+\end{proof}
+
+The limit need not be the limit in $L^1$: the fortune $P_n$ of the all-in player of Example~\ref{ex:martingales}(c) converges to $0$ while $\mathbb E[P_n]=1$.
+The exact condition for convergence in $L^1$, \emph{uniform integrability}, is studied in Tome~6.
+
+\begin{theorem}[P\'olya's urn]\label{thm:polyaurn}
+An urn contains one red and one blue ball. At each step a ball is drawn uniformly, and put back together with a new
+ball of the same colour. Let $R_n$ be the number of red balls after $n$ steps and $M_n=\frac{R_n}{n+2}$ their proportion. Then $M_n$ is a martingale,
+$P(R_n=k)=\frac1{n+1}$ for $k=1,\dots,n+1$, and $M_n$ converges almost surely to a limit $M_\infty$ that is uniform on $[0,1]$.
+\end{theorem}
+\begin{proof}
+Given the past, a red ball is added with probability $M_n$, so $\mathbb E[R_{n+1}\mid\mathcal F_n]=R_n+M_n=R_n\frac{n+3}{n+2}$, and $\mathbb E[M_{n+1}\mid\mathcal F_n]=M_n$ (rule (e) and the
+formula of Section~1, the past being discrete). A given sequence of $n$ draws with $j$ red ones has probability
+$\frac{j!\,(n-j)!}{(n+1)!}$: the numerators of the successive factors are $1,2,\dots,j$ for the red draws and $1,\dots,n-j$ for the blue ones, in some order,
+and the denominators are $2,3,\dots,n+1$. Multiplying by the $\binom nj$ orders, $P(R_n=j+1)=\frac1{n+1}$.
+
+$M_n$ is a non-negative martingale, so it converges almost surely (Theorem~\ref{thm:supconv}), hence in law (Proposition~\ref{prop:modes}). Now $P(M_n\le x)$ is
+the number of $k\in\{1,\dots,n+1\}$ with $k\le x(n+2)$, divided by $n+1$, which tends to $x$ for $x\in[0,1]$. By Proposition~\ref{prop:law}, the distribution
+function of $M_\infty$ equals $x$ at its continuity points, which are dense; by right-continuity it equals $x$ on $[0,1]$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-polya}
+\caption{Twenty runs of P\'olya's urn: the proportion of red balls over $1000$ draws. Each run settles down, but at a
+random level: the urn remembers its first draws forever.}
+\label{fig:polya}
+\end{figure}
+
+The limit is random: early luck is reinforced and never forgotten, a model for the success of technologies or of
+species that grow by imitation. The same theorem keeps a promise of Chapter~3 about branching processes. Recall
+that $Z_0=1$ and $Z_{n+1}=\sum_{i\le Z_n}\xi_{n+1,i}$, where the $\xi_{n,i}$ are independent with the offspring law $(p_k)$, of mean $m$ and generating function $G$.
+
+\begin{theorem}[growth of a branching process]\label{thm:gwlimit}
+Let $0<m<\infty$ and $W_n=\frac{Z_n}{m^n}$.
+\begin{enumerate}[label=(\alph*)]
+\item $W_n$ is a non-negative martingale, which converges almost surely to a limit $W$.
+\item If $m\le1$ and $p_1<1$, then $W=0$ almost surely.
+\item If $m>1$ and the offspring law has a finite variance $\sigma^2$, then $W_n\to W$ in $L^2$, $\mathbb E[W]=1$, $\mathrm{Var}(W)=\frac{\sigma^2}{m(m-1)}$, and up to a null set
+$\{W=0\}$ is the event of extinction.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Let $\mathcal F_n$ be generated by the $\xi_{k,i}$ with $k\le n$. For $A\in\mathcal F_n$, split according to the value of $Z_n$; as the $\xi_{n+1,i}$ are independent of
+$\mathcal F_n$,
+\[
+\mathbb E[Z_{n+1}\mathbf 1_A]=\sum_kP(A,Z_n=k)\,km=\mathbb E[mZ_n\mathbf 1_A].
+\]
+So $\mathbb E[Z_{n+1}\mid\mathcal F_n]=mZ_n$, which gives the martingale property, and $\mathbb E[Z_n]=m^n$. Theorem~\ref{thm:supconv} gives convergence.
+
+(b) By Theorem~\ref{thm:extinction} the population dies out almost surely, so $W_n=0$ for large $n$.
+
+(c) In the same way, since $\mathbb E[(\sum_{i\le k}\xi_i)^2]=k\sigma^2+k^2m^2$, we get $\mathbb E[Z_{n+1}^2]=\sigma^2m^n+m^2\,\mathbb E[Z_n^2]$, so
+$\mathbb E[W_{n+1}^2]=\mathbb E[W_n^2]+\sigma^2m^{-n-2}$ and
+\[
+\mathbb E[W_n^2]=1+\sigma^2\sum_{k=0}^{n-1}m^{-k-2}\le1+\frac{\sigma^2}{m(m-1)}.
+\]
+By Theorem~\ref{thm:L2conv}, $W_n\to W$ in $L^2$, so $\mathbb E[W]=\lim\mathbb E[W_n]=1$ and $\mathbb E[W^2]=\lim\mathbb E[W_n^2]=1+\frac{\sigma^2}{m(m-1)}$.
+
+Let $r=P(W=0)$. The descendants of the $i$-th child of the ancestor form a Galton--Watson process $Z^{(i)}$, with
+$Z_{n+1}=\sum_{i\le Z_1}Z^{(i)}_n$; these processes are independent, with the law of $Z$, and independent of $Z_1$, because they are built
+from disjoint families of the $\xi$'s. Dividing by $m^{n+1}$ and letting $n\to\infty$, $W=\frac1m\sum_{i\le Z_1}W^{(i)}$, with $W^{(i)}$ independent copies of $W$,
+independent of $Z_1$. So $W=0$ if and only if all $W^{(i)}$, $i\le Z_1$, vanish, and $r=\sum_kp_kr^k=G(r)$. Since $m>1$, some $p_k$ with $k\ge2$ is positive, so
+$G$ is strictly convex on $[0,1]$ and $G(s)=s$ has at most two solutions there: the extinction probability $q$ and $1$ (Theorem~\ref{thm:extinction}). As
+$\mathbb E[W]=1$, $r<1$, so $r=q$. Extinction implies $W=0$, and both events have probability $q$, so they differ by a null set.
+\end{proof}
+
+\begin{remark}
+So a surviving population grows like $Wm^n$ with $W>0$: the naive mean is right, up to a random factor fixed by the early
+generations. Kesten and Stigum (1966) proved that the condition $\sigma^2<\infty$ can be weakened to $\mathbb E[\xi\ln\xi]<\infty$, and that $W=0$ almost surely
+otherwise; a short proof by Lyons, Pemantle and Peres is listed in the sources.
+\end{remark}
+
+\section{Azuma's inequality}
+
+Hoeffding's inequality (Theorem~\ref{thm:hoeffding}) bounds the deviations of a sum of independent bounded variables. Its proof only used the
+fact that each new term has mean $0$ given the past, so it extends to martingales.
+
+\begin{lemma}\label{lem:condhoeffding}
+Let $D$ be a random variable with $|D|\le c$ and $\mathbb E[D\mid\mathcal G]=0$. Then $\mathbb E[e^{\lambda D}\mid\mathcal G]\le e^{\lambda^2c^2/2}$ for every real $\lambda$.
+\end{lemma}
+\begin{proof}
+We may assume $c>0$. By convexity, on $[-c,c]$ the function $x\mapsto e^{\lambda x}$ lies below its chord:
+\[
+\begin{aligned}e^{\lambda x}&\le\frac{c-x}{2c}e^{-\lambda c}+\frac{c+x}{2c}e^{\lambda c}\eqbr=\cosh(\lambda c)+\frac xc\sinh(\lambda c).\end{aligned}
+\]
+Put $x=D$ and take conditional expectations (rules (a), (b), (d)): $\mathbb E[e^{\lambda D}\mid\mathcal G]\le\cosh(\lambda c)$. Finally $\cosh y=\sum_k\frac{y^{2k}}{(2k)!}\le\sum_k\frac{y^{2k}}{2^kk!}=e^{y^2/2}$,
+since $(2k)!=\prod_{j=1}^k(2j-1)(2j)\ge\prod_{j=1}^k2j=2^kk!$.
+\end{proof}
+
+\begin{theorem}[Azuma--Hoeffding]\label{thm:azuma}
+Let $M$ be a martingale with $|M_k-M_{k-1}|\le c_k$ for constants $c_k$, and $C=\sum_{k\le n}c_k^2$. For $t>0$,
+\[
+P(M_n-M_0\ge t)\le e^{-t^2/2C},
+\]
+and the same bound holds for $P(M_n-M_0\le-t)$.
+\end{theorem}
+\begin{proof}
+Let $\lambda>0$ and $Y_n=e^{\lambda(M_n-M_0)}$. As $|M_{n-1}-M_0|\le\sum_kc_k$, $Y_{n-1}$ is bounded and $\mathcal F_{n-1}$-measurable, so by rules (c) and (e) and the lemma,
+\[
+\begin{aligned}\mathbb E[Y_n]&=\mathbb E\bigl[Y_{n-1}\,\mathbb E[e^{\lambda D_n}\mid\mathcal F_{n-1}]\bigr]\eqbr\le e^{\lambda^2c_n^2/2}\,\mathbb E[Y_{n-1}],\end{aligned}
+\]
+and by induction $\mathbb E[Y_n]\le e^{\lambda^2C/2}$. Markov's inequality gives $P(M_n-M_0\ge t)\le e^{-\lambda t+\lambda^2C/2}$; take $\lambda=\frac tC$. For the lower tail, apply this to $-M$.
+\end{proof}
+
+For a sum of independent variables with $|X_k-\mathbb E X_k|\le c_k$, this is exactly Hoeffding's bound with intervals of length $2c_k$. The gain is that
+$M$ may be any martingale. The most useful ones are the Doob martingales of Example~\ref{ex:martingales}(d), which reveal the inputs of a
+complicated function one at a time.
+
+\begin{theorem}[bounded differences]\label{thm:bounded}
+Let $X_1,\dots,X_n$ be independent, $X_i$ taking values in a countable set $S_i$, and $f:S_1\times\dots\times S_n\to\R$ such that $|f(x)-f(x')|\le c_i$ whenever $x$ and $x'$
+differ only in the $i$-th coordinate. Let $F=f(X_1,\dots,X_n)$ and $C=\sum_ic_i^2$. For $t>0$,
+\[
+P\bigl(|F-\mathbb E[F]|\ge t\bigr)\le2e^{-t^2/2C}.
+\]
+\end{theorem}
+\begin{proof}
+Changing the coordinates one at a time, $|f(x)-f(y)|\le\sum_ic_i$ for all $x,y$, so $f$ is bounded. Let $\mathcal F_k=\sigma(X_1,\dots,X_k)$ and $M_k=\mathbb E[F\mid\mathcal F_k]$, so that
+$M_0=\mathbb E[F]$ and $M_n=F$. The $\sigma$-algebra $\mathcal F_k$ comes from the countable partition into the events $\{(X_1,\dots,X_k)=x\}$, so by Section~1 and
+independence, $M_k=g_k(X_1,\dots,X_k)$ where
+\[
+g_k(x_1,\dots,x_k)=\mathbb E\bigl[f(x_1,\dots,x_k,X_{k+1},\dots,X_n)\bigr].
+\]
+Write $x'=(x_1,\dots,x_{k-1})$. By independence again, $g_{k-1}(x')=\sum_zP(X_k=z)\,g_k(x',z)$, and $|g_k(x',x_k)-g_k(x',z)|\le c_k$ since the
+same holds for $f$ inside the expectation. So $|M_k-M_{k-1}|\le\sum_zP(X_k=z)c_k=c_k$, and Theorem~\ref{thm:azuma}, applied to both tails, concludes.
+\end{proof}
+
+For example, throw $m$ balls independently into $n$ bins and let $F$ be the number of empty bins. Moving one ball changes $F$ by at most
+$1$, so $P(|F-\mathbb E F|\ge t)\le2e^{-t^2/2m}$, although the bins are far from independent. With $m=n=10^6$, $\mathbb E[F]=n(1-\frac1n)^m\approx367\,879$, and the
+probability of a deviation of $5000$ is at most $2e^{-12.5}<10^{-5}$. The true standard deviation is about $312$: Azuma loses a constant
+factor, but finds the right scale $\sqrt m$ without knowing anything about the dependence. McDiarmid (1989) improved the exponent to
+$\frac{2t^2}C$, which matches Hoeffding exactly.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:ruinasym}
+\emph{Gambler's ruin, unfair case.} Let $S$ be the walk with steps $+1$ with probability $p\ne\frac12$ and $-1$ with probability $q$, started at $a\in\{0,\dots,N\}$, and $T$ its
+exit time from $\{1,\dots,N-1\}$. Using the martingales $(\frac qp)^{S_n}$ and $S_n-(p-q)n$, find $P(S_T=N)$ and $\mathbb E[T]$, and compare with Theorem~\ref{thm:ruin}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:patterns}
+A fair coin is tossed repeatedly. Compute the expected waiting times for HH, HT, HTH and HHT. Why does HH take longer than HT,
+although both patterns occur at a quarter of all positions in the long run?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:doubling}
+\emph{The doubling strategy.} A player bets $1$ euro on a fair coin, doubles the stake after each loss, and stops at the first win.
+Show that the net gain at the stopping time $T$ is $1$ almost surely. Compute the expected loss accumulated just before the
+winning round, and say which hypothesis of Theorem~\ref{thm:ost} fails for the fortune.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:wald2}
+\emph{Wald's second identity.} Let $\xi_1,\xi_2,\ldots$ be independent with the same law, of mean $0$ and variance $\sigma^2$, $S_n=\xi_1+\dots+\xi_n$, and $T$ a stopping time
+with $\mathbb E[T]<\infty$. Show that $\mathbb E[S_T]=0$ and $\mathbb E[S_T^2]=\sigma^2\,\mathbb E[T]$. (Apply Theorem~\ref{thm:L2conv} to the stopped walk.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:polyabeta}
+\emph{P\'olya's urn in general.} The urn starts with $a$ red and $b$ blue balls ($a,b\ge1$ integers). Show that the proportion of red balls is a
+martingale, that the number $K$ of red balls drawn in the first $n$ steps satisfies
+\[
+P(K=k)=\frac{\binom{a+k-1}k\binom{b+n-k-1}{n-k}}{\binom{a+b+n-1}n},
+\]
+and that the limit proportion has the Beta density $\frac{x^{a-1}(1-x)^{b-1}}{B(a,b)}$ on $[0,1]$, where $B(a,b)=\frac{(a-1)!\,(b-1)!}{(a+b-1)!}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:signs}
+Let $\varepsilon_n$ be independent fair signs. Show that $\sum_n\varepsilon_nn^{-\alpha}$ converges almost surely for $\alpha>\frac12$, and that for $\alpha\le\frac12$ the partial sums have a
+variance tending to infinity. Compute the variance of $\sum_n\frac{\varepsilon_n}n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:chromatic}
+\emph{The chromatic number of a random graph.} In the random graph $G(n,\frac12)$, each of the $\binom n2$ possible edges between $n$ vertices is
+present independently with probability $\frac12$. Its chromatic number $\chi$ is the least number of colours that colour the vertices so
+that adjacent vertices differ. Show that $P(|\chi-\mathbb E\chi|\ge\lambda\sqrt n)\le2e^{-\lambda^2/2}$ for every $\lambda>0$, although $\mathbb E\chi$ itself is hard to compute. (Reveal the vertices one at a time.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:likelihood}
+\emph{Likelihood ratios.} Let $X_1,X_2,\ldots$ be independent with law $p$ on a finite set, and $q$ another law with $q(x)>0$ exactly when $p(x)>0$. Show
+that $L_n=\prod_{k\le n}\frac{q(X_k)}{p(X_k)}$ is a martingale, that it converges almost surely, and that the limit is $0$ if $q\ne p$. (Use the strong law for
+$\ln\frac{q(X_k)}{p(X_k)}$ and Gibbs' inequality.) A statistician who doubts that the data come from $p$ thus becomes, almost surely, more and
+more certain, although the expected likelihood ratio stays equal to $1$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:ruinasym}
+Both martingales are bounded on $\{T\ge n\}$, or have bounded increments, and $\mathbb E[T]<\infty$ by Lemma~\ref{lem:exit}. Optional stopping gives two linear
+equations.
+\end{hint}
+\begin{hint}{ex:patterns}
+Theorem~\ref{thm:abra} with $m=2$. List the overlaps.
+\end{hint}
+\begin{hint}{ex:doubling}
+If the first win is at round $T$, the losses before it are $1+2+\dots+2^{T-2}$. $T$ is geometric.
+\end{hint}
+\begin{hint}{ex:wald2}
+$S_{T\wedge n}$ is a martingale with orthogonal increments $\xi_k\mathbf 1_{\{T\ge k\}}$, and $\mathbb E[\xi_k^2\mathbf 1_{\{T\ge k\}}]=\sigma^2P(T\ge k)$.
+\end{hint}
+\begin{hint}{ex:polyabeta}
+A sequence of draws with $k$ red ones has a probability that does not depend on the order. For the limit, compare $n\,P(K=k)$ with
+the Beta density at $\frac kn$.
+\end{hint}
+\begin{hint}{ex:signs}
+The example after Theorem~\ref{thm:L2conv}. For the variance, $\sum\frac1{n^2}=\frac{\pi^2}6$ (Tome~0).
+\end{hint}
+\begin{hint}{ex:chromatic}
+Let $X_i$ be the set of edges between vertex $i$ and the vertices $1,\dots,i-1$. Changing $X_i$ changes $\chi$ by at most $1$.
+\end{hint}
+\begin{hint}{ex:likelihood}
+The mean of $\frac{q(X)}{p(X)}$ is $\sum_{x:\,p(x)>0}q(x)=1$. The mean of $\ln\frac{q(X)}{p(X)}$ is negative unless $q=p$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:ruinasym}
+\idea Each martingale, stopped at the exit time, turns into one equation, and the two unknowns are the probability of
+winning and the mean duration.
+\writeup Let $r=\frac qp$ and $h=P(S_T=N)$. By Lemma~\ref{lem:exit}, $\mathbb E[T]<\infty$. The martingale $r^{S_n}$ stopped at $T$ is bounded by $\max(1,r^N)$, so by
+Theorem~\ref{thm:ost}(b), $r^a=\mathbb E[r^{S_T}]=hr^N+(1-h)$, and $h=\frac{r^a-1}{r^N-1}$. The martingale $S_n-(p-q)n$ has increments bounded by $2$, so by Theorem~\ref{thm:ost}(c),
+$a=\mathbb E[S_T]-(p-q)\mathbb E[T]=Nh-(p-q)\mathbb E[T]$, and $\mathbb E[T]=\frac{a-Nh}{q-p}$. These are the formulas of Theorem~\ref{thm:ruin}, obtained without a recurrence.
+\end{solution}
+
+\begin{solution}{ex:patterns}
+\idea A pattern that overlaps itself wastes part of its occurrences in clumps, so the gaps between clumps are longer.
+\writeup By Theorem~\ref{thm:abra} with $m=2$: HH has overlaps $1,2$, so $2+4=6$ tosses; HT has only the overlap $2$: $4$ tosses; HTH has overlaps $1,3$:
+$2+8=10$; HHT has only $3$: $8$. Both HH and HT occur at a quarter of all positions, so in a long sequence of length $L$ there are about
+$\frac L4$ occurrences of each. But occurrences of HH come in runs (HHHH contains three), so they gather into fewer clumps,
+separated by longer gaps; the waiting time from the start resembles a gap between clumps. Occurrences of HT never
+overlap, and are evenly spread.
+\end{solution}
+
+\begin{solution}{ex:doubling}
+\idea The strategy is a martingale transform with unbounded stakes, played for an unbounded time: optional stopping fails
+because the fortune is unbounded below.
+\writeup If the first win is at round $T$, the player has lost $1+2+\dots+2^{T-2}=2^{T-1}-1$ and then wins $2^{T-1}$: net gain $1$. $T$ is geometric with
+$P(T=k)=2^{-k}$, finite almost surely. The loss just before the winning round is $2^{T-1}-1$, with expectation $\sum_k2^{-k}(2^{k-1}-1)=\infty$. The fortune
+$X_n$ is a martingale (Proposition~\ref{prop:transform} applies at each finite time, since the stake $2^{k-1}$ at round $k$ is bounded for fixed $k$), and $\mathbb E[X_T]=1\ne0$.
+Here $\mathbb E[T]=2<\infty$, but the increments are not bounded, so (c) fails; and $X_{T\wedge n}$ is not bounded below, so (b) fails. A player with a finite
+credit line $2^L-1$ is ruined with probability $2^{-L}$, losing $2^L-1$, which exactly balances the gain $1$ in the other cases.
+\end{solution}
+
+\begin{solution}{ex:wald2}
+\idea The stopped walk is a martingale whose increments are orthogonal, and their squares add up to $\sigma^2\,\mathbb E[T]$; boundedness in $L^2$
+then lets us pass to the limit.
+\writeup $S_{T\wedge n}=\sum_{k\le n}\xi_k\mathbf 1_{\{T\ge k\}}$ is a martingale (Proposition~\ref{prop:stopped}), in $L^2$. The event $\{T\ge k\}$ is in $\mathcal F_{k-1}$, hence independent of $\xi_k$,
+so $\mathbb E[\xi_k^2\mathbf 1_{\{T\ge k\}}]=\sigma^2P(T\ge k)$. By Lemma~\ref{lem:orth},
+\[
+\begin{aligned}\mathbb E[S_{T\wedge n}^2]&=\sigma^2\sum_{k\le n}P(T\ge k)\eqbr=\sigma^2\,\mathbb E[T\wedge n]\le\sigma^2\,\mathbb E[T].\end{aligned}
+\]
+So the stopped walk is bounded in $L^2$; by Theorem~\ref{thm:L2conv} it converges almost surely and in $L^2$, and since $T<\infty$ almost surely its limit is
+$S_T$. Convergence in $L^2$ gives $\mathbb E[S_T]=\lim\mathbb E[S_{T\wedge n}]=0$ and $\mathbb E[S_T^2]=\lim\mathbb E[S_{T\wedge n}^2]=\sigma^2\,\mathbb E[T]$ (monotone convergence on the right). For the simple walk
+leaving $]0,N[$ from $a$, this gives again $\mathbb E[T]=\mathbb E[(S_T-a)^2]=a(N-a)$.
+\end{solution}
+
+\begin{solution}{ex:polyabeta}
+\idea Exchangeability: the probability of a sequence of draws depends only on how many reds it contains, so everything
+reduces to rising factorials, and their asymptotics are powers.
+\writeup After $n$ steps there are $a+b+n$ balls, of which $R_n$ red; as in Theorem~\ref{thm:polyaurn}, $\mathbb E[R_{n+1}\mid\mathcal F_n]=R_n\frac{a+b+n+1}{a+b+n}$, so $\frac{R_n}{a+b+n}$ is a
+martingale. Write $x^{(j)}=x(x+1)\cdots(x+j-1)$ for the rising factorial. A sequence of $n$ draws with $k$ reds has probability
+\[
+\frac{a^{(k)}\,b^{(n-k)}}{(a+b)^{(n)}},
+\]
+whatever the order: the red numerators run through $a,\dots,a+k-1$, the blue ones through $b,\dots,b+n-k-1$. Multiplying by $\binom nk$ and writing
+the rising factorials with factorials gives the formula. Now $\binom{a+k-1}k=\frac{(k+1)\cdots(k+a-1)}{(a-1)!}$ lies between $\frac{k^{a-1}}{(a-1)!}$ and $\frac{(k+a)^{a-1}}{(a-1)!}$, and similarly for
+the other two binomials. So $P(K=k)$ lies between $\frac1{B(a,b)}\frac{k^{a-1}(n-k)^{b-1}}{(n+a+b)^{a+b-1}}$ and $\frac1{B(a,b)}\frac{(k+a)^{a-1}(n-k+b)^{b-1}}{n^{a+b-1}}$. Summing over $k\le xn$, both
+bounds are Riemann sums, up to factors tending to $1$ and shifts of order $\frac1n$, of $\int_0^x\frac{u^{a-1}(1-u)^{b-1}}{B(a,b)}\dd u$, which is continuous in $x$. So $P(\frac Kn\le x)$
+tends to this integral. The limit proportion $M_\infty$ of red balls is also the limit of $\frac Kn$, since $R_n=a+K$, so it has the Beta law
+(Propositions~\ref{prop:modes} and~\ref{prop:law}, as in Theorem~\ref{thm:polyaurn}). The normalisation $\int_0^1u^{a-1}(1-u)^{b-1}\dd u=B(a,b)$ follows: the total mass is $1$.
+\end{solution}
+
+\begin{solution}{ex:signs}
+\idea Random signs make a martingale whose $L^2$ norm is the sum of the squares of the terms.
+\writeup $M_n=\sum_{k\le n}\varepsilon_kk^{-\alpha}$ is a martingale (Example~\ref{ex:martingales}(a)) with $\mathbb E[M_n^2]=\sum_{k\le n}k^{-2\alpha}$, which is bounded if and only if $2\alpha>1$. For $\alpha>\frac12$
+Theorem~\ref{thm:L2conv} gives almost sure convergence; for $\alpha\le\frac12$ the variance tends to infinity. For $\alpha=1$ the limit has variance $\sum\frac1{n^2}=\frac{\pi^2}6$. (For
+$\alpha\le\frac12$ the series diverges almost surely, since its terms do not tend to $0$ when $\alpha\le0$, and for $0<\alpha\le\frac12$ by Kolmogorov's three-series
+theorem, Tome~10.)
+\end{solution}
+
+\begin{solution}{ex:chromatic}
+\idea Reveal the graph vertex by vertex: each step changes the chromatic number by at most one, so Azuma applies with
+$n-1$ steps of size $1$.
+\writeup For $2\le i\le n$, let $X_i$ be the set of edges present between vertex $i$ and the vertices $1,\dots,i-1$: the $X_i$ are independent (they involve
+disjoint sets of edges), with values in finite sets, and the graph is a function of $(X_2,\dots,X_n)$. If two graphs differ only in the
+edges at vertex $i$, their chromatic numbers differ by at most $1$: from a colouring of one, give vertex $i$ a new colour to get a
+colouring of the other. Theorem~\ref{thm:bounded} with $n-1$ coordinates and $c_i=1$ gives $P(|\chi-\mathbb E\chi|\ge t)\le2e^{-t^2/2(n-1)}\le2e^{-t^2/2n}$; take $t=\lambda\sqrt n$.
+Since $\mathbb E\chi$ is asymptotic to $\frac n{2\log_2n}$ (Bollob\'as, 1988, with martingales again), this says that $\chi$ is concentrated in a window much smaller than its size.
+\end{solution}
+
+\begin{solution}{ex:likelihood}
+\idea The likelihood ratio is a product of independent factors of mean at most $1$; its logarithm is a random walk with
+negative drift.
+\writeup Let $Y_k=\frac{q(X_k)}{p(X_k)}$, defined and positive since $p(X_k)>0$ almost surely. The $Y_k$ are independent, positive, with
+$\mathbb E[Y_k]=\sum_{x:\,p(x)>0}p(x)\frac{q(x)}{p(x)}=\sum_xq(x)=1$, so $L_n$ is a martingale (Example~\ref{ex:martingales}(c)), non-negative, and it converges almost
+surely by Theorem~\ref{thm:supconv}. Now $\ln L_n=\sum_{k\le n}\ln Y_k$ is a sum of independent bounded variables (the set is finite) of mean
+$\sum_xp(x)\ln\frac{q(x)}{p(x)}=-D(p\|q)$, which is $<0$ when $q\ne p$ (Gibbs' inequality, Proposition~\ref{prop:gibbs}). By the strong law (Corollary~\ref{cor:slln}),
+$\frac1n\ln L_n\to-D(p\|q)$ almost surely, so $L_n\to0$, exponentially fast. Yet $\mathbb E[L_n]=1$ for all $n$: the expectation is carried by rarer and
+rarer sequences on which $L_n$ is huge.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item D.~Williams, \emph{Probability with Martingales}, Cambridge University Press, 1991. Conditional expectation as a
+projection, upcrossings, the ABRACADABRA problem (an exercise of Chapter~10) and much more, in a lively style.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Chapter~4.
+\item G.~Grimmett and D.~Stirzaker, \emph{Probability and Random Processes}, 4th ed., Oxford University Press, 2020,
+Chapter~12.
+\item J.~L.~Doob, \emph{Stochastic Processes}, Wiley, 1953. The book that made martingales a theory.
+\item S.-Y.~R.~Li, \emph{A martingale approach to the study of occurrence of sequence patterns in repeated experiments},
+Annals of Probability 8 (1980), 1171--1176.
+\item K.~Azuma, \emph{Weighted sums of certain dependent random variables}, T\^ohoku Mathematical Journal 19 (1967),
+357--367.
+\item C.~McDiarmid, \emph{On the method of bounded differences}, in Surveys in Combinatorics 1989, London Mathematical
+Society Lecture Note Series 141, Cambridge University Press, 1989, 148--188.
+\item E.~Shamir and J.~Spencer, \emph{Sharp concentration of the chromatic number on random graphs $G_{n,p}$},
+Combinatorica 7 (1987), 121--129.
+\item B.~Bollob\'as, \emph{The chromatic number of random graphs}, Combinatorica 8 (1988), 49--55.
+\item R.~Lyons, R.~Pemantle and Y.~Peres, \emph{Conceptual proofs of $L\log L$ criteria for mean behavior of branching
+processes}, Annals of Probability 23 (1995), 1125--1138.
+\item M.~Mitzenmacher and E.~Upfal, \emph{Probability and Computing}, 2nd ed., Cambridge University Press, 2017,
+Chapter~13: martingales and Azuma's inequality for algorithms.
+\end{itemize}
