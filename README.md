@@ -65,7 +65,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | Complete (12 chapters) |
 | S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Complete (12 chapters) |
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Complete (12 chapters) |
-| S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
+| S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Complete (10 chapters, regenerated from the other tomes at every build) |
 | P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
 | P2 | Machinery | 300 harder problems across Tomes 6–9 | Planned |
 | P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |

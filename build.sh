@@ -11,6 +11,8 @@ tomes=("$@")
 
 for tome in "${tomes[@]}"; do
   echo "== $tome"
+  # A tome made from the others (Tome S4) regenerates its chapters from their sources first.
+  if [ -f "$root/$tome/generate.py" ]; then python3 "$root/$tome/generate.py"; fi
   out="$root/build/$tome"
   mkdir -p "$out"
   # The cover (tools/cover.tex with the tome's picture from tools/cover_motifs.py): a PDF page

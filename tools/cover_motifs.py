@@ -702,6 +702,45 @@ def dyson_fan(n=16, steps=700, seed=11):
     return "\n".join(lines) + "\n"
 
 
+def series_chords():
+    """Tome S4: the map of the series as a chord diagram. The tomes sit on a circle in series
+    order; a chord joins two tomes when one cites the other, its width growing with the number
+    of citations (tomeS4-companion/data/series.json, made by tomeS4-companion/generate.py),
+    and each dot grows with the number of named results of its tome."""
+    import json
+    data = json.loads((ROOT / "tomeS4-companion/data/series.json").read_text())
+    order = [t["num"] for t in data["plan"]]
+    count = {}
+    for c in data["citations"]:
+        if c["status"] == "ok":
+            key = tuple(sorted((c["from"], c["to"]), key=order.index))
+            count[key] = count.get(key, 0) + 1
+    n = len(order)
+    ang = {t: math.pi / 2 - 2 * math.pi * i / n for i, t in enumerate(order)}
+    rr = 0.86 * R
+    pos = {t: (rr * math.cos(a), rr * math.sin(a)) for t, a in ang.items()}
+    top = max(count.values())
+    lines = ["%% Series chord diagram: %d tomes in the plan, %d pairs of tomes linked by citations." % (n, len(count)),
+             r"\begin{scope}",
+             r"\draw[accent,line width=0.5pt,opacity=0.5] (0,0) circle (%.3fin);" % rr]
+    for (a, b), v in sorted(count.items(), key=lambda kv: kv[1]):
+        (x1, y1), (x2, y2) = pos[a], pos[b]
+        w = 0.25 + 2.6 * math.sqrt(v / top)
+        lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] (%.4fin,%.4fin) .. controls (%.4fin,%.4fin) and (%.4fin,%.4fin) .. (%.4fin,%.4fin);"
+                     % (w, 0.35 + 0.5 * math.sqrt(v / top), x1, y1, 0.25 * x1, 0.25 * y1, 0.25 * x2, 0.25 * y2, x2, y2))
+    for t in order:
+        tome = data["tomes"].get(t)
+        named = sum(1 for ch in tome["chapters"] for r in ch["results"] if r.get("name")) if tome else 0
+        rad = 0.035 + 0.075 * math.sqrt(named / 200)
+        x, y = pos[t]
+        style = "fill=accent" if tome or t == "S4" else "draw=accent,line width=0.6pt"
+        lines.append(r"\path[%s] (%.4fin,%.4fin) circle (%.3fin);" % (style, x, y, rad))
+        lx, ly = 1.09 * x, 1.09 * y
+        lines.append(r"\node[accent,font=\scriptsize] at (%.4fin,%.4fin) {%s};" % (lx, ly, t))
+    lines.append(r"\end{scope}")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -723,6 +762,7 @@ MOTIFS = {
     "tomeS1-linear": lozenge_tiling,
     "tomeS2-geometry": apollonian_gasket,
     "tomeS3-conjectures": collatz_coral,
+    "tomeS4-companion": series_chords,
     "tomeP1-crossroads": gaussian_primes,
 }
 
