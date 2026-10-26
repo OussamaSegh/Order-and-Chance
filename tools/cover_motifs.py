@@ -501,6 +501,49 @@ def farey_tessellation(depth=8, nmax=40):
     return "\n".join(lines) + "\n"
 
 
+def collatz_coral(N=2500, even_turn=0.13, odd_turn=-0.23):
+    """Tome S3: the Collatz tree as a coral. Every n <= N is joined to 1 along its Collatz
+    orbit, read backwards from 1; each step turns left when the value is even and right when
+    it is odd. Paths share their common tails, so the picture is the backward Collatz tree
+    (Chapter 6), with every edge drawn once."""
+    def orbit(n):
+        out = [n]
+        while n != 1:
+            n = n // 2 if n % 2 == 0 else 3 * n + 1
+            out.append(n)
+        return out[::-1]
+    pos = {1: (0.0, 0.0, math.pi / 2)}
+    edges = []
+    for n in range(1, N + 1):
+        path = orbit(n)
+        for a, b in zip(path, path[1:]):
+            if b in pos:
+                continue
+            x, y, t = pos[a]
+            t += even_turn if b % 2 == 0 else odd_turn
+            nx, ny = x + math.cos(t), y + math.sin(t)
+            pos[b] = (nx, ny, t)
+            edges.append(((x, y), (nx, ny)))
+    # rotate so that the coral grows upwards from its root at 1
+    mx = sum(p[0] for p in pos.values()) / len(pos); my = sum(p[1] for p in pos.values()) / len(pos)
+    rot = math.pi / 2 - math.atan2(my, mx)
+    c, s = math.cos(rot), math.sin(rot)
+    turn = lambda q: (c * q[0] - s * q[1], s * q[0] + c * q[1])
+    edges = [(turn(a), turn(b)) for a, b in edges]
+    pts = [turn(p) for p in pos.values()]
+    xs = [p[0] for p in pts]; ys = [p[1] for p in pts]
+    cx, cy = (max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2
+    rad = max(math.hypot(x - cx, y - cy) for x, y in zip(xs, ys))
+    k = 0.98 * R / rad
+    lines = ["%% Collatz coral: orbits of 1..%d read backwards from 1; even steps turn %.2f rad, odd steps %.2f rad; %d edges." % (N, even_turn, odd_turn, len(edges)),
+             r"\begin{scope}"]
+    for (x1, y1), (x2, y2) in edges:
+        lines.append(r"\draw[accent,line width=0.35pt,opacity=0.8] (%.3fin,%.3fin)--(%.3fin,%.3fin);"
+                     % (k * (x1 - cx), k * (y1 - cy), k * (x2 - cx), k * (y2 - cy)))
+    lines.append(r"\end{scope}")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -517,6 +560,7 @@ MOTIFS = {
     "tomeC2-algorithms": bitonic_network,
     "tomeS1-linear": lozenge_tiling,
     "tomeS2-geometry": apollonian_gasket,
+    "tomeS3-conjectures": collatz_coral,
     "tomeP1-crossroads": gaussian_primes,
 }
 
