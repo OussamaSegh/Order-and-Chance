@@ -45,7 +45,10 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: books-${{ matrix.tome }}
-          path: dist/
+          # dist/ holds the PDFs, the EPUB and dist/kdp/; the cover page is for the site's thumbnails.
+          path: |
+            dist/
+            build/${{ matrix.tome }}/cover.pdf
 
   # Gathers the books of every tome and builds the download page.
   site:
@@ -57,7 +60,9 @@ jobs:
         with:
           pattern: books-*
           merge-multiple: true
-          path: dist
+          path: .
+      - name: Install poppler
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
       - uses: actions/upload-artifact@v4
         with:
           name: books
