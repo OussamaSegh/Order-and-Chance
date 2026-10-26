@@ -163,12 +163,43 @@ def sierpinski_carpet(level=4):
     return "\n".join(lines) + "\n"
 
 
+def zeta_critical_line(t_max=42.0, steps=2400):
+    """The curve t -> zeta(1/2 + it) for 0 <= t <= t_max: it loops around and passes through the
+    origin at each zero on the critical line (Tome 5, Chapters 6-7). Computed by Euler-Maclaurin
+    (Tome 4, Proposition 11.7) with N = 40 terms and six Bernoulli corrections."""
+    B = [1 / 6, -1 / 30, 1 / 42, -1 / 30, 5 / 66, -691 / 2730]
+    N = 40
+
+    def zeta(s):
+        tot = sum(n ** -s for n in range(1, N + 1)) + N ** (1 - s) / (s - 1) - N ** -s / 2
+        poch = s
+        for k in range(1, 7):
+            tot += B[k - 1] / math.factorial(2 * k) * poch * N ** (1 - s - 2 * k)
+            poch *= (s + 2 * k - 1) * (s + 2 * k)
+        return tot
+
+    pts = [zeta(complex(0.5, t_max * i / steps)) for i in range(steps + 1)]
+    xs, ys = [z.real for z in pts], [z.imag for z in pts]
+    cx, cy = (max(xs) + min(xs)) / 2, (max(ys) + min(ys)) / 2
+    scale = 0.95 * R / max(math.hypot(x - cx, y - cy) for x, y in zip(xs, ys))
+    lines = ["%% The curve zeta(1/2+it), 0 <= t <= %g; it passes through 0 at every zero." % t_max]
+    lines.append(r"\draw[accent,line width=0.3pt,opacity=0.35] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                 % ((min(xs) - cx) * scale - 0.1, -cy * scale, (max(xs) - cx) * scale + 0.1, -cy * scale))
+    lines.append(r"\draw[accent,line width=0.3pt,opacity=0.35] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                 % (-cx * scale, (min(ys) - cy) * scale - 0.1, -cx * scale, (max(ys) - cy) * scale + 0.1))
+    lines.append(r"\draw[accent,line width=0.9pt] " + "--".join(
+        "(%.4fin,%.4fin)" % ((x - cx) * scale, (y - cy) * scale) for x, y in zip(xs, ys)) + ";")
+    lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (2.2pt);" % (-cx * scale, -cy * scale))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
     "tome3-chance": galton_board,
     "tome4-calculation": fourier_square,
+    "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
 }
 

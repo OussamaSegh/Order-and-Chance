@@ -17,6 +17,7 @@ companion notebook with computer-science applications.
   | 2. Structures | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome2-structures.epub) |
   | 3. Chance | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance.epub) |
   | 4. The Art of Calculation | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation.epub) |
+  | 5. Where It All Meets (in progress) | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -34,8 +35,8 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters) |
 | 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
-| 5 | Where It All Meets | Analytic and probabilistic number theory | Planned |
-| 6 | Spaces | Sets, topology, measure and integration | In progress (3 of 11 chapters) |
+| 5 | Where It All Meets | Analytic and probabilistic number theory | In progress (2 of 12 chapters) |
+| 6 | Spaces | Sets, topology, measure and integration | In progress (5 of 11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | Planned |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups | Planned |
 | 9 | Structures II | Categories, commutative and homological algebra, representations | Planned |
