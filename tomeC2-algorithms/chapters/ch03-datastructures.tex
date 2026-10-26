@@ -1,0 +1,460 @@
+\chapter{Data Structures}\label{ch:datastructures}
+
+\begin{center}\itshape
+Show me your flowchart and conceal your tables, and I shall continue to be mystified. Show me your tables,\\
+and I won't usually need your flowchart; it'll be obvious.\\
+\upshape(Fred Brooks, \emph{The Mythical Man-Month}, 1975)
+\end{center}
+
+In January 1953, Hans Peter Luhn, an engineer at IBM, wrote an internal memorandum with a curious idea. To find a record by its key,
+do not search for it: \emph{compute} where it is. Chop the key into pieces, combine them into a number, and use that number as the
+address of a ``bucket''; records whose keys land in the same bucket are chained together. Luhn's memo is the first known description
+of \emph{hashing}. It sounds like cheating, and for a long time nobody could say why it works so well: a cleverly chosen set of keys can put
+everything in one bucket. The answer came in 1977, when Larry Carter and Mark Wegman had the idea of choosing the hash function \emph{at
+random} from a small family, after the keys are fixed: then no set of keys is bad, and the analysis needs one line of algebra over a finite field.
+
+A data structure is a way of organising information so that the questions we will ask about it are cheap to answer. This chapter builds the
+classical ones and proves what they cost: \emph{heaps}, which always know their smallest element; balanced \emph{search trees}, whose height
+Fibonacci numbers keep in check; \emph{hash tables}, with universal and perfect hashing; the \emph{union--find} structure, which maintains a
+partition under merges in time so close to linear that the difference is the inverse of the Ackermann function of Tome~C1; and \emph{skip lists},
+which get the performance of balanced trees from coin flips. Most proofs are about potentials, Fibonacci numbers, or the probability that two
+things collide.
+
+\begin{think}
+You are given a stream of numbers and must, at any moment, report the median of the numbers seen so far. Sorting again after each new
+number costs $n\log n$ per number. Can you do it with two piles, one holding the smaller half and one the larger half, from which you can always
+take the largest (respectively the smallest) element cheaply?
+\end{think}
+
+\section{Heaps}\label{sec:heaps}
+
+A \emph{priority queue} stores keys and supports $\mathrm{insert}(x)$ and $\mathrm{extractmin}$, which removes and returns a smallest key. A \emph{binary heap}
+stores $n$ keys in an array $A[1..n]$ seen as a complete binary tree: the children of position $i$ are $2i$ and $2i+1$ (when $\le n$), its parent
+is $\lfloor i/2\rfloor$. The \emph{heap property} says $A[\lfloor i/2\rfloor]\le A[i]$ for all $i\ge2$, so the minimum is at the root $A[1]$. The tree has
+depth $\lfloor\log_2n\rfloor$.
+
+\begin{proposition}\label{prop:heapops}
+In a binary heap of $n$ keys, $\mathrm{insert}$ makes at most $\lfloor\log_2(n+1)\rfloor$ comparisons and $\mathrm{extractmin}$ at most $2\lfloor\log_2n\rfloor$.
+\end{proposition}
+\begin{proof}
+\emph{Insert} puts $x$ at position $n+1$ and \emph{sifts it up}: while $x$ is smaller than its parent, swap them. Invariant: the heap property holds except
+possibly on the edge from the current position $j$ of $x$ to its parent, and the parent of $j$ is $\le$ the children of $j$. This holds at the start
+($j$ is a leaf). A swap with the parent $p$ moves the old $A[p]$ down to $j$, where it is $\le$ the children of $j$ by the invariant, and puts $x<A[p]$
+at $p$, where it is below the other child of $p$; the parent of $p$ was $\le A[p]$, hence $\le$ both children of $p$. When the loop stops, no edge is violated.
+There is one comparison per level, at most the depth of position $n+1$.
+
+\emph{Extractmin} returns $A[1]$, moves $A[n]$ to the root and \emph{sifts it down}: while it is larger than one of its children, swap it with the smaller
+child. Symmetrically, the heap property holds except on the edges from the current position to its children, and the parent of the current position
+is $\le$ its children; swapping with the smaller child $c$ puts at the current position a value $\le$ the other child and $\ge$ the parent, and leaves the
+invariant at $c$. Two comparisons per level.
+\end{proof}
+
+Building a heap by $n$ insertions costs $O(n\log n)$. Robert Floyd noticed in 1964 that sifting down from the bottom up is cheaper.
+
+\begin{proposition}[Floyd, 1964]\label{prop:buildheap}
+Sifting down positions $\lfloor n/2\rfloor,\lfloor n/2\rfloor-1,\dots,1$ in this order turns any array into a heap, with fewer than $2n$ comparisons.
+\end{proposition}
+\begin{proof}
+When position $i$ is sifted down, both subtrees below it are already heaps (induction, since their roots have larger indices), and the
+sift-down makes the subtree of $i$ a heap, by the invariant of the previous proof. It costs at most $2h(i)$ comparisons, where $h(i)$ is the height of
+$i$ (the length of the longest path down to a leaf). Position $i$ has height at least $h$ if and only if it has a descendant $h$ levels below, and the
+leftmost one, of smallest index, is $2^hi$; so $h(i)\ge h$ if and only if $i\le n/2^h$, and exactly $\lfloor n/2^h\rfloor$ positions have height at least $h$. Hence
+\[
+\sum_{i=1}^nh(i)=\sum_{h\ge1}\#\{i:h(i)\ge h\}=\sum_{h\ge1}\Bigl\lfloor\frac n{2^h}\Bigr\rfloor<n.
+\]
+\end{proof}
+
+\emph{Heapsort} (J.~W.~J.~Williams, 1964) builds a heap and extracts the minimum $n$ times: $O(n\log n)$ comparisons in the worst case, and, using the
+freed end of the array for the output, no extra memory. Merge sort needs extra memory and quicksort can be unlucky; heapsort has neither defect, at the
+price of jumping around the array.
+
+\section{Balanced search trees}\label{sec:avl}
+
+A \emph{binary search tree} stores keys in the nodes of a binary tree so that every key is larger than the keys of its left subtree and smaller than those of its
+right subtree. Searching, inserting (as a new leaf) and listing in order are then obvious, and searching costs the depth of the key. Inserting the keys in
+sorted order produces a path of length $n$; the whole art is to keep the height logarithmic. The basic tool is the \emph{rotation} (Figure~\ref{fig:rotation}), which
+changes the shape and keeps the order: in both trees the in-order listing is $A,x,B,y,C$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-rotation}
+\caption{A rotation. The triangles $A$, $B$, $C$ are subtrees. Both trees list their keys in the same order, $A<x<B<y<C$, so both are search trees; the
+rotation moves $A$ up one level and $C$ down one level, in constant time.}
+\label{fig:rotation}
+\end{figure}
+
+The first balanced trees were invented in Moscow in 1962 by Georgy Adelson-Velsky and Evgenii Landis, to store the positions of a chess program.
+
+\begin{definition}\label{def:avl}
+The \emph{height} of an empty tree is $-1$, and that of a non-empty tree is $1$ plus the larger height of its two subtrees. A binary tree is an
+\emph{AVL tree} if, at every node, the heights of the two subtrees differ by at most $1$.
+\end{definition}
+
+\begin{theorem}[Adelson-Velsky and Landis, 1962]\label{thm:avlheight}
+An AVL tree with $n$ nodes has height $h\le\log_\varphi(n+1)-1<1.4405\log_2(n+1)$, where $\varphi=(1+\sqrt5)/2$.
+\end{theorem}
+\begin{proof}
+Let $N(h)$ be the smallest number of nodes of an AVL tree of height $h$. Then $N(-1)=0$, $N(0)=1$, and for $h\ge1$ one subtree of the root has height $h-1$ and the other
+at least $h-2$, both AVL, so $N(h)\ge1+N(h-1)+N(h-2)$; a root with smallest trees of heights $h-1$ and $h-2$ attains it, so $N(h)=1+N(h-1)+N(h-2)$. Then $N(h)+1$
+satisfies the Fibonacci recurrence with $N(-1)+1=1=F_2$ and $N(0)+1=2=F_3$, so $N(h)=F_{h+3}-1$. Since $F_{k+1}\ge\varphi^{k-1}$ (Tome~1, Exercise~1.6),
+$n+1\ge F_{h+3}\ge\varphi^{h+1}$. Finally $1/\log_2\varphi=1.44042\ldots$
+\end{proof}
+
+The smallest AVL trees, \emph{Fibonacci trees}, are thus the worst case, and they are only $44\%$ taller than perfectly balanced trees. It remains to
+keep the balance under insertions.
+
+\begin{theorem}\label{thm:avlinsert}
+After inserting a key into an AVL tree as a new leaf, let $z$ be the lowest node whose subtrees now differ in height by $2$, if any. One rotation at $z$ (when
+the new leaf is in the outer subtree of the taller child of $z$) or two rotations (when it is in the inner one) make the tree AVL again, and give the subtree
+rooted there its height from before the insertion. Insertion therefore takes time $O(\log n)$.
+\end{theorem}
+\begin{proof}
+An insertion increases the heights of some ancestors of the new leaf by at most $1$ and changes nothing else. Say the new leaf is in the left subtree of $z$,
+rooted at $y$ (the other case is symmetric). Since $z$ became unbalanced, $y$ went from height $h+1$ to $h+2$, while the right subtree $w$ of $z$ has height
+$h$; before the insertion $z$ had height $h+2$. Since $y$ is balanced (by the choice of $z$) and its height increased, its child $x$ on the side of the new leaf has
+height $h+1$ (and had height $h$), and its other child has height exactly $h$ (height $h+1$ would mean that $y$ already had height $h+2$).
+
+\emph{Outer case}: $x$ is the left child of $y$. Rotate right at $z$: $y$ becomes the root of the subtree, with left child $x$ (height $h+1$) and right child $z$, whose
+subtrees are the old right child of $y$ and $w$, both of height $h$. So $z$ has height $h+1$, every node involved is balanced, and $y$ has height $h+2$.
+
+\emph{Inner case}: $x$ is the right child of $y$. Let $x_1,x_2$ be the subtrees of $x$; since $x$ has height $h+1$ and is balanced, they have heights $h$ or $h-1$, not both
+$h-1$ (if $x$ is the new leaf, $h=-1$ and both are empty). Rotate left at $y$, then right at $z$: $x$ becomes the root, with left child $y$ holding the old left
+child of $y$ (height $h$) and $x_1$, and right child $z$ holding $x_2$ and $w$ (height $h$). Both $y$ and $z$ have height $h+1$ and are balanced, and $x$ has height $h+2$.
+
+In both cases the subtree has height $h+2$, as before the insertion, so no ancestor changes height and the tree is AVL. Finding $z$ means walking up from the leaf
+with the stored heights: $O(\log n)$ by Theorem~\ref{thm:avlheight}.
+\end{proof}
+
+Deletions are handled similarly, with up to $O(\log n)$ rotations. Red--black trees (Bayer, 1972; Guibas and Sedgewick, 1978) relax the balance condition and
+need $O(1)$ rotations per update; B-trees, with many keys per node, are the trees of databases and file systems.
+
+\section{Hashing}\label{sec:hashing}
+
+We want a \emph{dictionary}: a set of keys from a huge universe $U$ (all strings, all $64$-bit integers) supporting insert, delete and lookup. A \emph{hash function}
+$h:U\to\{0,\dots,m-1\}$ sends each key to one of $m$ buckets, and \emph{chaining} keeps in each bucket a list of its keys. A lookup costs $1$ plus the length of the list,
+so we want few \emph{collisions}, pairs of distinct keys with the same hash. For any fixed $h$, since $|U|>m(n-1)$, some bucket receives $n$ keys of $U$: an adversary who knows
+$h$ can make every operation cost $n$. Carter and Wegman's way out is to choose $h$ at random, after the keys are fixed.
+
+\begin{definition}\label{def:universal}
+A family $\mathcal H$ of functions $U\to\{0,\dots,m-1\}$ is \emph{universal} if for all $x\ne y$ in $U$, $P_{h\in\mathcal H}\bigl(h(x)=h(y)\bigr)\le\frac1m$, for $h$ uniform in $\mathcal H$.
+\end{definition}
+
+The family of all functions is universal, but describing one of them takes $|U|\log_2m$ bits. Here is a family whose members are described by two numbers.
+
+\begin{theorem}[Carter and Wegman, 1979]\label{thm:carterwegman}
+Let $p$ be a prime, $U=\{0,\dots,p-1\}$, and $m\ge1$. The functions $h_{a,b}(x)=\bigl((ax+b)\bmod p\bigr)\bmod m$, for $a\in\{1,\dots,p-1\}$ and $b\in\{0,\dots,p-1\}$, form a universal family.
+\end{theorem}
+\begin{proof}
+Fix $x\ne y$ in $U$. For $(a,b)$, let $r=(ax+b)\bmod p$ and $s=(ay+b)\bmod p$. Since $\mathbb Z/p\mathbb Z$ is a field (Tome~1, Chapter~3) and $x-y\not\equiv0$, the system
+$ax+b\equiv r$, $ay+b\equiv s$ has exactly one solution $(a,b)$ for each $(r,s)$, namely $a=(r-s)(x-y)^{-1}$, $b=r-ax$; and $a\ne0$ if and only if $r\ne s$. So $(a,b)\mapsto(r,s)$ is a
+bijection from the $p(p-1)$ functions of the family onto the pairs $r\ne s$ of $\mathbb Z/p\mathbb Z$. A collision means $r\equiv s\pmod m$. For each $r$, the values $s\ne r$ in
+$\{0,\dots,p-1\}$ with $s\equiv r\pmod m$ number at most $\lceil p/m\rceil-1\le\frac{p+m-1}m-1=\frac{p-1}m$. So at most $p(p-1)/m$ of the $p(p-1)$ pairs collide.
+\end{proof}
+
+\begin{proposition}\label{prop:chaining}
+Store $n$ keys in a table of $m$ buckets with chaining and a hash function drawn from a universal family. For any key $x$, the expected number of stored keys
+other than $x$ in the bucket of $x$ is at most $n/m$. So with $m\ge n$ every lookup takes expected time $O(1)$.
+\end{proposition}
+\begin{proof}
+By linearity of expectation (Tome~3, Theorem~2.5), the expected number is $\sum_{y\ne x}P(h(y)=h(x))\le n/m$.
+\end{proof}
+
+The expectation is over the choice of $h$ only: the keys may be chosen by an adversary, as long as the adversary does not know $h$. If the number of keys grows,
+double $m$ and rehash everything, with a fresh $h$; by the argument of Proposition~1.12 this costs $O(1)$ amortised per insertion.
+
+\subsection*{Perfect hashing}
+
+For a \emph{static} set (a dictionary of words, the reserved words of a compiler) we can ask for more: no collisions at all, hence lookups in constant time in the
+worst case. With $m$ buckets the expected number of colliding pairs is at most $\binom n2/m$; with $m=n^2$ this is below $\frac12$, so a random universal function is
+collision-free with probability above $\frac12$ (Markov's inequality). That is the birthday problem of Tome~3, Chapter~1, read backwards, and $n^2$ space is too much.
+Michael Fredman, J\'anos Koml\'os and Endre Szemer\'edi found in 1984 that two levels are enough.
+
+\begin{theorem}[Fredman, Koml\'os and Szemer\'edi, 1984]\label{thm:fks}
+A set $S$ of $n$ keys can be stored in $O(n)$ words so that a lookup makes two hash evaluations and one comparison. The construction takes expected time $O(n)$.
+\end{theorem}
+\begin{proof}
+\emph{Level one.} Draw $h$ from a universal family into $m=n$ buckets, and let $b_i$ be the number of keys in bucket $i$. The number of colliding pairs is
+$\sum_i\binom{b_i}2$, with expectation at most $\binom n2/n<\frac n2$, and $\sum_ib_i^2=n+2\sum_i\binom{b_i}2$, so $\mathbb E\sum_ib_i^2<2n$. By Markov's inequality,
+$P(\sum_ib_i^2\ge4n)<\frac12$. Redraw $h$ until $\sum_ib_i^2<4n$: the expected number of draws is less than $2$, each costing $O(n)$.
+
+\emph{Level two.} For each bucket with $b_i\ge1$, draw $h_i$ from a universal family into $b_i^2$ cells, and redraw until $h_i$ is injective on the bucket. The expected
+number of collisions is at most $\binom{b_i}2/b_i^2<\frac12$, so each draw succeeds with probability above $\frac12$, and the expected time for bucket $i$ is $O(b_i)$.
+
+To look up $x$: compute $i=h(x)$, then $j=h_i(x)$, and compare $x$ with the key stored in cell $j$ of table $i$. Space: $n$ for level one, plus $\sum_ib_i^2<4n$ cells,
+plus the descriptions of $h$ and the $h_i$, two numbers each.
+\end{proof}
+
+A dynamic alternative with worst-case constant lookups is \emph{cuckoo hashing} (Pagh and Rodler, 2001): two tables and two hash functions, each key living in one
+of its two possible cells; an insertion that finds both occupied evicts the occupant, which moves to its other cell, possibly evicting another, like a cuckoo
+chick pushing eggs out of the nest. Its analysis is a question about random graphs, whose components must stay small.
+
+\begin{think}
+Python's dictionaries hash strings with a function that is randomised each time the interpreter starts (since 2012). Before that, a web server written in
+Python could be brought down by a single request containing thousands of form fields whose names were chosen to collide. What does the attacker need to know
+to build such a request, and why does randomisation take it away?
+\end{think}
+
+\section{Union--find}\label{sec:unionfind}
+
+Kruskal's algorithm (Tome~C1, Corollary~10.9) adds the edges of a graph in increasing order of weight, skipping those that would close a cycle. It needs to
+maintain the connected components of a growing forest: is $u$ in the same component as $v$, and merge two components. The \emph{union--find} structure does this
+for a partition of $\{1,\dots,n\}$, with the operations $\mathrm{find}(x)$, returning a canonical representative of the class of $x$, and $\mathrm{union}(x,y)$, merging
+the classes of $x$ and $y$. It was introduced by Bernard Galler and Michael Fischer in 1964.
+
+Each class is a rooted tree, every element pointing to its parent, the root to itself; the root is the representative. Two ideas make it fast.
+
+\begin{itemize}
+\item \emph{Union by rank.} Each node has a \emph{rank}, initially $0$. To unite two roots, make the one of smaller rank point to the other; if the ranks are equal,
+choose either and increase the rank of the new root by $1$.
+\item \emph{Path compression.} After $\mathrm{find}(x)$ has walked from $x$ to the root, make every node on the path point directly to the root (Figure~\ref{fig:unionfind}).
+\end{itemize}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-unionfind}
+\caption{Path compression. The small numbers are ranks. After $\mathrm{find}(d)$, the nodes $d,c,b$ on the path (shaded) point directly to the root $a$; ranks do not change.
+Later finds from $d$, $c$ or $b$ take one step.}
+\label{fig:unionfind}
+\end{figure}
+
+Write $\log^*n$ for the number of times $\log_2$ must be applied to $n$ to get a number $\le1$: $\log^*2=1$, $\log^*4=2$, $\log^*16=3$, $\log^*65536=4$, and $\log^*n\le5$ for every
+$n\le2^{65536}$, a number of nearly twenty thousand digits.
+
+\begin{lemma}\label{lem:ranks}
+In any sequence of operations: (a) the rank of a node never changes once it is not a root; (b) along every parent pointer the rank strictly increases;
+(c) for every $r$, at most $n/2^r$ nodes ever have rank $r$.
+\end{lemma}
+\begin{proof}
+(a) Ranks only change at roots, during unions. For (b) and (c), compare with the forest $F^*$ obtained by performing the same unions without path compression.
+Compression does not change which nodes are roots, nor any rank, so the ranks in both are the same; in $F^*$ the parent of a node, when it is set,
+has larger rank (by the union rule), and afterwards the node's rank is frozen while the parent's can only grow. In the real forest, the parent of $x$ is always an ancestor
+of $x$ in $F^*$ (compression points nodes to ancestors), so (b) holds. For (c): in $F^*$, a node of rank $r$ has at least $2^r$ descendants, by induction (a root of
+rank $r+1$ is made by uniting two trees with roots of rank $r$, each with at least $2^r$ nodes), and descendants are never lost in $F^*$. Two distinct nodes of rank $r$ are
+not ancestors of each other in $F^*$, by (b) applied to $F^*$, so their sets of descendants are disjoint. So there are at most $n/2^r$ of them.
+\end{proof}
+
+\begin{theorem}[Hopcroft and Ullman, 1973]\label{thm:logstar}
+With union by rank and path compression, any sequence of $m$ operations on $n$ elements takes time $O\bigl((m+n)\log^*n\bigr)$.
+\end{theorem}
+\begin{proof}
+A union is two finds plus constant work, so it suffices to bound the total number of steps of finds, one step per node on the path below the root. Cut the
+ranks into blocks: $\{0,1\}$, $\{2\}$, $\{3,4\}$, $\{5,\dots,16\}$, $\{17,\dots,65536\}$, and so on, the block $\{k+1,\dots,2^k\}$ following the block that ends at $k$. Ranks are at most $\log_2n$
+by Lemma~\ref{lem:ranks}(c), so at most $\log^*n+1$ blocks are used. For a node $x$ on the path of a find, other than the root and its child, charge the step to
+the \emph{find} if the parent of $x$ has its rank in a higher block than $x$, and to $x$ otherwise.
+
+Along the path ranks strictly increase (Lemma~\ref{lem:ranks}(b)), so the block changes at most $\log^*n+1$ times: each find is charged $O(\log^*n)$.
+
+If $x$ is charged, with rank in the block $\{k+1,\dots,2^k\}$, then after the compression its parent is the root, whose rank is larger than that of its old parent,
+since the old parent was not the root. Its rank is frozen (Lemma~\ref{lem:ranks}(a)), and the rank of its parent strictly increases at each charge, so after at most $2^k$
+charges the parent's rank leaves the block, and from then on the steps at $x$ are charged to finds. By Lemma~\ref{lem:ranks}(c), at most
+$\sum_{r>k}n/2^r=n/2^k$ nodes have rank in the block, so the block's nodes receive at most $2^k\cdot n/2^k=n$ charges in total. Over the $O(\log^*n)$ blocks, nodes
+receive $O(n\log^*n)$ charges.
+\end{proof}
+
+\begin{remark}
+The truth is even better, and stranger. Robert Tarjan proved in 1975 that the total time is $\Theta\bigl(m\,\alpha(m,n)\bigr)$, where $\alpha$ is an inverse of
+Ackermann's function (Tome~C1, Example~2.11), which is at most $4$ for any input that fits in the universe; and Michael Fredman and Michael Saks proved in 1989
+that no structure of any kind can do better in the cell-probe model. A function that is unbounded but never exceeds $4$ in practice is the exact complexity of
+a natural problem.
+\end{remark}
+
+\section{Skip lists}\label{sec:skiplists}
+
+William Pugh proposed in 1990 a structure that is balanced by chance. Keep the keys in a sorted linked list (level $0$). Each key is \emph{promoted} to level $1$ with
+probability $\frac12$, each promoted key to level $2$ with probability $\frac12$, and so on, independently: a key reaches level $i$ with probability $2^{-i}$. Each level is a sorted
+linked list of the keys that reached it, every key keeping a pointer to its copy one level down, and a sentinel $-\infty$ heads every level. To search for $x$, start
+at the top level of the sentinel; move right while the next key is $\le x$; then go down a level; stop at level $0$.
+
+\begin{theorem}[Pugh, 1990]\label{thm:skiplist}
+In a skip list with $n\ge2$ keys, the expected number of steps of a search is at most $2\log_2n+4$. The expected total number of nodes is $2n$.
+\end{theorem}
+\begin{proof}
+The number of copies of a key is geometric: it has expectation $\sum_{i\ge0}2^{-i}=2$, which gives the second claim.
+
+For the first, read the search path backwards, from the node where the search ends at level $0$ to the top of the sentinel. Going backwards, at a node of level $i$ the path
+goes \emph{up} if the node has a copy at level $i+1$ (the search came down from there), and \emph{left} otherwise. When the backward walk reaches a key at level $i$, it knows that the key
+reaches level $i$ and nothing else about it, so, given the whole past of the walk, the step is ``up'' with probability $\frac12$. A left step at level $i$ passes a key whose top level is $i$,
+so every key is passed leftwards at most once.
+
+Let $L=\lceil\log_2n\rceil$. Until the walk reaches level $L$ or the sentinel, its steps are fair coin flips, ``up'' meaning heads, so the expected number of steps needed for $L$ heads,
+$2L$, bounds this part. After that, the left steps pass distinct keys of level at least $L$, whose expected number is $n2^{-L}\le1$; and the up steps are at most $M-L$ when the largest level
+$M$ exceeds $L$, where $\mathbb E[(M-L)^+]=\sum_{j\ge1}P(M\ge L+j)\le\sum_{j\ge1}n2^{-L-j}\le1$. In all, the expected length is at most $2L+2<2\log_2n+4$.
+\end{proof}
+
+Skip lists are easy to implement concurrently, which is why they appear inside databases such as Redis and in the memory tables of LevelDB.
+
+\begin{beauty}
+Every structure of this chapter wins by refusing to know too much. A heap does not sort, it only keeps each parent below its children. An AVL tree does not
+balance perfectly, it tolerates a difference of one, and Fibonacci makes that enough. A hash table does not organise keys at all, it scatters them, and one
+line of algebra in $\mathbb Z/p\mathbb Z$ shows that random scattering is fair. Union--find leaves its trees lopsided and repairs them only along the paths it walks, and pays
+for this laziness the inverse of Ackermann's function. And a skip list lets coins decide its shape.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:kmerge}
+Merge $k$ sorted lists of total length $n$ into one sorted list in time $O(n\log k)$, using a heap.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:dheap}
+In a $d$-ary heap each node has $d$ children. Show that insert makes $O(\log_dn)$ comparisons and extractmin $O(d\log_dn)$. Which $d$ suits a sequence with many
+more insertions than extractions?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rotations}
+Show that any binary search tree on $n$ keys can be transformed into any other one on the same keys by at most $2n-2$ rotations. (Sleator, Tarjan and Thurston proved in
+1988 that $2n-6$ suffice for $n\ge11$ and are sometimes necessary, using hyperbolic geometry.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:notuniversal}
+Find $n$ keys that all collide under $h(x)=x\bmod m$. Then show that the term $b$ in Theorem~\ref{thm:carterwegman} cannot be dropped: with $p=5$ and $m=3$, the functions
+$x\mapsto(ax\bmod 5)\bmod 3$, $a=1,\dots,4$, make the keys $1$ and $4$ collide with probability $\frac12>\frac13$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dotproduct}
+Let $p$ be prime and $U=(\mathbb Z/p\mathbb Z)^r$. Show that the functions $h_a(x)=\sum_ia_ix_i\bmod p$, for $a\in U$, form a universal family into $m=p$ buckets. This hashes
+long keys, cut into $r$ pieces.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fkstwo}
+In Theorem~\ref{thm:fks}, show that the expected number of draws at level one is at most $2$, and that the expected total construction time is $O(n)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:rankonly}
+With union by rank but without path compression, show that every find takes $O(\log n)$ steps, and that some sequence of $n-1$ unions creates a find of $\lfloor\log_2n\rfloor$ steps.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:compressonly}
+Without union by rank (always making the first root point to the second), show that $n-1$ unions can create a tree in which one find takes $n-1$ steps.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:kruskaltime}
+Show that Kruskal's algorithm, with union--find, runs in time $O(|E|\log|E|)$ on a graph with $|E|\ge|V|-1$ edges, the sorting being the bottleneck.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:streammedian}
+Solve the problem of the opening box: maintain the median of a stream with $O(\log n)$ time per new number.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:kmerge}
+Keep in the heap the current front element of each list.
+\end{hint}
+\begin{hint}{ex:dheap}
+The depth is $\log_dn$; sifting down compares with all $d$ children.
+\end{hint}
+\begin{hint}{ex:rotations}
+Transform both trees into the right-leaning path (every node has only a right child), with at most $n-1$ rotations each.
+\end{hint}
+\begin{hint}{ex:notuniversal}
+For the second part, list the pairs $(a\bmod5,\,4a\bmod5)$.
+\end{hint}
+\begin{hint}{ex:dotproduct}
+If $x\ne y$, some coordinate $x_j\ne y_j$; fix all $a_i$ with $i\ne j$.
+\end{hint}
+\begin{hint}{ex:fkstwo}
+Each draw succeeds with probability greater than $\frac12$, independently.
+\end{hint}
+\begin{hint}{ex:rankonly}
+A tree whose root has rank $r$ has height at most $r$. Unite equal trees repeatedly.
+\end{hint}
+\begin{hint}{ex:compressonly}
+Unite $\{1\}$ with $\{2\}$, then the result with $\{3\}$, with the root of the big tree always pointing to the new element.
+\end{hint}
+\begin{hint}{ex:kruskaltime}
+There are $2|E|$ finds and at most $|V|-1$ unions.
+\end{hint}
+\begin{hint}{ex:streammedian}
+A max-heap for the lower half and a min-heap for the upper half, with sizes differing by at most one.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:kmerge}
+\idea The smallest remaining element is always at the front of some list; a heap of $k$ fronts finds it in $O(\log k)$.
+\writeup Put the first element of each list in a heap, tagged with its list. Repeatedly extract the minimum, output it, and insert the next element of its list,
+if any. The heap never holds more than $k$ elements and each of the $n$ elements is inserted and extracted once: $O(n\log k)$.
+\end{solution}
+
+\begin{solution}{ex:dheap}
+\idea A wider tree is shallower: going up is cheaper, going down compares with more children.
+\writeup With children $di-d+2,\dots,di+1$ of node $i$, the depth is $O(\log_dn)$. Sift-up makes one comparison per level, $O(\log_dn)$; sift-down finds the smallest of $d$ children
+($d-1$ comparisons) and compares with it, $O(d\log_dn)$. With many insertions, a large $d$ helps; Dijkstra's algorithm with $|E|$ decrease-key operations (sift-ups) and $|V|$
+extractions uses $d\approx|E|/|V|$ (Chapter~4).
+\end{solution}
+
+\begin{solution}{ex:rotations}
+\idea Rotations are reversible, so it is enough to reach one canonical shape from any tree.
+\writeup Let the \emph{right spine} be the path from the root following right children. If some node of the right spine has a left child, a right rotation at that node moves the left
+child onto the spine, increasing the length of the spine by $1$ (in Figure~\ref{fig:rotation}, a right rotation at $y$ puts $x$ on the path above $y$, keeping $y$ on it). The spine has at
+least $1$ node, so after at most $n-1$ rotations it contains all $n$ nodes: the tree is the right-leaning path, the same for both trees since the in-order is fixed. Going from the
+first tree to the path and then, reversing the rotations of the second, from the path to the second tree takes at most $2n-2$ rotations.
+\end{solution}
+
+\begin{solution}{ex:notuniversal}
+\idea A fixed function has a large fibre; and without $b$ the pair $(r,s)$ is no longer uniform over all pairs, since $4\equiv-1$ forces $s=p-r$.
+\writeup The keys $0,m,2m,\dots,(n-1)m$ all hash to $0$. For $a=1,2,3,4$ the pairs $(a\bmod5,\,4a\bmod5)$ are $(1,4),(2,3),(3,2),(4,1)$; reduced modulo $3$ they are $(1,1),(2,0),(0,2),(1,1)$. Two
+of the four functions make $1$ and $4$ collide. Without $b$, the map $a\mapsto(r,s)$ only reaches the $p-1$ pairs with $s\equiv4r$, and these can be unluckily concentrated on the diagonal
+modulo $m$. (One can show that $\{h_{a,0}\}$ still has collision probability at most $2/m$, which is enough for most purposes.)
+\end{solution}
+
+\begin{solution}{ex:dotproduct}
+\idea Collisions are solutions of one linear equation in the random vector $a$, and one equation cuts a hyperplane, a fraction $1/p$ of the space.
+\writeup For $x\ne y$, $h_a(x)=h_a(y)$ means $\sum_ia_i(x_i-y_i)=0$ in $\mathbb Z/p\mathbb Z$. Choose $j$ with $x_j\ne y_j$. For each choice of the $a_i$, $i\ne j$, exactly one value of $a_j$ satisfies the
+equation, since $x_j-y_j$ is invertible. So exactly $p^{r-1}$ of the $p^r$ vectors $a$ give a collision: probability $\frac1p=\frac1m$.
+\end{solution}
+
+\begin{solution}{ex:fkstwo}
+\idea Independent retries with success probability above one half: the number of tries is dominated by a geometric variable of mean $2$.
+\writeup Each draw at level one is independent and succeeds with probability $q>\frac12$, so the number of draws is geometric with mean $1/q<2$, and each costs $O(n)$ (computing the $b_i$).
+At level two, bucket $i$ needs a geometric number of draws of mean less than $2$, each costing $O(b_i)$ to test injectivity (with an array of $b_i^2$ cells, cleared in $O(b_i)$ by remembering
+which cells were used), so expected $O(b_i)$; summing, $O(n)$. Allocating the tables costs $O(\sum b_i^2)=O(n)$.
+\end{solution}
+
+\begin{solution}{ex:rankonly}
+\idea Without compression the height of a tree is at most its root's rank, and Lemma~\ref{lem:ranks} bounds ranks by $\log_2n$.
+\writeup By Lemma~\ref{lem:ranks}, whose proof does not use compression, ranks strictly increase along a path and are at most $\log_2n$, so a find takes at most
+$\lfloor\log_2n\rfloor$ steps. For $n=2^k$, unite the singletons in pairs, then the pairs in pairs, and so on: always two trees of equal rank, so after $n-1$ unions one tree of rank $k$
+whose height is $k$ (the binomial tree), and a find from its deepest node takes $k$ steps.
+\end{solution}
+
+\begin{solution}{ex:compressonly}
+\idea Bad merging builds a path.
+\writeup Perform $\mathrm{union}(1,2)$, making $1$ point to $2$; then $\mathrm{union}(2,3)$ with root $2$ pointing to $3$; and so on until $\mathrm{union}(n-1,n)$, each union finding the roots in one
+step. The result is the path $1\to2\to\dots\to n$, and $\mathrm{find}(1)$ takes $n-1$ steps. (Compression then flattens it, and Tarjan and van Leeuwen showed in 1984 that compression alone
+gives $O(\log n)$ amortised.)
+\end{solution}
+
+\begin{solution}{ex:kruskaltime}
+\idea Sorting dominates; the union--find part is almost linear.
+\writeup Sorting the edges costs $O(|E|\log|E|)$. For each edge $uv$ in order, compare $\mathrm{find}(u)$ and $\mathrm{find}(v)$, and if they differ, keep the edge and unite. That is $2|E|$ finds and at
+most $|V|-1$ unions, $O((|E|+|V|)\log^*|V|)$ by Theorem~\ref{thm:logstar}, which is $O(|E|\log|E|)$ since $|E|\ge|V|-1$. Correctness is Tome~C1, Corollary~10.9: an edge is skipped exactly when its
+endpoints are already connected.
+\end{solution}
+
+\begin{solution}{ex:streammedian}
+\idea Split the numbers seen into a lower half and an upper half; the median is at the boundary, and heaps give the boundary elements.
+\writeup Keep a max-heap $L$ and a min-heap $R$ with every element of $L$ $\le$ every element of $R$, and $|L|-|R|\in\{0,1\}$. The median is the top of $L$ (for an odd count; for an even count, the
+lower median). A new number $x$ goes into $L$ if $x\le\max L$, otherwise into $R$; then, if $|L|>|R|+1$, move the top of $L$ to $R$, and if $|R|>|L|$, move the top of $R$ to $L$. Moves preserve the
+order between the heaps since the top of $L$ is the largest of the lower half. Each step is a constant number of heap operations: $O(\log n)$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The stories.} Luhn's memorandum of January 1953 and the early history of hashing are described in D.~E.~Knuth, \emph{The Art of Computer Programming}, vol.~3, 2nd ed.,
+Addison-Wesley, 1998, Section~6.4 (``History''); F.~P.~Brooks, \emph{The Mythical Man-Month}, Addison-Wesley, 1975, Chapter~9; G.~M.~Adelson-Velsky and E.~M.~Landis, \emph{An
+algorithm for the organization of information}, Doklady Akademii Nauk SSSR 146 (1962), 263--266.
+\item J.~W.~J.~Williams, \emph{Algorithm 232: Heapsort}, Communications of the ACM 7 (1964), 347--348; R.~W.~Floyd, \emph{Algorithm 245: Treesort 3}, Communications of the ACM 7 (1964), 701.
+D.~D.~Sleator, R.~E.~Tarjan and W.~P.~Thurston, \emph{Rotation distance, triangulations, and hyperbolic geometry}, Journal of the AMS 1 (1988), 647--681.
+\item J.~L.~Carter and M.~N.~Wegman, \emph{Universal classes of hash functions}, Journal of Computer and System Sciences 18 (1979), 143--154 (conference version 1977); M.~L.~Fredman,
+J.~Koml\'os and E.~Szemer\'edi, \emph{Storing a sparse table with $O(1)$ worst case access time}, Journal of the ACM 31 (1984), 538--544; R.~Pagh and F.~F.~Rodler, \emph{Cuckoo hashing},
+Journal of Algorithms 51 (2004), 122--144 (conference version 2001). On hash-flooding attacks: A.~Klink and J.~W\"alde, \emph{Efficient denial of service attacks on web application platforms},
+28th Chaos Communication Congress, 2011.
+\item B.~A.~Galler and M.~J.~Fischer, \emph{An improved equivalence algorithm}, Communications of the ACM 7 (1964), 301--303; J.~E.~Hopcroft and J.~D.~Ullman, \emph{Set merging algorithms}, SIAM Journal on
+Computing 2 (1973), 294--303; R.~E.~Tarjan, \emph{Efficiency of a good but not linear set union algorithm}, Journal of the ACM 22 (1975), 215--225; R.~E.~Tarjan and J.~van Leeuwen, \emph{Worst-case analysis
+of set union algorithms}, Journal of the ACM 31 (1984), 245--281; M.~L.~Fredman and M.~E.~Saks, \emph{The cell probe complexity of dynamic data structures}, Proceedings of the 21st ACM STOC (1989), 345--354;
+S.~Dasgupta, C.~H.~Papadimitriou and U.~V.~Vazirani, \emph{Algorithms}, McGraw-Hill, 2006, Section~5.1.4, for the proof of Theorem~\ref{thm:logstar}.
+\item W.~Pugh, \emph{Skip lists: a probabilistic alternative to balanced trees}, Communications of the ACM 33 (1990), 668--676.
+\end{itemize}
