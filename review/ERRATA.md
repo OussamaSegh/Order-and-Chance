@@ -498,3 +498,72 @@ An independent pass over Tome 8 (Shapes, 10 chapters, 10 notebooks). Every proof
 - Chapter 1 quotes without proof that ℝP² does not embed in ℝ³, Chapter 3 that de Rham's theorem identifies de Rham cohomology with singular cohomology, Chapter 4 that the eigenfunctions of the round sphere are the spherical harmonics; each is flagged as quoted in the text.
 - Chapter 8 presents Montgomery's pair correlation conjecture and Odlyzko's 1987 computation as what they are, a conjecture and numerical evidence; the companion notebook reproduces a small version (500 zeros).
 - The figures were not regenerated; every number in a caption was recomputed and agrees.
+
+## Review: Tome 10
+
+What was checked and found correct: all twelve chapters, every proof and every
+solution re-derived by hand, with extra care on the four places flagged for it:
+Donsker's theorem through Skorokhod's embedding (Chapter 3: the exit-time estimates,
+the strong Markov step, the tightness via the maximal inequality, Chung–Feller, the
+arcsine law and the two laws of the iterated logarithm), Furstenberg's double
+recurrence (Chapter 10: the compact/weakly mixing splitting of L², the σ-algebra of
+the compact part, almost periodicity by pigeonhole on the torus, the Hilbert–Schmidt
+argument for the weakly mixing part, van der Corput, the correspondence principle
+and the extraction of an ergodic measure by successive maximisation), the mod-Poisson
+local limit theorem (Chapter 11: Cauchy integrals on the circle of radius k/λ, the
+bound 1 − cos θ ≥ 2θ²/π², k! ≤ e√k(k/e)ᵏ, uniformity in k) and Billingsley's theorem
+by factorial moments (Chapter 12: the marked-cycle count n!/(ℓ₁⋯ℓ_K), the Riemann sum,
+Chebyshev's bound on the number of tuples, Mertens on the scale log p/log x, the grid
+argument around the hyperplane Σtᵢ = 1, the finite inversion of factorial moments).
+Numbers recomputed (Python, mpmath): the random harmonic density g(0) = 0.2499944
+and g(2) = 1/8, the Weldon dice χ² = 35.49 (p = 1.0·10⁻⁴), p̂ = 0.3377 and χ² = 8.18,
+Pearson's odds 62 499:1, the near-birthday probability 0.4625, the insurer's gamma tail
+1.84·10⁻¹⁵ and its Chernoff and Bahadur–Rao values, 1 − Φ(10) = 7.62·10⁻²⁴, the
+Brandeis dice tilt (0.054, …, 0.348) and Λ*(4.5) = 0.178, the Chernoff information
+0.005077, the Curie–Weiss magnetisations m*(1.5) = 0.8586 and m*(2) = 0.9575, the
+Johnson–Lindenstrauss dimension 11 842, Berry–Esseen's 0.7523 + 2.2858, the hash and
+run-test numbers, Pólya's constant 0.3405, Khinchin's 2.68545, Lévy's 1.18657,
+e^{π²/(6 log 2)} = 10.73, H_{10⁶} = 14.39, e^{−γ}/Γ(2) = 0.56, e^{γ/2}/Γ(½) = 0.75,
+log log 10⁸ = 2.91, 2·3⋯23 > 10⁸, the Simpson value 0.14718 and ρ(3) = 0.0486, the
+Golomb–Dickman constant, the fourth cumulants −2 and −6/5, the broken-stick figure
+(first cycle 251, nine cycles, coupling error below 0.0015) and the smooth-number
+proportion 0.067 at u = 3. Every numbered pointer to Tomes 1, 3, 4, 5, 6, 7 and C1
+(about ninety) was checked against the rebuilt `.aux` files and the statements
+themselves; all resolve to the result described, except the one listed below.
+Dates, anecdotes and citations checked against sources: Borel 1909, Steinhaus 1923,
+Rademacher 1922, Khintchine–Kolmogorov 1925, Hewitt–Savage 1955, Etemadi 1981 (pages
+119–122), Bernoulli's 25 550 trials, Weldon's 26 306 throws and Labby's 2009
+recount (bias from the cubes, not the pips), Pearson 1900, Gauss's letter to Laplace
+of 30 January 1812 and his diary of 1800, Kuzmin 1928, Lévy 1929/1936, Khinchin 1935,
+Erdős–Turán 1936, Roth 1953, Szemerédi 1975, Furstenberg 1977 and the Abel Prize
+2020, Host–Kra 2005, Green–Tao 2008, Keating–Snaith 2000, Jacod–Kowalski–Nikeghbali
+2011, Goncharov 1944, Moser–Wyman 1958, Hwang 1995, Selberg 1954, Delange 1959/1971,
+Golomb 1964, Shepp–Lloyd 1966, Dickman 1930, Billingsley 1972, Kingman 1975, Ewens
+1972, Arratia–Tavaré 1992, de Bruijn 1951, Knuth–Trabb Pardo 1976, and the journal
+references of all twelve "Sources" sections. Publishing rules: author "SEGHAIER
+Oussama" only, "First edition", no mention of the repository. The build is clean (no
+undefined or multiply defined label, no EPUB warning, no overfull box above 10 pt in
+the paperback, Kindle and phone formats; the A4 format had ten, listed below); all
+twelve notebooks run without error, and every number quoted from a notebook appears
+in its output.
+
+### Tome 10
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 2, opening | text | "Etemadi published a proof in three pages": the paper (Z. Wahrsch. verw. Gebiete 55, 1981) is pages 119–122, four pages. | "four pages". |
+| Ch. 2, solution of the Chung–Fuchs exercise | pointer | "By the strong Markov property at τ_x (Tome 3, Chapter 7)": Tome 3, Chapter 7 proves the walk starts afresh after a fixed time and after the first return, not after a general stopping time. | The one-line justification is given in place ({τ_x = m} depends only on X₁, …, X_m, and the later increments are independent of it); the pointer is dropped. |
+| Ch. 11, solution of the Ω(N_s) exercise | math (minor) | "E[2^{Ω(N_s)}] = ∞ for s close to 1": the expectation is Π_p (1 − p^{−s})/(1 − 2p^{−s}), finite for every s > 1; it tends to infinity as s ↓ 1. | Statement corrected, with the p = 2 factor (1 − 2^{−s})/(1 − 2^{1−s}) that blows up. |
+| Ch. 12, after Dickman's corollary | text | "ρ(3) ≈ 0.048" in the text against "ρ(3) = 0.049" in the caption; ρ(3) = 0.04861. | 0.049. |
+| Ch. 3, strong Markov proof, Skorokhod E τ = E X², LIL upper bound; Ch. 6, the functions ψ(±w), Step 5 of the Stein solution bounds, the Kolmogorov-from-Wasserstein bound, the hypergeometric conditional second moment; Ch. 7, proof of the types lemma; Ch. 11, solution of the residues exercise; Ch. 12, proof of the small-cycles theorem | text | Ten displays (one inline formula) overflow the A4 text width by 10–166 pt; the narrow formats break them with `\qq`, A4 does not. | Broken over two lines in every format. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 10, ch. 1–12 | None found: all run, every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapter 4, Weldon's table: the expected count for 7 successes is 1254.51, printed as 1254 (Pearson's own rounding, which makes the column add up to 26 306).
+- The Golomb–Dickman constant is quoted to ten digits from the literature (0.6243299885); the notebook's trapezoidal solution of the delay equation gives 0.6243299882.
