@@ -31,6 +31,7 @@ companion notebook with computer-science applications.
   | S2. Geometry | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.epub) |
   | P1. Crossroads (problem book) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
   | P2. Machinery (problem book) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.epub) |
+  | P3. Frontiers (problem book, in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -72,7 +73,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Complete (10 chapters, regenerated from the other tomes at every build) |
 | P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
 | P2 | Machinery | 300 harder problems across Tomes 6–9 | In progress (2 of 14 chapters) |
-| P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |
+| P3 | Frontiers | 300 harder problems across Tomes 10–15 | In progress (1 of 14 chapters) |
 
 Tomes 0–5 are the foundations, 6–9 the graduate toolbox, and 10–15 the road to research in probability,
 probabilistic number theory and algebra. The Computing track C1–C5 runs alongside and treats the

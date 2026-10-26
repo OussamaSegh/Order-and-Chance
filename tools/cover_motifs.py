@@ -940,6 +940,42 @@ def gd_nesterov(kappa=16.0, angle=24.0, n_levels=12):
         lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.028in);" % P(*p))
     lines.append(r"\draw[accent,line width=1.6pt,opacity=0.95,line join=round,dash pattern=on 5pt off 2.5pt] " + fmt(xs) + ";")
     lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.06in);" % P(0, 0))
+
+def cue_and_zeta(n=48, first=1000, seed=3):
+    """Problem Book P3: three rings of n points. Outside, the eigenvalues of a random n x n unitary
+    matrix (Haar measure, via QR of a complex Gaussian matrix); in the middle, n consecutive zeros
+    1/2+i*gamma of the Riemann zeta function from the first-th on, unfolded by the smooth counting
+    function N(T) = T/(2 pi) log(T/(2 pi e)) + 7/8 so that their mean spacing is one; inside, n
+    independent uniform points. The two outer rings repel alike (Montgomery, Dyson, Odlyzko); the
+    inner one clumps and leaves gaps."""
+    import random
+    import mpmath as mp
+    mp.mp.dps = 20
+    rng = random.Random(seed)
+    G = mp.matrix(n, n)
+    for i in range(n):
+        for j in range(n):
+            G[i, j] = mp.mpc(rng.gauss(0, 1), rng.gauss(0, 1))
+    Q, Rm = mp.qr(G)
+    for j in range(n):                                  # fix the phases so that Q is Haar distributed
+        d = Rm[j, j] / abs(Rm[j, j])
+        for i in range(n):
+            Q[i, j] *= d
+    cue = sorted(float(mp.arg(z)) % (2 * math.pi) for z in mp.eig(Q, left=False, right=False))
+    unfold = lambda t: t / (2 * math.pi) * math.log(t / (2 * math.pi * math.e)) + 7 / 8
+    gam = [float(mp.zetazero(first + k).imag) for k in range(n + 1)]
+    u0 = unfold(gam[0])
+    zeta = [2 * math.pi * (unfold(g) - u0) / n for g in gam[:n]]
+    poisson = sorted(rng.uniform(0, 2 * math.pi) for _ in range(n))
+    lines = ["%% Eigenvalues of a %dx%d Haar unitary matrix (outer ring), %d unfolded zeta zeros from the %d-th"
+             " (middle ring) and %d independent uniform points (inner ring)." % (n, n, n, first, n)]
+    for r, angles, size in ((R, cue, 0.075), (0.70 * R, zeta, 0.062), (0.40 * R, poisson, 0.05)):
+        lines.append(r"\draw[accent,line width=0.5pt,opacity=0.45] (0,0) circle (%.4fin);" % r)
+        for a in angles:
+            c, s_ = math.cos(math.pi / 2 - a), math.sin(math.pi / 2 - a)
+            lines.append(r"\draw[accent,line width=0.7pt,opacity=0.7] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                         % (0.9 * r * c, 0.9 * r * s_, r * c, r * s_))
+            lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (%.4fin);" % (r * c, r * s_, size))
     return "\n".join(lines) + "\n"
 
 
@@ -971,6 +1007,8 @@ MOTIFS = {
     "tome14-random": multiplicative_walks,
     "tomeC4-information": e8_roots,
     "tomeC5-learning": gd_nesterov,
+
+    "tomeP3-frontiers": cue_and_zeta,
 }
 
 if __name__ == "__main__":
