@@ -348,6 +348,46 @@ def confocal_grid(Y=1.45, n_ell=9, n_hyp=8):
     return "\n".join(lines) + "\n"
 
 
+def apollonian_gasket(rmin=0.004, label_r=0.06):
+    """Tome S2: the integral Apollonian gasket with root quadruple (-1, 2, 2, 3). Every circle
+    is tangent to three others, and by Descartes' theorem every curvature is an integer; the
+    larger circles carry theirs. New circles come from the reflection d' = 2(a + b + c) - d,
+    applied to curvatures and to curvature times centre (the complex Descartes theorem)."""
+    quads = [((-1, 0j), (2, 0.5 + 0j), (2, -0.5 + 0j), (3, 2j / 3))]
+    quads.append(((-1, 0j), (2, 0.5 + 0j), (2, -0.5 + 0j), (3, -2j / 3)))
+    circles = {(k, round(z.real, 9), round(z.imag, 9)): (k, z) for k, z in quads[0] + quads[1]}
+    stack = [(q, 3) for q in quads]
+    while stack:
+        q, i = stack.pop()
+        for j in range(4):
+            if j == i:
+                continue
+            others = [q[m] for m in range(4) if m != j]
+            k = 2 * sum(c[0] for c in others) - q[j][0]
+            kz = 2 * sum(c[0] * c[1] for c in others) - q[j][0] * q[j][1]
+            if 1 / k < rmin:
+                continue
+            z = kz / k
+            key = (k, round(z.real, 9), round(z.imag, 9))
+            if key in circles:
+                continue
+            circles[key] = (k, z)
+            nq = list(q)
+            nq[j] = (k, z)
+            stack.append((tuple(nq), j))
+    lines = ["%% The integral Apollonian gasket with root (-1, 2, 2, 3); %d circles of radius >= %g."
+             % (len(circles), rmin)]
+    for k, z in sorted(circles.values(), key=lambda c: c[0]):
+        r = 1 / abs(k)
+        w = max(0.15, min(1.0, 3.0 / k)) if k > 0 else 1.0
+        lines.append(r"\draw[accent,line width=%.2fpt] (%.4fin,%.4fin) circle (%.4fin);"
+                     % (w, R * z.real, R * z.imag, R * r))
+        if k > 0 and r >= label_r:
+            lines.append(r"\node[accent,font=\sffamily,scale=%.2f] at (%.4fin,%.4fin) {%d};"
+                         % (min(2.2, 9.0 * r), R * z.real, R * z.imag, k))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -360,6 +400,7 @@ MOTIFS = {
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
     "tomeS1-linear": lozenge_tiling,
+    "tomeS2-geometry": apollonian_gasket,
     "tomeP1-crossroads": gaussian_primes,
 }
 
