@@ -1,0 +1,555 @@
+\chapter{The Spectral Theorem}
+
+\begin{center}\itshape
+A symmetric matrix is a list of numbers in disguise: choose the right axes and it only stretches. The same is true of the compact
+self-adjoint operators, and the axes they choose are the vibrations of strings, the modes of noise and the harmonics of a drum.
+\end{center}
+
+In 1910, the Dutch physicist Hendrik Lorentz came to G\"ottingen and lectured on an old problem of radiation. Inside a cavity, the
+electromagnetic field vibrates at certain frequencies, the eigenvalues of the Laplacian with boundary conditions. Physicists needed to
+know how many of them lie below a given frequency, and they believed, without proof, that the answer depends only on the volume of the
+cavity and not on its shape. Lorentz asked the mathematicians in the audience to prove it. The story goes that Hilbert predicted he
+would not live to see a proof. Less than two years later, his student Hermann Weyl proved it, with an idea that this chapter makes
+precise in one dimension: the eigenvalues can be compared, one by one, through a variational principle, and squeezing a domain between
+simpler ones squeezes its eigenvalues between theirs.
+
+The setting had been built by Hilbert himself. Between 1904 and 1910 he wrote six papers on integral equations, in which he took
+Fredholm's work, recast it as linear algebra in infinitely many variables, and proved that a symmetric kernel can be diagonalised. He
+called the set of eigenvalues a \emph{spectrum}, by an analogy with the spectral lines of light that nobody then took literally.
+Twenty years later the new quantum mechanics showed that the spectral lines of hydrogen \emph{are} the eigenvalues of an operator, and
+Hilbert is reported to have said that he had named his theory after spectra without any presentiment that it would one day apply to the
+actual spectra of physics.
+
+This chapter proves the spectral theorem for compact self-adjoint operators, the variational characterisation of eigenvalues by
+Courant and Fischer, and its two great applications: the vibrating string (Sturm--Liouville theory, with Weyl's law on an interval),
+and Mercer's theorem on positive kernels, which expands the covariance of Brownian motion in its natural modes. It ends with a first
+glimpse of bounded self-adjoint operators: their continuous functions, and their square roots. Throughout, $H$ is a complex Hilbert
+space.
+
+\section{Self-adjoint operators}
+
+An operator $T\in\mathcal L(H)$ is self-adjoint when $\langle Tx,y\rangle=\langle x,Ty\rangle$ for all $x,y$. Then $\langle Tx,x\rangle=\langle x,Tx\rangle=\overline{\langle Tx,x\rangle}$ is real. The function $x\mapsto\langle Tx,x\rangle$ on the
+unit sphere, the \emph{Rayleigh quotient}, carries all the information.
+
+\begin{lemma}\label{lem:sanorm}
+If $T$ is self-adjoint, then $\|T\|=\sup_{\|x\|=1}|\langle Tx,x\rangle|$.
+\end{lemma}
+\begin{proof}
+Let $M$ be the supremum; clearly $M\le\|T\|$. Expanding, and using $\langle Ty,x\rangle=\overline{\langle Tx,y\rangle}$,
+\[\langle T(x+y),x+y\rangle-\langle T(x-y),x-y\rangle=4\operatorname{Re}\langle Tx,y\rangle,\]
+so $4\operatorname{Re}\langle Tx,y\rangle\le M(\|x+y\|^2+\|x-y\|^2)=2M(\|x\|^2+\|y\|^2)$ by the parallelogram law. For $\|x\|=1$ with $Tx\ne0$, take $y=\frac{Tx}{\|Tx\|}$: this gives $4\|Tx\|\le4M$.
+\end{proof}
+
+\begin{proposition}\label{prop:saspec}
+Let $T$ be self-adjoint, $m=\inf_{\|x\|=1}\langle Tx,x\rangle$ and $M=\sup_{\|x\|=1}\langle Tx,x\rangle$. Then:
+\begin{enumerate}
+\item[(a)] the eigenvalues of $T$ are real, and eigenvectors for distinct eigenvalues are orthogonal;
+\item[(b)] $\sigma(T)\subset[m,M]$, and $m,M\in\sigma(T)$;
+\item[(c)] $\|T\|=\max(|m|,|M|)=r(T)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) If $Tx=\lambda x$ with $\|x\|=1$, then $\lambda=\langle Tx,x\rangle\in\R$. If also $Ty=\mu y$ with $\mu\ne\lambda$, then $\lambda\langle x,y\rangle=\langle Tx,y\rangle=\langle x,Ty\rangle=\mu\langle x,y\rangle$, so $\langle x,y\rangle=0$.
+
+(b) First, an operator $A$ with $\|Ax\|\ge c\|x\|$ for all $x$ ($c>0$) and $\ker A^*=\{0\}$ is invertible: it is injective, its range is closed (if $Ax_n\to y$, then $(x_n)$ is Cauchy, $x_n\to x$ and $Ax=y$), and the range is dense since its
+orthogonal is $\ker A^*$ (Proposition~3.1); the inverse has norm at most $\frac1c$. Now let $\lambda=a+ib$ with $b\ne0$. For every $x$,
+\[\|(T-\lambda)x\|\|x\|\ge|\operatorname{Im}\langle(T-\lambda)x,x\rangle|=|b|\|x\|^2,\]
+and the same holds for $(T-\lambda)^*=T-\bar\lambda$. So $T-\lambda$ is invertible. If $\lambda>M$ is real, $\langle(\lambda-T)x,x\rangle\ge(\lambda-M)\|x\|^2$, so $\|(\lambda-T)x\|\ge(\lambda-M)\|x\|$, and $\lambda-T$ is self-adjoint:
+it is invertible. The case $\lambda<m$ is symmetric. So $\sigma(T)\subset[m,M]$.
+
+To see that $M\in\sigma(T)$, note that $B(x,y)=\langle(M-T)x,y\rangle$ is a positive Hermitian form, so it satisfies the Cauchy--Schwarz inequality $|B(x,y)|^2\le B(x,x)B(y,y)$ (Tome~0's proof applies word for word). With $y=(M-T)x$,
+\[\|(M-T)x\|^4\le\langle(M-T)x,x\rangle\,\|M-T\|\,\|(M-T)x\|^2.\]
+Choose unit vectors $x_n$ with $\langle Tx_n,x_n\rangle\to M$: then $(M-T)x_n\to0$. If $M-T$ had a bounded inverse, $x_n=(M-T)^{-1}(M-T)x_n$ would tend to $0$, which is absurd. So $M\in\sigma(T)$; applying this to $-T$ gives $m\in\sigma(T)$.
+
+(c) By Lemma~\ref{lem:sanorm}, $\|T\|=\max(|m|,|M|)$, and by (b) this is the largest modulus of a point of $\sigma(T)$.
+\end{proof}
+
+So for a self-adjoint operator, the spectral radius formula of Theorem~3.6 is an equality at every step: $\|T^{2^k}\|=\|T\|^{2^k}$. An operator is \emph{positive}, written $T\ge0$, if $\langle Tx,x\rangle\ge0$ for all $x$; on a complex Hilbert space this forces $T$
+to be self-adjoint (polarisation recovers $\langle Tx,y\rangle$ from the real numbers $\langle Tz,z\rangle$, which equal $\langle z,Tz\rangle$). By (b), $T\ge0$ if and only if $T$ is self-adjoint with $\sigma(T)\subset[0,\infty[$.
+
+\section{The spectral theorem for compact operators}
+
+\begin{lemma}\label{lem:eigenvalue}
+A compact self-adjoint operator $K$ has $\|K\|$ or $-\|K\|$ as an eigenvalue.
+\end{lemma}
+\begin{proof}
+If $K=0$ there is nothing to prove. By Lemma~\ref{lem:sanorm} there are unit vectors $x_n$ with $\langle Kx_n,x_n\rangle\to\lambda$, where $\lambda\in\{\|K\|,-\|K\|\}$. Then
+\[\|Kx_n-\lambda x_n\|^2=\|Kx_n\|^2-2\lambda\langle Kx_n,x_n\rangle+\lambda^2\le2\lambda^2-2\lambda\langle Kx_n,x_n\rangle\to0.\]
+By compactness, a subsequence has $Kx_n\to y$; then $\lambda x_n\to y$, so $\|y\|=|\lambda|\ne0$, and $Ky=\lim\lambda Kx_n=\lambda y$.
+\end{proof}
+
+\begin{theorem}[spectral theorem, Hilbert 1906]\label{thm:spectralcompact}
+Let $K$ be a compact self-adjoint operator on $H$. There is an orthonormal family $(e_n)$, finite or countable, and non-zero real numbers $\lambda_n$, with $|\lambda_1|\ge|\lambda_2|\ge\cdots$ and $\lambda_n\to0$ if the family is
+infinite, such that
+\[Kx=\sum_n\lambda_n\langle x,e_n\rangle e_n\qquad\text{for all }x\in H.\]
+Moreover $H=\ker K\oplus\overline{\operatorname{span}}(e_n)$; the non-zero eigenvalues of $K$ are exactly the $\lambda_n$, each of finite multiplicity; and if $H$ is separable, $H$ has a Hilbert basis of eigenvectors of $K$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:eigenvalue} pick a unit $e_1$ with $Ke_1=\lambda_1e_1$, $|\lambda_1|=\|K\|$ (stop if $K=0$). The space $H_2=\{e_1\}^\perp$ is invariant under $K$: if $x\perp e_1$, then $\langle Kx,e_1\rangle=\langle x,Ke_1\rangle=0$. The restriction
+of $K$ to $H_2$ is compact and self-adjoint, so it has a unit eigenvector $e_2$ with eigenvalue $\lambda_2$, $|\lambda_2|=\|K|_{H_2}\|\le|\lambda_1|$. Continue with $H_3=\{e_1,e_2\}^\perp$, and so on, stopping if some restriction
+$K|_{H_{n+1}}$ vanishes.
+
+If the process does not stop, $\lambda_n\to0$: otherwise $|\lambda_n|\ge\delta>0$ for all $n$, and $\|Ke_n-Ke_m\|^2=\lambda_n^2+\lambda_m^2\ge2\delta^2$, so $(Ke_n)$ has no convergent subsequence. For $x\in H$, the vector
+$x-\sum_{k\le n}\langle x,e_k\rangle e_k$ lies in $H_{n+1}$ and has norm at most $\|x\|$, so
+\[\Bigl\|Kx-\sum_{k\le n}\lambda_k\langle x,e_k\rangle e_k\Bigr\|\le|\lambda_{n+1}|\,\|x\|\to0\]
+(and the difference is $0$ if the process stopped at $n$). This is the expansion. Let $F=\overline{\operatorname{span}}(e_n)$. If $x\in\ker K$, then $\lambda_n\langle x,e_n\rangle=\langle x,Ke_n\rangle=\langle Kx,e_n\rangle=0$, so
+$x\perp F$; conversely if $x\perp F$, the expansion gives $Kx=0$. So $\ker K=F^\perp$ and $H=\ker K\oplus F$ (Corollary~2.2).
+
+If $Kx=\mu x$ with $\mu\ne0$ and $x\ne0$, then $\mu\langle x,e_n\rangle=\langle Kx,e_n\rangle=\lambda_n\langle x,e_n\rangle$, so $x$ is orthogonal to the $e_n$ with $\lambda_n\ne\mu$, and $x\in F$ since $x=\mu^{-1}Kx$. Hence $\mu$
+is one of the $\lambda_n$ and $x$ lies in the span of the $e_n$ with $\lambda_n=\mu$, a finite set since $\lambda_n\to0$. Finally, if $H$ is separable, so is $\ker K$, which has a countable Hilbert basis (Corollary~2.6); together
+with the $e_n$ it is a Hilbert basis of $H$ made of eigenvectors.
+\end{proof}
+
+\begin{beauty}
+The proof is an infinite version of the high-school recipe for a symmetric matrix: find the largest stretch, which is an eigenvalue,
+remove its axis, and repeat. In finite dimension the maximum of the Rayleigh quotient on the sphere exists because the sphere is compact.
+In infinite dimension the sphere is not compact (Theorem~1.3), and compactness has moved from the sphere to the operator: that is
+exactly what is needed for the maximising sequence to converge.
+\end{beauty}
+
+\begin{think}
+Does every compact operator have an eigenvalue? The Volterra operator of Example~3.7 is compact (Example~3.3: its kernel is $\mathbf 1_{y<x}$) and has none. What fails in Lemma~\ref{lem:eigenvalue}
+without self-adjointness?
+\end{think}
+
+\begin{corollary}\label{cor:normal}
+A compact normal operator $K$ on a separable Hilbert space has a Hilbert basis of eigenvectors, with complex eigenvalues tending to $0$.
+\end{corollary}
+\begin{proof}
+$A=\frac12(K+K^*)$ and $B=\frac1{2i}(K-K^*)$ are compact and self-adjoint, $K=A+iB$, and $AB=BA$ because $K$ is normal. Each eigenspace $E$ of $A$ is invariant under $B$ (if $Ax=\lambda x$ then $ABx=BAx=\lambda Bx$), and $B|_E$ is compact
+and self-adjoint, so by Theorem~\ref{thm:spectralcompact} applied in $E$ (finite-dimensional when $\lambda\ne0$, possibly not for $\lambda=0$), $E$ has a Hilbert basis of eigenvectors of $B$. These are eigenvectors of $A$ and $B$, hence of
+$K$, and by Theorem~\ref{thm:spectralcompact} for $A$, $H$ is the orthogonal sum of the eigenspaces of $A$. Their union is the required basis. The eigenvalues of $K$ tend to $0$ by the argument in the proof of
+Theorem~\ref{thm:spectralcompact}.
+\end{proof}
+
+\section{Min--max}
+
+The largest eigenvalue of a compact positive operator maximises the Rayleigh quotient. The others are characterised in the same way, without
+reference to the eigenvectors that come before them, and this makes them comparable from one operator to another.
+
+\begin{theorem}[Courant--Fischer]\label{thm:minmax}
+Let $K\ge0$ be compact on $H$, and let $\lambda_1\ge\lambda_2\ge\cdots\ge0$ be its non-zero eigenvalues repeated according to multiplicity, followed by zeros if there are finitely many. If $\dim H\ge n$, then
+\begin{align*}
+\lambda_n&=\max_{\dim V=n}\ \min_{x\in V,\,\|x\|=1}\langle Kx,x\rangle\\
+&=\min_{\dim W\le n-1}\ \sup_{x\perp W,\,\|x\|=1}\langle Kx,x\rangle,
+\end{align*}
+where $V$ and $W$ run over subspaces of $H$.
+\end{theorem}
+\begin{proof}
+Let $(e_k)$ be the orthonormal eigenvectors of Theorem~\ref{thm:spectralcompact}, ordered so that $Ke_k=\lambda_ke_k$ for the non-zero $\lambda_k$. For every $x$, $\langle Kx,x\rangle=\sum_k\lambda_k|\langle x,e_k\rangle|^2$.
+
+If $x\perp e_1,\dots,e_{n-1}$, then $\langle Kx,x\rangle=\sum_{k\ge n}\lambda_k|\langle x,e_k\rangle|^2\le\lambda_n\|x\|^2$ by Bessel. Every subspace $V$ of dimension $n$ contains a unit vector orthogonal to $e_1,\dots,e_{n-1}$ (the
+linear map $x\mapsto(\langle x,e_k\rangle)_{k<n}$ from $V$ to $\C^{n-1}$ has a non-zero kernel), so the minimum over $V$ is at most $\lambda_n$. Conversely, take $V$ spanned by those $e_k$, $k\le n$, which exist, completed if needed
+by vectors of $\ker K$ (there are enough, since $\dim H\ge n$): for $x\in V$, $\langle Kx,x\rangle\ge\lambda_n\|x\|^2$. This proves the first formula, and the minimum over this $V$ is attained by compactness of its unit sphere.
+
+For the second, $W=\operatorname{span}(e_k:k<n)$ gives a supremum at most $\lambda_n$ by the computation above. For any $W$ of dimension at most $n-1$, the $V$ just built meets $W^\perp$ in a non-zero vector, at which the
+Rayleigh quotient is at least $\lambda_n$.
+\end{proof}
+
+\begin{corollary}\label{cor:weylpert}
+If $K,L\ge0$ are compact, then $|\lambda_n(K)-\lambda_n(L)|\le\|K-L\|$ for every $n$. If $K\le L$, that is if $L-K\ge0$, then $\lambda_n(K)\le\lambda_n(L)$.
+\end{corollary}
+\begin{proof}
+For unit $x$, $\langle Kx,x\rangle\le\langle Lx,x\rangle+\|K-L\|$. Take the minimum over $x\in V$, then the maximum over $V$, and use Theorem~\ref{thm:minmax}; exchange $K$ and $L$. If $K\le L$ the same argument works
+without the error term.
+\end{proof}
+
+So the eigenvalues of positive compact operators move continuously, and monotonically, with the operator. For matrices this is
+Weyl's inequality (1912); Exercise~\ref{ex:weylineq} gives the general form. Numerically, it says that computing eigenvalues of a
+symmetric matrix is a well-conditioned problem, in sharp contrast to the Jordan block of Figure~3.1.
+
+\section{Sturm--Liouville problems}
+
+A string of length $1$, fixed at both ends, with a stiffness that varies along it, vibrates in modes $u(x)\cos(\omega t)$ where
+\begin{equation}\label{eq:sl}
+-u''+qu=\lambda u,\qquad u(0)=u(1)=0,
+\end{equation}
+with $\lambda=\omega^2$. Charles Sturm and Joseph Liouville studied such problems in 1836--1837, in a series of papers that Liouville
+published in the journal he had just founded. The differential operator $u\mapsto-u''+qu$ is unbounded, but its inverse is a compact
+integral operator, and the spectral theorem applies to the inverse. We assume $q\in C([0,1])$ real and $q\ge0$ (adding a constant to $q$
+shifts every $\lambda$ by the same constant, so $q$ bounded below would do).
+
+\begin{lemma}\label{lem:ivp}
+For $x_0\in[0,1]$ and $a,b\in\C$ there is a unique $u\in C^2([0,1])$ with $u''=qu$, $u(x_0)=a$, $u'(x_0)=b$.
+\end{lemma}
+\begin{proof}
+By Taylor's formula with integral remainder, these conditions are equivalent to $u=a+b(x-x_0)+Wu$, where $Wu(x)=\int_{x_0}^x(x-t)q(t)u(t)\dd t$ is a bounded operator on $C([0,1])$. By induction,
+$|W^nu(x)|\le\frac{\|q\|_\infty^n|x-x_0|^{2n}}{(2n)!}\|u\|_\infty$, using $\int_0^s(s-t)t^{2n-2}\dd t=\frac{s^{2n}}{(2n-1)2n}$. So $\|W^n\|\le\frac{\|q\|_\infty^n}{(2n)!}$, the Neumann series $\sum W^n$ converges
+(as in Lemma~3.5), $I-W$ is invertible, and the equation has exactly one continuous solution. It is $C^2$, and differentiating twice gives $u''=qu$.
+\end{proof}
+
+This is the Volterra phenomenon of Example~3.7 once more: a ``triangular'' integral operator has spectral radius $0$.
+
+\begin{lemma}[Green's function]\label{lem:green}
+Let $\varphi,\psi$ solve $\varphi''=q\varphi$, $\varphi(0)=0$, $\varphi'(0)=1$ and $\psi''=q\psi$, $\psi(1)=0$, $\psi'(1)=-1$. Then $c=\psi\varphi'-\psi'\varphi$ is a non-zero constant, and with
+\[G(x,y)=\tfrac1c\,\varphi(\min(x,y))\,\psi(\max(x,y)),\]
+for every $f\in C([0,1])$ the function $u=\mathcal Gf$, $\mathcal Gf(x)=\int_0^1G(x,y)f(y)\dd y$, is the unique $C^2$ solution of $-u''+qu=f$, $u(0)=u(1)=0$.
+\end{lemma}
+\begin{proof}
+$c'=\psi\varphi''-\psi''\varphi=0$, so $c$ is constant, and evaluating at $x=1$ gives $c=\varphi(1)$. If $c=0$, then $\varphi(0)=\varphi(1)=0$ and $\varphi''=q\varphi$. Then
+$0=\int_0^1\bar\varphi(\varphi''-q\varphi)=-\int_0^1(|\varphi'|^2+q|\varphi|^2)$ after an integration by parts, so $\varphi'=0$, contradicting $\varphi'(0)=1$. Now
+$cu(x)=\psi(x)\int_0^x\varphi f+\varphi(x)\int_x^1\psi f$, so $u(0)=u(1)=0$, and differentiating,
+\[cu'=\psi'\int_0^x\varphi f+\varphi'\int_x^1\psi f,\qquad cu''=q\,cu+(\psi'\varphi-\varphi'\psi)f=c\,(qu-f),\]
+since the terms $\psi\varphi f-\varphi\psi f$ produced by differentiating the integrals cancel in $cu'$. So $-u''+qu=f$. If $w$ is the difference of two solutions, then $-w''+qw=0$ and $w(0)=w(1)=0$, and the integration by parts
+above gives $w'=0$, so $w=0$.
+\end{proof}
+
+For $q=0$, $\varphi(x)=x$, $\psi(x)=1-x$, $c=1$, and $G(x,y)=\min(x,y)-xy$: the kernel of the notebook of Chapter~3, and the covariance of the Brownian bridge (Tome~3, Chapter~11). One more ingredient
+is needed: enough test functions.
+
+\begin{lemma}\label{lem:sines}
+The functions $s_n(x)=\sqrt2\sin(n\pi x)$, $n\ge1$, form a Hilbert basis of $L^2([0,1])$.
+\end{lemma}
+\begin{proof}
+They are orthonormal, since
+\[2\sin(n\pi x)\sin(m\pi x)=\cos((n-m)\pi x)-\cos((n+m)\pi x)\]
+integrates to $\delta_{nm}$ over $[0,1]$. Let $f\in L^2([0,1])$ be orthogonal to all of them, and extend it to an odd function $\tilde f$ on $[-1,1]$. Then
+$\int_{-1}^1\tilde f(x)\sin(n\pi x)\dd x=2\int_0^1f(x)\sin(n\pi x)\dd x=0$, and $\int_{-1}^1\tilde f(x)\cos(n\pi x)\dd x=0$ because the integrand is odd. So $\tilde f$ is orthogonal to every $e^{in\pi x}$, and $t\mapsto\tilde f(\frac t\pi)$ is
+orthogonal to every $e^{int}$ in $L^2(\mathbb T)$; by Theorem~2.7 it vanishes, so $f=0$.
+\end{proof}
+
+\begin{theorem}[Sturm--Liouville]\label{thm:sturm}
+Let $q\in C([0,1])$ be real with $q\ge0$. There is a Hilbert basis $(e_n)_{n\ge1}$ of $L^2([0,1])$ of real functions $e_n\in C^2([0,1])$ with $e_n(0)=e_n(1)=0$ and $-e_n''+qe_n=\lambda_ne_n$, where
+\[0<\lambda_1<\lambda_2<\cdots,\qquad \pi^2n^2\le\lambda_n\le\pi^2n^2+\max q.\]
+Every non-zero $C^2$ solution of \eqref{eq:sl} is a multiple of some $e_n$, with $\lambda=\lambda_n$.
+\end{theorem}
+\begin{proof}
+\emph{The inverse operator.} $G$ is continuous, real and symmetric, so $\mathcal G$ is a compact self-adjoint operator on $L^2([0,1])$ (Example~3.3). It maps $L^2$ into $C([0,1])$, since
+$|\mathcal Gf(x)-\mathcal Gf(x')|\le\|G(x,\cdot)-G(x',\cdot)\|_2\|f\|_2$ and $G$ is uniformly continuous. For $f$ continuous and $u=\mathcal Gf$, integration by parts gives
+\[\langle\mathcal Gf,f\rangle=\int_0^1u\,\overline{(-u''+qu)}=\int_0^1\bigl(|u'|^2+q|u|^2\bigr)\ge0,\]
+and by density of $C([0,1])$ in $L^2$ (Tome~6, Chapter~9) and continuity of $f\mapsto\langle\mathcal Gf,f\rangle$, $\mathcal G\ge0$. It is injective: if $\mathcal Gf=0$, then for every finite combination $h$ of the $s_n$ of
+Lemma~\ref{lem:sines}, which is $C^2$ with $h(0)=h(1)=0$, uniqueness in Lemma~\ref{lem:green} gives $\mathcal G(-h''+qh)=h$, so $\langle f,h\rangle=\langle\mathcal Gf,-h''+qh\rangle=0$; these $h$ are dense, so $f=0$.
+
+\emph{Eigenfunctions.} By Theorem~\ref{thm:spectralcompact}, with $\ker\mathcal G=\{0\}$, $L^2([0,1])$ has a Hilbert basis $(e_n)$ with $\mathcal Ge_n=\mu_ne_n$, $\mu_n>0$ (positivity and injectivity), $\mu_n\to0$. Each $e_n=\mathcal G(\mu_n^{-1}e_n)$ is continuous,
+hence $C^2$ by Lemma~\ref{lem:green}, with $e_n(0)=e_n(1)=0$ and $-e_n''+qe_n=\lambda_ne_n$, $\lambda_n=\mu_n^{-1}$. Conversely, a non-zero $C^2$ solution $u$ of \eqref{eq:sl} satisfies $u=\mathcal G(\lambda u)$, so $\lambda\ne0$ and $u$ is an
+eigenvector of $\mathcal G$ for $\lambda^{-1}$: $\lambda$ is some $\lambda_n$. Two solutions $u,v$ of \eqref{eq:sl} for the same $\lambda$ are proportional, since $v'(0)u-u'(0)v$ solves the same equation with zero initial data
+at $0$ and vanishes by Lemma~\ref{lem:ivp}. So every eigenvalue is simple, the $\lambda_n$ are distinct and can be listed increasingly, and as real and imaginary parts of a solution are solutions, each $e_n$ can be taken real.
+
+\emph{Bounds.} For $u\in C^2$ with $u(0)=u(1)=0$, let $Q(u)=\int_0^1(|u'|^2+q|u|^2)=\langle-u''+qu,u\rangle$. Two integrations by parts give $\langle-u''+qu,e_k\rangle=\langle u,-e_k''+qe_k\rangle=\lambda_k\langle u,e_k\rangle$, so by Parseval
+\[Q(u)=\sum_k\lambda_k|\langle u,e_k\rangle|^2.\]
+The argument of Theorem~\ref{thm:minmax}, word for word, now gives
+\[\lambda_n=\min_V\ \max_{u\in V,\,\|u\|_2=1}Q(u),\]
+the minimum over $n$-dimensional spaces $V$ of $C^2$ functions vanishing at $0$ and $1$, attained at $V=\operatorname{span}(e_1,\dots,e_n)$. Write $Q_q$ to show the dependence on $q$. Since $Q_0(u)\le Q_q(u)\le Q_0(u)+\max q\,\|u\|_2^2$,
+the eigenvalues for $q$ lie between those for $0$ and those for $0$ plus $\max q$. For $q=0$, the solutions of $u''=-\lambda u$ with $u(0)=0$ are the multiples of $\sin(\sqrt\lambda x)$ (as $\lambda>0$), and $u(1)=0$ means
+$\sqrt\lambda\in\pi\N^*$: the eigenvalues are the $\pi^2n^2$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-sturm}
+\caption{The first four eigenfunctions of $-u''+qu=\lambda u$ on $[0,1]$ with $q(x)=60x$ (solid), against the sines of $q=0$ (dashed). Where $q$ is large the string is stiffer and the modes are
+pushed to the left; the $n$-th mode still has $n-1$ zeros inside, as Sturm's oscillation theorem predicts. The eigenvalues are $\lambda_n\approx36.2,\ 70.4,\ 119.5,\ 188.3$, against $\pi^2n^2\approx9.9,\ 39.5,\ 88.8,\ 157.9$.}
+\label{fig:sturm}
+\end{figure}
+
+\begin{corollary}[Weyl's law on an interval]\label{cor:weyllaw}
+Let $N(\lambda)$ be the number of eigenvalues of \eqref{eq:sl} at most $\lambda$. Then $N(\lambda)\sim\frac{\sqrt\lambda}\pi$ as $\lambda\to\infty$. On an interval of length $\ell$, with $q=0$, the eigenvalues are $\frac{\pi^2n^2}{\ell^2}$
+and $N(\lambda)\sim\frac{\ell\sqrt\lambda}\pi$.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:sturm}, $\lambda_n\le\lambda$ implies $n\le\frac{\sqrt\lambda}\pi$, and $\pi^2n^2+\max q\le\lambda$ implies $\lambda_n\le\lambda$. So $\frac{\sqrt{\lambda-\max q}}\pi-1\le N(\lambda)\le\frac{\sqrt\lambda}\pi$. For the
+interval $[0,\ell]$, $u(x)=v(\frac x\ell)$ turns $-u''=\lambda u$ into $-v''=\ell^2\lambda v$.
+\end{proof}
+
+\begin{think}
+Can you hear the length of a string? The corollary says yes: $\ell=\lim\pi\frac{N(\lambda)}{\sqrt\lambda}$, and the potential $q$ is inaudible at this order. Can you hear $q$ itself? Partly. Ambartsumian proved in 1929 that if the
+eigenvalues with the Neumann conditions $u'(0)=u'(1)=0$ are exactly the $\pi^2n^2$, $n\ge0$, then $q=0$; Borg showed in 1946 that two spectra, for two different boundary conditions, determine $q$, while one spectrum in general does not.
+\end{think}
+
+\begin{remark}
+In 1966 Mark Kac asked the same question for a drum: does the spectrum of the Laplacian on a plane domain determine its shape? Weyl's law says it determines the area, and finer asymptotics give the perimeter and the
+number of holes. In 1992 Gordon, Webb and Wolpert answered no, with two different polygons with exactly the same eigenvalues.
+\end{remark}
+
+\section{Hilbert--Schmidt operators and Mercer's theorem}
+
+\begin{proposition}\label{prop:hs}
+Let $T\in\mathcal L(H)$, with $H$ separable. The quantity $\|T\|_{HS}^2=\sum_n\|Te_n\|^2\in[0,\infty]$ does not depend on the Hilbert basis $(e_n)$, and $\|T^*\|_{HS}=\|T\|_{HS}$. If it is finite, $T$ is called
+\emph{Hilbert--Schmidt}; then $\|T\|\le\|T\|_{HS}$ and $T$ is compact. On $H=L^2(\mu)$, $\mu$ $\sigma$-finite with $L^2(\mu)$ separable, the Hilbert--Schmidt operators are exactly the integral operators of
+Example~3.3 with kernel $k\in L^2(\mu\otimes\mu)$, and $\|T\|_{HS}=\|k\|_{L^2}$.
+\end{proposition}
+\begin{proof}
+For two Hilbert bases $(e_n)$ and $(f_m)$, Parseval and Tonelli for series give
+\[\sum_n\|Te_n\|^2=\sum_n\sum_m|\langle Te_n,f_m\rangle|^2=\sum_m\sum_n|\langle e_n,T^*f_m\rangle|^2=\sum_m\|T^*f_m\|^2.\]
+The right side does not involve $(e_n)$, and the left side does not involve $(f_m)$, so both are independent of the bases and $\|T\|_{HS}=\|T^*\|_{HS}$. If $\|x\|=1$, complete $x$ to a Hilbert basis: $\|Tx\|^2\le\|T\|_{HS}^2$.
+With $P_N$ the projection on $\operatorname{span}(e_n:n\le N)$, $\|T-TP_N\|^2\le\|T-TP_N\|_{HS}^2=\sum_{n>N}\|Te_n\|^2\to0$, so $T$ is a limit of finite-rank operators, hence compact (Proposition~3.2).
+
+On $L^2(\mu)$, the functions $e_m\otimes\bar e_n:(x,y)\mapsto e_m(x)\overline{e_n(y)}$ are orthonormal in $L^2(\mu\otimes\mu)$ by Fubini. They form a Hilbert basis: write $T_k$ for the integral operator with kernel $k$; then
+$\langle k,e_m\otimes\bar e_n\rangle=\langle T_ke_n,e_m\rangle$, so if $k$ is orthogonal to all of them, $T_k=0$, hence $\int\!\!\int k(x,y)\mathbf 1_B(y)\mathbf 1_A(x)=0$ for all sets $A,B$ of finite measure, and $k=0$ almost
+everywhere, since a function whose integral vanishes on all rectangles of finite measure vanishes (Tome~6, Chapter~8: the rectangles generate the product $\sigma$-algebra). Now $\|T_k\|_{HS}^2=\sum_{m,n}|\langle T_ke_n,e_m\rangle|^2=\sum_{m,n}|\langle k,e_m\otimes\bar e_n\rangle|^2=\|k\|_2^2$.
+Conversely, if $T$ is Hilbert--Schmidt, $k=\sum_{m,n}\langle Te_n,e_m\rangle\,e_m\otimes\bar e_n$ converges in $L^2(\mu\otimes\mu)$, and $T_k$ and $T$ agree on every $e_n$, so $T=T_k$.
+\end{proof}
+
+The kernel of a Hilbert--Schmidt operator is only defined almost everywhere, so its diagonal $k(x,x)$ means nothing in general. For continuous positive kernels it does, and it carries the trace.
+
+\begin{theorem}[Mercer, 1909]\label{thm:mercer}
+Let $I=[a,b]$ and let $k\in C(I\times I)$ be a \emph{positive kernel}: $\overline{k(x,y)}=k(y,x)$, and $\sum_{i,j}\bar c_ic_jk(x_i,x_j)\ge0$ for all finite families of points $x_i\in I$ and $c_i\in\C$. Let $T$ be the integral
+operator with kernel $k$ on $L^2(I)$, with non-zero eigenvalues $\lambda_n$ and orthonormal eigenvectors $e_n$ as in Theorem~\ref{thm:spectralcompact}. Then $\lambda_n>0$, each $e_n$ is continuous, and
+\[k(x,y)=\sum_n\lambda_ne_n(x)\overline{e_n(y)},\]
+the series converging absolutely and uniformly on $I\times I$. In particular $\sum_n\lambda_n=\int_Ik(x,x)\dd x$.
+\end{theorem}
+\begin{proof}
+\emph{Step 1: $T\ge0$, and the $e_n$ are continuous.} For $f$ continuous, the integral
+\[\langle Tf,f\rangle=\int_I\!\int_Ik(x,y)f(y)\overline{f(x)}\dd x\dd y\]
+is a limit, over regular grids of step $h$, of the Riemann sums
+\[h^2\sum_{i,j}k(x_i,x_j)f(x_j)\overline{f(x_i)}\ge0;\] by density, $T\ge0$, so $\lambda_n>0$. As in the proof of Theorem~\ref{thm:sturm}, $T$ maps $L^2$ into $C(I)$, so $e_n=\lambda_n^{-1}Te_n$ is continuous.
+
+\emph{Step 2: a bound on the diagonal.} Let $k_N(x,y)=k(x,y)-\sum_{n\le N}\lambda_ne_n(x)\overline{e_n(y)}$, a continuous kernel. Its operator $T-\sum_{n\le N}\lambda_n\langle\cdot,e_n\rangle e_n$ is positive, by the expansion of
+Theorem~\ref{thm:spectralcompact}. A continuous kernel $\kappa$ whose operator is positive has $\kappa(x,x)\ge0$: $\kappa(x_0,x_0)$ is real, and if it were $<0$, then $\operatorname{Re}\kappa<\frac12\kappa(x_0,x_0)$ on some
+$U\times U$, $U$ an interval around $x_0$, and with $f=\mathbf 1_U$ the real number $\langle T_\kappa f,f\rangle=\int_U\int_U\kappa$ would be negative. So $k_N(x,x)\ge0$, that is,
+\[\sum_{n\le N}\lambda_n|e_n(x)|^2\le k(x,x)\le C:=\max_Ik(x,x)\qquad\text{for all }x\text{ and }N.\]
+
+\emph{Step 3: pointwise convergence.} By Cauchy--Schwarz, for $M<N$,
+\begin{equation}\label{eq:mercercs}
+\begin{aligned}\sum_{n=M}^N\lambda_n|e_n(x)e_n(y)|&\le\Bigl(\sum_{n=M}^N\lambda_n|e_n(x)|^2\Bigr)^{1/2}\eqbr\cdot\Bigl(\sum_{n=M}^N\lambda_n|e_n(y)|^2\Bigr)^{1/2}.\end{aligned}
+\end{equation}
+For fixed $x$ the first factor tends to $0$ as $M\to\infty$ (Step 2) and the second is at most $\sqrt C$, so $\tilde k(x,y)=\sum_n\lambda_ne_n(x)\overline{e_n(y)}$ converges uniformly in $y$, and is continuous in $y$. For
+$f\in L^2(I)$, the same inequality shows that $\sum_n\lambda_n\langle f,e_n\rangle e_n(x)$ converges uniformly in $x$; its limit in $L^2$ is $Tf$ (Theorem~\ref{thm:spectralcompact}), and both $Tf$ and the uniform limit
+are continuous, so they agree everywhere. Integrating term by term (uniform convergence in $y$),
+\[\int_I\tilde k(x,y)f(y)\dd y=\sum_n\lambda_ne_n(x)\langle f,e_n\rangle=Tf(x)=\int_Ik(x,y)f(y)\dd y.\]
+As this holds for all $f$, $\tilde k(x,\cdot)=k(x,\cdot)$ almost everywhere, hence everywhere by continuity. In particular $k(x,x)=\sum_n\lambda_n|e_n(x)|^2$.
+
+\emph{Step 4: uniform convergence.} The partial sums $\sum_{n\le N}\lambda_n|e_n(x)|^2$ are continuous and increase to the continuous function $k(x,x)$ on the compact $I$, so the convergence is uniform by Dini's theorem (Tome~6,
+Exercise~4.1, or directly: the closed sets $\{x:k(x,x)-\sum_{n\le N}\lambda_n|e_n(x)|^2\ge\varepsilon\}$ decrease and have empty intersection, so one of them is empty). Then the first factor in \eqref{eq:mercercs} tends to
+$0$ uniformly in $x$, and the series converges absolutely and uniformly on $I\times I$. Integrating the diagonal, $\int_Ik(x,x)\dd x=\sum_n\lambda_n\int_I|e_n|^2=\sum_n\lambda_n$.
+\end{proof}
+
+\begin{example}[the covariance of Brownian motion]\label{ex:minkernel}
+The kernel $k(s,t)=\min(s,t)$ on $[0,1]$ is positive, because $\min(s,t)=\int_0^1\mathbf 1_{[0,s]}\mathbf 1_{[0,t]}$ gives $\sum\bar c_ic_j\min(t_i,t_j)=\int_0^1\bigl|\sum_jc_j\mathbf 1_{[0,t_j]}\bigr|^2\ge0$. If $Tf=\lambda f$ with
+$\lambda\ne0$, then $f$ is continuous and
+\[\lambda f(s)=\int_0^st\,f(t)\dd t+s\int_s^1f(t)\dd t,\]
+so $\lambda f(0)=0$, $\lambda f'(s)=\int_s^1f$, $\lambda f'(1)=0$ and $\lambda f''=-f$. With $\lambda>0$, $f$ is a multiple of $\sin(s/\sqrt\lambda)$, and $f'(1)=0$ forces $\frac1{\sqrt\lambda}=(n-\frac12)\pi$. So
+\[\lambda_n=\frac1{(n-\frac12)^2\pi^2},\qquad e_n(s)=\sqrt2\sin\bigl((n-\tfrac12)\pi s\bigr),\qquad n\ge1,\]
+and Mercer's theorem gives, uniformly on $[0,1]^2$,
+\[\min(s,t)=\sum_{n\ge1}\frac{2\sin((n-\frac12)\pi s)\sin((n-\frac12)\pi t)}{(n-\frac12)^2\pi^2}.\]
+At $s=t=1$: $1=\frac8{\pi^2}\sum_{n\ge1}\frac1{(2n-1)^2}$, that is $\sum_{n\ge1}\frac1{(2n-1)^2}=\frac{\pi^2}8$, the odd half of the Basel problem.
+\end{example}
+
+Here is why this example matters. Brownian motion $(B_t)_{t\in[0,1]}$ (Tome~3, Chapter~11) is a centred Gaussian process with $\operatorname{Cov}(B_s,B_t)=\min(s,t)$. The variables $\xi_n=\lambda_n^{-1/2}\int_0^1B_te_n(t)\dd t$ are
+jointly Gaussian with
+\[\operatorname{Cov}(\xi_n,\xi_m)=\frac{\int_0^1\!\int_0^1\min(s,t)e_n(s)e_m(t)\dd s\dd t}{\sqrt{\lambda_n\lambda_m}}=\frac{\langle Te_m,e_n\rangle}{\sqrt{\lambda_n\lambda_m}}=\delta_{nm},\]
+so they are independent standard Gaussians, and Brownian motion should be the random series $\sum_n\xi_n\sqrt{\lambda_n}e_n(t)$, a sum of sine waves with independent random amplitudes. This is the
+\emph{Karhunen--Lo\`eve expansion}, the principal component analysis of a random function: the first mode carries $\lambda_1/\sum\lambda_n=\frac{8}{\pi^2}\approx81\%$ of the total variance $\int_0^1\operatorname{Var}B_t\dd t=\frac12$.
+Exercise~\ref{ex:kl} proves that the series has the right covariances, and Tome~11 proves that it converges uniformly, almost surely, to a continuous path.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-kl}
+\caption{Left: the first four Karhunen--Lo\`eve modes $\sqrt{\lambda_n}e_n(t)$ of Brownian motion. Right: one sample of the partial sums $\sum_{n\le N}\xi_n\sqrt{\lambda_n}e_n(t)$ for $N=3$, $20$ and $500$, with the same random
+amplitudes $\xi_n$: the low modes give the overall shape, the high ones the roughness.}
+\label{fig:kl}
+\end{figure}
+
+\section{The continuous functional calculus}
+
+For a compact self-adjoint operator, the spectral theorem defines $f(K)=\sum_nf(\lambda_n)\langle\cdot,e_n\rangle e_n+f(0)P_{\ker K}$ for any bounded function $f$ on the spectrum. For a general bounded self-adjoint operator, such as
+multiplication by $x$ on $L^2([0,1])$, there may be no eigenvectors at all. Yet continuous functions of it still make sense, by an argument that uses nothing but Proposition~\ref{prop:saspec} and Weierstrass.
+
+\begin{theorem}[continuous functional calculus]\label{thm:funcalc}
+Let $T$ be a bounded self-adjoint operator on $H$. There is a unique linear map $f\mapsto f(T)$ from $C(\sigma(T))$ to $\mathcal L(H)$ which is multiplicative, sends $1$ to $I$ and the identity function to $T$, and is
+isometric: $\|f(T)\|=\max_{\sigma(T)}|f|$. Moreover $f(T)^*=\bar f(T)$, $f(T)$ commutes with every operator that commutes with $T$, and $f(T)\ge0$ when $f\ge0$.
+\end{theorem}
+\begin{proof}
+\emph{Polynomials.} For a polynomial $p$, $\sigma(p(T))=p(\sigma(T))$. Indeed, for $\mu\in\C$ and $p$ non-constant, factor $p(z)-\mu=c\prod_i(z-z_i)$, so $p(T)-\mu=c\prod_i(T-z_i)$ with commuting factors. A product $AB=BA$ of
+commuting operators is invertible if and only if both factors are ($A$ then has the right inverse $B(AB)^{-1}$ and the left inverse $(BA)^{-1}B$). So $\mu\in\sigma(p(T))$ iff some $z_i\in\sigma(T)$ iff $\mu\in p(\sigma(T))$.
+Write $\bar p$ for the polynomial with conjugate coefficients; as $T^*=T$, $p(T)^*=\bar p(T)$, and $(\bar pp)(T)$ is self-adjoint. By Proposition~3.1 and Proposition~\ref{prop:saspec}(c),
+\[\|p(T)\|^2=\|p(T)^*p(T)\|=r\bigl((\bar pp)(T)\bigr)=\max_{t\in\sigma(T)}|\bar p(t)p(t)|=\max_{\sigma(T)}|p|^2,\]
+using $\bar p(t)=\overline{p(t)}$ for real $t$, as $\sigma(T)\subset\R$.
+
+\emph{Extension.} So $p\mapsto p(T)$ is well defined and isometric on polynomials viewed as functions on the compact set $\sigma(T)\subset\R$ (two polynomials equal on $\sigma(T)$ give the same operator). Polynomials are dense in
+$C(\sigma(T))$ by the Weierstrass theorem (Tome~6, Theorem~4.19), and $\mathcal L(H)$ is complete, so the map extends uniquely to an isometry on $C(\sigma(T))$; linearity, multiplicativity, $f(T)^*=\bar f(T)$ and commutation
+pass to the limit. Uniqueness: any map with these properties agrees with this one on polynomials and is continuous.
+
+\emph{Positivity.} If $f\ge0$, let $g=\sqrt f$, real and continuous: $f(T)=g(T)^2=g(T)^*g(T)$, and $\langle f(T)x,x\rangle=\|g(T)x\|^2\ge0$.
+\end{proof}
+
+\begin{corollary}[square roots]\label{cor:sqrt}
+Every positive operator $A$ has a unique positive square root: an operator $B\ge0$ with $B^2=A$.
+\end{corollary}
+\begin{proof}
+Since $\sigma(A)\subset[0,\infty[$ (Proposition~\ref{prop:saspec}), $C=\sqrt{A}$, the function $\sqrt t$ applied to $A$, is positive and $C^2=A$. Let $B\ge0$ with $B^2=A$. Then $B$ commutes with $A=B^2$, hence with $C$
+(Theorem~\ref{thm:funcalc}). So $(B-C)(B+C)=B^2-C^2=0$, and
+\[(B-C)B(B-C)+(B-C)C(B-C)=(B-C)(B+C)(B-C)=0.\]
+Both terms are positive ($\langle(B-C)B(B-C)x,x\rangle=\langle By,y\rangle$ with $y=(B-C)x$), so both vanish, and their difference $(B-C)^3$ vanishes. For the self-adjoint $S=B-C$, Proposition~3.1 gives $\|S^2\|=\|S\|^2$, so
+$\|S\|^4=\|S^4\|=\|S\cdot S^3\|=0$ and $B=C$.
+\end{proof}
+
+\begin{remark}
+The full spectral theorem says that every bounded self-adjoint operator is a multiplication operator in disguise: there is a measure space $(X,\mu)$, a bounded real function $\varphi$ on $X$, and a unitary
+$U:H\to L^2(\mu)$ with $UTU^{-1}f=\varphi f$. Equivalently, there is a projection-valued measure $E$ on $\sigma(T)$ with $T=\int\lambda\dd E(\lambda)$, which allows $f(T)$ for every bounded Borel $f$. The proof
+combines Theorem~\ref{thm:funcalc} with the Riesz--Markov theorem (Theorem~1.13); von Neumann extended it to unbounded operators in 1929, to give quantum mechanics its mathematics. See Reed and Simon, or Rudin, below.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:kl}
+\emph{The Karhunen--Lo\`eve expansion of Brownian motion.} Let $(\xi_n)_{n\ge1}$ be independent $N(0,1)$ variables, and $\lambda_n,e_n$ as in Example~\ref{ex:minkernel}. (a) Show that for each $t\in[0,1]$ the series
+$X_t=\sum_n\xi_n\sqrt{\lambda_n}e_n(t)$ converges in $L^2(P)$. (b) Show that $X_0=0$ and $\operatorname{Cov}(X_s,X_t)=\min(s,t)$, and that each $X_t$ is Gaussian. (c) Find the corresponding expansion of the Brownian bridge,
+whose covariance is $\min(s,t)-st$ (Tome~3, Chapter~11).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:toeplitz}
+\emph{Convolution kernels.} Let $g\in L^2(\mathbb T)$, with $\mathbb T=\R/\Z$ here, and $Tf(x)=\int_0^1g(x-y)f(y)\dd y$ on $L^2(\mathbb T)$. (a) Show that $e_n(x)=e^{2\pi inx}$ is an eigenvector of $T$, with eigenvalue the Fourier coefficient
+$\hat g(n)=\int_0^1g(x)e^{-2\pi inx}\dd x$. (b) When is $T$ self-adjoint? positive? (c) Apply Mercer's theorem to the Poisson kernel $P_r(x)=\sum_{n\in\Z}r^{|n|}e^{2\pi inx}$, $0<r<1$, and check the trace formula.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weylineq}
+\emph{Weyl's inequalities.} Let $K,L\ge0$ be compact. Show that $\lambda_{m+n-1}(K+L)\le\lambda_m(K)+\lambda_n(L)$ for all $m,n\ge1$. Deduce that if $F\ge0$ has rank $r$, then $\lambda_n(K)\le\lambda_n(K+F)$ and $\lambda_{n+r}(K+F)\le\lambda_n(K)$: a
+positive perturbation of rank $r$ raises the eigenvalues, but never moves one past the eigenvalue $r$ places above it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:graphlaplacian}
+\emph{The Laplacian of a graph.} Let $G$ be a finite graph with vertex set $V$ and edge set $E$, and $L=D-A$ on $\C^V$, where $D$ is the diagonal matrix of degrees and $A$ the adjacency matrix. (a) Show that
+$\langle Lx,x\rangle=\sum_{\{i,j\}\in E}|x_i-x_j|^2$, that $L\ge0$, and that $\ker L$ is the space of functions constant on each connected component. (b) If $G$ is connected, show that the second smallest eigenvalue of $L$ is
+$\mu_2=\min\bigl\{\frac{\sum_E|x_i-x_j|^2}{\sum_V|x_i|^2}:x\ne0,\ \sum_Vx_i=0\bigr\}$. (c) Compute the eigenvalues of the cycle $C_n$, and show that $\mu_2\sim\frac{4\pi^2}{n^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:polar}
+\emph{Polar decomposition.} Let $T\in\mathcal L(H)$ and $|T|=\sqrt{T^*T}$ (Corollary~\ref{cor:sqrt}). (a) Show that $\||T|x\|=\|Tx\|$ for all $x$. (b) Show that there is a unique $U\in\mathcal L(H)$ with $T=U|T|$ and $U=0$ on
+$\ker T$, and that $U$ is isometric on $(\ker T)^\perp$. (c) Show that $U$ is unitary if $T$ is invertible, and compute $|S|$ and $U$ for the shift $S$ of Chapter~3.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:basel}
+\emph{Basel from a string.} Let $G(x,y)=\min(x,y)-xy$ on $[0,1]^2$. (a) Show that $G$ is a positive kernel. (b) Using Theorem~\ref{thm:sturm} with $q=0$ and Mercer's theorem, prove $\sum_{n\ge1}\frac1{n^2}=\frac{\pi^2}6$.
+(c) Using Proposition~\ref{prop:hs}, prove $\sum_{n\ge1}\frac1{n^4}=\frac{\pi^4}{90}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:volterranorm}
+\emph{The norm of the Volterra operator.} Let $Vf(x)=\int_0^xf$ on $L^2([0,1])$. Compute $V^*$ and $V^*V$, find the eigenvalues of $V^*V$ with Example~\ref{ex:minkernel}, and deduce that $\|V\|=\frac2\pi$. (The operator $V$ has no
+eigenvalue, but $V^*V$ has plenty: these \emph{singular values} are the right tool for non-normal compact operators.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:kl}
+The terms are independent and centred, so they are orthogonal in $L^2(P)$. Mercer's theorem on the diagonal gives $\sum_n\lambda_ne_n(t)^2=t$. For (c), the kernel is the Green's function of $-u''$.
+\end{hint}
+\begin{hint}{ex:toeplitz}
+Substitute $u=x-y$. Since the $e_n$ form a Hilbert basis (Theorem~2.7, rescaled), $T$ is diagonal in it, and $\langle Tf,f\rangle=\sum_n\hat g(n)|\langle f,e_n\rangle|^2$.
+\end{hint}
+\begin{hint}{ex:weylineq}
+Use the min-sup form of Theorem~\ref{thm:minmax} with $W$ spanned by the first $m-1$ eigenvectors of $K$ and the first $n-1$ eigenvectors of $L$.
+\end{hint}
+\begin{hint}{ex:graphlaplacian}
+Expand $\sum_E|x_i-x_j|^2$ and count how often each $|x_i|^2$ appears. For (c), try $x_j=\omega^{jk}$ with $\omega=e^{2\pi i/n}$.
+\end{hint}
+\begin{hint}{ex:polar}
+(a) is one line. For (b), define $U$ on the range of $|T|$ by $U(|T|x)=Tx$, and check that $\ker|T|=\ker T$.
+\end{hint}
+\begin{hint}{ex:basel}
+$G(s,t)=\int_0^1(\mathbf 1_{[0,s]}(u)-s)(\mathbf 1_{[0,t]}(u)-t)\dd u$. The eigenvalues of $\mathcal G$ are the $\frac1{\pi^2n^2}$.
+\end{hint}
+\begin{hint}{ex:volterranorm}
+$V^*V$ has kernel $1-\max(x,y)$, which is $\min(1-x,1-y)$: reflect $[0,1]$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:kl}
+\idea A Gaussian process is determined by its covariance, and Mercer's theorem writes the covariance as a sum of products. Each product is the covariance of one random sine wave, and independent amplitudes add
+covariances.
+\writeup (a) Let $S_N(t)=\sum_{n\le N}\xi_n\sqrt{\lambda_n}e_n(t)$. The $\xi_n$ are orthonormal in $L^2(P)$, so for $M<N$, $E|S_N(t)-S_M(t)|^2=\sum_{M<n\le N}\lambda_ne_n(t)^2$. By Mercer's theorem on the diagonal,
+$\sum_n\lambda_ne_n(t)^2=\min(t,t)=t<\infty$, so $(S_N(t))$ is Cauchy in $L^2(P)$, which is complete (Tome~6, Chapter~9).
+
+(b) $e_n(0)=0$ gives $X_0=0$. Inner products are continuous in $L^2(P)$, so by Mercer's theorem
+\[E[X_sX_t]=\lim_NE[S_N(s)S_N(t)]=\lim_N\sum_{n\le N}\lambda_ne_n(s)e_n(t)=\min(s,t),\]
+and $E[X_t]=0$. $S_N(t)$ is Gaussian
+with variance $\sigma_N^2\to t$, and $|E[e^{iuX_t}]-E[e^{iuS_N(t)}]|\le|u|\,E|X_t-S_N(t)|\le|u|\,\|X_t-S_N(t)\|_2\to0$, so $E[e^{iuX_t}]=\lim e^{-u^2\sigma_N^2/2}=e^{-u^2t/2}$: $X_t\sim N(0,t)$. The same argument applied
+to any combination $\sum_ia_iX_{t_i}$ shows that $X$ is a Gaussian process with the covariance of Brownian motion.
+
+(c) $G(s,t)=\min(s,t)-st$ is the Green's function of $-u''$ (Lemma~\ref{lem:green} with $q=0$), a positive kernel (Exercise~\ref{ex:basel}), and $\mathcal Ge=\mu e$ with $\mu\neq0$ means $-e''=\mu^{-1}e$ with Dirichlet conditions. By
+Theorem~\ref{thm:sturm}, $\mu_n=\frac1{\pi^2n^2}$ and $e_n=\sqrt2\sin(n\pi t)$. The same proof gives the bridge as
+\[X_t=\sum_{n\ge1}\xi_n\frac{\sqrt2\sin(n\pi t)}{n\pi},\]
+and adding $t\xi_0$ with an independent $\xi_0\sim N(0,1)$ gives Brownian motion again, by the decomposition $B_t=X_t+tZ$ of the Brownian bridge exercise of Tome~3, Chapter~11. The resulting series
+$B_t=t\xi_0+\sum_{n\ge1}\xi_n\frac{\sqrt2\sin(n\pi t)}{n\pi}$ is the one Paley and Wiener used in 1934 to construct Brownian motion.
+\end{solution}
+
+\begin{solution}{ex:toeplitz}
+\idea Convolution commutes with translations, and the characters $e_n$ are the common eigenvectors of all translations. So every convolution operator is diagonal in the Fourier basis, and everything about it is read off
+the sequence $\hat g(n)$.
+\writeup (a) The kernel $g(x-y)$ is in $L^2([0,1]^2)$ (Tonelli and periodicity), so $T$ is bounded (Example~3.3). With $u=x-y$ and periodicity, $Te_n(x)=\int_0^1g(u)e^{2\pi in(x-u)}\dd u=\hat g(n)e_n(x)$.
+
+(b) As $(e_n)$ is a Hilbert basis of $L^2(\mathbb T)$ (Theorem~2.7 after the change of variable $t=2\pi x$), $Tf=\sum_n\hat g(n)\langle f,e_n\rangle e_n$ and $T^*f=\sum_n\overline{\hat g(n)}\langle f,e_n\rangle e_n$. So $T$ is self-adjoint iff
+every $\hat g(n)$ is real, that is iff $g(x)=\overline{g(-x)}$ almost everywhere (the function $x\mapsto\overline{g(-x)}$ has coefficients $\overline{\hat g(n)}$, and Theorem~2.7 identifies a function from its coefficients).
+And $\langle Tf,f\rangle=\sum_n\hat g(n)|\langle f,e_n\rangle|^2$ is $\ge0$ for all $f$ iff every $\hat g(n)\ge0$.
+
+(c) The series $\sum r^{|n|}e^{2\pi inx}$ converges absolutely and uniformly, so $P_r$ is continuous, and summing the two geometric series gives $P_r(x)=\frac{1-r^2}{1-2r\cos2\pi x+r^2}$. The kernel $k(x,y)=P_r(x-y)=\sum_nr^{|n|}e_n(x)\overline{e_n(y)}$
+is positive in Mercer's sense: $\sum_{i,j}\bar c_ic_jk(x_i,x_j)=\sum_nr^{|n|}\bigl|\sum_jc_j\overline{e_n(x_j)}\bigr|^2\ge0$. Its eigenvalues are the $r^{|n|}$, with sum $\frac{1+r}{1-r}$, and indeed
+$\int_0^1k(x,x)\dd x=P_r(0)=\frac{1-r^2}{(1-r)^2}=\frac{1+r}{1-r}$.
+\end{solution}
+
+\begin{solution}{ex:weylineq}
+\idea The $n$-th eigenvalue is the best upper bound for the Rayleigh quotient once $n-1$ directions are forbidden. Forbid the $m-1$ top directions of $K$ and the $n-1$ top directions of $L$ at once: that is $m+n-2$
+directions, and on what remains each operator is small.
+\writeup Let $W$ be spanned by the eigenvectors of $K$ for its $m-1$ largest eigenvalues and those of $L$ for its $n-1$ largest (those that exist), so $\dim W\le m+n-2$. For a unit $x\perp W$, the computation in the
+proof of Theorem~\ref{thm:minmax} gives $\langle Kx,x\rangle\le\lambda_m(K)$ and $\langle Lx,x\rangle\le\lambda_n(L)$. By the min-sup formula for $K+L$,
+\[\lambda_{m+n-1}(K+L)\le\sup_{x\perp W,\,\|x\|=1}\langle(K+L)x,x\rangle\le\lambda_m(K)+\lambda_n(L).\]
+If $F\ge0$ has rank $r$, then $\lambda_{r+1}(F)=0$, and the inequality with $L=F$ and $(m,n)$ replaced by $(n,r+1)$ gives $\lambda_{n+r}(K+F)\le\lambda_n(K)$. And $K\le K+F$ gives $\lambda_n(K)\le\lambda_n(K+F)$ by
+Corollary~\ref{cor:weylpert}.
+\end{solution}
+
+\begin{solution}{ex:graphlaplacian}
+\idea The quadratic form of the Laplacian measures how much a function on the vertices varies along the edges. Functions that do not vary at all are constant on components; the cheapest non-constant function
+measures how well connected the graph is.
+\writeup (a) $\langle Lx,x\rangle=\sum_id_i|x_i|^2-\sum_{i,j}A_{ij}x_j\bar x_i$, and each edge $\{i,j\}$ contributes $|x_i|^2+|x_j|^2-x_j\bar x_i-x_i\bar x_j=|x_i-x_j|^2$. So $L\ge0$, and $Lx=0$ iff $\langle Lx,x\rangle=0$ (for $L\ge0$,
+Cauchy--Schwarz for the form $\langle Lx,y\rangle$, as in Proposition~\ref{prop:saspec}, gives $\|Lx\|^2\le\langle Lx,x\rangle^{1/2}\langle L^2x,Lx\rangle^{1/2}$), iff $x_i=x_j$ along every edge, iff $x$ is constant on components.
+
+(b) If $G$ is connected, $\ker L=\C\mathbf 1$, so $\mu_1=0$ is simple. Take an orthonormal eigenbasis $f_1=\frac{\mathbf 1}{\sqrt{|V|}},f_2,\dots$ with eigenvalues $0<\mu_2\le\mu_3\le\cdots$. For $x\perp\mathbf 1$,
+$\langle Lx,x\rangle=\sum_{k\ge2}\mu_k|\langle x,f_k\rangle|^2\ge\mu_2\|x\|^2$, with equality at $x=f_2$.
+
+(c) For $C_n$, $(Lx)_j=2x_j-x_{j-1}-x_{j+1}$ (indices mod $n$). With $x_j=\omega^{jk}$, $(Lx)_j=(2-\omega^k-\omega^{-k})x_j=(2-2\cos\frac{2\pi k}n)x_j$. These $n$ vectors are orthogonal (a discrete Fourier basis, Chapter~7), so the
+eigenvalues are $2-2\cos\frac{2\pi k}n$, $0\le k<n$, and $\mu_2=2-2\cos\frac{2\pi}n\sim\frac{4\pi^2}{n^2}$. A long cycle is ``almost disconnected'': cut two edges and it falls in two. This is the discrete string of
+Theorem~\ref{thm:sturm}, and spectral clustering (notebook) uses $f_2$ to find such cuts.
+\end{solution}
+
+\begin{solution}{ex:polar}
+\idea A complex number is $re^{i\theta}$; an operator is ``a stretch, then a rotation''. The stretch $|T|$ is forced by $T^*T$, and the rotation is what is left.
+\writeup (a) $\||T|x\|^2=\langle|T|^2x,x\rangle=\langle T^*Tx,x\rangle=\|Tx\|^2$.
+
+(b) By (a), $\ker|T|=\ker T$, and the map $|T|x\mapsto Tx$ is well defined and isometric on $\operatorname{ran}|T|$; it extends by continuity to an isometry $U_0$ of $\overline{\operatorname{ran}|T|}$ onto $\overline{\operatorname{ran}T}$.
+Since $|T|$ is self-adjoint, $\overline{\operatorname{ran}|T|}=(\ker|T|)^\perp=(\ker T)^\perp$ (Proposition~3.1). Set $U=U_0$ on $(\ker T)^\perp$ and $U=0$ on $\ker T$. Then $U|T|x=Tx$ for all $x$. Uniqueness: $T=U|T|$ fixes $U$ on
+$\operatorname{ran}|T|$, hence on its closure $(\ker T)^\perp$, and $U=0$ on $\ker T$ is imposed.
+
+(c) If $T$ is invertible, $\ker T=\{0\}$ and $\operatorname{ran}T=H$, so $U$ is an isometry of $H$ onto $H$: unitary. For the shift, $S^*S=I$, so $|S|=I$ and $U=S$, an isometry that is not onto. So one cannot always choose
+$U$ unitary, unlike in finite dimension where an isometry is automatically onto.
+\end{solution}
+
+\begin{solution}{ex:basel}
+\idea The string with fixed ends has frequencies $\pi n$, and its Green's function has an elementary diagonal. Mercer's trace formula turns ``sum of the eigenvalues'' into ``integral of the diagonal'': Euler's
+series appears as the total compliance of a string.
+\writeup (a) For $s,t\in[0,1]$,
+\[\int_0^1(\mathbf 1_{[0,s]}-s)(\mathbf 1_{[0,t]}-t)=\min(s,t)-ts-st+st=G(s,t),\]
+so $\sum\bar c_ic_jG(t_i,t_j)=\int_0^1\bigl|\sum_jc_j(\mathbf 1_{[0,t_j]}-t_j)\bigr|^2\ge0$, and $G$ is real and symmetric.
+
+(b) By Lemma~\ref{lem:green} with $q=0$, $\mathcal G$ is the inverse of $-u''$ with Dirichlet conditions, and by the proof of Theorem~\ref{thm:sturm} its eigenvalues are $\mu_n=\frac1{\pi^2n^2}$ with eigenfunctions $\sqrt2\sin(n\pi x)$.
+Mercer's trace formula gives
+\[\sum_{n\ge1}\frac1{\pi^2n^2}=\int_0^1G(x,x)\dd x=\int_0^1(x-x^2)\dd x=\frac16.\]
+
+(c) By Proposition~\ref{prop:hs} in the eigenbasis, $\|\mathcal G\|_{HS}^2=\sum_n\mu_n^2=\sum_n\frac1{\pi^4n^4}$, and it equals $\|G\|_2^2=2\int_0^1\int_0^x y^2(1-x)^2\dd y\dd x=\frac23\int_0^1x^3(1-x)^2\dd x=\frac23\cdot\frac1{60}=\frac1{90}$.
+\end{solution}
+
+\begin{solution}{ex:volterranorm}
+\idea For a non-normal operator the norm is not read off the eigenvalues, but it is read off the eigenvalues of $V^*V$, which is self-adjoint: $\|V\|^2=\|V^*V\|$. And $V^*V$ turns out to be the covariance of Brownian
+motion run backwards.
+\writeup By Fubini,
+\[\langle Vf,g\rangle=\int_0^1\!\!\int_0^xf(y)\dd y\,\overline{g(x)}\dd x=\int_0^1f(y)\overline{\int_y^1g(x)\dd x}\dd y,\]
+so $V^*g(y)=\int_y^1g$. Then
+\[V^*Vf(x)=\int_x^1\int_0^tf(s)\dd s\dd t=\int_0^1\bigl(1-\max(x,s)\bigr)f(s)\dd s.\]
+The kernel $1-\max(x,s)=\min(1-x,1-s)$ is the kernel of Example~\ref{ex:minkernel} transported by the unitary $Rf(x)=f(1-x)$: $V^*V=RTR^{-1}$. So $V^*V$ has the eigenvalues $\frac1{(n-\frac12)^2\pi^2}$, the largest being
+$\frac4{\pi^2}$. By Propositions~3.1 and \ref{prop:saspec}(c), $\|V\|^2=\|V^*V\|=\frac4{\pi^2}$, so $\|V\|=\frac2\pi\approx0.64$, while $r(V)=0$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item D.~Hilbert, \emph{Grundz\"uge einer allgemeinen Theorie der linearen Integralgleichungen}, Teubner, 1912. The six communications of 1904--1910.
+\item L.~A.~Steen, ``Highlights in the history of spectral theory'', \emph{Amer. Math. Monthly} 80 (1973), 359--381. Hilbert, the word ``spectrum'', and quantum mechanics.
+\item H.~Weyl, ``Das asymptotische Verteilungsgesetz der Eigenwerte linearer partieller Differentialgleichungen'', \emph{Math. Ann.} 71 (1912), 441--479; W.~Arendt, R.~Nittka, W.~Peter and F.~Steiner, ``Weyl's law'', in
+\emph{Mathematical Analysis of Evolution, Information, and Complexity}, Wiley-VCH, 2009. The story of Lorentz's challenge.
+\item J.~Mercer, ``Functions of positive and negative type, and their connection with the theory of integral equations'', \emph{Phil. Trans. Roy. Soc. London A} 209 (1909), 415--446.
+\item R.~Courant and D.~Hilbert, \emph{Methods of Mathematical Physics}, vol.~1, Interscience, 1953. Min--max, Sturm--Liouville, and the vibrating string.
+\item M.~Kac, ``Can one hear the shape of a drum?'', \emph{Amer. Math. Monthly} 73 (1966), 1--23; C.~Gordon, D.~Webb and S.~Wolpert, ``One cannot hear the shape of a drum'', \emph{Bull. Amer. Math. Soc.} 27 (1992), 134--138.
+\item G.~Borg, ``Eine Umkehrung der Sturm--Liouvilleschen Eigenwertaufgabe'', \emph{Acta Math.} 78 (1946), 1--96.
+\item M.~Reed and B.~Simon, \emph{Methods of Modern Mathematical Physics I: Functional Analysis}, Academic Press, 1980, Chapters~VI--VII; W.~Rudin, \emph{Functional Analysis}, 2nd ed., McGraw--Hill, 1991, Chapter~12.
+\item M.~Lo\`eve, \emph{Probability Theory}, Van Nostrand, 1955, \S34 (the Karhunen--Lo\`eve expansion); R.~E.~A.~C.~Paley and N.~Wiener, \emph{Fourier Transforms in the Complex Domain}, AMS, 1934, Chapter~IX.
+\end{itemize}
