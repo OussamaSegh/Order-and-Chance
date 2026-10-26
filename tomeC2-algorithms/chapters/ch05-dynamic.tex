@@ -1,0 +1,450 @@
+\chapter{Dynamic Programming}\label{ch:dynamic}
+
+\begin{center}\itshape
+An optimal policy has the property that whatever the initial state and initial decision are,\\
+the remaining decisions must constitute an optimal policy with regard to the state\\
+resulting from the first decision.\\
+\upshape(Richard Bellman, \emph{Dynamic Programming}, 1957, Chapter~III, \S\,3)
+\end{center}
+
+In the autumn of 1950 Richard Bellman was at the RAND Corporation in Santa Monica, working for the US Air Force on what he called multistage decision
+processes, and he needed a name for this work. More than thirty years later he told the story in his autobiography. The Secretary of Defense, he wrote,
+could not bear the word ``research'', and RAND's sponsors had to be kept happy; ``programming'' sounded like planning and scheduling, and
+``dynamic'' had a precise meaning in physics and, he observed, could not be used in a pejorative sense. The combination, in his words, was
+``something not even a Congressman could object to''. (Bellman's memory was not quite exact: the Secretary he named, Charles Wilson, took office only in 1953. Stuart Dreyfus, his collaborator,
+reproduces the whole passage in a short article listed at the end of the chapter.) The name stuck, and it describes nothing in particular, which is perhaps why it
+fits so many things.
+
+What it describes, in this book, is a single idea: \emph{solve every subproblem once, and in the right order}. A recursive solution that calls itself on
+overlapping subproblems can take exponential time, as the naive recursion for the Fibonacci numbers does (Exercise~\ref{ex:fibcalls}); if the distinct subproblems
+are few, storing their answers in a table makes it polynomial. The art is in choosing the subproblems. We shall see the classical examples, each one a small gem:
+the distance between two words, and how to compute an optimal alignment in linear space (Hirschberg); the knapsack; the best order in which to multiply matrices;
+optimal search trees, and the beautiful theorem of Knuth and Yao that speeds them up from cubic to quadratic time; the most likely hidden explanation of a sequence of
+observations (Viterbi); the travelling salesman in time $2^nn^2$ instead of $n!$; and problems on trees.
+
+\begin{think}
+How many single-letter edits (insert a letter, delete a letter, replace a letter by another) turn \texttt{kitten} into \texttt{sitting}? Three are easy to find. Can you
+\emph{prove} that two are not enough?
+\end{think}
+
+\section{The principle}\label{sec:dpprinciple}
+
+A dynamic programme has three ingredients: a family of \emph{subproblems}, indexed by a finite set $\mathcal S$; a \emph{recurrence} expressing the answer to each subproblem
+through the answers to smaller ones; and an \emph{order} on $\mathcal S$ in which every subproblem comes after those it uses. The subproblems and the ``uses'' relation
+form a directed acyclic graph, and the order is a topological order of it (Theorem~\ref{thm:cycle}). Filling a table in that order computes every answer exactly once,
+and correctness is a proof by induction along the order, in which the main step is always the same: \emph{an optimal solution decomposes into a first decision and optimal
+solutions of the subproblems this decision leaves}. This is Bellman's principle of optimality. The running time is the sum over subproblems of the work done by the
+recurrence, and the space is the size of the table, which can often be reduced by forgetting answers that will not be used again.
+
+Equivalently, one can keep the recursive program and \emph{memoise} it, storing each answer the first time it is computed; then the order is found automatically.
+The Fibonacci numbers, with subproblems $F_0,\dots,F_n$ and recurrence $F_k=F_{k-1}+F_{k-2}$, need $n-1$ additions instead of the $2F_{n+1}-1$ calls of the naive recursion.
+
+\section{Edit distance}\label{sec:edit}
+
+Let $a=a_1\cdots a_m$ and $b=b_1\cdots b_n$ be words. The \emph{edit distance} (or Levenshtein distance) $\mathrm{ed}(a,b)$ is the least number of operations turning $a$ into $b$,
+each operation inserting a letter, deleting one, or replacing one by another. An \emph{alignment} writes the two words one above the other with gaps, for instance
+\begin{center}
+\texttt{k i t t e n -}\\
+\texttt{s i t t i n g}
+\end{center}
+and costs the number of columns whose two symbols differ. Each alignment of cost $c$ gives $c$ edits (a gap below is a deletion, a gap above an insertion, a mismatch a replacement), and conversely a
+sequence of $c$ edits gives an alignment of cost at most $c$ (follow each letter of $a$ that survives to its final position; the survivors keep their order). So $\mathrm{ed}(a,b)$ is the least cost of an alignment.
+
+\begin{theorem}[Levenshtein, 1965; Wagner and Fischer, 1974]\label{thm:editdistance}
+Let $E(i,j)=\mathrm{ed}(a_1\cdots a_i,\,b_1\cdots b_j)$. Then $E(i,0)=i$, $E(0,j)=j$, and for $i,j\ge1$
+\[
+E(i,j)=\min\big(E(i-1,j)+1,\ E(i,j-1)+1,\ E(i-1,j-1)+[a_i\ne b_j]\big).
+\]
+So $\mathrm{ed}(a,b)=E(m,n)$ and an optimal alignment are computed in time $O(mn)$.
+\end{theorem}
+\begin{proof}
+An empty word is reached by deletions only, and from it by insertions only. For $i,j\ge1$, look at the last column of an optimal alignment of $a_1\cdots a_i$ with $b_1\cdots b_j$: it is $a_i$ over a gap,
+a gap over $b_j$, or $a_i$ over $b_j$. Removing it leaves an alignment of $a_1\cdots a_{i-1}$ with $b_1\cdots b_j$, of $a_1\cdots a_i$ with $b_1\cdots b_{j-1}$, or of $a_1\cdots a_{i-1}$ with $b_1\cdots b_{j-1}$, which costs at least the
+corresponding $E$; so $E(i,j)$ is at least the minimum. Conversely, each term of the minimum is the cost of an alignment obtained by appending that column to an optimal alignment of the shorter words.
+Filling the table row by row costs $O(1)$ per entry, and an optimal alignment is read backwards from $(m,n)$ by following, at each entry, a term achieving the minimum.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-editgrid}
+\caption{The table $E(i,j)$ for \texttt{kitten} (rows) and \texttt{sitting} (columns). Its corner says $\mathrm{ed}=3$, which answers the opening question: two edits are not enough. The shaded
+cells are an optimal path: diagonal steps are matches or replacements, the final horizontal step inserts \texttt{g}. The pale band is the middle row used by Hirschberg's algorithm.}
+\label{fig:editgrid}
+\end{figure}
+
+An alignment is a path in the grid of Figure~\ref{fig:editgrid}, from the corner $(0,0)$ to $(m,n)$, by steps down, right, or diagonally down-right, and its cost is the sum of the step costs:
+edit distance is a shortest path in a directed acyclic grid graph (Exercise~\ref{ex:dagsp}). The value $E(m,n)$ alone needs only two rows of the table at a time, so space $O(n)$. The alignment seems to need the whole
+table, which for two genomes of a million letters is a terabyte. Hirschberg's trick avoids this.
+
+\begin{theorem}[Hirschberg, 1975]\label{thm:hirschberg}
+An optimal alignment of words of lengths $m$ and $n$ can be computed in time $O(mn)$ and space $O(m+n)$.
+\end{theorem}
+\begin{proof}
+Let $h=\lfloor m/2\rfloor$. Compute in linear space the row $E(h,j)$, $0\le j\le n$, and also the row $E'(h,j)=\mathrm{ed}(a_{h+1}\cdots a_m,\,b_{j+1}\cdots b_n)$, by running the same recurrence on the reversed words.
+Every path from $(0,0)$ to $(m,n)$ in the grid meets row $h$, since each step increases the row index by at most $1$, and the part before (respectively after) its first (respectively last) visit costs at least $E(h,j)$
+(respectively $E'(h,j')$). So $\mathrm{ed}(a,b)=\min_j\big(E(h,j)+E'(h,j)\big)$, and for a $j^*$ achieving it, an optimal alignment of $a_1\cdots a_h$ with $b_1\cdots b_{j^*}$ followed by one of the remaining parts is optimal. Find
+these two alignments recursively (stopping when $m\le1$, where the alignment is found directly), and concatenate.
+
+The space is linear: two rows, plus the output, plus a recursion of depth $\lceil\log_2m\rceil$ storing a constant number of indices per level. For the time, exchange $a$ and $b$ if necessary so that $m\le n$,
+and look at the recursion level by level. At depth $\ell$ each subproblem has at most $m/2^\ell+1$ rows; the subproblems of that depth have disjoint sets of rows, so there are at most $m$ of them, and their column ranges
+are disjoint, of lengths $n_i$ with $\sum_in_i\le n$. Computing the two rows of a subproblem with $m_i$ rows and $n_i$ columns costs at most $c(m_i+1)(n_i+1)$ for a constant $c$, so depth $\ell$ costs at most
+\[
+c\Big(\frac m{2^\ell}+2\Big)\sum_i(n_i+1)\le c\Big(\frac m{2^\ell}+2\Big)(n+m)\le c\,\frac{2mn}{2^\ell}+4cn,
+\]
+using $m\le n$. Summing over the $\lceil\log_2m\rceil+1$ depths gives at most $4c\,mn+4cn(\log_2m+2)=O(mn)$.
+\end{proof}
+
+\begin{remark}
+Quadratic time looks improvable, but Backurs and Indyk proved in 2015 that an algorithm in time $O(n^{2-\varepsilon})$ for edit distance would refute the \emph{strong exponential time hypothesis}, a
+conjecture about satisfiability that Tome~C3 will meet. With weights on the operations (and gaps), the same recurrence is the Needleman--Wunsch algorithm of bioinformatics.
+\end{remark}
+
+\section{Knapsacks and matrix chains}\label{sec:knapsack}
+
+A burglar can carry a total weight $W$. Object $i$, for $1\le i\le n$, has weight $w_i$ and value $v_i$, both positive integers. Which objects should be taken to maximise the value?
+
+\begin{theorem}\label{thm:knapsack}
+Let $V(i,c)$ be the largest value of a subset of the first $i$ objects of total weight at most $c$. Then $V(0,c)=0$ and
+\[
+V(i,c)=\begin{cases}V(i-1,c)&\text{if }w_i>c,\\ \max\big(V(i-1,c),\ v_i+V(i-1,c-w_i)\big)&\text{if }w_i\le c.\end{cases}
+\]
+The optimum $V(n,W)$ and an optimal subset are computed in time and space $O(nW)$.
+\end{theorem}
+\begin{proof}
+An optimal subset for $(i,c)$ either omits object $i$, and is then a subset of the first $i-1$ objects of weight at most $c$, or contains it, and then the rest is a subset of the first $i-1$ of weight at most $c-w_i$.
+So $V(i,c)$ is at most the right-hand side, and each term is the value of a feasible subset, so equality holds. There are $(n+1)(W+1)$ entries, each computed in constant time, and the subset is read backwards.
+\end{proof}
+
+The bound $O(nW)$ is not polynomial in the size of the input, which is about $n\log_2W$ bits: doubling the number of bits of $W$ can square the time. Such an algorithm is called \emph{pseudo-polynomial}.
+Tome~C3 will show that the knapsack problem is NP-hard, so this is probably the best kind of algorithm one can hope for; and Chapter~12 will turn Exercise~\ref{ex:knapsackvalue} into an
+approximation scheme.
+
+Next, to multiply matrices $A_1A_2\cdots A_n$, where $A_i$ has $p_{i-1}$ rows and $p_i$ columns, by the schoolbook method, multiplying a $p\times q$ matrix by a $q\times r$ one costs $pqr$ multiplications,
+and the total depends on the parenthesisation: with sizes $10\times100$, $100\times5$, $5\times50$, the order $(A_1A_2)A_3$ costs $5000+2500=7500$ and $A_1(A_2A_3)$ costs $25000+50000=75000$.
+
+\begin{proposition}\label{prop:matrixchain}
+Let $M(i,j)$ be the least cost of computing $A_i\cdots A_j$. Then $M(i,i)=0$ and, for $i<j$,
+\[
+M(i,j)=\min_{i\le k<j}\big(M(i,k)+M(k+1,j)+p_{i-1}p_kp_j\big),
+\]
+computed for all $i<j$ in order of increasing $j-i$, in time $O(n^3)$ and space $O(n^2)$.
+\end{proposition}
+\begin{proof}
+The last multiplication of any computation of $A_i\cdots A_j$ multiplies $A_i\cdots A_k$ by $A_{k+1}\cdots A_j$ for some $k$, which are $p_{i-1}\times p_k$ and $p_k\times p_j$; the two factors were computed independently, each at cost at least
+its $M$. Conversely, optimal computations of the two factors followed by this product achieve the term for $k$. There are $O(n^2)$ entries, each a minimum of at most $n$ terms.
+\end{proof}
+
+Exercise~\ref{ex:catalan} shows that trying all parenthesisations would be exponential. Hu and Shing found in 1982 an $O(n\log n)$ algorithm, by reducing the problem to a triangulation of a polygon.
+
+\section{Optimal search trees and the quadrangle inequality}\label{sec:obst}
+
+Keys $1,\dots,n$ are searched with frequencies $p_1,\dots,p_n\ge0$. A binary search tree on these keys finds key $k$ after $1+\mathrm{depth}(k)$ comparisons, so its cost is $\sum_kp_k(1+\mathrm{depth}(k))$. For a dictionary,
+the frequent words should be near the root, but the tree must stay a search tree: which tree is best?
+
+For $0\le i\le j\le n$ let $w(i,j)=p_{i+1}+\dots+p_j$ and let $c(i,j)$ be the least cost of a search tree on the keys $i+1,\dots,j$ (so $c(i,i)=0$). A tree on these keys with root $k$ has a left subtree on $i+1,\dots,k-1$ and a right subtree
+on $k+1,\dots,j$, and all depths in them increase by $1$; the root itself contributes $p_k$. Hence, exactly as in Proposition~\ref{prop:matrixchain}, for $i<j$,
+\begin{equation}\label{eq:obst}
+c(i,j)=w(i,j)+\min_{i<k\le j}\big(c(i,k-1)+c(k,j)\big),
+\end{equation}
+and an optimal tree is found in time $O(n^3)$. Figure~\ref{fig:obst} shows one. In 1971 Knuth noticed that the optimal roots move monotonically, and that this saves a factor $n$. In 1980 Frances Yao explained why, with
+an inequality that has since been used for dozens of other problems.
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-obst}
+\caption{An optimal search tree for keys $A<B<\dots<G$ with frequencies $4,1,6,2,9,3,5$ (in red). Its cost is $62$. Frequent keys are near the root, but not in order of frequency: $D$, searched twice, is as high as
+$A$, searched four times, because the tree must respect the order of the keys.}
+\label{fig:obst}
+\end{figure}
+
+Say that a function $f$ of pairs $i\le j$ satisfies the \emph{quadrangle inequality} if
+\[
+f(i,j)+f(i',j')\le f(i',j)+f(i,j')\qquad\text{whenever } i\le i'\le j\le j',
+\]
+and that it is \emph{monotone} if $f(i',j)\le f(i,j')$ whenever $[i',j]\subseteq[i,j']$. For \eqref{eq:obst}, $w$ satisfies the quadrangle inequality with equality (both sides add the same $p$'s) and is monotone since $p\ge0$.
+In what follows $c$ is defined by \eqref{eq:obst} from any such $w$; write $c_k(i,j)=w(i,j)+c(i,k-1)+c(k,j)$, and let $K(i,j)$ be the \emph{largest} $k$ achieving the minimum in \eqref{eq:obst}.
+
+\begin{lemma}[Yao, 1980]\label{lem:yaoqi}
+If $w$ satisfies the quadrangle inequality and is monotone, then so does $c$ satisfy the quadrangle inequality.
+\end{lemma}
+\begin{proof}
+Induction on $\ell=j'-i$. If $i=i'$ or $j=j'$ there is equality, so let $i<i'\le j<j'$; the induction hypothesis covers all quadruples spanning fewer than $\ell$.
+
+\emph{Case $i'=j$.} We must show $c(i,j)+c(j,j')\le c(i,j')$. Let $z=K(i,j')$. If $z\le j$, then $c(i,j)\le c_z(i,j)$, so
+\[\begin{aligned}
+c(i,j)+c(j,j')&\le w(i,j)+c(i,z-1)+\big(c(z,j)+c(j,j')\big)\\
+&\le w(i,j')+c(i,z-1)+c(z,j')=c(i,j'),
+\end{aligned}\]
+using monotonicity of $w$ and the induction hypothesis on $z\le j\le j\le j'$ (which spans $j'-z<\ell$). If $z>j$, then $c(j,j')\le c_z(j,j')$, and symmetrically
+\[\begin{aligned}
+c(i,j)+c(j,j')&\le w(j,j')+\big(c(i,j)+c(j,z-1)\big)+c(z,j')\\
+&\le w(i,j')+c(i,z-1)+c(z,j')=c(i,j').
+\end{aligned}\]
+
+\emph{Case $i'<j$.} Let $y=K(i',j)$ and $z=K(i,j')$. If $z\le y$, then $i<z\le j$ and $i'<y\le j'$, so
+\[\begin{aligned}
+c(i,j)+c(i',j')&\le c_z(i,j)+c_y(i',j')\\
+&=w(i,j)+w(i',j')+c(i,z-1)+c(i',y-1)+c(z,j)+c(y,j').
+\end{aligned}\]
+By the hypothesis on $w$, $w(i,j)+w(i',j')\le w(i',j)+w(i,j')$, and by induction on $z\le y\le j\le j'$, $c(z,j)+c(y,j')\le c(y,j)+c(z,j')$. Regrouping, the right-hand side is at most
+$c_y(i',j)+c_z(i,j')=c(i',j)+c(i,j')$. If $z>y$, use instead $c(i,j)\le c_y(i,j)$ (valid as $i<y\le j$) and $c(i',j')\le c_z(i',j')$ (valid as $i'<z\le j'$), and the induction hypothesis on
+$i\le i'\le y-1\le z-1$: $c(i,y-1)+c(i',z-1)\le c(i',y-1)+c(i,z-1)$. Regrouping gives again $c_y(i',j)+c_z(i,j')$.
+\end{proof}
+
+\begin{theorem}[Knuth, 1971; Yao, 1980]\label{thm:knuthyao}
+Under the hypotheses of Lemma~\ref{lem:yaoqi}, $K(i,j-1)\le K(i,j)\le K(i+1,j)$ whenever $j-i\ge2$. Consequently, computing $c(i,j)$ by trying only $k$ between $K(i,j-1)$ and $K(i+1,j)$, in order of increasing $j-i$, takes
+time $O(n^2)$. In particular, optimal binary search trees are found in quadratic time.
+\end{theorem}
+\begin{proof}
+\emph{Left inequality.} Let $k\le k'\le j-1$. The quadrangle inequality for $c$ on $k\le k'\le j-1\le j$, with $w(i,j-1)+w(i,j)+c(i,k-1)+c(i,k'-1)$ added to both sides, reads
+\[
+c_k(i,j-1)+c_{k'}(i,j)\le c_{k'}(i,j-1)+c_k(i,j).
+\]
+So if $k'$ is at least as good as $k$ for $(i,j-1)$, that is $c_{k'}(i,j-1)\le c_k(i,j-1)$, then $c_{k'}(i,j)\le c_k(i,j)$. Taking $k'=K(i,j-1)$: no $k<k'$ beats $k'$ for $(i,j)$, so the largest minimiser $K(i,j)$ is at least $k'$.
+
+\emph{Right inequality.} Let $k'=K(i+1,j)$ and $k'<k\le j$. The quadrangle inequality on $i\le i+1\le k'-1\le k-1$, with $w(i,j)+w(i+1,j)+c(k',j)+c(k,j)$ added, reads
+\[
+c_{k'}(i,j)+c_k(i+1,j)\le c_{k'}(i+1,j)+c_k(i,j).
+\]
+Since $k$ is larger than the largest minimiser for $(i+1,j)$, $c_k(i+1,j)>c_{k'}(i+1,j)$, hence $c_k(i,j)>c_{k'}(i,j)$: $k$ is not a minimiser for $(i,j)$, and $K(i,j)\le k'$.
+
+\emph{Time.} For $j-i=d\ge2$, computing $c(i,j)$ and $K(i,j)$ costs $O\big(K(i+1,j)-K(i,j-1)+1\big)$. Summed over $i$, with $j=i+d$, the differences telescope to $K(n-d+1,n)-K(0,d-1)\le n$, so each diagonal costs $O(n)$
+and the $n$ diagonals cost $O(n^2)$.
+\end{proof}
+
+\begin{beauty}
+The cubic algorithm tries every root for every interval. Knuth and Yao show that this is wasteful for a reason that has nothing to do with trees: the cost satisfies an inequality between four numbers,
+$c(i,j)+c(i',j')\le c(i',j)+c(i,j')$, which says that two overlapping intervals cost no more than the union and the intersection; from it, the best choices march monotonically across the table, and a
+sum that looked quadratic per diagonal telescopes to a linear one.
+\end{beauty}
+
+\section{Hidden paths: Viterbi}\label{sec:viterbi}
+
+In 1967 Andrew Viterbi, then at the University of California at Los Angeles, published a method for decoding convolutional codes. It turned out to be a dynamic programme, and today it decodes signals in
+mobile phones and satellite links, aligns speech with words, and finds genes in DNA. Its setting is a \emph{hidden Markov model}: a finite set $S$ of hidden states, an initial distribution $\pi$, transition
+probabilities $a(s,s')$, and emission probabilities $b(s,o)$ of observing the symbol $o$ in state $s$. A hidden path $x_1,\dots,x_T$ and observations $o_1,\dots,o_T$ have joint probability
+\[
+P(x,o)=\pi(x_1)b(x_1,o_1)\prod_{t=2}^Ta(x_{t-1},x_t)\,b(x_t,o_t).
+\]
+Given the observations, which hidden path is the most likely? There are $|S|^T$ candidates.
+
+\begin{theorem}[Viterbi, 1967]\label{thm:viterbi}
+Let $\delta_t(s)$ be the largest value of $P(x_1\cdots x_t,o_1\cdots o_t)$ over hidden paths of length $t$ ending in $x_t=s$. Then $\delta_1(s)=\pi(s)b(s,o_1)$ and
+\[
+\delta_t(s')=\max_{s\in S}\delta_{t-1}(s)\,a(s,s')\,b(s',o_t).
+\]
+So a most likely hidden path is found in time $O(T|S|^2)$.
+\end{theorem}
+\begin{proof}
+The probability of a path of length $t$ ending in $s'$ is the probability of its prefix of length $t-1$, ending in some $s$, times $a(s,s')b(s',o_t)$, a factor that depends only on $s$ and $s'$. Maximising over the prefix for fixed $s$
+gives $\delta_{t-1}(s)a(s,s')b(s',o_t)$, then maximise over $s$. Keep for each $(t,s')$ a maximising $s$; the best path ends at a state maximising $\delta_T$ and is read backwards.
+\end{proof}
+
+Taking $-\log$ of the probabilities, this is a shortest path in the layered acyclic graph with vertices $(t,s)$, and in practice the logarithms also prevent the products from underflowing. Replacing $\max$ by a sum gives
+the \emph{forward algorithm}, which computes $P(o)$ itself (Exercise~\ref{ex:forward}).
+
+\section{The travelling salesman}\label{sec:heldkarp}
+
+Cities $1,\dots,n$ are at distances $d(i,j)\ge0$, not necessarily symmetric. A tour visits every city once and returns. There are $(n-1)!$ tours from city $1$, and $30!$ is about $2.7\times10^{32}$.
+
+\begin{theorem}[Bellman, 1962; Held and Karp, 1962]\label{thm:heldkarp}
+For $S\subseteq\{2,\dots,n\}$ and $j\in S$, let $C(S,j)$ be the least length of a path that starts at $1$, visits exactly the cities of $S\cup\{1\}$, and ends at $j$. Then $C(\{j\},j)=d(1,j)$ and, for $|S|\ge2$,
+\[
+C(S,j)=\min_{i\in S\setminus\{j\}}\big(C(S\setminus\{j\},i)+d(i,j)\big).
+\]
+The shortest tour has length $\min_jC(\{2,\dots,n\},j)+d(j,1)$, computed in time $O(2^nn^2)$ and space $O(2^nn)$.
+\end{theorem}
+\begin{proof}
+In a path as in the definition, with $|S|\ge2$, the city $i$ visited just before $j$ is in $S\setminus\{j\}$, and the part up to $i$ is a path from $1$ visiting exactly $(S\setminus\{j\})\cup\{1\}$ and ending at $i$; it is at least
+$C(S\setminus\{j\},i)$ long. Conversely, extending an optimal such path by the edge $ij$ achieves the term for $i$. A tour is such a path for $S=\{2,\dots,n\}$ closed by an edge back to $1$. Processing the sets by increasing size, there
+are at most $2^{n-1}(n-1)$ pairs $(S,j)$, each a minimum over fewer than $n$ terms. Encoding $S$ as a bit mask makes $S\setminus\{j\}$ a single operation.
+\end{proof}
+
+For $n=30$ this is about $10^{12}$ steps instead of $10^{32}$: feasible in a day instead of never. Whether the travelling salesman problem can be solved in time $O(1.999^n)$ is a famous open question; for deciding whether a
+Hamiltonian cycle exists, Bj\"orklund broke the $2^n$ barrier for undirected graphs in 2010.
+
+\section{Dynamic programming on trees}\label{sec:treedp}
+
+Trees are the natural home of dynamic programming: the subtrees of a rooted tree are subproblems, and they overlap in a perfectly controlled way. A typical example: in a tree with vertex weights $x(v)\ge0$, find
+an \emph{independent set} (no two of its vertices adjacent) of largest weight. In a general graph this is NP-hard.
+
+\begin{proposition}\label{prop:treemis}
+Root the tree. For a vertex $v$ with children $c_1,\dots,c_r$, let $\mathrm{in}(v)$ and $\mathrm{out}(v)$ be the largest weights of independent sets of the subtree of $v$ that contain $v$, respectively do not contain $v$. Then
+\[
+\mathrm{in}(v)=x(v)+\sum_i\mathrm{out}(c_i),\qquad \mathrm{out}(v)=\sum_i\max\big(\mathrm{in}(c_i),\mathrm{out}(c_i)\big),
+\]
+and the maximum weight is $\max(\mathrm{in},\mathrm{out})$ at the root, computed in linear time by a postorder traversal.
+\end{proposition}
+\begin{proof}
+An independent set $I$ of the subtree of $v$ is the union of its traces on the subtrees of the children, plus possibly $v$; there is no edge between different subtrees, so these traces can be chosen independently, except that
+if $v\in I$, no child is in $I$. This gives both formulas, by maximising each trace separately. Each vertex is handled once with work proportional to its number of children.
+\end{proof}
+
+\begin{remark}
+The same method works on graphs that are ``tree-like'': if a graph has a tree decomposition of width $k$, independent set, colouring and many other NP-hard problems are solved in time $f(k)\cdot n$. Courcelle's theorem (1990)
+says that every property expressible in monadic second-order logic can be decided this way, a striking meeting of logic and algorithms.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:lcs}
+A \emph{common subsequence} of $a$ and $b$ is a word obtained from both by deleting letters. Give a recurrence for the length $L(i,j)$ of a longest common subsequence of $a_1\cdots a_i$ and $b_1\cdots b_j$. Show that the least number of
+insertions and deletions (without replacements) turning $a$ into $b$ is $m+n-2L(m,n)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:coins}
+With coins of values $1$, $3$ and $4$, show that the greedy method (take the largest coin that fits) does not always use the fewest coins. Give an $O(nV)$ algorithm for the fewest coins paying $V$ with $n$ coin values, and an algorithm
+counting the ways to pay $V$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lis}
+Find a longest increasing subsequence of a sequence of $n$ numbers in time $O(n\log n)$. (Keep, for each length $\ell$, the smallest possible last element of an increasing subsequence of length $\ell$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:catalan}
+Show that the number of parenthesisations of a product of $n$ factors is the Catalan number $C_{n-1}=\frac1n\binom{2n-2}{n-1}$, and that it is at least $2^{n-2}$ for $n\ge2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:knapsackvalue}
+Solve the knapsack problem in time $O(n^2v_{\max})$, where $v_{\max}=\max_iv_i$, by computing for each value $v$ the least weight of a subset of value exactly $v$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:linebreak}
+\emph{Breaking paragraphs into lines.} Words of lengths $\ell_1,\dots,\ell_n$ must be set in lines of width $L$, in order, with one space between words on a line. A line holding words $i$ to $j$ has slack $s=L-\sum_{k=i}^j\ell_k-(j-i)$, which must
+be nonnegative, and costs $s^2$, except the last line, which is free. Minimise the total cost in time $O(n^2)$. Show that the greedy method, filling each line as much as possible, is not optimal.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bitonic}
+\emph{Bitonic tours.} Points $p_1,\dots,p_n$ in the plane have increasing abscissas. A tour is \emph{bitonic} if it goes from $p_1$ to $p_n$ strictly rightwards and comes back strictly leftwards. Find the shortest bitonic tour in time $O(n^2)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:treevc}
+Find a minimum vertex cover of a tree in linear time. Show that in a tree its size equals the size of a maximum matching.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:forward}
+\emph{The forward algorithm.} With the notation of Theorem~\ref{thm:viterbi}, let $\alpha_t(s)=P(o_1\cdots o_t,\,x_t=s)$. Show that $\alpha_t(s')=\sum_s\alpha_{t-1}(s)a(s,s')b(s',o_t)$ and deduce $P(o_1\cdots o_T)$ in time $O(T|S|^2)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hirschspace}
+Show that the length of a longest common subsequence can be computed in space $O(\min(m,n))$, and that Hirschberg's method also gives the subsequence itself in time $O(mn)$ and linear space.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:lcs}
+Compare $a_i$ and $b_j$. For the second part, the letters that are neither deleted nor inserted form a common subsequence.
+\end{hint}
+\begin{hint}{ex:coins}
+Pay $6$. For counting, process the coin values one at a time, to count each multiset once.
+\end{hint}
+\begin{hint}{ex:lis}
+The array of smallest last elements is increasing; a new number replaces the first entry that is at least as large.
+\end{hint}
+\begin{hint}{ex:catalan}
+Split at the last multiplication; the Catalan numbers satisfy $C_k=\sum_{i=0}^{k-1}C_iC_{k-1-i}$.
+\end{hint}
+\begin{hint}{ex:knapsackvalue}
+The total value is at most $nv_{\max}$.
+\end{hint}
+\begin{hint}{ex:linebreak}
+Let $f(j)$ be the least cost of setting words $1,\dots,j$, with word $j$ ending a line. For greed, try $L=10$ and words of lengths $5,4,4,10$.
+\end{hint}
+\begin{hint}{ex:bitonic}
+Consider two disjoint rightward paths from $p_1$ covering $p_1,\dots,p_j$ and ending at $p_i$ and $p_j$, $i<j$. Where is $p_{j-1}$?
+\end{hint}
+\begin{hint}{ex:treevc}
+Two values per vertex, as in Proposition~\ref{prop:treemis}. For the matching, match leaves to their parents greedily.
+\end{hint}
+\begin{hint}{ex:forward}
+Sum instead of maximising, by the law of total probability.
+\end{hint}
+\begin{hint}{ex:hirschspace}
+Keep two rows; for the subsequence, split $a$ in the middle and combine forward and backward rows.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:lcs}
+\idea Look at the last letters: either they match and can be used together, or one of them is useless.
+\writeup $L(i,0)=L(0,j)=0$; if $a_i=b_j$, then $L(i,j)=L(i-1,j-1)+1$, otherwise $L(i,j)=\max(L(i-1,j),L(i,j-1))$. Proof: a common subsequence of $a_1\cdots a_i$ and $b_1\cdots b_j$ does not use $a_i$, or does not use $b_j$, or uses both as its
+last letter, which requires $a_i=b_j$; when $a_i=b_j$, a longest one can be assumed to end with this letter (if it ends with $a_i$ matched to an earlier copy, rematch it to $b_j$; if it uses neither, append the letter). For the second part, the letters of $a$ kept by an
+insertion--deletion sequence form a common subsequence of length $k$, and the sequence makes $m-k$ deletions and $n-k$ insertions; conversely, a common subsequence of length $k$ gives such a sequence. So the minimum is $m+n-2L(m,n)$.
+\end{solution}
+
+\begin{solution}{ex:coins}
+\idea Greed commits to the big coin; dynamic programming considers every last coin.
+\writeup For $6$, greed takes $4+1+1$, three coins, while $3+3$ uses two. Let $N(v)$ be the fewest coins paying $v$: $N(0)=0$ and $N(v)=1+\min\{N(v-c): c\le v\}$ over the coin values, since the last coin is some $c$ and the rest pays $v-c$ optimally. This is $O(nV)$. To count
+multisets, let $P_i(v)$ be the number of ways using only the first $i$ values: $P_i(v)=P_{i-1}(v)+P_i(v-c_i)$ (either value $c_i$ is not used at all, or remove one coin $c_i$), with $P_i(0)=1$; again $O(nV)$.
+\end{solution}
+
+\begin{solution}{ex:lis}
+\idea Among increasing subsequences of a given length, the one with the smallest last element is the most useful for the future.
+\writeup Scan the sequence, keeping $T[\ell]$, the smallest last element of an increasing subsequence of length $\ell$ of the prefix seen so far. $T$ is increasing: from a subsequence of length $\ell+1$ ending in $T[\ell+1]$, dropping its last element leaves one of length
+$\ell$ ending in something smaller. A new number $x$ extends exactly the subsequences ending below $x$; so if $\ell$ is the largest index with $T[\ell]<x$, the new subsequence of length $\ell+1$ ending in $x$ improves $T[\ell+1]$ (which was $\ge x$, or undefined), and no other entry
+changes. Finding $\ell$ is a binary search, $O(\log n)$. The answer is the final length of $T$; storing, for each element, a pointer to the element that was $T[\ell]$ when it was inserted recovers a longest subsequence.
+\end{solution}
+
+\begin{solution}{ex:catalan}
+\idea A parenthesisation is a binary tree with $n$ leaves, and the root splits it in two.
+\writeup Let $P_n$ be the number for $n$ factors. The last multiplication splits the factors into the first $k$ and the last $n-k$, $1\le k\le n-1$, parenthesised independently: $P_1=1$, $P_n=\sum_{k=1}^{n-1}P_kP_{n-k}$. Setting $C_{k}=P_{k+1}$ gives
+the Catalan recurrence with $C_0=1$, whose solution is $\frac1{k+1}\binom{2k}k$ (Tome~C1, Corollary~3.12, or the generating function $C(x)=1+xC(x)^2$). For the bound, induction: $P_2=1$, and $P_n\ge P_1P_{n-1}+P_{n-1}P_1=2P_{n-1}$ for $n\ge3$.
+\end{solution}
+
+\begin{solution}{ex:knapsackvalue}
+\idea Exchange the roles of weight and value: tabulate by value, which is small when values are small integers.
+\writeup Let $G(i,v)$ be the least weight of a subset of the first $i$ objects with value exactly $v$ ($\infty$ if none), for $0\le v\le nv_{\max}$. Then $G(0,0)=0$, $G(0,v)=\infty$ for $v>0$, and $G(i,v)=\min\big(G(i-1,v),\,w_i+G(i-1,v-v_i)\big)$, the second term only if $v_i\le v$,
+by the argument of Theorem~\ref{thm:knapsack}. The answer is the largest $v$ with $G(n,v)\le W$. The table has $(n+1)(nv_{\max}+1)$ entries.
+\end{solution}
+
+\begin{solution}{ex:linebreak}
+\idea Decide where the last line starts; everything before it is an optimal smaller paragraph.
+\writeup Let $f(0)=0$ and, for $j\ge1$, $f(j)=\min_i\big(f(i-1)+\mathrm{cost}(i,j)\big)$ over the $i\le j$ such that words $i..j$ fit on a line, where $\mathrm{cost}(i,j)=s^2$, or $0$ if $j=n$. The proof is the usual one: in an optimal setting of words $1..j$ the last line holds words $i..j$ for some $i$, and the
+lines before are a setting of $1..i-1$. With prefix sums, each cost is $O(1)$: time $O(n^2)$. For greed, take $L=10$ and lengths $5,4,4,10$: greed sets ``$5\ 4$'' (slack $0$), then ``$4$'' alone (slack $6$, cost $36$), then the last word, total $36$;
+the setting ``$5$'' (slack $5$), ``$4\ 4$'' (slack $1$), last word, costs $25+1=26$. Greed is blind to the line it is preparing for the next word. Knuth and Plass's algorithm in \TeX{} is this dynamic programme with a richer cost; it set the line breaks of this book.
+\end{solution}
+
+\begin{solution}{ex:bitonic}
+\idea Sweep from left to right keeping the two ends of the two strands of the tour; only the leftmost end matters, the other one is the current point.
+\writeup For $i<j$ let $P(i,j)$ be the least total length of two vertex-disjoint paths, each going strictly rightwards, both starting at $p_1$ (which they share), together covering $p_1,\dots,p_j$, one ending at $p_i$ and the other at $p_j$. The
+path ending at $p_i$ uses only points of index at most $i$. If $i<j-1$, the point $p_{j-1}$ must therefore be on the other path, just before $p_j$: $P(i,j)=P(i,j-1)+|p_{j-1}p_j|$. If $i=j-1$, the point before $p_j$ is some $p_k$, $k<j-1$, and removing $p_j$ leaves a pair ending at $p_k$ and $p_{j-1}$:
+$P(j-1,j)=\min_{k<j-1}\big(P(k,j-1)+|p_kp_j|\big)$, with $P(1,2)=|p_1p_2|$. The shortest bitonic tour has length $P(n-1,n)+|p_{n-1}p_n|$, since $p_{n-1}$ and $p_n$ are consecutive on it. There are $O(n^2)$ entries; the first kind costs $O(1)$ and the $n$ entries of the second kind $O(n)$ each.
+\end{solution}
+
+\begin{solution}{ex:treevc}
+\idea The edge from a leaf to its parent must be covered, and the parent covers more.
+\writeup With $\mathrm{in}(v)=1+\sum_i\min(\mathrm{in}(c_i),\mathrm{out}(c_i))$ and $\mathrm{out}(v)=\sum_i\mathrm{in}(c_i)$ (if $v$ is not in the cover, every edge to a child forces the child in), the minimum is $\min(\mathrm{in},\mathrm{out})$ at the root, by the argument of Proposition~\ref{prop:treemis}. For the equality, a cover has at least as many vertices
+as any matching has edges, since the matched edges are disjoint and each needs its own vertex. Conversely, repeatedly take a leaf $u$ with parent $v$ (in the current forest; isolated vertices are discarded), put $v$ in the cover and $uv$ in the matching, and delete $u$ and $v$. Every deleted edge is covered by $v$, and the
+matching and the cover grow together. (This is K\H{o}nig's theorem for trees; it holds for all bipartite graphs, Tome~C1, Theorem~6.4.)
+\end{solution}
+
+\begin{solution}{ex:forward}
+\idea Probabilities of disjoint events add; the Markov structure makes the last step a factor depending only on the last two states.
+\writeup The events $\{x_{t-1}=s\}$ partition the sample space, and $P(o_1\cdots o_t,x_{t-1}=s,x_t=s')=P(o_1\cdots o_{t-1},x_{t-1}=s)\,a(s,s')\,b(s',o_t)$, by the product formula for $P(x,o)$ summed over $x_1,\dots,x_{t-2}$. Summing over $s$ gives the recurrence, with $\alpha_1(s)=\pi(s)b(s,o_1)$,
+and $P(o_1\cdots o_T)=\sum_s\alpha_T(s)$.
+\end{solution}
+
+\begin{solution}{ex:hirschspace}
+\idea Row $i$ of the table depends only on row $i-1$; and the middle row splits the problem in two, as in Theorem~\ref{thm:hirschberg}.
+\writeup Exchanging $a$ and $b$ if needed, let $n\le m$. Compute $L(i,\cdot)$ for $i=1,\dots,m$ keeping only the previous row, of length $n+1$. For the subsequence, with $h=\lfloor m/2\rfloor$, compute the row $L(h,j)$ and the row $L'(h,j)$, the length of a longest common subsequence of
+$a_{h+1}\cdots a_m$ and $b_{j+1}\cdots b_n$; a longest common subsequence of $a$ and $b$ splits into one of $a_1\cdots a_h$ with $b_1\cdots b_j$ and one of the rest, for some $j$, so $L(m,n)=\max_j\big(L(h,j)+L'(h,j)\big)$. Recurse on both halves with a maximising $j$. The time analysis is that of
+Theorem~\ref{thm:hirschberg}. This is the setting of Hirschberg's original paper.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The story.} R.~Bellman, \emph{Eye of the Hurricane: An Autobiography}, World Scientific, 1984, p.~159, quoted and discussed in S.~Dreyfus, \emph{Richard Bellman on the birth of dynamic programming}, Operations Research 50 (2002), 48--51.
+The epigraph is from R.~Bellman, \emph{Dynamic Programming}, Princeton University Press, 1957, Chapter~III, \S\,3.
+\item V.~I.~Levenshtein, \emph{Binary codes capable of correcting deletions, insertions, and reversals}, Doklady Akademii Nauk SSSR 163 (1965), 845--848 (English translation in Soviet Physics Doklady 10 (1966), 707--710); R.~A.~Wagner and M.~J.~Fischer,
+\emph{The string-to-string correction problem}, Journal of the ACM 21 (1974), 168--173; D.~S.~Hirschberg, \emph{A linear space algorithm for computing maximal common subsequences}, Communications of the ACM 18 (1975), 341--343; S.~B.~Needleman and C.~D.~Wunsch,
+\emph{A general method applicable to the search for similarities in the amino acid sequence of two proteins}, Journal of Molecular Biology 48 (1970), 443--453; A.~Backurs and P.~Indyk, \emph{Edit distance cannot be computed in strongly subquadratic time (unless SETH is false)},
+SIAM Journal on Computing 47 (2018), 1087--1097 (conference version STOC 2015).
+\item D.~E.~Knuth, \emph{Optimum binary search trees}, Acta Informatica 1 (1971), 14--25; F.~F.~Yao, \emph{Efficient dynamic programming using quadrangle inequalities}, Proceedings of the 12th ACM STOC (1980), 429--435; T.~C.~Hu and M.~T.~Shing, \emph{Computation of matrix chain products},
+Part~I, SIAM Journal on Computing 11 (1982), 362--373, and Part~II, 13 (1984), 228--251.
+\item A.~J.~Viterbi, \emph{Error bounds for convolutional codes and an asymptotically optimum decoding algorithm}, IEEE Transactions on Information Theory 13 (1967), 260--269; L.~R.~Rabiner, \emph{A tutorial on hidden Markov models and selected applications in speech recognition},
+Proceedings of the IEEE 77 (1989), 257--286.
+\item R.~Bellman, \emph{Dynamic programming treatment of the travelling salesman problem}, Journal of the ACM 9 (1962), 61--63; M.~Held and R.~M.~Karp, \emph{A dynamic programming approach to sequencing problems}, Journal of SIAM 10 (1962), 196--210; A.~Bj\"orklund, \emph{Determinant sums for
+undirected Hamiltonicity}, SIAM Journal on Computing 43 (2014), 280--299 (conference version FOCS 2010).
+\item B.~Courcelle, \emph{The monadic second-order logic of graphs I: recognizable sets of finite graphs}, Information and Computation 85 (1990), 12--75; D.~E.~Knuth and M.~F.~Plass, \emph{Breaking paragraphs into lines}, Software: Practice and Experience 11 (1981), 1119--1184.
+\end{itemize}
