@@ -24,6 +24,9 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   80 pages; text kept 0.125 in inside the trim and 0.0625 in inside the spine folds; the
   barcode area (lower right of the back cover) is left empty for KDP's ISBN barcode.
 - Fonts: every font is an embedded Type 1 font (no bitmap fonts); links are black in print.
+- Publisher: the books are published from the authors' own KDP account with free KDP ISBNs,
+  so the imprint is "Independently published". Once KDP assigns a tome's paperback ISBN, put it
+  in that tome's `main.tex` with `\renewcommand{\bookisbnprint}{978-...}`.
 - At upload, KDP asks whether the content is AI-generated: answer yes (text and covers).
 
 ## Conventions for every tome
