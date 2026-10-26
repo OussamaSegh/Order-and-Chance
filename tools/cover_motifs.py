@@ -126,11 +126,32 @@ def galton_board(rows=12, balls=40):
     return "\n".join(lines) + "\n"
 
 
+def fourier_square(levels=(1, 3, 9, 41)):
+    """Partial sums of the Fourier series of a square wave, stacked: the jumps sharpen as terms are
+    added, and the Gibbs overshoot (about 9% of the jump) never goes away."""
+    lines = ["% Fourier partial sums of a square wave, with the Gibbs overshoot."]
+    width, amp, gap = 3.6, 0.32, 1.02
+    top = 1.55
+    for i, n in enumerate(levels):
+        y0 = top - i * gap
+        pts = []
+        for t in range(0, 721):
+            x = t / 720 * 2 * 2 * math.pi
+            s = 4 / math.pi * sum(math.sin((2 * k + 1) * x) / (2 * k + 1) for k in range(n))
+            pts.append("(%.4fin,%.4fin)" % (-width / 2 + width * t / 720, y0 + amp * s))
+        op = 0.35 + 0.65 * (i + 1) / len(levels)
+        lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] " % (0.6 + 0.25 * i, op) + "--".join(pts) + ";")
+        lines.append(r"\draw[accent,line width=0.3pt,opacity=0.3] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                     % (-width / 2, y0, width / 2, y0))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
     "tome3-chance": galton_board,
+    "tome4-calculation": fourier_square,
 }
 
 if __name__ == "__main__":
