@@ -719,3 +719,72 @@ Kindle formats; A4 had ten and the phone format one, listed below).
 - Chapter 1, "where it leads" of the p-adic problem: "the adeles (Tome 7)". Tome 7, Chapter 8 does introduce them; the systematic treatment is Tome 12, Chapter 9, which the same sentence cites for the local–global principle.
 - Chapter 14, Selberg–Erdős story: the dates (March, April, early July, Sunday 18 July 1948) follow Goldfeld's account of the letters; they are not independently checked here.
 - The notebooks' Monte Carlo lines (restaurant process, Hawkins sieve, Kac ring) print values that differ from run to run in the last digits; the text quotes them to the precision that is stable.
+
+## Review: Tome S3
+
+What was checked and found correct: all twelve chapters, every proof and every
+solution re-derived by hand, with extra care on Chapter 12: the abelian inverse
+Galois theorem through cyclotomic fields, the S_n construction by the Chinese
+remainder theorem and Dedekind's theorem (the generating lemma, the discriminant
+step, the odd-cycle power giving a transposition), the coefficient lemma
+|γ_k| ≤ 1 − |γ_0|² (Schwarz–Pick at 0, then the k-th-root averaging), the
+non-reciprocal Mahler bound (1+√17)/4 (P/P* has integer coefficients, the
+Blaschke-type splitting g = hG with |g| = |h| = 1 on the circle, |c₀| = 1/M, the
+inequality 1/M ≤ 2(1 − 1/M²)) and its corollary, Wang's midpoint identity for
+quadratic maps, Ax–Grothendieck over algebraic extensions of F_p, and all nine
+exercises. Smyth's sharp constant 1.3247 is stated as a remark, not reproved. Also
+checked: Landau's theorem and Pólya ⇒ RH, the Borwein integrals (the 7-sinc deficit
+2.31·10⁻¹¹ and the harmonic case π/3456), the Selberg-sieve pair bound, Erdős's
+small gaps and Westzynthius's large gaps, Schnirelmann's density theorem, Gronwall,
+colossally abundant numbers and Robin/Lagarias, the moment method for the
+semicircle law and the 2×2 surmises, the Collatz parity vectors, Terras's theorem
+and the Stern–Brocot bound on cycles, Sylvester, Paley I/II and Williamson, the
+hexagon colouring (√7 s), Székely's unit-distance bound, Erdős–Szekeres cups and
+caps, Gilmer's entropy bound, Mason–Stothers and Fermat–Catalan, the Mordell
+classes mod 840, the Jacobi-sum point counts for y² = x³ − n²x, Chowla/Sarnak, the
+EDP constructions, the Artin average and Cohen–Lenstra. Every cross-tome pointer
+(Tomes 0, 1, 2, 4, 5, 7, 11, 12, 13 and P1) was resolved against the cited tome's
+build and points to the right statement; S3 does not reprove results owned by Tomes
+11–14 (Maynard, Helfgott, Hardy's theorem, Montgomery under RH, Hooley, Vinogradov
+are remarks with pointers). Status claims checked against current sources: Collatz
+verified to 2⁷¹ (Barina 2025), Goldbach to 4·10¹⁸, the 428 Hadamard matrix
+(1 911 620 solutions, sixteen PCs, twelve hours), the 668 announcement of 2026,
+the union-closed verification bounds (12 elements, 50 sets), the rank records 29–32
+(Dujella's table, 2026), Bhargava–Shankar's .885 / 20.62% / 83.75%, Bhargava's
+van der Waerden theorem (Annals 201, 2025), the M₂₃ preprint of Huang, Jackson,
+Lee, Poonen, Pries and Zhang (arXiv:2608.08538, August 2026), Konev–Lisitsa's 1160.
+Dates and quotes: Guy, Euler–Goldbach 1742, Riemann 1859, Kakutani, Sylvester 1867,
+Paley 1933, Baumert–Golomb–Hall 1962, Lehmer 1933, Hilbert 1892, Noether 1918,
+Swan 1969, Shafarevich 1954, Thompson 1984, Keller 1939, Ax 1968, Grothendieck 1966,
+and the journal references of all twelve "Sources" sections. Publishing rules:
+author "SEGHAIER Oussama" only, "First edition", no mention of the repository. The
+build is clean (no undefined or multiply defined label, no duplicate label, no EPUB
+warning, no overfull box above 10 pt in any of the four formats; 236 print pages);
+all twelve notebooks run without error (Chapter 4 takes 17 minutes, Chapter 5
+12 minutes), and every number quoted from a notebook appears in its output. Numbers
+computed outside the notebooks were recomputed independently: the twin, cousin and
+triple counts to 10⁹ (3 424 506, 3 424 680, 379 508), the four Liouville sums at
+10⁸, the mean Collatz stopping time 131.4, the 3504 abc hits and the 17 of quality
+above 1.4, the Cohen–Lenstra table.
+
+### Tome S3
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 5, solution of the fourth-moment exercise (and its hint) | math (minor) | The "loop and edge" shape was illustrated by i₁ = i₂ ≠ i₃ = i₄, which uses two distinct loops once each and contributes 0; the contributing pattern is three equal indices and one different. The hint also listed "two loops" as a contributing shape. The count 4n(n−1) and the polynomial 2n³ + 5n² + 5n were right (checked by brute force for n ≤ 5). | Example replaced by i₁ = i₂ = i₄ ≠ i₃ with the four positions explained; hint lists only the four contributing shapes. |
+| Ch. 7, opening and the remark on 668 | date | The Hadamard matrix of order 428 "fell in 2005": Kharaghani and Tayfeh-Rezaie found it in June 2004; 2005 is the year of the paper in J. Combin. Designs 13, which is still cited correctly. | "2004" in both places. |
+| Ch. 9, abc hits | number | "Below 10⁷ there are exactly 3504 abc hits": the count 3504 is for c ≤ 10⁷; five hits have c = 10⁷ exactly (e.g. 1323 + 9 998 677), and the count for c < 10⁷ is 3499 (de Smit's tables, OEIS A225425). None of the five has quality above 1.4, so "17 of them have q > 1.4" stands. | "Up to 10⁷ … 3504 (3499 of them with c < 10⁷)", caption and source note say c ≤ 10⁷. |
+| Ch. 10, remark on averages | number | "at least 20.6% of the curves have rank 0": Bhargava–Shankar's Theorem 5 says 20.62%. | 20.62%. |
+| Ch. 6, after the stopping-time records | rounding | The heuristic 10.43 log n averaged over n ≤ 10⁶ is 133.67, printed 133.6. | 133.7. |
+| Ch. 2, sources | text | "the notebook of this chapter repeats the computation" (the counts to 10⁹): the notebook stops at 10⁸. | "repeats the computation up to 10⁸". |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome S3, ch. 1–12 | None found: all run (total 42 minutes), every number quoted from a notebook in the text appears in that notebook's output; the figures with larger ranges (10⁹ sieves, 5000 zeros, 2·10⁵ point counts, class numbers to 2·10⁶) come from the project's scripts and were recomputed here. | — |
+
+### Known and left as is
+
+- Chapter 7: the 2026 resolution of the orders up to 2000 (including 668) is described as announced without a paper, which is the state of the sources at the time of review.
+- Chapter 12: the bound (1+√17)/4 = 1.2808 is proved and Smyth's 1.3247 is quoted; the figure's reciprocal point at d = 8 (1.28064) sits below the proved non-reciprocal bound, as the caption says.
