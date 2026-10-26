@@ -1,0 +1,486 @@
+\chapter{Birch and Swinnerton-Dyer}\label{ch:bsd}
+
+\begin{center}\itshape
+A curve with many rational points should have many points modulo $p$, for most $p$.\\
+\upshape(the intuition behind the conjecture, in our words)
+\end{center}
+
+In the early 1960s, in the Mathematical Laboratory at Cambridge, Bryan Birch and Peter Swinnerton-Dyer kept the EDSAC~2 computer busy with a question that
+looks almost naive. Take an elliptic curve over $\Q$, say $y^2=x^3-Dx$. For each prime $p$, count its points modulo $p$: call the number $N_p$. Hasse's theorem
+says that $N_p$ is close to $p+1$, within $2\sqrt p$. Now multiply the ratios $N_p/p$ over all primes up to $x$. Does this product know anything about the
+rational points of the curve?
+
+It did. For curves with only finitely many rational points the product seemed to stay bounded; for curves of rank $1$ it grew like $\log x$; for rank $2$ like
+$(\log x)^2$. Birch and Swinnerton-Dyer turned the pattern into a conjecture about the $L$-function of the curve at the point $s=1$, refined it into an exact
+formula, and published it in two papers in Crelle's journal (1963 and 1965). In 2000 the Clay Mathematics Institute put it on its list of seven Millennium
+Problems. Sixty years after the first computations, it is proved for the curves whose $L$-function vanishes to order at most $1$ at $s=1$, and for no curve of rank $2$ or more
+does anyone know a general reason why the analytic and algebraic ranks should agree.
+
+Tome~12 built the stage: the group law and Mordell's theorem (Chapter~12), Hasse's bound (Chapter~13), and modular forms and the modularity theorem
+(Chapter~14). It also stated the conjecture in a remark and proved, with the congruent number curves $E_n:y^2=x^3-n^2x$, that $1$ is not a congruent number.
+This chapter does what Tome~12 did not: it counts the points of the curves $E_n$ exactly, by Jacobi sums, as in Birch and Swinnerton-Dyer's first paper; it
+proves that the Euler product converges where it should; it shows that exactly half of the $a_p$ of these curves vanish; and it runs the experiment again,
+on four curves of ranks $0$ to $3$, up to $2\cdot10^5$.
+
+\begin{think}
+Count the points of $y^2=x^3-x$ modulo $5$ and modulo $13$, including the point at infinity. Both counts are divisible by $8$. Is that an accident? Before
+reading on, try $p=17$ and $p=29$.
+\end{think}
+
+\section{The conjecture and the evidence}
+
+Let $E$ be an elliptic curve over $\Q$, given by a Weierstrass equation with integer coefficients and minimal discriminant $\Delta$. For a prime $p\nmid\Delta$
+(a \emph{good} prime) the reduction of $E$ modulo $p$ is an elliptic curve over $\mathbb F_p$, with $N_p$ points (counting $O$), and we put $a_p=p+1-N_p$. By
+Hasse's theorem (Tome~12, Corollary~13.14), $|a_p|\le2\sqrt p$. For a bad prime we put $a_p=p-(\text{number of affine solutions modulo }p)$, a convention
+which gives $a_p\in\{0,\pm1\}$ for a minimal equation; we only need that there are finitely many bad primes. The \emph{$L$-function} of $E$ is
+\[
+L(E,s)=\prod_{p\nmid\Delta}\frac1{1-a_pp^{-s}+p^{1-2s}}\;\prod_{p\mid\Delta}\frac1{1-a_pp^{-s}} .
+\]
+Formally, at $s=1$ the factor at a good prime is $\bigl(1-\frac{a_p}p+\frac1p\bigr)^{-1}=\frac p{N_p}$. So if $E$ has many points modulo $p$ for most $p$, the
+factors are small and $L(E,1)$ ``wants'' to vanish.
+
+\begin{center}
+\emph{The Birch and Swinnerton-Dyer conjecture (rank part).} $L(E,s)$ has a zero at $s=1$ of order exactly the rank $r$ of $E(\Q)$.
+\end{center}
+
+The product does not converge at $s=1$, so the statement needs $L(E,s)$ to exist there. That it does is a deep theorem: by the modularity theorem
+(Tome~12, Chapter~14), $L(E,s)$ is the $L$-function of a modular form of weight $2$ and level $N$, the \emph{conductor} of $E$, so it extends to an entire
+function with a functional equation relating $s$ and $2-s$. Before 1995 the conjecture could only be stated for special curves, such as the curves with
+complex multiplication that this chapter studies, for which Deuring had proved the continuation in the 1950s. The full conjecture also predicts the leading
+coefficient: if $L(E,s)\sim C(s-1)^r$, then
+\[
+C=\frac{\Omega_E\,R_E\,|\operatorname{Sha}(E)|\prod_pc_p}{|E(\Q)_{\mathrm{tors}}|^2},
+\]
+where $\Omega_E$ is the real period (an integral of $\frac{dx}{2y+a_1x+a_3}$ over $E(\R)$), $R_E$ the regulator (a determinant of canonical heights of a basis
+of the free part, so $R_E=1$ when $r=0$), $c_p$ the Tamagawa numbers (small integers attached to the bad primes), and $\operatorname{Sha}(E)$ the Tate--Shafarevich group (written with the Cyrillic letter sha in most texts),
+conjectured to be finite. For a curve of rank $0$ the formula says that $L(E,1)/\Omega_E$ is a rational number with a predicted arithmetic meaning; the
+notebook computes $L(E,1)$ from its rapidly converging series and finds, for the curve $y^2+y=x^3-x^2$ of Tome~12,
+\[
+L(E,1)=0.253841\ldots,\qquad\Omega_E=6.346046\ldots,\qquad\frac{L(E,1)}{\Omega_E}=0.0400000\ldots=\frac1{25},
+\]
+which is $\frac1{|E(\Q)_{\mathrm{tors}}|^2}$ for its torsion group $\Z/5$, with all the other factors equal to $1$. For $y^2=x^3-x$ it finds
+$L(E,1)/\Omega_E=0.125000\ldots=\frac18$; with $|E(\Q)_{\mathrm{tors}}|=4$ the formula then asks that $|\operatorname{Sha}(E)|\prod c_p=2$.
+
+\paragraph{The evidence.} Figure~\ref{fig:bsd} redoes the original experiment with four curves taken from the tables, of ranks $0$, $1$, $2$ and $3$: our
+$y^2=x^3-x$ (rank $0$, by Tome~12, Theorem~12.15), and the curves of smallest conductor of ranks $1$, $2$ and $3$, of conductors $37$, $389$ and $5077$. The
+four curves are visibly sorted by rank. Fitting straight lines against $\log\log x$ over the primes $10^3<p<2\cdot10^5$ gives slopes $-0.00$, $1.03$,
+$2.17$ and $2.91$; over $10^4<p<2\cdot10^5$ the same fits give $0.10$, $1.01$, $2.35$ and $2.66$. The slopes are right to within a few tenths, and they move
+by a few tenths when the window moves: $\log\log x$ grows so slowly that the whole computation covers less than one unit of it. Birch and Swinnerton-Dyer
+saw a pattern of this kind, not a limit, and nobody today can compute far enough to see a limit.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-bsd}
+\caption{$\log\prod_{p\le x}N_p/p$ over the good primes $p\le x$, for $x$ up to $2\cdot10^5$, plotted against $\log\log x$, for four curves of ranks $0$ to $3$
+(conductors $32$, $37$, $389$, $5077$). The values at $x=2\cdot10^5$ are $0.905$, $4.593$, $6.766$ and $9.047$. If the product behaves like $C(\log x)^r$,
+the curves become straight lines of slope $r$. Point counts computed for this book.}
+\label{fig:bsd}
+\end{figure}
+
+\paragraph{The heuristic.} Why $(\log x)^r$? Two reasons, one arithmetic and one analytic. The arithmetic one is the epigraph: a rational point of infinite
+order reduces to a point modulo almost every $p$, and its multiples give many points there, so a large rank should push $N_p$ above $p+1$ on average. The
+analytic one is Mertens' theorem. The Riemann zeta function has a pole of order $1$ at $s=1$, and its partial Euler products satisfy
+$\prod_{p\le x}(1-\frac1p)^{-1}\sim e^\gamma\log x$ (Tome~5, Theorem~1.6). If the partial Euler products of $L(E,s)$ at $s=1$ behaved in the same way, a zero
+of order $r$ would give $\prod_{p\le x}\frac p{N_p}\approx\frac C{(\log x)^r}$. This is only an analogy: for $L(E,s)$ the line $\operatorname{Re}s=1$ is the centre of the critical strip
+$\frac12<\operatorname{Re}s<\frac32$, half a unit away from the half-plane where the Euler product converges (Proposition~\ref{prop:eulerconv}), and
+Remark~\ref{rem:goldfeld} explains what is known.
+
+\section{Counting points with Jacobi sums}
+
+For a prime $p$ and characters $\chi,\psi$ of $\mathbb F_p^\times$, extended by $\chi(0)=0$ when $\chi$ is non-trivial, the \emph{Jacobi sum} is
+$J(\chi,\psi)=\sum_{u\in\mathbb F_p}\chi(u)\psi(1-u)$, and the \emph{Gauss sum} is $g(\chi)=\sum_{u\in\mathbb F_p}\chi(u)\zeta^u$ with $\zeta=e^{2\pi i/p}$.
+For a non-trivial $\chi$, $|g(\chi)|=\sqrt p$ (Tome~5, Theorem~3.5: every non-trivial character modulo a prime is primitive). We write $\rho$ for the
+Legendre symbol, the character of order $2$.
+
+\begin{lemma}\label{lem:jacabs}
+If $\chi$, $\psi$ and $\chi\psi$ are non-trivial characters of $\mathbb F_p^\times$, then $g(\chi)g(\psi)=J(\chi,\psi)\,g(\chi\psi)$, and $|J(\chi,\psi)|=\sqrt p$.
+\end{lemma}
+\begin{proof}
+Expand and group by $u=s+t$:
+\[
+g(\chi)g(\psi)=\sum_{s,t}\chi(s)\psi(t)\zeta^{s+t}=\sum_u\zeta^u\sum_{s+t=u}\chi(s)\psi(t).
+\]
+For $u\ne0$, substitute $s=us'$, $t=ut'$ with $s'+t'=1$: the inner sum is $\chi\psi(u)J(\chi,\psi)$. For $u=0$ it is
+$\sum_s\chi(s)\psi(-s)=\psi(-1)\sum_s\chi\psi(s)=0$, since $\chi\psi$ is non-trivial. Hence $g(\chi)g(\psi)=J(\chi,\psi)\sum_{u}\chi\psi(u)\zeta^u=J(\chi,\psi)g(\chi\psi)$.
+Taking absolute values, $p=|J(\chi,\psi)|\sqrt p$.
+\end{proof}
+
+Now let $p\equiv1\pmod4$. The group $\mathbb F_p^\times$ is cyclic of order divisible by $4$, so it has a character $\chi$ of order $4$ (send a generator to $i$).
+Then $\chi^2=\rho$, $\chi^3=\overline\chi$, and $\chi$ takes values in $\{0,\pm1,\pm i\}$, so every Jacobi sum built from $\chi$ and $\rho$ lies in $\Z[i]$.
+
+\begin{lemma}\label{lem:quarticap}
+Let $p\equiv1\pmod4$ and $\chi$ a character of order $4$ of $\mathbb F_p^\times$. For $E_1:y^2=x^3-x$, $a_p=-2\operatorname{Re}J(\chi,\rho)$. Writing
+$J(\chi,\rho)=A+Bi$ with $A,B\in\Z$, we have $A^2+B^2=p$ and $a_p=-2A$.
+\end{lemma}
+\begin{proof}
+For each $x$, the equation $y^2=c$ has $1+\rho(c)$ solutions $y$ (this is $1$ for $c=0$). So the number of affine points is $\sum_x(1+\rho(x^3-x))$, and with
+the point at infinity, $a_p=p+1-N_p=-\sum_x\rho(x^3-x)=-\sum_x\rho(x)\rho(x^2-1)$.
+
+Group the non-zero $x$ by $u=x^2$. Each non-zero square $u$ comes from two values $\pm x$, and $\rho(-x)=\rho(x)$ because $\rho(-1)=1$ for $p\equiv1\pmod4$.
+Moreover $\rho(x)=\chi(x)^2=\chi(x^2)=\chi(u)$. Since $1+\rho(u)$ is $2$ on the non-zero squares and $0$ on the non-squares,
+\[
+\sum_x\rho(x)\rho(x^2-1)=\sum_{u\ne0}\bigl(1+\rho(u)\bigr)\chi(u)\rho(u-1)=\sum_u\chi(u)\rho(1-u)+\sum_u\overline\chi(u)\rho(1-u),
+\]
+using $\rho(u-1)=\rho(-1)\rho(1-u)=\rho(1-u)$ and $\rho\chi=\chi^3=\overline\chi$. The two sums are $J(\chi,\rho)$ and $J(\overline\chi,\rho)=\overline{J(\chi,\rho)}$,
+so $a_p=-2\operatorname{Re}J(\chi,\rho)=-2A$. Finally $\chi$, $\rho$ and $\chi\rho=\overline\chi$ are non-trivial, so $A^2+B^2=|J(\chi,\rho)|^2=p$ by
+Lemma~\ref{lem:jacabs}.
+\end{proof}
+
+The lemma determines $|a_p|$: $p=A^2+B^2$, and $p$ has only one such decomposition up to order and signs ($p$ has exactly $8$ representations as a sum of two
+squares, Tome~1, Theorem~10.5). But which of the two squares is $A^2$, and what is the sign of $A$? The group structure answers both.
+
+\begin{lemma}\label{lem:eightdiv}
+If $p\equiv1\pmod4$, then $8$ divides $N_p$, the number of points of $y^2=x^3-x$ over $\mathbb F_p$.
+\end{lemma}
+\begin{proof}
+Let $i\in\mathbb F_p$ with $i^2=-1$, and $P=(i,1-i)$. It lies on the curve: $(1-i)^2=1-2i+i^2=-2i$ and $i^3-i=-i-i=-2i$. The tangent at $P$ has slope
+$\lambda=\frac{3x^2-1}{2y}=\frac{-4}{2(1-i)}=\frac{-2}{1-i}=-(1+i)$, so the $x$-coordinate of $2P$ is $\lambda^2-2x=(1+i)^2-2i=0$, and $2P=(0,0)$
+(the only point with $x=0$), which has order $2$. So $P$ has order $4$ and $\langle P\rangle=\{O,P,(0,0),-P\}$. The point $(1,0)$ has order $2$ and is not
+in $\langle P\rangle$, since $\pm P$ have $x=i\ne1$. So the subgroup generated by $P$ and $(1,0)$ is $\langle P\rangle\cup\bigl((1,0)+\langle P\rangle\bigr)$,
+of order $8$, and Lagrange's theorem gives $8\mid N_p$ (the points form a group by Tome~12, Theorem~12.2).
+\end{proof}
+
+\begin{theorem}\label{thm:countEn}
+Let $n\ge1$ and $p\nmid2n$ a prime, and let $N_p$ be the number of points of $E_n:y^2=x^3-n^2x$ over $\mathbb F_p$, $a_p=p+1-N_p$.
+\begin{enumerate}[label=(\alph*)]
+\item If $p\equiv3\pmod4$, then $a_p=0$.
+\item If $p\equiv1\pmod4$, write $p=a^2+b^2$ with $a$ odd and $a\equiv\frac{p+1}2\pmod4$; this determines $a$ uniquely. Then
+\[
+a_p=2\Bigl(\frac np\Bigr)a .
+\]
+\end{enumerate}
+In particular $a_p\ne0$ in case (b).
+\end{theorem}
+\begin{proof}
+\emph{Reduction to $n=1$.} The substitution $x=nu$ is a bijection of $\mathbb F_p$, and $x^3-n^2x=n^3(u^3-u)$, so
+$a_p(E_n)=-\sum_x\rho(x^3-n^2x)=-\rho(n)^3\sum_u\rho(u^3-u)=\rho(n)\,a_p(E_1)$. (Case (a) for $E_n$ is also in the proof of Tome~12, Proposition~12.14.)
+
+(a) If $p\equiv3\pmod4$, then $\rho(-1)=-1$, and $u\mapsto-u$ changes the sign of $\rho(u^3-u)$, so the sum is $0$.
+
+(b) By Lemma~\ref{lem:quarticap}, $a_p(E_1)=-2A$ with $A^2+B^2=p$, so $N_p=p+1+2A$, and by Lemma~\ref{lem:eightdiv}, $2A\equiv-(p+1)\pmod8$, that is
+$A\equiv-\frac{p+1}2\pmod4$. Since $p\equiv1\pmod4$, $\frac{p+1}2$ is odd, so $A$ is odd. Put $a=-A$: then $a$ is odd, $a\equiv\frac{p+1}2\pmod4$, $a^2+B^2=p$,
+and $a_p(E_1)=2a$. For uniqueness: the representations of $p$ as a sum of two squares are the $8$ pairs $(\pm a_0,\pm b_0)$, $(\pm b_0,\pm a_0)$ with $a_0$ odd
+and $b_0$ even (Tome~1, Theorem~10.5, and $p$ odd), so the odd member is $\pm a_0$, and exactly one of the two signs is $\equiv\frac{p+1}2\pmod4$. Finally
+$a$ is odd, so $a_p\ne0$.
+\end{proof}
+
+For $p=5$: $5=1+4$, $\frac{p+1}2=3$, so $a=-1$ and $N_5=5+1+2=8$. For $p=13$: $13=9+4$, $\frac{p+1}2=7\equiv3$, so $a=3$, $a_{13}=6$ and $N_{13}=8$. For
+$p=17$: $a=1$, $N_{17}=16$. The notebook checks the theorem for every prime below $2\cdot10^5$. This is the kind of count that Birch and Swinnerton-Dyer
+needed in their first paper, which treats the curves $y^2=x^3-Dx$; and it has a famous ancestor. The last entry of Gauss's mathematical diary, dated
+9~July~1814, records a count of the solutions of $x^2+y^2+x^2y^2\equiv1\pmod p$ in terms of the decomposition $p=a^2+b^2$, for a curve closely related
+to the lemniscate; the method above, Jacobi sums with values in $\Z[i]$, is the modern form of his.
+
+\section{What is proved}
+
+\paragraph{Convergence.} The product defining $L(E,s)$ converges in the half-plane where Hasse's bound makes it converge, and no further.
+
+\begin{proposition}\label{prop:eulerconv}
+Let $E$ be an elliptic curve over $\Q$. Define $a_n$ for $n\ge1$ by $a_1=1$, $a_{mn}=a_ma_n$ for coprime $m,n$, and for each prime $p$
+\[
+a_{p^{k+1}}=a_pa_{p^k}-\varepsilon_p\,p\,a_{p^{k-1}}\quad(k\ge1),\qquad\varepsilon_p=\begin{cases}1&p\text{ good},\\0&p\text{ bad}.\end{cases}
+\]
+Then $|a_n|\le d(n)\sqrt n$ for every $n$ coprime to the bad primes, and for $\operatorname{Re}s>\frac32$ the series $\sum a_nn^{-s}$ converges absolutely and
+\[
+\sum_{n\ge1}\frac{a_n}{n^s}=\prod_{p\text{ good}}\frac1{1-a_pp^{-s}+p^{1-2s}}\prod_{p\text{ bad}}\frac1{1-a_pp^{-s}}=L(E,s),
+\]
+a holomorphic function without zeros in that half-plane.
+\end{proposition}
+\begin{proof}
+Let $p$ be good. By Hasse's bound $a_p^2\le4p$, so the polynomial $X^2-a_pX+p$ has roots $\alpha$, $\overline\alpha$ that are complex conjugate (or equal and
+real), with $\alpha\overline\alpha=p$, hence $|\alpha|=\sqrt p$. Put $b_k=\sum_{j=0}^k\alpha^j\overline\alpha^{k-j}$. Then $b_0=1$, $b_1=\alpha+\overline\alpha=a_p$,
+and $b_{k+1}=(\alpha+\overline\alpha)b_k-\alpha\overline\alpha\,b_{k-1}$ (multiply out), the same recursion as $a_{p^k}$; so $a_{p^k}=b_k$ and $|a_{p^k}|\le(k+1)p^{k/2}$.
+For coprime $m,n$ coprime to the bad primes, multiplicativity and $d(mn)=d(m)d(n)$ give $|a_n|\le d(n)\sqrt n$. At a bad prime, $a_{p^k}=a_p^k$ and
+$|a_p|\le p$ (there are at most $2p$ affine points), so $|a_{p^k}|\le p^k$; let $B$ be the product of the bad primes.
+
+Write $n=n_1n_2$ with $n_2$ composed of bad primes and $n_1$ coprime to $B$. For $\sigma=\operatorname{Re}s>\frac32$,
+\[
+\sum_n\frac{|a_n|}{n^\sigma}\le\sum_{n_1}\frac{d(n_1)}{n_1^{\sigma-1/2}}\prod_{p\mid B}\sum_{k\ge0}p^{k(1-\sigma)}<\infty,
+\]
+since $\sum d(n)n^{-t}=\zeta(t)^2<\infty$ for $t>1$ and $p^{1-\sigma}<1$. Tome~4, Theorem~10.3, applied to the multiplicative function $a_n$, gives the Euler
+product with factors $\sum_ka_{p^k}p^{-ks}$. At a good prime, the generating function of the $b_k$ is
+$\sum_kb_kT^k=\frac1{(1-\alpha T)(1-\overline\alpha T)}=\frac1{1-a_pT+pT^2}$ for $|T|<p^{-1/2}$, and at a bad prime it is $\frac1{1-a_pT}$; put $T=p^{-s}$,
+with $|T|=p^{-\sigma}<p^{-3/2}$. A uniformly convergent Dirichlet series is holomorphic, and the product has no zero: each factor is the inverse of a
+non-zero number, and $\sum_p|\log(1-\alpha p^{-s})|<\infty$ because $|\alpha p^{-s}|\le p^{1/2-\sigma}$ and $\sum_pp^{1/2-\sigma}<\infty$.
+\end{proof}
+
+For the modular form of Tome~12, Proposition~14.11, the coefficients $c_n$ of $\eta(\tau)^2\eta(11\tau)^2$ are exactly these $a_n$ for $y^2+y=x^3-x^2$
+(Exercise~\ref{ex:anbound}). The point $s=1$ is a distance $\frac12$ to the left of the region of Proposition~\ref{prop:eulerconv}; the functional equation
+of Tome~12, Theorem~14.9, sends $s=1$ to itself, so it is the centre of symmetry of $L(E,s)$, exactly as $s=\frac12$ is for $\zeta$.
+
+\paragraph{Half the $a_p$ vanish.} For a curve without complex multiplication, $a_p=0$ is rare: the primes with $a_p=0$ have density $0$ (a theorem of Serre,
+1981). For our curves, Theorem~\ref{thm:countEn} gives a sharp and opposite answer.
+
+\begin{corollary}\label{cor:cmhalf}
+For $E_n$, the good primes with $a_p=0$ are exactly the primes $p\equiv3\pmod4$ with $p\nmid n$. Among the primes up to $x$, the proportion of those with
+$a_p=0$ tends to $\frac12$.
+\end{corollary}
+\begin{proof}
+The first statement is Theorem~\ref{thm:countEn}. The second is the prime number theorem for arithmetic progressions (Tome~5, Theorem~5.8): the primes
+$\equiv3\pmod4$ up to $x$ number $\sim\frac12\frac x{\log x}$, and the finitely many primes dividing $2n$ do not matter.
+\end{proof}
+
+What about the other half? For a split prime $p\equiv1\pmod4$, write $a_p=2\sqrt p\cos\theta_p$ with $\theta_p\in[0,\pi]$. By Theorem~\ref{thm:countEn},
+$\cos\theta_p=\pm\frac a{\sqrt p}$, where $a+bi$ is a Gaussian prime of norm $p$: the angle $\theta_p$ is, up to symmetries, the argument of a Gaussian prime.
+Figure~\ref{fig:cm} shows the $8977$ split primes below $2\cdot10^5$. The histogram of $\cos\theta_p$ is not Tome~12's semicircle but the \emph{arcsine}
+density $\frac1{\pi\sqrt{1-t^2}}$, which is what one gets when $\theta_p$ is uniform on $[0,\pi]$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-cm}
+\caption{Histogram ($20$ bins) of $a_p/(2\sqrt p)$ for $y^2=x^3-x$ over the $8977$ primes $p\equiv1\pmod4$ below $2\cdot10^5$, against the arcsine density
+(solid) and the Sato--Tate density of curves without complex multiplication (dashed). The two outer bins have density $1.43$, where the arcsine density
+is infinite at $\pm1$. Point counts computed for this book.}
+\label{fig:cm}
+\end{figure}
+
+\begin{remark}[Hecke, and the CM Sato--Tate law]\label{rem:hecke}
+Hecke proved in 1918--1920, with $L$-functions of characters of the ideal classes he called \emph{Gr\"o\ss encharaktere}, that the arguments of the Gaussian
+primes are equidistributed: for $0\le\alpha<\beta\le\frac\pi2$, the primes $\pi=a+bi$ with $a>0$, $b\ge0$ and $\arg\pi\in[\alpha,\beta]$ have density
+$\frac{\beta-\alpha}{\pi/2}$ among all such primes. In 1953 Deuring showed that the $L$-function of a curve with complex multiplication is such a Hecke
+$L$-function. Combining the two, the angles $\theta_p$ of $E_n$ are equidistributed in $[0,\pi]$ along the split primes, so that over all primes their law is
+$\frac12\delta_{\pi/2}+\frac12\cdot\frac{d\theta}\pi$: half of the mass sits at $\frac\pi2$ (the $a_p=0$ of Corollary~\ref{cor:cmhalf}) and half is uniform.
+Compare Tome~12's remark on Sato--Tate, where the law is $\frac2\pi\sin^2\theta\,d\theta$ for every curve without complex multiplication.
+Exercise~\ref{ex:cmmoments} shows how the moments tell the two laws apart.
+\end{remark}
+
+\begin{remark}[what is proved about the conjecture]\label{rem:bsdproved}
+Coates and Wiles (1977) proved that if $E$ has complex multiplication and $L(E,1)\ne0$, then $E(\Q)$ is finite; our $E_n$ are such curves. Gross and Zagier
+(1986) related $L'(E,1)$ to the height of a Heegner point, and Kolyvagin (1988--1989) used Heegner points to bound Selmer groups. Together with the modularity
+theorem they give: \emph{if $L(E,s)$ vanishes to order $0$ or $1$ at $s=1$, then the rank of $E(\Q)$ is that order and $\operatorname{Sha}(E)$ is finite}. For a specific curve
+one can sometimes go further by computing both sides: Buhler, Gross and Zagier (1985) proved that $L(E,s)$ vanishes to order exactly $3$ for the curve of
+conductor $5077$ in Figure~\ref{fig:bsd}, which has rank $3$. But no theorem says that a zero of order $2$ or more forces even one rational point of
+infinite order; and the order of $\operatorname{Sha}(E)$ is not known to be finite for a single curve of rank $2$ or more.
+\end{remark}
+
+\begin{remark}[on average]\label{rem:averages}
+Order the curves $y^2=x^3+Ax+B$ by $\max(4|A|^3,27B^2)$. Bhargava and Shankar (2013, from the average size of $5$-Selmer groups) proved that the average rank
+is less than $0.885$, that at least $20.6\%$ of the curves have rank $0$, and at least $83.75\%$ have rank $0$ or $1$; with Skinner and Zhang (2014), Bhargava
+showed that at least $66.48\%$ of curves satisfy the rank part of the conjecture and have finite $\operatorname{Sha}(E)$. The minimalist conjecture is that half the curves have
+rank $0$, half rank $1$, and $0\%$ rank $2$ or more.
+\end{remark}
+
+\begin{remark}[records]\label{rem:records}
+Ranks of individual curves can be large. Elkies found a curve of rank at least $28$ in 2006; by Dujella's table of records (accessed October 2026), the record
+then moved to $29$ (Elkies and Klagsbrun, 2024), $30$ and $31$ (Alp\"oge and Howell, 2026) and $32$ (Elkies, Klagsbrun and Li, 2026). Whether ranks are bounded
+is open. A heuristic of Park, Poonen, Voight and Wood (2019) predicts that only finitely many curves over $\Q$ have rank greater than $21$, which would
+make the recent records all the more remarkable.
+\end{remark}
+
+\begin{remark}[partial Euler products]\label{rem:goldfeld}
+Can the original experiment be made a theorem? Goldfeld proved in 1982 that if $\prod_{p\le x}N_p/p\sim C(\log x)^r$ for some constants $C>0$ and $r$, then
+$L(E,s)$ satisfies the analogue of the Riemann hypothesis (all its non-trivial zeros on $\operatorname{Re}s=1$), $r$ is the order of vanishing of $L(E,s)$ at
+$s=1$, and $C$ is determined by the leading Taylor coefficient there, with an unexpected extra factor $\sqrt2$. So the asymptotic behind
+Figure~\ref{fig:bsd} is stronger than the Riemann hypothesis for $L(E,s)$, and it is not known for any curve. K.~Conrad (2005) explains where the
+$\sqrt2$ comes from.
+\end{remark}
+
+\paragraph{Why it is hard.} The conjecture links two worlds with no known bridge in general. On one side is $L(E,s)$, defined by the local data $N_p$ and
+continued past its region of convergence by modularity, an analytic miracle. On the other is the rank, a global object computed by descent, with $\operatorname{Sha}(E)$ as the
+obstruction that descent cannot see through. The only known bridges, Heegner points (Gross--Zagier, Kolyvagin) and the Euler systems that generalise them,
+produce at most one point of infinite order at a time: they work when the analytic rank is $1$ (one point to find) or $0$ (no point, but a bound). For
+rank $2$ nobody knows a construction that produces two independent points from $L''(E,1)\ne0$.
+
+\section{Reading a paper: Wiles's Millennium essay}
+
+Andrew Wiles's \emph{The Birch and Swinnerton-Dyer conjecture}, written for the Clay Mathematics Institute's book on the Millennium Problems (2006), is the
+official statement of the problem, and in ten pages it is also a history. Read it with this chapter at hand. Its first part goes from Diophantus and the
+congruent number problem to Mordell's theorem; you know this from Tome~12. Then comes the definition of $L(E,s)$ and the conjecture with its full formula; check
+each symbol against the box above. The last part lists the theorems: Coates--Wiles, Gross--Zagier, Kolyvagin, and Tunnell's criterion for congruent numbers.
+The idea worth stealing is the shape of the conjecture itself: a local--global principle in which the local factors $p/N_p$, each trivially computable,
+multiply to something that knows the global group $E(\Q)$. The original papers, B.~Birch and P.~Swinnerton-Dyer, \emph{Notes on elliptic curves I and II},
+are worth opening for their tables and graphs, the first experimental evidence in this book's sense for one of the great conjectures.
+
+\section{Open doors}
+
+\begin{itemize}
+\item Extend Figure~\ref{fig:bsd} to $x=10^8$ with a compiled program (count points with the Legendre symbol, or faster, with baby-step giant-step on the
+group). Fit slopes on the last decade. How close to $3$ does the rank-$3$ curve get?
+\item For the congruent number curves $E_n$, $n\le1000$ squarefree, compute $\log\prod_{p\le10^6}N_p/p$ and compare with what is known about the rank (by
+Tunnell's criterion, Tome~12). Can you see the rank in the product?
+\item Compute $L(E_n,1)/\Omega$ for the squarefree $n\le200$ with $n\equiv1,2,3\pmod8$ with the series of the notebook. Which values are $0$? Which non-zero values
+are not of the form $\frac1{|T|^2}$ times a small integer?
+\item Repeat Figure~\ref{fig:cm} for $y^2=x^3+1$ and the split primes $p\equiv1\pmod3$ (Exercise~\ref{ex:cubicD}). Which arcsine-like law appears?
+\end{itemize}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:handcount}
+Count the points of $y^2=x^3-x$ over $\mathbb F_5$, $\mathbb F_{13}$ and $\mathbb F_{17}$ by hand, list the points of the subgroup of order $8$ of
+Lemma~\ref{lem:eightdiv} for $p=13$, and compare with Theorem~\ref{thm:countEn}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bigp}
+Use Theorem~\ref{thm:countEn} to find the number of points of $y^2=x^3-x$ and of $y^2=x^3-4x$ over $\mathbb F_{101}$ and over $\mathbb F_{1009}$
+($1009=15^2+28^2$). Which of the four counts are divisible by $8$, and why?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:jac13}
+Let $p=13$ and $\chi$ the character of order $4$ with $\chi(2)=i$ ($2$ generates $\mathbb F_{13}^\times$). Tabulate $\chi$, compute $J(\chi,\rho)$, and check
+Lemmas~\ref{lem:jacabs} and~\ref{lem:quarticap}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quarticD}
+Let $p\equiv1\pmod4$, $\chi$ of order $4$, and $D\not\equiv0\pmod p$. Show that $y^2=x^3-Dx$ has $a_p=-2\operatorname{Re}\bigl(\overline\chi(D)J(\chi,\rho)\bigr)$.
+Deduce that every curve $y^2=x^3-Dx$ has $a_p\in\{\pm2a,\pm2b\}$ with $p=a^2+b^2$, and that among $D\in\{1,-1,2,-2\}$, the values $D=\pm2$ give $\pm2b$ exactly when
+$p\equiv5\pmod8$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cubicD}
+Let $p\equiv1\pmod3$, $\psi$ a character of order $3$ of $\mathbb F_p^\times$, and $D\not\equiv0\pmod p$. Show that $y^2=x^3+D$ has
+$a_p=-2\operatorname{Re}\bigl(\psi(D)\rho(D)J(\psi,\rho)\bigr)$, and that $|a_p|\le2\sqrt p$. (For $D=1$ this is Tome~12, Exercise~13.3; for $p\equiv2\pmod3$,
+$a_p=0$ by Tome~12, Exercise~12.5.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:anbound}
+For $E:y^2+y=x^3-x^2$, with $a_p$ for $p\le11$ from the table of Tome~12, Proposition~14.11 (and $a_{11}=1$), compute $a_n$ for $n\le12$ from
+Proposition~\ref{prop:eulerconv}, and compare with the first coefficients of $q\prod_{n\ge1}(1-q^n)^2(1-q^{11n})^2$. Show that equality $|a_{p^k}|=(k+1)p^{k/2}$
+in the bound of the proof can only happen when $a_p^2=4p$, and that this never happens for $p$ good.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:inertmertens}
+For $E_1:y^2=x^3-x$, show that $\prod_{p\le x,\,p\equiv3\,(4)}\frac{N_p}p\sim C\sqrt{\log x}$ for some $C>0$, using Tome~5, Corollary~4.5. Since $E_1$ has rank
+$0$, what does the heuristic of this chapter then predict for the product over the split primes $p\equiv1\pmod4$, $p\le x$? Check it on the data of the
+notebook.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cmmoments}
+Let $t_p=a_p/\sqrt p=2\cos\theta_p$. Compute $\mathrm E[t^2]$ and $\mathrm E[t^4]$ under the law $\frac12\delta_{\pi/2}+\frac12\frac{d\theta}\pi$ of
+Remark~\ref{rem:hecke} and under the Sato--Tate law $\frac2\pi\sin^2\theta\,d\theta$. Which moment separates them? Compare with the averages of $t_p^2$ and $t_p^4$
+for $y^2=x^3-x$ over the odd primes below $2\cdot10^5$, which are $0.9955$ and $2.982$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:handcount}
+List the squares modulo $p$ first; the points of order $2$ and $O$ are always there. For $p=13$, $i=5$.
+\end{hint}
+\begin{hint}{ex:bigp}
+$101=1^2+10^2$. For $y^2=x^3-4x$ use $n=2$ and the value of $\bigl(\frac2p\bigr)$.
+\end{hint}
+\begin{hint}{ex:jac13}
+The powers of $2$ modulo $13$ are $2,4,8,3,6,12,11,9,5,10,7,1$.
+\end{hint}
+\begin{hint}{ex:quarticD}
+Follow the proof of Lemma~\ref{lem:quarticap} and substitute $u=Dv$. For the second part, $\overline\chi(D)$ is a power of $i$; $\chi(-1)=-1$ when
+$p\equiv5\pmod8$.
+\end{hint}
+\begin{hint}{ex:cubicD}
+Count by $u=x^3$: the number of $x$ with $x^3=u$ is $1+\psi(u)+\overline\psi(u)$. Then substitute $u=-Dv$.
+\end{hint}
+\begin{hint}{ex:anbound}
+$a_4=a_2^2-2$, $a_8=a_2a_4-2a_2$, $a_9=a_3^2-3$, $a_{11}=1$.
+\end{hint}
+\begin{hint}{ex:inertmertens}
+$\log\frac{p+1}p=\frac1p+O(\frac1{p^2})$.
+\end{hint}
+\begin{hint}{ex:cmmoments}
+$\mathrm E[(2\cos\theta)^{2k}]$ under the uniform law is the constant term of $(e^{i\theta}+e^{-i\theta})^{2k}$, a binomial coefficient.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:handcount}
+\idea Tabulate $x^3-x$, mark the non-zero squares, and count two points for each.
+\writeup Modulo $5$ the non-zero squares are $1,4$, and $x^3-x$ takes the values $0,0,1,4,0$ for $x=0,\dots,4$: three points with $y=0$, two values that are
+squares, so $3+2\cdot2=7$ affine points and $N_5=8$. Modulo $13$ the non-zero squares are $1,3,4,9,10,12$, and $x^3-x$ for $x=0,\dots,12$ is
+\[
+0,0,6,11,8,3,2,11,10,5,2,7,0;
+\]
+only $3$ (at $x=5$) and $10$ (at $x=8$) are squares, so $3+2\cdot2=7$ affine points and $N_{13}=8$. Modulo $17$ the non-zero squares are
+$1,2,4,8,9,13,15,16$, and $x^3-x$ is a non-zero square for $x=4,5,7,10,12,13$, so $3+2\cdot6=15$ affine points and $N_{17}=16$. Theorem~\ref{thm:countEn}
+gives $5+1-(-2)=8$, $13+1-6=8$ and $17+1-2=16$. For $p=13$, $i=5$ and $P=(5,1-5)=(5,9)$; then $\langle P\rangle=\{O,(5,9),(0,0),(5,4)\}$ and the other coset
+is $(1,0)+\langle P\rangle=\{(1,0),(8,7),(12,0),(8,6)\}$. That is all $8$ points: $E(\mathbb F_{13})\cong\Z/4\times\Z/2$.
+\end{solution}
+
+\begin{solution}{ex:bigp}
+\idea Find the odd square, fix its sign modulo $4$, then twist.
+\writeup $p=101=1^2+10^2$, $\frac{p+1}2=51\equiv3\pmod4$, so $a=-1$, $a_{101}=-2$ and $N_{101}=104=8\cdot13$ for $y^2=x^3-x$. For $y^2=x^3-4x$ ($n=2$),
+$\bigl(\frac2{101}\bigr)=-1$ since $101\equiv5\pmod8$, so $a_{101}=2$ and $N_{101}=100$. For $p=1009=15^2+28^2$, $\frac{p+1}2=505\equiv1\pmod4$, and of $\pm15$
+it is $-15\equiv1$, so $a_{1009}=-30$ and $N_{1009}=1040=8\cdot130$; since $1009\equiv1\pmod8$, $\bigl(\frac2{1009}\bigr)=1$ and $y^2=x^3-4x$ has $1040$
+points too. The count $100$ is divisible by $4$ (the three points of order $2$ and $O$) but not by $8$: Lemma~\ref{lem:eightdiv} is about $y^2=x^3-x$, and
+$y^2=x^3-4x$ is isomorphic to it over $\mathbb F_p$ only when $2$ is a square modulo $p$.
+\end{solution}
+
+\begin{solution}{ex:jac13}
+\idea Read $\chi$ off the discrete logarithm.
+\writeup From the powers of $2$, $\chi(u)=i^k$ when $u\equiv2^k$: $\chi=1,i,1,-1,i,i,-i,-i,1,-1,-i,-1$ at $u=1,\dots,12$, and $\rho=\chi^2$. The terms
+$\chi(u)\rho(1-u)$ for $u=2,\dots,12$ ($u=0,1$ give $0$) are $i,-1,-1,i,-i,i,i,-1,-1,-i,1$, with sum $J(\chi,\rho)=-3+2i$. Then $|J|^2=9+4=13$, as
+Lemma~\ref{lem:jacabs} says, and $-2\operatorname{Re}J=6=a_{13}$, as Lemma~\ref{lem:quarticap} says ($N_{13}=8$, Exercise~\ref{ex:handcount}).
+\end{solution}
+
+\begin{solution}{ex:quarticD}
+\idea The substitution $u=Dv$ moves $D$ out of the sum as a character value, a fourth root of unity.
+\writeup As in Lemma~\ref{lem:quarticap}, $-a_p=\sum_x\rho(x)\rho(x^2-D)=\sum_u(1+\rho(u))\chi(u)\rho(u-D)$. With $u=Dv$, $\rho(u-D)=\rho(D)\rho(v-1)=\rho(D)\rho(1-v)$
+and $\chi(u)=\chi(D)\chi(v)$, so the first part is $\chi(D)\rho(D)J(\chi,\rho)=\chi^3(D)J=\overline\chi(D)J(\chi,\rho)$, and the second, with $\overline\chi$ in place of
+$\chi$, is its complex conjugate. Hence $a_p=-2\operatorname{Re}\bigl(\overline\chi(D)J(\chi,\rho)\bigr)$. With $J=A+Bi$ and $\overline\chi(D)\in\{\pm1,\pm i\}$, the real
+part is $\pm A$ or $\pm B$, so $a_p\in\{\pm2a,\pm2b\}$ for every $D$. For $D=\pm1,\pm2$: $\chi(-1)=\chi(g^{(p-1)/2})=i^{(p-1)/2}=(-1)^{(p-1)/4}$, and $\chi(2)^2=\rho(2)$.
+If $p\equiv5\pmod8$, then $\rho(2)=-1$, so $\chi(2)=\pm i$ and $\chi(-2)=\mp i$ are imaginary while $\chi(\pm1)=\pm1$ are real: $D=\pm1$ give $\pm2a$ and $D=\pm2$
+give $\pm2b$. (For $p=13=3^2+2^2$ the four values are $6,-6,-4,4$.) If $p\equiv1\pmod8$, all four values of $\chi$ are real ($\chi(2)=\pm1$), and all four
+curves have $a_p=\pm2a$.
+\end{solution}
+
+\begin{solution}{ex:cubicD}
+\idea Sum over the cubes instead of the squares.
+\writeup $-a_p=\sum_x\rho(x^3+D)=\sum_u\bigl(1+\psi(u)+\overline\psi(u)\bigr)\rho(u+D)$, since $x^3=u$ has $1+\psi(u)+\overline\psi(u)$ solutions ($1$ for $u=0$, and $3$
+or $0$ otherwise). The first part is $\sum_u\rho(u+D)=0$. In the second, put $u=-Dv$: $\psi(u)=\psi(-1)\psi(D)\psi(v)$ with $\psi(-1)=1$ (it is a cube root of unity
+equal to its own cube), and $\rho(u+D)=\rho(D)\rho(1-v)$, giving $\psi(D)\rho(D)J(\psi,\rho)$; the third part is its conjugate. So
+$a_p=-2\operatorname{Re}\bigl(\psi(D)\rho(D)J(\psi,\rho)\bigr)$, and since $\psi$, $\rho$ and $\psi\rho$ (of order $6$) are non-trivial, $|J(\psi,\rho)|=\sqrt p$
+by Lemma~\ref{lem:jacabs}, hence $|a_p|\le2\sqrt p$. The notebook checks the formula for $p<40$ and $D=1,2,3,5$.
+\end{solution}
+
+\begin{solution}{ex:anbound}
+\idea Run the recursion, and look at when the triangle inequality is an equality.
+\writeup With $a_2=-2$, $a_3=-1$, $a_5=1$, $a_7=-2$, $a_{11}=1$: $a_4=a_2^2-2=2$, $a_8=a_2a_4-2a_2=0$, $a_9=a_3^2-3=-2$, $a_6=a_2a_3=2$, $a_{10}=a_2a_5=-2$,
+$a_{12}=a_4a_3=-2$. So $a_1,\dots,a_{12}$ are $1,-2,-1,2,1,2,-2,0,-2,-2,1,-2$, and expanding $q\prod_{n\ge1}(1-q^n)^2(1-q^{11n})^2$ up to $q^{12}$
+gives the same twelve numbers. For the bound, $|b_k|=|\sum_{j=0}^k\alpha^j\overline\alpha^{k-j}|\le(k+1)p^{k/2}$ with equality only if all the terms have the same
+argument, which for $k\ge1$ forces $\alpha/\overline\alpha=1$, that is $\alpha$ real, $\alpha=\pm\sqrt p$ and $a_p=\pm2\sqrt p$. But $a_p$ is an integer and $4p$ is
+not a square, so this never happens.
+\end{solution}
+
+\begin{solution}{ex:inertmertens}
+\idea At an inert prime $N_p=p+1$, and Mertens in progressions does the rest.
+\writeup For $p\equiv3\pmod4$, $N_p=p+1$ (Theorem~\ref{thm:countEn}), so $\log\prod\frac{N_p}p=\sum_{p\le x,\,p\equiv3\,(4)}\log\bigl(1+\frac1p\bigr)
+=\sum\frac1p+c+o(1)$ with $c=\sum(\log(1+\frac1p)-\frac1p)$ convergent. By Tome~5, Corollary~4.5, $\sum_{p\le x,\,p\equiv3\,(4)}\frac1p=\frac12\log\log x+M(4,3)+o(1)$,
+so the product is $\sim C\sqrt{\log x}$. Since $E_1$ has rank $0$, the heuristic says that the whole product stays bounded, so the split primes must
+compensate: $\prod_{p\le x,\,p\equiv1\,(4)}\frac{N_p}p\approx\frac{C'}{\sqrt{\log x}}$. In the data, the inert product divided by $\sqrt{\log x}$ is $0.9857$,
+$0.9853$, $0.9852$, $0.9852$ at $x\approx10^3,10^4,10^5,2\cdot10^5$, and the split product times $\sqrt{\log x}$ is $2.34$, $2.33$, $2.07$, $2.51$: bounded
+in the range, as predicted, but fluctuating, as Figure~\ref{fig:bsd} already showed for the full product. The split part is the hard part of the problem.
+\end{solution}
+
+\begin{solution}{ex:cmmoments}
+\idea Expand $(2\cos\theta)^{2k}=(e^{i\theta}+e^{-i\theta})^{2k}$.
+\writeup Under the uniform law on $[0,\pi]$, the mean of $(e^{i\theta}+e^{-i\theta})^{2k}$ is its constant term $\binom{2k}k$: $2$ for $k=1$, $6$ for $k=2$. The
+atom at $\frac\pi2$ contributes $0$. So the CM law gives $\mathrm E[t^2]=\frac12\cdot2=1$ and $\mathrm E[t^4]=\frac12\cdot6=3$. Under Sato--Tate, $t=2\cos\theta$ has
+the semicircle law on $[-2,2]$, whose even moments are the Catalan numbers: $\mathrm E[t^2]=1$, $\mathrm E[t^4]=2$. The second moment does not separate the
+laws (compare Tome~12, Exercise~13.4, where $a_p^2/p$ is $1$ on average over all curves modulo $p$); the fourth does: $3$ against $2$. The data give $0.9955$ and $2.982$, clearly the CM law.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item B.~J.~Birch and H.~P.~F.~Swinnerton-Dyer, \emph{Notes on elliptic curves I}, Journal f\"ur die reine und angewandte Mathematik 212 (1963), 7--25,
+and \emph{Notes on elliptic curves II}, same journal, 218 (1965), 79--108.
+\item A.~Wiles, \emph{The Birch and Swinnerton-Dyer conjecture}, in J.~Carlson, A.~Jaffe and A.~Wiles (eds.), \emph{The Millennium Prize Problems}, Clay
+Mathematics Institute and American Mathematical Society, 2006, 31--41. This is also the source for the early history and the EDSAC~2 computations.
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd edition, Springer, 1990, Chapters~8 and~18, for Jacobi sums and
+point counts on $y^2=x^3-Dx$. On Gauss's diary: J.~Gray, \emph{A commentary on Gauss's mathematical diary, 1796--1814, with an English translation},
+Expositiones Mathematicae 2 (1984), 97--130.
+\item E.~Hecke, \emph{Eine neue Art von Zetafunktionen und ihre Beziehungen zur Verteilung der Primzahlen}, Mathematische Zeitschrift 1 (1918), 357--376,
+and 6 (1920), 11--51. M.~Deuring, \emph{Die Zetafunktion einer algebraischen Kurve vom Geschlechte Eins}, Nachrichten der Akademie der Wissenschaften in
+G\"ottingen, 1953. J.-P.~Serre, \emph{Quelques applications du th\'eor\`eme de densit\'e de Chebotarev}, Publications Math\'ematiques de l'IH\'ES 54 (1981),
+123--201.
+\item J.~Coates and A.~Wiles, \emph{On the conjecture of Birch and Swinnerton-Dyer}, Inventiones Mathematicae 39 (1977), 223--251. B.~Gross and D.~Zagier,
+\emph{Heegner points and derivatives of $L$-series}, Inventiones Mathematicae 84 (1986), 225--320. V.~A.~Kolyvagin, \emph{Finiteness of $E(\Q)$ and Sha$(E,\Q)$
+for a subclass of Weil curves}, Izvestiya Akademii Nauk SSSR 52 (1988). J.~Buhler, B.~Gross and D.~Zagier, \emph{On the conjecture of Birch and
+Swinnerton-Dyer for an elliptic curve of rank $3$}, Mathematics of Computation 44 (1985), 473--481.
+\item M.~Bhargava and A.~Shankar, \emph{The average size of the $5$-Selmer group of elliptic curves is $6$, and the average rank is less than $1$},
+arXiv:1312.7859 (2013). M.~Bhargava, C.~Skinner and W.~Zhang, \emph{A majority of elliptic curves over $\Q$ satisfy the Birch and Swinnerton-Dyer conjecture},
+arXiv:1407.1826 (2014).
+\item A.~Dujella, \emph{History of elliptic curves rank records}, web page at the University of Zagreb (accessed October 2026). J.~Park, B.~Poonen,
+J.~Voight and M.~M.~Wood, \emph{A heuristic for boundedness of ranks of elliptic curves}, Journal of the European Mathematical Society 21 (2019),
+2859--2903.
+\item D.~Goldfeld, \emph{Sur les produits partiels eul\'eriens attach\'es aux courbes elliptiques}, Comptes Rendus de l'Acad\'emie des Sciences de Paris
+294 (1982), 471--474. K.~Conrad, \emph{Partial Euler products on the critical line}, Canadian Journal of Mathematics 57 (2005), 267--297.
+\item The curves of Figure~\ref{fig:bsd} and their conductors are in J.~E.~Cremona, \emph{Algorithms for Modular Elliptic Curves}, 2nd edition, Cambridge
+University Press, 1997, and in the LMFDB. All point counts, $L$-values and periods in this chapter were computed for this book.
+\end{itemize}
