@@ -388,6 +388,40 @@ def apollonian_gasket(rmin=0.004, label_r=0.06):
     return "\n".join(lines) + "\n"
 
 
+def bitonic_network(n=16):
+    """Batcher's bitonic sorting network on n wires (Tome C2, Chapter 2): horizontal wires,
+    each comparator a vertical segment whose arrowhead marks where the larger value goes.
+    Comparators of one stage whose spans overlap are drawn in separate sub-columns."""
+    cols = []
+    k = 2
+    while k <= n:
+        j = k // 2
+        while j >= 1:
+            stage = [(i, i ^ j, (i & k) == 0) for i in range(n) if (i ^ j) > i]
+            sub = {}
+            for i, l, up in stage:
+                sub.setdefault(i % j, []).append((i, l, up))
+            cols.extend(sub[r] for r in sorted(sub))
+            j //= 2
+        k *= 2
+    W, H = 1.92, 1.9
+    dx = 2 * W / (len(cols) + 1)
+    ys = [H - 2 * H * w / (n - 1) for w in range(n)]
+    lines = ["%% Batcher's bitonic sorting network on %d wires." % n]
+    for y in ys:
+        lines.append(r"\draw[accent,line width=0.5pt,opacity=0.6] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (-W - 0.1, y, W + 0.1, y))
+    for c, comps in enumerate(cols):
+        x = -W + dx * (c + 1)
+        for i, l, asc in comps:
+            top, bot = ys[i], ys[l]          # wire i is above wire l
+            tip = bot if asc else top        # ascending: the larger value goes to the lower wire
+            lines.append(r"\draw[accent,line width=1.1pt,-latex] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                         % (x, top if asc else bot, x, tip))
+            for y in (top, bot):
+                lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.03in);" % (x, y))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -399,6 +433,7 @@ MOTIFS = {
     "tome7-analysis": confocal_grid,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
+    "tomeC2-algorithms": bitonic_network,
     "tomeS1-linear": lozenge_tiling,
     "tomeS2-geometry": apollonian_gasket,
     "tomeP1-crossroads": gaussian_primes,
