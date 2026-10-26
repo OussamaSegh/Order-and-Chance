@@ -18,6 +18,7 @@ companion notebook with computer-science applications.
   | 3. Chance | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome3-chance.epub) |
   | 4. The Art of Calculation | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome4-calculation.epub) |
   | 5. Where It All Meets (in progress) | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome5-meets.epub) |
+  | 12. Arithmetic (in progress) | [PDF](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome12-arithmetic.pdf) | [phone](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome12-arithmetic-phone.pdf) | [Kindle](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome12-arithmetic-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/numbers-structures-chance/releases/download/books/tome12-arithmetic.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -42,7 +43,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 9 | Structures II | Categories, commutative and homological algebra, representations | Planned |
 | 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Planned |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Planned |
-| 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Planned |
+| 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | In progress (1 of 14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | Planned |
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
 | 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | Planned |

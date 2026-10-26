@@ -193,6 +193,29 @@ def zeta_critical_line(t_max=42.0, steps=2400):
     return "\n".join(lines) + "\n"
 
 
+def ford_circles(qmax=80):
+    """Ford circles: above each fraction p/q (lowest terms), the circle of radius 1/(2q^2)
+    tangent to the line at p/q. Two of them touch exactly when the fractions are Farey neighbours,
+    and SL2(Z) permutes them (Tome 12, Chapter 14). Drawn for p/q in [0, 1], clipped to the disc."""
+    s = 2.7 * R                       # length of the unit interval on the cover
+    y0 = -0.42 * R                    # the line on which the circles stand
+    lines = ["%% Ford circles for p/q in [0,1], q <= %d: radius 1/(2q^2), tangent at p/q." % qmax,
+             r"\begin{scope}",
+             r"\clip (0,0) circle (%.4fin);" % R,
+             r"\draw[accent,line width=0.5pt,opacity=0.7] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (-R, y0, R, y0)]
+    for q in range(1, qmax + 1):
+        for p in range(0, q + 1):
+            if math.gcd(p, q) != 1:
+                continue
+            r = s / (2 * q * q)
+            x = -s / 2 + s * p / q
+            if r < 0.003 or abs(x) > R + r:
+                continue
+            w = max(0.12, min(0.9, 2.4 / q))
+            lines.append(r"\draw[accent,line width=%.2fpt] (%.4fin,%.4fin) circle (%.4fin);" % (w, x, y0 + r, r))
+    lines.append(r"\end{scope}")
+    return "\n".join(lines) + "\n"
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -201,6 +224,7 @@ MOTIFS = {
     "tome4-calculation": fourier_square,
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
+    "tome12-arithmetic": ford_circles,
 }
 
 if __name__ == "__main__":
