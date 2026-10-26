@@ -1,0 +1,441 @@
+\chapter{Kolmogorov Complexity}\label{ch:kolmogorov}
+
+\begin{center}\itshape
+The shortest description of an object\\
+is the only one that tells you nothing about the describer.\\
+\upshape(our summary of the invariance theorem)
+\end{center}
+
+Shannon's entropy measures a \emph{source}: a die, a language, a coin, anything that produces messages at random. It says nothing about a single message. The string $0101010101\cdots01$ of a thousand bits and a thousand flips of a fair coin are equally likely under the fair coin, each with probability $2^{-1000}$, and yet nobody believes that the first one came from a coin. What is it that we see?
+
+Three people answered within six years, independently. Ray Solomonoff, working on the mathematics of induction, wrote a report in 1960 and two papers in 1964 in which the probability of a string is computed from the lengths of the programs that print it. Andrei Kolmogorov, in 1965, proposed three approaches to the amount of information in an object, the third of which, ``algorithmic'', defines it as the length of the shortest program that produces it. Gregory Chaitin, a teenager studying at the City College of New York, had the same idea and published it in 1966. Kolmogorov later learnt of Solomonoff's work and acknowledged his priority; the story is told in the historical notes of Li and Vitányi's book (see the Sources).
+
+The idea is an old paradox made precise. In 1908 Bertrand Russell published, crediting it to G.~G.~Berry of the Bodleian Library in Oxford, the puzzle of ``the least integer not nameable in fewer than nineteen syllables'', a phrase of eighteen syllables that names it. Tome~C3, Theorem~7.23 turned Berry's paradox into Chaitin's incompleteness theorem. Here we develop the complexity itself: what it is, why it does not depend on the programming language, why nobody can compute it, how it matches entropy on average, how it defines a random infinite sequence, and how it proves that there are infinitely many primes.
+
+\begin{think}
+Here are three strings of $32$ bits:
+\[
+\begin{aligned}
+&01010101010101010101010101010101,\\
+&11001001000011111101101010100010,\\
+&10101100001000110100000111001010.
+\end{aligned}
+\]
+One is periodic, one comes from $32$ flips of a fair coin (the notebook made them), and one is the beginning of the binary expansion of a famous number. Which strings can be described in fewer than $32$ bits? Which ``look random''? Do these two questions have the same answer?
+\end{think}
+
+\section{Descriptions and machines}\label{sec:invariance}
+
+We work with finite binary strings $x\in\{0,1\}^*$, of length $|x|$, and identify a natural number $n\ge1$ with its binary expansion $b(n)$, of length $\lfloor\log_2n\rfloor+1$. A \emph{machine} is a partial computable function $M:\{0,1\}^*\to\{0,1\}^*$, that is, a Turing machine reading an input string and, if it halts, leaving an output string (Tome~C3, Chapter~3; by the Church--Turing thesis any reasonable programming language gives the same class of functions). The inputs are called \emph{programs}.
+
+\begin{definition}\label{def:plain}
+The \emph{complexity} of $x$ relative to the machine $M$ is $C_M(x)=\min\{|p|:M(p)=x\}$, with $\min\varnothing=\infty$.
+\end{definition}
+
+The definition depends on $M$, and at first sight this ruins everything: a machine that prints the complete works of Shakespeare on the input $0$ gives them complexity $1$. The way out is that some machines are as good as all others up to an additive constant. We need a way to glue a program to a description of a machine. Recall from Chapter~\ref{ch:compression} (Proposition~\ref{prop:elias}) the Elias $\gamma$ code; for a string $s$, the string $\bar s=\gamma(|s|+1)\,s$ is self-delimiting: a reader who sees $\bar s$ followed by anything knows where $\bar s$ ends. Its length is $|s|+2\lfloor\log_2(|s|+1)\rfloor+1$.
+
+\begin{theorem}[invariance; Solomonoff 1964, Kolmogorov 1965]\label{thm:invariance}
+There is a machine $U$ such that for every machine $M$ there is a constant $c_M$ with
+\[
+C_U(x)\le C_M(x)+c_M\qquad\text{for all }x.
+\]
+If $U$ and $V$ both have this property, then $|C_U(x)-C_V(x)|\le c$ for a constant $c$ and all $x$.
+\end{theorem}
+
+\begin{proof}
+List all machines as $M_1,M_2,\dots$ (for example, by listing all Turing machine descriptions in order). By the existence of a universal Turing machine (Tome~C3, Theorem~3.5) there is a machine $U$ that, on an input of the form $\bar s\,q$ where $s=b(i)$, simulates $M_i$ on $q$ and outputs what it outputs; on inputs not of this form it does not halt. If $M=M_i$ and $M(p)=x$ with $|p|=C_M(x)$, then $U(\overline{b(i)}\,p)=x$, so $C_U(x)\le C_M(x)+|\overline{b(i)}|$, and $c_M=|\overline{b(i)}|$ depends on $M$ only. If $V$ has the same property, then $C_U\le C_V+c_V$ and $C_V\le C_U+c'_U$, which is the second statement.
+\end{proof}
+
+We fix such a $U$ once and for all and write $C(x)=C_U(x)$, the \emph{plain Kolmogorov complexity} of $x$. Every statement below holds ``up to an additive constant'', and the constant depends on $U$ but never on $x$. For a natural number, $C(n)=C(b(n))$.
+
+\begin{proposition}\label{prop:basicC}
+There is a constant $c$ such that for all strings $x,y$ and all $n\ge1$:
+\begin{enumerate}[label=(\alph*)]
+\item $C(x)\le|x|+c$;
+\item for each computable function $f$, $C(f(x))\le C(x)+c_f$, with $c_f$ depending on $f$ only;
+\item $C(0^n)\le\log_2n+c$;
+\item $C(xy)\le C(x)+C(y)+2\log_2(C(x)+1)+c$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) The identity machine has $C_{\mathrm{id}}(x)=|x|$. (b) The machine $M(p)=f(U(p))$ has $C_M(f(x))\le C(x)$. (c) The machine $b(n)\mapsto0^n$ has complexity $|b(n)|\le\log_2n+1$ at $0^n$. (d) The machine $M$ that splits its input as $\bar p\,q$, which it can do because $\bar p$ is self-delimiting, and outputs $U(p)U(q)$, has $C_M(xy)\le|\bar p|+|q|$ for shortest programs $p$ of $x$ and $q$ of $y$.
+\end{proof}
+
+The logarithmic term in (d) is the price of not knowing where one program ends; Section~\ref{sec:prefix} removes it by changing the definition.
+
+\section{Most strings are incompressible}\label{sec:incompressiblestrings}
+
+\begin{theorem}\label{thm:counting}
+For all $n$ and $c\ge0$, fewer than $2^{n-c}$ strings of length $n$ have $C(x)<n-c$. In particular, at least $2^n-2^{n-c}+1$ strings of length $n$ have $C(x)\ge n-c$, and at least one has $C(x)\ge n$.
+\end{theorem}
+
+\begin{proof}
+A string with $C(x)<n-c$ is $U(p)$ for a program $p$ of length less than $n-c$, and different strings need different programs. There are $1+2+\cdots+2^{n-c-1}=2^{n-c}-1$ such programs.
+\end{proof}
+
+This is the counting argument of Proposition~\ref{prop:nocompress} in a new costume, and Tome~C3, Exercise~7.11 met it too. A string with $C(x)\ge|x|-c$ is called \emph{$c$-incompressible}. Figure~\ref{fig:landscape} shows the resulting landscape.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-landscape}
+\caption{The complexity landscape (schematic, constants omitted). Every string lies below $|x|+c$ for $C$ and below $|x|+2\log_2|x|+c$ for $K$; all but a fraction $2^{-c}$ of the strings of each length lie in the band above $|x|-c$; a few, such as $0^n$ or the first $n$ binary digits of $\pi$, lie near $\log_2n$, and some, like $0^{2^{2^j}}$, even lower (Exercise~\ref{ex:basicC}).}
+\label{fig:landscape}
+\end{figure} Incompressible strings exist at every length, but the theorem gives no way to find one: Exercise~\ref{ex:produce} shows that no algorithm can produce them.
+
+Incompressible strings have every property of coin flips that can be tested by an algorithm with a short description; this is the \emph{incompressibility method}. Here is the simplest instance.
+
+\begin{proposition}\label{prop:balanced}
+There is a constant $c_0$ such that if $|x|=n\ge2$, $C(x)\ge n-c$ and $x$ has $k$ ones, then
+\[
+\Bigl|k-\frac n2\Bigr|\le\sqrt{\frac{n\ln2}2\,(c+4\log_2n+c_0)}.
+\]
+\end{proposition}
+
+\begin{proof}
+Let $D=|2k-n|$ and let $S$ be the set of strings $y$ of length $n$ whose number of ones $j$ satisfies $|2j-n|\ge D$. If $Y$ is uniform on $\{0,1\}^n$, its number of ones is a sum of $n$ independent variables with values in $\{0,1\}$ and mean $\frac n2$, and Hoeffding's inequality (Tome~3, Theorem~4.9), applied to it and to $n$ minus it, gives
+\[
+|S|=2^nP(Y\in S)\le2^n\cdot2e^{-2(D/2)^2/n}=2^{n+1}e^{-D^2/(2n)}.
+\]
+Now describe $x$ by $n$, $D$ and the position $i$ of $x$ in the list of the elements of $S$ in lexicographic order. The machine that reads $\overline{b(n)}\,\overline{b(D+1)}\,b(i)$ can compute $S$ and print its $i$-th element; this program has length at most $\log_2|S|+4\log_2n+c_1$, since $D\le n$. So
+\[
+n-c\le C(x)\le n+1-\frac{D^2\log_2e}{2n}+4\log_2n+c_1+c_2,
+\]
+which gives $D^2\le2n\ln2\,(c+4\log_2n+c_0)$ with $c_0=c_1+c_2+1$, and $|k-\frac n2|=\frac D2$.
+\end{proof}
+
+The same pattern, ``a string with a short-to-describe property belongs to a small set, hence can be described by its index'', shows that incompressible strings have no long runs (Exercise~\ref{ex:runs}), and turns lower bounds for algorithms into counting (Exercise~\ref{ex:compsort}).
+
+\section{Nobody can compute it}\label{sec:noncomputable}
+
+The definition of $C$ is explicit, and a computer can try all programs in order of length. The catch is that some programs never halt, and we cannot know which (Tome~C3, Theorem~3.7).
+
+\begin{theorem}\label{thm:noncomputable}
+If $g$ is a total computable function with $g(x)\le C(x)$ for all $x$, then $g$ is bounded. In particular $C$ is not computable.
+\end{theorem}
+
+\begin{proof}
+Suppose $g$ is unbounded. The machine $M$ that, on input $b(m)$, runs through all strings in order of length and then lexicographically, and outputs the first $x$ with $g(x)\ge m$, is defined on every $b(m)$. Let $x_m=M(b(m))$. Then
+\[
+m\le g(x_m)\le C(x_m)\le C_M(x_m)+c_M\le\log_2m+1+c_M,
+\]
+which fails for large $m$. Since $C$ is unbounded by Theorem~\ref{thm:counting}, $C$ itself is not computable.
+\end{proof}
+
+The machine $M$ is Berry's phrase: ``the first string whose complexity is at least $m$'', a description of length about $\log_2m$ of a string that has no description shorter than $m$. The paradox disappears because ``has complexity at least $m$'' cannot be checked by an algorithm.
+
+From above, however, $C$ can be approached: let $C^t(x)$ be the length of the shortest program of length at most $|x|+c$ that prints $x$ within $t$ steps. Each $C^t$ is computable, $C^t(x)$ decreases with $t$ and equals $C(x)$ for $t$ large, but we never know when we have arrived. One says that $C$ is \emph{upper semicomputable}. This also answers the box at the start of the chapter, for long versions of its strings: the periodic string and the digits of $\pi$ have programs of length $O(\log_2n)$, while for the coin flips we can only say that, with probability at least $1-2^{-c}$, they have complexity at least $n-c$ (Theorem~\ref{thm:counting}); we can never certify it. The digits of $\pi$ pass every statistical test anyone has tried, and are as far from random as can be in Kolmogorov's sense. And, as Chaitin showed (Tome~C3, Theorem~7.23), a consistent theory with a computable set of axioms, enough arithmetic and only true theorems proves $C(x)\ge L$ for no $x$ once $L$ exceeds a constant depending on the theory, although all but finitely many such statements are true.
+
+\section{Prefix complexity}\label{sec:prefix}
+
+Plain complexity has a defect that matters for the comparison with entropy: the set of shortest programs is not a prefix code, so Kraft's inequality fails, and complexity is not subadditive (Proposition~\ref{prop:basicC}(d) needed a logarithmic term). The cure, found by Leonid Levin (1974), Peter Gács (1974) and Chaitin (1975), is to allow only self-delimiting programs.
+
+\begin{definition}\label{def:prefixmachine}
+A \emph{prefix machine} is a machine whose domain $\{p:M(p)\text{ is defined}\}$ is prefix-free: no element of it is a proper prefix of another.
+\end{definition}
+
+\begin{lemma}\label{lem:prefixify}
+From every machine $M$ one can compute a prefix machine $M'$ that equals $M$ whenever the domain of $M$ is prefix-free.
+\end{lemma}
+
+\begin{proof}
+Enumerate the domain of $M$ by dovetailing: at stage $t$, run $M$ for $t$ steps on the first $t$ inputs, and list the inputs on which it has halted, in order of discovery. Accept a listed input if it is neither a prefix nor an extension of an input accepted earlier. Define $M'(p)=M(p)$ if $p$ is accepted, and leave it undefined otherwise; $M'$ is computable, since on input $p$ it runs the enumeration until $p$ is listed. Two comparable inputs are never both accepted, so the domain of $M'$ is prefix-free; if the domain of $M$ was already prefix-free, every listed input is accepted and $M'=M$.
+\end{proof}
+
+\begin{theorem}\label{thm:prefixinvariance}
+There is a prefix machine $V$ such that for every prefix machine $M$ there is a constant $c_M$ with $C_V(x)\le C_M(x)+c_M$ for all $x$.
+\end{theorem}
+
+\begin{proof}
+Let $V(\overline{b(i)}\,q)=M'_i(q)$, with $M_i'$ as in Lemma~\ref{lem:prefixify}. The domain of $V$ is prefix-free: if $\overline{b(i)}\,q$ is a prefix of $\overline{b(j)}\,q'$, then $\overline{b(i)}$ and $\overline{b(j)}$ are comparable, so $i=j$ because the code $s\mapsto\bar s$ is prefix-free, and $q$ is a prefix of $q'$ with both in the prefix-free domain of $M'_i$, so $q=q'$. Each prefix machine $M$ is some $M_i=M_i'$, and $c_M=|\overline{b(i)}|$ works as before.
+\end{proof}
+
+We fix $V$ and call $K(x)=C_V(x)$ the \emph{prefix complexity} of $x$. Since its domain is prefix-free, Kraft's inequality (Tome~3, Proposition~4.18, applied to each finite subset) gives
+\begin{equation}\label{eq:kraftK}
+\sum_x2^{-K(x)}\le\sum_{p:\,V(p)\text{ defined}}2^{-|p|}\le1.
+\end{equation}
+
+\begin{proposition}\label{prop:basicK}
+There is a constant $c$ such that for all strings $x,y$ and all $n\ge1$:
+\begin{enumerate}[label=(\alph*)]
+\item $C(x)\le K(x)+c$ and $K(x)\le C(x)+2\log_2(C(x)+1)+c$;
+\item $K(x)\le|x|+2\log_2(|x|+1)+c$ and $K(n)\le\log_2n+2\log_2\log_2n+c$ for $n\ge2$;
+\item $K(xy)\le K(x)+K(y)+c$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) $V$ is a machine, so the invariance theorem gives the first inequality. For the second, the machine $\bar p\mapsto U(p)$ has a prefix-free domain. (b) The machines $\bar x\mapsto x$ and $\delta(n)\mapsto b(n)$, with the Elias $\delta$ code of Proposition~\ref{prop:elias}, are prefix machines. (c) Let $M$ act on an input $s$ by searching, by dovetailing, for a decomposition $s=pq$ with $V(p)$ and $V(q)$ both defined, and output $V(p)V(q)$. At most one decomposition works, because two different candidates $p$ would be comparable elements of the domain of $V$. The domain of $M$ is prefix-free: if $s=pq$ and $sr=p'q'$ are both accepted, then $p$ and $p'$ are comparable, so $p=p'$, and then $q$ and $q'=qr$ are both in the domain of $V$, so $r$ is empty. Now $M$ applied to the concatenation of shortest programs of $x$ and $y$ gives $xy$.
+\end{proof}
+
+The bound (b) for integers is Elias's $\delta$ code, and it cannot be improved to $\log_2n+\log_2\log_2n$ (Exercise~\ref{ex:Kn}). Rissanen's $\log_2^*n=\log_2n+\log_2\log_2n+\cdots$ (positive terms only), promised in Chapter~\ref{ch:compression}, does better: $\sum_n2^{-\log_2^*n}$ converges (Rissanen 1983, quoted), so the lengths $\ell_n=\lceil\log_2^*n\rceil+c_0$ satisfy Kraft's inequality for a suitable $c_0$. They are computable and nondecreasing, so giving $n$ the first $\ell_n$ binary digits of $\sum_{m<n}2^{-\ell_m}$ is a computable prefix code, and $K(n)\le\log_2^*n+c$. A deeper fact, the \emph{symmetry of information} of Gács, Levin and Kolmogorov, says that $K(x,y)=K(x)+K(y\mid x,K(x))+O(1)$, where $K(\cdot\mid\cdot)$ is the conditional complexity defined by giving the machine a second input: the exact analogue of the chain rule $H(X,Y)=H(X)+H(Y\mid X)$ (quoted; see the Sources).
+
+\section{Complexity and entropy}\label{sec:entropy}
+
+Prefix complexity is a code length, so it cannot beat Shannon on average; and it can match him, because a machine can compute any explicit code.
+
+\begin{proposition}[nobody beats Shannon by $t$ bits]\label{prop:competitive}
+Let $P$ be any probability on strings and $X$ have law $P$. For every $t\ge0$,
+\[
+P\Bigl(K(X)\le\log_2\frac1{P(X)}-t\Bigr)\le2^{-t}.
+\]
+\end{proposition}
+
+\begin{proof}
+The event is the set $B$ of strings $x$ with $P(x)\le2^{-t}2^{-K(x)}$. By~\eqref{eq:kraftK}, $P(B)=\sum_{x\in B}P(x)\le2^{-t}\sum_x2^{-K(x)}\le2^{-t}$.
+\end{proof}
+
+We call a probability $P$ on a finite set of strings \emph{explicit} if its values are rational; it is then described by a finite list $\langle P\rangle$ of pairs (string, probability), itself a binary string, and we write $K(P)=K(\langle P\rangle)$.
+
+\begin{theorem}\label{thm:KH}
+There is a constant $c$ such that for every explicit probability $P$, if $X$ has law $P$,
+\[
+H(X)\le\mathbb E\,K(X)\le H(X)+K(P)+c.
+\]
+\end{theorem}
+
+\begin{proof}
+For the lower bound, choose for each $x$ in the support of $P$ a shortest program $p_x$. These are distinct elements of the prefix-free domain of $V$, so $x\mapsto p_x$ is a prefix code, and its expected length $\mathbb EK(X)$ is at least $H(X)$ by Shannon's source coding theorem (Tome~3, Theorem~4.19).
+
+For the upper bound, consider the machine $M$ that, on input $s$, searches for a decomposition $s=qr$ with $V(q)$ defined, as in Proposition~\ref{prop:basicK}(c); it reads $V(q)$ as the list of an explicit law $P$, and if $r$ is the Shannon--Fano--Elias codeword of some $x$ for $P$ (Exercise~\ref{ex:sfe}), it outputs $x$. The domain of $M$ is prefix-free, by the argument of Proposition~\ref{prop:basicK}(c) and because the Shannon--Fano--Elias code is a prefix code. The codeword of $x$ has length $\lceil\log_2\frac1{P(x)}\rceil+1<\log_2\frac1{P(x)}+2$, so
+\[
+K(x)\le K(P)+\log_2\frac1{P(x)}+2+c_M,
+\]
+and taking expectations gives the claim.
+\end{proof}
+
+\begin{corollary}\label{cor:bernoulliK}
+Let $p\in\,]0,1[$ be rational and $X^n=(X_1,\dots,X_n)$ be independent Bernoulli$(p)$ bits. There is a constant $c_p$ with
+\[
+nh(p)\le\mathbb EK(X^n)\le nh(p)+\log_2n+2\log_2\log_2n+c_p\qquad(n\ge2).
+\]
+In particular $\frac1n\mathbb EK(X^n)\to h(p)$.
+\end{corollary}
+
+\begin{proof}
+$H(X^n)=nh(p)$ by additivity of entropy (Tome~3, Proposition~4.17). The list of the $2^n$ strings with their probabilities is computable from $n$ by a fixed program that knows $p$, so $K(P_n)\le K(n)+c'_p$, and Proposition~\ref{prop:basicK}(b) bounds $K(n)$.
+\end{proof}
+
+So the entropy of a source is the expected complexity of its outputs, up to the cost of describing the source. Proposition~\ref{prop:competitive} adds that the complexity of a single output is rarely much below $\log_2\frac1{P(x)}$; Exercise~\ref{ex:ergodic} combines the two into an almost sure statement, $\frac1nK(X^n)\to h(p)$.
+
+\section{Random infinite sequences}\label{sec:mlrandom}
+
+What is a random infinite sequence of bits? Richard von Mises, in 1919, proposed: a sequence whose frequency of ones tends to $\frac12$, also along every ``admissible'' subsequence. Jean Ville showed in 1939 that sequences satisfying von Mises's conditions for any countable family of selection rules can still fail other laws of chance, such as the law of the iterated logarithm. Per Martin-Löf, who had worked with Kolmogorov in Moscow, gave in 1966 the definition that is now standard: a sequence is random if it passes every effective statistical test.
+
+Let $\lambda$ be the fair coin measure on infinite sequences $\omega=\omega_1\omega_2\cdots$, and for a finite string $w$ let $[w]$ be the set of sequences that begin with $w$, so that $\lambda([w])=2^{-|w|}$. A set of sequences is \emph{effectively open} if it is $\bigcup_{w\in W}[w]$ for a set $W$ of strings that a machine can enumerate.
+
+\begin{definition}[Martin-Löf 1966]\label{def:mltest}
+A \emph{Martin-Löf test} is a sequence $U_1,U_2,\dots$ of effectively open sets, enumerated by one machine (which lists pairs $(c,w)$ with $U_c=\bigcup_{(c,w)\text{ listed}}[w]$), such that $\lambda(U_c)\le2^{-c}$ for every $c$. A sequence $\omega$ \emph{fails} the test if $\omega\in\bigcap_cU_c$. It is \emph{Martin-Löf random} if it fails no test.
+\end{definition}
+
+A test is a statistical test with significance levels $2^{-1},2^{-2},\dots$, and a sequence fails it if it is rejected at every level. For instance $U_c=$ ``the first $c$ bits are zero'' rejects $000\cdots$, and the law of large numbers, with an effective rate, gives a test rejecting every sequence whose frequency of ones does not tend to $\frac12$ (Exercise~\ref{ex:lln}). There are only countably many machines, hence countably many tests, and each $\bigcap_cU_c$ has measure $0$; so $\lambda$-almost every sequence is Martin-Löf random.
+
+\begin{theorem}[Schnorr, Levin, Chaitin]\label{thm:schnorr}
+If $\omega$ is Martin-Löf random, then there is a constant $c$ with $K(\omega_1\cdots\omega_n)\ge n-c$ for all $n$. Conversely, a sequence with this property is Martin-Löf random (quoted).
+\end{theorem}
+
+\begin{proof}[Proof of the first statement]
+Let $U_c$ be the union of the $[w]$ over the strings $w$ with $K(w)<|w|-c$. It is effectively open, uniformly in $c$: run $V$ on all programs by dovetailing and, whenever $V(p)=w$ with $|p|<|w|-c$, list $(c,w)$. Its measure is at most
+\[
+\sum_{w:\,K(w)<|w|-c}2^{-|w|}<\sum_w2^{-K(w)-c}\le2^{-c}
+\]
+by~\eqref{eq:kraftK}. So $(U_c)$ is a Martin-Löf test, and a random $\omega$ avoids some $U_c$, which means $K(\omega_1\cdots\omega_n)\ge n-c$ for every $n$.
+\end{proof}
+
+For plain complexity no such characterisation exists: Martin-Löf showed that for every infinite sequence there is a constant $c$ with $C(\omega_1\cdots\omega_n)\le n-\log_2n+c$ for infinitely many $n$ (quoted), because the length $n$ of a prefix can itself be read off the bits that follow. Prefix complexity is the right notion precisely because its programs carry their own length.
+
+\subsection*{A random number that knows everything}
+
+Chaitin's \emph{halting probability} is
+\[
+\Omega=\sum_{p:\,V(p)\text{ defined}}2^{-|p|}\in\,]0,1],
+\]
+the probability that $V$ halts when its program is chosen by fair coin flips, read until $V$ has consumed a whole program. We write its binary expansion $\Omega=0.\omega_1\omega_2\cdots$ with infinitely many ones, so that the truncation $\Omega_n=0.\omega_1\cdots\omega_n$ satisfies $\Omega_n<\Omega\le\Omega_n+2^{-n}$.
+
+\begin{theorem}[Chaitin 1975]\label{thm:omega}
+\begin{enumerate}[label=(\alph*)]
+\item From $\omega_1\cdots\omega_n$ one can compute the list of all programs of length at most $n$ on which $V$ halts.
+\item There is a constant $c$ with $K(\omega_1\cdots\omega_n)\ge n-c$ for all $n$. Hence $\Omega$ is Martin-Löf random.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) Enumerate the domain of $V$ by dovetailing, and let $S_t$ be the sum of $2^{-|p|}$ over the programs found by stage $t$. Then $S_t$ increases to $\Omega>\Omega_n$, so some stage $t$ has $S_t>\Omega_n$, and it can be found from $\Omega_n$. If a program $p$ with $|p|\le n$ that has not halted by stage $t$ halted later, we would have $\Omega\ge S_t+2^{-|p|}>\Omega_n+2^{-n}\ge\Omega$, which is absurd. So the programs found by stage $t$ include all halting programs of length at most $n$.
+
+(b) Let $M$ be the machine that, on an input $q$ with $V(q)$ defined, reads $V(q)$ as $\omega_1\cdots\omega_n$, computes by (a) the outputs of all halting programs of length at most $n$, and prints the first string $y$ (in order of length, then lexicographically) that is not among them. Its domain is contained in that of $V$, so it is a prefix machine. The string $y$ has no program of length at most $n$, so $n<K(y)\le K_M(y)+c_M\le K(\omega_1\cdots\omega_n)+c_M$. The last claim follows from the converse in Theorem~\ref{thm:schnorr}.
+\end{proof}
+
+\begin{beauty}
+The digits of $\Omega$ answer the halting problem for every program, and hence every question of the form ``does this search ever succeed?'': Goldbach's conjecture, for instance, is settled by finitely many of them, a few thousand for natural choices of $V$. Yet $\Omega$ is algorithmically random: no gambler with a computable strategy makes money betting on its bits, and no finite theory determines more than finitely many of them. The most informative number we can define is indistinguishable from noise, precisely because it contains no redundancy at all.
+\end{beauty}
+
+\section{Primes by incompressibility}\label{sec:primes}
+
+The incompressibility method proves theorems that have nothing to do with computers. A number $m$ with $2^{n-1}\le m<2^n$ has an $n$-bit expansion beginning with $1$; there are $2^{n-1}$ of them and only $2^{n-1}-1$ programs shorter than $n-1$, so for every $n$ some such $m$ has $C(m)\ge n-1$. Call it $m_n$.
+
+\begin{theorem}\label{thm:infprimes}
+There are infinitely many primes.
+\end{theorem}
+
+\begin{proof}
+Suppose $p_1,\dots,p_k$ are all the primes. Then $m_n=p_1^{e_1}\cdots p_k^{e_k}$ with $e_i\le\log_2m_n<n$. The machine that knows $p_1,\dots,p_k$ and reads $\overline{b(e_1+1)}\cdots\overline{b(e_k+1)}$ prints $m_n$, so
+\[
+n-1\le C(m_n)\le k\bigl(\log_2n+2\log_2(\log_2n+2)+2\bigr)+c,
+\]
+which fails for large $n$.
+\end{proof}
+
+With the Elias $\delta$ code, the same idea gives a quantitative statement. Let $p_k$ denote the $k$-th prime.
+
+\begin{theorem}\label{thm:chebyshevK}
+There is a constant $A$ such that $p_k\le Ak(\log_2k)^2$ for infinitely many $k$. Equivalently, $\pi(x)\ge\frac x{A(\log_2x)^2}$ for infinitely many $x$.
+\end{theorem}
+
+\begin{proof}
+Let $p_k$ be the largest prime factor of $m_n$. The machine that reads $\delta(k)$, computes $p_k$, reads the rest of its input as the binary expansion of a number $q$, and prints $p_kq$, prints $m_n$ from the program $\delta(k)\,b(m_n/p_k)$, whose length is at most $\log_2k+2\log_2\log_2k+c'+\log_2\frac{m_n}{p_k}+1$ by Proposition~\ref{prop:elias}. Since $\log_2m_n<n\le C(m_n)+1$,
+\[
+\log_2p_k\le\log_2k+2\log_2\log_2k+c'+2+c_M,
+\]
+that is, $p_k\le Ak(\log_2k)^2$ with $A=2^{c'+2+c_M}$. The largest prime factor of $m_n$ tends to infinity with $n$: if it stayed below some $B$ along a subsequence, the proof of Theorem~\ref{thm:infprimes}, with the primes up to $B$, would give $C(m_n)=O(\log_2n)$. So infinitely many $k$ occur. Finally, for $x=p_k$, $\pi(x)=k\ge\frac{p_k}{A(\log_2k)^2}\ge\frac x{A(\log_2x)^2}$.
+\end{proof}
+
+This is weaker than Chebyshev's $\pi(x)\ge c\frac x{\ln x}$ for all $x\ge2$ (Tome~1, Theorem~2.4), but its proof uses nothing about primes except unique factorisation, and it has a moral: if primes were much rarer, numbers would be compressible, because naming a big prime factor would be cheaper than writing it.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:basicC}
+Show that $C(xx)\le C(x)+c$ and $C(x^R)\le C(x)+c$, where $x^R$ is $x$ reversed. Show that $C(0^n)\le\log_2\log_2n+c$ when $n=2^{2^j}$, so that some strings of every length $n$ of this form have complexity far below $\log_2n$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:fraction}
+At least what fraction of the strings of length $1000$ have $C(x)\ge990$? What can you say about $C(x)$ for a string $x$ obtained from $1000$ fair coin flips?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:produce}
+Show that there is no computable function $f$ such that $f(n)$ is a string of length $n$ with $C(f(n))\ge n-1$ for every $n$. (Incompressible strings exist, but no algorithm can produce them.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:runs}
+Let $x$ have length $n$ and $C(x)\ge n-c$. Show that every run of consecutive zeros in $x$ has length at most $\log_2n+O(\log_2\log_2n)$, the constant in the $O$ depending on $c$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:compsort}
+A comparison sorting algorithm $\mathcal A$ sorts $n$ distinct numbers using only comparisons. Show, by the incompressibility method, that for all but a fraction $2^{-c}$ of the $n!$ input orders, $\mathcal A$ makes at least $\log_2n!-2\log_2n-c-c_{\mathcal A}$ comparisons.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:Kn}
+Using~\eqref{eq:kraftK}, show that $K(n)>\log_2n+\log_2\log_2n$ for infinitely many $n$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:omegairr}
+Show that $\Omega$ is irrational and that no algorithm computes its digits.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lln}
+Show that the set of sequences $\omega$ whose frequency of ones does not tend to $\frac12$ is contained in $\bigcap_cU_c$ for a Martin-Löf test $(U_c)$. (Use Hoeffding's inequality to choose, for each $c$, a level $n_c$ such that the strings $w$ of lengths $n\ge n_c$ with $|\frac{\#\text{ones}}n-\frac12|\ge\frac1{\log_2n}$ have total measure at most $2^{-c}$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:ergodic}
+Let $X_1,X_2,\dots$ be independent Bernoulli$(p)$ bits with $p\in\,]0,1[$ rational. Show that $\frac1nK(X_1\cdots X_n)\to h(p)$ almost surely.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:berry}
+Count the letters of the phrase ``the smallest positive integer not definable in under sixty letters''. Explain why Theorem~\ref{thm:noncomputable} is what remains of the paradox when ``definable'' is replaced by ``printed by a program''.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:basicC}
+Use Proposition~\ref{prop:basicC}(b) with $f(x)=xx$ and $f(x)=x^R$. For $n=2^{2^j}$, describe $j$.
+\end{hint}
+\begin{hint}{ex:fraction}
+Theorem~\ref{thm:counting} with $c=10$.
+\end{hint}
+\begin{hint}{ex:produce}
+$C(f(n))\le C(n)+c_f$.
+\end{hint}
+\begin{hint}{ex:runs}
+Describe $x$ by the position and the length of the run, self-delimited, followed by $x$ with the run deleted.
+\end{hint}
+\begin{hint}{ex:compsort}
+The outcomes of the comparisons, together with $n$, determine the input order.
+\end{hint}
+\begin{hint}{ex:Kn}
+$\sum_n\frac1{n\log_2n}$ diverges.
+\end{hint}
+\begin{hint}{ex:omegairr}
+A computable real $r$ has $K(r_1\cdots r_n)\le K(n)+c$.
+\end{hint}
+\begin{hint}{ex:lln}
+Take $U_c=\bigcup[w]$ over the strings $w$ of length $n\ge n_c$ that are unbalanced in the stated sense.
+\end{hint}
+\begin{hint}{ex:ergodic}
+For the lower bound, Proposition~\ref{prop:competitive} with $t=2\log_2n$ and Borel--Cantelli. For the upper bound, describe $x$ by $n$, its number $k$ of ones and its index among the strings with $k$ ones.
+\end{hint}
+\begin{hint}{ex:berry}
+The notebook counts.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:basicC}
+\idea Computable transformations cost a constant; regular numbers have short names.
+\writeup The maps $x\mapsto xx$ and $x\mapsto x^R$ are computable, so Proposition~\ref{prop:basicC}(b) applies. For $n=2^{2^j}$, the machine $b(j)\mapsto0^{2^{2^j}}$ shows $C(0^n)\le|b(j)|+c\le\log_2j+1+c=\log_2\log_2\log_2n+1+c$, which is even better than claimed. So $C$ is wildly irregular: $C(0^n)$ is about $\log_2n$ for most $n$ (Theorem~\ref{thm:counting} applied to the numbers $n$ themselves) but tiny for special $n$.
+\end{solution}
+
+\begin{solution}{ex:fraction}
+\idea Count programs.
+\writeup Fewer than $2^{990}$ strings have $C(x)<990$, a fraction less than $2^{-10}<0.001$; so more than $99.9\%$ of the strings of length $1000$ have $C(x)\ge990$. For coin flips, $P(C(X)<990)<2^{-10}$, but we can never certify that a given outcome has $C(x)\ge990$: by Chaitin's theorem, a theory proves such a statement only if $990$ is below a constant attached to the theory (Tome~C3, Theorem~7.23), which for usual theories is a few thousand bits.
+\end{solution}
+
+\begin{solution}{ex:produce}
+\idea An algorithm that produces a string is a short description of it.
+\writeup If $f$ were computable, then $C(f(n))\le C(n)+c_f\le\log_2n+1+c+c_f$ by Proposition~\ref{prop:basicC}(a) and (b), which is less than $n-1$ for large $n$.
+\end{solution}
+
+\begin{solution}{ex:runs}
+\idea A long run is a regularity, and a regularity is a saving.
+\writeup Let $x=u0^rv$ with $|u|=i$. A machine that reads $\delta(i+1)\,\delta(r)$ and then a string $z$, and outputs $z$ with $0^r$ inserted after position $i$, prints $x$ from the program $\delta(i+1)\,\delta(r)\,uv$ (the program for $z=uv$ is $uv$ itself, read to the end). Its length is at most $(\log_2n+2\log_2\log_2n+c')+(\log_2r+2\log_2\log_2r+c')+n-r$. So $n-c\le C(x)\le n-r+\log_2r+\log_2n+4\log_2\log_2n+c''$, that is, $r-\log_2r\le\log_2n+4\log_2\log_2n+c+c''$. Since $r\le n$, $\log_2r\le\log_2n$; first $r\le3\log_2n$ for large $n$, and then $r\le\log_2n+\log_2(3\log_2n)+4\log_2\log_2n+c+c''=\log_2n+O(\log_2\log_2n)$. Coin flips do have runs of length about $\log_2n$ (the notebook checks), so the bound is sharp up to the lower-order term.
+\end{solution}
+
+\begin{solution}{ex:compsort}
+\idea The transcript of the comparisons is a description of the input.
+\writeup Encode an input order (a permutation $\pi$ of $n$ items) by its rank among the $n!$ permutations, written with $\lceil\log_2n!\rceil$ bits. At most $2^{\log_2n!-c}=n!\,2^{-c}$ permutations have $C(\pi)<\log_2n!-c$. Let $b$ be the string of outcomes of the comparisons made by $\mathcal A$ on $\pi$, of length $T(\pi)$. The machine that reads $\delta(n)$ and then $b$, and replays $\mathcal A$ answering its comparisons with the bits of $b$, learns the sorted order of the positions, hence $\pi$, because $\mathcal A$ sorts correctly. So $C(\pi)\le T(\pi)+\log_2n+2\log_2\log_2n+c_{\mathcal A}\le T(\pi)+2\log_2n+c_{\mathcal A}$ for $n\ge16$, and for all but a fraction $2^{-c}$ of inputs $T(\pi)\ge\log_2n!-2\log_2n-c-c_{\mathcal A}$. This is the information-theoretic bound of Tome~C2, Chapter~2, now for almost every input instead of the worst case or the average.
+\end{solution}
+
+\begin{solution}{ex:Kn}
+\idea Kraft forbids code lengths whose powers $2^{-\ell}$ have a divergent sum.
+\writeup If $K(n)\le\log_2n+\log_2\log_2n$ for all $n\ge n_0$, then $\sum_{n\ge n_0}2^{-K(n)}\ge\sum_{n\ge n_0}\frac1{n\log_2n}=\infty$ (compare with $\int\frac{dx}{x\ln x}=\ln\ln x$), against~\eqref{eq:kraftK}. Here $K(n)$ means $K(b(n))$ and different $n$ give different strings.
+\end{solution}
+
+\begin{solution}{ex:omegairr}
+\idea Computable numbers have prefixes of logarithmic complexity, and $\Omega$'s prefixes have linear complexity.
+\writeup If an algorithm computed the digits $\omega_i$, then the machine $\delta(n)\mapsto\omega_1\cdots\omega_n$ would give $K(\omega_1\cdots\omega_n)\le\log_2n+2\log_2\log_2n+c$, against Theorem~\ref{thm:omega}(b) for large $n$. A rational number has an eventually periodic expansion, which an algorithm computes, so $\Omega$ is irrational.
+\end{solution}
+
+\begin{solution}{ex:lln}
+\idea The strong law of large numbers is a countable union of rejection regions with summable sizes, and all of them can be listed by a machine.
+\writeup For a string $w$ of length $n$, call it unbalanced if its number of ones $k$ has $|\frac kn-\frac12|\ge\frac1{\log_2n}$. By Hoeffding, the measure of the union of $[w]$ over unbalanced $w$ of length $n$ is at most $2e^{-2n/(\log_2n)^2}$, whose sum over $n\ge N$ tends to $0$ as $N\to\infty$; for each $c$, let $n_c$ be the first $N$ for which this sum is at most $2^{-c}$, which a machine can find by computing the sums with enough precision (or with explicit bounds). Let $U_c$ be the union of $[w]$ over unbalanced $w$ of lengths $n\ge n_c$. These sets are effectively open, uniformly in $c$, with $\lambda(U_c)\le2^{-c}$. If the frequency of ones in $\omega$ does not tend to $\frac12$, there are $\eta>0$ and infinitely many $n$ with $|\frac{k_n}n-\frac12|\ge\eta$, and $\eta\ge\frac1{\log_2n}$ once $n$ is large; so $\omega_1\cdots\omega_n$ is unbalanced for arbitrarily large $n$, and $\omega\in U_c$ for every $c$. So every Martin-Löf random sequence obeys the strong law of large numbers.
+\end{solution}
+
+\begin{solution}{ex:ergodic}
+\idea Below by Kraft, above by an explicit description; both are within $O(\log n)$ of $\log_2\frac1{P(x)}$ or of $nh(\frac kn)$, which the strong law drives to $nh(p)$.
+\writeup Lower bound: let $P_n$ be the law of $X^n$. Proposition~\ref{prop:competitive} with $t=2\log_2n$ gives $P(K(X^n)\le\log_2\frac1{P_n(X^n)}-2\log_2n)\le\frac1{n^2}$, a summable sequence, so by Borel--Cantelli (Tome~3, Theorem~4.11) almost surely $K(X^n)>\log_2\frac1{P_n(X^n)}-2\log_2n$ for all large $n$. Now $\frac1n\log_2\frac1{P_n(X^n)}=\frac{k_n}n\log_2\frac1p+(1-\frac{k_n}n)\log_2\frac1{1-p}\to h(p)$ almost surely by the strong law (Tome~3, Corollary~4.12), where $k_n$ is the number of ones. So $\liminf\frac1nK(X^n)\ge h(p)$. Upper bound: a machine reading $\delta(n)\,\delta(k+1)$ and then the index of $x$ among the $\binom nk$ strings with $k$ ones, written with $\lceil\log_2\binom nk\rceil$ bits, is a prefix machine, so $K(x)\le\log_2\binom nk+4\log_2n+c\le nh(\frac kn)+4\log_2n+c$ by Proposition~\ref{prop:binomial}. Since $\frac{k_n}n\to p$ almost surely and $h$ is continuous, $\limsup\frac1nK(X^n)\le h(p)$.
+\end{solution}
+
+\begin{solution}{ex:berry}
+\idea A paradox is an argument that uses a non-computable notion as if it were computable.
+\writeup The phrase has $57$ letters (the notebook counts them), fewer than sixty, so it defines, in under sixty letters, a number that cannot be so defined. The argument assumes that ``definable in under sixty letters'' is a well-defined property that we can survey. Replace it by ``printed by a program of length less than $m$'': the phrase becomes the machine of Theorem~\ref{thm:noncomputable}, which would print the first string with $C(x)\ge m$ from a program of length about $\log_2m$. There is no paradox, only a proof that no algorithm decides $C(x)\ge m$, let alone computes $C$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} A.~N.~Kolmogorov, \emph{Three approaches to the quantitative definition of information}, Problemy Peredachi Informatsii 1 (1965), no.~1, 3--11; English translation in Problems of Information Transmission 1 (1965), 1--7, reprinted in International Journal of Computer Mathematics 2 (1968), 157--168. Seven pages. The combinatorial approach is $\log_2$ of the size of a finite set containing the object; the probabilistic one is Shannon's, and Kolmogorov points out that it says nothing about an individual object such as the text of \emph{War and Peace}; the algorithmic one is our $C$, with the invariance theorem and conditional complexity. Compare his discussion of why the additive constant is harmless with our Theorem~\ref{thm:invariance}, and notice that he does not yet have prefix complexity.
+\item \emph{The three discoveries.} R.~J.~Solomonoff, \emph{A formal theory of inductive inference}, Parts I and II, Information and Control 7 (1964), 1--22 and 224--254; G.~J.~Chaitin, \emph{On the length of programs for computing finite binary sequences}, Journal of the ACM 13 (1966), 547--569. The history, including Kolmogorov's acknowledgement of Solomonoff's priority, is in M.~Li and P.~Vitányi, \emph{An Introduction to Kolmogorov Complexity and Its Applications}, 4th ed., Springer, 2019, in the historical notes of Chapter~1; the incompressibility method, with the prime-counting argument of Section~\ref{sec:primes}, is developed there at length.
+\item \emph{Berry's paradox.} B.~Russell, \emph{Mathematical logic as based on the theory of types}, American Journal of Mathematics 30 (1908), 222--262, which states the paradox with nineteen syllables and attributes it to G.~G.~Berry of the Bodleian Library.
+\item \emph{Prefix complexity and $\Omega$.} L.~A.~Levin, \emph{Laws of information conservation (nongrowth) and aspects of the foundation of probability theory}, Problems of Information Transmission 10 (1974), 206--210; P.~Gács, \emph{On the symmetry of algorithmic information}, Soviet Mathematics Doklady 15 (1974), 1477--1480; G.~J.~Chaitin, \emph{A theory of program size formally identical to information theory}, Journal of the ACM 22 (1975), 329--340, where $\Omega$ and Theorem~\ref{thm:omega} appear.
+\item \emph{Randomness.} R.~von Mises, \emph{Grundlagen der Wahrscheinlichkeitsrechnung}, Mathematische Zeitschrift 5 (1919), 52--99; J.~Ville, \emph{Étude critique de la notion de collectif}, Gauthier-Villars, 1939; P.~Martin-Löf, \emph{The definition of random sequences}, Information and Control 9 (1966), 602--619; C.-P.~Schnorr, \emph{Process complexity and effective random tests}, Journal of Computer and System Sciences 7 (1973), 376--388. R.~G.~Downey and D.~R.~Hirschfeldt, \emph{Algorithmic Randomness and Complexity}, Springer, 2010, is the modern reference.
+\item J.~Rissanen, \emph{A universal prior for integers and estimation by minimum description length}, Annals of Statistics 11 (1983), 416--431, for $\log_2^*n$.
+\item T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd ed., Wiley, 2006, Chapter~14, relates complexity to entropy as in Section~\ref{sec:entropy}.
+\end{itemize}
