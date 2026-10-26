@@ -595,3 +595,61 @@ An independent pass over Tome 9 (Structures II, 11 chapters, 11 notebooks). Ever
 
 - Chapter 3: Rabinowitsch's one-page note is dated 1929 in the text and the sources; Math. Ann. volume 102 is dated 1929–1930 (received 1929, the volume carries 1930), and both years appear in the literature.
 - Chapter 9: "Young's last paper appeared in 1952, eleven years after his death" follows MacTutor's wording (Young died in December 1940).
+
+## Review: Tome 0 (expanded first edition)
+
+What was checked and found correct: all eight chapters of the expanded book, every
+proof and every solution re-derived by hand (Chapters 1–4 as expanded earlier, and
+the rewritten Chapters 5–8: Stirling with its constant and the 1/(12n) correction,
+Wallis, the Riemann-sum and trapezoid error bounds, Cauchy–Hadamard, Carleman's
+inequality and its sharpness, Cayley–Hamilton, the spectral theorem, Cauchy's
+determinant and the Hilbert matrix, the random-surfer contraction, Bernoulli's law
+of large numbers, Montmort's derangements); the dates, quotes and anecdotes of the
+opening stories and the notes (Gauss's schoolroom story and its sources, Levi ben
+Gershon 1321, Wessel 1797, Gauss's diary entries on the sign of the Gauss sum,
+Chebyshev 1854, Schönemann 1846 and Eisenstein 1850, Cauchy–Bunyakovsky–Schwarz,
+Jensen 1906, Carleman 1923, Oresme, Riemann 1854/1867, Wallis 1656, Taylor 1715,
+Euler to Goldbach 13 October 1729, the l'Hôpital–Bernoulli contract, Niven 1947,
+Seki 1683, Cayley 1858, Pascal–Fermat 1654, Montmort 1708/1713, von Mises 1939,
+Erdős–Szekeres 1935, R(5,5) ∈ [43, 46]); every number in captions and solutions
+recomputed (Carleman ratios 1.52/1.94/2.29, u₁₀₀ ≈ 0.170, Runge's 1.9 and 0.11,
+the roots of X⁵ − 3X + 1, T₁₀ = 7.954926524 against 7.954926521, the Riemann-sum
+error 0.040, the PageRank vector and the factor X² + 0.85X + 0.36125, det H₁₂ ≈
+2.6·10⁻⁷⁸, the multinomial 2.46·10⁻⁷); the 28 portraits matched one by one to
+their Wikimedia Commons files by pixel dimensions, licences and credits read from
+the file pages (27 public domain, erdos.jpg CC BY 3.0 by Topsy Kretts); the eight
+notebooks run clean; the full build (A4, phone, Kindle, EPUB, online reader, KDP
+print PDF and cover wrap) succeeds with no undefined or multiply defined labels and
+no pandoc errors. First-edition numbering confirmed unchanged: the aux file of the
+pre-expansion book (commit bf77247) was rebuilt and all 114 labels keep their
+numbers; in every chapter the old numbered results and exercises form a prefix of
+the new ones. Author "SEGHAIER Oussama", "First edition", ISBN 9798165526770, no
+mention of the repository and no personal details, all confirmed.
+
+### Tome 0
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 1, solution of Exercise 1.16 (integer-valued polynomials) | math | "(X³ − X)/6 = C(X,3) + C(X,2)·0 + …" is wrong and unfinished: the Newton expansion is C(X,3) + C(X,2). | Corrected, with the difference table 0, 0, 1, 4 → 0, 1, 3 → 1, 2 → 1 shown. |
+| Ch. 2, Figure 2.6 (Dirichlet kernel) | math | "width about 2π/(2n+1)": the first zeros are at ±2π/(2n+1), so the peak is 4π/(2n+1) wide. | Caption corrected. |
+| Ch. 3, credit of d'Alembert's portrait | credit | The Commons photograph of La Tour's pastel is by Didier Descouens under CC BY-SA 4.0; the credit said only "public domain". | Photographer and licence added; Louvre named. |
+| Ch. 4, solution of Exercise 4.17 (Schur), equality case | math | Garbled sentence ("forces a = b unless... it cannot"). | Rewritten: for a > b the bracket a(a−c) − b(b−c) is > 0, so the first piece vanishes iff a = b; the second iff c = 0 or c = b or c = a; hence a = b = c or two equal and the third 0. |
+| Ch. 4, notes on challenge (3) (inscribed polygons) | math | "Reflecting the longest side's vertices across the centre" does not reduce the case of a centre outside the polygon. | Signed-angle argument: the reflex angle contributes sin θ ≤ 0, the others sum to ≤ π, Jensen gives (n−1) sin(π/(n−1)) < n sin(2π/n). |
+| Ch. 6, proof of Proposition 6.8 (Stirling's 1/(12n) term) | text | Leftover draft "… ≤ (1/(n−1)) Σ 1/(k(k−1)) … or simply …". | Only the clean bound Σ_{k≥n} 1/k³ ≤ (1/n) Σ 1/(k(k−1)) = 1/(n(n−1)) kept. |
+| Ch. 6, solution of Exercise 6.9 (Leibniz and Machin) | fact | "Machin's method held the record until 1949": the 1949 ENIAC computation (2037 decimals) used Machin's formula; Machin-like formulas held the record until Tamura–Kanada's AGM computation of 1982. Also "3 terms of arctan 1/239": two suffice for ten decimals (error 4·239⁻⁵/5 ≈ 10⁻¹²). | Both corrected. |
+| Ch. 7, opening story (chessboard paradox) | math | "width less than a thirtieth of a square": the parallelogram is 0.12 to 0.19 square wide (perpendicular widths 1/√73 and 1/√29). | "at most a fifth of a square wide". |
+| Ch. 7, solution of Exercise 7.16 (Cauchy's determinant, Hilbert matrix) | math | "largest eigenvalue about 1.27" holds for n = 2 only (1.80 for n = 12, limit π). | "stays below π (1.27 for n = 2, 1.80 for n = 12)". |
+| Ch. 7, credit of Cayley's photograph | credit | "Herbert Beraud" (the Commons page's misspelling); the photographer is Herbert Rose Barraud (1845–1896). | Corrected. |
+| Ch. 1, 2, 6, 7, phone and Kindle PDFs | text | Four overfull lines of 40–90 pt: the arithmetic-progression sum in the from-scratch list, the unbreakable list of constructible n ≤ 30, the moment integral in the Sophomore's dream solution, the inline product of block matrices. | Sentence split, commas moved out of math, two displays. |
+
+### Notebooks
+
+All eight run clean (nbconvert, 2026-10-26); the printed values agree with the text. No change.
+
+### Page count
+
+The two new displays move the KDP print PDF from 270 to 272 pages (spine 0.6125 in instead of 0.6080 in); the print PDF and the cover wrap must be re-uploaded on KDP after the merge.
+
+### Known and left as is
+
+The Commons page of Cardano's portrait calls it a "self-portrait, woodcut, 18th century"; the book's credit keeps only the woodcut and the century, which is all the page supports. The Vandermonde portrait is the engraved frontispiece of his *Système d'harmonie* (Bibliothèque nationale de France), credited as "portrait, eighteenth century", which is accurate.
