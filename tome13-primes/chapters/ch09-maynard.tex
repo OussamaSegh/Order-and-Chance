@@ -1,0 +1,295 @@
+\chapter{Bounded Gaps between Primes}
+\begin{center}\itshape
+In May 2013 the record for small gaps was seventy million.\\
+By November it was six hundred,\\
+and the proof took about thirty pages.
+\end{center}
+
+On 19 November 2013 a paper called \emph{Small gaps between primes} appeared on the arXiv. Its author, James Maynard, was a postdoctoral fellow of the Centre de recherches mathématiques at the Université de Montréal. Seven months earlier Zhang had astonished the world by proving that $p_{n+1}-p_n<7\cdot10^7$ infinitely often; a large online collaboration, Polymath8a, had since pushed the bound down to $4680$ by sharpening every part of his argument. Maynard's paper gave $600$, and it did not need Zhang's hard equidistribution theorem at all: the Bombieri--Vinogradov theorem of Chapter~4, the tool that GPY had found just insufficient, was now enough. The same paper proved what no one had dared to expect, that for every $m$ there are infinitely many intervals of bounded length containing $m$ primes.
+
+The new ingredient was a choice. Chapter~8 set up the sieve with a function $F$ of $k$ variables and GPY, following decades of sieve tradition, took $F$ to depend on $t_1+\cdots+t_k$ alone. Maynard let $F$ depend on all the $t_i$ separately. Terence Tao had independently arrived at the same idea; rather than race, he and the Polymath project used it at once to improve the numbers further, down to $246$. Maynard received a Fields Medal in 2022, for this and for much else.
+
+This chapter proves Maynard's theorems. Everything rests on Theorem~\ref{thm:maynardsums} and Corollary~\ref{cor:mkcriterion}: we only have to show that the variational quantity $M_k$ is large. That is a pleasant problem in calculus, and its solution is a piece of probability: the law of large numbers for a sum of independent random variables.
+
+\begin{reminder}[from Chapter~8]
+For $\mathbf t\in\mathcal R_k=\{\mathbf t\in[0,1]^k:\sum t_i\le1\}$,
+\[
+I_k(F)=\int_{\mathcal R_k}F^2\dd\mathbf t,\qquad J_k^{(m)}(F)=\int\Bigl(\int_0^1F\dd t_m\Bigr)^2\dd t_1\cdots\dd t_{m-1}\dd t_{m+1}\cdots\dd t_k,
+\]
+and $M_k=\sup_F\frac{\sum_mJ_k^{(m)}(F)}{I_k(F)}$ over the $F$ of Definition~\ref{def:yweights}. \emph{Corollary~\ref{cor:mkcriterion}}: if the primes have level of distribution $\theta$ and $\frac\theta2M_k>\rho$, then every admissible $k$-tuple $\mathcal H$ has infinitely many translates $n+\mathcal H$ containing at least $\lfloor\rho\rfloor+1$ primes. \emph{Bombieri--Vinogradov} (Corollary~\ref{cor:bvpi}) gives level $\theta$ for every $\theta<\frac12$: the range $q\le x^\theta$ lies inside $q\le\sqrt x(\log x)^{-A-6}$, and replacing $\operatorname{li}x$ by $\pi(x)$ costs $|\pi(x)-\operatorname{li}x|\sum_{q\le x}\frac1{\varphi(q)}\ll x e^{-c\sqrt{\log x}}\log x$.
+\end{reminder}
+
+\section{The variational problem}
+
+The functions allowed in Definition~\ref{def:yweights} are smooth on the simplex. The function we shall use is not even continuous, so we first check that this makes no difference to $M_k$.
+
+\begin{lemma}\label{lem:ltwo}
+For every non-zero $F\in L^2(\mathcal R_k)$, extended by $0$ to $[0,1]^k$, $\frac{\sum_mJ_k^{(m)}(F)}{I_k(F)}\le M_k$.
+\end{lemma}
+\begin{proof}
+Polynomials are dense in $L^2(\mathcal R_k)$: continuous functions are dense, and by the Weierstrass theorem polynomials approximate a continuous function uniformly on the compact set $\mathcal R_k$. A polynomial, restricted to $\mathcal R_k$ and extended by $0$, is allowed in Definition~\ref{def:yweights}. Take polynomials $G_j\to F$ in $L^2(\mathcal R_k)$. Then $I_k(G_j)=\|G_j\|^2\to\|F\|^2=I_k(F)\ne0$. For $J$, let $T_mG(\mathbf t')=\int_0^1G\dd t_m$, a function of the other $k-1$ variables. By Cauchy--Schwarz on an interval of length at most $1$, $(T_mG)^2\le\int_0^1G^2\dd t_m$, so $\|T_mG\|\le\|G\|$ and $T_m$ is a bounded linear map. Hence $T_mG_j\to T_mF$ and $J_k^{(m)}(G_j)=\|T_mG_j\|^2\to J_k^{(m)}(F)$. The ratio for $G_j$ is at most $M_k$, and it converges to the ratio for $F$.
+\end{proof}
+
+For computations we need the volume integrals of the simplex. They are Dirichlet's generalization of Euler's Beta integral (Tome~4, Theorem~5.11).
+
+\begin{lemma}[Dirichlet]\label{lem:dirichletint}
+For integers $a,c_1,\dots,c_k\ge0$,
+\[
+\int_{\mathcal R_k}\Bigl(1-\sum_{i=1}^kt_i\Bigr)^a\prod_{i=1}^kt_i^{c_i}\dd\mathbf t=\frac{a!\,c_1!\cdots c_k!}{(k+a+c_1+\cdots+c_k)!}.
+\]
+\end{lemma}
+\begin{proof}
+For $u>0$ the substitution $t=uv$ and Euler's Beta integral give
+\[
+\int_0^u(u-t)^at^c\dd t=u^{a+c+1}\int_0^1(1-v)^av^c\dd v=\frac{a!\,c!}{(a+c+1)!}u^{a+c+1}.
+\]
+For $k=1$ this is the claim with $u=1$. For $k\ge2$, integrate first over $t_k$, from $0$ to $u=1-\sum_{i<k}t_i$: the integrand becomes $\frac{a!c_k!}{(a+c_k+1)!}(1-\sum_{i<k}t_i)^{a+c_k+1}\prod_{i<k}t_i^{c_i}$, and induction on $k$, with $a+c_k+1$ in place of $a$, gives $\frac{a!c_k!}{(a+c_k+1)!}\cdot\frac{(a+c_k+1)!\,c_1!\cdots c_{k-1}!}{(k-1+a+c_k+1+c_1+\cdots+c_{k-1})!}$, which is the claim.
+\end{proof}
+
+\section{Many primes in bounded intervals}
+
+Here is the heart of the chapter. The GPY functions of Chapter~8 gave ratios that never reach much beyond $4$ (Exercise~\ref{ex:hardyineq}); the next proposition shows that $M_k$ is unbounded.
+
+\begin{proposition}[Maynard]\label{prop:mklower}
+For all sufficiently large $k$, $M_k>\log k-2\log\log k-2$.
+\end{proposition}
+
+The idea is to take $F$ a product, $F(\mathbf t)=\prod_ig(kt_i)$ on $\mathcal R_k$. If the simplex were the whole cube, everything would factorize and the ratio would be $k$ times a ratio of one-dimensional integrals. The simplex cuts off the corner where $\sum t_i>1$; and if $g$ is chosen so that $\sum_i kt_i$, with the $kt_i$ distributed according to $g^2$, is rarely larger than $k$, the cut costs almost nothing. That is a law of large numbers.
+
+\begin{proof}
+Let $A=\log k-2\log\log k$, $T=\frac{e^A-1}A$, and $g(t)=\frac1{1+At}$ for $0\le t\le T$, $g(t)=0$ for $t>T$; we take $k$ so large that $A\ge2$ and $T<k$. Note that $1+AT=e^A=\frac k{(\log k)^2}$. Let $F(\mathbf t)=\prod_{i=1}^kg(kt_i)$ on $\mathcal R_k$ and $F=0$ elsewhere, a bounded function, so that Lemma~\ref{lem:ltwo} applies. Put
+\[
+\gamma=\int_0^Tg(t)^2\dd t=\frac1A\Bigl(1-\frac1{1+AT}\Bigr)=\frac{1-e^{-A}}A.
+\]
+
+\emph{The denominator.} Dropping the condition $\sum t_i\le1$ and substituting $u_i=kt_i$, $I_k(F)\le\prod_i\int_0^\infty g(kt_i)^2\dd t_i=(\frac\gamma k)^k$.
+
+\emph{The numerator.} By symmetry all $J_k^{(m)}(F)$ are equal; take $m=k$, and write $\mathbf t'=(t_1,\dots,t_{k-1})$, $s=\sum_{i<k}t_i$. If $s\le1-\frac Tk$, the condition $t_k\le1-s$ is implied by $g(kt_k)\ne0$, so
+\[
+\int_0^1F\dd t_k=\prod_{i<k}g(kt_i)\int_0^{T/k}\frac{\dd t}{1+Akt}=\prod_{i<k}g(kt_i)\frac{\log(1+AT)}{kA}=\frac1k\prod_{i<k}g(kt_i).
+\]
+Keeping only these $\mathbf t'$ and substituting $u_i=kt_i$,
+\[
+J_k^{(k)}(F)\ge\frac1{k^2}\int_{s\le1-T/k}\prod_{i<k}g(kt_i)^2\dd\mathbf t'=\frac1{k^2}\Bigl(\frac\gamma k\Bigr)^{k-1}\,\mathbb P\bigl(X_1+\cdots+X_{k-1}\le k-T\bigr),
+\]
+where $X_1,\dots,X_{k-1}$ are independent random variables on $[0,T]$ with density $\frac{g^2}\gamma$. So
+\[
+\frac{\sum_mJ_k^{(m)}(F)}{I_k(F)}\ge\frac{k}{k^2}\Bigl(\frac\gamma k\Bigr)^{k-1}\Bigl(\frac k\gamma\Bigr)^k\mathbb P=\frac{\mathbb P}\gamma=\frac{A}{1-e^{-A}}\,\mathbb P\ge A\,\mathbb P.
+\]
+
+\emph{The probability.} With $v=1+At$,
+\[
+\mu=\mathbb E X_1=\frac1\gamma\int_0^T\frac{t\dd t}{(1+At)^2}=\frac1{\gamma A^2}\int_1^{e^A}\frac{v-1}{v^2}\dd v=\frac{A-1+e^{-A}}{A(1-e^{-A})},
+\]
+so that
+\[
+1-\mu=\frac{1-e^{-A}-Ae^{-A}}{A(1-e^{-A})}\ge\frac1A\bigl(1-2Ae^{-A}\bigr),
+\]
+because $1-e^{-A}\ge\frac12$. Since $\frac{t^2}{(1+At)^2}\le\frac1{A^2}$, the variance is at most $\mathbb EX_1^2\le\frac T{\gamma A^2}=\frac{e^A}{A^2}$. Let $\delta=k-T-(k-1)\mu\ge k(1-\mu)-T$. Using $Ae^{-A}=\frac{A(\log k)^2}k\le\frac{(\log k)^3}k$ and $T\le\frac{e^A}A=\frac k{A(\log k)^2}$,
+\[
+\delta\ge\frac kA\Bigl(1-\frac{2(\log k)^3}k-\frac1{(\log k)^2}\Bigr)\ge\frac kA\Bigl(1-\frac2{(\log k)^2}\Bigr)
+\]
+for $k$ large. By Chebyshev's inequality,
+\[
+\begin{aligned}\mathbb P\bigl(X_1+\cdots+X_{k-1}>k-T\bigr)&\le\frac{(k-1)e^A/A^2}{\delta^2}\le\frac{ke^A}{A^2}\cdot\frac{A^2}{k^2(1-2(\log k)^{-2})^2}\\&=\frac1{(\log k)^2(1-2(\log k)^{-2})^2}\le\frac2{(\log k)^2}\end{aligned}
+\]
+for $k$ large. Hence the ratio is at least $A(1-\frac2{(\log k)^2})\ge A-\frac2{\log k}$, since $A\le\log k$, and this is larger than $\log k-2\log\log k-2$. By Lemma~\ref{lem:ltwo}, so is $M_k$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-chance}
+\caption{The proof of Proposition~\ref{prop:mklower} for $k=200$, where $A=1.964$ and $T=3.119$. Left: the density $\frac{g(t)^2}\gamma$ of each $X_i$, with mean $\mu=0.654$. Right: $20000$ samples of $X_1+\cdots+X_{199}$; the mean is $130.1$, the standard deviation $9.9$, and not one sample comes near the threshold $k-T=196.9$ beyond which the simplex cuts. The product function loses almost nothing to the corner of the cube that the simplex removes.}
+\label{fig:chance}
+\end{figure}
+
+\begin{think}
+At the end of Chapter~8 we asked how to reward $n+h_1$ and $n+h_2$ being prime separately. Look at the product $F=\prod g(kt_i)$ with $g$ decreasing: the weight $y_{\mathbf r}$ is large when every $r_i$ is small, which means each $n+h_i$ separately has few small prime factors, and the sieve treats the $k$ coordinates as $k$ independent, small sieve problems glued together. Why does the density $g(t)=\frac1{1+At}$ appear? Compare with the function that maximizes $\frac{(\int_0^Tg)^2}{\int_0^Tg^2}$ alone: it is constant. What does the factor $t$ in the mean $\mu$ penalize?
+\end{think}
+
+\begin{theorem}[Maynard, 2013]\label{thm:maynard}
+Let $m\ge1$, and let $k$ satisfy $M_k>4m$, which holds for all large $k$. Then for every admissible $k$-tuple $\mathcal H$ there are infinitely many $n$ such that at least $m+1$ of the numbers $n+h_1,\dots,n+h_k$ are prime.
+\end{theorem}
+\begin{proof}
+Since $M_k>4m$, there is $\theta<\frac12$ with $\frac\theta2M_k>m$. The primes have level of distribution $\theta$ by Bombieri--Vinogradov, and Corollary~\ref{cor:mkcriterion} with $\rho=m$ gives the claim.
+\end{proof}
+
+\begin{corollary}\label{cor:mprimes}
+There is an absolute constant $C$ such that for every $m\ge1$, $p_{n+m}-p_n\le Cm^3e^{4m}$ for infinitely many $n$. In particular $\liminf(p_{n+1}-p_n)<\infty$.
+\end{corollary}
+\begin{proof}
+Let $k=\lceil m^2e^{4m+8}\rceil$. Then $\log k\ge4m+8+2\log m$, and $\log k\le4m+9+2\log m\le15m$, so $\log\log k\le\log m+\log15$ and
+\[
+\log k-2\log\log k-2\ge4m+8+2\log m-2\log m-2\log15-2>4m+0.5.
+\]
+By Proposition~\ref{prop:mklower} there is $m_0$ such that $M_k>4m$ for this $k$ whenever $m\ge m_0$; for $m<m_0$ take instead a fixed $k_0$ with $M_{k_0}>4m_0$. Let $\mathcal H$ be the set of the $k$ smallest primes larger than $k$, admissible by Exercise~\ref{ex:admiss}. Since $\pi(k)\le k$, its diameter is less than $p_{2k}\ll k\log k\ll m^3e^{4m}$. By Theorem~\ref{thm:maynard} infinitely many intervals $[n+h_1,n+h_k]$ contain $m+1$ primes, so $p_{j+m}-p_j\le h_k-h_1$ for infinitely many $j$.
+\end{proof}
+
+GPY's theorem, $\liminf\frac{p_{n+1}-p_n}{\log p_n}=0$, which needed all of Chapter~8, is now a trivial consequence. The bound $Cm^3e^{4m}$ is far from the truth, which should be about $m\log m$ (the narrowest admissible $(m+1)$-tuple); the exponential comes from $M_k$ growing only like $\log k$, and Exercise~\ref{ex:upper} shows that this is the true size of $M_k$: the method cannot do better than an exponential in $m$.
+
+\section{Six hundred}
+
+For explicit bounds we need explicit lower bounds for $M_k$ for moderate $k$, and here Proposition~\ref{prop:mklower} is useless: for $k=105$, $\log k-2\log\log k-2$ is negative. Maynard took $F$ to be a symmetric polynomial, in fact a polynomial in $P_1=\sum t_i$ and $P_2=\sum t_i^2$, and computed the quadratic forms exactly.
+
+\begin{lemma}\label{lem:symint}
+For integers $a,b\ge0$ write $\langle a,b\rangle_k=\int_{\mathcal R_k}(1-P_1)^aP_2^b\dd\mathbf t$. Then
+\[
+\langle a,b\rangle_k=\frac{a!\,b!}{(k+a+2b)!}\sum_{\substack{b_1+\cdots+b_k=b\\b_i\ge0}}\prod_{i=1}^k\frac{(2b_i)!}{b_i!},
+\]
+and, with $u=1-\sum_{i<m}t_i-\sum_{i>m}t_i$ and $P_1',P_2'$ the sums over $i\ne m$,
+\[
+\int_0^u(u-t_m)^a(P_2'+t_m^2)^b\dd t_m=\sum_{j=0}^b\binom bj\frac{a!\,(2j)!}{(a+2j+1)!}(1-P_1')^{a+2j+1}P_2'^{\,b-j}.
+\]
+\end{lemma}
+\begin{proof}
+Expand $P_2^b=\sum\frac{b!}{b_1!\cdots b_k!}\prod t_i^{2b_i}$ by the multinomial theorem and apply Lemma~\ref{lem:dirichletint} to each term. For the second formula expand $(P_2'+t_m^2)^b$ by the binomial theorem and use $\int_0^u(u-t)^at^{2j}\dd t=\frac{a!(2j)!}{(a+2j+1)!}u^{a+2j+1}$ from the proof of Lemma~\ref{lem:dirichletint}.
+\end{proof}
+
+So for $F=\sum c_{ab}(1-P_1)^aP_2^b$ on $\mathcal R_k$, $I_k(F)$ and $\sum_mJ_k^{(m)}(F)=kJ_k^{(k)}(F)$ are quadratic forms in the coefficients $c_{ab}$ with explicit rational entries, sums of the numbers $\langle a,b\rangle_k$ and $\langle a,b\rangle_{k-1}$. The best $F$ of a given degree is the top generalized eigenvector of the pair of Gram matrices, exactly as for one variable in Chapter~8, and the ratio for any rational choice of coefficients can be checked in exact arithmetic.
+
+\begin{theorem}[Maynard, 2013]\label{thm:six}
+(a) $M_{105}>4.002$, and $p_{n+1}-p_n\le600$ for infinitely many $n$.
+(b) $M_5\ge\frac{1417255}{708216}=2.00116\ldots$ If the primes have level of distribution $\theta$ for every $\theta<1$, as the Elliott--Halberstam conjecture predicts, then $p_{n+1}-p_n\le12$ and $p_{n+2}-p_n\le600$ for infinitely many $n$.
+\end{theorem}
+\begin{proof}
+(b) For $k=5$, Maynard's polynomial
+\[
+F=(1-P_1)P_2+\tfrac7{10}(1-P_1)^2+\tfrac1{14}P_2-\tfrac3{14}(1-P_1)
+\]
+gives, by Lemma~\ref{lem:symint} and exact rational arithmetic,
+\[
+I_5(F)=\frac{29509}{1222452000},\qquad\sum_{m=1}^5J_5^{(m)}(F)=\frac{40493}{838252800},
+\]
+whose ratio is $\frac{1417255}{708216}>2$. Choose $\theta<1$ with $\frac\theta2\cdot\frac{1417255}{708216}>1$. The $5$-tuple $\{0,2,6,8,12\}$ is admissible (Exercise~\ref{ex:admiss}), and Corollary~\ref{cor:mkcriterion} with $\rho=1$ gives two primes among $n,n+2,n+6,n+8,n+12$ infinitely often. For $p_{n+2}-p_n$ use (a): $\frac\theta2M_{105}>2$ for $\theta$ close to $1$, and $\rho=2$ gives three primes in a translate of the $105$-tuple below.
+
+(a) For $k=105$ take all $42$ monomials $(1-P_1)^aP_2^b$ with $a+2b\le11$. The top generalized eigenvalue of the two $42\times42$ Gram matrices is $4.0020697\ldots$; rounding the eigenvector to $30$ significant digits and evaluating both quadratic forms in exact rational arithmetic gives a ratio larger than $4.002$. (The companion notebook carries out both computations; they reproduce Maynard's value.) So $\frac\theta2M_{105}>1$ for $\theta<\frac12$ close to $\frac12$, and Theorem~\ref{thm:maynard}'s argument with $m=1$ gives two primes in infinitely many translates of any admissible $105$-tuple. Thomas Engelsma's computations, used by Maynard, provide an admissible $105$-tuple of diameter $600$.
+\end{proof}
+
+The proof of (a) is computer-assisted in two places: the $42$ coefficients and the $105$ elements of the tuple are too long to print, but checking them is a finite computation in rational numbers, and checking admissibility needs only the primes up to $105$. Figure~\ref{fig:mk} compares these values with the upper bound of Exercise~\ref{ex:upper}.
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-mk}
+\caption{Lower bounds for $M_k$ from symmetric polynomials in $P_1,P_2$ of degree at most $11$ (computed for $2\le k\le200$), the best one-variable GPY ratio of Chapter~8, and the upper bound $\frac{k\log k}{k-1}$ of Exercise~\ref{ex:upper}. The computed values cross $2$ between $k=4$ and $k=5$ ($M_5\ge2.0041$) and $4$ between $k=70$ and $k=105$ ($M_{105}\ge4.0021$). For $k=2$ the computed $1.38593$ is within $0.0004$ of the upper bound $2\log2$.}
+\label{fig:mk}
+\end{figure}
+
+The Polymath8b project took Maynard's and Tao's weights further. Enlarging the support of $F$ slightly beyond the simplex, at the price of a more delicate argument, and optimizing over far larger families of polynomials, it proved $\liminf(p_{n+1}-p_n)\le246$, with $k=50$. Under a generalized Elliott--Halberstam conjecture, which allows convolutions other than the primes, the bound becomes $6$.
+
+\begin{theorem}[Polymath, 2014; quoted]\label{thm:246}
+$p_{n+1}-p_n\le246$ for infinitely many $n$.
+\end{theorem}
+
+Six is where the method stops, even with every conjecture about distribution in progressions. The reason is Selberg's parity obstruction of Chapter~3 (Theorem~\ref{thm:parity}): a sieve whose input is distribution in progressions cannot tell numbers with an even number of prime factors from numbers with an odd number, and the twin prime conjecture is exactly a statement that needs this distinction. For the weights of this chapter one sees the wall directly: with $k=2$, two primes among $n,n+2$ need $\frac\theta2M_2>1$, but $M_2\le2\log2<2$ (Exercise~\ref{ex:upper}), so not even $\theta=1$ would suffice.
+
+\begin{beauty}
+The sieve problem was about divisibility of $n+h_1,\dots,n+h_k$ by small primes, a question of arithmetic. After Theorem~\ref{thm:maynardsums} it became a question about functions on a simplex, a question of analysis. And the analysis was solved by probability: a product function is a product measure, the simplex constraint is an event about a sum of independent variables, and the law of large numbers says that the event is almost certain. Three branches of mathematics, each doing what it does best, and between them they found infinitely many intervals of bounded length with as many primes as one likes.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:pigeon}
+(a) Deduce from Theorem~\ref{thm:six}(a) that there is an even $h\le600$ such that $p_{n+1}-p_n=h$ for infinitely many $n$.
+(b) Deduce that $\liminf\frac{p_{n+1}-p_n}{\log p_n}=0$, and more generally that $\liminf\frac{p_{n+m}-p_n}{\log p_n}=0$ for every $m$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:mtwo}
+For $k=2$ and $F=1$ on $\mathcal R_2$, compute $I_2(F)$, $J_2^{(1)}(F)$ and the ratio. Then do the same for $F=1+c(1-t_1-t_2)$ and find the best $c$. Compare with $2\log2$ and with Figure~\ref{fig:mk}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:progs}
+Let $q\ge1$ and $a$ with $(a,q)=1$, and let $p'_1<p'_2<\cdots$ be the primes congruent to $a$ modulo $q$. Show that for every $m$, $p'_{n+m}-p'_n$ is bounded for infinitely many $n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gooddiff}
+Call an even number $h$ \emph{good} if $p'-p=h$ for infinitely many pairs of primes $p<p'$, not necessarily consecutive. Let $Q=\prod_{p\le105}p$. Show that among any $105$ multiples of $Q$ there are two whose difference is good, and deduce that the good numbers have positive lower density: $\#\{h\le x:h\text{ good}\}\ge\frac x{416Q}$ for $x$ large.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:upper}
+(a) Show that $M_k\le\frac{k\log k}{k-1}$ for every $k\ge2$.
+(b) Deduce that Corollary~\ref{cor:mkcriterion} can never give two primes among $n,n+2$, whatever the level of distribution, and that it needs $k\ge e^{(1-1/k)\cdot2\rho/\theta}$, roughly, to give $\rho+1$ primes.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:pigeon}
+For (a), the gaps in (a) take only finitely many values. For (b), divide by $\log p_n\to\infty$.
+\end{hint}
+
+\begin{hint}{ex:mtwo}
+Use Lemma~\ref{lem:dirichletint}. With $F=1+c(1-t_1-t_2)$, both forms are quadratic in $c$.
+\end{hint}
+
+\begin{hint}{ex:progs}
+Use a tuple $q\mathcal H'$ and restrict $n$ to the class $a$ modulo $q$. Check that Chapter~8 goes through with $W$ replaced by $qW$.
+\end{hint}
+
+\begin{hint}{ex:gooddiff}
+Any $105$ multiples of $Q$ form an admissible tuple. Then take a maximal set of multiples of $Q$ with no good difference.
+\end{hint}
+
+\begin{hint}{ex:upper}
+Bound $(\int F\dd t_k)^2$ by Cauchy--Schwarz with the weight $1-\sum_{i<k}t_i+(k-1)t_k$, and sum the weights over $m$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:pigeon}
+\idea Bounded gaps give finitely many possible values, and one of them must recur forever.
+\writeup (a) By Theorem~\ref{thm:six}(a) the set $E=\{n:p_{n+1}-p_n\le600\}$ is infinite. For $n\in E$ with $p_n>2$ the gap is even, so it is one of the $300$ values $2,4,\dots,600$. A partition of the infinite set $E$ into finitely many classes has an infinite class: some $h$ occurs infinitely often.
+(b) By Corollary~\ref{cor:mprimes}, $p_{n+m}-p_n\le Cm^3e^{4m}$ for infinitely many $n$, and for those $n$, $\frac{p_{n+m}-p_n}{\log p_n}\le\frac{Cm^3e^{4m}}{\log p_n}\to0$. The quotient is positive, so the $\liminf$ is $0$.
+\end{solution}
+
+\begin{solution}{ex:mtwo}
+\idea On the triangle everything is a Beta integral.
+\writeup For $F=1$: $I_2=\frac12$, and $\int_0^1F\dd t_1=1-t_2$, so $J_2^{(1)}=\int_0^1(1-t_2)^2\dd t_2=\frac13$. By symmetry $\sum_mJ_2^{(m)}=\frac23$ and the ratio is $\frac43=1.3333$. For $F=1+cx$ with $x=1-t_1-t_2$, Lemma~\ref{lem:dirichletint} gives $\int_{\mathcal R_2}x^j=\frac{j!}{(j+2)!}=\frac1{(j+1)(j+2)}$, so
+\[
+I_2=\frac12+\frac{2c}6+\frac{c^2}{12}=\frac{6+4c+c^2}{12}.
+\]
+The inner integral is $\int_0^{1-t_2}(1+c(1-t_2-t_1))\dd t_1=u+\frac c2u^2$ with $u=1-t_2$, so
+\[
+J_2^{(1)}=\int_0^1\Bigl(u^2+cu^3+\frac{c^2}4u^4\Bigr)\dd u=\frac13+\frac c4+\frac{c^2}{20},
+\]
+and the ratio is
+\[
+\rho(c)=\frac{2(\frac13+\frac c4+\frac{c^2}{20})}{\frac{6+4c+c^2}{12}}=\frac{40+30c+6c^2}{5(6+4c+c^2)},
+\]
+which is $\frac43$ at $c=0$, as it should be. Setting $\rho'(c)=0$: $(30+12c)(6+4c+c^2)=(40+30c+6c^2)(4+2c)$, which simplifies to $20-8c-6c^2=0$, i.e.\ $3c^2+4c-10=0$, $c=\frac{-2+\sqrt{34}}3=1.2770$. Then $\rho=1.38310$, already close to $2\log2=1.38629$ and to the degree-$11$ value $1.38593$ of Figure~\ref{fig:mk}. Even the best $F$ falls short of $2$: two primes among $n,n+h_1,n+h_2$ are out of reach.
+\end{solution}
+
+\begin{solution}{ex:progs}
+\idea Primes in a fixed progression are found by the same sieve, run inside that progression; nothing in Chapter~8 cares which reduced class modulo a fixed number we sit in.
+\writeup Let $k$ be as in Theorem~\ref{thm:maynard}, $\mathcal H'$ an admissible $k$-tuple, and $\mathcal H=q\mathcal H'$. It is admissible: for $p\mid q$ all elements are $0$ modulo $p$, so $\nu_p=1<p$; for $p\nmid q$ multiplication by $q$ permutes the classes modulo $p$, so $\nu_p(\mathcal H)=\nu_p(\mathcal H')<p$. Run Chapter~8 with $W$ replaced by $W'=qW$ and with $\nu_0$ chosen modulo $W'$ such that $\nu_0\equiv a\pmod q$ and $(\nu_0+h_i,W)=1$; this is possible since for $p\mid q$, $\nu_0+h_i\equiv a\not\equiv0\pmod p$, and for the other $p\le D_0$ we choose as before. Once $D_0$ exceeds the primes dividing $q$, the primes dividing $W'$ are exactly those up to $D_0$, so $\frac{\varphi(W')}{W'}=\frac{\varphi(W)}W$, the weights are supported on $d$ prime to $W'$, and $W'\le q(\log\log N)^2$ is still small enough for every error term. Every step of Theorem~\ref{thm:maynardsums} goes through with the main terms of $S_1$ and $S_2$ multiplied by the same factor $\frac1q$, so the ratio, and Corollary~\ref{cor:mkcriterion}, are unchanged. Bombieri--Vinogradov still applies, since the moduli are now $qW\prod[d_i,e_i]$, at most $q$ times larger. So infinitely many $n\equiv a\pmod q$ have $m+1$ primes among $n+h_i$, all congruent to $a$ modulo $q$ since $q\mid h_i$, and $p'_{j+m}-p'_j\le\max\mathcal H-\min\mathcal H$ infinitely often.
+\end{solution}
+
+\begin{solution}{ex:gooddiff}
+\idea Theorem~\ref{thm:six}(a) holds for every admissible $105$-tuple, not just the narrow one; a combinatorial argument turns ``every such tuple contains a good difference'' into ``good differences are dense''.
+\writeup Any set $\mathcal H$ of $105$ multiples of $Q$ is admissible: for $p\le105$ all elements are $0$ modulo $p$, and for $p>105$ the $105$ elements cannot cover $p$ classes. By the proof of Theorem~\ref{thm:six}(a), infinitely many translates $n+\mathcal H$ contain two primes. There are $\binom{105}2$ pairs in $\mathcal H$, so one pair $h<h'$ is the pair for infinitely many $n$, and $h'-h$ is good.
+Now let $N$ be large and consider $Q,2Q,\dots,NQ$. Choose a maximal subset $S$ in which no difference is good. Then $|S|\le104$. By maximality, every $jQ\notin S$ differs from some element of $S$ by a good number $d\le NQ$. Each $s\in S$ and each good $d\le NQ$ account for at most two values $jQ=s\pm d$, so
+\[
+N\le|S|+2|S|\cdot\#\{d\le NQ\text{ good}\}\le104+208\,\#\{d\le NQ\text{ good}\}.
+\]
+With $x=NQ$, $\#\{h\le x\text{ good}\}\ge\frac{x/Q-104}{208}\ge\frac x{416Q}$ for $x\ge208Q$; for general large $x$ apply this with $N=\lfloor x/Q\rfloor$. Maynard proved much more: for each $m$, a positive proportion of admissible $m$-tuples $\mathcal H$ have infinitely many $n$ with \emph{all} of $n+\mathcal H$ prime.
+\end{solution}
+
+\begin{solution}{ex:upper}
+\idea Cauchy--Schwarz with a well-chosen weight turns each $J$ into an integral of $F^2$, and the weights sum to a constant.
+\writeup (a) By Lemma~\ref{lem:ltwo}'s density argument it is enough to treat $F\in L^2(\mathcal R_k)$. Fix $\mathbf t'=(t_1,\dots,t_{k-1})$ with $s=\sum_{i<k}t_i<1$, and let $w(t)=1-s+(k-1)t$ for $0\le t\le1-s$. By Cauchy--Schwarz,
+\[
+\Bigl(\int_0^{1-s}F\dd t_k\Bigr)^2\le\int_0^{1-s}\frac{\dd t}{w(t)}\int_0^{1-s}w(t_k)F^2\dd t_k,\qquad\int_0^{1-s}\frac{\dd t}{1-s+(k-1)t}=\frac{\log k}{k-1}.
+\]
+Integrating over $\mathbf t'$, $J_k^{(k)}(F)\le\frac{\log k}{k-1}\int_{\mathcal R_k}\bigl(1-\sum_{i\ne k}t_i+(k-1)t_k\bigr)F^2\dd\mathbf t$. The same holds for every $m$, and with $S=\sum_it_i$,
+\[
+\sum_{m=1}^k\Bigl(1-(S-t_m)+(k-1)t_m\Bigr)=k-kS+S+(k-1)S=k.
+\]
+So $\sum_mJ_k^{(m)}(F)\le\frac{k\log k}{k-1}I_k(F)$.
+(b) For $k=2$, $M_2\le2\log2<2\le\frac2\theta$ for every $\theta\le1$, so $\frac\theta2M_2>1$ is impossible: no level of distribution gives two primes among $n+h_1,n+h_2$, in particular twin primes. In general, $\frac\theta2M_k>\rho$ forces $\frac{k\log k}{k-1}>\frac{2\rho}\theta$, that is $\log k>(1-\frac1k)\frac{2\rho}\theta$. To get $\rho+1$ primes one needs $k$ exponentially large in $\rho$, which explains the $e^{4m}$ in Corollary~\ref{cor:mprimes}.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Maynard's theorem.} J.~Maynard, ``Small gaps between primes'', \emph{Ann.\ of Math.}\ 181 (2015), 383--413 (arXiv 1311.4600, 19 November 2013). Proposition~4.3 is our Proposition~\ref{prop:mklower}; Section~8 gives the polynomial for $M_5$, the ratio $\frac{1417255}{708216}$, the basis of $42$ monomials for $k=105$ with eigenvalue $4.0020697$, and the credit to Engelsma for the $105$-tuple. The affiliation (CRM, Université de Montréal) is from the paper.
+\item \emph{Polymath8b.} D.~H.~J.~Polymath, ``Variants of the Selberg sieve, and bounded intervals containing many primes'', \emph{Res.\ Math.\ Sci.}\ 1 (2014), Art.~12, for $246$, the conditional $6$, and the parity barrier for the method.
+\item \emph{Surveys.} A.~Granville, ``Primes in intervals of bounded length'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 52 (2015), 171--222, which also tells how Tao found the weights independently. K.~Soundararajan, ``The work of James Maynard'', Proceedings of the ICM 2022 (arXiv 2207.03463), written for Maynard's Fields Medal.
+\end{itemize}
