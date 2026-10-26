@@ -1,0 +1,291 @@
+\chapter{Heuristics That Predict}
+\label{ch:heuristics}
+
+\begin{center}\itshape
+A heuristic is a proof that is wrong in an interesting way.\\
+It tells you what is true before anyone can show it,\\
+and sometimes it tells you where to look.
+\end{center}
+
+Here is a list of identities. Read it slowly:
+\[
+\begin{aligned}
+3&=1^3+1^3+1^3=4^3+4^3+(-5)^3,\\
+30&=2\,220\,422\,932^3+(-2\,218\,888\,517)^3+(-283\,059\,965)^3,\\
+33&=8\,866\,128\,975\,287\,528^3+(-8\,778\,405\,442\,862\,239)^3+(-2\,736\,111\,468\,807\,040)^3,\\
+42&=(-80\,538\,738\,812\,075\,974)^3+80\,435\,758\,145\,817\,515^3+12\,602\,123\,297\,335\,631^3 .
+\end{aligned}
+\]
+In the 1950s Louis Mordell asked whether $3$ has any representation as a sum of three cubes other than the two on the first line. The
+representation of $30$ was found in 1999, after decades of searching. In 2015 the YouTube channel Numberphile made a video about $33$, the smallest number
+for which no representation was known; Andrew Booker of the University of Bristol watched it, designed a new algorithm, and in March 2019, after three weeks on a
+university cluster, found the third line. Six months later, Booker and Andrew Sutherland of MIT, with half a million volunteer computers of the
+Charity Engine grid, found $42$ (the last case below $100$), and then a third representation of $3$:
+\[
+3=569\,936\,821\,221\,962\,380\,720^3+(-569\,936\,821\,113\,563\,493\,509)^3+(-472\,715\,493\,453\,327\,032)^3 .
+\]
+Every one of these identities can be checked by hand in an afternoon, and by computer in a microsecond (the notebook does).
+
+Why did anyone believe these solutions exist? Why did they expect them to be so large? And why did they search where they searched? The
+answer is a heuristic, due to Roger Heath-Brown, that predicts not only \emph{whether} there are solutions but \emph{how many} there are up to a given size.
+This chapter derives the heuristic, proves the parts of it that can be proved, and proves the trick that made Booker's search possible.
+
+\section{What can be proved}
+
+\begin{proposition}\label{prop:mod9}
+If $n\equiv\pm4\pmod9$, then $n$ is not a sum of three cubes of integers.
+\end{proposition}
+
+\begin{proof}
+If $3\mid x$ then $x^3\equiv0\pmod{27}$. Otherwise $x\equiv\pm1,\pm2,\pm4\pmod9$, and $x^3\equiv\pm1,\pm8,\pm64$, all $\equiv\pm1\pmod9$. So cubes are $0,\pm1$ modulo $9$, and a sum of three of them is in
+$\{0,\pm1,\pm2,\pm3\}$ modulo $9$, which misses $\pm4$.
+\end{proof}
+
+For two numbers, infinitely many representations are known, given by polynomial identities.
+
+\begin{proposition}[Verebrusov, 1908; Mahler, 1936]\label{prop:families}
+For every integer $t$,
+\[
+(1+6t^3)^3+(1-6t^3)^3+(-6t^2)^3=2,\qquad(9t^4)^3+(3t-9t^4)^3+(1-9t^3)^3=1 .
+\]
+\end{proposition}
+
+\begin{proof}
+For the first, $(1+u)^3+(1-u)^3=2+6u^2$; with $u=6t^3$ this is $2+216t^6=2+(6t^2)^3$. For the second, let $a=9t^4$ and $b=3t-9t^4$, so $a+b=3t$ and
+$a^3+b^3=(a+b)^3-3ab(a+b)=27t^3-9t\cdot9t^4(3t-9t^4)=27t^3-243t^6+729t^9$; and $(1-9t^3)^3=1-27t^3+243t^6-729t^9$. The sum is $1$.
+\end{proof}
+
+No such family is known for any other $n$ that is not a cube (a cube $n=m^3$ has the family $m^3+t^3+(-t)^3$), and for $3$ it is not even known whether there are infinitely many
+solutions. So the conjecture that every $n\not\equiv\pm4\pmod9$ is a sum of three cubes is open; it is believed, because of the heuristic.
+
+\section{The heuristic}
+
+Count solutions in a box. Let $N_n(B)$ be the number of $(x,y,z)\in\Z^3$ with $x^3+y^3+z^3=n$ and $\max(|x|,|y|,|z|)\le B$. The heuristic has two factors, one from the real numbers and one from the
+primes; we derive each, and say exactly which step is not a proof.
+
+\subsection*{The real density}
+
+Pretend that the value $F=x^3+y^3+z^3$ at a random integer point near a point of $\R^3$ is ``spread out'' like a continuous variable. The expected number of integer points with $F=n$ is then the
+volume of the region where $|F-n|<\frac12$. For a dyadic shell $B<\max(|x|,|y|,|z|)\le2B$, substitute $x=Bu$, $y=Bv$, $z=Bw$: the region becomes $\{1<\max(|u|,|v|,|w|)\le2,\ |u^3+v^3+w^3-n/B^3|<\frac1{2B^3}\}$, of
+volume about $\frac1{B^3}A$, where $A$ is the ``area'' of the surface $u^3+v^3+w^3=0$ in the shell, measured with the density $\frac1{|\nabla F|}$; multiplied by $B^3$ (the Jacobian), the shell
+contributes a constant $A$, \emph{independent of $B$}. There are $\log_2B$ dyadic shells up to $B$, so the real part of the heuristic predicts
+\[
+N_n(B)\approx\sigma_\infty\log B,
+\]
+with an explicit constant $\sigma_\infty$; following Heath-Brown, Booker and Sutherland find $\sigma_\infty=4\int_1^\infty(t^3+1)^{-2/3}\dd t=\frac{2\,\Gamma(\frac13)^2}{3\,\Gamma(\frac23)}\approx3.533$ (Exercise~\ref{ex:sigmainf} explains where the integral comes from). The logarithm is the
+signature of the problem: three variables of degree three is exactly the critical case where each scale contributes the same amount (Exercise~\ref{ex:dimcount}).
+
+\subsection*{The local densities}
+
+The integers are not random: congruences can forbid solutions, as Proposition~\ref{prop:mod9} shows, or favour them. For a prime $p$, the \emph{local density} measures how much more (or less) often
+$F\equiv n$ happens modulo powers of $p$ than for a random value:
+\[
+\sigma_p(n)=\lim_{k\to\infty}\frac{\#\{(x,y,z)\bmod p^k:\ x^3+y^3+z^3\equiv n\pmod{p^k}\}}{p^{2k}} .
+\]
+(For a random value, the count would be $p^{3k}\cdot p^{-k}=p^{2k}$.)
+
+\begin{proposition}\label{prop:localdens}
+\begin{enumerate}[label=(\alph*)]
+\item If $p\equiv2\pmod3$ and $p\nmid n$, then $\sigma_p(n)=1$.
+\item If $n\equiv\pm4\pmod9$, then $\sigma_3(n)=0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) \emph{Modulo $p$.} The group $\mathbb F_p^\times$ has order $p-1$, prime to $3$, so $x\mapsto x^3$ is injective on it, and since $0^3=0$ it is a bijection of $\mathbb F_p$. Hence $(x,y,z)\mapsto(x^3,y^3,z^3)$ permutes $\mathbb F_p^3$, and
+the number of solutions of $x^3+y^3+z^3=n$ in $\mathbb F_p$ equals the number of $(a,b,c)$ with $a+b+c=n$, which is $p^2$.
+
+\emph{Lifting.} Let $F=x^3+y^3+z^3-n$. A solution modulo $p$ has some coordinate nonzero modulo $p$, since $p\nmid n$; say $p\nmid x$, so $\partial F/\partial x=3x^2\not\equiv0\pmod p$ (here $p\ne3$). Let $(x,y,z)$
+solve $F\equiv0\pmod{p^j}$ with $j\ge1$ and $p\nmid x$. The points congruent to it modulo $p^j$ are $(x+p^ja,y+p^jb,z+p^jc)$ with $a,b,c$ modulo $p$, and by Taylor's formula (all higher terms are
+divisible by $p^{2j}$, hence by $p^{j+1}$)
+\[
+F(x+p^ja,y+p^jb,z+p^jc)\equiv F(x,y,z)+p^j\bigl(3x^2a+3y^2b+3z^2c\bigr)\pmod{p^{j+1}} .
+\]
+Dividing by $p^j$, the condition $F\equiv0\pmod{p^{j+1}}$ is one linear equation in $(a,b,c)$ over $\mathbb F_p$ with a nonzero coefficient $3x^2$, which has exactly $p^2$ solutions. So each solution modulo $p^j$ has exactly $p^2$
+lifts modulo $p^{j+1}$, all with $p\nmid x$ again. By induction there are $p^2\cdot(p^2)^{k-1}=p^{2k}$ solutions modulo $p^k$, and the ratio in the definition of $\sigma_p(n)$ is $1$ for every $k$.
+
+(b) By the proof of Proposition~\ref{prop:mod9}, there is no solution modulo $9$, hence none modulo $3^k$ for $k\ge2$.
+\end{proof}
+
+For the primes $p\equiv1\pmod3$, cubing is three-to-one on $\mathbb F_p^\times$ and $\sigma_p(n)$ is not $1$. For $p\nmid3n$ the lifting argument above still applies, so $\sigma_p(n)$ is the count modulo $p$ divided by $p^2$, and the theory of Jacobi sums shows that it is $1+O(1/p)$. The notebook finds a striking pattern: $p(\sigma_p(n)-1)$ is close to $6$ when $n$ is a cube modulo $p$ and close to $-3$ when it is not. A random $n$ is a cube modulo $p$ with probability $\frac13$, and $\frac13\cdot6+\frac23\cdot(-3)=0$: the corrections cancel on average, and the product over $p$ converges, though only conditionally and slowly. Computing it accurately is a small research problem in itself, which Booker and Sutherland solved.
+
+\begin{remark}[Heath-Brown's conjecture, 1992]\label{rem:hb}
+Combining the two factors, Heath-Brown conjectured that for $n\not\equiv\pm4\pmod9$ and $n$ not a cube, the number of solutions with $\max(|x|,|y|,|z|)\le B$, counted up to permutation, satisfies
+\[
+N_n(B)\sim\rho(n)\log B,\qquad\rho(n)=\frac16\,\sigma_\infty\prod_p\sigma_p(n)>0 .
+\]
+In particular every such $n$ would be a sum of three cubes in infinitely many ways. This is the same shape of formula that the circle method \emph{proves} for Waring's problem with
+enough variables (Tome~13, Theorem~7.11, with its singular series and singular integral); for three cubes the method is far out of reach, and the formula is only a prediction.
+\end{remark}
+
+The heuristic predicts more than existence. Since solutions are spread evenly over the scales $\log B$, the smallest solution for a given $n$ has $\log\max(|x|,|y|,|z|)$ of order $1/\rho(n)$,
+with large fluctuations: some $n$ have a solution with three-digit coordinates, others need sixteen digits or more. The record sizes of the solutions for $30$, $33$ and $42$ are not
+signs that something unusual happens for these numbers; they are what a constant density on a logarithmic scale produces, once in a while. Booker and Sutherland compared the counts
+of all known solutions for $n\le1000$ with the predicted $\rho(n)\log B$ and found close agreement.
+
+\section{How the search was done}
+
+The naive search for solutions with coordinates up to $B$ looks at $B^2$ pairs $(x,y)$ and asks whether $n-x^3-y^3$ is a cube: hopeless for $B=10^{16}$. Booker's search is almost linear in $B$, and
+it finds all solutions whose \emph{smallest} coordinate is at most $B$, however large the other two are. It rests on one factorisation.
+
+\begin{proposition}[the divisor trick]\label{prop:booker}
+Let $n$ be an integer that is not a cube, and let $x^3+y^3+z^3=n$. Put $d=x+y$. Then $d\ne0$, $d$ divides $n-z^3$,
+\[
+|d|^3\le4\,|n-z^3|,\qquad\text{and}\qquad\Delta=\frac{4(n-z^3)-d^3}{3d}=(x-y)^2 .
+\]
+Conversely, if $d\ne0$ and $z$ are integers with $\Delta$ a perfect square, and $x,y=\frac{d\pm\sqrt\Delta}2$ are integers, then $x^3+y^3+z^3=n$.
+\end{proposition}
+
+\begin{proof}
+If $d=0$ then $y=-x$ and $z^3=n$, which is excluded. From $x^3+y^3=(x+y)(x^2-xy+y^2)$ we get $n-z^3=d(x^2-xy+y^2)$, so $d\mid n-z^3$. Since $x^2-xy+y^2=\frac14\bigl((x+y)^2+3(x-y)^2\bigr)\ge\frac{d^2}4$, we get
+$|n-z^3|\ge\frac{|d|^3}4$. Next, $x^3+y^3=d^3-3dxy$, so $xy=\frac{d^3-(n-z^3)}{3d}$, and $(x-y)^2=d^2-4xy=\frac{3d^3-4d^3+4(n-z^3)}{3d}=\Delta$. Conversely, if $x+y=d$ and $(x-y)^2=\Delta$, then $xy=\frac{d^2-\Delta}4=\frac{d^3-(n-z^3)}{3d}$,
+and $x^3+y^3=d^3-3dxy=n-z^3$.
+\end{proof}
+
+\begin{corollary}\label{cor:booker}
+Let $n$ be not a cube, and $B\ge1$. Every solution of $x^3+y^3+z^3=n$ with $\min(|x|,|y|,|z|)\le B$ is found by the following search: for each nonzero $d$ with $|d|\le(4|n|+4B^3)^{1/3}$, for each
+$z$ with $|z|\le B$ and $z^3\equiv n\pmod{|d|}$, test whether $\Delta$ is a square. The number of pairs $(d,z)$ examined is $\sum_{d}r(d)\bigl(\frac{2B}{|d|}+1\bigr)$, where $r(d)$ is the number of
+cube roots of $n$ modulo $|d|$.
+\end{corollary}
+
+\begin{proof}
+Permute the coordinates so that $|z|$ is the smallest of $|x|,|y|,|z|$, so $|z|\le B$; then Proposition~\ref{prop:booker} gives $d\ne0$ with $d\mid n-z^3$, so $z^3\equiv n\pmod{|d|}$, and $|d|^3\le4|n-z^3|\le4|n|+4B^3$. The solution is then recovered from
+$(d,z)$. The count is that of integers $z\in[-B,B]$ in $r(d)$ residue classes modulo $|d|$.
+\end{proof}
+
+Since $r(d)$ is small on average (it is $1$ when every prime factor of $d$ is $\equiv2\pmod3$ and prime to $3n$), the sum is about $B$ times a power of $\log B$: almost linear. Booker
+added a sieve to discard most $z$ before computing $\Delta$, and with Sutherland a dozen further refinements, including a use of cubic reciprocity. In the solution for
+$33$, the smallest coordinate is $z=-2\,736\,111\,468\,807\,040$, and $d=x+y=87\,723\,532\,425\,289$ is about thirty times smaller than $|z|$ (Exercise~\ref{ex:booker33}). So this solution sits at a value of $d$ far below the bound $(4|n|+4B^3)^{1/3}\approx1.6\,|z|$ allowed by the corollary.
+
+\begin{think}
+Why does it help to search by the \emph{smallest} coordinate? In the third representation of $3$, how large is the largest coordinate compared with the smallest?
+\end{think}
+
+\begin{beauty}
+Three cubes, a mod $9$ obstruction, a logarithmic density, a factorisation of $x^3+y^3$ known to Euler, and half a million volunteer computers. The heuristic did not prove that $42$ is a sum of
+three cubes; it said that the solutions were probably there, how large they would probably be, and how to search for them, and it was right on all three counts. Mathematics has few
+predictions so precise about objects so stubborn.
+\end{beauty}
+
+\begin{remark}[open cases]\label{rem:open3cubes}
+After the work of Booker and Sutherland, the integers below $1000$ not $\equiv\pm4\pmod9$ for which no representation was known were $114$, $390$, $627$, $633$, $732$, $921$ and $975$. The heuristic predicts
+solutions for all of them. That every $n\not\equiv\pm4\pmod9$ is a sum of three cubes is open; so is whether $3$ has infinitely many representations. For the deeper question of why the
+heuristic should hold, the relevant concept is the Brauer--Manin obstruction for integral points on cubic surfaces; J.-L.~Colliot-Th\'el\`ene and O.~Wittenberg showed in 2012 that it does not
+obstruct sums of three cubes.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:mod7}
+Show that the cubes modulo $7$ are $0,\pm1$, as modulo $9$, but that every residue modulo $7$ is a sum of three cubes. Which moduli $m$ give an obstruction?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cubebij}
+Show that $x\mapsto x^3$ is a bijection of $\Z/2\Z$ but not of $\Z/8\Z$. Why does the proof of Proposition~\ref{prop:localdens}(a) lift solutions from $\mathbb F_p$ instead of using a bijection modulo $p^k$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dimcount}
+\emph{Counting dimensions.} Repeat the real-density heuristic for $x_1^3+\dots+x_k^3=n$ and show that it predicts about $B^{k-3}$ solutions up to $B$ (and $\log B$ for $k=3$). Then show, without
+any heuristic, that $x^3+y^3=n$ has only finitely many integer solutions for $n\ne0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:families2}
+Use Proposition~\ref{prop:families} to show that $2m^3$ and $m^3$ have infinitely many representations as sums of three cubes for every $m\ne0$. Is $16$ a sum of three cubes in infinitely many ways?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:booker33}
+For the representation of $33$ above, compute $d=x+y$ (for the two largest coordinates), check that $d\mid33-z^3$, compute $\Delta$ and recover $x$ and $y$ from $(d,z)$ as in Proposition~\ref{prop:booker}. How does $|d|$ compare
+with the bound $(4|33-z^3|)^{1/3}$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:sigmainf}
+\emph{The real density.} For $t>0$, the number of integer $z$ with $|z^3-t^3|\le\frac12$ is about the length of the interval of such real $z$. Show that this length is $\frac1{3t^2}(1+o(1))$ as $t\to\infty$.
+Deduce that the expected number of solutions of $x^3+y^3+z^3=n$ with $B<|z|\le2B$ and $|x|,|y|\le|z|$, summed over integer $(x,y)$, is about
+\[
+\iint\frac{\dd x\dd y}{3|x^3+y^3|^{2/3}}
+\]
+over the corresponding region, and that this is independent of $B$ by scaling. (Computing the constant exactly gives $\sigma_\infty$; you need not do it.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:mod7}
+Sums of three elements of $\{0,\pm1\}$ cover $\{-3,\dots,3\}$. For an obstruction modulo $m$ the cubes must be rare: try $m=9$, then use Cauchy--Davenport and lifting for primes $p\ne3$.
+\end{hint}
+
+\begin{hint}{ex:cubebij}
+$2^3\equiv0\pmod8$.
+\end{hint}
+
+\begin{hint}{ex:dimcount}
+Scale $x_i=Bu_i$; the volume of $\{|F-n|<\frac12\}$ in a shell scales like $B^{k}\cdot B^{-3}$. For two cubes, $d=x+y$ divides $n$.
+\end{hint}
+
+\begin{hint}{ex:families2}
+Multiply the identities by $m^3$.
+\end{hint}
+
+\begin{hint}{ex:booker33}
+Use a computer or exact arithmetic; $\Delta$ has $32$ digits.
+\end{hint}
+
+\begin{hint}{ex:sigmainf}
+$(t^3+\frac12)^{1/3}-(t^3-\frac12)^{1/3}\approx\frac{\dd}{\dd s}s^{1/3}\big|_{s=t^3}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:mod7}
+\idea Cubes modulo $m$ are rare when the cubing map is far from injective.
+\writeup Modulo $7$: $1,2,4\mapsto1$ and $3,5,6\mapsto-1$ (as $2^3=8$, $3^3=27\equiv-1$, and so on), so the cubes are $0,\pm1$. Sums of three of them give $-3,\dots,3$, that is all residues modulo $7$. Modulo $9$ the same
+three cubes cover only seven of the nine residues, which is why $\pm4$ are excluded.
+
+Now let $p\ne3$ be prime. Modulo $p$ every residue is a sum of three cubes: for $p\equiv2\pmod3$ (or $p=2$) every residue is a cube, and for $p\equiv1\pmod3$ the set $C$ of cubes has $\frac{p-1}3+1$ elements, so the Cauchy--Davenport theorem (Tome~C1, Theorem~11.11) gives $|C+C+C|\ge\min(p,3|C|-2)=p$. Each residue has a solution with a coordinate prime to $p$ (for $0$ take $1+(-1)+0$), and the lifting step of Proposition~\ref{prop:localdens} carries it to every $p^k$. By the Chinese remainder theorem, the only possible obstructions live at powers of $3$; the notebook checks that modulo $27$ and $81$ the excluded residues are exactly those $\equiv\pm4\pmod9$. (Lifting further needs the stronger Hensel lemma for a derivative divisible by $3$ exactly once; try it.) So $9$ is the modulus that matters.
+\end{solution}
+
+\begin{solution}{ex:cubebij}
+\idea A bijection of a finite set is the same as an injection.
+\writeup Modulo $2$, $0^3=0$ and $1^3=1$. Modulo $8$, $0^3\equiv2^3\equiv4^3\equiv6^3\equiv0$, so cubing is not injective. In the proof, only the solutions modulo $p$ were counted by a bijection; the lifting to $p^k$ used the
+nonvanishing of a partial derivative, which holds because $p\nmid n$ forces a coordinate to be a unit. A bijection argument modulo $p^k$ would be false.
+\end{solution}
+
+\begin{solution}{ex:dimcount}
+\idea Each scale contributes $B^{k}$ points, of which a proportion $B^{-3}$ hit a given value.
+\writeup In the shell $B<\max|x_i|\le2B$ there are about $B^k$ integer points, and $F=\sum x_i^3$ takes values of size $B^3$ there, spread over an interval of length about $B^3$; the expected number with $F=n$ is
+about $B^{k-3}$ times a constant (the scaled density, as in the text). Summing over dyadic shells up to $B$ gives $B^{k-3}$ for $k\ge4$, $\log B$ for $k=3$, and a convergent sum for $k\le2$: finitely many.
+For $k=2$ this is a theorem: if $x^3+y^3=n\ne0$, then $d=x+y$ is a nonzero divisor of $n$, and $x^2-xy+y^2=\frac nd$; and $\bigl|\frac nd\bigr|\le|n|$. As $x^2-xy+y^2=\frac12(x^2+y^2)+\frac12(x-y)^2\ge\frac12(x^2+y^2)$, we get $x^2+y^2\le2|n|$. So there are finitely many solutions.
+\end{solution}
+
+\begin{solution}{ex:families2}
+\idea Cubes are homogeneous.
+\writeup Multiplying $(1+6t^3)^3+(1-6t^3)^3+(-6t^2)^3=2$ by $m^3$ gives $(m+6mt^3)^3+(m-6mt^3)^3+(-6mt^2)^3=2m^3$ for every $t$, and different $t$ give different triples. Similarly Mahler's identity gives infinitely
+many representations of $m^3$. So $16=2\cdot2^3$ has infinitely many, for example $t=1$ gives $14^3+(-10)^3+(-12)^3=2744-1000-1728=16$.
+\end{solution}
+
+\begin{solution}{ex:booker33}
+\idea Plug into the formulas.
+\writeup With $x=8\,866\,128\,975\,287\,528$, $y=-8\,778\,405\,442\,862\,239$, $z=-2\,736\,111\,468\,807\,040$: $d=x+y=87\,723\,532\,425\,289$. Exact arithmetic (notebook) confirms $d\mid33-z^3$, that
+$\Delta=(x-y)^2$ with $x-y=17\,644\,534\,418\,149\,767$, and that $\frac{d\pm\sqrt\Delta}2$ gives back $x$ and $y$. The bound $(4|33-z^3|)^{1/3}=4^{1/3}|z|(1+o(1))\approx4.34\times10^{15}$ is about fifty times larger than $d$: the actual
+$d$ is much smaller than the worst case allowed by the proposition, which is what makes the refined search of Booker and Sutherland pay off.
+\end{solution}
+
+\begin{solution}{ex:sigmainf}
+\idea Linearise the cube root.
+\writeup By the mean value theorem, $(t^3+\frac12)^{1/3}-(t^3-\frac12)^{1/3}=\frac13s^{-2/3}$ for some $s$ with $|s-t^3|\le\frac12$, and $s^{-2/3}=t^{-2}(1+O(t^{-3}))$. So the length is $\frac1{3t^2}(1+o(1))$. For fixed $(x,y)$ the
+relevant $t$ is $|n-x^3-y^3|^{1/3}$, which is $|x^3+y^3|^{1/3}(1+o(1))$ when $|x^3+y^3|$ is large compared with $n$; summing $\frac1{3t^2}$ over integer $(x,y)$ in the region and replacing the sum by an integral gives the
+displayed integral. Substituting $x=Bu$, $y=Bv$ multiplies $\dd x\dd y$ by $B^2$ and $|x^3+y^3|^{2/3}$ by $B^2$, and maps the region for $B$ to the region for $1$; so the integral does not depend on $B$. (The integrand
+is singular on the line $u=-v$, but like $|u+v|^{-2/3}$, which is integrable.)
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The search.} A.~R.~Booker, ``Cracking the problem with 33'', \emph{Res.\ Number Theory} 5 (2019), paper 26. A.~R.~Booker and A.~V.~Sutherland, ``On a question of Mordell'',
+\emph{Proc.\ Natl.\ Acad.\ Sci.\ USA} 118 (2021), e2022377118, arXiv:2007.01209 (the solutions for $3$ and $42$, Mordell's 1953 question, the density computations and the list of open cases).
+S.~G.~Huisman, ``Newer sums of three cubes'', arXiv:1604.07746, 2016. ``Sum-of-three-cubes problem solved for `stubborn' number 33'', \emph{Quanta Magazine}, 26 March 2019, and the University of Bristol
+press release of 6 September 2019, for the story and the Numberphile video.
+\item \emph{The heuristic.} D.~R.~Heath-Brown, ``The density of zeros of forms for which weak approximation fails'', \emph{Math.\ Comp.}\ 59 (1992), 613--623.
+\item \emph{Families and obstructions.} K.~Mahler, ``Note on hypothesis K of Hardy and Littlewood'', \emph{J.\ London Math.\ Soc.}\ 11 (1936), 136--138. J.-L.~Colliot-Th\'el\`ene and O.~Wittenberg,
+``Groupe de Brauer et points entiers de deux familles de surfaces cubiques affines'', \emph{Amer.\ J.\ Math.}\ 134 (2012), 1303--1327.
+\end{itemize}
