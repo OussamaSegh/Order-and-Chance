@@ -1,0 +1,567 @@
+\chapter{Positive Matrices}\label{ch:perron}
+
+\begin{center}\itshape
+A certain man had put a pair of rabbits in a place surrounded on all sides by a wall. How many pairs of rabbits can be
+bred from that pair in a year, if it is supposed that every month each pair begets a new pair, which from the second
+month on becomes productive?
+\upshape(Leonardo of Pisa, \emph{Liber abaci}, 1202)
+\end{center}
+
+In 1907 Oskar Perron, a young mathematician in Munich, was studying continued fractions and needed to know how the
+powers of a matrix with positive entries behave. He proved that such a matrix has a positive eigenvalue strictly larger
+in modulus than all the others, with an eigenvector whose entries are all positive. Georg Frobenius, then the grand old
+man of Berlin algebra, read the paper, admired it, and spent the next five years extending it to matrices with
+non-negative entries, a much subtler problem: there, several eigenvalues may share the largest modulus, and Frobenius
+found that they are then arranged with perfect symmetry, like the vertices of a regular polygon.
+
+The theorem lay quietly in algebra books for decades and then turned out to be everywhere. In 1906 Andrey Markov had
+invented his chains to show that the law of large numbers does not need independence; their long-run behaviour is
+Perron--Frobenius theory for stochastic matrices. In 1945 Patrick Leslie, studying the brown rat, wrote populations
+structured by age as a non-negative matrix, whose Perron eigenvalue is the growth rate of the population and whose Perron
+vector is its stable age distribution; Fibonacci's rabbits are the simplest case. Economists (Leontief's input--output
+models) and demographers followed. And in 1998 two Stanford students, Sergey Brin and Larry Page, ranked the pages of the
+web by the Perron vector of a huge stochastic matrix. A 2006 article in \emph{SIAM Review} called it ``the
+\$25{,}000{,}000{,}000 eigenvector''.
+
+This chapter proves Perron's theorem twice, once by an optimisation (Collatz--Wielandt) and once by a contraction that also
+proves the convergence of the power method; extends it to irreducible matrices (Frobenius); studies periods and
+primitivity, with Wielandt's sharp bound; and applies the results to Markov chains, PageRank and populations.
+
+\begin{think}
+Fibonacci's rabbits: write $(J_k,A_k)$ for the numbers of juvenile and adult pairs in month $k$. Then $J_{k+1}=A_k$ and
+$A_{k+1}=A_k+J_k$. In the long run, what fraction of the pairs are juveniles? Does the answer depend on how many juveniles
+and adults you start with? Example~\ref{exa:leslie} answers, and the golden ratio appears twice.
+\end{think}
+
+\section{Positive matrices: Perron's theorem}
+
+We write $A\ge0$ when all entries of $A$ (a matrix or a vector) are non-negative, $A>0$ when they are all positive, and
+$|x|$ for the vector of moduli of the entries of $x$. The \emph{spectral radius} of a square matrix is $\rho(A)=\max|\lambda|$
+over its complex eigenvalues. Two remarks are used constantly: if $A\ge0$, then $|Ax|\le A|x|$ (triangle inequality in each
+coordinate); and if $A>0$, $x\ge0$ and $x\ne0$, then $Ax>0$.
+
+For $A\ge0$ and $x\ge0$, $x\ne0$, the \emph{Collatz--Wielandt function} is
+\[
+r(x)=\min_{i:\ x_i>0}\frac{(Ax)_i}{x_i},
+\]
+the largest $t$ with $Ax\ge tx$.
+
+\begin{theorem}[Perron, 1907]\label{thm:perron}
+Let $A>0$ be an $n\times n$ matrix and $\rho=\rho(A)$. Then:
+\begin{enumerate}[label=(\alph*)]
+\item $\rho>0$ is an eigenvalue of $A$, with an eigenvector $z>0$ (the \emph{Perron vector});
+\item $\rho$ is an algebraically simple eigenvalue;
+\item every other eigenvalue satisfies $|\lambda|<\rho$;
+\item every eigenvector $x\ge0$ of $A$ is a multiple of $z$.
+\end{enumerate}
+Moreover $\rho=\max_{x\ge0,x\ne0}r(x)$ (Collatz--Wielandt formula).
+\end{theorem}
+\begin{proof}
+\emph{(a) Existence.} Let $\Delta=\{x\ge0:\sum x_i=1\}$ and $r^*=\sup_\Delta r$ (finite: $r(x)\le\max_i\sum_ja_{ij}$). If
+$Ax\ge tx$ then $A(Ax)\ge tAx$, so $r(Ax)\ge r(x)$: applying $A$ never decreases $r$. The set $K=\{Ax/\sum_i(Ax)_i:x\in\Delta\}$
+is compact and consists of positive vectors, on which $r(y)=\min_i(Ay)_i/y_i$ is continuous. Since $r$ is unchanged by
+scaling and $r(Ax)\ge r(x)$, $\sup_\Delta r=\sup_Kr$, which is attained at some $z\in K$, so $z>0$ and $Az\ge r^*z$. If
+$Az\ne r^*z$, then $Az-r^*z\ge0$ is non-zero, so $A(Az-r^*z)>0$, that is $A(Az)>r^*Az$ strictly, and $r(Az)>r^*$, a
+contradiction. Hence $Az=r^*z$ with $z>0$, and $r^*>0$ since $Az>0$.
+
+\emph{$r^*=\rho$.} If $Ay=\lambda y$ with $y\ne0$, then $|\lambda||y|=|Ay|\le A|y|$, so $r(|y|)\ge|\lambda|$ and $|\lambda|\le
+r^*$. As $r^*$ is itself an eigenvalue, $r^*=\rho$, which proves the Collatz--Wielandt formula.
+
+\emph{(c)} Let $|\lambda|=\rho$ and $Ay=\lambda y$. Then $A|y|\ge\rho|y|$, and the equality argument of (a) applied to
+$|y|$ shows $A|y|=\rho|y|$ and $|y|=A|y|/\rho>0$. So for each $i$, $\bigl|\sum_ja_{ij}y_j\bigr|=\sum_ja_{ij}|y_j|$ with all
+$a_{ij}>0$: equality in the triangle inequality forces all $y_j$ to have the same argument, $y=e^{i\theta}|y|$. Then $\lambda
+y=Ay=e^{i\theta}A|y|=\rho y$, so $\lambda=\rho$.
+
+\emph{Geometric simplicity.} Let $y$ be an eigenvector for $\rho$; taking real and imaginary parts we may assume $y$ real,
+and replacing $y$ by $-y$ that some $y_i>0$. Let $t=\min\{z_i/y_i:y_i>0\}$ and $w=z-ty$. Then $w\ge0$, $w$ has a zero
+coordinate, and $Aw=\rho w$. If $w\ne0$, then $Aw>0$ while $\rho w$ has a zero coordinate: impossible. So $w=0$ and $y$ is
+a multiple of $z$.
+
+\emph{(b)} The matrix $A^{\mathsf T}>0$ has the same spectrum, hence by (a) a vector $w>0$ with $w^{\mathsf T}A=\rho w^{\mathsf
+T}$. If $\rho$ were not algebraically simple, then, being geometrically simple, it would carry a Jordan block of size at least
+$2$: there would be $u$ with $(A-\rho I)u=z$. Multiplying on the left by $w^{\mathsf T}$ gives $0=w^{\mathsf T}z>0$, a
+contradiction.
+
+\emph{(d)} If $Ax=\lambda x$ with $x\ge0$, $x\ne0$, then $\lambda w^{\mathsf T}x=w^{\mathsf T}Ax=\rho w^{\mathsf T}x$ and $w^{\mathsf
+T}x>0$, so $\lambda=\rho$ and $x$ is a multiple of $z$ by geometric simplicity.
+\end{proof}
+
+The vector $w>0$ with $w^{\mathsf T}A=\rho w^{\mathsf T}$ is the \emph{left Perron vector}; we normalise $w^{\mathsf T}z=1$.
+
+\section{Contraction and the power method}
+
+The second proof explains \emph{why} the Perron vector wins: a positive matrix squeezes all positive directions towards one.
+For positive vectors $x,y$, the ratios $x_i/y_i$ lie in an interval $[m(x/y),M(x/y)]$; we call its length the
+\emph{oscillation} of $x/y$. It is zero exactly when $x$ is a multiple of $y$.
+
+\begin{lemma}\label{lem:oscillation}
+Let $A>0$, and let $c=\min a_{ij}/a_{kj}$ over all $i,j,k$, so $0<c\le1$. For positive $x,y$,
+\[
+\begin{gathered}
+[m(Ax/Ay),M(Ax/Ay)]\subseteq[m(x/y),M(x/y)],\\
+M(Ax/Ay)-m(Ax/Ay)\le(1-c^2)\bigl(M(x/y)-m(x/y)\bigr).
+\end{gathered}
+\]
+\end{lemma}
+\begin{proof}
+Write $m=m(x/y)$ and $M=M(x/y)$, so that $p=A(x-my)$ and $q=A(My-x)$ are $\ge0$ with $p+q=(M-m)Ay$. The inclusion follows from
+$(Ax)_i=m(Ay)_i+p_i\ge m(Ay)_i$ and similarly with $q$. For any $u\ge0$ and indices $i,k$, $(Au)_i=\sum_ja_{ij}u_j\ge c\sum_j
+a_{kj}u_j=c(Au)_k$; in particular $(Ay)_i\le c^{-1}(Ay)_k$. So $\beta_i=q_i/(Ay)_i$ satisfies $\beta_i\ge c^2\beta_k$ for all
+$i,k$. Since $(Ax)_i/(Ay)_i=M-\beta_i$, the oscillation of $Ax/Ay$ is $\max\beta-\min\beta\le(1-c^2)\max\beta\le(1-c^2)(M-m)$,
+as $\beta_i\le M-m$ (because $p_i\ge0$).
+\end{proof}
+
+\begin{theorem}[convergence of the power method]\label{thm:powerconv}
+Let $A>0$ with Perron vectors $z,w$, $w^{\mathsf T}z=1$. For every $x\ge0$, $x\ne0$, $A^kx/\rho^k\to(w^{\mathsf T}x)\,z$, and
+$A^k/\rho^k\to zw^{\mathsf T}$. The convergence is geometric.
+\end{theorem}
+\begin{proof}
+Replacing $x$ by $Ax$ we may assume $x>0$. Apply Lemma~\ref{lem:oscillation} repeatedly with $y=z$, noting $A^kz=\rho^kz$:
+the ratios $(A^kx)_i/(\rho^kz_i)$ lie in nested intervals whose lengths are at most $(1-c^2)^k$ times the first. So they
+converge, uniformly in $i$ and geometrically, to a common limit $\gamma$: $A^kx/\rho^k\to\gamma z$. Since $w^{\mathsf T}A^kx/
+\rho^k=w^{\mathsf T}x$ for all $k$, $\gamma=w^{\mathsf T}x$. Applying this to the basis vectors gives the matrix statement.
+\end{proof}
+
+So for any positive starting vector, $A^kx/\|A^kx\|$ converges to the Perron vector: this is the \emph{power method}, and
+PageRank is computed this way. The proof shows a rate $1-c^2$; the true rate is $|\lambda_2|/\rho$, where $\lambda_2$ is the
+second largest eigenvalue in modulus, as one sees from the Jordan form.
+
+\begin{remark}
+Lemma~\ref{lem:oscillation} is a version of a beautiful fact found by Garrett Birkhoff (1957) and Hans Samelson: in
+\emph{Hilbert's projective metric} $d(x,y)=\log\frac{M(x/y)}{m(x/y)}$ on the positive cone, every positive matrix is a strict
+contraction, with the explicit contraction factor $\tanh(\Delta/4)$, where $\Delta$ is the diameter of the image of the cone.
+Perron's theorem then becomes the Banach fixed point theorem; this point of view extends to infinite dimension and to
+non-linear maps.
+\end{remark}
+
+\section{Non-negative matrices: Frobenius's theorem}
+
+Zeros change the picture. The matrix $\bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ has eigenvalues $\pm1$, both
+of modulus $\rho$; the matrix $\bigl(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\bigr)$ has a Jordan block at $\rho$, and its
+eigenvector $(1,0)$ is not positive. The right notion is connectivity. To $A\ge0$ of size $n$ associate the directed graph
+$\Gamma(A)$ on vertices $1,\dots,n$ with an edge $i\to j$ when $a_{ij}>0$. Then $(A^k)_{ij}>0$ if and only if there is a walk of
+length $k$ from $i$ to $j$, since $(A^k)_{ij}$ is a sum of products $a_{ii_1}a_{i_1i_2}\cdots a_{i_{k-1}j}$ over such walks.
+
+\begin{definition}\label{def:irreducible}
+$A\ge0$ is \emph{irreducible} if $\Gamma(A)$ is strongly connected: there is a walk from every vertex to every vertex. Its
+\emph{period} $h$ is the greatest common divisor of the lengths of the closed walks of $\Gamma(A)$. It is \emph{primitive} if
+$A^k>0$ for some $k$.
+\end{definition}
+
+Since a path between distinct vertices visits at most $n$ vertices, $A$ is irreducible if and only if $(I+A)^{n-1}>0$: the
+$(i,j)$ entry of $(I+A)^{n-1}=\sum_k\binom{n-1}kA^k$ is positive exactly when some walk of length at most $n-1$ joins $i$ to $j$.
+
+\begin{theorem}[Frobenius, 1912]\label{thm:frobenius}
+Let $A\ge0$ be irreducible, of period $h$, and $\rho=\rho(A)$. Then $\rho>0$ (if $n\ge2$) is an algebraically simple
+eigenvalue with an eigenvector $z>0$, and every eigenvector $x\ge0$ is a multiple of $z$. The eigenvalues of modulus $\rho$ are
+exactly $\rho\,\omega^k$, $k=0,\dots,h-1$, where $\omega=e^{2\pi i/h}$; each is simple, and the whole spectrum is invariant under
+multiplication by $\omega$.
+\end{theorem}
+\begin{proof}
+\emph{Perron part.} $B=(I+A)^{n-1}>0$ commutes with $A$. By Theorem~\ref{thm:perron}, $B$ has a one-dimensional eigenspace for
+$\rho(B)$, spanned by $z>0$; as $A$ commutes with $B$, it preserves this line, so $Az=rz$ for some $r$, and $r\ge0$ since $Az\ge0$.
+The same argument with $A^{\mathsf T}$ gives $w>0$ and $r'$ with $w^{\mathsf T}A=r'w^{\mathsf T}$, and $r'w^{\mathsf T}z=w^{\mathsf
+T}Az=rw^{\mathsf T}z$ gives $r'=r$. If $Ay=\lambda y$, then $|\lambda||y|\le A|y|$, and multiplying by $w^{\mathsf T}$,
+$|\lambda|w^{\mathsf T}|y|\le rw^{\mathsf T}|y|$, so $|\lambda|\le r$: hence $r=\rho$. If $\rho=0$, then $Az=0$ with $z>0$
+forces $A=0$, which is not irreducible for $n\ge2$. The eigenvalues of $B$ are the $(1+\lambda)^{n-1}$, with multiplicities,
+and $|1+\lambda|\le1+|\lambda|\le1+\rho$ with equality only for $\lambda=\rho$; since $(1+\rho)^{n-1}=\rho(B)$ is simple for $B$,
+$\rho$ is simple for $A$. Non-negative eigenvectors are multiples of $z$ by the argument of Theorem~\ref{thm:perron}(d).
+
+\emph{The peripheral spectrum.} Let $Ay=\lambda y$ with $\lambda=\rho e^{i\varphi}$. As above, $A|y|\ge\rho|y|$, and
+$w^{\mathsf T}(A|y|-\rho|y|)=0$ with $w>0$ forces $A|y|=\rho|y|$, so $|y|$ is a multiple of $z$, positive. Write $y_j=e^{i\theta_j}
+|y_j|$. Then for each $i$, $\sum_ja_{ij}|y_j|e^{i\theta_j}=\rho e^{i\varphi}e^{i\theta_i}|y_i|=e^{i(\varphi+\theta_i)}\sum_ja_{ij}|y_j|$;
+equality in the triangle inequality gives
+\[
+e^{i\theta_j}=e^{i\varphi}e^{i\theta_i}\qquad\text{whenever }a_{ij}>0.
+\]
+Following a closed walk of length $\ell$ multiplies $e^{i\theta}$ by $e^{i\ell\varphi}$ and returns to the start, so $e^{i\ell
+\varphi}=1$ for every closed walk length $\ell$, hence $e^{ih\varphi}=1$ (the period is an integer combination of such lengths).
+So the peripheral eigenvalues are among the $\rho\omega^k$.
+
+Conversely, Proposition~\ref{prop:levels} below gives a function $\ell:\{1,\dots,n\}\to\Z/h$ with $\ell(j)=\ell(i)+1$ for every
+edge $i\to j$. With $D=\operatorname{diag}(\omega^{\ell(1)},\dots,\omega^{\ell(n)})$, $(D^{-1}AD)_{ij}=\omega^{\ell(j)-\ell(i)}a_{ij}=
+\omega a_{ij}$. So $A$ is similar to $\omega A$: the spectrum, with multiplicities, is invariant under multiplication by $\omega$,
+and each $\rho\omega^k$ is an eigenvalue as simple as $\rho$.
+\end{proof}
+
+\begin{proposition}\label{prop:levels}
+Let $\Gamma$ be strongly connected with period $h$. Fix a vertex $v_0$. The length of a walk from $v_0$ to $j$ is
+well defined modulo $h$; calling it $\ell(j)$, every edge $i\to j$ satisfies $\ell(j)=\ell(i)+1$ in $\Z/h$. So the vertices
+fall into $h$ classes, and every edge goes from one class to the next, cyclically.
+\end{proposition}
+\begin{proof}
+Let two walks from $v_0$ to $j$ have lengths $p$ and $q$, and let a walk from $j$ back to $v_0$ have length $s$. Then $p+s$ and
+$q+s$ are closed walk lengths, so $h$ divides both and $p\equiv q\pmod h$. A walk to $i$ followed by the edge $i\to j$ is a walk
+to $j$, which gives $\ell(j)=\ell(i)+1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-period}
+\caption{A strongly connected digraph of period $3$. Every edge goes from one colour class to the next, so all closed walks
+have lengths divisible by $3$; the adjacency matrix has three eigenvalues of maximal modulus, $\rho$, $\rho\omega$, $\rho\omega^2$.}
+\label{fig:period}
+\end{figure}
+
+\section{Primitive matrices, Wielandt's bound}
+
+\begin{theorem}\label{thm:primitive}
+For irreducible $A\ge0$, the following are equivalent: (i) $A$ is primitive; (ii) the period is $h=1$; (iii) $\rho$ is the
+only eigenvalue of modulus $\rho$. For a primitive $A$, $A^k/\rho^k\to zw^{\mathsf T}$, where $z,w$ are the right and left Perron
+vectors with $w^{\mathsf T}z=1$.
+\end{theorem}
+\begin{proof}
+(ii)$\Leftrightarrow$(iii) is Theorem~\ref{thm:frobenius}. (i)$\Rightarrow$(iii): if $A^k>0$, then $\rho^k$ is a simple eigenvalue
+of $A^k$ and the only one of modulus $\rho^k$ (Theorem~\ref{thm:perron}). If $\lambda\ne\rho$ had $|\lambda|=\rho$, then $\lambda^k$
+would have modulus $\rho^k$, hence equal $\rho^k$, which would then have multiplicity at least $2$ in $A^k$.
+
+(ii)$\Rightarrow$(i): fix a vertex $i$ and let $S$ be the set of lengths of closed walks at $i$. It is closed under addition. Its
+gcd is $1$: for any closed walk of length $\ell$ through a vertex $j$, going from $i$ to $j$ (length $a$), around (length $\ell$)
+and back (length $b$) shows $a+b\in S$ and $a+b+\ell\in S$, so $\gcd S$ divides every closed walk length, hence divides $h=1$.
+A set of positive integers closed under addition with gcd $1$ contains all large integers: by Bezout, $1=\sum_tc_ts_t$ with
+$s_t\in S$ and $c_t\in\Z$; letting $P$ be the sum of the positive terms and $N$ minus the sum of the negative ones, both in $S$
+(or zero) with $P-N=1$; then for $m\ge N^2$, write $m=qN+r$ with $0\le r<N$ and $q\ge N$, so that $m=rP+(q-r)N\in S$. Hence
+$(A^k)_{ii}>0$ for all large $k$, for every $i$, and then $(A^k)_{ij}>0$ for all large $k$ by appending a fixed path from $i$ to $j$.
+
+For the limit, $B=A^N>0$ for some $N$, with the same Perron vectors and $\rho(B)=\rho^N$. For $k=mN+s$ with $0\le s<N$,
+Theorem~\ref{thm:powerconv} for $B$ gives $A^k/\rho^k=(B^m/\rho^{mN})A^s/\rho^s\to zw^{\mathsf T}A^s/\rho^s=zw^{\mathsf T}$.
+\end{proof}
+
+How large must $k$ be? Wielandt stated in 1950, without proof, the sharp answer; the first published proof is from 1964.
+
+\begin{theorem}[Wielandt]\label{thm:wielandt}
+If $A\ge0$ of size $n\ge2$ is primitive, then $A^{(n-1)^2+1}>0$.
+\end{theorem}
+\begin{proof}
+Let $s$ be the length of a shortest cycle $C$ of $\Gamma=\Gamma(A)$. Then $s\le n-1$: otherwise every cycle would have length $n$,
+and the period would be $n\ge2$ (every closed walk decomposes into cycles). The matrix $B=A^s$ is primitive (a power of a
+primitive matrix is primitive, since $A$ has no zero row and $A^m>0$ for all large $m$), so $\Gamma(B)$ is strongly connected, and
+every vertex $c$ of $C$ has a loop in $\Gamma(B)$ (go once around $C$). From $c$, every vertex $j$ is reached in $\Gamma(B)$ by a
+path of length at most $n-1$, which the loop at $c$ pads to length exactly $n-1$: $(B^{n-1})_{cj}=(A^{s(n-1)})_{cj}>0$.
+
+Now let $i$ be any vertex. A shortest path from $i$ to $C$ has length $t\le n-s$ (it visits distinct vertices outside $C$
+before reaching $C$); continue along $C$ for $n-s-t$ more steps, to get a walk of length exactly $n-s$ from $i$ to some vertex
+$c$ of $C$. Then $(A^{n-s+s(n-1)})_{ij}\ge(A^{n-s})_{ic}(A^{s(n-1)})_{cj}>0$ for every $j$. Since $n-s+s(n-1)=n+s(n-2)\le
+n+(n-1)(n-2)=(n-1)^2+1$, and $A^{k}>0$ implies $A^{k+1}=A\cdot A^k>0$ (no zero row), the theorem follows.
+\end{proof}
+
+The bound is attained by the \emph{Wielandt matrix}, the graph $1\to2\to\dots\to n\to1$ with one extra edge $n\to2$; the notebook
+checks this for $n\le10$.
+
+\section{Markov chains and PageRank}
+
+A \emph{stochastic} matrix $P\ge0$ has rows summing to $1$: $P\mathbf 1=\mathbf 1$. It describes a Markov chain, $p_{ij}$ being the
+probability to move from state $i$ to state $j$, and a probability distribution $\mu$ (a row vector) evolves as $\mu\mapsto\mu
+P$. The vector $\mathbf 1>0$ is a non-negative eigenvector for the eigenvalue $1$, so $\rho(P)=1$ when $P$ is irreducible
+(Theorem~\ref{thm:frobenius}: non-negative eigenvectors belong to $\rho$), and indeed for every stochastic $P$, since $\|Px\|_\infty
+\le\|x\|_\infty$.
+
+\begin{corollary}[ergodic theorem for Markov chains]\label{cor:markov}
+Let $P$ be a stochastic matrix that is irreducible with period $1$. There is a unique probability vector $\pi$ with $\pi P=\pi$;
+it is positive, and for every initial distribution $\mu$, $\mu P^k\to\pi$. More precisely $P^k\to\mathbf 1\pi$, the matrix all of
+whose rows are $\pi$.
+\end{corollary}
+\begin{proof}
+Here $\rho=1$, $z=\mathbf 1$, and the left Perron vector normalised by $w^{\mathsf T}\mathbf 1=1$ is $\pi$, unique and positive by
+Theorem~\ref{thm:frobenius}. Theorem~\ref{thm:primitive} gives $P^k\to\mathbf 1\pi$, and $\mu P^k\to(\mu\mathbf 1)\pi=\pi$.
+\end{proof}
+
+Tome~3, Chapter~8 proves the same theorem by coupling, with probabilistic intuition and explicit rates; here it is a statement
+about eigenvalues. The rate of convergence is governed by $|\lambda_2|$, the \emph{spectral gap} $1-|\lambda_2|$ measuring how fast
+the chain forgets where it started.
+
+\begin{example}[PageRank]\label{exa:pagerank}
+Model a surfer on the web: from page $i$ with $d_i$ outgoing links, follow one at random ($p_{ij}=1/d_i$ for each link
+$i\to j$; a page with no links is given links to all pages). The importance of a page should be the long-run fraction of
+time the surfer spends there, the stationary distribution of $P$. But the web graph is not strongly connected, so Brin and
+Page added teleportation: with probability $1-\alpha$, the surfer jumps to a uniformly random page. The \emph{Google matrix}
+\[
+G=\alpha P+\frac{1-\alpha}n\mathbf 1\mathbf 1^{\mathsf T},\qquad\alpha=0.85,
+\]
+is stochastic and positive, so Perron's theorem gives a unique positive PageRank vector $\pi=\pi G$, and the power method
+converges at rate at most $\alpha$ (Exercise~\ref{ex:pagerankrate}), independently of the size of the web: about $50$
+iterations give six digits. Figure~\ref{fig:pagerank} shows a small example. Page $C$, with six incoming links, ranks first. Page $A$
+has only two, but one of them comes from $C$, which has no other outgoing link and passes all its weight to $A$: so $A$ ranks
+almost as high as $C$. Page $B$ also has two incoming links, one from the important page $A$, and ranks third. Being linked by
+important pages matters more than being linked often.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-pagerank}
+\caption{PageRank of an eight-page web with $\alpha=0.85$; the area of each node is proportional to its rank. The values
+are $C:0.351$, $A:0.329$, $B:0.169$, and between $0.019$ and $0.040$ for the others.}
+\label{fig:pagerank}
+\end{figure}
+
+\section{Populations}
+
+\begin{example}[Leslie models]\label{exa:leslie}
+Divide a female population into age classes $1,\dots,n$. Each step, a female of class $i$ gives birth on average to $f_i\ge0$
+daughters, and survives into class $i+1$ with probability $s_i\in(0,1]$. The vector $x_k$ of class sizes evolves by
+$x_{k+1}=Lx_k$, with the \emph{Leslie matrix}
+\[
+L=\begin{pmatrix}f_1&f_2&\cdots&f_{n-1}&f_n\\s_1&0&\cdots&0&0\\0&s_2&&&0\\&&\ddots&&\vdots\\0&0&\cdots&s_{n-1}&0\end{pmatrix}.
+\]
+If $f_n>0$, the graph $\Gamma(L)$ contains the cycle $1\to n\to n-1\to\dots\to2\to1$ (the edge $1\to j$ comes from
+$f_j>0$ and the edge $j+1\to j$ from $s_j>0$), so $L$ is irreducible; if moreover two consecutive $f_i,f_{i+1}$ are positive,
+there are cycles $1\to i\to\dots\to1$ of lengths $i$ and $i+1$, the period is $1$ and $L$ is primitive. Then $L^kx_0/\rho^k\to(w^{\mathsf T}x_0)z$: whatever the initial population,
+it eventually grows by the factor $\rho$ each step, with the \emph{stable age distribution} $z$. The characteristic equation
+is the \emph{Euler--Lotka equation} $\sum_if_i\ell_i\rho^{-i}=1$, with $\ell_i=s_1\cdots s_{i-1}$ the probability to reach class
+$i$ (Exercise~\ref{ex:leslie}).
+
+Fibonacci's rabbits, counted in pairs, are a Leslie model with two classes, juveniles and adults, $f_1=0$,
+$f_2=1$, $s_1=1$, and one extra entry $1$ in position $(2,2)$ because adults remain adults:
+$L=\bigl(\begin{smallmatrix}0&1\\1&1\end{smallmatrix}\bigr)$ in the coordinates $(J,A)$ of the opening question, with
+$\rho=\varphi=\frac{1+\sqrt5}2$ and Perron vector $z=(1,\varphi)$ (indeed $Lz=(\varphi,1+\varphi)=\varphi z$). This $L$ is
+primitive ($L^2>0$), so the fraction of juveniles tends to $\frac1{1+\varphi}=\frac1{\varphi^2}\approx0.382$, whatever the
+start: the golden ratio twice, as the growth factor and in the stable proportions.
+\end{example}
+
+\begin{beauty}
+A positive matrix knows which way is up. However you start, as long as you start inside the positive cone, repeated
+multiplication drags every direction to the same one, the Perron vector, and this single geometric fact predicts the age
+pyramid of a rat colony, the rank of a web page, and the long-run frequencies of a card shuffle. When zeros break the
+positivity, the leading eigenvalues arrange themselves as a regular polygon whose number of sides is the gcd of the cycle
+lengths: arithmetic of the graph becomes geometry of the spectrum.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:perron2}
+Let $A=\bigl(\begin{smallmatrix}a&b\\c&d\end{smallmatrix}\bigr)>0$. Compute $\rho$ and the Perron vector, and check directly
+that the other eigenvalue has smaller modulus.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:rowsum}
+For $A\ge0$ irreducible, show that $\min_i\sum_ja_{ij}\le\rho\le\max_i\sum_ja_{ij}$, with equality on either side only if all row
+sums are equal.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:minmaxcw}
+For $A>0$, show the dual Collatz--Wielandt formula $\rho=\min_{x>0}\max_i\frac{(Ax)_i}{x_i}$, and deduce that any $x>0$ gives
+$\min_i\frac{(Ax)_i}{x_i}\le\rho\le\max_i\frac{(Ax)_i}{x_i}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:monotone}
+Let $0\le A\le B$ entrywise, with $B$ irreducible. Show that $\rho(A)\le\rho(B)$, with equality only if $A=B$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nonneg}
+Let $A\ge0$ be arbitrary. Show that $\rho(A)$ is an eigenvalue of $A$ with an eigenvector $x\ge0$, $x\ne0$. (Apply
+Exercise~\ref{ex:monotone} to $A+\varepsilon J$, where $J$ is the all-ones matrix, and let $\varepsilon\to0$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cycleperiod}
+Find the period and the eigenvalues of the adjacency matrix of the directed cycle on $n$ vertices, and of the adjacency matrix
+of a connected bipartite graph (with each edge in both directions). Show that the spectrum of a connected bipartite graph is
+symmetric about $0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:diagpos}
+Show that an irreducible $A\ge0$ with a positive diagonal entry is primitive, and that if all diagonal entries are positive then
+$A^{n-1}>0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:twostate}
+For the two-state chain $P=\bigl(\begin{smallmatrix}1-a&a\\b&1-b\end{smallmatrix}\bigr)$ with $0<a,b<1$, find $\pi$ and an
+explicit formula for $P^k$. What is the rate of convergence?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pagerankrate}
+Show that every eigenvalue $\lambda\ne1$ of the Google matrix $G=\alpha P+(1-\alpha)\mathbf 1v^{\mathsf T}$ ($P$ stochastic, $v$ a
+probability vector) satisfies $|\lambda|\le\alpha$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:leslie}
+Show that the characteristic polynomial of the Leslie matrix is $X^n-\sum_if_i\ell_iX^{n-i}$, that it has exactly one
+positive root when some $f_i>0$, and that this root is $\rho(L)$. Compute the Perron vector, and show that $\rho>1$ if and only
+if the \emph{net reproductive rate} $\sum_if_i\ell_i$ exceeds $1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:doublystoch}
+Let $P$ be a doubly stochastic primitive matrix. Show that $P^k\to\frac1nJ$. Deduce that repeating any fixed card shuffle
+whose transition matrix is primitive makes all $n!$ orders of the deck equally likely in the limit.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:wielandtsharp}
+Let $W$ be the Wielandt matrix (edges $i\to i+1$ for $i<n$, $n\to1$ and $n\to2$). Show that every closed walk at vertex $1$
+has length $an+b(n-1)$ with $a\ge1$ and $b\ge0$, and deduce that $(W^{(n-1)^2})_{11}=0$, so that Theorem~\ref{thm:wielandt} is
+sharp.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:perron2}
+$\rho=\frac{a+d+\sqrt{(a-d)^2+4bc}}2$.
+\end{hint}
+\begin{hint}{ex:rowsum}
+Look at the row of $Az=\rho z$ where $z_i$ is largest, and the one where it is smallest.
+\end{hint}
+\begin{hint}{ex:minmaxcw}
+For $x>0$, apply the left Perron vector to $Ax\le Mx$.
+\end{hint}
+\begin{hint}{ex:monotone}
+If $Ay=\lambda y$ then $|\lambda||y|\le B|y|$; multiply by the left Perron vector of $B$. For equality, look at what is forced.
+\end{hint}
+\begin{hint}{ex:nonneg}
+$\rho(A+\varepsilon J)$ decreases as $\varepsilon\downarrow0$; take a limit of normalised Perron vectors.
+\end{hint}
+\begin{hint}{ex:cycleperiod}
+For a bipartite graph, the classes of Proposition~\ref{prop:levels} are the two sides.
+\end{hint}
+\begin{hint}{ex:diagpos}
+A loop at a vertex makes $1$ a closed walk length. With all loops, walks can be padded to any longer length.
+\end{hint}
+\begin{hint}{ex:twostate}
+The eigenvalues are $1$ and $1-a-b$.
+\end{hint}
+\begin{hint}{ex:pagerankrate}
+A left eigenvector $x$ for $\lambda\ne1$ satisfies $x^{\mathsf T}\mathbf 1=0$.
+\end{hint}
+\begin{hint}{ex:leslie}
+Expand along the first row, or solve $Lz=\lambda z$ from the bottom up. Descartes's rule, or monotonicity of $\sum f_i\ell_i
+\lambda^{-i}$.
+\end{hint}
+\begin{hint}{ex:doublystoch}
+$\mathbf 1$ is both a left and a right Perron vector.
+\end{hint}
+\begin{hint}{ex:wielandtsharp}
+Vertex $n$ is the only vertex with two outgoing edges. Reduce $(n-1)^2=an+b(n-1)$ modulo $n-1$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:perron2}
+\idea Solve the quadratic and compare the two roots.
+\writeup $\chi_A=X^2-(a+d)X+ad-bc$, with discriminant $(a-d)^2+4bc>0$, so the roots are real and distinct,
+$\lambda_\pm=\frac{a+d\pm\sqrt{(a-d)^2+4bc}}2$. Since $\sqrt{(a-d)^2+4bc}>|a-d|$, we get $\lambda_+>\max(a,d)>0$, and
+$|\lambda_-|<\lambda_+$ because $\lambda_++\lambda_-=a+d>0$. An eigenvector for $\lambda_+$ is $(b,\lambda_+-a)$, positive since
+$\lambda_+>a$.
+\end{solution}
+
+\begin{solution}{ex:rowsum}
+\idea Read the equation $Az=\rho z$ in the coordinate where $z$ is largest: $\rho z_i$ is an average-like combination of
+smaller values.
+\writeup Let $z>0$ be the Perron vector and $z_i=\max z$. Then $\rho z_i=\sum_ja_{ij}z_j\le z_i\sum_ja_{ij}\le z_i\max_k\sum_j
+a_{kj}$. At the row where $z$ is smallest, the same argument gives the lower bound. Equality $\rho=\max$ row sum forces, in the
+row $i$, $a_{ij}z_j=a_{ij}z_i$ for all $j$, i.e.\ $z_j=z_i$ for the neighbours $j$ of $i$, and the row sum of $i$ to be maximal.
+The neighbours then also achieve the maximum of $z$, and the argument propagates along edges; by irreducibility $z$ is constant,
+and then $A\mathbf 1=\rho\mathbf 1$: all row sums equal $\rho$.
+\end{solution}
+
+\begin{solution}{ex:minmaxcw}
+\idea Pair any test vector with the left Perron vector: $w^{\mathsf T}Ax=\rho w^{\mathsf T}x$ is the bridge.
+\writeup Let $x>0$ and $M=\max_i(Ax)_i/x_i$, so $Ax\le Mx$. Then $\rho w^{\mathsf T}x=w^{\mathsf T}Ax\le Mw^{\mathsf T}x$, and
+$w^{\mathsf T}x>0$, so $\rho\le M$. Equality for $x=z$. The lower bound is the Collatz--Wielandt formula of
+Theorem~\ref{thm:perron}, or the same argument with $Ax\ge mx$.
+\end{solution}
+
+\begin{solution}{ex:monotone}
+\idea Use $B$'s left Perron vector as a weighting that turns vector inequalities into number inequalities.
+\writeup If $Ay=\lambda y$, $y\ne0$, then $|\lambda||y|\le A|y|\le B|y|$. With $w>0$ the left Perron vector of $B$,
+$|\lambda|w^{\mathsf T}|y|\le w^{\mathsf T}B|y|=\rho(B)w^{\mathsf T}|y|$, so $|\lambda|\le\rho(B)$. If $\rho(A)=\rho(B)$, take
+$\lambda$ with $|\lambda|=\rho(B)$: all inequalities are equalities, $w^{\mathsf T}(B|y|-\rho(B)|y|)=0$ gives $B|y|=\rho(B)|y|$, so
+$|y|=z>0$ (Frobenius), and $w^{\mathsf T}(B-A)z=0$ with $w,z>0$ and $B-A\ge0$ forces $A=B$.
+\end{solution}
+
+\begin{solution}{ex:nonneg}
+\idea Positive perturbations have Perron vectors; compactness of the simplex lets us pass to the limit, and monotonicity
+controls the eigenvalue.
+\writeup $A_\varepsilon=A+\varepsilon J>0$ has Perron root $\rho_\varepsilon$ and Perron vector $z_\varepsilon$ with $\sum_i
+(z_\varepsilon)_i=1$. By Exercise~\ref{ex:monotone}, $\rho_\varepsilon$ decreases as $\varepsilon$ decreases, so it has a limit $r$
+as $\varepsilon\to0$, and the same argument (with $B=A_\varepsilon$, which is irreducible) gives $\rho(A)\le\rho_\varepsilon$, so
+$\rho(A)\le r$. By compactness, some sequence $z_{\varepsilon_k}$ converges to $x\ge0$ with $\sum x_i=1$, and passing to the limit in
+$A_\varepsilon z_\varepsilon=\rho_\varepsilon z_\varepsilon$ gives $Ax=rx$. So $r$ is an eigenvalue of $A$, $r\le\rho(A)$, and
+therefore $r=\rho(A)$ with eigenvector $x\ge0$.
+\end{solution}
+
+\begin{solution}{ex:cycleperiod}
+\idea A directed $n$-cycle is the permutation matrix of a cyclic shift; for bipartite graphs, use the similarity of
+Theorem~\ref{thm:frobenius} with $h=2$.
+\writeup The cycle has all closed walks of length divisible by $n$, so $h=n$; its matrix $C$ satisfies $C^n=I$ and its
+eigenvalues are the $n$-th roots of unity, each once (eigenvectors $(\omega^{jk})_j$): exactly the peripheral spectrum predicted,
+with $\rho=1$. A connected bipartite graph has all closed walks of even length and contains closed walks of length $2$ (an
+edge back and forth), so $h=2$; Theorem~\ref{thm:frobenius} gives that $A$ is similar to $-A$ (explicitly, $D=\operatorname{diag}
+(\pm1)$ according to the side), so the spectrum is symmetric about $0$.
+\end{solution}
+
+\begin{solution}{ex:diagpos}
+\idea A loop is a closed walk of length $1$, so the gcd is $1$; loops at every vertex let any short walk wait.
+\writeup If $a_{ii}>0$, then $1$ is a closed walk length, so $h=1$ and $A$ is primitive by Theorem~\ref{thm:primitive}. If
+all $a_{ii}>0$, take any $i,j$: by irreducibility there is a path from $i$ to $j$ of some length $k\le n-1$, and padding it with
+$n-1-k$ loops at $j$ gives a walk of length exactly $n-1$. So $(A^{n-1})_{ij}>0$ for all $i,j$.
+\end{solution}
+
+\begin{solution}{ex:twostate}
+\idea Two states, two eigenvalues: $1$ and the trace minus $1$.
+\writeup $\pi=\bigl(\frac b{a+b},\frac a{a+b}\bigr)$ satisfies $\pi P=\pi$. The eigenvalues are $1$ and $\lambda=1-a-b\in(-1,1)$,
+and
+\[
+P^k=\mathbf 1\pi+\lambda^k\frac1{a+b}\begin{pmatrix}a&-a\\-b&b\end{pmatrix},
+\]
+as one checks for $k=0$ and by noting that the second matrix $E$ satisfies $PE=EP=\lambda E$ and $\mathbf 1\pi E=0$. So
+$P^k\to\mathbf 1\pi$ at rate $|1-a-b|^k$: fast when $a+b$ is near $1$, slow for a ``sticky'' chain ($a,b$ small) or an almost
+periodic one ($a,b$ near $1$).
+\end{solution}
+
+\begin{solution}{ex:pagerankrate}
+\idea Teleportation is a rank-one perturbation that acts trivially on vectors orthogonal to $\mathbf 1$.
+\writeup Let $x^{\mathsf T}G=\lambda x^{\mathsf T}$ with $\lambda\ne1$, $x\ne0$. Since $G\mathbf 1=\mathbf 1$, $\lambda x^{\mathsf
+T}\mathbf 1=x^{\mathsf T}G\mathbf 1=x^{\mathsf T}\mathbf 1$, so $x^{\mathsf T}\mathbf 1=0$. Then $x^{\mathsf T}G=\alpha x^{\mathsf T}P+
+(1-\alpha)(x^{\mathsf T}\mathbf 1)v^{\mathsf T}=\alpha x^{\mathsf T}P$, so $\lambda/\alpha$ is an eigenvalue of $P$ (if $\alpha>0$),
+and $|\lambda/\alpha|\le\rho(P)=1$.
+\end{solution}
+
+\begin{solution}{ex:leslie}
+\idea An eigenvector of a Leslie matrix is forced by the survival rows; the first row then gives one scalar equation.
+\writeup Suppose $Lz=\lambda z$ with $\lambda\ne0$. Rows $2,\dots,n$ give $z_{i+1}=s_iz_i/\lambda$, so $z_i=\ell_i\lambda^{-(i-1)}z_1$.
+The first row gives $\lambda z_1=\sum_if_iz_i=z_1\sum_if_i\ell_i\lambda^{1-i}$, i.e.\ $\sum_if_i\ell_i\lambda^{-i}=1$, which is
+$\lambda^n-\sum_if_i\ell_i\lambda^{n-i}=0$ after multiplying by $\lambda^n$. Both sides are monic of degree $n$ and the
+eigenvalue equation must be the characteristic polynomial (expand $\det(XI-L)$ along the first row to confirm). For $\lambda>0$,
+$g(\lambda)=\sum_if_i\ell_i\lambda^{-i}$ is strictly decreasing from $+\infty$ to $0$ (some $f_i\ell_i>0$), so there is
+exactly one positive root $\lambda_0$, with eigenvector $z=(\ell_i\lambda_0^{1-i})_i>0$. A non-negative eigenvector belongs to
+$\rho$ (Exercise~\ref{ex:nonneg} gives one for $\rho$, and its eigenvalue is a non-negative real root), so $\lambda_0=\rho$ when
+$\rho>0$. Finally $\rho>1$ iff $g(1)>g(\rho)=1$, i.e.\ $\sum_if_i\ell_i>1$.
+\end{solution}
+
+\begin{solution}{ex:doublystoch}
+\idea Doubly stochastic means $\mathbf 1$ is invariant on both sides, so both Perron vectors are uniform.
+\writeup $P\mathbf 1=\mathbf 1$ and $\mathbf 1^{\mathsf T}P=\mathbf 1^{\mathsf T}$, so $z=\mathbf 1$ and $w=\frac1n\mathbf 1$ with
+$w^{\mathsf T}z=1$, and Theorem~\ref{thm:primitive} gives $P^k\to\frac1n\mathbf 1\mathbf 1^{\mathsf T}$. A card shuffle is a
+random permutation applied to the deck; its transition matrix on the $n!$ orders has entries $p_{\sigma\tau}=\Pr(\text{shuffle}=
+\tau\sigma^{-1})$, and each column sums to $1$ as well as each row (for fixed $\tau$, $\sigma\mapsto\tau\sigma^{-1}$ is a
+bijection). So it is doubly stochastic, and if primitive, the distribution of the deck tends to uniform.
+\end{solution}
+
+\begin{solution}{ex:wielandtsharp}
+\idea Vertex $n$ is the only branching point, so walks are made of two loops; then it is a coin problem with coins $n$ and
+$n-1$, and the condition $a\ge1$ (we must come back to $1$) is what makes $(n-1)^2$ unreachable.
+\writeup Every vertex $i<n$ has the single outgoing edge $i\to i+1$. So a closed walk at $1$ goes $1\to2\to\dots\to n$ and then,
+each time it is at $n$, either returns to $1$ (closing an excursion of length $n$ since the last visit to $1$) or goes around
+$n\to2\to\dots\to n$ (length $n-1$). It ends at $1$, so it consists of $a\ge1$ excursions through the edge $n\to1$ and $b\ge0$ extra
+loops through $n\to2$, and its length is $an+b(n-1)$. Suppose $(n-1)^2=an+b(n-1)$. Since $n\equiv1\pmod{n-1}$, reducing modulo
+$n-1$ gives $a\equiv0$, so $a\ge n-1$ and $an\ge n(n-1)>(n-1)^2$, a contradiction. Hence there is no closed walk of length
+$(n-1)^2$ at $1$, and $(W^{(n-1)^2})_{11}=0$. The notebook confirms that $W^{(n-1)^2+1}>0$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item O.~Perron, \emph{Zur Theorie der Matrices}, Mathematische Annalen 64 (1907), 248--263; G.~Frobenius, \emph{\"Uber Matrizen aus
+nicht negativen Elementen}, Sitzungsberichte der Preussischen Akademie (1912), 456--477.
+\item L.~Collatz, \emph{Einschlie\ss ungssatz f\"ur die charakteristischen Zahlen von Matrizen}, Mathematische Zeitschrift 48
+(1942), 221--226; H.~Wielandt, \emph{Unzerlegbare, nicht negative Matrizen}, Mathematische Zeitschrift 52 (1950), 642--648.
+\item G.~Birkhoff, \emph{Extensions of Jentzsch's theorem}, Transactions of the AMS 85 (1957), 219--227 (Hilbert's metric).
+\item H.~Schneider, \emph{Wielandt's proof of the exponent inequality for primitive nonnegative matrices}, Linear Algebra and its
+Applications 353 (2002), 5--10; A.~L.~Dulmage and N.~S.~Mendelsohn, \emph{Gaps in the exponent set of primitive matrices}, Illinois
+Journal of Mathematics 8 (1964), 642--656.
+\item A.~A.~Markov, \emph{Extension of the law of large numbers to dependent quantities} (in Russian), Izvestiya
+Fiziko-Matematicheskogo Obshchestva Kazan 15 (1906), 135--156.
+\item P.~H.~Leslie, \emph{On the use of matrices in certain population mathematics}, Biometrika 33 (1945), 183--212.
+\item S.~Brin and L.~Page, \emph{The anatomy of a large-scale hypertextual web search engine}, Computer Networks and ISDN Systems
+30 (1998), 107--117; K.~Bryan and T.~Leise, \emph{The \$25{,}000{,}000{,}000 eigenvector: the linear algebra behind Google},
+SIAM Review 48 (2006), 569--581.
+\item E.~Seneta, \emph{Non-negative Matrices and Markov Chains}, 2nd ed., Springer, 1981; C.~D.~Meyer, \emph{Matrix Analysis and
+Applied Linear Algebra}, SIAM, 2000, Chapter~8 (with a history of Perron--Frobenius theory).
+\end{itemize}
