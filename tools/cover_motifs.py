@@ -388,6 +388,119 @@ def apollonian_gasket(rmin=0.004, label_r=0.06):
     return "\n".join(lines) + "\n"
 
 
+def bitonic_network(n=16):
+    """Batcher's bitonic sorting network on n wires (Tome C2, Chapter 2): horizontal wires,
+    each comparator a vertical segment whose arrowhead marks where the larger value goes.
+    Comparators of one stage whose spans overlap are drawn in separate sub-columns."""
+    cols = []
+    k = 2
+    while k <= n:
+        j = k // 2
+        while j >= 1:
+            stage = [(i, i ^ j, (i & k) == 0) for i in range(n) if (i ^ j) > i]
+            sub = {}
+            for i, l, up in stage:
+                sub.setdefault(i % j, []).append((i, l, up))
+            cols.extend(sub[r] for r in sorted(sub))
+            j //= 2
+        k *= 2
+    W, H = 1.92, 1.9
+    dx = 2 * W / (len(cols) + 1)
+    ys = [H - 2 * H * w / (n - 1) for w in range(n)]
+    lines = ["%% Batcher's bitonic sorting network on %d wires." % n]
+    for y in ys:
+        lines.append(r"\draw[accent,line width=0.5pt,opacity=0.6] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (-W - 0.1, y, W + 0.1, y))
+    for c, comps in enumerate(cols):
+        x = -W + dx * (c + 1)
+        for i, l, asc in comps:
+            top, bot = ys[i], ys[l]          # wire i is above wire l
+            tip = bot if asc else top        # ascending: the larger value goes to the lower wire
+            lines.append(r"\draw[accent,line width=1.1pt,-latex] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                         % (x, top if asc else bot, x, tip))
+            for y in (top, bot):
+                lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.03in);" % (x, y))
+    return "\n".join(lines) + "\n"
+
+
+def stick_breaking(rings=13, seed=10):
+    """Poisson-Dirichlet stick-breaking: each ring is one sample of the GEM(1) law, the circle
+    broken at a uniform point, the rest broken again, and so on. The arc lengths are the cycle
+    proportions of a large random permutation, and of the prime factors of a large random
+    integer (Tome 10, Chapter 12). Drawn with a fixed seed so the cover is reproducible."""
+    import random
+    rng = random.Random(seed)
+    lines = ["%% Stick-breaking (GEM(1)) samples, one per ring, seed %d." % seed, r"\begin{scope}"]
+    for i in range(rings):
+        r = R * (0.22 + 0.76 * i / (rings - 1))
+        w = 6.5 * (0.6 + 0.4 * i / (rings - 1))
+        left, start = 1.0, 90.0 + rng.uniform(0, 360)
+        while left > 0.004:
+            piece = left * rng.random()
+            left -= piece
+            sweep = 360.0 * piece
+            if sweep > 2.2:
+                a, b = start + 0.9, start + sweep - 0.9
+                op = 0.35 + 0.65 * min(1.0, piece * 2.2)
+                lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] (%.3f:%.4fin) arc (%.3f:%.3f:%.4fin);"
+                             % (w, op, a, r, a, b, r))
+            start += sweep
+    lines.append(r"\end{scope}")
+    return "\n".join(lines) + "\n"
+
+
+def farey_tessellation(depth=8, nmax=40):
+    """The Farey tessellation of the hyperbolic disc: the geodesics joining p/q and r/s whenever
+    ps - qr = +-1, carried from the upper half-plane by the Cayley map z -> (z-i)/(z+i). They cut
+    the disc into ideal triangles, all images of one triangle under the modular group SL2(Z)
+    (Tome 8, Chapter 9)."""
+    from fractions import Fraction
+
+    def to_angle(x):                   # boundary point of the half-plane -> angle on the circle
+        if x is None:
+            return 0.0
+        w = complex(x, -1) / complex(x, 1)
+        return math.atan2(w.imag, w.real)
+
+    def arc(a, b, n=60):
+        d = (b - a + math.pi) % (2 * math.pi) - math.pi   # signed angular gap in (-pi, pi]
+        if abs(abs(d) - math.pi) < 1e-9:
+            return [(R * math.cos(a), R * math.sin(a)), (R * math.cos(b), R * math.sin(b))], math.pi
+        m = a + d / 2
+        dist = 1 / math.cos(d / 2)
+        rad = abs(math.tan(d / 2))
+        cx, cy = dist * math.cos(m), dist * math.sin(m)
+        # the arc runs inside the disc, from e^{ia} to e^{ib}, on the circle centred at (cx, cy)
+        ta = math.atan2(math.sin(a) - cy, math.cos(a) - cx)
+        tb = math.atan2(math.sin(b) - cy, math.cos(b) - cx)
+        dt = (tb - ta + math.pi) % (2 * math.pi) - math.pi
+        pts = [(R * (cx + rad * math.cos(ta + dt * k / n)), R * (cy + rad * math.sin(ta + dt * k / n)))
+               for k in range(n + 1)]
+        return pts, abs(d)
+
+    edges = [(Fraction(n), None) for n in range(-nmax, nmax + 1)]
+    stack = [((n, 1), (n + 1, 1), 0) for n in range(-nmax, nmax)]
+    while stack:
+        (p, q), (r, t), k = stack.pop()
+        edges.append((Fraction(p, q), Fraction(r, t)))
+        if k < depth:
+            m = (p + r, q + t)
+            stack.append(((p, q), m, k + 1))
+            stack.append((m, (r, t), k + 1))
+    lines = ["%% Farey tessellation in the disc: geodesics p/q -- r/s with ps-qr=+-1, depth %d." % depth,
+             r"\draw[accent,line width=0.9pt] (0,0) circle (%.4fin);" % R]
+    for x, y in edges:
+        a, b = to_angle(x), to_angle(y)
+        gap0 = abs((b - a + math.pi) % (2 * math.pi) - math.pi)
+        if gap0 < 0.012:
+            continue
+        pts, gap = arc(a, b, n=max(6, int(70 * gap0 / math.pi)))
+        if gap < 0.012:
+            continue
+        w = max(0.12, min(1.1, 1.6 * gap))
+        lines.append(r"\draw[accent,line width=%.2fpt] " % w + "--".join("(%.4fin,%.4fin)" % pt for pt in pts) + ";")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -397,8 +510,11 @@ MOTIFS = {
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
     "tome7-analysis": confocal_grid,
+    "tome8-shapes": farey_tessellation,
+    "tome10-chance2": stick_breaking,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
+    "tomeC2-algorithms": bitonic_network,
     "tomeS1-linear": lozenge_tiling,
     "tomeS2-geometry": apollonian_gasket,
     "tomeP1-crossroads": gaussian_primes,

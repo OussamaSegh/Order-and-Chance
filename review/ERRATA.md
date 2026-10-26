@@ -212,3 +212,170 @@ A sixth independent pass, over Tome 5 (Where It All Meets, 12 chapters, 12 noteb
 - Chapters 1–5 are being retold in storytelling style by the writing thread, so this review changes nothing in them. The one error found there, the caption of the race figure in Chapter 4 (it said the two counts were equal at x = 26861 "for the first time since x = 2"; they are equal at ten primes from 5 to 26921, and at 26861 class 1 leads), had already been corrected on main by the writing thread while this review ran; the corrected caption and think box agree with the recomputation.
 - Chapter 2 quotes the constant term 0.4863 of P₃ and the mean 1.94358 of n/φ(n) "from the notebook"; both appear in the notebook's output and were not recomputed by a second method.
 - The figures were not regenerated; the race figure itself (ch04-race) is consistent with the recomputed tie points.
+
+## Review: Tome C1
+
+What was checked and found correct: all twelve chapters, every proof and every solution
+re-read, with particular care for the Bruck–Ryser proof (the elimination of the variables
+y₁,…,y_v, the case c₁ = 1, and the final descent on primes ≡ 3 mod 4), the slice-rank
+cap set proof (the diagonal lemma, the bound M_n ≤ ((1+x+x²)/x^{2/3})ⁿ and the value
+2.7552 at x = 0.6), and Bose's and Skolem's constructions of triple systems (every pair
+type, the half-idempotent quasigroup of Lemma 12.5, the block counts m(6m+1) and
+n(3n−1)/2). Numbers recomputed in Python: the formula-size bound s ≤ 115 900 for n = 20,
+the 73-clause saturation of PHP₂, the alkane counts 366 319 and 4 111 846 763, Lyndon words,
+the partial fractions of L₀ in Chapter 4, the circulant Ramsey colourings, τ(Q₃) = 384 and
+2000 for the Petersen graph, the Kirkman table (105 pairs once, every girl once a day),
+the Fano lines, the Bruck–Ryser list up to 30, C(12,7) = 792 < 1000 ≤ C(13,7) = 1716 and the
+random bound 59. Figures checked against their captions: the Mirsky labels (three terms
+labelled 2), the Prüfer code (4,4,5,5,6), the flow of value 19 and its cut 10+9, the
+Gale–Shapley run (both stable matchings), Kruskal's tree of cost 39. Every cross-tome
+pointers checked: the numbered ones against the `.aux` files of Tomes 0–6, 12 and S1 (all
+correct), the forward ones against the series plan and the computing dependency map.
+Dates and attributions checked against sources: Kirkman 1847 and 1850, Steiner 1853,
+Fisher 1940, Bose 1938–39, Skolem 1958, Ray-Chaudhuri–Wilson 1971, Kaski–Östergård 2004,
+Euler 1782, Tarry 1900, Bose–Shrikhande–Parker 1959–60, MacNeish 1922, Bruck–Ryser 1949,
+Lam–Thiel–Swiercz 1989, Bright et al. 2021, Katona and Kleitman–Spencer 1973, AETG 1997,
+Segre 1955, Haken 1985, Shannon 1949, Göring 2000, Bernardi 2012, Friedman 2008, and the
+journal references of every "Sources" section. All formats build (A4, phone, Kindle, EPUB,
+KDP print and cover) with no multiply-defined labels and no undefined references; all
+12 notebooks run without error and their printed values agree with the text (73 clauses,
+7-clause formula unsatisfiable, 366 319 isomers, 384 and 2000 spanning trees, Table 12.1,
+the MOLS counts, the Bruck–Ryser list). Not verifiable from here: the section number
+§ 85 given for Russell's 1900 translation of the Leibniz epigraph (the Latin source,
+Gerhardt VII, p. 200, is confirmed).
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 5, tournaments | ref | Landau's king theorem dated 1951; the paper (*On dominance relations and the structure of animal societies* III, Bull. Math. Biophysics 15) is from 1953. | 1953. |
+| Ch. 5, Menger's theorem | ref | The gap in Menger's 1927 proof was said to be filled by Kőnig in 1931. Kőnig's lecture of 1931 is the bipartite matching theorem; the complete proof of Menger's theorem is in his paper *Über trennende Knotenpunkte in Graphen*, Acta Sci. Math. Szeged 6, 1933. | 1933. |
+| Ch. 7, planarity | ref | Robertson and Seymour's Graph Minors series counted as "twenty-three papers written from 1983 to 2004". Papers I–XX appeared 1983–2004 and XX contains the theorem; XXI–XXIII appeared 2009–2012. | "the twenty papers of their Graph Minors series, written from 1983 to 2004". |
+| Ch. 1, first-order logic | ref | Pointer to "Tome C3, Chapter 4" for Gödel's completeness theorem; C3 is unwritten and the dependency map fixes no chapter number. | "Tome C3". |
+| Ch. 12, Bruck–Ryser | ref | "Chowla extended it to all symmetric designs": the extension is the joint paper of Chowla and Ryser (1950), cited in the sources. | "Chowla and Ryser extended it to all symmetric designs in 1950." |
+
+## Review: Tome 12
+
+What was checked and found correct: all fourteen chapters, every proof and every
+solution re-derived by hand (in particular the Chebotarev proof of Chapter 8 through
+Deuring's reduction and the cyclotomic crossing, the local and global Kronecker–Weber
+proofs, the Kummer-theory step bounding the ω-eigenspace of U₁/U₁ᵖ, the Riemann–Roch
+proof for smooth plane curves, the p-adic filtration and the descent of Chapter 12,
+Bombieri's bound and the twist argument of Chapter 13, Hecke's functional equation);
+the admitted theorems (Artin reciprocity, the existence theorem, the Hilbert class
+field) are labelled "admitted, not proved in this series", and every consequence drawn
+from them is labelled "assuming Theorem …" (the x² + ny² theorem, the Hilbert class
+fields of Q(√−5) and Q(√−23)); Mazur, Birch–Swinnerton-Dyer, Tunnell, modularity,
+Weil's theorem for all curves, the Weil conjectures, Sato–Tate, Petersson and
+Eichler–Shimura appear only in remarks. Numbers recomputed (Python, SymPy, PARI):
+the minimal polynomial of √2 + ∛2, disc(X⁴ − 10X² + 1) = 147456, 7709321041217 =
+37·683·305065927, the Minkowski bounds and class numbers of Chapter 3, Pell for 61,
+the regulator of Q(ζ₇)⁺, the Gauss sums modulo 3, 4, 5, 8 and the root numbers,
+Σ(a/47)a = −235, the h⁻ table up to 41, κ = π/√20 = 0.70248, the splitting examples
+of Chapters 2 and 10 (x² + 14y² below 200: 23, 127, 137, 151; x² + 27y²: 31, 43, 109,
+127, 157; the Hilbert class field of Q(√−23) and the roots 4, 13, 42 of X³ − X − 1
+modulo 59), Gauss's cubic counts for p = 7, 13, 31, the Hasse figure (667 primes,
+largest ratio 0.977), the Sato–Tate figure (78 496 primes), the area-6 triangles from
+P, 2P, 4P on y² = x³ − 36x (hypotenuse 2094350404801/241717895860), the Nagell–Lutz
+identity, the addition and duplication formulas, the torsion-7 point (3, 8), Bachet's
+2P = (129/100, −383/1000), the a_p table of y² + y = x³ − x² against η(τ)²η(11τ)², the
+coefficients of ΔE₄, j = q⁻¹ + 744 + 196884q + …, the Klein quartic (N₁ = 3, N₂ = 5,
+N₃ = 24, P = 1 + 5T³ + 8T⁶), the F₅ count of y² = x³ − x + 1 and N₂ = 32, N₃ = 104.
+Every pointer to Tomes 0, 1, 2, 4, 5 and 6 (about ninety, from "Tome 0, Proposition
+3.7" to "Tome 6, Theorem 6.10") was checked against the rebuilt `.aux` files and the
+statements themselves; all resolve to the result described. Pointers to Tomes 7, 9,
+13 and 14 agree with the series plan and the Part III map. Dates and quotes checked
+against sources: Jordan's letter to Minkowski (SMF page on Bayer-Fluckiger's talk),
+Weil's letter from Rouen prison ("two or three months locked up every year", MacTutor),
+Gauss's diary entry 146 of 9 July 1814, Taniyama's problem 12 (1955), Kronecker 1853,
+Weber 1886, Hilbert 1896, Chevalley 1936, Iwasawa's letter 1952/1992, Roch's death at
+26, Maclaurin 1720, Cramer 1750, Bézout 1779, Mordell 1922, Weil 1928, Nagell–Lutz
+1935–37, Hasse 1933, Stepanov 1969, Bombieri 1973, Deligne 1974. Publishing rules:
+author "SEGHAIER Oussama" only, "First edition", no mention of the repository. The
+build is clean (no undefined or multiply defined label, no duplicate label, no EPUB
+warning); all fourteen notebooks run without error, and every number quoted from a
+notebook appears in its output.
+
+### Tome 12
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 2, figure of the cycle types of X⁵ − X − 1 | text | Caption said "17 981 primes p < 2·10⁵ not dividing 2869"; there are 17 984 primes below 2·10⁵ and 2869 = 19·151, so 17 982 (recounted with PARI: 150, 1450, 3041, 2270, 4487, 3038, 3546 primes for the seven cycle types; the bar heights are unchanged to three decimals). | 17 982. |
+| Ch. 3, proof of Hermite's theorem | math (minor) | "All conjugates of θ have absolute value at most max(C_X, 1)": in the complex case the distinguished conjugate satisfies \|τ₁(θ)\|² ≤ C_X² + ¼, which can exceed max(C_X, 1). | Bound replaced by C_X + 1, with the reason; the coefficient bound becomes C(n,k)(C_X + 1)ᵏ. |
+| Ch. 3, solution of the discriminant-bound exercise | text | (π/4)⁴(256/24)² ≈ 43.1; it is 43.29. | 43.3. |
+| Ch. 12, associativity proof; Ch. 12, Mordell's descent; Ch. 13, twist inequality | text | Three displays overflow the A4 text width by 20–33 pt. | Broken over two lines. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 12, ch. 1–14 | None found: all run, every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapter 8 quotes Washington's theorem numbers (5.34, 8.2, 9.3, 4.17) and Chapter 10 its Chapter 14; not re-checked against the book.
+- Chapter 9 says Weil "added the additive version, the adèles"; the ring was first written down by Artin and Whaples (1945) as "valuation vectors" and the name is Weil's. Left as is.
+- The figures were not regenerated; the cycle-type bars of Chapter 2 were generated with one prime fewer than the recount (3037 against 3038 for the type 2 3), a difference below the resolution of the drawing.
+
+## Review: Tome 7
+
+What was checked and found correct: all ten chapters of Analysis in Depth, every proof
+and every solution re-read line by line, with particular care for Hahn–Banach and the
+three Baire consequences, the mean ergodic theorem and Moore–Aronszajn, Gelfand's theory
+and Wiener's lemma, the spectral theorem and Sturm–Liouville (the Green function bounds,
+Weyl's law, Mercer), Plancherel, Hermite functions, Riesz–Thorin and the lattice Poisson
+formula, Sobolev embeddings and Lax–Milgram, Chebotarev's minors lemma and Tao's
+uncertainty principle, the slice-rank cap set bound (every inequality in the chain to
+32·3ⁿ/n), the Haar measure on GL_n and on Q_p, Hausdorff's free rotations (the 3 ∤ b
+induction), the Jordan curve theorem (Maehara's proof), Dixon's Cauchy theorem,
+Phragmén–Lindelöf, Hadamard's factorisation, the Riemann mapping theorem, Mellin inversion,
+Karamata's theorem, Wiener's L¹ theorem, the Wiener–Ikehara theorem and the Landau–
+Ramanujan count. Numbers recomputed in Python independently of the notebooks: the
+Sturm–Liouville eigenvalues 36.2, 70.4, 119.5, 188.3 for q = 60x; the Karhunen–Loève share
+8/π² ≈ 81%; the cap set exponents 2.7552 (t = 0.6) and 2.7551 (t = 0.5931); y₁ ≈ 9.06 and
+the wobble bound |P| < 1.6·10⁻⁶ in the maximum-of-geometrics theorem, with γ/ln 2 − ½ =
+0.3327; the Landau–Ramanujan constant K = 0.76422365…; the oscillation bounds 0.29 and 1.71
+of Exercise 10.6; the Lebesgue constants, the squares-in-Z_p densities p/(2(p+1)), the
+Legendre fits and the Basel sums of the exercises. Every cross-tome pointer checked: the
+numbered ones (about 150) against the `.aux` files of Tomes 0–6, 12 and S1, all correct, and
+the forward ones (Tome 10 for Birkhoff and Lévy, Tome 11 for the Karhunen–Loève path,
+Tome 12 for Tate's thesis, modular forms and Chebotarev density, Tome C5 for convex
+optimisation) against the series plan. The promises of Tome 4 (general Cauchy, Jordan curve,
+L² Fourier theory, Wiener–Ikehara) are all kept, and the chapters match the map that
+Part III cites. Dates and attributions checked against sources: Hahn 1927 and Banach 1929,
+Steinhaus 1919, Fréchet and Riesz 1907, von Neumann 1929, Fredholm 1903, Gelfand 1941,
+Wiener 1932, Mercer 1909, Weyl's inequality 1912, Plancherel 1910, Lax–Milgram 1954,
+Chebotarev 1926, Tao 2005, Meshulam 1995, Croot–Lev–Pach and Ellenberg–Gijswijt 2016,
+the 2.2202ⁿ construction of 2024, Blum–Luby–Rubinfeld 1990, Haar 1933, Hausdorff 1914,
+Jordan 1887 and Veblen 1905, Maehara 1984, Dixon 1971, Bourgain's 13/84, Riemann 1851
+and Koebe's trick of 1912, Abel 1826, Tauber 1897 and his death in Theresienstadt, Littlewood
+1911, Hardy–Littlewood 1914, Karamata 1930, Ikehara 1931, Landau 1908, Ramanujan's letter
+of 16 January 1913, Hardy–Ramanujan 1918, Delange 1954, and the journal references of every
+"Sources" section. All formats build (A4,
+phone, Kindle, EPUB, KDP print and cover) with no multiply-defined labels and no undefined
+references; all ten notebooks run.
+
+### Tome 7
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 1, duals of the classical spaces | text | "Frigyes Riesz proved in 1909 that there are no others" (the dual of L^p). Riesz's paper is Math. Ann. 69 (1910). | 1910. |
+| Ch. 2, opening | text | "Erhard Schmidt who, in 1907, saw that all this was geometry", and Riesz–Fischer "the same year". Schmidt's paper is Rend. Circ. Mat. Palermo 25 (1908), as the chapter's own sources say; Riesz–Fischer is 1907. | 1908, and "the year before, in 1907". |
+| Ch. 2, mean ergodic theorem | text | "von Neumann's came first, and the two men argued for years about who had done what" overstates the story: von Neumann proved his theorem first and told Birkhoff, Birkhoff's paper appeared first (December 1931, von Neumann's in January 1932), and the dispute is a historians' question rather than a years-long quarrel. | Rewritten with the dates; Birkhoff's paper and Zund's study (Historia Math. 29, 2002) added to the sources. |
+| Ch. 5, interpolation | text | "In 1926 Marcel Riesz proved a general principle": the paper is Acta Math. 49 (1927), as cited in the sources. Thorin's paper is dated 1939 in the sources; it is 1938. | 1927; 1938. |
+| Ch. 8, amenability | math | "an extension of the abelian group of rotations and reflections O(2)": O(2) is not abelian (a reflection and a rotation do not commute). The argument only needs the two-element extension of SO(2), which is what the sentence goes on to say. | "the group O(2) of rotations and reflections". |
+| Ch. 8, Banach–Tarski remark | text | "S. Wagon and G. Tomkowicz" in the text, "Tomkowicz and Wagon" in the sources (the book's author order). | Tomkowicz and Wagon. |
+| Ch. 10, Wiener's L¹ theorem (twice) | ref | Fourier inversion and uniqueness of transforms cited as Theorem 5.3, which is the Schwartz-space proposition; inversion is Theorem 5.2. | Theorem 5.2. |
+| Ch. 10, solution of the quicksort exercise | math | "about 2·10⁶ log 10⁶ ≈ 2.8·10⁷ comparisons, against log₂(10⁶!) ≈ 1.9·10⁷: 38% more". The quoted numbers give 47% more; the exact C_n = 2(n+1)H_n − 4n is 2.48·10⁷ against 1.85·10⁷ (34% more), and 38.6% is the limit 2 ln 2 − 1 of the leading terms. | Rewritten with the exact count, a third more, and the limit 2 ln 2 ≈ 1.39. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 7, ch. 9 | The convexity bound was cited as Theorem 9.17 (that is the zero-counting lemma) and the Γ-size lemma as Lemma 9.15(a) (that is the convexity theorem). | Theorem 9.15 and Lemma 9.14(a). |
+| Tome 7, ch. 10 | Progressions cited as Corollary 10.16 (that is the Euler product proposition); Abel's theorem and its Cesàro corollary cited as Theorem 10.3 and Corollary 10.4. | Corollary 10.15; Theorem 10.2 and Corollary 10.3. |
+| Tome 7, ch. 1–10 | All ten run; every other numbered reference matches the book. | — |
+
+### Known and left as is
+
+- Chapter 2 tells the story of Hilbert asking "what is a Hilbert space?" and flags it as untraceable; Chapter 10 paraphrases Abel's "devil's invention" and says so. Both are left as they are.
+- Chapter 10 states Landau's unweighted count B(x) ~ Kx/√log x without proof and says so; only the logarithmically weighted version is proved.
+- The figures were not regenerated; every number in a caption was recomputed and agrees.

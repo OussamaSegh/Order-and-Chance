@@ -1,0 +1,440 @@
+\chapter{Laws of Large Numbers}
+\begin{center}\itshape
+A casino offers a game: a coin is tossed until it shows heads, and if that takes $k$ tosses you win $2^k$ euros.\\
+The expected win is infinite. What is a fair price for playing $n$ times?\\
+About $n\log_2n$ euros, and the law of large numbers proves it, in probability but not almost surely.
+\end{center}
+
+Jakob Bernoulli died in 1705 with his book on probability unfinished. His nephew Nicolaus published it in 1713 as \emph{Ars
+Conjectandi}, and its fourth part contains the first limit theorem of probability. Draw with replacement from an urn in which
+the white pebbles make up three fifths of the total. How many draws are needed so that the observed proportion of white is
+within $\frac1{50}$ of $\frac35$, with odds of a thousand to one? Bernoulli proved that a finite number suffices, and computed
+one: $25\,550$. The number is absurdly large, because his inequalities were crude, but the principle was new: frequencies converge
+to probabilities, and one can say how fast. Simeon-Denis Poisson named the principle \emph{la loi des grands nombres} in 1837.
+
+For two centuries ``converge'' meant ``in probability''. Borel's paper of 1909 (Chapter~1) asked for more: that the
+frequency of heads in one infinite sequence of tosses tends to $\frac12$, for almost every sequence. This is the \emph{strong}
+law, and it is genuinely stronger. Francesco Cantelli proved it in 1917 for variables with four moments, the proof in Tome~3.
+Aleksandr Khintchine proved the weak law for i.i.d.\ variables with a finite mean in 1929, and Kolmogorov the strong law in the same
+generality in 1930, with a proof through random series that we shall meet in Section~\ref{sec:threeseries}. Fifty years later, in 1981,
+Nasrollah Etemadi published a proof in three pages that needs only pairwise independence, and it is the one this chapter gives.
+
+Then there is the casino of the epigraph, the \emph{St Petersburg game}. Nicolaus Bernoulli, the same nephew, proposed it in a letter
+to Pierre R\'emond de Montmort in 1713; his cousin Daniel Bernoulli analysed it in the proceedings of the St Petersburg academy in 1738
+and gave it its name. The expected gain $\sum_k2^k2^{-k}$ is infinite, yet nobody would pay much to play. Daniel's answer was the
+utility of money, which founded economics' theory of choice. William Feller's answer, in 1945, was a law of large numbers: the
+total gain after $n$ games is $n\log_2n$ to first order, in probability. Fair entrance fees exist after all; they just grow with $n$.
+And the almost sure version fails: infinitely often, the player is far ahead (Exercise~\ref{ex:stpeteas}).
+
+The chapter has three tools. \emph{Truncation}, which cuts off the rare large values that make the variance infinite. Kolmogorov's
+\emph{three-series theorem}, which says exactly when a series of independent terms converges. And \emph{monotone interpolation}, which
+passes from a sparse geometric subsequence of times to all times. With them we prove Feller's weak law and the St Petersburg price,
+Etemadi's strong law, the three-series theorem with its converse, and the strong law of renewal theory.
+
+\begin{reminder}[from Tome 3 and Chapter 1]
+\emph{Chebyshev's inequality} and the weak law for uncorrelated variables with bounded variances (Tome~3, Theorem~4.2): for pairwise independent
+variables, $\operatorname{Var}(X_1+\dots+X_n)=\sum\operatorname{Var}X_k$. \emph{Optional stopping} (Tome~3, Theorem~10.12): if $(M_k)$ is a martingale and
+$\tau\le n$ a stopping time, $\mathbb E M_\tau=\mathbb E M_0$. \emph{Borel--Cantelli} (Tome~3, Theorem~4.11). \emph{Chapter~1}: the zero--one law,
+Kolmogorov's $L^2$ criterion (Proposition~\ref{prop:l2series}), and the fact that a convergent series of independent terms with
+$\mathbb E|X_1|=\infty$ cannot satisfy $S_n/n\to c$ (Exercise~\ref{ex:infmean}). For $Y\ge0$, $\sum_{n\ge1}P(Y>n)\le\mathbb E Y\le\sum_{n\ge0}P(Y>n)$.
+\end{reminder}
+
+\section{Truncation and the weak law}
+
+When the variance is infinite, Chebyshev's inequality is useless as it stands. The remedy is to cut: replace $X$ by $X\mathbf 1_{|X|\le b}$,
+which has all moments, and control separately the probability that the cut made a difference. The following form of the idea works for
+triangular arrays, where the summands may change with $n$.
+
+\begin{theorem}[weak law for triangular arrays]\label{thm:wlltriangular}
+For each $n$, let $X_{n,1},\dots,X_{n,n}$ be independent, let $b_n>0$, and let $Y_{n,k}=X_{n,k}\mathbf 1_{|X_{n,k}|\le b_n}$. Suppose
+\[
+\text{(a)}\ \sum_{k=1}^nP(|X_{n,k}|>b_n)\to0,\qquad\text{(b)}\ \frac1{b_n^2}\sum_{k=1}^n\mathbb E\,Y_{n,k}^2\to0 .
+\]
+Then, with $S_n=\sum_kX_{n,k}$ and $a_n=\sum_k\mathbb E\,Y_{n,k}$, we have $(S_n-a_n)/b_n\to0$ in probability.
+\end{theorem}
+\begin{proof}
+Let $T_n=\sum_kY_{n,k}$. Then $P(S_n\ne T_n)\le\sum_kP(|X_{n,k}|>b_n)\to0$ by~(a). By Chebyshev and independence,
+\[
+P\Bigl(\Bigl|\frac{T_n-a_n}{b_n}\Bigr|>\varepsilon\Bigr)\le\frac{\operatorname{Var}T_n}{\varepsilon^2b_n^2}\le\frac1{\varepsilon^2b_n^2}\sum_k\mathbb E\,Y_{n,k}^2\to0
+\]
+by~(b). So $P(|S_n-a_n|>\varepsilon b_n)\le P(S_n\ne T_n)+P(|T_n-a_n|>\varepsilon b_n)\to0$.
+\end{proof}
+
+For i.i.d.\ variables with a finite mean, take $b_n=n$: the sums in (a) and (b) are $nP(|X|>n)$ and $\frac1n\mathbb E[X^2\mathbf 1_{|X|\le n}]$, both
+of which tend to $0$ (Exercise~\ref{ex:feller}), and $a_n/n=\mathbb E[X\mathbf 1_{|X|\le n}]\to\mathbb E X$: this is Khintchine's weak law. The
+St Petersburg game has no mean, but the theorem still applies, with a different scale.
+
+\begin{theorem}[Feller, 1945]\label{thm:stpetersburg}
+Let $X_1,X_2,\dots$ be i.i.d.\ with $P(X=2^j)=2^{-j}$ for $j\ge1$, and $S_n=X_1+\dots+X_n$. Then
+\[
+\frac{S_n}{n\log_2n}\to1\quad\text{in probability.}
+\]
+\end{theorem}
+\begin{proof}
+Apply Theorem~\ref{thm:wlltriangular} with $X_{n,k}=X_k$ and $b_n=n\log_2n$. Since $P(X\ge2^j)=2^{1-j}$, we have $P(X>x)\le2/x$ for all
+$x>0$, so (a) is $nP(X>b_n)\le2n/b_n=2/\log_2n\to0$. For (b),
+\[
+\mathbb E[X^2\mathbf 1_{X\le b_n}]=\sum_{j:\,2^j\le b_n}2^{2j}2^{-j}=\sum_{j\le\log_2b_n}2^j\le2b_n,
+\]
+so $nb_n^{-2}\mathbb E[X^2\mathbf 1_{X\le b_n}]\le2n/b_n\to0$. Finally $a_n=n\,\mathbb E[X\mathbf 1_{X\le b_n}]=n\sum_{j\le\log_2b_n}1=n\lfloor\log_2b_n\rfloor$,
+and $\log_2b_n=\log_2n+\log_2\log_2n$, so $a_n/b_n\to1$. Hence $S_n/b_n-a_n/b_n\to0$ in probability, and $S_n/b_n\to1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch02-petersburg}
+\caption{Five players of the St Petersburg game: $S_n/(n\log_2n)$ against $n$ on a logarithmic scale, clipped at $4$. The ratio drifts towards $1$
+(Theorem~\ref{thm:stpetersburg}) but every so often a single huge prize throws it upwards; one of these five paths reaches $7$ after $n=1000$.
+The spikes never stop (Exercise~\ref{ex:stpeteas}).}
+\label{fig:petersburg}
+\end{figure}
+
+\begin{think}
+In the St Petersburg game, how long must you play before a single prize exceeds everything won so far? If the largest of $n$ prizes is about $n$
+(why?), and the total is about $n\log_2n$, what fraction of your total comes from your best game? Now explain the jumps in Figure~
+\ref{fig:petersburg}.
+\end{think}
+
+\section{The strong law}
+
+\begin{theorem}[Etemadi, 1981]\label{thm:etemadi}
+Let $X_1,X_2,\dots$ be pairwise independent and identically distributed, with $\mathbb E|X_1|<\infty$ and $\mu=\mathbb E X_1$. Then
+$S_n/n\to\mu$ almost surely.
+\end{theorem}
+\begin{proof}
+\emph{Reduction.} The positive parts $X_k^+$ are again pairwise independent and identically distributed, and so are the negative parts, and
+$S_n=\sum X_k^+-\sum X_k^-$. So we may assume $X_k\ge0$.
+
+\emph{Truncation.} Let $Y_k=X_k\mathbf 1_{X_k\le k}$ and $T_n=Y_1+\dots+Y_n$. Since $\sum_kP(X_k\ne Y_k)=\sum_{k\ge1}P(X_1>k)\le\mathbb E X_1<\infty$,
+Borel--Cantelli says that $X_k=Y_k$ for all large $k$, almost surely. Then $S_n-T_n$ is eventually constant, so it suffices to show
+$T_n/n\to\mu$. Also $\mathbb E Y_k=\mathbb E[X_1\mathbf 1_{X_1\le k}]\to\mu$ by monotone convergence, so $\mathbb E T_n/n\to\mu$ (Ces\`aro).
+
+\emph{A variance bound.} The $Y_k$ are pairwise independent, so $\operatorname{Var}T_n=\sum_{k\le n}\operatorname{Var}Y_k\le\sum_{k\le n}\mathbb E Y_k^2$.
+We shall need
+\begin{equation}\label{eq:etemadisum}
+\sum_{k\ge1}\frac{\mathbb E Y_k^2}{k^2}\le2\,\mathbb E X_1.
+\end{equation}
+Indeed $\sum_kk^{-2}\mathbb E Y_k^2=\mathbb E\bigl[X_1^2\sum_{k\ge\max(X_1,1)}k^{-2}\bigr]$, and $\sum_{k\ge y}k^{-2}\le\frac1{y^2}+\int_y^\infty
+\frac{\dd x}{x^2}\le\frac2y$ for $y\ge1$; so the bracket is at most $2X_1^2/\max(X_1,1)\le2X_1$.
+
+\emph{A geometric subsequence.} Fix $\alpha>1$ and let $k_n=\lfloor\alpha^n\rfloor$. For $\varepsilon>0$, Chebyshev gives
+\[
+\sum_nP\bigl(|T_{k_n}-\mathbb E T_{k_n}|>\varepsilon k_n\bigr)\le\frac1{\varepsilon^2}\sum_n\frac1{k_n^2}\sum_{m\le k_n}\mathbb E Y_m^2=
+\frac1{\varepsilon^2}\sum_m\mathbb E Y_m^2\sum_{n:\,k_n\ge m}\frac1{k_n^2}.
+\]
+Since $k_n\ge\alpha^n/2$, the inner sum is at most $4\sum_{n:\,\alpha^n\ge m}\alpha^{-2n}\le\frac{4}{(1-\alpha^{-2})m^2}$, and by~\eqref{eq:etemadisum}
+the whole is finite. By Borel--Cantelli, $(T_{k_n}-\mathbb E T_{k_n})/k_n\to0$ almost surely, and so $T_{k_n}/k_n\to\mu$ almost surely.
+
+\emph{Interpolation.} Here positivity is used. For $k_n\le m\le k_{n+1}$, since $T$ is non-decreasing,
+\[
+\frac{T_{k_n}}{k_{n+1}}\le\frac{T_m}m\le\frac{T_{k_{n+1}}}{k_n}.
+\]
+As $k_{n+1}/k_n\to\alpha$, we get $\mu/\alpha\le\liminf T_m/m\le\limsup T_m/m\le\alpha\mu$ almost surely. Letting $\alpha\downarrow1$ along a
+sequence, $T_m/m\to\mu$ almost surely.
+\end{proof}
+
+The proof never uses more than pairs of variables at a time: Chebyshev's inequality only sees variances. Everything else is Borel--Cantelli,
+which needs no independence in its first half. The integrability assumption is necessary, by Exercise~\ref{ex:infmean} of Chapter~1: if
+$\mathbb E|X_1|=\infty$, then $\limsup|S_n|/n=\infty$. For non-negative variables, $S_n/n\to\infty$ (Exercise~\ref{ex:infmeanpos}).
+
+\begin{figure}[ht]
+\centering\fig{ch02-pareto}
+\caption{Running averages of five samples from the Pareto law $P(X>x)=x^{-3/2}$, $x\ge1$, which has mean $3$ and infinite variance. Each path
+converges to $3$ (Theorem~\ref{thm:etemadi}), but slowly and with upward jumps: with infinite variance there is no $\frac1{\sqrt n}$ rate.
+Chapter~5 finds the true scale, $n^{-1/3}$, and the stable law that replaces the Gaussian.}
+\label{fig:pareto}
+\end{figure}
+
+\section{Kolmogorov's three-series theorem}\label{sec:threeseries}
+
+Chapter~1 settled random signs. For general independent terms, Kolmogorov found three conditions that together are necessary and sufficient
+for convergence. The converse direction needs a lower bound for the maximum of a walk with bounded steps.
+
+\begin{lemma}[Kolmogorov's other inequality]\label{lem:kolmogorovlower}
+Let $X_1,\dots,X_n$ be independent, with $\mathbb E X_k=0$ and $|X_k|\le c$. Let $S_k=X_1+\dots+X_k$ and $s_n^2=\operatorname{Var}S_n$. Then for
+$a>0$,
+\[
+P\Bigl(\max_{k\le n}|S_k|\le a\Bigr)\le\frac{(a+c)^2}{s_n^2}.
+\]
+\end{lemma}
+\begin{proof}
+Let $s_k^2=\operatorname{Var}S_k$. The process $M_k=S_k^2-s_k^2$ is a martingale: $\mathbb E[S_{k+1}^2-S_k^2\mid\mathcal F_k]=\mathbb E[2S_kX_{k+1}+X_{k+1}^2
+\mid\mathcal F_k]=\operatorname{Var}X_{k+1}$. Let $\tau$ be the first $k\le n$ with $|S_k|>a$, and $\tau=n$ if there is none; it is a bounded
+stopping time, so optional stopping gives $\mathbb E S_\tau^2=\mathbb E s_\tau^2$. Now $|S_\tau|\le a+c$: either $\tau$ is the first exit, and then
+$|S_{\tau-1}|\le a$ and $|X_\tau|\le c$, or there is no exit and $|S_n|\le a$. So $\mathbb E s_\tau^2\le(a+c)^2$. On the event
+$A=\{\max_{k\le n}|S_k|\le a\}$ we have $\tau=n$, so $\mathbb E s_\tau^2\ge s_n^2P(A)$.
+\end{proof}
+
+\begin{theorem}[three-series theorem, Kolmogorov]\label{thm:threeseries}
+Let $X_1,X_2,\dots$ be independent, $c>0$, and $Y_n=X_n\mathbf 1_{|X_n|\le c}$. Then $\sum X_n$ converges almost surely if and only if the three
+series
+\[
+\text{(i)}\ \sum_nP(|X_n|>c),\qquad\text{(ii)}\ \sum_n\mathbb E Y_n,\qquad\text{(iii)}\ \sum_n\operatorname{Var}Y_n
+\]
+all converge. Otherwise it diverges almost surely.
+\end{theorem}
+\begin{proof}
+\emph{Sufficiency.} By (iii) and Proposition~\ref{prop:l2series}, $\sum(Y_n-\mathbb E Y_n)$ converges almost surely; with (ii), so does $\sum Y_n$.
+By (i) and Borel--Cantelli, $X_n=Y_n$ for all large $n$, almost surely, so $\sum X_n$ converges.
+
+\emph{Necessity.} Convergence is a tail event, so if it does not hold almost surely it fails almost surely. Suppose $\sum X_n$ converges almost surely.
+Then $X_n\to0$, so $\{|X_n|>c\}$ happens only finitely often; these events are independent, so by the second Borel--Cantelli lemma (i) holds. As above,
+$\sum Y_n$ then converges almost surely.
+
+To reach the variances, symmetrise: on a product space, let $(Y'_n)$ be an independent copy of $(Y_n)$ (Tome~6, Theorem~6.17), and let
+$Z_n=Y_n-Y'_n$. The $Z_n$ are independent, centred, $|Z_n|\le2c$, $\operatorname{Var}Z_n=2\operatorname{Var}Y_n$, and $\sum Z_n$ converges almost
+surely. Its partial sums $U_n$ are therefore bounded almost surely, so there is $a$ with $P(\sup_n|U_n|\le a)\ge\frac12$. By
+Lemma~\ref{lem:kolmogorovlower}, for every $n$,
+\[
+2\sum_{k\le n}\operatorname{Var}Y_k=\operatorname{Var}U_n\le\frac{(a+2c)^2}{P(\max_{k\le n}|U_k|\le a)}\le2(a+2c)^2.
+\]
+This is (iii). Then $\sum(Y_n-\mathbb E Y_n)$ converges almost surely by Proposition~\ref{prop:l2series}, and subtracting it from the convergent
+$\sum Y_n$ shows that the numerical series $\sum\mathbb E Y_n$ converges: (ii).
+\end{proof}
+
+The theorem holds for every $c>0$: if the three series converge for one $c$ they converge for all. It also gives a complete answer to Chapter~1's
+question about random signs, now for any law: for instance $\sum X_n/n$ converges almost surely for i.i.d.\ centred $X_n$ with $\mathbb E[|X_1|\log^+|X_1|]<\infty$
+(Exercise~\ref{ex:seriesiid}), even when the variance is infinite, while a finite mean alone does not suffice. And it gives Kolmogorov's own route to the strong law, through the following lemma.
+
+\begin{lemma}[Kronecker]\label{lem:kronecker}
+If $0<b_n\uparrow\infty$ and $\sum x_n/b_n$ converges, then $\frac1{b_n}\sum_{k\le n}x_k\to0$.
+\end{lemma}
+\begin{proof}
+Let $r_n=\sum_{k>n}x_k/b_k$, so $r_n\to0$ and $x_k=b_k(r_{k-1}-r_k)$. Summation by parts gives
+\[
+\frac1{b_n}\sum_{k=1}^nx_k=\frac1{b_n}\Bigl(b_1r_0-b_nr_n+\sum_{k=1}^{n-1}(b_{k+1}-b_k)r_k\Bigr).
+\]
+The first term tends to $0$ and so does the second. The last is a weighted average of the $r_k$ with weights $(b_{k+1}-b_k)/b_n$, whose total is
+$(b_n-b_1)/b_n\le1$ and which put vanishing weight on each fixed $k$; since $r_k\to0$, it tends to $0$.
+\end{proof}
+
+\begin{remark}[Kolmogorov's proof of the strong law]
+For i.i.d.\ $X_k$ with mean $\mu$, let $Y_k=X_k\mathbf 1_{|X_k|\le k}$. By~\eqref{eq:etemadisum} (applied to $|X_k|$), $\sum_k\operatorname{Var}(Y_k/k)<\infty$, so
+$\sum(Y_k-\mathbb E Y_k)/k$ converges almost surely, and Kronecker's lemma gives $\frac1n\sum_{k\le n}(Y_k-\mathbb E Y_k)\to0$. As in Etemadi's proof,
+$\mathbb E Y_k\to\mu$ and $X_k=Y_k$ eventually. This proof uses full independence (through Proposition~\ref{prop:l2series}), but it gives more: by the
+same route, $S_n/n^{1/p}\to0$ almost surely for centred $X$ with $\mathbb E|X|^p<\infty$, $1\le p<2$ (Exercise~\ref{ex:mz}).
+\end{remark}
+
+\section{Renewal}
+
+A light bulb is replaced as soon as it fails; the lifetimes $\xi_1,\xi_2,\dots$ are i.i.d., positive, with mean $\mu\in(0,\infty]$. Let
+$T_n=\xi_1+\dots+\xi_n$ be the time of the $n$-th replacement and $N(t)=\max\{n:T_n\le t\}$ the number of replacements by time $t$.
+
+\begin{theorem}[strong law of renewal]\label{thm:renewal}
+$N(t)/t\to1/\mu$ almost surely as $t\to\infty$ (with $1/\infty=0$).
+\end{theorem}
+\begin{proof}
+By the strong law (Exercise~\ref{ex:infmeanpos} if $\mu=\infty$), $T_n/n\to\mu$ almost surely. Each $T_n$ is finite, so $N(t)\to\infty$ as
+$t\to\infty$. By definition $T_{N(t)}\le t<T_{N(t)+1}$, hence
+\[
+\frac{T_{N(t)}}{N(t)}\le\frac t{N(t)}<\frac{T_{N(t)+1}}{N(t)+1}\cdot\frac{N(t)+1}{N(t)}.
+\]
+Both bounds tend to $\mu$ along the path, so $t/N(t)\to\mu$.
+\end{proof}
+
+The expectation $\mathbb E N(t)/t\to1/\mu$ also holds (the \emph{elementary renewal theorem}), but almost sure convergence does not give it for free;
+Exercise~\ref{ex:wald} proves it with Wald's identity. Renewal processes count failures, arrivals at a server, and the cache misses of an algorithm,
+and Theorem~\ref{thm:renewal} turns statements about one cycle into statements about long-run rates: the \emph{renewal--reward theorem} of the
+notebook says that the long-run reward per unit time is the expected reward per cycle divided by the expected cycle length.
+
+\begin{beauty}
+The strong law is a statement about a single infinite experiment, and a theorem about averages over all of them; the bridge is measure theory.
+Etemadi's proof shows how little it needs: variances of pairs, a sparse subsequence of times, and the monotonicity of sums of positive numbers. The
+St Petersburg game shows the other side: a game with infinite expectation still has a law of large numbers, at the scale $n\log n$, but only in
+probability. The difference between ``in probability'' and ``almost surely'' is the difference between what a casino can rely on and what a single
+gambler will see.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:infmeanpos}
+Let $X_k\ge0$ be i.i.d.\ with $\mathbb E X_1=\infty$. Show that $S_n/n\to\infty$ almost surely. (Truncate at a fixed level $M$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:wald}
+In the setting of Theorem~\ref{thm:renewal}, with $\mu<\infty$: (a) show that $N(t)+1$ is a stopping time for the filtration of the $\xi_k$, that
+$\mathbb E N(t)<\infty$, and that $\mathbb E T_{N(t)+1}=\mu\,\mathbb E[N(t)+1]$ (Wald's identity; use the martingale $T_n-n\mu$ and optional stopping at
+$(N(t)+1)\wedge m$). (b) Deduce $\liminf\mathbb E N(t)/t\ge1/\mu$ from $T_{N(t)+1}>t$. (c) Show $\limsup\mathbb E N(t)/t\le1/\mu$, first when $\xi_k\le M$,
+then in general by truncating the lifetimes, which can only increase $N(t)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:feller}
+Let $X_k$ be i.i.d. (a) If $xP(|X|>x)\to0$ as $x\to\infty$, show that $S_n/n-\mathbb E[X\mathbf 1_{|X|\le n}]\to0$ in probability, using
+$\mathbb E[X^2\mathbf 1_{|X|\le n}]=\int_0^n2yP(|X|>y)\dd y-n^2P(|X|>n)\le\int_0^n2yP(|X|>y)\dd y$. (b) Let $X$ be symmetric with $P(|X|>x)=\frac e{x\log x}$ for
+$x\ge e$. Show that $S_n/n\to0$ in probability, but that $S_n/n$ does not converge almost surely.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:stpeteas}
+In the St Petersburg game, show that $\limsup_nS_n/(n\log_2n)=\infty$ almost surely. So Theorem~\ref{thm:stpetersburg} cannot be improved to almost sure
+convergence.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:seriesiid}
+Let $X_k$ be i.i.d.\ and centred. (a) Show with the three-series theorem (with $c=1$, applied to $X_k/k$) that $\sum_kX_k/k$ converges almost surely
+if $\mathbb E[|X_1|\log^+|X_1|]<\infty$. (b) Let $X=Y-\mathbb E Y$ where $P(Y>y)=\frac e{y(\log y)^2}$ for $y\ge e$. Show that $\mathbb E|X|<\infty$ but that
+$\sum_kX_k/k$ diverges almost surely.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:mz}
+Let $1\le p<2$ and let $X_k$ be i.i.d., centred, with $\mathbb E|X_1|^p<\infty$. Show that $S_n/n^{1/p}\to0$ almost surely (Marcinkiewicz and
+Zygmund, 1937). (Apply the three-series theorem to $X_k/k^{1/p}$, then Kronecker's lemma.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:chungfuchs}
+Let $S_n$ be a random walk on $\Z$ with i.i.d.\ steps, $\mathbb E|X_1|<\infty$ and $\mathbb E X_1=0$. Let $G_N(x)=\sum_{n=0}^NP(S_n=x)$. (a) Show that
+$G_N(x)\le G_N(0)$ for every $x$ (decompose according to the first visit to $x$). (b) Using the weak law, show that
+$\sum_{|x|\le\varepsilon N}G_N(x)\ge\sum_{n\le N}P(|S_n|\le\varepsilon n)\ge(1-o(1))N$. (c) Deduce that $\sum_nP(S_n=0)=\infty$, so that the walk is recurrent
+(Tome~3, Theorem~7.12). This is the theorem of Chung and Fuchs (1951) in dimension one: every centred integrable walk on $\Z$ returns to $0$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:infmeanpos}
+For fixed $M$, $S_n/n$ is at least the average of the $\min(X_k,M)$, $k\le n$, which tends to $\mathbb E\min(X_1,M)$, which tends to $\infty$ with $M$.
+\end{hint}
+\begin{hint}{ex:wald}
+$\{N(t)+1=n\}=\{T_{n-1}\le t<T_n\}$. For (c) with $\xi\le M$: $T_{N(t)+1}\le t+M$.
+\end{hint}
+\begin{hint}{ex:feller}
+(a) Theorem~\ref{thm:wlltriangular} with $b_n=n$; the average of a function tending to $0$ tends to $0$. (b) The mean of the truncation is $0$ by symmetry;
+for almost sure convergence, use Exercise~\ref{ex:infmean} of Chapter~1.
+\end{hint}
+\begin{hint}{ex:stpeteas}
+$P(X_n>Cn\log_2n)\ge\frac1{Cn\log_2n}$, and $\sum\frac1{n\log n}=\infty$.
+\end{hint}
+\begin{hint}{ex:seriesiid}
+$\sum_kP(|X_1|>k)<\infty$; for (iii) use~\eqref{eq:etemadisum}; for (ii), $\mathbb E[X\mathbf 1_{|X|\le k}]=-\mathbb E[X\mathbf 1_{|X|>k}]$. In (b), series (ii)
+is $-\sum_k\frac1k\mathbb E[X\mathbf 1_{|X|>k}]$ and $\mathbb E[X\mathbf 1_{X>k}]\approx\frac e{\log k}$.
+\end{hint}
+\begin{hint}{ex:mz}
+The three series are $\sum P(|X|^p>k)$, $\sum k^{-2/p}\mathbb E[X^2\mathbf 1_{|X|\le k^{1/p}}]$ and $\sum k^{-1/p}\mathbb E[X\mathbf 1_{|X|>k^{1/p}}]$ (up to sign).
+\end{hint}
+\begin{hint}{ex:chungfuchs}
+(a) Let $\tau_x$ be the first visit to $x$; after it the walk starts afresh from $x$. (c) Combine (a) and (b): $(2\varepsilon N+1)G_N(0)\ge(1-o(1))N$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:infmeanpos}
+\idea Infinite mean means the truncated means are unbounded; the strong law applies to each truncation, and the truncation only lowers the sum.
+\writeup For fixed $M$, the variables $\min(X_k,M)$ are i.i.d.\ and bounded, so by Theorem~\ref{thm:etemadi}, $\frac1n\sum_{k\le n}\min(X_k,M)\to\mathbb E\min(X_1,M)$
+almost surely. Since $X_k\ge\min(X_k,M)$, $\liminf S_n/n\ge\mathbb E\min(X_1,M)$ almost surely, for every $M$ (countably many $M=1,2,\dots$ suffice). By monotone
+convergence $\mathbb E\min(X_1,M)\to\mathbb E X_1=\infty$.
+\end{solution}
+
+\begin{solution}{ex:wald}
+\idea Wald's identity is optional stopping for the martingale $T_n-n\mu$; the stopping time $N(t)+1$ is the first $n$ with $T_n>t$, and the overshoot
+$T_{N(t)+1}-t$ is at most one lifetime.
+\writeup (a) $\{N(t)+1\le n\}=\{T_n>t\}$ depends on $\xi_1,\dots,\xi_n$, so $\sigma=N(t)+1$ is a stopping time. Choose $\delta>0$ with $p=P(\xi>\delta)>0$; the
+number of lifetimes exceeding $\delta$ before time $t$ is at most $t/\delta$, and $N(t)$ is at most the number of trials needed for $\lfloor t/\delta\rfloor+1$
+successes of probability $p$, a negative binomial variable with finite mean. So $\mathbb E N(t)<\infty$. Optional stopping at the bounded time $\sigma\wedge m$ gives
+$\mathbb E T_{\sigma\wedge m}=\mu\,\mathbb E[\sigma\wedge m]$, and both sides increase to their limits by monotone convergence, so $\mathbb E T_\sigma=\mu\,\mathbb E\sigma$.
+
+(b) $T_\sigma>t$, so $\mu(\mathbb E N(t)+1)>t$, i.e.\ $\mathbb E N(t)/t>1/\mu-1/t$.
+
+(c) If $\xi_k\le M$, then $T_\sigma\le t+M$, so $\mu(\mathbb E N(t)+1)\le t+M$ and $\limsup\mathbb E N(t)/t\le1/\mu$. In general, let $\xi_k^M=\min(\xi_k,M)$ with mean
+$\mu_M$ and renewal count $N^M(t)\ge N(t)$ (shorter lifetimes, more replacements). Then $\limsup\mathbb E N(t)/t\le1/\mu_M$, and $\mu_M\uparrow\mu$ as $M\to\infty$.
+\end{solution}
+
+\begin{solution}{ex:feller}
+\idea Feller's condition $xP(|X|>x)\to0$ is exactly what makes both conditions of the triangular weak law work at the scale $b_n=n$. The example
+satisfies it while having an infinite mean, so the strong law must fail.
+\writeup (a) Condition (a) of Theorem~\ref{thm:wlltriangular} is $nP(|X|>n)\to0$. For (b), the formula $\mathbb E[Z^2]=\int_0^\infty2yP(|Z|>y)\dd y$ applied to
+$Z=X\mathbf 1_{|X|\le n}$ (for which $P(|Z|>y)\le P(|X|>y)$ and $=0$ for $y\ge n$) gives $\frac1n\mathbb E[X^2\mathbf 1_{|X|\le n}]\le\frac1n\int_0^n2yP(|X|>y)\dd y$.
+The integrand $g(y)=2yP(|X|>y)$ tends to $0$ and is bounded by $2y$, so its average over $[0,n]$ tends to $0$. Hence $(S_n-n\,\mathbb E[X\mathbf 1_{|X|\le n}])/n\to0$
+in probability.
+
+(b) At $x=e$, $P(|X|>e)=1$, so this is a valid law. Here $xP(|X|>x)=e/\log x\to0$ and the truncated means vanish by symmetry, so $S_n/n\to0$ in probability.
+But $\mathbb E|X|=\int_0^\infty P(|X|>x)\dd x\ge\int_e^\infty\frac{e\dd x}{x\log x}=\infty$, so by Exercise~\ref{ex:infmean} of Chapter~1, $\limsup|S_n|/n=\infty$
+almost surely: $S_n/n$ converges nowhere, except on a null set.
+\end{solution}
+
+\begin{solution}{ex:stpeteas}
+\idea A single prize larger than $Cn\log_2n$ at time $n$ already pushes the ratio above $C$; such prizes happen infinitely often because the
+probabilities form a divergent series.
+\writeup Since $P(X\ge2^j)=2^{1-j}$, for $x\ge2$ we have $P(X>x)\ge P(X\ge2^{\lceil\log_2x\rceil+1})\ge\frac1{2x}$. Hence
+$\sum_nP(X_n>Cn\log_2n)\ge\sum_n\frac1{2Cn\log_2n}=\infty$, and the events are independent; by Borel--Cantelli, $X_n>Cn\log_2n$ for infinitely many $n$. For each
+such $n$, $S_n\ge X_n>Cn\log_2n$. So $\limsup S_n/(n\log_2n)\ge C$ almost surely, for every $C$.
+\end{solution}
+
+\begin{solution}{ex:seriesiid}
+\idea The three series for $X_k/k$ with $c=1$ involve the tails of $X$ at the levels $k$, exactly the quantities controlled in Etemadi's proof. The
+delicate one is the series of means: the truncation at $k$ removes a little mass from the tail, and the removed amounts, divided by $k$, must sum.
+\writeup (a) (i) $\sum_kP(|X_k/k|>1)=\sum_kP(|X_1|>k)\le\mathbb E|X_1|<\infty$. (iii) The variance of $X_k\mathbf 1_{|X_k|\le k}/k$ is at most $k^{-2}\mathbb E[X_1^2\mathbf 1_{|X_1|\le k}]$,
+and the sum over $k$ is at most $2\mathbb E|X_1|$ by~\eqref{eq:etemadisum} applied to $|X_1|$. (ii) Since $\mathbb E X_1=0$,
+\[
+\bigl|\mathbb E[X_1\mathbf 1_{|X_1|\le k}]\bigr|=\bigl|\mathbb E[X_1\mathbf 1_{|X_1|>k}]\bigr|\le\mathbb E[|X_1|\mathbf 1_{|X_1|>k}],
+\]
+so
+\[
+\begin{gathered}
+\sum_k\frac1k\bigl|\mathbb E[X_1\mathbf 1_{|X_1|\le k}]\bigr|\le\mathbb E\Bigl[|X_1|\sum_{k<|X_1|}\frac1k\Bigr]\qq\le\mathbb E\bigl[|X_1|(1+\log^+|X_1|)\bigr]<\infty .
+\end{gathered}
+\]
+All three series converge.
+
+(b) $\mathbb E Y=e+\int_e^\infty\frac{e\dd y}{y(\log y)^2}=2e<\infty$, so $X$ is integrable and centred. For $k\ge4e$, $|X_1|>k$ means $Y_1>k+2e$ (since $X_1\ge e-2e>-k$), and on that event
+$Y_1-2e\ge\frac12Y_1$; using $\mathbb E[Y\mathbf 1_{Y>t}]\ge\int_t^\infty P(Y>y)\dd y$,
+\[
+\mathbb E[X_1\mathbf 1_{|X_1|>k}]=\mathbb E[(Y_1-2e)\mathbf 1_{Y_1>k+2e}]\ge\tfrac12\mathbb E[Y_1\mathbf 1_{Y_1>k+2e}]\ge\tfrac12\int_{k+2e}^\infty\frac{e\dd y}{y(\log y)^2}
+=\frac e{2\log(k+2e)} .
+\]
+So the series (ii), which is
+\[
+\sum_k\frac1k\mathbb E[X_1\mathbf 1_{|X_1|\le k}]=-\sum_k\frac1k\mathbb E[X_1\mathbf 1_{|X_1|>k}],
+\]
+diverges like $-\sum\frac e{2k\log k}$. By the
+three-series theorem, $\sum X_k/k$ diverges almost surely. Here $\mathbb E[|X|\log^+|X|]=\infty$: the condition of (a) is sharp for this kind of one-sided tail.
+\end{solution}
+
+\begin{solution}{ex:mz}
+\idea Rescale: $X_k/k^{1/p}$ is the right summand, and each of the three series turns into a moment of $|X|^p$ by exchanging sum and expectation, as
+in~\eqref{eq:etemadisum}.
+\writeup Let $c=1$, $Z_k=X_k/k^{1/p}$, $W_k=Z_k\mathbf 1_{|Z_k|\le1}$. (i) $\sum_kP(|X_1|>k^{1/p})=\sum_kP(|X_1|^p>k)\le\mathbb E|X_1|^p$.
+
+(iii) $\sum_k\mathbb E W_k^2=\mathbb E\bigl[X_1^2\sum_{k\ge|X_1|^p}k^{-2/p}\bigr]$. For $y\ge1$, $\sum_{k\ge y}k^{-2/p}\le y^{-2/p}+\int_y^\infty x^{-2/p}\dd x=
+y^{-2/p}+\frac{y^{1-2/p}}{2/p-1}\le C_py^{1-2/p}$, since $2/p>1$. With $y=\max(|X_1|^p,1)$ the bracket is at most $C_p|X_1|^2\max(|X_1|^p,1)^{1-2/p}\le C_p\max(|X_1|^p,|X_1|^2)$,
+and when $|X_1|<1$ this is at most $C_p$; in all cases at most $C_p(1+|X_1|^p)$, which is integrable.
+
+(ii) Since $\mathbb E X_1=0$,
+\[
+|\mathbb E W_k|=k^{-1/p}\bigl|\mathbb E[X_1\mathbf 1_{|X_1|>k^{1/p}}]\bigr|\le k^{-1/p}\mathbb E[|X_1|\mathbf 1_{|X_1|^p>k}],
+\]
+so $\sum_k|\mathbb E W_k|\le\mathbb E\bigl[|X_1|\sum_{k<|X_1|^p}k^{-1/p}\bigr]$. When $p>1$, $\sum_{k<y}k^{-1/p}\le\frac{y^{1-1/p}}{1-1/p}$, and the bracket is at most
+$\frac p{p-1}|X_1|\cdot|X_1|^{p-1}=\frac p{p-1}|X_1|^p$: integrable. The case $p=1$ is Theorem~\ref{thm:etemadi} itself.
+
+So $\sum_kX_k/k^{1/p}$ converges almost surely for $1<p<2$, and Kronecker's lemma with $b_k=k^{1/p}$ gives $S_n/n^{1/p}\to0$.
+\end{solution}
+
+\begin{solution}{ex:chungfuchs}
+\idea Recurrence on $\Z$ is $\sum_nP(S_n=0)=\infty$. The weak law says the walk spends most of its first $N$ steps in the window $|x|\le\varepsilon N$, of
+about $2\varepsilon N$ sites; if no site is visited more often than $0$, then $0$ must be visited at least about $\frac1{2\varepsilon}$ times.
+\writeup (a) Let $\tau_x=\min\{n\ge0:S_n=x\}$. By the strong Markov property at $\tau_x$ (Tome~3, Chapter~7), on $\{\tau_x=m\}$ the walk $(S_{m+j}-x)_{j\ge0}$ is a
+fresh copy of the walk, independent of $\tau_x$. So
+\[
+G_N(x)=\sum_{m\le N}P(\tau_x=m)\sum_{j\le N-m}P(S_j=0)\le\sum_mP(\tau_x=m)\,G_N(0)\le G_N(0).
+\]
+(b) $\sum_{|x|\le\varepsilon N}G_N(x)=\sum_{n\le N}P(|S_n|\le\varepsilon N)\ge\sum_{n\le N}P(|S_n|\le\varepsilon n)$. By the weak law, $P(|S_n|\le\varepsilon n)\to1$,
+so the Ces\`aro average $\frac1N\sum_{n\le N}P(|S_n|\le\varepsilon n)\to1$.
+
+(c) By (a) the left side of (b) is at most $(2\varepsilon N+1)G_N(0)$. Hence $G_N(0)\ge\frac{(1-o(1))N}{2\varepsilon N+1}$, and $\liminf_NG_N(0)\ge\frac1{2\varepsilon}$.
+As $\varepsilon$ is arbitrary, $\sum_nP(S_n=0)=\infty$, and Tome~3, Theorem~7.12 says the walk returns to $0$ infinitely often, almost surely.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} J.~Bernoulli, \emph{Ars Conjectandi}, Basel, 1713, Part~IV; the computation of $25\,550$ draws and the later history are in E.~Seneta,
+``A tricentenary history of the law of large numbers'', \emph{Bernoulli} 19 (2013), 1088--1121, which also records Poisson's name for the law (\emph{Recherches
+sur la probabilit\'e des jugements}, 1837). F.~P.~Cantelli, ``Sulla probabilit\`a come limite della frequenza'', \emph{Rend.\ Accad.\ Lincei} 26 (1917), 39--45.
+A.~Khintchine, ``Sur la loi des grands nombres'', \emph{C.\ R.\ Acad.\ Sci.\ Paris} 188 (1929), 477--479. A.~N.~Kolmogorov, ``Sur la loi forte des grands nombres'',
+\emph{C.\ R.\ Acad.\ Sci.\ Paris} 191 (1930), 910--912. N.~Etemadi, ``An elementary proof of the strong law of large numbers'', \emph{Z.\ Wahrsch.\ Verw.\ Gebiete}
+55 (1981), 119--122. The St Petersburg game: D.~Bernoulli, ``Specimen theoriae novae de mensura sortis'', \emph{Comment.\ Acad.\ Sci.\ Imp.\ Petropolitanae} 5 (1738),
+175--192, which quotes Nicolaus Bernoulli's problem; W.~Feller, ``Note on the law of large numbers and `fair' games'', \emph{Ann.\ Math.\ Statist.}\ 16 (1945), 301--304;
+Y.~S.~Chow and H.~Robbins, ``On sums of independent random variables with infinite moments and `fair' games'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 47 (1961), 330--335.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Sections~2.2--2.5 (the triangular weak law, St Petersburg,
+Etemadi, three series, renewal) and~5.4 (Chung--Fuchs).
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, vol.~II, 2nd ed., Wiley, 1971, Chapters~VII and~XI. Laws of large numbers and
+renewal theory.
+\item J.~Marcinkiewicz and A.~Zygmund, ``Sur les fonctions ind\'ependantes'', \emph{Fund.\ Math.}\ 29 (1937), 60--90.
+\item K.~L.~Chung and W.~H.~J.~Fuchs, ``On the distribution of values of sums of random variables'', \emph{Mem.\ Amer.\ Math.\ Soc.}\ 6 (1951).
+\end{itemize}

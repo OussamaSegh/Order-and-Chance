@@ -1,6 +1,6 @@
 # Order and Chance
 
-*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama & Claude Opus 5.5.
+*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama.
 
 A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 companion notebook with computer-science applications.
@@ -19,7 +19,8 @@ companion notebook with computer-science applications.
   | 4. The Art of Calculation | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.epub) |
   | 5. Where It All Meets (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.epub) |
   | 12. Arithmetic (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.epub) |
-  | C1. Discrete Structures (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.epub) |
+  | C1. Discrete Structures | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC1-discrete.epub) |
+  | C2. Algorithms (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC2-algorithms.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC2-algorithms-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC2-algorithms-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC2-algorithms.epub) |
   | S1. Linear Algebra in Depth | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.epub) |
   | S2. Geometry (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.epub) |
   | P1. Crossroads (problem book, in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
@@ -43,26 +44,26 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
-| 6 | Spaces | Sets, topology, measure and integration | Complete draft (11 chapters) |
-| 7 | Analysis in Depth | Functional, harmonic and complex analysis | In progress (9 of 10 chapters) |
-| 8 | Shapes | Manifolds, algebraic topology, Lie groups | Planned |
+| 6 | Spaces | Sets, topology, measure and integration | Complete (11 chapters) |
+| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (10 chapters) |
+| 8 | Shapes | Manifolds, algebraic topology, Lie groups | In progress (2 of 10 chapters) |
 | 9 | Structures II | Categories, commutative and homological algebra, representations | Planned |
-| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Planned |
+| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | In progress (4 of 12 chapters) |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Planned |
-| 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | In progress (13 of 14 chapters) |
+| 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | Planned |
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
 | 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | Planned |
 | C1 | Discrete Structures | Logic, combinatorics, graph theory, orders | Complete draft (12 chapters) |
-| C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised and algebraic algorithms | Planned |
+| C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised and algebraic algorithms | In progress (5 of 12 chapters) |
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Planned |
 | C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
 | C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
 | S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | Complete (12 chapters) |
-| S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | In progress (3 of 12 chapters) |
+| S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | In progress (11 of 12 chapters) |
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Planned |
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
-| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | In progress (6 of 14 chapters) |
+| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | In progress (8 of 14 chapters) |
 | P2 | Machinery | 300 harder problems across Tomes 6–9 | Planned |
 | P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |
 

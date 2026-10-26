@@ -5,7 +5,8 @@
 % width in inches, from the page count of the print interior) and \BLURB (the tome's back-cover
 % text, <tome>/blurb.tex, or tools/blurb-default.tex). KDP puts spine text only on books of 80
 % pages or more, so \SPINETEXT is defined only then. The barcode area (2in x 1.2in, lower right
-% of the back cover) is left empty: KDP prints the ISBN barcode there.
+% of the back cover) holds the ISBN barcode when \BARCODE is defined, otherwise it is left empty
+% for KDP's own barcode.
 \documentclass[border=0pt]{standalone}
 \input{tools/cover-colors}
 \begin{document}
@@ -27,9 +28,14 @@
   \draw[accent,line width=0.4pt] ($(K)+(2.4in,7.5in)$) -- ++(1.2in,0);
   \node[ivory,anchor=north,text width=4.5in,align=justify,font=\fontsize{10.5}{14.5}\selectfont]
     at ($(K)+(3in,7.25in)$) {\input{\BLURB}};
-  \node[ivory!70,anchor=south west,text width=3in,align=left,font=\fontsize{8}{10}\selectfont]
-    at ($(K)+(0.6in,0.6in)$) {Companion notebooks and corrections:\\
-    \texttt{github.com/OussamaSegh/Order-and-Chance}};
+  % ISBN barcode (EAN-13, made by tools/ean13.py) in KDP's barcode area, lower right of the back
+  % cover, when the tome has its ISBN; then untick "add a barcode" in KDP.
+  \ifdefined\BARCODE
+    \fill[white] ($(K)+(3.4in,0.5in)$) rectangle ++(2.05in,1.25in);
+    \begin{scope}[shift={($(K)+(3.4in,0.5in)$)}]
+      \input{\BARCODE}
+    \end{scope}
+  \fi
   % Spine (text reads top to bottom, as on English-language books)
   \ifdefined\SPINETEXT
     \pgfmathsetmacro{\spfs}{min(10,\SPINE*72*0.42)}

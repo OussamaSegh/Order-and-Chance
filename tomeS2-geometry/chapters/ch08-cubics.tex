@@ -1,0 +1,483 @@
+\chapter{Cubic curves}\label{ch:cubics}
+
+\begin{center}\itshape
+Every curve of the third order is the shadow of one of five parabolas.
+\upshape(paraphrase of Newton, \emph{Enumeratio linearum tertii ordinis}, 1704)
+\end{center}
+
+Around 1621 Claude-Gaspard Bachet de M\'eziriac, whose Latin edition of Diophantus' \emph{Arithmetica} came out that year (it is in a copy of this
+book that Fermat later wrote his famous marginal note), looked at the equation $y^2=x^3-2$. It has the obvious solution $x=3$, $y=5$. Is there another
+one in rational numbers? Bachet found one, $x=\frac{129}{100}$, $y=\frac{383}{1000}$, and a recipe to produce more: draw the tangent to the curve at
+$(3,5)$ and see where it cuts the curve again (Figure~\ref{fig:bachet}). Today we see in his trick the first step of a group law: on a cubic curve, two
+points can be ``added'' to give a third, and the rational points form a group.
+
+Newton, who classified the real cubic curves into $72$ species in an appendix to his \emph{Opticks} (1704), noticed that all of them are projections of
+the five ``divergent parabolas'' $y^2=ax^3+bx^2+cx+d$. In this chapter we prove a sharp form of his remark, the Weierstrass normal form, and then follow
+the chord and the tangent: the group law, its associativity from the Cayley--Bacharach theorem of Chapter~7, the nine inflection points and their twelve
+lines, which form the finite plane of order $3$ of Chapter~4, and the curves over finite fields, which a cryptographer would recognise.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-bachet}
+\caption{Bachet's tangent on $y^2=x^3-2$. The tangent at $P=(3,5)$, of slope $\frac{27}{10}$, meets the curve again at
+$P*P=\bigl(\frac{129}{100},\frac{383}{1000}\bigr)$; reflecting in the $x$-axis gives the point $2P$ of Section~\ref{sec:weierstrass}.}
+\label{fig:bachet}
+\end{figure}
+
+\begin{think}
+A line meets a cubic in three points. If two of them are rational, why must the third be rational too? What goes wrong with conics, where a line meets
+the curve in two points?
+\end{think}
+
+\section{Chords and tangents}
+
+Throughout, $K$ is a field and $E$ is a \emph{smooth} cubic curve over $K$, given by a homogeneous cubic $F$ with no singular point over an algebraic
+closure $\overline K$. A smooth cubic is irreducible (the solution of Exercise~\ref{ex:polarcurve}), so no line is contained in $E$. We write $E(K)$ for the
+set of points of $E$ with coordinates in $K$.
+
+Let $L$ be a line through two points $[p]$ and $[v]$. Its points are $[sp+tv]$, and $F(sp+tv)$ is a binary form of degree $3$ in $(s,t)$, not zero since $L$ is
+not a component of $E$. Its roots are the points of $L\cap E$; their \emph{multiplicities} add up to $3$ over $\overline K$.
+
+\begin{lemma}\label{lem:tangentdouble}
+Let $P=[p]$ be a point of $E$ and $L$ a line through $P$. The root $P$ of $F$ restricted to $L$ is at least double if and only if $L$ is the tangent line
+at $P$.
+\end{lemma}
+
+\begin{proof}
+Write $L$ as the points $[p+tv]$ together with $[v]$, where $[v]\ne P$. By Taylor's formula $F(p+tv)=F(p)+t\,\nabla F(p)\cdot v+t^2(\dots)$, and $F(p)=0$.
+So $t=0$ is at least a double root if and only if $\nabla F(p)\cdot v=0$, that is, if and only if $[v]$ lies on the tangent line $\nabla F(p)\cdot x=0$.
+That line also contains $P$, since $\nabla F(p)\cdot p=3F(p)=0$ by Euler's formula, so this says exactly that $L$ is the tangent.
+\end{proof}
+
+For $P,Q\in E(K)$, let $L$ be the line $PQ$, or the tangent at $P$ if $P=Q$. By the lemma, $P$ and $Q$ account for two of the three roots of the binary cubic.
+A cubic with coefficients in $K$ and two roots in $K$ has its third root in $K$ too: divide by the two known linear factors. Call the third point $P*Q$; it
+lies in $E(K)$. The operation $*$ is commutative, and $P*Q=R$ means that $P,Q,R$ are the three points of a line with $E$, counted with multiplicity; so
+$P*(P*Q)=Q$.
+
+The operation $*$ is not a group law: it has no neutral element (Exercise~\ref{ex:noneutral}). The fix is to choose a point.
+
+\begin{definition}
+Fix $O\in E(K)$. For $P,Q\in E(K)$, set $P+Q=O*(P*Q)$.
+\end{definition}
+
+\begin{proposition}\label{prop:groupbasic}
+The operation $+$ is commutative, $O$ is a neutral element, and every $P$ has an inverse $-P=P*(O*O)$.
+\end{proposition}
+
+\begin{proof}
+Commutativity comes from that of $*$. Next, $P+O=O*(P*O)$, and $O$, $P$, $P*O$ are the three points of one line, so $O*(P*O)=P$. Finally, let $O'=O*O$, the
+third point of the tangent at $O$, and $P'=P*O'$. Then $P$, $O'$, $P'$ lie on a line, so $P*P'=O'$, and $P+P'=O*O'=O$, because $O,O,O'$ are the three points
+of the tangent at $O$.
+\end{proof}
+
+The hard part is associativity. Here is where Chapter~7 pays off.
+
+\begin{theorem}[associativity]\label{thm:assoc}
+Let $P,Q,R\in E(K)$ and set
+\[
+S'=P*Q,\quad S=P+Q,\quad T'=S*R,\qquad U'=Q*R,\quad U=Q+R,\quad T''=P*U.
+\]
+If the nine points $P,Q,R,O,S,S',U,U',T'$ are distinct, then $(P+Q)+R=P+(Q+R)$.
+\end{theorem}
+
+\begin{proof}
+Since $(P+Q)+R=O*T'$ and $P+(Q+R)=O*T''$, it suffices to show $T'=T''$. Consider the six lines
+\[
+\ell_1=PQS',\quad \ell_2=SRT',\quad \ell_3=U'OU,\qquad m_1=S'OS,\quad m_2=QRU',\quad m_3=PUT'',
+\]
+each named by its three points on $E$ (for instance $U=O*U'$ means that $U'$, $O$, $U$ are collinear). The cubic $C_1=\ell_1\ell_2\ell_3$ meets $E$ in the nine
+distinct points $P,Q,S',S,R,T',U',O,U$, and $E$, being irreducible, has no common component with it. The cubic $C_2=m_1m_2m_3$ passes through eight of these
+points, $S',O,S,Q,R,U',P,U$. By the Cayley--Bacharach theorem (Theorem~\ref{thm:cayleybacharach}), it also passes through $T'$. So $T'$ lies on $m_1$, $m_2$
+or $m_3$, and also on $E$. The points of $E$ on $m_1$ are $S',O,S$, and on $m_2$ they are $Q,R,U'$, all different from $T'$. So $T'$ is on $m_3$, whose points on
+$E$ are $P,U,T''$; since $T'\ne P,U$, we get $T'=T''$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-real}
+\caption{Two real cubics: $y^2=x^3-x$ has two components, $y^2=x^3-x+1$ has one. The red points are the real inflection points in the affine plane; with
+the point at infinity $O$ they are the three points of the vertical dashed line (Theorem~\ref{thm:realflexes}).}
+\label{fig:realcubics}
+\end{figure}
+
+\begin{remark}
+The theorem covers ``most'' triples. The remaining cases, when some of the nine points coincide, are handled in Tome~12 (Chapter~12, the theorem on the
+group law), where Cayley--Bacharach is proved for divisors, that is, for points counted with multiplicity. Over $\mathbb R$ or $\mathbb C$ one can also
+argue by continuity: both sides of the identity are continuous functions of $(P,Q,R)$, and triples in general position are dense. The companion notebook
+checks associativity for every triple of points on several curves over finite fields, degenerate or not. From now on we use that $(E(K),+)$ is an abelian
+group.
+\end{remark}
+
+\section{The Weierstrass form}\label{sec:weierstrass}
+
+A point $O$ of $E$ is an \emph{inflection point}, or \emph{flex}, if its tangent line meets $E$ only at $O$, with multiplicity $3$; equivalently, $O*O=O$.
+Choosing a flex as the origin makes everything simpler: then $-P=P*O$, and three points add up to $O$ exactly when they are collinear (Exercise~\ref{ex:collinear}).
+
+\begin{proposition}[Weierstrass form]\label{prop:weierstrass}
+Let $K$ have characteristic different from $2$ and $3$, and let $E$ be a smooth cubic over $K$ with a flex $O\in E(K)$. In suitable coordinates over
+$K$, $O=[0:1:0]$ and
+\[
+E:\ y^2z=x^3+axz^2+bz^3,\qquad\text{that is}\qquad y^2=x^3+ax+b\ \text{in the chart }z=1,
+\]
+with $4a^3+27b^2\ne0$. Conversely, every such equation defines a smooth cubic with a flex at $[0:1:0]$.
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:frames} we may send $O$ and a second point of its tangent to $[0:1:0]$ and $[1:0:0]$; then $O=[0:1:0]$ and its tangent is
+the line $z=0$. The restriction $F(x,y,0)$ is a binary cubic with a triple root at $[0:1]$, so $F(x,y,0)=cx^3$, and $c\ne0$ since the line $z=0$
+is not a component. Hence $F=cx^3+zQ(x,y,z)$ with $Q$ a quadratic form. Let $e$ be the coefficient of $y^2$ in $Q$. If $e=0$, then $F$ has no monomial
+$y^3$, $xy^2$ or $y^2z$, so all three partial derivatives vanish at $[0:1:0]$, and $O$ would be singular. So $e\ne0$, and $Q=ey^2+y\,(\alpha x+\beta z)+q(x,z)$.
+Replacing $y$ by $y-\frac{\alpha x+\beta z}{2e}$ removes the middle term, and the equation takes the form
+\[
+ey^2z=c'x^3+c_2x^2z+c_1xz^2+c_0z^3,\qquad c'=-c\ne0.
+\]
+Replacing $z$ by $\frac{c'}e\,z$ and dividing by $c'$ makes both leading coefficients $1$, and then a substitution $x\mapsto x-\frac s3z$, where $s$ is the
+new coefficient of $x^2z$, removes the $x^2z$ term. None of these
+substitutions moves $[0:1:0]$, and the equation is now $y^2z=x^3+axz^2+bz^3$.
+
+For the smoothness condition, let $f(x)=x^3+ax+b$. In the chart $z=1$ the equation is $y^2-f(x)=0$, and a singular point has $2y=0$ and $f'(x)=0$, with
+$f(x)=y^2=0$: a repeated root of $f$. At $[0:1:0]$ the derivative with respect to $z$ is $y^2-\dots=1\ne0$. A common root of $f$ and $f'=3x^2+a$ satisfies
+$x^2=-\frac a3$ and $0=f(x)=x(x^2+a)+b=\frac{2a}3x+b$. If $a=0$ this forces $b=0$. If $a\ne0$ it forces $x=-\frac{3b}{2a}$, and then $x^2=-\frac a3$ reads
+$27b^2=-4a^3$; conversely, if $4a^3+27b^2=0$ and $a\ne0$, then $x=-\frac{3b}{2a}$ is a common root. So $E$ is smooth exactly when $4a^3+27b^2\ne0$. Finally
+$F(x,y,0)=-x^3$, so the line $z=0$ meets $E$ only at $[0:1:0]$, three times: it is a flex.
+\end{proof}
+
+On a Weierstrass curve, the line through $O=[0:1:0]$ and an affine point $(x_0,y_0)$ is the vertical line $x=x_0$, which meets $E$ again at $(x_0,-y_0)$.
+So $-(x,y)=(x,-y)$: \emph{to add $P$ and $Q$, draw the line, take the third point, and reflect it in the $x$-axis}. In coordinates, let $P=(x_1,y_1)$ and
+$Q=(x_2,y_2)$ with $Q\ne-P$, and let $\lambda$ be the slope of the line $PQ$, or of the tangent at $P$ if $P=Q$:
+\[
+\lambda=\frac{y_2-y_1}{x_2-x_1}\quad(x_1\ne x_2),\qquad\lambda=\frac{3x_1^2+a}{2y_1}\quad(P=Q).
+\]
+Substituting $y=y_1+\lambda(x-x_1)$ into $y^2=f(x)$ gives a cubic in $x$ with leading coefficient $1$ and roots $x_1$, $x_2$ and $x_3$, the abscissa of $P*Q$. The
+coefficient of $x^2$ is $-\lambda^2$ on one side and $-(x_1+x_2+x_3)$ on the other, so
+\[
+P+Q=(x_3,y_3),\qquad x_3=\lambda^2-x_1-x_2,\qquad y_3=-\bigl(y_1+\lambda(x_3-x_1)\bigr).
+\]
+For Bachet's point $P=(3,5)$ on $y^2=x^3-2$: $\lambda=\frac{27}{10}$, $x_3=\frac{729}{100}-6=\frac{129}{100}$ and $y_3=-\bigl(5-\frac{27}{10}\cdot\frac{171}{100}\bigr)
+=-\frac{383}{1000}$. Indeed $\bigl(\frac{383}{1000}\bigr)^2=\frac{146689}{10^6}=\bigl(\frac{129}{100}\bigr)^3-2$.
+
+\begin{remark}
+Bachet's point generates infinitely many rational points: $(3,5)$ has infinite order. (By the theorem of Nagell and Lutz, proved in Tome~12, Chapter~12, a
+point of finite order on $y^2=x^3+ax+b$ with $a,b\in\mathbb Z$ has integer coordinates; $2P$ does not, so neither $2P$ nor $P$ has finite order.) Two
+theorems frame the story. Mordell proved in 1922 that $E(\mathbb Q)$ is always finitely generated, as Poincar\'e had asked in 1901; Tome~12 proves it in
+Chapter~12. Mazur proved in 1977 that its finite part is one of exactly fifteen groups, $\mathbb Z/n$ for $1\le n\le10$ or $n=12$ and
+$\mathbb Z/2\times\mathbb Z/2m$ for $1\le m\le4$; this is far beyond our reach. The number of copies of $\mathbb Z$, the \emph{rank}, is the subject of a famous open
+problem, the conjecture of Birch and Swinnerton-Dyer.
+\end{remark}
+
+\section{Nine flexes and twelve lines}
+
+\begin{think}
+On the curve $y^2=x^3-x+1$ of Figure~\ref{fig:realcubics}, find by eye the points where the curve changes from bending one way to bending the other. How many
+are there, counting $O$? Are they collinear?
+\end{think}
+
+When $O$ is a flex, a point $P$ is a flex exactly when the tangent at $P$ meets $E$ three times at $P$, that is, $P*P=P$, that is, $P+P+P=O$: the flexes are
+the points of order dividing $3$, the \emph{$3$-torsion} $E[3]$. We count them.
+
+\begin{theorem}\label{thm:nineflexes}
+Let $E:y^2=x^3+ax+b$ be smooth over an algebraically closed field of characteristic $0$. Then $E$ has exactly nine flexes, they form a subgroup
+$E[3]\cong(\mathbb Z/3)^2$, and three distinct flexes are collinear if and only if they form a line of the affine plane $(\mathbb Z/3)^2$. In particular the
+line through two flexes contains a third one, and the nine flexes lie three by three on twelve lines.
+\end{theorem}
+
+\begin{proof}
+Let $f(x)=x^3+ax+b$. An affine point $P=(x,y)$ with $y=0$ has $-P=P$, so $2P=O$ and $3P=P\ne O$: it is not a flex. For $y\ne0$, $P$ is a flex if and only if
+$2P=-P$, which means that $2P$ and $P$ have the same abscissa. By the duplication formula this is $\frac{f'(x)^2}{4f(x)}-2x=x$, that is,
+\[
+\psi(x)=12xf(x)-f'(x)^2=3x^4+6ax^2+12bx-a^2=0.
+\]
+Since $f''(x)=6x$,
+\[
+\psi'(x)=12f(x)+12xf'(x)-2f'(x)f''(x)=12f(x).
+\] If $\psi$ had a double root $x_0$, then $f(x_0)=0$, and $\psi(x_0)=0$ would give
+$f'(x_0)=0$: a double root of $f$, which smoothness excludes. So $\psi$ has four distinct roots, none of them a root of $f$, and each gives two points
+$(x_0,\pm y_0)$ with $y_0\ne0$. With $O$, this is nine flexes.
+
+The flexes are the solutions of $3P=O$, a subgroup of the abelian group $E$. A group of order $9$ in which every element has order $1$ or $3$ is not cyclic,
+so it is $\mathbb Z/3\times\mathbb Z/3$. For distinct flexes $P,Q$, the third point $R$ of the line $PQ$ satisfies $P+Q+R=O$, so $R=-P-Q$ is a flex. It is
+different from $P$: $R=P$ would give $Q=-2P=P$, since $3P=O$. Likewise $R\ne Q$. In the plane $(\mathbb Z/3)^2$, which is a vector space over $\mathbb F_3$,
+the line through $P$ and $Q$ is $\{P,Q,P+2(Q-P)\}$, and $P+2(Q-P)=2Q-P=-P-Q$ since $3=0$. So the lines through two flexes are exactly the affine lines of
+$\mathbb F_3^2$. There are $\binom92/\binom32=12$ of them.
+\end{proof}
+
+This configuration of nine points and twelve lines is named after Otto Hesse, the first to study its properties; the nine flexes themselves go back to
+Maclaurin (see Artebani and Dolgachev in the sources). It is the affine plane of order $3$, which you met in Chapter~4 as the finite plane $\mathbb P^2(\mathbb F_3)$
+minus a line. It cannot be drawn with straight lines in the real plane, as we will see in a moment; Figure~\ref{fig:hesse} draws four of its lines as circles.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-hesse}
+\caption{The Hesse configuration: nine points, twelve lines of three points each, any two points on exactly one line. Eight lines are straight; the four
+other ones are drawn as circles.}
+\label{fig:hesse}
+\end{figure}
+
+\begin{theorem}\label{thm:realflexes}
+A smooth real cubic $y^2=x^3+ax+b$ has exactly three real flexes, and they are collinear.
+\end{theorem}
+
+\begin{proof}
+The real flexes form the subgroup $E(\mathbb R)\cap E[3]$ of $E[3]\cong(\mathbb Z/3)^2$, so there are $1$, $3$ or $9$ of them. There are not $9$: the nine
+flexes are not all on one line (a line meets $E$ in at most three points), and every line through two of them contains a third, which the theorem of
+Sylvester and Gallai (Exercise~\ref{ex:sylvestergallai}) forbids for a finite set of real points. (The theorem is stated in the affine plane, but a real projective
+transformation sending to infinity a real line that misses the nine points brings us there, and it preserves collinearity.) There are more than one: let $e$ be the largest real root of
+$f$. Then $\psi(e)=-f'(e)^2<0$, while $\psi(x)\to+\infty$ as $x\to+\infty$, so $\psi$ has a root $x_1>e$, where $f(x_1)>0$. This gives two real flexes
+$(x_1,\pm\sqrt{f(x_1)})$, and with $O$ we have three. They are collinear: the vertical line $x=x_1$ passes through $O$.
+\end{proof}
+
+\begin{remark}
+Every smooth complex cubic has exactly nine flexes, whether or not we start from a Weierstrass equation: they are its intersections with the
+\emph{Hessian curve} $\det\bigl(\partial^2F/\partial x_i\partial x_j\bigr)=0$, another cubic, and one shows that all nine intersections are simple (Brieskorn
+and Kn\"orrer, or Kirwan, in the sources). In particular every smooth complex cubic has a flex, and Proposition~\ref{prop:weierstrass} applies to it.
+\end{remark}
+
+\section{Cubics over finite fields}
+
+Over a finite field $\mathbb F_p$, $p$ an odd prime, the group $E(\mathbb F_p)$ is finite, and counting its points is a game with quadratic residues.
+Recall the Legendre symbol: $\bigl(\frac cp\bigr)$ is $1$ if $c$ is a nonzero square mod $p$, $-1$ if it is not a square, and $0$ if $p\mid c$.
+
+\begin{proposition}\label{prop:countEp}
+For $E:y^2=f(x)$ over $\mathbb F_p$,
+\[
+\# E(\mathbb F_p)=p+1+\sum_{x\in\mathbb F_p}\Bigl(\frac{f(x)}p\Bigr).
+\]
+\end{proposition}
+
+\begin{proof}
+The equation $y^2=c$ has $1+\bigl(\frac cp\bigr)$ solutions $y\in\mathbb F_p$: two if $c$ is a nonzero square, one if $c=0$, none otherwise. Summing over $x$
+gives $p+\sum_x\bigl(\frac{f(x)}p\bigr)$ affine points, and the point $O$ adds one.
+\end{proof}
+
+The sum is a sum of $p$ signs. If they behaved like coin flips it would typically be of size about $\sqrt p$, and that is the truth: Hasse proved in 1933
+that $\bigl|\#E(\mathbb F_p)-p-1\bigr|\le2\sqrt p$ (Tome~12, Chapter~13). Figure~\ref{fig:finitecubic} shows the $100$ points of $y^2=x^3-x+1$ over
+$\mathbb F_{101}$, scattered like stars, but symmetric under $y\mapsto-y$. Sometimes the signs cancel exactly.
+
+\begin{proposition}\label{prop:supersingular}
+If $p\equiv3\pmod4$, the curve $y^2=x^3-x$ has exactly $p+1$ points over $\mathbb F_p$.
+\end{proposition}
+
+\begin{proof}
+Here $f(-x)=-f(x)$, and $-1$ is not a square mod $p$ (Tome~1), so $\bigl(\frac{f(-x)}p\bigr)=-\bigl(\frac{f(x)}p\bigr)$. The terms for $x$ and $-x$ cancel,
+the term for $x=0$ is $0$, and the sum in Proposition~\ref{prop:countEp} vanishes.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-finite}
+\caption{The $100$ affine points of $y^2=x^3-x+1$ over $\mathbb F_{101}$; with $O$, $E(\mathbb F_{101})$ has $101$ points, and $|101-102|\le2\sqrt{101}$.}
+\label{fig:finitecubic}
+\end{figure}
+
+\begin{remark}
+In 1985 Neal Koblitz and Victor Miller independently proposed to use the groups $E(\mathbb F_p)$ for cryptography: the chord-and-tangent rule is easy to
+compute, while undoing it (finding $n$ from $P$ and $nP$) seems very hard. Elliptic curve cryptography now protects a large part of the traffic on the
+internet. The companion notebook implements the group law over $\mathbb F_p$.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:noneutral}
+Show that $*$ has no neutral element: there is no $N\in E$ with $N*P=P$ for all $P\in E$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:collinear}
+Let $O$ be a flex. Show that $-P=P*O$, and that $P+Q+R=O$ if and only if $P,Q,R$ are the three points of a line with $E$, counted with multiplicity.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bachet}
+On $y^2=x^3-2$, compute $3P$ for $P=(3,5)$, and check that it is on the curve.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:twotorsion}
+Show that the points of order $2$ of $y^2=f(x)$ are the $(e,0)$ with $f(e)=0$, and that over $\mathbb C$ the points with $2P=O$ form a group isomorphic to
+$(\mathbb Z/2)^2$. When are all of them real?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:torsionsix}
+Show that $P=(2,3)$ has order $6$ on $y^2=x^3+1$, and list its multiples.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:realcomponents}
+Show that the real points of $y^2=f(x)$ form two pieces if $f$ has three real roots, and one piece if it has one.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fermatflexes}
+Find the nine flexes of the Fermat cubic $x^3+y^3+z^3=0$ in $\mathbb P^2(\mathbb C)$, and check that the line through two of them contains a third.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:flexesxcube}
+Find the flexes of $y^2=x^3+1$. Which of them are real? Check Theorem~\ref{thm:realflexes}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:countfive}
+List the points of $y^2=x^3+x+1$ over $\mathbb F_5$, and show that $E(\mathbb F_5)$ is cyclic. Which points are flexes?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:xcubeplusone}
+Show that if $p\equiv2\pmod3$, then $y^2=x^3+1$ has exactly $p+1$ points over $\mathbb F_p$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:changeorigin}
+Let $O$ and $O_1$ be two points of $E$, with $O$ a flex, and write $+$ and $\oplus$ for the group laws with origins $O$ and $O_1$. Show that
+$P\oplus Q=P+Q-O_1$. So the groups are isomorphic, by $P\mapsto P-O_1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:sixonconic}
+Let $O$ be a flex, and $P_1,\dots,P_6$ six points of $E$ on a conic $C$. Assume that $A=P_1*P_2$, $B=P_3*P_4$ and $C'=P_5*P_6$ are such that the nine points $P_1,\dots,P_6,A,B,C'$ are distinct and $C'\notin C$. Show that $P_1+\dots+P_6=O$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:noneutral}
+If $N*P=P$, the line through $N$ and $P$ meets $E$ at $P$ twice.
+\end{hint}
+\begin{hint}{ex:collinear}
+Use $O*O=O$ in Proposition~\ref{prop:groupbasic}.
+\end{hint}
+\begin{hint}{ex:bachet}
+Add $P$ and $2P=\bigl(\frac{129}{100},-\frac{383}{1000}\bigr)$ with the chord formula.
+\end{hint}
+\begin{hint}{ex:twotorsion}
+$2P=O$ means $P=-P$.
+\end{hint}
+\begin{hint}{ex:torsionsix}
+Compute $2P$ with the tangent, then $3P=P+2P$.
+\end{hint}
+\begin{hint}{ex:realcomponents}
+Look at the sign of $f$ on the intervals between its roots.
+\end{hint}
+\begin{hint}{ex:fermatflexes}
+Try the points with a zero coordinate. For collinearity, use determinants.
+\end{hint}
+\begin{hint}{ex:flexesxcube}
+Here $\psi(x)=3x^4+12x=3x(x^3+4)$.
+\end{hint}
+\begin{hint}{ex:countfive}
+The squares mod $5$ are $0,1,4$. A group of order $9$ is cyclic if it has an element of order $9$.
+\end{hint}
+\begin{hint}{ex:xcubeplusone}
+When $\gcd(3,p-1)=1$, cubing is a bijection of $\mathbb F_p$.
+\end{hint}
+\begin{hint}{ex:changeorigin}
+Compute $P\oplus Q=O_1*(P*Q)$ using $P*Q=-(P+Q)$ and Exercise~\ref{ex:collinear}.
+\end{hint}
+\begin{hint}{ex:sixonconic}
+The cubic $C\cup AB$ passes through eight of the nine points where $E$ meets $P_1P_2\cup P_3P_4\cup P_5P_6$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:noneutral}
+\idea A neutral element for $*$ would make every line through it tangent somewhere.
+\writeup Suppose $N*P=P$ for all $P$. For $P\ne N$, the line $NP$ then meets $E$ in $N$, $P$, $P$, so by Lemma~\ref{lem:tangentdouble} it is the tangent at
+$P$. Now look at the lines through $N$ over $\overline K$. At most one of them (the tangent at $N$) meets $E$ only at $N$; each of the infinitely many others
+contains a point $P\ne N$ of $E$ and is the tangent at $P$. So there are infinitely many points of $E$ whose tangent passes through $N$. But these points lie on
+the polar conic $n_0F_x+n_1F_y+n_2F_z=0$ of $N=[n]$, which is not zero and has no common component with the irreducible cubic $E$ (solution of
+Exercise~\ref{ex:polarcurve}); by B\'ezout there are at most $3\cdot2=6$ of them. Contradiction.
+\end{solution}
+
+\begin{solution}{ex:collinear}
+\idea With a flex as origin, the tangent at $O$ contributes nothing.
+\writeup By Proposition~\ref{prop:groupbasic}, $-P=P*(O*O)=P*O$. If $P,Q,R$ are the points of a line, then $P*Q=R$ and $P+Q=O*R=-R$, so $P+Q+R=O$. Conversely,
+if $P+Q+R=O$, let $R'=P*Q$; then $P+Q=O*R'=-R'$, so $-R'+R=O$ and $R=R'$: the points $P,Q,R$ are the three points of a line.
+\end{solution}
+
+\begin{solution}{ex:bachet}
+\idea Same recipe, with a chord instead of a tangent.
+\writeup With $P=(3,5)$ and $2P=\bigl(\frac{129}{100},-\frac{383}{1000}\bigr)$, the slope is
+$\lambda=\frac{-\frac{383}{1000}-5}{\frac{129}{100}-3}=\frac{-5383/1000}{-171/100}=\frac{5383}{1710}$. Then
+$x_3=\lambda^2-3-\frac{129}{100}=\frac{164323}{29241}$ and $y_3=-\bigl(5+\lambda(x_3-3)\bigr)=-\frac{66234835}{5000211}$, so
+\[
+3P=\Bigl(\frac{164323}{29241},\ -\frac{66234835}{5000211}\Bigr),\qquad 29241=171^2,\quad 5000211=171^3.
+\]
+One checks that $y_3^2=x_3^3-2$ (the companion notebook does it in exact arithmetic). The denominators grow fast: this is the typical behaviour of a point of
+infinite order.
+\end{solution}
+
+\begin{solution}{ex:twotorsion}
+\idea Points of order $2$ are their own negatives.
+\writeup $2P=O$ means $P=-P$. For $P=(x,y)$ affine, $-P=(x,-y)$, so $y=0$ and $f(x)=0$. Over $\mathbb C$, $f$ has three distinct roots $e_1,e_2,e_3$, so $E[2]$
+consists of $O$ and the three points $(e_i,0)$: a group of order $4$ in which every element has order at most $2$, hence $(\mathbb Z/2)^2$. (As a check, the line
+$y=0$ contains all three, so $(e_1,0)+(e_2,0)+(e_3,0)=O$.) All of them are real exactly when $f$ has three real roots.
+\end{solution}
+
+\begin{solution}{ex:torsionsix}
+\idea Compute multiples until you come back to $O$.
+\writeup At $P=(2,3)$: $\lambda=\frac{3\cdot4}{6}=2$, $x=4-4=0$, $y=-(3+2(0-2))=1$, so $2P=(0,1)$. Then $P+2P$: $\lambda=\frac{1-3}{0-2}=1$, $x=1-2-0=-1$,
+$y=-(3+1\cdot(-1-2))=0$, so $3P=(-1,0)$, a point of order $2$. Hence $6P=O$ and $P$ has order $6$, with $4P=-2P=(0,-1)$ and $5P=-P=(2,-3)$. The multiples are
+$O,(2,3),(0,1),(-1,0),(0,-1),(2,-3)$.
+\end{solution}
+
+\begin{solution}{ex:realcomponents}
+\idea A real point needs $f(x)\ge0$.
+\writeup The real points have $f(x)=y^2\ge0$. If $f$ has three real roots $e_1<e_2<e_3$, then $f\ge0$ exactly on $[e_1,e_2]\cup[e_3,\infty)$. Over $[e_1,e_2]$ the
+two graphs $y=\pm\sqrt{f(x)}$ join at the ends into a closed oval; over $[e_3,\infty)$ they form an unbounded branch, which closes up through $O$ in the
+projective plane. With one real root $e$, $f\ge0$ exactly on $[e,\infty)$, and there is only the unbounded branch.
+\end{solution}
+
+\begin{solution}{ex:fermatflexes}
+\idea The coordinate lines cut the Fermat cubic in three points each, and those are the flexes.
+\writeup Let $\omega=e^{2\pi i/3}$. On the line $z=0$ the curve gives $x^3=-y^3$, so the points $[1:-\omega^k:0]$, $k=0,1,2$; likewise $[0:1:-\omega^k]$ and
+$[-\omega^k:0:1]$: nine points. At $P=[1:-1:0]$ the gradient $(3x^2,3y^2,3z^2)$ is $(3,3,0)$, so the tangent is $x+y=0$; on it, $F=(-y)^3+y^3+z^3=z^3$, a triple root
+at $z=0$, so $P$ is a flex. Multiplying a coordinate by a cube root of unity, or permuting the coordinates, preserves $F$ and moves $[1:-1:0]$ to any of the nine points, so all nine
+are flexes. Collinearity:
+$[1:-1:0]$, $[0:1:-1]$, $[-1:0:1]$ satisfy $x+y+z=0$, and in general the determinant of $[1:-\omega^a:0]$, $[0:1:-\omega^b]$, $[-\omega^c:0:1]$ is
+$1-\omega^{a+b+c}$, which vanishes when $a+b+c\equiv0\pmod3$. So the line through two flexes on different coordinate lines contains a third, and the three
+flexes on one coordinate line are collinear by construction.
+\end{solution}
+
+\begin{solution}{ex:flexesxcube}
+\idea Solve $\psi=0$ and keep the roots where $f\ne0$.
+\writeup With $a=0$, $b=1$: $\psi=3x^4+12x=3x(x^3+4)$. The roots are $x=0$ and the three cube roots of $-4$. At $x=0$, $y^2=1$: the flexes $(0,\pm1)$, real. At
+$x=-\sqrt[3]4$, $y^2=-4+1=-3$: $y=\pm i\sqrt3$, not real; at the two complex cube roots $x=-\sqrt[3]4\,\omega^{\pm1}$ also $y^2=-3$. So the nine flexes are $O$, $(0,\pm1)$
+and six non-real points, and the three real ones, $O$, $(0,1)$, $(0,-1)$, lie on the line $x=0$. In Exercise~\ref{ex:torsionsix}, $(0,1)=2P$ indeed has order $3$.
+\end{solution}
+
+\begin{solution}{ex:countfive}
+\idea Tabulate $f(x)$ and compare with the squares.
+\writeup $f(0)=1$, $f(1)=3$, $f(2)=11\equiv1$, $f(3)=31\equiv1$, $f(4)=69\equiv4$. The value $3$ is not a square; the others are. So the affine points are
+$(0,\pm1)$, $(2,\pm1)$, $(3,\pm1)$, $(4,\pm2)$, and with $O$ there are $9$. For $Q=(2,1)$: $\lambda=\frac{3\cdot4+1}{2}=\frac{13}2\equiv\frac32\equiv3\cdot3=9\equiv4$,
+$x=16-4=12\equiv2$, $y=-(1+4\cdot0)=-1$: so $2Q=(2,-1)=-Q$ and $Q$ has order $3$, a flex, as is $-Q$. For $P=(0,1)$: $\lambda=\frac{1}{2}\equiv3$, $x=9\equiv4$,
+$y=-(1+3\cdot4)=-13\equiv2$, so $2P=(4,2)$; then $3P=P+2P$ with $\lambda=\frac{2-1}{4-0}=\frac14\equiv4$, $x=16-0-4=12\equiv2$, $y=-(1+4\cdot2)=-9\equiv1$, so
+$3P=(2,1)=Q\ne O$. The order of $P$ divides $9$ and is not $1$ or $3$, so it is $9$: the group is cyclic, generated by $P$. Its flexes are $O$, $(2,1)$, $(2,-1)$.
+\end{solution}
+
+\begin{solution}{ex:xcubeplusone}
+\idea Change variables $u=x^3$.
+\writeup If $p\equiv2\pmod3$, then $3\nmid p-1$, so $x\mapsto x^3$ is injective on the cyclic group $\mathbb F_p^\times$ (its kernel has order $\gcd(3,p-1)=1$), hence
+bijective on $\mathbb F_p$. So the number of affine solutions of $y^2=x^3+1$ equals that of $y^2=u+1$, which is $p$: one $u$ for each $y$. With $O$, $p+1$ points.
+\end{solution}
+
+\begin{solution}{ex:changeorigin}
+\idea Every $*$ can be rewritten with $+$, because three collinear points add to $O$.
+\writeup By Exercise~\ref{ex:collinear}, $X*Y=-X-Y$ for all $X,Y$. So $P\oplus Q=O_1*(P*Q)=-O_1-(P*Q)=-O_1+P+Q$. The map $\phi(P)=P-O_1$ then satisfies
+$\phi(P\oplus Q)=P+Q-2O_1=\phi(P)+\phi(Q)$, and it is a bijection, so it is an isomorphism from $(E,\oplus)$ to $(E,+)$.
+\end{solution}
+
+\begin{solution}{ex:sixonconic}
+\idea Cayley--Bacharach again, with the conic playing the role of two of the three lines.
+\writeup The cubic $L=P_1P_2\cup P_3P_4\cup P_5P_6$ meets $E$ in the nine distinct points $P_1,\dots,P_6,A,B,C'$. The cubic $C\cup AB$ passes through
+$P_1,\dots,P_6$ (on $C$) and $A,B$: eight of them. By Theorem~\ref{thm:cayleybacharach} it passes through $C'$, and since $C'\notin C$, $C'$ is on the line $AB$.
+So $A$, $B$, $C'$ are collinear, and $A+B+C'=O$ by Exercise~\ref{ex:collinear}. Also $P_1+P_2=-A$, $P_3+P_4=-B$ and $P_5+P_6=-C'$. Adding,
+$P_1+\dots+P_6=-(A+B+C')=O$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item D.~Perrin, \emph{Bachet}, lecture notes, Universit\'e Paris-Saclay (Bachet's tangent method of 1621 and the point $\bigl(\frac{129}{100},\frac{383}{1000}\bigr)$
+of $y^2+2=x^3$).
+\item I.~Newton, \emph{Enumeratio linearum tertii ordinis}, appendix to \emph{Opticks}, London, 1704; the description of Newton's manuscripts at the
+Cambridge Digital Library (72 species, projections of the five divergent parabolas).
+\item M.~Artebani and I.~Dolgachev, \emph{The Hesse pencil of plane cubic curves}, L'Enseignement Math\'ematique 55 (2009), 235--273 (the Hesse
+configuration, its history and its symmetries).
+\item J.~H.~Silverman and J.~Tate, \emph{Rational Points on Elliptic Curves}, 2nd ed., Springer, 2015 (the group law, Nagell--Lutz, Mordell's theorem and
+curves over finite fields, at the level of this book).
+\item H.~Poincar\'e, \emph{Sur les propri\'et\'es arithm\'etiques des courbes alg\'ebriques}, J.\ Math.\ Pures Appl.\ (5) 7 (1901); L.~J.~Mordell, \emph{On the
+rational solutions of the indeterminate equations of the third and fourth degrees}, Proc.\ Cambridge Philos.\ Soc.\ 21 (1922); B.~Mazur, \emph{Modular
+curves and the Eisenstein ideal}, Publ.\ Math.\ IH\'ES 47 (1977).
+\item N.~Koblitz, \emph{Elliptic curve cryptosystems}, Math.\ Comp.\ 48 (1987); V.~Miller, \emph{Use of elliptic curves in cryptography}, CRYPTO '85 (1986).
+\item E.~Brieskorn and H.~Kn\"orrer, \emph{Plane Algebraic Curves}, Birkh\"auser, 1986; F.~Kirwan, \emph{Complex Algebraic Curves}, Cambridge University Press,
+1992 (the Hessian and the nine flexes).
+\end{itemize}
