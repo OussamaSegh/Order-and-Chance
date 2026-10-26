@@ -1,0 +1,385 @@
+\chapter{Small Gaps between Primes}
+\begin{center}\itshape
+On average, consecutive primes near $x$ are $\log x$ apart.\\
+How close can they come, infinitely often? Twin primes say $2$.\\
+In 2005 nobody could prove even that the gap is sometimes $\frac1{10}\log x$.
+\end{center}
+
+The prime number theorem says that the gaps $p_{n+1}-p_n$ are $\log p_n$ on average. The twin prime conjecture says that the gap $2$ occurs infinitely often, and Hardy and Littlewood's conjecture of 1923 predicts how often every pattern of primes occurs. Proving that the gaps are \emph{sometimes} much smaller than average turned out to be very hard. In 1926 Hardy and Littlewood showed, under the generalized Riemann hypothesis, that $\liminf\frac{p_{n+1}-p_n}{\log p_n}\le\frac23$. Erdős proved in 1940, unconditionally, that the $\liminf$ is less than $1$; Bombieri and Davenport, with the Bombieri--Vinogradov theorem of Chapter~4, obtained $\frac12$ in 1966; and Helmut Maier reached $0.2486$ in 1988.
+
+In 2003 Daniel Goldston and Cem Yıldırım announced that the $\liminf$ is $0$. At a workshop at the American Institute of Mathematics that spring, Andrew Granville and Kannan Soundararajan found an error: a lower-order term that the authors believed small was in fact as large as the main term. The proof was repaired two years later with János Pintz, and the repair was a new idea: weight the integers $n$ not by a function of $n$ alone, but by a sieve weight attached to a whole pattern $n+h_1,\dots,n+h_k$ at once. The Goldston--Pintz--Yıldırım theorem of 2005 says that the $\liminf$ is $0$. The method came tantalizingly close to more: with a level of distribution of the primes even slightly above the $\frac12$ of Bombieri--Vinogradov, it gives \emph{bounded} gaps.
+
+Yitang Zhang, a lecturer at the University of New Hampshire then unknown to most of the field, proved in April 2013 a version of Bombieri--Vinogradov just beyond $\frac12$, good enough for these weights, and deduced that $p_{n+1}-p_n<7\cdot10^7$ infinitely often. Seven months later James Maynard, a postdoctoral researcher in Montréal, and independently Terence Tao, found that a different choice of weights gives bounded gaps with $\frac12$ alone. This chapter develops the weights in Maynard's form, with complete proofs of the two asymptotic formulas on which everything rests, and derives the GPY consequences; Chapter~9 makes Maynard's choice.
+
+\begin{reminder}[from Tome~5 and Chapters~3 and~4]
+\emph{Bombieri--Vinogradov} (Corollary~\ref{cor:bvpi}). For every $A>0$, $\sum_{q\le\sqrt x(\log x)^{-A-6}}\max_{(a,q)=1}|\pi(x;q,a)-\frac{\operatorname{li}x}{\varphi(q)}|\ll_A\frac x{(\log x)^A}$.
+\emph{Mertens and Chebyshev} (Tome~5, Chapter~1). $\prod_{p\le x}(1-\frac1p)^{-1}\ll\log x$, $\sum_{p\le x}\frac{\log p}p=\log x+O(1)$ and $\prod_{p\le x}p\le4^x$.
+\emph{Divisor sums.} $\tau_k(n)$, the number of ways to write $n$ as an ordered product of $k$ factors, satisfies $\sum_{n\le x}\frac{\tau_k(n)}n\le(1+\log x)^k$ and $\sum_{n\le x}\tau_k(n)\le x(1+\log x)^{k-1}$.
+\emph{Gallagher} (Tome~5, Theorem~10.7). $\sum_{d\le h}\mathfrak S(\{0,d\})=h+O(\sqrt h)$.
+\end{reminder}
+
+\section{Admissible tuples}
+
+A set $\mathcal H=\{h_1,\dots,h_k\}$ of distinct integers cannot have $n+h_1,\dots,n+h_k$ all prime for infinitely many $n$ if it covers every residue class modulo some prime $p$: one of the $n+h_i$ is then divisible by $p$. For instance $\{0,2,4\}$ covers $0,1,2$ modulo $3$, and $n$, $n+2$, $n+4$ are all prime only for $n=3$.
+
+\begin{definition}\label{def:admissible}
+A finite set $\mathcal H$ of integers is \emph{admissible} if for every prime $p$, the number $\nu_p(\mathcal H)$ of classes modulo $p$ met by $\mathcal H$ is less than $p$.
+\end{definition}
+
+For $p>k=|\mathcal H|$ the condition is automatic, so admissibility is a finite check. For example $\{0,2,6,8,12\}$ is admissible, and the $k$ smallest primes larger than $k$ form an admissible $k$-tuple (Exercise~\ref{ex:admiss}).
+
+\medskip\noindent\textbf{The prime $k$-tuples conjecture} (Hardy and Littlewood, 1923). If $\mathcal H=\{h_1,\dots,h_k\}$ is admissible, then
+\[
+\#\{n\le x:\ n+h_1,\dots,n+h_k\text{ all prime}\}\sim\mathfrak S(\mathcal H)\int_2^x\frac{\dd t}{(\log t)^k},\qquad\mathfrak S(\mathcal H)=\prod_p\frac{1-\nu_p(\mathcal H)/p}{(1-1/p)^k}.
+\]
+\medskip
+
+The product converges, because $\nu_p=k$ for $p$ large and $(1-\frac kp)(1-\frac1p)^{-k}=1+O(\frac{k^2}{p^2})$; it is positive exactly when $\mathcal H$ is admissible. The heuristic is the one of Tome~5, Chapter~10: a random integer near $t$ is prime with probability $\frac1{\log t}$, and the factor at $p$ corrects the independence assumption modulo $p$. Not a single case with $k\ge2$ is proved. Figure~\ref{fig:tuples} shows how well the conjecture fits.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-tuples}
+\caption{The number of $n\le x$ with $n+\mathcal H$ all prime, divided by the prediction of the prime $k$-tuples conjecture, for $10^4\le x\le10^8$. At $x=10^8$ the counts are $440312$ twins ($\mathfrak S=1.3203$, ratio $0.99987$), $55600$ and $55556$ triples of the two shapes ($\mathfrak S=2.8582$, ratios $1.002$ and $1.001$), and $4768$ quadruples $\{0,2,6,8\}$ ($\mathfrak S=4.1512$, ratio $1.007$).}
+\label{fig:tuples}
+\end{figure}
+
+\section{The sieve weights}
+
+Fix $k\ge2$ and an admissible $\mathcal H=\{h_1,\dots,h_k\}$. Let $N$ be large, $D_0=\log\log\log N$, and $W=\prod_{p\le D_0}p\le4^{D_0}\le(\log\log N)^2$. Since $\mathcal H$ is admissible, for each $p\le D_0$ some class modulo $p$ avoids $-h_1,\dots,-h_k$; by the Chinese remainder theorem there is $\nu_0$ with $(\nu_0+h_i,W)=1$ for all $i$. We look only at $n\equiv\nu_0\pmod W$, which removes the small primes from the picture. Once $N$ is large, $D_0$ exceeds every $|h_i-h_j|$, so a prime $p>D_0$ divides at most one of $n+h_1,\dots,n+h_k$.
+
+For real numbers $\lambda_{d_1,\dots,d_k}$, indexed by $k$-tuples of positive integers, let
+\[
+w_n=\Biggl(\sum_{d_i\mid n+h_i\ \forall i}\lambda_{d_1,\dots,d_k}\Biggr)^2\ge0.
+\]
+We always assume that $\lambda_{\mathbf d}=0$ unless $d=d_1\cdots d_k$ is squarefree, prime to $W$, and less than a parameter $R$. Let $\chi_{\mathbb P}$ be the indicator of the primes, and
+\[
+S_1=\sum_{\substack{N\le n<2N\\n\equiv\nu_0\,(W)}}w_n,\qquad S_2^{(m)}=\sum_{\substack{N\le n<2N\\n\equiv\nu_0\,(W)}}\chi_{\mathbb P}(n+h_m)w_n,\qquad S_2=\sum_{m=1}^kS_2^{(m)}.
+\]
+The whole method rests on one observation.
+
+\begin{lemma}\label{lem:gpyprinciple}
+If $S_2>\rho S_1$ for some $\rho>0$, then some $n\in[N,2N[$ has at least $\lfloor\rho\rfloor+1$ primes among $n+h_1,\dots,n+h_k$.
+\end{lemma}
+\begin{proof}
+$S_2-\rho S_1=\sum_nw_n\bigl(\#\{i:n+h_i\text{ prime}\}-\rho\bigr)$ and $w_n\ge0$, so some $n$ with $w_n>0$ has $\#\{i:n+h_i\text{ prime}\}>\rho$.
+\end{proof}
+
+So we want weights that make $S_2$ large compared with $S_1$: weights that concentrate on the $n$ for which many $n+h_i$ are prime, or at least have no small prime factors. Selberg's idea, in Tome~5, was to choose $\lambda$ to minimize a quadratic form; Maynard's is to parametrize $\lambda$ by a smooth function of $k$ variables.
+
+\begin{definition}\label{def:yweights}
+Let $\mathcal R_k=\{\mathbf t\in[0,1]^k:t_1+\cdots+t_k\le1\}$ and let $F:[0,1]^k\to\R$ vanish outside $\mathcal R_k$ and coincide on $\mathcal R_k$ with a function having continuous first partial derivatives. For $k$-tuples $\mathbf r$ of positive integers, set
+\[
+y_{\mathbf r}=F\Bigl(\frac{\log r_1}{\log R},\dots,\frac{\log r_k}{\log R}\Bigr)\quad\text{if }r=r_1\cdots r_k\text{ is squarefree and prime to }W,
+\]
+and $y_{\mathbf r}=0$ otherwise. Define
+\[
+\lambda_{\mathbf d}=\prod_{i=1}^k\mu(d_i)d_i\sum_{\substack{\mathbf r\\d_i\mid r_i\,\forall i}}\frac{y_{\mathbf r}}{\prod_i\varphi(r_i)}.
+\]
+Let $y_{\max}=\sup|y_{\mathbf r}|\le\sup|F|$ and $\lambda_{\max}=\sup|\lambda_{\mathbf d}|$. Finally
+\[
+I_k(F)=\int_{\mathcal R_k}F^2\dd\mathbf t,\qquad J_k^{(m)}(F)=\int_{[0,1]^{k-1}}\Bigl(\int_0^1F\dd t_m\Bigr)^2\dd t_1\cdots\dd t_{m-1}\dd t_{m+1}\cdots\dd t_k.
+\]
+\end{definition}
+
+If $y_{\mathbf r}\ne0$ then $\sum\frac{\log r_i}{\log R}\le1$, so $r\le R$; hence $\lambda_{\mathbf d}=0$ unless $d\le R$, $d$ squarefree and prime to $W$, as required (we may take $R$ not an integer, so $d<R$).
+
+\begin{lemma}[change of variables]\label{lem:inversion}
+For every $\mathbf r$ with $r$ squarefree,
+\[
+y_{\mathbf r}=\prod_i\mu(r_i)\varphi(r_i)\sum_{\substack{\mathbf d\\r_i\mid d_i\,\forall i}}\frac{\lambda_{\mathbf d}}{\prod_id_i}.
+\]
+Moreover $\lambda_{\max}\ll_ky_{\max}(\log R)^k$.
+\end{lemma}
+\begin{proof}
+Substitute the definition of $\lambda_{\mathbf d}$ into the right side: it equals
+\[
+\prod_i\mu(r_i)\varphi(r_i)\sum_{\mathbf a}\frac{y_{\mathbf a}}{\prod\varphi(a_i)}\prod_i\sum_{r_i\mid d_i\mid a_i}\mu(d_i).
+\]
+The inner sum is $1$ if $a_i=r_i$ and $0$ otherwise, so only $\mathbf a=\mathbf r$ remains, giving $\prod\mu(r_i)^2\,y_{\mathbf r}=y_{\mathbf r}$ when $y_{\mathbf r}\ne0$ (and both sides vanish when $r$ is not prime to $W$). For the bound, write $a_i=d_iv_i$: with $d=\prod d_i$ and $v=\prod v_i$ squarefree and prime to $dW$,
+\[
+|\lambda_{\mathbf d}|\le y_{\max}\frac d{\varphi(d)}\sum_{\substack{v<R\\(v,dW)=1}}\frac{\mu(v)^2\tau_k(v)}{\varphi(v)}\le y_{\max}\prod_{p\mid d}\Bigl(1+\frac k{p-1}\Bigr)\prod_{\substack{p<R\\p\nmid d}}\Bigl(1+\frac k{p-1}\Bigr),
+\]
+since a squarefree $v$ is split into $k$ factors in $\tau_k(v)$ ways and $\frac{\tau_k(v)}{\varphi(v)}=\prod_{p\mid v}\frac k{p-1}$. The last product is at most $\prod_{p<R}(1-\frac1p)^{-k}\prod_p(1+\frac{k^2}{(p-1)^2})\ll_k(\log R)^k$.
+\end{proof}
+
+\section{Sums of multiplicative functions}
+
+The asymptotic evaluations need one estimate, used repeatedly.
+
+\begin{lemma}\label{lem:musum}
+Let $h$ be a multiplicative function on squarefree integers with $h(p)=p-c_p$, $c_p\in\{1,2\}$, for all primes $p>D_0\ge3$. Then, uniformly for $x\ge2$,
+\[
+\sum_{\substack{u<x\\(u,W)=1}}\frac{\mu(u)^2}{h(u)}=\frac{\varphi(W)}W\Bigl(1+O\Bigl(\frac1{D_0}\Bigr)\Bigr)\log x+O(D_0^2).
+\]
+If $G:[0,1]\to\R$ is continuously differentiable on $[0,a]$ and zero on $\left]a,1\right]$, for some $a\in[0,1]$, then for $R\ge2$
+\[
+\begin{aligned}\sum_{\substack{u<R\\(u,W)=1}}\frac{\mu(u)^2}{h(u)}G\Bigl(\frac{\log u}{\log R}\Bigr)&=\frac{\varphi(W)}W\log R\int_0^1G\\&\quad+O\Bigl(\frac{\varphi(W)}W\frac{\log R}{D_0}\sup|G|+D_0^2(\sup|G|+\sup|G'|)\Bigr).\end{aligned}
+\]
+\end{lemma}
+\begin{proof}
+Let $f(u)=\frac{u\mu(u)^2}{h(u)}\mathbf 1_{(u,W)=1}$ and write $f=\mathbf 1*g$, so that $g$ is multiplicative with $g(p)=f(p)-1$, $g(p^2)=-f(p)$ and $g(p^j)=0$ for $j\ge3$. For $p\le D_0$, $g(p)=-1$ and $g(p^2)=0$; for $p>D_0$, $g(p)=\frac{c_p}{p-c_p}\le\frac2{p-2}$ and $|g(p^2)|\le2$. Then
+\[
+\sum_{u<x}\frac{f(u)}u=\sum_{d<x}\frac{g(d)}d\sum_{m<x/d}\frac1m=\sum_{d<x}\frac{g(d)}d\Bigl(\log\frac xd+O(1)\Bigr).
+\]
+Let $K=\sum_d\frac{|g(d)|}d(1+\log d)$. Since $1+\log d\le\prod_{p^j\|d}(1+j\log p)$, Mertens's theorem gives
+\[
+K\le\prod_{p\le D_0}\Bigl(1+\frac{1+\log p}p\Bigr)\prod_{p>D_0}\Bigl(1+O\Bigl(\frac{\log p}{p^2}\Bigr)\Bigr)\ll\exp\Bigl(\sum_{p\le D_0}\frac{1+\log p}p\Bigr)\ll D_0^2.
+\] The terms $\frac{g(d)}d\log d$ and $O(\frac{|g(d)|}d)$ add up to $O(K)$, and $\sum_{d\ge x}\frac{|g(d)|}d\le\frac K{\log x}$. So the sum is $c\log x+O(K)$ with
+\[
+c=\sum_d\frac{g(d)}d=\prod_p\Bigl(1-\frac1p\Bigr)\sum_{j\ge0}\frac{f(p^j)}{p^j}=\prod_{p\le D_0}\Bigl(1-\frac1p\Bigr)\prod_{p>D_0}\Bigl(1+\frac{c_p-1}{p(p-c_p)}\Bigr),
+\]
+which is $\frac{\varphi(W)}W(1+O(\frac1{D_0}))$. For the second statement let $A(t)=\sum_{u<t,(u,W)=1}\frac{\mu(u)^2}{h(u)}=c\log t+E(t)$ with $|E|\ll K$, and integrate by parts on $[1,R^a]$:
+\[
+\int_{1}^{R^a}G\Bigl(\frac{\log t}{\log R}\Bigr)\dd A(t)=c\log R\int_0^aG+O\bigl(K\sup|G|+K\sup|G'|\bigr),
+\]
+where the main term comes from $\dd A=\frac c t\dd t$, and the boundary terms and $\int E(t)\,\dd G(\frac{\log t}{\log R})$ give the error, since $\int_1^{R^a}|\dd G(\frac{\log t}{\log R})|\le\sup|G'|$. Finally $c\log R=\frac{\varphi(W)}W\log R+O(\frac{\varphi(W)}W\frac{\log R}{D_0})$.
+\end{proof}
+
+For $h=\varphi$ ($c_p=1$) the constant is exactly $\frac{\varphi(W)}W$. We shall apply the lemma with $h=\varphi$ and with $h=g^\flat$, the multiplicative function with $g^\flat(p)=p-2$, which satisfies $\varphi([d,e])^{-1}=\frac1{\varphi(d)\varphi(e)}\sum_{u\mid(d,e)}g^\flat(u)$ for squarefree $d$, $e$ (because $\varphi(u)=\sum_{v\mid u}g^\flat(v)$, as $1+(p-2)=p-1$). The error terms are always negligible: $D_0^2$ is tiny compared with $\frac{\varphi(W)}W\log R\gg\frac{\log R}{\log D_0}$.
+
+\section{The two asymptotic formulas}
+
+\begin{definition}\label{def:level}
+The primes have \emph{level of distribution} $\theta$ if for every $A>0$,
+\[
+\sum_{q\le x^\theta}\max_{(a,q)=1}\Bigl|\pi(x;q,a)-\frac{\pi(x)}{\varphi(q)}\Bigr|\ll_A\frac x{(\log x)^A}.
+\]
+\end{definition}
+
+By the Bombieri--Vinogradov theorem every $\theta<\frac12$ is a level of distribution (replacing $\operatorname{li}x$ by $\pi(x)$ costs nothing, by the case $q=1$). The \emph{Elliott--Halberstam conjecture} is that every $\theta<1$ is.
+
+\begin{theorem}[Maynard, 2013]\label{thm:maynardsums}
+Let $k$, $\mathcal H$ and $F$ be fixed as above, $0<\theta\le1$, $0<\delta<\frac\theta2$, and $R=N^{\theta/2-\delta}$. Then, uniformly in $\nu_0$,
+\[
+S_1=(1+o(1))\frac{\varphi(W)^kN(\log R)^k}{W^{k+1}}I_k(F).
+\]
+If moreover the primes have level of distribution $\theta$, then for each $m$,
+\[
+S_2^{(m)}=(1+o(1))\frac{\varphi(W)^kN(\log R)^{k+1}}{W^{k+1}\log N}J_k^{(m)}(F).
+\]
+\end{theorem}
+
+The proof occupies the rest of this section. It has the same pattern for both sums: expand the square, count $n$ in progressions, diagonalize the resulting quadratic form with the change of variables, and evaluate the diagonal with Lemma~\ref{lem:musum}. Throughout, $\mathbf d$, $\mathbf e$, $\mathbf u$ range over $k$-tuples, and products such as $d=\prod d_i$ are squarefree and prime to $W$ wherever a weight is non-zero.
+
+\begin{proof}[Proof for $S_1$]
+\emph{Expanding.} $S_1=\sum_{\mathbf d,\mathbf e}\lambda_{\mathbf d}\lambda_{\mathbf e}\#\{N\le n<2N:n\equiv\nu_0\,(W),\ [d_i,e_i]\mid n+h_i\ \forall i\}$. If a prime divides both $[d_i,e_i]$ and $[d_j,e_j]$ with $i\ne j$, it is larger than $D_0$ and divides $h_i-h_j$, which is impossible; and every $[d_i,e_i]$ is prime to $W$. So the conditions are compatible exactly when $(d_i,e_j)=1$ for all $i\ne j$, and then define one class modulo $q=W\prod[d_i,e_i]$, which contains $\frac Nq+O(1)$ integers of $[N,2N[$. The $O(1)$ terms contribute at most $\lambda_{\max}^2(\sum_{d<R}\tau_k(d))^2\ll y_{\max}^2R^2(\log R)^{4k}$, which is $O(y_{\max}^2N^{1-\delta})$ since $R^2\le N^{1-2\delta}$. So
+\[
+S_1=\frac NW\sum^{\prime}_{\mathbf d,\mathbf e}\frac{\lambda_{\mathbf d}\lambda_{\mathbf e}}{\prod_i[d_i,e_i]}+O(y_{\max}^2N^{1-\delta}),
+\]
+where $\sum^{\prime}$ means $(d_i,e_j)=1$ for $i\ne j$.
+
+\emph{Diagonalizing.} For squarefree $d_i,e_i$ we have
+\[
+\frac1{[d_i,e_i]}=\frac1{d_ie_i}\sum_{u_i\mid(d_i,e_i)}\varphi(u_i).
+\]
+Remove the condition $(d_i,e_j)=1$ with $\sum_{s_{ij}\mid(d_i,e_j)}\mu(s_{ij})$. Since $d$ and $e$ are squarefree, only $s_{ij}$ prime to $u_i$, $u_j$, and to $s_{ab}$ when $a=i$ or $b=j$ (and $(a,b)\ne(i,j)$), contribute. The sum becomes
+\[
+\sum_{\mathbf u}\prod_i\varphi(u_i)\sum_{(s_{ij})}\prod_{i\ne j}\mu(s_{ij})\sum_{\substack{\mathbf d,\mathbf e\\u_i\mid d_i,\ u_i\mid e_i\\s_{ij}\mid d_i,\ s_{ij}\mid e_j}}\frac{\lambda_{\mathbf d}\lambda_{\mathbf e}}{\prod d_ie_i}=\sum_{\mathbf u}\prod_i\varphi(u_i)\sum_{(s_{ij})}\prod_{i\ne j}\mu(s_{ij})\frac{y_{\mathbf a}}{\prod\mu(a_i)\varphi(a_i)}\frac{y_{\mathbf b}}{\prod\mu(b_i)\varphi(b_i)},
+\]
+by Lemma~\ref{lem:inversion}, where $a_i=u_i\prod_{j\ne i}s_{ij}$ and $b_j=u_j\prod_{i\ne j}s_{ij}$. Since $y$ vanishes unless its argument is prime to $W$, each $s_{ij}$ is $1$ or has all prime factors $>D_0$. The terms with all $s_{ij}=1$ give $\sum_{\mathbf u}\frac{y_{\mathbf u}^2}{\prod\varphi(u_i)}$. The others are bounded by
+\[
+y_{\max}^2\Bigl(\sum_{\substack{u<R\\(u,W)=1}}\frac{\mu(u)^2}{\varphi(u)}\Bigr)^k\Bigl(\sum_{s>D_0}\frac{\mu(s)^2}{\varphi(s)^2}\Bigr)\Bigl(\sum_{s\ge1}\frac{\mu(s)^2}{\varphi(s)^2}\Bigr)^{k^2-k-1}\ll\frac{y_{\max}^2\varphi(W)^k(\log R)^k}{W^kD_0},
+\]
+because each $s_{ij}$ appears in one $a_i$ and one $b_j$, so that the denominators contain $\varphi(s_{ij})^2$; moreover $\sum_{s>D_0}\varphi(s)^{-2}\ll\frac1{D_0}$, and Lemma~\ref{lem:musum} bounds the $u$-sums.
+
+\emph{Evaluating.} In $\sum_{\mathbf u}\frac{y_{\mathbf u}^2}{\prod\varphi(u_i)}$ the $u_i$ are pairwise coprime (as $u$ is squarefree). Dropping that condition adds tuples in which some prime $p>D_0$ divides two of the $u_i$, which contribute $O(y_{\max}^2(\frac{\varphi(W)}W\log R)^k\sum_{p>D_0}\frac1{(p-1)^2})=O(\frac{y_{\max}^2\varphi(W)^k(\log R)^k}{W^kD_0})$. The remaining sum is
+\[
+\sum_{u_1,\dots,u_k}\prod_i\frac{\mu(u_i)^2\mathbf 1_{(u_i,W)=1}}{\varphi(u_i)}F\Bigl(\frac{\log u_1}{\log R},\dots,\frac{\log u_k}{\log R}\Bigr)^2.
+\]
+Summing over $u_1$ with the other variables fixed, Lemma~\ref{lem:musum} applies to $G(t)=F(t,t_2,\dots,t_k)^2$, which is $C^1$ on $[0,1-t_2-\cdots-t_k]$ and zero after, and gives $\frac{\varphi(W)}W\log R\int_0^1F^2\dd t_1$ up to a relative error $O(\frac1{D_0})$. The result is again a function of $(t_2,\dots,t_k)$ of the same type, so we may repeat; after $k$ steps the sum is $(\frac{\varphi(W)}W\log R)^k(I_k(F)+O(\frac1{D_0}))$. Multiplying by $\frac NW$ gives the formula for $S_1$, since every error is $o$ of the main term ($y_{\max}$ and $\sup|F|$ are fixed).
+\end{proof}
+
+\begin{proof}[Proof for $S_2^{(m)}$]
+\emph{Expanding.} For $n\ge N>R$, if $n+h_m$ is prime then a divisor $d_m<R$ of it is $1$. So only $\mathbf d,\mathbf e$ with $d_m=e_m=1$ contribute, and, as before, the conditions on $n$ define one class modulo $q=W\prod_{i\ne m}[d_i,e_i]$ when $(d_i,e_j)=1$ for $i\ne j$. In that class $n+h_m$ is prime to $q$: it is prime to $W$ by the choice of $\nu_0$, and if $p\mid[d_i,e_i]$ then $p\mid n+h_i$, so $p\nmid n+h_m$. Let $X=\pi(2N)-\pi(N)$, so that the number of primes $n+h_m$ in our class is $\frac X{\varphi(q)}+O(E(q))$, where
+\[
+E(q)=\max_{(a,q)=1}\Bigl|\pi(2N+h_m;q,a)-\pi(N+h_m;q,a)-\frac X{\varphi(q)}\Bigr|.
+\]
+Hence
+\[
+S_2^{(m)}=\frac X{\varphi(W)}\sum^{\prime}_{\substack{\mathbf d,\mathbf e\\d_m=e_m=1}}\frac{\lambda_{\mathbf d}\lambda_{\mathbf e}}{\prod_{i\ne m}\varphi([d_i,e_i])}+O\Bigl(\lambda_{\max}^2\sum_{q<R^2W}\mu(q)^2\tau_{3k}(q)E(q)\Bigr),
+\]
+since a squarefree $q$ arises from at most $\tau_{3k}(q)$ pairs $(\mathbf d,\mathbf e)$. As $R^2W<N^\theta$ for $N$ large, the level of distribution (applied at $2N$ and $N$, the shift $h_m$ changing each count by $O(1)$) gives $\sum_{q<R^2W}E(q)\ll_AN(\log N)^{-A}$ for every $A$. With $E(q)\ll\frac N{\varphi(q)}$ and Cauchy--Schwarz,
+\[
+\sum_q\mu(q)^2\tau_{3k}(q)E(q)\le\Bigl(\sum_{q<N}\frac{\mu(q)^2\tau_{3k}(q)^2N}{\varphi(q)}\Bigr)^{1/2}\Bigl(\sum_qE(q)\Bigr)^{1/2}\ll\frac N{(\log N)^{A/2-(3k)^2}},
+\]
+and with $A$ large the error is $O(y_{\max}^2N(\log N)^{-k-2})$, negligible.
+
+\emph{Diagonalizing.} Now use $\frac1{\varphi([d_i,e_i])}=\frac1{\varphi(d_i)\varphi(e_i)}\sum_{u_i\mid(d_i,e_i)}g^\flat(u_i)$ and remove the coprimality conditions as before. Define, for $\mathbf r$ with $r_m=1$,
+\[
+y^{(m)}_{\mathbf r}=\prod_i\mu(r_i)g^\flat(r_i)\sum_{\substack{\mathbf d:\ r_i\mid d_i\,\forall i\\d_m=1}}\frac{\lambda_{\mathbf d}}{\prod\varphi(d_i)}.
+\]
+Exactly as for $S_1$, with $\varphi$ replaced by $g^\flat$ and with $y^{(m)}_{\max}=\sup|y^{(m)}_{\mathbf r}|$,
+\[
+S_2^{(m)}=\frac X{\varphi(W)}\sum_{\mathbf u:\,u_m=1}\frac{(y^{(m)}_{\mathbf u})^2}{\prod_{i\ne m}g^\flat(u_i)}+O\Bigl(\frac{(y^{(m)}_{\max})^2\varphi(W)^{k-2}N(\log R)^{k-1}}{W^{k-1}D_0\log N}\Bigr)+o(\cdots).
+\]
+
+\emph{Relating $y^{(m)}$ to $y$.} Substituting the definition of $\lambda_{\mathbf d}$ and summing over $d_i$ first, as in Lemma~\ref{lem:inversion}, with $\sum_{r_i\mid d_i\mid a_i}\frac{\mu(d_i)d_i}{\varphi(d_i)}=\frac{\mu(r_i)r_i}{\varphi(r_i)}\cdot\frac{\mu(a_i/r_i)}{\varphi(a_i/r_i)}$,
+\[
+y^{(m)}_{\mathbf r}=\prod_{i\ne m}\frac{g^\flat(r_i)r_i}{\varphi(r_i)}\sum_{\substack{\mathbf a:\ r_i\mid a_i\ (i\ne m)}}\frac{y_{\mathbf a}}{\prod_i\varphi(a_i)}\prod_{i\ne m}\frac{\mu(a_i/r_i)}{\varphi(a_i/r_i)}.
+\]
+If $a_i\ne r_i$ for some $i\ne m$, then $a_i/r_i$ has a prime factor $>D_0$; these terms add up to $O(y_{\max}\frac{\varphi(W)}W\frac{\log R}{D_0})$. The terms with $a_i=r_i$ for all $i\ne m$ give $\prod_{i\ne m}\frac{g^\flat(r_i)r_i}{\varphi(r_i)^2}\sum_{a_m}\frac{y_{(r_1,\dots,a_m,\dots,r_k)}}{\varphi(a_m)}$, and $\frac{g^\flat(p)p}{\varphi(p)^2}=1-\frac1{(p-1)^2}$, so the product is $1+O(\frac1{D_0})$. So
+\[
+y^{(m)}_{\mathbf r}=\sum_{a_m}\frac{y_{(r_1,\dots,r_{m-1},a_m,r_{m+1},\dots,r_k)}}{\varphi(a_m)}+O\Bigl(y_{\max}\frac{\varphi(W)\log R}{WD_0}\Bigr).
+\]
+By Lemma~\ref{lem:musum} (with $a_m$ prime to $W\prod_{i\ne m}r_i$; the coprimality to $r_i$ changes the sum by $O(\sum_{p\mid r,p>D_0}\frac{\log R}p)$, a relative $O(\frac{\log\log R}{D_0})$), the main term is $\frac{\varphi(W)}W\log R\cdot F^{(m)}(\frac{\log r_1}{\log R},\dots)$ with $F^{(m)}=\int_0^1F\dd t_m$, up to a relative $O(\frac{\log\log R}{D_0})$, when $\prod_{i\ne m}r_i$ is squarefree and prime to $W$, and $0$ otherwise. In particular $y^{(m)}_{\max}\ll y_{\max}\frac{\varphi(W)}W\log R$.
+
+\emph{Evaluating.} Substitute into the diagonal sum, drop the pairwise coprimality of the $u_i$ at a cost $O(\frac1{D_0})$, and sum over the $k-1$ variables $u_i$, $i\ne m$, with Lemma~\ref{lem:musum} for $h=g^\flat$, as in the proof for $S_1$:
+\[
+\sum_{\mathbf u:\,u_m=1}\frac{(y^{(m)}_{\mathbf u})^2}{\prod_{i\ne m}g^\flat(u_i)}=\Bigl(\frac{\varphi(W)}W\log R\Bigr)^2\Bigl(\frac{\varphi(W)}W\log R\Bigr)^{k-1}\bigl(J_k^{(m)}(F)+o(1)\bigr).
+\]
+With $X=(1+o(1))\frac N{\log N}$ and the factor $\frac1{\varphi(W)}$, this is the formula for $S_2^{(m)}$; the error term above is smaller by a factor $\frac1{D_0}$.
+\end{proof}
+
+\begin{corollary}\label{cor:mkcriterion}
+Let $M_k=\sup_F\frac{\sum_{m=1}^kJ_k^{(m)}(F)}{I_k(F)}$, over the functions $F$ of Definition~\ref{def:yweights} with $I_k(F)\ne0$. If the primes have level of distribution $\theta$ and $\frac\theta2M_k>\rho$ for some $\rho>0$, then for every admissible $k$-tuple $\mathcal H$ there are infinitely many $n$ with at least $\lfloor\rho\rfloor+1$ primes among $n+h_1,\dots,n+h_k$.
+\end{corollary}
+\begin{proof}
+Choose $F$ with $\frac\theta2\frac{\sum_mJ^{(m)}_k(F)}{I_k(F)}>\rho$, then $\delta>0$ so small that $(\frac\theta2-\delta)\frac{\sum J}I>\rho$. Since $\frac{\log R}{\log N}=\frac\theta2-\delta$, Theorem~\ref{thm:maynardsums} gives
+\[
+S_2-\rho S_1=\frac{\varphi(W)^kN(\log R)^k}{W^{k+1}}\Bigl(\Bigl(\frac\theta2-\delta\Bigr)\sum_mJ_k^{(m)}(F)-\rho I_k(F)+o(1)\Bigr)>0
+\]
+for $N$ large. Lemma~\ref{lem:gpyprinciple} gives an $n\in[N,2N[$; letting $N\to\infty$ gives infinitely many.
+\end{proof}
+
+\section{The Goldston--Pintz--Yıldırım weights}
+
+GPY took $F$ to be a function of $t_1+\cdots+t_k$ only. Then all the integrals are one-dimensional, thanks to the volume of the slices of the simplex: the set $\{\mathbf t\in[0,\infty[^k:\sum t_i\le s\}$ has volume $\frac{s^k}{k!}$, so the slice $\sum t_i=s$ carries the measure $\frac{s^{k-1}}{(k-1)!}\dd s$.
+
+\begin{proposition}\label{prop:gpyratio}
+Let $F(\mathbf t)=P(1-t_1-\cdots-t_k)$ on $\mathcal R_k$, with $P$ a polynomial, and $Q(x)=\int_0^xP$. Then
+\[
+I_k(F)=\int_0^1P(x)^2\frac{(1-x)^{k-1}}{(k-1)!}\dd x,\qquad J_k^{(m)}(F)=\int_0^1Q(x)^2\frac{(1-x)^{k-2}}{(k-2)!}\dd x.
+\]
+For $P(x)=x^\ell$, $\frac{\sum_mJ^{(m)}_k}{I_k}=\frac{2k(2\ell+1)}{(\ell+1)(k+2\ell+1)}$.
+\end{proposition}
+\begin{proof}
+For $I_k$, integrate over the slices $\sum t_i=s$ and put $x=1-s$. For $J^{(m)}_k$, with $s=\sum_{i\ne m}t_i$, $\int_0^{1-s}P(1-s-t_m)\dd t_m=Q(1-s)$, and the remaining integral is over the slices of $\mathcal R_{k-1}$. For $P(x)=x^\ell$, $Q(x)=\frac{x^{\ell+1}}{\ell+1}$, and the Beta integral $\int_0^1x^a(1-x)^b\dd x=\frac{a!\,b!}{(a+b+1)!}$ gives $I_k=\frac{(2\ell)!}{(k+2\ell)!}$ and $J^{(m)}_k=\frac{(2\ell+2)!}{(\ell+1)^2(k+2\ell+1)!}$. So $\frac{kJ}I=\frac{k(2\ell+1)(2\ell+2)}{(\ell+1)^2(k+2\ell+1)}$, which is the formula.
+\end{proof}
+
+The ratio $\frac{2k(2\ell+1)}{(\ell+1)(k+2\ell+1)}$ is always less than $4$, since $k(2\ell+1)<2(\ell+1)(k+2\ell+1)$; and with $\ell\approx\sqrt k$ it tends to $4$ as $k\to\infty$. With Bombieri--Vinogradov, $\theta$ is any number less than $\frac12$, so Corollary~\ref{cor:mkcriterion} needs a ratio larger than $4$: this is exactly where level $\frac12$ falls short. Figure~\ref{fig:gpyratio} shows that optimizing the polynomial does not help: the best one-variable ratio stays below $4$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-gpy}
+\caption{The largest value of $\frac{\sum_mJ^{(m)}_k}{I_k}$ for $F=P(1-\sum t_i)$, $P$ of degree at most $8$, computed as the top eigenvalue of a generalized eigenvalue problem (solid), and for the best $P(x)=x^\ell$ (dotted). For $k=6$ the best values are $2.084$ and $2.000$; for $k=100$, $3.473$ and $3.303$. Level $\frac12$ needs more than $4$; level close to $1$ needs more than $2$.}
+\label{fig:gpyratio}
+\end{figure}
+
+\begin{theorem}[Goldston, Pintz, Yıldırım, 2005]\label{thm:gpy}
+(a) If the primes have some level of distribution $\theta>\frac12$, then $\liminf(p_{n+1}-p_n)<\infty$.
+(b) If the primes have level of distribution $\theta$ for some $\theta>\frac{20}{21}$, in particular under the Elliott--Halberstam conjecture, then $p_{n+1}-p_n\le20$ infinitely often.
+\end{theorem}
+\begin{proof}
+(a) Choose $k$ and $\ell$ with $\frac{2k(2\ell+1)}{(\ell+1)(k+2\ell+1)}>\frac2\theta$, possible since the left side tends to $4>\frac2\theta$, and an admissible $k$-tuple $\mathcal H$. Corollary~\ref{cor:mkcriterion} with $\rho=1$ gives infinitely many $n$ with two primes among $n+\mathcal H$, so $p_{j+1}-p_j\le\max\mathcal H-\min\mathcal H$ infinitely often.
+(b) For $k=7$ and $\ell=1$ the ratio is $\frac{42}{20}=2.1>\frac2\theta$ when $\theta>\frac{20}{21}$. The $7$-tuple $\{0,2,6,8,12,18,20\}$ is admissible (Exercise~\ref{ex:admiss}), so infinitely often two of $n,n+2,\dots,n+20$ are prime.
+\end{proof}
+
+With the best polynomial, $k=6$ gives the ratio $2.084$, so level $\theta>0.96$ suffices for the $6$-tuple $\{0,4,6,10,12,16\}$ and gaps at most $16$; GPY stated it for $\theta>0.971$. Chapter~9 brings this down to $12$.
+
+\begin{think}
+Why should a function of $t_1+\cdots+t_k$ be a bad choice? Think of what the weight $w_n$ rewards. With $F$ depending only on the sum, the weight sees only the product $(n+h_1)\cdots(n+h_k)$ and asks that it have few small prime factors. But we want the \emph{individual} factors $n+h_i$ to be prime, and a product with few prime factors in total can still have them badly distributed among the factors. A function of the $t_i$ separately can reward the right distribution. How would you design $F$ to reward $n+h_1$ and $n+h_2$ being prime, regardless of the others?
+\end{think}
+
+\section{Zhang's theorem}
+
+Level $\frac12$ falls short by a hair, so a level slightly above $\frac12$ would give bounded gaps. Nobody can prove Definition~\ref{def:level} for any $\theta>\frac12$. Zhang's insight was that the weights do not need the full statement. In the proof of Theorem~\ref{thm:maynardsums}, the moduli $q$ that occur are products of divisors of $\prod(n+h_i)$, and the residue classes are of a special form, determined by $\mathcal H$. Moreover, one can restrict the $\lambda_{\mathbf d}$ to \emph{smooth} $d$, all of whose prime factors are below $N^\varpi$, at a negligible cost in the main terms. Zhang proved, by a combination of Vaughan-type decompositions (Chapter~4), the dispersion method of Linnik, and the Weil bound for Kloosterman sums and their higher-dimensional analogues proved by Deligne (Chapter~5), that the primes are well distributed in these classes for smooth moduli up to $N^{1/2+2\varpi}$, with $\varpi=\frac1{1168}$.
+
+\begin{theorem}[Zhang, 2013; quoted]\label{thm:zhang}
+$p_{n+1}-p_n<7\cdot10^7$ for infinitely many $n$.
+\end{theorem}
+
+The Polymath8a project, an online collaboration organized by Tao, improved the level and the combinatorics and brought the bound down to $4680$. Maynard's choice of weights, the subject of Chapter~9, does better without going beyond $\frac12$ at all.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:admiss}
+(a) Show that $\{0,2,6,8,12\}$ and $\{0,2,6,8,12,18,20\}$ are admissible and that $\{0,2,4\}$ and $\{0,2,6,8,12,14\}$ are not.
+(b) Show that if $p_{j+1},\dots,p_{j+k}$ are the $k$ smallest primes larger than $k$, the set $\{p_{j+1},\dots,p_{j+k}\}$ is admissible.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:singtwin}
+Show that $\mathfrak S(\{0,2\})=2C_2$, with $C_2=\prod_{p>2}(1-\frac1{(p-1)^2})$, and that $\mathfrak S(\mathcal H)=0$ if and only if $\mathcal H$ is not admissible.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hardyineq}
+\emph{An upper bound for the GPY ratio.} Let $G:[0,1]\to\R$ be continuous and $H(s)=\int_s^1G$. Prove Hardy's inequality $\int_0^1H(s)^2s^{a}\dd s\le\frac4{(a+1)^2}\int_0^1G(s)^2s^{a+2}\dd s$ for $a>-1$, and deduce that $\frac{\sum_mJ^{(m)}_k(F)}{I_k(F)}\le\frac{4k}{k-1}$ for every $F=G(t_1+\cdots+t_k)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gallaghertuple}
+Use Gallagher's theorem to show that the average of $\mathfrak S(\{0,d\})$ over $d\le h$ is $1+O(h^{-1/2})$. Explain why this says that the twin prime conjecture and its relatives are, on average over the gap, consistent with the prime number theorem.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:btsieve}
+\emph{Brun--Titchmarsh from the weights.} Take $k=1$, $\mathcal H=\{0\}$, $F=1$ on $[0,1]$ and $R=N^{1/2-\delta}$. Show that $w_n=\lambda_1^2$ for every prime $n\ge N$, and that $\lambda_1=(1+o(1))\frac{\varphi(W)}W\log R$. Deduce from Theorem~\ref{thm:maynardsums} (only the part about $S_1$, which needs no level of distribution) that $\pi(2N)-\pi(N)\le(2+\varepsilon)\frac N{\log N}$ for $N\ge N_0(\varepsilon)$. Why is $F=1$ the best choice?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:admiss}
+Only primes $p\le k$ need checking. For (b), modulo a prime $p\le k$, the class $0$ is avoided.
+\end{hint}
+
+\begin{hint}{ex:singtwin}
+$\nu_2=1$ and $\nu_p=2$ for $p>2$. If $\nu_p=p$ the factor at $p$ vanishes.
+\end{hint}
+
+\begin{hint}{ex:hardyineq}
+Integrate $H(s)^2s^a$ by parts and use Cauchy--Schwarz. Then use $s^{k}\le s^{k-1}$ on $[0,1]$.
+\end{hint}
+
+\begin{hint}{ex:gallaghertuple}
+Divide by $h$.
+\end{hint}
+
+\begin{hint}{ex:btsieve}
+A divisor $d<R$ of a prime $n\ge N$ is $1$. Use $S_1\ge\lambda_1^2\#\{\text{primes}\}$, Lemma~\ref{lem:musum} for $\lambda_1=\sum_r\frac{y_r}{\varphi(r)}$, and sum over the classes $\nu_0$. For the last question, Cauchy--Schwarz: $(\int_0^1F)^2\le\int_0^1F^2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:admiss}
+\idea Admissibility is a finite computation: only the primes up to the size of the set can be covered.
+\writeup (a) For $\{0,2,6,8,12\}$: modulo $2$ all are $0$; modulo $3$ they are $0,2,0,2,0$, missing $1$; modulo $5$ they are $0,2,1,3,2$, missing $4$; primes $p\ge7>5$ cannot be covered by $5$ numbers. For $\{0,2,6,8,12,18,20\}$: modulo $3$ the classes are $0,2,0,2,0,0,2$, missing $1$; modulo $5$, $0,2,1,3,2,3,0$, missing $4$; modulo $7$, $0,2,6,1,5,4,6$, missing $3$; and $p\ge11>7$ is automatic. $\{0,2,4\}$ covers all classes modulo $3$. $\{0,2,6,8,12,14\}$ is $0,2,1,3,2,4$ modulo $5$, all five classes.
+(b) Let $p\le k$. The chosen primes are all larger than $k\ge p$, so none is divisible by $p$: the class $0$ modulo $p$ is missed. For $p>k$ the $k$ numbers cannot cover $p$ classes.
+\end{solution}
+
+\begin{solution}{ex:singtwin}
+\idea Each factor of the singular series is a ratio of two local probabilities; it vanishes exactly when the local probability that all entries are units is zero.
+\writeup For $\mathcal H=\{0,2\}$, $\nu_2=1$: the factor at $2$ is $\frac{1-1/2}{(1-1/2)^2}=2$. For $p>2$, $\nu_p=2$ and the factor is $\frac{1-2/p}{(1-1/p)^2}=\frac{p(p-2)}{(p-1)^2}=1-\frac1{(p-1)^2}$. So $\mathfrak S=2C_2$. In general the factor at $p$ is $0$ if and only if $\nu_p=p$, and the factors with $p>k$ form a convergent product of positive numbers $1+O(\frac{k^2}{p^2})$, all non-zero; so $\mathfrak S(\mathcal H)=0$ if and only if some $\nu_p=p$, that is, $\mathcal H$ is not admissible.
+\end{solution}
+
+\begin{solution}{ex:hardyineq}
+\idea Hardy's inequality controls a tail integral by the function itself; the weights $s^{k-2}$ and $s^{k-1}$ in $J$ and $I$ differ by just enough power of $s$ for it to apply.
+\writeup Since $H(1)=0$ and $H'=-G$, integration by parts gives, for $a>-1$ (the boundary term at $0$ vanishes because $H$ is bounded),
+\[
+\int_0^1H^2s^a\dd s=\Bigl[H^2\frac{s^{a+1}}{a+1}\Bigr]_0^1+\frac2{a+1}\int_0^1HGs^{a+1}\dd s\le\frac2{a+1}\Bigl(\int_0^1H^2s^a\Bigr)^{1/2}\Bigl(\int_0^1G^2s^{a+2}\Bigr)^{1/2},
+\]
+by Cauchy--Schwarz, writing $s^{a+1}=s^{a/2}s^{(a+2)/2}$. Dividing gives Hardy's inequality. For $F=G(\sum t_i)$, as in Proposition~\ref{prop:gpyratio}, $I_k=\int_0^1G(s)^2\frac{s^{k-1}}{(k-1)!}\dd s$ and $J_k^{(m)}=\int_0^1H(s)^2\frac{s^{k-2}}{(k-2)!}\dd s$. With $a=k-2$,
+\[
+J_k^{(m)}\le\frac4{(k-1)^2(k-2)!}\int_0^1G^2s^k\le\frac4{(k-1)^2(k-2)!}\int_0^1G^2s^{k-1}=\frac{4}{k-1}I_k,
+\]
+so $\frac{kJ}I\le\frac{4k}{k-1}$. This is not quite enough to show that the ratio is below $4$, but it shows that one-variable weights can never reach much beyond $4$; the numerical optimum in Figure~\ref{fig:gpyratio} is below $4$ for every $k$ computed.
+\end{solution}
+
+\begin{solution}{ex:gallaghertuple}
+\idea Gallagher's theorem is a statement about the mean of the local corrections, and the mean is $1$.
+\writeup Dividing Theorem~10.7 of Tome~5 by $h$, $\frac1h\sum_{d\le h}\mathfrak S(\{0,d\})=1+O(h^{-1/2})$. If the conjecture holds for every pair $\{0,d\}$, the number of $n\le x$ with $n$ and $n+d$ prime, summed over $d\le h$, is about $\sum_{d\le h}\mathfrak S(\{0,d\})\frac x{\log^2x}\approx h\frac x{\log^2x}$. On the other hand, each prime $n\le x$ is followed by about $\frac h{\log x}$ primes in $]n,n+h]$ on average, by the prime number theorem, for a total of $\frac x{\log x}\cdot\frac h{\log x}$. The two counts agree: the singular series redistribute the pairs among the gaps (pairs with $d\equiv2\pmod 6$ are rarer than pairs with $d\equiv0\pmod6$, for instance) without changing their total.
+\end{solution}
+
+\begin{solution}{ex:btsieve}
+\idea A one-dimensional Selberg weight is an upper bound sieve: it is at least the square of its value at $d=1$ on the primes, and its average is computed by Theorem~\ref{thm:maynardsums}.
+\writeup With $k=1$, $w_n=(\sum_{d\mid n}\lambda_d)^2$, and for a prime $n\ge N>R$ the only divisor $d<R$ is $1$, so $w_n=\lambda_1^2$. By the definition of $\lambda$, $\lambda_1=\sum_r\frac{y_r}{\varphi(r)}=\sum_{r<R,(r,W)=1}\frac{\mu(r)^2}{\varphi(r)}=(1+o(1))\frac{\varphi(W)}W\log R$ by Lemma~\ref{lem:musum}. Since $w_n\ge0$ for all $n$, the number $\pi_{\nu_0}$ of primes $n\equiv\nu_0\pmod W$ in $[N,2N[$ satisfies $\lambda_1^2\pi_{\nu_0}\le S_1$. The $S_1$ part of Theorem~\ref{thm:maynardsums} needs only $R^2\le N^{1-2\delta}$, and with $I_1(F)=1$ gives $S_1=(1+o(1))\frac{\varphi(W)N\log R}{W^2}$, uniformly in $\nu_0$. Hence
+\[
+\pi_{\nu_0}\le(1+o(1))\frac{\varphi(W)N\log R}{W^2}\cdot\frac{W^2}{\varphi(W)^2\log^2R}=(1+o(1))\frac N{\varphi(W)\log R}.
+\]
+Summing over the $\varphi(W)$ classes $\nu_0$ prime to $W$, and adding the at most $D_0$ primes dividing $W$, $\pi(2N)-\pi(N)\le(1+o(1))\frac N{\log R}=\frac{1+o(1)}{\frac12-\delta}\frac N{\log N}$, which is at most $(2+\varepsilon)\frac N{\log N}$ when $\delta$ is small and $N$ large. For general $F$ the same argument gives $\frac{\int_0^1F^2}{(\int_0^1F)^2}\frac N{\log R}$, and Cauchy--Schwarz shows that the ratio is at least $1$, with equality for constant $F$. This is the Brun--Titchmarsh constant $2$ of Chapter~3, which the parity phenomenon shows to be the limit of sieve methods.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} G.~H.~Hardy and J.~E.~Littlewood, ``Some problems of `Partitio Numerorum' III'', \emph{Acta Math.}\ 44 (1923), 1--70. P.~Erdős, ``The difference of consecutive primes'', \emph{Duke Math.\ J.}\ 6 (1940), 438--441. E.~Bombieri and H.~Davenport, ``Small differences between prime numbers'', \emph{Proc.\ Roy.\ Soc.\ A} 293 (1966), 1--18. H.~Maier, ``Small differences between prime numbers'', \emph{Michigan Math.\ J.}\ 35 (1988), 323--344. The 2003 episode is told in K.~Soundararajan, ``Small gaps between prime numbers: the work of Goldston--Pintz--Yıldırım'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 44 (2007), 1--18.
+\item \emph{GPY.} D.~A.~Goldston, J.~Pintz and C.~Y.~Yıldırım, ``Primes in tuples I'', \emph{Ann.\ of Math.}\ 170 (2009), 819--862.
+\item \emph{Zhang and Polymath.} Y.~Zhang, ``Bounded gaps between primes'', \emph{Ann.\ of Math.}\ 179 (2014), 1121--1174. D.~H.~J.~Polymath, ``New equidistribution estimates of Zhang type'', \emph{Algebra Number Theory} 8 (2014), 2067--2199.
+\item \emph{The weights.} J.~Maynard, ``Small gaps between primes'', \emph{Ann.\ of Math.}\ 181 (2015), 383--413, Sections~4--6, which our proof of Theorem~\ref{thm:maynardsums} follows. A.~Granville, ``Primes in intervals of bounded length'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 52 (2015), 171--222, a beautiful survey of the whole story.
+\end{itemize}
