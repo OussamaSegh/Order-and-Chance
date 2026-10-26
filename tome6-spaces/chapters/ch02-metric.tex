@@ -1,0 +1,550 @@
+\chapter{Metric Spaces and Completeness}
+
+\begin{center}\itshape
+Iterate $x\mapsto\cos x$ from any starting point and the values settle on $0.739085\ldots$; iterate two maps that shrink\\
+the line by a factor $3$ and the Cantor set appears, whatever shape you start from. Why must such iterations\\
+converge, and why always to the same limit?
+\end{center}
+
+Chapter~1 built $\R$ by completing $\Q$: adding the limits that its Cauchy sequences were missing. Limits make sense
+whenever there is a distance, and a \emph{metric space} is a set with nothing but a distance. This chapter develops
+the vocabulary of metric spaces (open and closed sets, convergence, continuity) and the central notion of
+completeness. Every metric space has a completion, built as $\R$ was built from $\Q$, and the completion of $\Q$ for
+the $p$-adic distance of Tome~1 is the field $\Q_p$.
+
+In a complete space, a map that shrinks distances has exactly one fixed point, which iteration finds: this is
+Banach's fixed point theorem, the engine behind Newton's method, the existence of solutions of differential
+equations, PageRank and the fractals that iterated function systems draw. Along the way the chapter keeps a promise
+of Tome~0, which admitted the properties of $\exp$, $\cos$, $\sin$ and $\pi$: they are defined here by power series,
+in the complete space $\C$, and every property used in the series is proved.
+
+\section{Distances}
+
+\begin{definition}
+A \emph{metric} on a set $X$ is a map $d:X\times X\to[0,+\infty[$ with $d(x,y)=0$ iff $x=y$, $d(x,y)=d(y,x)$, and the triangle inequality
+$d(x,z)\le d(x,y)+d(y,z)$. A \emph{norm} on a real or complex vector space $E$ is a map $\|\cdot\|:E\to[0,+\infty[$ with $\|x\|=0$ iff $x=0$,
+$\|\lambda x\|=|\lambda|\|x\|$ and $\|x+y\|\le\|x\|+\|y\|$; then $d(x,y)=\|x-y\|$ is a metric.
+\end{definition}
+
+\begin{example}\label{ex:metrics}
+\begin{enumerate}[label=(\alph*)]
+\item On $\R^n$: $\|x\|_1=\sum|x_i|$, $\|x\|_2=\bigl(\sum x_i^2\bigr)^{1/2}$ and $\|x\|_\infty=\max|x_i|$. The triangle inequality for $\|\cdot\|_2$ is Minkowski's, a
+consequence of Cauchy--Schwarz: $\|x+y\|_2^2=\|x\|_2^2+2\langle x,y\rangle+\|y\|_2^2\le(\|x\|_2+\|y\|_2)^2$. They satisfy
+$\|x\|_\infty\le\|x\|_2\le\|x\|_1\le n\|x\|_\infty$.
+\item On the set $B(S)$ of bounded functions $S\to\R$ (or $\C$), the \emph{sup norm} $\|f\|_\infty=\sup_{s\in S}|f(s)|$.
+\item On any set, the \emph{discrete metric}: $d(x,y)=1$ if $x\ne y$. On words of length $n$, the \emph{Hamming distance}: the number of
+positions where two words differ, the distance of error-correcting codes.
+\item On $\Q$, for a prime $p$, the \emph{$p$-adic absolute value} $|x|_p=p^{-v_p(x)}$, where $v_p(x)$ is the exponent of $p$ in $x\ne0$, and $|0|_p=0$
+(Tome~1, Chapter~12). It satisfies $|xy|_p=|x|_p|y|_p$ and the \emph{ultrametric} inequality $|x+y|_p\le\max(|x|_p,|y|_p)$, stronger than the
+triangle inequality, because $v_p(x+y)\ge\min(v_p(x),v_p(y))$. So $d(x,y)=|x-y|_p$ is a metric, in
+which $p^n\to0$.
+\end{enumerate}
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-balls}
+\caption{The unit balls of $\|\cdot\|_1$ (a diamond), $\|\cdot\|_2$ (a disc) and $\|\cdot\|_\infty$ (a square) in $\R^2$, nested as the inequalities of
+Example~\ref{ex:metrics}(a) say. Each norm gives the same convergent sequences.}
+\label{fig:balls}
+\end{figure}
+
+A subset $Y$ of a metric space is a metric space with the restricted metric. The \emph{open ball} is $B(x,r)=\{y:d(x,y)<r\}$, the
+\emph{closed ball} $\bar B(x,r)=\{y:d(x,y)\le r\}$, and the \emph{diameter} of $A$ is $\operatorname{diam}A=\sup_{x,y\in A}d(x,y)$. The \emph{distance} from $x$ to a
+non-empty $A$ is $d(x,A)=\inf_{a\in A}d(x,a)$; it is $1$-Lipschitz in $x$: $d(x,A)\le d(x,a)\le d(x,y)+d(y,a)$, and take the infimum over $a$.
+
+\section{Open sets, convergence and continuity}
+
+\begin{definition}
+A set $U\subseteq X$ is \emph{open} if for every $x\in U$ there is $r>0$ with $B(x,r)\subseteq U$; it is \emph{closed} if $X\setminus U$ is open. The
+\emph{interior} $\mathring A$ is the union of the open sets inside $A$, the \emph{closure} $\bar A$ the intersection of the closed sets containing $A$,
+and $A$ is \emph{dense} if $\bar A=X$. A sequence $x_n\to x$ if $d(x_n,x)\to0$.
+\end{definition}
+
+An open ball is open: if $y\in B(x,r)$, then $B(y,r-d(x,y))\subseteq B(x,r)$ by the triangle inequality. Unions of open sets and finite
+intersections of open sets are open (take the smallest radius), so intersections of closed sets and finite unions are
+closed. A limit is unique: $d(x,y)\le d(x,x_n)+d(x_n,y)$.
+
+\begin{proposition}\label{prop:closure}
+\begin{enumerate}[label=(\alph*)]
+\item $x\in\bar A$ iff $d(x,A)=0$ iff some sequence of $A$ converges to $x$.
+\item $A$ is closed iff it contains the limits of its convergent sequences.
+\item For $f:X\to Y$ between metric spaces, the following are equivalent: (i) for every $x$ and $\varepsilon>0$ there is $\delta>0$ with
+$d(f(x),f(y))<\varepsilon$ when $d(x,y)<\delta$ (\emph{continuity}); (ii) $x_n\to x$ implies $f(x_n)\to f(x)$; (iii) $f^{-1}(V)$ is open for every
+open $V\subseteq Y$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) If $d(x,A)>0$, the ball $B(x,d(x,A))$ is open and misses $A$, so its complement is a closed set containing $A$ and not $x$: $x\notin\bar A$.
+If $d(x,A)=0$, pick $a_n\in A$ with $d(x,a_n)<\frac1n$: then $a_n\to x$. If $a_n\to x$ with $a_n\in A$, and $F\supseteq A$ is closed with $x\notin F$, some ball
+$B(x,r)$ misses $F$ and hence all $a_n$, which is absurd for large $n$; so $x\in\bar A$. (b) $A$ is closed iff $A=\bar A$; apply (a).
+(c) (i)$\Rightarrow$(ii) is direct. (ii)$\Rightarrow$(iii): if $f^{-1}(V)$ is not open, there are $x\in f^{-1}(V)$ and $x_n\to x$ with $f(x_n)\notin V$; then
+$f(x_n)\to f(x)\in V$, but $V$ contains a ball around $f(x)$, which $f(x_n)$ must eventually enter. (iii)$\Rightarrow$(i): $f^{-1}(B(f(x),\varepsilon))$ is open and
+contains $x$, so it contains a ball $B(x,\delta)$.
+\end{proof}
+
+By (c), continuity only depends on the open sets, not on the metric: this is the starting point of Chapter~3. Two
+metrics are \emph{equivalent} if they have the same open sets, \emph{Lipschitz equivalent} if $c\,d\le d'\le C\,d$ for constants
+$0<c\le C$. The three norms of Example~\ref{ex:metrics}(a) are Lipschitz equivalent, and Chapter~4 proves that all norms on $\R^n$ are.
+
+\begin{definition}
+A map $f:X\to Y$ is \emph{uniformly continuous} if the $\delta$ in (i) can be chosen independently of $x$, and \emph{$k$-Lipschitz} if
+$d(f(x),f(y))\le k\,d(x,y)$ for all $x,y$. A \emph{contraction} is a $k$-Lipschitz map with $k<1$. An \emph{isometry} preserves distances.
+\end{definition}
+
+Lipschitz maps are uniformly continuous; $x\mapsto x^2$ on $\R$ is continuous but not uniformly ($(n+\frac1n)^2-n^2>2$), and $\sqrt x$
+on $[0,1]$ is uniformly continuous but not Lipschitz.
+
+\section{Completeness}
+
+\begin{definition}
+A sequence $(x_n)$ is \emph{Cauchy} if for every $\varepsilon>0$ there is $N$ with $d(x_n,x_m)<\varepsilon$ for $n,m\ge N$. The space is \emph{complete} if
+every Cauchy sequence converges. A complete normed space is a \emph{Banach space}.
+\end{definition}
+
+A convergent sequence is Cauchy, and a Cauchy sequence with a convergent subsequence converges to the same limit
+($d(x_n,x)\le d(x_n,x_{n_k})+d(x_{n_k},x)$). $\R$ is complete (Theorem~\ref{thm:reals}), and $\Q$ and $]0,1]$ are not: $\frac1n$ is Cauchy in
+$]0,1]$ with no limit there. Completeness, unlike openness, is not a topological property: $]0,1]$ and $[1,+\infty[$ are
+homeomorphic by $x\mapsto\frac1x$, and only the second is complete.
+
+\begin{proposition}\label{prop:complete}
+\begin{enumerate}[label=(\alph*)]
+\item A closed subset of a complete space is complete; a complete subset of any metric space is closed.
+\item $\R^n$ and $\C^n$ are complete for $\|\cdot\|_1$, $\|\cdot\|_2$ and $\|\cdot\|_\infty$.
+\item $B(S)$ with the sup norm is a Banach space, and if $S$ is a metric space, the bounded continuous functions form a
+closed subspace $C_b(S)$, hence a Banach space. In particular a uniform limit of continuous functions is continuous.
+\item In a Banach space, an absolutely convergent series converges: if $\sum\|u_k\|<\infty$, then $\sum u_k$ converges and
+$\|\sum u_k\|\le\sum\|u_k\|$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) A Cauchy sequence of a closed $F$ converges in $X$, and its limit is in $F$ by Proposition~\ref{prop:closure}(b). If $A$ is complete and
+$a_n\to x$ with $a_n\in A$, then $(a_n)$ is Cauchy, so it converges in $A$, and by uniqueness of limits $x\in A$.
+(b) By the inequalities between the norms, a sequence is Cauchy (or converges) for one norm iff it is for all, and for $\|\cdot\|_\infty$
+this happens iff each coordinate is Cauchy (or converges) in $\R$. Identify $\C^n$ with $\R^{2n}$.
+(c) Let $(f_n)$ be Cauchy in $B(S)$. For each $s$, $|f_n(s)-f_m(s)|\le\|f_n-f_m\|_\infty$, so $(f_n(s))$ is Cauchy and has a limit $f(s)$. Given $\varepsilon$,
+take $N$ with $\|f_n-f_m\|_\infty\le\varepsilon$ for $n,m\ge N$, and let $m\to\infty$: $|f_n(s)-f(s)|\le\varepsilon$ for all $s$ and $n\ge N$. So $f$ is bounded and
+$f_n\to f$ uniformly. If moreover each $f_n$ is continuous, fix $s$ and $\varepsilon$, take $n$ with $\|f_n-f\|_\infty<\varepsilon$ and $\delta$ with
+$|f_n(t)-f_n(s)|<\varepsilon$ for $d(s,t)<\delta$; then $|f(t)-f(s)|<3\varepsilon$. So $C_b(S)$ is closed in $B(S)$, and complete by (a).
+(d) The partial sums satisfy $\|\sum_{k=m}^nu_k\|\le\sum_{k=m}^n\|u_k\|$, which is small for large $m$: they are Cauchy.
+\end{proof}
+
+\section{The completion}
+
+\begin{lemma}[extension]\label{lem:extension}
+Let $D$ be dense in $X$, $Y$ complete, and $f:D\to Y$ uniformly continuous. Then $f$ has a unique continuous extension
+$\bar f:X\to Y$, and $\bar f$ is uniformly continuous. If $f$ is an isometry, so is $\bar f$.
+\end{lemma}
+\begin{proof}
+For $x\in X$ take $d_n\in D$ with $d_n\to x$. Then $(d_n)$ is Cauchy, so $(f(d_n))$ is Cauchy by uniform continuity, and converges in $Y$.
+The limit does not depend on the sequence: interleaving two sequences converging to $x$ gives one sequence converging to $x$,
+whose image converges, so the two limits agree. Call it $\bar f(x)$. Given $\varepsilon$, let $\delta$ be such that $d(a,b)<\delta$ implies
+$d(f(a),f(b))<\varepsilon$ on $D$. If $d(x,y)<\delta$, approximating sequences $a_n\to x$, $b_n\to y$ eventually satisfy $d(a_n,b_n)<\delta$, so
+$d(\bar f(x),\bar f(y))\le\varepsilon$: $\bar f$ is uniformly continuous. Uniqueness: two continuous extensions agree on $D$, hence on $X$ by
+Proposition~\ref{prop:closure}(c)(ii). Distances pass to the limit, which gives the isometry statement.
+\end{proof}
+
+\begin{theorem}[completion]\label{thm:completion}
+Every metric space $X$ has a \emph{completion}: a complete metric space $\hat X$ with an isometry $\iota:X\to\hat X$ whose image is dense. If
+$(\hat X',\iota')$ is another one, there is a unique isometric bijection $\phi:\hat X\to\hat X'$ with $\phi\circ\iota=\iota'$.
+\end{theorem}
+\begin{proof}
+\emph{Existence} (Kuratowski's embedding). We may assume $X\ne\varnothing$; fix $a\in X$. For $x\in X$ let $\iota(x)$ be the function $f_x(s)=d(x,s)-d(a,s)$ on $X$.
+It is bounded, by $d(x,a)$, by the triangle inequality, and continuous, so $f_x\in C_b(X)$. Moreover
+$\|f_x-f_y\|_\infty=\sup_s|d(x,s)-d(y,s)|=d(x,y)$, the supremum being attained at $s=y$. So $\iota$ is an isometry into the Banach space $C_b(X)$
+(Proposition~\ref{prop:complete}(c)). Let $\hat X$ be the closure of $\iota(X)$; it is complete by Proposition~\ref{prop:complete}(a), and $\iota(X)$ is dense in it.
+\emph{Uniqueness.} $\iota'\circ\iota^{-1}:\iota(X)\to\hat X'$ is an isometry from a dense subset into a complete space; by Lemma~\ref{lem:extension} it extends to an isometry
+$\phi:\hat X\to\hat X'$. Its image is complete, hence closed, and contains the dense set $\iota'(X)$: $\phi$ is onto. Any $\phi$ with $\phi\circ\iota=\iota'$ is continuous and
+is determined on the dense set $\iota(X)$.
+\end{proof}
+
+This proof cannot construct $\R$, since $C_b(X)$ is made of real-valued functions; that is why Chapter~1 used Cauchy
+sequences. The same construction works here (classes of Cauchy sequences of $X$, with $d([x],[y])=\lim d(x_n,y_n)$), and gives a
+second proof. When $X$ has more structure, the completion inherits it: the completion of a normed space is a Banach space
+(the operations are uniformly continuous on bounded sets and extend), and Tome~7 finds $L^1$ and $L^2$ as completions of the
+continuous functions for integral norms (Exercise~\ref{ex:L1incomplete}).
+
+\section{The \texorpdfstring{$p$}{p}-adic numbers as a completion}
+
+\begin{theorem}\label{thm:Qp}
+Let $\Q_p$ be the completion of $(\Q,|\cdot|_p)$. Addition and multiplication extend from $\Q$, and $\Q_p$ is a field; $|\cdot|_p$ extends to an
+ultrametric absolute value on $\Q_p$, with values in $\{p^k:k\in\Z\}\cup\{0\}$. The closed unit ball $\Z_p=\{x:|x|_p\le1\}$ is a subring, it is the
+closure of $\Z$, and $x\mapsto(x\bmod p^n)_{n\ge1}$ is a ring isomorphism from $\Z_p$ onto the ring of compatible sequences that Tome~1,
+Chapter~12 calls $\Z_p$. Every $x\in\Z_p$ is uniquely a convergent sum $\sum_{k\ge0}a_kp^k$ with digits $a_k\in\{0,\dots,p-1\}$.
+\end{theorem}
+\begin{proof}
+Write $|\cdot|$ for $|\cdot|_p$. We use the Cauchy-sequence model of the completion: elements of $\Q_p$ are classes of Cauchy sequences of $\Q$,
+and $\Q$ sits inside as constant sequences. Parts (a) and (b) of Lemma~\ref{lem:cauchybasic} of Chapter~1, and the bound $|x_n|\ge\delta$ for large $n$ in part (c),
+hold word for word with $|\cdot|$ in place of the usual absolute value (their proofs used only the triangle inequality and
+multiplicativity), so the classes form a field, exactly as in Theorem~\ref{thm:reals}. If $(x_n)$ is Cauchy and not null, then $|x_n|$ is eventually constant: $|x_n|\ge\delta$ for large $n$,
+and once $|x_n-x_m|<\delta$, the ultrametric inequality gives $|x_n|=|x_m|$ (if $|a|>|b|$ then $|a+b|=|a|$, since $|a|\le\max(|a+b|,|b|)$). So
+$|x|=\lim|x_n|$ is well defined, multiplicative and ultrametric (pass to the limit), with values in $p^\Z\cup\{0\}$, and it induces the
+metric of the completion.
+
+$\Z_p$ is a subring by the ultrametric inequality and multiplicativity. It is closed (as a closed ball) and contains $\Z$. If
+$|x|\le1$, pick $q\in\Q$ with $|x-q|<p^{-n}$; then $|q|\le1$, so $q=\frac ab$ with $p\nmid b$; choose $c\in\Z$ with $bc\equiv1\pmod{p^n}$, and then
+$|q-ac|=|a|\,|1-bc|/|b|\le p^{-n}$. So $x$ is within $p^{-n}$ of the integer $ac$: $\Z$ is dense in $\Z_p$.
+
+For $x\in\Z_p$ and $n\ge1$, let $x\bmod p^n$ be the class modulo $p^n$ of any integer $m$ with $|x-m|\le p^{-n}$; two such integers differ by a
+multiple of $p^n$, so this is well defined, and it is compatible with reduction from $p^{n+1}$ to $p^n$. The map is a ring morphism
+(approximate $x$ and $y$ by integers $m$, $m'$; then $m+m'$ and $mm'$ approximate $x+y$ and $xy$ to within $p^{-n}$). It is injective: if all
+the reductions vanish, $|x|\le p^{-n}$ for every $n$. It is onto: given compatible $(c_n)$, choose integers $m_n$ in the classes $c_n$; then
+$|m_{n+1}-m_n|\le p^{-n}$, so $(m_n)$ is Cauchy, and its limit reduces to $c_n$ for each $n$.
+
+Digits: let $a_0\in\{0,\dots,p-1\}$ be the representative of $x\bmod p$; then $|x-a_0|\le p^{-1}$, so $x-a_0=py$ with $|y|\le1$, and we continue with $y$. By
+induction $|x-\sum_{k<n}a_kp^k|\le p^{-n}$, so the series converges to $x$. Uniqueness: if two digit sequences first differ at index $j$, the
+difference of the sums is $p^j$ times $(a_j-a'_j)+p(\cdots)$, of absolute value exactly $p^{-j}$.
+\end{proof}
+
+So the $p$-adic integers of Tome~1, defined there by congruences, are the $p$-adic limits of ordinary integers. For example,
+$\frac1{1-p}=\sum_{k\ge0}p^k$ in $\Z_p$, and $-1=\sum_{k\ge0}(p-1)p^k$: in $\Z_2$, $-1=\ldots1111$, the two's complement of computers.
+
+\section{Banach's fixed point theorem}
+
+\begin{theorem}[Banach, 1922]\label{thm:banach}
+Let $X$ be a non-empty complete metric space and $f:X\to X$ a $k$-contraction, $k<1$. Then $f$ has a unique fixed point $x^*$. For every
+$x_0\in X$ the iterates $x_{n+1}=f(x_n)$ converge to $x^*$, with
+\[
+d(x_n,x^*)\le\frac{k^n}{1-k}\,d(x_0,x_1)\qquad\text{and}\qquad d(x_n,x^*)\le\frac k{1-k}\,d(x_{n-1},x_n).
+\]
+\end{theorem}
+\begin{proof}
+$d(x_{j},x_{j+1})\le k^jd(x_0,x_1)$ by induction, so for $m>n$,
+$d(x_n,x_m)\le\sum_{j=n}^{m-1}k^jd(x_0,x_1)\le\frac{k^n}{1-k}d(x_0,x_1)$. The sequence is Cauchy, hence converges to some $x^*$; since $f$ is continuous,
+$x^*=\lim x_{n+1}=\lim f(x_n)=f(x^*)$. Letting $m\to\infty$ gives the first bound, and applying it with $x_{n-1}$ as starting point gives the second.
+Two fixed points satisfy $d(x^*,y^*)=d(f(x^*),f(y^*))\le k\,d(x^*,y^*)$, so they coincide.
+\end{proof}
+
+\begin{think}
+Is completeness needed? Is $k<1$ needed, or is $d(f(x),f(y))<d(x,y)$ for $x\ne y$ enough? Try $f(x)=x+\frac1x$ on $[1,+\infty[$.
+\end{think}
+
+\begin{example}\label{ex:cosfixed}
+$\cos$ maps $[0,1]$ into $[\cos1,1]\subseteq[0,1]$, and $|\cos x-\cos y|\le\sin1\,|x-y|$ there by the mean value theorem (Chapter~4), with
+$\sin1<0.85$. So $x=\cos x$ has a unique solution in $[0,1]$, the \emph{Dottie number} $0.7390851332\ldots$, and the a posteriori bound
+says when to stop iterating. Convergence is linear, with ratio about $|\sin x^*|\approx0.67$: one digit every six steps. Newton's
+method, $x\mapsto x-\frac{x-\cos x}{1+\sin x}$, is a contraction with ratio tending to $0$ near $x^*$, and doubles the number of digits at each
+step (Exercise~\ref{ex:newton}). Figure~\ref{fig:cobweb} draws both.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-cobweb}
+\caption{Iterating $x\mapsto\cos x$ from $x_0=0.1$: the cobweb spirals into the fixed point, the intersection of the graph with the diagonal.
+The distances to $x^*$ shrink by a factor close to $|\cos'(x^*)|=\sin x^*\approx0.67$ at each step.}
+\label{fig:cobweb}
+\end{figure}
+
+\section{Exponential, cosine, sine and \texorpdfstring{$\pi$}{pi}}
+
+Tome~0 admitted the basic properties of $\exp$, $\ln$, $\cos$, $\sin$ and $\pi$. Here they are defined and proved, in the Banach space $\C$.
+
+\begin{lemma}[Cauchy product]\label{lem:cauchyproduct}
+If $\sum a_n$ and $\sum b_n$ converge absolutely in $\C$, then $c_n=\sum_{k=0}^na_kb_{n-k}$ defines an absolutely convergent series with
+$\sum c_n=\bigl(\sum a_n\bigr)\bigl(\sum b_n\bigr)$.
+\end{lemma}
+\begin{proof}
+$\sum_{n\le N}|c_n|\le\sum_{k,l\le N}|a_k||b_l|\le\sum|a_k|\sum|b_l|$, so $\sum c_n$ converges absolutely. Moreover
+$\bigl(\sum_{k\le N}a_k\bigr)\bigl(\sum_{l\le N}b_l\bigr)-\sum_{n\le N}c_n=\sum a_kb_l$ over $k,l\le N$ with $k+l>N$, where $k$ or $l$ exceeds $\frac N2$; so its modulus is at
+most $\sum_{k>N/2}|a_k|\sum_l|b_l|+\sum_k|a_k|\sum_{l>N/2}|b_l|\to0$.
+\end{proof}
+
+\begin{definition}
+For $z\in\C$, $\exp z=\sum_{n\ge0}\frac{z^n}{n!}$, which converges absolutely (compare with $\sum\frac{|z|^n}{n!}$, whose terms are eventually less than
+$2^{-n}$). For real $t$, $\cos t=\operatorname{Re}\exp(it)$ and $\sin t=\operatorname{Im}\exp(it)$, that is $\cos t=\sum\frac{(-1)^kt^{2k}}{(2k)!}$ and $\sin t=\sum\frac{(-1)^kt^{2k+1}}{(2k+1)!}$.
+We write $e^z=\exp z$ and $e=\exp1$.
+\end{definition}
+
+\begin{theorem}\label{thm:exp}
+\begin{enumerate}[label=(\alph*)]
+\item $\exp(z+w)=\exp z\exp w$, $\exp z\ne0$, $\overline{\exp z}=\exp\bar z$, and $|\exp(it)|=1$ for real $t$, so $\cos^2t+\sin^2t=1$.
+\item $\exp$ is differentiable on $\C$ with $\exp'=\exp$; hence $\cos'=-\sin$ and $\sin'=\cos$ on $\R$.
+\item On $\R$, $\exp$ is a strictly increasing bijection onto $]0,+\infty[$. Its inverse $\ln$ satisfies $\ln(xy)=\ln x+\ln y$ and $\ln'(x)=\frac1x$.
+\item There is a smallest $t>0$ with $\cos t=0$; call it $\frac\pi2$. Then $e^{i\pi/2}=i$, $e^{i\pi}=-1$, $e^{2i\pi}=1$, and $\exp$ is periodic of period $2i\pi$.
+\item $e^{it}=1$ for real $t$ iff $t\in2\pi\Z$, and $t\mapsto e^{it}$ maps $[0,2\pi[$ bijectively onto the unit circle.
+\item The curve $t\mapsto e^{it}$, $0\le t\le\theta$, has length $\theta$. So $\pi$ is half the perimeter of the unit circle, as in school.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) By Lemma~\ref{lem:cauchyproduct} and the binomial formula, $\exp z\exp w=\sum_n\sum_{k\le n}\frac{z^kw^{n-k}}{k!(n-k)!}=\sum_n\frac{(z+w)^n}{n!}$. So $\exp z\exp(-z)=\exp0=1$.
+Conjugation is continuous and commutes with partial sums. Then $|e^{it}|^2=e^{it}\overline{e^{it}}=e^{it}e^{-it}=1$.
+
+(b) By (a),
+\[
+\begin{aligned}\exp(z+h)-\exp z-h\exp z&=\exp z\,(\exp h-1-h),\\|\exp h-1-h|&\le\sum_{n\ge2}\frac{|h|^n}{n!}\le|h|^2e^{|h|},\end{aligned}
+\]
+which is $o(|h|)$. For real $t$,
+$\frac{\dd}{\dd t}e^{it}=ie^{it}$ by the chain rule for a complex function of a real variable (apply the estimate with $h=is$); take real and
+imaginary parts.
+
+(c) For $x>0$, $\exp x>1+x>1$; for $x<y$, $\exp y=\exp x\exp(y-x)>\exp x$, using $\exp x=(\exp\frac x2)^2>0$. As $\exp x\ge1+x$ and $\exp(-x)=\frac1{\exp x}$, $\exp$
+tends to $+\infty$ and $0$ at $\pm\infty$. It is continuous and strictly increasing, so by Lemma~\ref{lem:monoivt} below it takes every value in
+$]0,+\infty[$. The inverse $\ln$ turns products into sums because $\exp$ turns sums into products, and it is differentiable with
+$\ln'(x)=\frac1{\exp'(\ln x)}=\frac1x$ (the derivative of an inverse function, Tome~0).
+
+(d) From the series, $\sin t\ge t-\frac{t^3}6>0$ on $]0,2]$ (the terms after $t$ decrease in modulus and alternate in sign, since $\frac{t^2}{(2k+2)(2k+3)}<1$),
+so $\cos$ is strictly decreasing on $[0,2]$. And $\cos2\le1-2+\frac{2^4}{24}=-\frac13<0$ by the same alternating bound. By Lemma~\ref{lem:monoivt}, $\cos$
+vanishes at exactly one point of $]0,2[$, and $\cos>0$ on $[0,\frac\pi2[$. Then $\sin\frac\pi2=1$ (it is positive and $\sin^2=1-\cos^2$), so $e^{i\pi/2}=i$, and
+powers give $e^{i\pi}=-1$ and $e^{2i\pi}=1$; then $\exp(z+2i\pi)=\exp z$ by (a).
+
+(e) Let $0<t<2\pi$ and $e^{it/4}=u+iv$. As $0<\frac t4<\frac\pi2$, $u=\cos\frac t4>0$ and $v=\sin\frac t4>0$ (sine increases on $[0,\frac\pi2]$ from $0$ since its derivative $\cos$ is
+positive). Now $e^{it}=(u+iv)^4=u^4-6u^2v^2+v^4+4iuv(u^2-v^2)$. If it equals $1$, then $u^2=v^2=\frac12$, and the real part is
+$\frac14-\frac64+\frac14=-1\ne1$. So $e^{it}\ne1$ on $]0,2\pi[$, and by periodicity $e^{it}=1$ iff $t\in2\pi\Z$. Injectivity on $[0,2\pi[$ follows ($e^{is}=e^{it}$ means
+$e^{i(s-t)}=1$). Onto: let $|u+iv|=1$. If $u,v\ge0$, $\cos$ decreases continuously from $1$ to $0$ on $[0,\frac\pi2]$, so $u=\cos t$ for some $t$ there
+(Lemma~\ref{lem:monoivt}), and then $v=\sin t$ since both are $\ge0$ with the same square. The other quadrants follow by multiplying by $i$,
+$-1$ or $-i$, that is, by adding $\frac\pi2$, $\pi$ or $\frac{3\pi}2$.
+
+(f) The length of a $C^1$ curve $\gamma$ is $\int|\gamma'|$ (Tome~0), and $|\frac{\dd}{\dd t}e^{it}|=|ie^{it}|=1$.
+\end{proof}
+
+The proof used one lemma, a first case of the intermediate value theorem; the general theorem is in Chapter~3.
+
+\begin{lemma}\label{lem:monoivt}
+Let $f:[a,b]\to\R$ be continuous and strictly monotone. Then $f$ takes every value between $f(a)$ and $f(b)$. The same holds on an open
+interval $]a,b[$ ($-\infty\le a<b\le+\infty$) for the values strictly between the limits of $f$ at $a$ and $b$.
+\end{lemma}
+\begin{proof}
+Say $f$ increases, and $f(a)<y<f(b)$. Let $s=\sup\{x\in[a,b]:f(x)<y\}$. If $f(s)<y$, then $s<b$ and continuity gives $f<y$ on some $[s,s+\eta]$, contradicting
+the definition of $s$. If $f(s)>y$, then $s>a$ and $f>y$ on some $[s-\eta,s]$; since $f$ is increasing, $f>y$ on $[s-\eta,b]$, so $s-\eta$ is a smaller upper
+bound. Hence $f(s)=y$. On an open interval, pick $a'<b'$ inside with $f(a')<y<f(b')$, which exist by definition of the limits.
+\end{proof}
+
+\section{Fractals as fixed points}
+
+\begin{definition}
+Let $\mathcal F(X)$ be the set of non-empty closed bounded subsets of a metric space $X$. The \emph{Hausdorff distance} between $A,B\in\mathcal F(X)$ is
+\[
+d_H(A,B)=\max\Bigl(\sup_{a\in A}d(a,B),\ \sup_{b\in B}d(b,A)\Bigr),
+\]
+the smallest $r$ such that each set lies in the closed $r$-neighbourhood of the other.
+\end{definition}
+
+It is a metric on $\mathcal F(X)$: $d_H(A,B)=0$ forces $A\subseteq\bar B=B$ and $B\subseteq A$; the triangle inequality follows from
+$d(a,C)\le d(a,b)+d(b,C)$, taking the infimum over $b\in B$ and then the suprema.
+
+\begin{theorem}\label{thm:hausdorffcomplete}
+If $X$ is complete, then $(\mathcal F(X),d_H)$ is complete.
+\end{theorem}
+\begin{proof}
+Let $(A_n)$ be Cauchy, and $A=\bigcap_n\overline{\bigcup_{k\ge n}A_k}$, a closed set. Fix $\varepsilon>0$ and choose $N_0<N_1<\cdots$ with $d_H(A_m,A_n)<\varepsilon2^{-j-1}$ for
+$m,n\ge N_j$. \emph{Points of $A_n$ are near $A$.} Let $n\ge N_0$ and $x\in A_n$. Put $x_0=x$, $m_0=n$, and for $j\ge1$ let $m_j=\max(n,N_j)$ and choose $x_j\in A_{m_j}$ with
+$d(x_{j-1},x_j)<\varepsilon2^{-j}$; this is possible because $m_{j-1},m_j\ge N_{j-1}$. Then $(x_j)$ is Cauchy and converges to some $y$ with $d(x,y)<\varepsilon$, and $y\in A$,
+since for each $p$ it is a limit of points $x_j\in A_{m_j}$ with $m_j\ge p$ eventually. So $A\ne\varnothing$ and $\sup_{x\in A_n}d(x,A)\le\varepsilon$.
+\emph{Points of $A$ are near $A_n$.} Let $n\ge N_0$ and $a\in A$. As $a\in\overline{\bigcup_{k\ge n}A_k}$, there are $k\ge n$ and $y\in A_k$ with $d(a,y)<\frac\varepsilon2$, and
+$d(y,A_n)\le d_H(A_k,A_n)<\frac\varepsilon2$. So $d(a,A_n)<\varepsilon$. Finally $A$ is bounded, being within $\varepsilon$ of the bounded $A_n$. Hence $A\in\mathcal F(X)$ and
+$d_H(A_n,A)\le\varepsilon$ for $n\ge N_0$.
+\end{proof}
+
+\begin{theorem}[Hutchinson, 1981]\label{thm:hutchinson}
+Let $X$ be complete and $f_1,\dots,f_m:X\to X$ contractions with ratios $k_i<1$. There is a unique $K\in\mathcal F(X)$ with
+$K=\overline{f_1(K)\cup\cdots\cup f_m(K)}$, the \emph{attractor} of the system, and for every $A\in\mathcal F(X)$ the iterates $F^n(A)$ of
+$F(A)=\overline{\bigcup_if_i(A)}$ converge to $K$ in $d_H$.
+\end{theorem}
+\begin{proof}
+$F(A)$ is closed, non-empty and bounded, so $F$ maps $\mathcal F(X)$ to itself. For each $i$, $d(f_i(a),f_i(B))\le k_id(a,B)$, so $d_H(f_i(A),f_i(B))\le k_id_H(A,B)$,
+where $d_H$ is extended to bounded sets by the same formula. A point of $\bigcup f_i(A)$ lies in some $f_i(A)$, within $k_id_H(A,B)$ of $f_i(B)$; so
+$d_H(\bigcup f_i(A),\bigcup f_i(B))\le\max_ik_i\,d_H(A,B)$. Closures do not change $d_H$, since $d(x,\bar B)=d(x,B)$ and $d(\cdot,B)$ is continuous. So $F$ is a
+contraction of the complete space $\mathcal F(X)$, and Banach's theorem applies.
+\end{proof}
+
+For $f_1(x)=\frac x3$ and $f_2(x)=\frac{x+2}3$ on $\R$, the attractor is the \emph{Cantor set} $C$ of the numbers of $[0,1]$ with a ternary
+expansion using only the digits $0$ and $2$: $f_1$ and $f_2$ prepend a digit $0$ or $2$, so $f_1(C)\cup f_2(C)=C$, and $C$ is closed and bounded
+(Exercise~\ref{ex:cantorifs}). Starting from $[0,1]$, $F^n([0,1])$ is the union of the $2^n$ intervals of the $n$-th stage. Starting from a
+single point, it is a set of $2^n$ points, which converges to the same $C$. Figure~\ref{fig:sierpinski} shows the same phenomenon in the
+plane.
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-sierpinski}
+\caption{Three contractions of ratio $\frac12$ towards the corners of a triangle. Starting from a square (left), the iterates $F(A)$, $F^2(A)$ and
+$F^6(A)$ forget the square and converge to the Sierpi\'nski triangle, the attractor of Theorem~\ref{thm:hutchinson}.}
+\label{fig:sierpinski}
+\end{figure}
+
+\begin{beauty}
+One theorem with a three-line proof, Banach's, solves equations of all kinds: numerical ($x=\cos x$), algebraic (Newton's
+method, and Hensel's lemma in $\Z_p$, Exercise~\ref{ex:hensel}), differential (Picard--Lindel\"of, Exercise~\ref{ex:picard}), probabilistic
+(PageRank and the stationary laws of Markov chains, in the notebook) and geometric (fractals). Each time, the work is
+to find a complete space on which the problem is a contraction. And completeness itself, the property that made $\R$ out
+of $\Q$, makes $\Q_p$ out of $\Q$ for another distance: Ostrowski's theorem (Tome~1, Chapter~12) says that $\R$ and the $\Q_p$ are
+the only completions of $\Q$ for an absolute value.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:ultra}
+Let $d$ be an ultrametric: $d(x,z)\le\max(d(x,y),d(y,z))$. Show that every triangle is isosceles, with the two longest sides equal; that every
+point of a ball is a centre of it; that two balls are either disjoint or nested; and that every open ball is also closed.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:newton}
+Let $a>0$ and $N(x)=\frac12\bigl(x+\frac ax\bigr)$. Show that $N$ maps $[\sqrt a,+\infty[$ into itself, is a contraction there with ratio $\frac12$, and that the
+errors $e_n=x_n-\sqrt a$ satisfy $e_{n+1}=\frac{e_n^2}{2x_n}$. Starting from $x_0=2$ for $a=2$, how many correct digits does $x_5$ have?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cantorifs}
+Show that the Cantor set $C$ is closed and bounded and satisfies $C=f_1(C)\cup f_2(C)$ for $f_1(x)=\frac x3$, $f_2(x)=\frac{x+2}3$. What is the attractor of
+$\frac x2$ and $\frac{x+1}2$? Of $\frac x3$, $\frac{x+1}3$ and $\frac{x+2}3$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:L1incomplete}
+On $C([0,1])$, let $\|f\|_1=\int_0^1|f|$. Show that this is a norm, and that $C([0,1])$ is not complete for it: find a Cauchy sequence of
+continuous functions that converges, in a sense to be made precise, to the indicator of $[\frac12,1]$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cantorinter}
+Show that $X$ is complete iff every decreasing sequence $F_1\supseteq F_2\supseteq\cdots$ of non-empty closed sets with $\operatorname{diam}F_n\to0$ has a non-empty
+intersection (Cantor's intersection theorem). Show that the intersection is then a single point, and that the hypothesis on the
+diameters cannot be dropped.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:picard}
+\emph{Picard--Lindel\"of.} Let $f:[0,T]\times\R\to\R$ be continuous and $L$-Lipschitz in its second variable, and $y_0\in\R$. On $C([0,T])$, consider
+$\Phi(y)(t)=y_0+\int_0^tf(s,y(s))\dd s$ and the norm $\|y\|_L=\sup_te^{-2Lt}|y(t)|$. Show that $\Phi$ is a $\frac12$-contraction for $\|\cdot\|_L$, and deduce that
+$y'=f(t,y)$, $y(0)=y_0$ has a unique solution on $[0,T]$. What are the iterates for $y'=y$, $y(0)=1$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hensel}
+In $\Z_5$, let $T(x)=x-4(x^2+1)$. Show that $T$ maps $D=\{x:|x-2|_5\le\frac15\}$ into itself and is a contraction there with ratio $\frac15$, and deduce that
+$-1$ has a square root in $\Z_5$ congruent to $2$ modulo $5$. Compute its first three $5$-adic digits.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:devil}
+\emph{The devil's staircase as a fixed point.} On the Banach space $B([0,1])$, define $\Phi(f)(x)=\frac12f(3x)$ for $x\in[0,\frac13]$, $\Phi(f)(x)=\frac12$ for
+$x\in\,]\frac13,\frac23[$, and $\Phi(f)(x)=\frac12+\frac12f(3x-2)$ for $x\in[\frac23,1]$. Show that $\Phi$ is a $\frac12$-contraction, that its fixed point $c$ is continuous
+and non-decreasing with $c(0)=0$ and $c(1)=1$, and that $c$ is constant on each interval removed from $[0,1]$ to build the Cantor set.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:ultra}
+If $d(x,y)<d(y,z)$, apply the ultrametric inequality to $d(y,z)$ through $x$. For the last claim, a point at distance $\ge r$ from the centre
+has a whole ball around it outside.
+\end{hint}
+\begin{hint}{ex:newton}
+$N(x)-\sqrt a=\frac{(x-\sqrt a)^2}{2x}$, and $N'(x)=\frac12(1-\frac a{x^2})\in[0,\frac12[$.
+\end{hint}
+\begin{hint}{ex:cantorifs}
+$C=\bigcap C_n$ with $C_n$ the union of $2^n$ closed intervals. The other two attractors are intervals.
+\end{hint}
+\begin{hint}{ex:L1incomplete}
+Take $f_n$ equal to $0$ on $[0,\frac12-\frac1n]$, $1$ on $[\frac12,1]$, affine between. A limit $g$ in $C([0,1])$ would satisfy $\int|g-\mathbf 1_{[1/2,1]}|=0$.
+\end{hint}
+\begin{hint}{ex:cantorinter}
+For the converse, given a Cauchy sequence, use $F_n=\overline{\{x_k:k\ge n\}}$. For the counterexample, try $F_n=[n,+\infty[$.
+\end{hint}
+\begin{hint}{ex:picard}
+$|\Phi(y)(t)-\Phi(z)(t)|\le L\int_0^te^{2Ls}\|y-z\|_L\dd s$.
+\end{hint}
+\begin{hint}{ex:hensel}
+On $D$, $x=2+5u$ with $|u|\le1$; compute $T(x)-T(x')=(x-x')(1-4(x+x'))$ and look at $1-4(x+x')$ modulo $5$.
+\end{hint}
+\begin{hint}{ex:devil}
+The three pieces of $\Phi(f)-\Phi(g)$ are bounded by $\frac12\|f-g\|_\infty$. The continuous non-decreasing functions with $f(0)=0$, $f(1)=1$ form a closed set that
+$\Phi$ maps into itself.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:ultra}
+\idea Everything follows from one fact: if $d(x,y)\ne d(y,z)$, then $d(x,z)$ is the larger of the two. Balls then behave like the levels of a
+tree.
+\writeup Let $d(x,y)<d(y,z)$. Then $d(y,z)\le\max(d(y,x),d(x,z))$, and the maximum cannot be $d(x,y)$, so $d(y,z)\le d(x,z)\le\max(d(x,y),d(y,z))=d(y,z)$:
+$d(x,z)=d(y,z)$. So the two longest sides are equal. If $y\in B(x,r)$ and $d(z,y)<r$, then $d(z,x)\le\max(d(z,y),d(y,x))<r$, and symmetrically: $B(y,r)=B(x,r)$.
+If two balls $B(x,r)$, $B(x',r')$ with $r\le r'$ share a point $z$, then $B(x,r)=B(z,r)\subseteq B(z,r')=B(x',r')$. Finally if $d(y,x)\ge r$, then for
+$d(z,y)<r$ we get $d(z,x)=d(y,x)\ge r$ (as $d(z,y)<d(y,x)$): the ball $B(y,r)$ lies outside $B(x,r)$, which is therefore closed.
+\end{solution}
+
+\begin{solution}{ex:newton}
+\idea Newton's method is a contraction whose ratio is the derivative of $N$; at the fixed point that derivative vanishes, so the
+contraction gets stronger and stronger.
+\writeup $N(x)-\sqrt a=\frac{x^2-2x\sqrt a+a}{2x}=\frac{(x-\sqrt a)^2}{2x}\ge0$, which is $e_{n+1}=\frac{e_n^2}{2x_n}$ and shows $N([\sqrt a,+\infty[)\subseteq[\sqrt a,+\infty[$. For $x\ge\sqrt a$,
+$0\le N'(x)=\frac12(1-\frac a{x^2})<\frac12$, so by the mean value theorem $N$ is a $\frac12$-contraction on this closed, hence complete, set. For $a=2$, $x_0=2$:
+$e_0\approx0.586$, and $e_{n+1}\le\frac{e_n^2}{2\sqrt2}$ gives $e_1\le0.12$, $e_2\le5.2\cdot10^{-3}$, $e_3\le9.6\cdot10^{-6}$, $e_4\le3.3\cdot10^{-11}$, $e_5\le3.8\cdot10^{-22}$: $x_5$ has
+at least $21$ correct digits (in fact $24$, since $e_1=\frac32-\sqrt2\approx0.086$ is smaller than the bound). The number of digits doubles at each step, while the ratio $\frac12$ alone would only promise one binary digit.
+\end{solution}
+
+\begin{solution}{ex:cantorifs}
+\idea Write $C$ through its ternary digits; the two maps prepend a digit. For the other systems, guess the attractor from one iterate of
+$[0,1]$, and use uniqueness.
+\writeup Let $C_0=[0,1]$ and $C_{n+1}=f_1(C_n)\cup f_2(C_n)$. By induction, $C_n$ is the disjoint union of the $2^n$ closed intervals
+$I_{d}=[\sum_{k\le n}d_k3^{-k},\sum_{k\le n}d_k3^{-k}+3^{-n}]$ for $d\in\{0,2\}^n$, and $C_{n+1}\subseteq C_n$. We check that $C=\bigcap_nC_n$. If $x=\sum_kd_k3^{-k}$ with all $d_k\in\{0,2\}$,
+then $x\in I_{(d_1,\dots,d_n)}$ for every $n$. Conversely, if $x\in\bigcap C_n$, then for each $n$ it lies in exactly one interval of stage $n$ (they are
+disjoint), and the interval of stage $n+1$ containing $x$ lies in the one of stage $n$; so the digits $d_k$ are consistent, and $|x-\sum_{k\le n}d_k3^{-k}|\le3^{-n}$
+gives $x=\sum_kd_k3^{-k}$. So $C$ is closed (an intersection of closed sets) and bounded. Since $C_{n+1}=f_1(C_n)\cup f_2(C_n)$ and the
+$f_i$ are injective, $f_i(\bigcap C_n)=\bigcap f_i(C_n)$; and $f_1(C_n)\subseteq[0,\frac13]$, $f_2(C_n)\subseteq[\frac23,1]$ are disjoint, so
+$f_1(C)\cup f_2(C)=\bigcap_n\bigl(f_1(C_n)\cup f_2(C_n)\bigr)=\bigcap_nC_{n+1}=C$. By uniqueness, $C$ is the attractor.
+For $\frac x2$, $\frac{x+1}2$: $[0,1]=[0,\frac12]\cup[\frac12,1]$ is fixed, so it is the attractor (binary expansions use all digits). For the three maps of ratio
+$\frac13$: $[0,\frac13]\cup[\frac13,\frac23]\cup[\frac23,1]=[0,1]$ again. Fractal attractors need ``missing pieces''.
+\end{solution}
+
+\begin{solution}{ex:L1incomplete}
+\idea Continuous functions can approximate a jump in the mean, but the jump is not continuous: the limit falls outside the space.
+\writeup Positivity: if $f\ne0$ is continuous, $|f|>\frac{|f(x_0)|}2$ on an interval around $x_0$, so $\int|f|>0$. Homogeneity and the triangle inequality come from
+those of $|\cdot|$ and the monotonicity of the integral. For $f_n$ as in the hint and $m>n$, $f_n$ and $f_m$ differ only on $[\frac12-\frac1n,\frac12]$, where both are in
+$[0,1]$, so $\|f_n-f_m\|_1\le\frac1n$: the sequence is Cauchy. Suppose $f_n\to g$ in $\|\cdot\|_1$ with $g$ continuous. For fixed $\eta>0$, on $[\frac12,1]$ all $f_n=1$, so
+$\int_{1/2}^1|1-g|\le\|f_n-g\|_1\to0$, and $g=1$ there by continuity; on $[0,\frac12-\eta]$, $f_n=0$ for $n>\frac1\eta$, so $g=0$ there. As $\eta$ is arbitrary, $g=0$ on $[0,\frac12[$ and
+$g(\frac12)=1$, contradicting continuity. The completion is $L^1([0,1])$ (Chapter~9), where $\mathbf 1_{[1/2,1]}$ lives.
+\end{solution}
+
+\begin{solution}{ex:cantorinter}
+\idea Shrinking closed sets pin down a Cauchy sequence, and conversely the tails of a Cauchy sequence form shrinking closed sets.
+\writeup Let $X$ be complete and $(F_n)$ as stated. Pick $x_n\in F_n$. For $m\ge n$, $x_m\in F_n$, so $d(x_n,x_m)\le\operatorname{diam}F_n\to0$: $(x_n)$ is Cauchy, with a limit $x$.
+For each $n$, $x$ is a limit of points $x_m\in F_n$ ($m\ge n$), so $x\in F_n$. Two points of $\bigcap F_n$ are at distance $\le\operatorname{diam}F_n$ for all $n$, so they
+coincide. Conversely, let $(x_k)$ be Cauchy and $F_n=\overline{\{x_k:k\ge n\}}$; then $\operatorname{diam}F_n=\sup_{k,l\ge n}d(x_k,x_l)\to0$ (the closure does not change the
+diameter), so some $x$ lies in every $F_n$: $d(x,x_k)\le\operatorname{diam}F_n$ for $k\ge n$, and $x_k\to x$. Without the diameters: in $\R$, $F_n=[n,+\infty[$ is a
+decreasing sequence of non-empty closed sets with empty intersection.
+\end{solution}
+
+\begin{solution}{ex:picard}
+\idea The integral equation $y=\Phi(y)$ is equivalent to the differential equation, and the weight $e^{-2Lt}$ is chosen so that the
+Lipschitz constant $L$ is beaten on the whole interval, not only on a short one.
+\writeup $C([0,T])$ with $\|\cdot\|_L$ is complete: $e^{-2LT}\|y\|_\infty\le\|y\|_L\le\|y\|_\infty$, so it has the same Cauchy sequences as the sup norm. $\Phi(y)$ is
+continuous (an integral of a continuous function), and
+\[
+\begin{aligned}|\Phi(y)(t)-\Phi(z)(t)|&\le\int_0^tL|y(s)-z(s)|\dd s\eqbr\le L\|y-z\|_L\int_0^te^{2Ls}\dd s\eqbr\le\frac{e^{2Lt}}2\|y-z\|_L.\end{aligned}
+\]
+Multiplying by $e^{-2Lt}$ and taking the supremum, $\|\Phi(y)-\Phi(z)\|_L\le\frac12\|y-z\|_L$. Banach gives a unique fixed point $y$. A fixed point is $C^1$ with
+$y'=f(t,y)$ and $y(0)=y_0$, by the fundamental theorem of calculus; conversely any solution satisfies $y=\Phi(y)$ by integration, so the
+solution is unique. For $y'=y$, $y_0=1$, starting from $1$ the iterates are $\sum_{k\le n}\frac{t^k}{k!}$: Picard's iteration rebuilds the exponential
+series.
+\end{solution}
+
+\begin{solution}{ex:hensel}
+\idea This is Newton's method for $x^2+1$ with the derivative frozen at the first approximation: $2\cdot2=4$, whose inverse modulo $5$ is $4$.
+Freezing the derivative loses quadratic convergence but keeps a contraction, which is all Banach needs.
+\writeup $D$ is a closed ball of the complete space $\Z_5$, hence complete. For $x\in D$, $x^2+1\equiv4+1\equiv0\pmod5$, so $|x^2+1|_5\le\frac15$ and $|T(x)-2|_5\le\max(|x-2|_5,|4(x^2+1)|_5)\le\frac15$:
+$T(D)\subseteq D$. Next $T(x)-T(x')=(x-x')(1-4(x+x'))$, and $x+x'\equiv4\pmod5$, so $1-4(x+x')\equiv1-16\equiv0\pmod5$: $|T(x)-T(x')|_5\le\frac15|x-x'|_5$. The fixed point
+satisfies $4(x^2+1)=0$, hence $x^2=-1$, and $x\equiv2\pmod5$. By the a priori bound, $|T^n(2)-x|_5\le5^{-n-1}$, so $T^n(2)\equiv x\pmod{5^{n+1}}$, and an integer congruent to $T^n(2)$ modulo $5^{n+1}$ may replace it
+(its image moves by $\frac15$ of that distance at most). Iterating from $2$: $T(2)=2-20=-18\equiv7\pmod{25}$, so $x\equiv7=2+1\cdot5\pmod{25}$; then
+$T(7)=7-200=-193\equiv57\pmod{125}$, and $57=2+1\cdot5+2\cdot25$. Check: $57^2+1=3250=26\cdot125$. The digits start $2,1,2$.
+\end{solution}
+
+\begin{solution}{ex:devil}
+\idea Self-similarity is a fixed point equation, and on a space of bounded functions with the sup norm, halving the values makes
+it a contraction. Properties preserved by $\Phi$ and closed under uniform limits pass to the fixed point.
+\writeup On each of the three pieces, $|\Phi(f)(x)-\Phi(g)(x)|$ is $\frac12|f(y)-g(y)|$ for some $y$, or $0$; so $\|\Phi(f)-\Phi(g)\|_\infty\le\frac12\|f-g\|_\infty$, and Banach in the
+Banach space $B([0,1])$ gives a unique fixed point $c$. Let $M$ be the set of continuous non-decreasing $f$ with $f(0)=0$, $f(1)=1$. It is closed in $B([0,1])$
+(uniform limits keep continuity, monotonicity and the values at $0$, $1$), non-empty ($f(x)=x$), and $\Phi(M)\subseteq M$: on $[0,\frac13]$, $\Phi(f)$ rises from $0$ to
+$\frac12f(1)=\frac12$, it equals $\frac12$ in the middle, and rises from $\frac12+\frac12f(0)=\frac12$ to $1$ on $[\frac23,1]$, so the pieces join continuously and monotonically. The
+iterates of $f\in M$ stay in $M$ and converge to $c$, so $c\in M$. Finally $c=\frac12$ on $]\frac13,\frac23[$, and by the equation $c(x)=\frac12c(3x)$ the function is constant on
+each removed interval of $[0,\frac13]$ that is the image of a removed interval under $x\mapsto\frac x3$, and likewise on $[\frac23,1]$; by induction on the stage, $c$ is
+constant on every removed interval. This $c$ is the distribution function of Tome~3, Exercise~5.7, and Chapter~10 shows that $c'=0$ almost
+everywhere.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item S.~Banach, \emph{Sur les op\'erations dans les ensembles abstraits et leur application aux \'equations int\'egrales}, Fundamenta
+Mathematicae 3 (1922), 133--181. The thesis that introduced Banach spaces and the fixed point theorem.
+\item M.~Fr\'echet, \emph{Sur quelques points du calcul fonctionnel}, Rendiconti del Circolo Matematico di Palermo 22 (1906), 1--74. Metric
+spaces are born.
+\item W.~Rudin, \emph{Principles of Mathematical Analysis}, 3rd ed., McGraw--Hill, 1976, Chapters~2, 3 and~8. Metric spaces in forty pages,
+and the definition of $\exp$, $\cos$, $\sin$ and $\pi$ by power series followed here (the proof of Theorem~\ref{thm:exp}(e) is Rudin's).
+\item F.~Q.~Gouv\^ea, \emph{$p$-adic Numbers: An Introduction}, 2nd ed., Springer, 1997. $\Q_p$ as a completion, with Hensel and Ostrowski.
+\item J.~E.~Hutchinson, \emph{Fractals and self-similarity}, Indiana University Mathematics Journal 30 (1981), 713--747. Theorem~\ref{thm:hutchinson} and
+much more.
+\item M.~F.~Barnsley, \emph{Fractals Everywhere}, Academic Press, 1988. Iterated function systems, the chaos game and the collage
+theorem, with pictures.
+\end{itemize}
