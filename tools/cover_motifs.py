@@ -770,7 +770,6 @@ def hilbert_curve(order=6):
     return "\n".join(lines) + "\n"
 
 
-<<<<<<< Updated upstream
 
 def multiplicative_walks(N=3000, walks=3, seed=14):
     """Partial sums S(n) = f(1)+...+f(n) of Steinhaus random multiplicative functions, drawn as
@@ -809,7 +808,7 @@ def multiplicative_walks(N=3000, walks=3, seed=14):
     lines.append(r"\fill[accent] (0,0) circle (2.2pt);")
     return "\n".join(lines) + "\n"
 
-=======
+
 def brw_barrier(depth=11, seed=15):
     """Tome 15: a binary branching random walk (each particle splits in two, each child moves by an
     independent Gaussian step), drawn with time running left to right, and the critical line
@@ -845,7 +844,6 @@ def brw_barrier(depth=11, seed=15):
     return "\n".join(lines) + "\n"
 
 
->>>>>>> Stashed changes
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
