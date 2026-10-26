@@ -1,0 +1,192 @@
+\chapter{Five Projects}
+\label{ch:projects}
+
+\begin{center}\itshape
+Every project here starts with a computation,\\
+passes through a theorem proved in these pages,\\
+and ends with a question nobody has answered yet.
+\end{center}
+
+This last chapter is a launch pad. Each project follows the same pattern: a computation you can run in an afternoon, a partial result proved here in full, and an extension that, as far as we know, is open or at least not in the literature in the form stated. ``As far as we know'' is the honest qualifier of every research project: part of the work is to search the literature properly (Chapter~\ref{ch:reading}) and find out whether someone got there first. If they did, that is not a failure. It means your question was a good one, and you now have a paper to read with unusual attention.
+
+\section{Project 1: a new shuffle}
+
+\emph{The computation.} Simulate the \emph{random-to-top} shuffle: at each step a uniformly random card is taken out of the deck and put on top. (It is the shuffle a pile of papers on a desk performs, when each paper you use goes back on top.) Estimate the total variation distance to uniform by counting a simple statistic, such as the length of the longest increasing run from the top.
+
+\begin{proposition}\label{prop:randomtotop}
+For random-to-top on $n$ cards, $d(n\ln n+cn)\le e^{-c}$ for every $c>0$.
+\end{proposition}
+
+\begin{proof}
+Let $\tau$ be the first time at which at least $n-1$ distinct cards have been chosen. At any time $t$, the cards chosen so far are on top, ordered by their most recent choice (the most recent on top), and the others are below them in their original order. So at any $t\ge\tau$ the deck is a function of the sequence of choices: the chosen cards by order of last choice, then the single unchosen card, if any.
+
+We show that $\tau$ is a strong stationary time. The event $\{\tau=s\}$ depends only on the first $s$ choices. Relabel the cards by a permutation $\sigma$: the sequence of choices $(\sigma(c_1),\sigma(c_2),\dots)$ has the same law as $(c_1,c_2,\dots)$, the event $\{\tau=s\}$ is unchanged, and the deck at time $s$ becomes its image under $\sigma$ (the unchosen card is relabelled too, and its position, the bottom, does not depend on its name). Hence $P(X_s=\pi,\tau=s)=P(X_s=\sigma\pi,\tau=s)$ for all $\sigma$, so $X_\tau$ is uniform and independent of $\tau$; after $\tau$ the chain stays uniform, since a uniform deck stays uniform under any shuffle that is a random permutation independent of the deck. By Tome~3, Proposition~8.18, $d(t)\le P(\tau>t)$.
+
+Finally $\tau$ is at most the time to collect all $n$ coupons, and the probability that a given card has not been chosen by time $t$ is $(1-\frac1n)^t\le e^{-t/n}$. A union bound gives $P(\tau>t)\le ne^{-t/n}=e^{-c}$ for $t=n\ln n+cn$.
+\end{proof}
+
+Random-to-top is the time reversal of top-to-random (Tome~3, Exercise~8.6), and both have cutoff at $n\ln n$. \emph{The extension.} Generalise: take a random card and insert it at a uniformly random position among the top $k$ positions. For $k=1$ this is random-to-top, for $k=n$ it is random-to-random, whose cutoff at $\frac34n\ln n$ was established only recently (Subag in 2013 gave the lower bound; Bernstein and Nestoridi completed the proof in 2019). What happens for $k=\lfloor\alpha n\rfloor$ with $0<\alpha<1$? Is there cutoff, and where? Start by simulating the decay of the expected number of cards that have never been touched, and of the longest increasing subsequence.
+
+\section{Project 2: prime factors in short intervals}
+
+\emph{The computation.} For $x=10^{12}$ and $h=10^6$, compute $\omega(n)$ for all $n\in(x,x+h]$ with a segmented sieve, and compare its histogram with the Poisson law of mean $\ln\ln x$ and with the normal law of the Erd\H os--Kac theorem (Tome~5, Theorem~9.7).
+
+For $y\ge2$, let $\omega_y(n)$ be the number of primes $p\le y$ dividing $n$, and $\mu_y=\sum_{p\le y}\frac1p$. The following is the Tur\'an--Kubilius inequality of Tome~5 (Theorem~9.1) transplanted to a short interval.
+
+\begin{proposition}\label{prop:tkshort}
+For real $x\ge0$, $h\ge1$ and $y\ge2$,
+\[
+\sum_{x<n\le x+h}\bigl(\omega_y(n)-\mu_y\bigr)^2\le h\,\mu_y+5\,\pi(y)^2 .
+\]
+In particular, if $y\le\sqrt h$, the left side is at most $h(\mu_y+5)$.
+\end{proposition}
+
+\begin{proof}
+For $d\ge1$ let $N_d$ be the number of multiples of $d$ in $(x,x+h]$; then $N_d=\frac hd+\theta_d$ with $|\theta_d|\le1$. Write $\pi=\pi(y)$, and let $p,q$ run over primes $\le y$. Then $\sum_n\omega_y(n)=\sum_pN_p$ and $\sum_n\omega_y(n)^2=\sum_pN_p+\sum_{p\ne q}N_{pq}$. Expanding the square,
+\[
+\sum_n(\omega_y(n)-\mu_y)^2=\sum_pN_p+\sum_{p\ne q}N_{pq}-2\mu_y\sum_pN_p+\mu_y^2N_1 .
+\]
+The main terms are $h\mu_y+h\sum_{p\ne q}\frac1{pq}-2h\mu_y^2+h\mu_y^2\le h\mu_y$, because $\sum_{p\ne q}\frac1{pq}\le\mu_y^2$. The error terms are at most $\pi+\pi^2+2\mu_y\pi+\mu_y^2\le5\pi^2$, using $\mu_y\le\pi$ and $\pi\ge1$. If $y\le\sqrt h$, then $\pi(y)^2\le y^2\le h$.
+\end{proof}
+
+With $h=x^\theta$ and $y=x^{\theta/2}$, an integer $n\le2x$ has at most $2/\theta+1$ prime factors above $y$, and $\mu_y=\ln\ln x+O_\theta(1)$ by Mertens's theorem. So the proposition shows that almost all $n$ in $(x,x+x^\theta]$ have $\omega(n)=\ln\ln x+O(\psi(x)\sqrt{\ln\ln x})$ for any $\psi\to\infty$: the Hardy--Ramanujan theorem holds in short intervals. \emph{The extension.} How short can the interval be for the Erd\H os--Kac theorem, or for the finer Poisson approximation of the distribution of $\omega(n)$ (the Sathe--Selberg formula), to hold? For which $h=h(x)$ can one prove it, and what do the data say about where it fails? (Intervals of length $(\ln x)^A$ are a natural test case; the computation above, and its analogue for $\Omega(n)$, are the place to start.)
+
+\section{Project 3: random symmetric matrices over a finite field}
+
+\emph{The computation.} For a prime $p$, generate random symmetric $n\times n$ matrices over $\mathbb F_p$, first with uniform entries, then \emph{sparse}: each entry above the diagonal is nonzero with probability $\frac dn$ (and then uniform among the nonzero values), for a fixed $d$. Record the corank (the dimension of the kernel), and compare its distribution with the limit law for uniform matrices.
+
+\begin{proposition}\label{prop:symkernel}
+Let $A$ be a uniformly random symmetric $n\times n$ matrix over $\mathbb F_p$. For every nonzero $v\in\mathbb F_p^n$, $P(Av=0)=p^{-n}$. Consequently the expected number of nonzero vectors in $\ker A$ is $1-p^{-n}$, and $P(\det A=0)\le\frac{1-p^{-n}}{p-1}$.
+\end{proposition}
+
+\begin{proof}
+Choose an invertible matrix $Q$ with $Qe_1=v$. The map $A\mapsto Q^{\mathsf T}AQ$ is a bijection of the set of symmetric matrices (its inverse is $B\mapsto(Q^{-1})^{\mathsf T}BQ^{-1}$), so $A'=Q^{\mathsf T}AQ$ is again uniform. And $Av=0$ if and only if $A'e_1=Q^{\mathsf T}AQe_1=0$, that is, the first column of $A'$ vanishes. The entries $A'_{11},A'_{21},\dots,A'_{n1}$ are $n$ distinct entries on or below the diagonal of a uniform symmetric matrix, hence independent and uniform, so all vanish with probability $p^{-n}$. Summing over the $p^n-1$ nonzero vectors gives the expectation. If $\det A=0$, the kernel contains at least $p-1$ nonzero vectors, so by Markov's inequality $P(\det A=0)\le\frac{1-p^{-n}}{p-1}$.
+\end{proof}
+
+The bound is of the right order: the exact limit of $P(\det A\ne0)$ for uniform symmetric matrices is a product $\prod_{i\ge0}(1-p^{-(2i+1)})$, and the whole distribution of the cokernel of random symmetric integer matrices (the sandpile groups of Chapter~\ref{ch:sandpiles}) was found by Clancy, Leake and Payne in their conjecture and proved by Wood. \emph{The extension.} For the sparse model with fixed $d$, the matrix has many zero rows when $d$ is small, so the corank is large; but what is the distribution of the corank \emph{after removing the obvious kernel vectors} (from zero rows and from pairs of equal rows)? Does it converge to the uniform-model law as $d\to\infty$, and how fast? This is close to questions studied for random graphs, but the finite-field symmetric sparse version is a good place to find something new.
+
+\section{Project 4: random multiplicative functions over $\mathbb F_q[t]$}
+
+\emph{The computation.} The ring $\mathbb F_q[t]$ of polynomials over a finite field behaves like the integers: unique factorisation into monic irreducibles, about $q^n/n$ monic irreducibles of degree $n$, and a Riemann hypothesis that is a theorem (Weil). A \emph{Steinhaus random multiplicative function} assigns to each monic irreducible $P$ an independent uniform $f(P)$ on the unit circle, and extends multiplicatively to all monic polynomials. Compute $S_n=\sum_{\deg g=n}f(g)$, the sum over monic $g$ of degree $n$, for $q=3$ and $n\le12$, and estimate $\mathbb E|S_n|^4$.
+
+\begin{proposition}\label{prop:ffmoments}
+$\mathbb E|S_n|^2=q^n$, and $\mathbb E|S_n|^4$ equals the number of quadruples $(a,b,c,d)$ of monic polynomials of degree $n$ with $ab=cd$.
+\end{proposition}
+
+\begin{proof}
+For monic $a,b$, write $a=\prod P^{\alpha_P}$ and $b=\prod P^{\beta_P}$. Then $f(a)\overline{f(b)}=\prod_Pf(P)^{\alpha_P-\beta_P}$, a product of independent factors, and $\mathbb E f(P)^k=0$ for $k\ne0$. So $\mathbb E f(a)\overline{f(b)}=1$ if $a=b$ and $0$ otherwise, by unique factorisation. Hence $\mathbb E|S_n|^2=\sum_{a,b}\mathbb E f(a)\overline{f(b)}$ is the number of monic polynomials of degree $n$, which is $q^n$. Similarly $\mathbb E|S_n|^4=\sum_{a,b,c,d}\mathbb E f(ab)\overline{f(cd)}$, using $f(a)f(b)=f(ab)$, and the term is $1$ exactly when $ab=cd$.
+\end{proof}
+
+Over the integers the fourth moment is $\frac{12}{\pi^2}x^2\ln x$ (Tome~14, Theorem~5.5), and Chapter~\ref{ch:chaos} explains why the low moments behave in a surprising way (\emph{better than square-root cancellation}). \emph{The extension.} Compute the count of Proposition~\ref{prop:ffmoments} exactly, as a function of $q$ and $n$ (the generating function of the count is a rational function of $u=q^{-s}$, so the answer is explicit), and find the analogue of the constant $\frac{12}{\pi^2}$. Then estimate $\mathbb E|S_n|$ numerically, and compare with the integer case: does the function field analogue of Harper's theorem hold, and can its proof be made more explicit there, where the zeta function is a polynomial?
+
+\section{Project 5: formalise a lemma of this tome}
+
+\emph{The computation} is a proof assistant session. Choose a statement of this tome with a short proof and formalise it in Lean, using the method of Chapter~\ref{ch:lean}: write the statement first, with the proof replaced by \texttt{sorry}, then fill in one step at a time. Here are three statements, in increasing order of difficulty, written for Lean~4 with Mathlib but not compiled for this edition (as for Chapter~\ref{ch:lean}, Remark~\ref{rem:leanlistings}).
+\begin{verbatim}
+-- Proposition lehmer, first part
+theorem lehmer_odd (n : Nat) (h2 : 2 < n)
+    (h : n.totient ∣ n - 1) : Odd n := by
+  sorry
+
+-- Proposition lonely2, case k = 1
+theorem lonely_one (v : Nat)
+    (hv : 0 < v) : ∃ t : ℚ,
+      1/2 ≤ |(v : ℚ) * t
+        - round ((v : ℚ) * t)| := by
+  sorry
+
+-- Lemma kelly, for edges:
+-- state it first!
+\end{verbatim}
+For the first, Mathlib's \texttt{Nat.totient\_even} (the totient of a number greater than $2$ is even) does most of the work. For the second, $t=\frac1{2v}$ and the library's facts about \texttt{round} suffice. The third requires you to choose how to represent graphs and cards (Mathlib has \texttt{SimpleGraph} and induced subgraphs) and is a real project.
+
+\emph{The extension.} Formalise the polygonal Jordan theorem of Chapter~\ref{ch:writing}. Mathlib does not, at the time of writing, contain the Jordan curve theorem, and the polygonal case, with the careful treatment of vertices given there, is a substantial but realistic project. Hales's formal proof of the general theorem in HOL Light is a guide, not a template: a Lean proof would need its own design.
+
+\section{Epilogue: where to go next}
+
+This tome is the end of the series, and the beginning of whatever you do with it. Some suggestions.
+\begin{itemize}
+\item Read the arXiv listings of one subject every day for a month (math.NT for number theory, math.PR for probability, math.CO for combinatorics, math.GR for group theory). Most abstracts will be opaque at first. After a month, you will recognise names, problems and techniques, and the opacity will start to lift.
+\item Choose one paper a month and read it as in Chapter~\ref{ch:reading}, with a notebook open. Write a two-page summary as if for a colleague.
+\item Work on one problem from Chapter~\ref{ch:problems} or one project from this chapter for a few months, and write up what you find, whatever it is, as in Chapter~\ref{ch:writing}. Negative results and careful computations are worth writing down.
+\item Find people. Mathematics is a social activity: seminars, online communities (the Lean community is especially welcoming to newcomers), and correspondence with authors, done as Chapter~\ref{ch:writing} suggests.
+\end{itemize}
+
+The series began with counting, and with the claim that order and chance are two faces of the same mathematics. You have now seen that claim at work in prime numbers that behave like coin flips, in groups whose random quotients follow precise laws, in shuffles that suddenly become random, and in sums of three cubes whose existence was predicted by a probabilistic model before it was found. The next theorem of that kind is waiting to be found, and you now have everything needed to look for it.
+
+\begin{think}
+Which project would you choose? Write down, before starting, what you would consider a success after one month, and after six.
+\end{think}
+
+\begin{beauty}
+Research is the moment when the exercises run out. There is no solution at the back, no hint, and nobody who knows the answer; there is only the problem, what you know, and what you can compute. It is also the moment when mathematics becomes yours.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:rttsim}
+Show that for random-to-top, the number of cards never chosen by time $t$ has expectation $n(1-\frac1n)^t$, and deduce that $d(t)\ge1-\varepsilon$ for $t\le(1-\delta)n\ln n$ and $n$ large: the bound of Proposition~\ref{prop:randomtotop} is sharp to first order. (Use the bottom cards: what does a uniform deck look like at the bottom?)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:tkshortsharp}
+Show that the main term $h\mu_y$ in Proposition~\ref{prop:tkshort} is of the right order: if $y\le h^{1/4}$, then $\sum_{x<n\le x+h}(\omega_y(n)-\mu_y)^2\ge h\bigl(\mu_y-\sum_{p\le y}p^{-2}\bigr)-5y^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:symsmall}
+Compute $P(\det A=0)$ exactly for a uniform symmetric $2\times2$ matrix over $\mathbb F_p$, and compare with the bound of Proposition~\ref{prop:symkernel}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ffcount}
+Show that the number of monic polynomials of degree $n$ over $\mathbb F_q$ that are squarefree is $q^n-q^{n-1}$ for $n\ge2$. (This is the analogue of $\frac6{\pi^2}$, and a warm-up for Project~4.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:rttsim}
+Unchosen cards stay at the bottom in their original order. In a uniform deck, the probability that the bottom $m$ cards are in their original relative order is $\frac1{m!}$.
+\end{hint}
+
+\begin{hint}{ex:tkshortsharp}
+Redo the computation of the proof keeping the term $-h\sum_pp^{-2}$ and bounding the errors in the other direction.
+\end{hint}
+
+\begin{hint}{ex:symsmall}
+$\det\begin{pmatrix}a&b\\b&c\end{pmatrix}=ac-b^2$. Count the solutions of $ac=b^2$.
+\end{hint}
+
+\begin{hint}{ex:ffcount}
+Every monic $g$ is uniquely $a^2b$ with $a,b$ monic and $b$ squarefree.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:rttsim}
+\idea Untouched cards sink and keep their order; a uniform deck rarely does that.
+\writeup Each card is unchosen at time $t$ with probability $(1-\frac1n)^t$, so the expectation is $n(1-\frac1n)^t$. Its variance is at most its expectation, as in Tome~3, Proposition~8.21 (the covariances $(1-\frac2n)^t-(1-\frac1n)^{2t}$ are negative). At $t=(1-\delta)n\ln n$ the expectation is about $n^\delta\to\infty$, so with probability close to $1$ at least $m=\frac12n^{\delta}$ cards are unchosen, and then the bottom $m$ cards are in their original relative order. For a uniform deck this event has probability $\frac1{m!}\to0$. The difference of the two probabilities is a lower bound for $d(t)$, and it tends to $1$.
+\end{solution}
+
+\begin{solution}{ex:tkshortsharp}
+\idea The same expansion, with the inequalities reversed.
+\writeup The main terms are exactly $h\mu_y+h\sum_{p\ne q}\frac1{pq}-h\mu_y^2=h\mu_y-h\sum_pp^{-2}$, because $\sum_{p\ne q}\frac1{pq}=\mu_y^2-\sum_pp^{-2}$. The error terms are at least $-5\pi(y)^2\ge-5y^2$, by the same bounds as in the proof. With $y\le h^{1/4}$, the error $5y^2\le5\sqrt h$ is negligible against $h\mu_y$.
+\end{solution}
+
+\begin{solution}{ex:symsmall}
+\idea Count the points of a conic.
+\writeup We count $(a,b,c)\in\mathbb F_p^3$ with $ac=b^2$. If $b=0$: $a=0$ or $c=0$, giving $2p-1$ triples. If $b\ne0$: $a\ne0$ and $c=b^2/a$, giving $(p-1)^2$ triples. In total $p^2$, so $P(\det A=0)=\frac{p^2}{p^3}=\frac1p$. The bound of Proposition~\ref{prop:symkernel} is $\frac{1-p^{-2}}{p-1}=\frac{p+1}{p^2}$, slightly larger than $\frac1p$, as it should be.
+\end{solution}
+
+\begin{solution}{ex:ffcount}
+\idea Generating functions turn the unique decomposition into a product.
+\writeup Let $s_n$ be the number of squarefree monic polynomials of degree $n$ ($s_0=1$, $s_1=q$). The decomposition $g=a^2b$ (with $b$ squarefree and $a$ monic, both unique) gives $q^n=\sum_{2i+j=n}q^is_j$. In generating functions, with $S(u)=\sum s_ju^j$, this reads $\frac1{1-qu}=\frac1{1-qu^2}S(u)$, so $S(u)=\frac{1-qu^2}{1-qu}=1+qu+(q^2-q)u^2+(q^3-q^2)u^3+\cdots$. Hence $s_n=q^n-q^{n-1}$ for $n\ge2$: a proportion $1-\frac1q=1/\zeta_q(2)$, where $\zeta_q(s)=\frac1{1-q^{1-s}}$ is the zeta function of $\mathbb F_q[t]$, exactly as $\frac6{\pi^2}=1/\zeta(2)$ for the integers.
+\end{solution}
+
+\section{Sources}
+
+\begin{itemize}
+\item P.~Diaconis, J.~A.~Fill, J.~Pitman, Analysis of top to random shuffles, \emph{Combin.\ Probab.\ Comput.} 1 (1992); E.~Subag, A lower bound for the mixing time of the random-to-random insertions shuffle, \emph{Electron.\ J.\ Probab.} 18 (2013); M.~Bernstein, E.~Nestoridi, Cutoff for random to random card shuffle, \emph{Ann.\ Probab.} 47 (2019).
+\item P.~Tur\'an, On a theorem of Hardy and Ramanujan, \emph{J.\ London Math.\ Soc.} 9 (1934); L.~G.~Sathe, On a problem of Hardy on the distribution of integers having a given number of prime factors, \emph{J.\ Indian Math.\ Soc.} 17--18 (1953--54); A.~Selberg, Note on a paper by L.~G.~Sathe, \emph{J.\ Indian Math.\ Soc.} 18 (1954).
+\item J.~Clancy, T.~Leake, S.~Payne, A note on Jacobians, Tutte polynomials, and two-variable zeta functions of graphs, \emph{Exp.\ Math.} 24 (2015); M.~M.~Wood, The distribution of sandpile groups of random graphs, \emph{J.\ Amer.\ Math.\ Soc.} 30 (2017).
+\item M.~Rosen, \emph{Number Theory in Function Fields}, Springer GTM 210, 2002: the arithmetic of $\mathbb F_q[t]$, including its zeta function.
+\item A.~J.~Harper, Moments of random multiplicative functions, I: low moments, better than squareroot cancellation, and critical multiplicative chaos, \emph{Forum Math.\ Pi} 8 (2020).
+\item T.~C.~Hales, The Jordan curve theorem, formally and informally, \emph{Amer.\ Math.\ Monthly} 114 (2007).
+\end{itemize}
