@@ -1,0 +1,382 @@
+\chapter{Differentiation and Radon--Nikodym}
+
+\begin{center}\itshape
+A staircase climbs from $0$ to $1$ without ever jumping, and yet it is flat almost everywhere: its derivative is $0$ at almost
+every point. Where did the climbing happen? And when can a function be recovered by integrating its derivative?
+\end{center}
+
+In 1930 G.~H.~Hardy and J.~E.~Littlewood published a paper on a problem of complex analysis, and opened it with cricket. A
+batsman's scores in a season form a sequence; his ``average'' after each innings depends on where one starts counting. A
+batsman who wants to look good will start counting at the innings that makes his average largest. How much can this
+flattery inflate the averages? Hardy and Littlewood proved that it is bounded, in a precise sense, and their \emph{maximal
+inequality} turned out to be the key to a much older question: Lebesgue's.
+
+Lebesgue had asked in 1904 when the fundamental theorem of calculus holds for his integral: when is $F(b)-F(a)=\int_a^bF'$?
+It is not obvious. Vito Volterra had built in 1881 a function that is differentiable everywhere, with a bounded derivative that
+is not Riemann integrable. And the devil's staircase of Chapter~2 rises from $0$ to $1$ while its derivative vanishes almost
+everywhere: integrating the derivative gives $0$. Lebesgue proved that every monotone function is differentiable almost
+everywhere, and that the functions for which the fundamental theorem holds are exactly the \emph{absolutely continuous} ones.
+
+The same story has a version for measures, and it is the one probability needs. When does a measure $\nu$ have a density with
+respect to another measure $\mu$, $\nu(A)=\int_Af\,d\mu$? Johann Radon (1913) answered for $\R^d$, Otto Nikodym (1930) in general:
+exactly when $\nu$ gives no mass to the sets that $\mu$ ignores. The density $f=\frac{d\nu}{d\mu}$ is a derivative of one measure
+against another, and the Radon--Nikodym theorem is the foundation of conditional expectations (Tome~10), of likelihood ratios in
+statistics, and of importance sampling in computing. Along the way, every law on $\R$ splits into three parts, atoms, a density
+and a singular continuous part, as Tome~3's notebooks announced.
+
+\section{Signed measures and the Hahn decomposition}
+
+A \emph{finite signed measure} on $(E,\mathcal A)$ is a map $\nu:\mathcal A\to\R$ with $\nu(\varnothing)=0$ and $\nu(\bigsqcup_kA_k)=\sum_k\nu(A_k)$ for disjoint $A_k$; the series then converges absolutely, since
+its sum does not depend on the order (Tome~0). The difference of two finite measures is one; the Jordan decomposition below says that there are no others. A set $P$ is
+\emph{positive} for $\nu$ if $\nu(A)\ge0$ for every measurable $A\subseteq P$, and \emph{negative} if $\nu(A)\le0$ for all such $A$.
+
+\begin{lemma}\label{lem:positivepart}
+If $\nu(B)>0$, then $B$ contains a positive set $P$ with $\nu(P)\ge\nu(B)$.
+\end{lemma}
+\begin{proof}
+Remove the worst negative pieces greedily. If $B$ is not positive, let $n_1$ be the smallest integer such that some $C_1\subseteq B$ has $\nu(C_1)<-\frac1{n_1}$. If $B\setminus C_1$ is not positive, let $n_2$ be the
+smallest integer such that some $C_2\subseteq B\setminus C_1$ has $\nu(C_2)<-\frac1{n_2}$, and so on (if the process stops, the remaining set is positive and we are done). Let $P=B\setminus\bigcup_kC_k$.
+Then $\nu(B)=\nu(P)+\sum_k\nu(C_k)$, and since the $C_k$ are disjoint the series converges, so $\sum_k\frac1{n_k}<\infty$ and $n_k\to\infty$; also $\nu(P)\ge\nu(B)$. If some $A\subseteq P$ had
+$\nu(A)<0$, then $\nu(A)<-\frac1{n_k-1}$ for $k$ large, and $A\subseteq B\setminus(C_1\cup\cdots\cup C_{k-1})$ would contradict the minimality of $n_k$. So $P$ is positive.
+\end{proof}
+
+\begin{theorem}[Hahn decomposition]\label{thm:hahn}
+For a finite signed measure $\nu$ there is a partition $E=P\sqcup N$ with $P$ positive and $N$ negative. If $P'\sqcup N'$ is another, $\nu$ vanishes on all subsets of $P\,\triangle\,P'$.
+\end{theorem}
+\begin{proof}
+Let $m=\sup\{\nu(Q):Q\text{ positive}\}$, finite since $\nu$ is real-valued, and $Q_j$ positive with $\nu(Q_j)\to m$. A countable union of positive sets is positive (cut a subset of the union
+into disjoint pieces, each inside one $Q_j$), so $P=\bigcup_jQ_j$ is positive with $\nu(P)=m$. Let $N=E\setminus P$. If some $B\subseteq N$ had $\nu(B)>0$, Lemma~\ref{lem:positivepart} would give a positive
+$P''\subseteq B$ with $\nu(P'')>0$, and $P\cup P''$ would be positive with $\nu(P\cup P'')>m$. So $N$ is negative. For uniqueness, a subset of $P\setminus P'=P\cap N'$ is both positive and negative.
+\end{proof}
+
+\begin{corollary}[Jordan decomposition]\label{cor:jordan}
+Every finite signed measure is $\nu=\nu^+-\nu^-$ with $\nu^\pm$ finite measures, $\nu^+(A)=\nu(A\cap P)$, $\nu^-(A)=-\nu(A\cap N)$, living on the disjoint sets $P$ and $N$. The measure
+$|\nu|=\nu^++\nu^-$ is the \emph{total variation} of $\nu$.
+\end{corollary}
+
+\section{The Radon--Nikodym theorem}
+
+Two measures $\mu,\nu$ on $(E,\mathcal A)$ are \emph{mutually singular}, $\nu\perp\mu$, if they live on disjoint sets: $E=S\sqcup T$ with $\mu(S)=0$ and $\nu(T)=0$. And $\nu$ is \emph{absolutely continuous} with respect to
+$\mu$, $\nu\ll\mu$, if $\mu(A)=0$ implies $\nu(A)=0$. If $\nu(A)=\int_Af\,d\mu$ for a measurable $f\ge0$, then clearly $\nu\ll\mu$. The theorem says that the converse holds.
+
+\begin{think}
+Let $\mu$ be the law of a standard Gaussian and $\nu$ the law of a Gaussian of mean $1$ and variance $1$. Is there a function $f$ with $\nu(A)=\int_Af\,d\mu$ for every Borel $A$? What about $\nu$ the law
+of a Poisson variable?
+\end{think}
+
+For Gaussians, $f(x)=\frac{e^{-(x-1)^2/2}}{e^{-x^2/2}}=e^{x-\frac12}$, the ratio of the densities. For a Poisson law $\nu$, which lives on the null set $\N$, no such $f$ exists: $\nu(\N)=1$ but $\mu(\N)=0$. The
+Poisson law and the Gaussian are mutually singular.
+
+\begin{theorem}[Radon--Nikodym]\label{thm:rn}
+Let $\mu$ and $\nu$ be $\sigma$-finite measures with $\nu\ll\mu$. There is a measurable $f\ge0$ with $\nu(A)=\int_Af\,d\mu$ for all $A\in\mathcal A$, unique $\mu$-a.e. It is written $\frac{d\nu}{d\mu}$, the
+\emph{Radon--Nikodym derivative}.
+\end{theorem}
+\begin{proof}
+\emph{Finite measures.} Let $\mathcal G$ be the set of measurable $g\ge0$ with $\int_Ag\,d\mu\le\nu(A)$ for all $A$, and $m=\sup_{g\in\mathcal G}\int g\,d\mu\le\nu(E)$. If $g,h\in\mathcal G$, then $\max(g,h)\in\mathcal G$ (split $A$
+into $A\cap\{g\ge h\}$ and $A\cap\{g<h\}$). So there are $g_n\in\mathcal G$, which we may take increasing, with $\int g_n\to m$; by monotone convergence $f=\lim g_n\in\mathcal G$ and $\int f=m$. Then
+$\nu_0(A)=\nu(A)-\int_Af\,d\mu$ is a finite measure, and we claim $\nu_0=0$. If not, $\nu_0(E)>0$, so $\mu(E)>0$ (as $\nu_0\le\nu\ll\mu$), and we can choose $\varepsilon>0$ with $\nu_0(E)>\varepsilon\mu(E)$. Let $P\sqcup N$ be a
+Hahn decomposition for $\nu_0-\varepsilon\mu$. Then $(\nu_0-\varepsilon\mu)(P)\ge(\nu_0-\varepsilon\mu)(E)>0$, so $\mu(P)>0$ (otherwise $\nu_0(P)=0$ too). For every $A$,
+\[\int_A(f+\varepsilon\mathbf 1_P)\,d\mu=\int_Af\,d\mu+\varepsilon\mu(A\cap P)\le\int_Af\,d\mu+\nu_0(A\cap P)\le\nu(A),\]
+since $P$ is positive for $\nu_0-\varepsilon\mu$. So $f+\varepsilon\mathbf 1_P\in\mathcal G$, with integral $m+\varepsilon\mu(P)>m$: a contradiction.
+
+\emph{$\sigma$-finite measures.} Cut $E$ into disjoint $E_n$ with $\mu(E_n)$ and $\nu(E_n)$ finite (intersect the pieces for $\mu$ and for $\nu$), apply the finite case on each $E_n$, and glue the densities.
+
+\emph{Uniqueness.} If $\int_Af=\int_Ag$ for all $A$, take $A=\{f>g\}\cap E_n\cap\{f\le k\}$: then $\int_A(f-g)=0$ with $f-g>0$ on $A$, so $\mu(A)=0$; let $k,n\to\infty$, and exchange $f,g$.
+\end{proof}
+
+\begin{theorem}[Lebesgue decomposition]\label{thm:lebdecomp}
+Let $\mu,\nu$ be $\sigma$-finite. Then $\nu=\nu_a+\nu_s$ uniquely with $\nu_a\ll\mu$ and $\nu_s\perp\mu$. Hence $\nu=f\mu+\nu_s$ with $f=\frac{d\nu_a}{d\mu}$.
+\end{theorem}
+\begin{proof}
+Assume $\nu$ finite (the $\sigma$-finite case follows piece by piece). Let $s=\sup\{\nu(Z):\mu(Z)=0\}$, and $Z_j$ $\mu$-null with $\nu(Z_j)\to s$. Then $Z=\bigcup_jZ_j$ is $\mu$-null and $\nu(Z)=s$. Put
+$\nu_s=\nu(\cdot\cap Z)$, which lives on the $\mu$-null set $Z$, and $\nu_a=\nu(\cdot\setminus Z)$. If $\mu(A)=0$, then $Z\cup A$ is $\mu$-null, so $s\ge\nu(Z\cup A)=s+\nu_a(A)$ and $\nu_a(A)=0$: $\nu_a\ll\mu$. Uniqueness: if
+$\nu_a+\nu_s=\nu_a'+\nu_s'$, the finite signed measure $\nu_a-\nu_a'=\nu_s'-\nu_s$ vanishes on $\mu$-null sets and lives on a $\mu$-null set (the union of those of $\nu_s,\nu_s'$), so it is $0$.
+\end{proof}
+
+\begin{corollary}[the three parts of a law]\label{cor:threeparts}
+Every probability $\mu$ on $\R$ is uniquely $\mu=\mu_d+\mu_{ac}+\mu_{sc}$, where $\mu_d=\sum_ip_i\delta_{a_i}$ is carried by countably many atoms, $\mu_{ac}$ has a density with respect to $\lambda$, and $\mu_{sc}$ has no atoms and
+lives on a $\lambda$-null set.
+\end{corollary}
+\begin{proof}
+The atoms $\{a:\mu(\{a\})>0\}$ are countable: at most $n$ of them have mass $>\frac1n$. Let $\mu_d$ be $\mu$ restricted to them, and decompose the rest, which has no atoms, with Theorem~\ref{thm:lebdecomp}
+with respect to $\lambda$; restrictions of an atomless measure are atomless.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-threeparts}
+\caption{The distribution function of a law with three parts: weight $\frac14$ on an atom at $-1$ (a jump), weight $\frac12$ with a density on $[0,1]$ (a smooth rise), and weight $\frac14$ spread on a Cantor set
+in $[2,3]$ (a devil's staircase, continuous, but flat almost everywhere).}
+\label{fig:threeparts}
+\end{figure}
+
+Exercise~\ref{ex:salem} shows that a singular continuous law can even have a strictly increasing distribution function. In probability, if $\mathbb Q\ll\mathbb P$, the density $L=\frac{d\mathbb Q}{d\mathbb P}$ is
+the \emph{likelihood ratio}: $\mathbb E_{\mathbb Q}[X]=\mathbb E_{\mathbb P}[XL]$. This is the principle of importance sampling (this chapter's notebook), of the Neyman--Pearson lemma in statistics, and of
+Girsanov's theorem in Tome~11. Exercise~\ref{ex:condexp} builds conditional expectations from Theorem~\ref{thm:rn}.
+
+\section{The maximal function and Lebesgue's differentiation theorem}
+
+On $\R^d$, a density can be recovered from its measure by zooming in: if $\nu=f\lambda_d$ and $f$ is continuous at $x$, then $\frac{\nu(B(x,r))}{\lambda_d(B(x,r))}\to f(x)$ as $r\to0$. Lebesgue's theorem says that this
+works almost everywhere for every integrable $f$. The difficulty is to control all radii at once, and that is the job of the maximal function. A measurable $f$ is \emph{locally integrable}, $f\in L^1_{\mathrm{loc}}$, if
+$\int_K|f|<\infty$ for every compact $K$. Balls are open balls for the Euclidean norm, and $B(x,r)$ has measure $\omega_dr^d$.
+
+\begin{lemma}[Vitali's covering lemma]\label{lem:vitalicover}
+From finitely many open balls $B_1,\dots,B_n$ one can extract disjoint ones $B_{i_1},\dots,B_{i_k}$ with $\lambda_d(B_1\cup\cdots\cup B_n)\le3^d\sum_j\lambda_d(B_{i_j})$.
+\end{lemma}
+\begin{proof}
+Greedily: take the largest ball, discard every ball meeting it, take the largest remaining ball, and so on. A discarded ball meets a chosen ball at least as large, so it lies inside the concentric
+ball with three times the radius, of measure $3^d$ times larger. The tripled chosen balls cover everything.
+\end{proof}
+
+For $f\in L^1_{\mathrm{loc}}(\R^d)$, the \emph{Hardy--Littlewood maximal function} is
+\[Mf(x)=\sup_{r>0}\frac1{\lambda_d(B(x,r))}\int_{B(x,r)}|f|\,d\lambda_d.\]
+It is the batsman's flattering average. $\{Mf>t\}$ is open: if $\frac1{\lambda_d(B(x,r))}\int_{B(x,r)}|f|>t$, the same holds for $B(x',r+|x-x'|)$ when $x'$ is close to $x$, by continuity in the radius. So $Mf$ is
+Borel.
+
+\begin{theorem}[maximal inequality]\label{thm:maximal}
+For $f\in L^1(\R^d)$ and $t>0$, $\lambda_d(\{Mf>t\})\le\dfrac{3^d}t\|f\|_1$.
+\end{theorem}
+\begin{proof}
+Let $K\subseteq\{Mf>t\}$ be compact. Each $x\in K$ is the centre of a ball $B_x$ with $\int_{B_x}|f|>t\lambda_d(B_x)$; finitely many cover $K$, and Lemma~\ref{lem:vitalicover} extracts disjoint ones with
+\[\lambda_d(K)\le3^d\sum_j\lambda_d(B_{i_j})<\frac{3^d}t\sum_j\int_{B_{i_j}}|f|\le\frac{3^d}t\|f\|_1.\]
+Take the supremum over $K$ (inner regularity, Proposition~\ref{prop:regularity}).
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-maximal}
+\caption{The indicator of $[-1,1]$ (blue) and its maximal function (orange), equal to $1$ on $[-1,1]$ and to $\frac1{|x|+1}$ outside. The maximal function of an integrable function is usually not integrable,
+because of the tail $\frac1{|x|}$, but the measure of $\{Mf>t\}$ is of order $\frac1t$: the ``weak'' bound of Theorem~\ref{thm:maximal}.}
+\label{fig:maximal}
+\end{figure}
+
+\begin{theorem}[Lebesgue's differentiation theorem]\label{thm:lebdiff}
+Let $f\in L^1_{\mathrm{loc}}(\R^d)$. For almost every $x$,
+\[\lim_{r\to0}\frac1{\lambda_d(B(x,r))}\int_{B(x,r)}|f(y)-f(x)|\,dy=0.\]
+Such $x$ are the \emph{Lebesgue points} of $f$; at each of them the averages of $f$ over $B(x,r)$ tend to $f(x)$.
+\end{theorem}
+\begin{proof}
+The statement is local, so we may assume $f\in L^1$ (multiply by the indicator of a large ball). Let $\Omega f(x)=\limsup_{r\to0}\frac1{\lambda_d(B(x,r))}\int_{B(x,r)}|f(y)-f(x)|\,dy$. If $g$ is continuous, $\Omega g=0$
+everywhere. For $g\in C_c$, since $|f(y)-f(x)|\le|(f-g)(y)|+|g(y)-g(x)|+|(g-f)(x)|$, we get $\Omega f\le M(f-g)+|f-g|$. Hence, for $t>0$,
+\[\lambda_d(\{\Omega f>2t\})\le\lambda_d(\{M(f-g)>t\})+\lambda_d(\{|f-g|>t\})\le\frac{3^d+1}t\|f-g\|_1\]
+(Theorem~\ref{thm:maximal} and Markov). By Theorem~\ref{thm:ccdense} the right side can be made as small as we wish, so $\lambda_d^*(\{\Omega f>2t\})=0$ for every $t>0$, and $\Omega f=0$ a.e.
+\end{proof}
+
+In dimension one, intervals $[x,x+h]$ and $[x-h,x]$ lie in $B(x,|h|)$ and have half its length, so at every Lebesgue point $\frac1h\int_x^{x+h}f\to f(x)$ as $h\to0$ from either side: $F(x)=\int_a^xf$ is
+differentiable at $x$ with $F'(x)=f(x)$. This is half of the fundamental theorem of calculus, now for every integrable $f$, at almost every point.
+
+\section{Differentiating measures and monotone functions}
+
+A Borel measure on $\R^d$ that is finite on bounded sets is \emph{locally finite}. To differentiate such measures, we need one more regularity fact; Chapter~11 proves it in every metric space.
+
+\begin{lemma}\label{lem:outerreg}
+A finite Borel measure $\nu$ on a metric space $X$ is outer regular: $\nu(A)=\inf\{\nu(U):U\supseteq A\text{ open}\}$ for every Borel set $A$.
+\end{lemma}
+\begin{proof}
+Let $\mathcal C$ be the family of Borel sets $A$ such that for every $\varepsilon>0$ there are a closed $C$ and an open $U$ with $C\subseteq A\subseteq U$ and $\nu(U\setminus C)<\varepsilon$. A closed set $C$ is in $\mathcal C$: the open
+sets $U_n=\{x:d(x,C)<\frac1n\}$ decrease to $C$, so $\nu(U_n\setminus C)\to0$ by continuity from above. $\mathcal C$ is stable under complements (exchange the roles of $C$ and $U$) and countable unions: for $A=\bigcup_kA_k$,
+take $C_k\subseteq A_k\subseteq U_k$ with $\nu(U_k\setminus C_k)<\varepsilon2^{-k}$, let $U=\bigcup_kU_k$ and $C=C_1\cup\cdots\cup C_K$ with $K$ so large that $\nu(\bigcup_kC_k\setminus C)<\varepsilon$. So $\mathcal C$ is a $\sigma$-algebra
+containing the closed sets, hence all Borel sets.
+\end{proof}
+
+\begin{theorem}[differentiation of measures]\label{thm:diffmeasures}
+Let $\nu$ be a locally finite Borel measure on $\R^d$, with Lebesgue decomposition $\nu=f\lambda_d+\nu_s$. Then for almost every $x$,
+\[\lim_{r\to0}\frac{\nu(B(x,r))}{\lambda_d(B(x,r))}=f(x).\]
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:lebdiff} the absolutely continuous part contributes $f(x)$ at almost every point ($f$ is locally integrable as $\nu$ is locally finite). It remains to show that
+$\frac{\nu_s(B(x,r))}{\lambda_d(B(x,r))}\to0$ a.e. Working in a large ball, we may assume $\nu_s$ finite. It lives on a $\lambda_d$-null Borel set $Z$: $\nu_s(\R^d\setminus Z)=0$. Fix $k\ge1$ and let
+\[F_k=\Bigl\{x\notin Z:\limsup_{r\to0}\frac{\nu_s(B(x,r))}{\lambda_d(B(x,r))}>\frac1k\Bigr\}.\]
+Given $\varepsilon>0$, Lemma~\ref{lem:outerreg} gives an open $U\supseteq\R^d\setminus Z$ with $\nu_s(U)<\varepsilon$. Each $x\in F_k$ is the centre of a ball $B_x\subseteq U$ with $\nu_s(B_x)>\frac1k\lambda_d(B_x)$. For a compact
+$K\subseteq\bigcup_xB_x$, finitely many $B_x$ cover $K$, and Lemma~\ref{lem:vitalicover} gives disjoint ones with $\lambda_d(K)\le3^d\sum_j\lambda_d(B_{i_j})<3^dk\sum_j\nu_s(B_{i_j})\le3^dk\varepsilon$. By inner regularity
+$\lambda_d(\bigcup_xB_x)\le3^dk\varepsilon$, so $\lambda_d^*(F_k)\le3^dk\varepsilon$ for every $\varepsilon$: $F_k$ is null. Since $Z$ is null too, the $\limsup$ vanishes almost everywhere.
+\end{proof}
+
+\begin{think}
+Can a continuous increasing function have derivative $0$ almost everywhere and still rise from $0$ to $1$?
+\end{think}
+
+Yes: the devil's staircase $c$ of Exercise~\ref{ex:devil} is constant on each interval removed to build the Cantor set, so $c'=0$ on a set of measure $1$, and yet $c(1)-c(0)=1$. Its measure $\mu_c$ lives on the
+Cantor set: it is singular, and Theorem~\ref{thm:diffmeasures} sees only its density, $0$. All the climbing happens on a set of measure zero.
+
+\begin{theorem}[Lebesgue, 1904]\label{thm:monotone}
+A monotone function $F:\R\to\R$ is differentiable almost everywhere. If $F$ is non-decreasing and right-continuous, then $F'=\frac{d\mu_{F,a}}{d\lambda}$ a.e., where $\mu_{F,a}$ is the absolutely continuous part of
+$\mu_F$ (Theorem~\ref{thm:stieltjes}), and $\int_a^bF'\le F(b)-F(a)$.
+\end{theorem}
+\begin{proof}
+Let $F$ be non-decreasing and right-continuous, and $\mu_F=f\lambda+\nu_s$. For $h>0$, $F(x+h)-F(x)=\mu_F(]x,x+h])$ and $F(x)-F(x-h)=\mu_F(]x-h,x])$, intervals of length $h$ inside $B(x,2h)$, which has length $4h$. At every $x$ which is a Lebesgue point of $f$ and where $\frac{\nu_s(B(x,r))}{2r}\to0$ (almost every $x$, by Theorems~\ref{thm:lebdiff} and~\ref{thm:diffmeasures}),
+\[\Bigl|\frac{F(x+h)-F(x)}h-f(x)\Bigr|\le\frac1h\int_x^{x+h}|f-f(x)|+\frac{\nu_s(B(x,2h))}h\to0,\]
+and similarly from the left; so $F'(x)=f(x)$. Then $\int_a^bF'=\int_{]a,b]}f\,d\lambda\le\mu_F(]a,b])=F(b)-F(a)$.
+
+For a general non-decreasing $F$, let $G(x)=F(x^+)$, which is non-decreasing and right-continuous. The function $H=G-F\ge0$ vanishes except at the discontinuities $x_j$ of $F$, a countable set, and
+$\sum_{x_j\in[-n,n]}H(x_j)\le F(n+1)-F(-n-1)$ for each $n$ (the jumps are disjoint parts of the rise). So $\rho=\sum_jH(x_j)\delta_{x_j}$ is a locally finite measure, singular with respect to $\lambda$. At every $x$
+outside $\{x_j\}$ with $\frac{\rho(B(x,r))}{2r}\to0$ (almost every $x$, by Theorem~\ref{thm:diffmeasures}), $H(x)=0$ and $0\le\frac{H(x+h)}{|h|}\le\frac{\rho(B(x,2|h|))}{|h|}\to0$: so $H'(x)=0$, and $F'=G'$ a.e. A non-increasing $F$ is
+$-(-F)$.
+\end{proof}
+
+\section{Absolutely continuous functions}
+
+\begin{definition}
+$F:[a,b]\to\R$ is \emph{absolutely continuous} if for every $\varepsilon>0$ there is $\delta>0$ such that $\sum_i|F(b_i)-F(a_i)|<\varepsilon$ for every finite family of disjoint intervals $]a_i,b_i[$ of total length
+$\sum_i(b_i-a_i)<\delta$.
+\end{definition}
+
+With one interval, this is uniform continuity; with many, it forbids the devil's staircase, which rises by $1$ on the Cantor set, covered by intervals of arbitrarily small total length.
+
+\begin{theorem}[fundamental theorem of calculus]\label{thm:ftc}
+For $F:[a,b]\to\R$, the following are equivalent: (i) $F$ is absolutely continuous; (ii) there is $f\in L^1([a,b])$ with $F(x)=F(a)+\int_a^xf$ for all $x$. Then $F$ is differentiable a.e., $F'=f$ a.e., and
+$F(b)-F(a)=\int_a^bF'$.
+\end{theorem}
+\begin{proof}
+(ii)$\Rightarrow$(i): by Lemma~\ref{lem:abscont}, $\int_A|f|<\varepsilon$ when $\lambda(A)<\delta$; take $A=\bigcup_i\,]a_i,b_i[$. And $F'=f$ a.e. by Lebesgue's differentiation theorem.
+
+(i)$\Rightarrow$(ii). \emph{Bounded variation.} Let $\delta$ correspond to $\varepsilon=1$. For a subdivision $P:a=x_0<\cdots<x_n=x$, let $V(F,P)=\sum_i|F(x_i)-F(x_{i-1})|$ and $T(x)=\sup_PV(F,P)$, the variation of $F$ on $[a,x]$.
+Cutting $[a,b]$ into $m$ pieces of length less than $\delta$, and refining any $P$ by their endpoints, shows $T(b)\le m<\infty$. For $x<y$, $T(y)\ge T(x)+|F(y)-F(x)|$ (append $y$ to the subdivisions of $[a,x]$), so
+$T$ and $T-F$ are non-decreasing.
+
+\emph{$T$ is absolutely continuous.} Given $\varepsilon$ and its $\delta$, let $]a_i,b_i[$ be disjoint with total length $<\delta$. For subdivisions $P_i$ of the $[a_i,b_i]$, all their small intervals together have total length
+$<\delta$, so $\sum_iV(F|_{[a_i,b_i]},P_i)<\varepsilon$. Taking suprema, $\sum_i(T(b_i)-T(a_i))\le\varepsilon$, since $T(b_i)-T(a_i)$ is the variation of $F$ on $[a_i,b_i]$ (subdivisions of $[a,b_i]$ may be assumed to contain $a_i$).
+So $T$ and $T-F$ are non-decreasing and absolutely continuous, in particular continuous.
+
+\emph{Non-decreasing absolutely continuous $G$.} Extend $G$ by constants outside $[a,b]$; then $\mu_G\ll\lambda$. Indeed, let $\lambda(N)=0$ and $\varepsilon>0$; cover $N\cap\,]a,b[$ by open intervals of total length $<\delta$, which we may
+take disjoint (a union of open intervals is a disjoint union of open intervals, of no larger total length) and contained in $]a,b[$; every finite subfamily has $\sum(G(b_i)-G(a_i))<\varepsilon$, so $\mu_G(N)\le\varepsilon$ (the points
+$a,b$ carry no mass, $G$ being continuous). By Radon--Nikodym, $\mu_G=g\lambda$, and $G(x)-G(a)=\mu_G(]a,x])=\int_a^xg$. Applying this to $T$ and to $T-F$ gives (ii), with $f$ the density of $T$ minus the density of $T-F$.
+\end{proof}
+
+The devil's staircase is continuous, non-decreasing, differentiable almost everywhere with integrable derivative $0$, and not absolutely continuous: absolute continuity is exactly what is needed
+for the fundamental theorem of calculus, no more and no less.
+
+\begin{beauty}
+Three ideas that look unrelated turn out to be one. The density of a law, the derivative of a function, and the limit of averages over shrinking balls are the same object seen from three sides:
+$\frac{d\nu}{d\lambda}$. And a story about a batsman flattering his cricket average controls them all.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:cantorfn}
+Let $c$ be the devil's staircase (Exercise~\ref{ex:devil}). Show that $c'=0$ on $[0,1]\setminus C$, that $c$ is not absolutely continuous, and that its Lebesgue--Stieltjes measure $\mu_c$ is the Cantor law, singular
+and without atoms. What is the distribution function of $\mu_c$ restricted to $[0,\frac13]$, in terms of $c$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:condexp}
+\emph{Conditional expectation (Tome~3, Chapter~10).} Let $X\in L^1(\Omega,\mathcal F,\mathbb P)$ and $\mathcal G\subseteq\mathcal F$ a $\sigma$-algebra. (a) For $X\ge0$, show that $\nu(A)=\mathbb E[X\mathbf 1_A]$, $A\in\mathcal G$, is a finite
+measure on $\mathcal G$ with $\nu\ll\mathbb P|_{\mathcal G}$, and let $\mathbb E[X\mid\mathcal G]=\frac{d\nu}{d\mathbb P|_{\mathcal G}}$. (b) Extend to integrable $X$ and show that $Y=\mathbb E[X\mid\mathcal G]$ is the unique $\mathcal G$-measurable
+integrable $Y$ with $\mathbb E[Y\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$ for all $A\in\mathcal G$. (c) Prove linearity, $\mathbb E[\mathbb E[X\mid\mathcal G]]=\mathbb E[X]$, and $\mathbb E[ZX\mid\mathcal G]=Z\,\mathbb E[X\mid\mathcal G]$ for bounded
+$\mathcal G$-measurable $Z$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:likelihood}
+Let $\mathbb P=\mathcal N(0,1)$ and $\mathbb Q=\mathcal N(m,1)$ on $\R$. Compute $L=\frac{d\mathbb Q}{d\mathbb P}$, check $\mathbb E_{\mathbb P}[L]=1$, and compute the relative entropy $\int\ln L\,d\mathbb Q$. Show that $\mathcal N(0,1)$ and
+$\mathcal N(0,2)$ are mutually absolutely continuous, and that $\mathcal N(0,1)$ and a Poisson law are mutually singular.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:salem}
+\emph{A strictly increasing singular function.} Let $0<p<1$, $p\ne\frac12$, let $B_1,B_2,\ldots$ be independent with $\mathbb P(B_k=1)=p=1-\mathbb P(B_k=0)$, and $F_p$ the distribution function of $X=\sum_kB_k2^{-k}$.
+Show that $F_p$ is continuous and strictly increasing on $[0,1]$, and that $F_p'=0$ almost everywhere. (Use the strong law of large numbers, Tome~3, and Borel's theorem of Chapter~6.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:density}
+\emph{Lebesgue's density theorem.} For a Borel set $A\subseteq\R^d$, show that $\frac{\lambda_d(A\cap B(x,r))}{\lambda_d(B(x,r))}\to\mathbf 1_A(x)$ for almost every $x$. Deduce that there is no Borel $A\subseteq[0,1]$ with
+$\lambda(A\cap I)=\frac12\lambda(I)$ for every interval $I\subseteq[0,1]$. Compare with Exercise~\ref{ex:everywhere}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:variation}
+(a) Show that $x\sin\frac1x$ (with value $0$ at $0$) is continuous on $[0,1]$ but not of bounded variation. (b) Show that $F(x)=x^2\sin\frac1{x^2}$ (with $F(0)=0$) is differentiable at every point of $[-1,1]$, but that
+$F'$ is not integrable on $[0,1]$. Is $F$ absolutely continuous on $[0,1]$?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:cantorfn}
+A continuous function constant on an interval has derivative $0$ there. For absolute continuity, cover $C_n$ by $2^n$ intervals of total length $(\frac23)^n$. On $[0,\frac13]$, $c(x)=\frac12c(3x)$.
+\end{hint}
+\begin{hint}{ex:condexp}
+(b) Split $X=X^+-X^-$. Uniqueness: apply the defining property to $A=\{Y>Y'\}$. (c) For $Z=\mathbf 1_B$, $B\in\mathcal G$, the property is the definition; then simple $Z$, then limits.
+\end{hint}
+\begin{hint}{ex:likelihood}
+$L$ is the ratio of densities. $\ln L(x)=mx-\frac{m^2}2$.
+\end{hint}
+\begin{hint}{ex:salem}
+Each dyadic interval of rank $n$ has probability $p^k(1-p)^{n-k}>0$. The set of $x$ whose binary digits have frequency of ones equal to $p$ has $\mu_p$-measure $1$ and Lebesgue measure $0$. Then apply
+Theorem~\ref{thm:monotone}.
+\end{hint}
+\begin{hint}{ex:density}
+Apply Theorem~\ref{thm:lebdiff} to $\mathbf 1_{A\cap B(0,R)}$. For the second part, the density at almost every point of $[0,1]$ would be $\frac12$.
+\end{hint}
+\begin{hint}{ex:variation}
+(a) Look at the points $x_k=\frac1{(k+\frac12)\pi}$. (b) $F'(x)=2x\sin\frac1{x^2}-\frac2x\cos\frac1{x^2}$ for $x\ne0$; integrate $|F'|$ over the intervals where $|\cos\frac1{x^2}|\ge\frac12$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:cantorfn}
+\idea Everything is visible on the staircase: it is flat on the gaps of the Cantor set, which have total length $1$, and it climbs only on the Cantor set, which can be covered by intervals of tiny total
+length; that is exactly what absolute continuity forbids.
+\writeup By Exercise~\ref{ex:devil}, $c$ is constant on each removed open interval, so $c'=0$ on $[0,1]\setminus C$, a set of measure $1$. The stage $C_n$ consists of $2^n$ closed intervals of length $3^{-n}$; on each,
+$c$ increases by $2^{-n}$ (by self-similarity, $c(x)=\frac12c(3x)$ on $[0,\frac13]$ and $c(x)=\frac12+\frac12c(3x-2)$ on $[\frac23,1]$). Their total length $(\frac23)^n$ tends to $0$, while $\sum|c(b_i)-c(a_i)|=1$: $c$ is not absolutely
+continuous (slightly enlarge the intervals to open ones of total length less than $\delta$). Extend $c$ by $0$ on $]-\infty,0[$ and $1$ on $]1,\infty[$. Then $\mu_c$ is a probability with $\mu_c([0,1]\setminus C)=0$ (it is $0$
+on each gap, where $c$ is constant), $\lambda(C)=0$, and $\mu_c(\{x\})=0$ by continuity: it is singular and atomless, and it is the law of $\sum_k2B_k3^{-k}$ with fair bits $B_k$ (both have distribution function $c$,
+by self-similarity). Restricted to $[0,\frac13]$, $\mu_c$ has distribution function $c(x)=\frac12c(3x)$: it is half the image of $\mu_c$ under $x\mapsto\frac x3$.
+\end{solution}
+
+\begin{solution}{ex:condexp}
+\idea Conditional expectation given $\mathcal G$ is a density: the measure ``$X$ restricted to the information $\mathcal G$'' has a density with respect to $\mathbb P$ on $\mathcal G$, and the density must be
+$\mathcal G$-measurable because it is a function on the smaller $\sigma$-algebra. Radon--Nikodym does all the work.
+\writeup (a) $\nu$ is countably additive by monotone convergence, finite as $\mathbb E[X]<\infty$, and $\mathbb P(A)=0$ implies $\mathbb E[X\mathbf 1_A]=0$. Theorem~\ref{thm:rn} on $(\Omega,\mathcal G)$ gives a $\mathcal G$-measurable $Y\ge0$ with
+$\mathbb E[Y\mathbf 1_A]=\nu(A)$, unique a.s. (b) Set $\mathbb E[X\mid\mathcal G]=\mathbb E[X^+\mid\mathcal G]-\mathbb E[X^-\mid\mathcal G]$, integrable since $\mathbb E[\mathbb E[X^\pm\mid\mathcal G]]=\mathbb E[X^\pm]$. If $Y,Y'$ both satisfy the property,
+$A=\{Y>Y'\}\in\mathcal G$ gives $\mathbb E[(Y-Y')\mathbf 1_A]=0$ with $Y-Y'>0$ on $A$, so $\mathbb P(A)=0$; similarly $\{Y'>Y\}$. (c) Linearity follows from uniqueness: $a\mathbb E[X\mid\mathcal G]+b\mathbb E[X'\mid\mathcal G]$ has the defining
+property of $\mathbb E[aX+bX'\mid\mathcal G]$. Taking $A=\Omega$ gives $\mathbb E[\mathbb E[X\mid\mathcal G]]=\mathbb E[X]$. For $Z=\mathbf 1_B$ with $B\in\mathcal G$ and $A\in\mathcal G$, $\mathbb E[\mathbf 1_BY\mathbf 1_A]=\mathbb E[Y\mathbf 1_{A\cap B}]=\mathbb E[X\mathbf 1_{A\cap B}]=\mathbb E[\mathbf 1_BX\mathbf 1_A]$,
+so $\mathbf 1_BY=\mathbb E[\mathbf 1_BX\mid\mathcal G]$. By linearity this holds for simple $Z$; a bounded $\mathcal G$-measurable $Z$ is a uniform limit of simple $Z_n$ bounded by the same constant, and dominated convergence (with
+bounds $C|X|$ and $C|Y|$) passes to the limit in $\mathbb E[Z_nY\mathbf 1_A]=\mathbb E[Z_nX\mathbf 1_A]$.
+\end{solution}
+
+\begin{solution}{ex:likelihood}
+\idea Both laws have densities with respect to Lebesgue measure, positive everywhere, so each is absolutely continuous with respect to the other and the likelihood ratio is the quotient of
+densities.
+\writeup With $\varphi(x)=\frac{e^{-x^2/2}}{\sqrt{2\pi}}$, $\mathbb Q(A)=\int_A\varphi(x-m)\,dx=\int_A\frac{\varphi(x-m)}{\varphi(x)}\,d\mathbb P(x)$, so $L(x)=e^{mx-m^2/2}$. Then $\mathbb E_{\mathbb P}[L]=\mathbb Q(\R)=1$ (or: $\mathbb E[e^{mZ}]=e^{m^2/2}$), and
+$\int\ln L\,d\mathbb Q=\mathbb E_{\mathbb Q}[mX]-\frac{m^2}2=m^2-\frac{m^2}2=\frac{m^2}2$. $\mathcal N(0,1)$ and $\mathcal N(0,2)$ both have positive densities, so the same quotient argument works both ways. A Poisson law lives on the null set
+$\N$, which has $\mathcal N(0,1)$-measure $0$: they are mutually singular.
+\end{solution}
+
+\begin{solution}{ex:salem}
+\idea Under $\mu_p$ the binary digits of $X$ are biased coins, so by the law of large numbers the proportion of ones is $p$; under Lebesgue measure it is $\frac12$. The two measures live on disjoint sets, so
+$\mu_p$ is singular, yet it charges every dyadic interval, so its distribution function climbs everywhere.
+\writeup Let $\mu_p$ be the law of $X$. \emph{No atoms.} A point has at most two binary expansions, and each expansion has probability $\lim_np^{k_n}(1-p)^{n-k_n}\le\lim_n\max(p,1-p)^n=0$. So $F_p$ is continuous.
+\emph{Strictly increasing.} The dyadic interval $[\frac j{2^n},\frac{j+1}{2^n}]$ contains $X$ as soon as the first $n$ bits are those of $j$, an event of probability $p^k(1-p)^{n-k}>0$; every interval $[s,t]\subseteq[0,1]$ with $s<t$ contains
+such a dyadic interval, so $F_p(t)>F_p(s)$. \emph{Singular.} Let $S_q$ be the set of $x\in[0,1[$ whose binary digits $D_j(x)$ satisfy $\frac1n\sum_{j\le n}D_j(x)\to q$. By the strong law of large numbers, $\mu_p(S_p)=1$ (the digits of $X$ are the
+$B_k$, except on the null event that $X$ is dyadic). By Borel's theorem (Theorem~\ref{thm:borelnormal}), $\lambda(S_{1/2})=1$, and $S_p\cap S_{1/2}=\varnothing$ as $p\ne\frac12$, so $\lambda(S_p)=0$. Thus $\mu_p\perp\lambda$, its absolutely
+continuous part is $0$, and Theorem~\ref{thm:monotone} gives $F_p'=0$ almost everywhere. A continuous, strictly increasing function whose derivative is $0$ almost everywhere: the climbing happens on a set of
+measure zero which is, this time, dense.
+\end{solution}
+
+\begin{solution}{ex:density}
+\idea The density of $A$ at $x$ is the average of $\mathbf 1_A$ over a small ball; Lebesgue's theorem says that averages recover the function at almost every point, and $\mathbf 1_A$ takes only the values $0$
+and $1$.
+\writeup Fix $R$ and $f=\mathbf 1_{A\cap B(0,R)}\in L^1$. By Theorem~\ref{thm:lebdiff}, for a.e. $x$ with $|x|<R$, $\frac{\lambda_d(A\cap B(x,r))}{\lambda_d(B(x,r))}=\frac1{\lambda_d(B(x,r))}\int_{B(x,r)}f\to f(x)=\mathbf 1_A(x)$ for small $r$; let $R$ run
+through the integers. If $\lambda(A\cap I)=\frac12\lambda(I)$ for every interval, then the density of $A$ at every point of $]0,1[$ is $\frac12$, which is neither $0$ nor $1$, so the set where the conclusion fails is
+all of $]0,1[$, not null: contradiction. Exercise~\ref{ex:everywhere} built a set meeting every interval in positive measure, together with its complement; the density theorem says that the proportions cannot be
+the same everywhere.
+\end{solution}
+
+\begin{solution}{ex:variation}
+\idea A function of bounded variation cannot oscillate with amplitude $\frac1k$ infinitely often near a point, because $\sum\frac1k=\infty$. An everywhere-differentiable function can have a derivative so large
+near $0$ that it is not integrable, and then the fundamental theorem fails in Lebesgue's form, so the function is not absolutely continuous.
+\writeup (a) Continuity at $0$: $|x\sin\frac1x|\le|x|$. At $x_k=\frac1{(k+\frac12)\pi}$, $x_k\sin\frac1{x_k}=\frac{(-1)^k}{(k+\frac12)\pi}$, so consecutive values differ by more than $\frac1{(k+1)\pi}$, and the variation over
+$[0,1]$ is at least $\sum_k\frac1{(k+1)\pi}=\infty$. (b) At $x\ne0$ the formula of the hint holds; at $0$, $|\frac{F(h)}h|\le|h|\to0$, so $F'(0)=0$. On $I_k=[(2k\pi+\frac\pi3)^{-1/2},(2k\pi-\frac\pi3)^{-1/2}]$, where
+$\cos\frac1{x^2}\ge\frac12$, we have $|F'(x)|\ge\frac1x-2x\ge\frac1{2x}$ for $x\le\frac12$, so
+\[\int_{I_k}|F'|\ge\frac12\ln\frac{(2k\pi+\frac\pi3)^{1/2}}{(2k\pi-\frac\pi3)^{1/2}}=\frac14\ln\frac{6k+1}{6k-1}\ge\frac c k\]
+for some $c>0$, and $\sum_k\frac ck=\infty$. So $F'$ is not integrable on $[0,1]$, and by Theorem~\ref{thm:ftc} $F$ is not absolutely continuous there (otherwise $F'$ would be integrable). It is absolutely continuous on every
+$[\varepsilon,1]$, where $F'$ is bounded: everything goes wrong at a single point.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Lebesgue, \emph{Le\c cons sur l'int\'egration et la recherche des fonctions primitives}, Gauthier-Villars, 1904. Monotone functions and the fundamental theorem.
+\item J.~Radon, ``Theorie und Anwendungen der absolut additiven Mengenfunktionen'', \emph{Sitzungsber. Akad. Wiss. Wien} 122 (1913), 1295--1438; O.~Nikodym, ``Sur une g\'en\'eralisation des int\'egrales de M.~J.~Radon'',
+\emph{Fund. Math.} 15 (1930), 131--179.
+\item G.~H.~Hardy and J.~E.~Littlewood, ``A maximal theorem with function-theoretic applications'', \emph{Acta Math.} 54 (1930), 81--116. The cricket story is on the first page.
+\item G.~B.~Folland, \emph{Real Analysis}, 2nd ed., Wiley, 1999, Chapter~3. Our route through the maximal function and the differentiation of measures follows it.
+\item E.~M.~Stein and R.~Shakarchi, \emph{Real Analysis}, Princeton, 2005, Chapter~3.
+\item R.~Salem, ``On some singular monotonic functions which are strictly increasing'', \emph{Trans. Amer. Math. Soc.} 53 (1943), 427--439.
+\end{itemize}
