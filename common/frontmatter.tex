@@ -1,0 +1,77 @@
+% Front matter of every tome, in the order of a published book. \maketitle (called by each
+% main.tex) builds four pages: the half-title (recto), the series page (verso), the title page
+% (recto) and the copyright page (verso). The preface and the table of contents follow.
+%
+% Series-wide settings (one place for every tome):
+\newcommand{\seriesname}{Order and Chance}
+\newcommand{\seriessubtitle}{Number theory, algebra and probability, all proved}
+\newcommand{\bookauthors}{SEGHAIER Oussama \& Claude Opus 5.5}
+\newcommand{\bookcopyright}{Copyright \textcopyright\ 2026 SEGHAIER Oussama and Claude Opus 5.5}
+\newcommand{\booklicence}{All rights reserved. No part of this book may be reproduced, stored
+  in a retrieval system or transmitted in any form or by any means without the prior written
+  permission of the copyright holders, except for brief quotations in reviews and scholarly works.}
+\newcommand{\bookrepo}{https://github.com/OussamaSegh/Order-and-Chance}
+% Per-tome settings: a tome may \renewcommand these in its main.tex, after \input{../common/preamble}.
+%   \bookedition    the edition line
+%   \bookisbnprint  the paperback ISBN (KDP assigns one free of charge)
+%   \bookisbnebook  the eBook ISBN (optional on Kindle, which uses an ASIN)
+\newcommand{\bookedition}{First edition, 2026}
+\newcommand{\bookisbnprint}{to be assigned}
+\newcommand{\bookisbnebook}{}
+\makeatletter\newcommand{\oc@empty}{}\makeatother
+% Tome number and title, passed by build.sh from the "% epub-title:" line of main.tex.
+\providecommand{\TOMENUM}{}
+\providecommand{\TOMETITLE}{}
+
+\makeatletter
+% The series list, read from common/series.tex; the current tome is set in bold.
+\newcommand{\seriespart}[1]{\par\medskip\noindent{\small\textsc{#1}}\par\nobreak\smallskip}
+\newcommand{\seriestome}[3]{%
+  \def\oc@this{#1}%
+  \par\noindent\hangindent=2.2em\makebox[2.2em][l]{\small #1}%
+  \ifx\oc@this\TOMENUM{\small\textbf{#2}}\else{\small #2}\fi
+  \if\relax\detokenize{#3}\relax\else{\footnotesize\itshape\ --- #3}\fi\par}
+
+\renewcommand{\maketitle}{%
+  \cleardoublepage
+  % Half-title
+  \thispagestyle{empty}%
+  \vspace*{0.22\textheight}%
+  \begin{center}
+    {\Large\scshape\seriesname}\par\bigskip
+    \ifx\TOMETITLE\@empty\else{\LARGE Tome \TOMENUM\par\medskip\TOMETITLE\par}\fi
+  \end{center}
+  \clearpage
+  % Series page
+  \thispagestyle{empty}%
+  {\raggedright\let\oc@this\relax
+   \noindent{\large\scshape\seriesname}\par
+   \noindent{\small\itshape\seriessubtitle}\par\medskip
+   \input{../common/series}\par}%
+  \clearpage
+  % Title page
+  \thispagestyle{empty}%
+  \vspace*{0.12\textheight}%
+  \begin{center}
+    {\@title\par}\vskip 3em
+    {\large\@author\par}\vfill
+    {\small\@date\par}
+  \end{center}
+  \clearpage
+  % Copyright page: the text sits at the foot of the page, as is the custom.
+  \thispagestyle{empty}%
+  \vspace*{\fill}%
+  {\footnotesize\raggedright\setlength{\parskip}{0.6em}\setlength{\parindent}{0pt}%
+   \textit{\seriesname}\ifx\TOMETITLE\@empty\else. Tome~\TOMENUM: \textit{\TOMETITLE}\fi\par
+   \bookcopyright\par
+   \booklicence\par
+   \bookedition. This printing typeset on \today.\par
+   ISBN (paperback): \bookisbnprint\ifx\bookisbnebook\oc@empty\else\\ISBN (eBook): \bookisbnebook\fi\par
+   SEGHAIER Oussama and Claude Opus 5.5, an AI model made by Anthropic, wrote this book together. Every statement is proved in the text and every number was checked by
+   computer, but errors may remain; corrections are welcome at the address below, where the
+   companion Python notebooks are also published.\par
+   \url{\bookrepo}\par
+   Typeset with \LaTeX\ in Palatino.\par}%
+  \clearpage
+  \global\let\maketitle\relax}
+\makeatother

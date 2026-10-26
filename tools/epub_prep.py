@@ -25,8 +25,34 @@ def inline(path: Path) -> str:
     return re.sub(r"\\input\{([^}]*)\}", repl, text)
 
 
+COMMON = Path(__file__).resolve().parent.parent / "common"
+
+
+def book_settings(main_tex: Path) -> dict:
+    """The \\book... settings of common/frontmatter.tex, with a tome's \\renewcommand overrides."""
+    pattern = r"\\(?:re)?newcommand\{\\(book\w+|seriesname)\}\{((?:[^{}]|\{[^{}]*\})*)\}"
+    settings = dict(re.findall(pattern, (COMMON / "frontmatter.tex").read_text(encoding="utf-8")))
+    settings.update(re.findall(pattern, main_tex.read_text(encoding="utf-8")))
+    return {k: " ".join(v.replace("\\textcopyright\\ ", "\u00a9 ").replace("\\&", "&").split())
+            for k, v in settings.items()}
+
+
+def copyright_section(main_tex: Path) -> str:
+    b = book_settings(main_tex)
+    title = re.search(r"^% epub-title: (.*)$", main_tex.read_text(encoding="utf-8"), re.M)
+    isbn = "ISBN (eBook): " + b["bookisbnebook"] + "\n\n" if b.get("bookisbnebook") else ""
+    return ("\\chapter*{Copyright}\n" + (r"\emph{" + title.group(1) + "}\n\n" if title else "")
+            + b["bookcopyright"] + "\n\n" + b["booklicence"] + "\n\n"
+            + b["bookedition"] + ".\n\n" + isbn
+            + "SEGHAIER Oussama and Claude Opus 5.5, an AI model made by Anthropic, wrote this book together. "
+            "Every statement is proved in the text and every number was checked by computer, but errors may "
+            "remain; corrections are welcome at the address below, where the companion Python notebooks "
+            "are also published.\n\n\\url{" + b["bookrepo"] + "}\n\n")
+
+
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
+    text = text.replace("\\maketitle\n", copyright_section(Path(src)), 1)
     # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
@@ -49,4 +75,8 @@ def main(src: str, dst: str, figdir: str) -> None:
 
 
 if __name__ == "__main__":
-    main(sys.argv[1], sys.argv[2], sys.argv[3])
+    if sys.argv[1] == "--rights":
+        b = book_settings(Path(sys.argv[2]))
+        print(b["bookcopyright"] + ". " + b["booklicence"])
+    else:
+        main(sys.argv[1], sys.argv[2], sys.argv[3])

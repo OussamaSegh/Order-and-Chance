@@ -1,0 +1,41 @@
+% Paperback cover for Amazon KDP: one PDF with back cover, spine and front cover, 6in x 9in trim
+% with 0.125in bleed on every outside edge. KDP's formula: width = bleed + back + spine + front
+% + bleed, height = bleed + 9in + bleed, spine = pages x 0.002252in on white paper (black ink).
+% build.sh compiles it with \TOMENUM, \TOMETITLE, \MOTIF (as for tools/cover.tex), \SPINE (spine
+% width in inches, from the page count of the print interior) and \BLURB (the tome's back-cover
+% text, <tome>/blurb.tex, or tools/blurb-default.tex). KDP puts spine text only on books of 80
+% pages or more, so \SPINETEXT is defined only then. The barcode area (2in x 1.2in, lower right
+% of the back cover) is left empty: KDP prints the ISBN barcode there.
+\documentclass[border=0pt]{standalone}
+\input{tools/cover-colors}
+\begin{document}
+\begin{tikzpicture}
+  \def\B{0.125}
+  \pgfmathsetmacro{\W}{2*\B+12+\SPINE}
+  \useasboundingbox (0,0) rectangle ({\W*1in},{(9+2*\B)*1in});
+  \shade[top color=navytop,bottom color=navy] (0,0) rectangle ({\W*1in},{(9+2*\B)*1in});
+  % Front cover, right of the spine
+  \coordinate (O) at ({(\B+6+\SPINE)*1in},{\B*1in});
+  \def\CH{9}\coverbgfalse
+  \input{tools/cover-front}
+  % Back cover
+  \coordinate (K) at ({\B*1in},{\B*1in});
+  \draw[accent,line width=1pt] ($(K)+(0.3in,0.3in)$) rectangle ($(K)+(5.7in,8.7in)$);
+  \draw[accent!70,line width=0.3pt] ($(K)+(0.38in,0.38in)$) rectangle ($(K)+(5.62in,8.62in)$);
+  \node[ivory,font=\fontsize{15}{18}\selectfont] at ($(K)+(3in,8.1in)$) {\textls{ORDER AND CHANCE}};
+  \node[accent,font=\fontsize{10}{12}\selectfont] at ($(K)+(3in,7.75in)$) {\textls{TOME \TOMENUM\ \textperiodcentered\ \MakeUppercase{\TOMETITLE}}};
+  \draw[accent,line width=0.4pt] ($(K)+(2.4in,7.5in)$) -- ++(1.2in,0);
+  \node[ivory,anchor=north,text width=4.5in,align=justify,font=\fontsize{10.5}{14.5}\selectfont]
+    at ($(K)+(3in,7.25in)$) {\input{\BLURB}};
+  \node[ivory!70,anchor=south west,text width=3in,align=left,font=\fontsize{8}{10}\selectfont]
+    at ($(K)+(0.6in,0.6in)$) {Companion notebooks and corrections:\\
+    \texttt{github.com/OussamaSegh/Order-and-Chance}};
+  % Spine (text reads top to bottom, as on English-language books)
+  \ifdefined\SPINETEXT
+    \pgfmathsetmacro{\spfs}{min(10,\SPINE*72*0.42)}
+    \coordinate (S) at ({(\B+6+\SPINE/2)*1in},{(\B+4.5)*1in});
+    \node[rotate=-90,ivory,font=\fontsize{\spfs}{\spfs}\selectfont] at (S)
+      {\textls[120]{ORDER AND CHANCE}\quad{\color{accent}\textls[60]{TOME \TOMENUM}}\quad\TOMETITLE};
+  \fi
+\end{tikzpicture}
+\end{document}

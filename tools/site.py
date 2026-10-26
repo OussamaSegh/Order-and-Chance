@@ -68,11 +68,17 @@ VARIANTS = [("phone", "Phone PDF", "Pages sized for a large phone screen (Galaxy
             ("kindle", "Kindle PDF", "Pages sized for a 7-inch e-reader (Kindle Paperwhite)")]
 
 
+def tome_order(pdf: Path):
+    """Main line by number (tome0..tome15), then the Computing track C1..C5, then S1..S4."""
+    m = re.match(r"tome([A-Z]?)(\d+)", pdf.stem)
+    return ("", "C", "S").index(m.group(1)) if m and m.group(1) in "CS" else 3, int(m.group(2)) if m else 0
+
+
 def main(dist: str, out: str) -> None:
     dist_dir, out_dir = Path(dist), Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
     cards = []
-    for pdf in sorted(dist_dir.glob("*.pdf")):
+    for pdf in sorted(dist_dir.glob("*.pdf"), key=tome_order):
         if any(pdf.stem.endswith("-" + v) for v, _, _ in VARIANTS):
             continue
         tome = pdf.stem
