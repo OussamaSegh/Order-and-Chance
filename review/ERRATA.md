@@ -567,3 +567,9 @@ in its output.
 
 - Chapter 4, Weldon's table: the expected count for 7 successes is 1254.51, printed as 1254 (Pearson's own rounding, which makes the column add up to 26 306).
 - The Golomb–Dickman constant is quoted to ten digits from the literature (0.6243299885); the notebook's trapezoidal solution of the delay equation gives 0.6243299882.
+
+## Erratum: Tome 5 (found by the Part III thread)
+
+| Where | Kind | Problem | Fix |
+|---|---|---|---|
+| Ch. 8, remark "how many twins?" after Theorem 8.6 | math | Attributed π₂(x) ≤ (8C₂ + o(1)) x/log²x ("4 times too large") to the plain Selberg sieve. Sifting n(n+2) with Selberg's sieve gives 16C₂, 8 times the Hardy–Littlewood 2C₂; the factor 4 (8C₂) is Bombieri–Davenport 1966, sifting p + 2 with Bombieri–Vinogradov. | Corrected to 16C₂ and factor 8, Bombieri–Davenport credited for the factor 4, Wu's 3.4 kept; both papers added to the sources. |
