@@ -1,0 +1,808 @@
+\chapter{Logic and Proof}
+
+\begin{center}\itshape
+If controversies were to arise, there would be no more need of disputation between two philosophers than between\\
+two accountants. For it would suffice to take their pencils in their hands and say to each other: let us calculate.
+\upshape(Leibniz, about 1685)
+\end{center}
+
+In 1847 a schoolmaster from Lincoln, the son of a shoemaker, who had taught himself mathematics from library books,
+published a small pamphlet with an outrageous claim: thinking obeys algebra. George Boole would write $x$ for ``the white
+things'' and $y$ for ``the sheep'', so that $xy$ meant ``the white sheep''; and then $xx=x$, since the white white things are
+just the white things. That equation holds for no number except $0$ and $1$. So logic, he concluded, is the algebra of the two numbers $0$ and $1$. Leibniz had
+dreamed of such a calculus a century and a half earlier, and the philosophers of Boole's day mostly ignored it.
+
+Ninety years later, a student at MIT named Claude Shannon noticed that the relays of a telephone exchange obey
+Boole's laws: two switches in series are an \emph{and}, two in parallel an \emph{or}. His master's thesis of 1937,
+perhaps the most consequential master's thesis ever written, turned Boole's algebra into the design method of
+every digital circuit since. Today the same algebra runs the other way too: we ask computers to \emph{reason}.
+In 2016 Marijn Heule, Oliver Kullmann and Victor Marek asked whether the integers $1,2,\dots,n$ can be coloured red and
+blue so that no Pythagorean triple $a^2+b^2=c^2$ is all one colour. Nobody knew. A satisfiability solver, running on a
+supercomputer for two days, found that it can be done up to $n=7824$ and is impossible for $n=7825$, and it produced a
+proof of impossibility two hundred terabytes long, the longest proof ever written at the time (Heule beat his own
+record a year later with two petabytes, for a problem of Chapter~8). Every step of that proof is one application of a
+single rule of this chapter.
+
+This chapter tells that story in order. We first show that every truth table is a formula, and that some truth tables
+need enormous ones. We give Boolean algebra its abstract form and prove that every finite Boolean algebra is an
+algebra of subsets, which is the normal form theorem in disguise. Then we turn to proofs: \emph{resolution}, the single
+rule behind the Pythagorean proof, which refutes every unsatisfiable set of clauses; the \emph{compactness theorem},
+which lets infinite problems be solved by finite ones; and two fragments where satisfiability is easy, Horn clauses
+and clauses of length two. The chapter ends with the language of first-order logic, in which the rest of
+mathematics is written.
+
+\begin{think}
+Can the following formula be made true, and if so how?
+\[
+\begin{aligned}{}&(x_1\lor x_2)\land(\neg x_1\lor x_3)\land(\neg x_2\lor\neg x_3)\eqbr\land(\neg x_3\lor x_4)\land(\neg x_4\lor\neg x_1)\land(x_2\lor x_4).\end{aligned}
+\]
+What if we add the clause $(\neg x_2\lor x_1)$? With $4$ variables you can try all $16$ cases; with $300$ you
+could not. Section~\ref{sec:twosat} gives a method that decides such formulas, with any number of variables, in
+a time proportional to their length.
+\end{think}
+
+\section{Propositional formulas}
+
+Fix a set of \emph{variables} $x_1,x_2,\dots$. \emph{Formulas} are built from the variables and the constants $\top$
+(true) and $\bot$ (false) by the rules: if $\varphi$ and $\psi$ are formulas, so are $\neg\varphi$, $(\varphi\land\psi)$,
+$(\varphi\lor\psi)$, $(\varphi\to\psi)$ and $(\varphi\leftrightarrow\psi)$. It is best to think of a formula as a
+tree, its \emph{parse tree}: the leaves carry variables or constants and the inner nodes carry connectives. The
+parentheses only serve to write the tree on a line, and we drop those that are clear from context. Since a
+formula is a finite tree, we can define functions on formulas and prove properties of them \emph{by structural
+induction}: handle the leaves, then a node given its subtrees.
+
+An \emph{assignment} is a map $\alpha$ from the variables to $\{0,1\}$ ($0$ for false, $1$ for true). It extends to all
+formulas by induction: $\alpha(\top)=1$, $\alpha(\bot)=0$, $\alpha(\neg\varphi)=1-\alpha(\varphi)$, $\alpha(\varphi\land\psi)=\min(\alpha(\varphi),\alpha(\psi))$,
+$\alpha(\varphi\lor\psi)=\max(\alpha(\varphi),\alpha(\psi))$, $\alpha(\varphi\to\psi)=\max(1-\alpha(\varphi),\alpha(\psi))$, and $\alpha(\varphi\leftrightarrow\psi)=1$ if and only
+if $\alpha(\varphi)=\alpha(\psi)$. The value $\alpha(\varphi)$ only depends on the values of $\alpha$ at the variables that occur in $\varphi$ (an
+induction on $\varphi$).
+
+\begin{definition}\label{def:sat}
+A formula $\varphi$ is \emph{satisfiable} if $\alpha(\varphi)=1$ for some assignment $\alpha$, which is then a \emph{model} of
+$\varphi$, and a \emph{tautology} if $\alpha(\varphi)=1$ for all $\alpha$. A set $\Gamma$ of formulas is satisfiable if one
+assignment satisfies all its members. We write $\Gamma\models\varphi$, and say that $\varphi$ is a \emph{consequence} of
+$\Gamma$, if every model of $\Gamma$ is a model of $\varphi$. Two formulas are \emph{equivalent}, $\varphi\equiv\psi$, if
+$\alpha(\varphi)=\alpha(\psi)$ for every $\alpha$.
+\end{definition}
+
+The basic equivalences are checked on the four rows of a truth table: commutativity and associativity of $\land$ and
+$\lor$, the two distributive laws $\varphi\land(\psi\lor\chi)\equiv(\varphi\land\psi)\lor(\varphi\land\chi)$ and
+$\varphi\lor(\psi\land\chi)\equiv(\varphi\lor\psi)\land(\varphi\lor\chi)$, De Morgan's laws $\neg(\varphi\land\psi)\equiv\neg\varphi\lor\neg\psi$ and
+$\neg(\varphi\lor\psi)\equiv\neg\varphi\land\neg\psi$, double negation $\neg\neg\varphi\equiv\varphi$, and $\varphi\to\psi\equiv\neg\varphi\lor\psi$. Replacing a
+subformula by an equivalent one gives an equivalent formula (induction on the parse tree). Satisfiability and
+consequence are linked by a remark that we will use all the time.
+
+\begin{proposition}\label{prop:refute}
+$\Gamma\models\varphi$ if and only if $\Gamma\cup\{\neg\varphi\}$ is unsatisfiable. In particular $\varphi$ is a tautology if and only
+if $\neg\varphi$ is unsatisfiable.
+\end{proposition}
+\begin{proof}
+A model of $\Gamma\cup\{\neg\varphi\}$ is exactly a model of $\Gamma$ in which $\varphi$ is false. There is none if and only if every
+model of $\Gamma$ satisfies $\varphi$.
+\end{proof}
+
+So to \emph{prove} a statement it is enough to show that its negation, added to the hypotheses, cannot be
+satisfied. This is how SAT solvers are used to verify hardware and software: the property to check is negated, and
+the solver either finds a satisfying assignment, which is a bug, or shows there is none, which is a proof.
+
+\section{Normal forms}
+
+A \emph{Boolean function} of $n$ variables is a map $f\colon\{0,1\}^n\to\{0,1\}$; there are $2^{2^n}$ of them. Each formula in
+$x_1,\dots,x_n$ \emph{computes} one, $f(a)=\alpha_a(\varphi)$, where $\alpha_a$ sends $x_i$ to $a_i$. A \emph{literal} is a variable or its
+negation; for a literal $\ell$ we write $\bar\ell$ for its opposite ($\bar x=\neg x$ and $\overline{\neg x}=x$). A \emph{clause} is a
+disjunction of literals, and a formula is in \emph{conjunctive normal form} (CNF) if it is a conjunction of clauses,
+in \emph{disjunctive normal form} (DNF) if it is a disjunction of conjunctions of literals. The empty disjunction is
+$\bot$ and the empty conjunction is $\top$.
+
+\begin{theorem}\label{thm:normalforms}
+Every Boolean function is computed by a formula in DNF and by a formula in CNF.
+\end{theorem}
+\begin{proof}
+For $a\in\{0,1\}^n$, let $m_a=\ell_1\land\dots\land\ell_n$ with $\ell_i=x_i$ if $a_i=1$ and $\ell_i=\neg x_i$ if $a_i=0$. Then $m_a$ is true exactly at
+$a$: it is the \emph{minterm} of $a$. The DNF $\bigvee_{f(a)=1}m_a$ is true exactly where $f$ is $1$, so it computes $f$. Applying
+this to $1-f$ gives a DNF $\psi$ for $1-f$; then $\neg\psi$ computes $f$, and De Morgan's laws push the negation inside: $\neg\bigvee_a m_a\equiv\bigwedge_a\neg m_a$
+and $\neg m_a\equiv\bar\ell_1\lor\dots\lor\bar\ell_n$, a clause. So $f$ is computed by the CNF $\bigwedge_{f(a)=0}(\bar\ell_1\lor\dots\lor\bar\ell_n)$: one clause forbidding each
+point where $f$ vanishes.
+\end{proof}
+
+A set of connectives is \emph{complete} if every Boolean function is computed by a formula that uses only them (and
+variables). Theorem~\ref{thm:normalforms} says that $\{\neg,\land,\lor\}$ is complete; since $\varphi\lor\psi\equiv\neg(\neg\varphi\land\neg\psi)$, so is $\{\neg,\land\}$. The
+\emph{Sheffer stroke} or NAND, $\varphi\uparrow\psi=\neg(\varphi\land\psi)$, is complete on its own, because $\neg\varphi\equiv\varphi\uparrow\varphi$ and $\varphi\land\psi\equiv(\varphi\uparrow\psi)\uparrow(\varphi\uparrow\psi)$;
+this is why a chip can be built from a single kind of gate. Not every set is complete:
+
+\begin{proposition}\label{prop:monotone}
+Call $f$ \emph{monotone} if $a\le b$ coordinatewise implies $f(a)\le f(b)$. Every formula built from variables with $\land$ and
+$\lor$ only computes a monotone function. In particular $\{\land,\lor\}$ is not complete.
+\end{proposition}
+\begin{proof}
+By structural induction: a variable is monotone, and if $g$ and $h$ are monotone, so are $\min(g,h)$ and $\max(g,h)$, as
+$\min$ and $\max$ are non-decreasing in each argument. The function $\neg x_1$ is not monotone.
+\end{proof}
+
+Exercise~\ref{ex:monotone} shows the converse: every monotone function has a formula without negation.
+
+The normal forms of Theorem~\ref{thm:normalforms} can be huge, and sometimes this cannot be helped. The \emph{parity
+function} $x_1\oplus\dots\oplus x_n$ is $1$ when an odd number of the $x_i$ are $1$.
+
+\begin{proposition}\label{prop:parity}
+Every CNF that computes the parity of $n$ variables has at least $2^{n-1}$ clauses.
+\end{proposition}
+\begin{proof}
+Remove from the CNF any clause containing both a variable and its negation: such a clause is always true. Let $C$ be one
+of the remaining clauses; it is false at some assignment $a$ (make each of its literals false, which is possible as no
+two of them are opposite). Suppose a variable $x_i$ does not occur in $C$, and let $a'$ be $a$ with the $i$-th bit flipped.
+Then $C$ is still false at $a'$, so the CNF is false at $a$ and at $a'$, but the parity of $a$ and $a'$ differ: one of them is
+$1$. This is impossible, so every clause contains all $n$ variables, and is then false at exactly one assignment. The
+CNF must be false at each of the $2^{n-1}$ assignments of even parity, and each clause accounts for only one of
+them.
+\end{proof}
+
+Even worse, Exercise~\ref{ex:shannoncount} shows by counting that most Boolean functions of $n$ variables need formulas
+of length about $2^n/\log_2n$, whatever the form. But a satisfiability solver does not need an \emph{equivalent} CNF; it only
+needs one that is satisfiable exactly when the original formula is. That can always be had cheaply, at the price of
+new variables.
+
+\begin{theorem}[Tseitin, 1968]\label{thm:tseitin}
+For every formula $\varphi$ with $s$ connectives there is a CNF $\psi$ with at most $4s+1$ clauses, each of at most three
+literals, in the variables of $\varphi$ and $s$ new variables, such that every model of $\varphi$ extends in exactly one way to a
+model of $\psi$, and every model of $\psi$ restricts to a model of $\varphi$. In particular $\varphi$ and $\psi$ are \emph{equisatisfiable}.
+\end{theorem}
+\begin{proof}
+We may assume that $\varphi$ contains no constant, since $\top$ and $\bot$ can be removed by the equivalences $\chi\land\top\equiv\chi$,
+$\chi\land\bot\equiv\bot$, $\neg\top\equiv\bot$ and their analogues for the other connectives, unless $\varphi$ reduces to a constant, a trivial case.
+Give each inner node $u$ of the parse tree a new variable $y_u$, meant to hold the value of the subformula at $u$, and for a
+leaf let $y_u$ be its variable. For each inner node add clauses saying that $y_u$ is computed correctly from its children
+$v,w$:
+\begin{itemize}
+\item for $u=\neg v$: $(y_u\lor y_v)\land(\neg y_u\lor\neg y_v)$, which says $y_u\leftrightarrow\neg y_v$;
+\item for $u=v\land w$: $(\neg y_u\lor y_v)\land(\neg y_u\lor y_w)\land(y_u\lor\neg y_v\lor\neg y_w)$, which says $y_u\leftrightarrow y_v\land y_w$;
+\item for $u=v\lor w$: $(y_u\lor\neg y_v)\land(y_u\lor\neg y_w)\land(\neg y_u\lor y_v\lor y_w)$, which says $y_u\leftrightarrow y_v\lor y_w$;
+\item for $u=v\to w$: $(y_u\lor y_v)\land(y_u\lor\neg y_w)\land(\neg y_u\lor\neg y_v\lor y_w)$;
+\item for $u=v\leftrightarrow w$: the four clauses $(\neg y_u\lor\neg y_v\lor y_w)$, $(\neg y_u\lor y_v\lor\neg y_w)$, $(y_u\lor y_v\lor y_w)$ and
+$(y_u\lor\neg y_v\lor\neg y_w)$, which exclude exactly the four assignments of $(y_u,y_v,y_w)$ where $y_u$ is not $y_v\leftrightarrow y_w$.
+\end{itemize}
+(Each line is the CNF of Theorem~\ref{thm:normalforms} for the function ``$y_u$ equals the value of the connective'', simplified.)
+Finally add the one-literal clause $(y_r)$ for the root $r$. That is at most $4s+1$ clauses. Given a model $\alpha$ of $\varphi$, the
+clauses for the nodes force, from the leaves up, $y_u=\alpha(\text{subformula at }u)$, which is a model of all clauses including
+$y_r$, and it is the only extension. Conversely in a model of $\psi$, the same induction shows that $y_u$ equals the value of
+the subformula at $u$, so $y_r=1$ means that $\varphi$ is true.
+\end{proof}
+
+So satisfiability of arbitrary formulas reduces, in linear time, to satisfiability of CNFs with clauses of length
+at most $3$: the problem \textsc{3-SAT}. Tome~C3 shows that every problem whose solutions can be checked quickly reduces
+to it in the same way (the Cook--Levin theorem), and that is why \textsc{3-SAT} is the most studied problem of computer
+science.
+
+\section{Boolean algebras}\label{sec:boolean}
+
+Formulas up to equivalence, subsets of a set, and the divisors of $30$ under gcd and lcm all obey the same laws. Here are
+the laws.
+
+\begin{definition}\label{def:boolalg}
+A \emph{Boolean algebra} is a set $B$ with two binary operations $\land,\lor$, a unary operation $x\mapsto\neg x$ and two elements
+$0,1$, such that for all $x,y,z$: $\land$ and $\lor$ are commutative and associative; each distributes over the other;
+$x\land1=x$ and $x\lor0=x$; and $x\land\neg x=0$ and $x\lor\neg x=1$.
+\end{definition}
+
+Examples: the subsets of a set $X$ with $\cap,\cup$, complement, $\emptyset$ and $X$; the two-element algebra $\{0,1\}$; the
+\emph{Lindenbaum algebra} of formulas in $x_1,\dots,x_n$ up to equivalence; the divisors of a squarefree integer $N$ with $\gcd$,
+$\operatorname{lcm}$, $d\mapsto N/d$, $1$ and $N$. The axioms come in dual pairs (swap $\land$ with $\lor$ and $0$ with $1$), so every consequence of
+the axioms has a dual, also true.
+
+\begin{lemma}\label{lem:boolbasic}
+In a Boolean algebra: (a) $x\land x=x$, $x\land0=0$ and $x\land(x\lor y)=x$, and dually; (b) if $x\land y=0$ and $x\lor y=1$ then $y=\neg x$;
+in particular $\neg\neg x=x$; (c) De Morgan: $\neg(x\land y)=\neg x\lor\neg y$; (d) the relation $x\le y\iff x\land y=x$ is a partial order, and
+$x\land y=x$ if and only if $x\lor y=y$.
+\end{lemma}
+\begin{proof}
+(a) $x=x\land1=x\land(x\lor\neg x)=(x\land x)\lor(x\land\neg x)=(x\land x)\lor0=x\land x$. Then
+$x\land0=x\land(x\land\neg x)=(x\land x)\land\neg x=x\land\neg x=0$. And $x\land(x\lor y)=(x\lor0)\land(x\lor y)=x\lor(0\land y)=x\lor0=x$, by the second distributive law
+and $0\land y=0$.
+
+(b) $y=y\land1=y\land(x\lor\neg x)=(y\land x)\lor(y\land\neg x)=0\lor(y\land\neg x)=y\land\neg x$, and symmetrically, using $x\lor y=1$ and
+$x\land\neg x=0$: $\neg x=\neg x\land(x\lor y)=(\neg x\land x)\lor(\neg x\land y)=\neg x\land y$. So $y=\neg x$. Since $\neg x\land x=0$ and $\neg x\lor x=1$, the same
+argument with $\neg x$ in the role of $x$ gives $x=\neg\neg x$.
+
+(c) By (b) it suffices to check that $(x\land y)\land(\neg x\lor\neg y)=0$ and $(x\land y)\lor(\neg x\lor\neg y)=1$. The first is
+$(x\land y\land\neg x)\lor(x\land y\land\neg y)=0\lor0$ by distributivity and (a). The second is, by distributivity of $\lor$ over $\land$,
+$(x\lor\neg x\lor\neg y)\land(y\lor\neg x\lor\neg y)=1\land1$, using the dual of $x\land0=0$, namely $x\lor1=1$.
+
+(d) If $x\land y=x$ then $x\lor y=(x\land y)\lor y=y$ by the dual absorption law, and conversely if $x\lor y=y$ then
+$x\land y=x\land(x\lor y)=x$. Reflexivity is $x\land x=x$; if $x\le y\le x$ then $x=x\land y=y\land x=y$; if $x\le y\le z$ then
+$x\land z=(x\land y)\land z=x\land(y\land z)=x\land y=x$.
+\end{proof}
+
+For this order, $x\land y$ is the greatest lower bound of $x$ and $y$ and $x\lor y$ their least upper bound (Exercise~\ref{ex:lattice}), $0$ is
+the least element and $1$ the greatest. An \emph{atom} is a minimal non-zero element: $a\ne0$, and $0\le x\le a$ implies $x=0$
+or $x=a$. In the algebra of subsets, the atoms are the singletons. In the Lindenbaum algebra, they are the classes of
+the $2^n$ minterms.
+
+\begin{theorem}[finite Stone representation]\label{thm:stone}
+Let $B$ be a finite Boolean algebra and $A$ its set of atoms. The map $\Phi(x)=\{a\in A:a\le x\}$ is an isomorphism from $B$ to
+the algebra of subsets of $A$. In particular $|B|=2^{|A|}$.
+\end{theorem}
+\begin{proof}
+Three facts about an atom $a$. (i) For every $x$, $a\land x$ is $0$ or $a$, because $a\land x\le a$. (ii) $a\le x\lor y$ if and only if
+$a\le x$ or $a\le y$: indeed $a\land(x\lor y)=(a\land x)\lor(a\land y)$, and by (i) this is $a$ exactly when one of the two terms is $a$.
+(iii) $a\le\neg x$ if and only if $a\not\le x$: if $a\land x=0$ then $a=a\land(x\lor\neg x)=a\land\neg x$, so $a\le\neg x$; and if $a\le x$ and $a\le\neg x$
+then $a\le x\land\neg x=0$, which is false.
+
+Also $a\le x\land y$ if and only if $a\le x$ and $a\le y$: if $a\land x=a=a\land y$ then $a\land(x\land y)=(a\land x)\land y=a$, and if
+$a\land x\land y=a$ then $a\land x=(a\land x\land y)\land x=a\land x\land y=a$, and likewise for $y$. By these facts and (ii), (iii), $\Phi(x\lor y)=\Phi(x)\cup\Phi(y)$, $\Phi(\neg x)=A\setminus\Phi(x)$ and $\Phi(x\land y)=\Phi(x)\cap\Phi(y)$; also
+$\Phi(0)=\emptyset$ and $\Phi(1)=A$. So $\Phi$ is a homomorphism. Every non-zero $z$ lies above an atom, since $B$ is finite: take an
+element minimal among the non-zero elements below $z$. \emph{Injectivity}: let $y=\bigvee\Phi(x)$, the join of the atoms below $x$ (with
+$y=0$ if there are none). Then $y\le x$. If $y\ne x$, then $z=x\land\neg y\ne0$, for otherwise $x=x\land(y\lor\neg y)=(x\land y)\lor0=y$. An atom $a\le z$
+satisfies $a\le x$, hence $a\le y$, and $a\le\neg y$, which contradicts (iii). So $x=\bigvee\Phi(x)$ is determined by $\Phi(x)$.
+\emph{Surjectivity}: for $S\subseteq A$, let $x=\bigvee S$. By (ii) applied repeatedly, an atom $b$ lies below $x$ if and only if it lies
+below some $a\in S$, that is, $b=a$. So $\Phi(x)=S$.
+\end{proof}
+
+\begin{beauty}
+The Lindenbaum algebra of $n$ variables has $2^n$ atoms, the minterms, so it has $2^{2^n}$ elements: one for each Boolean
+function. Stone's theorem is then exactly the disjunctive normal form: an element is the join of the atoms below it,
+and a formula is the disjunction of the minterms of the points where it is true. The same theorem, with
+topology added, describes infinite Boolean algebras too (Stone, 1936), and it was one of the first great
+dualities of modern mathematics.
+\end{beauty}
+
+\section{Resolution}\label{sec:resolution}
+
+In 1960 Martin Davis and Hilary Putnam wanted a computer to prove theorems, and they found that the heart of the
+matter was propositional. Five years later John Alan Robinson distilled their method into one rule, so simple that it
+looks like it cannot possibly be enough. It is enough.
+
+From now on a CNF is viewed as a finite set $S$ of clauses, and a clause as a finite set of literals; the empty clause,
+written $\Box$, is false under every assignment, and a set containing it is unsatisfiable. A clause containing a literal
+and its opposite is a \emph{tautology}.
+
+\begin{definition}\label{def:resolution}
+If $C\cup\{x\}$ and $D\cup\{\neg x\}$ are clauses, the clause $C\cup D$ is their \emph{resolvent} on $x$. A \emph{resolution derivation} from $S$
+is a sequence of clauses, each of which is in $S$ or is a resolvent of two earlier ones. A \emph{refutation} of $S$ is a
+derivation that ends with $\Box$.
+\end{definition}
+
+For instance, from $S=\{\{x,y\},\{x,\neg y\},\{\neg x,y\},\{\neg x,\neg y\}\}$ (the four ways of being wrong about two bits) we derive $\{x\}$ from the
+first two clauses, $\{\neg x\}$ from the last two, and $\Box$ from these. Figure~\ref{fig:resolution} draws a refutation as a tree.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-resolution}
+\caption{A resolution refutation of the second formula of the opening question, the one with seven clauses. Each inner
+node is the resolvent of its two parents on the variable written beside it; the root is the empty clause.}
+\label{fig:resolution}
+\end{figure}
+
+\begin{lemma}[soundness]\label{lem:sound}
+A resolvent is a consequence of the two clauses it comes from. Hence if $S$ has a refutation, $S$ is unsatisfiable.
+\end{lemma}
+\begin{proof}
+Let $\alpha$ satisfy $C\cup\{x\}$ and $D\cup\{\neg x\}$. If $\alpha(x)=1$, then $\neg x$ is false, so some literal of $D$ is true; if $\alpha(x)=0$, some
+literal of $C$ is true. Either way $\alpha$ satisfies $C\cup D$. By induction along a derivation, every model of $S$ satisfies every
+derived clause, and no assignment satisfies $\Box$.
+\end{proof}
+
+The converse is the remarkable part: a single rule is enough to refute every unsatisfiable set of clauses. The proof
+eliminates the variables one at a time, an idea of Davis and Putnam (1960).
+
+\begin{theorem}[completeness of resolution]\label{thm:rescomplete}
+If a finite set $S$ of clauses is unsatisfiable, it has a refutation.
+\end{theorem}
+\begin{proof}
+Induction on the number $k$ of variables occurring in $S$. If $k=0$, the only clause without variables is $\Box$, and the empty set
+of clauses is satisfied by every assignment; so $S$, being unsatisfiable, contains $\Box$, a one-line refutation.
+
+Let $k\ge1$ and choose a variable $x$ of $S$. Split $S$ into $S_0$, the clauses without $x$ or $\neg x$, $P$, the clauses containing $x$,
+and $N$, those containing $\neg x$; a tautological clause containing both may be dropped, since it is satisfied by every
+assignment and does not change satisfiability. Let $S'=S_0\cup\{\text{resolvents on }x\text{ of a clause of }P\text{ and a clause of }N\}$. The
+variable $x$ does not occur in $S'$.
+
+We claim that $S'$ is unsatisfiable. Suppose $\alpha$ satisfies $S'$; we extend it to $x$ so as to satisfy $S$, a contradiction. Write
+the clauses of $P$ as $C_i\cup\{x\}$ and those of $N$ as $D_j\cup\{\neg x\}$. If every $C_i$ is true under $\alpha$, set $x=0$: the clauses of $P$ hold
+through $C_i$ and those of $N$ through $\neg x$. Otherwise some $C_i$ is false under $\alpha$; since every resolvent $C_i\cup D_j$ is true,
+every $D_j$ is true, and setting $x=1$ satisfies $P$ through $x$ and $N$ through $D_j$. Either way $S_0$ holds, as $S_0\subseteq S'$.
+
+So $S'$ is unsatisfiable with fewer variables, and by induction it has a refutation. Every clause of $S'$ is in $S$ or is a
+resolvent of two clauses of $S$; prefixing those derivations gives a refutation of $S$.
+\end{proof}
+
+By Proposition~\ref{prop:refute}, resolution therefore proves every consequence: $S\models C$ if and only if $S\cup\{\{\bar\ell\}:\ell\in C\}$
+has a refutation. But completeness says nothing about length. The \emph{pigeonhole formula} $\mathrm{PHP}_n$ has variables
+$p_{ij}$ (pigeon $i\le n+1$ sits in hole $j\le n$), the clauses $p_{i1}\lor\dots\lor p_{in}$ (each pigeon sits somewhere) and $\neg p_{ij}\lor\neg p_{i'j}$ for
+$i<i'$ (no two pigeons share a hole). It is unsatisfiable, and every human sees why at once; yet Haken (1985) proved
+that every resolution refutation of $\mathrm{PHP}_n$ has at least $c^n$ clauses for some constant $c>1$. Finding short proofs, and proving
+that none exist, is the subject of proof complexity, met again in Tome~C3.
+
+\subsection*{DPLL}
+
+Modern SAT solvers do not saturate a formula with resolvents; they search for a model and learn from failure. Their
+skeleton is the \emph{DPLL} procedure (Davis, Putnam, Logemann and Loveland, 1962). For a set of clauses $S$ and a literal $\ell$,
+let $S|_\ell$ be the result of making $\ell$ true: delete the clauses containing $\ell$ and remove $\bar\ell$ from the others.
+
+\begin{center}
+\begin{minipage}{0.9\linewidth}
+$\mathrm{DPLL}(S)$:
+\begin{enumerate}
+\item If $S$ is empty, return \emph{satisfiable}. If $\Box\in S$, return \emph{unsatisfiable}.
+\item \emph{Unit propagation}: if $S$ contains a one-literal clause $\{\ell\}$, return $\mathrm{DPLL}(S|_\ell)$.
+\item \emph{Pure literal}: if a literal $\ell$ occurs in $S$ and $\bar\ell$ does not, return $\mathrm{DPLL}(S|_\ell)$.
+\item \emph{Branch}: choose a literal $\ell$ of $S$; if $\mathrm{DPLL}(S|_\ell)$ is satisfiable return it, else return $\mathrm{DPLL}(S|_{\bar\ell})$.
+\end{enumerate}
+\end{minipage}
+\end{center}
+
+\begin{proposition}\label{prop:dpll}
+DPLL terminates and answers correctly. Moreover the literals chosen along a successful branch, with the other variables
+set arbitrarily, form a model of $S$.
+\end{proposition}
+\begin{proof}
+Each recursive call is on a set of clauses with one variable fewer, so the recursion depth is at most the number of
+variables. Correctness rests on three facts, for an assignment $\alpha$ with $\alpha(\ell)=1$: $\alpha$ satisfies $S$ if and only if it
+satisfies $S|_\ell$ (the deleted clauses hold through $\ell$, and $\bar\ell$ is false anyway), and $S|_\ell$ does not involve the variable of $\ell$.
+So $S$ is satisfiable if and only if $S|_\ell$ or $S|_{\bar\ell}$ is, which justifies step~4. In step~2 every model of $S$ makes $\ell$ true, so $S$ is
+satisfiable if and only if $S|_\ell$ is. In step~3, if $\alpha$ is a model of $S$, the assignment $\alpha'$ that agrees with $\alpha$ except that it makes $\ell$
+true is still a model: the clauses containing $\ell$ hold, and the others do not contain $\bar\ell$, so their truth is unchanged.
+Hence $S$ is satisfiable if and only if $S|_\ell$ is. Step~1 is correct by definition. The last statement follows by
+induction from the equivalence ``$\alpha$ satisfies $S$ iff it satisfies $S|_\ell$'' when $\alpha(\ell)=1$.
+\end{proof}
+
+A run of DPLL on an unsatisfiable formula is, read backwards, a tree-like resolution refutation (Exercise~\ref{ex:dpllres}), so
+Haken's theorem bounds it too. Current solvers add \emph{clause learning}: when a branch fails, they derive by resolution a
+new clause that explains the failure and keep it, which lets them solve industrial instances with millions of clauses.
+The companion notebook builds a DPLL solver with unit propagation and watched literals and uses it throughout this book.
+
+\section{Compactness}
+
+Here is a puzzle about infinity. You are given infinitely many requirements, each about finitely many switches, and
+someone has checked that any finite batch of them can be met at once. Can they all be met at once? It sounds like it
+should need a miracle; it needs only patience. An infinite set of formulas, each mentioning finitely many variables, is satisfiable as soon as each of its finite
+parts is. This is a theorem about infinity, and the proof is a careful choice made one variable at a time.
+
+\begin{theorem}[compactness]\label{thm:compactness}
+Let $\Gamma$ be a set of formulas in the countably many variables $x_1,x_2,\dots$. If every finite subset of $\Gamma$ is satisfiable, then
+$\Gamma$ is satisfiable.
+\end{theorem}
+\begin{proof}
+Call an assignment $\beta$ of $x_1,\dots,x_n$ \emph{good} if every finite subset of $\Gamma$ has a model extending $\beta$. The empty assignment
+($n=0$) is good by hypothesis. If $\beta$ is good, one of its two extensions $\beta0$ and $\beta1$ (setting $x_{n+1}$ to $0$ or to $1$) is good. Otherwise there
+are finite sets $F_0,F_1\subseteq\Gamma$ such that no model of $F_0$ extends $\beta0$ and no model of $F_1$ extends $\beta1$. But $F_0\cup F_1$ is finite, so it has a
+model extending $\beta$, and that model extends $\beta0$ or $\beta1$ and satisfies both $F_0$ and $F_1$: a contradiction.
+
+So we can choose $\varepsilon_1,\varepsilon_2,\ldots\in\{0,1\}$ one after the other such that each assignment $x_1\mapsto\varepsilon_1,\dots,x_n\mapsto\varepsilon_n$ is good. Let
+$\alpha(x_i)=\varepsilon_i$ for all $i$. A formula $\varphi\in\Gamma$ only involves variables among $x_1,\dots,x_n$ for some $n$. The restriction of $\alpha$ to $x_1,\dots,x_n$
+is good, so $\{\varphi\}$ has a model that agrees with $\alpha$ on $x_1,\dots,x_n$, and therefore $\alpha(\varphi)=1$.
+\end{proof}
+
+The same statement holds for any number of variables, but then the step-by-step choice must be replaced by Zorn's
+lemma or by Tychonoff's theorem: the assignments form the compact space $\{0,1\}^X$ (Tome~6, Chapter~4), and each formula is
+satisfied on a closed subset. The theorem gets its name from this.
+
+\begin{corollary}[de Bruijn and Erd\H os, 1951]\label{cor:debruijnerdos}
+A graph whose vertex set is countable can be coloured with $k$ colours, adjacent vertices getting different colours, if
+and only if each of its finite subgraphs can.
+\end{corollary}
+\begin{proof}
+One direction is clear. For the other, take a variable $x_{v,c}$ for each vertex $v$ and colour $c\in\{1,\dots,k\}$, meaning ``$v$ gets colour $c$''.
+The set $\Gamma$ contains, for each vertex $v$, the clause $x_{v,1}\lor\dots\lor x_{v,k}$, and for each edge $vw$ and colour $c$, the clause $\neg x_{v,c}\lor\neg x_{w,c}$. A
+finite subset of $\Gamma$ involves finitely many vertices; a colouring of the subgraph they span gives a model (setting $x_{v,c}$ true
+when $v$ gets colour $c$). By compactness $\Gamma$ has a model $\alpha$; give $v$ the least colour $c$ with $\alpha(x_{v,c})=1$. Adjacent vertices then get
+different colours.
+\end{proof}
+
+So the plane graph with all lattice points of $\Z^2$ joined at distance $1$ is $2$-colourable, a question about infinitely many
+vertices answered by finite ones. Chapter~8 uses compactness to deduce the finite Ramsey theorem from the infinite one.
+
+\section{Horn clauses and 2-SAT}\label{sec:twosat}
+
+In general nobody knows how to decide satisfiability in polynomial time: that is the P versus NP question of Tome~C3.
+But two natural fragments are easy, and the reasons are instructive.
+
+\subsection*{Horn clauses}
+
+Alfred Horn, an algebraist at UCLA, singled out these clauses in 1951 for a reason that had nothing to do with
+computers (they are the sentences preserved by products of structures). Twenty years later they became the
+programming language Prolog. A \emph{Horn clause} has at most one positive literal: $\neg a_1\lor\dots\lor\neg a_k\lor b$, that is, the rule $a_1\land\dots\land a_k\to b$ (a \emph{definite} clause; a
+\emph{fact} if $k=0$), or $\neg a_1\lor\dots\lor\neg a_k$ (a \emph{goal}, $a_1\land\dots\land a_k\to\bot$). Rules of this shape are the language of logic
+programming (Prolog), of database queries (Datalog) and of type inference.
+
+\begin{theorem}\label{thm:horn}
+Let $S$ be a finite set of Horn clauses. Start with all variables false and repeat: if a definite clause $a_1\land\dots\land a_k\to b$ has all
+$a_i$ true and $b$ false, make $b$ true. When nothing changes, $S$ is satisfiable if and only if every goal clause has a false
+variable, and then the final assignment $\mu$ is a model of $S$. Moreover $\mu$ is the least model: every model of $S$ makes true
+every variable that $\mu$ makes true.
+\end{theorem}
+\begin{proof}
+The loop changes at most one variable from false to true at each step, so it stops after at most as many steps as there
+are variables. Let $\alpha$ be any model of $S$. By induction on the steps, every variable made true by the loop is true in $\alpha$: if
+$a_1,\dots,a_k$ are true in $\alpha$, the clause $a_1\land\dots\land a_k\to b$ forces $b$ to be true in $\alpha$. So if some goal clause has all its variables
+true in $\mu$, they are true in $\alpha$ too and $\alpha$ violates it: there is no model at all. Otherwise $\mu$ satisfies every goal
+clause, and every definite clause too, because the loop stopped: a definite clause whose hypotheses are all true has
+its conclusion true. So $\mu$ is a model, and the least one by the induction.
+\end{proof}
+
+With a counter per clause recording how many of its hypotheses are still false, the loop runs in time proportional
+to the total length of $S$ (Dowling and Gallier, 1984); Tome~C2 analyses this kind of bookkeeping.
+
+\subsection*{2-SAT}
+
+Now let every clause have at most two literals; a one-literal clause $\{\ell\}$ is written $\ell\lor\ell$. The clause $a\lor b$ says $\bar a\to b$
+and, equally, $\bar b\to a$. The \emph{implication graph} of $S$ has the $2n$ literals as vertices and, for each clause $a\lor b$, the two arrows
+$\bar a\to b$ and $\bar b\to a$. It is \emph{skew-symmetric}: there is an arrow $u\to v$ if and only if there is an arrow $\bar v\to\bar u$, so there is a path
+from $u$ to $v$ if and only if there is one from $\bar v$ to $\bar u$. Write $u\leadsto v$ for ``there is a path from $u$ to $v$''.
+
+\begin{theorem}[Aspvall, Plass and Tarjan, 1979]\label{thm:twosat}
+A set of $2$-clauses is satisfiable if and only if there is no variable $x$ with $x\leadsto\neg x$ and $\neg x\leadsto x$.
+\end{theorem}
+\begin{proof}
+Every arrow $u\to v$ comes from a clause and is an implication valid in every model; hence so is every path. If $x\leadsto\neg x$
+and $\neg x\leadsto x$, a model would make $x$ true (then $\neg x$ true, impossible) or false (then $\neg x$ true, and so $x$ true): there is none.
+
+Conversely, assume the condition and induct on the number of variables. If $S$ is empty there is nothing to do. Otherwise
+pick a variable $x$; by hypothesis $x\not\leadsto\neg x$ or $\neg x\not\leadsto x$, so there is a literal $\ell$ with $\ell\not\leadsto\bar\ell$. Make true every literal $m$
+with $\ell\leadsto m$ (including $\ell$ itself). This is consistent: if $\ell\leadsto m$ and $\ell\leadsto\bar m$, skew symmetry turns the second path into
+$m\leadsto\bar\ell$, and $\ell\leadsto m\leadsto\bar\ell$ is excluded. Every clause $a\lor b$ with a variable now assigned is satisfied: if $a$ was made true
+there is nothing to say, and if $a$ was made false, then $\ell\leadsto\bar a$ and the arrow $\bar a\to b$ gives $\ell\leadsto b$, so $b$ was made true. The
+clauses with no variable assigned form a set $S'$ whose implication graph is a subgraph of the old one, so $S'$ still
+satisfies the condition and, by induction, has a model on the remaining variables. Together with the literals made
+true, it is a model of $S$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-implication}
+\caption{The implication graph of the seven clauses of the opening question. The thick path $x_1\to x_3\to x_4\to\neg x_1$ and the
+dashed path $\neg x_1\to x_2\to x_1$ put $x_1$ and $\neg x_1$ in the same strongly connected component: the seven clauses are
+unsatisfiable. Without the clause $\neg x_2\lor x_1$, the two arrows $x_2\to x_1$ and $\neg x_1\to\neg x_2$ disappear.}
+\label{fig:implication}
+\end{figure}
+
+The condition says that $x$ and $\neg x$ never lie in the same \emph{strongly connected component} of the implication graph, the
+classes of the relation ``$u\leadsto v$ and $v\leadsto u$''. Tome~C2 computes these components in linear time (Tarjan's algorithm), so
+2-SAT is solved in time proportional to the length of the formula, whereas 3-SAT is NP-complete. For the opening
+question: the six clauses are satisfiable, for instance by $x_2=1$ and $x_1=x_3=x_4=0$ (the proof above finds such a model
+starting from $\ell=x_2$), while the seven clauses are not (Figure~\ref{fig:implication}). Tome~3, Chapter~7 gives a
+different, randomised algorithm for 2-SAT: a random walk on assignments.
+
+\section{First-order logic}
+
+Propositional logic cannot say ``every element has an inverse'' or ``between two rationals there is a third''. For
+that we need variables that range over the elements of a structure, and quantifiers.
+
+A \emph{signature} is a set of function symbols and relation symbols, each with an arity; constants are function symbols of
+arity $0$. The signature of graphs has one binary relation $E$; that of ordered sets one binary relation $<$; that of
+groups a binary function $\cdot$, a unary function ${}^{-1}$ and a constant $e$; that of arithmetic $0,1,+,\times,<$. \emph{Terms} are built from
+variables $v_1,v_2,\dots$ by applying function symbols, and \emph{formulas} from atomic formulas $t_1=t_2$ and $R(t_1,\dots,t_k)$ by the
+connectives and the quantifiers $\forall v$ and $\exists v$. A variable occurrence is \emph{bound} if it lies under a quantifier on that
+variable, and \emph{free} otherwise; a \emph{sentence} has no free variable.
+
+A \emph{structure} $\mathcal M$ for the signature is a non-empty set $M$ with a function $M^k\to M$ for each $k$-ary function symbol and a subset of
+$M^k$ for each $k$-ary relation symbol. Given values in $M$ for the free variables, the truth of a formula in $\mathcal M$ is
+defined by induction, the only new clauses being: $\forall v\,\varphi$ is true if $\varphi$ is true for every value of $v$ in $M$, and $\exists v\,\varphi$ if
+it is true for some value (Tarski, 1933). We write $\mathcal M\models\varphi$ when a sentence $\varphi$ is true in $\mathcal M$, and $\Gamma\models\varphi$ when $\varphi$ is
+true in every structure where all sentences of $\Gamma$ are.
+
+For instance $\forall v_1\forall v_2\,(v_1<v_2\to\exists v_3\,(v_1<v_3\land v_3<v_2))$ is true in $(\Q,<)$ and false in $(\Z,<)$; and the sentence
+$\forall v_1\exists v_2\,(v_1\cdot v_2=e)$ holds in every group.
+
+\begin{proposition}[prenex form]\label{prop:prenex}
+Every formula is equivalent (true for the same values of its free variables in every structure) to a formula
+$Q_1w_1\cdots Q_kw_k\,\psi$, where the $Q_i$ are quantifiers and $\psi$ has no quantifier.
+\end{proposition}
+\begin{proof}
+First rename bound variables so that each quantifier uses its own variable, distinct from the free variables and from
+the other quantified ones; this does not change the meaning, as the name of a bound variable plays no role (an
+induction on formulas). Remove $\to$ and $\leftrightarrow$ by their expressions in $\neg,\land,\lor$. Then move quantifiers outwards with the
+equivalences $\neg\forall w\,\varphi\equiv\exists w\,\neg\varphi$, $\neg\exists w\,\varphi\equiv\forall w\,\neg\varphi$, and, when $w$ is not free in $\chi$,
+$(\forall w\,\varphi)\land\chi\equiv\forall w\,(\varphi\land\chi)$, $(\exists w\,\varphi)\land\chi\equiv\exists w\,(\varphi\land\chi)$ and the same with $\lor$. Each of these is checked directly on the
+definition of truth; the hypothesis that $w$ is not free in $\chi$ (secured by the renaming) is used, and so is the fact that
+$M$ is non-empty, for instance in $(\forall w\,\varphi)\lor\chi\equiv\forall w\,(\varphi\lor\chi)$. Formally the proof is an induction on the formula, which
+pulls the prefixes of the two sides of $\land$ or $\lor$ out one after the other.
+\end{proof}
+
+\begin{remark}
+\emph{Gödel's completeness theorem} (1929) says that first-order consequence is captured by a finite proof system: if
+$\Gamma\models\varphi$, there is a formal proof of $\varphi$ from $\Gamma$, which a computer can check. It implies the compactness theorem for
+first-order logic: if every finite part of $\Gamma$ has a model, so does $\Gamma$. Both are proved in Tome~C3, Chapter~4, together with the
+\emph{incompleteness} theorems, which say that for arithmetic the true sentences cannot all be captured by any such
+system, and with Church and Turing's theorem that no algorithm decides whether a first-order sentence is valid. The
+propositional theorems of this chapter are the shadows of these.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:connectives}
+Show that $\{\neg,\to\}$ is complete, and that $\{\land,\lor,\to,\leftrightarrow\}$ is not. Is $\{\to,\bot\}$ complete?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:monotone}
+Show that a Boolean function is monotone if and only if it is computed by a formula using only $\land$ and $\lor$ (or is a
+constant). Give such a formula for the \emph{majority} of three bits.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:shannoncount}
+\emph{Most functions need long formulas.} Show that there are at most $(n+3)^{2s+2}$ formulas in $x_1,\dots,x_n$ with at most $s$
+connectives among $\neg,\land,\lor$. Deduce that if $(2s+2)\log_2(n+3)<2^n$, some Boolean function of $n$ variables has no formula with at
+most $s$ connectives. For $n=20$, how large is the bound?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lattice}
+In a Boolean algebra, show that $x\land y$ is the greatest lower bound of $x$ and $y$ for the order of Lemma~\ref{lem:boolbasic}, and
+$x\lor y$ the least upper bound.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:php}
+Write the clauses of $\mathrm{PHP}_2$ (three pigeons, two holes) and find a resolution refutation. How many clauses does your
+refutation use?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:threesat}
+Show that a clause $\ell_1\lor\dots\lor\ell_k$ with $k\ge4$ can be replaced by the $k-2$ clauses
+$\ell_1\lor\ell_2\lor y_1$, $\bar y_1\lor\ell_3\lor y_2$, \dots, $\bar y_{k-3}\lor\ell_{k-1}\lor\ell_k$, with new variables $y_i$, without changing satisfiability.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:xorsat}
+A \emph{parity constraint} says that $x_{i_1}\oplus\dots\oplus x_{i_k}=b$. Show how to decide in polynomial time whether a set of parity
+constraints is satisfiable and to count its solutions. Why does this not contradict Proposition~\ref{prop:parity}?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hornmodels}
+Show that the set of models of a Horn formula is closed under intersection: if $\alpha$ and $\beta$ are models, so is $\alpha\land\beta$ (the
+assignment $x\mapsto\min(\alpha(x),\beta(x))$). Find a $2$-clause formula whose models are not closed under intersection.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hornconverse}
+Conversely, show that if the set of models of a formula $\varphi$ is closed under intersection, then $\varphi$ is equivalent to a
+conjunction of Horn clauses (McKinsey, 1943).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:konig}
+\emph{K\H onig's lemma.} A rooted tree in which every vertex has finitely many children and which has infinitely many
+vertices has an infinite path from the root. Prove it directly, then deduce it from Theorem~\ref{thm:compactness}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:interpolation}
+\emph{Craig interpolation.} Let $\varphi\to\psi$ be a tautology, and let $V$ be the set of variables common to $\varphi$ and $\psi$. Show
+that there is a formula $\theta$ with variables in $V$ such that $\varphi\to\theta$ and $\theta\to\psi$ are tautologies. (Model checkers use
+interpolants to over-approximate the reachable states of a program.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dpllres}
+Show that if DPLL without the pure literal rule answers \emph{unsatisfiable} on $S$, then $S$ has a resolution refutation with
+at most one clause per node of the recursion tree, plus the clauses of $S$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:fosentences}
+Write first-order sentences saying, in the signature of graphs: (a) the graph has no triangle; (b) every vertex has
+exactly two neighbours; (c) the graph has a vertex adjacent to all others. In the signature $\{<\}$, write a sentence true
+in $(\R,<)$ and false in $(\Z,<)$, and one true in $(\N,<)$ and false in $(\Z,<)$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:connectives}
+Express $\lor$ with $\neg$ and $\to$. For the second set, look at the assignment that makes every variable true. For the
+third, express $\neg$.
+\end{hint}
+\begin{hint}{ex:monotone}
+Take the disjunction, over the minimal points $a$ where $f(a)=1$, of the conjunction of the variables $x_i$ with $a_i=1$.
+\end{hint}
+\begin{hint}{ex:shannoncount}
+Write formulas in Polish notation (connective first), which needs no parentheses. How many variable occurrences can a
+formula with $s$ connectives have?
+\end{hint}
+\begin{hint}{ex:lattice}
+For the lower bound: if $z\le x$ and $z\le y$, compute $z\land(x\land y)$. For the upper bound, use Lemma~\ref{lem:boolbasic}(d).
+\end{hint}
+\begin{hint}{ex:php}
+First derive the one-literal clause $\{\neg p_{21}\}$ (pigeon $2$ is not in hole $1$) and the clause $\{p_{21}\}$, each by
+following where pigeons $1$ and $3$ could go.
+\end{hint}
+\begin{hint}{ex:threesat}
+If $\ell_j$ is true, make $y_m$ true for the clauses before the one containing $\ell_j$, false after it.
+\end{hint}
+\begin{hint}{ex:xorsat}
+A parity constraint is a linear equation over $\mathbb F_2$.
+\end{hint}
+\begin{hint}{ex:hornmodels}
+If $\alpha\land\beta$ makes the hypotheses of a rule true, so do $\alpha$ and $\beta$.
+\end{hint}
+\begin{hint}{ex:hornconverse}
+Let $H$ be the conjunction of all Horn clauses implied by $\varphi$. Given an assignment $\beta$ that is not a model of $\varphi$,
+intersect all the models of $\varphi$ that lie above $\beta$.
+\end{hint}
+\begin{hint}{ex:konig}
+Directly: walk down, always to a child with infinitely many descendants. With compactness: one variable per vertex,
+saying ``the path goes through $v$''.
+\end{hint}
+\begin{hint}{ex:interpolation}
+Induction on the number of variables of $\varphi$ that are not in $V$. To remove such a variable $x$, replace $\varphi$ by
+$\varphi[x:=\top]\lor\varphi[x:=\bot]$.
+\end{hint}
+\begin{hint}{ex:dpllres}
+Show by induction, from the leaves up, that at a node where the literals of a set $\rho$ have been made true, there is a
+derived clause all of whose literals are made false by $\rho$.
+\end{hint}
+\begin{hint}{ex:fosentences}
+``Exactly two'' means: there are two distinct neighbours, and every neighbour is one of them.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:connectives}
+\idea To show completeness, rebuild a set already known to be complete. To show incompleteness, find a property that every
+formula over the set has and some function lacks, as in Proposition~\ref{prop:monotone}.
+\writeup $\varphi\lor\psi\equiv\neg\varphi\to\psi$, and $\{\neg,\lor\}$ is complete since $\varphi\land\psi\equiv\neg(\neg\varphi\lor\neg\psi)$; so $\{\neg,\to\}$ is complete. Let $\mathbf 1$ be the assignment
+making every variable true. By structural induction, every formula built from variables with $\land,\lor,\to,\leftrightarrow$ is true at $\mathbf 1$,
+because each of these connectives gives $1$ on two inputs equal to $1$. So $\neg x_1$, false at $\mathbf 1$, is not expressible. Finally
+$\neg\varphi\equiv\varphi\to\bot$, so $\{\to,\bot\}$ can express $\neg$ and $\to$, and is complete.
+\end{solution}
+
+\begin{solution}{ex:monotone}
+\idea A monotone function is determined by its minimal ``true'' points: it is $1$ exactly above one of them, and ``above $a$'' is
+a conjunction of variables.
+\writeup Proposition~\ref{prop:monotone} gives one direction. Conversely let $f$ be monotone and not constant, and let $A$ be the set of
+minimal points $a$ with $f(a)=1$ (for the coordinatewise order). Since $f(0,\dots,0)=0$ (otherwise $f\equiv1$ by monotonicity), every
+$a\in A$ has a coordinate $1$, and $t_a=\bigwedge_{a_i=1}x_i$ is a formula without negation, true at $b$ if and only if $a\le b$. Let
+$\varphi=\bigvee_{a\in A}t_a$. If $f(b)=1$, there is a minimal $a\le b$ with $f(a)=1$ (go down while possible), and $t_a$ is true at $b$. If $\varphi$ is
+true at $b$, then $a\le b$ for some $a\in A$, and $f(b)\ge f(a)=1$. So $\varphi$ computes $f$. For majority, the minimal true points are
+$110,101,011$, giving $(x_1\land x_2)\lor(x_1\land x_3)\lor(x_2\land x_3)$.
+\end{solution}
+
+\begin{solution}{ex:shannoncount}
+\idea Count formulas by writing them as strings, and compare with the $2^{2^n}$ functions: if there are fewer short formulas
+than functions, some function has no short formula. This is Shannon's counting argument (1949), used again in Tome~C3
+for circuits.
+\writeup In Polish notation a formula is written as its connective followed by its arguments, for example $\land\,x_1\neg x_2$; it is a
+string over the $n+3$ symbols $x_1,\dots,x_n,\neg,\land,\lor$, and different parse trees give different strings (reading from the
+left, the first symbol tells how many arguments follow, and an induction shows that a formula has a unique reading).
+A formula with $c\le s$ connectives, of which $b$ are binary, has $b+1\le s+1$ leaves, so its length is at most $2s+1$. The number of
+strings of length at most $2s+1$ is $\sum_{L=0}^{2s+1}(n+3)^L\le(n+3)^{2s+2}$ (a geometric sum with ratio at least $2$). There are $2^{2^n}$
+functions, and $(n+3)^{2s+2}<2^{2^n}$ if and only if $(2s+2)\log_2(n+3)<2^n$. For $n=20$ this holds for every $s\le115\,900$: some
+function of $20$ variables needs more than $115\,900$ connectives, while its truth table has about a million bits. In
+fact almost all functions do, since the short formulas cover a vanishing fraction of the functions.
+\end{solution}
+
+\begin{solution}{ex:lattice}
+\idea Translate ``$\le$'' into equations with $\land$ and use associativity.
+\writeup $(x\land y)\land x=x\land y$, so $x\land y\le x$, and likewise $x\land y\le y$. If $z\le x$ and $z\le y$, then $z\land(x\land y)=(z\land x)\land y=z\land y=z$, so
+$z\le x\land y$. By Lemma~\ref{lem:boolbasic}(d), $u\le v$ means $u\lor v=v$. Since $x\lor(x\lor y)=x\lor y$, $x\le x\lor y$, and likewise $y\le x\lor y$. If $x\le z$
+and $y\le z$, then $(x\lor y)\lor z=x\lor(y\lor z)=x\lor z=z$, so $x\lor y\le z$.
+\end{solution}
+
+\begin{solution}{ex:php}
+\idea Reason as a human would, ``if pigeon $2$ were in hole $1$, then pigeons $1$ and $3$ would both have to be in hole $2$'', and turn each
+step into a resolution.
+\writeup The clauses are $\{p_{i1},p_{i2}\}$ for $i=1,2,3$ and $\{\neg p_{ij},\neg p_{kj}\}$ for $j=1,2$ and $i<k$: nine clauses. A refutation
+with $11$ resolutions (the variable resolved on is in brackets):
+\begin{enumerate}
+\item $\{p_{11},p_{12}\}$ and $\{\neg p_{12},\neg p_{32}\}$ give $\{p_{11},\neg p_{32}\}$ $[p_{12}]$;
+\item $\{p_{31},p_{32}\}$ and $\{\neg p_{21},\neg p_{31}\}$ give $\{\neg p_{21},p_{32}\}$ $[p_{31}]$;
+\item from 1 and 2: $\{p_{11},\neg p_{21}\}$ $[p_{32}]$; with $\{\neg p_{11},\neg p_{21}\}$: $\{\neg p_{21}\}$ $[p_{11}]$;
+\item $\{p_{21},p_{22}\}$ and $\{\neg p_{12},\neg p_{22}\}$ give $\{\neg p_{12},p_{21}\}$ $[p_{22}]$; with $\{p_{11},p_{12}\}$: $\{p_{11},p_{21}\}$ $[p_{12}]$;
+\item $\{p_{21},p_{22}\}$ and $\{\neg p_{22},\neg p_{32}\}$ give $\{p_{21},\neg p_{32}\}$ $[p_{22}]$; $\{p_{31},p_{32}\}$ and $\{\neg p_{11},\neg p_{31}\}$ give $\{\neg p_{11},p_{32}\}$ $[p_{31}]$;
+these two give $\{\neg p_{11},p_{21}\}$ $[p_{32}]$;
+\item from the last clauses of 4 and 5: $\{p_{21}\}$ $[p_{11}]$; and with $\{\neg p_{21}\}$ from 3: $\Box$ $[p_{21}]$.
+\end{enumerate}
+The notebook finds this refutation by breadth-first search and checks that the saturation of the nine clauses
+contains $73$ non-tautological clauses.
+\end{solution}
+
+\begin{solution}{ex:threesat}
+\idea The new variables form a chain of ``the clause is not yet satisfied'' flags passed from one short clause to the next.
+\writeup Number the new clauses $C_1=\ell_1\lor\ell_2\lor y_1$, $C_m=\bar y_{m-1}\lor\ell_{m+1}\lor y_m$ for $2\le m\le k-3$, and $C_{k-2}=\bar y_{k-3}\lor\ell_{k-1}\lor\ell_k$. If all $\ell_i$
+are false in an assignment, then $C_1$ forces $y_1$, then $C_2$ forces $y_2$, and so on up to $y_{k-3}$, and $C_{k-2}$ is false. So every model of the
+new clauses satisfies the old clause. Conversely, if some $\ell_j$ is true, let $C_c$ be the new clause containing it and set
+$y_m=1$ for $m<c$ and $y_m=0$ for $m\ge c$. Then $C_m$ holds through $y_m$ for $m<c$, $C_c$ through $\ell_j$, and $C_m$ through $\bar y_{m-1}$ for $m>c$.
+Doing this for every long clause, with its own new variables, turns any CNF into a $3$-CNF with the same satisfiability.
+\end{solution}
+
+\begin{solution}{ex:xorsat}
+\idea Over $\mathbb F_2$, $\oplus$ is addition, so the constraints form a linear system.
+\writeup Each constraint is the equation $x_{i_1}+\dots+x_{i_k}=b$ in $\mathbb F_2$. Gaussian elimination on the $m\times n$ system, in $O(mn\min(m,n))$
+operations, decides consistency; if the system is consistent with rank $r$, its solutions form an affine space of
+dimension $n-r$, with $2^{n-r}$ points. There is no contradiction with Proposition~\ref{prop:parity}: that proposition bounds the
+size of a CNF \emph{equivalent} to parity, without new variables. With new variables $y_1,\dots,y_{k-1}$ and the constraints
+$y_1=x_1\oplus x_2$, $y_{i}=y_{i-1}\oplus x_{i+1}$, each a CNF of four clauses, parity gets an equisatisfiable CNF of linear size, as in
+Theorem~\ref{thm:tseitin}. But a SAT solver that only resolves does not ``see'' linear algebra: Tseitin's parity formulas on
+expander graphs need exponentially long resolution refutations (Urquhart, 1987), which is why solvers add Gaussian
+elimination for XOR constraints.
+\end{solution}
+
+\begin{solution}{ex:hornmodels}
+\idea A Horn clause says ``if all these, then that''; an intersection can only make fewer hypotheses true.
+\writeup Let $\alpha,\beta$ be models and $\gamma=\alpha\land\beta$. For a rule $a_1\land\dots\land a_k\to b$: if $\gamma$ makes all $a_i$ true, then so do $\alpha$ and $\beta$, so both make $b$
+true, and so does $\gamma$. For a goal $\neg a_1\lor\dots\lor\neg a_k$: if $\gamma$ made all $a_i$ true, so would $\alpha$, which is a model. The clause
+$x\lor y$ has the models $(1,0)$ and $(0,1)$, whose intersection $(0,0)$ is not a model.
+\end{solution}
+
+\begin{solution}{ex:hornconverse}
+\idea To show that $\varphi$ is equivalent to the conjunction $H$ of its Horn consequences, we must separate each non-model $\beta$ from
+the models by a Horn clause false at $\beta$. Closure under intersection gives a least model above $\beta$, which tells us which
+conclusion to draw.
+\writeup Let $x_1,\dots,x_n$ be the variables of $\varphi$; all assignments below are of these variables. Let $H$ be the conjunction of the
+(finitely many) Horn clauses in $x_1,\dots,x_n$ that are consequences of $\varphi$. Then $\varphi\models H$, and it remains to show that every
+model of $H$ is a model of $\varphi$, that is, that every $\beta$ which is not a model of $\varphi$ falsifies some clause of $H$. Let
+$T=\{i:\beta(x_i)=1\}$, and let $U$ be the set of models $\alpha$ of $\varphi$ with $\alpha\ge\beta$ (that is, true on $T$).
+
+If $U$ is empty, the goal clause $\bigvee_{i\in T}\neg x_i$ is a consequence of $\varphi$ (every model makes some $x_i$, $i\in T$, false), and $\beta$ falsifies it.
+
+Otherwise, let $\gamma$ be the intersection of the members of $U$; by hypothesis it is a model of $\varphi$, and $\gamma\ge\beta$. As $\beta$ is not a model, $\gamma\ne\beta$,
+so there is $j$ with $\gamma(x_j)=1$ and $\beta(x_j)=0$. The Horn clause $\bigwedge_{i\in T}x_i\to x_j$ is a consequence of $\varphi$: a model that makes all $x_i$,
+$i\in T$, true belongs to $U$, so it lies above $\gamma$ and makes $x_j$ true. And $\beta$ falsifies it. So $\varphi\equiv H$.
+\end{solution}
+
+\begin{solution}{ex:konig}
+\idea An infinite set split into finitely many parts has an infinite part: the pigeonhole principle, applied at each step
+down the tree.
+\writeup \emph{Directly.} Call a vertex \emph{rich} if it has infinitely many descendants. The root is rich. A rich vertex has finitely
+many children, and its descendants are the children and their descendants, so at least one child is rich. Starting
+from the root and always moving to a rich child gives an infinite path.
+
+\emph{By compactness.} The tree has finitely many vertices at each depth (induction on the depth), so countably many in all.
+Take a variable $x_v$ per vertex. Let $\Gamma$ contain, for each depth $n$, a formula saying that exactly one vertex of depth $n$ is
+chosen (a finite formula, as depth $n$ is finite), and for each vertex $v\ne$ root the formula $x_v\to x_{\text{parent}(v)}$. A finite subset of
+$\Gamma$ mentions depths at most $N$. Depth $N$ is not empty, otherwise all vertices would have depth less than $N$ and the tree
+would be finite; choose $w$ at depth $N$ and make true exactly the $x_v$ for $v$ on the path from the root to $w$: this satisfies
+the finite subset. By compactness, $\Gamma$ has a model. It chooses one vertex $v_n$ at each depth $n$, and the parent of $v_{n+1}$ is
+chosen, so it is $v_n$: the $v_n$ form an infinite path.
+\end{solution}
+
+\begin{solution}{ex:interpolation}
+\idea A variable that $\psi$ does not see can be ``projected out'' of $\varphi$: $\varphi[x:=\top]\lor\varphi[x:=\bot]$ says ``some value of $x$ makes $\varphi$ true''.
+It is weaker than $\varphi$ and still strong enough for $\psi$, which does not care about $x$.
+\writeup Induction on the number $k$ of variables of $\varphi$ outside $V$. If $k=0$, take $\theta=\varphi$. Otherwise let $x$ be such a variable and
+$\varphi'=\varphi[x:=\top]\lor\varphi[x:=\bot]$, which has $k-1$ variables outside $V$. Then $\varphi\to\varphi'$ is a tautology: under any assignment $\alpha$, $\varphi$ has the
+value of one of the two disjuncts, the one with the constant $\alpha(x)$. And $\varphi'\to\psi$ is a tautology: if $\alpha$ makes $\varphi'$ true, then
+$\varphi$ is true at the assignment $\alpha'$ equal to $\alpha$ except perhaps at $x$; then $\psi$ is true at $\alpha'$, and since $x$ does not occur in
+$\psi$, at $\alpha$. The variables common to $\varphi'$ and $\psi$ are in $V$, so by induction there is $\theta$ over $V$ with $\varphi'\to\theta$ and $\theta\to\psi$
+tautologies; then $\varphi\to\theta$ as well. (If $V$ is empty, $\theta$ is a constant: $\varphi$ is unsatisfiable or $\psi$ is a tautology.) The
+interpolant can be exponentially long; computing small interpolants from resolution proofs is what model checkers do.
+\end{solution}
+
+\begin{solution}{ex:dpllres}
+\idea A failed branch on $\ell$ and a failed branch on $\bar\ell$ each produce a reason; resolving the two reasons on $\ell$ produces a
+reason for the parent's failure.
+\writeup For a node of the recursion tree, let $\rho$ be the set of literals made true on the way to it, so the node runs DPLL on $S|_\rho$.
+We show by induction from the leaves up that if the node answers \emph{unsatisfiable}, some clause $C$ derivable from $S$, using one
+new clause per node below it, has all its literals false under $\rho$ (we say $C$ is \emph{falsified} by $\rho$). At a leaf, $\Box\in S|_\rho$, which
+means that a clause $C$ of $S$ is falsified by $\rho$. At a branching node on $\ell$, the children give clauses $C_1$ falsified by $\rho\cup\{\ell\}$ and $C_2$
+falsified by $\rho\cup\{\bar\ell\}$. If $\bar\ell\notin C_1$, then $C_1$ is falsified by $\rho$ already; likewise if $\ell\notin C_2$. Otherwise the resolvent of $C_1$ and
+$C_2$ on $\ell$ is falsified by $\rho$. At a unit propagation node, the unit clause $\{\ell\}$ of $S|_\rho$ comes from a clause $D\in S$ whose literals other
+than $\ell$ are falsified by $\rho$; the child gives $C_1$ falsified by $\rho\cup\{\ell\}$, and either $C_1$ or its resolvent with $D$ on $\ell$ works. At the
+root $\rho=\emptyset$, and the only clause falsified by the empty assignment is $\Box$. The refutation is tree-like and has at most one
+derived clause per node.
+\end{solution}
+
+\begin{solution}{ex:fosentences}
+\idea Translate word by word, using $=$ to express ``distinct'' and ``one of'', and remember that a graph here has a symmetric
+irreflexive relation $E$, so the vertices of a triangle are automatically distinct.
+\writeup (a) $\neg\exists a\,\exists b\,\exists c\,(E(a,b)\land E(b,c)\land E(a,c))$. (b) $\forall a\,\exists b\,\exists c\,\bigl(b\ne c\land E(a,b)\land E(a,c)\land\forall d\,(E(a,d)\to(d=b\lor d=c))\bigr)$.
+(c) $\exists a\,\forall b\,(b\ne a\to E(a,b))$. Density, $\forall a\,\forall b\,(a<b\to\exists c\,(a<c\land c<b))$, is true in $\R$ and false in $\Z$ (nothing
+lies strictly between $0$ and $1$). The existence of a least element, $\exists a\,\forall b\,\neg(b<a)$, is true in $\N$ and false in $\Z$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~B.~Enderton, \emph{A Mathematical Introduction to Logic}, 2nd ed., Academic Press, 2001. Chapter~1 for propositional
+logic and compactness, Chapter~2 for first-order structures and prenex forms.
+\item D.~E.~Knuth, \emph{The Art of Computer Programming}, Volume~4B, \emph{Combinatorial Algorithms, Part~2}, Addison-Wesley,
+2022. Section~7.2.2.2, \emph{Satisfiability}: DPLL, watched literals, clause learning, and a wealth of encodings.
+\item A.~Biere, M.~Heule, H.~van Maaren and T.~Walsh (eds.), \emph{Handbook of Satisfiability}, 2nd ed., IOS Press, 2021.
+\item M.~Davis and H.~Putnam, \emph{A computing procedure for quantification theory}, Journal of the ACM 7 (1960),
+201--215; M.~Davis, G.~Logemann and D.~Loveland, \emph{A machine program for theorem-proving}, Communications of the
+ACM 5 (1962), 394--397.
+\item J.~A.~Robinson, \emph{A machine-oriented logic based on the resolution principle}, Journal of the ACM 12 (1965),
+23--41.
+\item G.~S.~Tseitin, \emph{On the complexity of derivation in propositional calculus}, in \emph{Studies in Constructive
+Mathematics and Mathematical Logic}, Part~II, 1968, 115--125.
+\item A.~Haken, \emph{The intractability of resolution}, Theoretical Computer Science 39 (1985), 297--308.
+\item B.~Aspvall, M.~F.~Plass and R.~E.~Tarjan, \emph{A linear-time algorithm for testing the truth of certain quantified
+Boolean formulas}, Information Processing Letters 8 (1979), 121--123. The 2-SAT theorem.
+\item W.~F.~Dowling and J.~H.~Gallier, \emph{Linear-time algorithms for testing the satisfiability of propositional Horn
+formulae}, Journal of Logic Programming 1 (1984), 267--284.
+\item M.~H.~Stone, \emph{The theory of representations for Boolean algebras}, Transactions of the AMS 40 (1936), 37--111.
+\item N.~G.~de Bruijn and P.~Erd\H os, \emph{A colour problem for infinite graphs and a problem in the theory of relations},
+Indagationes Mathematicae 13 (1951), 371--373.
+\item C.~E.~Shannon, \emph{The synthesis of two-terminal switching circuits}, Bell System Technical Journal 28 (1949),
+59--98. The counting argument of Exercise~\ref{ex:shannoncount}.
+\end{itemize}

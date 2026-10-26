@@ -216,6 +216,49 @@ def ford_circles(qmax=80):
     lines.append(r"\end{scope}")
     return "\n".join(lines) + "\n"
 
+
+def boolean_lattice(n=5):
+    """Hasse diagram of the subsets of {1,...,n}, ranks as rows, with a symmetric chain
+    decomposition (de Bruijn, Tengbergen and Kruyswijk, 1951; Tome C1, Chapter 2) drawn as
+    vertical gold chains and the other covering edges faint."""
+    chains = [[frozenset(), frozenset([1])]]          # the subsets of {1}, then induction on n
+    for k in range(2, n + 1):
+        new = []
+        for c in chains:                              # c = A1 < ... < Am  gives two chains
+            new.append(c + [c[-1] | {k}])
+            if len(c) > 1:
+                new.append([a | {k} for a in c[:-1]])
+        chains = new
+    # columns: longest chains in the middle, alternating left and right
+    chains.sort(key=lambda c: -len(c))
+    order = []
+    for i, c in enumerate(chains):
+        order.insert(0, c) if i % 2 else order.append(c)
+    col = {}
+    for j, c in enumerate(order):
+        for a in c:
+            col[a] = j
+    m = len(order)
+    dx, dy = 2 * 1.92 / (m - 1), 0.8
+    pos = {a: (-1.92 + dx * col[a], dy * (len(a) - n / 2)) for a in col}
+    lines = ["%% Boolean lattice of the subsets of {1..%d} with a symmetric chain decomposition." % n]
+    chain_edges = {(c[i], c[i + 1]) for c in order for i in range(len(c) - 1)}
+    for a in pos:
+        for k in range(1, n + 1):
+            if k not in a:
+                b = a | {k}
+                if (a, b) in chain_edges:
+                    continue
+                (x1, y1), (x2, y2) = pos[a], pos[b]
+                lines.append(r"\draw[accent,line width=0.35pt,opacity=0.35] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (x1, y1, x2, y2))
+    for a, b in chain_edges:
+        (x1, y1), (x2, y2) = pos[a], pos[b]
+        lines.append(r"\draw[accent,line width=1.6pt,line cap=round] (%.4fin,%.4fin)--(%.4fin,%.4fin);" % (x1, y1, x2, y2))
+    for a, (x, y) in pos.items():
+        lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.055in);" % (x, y))
+        lines.append(r"\fill[navy] (%.4fin,%.4fin) circle (0.028in);" % (x, y))
+    return "\n".join(lines) + "\n"
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -225,6 +268,7 @@ MOTIFS = {
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
     "tome12-arithmetic": ford_circles,
+    "tomeC1-discrete": boolean_lattice,
 }
 
 if __name__ == "__main__":
