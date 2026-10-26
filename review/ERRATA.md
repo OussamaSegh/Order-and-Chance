@@ -212,3 +212,42 @@ A sixth independent pass, over Tome 5 (Where It All Meets, 12 chapters, 12 noteb
 - Chapters 1–5 are being retold in storytelling style by the writing thread, so this review changes nothing in them. The one error found there, the caption of the race figure in Chapter 4 (it said the two counts were equal at x = 26861 "for the first time since x = 2"; they are equal at ten primes from 5 to 26921, and at 26861 class 1 leads), had already been corrected on main by the writing thread while this review ran; the corrected caption and think box agree with the recomputation.
 - Chapter 2 quotes the constant term 0.4863 of P₃ and the mean 1.94358 of n/φ(n) "from the notebook"; both appear in the notebook's output and were not recomputed by a second method.
 - The figures were not regenerated; the race figure itself (ch04-race) is consistent with the recomputed tie points.
+
+## Review: Tome C1
+
+What was checked and found correct: all twelve chapters, every proof and every solution
+re-read, with particular care for the Bruck–Ryser proof (the elimination of the variables
+y₁,…,y_v, the case c₁ = 1, and the final descent on primes ≡ 3 mod 4), the slice-rank
+cap set proof (the diagonal lemma, the bound M_n ≤ ((1+x+x²)/x^{2/3})ⁿ and the value
+2.7552 at x = 0.6), and Bose's and Skolem's constructions of triple systems (every pair
+type, the half-idempotent quasigroup of Lemma 12.5, the block counts m(6m+1) and
+n(3n−1)/2). Numbers recomputed in Python: the formula-size bound s ≤ 115 900 for n = 20,
+the 73-clause saturation of PHP₂, the alkane counts 366 319 and 4 111 846 763, Lyndon words,
+the partial fractions of L₀ in Chapter 4, the circulant Ramsey colourings, τ(Q₃) = 384 and
+2000 for the Petersen graph, the Kirkman table (105 pairs once, every girl once a day),
+the Fano lines, the Bruck–Ryser list up to 30, C(12,7) = 792 < 1000 ≤ C(13,7) = 1716 and the
+random bound 59. Figures checked against their captions: the Mirsky labels (three terms
+labelled 2), the Prüfer code (4,4,5,5,6), the flow of value 19 and its cut 10+9, the
+Gale–Shapley run (both stable matchings), Kruskal's tree of cost 39. Every cross-tome
+pointers checked: the numbered ones against the `.aux` files of Tomes 0–6, 12 and S1 (all
+correct), the forward ones against the series plan and the computing dependency map.
+Dates and attributions checked against sources: Kirkman 1847 and 1850, Steiner 1853,
+Fisher 1940, Bose 1938–39, Skolem 1958, Ray-Chaudhuri–Wilson 1971, Kaski–Östergård 2004,
+Euler 1782, Tarry 1900, Bose–Shrikhande–Parker 1959–60, MacNeish 1922, Bruck–Ryser 1949,
+Lam–Thiel–Swiercz 1989, Bright et al. 2021, Katona and Kleitman–Spencer 1973, AETG 1997,
+Segre 1955, Haken 1985, Shannon 1949, Göring 2000, Bernardi 2012, Friedman 2008, and the
+journal references of every "Sources" section. All formats build (A4, phone, Kindle, EPUB,
+KDP print and cover) with no multiply-defined labels and no undefined references; all
+12 notebooks run without error and their printed values agree with the text (73 clauses,
+7-clause formula unsatisfiable, 366 319 isomers, 384 and 2000 spanning trees, Table 12.1,
+the MOLS counts, the Bruck–Ryser list). Not verifiable from here: the section number
+§ 85 given for Russell's 1900 translation of the Leibniz epigraph (the Latin source,
+Gerhardt VII, p. 200, is confirmed).
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 5, tournaments | ref | Landau's king theorem dated 1951; the paper (*On dominance relations and the structure of animal societies* III, Bull. Math. Biophysics 15) is from 1953. | 1953. |
+| Ch. 5, Menger's theorem | ref | The gap in Menger's 1927 proof was said to be filled by Kőnig in 1931. Kőnig's lecture of 1931 is the bipartite matching theorem; the complete proof of Menger's theorem is in his paper *Über trennende Knotenpunkte in Graphen*, Acta Sci. Math. Szeged 6, 1933. | 1933. |
+| Ch. 7, planarity | ref | Robertson and Seymour's Graph Minors series counted as "twenty-three papers written from 1983 to 2004". Papers I–XX appeared 1983–2004 and XX contains the theorem; XXI–XXIII appeared 2009–2012. | "the twenty papers of their Graph Minors series, written from 1983 to 2004". |
+| Ch. 1, first-order logic | ref | Pointer to "Tome C3, Chapter 4" for Gödel's completeness theorem; C3 is unwritten and the dependency map fixes no chapter number. | "Tome C3". |
+| Ch. 12, Bruck–Ryser | ref | "Chowla extended it to all symmetric designs": the extension is the joint paper of Chowla and Ryser (1950), cited in the sources. | "Chowla and Ryser extended it to all symmetric designs in 1950." |
