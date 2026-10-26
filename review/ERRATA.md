@@ -653,3 +653,69 @@ The two new displays move the KDP print PDF from 270 to 272 pages (spine 0.6125 
 ### Known and left as is
 
 The Commons page of Cardano's portrait calls it a "self-portrait, woodcut, 18th century"; the book's credit keeps only the woodcut and the century, which is all the page supports. The Vandermonde portrait is the engraved frontispiece of his *Système d'harmonie* (Bibliothèque nationale de France), credited as "portrait, eighteenth century", which is accurate.
+
+## Review: Tome P1
+
+What was checked and found correct: all 300 problems of the fourteen chapters, each
+statement, hint, `\idea` and `\writeup` re-derived (among them the Beukers integrals
+and the irrationality measures, the Borwein and sinc integrals, the Kloosterman
+moments 2p³−3p²−3p, the Fourier multiplicities of the DFT, Newman's sums, the
+icosahedron and antipode hitting times 6, 10, 15, 35, Ramanujan's Q and R, the
+saddle point for the involutions and the Bell numbers, the Glaisher constant, Rankin's
+bound, Dickman's ∫ρ = e^γ, Buchstab's ω, Hawkins's sieve, Rényi's law, Jacobi's four
+squares by Hirschhorn's route and by local densities, the Landau and Guinand–Weil
+formulas, Selberg's formula and a + A = 2, Schur's determinant and the sign of the
+Gauss sum, Rabinowitsch, Hecke's angles, Romanoff and Erdős's covering 7 629 217 mod
+11 184 810, Dedekind reciprocity by residues); every date and attribution in the
+fourteen "Sources" sections (Zagier 1975/1977, Selberg–Erdős 1948–1949 after Goldfeld,
+Hardy's *Apology* §10, Gauss 1801/1805, Schur 1921, Landau 1908/1911, Rademacher
+1956, Hlawka 1975, Littlewood 1914, Büthe 2018, Rubinstein–Sarnak 1994, Burgess 1962,
+Shoup 1992, Heegner–Baker–Stark, Lemke Oliver–Soundararajan 2016, Dressler–Parker
+1975, Sondow 2009, Laishram 2010, Alladi–Erdős 1977, Erdős–Graham–Ivić–Pomerance
+1996, Hooley 1967, Stephens 1969, Titchmarsh 1930, Linnik, Halberstam 1967, Menon
+1965, Rankin 1938, Dickman 1930, de Bruijn 1950/1951, Buchstab 1937, Hawkins 1957,
+Wunderlich, Neudecker–Williams, Heyde, Rényi 1955, Brandt–Damgård 1992, Fouque–Tibouchi
+2014, Vardi 1993, Hough 2015, Friedlander–Iwaniec 1998, Heath-Brown 2001, and the
+earlier chapters' sources); all 488 numbered pointers "Tome N, Theorem/Proposition/
+Lemma/Corollary/Exercise x.y" to Tomes 0–6 and all pointers to the Computing track
+C1 against the built `.aux` files (every one exists and has the right kind and
+subject); the chapter-level pointers to Tomes 0–7, 10, 12, 13 and C4 against the
+chapter lists; no problem duplicates a tome exercise (one statement, Dvir's Kakeya
+theorem, is also Computing track C1, Exercise 11.10, now acknowledged; the
+Cauchy–Davenport and Bonferroni problems prove what the tomes' exercises only
+illustrate). Publishing rules: author "SEGHAIER Oussama" only, "First edition", no
+mention of the repository. All fourteen notebooks run; every number quoted from a
+notebook in the text or a caption appears in that notebook's output (checked by a
+script over the 14 output files). The build is clean (no undefined or multiply
+defined label, no EPUB warning, no overfull box above 10 pt in the paperback and
+Kindle formats; A4 had ten and the phone format one, listed below).
+
+### Tome P1
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 2, solution of the Prouhet problem, "where it leads" | math | "The best possible size is k+1 numbers in each set, known only for k ≤ 11": ideal solutions of the Prouhet–Tarry–Escott problem are known for sizes 1–10 and 12, that is for k ≤ 9 and k = 11; k = 10 is open. | Corrected (and "2^{k+1} numbers" made "2^k numbers in each set"). |
+| Ch. 2, two "where it leads" (Tome 10 pointers) | ref | The spectral gap of random walks on groups and diffusion on the circle were sent to Tome 10, which has no such chapter. | Tome 3, Chapter 8. |
+| Ch. 5, Dvir's Kakeya theorem, tools | ref | Part (a) is word for word Computing track C1, Exercise 11.10, not acknowledged. | Acknowledged; the construction of (b) is new. |
+| Ch. 8, Erdős–Selfridge, "where it leads" | math | "Maker can build a K_q as soon as N ≥ 2^q or so (Beck), so the threshold is 2^{cq} with ½ ≤ c ≤ 1; the exact constant is open": Beck (2002) proved that the clique achievement number is 2 log₂N − 2 log₂log₂N + O(1), so Maker wins for N ≥ 2^{q/2+o(q)} and the Erdős–Selfridge bound is sharp in the exponent. | Corrected. |
+| Ch. 8, edge-isoperimetric inequality | ref | "(Harper, Bernstein, Hart, 1960s)": Hart's paper is from 1976. | "Harper 1964, Bernstein 1967, Hart 1976". |
+| Ch. 9, opening | text | Apéry "then sixty-two" in June 1978; he was born on 14 November 1916, so sixty-one. | Corrected. |
+| Ch. 9, sophomore's dream, solution (b) | text | The tail *bound* for N = 10 is 3.9·10⁻¹²; 3.6·10⁻¹² is the true tail. | 3.9·10⁻¹². |
+| Ch. 12, die hitting probabilities | text | ρ = 0.7303; the notebook's 1/R is 0.73025. | 0.7302. |
+| Ch. 13, prime factors of C(2n,n), solution (d) | text | log 4 · n/log n = 449 371 at n = 5·10⁶; it is 449 370. | Corrected. |
+| Ch. 13, Mertens in F_q[x], statement, solution and tools | ref | "Problem 5.20" hardcoded three times. | `\ref{pb:randpoly}`. |
+| Ch. 13, Brun–Titchmarsh display (eq. bt13) | text | `\qq` inside an `equation` environment; the display overflowed the phone width by 23 pt. | Conditions set in parentheses on one line. |
+| Ch. 6 (walk on Z/p), Ch. 9 (sinc integral), Ch. 10 (DFT multiplicities, Weierstrass function, discrete Wirtinger), Ch. 11 (gambler's ruin visits), Ch. 12 (ln H(n)), Ch. 14 (Guinand–Weil formula, record primitive roots) | text | Ten displays overflow the A4 text width by 11–68 pt (the narrow formats shrink them). | Broken over two or three lines with `aligned`/`gathered`. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| ch01-two-tomes, Rudin–Shapiro cell | The plot label `$\sqrt2$` is not valid matplotlib mathtext (it needs braces), so the cell raised ValueError and the figure was not drawn. | `$\sqrt{2}$`; the notebook now runs without error. |
+| ch02–ch14 | None found: all run, every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapter 1, "where it leads" of the p-adic problem: "the adeles (Tome 7)". Tome 7, Chapter 8 does introduce them; the systematic treatment is Tome 12, Chapter 9, which the same sentence cites for the local–global principle.
+- Chapter 14, Selberg–Erdős story: the dates (March, April, early July, Sunday 18 July 1948) follow Goldfeld's account of the letters; they are not independently checked here.
+- The notebooks' Monte Carlo lines (restaurant process, Hawkins sieve, Kac ring) print values that differ from run to run in the last digits; the text quotes them to the precision that is stable.
