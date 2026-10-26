@@ -1,0 +1,629 @@
+\chapter{Cyclotomic Fields and Fermat}
+\begin{center}\itshape
+``It is impossible to separate a cube into two cubes, or a fourth power into two fourth powers, or in general any power
+higher than the second into two like powers. I have discovered a truly marvellous proof of this, which this margin is
+too narrow to contain.''\\[0.3em]
+\upshape Pierre de Fermat, in the margin of his copy of Diophantus, around 1637
+\end{center}
+
+Fermat never wrote the proof down, and probably never had one. What he left was a dare, and for two centuries the best
+mathematicians took it one exponent at a time. Fermat himself handled $n=4$ by infinite descent. Euler did $n=3$ in 1770,
+with a gap that only the arithmetic of $\Z[\omega]$ could close (Tome~1, Theorem~10.8). Then came a surprise. Twenty years
+earlier Gauss had been corresponding with a brilliant young ``Monsieur Le Blanc'', and was astonished to learn in 1807 that
+Le Blanc was Sophie Germain, who had borrowed a man's name to be taken seriously. Around 1820 she found the first general
+result on Fermat's problem: for every prime $p$ with $2p+1$ also prime, there is no solution in which $p$ divides none of
+$x,y,z$. Legendre published it in 1825 with credit to her, and it is Exercise~\ref{ex:germain}. Dirichlet and
+Legendre settled $n=5$ in 1825, and Lamé settled $n=7$ in 1839 by a computation so heavy that nobody wanted to go to $11$.
+
+Chapter~2 told what happened on 1 March 1847: Lamé's general ``proof'' through the factorisation $x^p+y^p=\prod_k
+(x+\zeta^ky)$, Liouville's awkward question about unique factorisation, and Kummer's letter from Breslau showing that it
+fails in $\Z[\zeta_{23}]$. Exercise~\ref{ex:kummer23} lets you catch that failure with your own hands. But the story did not
+end with Lamé's embarrassment. Kummer did not stop at saying no. Within weeks he had found exactly what Lamé's argument
+needs: not that $\Z[\zeta_p]$ has unique factorisation, but that the prime $p$ does not divide its class number. He called
+such primes \emph{regular}, proved Fermat's Last Theorem for all of them, and in 1850 he checked the primes below $100$.
+Only three failed: $37$, $59$ and $67$. In 1857 the Paris Academy, which had offered a gold medal for a proof of
+Fermat's theorem and received nothing it could accept, gave the prize to Kummer, who had not entered the competition.
+
+This chapter retraces Kummer's road with Dedekind's tools. The field $\Q(\zeta_p)$ has a strange and beautiful prime above
+$p$, the number $1-\zeta_p$, whose $(p-1)$-st power is $p$ up to a unit. Its ring of integers is as simple as possible,
+$\Z[\zeta_n]$. It contains a hidden square root of $\pm p$, the Gauss sum, and with it quadratic reciprocity becomes a
+statement about one Frobenius element. Its units are almost real (Kummer's lemma). And for regular primes these pieces fit
+together into a proof of the first case of Fermat's Last Theorem. The full theorem had to wait for Andrew Wiles in 1994,
+but the road from Kummer to Wiles runs through every chapter of this book: ideals, class groups, $L$-functions, class
+field theory, elliptic curves and modular forms.
+
+\begin{reminder}[from Tomes 1, 2 and 4, and Chapters 1--4]
+\emph{Cyclotomic polynomials} (Tome~2, Proposition~10.9 and Exercise~10.8). $\Phi_n=\prod_{\gcd(a,n)=1}(X-\zeta_n^a)\in\Z[X]$
+is irreducible, $[\Q(\zeta_n):\Q]=\varphi(n)$, and $\operatorname{Gal}(\Q(\zeta_n)/\Q)\cong(\Z/n\Z)^*$ through
+$\sigma_a(\zeta_n)=\zeta_n^a$; $X^n-1=\prod_{d\mid n}\Phi_d$. \emph{Chapter~1}: the discriminant of a polynomial,
+$\operatorname{disc}(f)=(-1)^{n(n-1)/2}N(f'(\theta))$ (Proposition~\ref{prop:disc}); the index formula (Proposition~\ref{prop:index});
+an Eisenstein polynomial at $p$ gives an index prime to $p$ (Proposition~\ref{prop:eisenstein}); the sign of $d_K$ is
+$(-1)^{r_2}$ (Proposition~\ref{prop:sign}). \emph{Chapter~2}: unique factorisation of ideals (Theorem~\ref{thm:ufi}),
+$\sum e_if_i=n$ (Theorem~\ref{thm:sumef}), the Kummer--Dedekind theorem (Theorem~\ref{thm:kd}), Frobenius elements
+(Theorem~\ref{thm:decomp}) and splitting in $\Q(\zeta_m)$ for $p\nmid m$ (Theorem~\ref{thm:cyclosplit}). \emph{Chapter~4}: an
+algebraic integer all of whose conjugates have absolute value $1$ is a root of unity (Proposition~\ref{prop:logkernel}).
+\end{reminder}
+
+\section{The field of $n$-th roots of unity}
+
+Throughout, $\zeta_n=e^{2i\pi/n}$, and $K_n=\Q(\zeta_n)$. Since $-\zeta_n$ is a primitive $2n$-th root of unity when $n$ is
+odd, $K_n=K_{2n}$ for odd $n$; so we may always assume $n\not\equiv2\pmod4$. Apart from $K_1=K_2=\Q$, every $K_n$ is
+totally complex of degree $\varphi(n)$, with $r_2=\varphi(n)/2$.
+
+\begin{proposition}\label{prop:muKn}
+Let $n\not\equiv2\pmod 4$. The roots of unity in $K_n$ are the $n$-th roots of unity if $n$ is even, and the $2n$-th roots
+of unity, $\pm\zeta_n^k$, if $n$ is odd.
+\end{proposition}
+\begin{proof}
+If $\zeta_m\in K_n$, then $K_n$ contains $\zeta_N$ with $N=\operatorname{lcm}(m,n)$ (a product of suitable powers of
+$\zeta_m$ and $\zeta_n$, by Bezout), so $\varphi(N)\le\varphi(n)$. Write $N=nt$. Then
+\[
+\varphi(N)=\varphi(n)\cdot t\prod_{\ell\mid t,\ \ell\nmid n}\Bigl(1-\frac1\ell\Bigr)\ge\varphi(n)\prod_{\ell\mid t,\ \ell\nmid n}(\ell-1),
+\]
+because $t$ is a multiple of the product of the primes $\ell$ in question. Equality $\varphi(N)=\varphi(n)$ forces
+$t=\prod\ell$ with every $\ell-1=1$: so $t=1$, or $t=2$ with $n$ odd. Hence $m\mid n$, or $m\mid2n$ with $n$ odd.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-roots}
+\caption{The seventh roots of unity, and the six chords from $1$.}
+\label{fig:roots}
+\end{figure}
+
+Figure~\ref{fig:roots} shows $K_7$ from the inside. The six chords from $1$ to the other seventh roots of unity have lengths
+whose product is $7$: indeed $\prod_{a=1}^{6}(X-\zeta^a)=\Phi_7(X)=1+X+\dots+X^6$, and $X=1$ gives $7$. This tiny identity
+controls everything in the next section.
+
+\section{The prime above $p$ and the ring of integers}
+
+\begin{proposition}[the prime $1-\zeta$]\label{prop:lambda}
+Let $n=p^k$ be a prime power, $\zeta=\zeta_{p^k}$, $K=\Q(\zeta)$, $\mathcal O=\mathcal O_K$, and $\lambda=1-\zeta$.
+\begin{enumerate}[label=(\alph*)]
+\item For $p\nmid a$, the number $\dfrac{1-\zeta^a}{1-\zeta}$ is a unit of $\Z[\zeta]$.
+\item $\prod_{a\in(\Z/p^k\Z)^*}(1-\zeta^a)=p$, so $p=u\lambda^{\varphi(p^k)}$ with $u$ a unit.
+\item $\lambda\mathcal O$ is a prime ideal of norm $p$, and $p\mathcal O=(\lambda\mathcal O)^{\varphi(p^k)}$: the prime $p$ is
+\emph{totally ramified} in $K$, with $e=\varphi(p^k)$ and $f=g=1$. Moreover $\lambda\mathcal O\cap\Z=p\Z$ and $\mathcal
+O/\lambda\mathcal O=\mathbb F_p$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $\frac{1-\zeta^a}{1-\zeta}=1+\zeta+\dots+\zeta^{a-1}\in\Z[\zeta]$. Choose $b\ge1$ with $ab\equiv1\pmod{p^k}$; then
+$\zeta=(\zeta^a)^b$, so the inverse $\frac{1-\zeta}{1-\zeta^a}=1+\zeta^a+\dots+\zeta^{a(b-1)}$ is in $\Z[\zeta]$ too.
+
+(b) The roots of $\Phi_p(X^{p^{k-1}})$ are the $x$ with $x^{p^{k-1}}$ a primitive $p$-th root of unity, that is, the primitive
+$p^k$-th roots of unity. Both $\Phi_p(X^{p^{k-1}})$ and $\Phi_{p^k}$ are monic of degree $p^{k-1}(p-1)$ with these distinct
+roots, so they are equal. Hence $\prod_a(1-\zeta^a)=\Phi_{p^k}(1)=\Phi_p(1)=p$, and by (a) each factor is $\lambda$ times a
+unit.
+
+(c) By (b), $p\mathcal O=(\lambda\mathcal O)^{\varphi}$ with $\varphi=\varphi(p^k)=[K:\Q]$. Write $\lambda\mathcal O=\prod
+P_i^{a_i}$ (Theorem~\ref{thm:ufi}); then $p\mathcal O=\prod P_i^{\varphi a_i}$, and Theorem~\ref{thm:sumef} gives $\sum
+\varphi a_if_i=\varphi$. So there is one $P_1$, with $a_1=f_1=1$: $\lambda\mathcal O=P_1$ is prime with residue field
+$\mathbb F_p$. Finally $\lambda\mathcal O\cap\Z$ is a prime ideal of $\Z$ containing $p$, so it is $p\Z$.
+\end{proof}
+
+\begin{think}
+Total ramification makes congruences modulo $\lambda$ very concrete. Every element of $\mathcal O$ is congruent modulo
+$\lambda$ to one of $0,1,\dots,p-1$. Before reading on, find which integer $\zeta^5+3\zeta^2$ is congruent to modulo
+$\lambda$ in $\Z[\zeta_7]$. (Since $\zeta\equiv1$, the answer is $4$.)
+\end{think}
+
+\begin{theorem}\label{thm:Zzeta}
+For every $n$, the ring of integers of $\Q(\zeta_n)$ is $\Z[\zeta_n]$. For a prime power,
+\[
+d_{\Q(\zeta_{p^k})}=\pm p^{\,p^{k-1}(k(p-1)-1)},\qquad\text{and in particular}\qquad d_{\Q(\zeta_p)}=(-1)^{\frac{p-1}2}p^{\,p-2}
+\quad(p\text{ odd}).
+\]
+\end{theorem}
+
+We prove it first for prime powers, where Eisenstein does all the work, and then glue prime powers together.
+
+\begin{proof}[Proof for $n=p^k$]
+Let $\theta=\zeta-1$, so $\Z[\theta]=\Z[\zeta]$, with minimal polynomial $f(X)=\Phi_{p^k}(X+1)$. Modulo $p$, using
+$(a+b)^p\equiv a^p+b^p$,
+\begin{gather*}
+f(X)=\Phi_p\bigl((X+1)^{p^{k-1}}\bigr)\equiv\Phi_p\bigl(X^{p^{k-1}}+1\bigr)\pmod p,\\
+\Phi_p(Y+1)=\frac{(Y+1)^p-1}{Y}\equiv Y^{p-1}\pmod p,
+\end{gather*}
+so $f\equiv X^{\varphi(p^k)}\pmod p$, and its constant term is $f(0)=\Phi_{p^k}(1)=p$. So $f$ is Eisenstein at $p$, and
+$p\nmid[\mathcal O:\Z[\zeta]]$ by Proposition~\ref{prop:eisenstein}.
+
+Now compute $\operatorname{disc}(\Phi_{p^k})=\pm N(\Phi_{p^k}'(\zeta))$. Differentiate $X^{p^k}-1=\Phi_{p^k}(X)\bigl(X^{p^{k-1}}
+-1\bigr)$ and put $X=\zeta$:
+\[
+p^k\zeta^{p^k-1}=\Phi'_{p^k}(\zeta)\,(\xi-1),\qquad \xi=\zeta^{p^{k-1}}\text{ a primitive $p$-th root of unity}.
+\]
+Take norms from $K$ to $\Q$. The norm of $\zeta$ is $\pm1$, and $N(p^k)=p^{k\varphi(p^k)}$. The automorphisms $\sigma_a$ send
+$\xi$ to $\xi^a$, and as $a$ runs over $(\Z/p^k\Z)^*$, $a\bmod p$ takes each non-zero value $p^{k-1}$ times; so
+$N(\xi-1)=\pm\bigl(\prod_{b=1}^{p-1}(1-\xi^b)\bigr)^{p^{k-1}}=\pm p^{p^{k-1}}$. Hence
+$|N(\Phi'_{p^k}(\zeta))|=p^{k\varphi(p^k)-p^{k-1}}=p^{p^{k-1}(k(p-1)-1)}$. By the index formula (Proposition~\ref{prop:index}),
+$[\mathcal O:\Z[\zeta]]^2$ divides this power of $p$; being prime to $p$, the index is $1$. So $\mathcal O=\Z[\zeta]$, and $d_K$
+is the discriminant just computed. Its sign is $(-1)^{r_2}$ (Proposition~\ref{prop:sign}), with $r_2=\frac{p-1}2$ when
+$k=1$.
+\end{proof}
+
+For the gluing we need a lemma that is useful far beyond cyclotomic fields.
+
+\begin{lemma}[coprime discriminants]\label{lem:compositum}
+Let $K,L$ be number fields of degrees $n,m$ such that $[KL:\Q]=nm$ and $\gcd(d_K,d_L)=1$. If $(\alpha_i)$ and $(\beta_j)$ are
+integral bases of $K$ and $L$, then $(\alpha_i\beta_j)$ is an integral basis of $KL$. In particular $\mathcal O_{KL}=\mathcal
+O_K\mathcal O_L$.
+\end{lemma}
+\begin{proof}
+The $nm$ products $\alpha_i\beta_j$ span $KL$ over $\Q$ (they span the ring $K[L]$, which is a field since it is finite
+dimensional and a domain), so they form a basis. Let $x\in\mathcal O_{KL}$ and write $x=\sum_{i,j}c_{ij}\alpha_i\beta_j$
+with $c_{ij}\in\Q$. We show $d_Kc_{ij}\in\Z$.
+
+Let $\theta$ generate $K$. Its minimal polynomial over $L$ has degree $[KL:L]=n=[K:\Q]$, so it is the minimal polynomial over
+$\Q$. Hence each of the $n$ embeddings $\sigma_1,\dots,\sigma_n$ of $K$ extends to an embedding of $KL$ that is the identity on
+$L$ (send $\theta$ to the corresponding conjugate). Put $x_i=\sum_jc_{ij}\beta_j\in L$; then $\sigma_k(x)=\sum_i\sigma_k(\alpha_i)
+x_i$ for $k=1,\dots,n$. Solve this system by Cramer's rule: $x_i=\gamma_i/\delta$, where $\delta=\det(\sigma_k(\alpha_i))$ and
+$\gamma_i$ is a determinant whose entries are algebraic integers. So $\delta^2x_i=\delta\gamma_i$ is an algebraic integer.
+But $\delta^2=d_K$ (Proposition~\ref{prop:disc}), so $d_Kx_i=\sum_j d_Kc_{ij}\beta_j$ lies in $L\cap\overline\Z=\mathcal O_L$, and
+since $(\beta_j)$ is an integral basis, $d_Kc_{ij}\in\Z$. By symmetry $d_Lc_{ij}\in\Z$; as $\gcd(d_K,d_L)=1$, $c_{ij}\in\Z$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:Zzeta} in general]
+By induction on the number of prime factors of $n$. Write $n=mp^k$ with $p\nmid m$, $K=\Q(\zeta_m)$ and $L=\Q(\zeta_{p^k})$. Then
+$KL=\Q(\zeta_n)$, since $\zeta_m\zeta_{p^k}$ is a primitive $n$-th root of unity and $\zeta_m,\zeta_{p^k}$ are powers of
+$\zeta_n$; and $[KL:\Q]=\varphi(n)=\varphi(m)\varphi(p^k)$. By induction $\mathcal O_K=\Z[\zeta_m]$, so $d_K=\pm\operatorname{disc}
+(\Phi_m)$, which divides a power of $m$ (proof of Theorem~\ref{thm:cyclosplit}); and $d_L$ is a power of $p$. By the lemma,
+$\mathcal O_{KL}=\Z[\zeta_m]\Z[\zeta_{p^k}]=\Z[\zeta_n]$.
+\end{proof}
+
+\begin{corollary}\label{cor:cycloram}
+Let $n\not\equiv2\pmod4$. A prime $p$ ramifies in $\Q(\zeta_n)$ if and only if $p\mid n$. If $p\nmid n$, it splits into
+$\varphi(n)/f$ primes of residue degree $f$, the order of $p$ modulo $n$.
+\end{corollary}
+\begin{proof}
+The case $p\nmid n$ is Theorem~\ref{thm:cyclosplit}. If $p^k\,\|\,n$ with $k\ge1$, then $\varphi(p^k)>1$ (as $p^k\ne2$), and
+$L=\Q(\zeta_{p^k})\subseteq\Q(\zeta_n)$. By Proposition~\ref{prop:lambda}, $p\mathcal O_L=(\lambda\mathcal O_L)^{\varphi(p^k)}$, so
+$p\mathcal O_{K_n}=(\lambda\mathcal O_{K_n})^{\varphi(p^k)}$, and every prime of $K_n$ above $p$ occurs with exponent at least
+$\varphi(p^k)>1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-spec}
+\caption{The primes of $\Z[\zeta_5]$ above the primes of $\Z$. The fibre above $p$ depends only on $p\bmod 5$: four primes
+of degree $1$ when $p\equiv1$, two of degree $2$ when $p\equiv4$, one of degree $4$ when $p\equiv2,3$; and above $5$ the
+four sheets of $\operatorname{Spec}\Z[\zeta_5]$ pinch together into the single prime $(1-\zeta)$, counted four times.}
+\label{fig:spec5}
+\end{figure}
+
+\section{Gauss sums and quadratic reciprocity}
+
+Let $p$ be an odd prime, $\zeta=\zeta_p$, $K=\Q(\zeta)$, $G=\operatorname{Gal}(K/\Q)\cong(\Z/p\Z)^*$, and
+$p^*=\bigl(\frac{-1}p\bigr)p=(-1)^{(p-1)/2}p$. Since $G$ is cyclic of even order $p-1$, it has exactly one subgroup of index
+$2$, the squares; so $K$ has exactly one quadratic subfield. Which one? The answer is a sum whose sign cost Gauss four years of work.
+
+\begin{proposition}[the Gauss sum]\label{prop:gausssum}
+Let $g=\sum_{a=1}^{p-1}\bigl(\frac ap\bigr)\zeta^a$. Then $\sigma_b(g)=\bigl(\frac bp\bigr)g$ for all $b$, and $g^2=p^*$.
+Hence the quadratic subfield of $\Q(\zeta_p)$ is $\Q(\sqrt{p^*})$.
+\end{proposition}
+\begin{proof}
+$\sigma_b(g)=\sum_a\bigl(\frac ap\bigr)\zeta^{ab}=\bigl(\frac bp\bigr)\sum_a\bigl(\frac{ab}p\bigr)\zeta^{ab}=\bigl(\frac bp
+\bigr)g$, since $ab$ runs over $(\Z/p\Z)^*$ with $a$. Next, $g^2=\sum_{a,b}\bigl(\frac{ab}p\bigr)\zeta^{a+b}$; put $b=ac$
+(for fixed $a$, $c$ runs over $(\Z/p\Z)^*$ with $b$), and use $\bigl(\frac{a^2c}p\bigr)=\bigl(\frac cp\bigr)$:
+\[
+g^2=\sum_{c=1}^{p-1}\Bigl(\frac cp\Bigr)\sum_{a=1}^{p-1}\zeta^{a(1+c)}.
+\]
+The inner sum is $p-1$ if $c\equiv-1$, and $-1$ otherwise (the sum of all non-trivial $p$-th roots of unity). Since
+$\sum_c\bigl(\frac cp\bigr)=0$, we get $g^2=\bigl(\frac{-1}p\bigr)(p-1)+\bigl(\frac{-1}p\bigr)=p^*$. Finally $g\notin\Q$
+since $p^*$ is not a rational square, so $\Q(g)=\Q(\sqrt{p^*})$ is the quadratic subfield.
+\end{proof}
+
+So $\sqrt5=1+2\zeta_5+2\zeta_5^4$ (check it numerically!), $\sqrt{-7}=\zeta_7+\zeta_7^2+\zeta_7^4-\zeta_7^3-\zeta_7^5-\zeta_7^6$,
+and every quadratic field lives inside a cyclotomic field (Exercise~\ref{ex:quadcyclo}). Tome~1, Exercise~6.7 used the Gauss
+sum to prove quadratic reciprocity by a clever computation. Now we can see what the computation meant: reciprocity is one
+Frobenius element looked at from two sides.
+
+\begin{theorem}[quadratic reciprocity, through Frobenius]\label{thm:qrfrob}
+For distinct odd primes $p,q$, $\displaystyle\Bigl(\frac{p^*}q\Bigr)=\Bigl(\frac qp\Bigr)$.
+\end{theorem}
+\begin{proof}
+Let $F=\Q(g)=\Q(\sqrt{p^*})$, and ask whether $q$ splits in $F$. We answer twice.
+
+\emph{From below.} $g$ is an algebraic integer with minimal polynomial $X^2-p^*$, and $[\mathcal O_F:\Z[g]]$ is $1$ or $2$
+(Tome~1, Proposition~11.2), hence prime to $q$. By Kummer--Dedekind (Theorem~\ref{thm:kd}), $q$ splits in $F$ if and only if
+$X^2-p^*$ has two distinct roots modulo $q$, that is, iff $\bigl(\frac{p^*}q\bigr)=1$.
+
+\emph{From above.} Let $P$ be a prime of $\mathcal O_K$ above $q$ and $\mathfrak q=P\cap\mathcal O_F$. By
+Theorem~\ref{thm:cyclosplit}, $\operatorname{Frob}_P=\sigma_q$, and $\sigma_q(x)\equiv x^q\pmod P$ for $x\in\mathcal O_K$.
+For $x\in\mathcal O_F$ both sides lie in $\mathcal O_F$ ($\sigma_q$ maps $F$ to itself, $G$ being abelian), so
+$\sigma_q(x)\equiv x^q\pmod{\mathfrak q}$. If $\sigma_q$ is the identity on $F$, then $x^q\equiv x$ for every $x$ in the
+residue field $\mathcal O_F/\mathfrak q$, which therefore has at most $q$ elements: $f=1$, and since $q$ is unramified in $F$
+($q\nmid p^*=d_F$, Theorem~\ref{thm:ramdisc}), $q$ splits. If $\sigma_q$ is not the identity on $F$, then $\sigma_q(g)=-g$,
+so $g^q\equiv-g\not\equiv g\pmod{\mathfrak q}$, because $2g\notin\mathfrak q$ (its square $4p^*$ is prime to $q$). So the
+residue field is not $\mathbb F_q$, and $q$ is inert. Hence $q$ splits in $F$ iff $\sigma_q(g)=g$, iff $\bigl(\frac qp\bigr)=1$ by
+Proposition~\ref{prop:gausssum}.
+\end{proof}
+
+\begin{think}
+The proof never computed anything modulo $q$ except in $F$. Where exactly did the ``reciprocity'' (the exchange of the roles
+of $p$ and $q$) happen? Answer: in the identification $\operatorname{Frob}=\sigma_q$, which says that the Frobenius at $q$
+is \emph{the number $q$ itself}, read modulo $p$ in $(\Z/p\Z)^*$. Class field theory (Chapter~10) is the statement that this
+miracle happens in every abelian extension.
+\end{think}
+
+\section{Units: Kummer's lemma}
+
+Let $p$ be an odd prime, $K=\Q(\zeta_p)$, and $K^+=\Q(\zeta+\zeta^{-1})$. Since $\zeta$ is a root of $X^2-(\zeta+\zeta^{-1})X
++1$, $[K:K^+]\le2$; and $K^+\subseteq\R$ while $K\not\subseteq\R$, so $[K:K^+]=2$ and $K^+=K\cap\R$, the \emph{maximal real
+subfield}, of degree $\frac{p-1}2$. It is the fixed field of complex conjugation $\sigma_{-1}$, and since $G$ is abelian,
+complex conjugation commutes with every embedding of $K$: $\overline{\sigma(x)}=\sigma(\bar x)$.
+
+Count units with Dirichlet's theorem (Theorem~\ref{thm:dirichlet}). $K$ is totally complex with $r_2=\frac{p-1}2$, so its unit
+rank is $\frac{p-3}2$. $K^+$ is totally real of degree $\frac{p-1}2$, so its unit rank is also $\frac{p-3}2$. The real units
+already fill the whole rank! Kummer's lemma says much more: they fill almost everything.
+
+\begin{theorem}[Kummer's lemma]\label{thm:kummerlemma}
+Every unit $u$ of $\Z[\zeta_p]$ is of the form $u=\zeta^k\varepsilon$ with $k\in\Z$ and $\varepsilon$ a real unit, $\varepsilon\in
+\mathcal O_{K^+}^\times$.
+\end{theorem}
+\begin{proof}
+Let $v=u/\bar u$, a unit of $\mathcal O_K$. For every embedding $\sigma$, $|\sigma(v)|=|\sigma(u)|/|\overline{\sigma(u)}|=1$.
+By Proposition~\ref{prop:logkernel}, $v$ is a root of unity, so $v=\pm\zeta^j$ by Proposition~\ref{prop:muKn}.
+
+We show the sign is $+$. Every $x\in\mathcal O$ is congruent to an integer modulo $\lambda=1-\zeta$
+(Proposition~\ref{prop:lambda}(c)). Also $\bar\lambda=1-\zeta^{-1}=-\zeta^{-1}\lambda$, so $\bar\lambda\mathcal O=\lambda\mathcal
+O$ and conjugation preserves congruences modulo $\lambda$: if $x\equiv b\pmod\lambda$ with $b\in\Z$, then $\bar x\equiv b
+\pmod\lambda$ too. Choose $\eta=\zeta^{j(p+1)/2}$, so that $\eta^2=\zeta^j$, and let $w=u\eta^{-1}$; then $\bar w=\bar u\eta$. If
+$u=-\zeta^j\bar u$, then $w=-\eta\bar u=-\bar w$. Writing $w\equiv b\pmod\lambda$ with $b\in\Z$, we get $b\equiv-b$, so
+$\lambda\mid2b$, so $p\mid 2b$ (Proposition~\ref{prop:lambda}(c)), so $p\mid b$ and $\lambda\mid w$: impossible for a unit.
+
+Hence $u=\zeta^j\bar u$, that is $w=\bar w$: $\varepsilon=w$ is a real unit and $u=\eta\varepsilon$ with $\eta$ a power of
+$\zeta$.
+\end{proof}
+
+The real units contain explicit specimens, the \emph{cyclotomic units}. By Proposition~\ref{prop:lambda}(a),
+$\frac{1-\zeta^a}{1-\zeta}$ is a unit, and multiplying by the right power of $\zeta$ makes it real: up to sign it equals
+\[
+\xi_a=\frac{\sin(\pi a/p)}{\sin(\pi/p)},\qquad 1<a<\frac p2 .
+\]
+For $p=5$, $\xi_2=2\cos\frac\pi5$ is the golden ratio (Exercise~\ref{ex:golden}); for $p=7$, $\xi_2$ and $\xi_3$ are, up to sign,
+the units $\theta$ and $1+\theta$ of Chapter~4, Figure~\ref{fig:loglattice}.
+
+\begin{remark}
+Kummer proved that the $\xi_a$ generate a subgroup of $\mathcal O_{K^+}^\times$ of finite index, and that this index is the
+class number $h^+$ of $K^+$. The independence of the $\xi_a$ amounts to the non-vanishing of $L(1,\chi)$ for the even
+Dirichlet characters modulo $p$, which Chapter~8 proves; the equality with $h^+$ is in Washington's book, Theorem~8.2.
+\end{remark}
+
+\section{Regular primes and Fermat's Last Theorem}
+
+\begin{definition}
+An odd prime $p$ is \emph{regular} if $p$ does not divide the class number $h_p$ of $\Q(\zeta_p)$, and \emph{irregular}
+otherwise.
+\end{definition}
+
+For $p\le19$, $\Z[\zeta_p]$ is a principal ideal domain ($h_p=1$), so these primes are regular. For $p=23$, $h_p=3$: the ring
+is not a UFD, which is what Kummer had found, but $23$ is still regular. How can one decide regularity without computing
+class groups of fields of degree $p-1$? Kummer found a stunning criterion.
+
+\begin{remark}[Kummer's criterion]
+\emph{$p$ is irregular if and only if $p$ divides the numerator of one of the Bernoulli numbers $B_2,B_4,\dots,B_{p-3}$}
+(Tome~4, Proposition~1.14). Chapter~8 proves, through the analytic class number formula, the half we need to recognise an
+irregular prime: if $p$ divides such a numerator, then $p\mid h_p$. The converse is Theorem~5.34 in Washington's book. With it,
+the irregular primes below $160$ are
+\begin{gather*}
+37\ (B_{32}),\quad 59\ (B_{44}),\quad 67\ (B_{58}),\quad 101\ (B_{68}),\\
+103\ (B_{24}),\quad 131\ (B_{22}),\quad149\ (B_{130}),\quad 157\ (B_{62},B_{110}).
+\end{gather*}
+Jensen proved in 1915 that there are infinitely many irregular primes. Nobody knows whether there are infinitely many regular
+ones, although about $e^{-1/2}\approx61\%$ of all primes should be regular (the notebook tests this).
+\end{remark}
+
+Here is why regularity is exactly what Lamé needed.
+
+\begin{lemma}\label{lem:regular}
+Let $p$ be regular and $I$ an ideal of $\Z[\zeta_p]$. If $I^p$ is principal, then $I$ is principal.
+\end{lemma}
+\begin{proof}
+The class $[I]$ satisfies $[I]^p=1$ and $[I]^{h_p}=1$. Since $\gcd(p,h_p)=1$, write $1=ap+bh_p$; then
+$[I]=[I]^{ap}[I]^{bh_p}=1$.
+\end{proof}
+
+\begin{think}
+Lamé's argument says: the factors $x+\zeta^ky$ are pairwise coprime and their product is a $p$-th power, so each is a $p$-th
+power. Which two steps of this sentence fail in a general $\Z[\zeta_p]$, and which of them does unique factorisation of
+\emph{ideals} rescue? (Coprimality makes sense for ideals, and each ideal $(x+\zeta^ky)$ is the $p$-th power of an ideal.
+What is lost is that this ideal is principal, which Lemma~\ref{lem:regular} restores; and what Lamé forgot entirely is the
+unit in front, which Kummer's lemma tames.)
+\end{think}
+
+Two small lemmas about congruences modulo $p$ in $\Z[\zeta]$, where ``$\alpha\equiv\beta\pmod p$'' means $\alpha-\beta\in p\Z
+[\zeta]$.
+
+\begin{lemma}\label{lem:pthpower}
+For every $\alpha\in\Z[\zeta_p]$ there is $a\in\Z$ with $\alpha^p\equiv a\pmod p$.
+\end{lemma}
+\begin{proof}
+Write $\alpha=\sum_ia_i\zeta^i$. In the ring $\Z[\zeta]/p\Z[\zeta]$ of characteristic $p$, the map $x\mapsto x^p$ is additive, so
+$\alpha^p\equiv\sum_ia_i^p\zeta^{ip}=\sum_ia_i^p\pmod p$.
+\end{proof}
+
+\begin{lemma}\label{lem:zerocoef}
+Let $\alpha=\sum_{i=0}^{p-1}a_i\zeta^i$ with $a_i\in\Z$, at least one $a_i=0$. If $n\in\Z$ and $\alpha\equiv0\pmod n$, then
+$n$ divides every $a_i$.
+\end{lemma}
+\begin{proof}
+$1,\zeta,\dots,\zeta^{p-2}$ is a $\Z$-basis of $\Z[\zeta]$ (Theorem~\ref{thm:Zzeta}), and since $\zeta^{p-1}=-1-\zeta-\dots-
+\zeta^{p-2}$, any $p-1$ of the $p$ numbers $1,\zeta,\dots,\zeta^{p-1}$ form a $\Z$-basis. If $a_k=0$, then $\alpha$ is written
+in the basis that omits $\zeta^k$, with coefficients $a_i$; and $\alpha/n\in\Z[\zeta]$ means that all these coefficients are
+divisible by $n$.
+\end{proof}
+
+We can now prove Kummer's theorem in the ``first case'', where $p$ divides none of $x,y,z$. This is the case Lamé's
+argument was aiming at, and it is where the beauty is.
+
+\begin{theorem}[Kummer, 1847]\label{thm:fltfirst}
+Let $p\ge5$ be a regular prime. There are no integers $x,y,z$ with $x^p+y^p=z^p$ and $p\nmid xyz$.
+\end{theorem}
+\begin{proof}
+Suppose there are. Dividing by a common factor, we may assume $x,y,z$ pairwise coprime (a prime dividing two of them divides
+the third).
+
+\emph{Step 0: we may assume $x\not\equiv y\pmod p$.} If $x\equiv y\equiv-z\pmod p$, then $z^p=x^p+y^p$ gives $z\equiv x+y
+\equiv-2z$, so $p\mid3z$, impossible as $p\ge5$ and $p\nmid z$. So either $x\not\equiv y$, or $x\not\equiv-z$; in the second
+case rewrite the equation as $x^p+(-z)^p=(-y)^p$ ($p$ is odd) and rename.
+
+\emph{Step 1: the ideals $(x+\zeta^iy)$, $0\le i<p$, are pairwise coprime.} Let $P$ be a prime containing $x+\zeta^iy$ and
+$x+\zeta^jy$ with $i\ne j$. Then $P$ contains their difference $(\zeta^i-\zeta^j)y$ and $\zeta^j(x+\zeta^iy)-\zeta^i(x+
+\zeta^jy)=(\zeta^j-\zeta^i)x$. Now $\zeta^i-\zeta^j$ is $\lambda$ times a unit (Proposition~\ref{prop:lambda}(a)), so $P$
+contains $\lambda x$ and $\lambda y$, hence $\lambda$ (as $ux+vy=1$ for some integers $u,v$). So $P=(\lambda)$. But then
+$x+y\equiv x+\zeta^iy\equiv0\pmod\lambda$, so $p\mid x+y$, and $z^p=x^p+y^p\equiv x+y\equiv0\pmod p$: $p\mid z$, a
+contradiction.
+
+\emph{Step 2: $x+\zeta y=u\alpha^p$ with $u$ a unit.} The ideal equation $\prod_{i=0}^{p-1}(x+\zeta^iy)=(z)^p$ and unique
+factorisation into primes (Theorem~\ref{thm:ufi}), together with Step~1, show that each $(x+\zeta^iy)$ is the $p$-th power of an
+ideal: every prime appears in exactly one factor, with an exponent divisible by $p$. So $(x+\zeta y)=I^p$, $I$ is principal
+by Lemma~\ref{lem:regular}, say $I=(\alpha)$, and $x+\zeta y=u\alpha^p$.
+
+\emph{Step 3: a congruence.} By Kummer's lemma, $u=\zeta^r\varepsilon$ with $\varepsilon$ real, and by
+Lemma~\ref{lem:pthpower}, $\alpha^p\equiv a\pmod p$ with $a\in\Z$. So $x+\zeta y\equiv\zeta^r\varepsilon a\pmod p$. Complex
+conjugation maps $p\Z[\zeta]$ to itself and fixes $\varepsilon$ and $a$, so $x+\zeta^{-1}y\equiv\zeta^{-r}\varepsilon a\pmod
+p$. Eliminating $\varepsilon a$,
+\[
+\zeta^{-r}(x+\zeta y)\equiv\zeta^r(x+\zeta^{-1}y),\qquad\text{that is}\qquad
+x+\zeta y-\zeta^{2r}x-\zeta^{2r-1}y\equiv0\pmod p.\tag{$*$}
+\]
+
+\emph{Step 4: the exponents collide.} Reduce the exponents $0,1,2r,2r-1$ modulo $p$. If they are four distinct residues,
+then, as $p\ge5$, some power of $\zeta$ among $1,\dots,\zeta^{p-1}$ does not occur in $(*)$, and Lemma~\ref{lem:zerocoef} gives
+$p\mid x$: contradiction. Since $0\ne1$ and $2r\ne2r-1$, the possible coincidences are:
+\begin{itemize}
+\item $2r\equiv0$. Then $(*)$ reads $y\zeta-y\zeta^{p-1}\equiv0$, and Lemma~\ref{lem:zerocoef} gives $p\mid y$: contradiction.
+\item $2r\equiv1$ (equivalently $2r-1\equiv0$). Then $(*)$ reads $(x-y)-(x-y)\zeta\equiv0$, so $p\mid x-y$, which Step~0 excluded.
+\item $2r-1\equiv1$. Then $(*)$ reads $x-x\zeta^2\equiv0$, so $p\mid x$: contradiction.
+\end{itemize}
+Every case is impossible, and the theorem is proved.
+\end{proof}
+
+For $p=3$ the first case is a one-line congruence (Exercise~\ref{ex:cubes9}), and Tome~1, Theorem~10.8 settled $n=3$
+completely. Since every $n\ge3$ is divisible by $4$ or by an odd prime, and Fermat did $n=4$, Fermat's Last Theorem for all
+$n$ reduces to odd prime exponents.
+
+\begin{remark}[the second case, and the end of the story]
+Kummer also proved the second case ($p\mid xyz$) for regular primes, by a more delicate descent in $\Z[\zeta_p]$ that
+generalises Tome~1, Theorem~10.8; see Washington, Theorem~9.3. For irregular primes he and his successors developed finer
+criteria, and by 1993 computers had verified the theorem for all exponents up to four million. Then Andrew Wiles, with a
+final step completed with Richard Taylor, proved in 1994 that every semistable elliptic curve over $\Q$ is modular, which by
+the work of Frey, Serre and Ribet implies Fermat's Last Theorem for every exponent. The elliptic curves are in
+Chapters~12--13 and the modular forms in Chapter~14; the bridge between them is still, thirty years later, one of the most
+active subjects in mathematics.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:cubes9}
+\emph{The first case for $p=3$.} Show that every cube is congruent to $0$ or $\pm1$ modulo $9$, and deduce that $x^3+y^3=z^3$
+has no solution with $3\nmid xyz$. Where does the proof of Theorem~\ref{thm:fltfirst} use $p\ge5$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:golden}
+\emph{The golden ratio is a cyclotomic unit.} Let $\zeta=\zeta_5$ and $\phi=\frac{1+\sqrt5}2$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\theta=\zeta+\zeta^{-1}$ satisfies $\theta^2+\theta-1=0$, so $\theta=\phi^{-1}$ and $K^+=\Q(\sqrt5)$.
+\item Show that $\phi=-\zeta^2(1+\zeta)$, and that $1+\zeta$ is a cyclotomic unit.
+\item Show that the units of $\Z[\zeta_5]$ are exactly the numbers $\pm\zeta^k\phi^m$, $k,m\in\Z$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:realint}
+\emph{The integers of the real subfield.} Let $p$ be an odd prime, $K=\Q(\zeta_p)$ and $\theta=\zeta+\zeta^{-1}$. Show that
+$\mathcal O_{K^+}=\Z[\theta]$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:compdisc}
+\emph{Discriminants of composita.} Under the hypotheses of Lemma~\ref{lem:compositum}, show that $d_{KL}=d_K^{\,m}d_L^{\,n}$.
+Deduce the discriminant of $\Q(\zeta_{12})=\Q(i,\sqrt{-3})$, and check Theorem~\ref{thm:Zzeta} for $\Q(\zeta_8)$ against
+$\operatorname{disc}(X^4+1)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quadcyclo}
+\emph{A first glimpse of Kronecker--Weber.} Show that every quadratic field $\Q(\sqrt d)$, $d$ a squarefree integer, is
+contained in $\Q(\zeta_{4|d|})$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:germain}
+\emph{Sophie Germain's theorem.} Let $p$ be an odd prime such that $q=2p+1$ is prime (for instance $p=3,5,11,23,29,41$).
+Show that $x^p+y^p=z^p$ has no solution in integers with $p\nmid xyz$. (Work with $x^p+y^p+z^p=0$, pairwise coprime.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:kummer23}
+\emph{Kummer's counterexample.} Let $K=\Q(\zeta_{23})$ and $F=\Q(\sqrt{-23})$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $F\subseteq K$ and that $47$ splits completely in $K$.
+\item For $\alpha\in\mathcal O_K$, put $N_{K/F}(\alpha)=\prod_{\sigma\in H}\sigma(\alpha)$, where $H=\operatorname{Gal}(K/F)$.
+Show that $N_{K/F}(\alpha)\in\mathcal O_F$ and $N_{K/\Q}(\alpha)=N_{F/\Q}(N_{K/F}(\alpha))$.
+\item Show that no element of $\mathcal O_F$ has norm $47$, and deduce that no prime of $K$ above $47$ is principal. So
+$\Z[\zeta_{23}]$ is not a unique factorisation domain.
+\end{enumerate}
+\end{exercise}
+
+\begin{beauty}
+Count what one root of unity bought us. The single identity $\prod(1-\zeta^a)=p$ made $p$ totally ramified, gave the ring of
+integers through Eisenstein, and produced the cyclotomic units. The Gauss sum hid $\sqrt{\pm p}$ inside $\Q(\zeta_p)$, and
+the Frobenius $\sigma_q$ turned quadratic reciprocity into the statement that a symmetry of $\Q(\zeta_p)$ restricts to a
+symmetry of $\Q(\sqrt{p^*})$. And Kummer's attack on Fermat, born from Lamé's mistake, created ideal theory, class
+numbers, and the link between class numbers and Bernoulli numbers, the first appearance of the mysterious bond between
+algebra and the values of zeta functions that Chapter~8 starts to explain and that modern Iwasawa theory still explores.
+Fermat's margin was too small; the theory it provoked fills libraries.
+\end{beauty}
+
+\section{Hints}
+
+Try each exercise for a while before reading its hint, and read the hint before the solution.
+
+\begin{hint}{ex:cubes9}
+Check $x=0,\pm1,\pm2,\pm3,\pm4$.
+\end{hint}
+\begin{hint}{ex:golden}
+Divide $1+\zeta+\zeta^2+\zeta^3+\zeta^4=0$ by $\zeta^2$. For (c), use Kummer's lemma and the units of $\Q(\sqrt5)$ (Tome~1,
+Exercise~11.2).
+\end{hint}
+\begin{hint}{ex:realint}
+$\mathcal O_{K^+}=\Z[\zeta]\cap\R$. Write a real element in the basis $\zeta,\zeta^2,\dots,\zeta^{p-1}$ and compare with its
+conjugate.
+\end{hint}
+\begin{hint}{ex:compdisc}
+The embeddings of $KL$ are the pairs (embedding of $K$, embedding of $L$); the matrix $(\sigma\tau(\alpha_i\beta_j))$ is a
+Kronecker product.
+\end{hint}
+\begin{hint}{ex:quadcyclo}
+$\sqrt{p^*}\in\Q(\zeta_p)$, $i\in\Q(\zeta_4)$, and $\sqrt2=\zeta_8+\zeta_8^{-1}$.
+\end{hint}
+\begin{hint}{ex:germain}
+The $p$-th powers modulo $q$ are $0$ and $\pm1$. Show $q\mid xyz$, say $q\mid x$, and factor $-x^p=(y+z)(y^{p-1}-\dots+z^{p-1})$
+into coprime factors, and similarly for $y$ and $z$.
+\end{hint}
+\begin{hint}{ex:kummer23}
+$23\equiv3\pmod4$, and $47=2\cdot23+1$. Elements of $\mathcal O_F$ are $\frac{a+b\sqrt{-23}}2$ with $a\equiv b\pmod2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:cubes9}
+\idea Modulo $9$, cubes take very few values, because $(3k\pm1)^3\equiv\pm1$.
+\writeup The cubes of $0,\pm1,\pm2,\pm3,\pm4$ are $0,\pm1,\pm8,\pm27,\pm64$, that is $0,\pm1,\mp1,0,\pm1$ modulo $9$. If $3\nmid
+xyz$, then $x^3+y^3-z^3\equiv\pm1\pm1\pm1\pmod9$, which is one of $\pm1,\pm3$, never $0$. The proof of
+Theorem~\ref{thm:fltfirst} uses $p\ge5$ twice: in Step~0, to rule out $p\mid3z$; and in Step~4, to be sure that four exponents
+leave a power of $\zeta$ unused among $p\ge5$ of them. For $p=3$ both steps fail, which is why a separate argument is needed.
+\end{solution}
+
+\begin{solution}{ex:golden}
+\idea Symmetric expressions in $\zeta$ and $\zeta^{-1}$ are polynomials in $\theta$, and the relation $\Phi_5(\zeta)=0$ becomes a
+quadratic equation for $\theta$.
+\writeup (a) Dividing $1+\zeta+\zeta^2+\zeta^3+\zeta^4=0$ by $\zeta^2$ gives $(\zeta^2+\zeta^{-2})+(\zeta+\zeta^{-1})+1=0$, and
+$\zeta^2+\zeta^{-2}=\theta^2-2$, so $\theta^2+\theta-1=0$. As $\theta=2\cos\frac{2\pi}5>0$, $\theta=\frac{-1+\sqrt5}2=\phi-1=
+\phi^{-1}$. So $K^+=\Q(\theta)=\Q(\sqrt5)$.
+
+(b) $-\zeta^2(1+\zeta)=-(\zeta^2+\zeta^3)=-(\zeta^2+\zeta^{-2})=2-\theta^2=2-(1-\theta)=1+\theta=1+\phi^{-1}=\phi$. And
+$1+\zeta=\frac{1-\zeta^2}{1-\zeta}$ is a unit by Proposition~\ref{prop:lambda}(a).
+
+(c) By Kummer's lemma, a unit is $\zeta^k\varepsilon$ with $\varepsilon$ a unit of $\mathcal O_{K^+}=\mathcal O_{\Q(\sqrt5)}$,
+whose units are $\pm\phi^m$ (Tome~1, Exercise~11.2 and Theorem~11.4). Conversely every $\pm\zeta^k\phi^m$ is a unit. So
+$\mathcal O_K^\times=\mu_{10}\times\phi^{\Z}$, a free part of rank $1=\frac{5-3}2$, as Dirichlet predicts.
+\end{solution}
+
+\begin{solution}{ex:realint}
+\idea A real element equals its conjugate, which pairs up the coefficients of $\zeta^i$ and $\zeta^{-i}$; and
+$\zeta^i+\zeta^{-i}$ is a polynomial in $\theta$, as $2\cos(ix)$ is a polynomial in $2\cos x$.
+\writeup $K^+=K\cap\R$ (shown in the text), so $\mathcal O_{K^+}=\mathcal O_K\cap\R=\Z[\zeta]\cap\R$, and clearly $\Z[\theta]
+\subseteq\mathcal O_{K^+}$. The numbers $\zeta,\dots,\zeta^{p-1}$ form a $\Z$-basis of $\Z[\zeta]$ (they are $\zeta$ times the basis
+$1,\dots,\zeta^{p-2}$, and $\zeta$ is a unit). Let $x=\sum_{i=1}^{p-1}a_i\zeta^i$ be real. Then $x=\bar x=\sum_ia_i\zeta^{p-i}$, and
+comparing coefficients, $a_i=a_{p-i}$. Hence $x=\sum_{i=1}^{(p-1)/2}a_i(\zeta^i+\zeta^{-i})$. Define $P_0=2$, $P_1=X$,
+$P_{i+1}=XP_i-P_{i-1}$; by induction $\zeta^i+\zeta^{-i}=P_i(\theta)$, since $(\zeta+\zeta^{-1})(\zeta^i+\zeta^{-i})=(\zeta^{i+1}+
+\zeta^{-i-1})+(\zeta^{i-1}+\zeta^{1-i})$. So $x\in\Z[\theta]$.
+\end{solution}
+
+\begin{solution}{ex:compdisc}
+\idea The discriminant is the square of the determinant of the matrix of embeddings, and here that matrix splits as a tensor
+product.
+\writeup Let $\sigma_1,\dots,\sigma_n$ and $\tau_1,\dots,\tau_m$ be the embeddings of $K$ and $L$. An embedding $\rho$ of $KL$ is
+determined by its restrictions to $K$ and $L$, which generate $KL$; there are $nm$ embeddings of $KL$ and $nm$ pairs, so every
+pair $(\sigma_k,\tau_l)$ comes from exactly one $\rho_{kl}$. By the lemma, $(\alpha_i\beta_j)$ is an integral basis of $KL$, and
+$\rho_{kl}(\alpha_i\beta_j)=\sigma_k(\alpha_i)\tau_l(\beta_j)$: the matrix is the Kronecker product $A\otimes B$ of
+$A=(\sigma_k(\alpha_i))$ and $B=(\tau_l(\beta_j))$. Since $A\otimes B=(A\otimes I_m)(I_n\otimes B)$, its determinant is
+$\det(A)^m\det(B)^n$. Squaring, $d_{KL}=d_K^{\,m}d_L^{\,n}$.
+
+For $\Q(\zeta_{12})$: $K=\Q(\zeta_3)$ with $d_K=-3$ and $L=\Q(i)$ with $d_L=-4$ are coprime, and $[KL:\Q]=4=\varphi(12)$; so
+$d=(-3)^2(-4)^2=144$. For $\Q(\zeta_8)$, Theorem~\ref{thm:Zzeta} with $p=2$, $k=3$ gives $\pm2^{4\cdot(3-1)}=\pm2^8$, with sign
+$(-1)^{r_2}=+1$. Directly, $\operatorname{disc}(X^4+1)=N(4\zeta^3)=4^4N(\zeta)^3=256$ (Proposition~\ref{prop:disc}(c), with
+$(-1)^{4\cdot3/2}=1$).
+\end{solution}
+
+\begin{solution}{ex:quadcyclo}
+\idea Build $\sqrt d$ as a product of square roots that we already know to be cyclotomic: $\sqrt{p^*}$ from the Gauss sum,
+$i$, and $\sqrt2$.
+\writeup Write $d=\pm2^{\epsilon}p_1\cdots p_r$ with distinct odd primes $p_i$ and $\epsilon\in\{0,1\}$. Each $\sqrt{p_i^*}$ lies
+in $\Q(\zeta_{p_i})$ (Proposition~\ref{prop:gausssum}), $i=\zeta_4$, and $\sqrt2=\zeta_8+\zeta_8^{-1}=2\cos\frac\pi4$. Since
+$p_i=\pm p_i^*$, the number $\sqrt d$ is a product of the $\sqrt{p_i^*}$, possibly $i$, and possibly $\sqrt2$. All of these lie
+in $\Q(\zeta_N)$ with $N=\operatorname{lcm}(4,|d'|)$ if $d$ is odd ($d'=d$), and $N=\operatorname{lcm}(8,|d|/2)$ if $d$ is
+even; in both cases $N$ divides $4|d|$, and $\Q(\zeta_N)\subseteq\Q(\zeta_{4|d|})$. The Kronecker--Weber theorem (Chapter~10)
+says that \emph{every} abelian extension of $\Q$ lies in some $\Q(\zeta_N)$.
+\end{solution}
+
+\begin{solution}{ex:germain}
+\idea Modulo $q=2p+1$, a $p$-th power is a square root of $1$ or $0$, so the equation forces $q$ to divide one variable. Then
+the three factorisations $-x^p=(y+z)Q(y,z)$, and its two cousins, turn the variables into $p$-th powers, and modulo $q$ the
+numbers become too few to fit.
+\writeup Write the equation as $x^p+y^p+z^p=0$ (replace $z$ by $-z$), with $x,y,z$ pairwise coprime and $p\nmid xyz$.
+
+\emph{$p$-th powers modulo $q$.} If $q\nmid t$, then $(t^p)^2=t^{q-1}\equiv1$, so $t^p\equiv\pm1\pmod q$. If $q\nmid xyz$, the
+sum of three numbers $\pm1$ would be $\equiv0\pmod q$; but such a sum is odd and of absolute value at most $3<q$. So $q\mid
+xyz$; by symmetry, $q\mid x$.
+
+\emph{Factorisations.} Let $Q(y,z)=\sum_{i=0}^{p-1}y^{p-1-i}(-z)^i$, so that $-x^p=y^p+z^p=(y+z)Q(y,z)$. Modulo $y+z$, $z\equiv-y$
+and $Q\equiv py^{p-1}$; so a common prime factor of $y+z$ and $Q$ divides $py^{p-1}$. It cannot divide $y$ (it would divide $z$
+too), and it cannot be $p$ (it would divide $x$). So $y+z$ and $Q$ are coprime, their product is the $p$-th power $(-x)^p$, and
+since $p$ is odd, $y+z=a^p$ and $Q(y,z)=\alpha^p$ for integers $a,\alpha$. In the same way $z+x=b^p$ and $x+y=c^p$.
+
+\emph{Contradiction.} $2x=(x+y)+(z+x)-(y+z)=c^p+b^p-a^p\equiv0\pmod q$, and as before one of $a,b,c$ is divisible by $q$. If $q
+\mid b$, then $q\mid z+x$, so $q\mid z$, contradicting $\gcd(x,z)=1$; likewise $q\nmid c$. So $q\mid a$, that is $z\equiv-y
+\pmod q$, and $\alpha^p=Q(y,z)\equiv py^{p-1}\pmod q$. But $y\equiv x+y=c^p\pmod q$ with $c^p\equiv\pm1$, so $y^{p-1}\equiv1$ ($p-1$
+is even), and $\alpha^p\equiv p\pmod q$. The left side is $0$ or $\pm1$ modulo $q$, while $p,p\pm1$ are not divisible by
+$q=2p+1$. This contradiction proves the theorem.
+\end{solution}
+
+\begin{solution}{ex:kummer23}
+\idea A principal prime $P=(\alpha)$ of norm $47$ would push down, through the relative norm, to an element of norm $47$ in the
+quadratic field $\Q(\sqrt{-23})$; and the norm form $\frac{a^2+23b^2}4$ never takes the value $47$.
+\writeup (a) $23\equiv3\pmod4$, so $23^*=-23$ and $F=\Q(\sqrt{-23})\subseteq K$ by Proposition~\ref{prop:gausssum}. Since
+$47\equiv1\pmod{23}$, the order of $47$ modulo $23$ is $1$, and $47$ splits into $22$ primes of norm $47$
+(Corollary~\ref{cor:cycloram}).
+
+(b) $\beta=N_{K/F}(\alpha)$ is a product of algebraic integers, so it is one; and for $\tau\in H$, $\tau(\beta)=\prod_\sigma
+\tau\sigma(\alpha)=\beta$, so $\beta\in K^H=F$. Hence $\beta\in\mathcal O_F$. Let $\rho$ be the non-trivial element of
+$\operatorname{Gal}(K/\Q)/H$, lifted to $\tilde\rho$. Then $G=H\cup\tilde\rho H$, and
+$N_{K/\Q}(\alpha)=\prod_{\sigma\in H}\sigma(\alpha)\prod_{\sigma\in H}\tilde\rho\sigma(\alpha)=\beta\,\tilde\rho(\beta)=N_{F/\Q}(\beta)$.
+
+(c) $\mathcal O_F=\Z\bigl[\frac{1+\sqrt{-23}}2\bigr]$ consists of the $\frac{a+b\sqrt{-23}}2$ with $a\equiv b\pmod2$, of norm
+$\frac{a^2+23b^2}4$. Norm $47$ means $a^2+23b^2=188$; $b=0,\pm1,\pm2$ give $a^2=188,165,96$, none a square, and $|b|\ge3$ gives
+$23b^2>188$. Now let $P$ be a prime of $K$ above $47$, of norm $47$ by (a). If $P=(\alpha)$, then $N_{K/\Q}(\alpha)=\pm47$, and
+in fact $+47$ since $K$ is totally complex (the conjugates come in pairs $\sigma(\alpha),\overline{\sigma(\alpha)}$). By (b),
+$\beta=N_{K/F}(\alpha)\in\mathcal O_F$ has norm $47$, which is impossible. So $P$ is not principal, the class number of
+$\Q(\zeta_{23})$ is not $1$, and $\Z[\zeta_{23}]$ is not a UFD. (A Dedekind domain that is a UFD is a PID: a prime $P\ne0$ contains an
+irreducible factor $\pi$ of any of its non-zero elements; in a UFD $\pi$ is prime, so $(\pi)\subseteq P$ is an inclusion of
+non-zero primes, which are maximal, hence an equality.) In fact $h(\Q(\zeta_{23}))=3$, as the notebook checks.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~E.~Kummer, ``Beweis des Fermat'schen Satzes der Unm\"oglichkeit von $x^\lambda+y^\lambda=z^\lambda$ f\"ur eine unendliche
+Anzahl Primzahlen $\lambda$'', \emph{Monatsber.\ Akad.\ Wiss.\ Berlin} (1847), 132--139; and \emph{J.\ reine angew.\ Math.}\ 40
+(1850), 130--138. Regular primes and the first proofs.
+\item L.~C.~Washington, \emph{Introduction to Cyclotomic Fields}, 2nd ed., Springer GTM~83, 1997. Chapter~1 (the first case, the
+route followed here), Chapters~2, 5 and~8 (integers, Kummer's criterion, cyclotomic units), Theorem~9.3 (the second case).
+\item H.~M.~Edwards, \emph{Fermat's Last Theorem: A Genetic Introduction to Algebraic Number Theory}, Springer GTM~50, 1977. The
+history of Lamé, Liouville and Kummer told from the original sources.
+\item P.~Ribenboim, \emph{13 Lectures on Fermat's Last Theorem}, Springer, 1979; and \emph{Fermat's Last Theorem for Amateurs},
+Springer, 1999. Sophie Germain's theorem and many elementary results.
+\item D.~A.~Marcus, \emph{Number Fields}, 2nd ed., Springer, 2018, Chapters~2 and~3. Cyclotomic integers and the compositum lemma.
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer GTM~84, 1990,
+Chapters~6 and~14. Gauss sums and the Stickelberger relation.
+\item A.~Wiles, ``Modular elliptic curves and Fermat's Last Theorem'', \emph{Ann.\ of Math.}\ 141 (1995), 443--551; R.~Taylor and
+A.~Wiles, ``Ring-theoretic properties of certain Hecke algebras'', same volume, 553--572.
+\end{itemize}
