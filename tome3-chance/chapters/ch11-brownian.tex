@@ -1,0 +1,598 @@
+\chapter{Brownian Motion}
+
+\begin{center}\itshape
+In 1827 Robert Brown watched particles from pollen grains jitter in water.\\
+In 1905 Einstein explained the jitter by molecular impacts,\\
+and in 1923 Wiener built the curve such a particle follows:\\
+continuous everywhere, differentiable nowhere.
+\end{center}
+
+Shrink the steps of a random walk to $\frac1{\sqrt n}$ and speed up time by $n$: by the central limit theorem, the position at time $t$
+becomes approximately $N(0,t)$, the displacements over disjoint time intervals stay independent, and the path looks
+more and more like a continuous curve. The limiting object is \emph{Brownian motion}, the most important random
+process in mathematics. It models the motion of a particle in a fluid, the noise in an electrical circuit, and, since
+Louis Bachelier's thesis of 1900, the fluctuations of stock prices.
+
+The first question is whether it exists at all: can one have continuous paths with independent Gaussian increments?
+We answer with Paul L\'evy's construction, which refines a path by random midpoint displacements, and Borel--Cantelli
+shows that the refinements converge uniformly. Then we study the paths. Their scaling makes them self-similar; their
+quadratic variation over $[0,t]$ is exactly $t$; they have no derivative at any point. The reflection principle of Chapter~7
+passes to the limit and gives the law of the maximum. A discrete version of It\^o's formula shows where the extra
+term of stochastic calculus comes from. Finally we price an option in the binomial model of Cox, Ross and
+Rubinstein and let the time step go to zero: the central limit theorem turns the binomial price into the formula of
+Black and Scholes.
+
+\begin{think}
+Zoom into a Brownian path, magnifying time by a factor $4$. By what factor must you magnify space for the picture to
+look statistically the same? What does your answer say about the slope of the path?
+\end{think}
+
+\section{From random walks to Brownian motion}
+
+Let $S_k$ be a random walk with independent steps of mean $0$ and variance $1$, and set $W^{(n)}_t=\frac{S_{\lfloor nt\rfloor}}{\sqrt n}$. For $s<t$, the increment
+$W^{(n)}_t-W^{(n)}_s$ is a sum of $\lfloor nt\rfloor-\lfloor ns\rfloor$ steps divided by $\sqrt n$, so by the central limit theorem it converges in law to $N(0,t-s)$, and
+increments over disjoint intervals are independent. This suggests the following definition.
+
+\begin{definition}\label{def:bm}
+A \emph{Brownian motion} is a family of random variables $(B_t)_{t\ge0}$ on one probability space such that
+\begin{enumerate}[label=(\roman*)]
+\item $B_0=0$, and for every $\omega$ the path $t\mapsto B_t(\omega)$ is continuous;
+\item for $0\le t_0<t_1<\dots<t_k$, the increments $B_{t_1}-B_{t_0},\dots,B_{t_k}-B_{t_{k-1}}$ are independent;
+\item for $s<t$, $B_t-B_s$ is $N(0,t-s)$.
+\end{enumerate}
+\end{definition}
+
+\begin{proposition}\label{prop:bmgauss}
+Let $(B_t)$ have continuous paths with $B_0=0$. Then (ii) and (iii) hold if and only if for all $t_1,\dots,t_k$ the vector $(B_{t_1},\dots,B_{t_k})$ is a centred Gaussian
+vector with $\operatorname{Cov}(B_s,B_t)=\min(s,t)$.
+\end{proposition}
+\begin{proof}
+If (ii) and (iii) hold, the increments over $0<t_1<\dots<t_k$ form a Gaussian vector with independent components (Theorem~\ref{thm:gaussvec}(b),(c)), and $(B_{t_i})$
+is a linear image of it, hence Gaussian (Theorem~\ref{thm:gaussvec}(d)); for $s<t$, $\operatorname{Cov}(B_s,B_t)=\operatorname{Var}(B_s)+\operatorname{Cov}(B_s,B_t-B_s)=s$. Conversely, the increments are a
+linear image of $(B_{t_i})$, hence a Gaussian vector, and for $s<t\le u<v$,
+\[
+\operatorname{Cov}(B_t-B_s,B_v-B_u)=t-s-t+s=0,
+\]
+while $\operatorname{Var}(B_t-B_s)=t-2s+s=t-s$. Theorem~\ref{thm:gaussvec}(c) gives (ii), and (iii) follows.
+\end{proof}
+
+That the rescaled walks converge to Brownian motion as whole paths, and not only through finitely many times, is
+\emph{Donsker's invariance principle} (1951), proved in Tome~10. Here we need a construction: nothing so far guarantees that
+continuous paths with these increments exist.
+
+\section{L\'evy's construction}
+
+Let $D_n=\{k2^{-n}:0\le k\le2^n\}$ be the dyadic points of level $n$ in $[0,1]$, and $D=\bigcup_nD_n$. Take independent $N(0,1)$ variables $Z_t$, one for each $t\in D$
+(admitted fact (A1) of Chapter~5). Define $B$ on $D$ level by level: $B_0=0$, $B_1=Z_1$, and for $t\in D_n\setminus D_{n-1}$, $n\ge1$,
+\[
+B_t=\frac{B_{t-2^{-n}}+B_{t+2^{-n}}}2+2^{-(n+1)/2}Z_t.
+\]
+Each new point is placed at the midpoint of its two neighbours, then displaced by an independent Gaussian of the right
+size (Figure~\ref{fig:levy}).
+
+\begin{lemma}\label{lem:levylevel}
+For every $n$, the $2^n$ increments $B_{k2^{-n}}-B_{(k-1)2^{-n}}$ are independent $N(0,2^{-n})$ variables.
+\end{lemma}
+\begin{proof}
+By induction; $n=0$ is clear. All the variables involved are linear combinations of the independent Gaussians $Z_t$, so the
+increments of level $n$ form a Gaussian vector, and it suffices to compute variances and covariances
+(Theorem~\ref{thm:gaussvec}(c),(d)). An interval of level $n-1$ with increment $\Delta$ (of variance $2^{-n+1}$) is split at its midpoint $t$ into two halves with
+increments $\frac\Delta2\pm2^{-(n+1)/2}Z_t$. Their variances are $\frac{2^{-n+1}}4+2^{-n-1}=2^{-n}$, and their covariance is $\frac{2^{-n+1}}4-2^{-n-1}=0$. Halves of different intervals of
+level $n-1$ are built from independent variables (the level-$(n-1)$ increments, independent by induction, and distinct $Z_t$), so they are
+uncorrelated too.
+\end{proof}
+
+\begin{theorem}[Wiener; L\'evy's construction]\label{thm:levy}
+Brownian motion exists.
+\end{theorem}
+\begin{proof}
+\emph{Uniform convergence.} Let $F_n$ be the function on $[0,1]$ that equals $B$ on $D_n$ and is linear between consecutive points of $D_n$. Then $F_n-F_{n-1}$
+is piecewise linear, vanishes on $D_{n-1}$, and equals $2^{-(n+1)/2}Z_t$ at each $t\in D_n\setminus D_{n-1}$, so
+\[
+\|F_n-F_{n-1}\|_\infty=2^{-(n+1)/2}\max_{t\in D_n\setminus D_{n-1}}|Z_t|.
+\]
+For $x\ge1$, $P(|Z|\ge x)=2\int_x^\infty\frac{e^{-u^2/2}}{\sqrt{2\pi}}\dd u\le2\int_x^\infty\frac ux\frac{e^{-u^2/2}}{\sqrt{2\pi}}\dd u=\frac{2e^{-x^2/2}}{x\sqrt{2\pi}}\le e^{-x^2/2}$. Hence
+\[
+P\Bigl(\max_{t\in D_n\setminus D_{n-1}}|Z_t|\ge2\sqrt n\Bigr)\le2^{n-1}e^{-2n},
+\]
+which is summable. By Borel--Cantelli (Theorem~\ref{thm:bc}), almost surely $\max|Z_t|<2\sqrt n$ for all large $n$, and then $\sum_n\|F_n-F_{n-1}\|_\infty\le\sum_n2^{-(n+1)/2}2\sqrt n<\infty$.
+So $F_n$ converges uniformly on $[0,1]$ to a continuous function, which equals $B$ on $D$ (as $F_m=B$ on $D_n$ for $m\ge n$). On the null event where
+this fails, set the limit to $0$. Call the limit $B$ again.
+
+\emph{The law.} Let $t_1,\dots,t_k\in[0,1]$ and $t_i^{(n)}=\lceil2^nt_i\rceil2^{-n}\in D_n$. By Lemma~\ref{lem:levylevel}, as in the proof of Proposition~\ref{prop:bmgauss},
+$(B_{t_i^{(n)}})_i$ is a centred Gaussian vector with covariances $\min(t^{(n)}_i,t^{(n)}_j)$, so its characteristic function is $e^{-u^{\mathsf T}\Sigma_nu/2}$. As $n\to\infty$, $B_{t_i^{(n)}}\to B_{t_i}$ by
+continuity, and by dominated convergence the characteristic function of $(B_{t_i})$ is $e^{-u^{\mathsf T}\Sigma u/2}$ with $\Sigma_{ij}=\min(t_i,t_j)$. By Theorem~\ref{thm:inversion}(a)
+and Theorem~\ref{thm:gaussvec}(a),(b), $(B_{t_i})$ is a centred Gaussian vector with these covariances, so $B$ is a Brownian motion on $[0,1]$
+(Proposition~\ref{prop:bmgauss}).
+
+\emph{All times.} Take independent copies $B^{(0)},B^{(1)},\ldots$ of this process on $[0,1]$ (built from disjoint families of $Z$'s), and for $t\in[j,j+1]$ set
+$B_t=B^{(0)}_1+\dots+B^{(j-1)}_1+B^{(j)}_{t-j}$. The paths are continuous, and an increment over $[s,t]$ is a sum of increments of independent copies over the
+pieces of $[s,t]$ cut at the integers: independent Gaussians with variances adding up to $t-s$ (Proposition~\ref{prop:gausssum}). Increments over disjoint
+intervals are built from disjoint pieces, hence independent.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-levy}
+\caption{L\'evy's construction: the piecewise linear paths $F_0$, $F_2$, $F_4$ and $F_{10}$ (darkest), each obtained from the previous one by random
+midpoint displacements of size $2^{-(n+1)/2}$.}
+\label{fig:levy}
+\end{figure}
+
+\begin{beauty}
+The construction is also a fast algorithm: a path on $2^n$ points costs $2^n$ Gaussian draws, and can be refined later
+where more detail is needed, without changing what is already drawn. The same midpoint displacement, with other
+scaling exponents, draws the fractal mountains of computer graphics.
+\end{beauty}
+
+\section{Scaling, symmetry and the Markov property}
+
+Let $\mathcal F_s=\sigma(B_u:u\le s)$ be the information revealed by the path up to time $s$.
+
+\begin{proposition}\label{prop:scaling}
+Let $B$ be a Brownian motion, $c>0$ and $s\ge0$. Then the following are Brownian motions:
+\begin{enumerate}[label=(\alph*)]
+\item (\emph{scaling}) $\frac1cB_{c^2t}$;
+\item (\emph{symmetry}) $-B_t$;
+\item (\emph{Markov property}) $B_{s+t}-B_s$, and this process is independent of $\mathcal F_s$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+In each case the paths are continuous and start at $0$, and the times $t_1,\dots,t_k$ give a centred Gaussian vector (a linear image of
+one, Theorem~\ref{thm:gaussvec}(d)). By Proposition~\ref{prop:bmgauss} it suffices to compute covariances: $\frac1{c^2}\min(c^2s,c^2t)=\min(s,t)$; $\min(s,t)$;
+and $\min(s+t,s+t')-s-s+s=\min(t,t')$. For the independence in (c), take $u_1,\dots,u_j\le s$ and $t_1,\dots,t_k\ge0$. The vector made of the $B_{u_i}$ and the
+$B_{s+t_l}-B_s$ is Gaussian, and $\operatorname{Cov}(B_{u_i},B_{s+t_l}-B_s)=u_i-u_i=0$; so its characteristic function factorises (Theorem~\ref{thm:gaussvec}(a)), and the two
+blocks are independent (Theorem~\ref{thm:inversion}(a)). Events determined by finitely many times form $\pi$-systems that generate the two
+$\sigma$-algebras, and Theorem~\ref{thm:uniqueness} extends the independence to them.
+\end{proof}
+
+Scaling answers the opening question: magnifying time by $4$ requires magnifying space by $2$. A Brownian path is
+statistically self-similar (Figure~\ref{fig:zoom}). Over a time $h$ it moves by about $\sqrt h$, so its difference quotients are of order $\frac1{\sqrt h}$, which
+explodes: we shall see that the path has no derivative anywhere.
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-zoom}
+\caption{One Brownian path on $[0,1]$ (left), on $[0,\frac14]$ magnified $2$ times in space (middle), and on $[0,\frac1{16}]$ magnified $4$ times
+(right). The three pictures have the same law.}
+\label{fig:zoom}
+\end{figure}
+
+\begin{lemma}\label{lem:bmmax}
+For $\lambda>0$, $P\bigl(\max_{t\le1}|B_t|>\lambda\bigr)\le\frac1{\lambda^2}$.
+\end{lemma}
+\begin{proof}
+For fixed $m$, $(B_{k2^{-m}})_{0\le k\le2^m}$ is a martingale, a sum of independent centred Gaussians, with $\mathbb E[B_1^2]=1$; by Kolmogorov's inequality
+(Corollary~\ref{cor:kolmogorov}), $P(\max_{t\in D_m}|B_t|\ge\lambda)\le\frac1{\lambda^2}$. These events increase with $m$, and by continuity their union contains
+$\{\max_{t\le1}|B_t|>\lambda\}$, as the maximum is approached along dyadic times.
+\end{proof}
+
+\begin{proposition}[time inversion]\label{prop:inversion}
+$\frac{B_t}t\to0$ almost surely as $t\to\infty$, and the process $X_0=0$, $X_t=tB_{1/t}$ ($t>0$) is a Brownian motion.
+\end{proposition}
+\begin{proof}
+$B_n$ is a sum of $n$ independent $N(0,1)$ variables, so $\frac{B_n}n\to0$ almost surely by the strong law (Theorem~\ref{thm:slln4}). By Proposition~\ref{prop:scaling}(c) and
+Lemma~\ref{lem:bmmax}, $P(\max_{t\in[n,n+1]}|B_t-B_n|>n^{3/4})\le n^{-3/2}$, which is summable, so by Borel--Cantelli $\max_{[n,n+1]}|B_t-B_n|\le n^{3/4}$ for all large $n$. So for $t\in[n,n+1]$,
+$\frac{|B_t|}t\le\frac{|B_n|+n^{3/4}}n\to0$.
+
+The process $X$ is continuous on $]0,\infty[$, and at $0$ since $X_t=\frac{B_u}u$ with $u=\frac1t\to\infty$. Its values at finitely many times form a centred Gaussian
+vector (a linear image of one) with $\operatorname{Cov}(X_s,X_t)=st\min(\frac1s,\frac1t)=\min(s,t)$; conclude by Proposition~\ref{prop:bmgauss}.
+\end{proof}
+
+\section{Quadratic variation and roughness}
+
+For a partition $\pi:0=t_0<t_1<\dots<t_m=t$ of $[0,t]$, with mesh $|\pi|=\max_k(t_k-t_{k-1})$, let
+\[
+Q(\pi)=\sum_{k=1}^m\bigl(B_{t_k}-B_{t_{k-1}}\bigr)^2.
+\]
+For a function with a continuous derivative, $Q(\pi)\le\max|f'|^2\,|\pi|\,t\to0$. Not so for Brownian motion.
+
+\begin{theorem}[quadratic variation]\label{thm:qv}
+$\mathbb E\bigl[(Q(\pi)-t)^2\bigr]=2\sum_k(t_k-t_{k-1})^2\le2t|\pi|$, so $Q(\pi)\to t$ in $L^2$ as $|\pi|\to0$. For the dyadic partitions $\pi_n$ of mesh $t2^{-n}$, $Q(\pi_n)\to t$
+almost surely.
+\end{theorem}
+\begin{proof}
+The terms $Y_k=(B_{t_k}-B_{t_{k-1}})^2-(t_k-t_{k-1})$ are independent, centred, and $\operatorname{Var}(Y_k)=2(t_k-t_{k-1})^2$, since for $N$ of law $N(0,h)$, $\mathbb E[N^4]=3h^2$. So
+$\mathbb E[(Q(\pi)-t)^2]=\operatorname{Var}(\sum Y_k)=2\sum(t_k-t_{k-1})^2\le2|\pi|\sum(t_k-t_{k-1})$. For $\pi_n$ this is $2t^22^{-n}$; by Chebyshev, $P(|Q(\pi_n)-t|>\varepsilon)\le\frac{2t^2}{\varepsilon^22^n}$,
+summable, and Borel--Cantelli gives the almost sure convergence.
+\end{proof}
+
+\begin{corollary}\label{cor:variation}
+Almost surely, the path has infinite total variation on every interval $[s,t]$ with $s<t$: the lengths $\sum_k|B_{t_k}-B_{t_{k-1}}|$ over partitions of $[s,t]$ are
+unbounded.
+\end{corollary}
+\begin{proof}
+By Proposition~\ref{prop:scaling}(c), Theorem~\ref{thm:qv} applies on $[s,t]$; almost surely the dyadic sums converge to $t-s>0$ for all rational $s<t$ at once. If
+the variation $V$ on $[s,t]$ were finite, then $Q(\pi_n)\le\max_k|B_{t_k}-B_{t_{k-1}}|\cdot V\to0$ by uniform continuity, a contradiction. Every interval contains one
+with rational endpoints.
+\end{proof}
+
+So $\int f\dd B$ cannot be defined path by path as a Stieltjes integral. Stochastic calculus (Tome~11) defines it in $L^2$,
+using precisely the rule ``$(\dd B)^2=\dd t$'' expressed by Theorem~\ref{thm:qv}.
+
+\begin{theorem}[Paley, Wiener and Zygmund, 1933]\label{thm:pwz}
+Almost surely, the Brownian path is differentiable at no point of $[0,\infty[$.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:scaling}(c) it suffices to treat $s\in[0,1]$ (then shift by integers). Suppose the path is differentiable at some $s\in[0,1]$. Then the
+difference quotients are bounded near $s$, and by continuity on $[0,2]$ there is an integer $M$ with $|B_t-B_s|\le M|t-s|$ for all $t\in[0,2]$. For $n\ge2$ let
+$k=\lfloor2^ns\rfloor$, so that $k2^{-n}\le s<(k+1)2^{-n}$. For $j=1,2,3$, the points $(k+j-1)2^{-n}$ and $(k+j)2^{-n}$ lie within $(j+1)2^{-n}$ of $s$, so
+\[
+\begin{aligned}\bigl|B_{(k+j)2^{-n}}-B_{(k+j-1)2^{-n}}\bigr|&\le M(2j+1)2^{-n}\eqbr\le7M2^{-n}.\end{aligned}
+\]
+Let $A_{M,n}$ be the event that for some $k\in\{0,\dots,2^n\}$ three consecutive increments of length $2^{-n}$ starting at $k2^{-n}$ are all at most $7M2^{-n}$ in absolute value.
+The increments are independent $N(0,2^{-n})$, and $P(|N(0,2^{-n})|\le x)\le\frac{2x}{\sqrt{2\pi}\,2^{-n/2}}\le2^{n/2}x$ (the density is at most $\frac{2^{n/2}}{\sqrt{2\pi}}$), so
+\[
+\begin{aligned}P(A_{M,n})&\le(2^n+1)\bigl(2^{n/2}\cdot7M2^{-n}\bigr)^3\eqbr\le2(7M)^32^{-n/2},\end{aligned}
+\]
+which tends to $0$. We showed that differentiability at some $s\in[0,1]$ implies $A_{M,n}$ for some $M$ and all $n\ge2$. But $P(\bigcap_{n\ge2}A_{M,n})\le\inf_nP(A_{M,n})=0$ for each $M$, and a
+countable union of null events is null.
+\end{proof}
+
+The short proof is due to Dvoretzky, Erd\H os and Kakutani (1961). Weierstrass had astonished his contemporaries in 1872 with
+one explicit continuous nowhere differentiable function; the theorem says that, in the sense of Wiener's measure on
+paths, almost every continuous function is of this kind.
+
+\section{Martingales and the reflection principle}
+
+A family $(X_t)_{t\ge0}$ adapted to $(\mathcal F_t)$, with $X_t$ integrable, is a martingale if $\mathbb E[X_t\mid\mathcal F_s]=X_s$ for $s\le t$, as in Chapter~10.
+
+\begin{proposition}\label{prop:bmmart}
+$B_t$, $B_t^2-t$ and $e^{\theta B_t-\theta^2t/2}$ (for real $\theta$) are martingales.
+\end{proposition}
+\begin{proof}
+Write $B_t=B_s+N$ with $N=B_t-B_s$ of law $N(0,t-s)$, independent of $\mathcal F_s$ (Proposition~\ref{prop:scaling}(c)). By the rules of Proposition~\ref{prop:cerules},
+$\mathbb E[B_t\mid\mathcal F_s]=B_s$; $\mathbb E[B_t^2\mid\mathcal F_s]=B_s^2+2B_s\mathbb E[N]+\mathbb E[N^2]=B_s^2+t-s$; and $\mathbb E[e^{\theta B_t}\mid\mathcal F_s]=e^{\theta B_s}\mathbb E[e^{\theta N}]=e^{\theta B_s+\theta^2(t-s)/2}$, using the
+Gaussian moment generating function $\mathbb E[e^{\theta N}]=e^{\theta^2(t-s)/2}$ (complete the square).
+\end{proof}
+
+Chapter~7 proved that the maximum of a simple random walk is distributed like $|S_n|$, roughly, by reflecting paths after
+their first visit to a level. Here is the continuous version, promised there.
+
+\begin{theorem}[reflection principle]\label{thm:reflection}
+Let $M_t=\max_{s\le t}B_s$. For $a>0$,
+\[
+P(M_t\ge a)=2P(B_t\ge a)=P(|B_t|\ge a).
+\]
+So $M_t$ has the law of $|B_t|$.
+\end{theorem}
+\begin{proof}
+By scaling we may take $t=1$. Let $T=\inf\{s:B_s=a\}$, the hitting time of $a$ ($\infty$ if $a$ is never reached). By continuity $M_1\ge a$ if and only if
+$T\le1$, and for every $s$, $\{T\le s\}=\{\max_{u\le s}B_u\ge a\}$ is in $\mathcal F_s$ (the maximum over $[0,s]$ is a supremum over rational times).
+
+\emph{A dyadic version of $T$.} Let $T_n=\lceil2^nT\rceil2^{-n}$, the first dyadic time of level $n$ at or after $T$. The event $\{T_n=k2^{-n}\}=\{(k-1)2^{-n}<T\le k2^{-n}\}$ is in
+$\mathcal F_{k2^{-n}}$. For $k2^{-n}<1$, the increment $B_1-B_{k2^{-n}}$ is independent of $\mathcal F_{k2^{-n}}$ and has a symmetric law (Proposition~\ref{prop:scaling}(c)). So for
+$\varepsilon>0$,
+\[
+\begin{aligned}&P\bigl(T_n=k2^{-n},\ B_1-B_{k2^{-n}}>\varepsilon\bigr)\eqbr=P\bigl(T_n=k2^{-n},\ B_1-B_{k2^{-n}}<-\varepsilon\bigr),\end{aligned}
+\]
+and summing over $k$: $P(T_n<1,\ B_1-B_{T_n}>\varepsilon)=P(T_n<1,\ B_1-B_{T_n}<-\varepsilon)$.
+
+\emph{Passing to the limit.} As $n\to\infty$, $T_n\downarrow T$, so $\mathbf 1_{\{T_n<1\}}\to\mathbf 1_{\{T<1\}}$, and on $\{T<1\}$, $B_{T_n}\to B_T=a$ by continuity. The indicator functions converge
+except on $\{B_1=a\pm\varepsilon\}$, a null event, so dominated convergence gives
+\[
+P(T<1,\ B_1>a+\varepsilon)=P(T<1,\ B_1<a-\varepsilon).
+\]
+Let $\varepsilon\downarrow0$: $P(T<1,\ B_1>a)=P(T<1,\ B_1<a)$. Now $\{B_1>a\}\subseteq\{T<1\}$ by the intermediate value theorem, and $P(T=1)\le P(B_1=a)=0$. Hence, as $P(B_1=a)=0$,
+\[
+\begin{aligned}P(M_1\ge a)&=P(T<1)\eqbr=P(B_1>a)+P(T<1,\ B_1<a)\eqbr=2P(B_1>a),\end{aligned}
+\]
+and $2P(B_1\ge a)=P(|B_1|\ge a)$ by symmetry.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-reflect}
+\caption{The reflection principle: after the first time $T$ the path (blue) reaches the level $a$, its reflection in that level
+(orange) is another Brownian path. Paths that reach $a$ and end below it correspond to paths that end above it.}
+\label{fig:bmreflect}
+\end{figure}
+
+\begin{corollary}\label{cor:hitting}
+The hitting time $T_a$ of $a>0$ is finite almost surely, with $P(T_a\le t)=2\bigl(1-\Phi(\frac a{\sqrt t})\bigr)$, and $\mathbb E[T_a]=\infty$.
+\end{corollary}
+\begin{proof}
+$P(T_a\le t)=P(M_t\ge a)=2P(B_t\ge a)=2(1-\Phi(\frac a{\sqrt t}))$, which tends to $1$ as $t\to\infty$. And $P(T_a>t)=P(|B_1|<\frac a{\sqrt t})\ge\frac{2a}{\sqrt t}\cdot\frac{e^{-1/2}}{\sqrt{2\pi}}$ for $t\ge a^2$
+(the density of $|B_1|$ is at least $\frac{2e^{-1/2}}{\sqrt{2\pi}}$ on $[0,1]$), so $\mathbb E[T_a]=\int_0^\infty P(T_a>t)\dd t=\infty$.
+\end{proof}
+
+As for the simple random walk (Corollary~\ref{cor:return1d}), Brownian motion reaches every level, but takes an infinite expected time to do so.
+
+\section{A first look at It\^o's formula}
+
+If $f$ is smooth and $x(t)$ a smooth path, $f(x(t))-f(x(0))=\int_0^tf'(x(s))x'(s)\dd s$. For a random walk, the chain rule acquires a second term.
+
+\begin{proposition}[discrete It\^o formula]\label{prop:discreteito}
+Let $S_n=X_1+\dots+X_n$ be the simple random walk, $f:\Z\to\R$, $Df(x)=\frac{f(x+1)-f(x-1)}2$ and $\Delta f(x)=f(x+1)-2f(x)+f(x-1)$. Then
+\[
+\begin{aligned}f(S_n)&=f(0)+\sum_{k=1}^nDf(S_{k-1})X_k\eqbr+\frac12\sum_{k=1}^n\Delta f(S_{k-1}).\end{aligned}
+\]
+The first sum is a martingale, so $f(S_n)-\frac12\sum_{k\le n}\Delta f(S_{k-1})$ is a martingale.
+\end{proposition}
+\begin{proof}
+It suffices to check one step: with $x=S_{k-1}$, $f(x+X_k)-f(x)=Df(x)X_k+\frac12\Delta f(x)$. For $X_k=1$ the right side is
+$\frac{f(x+1)-f(x-1)+f(x+1)-2f(x)+f(x-1)}2=f(x+1)-f(x)$, and for $X_k=-1$ it is $f(x-1)-f(x)$ in the same way. The first sum is a martingale transform
+of the walk by the predictable sequence $Df(S_{k-1})$, which up to time $n$ is bounded by $\max_{|x|<n}|Df(x)|$ (Proposition~\ref{prop:transform}).
+\end{proof}
+
+With $f(x)=x^2$, $\Delta f=2$ and we recover the martingale $S_n^2-n$; with $f(x)=x^3$, $\Delta f(x)=6x$, so $S_n^3-3\sum_{k<n}S_k$ is a martingale.
+
+\begin{remark}
+Scale space by $\sqrt h$ and time by $h$ and let $h\to0$. The sum $\sum Df(S_{k-1})X_k$ becomes a stochastic integral $\int_0^tf'(B_s)\dd B_s$, and the second
+sum, where $\Delta f\approx h f''$ and there are $\frac th$ terms, becomes $\frac12\int_0^tf''(B_s)\dd s$. This is \emph{It\^o's formula},
+\[
+f(B_t)=f(0)+\int_0^tf'(B_s)\dd B_s+\frac12\int_0^tf''(B_s)\dd s,
+\]
+proved in Tome~11. The correction term is the trace of the quadratic variation: the path is so rough that the second order
+of Taylor's formula survives. In the same way, the discrete Dirichlet problem of Theorem~\ref{thm:dirichlet} becomes the continuous one: a
+function harmonic in a domain is the expected value of its boundary values at the exit point of Brownian motion
+(Kakutani, 1944), also in Tome~11.
+\end{remark}
+
+\section{The binomial model and the Black--Scholes formula}
+
+A bank account grows at a continuous rate $r$: one euro becomes $e^{rt}$ euros at time $t$. A stock has price $S_t$. A \emph{European
+put} with strike $K$ and maturity $T$ pays $(K-S_T)^+$ at time $T$ (the right to sell the stock at the price $K$); a \emph{call} pays $(S_T-K)^+$.
+What is the fair price of such a contract today?
+
+In the \emph{binomial model} of Cox, Ross and Rubinstein, time is cut into $n$ periods of length $h=\frac Tn$, and in each period the
+price is multiplied by $u=e^{\sigma\sqrt h}$ or by $d=e^{-\sigma\sqrt h}$, where $\sigma>0$ is the \emph{volatility}. We assume $d<e^{rh}<u$, which holds as soon as $h$ is small: otherwise
+one of the two assets would dominate the other. A \emph{strategy} holds, during each period, a number of shares and an amount
+in the bank chosen at the start of the period (a predictable choice, as in Chapter~10), and is \emph{self-financing} if it never
+adds or withdraws money. A contract is \emph{replicated} by a strategy whose final value equals its payoff in every
+scenario. Its fair price is then the initial cost of the strategy: any other price would allow a riskless profit
+(an \emph{arbitrage}), by selling the dearer of the two and buying the cheaper.
+
+\begin{proposition}[one period]\label{prop:oneperiod}
+Let $p^*=\frac{e^{rh}-d}{u-d}\in\,]0,1[$. A contract paying $V_u$ if the price goes up and $V_d$ if it goes down, after one period from price $x$, is replicated by
+holding $\delta=\frac{V_u-V_d}{x(u-d)}$ shares and the rest in the bank, at the initial cost
+\[
+V=e^{-rh}\bigl(p^*V_u+(1-p^*)V_d\bigr).
+\]
+\end{proposition}
+\begin{proof}
+With $\delta$ shares and $\beta$ in the bank, the final value is $\delta xu+\beta e^{rh}$ or $\delta xd+\beta e^{rh}$. Equating with $V_u$ and $V_d$ gives $\delta$ as stated and
+$\beta=e^{-rh}\frac{uV_d-dV_u}{u-d}$. The cost is
+\[
+\begin{aligned}\delta x+\beta&=\frac{e^{-rh}}{u-d}\bigl((e^{rh}-d)V_u+(u-e^{rh})V_d\bigr)\eqbr=V.\end{aligned}
+\]
+\end{proof}
+
+\begin{theorem}[binomial pricing]\label{thm:binomial}
+In the $n$-period model, a contract paying $g(S_T)$ is replicated by a self-financing strategy with initial cost
+\[
+V_0=e^{-rT}\,\mathbb E^*\bigl[g(S_T)\bigr],
+\]
+where under the probability $P^*$ the moves are independent, up with probability $p^*$. Under $P^*$ the discounted price $e^{-rkh}S_{kh}$ is a martingale.
+\end{theorem}
+\begin{proof}
+Define $V_n(x)=g(x)$ and, backwards, $V_k(x)=e^{-rh}\bigl(p^*V_{k+1}(xu)+(1-p^*)V_{k+1}(xd)\bigr)$. At time $k$, with price $x$, Proposition~\ref{prop:oneperiod} gives a portfolio of value $V_k(x)$
+that becomes $V_{k+1}(S_{(k+1)h})$ at the end of the period, whatever happens; chaining these portfolios is a self-financing strategy from
+$V_0(S_0)$ to $g(S_T)$. Unrolling the recursion, $V_k(x)=e^{-r(n-k)h}\mathbb E^*[g(xu^Jd^{n-k-J})]$ with $J$ binomial$(n-k,p^*)$, and $k=0$ gives the formula. Finally
+$p^*u+(1-p^*)d=e^{rh}$, so $\mathbb E^*[S_{(k+1)h}\mid\mathcal F_k]=e^{rh}S_{kh}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-tree}
+\caption{The binomial tree for three periods: from each node the price is multiplied by $u$ or by $d=\frac1u$. Pricing runs
+backwards from the payoffs at the leaves, each node receiving the discounted $p^*$-average of its two children.}
+\label{fig:tree}
+\end{figure}
+
+\begin{beauty}
+The real probability that the stock goes up appears nowhere. The price is an expectation, but under the artificial
+probability $P^*$ that makes the stock a fair game after discounting. Two traders who disagree completely about the
+future of the stock must still agree on the price of the option, because the option can be manufactured from the
+stock and the bank.
+\end{beauty}
+
+Let $\Phi$ be the $N(0,1)$ distribution function and
+\[
+d_\pm=\frac{\ln(S_0/K)+(r\pm\frac12\sigma^2)T}{\sigma\sqrt T}.
+\]
+
+\begin{theorem}[Black--Scholes as a limit]\label{thm:blackscholes}
+As $n\to\infty$, the binomial prices of the put and of the call converge to
+\[
+\begin{gathered}P_{\mathrm{BS}}=Ke^{-rT}\Phi(-d_-)-S_0\Phi(-d_+),\qq C_{\mathrm{BS}}=S_0\Phi(d_+)-Ke^{-rT}\Phi(d_-).\end{gathered}
+\]
+\end{theorem}
+\begin{proof}
+\emph{The law of $\ln S_T$.} Write $a=\sigma\sqrt h$, so $a^2=\sigma^2h$, and $\ln\frac{S_T}{S_0}=a\sum_{k\le n}\varepsilon_k$, where under $P^*$ the $\varepsilon_k=\pm1$ are independent and $+1$ with
+probability $p^*$. Taylor expansions give $e^{rh}-e^{-a}=a+(r-\frac{\sigma^2}2)h+O(h^{3/2})$ and $e^a-e^{-a}=2a(1+O(h))$, so
+\[
+p^*=\frac12+\frac{(r-\frac{\sigma^2}2)\sqrt h}{2\sigma}+O(h).
+\]
+Hence the mean of $Y_n=\ln\frac{S_T}{S_0}$ is $m_n=na(2p^*-1)=(r-\frac{\sigma^2}2)T+O(\sqrt h)$, and its variance is $s_n^2=4na^2p^*(1-p^*)=\sigma^2T(1-(2p^*-1)^2)\to\sigma^2T$. The
+centred and normalised terms $\frac{a(\varepsilon_k-(2p^*-1))}{s_n}$ are bounded by $\frac{2a}{s_n}\to0$, so Lindeberg's condition holds trivially (the truncated sums vanish for
+large $n$), and $\frac{Y_n-m_n}{s_n}\to N(0,1)$ in law (Theorem~\ref{thm:lindeberg}). By Slutsky's lemma (Exercise~\ref{ex:slutsky}), $Y_n\to Y$ in law, where $Y$ is
+$N(\mu,\sigma^2T)$ with $\mu=(r-\frac{\sigma^2}2)T$.
+
+\emph{The put.} The function $y\mapsto(K-S_0e^y)^+$ is continuous and bounded by $K$, so the binomial put price $e^{-rT}\mathbb E^*[(K-S_0e^{Y_n})^+]$ converges to
+$e^{-rT}\mathbb E[(K-S_0e^Y)^+]$. Write $Y=\mu+\sigma\sqrt TZ$ with $Z$ of law $N(0,1)$. The payoff is positive exactly when $Z<-d_-$, and completing the square,
+$\mathbb E[e^{\sigma\sqrt TZ}\mathbf 1_{\{Z<-d_-\}}]=e^{\sigma^2T/2}\Phi(-d_--\sigma\sqrt T)$, with $d_-+\sigma\sqrt T=d_+$ and $\mu+\frac{\sigma^2T}2=rT$. So
+\[
+\begin{aligned}e^{-rT}\mathbb E[(K-S_0e^Y)^+]&=Ke^{-rT}\Phi(-d_-)\eqbr-S_0\Phi(-d_+).\end{aligned}
+\]
+
+\emph{The call.} Since $(x-K)^+-(K-x)^+=x-K$ and $\mathbb E^*[S_T]=S_0e^{rT}$ (the discounted price is a $P^*$-martingale), the binomial prices satisfy, for every $n$,
+\[
+C_n-P_n=e^{-rT}\mathbb E^*[S_T-K]=S_0-Ke^{-rT}.
+\]
+So $C_n$ converges to $P_{\mathrm{BS}}+S_0-Ke^{-rT}$, which equals $C_{\mathrm{BS}}$ since $1-\Phi(-x)=\Phi(x)$.
+\end{proof}
+
+For example, with $S_0=K=100$, $r=5\%$, $\sigma=20\%$ and $T=1$ year, $d_+=0.35$, $d_-=0.15$, and the call is worth $C_{\mathrm{BS}}\approx10.45$ and the put
+$P_{\mathrm{BS}}\approx5.57$. The binomial model gives $12.16$ with one period, $10.25$ with $10$, $10.43$ with $100$ and $10.449$ with $1000$: the
+convergence is slow and oscillating, at rate about $\frac1n$.
+
+\begin{remark}
+Under $P^*$ the binomial price paths converge to $S_t=S_0\exp\bigl((r-\frac{\sigma^2}2)t+\sigma B_t\bigr)$, \emph{geometric Brownian motion}. Black and Scholes, and
+Merton, derived the formula in 1973 directly in continuous time, by It\^o's formula and a hedging argument; Bachelier
+had used Brownian motion for prices in 1900, without the exponential. The binomial model of 1979 showed that the whole
+theory rests on the replication argument of Proposition~\ref{prop:oneperiod} and on the central limit theorem.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:maxjoint}
+\emph{The joint law of the maximum and the endpoint.} Adapt the proof of Theorem~\ref{thm:reflection} to show that for $a>0$ and $b\le a$,
+\[
+P(M_1\ge a,\ B_1\le b)=P(B_1\ge2a-b).
+\]
+Deduce the joint density of $(M_1,B_1)$, and show that $M_1-B_1$ also has the law of $|B_1|$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bridge}
+\emph{The Brownian bridge.} Let $X_t=B_t-tB_1$ for $t\in[0,1]$. Show that $X$ is a centred Gaussian process with $\operatorname{Cov}(X_s,X_t)=\min(s,t)-st$, independent of $B_1$, and
+that $B_t=X_t+tZ$ for a variable $Z$ of law $N(0,1)$ independent of $X$. Interpret L\'evy's construction in these terms.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:zeros}
+\emph{The zeros of Brownian motion.} Let $\mathcal Z=\{t\in[0,1]:B_t=0\}$.
+(a) Show that $\mathcal Z$ is closed and has Lebesgue measure $0$ almost surely. (Use Tonelli on $\Omega\times[0,1]$; the map $(t,\omega)\mapsto B_t(\omega)$ is
+measurable, being a limit of the step functions $B_{\lceil mt\rceil/m}$.)
+(b) Show that almost surely $0$ is not isolated in $\mathcal Z$: $B$ has zeros in $]0,\varepsilon[$ for every $\varepsilon>0$. (Use Theorem~\ref{thm:reflection} and symmetry.)
+(c) Show that a non-empty closed subset of $\R$ with no isolated point is uncountable.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:hittingdensity}
+Show that the hitting time $T_a$ of Corollary~\ref{cor:hitting} has density $\frac a{\sqrt{2\pi t^3}}e^{-a^2/2t}$ on $]0,\infty[$, and that $T_a$ has the law of $\frac{a^2}{B_1^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pvariation}
+For the dyadic partitions $\pi_n$ of $[0,1]$ and $p>0$, let $V_p(\pi_n)=\sum_k|B_{k2^{-n}}-B_{(k-1)2^{-n}}|^p$. Compute $\mathbb E[V_p(\pi_n)]$ and $\operatorname{Var}(V_p(\pi_n))$, and show that
+$V_p(\pi_n)\to0$ almost surely for $p>2$ and $V_p(\pi_n)\to\infty$ almost surely for $p<2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:putcall}
+\emph{Put--call parity without a model.} In any market with a bank account at rate $r$, show that if a call and a put with
+the same strike $K$ and maturity $T$ trade at prices $C$ and $P$ with $C-P\ne S_0-Ke^{-rT}$, there is an arbitrage. (Compare the payoffs of
+``buy the call, sell the put'' and ``buy the stock, borrow $Ke^{-rT}$''.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:onestep}
+A stock worth $100$ will be worth $120$ or $90$ in one year; the bank pays nothing ($r=0$). Price the call with strike $100$ and find the
+replicating portfolio. A trader who believes the stock will rise with probability $0.9$ offers to buy the call for $8$. What do you do?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:maxjoint}
+Reflect the event $\{B_1<b\}$ instead of $\{B_1<a\}$. For the density, differentiate $P(M_1\ge a,B_1\le b)$ in $a$ and $b$. For $M_1-B_1$, integrate the density.
+\end{hint}
+\begin{hint}{ex:bridge}
+Gaussian vectors: compute $\operatorname{Cov}(X_t,B_1)$. At level $n$ of the construction, the displacement of the midpoint is the value of a bridge.
+\end{hint}
+\begin{hint}{ex:zeros}
+(a) $\mathbb E[\lambda(\mathcal Z)]=\int_0^1P(B_t=0)\dd t$. (b) $P(\max_{t\le\varepsilon}B_t>0)=1$ for every $\varepsilon$. (c) Build a binary tree of nested closed intervals, as for
+the Cantor set.
+\end{hint}
+\begin{hint}{ex:hittingdensity}
+Differentiate $2(1-\Phi(a/\sqrt t))$. For the second statement, $P(\frac{a^2}{B_1^2}\le t)=P(|B_1|\ge\frac a{\sqrt t})$.
+\end{hint}
+\begin{hint}{ex:pvariation}
+$\mathbb E[V_p]=2^{n(1-p/2)}\mathbb E|Z|^p$ and $\operatorname{Var}(V_p)=2^{n(1-p)}\operatorname{Var}|Z|^p$.
+\end{hint}
+\begin{hint}{ex:putcall}
+$(S_T-K)^+-(K-S_T)^+=S_T-K$ in every scenario.
+\end{hint}
+\begin{hint}{ex:onestep}
+$p^*=\frac{100-90}{120-90}$. Sell the call to the trader and replicate it.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:maxjoint}
+\idea After the first visit to $a$, the rest of the path is as likely to go up as down by any given amount; reflecting the
+final stretch maps ending below $b$ to ending above $2a-b$.
+\writeup With the notation of the proof of Theorem~\ref{thm:reflection}, the same argument with the events $\{B_1-B_{T_n}>a-b+\varepsilon\}$ and $\{B_1-B_{T_n}<-(a-b)-\varepsilon\}$ gives
+$P(T<1,\ B_1>2a-b+\varepsilon)=P(T<1,\ B_1<b-\varepsilon)$, and letting $\varepsilon\downarrow0$ (the law of $B_1$ has no atoms), $P(T<1,B_1<b)=P(T<1,B_1>2a-b)$. Since $2a-b\ge a$,
+$\{B_1>2a-b\}\subseteq\{T<1\}$, so $P(M_1\ge a,\ B_1\le b)=P(B_1\ge2a-b)=1-\Phi(2a-b)$. Differentiating in $b$ and then in $a$ (with $\varphi=\Phi'$, $\varphi'(x)=-x\varphi(x)$), the
+joint density on $\{a>0,\ b<a\}$ is
+\[
+f(a,b)=2(2a-b)\varphi(2a-b).
+\]
+For $M_1-B_1$: $P(M_1-B_1\ge c)=\int\!\!\int_{a-b\ge c}2(2a-b)\varphi(2a-b)\dd b\dd a$. With $x=a-b\ge c$ and $a>0$, $2a-b=a+x$, and $\int_0^\infty2(a+x)\varphi(a+x)\dd a=2\varphi(x)$, so
+$P(M_1-B_1\ge c)=\int_c^\infty2\varphi(x)\dd x=P(|B_1|\ge c)$. (This is a shadow of L\'evy's theorem that $M-B$ is, as a process, a reflected Brownian motion.)
+\end{solution}
+
+\begin{solution}{ex:bridge}
+\idea A Gaussian vector splits into independent pieces as soon as the covariances vanish: subtracting the right multiple
+of $B_1$ kills the correlation.
+\writeup The values of $X$ and $B_1$ at finitely many times form a Gaussian vector (Theorem~\ref{thm:gaussvec}(d)), centred, with
+$\operatorname{Cov}(X_s,X_t)=\min(s,t)-st-ts+st=\min(s,t)-st$ and $\operatorname{Cov}(X_t,B_1)=t-t=0$. So $(X_{t_1},\dots,X_{t_k})$ is independent of $B_1$ for all times (Theorem~\ref{thm:gaussvec}(a) and
+Theorem~\ref{thm:inversion}(a), as in Proposition~\ref{prop:scaling}), and $B_t=X_t+tB_1$ with $Z=B_1$. The bridge is Brownian motion conditioned to return to $0$ at time $1$.
+In L\'evy's construction, between two consecutive points of level $n-1$ the path is a scaled bridge added to the linear interpolation; its value at the
+midpoint is $N(0,\frac14\cdot2^{-n+1})=N(0,2^{-n-1})$, of standard deviation $2^{-(n+1)/2}$: exactly the displacement used.
+\end{solution}
+
+\begin{solution}{ex:zeros}
+\idea Zero has probability zero at each fixed time, hence a zero-measure set of zeros; but near time $0$ the path
+changes sign infinitely often.
+\writeup (a) $\mathcal Z$ is the preimage of $\{0\}$ by a continuous function, so it is closed. By Tonelli (A2), $\mathbb E[\lambda(\mathcal Z)]=\int_0^1P(B_t=0)\dd t=0$, so $\lambda(\mathcal Z)=0$ almost surely.
+(b) By Theorem~\ref{thm:reflection} and scaling, $P(\max_{t\le\varepsilon}B_t>0)\ge P(\max_{t\le\varepsilon}B_t\ge\delta)=P(|B_\varepsilon|\ge\delta)\to1$ as $\delta\to0$; so the event $E_\varepsilon=\{\max_{t\le\varepsilon}B_t>0\}$ has
+probability $1$, and so has its analogue for $-B$. Intersecting over $\varepsilon=\frac1j$, almost surely $B$ takes positive and negative values in every
+interval $]0,\varepsilon[$, hence vanishes somewhere in it by the intermediate value theorem.
+(c) Let $F$ be non-empty, closed, without isolated points. Pick two distinct points of $F$ and disjoint closed intervals of length
+at most $1$ around them; each interval meets $F$ in a point that is not isolated, so each contains two points of $F$ again, around which
+we put two disjoint closed intervals of length at most $\frac12$ inside it, and so on. Each infinite sequence of left/right choices gives
+a decreasing sequence of closed intervals with lengths tending to $0$, each meeting the closed set $F$; their intersection is a point of
+$F$ (nested closed intervals with lengths tending to $0$ meet in one point, by completeness of $\R$). Different sequences give different points, so $F$
+has at least as many points as $\{0,1\}^{\N}$, which is uncountable (Cantor's diagonal argument). Every point of $\mathcal Z$ is in fact a non-isolated point; this uses the strong Markov
+property at the first zero after each rational time, proved in Tome~11, and with (c) it shows that $\mathcal Z$ is uncountable.
+\end{solution}
+
+\begin{solution}{ex:hittingdensity}
+\idea The law of the hitting time is read off from the law of the maximum, by the scaling relation between space and
+time.
+\writeup By Corollary~\ref{cor:hitting}, $P(T_a\le t)=2(1-\Phi(at^{-1/2}))$. Differentiating, the density is $2\varphi(at^{-1/2})\cdot\frac a2t^{-3/2}=\frac a{\sqrt{2\pi t^3}}e^{-a^2/2t}$. And
+$P(\frac{a^2}{B_1^2}\le t)=P(|B_1|\ge at^{-1/2})=2(1-\Phi(at^{-1/2}))$: the same distribution function. The density decays like $t^{-3/2}$, which again shows $\mathbb E[T_a]=\infty$.
+\end{solution}
+
+\begin{solution}{ex:pvariation}
+\idea Each of the $2^n$ increments is $2^{-n/2}$ times a standard Gaussian, so the $p$-th powers sum to $2^{n(1-p/2)}$ times an average,
+which the law of large numbers controls.
+\writeup The increments are $2^{-n/2}Z_k$ with $Z_k$ independent $N(0,1)$, so $V_p(\pi_n)=2^{-np/2}\sum_{k\le2^n}|Z_k|^p$, of mean $c_p2^{n(1-p/2)}$ with $c_p=\mathbb E|Z|^p\in\,]0,\infty[$, and
+variance $v_p2^{n(1-p)}$ with $v_p=\operatorname{Var}|Z|^p$. By Chebyshev, $P\bigl(|V_p-\mathbb E V_p|>\frac12\mathbb E V_p\bigr)\le\frac{4v_p2^{n(1-p)}}{c_p^22^{n(2-p)}}=\frac{4v_p}{c_p^2}2^{-n}$, which is summable; by
+Borel--Cantelli, almost surely $\frac12\mathbb E V_p\le V_p\le\frac32\mathbb E V_p$ for large $n$. Since $\mathbb E V_p\to0$ for $p>2$ and $\to\infty$ for $p<2$, the claims follow. The exponent $2$ is
+the dividing line, in agreement with Theorem~\ref{thm:qv}.
+\end{solution}
+
+\begin{solution}{ex:putcall}
+\idea Two portfolios with the same payoff in every scenario must cost the same today; otherwise buy the cheap one, sell
+the dear one, and pocket the difference.
+\writeup Portfolio A: buy the call and sell the put; at $T$ it is worth $(S_T-K)^+-(K-S_T)^+=S_T-K$. Portfolio B: buy one share and borrow $Ke^{-rT}$; at $T$
+it is worth $S_T-K$ too. Their costs are $C-P$ and $S_0-Ke^{-rT}$. If $C-P>S_0-Ke^{-rT}$, sell A and buy B: you receive the difference today and owe
+nothing at $T$, whatever happens. If $C-P<S_0-Ke^{-rT}$, do the opposite. No model of the stock is needed.
+\end{solution}
+
+\begin{solution}{ex:onestep}
+\idea The option is a combination of stock and cash; its price is the price of that combination, whatever anybody
+believes about the future.
+\writeup Here $u=1.2$, $d=0.9$, $e^{rh}=1$, so $p^*=\frac{1-0.9}{1.2-0.9}=\frac13$. The call pays $20$ or $0$, so its price is $\frac13\cdot20=\frac{20}3\approx6.67$. Replication: $\delta=\frac{20-0}{120-90}=\frac23$
+share, financed by borrowing $\frac23\cdot90=60$: the portfolio costs $\frac{200}3-60=\frac{20}3$ and is worth $80-60=20$ or $60-60=0$. The trader's beliefs are irrelevant:
+sell him the call for $8$, buy $\frac23$ of a share and borrow $60$; you keep $8-\frac{20}3=\frac43$ for sure, and the portfolio pays exactly what you owe him.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item P.~M\"orters and Y.~Peres, \emph{Brownian Motion}, Cambridge University Press, 2010. L\'evy's construction, scaling,
+nowhere differentiability, the reflection principle and the zero set, all in Chapters~1 and~2.
+\item I.~Karatzas and S.~Shreve, \emph{Brownian Motion and Stochastic Calculus}, 2nd ed., Springer, 1991.
+\item P.~L\'evy, \emph{Processus stochastiques et mouvement brownien}, Gauthier-Villars, 1948.
+\item N.~Wiener, \emph{Differential space}, Journal of Mathematics and Physics 2 (1923), 131--174.
+\item R.~Paley, N.~Wiener and A.~Zygmund, \emph{Notes on random functions}, Mathematische Zeitschrift 37 (1933), 647--668.
+\item A.~Dvoretzky, P.~Erd\H os and S.~Kakutani, \emph{Nonincrease everywhere of the Brownian motion process}, Proceedings of
+the Fourth Berkeley Symposium, Vol.~2, 1961, 103--116.
+\item A.~Einstein, \emph{\"Uber die von der molekularkinetischen Theorie der W\"arme geforderte Bewegung von in ruhenden
+Fl\"ussigkeiten suspendierten Teilchen}, Annalen der Physik 17 (1905), 549--560.
+\item L.~Bachelier, \emph{Th\'eorie de la sp\'eculation}, Annales scientifiques de l'\'Ecole Normale Sup\'erieure 17 (1900), 21--86.
+\item J.~Cox, S.~Ross and M.~Rubinstein, \emph{Option pricing: a simplified approach}, Journal of Financial Economics 7
+(1979), 229--263.
+\item F.~Black and M.~Scholes, \emph{The pricing of options and corporate liabilities}, Journal of Political Economy 81
+(1973), 637--654.
+\item S.~Shreve, \emph{Stochastic Calculus for Finance I: The Binomial Asset Pricing Model}, Springer, 2004.
+\end{itemize}
