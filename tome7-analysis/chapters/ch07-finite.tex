@@ -1,0 +1,627 @@
+\chapter{Fourier Analysis on Finite Abelian Groups}
+
+\begin{center}\itshape
+On a finite group there are no convergence questions, no null sets and no distributions: the Fourier transform is a change of basis
+in a space of finite dimension. What remains is the structure, and the structure turns out to be enough to prove quadratic
+reciprocity, to bound the largest hand of SET without a set, and to check a program by asking it three questions.
+\end{center}
+
+In the mid-1920s Alexander Ostrowski asked a question that sounds like an exercise. Let $p$ be a prime and
+$\zeta=e^{2\pi i/p}$. Take the $p\times p$ matrix $(\zeta^{jk})$ of the discrete Fourier transform and cut out any square submatrix,
+choosing any $n$ rows and any $n$ columns. Is it always invertible? For $p=2$ and $p=3$ one checks it by hand; for $p=5$ there are
+$251$ minors. The answer is yes, and the proof came in 1926 from Nikolai Chebotarev, whose great density theorem, met in Tome~12, was appearing
+at the same time. The lemma was forgotten and rediscovered many times in the following eighty years, by algebraists, by analysts, and by engineers who needed it. In 2003 Terence Tao noticed that it is an
+\emph{uncertainty principle}: a signal on $\Z/p\Z$ and its spectrum cannot both be sparse, in a sense much sharper than the general
+uncertainty principle for finite groups. Soon after, trying to explain a numerical experiment of Emmanuel Cand\`es in which a
+medical image had been rebuilt perfectly from far too few Fourier samples, Cand\`es, Justin Romberg and Tao founded \emph{compressed
+sensing}. A ninety-year-old lemma about roots of unity now runs inside MRI scanners.
+
+This chapter is about such surprises. Tome~2 (Section~11.4) proved the basic theory: a finite abelian group $G$ has exactly $|G|$
+characters, they form an orthonormal basis, and every function is a combination of them. Tome~4 (Chapter~7) built the fast Fourier
+transform for $\Z/2^k\Z$. Here we develop the duality between $G$ and its characters, the Poisson summation formula for subgroups and
+a fast transform for every finite abelian group. Then we harvest: uncertainty principles, Chebotarev's lemma and Tao's theorem;
+quadratic reciprocity as a consequence of the Chinese remainder theorem; Meshulam's bound for sets without arithmetic progressions in
+$\mathbb F_3^n$; and the linearity test of Blum, Luby and Rubinfeld, the first brick of the theory of probabilistically checkable proofs.
+
+\section{Characters and duality}
+
+Throughout, $G$ is a finite abelian group, written additively. A \emph{character} of $G$ is a homomorphism $\chi:G\to\C^*$; since
+$\chi(x)^{|G|}=\chi(|G|x)=1$, its values are roots of unity, so $|\chi|=1$ and $\overline{\chi}=\chi^{-1}$. The characters form the
+\emph{dual group} $\widehat G$ under pointwise multiplication, and $|\widehat G|=|G|$ (Tome~2, Section~11.4). We write $e(t)=e^{2\pi it}$; the
+characters of $\Z/n\Z$ are $x\mapsto e(\frac{bx}n)$, $b\in\Z/n\Z$.
+
+\begin{proposition}\label{prop:dualprod}
+\begin{enumerate}
+\item[(a)] For finite abelian groups $G$ and $H$, the map $\chi\mapsto(\chi(\cdot,0),\chi(0,\cdot))$ is an isomorphism $\widehat{G\times H}\to\widehat G\times\widehat H$.
+\item[(b)] $\widehat G\cong G$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The map is a homomorphism. Since $(x,y)=(x,0)+(0,y)$, we have $\chi(x,y)=\chi(x,0)\chi(0,y)$, so $\chi$ is determined by its image
+and the map is injective; conversely, for $\psi\in\widehat G$ and $\phi\in\widehat H$, $(x,y)\mapsto\psi(x)\phi(y)$ is a character of
+$G\times H$ with image $(\psi,\phi)$.
+
+(b) For $G=\Z/n\Z$, a character is determined by $\chi(1)$, which can be any $n$-th root of unity, so $b\mapsto(x\mapsto e(\frac{bx}n))$
+is an isomorphism $\Z/n\Z\to\widehat G$. By the structure theorem (Tome~2, Corollary~7.7), $G$ is a product of cyclic groups, and (a)
+finishes the proof.
+\end{proof}
+
+The isomorphism in (b) is not \emph{canonical}: already for $\Z/n\Z$ it depends on the choice of the root of unity $e(\frac1n)$ among the
+primitive ones. The double dual, by contrast, needs no choice at all.
+
+\begin{theorem}[duality]\label{thm:finiteduality}
+The map $\mathrm{ev}:G\to\widehat{\widehat G}$, $\mathrm{ev}(x)(\chi)=\chi(x)$, is an isomorphism.
+\end{theorem}
+\begin{proof}
+$\mathrm{ev}(x)$ is a character of $\widehat G$ because the group law of $\widehat G$ is pointwise multiplication, and $\mathrm{ev}$ is a
+homomorphism because each $\chi$ is. If $x\ne0$, the third formula of Tome~2, Theorem~11.14, gives $\sum_{\chi}\chi(x)=0$; if
+$\chi(x)$ were $1$ for every $\chi$, the sum would be $|G|$. So $\chi(x)\ne1$ for some $\chi$, and $\mathrm{ev}$ is injective. Both groups have $|G|$ elements.
+\end{proof}
+
+Chapter~8 extends this theorem to locally compact abelian groups, where it becomes Pontryagin's duality: the dual of $\R$ is $\R$, the
+dual of the circle is $\Z$, and the dual of $\Z$ is the circle. The finite case already contains the most useful construction.
+
+\begin{definition}
+The \emph{annihilator} of a subgroup $H\le G$ is $H^\perp=\{\chi\in\widehat G:\chi(h)=1\text{ for all }h\in H\}$.
+\end{definition}
+
+\begin{proposition}\label{prop:annihilator}
+Let $H\le G$.
+\begin{enumerate}
+\item[(a)] $H^\perp$ is a subgroup of $\widehat G$, isomorphic to $\widehat{G/H}$; in particular $|H^\perp|=|G|/|H|$.
+\item[(b)] Every character of $H$ extends to a character of $G$, and restriction induces an isomorphism $\widehat G/H^\perp\cong\widehat H$.
+\item[(c)] Under the identification of Theorem~\ref{thm:finiteduality}, $(H^\perp)^\perp=H$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) A character trivial on $H$ factors through the quotient map $G\to G/H$, and every character of $G/H$ composed with that map is
+a character of $G$ trivial on $H$. This is a bijection compatible with products, so $H^\perp\cong\widehat{G/H}$, which has $|G/H|$
+elements.
+
+(b) Restriction $\widehat G\to\widehat H$ is a homomorphism with kernel $H^\perp$. Its image therefore has $|\widehat G|/|H^\perp|=|H|=|\widehat H|$
+elements: it is onto, which is the extension statement, and the isomorphism follows.
+
+(c) If $h\in H$, then $\chi(h)=1$ for every $\chi\in H^\perp$, so $\mathrm{ev}(h)\in(H^\perp)^\perp$. By (a) applied to $H^\perp\le\widehat G$,
+$|(H^\perp)^\perp|=|\widehat G|/|H^\perp|=|H|$, so the inclusion is an equality.
+\end{proof}
+
+\begin{think}
+Statement (b) says that a homomorphism from a subgroup into $\C^*$ always extends to the whole group. Is the same true for
+homomorphisms into $\{\pm1\}$? Into $\Z$? (Try $H=2\Z/4\Z$ inside $G=\Z/4\Z$.) What property of $\C^*$ is being used?
+\end{think}
+
+\subsection*{The Fourier transform}
+
+We use the normalisation of Tome~2, which is the one of additive combinatorics: averages on the group, sums on the dual. For
+$f:G\to\C$ write $\mathbb E_{x}f(x)=\frac1{|G|}\sum_{x\in G}f(x)$, and define
+\[\hat f(\chi)=\mathbb E_{x}f(x)\overline{\chi(x)},\qquad\langle f,g\rangle=\mathbb E_{x}f(x)\overline{g(x)},\qquad(f*g)(x)=\mathbb E_{y}f(y)g(x-y).\]
+Tome~2, Theorem~11.14, gives the inversion formula $f=\sum_\chi\hat f(\chi)\chi$ and Parseval's identity $\mathbb E|f|^2=\sum_\chi|\hat f(\chi)|^2$.
+
+\begin{proposition}\label{prop:finiteconv}
+For $f,g:G\to\C$, $a\in G$ and $\chi,\psi\in\widehat G$:
+\begin{enumerate}
+\item[(a)] $\langle f,g\rangle=\sum_\chi\hat f(\chi)\overline{\hat g(\chi)}$ (Plancherel);
+\item[(b)] $\widehat{f*g}=\hat f\,\hat g$;
+\item[(c)] if $\tau_af(x)=f(x-a)$, then $\widehat{\tau_af}(\chi)=\overline{\chi(a)}\hat f(\chi)$, and $\widehat{\psi f}(\chi)=\hat f(\overline\psi\chi)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Expand $f$ and $g$ by inversion and use the orthonormality $\langle\chi,\psi\rangle=\mathbf 1_{\chi=\psi}$. (b) Substituting $x=y+z$,
+\[\widehat{f*g}(\chi)=\mathbb E_x\mathbb E_yf(y)g(x-y)\overline{\chi(x)}=\mathbb E_y\mathbb E_zf(y)\overline{\chi(y)}\,g(z)\overline{\chi(z)}=\hat f(\chi)\hat g(\chi).\]
+(c) Substitute $x=y+a$ in the first formula. For the second, $\psi(x)\overline{\chi(x)}=\overline{(\overline\psi\chi)(x)}$ because $|\psi(x)|=1$.
+\end{proof}
+
+\begin{theorem}[Poisson summation]\label{thm:poissonfinite}
+Let $H\le G$ and $f:G\to\C$. For every $x\in G$,
+\[\mathbb E_{h\in H}f(x+h)=\sum_{\chi\in H^\perp}\hat f(\chi)\chi(x).\]
+In particular $\mathbb E_{h\in H}f(h)=\sum_{\chi\in H^\perp}\hat f(\chi)$.
+\end{theorem}
+\begin{proof}
+By inversion,
+\[f(x+h)=\sum_\chi\hat f(\chi)\chi(x)\chi(h).\]
+Average over $h\in H$. The restriction of $\chi$ to $H$ is a character $\psi$
+of $H$; if $\psi$ is trivial, $\mathbb E_{h\in H}\psi(h)=1$, and otherwise there is $h_0\in H$ with $\psi(h_0)\ne1$, and
+$\psi(h_0)\mathbb E_h\psi(h)=\mathbb E_h\psi(h_0+h)=\mathbb E_h\psi(h)$ forces $\mathbb E_h\psi(h)=0$. So only the $\chi\in H^\perp$ survive.
+\end{proof}
+
+For $H=\{0\}$ this is the inversion formula, and for $H=G$ it says $\hat f(1)=\mathbb E f$. For $G=\Z/n\Z$ and $H=d\Z/n\Z$ with $d\mid n$, the
+annihilator consists of the characters $x\mapsto e(\frac{bx}n)$ with $\frac nd\mid b$, and the formula computes averages over arithmetic
+progressions from a few Fourier coefficients. For a linear code $C\subset\mathbb F_2^n$, it becomes the MacWilliams identity of
+Exercise~\ref{ex:macwilliams}, which links the weights of a code to those of its dual code.
+
+\begin{beauty}
+The Poisson summation formula of Tome~4 (Theorem~8.9), $\sum_{n\in\Z}f(n)=\sum_{k\in\Z}\hat f(k)$, and its lattice version
+(Theorem~\ref{thm:poissonlattice}) are the same statement for the subgroup $\Z$ of $\R$, whose annihilator is again $\Z$; the finite
+version needs no analysis at all. Chapter~8 will put all of them, and a version on the adeles that underlies Tate's thesis, under one
+roof.
+\end{beauty}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-characters}
+\caption{The characters $\chi_b(x)=e(\frac{bx}8)$ of $\Z/8\Z$ for $b=1,2,3,4$: the points $\chi_b(0),\chi_b(1),\dots,\chi_b(7)$ on the unit circle,
+joined in order. $\chi_1$ walks around the octagon, $\chi_2$ goes twice around a square, $\chi_3$ draws a star, and $\chi_4$ only takes the
+values $\pm1$. The characters with $b$ odd are the faithful ones: they are the $\varphi(8)=4$ possible identifications of $\Z/8\Z$ with its dual.}
+\label{fig:characters}
+\end{figure}
+
+\section{A fast transform for every finite abelian group}
+
+Computed from its definition, $\hat f$ costs $|G|^2$ multiplications. Tome~4 (Theorem~7.9) reduced this to $O(n\log n)$ for $\Z/n\Z$ with
+$n=2^k$, by splitting the group into even and odd residues. The idea works along any subgroup.
+
+\begin{lemma}[splitting along a subgroup]\label{lem:split}
+Let $H\le G$, let $T\subset G$ contain exactly one element of each coset of $H$, and for each $\psi\in\widehat H$ fix an extension
+$\chi_\psi\in\widehat G$ (Proposition~\ref{prop:annihilator}(b)). For $t\in T$ let $F_t$ be the Fourier transform on $H$ of $h\mapsto f(t+h)$.
+Then the characters of $G$ are the $\chi_\psi\eta$ with $\psi\in\widehat H$ and $\eta\in H^\perp$, each obtained once, and
+\[\hat f(\chi_\psi\eta)=\mathbb E_{t\in T}\,\overline{\eta(t)}\,\Bigl(\overline{\chi_\psi(t)}\,F_t(\psi)\Bigr).\]
+Since $\eta\in H^\perp\cong\widehat{G/H}$, for each fixed $\psi$ the right side is a Fourier transform on the group $G/H$.
+\end{lemma}
+\begin{proof}
+A character $\chi$ with $\chi|_H=\psi$ satisfies $(\chi\overline{\chi_\psi})|_H=1$, so $\chi=\chi_\psi\eta$ with $\eta\in H^\perp$, and $\eta$
+is unique. Every $x\in G$ is uniquely $t+h$ with $t\in T$ and $h\in H$, and $|G|=|T||H|$, so
+\[\hat f(\chi)=\mathbb E_{t\in T}\overline{\chi(t)}\,\mathbb E_{h\in H}f(t+h)\overline{\chi(h)}=\mathbb E_{t\in T}\overline{\chi(t)}F_t(\chi|_H).\]
+With $\chi=\chi_\psi\eta$, $\overline{\chi(t)}=\overline{\chi_\psi(t)}\,\overline{\eta(t)}$ and $\chi|_H=\psi$. Finally $\eta(t)$ only depends on the coset $t+H$.
+\end{proof}
+
+\begin{theorem}[fast Fourier transform]\label{thm:fftgeneral}
+Let $|G|=p_1p_2\cdots p_r$ with primes $p_i$, repeated according to multiplicity. Once the values of suitable characters are
+tabulated, the Fourier transform of any $f:G\to\C$ can be computed with at most $|G|\sum_{i=1}^r(p_i+2)$ operations, an operation being
+one complex multiplication and one addition.
+\end{theorem}
+\begin{proof}
+Let $C(G)$ be the cost. For the trivial group $C=0$. Otherwise $G$ has a subgroup $H$ of prime index $p$: write $G\cong\Z/n_1\Z\times\cdots$ and
+take $H=p\Z/n_1\Z\times\cdots$, where $p\mid n_1$. Then $|H|=p_2\cdots p_r$ after renumbering, and $G/H\cong\Z/p\Z$. Apply Lemma~\ref{lem:split}:
+compute the $p$ transforms $F_t$ on $H$ (cost $pC(H)$), multiply each value $F_t(\psi)$ by $\frac1p\overline{\chi_\psi(t)}$ ($|G|$
+operations), and for each of the $|H|$ characters $\psi$ compute a transform on $\Z/p\Z$ from its definition ($p^2$ operations each). By
+induction,
+\[C(G)\le p\,|H|\sum_{i\ge2}(p_i+2)+|G|+|H|p^2=|G|\Bigl(\sum_{i\ge2}(p_i+2)+p+1\Bigr)\le|G|\sum_{i\ge1}(p_i+2).\]
+\end{proof}
+
+For $|G|=2^k$ the bound is $4k\,2^k$: the transform of a $2$-group costs $O(|G|\log|G|)$. For $G=\Z/2^k\Z$ the lemma is Cooley and
+Tukey's even--odd split, and for $G=\mathbb F_2^n$ it is the Walsh--Hadamard transform used in Section~\ref{sec:blr}. The bound is poor
+when $|G|$ has a large prime factor, and the extreme case $G=\Z/p\Z$ costs $p^2$. Here a beautiful trick of Rader (1968) helps: the
+multiplicative group $(\Z/p\Z)^*$ is cyclic (Tome~1, Chapter~5), and writing $x=g^u$ and $b=g^{-v}$ for a primitive root $g$ turns
+$\sum_{x\ne0}f(x)e(\frac{bx}p)$ into a convolution on $\Z/(p-1)\Z$, which an FFT of composite length computes. So every finite abelian group
+has an $O(|G|\log|G|)$ Fourier transform.
+
+\section{Uncertainty}
+
+A function on $\R$ and its Fourier transform cannot both be concentrated: Heisenberg's inequality (Tome~4, Theorem~8.16) measures this
+by variances, and Corollary~\ref{cor:nocompact} shows that they cannot both have compact support. On a finite group the natural measure
+of concentration is the size of the support.
+
+\begin{theorem}[Donoho and Stark, 1989]\label{thm:donohostark}
+If $f:G\to\C$ is not identically zero, then
+\[|\operatorname{supp}f|\cdot|\operatorname{supp}\hat f|\ge|G|.\]
+\end{theorem}
+\begin{proof}
+Let $A=\operatorname{supp}f$ and $B=\operatorname{supp}\hat f$. By inversion, Cauchy--Schwarz and Parseval, for every $x$,
+\[|f(x)|\le\sum_{\chi\in B}|\hat f(\chi)|\le|B|^{1/2}\Bigl(\sum_\chi|\hat f(\chi)|^2\Bigr)^{1/2}=|B|^{1/2}\bigl(\mathbb E|f|^2\bigr)^{1/2}\le|B|^{1/2}\Bigl(\frac{|A|}{|G|}\Bigr)^{1/2}\|f\|_\infty,\]
+the last step because $|f|^2\le\|f\|_\infty^2\mathbf 1_A$. Take the maximum over $x$ and divide by $\|f\|_\infty>0$.
+\end{proof}
+
+The bound is attained. For a subgroup $H$, Theorem~\ref{thm:poissonfinite} applied at $x=0$ to $f\overline\chi$, or a direct computation,
+gives
+\[\widehat{\mathbf 1_H}(\chi)=\frac{|H|}{|G|}\mathbb E_{h\in H}\overline{\chi(h)}=\frac{|H|}{|G|}\mathbf 1_{H^\perp}(\chi),\]
+so $|\operatorname{supp}\mathbf 1_H|\cdot|\operatorname{supp}\widehat{\mathbf 1_H}|=|H|\cdot|H^\perp|=|G|$. Translating and multiplying by a character
+(Proposition~\ref{prop:finiteconv}(c)) moves the supports without changing their sizes, so $\psi\cdot\mathbf 1_{a+H}$ is extremal too, and
+Exercise~\ref{ex:dsequality} shows that these are the only extremal functions, up to a constant factor.
+
+\begin{think}
+For $G=\Z/p\Z$ with $p$ prime there are no subgroups except $\{0\}$ and $G$, so equality only holds when one support is a single
+point. Could there still be an $f$ with $|\operatorname{supp}f|=|\operatorname{supp}\hat f|=\lceil\sqrt p\,\rceil$, which the theorem allows?
+\end{think}
+
+The answer is no, by far. It rests on Chebotarev's lemma. We give a short proof in the spirit of P.~E.~Frenkel's (2003), which only uses
+the minimal polynomial of $\zeta$ and Taylor expansions.
+
+\begin{lemma}[Chebotarev, 1926]\label{lem:chebotarev}
+Let $p$ be prime and $\zeta=e(\frac1p)$. If $a_1,\dots,a_n$ are distinct and $b_1,\dots,b_n$ are distinct elements of $\{0,1,\dots,p-1\}$,
+then $\det\bigl(\zeta^{a_ib_j}\bigr)_{1\le i,j\le n}\ne0$.
+\end{lemma}
+\begin{proof}
+Let $D(x)=\det\bigl(x^{a_ib_j}\bigr)\in\Z[x]$, $m=\frac{n(n-1)}2$, and let $V(a)=\prod_{i<j}(a_j-a_i)$, $V(b)$ likewise.
+
+\emph{Step 1: $D(e^t)=c\,t^m+O(t^{m+1})$ as $t\to0$, with $c\prod_{k=0}^{n-1}k!=V(a)V(b)$.} Fix $K\ge m$. Then
+$e^{ta_ib_j}=\sum_{k=0}^Ka_i^k\frac{t^k}{k!}b_j^k+O(t^{K+1})$, so the matrix $(e^{ta_ib_j})$ is $P\Delta Q^{\mathsf T}+O(t^{K+1})$, where $P$ and $Q$ are the
+$n\times(K+1)$ matrices $(a_i^k)$ and $(b_j^k)$, and $\Delta=\operatorname{diag}(\frac{t^k}{k!})_{0\le k\le K}$. A determinant is a polynomial in the
+entries, so $D(e^t)=\det(P\Delta Q^{\mathsf T})+O(t^{K+1})$. By the Cauchy--Binet formula,
+\[\det(P\Delta Q^{\mathsf T})=\sum_{S}\det P_S\,\det Q_S\prod_{k\in S}\frac{t^k}{k!},\]
+the sum running over the $n$-element subsets $S\subset\{0,\dots,K\}$, where $P_S$ keeps the columns of $P$ indexed by $S$. The power of $t$ is
+$\sum_{k\in S}k\ge0+1+\cdots+(n-1)=m$, with equality only for $S=\{0,\dots,n-1\}$, where $\det P_S=V(a)$ and $\det Q_S=V(b)$ are Vandermonde
+determinants. This proves Step 1.
+
+\emph{Step 2: $D(x)=(x-1)^mQ(x)$ with $Q\in\Z[x]$ and $Q(1)=c$.} Let $r$ be the order of vanishing of $D$ at $1$ and $D=(x-1)^rQ$, with
+$Q(1)\ne0$ (note $c\ne0$, so $D\ne0$). Division by the monic polynomial $(x-1)^r$ stays in $\Z[x]$, so $Q\in\Z[x]$. Since
+$e^t-1=t(1+O(t))$, $D(e^t)=Q(1)t^r+O(t^{r+1})$, and comparing with Step 1 gives $r=m$ and $Q(1)=c$. In particular $c$ is an integer, and since
+the $a_i$ are distinct residues, $0<|a_j-a_i|<p$, so $p\nmid V(a)V(b)=c\prod k!$, and $p\nmid c$.
+
+\emph{Step 3.} Suppose $D(\zeta)=0$. The cyclotomic polynomial $\Phi_p=1+x+\cdots+x^{p-1}$ is the minimal polynomial of $\zeta$ over $\Q$
+(its degree $p-1$ equals $[\Q(\zeta):\Q]$, Tome~2, Proposition~10.9), so $\Phi_p$ divides $D$ in $\Q[x]$. As $\Phi_p(1)=p\ne0$, $\Phi_p$ is prime to
+$(x-1)^m$ and divides $Q$; as $\Phi_p$ is monic, $Q=\Phi_pR$ with $R\in\Z[x]$. Then $c=Q(1)=pR(1)$, contradicting Step 2.
+\end{proof}
+
+\begin{theorem}[Tao, 2005]\label{thm:tao}
+Let $p$ be prime and $f:\Z/p\Z\to\C$ not identically zero. Then
+\[|\operatorname{supp}f|+|\operatorname{supp}\hat f|\ge p+1.\]
+Conversely, for all non-empty $A,B\subset\Z/p\Z$ with $|A|+|B|=p+1$ there is an $f$ with $\operatorname{supp}f=A$ and $\operatorname{supp}\hat f=B$.
+\end{theorem}
+\begin{proof}
+Identify $\widehat{\Z/p\Z}$ with $\Z/p\Z$ through $b\mapsto e(\frac{b\,\cdot}p)$, so that $p\hat f(b)=\sum_xf(x)\zeta^{-bx}$. Let $A=\operatorname{supp}f$, $k=|A|$, and
+suppose $|\operatorname{supp}\hat f|\le p-k$. Then $\hat f$ vanishes on a set $B$ of $k$ frequencies, and $\sum_{x\in A}\zeta^{-bx}f(x)=0$ for $b\in B$. This is a
+square linear system for the values $f(x)$, $x\in A$, whose matrix $(\zeta^{(-b)x})$ is invertible by Lemma~\ref{lem:chebotarev} (represent $-b$ and $x$ by
+elements of $\{0,\dots,p-1\}$). So $f=0$ on $A$, a contradiction.
+
+For the converse, the functions supported in $A$ form a space of dimension $|A|$, and requiring $\hat f=0$ outside $B$ imposes
+$p-|B|=|A|-1$ linear conditions. So some $f\ne0$ satisfies $\operatorname{supp}f\subset A$ and $\operatorname{supp}\hat f\subset B$. By the inequality,
+$|\operatorname{supp}f|+|\operatorname{supp}\hat f|\ge p+1=|A|+|B|$, so both inclusions are equalities.
+\end{proof}
+
+Compare the two theorems when $f$ has $\sqrt p$ non-zero values: Donoho--Stark allows a spectrum of size $\sqrt p$, Tao forces at least $p+1-\sqrt p$. The
+consequence for signal processing is striking. If $f$ and $g$ have at most $k$ non-zero values each and $\hat f=\hat g$ on any $2k$
+frequencies, then $f-g$ has support at most $2k$ and a spectrum of size at most $p-2k$, so $f=g$: \emph{a $k$-sparse signal of prime length
+is determined by any $2k$ of its Fourier coefficients}, wherever they are. For composite lengths this fails (Exercise~\ref{ex:composite}),
+and compressed sensing replaces exact determination by stable recovery with random frequencies, at the price of a logarithmic factor.
+
+\section{Quadratic reciprocity from the Chinese remainder theorem}
+
+Tome~1 proved quadratic reciprocity by counting lattice points (Eisenstein's proof) and, in an exercise, with Gauss sums; Tome~4
+(Theorem~8.14) computed the sums
+\[G(a;n)=\sum_{x\in\Z/n\Z}e\Bigl(\frac{ax^2}n\Bigr),\qquad G(1;n)=\varepsilon_n\sqrt n\quad\text{for odd }n,\quad\varepsilon_n=\begin{cases}1&n\equiv1\ (4),\\i&n\equiv3\ (4),\end{cases}\]
+by Poisson summation on $\R$, settling the sign that cost Gauss four years. In the language of this chapter, $G(a;n)$ is $n$ times a
+Fourier coefficient, at the character $y\mapsto e(-\frac{ay}n)$, of the function $r(y)=\#\{x:x^2=y\}$ that counts square roots. Once the analysis has fixed
+the sign, reciprocity is pure group structure: it is the Chinese remainder theorem.
+
+\begin{lemma}\label{lem:gaussa}
+Let $p$ be an odd prime and $p\nmid a$. Then $G(a;p)=\bigl(\frac ap\bigr)G(1;p)$.
+\end{lemma}
+\begin{proof}
+The number of $x$ with $x^2=y$ in $\Z/p\Z$ is $1+\bigl(\frac yp\bigr)$ (Tome~1, Chapter~6). Hence, using $\sum_ye(\frac{ay}p)=0$,
+\[G(a;p)=\sum_y\Bigl(1+\Bigl(\frac yp\Bigr)\Bigr)e\Bigl(\frac{ay}p\Bigr)=\sum_y\Bigl(\frac yp\Bigr)e\Bigl(\frac{ay}p\Bigr)=\Bigl(\frac ap\Bigr)\sum_y\Bigl(\frac{ay}p\Bigr)e\Bigl(\frac{ay}p\Bigr),\]
+since $\bigl(\frac ap\bigr)^2=1$. As $y$ runs over $\Z/p\Z$, so does $ay$, and the last sum is $G(1;p)$ by the same computation with $a=1$.
+\end{proof}
+
+\begin{lemma}\label{lem:gaussmult}
+If $\gcd(m,n)=1$, then $G(a;mn)=G(an;m)\,G(am;n)$.
+\end{lemma}
+\begin{proof}
+The map $\Z/n\Z\times\Z/m\Z\to\Z/mn\Z$, $(y,z)\mapsto my+nz$, is well defined and injective: if $my+nz\equiv0\pmod{mn}$, then $n\mid my$, so
+$n\mid y$, and likewise $m\mid z$. Both sides have $mn$ elements, so it is a bijection (the Chinese remainder theorem). Now
+\[\frac{a(my+nz)^2}{mn}=\frac{amy^2}n+\frac{anz^2}m+2ayz,\]
+and $e(2ayz)=1$. So the summand $e(\frac{ax^2}{mn})$ factors, and the sum over $x$ is the product of the sums over $y$ and over $z$.
+\end{proof}
+
+\begin{theorem}[quadratic reciprocity]\label{thm:qr}
+For distinct odd primes $p$ and $q$,
+\[\Bigl(\frac pq\Bigr)\Bigl(\frac qp\Bigr)=(-1)^{\frac{p-1}2\cdot\frac{q-1}2}.\]
+\end{theorem}
+\begin{proof}
+By the two lemmas,
+\[G(1;pq)=G(q;p)G(p;q)=\Bigl(\frac qp\Bigr)\Bigl(\frac pq\Bigr)G(1;p)G(1;q).\]
+With Tome~4's evaluation,
+\[\varepsilon_{pq}\sqrt{pq}=\Bigl(\frac qp\Bigr)\Bigl(\frac pq\Bigr)\varepsilon_p\varepsilon_q\sqrt{pq}.\]
+If $p\equiv1\pmod4$, then $pq\equiv q$ and $\varepsilon_{pq}=\varepsilon_q$,
+$\varepsilon_p=1$: the product of the symbols is $1$, and so is the right side; the case $q\equiv1$ is the same. If $p\equiv q\equiv3\pmod 4$, then
+$pq\equiv1$, and $1=\bigl(\frac qp\bigr)\bigl(\frac pq\bigr)i^2$: the product is $-1$, as is $(-1)^{\frac{p-1}2\cdot\frac{q-1}2}$.
+\end{proof}
+
+\begin{beauty}
+The proof has three ingredients of three different natures: Lemma~\ref{lem:gaussa} is arithmetic (counting square roots),
+Lemma~\ref{lem:gaussmult} is the structure of the group $\Z/pq\Z\cong\Z/p\Z\times\Z/q\Z$, and the sign of $G(1;n)$ is analysis on the real
+line. Hecke extended the method to every number field in the 1920s, using theta functions, and in 1964 Andr\'e Weil recast it as a
+statement about unitary representations of $SL_2$ over the adeles, the object that Chapter~8 introduces: there, quadratic reciprocity
+becomes a \emph{product formula}, saying that a product of local signs over all primes and over $\R$ equals $1$.
+\end{beauty}
+
+\section{Arithmetic progressions and the game of SET}
+
+In 1974 the geneticist Marsha Falco was studying epilepsy in German shepherds and drew symbols on file cards to record the genes of
+the dogs. Her family played with the cards, and in 1991 they became the game SET. Each of the $81$ cards shows one, two or three
+symbols, of one of three shapes, three colours and three shadings; a \emph{set} is a triple of cards on which each of the four attributes
+is either the same on all three or different on all three. Players race to spot sets among twelve cards on the table, and when there
+is none the dealer adds three more. How many cards can lie on the table without a set?
+
+Number the values of each attribute $0,1,2$: the cards become the vectors of $\mathbb F_3^4$. Three elements $x,y,z\in\mathbb F_3$ are all
+equal or all different exactly when $x+y+z=0$ (check the $27$ cases, or note that $x+y+z=0$ means $z=-x-y$, which is the third value
+if $x\ne y$ and equals $x$ if $x=y$). So a set is a triple of distinct vectors with $x+y+z=0$, and since $z=-x-y=x+2(y-x)$ in
+characteristic $3$, it is the same as a \emph{three-term arithmetic progression} $x,x+d,x+2d$ with $d\ne0$, or a line of the affine space.
+A \emph{cap set} is a subset of $\mathbb F_3^n$ with no three distinct elements summing to $0$. Pellegrino showed in 1971 that the largest cap in
+$\mathbb F_3^4$ has $20$ elements, so twenty-one cards always contain a set; Figure~\ref{fig:cap} shows the plane $\mathbb F_3^2$, where the answer is $4$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-cap}
+\caption{Left: the plane $\mathbb F_3^2$ and four of its twelve lines, which are its three-term progressions; lines wrap around, like
+$\{(0,0),(1,2),(2,1)\}$. Right: a cap of four points, the largest possible in dimension $2$. Every fifth point would complete a line.}
+\label{fig:cap}
+\end{figure}
+
+How fast can caps grow with $n$? The whole space has $3^n$ points, and products of caps are caps, so the answer is between
+$4^{n/2}=2^n$ and $3^n$. Fourier analysis counts progressions.
+
+\begin{lemma}\label{lem:capcount}
+Let $G$ be a finite abelian group of order $N$ and $A\subset G$. The number of triples $(x,y,z)\in A^3$ with $x+y+z=0$ is
+\[T(A)=N^2\sum_{\chi\in\widehat G}\widehat{\mathbf 1_A}(\chi)^3.\]
+\end{lemma}
+\begin{proof}
+By Tome~2, Theorem~11.14, $\mathbf 1_{w=0}=\frac1N\sum_\chi\chi(w)$. So
+\[T(A)=\sum_{x,y,z\in A}\frac1N\sum_\chi\chi(x)\chi(y)\chi(z)=\frac1N\sum_\chi\Bigl(\sum_{x\in A}\chi(x)\Bigr)^3=\frac1N\sum_\chi\bigl(N\widehat{\mathbf 1_A}(\overline\chi)\bigr)^3,\]
+and $\chi\mapsto\overline\chi$ is a bijection of $\widehat G$.
+\end{proof}
+
+\begin{theorem}[Meshulam, 1995]\label{thm:meshulam}
+Every cap set $A\subset\mathbb F_3^n$ has $|A|\le\dfrac{32\cdot3^n}n$.
+\end{theorem}
+\begin{proof}
+Let $N=3^n$ and $\alpha=|A|/N$, the \emph{density} of $A$. The proof is a \emph{density increment}: either $A$ has a large Fourier coefficient,
+which locates a hyperplane where $A$ is denser, or it behaves like a random set and contains progressions.
+
+\emph{Step 1: a large coefficient.} A cap set has only the $|A|$ trivial solutions $x=y=z$ of $x+y+z=0$ (if $x=y$, then $z=-2x=x$). So
+$T(A)=|A|=\alpha N$, and Lemma~\ref{lem:capcount}, after separating the trivial character, where $\widehat{\mathbf 1_A}(1)=\alpha$, gives
+\[\sum_{\chi\ne1}\widehat{\mathbf 1_A}(\chi)^3=\frac\alpha N-\alpha^3.\]
+Assume $\alpha^2\ge\frac2N$. Then the right side has absolute value at least $\frac{\alpha^3}2$, while by Parseval
+$\sum_{\chi\ne1}|\widehat{\mathbf 1_A}(\chi)|^3\le\max_{\chi\ne1}|\widehat{\mathbf 1_A}(\chi)|\sum_\chi|\widehat{\mathbf 1_A}(\chi)|^2=\alpha\max_{\chi\ne1}|\widehat{\mathbf 1_A}(\chi)|$.
+So some $\chi\ne1$ has $|\widehat{\mathbf 1_A}(\chi)|\ge\frac{\alpha^2}2$.
+
+\emph{Step 2: a denser hyperplane.} Write $\chi(x)=\omega^{\xi\cdot x}$ with $\omega=e(\frac13)$ and $\xi\ne0$, and let $H_j=\{x:\xi\cdot x=j\}$ for
+$j\in\mathbb F_3$: three parallel affine hyperplanes with $\frac N3$ points each. If $\alpha_j=|A\cap H_j|/\frac N3$, then $\alpha=\frac13\sum_j\alpha_j$ and,
+since $\sum_j\omega^{-j}=0$,
+\[\widehat{\mathbf 1_A}(\chi)=\frac13\sum_j\alpha_j\omega^{-j}=\frac13\sum_j(\alpha_j-\alpha)\omega^{-j}.\]
+The numbers $\alpha_j-\alpha$ sum to $0$ and are not all positive, so $\sum_j|\alpha_j-\alpha|=2\sum_j(\alpha_j-\alpha)^+\le4\max_j(\alpha_j-\alpha)$. Hence
+$\frac{\alpha^2}2\le\frac43\max_j(\alpha_j-\alpha)$, and some $H_j$ has $\alpha_j\ge\alpha+\frac{3\alpha^2}8\ge\alpha+\frac{\alpha^2}4$.
+
+\emph{Step 3: iterate.} Pick $x_j\in H_j$. Then $H_j-x_j=H_0$ is a subspace of dimension $n-1$, isomorphic to $\mathbb F_3^{n-1}$ by a linear map,
+and $A'=(A\cap H_j)-x_j$ is a cap set in it: if $a,b,c\in A\cap H_j$, then $(a-x_j)+(b-x_j)+(c-x_j)=a+b+c$ because $3x_j=0$. Starting from $A_0=A$, we obtain
+cap sets $A_k$ in dimension $n-k$ with densities $\alpha_k$, where $\alpha_0=\alpha$ and $\alpha_{k+1}\ge\alpha_k+\frac{\alpha_k^2}4$, as long as
+$\alpha_k^2\ge2\cdot3^{-(n-k)}$ (this condition forces $n-k\ge1$). Densities never exceed $1$, so the process stops at some step $K$ with
+$\alpha_K^2<2\cdot3^{-(n-K)}$, that is $n-K<\log_3\frac2{\alpha_K^2}\le\log_3\frac2{\alpha^2}$.
+
+\emph{Step 4: count the steps.} While $\alpha_k\in[2^j\alpha,2^{j+1}\alpha[$, each step adds at least $\frac{4^j\alpha^2}4$ to an interval of length $2^j\alpha$,
+so there are at most $1+\frac4{2^j\alpha}$ such steps; and $j$ only takes values with $2^j\alpha\le1$, that is $j\le J=\log_2\frac1\alpha$. Hence
+$K\le\sum_{j=0}^J\bigl(1+\frac4{2^j\alpha}\bigr)\le\log_2\frac1\alpha+1+\frac8\alpha$, and with Step 3,
+\[n<\frac8\alpha+\log_2\frac1\alpha+1+\log_3\frac2{\alpha^2}.\]
+Suppose $\alpha>\frac{32}n$. Then $n>32$, $\frac8\alpha<\frac n4$, $\log_2\frac1\alpha<\log_2\frac n{32}<\frac n{32}$, and $\log_3\frac2{\alpha^2}<\log_3n^2<2\log_2n\le\frac n2$ (as
+$n\ge16$). The right side is then less than $\frac n4+\frac n{32}+1+\frac n2<n$, a contradiction. So $\alpha\le\frac{32}n$.
+\end{proof}
+
+Meshulam's more careful bookkeeping gives $\frac{2\cdot3^n}n$, and the same proof works in any $\mathbb F_q^n$ with $q$ odd. For twenty years the
+exponent $3$ seemed unbreakable: Bateman and Katz (2012) gained only a tiny extra power of $n$. Then, in May 2016, Ernie Croot, Vsevolod Lev and
+P\'eter P\'al Pach found a three-page polynomial argument for $(\Z/4\Z)^n$, and within days Jordan Ellenberg and Dion Gijswijt
+independently adapted it to $\mathbb F_3^n$: every cap set has at most $2.756^n$ elements. Exercise~\ref{ex:capset} walks through their argument. The best
+constructions give about $2.2202^n$, the last improvement (2024) found with the help of a computer search guided by a language model.
+Over the integers, the analogous question, how large a subset of $\{1,\dots,N\}$ can avoid three-term progressions, is Roth's theorem,
+whose Fourier proof is Meshulam's with harder bookkeeping; in 2023 Zander Kelley and Raghu Meka brought its upper bound close to the
+lower one.
+
+\section{Testing linearity}\label{sec:blr}
+
+A program claims to compute a linear map $f:\mathbb F_2^n\to\mathbb F_2$. You cannot read its code, and checking all $2^n$ inputs is
+impossible. In 1990 Manuel Blum, Michael Luby and Ronitt Rubinfeld proposed the simplest possible test: pick $x$ and $y$ at random and check
+that $f(x+y)=f(x)+f(y)$. A linear map always passes. The theorem is that a map that passes with high probability is \emph{close} to linear.
+
+Write the values multiplicatively: $F=(-1)^f$ takes values $\pm1$, and the linear maps become the characters
+$\chi_S(x)=(-1)^{\sum_{i\in S}x_i}$, $S\subset\{1,\dots,n\}$, which are all the characters of $\mathbb F_2^n$. The distance between two maps is the fraction of
+inputs where they differ, and since $F\chi_S=1$ where $F$ and $\chi_S$ agree and $-1$ elsewhere,
+\[\operatorname{dist}(F,\chi_S)=\frac{1-\hat F(S)}2,\qquad\hat F(S)=\mathbb E_xF(x)\chi_S(x).\]
+By Parseval, $\sum_S\hat F(S)^2=\mathbb E F^2=1$.
+
+\begin{theorem}[Blum, Luby and Rubinfeld, 1990]\label{thm:blr}
+For $F:\mathbb F_2^n\to\{\pm1\}$, with $x,y$ independent and uniform,
+\[\Pr\bigl[F(x)F(y)=F(x+y)\bigr]=\frac12+\frac12\sum_S\hat F(S)^3.\]
+Consequently, if the test accepts with probability at least $1-\varepsilon$, then $\operatorname{dist}(F,\chi_S)\le\varepsilon$ for some $S$.
+\end{theorem}
+\begin{proof}
+The test accepts exactly when the product $F(x)F(y)F(x+y)$ equals $1$, so its indicator is
+\[\tfrac12\bigl(1+F(x)F(y)F(x+y)\bigr).\]
+Since $-y=y$ in $\mathbb F_2^n$,
+\[\mathbb E_{x,y}F(x)F(y)F(x+y)=\mathbb E_xF(x)(F*F)(x)=\langle F,F*F\rangle=\sum_S\hat F(S)\cdot\hat F(S)^2\]
+by Proposition~\ref{prop:finiteconv}, all coefficients being real. For the consequence, $1-2\varepsilon\le\sum_S\hat F(S)^3\le\max_S\hat F(S)\sum_S\hat F(S)^2=\max_S\hat F(S)$, so
+some $S$ has $\operatorname{dist}(F,\chi_S)=\frac{1-\hat F(S)}2\le\varepsilon$.
+\end{proof}
+
+The test reads three values of $F$ and its analysis is three lines of Fourier analysis, found by Bellare, Coppersmith, H\aa stad, Kiwi and Sudan
+in 1995 (the original combinatorial proof was longer and gave a weaker constant). Such tests are the building blocks of the PCP theorem (1992):
+every mathematical proof can be rewritten so that a verifier, reading a constant number of randomly chosen bits, accepts correct proofs
+always and rejects wrong ones with probability at least $\frac12$. In 2001 Johan H\aa stad pushed this to three bits, with a test that is a
+noisy version of the one above, and deduced that approximating the maximum number of satisfiable equations $x_i+x_j+x_k=c$ modulo $2$
+better than by a factor $\frac12$ is NP-hard: a random assignment already achieves $\frac12$.
+
+\begin{beauty}
+The same identity, \emph{count a pattern, expand in characters, isolate the trivial character, bound the rest by the largest
+coefficient times Parseval}, proved Meshulam's theorem and the BLR test. In the first, a large coefficient is good news for the
+argument, because it signals structure that can be exploited; in the second, it is the conclusion, because structure is what is being
+tested. This dichotomy between \emph{structure} (a large Fourier coefficient) and \emph{randomness} (all coefficients small) runs through
+modern additive combinatorics, from Roth to Green and Tao's theorem that the primes contain arbitrarily long progressions.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:macwilliams}
+\emph{The MacWilliams identity.} A \emph{linear code} is a subspace $C\subset\mathbb F_2^n$, and its dual is $C^\perp=\{u:u\cdot c=0\text{ for all }c\in C\}$. The
+\emph{weight} $w(v)$ is the number of coordinates equal to $1$, and $W_C(X,Y)=\sum_{c\in C}X^{n-w(c)}Y^{w(c)}$. Show that
+\[W_{C^\perp}(X,Y)=\frac1{|C|}W_C(X+Y,X-Y).\]
+Deduce the weight distribution of the dual of the $[7,4]$ Hamming code from the fact that the Hamming code has one word of weight $0$, seven
+of weight $3$, seven of weight $4$ and one of weight $7$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dsequality}
+\emph{Equality in Donoho--Stark.} Show that equality holds in Theorem~\ref{thm:donohostark} if and only if $f=c\,\psi\,\mathbf 1_{a+H}$ for a constant $c\ne0$, a
+character $\psi$, an element $a$ and a subgroup $H$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:composite}
+\emph{Composite lengths.} Let $n=uv$ with $u,v\ge2$. Find a non-zero $f$ on $\Z/n\Z$ with $|\operatorname{supp}f|+|\operatorname{supp}\hat f|=u+v$, and conclude that
+Theorem~\ref{thm:tao} fails for $n$. Exhibit a singular $2\times2$ minor of the matrix $(i^{jk})_{0\le j,k\le3}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:qrsums}
+\emph{Sums of two squares in $\mathbb F_p$.} Let $p$ be an odd prime, $Q$ the set of non-zero squares in $\Z/p\Z$, $g=G(1;p)$ and $p^*=\bigl(\frac{-1}p\bigr)p$. (a) Show that
+$\widehat{\mathbf 1_Q}(b)=\frac1{2p}\bigl(\bigl(\frac{-b}p\bigr)g-1\bigr)$ for $b\ne0$, with the identification of Theorem~\ref{thm:tao}. (b) For $a\ne0$, let $N(a)$ be the number of
+$(x,y)\in Q^2$ with $x+y=a$. Show that
+\[N(a)=\frac{p-2-\bigl(\frac{-1}p\bigr)}4-\frac12\Bigl(\frac ap\Bigr).\]
+(c) Deduce that every non-zero element of $\Z/p\Z$ is a sum of two non-zero squares if and only if $p\ge7$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:circlefp}
+\emph{The circle over a finite field.} Use Lemma~\ref{lem:gaussa} and Fourier analysis on $\Z/p\Z$ to show that, for an odd prime $p$, the
+equation $x^2+y^2=1$ has exactly $p-\bigl(\frac{-1}p\bigr)$ solutions in $(\Z/p\Z)^2$. Explain the answer geometrically when $p\equiv3\pmod4$ by projecting the
+circle from the point $(-1,0)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:majority}
+\emph{Testing the majority.} Let $\operatorname{Maj}:\{\pm1\}^3\to\{\pm1\}$ be the majority vote, viewed as a function on $\mathbb F_2^3$ through
+$x_i\mapsto(-1)^{x_i}$. Compute its Fourier expansion, the probability that it passes the BLR test, and its distance to the nearest
+character. Compare with the bound of Theorem~\ref{thm:blr}.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:capset}
+\emph{The cap set bound of Ellenberg and Gijswijt.} Let $A\subset\mathbb F_3^n$ be a cap set and let $M_d$ be the number of monomials
+$x_1^{e_1}\cdots x_n^{e_n}$ with all $e_i\le2$ and $\sum e_i\le d$. (a) Show that $F(x,y,z)=\prod_{i=1}^n\bigl(1-(x_i+y_i+z_i)^2\bigr)$ is the indicator of
+$x+y+z=0$ on $(\mathbb F_3^n)^3$, and that on $A^3$ it is the \emph{diagonal} function $\mathbf 1_{x=y=z}$. (b) Expanding $F$ into monomials of total degree at most
+$2n$, show that $F$ is a sum of at most $3M_{2n/3}$ functions, each of the form $u(x)v(y,z)$, $u(y)v(x,z)$ or $u(z)v(x,y)$. (c) You may use the
+following lemma of Tao: a function on $A^3$ that is a sum of $r$ such products cannot be a diagonal function with non-zero diagonal unless
+$r\ge|A|$. Deduce $|A|\le3M_{2n/3}$. (d) Show that $M_{2n/3}\le\dfrac{(1+t+t^2)^n}{t^{2n/3}}$ for $0<t\le1$, and with $t=0.6$ deduce $|A|\le3\cdot(2.756)^n$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:macwilliams}
+Apply Theorem~\ref{thm:poissonfinite} with $H=C^\perp$ at $x=0$ to $f(v)=X^{n-w(v)}Y^{w(v)}$, and identify $C^\perp$ with the annihilator of $C$ through
+$u\mapsto\chi_u$, $\chi_u(v)=(-1)^{u\cdot v}$. The transform of $f$ is a product over coordinates.
+\end{hint}
+\begin{hint}{ex:dsequality}
+Equality forces equality in each step of the proof: $|f|$ is constant on its support, $|\hat f|$ is constant on its support, and at a point
+where $|f|$ is maximal all terms $\hat f(\chi)\chi(x)$ have the same argument.
+\end{hint}
+\begin{hint}{ex:composite}
+Indicators of subgroups. For the minor, use the subgroup $\{0,2\}$.
+\end{hint}
+\begin{hint}{ex:qrsums}
+$\sum_{x\in Q}e(\frac{-bx}p)=\frac12\bigl(G(-b;p)-1\bigr)$. Then $N(a)=p\,(\mathbf 1_Q*\mathbf 1_Q)(a)$; expand with Proposition~\ref{prop:finiteconv}, and remember $g^2=p^*$.
+\end{hint}
+\begin{hint}{ex:circlefp}
+Write $\mathbf 1_{w=0}=\frac1p\sum_re(\frac{rw}p)$ with $w=x^2+y^2-1$; the double sum over $x,y$ factors into $G(r;p)^2$.
+\end{hint}
+\begin{hint}{ex:majority}
+Check that $\frac12(x_1+x_2+x_3)-\frac12x_1x_2x_3$ agrees with the majority on all eight points.
+\end{hint}
+\begin{hint}{ex:capset}
+(b) In each monomial of degree at most $2n$, one of the three groups of variables has degree at most $\frac{2n}3$; group the monomials
+according to which one. (d) $M_d$ is at most the sum over all monomials of $t^{\sum e_i-d}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:macwilliams}
+\idea Weight enumerators are averages of a product function over a subgroup, and Poisson summation trades such an average for a
+sum over the annihilator. Product functions have product transforms, so the transform can be computed coordinate by coordinate.
+\writeup For $u\in\mathbb F_2^n$ let $\chi_u(v)=(-1)^{u\cdot v}$; $u\mapsto\chi_u$ is an isomorphism onto $\widehat{\mathbb F_2^n}$ (it is injective, as $\chi_u(e_i)=(-1)^{u_i}$), and it maps
+$C^\perp$ onto the annihilator of $C$. Let $f(v)=\prod_i\phi(v_i)$ with $\phi(0)=X$, $\phi(1)=Y$. Then
+\[\hat f(\chi_u)=\prod_{i=1}^n\frac{X+(-1)^{u_i}Y}2=\frac1{2^n}(X+Y)^{n-w(u)}(X-Y)^{w(u)}.\]
+The annihilator of $C^\perp$ is $\{\chi_c:c\in C\}$, because $(C^\perp)^\perp=C$ in linear algebra. So Theorem~\ref{thm:poissonfinite} at $x=0$ with $H=C^\perp$ gives
+$\frac1{|C^\perp|}W_{C^\perp}(X,Y)=\sum_{c\in C}\hat f(\chi_c)=\frac1{2^n}W_C(X+Y,X-Y)$, and $|C||C^\perp|=2^n$. For the Hamming code,
+\[W_{C^\perp}=\tfrac1{16}\bigl[(X+Y)^7+7(X+Y)^4(X-Y)^3+7(X+Y)^3(X-Y)^4+(X-Y)^7\bigr].\]
+At $Y=0$ this is $X^7$; expanding, all coefficients vanish except $X^7$ and $7X^3Y^4$ (for instance, the coefficient of $X^6Y$ is
+$\frac1{16}(7+7(4-3)+7(3-4)-7)=0$). So the dual, the simplex code, has one word of weight $0$ and seven of weight $4$: every two of its
+non-zero words are at distance $4$, the ``perfect fit'' of \emph{Linear Algebra in Depth}, Example~9.15.
+\end{solution}
+
+\begin{solution}{ex:dsequality}
+\idea Track equality through the three inequalities of the proof, then show that the spectrum is a coset of a subgroup by comparing
+its size with the size of the subgroup it generates.
+\writeup Functions $c\psi\mathbf 1_{a+H}$ are extremal by the computation after Theorem~\ref{thm:donohostark}. Conversely, let $f$ be extremal, $A$, $B$ its supports,
+and $x_0$ a point with $|f(x_0)|=\|f\|_\infty$. Translating (Proposition~\ref{prop:finiteconv}(c)) we may assume $x_0=0$. Equality in the three steps gives: (i)
+$|f(0)|=\sum_{\chi\in B}|\hat f(\chi)|$, so all $\hat f(\chi)$, $\chi\in B$, have the same argument; (ii) equality in Cauchy--Schwarz, so $|\hat f|$ is constant on
+$B$; (iii) $|f|=\|f\|_\infty$ on $A$. Multiplying $f$ by a constant, $\hat f=\mathbf 1_B$, so $f=\sum_{\chi\in B}\chi$ and $f(0)=|B|=\|f\|_\infty$. Fix $\chi_0\in B$ and let $L$ be the
+subgroup generated by $B\overline{\chi_0}$. Now $|f(x)|=|B|$ if and only if all $\chi(x)$, $\chi\in B$, are equal (equality in the triangle inequality for unit
+numbers), that is $\chi\overline{\chi_0}(x)=1$ for $\chi\in B$, that is $x\in L^\perp$. By (iii) and since $f$ vanishes off $A$, $A=\{x:|f(x)|=|B|\}=L^\perp$. Then
+$|A||B|=|G|$ and $|A|=|L^\perp|=|G|/|L|$ give $|B\overline{\chi_0}|=|B|=|L|$: the set $B\overline{\chi_0}$, which contains $1$, has as many elements as the subgroup it
+generates, so it is that subgroup, and $B=\chi_0L$. Finally, by Theorem~\ref{thm:poissonfinite}, $\sum_{\eta\in L}\eta=|L|\mathbf 1_{L^\perp}$, so
+$f=\chi_0\sum_{\eta\in L}\eta=|L|\,\chi_0\mathbf 1_{L^\perp}$. Undoing the normalisations gives the form $c\psi\mathbf 1_{a+H}$.
+\end{solution}
+
+\begin{solution}{ex:composite}
+\idea A proper subgroup of $\Z/n\Z$ is a set much smaller than $n$ whose indicator has a spectrum much smaller than $n$.
+\writeup Let $H=u\Z/n\Z$, a subgroup with $v$ elements. By the computation after Theorem~\ref{thm:donohostark}, $\widehat{\mathbf 1_H}$ is supported on $H^\perp$, which has $u$ elements. So
+$|\operatorname{supp}f|+|\operatorname{supp}\hat f|=u+v\le\frac n2+2<n+1$ for $f=\mathbf 1_H$ (as $u+v\le\frac{uv}2+2$ for $u,v\ge2$). By the proof of Theorem~\ref{thm:tao}, this forces a singular minor.
+Concretely, for $n=4$, rows $\{0,2\}$ and columns $\{0,2\}$ of $(i^{jk})$ give $\begin{pmatrix}1&1\\1&i^4\end{pmatrix}=\begin{pmatrix}1&1\\1&1\end{pmatrix}$, which is singular.
+\end{solution}
+
+\begin{solution}{ex:qrsums}
+\idea Counting solutions of $x+y=a$ is a convolution; the Fourier coefficients of the set of squares are Gauss sums, which are known
+exactly, so the count is exact too.
+\writeup (a) The number of $x\ne0$ with $x^2=y$ is $2$ for $y\in Q$ and $0$ otherwise, so $\sum_{y\in Q}e(\frac{-by}p)=\frac12\sum_{x\ne0}e(\frac{-bx^2}p)=\frac12(G(-b;p)-1)$, and by
+Lemma~\ref{lem:gaussa}, $\widehat{\mathbf 1_Q}(b)=\frac1{2p}\bigl(\bigl(\frac{-b}p\bigr)g-1\bigr)$. Also $\widehat{\mathbf 1_Q}(0)=\frac{p-1}{2p}$.
+
+(b) By Proposition~\ref{prop:finiteconv}(b) and inversion,
+\[N(a)=\sum_x\mathbf 1_Q(x)\mathbf 1_Q(a-x)=p\,(\mathbf 1_Q*\mathbf 1_Q)(a)=p\sum_b\widehat{\mathbf 1_Q}(b)^2e\Bigl(\frac{ab}p\Bigr).\]
+For $b\ne0$,
+$4p^2\widehat{\mathbf 1_Q}(b)^2=g^2-2\bigl(\frac{-b}p\bigr)g+1=p^*+1-2\bigl(\frac{-b}p\bigr)g$. Now $\sum_{b\ne0}e(\frac{ab}p)=-1$, and $\sum_{b\ne0}\bigl(\frac{-b}p\bigr)e(\frac{ab}p)=\bigl(\frac{-1}p\bigr)G(a;p)=\bigl(\frac{-1}p\bigr)\bigl(\frac ap\bigr)g$
+by the proof of Lemma~\ref{lem:gaussa}. Since $\bigl(\frac{-1}p\bigr)g^2=\bigl(\frac{-1}p\bigr)p^*=p$,
+\[N(a)=\frac{(p-1)^2}{4p}+\frac1{4p}\Bigl(-(p^*+1)-2\Bigl(\frac ap\Bigr)p\Bigr)=\frac{(p-1)^2-p^*-1}{4p}-\frac12\Bigl(\frac ap\Bigr).\]
+With $p^*=\bigl(\frac{-1}p\bigr)p$, $(p-1)^2-1-p^*=p\bigl(p-2-\bigl(\frac{-1}p\bigr)\bigr)$, which is the formula. (Check: for $p=5$, $Q=\{1,4\}$ and $N(1)=0$, $N(2)=1$.)
+
+(c) Since $p-2-\bigl(\frac{-1}p\bigr)\ge p-3$, $N(a)\ge\frac{p-3}4-\frac12$, which is positive as soon as $p>5$. For $p=3$, $Q=\{1\}$ and $1$ is not a sum of two non-zero
+squares; for $p=5$, $N(1)=0$ as computed above.
+\end{solution}
+
+\begin{solution}{ex:circlefp}
+\idea Detect the equation with characters; the sum over the variables separates into one Gauss sum per variable, and the
+Gauss sums are known up to a sign that cancels in the square.
+\writeup With $g=G(1;p)$ and $\bigl(\frac rp\bigr)^2=1$,
+\[\begin{aligned}\#\{x^2+y^2=1\}&=\frac1p\sum_{r}\sum_{x,y}e\Bigl(\frac{r(x^2+y^2-1)}p\Bigr)=p+\frac1p\sum_{r\ne0}G(r;p)^2e\Bigl(\frac{-r}p\Bigr)\\&=p+\frac{g^2}p\sum_{r\ne0}e\Bigl(\frac{-r}p\Bigr)=p-\frac{g^2}p,\end{aligned}\]
+and $g^2=p^*=\bigl(\frac{-1}p\bigr)p$. Geometrically, when $p\equiv3\pmod4$, $-1$ is not a square, so the line through $(-1,0)$ with slope $t$ meets the circle again
+in exactly one point, $\bigl(\frac{1-t^2}{1+t^2},\frac{2t}{1+t^2}\bigr)$ ($1+t^2\ne0$), and this point is never $(-1,0)$ since $1-t^2=-1-t^2$ is impossible. The vertical line
+$x=-1$ is tangent. So the circle has $p$ points from the slopes, plus $(-1,0)$: $p+1$ points, as the formula says. When $p\equiv1\pmod4$, the two slopes
+$t=\pm\sqrt{-1}$ are missing and the count is $p-1$: the circle has two points ``at infinity''.
+\end{solution}
+
+\begin{solution}{ex:majority}
+\idea The majority of three $\pm1$ votes is a cubic polynomial in the votes; its coefficients are the Fourier coefficients.
+\writeup The formula $\operatorname{Maj}=\frac12(x_1+x_2+x_3)-\frac12x_1x_2x_3$ gives $1$ when all $x_i=1$ ($\frac32-\frac12$), $1$ when exactly one is $-1$
+($\frac12+\frac12$), and by oddness the opposite values in the other cases. Its coefficients are $\frac12$ on $\{1\},\{2\},\{3\}$ and $-\frac12$ on $\{1,2,3\}$
+(Parseval: $4\cdot\frac14=1$). The test accepts with probability $\frac12+\frac12\bigl(3\cdot\frac18-\frac18\bigr)=\frac58$. The nearest characters are the
+dictators $x\mapsto x_i$, at distance $\frac{1-1/2}2=\frac14$. Theorem~\ref{thm:blr} with $\varepsilon=\frac38$ only promises a character within $\frac38$: a function can be fairly far
+from linear and still pass often, because the test only sees the sum $\sum_S\hat F(S)^3$, in which the negative coefficient of $x_1x_2x_3$ partly cancels the others.
+\end{solution}
+
+\begin{solution}{ex:capset}
+\idea Ellenberg and Gijswijt replace Fourier analysis by polynomials. The indicator of $x+y+z=0$ is a polynomial of low degree in
+each block of variables simultaneously, so it has low ``slice rank'', while on a cap set it is diagonal and diagonal functions have high
+slice rank.
+\writeup (a) In $\mathbb F_3$, $w^2=1$ for $w\ne0$ and $0^2=0$, so $1-w^2=\mathbf 1_{w=0}$, and the product over coordinates is $\mathbf 1_{x+y+z=0}$. On a cap set
+$x+y+z=0$ forces $x=y=z$. (b) Expanding, and reducing each $x_i^{e}$ with $e\ge3$ by $x_i^3=x_i$ (valid on $\mathbb F_3$), $F$ is a combination of monomials
+$x^\alpha y^\beta z^\gamma$ with entries of $\alpha,\beta,\gamma$ at most $2$ and $|\alpha|+|\beta|+|\gamma|\le2n$. So one of $|\alpha|,|\beta|,|\gamma|$ is at most $\frac{2n}3$. Group the
+monomials with $|\alpha|\le\frac{2n}3$ by $\alpha$: they contribute $\sum_\alpha x^\alpha v_\alpha(y,z)$, at most $M_{2n/3}$ products. Do the same for the remaining monomials
+with $|\beta|\le\frac{2n}3$, then with $|\gamma|\le\frac{2n}3$. (c) On $A^3$, $F$ is diagonal with diagonal entries $1$ and is a sum of at most $3M_{2n/3}$ products, so
+$|A|\le3M_{2n/3}$. (d) For $0<t\le1$, each monomial counted in $M_d$ has $t^{\sum e_i-d}\ge1$, so $M_d\le t^{-d}\sum_{e\in\{0,1,2\}^n}t^{\sum e_i}=t^{-d}(1+t+t^2)^n$.
+At $t=0.6$, $\frac{1+0.6+0.36}{0.6^{2/3}}=\frac{1.96}{0.7114}=2.7552\ldots$, so $|A|\le3\cdot2.756^n$. (The optimal $t$ is about $0.5931$ and gives
+$2.7551\ldots$.)
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+Chebotarev's lemma and its many rediscoveries are told in P.~Stevenhagen and H.~W.~Lenstra, Jr., ``Chebotar\"ev and his density theorem'',
+\emph{Math.\ Intelligencer} 18 (1996), 26--37. The proof given here follows the idea of P.~E.~Frenkel, ``Simple proof of Chebotarev's theorem on
+roots of unity'', arXiv:math/0312398 (2003). The uncertainty principles are from D.~L.~Donoho and P.~B.~Stark, ``Uncertainty principles and
+signal recovery'', \emph{SIAM J.\ Appl.\ Math.} 49 (1989), 906--931, and T.~Tao, ``An uncertainty principle for cyclic groups of prime order'',
+\emph{Math.\ Res.\ Lett.} 12 (2005), 121--127; compressed sensing begins with E.~J.~Cand\`es, J.~Romberg and T.~Tao, ``Robust uncertainty
+principles'', \emph{IEEE Trans.\ Inform.\ Theory} 52 (2006), 489--509. Rader's prime-length transform is in C.~M.~Rader, \emph{Proc.\ IEEE} 56 (1968),
+1107--1108. The proof of quadratic reciprocity through the multiplicativity of Gauss sums goes back to Gauss and Dirichlet; Weil's version is
+A.~Weil, ``Sur certains groupes d'op\'erateurs unitaires'', \emph{Acta Math.} 111 (1964), 143--211.
+
+R.~Meshulam, ``On subsets of finite abelian groups with no 3-term arithmetic progressions'', \emph{J.\ Combin.\ Theory Ser.\ A} 71 (1995),
+168--172. E.~Croot, V.~Lev and P.~P.~Pach, ``Progression-free sets in $\Z_4^n$ are exponentially small'', and J.~S.~Ellenberg and D.~Gijswijt,
+``On large subsets of $\mathbb F_q^n$ with no three-term arithmetic progression'', \emph{Ann.\ of Math.} 185 (2017), 331--337 and 339--343: two
+of the shortest papers ever published in the Annals, and a good first research paper to read in full. The slice rank lemma is in Tao's blog
+post ``A symmetric formulation of the Croot--Lev--Pach--Ellenberg--Gijswijt capset bound'' (May 2016). The lower bound $2.2202^n$ is in
+B.~Romera-Paredes et al., ``Mathematical discoveries from program search with large language models'', \emph{Nature} 625 (2024), 468--475;
+Roth's theorem with the bounds of Z.~Kelley and R.~Meka is in ``Strong bounds for 3-progressions'', FOCS 2023.
+
+M.~Blum, M.~Luby and R.~Rubinfeld, ``Self-testing/correcting with applications to numerical problems'', \emph{J.\ Comput.\ System Sci.} 47
+(1993), 549--595; M.~Bellare, D.~Coppersmith, J.~H\aa stad, M.~Kiwi and M.~Sudan, ``Linearity testing in characteristic two'', \emph{IEEE
+Trans.\ Inform.\ Theory} 42 (1996), 1781--1795. For more: R.~O'Donnell, \emph{Analysis of Boolean Functions} (Cambridge, 2014, free online);
+T.~Tao and V.~Vu, \emph{Additive Combinatorics} (Cambridge, 2006), Chapter~4; A.~Terras, \emph{Fourier Analysis on Finite Groups and
+Applications} (Cambridge, 1999). F.~J.~MacWilliams' identity is in \emph{Bell System Tech.\ J.} 42 (1963), 79--94.
