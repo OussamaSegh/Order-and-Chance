@@ -182,6 +182,16 @@ An independent pass over Tome S1 (Linear Algebra in Depth, 12 chapters, 12 noteb
 | Ch. 7, Wielandt's bound | text | "The first published proof is from 1964": the 1964 paper of Dulmage and Mendelsohn is about gaps in the exponent set; the first published proofs are Rosenblatt (1957) and Holladay–Varga (1958), Wielandt's own proof appearing only in Schneider's 2002 paper. | Corrected, with the sources entry expanded. |
 | Ch. 9, solution of the Fourier matrix exercise | text | "Their multiplicities, roughly n/4 each, were found by Gauss": Gauss evaluated the trace (the quadratic Gauss sum); the exact multiplicities of ±1, ±i are due to McClellan and Parks (1972). | Attribution split accordingly. |
 
+## Review 6: Tome 5
+
+A sixth independent pass, over Tome 5 (Where It All Meets, 12 chapters, 12 notebooks). Every proof and every solution was read line by line. The numerical claims were recomputed in Python, independently of the notebooks: Mertens (θ(3000)/3000 = 0.977, ψ(3000)/3000 = 1.0004, R(10³) = −1.298, R(10⁵) = −1.329, R(10⁷) = −1.3324 and the limit −γ − 0.75536 = −1.33258, M = 0.2614972, H = 0.3157184, M + H = γ), the 359 visible points of the 24 × 24 grid, the median 8 and the 34% of τ(n) ≥ 14 below 10⁶, the coprime k-tuple densities 0.60838, 0.83205, 0.92399 against 1/ζ(k), the lattice-point error −43.65 at radius 1000, the constant C = 0.7869 in the 2^ω mean value, L(1, χ₋₃) = π/(3√3) and L(1, χ₋₄) = π/4, the mod 3 Mertens gap 0.675 = 0.368 + 0.308, the mod 4 race (ties at x = 2, 5, 17, 41, 461, then near 26 850; class 1 first ahead at 26861, for two integers; 3406 integers below 10⁷ where class 1 leads), π(10⁸) = 5 761 455 and Li − π = 753, A(10⁴), A(10⁶), A(10⁷) for ∑ μ(n)/n, p₁₀₀₀₀₀₀ = 15 485 863 and Cipolla's 0.29%, lcm(1, …, n)^{1/n} at n = 100, 1000, 10⁸, L'/L(1, χ₋₄) = 0.24561 and its closed form, π₂(10⁸) and the ratio 1.102, the Legendre-sieve ratios 0.998 and 1.034, B = ½ log 4π − 1 − γ/2 = −0.0230957 and −2B, the average zero gap 0.524 at T = 10⁶, Brun's constant from 1.7383570 + 0.1638312, the n² + 1 constant 0.6864, the Erdős–Kac exponent c = 0.086, the Montgomery–Soundararajan constant γ + log 2π − 1 = 1.415, and Deligne's bound for the 5133 primes below 50 000 (largest |x_p| = 0.9904 at p = 39089). Every pointer to Tomes 1–4 (theorems, propositions, corollaries, exercises and chapters) was resolved against the built numbering of those tomes and its statement compared with the use made of it; all are correct. The pointers to Tome 6 (Tonelli–Fubini, Ch. 8), Tome 12 (class number formula, Ch. 8; fundamental domain and the general theory of modular forms, Ch. 13) and Part III (mean values from the probabilistic point of view, Tome 14) agree with the Tome 6 plan, the Part III dependency map and the series plan. All four PDF formats, the KDP print and cover files and the EPUB build without errors, with no undefined or multiply defined labels and no overfull box; all twelve notebooks run to completion and their numbered references match the built numbering. The labels of Chapter 12 that Tome 12 builds on were not touched.
+
+### Tome 5
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 6, Stirling's formula (Theorem "Stirling's formula", part (b)) | math | Stated for 0 < δ < π with C_δ = (1 − cos δ)^{−3/2}, and the proof claims |u + s|² ≥ (1 − cos δ)(u² + r²) is "clear if c ≥ 0". For δ > π/2 the factor 1 − cos δ exceeds 1 and the inequality fails (take c = 0). Every use in the tome has δ ≤ π/2 (δ = arctan 2 in the zero-density proposition, δ = π/2 on vertical lines). | Statement restricted to 0 < δ ≤ π/2; the proof notes cos δ ≥ 0. |
+
 ### Notebooks
 
 | Notebook | Problem | Fix |
@@ -194,3 +204,11 @@ An independent pass over Tome S1 (Linear Algebra in Depth, 12 chapters, 12 noteb
 - Chapter 1 (twice) points to "Tome C1, Chapter 11" for the linear algebra method and Fisher's inequality. Tome C1 has nine chapters on main so far; its own plan has twelve, with the linear algebra method as Chapter 11, and the computing thread agreed to that pointer. Left as is.
 - Chapters 8, 9 and 11 point to Tome S3 for the Moore graph of degree 57, Paley graphs and the Hadamard conjecture, and Chapter 1 to Tome S2, Chapters 4 (projective duality) and 9 (Pick's theorem); neither tome exists yet, and all four pointers match the series plan.
 - Chapter 11 quotes the de Bruijn–Wilf asymptotic π − λ_max(H_N) ~ π⁵/(2 log² N). At N = 3000 the formula gives 2.4 while the true gap is 0.61; the text only says the gap "behaves like" the formula, which is the asymptotic statement, and is left as is.
+
+| Tome 5, ch. 1–12 | None found: all run, every numbered reference matches the book, every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapters 1–5 are being retold in storytelling style by the writing thread, so this review changes nothing in them. The one error found there, the caption of the race figure in Chapter 4 (it said the two counts were equal at x = 26861 "for the first time since x = 2"; they are equal at ten primes from 5 to 26921, and at 26861 class 1 leads), had already been corrected on main by the writing thread while this review ran; the corrected caption and think box agree with the recomputation.
+- Chapter 2 quotes the constant term 0.4863 of P₃ and the mean 1.94358 of n/φ(n) "from the notebook"; both appear in the notebook's output and were not recomputed by a second method.
+- The figures were not regenerated; the race figure itself (ch04-race) is consistent with the recomputed tie points.
