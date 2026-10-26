@@ -1,0 +1,490 @@
+\chapter{The Fourier Transform}
+
+\begin{center}\itshape
+Every signal is a chord. The Fourier transform lists its notes, and in the right space the listing loses nothing: it is a rotation of
+an infinite-dimensional sphere, so perfect that applying it four times brings every function home.
+\end{center}
+
+On 21 December 1807, Joseph Fourier, prefect of the Is\`ere and veteran of Bonaparte's expedition to Egypt, presented to the Paris
+Institute a memoir on the propagation of heat. His method was outrageous: to solve the heat equation he expanded \emph{arbitrary}
+functions, even discontinuous ones, into series of sines and cosines. The committee included Lagrange, Laplace and Monge. Lagrange
+objected that such expansions could not be valid in general, the memoir was never published, and when a revised version won the
+Institute's prize in 1812, the judges still complained about its lack of rigour. Fourier published his \emph{Th\'eorie analytique de la
+chaleur} in 1822, as secretary of the Academy, and the rigour he lacked took a century to supply. Dirichlet, Riemann, Cantor, Lebesgue
+and many others were driven by the question: in what sense does a function equal its Fourier series?
+
+For the Fourier transform on the line, the decisive answer came in 1910 from a young Swiss mathematician, Michel Plancherel. The
+integral $\int f(x)e^{-2\pi ix\xi}\dd x$ need not converge when $f$ is merely square-integrable, yet Plancherel showed that the transform
+makes sense for every $f\in L^2$ and preserves its energy exactly. With the language of Chapter~2, his theorem says that the Fourier
+transform is a \emph{unitary operator} of $L^2(\R^d)$. And since a unitary operator has a spectrum on the unit circle, one may ask for its
+eigenvalues: there are four, $1,-i,-1,i$, and the eigenfunctions are the Hermite functions of the quantum harmonic oscillator.
+
+Tome~4 (Chapter~8) introduced the transform for continuous integrable functions and proved inversion, Plancherel for nice functions,
+Poisson summation, sampling and Heisenberg's inequality. This chapter rebuilds the theory on Lebesgue's integral, in $d$ dimensions,
+extends it to $L^2$, to $L^p$ for $1\le p\le2$ by the Riesz--Thorin interpolation theorem, and to measures, and then studies
+band-limited functions and lattices. As in Tome~4,
+\[\hat f(\xi)=\mathcal Ff(\xi)=\int_{\R^d}f(x)e^{-2\pi ix\cdot\xi}\dd x,\]
+and integrals without a domain are over $\R^d$.
+
+\section{The transform on \texorpdfstring{$L^1$}{L1}}
+
+\begin{proposition}\label{prop:ftl1}
+Let $f,g\in L^1(\R^d)$.
+\begin{enumerate}
+\item[(a)] $\hat f$ is continuous and $\|\hat f\|_\infty\le\|f\|_1$.
+\item[(b)] (Riemann--Lebesgue) $\hat f(\xi)\to0$ as $|\xi|\to\infty$.
+\item[(c)] $\widehat{f*g}=\hat f\,\hat g$.
+\item[(d)] $f(x-a)$ has transform $e^{-2\pi ia\cdot\xi}\hat f(\xi)$, and $f(\frac x\lambda)$ has transform $\lambda^d\hat f(\lambda\xi)$ for $\lambda>0$.
+\item[(e)] (multiplication formula) $\int\hat f\,g=\int f\,\hat g$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Dominated convergence, with the bound $|f(x)|$ independent of $\xi$. (d) Change variables. (c) and (e) are Fubini's theorem, justified by Tonelli, since $|f(x-y)g(y)|$ and $|f(x)g(\xi)|$ both have double integral $\|f\|_1\|g\|_1$. For (c),
+\[\begin{aligned}\widehat{f*g}(\xi)&=\int\!\!\int f(x-y)e^{-2\pi i(x-y)\cdot\xi}g(y)e^{-2\pi iy\cdot\xi}\dd y\dd x\eqbr=\hat f(\xi)\hat g(\xi).\end{aligned}\]
+
+(b) Here is a trick of Riemann. For $\xi\ne0$ let $h=\frac{\xi}{2|\xi|^2}$, so that $e^{-2\pi ih\cdot\xi}=e^{-i\pi}=-1$. Substituting $x\mapsto x+h$,
+$\hat f(\xi)=-\int f(x+h)e^{-2\pi ix\cdot\xi}\dd x$, hence
+\[2\hat f(\xi)=\int\bigl(f(x)-f(x+h)\bigr)e^{-2\pi ix\cdot\xi}\dd x,\qquad|\hat f(\xi)|\le\tfrac12\|f-\tau_{-h}f\|_1.\]
+As $|\xi|\to\infty$, $|h|=\frac1{2|\xi|}\to0$, and the right side tends to $0$ by continuity of translation in $L^1$ (Tome~6, Proposition~9.8).
+\end{proof}
+
+The Gaussian $\gamma(x)=e^{-\pi|x|^2}$ is a product of one-variable Gaussians, so by Fubini and Tome~4 (Theorem~8.3) $\hat\gamma=\gamma$ on $\R^d$, and by (d), for $\varepsilon>0$,
+\begin{equation}\label{eq:gaussft}
+\int e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi ix\cdot\xi}\dd\xi=\varepsilon^{-d}e^{-\pi|x|^2/\varepsilon^2}=:G_\varepsilon(x),
+\end{equation}
+an approximate identity in the sense of Tome~6, Theorem~9.10.
+
+\begin{theorem}[Fourier inversion]\label{thm:ftinv}
+If $f\in L^1(\R^d)$ and $\hat f\in L^1(\R^d)$, then $f(x)=\int\hat f(\xi)e^{2\pi ix\cdot\xi}\dd\xi$ for almost every $x$, and for every $x$ if $f$ is continuous. In particular, if $f\in L^1$ and $\hat f=0$, then $f=0$ almost
+everywhere.
+\end{theorem}
+\begin{proof}
+Let $I_\varepsilon(x)=\int\hat f(\xi)e^{-\pi\varepsilon^2|\xi|^2}e^{2\pi ix\cdot\xi}\dd\xi$. By dominated convergence (bound $|\hat f|$), $I_\varepsilon(x)\to\int\hat f(\xi)e^{2\pi ix\cdot\xi}\dd\xi$ for every $x$ as $\varepsilon\to0$. Writing $\hat f$ as
+an integral and using Fubini (the integrand is bounded by $|f(y)|e^{-\pi\varepsilon^2|\xi|^2}$) and \eqref{eq:gaussft}, $I_\varepsilon=f*G_\varepsilon$. By Tome~6, Theorem~9.10, $f*G_\varepsilon\to f$ in $L^1$, so along a sequence
+$\varepsilon_k\to0$ it converges almost everywhere. The two limits agree almost everywhere. If $f$ is continuous, both sides of the formula are continuous (the right one by Proposition~\ref{prop:ftl1}(a), with the roles of
+$x$ and $\xi$ exchanged), and functions that agree almost everywhere and are continuous agree everywhere.
+\end{proof}
+
+\section{The Schwartz space}
+
+The transform exchanges smoothness and decay: differentiating $f$ multiplies $\hat f$ by $2\pi i\xi$, and multiplying $f$ by $-2\pi ix$ differentiates $\hat f$. A space that is
+stable under both operations will be stable under $\mathcal F$. With multi-indices $\alpha\in\N^d$, $x^\alpha=x_1^{\alpha_1}\cdots x_d^{\alpha_d}$ and $\partial^\alpha=\partial_1^{\alpha_1}\cdots\partial_d^{\alpha_d}$, the
+\emph{Schwartz space} $\mathcal S(\R^d)$ consists of the $C^\infty$ functions $f$ with $\sup_x|x^\alpha\partial^\beta f(x)|<\infty$ for all $\alpha,\beta$. It contains $C_c^\infty(\R^d)$ and the Gaussians, and is stable under
+derivatives and under multiplication by polynomials. Since $(1+|x|^2)^{d}f$ is bounded, $|f(x)|\le C(1+|x|^2)^{-d}$, so $\mathcal S\subset L^p$ for every $p$.
+
+\begin{proposition}\label{prop:schwartz}
+For $f\in\mathcal S(\R^d)$: $\hat f\in\mathcal S(\R^d)$, with
+\[\widehat{\partial^\beta f}(\xi)=(2\pi i\xi)^\beta\hat f(\xi),\qquad\widehat{(-2\pi ix)^\alpha f}=\partial^\alpha\hat f.\]
+The map $\mathcal F:\mathcal S\to\mathcal S$ is a bijection, $\mathcal F^2f(x)=f(-x)$, and $\mathcal F^4=I$.
+\end{proposition}
+\begin{proof}
+Since $x^\alpha f$ is integrable for every $\alpha$, differentiation under the integral sign (Tome~6, Theorem~7.17, dominated by $|(2\pi x)^\alpha f(x)|$) shows that $\hat f$ is $C^\infty$ with the second formula. For the first,
+take $\beta=e_j$: by Fubini, integrate in $x_j$ first, and integrate by parts on $\R$, the boundary terms vanishing because $f(x)\to0$ as $|x_j|\to\infty$; this gives $2\pi i\xi_j\hat f$, and induction gives the general
+case. Combining, $\xi^\beta\partial^\alpha\hat f$ is, up to a constant, the transform of $\partial^\beta(x^\alpha f)\in\mathcal S\subset L^1$, so it is bounded by Proposition~\ref{prop:ftl1}(a): $\hat f\in\mathcal S$. By
+Theorem~\ref{thm:ftinv}, which applies everywhere since $f$ is continuous, $\mathcal F(\mathcal Ff)(x)=\int\hat f(\xi)e^{-2\pi ix\cdot\xi}\dd\xi=f(-x)$. So $\mathcal F^4=I$ on $\mathcal S$, and $\mathcal F$ is a bijection
+with inverse $\mathcal F^3$.
+\end{proof}
+
+\section{Plancherel's theorem}
+
+\begin{theorem}[Plancherel, 1910]\label{thm:plancherel}
+There is a unique bounded operator $\mathcal F$ on $L^2(\R^d)$ that agrees with $f\mapsto\hat f$ on $L^1\cap L^2$. It is unitary: $\langle\mathcal Ff,\mathcal Fg\rangle=\langle f,g\rangle$ and $\mathcal F$ is onto, with
+$\mathcal F^{-1}g(x)=\mathcal Fg(-x)$. For every $f\in L^2$,
+\[\mathcal Ff=\lim_{R\to\infty}\int_{|x|\le R}f(x)e^{-2\pi ix\cdot\xi}\dd x\qquad\text{in }L^2.\]
+\end{theorem}
+\begin{proof}
+\emph{Isometry on $\mathcal S$.} For $f\in\mathcal S$, let $g=\overline{\hat f}\in\mathcal S$. By Theorem~\ref{thm:ftinv},
+$\hat g(x)=\overline{\int\hat f(\xi)e^{2\pi ix\cdot\xi}\dd\xi}=\overline{f(x)}$, and the multiplication formula gives $\int|\hat f|^2=\int\hat fg=\int f\hat g=\int|f|^2$.
+
+\emph{Extension.} $\mathcal S\supset C_c^\infty$ is dense in $L^2$ (Tome~6, Theorem~9.11), so $\mathcal F$ extends uniquely to an isometry of $L^2$, by uniform continuity and completeness. Its range is complete,
+hence closed, and contains $\mathcal F(\mathcal S)=\mathcal S$, which is dense: $\mathcal F$ is onto. An isometry preserves inner products (polarisation). The operator $g\mapsto\mathcal Fg(-\cdot)$ is bounded and inverts
+$\mathcal F$ on the dense set $\mathcal S$ (Proposition~\ref{prop:schwartz}), so it inverts $\mathcal F$ everywhere.
+
+\emph{Consistency.} Let $f\in L^1\cap L^2$. The truncations $f\mathbf 1_{|x|\le R}$ converge to $f$ in $L^1$ and in $L^2$, and mollifying them (Tome~6, Theorem~9.10) gives $f_n\in C_c^\infty$ with $f_n\to f$ in both norms.
+Then $\hat f_n\to\hat f$ uniformly, and $\mathcal Ff_n\to\mathcal Ff$ in $L^2$, hence almost everywhere along a subsequence: $\mathcal Ff=\hat f$ almost everywhere. Finally, for $f\in L^2$, $f\mathbf 1_{|x|\le R}\in L^1\cap L^2$
+tends to $f$ in $L^2$, and $\mathcal F$ is continuous, which is the last formula.
+\end{proof}
+
+\begin{beauty}
+On the circle, Fourier series turned $L^2(\mathbb T)$ into $\ell^2(\Z)$ (Theorem~2.7): a change of basis. On the line there is no basis
+of exponentials, since $e^{2\pi ix\xi}$ is not even square-integrable, and yet the transform is still a rotation of $L^2$, as if the
+continuum of exponentials were an orthonormal basis. This ``as if'' is made precise by distributions (Chapter~6), and it is the
+mathematical form of the physicist's statement that position and momentum are two bases of the same Hilbert space.
+\end{beauty}
+
+\section{The Hermite functions}
+
+Which functions are their own Fourier transforms? The Gaussian is one. On the line, consider the operators
+\[A=2\pi x+\frac{\dd}{\dd x},\qquad A^\dagger=2\pi x-\frac{\dd}{\dd x}\]
+on $\mathcal S(\R)$, adjoint to each other ($\langle Af,g\rangle=\langle f,A^\dagger g\rangle$ by parts). They are the annihilation and creation operators of the quantum harmonic oscillator.
+
+\begin{theorem}[Hermite functions]\label{thm:hermite}
+Let $g_n=(A^\dagger)^ne^{-\pi x^2}$ and $h_n=\frac{g_n}{\|g_n\|_2}$. Then $g_n=P_n(x)e^{-\pi x^2}$ with $P_n$ a polynomial of degree exactly $n$, $(h_n)_{n\ge0}$ is a Hilbert basis of $L^2(\R)$, and
+\[\mathcal Fh_n=(-i)^nh_n.\]
+So $\mathcal F$ is diagonal in this basis, with eigenvalues $1,-i,-1,i$ repeating, each with an infinite-dimensional eigenspace.
+\end{theorem}
+\begin{proof}
+\emph{Shape.} $A^\dagger(Pe^{-\pi x^2})=(4\pi xP-P')e^{-\pi x^2}$ raises the degree by one, with leading coefficient multiplied by $4\pi$.
+
+\emph{Eigenfunctions of $\mathcal F$.} By Proposition~\ref{prop:schwartz}, $\mathcal F(f')=2\pi i\xi\hat f$ and $\mathcal F(2\pi xf)=i\hat f\,'$, so for $f\in\mathcal S$,
+\[\mathcal F(A^\dagger f)=i\hat f\,'-2\pi i\xi\hat f=-i\,A^\dagger\hat f.\]
+Since $\mathcal F(e^{-\pi x^2})=e^{-\pi\xi^2}$, induction gives $\mathcal Fg_n=(-i)^ng_n$.
+
+\emph{Orthogonality.} A direct computation gives $AA^\dagger-A^\dagger A=4\pi$ on $\mathcal S$, and by induction $A(A^\dagger)^n=(A^\dagger)^nA+4\pi n(A^\dagger)^{n-1}$. Also $Ae^{-\pi x^2}=0$. With $H=A^\dagger A+2\pi=-\frac{\dd^2}{\dd x^2}+4\pi^2x^2$,
+it follows that $Hg_n=2\pi(2n+1)g_n$. As $\langle Hf,g\rangle=\langle f,Hg\rangle$ on $\mathcal S$ (by parts), eigenvectors for distinct eigenvalues are orthogonal, as in Proposition~4.2(a). So $(h_n)$ is orthonormal.
+
+\emph{Completeness.} By the shape, $h_0,\dots,h_n$ span the same space as $e^{-\pi x^2},xe^{-\pi x^2},\dots,x^ne^{-\pi x^2}$. Let $f\in L^2(\R)$ be orthogonal to all $x^ke^{-\pi x^2}$, and for $z\in\C$ let
+\[\varphi(z)=\int f(x)e^{-\pi x^2}e^{-2\pi ixz}\dd x.\]
+By Cauchy--Schwarz, $\int|f(x)|e^{-\pi x^2}e^{2\pi|x||z|}\dd x<\infty$, so expanding $e^{-2\pi ixz}$ in its power series and integrating term by term (Tonelli justifies it) gives
+$\varphi(z)=\sum_k\frac{(-2\pi iz)^k}{k!}\int f(x)x^ke^{-\pi x^2}\dd x=0$. So the integrable function $fe^{-\pi x^2}$ has zero Fourier transform, and $f=0$ by Theorem~\ref{thm:ftinv}.
+
+Finally, a unitary operator that is diagonal in a Hilbert basis has the closure of its eigenvalues as spectrum (Exercise~3.4, with the counting measure on $\N$), here $\{1,-i,-1,i\}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-hermite}
+\caption{The Hermite functions $h_0,\dots,h_3$. Each is, up to the factor $(-i)^n$, its own Fourier transform; $h_n$ has $n$ zeros, and its energy $2\pi(2n+1)$ for the oscillator $H$ grows by equal
+steps, the ``quanta'' of the harmonic oscillator.}
+\label{fig:hermite}
+\end{figure}
+
+This keeps the promise of Chapter~2: the Hermite functions are a Hilbert basis of $L^2(\R)$, and the proof shows why, they are the
+eigenvectors of a self-adjoint problem, like the sines of Chapter~4.
+
+\section{Interpolation: Riesz--Thorin and Hausdorff--Young}
+
+The transform maps $L^1$ to $L^\infty$ with norm $1$ and $L^2$ to $L^2$ with norm $1$. What does it do on $L^p$ for $1<p<2$? In 1926 Marcel Riesz proved a general principle: a linear operator bounded on two pairs of
+$L^p$ spaces is bounded on all the pairs ``in between''. His proof was long and real-variable. In 1938 his student Olof Thorin found a proof in a few lines by complex analysis, a proof that Littlewood is said to have
+called the most impudent in mathematics, and brilliantly successful. It rests on a maximum principle in a strip.
+
+\begin{lemma}[three lines lemma]\label{lem:threelines}
+Let $F$ be continuous and bounded on the strip $S=\{0\le\operatorname{Re}z\le1\}$ and holomorphic inside, with $|F|\le M_0$ on $\operatorname{Re}z=0$ and $|F|\le M_1$ on $\operatorname{Re}z=1$, where $M_0,M_1>0$. Then
+$|F(x+iy)|\le M_0^{1-x}M_1^x$ on $S$.
+\end{lemma}
+\begin{proof}
+For $\varepsilon>0$ let $G_\varepsilon(z)=F(z)M_0^{z-1}M_1^{-z}e^{\varepsilon z^2}$. For $z=x+iy\in S$, $|M_0^{z-1}M_1^{-z}|=M_0^{x-1}M_1^{-x}$ and $|e^{\varepsilon z^2}|=e^{\varepsilon(x^2-y^2)}\le e^\varepsilon e^{-\varepsilon y^2}$. So
+$|G_\varepsilon|\le e^\varepsilon$ on both edges of $S$, and $G_\varepsilon(z)\to0$ as $|y|\to\infty$, uniformly in $x$. On a rectangle $[0,1]\times[-Y,Y]$ with $Y$ large enough that $|G_\varepsilon|\le e^\varepsilon$ on the horizontal
+sides, the maximum principle (Tome~4, Chapter~9) gives $|G_\varepsilon|\le e^\varepsilon$ inside. Every point of $S$ lies in such a rectangle, so $|F(z)|M_0^{x-1}M_1^{-x}\le e^{\varepsilon}e^{\varepsilon y^2}\cdot e^{-\varepsilon x^2}$, and
+letting $\varepsilon\to0$ gives the claim.
+\end{proof}
+
+\begin{theorem}[Riesz--Thorin]\label{thm:rieszthorin}
+Let $(X,\mu)$ and $(Y,\nu)$ be $\sigma$-finite measure spaces, $1\le p_0,p_1,q_0,q_1\le\infty$, and $T$ a linear map from the simple functions on $X$ with support of finite measure to measurable functions on $Y$, with
+$\|Tf\|_{q_j}\le M_j\|f\|_{p_j}$ for $j=0,1$. For $0<\theta<1$ define $p_\theta,q_\theta$ by
+\[\frac1{p_\theta}=\frac{1-\theta}{p_0}+\frac\theta{p_1},\qquad\frac1{q_\theta}=\frac{1-\theta}{q_0}+\frac\theta{q_1},\]
+and assume $p_\theta<\infty$ and $1<q_\theta<\infty$. Then $\|Tf\|_{q_\theta}\le M_0^{1-\theta}M_1^\theta\|f\|_{p_\theta}$, and $T$ extends uniquely to a bounded operator $L^{p_\theta}\to L^{q_\theta}$ with this bound.
+\end{theorem}
+\begin{proof}
+Write $p=p_\theta$, $q=q_\theta$, $q'$ for the conjugate exponent, and $\operatorname{sgn}w=\frac w{|w|}$ ($\operatorname{sgn}0=0$). We may assume $M_0,M_1>0$.
+
+\emph{Duality.} For $h\in L^q(\nu)$, $\|h\|_q=\sup|\int hg|$ over simple $g$ with support of finite measure and $\|g\|_{q'}\le1$. Indeed ``$\ge$'' is H\"older; and $g_0=|h|^{q-1}\overline{\operatorname{sgn}h}/\|h\|_q^{q-1}$ has
+$\|g_0\|_{q'}=1$ and $\int hg_0=\|h\|_q$, while simple $g_n$ with $|g_n|\le|g_0|$, supports of finite measure ($\sigma$-finiteness) and $g_n\to g_0$ pointwise give $\int hg_n\to\int hg_0$ by dominated convergence.
+
+\emph{The analytic family.} Let $f=\sum_ja_j\mathbf 1_{A_j}$ and $g=\sum_kb_k\mathbf 1_{B_k}$ be simple, with disjoint $A_j$ and disjoint $B_k$ of finite measure, $\|f\|_p=1$ and $\|g\|_{q'}=1$. For $z\in S$ let
+\[\frac1{p(z)}=\frac{1-z}{p_0}+\frac z{p_1},\qquad\frac1{q'(z)}=\frac{1-z}{q_0'}+\frac z{q_1'},\]
+and
+\[f_z=\sum_j|a_j|^{\frac p{p(z)}}\operatorname{sgn}(a_j)\mathbf 1_{A_j},\qquad g_z=\sum_k|b_k|^{\frac{q'}{q'(z)}}\operatorname{sgn}(b_k)\mathbf 1_{B_k}.\]
+Then $f_\theta=f$, $g_\theta=g$, and
+\[\begin{aligned}F(z)&=\int_Y(Tf_z)g_z\dd\nu\\&=\sum_{j,k}|a_j|^{\frac p{p(z)}}|b_k|^{\frac{q'}{q'(z)}}\operatorname{sgn}(a_jb_k)\eqbr\cdot\int_YT(\mathbf 1_{A_j})\mathbf 1_{B_k}\dd\nu\end{aligned}\]
+is a finite sum of functions $c^{w(z)}$, $c>0$, with $w$ affine: $F$ is entire and bounded on $S$. On $\operatorname{Re}z=0$, $|f_{iy}|=|f|^{p/p_0}$, so $\|f_{iy}\|_{p_0}=1$ (both when $p_0<\infty$, as
+$\int|f|^p=1$, and when $p_0=\infty$, as then $|f_{iy}|=1$ on the support), and likewise $\|g_{iy}\|_{q_0'}=1$. H\"older gives $|F(iy)|\le M_0$, and in the same way $|F(1+iy)|\le M_1$.
+
+\emph{Conclusion.} By Lemma~\ref{lem:threelines}, $|\int(Tf)g|=|F(\theta)|\le M_0^{1-\theta}M_1^\theta$. Since $Tf\in L^{q_0}\cap L^{q_1}\subset L^q$ (Tome~6, Exercise~9.3), duality gives $\|Tf\|_q\le M_0^{1-\theta}M_1^\theta$
+for $\|f\|_p=1$, hence for all simple $f$ by homogeneity. Simple functions are dense in $L^p$ ($p<\infty$, Tome~6, Proposition~9.6), so $T$ extends by continuity.
+\end{proof}
+
+\begin{corollary}[Hausdorff--Young]\label{cor:hausdorffyoung}
+Let $1\le p\le2$ and $\frac1p+\frac1{p'}=1$. For $f\in L^1\cap L^p(\R^d)$, $\|\hat f\|_{p'}\le\|f\|_p$. So $\mathcal F$ extends to a bounded operator $L^p(\R^d)\to L^{p'}(\R^d)$ of norm at most $1$.
+\end{corollary}
+\begin{proof}
+The cases $p=1$ and $p=2$ are Proposition~\ref{prop:ftl1}(a) and Theorem~\ref{thm:plancherel}. For $1<p<2$, apply Theorem~\ref{thm:rieszthorin} to $T=\mathcal F$ with $(p_0,q_0)=(1,\infty)$, $(p_1,q_1)=(2,2)$, $M_0=M_1=1$, and
+$\theta=2-\frac2p$: then $\frac1{p_\theta}=1-\frac\theta2=\frac1p$ and $\frac1{q_\theta}=\frac\theta2=1-\frac1p$. For $f\in L^1\cap L^p$, the same simple functions approximate $f$ in $L^1$ and in $L^p$ (truncate the values and the
+support, then use Proposition~9.6 of Tome~6), so the extension agrees with the integral defining $\hat f$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-riesz}
+\caption{The Riesz diagram: an operator bounded from $L^p$ to $L^q$ is a point $(\frac1p,\frac1q)$ of the square. The set of such points is convex (Theorem~\ref{thm:rieszthorin}). For $\mathcal F$, the
+endpoints $(1,0)$ (Proposition~\ref{prop:ftl1}) and $(\frac12,\frac12)$ (Plancherel) give the Hausdorff--Young segment $\frac1q=1-\frac1p$.}
+\label{fig:riesz}
+\end{figure}
+
+The constant $1$ is not the best for $1<p<2$: Gaussians do better (Exercise~\ref{ex:hysharp}), and Beckner proved in 1975 that they are the extremal functions. Riesz--Thorin also gives Young's inequality for
+convolutions (Tome~6, Exercise~9.1) by interpolating between Proposition~9.9 of Tome~6 and H\"older.
+
+\section{Measures and characteristic functions}
+
+The transform of a finite Borel measure $\mu$ on $\R^d$ is $\hat\mu(\xi)=\int e^{-2\pi ix\cdot\xi}\dd\mu(x)$, a bounded continuous function (dominated convergence). For a random vector $X$ of law $\mu$, the
+\emph{characteristic function} $\varphi_X(t)=E[e^{it\cdot X}]=\hat\mu(-\frac t{2\pi})$ of Tome~3 is the same object with another normalisation.
+
+\begin{theorem}\label{thm:measuniq}
+If two finite Borel measures $\mu,\nu$ on $\R^d$ have $\hat\mu=\hat\nu$, then $\mu=\nu$. In particular, a probability law is determined by its characteristic function.
+\end{theorem}
+\begin{proof}
+For $g\in\mathcal S$, Fubini gives $\int\hat g\dd\mu=\int g(\xi)\hat\mu(\xi)\dd\xi$. So $\int\hat g\dd\mu=\int\hat g\dd\nu$ for every $g\in\mathcal S$, and as $\mathcal F(\mathcal S)=\mathcal S$, $\int h\dd\mu=\int h\dd\nu$ for every
+$h\in\mathcal S\supset C_c^\infty$. For $h\in C_c$ and a mollifier $\varphi$, $h*\varphi_t\in C_c^\infty$ tends to $h$ uniformly (Tome~6, Theorem~9.10(b)) with supports in a fixed compact set, so $\int h\dd\mu=\int h\dd\nu$
+by dominated convergence for the finite measures. For an open box $U$, choose $h_n\in C_c$ with $0\le h_n\uparrow\mathbf 1_U$; monotone convergence gives $\mu(U)=\nu(U)$, and likewise $\mu(\R^d)=\nu(\R^d)$. Open boxes form a
+$\pi$-system generating the Borel sets, so $\mu=\nu$ (Tome~6, Chapter~6).
+\end{proof}
+
+\begin{proposition}\label{prop:cauchylaw}
+For $a>0$, the transform of $e^{-2\pi a|x|}$ on $\R$ is $p_a(\xi)=\frac a{\pi(a^2+\xi^2)}$, and the transform of $p_a$ is $e^{-2\pi a|\xi|}$. So the Cauchy law of density $p_a$ has characteristic function $e^{-a|t|}$.
+\end{proposition}
+\begin{proof}
+Splitting the integral at $0$,
+\[\int e^{-2\pi a|x|}e^{-2\pi ix\xi}\dd x=\frac1{2\pi(a+i\xi)}+\frac1{2\pi(a-i\xi)}=\frac a{\pi(a^2+\xi^2)}.\]
+Both functions are continuous and integrable, so Theorem~\ref{thm:ftinv} gives $e^{-2\pi a|x|}=\int p_a(\xi)e^{2\pi ix\xi}\dd\xi$ for every $x$, which is $\hat p_a(x)$ since $p_a$ is even. Finally
+$\varphi(t)=\hat p_a(-\frac t{2\pi})=e^{-a|t|}$.
+\end{proof}
+
+This keeps a promise of Tome~6 (Exercise~9.2): $\hat p_s\hat p_t=\hat p_{s+t}$, so $p_s*p_t=p_{s+t}$ by Proposition~\ref{prop:ftl1}(c) and uniqueness. And it explains a scandal. In 1824 Poisson noticed that for
+this law the average of $n$ independent observations is no better than one observation; in 1853 Cauchy and Bienaym\'e quarrelled in the \emph{Comptes rendus} over whether the method of least squares could be
+trusted, and the law has carried Cauchy's name ever since.
+
+\begin{corollary}\label{cor:cauchymean}
+If $X_1,\dots,X_n$ are independent with the Cauchy law $p_a$, then $\frac1n(X_1+\cdots+X_n)$ has the law $p_a$.
+\end{corollary}
+\begin{proof}
+By independence (Tome~3), the characteristic function of the mean is $\varphi(\frac tn)^n=e^{-a|t|}$, and Theorem~\ref{thm:measuniq} concludes.
+\end{proof}
+
+So the law of large numbers fails: the Cauchy law has no mean, and averaging does not concentrate it at all. Characteristic functions are the main tool of Tome~10, where L\'evy's continuity theorem turns
+pointwise convergence of $\varphi_{X_n}$ into convergence in law, and the central limit theorem becomes a Taylor expansion.
+
+\section{Band-limited functions}
+
+A signal of finite energy is \emph{band-limited} to $W>0$ if its transform vanishes outside $[-W,W]$. These signals form the \emph{Paley--Wiener space}
+\[PW_W=\{f\in L^2(\R):\mathcal Ff=0\text{ almost everywhere outside }[-W,W]\},\]
+a closed subspace of $L^2(\R)$ (the inverse image under the unitary $\mathcal F$ of the closed subspace $L^2([-W,W])$).
+
+\begin{theorem}[sampling in Hilbert space]\label{thm:sampling}
+Every $f\in PW_W$ agrees almost everywhere with the restriction to $\R$ of the entire function $f(z)=\int_{-W}^W\hat f(\xi)e^{2\pi iz\xi}\dd\xi$. The functions
+\[\varphi_n(x)=\sqrt{2W}\operatorname{sinc}(2Wx-n),\qquad n\in\Z,\qquad\operatorname{sinc}t=\frac{\sin\pi t}{\pi t},\]
+form a Hilbert basis of $PW_W$, and for $f\in PW_W$,
+\[f(x)=\sum_{n\in\Z}f\Bigl(\frac n{2W}\Bigr)\operatorname{sinc}(2Wx-n),\]
+with convergence in $L^2$ and uniformly on $\R$.
+\end{theorem}
+\begin{proof}
+$\hat f\in L^2([-W,W])\subset L^1([-W,W])$, so $f(z)$ is defined, and entire: expanding $e^{2\pi iz\xi}$ in power series and integrating term by term is justified since $\int_{-W}^W|\hat f|e^{2\pi|z|W}<\infty$. By
+Theorem~\ref{thm:plancherel}, $\mathcal F^{-1}\hat f(x)=\mathcal F\hat f(-x)$ is given by this integral almost everywhere, since $\hat f\in L^1\cap L^2$.
+
+The functions
+\[\psi_n(\xi)=\frac1{\sqrt{2W}}e^{-2\pi in\xi/(2W)}\mathbf 1_{[-W,W]}(\xi),\qquad n\in\Z,\]
+form a Hilbert basis of $L^2([-W,W])$ (Theorem~2.7, rescaled), and $\mathcal F^{-1}$ maps $L^2([-W,W])$ unitarily onto $PW_W$. A direct
+integration gives $\mathcal F^{-1}\psi_n=\varphi_n$, so $(\varphi_n)$ is a Hilbert basis of $PW_W$, and $f=\sum_n\langle f,\varphi_n\rangle\varphi_n$ in $L^2$. By Plancherel,
+\[\begin{aligned}\langle f,\varphi_n\rangle&=\langle\hat f,\psi_n\rangle=\frac1{\sqrt{2W}}\int_{-W}^W\hat f(\xi)e^{2\pi i\frac n{2W}\xi}\dd\xi\eqbr=\frac1{\sqrt{2W}}f\Bigl(\frac n{2W}\Bigr),\end{aligned}\]
+which is the sampling formula. For $g\in PW_W$ and real $x$, Cauchy--Schwarz gives $|g(x)|\le\int_{-W}^W|\hat g|\le\sqrt{2W}\|g\|_2$, so $L^2$ convergence in $PW_W$ implies uniform convergence.
+\end{proof}
+
+Tome~4 proved the sampling formula for integrable band-limited functions with a computation; here it is a change of orthonormal basis, and the samples are coordinates.
+
+\begin{corollary}\label{cor:nocompact}
+If $f\in L^2(\R)$ and both $f$ and $\hat f$ vanish almost everywhere outside bounded sets, then $f=0$.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:sampling}, $f$ is almost everywhere equal to an entire function that vanishes on $\R\setminus[-R,R]$ for some $R$, hence everywhere by the identity theorem (Tome~4, Chapter~9).
+\end{proof}
+
+\begin{think}
+No signal is both of finite duration and of finite bandwidth. Yet every real sound has finite duration, and engineers happily speak of its bandwidth. What do they mean? Look at Theorem~4.6 and think of
+the eigenvalues of ``time-limit, then band-limit''.
+\end{think}
+
+\begin{think}
+In films, the spokes of a turning wagon wheel sometimes seem to turn slowly backwards. The camera samples $24$ times per second. What does Theorem~\ref{thm:sampling} say about a wheel whose spokes pass
+$23$ times per second?
+\end{think}
+
+\section{Poisson summation on lattices}
+
+A \emph{lattice} in $\R^d$ is $\Lambda=A\Z^d$ with $A\in GL_d(\R)$; its \emph{covolume} is $|\det A|$, the volume of a fundamental parallelepiped. Its \emph{dual lattice} is
+$\Lambda^*=\{w\in\R^d:w\cdot v\in\Z\text{ for all }v\in\Lambda\}=A^{-T}\Z^d$, where $A^{-T}=(A^T)^{-1}$.
+
+\begin{theorem}[Poisson summation]\label{thm:poissonlattice}
+For $f\in\mathcal S(\R^d)$ and $x\in\R^d$,
+\[\sum_{v\in\Lambda}f(x+v)=\frac1{\operatorname{covol}\Lambda}\sum_{w\in\Lambda^*}\hat f(w)e^{2\pi iw\cdot x},\]
+both series converging absolutely and uniformly in $x$. In particular $\sum_{v\in\Lambda}f(v)=\frac1{\operatorname{covol}\Lambda}\sum_{w\in\Lambda^*}\hat f(w)$.
+\end{theorem}
+\begin{proof}
+First let $\Lambda=\Z^d$. Since $|f(y)|\le C(1+|y|)^{-d-1}$, the series $F(y)=\sum_{m\in\Z^d}f(y+m)$ converges uniformly on compact sets, and $F$ is continuous and $\Z^d$-periodic. Its Fourier coefficients on $[0,1[^d$ are, by
+termwise integration and unfolding the sum into an integral over $\R^d$,
+\[\int_{[0,1[^d}F(y)e^{-2\pi ik\cdot y}\dd y=\sum_m\int_{m+[0,1[^d}f(y)e^{-2\pi ik\cdot y}\dd y=\hat f(k).\]
+As $\hat f\in\mathcal S$, $\sum_k|\hat f(k)|<\infty$, and $\sum_k\hat f(k)e^{2\pi ik\cdot y}$ converges uniformly to a continuous function with the same Fourier coefficients as $F$. The exponentials form a Hilbert basis of
+$L^2(\mathbb T^d)$ (as shown in Chapter~2 just before Theorem~\ref{thm:kroneckerweyl}), so the two continuous functions agree almost everywhere, hence everywhere.
+
+In general, let $g(y)=f(Ay)\in\mathcal S$. A change of variables gives $\hat g(\eta)=\frac1{|\det A|}\hat f(A^{-T}\eta)$. Apply the case $\Z^d$ to $g$ at $y=A^{-1}x$: $\sum_mf(x+Am)=\frac1{|\det A|}\sum_k\hat f(A^{-T}k)e^{2\pi ik\cdot A^{-1}x}$,
+and $k\cdot A^{-1}x=(A^{-T}k)\cdot x$. As $k$ runs over $\Z^d$, $w=A^{-T}k$ runs over $\Lambda^*$.
+\end{proof}
+
+\begin{corollary}[theta of a lattice]\label{cor:thetalattice}
+Let $\theta_\Lambda(t)=\sum_{v\in\Lambda}e^{-\pi t|v|^2}$ for $t>0$. Then
+\[\theta_\Lambda(t)=\frac1{\operatorname{covol}\Lambda}\,t^{-d/2}\,\theta_{\Lambda^*}\Bigl(\frac1t\Bigr).\]
+In particular $\theta_\Lambda(t)\sim\frac1{\operatorname{covol}\Lambda}t^{-d/2}$ as $t\to0$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:poissonlattice} at $x=0$ to $f(x)=e^{-\pi t|x|^2}$, whose transform is $t^{-d/2}e^{-\pi|\xi|^2/t}$ by \eqref{eq:gaussft}. As $t\to0$, $\theta_{\Lambda^*}(\frac1t)\to1$: only $w=0$ survives.
+\end{proof}
+
+For $\Lambda=\Z$ this is the theta transformation of Tome~4, the engine of the functional equation of $\zeta$ in Tome~5. The asymptotic says that a lattice of covolume $V$ has ``$\frac1V$ points per unit
+volume'', seen through a Gaussian lens. For special lattices, $\theta_\Lambda$ is a modular form: for the lattice $E_8$ in dimension $8$, which is its own dual, the formula reads $\theta(t)=t^{-4}\theta(\frac1t)$, and
+this symmetry, studied in Tome~12, is behind Viazovska's 2016 proof that $E_8$ gives the densest packing of spheres in dimension~$8$.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:cothsum}
+Apply the Poisson summation formula of Tome~4 (Theorem~8.9) to $f(x)=e^{-2\pi a|x|}$, $a>0$, to prove $\sum_{n\in\Z}\frac1{n^2+a^2}=\frac\pi a\coth(\pi a)$. Let $a\to0$ to recover $\sum_{n\ge1}\frac1{n^2}=\frac{\pi^2}6$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:heatft}
+\emph{The heat equation on $\R^d$.} For $f\in\mathcal S(\R^d)$ and $t>0$ let $u(t,x)=\int e^{-4\pi^2t|\xi|^2}\hat f(\xi)e^{2\pi ix\cdot\xi}\dd\xi$. (a) Show that $u(t,\cdot)=f*K_t$ with $K_t(x)=(4\pi t)^{-d/2}e^{-|x|^2/(4t)}$. (b) Show that
+$\partial_tu=\Delta u$ and that $u(t,\cdot)\to f$ uniformly as $t\to0$. (c) Show that $\|u(t,\cdot)\|_2$ decreases with $t$ and that $\|u(t,\cdot)\|_\infty\le(4\pi t)^{-d/2}\|f\|_1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bochner}
+\emph{Positive definite functions.} A function $\varphi:\R^d\to\C$ is \emph{positive definite} if $\sum_{i,j}c_i\bar c_j\varphi(\xi_i-\xi_j)\ge0$ for all finite families $\xi_i\in\R^d$, $c_i\in\C$. (a) Show that $\hat\mu$ is positive
+definite for every finite positive measure $\mu$. (b) Let $\varphi\in L^1(\R^d)$ be continuous and positive definite. Show that $\int\varphi(\xi)e^{2\pi ix\cdot\xi}\dd\xi\ge0$ for every $x$. (c) Show that a positive definite $\varphi$
+satisfies $|\varphi(\xi)|\le\varphi(0)$, that $\xi\mapsto\xi^2e^{-\pi\xi^2}$ is not positive definite, and that the triangle $\max(1-|\xi|,0)$ is.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:paleywiener}
+\emph{The easy half of Paley--Wiener.} Let $f\in L^2(\R)$ vanish outside $[-R,R]$. (a) Show that $\hat f$ extends to an entire function with $|\hat f(\zeta)|\le\sqrt{2R}\,\|f\|_2\,e^{2\pi R|\operatorname{Im}\zeta|}$. (b) Compute
+$\hat f$ for $f=\mathbf 1_{[-R,R]}$ and show that the exponent $2\pi R$ cannot be improved. (The converse, that an entire function of this growth which is square-integrable on $\R$ is such a transform, is the
+Paley--Wiener theorem; its proof moves a contour, with the tools of Chapter~9.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:hermitecalc}
+\emph{Hermite functions by hand.} (a) Show that $\|g_n\|_2^2=4\pi n\|g_{n-1}\|_2^2$, so $\|g_n\|_2^2=(4\pi)^nn!/\sqrt2$, and write $g_1,g_2$ explicitly. (b) Check $\mathcal Fg_1=-ig_1$ directly from Proposition~\ref{prop:schwartz}.
+(c) Show that $h_n(-x)=(-1)^nh_n(x)$. For $\alpha\in\R$ let $\mathcal F_\alpha f=\sum_ne^{-in\alpha}\langle f,h_n\rangle h_n$. Show that $(\mathcal F_\alpha)$ is a group of unitary operators with $\mathcal F_{\pi/2}=\mathcal F$ and
+$\mathcal F_\pi f=f(-\cdot)$: the \emph{fractional Fourier transform}, a rotation by the angle $\alpha$ in the time--frequency plane.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:hysharp}
+Let $\gamma(x)=e^{-\pi x^2}$ on $\R$ and $1<p<2$. Compute $\|\gamma\|_p$ and $\|\hat\gamma\|_{p'}$, and show that $\|\hat\gamma\|_{p'}<\|\gamma\|_p$. So the constant $1$ in Corollary~\ref{cor:hausdorffyoung} is not sharp.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hexlattice}
+\emph{The hexagonal lattice.} Let $\Lambda$ be the lattice spanned by $(1,0)$ and $(\frac12,\frac{\sqrt3}2)$. (a) Compute $\operatorname{covol}\Lambda$ and a basis of $\Lambda^*$, and show that $\Lambda^*$ is $\Lambda$ rotated by
+$90^\circ$ and scaled by $\frac2{\sqrt3}$. (b) Deduce $\theta_\Lambda(t)=\frac2{\sqrt3\,t}\,\theta_\Lambda\bigl(\frac4{3t}\bigr)$. (c) What happens at $t=\frac2{\sqrt3}$?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:cothsum}
+$\hat f=p_a$ by Proposition~\ref{prop:cauchylaw}; both decay like $(1+|x|)^{-2}$. The left side is a geometric series.
+\end{hint}
+\begin{hint}{ex:heatft}
+$e^{-4\pi^2t|\xi|^2}=e^{-\pi\varepsilon^2|\xi|^2}$ with $\varepsilon^2=4\pi t$; use \eqref{eq:gaussft}. Differentiate under the integral sign.
+\end{hint}
+\begin{hint}{ex:bochner}
+(b) Use the double integral $\int\!\!\int\varphi(\xi-\eta)g(\xi)\overline{g(\eta)}\dd\xi\dd\eta\ge0$ with $g(\xi)=e^{2\pi ix\cdot\xi}e^{-\pi\varepsilon^2|\xi|^2}$, and complete the square. (c) Use $2\times2$ matrices.
+\end{hint}
+\begin{hint}{ex:paleywiener}
+$|e^{-2\pi ix\zeta}|=e^{2\pi x\operatorname{Im}\zeta}$. Look at $\hat f(iy)$.
+\end{hint}
+\begin{hint}{ex:hermitecalc}
+$\|g_n\|^2=\langle A^\dagger g_{n-1},g_n\rangle=\langle g_{n-1},Ag_n\rangle$. For parity, $A^\dagger$ exchanges even and odd functions.
+\end{hint}
+\begin{hint}{ex:hysharp}
+$\|\gamma\|_p=p^{-1/(2p)}$. With $a=\frac1p$, compare $a\log a$ and $(1-a)\log(1-a)$.
+\end{hint}
+\begin{hint}{ex:hexlattice}
+With $A$ the matrix of the basis, $\Lambda^*=A^{-T}\Z^2$. Then $\theta_{\Lambda^*}(s)=\theta_\Lambda(\frac43s)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:cothsum}
+\idea Poisson summation trades a slowly converging sum for a geometric series. The function $e^{-2\pi a|x|}$ is chosen because its transform is the summand we want.
+\writeup $f$ is continuous with $|f(x)|\le C(1+|x|)^{-2}$, and $\hat f=p_a$ satisfies the same bound (Proposition~\ref{prop:cauchylaw}), so Theorem~8.9 of Tome~4 applies:
+\[\sum_{m\in\Z}\frac a{\pi(a^2+m^2)}=\sum_{n\in\Z}e^{-2\pi a|n|}=1+\frac{2e^{-2\pi a}}{1-e^{-2\pi a}}=\frac{1+e^{-2\pi a}}{1-e^{-2\pi a}}=\coth(\pi a).\]
+Multiply by $\frac\pi a$. Then $\sum_{n\ge1}\frac1{n^2+a^2}=\frac12\bigl(\frac\pi a\coth\pi a-\frac1{a^2}\bigr)$. As $a\to0$, $\coth(\pi a)=\frac1{\pi a}+\frac{\pi a}3+O(a^3)$, so the right side tends to $\frac{\pi^2}6$, and the left
+side tends to $\sum\frac1{n^2}$ by monotone convergence.
+\end{solution}
+
+\begin{solution}{ex:heatft}
+\idea On the Fourier side the heat equation is a family of independent ordinary differential equations, $\partial_t\hat u=-4\pi^2|\xi|^2\hat u$: each frequency decays at its own rate, and high frequencies die first.
+That is smoothing.
+\writeup (a) By \eqref{eq:gaussft} with $\varepsilon^2=4\pi t$, $e^{-4\pi^2t|\xi|^2}$ is the transform of $K_t$, a positive integrable function of integral $1$. By Proposition~\ref{prop:ftl1}(c), $\widehat{f*K_t}=e^{-4\pi^2t|\xi|^2}\hat f$, which is
+integrable, and $f*K_t$ is continuous, so Theorem~\ref{thm:ftinv} gives $f*K_t=u(t,\cdot)$ everywhere.
+
+(b) The integrand of $u$ and its derivatives in $t$ and $x$ up to order two are dominated, for $t\ge t_0>0$, by $C(1+|\xi|^2)|\hat f(\xi)|$, integrable as $\hat f\in\mathcal S$. Differentiating under the integral,
+$\partial_tu$ brings the factor $-4\pi^2|\xi|^2$ and $\Delta u$ the factor $\sum_j(2\pi i\xi_j)^2=-4\pi^2|\xi|^2$: they agree. And $|u(t,x)-f(x)|\le\int(1-e^{-4\pi^2t|\xi|^2})|\hat f(\xi)|\dd\xi\to0$ uniformly in $x$, by inversion for $f$ and
+dominated convergence.
+
+(c) By Plancherel, $\|u(t,\cdot)\|_2=\|e^{-4\pi^2t|\xi|^2}\hat f\|_2$, which decreases in $t$. And $|f*K_t(x)|\le\|K_t\|_\infty\|f\|_1=(4\pi t)^{-d/2}\|f\|_1$: heat spreads, and its maximum decays like $t^{-d/2}$.
+\end{solution}
+
+\begin{solution}{ex:bochner}
+\idea Positive definiteness is positivity of the measure on the other side of the transform, tested on trigonometric sums. To extract the measure from $\varphi$, test against Gaussian wave packets that
+concentrate at one frequency.
+\writeup (a) Expanding the square,
+\[\sum_{i,j}c_i\bar c_j\hat\mu(\xi_i-\xi_j)=\int\Bigl|\sum_ic_ie^{-2\pi ix\cdot\xi_i}\Bigr|^2\dd\mu(x)\ge0.\]
+
+(b) For $g$ continuous with compact support, the double integral $\int\!\!\int\varphi(\xi-\eta)g(\xi)\overline{g(\eta)}\dd\xi\dd\eta$ is a limit of Riemann sums
+\[h^{2d}\sum_{i,j}\varphi(\xi_i-\xi_j)g(\xi_i)\overline{g(\xi_j)}\ge0,\]
+so it is $\ge0$; by
+dominated convergence ($\varphi$ is bounded, by (c) below) it stays $\ge0$ for $g(\xi)=e^{2\pi ix\cdot\xi}e^{-\pi\varepsilon^2|\xi|^2}$, approximated by $g$ times continuous cut-offs. With $u=\xi-\eta$ and
+$|\eta+u|^2+|\eta|^2=2|\eta+\frac u2|^2+\frac{|u|^2}2$,
+\[\begin{aligned}0&\le\int\!\!\int\varphi(\xi-\eta)g(\xi)\overline{g(\eta)}\eqbr=(2\varepsilon^2)^{-d/2}\int\varphi(u)e^{2\pi ix\cdot u}e^{-\pi\varepsilon^2|u|^2/2}\dd u.\end{aligned}\]
+Multiply by $(2\varepsilon^2)^{d/2}$ and let $\varepsilon\to0$; dominated convergence ($\varphi\in L^1$) gives $\int\varphi(u)e^{2\pi ix\cdot u}\dd u\ge0$.
+
+(c) With two points $0,\xi$, the matrix $\begin{pmatrix}\varphi(0)&\varphi(-\xi)\\\varphi(\xi)&\varphi(0)\end{pmatrix}$ defines a positive Hermitian form on $\C^2$, so it is Hermitian with non-negative determinant: $\varphi(-\xi)=\overline{\varphi(\xi)}$ and
+$|\varphi(\xi)|\le\varphi(0)$. The function $\xi^2e^{-\pi\xi^2}$ vanishes at $0$ but not identically. The triangle $\Delta$ is the transform of $\operatorname{sinc}^2\ge0$ (compute $\hat\Delta=\operatorname{sinc}^2$ directly; both are
+integrable, and Theorem~\ref{thm:ftinv} with evenness inverts it), so it is $\hat\mu$ for the measure $\operatorname{sinc}^2(x)\dd x$, positive definite by (a). Bochner's theorem (1932) says that the continuous positive definite
+functions are exactly the transforms of finite positive measures.
+\end{solution}
+
+\begin{solution}{ex:paleywiener}
+\idea A function confined to $[-R,R]$ has a transform that is a superposition of exponentials $e^{-2\pi ix\zeta}$ with $|x|\le R$, and each of them grows at most like $e^{2\pi R|\operatorname{Im}\zeta|}$ off the real axis.
+\writeup (a) For $|x|\le R$, $|e^{-2\pi ix\zeta}|=e^{2\pi x\operatorname{Im}\zeta}\le e^{2\pi R|\operatorname{Im}\zeta|}$, and $\int_{-R}^R|f|\le\sqrt{2R}\|f\|_2$. So $F(\zeta)=\int_{-R}^Rf(x)e^{-2\pi ix\zeta}\dd x$ is defined and bounded as claimed;
+it is entire by the power series argument of Theorem~\ref{thm:sampling}, and equals $\hat f$ on $\R$ (Theorem~\ref{thm:plancherel}, as $f\in L^1\cap L^2$).
+
+(b) For $f=\mathbf 1_{[-R,R]}$, $F(\zeta)=\frac{\sin(2\pi R\zeta)}{\pi\zeta}$, and $F(iy)=\frac{\sinh(2\pi Ry)}{\pi y}\sim\frac{e^{2\pi R|y|}}{2\pi|y|}$. A bound $Ce^{c|\operatorname{Im}\zeta|}$ with $c<2\pi R$ would fail along the imaginary axis.
+\end{solution}
+
+\begin{solution}{ex:hermitecalc}
+\idea Creation and annihilation operators do all the work: norms, parity and eigenvalues follow from the commutation relation, with no integral computed except the Gaussian one.
+\writeup (a) $\|g_n\|^2=\langle A^\dagger g_{n-1},g_n\rangle=\langle g_{n-1},Ag_n\rangle=4\pi n\|g_{n-1}\|^2$, using $Ag_n=4\pi n\,g_{n-1}$ from the proof of Theorem~\ref{thm:hermite}, and $\|g_0\|^2=\int e^{-2\pi x^2}=\frac1{\sqrt2}$.
+Then $g_1=4\pi xe^{-\pi x^2}$ and $g_2=(16\pi^2x^2-4\pi)e^{-\pi x^2}$.
+
+(b) By Proposition~\ref{prop:schwartz}, $\mathcal F(xe^{-\pi x^2})=\frac i{2\pi}\frac{\dd}{\dd\xi}e^{-\pi\xi^2}=-i\xi e^{-\pi\xi^2}$, so $\mathcal Fg_1=-ig_1$.
+
+(c) If $f$ is even, $A^\dagger f$ is odd, and conversely; $g_0$ is even, so $h_n$ has parity $(-1)^n$. $\mathcal F_\alpha$ multiplies the coordinates in the basis $(h_n)$ by numbers of modulus one, so it is unitary, and
+$\mathcal F_\alpha\mathcal F_\beta=\mathcal F_{\alpha+\beta}$. $\mathcal F_{\pi/2}$ multiplies $h_n$ by $(-i)^n$, as $\mathcal F$ does (Theorem~\ref{thm:hermite}); both are bounded and agree on a basis. $\mathcal F_\pi$ multiplies $h_n$ by $(-1)^n$,
+as does $f\mapsto f(-\cdot)$.
+\end{solution}
+
+\begin{solution}{ex:hysharp}
+\idea The Gaussian is its own transform, so the question is only how $\|\gamma\|_p$ depends on $p$; the inequality is a convexity statement about the entropy-like function $a\log a$.
+\writeup $\|\gamma\|_p^p=\int e^{-\pi px^2}\dd x=p^{-1/2}$, so $\|\gamma\|_p=p^{-1/(2p)}$ and $\|\hat\gamma\|_{p'}=\|\gamma\|_{p'}=p'^{-1/(2p')}$. With $a=\frac1p\in]\frac12,1[$ and $b=1-a=\frac1{p'}$,
+\[\log\frac{\|\hat\gamma\|_{p'}}{\|\gamma\|_p}=\frac{\log p}{2p}-\frac{\log p'}{2p'}=\frac12\bigl(b\log b-a\log a\bigr).\]
+Let $E(a)=a\log a-(1-a)\log(1-a)$ on $[\frac12,1]$. Then $E(\frac12)=E(1)=0$ and $E''(a)=\frac1a-\frac1{1-a}<0$, so $E>0$ on $]\frac12,1[$ by concavity, and the ratio is $<1$. Beckner's theorem says that the
+best constant is exactly this ratio, $\bigl(p^{1/p}/p'^{1/p'}\bigr)^{1/2}$, raised to the power $d$ on $\R^d$.
+\end{solution}
+
+\begin{solution}{ex:hexlattice}
+\idea A lattice and its dual are related by inverse transpose. The hexagonal lattice is so symmetric that its dual is a copy of itself, and Poisson summation becomes a functional equation for one function.
+\writeup (a) $A=\begin{pmatrix}1&\frac12\\0&\frac{\sqrt3}2\end{pmatrix}$, $\operatorname{covol}\Lambda=\frac{\sqrt3}2$, and $A^{-T}=\begin{pmatrix}1&0\\-\frac1{\sqrt3}&\frac2{\sqrt3}\end{pmatrix}$: $\Lambda^*$ is spanned by $w_1=(1,-\frac1{\sqrt3})$ and
+$w_2=(0,\frac2{\sqrt3})$, with $|w_1|^2=|w_2|^2=\frac43$ and $w_1\cdot w_2=-\frac23$, so the angle is $120^\circ$. Let $R$ be the rotation by $90^\circ$, $R(x,y)=(-y,x)$. Then $\frac2{\sqrt3}R(1,0)=(0,\frac2{\sqrt3})=w_2$ and $\frac2{\sqrt3}R(\frac12,\frac{\sqrt3}2)=(-1,\frac1{\sqrt3})=-w_1$: the map
+$\frac2{\sqrt3}R$ sends a basis of $\Lambda$ to a basis of $\Lambda^*$, so $\Lambda^*=\frac2{\sqrt3}R\Lambda$.
+
+(b) Hence $\theta_{\Lambda^*}(s)=\sum_{v\in\Lambda}e^{-\pi s\frac43|v|^2}=\theta_\Lambda(\frac43s)$, and Corollary~\ref{cor:thetalattice} with $d=2$ gives $\theta_\Lambda(t)=\frac2{\sqrt3}t^{-1}\theta_\Lambda(\frac4{3t})$.
+
+(c) At $t_0=\frac2{\sqrt3}$, $\frac4{3t_0}=t_0$ and $\frac2{\sqrt3t_0}=1$: the point is fixed by the symmetry $t\mapsto\frac4{3t}$, and the identity is a tautology there. Differentiating it at $t_0$ gives
+$t_0\theta_\Lambda'(t_0)=-\frac12\theta_\Lambda(t_0)$, a non-obvious identity between two lattice sums.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~Fourier, \emph{Th\'eorie analytique de la chaleur}, Didot, 1822; T.~W.~K\"orner, \emph{Fourier Analysis}, Cambridge, 1988, for the history and many applications.
+\item M.~Plancherel, ``Contribution \`a l'\'etude de la repr\'esentation d'une fonction arbitraire par des int\'egrales d\'efinies'', \emph{Rend. Circ. Mat. Palermo} 30 (1910), 289--335.
+\item M.~Riesz, ``Sur les maxima des formes bilin\'eaires et sur les fonctionnelles lin\'eaires'', \emph{Acta Math.} 49 (1927), 465--497; G.~O.~Thorin, ``An extension of a convexity theorem due to M.~Riesz'',
+\emph{Kungl. Fysiogr. S\"allsk. i Lund F\"orh.} 8 (1939), 166--170; J.~E.~Littlewood, \emph{Littlewood's Miscellany}, ed. B.~Bollob\'as, Cambridge, 1986.
+\item W.~Beckner, ``Inequalities in Fourier analysis'', \emph{Ann. of Math.} 102 (1975), 159--182.
+\item E.~M.~Stein and G.~Weiss, \emph{Introduction to Fourier Analysis on Euclidean Spaces}, Princeton, 1971; E.~M.~Stein and R.~Shakarchi, \emph{Fourier Analysis}, Princeton, 2003.
+\item R.~E.~A.~C.~Paley and N.~Wiener, \emph{Fourier Transforms in the Complex Domain}, AMS, 1934; C.~E.~Shannon, ``Communication in the presence of noise'', \emph{Proc. IRE} 37 (1949), 10--21.
+\item M.~Viazovska, ``The sphere packing problem in dimension 8'', \emph{Ann. of Math.} 185 (2017), 991--1015.
+\end{itemize}
