@@ -251,3 +251,66 @@ Gerhardt VII, p. 200, is confirmed).
 | Ch. 7, planarity | ref | Robertson and Seymour's Graph Minors series counted as "twenty-three papers written from 1983 to 2004". Papers I–XX appeared 1983–2004 and XX contains the theorem; XXI–XXIII appeared 2009–2012. | "the twenty papers of their Graph Minors series, written from 1983 to 2004". |
 | Ch. 1, first-order logic | ref | Pointer to "Tome C3, Chapter 4" for Gödel's completeness theorem; C3 is unwritten and the dependency map fixes no chapter number. | "Tome C3". |
 | Ch. 12, Bruck–Ryser | ref | "Chowla extended it to all symmetric designs": the extension is the joint paper of Chowla and Ryser (1950), cited in the sources. | "Chowla and Ryser extended it to all symmetric designs in 1950." |
+
+## Review: Tome 12
+
+What was checked and found correct: all fourteen chapters, every proof and every
+solution re-derived by hand (in particular the Chebotarev proof of Chapter 8 through
+Deuring's reduction and the cyclotomic crossing, the local and global Kronecker–Weber
+proofs, the Kummer-theory step bounding the ω-eigenspace of U₁/U₁ᵖ, the Riemann–Roch
+proof for smooth plane curves, the p-adic filtration and the descent of Chapter 12,
+Bombieri's bound and the twist argument of Chapter 13, Hecke's functional equation);
+the admitted theorems (Artin reciprocity, the existence theorem, the Hilbert class
+field) are labelled "admitted, not proved in this series", and every consequence drawn
+from them is labelled "assuming Theorem …" (the x² + ny² theorem, the Hilbert class
+fields of Q(√−5) and Q(√−23)); Mazur, Birch–Swinnerton-Dyer, Tunnell, modularity,
+Weil's theorem for all curves, the Weil conjectures, Sato–Tate, Petersson and
+Eichler–Shimura appear only in remarks. Numbers recomputed (Python, SymPy, PARI):
+the minimal polynomial of √2 + ∛2, disc(X⁴ − 10X² + 1) = 147456, 7709321041217 =
+37·683·305065927, the Minkowski bounds and class numbers of Chapter 3, Pell for 61,
+the regulator of Q(ζ₇)⁺, the Gauss sums modulo 3, 4, 5, 8 and the root numbers,
+Σ(a/47)a = −235, the h⁻ table up to 41, κ = π/√20 = 0.70248, the splitting examples
+of Chapters 2 and 10 (x² + 14y² below 200: 23, 127, 137, 151; x² + 27y²: 31, 43, 109,
+127, 157; the Hilbert class field of Q(√−23) and the roots 4, 13, 42 of X³ − X − 1
+modulo 59), Gauss's cubic counts for p = 7, 13, 31, the Hasse figure (667 primes,
+largest ratio 0.977), the Sato–Tate figure (78 496 primes), the area-6 triangles from
+P, 2P, 4P on y² = x³ − 36x (hypotenuse 2094350404801/241717895860), the Nagell–Lutz
+identity, the addition and duplication formulas, the torsion-7 point (3, 8), Bachet's
+2P = (129/100, −383/1000), the a_p table of y² + y = x³ − x² against η(τ)²η(11τ)², the
+coefficients of ΔE₄, j = q⁻¹ + 744 + 196884q + …, the Klein quartic (N₁ = 3, N₂ = 5,
+N₃ = 24, P = 1 + 5T³ + 8T⁶), the F₅ count of y² = x³ − x + 1 and N₂ = 32, N₃ = 104.
+Every pointer to Tomes 0, 1, 2, 4, 5 and 6 (about ninety, from "Tome 0, Proposition
+3.7" to "Tome 6, Theorem 6.10") was checked against the rebuilt `.aux` files and the
+statements themselves; all resolve to the result described. Pointers to Tomes 7, 9,
+13 and 14 agree with the series plan and the Part III map. Dates and quotes checked
+against sources: Jordan's letter to Minkowski (SMF page on Bayer-Fluckiger's talk),
+Weil's letter from Rouen prison ("two or three months locked up every year", MacTutor),
+Gauss's diary entry 146 of 9 July 1814, Taniyama's problem 12 (1955), Kronecker 1853,
+Weber 1886, Hilbert 1896, Chevalley 1936, Iwasawa's letter 1952/1992, Roch's death at
+26, Maclaurin 1720, Cramer 1750, Bézout 1779, Mordell 1922, Weil 1928, Nagell–Lutz
+1935–37, Hasse 1933, Stepanov 1969, Bombieri 1973, Deligne 1974. Publishing rules:
+author "SEGHAIER Oussama" only, "First edition", no mention of the repository. The
+build is clean (no undefined or multiply defined label, no duplicate label, no EPUB
+warning); all fourteen notebooks run without error, and every number quoted from a
+notebook appears in its output.
+
+### Tome 12
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 2, figure of the cycle types of X⁵ − X − 1 | text | Caption said "17 981 primes p < 2·10⁵ not dividing 2869"; there are 17 984 primes below 2·10⁵ and 2869 = 19·151, so 17 982 (recounted with PARI: 150, 1450, 3041, 2270, 4487, 3038, 3546 primes for the seven cycle types; the bar heights are unchanged to three decimals). | 17 982. |
+| Ch. 3, proof of Hermite's theorem | math (minor) | "All conjugates of θ have absolute value at most max(C_X, 1)": in the complex case the distinguished conjugate satisfies \|τ₁(θ)\|² ≤ C_X² + ¼, which can exceed max(C_X, 1). | Bound replaced by C_X + 1, with the reason; the coefficient bound becomes C(n,k)(C_X + 1)ᵏ. |
+| Ch. 3, solution of the discriminant-bound exercise | text | (π/4)⁴(256/24)² ≈ 43.1; it is 43.29. | 43.3. |
+| Ch. 12, associativity proof; Ch. 12, Mordell's descent; Ch. 13, twist inequality | text | Three displays overflow the A4 text width by 20–33 pt. | Broken over two lines. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 12, ch. 1–14 | None found: all run, every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapter 8 quotes Washington's theorem numbers (5.34, 8.2, 9.3, 4.17) and Chapter 10 its Chapter 14; not re-checked against the book.
+- Chapter 9 says Weil "added the additive version, the adèles"; the ring was first written down by Artin and Whaples (1945) as "valuation vectors" and the name is Weil's. Left as is.
+- The figures were not regenerated; the cycle-type bars of Chapter 2 were generated with one prime fewer than the recount (3037 against 3038 for the type 2 3), a difference below the resolution of the drawing.
