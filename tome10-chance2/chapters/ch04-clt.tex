@@ -1,0 +1,593 @@
+\chapter{The Central Limit Theorem, Sharpened}
+\begin{center}\itshape
+Tome~3 proved that sums of many small independent pieces look Gaussian. This chapter asks the questions that come next:\\
+is the condition of the theorem the right one? How good is the Gaussian approximation for a given $n$?\\
+Does it hold point by point, for the probability of each value? And what does it say about walks coming home?
+\end{center}
+
+In 1920 George P\'olya wrote a paper on sums of random variables and the problem of moments, and titled it ``On the central limit theorem of probability
+theory''. The theorem had no name before; P\'olya called it \emph{central} because of the central place it holds in probability, and the name stuck,
+adjective and all. At that time the theorem had been proved under several sets of conditions (by Lyapunov in 1900 and 1901, assuming moments of order a little above two), but nobody
+knew where the truth lay.
+
+Two years later the Finnish mathematician Jarl Waldemar Lindeberg found both a short new proof, the replacement method of Tome~3, and the condition
+that now carries his name. Was it the right condition? The answer came in 1935, from two people at once. William Feller, a young refugee then in
+Stockholm, and Paul L\'evy in Paris proved, independently, that Lindeberg's condition is also \emph{necessary}, as soon as no single summand
+matters. Lucien Le Cam later wrote the history of that year, and of who knew what when, in a well-known essay.
+
+Then came precision. In 1941 Andrew Berry in the United States and in 1942 Carl-Gustav Esseen in Sweden, separately, showed that the error of the
+Gaussian approximation is at most a constant times $\rho/(\sigma^3\sqrt n)$. The constant has a story of its own: Esseen's first value was $7.59$; it has
+been pushed down over seventy years to $0.4748$ (Shevtsova, 2011), and Esseen himself showed in 1956 that it cannot be below $0.4097$. The gap is
+still open.
+
+The chapter proves these four results in that order: Lindeberg--Feller, Berry--Esseen, the multivariate theorem with Pearson's $\chi^2$ test as
+a test case, and the local limit theorem. The last section turns the Fourier method on an old friend: when does a random walk on $\Z^d$ come back home?
+
+\begin{reminder}[from Tome 3 and Chapter 3]
+The \emph{characteristic function} of a random vector $X$ in $\R^d$ is $\varphi_X(t)=\mathbb E e^{i\langle t,X\rangle}$; it determines the law, and if
+$\int|\varphi_X|<\infty$ for real $X$ then $X$ has the density $\frac1{2\pi}\int e^{-itx}\varphi_X(t)\dd t$ (Tome~3, Theorem~6.8). The \emph{Lindeberg
+theorem} (Tome~3, Theorem~6.10): if $X_{n,1},\dots,X_{n,k_n}$ are independent and centred, with variances $\sigma_{n,k}^2$ summing to $1$, and for
+every $\varepsilon>0$
+\[
+L_n(\varepsilon)=\sum_k\mathbb E\bigl[X_{n,k}^2\mathbf 1_{|X_{n,k}|>\varepsilon}\bigr]\to0,
+\]
+then $S_n=\sum_kX_{n,k}\Rightarrow N(0,1)$. In particular (Tome~3, Corollary~6.11) $S_n/(\sigma\sqrt n)\Rightarrow N(0,1)$ for i.i.d.\ centred steps of
+variance $\sigma^2$. \emph{L\'evy's continuity theorem} (Theorem~\ref{thm:levycont}): $X_n\Rightarrow X$ in $\R^d$ if and only if
+$\varphi_{X_n}\to\varphi_X$ pointwise. The \emph{Cram\'er--Wold device} (Corollary~\ref{cor:cramerwold}): $X_n\Rightarrow X$ in $\R^d$ if and
+only if $\langle t,X_n\rangle\Rightarrow\langle t,X\rangle$ for every $t$. For a walk on $\Z^d$ with i.i.d.\ steps, $u_n=P(S_n=0)$, and the walk is
+\emph{recurrent} (returns to $0$ with probability $1$, then infinitely often) if and only if $\sum_nu_n=\infty$ (Tome~3, Theorem~7.12: the proof
+there is written for the simple walk but uses only that the steps are i.i.d.).
+\end{reminder}
+
+We use two Taylor bounds for $u$ real, both from $e^{iu}-\sum_{j<m}\frac{(iu)^j}{j!}=\frac{i^m}{(m-1)!}\int_0^u(u-s)^{m-1}e^{is}\dd s$:
+\begin{equation}\label{eq:taylor}
+\Bigl|e^{iu}-1-iu\Bigr|\le\frac{u^2}2,\qquad\Bigl|e^{iu}-1-iu+\frac{u^2}2\Bigr|\le\frac{|u|^3}6.
+\end{equation}
+
+\section{Lindeberg's condition is the right one}
+
+Lindeberg's condition says that the summands which are large, compared with the total standard deviation, carry a negligible part of the variance.
+It implies that every single summand is negligible: $\sigma_{n,k}^2\le\varepsilon^2+L_n(\varepsilon)$, so
+\begin{equation}\label{eq:uan}
+\max_k\sigma_{n,k}^2\to0.
+\end{equation}
+Without~\eqref{eq:uan} there is no hope of a converse: if $X_{n,1}\sim N(0,1)$ and all the other summands are $0$, the sum is Gaussian and Lindeberg's
+condition fails. Feller's theorem says that this is the only way it can fail.
+
+\begin{theorem}[Lindeberg--Feller]\label{thm:feller}
+Let $X_{n,1},\dots,X_{n,k_n}$ be independent and centred, with variances $\sigma_{n,k}^2$ such that $\sum_k\sigma_{n,k}^2=1$ and $\max_k\sigma_{n,k}^2\to0$.
+Then $S_n\Rightarrow N(0,1)$ if and only if Lindeberg's condition holds.
+\end{theorem}
+\begin{proof}
+``If'' is Tome~3's theorem. Conversely, suppose $S_n\Rightarrow N(0,1)$, and fix $t\in\R$. Let $\varphi_{n,k}$ be the characteristic function of
+$X_{n,k}$. By~\eqref{eq:taylor} and $\mathbb EX_{n,k}=0$, $|\varphi_{n,k}(t)-1|\le\frac{t^2}2\sigma_{n,k}^2$, which is at most $\frac12$ for all $k$ once $n$ is
+large. For complex $w$ with $|w|\le\frac12$, the series of the logarithm gives
+\[
+|\log(1+w)-w|\le\sum_{j\ge2}\frac{|w|^j}2=\frac{|w|^2}{2(1-|w|)}\le|w|^2.
+\]
+Taking real parts, with $w=\varphi_{n,k}(t)-1$ and $\operatorname{Re}\log z=\log|z|$:
+\[
+\Bigl|\sum_k\log|\varphi_{n,k}(t)|-\sum_k\operatorname{Re}(\varphi_{n,k}(t)-1)\Bigr|\le\sum_k|\varphi_{n,k}(t)-1|^2\le\frac{t^2}2\max_k\sigma_{n,k}^2\cdot\frac{t^2}2\sum_k\sigma_{n,k}^2\to0.
+\]
+The first sum is $\log|\varphi_{S_n}(t)|$, which tends to $\log e^{-t^2/2}=-\frac{t^2}2$ because the characteristic functions converge. Hence
+\[
+\sum_k\mathbb E\bigl[1-\cos(tX_{n,k})\bigr]=-\sum_k\operatorname{Re}(\varphi_{n,k}(t)-1)\to\frac{t^2}2.
+\]
+Now split each expectation at $|X_{n,k}|=\varepsilon$. On $\{|X_{n,k}|\le\varepsilon\}$ use $1-\cos u\le\frac{u^2}2$; on the complement use $1-\cos u\le2$ and
+Chebyshev, $\sum_kP(|X_{n,k}|>\varepsilon)\le\sum_k\sigma_{n,k}^2/\varepsilon^2=\varepsilon^{-2}$:
+\[
+\sum_k\mathbb E\bigl[1-\cos(tX_{n,k})\bigr]\le\frac{t^2}2\sum_k\mathbb E\bigl[X_{n,k}^2\mathbf 1_{|X_{n,k}|\le\varepsilon}\bigr]+\frac2{\varepsilon^2}
+=\frac{t^2}2\bigl(1-L_n(\varepsilon)\bigr)+\frac2{\varepsilon^2}.
+\]
+Letting $n\to\infty$, $\frac{t^2}2\limsup_nL_n(\varepsilon)\le\frac2{\varepsilon^2}$. This holds for every $t$, so $\limsup_nL_n(\varepsilon)=0$.
+\end{proof}
+
+The proof shows where the Gaussian comes from: $\sum_k\mathbb E[1-\cos tX_{n,k}]$ must behave like $\frac{t^2}2$, the contribution of small values,
+and large values would add a part bounded in $t$, which a quadratic cannot absorb. When the large values are \emph{not} negligible the limit can
+still exist, but it is not Gaussian: that is the subject of Chapter~5 (Poisson and stable limits).
+
+\begin{corollary}[Lyapunov's condition]\label{cor:lyapunov}
+Under the normalisation of Theorem~\ref{thm:feller}, if $\sum_k\mathbb E|X_{n,k}|^{2+\delta}\to0$ for some $\delta>0$, then $S_n\Rightarrow N(0,1)$.
+\end{corollary}
+\begin{proof}
+On $\{|X|>\varepsilon\}$, $X^2\le|X|^{2+\delta}/\varepsilon^\delta$. So
+\[
+L_n(\varepsilon)\le\varepsilon^{-\delta}\sum_k\mathbb E|X_{n,k}|^{2+\delta}\to0.
+\]
+\end{proof}
+
+\begin{example}[inversions, or the work of insertion sort]\label{ex:inversions}
+An \emph{inversion} of a permutation $\pi$ of $\{1,\dots,n\}$ is a pair of positions $i<j$ with $\pi(i)>\pi(j)$. Insertion sort, which slides each new
+element left past the larger ones, makes exactly one swap per inversion, so the number $I_n$ of inversions of a uniform random permutation is the
+cost of insertion sort on random data. For $k\le n$ let $Y_k$ be the number of $i<k$ with $\pi(i)>\pi(k)$: the number of earlier elements that the
+$k$-th must pass. Then $I_n=Y_1+\dots+Y_n$ and $0\le Y_k\le k-1$. The map $\pi\mapsto(Y_1,\dots,Y_n)$ is injective (read the vector backwards:
+$Y_n$ says which value sits in the last position, namely the $(Y_n+1)$-th largest, and so on), and both sets have $n!$ elements, so it is a
+bijection onto $\prod_k\{0,\dots,k-1\}$. Under the uniform law, therefore, the $Y_k$ are \emph{independent}, $Y_k$ uniform on $\{0,\dots,k-1\}$, with
+mean $\frac{k-1}2$ and variance $\frac{k^2-1}{12}$. Summing (Exercise~\ref{ex:inversionsvar}),
+\[
+\mathbb EI_n=\frac{n(n-1)}4,\qquad s_n^2=\operatorname{Var}I_n=\frac{2n^3+3n^2-5n}{72}.
+\]
+Put $X_{n,k}=(Y_k-\frac{k-1}2)/s_n$. Then $|X_{n,k}|\le n/s_n\to0$, so for each $\varepsilon$ all the indicators in $L_n(\varepsilon)$ vanish for
+large $n$, and Lindeberg gives
+\[
+\frac{I_n-n^2/4}{n^{3/2}/6}\Rightarrow N(0,1).
+\]
+Sorting a million random keys by insertion costs $2.5\times10^{11}$ swaps, give or take about $1.7\times10^8$: the fluctuation is less than one part in a
+thousand.
+\end{example}
+
+\section{How fast? The Berry--Esseen theorem}
+
+The central limit theorem says $F_n(x)\to\Phi(x)$ for every $x$ (Tome~3, Proposition~6.3). We now bound the speed, uniformly in $x$. The tool is a smoothing inequality: it converts a bound on characteristic functions into a bound on distribution functions,
+at the price of a term that measures how much we smoothed.
+
+\begin{lemma}[P\'olya's density]\label{lem:polya}
+$h(x)=\dfrac{1-\cos x}{\pi x^2}$ is a probability density, with characteristic function $(1-|t|)^+$. For $T>0$, $h_T(x)=Th(Tx)$ is a density
+with characteristic function $(1-|t|/T)^+$, and if $Y$ has density $h_T$ then $P(|Y|>\delta)\le\frac4{\pi T\delta}$.
+\end{lemma}
+\begin{proof}
+The triangular density $(1-|y|)^+$ has characteristic function $2\int_0^1(1-y)\cos(ty)\dd y=\frac{2(1-\cos t)}{t^2}=2\pi h(t)$, which is integrable. By
+inversion, $(1-|y|)^+=\frac1{2\pi}\int e^{-ity}\,2\pi h(t)\dd t=\int e^{-ity}h(t)\dd t$. At $y=0$ this says $\int h=1$, and $h\ge0$; replacing $y$ by $-t$,
+the characteristic function of $h$ is $(1-|t|)^+$. Scaling gives $h_T$. Finally $h_T(x)\le\frac2{\pi Tx^2}$, so
+$P(|Y|>\delta)\le2\int_\delta^\infty\frac2{\pi Tx^2}\dd x=\frac4{\pi T\delta}$.
+\end{proof}
+
+\begin{lemma}[Esseen's smoothing inequality]\label{lem:smoothing}
+Let $F$ and $G$ be distribution functions with characteristic functions $\varphi$ and $\gamma$, where $G$ has a density bounded by $m$. Let $T>0$, and
+suppose $\int_{-T}^T|\varphi(t)-\gamma(t)|/|t|\dd t<\infty$. Then
+\[
+\sup_x|F(x)-G(x)|\le\frac1\pi\int_{-T}^T\frac{|\varphi(t)-\gamma(t)|}{|t|}\dd t+\frac{24m}{\pi T}.
+\]
+\end{lemma}
+\begin{proof}
+Let $\Delta=F-G$, $\eta=\sup|\Delta|$, and $\Delta_T(x)=\int\Delta(x-y)h_T(y)\dd y$.
+
+\emph{Step 1: $|\Delta_T(x)|\le\frac1{2\pi}\int_{-T}^T|\varphi-\gamma|/|t|$.} The function $\int F(x-y)h_T(y)\dd y$ is the distribution function of
+$X+Y$, with $X\sim F$ and $Y\sim h_T$ independent. Its characteristic function $\varphi(t)(1-|t|/T)^+$ is integrable, so it has the density
+$\frac1{2\pi}\int_{-T}^Te^{-itx}\varphi(t)(1-|t|/T)\dd t$, and the same holds for $G$. Hence
+\[
+\Delta_T'(x)=\frac1{2\pi}\int_{-T}^Te^{-itx}\bigl(\varphi(t)-\gamma(t)\bigr)\Bigl(1-\frac{|t|}T\Bigr)\dd t.
+\]
+Let $R(x)=\frac1{2\pi}\int_{-T}^Te^{-itx}g(t)\dd t$ with $g(t)=\frac{\varphi(t)-\gamma(t)}{-it}(1-\frac{|t|}T)$, integrable by hypothesis. Differentiating
+under the integral (Tome~3, Lemma~6.6, with the bound $|\varphi-\gamma|$), $R'=\Delta_T'$. Both functions tend to $0$ at $-\infty$: $\Delta_T$ by
+dominated convergence, and $R$ because $\int e^{-itx}g(t)\dd t\to0$ as $|x|\to\infty$ for integrable $g$ (true for indicators of intervals by direct
+computation, hence for step functions, which are dense in $L^1$). So $\Delta_T=R$, and $|R|\le\frac1{2\pi}\int|g|$.
+
+\emph{Step 2: $\eta\le2\sup|\Delta_T|+\frac{24m}{\pi T}$.} Assume $\eta>0$. Since $\Delta\to0$ at $\pm\infty$ and $\Delta$ has one-sided limits, there is $x_0$
+such that $\Delta(x_0)$ or $\Delta(x_0-)$ equals $\eta$ or $-\eta$. Suppose it is $+\eta$. As $F$ is non-decreasing and $G$ is $m$-Lipschitz, for $s>0$,
+$\Delta(x_0+s)\ge\eta-ms$. Let $\delta=\frac\eta{2m}$ and $x_1=x_0+\delta$. For $|y|<\delta$, $x_1-y=x_0+(\delta-y)$ with $\delta-y>0$, so
+$\Delta(x_1-y)\ge\eta-m(\delta-y)=\frac\eta2+my$. Using $\Delta\ge-\eta$ elsewhere, the symmetry of $h_T$, and Lemma~\ref{lem:polya},
+\[
+\Delta_T(x_1)\ge\int_{|y|<\delta}\Bigl(\frac\eta2+my\Bigr)h_T(y)\dd y-\eta P(|Y|\ge\delta)\ge\frac\eta2-\frac{3\eta}2\cdot\frac4{\pi T\delta}=\frac\eta2-\frac{12m}{\pi T}.
+\]
+If it is $-\eta$, the mirror argument ($\Delta(x_0-s)\le-\eta+ms$ for $s>0$, and $x_1=x_0-\delta$) gives $-\Delta_T(x_1)\ge\frac\eta2-\frac{12m}{\pi T}$.
+Steps 1 and 2 together give the lemma.
+\end{proof}
+
+\begin{lemma}\label{lem:cfestimate}
+Let $X$ be centred with $\mathbb EX^2=1$ and $\rho=\mathbb E|X|^3<\infty$, with characteristic function $\varphi$. Then $\rho\ge1$, and for $n\ge10$ and
+$|t|\le T=\frac{4\sqrt n}{3\rho}$,
+\[
+\bigl|\varphi(t/\sqrt n)^n-e^{-t^2/2}\bigr|\le\frac{\rho|t|^3}{3\sqrt n}e^{-t^2/4}.
+\]
+\end{lemma}
+\begin{proof}
+$\rho\ge(\mathbb EX^2)^{3/2}=1$ by Jensen (or H\"older). Let $s=t/\sqrt n$, so $|s|\le\frac4{3\rho}\le\frac43$. By~\eqref{eq:taylor}, $|\varphi(s)-1+\frac{s^2}2|\le\frac{\rho|s|^3}6$.
+As $\frac{s^2}2\le\frac89<1$ and $\frac{\rho|s|}6\le\frac29$,
+\[
+|\varphi(s)|\le1-\frac{s^2}2+\frac{\rho|s|}6s^2\le1-\frac5{18}s^2\le e^{-5s^2/18}.
+\]
+So $|\varphi(s)|^{n-1}\le e^{-5(n-1)t^2/(18n)}\le e^{-t^2/4}$, since $20(n-1)\ge18n$ for $n\ge10$; also $(e^{-s^2/2})^{n-1}\le e^{-t^2/4}$. For complex $a,b$ of
+modulus at most $1$, $|a^n-b^n|=|a-b|\,|\sum_ja^jb^{n-1-j}|\le n|a-b|\max(|a|,|b|)^{n-1}$. With $a=\varphi(s)$, $b=e^{-s^2/2}$, and $0\le e^{-v}-1+v\le\frac{v^2}2$
+for $v\ge0$,
+\[
+n|a-b|\le n\Bigl(\frac{\rho|s|^3}6+\frac{s^4}8\Bigr)=\frac{\rho|t|^3}{6\sqrt n}+\frac{t^4}{8n}.
+\]
+Finally $\frac{t^4}{8n}\le\frac{|t|^3}{8n}\cdot\frac{4\sqrt n}{3\rho}=\frac{|t|^3}{6\rho\sqrt n}\le\frac{\rho|t|^3}{6\sqrt n}$, since $\rho\ge1$.
+\end{proof}
+
+\begin{theorem}[Berry--Esseen]\label{thm:berryesseen}
+Let $X_1,X_2,\dots$ be i.i.d.\ and centred, with variance $\sigma^2>0$ and $\rho=\mathbb E|X_1|^3<\infty$, and let $F_n$ be the distribution function of
+$S_n/(\sigma\sqrt n)$. Then for every $n\ge1$
+\[
+\sup_{x\in\R}|F_n(x)-\Phi(x)|\le\frac{3.1\,\rho}{\sigma^3\sqrt n}.
+\]
+\end{theorem}
+\begin{proof}
+Replacing $X_i$ by $X_i/\sigma$, we may take $\sigma=1$. If $n\le9$, the right side is at least $3.1/3>1$ (as $\rho\ge1$) and there is nothing to prove.
+For $n\ge10$, apply Lemma~\ref{lem:smoothing} with $F=F_n$, $G=\Phi$, $m=\frac1{\sqrt{2\pi}}$ and $T=\frac{4\sqrt n}{3\rho}$. By Lemma~\ref{lem:cfestimate} the
+integrand is at most $\frac{\rho t^2}{3\sqrt n}e^{-t^2/4}$, which is integrable, and $\int_\R t^2e^{-t^2/4}\dd t=4\sqrt\pi$. So
+\[
+\sup_x|F_n(x)-\Phi(x)|\le\frac1\pi\cdot\frac{4\sqrt\pi\,\rho}{3\sqrt n}+\frac{24}{\pi\sqrt{2\pi}}\cdot\frac{3\rho}{4\sqrt n}=\Bigl(\frac4{3\sqrt\pi}+\frac{18}{\pi\sqrt{2\pi}}\Bigr)\frac\rho{\sqrt n},
+\]
+and the bracket is $0.7523\ldots+2.2858\ldots<3.1$.
+\end{proof}
+
+The rate $n^{-1/2}$ cannot be improved in general, and the reason is arithmetic: a lattice variable puts atoms of size about $n^{-1/2}$, which no
+continuous law can match.
+
+\begin{proposition}\label{prop:latticelower}
+For the coin-tossing walk ($X_i=\pm1$, so $\sigma=\rho=1$) and $n$ even, $\sup_x|F_n(x)-\Phi(x)|\ge\dfrac1{2\sqrt{2n}}$.
+\end{proposition}
+\begin{proof}
+$F_n$ jumps by $u_n=P(S_n=0)$ at $0$, while $\Phi$ is continuous, so $|F_n(0)-\Phi(0)|+|\Phi(0)-F_n(0-)|\ge u_n$ and one of the two terms is at least
+$\frac{u_n}2$. By Tome~3, Lemma~7.1, $u_n\ge\frac1{2\sqrt{n/2}}=\frac1{\sqrt{2n}}$.
+\end{proof}
+
+\begin{remark}[the constant]
+Our $3.1$ is far from the truth. The best constant $C_0$ in $\sup|F_n-\Phi|\le C_0\rho/(\sigma^3\sqrt n)$ is known to satisfy
+\[
+0.4097\le\frac{\sqrt{10}+3}{6\sqrt{2\pi}}\le C_0\le0.4748;
+\]
+the lower bound is Esseen's (1956), attained in the limit by suitable two-point laws, and the upper bound is Shevtsova's (2011), the latest in a long series of
+improvements. Proposition~\ref{prop:latticelower} gives $C_0\ge0.35$ for free. Figure~\ref{fig:berryesseen} shows the exact error for binomial sums.
+\end{remark}
+
+\begin{figure}[ht]
+\centering\fig{ch04-berryesseen}
+\caption{The exact Kolmogorov distance $D_n=\sup_x|F_n(x)-\Phi(x)|$ for sums of $n$ Bernoulli$(p)$ variables, multiplied by $\sqrt n$ and divided by
+$\rho/\sigma^3$, for $p=\frac12$ (black) and $p=0.1$ (grey), $1\le n\le300$. Berry--Esseen says the curves stay below $3.1$; they stay below the
+dashed line at $0.4748$, as Shevtsova's constant guarantees, and the curve for $p=\frac12$ (even $n$) approaches $\frac1{\sqrt{2\pi}}\approx0.399$ (Exercise~\ref{ex:binomialsharp}); the dotted line marks that value.}
+\label{fig:berryesseen}
+\end{figure}
+
+\begin{think}
+The Berry--Esseen bound is uniform in $x$, so it says nothing useful about tail probabilities like $P(S_n>10\sqrt n)$, which are much smaller than $n^{-1/2}$.
+Which theorem of Tome~3 would you use for those? (Chapter~7 of this tome sharpens it.)
+\end{think}
+
+\section{Several dimensions and Pearson's test}
+
+\begin{theorem}[multivariate central limit theorem]\label{thm:multiclt}
+Let $X_1,X_2,\dots$ be i.i.d.\ random vectors in $\R^d$ with $\mathbb E|X_1|^2<\infty$, mean $\mu$ and covariance matrix $\Sigma$. Then
+$(S_n-n\mu)/\sqrt n\Rightarrow N(0,\Sigma)$.
+\end{theorem}
+\begin{proof}
+Let $Y\sim N(0,\Sigma)$ (it exists: Tome~3, Theorem~6.15). For $t\in\R^d$, the variables $\langle t,X_i-\mu\rangle$ are i.i.d., centred, with variance
+$t^{\mathsf T}\Sigma t$. If this is $0$ they vanish almost surely and $\langle t,(S_n-n\mu)/\sqrt n\rangle=0=\langle t,Y\rangle$ almost surely; otherwise the
+one-dimensional theorem gives convergence to $N(0,t^{\mathsf T}\Sigma t)$, the law of $\langle t,Y\rangle$. Conclude by Cram\'er--Wold.
+\end{proof}
+
+The most famous application is older than the theorem. Exercise~\ref{ex:multinomial} derives from it Pearson's: if $(N_1,\dots,N_d)$ counts $n$
+independent trials falling into $d$ cells with probabilities $p_1,\dots,p_d$, then
+\[
+\chi^2=\sum_{i=1}^d\frac{(N_i-np_i)^2}{np_i}\Rightarrow\chi^2_{d-1},
+\]
+the law of the sum of the squares of $d-1$ independent standard Gaussians. Large values of $\chi^2$ are evidence against the probabilities $p_i$.
+
+\begin{example}[Weldon's dice]\label{ex:weldon}
+In a letter to Francis Galton dated 2 February 1894, the zoologist Raphael Weldon reported $26\,306$ throws of twelve dice, recording each time the
+number of dice showing $5$ or $6$. For fair dice this number is binomial$(12,\frac13)$. Here are the counts, with the expected values (rounded):
+\begin{center}
+\small
+\begin{tabular}{r|rrrrr}
+fives or sixes&0&1&2&3&4\\\hline
+observed&185&1149&3265&5475&6114\\
+expected&203&1217&3345&5576&6273
+\end{tabular}
+\par\medskip
+\begin{tabular}{r|rrrr}
+fives or sixes&5&6&7&8\\\hline
+observed&5194&3067&1331&403\\
+expected&5018&2927&1254&392
+\end{tabular}
+\par\medskip
+\begin{tabular}{r|rrrr}
+fives or sixes&9&10&11&12\\\hline
+observed&105&14&4&0\\
+expected&87&13&1&0
+\end{tabular}
+\end{center}
+There are too few small counts and too many large ones. In 1900 Karl Pearson used these data to introduce his test, and concluded that the dice
+were not fair, quoting odds of about $62\,499$ to $1$ against chance. Redone today: the last two cells expect only $1.2$ and $0.05$ throws, too few
+for the $\chi^2$ approximation (a single throw in the last cell would add $20$ to the statistic), so we merge the cells $10$, $11$ and $12$. The
+statistic over the eleven remaining cells is $35.5$, and a $\chi^2_{10}$ variable exceeds it with probability about $10^{-4}$: the verdict stands. The
+estimated probability of a five or a six is $0.3377$ instead of $0.3333$; with that value the statistic drops to $8.2$, an ordinary value for
+$\chi^2_9$ (one parameter has been estimated, which removes one degree of freedom, as Fisher explained in 1924). In 2009 Zacariah Labby rebuilt the experiment with a dice-throwing
+machine, $26\,306$ throws of twelve dice again; he too found fives and sixes slightly too frequent, but traced the excess to small irregularities of
+the cubes rather than to the hollowed-out pips that had long been blamed.
+\end{example}
+
+\section{The local limit theorem}
+
+The central limit theorem speaks of intervals. For integer-valued variables one can ask for more: the probability of each single value. Tome~3,
+Theorem~6.12 did it for the binomial law, with Stirling's formula. The Fourier method does it for every integer law with a finite variance,
+provided the law is not trapped on a sublattice. An integer-valued $X$ has \emph{span~$1$} if the differences $x-y$ of points of its support (the
+values taken with positive probability) have greatest common divisor $1$. Otherwise, with $h\ge2$ that divisor, $X$ lives in $x_0+h\Z$, and so
+does $S_n-nx_0$: then $P(S_n=k)=0$ for most $k$, and the question must be asked on $nx_0+h\Z$ (Exercise~\ref{ex:lltdensity} hints at the
+general picture).
+
+\begin{lemma}\label{lem:span}
+If $X$ is integer-valued with span $1$, then $|\varphi_X(t)|<1$ for $0<|t|\le\pi$.
+\end{lemma}
+\begin{proof}
+If $|\varphi_X(t)|=1$, write $\varphi_X(t)=e^{i\theta}$. Then $\mathbb E[1-\cos(tX-\theta)]=0$, so $tX-\theta\in2\pi\Z$ almost surely, and $t(x-y)\in2\pi\Z$
+for all $x,y$ in the support. By B\'ezout, $1$ is an integer combination of such differences, so $t\in2\pi\Z$, which excludes $0<|t|\le\pi$.
+\end{proof}
+
+\begin{theorem}[local limit theorem; Gnedenko, 1948]\label{thm:llt}
+Let $X_1,X_2,\dots$ be i.i.d., integer-valued with span $1$, mean $\mu$ and variance $\sigma^2\in(0,\infty)$, and $\phi(x)=e^{-x^2/2}/\sqrt{2\pi}$. Then
+\[
+\sup_{k\in\Z}\Bigl|\sigma\sqrt n\,P(S_n=k)-\phi\Bigl(\frac{k-n\mu}{\sigma\sqrt n}\Bigr)\Bigr|\xrightarrow[n\to\infty]{}0.
+\]
+\end{theorem}
+\begin{proof}
+Let $\varphi=\varphi_{X_1}$ and $\chi(t)=e^{-i\mu t}\varphi(t)$, the characteristic function of $X_1-\mu$. Since $\varphi(t)^n=\sum_jP(S_n=j)e^{itj}$, an absolutely
+convergent series, integrating term by term gives
+\[
+P(S_n=k)=\frac1{2\pi}\int_{-\pi}^\pi e^{-itk}\varphi(t)^n\dd t.
+\]
+Put $x=\frac{k-n\mu}{\sigma\sqrt n}$ and substitute $t=\frac u{\sigma\sqrt n}$; as $e^{-itk}\varphi(t)^n=e^{-iux}\chi(t)^n$,
+\[
+\sigma\sqrt n\,P(S_n=k)=\frac1{2\pi}\int_{|u|\le\pi\sigma\sqrt n}e^{-iux}\psi_n(u)\dd u,\qquad\psi_n(u)=\chi\Bigl(\frac u{\sigma\sqrt n}\Bigr)^n,
+\]
+and $\psi_n$ is the characteristic function of $(S_n-n\mu)/(\sigma\sqrt n)$. By inversion, $\phi(x)=\frac1{2\pi}\int e^{-iux}e^{-u^2/2}\dd u$. Since
+$\chi(t)=1-\frac{\sigma^2t^2}2+o(t^2)$ (Tome~3, Lemma~6.6), there is $\delta\in(0,\pi]$ with $|\chi(t)|\le1-\frac{\sigma^2t^2}4\le e^{-\sigma^2t^2/4}$ for
+$|t|\le\delta$; and by Lemma~\ref{lem:span} and continuity, $\eta=\max_{\delta\le|t|\le\pi}|\varphi(t)|<1$. For $A>0$ the difference in the theorem is
+at most $\frac1{2\pi}$ times
+\[
+\begin{gathered}
+\int_{|u|\le A}\bigl|\psi_n(u)-e^{-u^2/2}\bigr|\dd u+\int_{|u|>A}e^{-u^2/2}\dd u\\
++\int_{A<|u|\le\delta\sigma\sqrt n}|\psi_n(u)|\dd u+\int_{\delta\sigma\sqrt n<|u|\le\pi\sigma\sqrt n}|\psi_n(u)|\dd u,
+\end{gathered}
+\]
+uniformly in $x$. The first term tends to $0$ by the central limit theorem (pointwise convergence of $\psi_n$, bounded by $2$ on a bounded interval).
+In the third, $|\psi_n(u)|\le e^{-u^2/4}$. The fourth is at most $2\pi\sigma\sqrt n\,\eta^n\to0$. So the $\limsup$ of the difference is at most
+$\frac1{2\pi}\int_{|u|>A}2e^{-u^2/4}\dd u$, which is as small as we like.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch04-llt}
+\caption{The exact law of $S_{30}$ for steps taking the values $0$, $1$, $3$ with probabilities $\frac12$, $\frac14$, $\frac14$ (bars), against
+$\frac1{\sigma\sqrt n}\phi\bigl(\frac{k-n\mu}{\sigma\sqrt n}\bigr)$ (curve). Here $\mu=1$, $\sigma^2=\frac32$, and the support $\{0,1,3\}$ has span $1$.
+The fit is already good point by point, with a visible skew that the next term of the expansion (the Edgeworth correction) would capture.}
+\label{fig:llt}
+\end{figure}
+
+\section{Coming home: recurrence by Fourier analysis}
+
+Tome~3 decided recurrence for the simple walk on $\Z^d$ by counting paths. Fourier analysis, in the hands of Kai Lai Chung and Wolfgang Fuchs (1951), decides it for every walk
+with finite variance, and explains the dimension $2$ as a convergence exponent: whether $\int|t|^{-2}\dd t$ converges near $0$ in $\R^d$.
+
+\begin{lemma}\label{lem:greenfourier}
+Let $S_n$ be a walk on $\Z^d$ with i.i.d.\ steps of characteristic function $\varphi$, and $u_n=P(S_n=0)$. For $0<r<1$,
+\[
+\sum_{n\ge0}r^nu_n=\frac1{(2\pi)^d}\int_{[-\pi,\pi]^d}\operatorname{Re}\frac1{1-r\varphi(t)}\dd t.
+\]
+\end{lemma}
+\begin{proof}
+For $x\in\Z^d$, $\int_{[-\pi,\pi]^d}e^{i\langle t,x\rangle}\dd t$ is $(2\pi)^d$ if $x=0$ and $0$ otherwise. So by Fubini $u_n=(2\pi)^{-d}\int\mathbb E e^{i\langle t,S_n\rangle}\dd t=
+(2\pi)^{-d}\int\varphi(t)^n\dd t$. Summing, $\sum_nr^n\varphi(t)^n=\frac1{1-r\varphi(t)}$, with partial sums bounded by $\frac1{1-r}$, so we may integrate term
+by term. The left side is real, so only the real part of the integral survives.
+\end{proof}
+
+Note that $\operatorname{Re}\frac1z=\frac{\operatorname{Re}z}{|z|^2}>0$ when $\operatorname{Re}z>0$, which is the case for $z=1-r\varphi(t)$. We say that the
+steps \emph{generate} $\Z^d$ if every point of $\Z^d$ is an integer combination of points of the support. Then the support spans $\R^d$, so it
+contains a basis $v_1,\dots,v_d$ of $\R^d$; and $\varphi(t)=1$ forces $\langle t,x\rangle\in2\pi\Z$ for every $x$ in the support, hence for every $x\in\Z^d$, so
+$t\in2\pi\Z^d$: in the cube $[-\pi,\pi]^d$, only $t=0$.
+
+\begin{theorem}[recurrence on $\Z^d$]\label{thm:recurrencefourier}
+Let the i.i.d.\ steps $X_i$ of a walk generate $\Z^d$.
+\begin{enumerate}[label=(\alph*)]
+\item If $d\ge3$, the walk is transient, whatever the law of the steps.
+\item If $d\le2$, $\mathbb E|X_1|^2<\infty$ and $\mathbb EX_1=0$, the walk is recurrent.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{A lower bound.} Let $p=\min_jP(X_1=v_j)>0$ and $M=\max_j|v_j|$. For $|t|\le\frac1M$, $|\langle t,v_j\rangle|\le1$, and $1-\cos u\ge\frac{2u^2}{\pi^2}$ for
+$|u|\le\pi$, so
+\[
+1-\operatorname{Re}\varphi(t)=\mathbb E\bigl[1-\cos\langle t,X_1\rangle\bigr]\ge\frac{2p}{\pi^2}\sum_j\langle t,v_j\rangle^2\ge c|t|^2,
+\]
+because $\sum_j\langle t,v_j\rangle^2$ is a positive definite quadratic form. On the compact set of $t\in[-\pi,\pi]^d$ with $|t|\ge\frac1M$, the continuous
+function $1-\operatorname{Re}\varphi$ vanishes only where $\varphi(t)=1$, that is nowhere; so it is bounded below there by a positive constant, hence by
+$c'|t|^2$. Shrinking $c$, $1-\operatorname{Re}\varphi(t)\ge c|t|^2$ on the whole cube.
+
+(a) Since $|z|\ge\operatorname{Re}z$ and $1-r\operatorname{Re}\varphi=(1-r)+r(1-\operatorname{Re}\varphi)$,
+\[
+\operatorname{Re}\frac1{1-r\varphi(t)}\le\frac1{\operatorname{Re}(1-r\varphi(t))}\le\frac1{r\bigl(1-\operatorname{Re}\varphi(t)\bigr)}\le\frac1{rc|t|^2}.
+\]
+In dimension $d\ge3$, $|t|^{-2}$ is integrable near $0$ (in polar coordinates, $\int_0^1s^{-2}s^{d-1}\dd s<\infty$). So by Lemma~\ref{lem:greenfourier}, $\sum_nr^nu_n$
+is bounded for $r\in[\frac12,1)$, and by monotone convergence $\sum_nu_n<\infty$: the walk is transient.
+
+(b) Let $K=\mathbb E|X_1|^2$. From $1-\cos u\le\frac{u^2}2$ and Cauchy--Schwarz, $1-\operatorname{Re}\varphi(t)\le\frac K2|t|^2$. Since $\mathbb EX_1=0$,
+$\operatorname{Im}\varphi(t)=\mathbb E[\sin\langle t,X_1\rangle-\langle t,X_1\rangle]$, and $|\sin u-u|\le u^2$ for all real $u$ (it is at most $\frac{|u|^3}6$, and at
+most $1+|u|$), so $|\operatorname{Im}\varphi(t)|\le K|t|^2$. Hence for $0<|t|\le\frac1M$,
+\[
+\operatorname{Re}\frac1{1-\varphi(t)}=\frac{1-\operatorname{Re}\varphi(t)}{(1-\operatorname{Re}\varphi(t))^2+(\operatorname{Im}\varphi(t))^2}\ge\frac{c|t|^2}{\frac54K^2|t|^4}=\frac{4c}{5K^2|t|^2},
+\]
+which is \emph{not} integrable near $0$ when $d\le2$. As $r\uparrow1$, $\operatorname{Re}\frac1{1-r\varphi(t)}\to\operatorname{Re}\frac1{1-\varphi(t)}$ for every $t\ne0$,
+and these functions are non-negative; by Fatou's lemma and Lemma~\ref{lem:greenfourier}, $\sum_nu_n\ge\liminf_{r\uparrow1}\sum_nr^nu_n=\infty$. The walk is
+recurrent.
+\end{proof}
+
+\begin{remark}[P\'olya's constant]
+For the simple walk on $\Z^3$, $\varphi(t)=\frac13(\cos t_1+\cos t_2+\cos t_3)$ is real, and Lemma~\ref{lem:greenfourier} with $r\to1$ gives
+\[
+\sum_{n\ge0}u_n=\frac1{(2\pi)^3}\int_{[-\pi,\pi]^3}\frac{\dd t}{1-\frac13(\cos t_1+\cos t_2+\cos t_3)}=1.5163\ldots,
+\]
+one of three ``triple integrals'' evaluated in closed form by G.~N.~Watson in 1939. Since $\sum_{n\ge0}u_n=\frac1{1-F}$ (Tome~3, Theorem~7.12), the
+probability of ever returning is $F=0.3405\ldots$: a random walker in three dimensions comes home only about one time in three. The notebook computes
+the integral.
+\end{remark}
+
+\begin{think}
+Part (b) needs a finite variance only in dimension $2$. In dimension $1$, Chapter~2 (Exercise~\ref{ex:chungfuchs}) showed that a finite \emph{mean}
+$0$ is enough. Can a symmetric walk on $\Z$ be transient? The answer is yes, with heavy enough tails: see Exercise~\ref{ex:heavytail}.
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:fellercounter}
+Let $\varepsilon_1,\varepsilon_2,\dots$ be independent fair signs and $a_k=2^{-k}$. Show that $\sum_{k\le n}a_k\varepsilon_k$, normalised to have variance $1$,
+converges in distribution to the uniform law on $[-\sqrt3,\sqrt3]$. Which hypothesis of Theorem~\ref{thm:feller} fails? Show on the other hand
+that if $a_k=k^{-\alpha}$ with $\alpha\le\frac12$, the normalised sum is asymptotically Gaussian.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:inversionsvar}
+Check the formulas for $\mathbb EI_n$ and $\operatorname{Var}I_n$ in Example~\ref{ex:inversions}, and the claim that $\pi\mapsto(Y_1,\dots,Y_n)$ is injective.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:chisqmean}
+In Pearson's setting, show that $\mathbb E\chi^2=d-1$ for every $n$, the mean of the limit law $\chi^2_{d-1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:binomialsharp}
+For the coin-tossing walk with $n$ even, show that $\liminf_n\sqrt n\sup_x|F_n(x)-\Phi(x)|\ge\frac1{\sqrt{2\pi}}\approx0.399$, improving the
+constant of Proposition~\ref{prop:latticelower}. (Figure~\ref{fig:berryesseen} suggests that this is the exact limit, which is true: it follows from Esseen's
+expansion for lattice laws, in Gnedenko and Kolmogorov's book.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lltdensity}
+(Local limit theorem for densities.) Let $X_1,X_2,\dots$ be i.i.d., centred, with variance $1$, and suppose $\int|\varphi_{X_1}|^\nu<\infty$ for some
+$\nu\ge1$. Show that for $n\ge\nu$, $S_n/\sqrt n$ has a continuous density $f_n$, and that $\sup_x|f_n(x)-\phi(x)|\to0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:poissonbe}
+Let $N_\lambda$ be Poisson with mean $\lambda$. Show that $\sup_x\bigl|P\bigl((N_\lambda-\lambda)/\sqrt\lambda\le x\bigr)-\Phi(x)\bigr|\le3.1/\sqrt\lambda$, by
+writing $N_\lambda$ as a sum of $n$ independent Poisson$(\lambda/n)$ variables and letting $n\to\infty$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:heavytail}
+Let $0<\alpha<1$ and let $X$ take the value $k\in\Z\setminus\{0\}$ with probability $c|k|^{-1-\alpha}$. Show that $1-\varphi_X(t)\ge c'|t|^\alpha$ for
+$|t|\le\pi$, and deduce from Lemma~\ref{lem:greenfourier} that the symmetric walk with steps distributed like $X$ is transient.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:fellercounter}
+$\prod_{k\le n}\cos(t2^{-k})=\frac{\sin t}{2^n\sin(t2^{-n})}$: multiply by $\sin(t2^{-n})$ and use $\sin2a=2\sin a\cos a$ repeatedly. For the second part, check Lindeberg with $|X_{n,k}|\le a_1/s_n$.
+\end{hint}
+\begin{hint}{ex:inversionsvar}
+$\sum_{k\le n}(k^2-1)=\frac{n(n+1)(2n+1)}6-n$.
+\end{hint}
+\begin{hint}{ex:chisqmean}
+$N_i$ is binomial$(n,p_i)$.
+\end{hint}
+\begin{hint}{ex:binomialsharp}
+Apply Theorem~\ref{thm:llt} to the Bernoulli variables $(X_i+1)/2$ to find the size of the atom of $S_n/\sqrt n$ at $0$, and redo the proof of
+Proposition~\ref{prop:latticelower}.
+\end{hint}
+\begin{hint}{ex:lltdensity}
+Copy the proof of Theorem~\ref{thm:llt}, with the integral over $|t|\le\pi$ replaced by an integral over $\R$, and use $|\varphi(t)|<1$ for $t\ne0$
+(a variable with a density has no lattice) together with $|\varphi|^n\le\eta^{n-\nu}|\varphi|^\nu$ for $|t|\ge\delta$.
+\end{hint}
+\begin{hint}{ex:poissonbe}
+For $Y$ Poisson$(m)$ with $m\le1$, bound $\mathbb E|Y-m|^3\le m^3+\mathbb EY^3$, and compute $\mathbb EY^3=m+3m^2+m^3$.
+\end{hint}
+\begin{hint}{ex:heavytail}
+$1-\varphi_X(t)=\sum_kc|k|^{-1-\alpha}(1-\cos tk)$; keep only $1\le|k|\le\pi/|t|$ and use $1-\cos u\ge\frac{2u^2}{\pi^2}$. Then $\operatorname{Re}\frac1{1-r\varphi}\le\frac1{r(1-\varphi)}$
+as $\varphi$ is real.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:fellercounter}
+\idea A sum of independent pieces in which the first piece carries a fixed fraction of the variance cannot forget the law of that piece. Here the
+pieces halve each time, and the limit is the law of a random real number written in binary.
+\writeup The characteristic function of $\sum_{k\le n}2^{-k}\varepsilon_k$ is $\prod_{k\le n}\cos(t2^{-k})$. Multiplying by $\sin(t2^{-n})$ and using
+$\sin2a=2\sin a\cos a$ $n$ times, $2^n\sin(t2^{-n})\prod_{k\le n}\cos(t2^{-k})=\sin t$; as $2^n\sin(t2^{-n})\to t$, the product tends to $\frac{\sin t}t$, the characteristic
+function of the uniform law on $[-1,1]$ (since $\frac12\int_{-1}^1e^{itx}\dd x=\frac{\sin t}t$). By L\'evy's theorem the sums converge in law to $U$ uniform on
+$[-1,1]$, of variance $\frac13$. The variances $s_n^2=\sum_{k\le n}4^{-k}\to\frac13$, so the normalised sums converge in law to $\sqrt3U$, uniform on $[-\sqrt3,\sqrt3]$.
+The first summand has variance $\frac14/s_n^2\to\frac34$: condition~\eqref{eq:uan} fails, and the limit is not Gaussian.
+
+If $a_k=k^{-\alpha}$ with $\alpha\le\frac12$, then $s_n^2=\sum_{k\le n}k^{-2\alpha}\ge\sum_{k\le n}k^{-1}\to\infty$, while $|a_k\varepsilon_k|\le1$. So $|X_{n,k}|\le1/s_n\to0$, the
+indicators in $L_n(\varepsilon)$ vanish for large $n$, and Lindeberg's theorem applies.
+\end{solution}
+
+\begin{solution}{ex:inversionsvar}
+\idea Independence turns everything into sums of the mean and the variance of a discrete uniform law.
+\writeup The uniform law on $\{0,\dots,k-1\}$ has mean $\frac{k-1}2$ and second moment $\frac{(k-1)(2k-1)}6$, so variance $\frac{(k-1)(2k-1)}6-\frac{(k-1)^2}4=\frac{k^2-1}{12}$.
+Then $\mathbb EI_n=\sum_{k\le n}\frac{k-1}2=\frac{n(n-1)}4$ and
+\[
+\operatorname{Var}I_n=\frac1{12}\Bigl(\frac{n(n+1)(2n+1)}6-n\Bigr)=\frac{2n^3+3n^2+n-6n}{72}=\frac{2n^3+3n^2-5n}{72}.
+\]
+Injectivity: $\pi(n)$ is preceded by all other values, so $Y_n$ counts the values larger than $\pi(n)$, and $\pi(n)=n-Y_n$. Removing the last position
+and relabelling the remaining values increasingly by $1,\dots,n-1$ leaves a permutation of $\{1,\dots,n-1\}$ with vector $(Y_1,\dots,Y_{n-1})$; by
+induction it is determined, and so is $\pi$.
+\end{solution}
+
+\begin{solution}{ex:chisqmean}
+\idea The statistic is a sum of squared standardised counts; each count is binomial.
+\writeup $\mathbb E(N_i-np_i)^2=np_i(1-p_i)$, so $\mathbb E\chi^2=\sum_i(1-p_i)=d-1$.
+\end{solution}
+
+\begin{solution}{ex:binomialsharp}
+\idea The distribution function of a lattice law is a staircase, and a continuous function can follow it only to within half the height of each step.
+The local limit theorem tells us the height of the central step.
+\writeup Let $B_i=(X_i+1)/2$, Bernoulli$(\frac12)$ with span $1$, mean $\frac12$ and $\sigma=\frac12$; then $S_n=2(B_1+\dots+B_n)-n$, so $S_n=0$ means
+$B_1+\dots+B_n=\frac n2$, a point where $\frac{k-n\mu}{\sigma\sqrt n}=0$. Theorem~\ref{thm:llt} gives $\frac{\sqrt n}2P(S_n=0)\to\phi(0)$. As in
+Proposition~\ref{prop:latticelower}, $\sup_x|F_n(x)-\Phi(x)|\ge\frac12P(S_n=0)$, so
+\[
+\sqrt n\sup_x|F_n(x)-\Phi(x)|\ge\frac{\sqrt n}2P(S_n=0)\to\phi(0)=\frac1{\sqrt{2\pi}}.
+\]
+\end{solution}
+
+\begin{solution}{ex:lltdensity}
+\idea Inversion turns densities into integrals of characteristic functions, as in the lattice case, and the integrability of a power of $\varphi$
+replaces the compactness of $[-\pi,\pi]$.
+\writeup Let $\varphi=\varphi_{X_1}$. For $n\ge\nu$, $|\varphi(t/\sqrt n)|^n\le|\varphi(t/\sqrt n)|^\nu$ is integrable, so by inversion $S_n/\sqrt n$ has the continuous
+density $f_n(x)=\frac1{2\pi}\int e^{-iux}\varphi(u/\sqrt n)^n\dd u$, and $\phi(x)=\frac1{2\pi}\int e^{-iux}e^{-u^2/2}\dd u$. Choose $\delta>0$ with
+$|\varphi(t)|\le e^{-t^2/4}$ for $|t|\le\delta$. A variable with a density has $|\varphi(t)|<1$ for $t\ne0$ (if $|\varphi(t)|=1$ the variable would live on a
+lattice $a+\frac{2\pi}t\Z$, a null set); and $\varphi(t)\to0$ as $|t|\to\infty$ by the Riemann--Lebesgue lemma. So $\eta=\sup_{|t|\ge\delta}|\varphi(t)|<1$.
+Then $\sup_x|f_n(x)-\phi(x)|$ is at most $\frac1{2\pi}$ times
+\[
+\int_{|u|\le A}|\psi_n-e^{-u^2/2}|+\int_{|u|>A}e^{-u^2/2}+\int_{A<|u|\le\delta\sqrt n}e^{-u^2/4}+\int_{|u|>\delta\sqrt n}|\varphi(u/\sqrt n)|^n\dd u,
+\]
+with $\psi_n(u)=\varphi(u/\sqrt n)^n$. The first tends to $0$ by the central limit theorem, the second and third are small for large $A$, and the last is at
+most $\eta^{n-\nu}\sqrt n\int|\varphi|^\nu\to0$.
+\end{solution}
+
+\begin{solution}{ex:poissonbe}
+\idea The law of $N_\lambda$ does not depend on how we cut it into pieces, while the Berry--Esseen bound does; cutting into very many small pieces makes
+$\rho/(\sigma^3\sqrt n)$ tend to $1/\sqrt\lambda$.
+\writeup Let $m=\lambda/n\le1$ and $Y\sim$ Poisson$(m)$. Then $\sigma^2=m$ and, since $|k-m|\le k$ for $k\ge1$,
+$\rho=\mathbb E|Y-m|^3\le m^3P(Y=0)+\mathbb EY^3\le m^3+(m+3m^2+m^3)\le m+5m^2$. The sum of $n$ independent copies is $N_\lambda$, so by Theorem~\ref{thm:berryesseen}
+the distance is at most
+\[
+\frac{3.1\,\rho}{\sigma^3\sqrt n}\le\frac{3.1(m+5m^2)}{m^{3/2}\sqrt n}=\frac{3.1(1+5m)}{\sqrt{mn}}=\frac{3.1(1+5\lambda/n)}{\sqrt\lambda}.
+\]
+The left side does not depend on $n$; let $n\to\infty$.
+\end{solution}
+
+\begin{solution}{ex:heavytail}
+\idea Transience in dimension $1$ needs $1-\varphi$ to vanish more slowly than $|t|$ at $0$, so that $\int\frac{\dd t}{1-\varphi(t)}$ converges. Heavy tails make $1-\varphi$
+large: the walk makes long jumps and loses its way home.
+\writeup For $0<|t|\le\pi$, keep in $1-\varphi_X(t)=\sum_{k\ne0}c|k|^{-1-\alpha}(1-\cos tk)$ only the terms with $1\le|k|\le\pi/|t|$, where $|tk|\le\pi$ and so
+$1-\cos tk\ge\frac{2t^2k^2}{\pi^2}$:
+\[
+1-\varphi_X(t)\ge\frac{4ct^2}{\pi^2}\sum_{1\le k\le\pi/|t|}k^{1-\alpha}\ge\frac{4ct^2}{\pi^2}\int_0^{\lfloor\pi/|t|\rfloor}s^{1-\alpha}\dd s
+\ge\frac{4ct^2}{\pi^2(2-\alpha)}\Bigl(\frac\pi{2|t|}\Bigr)^{2-\alpha},
+\]
+using $\lfloor\pi/|t|\rfloor\ge\frac\pi{2|t|}$ for $|t|\le\pi$. This is $c'|t|^\alpha$. As $X$ is symmetric, $\varphi_X$ is real and $1-r\varphi_X\ge r(1-\varphi_X)$, so
+$\operatorname{Re}\frac1{1-r\varphi_X(t)}\le\frac1{rc'|t|^\alpha}$, integrable on $[-\pi,\pi]$ because $\alpha<1$. By Lemma~\ref{lem:greenfourier} and monotone convergence,
+$\sum_nu_n<\infty$, and the walk is transient (Tome~3, Theorem~7.12). It has no mean ($\mathbb E|X|=\infty$ since $\alpha<1$), which is why Chapter~2's
+criterion did not apply.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} G.~P\'olya, ``\"Uber den zentralen Grenzwertsatz der Wahrscheinlichkeitsrechnung und das Momentenproblem'', \emph{Math.\ Z.}\ 8 (1920),
+171--181. J.~W.~Lindeberg, ``Eine neue Herleitung des Exponentialgesetzes in der Wahrscheinlichkeitsrechnung'', \emph{Math.\ Z.}\ 15 (1922), 211--225. W.~Feller,
+``\"Uber den zentralen Grenzwertsatz der Wahrscheinlichkeitsrechnung'', \emph{Math.\ Z.}\ 40 (1935), 521--559. P.~L\'evy, ``Propri\'et\'es asymptotiques des sommes de
+variables al\'eatoires ind\'ependantes ou encha\^in\'ees'', \emph{J.\ Math.\ Pures Appl.}\ 14 (1935), 347--402. L.~Le Cam, ``The central limit theorem around 1935'',
+\emph{Statist.\ Sci.}\ 1 (1986), 78--96. A.~C.~Berry, ``The accuracy of the Gaussian approximation to the sum of independent variates'', \emph{Trans.\ Amer.\ Math.\ Soc.}\ 49
+(1941), 122--136. C.-G.~Esseen, ``On the Liapunoff limit of error in the theory of probability'', \emph{Ark.\ Mat.\ Astr.\ Fys.}\ 28A (1942), 1--19; ``A moment inequality
+with an application to the central limit theorem'', \emph{Skand.\ Aktuarietidskr.}\ 39 (1956), 160--170. I.~G.~Shevtsova, ``On the absolute constants in the
+Berry--Esseen type inequalities for identically distributed summands'', arXiv:1111.6554 (2011). K.~Pearson, ``On the criterion that a given system of deviations
+from the probable in the case of a correlated system of variables is such that it can be reasonably supposed to have arisen from random sampling'',
+\emph{Phil.\ Mag.}\ (5) 50 (1900), 157--175. R.~A.~Fisher, ``The conditions under which $\chi^2$ measures the discrepancy between observation and hypothesis'',
+\emph{J.\ Roy.\ Statist.\ Soc.}\ 87 (1924), 442--450. Z.~Labby, ``Weldon's dice, automated'', \emph{Chance} 22(4) (2009), 6--13 (Weldon's data and letter, and the
+modern repetition). B.~V.~Gnedenko, ``On a local limit theorem of the theory of probability'' (in Russian), \emph{Uspekhi Mat.\ Nauk} 3(3) (1948), 187--194.
+K.~L.~Chung and W.~H.~J.~Fuchs, ``On the distribution of values of sums of random variables'', \emph{Mem.\ Amer.\ Math.\ Soc.}\ 6 (1951). G.~N.~Watson, ``Three triple integrals'', \emph{Quart.\ J.\ Math.}\ 10 (1939), 266--276.
+\item B.~V.~Gnedenko and A.~N.~Kolmogorov, \emph{Limit Distributions for Sums of Independent Random Variables}, translated by K.~L.~Chung, Addison-Wesley, 1954. The
+classical treatise: Lindeberg--Feller, local limit theorems, and the general limit laws of Chapter~5.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, vol.~II, 2nd ed., Wiley, 1971, Chapters~XV--XVI. Smoothing, Berry--Esseen and
+Edgeworth expansions; our Lemmas~\ref{lem:smoothing} and~\ref{lem:cfestimate} follow it.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Chapter~3 (Lindeberg--Feller, Berry--Esseen,
+local limit theorems) and the section on recurrence of random walks (the Chung--Fuchs criterion).
+\item F.~Spitzer, \emph{Principles of Random Walk}, 2nd ed., Springer, 1976. Fourier analysis of random walks on $\Z^d$, Green functions, and P\'olya's constant.
+\item D.~E.~Knuth, \emph{The Art of Computer Programming}, vol.~3, \emph{Sorting and Searching}, 2nd ed., Addison-Wesley, 1998, Section~5.1.1. Inversions and
+the inversion table.
+\end{itemize}
