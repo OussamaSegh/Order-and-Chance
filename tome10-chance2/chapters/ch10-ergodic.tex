@@ -1,0 +1,555 @@
+\chapter{Ergodic Theory}
+\begin{center}\itshape
+Follow one point of a system for a long time, or look at all points at one time: the ergodic theorem says that you see the same averages.\\
+It is the strong law of large numbers without independence. It tells us what the digits of the continued fraction of a typical number look like,\\
+and, in Furstenberg's hands, it proves that a set of integers of positive density contains three terms in arithmetic progression.
+\end{center}
+
+In the autumn of 1931, John von Neumann, then 27, proved that for a system preserving volume, the time averages of an observable converge in the
+mean square sense. Bernard Koopman had shown a few months earlier how to turn a dynamical system into a unitary operator on a Hilbert space, and von Neumann's proof
+used nothing else. In October he told George David Birkhoff, the leading American mathematician of the time, who in a few weeks proved a stronger result: the
+averages converge for almost every initial point. Birkhoff's paper appeared in the \emph{Proceedings of the National Academy of Sciences} in December 1931, von
+Neumann's in January 1932, and a short note by Birkhoff and Koopman soon explained who had done what. According to Stanislaw Ulam, von Neumann never quite forgave
+Birkhoff. Both theorems are in this chapter, and the physicists' question that motivated them, whether time averages equal space averages, has become a tool
+of number theory and combinatorics.
+
+The tools are: von Neumann's theorem in Hilbert space, Birkhoff's theorem through Garsia's maximal lemma, and Kac's formula for the mean return time. The first application
+is the theory of continued fractions of random numbers, started by Gauss in 1800: the frequency of each digit, Khinchin's constant and L\'evy's constant. The second is
+Furstenberg's ergodic proof of Roth's theorem. A set of integers of positive upper density contains three terms in arithmetic progression.
+
+\begin{reminder}[from Tomes 1, 3, 6 and 7, and Chapter 9]
+Tome~1 (Proposition~8.1 and Theorem~8.2): for irrational $x=[0;a_1,a_2,\dots]$ with convergents $p_n/q_n$ and complete quotients $x_{n+1}=[a_{n+1};a_{n+2},\dots]$,
+$x=\frac{x_{n+1}p_n+p_{n-1}}{x_{n+1}q_n+q_{n-1}}$ and $p_nq_{n-1}-p_{n-1}q_n=(-1)^{n-1}$. A Hilbert space operator has an adjoint (Tome~7, Theorem~2.3); a compact self-adjoint operator $S$ has an orthonormal family of eigenvectors $e_n$ with non-zero eigenvalues of finite multiplicity, and $H=\ker S\oplus\overline{\operatorname{span}}(e_n)$ (Tome~7, Theorem~4.4);
+integral operators with square-integrable kernels are compact (Tome~7, Example~3.3); $(e^{2\pi ikx})_{k\in\Z}$ is a Hilbert basis of $L^2[0,1)$ (Tome~7, Theorem~2.7, rescaled).
+On a compact metric space every sequence of probabilities has a weakly convergent subsequence (Tome~6, Theorem~11.7). The conditional expectation on $\mathcal G$ is the orthogonal projection of $L^2$ on $L^2(\mathcal G)$ (Tome~3, Theorem~10.4),
+and L\'evy's zero--one law says $P(B\mid\mathcal F_n)\to\mathbf 1_B$ for $B\in\mathcal F_\infty$ (Corollary~\ref{cor:levy01}).
+\end{reminder}
+
+\section{Measure-preserving systems}
+
+\begin{definition}
+A \emph{measure-preserving system} $(X,\mathcal A,\mu,T)$ is a probability space with a measurable map $T:X\to X$ such that $\mu(T^{-1}A)=\mu(A)$ for every $A\in\mathcal A$. A set $B$ is \emph{invariant} if
+$T^{-1}B=B$, and $T$ is \emph{ergodic} if every invariant set has measure $0$ or $1$.
+\end{definition}
+
+Since $\mu\circ T^{-1}$ and $\mu$ are probabilities, it suffices to check $\mu(T^{-1}A)=\mu(A)$ for $A$ in a $\pi$-system generating $\mathcal A$ (Tome~6, Theorem~6.5). Equivalently, $\int f\circ T\,\dd\mu=\int f\,\dd\mu$ for every integrable $f$:
+the \emph{Koopman operator} $Uf=f\circ T$ is an isometry of each $L^p(\mu)$.
+
+\begin{example}\label{ex:mps}
+(a) \emph{Rotations.} On $[0,1)$ with Lebesgue measure $\lambda$, $R_\alpha x=x+\alpha\bmod1$: the preimage of an interval is an interval of the same length, or two pieces.
+(b) \emph{The doubling map} $Dx=2x\bmod1$: $D^{-1}[a,b)=[\frac a2,\frac b2)\cup[\frac{a+1}2,\frac{b+1}2)$ has measure $b-a$.
+(c) \emph{Bernoulli shifts.} Let $\nu$ be a probability on $\R$, $X=\R^\N$ with the product probability $\nu^{\otimes\N}$, and $\sigma(x_0,x_1,\dots)=(x_1,x_2,\dots)$. The preimage of a cylinder $\{x_0\in B_0,\dots,x_k\in B_k\}$ is
+$\{x_1\in B_0,\dots,x_{k+1}\in B_k\}$, with the same measure. A sequence of i.i.d.\ variables is a point chosen at random in this system.
+(d) \emph{The Gauss map} $G(x)=\frac1x-\lfloor\frac1x\rfloor$ on $(0,1)$ preserves the \emph{Gauss measure} $\gamma(\dd x)=\frac{\dd x}{(1+x)\log2}$ (Proposition~\ref{prop:gaussmeasure}).
+\end{example}
+
+\begin{theorem}[Poincar\'e recurrence, 1890]\label{thm:poincare}
+Let $\mu(A)>0$. Then almost every point of $A$ returns to $A$ infinitely often: $T^nx\in A$ for infinitely many $n$.
+\end{theorem}
+\begin{proof}
+Let $B=A\setminus\bigcup_{n\ge1}T^{-n}A$, the points of $A$ that never return. The sets $T^{-n}B$, $n\ge0$, are disjoint: if $x\in T^{-m}B\cap T^{-n}B$ with $m<n$, then $y=T^mx\in B$ and $T^{n-m}y\in B\subseteq A$, so
+$y$ returns. They have the same measure, and total measure at most $1$, so $\mu(B)=0$. If $x\in A$ visits $A$ only finitely often, its last visit $T^kx$ lies in $B$, so $x\in\bigcup_kT^{-k}B$, a null set.
+\end{proof}
+
+Poincar\'e stated it for the three-body problem in 1890; Ernst Zermelo turned it against Boltzmann in 1896: a gas released in one corner of a box will, with probability one, return to that corner.
+The answer, as Boltzmann pointed out, is the waiting time. Mark Kac computed it in 1947.
+
+\begin{lemma}[almost invariant sets]\label{lem:almostinv}
+If $\mu(B\,\triangle\,T^{-1}B)=0$, then $B'=\bigcap_{N\ge0}\bigcup_{n\ge N}T^{-n}B$ is invariant and $\mu(B\,\triangle\,B')=0$. In particular, if $T$ is ergodic, then $\mu(B)\in\{0,1\}$; this applies when
+$T^{-1}B\subseteq B$, and to the sets $\{f>t\}$ of a measurable $f$ with $f\circ T=f$ almost everywhere, which is therefore almost everywhere constant.
+\end{lemma}
+\begin{proof}
+$T^{-1}B'=\bigcap_N\bigcup_{n\ge N+1}T^{-n}B=B'$, since the unions decrease in $N$. As $\mu(T^{-k}B\triangle T^{-k-1}B)=\mu(T^{-k}(B\triangle T^{-1}B))=0$, each $T^{-n}B$ differs from $B$ by a null set, hence so does $B'$.
+If $T^{-1}B\subseteq B$, then $\mu(B\triangle T^{-1}B)=\mu(B)-\mu(T^{-1}B)=0$. For $f$ with $f\circ T=f$ a.e., $\{f>t\}\triangle T^{-1}\{f>t\}\subseteq\{f\circ T\neq f\}$; so $t\mapsto\mu(f>t)$ takes the values $0$ and $1$ only, and
+$f$ is a.e.\ equal to the point where it jumps, as in Corollary~\ref{cor:tailconst}.
+\end{proof}
+
+\begin{theorem}[Kac's lemma, 1947]\label{thm:kac}
+Let $T$ be ergodic, $\mu(A)>0$, and $\tau_A(x)=\min\{n\ge1:T^nx\in A\}$, the return time. Then
+\[
+\int_A\tau_A\,\dd\mu=1,\qquad\text{that is,}\qquad\mathbb E\bigl[\tau_A\mid A\bigr]=\frac1{\mu(A)}.
+\]
+\end{theorem}
+\begin{proof}
+For $n\ge0$ let $B_n=\bigcap_{k=0}^{n-1}T^{-k}A^c$, the points that avoid $A$ at times $0,\dots,n-1$ ($B_0=X$). Then $T^{-1}B_n$ is the set of points avoiding $A$ at times $1,\dots,n$, and splitting it according
+to time $0$,
+\[
+T^{-1}B_n=\bigl(A\cap\{\tau_A>n\}\bigr)\sqcup B_{n+1},\qquad\text{so}\qquad\mu(A\cap\{\tau_A>n\})=\mu(B_n)-\mu(B_{n+1}).
+\]
+Summing over $n<N$ gives $\sum_{n<N}\mu(A\cap\{\tau_A>n\})=1-\mu(B_N)$. The sets $B_N$ decrease to the set of points that never visit $A$, the complement of $C=\bigcup_{k\ge0}T^{-k}A$. Since
+$T^{-1}C\subseteq C$ and $\mu(C)\ge\mu(A)>0$, Lemma~\ref{lem:almostinv} gives $\mu(C)=1$. So $\int_A\tau_A\,\dd\mu=\sum_{n\ge0}\mu(A\cap\{\tau_A>n\})=1$.
+\end{proof}
+
+For a gas of $N$ molecules, the event ``all molecules in the left half'' has probability about $2^{-N}$, and the mean time between its occurrences is about $2^N$ steps: for $N=10^{20}$ the
+universe is far too young. Poincar\'e was right, and so was Boltzmann.
+
+\section{The ergodic theorems}
+
+\begin{theorem}[von Neumann's mean ergodic theorem, 1932]\label{thm:vonneumann}
+Let $U$ be a linear isometry of a Hilbert space $H$, $I=\{f:Uf=f\}$ and $P$ the orthogonal projection on $I$. Then for every $f\in H$,
+\[
+A_Nf=\frac1N\sum_{n=0}^{N-1}U^nf\longrightarrow Pf\qquad\text{in }H.
+\]
+\end{theorem}
+\begin{proof}
+First, $Uf=f$ if and only if $U^*f=f$. If $Uf=f$, then $\langle U^*f,f\rangle=\langle f,Uf\rangle=\|f\|^2$ and $\|U^*f\|\le\|f\|$, so $\|U^*f-f\|^2=\|U^*f\|^2-2\|f\|^2+\|f\|^2\le0$. If $U^*f=f$, the same computation with
+$\|Uf\|=\|f\|$ gives $Uf=f$. Hence the orthogonal complement of the range of $\mathrm{Id}-U$ is $\ker(\mathrm{Id}-U^*)=I$, and $H=I\oplus\overline{\operatorname{ran}(\mathrm{Id}-U)}$.
+For $f\in I$, $A_Nf=f$. For $f=g-Ug$, the sum telescopes: $A_Nf=\frac1N(g-U^Ng)$, of norm at most $\frac2N\|g\|$. Since $\|A_N\|\le1$, $A_Nf\to0$ on the closure of the range too. So $A_Nf\to Pf$.
+\end{proof}
+
+For a measure-preserving system and $f\in L^2$, the limit $Pf$ is an invariant function; if $T$ is ergodic, it is a constant (Lemma~\ref{lem:almostinv}), equal to $\int f\,\dd\mu$ since $\int A_Nf=\int f$.
+Birkhoff's theorem says much more: the averages converge along almost every single orbit. The key is a maximal inequality, whose shortest proof was found by Adriano Garsia in 1965.
+
+\begin{lemma}[maximal ergodic lemma]\label{lem:maxergodic}
+Let $f\in L^1(\mu)$, $S_n=\sum_{k<n}f\circ T^k$ (with $S_0=0$) and $M_N=\max(S_0,S_1,\dots,S_N)$. Then $\int_{\{M_N>0\}}f\,\dd\mu\ge0$.
+\end{lemma}
+\begin{proof}
+For $1\le n\le N$, $S_n=f+S_{n-1}\circ T\le f+M_N\circ T$. On $\{M_N>0\}$, $M_N=\max_{1\le n\le N}S_n\le f+M_N\circ T$. Hence, as $M_N\ge0$ everywhere and $M_N=0$ off $\{M_N>0\}$,
+\[
+\int_{\{M_N>0\}}f\,\dd\mu\ge\int_{\{M_N>0\}}(M_N-M_N\circ T)\,\dd\mu\ge\int_XM_N\,\dd\mu-\int_XM_N\circ T\,\dd\mu=0.
+\]
+\end{proof}
+
+\begin{theorem}[Birkhoff's ergodic theorem, 1931]\label{thm:birkhoff}
+Let $(X,\mathcal A,\mu,T)$ be a measure-preserving system and $f\in L^1(\mu)$. Then $\frac1nS_n=\frac1n\sum_{k<n}f\circ T^k$ converges almost everywhere and in $L^1$ to an integrable $\bar f$ with $\bar f\circ T=\bar f$ a.e.\ and
+$\int_B\bar f\,\dd\mu=\int_Bf\,\dd\mu$ for every invariant $B$. If $T$ is ergodic, $\bar f=\int f\,\dd\mu$ almost everywhere.
+\end{theorem}
+\begin{proof}
+\emph{Almost sure convergence.} Let $a<b$ be rationals and $D=\{\liminf\frac{S_n}n<a<b<\limsup\frac{S_n}n\}$. Since $\frac{S_n\circ T}n=\frac{n+1}n\frac{S_{n+1}}{n+1}-\frac fn$, the set $D$ is invariant. Let
+$g=(f-b)\mathbf 1_D$; as $\mathbf 1_D\circ T^k=\mathbf 1_D$, its sums are $S_n(g)=\mathbf 1_D(S_n-nb)$. On $D$ some $S_n-nb$ is positive, so the sets $\{M_N(g)>0\}$ increase to $D$. The lemma and dominated convergence
+give $\int_D(f-b)\,\dd\mu\ge0$. The same argument with $g=(a-f)\mathbf 1_D$ gives $\int_D(a-f)\,\dd\mu\ge0$. Adding, $(a-b)\mu(D)\ge0$, so $\mu(D)=0$. Taking the union over all rational pairs, $\frac{S_n}n$ converges a.e.\ in $[-\infty,\infty]$; by
+Fatou's lemma $\int\liminf\frac{|S_n|}n\le\int|f|$, so the limit $\bar f$ is finite a.e.\ and integrable.
+
+\emph{Convergence in $L^1$.} If $f$ is bounded, by $c$ say, so are the averages, and dominated convergence applies. In general, let $h$ be bounded with $\|f-h\|_1<\varepsilon$. The averages of $f-h$ have norm less than
+$\varepsilon$, so $\limsup_{m,n}\|\frac{S_n}n-\frac{S_m}m\|_1\le2\varepsilon$: the averages are Cauchy in $L^1$, and their $L^1$ limit is $\bar f$ (a subsequence converges a.e.).
+
+\emph{Properties of the limit.} The identity above gives $\bar f\circ T=\bar f$ wherever both limits exist, which is almost everywhere. For invariant $B$, $\int_Bf\circ T^k\,\dd\mu=\int(\mathbf 1_Bf)\circ T^k\,\dd\mu=\int_Bf\,\dd\mu$, so
+$\int_B\frac{S_n}n=\int_Bf$, and we pass to the $L^1$ limit. If $T$ is ergodic, $\bar f$ is a.e.\ constant by Lemma~\ref{lem:almostinv}, and the constant is $\int\bar f=\int f$.
+\end{proof}
+
+In other words, $\bar f=\mathbb E[f\mid\mathcal I]$, where $\mathcal I$ is the $\sigma$-algebra of invariant sets. Time averages equal space averages exactly when $T$ is ergodic.
+
+\begin{corollary}[ergodicity of the examples]\label{cor:ergexamples}
+(a) Bernoulli shifts are ergodic; with $f(x)=x_0$, Birkhoff's theorem is the strong law of large numbers for i.i.d.\ integrable variables.
+(b) The rotation $R_\alpha$ is ergodic if and only if $\alpha$ is irrational.
+(c) The doubling map is ergodic.
+\end{corollary}
+\begin{proof}
+(a) If $\sigma^{-1}B=B$, then $B=\sigma^{-n}B\in\sigma(x_n,x_{n+1},\dots)$ for every $n$: $B$ is a tail event, of probability $0$ or $1$ by Kolmogorov's law (Theorem~\ref{thm:kolmogorov01}).
+
+(b) If $\alpha=\frac pq$, the set $\bigcup_{j<q}[\frac jq,\frac jq+\frac1{2q})$ is invariant, of measure $\frac12$. If $\alpha$ is irrational and $f=\mathbf 1_B$ with $B$ invariant, compare Fourier coefficients: $f\circ R_\alpha$ has
+coefficients $\hat f(k)e^{2\pi ik\alpha}$, so $\hat f(k)(e^{2\pi ik\alpha}-1)=0$, and $\hat f(k)=0$ for $k\neq0$. So $f=\hat f(0)$ a.e., and $\mu(B)\in\{0,1\}$.
+
+(c) If $f=\mathbf 1_B$ with $D^{-1}B=B$, then $f(2x\bmod1)=f(x)$; the coefficients of $x\mapsto f(2x\bmod1)$ are $\hat f(k/2)$ at even frequencies $k$, and $0$ at odd ones. Hence $\hat f(k)=\hat f(2k)=\hat f(4k)=\cdots$, which tends to $0$
+since $\sum|\hat f(k)|^2<\infty$. So $\hat f(k)=0$ for $k\neq0$, and $f$ is constant.
+\end{proof}
+
+\subsection*{Mixing}
+
+Ergodicity says that the system cannot be split into two invariant parts. A stronger property says that it forgets its past.
+
+\begin{definition}
+$T$ is \emph{mixing} if $\mu(A\cap T^{-n}B)\to\mu(A)\mu(B)$ for all measurable $A,B$.
+\end{definition}
+
+A mixing $T$ is ergodic: for invariant $B$, take $A=B$ to get $\mu(B)=\mu(B)^2$. Bernoulli shifts are mixing: if $A$ and $B$ are cylinders depending on the first $k$ coordinates, then for $n\ge k$, $A$ and
+$\sigma^{-n}B$ depend on disjoint blocks of independent coordinates, so $\mu(A\cap\sigma^{-n}B)=\mu(A)\mu(B)$; general sets are approximated by finite unions of cylinders within $\varepsilon$ (Lemma~\ref{lem:approx}), which
+changes both sides by at most $2\varepsilon$. Rotations are ergodic but never mixing (Exercise~\ref{ex:rotnotmix}): an interval just moves around, rigidly.
+
+\section{The digits of a random number}
+
+On 30 January 1812, Gauss wrote to Laplace with a question about continued fractions that he could not answer. Twelve years earlier, in his diary, he had found that if $x$ is chosen uniformly in $(0,1)$ and
+$G^n x$ is the $n$-th ``tail'' of its continued fraction, then $P(G^nx<t)\to\log_2(1+t)$; Laplace was asked for the error. No proof by Gauss was ever found. Rodion Kuzmin proved the limit in 1928, with an error decreasing
+like $q^{\sqrt n}$, and Paul L\'evy in 1929, with error $q^n$. In 1935 Aleksandr Khinchin found that the geometric mean of the digits of almost every number tends to a universal constant, and in 1936 L\'evy found the growth rate of the
+denominators. Ergodic theory explains all three: the limit law is the invariant measure of the Gauss map, and the rest is Birkhoff's theorem.
+
+For irrational $x\in(0,1)$, write $x=[0;a_1,a_2,\dots]$. Then $a_1=\lfloor1/x\rfloor$ and $Gx=\frac1x-a_1=[0;a_2,a_3,\dots]$, so $a_{n+1}(x)=a_1(G^nx)$: the Gauss map shifts the digits. With the complete quotients of Tome~1,
+$G^nx=\frac1{x_{n+1}}$. We ignore the rationals, a null set.
+
+\begin{proposition}[Gauss]\label{prop:gaussmeasure}
+The Gauss map preserves the Gauss measure $\gamma(\dd x)=\frac{\dd x}{(1+x)\log2}$, a probability with $\gamma([0,t))=\log_2(1+t)$.
+\end{proposition}
+\begin{proof}
+The intervals $[0,t)$ form a $\pi$-system generating the Borel sets. Now $G^{-1}[0,t)$ is the disjoint union over $k\ge1$ of the intervals $(\frac1{k+t},\frac1k]$, where $a_1=k$ and $\frac1x-k<t$. So
+\[
+\gamma(G^{-1}[0,t))=\sum_{k\ge1}\Bigl(\log_2\bigl(1+\tfrac1k\bigr)-\log_2\bigl(1+\tfrac1{k+t}\bigr)\Bigr)=\sum_{k\ge1}\bigl(\ell(k+1)-\ell(k)-\ell(k+t+1)+\ell(k+t)\bigr),
+\]
+with $\ell=\log_2$. The partial sum up to $K$ telescopes to $\ell(K+1)-\ell(1)-\ell(K+t+1)+\ell(1+t)$, which tends to $\ell(1+t)=\gamma([0,t))$.
+\end{proof}
+
+The \emph{cylinder} $I(a_1,\dots,a_n)$ is the set of $x$ whose first $n$ digits are $a_1,\dots,a_n$. By Tome~1, Proposition~8.1, these are the numbers
+\[
+x=\psi(s)=\frac{p_n+sp_{n-1}}{q_n+sq_{n-1}},\qquad s=G^nx\in(0,1)\setminus\mathbb Q,
+\]
+where $p_n/q_n=[0;a_1,\dots,a_n]$. The map $\psi$ is a monotone bijection from $(0,1)$ onto the interval $I(a_1,\dots,a_n)$ (up to endpoints and rationals), with $|\psi'(s)|=\frac1{(q_n+sq_{n-1})^2}$ since $|p_nq_{n-1}-p_{n-1}q_n|=1$. In particular the length of
+the cylinder is $\int_0^1|\psi'|=\frac1{q_n(q_n+q_{n-1})}\le\frac1{q_n^2}$, and $q_n\ge2^{(n-1)/2}$ (as $q_n\ge q_{n-1}+q_{n-2}\ge2q_{n-2}$).
+
+\begin{lemma}[bounded distortion]\label{lem:distortion}
+For every cylinder $I$ of rank $n$ and Borel set $B\subseteq(0,1)$, $\lambda(I\cap G^{-n}B)\ge\frac12\lambda(I)\lambda(B)$.
+\end{lemma}
+\begin{proof}
+$I\cap G^{-n}B=\psi(B)$, up to a null set. Since $|\psi'(s)|\ge\frac1{(q_n+q_{n-1})^2}$,
+\[
+\frac{\lambda(\psi(B))}{\lambda(I)}=\frac{\int_B|\psi'|}{\int_0^1|\psi'|}\ge\lambda(B)\frac{q_n(q_n+q_{n-1})}{(q_n+q_{n-1})^2}=\lambda(B)\frac{q_n}{q_n+q_{n-1}}\ge\frac{\lambda(B)}2.
+\]
+\end{proof}
+
+\begin{theorem}\label{thm:gaussergodic}
+The Gauss map is ergodic for $\gamma$.
+\end{theorem}
+\begin{proof}
+Since $\frac1{2\log2}\le\frac{\dd\gamma}{\dd\lambda}\le\frac1{\log2}$, $\gamma$ and Lebesgue measure $\lambda$ have the same null sets, and it suffices to show that an invariant $B$ with $\lambda(B)>0$ has $\lambda(B)=1$. Work on $(0,1)$ with $\lambda$, and let $\mathcal F_n$ be the
+$\sigma$-algebra generated by the cylinders of rank $n$, a countable partition. The cylinders of all ranks generate the Borel $\sigma$-algebra (up to rationals): every open interval is the union of the cylinders it
+contains, since cylinders containing a given point have lengths at most $2^{1-n}\to0$. For $x$ in a cylinder $I$ of rank $n$, the conditional probability is $\lambda(B\mid\mathcal F_n)(x)=\frac{\lambda(B\cap I)}{\lambda(I)}$, and as $B=G^{-n}B$,
+Lemma~\ref{lem:distortion} gives $\lambda(B\mid\mathcal F_n)\ge\frac12\lambda(B)$. By L\'evy's zero--one law (Corollary~\ref{cor:levy01}), $\lambda(B\mid\mathcal F_n)\to\mathbf 1_B$ almost everywhere. So $\mathbf 1_B\ge\frac12\lambda(B)>0$ almost everywhere,
+that is, $\lambda(B)=1$.
+\end{proof}
+
+A martingale from Chapter~9 proved the ergodicity of a dynamical system: the two theories are made for each other.
+
+\begin{figure}[ht]
+\centering\fig{ch10-gauss}
+\caption{Left: the Gauss map $Gx=\frac1x-\lfloor\frac1x\rfloor$; its branches live on the cylinders $(\frac1{k+1},\frac1k]$ where $a_1=k$. Right: the density $\frac1{(1+x)\log2}$ of the Gauss measure (red) and a histogram of
+$G^{10}x$ for $20\,000$ random $x$ (grey): Gauss's law, ten steps in.}
+\label{fig:gaussmap}
+\end{figure}
+
+\begin{theorem}[digits of almost every number]\label{thm:cfstats}
+For Lebesgue-almost every $x\in(0,1)$:
+\begin{enumerate}[label=(\alph*)]
+\item for each $k\ge1$, the proportion of $i\le n$ with $a_i(x)=k$ tends to
+\[
+\log_2\Bigl(1+\frac1{k(k+2)}\Bigr);
+\]
+\item (Khinchin, 1935) the geometric mean of the digits converges:
+\[
+(a_1a_2\cdots a_n)^{1/n}\longrightarrow K=\prod_{k=1}^\infty\Bigl(1+\frac1{k(k+2)}\Bigr)^{\log_2k}=2.68545\ldots;
+\]
+\item (L\'evy, 1936) the denominators of the convergents grow at a universal rate:
+\[
+\frac1n\log q_n\longrightarrow\frac{\pi^2}{12\log2}=1.18656\ldots
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Apply Birkhoff's theorem (Theorem~\ref{thm:birkhoff}) to the ergodic system $((0,1),\gamma,G)$; a $\gamma$-null set is Lebesgue-null.
+
+(a) Take $f=\mathbf 1_{\{a_1=k\}}$, so $f(G^ix)=\mathbf 1_{\{a_{i+1}=k\}}$. The limit is
+\[
+\gamma\Bigl(\bigl(\tfrac1{k+1},\tfrac1k\bigr]\Bigr)=\log_2\frac{1+1/k}{1+1/(k+1)}=\log_2\frac{(k+1)^2}{k(k+2)}.
+\]
+
+(b) Take $f=\log a_1$, which is integrable: $\int f\,\dd\gamma=\sum_k\log k\,\log_2(1+\frac1{k(k+2)})\le\sum_k\frac{\log k}{k^2\log 2}<\infty$. Then $\frac1n\sum_{i\le n}\log a_i\to\int f\,\dd\gamma=\log K$.
+
+(c) By Tome~1 (proof of Theorem~8.2), $x_{n+1}q_n+q_{n-1}=x_1x_2\cdots x_{n+1}$: indeed it is true for $n=0$, and $x_{n+1}q_n+q_{n-1}=x_{n+1}\bigl(q_n+\frac{q_{n-1}}{x_{n+1}}\bigr)$, where
+$q_n+\frac{q_{n-1}}{x_{n+1}}=a_nq_{n-1}+q_{n-2}+(x_n-a_n)q_{n-1}=x_nq_{n-1}+q_{n-2}$. Since $a_{n+1}\le x_{n+1}<a_{n+1}+1$, this quantity lies between $q_{n+1}$ and $q_{n+1}+q_n\le2q_{n+1}$. As $x_k=1/G^{k-1}x$,
+\[
+\log q_{n+1}=-\sum_{k=0}^{n}\log G^kx+O(1).
+\]
+The function $-\log x$ is $\gamma$-integrable, and expanding $\frac1{1+x}=\sum_j(-1)^jx^j$ (the partial sums of the geometric series are bounded by $1$, so dominated convergence allows the interchange, and $\int_0^1x^j\log\frac1x\,\dd x=\frac1{(j+1)^2}$),
+\[
+\int_0^1\frac{-\log x}{(1+x)\log2}\,\dd x=\frac1{\log2}\sum_{j\ge0}\frac{(-1)^j}{(j+1)^2}=\frac1{\log2}\cdot\frac{\pi^2}{12},
+\]
+using $\sum\frac1{m^2}=\frac{\pi^2}6$ (Tome~4, Theorem~3.7), whose alternating version is half of it. Birkhoff's theorem gives the limit.
+\end{proof}
+
+Numbers are never ``typical'' in all respects at once when we can name them. The golden ratio has all its digits equal to $1$ (Exercise~\ref{ex:golden}), $e-2=[0;1,2,1,1,4,1,1,6,\dots]$ has a geometric mean growing to infinity, and
+nobody knows whether $\pi$ satisfies (a), (b) or (c), although its computed digits behave as the theorem predicts. Figure~\ref{fig:levy} shows L\'evy's law at work on random numbers.
+
+\begin{figure}[ht]
+\centering\fig{ch10-levy}
+\caption{$\frac1n\log q_n$ for eight random numbers $x$ (each given by $4000$ random bits), for $n\le1000$, converging to L\'evy's constant $\frac{\pi^2}{12\log2}\approx1.1866$ (red). The golden ratio, with all digits equal to $1$, sits at $\log\frac{1+\sqrt5}2\approx0.4812$
+(dashed): the slowest possible growth.}
+\label{fig:levy}
+\end{figure}
+
+\begin{think}
+Birkhoff's theorem with $f=a_1$, which is not $\gamma$-integrable, does not apply directly. Show that the arithmetic mean $\frac1n\sum_{i\le n}a_i$ tends to infinity for almost every $x$ (truncate $f$). So the
+digits of a typical number have a finite geometric mean but an infinite arithmetic mean: occasional huge digits dominate the sum, as for the stable laws of Chapter~5.
+\end{think}
+
+\section{Recurrence and arithmetic progressions}
+
+In 1936 Paul Erd\H{o}s and P\'al Tur\'an asked whether every set of integers of positive density contains arbitrarily long arithmetic progressions. Klaus Roth proved it for progressions of length three in 1953,
+by Fourier analysis; Endre Szemer\'edi proved the full conjecture in 1975, by a combinatorial tour de force. Two years later Hillel Furstenberg, born in Berlin in 1935, whose family had fled to the United
+States just before the war, gave a third proof: a theorem of \emph{multiple recurrence} for measure-preserving systems, of which Szemer\'edi's theorem is a translation. The method went on to prove results nobody
+knew how to prove otherwise, and led to the theorem of Ben Green and Terence Tao (2008) that the primes contain arbitrarily long progressions. Furstenberg shared the Abel Prize of 2020 with Gregory Margulis.
+
+We prove the case of length three. The \emph{upper density} of $E\subseteq\N$ is $\bar d(E)=\limsup_N\frac1N|E\cap[0,N)|$.
+
+\begin{theorem}[Roth, 1953]\label{thm:roth}
+A set $E\subseteq\N$ with $\bar d(E)>0$ contains three terms $a$, $a+n$, $a+2n$ in arithmetic progression, with $n\ge1$.
+\end{theorem}
+
+The dynamical statement is a strengthening of Poincar\'e's recurrence theorem: a set of positive measure returns to itself, at times $n$ and $2n$ simultaneously, a positive proportion of the time.
+
+\begin{theorem}[Furstenberg's double recurrence]\label{thm:double}
+Let $T$ be an ergodic measure-preserving map and $\mu(A)>0$. Then
+\[
+\liminf_{N\to\infty}\frac1N\sum_{n=1}^N\mu\bigl(A\cap T^{-n}A\cap T^{-2n}A\bigr)>0.
+\]
+\end{theorem}
+
+The proof splits functions into a structured part, on which $T$ acts like a rotation and recurrence is easy, and a random part, which averages out. In this section $L^2=L^2(\mu)$ is complex,
+$Uf=f\circ T$, and an \emph{eigenfunction} is a non-zero $\varphi\in L^2$ with $U\varphi=\lambda\varphi$. Let $H_c$ be the closed span of the eigenfunctions, the \emph{compact part}, and $H_w=H_c^\perp$, the
+\emph{weakly mixing part}.
+
+\begin{lemma}[the compact part]\label{lem:kronecker}
+Let $T$ be ergodic. Every eigenfunction $\varphi$ has $|\lambda|=1$ and $|\varphi|$ constant; products and conjugates of eigenfunctions are eigenfunctions. The set $\mathcal K=\{B:\mathbf 1_B\in H_c\}$ is a $\sigma$-algebra and $H_c=L^2(\mathcal K)$;
+so the orthogonal projection on $H_c$ is $\mathbb E[\cdot\mid\mathcal K]$, and maps functions with values in $[0,1]$ to functions with values in $[0,1]$.
+\end{lemma}
+\begin{proof}
+$\|U\varphi\|=\|\varphi\|$ gives $|\lambda|=1$, and then $|\varphi|\circ T=|\lambda\varphi|=|\varphi|$, so $|\varphi|$ is constant by Lemma~\ref{lem:almostinv}. If $U\varphi=\lambda\varphi$ and $U\psi=\kappa\psi$, then
+$U(\varphi\psi)=\lambda\kappa\,\varphi\psi$ and $U\bar\varphi=\bar\lambda\bar\varphi$. So the span $\mathcal S$ of the eigenfunctions (which contains the constants) consists of bounded functions and is closed under products, conjugation and real parts.
+
+Let $\psi\in\mathcal S$ be real, $|\psi|\le M$. By Weierstrass' theorem (Tome~6, Exercise~4.6), there are polynomials $p_k$ with $|p_k(t)-|t||\le\frac1k$ on $[-M,M]$; then $p_k(\psi)\in\mathcal S$ and $p_k(\psi)\to|\psi|$ uniformly, so
+$|\psi|\in H_c$, and $\psi^+=\frac12(\psi+|\psi|)\in H_c$. A real $\psi\in H_c$ is the $L^2$ limit of real parts of elements of $\mathcal S$, and $\psi\mapsto\psi^+$ is $1$-Lipschitz in $L^2$, so $\psi^+\in H_c$ for every real $\psi\in H_c$.
+Then $\min(\psi,1)=\psi-(\psi-1)^+\in H_c$, and for real $t$, $\mathbf 1_{\{\psi>t\}}$ is the $L^2$ limit of $\min(1,k(\psi-t)^+)\in H_c$ (dominated convergence). So every real $\psi\in H_c$ is $\mathcal K$-measurable.
+
+$\mathcal K$ is a $\sigma$-algebra: $\mathbf 1_X$ is constant, $\mathbf 1_{B^c}=1-\mathbf 1_B$, $\mathbf 1_{B\cap C}=(\mathbf 1_B+\mathbf 1_C-1)^+$, and an increasing union is an $L^2$ limit. Hence $H_c\subseteq L^2(\mathcal K)$ (real and imaginary parts are $\mathcal K$-measurable), and
+conversely the simple $\mathcal K$-measurable functions lie in $H_c$ and are dense in $L^2(\mathcal K)$. The projection on $L^2(\mathcal K)$ is the conditional expectation, which is monotone.
+\end{proof}
+
+\begin{lemma}[almost periodicity]\label{lem:almostperiodic}
+Let $g\in H_c$ and $\varepsilon>0$. The set $R=\{n\ge1:\|U^ng-g\|<\varepsilon\}$ has positive lower density: there is $M$ with $|R\cap[1,N]|\ge\frac NM-1$ for every $N$.
+\end{lemma}
+\begin{proof}
+Choose $h=\sum_{j\le k}c_j\varphi_j$, with eigenfunctions $\varphi_j$ of modulus $1$ and eigenvalues $\lambda_j$, such that $\|g-h\|<\frac\varepsilon3$, and $\delta>0$ with $\delta\sum_j|c_j|<\frac\varepsilon3$. As $U$ is an isometry,
+\[
+\|U^ng-g\|\le2\|g-h\|+\|U^nh-h\|<\frac{2\varepsilon}3+\sum_j|c_j|\,|\lambda_j^n-1|.
+\]
+Cover the torus $\{z\in\C^k:|z_j|=1\}$ by $M$ boxes in which any two points $z,w$ have $|z_j-w_j|<\delta$ for all $j$. Among $z^{(n)}=(\lambda_1^n,\dots,\lambda_k^n)$, $1\le n\le N$, some box contains at least $N/M$ of them, say for $n_1<n_2<\dots<n_r$.
+For each $i\ge2$, $|\lambda_j^{n_i-n_1}-1|=|\lambda_j^{n_i}-\lambda_j^{n_1}|<\delta$, so $n_i-n_1\in R$. These are $r-1\ge\frac NM-1$ distinct elements of $R\cap[1,N]$.
+\end{proof}
+
+\begin{lemma}[the weakly mixing part]\label{lem:wm}
+If $f\in H_w$, then
+\[
+\frac1N\sum_{n<N}|\langle U^nf,f\rangle|^2\longrightarrow0.
+\]
+\end{lemma}
+\begin{proof}
+On $X\times X$ with $\mu\otimes\mu$, the map $T\times T$ preserves the measure, with Koopman operator $V$. Let $F(x,y)=f(x)\overline{f(y)}$. By Fubini's theorem $\langle V^nF,F\rangle=\langle U^nf,f\rangle\overline{\langle U^nf,f\rangle}=|\langle U^nf,f\rangle|^2$, so by
+Theorem~\ref{thm:vonneumann} the averages tend to $\langle PF,F\rangle$, where $P$ projects on the $V$-invariant functions. Let $K=PF$, so that $K(Tx,Ty)=K(x,y)$ a.e., and let $\mathsf K$ be the integral operator
+$\mathsf K\varphi(x)=\int K(x,y)\varphi(y)\,\mu(\dd y)$, compact by Tome~7, Example~3.3. Since $\langle PF,F\rangle=\langle K,F\rangle=\iint K(x,y)\overline{f(x)}f(y)=\langle\mathsf Kf,f\rangle$, it suffices to show $\mathsf Kf=0$.
+
+The invariance of $K$ gives $\mathsf KU=U\mathsf K$: for a.e.\ $x$,
+\[
+\begin{aligned}\int K(x,y)\varphi(Ty)\,\mu(\dd y)&=\int K(Tx,Ty)\varphi(Ty)\,\mu(\dd y)\eqbr=\int K(Tx,y)\varphi(y)\,\mu(\dd y).\end{aligned}
+\]
+The adjoint $\mathsf K^*$ has kernel $\overline{K(y,x)}$, also invariant,
+so $\mathsf K^*U=U\mathsf K^*$, and the compact self-adjoint operator $S=\mathsf K^*\mathsf K$ commutes with $U$. Each eigenspace $E$ of $S$ for a non-zero eigenvalue is finite-dimensional and satisfies $UE\subseteq E$. The restriction of $U$ to $E$ is a linear
+isometry of a finite-dimensional space, hence unitary, hence diagonalizable in an orthonormal basis (the spectral theorem for unitary matrices); so $E\subseteq H_c$. By Tome~7, Theorem~4.4, $L^2=\ker S\oplus\overline{\operatorname{span}}$ of these
+eigenspaces, so $f\perp H_c$ forces $f\in\ker S$, and $\|\mathsf Kf\|^2=\langle Sf,f\rangle=0$.
+\end{proof}
+
+\begin{lemma}[van der Corput]\label{lem:vdc}
+Let $(u_n)_{n\ge0}$ be vectors of norm at most $1$ in a Hilbert space, and $\gamma_h=\limsup_N\bigl|\frac1N\sum_{n<N}\langle u_{n+h},u_n\rangle\bigr|$. If $\frac1H\sum_{h=1}^{H}\gamma_h\to0$ as $H\to\infty$, then $\frac1N\sum_{n<N}u_n\to0$.
+\end{lemma}
+\begin{proof}
+Fix $H$ and let $v_n=\frac1H\sum_{h<H}u_{n+h}$. Shifting a sum by $h<H$ changes it by at most $2H$ vectors, so $\bigl\|\frac1N\sum_{n<N}u_n-\frac1N\sum_{n<N}v_n\bigr\|\le\frac{2H}N$. By convexity of the square,
+\[
+\Bigl\|\frac1N\sum_{n<N}v_n\Bigr\|^2\le\frac1N\sum_{n<N}\|v_n\|^2=\frac1{H^2}\sum_{h,h'<H}\frac1N\sum_{n<N}\langle u_{n+h},u_{n+h'}\rangle,
+\]
+and each inner average differs by at most $\frac{2H}N$ from $\frac1N\sum_{n<N}\langle u_{n+|h-h'|},u_n\rangle$ or its conjugate. Letting $N\to\infty$,
+\[
+\limsup_N\Bigl\|\frac1N\sum_{n<N}u_n\Bigr\|^2\le\frac1{H^2}\sum_{h,h'<H}\gamma_{|h-h'|}\le\frac1H+\frac2H\sum_{d=1}^{H-1}\gamma_d,
+\]
+with $\gamma_0\le1$. The right side tends to $0$ as $H\to\infty$.
+\end{proof}
+
+\begin{lemma}\label{lem:wmaverage}
+Let $T$ be ergodic, $f,g\in L^\infty$, and $f\in H_w$ or $g\in H_w$. Then $\frac1N\sum_{n<N}U^nf\cdot U^{2n}g\to0$ in $L^2$.
+\end{lemma}
+\begin{proof}
+We may assume $|f|,|g|\le1$. Let $u_n=U^nf\cdot U^{2n}g$. By invariance of $\mu$ under $T^n$,
+\[
+\langle u_{n+h},u_n\rangle=\int U^n\bigl(U^hf\cdot\bar f\bigr)\,U^{2n}\bigl(U^{2h}g\cdot\bar g\bigr)\,\dd\mu=\int\bigl(U^hf\cdot\bar f\bigr)\,U^n\bigl(U^{2h}g\cdot\bar g\bigr)\,\dd\mu .
+\]
+By Theorem~\ref{thm:vonneumann} and ergodicity, $\frac1N\sum_{n<N}U^nG\to\int G\,\dd\mu$ in $L^2$ for every $G$, so the average over $n$ tends to $\langle U^hf,f\rangle\langle U^{2h}g,g\rangle$, and
+$\gamma_h=|\langle U^hf,f\rangle|\,|\langle U^{2h}g,g\rangle|$. If $f\in H_w$, then by Cauchy--Schwarz and Lemma~\ref{lem:wm}
+\[
+\frac1H\sum_{h\le H}\gamma_h\le\Bigl(\frac1H\sum_{h\le H}|\langle U^hf,f\rangle|^2\Bigr)^{1/2}\longrightarrow0.
+\]
+If $g\in H_w$, the same holds, since
+\[
+\frac1H\sum_{h\le H}|\langle U^{2h}g,g\rangle|^2\le\frac2{2H}\sum_{m\le2H}|\langle U^mg,g\rangle|^2\longrightarrow0.
+\]
+Lemma~\ref{lem:vdc} concludes.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:double}]
+Let $f=\mathbf 1_A$, $f_c=\mathbb E[f\mid\mathcal K]$, the projection on $H_c$, with values in $[0,1]$ by Lemma~\ref{lem:kronecker}, and $f_w=f-f_c\in H_w$, bounded. Then
+$\mu(A\cap T^{-n}A\cap T^{-2n}A)=\int f\cdot U^nf\cdot U^{2n}f\,\dd\mu$, and
+\[
+U^nf\cdot U^{2n}f=U^nf_c\cdot U^{2n}f_c+U^nf_w\cdot U^{2n}f+U^nf_c\cdot U^{2n}f_w .
+\]
+By Lemma~\ref{lem:wmaverage} and Cauchy--Schwarz, the averages over $n\le N$ of the last two terms, integrated against $f$, tend to $0$. For the first, every term $\int f\cdot U^nf_c\cdot U^{2n}f_c$ is non-negative. Since
+$f_c^2$ is $\mathcal K$-measurable, $\int f\,f_c^2=\int f_c^3\ge\bigl(\int f_c\bigr)^3=\mu(A)^3$ (Jensen). Let $\varepsilon=\mu(A)^3/6$ and $R$ as in Lemma~\ref{lem:almostperiodic} for $g=f_c$. For $n\in R$,
+$\|U^{2n}f_c-f_c\|\le\|U^n(U^nf_c-f_c)\|+\|U^nf_c-f_c\|<2\varepsilon$, and since all functions are bounded by $1$,
+\[
+\int f\cdot U^nf_c\cdot U^{2n}f_c\ge\int f\,f_c^2-\|U^nf_c-f_c\|-\|U^{2n}f_c-f_c\|\ge\mu(A)^3-3\varepsilon=\frac{\mu(A)^3}2.
+\]
+Hence $\frac1N\sum_{n=1}^N\int f\,U^nf_c\,U^{2n}f_c\ge\frac{\mu(A)^3}2\bigl(\frac1M-\frac1N\bigr)$, and the $\liminf$ in the theorem is at least $\frac{\mu(A)^3}{2M}>0$.
+\end{proof}
+
+It remains to translate. Furstenberg's \emph{correspondence principle} turns a set of integers into a dynamical system; the only subtlety is to make that system ergodic.
+
+\begin{proof}[Proof of Theorem~\ref{thm:roth}]
+Let $X=\{0,1\}^\N$ with the product topology, a compact metric space (for instance $d(x,y)=2^{-\min\{i:x_i\neq y_i\}}$), and the shift $(Tx)_i=x_{i+1}$, which is continuous. A \emph{cylinder} is a set fixing finitely many coordinates;
+cylinders are open and closed, form a countable $\pi$-system generating the Borel sets, and their indicators are continuous. Let $\omega=\mathbf 1_E\in X$ and $A=\{x:x_0=1\}$, so that $T^i\omega\in A$ if and only if $i\in E$.
+Suppose that $E$ contains no progression $a,a+n,a+2n$ with $n\ge1$.
+
+\emph{An invariant measure.} Let $\delta=\bar d(E)$ and $N_j\to\infty$ with $\frac1{N_j}|E\cap[0,N_j)|\to\delta$. The probabilities $\nu_j=\frac1{N_j}\sum_{i<N_j}\delta_{T^i\omega}$ have a weakly convergent subsequence (Tome~6, Theorem~11.7), with limit $\nu$.
+For continuous $\varphi$, $\int\varphi\circ T\,\dd\nu_j-\int\varphi\,\dd\nu_j=\frac1{N_j}(\varphi(T^{N_j}\omega)-\varphi(\omega))\to0$, so $\int\varphi\circ T\,\dd\nu=\int\varphi\,\dd\nu$, and $\nu$ is $T$-invariant (both $\nu$ and $\nu\circ T^{-1}$ give the same
+integral to continuous functions, hence to indicators of cylinders, hence are equal). For a cylinder $C$, $\nu(C)=\lim\nu_j(C)$. In particular $\nu(A)=\delta$, and for $n\ge1$,
+\[
+\nu(A\cap T^{-n}A\cap T^{-2n}A)=\lim_j\frac1{N_j}\bigl|\{i<N_j:i,\,i+n,\,i+2n\in E\}\bigr|=0.
+\]
+
+\emph{An ergodic measure.} Let $\mathcal M$ be the set of $T$-invariant probabilities $\rho$ with $\rho(A\cap T^{-n}A\cap T^{-2n}A)=0$ for all $n\ge1$. It contains $\nu$, is convex, and is compact for weak convergence (limits of invariant
+probabilities are invariant by the argument above, and the conditions involve cylinders). Enumerate the cylinders $C_1,C_2,\dots$ and put $C_0=A$. Let $F_0$ be the set of $\rho\in\mathcal M$ maximizing $\rho(C_0)$, and $F_k$ the set of $\rho\in F_{k-1}$ maximizing $\rho(C_k)$:
+these are non-empty compact sets (a continuous function on a compact set attains its maximum), decreasing, so their intersection is non-empty. Two elements of $\bigcap_kF_k$ agree on every cylinder, so they are equal (Tome~6, Theorem~6.5):
+$\bigcap_kF_k=\{\nu^*\}$, and $\nu^*(A)\ge\nu(A)=\delta>0$.
+
+$\nu^*$ is ergodic. Let $B$ be invariant with $t=\nu^*(B)\in(0,1)$, and $\nu_1=\nu^*(\cdot\cap B)/t$, $\nu_2=\nu^*(\cdot\cap B^c)/(1-t)$. Both are invariant (as $T^{-1}B=B$), lie in $\mathcal M$, and $\nu^*=t\nu_1+(1-t)\nu_2$. If $\nu_1,\nu_2\in F_{k-1}$
+(or $\mathcal M$, for $k=0$), then $\nu_i(C_k)\le m_k=\max_{F_{k-1}}\rho(C_k)$ and $t\nu_1(C_k)+(1-t)\nu_2(C_k)=\nu^*(C_k)=m_k$, so both equal $m_k$ and $\nu_1,\nu_2\in F_k$. By induction both lie in $\bigcap_kF_k$, so $\nu_1=\nu^*$, which is absurd since
+$\nu_1(B)=1\neq t$.
+
+So $(X,\nu^*,T)$ is ergodic, $\nu^*(A)>0$, and $\nu^*(A\cap T^{-n}A\cap T^{-2n}A)=0$ for every $n\ge1$, contradicting Theorem~\ref{thm:double}.
+\end{proof}
+
+The same scheme, with a much harder recurrence theorem, gives Szemer\'edi's theorem: \emph{for every $k$, a set of positive upper density contains $k$ terms in arithmetic progression.} Furstenberg proved that
+$\liminf\frac1N\sum_n\mu(A\cap T^{-n}A\cap\dots\cap T^{-(k-1)n}A)>0$ for every measure-preserving $T$ and $\mu(A)>0$, by building the system as a tower of compact extensions over a weakly mixing base. The
+convergence of these averages, an innocent-looking question, was only settled by Bernard Host and Bryna Kra in 2005.
+
+\begin{think}
+Where did the proof use that the progression has the form $a,a+n,a+2n$? Would the same proof give $a,a+n,a+3n$? What about $a,a+n^2$ (Furstenberg and S\'ark\"ozy: a set of positive density contains two elements differing by a non-zero
+square)? The set of integers whose base-$3$ digits are only $0$ and $1$ contains no three-term progression; what is its density?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:rotnotmix}
+Show that a rotation $R_\alpha$ is not mixing: take $A=B=[0,\frac12)$ and find infinitely many $n$ with $\lambda(A\cap R_\alpha^{-n}A)\ge\frac14+\frac18$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:kacword}
+In a sequence of fair coin tosses, let $\tau$ be the time between two consecutive occurrences of the pattern HH (occurrences may overlap). Use Kac's lemma to show that its mean is $4$. Compare with the mean waiting time $6$
+for the first HH from scratch (Tome~3, Theorem~10.14).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:golden}
+Show that $x=\frac{\sqrt5-1}2$ has all its continued fraction digits equal to $1$, that $q_n$ is a Fibonacci number, and that $\frac1n\log q_n\to\log\frac{1+\sqrt5}2$. Show that $\frac1n\log q_n\ge\frac12\log 2-\frac{\log2}{2n}$ for every
+irrational $x$, and that the golden ratio is the slowest: $\liminf\frac1n\log q_n\ge\log\frac{1+\sqrt5}2$ for every $x$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:normal}
+A number $x\in[0,1)$ is \emph{normal in base $2$} if every block of $\ell$ binary digits appears in its expansion with frequency $2^{-\ell}$. Show that almost every $x$ is normal in base $2$ (\'Emile Borel, 1909), and then normal in every
+base $b\ge2$ simultaneously.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weyl}
+Let $\alpha$ be irrational. Show that for \emph{every} $x$ and every continuous $\varphi$ on $[0,1]$ with $\varphi(0)=\varphi(1)$, $\frac1N\sum_{n<N}\varphi(x+n\alpha\bmod1)\to\int_0^1\varphi$ (Weyl, 1916). Deduce that the fractional parts of $n\alpha$ are
+equidistributed: the proportion of $n<N$ with $\{n\alpha\}\in[a,b)$ tends to $b-a$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:mixingeigen}
+Show that if $T$ is mixing, its only eigenfunctions are the constants: $H_c$ consists of constants. (Expand $\langle U^n\varphi,\varphi\rangle$ in two ways.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:approxrate}
+Show that for almost every $x$, $\frac1n\log\bigl|x-\frac{p_n}{q_n}\bigr|\to-\frac{\pi^2}{6\log2}$: each new digit of the continued fraction multiplies the precision by about $e^{2.37}\approx10.7$, against $10$ for each decimal digit.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:rotnotmix}
+By Exercise~\ref{ex:weyl} or by pigeonhole, $\{n\alpha\}<\frac18$ for infinitely many $n$. Then $A$ and $A-n\alpha$ overlap in a set of measure at least $\frac12-\frac18$.
+\end{hint}
+\begin{hint}{ex:kacword}
+Use the Bernoulli shift, ergodic by Corollary~\ref{cor:ergexamples}, and $A=\{x_0=x_1=\mathrm H\}$.
+\end{hint}
+\begin{hint}{ex:golden}
+$q_n=a_nq_{n-1}+q_{n-2}\ge q_{n-1}+q_{n-2}$; compare with the Fibonacci recursion. For the first bound, $q_n\ge2q_{n-2}$.
+\end{hint}
+\begin{hint}{ex:normal}
+The binary digits of $x$ are the coordinates of a Bernoulli shift: $d_{i+1}(x)=d_1(D^ix)$. Apply Birkhoff's theorem to the indicator of a block. There are countably many bases and blocks.
+\end{hint}
+\begin{hint}{ex:weyl}
+Prove it first for $\varphi(x)=e^{2\pi ikx}$ (a geometric sum), then for trigonometric polynomials, then approximate uniformly (Fej\'er, or Weierstrass for periodic functions). For indicators, squeeze between continuous functions.
+\end{hint}
+\begin{hint}{ex:mixingeigen}
+If $U\varphi=\lambda\varphi$, then $\langle U^n\varphi,\varphi\rangle=\lambda^n\|\varphi\|^2$, while mixing (extended from indicators to $L^2$) gives $\langle U^n\varphi,\varphi\rangle\to|\int\varphi|^2$.
+\end{hint}
+\begin{hint}{ex:approxrate}
+Theorem~8.2 of Tome~1: $\frac1{q_n(q_n+q_{n+1})}<|x-\frac{p_n}{q_n}|<\frac1{q_nq_{n+1}}$. Use Theorem~\ref{thm:cfstats}(c).
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:rotnotmix}
+\idea A rotation moves a set rigidly; when it nearly comes back, the overlap is far from the product of the measures.
+\writeup The points $\{n\alpha\}$, $n=0,\dots,8$, lie in $[0,1)$; two of them, $\{m\alpha\}$ and $\{m'\alpha\}$ with $m<m'$, are at distance less than $\frac18$ modulo $1$, so $d=m'-m$ has $\|d\alpha\|<\frac18$ (distance to the nearest integer). The same pigeonhole with $\frac1k$ in place of $\frac18$ gives $n\ge1$ with $\|n\alpha\|<\frac1k$; as $\|n\alpha\|>0$ for each $n$ when $\alpha$ is irrational, these $n$ cannot stay bounded as $k\to\infty$, so there are infinitely many $n$ with $\|n\alpha\|<\frac18$. (If $\alpha=\frac pq$, take the multiples of $q$.) For such $n$, $R_\alpha^{-n}A=A-n\alpha\bmod1$ is an interval of length $\frac12$ shifted by less than $\frac18$,
+so $\lambda(A\cap R_\alpha^{-n}A)>\frac12-\frac18=\frac38$, which does not tend to $\frac14$.
+\end{solution}
+
+\begin{solution}{ex:kacword}
+\idea Kac: the mean return time to a set is the inverse of its measure, and a pattern of two heads has measure $\frac14$.
+\writeup On the Bernoulli shift with fair coordinates, ergodic by Corollary~\ref{cor:ergexamples}, let $A=\{x_0=x_1=\mathrm H\}$, of measure $\frac14$. The time between consecutive occurrences of HH, starting from an occurrence, is the return time
+$\tau_A$, and Kac's lemma gives $\mathbb E[\tau_A\mid A]=4$. From scratch one must first build the pattern, which takes on average $6$ tosses: the overlap HH of the word with itself makes the return quicker (after an occurrence,
+one more H suffices with probability $\frac12$).
+\end{solution}
+
+\begin{solution}{ex:golden}
+\idea Every digit is at least $1$, so the recursion for $q_n$ is at least Fibonacci's; equality is the golden ratio.
+\writeup $x=\frac{\sqrt5-1}2$ satisfies $x^2+x=1$, so $\frac1x=1+x$, $a_1=1$ and $Gx=x$: all digits equal $1$. Then $q_n=q_{n-1}+q_{n-2}$ with $q_0=q_1=1$, so $q_n=F_{n+1}$, and $\frac1n\log F_{n+1}\to\log\frac{1+\sqrt5}2$ (Binet's formula). For any $x$,
+$q_n\ge q_{n-1}+q_{n-2}$, so by induction $q_n\ge F_{n+1}$, giving the $\liminf$. Finally $q_n\ge2q_{n-2}$ gives $q_n\ge2^{(n-1)/2}$, so $\frac1n\log q_n\ge\frac{n-1}{2n}\log2$.
+\end{solution}
+
+\begin{solution}{ex:normal}
+\idea Binary digits of a uniform random number are independent fair bits; ergodicity turns probabilities into frequencies along almost every orbit.
+\writeup The map $x\mapsto(d_1(x),d_2(x),\dots)$ sends Lebesgue measure to the fair Bernoulli product (the dyadic intervals of rank $\ell$ have measure $2^{-\ell}$) and conjugates the doubling map $D$ to the shift. Fix a block $w$ of length $\ell$ and let
+$f=\mathbf 1\{d_1\cdots d_\ell=w\}$, so $f(D^ix)$ indicates an occurrence of $w$ at position $i+1$. $D$ is ergodic (Corollary~\ref{cor:ergexamples}), and Birkhoff's theorem gives frequency $\int f=2^{-\ell}$ for a.e.\ $x$. There are countably many blocks, so a.e.\ $x$
+is normal in base $2$. The same argument with $x\mapsto bx\bmod1$ (ergodic by the same Fourier computation, with $\hat f(k)=\hat f(bk)$) works in base $b$, and a countable union of null sets is null.
+\end{solution}
+
+\begin{solution}{ex:weyl}
+\idea For exponentials the averages are geometric sums that stay bounded; uniform approximation spreads the result to all continuous functions, for every starting point.
+\writeup For $\varphi_k(x)=e^{2\pi ikx}$, $k\neq0$, $\frac1N\sum_{n<N}\varphi_k(x+n\alpha)=\frac{e^{2\pi ikx}}N\cdot\frac{e^{2\pi ikN\alpha}-1}{e^{2\pi ik\alpha}-1}$, of modulus at most $\frac2{N|e^{2\pi ik\alpha}-1|}\to0$, since $k\alpha\notin\Z$; for $k=0$ the average is $1=\int\varphi_0$. By linearity, the
+statement holds for trigonometric polynomials. A continuous periodic $\varphi$ is a uniform limit of trigonometric polynomials (Fej\'er's theorem, or Weierstrass); if $\|\varphi-p\|_\infty<\varepsilon$, both the averages and the integrals move by less than $\varepsilon$.
+For $[a,b)$, choose continuous periodic $\varphi_-\le\mathbf 1_{[a,b)}\le\varphi_+$ with $\int(\varphi_+-\varphi_-)<\varepsilon$; the frequencies are squeezed between $b-a-\varepsilon$ and $b-a+\varepsilon$ in the limit.
+\end{solution}
+
+\begin{solution}{ex:mixingeigen}
+\idea An eigenfunction rotates forever; mixing forces every correlation to decay to the product of the means.
+\writeup Mixing means $\langle U^n\mathbf 1_B,\mathbf 1_A\rangle\to\mu(A)\mu(B)$; by linearity this extends to simple functions, and by density and $\|U^n\|=1$ to $\langle U^n\psi,\varphi\rangle\to\int\psi\,\overline{\int\varphi}$ for all $\varphi,\psi\in L^2$. If $U\varphi=\lambda\varphi$
+with $\varphi\neq0$, then $\lambda^n\|\varphi\|^2=\langle U^n\varphi,\varphi\rangle\to|\int\varphi|^2$. Since $|\lambda|=1$, the sequence $\lambda^n$ converges only if $\lambda=1$; then $\varphi$ is invariant, hence constant (mixing implies ergodic). So $H_c$ is the space of constants.
+\end{solution}
+
+\begin{solution}{ex:approxrate}
+\idea The error of the $n$-th convergent is about $1/q_n^2$, and L\'evy's theorem says $q_n\approx e^{1.1866\,n}$.
+\writeup By Tome~1, Theorem~8.2, $-\log(q_n(q_n+q_{n+1}))<\log|x-\frac{p_n}{q_n}|<-\log(q_nq_{n+1})$. By Theorem~\ref{thm:cfstats}(c), $\frac1n\log q_n$ and $\frac1n\log q_{n+1}$ both tend to $L=\frac{\pi^2}{12\log2}$, and $q_n+q_{n+1}\le2q_{n+1}$. So both bounds, divided by $n$, tend to $-2L=-\frac{\pi^2}{6\log2}\approx-2.373$.
+Since $e^{2.373}\approx10.73$, a digit of the continued fraction is worth slightly more than a decimal digit.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History of the ergodic theorems.} B.~O.~Koopman, ``Hamiltonian systems and transformations in Hilbert space'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 17 (1931), 315--318. G.~D.~Birkhoff, ``Proof of the ergodic theorem'',
+\emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 17 (1931), 656--660. J.~von Neumann, ``Proof of the quasi-ergodic hypothesis'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 18 (1932), 70--82. G.~D.~Birkhoff and B.~O.~Koopman, ``Recent contributions to the
+ergodic theory'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 18 (1932), 279--282. C.~C.~Moore, ``Ergodic theorem, ergodic theory, and statistical mechanics'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 112 (2015), 1907--1911, tells the story,
+with the dates of submission. S.~M.~Ulam, \emph{Adventures of a Mathematician}, Scribner, 1976, for von Neumann's feelings. A.~M.~Garsia, ``A simple proof of E.~Hopf's maximal ergodic theorem'', \emph{J.\ Math.\ Mech.}\ 14 (1965), 381--382.
+\item \emph{Recurrence.} H.~Poincar\'e, ``Sur le probl\`eme des trois corps et les \'equations de la dynamique'', \emph{Acta Math.}\ 13 (1890), 1--270. M.~Kac, ``On the notion of recurrence in discrete stochastic processes'',
+\emph{Bull.\ Amer.\ Math.\ Soc.}\ 53 (1947), 1002--1010, where the Boltzmann--Zermelo debate is discussed.
+\item \emph{Continued fractions.} R.~O.~Kuzmin, ``Sur un probl\`eme de Gauss'', \emph{Atti Congr.\ Int.\ Bologna} 6 (1928), 83--89. A.~Khintchine, ``Metrische Kettenbruchprobleme'', \emph{Compositio Math.}\ 1 (1935), 361--382. P.~L\'evy, ``Sur le
+d\'eveloppement en fraction continue d'un nombre choisi au hasard'', \emph{Compositio Math.}\ 3 (1936), 286--303. M.~Iosifescu and C.~Kraaikamp, \emph{Metrical Theory of Continued Fractions}, Kluwer, 2002, for Gauss's diary entry of 1800 and his
+letter of 1812 to Laplace. A.~Ya.~Khinchin, \emph{Continued Fractions}, Chicago, 1964.
+\item \emph{Arithmetic progressions.} P.~Erd\H os and P.~Tur\'an, ``On some sequences of integers'', \emph{J.\ London Math.\ Soc.}\ 11 (1936), 261--264. K.~F.~Roth, ``On certain sets of integers'', \emph{J.\ London Math.\ Soc.}\ 28 (1953), 104--109.
+E.~Szemer\'edi, ``On sets of integers containing no $k$ elements in arithmetic progression'', \emph{Acta Arith.}\ 27 (1975), 199--245. H.~Furstenberg, ``Ergodic behavior of diagonal measures and a theorem of Szemer\'edi on arithmetic progressions'',
+\emph{J.\ Analyse Math.}\ 31 (1977), 204--256. B.~Host and B.~Kra, ``Nonconventional ergodic averages and nilmanifolds'', \emph{Ann.\ of Math.}\ 161 (2005), 397--488. B.~Green and T.~Tao, ``The primes contain arbitrarily long arithmetic
+progressions'', \emph{Ann.\ of Math.}\ 167 (2008), 481--547.
+\item M.~Einsiedler and T.~Ward, \emph{Ergodic Theory with a view towards Number Theory}, Springer, 2011. Continued fractions, the Furstenberg correspondence and Roth's theorem in the same spirit as here.
+\item H.~Furstenberg, \emph{Recurrence in Ergodic Theory and Combinatorial Number Theory}, Princeton University Press, 1981. The master's own account.
+\item P.~Walters, \emph{An Introduction to Ergodic Theory}, Springer, 1982. The standard first course.
+\end{itemize}
