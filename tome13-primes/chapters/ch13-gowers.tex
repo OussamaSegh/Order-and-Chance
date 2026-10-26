@@ -1,0 +1,281 @@
+\chapter{Gowers Norms and the Green--Tao Theorem}
+\begin{center}\itshape
+Fourier analysis counts progressions of length three.\\
+For length four it is blind, and a new kind of norm is needed.\\
+With it, two young mathematicians found progressions of every length among the primes.
+\end{center}
+
+On 9 April 2004 the \emph{Annals of Mathematics} received a paper by Ben Green, then twenty-seven, and Terence Tao, twenty-eight, with a title that said everything: \emph{The primes contain arbitrarily long arithmetic progressions}. Progressions of primes had been hunted for centuries, $3,5,7$, then $5,11,17,23,29$, then longer and longer ones found by computer; in 2010 a PlayStation~3 belonging to Benoît Perichon, running the volunteer project PrimeGrid, found $26$ primes in progression, and the record today has $27$ terms. But that progressions of \emph{every} length exist had been out of reach. Van der Corput's theorem of 1939 gave length three; nothing was known for length four.
+
+The primes have density zero, so Szemerédi's theorem (Theorem~12.7) does not apply to them. Green and Tao's idea was to make it apply. They found a weight $\nu$ that is much larger than the primes, so that the primes have positive density relative to it, yet behaves like the constant function $1$ in every way that matters for counting progressions. They then proved that Szemerédi's theorem holds for dense subsets of such ``pseudorandom'' weights. The weight came from the truncated divisor sums of Goldston and Yıldırım (Chapter~8), and the notion of ``every way that matters'' came from the norms Timothy Gowers had introduced in 2001 for his new proof of Szemerédi's theorem. Tao received the Fields Medal in 2006, in part for this work.
+
+This chapter develops the Gowers norms and proves their basic property, the generalized von Neumann theorem: they control the count of arithmetic progressions. We prove the inverse theorem for the $U^2$ norm and show by an explicit example why the $U^3$ norm is needed for progressions of length four. We then describe the architecture of the Green--Tao proof, proving its arithmetic ingredient (the $W$-trick) and quoting the rest, and compare the counts of prime progressions with the asymptotic formula that Green, Tao and Tamar Ziegler eventually proved.
+
+\begin{reminder}[from Chapters~2,~8 and~12]
+\emph{Siegel--Walfisz} (Corollary~2.12). For fixed $q$ and $(a,q)=1$, $\psi(x;q,a)=\frac x{\varphi(q)}+o(x)$.
+\emph{Goldston--Yıldırım weights} (Chapter~8). Truncated divisor sums $\Lambda_R(n)=\sum_{d\mid n,\,d\le R}\mu(d)\log\frac Rd$ and the evaluation of their correlations (Lemma~8.5, Theorem~8.7).
+\emph{Counting with Fourier analysis} (Lemma~12.1) and \emph{Szemerédi's theorem} (Theorem~12.7).
+\end{reminder}
+
+Throughout, $N$ is a prime, $\Z_N=\Z/N\Z$, $\mathbb E_{x}$ is the average over $x\in\Z_N$, and all functions are complex valued on $\Z_N$. We write $\mathcal C z=\bar z$ for complex conjugation, $|\omega|=\omega_1+\dots+\omega_k$ for $\omega\in\{0,1\}^k$, and $\omega\cdot h=\sum_i\omega_ih_i$.
+
+\section{The Gowers norms}
+
+\begin{definition}\label{def:gowers}
+For $h\in\Z_N$ let $\Delta_hf(x)=f(x+h)\overline{f(x)}$. Let $\|f\|_{U^1}=|\mathbb E_xf(x)|$, and for $k\ge2$
+\[
+\|f\|_{U^k}^{2^k}=\mathbb E_h\|\Delta_hf\|_{U^{k-1}}^{2^{k-1}}.
+\]
+\end{definition}
+
+By induction on $k$ the right side is a non-negative real number, so the definition makes sense, and unfolding it gives the \emph{cube formula}
+\begin{equation}\label{eq:cube}
+\|f\|_{U^k}^{2^k}=\mathbb E_{x,h_1,\dots,h_k}\prod_{\omega\in\{0,1\}^k}\mathcal C^{|\omega|}f(x+\omega\cdot h):
+\end{equation}
+indeed, if \eqref{eq:cube} holds for $k-1$, then $\|\Delta_hf\|_{U^{k-1}}^{2^{k-1}}$ is the average over $x,h_1,\dots,h_{k-1}$ of the product of $\mathcal C^{|\omega'|}\bigl(f(x+h+\omega'\cdot h')\overline{f(x+\omega'\cdot h')}\bigr)$ over $\omega'\in\{0,1\}^{k-1}$, which is \eqref{eq:cube} with $h_k=h$. The norm averages $f$ over the vertices of a $k$-dimensional parallelepiped, conjugating at the odd vertices (Figure~\ref{fig:cube}). In particular $\|\bar f\|_{U^k}=\|f\|_{U^k}$ and $\|f\|_{U^k}\le\max|f|$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch13-cube}
+\caption{The eight terms of $\|f\|_{U^3}^8$: the values of $f$ at the vertices of the parallelepiped spanned by $h_1,h_2,h_3$ at $x$, conjugated at the vertices with an odd number of $h_i$ (red).}
+\label{fig:cube}
+\end{figure}
+
+\begin{lemma}\label{lem:monotone}
+$\|f\|_{U^1}\le\|f\|_{U^2}\le\|f\|_{U^3}\le\cdots$.
+\end{lemma}
+\begin{proof}
+For $k=1$: $\|f\|_{U^2}^4=\mathbb E_h|\mathbb E_x\Delta_hf(x)|^2\ge|\mathbb E_{h,x}f(x+h)\overline{f(x)}|^2=|\mathbb E f|^4$. If $\|g\|_{U^{k-1}}\le\|g\|_{U^k}$ for every $g$, then by the Cauchy--Schwarz inequality
+\[
+\|f\|_{U^{k+1}}^{2^{k+1}}=\mathbb E_h\|\Delta_hf\|_{U^k}^{2^k}\ge\mathbb E_h\|\Delta_hf\|_{U^{k-1}}^{2^k}\ge\Bigl(\mathbb E_h\|\Delta_hf\|_{U^{k-1}}^{2^{k-1}}\Bigr)^2=\|f\|_{U^k}^{2^{k+1}}.
+\]
+\end{proof}
+
+For $k\ge2$, $\|\cdot\|_{U^k}$ is a norm: this follows from the Gowers--Cauchy--Schwarz inequality, of which Exercise~\ref{ex:u2fourier} treats the case $k=2$. The $U^2$ norm is Fourier analysis in disguise. Let $\hat f(\xi)=\mathbb E_xf(x)e(-\frac{x\xi}N)$, so that Parseval's identity reads $\sum_\xi|\hat f(\xi)|^2=\mathbb E_x|f(x)|^2$.
+
+\begin{lemma}[the $U^2$ inverse theorem]\label{lem:u2}
+$\|f\|_{U^2}^4=\sum_\xi|\hat f(\xi)|^4$. Consequently, if $|f|\le1$, then
+\[
+\max_\xi|\hat f(\xi)|\le\|f\|_{U^2}\le\max_\xi|\hat f(\xi)|^{1/2}.
+\]
+\end{lemma}
+\begin{proof}
+With $a=x$, $b=x+h_1+h_2$, $c=x+h_1$, $d=x+h_2$, the cube formula becomes the average of $f(a)f(b)\overline{f(c)f(d)}$ over the $N^3$ solutions of $a+b=c+d$. Detecting the equation by $\frac1N\sum_\xi e(\frac{\xi(a+b-c-d)}N)$,
+\[
+\|f\|_{U^2}^4=\frac1{N^4}\sum_\xi\Bigl(\sum_af(a)e\bigl(\tfrac{a\xi}N\bigr)\Bigr)^2\Bigl(\sum_c\overline{f(c)}e\bigl(-\tfrac{c\xi}N\bigr)\Bigr)^2=\sum_\xi|\hat f(-\xi)|^4.
+\]
+Then $\max|\hat f|^4\le\sum|\hat f|^4\le\max|\hat f|^2\sum|\hat f|^2\le\max|\hat f|^2$, by Parseval and $|f|\le1$.
+\end{proof}
+
+So a function has small $U^2$ norm exactly when all its Fourier coefficients are small. The density increment of Chapter~12 was, in this language: a set without $3$-APs has a balanced function with large $U^2$ norm, hence a large Fourier coefficient.
+
+\section{Counting progressions}
+
+The point of the Gowers norms is that the $U^{k-1}$ norm controls progressions of length $k$, and more generally any family of $k$ distinct multiples of a common difference.
+
+\begin{theorem}[generalized von Neumann theorem]\label{thm:gvn}
+Let $k\ge2$, let $c_0,\dots,c_{k-1}\in\Z_N$ be distinct, and let $f_0,\dots,f_{k-1}$ satisfy $|f_i|\le1$. Then for every $j$,
+\[
+\Bigl|\mathbb E_{x,d}\prod_{i=0}^{k-1}f_i(x+c_id)\Bigr|\le\|f_j\|_{U^{k-1}}.
+\]
+\end{theorem}
+\begin{proof}
+Relabelling, we may take $j=k-1$; replacing $x$ by $x-c_0d$, we may take $c_0=0$. We argue by induction on $k$. For $k=2$, the substitution $d\mapsto c_1^{-1}d$ (possible as $c_1\ne0$ and $N$ is prime) turns the average into $\mathbb E_{x,d}f_0(x)f_1(x+d)=\mathbb E f_0\,\mathbb E f_1$, of modulus at most $|\mathbb E f_1|=\|f_1\|_{U^1}$.
+
+Let $k\ge3$ and $F(x)=\mathbb E_d\prod_{i\ge1}f_i(x+c_id)$. By the Cauchy--Schwarz inequality and $|f_0|\le1$,
+\[
+\Bigl|\mathbb E_xf_0(x)F(x)\Bigr|^2\le\mathbb E_x|F(x)|^2=\mathbb E_{x,d,h}\prod_{i=1}^{k-1}f_i(x+c_id)\overline{f_i(x+c_id+c_ih)},
+\]
+where we wrote the second copy of $d$ as $d+h$. For fixed $h$, let $g_{i,h}(y)=f_i(y)\overline{f_i(y+c_ih)}$, of modulus at most $1$. The inner average $\mathbb E_{x,d}\prod_{i=1}^{k-1}g_{i,h}(x+c_id)$ has $k-1$ functions and distinct coefficients $c_1,\dots,c_{k-1}$, so by induction its modulus is at most $\|g_{k-1,h}\|_{U^{k-2}}=\|\Delta_{c_{k-1}h}f_{k-1}\|_{U^{k-2}}$, since $g_{k-1,h}=\overline{\Delta_{c_{k-1}h}f_{k-1}}$. By Hölder's inequality and the substitution $h\mapsto c_{k-1}^{-1}h$,
+\[
+\Bigl|\mathbb E_xf_0F\Bigr|^2\le\mathbb E_h\|\Delta_{c_{k-1}h}f_{k-1}\|_{U^{k-2}}\le\Bigl(\mathbb E_h\|\Delta_hf_{k-1}\|_{U^{k-2}}^{2^{k-2}}\Bigr)^{2^{2-k}}=\|f_{k-1}\|_{U^{k-1}}^2.
+\]
+\end{proof}
+
+\begin{corollary}\label{cor:countk}
+Let $A\subseteq\Z_N$ with $|A|=\alpha N$, $f=\mathbf1_A-\alpha$, and $3\le k\le N$. Then
+\[
+\Bigl|\mathbb E_{x,d}\prod_{i=0}^{k-1}\mathbf1_A(x+id)-\alpha^k\Bigr|\le k\|f\|_{U^{k-1}}.
+\]
+In particular, if $\|f\|_{U^{k-1}}\le\frac{\alpha^k}{2k}$ and $N>\frac2{\alpha^{k-1}}$, then $A$ contains a $k$-term progression with $d\neq0$.
+\end{corollary}
+\begin{proof}
+For numbers $a_i,b_i$, $\prod_ia_i-\prod_ib_i=\sum_jb_0\cdots b_{j-1}(a_j-b_j)a_{j+1}\cdots a_{k-1}$. Apply this with $a_i=\mathbf1_A(x+id)$ and $b_i=\alpha$, and average: each of the $k$ terms is an average of the form of Theorem~\ref{thm:gvn} with $f$ in one place and functions bounded by $1$ elsewhere, so it is at most $\|f\|_{U^{k-1}}$ in modulus. For the last claim, the average is then at least $\frac{\alpha^k}2$, while the pairs with $d=0$ contribute only $\frac{|A|}{N^2}=\frac\alpha N<\frac{\alpha^k}2$.
+\end{proof}
+
+For $k=3$ the corollary and Lemma~\ref{lem:u2} give back Chapter~12's counting lemma. For $k=4$ the natural guess, that small Fourier coefficients suffice, is false.
+
+\begin{example}\label{ex:quadphase}
+Let $f(x)=e(\frac{x^2}N)$. Every Fourier coefficient has modulus $|\hat f(\xi)|=N^{-1/2}$ (Exercise~\ref{ex:quadratic}), so $\|f\|_{U^2}=N^{-1/4}$ is tiny. But the alternating sum of a quadratic polynomial over the vertices of a $3$-dimensional parallelepiped vanishes, so every term of \eqref{eq:cube} for $k=3$ equals $1$ and $\|f\|_{U^3}=1$. And since $x^2-3(x+d)^2+3(x+2d)^2-(x+3d)^2=0$,
+\[
+\mathbb E_{x,d}\,f(x)\,\overline{f(x+d)}^{\,3}f(x+2d)^3\,\overline{f(x+3d)}=1.
+\]
+The weights $f,\bar f^3,f^3,\bar f$ are as uniform as possible in the Fourier sense, yet perfectly correlated along $4$-term progressions. Gowers showed that sets built from level sets of $x^2$ modulo $N$ inherit this: their Fourier coefficients are small, but their number of $4$-APs differs from $\alpha^4N^2$ by a constant factor.
+\end{example}
+
+So the obstructions to counting $4$-APs are not characters but \emph{quadratic phases}, and for longer progressions polynomial phases of higher degree, and then more general objects. The converse of Theorem~\ref{thm:gvn}, saying which functions have large $U^{s+1}$ norm, is the central result of the theory.
+
+\begin{theorem}[inverse theorem for the Gowers norms; Green, Tao and Ziegler, 2012; quoted]\label{thm:inverse}
+For every $s\ge1$ and $\delta>0$ there is a finite collection of \emph{nilsequences} of bounded complexity such that every $f:[N]\to\C$ with $|f|\le1$ and $\|f\|_{U^{s+1}[N]}\ge\delta$ correlates, with correlation at least $c(s,\delta)>0$, with one of them.
+\end{theorem}
+
+For $s=1$ the nilsequences are the characters $e(\xi n)$ and this is Lemma~\ref{lem:u2}; for $s=2$ they include the quadratic phases $e(\alpha n^2+\beta n)$ but also ``bracket quadratics'' such as $e(\lfloor\alpha n\rfloor\beta n)$, which arise from the Heisenberg group of upper triangular $3\times3$ matrices. A \emph{nilsequence} is in general a sequence $F(g^nx)$ obtained by following an orbit on a nilmanifold $G/\Gamma$, a quotient of a nilpotent Lie group. The appearance of these objects, unknown to most number theorists before 2005, in a question about progressions of integers was one of the surprises of the subject.
+
+\section{Progressions in the primes}
+
+\begin{theorem}[Green and Tao, 2008; quoted]\label{thm:greentao}
+For every $k\ge3$ there are infinitely many $k$-term arithmetic progressions of primes. More precisely, every subset of the primes of positive relative upper density contains such progressions.
+\end{theorem}
+
+The proof has three parts. We describe each and prove the first.
+
+\emph{The $W$-trick.} The primes are not random modulo small numbers: all but one are odd, all but one avoid $0\bmod3$, and so on. A function with such biases has large Gowers norms; for instance $\Lambda-1$ correlates with $(-1)^n$ (Exercise~\ref{ex:lambdaparity}). Green and Tao removed these biases by passing to a progression of large modulus. Let $w$ be large, $W=\prod_{p\le w}p$, $(b,W)=1$, and
+\[
+\Lambda_{b,W}(n)=\frac{\varphi(W)}W\Lambda(Wn+b).
+\]
+
+\begin{lemma}\label{lem:wtrick}
+For fixed $w$ and $b$, $\frac1N\sum_{n\le N}\Lambda_{b,W}(n)\to1$ as $N\to\infty$. Moreover, $\Lambda_{b,W}$ has no bias modulo any prime $p\le w$: for every $c$,
+\[
+\frac1N\sum_{\substack{n\le N\\n\equiv c\,(p)}}\Lambda_{b,W}(n)\to\frac1p.
+\]
+\end{lemma}
+\begin{proof}
+The numbers $Wn+b$, $1\le n\le N$, are the integers $m\le WN+b$ with $m\equiv b\pmod W$ and $m>b$. By Corollary~2.12 with $q=W$ fixed, $\sum_{n\le N}\Lambda(Wn+b)=\frac{WN}{\varphi(W)}+o(N)$, which is the first claim. For the second, $n\equiv c\pmod p$ means $Wn+b\equiv Wc+b\pmod{pW}$, and $(Wc+b,pW)=1$ because $(b,W)=1$ and $p\mid W$. Corollary~2.12 with $q=pW$ gives $\sum\Lambda(Wn+b)=\frac{WN}{\varphi(pW)}+o(N)$ over these $n$, and $\varphi(pW)=p\varphi(W)$ since $p\mid W$.
+\end{proof}
+
+A progression in the support of $\Lambda_{b,W}$ is a progression of primes, so it suffices to find progressions there. As $w\to\infty$, all the local biases disappear, and what remains is the global difficulty that $\Lambda_{b,W}$, of mean $1$, is unbounded: most of its mass sits on a set of density $\frac{\varphi(W)}{W\log N}\to0$.
+
+\emph{The pseudorandom majorant.} Let $R=N^{\theta}$ with $\theta>0$ small, and
+\[
+\nu(n)=\frac{\varphi(W)}W\,\frac{\Lambda_R(Wn+b)^2}{\log R},\qquad\Lambda_R(m)=\sum_{d\mid m,\,d\le R}\mu(d)\log\frac Rd.
+\]
+If $Wn+b$ is a prime larger than $R$, its only divisor $d\le R$ is $1$, so $\Lambda_R(Wn+b)=\log R$ and $\nu(n)=\frac{\varphi(W)}W\log R=\theta\frac{\varphi(W)}W\log N$. Hence $\Lambda_{b,W}(n)\le\frac1\theta\nu(n)$ for $n\in[\varepsilon N,N]$: \emph{the primes have positive density relative to $\nu$}. Green and Tao showed that $\nu$ satisfies a \emph{linear forms condition}: for any bounded family of linear forms $\psi_1,\dots,\psi_m$ in a few variables, no two proportional,
+\[
+\mathbb E_{x}\nu(\psi_1(x))\cdots\nu(\psi_m(x))=1+o(1),
+\]
+together with a correlation condition. Each such average is a sum of products of divisor sums, evaluated exactly as the Goldston--Pintz--Yıldırım sums of Chapter~8, by Euler products and contour integration; the $W$-trick ensures that the local factors are all $1+o(1)$.
+
+\emph{The relative Szemerédi theorem.} The last step transfers Szemerédi's theorem from dense sets to dense subsets of pseudorandom weights.
+
+\begin{theorem}[relative Szemerédi theorem; Green and Tao, 2008; Conlon, Fox and Zhao, 2015; quoted]\label{thm:relsz}
+Let $k\ge3$ and $\delta>0$. If $\nu$ satisfies the linear forms condition for the $k$-term progressions, $0\le g\le\nu$ and $\mathbb E g\ge\delta$, then $\mathbb E_{x,d}\prod_{i<k}g(x+id)\ge c(k,\delta)-o(1)$, with $c(k,\delta)>0$ the constant of Szemerédi's theorem in its counting form (Varnavides, Exercise~12.5).
+\end{theorem}
+
+Its heart is the \emph{dense model theorem}: a function $0\le g\le\nu$ can be replaced by a bounded function $0\le\tilde g\le1$ with the same mean that is indistinguishable from $g$ by the Gowers norm, and Theorem~\ref{thm:gvn} then shows that $g$ and $\tilde g$ have nearly the same number of progressions. The same statement, in different clothes, had appeared in theoretical computer science as Impagliazzo's hard-core lemma, and Omer Reingold, Luca Trevisan, Madhur Tulsiani and Salil Vadhan made the connection explicit in 2008. Applying Theorem~\ref{thm:relsz} to $g=\theta\Lambda_{b,W}\mathbf1_{[\varepsilon N,N]}$ proves Theorem~\ref{thm:greentao}.
+
+\begin{beauty}
+The primes never become dense, and Green and Tao never needed them to. They needed only a larger, smoother object, invisible to every test that counts progressions, inside which the primes are dense. The Gowers norm decides what ``invisible'' means; Goldston and Yıldırım's divisor sums provide the object; and Szemerédi's theorem, applied to a bounded imitation of the primes, does the rest. Nothing about the primes beyond their average in progressions and the behaviour of truncated divisor sums enters the proof.
+\end{beauty}
+
+The method later gave far more. Green and Tao, with Ziegler's work on the inverse theorem, proved the asymptotic formula for the number of $k$-term progressions of primes: the number of pairs $(x,d)$ with $d\ge1$ and $x,x+d,\dots,x+(k-1)d$ all prime and at most $N$ is
+\[
+(\mathfrak S_k+o(1))\sum_{x,d}\prod_{i<k}\frac1{\log(x+id)},\qquad\mathfrak S_k=\prod_p\frac{(p-1)(1+\max(p-k,0))}{p^2(1-\frac1p)^k},
+\]
+the sum running over the same pairs of integers $x\ge2$, $d\ge1$. The factor at $p$ compares the probability that $x,\dots,x+(k-1)d$ all avoid $0\bmod p$ with that for $k$ independent integers (Exercise~\ref{ex:singular}). Figure~\ref{fig:primeaps} compares this prediction with the actual counts.
+
+\begin{figure}[ht]
+\centering
+\fig{ch13-primeaps}
+\caption{The number of $k$-term progressions of primes up to $N$, divided by the prediction $\mathfrak S_k\sum_{x,d}\prod_i\frac1{\log(x+id)}$, for $k=3,4,5$ and $10^3\le N\le3\cdot10^5$. At $N=3\cdot10^5$ there are $19\,024\,997$ progressions of length $3$, $2\,352\,329$ of length $4$ and $219\,305$ of length $5$, and the ratios are $0.992$, $0.991$ and $0.980$.}
+\label{fig:primeaps}
+\end{figure}
+
+\begin{think}
+In Figure~\ref{fig:primeaps} the ratio approaches $1$ more slowly for larger $k$. The prediction uses $\frac1{\log(x+id)}$ as the probability that $x+id$ is prime. Where is this approximation worst, and why does the error grow with the number of terms?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:u2fourier}
+Show that $\|f\|_{U^2}=\bigl(\sum_\xi|\hat f(\xi)|^4\bigr)^{1/4}$ satisfies the triangle inequality, so that it is a norm on functions $\Z_N\to\C$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quadratic}
+Let $N$ be an odd prime and $f(x)=e(\frac{x^2}N)$.
+(a) Show that $|\sum_xe(\frac{x^2-\xi x}N)|^2=N$ for every $\xi$, so $|\hat f(\xi)|=N^{-1/2}$.
+(b) Show that $\sum_{\omega\in\{0,1\}^3}(-1)^{|\omega|}(x+\omega\cdot h)^2=0$, and deduce $\|f\|_{U^3}=1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:polyphase}
+Let $P$ be a polynomial with integer coefficients of degree at most $k-2$.
+(a) Show that $\sum_{i=0}^{k-1}(-1)^i\binom{k-1}iP(x+id)=0$ for all $x,d$.
+(b) Deduce that $f=e(\frac PN)$ has $\|f\|_{U^{k-1}}=1$, and that the $k$ functions $f_i=\mathcal C^i(f^{\binom{k-1}i})$ satisfy $\mathbb E_{x,d}\prod_if_i(x+id)=1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lambdaparity}
+Show that $\frac1N\sum_{n\le N}(\Lambda(n)-1)(-1)^n\to-1$. So $\Lambda-1$, although of mean $0$, correlates with the character $(-1)^n$ and is not Fourier-uniform; this is the bias the $W$-trick removes.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:singular}
+For a prime $p$ and $k\ge2$, show that the proportion of pairs $(x,d)\in(\Z/p\Z)^2$ for which $x,x+d,\dots,x+(k-1)d$ are all non-zero modulo $p$ is $\frac{(p-1)(1+\max(p-k,0))}{p^2}$. Deduce the formula for $\mathfrak S_k$, and that $\mathfrak S_3=2\prod_{p\ge3}\bigl(1-\frac1{(p-1)^2}\bigr)$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:u2fourier}
+Use Lemma~\ref{lem:u2} and Minkowski's inequality in $\ell^4$, and that $f\mapsto\hat f$ is linear.
+\end{hint}
+
+\begin{hint}{ex:quadratic}
+(a) Expand the square and substitute $x=y+t$. (b) Expand the squares, or note that a second difference of a quadratic is constant.
+\end{hint}
+
+\begin{hint}{ex:polyphase}
+(a) The $(k-1)$-st difference operator kills polynomials of degree less than $k-1$. (b) Use the cube formula and the analogous identity on cubes.
+\end{hint}
+
+\begin{hint}{ex:lambdaparity}
+Only powers of $2$ are even prime powers. Use $\psi(N)\sim N$.
+\end{hint}
+
+\begin{hint}{ex:singular}
+Separate $d\equiv0$ from $d\not\equiv0$; in the second case the $k$ terms are distinct residues when $p\ge k$ and cover all residues when $p<k$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:u2fourier}
+\idea Once the $U^2$ norm is written as an $\ell^4$ norm of the Fourier transform, the triangle inequality is Minkowski's.
+\writeup By Lemma~\ref{lem:u2}, $\|f\|_{U^2}=\|\hat f\|_{\ell^4}$, where $\|a\|_{\ell^4}=(\sum_\xi|a(\xi)|^4)^{1/4}$. Since $\widehat{f+g}=\hat f+\hat g$, Minkowski's inequality in $\ell^4$ gives $\|f+g\|_{U^2}\le\|f\|_{U^2}+\|g\|_{U^2}$. Homogeneity is clear, and $\|f\|_{U^2}=0$ forces $\hat f=0$, hence $f=0$ by Fourier inversion.
+\end{solution}
+
+\begin{solution}{ex:quadratic}
+\idea A quadratic phase has a perfectly flat Fourier transform, but its third differences are identically $1$.
+\writeup (a) With $x=y+t$,
+\[
+\Bigl|\sum_xe\Bigl(\frac{x^2-\xi x}N\Bigr)\Bigr|^2=\sum_{y,t}e\Bigl(\frac{t^2+2ty-\xi t}N\Bigr)=\sum_te\Bigl(\frac{t^2-\xi t}N\Bigr)\sum_ye\Bigl(\frac{2ty}N\Bigr).
+\]
+The inner sum is $N$ if $t=0$ and $0$ otherwise, as $2$ is invertible modulo $N$; so the total is $N$, and $|\hat f(\xi)|=\frac{\sqrt N}N$.
+(b) Group the vertices in pairs differing by $h_3$: the alternating sum is $-\sum_{\omega'\in\{0,1\}^2}(-1)^{|\omega'|}\bigl((y+h_3)^2-y^2\bigr)$ with $y=x+\omega'\cdot h'$, and $(y+h_3)^2-y^2=2h_3y+h_3^2$ is affine in $y$. The alternating sum of an affine function over a parallelogram vanishes. So every term of \eqref{eq:cube} for $k=3$ is $e(0)=1$, and $\|f\|_{U^3}^8=1$.
+\end{solution}
+
+\begin{solution}{ex:polyphase}
+\idea Differences lower the degree by one; after $k-1$ of them nothing is left of a polynomial of degree $k-2$.
+\writeup (a) Let $(\delta_dQ)(x)=Q(x+d)-Q(x)$. If $\deg Q\le m$ then $\deg\delta_dQ\le m-1$, so $\delta_d^{k-1}P=0$. Expanding, $\delta_d^{k-1}P(x)=\sum_i(-1)^{k-1-i}\binom{k-1}iP(x+id)$, which is the claim up to the sign $(-1)^{k-1}$.
+(b) The same argument with $k-1$ different steps shows that $\sum_{\omega\in\{0,1\}^{k-1}}(-1)^{|\omega|}P(x+\omega\cdot h)=\delta_{h_1}\cdots\delta_{h_{k-1}}P(x)$ up to sign, which is $0$. So every term of \eqref{eq:cube} is $1$ and $\|f\|_{U^{k-1}}=1$. Similarly $\prod_if_i(x+id)=e\bigl(\frac1N\sum_i(-1)^i\binom{k-1}iP(x+id)\bigr)=1$ by (a), for all $x,d$.
+\end{solution}
+
+\begin{solution}{ex:lambdaparity}
+\idea Odd prime powers carry all the mass of $\Lambda$, so $\Lambda(n)(-1)^n$ is essentially $-\Lambda(n)$.
+\writeup The even $n$ with $\Lambda(n)\ne0$ are the powers of $2$, which contribute at most $\log_2N\cdot\log2=\log N$ to $\sum_{n\le N}\Lambda(n)$. So
+\[
+\sum_{n\le N}\Lambda(n)(-1)^n=-\psi(N)+O(\log N),\qquad\sum_{n\le N}(-1)^n=O(1),
+\]
+and $\frac1N\sum_{n\le N}(\Lambda(n)-1)(-1)^n=-\frac{\psi(N)}N+o(1)\to-1$ by the prime number theorem.
+\end{solution}
+
+\begin{solution}{ex:singular}
+\idea Count residues: a constant progression avoids $0$ unless it sits there, a genuine one covers $k$ distinct residues or all of them.
+\writeup If $d\equiv0$, the $k$ terms all equal $x$, and $x\not\equiv0$ for $p-1$ values. If $d\not\equiv0$ and $p\ge k$, the terms are $k$ distinct residues, and they avoid $0$ for $p-k$ values of $x$; if $p<k$, they cover every residue, so no $x$ works. The total is $(p-1)+(p-1)\max(p-k,0)$ pairs out of $p^2$. For $k$ independent integers the probability is $(1-\frac1p)^k$, and the ratio is the factor of $\mathfrak S_k$ at $p$. For $k=3$: at $p=2$ the factor is $\frac{1/4}{1/8}=2$, and for $p\ge3$ it is $\frac{(p-1)(p-2)p}{(p-1)^3}=1-\frac1{(p-1)^2}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The norms.} W.~T.~Gowers, ``A new proof of Szemerédi's theorem for arithmetic progressions of length four'', \emph{Geom.\ Funct.\ Anal.}\ 8 (1998), 529--551, and ``A new proof of Szemerédi's theorem'', \emph{Geom.\ Funct.\ Anal.}\ 11 (2001), 465--588. Our proof of Theorem~\ref{thm:gvn} follows T.~Tao and V.~Vu, \emph{Additive Combinatorics}, Cambridge University Press, 2006, Chapter~11. B.~Green, ``Lecture notes on additive combinatorics'', Oxford, is a gentle introduction.
+\item \emph{The inverse theorem.} B.~Green, T.~Tao and T.~Ziegler, ``An inverse theorem for the Gowers $U^{s+1}[N]$-norm'', \emph{Ann.\ of Math.}\ 176 (2012), 1231--1372.
+\item \emph{Green--Tao.} B.~Green and T.~Tao, ``The primes contain arbitrarily long arithmetic progressions'', \emph{Ann.\ of Math.}\ 167 (2008), 481--547 (received 9 April 2004); ``Linear equations in primes'', \emph{Ann.\ of Math.}\ 171 (2010), 1753--1850; ``The Möbius function is strongly orthogonal to nilsequences'', \emph{Ann.\ of Math.}\ 175 (2012), 541--566. D.~Conlon, J.~Fox and Y.~Zhao, ``A relative Szemerédi theorem'', \emph{Geom.\ Funct.\ Anal.}\ 25 (2015), 733--762.
+\item \emph{Dense models in computer science.} O.~Reingold, L.~Trevisan, M.~Tulsiani and S.~Vadhan, ``Dense subsets of pseudorandom sets'', \emph{FOCS} 2008.
+\item \emph{Records.} The PrimeGrid records, including Perichon's $26$ primes in progression of 12 April 2010 and the current record of $27$ terms, are listed in the Wikipedia article ``Primes in arithmetic progression''.
+\end{itemize}
