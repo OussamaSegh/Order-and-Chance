@@ -26,8 +26,31 @@ jobs:
           echo "tomes=$(ls -d tome*/ | tr -d / | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
           echo "notebooks=$(ls -d python/*/ | xargs -n1 basename | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
 
+  # The Ubuntu mirror is sometimes very slow, and a dozen parallel jobs downloading 120 MB each make it worse.
+  # One job downloads the TeX packages once and caches the .deb files; every build job installs from the cache.
+  debs:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    steps:
+      - id: cache
+        uses: actions/cache@v4
+        with:
+          path: debs
+          key: tex-debs-ubuntu-24.04-v1
+      - name: Download the packages
+        if: steps.cache.outputs.cache-hit != 'true'
+        run: |
+          for i in 1 2 3; do
+            sudo timeout 300 apt-get -o Acquire::Retries=5 update &&
+            sudo timeout 1500 apt-get -o Acquire::Retries=5 install -y --download-only --no-install-recommends \
+              texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended tex-gyre \
+              texlive-pictures pandoc poppler-utils && break
+            echo "apt attempt $i failed, retrying"; sleep 10
+          done
+          mkdir -p debs && cp /var/cache/apt/archives/*.deb debs/ && ls debs | wc -l
+
   build:
-    needs: list
+    needs: [list, debs]
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
@@ -36,18 +59,16 @@ jobs:
         tome: ${{ fromJson(needs.list.outputs.tomes) }}
     steps:
       - uses: actions/checkout@v4
-      # A mirror sometimes stalls for the whole job; give each attempt five minutes and retry.
+      - uses: actions/cache/restore@v4
+        with:
+          path: debs
+          key: tex-debs-ubuntu-24.04-v1
+          fail-on-cache-miss: true
       - name: Install LaTeX, pandoc and poppler
-        timeout-minutes: 20
         run: |
-          for i in 1 2 3; do
-            sudo timeout 300 apt-get -o Acquire::Retries=3 update &&
-            sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends texlive-latex-base \
-              texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended tex-gyre texlive-pictures \
-              pandoc poppler-utils && break
-            echo "apt attempt $i failed, retrying"; sleep 10
-          done
-          command -v pdflatex && command -v pandoc
+          sudo dpkg -i debs/*.deb > /dev/null
+          rm -rf debs
+          command -v pdflatex && command -v pandoc && command -v pdftoppm
       - name: Build PDF and EPUB
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
