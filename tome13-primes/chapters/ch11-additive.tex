@@ -1,0 +1,407 @@
+\chapter{Additive Combinatorics}
+\begin{center}\itshape
+Add a set to itself.\\
+If almost nothing new appears, the set was secretly an arithmetic progression,\\
+or a subgroup, or a large piece of one.
+\end{center}
+
+Add the set $\{1,2,\dots,100\}$ to itself and you get $199$ numbers. Add $100$ random numbers below a billion to themselves and you get $5050$. The first set is structured, the second is not, and the size of the sumset $A+A$ is a remarkably honest detector of the difference. The question this chapter starts from is the inverse one: if $|A+A|$ is at most a constant times $|A|$, what must $A$ look like?
+
+Gregory Freiman, born in Kazan in 1926, answered it in the 1960s, in work collected in a monograph that the American Mathematical Society translated in 1973 as \emph{Foundations of a Structural Theory of Set Addition}. His answer is that $A$ must be a large part of a generalized arithmetic progression of bounded dimension. The proof was long and hard to read, and in the 1970s Freiman, a Soviet Jew, joined the refusenik movement of those who were denied the right to emigrate. The theorem became widely known only after 1994, when Imre Ruzsa, in Budapest, found a new proof built from short, elementary inequalities about sumsets. Four years later Timothy Gowers needed a quantitative form of a lemma of Antal Balog and Endre Szemerédi for his new proof of Szemerédi's theorem, and the subject became the toolbox of a whole generation. Its central open question, Marton's conjecture, was settled over $\mathbb F_2^n$ in November 2023 by Gowers, Ben Green, Freddie Manners and Terence Tao, and their proof was then checked line by line in the Lean proof assistant.
+
+We prove the core of this toolbox: Ruzsa's triangle inequality and covering lemma, the Plünnecke--Ruzsa inequality in Giorgis Petridis's astonishing half-page proof, Freiman's theorem in $\mathbb F_2^n$, and the Balog--Szemerédi--Gowers theorem. The last section turns to a question of Paul Erdős and Szemerédi: can a set of numbers have both few sums and few products? Here geometry enters, through the Szemerédi--Trotter theorem on points and lines and György Elekes's beautiful application of it.
+
+\begin{reminder}[from Tomes~3,~7 and~C1]
+\emph{The crossing lemma} (Tome~3, Exercise~12.4). A simple graph with $n$ vertices and $m\ge4n$ edges, drawn in the plane, has at least $\frac{m^3}{64n^2}$ pairs of crossing edges.
+\emph{Cauchy--Davenport} (Tome~C1, Theorem~11.11). For non-empty $A,B\subseteq\Z/p\Z$, $|A+B|\ge\min(p,|A|+|B|-1)$.
+\emph{Fourier analysis on $\mathbb F_3^n$} (Tome~7, Chapter~7). Meshulam's theorem on cap sets (Theorem~7.16) and the Blum--Luby--Rubinfeld linearity test (Theorem~7.17).
+\end{reminder}
+
+Throughout, $G$ is an abelian group, all sets are finite and non-empty, and
+\[
+A+B=\{a+b:a\in A,\ b\in B\},\qquad A-B=\{a-b:a\in A,\ b\in B\},
+\]
+$kA=A+\dots+A$ ($k$ terms, with $0A=\{0\}$), and $kA-lA$ is the set of differences of elements of $kA$ and $lA$. The \emph{doubling constant} of $A$ is $\frac{|A+A|}{|A|}$.
+
+\section{Small doubling}
+
+In $\Z$, a set cannot have doubling below $2$, and the progressions are the extreme case.
+
+\begin{lemma}\label{lem:chain}
+For non-empty finite $A,B\subset\Z$, $|A+B|\ge|A|+|B|-1$, with equality when $A$ and $B$ are arithmetic progressions with the same difference.
+\end{lemma}
+\begin{proof}
+Write $A=\{a_1<\dots<a_m\}$ and $B=\{b_1<\dots<b_n\}$. The chain
+\[
+a_1+b_1<a_1+b_2<\dots<a_1+b_n<a_2+b_n<\dots<a_m+b_n
+\]
+has $m+n-1$ distinct elements of $A+B$. If $A=\{a+jd:0\le j<m\}$ and $B=\{b+jd:0\le j<n\}$, then $A+B=\{a+b+jd:0\le j\le m+n-2\}$, of size $m+n-1$.
+\end{proof}
+
+Exercise~\ref{ex:inverse} proves the converse for $A=B$. Two more families have bounded doubling. A finite subgroup $H$ has $H+H=H$, doubling $1$. A \emph{generalized arithmetic progression} of dimension $d$ is a set
+\[
+P=\{x_0+l_1d_1+\dots+l_dd_d:\ 0\le l_i<N_i\},
+\]
+called \emph{proper} if its $N_1\cdots N_d$ expressions are distinct; then $|P+P|\le2^d|P|$ (Exercise~\ref{ex:gap}). Finally, if $A\subseteq P$ and $|A|\ge\frac{|P|}c$, then $|A+A|\le|P+P|\le c2^d|A|$: dense subsets of progressions of bounded dimension have bounded doubling. Freiman's theorem says that there is nothing else.
+
+\begin{theorem}[Freiman; Ruzsa, 1994; quoted]\label{thm:freiman}
+For every $K\ge1$ there are $d(K)$ and $f(K)$ such that every finite $A\subset\Z$ with $|A+A|\le K|A|$ is contained in a generalized arithmetic progression of dimension at most $d(K)$ and size at most $f(K)|A|$.
+\end{theorem}
+
+Ruzsa's proof combines the inequalities of the next two sections with Fourier analysis and the geometry of numbers; we prove the model case $G=\mathbb F_2^n$ in full in Section~\ref{sec:freimanf2}, where subgroups play the role of progressions.
+
+A second measure of additive structure counts coincidences instead of distinct sums. The \emph{additive energy} of $A$ and $B$ is
+\[
+E(A,B)=\#\{(a,b,a',b')\in A\times B\times A\times B:\ a+b=a'+b'\}=\sum_xr(x)^2,
+\]
+where $r(x)=\#\{(a,b)\in A\times B:a+b=x\}$. Always $|A||B|\le E(A,B)\le|A|^2|B|$, and we write $E(A)=E(A,A)$.
+
+\begin{lemma}\label{lem:energy}
+$E(A,B)\ge\dfrac{|A|^2|B|^2}{|A+B|}$. In particular, $|A+A|\le K|A|$ implies $E(A)\ge\frac{|A|^3}K$.
+\end{lemma}
+\begin{proof}
+The function $r$ is supported on $A+B$ and $\sum_xr(x)=|A||B|$. By the Cauchy--Schwarz inequality, $(|A||B|)^2\le|A+B|\sum_xr(x)^2$.
+\end{proof}
+
+\begin{think}
+Is the converse true? If $E(A)\ge\frac{|A|^3}K$, must $|A+A|$ be at most a constant times $|A|$? Try $A$ made of an interval of $n$ integers together with $n$ powers of $2$ (Exercise~\ref{ex:energy}). What is the best one can hope to say about such an $A$?
+\end{think}
+
+\section{Ruzsa's inequalities}
+
+The first tool is a triangle inequality, proved by an injection.
+
+\begin{lemma}[Ruzsa's triangle inequality]\label{lem:ruzsatri}
+For finite non-empty $X,B,C\subseteq G$,
+\[
+|X|\,|B-C|\le|X+B|\,|X+C|\qquad\text{and}\qquad|X|\,|B-C|\le|X-B|\,|X-C|.
+\]
+\end{lemma}
+\begin{proof}
+For every $d\in B-C$ fix one representation $d=b(d)-c(d)$ with $b(d)\in B$, $c(d)\in C$. The map
+\[
+X\times(B-C)\to(X+B)\times(X+C),\qquad(x,d)\mapsto\bigl(x+b(d),\,x+c(d)\bigr)
+\]
+is injective: from the image $(u,v)$ we recover $d=u-v$, then $b(d)$, then $x=u-b(d)$. This proves the first inequality. For the second, apply the first to $-X$, since $|-X+B|=|X-B|$.
+\end{proof}
+
+With $X=B=C=A$, $|A-A|\le\frac{|A+A|^2}{|A|}$: small doubling forces a small difference set. Exercise~\ref{ex:ruzsadist} explains the name: $\log\frac{|A-B|}{\sqrt{|A||B|}}$ is a distance between sets that satisfies the triangle inequality. The second tool says that a set whose sumset with $A$ is small is covered by few translates of $A-A$.
+
+\begin{lemma}[Ruzsa's covering lemma]\label{lem:covering}
+If $|A+B|\le K|A|$, there is a set $X\subseteq B$ with $|X|\le K$ and $B\subseteq X+A-A$.
+\end{lemma}
+\begin{proof}
+Choose $X\subseteq B$ maximal such that the translates $x+A$, $x\in X$, are pairwise disjoint. They all lie in $B+A$, so $|X||A|\le|A+B|\le K|A|$ and $|X|\le K$. If $b\in B$, then by maximality $b+A$ meets some $x+A$ with $x\in X$ (possibly $b\in X$): $b+a=x+a'$, so $b=x+a'-a\in X+A-A$.
+\end{proof}
+
+\section{The Plünnecke--Ruzsa inequality}
+
+If $|A+A|\le K|A|$, how large can $|A+A+A|$ be? Helmut Plünnecke answered in 1970 with a theory of commutative graphs; Ruzsa simplified it and drew the consequences; and in 2011 Giorgis Petridis, then a doctoral student of Gowers in Cambridge, replaced the whole graph theory by the following lemma.
+
+\begin{lemma}[Petridis]\label{lem:petridis}
+Let $A,B\subseteq G$ be finite and non-empty, and let $X\subseteq A$ be a non-empty subset minimizing the ratio $\frac{|X+B|}{|X|}$, with minimum value $K'$. Then
+\[
+|X+B+C|\le K'|X+C|\qquad\text{for every finite non-empty }C\subseteq G.
+\]
+\end{lemma}
+\begin{proof}
+By induction on $|C|$. If $C=\{c\}$, both sides are translates: $|X+B+c|=|X+B|=K'|X|=K'|X+c|$.
+Suppose the claim holds for $C$ and let $C'=C\cup\{\gamma\}$ with $\gamma\notin C$. Put
+\[
+Y=\{x\in X:\ x+B+\gamma\subseteq X+B+C\},\qquad Z=\{x\in X:\ x+\gamma\in X+C\}.
+\]
+Every element of $X+B+C'$ outside $X+B+C$ lies in some $x+B+\gamma$ with $x\notin Y$, so
+\[
+X+B+C'\subseteq(X+B+C)\cup\bigl((X\setminus Y)+B+\gamma\bigr),
+\]
+and since $X+B$ is the union of $Y+B$ and $(X\setminus Y)+B$,
+\[
+|X+B+C'|\le|X+B+C|+|X+B|-|Y+B|.
+\]
+If $Y\neq\varnothing$, minimality gives $|Y+B|\ge K'|Y|$, and this holds trivially if $Y=\varnothing$. With the induction hypothesis,
+\[
+|X+B+C'|\le K'\bigl(|X+C|+|X|-|Y|\bigr).
+\]
+On the other side, $X+C'$ is the disjoint union of $X+C$ and of the elements $x+\gamma$ with $x\in X\setminus Z$, so $|X+C'|=|X+C|+|X|-|Z|$. Finally $Z\subseteq Y$: if $x+\gamma=x'+c$ with $x'\in X$, $c\in C$, then $x+B+\gamma=x'+B+c\subseteq X+B+C$. Hence $|X|-|Y|\le|X|-|Z|$ and $|X+B+C'|\le K'|X+C'|$.
+\end{proof}
+
+\begin{theorem}[Plünnecke--Ruzsa inequality]\label{thm:plunnecke}
+If $|A+B|\le K|A|$, then $|nB-mB|\le K^{n+m}|A|$ for all integers $n,m\ge0$. In particular, $|A+A|\le K|A|$ implies $|nA-mA|\le K^{n+m}|A|$.
+\end{theorem}
+\begin{proof}
+Let $X\subseteq A$ and $K'$ be as in Lemma~\ref{lem:petridis}; $X=A$ is a candidate, so $K'\le K$. Applying the lemma with $C=(j-1)B$ for $j=2,\dots,n$ gives $|X+jB|\le K'|X+(j-1)B|$, hence $|X+nB|\le K^n|X|$ for every $n\ge0$. By Lemma~\ref{lem:ruzsatri} with $B$ replaced by $nB$ and $C$ by $mB$,
+\[
+|X|\,|nB-mB|\le|X+nB|\,|X+mB|\le K^{n+m}|X|^2,
+\]
+so $|nB-mB|\le K^{n+m}|X|\le K^{n+m}|A|$.
+\end{proof}
+
+\begin{beauty}
+For forty years the Plünnecke--Ruzsa inequality was proved through Menger's theorem on disjoint paths in layered graphs, and the argument filled several pages of every textbook. Petridis's proof uses nothing but the choice of an extremal subset and an induction in which a single element is added at a time. The whole difficulty had been the choice of the right object to look at: not $A$ itself, but its subset that is most efficient at absorbing $B$.
+\end{beauty}
+
+\section{Freiman's theorem in \texorpdfstring{$\mathbb F_2^n$}{F2n}}\label{sec:freimanf2}
+
+In $\mathbb F_2^n$ every element is its own inverse, so $A-A=A+A$ and $kA\subseteq(k+2)A$. A set with small doubling should now be a large part of a subgroup, and Ruzsa proved that it is.
+
+\begin{theorem}[Ruzsa, 1999]\label{thm:ruzsaf2}
+If $A\subseteq\mathbb F_2^n$ and $|A+A|\le K|A|$, the subgroup $\langle A\rangle$ generated by $A$ satisfies
+\[
+|\langle A\rangle|\le K\,2^{K^4}|A|.
+\]
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:plunnecke}, $|A+3A|=|4A|\le K^4|A|$. Lemma~\ref{lem:covering}, applied to $A$ and $B=3A$, gives $X\subseteq3A$ with $|X|\le K^4$ and
+\[
+3A\subseteq X+A-A=X+2A.
+\]
+Let $H=\langle X\rangle$; it is spanned by at most $K^4$ vectors, so $|H|\le2^{K^4}$. We show $kA\subseteq H+2A$ for every $k\ge2$. This is clear for $k=2$ and holds for $k=3$ by the covering. If it holds for $k$, then
+\[
+(k+1)A=kA+A\subseteq H+3A\subseteq H+X+2A=H+2A.
+\]
+Every element of $\langle A\rangle$ is a sum of $k\ge1$ elements of $A$, and $A\subseteq3A$, so $\langle A\rangle\subseteq H+2A$ and $|\langle A\rangle|\le|H|\,|2A|\le2^{K^4}K|A|$.
+\end{proof}
+
+The factor exponential in $K$ cannot be avoided: a subspace plus a few independent vectors has small doubling but spans a much larger subgroup (Exercise~\ref{ex:freimanbad}). Such a set is, however, covered by \emph{few cosets} of a subgroup of size at most $|A|$. Katalin Marton conjectured that this is always the case with polynomially many cosets, and this is the theorem of November 2023.
+
+\begin{theorem}[Gowers, Green, Manners and Tao, 2023; quoted]\label{thm:pfr}
+If $A\subseteq\mathbb F_2^n$ and $|A+A|\le K|A|$, then $A$ is covered by at most $2K^{12}$ cosets of a subgroup $H$ of $\mathbb F_2^n$ with $|H|\le|A|$.
+\end{theorem}
+
+Their proof is a minimization argument, like Petridis's, but for an entropy distance between random variables instead of a ratio of cardinalities.
+
+\section{The Balog--Szemerédi--Gowers theorem}
+
+Lemma~\ref{lem:energy} goes one way only: Exercise~\ref{ex:energy} gives sets with energy $\frac{|A|^3}{12}$ and unbounded doubling. The obstruction there is a structured part of $A$ hidden among noise, and the theorem of this section says that this is the only obstruction. The proof is a statement about bipartite graphs, proved by a random choice of a vertex. For a bipartite graph with parts $X$ and $Y$, write $N(v)$ for the set of neighbours of $v$, and call $|N(u)\cap N(u')|$ the \emph{codegree} of $u,u'\in X$.
+
+\begin{lemma}\label{lem:drc}
+Let $G$ be a bipartite graph with parts $X$, $Y$ and at least $\delta|X||Y|$ edges, $\delta>0$, and let $0<\varepsilon\le1$. There is $U\subseteq X$ with $|U|\ge\frac{\delta|X|}{\sqrt2}$ such that at most $\varepsilon|U|^2$ ordered pairs $(u,u')\in U^2$ have codegree less than $\frac{\varepsilon\delta^2|Y|}2$.
+\end{lemma}
+\begin{proof}
+Choose $y\in Y$ uniformly at random and let $U=N(y)$. Then $\mathbb E|U|=\frac1{|Y|}\sum_y|N(y)|\ge\delta|X|$, so $\mathbb E|U|^2\ge\delta^2|X|^2$. Call a pair $(u,u')\in X^2$ \emph{bad} if its codegree is less than $\frac{\varepsilon\delta^2|Y|}2$; both elements lie in $U$ exactly when $y$ is a common neighbour, which has probability less than $\frac{\varepsilon\delta^2}2$. So the number $\beta$ of bad pairs inside $U$ satisfies $\mathbb E\beta\le\frac{\varepsilon\delta^2|X|^2}2$, and
+\[
+\mathbb E\Bigl[|U|^2-\frac\beta\varepsilon\Bigr]\ge\frac{\delta^2|X|^2}2.
+\]
+Fix $y$ for which $|U|^2-\frac\beta\varepsilon\ge\frac{\delta^2|X|^2}2$. Then $|U|^2\ge\frac{\delta^2|X|^2}2$ and $\beta\le\varepsilon|U|^2$.
+\end{proof}
+
+\begin{lemma}[paths of length three]\label{lem:paths}
+Let $G$ be a bipartite graph with parts $X$, $Y$ and at least $\delta|X||Y|$ edges, $0<\delta\le1$. There are $X'\subseteq X$ and $Y'\subseteq Y$ with $|X'|\ge\frac{\delta|X|}8$ and $|Y'|\ge\frac{\delta|Y|}4$ such that every $x\in X'$ and $y\in Y'$ are joined by at least $\frac{\delta^5|X||Y|}{4096}$ paths $x-y''-u-y$ with $y''\in Y$, $u\in X$.
+\end{lemma}
+\begin{proof}
+Let $X_1=\{x\in X:|N(x)|\ge\frac{\delta|Y|}2\}$. The vertices outside $X_1$ carry fewer than $\frac{\delta|X||Y|}2$ edges, so $X_1$ carries at least $\frac{\delta|X||Y|}2$, and the graph between $X_1$ and $Y$ has density $\delta_1$ with $\delta_1|X_1|\ge\frac{\delta|X|}2$, in particular $\delta_1\ge\frac\delta2$. Apply Lemma~\ref{lem:drc} to it with $\varepsilon=\frac\delta{16}$: we get $U\subseteq X_1$ with $|U|\ge\frac{\delta_1|X_1|}{\sqrt2}\ge\frac{\delta|X|}4$ in which at most $\varepsilon|U|^2$ ordered pairs are bad, where now good pairs have codegree at least $\frac{\varepsilon\delta_1^2|Y|}2\ge\frac{\delta^3|Y|}{128}$.
+
+Let $X'$ be the set of $u\in U$ that are the first element of at most $2\varepsilon|U|$ bad pairs. Fewer than $\frac{\varepsilon|U|^2}{2\varepsilon|U|}=\frac{|U|}2$ elements of $U$ fail this, so $|X'|\ge\frac{|U|}2\ge\frac{\delta|X|}8$.
+
+Let $Y'$ be the set of $y\in Y$ with at least $\frac{\delta|U|}4$ neighbours in $U$. Each $u\in U\subseteq X_1$ has at least $\frac{\delta|Y|}2$ neighbours, so there are at least $\frac{\delta|U||Y|}2$ edges between $U$ and $Y$, of which fewer than $\frac{\delta|U||Y|}4$ end outside $Y'$. The remaining ones number at most $|U||Y'|$, so $|Y'|\ge\frac{\delta|Y|}4$.
+
+Now let $x\in X'$ and $y\in Y'$. Among the at least $\frac{\delta|U|}4$ neighbours $u\in U$ of $y$, at most $2\varepsilon|U|=\frac{\delta|U|}8$ make $(x,u)$ bad. Each of the remaining $\frac{\delta|U|}8$ has at least $\frac{\delta^3|Y|}{128}$ common neighbours $y''$ with $x$, and each choice of $(u,y'')$ is a path $x-y''-u-y$. Their number is at least
+\[
+\frac{\delta|U|}8\cdot\frac{\delta^3|Y|}{128}\ge\frac\delta8\cdot\frac{\delta|X|}4\cdot\frac{\delta^3|Y|}{128}=\frac{\delta^5|X||Y|}{4096}.
+\]
+\end{proof}
+
+\begin{theorem}[Balog--Szemerédi, 1994; Gowers, 1998]\label{thm:bsg}
+If $A\subseteq G$ and $E(A)\ge\frac{|A|^3}K$, there is $A'\subseteq A$ with
+\[
+|A'|\ge\frac{|A|}{8K}\qquad\text{and}\qquad|A'-A'|\le2^{44}K^{17}|A|.
+\]
+\end{theorem}
+\begin{proof}
+Let $r(s)=\#\{(a,b)\in A^2:a+b=s\}$ and call $s$ \emph{popular} if $r(s)\ge\frac{|A|}{2K}$; let $S$ be the set of popular sums. The unpopular sums contribute
+\[
+\sum_{s\notin S}r(s)^2<\frac{|A|}{2K}\sum_sr(s)=\frac{|A|^3}{2K}
+\]
+to $E(A)=\sum_sr(s)^2$, so $\sum_{s\in S}r(s)^2>\frac{|A|^3}{2K}$, and since $r(s)\le|A|$, $\sum_{s\in S}r(s)>\frac{|A|^2}{2K}$. Also $|S|\le\frac{|A|^2}{|A|/(2K)}=2K|A|$.
+
+Take two copies $X$, $Y$ of $A$ and join $a\in X$ to $b\in Y$ when $a+b\in S$. This bipartite graph has $\sum_{s\in S}r(s)\ge\delta|A|^2$ edges with $\delta=\frac1{2K}$. Lemma~\ref{lem:paths} gives $X',Y'\subseteq A$ with $|X'|\ge\frac{|A|}{16K}$ and $|Y'|\ge\frac{|A|}{8K}$ such that every $x\in X'$, $y\in Y'$ are joined by at least $m=\frac{\delta^5|A|^2}{4096}=\frac{|A|^2}{2^{17}K^5}$ paths $x-b-a-y$. For such a path,
+\[
+x+y=(x+b)-(a+b)+(a+y),
+\]
+a representation of $x+y$ as $s_1-s_2+s_3$ with $s_1,s_2,s_3\in S$; different paths give different triples, as $b=s_1-x$ and $a=s_2-b$. For each $z\in X'+Y'$ pick one pair $(x,y)$ with $x+y=z$: the triples obtained for different $z$ are different, since $s_1-s_2+s_3=z$. Hence
+\[
+|X'+Y'|\,m\le|S|^3\le8K^3|A|^3,\qquad\text{so}\qquad|X'+Y'|\le2^{20}K^8|A|.
+\]
+Finally, Lemma~\ref{lem:ruzsatri} with $X=X'$ and $B=C=Y'$ gives
+\[
+|Y'-Y'|\le\frac{|X'+Y'|^2}{|X'|}\le\frac{2^{40}K^{16}|A|^2\cdot16K}{|A|}=2^{44}K^{17}|A|,
+\]
+and $A'=Y'$ has the required properties.
+\end{proof}
+
+The constants are terrible and irrelevant: what matters is that the losses are polynomial in $K$. Gowers needed exactly this for his proof of Szemerédi's theorem for progressions of length four, where a function with a large Gowers $U^3$ norm (Chapter~13) produces a set of pairs with many additive quadruples, which the theorem converts into genuine algebraic structure.
+
+\section{Sums and products}
+
+A set of integers can have very few sums (a progression) or very few products (a geometric progression), but apparently not both. Erdős and Szemerédi conjectured in 1983 that
+\[
+\max\bigl(|A+A|,|A\cdot A|\bigr)\ge|A|^{2-\varepsilon}\qquad(|A|\ge n_0(\varepsilon))
+\]
+for every finite $A\subset\Z$, where $A\cdot A=\{ab:a,b\in A\}$, and proved the bound $|A|^{1+c}$ for some $c>0$. The cleanest route to a good exponent goes through geometry. An \emph{incidence} between a set $\mathcal P$ of points and a set $\mathcal L$ of lines in the plane is a pair $(p,\ell)$ with $p\in\ell$; let $I(\mathcal P,\mathcal L)$ be their number.
+
+\begin{theorem}[Szemerédi and Trotter, 1983]\label{thm:st}
+For finite sets $\mathcal P$ of points and $\mathcal L$ of lines in $\R^2$,
+\[
+I(\mathcal P,\mathcal L)\le4|\mathcal P|^{2/3}|\mathcal L|^{2/3}+4|\mathcal P|+|\mathcal L|.
+\]
+\end{theorem}
+\begin{proof}
+This proof is László Székely's. Let $k_\ell=|\ell\cap\mathcal P|$. Draw a graph with vertex set $\mathcal P$: on each line $\ell$ with $k_\ell\ge2$, join consecutive points of $\ell\cap\mathcal P$ by the segment between them. The graph is simple, since two points determine the line they lie on, and it has
+\[
+m=\sum_{\ell:\,k_\ell\ge1}(k_\ell-1)\ge I(\mathcal P,\mathcal L)-|\mathcal L|
+\]
+edges. An edge contains no point of $\mathcal P$ in its interior, so two edges cross only if they lie on different lines, at the unique intersection point of those lines: there are at most $\binom{|\mathcal L|}2\le\frac{|\mathcal L|^2}2$ crossing pairs. If $m\ge4|\mathcal P|$, the crossing lemma gives $\frac{m^3}{64|\mathcal P|^2}\le\frac{|\mathcal L|^2}2$, so $m\le32^{1/3}|\mathcal P|^{2/3}|\mathcal L|^{2/3}\le4|\mathcal P|^{2/3}|\mathcal L|^{2/3}$. Otherwise $m<4|\mathcal P|$. In both cases $I(\mathcal P,\mathcal L)\le m+|\mathcal L|$ gives the claim.
+\end{proof}
+
+The exponents are sharp: a grid of points and a family of lines of bounded slopes realize $|\mathcal P|^{2/3}|\mathcal L|^{2/3}$ incidences up to a constant (Exercise~\ref{ex:stsharp}). In 1997 Elekes saw that the sumset and the product set of $A$ build exactly such a configuration.
+
+\begin{theorem}[Elekes, 1997]\label{thm:elekes}
+For every finite set $A$ of non-zero real numbers,
+\[
+|A+A|\,|A\cdot A|\ge\frac{|A|^{5/2}}{64},\qquad\text{hence}\qquad\max\bigl(|A+A|,|A\cdot A|\bigr)\ge\frac{|A|^{5/4}}8.
+\]
+\end{theorem}
+\begin{proof}
+Let $n=|A|$; the case $n=1$ is clear, so let $n\ge2$. Take the points $\mathcal P=(A+A)\times(A\cdot A)$ and the $n^2$ lines
+\[
+\ell_{a,b}:\ y=a(x-b),\qquad a,b\in A,
+\]
+which are distinct because $a\neq0$ is the slope and $b$ the intercept with the $x$-axis. The line $\ell_{a,b}$ contains the $n$ points $(b+c,\,ac)$, $c\in A$, all in $\mathcal P$ (Figure~\ref{fig:elekes}). So $I(\mathcal P,\mathcal L)\ge n^3$, and Theorem~\ref{thm:st} gives, with $N=|\mathcal P|=|A+A||A\cdot A|$,
+\[
+n^3\le4N^{2/3}n^{4/3}+4N+n^2.
+\]
+As $n^2\le\frac{n^3}2$, one of the first two terms is at least $\frac{n^3}4$. If $4N\ge\frac{n^3}4$, then $N\ge\frac{n^3}{16}\ge\frac{n^{5/2}}{16}$. If $4N^{2/3}n^{4/3}\ge\frac{n^3}4$, then $N^{2/3}\ge\frac{n^{5/3}}{16}$ and $N\ge\frac{n^{5/2}}{64}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-elekes}
+\caption{Elekes's configuration for $A=\{1,2,3,4\}$: the $63$ points of $(A+A)\times(A\cdot A)$ and the $16$ lines $y=a(x-b)$, each through $4$ of the points. The line $y=2(x-1)$ and its points $(1+c,2c)$ are in red.}
+\label{fig:elekes}
+\end{figure}
+
+Elekes's exponent $\frac54$ was improved by József Solymosi in 2009 to $\frac43$, up to a power of $\log|A|$, by an elementary argument about the slopes of lines through the origin; Misha Rudnev and Sophie Stevens reached $\frac43+\frac2{1167}$ in 2020. The conjectured exponent $2$ is far away. Figure~\ref{fig:sumprod} shows what small examples do: intervals and geometric progressions are bad at one operation, and the most balanced sets known, like the smooth numbers, are good at products and only moderately bad at sums.
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-sumprod}
+\caption{The exponent $\frac{\log\max(|A+A|,|A\cdot A|)}{\log|A|}$ for four families of sets with $8\le|A|\le512$. The geometric progressions (line) and the random sets (circles) give almost the same values, close to $\log_n\frac{n^2}2$. The smooth numbers come lowest, near $1.5$, but their exponent rises again for large $n$; Elekes's and Solymosi's theorems are the dashed lines below.}
+\label{fig:sumprod}
+\end{figure}
+
+Over a finite field the problem changes nature: $A=\mathbb F_p$ has $|A+A|=|A\cdot A|=|A|$, so only sets far from subfields can grow. Jean Bourgain, Nets Katz and Tao proved in 2004 that for every $\delta>0$ there is $\varepsilon>0$ such that $\max(|A+A|,|A\cdot A|)\ge|A|^{1+\varepsilon}$ for all $A\subseteq\mathbb F_p$ with $p^\delta<|A|<p^{1-\delta}$. This theorem has an unexpected afterlife in computer science. A \emph{randomness extractor} takes several independent sources of weak randomness and outputs nearly uniform bits. Boaz Barak, Russell Impagliazzo and Avi Wigderson observed that $(a,b,c)\mapsto ab+c$ cannot keep a structured source structured: if three independent inputs are drawn from a set $A$, the output is spread over a set substantially larger than $A$, because $A$ cannot be closed under both operations. Iterating gives extractors from a constant number of sources; the notebook of this chapter measures the effect.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:inverse}
+Let $A\subset\Z$ be finite with $|A|=n\ge2$. Show that $|A+A|=2n-1$ only if $A$ is an arithmetic progression.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gap}
+(a) Show that a proper generalized arithmetic progression $P$ of dimension $d$ satisfies $|P+P|\le2^d|P|$.
+(b) A \emph{Sidon set} is a set whose sums $a+b$, $a\le b$, are all distinct. Show that a Sidon set has $|A+A|=\frac{|A|(|A|+1)}2$, and that $\{1,2,4,\dots,2^{n-1}\}$ is a Sidon set with $|A\cdot A|=2n-1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ruzsadist}
+For finite non-empty $A,B\subseteq G$ let $d(A,B)=\log\frac{|A-B|}{\sqrt{|A||B|}}$. Show that $d(A,B)\ge0$, $d(A,B)=d(B,A)$, and $d(A,C)\le d(A,B)+d(B,C)$. Show by an example that $d(A,A)$ can be positive, so that $d$ is not quite a metric.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:energy}
+Let $I=\{1,\dots,n\}$, let $Q=\{2^{n+1},2^{n+2},\dots,2^{2n}\}$, and $A=I\cup Q$, so $|A|=2n$.
+(a) Show that $E(I)=\frac{2n^3+n}3$, and deduce $E(A)\ge\frac{|A|^3}{12}$.
+(b) Show that $|A+A|\ge\frac{|A|^2}8$, so that $A$ has unbounded doubling.
+(c) Which subset $A'$ does Theorem~\ref{thm:bsg} find, morally?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:freimanbad}
+In $\mathbb F_2^n$, let $V$ be a subspace of dimension $d$ and $e_1,\dots,e_m$ vectors independent modulo $V$, with $m^2\le2^d$. Let $A=V\cup\{e_1,\dots,e_m\}$. Show that $|A+A|\le K|A|$ with $K=m+2$, while $|\langle A\rangle|\ge2^{K-3}|A|$. So the factor exponential in $K$ in Theorem~\ref{thm:ruzsaf2} is necessary.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:stsharp}
+For an integer $k\ge1$, let $\mathcal P=\{1,\dots,k\}\times\{1,\dots,2k^2\}$ and let $\mathcal L$ be the lines $y=ax+b$ with $1\le a\le k$ and $1\le b\le k^2$. Show that $I(\mathcal P,\mathcal L)=2^{-2/3}|\mathcal P|^{2/3}|\mathcal L|^{2/3}$, so that Theorem~\ref{thm:st} is sharp up to the constant.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:inverse}
+Use the chain $a_1+a_1<a_1+a_2<a_2+a_2<a_2+a_3<\dots<a_n+a_n$, and ask where $a_{i-1}+a_{i+1}$ can be.
+\end{hint}
+
+\begin{hint}{ex:gap}
+(a) Bound the coefficients of $P+P$. (b) Use binary expansions.
+\end{hint}
+
+\begin{hint}{ex:ruzsadist}
+Use the second inequality of Lemma~\ref{lem:ruzsatri} with $X$ the middle set.
+\end{hint}
+
+\begin{hint}{ex:energy}
+(a) Compute $r(s)$ for $I$. (b) Use Exercise~\ref{ex:gap} for $Q$.
+\end{hint}
+
+\begin{hint}{ex:freimanbad}
+List the elements of $A+A$; $\langle A\rangle$ is the direct sum of $V$ and the span of the $e_i$.
+\end{hint}
+
+\begin{hint}{ex:stsharp}
+Each line meets the grid at every $x\in\{1,\dots,k\}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:inverse}
+\idea There is no room in a chain of length $2n-1$ for one more element, so every other sum must coincide with an element of the chain; the sums $a_{i-1}+a_{i+1}$ are squeezed onto $2a_i$.
+\writeup Let $A=\{a_1<\dots<a_n\}$. The chain
+\[
+2a_1<a_1+a_2<2a_2<a_2+a_3<\dots<a_{n-1}+a_n<2a_n
+\]
+has $2n-1$ elements, so if $|A+A|=2n-1$ it is all of $A+A$. For $2\le i\le n-1$, the sum $a_{i-1}+a_{i+1}$ satisfies $a_{i-1}+a_i<a_{i-1}+a_{i+1}<a_i+a_{i+1}$, and the only element of the chain strictly between these two is $2a_i$. Hence $a_{i-1}+a_{i+1}=2a_i$, that is $a_{i+1}-a_i=a_i-a_{i-1}$, for every $i$: $A$ is an arithmetic progression.
+\end{solution}
+
+\begin{solution}{ex:gap}
+\idea Sums double the ranges of the coefficients, and binary expansions are unique.
+\writeup (a) Every element of $P+P$ has the form $2x_0+\sum_il_id_i$ with $0\le l_i\le2N_i-2$, so $|P+P|\le\prod_i(2N_i-1)<2^d\prod_iN_i=2^d|P|$, the last equality because $P$ is proper.
+(b) In a Sidon set the sums $a+b$ with $a\le b$ are distinct, and there are $\binom n2+n=\frac{n(n+1)}2$ of them. For $A=\{2^i:0\le i<n\}$, a sum $2^i+2^j$ with $i<j$ has exactly two binary digits $1$, in positions $i$ and $j$, and $2^i+2^i=2^{i+1}$ has one, in position $i+1$; so the sum determines $\{i,j\}$, and $A$ is a Sidon set. The products are $2^{i+j}$ with $0\le i+j\le2n-2$, which are $2n-1$ numbers.
+\end{solution}
+
+\begin{solution}{ex:ruzsadist}
+\idea The triangle inequality for $d$ is Ruzsa's inequality in disguise, with the middle set as the auxiliary set $X$.
+\writeup Since $A-B$ contains a translate of $A$ and one of $B$, $|A-B|\ge\max(|A|,|B|)\ge\sqrt{|A||B|}$, so $d\ge0$. As $B-A=-(A-B)$, $d$ is symmetric. Lemma~\ref{lem:ruzsatri} with $X=B$, $B$ replaced by $A$ and $C$ by $C$ gives $|B||A-C|\le|B-A||B-C|$. Dividing by $|B|\sqrt{|A||C|}$,
+\[
+\frac{|A-C|}{\sqrt{|A||C|}}\le\frac{|A-B|}{\sqrt{|A||B|}}\cdot\frac{|B-C|}{\sqrt{|B||C|}},
+\]
+and taking logarithms gives the triangle inequality. For $A=\{0,1\}\subset\Z$, $A-A=\{-1,0,1\}$ and $d(A,A)=\log\frac32>0$.
+\end{solution}
+
+\begin{solution}{ex:energy}
+\idea The interval alone already has energy of order $|A|^3$, while the powers of $2$ alone already have a quadratic sumset: energy cannot see that the structure lives on half of $A$ only.
+\writeup (a) For $I$, $r(s)=\min(s-1,2n+1-s)$ for $2\le s\le2n$. So
+\[
+E(I)=2\sum_{j=1}^{n-1}j^2+n^2=\frac{(n-1)n(2n-1)}3+n^2=\frac{2n^3+n}3.
+\]
+Additive quadruples of $I$ are additive quadruples of $A$, so $E(A)\ge\frac{2n^3}3=\frac{(2n)^3}{12}=\frac{|A|^3}{12}$.
+(b) $Q$ is $2^{n+1}$ times a geometric progression of ratio $2$, hence a Sidon set by Exercise~\ref{ex:gap}(b), so $|A+A|\ge|Q+Q|=\frac{n(n+1)}2\ge\frac{(2n)^2}8$. The doubling is at least $\frac{|A|}8$, unbounded.
+(c) The popular sums are essentially the sums of two elements of $I$ (a sum involving an element of $Q$ has at most $2$ representations), so the graph of the proof lives on $I$, and the set $A'$ found is a large part of the interval $I$, of doubling less than $2$.
+\end{solution}
+
+\begin{solution}{ex:freimanbad}
+\idea A subspace has doubling $1$, and each extra vector adds only one coset; but each extra vector also doubles the subgroup generated.
+\writeup The sums of two elements of $A$ are the elements of $V$ (sums of two elements of $V$, or $e_i+e_i=0$), of the cosets $V+e_i$, and the vectors $e_i+e_j$ with $i<j$. Hence $|A+A|\le2^d+m2^d+m^2\le(m+2)2^d\le(m+2)|A|$, using $m^2\le2^d$. As the $e_i$ are independent modulo $V$, $\langle A\rangle=V\oplus\operatorname{span}(e_1,\dots,e_m)$ has $2^{d+m}$ elements, while $|A|=2^d+m\le2^{d+1}$. So $\frac{|\langle A\rangle|}{|A|}\ge2^{m-1}=2^{K-3}$.
+\end{solution}
+
+\begin{solution}{ex:stsharp}
+\idea Lines of small slope and small intercept cross the narrow grid at every column: each line collects $k$ incidences, and the counts balance exactly as in the bound.
+\writeup For $1\le x\le k$, $1\le a\le k$ and $1\le b\le k^2$, $2\le ax+b\le k^2+k^2=2k^2$, so the point $(x,ax+b)$ lies in $\mathcal P$. Each of the $k^3$ distinct lines therefore contains exactly $k$ points of $\mathcal P$ (one per column), and $I(\mathcal P,\mathcal L)=k^4$. With $|\mathcal P|=2k^3$ and $|\mathcal L|=k^3$, $|\mathcal P|^{2/3}|\mathcal L|^{2/3}=2^{2/3}k^4$, so $I(\mathcal P,\mathcal L)=2^{-2/3}|\mathcal P|^{2/3}|\mathcal L|^{2/3}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Books.} T.~Tao and V.~Vu, \emph{Additive Combinatorics}, Cambridge University Press, 2006, Chapters~2, 5, 6 and~8, is the reference for everything here. Y.~Zhao, \emph{Graph Theory and Additive Combinatorics}, Cambridge University Press, 2023, Chapter~7, has the graph-theoretic proof of the Balog--Szemerédi--Gowers theorem that we follow.
+\item \emph{Freiman.} G.~A.~Freiman, \emph{Foundations of a Structural Theory of Set Addition}, Translations of Mathematical Monographs~37, AMS, 1973. I.~Z.~Ruzsa, ``Generalized arithmetical progressions and sumsets'', \emph{Acta Math.\ Hungar.}\ 65 (1994), 379--388, and ``An analog of Freiman's theorem in groups'', \emph{Astérisque} 258 (1999), 323--326. Freiman's biography, including his years as a refusenik, is in the Wikipedia article ``Gregory Freiman''.
+\item \emph{Plünnecke and Petridis.} H.~Plünnecke, ``Eine zahlentheoretische Anwendung der Graphentheorie'', \emph{J.\ Reine Angew.\ Math.}\ 243 (1970), 171--183. G.~Petridis, ``New proofs of Plünnecke-type estimates for product sets in groups'', \emph{Combinatorica} 32 (2012), 721--733 (arXiv January 2011); his Cambridge thesis (2011, advisor W.~T.~Gowers) is ``Plünnecke's inequality and the cardinality of sumsets''.
+\item \emph{Marton's conjecture.} W.~T.~Gowers, B.~Green, F.~Manners and T.~Tao, ``On a conjecture of Marton'', \emph{Ann.\ of Math.}\ 201 (2025), 515--549 (arXiv 2311.05762, November 2023). The Lean formalization is at \url{https://teorth.github.io/pfr/}.
+\item \emph{Balog--Szemerédi--Gowers.} A.~Balog and E.~Szemerédi, ``A statistical theorem of set addition'', \emph{Combinatorica} 14 (1994), 263--268. W.~T.~Gowers, ``A new proof of Szemerédi's theorem for arithmetic progressions of length four'', \emph{Geom.\ Funct.\ Anal.}\ 8 (1998), 529--551.
+\item \emph{Incidences and sum-product.} P.~Erdős and E.~Szemerédi, ``On sums and products of integers'', in \emph{Studies in Pure Mathematics}, Birkhäuser, 1983, 213--218. E.~Szemerédi and W.~T.~Trotter, ``Extremal problems in discrete geometry'', \emph{Combinatorica} 3 (1983), 381--392. L.~A.~Székely, ``Crossing numbers and hard Erdős problems in discrete geometry'', \emph{Combin.\ Probab.\ Comput.}\ 6 (1997), 353--358. G.~Elekes, ``On the number of sums and products'', \emph{Acta Arith.}\ 81 (1997), 365--367. J.~Solymosi, ``Bounding multiplicative energy by the sumset'', \emph{Adv.\ Math.}\ 222 (2009), 402--408. M.~Rudnev and S.~Stevens, ``An update on the sum-product problem'', \emph{Math.\ Proc.\ Cambridge Philos.\ Soc.}\ 173 (2022), 411--430.
+\item \emph{Finite fields and extractors.} J.~Bourgain, N.~Katz and T.~Tao, ``A sum-product estimate in finite fields, and applications'', \emph{Geom.\ Funct.\ Anal.}\ 14 (2004), 27--57. B.~Barak, R.~Impagliazzo and A.~Wigderson, ``Extracting randomness using few independent sources'', \emph{SIAM J.\ Comput.}\ 36 (2006), 1095--1118.
+\end{itemize}
