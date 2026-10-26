@@ -1,0 +1,535 @@
+\chapter{Singular Values}\label{ch:svd}
+
+\begin{center}\itshape
+The singular value decomposition is the Swiss Army knife of linear algebra.
+\upshape(a saying among numerical analysts)
+\end{center}
+
+In 1873 Eugenio Beltrami, a geometer in Bologna, published a short paper in a journal for university students. He wanted
+to simplify a bilinear form $f(x,y)=x^{\mathsf T}Ay$ by changing $x$ and $y$ \emph{independently}, each by a rotation, and
+showed that the form becomes $\sum_i\sigma_ix_iy_i$, the $\sigma_i^2$ being the eigenvalues of $A^{\mathsf T}A$. A year later
+Camille Jordan, unaware of Beltrami, found the same thing in Paris. Sylvester rediscovered it in 1889, Erhard Schmidt in
+1907 for integral operators, where he also proved that truncating the decomposition gives the best approximation of
+lower rank. In 1936 two psychologists, Carl Eckart and Gale Young, needed exactly that theorem to compress tables of
+test scores into a few ``factors'' of intelligence, proved it again for matrices, and their names stuck to it.
+
+The theorem then waited for computers. In 1965 Gene Golub and William Kahan showed how to compute singular values stably,
+and the decomposition became the workhorse of statistics, signal processing and data analysis. Its most famous public
+appearance was the Netflix Prize (2006--2009): a million dollars for predicting how users would rate films. The ratings
+form a huge matrix with most entries missing, and the leading idea, popularised on a blog by a contestant writing as Simon
+Funk, was to approximate it by a matrix of low rank, a product of a ``user'' matrix and a ``film'' matrix. Every user and
+every film becomes a short vector of hidden tastes, and a rating is an inner product. The winning team blended hundreds of
+models, but low rank was at the heart of most of them.
+
+This chapter proves the singular value decomposition (SVD) for every rectangular matrix, reads it geometrically, and
+derives its consequences: the polar decomposition, the natural norms of matrices, the Eckart--Young theorem, the
+pseudo-inverse, principal component analysis and the condition number. The numerical side, how to compute all this
+quickly and stably, is the subject of Tome~C5, Chapter~1.
+
+\begin{think}
+A grey-scale photograph of $1000\times1000$ pixels is a matrix with a million entries. Suppose you may store only
+$50{,}000$ numbers. What would you keep? Is there a sense in which one choice is \emph{best}, and could you prove it? The
+answer, Theorem~\ref{thm:eckartyoung}, is as clean as one could hope: keep the first $25$ singular triples.
+\end{think}
+
+\section{The decomposition}
+
+Throughout, $\mathbb K=\R$ or $\C$, with the standard inner products, and $A\in M_{m,n}(\mathbb K)$. Unlike eigenvalues,
+singular values need no square matrix.
+
+\begin{theorem}[singular value decomposition]\label{thm:svd}
+Let $A\in M_{m,n}(\mathbb K)$ have rank $r$. There are orthonormal bases $v_1,\dots,v_n$ of $\mathbb K^n$ and
+$u_1,\dots,u_m$ of $\mathbb K^m$, and numbers $\sigma_1\ge\sigma_2\ge\dots\ge\sigma_r>0$, such that
+\[
+Av_i=\sigma_iu_i\quad(i\le r),\qquad Av_i=0\quad(i>r).
+\]
+Equivalently $A=U\Sigma V^*=\sum_{i=1}^r\sigma_iu_iv_i^*$, with $U$, $V$ unitary and $\Sigma\in M_{m,n}$ zero except for
+$\Sigma_{ii}=\sigma_i$. The \emph{singular values} $\sigma_i$ are uniquely determined: $\sigma_1^2,\dots,\sigma_r^2$ are the
+non-zero eigenvalues of $A^*A$, and also of $AA^*$.
+\end{theorem}
+\begin{proof}
+The matrix $A^*A$ is Hermitian and positive semidefinite ($x^*A^*Ax=\|Ax\|^2\ge0$), so by the spectral theorem
+(Theorem~\ref{thm:spectral}) it has an orthonormal eigenbasis $v_1,\dots,v_n$ with eigenvalues $s_1\ge\dots\ge s_n\ge0$.
+Since $\ker A^*A=\ker A$ (Theorem~\ref{thm:lsq}), exactly $r$ of them are positive; set $\sigma_i=\sqrt{s_i}$ for $i\le r$.
+For $i>r$, $\|Av_i\|^2=s_i=0$. For $i\le r$, let $u_i=Av_i/\sigma_i$. These are orthonormal:
+\[
+\langle u_i,u_j\rangle=\frac{\langle A^*Av_i,v_j\rangle}{\sigma_i\sigma_j}=\frac{s_i\delta_{ij}}{\sigma_i\sigma_j}=\delta_{ij}.
+\]
+Extend them to an orthonormal basis of $\mathbb K^m$. Then $AV=U\Sigma$, which is the matrix form, and expanding $U\Sigma V^*$
+column by row gives the sum of rank-one terms. Conversely, from any such decomposition, $A^*A=V\Sigma^*\Sigma V^*$ and
+$AA^*=U\Sigma\Sigma^*U^*$, whose non-zero eigenvalues are the $\sigma_i^2$.
+\end{proof}
+
+The vectors $u_i$ and $v_i$ are the left and right \emph{singular vectors}. They are not unique (signs, and rotations inside
+spaces with repeated singular values), but the numbers are. The decomposition gives orthonormal bases of the four
+fundamental subspaces at once: $u_1,\dots,u_r$ span $\operatorname{Im}A$, $u_{r+1},\dots,u_m$ span $\ker A^*$, $v_1,\dots,v_r$
+span $\operatorname{Im}A^*$ and $v_{r+1},\dots,v_n$ span $\ker A$, recovering Proposition~\ref{prop:adjoint}.
+
+\paragraph{Geometry.} Every linear map is a rotation, then a stretch along the axes, then another rotation. In particular,
+the image of the unit sphere is an ellipsoid (flattened if $r<m$) whose semi-axes are the vectors $\sigma_iu_i$: for
+$x=\sum c_iv_i$ with $\sum|c_i|^2=1$, $Ax=\sum_{i\le r}\sigma_ic_iu_i$, and the coordinates $y_i=\sigma_ic_i$ satisfy $\sum
+y_i^2/\sigma_i^2\le1$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-ellipse}
+\caption{The matrix $A=\bigl(\begin{smallmatrix}3&0\\4&5\end{smallmatrix}\bigr)$ maps the unit circle to an ellipse with
+semi-axes $\sigma_1=3\sqrt5$ and $\sigma_2=\sqrt5$ (drawn at reduced scale). The orthogonal directions $v_1,v_2$ are sent to
+the orthogonal axes $\sigma_1u_1,\sigma_2u_2$; no other pair of orthogonal directions stays orthogonal.}
+\label{fig:ellipse}
+\end{figure}
+
+For a normal matrix $A=WDW^*$, an SVD is obtained by writing each eigenvalue as $\lambda_i=|\lambda_i|e^{i\theta_i}$, so the
+singular values are the $|\lambda_i|$. For other matrices, eigenvalues and singular values can differ wildly: the Jordan
+block $J_n$ has all eigenvalues $0$ and singular values $1,\dots,1,0$. They are related only by inequalities
+(Exercise~\ref{ex:normsvd}).
+
+A useful device turns singular values into eigenvalues. The \emph{Hermitian dilation} of $A$ is
+\[
+\mathcal H(A)=\begin{pmatrix}0&A\\A^*&0\end{pmatrix}\in M_{m+n}(\mathbb K).
+\]
+
+\begin{proposition}\label{prop:dilation}
+With $p=\min(m,n)$ and $\sigma_i=0$ for $r<i\le p$, the eigenvalues of $\mathcal H(A)$ are $\pm\sigma_1,\dots,\pm\sigma_p$ and
+$|m-n|$ zeros. In particular $\lambda_k(\mathcal H(A))=\sigma_k(A)$ for $k\le p$.
+\end{proposition}
+\begin{proof}
+$\mathcal H(A)$ maps $(u,v)$ to $(Av,A^*u)$. For $i\le p$, the vectors $(u_i,\pm v_i)$ are eigenvectors with eigenvalues
+$\pm\sigma_i$, since $Av_i=\sigma_iu_i$ and $A^*u_i=\sigma_iv_i$ (also when $\sigma_i=0$: then $u_i\perp\operatorname{Im}A$, so
+$u_i\in\ker A^*$). The vectors $(u_j,0)$ for $j>p$ and $(0,v_j)$ for $j>p$ are in the kernel. These $2p+(m-p)+(n-p)=m+n$
+vectors are orthogonal and non-zero, hence a basis.
+\end{proof}
+
+Through the dilation, everything proved about eigenvalues of Hermitian matrices in Chapter~\ref{ch:spectral} transfers. For
+example, Weyl's inequalities (Theorem~\ref{thm:weyl}) for $\mathcal H(A)+\mathcal H(B)=\mathcal H(A+B)$ give, for $i+j-1\le
+p$,
+\begin{equation}\label{eq:weylsv}
+\sigma_{i+j-1}(A+B)\le\sigma_i(A)+\sigma_j(B).
+\end{equation}
+
+\section{The polar decomposition}
+
+A complex number is $z=e^{i\theta}|z|$. Matrices factor the same way.
+
+\begin{theorem}[polar decomposition]\label{thm:polar}
+Every $A\in M_n(\mathbb K)$ can be written $A=WP$ with $W$ unitary and $P$ positive semidefinite. The factor
+$P=\sqrt{A^*A}$ is unique, and $W$ is unique when $A$ is invertible.
+\end{theorem}
+\begin{proof}
+From $A=U\Sigma V^*$, write $A=(UV^*)(V\Sigma V^*)$: $UV^*$ is unitary and $V\Sigma V^*$ is positive semidefinite. If $A=WP$, then
+$A^*A=PW^*WP=P^2$, so $P$ is the unique positive semidefinite square root of $A^*A$ (Exercise~\ref{ex:sqrtpsd}). If $A$ is
+invertible, so is $P$, and $W=AP^{-1}$.
+\end{proof}
+
+Geometrically, $P$ stretches along orthogonal axes and $W$ rotates (or reflects). Over $\R$ with $\det A>0$, the factor
+$W$ is a rotation, and the path $W_tP_t$, with $P_t=(1-t)I+tP$ and $W_t$ a path of rotations from $I$ to $W$, connects $I$ to
+$A$ inside the invertible matrices (a path of rotations exists by Exercise~\ref{ex:realnormal}: turn each rotation block
+gradually, and pair the $-1$ blocks, of which there is an even number, into rotations by $\pi$). So the real matrices of
+positive determinant form a connected set.
+
+\section{Norms of matrices}
+
+The space $M_{m,n}(\mathbb K)$ has several natural norms, and singular values describe all of them.
+\begin{itemize}
+\item The \emph{operator norm} $\|A\|=\max_{\|x\|=1}\|Ax\|$ equals $\sigma_1$, since $\|Ax\|^2=\sum\sigma_i^2|c_i|^2$ for $x=
+\sum c_iv_i$. It satisfies $\|AB\|\le\|A\|\|B\|$.
+\item The \emph{Frobenius norm} $\|A\|_F=\bigl(\sum_{i,j}|a_{ij}|^2\bigr)^{1/2}=\sqrt{\operatorname{tr}A^*A}$ equals
+$\bigl(\sum\sigma_i^2\bigr)^{1/2}$, since $\operatorname{tr}A^*A$ is the sum of the eigenvalues of $A^*A$.
+\item The \emph{Ky Fan $k$-norm} is $\|A\|_{(k)}=\sigma_1+\dots+\sigma_k$; for $k=p$ it is the \emph{nuclear} (or trace) norm
+$\|A\|_*=\sum\sigma_i$.
+\end{itemize}
+All of these are \emph{unitarily invariant}: $\|XAY\|=\|A\|$ for unitary $X,Y$, because $XAY$ has the same singular values.
+That the Ky Fan functions are norms is not obvious, since singular values are not linear in $A$; here is the proof.
+
+\begin{proposition}\label{prop:kyfannorm}
+For $k\le p$, $\|A+B\|_{(k)}\le\|A\|_{(k)}+\|B\|_{(k)}$.
+\end{proposition}
+\begin{proof}
+By Proposition~\ref{prop:dilation}, $\|A\|_{(k)}=\lambda_1(\mathcal H(A))+\dots+\lambda_k(\mathcal H(A))$. The sum of the $k$
+largest eigenvalues is subadditive on Hermitian matrices (Exercise~\ref{ex:kyfan}), and $\mathcal H$ is linear.
+\end{proof}
+
+\section{The best approximation of lower rank}
+
+Truncate the SVD after $k$ terms: $A_k=\sum_{i\le k}\sigma_iu_iv_i^*$, a matrix of rank $k$ (for $k\le r$). Storing it costs
+$k(m+n+1)$ numbers instead of $mn$.
+
+\begin{theorem}[Schmidt, Eckart--Young, Mirsky]\label{thm:eckartyoung}
+For every matrix $B$ of rank at most $k$,
+\[
+\|A-B\|\ge\sigma_{k+1}=\|A-A_k\|\qquad\text{and}\qquad\|A-B\|_F^2\ge\sum_{i>k}\sigma_i^2=\|A-A_k\|_F^2.
+\]
+So $A_k$ is a best approximation of rank at most $k$ in both norms.
+\end{theorem}
+\begin{proof}
+The equalities hold because $A-A_k=\sum_{i>k}\sigma_iu_iv_i^*$ is an SVD with singular values $\sigma_{k+1},\sigma_{k+2},\dots$.
+
+Operator norm: $\ker B$ has dimension at least $n-k$, and $\operatorname{span}(v_1,\dots,v_{k+1})$ has dimension $k+1$, so they
+share a unit vector $x=\sum_{i\le k+1}c_iv_i$. Then $\|(A-B)x\|=\|Ax\|=\bigl(\sum_{i\le k+1}\sigma_i^2|c_i|^2\bigr)^{1/2}\ge
+\sigma_{k+1}$.
+
+Frobenius norm: apply~\eqref{eq:weylsv} to $A=(A-B)+B$ with $j=k+1$: since $\sigma_{k+1}(B)=0$,
+$\sigma_{i+k}(A)\le\sigma_i(A-B)$ for every $i$ with $i+k\le p$. Squaring and summing over $i$,
+$\sum_{i>k}\sigma_i(A)^2\le\sum_i\sigma_i(A-B)^2=\|A-B\|_F^2$.
+\end{proof}
+
+\begin{remark}
+Mirsky (1960) proved that $A_k$ is a best approximation for \emph{every} unitarily invariant norm. The key is Ky Fan's
+dominance theorem: $\|A\|\le\|B\|$ for all unitarily invariant norms if and only if $\|A\|_{(k)}\le\|B\|_{(k)}$ for every $k$
+(see Bhatia's book in the sources); and~\eqref{eq:weylsv} gives exactly these Ky Fan inequalities between $A-B$ and
+$A-A_k$.
+\end{remark}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-lowrank}
+\caption{A $32\times32$ picture and its best approximations of rank $1$, $3$ and $8$. The relative errors in Frobenius norm,
+$\bigl(\sum_{i>k}\sigma_i^2/\sum_i\sigma_i^2\bigr)^{1/2}$, are about $0.30$, $0.16$ and $0.07$. Rank $8$ needs $8\cdot65=520$
+numbers instead of $1024$.}
+\label{fig:lowrank}
+\end{figure}
+
+For the photograph of the opening, $25$ singular triples cost $25\cdot2001\approx50{,}000$ numbers, and
+Theorem~\ref{thm:eckartyoung} says no other choice of $50{,}000$ numbers stored as a rank-$25$ matrix does better in
+Frobenius or operator norm. (Whether the eye agrees is another question; JPEG uses other bases, adapted to the eye.)
+
+A second reading of the theorem with $k=n-1$, for a square invertible $A$, is that \emph{$\sigma_n$ is the distance from $A$
+to the nearest singular matrix}: the smallest singular value measures how close to non-invertible a matrix is.
+
+\section{The pseudo-inverse and least squares}
+
+When $A$ is not invertible, or not square, the SVD still inverts whatever can be inverted.
+
+\begin{definition}\label{def:pinv}
+The \emph{Moore--Penrose pseudo-inverse} of $A=\sum_{i\le r}\sigma_iu_iv_i^*$ is $A^+=\sum_{i\le r}\sigma_i^{-1}v_iu_i^*\in
+M_{n,m}(\mathbb K)$.
+\end{definition}
+
+\begin{theorem}\label{thm:pinv}
+For every $b\in\mathbb K^m$, $x^+=A^+b$ is the least squares solution of $Ax\approx b$ of smallest norm: it minimises $\|Ax-b\|$,
+and among all minimisers it has the smallest $\|x\|$.
+\end{theorem}
+\begin{proof}
+Write $x=\sum_jy_jv_j$ and $b=\sum_ic_iu_i$. Then
+\[
+\|Ax-b\|^2=\sum_{i\le r}|\sigma_iy_i-c_i|^2+\sum_{i>r}|c_i|^2.
+\]
+The minimisers are exactly the $x$ with $y_i=c_i/\sigma_i$ for $i\le r$ and $y_j$ arbitrary for $j>r$; among them,
+$\|x\|^2=\sum|y_j|^2$ is smallest when $y_j=0$ for $j>r$, which is $x=\sum_{i\le r}\sigma_i^{-1}c_iv_i=A^+b$.
+\end{proof}
+
+When $A$ has independent columns, $A^+=(A^*A)^{-1}A^*$ and we recover Theorem~\ref{thm:lsq}; when $A$ is invertible,
+$A^+=A^{-1}$. Penrose (1955) characterised $A^+$ by four identities (Exercise~\ref{ex:pinv}).
+
+\section{Principal component analysis}
+
+Let $x_1,\dots,x_N\in\R^n$ be data points, centred so that $\sum_ix_i=0$, forming the rows of $X\in M_{N,n}(\R)$. We look for
+the $k$-dimensional subspace $W$ that fits them best, in the sense of the least total squared \emph{orthogonal} distance
+$\sum_id(x_i,W)^2$. Pearson posed this in 1901, ``on lines and planes of closest fit''; Hotelling (1933) named the answer.
+
+\begin{theorem}[principal components]\label{thm:pca}
+Let $X=\sum_i\sigma_iu_iv_i^{\mathsf T}$ be an SVD. The subspace $W_k=\operatorname{span}(v_1,\dots,v_k)$ minimises
+$\sum_id(x_i,W)^2$ over all $k$-dimensional subspaces, with minimum $\sum_{j>k}\sigma_j^2$.
+\end{theorem}
+\begin{proof}
+If $P_W$ is the orthogonal projection onto $W$, the rows of $XP_W$ are the projections of the data points, so
+$\sum_id(x_i,W)^2=\|X-XP_W\|_F^2$, and $XP_W$ has rank at most $k$. By Theorem~\ref{thm:eckartyoung} this is at least
+$\sum_{j>k}\sigma_j^2$. For $W=W_k$, $XP_{W_k}=\sum_{i\le k}\sigma_iu_iv_i^{\mathsf T}=X_k$, which attains the bound.
+\end{proof}
+
+The $v_i$ are the \emph{principal directions}, the eigenvectors of the covariance matrix $\frac1NX^{\mathsf T}X$, and
+$\sigma_i^2/N$ is the variance of the data along $v_i$. The fraction $\sum_{i\le k}\sigma_i^2/\sum_i\sigma_i^2$ is the
+proportion of variance ``explained'' by $k$ components. Note the difference with least squares regression, which
+minimises vertical distances and treats one coordinate as special: Exercise~\ref{ex:pcatoy} shows the two lines differ, and
+where the golden ratio hides.
+
+\section{Conditioning}
+
+How much does the solution of $Ax=b$ move when $b$ moves? For invertible $A$, the \emph{condition number} is
+$\kappa(A)=\|A\|\|A^{-1}\|=\sigma_1/\sigma_n$.
+
+\begin{proposition}\label{prop:condition}
+If $Ax=b\ne0$ and $A(x+\delta x)=b+\delta b$, then $\dfrac{\|\delta x\|}{\|x\|}\le\kappa(A)\dfrac{\|\delta b\|}{\|b\|}$, and equality
+occurs for suitable $b$ and $\delta b$. Moreover $1/\kappa(A)$ is the relative distance from $A$ to the singular matrices:
+$\min\{\|E\|/\|A\|:\ A+E\text{ singular}\}=\sigma_n/\sigma_1$.
+\end{proposition}
+\begin{proof}
+$\delta x=A^{-1}\delta b$ gives $\|\delta x\|\le\sigma_n^{-1}\|\delta b\|$, and $\|b\|=\|Ax\|\le\sigma_1\|x\|$; multiply. Equality
+holds for $x=v_1$ (so $b=\sigma_1u_1$) and $\delta b$ a multiple of $u_n$. The last statement is Theorem~\ref{thm:eckartyoung}
+with $k=n-1$, divided by $\|A\|=\sigma_1$.
+\end{proof}
+
+In floating point arithmetic with relative precision $10^{-16}$, a condition number of $10^{d}$ costs about $d$ digits, as
+the Hilbert matrices of Chapter~\ref{ch:inner} showed. Orthogonal matrices have $\kappa=1$, which is why algorithms built from
+rotations and reflections are stable, and why $QR$ beats the normal equations, whose matrix $A^*A$ has condition number
+$\kappa(A)^2$.
+
+\section{Procrustes}
+
+In Greek myth, Procrustes made his guests fit his bed by stretching or cutting them. The \emph{orthogonal Procrustes problem}
+is gentler: given two configurations of points, the columns of $A,B\in M_{n,N}(\R)$ (say landmarks on two scans of a face),
+find the rotation or reflection $Q$ that best superimposes them.
+
+\begin{theorem}[orthogonal Procrustes]\label{thm:procrustes}
+Let $BA^{\mathsf T}=U\Sigma V^{\mathsf T}$ be an SVD. Then $Q=UV^{\mathsf T}$ minimises $\|QA-B\|_F$ over orthogonal $Q$.
+\end{theorem}
+\begin{proof}
+$\|QA-B\|_F^2=\|A\|_F^2+\|B\|_F^2-2\operatorname{tr}(B^{\mathsf T}QA)$, and $\operatorname{tr}(B^{\mathsf T}QA)=\operatorname{tr}(QAB^{\mathsf T})
+=\operatorname{tr}(QV\Sigma U^{\mathsf T})=\operatorname{tr}(Z\Sigma)$ with $Z=U^{\mathsf T}QV$ orthogonal. Since $|z_{ii}|\le1$
+(the columns of $Z$ are unit vectors), $\operatorname{tr}(Z\Sigma)=\sum_i\sigma_iz_{ii}\le\sum_i\sigma_i$, with equality for
+$Z=I$, that is $Q=UV^{\mathsf T}$.
+\end{proof}
+
+With $B=I$ and $A$ square, this says that the orthogonal matrix closest to $A$ is the factor $W$ of its polar decomposition
+(Exercise~\ref{ex:nearestorth}).
+
+\begin{beauty}
+Eigenvalues need a square matrix and a choice of basis that serves both sides of the map; singular values allow two
+different orthonormal bases, one for the source and one for the target, and in exchange they always exist, are always real
+and non-negative, and are perfectly stable. A single theorem then answers questions from statistics (which plane best fits a
+cloud of points), numerical analysis (how close is a matrix to being singular), data compression (how few numbers describe a
+picture), and geometry (what is the closest rotation): each is ``keep the largest singular values''.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:svd2}
+Compute an SVD of $A=\begin{pmatrix}3&0\\4&5\end{pmatrix}$ (Figure~\ref{fig:ellipse}) and its polar decomposition. Check that
+$\sigma_1\sigma_2=|\det A|$ and $\sigma_1^2+\sigma_2^2=\|A\|_F^2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:normsvd}
+For square $A$, show that $|\det A|=\prod_i\sigma_i$ and $|\lambda|\le\sigma_1$ for every eigenvalue $\lambda$. Find a $2\times2$
+matrix whose eigenvalues and singular values have nothing in common, and show that for a normal matrix the singular values
+are the moduli of the eigenvalues.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:normineq}
+Show that $\|A\|\le\|A\|_F\le\sqrt r\,\|A\|$, where $r=\operatorname{rank}A$, and that $\|AB\|_F\le\|A\|\,\|B\|_F$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pinv}
+Show that $X=A^+$ satisfies Penrose's four equations $AXA=A$, $XAX=X$, $(AX)^*=AX$, $(XA)^*=XA$, that $AA^+$ and $A^+A$ are
+the orthogonal projections onto $\operatorname{Im}A$ and $\operatorname{Im}A^*$, and compute the pseudo-inverse of
+$\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:penroseunique}
+Show that the four equations of Exercise~\ref{ex:pinv} determine $X$ uniquely.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pcatoy}
+Find the first principal direction of the five points $(-2,-1)$, $(-1,-1)$, $(0,0)$, $(1,1)$, $(2,1)$, and compare with
+the least squares line $y=bx$ through them. Where does the golden ratio $\varphi=\frac{1+\sqrt5}2$ appear?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nearestorth}
+Show that for square real $A$ with polar decomposition $A=WP$, the orthogonal matrix closest to $A$ in Frobenius norm is
+$W$, and that $\|A-W\|_F^2=\sum_i(\sigma_i-1)^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nuclear}
+Show that $\|A\|_*=\max|\operatorname{tr}(AQ)|$ over unitary $Q$ (for square $A$), and deduce $|\operatorname{tr}(AB)|\le\|A\|_*
+\|B\|$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:svinterlace}
+Let $B$ be obtained from $A\in M_{m,n}$ by deleting one column. Show that $\sigma_1(A)\ge\sigma_1(B)\ge\sigma_2(A)\ge\sigma_2(B)
+\ge\cdots$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:svprod}
+Show that $\sigma_i(AB)\le\|A\|\,\sigma_i(B)$ for all $i$. Deduce that $\kappa(AB)\le\kappa(A)\kappa(B)$ for invertible $A$,
+$B$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:normal2x2}
+Show that the normal equations square the condition number: $\kappa(A^*A)=\kappa(A)^2$ for $A$ with independent columns
+(with $\kappa=\sigma_1/\sigma_n$ for rectangular matrices), while $\kappa(R)=\kappa(A)$ for $A=QR$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:matrixcompletion}
+(A taste of Netflix.) A $3\times3$ matrix of rank $1$ has entries $a_{11}=2$, $a_{12}=4$, $a_{21}=3$, $a_{33}=5$, and
+$a_{23}=10$; the others are unknown. Find all completions of rank $1$. Then show that a rank-one $m\times n$ matrix with all
+entries non-zero is determined by the entries of one row, one column and nothing else, and that in general one needs
+at least $m+n-1$ observed entries.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:svd2}
+$A^{\mathsf T}A=\bigl(\begin{smallmatrix}25&20\\20&25\end{smallmatrix}\bigr)$.
+\end{hint}
+\begin{hint}{ex:normsvd}
+$|\det A|^2=\det A^*A$. For the eigenvalue, take a unit eigenvector. Try a Jordan block with a non-zero eigenvalue.
+\end{hint}
+\begin{hint}{ex:normineq}
+Use $\|A\|_F^2=\sum\sigma_i^2$; for the product, apply $A$ to each column of $B$.
+\end{hint}
+\begin{hint}{ex:pinv}
+Check everything in the singular bases, where $A$ and $A^+$ are ``diagonal''. The matrix $\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$
+is $2uu^{\mathsf T}$ with $u=(1,1)/\sqrt2$.
+\end{hint}
+\begin{hint}{ex:penroseunique}
+If $X$ and $Y$ both satisfy the equations, write $X=XAX=X(AX)^*=\dots$ and move factors around until $Y$ appears.
+\end{hint}
+\begin{hint}{ex:pcatoy}
+$X^{\mathsf T}X=\bigl(\begin{smallmatrix}10&6\\6&4\end{smallmatrix}\bigr)$.
+\end{hint}
+\begin{hint}{ex:nearestorth}
+Theorem~\ref{thm:procrustes} with $B=I$; then compute in the singular bases.
+\end{hint}
+\begin{hint}{ex:nuclear}
+$\operatorname{tr}(AQ)=\operatorname{tr}(\Sigma V^*QU)$, as in the proof of Theorem~\ref{thm:procrustes}.
+\end{hint}
+\begin{hint}{ex:svinterlace}
+$B^*B$ is a principal submatrix of $A^*A$.
+\end{hint}
+\begin{hint}{ex:svprod}
+$\|ABx\|\le\|A\|\|Bx\|$, and Courant--Fischer for $B^*A^*AB$ and $B^*B$.
+\end{hint}
+\begin{hint}{ex:normal2x2}
+$A^*A=V\Sigma^*\Sigma V^*$, and $A^*A=R^*R$.
+\end{hint}
+\begin{hint}{ex:matrixcompletion}
+A rank-one matrix is $xy^{\mathsf T}$, so $a_{ij}a_{kl}=a_{il}a_{kj}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:svd2}
+\idea Diagonalise $A^{\mathsf T}A$ to get $V$ and the $\sigma_i$; then $u_i=Av_i/\sigma_i$.
+\writeup $A^{\mathsf T}A$ has eigenvalues $45$ and $5$ with eigenvectors $v_1=\frac1{\sqrt2}(1,1)$, $v_2=\frac1{\sqrt2}(-1,1)$.
+So $\sigma_1=3\sqrt5$, $\sigma_2=\sqrt5$, and $u_1=\frac{Av_1}{\sigma_1}=\frac{(3,9)}{\sqrt2\cdot3\sqrt5}=\frac1{\sqrt{10}}(1,3)$,
+$u_2=\frac{Av_2}{\sigma_2}=\frac{(-3,1)}{\sqrt2\sqrt5}=\frac1{\sqrt{10}}(-3,1)$. Then $\sigma_1\sigma_2=15=|\det A|$ and
+$\sigma_1^2+\sigma_2^2=50=9+16+25$. For the polar decomposition, $P=\sigma_1v_1v_1^{\mathsf T}+\sigma_2v_2v_2^{\mathsf T}
+=\frac{3\sqrt5}2\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)+\frac{\sqrt5}2\bigl(\begin{smallmatrix}1&-1\\-1&1\end{smallmatrix}\bigr)
+=\sqrt5\bigl(\begin{smallmatrix}2&1\\1&2\end{smallmatrix}\bigr)$, and
+$W=UV^{\mathsf T}=u_1v_1^{\mathsf T}+u_2v_2^{\mathsf T}=\frac1{\sqrt5}\bigl(\begin{smallmatrix}2&-1\\1&2\end{smallmatrix}\bigr)$, a
+rotation by $\arctan\frac12$. Check: $WP=\bigl(\begin{smallmatrix}2&-1\\1&2\end{smallmatrix}\bigr)\bigl(\begin{smallmatrix}2&1\\1&2
+\end{smallmatrix}\bigr)=\bigl(\begin{smallmatrix}3&0\\4&5\end{smallmatrix}\bigr)$.
+\end{solution}
+
+\begin{solution}{ex:normsvd}
+\idea Determinants and norms are unitarily invariant, so compute them on $\Sigma$.
+\writeup $|\det A|^2=\det(A^*A)=\prod\sigma_i^2$. If $Ax=\lambda x$ with $\|x\|=1$, then $|\lambda|=\|Ax\|\le\sigma_1$. The matrix
+$\bigl(\begin{smallmatrix}1&1\\0&1\end{smallmatrix}\bigr)$ has eigenvalues $1,1$ and $A^{\mathsf T}A=\bigl(\begin{smallmatrix}1&1\\1&2
+\end{smallmatrix}\bigr)$ with eigenvalues $\frac{3\pm\sqrt5}2$, so $\sigma_{1,2}=\frac{\sqrt5\pm1}2=\varphi^{\pm1}$: neither
+is $1$. For normal $A=WDW^*$, write $D=|D|\Theta$ with $\Theta$ diagonal unitary; then $A=(W\Theta)|D|W^*$ is an SVD (after
+reordering), with singular values $|\lambda_i|$.
+\end{solution}
+
+\begin{solution}{ex:normineq}
+\idea Compare $\max\sigma_i$, $\bigl(\sum\sigma_i^2\bigr)^{1/2}$ over $r$ non-zero terms.
+\writeup $\sigma_1^2\le\sum_{i\le r}\sigma_i^2\le r\sigma_1^2$. For the product, if $b_j$ are the columns of $B$, then
+$\|AB\|_F^2=\sum_j\|Ab_j\|^2\le\|A\|^2\sum_j\|b_j\|^2=\|A\|^2\|B\|_F^2$.
+\end{solution}
+
+\begin{solution}{ex:pinv}
+\idea In the bases $(v_j)$ and $(u_i)$, $A$ is $\Sigma$ and $A^+$ is $\Sigma^+$, the transpose of $\Sigma$ with non-zero entries
+inverted; everything reduces to diagonal matrices.
+\writeup $AA^+=\sum_{i\le r}u_iu_i^*$ and $A^+A=\sum_{i\le r}v_iv_i^*$, the orthogonal projections onto $\operatorname{span}
+(u_1,\dots,u_r)=\operatorname{Im}A$ and $\operatorname{span}(v_1,\dots,v_r)=\operatorname{Im}A^*$. They are Hermitian, and
+$AA^+A=\bigl(\sum_{i\le r}u_iu_i^*\bigr)A=A$, $A^+AA^+=\bigl(\sum_{i\le r}v_iv_i^*\bigr)A^+=A^+$. For $A=2uu^{\mathsf T}$ (an SVD
+with $\sigma_1=2$, $u_1=v_1=u$), $A^+=\frac12uu^{\mathsf T}=\frac14\bigl(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\bigr)$.
+\end{solution}
+
+\begin{solution}{ex:penroseunique}
+\idea Use the equations to insert $A$ between factors, and the two Hermitian conditions to move projections across.
+\writeup Let $X,Y$ satisfy the four equations. Then $AX=(AX)^*=X^*A^*=X^*(AYA)^*=X^*A^*Y^*A^*=(AX)^*(AY)^*=AXAY=AY$, and
+symmetrically $XA=(XA)^*=A^*X^*=(AYA)^*X^*=A^*Y^*A^*X^*=(YA)^*(XA)^*=YAXA=YA$. Hence $X=XAX=X(AY)=(XA)Y=(YA)Y=Y$.
+\end{solution}
+
+\begin{solution}{ex:pcatoy}
+\idea PCA diagonalises $X^{\mathsf T}X$; regression solves one normal equation. Both are two-line computations, and the
+golden ratio comes from $\sqrt{45}=3\sqrt5$.
+\writeup The points are centred. $X^{\mathsf T}X=\bigl(\begin{smallmatrix}10&6\\6&4\end{smallmatrix}\bigr)$ has trace $14$ and
+determinant $4$, so eigenvalues $7\pm3\sqrt5$. An eigenvector for $7+3\sqrt5$ is $(6,\,3\sqrt5-3)$, of slope $\frac{\sqrt5-1}2=
+\frac1\varphi\approx0.618$. The least squares line $y=bx$ has $b=\frac{\sum xy}{\sum x^2}=\frac6{10}=0.6$, a little flatter:
+regression minimises vertical distances and so is pulled towards the $x$-axis, while PCA treats both coordinates alike. The
+fraction of variance explained by the first component is $\frac{7+3\sqrt5}{14}\approx0.979$.
+\end{solution}
+
+\begin{solution}{ex:nearestorth}
+\idea Procrustes with target $I$: minimise $\|QA-I\|_F=\|A-Q^{\mathsf T}\|_F$.
+\writeup By Theorem~\ref{thm:procrustes} with $B=I$, and $BA^{\mathsf T}=A^{\mathsf T}=V\Sigma U^{\mathsf T}$, the minimiser of
+$\|QA-I\|_F$ is $Q=VU^{\mathsf T}$. Since $\|QA-I\|_F=\|A-Q^{\mathsf T}\|_F$ for orthogonal $Q$, the closest orthogonal matrix to
+$A$ is $Q^{\mathsf T}=UV^{\mathsf T}=W$. Finally $A-W=U(\Sigma-I)V^{\mathsf T}$ has Frobenius norm $\bigl(\sum(\sigma_i-1)^2\bigr)^{1/2}$.
+\end{solution}
+
+\begin{solution}{ex:nuclear}
+\idea The trace of $\Sigma$ times a unitary matrix is a combination of the $\sigma_i$ with coefficients of modulus at most $1$.
+\writeup $\operatorname{tr}(AQ)=\operatorname{tr}(U\Sigma V^*Q)=\operatorname{tr}(\Sigma Z)$ with $Z=V^*QU$ unitary, so
+$|\operatorname{tr}(AQ)|=|\sum\sigma_iz_{ii}|\le\sum\sigma_i$, with equality for $Q=VU^*$. For general $B$ with $\|B\|\le1$:
+$B=W P$ with $P=\sum_j\tau_jw_jw_j^*$, $0\le\tau_j\le1$, is a convex combination of unitary matrices (write each $\tau_j=
+\frac{e^{i\theta_j}+e^{-i\theta_j}}2$ with $\cos\theta_j=\tau_j$, so $P=\frac{U_++U_-}2$ with $U_\pm=\sum_je^{\pm i\theta_j}w_jw_j^*$
+unitary). Hence $|\operatorname{tr}(AB)|\le\frac12(|\operatorname{tr}(AWU_+)|+|\operatorname{tr}(AWU_-)|)\le\|A\|_*$, and scaling
+gives $|\operatorname{tr}(AB)|\le\|A\|_*\|B\|$.
+\end{solution}
+
+\begin{solution}{ex:svinterlace}
+\idea Squares of singular values are eigenvalues of Gram matrices, and deleting a column deletes a row and a column of
+the Gram matrix.
+\writeup If $B$ is $A$ without column $j$, then $B^*B$ is $A^*A$ without row and column $j$. By Cauchy's interlacing
+(Theorem~\ref{thm:interlacing}), $\lambda_k(A^*A)\ge\lambda_k(B^*B)\ge\lambda_{k+1}(A^*A)$, and taking square roots (all are
+$\ge0$) gives the claim.
+\end{solution}
+
+\begin{solution}{ex:svprod}
+\idea $\|ABx\|\le\|A\|\|Bx\|$ compares the Rayleigh quotients of $(AB)^*(AB)$ and $\|A\|^2B^*B$.
+\writeup For every $x$, $x^*(AB)^*ABx=\|ABx\|^2\le\|A\|^2\|Bx\|^2=\|A\|^2x^*B^*Bx$. By Courant--Fischer
+(Theorem~\ref{thm:courantfischer}), $\lambda_i\bigl((AB)^*AB\bigr)\le\|A\|^2\lambda_i(B^*B)$, that is $\sigma_i(AB)\le\|A\|\sigma_i(B)$.
+By symmetry ($\sigma_i(AB)=\sigma_i(B^*A^*)$) also $\sigma_i(AB)\le\sigma_i(A)\|B\|$. For invertible $A,B$ of size $n$:
+$\sigma_1(AB)\le\sigma_1(A)\sigma_1(B)$, and $\sigma_n(AB)=1/\|(AB)^{-1}\|\ge1/(\|B^{-1}\|\|A^{-1}\|)=\sigma_n(A)\sigma_n(B)$.
+\end{solution}
+
+\begin{solution}{ex:normal2x2}
+\idea Singular values of $A^*A$ are the squares of those of $A$; those of $R$ equal those of $A$ because $Q$ is an isometry.
+\writeup $A^*A=V(\Sigma^*\Sigma)V^*$ is an SVD (and spectral decomposition) with singular values $\sigma_i^2$, so $\kappa(A^*A)=
+\sigma_1^2/\sigma_n^2$. For $A=QR$ with $Q^*Q=I$, $A^*A=R^*R$, so $R$ and $A$ have the same singular values and $\kappa(R)=
+\kappa(A)$. Solving $Rx=Q^*b$ therefore loses about half as many digits as solving the normal equations.
+\end{solution}
+
+\begin{solution}{ex:matrixcompletion}
+\idea Rank one means all $2\times2$ minors vanish: $a_{ij}a_{kl}=a_{il}a_{kj}$. Each known pair of entries in a common row or
+column propagates information.
+\writeup Write $A=xy^{\mathsf T}$. From $a_{11}=x_1y_1=2$ and $a_{12}=x_1y_2=4$, $y_2=2y_1$; from $a_{21}=x_2y_1=3$,
+$x_2=\frac32x_1$. From $a_{23}=x_2y_3=10$, $y_3=\frac{20}{3x_1}$, so $a_{13}=x_1y_3=\frac{20}3$ and $a_{22}=x_2y_2=6$. From
+$a_{33}=x_3y_3=5$, $x_3=\frac{3x_1}4$, so $a_{31}=x_3y_1=\frac34\cdot2=\frac32$ and $a_{32}=3$. All unknowns are determined:
+the completion is unique,
+\[
+A=\begin{pmatrix}2&4&\frac{20}3\\3&6&10\\\frac32&3&5\end{pmatrix}=\begin{pmatrix}1\\\frac32\\\frac34\end{pmatrix}\begin{pmatrix}2&4&\frac{20}3\end{pmatrix}.
+\]
+In general, with all entries non-zero, row $i$ and column $j$ determine $a_{kl}=a_{kj}a_{il}/a_{ij}$. Counting: the set of
+rank-one matrices is described by $x\in\mathbb K^m$, $y\in\mathbb K^n$ up to the scaling $(tx,t^{-1}y)$, that is $m+n-1$
+parameters; more precisely, the bipartite graph of observed positions (rows and columns as vertices) must be connected for
+uniqueness, since otherwise one connected component can be rescaled independently, and a connected graph on $m+n$ vertices
+has at least $m+n-1$ edges. Matrix completion of rank $k$ from random entries, the mathematics behind the Netflix Prize, is
+the subject of Cand\`es and Recht's paper in the sources.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~Beltrami, \emph{Sulle funzioni bilineari}, Giornale di Matematiche ad uso degli studenti delle universit\`a 11
+(1873), 98--106; C.~Jordan, \emph{M\'emoire sur les formes bilin\'eaires}, Journal de math\'ematiques pures et appliqu\'ees
+19 (1874), 35--54.
+\item G.~W.~Stewart, \emph{On the early history of the singular value decomposition}, SIAM Review 35 (1993), 551--566.
+\item E.~Schmidt, \emph{Zur Theorie der linearen und nichtlinearen Integralgleichungen I}, Mathematische Annalen 63 (1907),
+433--476; C.~Eckart and G.~Young, \emph{The approximation of one matrix by another of lower rank}, Psychometrika 1 (1936),
+211--218; L.~Mirsky, \emph{Symmetric gauge functions and unitarily invariant norms}, Quarterly Journal of Mathematics 11
+(1960), 50--59.
+\item K.~Pearson, \emph{On lines and planes of closest fit to systems of points in space}, Philosophical Magazine 2 (1901),
+559--572; H.~Hotelling, \emph{Analysis of a complex of statistical variables into principal components}, Journal of
+Educational Psychology 24 (1933), 417--441.
+\item R.~Penrose, \emph{A generalized inverse for matrices}, Proceedings of the Cambridge Philosophical Society 51 (1955),
+406--413.
+\item G.~Golub and W.~Kahan, \emph{Calculating the singular values and pseudo-inverse of a matrix}, SIAM Journal on
+Numerical Analysis 2 (1965), 205--224.
+\item P.~H.~Sch\"onemann, \emph{A generalized solution of the orthogonal Procrustes problem}, Psychometrika 31 (1966), 1--10.
+\item Y.~Koren, R.~Bell and C.~Volinsky, \emph{Matrix factorization techniques for recommender systems}, IEEE Computer 42
+(2009), 30--37; E.~J.~Cand\`es and B.~Recht, \emph{Exact matrix completion via convex optimization}, Foundations of
+Computational Mathematics 9 (2009), 717--772.
+\item R.~Bhatia, \emph{Matrix Analysis}, Springer, 1997, Chapter~IV (unitarily invariant norms, Ky Fan dominance); L.~N.~Trefethen
+and D.~Bau, \emph{Numerical Linear Algebra}, SIAM, 1997, Lectures 4--5.
+\end{itemize}
