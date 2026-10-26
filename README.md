@@ -61,7 +61,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Planned |
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | Planned |
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
-| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | In progress (1 of 14 chapters) |
+| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | In progress (2 of 14 chapters) |
 | P2 | Machinery | 300 harder problems across Tomes 6–9 | Planned |
 | P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |
 
