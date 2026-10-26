@@ -26,7 +26,7 @@ companion notebook with computer-science applications.
   | C3. Computation and Complexity (in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC3-complexity.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC3-complexity-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC3-complexity-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeC3-complexity.epub) |
   | S1. Linear Algebra in Depth | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS1-linear.epub) |
   | S2. Geometry | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeS2-geometry.epub) |
-  | P1. Crossroads (problem book, in progress) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
+  | P1. Crossroads (problem book) | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [phone](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-phone.pdf) | [Kindle](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-kindle.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
 
 Each tome comes as three PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized
 for a large phone screen (Galaxy S25 Ultra, 9:19.5); pages sized for a 7-inch e-reader (Kindle
@@ -66,7 +66,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Complete (12 chapters) |
 | S3 | A Book of Conjectures | Open problems in number theory, probability and algebra: what is known, experiments, why they are hard | In progress (11 of 12 chapters) |
 | S4 | The Companion | Every major theorem and where it is proved, notation, and a dependency map of the series | Planned |
-| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | In progress (13 of 14 chapters) |
+| P1 | Crossroads | 300 harder problems across Tomes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
 | P2 | Machinery | 300 harder problems across Tomes 6–9 | Planned |
 | P3 | Frontiers | 300 harder problems across Tomes 10–15 | Planned |
 
