@@ -1,0 +1,336 @@
+\chapter{From Data to Conjecture}
+\label{ch:experiments}
+
+\begin{center}\itshape
+The computer does not prove theorems. It tells you which theorems to try to prove,\\
+and, more often, which ones not to waste a year on.
+\end{center}
+
+In 1995 a computer at Simon Fraser University in Vancouver found a new formula for $\pi$. Simon Plouffe, David Bailey and Peter Borwein had been
+looking for linear relations between $\pi$ and a handful of slowly converging series, with an integer relation algorithm running at high
+precision, and one day it returned a vector of small integers:
+\[
+\pi=\sum_{k=0}^\infty\frac1{16^k}\Bigl(\frac4{8k+1}-\frac2{8k+4}-\frac1{8k+5}-\frac1{8k+6}\Bigr).
+\]
+The formula is not faster than the classical ones. Its point is elsewhere: because of the $16^k$, it allows one to compute the millionth
+hexadecimal digit of $\pi$ without computing the first $999\,999$. Nobody had suspected that this was possible. And once the computer had
+found the formula, its proof took a few lines of first-year calculus.
+
+This chapter is about that sequence of events: compute, notice, guess, test, prove. We prove the formula and the digit-extraction algorithm,
+then the theorem behind the integer relation search, the lattice reduction algorithm of Lenstra, Lenstra and Lov\'asz; and we end with the
+other side of the coin: patterns that hold for a billion cases and then fail.
+
+\section{The formula and its proof}
+
+\begin{theorem}[Bailey, Borwein and Plouffe, 1995]\label{thm:bbp}
+For $j\ge1$, let $S_j=\sum_{k\ge0}\frac1{16^k(8k+j)}$. Then $\pi=4S_1-2S_4-S_5-S_6$.
+\end{theorem}
+
+\begin{proof}
+For $k\ge0$, $\int_0^{1/\sqrt2}x^{8k+j-1}\dd x=\frac{2^{-j/2}}{16^k(8k+j)}$. Summing over $k$ (the terms are positive, so the sum and the integral can be exchanged),
+\[
+S_j=2^{j/2}\int_0^{1/\sqrt2}\frac{x^{j-1}}{1-x^8}\dd x .
+\]
+So
+\[
+4S_1-2S_4-S_5-S_6=\int_0^{1/\sqrt2}\frac{4\sqrt2-8x^3-4\sqrt2x^4-8x^5}{1-x^8}\dd x,
+\]
+and the substitution $x=y/\sqrt2$ turns this into
+\[
+\int_0^1\frac{16(4-2y^3-y^4-y^5)}{16-y^8}\dd y=\int_0^1\frac{16(y-1)}{(y^2-2)(y^2-2y+2)}\dd y,
+\]
+since $16-y^8=(4-y^4)(4+y^4)$, $4-y^4=-(y^2-2)(y^2+2)$, $4+y^4=(y^2-2y+2)(y^2+2y+2)$, and $4-2y^3-y^4-y^5=(1-y)(y^2+2)(y^2+2y+2)$, as one checks by expanding. In partial fractions,
+\[
+\frac{16(y-1)}{(y^2-2)(y^2-2y+2)}=\frac{4y}{y^2-2}-\frac{4(y-1)}{(y-1)^2+1}+\frac4{(y-1)^2+1},
+\]
+(multiply out: the numerator is $4y(y^2-2y+2)-(4y-8)(y^2-2)=16y-16$). The three integrals over $[0,1]$ are $2\ln\frac12$, $-2\ln\frac12$ and $4\bigl(\arctan0-\arctan(-1)\bigr)=\pi$. Their sum is $\pi$.
+\end{proof}
+
+The proof is easy \emph{once one knows what to prove}. That is the typical shape of an experimental discovery: the hard part, finding the
+statement, was done by a machine, and the human part, the proof, was routine. The opposite also happens; we shall meet it in Chapter~\ref{ch:heuristics}.
+
+\begin{proposition}[digit extraction]\label{prop:digits}
+For $d\ge0$ and $j\ge1$, let
+\[
+T_j(d)=\sum_{k=0}^d\frac{16^{d-k}\bmod(8k+j)}{8k+j}+\sum_{k>d}\frac{16^{d-k}}{8k+j}.
+\]
+Then the fractional part of $16^d\pi$ equals the fractional part of $4T_1(d)-2T_4(d)-T_5(d)-T_6(d)$. In particular the hexadecimal digits of $\pi$ from position $d+1$ on can be
+computed with $O(d\log d)$ arithmetic operations on numbers of size $O(\log d)$ bits, without computing the previous digits.
+\end{proposition}
+
+\begin{proof}
+For $k\le d$, $\frac{16^{d-k}}{8k+j}$ differs from $\frac{16^{d-k}\bmod(8k+j)}{8k+j}$ by an integer. So $16^dS_j-T_j(d)$ is an integer, and as the coefficients $4,-2,-1,-1$ are integers,
+$16^d\pi-(4T_1-2T_4-T_5-T_6)$ is an integer by Theorem~\ref{thm:bbp}. Each residue $16^{d-k}\bmod(8k+j)$ is computed by repeated squaring modulo $8k+j$ with $O(\log d)$ multiplications of
+numbers below $8d+8$, and there are $O(d)$ of them; the tail is less than $\sum_{m\ge1}16^{-m}=\frac1{15}$ and a few terms give it to any fixed accuracy.
+\end{proof}
+
+In floating point, each $T_j(d)$ is a sum of $d$ numbers in $[0,1)$, computed with relative error about $10^{-16}$; the error in the final fractional part
+is then about $d\cdot10^{-16}$, so for $d=10^6$ one gets about eight correct hexadecimal digits. The notebook computes the digits of $\pi$ starting at position $10^6$ in a few seconds:
+\texttt{26C65E52}\dots, the same digits that Bailey, Borwein and Plouffe printed in 1997.
+
+\begin{think}
+Is there a formula of this kind for the \emph{decimal} digits of $\pi$, that is, with $10^k$ in place of $16^k$? Nobody knows one. What would the
+digit-extraction argument need from such a formula?
+\end{think}
+
+\section{How the formula was found: lattices}
+
+An \emph{integer relation} between real numbers $x_1,\dots,x_n$ is a nonzero $m\in\Z^n$ with $m_1x_1+\dots+m_nx_n=0$. Theorem~\ref{thm:bbp} is the relation
+$(1,-4,2,1,1)$ between $(\pi,S_1,S_4,S_5,S_6)$. One may search among $\pi$ and $S_1,\dots,S_8$; with the numbers known to a few hundred digits, how does one
+find a relation with small coefficients, if there is one? The answer is a short vector in a lattice.
+
+Let $b_1,\dots,b_n$ be linearly independent vectors of $\R^m$. The \emph{lattice} they generate is $L=\Z b_1+\dots+\Z b_n$, and $\lambda_1(L)$ is the length of its shortest nonzero vector.
+Finding a shortest vector is hard in general, but finding one that is short \emph{up to a factor $2^{(n-1)/2}$} is easy, and that is enough for many purposes.
+Write $b_i^*$ for the Gram--Schmidt vectors: $b_1^*=b_1$, and $b_i^*$ is the component of $b_i$ orthogonal to $b_1,\dots,b_{i-1}$, so that
+\[
+b_i=b_i^*+\sum_{j<i}\mu_{ij}b_j^*,\qquad\mu_{ij}=\frac{\langle b_i,b_j^*\rangle}{|b_j^*|^2}.
+\]
+
+\begin{definition}\label{def:lll}
+The basis is \emph{LLL-reduced} if it is \emph{size-reduced}, $|\mu_{ij}|\le\frac12$ for all $j<i$, and satisfies the \emph{Lov\'asz condition}
+\[
+|b_i^*|^2\ge\Bigl(\frac34-\mu_{i,i-1}^2\Bigr)|b_{i-1}^*|^2\qquad(2\le i\le n).
+\]
+\end{definition}
+
+\begin{lemma}\label{lem:gsbound}
+Every nonzero $v\in L$ satisfies $|v|\ge\min_i|b_i^*|$.
+\end{lemma}
+
+\begin{proof}
+Write $v=\sum c_ib_i$ with $c_i\in\Z$, and let $k$ be the largest index with $c_k\ne0$. Expanding each $b_i$ in the Gram--Schmidt basis, $v=c_kb_k^*+\sum_{j<k}\nu_jb_j^*$ for some reals $\nu_j$. The $b_j^*$ are orthogonal, so
+$|v|\ge|c_k|\,|b_k^*|\ge|b_k^*|$.
+\end{proof}
+
+\begin{theorem}[Lenstra, Lenstra and Lov\'asz, 1982]\label{thm:lll}
+Let $b_1,\dots,b_n$ be a basis of the lattice $L$.
+\begin{enumerate}[label=(\alph*)]
+\item If $b_1,\dots,b_n$ is LLL-reduced, then $|b_1|\le2^{(n-1)/2}\lambda_1(L)$.
+\item If $b_1,\dots,b_n\in\Z^m$, the algorithm below stops, and returns an LLL-reduced basis of the same lattice, after at most $n+2\log_{4/3}D_0$ passes through its loop, where, for the input basis,
+\[
+D_0=\prod_{i<n}\det\bigl(\langle b_k,b_l\rangle\bigr)_{k,l\le i}.
+\]
+\end{enumerate}
+\end{theorem}
+
+\emph{The algorithm.} Set $k=2$. While $k\le n$: size-reduce $b_k$, that is, for $j=k-1,k-2,\dots,1$ replace $b_k$ by $b_k-\lfloor\mu_{kj}\rceil b_j$ (nearest integer); then if the Lov\'asz condition
+holds at $k$, increase $k$ by $1$; otherwise exchange $b_{k-1}$ and $b_k$, and set $k=\max(k-1,2)$.
+
+\begin{proof}
+(a) Size reduction and the Lov\'asz condition give $|b_i^*|^2\ge(\frac34-\frac14)|b_{i-1}^*|^2=\frac12|b_{i-1}^*|^2$, so $|b_1|^2=|b_1^*|^2\le2^{i-1}|b_i^*|^2\le2^{n-1}|b_i^*|^2$ for every $i$. With
+Lemma~\ref{lem:gsbound}, $|b_1|^2\le2^{n-1}\min_i|b_i^*|^2\le2^{n-1}\lambda_1(L)^2$.
+
+(b) \emph{The lattice does not change}: both operations are invertible integer changes of basis.
+
+\emph{Invariant: at the start of each pass, $b_1,\dots,b_{k-1}$ is LLL-reduced.} It holds for $k=2$. Replacing $b_k$ by $b_k-qb_j$ with $j<k$ does not change $b_1,\dots,b_{k-1}$ nor any $b_i^*$, and changes
+$\mu_{kl}$ only for $l\le j$, into $\mu_{kl}-q\mu_{jl}$ (with $\mu_{jj}=1$); so after the loop over $j=k-1,\dots,1$, each $\mu_{kj}$ was last changed when it was made at most $\frac12$ in absolute value. If the Lov\'asz
+condition then holds at $k$, $b_1,\dots,b_k$ is LLL-reduced, and $k$ increases. Otherwise the exchange leaves $b_1,\dots,b_{k-2}$ untouched, and $k$ becomes $\max(k-1,2)$; the invariant holds again. So when the
+loop ends, with $k=n+1$, the basis is LLL-reduced.
+
+\emph{Termination.} Let $d_i=\det(\langle b_k,b_l\rangle)_{k,l\le i}$, a Gram determinant. Gram--Schmidt is a change of basis with a unipotent triangular matrix, so $d_i=\prod_{j\le i}|b_j^*|^2>0$, and $d_i$
+is an integer, as the $b_k$ have integer coordinates; so $D=\prod_{i<n}d_i$ is a positive integer. Size reduction does not change the $b_j^*$, hence not $D$. An exchange at $k$ changes only
+$b_{k-1}^*$ and $b_k^*$ among the Gram--Schmidt vectors, and among the $d_i$ only $d_{k-1}$ (since $d_k$ is the Gram determinant of the same set of vectors). The new $b_{k-1}^*$ is the component of the old $b_k$
+orthogonal to $b_1,\dots,b_{k-2}$, which is $b_k^*+\mu_{k,k-1}b_{k-1}^*$, of squared length $|b_k^*|^2+\mu_{k,k-1}^2|b_{k-1}^*|^2<\frac34|b_{k-1}^*|^2$ because the Lov\'asz condition failed. So $d_{k-1}$, and $D$, are multiplied
+by less than $\frac34$. A positive integer can be multiplied by less than $\frac34$ at most $\log_{4/3}D_0$ times, so there are at most that many exchanges. Each pass either increases $k$ or
+is an exchange that decreases $k$ by at most $1$; since $2\le k\le n+1$, the number of passes is at most $n-1+2\times(\text{number of exchanges})$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-lattice}
+\caption{The lattice generated by $b_1=(13,9)$ and $b_2=(5,4)$ (orange) is also generated by $b_1'=(-1,2)$ and $b_2'=(3,1)$ (blue). The first basis is long and nearly flat, the second
+short and nearly orthogonal. Lattice reduction finds the second from the first; in dimension $2$ it is Lagrange's and Gauss's reduction of binary quadratic forms (Exercise~\ref{ex:gauss2}).}
+\label{fig:lattice}
+\end{figure}
+
+With more care, one shows that the algorithm runs in time polynomial in $n$, $m$ and the number of bits of the input, since the numbers it manipulates stay of
+polynomial size; we do not need this. The exponential factor $2^{(n-1)/2}$ in (a) looks terrible, and in the worst case it is nearly attained; in practice
+LLL usually finds vectors much shorter than its guarantee.
+
+\subsection*{From lattices to integer relations}
+
+Let $x_1,\dots,x_n$ be real numbers and $N$ a large integer. Consider the lattice in $\Z^{n+1}$ with basis
+\[
+b_i=\bigl(e_i,\ \lfloor Nx_i\rceil\bigr)\qquad(1\le i\le n),
+\]
+where $e_i$ is the $i$-th unit vector of $\Z^n$ and $\lfloor\cdot\rceil$ is the nearest integer. A lattice vector is $\sum m_ib_i=(m,t)$ with $t=\sum m_i\lfloor Nx_i\rceil$, and $t\approx N\sum m_ix_i$. So a short vector has a small
+$m$ and a small $\sum m_ix_i$: an approximate integer relation of small height.
+
+\begin{proposition}[what the search guarantees]\label{prop:relation}
+Suppose $x$ has an integer relation $m^\circ$. Let $(m,t)$ be the first vector of an LLL-reduced basis of this lattice. Then
+\[
+|m|\le C_n|m^\circ|\qquad\text{and}\qquad\Bigl|\sum_im_ix_i\Bigr|\le\frac{C_n'|m^\circ|}N,
+\]
+with $C_n=2^{(n-1)/2}\sqrt{1+n/4}$ and $C'_n=C_n(1+\frac{\sqrt n}2)$.
+\end{proposition}
+
+\begin{proof}
+For any $m'\in\Z^n$, $|\sum m'_i\lfloor Nx_i\rceil-N\sum m'_ix_i|\le\frac12\sum|m'_i|\le\frac{\sqrt n}2|m'|$. For $m'=m^\circ$, this shows that $(m^\circ,t^\circ)$ is a lattice vector of length at most
+$|m^\circ|\sqrt{1+n/4}$. By Theorem~\ref{thm:lll}(a), $|(m,t)|\le C_n|m^\circ|$, so $|m|\le C_n|m^\circ|$ and $|t|\le C_n|m^\circ|$; and $N|\sum m_ix_i|\le|t|+\frac{\sqrt n}2|m|$.
+\end{proof}
+
+The proposition does \emph{not} say that $m$ is a relation: only that it is a relation up to an error of order $1/N$, with a height comparable to that of the true one.
+If the computation is done with $D$ digits and $N=10^D$, and if $\sum m_ix_i$ is zero to all $D$ digits while $m$ has three-digit entries, the evidence is overwhelming, but it is not a
+proof. For BBP, the proof came afterwards, by calculus. In practice one uses PSLQ, an algorithm of Helaman Ferguson and David Bailey designed for exactly
+this problem, which also certifies that no relation of height below a computed bound exists; LLL shows the principle.
+
+\section{Coincidences}
+
+The computer finds patterns; it also finds patterns that are not there. Three famous examples, in increasing order of danger.
+
+\emph{Almost integers.} In April 1975, in his \emph{Scientific American} column, Martin Gardner announced that Ramanujan had conjectured, and a computer had now
+confirmed, that $e^{\pi\sqrt{163}}$ is an integer. It was an April fool:
+\[
+e^{\pi\sqrt{163}}=262\,537\,412\,640\,768\,743.999\,999\,999\,999\,25\dots
+\]
+The near miss has a reason. By Tome~12, Theorem~14.3 and Remark~14.5, the modular invariant $j$ takes the integer value $-640320^3$ at $\tau=\frac{1+\sqrt{-163}}2$, and $j(\tau)=q^{-1}+744+196884q+\dots$
+with $q=e^{2\pi i\tau}=-e^{-\pi\sqrt{163}}$. So $e^{\pi\sqrt{163}}=640320^3+744-196884e^{-\pi\sqrt{163}}+\dots$, and the error is about $7.5\times10^{-13}$ (Exercise~\ref{ex:ramanujan}). Here the coincidence is a theorem in
+disguise; the lesson is that an almost integer deserves an explanation.
+
+\emph{The Pólya conjecture.} Let $\lambda(n)=(-1)^{\Omega(n)}$, where $\Omega(n)$ counts the prime factors of $n$ with multiplicity, and $L(x)=\sum_{n\le x}\lambda(n)$. In 1919 George Pólya
+observed that $L(x)\le0$ for all $x\ge2$ in his tables, which suggests that at least half the numbers up to $x$ have an odd number of prime factors. In 1958 C.~Brian Haselgrove proved that
+$L(x)>0$ for some $x$, without finding one; in 1980 Minoru Tanaka found the smallest, $x=906\,150\,257$. Nine hundred million cases of evidence, and the conjecture was false.
+
+\emph{Skewes.} Every table of primes ever printed shows $\pi(x)<\operatorname{li}(x)$, where $\operatorname{li}(x)$ is the logarithmic integral, essentially $\int_2^x\frac{\dd t}{\ln t}$. In 1914
+John Edensor Littlewood proved that $\pi(x)-\operatorname{li}(x)$ changes sign infinitely often. The first sign change is beyond every computer search, and the best
+current bounds place it near $10^{316}$.
+
+Why do these fail? In both cases the quantity is governed by the zeros of the zeta function, and its sign is decided by a sum of oscillating terms of size
+$x^{1/2}/\ln x$ against a bias of comparable size; the oscillations win only when $\ln x$ is large enough for the terms to align, and $\ln(10^9)\approx21$ is not large.
+Richard Guy collected dozens of such examples in an essay titled \emph{The strong law of small numbers}: there are not enough small numbers to meet the many demands
+made of them. The working rule: \emph{numerical evidence is evidence about the numbers you computed. Before you trust it, ask on what scale the phenomenon lives.} If it
+lives on the scale $\ln\ln x$, a billion is small.
+
+\begin{beauty}
+A formula for $\pi$ that hides inside it an algorithm for its digits; an integer, $640320^3+744$, that a modular function forces to be within $10^{-12}$ of $e^{\pi\sqrt{163}}$; and a
+lattice algorithm whose only job is to find short vectors, which became the key to factoring polynomials, breaking knapsack cryptosystems and, now, building the cryptography
+meant to survive quantum computers. Experimental mathematics is not a substitute for proof; it is the art of asking the right question.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:log2}
+Show that $\ln2=\sum_{k\ge1}\frac1{k2^k}$, and deduce an algorithm computing the binary digits of $\ln2$ from position $d+1$ on, without computing the previous ones.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bbpcheck}
+Check numerically that the first terms of Theorem~\ref{thm:bbp} give $\pi$ to about $1.2$ decimal digits per term. Why $1.2$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gauss2}
+For $n=2$, show that if $|\mu_{21}|\le\frac12$ and $|b_2|\ge|b_1|$, then $b_1$ is a shortest nonzero vector of $L$. (This is the reduction of Lagrange and Gauss; the Lov\'asz condition with $\frac34$
+replaced by $1$ says exactly $|b_2|\ge|b_1|$ when $\mu_{21}$ is taken into account.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:delta}
+Replace $\frac34$ by $\delta\in(\frac14,1)$ in Definition~\ref{def:lll} and in the algorithm. Show that the algorithm still terminates and that $|b_1|\le(\delta-\frac14)^{-(n-1)/2}\lambda_1(L)$. What goes wrong in the proof of termination
+for $\delta=1$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:minpoly}
+Let $\alpha=\sqrt2+\sqrt3$. Use Proposition~\ref{prop:relation} with $x=(1,\alpha,\alpha^2,\alpha^3,\alpha^4)$ to guess an integer polynomial of degree $4$ vanishing at $\alpha$ (or compute it by hand), and then prove
+that it vanishes at $\alpha$ and is irreducible over $\Q$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ramanujan}
+Using $j(\tau)=q^{-1}+744+196884q+O(|q|^2)$ and $j\bigl(\frac{1+\sqrt{-163}}2\bigr)=-640320^3$, show that $640320^3+744-e^{\pi\sqrt{163}}=196884e^{-\pi\sqrt{163}}+O(e^{-2\pi\sqrt{163}})$ and evaluate it.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:polya}
+\emph{Pólya's conjecture, the easy direction.} Show that $\sum_{n\le x}\lambda(n)\lfloor x/n\rfloor$ equals the number of squares up to $x$, that is $\lfloor\sqrt x\rfloor$. (Use $\sum_{d\mid n}\lambda(d)=1$ if $n$ is a square, $0$ otherwise.)
+Explain why this identity makes a negative bias of $L(x)$ plausible, without proving it.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:log2}
+$-\ln(1-x)=\sum x^k/k$ at $x=\frac12$. Then imitate Proposition~\ref{prop:digits} with $2^{d-k}\bmod k$.
+\end{hint}
+
+\begin{hint}{ex:bbpcheck}
+The terms decrease like $16^{-k}$, and $\log_{10}16\approx1.2$.
+\end{hint}
+
+\begin{hint}{ex:gauss2}
+Write a lattice vector as $c_1b_1+c_2b_2$ and use $|c_1b_1+c_2b_2|^2=(c_1+c_2\mu_{21})^2|b_1|^2+c_2^2|b_2^*|^2$.
+\end{hint}
+
+\begin{hint}{ex:delta}
+Redo both proofs with $\delta$; for termination, the factor is now $\delta$.
+\end{hint}
+
+\begin{hint}{ex:minpoly}
+$\alpha^2=5+2\sqrt6$.
+\end{hint}
+
+\begin{hint}{ex:ramanujan}
+$q=e^{\pi i(1+\sqrt{-163})}=-e^{-\pi\sqrt{163}}$.
+\end{hint}
+
+\begin{hint}{ex:polya}
+$\sum_{n\le x}\lambda(n)\lfloor x/n\rfloor=\sum_{m\le x}\sum_{d\mid m}\lambda(d)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:log2}
+\idea The same trick as for $\pi$, with base $2$.
+\writeup For $|x|<1$, $-\ln(1-x)=\sum_{k\ge1}\frac{x^k}k$; at $x=\frac12$, $\ln2=\sum\frac1{k2^k}$. Then $2^d\ln2=\sum_{k\le d}\frac{2^{d-k}}k+\sum_{k>d}\frac{2^{d-k}}k$, and modulo $1$ the first sum equals $\sum_{k\le d}\frac{2^{d-k}\bmod k}k$, whose terms
+are computed by repeated squaring modulo $k$. The tail is less than $\frac1{d+1}$ and is summed directly. The fractional part of the result is the fractional part of $2^d\ln2$, whose binary expansion
+is the digits of $\ln2$ from position $d+1$ on. The BBP paper discusses this case as the simplest example of the method.
+\end{solution}
+
+\begin{solution}{ex:bbpcheck}
+\idea The tail after $K$ terms is a geometric series.
+\writeup The $k$-th term is $16^{-k}$ times a quantity of order $\frac1{2k}$, so the tail after $K$ terms is $O(16^{-K}/K)$: each term adds $\log_{10}16\approx1.204$ correct decimal digits. With $K=10$ terms one gets
+about $12$ digits; the notebook confirms it.
+\end{solution}
+
+\begin{solution}{ex:gauss2}
+\idea Expand the squared length in the orthogonal basis $b_1^*=b_1$, $b_2^*$.
+\writeup Let $v=c_1b_1+c_2b_2\ne0$, with $c_i\in\Z$. As $b_2=b_2^*+\mu_{21}b_1$, $|v|^2=(c_1+c_2\mu_{21})^2|b_1|^2+c_2^2|b_2^*|^2$. If $c_2=0$, then $|v|=|c_1|\,|b_1|\ge|b_1|$. If $|c_2|\ge2$, then $|v|^2\ge4|b_2^*|^2$, and
+$|b_2^*|^2=|b_2|^2-\mu_{21}^2|b_1|^2\ge(1-\frac14)|b_1|^2$, so $|v|^2\ge3|b_1|^2$. If $c_2=\pm1$, then $|v|^2=(c_1\pm\mu_{21})^2|b_1|^2+|b_2^*|^2$, and $|c_1\pm\mu_{21}|\ge|\mu_{21}|$ for every integer $c_1$ (with equality for $c_1=0$; otherwise $|c_1\pm\mu_{21}|\ge1-\frac12\ge|\mu_{21}|$); so
+$|v|^2\ge\mu_{21}^2|b_1|^2+|b_2^*|^2=|b_2|^2\ge|b_1|^2$. So $|v|\ge|b_1|$ in all cases.
+\end{solution}
+
+\begin{solution}{ex:delta}
+\idea Every $\frac34$ in the proofs becomes $\delta$.
+\writeup With $\delta$, the Lov\'asz condition and size reduction give $|b_i^*|^2\ge(\delta-\frac14)|b_{i-1}^*|^2$, so $|b_1|^2\le(\delta-\frac14)^{-(i-1)}|b_i^*|^2$, and Lemma~\ref{lem:gsbound} gives $|b_1|\le(\delta-\frac14)^{-(n-1)/2}\lambda_1(L)$. For termination, an exchange
+multiplies $D$ by less than $\delta$, and a positive integer can be so multiplied at most $\log_{1/\delta}D_0$ times. For $\delta=1$, an exchange only guarantees that $D$ \emph{decreases}; an integer
+can decrease only finitely many times, so the algorithm still terminates, but the bound $\log_{1/\delta}D_0$ becomes infinite: no polynomial bound on the number of steps follows from this argument.
+\end{solution}
+
+\begin{solution}{ex:minpoly}
+\idea Guess with the lattice, prove by algebra.
+\writeup The search returns (up to sign) the vector $(1,0,-10,0,1)$, that is $P(x)=x^4-10x^2+1$. Proof that $P(\alpha)=0$: $\alpha^2=5+2\sqrt6$, so $(\alpha^2-5)^2=24$, $\alpha^4-10\alpha^2+1=0$. Irreducibility: the roots of $P$ are
+$\pm\sqrt2\pm\sqrt3$, none rational, so $P$ has no linear factor over $\Q$. A monic quadratic factor over $\Q$ would have two of the roots as its roots, with rational sum and product. Let one of them be
+$\sqrt2+\sqrt3$ (otherwise use the other factor). Its partner is $-\sqrt2-\sqrt3$ (product $-(5+2\sqrt6)\notin\Q$), $\sqrt2-\sqrt3$ (sum $2\sqrt2\notin\Q$) or $-\sqrt2+\sqrt3$ (sum $2\sqrt3\notin\Q$). So $P$ is irreducible over $\Q$.
+\end{solution}
+
+\begin{solution}{ex:ramanujan}
+\idea Plug $q$ into the expansion of $j$.
+\writeup At $\tau=\frac{1+\sqrt{-163}}2$, $q=e^{2\pi i\tau}=e^{\pi i}e^{-\pi\sqrt{163}}=-e^{-\pi\sqrt{163}}$, so $q^{-1}=-e^{\pi\sqrt{163}}$. The expansion gives $-640320^3=-e^{\pi\sqrt{163}}+744-196884e^{-\pi\sqrt{163}}+O(e^{-2\pi\sqrt{163}})$,
+that is $640320^3+744-e^{\pi\sqrt{163}}=196884e^{-\pi\sqrt{163}}+O(e^{-2\pi\sqrt{163}})$. With $e^{\pi\sqrt{163}}\approx2.625\times10^{17}$, the difference is about $7.50\times10^{-13}$, as the decimal expansion shows.
+\end{solution}
+
+\begin{solution}{ex:polya}
+\idea Count the pairs $(d,m)$ with $d\mid m\le x$ in two ways.
+\writeup $\lambda$ is completely multiplicative, so $g=\sum_{d\mid n}\lambda(d)$ is multiplicative, with $g(p^a)=1-1+\dots+(-1)^a$, which is $1$ for even $a$ and $0$ for odd $a$; so $g(n)=1$ if $n$ is a square and $0$ otherwise.
+Then $\sum_{n\le x}\lambda(n)\lfloor\frac xn\rfloor=\sum_{n\le x}\lambda(n)\#\{m\le x:n\mid m\}=\sum_{m\le x}g(m)=\lfloor\sqrt x\rfloor$. Heuristically, $\sum_n\lambda(n)\frac xn$ is then of order $\sqrt x$, which is much smaller than $x$: the
+values of $\lambda$ must nearly cancel, but the weights $\frac1n$ favour small $n$, and the small $n$ (the primes, with $\lambda=-1$) are many. That pushes $L(x)$ down on average; Haselgrove's theorem says it
+does not keep it down forever.
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+\begin{itemize}
+\item \emph{BBP.} D.~Bailey, P.~Borwein and S.~Plouffe, ``On the rapid computation of various polylogarithmic constants'', \emph{Math.\ Comp.}\ 66 (1997), 903--913 (the formula, its discovery
+in 1995, the digits at position $10^6$, and the $\ln2$ example). J.~Borwein and D.~Bailey, \emph{Mathematics by Experiment}, A~K Peters, 2004, for the experimental method in general.
+\item \emph{Lattices.} A.~K.~Lenstra, H.~W.~Lenstra Jr.\ and L.~Lov\'asz, ``Factoring polynomials with rational coefficients'', \emph{Math.\ Ann.}\ 261 (1982), 515--534. H.~R.~P.~Ferguson, D.~H.~Bailey
+and S.~Arno, ``Analysis of PSLQ, an integer relation finding algorithm'', \emph{Math.\ Comp.}\ 68 (1999), 351--369. P.~Q.~Nguyen and B.~Vall\'ee (eds.), \emph{The LLL Algorithm}, Springer, 2010.
+\item \emph{Coincidences.} M.~Gardner, ``Six sensational discoveries that somehow or another have escaped public attention'', \emph{Scientific American} 232, no.~4 (April 1975), 127--131.
+G.~P\'olya, ``Verschiedene Bemerkungen zur Zahlentheorie'', \emph{Jahresber.\ Deutsch.\ Math.-Verein.}\ 28 (1919), 31--40. C.~B.~Haselgrove, ``A disproof of a conjecture of P\'olya'', \emph{Mathematika} 5 (1958),
+141--145. M.~Tanaka, ``A numerical investigation on cumulative sum of the Liouville function'', \emph{Tokyo J.\ Math.}\ 3 (1980), 187--189. J.~E.~Littlewood, ``Sur la distribution des nombres premiers'',
+\emph{C.\ R.\ Acad.\ Sci.\ Paris} 158 (1914), 1869--1872. R.~K.~Guy, ``The strong law of small numbers'', \emph{Amer.\ Math.\ Monthly} 95 (1988), 697--712.
+\end{itemize}
