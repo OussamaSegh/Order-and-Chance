@@ -1,0 +1,452 @@
+\chapter{Random Matrices I: The Semicircle}
+
+\begin{center}\itshape
+Fill a large symmetric matrix with coin tosses.\\
+Its eigenvalues, which depend on every entry in a hopelessly complicated way,\\
+arrange themselves along a perfect semicircle, and none of them dares to leave it.
+\end{center}
+
+Random matrices were born twice, and the two births did not know of each other. In 1928 the Scottish statistician John Wishart computed, in \emph{Biometrika}, the exact law of the sample covariance matrix of Gaussian data:
+if you measure $p$ quantities on $N$ individuals, how far is the matrix of empirical correlations from the true one? The question was statistical, the answer an explicit density on the cone of positive matrices,
+and for thirty years it stayed in statistics.
+
+In 1955 Eugene Wigner, at Princeton, faced a different problem. The energy levels of a heavy nucleus such as uranium are the eigenvalues of a Hamiltonian that nobody can write down: hundreds of particles,
+strong forces, no small parameter. Wigner proposed to give up on the Hamiltonian and replace it by a \emph{random} symmetric matrix with the right symmetries, betting that the statistics of the eigenvalues
+would not depend on the details. In the \emph{Annals of Mathematics} he proved the first such statement: for a large random ``bordered'' matrix the density of eigenvalues is a semicircle (he extended it to general
+entries in 1958). Experiments on neutron resonances confirmed the spirit of the bet, and Wigner received the Nobel Prize in physics in 1963 (for other work, on symmetries in nuclear physics).
+
+The two lines met in 1967, when Vladimir Marchenko and Leonid Pastur, in Kharkov, found the analogue of the semicircle for sample covariance matrices: when the number of variables $p$ is comparable with the
+number of samples $N$, the eigenvalues of the sample covariance of pure noise spread over the whole interval $[(1-\sqrt\gamma)^2,(1+\sqrt\gamma)^2]$, $\gamma=\frac pN$, instead of concentrating at $1$. Every statistician who has
+run a principal component analysis on high-dimensional data has met their law, often without knowing it: the ``significant'' directions of the noise. In 2005 Jinho Baik, G\'erard Ben Arous and Sandrine P\'ech\'e found
+exactly when a true signal emerges from this noise: a phase transition, proved in this chapter in its simplest form.
+
+\begin{reminder}[from Tome S3, Tome 3, Tome 6, Tome 7 and Tome 10]
+A \emph{Wigner matrix} is a real symmetric random matrix $X_n=(x_{ij})$ with independent entries $x_{ij}$, $i\le j$, of mean $0$, with $\mathbb Ex_{ij}^2=1$ for $i<j$ and $\mathbb E|x_{ij}|^k\le B_k$ for all $k$, $n$, $i$, $j$. Its
+normalised eigenvalues are those of $X_n/\sqrt n$, and $m_n(r)=\frac1{n^{1+r/2}}\operatorname{tr}X_n^r$. Tome~S3 proves: the semicircle law $\mu_{\mathrm{sc}}(\dd x)=\frac1{2\pi}\sqrt{4-x^2}\,\mathbf 1_{|x|\le2}\dd x$ has moments $C_k$
+(even) and $0$ (odd) (Lemma~5.1); $\mathbb Em_n(2k)\to C_k$, $\mathbb Em_n(2k+1)\to0$ and $\operatorname{Var}m_n(r)=O(\frac1n)$, by counting closed walks whose graphs are plane trees (Lemma~5.2); hence the empirical spectral
+distribution converges to $\mu_{\mathrm{sc}}$ in probability (Theorem~5.3). Plane trees with $k$ edges are counted by the Catalan number $C_k$ (Tome~3, Proposition~3.10), and $C_{k+1}=\sum_{i=0}^kC_iC_{k-i}$ (Tome~3,
+Proposition~3.9). Prokhorov: a tight sequence of probability measures on $\R$ has a weakly convergent subsequence (Tome~6, Theorem~11.7). Courant--Fischer (Tome~7, Theorem~4.6). Stein's lemma
+$\mathbb E\,Wf(W)=\mathbb Ef'(W)$ for $W\sim N(0,1)$ (Tome~10, Lemma~6.1), and Gaussian concentration $P(F(Z)\ge\mathbb EF(Z)+t)\le e^{-t^2/2L^2}$ for $L$-Lipschitz $F$ (Tome~10, Theorem~8.6).
+\end{reminder}
+
+\section{Almost sure convergence}
+
+Tome~S3 proved convergence in probability. One more look at the walks gives a better variance, and with it almost sure convergence. All matrices $X_n$, $n\ge1$, are defined on one probability space; nothing is assumed
+about the dependence between different $n$.
+
+\begin{proposition}\label{prop:varsharp}
+For each $r$, $\operatorname{Var}m_n(r)=O(n^{-2})$.
+\end{proposition}
+
+\begin{proof}
+As in Tome~S3, Lemma~5.2, $\operatorname{Var}\operatorname{tr}X_n^r$ is a sum over pairs of closed walks $(w,w')$ of length $r$ of $\mathbb E[x_wx_{w'}]-\mathbb E[x_w]\mathbb E[x_{w'}]$, and the non-zero terms come from pairs whose graphs share an edge and
+in which every edge of the union graph $G$ is traversed at least twice in total. Then $G$ is connected with at most $r$ edges, so it has at most $r+1$ vertices, with equality only if $G$ is a tree whose edges are each
+traversed exactly twice. That case cannot occur: a closed walk on a tree crosses each edge of its own graph an even number of times, so a shared edge would be traversed at least $2+2$ times. Hence $G$ has at most $r$
+vertices, the number of contributing pairs is $O(n^r)$, each term is bounded by $2B_{2r}$, and $\operatorname{Var}m_n(r)=n^{-2-r}\operatorname{Var}\operatorname{tr}X_n^r=O(n^{-2})$.
+\end{proof}
+
+\begin{theorem}[Wigner's law, almost surely]\label{thm:wigneras}
+Almost surely, $\frac1n\sum_if(\lambda_i)\to\int f\dd\mu_{\mathrm{sc}}$ for every bounded continuous $f$, where $\lambda_1,\dots,\lambda_n$ are the eigenvalues of $X_n/\sqrt n$.
+\end{theorem}
+
+\begin{proof}
+By Chebyshev, $P(|m_n(r)-\mathbb Em_n(r)|>\varepsilon)\le\frac{C_r}{\varepsilon^2n^2}$, which is summable; by Borel--Cantelli and $\mathbb Em_n(r)\to\int x^r\dd\mu_{\mathrm{sc}}$, almost surely $m_n(r)\to\int x^r\dd\mu_{\mathrm{sc}}$ for every $r$ (a
+countable intersection of events of probability one). On this event, the approximation argument of Tome~S3, Theorem~5.3, which uses only the convergence of the moments $m_n(r)$, applies to each $f$ deterministically.
+\end{proof}
+
+\section{Stieltjes transforms}
+
+Moments are perfect for counting, but they hide the shape of the law. The \emph{Stieltjes transform} of a probability measure $\mu$ on $\R$ is
+\[
+s_\mu(z)=\int\frac{\mu(\dd x)}{x-z},\qquad z\in\mathbb C^+=\{\operatorname{Im}z>0\}.
+\]
+It is analytic on $\mathbb C^+$ (differentiate under the integral), $|s_\mu(z)|\le\frac1{\operatorname{Im}z}$, and $\operatorname{Im}s_\mu(z)=\int\frac{\operatorname{Im}z}{|x-z|^2}\mu(\dd x)>0$. For a matrix $H$ with eigenvalues $\lambda_i$,
+$s(z)=\frac1n\operatorname{tr}(H-z)^{-1}$: the trace of the resolvent. If $\mu$ lives on $[-R,R]$, then for $|z|>R$ the geometric series gives
+\begin{equation}\label{eq:stieltjesmoments}
+s_\mu(z)=-\sum_{k\ge0}\frac{\int x^k\dd\mu}{z^{k+1}} .
+\end{equation}
+
+\begin{proposition}[Stieltjes inversion]\label{prop:inversion}
+For $a<b$,
+\[
+\lim_{\varepsilon\downarrow0}\frac1\pi\int_a^b\operatorname{Im}s_\mu(x+i\varepsilon)\dd x=\mu\bigl((a,b)\bigr)+\tfrac12\mu(\{a\})+\tfrac12\mu(\{b\}).
+\]
+In particular $s_\mu$ determines $\mu$.
+\end{proposition}
+
+\begin{proof}
+$\frac1\pi\operatorname{Im}s_\mu(x+i\varepsilon)=\int P_\varepsilon(x-y)\mu(\dd y)$ with the Cauchy density $P_\varepsilon(u)=\frac{\varepsilon}{\pi(u^2+\varepsilon^2)}$. By Fubini,
+\[
+\frac1\pi\int_a^b\operatorname{Im}s_\mu(x+i\varepsilon)\dd x=\int\frac1\pi\Bigl(\arctan\frac{b-y}\varepsilon-\arctan\frac{a-y}\varepsilon\Bigr)\mu(\dd y).
+\]
+The integrand is between $0$ and $1$ and tends to $1$ for $a<y<b$, to $\frac12$ for $y\in\{a,b\}$, and to $0$ otherwise. Dominated convergence concludes. The right side, for all $a<b$, determines $\mu$ (let $a\downarrow-\infty$
+along points that are not atoms, which are all but countably many).
+\end{proof}
+
+To read a law off an algebraic formula for its transform we need one more step.
+
+\begin{lemma}[identification]\label{lem:identify}
+Let $\mu$ be a probability measure on $[-R,R]$, $a<b$, and $h$ a function analytic on $\mathbb C\setminus[a,b]$, real on $\R\setminus[a,b]$, extending continuously to $\overline{\mathbb C^+}$, with $s_\mu=h$ for $|z|>R$, $z\in\mathbb C^+$. Then
+$\mu(\dd x)=\frac1\pi\operatorname{Im}h(x+i0)\,\mathbf 1_{[a,b]}(x)\dd x$.
+\end{lemma}
+
+\begin{proof}
+$s_\mu$ and $h$ are analytic on the connected open set $\mathbb C^+$ and agree on a non-empty open subset, so $s_\mu=h$ on $\mathbb C^+$. By continuity of $h$ up to the real axis, $\operatorname{Im}h(x+i\varepsilon)\to\operatorname{Im}h(x+i0)$
+uniformly on compact intervals, so by Proposition~\ref{prop:inversion}, $\mu((c,d))+\frac12\mu(\{c,d\})=\frac1\pi\int_c^d\operatorname{Im}h(x+i0)\dd x$ for all $c<d$. Letting $d\downarrow c$ shows that $\mu$ has no atoms, so $\mu$ has density
+$\frac1\pi\operatorname{Im}h(x+i0)$, which vanishes off $[a,b]$ since $h$ is real there.
+\end{proof}
+
+\begin{proposition}\label{prop:scstieltjes}
+The semicircle law has Stieltjes transform $s_{\mathrm{sc}}(z)=\frac{-z+\sqrt{z^2-4}}2$, where $\sqrt{z^2-4}$ is the branch analytic on $\mathbb C\setminus[-2,2]$ with $\sqrt{z^2-4}\sim z$ at infinity. It is the solution of
+\[
+s^2+zs+1=0
+\]
+with $s(z)\sim-\frac1z$ at infinity.
+\end{proposition}
+
+\begin{proof}
+Let $c(w)=\sum_kC_kw^k$, which converges for $|w|<\frac14$. The recursion $C_{k+1}=\sum_iC_iC_{k-i}$ says $c=1+wc^2$. By \eqref{eq:stieltjesmoments} and the moments of $\mu_{\mathrm{sc}}$, $s_{\mathrm{sc}}(z)=-\frac1zc(\frac1{z^2})$ for $|z|>2$, so
+$-zs=c=1+\frac{c^2}{z^2}=1+s^2$. Of the two roots $\frac{-z\pm\sqrt{z^2-4}}2$, the one with the $+$ sign behaves like $-\frac1z$ at infinity, the other like $-z$. (Conversely, Lemma~\ref{lem:identify} recovers the density from this
+formula: on $(-2,2)$, $\sqrt{x^2-4}$ is $+i\sqrt{4-x^2}$ from above, and $\frac1\pi\operatorname{Im}s_{\mathrm{sc}}(x+i0)=\frac{\sqrt{4-x^2}}{2\pi}$.)
+\end{proof}
+
+\begin{remark}[the self-consistent equation]
+The equation $s=-\frac1{z+s}$ has a direct meaning for matrices. By the Schur complement formula, the first diagonal entry of the resolvent of $H=X_n/\sqrt n$ is
+$\bigl((H-z)^{-1}\bigr)_{11}=\bigl(h_{11}-z-\mathbf h^{\mathsf T}(H^{(1)}-z)^{-1}\mathbf h\bigr)^{-1}$, where $H^{(1)}$ is $H$ without its first row and column and $\mathbf h$ the rest of the first column. Since $\mathbf h$ is independent of
+$H^{(1)}$, with entries of variance $\frac1n$, the quadratic form concentrates around $\frac1n\operatorname{tr}(H^{(1)}-z)^{-1}\approx s(z)$, and $h_{11}\approx0$: so $s\approx-\frac1{z+s}$. Made quantitative, with errors controlled down to the
+scale $\frac1n$ of individual eigenvalues, this is the \emph{local semicircle law} of Erd\H os, Schlein and Yau (2009), the starting point of the proofs of universality mentioned in Tome~S3.
+\end{remark}
+
+\section{The Marchenko--Pastur law}
+
+Let $X=(x_{ij})$ be a $p\times N$ matrix with independent entries of mean $0$, variance $1$ and moments bounded as for Wigner matrices, and $S=\frac1NXX^{\mathsf T}$, the sample covariance matrix of $N$ samples of a
+$p$-dimensional vector with independent coordinates (its true covariance is $I$). We let $N\to\infty$ with $p=p_N$ and $\frac pN\to\gamma\in(0,1)$, and study the empirical distribution of the $p$ eigenvalues of $S$.
+
+For a plane tree $T$, call its vertices at even distance from the root (the root included) \emph{even}, the others \emph{odd}, and let $e(T)$ be the number of even vertices. Let
+\[
+m_k(\gamma)=\sum_{T}\gamma^{e(T)-1},
+\]
+the sum over the plane trees with $k$ edges, and $m_0=1$. For instance $m_1=1$, $m_2=1+\gamma$ (the cherry and the path), $m_3=1+3\gamma+\gamma^2$.
+
+\begin{lemma}\label{lem:mpmoments}
+Let $M_N(k)=\frac1p\operatorname{tr}S^k$. Then $\mathbb EM_N(k)\to m_k(\gamma)$ and $\operatorname{Var}M_N(k)=O(N^{-2})$ for each $k$.
+\end{lemma}
+
+\begin{proof}
+Expanding,
+\[
+\operatorname{tr}(XX^{\mathsf T})^k=\sum x_{i_1j_1}x_{i_2j_1}x_{i_2j_2}x_{i_3j_2}\cdots x_{i_kj_k}x_{i_1j_k},
+\]
+the sum over $i_1,\dots,i_k\in\{1,\dots,p\}$ and $j_1,\dots,j_k\in\{1,\dots,N\}$: closed walks $i_1\to j_1\to i_2\to j_2\to\dots\to j_k\to i_1$ of length $2k$ on the complete bipartite graph between \emph{row} vertices and \emph{column}
+vertices. As in Tome~S3, Lemma~5.2, only walks whose graph has every edge traversed at least twice contribute; their graphs are connected with at most $k$ edges, hence at most $k+1$ vertices. A shape with $r$ row
+vertices and $c$ column vertices is realised by at most $p^rN^c$ walks, and $\frac1{pN^k}p^rN^c=O(N^{r+c-k-1})$ since $p\le N$. So shapes with at most $k$ vertices contribute $O(\frac1N)$ to $\mathbb EM_N(k)$.
+
+A shape with $k+1$ vertices is a tree with $k$ edges each crossed once in each direction, with term $1$, and, numbering vertices by first visit, it is the contour walk of a plane tree whose root is $i_1$; since the walk
+alternates between rows and columns, the row vertices are exactly the even vertices. A plane tree $T$ thus contributes $\frac{1}{pN^k}p(p-1)\cdots(p-e+1)\,N(N-1)\cdots(N-k+e)$ with $e=e(T)$, which is
+$\frac{p^{e-1}}{N^{e-1}}(1+O(\frac1N))\to\gamma^{e-1}$. The variance bound is the argument of Proposition~\ref{prop:varsharp}, word for word.
+\end{proof}
+
+\begin{lemma}\label{lem:mpgf}
+The generating function $F(w)=\sum_{k\ge0}m_k(\gamma)w^k$ converges for $|w|<\frac14$ and satisfies $\gamma wF^2-(1-w+\gamma w)F+1=0$.
+\end{lemma}
+
+\begin{proof}
+Since $\gamma<1$, $m_k\le C_k\le4^k$. A plane tree is a root with an ordered sequence of subtrees, each attached by an edge. Let $E(w)=\sum_Tw^{|T|}\gamma^{e(T)}$ and $O(w)=\sum_Tw^{|T|}\gamma^{o(T)}$, where $|T|$ is the number of edges and
+$o(T)$ the number of odd vertices. The subtrees of the root of $T$ have their roots at odd depth, so their even vertices are their own odd vertices: hence $E=\gamma\sum_{j\ge0}(wO)^j=\frac\gamma{1-wO}$, and in the same way
+$O=\frac1{1-wE}$. Since $F=E/\gamma$, $F=\frac1{1-wO}$ and $O=\frac1{1-\gamma wF}$. Eliminating $O$: $F(1-\gamma wF-w)=1-\gamma wF$, which is the claim.
+\end{proof}
+
+\begin{theorem}[Marchenko and Pastur, 1967]\label{thm:mp}
+Let $a=(1-\sqrt\gamma)^2$ and $b=(1+\sqrt\gamma)^2$. Almost surely, the empirical distribution of the eigenvalues of $S$ converges weakly to the \emph{Marchenko--Pastur law}
+\[
+\mu_\gamma(\dd x)=\frac{\sqrt{(b-x)(x-a)}}{2\pi\gamma x}\,\mathbf 1_{[a,b]}(x)\dd x .
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{A measure with the right moments.} Let $\nu_N$ be the expected empirical distribution, $\nu_N(A)=\mathbb E\frac1p\#\{i:\lambda_i\in A\}$. Its moments $\mathbb EM_N(k)$ converge (Lemma~\ref{lem:mpmoments}), so $(\nu_N)$ is tight, and by
+Prokhorov a subsequence converges weakly to some $\mu$. Since $\int x^{2k}\dd\nu_N$ is bounded for each $k$, the functions $x^k$ are uniformly integrable along the subsequence and $\int x^k\dd\mu=m_k(\gamma)\le4^k$; so $\mu$
+lives on $[0,4]$ (its moments $\int x^{2k}\dd\mu\le16^k$ would otherwise grow faster).
+
+\emph{Its transform.} For $|z|>4$, by \eqref{eq:stieltjesmoments}, $s_\mu(z)=-\frac1zF(\frac1z)$. Substituting $F=-zs$, $w=\frac1z$ in Lemma~\ref{lem:mpgf} gives
+\[
+\gamma zs^2+(z-1+\gamma)s+1=0 .
+\]
+The discriminant is $(z-1+\gamma)^2-4\gamma z=z^2-2(1+\gamma)z+(1-\gamma)^2=(z-a)(z-b)$. Let $R(z)$ be the branch of $\sqrt{(z-a)(z-b)}$ analytic on $\mathbb C\setminus[a,b]$ with $R(z)\sim z$ at infinity, so that
+$R(z)=z-(1+\gamma)-\frac{2\gamma}z+O(z^{-2})$, $R$ is negative on $(-\infty,a)$ and positive on $(b,\infty)$. Let
+\[
+h(z)=\frac{-(z-1+\gamma)+R(z)}{2\gamma z}.
+\]
+At $z=0$ the numerator is $(1-\gamma)+R(0)=(1-\gamma)-(1-\gamma)=0$, so $h$ is analytic on $\mathbb C\setminus[a,b]$; it is real on $\R\setminus[a,b]$ and continuous up to the real axis (here $a>0$ is used). At infinity
+$h(z)=-\frac1z-\frac1{z^2}+O(z^{-3})$, while the other root of the quadratic tends to $-\frac1\gamma$. Since $s_\mu(z)\to0$, $s_\mu=h$ for $|z|$ large. Lemma~\ref{lem:identify} applies: on $(a,b)$, $R(x+i0)=i\sqrt{(b-x)(x-a)}$
+(the sign making $\operatorname{Im}s_\mu>0$), and $\mu$ has density $\frac1\pi\cdot\frac{\sqrt{(b-x)(x-a)}}{2\gamma x}$. So $\mu=\mu_\gamma$, whatever the subsequence: $\mu_\gamma$ is the measure with moments $m_k(\gamma)$.
+
+\emph{Almost sure convergence.} By Lemma~\ref{lem:mpmoments}, Chebyshev and Borel--Cantelli, almost surely $M_N(k)\to m_k(\gamma)=\int x^k\dd\mu_\gamma$ for all $k$, and the approximation argument of Tome~S3, Theorem~5.3, concludes.
+\end{proof}
+
+So even when the truth is the identity, the sample covariance matrix has eigenvalues spread from $(1-\sqrt\gamma)^2$ to $(1+\sqrt\gamma)^2$: with $p=500$ variables and $N=2000$ samples, from $0.25$ to $2.25$. The largest sample
+variance along a direction is more than twice the true one, purely by chance. The coefficients $m_k(\gamma)=\sum_rN(k,r)\gamma^{r-1}$ are the \emph{Narayana polynomials} (Exercise~\ref{ex:narayana}). For $\gamma=1$ the law is that
+of the square of a semicircular variable (Exercise~\ref{ex:quartercircle}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-laws}
+\caption{Left: the eigenvalues of one $2000\times2000$ symmetric matrix of random signs, divided by $\sqrt{2000}$, against the semicircle density; the extreme eigenvalues are $-1.985$ and $1.982$. Right: the eigenvalues of a
+sample covariance matrix with $p=500$, $N=2000$, against the Marchenko--Pastur density for $\gamma=\frac14$ on $[\frac14,\frac94]$; one coordinate has true variance $1+\theta=2.5$ instead of $1$, and its eigenvalue leaves the bulk, near
+the value $(1+\theta)(1+\frac\gamma\theta)=2.92$ predicted by Baik, Ben Arous and P\'ech\'e.}
+\label{fig:laws}
+\end{figure}
+
+\section{The largest eigenvalue}
+
+Weak convergence says nothing about a few eigenvalues: a vanishing fraction could escape to infinity. For the Gaussian orthogonal ensemble none does. The \emph{GOE} is the Wigner matrix with Gaussian entries,
+$x_{ij}\sim N(0,1)$ for $i<j$ and $x_{ii}\sim N(0,2)$; write $W=X_n/\sqrt n$. Its density on symmetric matrices is proportional to $\exp(-\frac n4\operatorname{tr}W^2)$, since $\operatorname{tr}W^2=\sum_iw_{ii}^2+2\sum_{i<j}w_{ij}^2$: so the law of
+$W$ is invariant under $W\mapsto QWQ^{\mathsf T}$ for every orthogonal $Q$.
+
+The tool is a comparison of Gaussian processes: a process whose increments are smaller has a smaller expected maximum.
+
+\begin{lemma}[Sudakov and Fernique]\label{lem:sudakov}
+Let $(X_i)_{i\in I}$ and $(Y_i)_{i\in I}$ be centred Gaussian vectors indexed by a finite set, with $\mathbb E(X_i-X_j)^2\le\mathbb E(Y_i-Y_j)^2$ for all $i,j$. Then $\mathbb E\max_iX_i\le\mathbb E\max_iY_i$.
+\end{lemma}
+
+\begin{proof}
+\emph{Gaussian integration by parts.} If $G=(G_1,\dots,G_m)$ is centred Gaussian with covariance $\Sigma$ and $f$ is $C^1$ with bounded derivatives, then $\mathbb E[G_if(G)]=\sum_j\Sigma_{ij}\mathbb E\,\partial_jf(G)$. Indeed $G=AZ$ with $Z$
+standard and $AA^{\mathsf T}=\Sigma$, and Stein's lemma in the variable $Z_k$, the others fixed, gives $\mathbb E[Z_kf(AZ)]=\sum_jA_{jk}\mathbb E\,\partial_jf(AZ)$; multiply by $A_{ik}$ and sum over $k$.
+
+\emph{Interpolation.} Take $X$ and $Y$ independent, $\beta>0$, $F(x)=\frac1\beta\log\sum_ie^{\beta x_i}$, and $\phi(t)=\mathbb EF(\sqrt tX+\sqrt{1-t}Y)$ on $[0,1]$. With $p_i=e^{\beta x_i}/\sum_je^{\beta x_j}$, $\partial_iF=p_i$ and
+$\partial_{ij}F=\beta(p_i\delta_{ij}-p_ip_j)$, all bounded. Differentiating and integrating by parts in $X$ and in $Y$,
+\[
+\phi'(t)=\frac12\sum_{i,j}\bigl(\mathbb EX_iX_j-\mathbb EY_iY_j\bigr)\,\mathbb E\,\partial_{ij}F(Z_t),\qquad Z_t=\sqrt tX+\sqrt{1-t}Y .
+\]
+Write $a_{ij}=\mathbb EX_iX_j-\mathbb EY_iY_j$. Expanding both sides, and using $\sum_jp_j=1$,
+\[
+\sum_{i,j}a_{ij}(p_i\delta_{ij}-p_ip_j)=\sum_ia_{ii}p_i-\sum_{i,j}a_{ij}p_ip_j=\frac12\sum_{i,j}p_ip_j\bigl(a_{ii}+a_{jj}-2a_{ij}\bigr),
+\]
+and $a_{ii}+a_{jj}-2a_{ij}=\mathbb E(X_i-X_j)^2-\mathbb E(Y_i-Y_j)^2\le0$. So $\phi'\le0$ on $(0,1)$, and $\mathbb EF(X)=\phi(1)\le\phi(0)=\mathbb EF(Y)$ ($\phi$ is continuous on $[0,1]$ by dominated convergence). Finally
+$\max_ix_i\le F(x)\le\max_ix_i+\frac{\log|I|}\beta$; let $\beta\to\infty$.
+\end{proof}
+
+\begin{theorem}\label{thm:lambdamax}
+For the GOE, $\lambda_{\max}(W)\to2$ and $\lambda_{\min}(W)\to-2$ almost surely. More precisely $\mathbb E\lambda_{\max}(W)\le2$ and $P(\lambda_{\max}(W)\ge2+t)\le e^{-nt^2/4}$ for $t>0$.
+\end{theorem}
+
+\begin{proof}
+\emph{Expectation.} For a unit vector $u$ let $X_u=u^{\mathsf T}Wu$, so that $\lambda_{\max}(W)=\sup_uX_u$. With $D=uu^{\mathsf T}-vv^{\mathsf T}$, $X_u-X_v=\sum_iw_{ii}D_{ii}+2\sum_{i<j}w_{ij}D_{ij}$, of variance
+$\frac2n\sum_iD_{ii}^2+\frac4n\sum_{i<j}D_{ij}^2=\frac2n\|D\|_F^2=\frac4n\bigl(1-\langle u,v\rangle^2\bigr)$. Compare with $Y_u=\frac2{\sqrt n}\langle g,u\rangle$, $g$ standard Gaussian in $\R^n$:
+$\mathbb E(Y_u-Y_v)^2=\frac4n\|u-v\|^2=\frac8n(1-\langle u,v\rangle)$, which is larger, because $1-\langle u,v\rangle^2=(1-\langle u,v\rangle)(1+\langle u,v\rangle)\le2(1-\langle u,v\rangle)$. For a finite set $U_k$ of unit vectors,
+Lemma~\ref{lem:sudakov} gives $\mathbb E\max_{U_k}X_u\le\mathbb E\max_{U_k}Y_u\le\frac2{\sqrt n}\mathbb E\|g\|\le\frac2{\sqrt n}\sqrt{\mathbb E\|g\|^2}=2$. Let $U_k$ increase to a countable dense subset of the sphere; by continuity
+$\max_{U_k}X_u\uparrow\lambda_{\max}(W)$, and monotone convergence gives $\mathbb E\lambda_{\max}(W)\le2$.
+
+\emph{Concentration.} Write $w_{ij}=g_{ij}/\sqrt n$ ($i<j$) and $w_{ii}=\sqrt2g_{ii}/\sqrt n$ with independent standard Gaussians $g_{ij}$, $i\le j$. By Courant--Fischer, $|\lambda_{\max}(W)-\lambda_{\max}(W')|\le\|W-W'\|_{\mathrm{op}}\le\|W-W'\|_F$, and
+$\|W-W'\|_F^2=\frac1n\bigl(2\sum_{i<j}(g_{ij}-g'_{ij})^2+2\sum_i(g_{ii}-g'_{ii})^2\bigr)$. So $\lambda_{\max}$ is $\sqrt{2/n}$-Lipschitz in $g$, and Gaussian concentration gives $P(\lambda_{\max}\ge2+t)\le P(\lambda_{\max}\ge\mathbb E\lambda_{\max}+t)\le e^{-nt^2/4}$.
+
+\emph{Limit.} The bound is summable in $n$, so by Borel--Cantelli $\limsup\lambda_{\max}\le2+t$ almost surely, for every rational $t>0$. Conversely, by Theorem~\ref{thm:wigneras} (the GOE is a Wigner matrix), almost surely the
+proportion of eigenvalues in $[2-t,\infty)$ tends to $\mu_{\mathrm{sc}}([2-t,2])>0$, so $\liminf\lambda_{\max}\ge2-t$. For $\lambda_{\min}$ apply this to $-W$, which is also GOE.
+\end{proof}
+
+\begin{remark}
+For general Wigner matrices, Zolt\'an F\"uredi and J\'anos Koml\'os (1981) proved $\lambda_{\max}\to2$ for bounded entries by pushing the moment method to moments of order $n^{1/6}$, and Zhidong Bai and Yong-Qua Yin (1988) showed that a
+finite fourth moment is necessary and sufficient. The fluctuations are much smaller than the $n^{-1/2}$ of the concentration inequality: $n^{2/3}(\lambda_{\max}-2)$ converges in law to the \emph{Tracy--Widom distribution} found by
+Craig Tracy and Harold Widom (1994 for complex Hermitian matrices, 1996 for real symmetric ones), whose left tail decays like $e^{-|s|^3/12}$ and right tail like $e^{-\frac23s^{3/2}}$. The same law governs the longest
+increasing subsequence of a random permutation (Baik, Deift and Johansson, 1999; Tome~10, Chapter~8 proved its concentration) and the second eigenvalue of random regular graphs (Chapter~9).
+\end{remark}
+
+\section{A phase transition for signals in noise}
+
+Add a signal to the noise: $M=W+\theta vv^{\mathsf T}$, with $W$ a GOE matrix, $v$ a unit vector and $\theta>0$. If $W$ were $0$, $M$ would have eigenvalue $\theta$ with eigenvector $v$. With noise, the spectrum of $W$ fills
+$[-2,2]$, and the question is whether the signal can still be seen.
+
+\begin{theorem}[outliers of a spiked Wigner matrix]\label{thm:spiked}
+Let $v=v_n$ be unit vectors and $\theta>0$ fixed. In probability, as $n\to\infty$,
+\[
+\lambda_{\max}(W+\theta vv^{\mathsf T})\longrightarrow\begin{cases}2&\text{if }\theta\le1,\\\theta+\frac1\theta&\text{if }\theta>1,\end{cases}
+\]
+and the second largest eigenvalue tends to $2$.
+\end{theorem}
+
+The threshold is sharp: a signal weaker than the noise level $1$ is invisible in the top eigenvalue, and a stronger one emerges at $\theta+\frac1\theta>2$, shifted upwards by the noise. This is the Wigner version of the BBP
+transition, due to D\'elphine F\'eral and Sandrine P\'ech\'e (2007); the proof below follows Florent Benaych-Georges and Raj Rao Nadakuditi (2011).
+
+\begin{proof}
+\emph{Reduction to a random direction.} Let $w$ be uniform on the unit sphere, independent of $W$, and $Q_w$ the reflection exchanging $v$ and $w$ (orthogonal and symmetric). Given $w$, $Q_wWQ_w$ is again GOE, hence
+independent of $w$, and $W+\theta ww^{\mathsf T}=Q_w(Q_wWQ_w+\theta vv^{\mathsf T})Q_w$ has the spectrum of $Q_wWQ_w+\theta vv^{\mathsf T}$, whose law is that of the spectrum of $W+\theta vv^{\mathsf T}$. So we may replace $v$ by $w$; we
+take all the $W=W_n$ and $w=w_n$ independent on one space and prove almost sure convergence, which gives convergence in probability for any $v_n$. Write $w=\eta/\|\eta\|$ with $\eta$ standard Gaussian, and let
+$\lambda_1\ge\dots\ge\lambda_n$ and $\varphi_1,\dots,\varphi_n$ be the eigenvalues and an orthonormal eigenbasis of $W$; given $W$, the coordinates $\eta_i=\langle\eta,\varphi_i\rangle$ are independent standard Gaussians.
+
+\emph{The secular equation.} For $z>\lambda_1$, by the matrix determinant lemma $\det(z-W-\theta ww^{\mathsf T})=\det(z-W)\bigl(1-\theta g_n(z)\bigr)$ with
+\[
+g_n(z)=w^{\mathsf T}(z-W)^{-1}w=\frac{\sum_i\eta_i^2/(z-\lambda_i)}{\sum_i\eta_i^2} .
+\]
+On $(\lambda_1,\infty)$, $g_n$ decreases from $+\infty$ to $0$ (almost surely $\eta_1\ne0$), so $M=W+\theta ww^{\mathsf T}$ has exactly one eigenvalue $z^*>\lambda_1$, the solution of $\theta g_n(z^*)=1$. By Courant--Fischer,
+$\lambda_2(M)\le\max_{x\perp w,\|x\|=1}x^{\mathsf T}Mx=\max_{x\perp w}x^{\mathsf T}Wx\le\lambda_1$ and $\lambda_2(M)\ge\lambda_2$ (since $M\ge W$); both bounds tend to $2$ by Theorem~\ref{thm:lambdamax} and Theorem~\ref{thm:wigneras}. So
+$\lambda_{\max}(M)=z^*$ and $\lambda_2(M)\to2$.
+
+\emph{The limit of $g_n$.} Let $G(z)=\int\frac{\mu_{\mathrm{sc}}(\dd x)}{z-x}=-s_{\mathrm{sc}}(z)=\frac{z-\sqrt{z^2-4}}2$ for $z>2$: it decreases from $G(2)=1$ to $0$. Fix $z>2$, let $z'=\frac{2+z}2$, and $f$ bounded continuous with
+$f(x)=\frac1{z-x}$ for $x\le z'$, $0\le f\le\frac2{z-2}$. Almost surely $\lambda_1<z'$ for $n$ large, and then the numerator of $g_n$ divided by $n$ is $\frac1n\sum_if(\lambda_i)+\frac1n\sum_if(\lambda_i)(\eta_i^2-1)$. The first term
+tends to $G(z)$ by Theorem~\ref{thm:wigneras}. Given $W$, the second is a sum of independent centred terms bounded in $L^4$, whose fourth moment is $O(n^{-2})$; by Borel--Cantelli it tends to $0$ almost surely, and so does
+$\frac1n\sum_i(\eta_i^2-1)$. So $g_n(z)\to G(z)$ almost surely, simultaneously for all rational $z>2$. Since the $g_n$ are decreasing and $G$ is continuous, the convergence is uniform on compact subsets of $(2,\infty)$.
+
+\emph{Conclusion.} If $\theta>1$, $z_\theta=\theta+\frac1\theta>2$ solves $G(z_\theta)=\frac1\theta$ (indeed $\sqrt{z_\theta^2-4}=\theta-\frac1\theta$). For small $\delta>0$, eventually $\lambda_1<z_\theta-\delta$, $\theta g_n(z_\theta-\delta)>1$ and $\theta g_n(z_\theta+\delta)<1$,
+so $z^*\in(z_\theta-\delta,z_\theta+\delta)$. If $\theta\le1$, for every $z>2$, $\theta G(z)<1$, so eventually $\theta g_n(z)<1$ and $z^*<z$; together with $z^*>\lambda_1\to2$, $z^*\to2$.
+\end{proof}
+
+\begin{think}
+Why is the outlier at $\theta+\frac1\theta$ and not at $\theta$? (The eigenvector of $M$ is not $v$: it mixes $v$ with the eigenvectors of $W$ near the edge, and the overlap $\langle x,v\rangle^2$ tends to $1-\frac1{\theta^2}$, Exercise~\ref{ex:overlap}. At
+$\theta=1$ the overlap vanishes: the signal dissolves into the noise exactly when it stops sticking out.)
+\end{think}
+
+\begin{remark}[why PCA overfits]
+Principal component analysis estimates the main direction of variation of data by the top eigenvector of the sample covariance $S$. In the \emph{spiked model} of Iain Johnstone (2001), the true covariance is $I+\theta vv^{\mathsf T}$, and
+$p/N\to\gamma$. Baik, Ben Arous and P\'ech\'e (2005, complex case) and Baik and Silverstein (2006) proved: if $\theta\le\sqrt\gamma$, the top eigenvalue of $S$ sticks to the edge $(1+\sqrt\gamma)^2$ of the Marchenko--Pastur law and its
+eigenvector is asymptotically orthogonal to $v$; if $\theta>\sqrt\gamma$, it converges to $(1+\theta)(1+\frac\gamma\theta)$, and Debashis Paul (2007) showed that the squared overlap with $v$ tends to
+$\frac{1-\gamma/\theta^2}{1+\gamma/\theta}$. The proof is the one above, with the Marchenko--Pastur law in place of the semicircle. So in high dimension a weak signal is not merely estimated badly: it is invisible, and the
+``first principal component'' is a direction of pure noise. Figure~\ref{fig:laws} shows a spike above the threshold; the notebook moves $\theta$ across it.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:pmone}
+Let $X_n$ be symmetric with zero diagonal and independent uniform signs $\pm1$ above it. Show that $\mathbb E\operatorname{tr}X_n^4=n(n-1)(2n-3)$ by counting walks, and deduce $\mathbb Em_n(4)\to2=C_2$. Why does Theorem~\ref{thm:wigneras} apply?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:mpsmall}
+Check $m_3(\gamma)=1+3\gamma+\gamma^2$ by drawing the five plane trees with three edges, and check it against $\mathbb E\frac1p\operatorname{tr}S^3$ computed directly for Gaussian entries when $p=1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quartercircle}
+Show that if $Y$ has the semicircle law, $Y^2$ has the law $\mu_1(\dd x)=\frac1{2\pi}\sqrt{\frac{4-x}x}\mathbf 1_{[0,4]}(x)\dd x$, the Marchenko--Pastur law for $\gamma=1$, and that the moments of $\mu_1$ are the Catalan numbers. Deduce the
+\emph{quarter circle law}: the singular values of $X/\sqrt n$, $X$ a square $n\times n$ matrix of independent entries, are distributed like $|Y|$ (assume the moment computation of Lemma~\ref{lem:mpmoments} holds for $\gamma=1$).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:wide}
+Let $\gamma>1$ (more variables than samples). Show that $XX^{\mathsf T}$ and $X^{\mathsf T}X$ have the same non-zero eigenvalues, and deduce that the empirical distribution of $S$ converges to
+$(1-\frac1\gamma)\delta_0+\frac1\gamma\tilde\mu$, where $\tilde\mu$ is the image of $\mu_{1/\gamma}$ under $x\mapsto\gamma x$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gordon}
+Let $G$ be a $p\times N$ matrix of independent standard Gaussians. Using Lemma~\ref{lem:sudakov} with $X_{u,v}=u^{\mathsf T}Gv$ and $Y_{u,v}=\langle g,u\rangle+\langle h,v\rangle$, show that $\mathbb E\|G\|_{\mathrm{op}}\le\sqrt p+\sqrt N$. Deduce that the
+largest eigenvalue of $S=\frac1NGG^{\mathsf T}$ is at most $(1+\sqrt{p/N})^2+o(1)$ with high probability: the Marchenko--Pastur edge.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:stieltjesconv}
+Let $\mu_n,\mu$ be probability measures with $s_{\mu_n}(z)\to s_\mu(z)$ for every $z\in\mathbb C^+$. Show that $\int f\dd\mu_n\to\int f\dd\mu$ for every continuous $f$ with compact support, and then for every bounded continuous $f$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:narayana}
+Show that the number of plane trees with $k$ edges and $r$ even vertices is the Narayana number $N(k,r)=\frac1k\binom kr\binom k{r-1}$. (Hint: extract coefficients from Lemma~\ref{lem:mpgf} by Lagrange inversion, or find a bijection with
+Dyck paths with $r$ peaks.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:overlap}
+In Theorem~\ref{thm:spiked} with $\theta>1$, let $x$ be a unit eigenvector of $M$ for $\lambda_{\max}(M)$. Show that $\langle x,w\rangle^2=\frac{g_n(z^*)^2}{-g_n'(z^*)}$ and deduce that $\langle x,w\rangle^2\to1-\frac1{\theta^2}$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:pmone}
+Walks of length $4$ with every edge at least twice: two shapes of trees with two edges, and one edge traversed four times. Bounded entries have all moments.
+\end{hint}
+
+\begin{hint}{ex:mpsmall}
+Count even vertices in each tree. For $p=1$, $S=\frac1N\sum_jx_j^2$, and $\mathbb E(\sum_jx_j^2)^3$ is a moment of a $\chi^2$ variable.
+\end{hint}
+
+\begin{hint}{ex:quartercircle}
+Change variables $x=y^2$. The moments of $Y^2$ are the even moments of $Y$. The singular values of $X/\sqrt n$ are the square roots of the eigenvalues of $\frac1nXX^{\mathsf T}$.
+\end{hint}
+
+\begin{hint}{ex:wide}
+If $XX^{\mathsf T}u=\lambda u$ with $\lambda\ne0$, look at $X^{\mathsf T}u$. Apply Theorem~\ref{thm:mp} to $X^{\mathsf T}$, with ratio $\frac Np\to\frac1\gamma<1$.
+\end{hint}
+
+\begin{hint}{ex:gordon}
+$\mathbb E(X_{u,v}-X_{u',v'})^2=\|uv^{\mathsf T}-u'v'^{\mathsf T}\|_F^2=2-2\langle u,u'\rangle\langle v,v'\rangle$, and $2-2ab\le(2-2a)+(2-2b)$ for $a,b\le1$. For the edge, use Gaussian concentration as in Theorem~\ref{thm:lambdamax}.
+\end{hint}
+
+\begin{hint}{ex:stieltjesconv}
+The functions $x\mapsto\frac1\pi\operatorname{Im}\frac1{x-z}$ are Cauchy densities; their translates and dilates approximate any continuous function with compact support uniformly (they form an approximate identity). For bounded
+$f$, check tightness first with $f=\operatorname{Im}\frac1{x-iy}$, $y$ large.
+\end{hint}
+
+\begin{hint}{ex:narayana}
+By Lemma~\ref{lem:mpgf}, $O(w)=\frac1{1-\gamma wF}$ and $F=\frac1{1-wO}$. Set $F=1+\Phi$; then $\Phi=w(1+\Phi)(1+\gamma\Phi)$, and Lagrange inversion gives $[w^k]\Phi=\frac1k[t^{k-1}](1+t)^k(1+\gamma t)^k$.
+\end{hint}
+
+\begin{hint}{ex:overlap}
+The eigenvector is proportional to $(z^*-W)^{-1}w$. For the limit, $g_n'$ converges to $G'$ by the same argument as $g_n$, and $G'=\frac1{1-1/G^2}$ from $z=G+\frac1G$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:pmone}
+\idea Only the shapes with the most vertices survive the normalisation, and they are the plane trees.
+\writeup Since the diagonal is $0$, a contributing walk $i_1i_2i_3i_4i_1$ has no loops and every edge traversed at least twice: either two edges, each twice, forming a tree with $3$ vertices (the shapes $i\,j\,i\,k\,i$ and $i\,j\,k\,j\,i$
+with $i,j,k$ distinct: $2n(n-1)(n-2)$ walks, each of expectation $1$), or one edge traversed four times ($i\,j\,i\,j\,i$: $n(n-1)$ walks, $\mathbb Ex^4=1$). Total $n(n-1)(2n-3)$, and $\mathbb Em_n(4)=\frac{n(n-1)(2n-3)}{n^3}\to2$.
+Bounded entries have all moments bounded, the off-diagonal variance is $1$ and the diagonal is allowed any variance, here $0$: the theorem applies.
+\end{solution}
+
+\begin{solution}{ex:mpsmall}
+\idea A tree with $k$ edges has $k+1$ vertices, split between even and odd depths; $\gamma$ counts the even ones beyond the root.
+\writeup The plane trees with $3$ edges: the path of length $3$ (even vertices: root and depth $2$, $e=2$), the root with three children ($e=1$), the root with two children one of which has a child, in two orders ($e=2$ each), and
+the root with one child having two children ($e=3$). So $m_3=1+3\gamma+\gamma^2$. For $p=1$ ($\gamma\approx0$), $S=\frac1N\chi^2_N$ and $\mathbb ES^3=\frac{N(N+2)(N+4)}{N^3}\to1=m_3(0)$.
+\end{solution}
+
+\begin{solution}{ex:quartercircle}
+\idea Squaring folds the semicircle onto $[0,4]$; Catalan numbers are the even moments of the semicircle and all the moments of the folded law.
+\writeup For $0<x<4$, $P(Y^2\le x)=\int_{-\sqrt x}^{\sqrt x}\frac{\sqrt{4-y^2}}{2\pi}\dd y$, with derivative $2\cdot\frac{\sqrt{4-x}}{2\pi}\cdot\frac1{2\sqrt x}=\frac1{2\pi}\sqrt{\frac{4-x}x}$, which is $\mu_\gamma$ for $\gamma=1$ ($a=0$, $b=4$). Its moments
+$\mathbb EY^{2k}=C_k$. And $m_k(1)$ counts all plane trees with $k$ edges, $C_k$. The squared singular values of $X/\sqrt n$ are the eigenvalues of $\frac1nXX^{\mathsf T}$, whose moments tend to $C_k$; so they are distributed like
+$Y^2$, and the singular values like $|Y|$, with density $\frac1\pi\sqrt{4-s^2}$ on $[0,2]$: a quarter circle.
+\end{solution}
+
+\begin{solution}{ex:wide}
+\idea The $p\times p$ matrix has rank at most $N$; its non-zero spectrum is that of the smaller $N\times N$ matrix.
+\writeup If $XX^{\mathsf T}u=\lambda u$, $\lambda\ne0$, then $X^{\mathsf T}u\ne0$ and $X^{\mathsf T}X(X^{\mathsf T}u)=\lambda X^{\mathsf T}u$, with the same multiplicities (the map $u\mapsto X^{\mathsf T}u$ is injective on the eigenspace). So $S$ has at least
+$p-N$ zero eigenvalues and its other eigenvalues are those of $\frac1NX^{\mathsf T}X=\frac pN\cdot\frac1pX^{\mathsf T}X$. By Theorem~\ref{thm:mp} for the $N\times p$ matrix $X^{\mathsf T}$ (ratio $\frac Np\to\frac1\gamma$), the eigenvalues of
+$\frac1pX^{\mathsf T}X$ follow $\mu_{1/\gamma}$; multiplying by $\frac pN\to\gamma$ and weighting by $\frac Np$ gives the claim. The density part is again $\frac{\sqrt{(b-x)(x-a)}}{2\pi\gamma x}$ on $[(1-\sqrt\gamma)^2,(1+\sqrt\gamma)^2]$: the same formula.
+\end{solution}
+
+\begin{solution}{ex:gordon}
+\idea The operator norm is the supremum of a bilinear Gaussian process; compare it with the sum of two independent linear ones.
+\writeup $\|G\|_{\mathrm{op}}=\sup_{u,v}u^{\mathsf T}Gv$ over unit $u\in\R^p$, $v\in\R^N$. With $a=\langle u,u'\rangle$, $b=\langle v,v'\rangle$: $\mathbb E(X_{u,v}-X_{u',v'})^2=\|uv^{\mathsf T}-u'v'^{\mathsf T}\|_F^2=2-2ab$ and
+$\mathbb E(Y_{u,v}-Y_{u',v'})^2=\|u-u'\|^2+\|v-v'\|^2=4-2a-2b$; the difference is $2(1-a)(1-b)\ge0$. By Lemma~\ref{lem:sudakov} on finite sets and monotone convergence, $\mathbb E\|G\|\le\mathbb E\|g\|+\mathbb E\|h\|\le\sqrt p+\sqrt N$. The norm is
+$1$-Lipschitz in the entries (Frobenius), so $P(\|G\|\ge\sqrt p+\sqrt N+t)\le e^{-t^2/2}$. With $t=N^{1/4}$, the largest eigenvalue of $S$, which is $\frac1N\|G\|^2$, is at most $\bigl(1+\sqrt{p/N}+N^{-1/4}\bigr)^2$ with probability at least
+$1-e^{-\sqrt N/2}$.
+\end{solution}
+
+\begin{solution}{ex:stieltjesconv}
+\idea Imaginary parts of $\frac1{x-z}$ are bumps; enough bumps make every continuous function.
+\writeup For $z=t+i\varepsilon$, $\frac1\pi\operatorname{Im}\frac1{x-z}=P_\varepsilon(x-t)$, the Cauchy density centred at $t$. So $\int P_\varepsilon(x-t)\mu_n(\dd x)\to\int P_\varepsilon(x-t)\mu(\dd x)$ for every $t$ and $\varepsilon$, and by dominated convergence (in $t$, with
+bound $\frac1{\pi\varepsilon}$) also $\int(f*P_\varepsilon)\dd\mu_n\to\int(f*P_\varepsilon)\dd\mu$ for $f$ continuous with compact support. Since $f*P_\varepsilon\to f$ uniformly as $\varepsilon\to0$, $\int f\dd\mu_n\to\int f\dd\mu$. For tightness:
+$y\operatorname{Im}s_{\mu_n}(iy)=\int\frac{y^2}{x^2+y^2}\mu_n(\dd x)$ converges to the same quantity for $\mu$, which is close to $1$ for $y$ large, and $\frac{y^2}{x^2+y^2}\le\frac12$ for $|x|\ge y$; so $\mu_n(|x|\ge y)$ is uniformly small
+for large $y$. Vague convergence and tightness give weak convergence.
+\end{solution}
+
+\begin{solution}{ex:narayana}
+\idea The generating function in two variables is algebraic, and Lagrange inversion reads off its coefficients.
+\writeup The proof of Lemma~\ref{lem:mpgf} gives $F=\frac1{1-wO}$ and $O=\frac1{1-\gamma wF}$, that is $F-1=wOF$ and $O-1=\gamma wOF$. So with $\Phi=F-1$, $O=1+\gamma\Phi$ and $\Phi=w(1+\Phi)(1+\gamma\Phi)$. Lagrange inversion for $\Phi=w\psi(\Phi)$ with $\psi(t)=(1+t)(1+\gamma t)$ gives $[w^k]\Phi=\frac1k[t^{k-1}]\psi(t)^k=\frac1k\sum_{r}\binom k{k-r}\binom k{r-1}\gamma^{r-1}$, taking $t^{k-r}$ from $(1+t)^k$ and $t^{r-1}$ from
+$(1+\gamma t)^k$. So the coefficient of $\gamma^{r-1}$ in $m_k$ is $\frac1k\binom kr\binom k{r-1}=N(k,r)$.
+\end{solution}
+
+\begin{solution}{ex:overlap}
+\idea The top eigenvector is the resolvent applied to the spike; its overlap is a ratio of the secular function and its derivative.
+\writeup From $(z^*-W)x=\theta\langle w,x\rangle w$, $x=c(z^*-W)^{-1}w$ with $c=\theta\langle w,x\rangle$. Then $\langle x,w\rangle=cg_n(z^*)$ and $1=\|x\|^2=c^2w^{\mathsf T}(z^*-W)^{-2}w=-c^2g_n'(z^*)$, so
+$\langle x,w\rangle^2=\frac{g_n(z^*)^2}{-g_n'(z^*)}$. The argument of the proof, applied to $\frac1{(z-x)^2}$, gives $g_n'\to G'$ uniformly on compact subsets of $(2,\infty)$, and $z^*\to z_\theta$, so the limit is
+$\frac{G(z_\theta)^2}{-G'(z_\theta)}$. Since $z=G+\frac1G$ for $z>2$, $G'=\frac1{1-1/G^2}$, and with $G(z_\theta)=\frac1\theta$: $-G'=\frac1{\theta^2-1}$ and the limit is $\frac{\theta^2-1}{\theta^2}=1-\frac1{\theta^2}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} J.~Wishart, ``The generalised product moment distribution in samples from a normal multivariate population'', \emph{Biometrika} 20A (1928), 32--52. E.~P.~Wigner, ``Characteristic vectors of bordered matrices with
+infinite dimensions'', \emph{Annals of Mathematics} 62 (1955), 548--564, and ``On the distribution of the roots of certain symmetric matrices'', \emph{Annals of Mathematics} 67 (1958), 325--327. V.~A.~Marchenko and L.~A.~Pastur,
+``Distribution of eigenvalues for some sets of random matrices'', \emph{Matematicheskii Sbornik} 72 (1967), 507--536. Z.~F\"uredi and J.~Koml\'os, ``The eigenvalues of random symmetric matrices'', \emph{Combinatorica} 1 (1981),
+233--241. Z.~D.~Bai and Y.~Q.~Yin, ``Necessary and sufficient conditions for almost sure convergence of the largest eigenvalue of a Wigner matrix'', \emph{Annals of Probability} 16 (1988), 1729--1741.
+\item \emph{Edges and spikes.} C.~A.~Tracy and H.~Widom, ``Level-spacing distributions and the Airy kernel'', \emph{Communications in Mathematical Physics} 159 (1994), 151--174, and ``On orthogonal and symplectic matrix ensembles'',
+ibid.\ 177 (1996), 727--754. I.~M.~Johnstone, ``On the distribution of the largest eigenvalue in principal components analysis'', \emph{Annals of Statistics} 29 (2001), 295--327. J.~Baik, G.~Ben Arous and S.~P\'ech\'e, ``Phase transition
+of the largest eigenvalue for nonnull complex sample covariance matrices'', \emph{Annals of Probability} 33 (2005), 1643--1697. D.~F\'eral and S.~P\'ech\'e, ``The largest eigenvalue of rank one deformation of large Wigner matrices'',
+\emph{Communications in Mathematical Physics} 272 (2007), 185--228. F.~Benaych-Georges and R.~R.~Nadakuditi, ``The eigenvalues and eigenvectors of finite, low rank perturbations of large random matrices'', \emph{Advances in
+Mathematics} 227 (2011), 494--521.
+\item G.~W.~Anderson, A.~Guionnet and O.~Zeitouni, \emph{An Introduction to Random Matrices}, Cambridge University Press, 2010. Moments, Stieltjes transforms, concentration and the edge.
+\item T.~Tao, \emph{Topics in Random Matrix Theory}, American Mathematical Society, 2012. Chapter~2: the operator norm, the semicircle law by three methods.
+\item Z.~Bai and J.~W.~Silverstein, \emph{Spectral Analysis of Large Dimensional Random Matrices}, 2nd ed., Springer, 2010. Marchenko--Pastur and its relatives, with the statistician's motivation.
+\end{itemize}
