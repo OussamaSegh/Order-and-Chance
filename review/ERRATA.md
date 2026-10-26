@@ -573,3 +573,25 @@ in its output.
 | Where | Kind | Problem | Fix |
 |---|---|---|---|
 | Ch. 8, remark "how many twins?" after Theorem 8.6 | math | Attributed π₂(x) ≤ (8C₂ + o(1)) x/log²x ("4 times too large") to the plain Selberg sieve. Sifting n(n+2) with Selberg's sieve gives 16C₂, 8 times the Hardy–Littlewood 2C₂; the factor 4 (8C₂) is Bombieri–Davenport 1966, sifting p + 2 with Bombieri–Vinogradov. | Corrected to 16C₂ and factor 8, Bombieri–Davenport credited for the factor 4, Wu's 3.4 kept; both papers added to the sources. |
+
+## Review: Tome 9
+
+An independent pass over Tome 9 (Structures II, 11 chapters, 11 notebooks). Every proof and every solution was read line by line and re-derived, with extra care for the three chapters the coordinator flagged. Chapter 9: the dominance lemma, the submodule theorem of James, the standard basis of the Specht modules, the Robinson–Schensted correspondence and its inverse, the hook walk of Greene–Nijenhuis–Wilf and the hook length formula (f^(5,4,2,1) = 5775, f^(3,2,1) = 16, the corner probabilities 1320, 2310, 1155, 990 over 5775), and the content formula for the character of a transposition (Theorem 9.15) are correct. Chapter 10: the Fourier transform on S_n, the upper bound lemma, the eigenvalues of random transpositions, Lemmas 10.6 and 10.7 and every constant in the proof of the cutoff theorem (Theorem 10.8: 5/9, 0.5001, ln σ < −0.57, h_k ≤ 8.2, q < 0.151, 19.4, 19.5 and the bound 3e^{−4c/3}) were recomputed; d(155) ≤ 0.06 for n = 52 follows from the notebook's S = 0.01372; the lower bound 1 − 6e^{1−2c} is the one Tome 3, Proposition 8.21 proves. Chapter 11: Peter–Weyl, the alternant formula for the Schur functions, Weyl's character and dimension formulas for U(n), E|tr U^k|² = min(k, n), the Pieri step, the Rains–Gessel moment theorem (E|tr U|^{2a} = a! for a ≤ n, the Catalan numbers for n = 2), the complex Gaussian moments and the Keating–Snaith case k = 1 are correct. Every numbered pointer to Tomes 0, 1, 2, 3, 5, 6, 7, 8, 12 and S1 (about 110 of them, including the promises kept to Tome 2 Ch. 4, Tome 3 Ch. 8 and Tome 8 Ch. 8) was checked against the aux files of those tomes, and the unnumbered chapter pointers against their chapter files: all correct. The quotes and anecdotes were checked against their sources (Yoneda at the Gare du Nord, Kinoshita 1996; the Gross–Streep film story, Harvard Crimson 2003; Gordan's "theology" and his concession, Plus Magazine 2006; Young's last paper of 1952 and Turnbull's words, MacTutor; Diaconis at fourteen, Gardner, Mosteller, MacTutor; Bayer–Diaconis 1992 figures). The dates and references of all eleven "Sources" sections were checked (Kan 1958, Moggi 1991, Wadler 1995, Whitney 1938, Baer 1934/1940, Strassen 1969, Gordan 1868, Hilbert 1890/1893, Noether 1921/1927, Zariski 1947, Buchberger 1965, Krull 1938, Cohen–Seidenberg 1946, Dedekind 1871, Claborn 1966, Weil 1940, Cartan–Eilenberg 1956, Yoneda 1954, Hölder 1893, Schreier 1926, Schur 1904, Feit–Thompson 1963, Burnside 1904, Wedderburn 1908, Mackey 1951, Specht 1935, James 1978, Robinson 1938, Schensted 1961, Knuth 1970, Frame–Robinson–Thrall 1954, Greene–Nijenhuis–Wilf 1979, Vershik–Kerov and Logan–Shepp 1977, Baik–Deift–Johansson 1999, Diaconis–Shahshahani 1981, Aldous–Diaconis 1986, Peres 2004, Schur 1924, Weyl 1925–26, Peter–Weyl 1927, Rains 1998, Keating–Snaith 2000, Gell-Mann 1961/1964). Publishing rules: author "SEGHAIER Oussama" only, "First edition", no mention of the repository, no personal details. The build is clean (186 KDP pages; no undefined or multiply defined label, no overfull box above 10 pt in any of the four formats, no pandoc warning); all eleven notebooks run without error and write nothing into the repository, and every number quoted from a notebook appears in its output.
+
+### Tome 9
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 1, closing "beauty" box | math (minor) | "inducing a representation from a subgroup is left adjoint to restricting one": Chapter 8, Theorem 8.5 proves Hom_G(V, Ind W) ≅ Hom_H(Res V, W), that is, induction is *right* adjoint to restriction (and Chapter 8 says so). For finite groups it is also left adjoint, but the box contradicted the chapter it announced. | "right adjoint to restricting one (for finite groups it is left adjoint too)". |
+| Ch. 1, sources | text | Eilenberg–Mac Lane, "Group extensions and homology", Ann. of Math. 43 (1942): pages given as 758–831; the paper starts on page 757 (Chapter 6 has it right). | 757–831. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 9, ch. 1–11 | None found: all run (ch. 4 takes about 90 s, ch. 10 about 40 s, the rest a few seconds), every number quoted from a notebook in the text appears in that notebook's output. | — |
+
+### Known and left as is
+
+- Chapter 3: Rabinowitsch's one-page note is dated 1929 in the text and the sources; Math. Ann. volume 102 is dated 1929–1930 (received 1929, the volume carries 1930), and both years appear in the literature.
+- Chapter 9: "Young's last paper appeared in 1952, eleven years after his death" follows MacTutor's wording (Young died in December 1940).
