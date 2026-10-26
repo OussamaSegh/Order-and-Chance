@@ -1,0 +1,748 @@
+\chapter{Algebraic Curves}
+\begin{center}\itshape
+A line meets a parabola twice, a circle meets a circle twice, a cubic meets a cubic nine times.\\
+Except when they do not.\\
+Count at infinity, count over $\C$, count with multiplicity, and the exceptions disappear.
+\end{center}
+
+In 1720 Colin Maclaurin noticed something odd. A cubic curve in the plane has an equation with ten coefficients, so nine points should
+determine it, just as two points determine a line and five a conic. But two different cubics meet in nine points. So nine points do
+\emph{not} always determine a cubic, and Gabriel Cramer, who made the same observation in 1750, could not say which nine points do.
+The ``Cramer paradox'' sat there until the nineteenth century, when it was understood as the first instance of two theorems.
+\emph{B\'ezout's theorem} (stated by Newton and Maclaurin, ``proved'' by B\'ezout in 1779, proved by Halphen and Noether a century later):
+two plane curves of degrees $m$ and $n$ without a common component meet in exactly $mn$ points, if one counts properly. And the
+\emph{Cayley--Bacharach theorem}: the nine points where two cubics meet are special, since any cubic through eight of them passes through
+the ninth.
+
+Counting properly needs three things. Points at infinity: the parallel lines $y=0$ and $y=1$ meet there. Complex points: the circle
+$x^2+y^2=1$ and the line $x=2$ meet at $(2,\pm i\sqrt3)$. Multiplicities: the parabola $y=x^2$ touches the line $y=0$ twice at the
+origin. With these three conventions, which this chapter makes precise, B\'ezout's count is exact, and it becomes the engine of
+everything else.
+
+The second half of the chapter is about a single curve and the functions on it. In 1857 Riemann asked how many meromorphic functions a
+compact Riemann surface carries with poles bounded by a given divisor $D$, and found the answer up to a correction: at least
+$\deg D+1-g$, where $g$ is the number of holes of the surface. His student Gustav Roch, who died of tuberculosis at twenty-six, found the
+correction term in 1865. Brill and Max Noether turned the analysis into algebra in 1874 using plane curves and B\'ezout's theorem, and
+that algebra works over any algebraically closed field, in particular over $\overline{\mathbb F}_p$. This is the version proved here,
+for smooth plane curves, following Fulton's book. Its payoffs come in the next three chapters: the group law on an elliptic curve
+(Chapter~12), the Riemann hypothesis for curves over finite fields (Chapter~13), and, at the end of this chapter, error-correcting codes
+that beat the best codes built from polynomials.
+
+\begin{reminder}[from Tome 2]
+$k[x_1,\dots,x_n]$ is a UFD (Tome~2, Theorem~6.17), and by Gauss's lemma a polynomial of $R[y]$, $R$ a UFD with fraction field $K$, that
+divides another one in $K[y]$ divides it in $R[y]$ when it is primitive (Tome~2, Proposition~6.16). The Chinese remainder theorem for rings:
+if $I_1,\dots,I_s$ are pairwise coprime ideals of a commutative ring $A$, then $A/(I_1\cdots I_s)\cong\prod A/I_i$ (Tome~2, Theorem~6.9, by
+induction). An algebraically closed field $k$ has no proper finite extension. Throughout this chapter $k$ is an algebraically closed
+field of any characteristic, except in Section~\ref{sec:goppa}.
+\end{reminder}
+
+\section{Plane curves}
+
+An \emph{affine plane curve} is a non-constant polynomial $F\in k[x,y]$, up to a non-zero scalar factor; its points are
+$V(F)=\{(a,b)\in k^2:F(a,b)=0\}$, its \emph{degree} is $\deg F$, and its \emph{components} are its irreducible factors (counted with
+multiplicity). We identify a curve with its equation: different equations can have the same points ($y$ and $y^2$), and the equation is the
+finer object, which carries multiplicities.
+
+The \emph{projective plane} $\mathbb P^2$ is the set of lines through the origin of $k^3$; the line through $(a,b,c)\ne0$ is written
+$(a:b:c)$. The points with $c\ne0$ form a copy of $k^2$ via $(a:b:c)\mapsto(a/c,b/c)$, and the points with $c=0$ form the \emph{line at
+infinity}, one point for each direction of lines in $k^2$: the parallel lines $y=0$ and $y=1$ both pass through $(1:0:0)$. A
+\emph{projective plane curve} is a non-constant homogeneous polynomial (a \emph{form}) $F\in k[X,Y,Z]$, up to a scalar; since
+$F(\lambda a,\lambda b,\lambda c)=\lambda^{\deg F}F(a,b,c)$, the condition $F(P)=0$ makes sense for $P\in\mathbb P^2$. To go back and forth,
+\[
+F_*(x,y)=F(x,y,1),\qq f^*(X,Y,Z)=Z^{\deg f}f(X/Z,Y/Z).
+\]
+If $Z\nmid F$, then $(F_*)^*=F$; and $(f^*)_*=f$ always. So affine curves and projective curves without the component $Z$ correspond, and the
+projective curve adds the points at infinity. Every linear change of coordinates of $k^3$ acts on $\mathbb P^2$ (a \emph{projective change of
+coordinates}); it can move any line to $Z=0$ and any point to $(0:0:1)$.
+
+Let $P=(a,b)$ be a point of the affine curve $F$. Expanding $F$ in powers of $x-a$ and $y-b$, $F=F_m+F_{m+1}+\dots$ with $F_j$ homogeneous of
+degree $j$ in $x-a,y-b$ and $F_m\ne0$; the integer $m=m_P(F)$ is the \emph{multiplicity} of $P$ on $F$ (it is $0$ iff $P\notin F$). $P$ is a
+\emph{smooth} (or simple) point if $m_P(F)=1$, that is if $F_x(P)$ and $F_y(P)$ are not both $0$; then the line $F_x(P)(x-a)+F_y(P)(y-b)=0$ is
+the \emph{tangent line} at $P$. A point of a projective curve is smooth if it is smooth in an affine chart containing it, and a curve is
+\emph{smooth} if all its points are.
+
+\begin{lemma}\label{lem:projsmooth}
+A point $P$ of a projective curve $F$ is singular iff $F_X(P)=F_Y(P)=F_Z(P)=0$. In particular this does not depend on the chart.
+\end{lemma}
+\begin{proof}
+By symmetry let $P=(a:b:1)$ lie in the chart $Z\ne0$, where the curve is $F_*$. Then $(F_*)_x(a,b)=F_X(a,b,1)$ and $(F_*)_y(a,b)=F_Y(a,b,1)$, so
+$P$ is singular iff $F_X(P)=F_Y(P)=0$. And this forces $F_Z(P)=0$, by Euler's identity $XF_X+YF_Y+ZF_Z=(\deg F)F$ (check it on monomials),
+evaluated at $(a,b,1)$, where $F$ vanishes. This holds in every characteristic.
+\end{proof}
+
+\begin{example}[three cubics]\label{exa:threecubics}
+The cubic $y^2=x^2(x+1)$ has a \emph{node} at the origin: its lowest terms are $y^2-x^2=(y-x)(y+x)$, two tangent lines. The cubic $y^2=x^3$ has a
+\emph{cusp}: lowest term $y^2$, one tangent counted twice. The cubic $y^2=x^3-x$ is smooth: $F=y^2-x^3+x$ has $F_y=2y$, $F_x=1-3x^2$, which do not
+vanish together on the curve if $\operatorname{char}k\ne2$ (if $y=0$ then $x\in\{0,\pm1\}$ and $1-3x^2\in\{1,-2\}$); at infinity
+$Y^2Z-X^3+XZ^2$ has the single point $(0:1:0)$, where $F_Z=Y^2+2XZ=1\ne0$. Figure~\ref{fig:threecubics} shows the real points. The first two are
+\emph{rational}: the line $y=tx$ through the singular point meets the curve in one more point, $(t^2-1,t(t^2-1))$, respectively $(t^2,t^3)$, and
+this parametrises the curve by $t$. The third one admits no such parametrisation (Corollary~\ref{cor:genus1} will say in what sense).
+\end{example}
+
+\begin{figure}[ht]
+\centering\fig{ch11-cubics}
+\caption{The real points of a nodal cubic $y^2=x^2(x+1)$, a cuspidal cubic $y^2=x^3$, and a smooth cubic $y^2=x^3-x$, which has two real
+components; the line through the singular point used to parametrise the first two is dashed.}
+\label{fig:threecubics}
+\end{figure}
+
+The first thing to know about two curves is that they meet in finitely many points, with a finite amount of algebra at each.
+
+\begin{lemma}\label{lem:finite}
+Let $F,G\in k[x,y]$ have no common factor. Then $(F,G)$ contains a non-zero polynomial in $x$ alone and a non-zero polynomial in $y$ alone.
+Hence $V(F)\cap V(G)$ is finite and $k[x,y]/(F,G)$ is a finite-dimensional $k$-vector space.
+\end{lemma}
+\begin{proof}
+View $F,G$ in $R[y]$ with $R=k[x]$, and in $K[y]$ with $K=k(x)$. They have no common factor of positive degree in $K[y]$: such a factor can
+be scaled to a primitive polynomial of $R[y]$, which would divide both in $R[y]$ (Tome~2, Proposition~6.16). If one of $F,G$ is a non-zero
+element of $R$ there is nothing to prove; otherwise, as $K[y]$ is a PID, $AF+BG=1$ for some $A,B\in K[y]$. Multiplying by a common denominator
+$D(x)\in R$ gives $aF+bG=D(x)\ne0$ with $a,b\in k[x,y]$. By symmetry $(F,G)$ also contains some $E(y)\ne0$. The points of $V(F)\cap V(G)$ have their
+$x$-coordinate among the roots of $D$ and their $y$-coordinate among those of $E$, so they are finitely many; and modulo $(D(x),E(y))$ every
+polynomial reduces to a combination of the $x^iy^j$ with $i<\deg D$, $j<\deg E$.
+\end{proof}
+
+For a point $P$ of $k^2$, let $\mathcal O_P=\mathcal O_P(\mathbb A^2)$ be the ring of rational functions $f/g$ with $f,g\in k[x,y]$ and $g(P)\ne0$:
+the functions defined near $P$. It is a local ring: its non-units are the functions vanishing at $P$, and they form its unique maximal ideal
+$\mathfrak m_P$. Ideals of $k[x,y]$ generate ideals of $\mathcal O_P$, written $I\mathcal O_P$.
+
+\begin{lemma}[local decomposition]\label{lem:localdecomp}
+Let $I$ be an ideal of $k[x,y]$ with $A=k[x,y]/I$ finite-dimensional. Then $V(I)=\{P_1,\dots,P_s\}$ is finite and
+\[
+k[x,y]/I\;\cong\;\prod_{i=1}^s\mathcal O_{P_i}/I\mathcal O_{P_i},
+\]
+the map being induced by the inclusions $k[x,y]\subseteq\mathcal O_{P_i}$. In particular $h\in I$ iff $h\in I\mathcal O_P$ for every $P\in V(I)$.
+\end{lemma}
+\begin{proof}
+\emph{Maximal ideals.} Let $M$ be a maximal ideal of $A$. The field $A/M$ is finite-dimensional over $k$, so it is $k$; if $x\mapsto a$ and $y\mapsto b$
+in it, then $M$ contains the images of $x-a$ and $y-b$, and since $(x-a,y-b)$ is already maximal, $M$ is its image. So the maximal ideals of $A$
+are the images $M_i$ of $\mathfrak m_{P}\cap k[x,y]=(x-a,y-b)$ for the points $P=(a,b)$ with $I\subseteq(x-a,y-b)$, that is $P\in V(I)$. Distinct
+maximal ideals are pairwise coprime, so by the Chinese remainder theorem $A\to\prod A/M_i$ is onto, and there are at most $\dim A$ of them.
+
+\emph{Nilpotence.} Every element $u$ of $A$ outside all the $M_i$ is a unit: otherwise $uA$ is a proper ideal, contained in a maximal one. Let
+$a\in J=\bigcap M_i$, and let $\mu(T)=T^j\nu(T)$, $\nu(0)\ne0$, be the minimal polynomial of the linear map ``multiplication by $a$''. Then
+$\nu(a)\equiv\nu(0)\not\equiv0$ modulo each $M_i$, so $\nu(a)$ is a unit, and $a^j\nu(a)=0$ gives $a^j=0$. So $J$ is spanned by finitely many
+nilpotent elements, say $N$ of them with $r$-th powers $0$, and any product of $Nr$ elements of $J$ vanishes: $J^{Nr}=0$. Put $R=Nr$.
+
+\emph{Splitting.} The ideals $M_i^R$ are pairwise coprime (raise $1=u+v$, $u\in M_i$, $v\in M_j$, to the power $2R$), and their product is contained
+in $J^R=0$. By the Chinese remainder theorem, $A\cong\prod_iA/M_i^R$. Each factor $A_i=A/M_i^R$ is local: its only maximal ideal is the image of
+$M_i$, and every element outside it is a unit. Finally $A_i\cong\mathcal O_{P_i}/I\mathcal O_{P_i}$: the map $k[x,y]\to A_i$ sends every
+$g$ with $g(P_i)\ne0$ to a unit, so it extends to $\mathcal O_{P_i}\to A_i$, which kills $I\mathcal O_{P_i}$; it is onto. Conversely, let
+$e_i\in A$ be the idempotent that is $1$ in $A_i$ and $0$ in the other factors, and lift it to $\tilde e\in k[x,y]$; then $\tilde e(P_i)=1$, because $e_i-1$ maps to $0$ in $A_i$ and so lies in the image of $M_i$. If $h\in k[x,y]$ maps to $0$ in $A_i$, then $he_i=0$ in $A$, so $h\tilde e\in I$, and
+$h=h\tilde e/\tilde e\in I\mathcal O_{P_i}$ since $\tilde e$ is a unit of $\mathcal O_{P_i}$. Every element of $\mathcal O_{P_i}$ is $h/g$, so
+the kernel of $\mathcal O_{P_i}\to A_i$ is exactly $I\mathcal O_{P_i}$.
+\end{proof}
+
+Lemmas~\ref{lem:finite} and~\ref{lem:localdecomp} together are the two-variable case of Hilbert's Nullstellensatz, which is all this chapter
+needs.
+
+\section{Intersection numbers}
+
+\begin{definition}
+Let $F,G\in k[x,y]$ have no common factor and let $P\in k^2$. The \emph{intersection number} of $F$ and $G$ at $P$ is
+\[
+I(P,F\cap G)=\dim_k\mathcal O_P/(F,G)\mathcal O_P .
+\]
+\end{definition}
+
+It is finite, being the dimension of a factor in Lemma~\ref{lem:localdecomp} (with $I=(F,G)$, which is allowed by Lemma~\ref{lem:finite}), and
+the same lemma says
+\begin{equation}\label{eq:sumI}
+\sum_{P}I(P,F\cap G)=\dim_kk[x,y]/(F,G).
+\end{equation}
+Two examples. For the axes, $\mathcal O_P/(x,y)=k$ at $P=(0,0)$, so $I=1$. For the parabola and its tangent, $(y-x^2,y)=(y,x^2)$, and
+$\mathcal O_P/(y,x^2)$ has basis $1,x$: $I=2$, the tangency counted twice.
+
+\begin{proposition}\label{prop:intprops}
+Let $F,G,H\in k[x,y]$, with $F$ prime to $G$ and to $H$, and $P\in k^2$.
+\begin{enumerate}[label=(\alph*)]
+\item $I(P,F\cap G)=I(P,G\cap F)$; it is $0$ iff $P\notin V(F)\cap V(G)$; it is unchanged by an affine change of coordinates.
+\item $I(P,F\cap G)=I(P,F\cap(G+AF))$ for every $A\in k[x,y]$.
+\item $I(P,F\cap GH)=I(P,F\cap G)+I(P,F\cap H)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The ideal $(F,G)$ is symmetric. If $F(P)\ne0$ then $F$ is a unit of $\mathcal O_P$ and the quotient is $0$; if $F(P)=G(P)=0$ then
+$(F,G)\mathcal O_P\subseteq\mathfrak m_P$ and the quotient maps onto $\mathcal O_P/\mathfrak m_P=k$. An affine change of coordinates induces
+an isomorphism of the local rings carrying one ideal to the other. (b) The ideals $(F,G)$ and $(F,G+AF)$ are equal.
+
+(c) Write $\mathcal O=\mathcal O_P$. Multiplication by $G$ gives a map $\mathcal O/(F,H)\to\mathcal O/(F,GH)$, and $\mathcal O/(F,GH)\to\mathcal O/(F,G)$ is
+the natural projection. The sequence
+\[
+0\to\mathcal O/(F,H)\xrightarrow{\;\cdot G\;}\mathcal O/(F,GH)\to\mathcal O/(F,G)\to0
+\]
+is exact: the projection is onto, the image of $\cdot G$ is $(F,G)/(F,GH)$, which is the kernel of the projection, and $\cdot G$ is injective.
+For the last point, suppose $Gz\in(F,GH)\mathcal O$; multiplying by a polynomial that does not vanish at $P$, we may take $z,u,v\in k[x,y]$ with
+$sGz=uF+vGH$, $s(P)\ne0$. Then $G(sz-vH)=uF$ in the UFD $k[x,y]$, and $F$ is prime to $G$, so $F\mid sz-vH$ and $sz\in(F,H)$, hence
+$z\in(F,H)\mathcal O$. Dimensions add along an exact sequence.
+\end{proof}
+
+\subsection*{Smooth points}
+
+When $P$ is a smooth point of $F$, intersection numbers become orders of vanishing. A smooth point lies on only one component of $F$
+(a point on two components, or on a repeated one, has multiplicity $\ge2$), and the other components do not vanish at $P$, so they are units of
+$\mathcal O_P$. Hence the \emph{local ring of $F$ at $P$},
+\[
+\mathcal O_P(F)=\mathcal O_P/F\mathcal O_P,
+\]
+equals $\mathcal O_P/F_1\mathcal O_P$ for the component $F_1$ through $P$. It is a domain: $F_1$ is irreducible, hence prime in the UFD
+$k[x,y]$, and if $F_1\mid ab$ in $\mathcal O_P$, clearing denominators, $F_1$ divides one of the numerators.
+
+\begin{proposition}\label{prop:smoothdvr}
+Let $P$ be a smooth point of $F$, and let $t$ be (the image of) the equation of any line through $P$ other than the tangent. Then every
+non-zero $z\in\mathcal O_P(F)$ can be written uniquely $z=ut^r$ with $u$ a unit and $r\ge0$. The integer $r=\operatorname{ord}_P(z)$ satisfies
+$\operatorname{ord}_P(zz')=\operatorname{ord}_P(z)+\operatorname{ord}_P(z')$, and for every $G$ prime to $F$,
+\[
+I(P,F\cap G)=\operatorname{ord}_P(G).
+\]
+\end{proposition}
+\begin{proof}
+Change coordinates so that $P=(0,0)$, the line is $t=x$, and the tangent is $y=0$; scaling, $F=y+(\text{terms of degree}\ge2)$. Every monomial of
+degree $\ge2$ is divisible by $y$ or is a power $x^j$, $j\ge2$, so $F=y(1+G_1)+x^2H(x)$ with $G_1(P)=0$. In $\mathcal O_P(F)$, $y=-x^2H/(1+G_1)$ is a
+multiple of $x$. So the maximal ideal of $\mathcal O_P(F)$, generated by $x$ and $y$, is $(t)$.
+
+Let $z\ne0$, written $z=g/h$ with $g$ not divisible by $F_1$. If $z\in(t^n)$ then $(g)\subseteq(t^n)$ in $\mathcal O_P(F)$, so
+$\dim\mathcal O_P(F)/(t^n)\le\dim\mathcal O_P(F)/(g)=I(P,F_1\cap g)<\infty$. But the chain $\mathcal O_P(F)\supsetneq(t)\supsetneq\dots\supsetneq(t^n)$ is
+strict ($t^i=t^{i+1}w$ would give $t^i(1-tw)=0$ with $1-tw$ a unit, so $t^i=0$, absurd in a domain), so $\dim\mathcal O_P(F)/(t^n)\ge n$. Hence
+there is a largest $r$ with $z\in(t^r)$; then $z=ut^r$ with $u\notin(t)$, a unit. If $ut^r=u't^{r'}$ with $r\le r'$, then $u=u't^{r'-r}$ and
+$r=r'$ since $u$ is a unit. Additivity follows from uniqueness. Finally $\mathcal O_P/(F,G)=\mathcal O_P(F)/(G)=\mathcal O_P(F)/(t^r)$ with
+$r=\operatorname{ord}_P(G)$, and $(t^i)/(t^{i+1})$ is spanned by $t^i$ and non-zero, for $i<r$: the dimension is $r$.
+\end{proof}
+
+So $\mathcal O_P(F)$ is a \emph{discrete valuation ring}, the curve analogue of $\Z_{(p)}$ or of $\Z_p$ in Chapter~6, with uniformiser $t$.
+On the field of fractions $\operatorname{ord}_P(g/h)=\operatorname{ord}_P(g)-\operatorname{ord}_P(h)$.
+
+\subsection*{Projective intersection numbers}
+
+For a point $P$ of $\mathbb P^2$, let $\mathcal O_P(\mathbb P^2)$ be the ring of quotients $G/H$ of forms of the same degree with $H(P)\ne0$; these are
+honest functions near $P$. If $P$ lies in the chart $Z\ne0$, dehomogenisation $G/H\mapsto G_*/H_*$ identifies $\mathcal O_P(\mathbb P^2)$ with
+$\mathcal O_P(\mathbb A^2)$, with inverse $f/g\mapsto Z^{\deg g-\deg f}f^*/g^*$ (multiply the numerator or the denominator by a power of $Z$ to equalise
+degrees). For forms $F,G$ without common component, and any linear form $L$ with $L(P)\ne0$, put
+\[
+I(P,F\cap G)=\dim_k\mathcal O_P(\mathbb P^2)\big/\bigl(F/L^{\deg F},\,G/L^{\deg G}\bigr).
+\]
+Changing $L$ multiplies the generators by the units $(L/L')^{\deg F}$ and $(L/L')^{\deg G}$, so this is independent of $L$; with $L=Z$ it is the
+affine intersection number of $F_*$ and $G_*$. Proposition~\ref{prop:intprops} and Proposition~\ref{prop:smoothdvr} carry over, with $\mathcal O_P(F)=\mathcal O_P(\mathbb P^2)/(F/L^{\deg F})$, and they are now invariant under projective changes of coordinates. For a
+form $G$ we write $\operatorname{ord}_P(G)$ for $\operatorname{ord}_P(G/L^{\deg G})$.
+
+\section{B\'ezout's theorem}
+
+\begin{theorem}[B\'ezout]\label{thm:bezout}
+Let $F$ and $G$ be projective plane curves of degrees $m$ and $n$ with no common component. Then
+\[
+\sum_{P\in\mathbb P^2}I(P,F\cap G)=mn.
+\]
+\end{theorem}
+\begin{proof}
+\emph{Coordinates.} $F$ and $G$ meet in finitely many points (Lemma~\ref{lem:finite} in each of the three charts). As $k$ is infinite, some line
+avoids them all; make it $Z=0$. Then all the points lie in the affine chart, and by \eqref{eq:sumI} the sum is $\dim_k\Gamma_*$, with
+$\Gamma_*=k[x,y]/(F_*,G_*)$. We show $\dim\Gamma_*=mn$.
+
+\emph{Graded pieces.} Let $R=k[X,Y,Z]$, $R_d$ its forms of degree $d$ (with $0$), $\dim R_d=\binom{d+2}2$, and $\Gamma=R/(F,G)$ with graded pieces
+$\Gamma_d=R_d/(FR_{d-m}+GR_{d-n})$. The sequence
+\[
+0\to R_{d-m-n}\xrightarrow{\;C\mapsto(GC,-FC)\;}R_{d-m}\times R_{d-n}\xrightarrow{\;(A,B)\mapsto AF+BG\;}R_d\to\Gamma_d\to0
+\]
+is exact. The only point to check is in the middle: if $AF+BG=0$, then $F\mid BG$, so $F\mid B$ ($R$ is a UFD and $F,G$ have no common factor),
+$B=-FC$, and then $A=GC$. Taking alternating sums of dimensions, for $d\ge m+n$,
+\[
+\dim\Gamma_d=\tbinom{d+2}2-\tbinom{d-m+2}2-\tbinom{d-n+2}2+\tbinom{d-m-n+2}2=mn,
+\]
+a polynomial identity in $d$ that one checks by expanding (the $d^2$ and $d$ terms cancel).
+
+\emph{$Z$ is a non-zero-divisor on $\Gamma$.} Suppose $ZH=AF+BG$. Set $Z=0$: writing $A_0(X,Y)=A(X,Y,0)$ and so on, $A_0F_0+B_0G_0=0$. The binary
+forms $F_0,G_0$ are non-zero (if, say, $F_0=0$, every zero of $G$ on $Z=0$ would be a common point there) and have no common factor: a binary form over $k$ factors into linear forms $bX-aY$, and a common factor would give a common zero
+$(a:b:0)$ of $F$ and $G$ on the line $Z=0$. So, as before, $B_0=-F_0C$, $A_0=G_0C$ for a form $C\in k[X,Y]$. Then $A-GC$ and $B+FC$ vanish on $Z=0$,
+that is $A-GC=ZA'$, $B+FC=ZB'$, and $ZH=(A-GC)F+(B+FC)G=Z(A'F+B'G)$. Cancelling $Z$, $H\in(F,G)$.
+
+\emph{Conclusion.} For $d\ge m+n$, multiplication by $Z$ is an injective map $\Gamma_d\to\Gamma_{d+1}$ between spaces of dimension $mn$, hence
+bijective. Consider $\alpha:\Gamma_d\to\Gamma_*$, $H\mapsto H_*$. It is injective: if $H_*=aF_*+bG_*$, homogenising gives $Z^rH=AF+BG$ for some $r$,
+and $H\in(F,G)$ because $Z$ is a non-zero-divisor. It is onto: given $h\in k[x,y]$, take $N\ge\deg h$; then $Z^{d+N-\deg h}h^*\in R_{d+N}$, and since $Z^N:\Gamma_d\to\Gamma_{d+N}$ is
+bijective, $Z^{d+N-\deg h}h^*\equiv Z^NH\pmod{(F,G)}$ for some $H\in R_d$; dehomogenising, $h\equiv H_*$ modulo $(F_*,G_*)$. So $\dim\Gamma_*=\dim\Gamma_d=mn$.
+\end{proof}
+
+\begin{think}
+The lines $y=0$ and $y=1$ are parallel, yet B\'ezout says they meet once. Where? And the circles $x^2+y^2=1$ and $(x-1)^2+y^2=1$ meet in
+two real points: where are the other two? (The second answer is Exercise~\ref{ex:circles}.)
+\end{think}
+
+\begin{corollary}\label{cor:bezoutcons}
+\begin{enumerate}[label=(\alph*)]
+\item Any two projective plane curves meet.
+\item A line not contained in a curve of degree $n$ meets it in exactly $n$ points counted with multiplicity.
+\item A smooth projective plane curve is irreducible.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) and (b) are Theorem~\ref{thm:bezout} (with common components, every point of the common one is in both). (c) If $F=GH$ with $G,H$ non-constant, take
+$P\in G\cap H$, by (a). Then $F_X=G_XH+GH_X$ vanishes at $P$, and so do $F_Y,F_Z$: $P$ is singular by Lemma~\ref{lem:projsmooth}.
+\end{proof}
+
+Figure~\ref{fig:bezout} shows the count for two parabolas, $y=x^2$ and $y=2x^2-1$. In the affine plane they meet at $(\pm1,1)$, transversally:
+two points. B\'ezout promises four. Homogenised, $YZ=X^2$ and $YZ=2X^2-Z^2$ both pass through $(0:1:0)$. In the chart $Y=1$, with coordinates
+$x=X/Y$, $z=Z/Y$, the curves are $z=x^2$ and $z=2x^2-z^2$; substituting, $(z-x^2,\,x^2-z^2)=(z-x^2,\,x^2-x^4)=(z-x^2,\,x^2(1-x^2))$, and since $1-x^2$ is a unit
+at the origin, the local ring modulo this ideal is $\mathcal O/(z-x^2,x^2)$, of dimension $2$. The parabolas are tangent to each other, and to the
+line at infinity, at the point at infinity of the $y$-axis: $2+1+1=4$.
+
+\begin{figure}[ht]
+\centering\fig{ch11-bezout}
+\caption{The parabolas $y=x^2$ and $y=2x^2-1$ meet in two points of the affine plane; the other two of B\'ezout's four are at the point at infinity
+$(0:1:0)$ of the vertical direction, where the curves are tangent.}
+\label{fig:bezout}
+\end{figure}
+
+\section{Max Noether's theorem}
+
+When does a third curve $H$ belong to the ideal $(F,G)$, that is $H=AF+BG$ with forms $A,B$? Necessarily locally at each point of $F\cap G$.
+Max Noether's theorem says that this is enough.
+
+\begin{theorem}[Noether's $AF+BG$ theorem]\label{thm:noether}
+Let $F,G,H$ be forms, $F$ and $G$ without common component. Suppose that at every $P\in F\cap G$, the germ of $H$ lies in the ideal generated by
+those of $F$ and $G$ in $\mathcal O_P(\mathbb P^2)$ (Noether's conditions). Then $H=AF+BG$ with forms $A,B$ of degrees $\deg H-\deg F$ and
+$\deg H-\deg G$ (or zero).
+\end{theorem}
+\begin{proof}
+As in the proof of Theorem~\ref{thm:bezout}, choose $Z=0$ avoiding $F\cap G$. In the chart, Noether's conditions say $H_*\in(F_*,G_*)\mathcal O_P$ for
+every $P\in V(F_*,G_*)$, so $H_*\in(F_*,G_*)$ by Lemma~\ref{lem:localdecomp}: $H_*=aF_*+bG_*$. Homogenising, $Z^rH=A'F+B'G$, and since $Z$ is a non-zero-divisor
+modulo $(F,G)$ (shown in the proof of Theorem~\ref{thm:bezout}), $H=A''F+B''G$. Keep only the terms of degree $\deg H$: $H=AF+BG$ with $A,B$ the homogeneous
+parts of $A'',B''$ of the right degrees.
+\end{proof}
+
+At smooth points the conditions are a simple inequality.
+
+\begin{corollary}\label{cor:noethersmooth}
+Let $F$ be a curve, $G$ and $H$ forms prime to $F$, and suppose every point of $F\cap G$ is a smooth point of $F$. If
+$I(P,F\cap H)\ge I(P,F\cap G)$ for every $P$, then $H=AF+BG$ with forms $A,B$.
+\end{corollary}
+\begin{proof}
+At $P\in F\cap G$, the ring $\mathcal O_P(F)$ is a discrete valuation ring (Proposition~\ref{prop:smoothdvr}), where $G=ut^r$ with
+$r=I(P,F\cap G)$ and $H=u't^{r'}$ with $r'\ge r$. So $H=(u'u^{-1}t^{r'-r})G$ in $\mathcal O_P(F)$, that is $H\in(F,G)$ in
+$\mathcal O_P(\mathbb P^2)$. Apply Theorem~\ref{thm:noether}.
+\end{proof}
+
+\section{Divisors on a smooth curve}
+
+From now on $C$ is a smooth projective plane curve, given by a form $F$ of degree $n$; it is irreducible by Corollary~\ref{cor:bezoutcons}.
+Its \emph{function field} $k(C)$ is the set of quotients $G/H$ of forms of the same degree with $F\nmid H$, two quotients $G/H$ and $G'/H'$ being
+equal when $F\mid GH'-G'H$. It is a field (because $F$ is prime), and it is the field of fractions of every $\mathcal O_P(C)$. Each point
+$P$ of $C$ gives a valuation $\operatorname{ord}_P$ on $k(C)^\times$ (Proposition~\ref{prop:smoothdvr}).
+
+A \emph{divisor} is a formal finite sum $D=\sum_Pn_PP$ of points of $C$ with integer coefficients; its \emph{degree} is $\sum n_P$, and $D\ge D'$ means
+$n_P\ge n'_P$ for all $P$. A divisor $D\ge0$ is \emph{effective}. For a form $G$ prime to $F$ and for $z\in k(C)^\times$ set
+\[
+\operatorname{div}(G)=\sum_PI(P,F\cap G)\,P,\qquad\operatorname{div}(z)=\sum_P\operatorname{ord}_P(z)\,P .
+\]
+By Proposition~\ref{prop:smoothdvr}, $\operatorname{div}(G/H)=\operatorname{div}(G)-\operatorname{div}(H)$; it is a finite sum, $\operatorname{div}(GG')=\operatorname{div}(G)+\operatorname{div}(G')$, and by
+B\'ezout $\deg\operatorname{div}(G)=n\deg G$. Divisors $\operatorname{div}(z)$ are \emph{principal}, and $D\equiv D'$ (\emph{linear equivalence}) means that
+$D-D'$ is principal. We fix a line $L$ with $L\nmid F$ and write
+\[
+E=\operatorname{div}(L),\qquad E_d=dE=\operatorname{div}(L^d),
+\]
+an effective divisor of degree $n$; changing $L$ changes $E$ only up to linear equivalence ($E-E'=\operatorname{div}(L/L')$).
+
+\begin{proposition}\label{prop:divbasic}
+\begin{enumerate}[label=(\alph*)]
+\item Principal divisors have degree $0$.
+\item If $z\in k(C)^\times$ has no pole ($\operatorname{div}(z)\ge0$), then $z$ is a constant.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $\deg\operatorname{div}(G/H)=n\deg G-n\deg H=0$. (b) Write $z=G/H$. Then $\operatorname{div}(G)\ge\operatorname{div}(H)$, so by Corollary~\ref{cor:noethersmooth}
+$G=AF+BH$ with $B$ a form of degree $\deg G-\deg H=0$, a constant $b$; in $k(C)$, $z=G/H=b$.
+\end{proof}
+
+For a divisor $D$, the \emph{Riemann--Roch space} is
+\[
+L(D)=\{z\in k(C)^\times:\operatorname{div}(z)+D\ge0\}\cup\{0\},
+\]
+the functions whose poles are bounded by the positive part of $D$ and which vanish at least as prescribed by its negative part. It is a vector
+space, because $\operatorname{ord}_P(z+z')\ge\min(\operatorname{ord}_Pz,\operatorname{ord}_Pz')$. Let $\ell(D)=\dim_kL(D)$.
+
+\begin{proposition}\label{prop:ellbasic}
+\begin{enumerate}[label=(\alph*)]
+\item If $D\equiv D'$, then $\ell(D)=\ell(D')$. $\ell(0)=1$, and $\ell(D)=0$ when $\deg D<0$.
+\item $\ell(D+P)\le\ell(D)+1$ for every point $P$. Hence $\ell(D)\le\deg D+1$ for $D\ge0$, and $\ell(D)$ is always finite.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) If $D'=D+\operatorname{div}(w)$, then $z\mapsto z/w$ maps $L(D)$ onto $L(D')$. $L(0)$ is the constants by Proposition~\ref{prop:divbasic}(b). If
+$z\in L(D)$ is non-zero then $\deg D=\deg(\operatorname{div}(z)+D)\ge0$.
+
+(b) Let $m$ be the coefficient of $P$ in $D$, and $t$ a uniformiser at $P$. For $z\in L(D+P)$, $t^{m+1}z\in\mathcal O_P(C)$, and $z\mapsto(t^{m+1}z)(P)$ is a linear form
+on $L(D+P)$ whose kernel is $L(D)$. Induction from $\ell(0)=1$ gives $\ell(D)\le\deg D+1$ for $D\ge0$, and in general $L(D)\subseteq L(D^+)$, where $D^+\ge D$ keeps
+only the positive coefficients.
+\end{proof}
+
+The next lemma says that the functions in $L(E_d-D)$ are exactly the curves of degree $d$ ``through $D$''.
+
+\begin{lemma}\label{lem:noetherrep}
+Let $D\ge0$ and $d\ge0$. Then $L(E_d-D)=\{G/L^d:\ G\in R_d,\ G=0\text{ or }\operatorname{div}(G)\ge D\}$. Two forms give the same function iff they
+are congruent modulo $F$.
+\end{lemma}
+\begin{proof}
+If $\operatorname{div}(G)\ge D$ then $\operatorname{div}(G/L^d)+E_d-D=\operatorname{div}(G)-D\ge0$. Conversely let $z\in L(E_d-D)$, $z=G_0/H_0$. Then
+$\operatorname{div}(G_0L^d)=\operatorname{div}(z)+E_d+\operatorname{div}(H_0)\ge D+\operatorname{div}(H_0)\ge\operatorname{div}(H_0)$, so by
+Corollary~\ref{cor:noethersmooth}, $G_0L^d=AF+GH_0$ with $G$ a form of degree $d$. In $k(C)$, $z=G_0/H_0=G/L^d$, and
+$\operatorname{div}(G)=\operatorname{div}(z)+E_d\ge D$. The last sentence is the definition of equality in $k(C)$.
+\end{proof}
+
+The following theorem, Noether's \emph{Restsatz}, lets one slide part of an intersection along a linear equivalence while keeping the rest fixed.
+
+\begin{theorem}[residue theorem]\label{thm:residue}
+Let $D,D'\ge0$ with $D\equiv D'$, and let $G$ be a form with $\operatorname{div}(G)=D+A$, $A\ge0$. Then there is a form $G'$ of the same degree with
+$\operatorname{div}(G')=D'+A$.
+\end{theorem}
+\begin{proof}
+Write $D'-D=\operatorname{div}(H/H')$ with forms $H,H'$ of the same degree. Then
+$\operatorname{div}(GH)=D+A+\operatorname{div}(H)=D'+A+\operatorname{div}(H')\ge\operatorname{div}(H')$, so by Corollary~\ref{cor:noethersmooth},
+$GH=BF+G'H'$ with $G'$ a form of degree $\deg G$. Then
+$\operatorname{div}(G')=\operatorname{div}(GH)-\operatorname{div}(H')=D'+A$.
+\end{proof}
+
+\section{The Riemann--Roch theorem}
+
+\begin{definition}
+The \emph{genus} of the smooth plane curve $C$ of degree $n$ is $g=\frac{(n-1)(n-2)}2$. Its \emph{canonical divisor} is $W=E_{n-3}=(n-3)E$, of
+degree $n(n-3)=2g-2$.
+\end{definition}
+
+Lines and conics have genus $0$, cubics genus $1$, quartics genus $3$. Over $\C$, a smooth plane curve is a compact Riemann surface, and $g$ is its
+number of holes (a cubic is a torus, Chapter~12). The canonical divisor is the divisor of the differential form $\omega=\mathrm dx/F_y$ (in the
+chart $Z\ne0$, with $F$ standing for $F_*$), whose zeros and poles all lie at infinity; we shall not need differentials, and take the definition as
+it stands. What matters is its class, and $\ell(W)=g$ by Lemma~\ref{lem:noetherrep}: $L(E_{n-3})$ is the space of all forms of degree $n-3$, of
+dimension $\binom{n-1}2=g$ (none is divisible by $F$).
+
+The proof of the Riemann--Roch theorem has three steps: count forms to get Riemann's inequality, then show, through B\'ezout's theorem on a line, that the
+two sides of the formula never grow at the same time, then put the two together.
+
+\begin{proposition}[counting forms]\label{prop:countforms}
+Let $V_d=R_d/FR_{d-n}$, the forms of degree $d$ modulo $F$. For $d\ge n-2$, $\dim V_d=dn+1-g$, and $\ell(E_d)=dn+1-g$.
+\end{proposition}
+\begin{proof}
+Multiplication by $F$ is injective, so $\dim V_d=\binom{d+2}2-\binom{d-n+2}2$, and $\binom{d-n+2}2=\frac{(d-n+2)(d-n+1)}2$ holds for $d-n\ge-2$ (both sides vanish at $-1$ and $-2$).
+Expanding, $\frac{(d+2)(d+1)-(d-n+2)(d-n+1)}2=dn+1-\frac{(n-1)(n-2)}2$. And $L(E_d)\cong V_d$ by Lemma~\ref{lem:noetherrep} with $D=0$.
+\end{proof}
+
+\begin{proposition}[Riemann's inequality]\label{prop:riemann}
+For every divisor $D$, $\ell(D)\ge\deg D+1-g$.
+\end{proposition}
+\begin{proof}
+\emph{Effective divisors with a residual.} Let $D_0\ge0$ of degree $r$ and $d\ge n-2$. For each $P$ in the support of $D_0$, with coefficient $m_P$, the map
+$G\mapsto G/L_P^d\bmod\mathfrak m_P^{m_P}$ (with $L_P$ a line not through $P$) sends $V_d$ to $\mathcal O_P(C)/\mathfrak m_P^{m_P}$, of dimension $m_P$; the
+kernel of $V_d\to\prod_P\mathcal O_P(C)/\mathfrak m_P^{m_P}$ is the set of $G$ with $\operatorname{div}(G)\ge D_0$, of dimension at least
+$\dim V_d-r$. By Lemma~\ref{lem:noetherrep}, $\ell(E_d-D_0)\ge dn+1-g-r=\deg(E_d-D_0)+1-g$.
+
+\emph{Effective divisors.} Let $D\ge0$. Choose $d\ge n-2$ with $dn+1-g>\deg D$; by the count just made there is a form $G$ of degree $d$, not divisible by $F$,
+with $\operatorname{div}(G)\ge D$. Write $\operatorname{div}(G)=D+D_0$, $D_0\ge0$. Since $\operatorname{div}(G)-E_d=\operatorname{div}(G/L^d)$, $D\equiv E_d-D_0$, and
+$\ell(D)=\ell(E_d-D_0)\ge\deg D+1-g$.
+
+\emph{All divisors.} Write $D=D^+-D^-$ with $D^\pm\ge0$. Applying Proposition~\ref{prop:ellbasic}(b) $\deg D^-$ times,
+$\ell(D)\ge\ell(D^+)-\deg D^-\ge\deg D^++1-g-\deg D^-$.
+\end{proof}
+
+Now for the correction term. The key is to compare a curve's behaviour along $C$ and along a line.
+
+\begin{lemma}[truncated intersection numbers]\label{lem:truncate}
+Let $Q$ be a point of $C$, $M$ a line through $Q$ not contained in $C$, and $e=I(Q,C\cap M)$. For every form $H$ prime to $F$ and to $M$,
+\[
+\min\bigl(I(Q,C\cap H),e\bigr)=\min\bigl(I(Q,M\cap H),e\bigr).
+\]
+\end{lemma}
+\begin{proof}
+Let $\mathcal O=\mathcal O_Q(\mathbb P^2)$ and $B=\mathcal O/(F,M)$, of dimension $e$ (dehomogenised generators understood). $B$ is a quotient of
+$\mathcal O_Q(C)$, by the ideal generated by $M$, which is $(t^e)$ for a uniformiser $t$ of $C$ at $Q$ (Proposition~\ref{prop:smoothdvr}); so
+$B=\mathcal O_Q(C)/(t^e)$. Symmetrically, $Q$ is a smooth point of the line $M$, and $B=\mathcal O_Q(M)/(s^e)$ for a uniformiser $s$ of $M$. In both
+descriptions the maximal ideal $\mathfrak n$ of $B$ is the image of $\mathfrak m_Q$, and for $i\le e$, $\mathfrak n^i$ is the image of $(t^i)$ and of
+$(s^i)$. So, for $h\in\mathcal O$, the largest $i\le e$ with $\bar h\in\mathfrak n^i$ is $\min(\operatorname{ord}^C_Q(h),e)$ by the first description and
+$\min(\operatorname{ord}^M_Q(h),e)$ by the second. Proposition~\ref{prop:smoothdvr} turns these orders into the two intersection numbers.
+\end{proof}
+
+\begin{lemma}[Noether's reduction lemma]\label{lem:reduction}
+Let $D\ge0$ and $P\in C$. If $\ell(W-D-P)\ne\ell(W-D)$, then $\ell(D+P)=\ell(D)$.
+\end{lemma}
+\begin{proof}
+We may assume $n\ge3$: otherwise $\deg(W-D)<0$ and $\ell(W-D)=0=\ell(W-D-P)$. Take $z_0\in L(W-D)\setminus L(W-D-P)$. By Lemma~\ref{lem:noetherrep},
+$z_0=H/L^{n-3}$ with $H$ of degree $n-3$ and $\operatorname{div}(H)=\operatorname{div}(z_0)+W=D+A$, $A\ge0$; and $z_0\notin L(W-D-P)$ says that $P$ does
+not occur in $A$.
+
+Suppose, for a contradiction, that some $z\in L(D+P)$ is not in $L(D)$. Then $D'=D+P+\operatorname{div}(z)$ is effective, $D'\equiv D+P$, and $P$ does not
+occur in $D'$ (the coefficient of $P$ is exactly $0$, since $z\notin L(D)$). Let $M$ be any line through $P$ not contained in $C$, and
+$\operatorname{div}(M)=P+B$, $B\ge0$. The form $HM$ of degree $n-2$ has $\operatorname{div}(HM)=(D+P)+(A+B)$, so by the residue theorem there is a form
+$H'$ of degree $n-2$ with
+\[
+\operatorname{div}(H')=D'+A+B .
+\]
+Compare $H'$ with $M$ at each $Q\in C\cap M$, with $e_Q=I(Q,C\cap M)$. If $Q\ne P$, the coefficient of $Q$ in $B$ is $e_Q$, so
+$I(Q,C\cap H')\ge e_Q$. At $P$, the coefficient of $P$ in $B$ is $e_P-1$, and $P$ occurs neither in $D'$ nor in $A$, so $I(P,C\cap H')=e_P-1$. If $M\mid H'$,
+then $I(P,C\cap H')\ge I(P,C\cap M)=e_P$, a contradiction. Otherwise Lemma~\ref{lem:truncate} gives $I(Q,M\cap H')\ge e_Q$ for $Q\ne P$ and
+$I(P,M\cap H')=e_P-1$, so, by B\'ezout for $M$ and $H'$, $n-2=\sum_QI(Q,M\cap H')\ge\sum_Qe_Q-1=n-1$: a contradiction again.
+\end{proof}
+
+\begin{theorem}[Riemann--Roch]\label{thm:rr}
+For every divisor $D$ on a smooth projective plane curve $C$ of genus $g$ and canonical divisor $W$,
+\[
+\ell(D)-\ell(W-D)=\deg D+1-g .
+\]
+\end{theorem}
+\begin{proof}
+Let $\Delta(D)=\ell(D)-\ell(W-D)-\deg D-1+g$; it only depends on the class of $D$ (Proposition~\ref{prop:ellbasic}(a)). We show $\Delta=0$.
+
+\emph{Small and large.} $\Delta(0)=1-g-0-1+g=0$, since $\ell(W)=g$. For $d>n-3$, $\ell(W-E_d)=0$ (negative degree) and $\ell(E_d)=dn+1-g$
+(Proposition~\ref{prop:countforms}), so $\Delta(E_d)=0$.
+
+\emph{Monotonicity.} Let $D\ge0$ and $P$ a point. By Proposition~\ref{prop:ellbasic}(b), $\ell(D+P)-\ell(D)$ and $\ell(W-D)-\ell(W-D-P)$ are $0$ or $1$, and by
+Lemma~\ref{lem:reduction} they are not both $1$. Since
+\[
+\Delta(D+P)-\Delta(D)=\bigl[\ell(D+P)-\ell(D)\bigr]+\bigl[\ell(W-D)-\ell(W-D-P)\bigr]-1,
+\]
+$\Delta(D+P)\le\Delta(D)$. Adding points one at a time, $\Delta(D_2)\le\Delta(D_1)$ whenever $D_2\ge D_1\ge0$.
+
+\emph{Effective divisors.} Let $D\ge0$. As in the proof of Proposition~\ref{prop:riemann}, there is a form $G$ of some degree $d>n-3$ with
+$\operatorname{div}(G)=D+D_0\ge D$, and $\operatorname{div}(G)\equiv E_d$. So $0=\Delta(0)\ge\Delta(D)\ge\Delta(D+D_0)=\Delta(E_d)=0$.
+
+\emph{All divisors.} If $\ell(D)>0$, then $D\equiv D+\operatorname{div}(z)\ge0$ for some $z$, and $\Delta(D)=0$. Note that
+$\Delta(W-D)=\ell(W-D)-\ell(D)-(2g-2-\deg D)-1+g=-\Delta(D)$; so if $\ell(W-D)>0$, $\Delta(D)=-\Delta(W-D)=0$. If $\ell(D)=\ell(W-D)=0$, Riemann's inequality
+for $D$ and for $W-D$ gives $\deg D\le g-1$ and $2g-2-\deg D\le g-1$, so $\deg D=g-1$ and $\Delta(D)=0-0-(g-1)-1+g=0$.
+\end{proof}
+
+\begin{beauty}
+The left side of the Riemann--Roch formula is about functions, an analytic or algebraic notion; the right side is about a degree and a
+topological invariant. And the correction term $\ell(W-D)$ is itself a space of functions, for the ``dual'' divisor $W-D$, so the formula is a
+symmetry: replacing $D$ by $W-D$ changes the sign of both sides. In the proof, the analytic content of Riemann's original argument (residues of
+differentials) is replaced by B\'ezout's theorem on a line: a curve of degree $n-2$ cannot meet a line $n-1$ times.
+\end{beauty}
+
+Riemann--Roch says most when $W-D$ has negative degree: if $\deg D>2g-2$, then $\ell(D)=\deg D+1-g$ exactly. For genus $1$, $W=0$, and the
+consequences are the foundation of Chapter~12.
+
+\begin{corollary}[curves of genus 1]\label{cor:genus1}
+Let $C$ be a smooth plane cubic.
+\begin{enumerate}[label=(\alph*)]
+\item $\ell(D)=\deg D$ for every divisor of degree $\ge1$.
+\item If $P\ne Q$, then $P\not\equiv Q$: no function on $C$ has a single simple pole.
+\item Fix $O\in C$. Every divisor of degree $0$ is linearly equivalent to $P-O$ for exactly one point $P$.
+\item (Nine-point theorem.) Let $G_1,G_2$ be cubics with $\operatorname{div}(G_1)=P_1+\dots+P_8+P_9$ and $\operatorname{div}(G_2)=P_1+\dots+P_8+Q$ (points
+counted with multiplicity). Then $Q=P_9$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) $g=1$, $W=E_0=0$, and $\ell(-D)=0$ when $\deg D\ge1$. (b) If $Q-P=\operatorname{div}(z)$ then $z\in L(P)$, which consists of the constants by (a):
+$\ell(P)=1$. Then $\operatorname{div}(z)=0$ and $Q=P$. (c) $\ell(D+O)=1$, so there is a
+$z\ne0$ with $\operatorname{div}(z)+D+O=P\ge0$ of degree $1$, a single point; and if $P-O\equiv P'-O$, then $P=P'$ by (b). (d) $Q-P_9=\operatorname{div}(G_2/G_1)$, so
+$Q=P_9$ by (b).
+\end{proof}
+
+Part (c) identifies the points of $C$ with the group of divisor classes of degree $0$, and this is the group law of Chapter~12; part (d) is what
+makes it associative there. Part (b) is the precise sense in which the smooth cubic of Example~\ref{exa:threecubics} is not rational: on the nodal cubic, the slope $t$ of the lines
+through the node is a function taking each value once, with a single simple pole, and nothing like it exists on a smooth cubic.
+
+\begin{remark}
+Riemann--Roch holds for every smooth projective curve, not only plane ones, with $g$ defined by the formula itself (for instance as $\ell(W)$). Most curves
+are not smooth plane curves: a smooth plane curve has genus $0,1,3,6,10,\dots$, never $2$. The curve $y^2=f(x)$, with $f$ of degree $5$ or $6$ without
+repeated roots, has genus $2$; its plane model is singular at infinity. For a plane curve with ordinary singularities of multiplicities $r_P$, Fulton's
+book proves Riemann--Roch for its smooth model by the same method, with \emph{adjoint} curves (curves with multiplicity $\ge r_P-1$ at each singular point),
+and finds $g=\frac{(n-1)(n-2)}2-\sum_P\frac{r_P(r_P-1)}2$. A nodal cubic has genus $0$, consistently with its rational parametrisation.
+\end{remark}
+
+\section{Codes from curves}\label{sec:goppa}
+
+A \emph{linear code} of length $N$ over $\mathbb F_q$ is a subspace $\mathcal C\subseteq\mathbb F_q^N$, of dimension $\kappa$ and minimum distance
+$\delta=\min\{\text{number of non-zero coordinates of }c:c\in\mathcal C\setminus0\}$. A message of $\kappa$ symbols is encoded as a codeword of $N$ symbols;
+any $\delta-1$ erased symbols, or any $\lfloor(\delta-1)/2\rfloor$ wrong ones, can be recovered. One wants $\kappa$ and $\delta$ both large, but the
+\emph{Singleton bound} $\kappa+\delta\le N+1$ forbids too much (project a codeword onto its first $\kappa-1$ coordinates: two codewords agree there, and their
+difference has weight $\le N-\kappa+1$). Reed--Solomon codes reach it: evaluate the polynomials of degree $<\kappa$ at $N$ distinct points of $\mathbb F_q$;
+a non-zero one has at most $\kappa-1$ roots, so $\delta\ge N-\kappa+1$. The catch is $N\le q$: there are only $q$ points on a line.
+
+V.~D.~Goppa's idea (1981) was to evaluate functions on a curve instead of a line, since a curve over $\mathbb F_q$ can have many more than $q$ points. Here is
+the version that needs nothing beyond B\'ezout. Let $F$ be a form over $\mathbb F_q$ defining a smooth curve $C$ of degree $n$ and genus $g$ over
+$\overline{\mathbb F}_q$, and let $P_1,\dots,P_N$ be points of $C$ with coordinates $(x_i:y_i:1)$ in $\mathbb F_q$. For $d\ge0$ let
+\[
+\mathcal C_d=\bigl\{\bigl(G(x_1,y_1,1),\dots,G(x_N,y_N,1)\bigr):G\text{ a form of degree }d\text{ over }\mathbb F_q\bigr\}.
+\]
+
+\begin{proposition}[Goppa codes from plane curves]\label{prop:goppa}
+If $dn<N$, then $\mathcal C_d$ has dimension $\kappa=\dim V_d$ (over $\mathbb F_q$), which is $dn+1-g$ for $d\ge n-2$, and minimum distance
+$\delta\ge N-dn$. In particular $\kappa+\delta\ge N+1-g$.
+\end{proposition}
+\begin{proof}
+If $F\nmid G$, then $G$ and $F$ have no common component, and $G$ vanishes at no more than $\sum_PI(P,F\cap G)=dn$ points of $C$ (Theorem~\ref{thm:bezout}
+over $\overline{\mathbb F}_q$). So the codeword of $G$ has at least $N-dn>0$ non-zero coordinates; and if $F\mid G$, it is $0$. Hence the kernel of
+$G\mapsto$ codeword is exactly $F\cdot R_{d-n}$ (divisibility by $F$ over $\overline{\mathbb F}_q$ and over $\mathbb F_q$ are the same, since dividing is
+solving a linear system with coefficients in $\mathbb F_q$), and the dimension is $\dim V_d$, computed over $\mathbb F_q$ exactly as in
+Proposition~\ref{prop:countforms}.
+\end{proof}
+
+The genus is the price paid with respect to Singleton. For the Hermitian curve $y^4z+yz^4=x^5$ over $\mathbb F_{16}$ (Exercise~\ref{ex:hermitian}) one
+gets $N=64$ affine points, $g=6$, and codes of length $64$ over an alphabet of $16$ letters, four times longer than any Reed--Solomon code over
+$\mathbb F_{16}$; the notebook builds them and corrects erasures. Better still, Tsfasman, Vl\u{a}du\c{t} and Zink showed in 1982, using modular curves
+(Chapter~14) with about $(\sqrt q-1)g$ points over $\mathbb F_q$, that for $q\ge49$ a square, codes from curves beat the Gilbert--Varshamov bound, which
+coding theorists had believed optimal for thirty years. How many points a curve over $\mathbb F_q$ can have is the subject of Chapter~13.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:circles}
+Show that every circle $(x-a)^2+(y-b)^2=r^2$ passes through the two \emph{circular points} $(1:i:0)$ and $(1:-i:0)$ of $\mathbb P^2(\C)$. Deduce that two
+distinct circles meet in at most two points of the affine plane, and find all four B\'ezout points of $x^2+y^2=1$ and $(x-1)^2+y^2=1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:singcubic}
+Let $F$ be an irreducible cubic with a singular point $P$. Show that $P$ is the only singular point and that every line through $P$, other than the
+tangents at $P$, meets $F$ in exactly one more point. Deduce that $F$ is rational, and find the parametrisation of $y^2=x^3+x^2$ by lines through the
+origin.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pascal}
+(Pascal, 1640.) Let $A_1,\dots,A_6$ be six distinct points on an irreducible conic $Q$, and let $L_i$ be the line $A_iA_{i+1}$ (indices mod $6$). Assume
+that the three points $R_1=L_1\cap L_4$, $R_2=L_2\cap L_5$, $R_3=L_3\cap L_6$ are defined (no two opposite sides parallel or equal) and do not lie on $Q$.
+Prove that $R_1,R_2,R_3$ are collinear. (Consider the cubics $L_1L_3L_5+\lambda L_2L_4L_6$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quartic}
+Let $C$ be a smooth plane quartic. Show that $g=3$, that the canonical divisors $W'\equiv W$ with $W'\ge0$ are exactly the divisors $\operatorname{div}(M)$ of the
+lines $M$, and that $\ell(P+Q)=1$ for all points $P,Q$: there is no function on $C$ with only two simple poles (a smooth quartic is not
+\emph{hyperelliptic}).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weierstrass}
+Let $\operatorname{char}k\ne2,3$ and let $C$ be the smooth cubic $Y^2Z=X^3+aXZ^2+bZ^3$, $O=(0:1:0)$, $x=X/Z$, $y=Y/Z$. Show that $\operatorname{div}(Z)=3O$, that
+$x$ and $y$ have a pole of order $2$ and $3$ at $O$ and no other pole, and that for $m\ge1$ the functions $x^iy^j$ with $j\in\{0,1\}$, $2i+3j\le m$ form a
+basis of $L(mO)$. Explain why seven functions in $L(6O)$ must satisfy a linear relation, and identify it.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:conic}
+Let $C$ be a smooth conic and $P\in C$. Show that $\ell(P)=2$, that a non-constant $z\in L(P)$ takes every value of $k\cup\{\infty\}$ exactly once on $C$, and that
+it can be taken to be the slope of the line through $P$. For $x^2+y^2=1$ and $P=(-1,0)$, write the inverse map and deduce the formula for all primitive
+Pythagorean triples.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hermitian}
+Let $q$ be a power of a prime $p$ and let $H$ be the Hermitian curve $Y^qZ+YZ^q=X^{q+1}$ over $\mathbb F_{q^2}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $H$ is smooth over $\overline{\mathbb F}_p$, of genus $\frac{q(q-1)}2$, with a single point at infinity.
+\item Show that $H$ has exactly $q^3$ affine points with coordinates in $\mathbb F_{q^2}$. (Use $x^{q+1}\in\mathbb F_q$ and count solutions of $y^q+y=c$.)
+\item Give the parameters of the code $\mathcal C_d$ of Proposition~\ref{prop:goppa} for $q=4$, and compare the number of $\mathbb F_{q^2}$-points with
+$q^2+1+2gq$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:circles}
+Homogenise and set $Z=0$. For the four points, subtract the two equations.
+\end{hint}
+\begin{hint}{ex:singcubic}
+A line through two singular points meets the cubic with total multiplicity $\ge4$. A line through $P$ meets $F$ with multiplicity $\ge2$ at $P$.
+\end{hint}
+\begin{hint}{ex:pascal}
+Choose $\lambda$ so that the cubic passes through a seventh point of $Q$, then count intersections with $Q$.
+\end{hint}
+\begin{hint}{ex:quartic}
+For $W$, use Lemma~\ref{lem:noetherrep}. For $\ell(P+Q)$, apply Riemann--Roch and count the lines through $P$ and $Q$, or tangent at $P$ if $P=Q$.
+\end{hint}
+\begin{hint}{ex:weierstrass}
+At $O$, use the chart $Y=1$. For the basis, compare dimensions with Corollary~\ref{cor:genus1}(a) and look at pole orders.
+\end{hint}
+\begin{hint}{ex:conic}
+Use Riemann--Roch with $g=0$. The function $z$ defines a map to $\mathbb P^1$; how many points has $\operatorname{div}(z-a)$?
+\end{hint}
+\begin{hint}{ex:hermitian}
+Compute the three partial derivatives in characteristic $p$. For (b), the norm map $x\mapsto x^{q+1}$ goes from $\mathbb F_{q^2}$ to $\mathbb F_q$, and $y\mapsto
+y^q+y$ is $\mathbb F_q$-linear from $\mathbb F_{q^2}$ to $\mathbb F_q$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:circles}
+\idea Points at infinity of a curve are the zeros of its top-degree part.
+\writeup Homogenised, the circle is $(X-aZ)^2+(Y-bZ)^2=r^2Z^2$; on $Z=0$ it reduces to $X^2+Y^2=0$, that is $(X+iY)(X-iY)=0$: the points $(1:i:0)$ and
+$(1:-i:0)$, whatever $a,b,r$. Two distinct circles have no common component (a circle is an irreducible conic: $x^2+y^2-r^2$, after translation, has no
+linear factor when $r\ne0$), so they meet in $4$ points with multiplicity, two of which are the circular points: at most $2$ affine points remain. For
+$x^2+y^2=1$ and $(x-1)^2+y^2=1$, subtracting gives $2x-1=0$, so $x=\frac12$, $y=\pm\frac{\sqrt3}2$; with $(1:\pm i:0)$, these are the four points, each of
+multiplicity $1$ (four distinct points and total $4$).
+\end{solution}
+
+\begin{solution}{ex:singcubic}
+\idea Bézout with a line is a degree count, and singular points eat two intersections each.
+\writeup If $L$ is a line through $P$ and $L\nmid F$, then $I(P,F\cap L)\ge2$: in coordinates with $P=(0,0)$ and $L=\{y=0\}$, $F(x,0)$ has no constant or
+linear term, as $m_P(F)\ge2$, so $(F,y)=(F(x,0),y)\subseteq(x^2,y)$ and the quotient has dimension $\ge2$. If $P'$ were a second singular point, the line
+$PP'$ would meet $F$ with total multiplicity $\ge4>3$, so it would be a component of $F$, contradicting irreducibility. Now let $L$ be a line through $P$,
+not tangent at $P$. Then $I(P,F\cap L)=2$ exactly: the lowest-degree part $F_2$ of $F$ at $P$ (of degree $2$; it is not $3$, else $F$ would be a product of
+three lines through $P$) does not vanish on the direction of $L$, so $F(x,0)=cx^2+\dots$ with $c\ne0$. By B\'ezout, $L$ meets $F$ in exactly one more point
+$\varphi(L)$, with multiplicity $1$. Conversely each point $Q\ne P$ of $F$ lies on the line $PQ$. So the lines through $P$, a family $y=tx$
+parametrised by $t\in k$ (plus $x=0$), parametrise $F$, up to finitely many exceptions. For $y^2=x^3+x^2$ and $y=tx$: $t^2x^2=x^3+x^2$, so $x=t^2-1$
+(the double root $0$ is $P$), and $(x,y)=(t^2-1,t(t^2-1))$. The tangents at $P$ are $y=\pm x$, the values $t=\pm1$, both giving $P$ itself.
+\end{solution}
+
+\begin{solution}{ex:pascal}
+\idea A cubic meeting a conic in seven points must contain it, and what is left is a line.
+\writeup Let $C_1=L_1L_3L_5$ and $C_2=L_2L_4L_6$. Each $A_i$ lies on one odd-numbered line and one even-numbered line ($A_i\in L_{i-1}\cap L_i$), so both cubics
+pass through all six $A_i$; both also pass through $R_1,R_2,R_3$. Take a point $A_7\in Q$ different from the $A_i$, and not on $C_2$ (only finitely many
+points of $Q$ are on $C_2$, by B\'ezout, as $Q$ is not a component of $C_2$). Choose $\lambda$ with $C=C_1+\lambda C_2$ vanishing at $A_7$; this is possible
+since $C_2(A_7)\ne0$. Then $C$ is a cubic (non-zero: $C_1$ and $C_2$ are not proportional, having different line factors) vanishing at seven distinct points of
+the conic $Q$. If $Q$ were not a component of $C$, B\'ezout would give at most $6$ intersection points; so $C=QM$ for a line $M$. Now $C$ vanishes at each $R_j$,
+and $R_j\notin Q$, so $M(R_j)=0$: the three points lie on the line $M$.
+\end{solution}
+
+\begin{solution}{ex:quartic}
+\idea For a quartic, $W=E$: canonical divisors are line sections, and two points determine a line.
+\writeup $n=4$, so $g=\frac{3\cdot2}2=3$ and $W=E_1$. By Lemma~\ref{lem:noetherrep} with $D=0$, $L(E_1)=\{M/L:M\text{ a linear form}\}$, and the effective
+divisors linearly equivalent to $W$ are the $\operatorname{div}(z)+E_1=\operatorname{div}(M)$ for $z=M/L\ne0$: the line sections. For $\ell(P+Q)$: Riemann--Roch gives
+$\ell(P+Q)=2+1-3+\ell(W-P-Q)=\ell(E_1-(P+Q))$, and by Lemma~\ref{lem:noetherrep} this is the dimension of the space of linear forms $M$ with
+$\operatorname{div}(M)\ge P+Q$. If $P\ne Q$, the condition is $M(P)=M(Q)=0$, and the linear forms vanishing at two distinct points form a space of dimension $1$.
+If $P=Q$, the condition is $I(P,C\cap M)\ge2$, which says $M$ is the tangent line at $P$ (a line through $P$ has $I=1$ iff it is not the tangent, by
+Proposition~\ref{prop:smoothdvr}: a non-tangent line is a uniformiser); again dimension $1$. So $\ell(P+Q)=1$: $L(P+Q)$ is the constants.
+\end{solution}
+
+\begin{solution}{ex:weierstrass}
+\idea Pole orders $2i+3j$ are all distinct when $j\le1$, which makes the functions independent; Riemann--Roch says there are exactly enough.
+\writeup Setting $Z=0$ gives $X^3=0$: the only point at infinity is $O$, and $\deg\operatorname{div}(Z)=3$, so $\operatorname{div}(Z)=3O$. In the chart $Y=1$, with
+$u=X/Y$, $v=Z/Y$, the curve is $v=u^3+auv^2+bv^3$, smooth at $(0,0)$ with tangent $v=0$; $u$ is a uniformiser, and $v=u^3\cdot(\text{unit})$, so
+$\operatorname{ord}_O(v)=3$. Then $x=X/Z=u/v$ has order $1-3=-2$ and $y=Y/Z=1/v$ has order $-3$ at $O$. Away from $O$, $Z\ne0$ and $x,y$ are regular. The
+functions $x^iy^j$ ($j\le1$) have pole order exactly $2i+3j$ at $O$, and these orders are distinct, so the functions are linearly independent (in a
+relation, the term with the largest pole order cannot cancel). Those with $2i+3j\le m$ lie in $L(mO)$, and there are exactly $m$ of them for
+$m\ge1$: the values $0,2,3,4,\dots,m$ of $2i+3j$, all integers in $[0,m]$ except $1$. Since $\ell(mO)=m$ (Corollary~\ref{cor:genus1}(a)), they form a basis.
+In $L(6O)$ the seven functions $1,x,y,x^2,xy,x^3,y^2$ are dependent, as $\ell(6O)=6$; the relation is the equation of the curve, $y^2=x^3+ax+b$, in which
+$y^2$ and $x^3$ are the two functions of pole order $6$, and must cancel.
+\end{solution}
+
+\begin{solution}{ex:conic}
+\idea Genus $0$ makes $\ell(P)=2$; a function with one simple pole is a bijection to the projective line.
+\writeup $n=2$, $g=0$, and $\deg(W-P)=-3<0$, so $\ell(P)=1+1-0=2$. Take $z\in L(P)$ non-constant; it has a simple pole at $P$ (a pole of order $\ge1$
+bounded by $1$), so $\deg\operatorname{div}(z)=0$ forces $\operatorname{div}(z)=Q-P$ for one point $Q$. Likewise for each $a\in k$, $z-a\in L(P)$, so
+$\operatorname{div}(z-a)=Q_a-P$: the value $a$ is taken exactly once, at $Q_a$, and $\infty$ only at $P$. With $M$ a line through $P$, not tangent, and $T$
+the tangent at $P$, $z=M/T$ works: $\operatorname{div}(M)-\operatorname{div}(T)=(P+Q)-2P$. For the circle and $P=(-1,0)$, $T=x+1$, $M=y$: $z=y/(x+1)=t$, the
+slope. Then $y=t(x+1)$ and $x^2+t^2(x+1)^2=1$, that is $(x+1)\bigl((1+t^2)x-(1-t^2)\bigr)=0$, so $x=\frac{1-t^2}{1+t^2}$, $y=\frac{2t}{1+t^2}$. Since $z$ is a
+bijection, $t\in\Q$ gives exactly the rational points other than $P$. With $t=\frac uv$ in lowest terms, $(x,y)=\bigl(\frac{v^2-u^2}{v^2+u^2},\frac{2uv}{v^2+u^2}\bigr)$,
+and clearing denominators, the primitive solutions of $a^2+b^2=c^2$ are, up to order and signs, $(v^2-u^2,2uv,v^2+u^2)$ with $\gcd(u,v)=1$ and $u\not\equiv v\pmod2$
+(when $u,v$ are both odd, everything is divisible by $2$, and dividing gives the same form with the roles of $a$ and $b$ swapped).
+\end{solution}
+
+\begin{solution}{ex:hermitian}
+\idea In characteristic $p$, most terms of the partial derivatives die, which makes smoothness easy; the point count is about the norm and trace from
+$\mathbb F_{q^2}$ to $\mathbb F_q$.
+\writeup (a) With $F=Y^qZ+YZ^q-X^{q+1}$: $F_X=-(q+1)X^q=-X^q$, $F_Y=qY^{q-1}Z+Z^q=Z^q$, $F_Z=Y^q+qYZ^{q-1}=Y^q$, since $q=0$ in $k$. They vanish together only at
+$X=Y=Z=0$, so $H$ is smooth (Lemma~\ref{lem:projsmooth}), of degree $n=q+1$ and genus $\frac{q(q-1)}2$. On $Z=0$, $X^{q+1}=0$: only $(0:1:0)$.
+
+(b) For $x\in\mathbb F_{q^2}$, $c=x^{q+1}$ satisfies $c^q=x^{q^2+q}=x^{1+q}=c$ (as $x^{q^2}=x$), so $c\in\mathbb F_q$. The map $T(y)=y^q+y$ is $\mathbb F_q$-linear
+from $\mathbb F_{q^2}$ to $\mathbb F_q$ (by the same computation, $T(y)^q=y^{q^2}+y^q=T(y)$), and its kernel, the roots of $y^q+y$, has at most $q$ elements, so its image
+has at least $q^2/q=q$ elements: $T$ is onto $\mathbb F_q$, with fibres of size exactly $q$. Hence for each of the $q^2$ values of $x$ there are exactly $q$
+values of $y$: $q^3$ affine points.
+
+(c) For $q=4$: $n=5$, $g=6$, $N=64$ over $\mathbb F_{16}$. For $3\le d\le12$ ($5d<64$), $\mathcal C_d$ has dimension $5d-5$ and minimum distance $\ge64-5d$; for
+example $d=6$ gives a $[64,25,\ge34]$ code, and $d=10$ a $[64,45,\ge14]$ code. The curve has $q^3+1=65$ points over $\mathbb F_{16}$, and
+$q^2+1+2gq=16+1+48=65$: the Hermitian curve attains the bound of Chapter~13 exactly (it is \emph{maximal}).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item W.~Fulton, \emph{Algebraic Curves: An Introduction to Algebraic Geometry}, 2008 edition, freely available from the author's web page. Chapters~2--5 and~8
+are the route followed here (intersection numbers, B\'ezout, Noether, Riemann--Roch), with the general case of plane curves with ordinary singularities.
+\item E.~Brieskorn and H.~Kn\"orrer, \emph{Plane Algebraic Curves}, Birkh\"auser, 1986; reprinted 2012. History, pictures, and the geometry of real curves.
+\item I.~R.~Shafarevich, \emph{Basic Algebraic Geometry 1}, 3rd ed., Springer, 2013, Chapters~III--IV: Riemann--Roch for all smooth curves.
+\item D.~Eisenbud, M.~Green and J.~Harris, ``Cayley--Bacharach theorems and conjectures'', \emph{Bull.\ AMS} 33 (1996), 295--324. From Pappus and Pascal to modern
+algebra, starting with the nine-point theorem.
+\item H.~Stichtenoth, \emph{Algebraic Function Fields and Codes}, 2nd ed., Springer GTM~254, 2009. Riemann--Roch for function fields over any field, Goppa
+codes, the Hermitian curve.
+\item M.~A.~Tsfasman, S.~G.~Vl\u{a}du\c{t} and T.~Zink, ``Modular curves, Shimura curves, and Goppa codes, better than Varshamov--Gilbert bound'',
+\emph{Math.\ Nachr.} 109 (1982), 21--28.
+\end{itemize}
