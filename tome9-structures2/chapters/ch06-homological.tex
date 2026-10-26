@@ -1,0 +1,397 @@
+\chapter{Homological Algebra}
+
+\begin{center}\itshape
+Tensor products and Hom forget the ends of exact sequences. Homological algebra measures exactly what they forget, by two families of functors, Tor and Ext, built from resolutions. Ext classifies extensions,
+Tor detects torsion, and together they say how homology changes with coefficients.
+\end{center}
+
+In 1853 James Joseph Sylvester, who coined words as easily as theorems, borrowed one from astronomy. A \emph{syzygy} (Greek \emph{suzugos}, yoked together) is the alignment of three celestial bodies; for
+Sylvester it became a relation between relations. If polynomials $f_1,\dots,f_k$ generate an ideal, the tuples $(g_1,\dots,g_k)$ with $\sum g_if_i=0$ form a module, the first syzygies; the relations between
+those are the second syzygies, and so on. In the same 1890 paper as his basis theorem (Chapter~3), Hilbert proved that over $K[x_1,\dots,x_n]$ the process stops: after at most $n$ steps the syzygies are free. A chain of
+free modules approximating a module, each one measuring the failure of the previous one, is what this chapter calls a \emph{resolution}.
+
+Sixty years later, Henri Cartan and Samuel Eilenberg found that resolutions explain far more than invariant theory. Their book \emph{Homological Algebra}, written in the early 1950s and published by Princeton
+University Press in 1956, gave the subject its name and its method: resolve, apply a functor, take homology. The groups $\operatorname{Ext}$ of Eilenberg and Mac Lane (Chapter~1) and the ``torsion products''
+$\operatorname{Tor}$ of the topologists became two instances of one construction. The method has a reputation. Serge Lang's \emph{Algebra}, a standard graduate textbook, contains the exercise: ``Take any book on
+homological algebra, and prove all the theorems without looking at the proofs given in that book.'' It is less of a joke than it sounds: once the snake lemma of Chapter~2 is in hand, nearly every proof is a chase that
+writes itself, and the reader is encouraged to try each one before reading it.
+
+Throughout, $R$ is a commutative ring and modules are $R$-modules. Chain complexes, chain maps, chain homotopies and the long exact sequence of a short exact sequence of complexes (the zigzag lemma) were set up in
+Tome~8, Chapter~6, for abelian groups; the definitions and proofs are the same for modules, and we use them freely.
+
+\section{Resolutions}
+
+\begin{definition}\label{def:resolution}
+A \emph{projective resolution} of a module $M$ is an exact sequence
+\[
+\cdots\to P_2\xrightarrow{d_2}P_1\xrightarrow{d_1}P_0\xrightarrow{\varepsilon}M\to0
+\]
+with all $P_n$ projective. We write $P_\bullet\to M$, and $P_\bullet$ for the complex $\cdots\to P_1\to P_0\to0$, whose homology is $M$ in degree $0$ and $0$ elsewhere.
+\end{definition}
+
+Every module has a free resolution: choose a surjection $\varepsilon\colon P_0\to M$ from a free module, then a surjection $P_1\to\ker\varepsilon$ from a free module, and so on. Over $\Z$, the sequence
+$0\to\Z\xrightarrow{n}\Z\to\Z/n\to0$ is a resolution of $\Z/n$ of length $1$. Over $R=K[x,y]$, the field $K=R/(x,y)$ has the resolution
+\[
+0\to R\xrightarrow{\ (-y,\ x)\ }R^2\xrightarrow{\ (x\ \ y)\ }R\to K\to0,
+\]
+where the middle map sends $(a,b)$ to $ax+by$ and the first sends $c$ to $(-cy,cx)$: the only relation between $x$ and $y$ is $y\cdot x-x\cdot y=0$, the \emph{Koszul relation}. Resolutions are far from unique, and the first task is to
+show that this does not matter.
+
+\begin{theorem}[comparison theorem]\label{thm:comparison}
+Let $P_\bullet\to M$ be a projective resolution, $Q_\bullet\to N$ an exact sequence $\cdots\to Q_1\to Q_0\to N\to0$ (not necessarily projective), and $f\colon M\to N$ a homomorphism. There is a chain map $f_\bullet\colon P_\bullet\to Q_\bullet$
+with $\varepsilon_Q\circ f_0=f\circ\varepsilon_P$, and any two such chain maps are chain homotopic.
+\end{theorem}
+
+\begin{proof}
+\emph{Existence.} Since $\varepsilon_Q$ is onto and $P_0$ projective, $f\circ\varepsilon_P$ lifts to $f_0\colon P_0\to Q_0$. Suppose $f_0,\dots,f_n$ are built with $d f_k=f_{k-1}d$ (where for $k=0$ this means the condition on
+$\varepsilon$). Then $f_nd_{n+1}$ maps $P_{n+1}$ into $\ker(Q_n\to Q_{n-1})$ (with $Q_{-1}=N$), because $d f_nd_{n+1}=f_{n-1}d_nd_{n+1}=0$. By exactness, that kernel is the image of $d\colon Q_{n+1}\to Q_n$, and projectivity of
+$P_{n+1}$ lifts $f_nd_{n+1}$ to $f_{n+1}\colon P_{n+1}\to Q_{n+1}$ with $df_{n+1}=f_nd_{n+1}$.
+
+\emph{Uniqueness up to homotopy.} By subtraction it suffices to show that a chain map $g_\bullet$ lifting $0$ is null-homotopic: we build $h_n\colon P_n\to Q_{n+1}$ with $g_n=dh_n+h_{n-1}d$ (and $h_{-1}=0$). As $\varepsilon_Qg_0=0$,
+$g_0$ maps into $\ker\varepsilon_Q=\operatorname{im}(Q_1\to Q_0)$, and lifts to $h_0$ with $dh_0=g_0$. If $h_0,\dots,h_{n-1}$ are built, then $g_n-h_{n-1}d$ maps $P_n$ into the cycles of $Q_n$:
+\[
+d(g_n-h_{n-1}d)=g_{n-1}d-dh_{n-1}d=(g_{n-1}-dh_{n-1})d=h_{n-2}dd=0.
+\]
+By exactness these cycles are boundaries, so $g_n-h_{n-1}d$ lifts to $h_n\colon P_n\to Q_{n+1}$ with $dh_n=g_n-h_{n-1}d$.
+\end{proof}
+
+\begin{lemma}[horseshoe lemma]\label{lem:horseshoe}
+Let $0\to A\xrightarrow iB\xrightarrow pC\to0$ be exact, and $P'_\bullet\to A$, $P''_\bullet\to C$ projective resolutions. Then $B$ has a projective resolution $P_\bullet$ with $P_n=P'_n\oplus P''_n$, such that the inclusions and projections
+form a short exact sequence of complexes $0\to P'_\bullet\to P_\bullet\to P''_\bullet\to0$, compatible with $i$ and $p$.
+\end{lemma}
+
+\begin{proof}
+Lift $\varepsilon''\colon P''_0\to C$ through $p$ to $\lambda\colon P''_0\to B$, and set $\varepsilon(x,y)=i\varepsilon'(x)+\lambda(y)$. In the diagram whose rows are $0\to P'_0\to P_0\to P''_0\to0$ and $0\to A\to B\to C\to0$, with vertical maps
+$\varepsilon',\varepsilon,\varepsilon''$, the squares commute. The snake lemma (Theorem~\ref{thm:snake}) gives an exact sequence
+\[
+0\to\ker\varepsilon'\to\ker\varepsilon\to\ker\varepsilon''\to\operatorname{coker}\varepsilon'\to\operatorname{coker}\varepsilon\to\operatorname{coker}\varepsilon''.
+\]
+Since $\operatorname{coker}\varepsilon'=\operatorname{coker}\varepsilon''=0$, $\varepsilon$ is onto, and $0\to\ker\varepsilon'\to\ker\varepsilon\to\ker\varepsilon''\to0$ is exact. The resolutions $P'_{\ge1}$ and $P''_{\ge1}$ resolve these kernels,
+and we repeat the construction for this new short exact sequence, and so on.
+\end{proof}
+
+\section{Tor and Ext}
+
+\begin{definition}\label{def:torext}
+Let $P_\bullet\to M$ be a projective resolution and $N$ a module. Then
+\[
+\operatorname{Tor}_n^R(M,N)=H_n(P_\bullet\otimes N),\qquad\operatorname{Ext}^n_R(M,N)=H^n\bigl(\operatorname{Hom}(P_\bullet,N)\bigr),
+\]
+the homology of the complex $\cdots\to P_1\otimes N\to P_0\otimes N\to0$ and the cohomology of $0\to\operatorname{Hom}(P_0,N)\to\operatorname{Hom}(P_1,N)\to\cdots$.
+\end{definition}
+
+\begin{proposition}\label{prop:torextbasic}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item Up to canonical isomorphism, $\operatorname{Tor}_n(M,N)$ and $\operatorname{Ext}^n(M,N)$ do not depend on the resolution, and they are functors of $M$ and of $N$.
+\item $\operatorname{Tor}_0(M,N)\cong M\otimes N$ and $\operatorname{Ext}^0(M,N)\cong\operatorname{Hom}(M,N)$.
+\item If $M$ is projective, then $\operatorname{Tor}_n(M,N)$ and $\operatorname{Ext}^n(M,N)$ vanish for $n\ge1$. If $N$ is flat, $\operatorname{Tor}_n(M,N)=0$ for $n\ge1$; if $N$ is injective, $\operatorname{Ext}^n(M,N)=0$ for $n\ge1$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) If $P_\bullet$ and $Q_\bullet$ resolve $M$, the comparison theorem gives chain maps $f\colon P_\bullet\to Q_\bullet$ and $g\colon Q_\bullet\to P_\bullet$ lifting $\mathrm{id}_M$. Then $gf$ and $\mathrm{id}$ both lift $\mathrm{id}_M$, so they are homotopic, and
+likewise $fg\simeq\mathrm{id}$. Applying $-\otimes N$ or $\operatorname{Hom}(-,N)$ to a homotopy gives a homotopy, so $f$ induces isomorphisms on homology, inverse to those of $g$, and they do not depend on the choice of $f$. Functoriality in $M$:
+a map $M\to M'$ lifts to the resolutions, uniquely up to homotopy. Functoriality in $N$ is clear.
+
+(b) $P_1\otimes N\to P_0\otimes N\to M\otimes N\to0$ is exact by right exactness of the tensor product (Corollary~\ref{cor:rightexact}), so $M\otimes N$ is the cokernel of $P_1\otimes N\to P_0\otimes N$, which is $H_0$. Likewise
+$0\to\operatorname{Hom}(M,N)\to\operatorname{Hom}(P_0,N)\to\operatorname{Hom}(P_1,N)$ is exact (Proposition~\ref{prop:homleft}), so $\operatorname{Hom}(M,N)$ is the kernel, which is $H^0$.
+
+(c) If $M$ is projective, $0\to M\to M\to0$ is a resolution with nothing in positive degrees. If $N$ is flat, $-\otimes N$ preserves exactness, so the complex $P_{\ge1}\otimes N\to M\otimes N\to0$ is exact, and
+$H_n(P_\bullet\otimes N)=0$ for $n\ge1$. The same argument applies to $\operatorname{Hom}(-,N)$ for $N$ injective.
+\end{proof}
+
+\begin{theorem}[long exact sequences]\label{thm:les}
+A short exact sequence $0\to A\to B\to C\to0$ gives long exact sequences
+\[
+\begin{gathered}
+\cdots\to\operatorname{Tor}_1(A,N)\to\operatorname{Tor}_1(B,N)\to\operatorname{Tor}_1(C,N)\to A\otimes N\to B\otimes N\to C\otimes N\to0,\\
+\cdots\to\operatorname{Tor}_1(M,C)\to M\otimes A\to M\otimes B\to M\otimes C\to0,\\
+0\to\operatorname{Hom}(C,N)\to\operatorname{Hom}(B,N)\to\operatorname{Hom}(A,N)\to\operatorname{Ext}^1(C,N)\to\operatorname{Ext}^1(B,N)\to\cdots,\\
+0\to\operatorname{Hom}(M,A)\to\operatorname{Hom}(M,B)\to\operatorname{Hom}(M,C)\to\operatorname{Ext}^1(M,A)\to\operatorname{Ext}^1(M,B)\to\cdots,
+\end{gathered}
+\]
+with $\operatorname{Tor}_{n+1}(\cdot,\cdot)\to\operatorname{Tor}_n(\cdot,\cdot)$ and $\operatorname{Ext}^n\to\operatorname{Ext}^{n+1}$ continuing each sequence in the same pattern.
+\end{theorem}
+
+\begin{proof}
+\emph{First variable.} Take the resolution of $B$ given by the horseshoe lemma. The short exact sequence $0\to P'_\bullet\to P_\bullet\to P''_\bullet\to0$ is split in each degree ($P_n=P'_n\oplus P''_n$), so it remains exact after
+applying $-\otimes N$ or $\operatorname{Hom}(-,N)$, which preserve direct sums. The zigzag lemma (Tome~8, Lemma~6.2) gives the first and third sequences, with (b) of Proposition~\ref{prop:torextbasic} for the ends. The maps
+$\operatorname{Tor}_n(A,N)\to\operatorname{Tor}_n(B,N)$ obtained are the functorial ones, since the inclusion $P'_\bullet\to P_\bullet$ lifts $A\to B$.
+
+\emph{Second variable.} Let $P_\bullet\to M$ be a projective resolution. Each $P_n$ is flat (Proposition~\ref{prop:projective}), so $0\to P_n\otimes A\to P_n\otimes B\to P_n\otimes C\to0$ is exact for every $n$, and similarly
+$0\to\operatorname{Hom}(P_n,A)\to\operatorname{Hom}(P_n,B)\to\operatorname{Hom}(P_n,C)\to0$ is exact by projectivity. Apply the zigzag lemma to these short exact sequences of complexes.
+\end{proof}
+
+\begin{corollary}\label{cor:torflat}
+A module $N$ is flat if and only if $\operatorname{Tor}_1(M,N)=0$ for every module $M$.
+\end{corollary}
+
+\begin{proof}
+If $N$ is flat, Proposition~\ref{prop:torextbasic}(c). Conversely, for $A\subseteq B$ the first sequence of Theorem~\ref{thm:les}, with $C=B/A$, contains $\operatorname{Tor}_1(C,N)\to A\otimes N\to B\otimes N$; if the left group is $0$,
+$A\otimes N\to B\otimes N$ is injective.
+\end{proof}
+
+\emph{Dimension shifting.} If $0\to K\to P\to M\to0$ is exact with $P$ projective, the long exact sequences and Proposition~\ref{prop:torextbasic}(c) give
+\[
+\operatorname{Tor}_{n+1}(M,N)\cong\operatorname{Tor}_n(K,N),\qquad\operatorname{Ext}^{n+1}(M,N)\cong\operatorname{Ext}^n(K,N)\qquad(n\ge1),
+\]
+\[
+\operatorname{Tor}_1(M,N)=\ker(K\otimes N\to P\otimes N),\qquad\operatorname{Ext}^1(M,N)=\operatorname{coker}\bigl(\operatorname{Hom}(P,N)\to\operatorname{Hom}(K,N)\bigr).
+\]
+So everything about $\operatorname{Tor}_1$ and $\operatorname{Ext}^1$ can be computed from a single presentation $0\to K\to P\to M\to0$.
+
+\begin{example}\label{ex:torextz}
+Over $\Z$, use $0\to\Z\xrightarrow n\Z\to\Z/n\to0$. Tensoring with $N$ gives $N\xrightarrow nN$, and applying $\operatorname{Hom}(-,N)$ gives $N\xrightarrow nN$ again (as $\operatorname{Hom}(\Z,N)=N$). Hence
+\[
+\operatorname{Tor}_1(\Z/n,N)\cong N[n]=\{x\in N:nx=0\},\qquad\operatorname{Ext}^1(\Z/n,N)\cong N/nN,
+\]
+and both vanish in degrees $\ge2$. In particular $\operatorname{Tor}_1(\Z/m,\Z/n)\cong\operatorname{Ext}^1(\Z/m,\Z/n)\cong\Z/d$ with $d=\gcd(m,n)$, and $\operatorname{Ext}^1(\Z/n,\Z)\cong\Z/n$. The group
+$\operatorname{Tor}_1(\Z/n,N)$ is the $n$-torsion of $N$, which explains the name: Tor detects torsion.
+\end{example}
+
+\begin{proposition}\label{prop:pidvanish}
+Over a principal ideal domain, $\operatorname{Tor}_n(M,N)=\operatorname{Ext}^n(M,N)=0$ for $n\ge2$ and all finitely generated $M$.
+\end{proposition}
+
+\begin{proof}
+Choose a surjection $P=R^k\to M$. Its kernel $K$ is a submodule of $R^k$, finitely generated (Proposition~\ref{prop:noethmodules}, as a principal ideal domain is Noetherian) and torsion-free, hence free (Theorem~\ref{thm:pidflat}). So
+$0\to K\to P\to M\to0$ is a projective resolution of length $1$.
+\end{proof}
+
+The statement holds for all modules over a principal ideal domain, because every submodule of a free module is then free, but for infinitely generated modules the proof needs Zorn's lemma. Hilbert's syzygy theorem, in
+this language, says that over $K[x_1,\dots,x_n]$ every finitely generated module has a projective resolution of length at most $n$, so that $\operatorname{Tor}_m$ and $\operatorname{Ext}^m$ vanish for $m>n$; and the
+Koszul resolution above shows that $\operatorname{Tor}_2^{K[x,y]}(K,K)\ne0$ (Exercise~\ref{ex:koszul}), so $n$ cannot be lowered.
+
+\begin{think}
+Tor was defined by resolving the first variable. Resolving the second one instead gives the same groups: $\operatorname{Tor}_n(M,N)\cong\operatorname{Tor}_n(N,M)$. The standard proof uses a double complex
+$P_\bullet\otimes Q_\bullet$. Check the statement for finitely generated abelian groups with Example~\ref{ex:torextz} (Exercise~\ref{ex:torsym}). Is $\operatorname{Ext}^1(M,N)\cong\operatorname{Ext}^1(N,M)$?
+\end{think}
+
+\section{Ext classifies extensions}
+
+An \emph{extension} of $M$ by $N$ is a short exact sequence $0\to N\xrightarrow jE\xrightarrow qM\to0$. Two extensions $E$, $E'$ are \emph{equivalent} if there is a homomorphism $\theta\colon E\to E'$ with $\theta j=j'$ and $q'\theta=q$;
+by the five lemma (Corollary~\ref{cor:fivelemma}), $\theta$ is then an isomorphism, so this is an equivalence relation. The split extension is $N\oplus M$.
+
+\begin{theorem}\label{thm:extclass}
+There is a bijection between $\operatorname{Ext}^1(M,N)$ and the set of equivalence classes of extensions of $M$ by $N$, which sends $0$ to the class of the split extension.
+\end{theorem}
+
+\begin{proof}
+Fix $0\to K\xrightarrow\iota P\xrightarrow\pi M\to0$ with $P$ projective; by dimension shifting,
+\[
+\operatorname{Ext}^1(M,N)=\operatorname{Hom}(K,N)/\iota^*\operatorname{Hom}(P,N).
+\]
+
+\emph{From extensions to classes.} Given $0\to N\xrightarrow jE\xrightarrow qM\to0$, lift $\pi$ through $q$ to $\beta\colon P\to E$. Then $q\beta\iota=\pi\iota=0$, so $\beta\iota$ maps $K$ into $j(N)$: $\beta\iota=j\varphi$ for a unique
+$\varphi\colon K\to N$. Another lift is $\beta+j\psi$ with $\psi\colon P\to N$, and it replaces $\varphi$ by $\varphi+\psi\iota$; an equivalence $\theta\colon E\to E'$ turns a lift $\beta$ into the lift $\theta\beta$, with the same $\varphi$.
+So the class $\Theta(E)=[\varphi]$ is well defined on equivalence classes.
+
+\emph{From classes to extensions.} Given $\varphi\colon K\to N$, let $E_\varphi$ be the quotient of $N\oplus P$ by the submodule of the $(\varphi(k),-\iota(k))$, $k\in K$ (the \emph{pushout} of $\iota$ and $\varphi$), with $j(n)=[(n,0)]$ and
+$q[(n,p)]=\pi(p)$. This is an extension: $q$ is well defined and onto; if $j(n)=0$ then $(n,0)=(\varphi(k),-\iota(k))$, so $\iota(k)=0$, $k=0$ and $n=0$; and if $q[(n,p)]=0$ then $p=\iota(k)$, and
+$[(n,\iota(k))]=[(n+\varphi(k),0)]\in j(N)$. Replacing $\varphi$ by $\varphi+\psi\iota$ gives an equivalent extension, via $[(n,p)]\mapsto[(n-\psi(p),p)]$, which maps the relation $(\varphi(k),-\iota(k))$ to $(\varphi(k)+\psi\iota(k),-\iota(k))$,
+a relation of $E_{\varphi+\psi\iota}$. Let $\Psi([\varphi])$ be the class of $E_\varphi$.
+
+\emph{They are inverse.} In $E_\varphi$, $\beta(p)=[(0,p)]$ lifts $\pi$, and $\beta\iota(k)=[(0,\iota(k))]=[(\varphi(k),0)]=j\varphi(k)$: so $\Theta\Psi[\varphi]=[\varphi]$. Conversely, given $E$ with lift $\beta$ and $\varphi$, the map
+$N\oplus P\to E$, $(n,p)\mapsto j(n)+\beta(p)$, kills $(\varphi(k),-\iota(k))$, so it induces $E_\varphi\to E$, compatible with the maps from $N$ and to $M$: an equivalence. So $\Psi\Theta(E)=E$.
+
+Finally, $E_0=(N\oplus P)/(0\oplus\iota K)\cong N\oplus M$ is split.
+\end{proof}
+
+\begin{example}\label{ex:extzp}
+$\operatorname{Ext}^1(\Z/p,\Z/p)\cong\Z/p$ has $p$ elements, so there are exactly $p$ classes of extensions $0\to\Z/p\to E\to\Z/p\to0$. One is $E=(\Z/p)^2$. The other $p-1$ all have $E\cong\Z/p^2$, but they are not
+equivalent to each other: for $a=1,\dots,p-1$, take $j(n)=pn$ and $q(x)=ax\bmod p$ (Exercise~\ref{ex:extzp2}). Equivalence of extensions remembers the maps, not only the middle group.
+\end{example}
+
+Theorem~\ref{thm:extclass} explains the name of Eilenberg and Mac Lane's group. The set of extensions also carries an addition of its own, defined by Reinhold Baer in 1934 directly on short exact sequences (the
+\emph{Baer sum}), and the bijection is an isomorphism of groups; Exercise~\ref{ex:baersum} gives the construction. Higher groups $\operatorname{Ext}^n$ classify, in the same way, exact sequences
+$0\to N\to E_n\to\cdots\to E_1\to M\to0$, as Nobuo Yoneda showed in 1954.
+
+\section{Universal coefficients}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-surfaces}
+\caption{The torus, the Klein bottle and the projective plane, as polygons with edges glued according to the arrows. Each has a cell structure with one $2$-cell, and the boundary of the $2$-cell gives $d_2$:
+$a+b-a-b=0$, $a+b-a+b=2b$ and $a+a=2a$.}
+\label{fig:surfaces}
+\end{figure}
+
+Homology with coefficients in an abelian group $A$ is computed by tensoring a chain complex with $A$; cohomology by applying $\operatorname{Hom}(-,A)$. Tome~8, Exercise~6.1, found that the projective plane has
+$H_2(\R P^2;\Z)=0$ but $H_2(\R P^2;\Z/2)=\Z/2$: the coefficients matter, and in a way that depends on torsion. The next theorem says exactly how.
+
+\begin{theorem}[universal coefficient theorems]\label{thm:uct}
+Let $R$ be a principal ideal domain, $C_\bullet$ a chain complex of finitely generated free $R$-modules, and $A$ a module. For every $n$ there are exact sequences
+\[
+\begin{gathered}
+0\to H_n(C)\otimes A\to H_n(C\otimes A)\to\operatorname{Tor}_1\bigl(H_{n-1}(C),A\bigr)\to0,\\
+0\to\operatorname{Ext}^1\bigl(H_{n-1}(C),A\bigr)\to H^n\bigl(\operatorname{Hom}(C,A)\bigr)\to\operatorname{Hom}\bigl(H_n(C),A\bigr)\to0,
+\end{gathered}
+\]
+natural in $C$ and $A$, and both split (not naturally).
+\end{theorem}
+
+\begin{proof}
+Write $Z_n$ and $B_n$ for the cycles and boundaries of $C_n$, and $i_n\colon B_n\to Z_n$ for the inclusion. These are submodules of $C_n$, finitely generated and torsion-free, hence free (Theorem~\ref{thm:pidflat}). So the exact
+sequence $0\to Z_n\to C_n\xrightarrow dB_{n-1}\to0$ splits (a free module is projective), and $0\to B_{n-1}\xrightarrow{i}Z_{n-1}\to H_{n-1}(C)\to0$ is a free resolution of $H_{n-1}(C)$.
+
+\emph{Homology.} View $Z_\bullet$ and $B_{\bullet-1}$ (the module $B_{n-1}$ in degree $n$) as complexes with zero differentials. Then $0\to Z_\bullet\to C_\bullet\to B_{\bullet-1}\to0$ is a short exact sequence of complexes, split in each
+degree, so it stays exact after $\otimes A$. Its long exact sequence reads
+\[
+B_n\otimes A\xrightarrow{\ \delta\ }Z_n\otimes A\to H_n(C\otimes A)\to B_{n-1}\otimes A\xrightarrow{\ \delta\ }Z_{n-1}\otimes A,
+\]
+since a complex with zero differential is its own homology. The connecting map $\delta$ is $i\otimes1$: to compute $\delta(b\otimes a)$, lift $b=dc$ to $c\otimes a$ and apply the differential, which gives $dc\otimes a=b\otimes a$ in
+$Z_n\otimes A$. So we get $0\to\operatorname{coker}(i_n\otimes1)\to H_n(C\otimes A)\to\ker(i_{n-1}\otimes1)\to0$. By right exactness, $\operatorname{coker}(i_n\otimes1)=H_n(C)\otimes A$, and by definition of Tor with the
+resolution $0\to B_{n-1}\to Z_{n-1}$, $\ker(i_{n-1}\otimes1)=\operatorname{Tor}_1(H_{n-1}(C),A)$.
+
+\emph{Splitting.} Let $r\colon C_n\to Z_n$ be a retraction ($r=\mathrm{id}$ on $Z_n$). The map $C_n\otimes A\to H_n(C)\otimes A$, $c\otimes a\mapsto[r(c)]\otimes a$, kills the boundaries $dc'\otimes a$ (as $r(dc')=dc'\in B_n$), so on cycles
+it induces $H_n(C\otimes A)\to H_n(C)\otimes A$, and it is a left inverse of the first map of the sequence, which sends $[z]\otimes a$ to $[z\otimes a]$.
+
+\emph{Cohomology.} Apply $\operatorname{Hom}(-,A)$ to the same split sequence of complexes. The long exact sequence and the same identification of the connecting map give
+\[
+0\to\operatorname{coker}\bigl(i_{n-1}^*\bigr)\to H^n\bigl(\operatorname{Hom}(C,A)\bigr)\to\ker\bigl(i_n^*\bigr)\to0,
+\]
+with $i_k^*\colon\operatorname{Hom}(Z_k,A)\to\operatorname{Hom}(B_k,A)$. By left exactness of Hom on $0\to B_n\to Z_n\to H_n(C)\to0$, $\ker i_n^*=\operatorname{Hom}(H_n(C),A)$; by definition of $\operatorname{Ext}^1$ with the
+resolution $0\to B_{n-1}\to Z_{n-1}$, $\operatorname{coker}i_{n-1}^*=\operatorname{Ext}^1(H_{n-1}(C),A)$. The splitting uses the retraction $r$ in the same way.
+\end{proof}
+
+\begin{example}\label{ex:rp2uct}
+The cell structure of Figure~\ref{fig:surfaces} gives for $\R P^2$ the complex $\Z\xrightarrow{2}\Z\xrightarrow{0}\Z$ (degrees $2,1,0$), so $H_0=\Z$, $H_1=\Z/2$, $H_2=0$. With $A=\Z/2$ the theorem predicts
+\[
+H_2(\R P^2;\Z/2)\cong H_2\otimes\Z/2\oplus\operatorname{Tor}_1(H_1,\Z/2)=0\oplus\Z/2,
+\]
+and directly, $\Z/2\xrightarrow{0}\Z/2\xrightarrow{0}\Z/2$ has $H_2=\Z/2$. For cohomology with integer coefficients, $H^2(\R P^2;\Z)\cong\operatorname{Hom}(H_2,\Z)\oplus\operatorname{Ext}^1(H_1,\Z)=\Z/2$, although $H_2=0$:
+in cohomology the torsion moves up one degree.
+\end{example}
+
+For fields of coefficients and complexes of vector spaces, all the Tor and Ext terms vanish, and $H^n(\operatorname{Hom}(C,K))$ is simply the dual of $H_n(C)$: this is the form in which Tome~8 used de Rham's theorem.
+
+\begin{beauty}
+Over $\Z$, a free module $F$ has $\operatorname{Ext}^1(F,\Z)=0$. J.~H.~C.~Whitehead asked the converse: if $\operatorname{Ext}^1(A,\Z)=0$, must the abelian group $A$ be free? Karl Stein proved in 1951 that the answer is yes for
+countable groups, and the question for uncountable groups resisted for twenty years. In 1974 Saharon Shelah showed that it cannot be settled by the usual axioms of set theory: in Gödel's constructible universe
+every such group is free, while under Martin's axiom with the continuum hypothesis false there is a non-free one. A question about short exact sequences of abelian groups turned out to be independent of mathematics as
+we axiomatise it.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:kleinuct}
+The Klein bottle has the complex $\Z\xrightarrow{d_2}\Z^2\xrightarrow{0}\Z$ with $d_2(1)=(0,2)$ (Figure~\ref{fig:surfaces}). Compute its homology with coefficients $\Z$, $\Z/2$ and $\Q$, and its cohomology with coefficients
+$\Z$, directly and with Theorem~\ref{thm:uct}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:torsym}
+Show that $\operatorname{Tor}_1(M,N)\cong\operatorname{Tor}_1(N,M)$ for finitely generated abelian groups, and that this group is finite. Is $\operatorname{Ext}^1(\Z/2,\Z)\cong\operatorname{Ext}^1(\Z,\Z/2)$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:koszul}
+Let $R=K[x,y]$ and $K=R/(x,y)$. Use the Koszul resolution to compute $\operatorname{Tor}_n^R(K,K)$ and $\operatorname{Ext}^n_R(K,R)$ for all $n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:extzp2}
+Prove the claims of Example~\ref{ex:extzp}: for $a\in\{1,\dots,p-1\}$, the extension $E_a$ with $j(n)=pn$ and $q(x)=ax\bmod p$ corresponds to the class $a^{-1}\bmod p$ under the identification $\operatorname{Ext}^1(\Z/p,\Z/p)\cong\Z/p$ of Example~\ref{ex:torextz}, and $E_a$, $E_b$ are equivalent only if $a=b$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:baersum}
+(Baer sum.) Given extensions $0\to N\to E_i\to M\to0$ ($i=1,2$), let $X=\{(e_1,e_2):q_1(e_1)=q_2(e_2)\}$ and $E=X/\{(j_1(n),-j_2(n))\}$. Show that $E$ is an extension of $M$ by $N$, and that, with the notation of the proof of
+Theorem~\ref{thm:extclass}, $\Theta(E)=\Theta(E_1)+\Theta(E_2)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:extqz}
+Show that $\operatorname{Ext}^1(\Q,\Z)\cong\operatorname{Hom}(\Q,\Q/\Z)/\Q$, and that $\operatorname{Hom}(\Q,\Q/\Z)$ is uncountable. Deduce that there is an abelian group $E$ containing $\Z$ with $E/\Z\cong\Q$ but $E\not\cong\Z\oplus\Q$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:kleinuct}
+$H_1=\Z\oplus\Z/2$ and $H_2=0$. The $\Z/2$ in $H_1$ produces a $\operatorname{Tor}$ term in $H_2(\,\cdot\,;\Z/2)$ and an $\operatorname{Ext}$ term in $H^2(\,\cdot\,;\Z)$.
+\end{hint}
+
+\begin{hint}{ex:torsym}
+Both sides are additive in each variable; reduce to cyclic groups and use Example~\ref{ex:torextz}.
+\end{hint}
+
+\begin{hint}{ex:koszul}
+Tensoring the Koszul complex with $K$ kills all its maps, since they are given by $x$ and $y$.
+\end{hint}
+
+\begin{hint}{ex:extzp2}
+Use $P=\Z$, $K=p\Z$, and lift $\pi\colon\Z\to\Z/p$ to $\beta\colon\Z\to\Z/p^2$; then compute $\beta(p)$.
+\end{hint}
+
+\begin{hint}{ex:baersum}
+If $\beta_i$ lifts $\pi$ to $E_i$, then $(\beta_1,\beta_2)$ lifts it to $X$.
+\end{hint}
+
+\begin{hint}{ex:extqz}
+Apply $\operatorname{Hom}(\Q,-)$ to $0\to\Z\to\Q\to\Q/\Z\to0$; $\Q$ is injective. A homomorphism $\Q\to\Q/\Z$ is determined by the images of $1/n!$, chosen compatibly.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:kleinuct}
+\idea Compute the homology of three small complexes, and match with the predictions.
+\writeup Over $\Z$: $d_2$ is injective, so $H_2=0$; $H_1=\Z^2/\langle(0,2)\rangle=\Z\oplus\Z/2$; $H_0=\Z$. Over $\Z/2$: all maps are $0$ (as $2=0$), so $H_2=\Z/2$, $H_1=(\Z/2)^2$, $H_0=\Z/2$. The theorem predicts
+$H_2(\Z/2)=0\oplus\operatorname{Tor}_1(\Z\oplus\Z/2,\Z/2)=\Z/2$ and $H_1(\Z/2)=(\Z\oplus\Z/2)\otimes\Z/2\oplus\operatorname{Tor}_1(\Z,\Z/2)=(\Z/2)^2$. Over $\Q$: $d_2$ is injective, $H_2=0$, $H_1=\Q$, $H_0=\Q$, matching
+$H_1\otimes\Q=\Q$ (torsion dies). Cohomology over $\Z$: the dual complex is $\Z\xrightarrow0\Z^2\xrightarrow{d_2^*}\Z$ with $d_2^*(u,v)=2v$, so $H^0=\Z$, $H^1=\ker d_2^*=\Z$, $H^2=\Z/2$. The theorem predicts
+$H^1=\operatorname{Hom}(\Z\oplus\Z/2,\Z)\oplus\operatorname{Ext}^1(\Z,\Z)=\Z$ and $H^2=\operatorname{Hom}(0,\Z)\oplus\operatorname{Ext}^1(\Z\oplus\Z/2,\Z)=\Z/2$.
+\end{solution}
+
+\begin{solution}{ex:torsym}
+\idea Tor commutes with finite direct sums, and on cyclic groups it is visibly symmetric.
+\writeup A finite direct sum of resolutions resolves the direct sum, and $\otimes$ commutes with finite direct sums in each variable, so $\operatorname{Tor}_1$ is additive in each variable. Every finitely generated abelian group is a
+finite sum of copies of $\Z$ and of $\Z/n$'s. Now $\operatorname{Tor}_1(\Z,N)=0$ ($\Z$ projective) and $\operatorname{Tor}_1(N,\Z)=0$ ($\Z$ flat), while $\operatorname{Tor}_1(\Z/m,\Z/n)\cong\Z/\gcd(m,n)$ is symmetric in $m,n$. So both
+sides are $\bigoplus_{i,j}\Z/\gcd(m_i,n_j)$ over the cyclic torsion summands $\Z/m_i$ of $M$ and $\Z/n_j$ of $N$, a finite group. Finally $\operatorname{Ext}^1(\Z/2,\Z)=\Z/2$ but
+$\operatorname{Ext}^1(\Z,\Z/2)=0$, as $\Z$ is projective: Ext is not symmetric.
+\end{solution}
+
+\begin{solution}{ex:koszul}
+\idea The Koszul complex is a free resolution of $K$; with $K$ in the second variable its maps all become $0$.
+\writeup The resolution is $0\to R\xrightarrow{(-y,x)}R^2\xrightarrow{(x\ y)}R\to K\to0$. It is exact: $ax+by=0$ forces $x\mid b$ ($R$ is a UFD), $b=cx$, and then $a=-cy$; and $(-cy,cx)=0$ only for $c=0$. Tensoring with
+$K=R/(x,y)$ replaces $R$ by $K$ and $x,y$ by $0$: the complex $0\to K\to K^2\to K\to0$ with zero maps. So $\operatorname{Tor}_0=K$, $\operatorname{Tor}_1=K^2$, $\operatorname{Tor}_2=K$, and $\operatorname{Tor}_n=0$ for $n\ge3$.
+Applying $\operatorname{Hom}(-,R)$ gives $0\to R\xrightarrow{(x,y)^{\mathsf T}}R^2\xrightarrow{(-y\ \ x)}R\to0$, that is $c\mapsto(cx,cy)$ and $(a,b)\mapsto-ay+bx$. The first map is injective, so $\operatorname{Ext}^0=\operatorname{Hom}(K,R)=0$; the
+kernel of the second is $\{(cx,cy)\}$ by the same UFD argument, so $\operatorname{Ext}^1=0$; and $\operatorname{Ext}^2=R/(x,y)=K$. Only the top degree survives, a first glimpse of duality.
+\end{solution}
+
+\begin{solution}{ex:extzp2}
+\idea Compute the class by lifting $\pi$, as in the proof of Theorem~\ref{thm:extclass}.
+\writeup $E_a$ is an extension: $j\colon\Z/p\to\Z/p^2$, $n\mapsto pn$, is injective with image $p\Z/p^2$, which is the kernel of $q(x)=ax\bmod p$ since $a$ is prime to $p$; $q$ is onto. With $P=\Z$, $K=p\Z$ and $\pi(1)=1$, a lift
+$\beta\colon\Z\to E_a$ needs $a\beta(1)\equiv1\pmod p$, so $\beta(1)=a'$ with $aa'\equiv1\pmod p$. Then $\beta(p)=pa'=j(a')$, so $\varphi(p)=a'$. Under $\operatorname{Hom}(p\Z,\Z/p)/\iota^*\operatorname{Hom}(\Z,\Z/p)\cong\Z/p$
+(the restrictions $\iota^*\psi$ send $p$ to $p\psi(1)=0$, so the quotient is $\operatorname{Hom}(p\Z,\Z/p)\cong\Z/p$, $\varphi\mapsto\varphi(p)$), the class of $E_a$ is $a^{-1}\bmod p$. These are the $p-1$ non-zero classes, pairwise distinct,
+so the $E_a$ are pairwise inequivalent by Theorem~\ref{thm:extclass}, while the split extension has class $0$. Directly: an equivalence $\theta\colon E_a\to E_b$ is multiplication by some unit $u$ of $\Z/p^2$; $\theta j=j$ forces $u\equiv1\pmod p$,
+and then $q_b\theta=q_a$ forces $b\equiv a\pmod p$.
+\end{solution}
+
+\begin{solution}{ex:baersum}
+\idea Glue the two extensions over $M$ (a pullback), then identify the two copies of $N$ (a pushout).
+\writeup $X$ is a submodule of $E_1\oplus E_2$ containing $(j_1(n),-j_2(n))$, and $q(e_1,e_2)=q_1(e_1)$ is well defined on $E$ and onto (given $m$, choose preimages $e_1,e_2$). Define $j(n)=[(j_1(n),0)]=[(0,j_2(n))]$. If $j(n)=0$, then
+$(j_1(n),0)=(j_1(n'),-j_2(n'))$, so $n'=0$ and $n=0$. If $q[(e_1,e_2)]=0$, then $e_1=j_1(n_1)$ and $q_2(e_2)=q_1(e_1)=0$, so $e_2=j_2(n_2)$, and $[(e_1,e_2)]=j(n_1+n_2)$. So $E$ is an extension. With lifts $\beta_i$ of $\pi$ and
+$\beta_i\iota=j_i\varphi_i$, the map $\beta=[(\beta_1,\beta_2)]$ lifts $\pi$ to $E$, and $\beta\iota(k)=[(j_1\varphi_1(k),j_2\varphi_2(k))]=j(\varphi_1(k)+\varphi_2(k))$. So $\Theta(E)=[\varphi_1+\varphi_2]$.
+\end{solution}
+
+\begin{solution}{ex:extqz}
+\idea The long exact sequence turns Ext into a quotient of Hom groups, and $\operatorname{Hom}(\Q,\Q/\Z)$ is huge.
+\writeup The second Ext sequence of Theorem~\ref{thm:les}, with $M=\Q$, gives
+\[
+\operatorname{Hom}(\Q,\Q)\to\operatorname{Hom}(\Q,\Q/\Z)\to\operatorname{Ext}^1(\Q,\Z)\to\operatorname{Ext}^1(\Q,\Q)=0,
+\]
+the last group vanishing because $\Q$ is injective (Corollary~\ref{cor:divisible} and Proposition~\ref{prop:torextbasic}(c)), and it is preceded by $\operatorname{Hom}(\Q,\Z)=0$ ($\Z$ has no divisible elements but $0$). Since
+$\operatorname{Hom}(\Q,\Q)\cong\Q$ (a homomorphism is multiplication by its value at $1$), $\operatorname{Ext}^1(\Q,\Z)\cong\operatorname{Hom}(\Q,\Q/\Z)/\Q$.
+
+A homomorphism $u\colon\Q\to\Q/\Z$ is determined by $x_n=u(1/n!)$, subject to $(n+1)x_{n+1}=x_n$; conversely any such sequence defines $u$, since every rational is $a/n!$. Given $x_n$, the equation $(n+1)y=x_n$ has $n+1$ solutions
+in $\Q/\Z$ ($\Q/\Z$ is divisible, and the solutions differ by the $n+1$ elements of order dividing $n+1$). So there are at least $2^{\aleph_0}$ sequences, choosing at each step one of at least two solutions: $\operatorname{Hom}(\Q,\Q/\Z)$
+is uncountable, and its quotient by the countable $\Q$ is non-zero. By Theorem~\ref{thm:extclass}, a non-zero class gives an extension $0\to\Z\to E\to\Q\to0$ that is not equivalent to the split one. To see $E\not\cong\Z\oplus\Q$,
+suppose $E$ contains a subgroup $D\cong\Q$ (as $\Z\oplus\Q$ does). The restriction of $q$ to $D$ is a homomorphism $\Q\to\Q$, so multiplication by some $c\in\Q$; and $c\ne0$, since otherwise $D\subseteq\ker q=j(\Z)\cong\Z$, which has no subgroup
+isomorphic to $\Q$. So $q|_D$ is an isomorphism onto $\Q$, its inverse is a section of $q$, and the extension splits (Proposition~\ref{prop:split}), a contradiction. Hence $E$ contains no copy of $\Q$ at all.
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+J.~J.~Sylvester, ``On a theory of the syzygetic relations of two rational integral functions'', \emph{Phil.\ Trans.\ R.\ Soc.\ London} 143 (1853), 407--548; D.~Hilbert, ``Über die Theorie der algebraischen Formen'', \emph{Math.\ Ann.} 36
+(1890), 473--534; R.~Baer, ``Erweiterung von Gruppen und ihren Isomorphismen'', \emph{Math.\ Z.} 38 (1934), 375--416; S.~Eilenberg and S.~Mac Lane, ``Group extensions and homology'', \emph{Ann.\ of Math.} 43 (1942), 757--831;
+H.~Cartan and S.~Eilenberg, \emph{Homological Algebra} (Princeton University Press, 1956); N.~Yoneda, ``On the homology theory of modules'', \emph{J.\ Fac.\ Sci.\ Univ.\ Tokyo} 7 (1954), 193--227; S.~Shelah, ``Infinite abelian groups,
+Whitehead problem and some constructions'', \emph{Israel J.\ Math.} 18 (1974), 243--256. Lang's exercise is in S.~Lang, \emph{Algebra}, in the chapter on general homology theory.
+
+For more: C.~A.~Weibel, \emph{An Introduction to Homological Algebra} (Cambridge University Press, 1994), Chapters 1, 2 and 3, and his ``History of homological algebra'', in I.~M.~James (ed.), \emph{History of Topology} (1999); A.~Hatcher, \emph{Algebraic
+Topology} (2002), Section~3.1 and 3.A, for universal coefficients; P.~C.~Eklof, ``Whitehead's problem is undecidable'', \emph{Amer.\ Math.\ Monthly} 83 (1976), 775--788, for the beauty box.
