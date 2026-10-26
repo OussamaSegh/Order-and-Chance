@@ -1,0 +1,383 @@
+\chapter{Multiplicative Functions}
+\begin{center}\itshape
+A multiplicative function is decided by its values at the primes.\\
+When is its average decided as well?\\
+Almost always, says Halász, unless it is pretending to be something simple.
+\end{center}
+
+The Möbius function has mean value $0$; this is equivalent to the prime number theorem (Tome~5, Theorem~5.7). The function $\mu^2$, the indicator of the squarefree numbers, has mean value $\frac6{\pi^2}$, and Wintner's theorem (Tome~5, Theorem~2.2) computes such means as Euler products whenever $f$ is close enough to $1$ that the convolution method converges absolutely. Between these two extremes lies a whole world. What is the mean value of a multiplicative function whose values at the primes are $\pm1$, chosen by some rule nobody understands? Does it even exist?
+
+Paul Erdős conjectured that every multiplicative function with values $\pm1$ has a mean value. Eduard Wirsing proved it in 1967, for all values in $[-1,1]$, and a year later Gábor Halász found a different and far more flexible argument that also handled complex values. The complex case contains a surprise. The function $n^{it}$ is multiplicative, of modulus $1$, and has no mean value at all: its averages turn forever on a circle (Exercise~\ref{ex:nit} and Figure~\ref{fig:spiral}). Halász's theorem says that this is essentially the only obstruction. A multiplicative function with $|f|\le1$ has small averages unless, at the primes, it looks like $n^{it}$ for some $t$. In the language that Andrew Granville and Kannan Soundararajan introduced forty years later, a multiplicative function has small mean value unless it \emph{pretends} to be $n^{it}$.
+
+This chapter proves Halász's theorem in full, for every multiplicative function with $|f|\le1$, with a proof that combines a sieve bound, a convolution identity and Plancherel's theorem. It then proves Delange's and Wirsing's theorems and deduces, with no zero-free region at all, that $\mu$ has mean value $0$. The last section describes what lies beyond: the Matomäki--Radziwiłł theorem on short intervals, Tao's work on Chowla's conjecture, and Sarnak's conjecture.
+
+\begin{reminder}[from Tomes~5 and~7]
+\emph{Mertens and Chebyshev} (Tome~5, Chapter~1). $\sum_{p\le x}\frac1p=\log\log x+O(1)$, $\sum_{p\le x}\frac{\log p}p=\log x+O(1)$, $\sum_{n\le x}\frac{\Lambda(n)}n=\log x+O(1)$, and $\psi(x)\le3x$ for $x\ge1$.
+\emph{Brun--Titchmarsh} (Tome~5, Theorem~8.4). $\pi(u+h)-\pi(u)\le\frac{2h}{\log h}(1+O(\frac{\log\log h}{\log h}))$ uniformly for $u\ge0$, $h\ge3$.
+\emph{Wintner} (Tome~5, Theorem~2.2). If $f=\mathbf1*h$ with $\sum_d\frac{|h(d)|}d<\infty$, then $f$ has the mean value $\sum_d\frac{h(d)}d$.
+\emph{Plancherel} (Tome~7, Theorem~5.4). For $g\in L^1\cap L^2(\R)$, $\int|g|^2=\frac1{2\pi}\int|\hat g(t)|^2\dd t$ with $\hat g(t)=\int g(v)e^{-itv}\dd v$.
+\end{reminder}
+
+Throughout, $f$ is a \emph{multiplicative function with $|f|\le1$}, $S_f(x)=\sum_{n\le x}f(n)$, and $F(s)=\sum_{n\ge1}f(n)n^{-s}$ for $\Re s>1$. The \emph{mean value} of $f$, if it exists, is $\lim_{x\to\infty}\frac{S_f(x)}x$.
+
+\section{Pretending}
+
+\begin{definition}\label{def:pretend}
+For functions $f,g$ on the primes with values in the closed unit disc and $x\ge2$, the \emph{pretentious distance} is
+\[
+\mathbb D(f,g;x)=\Bigl(\sum_{p\le x}\frac{1-\Re f(p)\overline{g(p)}}p\Bigr)^{1/2}.
+\]
+We say that $f$ \emph{pretends to be} $g$ if $\mathbb D(f,g;x)$ stays bounded as $x\to\infty$.
+\end{definition}
+
+Each term is non-negative, and it vanishes only when $f(p)=g(p)$ is of modulus $1$. If $f$ and $g$ are unimodular at the primes, $1-\Re f(p)\overline{g(p)}=\frac12|f(p)-g(p)|^2$, so $\mathbb D$ is a weighted $\ell^2$ distance and satisfies the triangle inequality (Exercise~\ref{ex:repulsion}). Thus $\mathbb D(\mu,1;x)^2=2\sum_{p\le x}\frac1p\sim2\log\log x$: the Möbius function is as far from $1$ as possible.
+
+We need three facts about $\zeta$ near the line $\Re s=1$ and their translation into distances.
+
+\begin{lemma}\label{lem:zetanear}
+Let $s=1+\sigma+iu$ with $0<\sigma\le1$. (a) If $|u|\le1$, then $|\zeta(s)-\frac1{s-1}|\le4$. (b) If $|u|\ge1$, then $|\zeta(s)|\le\log(|u|+3)+3$.
+\end{lemma}
+\begin{proof}
+For an integer $N\ge1$, partial summation gives $\sum_{n>N}n^{-s}=\int_N^\infty v^{-s}\dd\lfloor v\rfloor=\frac{N^{1-s}}{s-1}-s\int_N^\infty\{v\}v^{-s-1}\dd v$, since $\{N\}=0$. So
+\[
+\zeta(s)=\sum_{n\le N}n^{-s}+\frac{N^{1-s}}{s-1}-s\int_N^\infty\{v\}v^{-s-1}\dd v,\qquad\Bigl|s\int_N^\infty\{v\}v^{-s-1}\dd v\Bigr|\le\frac{|s|}N.
+\]
+(a) Take $N=1$: $|\zeta(s)-\frac1{s-1}|\le1+|s|\le1+\sqrt5<4$. (b) Take $N=\lceil|u|\rceil+2$, so that $|s|\le2+|u|\le N\le|u|+3$: then $|\zeta(s)|\le1+\log N+\frac1{|u|}+1\le\log(|u|+3)+3$.
+\end{proof}
+
+\begin{lemma}\label{lem:dist}
+There is an absolute constant $C$ such that for $x\ge C$, $\sigma=\frac1{\log x}$, $t\in\R$ and every multiplicative $f$ with $|f|\le1$:
+\begin{enumerate}[label=(\alph*)]
+\item the Dirichlet series satisfies $\log|F(1+\sigma+it)|\le\log\log x-\mathbb D(f,n^{it};x)^2+C$;
+\item $\mathbb D(1,n^{it};x)^2=\log\log x-\log|\zeta(1+\sigma+it)|+O(1)$;
+\item $\mathbb D(1,n^{it};x)^2\le t^2\log^2x$;
+\item $\mathbb D(1,n^{it};x)^2\ge\log(|t|\log x)-C$ if $\frac1{\log x}\le|t|\le1$, and $\mathbb D(1,n^{it};x)^2\ge\log\log x-\log\log\log x-C$ if $1\le|t|\le(\log x)^4$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+First, for $|z_p|\le1$,
+\[
+\Bigl|\sum_p\frac{z_p}{p^{1+\sigma}}-\sum_{p\le x}\frac{z_p}p\Bigr|\le\sum_{p\le x}\frac{1-p^{-\sigma}}p+\sum_{p>x}\frac1{p^{1+\sigma}}=O(1).
+\]
+Indeed $1-p^{-\sigma}\le\sigma\log p$, and $\sigma\sum_{p\le x}\frac{\log p}p=O(1)$ by Mertens; and the primes in $]x^{2^j},x^{2^{j+1}}]$ have $p^{-\sigma}\le e^{-2^j}$ and $\sum\frac1p=\log2+O(\frac1{\log x})$ there, so the tail is $\ll\sum_je^{-2^j}$.
+
+(a) The Euler factor at $p$ is $1+u_p$ with $u_p=\sum_{k\ge1}f(p^k)p^{-ks}$, $|u_p|\le\frac1{p-1}$, and $\Re u_p=\Re f(p)p^{-s}+O(p^{-2})$. For $p\ge3$, $|u_p|\le\frac12$ and $\log|1+u_p|=\Re(u_p-\frac{u_p^2}2+\cdots)\le\Re u_p+|u_p|^2$. For $p=2$, $\log|1+u_2|\le\log2\le\Re f(2)2^{-s}+2$. Summing, $\log|F(s)|\le\sum_p\Re\frac{f(p)}{p^s}+O(1)$, and by the first display this is $\sum_{p\le x}\frac{\Re f(p)p^{-it}}p+O(1)=\sum_{p\le x}\frac1p-\mathbb D(f,n^{it};x)^2+O(1)$. Mertens finishes the proof.
+(b) Similarly $\log|\zeta(s)|=\Re\sum_p\sum_k\frac{p^{-ks}}k=\sum_p\Re p^{-s}+O(1)=\sum_{p\le x}\frac{\cos(t\log p)}p+O(1)$.
+(c) $1-\cos y\le\frac{y^2}2$, so $\mathbb D(1,n^{it};x)^2\le\frac{t^2}2\sum_{p\le x}\frac{\log^2p}p\le\frac{t^2}2\log x\sum_{p\le x}\frac{\log p}p\le t^2\log^2x$ for $x$ large.
+(d) By (b) and Lemma~\ref{lem:zetanear}: for $|t|\le1$, $|\zeta(1+\sigma+it)|\le\frac1{|t|}+4\le\frac5{|t|}$, so $\mathbb D^2\ge\log\log x-\log\frac5{|t|}-O(1)$; for $1\le|t|\le(\log x)^4$, $|\zeta|\le\log((\log x)^4+3)+3\le5\log\log x$ for $x$ large.
+\end{proof}
+
+\section{Halász's theorem}
+
+Three ingredients go into the proof. The first is Plancherel's theorem, written for Dirichlet series.
+
+\begin{lemma}\label{lem:plancherel}
+Let $(b_n)$ be complex numbers with $|b_n|\le\log(n+1)$, $B(y)=\sum_{n\le y}b_n$, and $G(s)=\sum b_nn^{-s}$. For $\sigma>0$,
+\[
+\int_1^\infty\frac{|B(y)|^2}{y^{3+2\sigma}}\dd y=\frac1{2\pi}\int_{-\infty}^\infty\frac{|G(1+\sigma+it)|^2}{|1+\sigma+it|^2}\dd t.
+\]
+\end{lemma}
+\begin{proof}
+For $\Re s>1$, partial summation gives $G(s)=s\int_1^\infty B(y)y^{-s-1}\dd y$. Let $g(v)=B(e^v)e^{-(1+\sigma)v}$ for $v\ge0$ and $g(v)=0$ for $v<0$. Since $|B(y)|\le y\log(y+1)$, $|g(v)|\le(v+1)e^{-\sigma v}$, so $g\in L^1\cap L^2$, and with $y=e^v$,
+\[
+\hat g(t)=\int_0^\infty B(e^v)e^{-(1+\sigma+it)v}\dd v=\int_1^\infty B(y)y^{-2-\sigma-it}\dd y=\frac{G(1+\sigma+it)}{1+\sigma+it}.
+\]
+Plancherel's theorem and
+\[
+\int|g|^2\dd v=\int_1^\infty|B(y)|^2y^{-2-2\sigma}\frac{\dd y}y
+\]
+give the claim.
+\end{proof}
+
+The second ingredient, an inequality going back to Halász, bounds $S_f(x)$ by an average of $|S_f|$. The idea is that $f(n)\log n$ is a convolution of $f$ with a function supported on prime powers, so that $S_f(x)\log x$ is a weighted sum of the values $S_f(\frac xa)$ over prime powers $a$; and a sieve bound turns sums over primes into integrals.
+
+\begin{lemma}\label{lem:halineq}
+There are absolute constants $B$ and $x_0$ such that for every multiplicative $f$ with $|f|\le1$ and $x\ge x_0$,
+\[
+|S_f(x)|\log x\le Bx\int_1^x\frac{|S_f(v)|}{v^2}\dd v+Bx\log\log x.
+\]
+\end{lemma}
+\begin{proof}
+\emph{From $\log x$ to $\log n$.} $|S_f(x)\log x-\sum_{n\le x}f(n)\log n|\le\sum_{n\le x}\log\frac xn\le\int_0^x\log\frac xu\dd u=x$.
+
+\emph{A convolution.} Let $c(n)=f(p^k)\log p^k$ if $n=p^k$ is a prime power and $c(n)=0$ otherwise, so $|c|\le\Lambda$. Since $\log n=\sum_{p^k\|n}\log p^k$ and $f$ is multiplicative, $f(n)\log n=\sum_{p^k\|n}c(p^k)f(\frac n{p^k})$. The convolution $(c*f)(n)=\sum_{p^k\mid n}c(p^k)f(\frac n{p^k})$ has the extra terms with $p^{k+1}\mid n$, and these contribute in all, for $n\le x$, at most
+\[
+\sum_{p,k}k\log p\cdot\frac x{p^{k+1}}=x\sum_p\frac{\log p}{(p-1)^2}=O(x).
+\]
+Hence
+\[
+S_f(x)\log x=\sum_{n\le x}(c*f)(n)+O(x)=\sum_{a\le x}c(a)S_f\Bigl(\frac xa\Bigr)+O(x),
+\]
+and
+\[
+|S_f(x)|\log x\le\sum_{a\le x}\Lambda(a)\Bigl|S_f\Bigl(\frac xa\Bigr)\Bigr|+O(x).
+\]
+
+\emph{From the sum to an integral.} Let $y_0=(\log x)^{20}$ and $\eta=\frac1{\log x}$. The $a\le y_0$ contribute at most $\sum_{a\le y_0}\Lambda(a)\frac xa=x(\log y_0+O(1))=O(x\log\log x)$. Cover $]y_0,x]$ by the intervals $I_r=]u_r,u_r(1+\eta)]$ with $u_r=y_0(1+\eta)^r$; there are at most $2\log^2x$ of them up to $x$. On $I_r$, $h=\eta u_r\ge u_r^{19/20}$ since $u_r\ge(\log x)^{20}$; by Brun--Titchmarsh the primes in $I_r$ contribute $\le\log(2u_r)\cdot\frac{3h}{\log h}\le5h$ to $\sum_{a\in I_r}\Lambda(a)$, and the prime powers $p^k$ with $k\ge2$ at most $\log(2u_r)\sum_{2\le k\le2\log u_r}((u_r+h)^{1/k}-u_r^{1/k}+1)\le\log(2u_r)(\frac h{\sqrt{u_r}}+2\log u_r)\le h$, for $x$ large. So $\sum_{a\in I_r}\Lambda(a)\le6h$. For $a,w\in I_r$, $|\frac xa-\frac xw|\le\frac{\eta x}{u_r}$, and $|S_f(z)-S_f(z')|\le|z-z'|+1$; averaging over $w\in I_r$,
+\[
+\Bigl|S_f\Bigl(\frac xa\Bigr)\Bigr|\le\frac1h\int_{I_r}\Bigl|S_f\Bigl(\frac xw\Bigr)\Bigr|\dd w+\frac{\eta x}{u_r}+1.
+\]
+Multiplying by $\Lambda(a)$ and summing over $a\in I_r$ gives at most $6\int_{I_r}|S_f(\frac xw)|\dd w+6\eta^2x+6h$. Summing over $r$, the last two terms give $O(x)$, and the integrals give at most $6\int_{y_0}^{2x}|S_f(\frac xw)|\dd w=6x\int_{x/(2x)}^{x/y_0}\frac{|S_f(v)|}{v^2}\dd v\le6x\int_1^x\frac{|S_f(v)|}{v^2}\dd v$, since $S_f(v)=0$ for $v<1$.
+\end{proof}
+
+The third ingredient is the factorization of the Dirichlet series of $c*f$ as $C(s)F(s)$, with $C(s)=\sum c(n)n^{-s}$ whose coefficients are bounded by $\Lambda$: Plancherel then bounds a mean square of partial sums of $c*f$ by the \emph{maximum} of $|F|$ times a mean square of $C$, which Chebyshev controls.
+
+\begin{theorem}[Halász's inequality]\label{thm:halaszineq}
+There are absolute constants $A$ and $x_0$ such that for every multiplicative $f$ with $|f|\le1$, $x\ge x_0$ and $T\ge1$, with $m(\sigma)=\max_{|t|\le T}|F(1+\sigma+it)|$ and $K=\lfloor\log_2\log x\rfloor$,
+\[
+\frac{|S_f(x)|}x\le\frac A{\log x}\Bigl(\sum_{k=1}^Km\Bigl(\frac{2^k}{\log x}\Bigr)+\log\log x+\frac{(\log\log x)(\log x)^{3/2}}{\sqrt T}\Bigr).
+\]
+\end{theorem}
+\begin{proof}
+Let $c$ be as in the proof of Lemma~\ref{lem:halineq}, $b=c*f$, and $\tilde S(v)=\sum_{n\le v}b_n$. That proof showed $|S_f(v)\log v-\tilde S(v)|\le Dv$ for all $v\ge1$, with an absolute $D$.
+
+\emph{Dyadic ranges.} Let $V_j=x^{2^{-j-1}}$ and $\sigma_j=\frac1{\log V_j}=\frac{2^{j+1}}{\log x}$ for $0\le j<K$. Since $2^K\le\log x<2^{K+1}$, we have $\sigma_j\le1$, the ranges $[V_j,V_j^2]$ cover $[V_{K-1},x]$, and $e\le V_{K-1}<e^2$. For $v\ge e$, $|S_f(v)|\le\frac{|\tilde S(v)|+Dv}{\log v}$, and $|S_f(v)|\le v$ always, so
+\[
+\begin{aligned}\int_1^x\frac{|S_f(v)|}{v^2}\dd v&\le\int_1^{e^2}\frac{\dd v}v+\int_e^x\frac{D\dd v}{v\log v}+\sum_{j<K}P_j\\&\le2+D\log\log x+\sum_{j<K}P_j,\end{aligned}
+\]
+where
+\[
+P_j=\int_{V_j}^{V_j^2}\frac{|\tilde S(v)|}{v^2\log v}\dd v.
+\]
+
+\emph{One range.} Write $V=V_j$, $\sigma=\sigma_j\le1$. Since $\log v\ge\log V$ and $v^{2\sigma}\le V^{4\sigma}=e^4$ on $[V,V^2]$, Cauchy--Schwarz gives
+\[
+P_j\le\frac1{\log V}\Bigl(\int_1^\infty\frac{|\tilde S(v)|^2}{v^{3+2\sigma}}\dd v\Bigr)^{1/2}\Bigl(\int_V^{V^2}v^{2\sigma-1}\dd v\Bigr)^{1/2}\le\frac{e^2}{\sqrt{\log V}}\,\mathcal J^{1/2},
+\]
+where $\mathcal J$ is the first integral. Since $|b_n|\le(\Lambda*1)(n)=\log n$, Lemma~\ref{lem:plancherel} applies, and $\sum b_nn^{-s}=C(s)F(s)$. For $|t|\le T$, $|CF|\le m(\sigma)|C|$; and Lemma~\ref{lem:plancherel} once more, now for $C$ itself, with $|\sum_{n\le v}c(n)|\le\psi(v)\le3v$, gives
+\[
+\frac1{2\pi}\int_{-\infty}^\infty\frac{|C(1+\sigma+it)|^2}{|1+\sigma+it|^2}\dd t\le\int_1^\infty\frac{9v^2}{v^{3+2\sigma}}\dd v=\frac9{2\sigma}.
+\]
+For $|t|>T$ we use $|F(1+\sigma+it)|\le\zeta(1+\sigma)\le\frac2\sigma$ and $|C(1+\sigma+it)|\le\sum\frac{\Lambda(n)}{n^{1+\sigma}}=(1+\sigma)\int_1^\infty\frac{\psi(v)}{v^{2+\sigma}}\dd v\le\frac6\sigma$. Altogether
+\[
+\mathcal J\le\frac{9m(\sigma)^2}{2\sigma}+\frac1{2\pi}\cdot\frac{144}{\sigma^4}\cdot\frac2T\le\frac{5m(\sigma)^2}\sigma+\frac{46}{\sigma^4T}.
+\]
+With $\sigma=\frac1{\log V}$, $\mathcal J^{1/2}\le\sqrt5\,m(\sigma)\sqrt{\log V}+7\frac{(\log V)^2}{\sqrt T}$, so $P_j\le17m(\sigma_j)+52\frac{(\log x)^{3/2}}{\sqrt T}$.
+
+\emph{Conclusion.} Lemma~\ref{lem:halineq} and the last three displays give
+\[
+|S_f(x)|\log x\le Bx\Bigl(2+D\log\log x+\sum_{j<K}\Bigl(17m(\sigma_j)+\frac{52(\log x)^{3/2}}{\sqrt T}\Bigr)\Bigr)+Bx\log\log x,
+\]
+which is the claim with $k=j+1$ and $K\le\log_2\log x$.
+\end{proof}
+
+To turn this into a statement about distances, we need to compare $|F|$ on different vertical lines. The Poisson kernel does it: for $\delta>0$ and $L\ge0$, $e^{-\delta L}=\int_{-\infty}^\infty\frac{\delta}{\pi(\delta^2+u^2)}e^{-iuL}\dd u$, the Fourier transform of the Cauchy density. With $L=\log n$ and absolute convergence, for $\Re s>1$,
+\begin{equation}\label{eq:poisson}
+F(s+\delta)=\int_{-\infty}^\infty\frac{\delta\,F(s+iu)}{\pi(\delta^2+u^2)}\dd u
+\end{equation}
+So moving to the right can only average $F$: the maximum of $|F|$ on a line controls it on every line to the right.
+
+\begin{theorem}[Halász, 1968]\label{thm:halasz}
+For every multiplicative $f$ with $|f|\le1$ and $x\ge3$,
+\[
+\sum_{n\le x}f(n)\ll(1+\mathfrak m)e^{-\mathfrak m}x+x\frac{\log\log x}{\log x},\qquad\mathfrak m=\min_{|t|\le2(\log x)^3}\mathbb D(f,n^{it};x)^2,
+\]
+with an absolute implied constant.
+\end{theorem}
+\begin{proof}
+We may assume $x$ large. Let $T=(\log x)^3$ and $\sigma_0=\frac1{\log x}$. By Lemma~\ref{lem:dist}(a), $|F(1+\sigma_0+it')|\le E:=e^C e^{-\mathfrak m}\log x$ for $|t'|\le2T$. For $\sigma\ge\sigma_0$ and $|t|\le T$, apply \eqref{eq:poisson} with $s=1+\sigma_0+it$ and $\delta=\sigma-\sigma_0\le1$. Split the integral at $|u|=T$: for $|u|\le T$, $|t+u|\le2T$ and $|F|\le E$; the rest of the kernel has mass $\le\frac{2\delta}{\pi T}$ and $|F|\le\zeta(1+\sigma_0)\le\log x+1$. Hence
+\[
+m(\sigma)\le\min\Bigl(\frac2\sigma,\;E+1\Bigr).
+\]
+In Theorem~\ref{thm:halaszineq}, the error term is $\frac{(\log\log x)(\log x)^{3/2}}{(\log x)^{3/2}}=\log\log x$, and
+\[
+\sum_{k=1}^Km\Bigl(\frac{2^k}{\log x}\Bigr)\le K+\sum_{k\ge1}\min\Bigl(\frac{2\log x}{2^k},E\Bigr).
+\]
+Let $k_0\ge0$ be the least integer with $\frac{2\log x}{2^{k_0}}\le E$. The terms $k\le k_0$ give at most $k_0E$, and the terms $k>k_0$ at most $2\cdot\frac{2\log x}{2^{k_0+1}}\le E$. Since $\frac{2\log x}E=2e^{-C}e^{\mathfrak m}$, $k_0\le1+\log_2(2e^{\mathfrak m})\le2+2\mathfrak m$. So the sum is $\ll(1+\mathfrak m)e^{-\mathfrak m}\log x+\log\log x$, and Theorem~\ref{thm:halaszineq} gives the claim.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-spiral}
+\caption{The averages $\frac1x\sum_{n\le x}f(n)$ for $f(n)=n^{i}$ (blue) and $f(n)=\mu^2(n)n^{i}$ (red), for $10\le x\le10^6$, in the complex plane. Both turn forever on circles (dashed), of radii $\frac1{|1+i|}=0.7071$ and $\frac6{\pi^2}\cdot0.7071=0.4299$; at $x=10^6$ the moduli are $0.70711$ and $0.42987$. Neither function has a mean value, and both pretend to be $n^{i}$.}
+\label{fig:spiral}
+\end{figure}
+
+The theorem is a dichotomy. If $f$ is far from every $n^{it}$ with $|t|\le2(\log x)^3$, its partial sums are small; and if $f$ is close to some $n^{it}$, Figure~\ref{fig:spiral} shows what can happen: $f(n)=n^{it}g(n)$ with $g$ pretending to be $1$ has averages close to $\frac{x^{it}}{1+it}$ times the mean value of $g$, which rotate. The error term $x\frac{\log\log x}{\log x}$ is a limitation of this method: Koukoulopoulos showed that no argument of Halász type can do better than $x\frac{\log\log x}{\log x}$ in general, which is why the prime number theorem with an error term needs the zeros of Tome~5.
+
+\begin{think}
+Why must the minimum in Theorem~\ref{thm:halasz} run over $t$ up to a power of $\log x$, and not just over $t=0$? Take $f(n)=n^{it}$ with $t=\log x$: then $\mathbb D(f,1;x)^2=\mathbb D(1,n^{it};x)^2$ is large by Lemma~\ref{lem:dist}(d), yet $|\frac1x\sum_{n\le x}n^{it}|\approx\frac1{|1+it|}\approx\frac1{\log x}$. So far, so good. Now take $t=\frac{10}{\log x}$: what are $\mathbb D(n^{it},1;x)$ and the average? Which values of $t$ can hide from the minimum over $|t|\le1$, and which cannot?
+\end{think}
+
+\section{Delange, Wirsing and the Möbius function}
+
+When $f$ is close to $1$, the mean value exists and is an Euler product. The following theorem covers the absolutely convergent case of Delange's theorem of 1961.
+
+\begin{theorem}[Delange]\label{thm:delange}
+Let $f$ be multiplicative with $|f|\le1$ and $\sum_p\frac{|1-f(p)|}p<\infty$. Then $f$ has the mean value
+\[
+\prod_p\Bigl(1-\frac1p\Bigr)\Bigl(1+\frac{f(p)}p+\frac{f(p^2)}{p^2}+\cdots\Bigr),
+\]
+the product being convergent.
+\end{theorem}
+\begin{proof}
+Fix $y\ge2$ and let $f_y$ be the multiplicative function with $f_y(p^k)=f(p^k)$ for $p\le y$ and $f_y(p^k)=1$ for $p>y$. Then $f_y=\mathbf1*h$ with $h=\mu*f_y$ multiplicative, $h(p^k)=f_y(p^k)-f_y(p^{k-1})$, so $h(p^k)=0$ for $p>y$ and $|h(p^k)|\le2$. Hence $\sum_d\frac{|h(d)|}d\le\prod_{p\le y}(1+\frac2{p-1})<\infty$, and Wintner's theorem gives the mean value
+\[
+m(f_y)=\prod_{p\le y}\Bigl(1+\sum_{k\ge1}\frac{f(p^k)-f(p^{k-1})}{p^k}\Bigr)=\prod_{p\le y}\Bigl(1-\frac1p\Bigr)\sum_{k\ge0}\frac{f(p^k)}{p^k}=:P_y.
+\]
+Write $n=ab$ with $a$ composed of primes $\le y$ and $b$ of primes $>y$. Then $f(n)-f_y(n)=f(a)(f(b)-1)$, and for complex numbers $z_i$ in the unit disc, $|1-\prod z_i|\le\sum|1-z_i|$. So $|f(n)-f_y(n)|\le\sum_{p^k\|n,\,p>y}|1-f(p^k)|$ and
+\[
+\frac1x\sum_{n\le x}|f(n)-f_y(n)|\le\sum_{p>y}\frac{|1-f(p)|}p+\sum_{p>y,\,k\ge2}\frac2{p^k}=:\varepsilon(y).
+\]
+Thus $\limsup_x|\frac{S_f(x)}x-P_y|\le\varepsilon(y)$, and $\varepsilon(y)\to0$ as $y\to\infty$. Finally, the factors of $P_y$ are $1-\frac{1-f(p)}p+O(\frac1{p^2})$, so $P_y$ converges as $y\to\infty$ to the infinite product $P$, and $\frac{S_f(x)}x\to P$.
+\end{proof}
+
+For real functions, the alternative to Delange is Halász, through an inequality that lets $f$ pretend to be $n^{it}$ only for $t$ close to $0$.
+
+\begin{lemma}\label{lem:realpretend}
+If $f(p)\in[-1,1]$ for every $p$, then for all $t$ and $x\ge2$,
+\[
+\mathbb D(f,n^{it};x)^2\ge\max\Bigl(\mathbb D(f,1;x)^2-\mathbb D(1,n^{it};x)^2,\ \tfrac14\mathbb D(1,n^{2it};x)^2\Bigr).
+\]
+\end{lemma}
+\begin{proof}
+Compare term by term, with $a=f(p)$ and $\theta=t\log p$. First, $1-a\cos\theta=(1-a)+a(1-\cos\theta)\ge(1-a)-(1-\cos\theta)$, since $a\ge-1$. Second, $1-a\cos\theta\ge1-|\cos\theta|\ge\frac12(1-|\cos\theta|)(1+|\cos\theta|)=\frac12\sin^2\theta=\frac14(1-\cos2\theta)$.
+\end{proof}
+
+\begin{theorem}[Wirsing, 1967]\label{thm:wirsing}
+Every multiplicative $f$ with values in $[-1,1]$ has a mean value. It is the product of Theorem~\ref{thm:delange} if $\sum_p\frac{1-f(p)}p<\infty$, and $0$ otherwise.
+\end{theorem}
+\begin{proof}
+If the series converges, it converges absolutely, as $1-f(p)\ge0$, and Theorem~\ref{thm:delange} applies. Otherwise $\Delta(x)=\mathbb D(f,1;x)^2\to\infty$; note $\Delta(x)\le2\log\log x+O(1)$. Let $K=\sqrt{\Delta(x)/2}$, so $K\to\infty$ and $K\le\frac{\log x}8$ for $x$ large. We show $\mathfrak m\to\infty$ in Theorem~\ref{thm:halasz}. For $|t|\le\frac K{\log x}$, Lemma~\ref{lem:realpretend} and Lemma~\ref{lem:dist}(c) give $\mathbb D(f,n^{it};x)^2\ge\Delta(x)-K^2=\frac{\Delta(x)}2$. For $\frac K{\log x}\le|t|\le\frac12$, Lemma~\ref{lem:dist}(d) with $2t$ gives $\mathbb D(1,n^{2it};x)^2\ge\log(2K)-C$. For $\frac12\le|t|\le2(\log x)^3$, it gives $\mathbb D(1,n^{2it};x)^2\ge\log\log x-\log\log\log x-C$. All three lower bounds tend to infinity, so by Lemma~\ref{lem:realpretend} $\mathfrak m\to\infty$, and Theorem~\ref{thm:halasz} gives $S_f(x)=o(x)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-means}
+\caption{The averages $\frac1x\sum_{n\le x}f(n)$ for $10^2\le x\le10^7$. For $\mu$ and the Liouville function $\lambda$ they tend to $0$, quickly ($\sum_{n\le10^7}\mu(n)=1037$ and $\sum_{n\le10^7}\lambda(n)=-842$); for $\mu^2$ they tend to $\frac6{\pi^2}$, in agreement with Theorem~\ref{thm:delange} ($0.607929$ at $10^7$, against $0.607927$); for the indicator of the sums of two squares they tend to $0$ by Theorem~\ref{thm:wirsing}, but only like a constant times $(\log x)^{-1/2}$ ($0.1985$ at $10^7$).}
+\label{fig:means}
+\end{figure}
+
+\begin{corollary}\label{cor:mobius}
+$\sum_{n\le x}\mu(n)\ll x\frac{(\log\log x)^{5/4}}{(\log x)^{1/4}}$, and the same holds for the Liouville function $\lambda$.
+\end{corollary}
+\begin{proof}
+Both have the value $-1$ at every prime, so $\mathbb D(\mu,n^{it};x)^2=\sum_{p\le x}\frac{1+\cos(t\log p)}p$ and the same for $\lambda$. Let $x$ be large, $\sigma=\frac1{\log x}$.
+For $|t|\le\frac1{16}$: by Lemma~\ref{lem:dist}(b), $\mathbb D^2=2\sum_{p\le x}\frac1p-\mathbb D(1,n^{it};x)^2=\log\log x+\log|\zeta(1+\sigma+it)|+O(1)$, and by Lemma~\ref{lem:zetanear}(a), $|\zeta(1+\sigma+it)|\ge\frac1{|\sigma+it|}-4\ge4$ since $|\sigma+it|\le\frac18$. So $\mathbb D^2\ge\log\log x-O(1)$.
+For $\frac1{16}\le|t|\le2(\log x)^3$: by Lemma~\ref{lem:realpretend}, $\mathbb D^2\ge\frac14\mathbb D(1,n^{2it};x)^2=\frac14(\log\log x-\log|\zeta(1+\sigma+2it)|)-O(1)$. If $|2t|\le1$, $|\zeta(1+\sigma+2it)|\le\frac1{|2t|}+4\le12$; otherwise it is at most $\log(4(\log x)^3+3)+3\le5\log\log x$. So $\mathbb D^2\ge\frac14\log\log x-\frac14\log\log\log x-O(1)$.
+Hence $\mathfrak m\ge\frac14\log\log x-\frac14\log\log\log x-O(1)$. Since $(1+\mathfrak m)e^{-\mathfrak m}$ decreases for $\mathfrak m\ge0$, Theorem~\ref{thm:halasz} gives the bound.
+\end{proof}
+
+The exponent $\frac14$ is far from the truth: the zero-free region of Tome~5, through the same contour integral that gives the prime number theorem with an error term, gives $\sum_{n\le x}\mu(n)\ll xe^{-c\sqrt{\log x}}$. What Corollary~\ref{cor:mobius} shows is that the qualitative statement, $\mu$ has mean $0$, needs nothing about $\zeta$ beyond the two crude bounds of Lemma~\ref{lem:zetanear}. Notice where the argument works hardest: near $t=0$, where it uses that $\zeta$ has a \emph{pole} at $1$; and at all other $t$, where it uses only an upper bound for $|\zeta|$, through the elementary inequality of Lemma~\ref{lem:realpretend}. This is the same $3+4\cos\theta+\cos2\theta\ge0$ mechanism that proves $\zeta(1+it)\ne0$ in Tome~5, in disguise.
+
+\section{Beyond Halász}
+
+Halász's theorem is about long averages $\frac1x\sum_{n\le x}$. For short intervals $]x,x+h]$ it says nothing, and for $h$ much smaller than $x$ the problem looked hopeless: even under the Riemann hypothesis one controls $\sum_{x<n\le x+h}\mu(n)$ only for $h$ larger than $\sqrt x$. In 2015 Kaisa Matomäki and Maksym Radziwiłł proved that for \emph{almost all} $x$ the short averages match the long ones, with $h$ as small as one likes, provided only $h\to\infty$.
+
+\begin{theorem}[Matomäki and Radziwiłł, 2016; quoted]\label{thm:mr}
+Let $f$ be multiplicative with values in $[-1,1]$, and $h=h(X)\to\infty$. Then
+\[
+\frac1h\sum_{x<n\le x+h}f(n)-\frac1X\sum_{X<n\le2X}f(n)\longrightarrow0
+\]
+for all $x\in[X,2X]$ outside a set of measure $o(X)$.
+\end{theorem}
+
+In particular $\lambda$ changes sign in almost every interval $]x,x+h]$ with $h\to\infty$. The proof combines a factorization of typical integers into a small prime and the rest, a mean value theorem for Dirichlet polynomials like Lemma~\ref{lem:mvt}, and Halász-type bounds for Dirichlet polynomials over primes. Within a year, Tao used it to prove a logarithmically averaged form of Chowla's conjecture for two-point correlations, $\sum_{n\le x}\frac{\lambda(n)\lambda(n+1)}n=o(\log x)$, and from that solved the Erdős discrepancy problem: for every sequence of signs $\varepsilon_n=\pm1$, the sums $\sum_{j\le n}\varepsilon_{jd}$ are unbounded over $n$ and $d$.
+
+Sarnak's conjecture, formulated in 2010, asks for much more: $\sum_{n\le x}\mu(n)a(n)=o(x)$ for every sequence $a(n)$ produced by a deterministic dynamical system, that is, one of zero topological entropy. It is known for many systems, including all sequences produced by finite automata. The companion notebook tests it on the Thue--Morse and Rudin--Shapiro sequences.
+
+\begin{beauty}
+The values of $f$ at the primes are a sequence of points in the unit disc, as arbitrary as one likes. Halász's theorem says that there are only two kinds of such sequences. Either they wander, and then the partial sums of $f$ cancel; or they follow, at the scale $\frac1p$, the regular rotation $p^{it}$ of a single character of the multiplicative group of the positive reals. There is no third behaviour, and the proof reduces this dichotomy to one maximum of a Dirichlet series, controlled by Plancherel's identity.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nit}
+Let $t\ne0$. Show that $\sum_{n\le x}n^{it}=\frac{x^{1+it}}{1+it}+O((1+|t|)\log x)$, and deduce that $n^{it}$ has no mean value, although $|\frac1x\sum_{n\le x}n^{it}|\to\frac1{|1+it|}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:means}
+(a) Use Theorem~\ref{thm:delange} to find the mean values of $\mu^2$ and of $(-1)^{n+1}$, after checking that they are multiplicative.
+(b) Let $b(n)=1$ if $n$ is a sum of two squares and $b(n)=0$ otherwise. Granting Fermat's characterization (a prime $p\equiv3\pmod4$ divides such an $n$ to an even power), show that $b$ is multiplicative and has mean value $0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:logmean}
+(a) Show that if $\frac1x\sum_{n\le x}a(n)\to c$ for a bounded sequence $a$, then $\frac1{\log x}\sum_{n\le x}\frac{a(n)}n\to c$.
+(b) Show that $\frac1{\log x}\sum_{n\le x}\frac{n^{it}}n\to0$ for $t\ne0$. Logarithmic averages do not see the rotation of Exercise~\ref{ex:nit}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:repulsion}
+(a) Show that $\mathbb D$ satisfies the triangle inequality for functions of modulus $1$ at the primes.
+(b) Let $f$ be multiplicative with $|f(p)|=1$, and suppose $\mathbb D(f,n^{it_1};x)\le A$ and $\mathbb D(f,n^{it_2};x)\le A$ with $|t_1-t_2|\le1$. Show that $|t_1-t_2|\le\frac{e^{4A^2+C}}{\log x}$ for an absolute $C$: a function can pretend to be $n^{it}$ for essentially one $t$ only.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:mobiusap}
+Let $q\ge1$ and $(a,q)=1$. Show that $\sum_{n\le x,\,n\equiv a\,(q)}\mu(n)=o(x)$. You may use that $L(1,\chi)\ne0$ for every non-principal character $\chi$ (Tome~5), and bound $L(1+\sigma+iu,\chi)$ for non-principal $\chi$ as in Lemma~\ref{lem:zetanear}.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nit}
+Partial summation against $\lfloor u\rfloor=u-\{u\}$.
+\end{hint}
+
+\begin{hint}{ex:means}
+Compute the Euler factors; for (b) use Dirichlet's theorem for the progression $3\bmod4$ in the form $\sum_{p\equiv3\,(4)}\frac1p=\infty$.
+\end{hint}
+
+\begin{hint}{ex:logmean}
+Partial summation turns the logarithmic sum into an integral of the ordinary averages. For (b) use Exercise~\ref{ex:nit}.
+\end{hint}
+
+\begin{hint}{ex:repulsion}
+For unimodular values, $1-\Re z\bar w=\frac12|z-w|^2$. Then use Lemma~\ref{lem:dist}(d).
+\end{hint}
+
+\begin{hint}{ex:mobiusap}
+Expand the condition $n\equiv a\pmod q$ in characters, and apply Theorem~\ref{thm:halasz} to each $\mu\chi$. Use $1+\Re z\ge\frac14(1-\Re z^2)$ for $|z|=1$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:nit}
+\idea Compare the sum with the integral $\int_1^xu^{it}\dd u$; the difference is controlled by the fractional parts.
+\writeup By partial summation,
+\[
+\sum_{n\le x}n^{it}=\lfloor x\rfloor x^{it}-it\int_1^x\lfloor u\rfloor u^{it-1}\dd u=x^{1+it}-it\int_1^xu^{it}\dd u+O\Bigl(1+|t|\int_1^x\frac{\dd u}u\Bigr),
+\]
+and $x^{1+it}-it\frac{x^{1+it}-1}{1+it}=\frac{x^{1+it}}{1+it}+O(1)$. So $\frac1x\sum_{n\le x}n^{it}=\frac{x^{it}}{1+it}+o(1)$. Its modulus tends to $\frac1{|1+it|}$, but its argument is $t\log x-\arg(1+it)+o(1)$, which turns forever: there is no limit.
+\end{solution}
+
+\begin{solution}{ex:means}
+\idea Delange's product is a product of local densities; one vanishing factor, or a divergent series of defects, kills the mean.
+\writeup (a) $\mu^2$ is multiplicative with $\mu^2(p)=1$, $\mu^2(p^k)=0$ for $k\ge2$. The hypothesis of Theorem~\ref{thm:delange} holds trivially, and the mean is $\prod_p(1-\frac1p)(1+\frac1p)=\prod_p(1-\frac1{p^2})=\frac1{\zeta(2)}=\frac6{\pi^2}$. The function $g(n)=(-1)^{n+1}$ is $1$ on odd $n$ and $-1$ on even $n$; if $(m,n)=1$, at most one of them is even, so $g(mn)=g(m)g(n)$. Here $1-g(p)=0$ for $p$ odd, so Theorem~\ref{thm:delange} applies, and the factor at $2$ is $(1-\frac12)(1-\frac12-\frac14-\cdots)=0$: the mean value is $0$, as it should be.
+(b) If $(m,n)=1$, a prime $p\equiv3\pmod4$ divides $mn$ to an even power if and only if it divides $m$ or $n$ to an even power, so $b(mn)=b(m)b(n)$. Now $b(p)=0$ for $p\equiv3\pmod4$, so $\sum_p\frac{1-b(p)}p\ge\sum_{p\equiv3\,(4)}\frac1p=\infty$, and Theorem~\ref{thm:wirsing} gives the mean value $0$. Landau's theorem, $\sum_{n\le x}b(n)\sim K\frac x{\sqrt{\log x}}$ with $K=0.7642\ldots$, shows how slow the decay is (Figure~\ref{fig:means}); Tome~14 proves such results with the Selberg--Delange method.
+\end{solution}
+
+\begin{solution}{ex:logmean}
+\idea A logarithmic average is an average of ordinary averages, so it inherits their limits and can smooth away their oscillations.
+\writeup (a) Let $A(u)=\sum_{n\le u}a(n)=cu+\varepsilon(u)u$ with $\varepsilon(u)\to0$. Partial summation gives $\sum_{n\le x}\frac{a(n)}n=\frac{A(x)}x+\int_1^x\frac{A(u)}{u^2}\dd u=O(1)+c\log x+\int_1^x\frac{\varepsilon(u)}u\dd u$, and the last integral is $o(\log x)$.
+(b) By Exercise~\ref{ex:nit}, $A(u)=\frac{u^{1+it}}{1+it}+O((1+|t|)\log u)$, so $\int_1^x\frac{A(u)}{u^2}\dd u=\frac1{1+it}\int_1^xu^{it-1}\dd u+O(1)=\frac{x^{it}-1}{it(1+it)}+O(1)=O(1)$. So $\sum_{n\le x}\frac{n^{it}}n=O(1)$, and the logarithmic mean is $0$.
+\end{solution}
+
+\begin{solution}{ex:repulsion}
+\idea For unimodular values the distance is an $\ell^2$ norm; two characters $n^{it_1}$, $n^{it_2}$ are far apart unless $t_1$ and $t_2$ are within $\frac1{\log x}$ of each other.
+\writeup (a) If $|f(p)|=|g(p)|=1$, then $1-\Re f(p)\overline{g(p)}=\frac12|f(p)-g(p)|^2$, so $\mathbb D(f,g;x)=\|f-g\|$ in the space of sequences on the primes $p\le x$ with the norm $\|u\|^2=\sum_{p\le x}\frac{|u_p|^2}{2p}$. The triangle inequality for this norm (Minkowski) is the claim.
+(b) By (a), $\mathbb D(n^{it_1},n^{it_2};x)\le2A$, and $\mathbb D(n^{it_1},n^{it_2};x)=\mathbb D(1,n^{iu};x)$ with $u=t_2-t_1$. If $|u|\ge\frac1{\log x}$, Lemma~\ref{lem:dist}(d) gives $\log(|u|\log x)-C\le4A^2$, that is $|u|\le\frac{e^{4A^2+C}}{\log x}$; and if $|u|<\frac1{\log x}$ there is nothing to prove.
+\end{solution}
+
+\begin{solution}{ex:mobiusap}
+\idea Each $\mu\chi$ is far from every $n^{it}$: for $\chi^2$ non-principal by the $\cos2\theta$ trick, and for real $\chi$ near $t=0$ because $L(1,\chi)\ne0$, just as $\zeta$'s pole did the work for $\mu$.
+\writeup Since $(a,q)=1$, $\mathbf1_{n\equiv a\,(q)}=\frac1{\varphi(q)}\sum_\chi\overline{\chi(a)}\chi(n)$ for all $n$, so it suffices to show $\sum_{n\le x}\mu(n)\chi(n)=o(x)$ for each character $\chi$ modulo $q$. The function $f=\mu\chi$ is multiplicative with $|f|\le1$, $f(p)=-\chi(p)$ for $p\nmid q$ and $f(p)=0$ for $p\mid q$. Let $\sigma=\frac1{\log x}$; constants may depend on $q$.
+
+\emph{A bound for $L$.} If $\psi$ is a non-principal character modulo $q$, then $|\sum_{n\le N}\psi(n)|\le q$, and partial summation gives, as in Lemma~\ref{lem:zetanear}, $|L(1+\sigma+iu,\psi)|\le\sum_{n\le N}\frac1n+\frac{q|s|}N\ll_q\log(|u|+2)$ with $N=\lceil|u|\rceil+2$.
+
+\emph{The distance.} For $p\nmid q$, $z_p=\chi(p)p^{-it}$ has modulus $1$ and $1-\Re f(p)p^{-it}=1+\Re z_p\ge\frac14(1-\Re z_p^2)$ (the second inequality of Lemma~\ref{lem:realpretend} with $a=-1$ after a rotation). So, as in Lemma~\ref{lem:dist}(b),
+\[
+\mathbb D(f,n^{it};x)^2\ge\frac14\sum_{p\le x,\,p\nmid q}\frac{1-\Re\chi^2(p)p^{-2it}}p=\frac14\bigl(\log\log x-\log|L(1+\sigma+2it,\chi^2)|\bigr)-O(1).
+\]
+If $\chi^2$ is not principal, the bound for $L$ gives $\mathfrak m\ge\frac14(\log\log x-\log\log\log x)-O(1)$ for $|t|\le2(\log x)^3$.
+
+If $\chi^2$ is principal, $L(s,\chi^2)=\zeta(s)\prod_{p\mid q}(1-p^{-s})$, and the display handles $|t|\ge\delta$ for any fixed $\delta>0$ exactly as in Corollary~\ref{cor:mobius}: $|L(1+\sigma+2it,\chi^2)|\ll\frac1\delta+\log\log x$. For $|t|\le\delta$ we argue directly: $\mathbb D(f,n^{it};x)^2=\log\log x+\log|L(1+\sigma+it,\chi)|+O(1)$, by the computation of Lemma~\ref{lem:dist}(b). If $\chi$ is principal, $L(s,\chi)$ is $\zeta(s)$ times a factor bounded away from $0$ near $s=1$, and $|\zeta(1+\sigma+it)|\ge4$ for $|\sigma+it|\le\frac18$, as in Corollary~\ref{cor:mobius}. If $\chi$ is real and non-principal, $L(s,\chi)$ is continuous on $\Re s\ge1$ near $s=1$ and $L(1,\chi)\ne0$, so $|L(1+\sigma+it,\chi)|\ge\frac12|L(1,\chi)|$ for $\sigma+|t|\le\delta$, once $\delta=\delta(q)$ is small. In every case $\mathbb D^2\ge\log\log x-O_q(1)$ for $|t|\le\delta$.
+
+So $\mathfrak m\to\infty$ for every $\chi$, and Theorem~\ref{thm:halasz} gives $\sum_{n\le x}\mu(n)\chi(n)=o(x)$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The theorems.} E.~Wirsing, ``Das asymptotische Verhalten von Summen über multiplikative Funktionen~II'', \emph{Acta Math.\ Acad.\ Sci.\ Hungar.}\ 18 (1967), 411--467. G.~Halász, ``Über die Mittelwerte multiplikativer zahlentheoretischer Funktionen'', \emph{Acta Math.\ Acad.\ Sci.\ Hungar.}\ 19 (1968), 365--403. H.~Delange, ``Sur les fonctions arithmétiques multiplicatives'', \emph{Ann.\ Sci.\ École Norm.\ Sup.}\ (3) 78 (1961), 273--304.
+\item \emph{The proof.} Our route, through Lemma~\ref{lem:halineq} and Plancherel, follows H.~L.~Montgomery, ``A note on the mean values of multiplicative functions'', Institut Mittag-Leffler, Report~17 (1978), and G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., AMS, 2015, Chapter~III.4, with simplified bookkeeping that costs the error term $x\frac{\log\log x}{\log x}$. A different and more flexible proof is in A.~Granville, A.~J.~Harper and K.~Soundararajan, ``A new proof of Halász's theorem, and its consequences'', \emph{Compositio Math.}\ 155 (2019), 126--163. The remark on the limits of the method is from D.~Koukoulopoulos, ``Pretentious multiplicative functions and the prime number theorem for arithmetic progressions'', \emph{Compositio Math.}\ 149 (2013), 1129--1149.
+\item \emph{Pretending.} A.~Granville and K.~Soundararajan, ``Large character sums: pretentious characters and the Pólya--Vinogradov theorem'', \emph{J.\ Amer.\ Math.\ Soc.}\ 20 (2007), 357--384, where the language was introduced.
+\item \emph{Beyond.} K.~Matomäki and M.~Radziwiłł, ``Multiplicative functions in short intervals'', \emph{Ann.\ of Math.}\ 183 (2016), 1015--1056. T.~Tao, ``The logarithmically averaged Chowla and Elliott conjectures for two-point correlations'', \emph{Forum Math.\ Pi} 4 (2016), e8, and ``The Erdős discrepancy problem'', \emph{Discrete Analysis} 2016:1. P.~Sarnak, \emph{Three lectures on the Möbius function, randomness and dynamics}, IAS lecture notes, 2010. C.~Müllner, ``Automatic sequences fulfill the Sarnak conjecture'', \emph{Duke Math.\ J.}\ 166 (2017), 3219--3290.
+\end{itemize}
