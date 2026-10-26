@@ -120,7 +120,7 @@ A fourth independent pass, over Tome 4 (Calculation, 12 chapters, 29 figures, 12
 
 | Place | Severity | Problem | Fix |
 |---|---|---|---|
-| Ch. 6, remark after the equidistribution corollary | ref | Said that Tome 5 uses Weyl sums Σ e^(2πi h f(n)) for polynomials f. The series plan puts Weyl sums (Weyl differencing, van der Corput, the equidistribution of n²α) in Tome 13; Tome 5 has none. | "Tome 13 estimates Weyl sums … proving the equidistribution of n²α". |
+| Ch. 6, remark after the equidistribution corollary | ref | Said only that Tome 5 uses Weyl sums. The review moved the pointer to Tome 13 following the series plan, but the detailed Tome 5 plan keeps this promise in its Chapter 11 (Weyl differencing, van der Corput, equidistribution of polynomial sequences), so the writing thread restored Tome 5 when merging. | "Tome 5, Chapter 11 estimates Weyl sums … proving the equidistribution of n²α". |
 | Ch. 1, after the difference rule for falling powers, Δ x^(m) = m x^(m−1) | text | "For m = −1 the rule would give Δ x^(0) = 0": it is m = 0 that gives this; the point is that no m reaches the falling power x^(−1). | "To reach x^(−1) one would need m = 0, and the rule then gives Δ x^(0) = 0". |
 | Ch. 2, Franklin's proof of the pentagonal theorem ("A maps 𝒜 to ℬ") | text | The check that μ is not exceptional used only the case s(μ) = σ(μ) + 1 without saying why s(μ) = σ(μ) is excluded (it was shown two lines earlier that s(μ) > σ(μ)). | The case split is now spelled out. |
 
