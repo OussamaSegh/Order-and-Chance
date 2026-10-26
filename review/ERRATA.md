@@ -406,3 +406,9 @@ An independent pass over Tome S2 (Geometry, 12 chapters, 12 notebooks). Every pr
 |---|---|---|
 | Tome S2, ch. 9 | The density plot labelled a curve `$\mathbb Z^n$`; matplotlib's mathtext requires braces and the cell raised `ParseFatalException`, so the plot never appeared. | `$\mathbb{Z}^n$` in the notebook and in its generator script; notebook re-executed. |
 | Tome S2, ch. 1–8, 10–12 | All run to completion; the numbers printed agree with the chapters. | — |
+
+## Erratum: Tome 3 (found while writing the problem books)
+
+| Where | Kind | Problem | Fix |
+|---|---|---|---|
+| Ch. 6, Exercise 6.5 (`ex:poissonhalf`) | math | The next term of Ramanujan's expansion was given as 1/(3√(2πn)). At n = 100 the true value 0.526562 is matched by 1/2 + 2/(3√(2πn)) = 0.526596, not by 0.513298. | e^{−n} Σ_{k≤n} n^k/k! = 1/2 + 2/(3√(2πn)) + O(1/n). |
