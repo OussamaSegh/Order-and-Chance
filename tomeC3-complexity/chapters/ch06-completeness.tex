@@ -1,0 +1,560 @@
+\chapter{Completeness and Compactness}\label{ch:completeness}
+
+\begin{center}\itshape
+What is true in every world can be proved in a few lines of symbols;\\
+and what is promised by every finite piece comes true in some world.\\
+\upshape(the content of this chapter, in our words)
+\end{center}
+
+In 1928 David Hilbert and Wilhelm Ackermann published a little book, \emph{Grundzüge der theoretischen Logik}, which set out the logic we now call first-order: variables for the elements of a structure, quantifiers over them, and a handful of axioms and rules for writing proofs. Every formula their rules proved was true in every structure. Was the converse true? Could every formula that is true in every structure be proved by their rules? They listed it as an open question.
+
+A year later, in Vienna, a student of twenty-three answered it. Kurt Gödel completed his doctoral dissertation in the autumn of 1929 and received his doctorate on 6 February 1930; the revised version appeared that year in the \emph{Monatshefte für Mathematik und Physik}. The answer was yes: the rules prove every valid formula. Gödel also showed that an infinite set of formulas has a model as soon as each of its finite parts does. This is the \emph{compactness theorem}; Tome~C1 proved its propositional shadow (Theorem~1.14), and the first-order version is far stronger.
+
+The proof was hard, and it was not the one taught today. In 1947 Leon Henkin, a student of Alonzo Church at Princeton, wrote a dissertation on Church's theory of types, and found inside it a new proof of Gödel's theorem: to build a model of a set of sentences, build it out of the sentences' own words. Fifty years later he recalled that the proof had come ``in the midst of my efforts to prove an entirely different result''. His paper of 1949 is eight pages long, and it is the proof of this chapter.
+
+Completeness turned out to be the door to a new subject. Leopold Löwenheim had shown in 1915, and Thoralf Skolem in 1920, that a sentence with an infinite model has a countable one. Skolem drew from this, in 1922, a conclusion that looked like a paradox: the axioms of set theory, which prove that uncountable sets exist, have a countable model. In 1933 he built models of arithmetic with infinite integers in them; in 1936 Anatoly Malcev extended compactness to any number of symbols and began to use it to prove theorems about groups. The subject is \emph{model theory}, and at the end of the chapter it proves a theorem about polynomial maps of $\C^n$ by counting in finite fields.
+
+\begin{think}
+Is ``the domain is finite'' something a set of first-order sentences can say? Is ``every element is $0$, or $1$, or $1+1$, or $1+1+1$, \dots''? If every finite part of a set of axioms has a model, should the whole set have one?
+\end{think}
+
+\section{Formal proofs}\label{sec:formalproofs}
+
+We use the first-order logic of Tome~C1, Chapter~1: a signature $L$ of function, relation and constant symbols, terms, formulas, structures $\mathcal M$ with a non-empty domain $M$, and truth. To keep the proof system small, the only primitive connectives are $\neg$ and $\to$ and the only quantifier is $\forall$; the others are abbreviations: $\alpha\lor\beta$ is $\neg\alpha\to\beta$, $\alpha\land\beta$ is $\neg(\alpha\to\neg\beta)$, and $\exists x\,\alpha$ is $\neg\forall x\,\neg\alpha$. An \emph{assignment} $s$ gives a value $s(x)\in M$ to each variable; a term $t$ then has a value $t^{\mathcal M}[s]$, and we write $\mathcal M\models\varphi[s]$ when $\varphi$ is true for the values given by $s$. The truth of $\varphi$ only depends on the values of its free variables (an induction on $\varphi$), so for a sentence we simply write $\mathcal M\models\varphi$. We write $s(x\,|\,m)$ for the assignment equal to $s$ except that it sends $x$ to $m$. For a set of formulas $\Gamma$, $\Gamma\models\varphi$ means that every structure and assignment satisfying all formulas of $\Gamma$ satisfy $\varphi$; $\varphi$ is \emph{valid} if $\varnothing\models\varphi$.
+
+The substitution $\alpha[x:=t]$ replaces the free occurrences of $x$ in $\alpha$ by the term $t$. It may go wrong: in $\alpha=\exists y\,(y\ne x)$, which says ``something differs from $x$'', substituting $y$ for $x$ gives $\exists y\,(y\ne y)$, which is false. We say $t$ is \emph{substitutable} for $x$ in $\alpha$ if no free occurrence of $x$ in $\alpha$ lies under a quantifier $\forall y$ with $y$ a variable of $t$. A closed term is always substitutable.
+
+\begin{definition}\label{def:proofsystem}
+The \emph{logical axioms} are all the formulas $\forall x_1\cdots\forall x_k\,\varphi$, $k\ge0$, where $\varphi$ is one of:
+\begin{enumerate}
+\item[(A1)] an instance of a propositional tautology (replace the variables of a tautology by formulas);
+\item[(A2)] $\forall x\,\alpha\to\alpha[x:=t]$, where $t$ is substitutable for $x$ in $\alpha$;
+\item[(A3)] $\forall x\,(\alpha\to\beta)\to(\forall x\,\alpha\to\forall x\,\beta)$;
+\item[(A4)] $\alpha\to\forall x\,\alpha$, where $x$ is not free in $\alpha$;
+\item[(A5)] $x=x$;
+\item[(A6)] $x=y\to(\alpha\to\alpha')$, where $\alpha$ is atomic and $\alpha'$ is obtained from $\alpha$ by replacing some occurrences of $x$ by $y$.
+\end{enumerate}
+A \emph{proof} of $\varphi$ from a set of formulas $\Gamma$ is a finite sequence of formulas ending with $\varphi$, each of which is a logical axiom, or a member of $\Gamma$, or follows from two earlier ones by \emph{modus ponens}: from $\psi$ and $\psi\to\chi$, infer $\chi$. We write $\Gamma\vdash\varphi$ if there is one. A set $\Gamma$ is \emph{inconsistent} if $\Gamma\vdash\varphi$ and $\Gamma\vdash\neg\varphi$ for some $\varphi$, and \emph{consistent} otherwise.
+\end{definition}
+
+This is the system of Herbert Enderton's textbook. It has one rule, and whether a finite sequence is a proof can be checked by a program: tautologies by truth tables, the side conditions by looking at the formulas. Since $\neg\varphi\to(\varphi\to\psi)$ is a tautology, an inconsistent set proves everything. More generally, if $\Gamma\vdash\alpha_1,\dots,\Gamma\vdash\alpha_n$ and $\beta$ is a tautological consequence of $\alpha_1,\dots,\alpha_n$, then $\Gamma\vdash\beta$, since $\alpha_1\to(\alpha_2\to\cdots(\alpha_n\to\beta))$ is an instance of a tautology: we say $\beta$ follows \emph{by tautology}.
+
+\begin{lemma}[substitution]\label{lem:substitution}
+If $t$ is substitutable for $x$ in $\alpha$, then $\mathcal M\models\alpha[x:=t][s]$ if and only if $\mathcal M\models\alpha[s(x\,|\,m)]$, where $m=t^{\mathcal M}[s]$.
+\end{lemma}
+
+\begin{proof}
+For a term $u$, the value of $u[x:=t]$ under $s$ is the value of $u$ under $s(x\,|\,m)$, by induction on $u$; this gives the atomic case. The connectives pass through the induction. Let $\alpha=\forall y\,\beta$. If $x$ is not free in $\alpha$, then $\alpha[x:=t]=\alpha$, and the value of $x$ does not matter. Otherwise $y\ne x$, $x$ is free in $\beta$, and substitutability says that $y$ does not occur in $t$ and that $t$ is substitutable for $x$ in $\beta$. Then for every $a\in M$ the value of $t$ under $s(y\,|\,a)$ is still $m$, and by the induction hypothesis $\mathcal M\models\beta[x:=t][s(y\,|\,a)]$ if and only if $\mathcal M\models\beta[s(y\,|\,a)(x\,|\,m)]$. Taking this for all $a$ gives the claim, as $s(y\,|\,a)(x\,|\,m)=s(x\,|\,m)(y\,|\,a)$.
+\end{proof}
+
+\begin{proposition}[soundness]\label{prop:soundness}
+If $\Gamma\vdash\varphi$, then $\Gamma\models\varphi$.
+\end{proposition}
+
+\begin{proof}
+Modus ponens preserves truth under a given assignment, so it suffices to show that the logical axioms are valid; and if $\varphi$ is valid, so is $\forall x\,\varphi$. An instance of a tautology is true under every assignment, because its truth is computed from the truth values of the substituted formulas exactly as for the tautology. (A2) is valid by Lemma~\ref{lem:substitution}: if $\forall x\,\alpha$ is true under $s$, then $\alpha$ is true under $s(x\,|\,t^{\mathcal M}[s])$. (A3) is checked directly. (A4) is valid since the value of $x$ does not affect $\alpha$. (A5) is clear, and in (A6), if $s(x)=s(y)$, then every term has the same value after replacing some $x$ by $y$, so $\alpha$ and $\alpha'$ have the same truth value.
+\end{proof}
+
+The rest of the section shows that proofs can do what mathematicians do: assume a hypothesis, argue about an arbitrary $x$, and introduce a name for a witness.
+
+\begin{lemma}[deduction]\label{lem:deduction}
+If $\Gamma\cup\{\gamma\}\vdash\varphi$, then $\Gamma\vdash\gamma\to\varphi$. (The converse holds by modus ponens.)
+\end{lemma}
+
+\begin{proof}
+We show $\Gamma\vdash\gamma\to\varphi$ for each formula $\varphi$ of a proof from $\Gamma\cup\{\gamma\}$, in order. If $\varphi$ is an axiom or in $\Gamma$, then $\Gamma\vdash\varphi$, and $\gamma\to\varphi$ follows by tautology. If $\varphi=\gamma$, then $\gamma\to\gamma$ is a tautology. If $\varphi$ comes by modus ponens from earlier $\psi$ and $\psi\to\varphi$, we already have $\Gamma\vdash\gamma\to\psi$ and $\Gamma\vdash\gamma\to(\psi\to\varphi)$, and $\gamma\to\varphi$ follows from these two by tautology.
+\end{proof}
+
+\begin{lemma}[generalisation]\label{lem:generalisation}
+If $\Gamma\vdash\varphi$ and $x$ is not free in any formula of $\Gamma$, then $\Gamma\vdash\forall x\,\varphi$.
+\end{lemma}
+
+\begin{proof}
+Again we follow a proof, showing $\Gamma\vdash\forall x\,\varphi$ for each of its formulas $\varphi$. If $\varphi$ is a logical axiom, so is $\forall x\,\varphi$, as the axioms include all their generalisations. If $\varphi\in\Gamma$, then $x$ is not free in $\varphi$, and (A4) gives $\varphi\to\forall x\,\varphi$. If $\varphi$ comes from $\psi$ and $\psi\to\varphi$, we have $\Gamma\vdash\forall x\,\psi$ and $\Gamma\vdash\forall x\,(\psi\to\varphi)$, and (A3) with two applications of modus ponens gives $\Gamma\vdash\forall x\,\varphi$.
+\end{proof}
+
+\begin{lemma}[constants]\label{lem:constants}
+Let $c$ be a constant symbol occurring in no formula of $\Gamma$.
+\begin{enumerate}
+\item If $D$ is a proof from $\Gamma$ and $y$ is a variable occurring nowhere in $D$, then replacing $c$ by $y$ throughout $D$ gives a proof from $\Gamma$.
+\item If $\Gamma\vdash\varphi[x:=c]$ and $c$ does not occur in $\varphi$, then $\Gamma\vdash\forall x\,\varphi$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Members of $\Gamma$ are unchanged, modus ponens steps remain modus ponens steps, and each kind of axiom becomes an axiom of the same kind: the side conditions of (A2) and (A4) concern variables of the formulas, and the only new variable $y$ is never quantified in $D$, so it creates no capture and is distinct from the $x$ of (A4).
+
+(b) Let $D$ be a proof of $\varphi[x:=c]$ from $\Gamma$, and $y$ a variable not occurring in $D$. By (a), replacing $c$ by $y$ gives a proof of $\varphi[x:=y]$ from $\Gamma$, which uses only finitely many members of $\Gamma$, none containing $y$ free. By Lemma~\ref{lem:generalisation}, $\Gamma\vdash\forall y\,\varphi[x:=y]$. Now $x$ is substitutable for $y$ in $\varphi[x:=y]$ (the $y$'s sit where free $x$'s were) and $\varphi[x:=y][y:=x]=\varphi$, so (A2) gives $\forall y\,\varphi[x:=y]\vdash\varphi$. As $x$ is not free in $\forall y\,\varphi[x:=y]$, generalisation gives $\forall y\,\varphi[x:=y]\vdash\forall x\,\varphi$, and the deduction lemma and modus ponens give $\Gamma\vdash\forall x\,\varphi$.
+\end{proof}
+
+Finally, the system knows that equality is an equality.
+
+\begin{lemma}[equality]\label{lem:equality}
+For all terms $s,t,u,s_i,t_i$, a $k$-ary function symbol $f$ and a $k$-ary relation symbol $R$:
+\[
+\vdash t=t,\qquad\vdash s=t\to t=s,\qquad\vdash s=t\to(t=u\to s=u),
+\]
+\[
+\vdash s_1=t_1\to\Bigl(s_2=t_2\to\cdots\to\bigl(s_k=t_k\to f(s_1,\dots,s_k)=f(t_1,\dots,t_k)\bigr)\cdots\Bigr),
+\]
+and the same with $R(s_1,\dots,s_k)\to R(t_1,\dots,t_k)$ in place of the last equation.
+\end{lemma}
+
+\begin{proof}
+We first prove each statement for distinct variables in place of the terms. Recall that (A6) may use any two variables $u,v$: it is $u=v\to(\alpha\to\alpha')$, where $\alpha'$ replaces some occurrences of $u$ in the atomic $\alpha$ by $v$. Reflexivity is (A5). With $\alpha$ the formula $x=x$ and its first $x$ replaced by $y$, (A6) gives $x=y\to(x=x\to y=x)$, hence $x=y\to y=x$ by tautology. With $u=y$, $v=x$ and $\alpha$ the formula $y=z$, (A6) gives $y=x\to(y=z\to x=z)$, and together with symmetry, $x=y\to(y=z\to x=z)$ follows by tautology. For $f$, the formula $f(\bar x)=f(\bar x)$ follows from the axiom $\forall x\,(x=x)$ (a generalisation of (A5)) by (A2); then (A6), replacing $x_1$ by $y_1$ in the right side only, gives $x_1=y_1\to f(\bar x)=f(y_1,x_2,\dots,x_k)$. Doing the same for each coordinate in turn and chaining the equations with transitivity gives the statement. For $R$, apply (A6) to $R(\bar x)$ one coordinate at a time.
+
+To pass to terms, choose the variables distinct from all variables of the terms. Each statement $\psi(x_1,\dots,x_n)$ proved above can be generalised (Lemma~\ref{lem:generalisation} with $\Gamma=\varnothing$) to $\forall x_1\cdots\forall x_n\,\psi$, and (A2) then substitutes the terms for the variables one at a time; no capture is possible, since the variables still quantified do not occur in the terms.
+\end{proof}
+
+\section{Henkin's proof}\label{sec:henkin}
+
+\begin{theorem}[Gödel, 1929; Henkin's proof, 1949]\label{thm:completeness}
+Every consistent set of sentences has a model.
+\end{theorem}
+
+\begin{corollary}[completeness]\label{cor:completeness}
+For a set of sentences $\Gamma$ and a sentence $\varphi$, $\Gamma\models\varphi$ if and only if $\Gamma\vdash\varphi$.
+\end{corollary}
+
+\begin{proof}[Proof of the corollary]
+One direction is soundness. Suppose $\Gamma\nvdash\varphi$. Then $\Gamma\cup\{\neg\varphi\}$ is consistent: if it proved some $\psi$ and $\neg\psi$, it would prove $\varphi$, so $\Gamma\vdash\neg\varphi\to\varphi$ by the deduction lemma, and $\Gamma\vdash\varphi$ by the tautology $(\neg\varphi\to\varphi)\to\varphi$. By the theorem it has a model, in which $\Gamma$ holds and $\varphi$ fails; so $\Gamma\not\models\varphi$.
+\end{proof}
+
+Henkin's idea is to build the model from the closed terms of the language. Two things can go wrong. A sentence $\neg\forall x\,\varphi$ may be in our set while no term is a counterexample: we fix this by adding a new constant, a \emph{witness}, that is declared to be one. And the set may say neither $\sigma$ nor $\neg\sigma$, leaving the truth of $\sigma$ undecided: we fix this by deciding everything at once.
+
+\begin{proof}[Proof of Theorem~\ref{thm:completeness}]
+Let $\Gamma$ be a consistent set of sentences of the signature $L$.
+
+\emph{Step 1: witnesses.} Let $L_0=L$. Given $L_n$, let $L_{n+1}$ be $L_n$ with a new constant symbol $c_{\varphi,x}$ for each $L_n$-formula $\varphi$ and variable $x$; we say $c_{\varphi,x}$ has \emph{level} $n+1$. Let $L^*=\bigcup_nL_n$. For each $L^*$-formula $\varphi$ with no free variable other than $x$, with $\varphi$ an $L_n$-formula and $n$ least, the \emph{Henkin axiom} is the sentence
+\[
+\theta_{\varphi,x}:\quad\neg\forall x\,\varphi\to\neg\varphi[x:=c_{\varphi,x}],
+\]
+where $c_{\varphi,x}$ has level $n+1$: if anything fails $\varphi$, then $c_{\varphi,x}$ does. Let $H$ be the set of Henkin axioms.
+
+We claim that $\Gamma\cup H$ is consistent (as a set of $L^*$-sentences). First, $\Gamma$ itself is: if $\Gamma$ proved $\psi$ and $\neg\psi$ using new constants, replacing them in the two proofs by variables occurring nowhere in them (Lemma~\ref{lem:constants}(a), applied once for each constant) would give $L$-proofs of some $\psi'$ and $\neg\psi'$ from $\Gamma$. If $\Gamma\cup H$ were inconsistent, some finite part $\Gamma\cup\{\theta_1,\dots,\theta_k\}$ would be, since proofs are finite; take $k\ge1$ least, and order the $\theta_i$ so that the constant $c$ of $\theta_k=\theta_{\varphi,x}$ has the largest level $n+1$. Then $c$ does not occur in $\Gamma$, nor in $\varphi$, which is an $L_n$-formula, nor in $\theta_1,\dots,\theta_{k-1}$: their own constants are different from $c$, and their formulas are written with constants of level at most $n$. Let $\Delta=\Gamma\cup\{\theta_1,\dots,\theta_{k-1}\}$, consistent by the choice of $k$. As $\Delta\cup\{\theta_k\}$ is inconsistent, $\Delta\vdash\neg\theta_k$ (by the deduction lemma and the tautology $(\theta\to\neg\theta)\to\neg\theta$). By tautology, $\neg\theta_k$ gives both $\neg\forall x\,\varphi$ and $\varphi[x:=c]$. By Lemma~\ref{lem:constants}(b), $\Delta\vdash\varphi[x:=c]$ gives $\Delta\vdash\forall x\,\varphi$; together with $\Delta\vdash\neg\forall x\,\varphi$, $\Delta$ is inconsistent, a contradiction.
+
+\emph{Step 2: deciding everything.} The consistent sets of $L^*$-sentences containing $\Gamma\cup H$, ordered by inclusion, have the property that the union of a chain is consistent, since a proof uses finitely many sentences, all in one member of the chain. By Zorn's lemma (Tome~6, Chapter~1) there is a maximal one, $\Delta^*$. For every $L^*$-sentence $\sigma$, either $\sigma\in\Delta^*$ or $\neg\sigma\in\Delta^*$: if $\sigma\notin\Delta^*$, then $\Delta^*\cup\{\sigma\}$ is inconsistent by maximality, so $\Delta^*\vdash\neg\sigma$ as above; then $\Delta^*\cup\{\neg\sigma\}$ proves nothing new and is consistent, hence equal to $\Delta^*$. Similarly, $\Delta^*\vdash\sigma$ implies $\sigma\in\Delta^*$, since otherwise $\neg\sigma\in\Delta^*$ would make $\Delta^*$ inconsistent. In words: $\Delta^*$ contains exactly the sentences it proves, and it decides every sentence. (When $L$ is countable, Zorn is not needed: enumerate the sentences $\sigma_0,\sigma_1,\dots$ and add each one, or its negation, in turn.)
+
+\emph{Step 3: the term model.} Let $T$ be the set of closed $L^*$-terms; it is not empty, since every $c_{\varphi,x}$ is one. For $s,t\in T$ put $s\sim t$ if the sentence $s=t$ is in $\Delta^*$. By Lemma~\ref{lem:equality} and Step~2, $\sim$ is an equivalence relation, compatible with the function symbols: $s_i\sim t_i$ for all $i$ implies $f(\bar s)\sim f(\bar t)$, and $R(\bar s)\in\Delta^*$ if and only if $R(\bar t)\in\Delta^*$. So we may define a structure $\mathcal M$ on $M=T/{\sim}$, writing $[t]$ for the class of $t$:
+\[
+f^{\mathcal M}([t_1],\dots,[t_k])=[f(t_1,\dots,t_k)],\qquad ([t_1],\dots,[t_k])\in R^{\mathcal M}\iff R(t_1,\dots,t_k)\in\Delta^*.
+\]
+By induction on terms, the value of a closed term $t$ in $\mathcal M$ is $[t]$.
+
+\emph{Step 4: the truth lemma.} We show that for every $L^*$-sentence $\sigma$,
+\[
+\mathcal M\models\sigma\iff\sigma\in\Delta^*,
+\]
+by induction on the number of symbols $\neg,\to,\forall$ in $\sigma$. For atomic sentences, this is the definition of $\mathcal M$, as the value of $t$ is $[t]$. For $\neg\sigma$: $\mathcal M\models\neg\sigma$ iff $\sigma\notin\Delta^*$ iff $\neg\sigma\in\Delta^*$, since $\Delta^*$ contains exactly one of them. For $\alpha\to\beta$: since $\Delta^*$ is closed under tautological consequence and decides $\alpha$ and $\beta$, it contains $\alpha\to\beta$ if and only if $\alpha\notin\Delta^*$ or $\beta\in\Delta^*$, which matches the truth table. For $\forall x\,\varphi$: if $\forall x\,\varphi\in\Delta^*$, then for every closed term $t$, (A2) gives $\varphi[x:=t]\in\Delta^*$, hence $\mathcal M\models\varphi[x:=t]$ by induction (it has fewer symbols $\neg,\to,\forall$), that is, $\mathcal M\models\varphi[s(x\,|\,[t])]$ by Lemma~\ref{lem:substitution}; every element of $M$ is some $[t]$, so $\mathcal M\models\forall x\,\varphi$. If $\forall x\,\varphi\notin\Delta^*$, then $\neg\forall x\,\varphi\in\Delta^*$, and the Henkin axiom $\theta_{\varphi,x}\in\Delta^*$ gives $\neg\varphi[x:=c_{\varphi,x}]\in\Delta^*$, so $\varphi[x:=c_{\varphi,x}]\notin\Delta^*$, so $\mathcal M\not\models\varphi[x:=c_{\varphi,x}]$, and $\mathcal M\not\models\forall x\,\varphi$.
+
+In particular $\mathcal M$ satisfies $\Gamma\subseteq\Delta^*$, and forgetting the symbols of $L^*$ not in $L$ gives a model of $\Gamma$.
+\end{proof}
+
+The model was built from the words of the language, and it is no larger than the language: there are at most $\lambda=\max(|L|,\aleph_0)$ formulas in $L$, as they are finite strings, so $L_1$ has at most $\lambda$ new constants, and so on; $L^*$ has at most $\lambda$ closed terms, and $M$ at most $\lambda$ elements. We will use this count in a moment.
+
+\subsection*{What a computer can and cannot do with it}
+
+Corollary~\ref{cor:completeness} turns a question about all structures, most of them infinite, into a question about finite strings of symbols. Here is the first consequence for computation, together with its limit, which answers Hilbert's \emph{Entscheidungsproblem} for first-order logic.
+
+\begin{theorem}[Church, 1936; Turing, 1936]\label{thm:church}
+In a computable signature, the set of valid sentences is computably enumerable. There is a finite signature in which it is not decidable.
+\end{theorem}
+
+\begin{proof}
+A sentence is valid if and only if $\vdash\varphi$ (Corollary~\ref{cor:completeness}), and a program can list all finite sequences of formulas and check which are proofs; it prints the last formula of each. This enumerates the valid sentences.
+
+For the second part, take a deterministic Turing machine $M$ whose acceptance problem is undecidable (Chapter~\ref{ch:turing}), and the semi-Thue system $R_M$ of Theorem~\ref{thm:semithue} over its alphabet $\Sigma$, with the letter $H$: so $[q_0w]\Rightarrow^*H$ if and only if $M$ accepts $w$, and the word problem ``$x\Rightarrow^*y$?'' of $R_M$ is undecidable. Take a constant $e$, a unary function symbol $f_a$ for each letter $a\in\Sigma$ and a binary relation symbol $R$. For a word $w=a_1\cdots a_n$ and a term $t$, write $w(t)$ for the term $f_{a_1}(f_{a_2}(\cdots f_{a_n}(t)))$. Let $\Sigma_R$ be the conjunction of the sentences
+\[
+\forall x\,R(x,x),\qquad\forall x\,\forall y\,\forall z\,\bigl(R(x,y)\to(R(y,z)\to R(x,z))\bigr),
+\]
+\[
+\forall x\,\forall y\,\bigl(R(x,y)\to R(f_a(x),f_a(y))\bigr)\ (a\in\Sigma),\qquad\forall x\,R(u(x),v(x))\ (u\to v\text{ a rule}).
+\]
+We claim that $\Sigma_R\to R(w(e),z(e))$ is valid if and only if $w\Rightarrow^*z$; then a decision procedure for validity would decide the word problem.
+
+If $w=pu q\Rightarrow pvq=z$ by a rule $u\to v$, then in every model of $\Sigma_R$, the last axioms with $x=q(e)$ give $R(u(q(e)),v(q(e)))$, and the third ones, applied to the letters of $p$ from the right, give $R(w(e),z(e))$. By reflexivity and transitivity, $w\Rightarrow^*z$ implies that $R(w(e),z(e))$ holds in every model of $\Sigma_R$. Conversely, consider the structure whose domain is the set of all words, with $e$ the empty word, $f_a(x)=ax$, and $R$ the relation $\Rightarrow^*$. It is a model of $\Sigma_R$, because $\Rightarrow^*$ is reflexive, transitive, compatible with adding a letter on the left, and contains every pair $(ux,vx)$. The term $w(e)$ has the value $w$. So if the sentence is valid, $w\Rightarrow^*z$.
+\end{proof}
+
+So validity is semi-decidable and no better: a program can confirm a valid sentence by finding a proof, but it may search forever on one that is not valid. The companion notebook runs such a search. Its complement, satisfiability, is therefore not computably enumerable: there is no way to certify that a sentence has a model, in general, by a finite object. The model may have to be infinite.
+
+\section{Compactness and the size of models}\label{sec:compactness}
+
+\begin{corollary}[compactness; Gödel, 1930; Malcev, 1936]\label{cor:compactness}
+A set of sentences has a model if every finite subset of it has a model.
+\end{corollary}
+
+\begin{proof}
+If $\Gamma$ has no model, it is inconsistent by Theorem~\ref{thm:completeness}. The proofs of $\psi$ and $\neg\psi$ use only a finite part $\Gamma_0$ of $\Gamma$, which is then inconsistent, and has no model by soundness.
+\end{proof}
+
+\begin{theorem}[Löwenheim, 1915; Skolem, 1920; Tarski]\label{thm:ls}
+Let $\Gamma$ be a set of sentences in a signature $L$, and $\lambda=\max(|L|,\aleph_0)$.
+\begin{enumerate}
+\item If $\Gamma$ has a model, it has a model with at most $\lambda$ elements.
+\item If $\Gamma$ has an infinite model, it has a model with exactly $\kappa$ elements, for every cardinal $\kappa\ge\lambda$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) $\Gamma$ is consistent by soundness, and the model built by Henkin's proof has at most $\lambda$ elements. (b) Add to $L$ new constants $c_i$ for $i$ in a set $I$ of cardinality $\kappa$, and let $\Gamma'=\Gamma\cup\{\neg\,c_i=c_j:i\ne j\}$. A finite subset of $\Gamma'$ mentions finitely many $c_i$, and an infinite model of $\Gamma$ satisfies it once these are given distinct values. By compactness $\Gamma'$ has a model, and by (a), applied in a signature of cardinality $\kappa$, one with at most $\kappa$ elements. It has at least $\kappa$ elements, since the $c_i$ are distinct; forgetting the $c_i$ gives a model of $\Gamma$.
+\end{proof}
+
+Part (a) is Löwenheim and Skolem's; part (b), the \emph{upward} theorem, was proved by Tarski. Together they say that first-order sentences cannot fix the size of an infinite structure. Skolem drew the most famous consequence in 1922. The axioms of set theory of Zermelo and Fraenkel are first-order sentences in a signature with one symbol $\in$, and they prove Cantor's theorem that the set of real numbers is uncountable. If they are consistent, they have a countable model $\mathcal M$. In $\mathcal M$ there is an element $r$ which $\mathcal M$ believes is the set of real numbers, and $\mathcal M$ satisfies ``$r$ is uncountable''. Yet the elements $x$ with $x\in^{\mathcal M}r$ form a subset of the countable set $M$. There is no contradiction: ``uncountable'' in $\mathcal M$ means that no element of $\mathcal M$ is a bijection between $r$ and the natural numbers of $\mathcal M$. The bijection exists, outside $\mathcal M$. Skolem concluded that set-theoretic notions are relative to the model, a conclusion that set theorists have lived with, more or less comfortably, ever since.
+
+Compactness also says what first-order sentences cannot express.
+
+\begin{proposition}\label{prop:finiteness}
+If a set of sentences $\Gamma$ has finite models with arbitrarily many elements, it has an infinite model. In particular, no set of sentences has as its models exactly the finite groups, or exactly the finite graphs.
+\end{proposition}
+
+\begin{proof}
+Let $\lambda_n$ be the sentence $\exists x_1\cdots\exists x_n\bigwedge_{i<j}\neg\,x_i=x_j$, ``there are at least $n$ elements''. Every finite subset of $\Gamma\cup\{\lambda_n:n\ge1\}$ is satisfied by a large enough finite model of $\Gamma$, so the whole set has a model, which is infinite. If the models of $\Gamma$ were exactly the finite groups, then $\Gamma$ would have finite models of all sizes, hence an infinite one.
+\end{proof}
+
+The propositional compactness theorem of Tome~C1 gave the theorem of de Bruijn and Erdős for countable graphs. First-order compactness removes the countability.
+
+\begin{corollary}[de Bruijn and Erdős, 1951]\label{cor:dbegeneral}
+A graph $G=(V,E)$, with any number of vertices, can be properly coloured with $k$ colours if each of its finite subgraphs can.
+\end{corollary}
+
+\begin{proof}
+Take a constant $c_v$ for each vertex $v$ and unary relation symbols $P_1,\dots,P_k$. Let $\Gamma$ contain $P_1(c_v)\lor\cdots\lor P_k(c_v)$ for each $v\in V$ and $\neg(P_i(c_v)\land P_i(c_w))$ for each edge $vw$ and each $i$. A finite subset of $\Gamma$ mentions a finite set $F$ of vertices. Colour the subgraph spanned by $F$ properly, give the other vertices colour~$1$, and take the structure with domain $V$, $c_v$ interpreted as $v$, and $P_i$ the set of vertices of colour $i$: it satisfies the finite subset. By compactness $\Gamma$ has a model $\mathcal M$. Colour $v$ by the least $i$ with $\mathcal M\models P_i(c_v)$. If $vw$ is an edge, $c_v$ and $c_w$ cannot both satisfy the same $P_i$, so $v$ and $w$ get different colours.
+\end{proof}
+
+The same pattern, a constant for every element and the finite information as axioms, extends to infinite sets many theorems about finite ones: Exercise~\ref{ex:szpilrajn} extends partial orders to linear orders, and Exercise~\ref{ex:orderable} decides when a group can be ordered.
+
+\section{Non-standard integers}\label{sec:nonstandard}
+
+Let $\mathrm{Th}(\N)$ be the set of all sentences of the signature $0,1,+,\times,<$ that are true in $\N$, the \emph{true arithmetic}; a sentence such as ``every number is a sum of four squares'' is in it, and so is every other true statement of elementary number theory. Does $\mathrm{Th}(\N)$ determine $\N$? For each $n\in\N$ let the numeral $\overline n$ be the term $1+1+\cdots+1$ with $n$ terms ($\overline0=0$).
+
+\begin{theorem}[Skolem, 1933]\label{thm:nonstandard}
+\begin{enumerate}
+\item In every model $\mathcal M$ of $\mathrm{Th}(\N)$, the map $n\mapsto\overline n^{\mathcal M}$ is an injective map from $\N$ onto an initial segment $S$ of $(M,<)$ which respects $+$, $\times$ and $<$; every element of $M\setminus S$ is larger than every element of $S$.
+\item There is a countable model of $\mathrm{Th}(\N)$ with $M\ne S$.
+\end{enumerate}
+\end{theorem}
+
+The elements of $S$ are the \emph{standard} integers of $\mathcal M$, and the others the \emph{non-standard} ones: they are infinite, larger than $0,1,2,\dots$, and yet they satisfy every true statement of number theory. A non-standard $a$ is even or odd, it has a prime factor, and it is a sum of four squares.
+
+\begin{proof}
+(a) The following sentences are true in $\N$, hence hold in $\mathcal M$: for all $n,m\in\N$, $\overline n+\overline m=\overline{n+m}$, $\overline n\times\overline m=\overline{nm}$, $\overline n<\overline m$ if $n<m$, and
+\[
+\forall x\,\bigl(x<\overline n\to(x=\overline0\lor x=\overline1\lor\cdots\lor x=\overline{n-1})\bigr),
+\]
+together with the sentences saying that $<$ is a linear order. So the map respects the operations and is strictly increasing, hence injective, and every element below some $\overline n^{\mathcal M}$ is some $\overline k^{\mathcal M}$. If $a\notin S$, then $a\ne\overline n^{\mathcal M}$ and $a\not<\overline n^{\mathcal M}$, so $a>\overline n^{\mathcal M}$, for every $n$.
+
+(b) Add a constant $c$ and let $\Gamma=\mathrm{Th}(\N)\cup\{\overline n<c:n\in\N\}$. A finite subset of $\Gamma$ mentions finitely many $\overline n<c$, and $\N$ with $c$ interpreted as a large integer satisfies it. By compactness and Theorem~\ref{thm:ls}(a), $\Gamma$ has a countable model, and $c$ is non-standard in it.
+\end{proof}
+
+So no set of first-order sentences, not even the set of all true ones, describes $\N$. The induction axiom, which pins $\N$ down, speaks of all subsets of $\N$, and first-order logic only speaks of the subsets defined by formulas. The non-standard models are not exotic objects; they are the price of using a logic in which proofs are finite. How do they look?
+
+\begin{definition}\label{def:dlo}
+A \emph{dense linear order without endpoints} is a non-empty linear order $(D,<)$ in which between two elements there is a third, and there is neither a least nor a largest element. These conditions are first-order sentences; their set is denoted $\mathrm{DLO}$.
+\end{definition}
+
+The rationals are the example, and in the countable world the only one.
+
+\begin{theorem}[Cantor, 1895]\label{thm:cantor}
+Any two countable dense linear orders without endpoints are isomorphic.
+\end{theorem}
+
+\begin{proof}
+Let $A=\{a_0,a_1,\dots\}$ and $B=\{b_0,b_1,\dots\}$ be enumerations (both are infinite, by density). We build finite order-preserving bijections $p_0\subseteq p_1\subseteq\cdots$ between finite subsets of $A$ and of $B$, starting with $p_0=\varnothing$. At an even step $2k$, let $a$ be the first $a_i$ not in the domain of $p_{2k}$. The elements of the domain split into those below $a$ and those above; we need an image $b$ above the images of the first and below the images of the second. Since $B$ is dense and has no endpoints, such $b$ exist (between two elements, or above all of finitely many, or below), and we take the first one in the enumeration. Let $p_{2k+1}=p_{2k}\cup\{(a,b)\}$. At an odd step we do the same in the other direction, adding the first $b_j$ not in the range, with a preimage. The union $p=\bigcup_kp_k$ is order-preserving; every $a_i$ is in its domain after step $2i$ and every $b_j$ in its range after step $2j+1$, so $p$ is an isomorphism.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-backforth}
+\caption{The first seven steps of the back-and-forth proof of Theorem~\ref{thm:cantor}, between $\mathbb Q$ (enumerated $0,1,-1,\frac12,2,-2,-\frac12,\dots$) and the dyadic rationals $D$ of $]0,1[$ (enumerated $\frac12,\frac14,\frac34,\frac18,\frac38,\frac58,\frac78,\dots$). Blue steps go forth, matching the next rational; orange steps come back, matching the next dyadic. The positions on the top line are drawn on a compressed scale.}
+\label{fig:backforth}
+\end{figure}
+
+Figure~\ref{fig:backforth} runs the proof. Going only forth would build an order-preserving map defined on all of $A$, but it might miss elements of $B$; coming back is what makes the map onto. The same back-and-forth idea proves that structures are isomorphic, or that they satisfy the same sentences, all over model theory.
+
+\begin{theorem}\label{thm:ordertype}
+Let $\mathcal M$ be a countable model of $\mathrm{Th}(\N)$ with non-standard elements. Then $(M,<)$ is isomorphic to $\N$ followed by $\mathbb Q$ copies of $\Z$: the order on $\N\times\{0\}\cup\Q\times\Z$ in which $\N\times\{0\}$ comes first, ordered by its first coordinate, and $\Q\times\Z$ is ordered lexicographically.
+\end{theorem}
+
+\begin{proof}
+We use sentences true in $\N$, which therefore hold in $\mathcal M$: $<$ is a discrete linear order (nothing lies strictly between $x$ and $x+1$), $x<y$ implies $x+z=y$ for a unique $z$, $x<x+x$ when $x\ne0$, and every $x$ is $y+y$ or $y+y+1$ for some $y$. For each $n$, the sentence $\forall x\,\forall y\,(x\le y\le x+\overline n\to y=x\lor y=x+\overline1\lor\cdots\lor y=x+\overline n)$ is also true.
+
+For a non-standard $a$ and $n\in\N$, the element $a-n$, the unique $z$ with $z+\overline n=a$, exists since $\overline n<a$, and it is non-standard (otherwise $a=z+\overline n$ would be standard). The \emph{galaxy} of $a$ is the set $\{\dots,a-2,a-1,a,a+1,a+2,\dots\}$, ordered like $\Z$. By the last sentence above, anything between $a$ and $a+n$ is some $a+k$, so galaxies are intervals, and two of them are equal or disjoint. So $M$ is $S$, which is ordered like $\N$, followed by the galaxies, each ordered like $\Z$, and the galaxies are linearly ordered among themselves. It remains to show that this order of galaxies is dense without endpoints; it is countable, so Theorem~\ref{thm:cantor} then identifies it with $\Q$.
+
+\emph{No largest galaxy.} For non-standard $a$, $a+a>a+n$ for every $n$, since $a>\overline n$; so $a+a$ lies in a larger galaxy. \emph{No smallest.} Write $a=c+c$ or $a=c+c+1$. Then $c$ is non-standard, otherwise $a$ would be standard, and $a\ge c+c>c+n$ for every $n$; so $c$ lies in a smaller galaxy. \emph{Density.} Let $a<b$ lie in different galaxies, so $b>a+n$ for every $n$. Write $a+b=c+c$ or $c+c+1$. If $c=a+n$ for some $n$, then $a+b\le 2a+2n+1$ gives $b\le a+2n+1$, which is false; if $c=b-n$, then $a+b\ge 2b-2n$ gives $b\le a+2n$, also false. As $2a<a+b<2b$ forces $a<c<b$, the galaxy of $c$ lies strictly between those of $a$ and $b$.
+\end{proof}
+
+Figure~\ref{fig:nonstandard} shows the picture. Can a formula of arithmetic tell the standard integers from the others? No: a property true for all standard integers \emph{spills over} to some non-standard ones.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-nonstandard}
+\caption{A countable non-standard model of arithmetic, from left to right: the standard integers, then galaxies, each a copy of $\Z$, ordered like the rationals. Halving a non-standard $a$ (rounding down) gives an element $c$ in a smaller galaxy, and $a+a$ is in a larger one; between any two galaxies lies a third.}
+\label{fig:nonstandard}
+\end{figure}
+
+\begin{proposition}[overspill]\label{prop:overspill}
+Let $\mathcal M$ be a model of $\mathrm{Th}(\N)$ with non-standard elements, and $\varphi(x)$ a formula with one free variable. If $\mathcal M\models\varphi[\overline n^{\mathcal M}]$ for every $n\in\N$, then $\mathcal M\models\varphi[a]$ for some non-standard $a$. In particular, no formula $\varphi(x)$ is satisfied in $\mathcal M$ exactly by the standard integers.
+\end{proposition}
+
+\begin{proof}
+Suppose $\varphi$ holds at every standard element and at no non-standard one. The induction principle
+\[
+\varphi(0)\to\Bigl(\forall x\,\bigl(\varphi(x)\to\varphi(x+1)\bigr)\to\forall x\,\varphi(x)\Bigr)
+\]
+is true in $\N$, so it holds in $\mathcal M$. Its hypotheses hold in $\mathcal M$: $\varphi(0)$ is true, and if $\varphi[a]$ then $a$ is standard, $a=\overline n^{\mathcal M}$, and $a+1=\overline{n+1}^{\mathcal M}$ satisfies $\varphi$. So every element of $M$ satisfies $\varphi$, including the non-standard ones: a contradiction.
+\end{proof}
+
+The same proof works for formulas with parameters from $M$, using the induction principle with its parameters universally quantified. The models are strange, but not lawless. In 1959 Stanley Tennenbaum proved that they cannot be built by a program.
+
+\begin{theorem}[Tennenbaum, 1959; quoted]\label{thm:tennenbaum}
+In no countable model of $\mathrm{Th}(\N)$ with non-standard elements are the addition and the multiplication computable, the domain being identified with $\N$. (The same holds for the models of Peano arithmetic, Chapter~7.)
+\end{theorem}
+
+The standard model is the only computable one: the non-standard integers exist by compactness, and are seen only through it. Abraham Robinson used the same compactness argument for the real numbers in 1961, creating fields with infinitesimals (Exercise~\ref{ex:infinitesimal}); his \emph{non-standard analysis} justified, three centuries late, the infinitely small quantities of Leibniz.
+
+\section{Complete theories}\label{sec:completetheories}
+
+\begin{definition}\label{def:complete}
+A \emph{theory} is a set of sentences. A consistent theory $T$ is \emph{complete} if for every sentence $\sigma$ of its signature, $T\vdash\sigma$ or $T\vdash\neg\sigma$. For an infinite cardinal $\kappa$, $T$ is \emph{$\kappa$-categorical} if any two models of $T$ with $\kappa$ elements are isomorphic. Two structures are \emph{elementarily equivalent}, $\mathcal M\equiv\mathcal N$, if they satisfy the same sentences.
+\end{definition}
+
+For a structure $\mathcal M$, the theory $\mathrm{Th}(\mathcal M)$ of all sentences true in $\mathcal M$ is complete. A theory is complete exactly when all its models are elementarily equivalent: if $T\nvdash\sigma$ and $T\nvdash\neg\sigma$, then $T\cup\{\neg\sigma\}$ and $T\cup\{\sigma\}$ are consistent, as in the proof of Corollary~\ref{cor:completeness}, and have models which disagree on $\sigma$. Categoricity gives a test.
+
+\begin{theorem}[Łoś, 1954; Vaught, 1954]\label{thm:losvaught}
+Let $T$ be a consistent theory in a signature $L$, with no finite model, and $\kappa$-categorical for some $\kappa\ge\max(|L|,\aleph_0)$. Then $T$ is complete.
+\end{theorem}
+
+\begin{proof}
+If $T$ proves neither $\sigma$ nor $\neg\sigma$, then $T\cup\{\sigma\}$ and $T\cup\{\neg\sigma\}$ have models, which are infinite. By Theorem~\ref{thm:ls}(b), both have models with $\kappa$ elements. These are isomorphic, but one satisfies $\sigma$ and the other $\neg\sigma$, which is impossible.
+\end{proof}
+
+By Theorem~\ref{thm:cantor}, $\mathrm{DLO}$ is $\aleph_0$-categorical, and it has no finite model, so it is complete: a sentence about the order alone is true in $\Q$ if and only if it is true in $\R$ (Exercise~\ref{ex:dlo}). Completeness of a theory with a simple list of axioms has an algorithmic meaning.
+
+\begin{proposition}\label{prop:completedecidable}
+Let $T$ be a complete theory, in a computable signature, whose set of axioms is decidable. Then the set of sentences provable from $T$ is decidable.
+\end{proposition}
+
+\begin{proof}
+Given $\sigma$, enumerate all proofs from $T$; this is possible, because whether a sequence is a proof from $T$ is decidable. Stop when a proof of $\sigma$ or of $\neg\sigma$ appears. One of them will, by completeness, and not both, by consistency; answer accordingly.
+\end{proof}
+
+So there is an algorithm deciding the first-order sentences about $(\Q,<)$, which are the same as those about $(\R,<)$. Chapter~7 will run this proposition backwards: since no algorithm decides arithmetic, no decidable set of axioms for arithmetic is complete.
+
+\subsection*{Algebraically closed fields}
+
+Let $\mathrm{ACF}$ be the theory, in the signature $0,1,+,\times$, with the axioms of fields and, for every $d\ge1$, the axiom
+\[
+\forall a_0\,\forall a_1\cdots\forall a_{d-1}\,\exists x\,\bigl(x^d+a_{d-1}x^{d-1}+\cdots+a_1x+a_0=0\bigr).
+\]
+For $p$ prime, $\mathrm{ACF}_p$ adds the axiom $\overline p=0$, and $\mathrm{ACF}_0$ adds the axioms $\neg\,\overline p=0$ for all primes $p$. The field $\C$ is a model of $\mathrm{ACF}_0$ by the fundamental theorem of algebra (Tome~4, Corollary~9.17). For the characteristic $p$ we need a model too, and the finite fields of Tome~2, Chapter~9 provide one.
+
+\begin{lemma}\label{lem:kp}
+Let $p$ be prime and $K_p=\bigcup_{n\ge1}\mathbb F_{p^{n!}}$, where each $\mathbb F_{p^{n!}}$ is identified with the subfield of $\mathbb F_{p^{(n+1)!}}$ with $p^{n!}$ elements. Then $K_p$ is an algebraically closed field of characteristic $p$, and every finite subset of $K_p$ lies in a finite subfield $\mathbb F_{p^{m!}}$.
+\end{lemma}
+
+\begin{proof}
+The subfield exists and is unique by Tome~2, Theorem~9.7, since $n!$ divides $(n+1)!$, and the fields form an increasing chain, so their union is a field of characteristic $p$, and any finite subset lies in one of them. Let $f\in K_p[X]$ be non-constant, with coefficients in $F=\mathbb F_{p^{n!}}$, and $g$ a monic irreducible factor of $f$ over $F$, of degree $d$. Let $q=p^{n!}$. By Tome~2, Theorem~9.9, $g$ divides $X^{q^d}-X$ in $F[X]$. Choose $m$ with $n!d$ dividing $m!$. The field $E=\mathbb F_{p^{m!}}$ contains $F$ and the subfield $\{x:x^{q^d}=x\}$ with $q^d$ elements (Tome~2, Theorem~9.7), so $X^{q^d}-X$, which has degree $q^d$, splits into linear factors over $E$. By unique factorisation in $E[X]$, so does its divisor $g$; a root of $g$ in $E\subseteq K_p$ is a root of $f$.
+\end{proof}
+
+A finite field $\{a_1,\dots,a_n\}$ is never algebraically closed, since $(X-a_1)\cdots(X-a_n)+1$ has no root; so the models of $\mathrm{ACF}$ are infinite. The categoricity we need is a classical theorem of algebra, which we quote.
+
+\begin{theorem}[Steinitz, 1910; quoted]\label{thm:steinitz}
+Two algebraically closed fields of the same characteristic and the same uncountable cardinality are isomorphic.
+\end{theorem}
+
+(Steinitz showed that an algebraically closed field is determined by its characteristic and its transcendence degree, the size of a maximal algebraically independent set; for an uncountable field this degree equals the cardinality of the field.)
+
+\begin{corollary}\label{cor:acfcomplete}
+For $p=0$ and for every prime $p$, $\mathrm{ACF}_p$ is complete.
+\end{corollary}
+
+\begin{proof}
+$\mathrm{ACF}_p$ has a model ($\C$, or $K_p$ by Lemma~\ref{lem:kp}), no finite model, and it is $\aleph_1$-categorical by Theorem~\ref{thm:steinitz}; apply Theorem~\ref{thm:losvaught} with $\kappa=\aleph_1$.
+\end{proof}
+
+\begin{theorem}[the Lefschetz principle]\label{thm:lefschetz}
+For a sentence $\sigma$ of the signature $0,1,+,\times$, the following are equivalent:
+\begin{enumerate}
+\item $\C\models\sigma$;
+\item $\mathrm{ACF}_0\vdash\sigma$;
+\item there is $N$ such that $\mathrm{ACF}_p\vdash\sigma$ for every prime $p>N$;
+\item $\mathrm{ACF}_p\vdash\sigma$ for infinitely many primes $p$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) and (b) are equivalent because $\mathrm{ACF}_0$ is complete and $\C$ is a model of it. (b)$\Rightarrow$(c): a proof of $\sigma$ uses finitely many axioms of $\mathrm{ACF}_0$, among them finitely many $\neg\,\overline p=0$, say for $p\le N$; for a prime $p>N$, all of them hold in every model of $\mathrm{ACF}_p$, so $\sigma$ does, and $\mathrm{ACF}_p\vdash\sigma$ by completeness. (c)$\Rightarrow$(d) is clear. (d)$\Rightarrow$(b): otherwise $\mathrm{ACF}_0\vdash\neg\sigma$ by completeness, so by (b)$\Rightarrow$(c) applied to $\neg\sigma$, $\mathrm{ACF}_p\vdash\neg\sigma$ for all large $p$, and for those among the infinitely many primes of (d) the consistent theory $\mathrm{ACF}_p$ would prove both $\sigma$ and $\neg\sigma$.
+\end{proof}
+
+Here is the reward: a theorem about polynomials over $\C$ that follows from the pigeonhole principle.
+
+\begin{theorem}[Ax, 1968; Grothendieck, 1966]\label{thm:axgrothendieck}
+Every injective polynomial map $F:\C^n\to\C^n$ is surjective.
+\end{theorem}
+
+\begin{proof}
+For $n,d\ge1$, the statement ``every polynomial map $K^n\to K^n$ whose coordinates have degree at most $d$, if injective, is surjective'' is a first-order sentence $\sigma_{n,d}$: quantify universally over the finitely many coefficients $\bar a$ of the $n$ coordinate polynomials $F_{\bar a}=(F_1,\dots,F_n)$, and write
+\[
+\forall\bar a\,\Bigl[\forall\bar x\,\forall\bar y\,\bigl(F_{\bar a}(\bar x)=F_{\bar a}(\bar y)\to\bar x=\bar y\bigr)\to\forall\bar b\,\exists\bar x\,F_{\bar a}(\bar x)=\bar b\Bigr],
+\]
+where $F_{\bar a}(\bar x)=\bar b$ is the conjunction of the $n$ equations $F_i(\bar x)=b_i$.
+
+We show that $\sigma_{n,d}$ holds in $K_p$ for every prime $p$. Let $F$ be injective on $K_p^n$, and $\bar b\in K_p^n$. By Lemma~\ref{lem:kp}, the coefficients of $F$ and the coordinates of $\bar b$ lie in a finite subfield $E=\mathbb F_{p^{m!}}$. Since $E$ is a field containing the coefficients, $F$ maps the finite set $E^n$ into itself, injectively; so it is onto $E^n$, and $\bar b$ has a preimage.
+
+By Corollary~\ref{cor:acfcomplete}, $\mathrm{ACF}_p\vdash\sigma_{n,d}$ for every prime $p$, and by Theorem~\ref{thm:lefschetz}, $\C\models\sigma_{n,d}$. As every polynomial map has some degree, this proves the theorem.
+\end{proof}
+
+Grothendieck's proof, in his \emph{Éléments de géométrie algébrique}, used the machinery of schemes; James Ax's proof is the one above. The converse question, when a polynomial map is invertible, contains the \emph{Jacobian conjecture}, posed by Ott-Heinrich Keller in 1939 and still open: if the Jacobian determinant of $F:\C^n\to\C^n$ is a non-zero constant, is $F$ invertible, with a polynomial inverse?
+
+\begin{beauty}
+The theorem of Ax and Grothendieck is about the complex numbers, and the proof never looks at them. It checks a finite statement in finite fields, where an injective map of a finite set to itself is a bijection by counting; it then moves the statement to fields of characteristic $p$, then to characteristic $0$, by a theorem whose proof is about the finiteness of proofs. Gödel's completeness theorem, a statement about what can be written down, has become a bridge between arithmetic modulo $p$ and complex geometry.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:drinker}
+Show that $\exists x\,\bigl(D(x)\to\forall y\,D(y)\bigr)$ is valid (``in every non-empty pub there is someone such that, if they drink, everyone drinks''), hence provable. Why does it sound false?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:torsion}
+A group is a \emph{torsion group} if each element has finite order. Show that no set of sentences in the signature of groups has the torsion groups as its models. (Consider the sentences ``$x^n\ne e$'' for a new constant $x$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:connected}
+Show that no set of sentences in the signature of graphs (one binary relation $E$) has the connected graphs as its models. Show that the forests (graphs without cycles) are the models of a set of sentences, but the trees (connected forests) are not.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:szpilrajn}
+Show that every partial order on a set $X$ extends to a linear order on $X$: first for finite $X$, then in general by compactness. (Edward Szpilrajn, 1930.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dlo}
+(a) Deduce from Theorem~\ref{thm:losvaught} that $(\Q,<)\equiv(\R,<)$, although they are not isomorphic. (b) Let $\mathrm{DLO}'$ be the theory of dense linear orders with at least two elements, with or without endpoints. Show that it has exactly four completions, that is, four complete theories containing it, up to equivalence.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:acfnotcountable}
+Show that $\mathrm{ACF}_0$ is not $\aleph_0$-categorical: the algebraic closure of $\Q$ and the algebraic closure of the field $\Q(t)$ of rational functions are countable and not isomorphic. (You may use that every field has an algebraic closure, which is countable for a countable field.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:factorial}
+Let $\mathcal M$ be a model of $\mathrm{Th}(\N)$ with non-standard elements. Show that some non-standard $a\in M$ is divisible by every standard integer $n\ge1$ (``an infinite factorial''). Deduce that $a+1$ has no standard prime factor, and yet has a prime factor.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:infinitesimal}
+Let $\mathcal R$ be the structure $(\R,0,1,+,\times,<)$ with a constant symbol for each real number. Show that there is a structure $\mathcal R^*\equiv\mathcal R$ (in this signature) containing $\varepsilon$ with $0<\varepsilon<1/n$ for every integer $n\ge1$. Show that $\mathcal R^*$ is an ordered field containing a copy of $\R$, and that $1/\varepsilon$ is larger than every real number.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:charp}
+Show that a sentence true in every field of characteristic $0$ is true in every field of characteristic $p$ for all large enough primes $p$. Show by an example that ``all large enough'' cannot be replaced by ``all''.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:orderable}
+A group $G$ is \emph{left-orderable} if there is a linear order $<$ on $G$ with $x<y\Rightarrow gx<gy$ for all $g,x,y$. Show that $G$ is left-orderable if and only if each of its finitely generated subgroups is. Deduce, using the structure of finitely generated abelian groups (Tome~2, Chapter~7), that every torsion-free abelian group can be ordered.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:drinker}
+Either everyone drinks, or someone does not.
+\end{hint}
+\begin{hint}{ex:torsion}
+If $\Gamma$ axiomatised the torsion groups, add a constant $x$ and the sentences $x^n\ne e$ for $n\ge1$; every finite subset is satisfied in a large cyclic group.
+\end{hint}
+\begin{hint}{ex:connected}
+Add constants $c,d$ and the sentences ``there is no path of length at most $n$ from $c$ to $d$''; long paths satisfy any finite part. For forests, forbid cycles of each length $n\ge3$, one sentence per $n$.
+\end{hint}
+\begin{hint}{ex:szpilrajn}
+For finite $X$, add a minimal element first and recurse. For infinite $X$, take a constant for each element and the sentences $c_x<c_y$ for $x<y$ in the partial order, together with the axioms of a linear order.
+\end{hint}
+\begin{hint}{ex:dlo}
+For (b), a dense order may or may not have a least element, and may or may not have a largest one. Each of the four cases is $\aleph_0$-categorical.
+\end{hint}
+\begin{hint}{ex:acfnotcountable}
+An isomorphism fixes $\Q$, so it maps elements algebraic over $\Q$ to elements algebraic over $\Q$.
+\end{hint}
+\begin{hint}{ex:factorial}
+Use a non-standard $c$ and the sentence, true in $\N$, ``for every $x$ there is $y\ne0$ divisible by every $z$ with $1\le z\le x$''.
+\end{hint}
+\begin{hint}{ex:infinitesimal}
+Compactness, with a new constant $\varepsilon$ and the sentences $0<\varepsilon<\overline{1/n}$, where $\overline r$ is the constant naming $r$.
+\end{hint}
+\begin{hint}{ex:charp}
+Use the field axioms in place of $\mathrm{ACF}$ in the proof of (b)$\Rightarrow$(c) of Theorem~\ref{thm:lefschetz}. For the example, think of $1+1\ne0$.
+\end{hint}
+\begin{hint}{ex:orderable}
+Take a constant $c_g$ for each $g\in G$, a binary relation $<$, the axioms of a linear order, the sentences $c_x<c_y\to c_{gx}<c_{gy}$, and $\neg\,c_g=c_h$ for $g\ne h$. A finitely generated torsion-free abelian group is $\Z^n$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:drinker}
+\idea A choice of witness depends on the model: in a world where everyone drinks, anyone will do; otherwise, take a sober person.
+\writeup Let $\mathcal M$ be a structure. If $\mathcal M\models\forall y\,D(y)$, then any $m\in M$ (the domain is not empty) satisfies $D(x)\to\forall y\,D(y)$, since the conclusion is true. Otherwise some $m$ satisfies $\neg D(x)$, and then $D(x)\to\forall y\,D(y)$ is true at $m$ because its hypothesis is false. So the sentence is valid, and provable by Corollary~\ref{cor:completeness}. The principle looks false only because ``someone'' sounds like a fixed person, while the witness is chosen after looking at the whole pub.
+\end{solution}
+
+\begin{solution}{ex:torsion}
+\idea If a property held in all torsion groups by first-order axioms, compactness would sneak in an element of infinite order.
+\writeup Suppose $\Gamma$ has exactly the torsion groups as models. Add a constant $x$ and let $\Gamma'=\Gamma\cup\{\neg\,x^n=e:n\ge1\}$, where $x^n$ is the product of $n$ copies of $x$. A finite subset of $\Gamma'$ involves $x^n\ne e$ for $n<N$ only; the cyclic group $\Z/N\Z$, a torsion group, satisfies $\Gamma$, and with $x$ interpreted as a generator, it satisfies these too. By compactness $\Gamma'$ has a model, a torsion group by assumption, in which $x$ has infinite order: a contradiction.
+\end{solution}
+
+\begin{solution}{ex:connected}
+\idea A path of unbounded length is not a first-order property: compactness can push two vertices infinitely far apart.
+\writeup Graphs are the structures in which $E$ is symmetric and irreflexive, two sentences. Let $\pi_n(x,y)$ be the formula ``there is a path of length $n$ from $x$ to $y$'', that is $\exists z_0\cdots\exists z_n\,\bigl(z_0=x\land z_n=y\land\bigwedge_{i<n}E(z_i,z_{i+1})\bigr)$. Suppose the models of $\Gamma$ are the connected graphs. Add constants $c,d$ and let $\Gamma'=\Gamma\cup\{\neg\pi_n(c,d):n\ge0\}$. A finite subset of $\Gamma'$ excludes the paths of length $n<N$ only, and the path graph with vertices $0,1,\dots,N$, which is connected, satisfies it with $c=0$ and $d=N$. By compactness $\Gamma'$ has a model: a connected graph with no path from $c$ to $d$, which is absurd.
+
+For forests, let $\gamma_n$ say that there are no distinct $z_1,\dots,z_n$ with $E(z_1,z_2)$, \dots, $E(z_{n-1},z_n)$ and $E(z_n,z_1)$; the models of the graph axioms with all $\gamma_n$, $n\ge3$, are exactly the forests. If $\Gamma$ axiomatised the trees, the same argument applies word for word, since the path graphs are trees: a model of $\Gamma'$ would be a tree with no path from $c$ to $d$. (The model it produces is a forest with at least two components, for instance two disjoint copies of a two-way infinite path.)
+\end{solution}
+
+\begin{solution}{ex:szpilrajn}
+\idea A finite partial order can be linearised by repeatedly taking a minimal element; compactness does the rest.
+\writeup Finite case, by induction on $|X|$: a non-empty finite partial order has a minimal element $m$ (follow decreasing chains, which are finite). Linearly order $X\setminus\{m\}$ extending the induced order, by induction, and put $m$ first. This extends the order, since no $x<m$.
+
+General case: take a constant $c_x$ for each $x\in X$ and a binary relation symbol $\prec$; let $\Gamma$ contain the axioms of a strict linear order for $\prec$, the sentences $c_x\prec c_y$ for $x<y$ in the partial order, and $\neg\,c_x=c_y$ for $x\ne y$. A finite subset mentions a finite non-empty $F\subseteq X$ (add one element if it mentions none); extend the partial order of $F$ to a linear order by the finite case, and take the structure with domain $F$, with $c_x$ interpreted as $x$ for $x\in F$, every other $c_x$ interpreted as some fixed element of $F$, and $\prec$ the linear order of $F$. This structure satisfies the finite subset. By compactness, $\Gamma$ has a model $\mathcal M$; the $c_x^{\mathcal M}$ are distinct, and setting $x\lhd y$ iff $c_x^{\mathcal M}\prec^{\mathcal M}c_y^{\mathcal M}$ gives a linear order on $X$ extending $<$.
+\end{solution}
+
+\begin{solution}{ex:dlo}
+\idea Categoricity in the countable world plus no finite models gives completeness; endpoints are the only extra information.
+\writeup (a) $\mathrm{DLO}$ has no finite models (density between two elements, and no endpoints), and it is $\aleph_0$-categorical by Theorem~\ref{thm:cantor}; it is consistent, and the signature is finite, so it is complete by Theorem~\ref{thm:losvaught}. Both $(\Q,<)$ and $(\R,<)$ are models, so they satisfy the same sentences. They are not isomorphic since $\Q$ is countable and $\R$ is not.
+
+(b) Let $\lambda$ be ``there is a least element'' and $\rho$ ``there is a largest element''. Each of the four theories $\mathrm{DLO}'\cup\{\pm\lambda,\pm\rho\}$ (with $+\lambda$ meaning $\lambda$ and $-\lambda$ meaning $\neg\lambda$) is consistent, being satisfied by $\Q\cap[0,1]$, $\Q\cap[0,1[$, $\Q\cap\,]0,1]$ and $\Q$. Each has no finite model (density gives infinitely many elements between two). Each is $\aleph_0$-categorical: removing the endpoints of a countable model gives a countable dense order without endpoints (non-empty, as there are at least two elements and a third between them), isomorphic to $\Q$ by Cantor's theorem, and the isomorphism extends by sending endpoints to endpoints. So each is complete by Theorem~\ref{thm:losvaught}. They are pairwise inconsistent with each other, and any complete theory $T\supseteq\mathrm{DLO}'$ decides $\lambda$ and $\rho$, hence contains one of the four and proves the same sentences. So there are exactly four completions.
+\end{solution}
+
+\begin{solution}{ex:acfnotcountable}
+\idea The two fields have different transcendence degrees, $0$ and $1$, and the prime field is fixed by every isomorphism.
+\writeup Let $A=\overline{\Q}$ and $B=\overline{\Q(t)}$. Both are algebraically closed of characteristic $0$, and countable: the algebraic closure of a countable field $k$ is countable, since each element is a root of one of the countably many non-zero polynomials over $k$, each with finitely many roots. An isomorphism $\phi:B\to A$ fixes $1$, hence $\Z$ and $\Q$. Every element of $A$ is a root of a non-zero polynomial with rational coefficients, so the same holds for $\phi^{-1}$ of it, in $B$. But $t\in B$ is a root of no non-zero polynomial over $\Q$, and $\phi(t)\in A$ is: applying $\phi^{-1}$ to the equation $P(\phi(t))=0$ gives $P(t)=0$, a contradiction. So $A\not\cong B$, and $\mathrm{ACF}_0$ is not $\aleph_0$-categorical (although it is complete).
+\end{solution}
+
+\begin{solution}{ex:factorial}
+\idea Take a non-standard number and form the product of all numbers below it: arithmetic proves that this product exists.
+\writeup The sentence $\forall x\,\exists y\,\bigl(\neg\,y=0\land\forall z\,(1\le z\le x\to\exists w\,(z\times w=y))\bigr)$ is true in $\N$ (take $y=x!$), so it holds in $\mathcal M$. Take a non-standard $c$ and such a $y=a$ for $x=c$. Every standard $n\ge1$ satisfies $1\le n\le c$, so $n$ divides $a$. Since $c$ divides $a$ and $a\ne0$, the sentence ``$z\mid y$ and $y\ne0$ imply $z\le y$'' gives $a\ge c$, so $a$ is non-standard. If a standard prime $p$ divided $a+1$, it would divide $(a+1)-a=1$ (the sentence ``if $z\mid y$ and $z\mid y+1$ then $z=1$'' is true in $\N$). But ``every $y\ge2$ has a prime divisor'', where ``prime'' is a formula, is true in $\N$, so $a+1$ has a prime divisor in $\mathcal M$; it is a non-standard prime. This is Euclid's proof that there are infinitely many primes, run inside $\mathcal M$.
+\end{solution}
+
+\begin{solution}{ex:infinitesimal}
+\idea Every finite set of conditions ``$0<\varepsilon<1/n$'' is met by a small real; compactness meets all of them.
+\writeup Add a constant $\varepsilon$ to the signature and let $\Gamma=\mathrm{Th}(\mathcal R)\cup\{0<\varepsilon,\ \varepsilon<\overline{1/n}:n\ge1\}$. A finite subset mentions $n<N$ only, and $\mathcal R$ with $\varepsilon=1/N$ satisfies it. By compactness $\Gamma$ has a model $\mathcal R^*$; it satisfies $\mathrm{Th}(\mathcal R)$, so $\mathcal R^*\equiv\mathcal R$. The axioms of an ordered field are in $\mathrm{Th}(\mathcal R)$, so $\mathcal R^*$ is an ordered field. The map $r\mapsto\overline r^{\,\mathcal R^*}$ is injective and respects $+$, $\times$, $<$, since the sentences $\overline r+\overline s=\overline{r+s}$, $\overline r\times\overline s=\overline{rs}$, and $\overline r<\overline s$ for $r<s$ are true in $\mathcal R$; so $\mathcal R^*$ contains a copy of $\R$. Finally, for each real $r>0$, there is $n$ with $1/n<r$, so $\varepsilon<\overline{1/n}<\overline r$, and $1/\varepsilon>\overline{1/r}$ in the ordered field $\mathcal R^*$; as $r$ ranges over the positive reals, so does $1/r$. So $\mathcal R^*$ is not Archimedean, although it satisfies every first-order statement about $\R$: the Archimedean property is not first-order.
+\end{solution}
+
+\begin{solution}{ex:charp}
+\idea A proof uses finitely many axioms, so it only knows that finitely many primes are not zero.
+\writeup Let $F_0$ be the field axioms with the axioms $\neg\,\overline p=0$ for all primes $p$; its models are the fields of characteristic $0$. If $\sigma$ holds in all of them, $F_0\vdash\sigma$ by Corollary~\ref{cor:completeness}. The proof uses $\neg\,\overline p=0$ for finitely many primes, say $p\le N$; every field of characteristic $p>N$ satisfies all axioms used, hence $\sigma$, by soundness. For the example, $\sigma:\neg\,1+1=0$ holds in characteristic $0$ and in every characteristic $p>2$, but not in characteristic $2$.
+\end{solution}
+
+\begin{solution}{ex:orderable}
+\idea Ordering a group is satisfying infinitely many conditions, each about finitely many elements; and the finitely generated torsion-free abelian groups are lattices $\Z^n$, ordered lexicographically.
+\writeup If $G$ is left-orderable, so is every subgroup, with the restricted order. Conversely, take the signature with a constant $c_g$ for each $g\in G$ and a binary relation $<$, and let $\Gamma$ contain the axioms of a strict linear order, $\neg\,c_g=c_h$ for $g\ne h$, and $c_x<c_y\to c_{gx}<c_{gy}$ for all $g,x,y\in G$. A finite subset $\Gamma_0$ mentions finitely many elements; let $H$ be the subgroup they generate, left-ordered by hypothesis. Take the structure with domain $H$ and its order, with $c_g$ interpreted as $g$ for $g\in H$ and as $e$ for $g\notin H$. Every constant occurring in $\Gamma_0$ names an element of $H$, so the sentences $c_x<c_y\to c_{gx}<c_{gy}$ of $\Gamma_0$ hold by left-invariance in $H$, and the others clearly hold. By compactness $\Gamma$ has a model $\mathcal M$, and $x\prec y\iff c_x^{\mathcal M}<^{\mathcal M}c_y^{\mathcal M}$ is a left order on $G$, since the $c_g^{\mathcal M}$ are distinct.
+
+For abelian $G$, left-orderable means ordered. A finitely generated torsion-free abelian group is isomorphic to $\Z^n$ by the structure theorem for finitely generated modules over the principal ideal domain $\Z$ (Tome~2, Chapter~7), and $\Z^n$ is ordered lexicographically: if $x<y$, then the first coordinate where $y-x$ is non-zero is positive, and this is unchanged by adding $g$ to both. By the first part, every torsion-free abelian group is ordered. (Torsion-freeness is needed: in an ordered group, $g>0$ implies $ng>0$ for all $n\ge1$, so no non-zero element has finite order.)
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} L.~Henkin, \emph{The completeness of the first-order functional calculus}, Journal of Symbolic Logic 14 (1949), 159--166. Eight pages, and the whole of Section~\ref{sec:henkin}. Henkin works with a countable language and adds the witnesses in one sweep, as in Step~1, then extends to a maximal consistent set by enumeration, as in our remark after Step~2. Read Theorem~1 and its proof first, and match his ``formulas of the form $(\exists x)A$'' with our Henkin axioms; his system is Church's, with the same theorems as ours. The last page notes the extension to uncountable languages, which needs the well-ordering theorem. Then read Henkin's own account, \emph{The discovery of my completeness proofs}, Bulletin of Symbolic Logic 2 (1996), 127--158, from which our quotation comes: it shows the proof emerging from an attempt to prove something else about Church's theory of types.
+\item \emph{The stories.} D.~Hilbert and W.~Ackermann, \emph{Grundzüge der theoretischen Logik}, Springer, 1928; K.~Gödel, \emph{Die Vollständigkeit der Axiome des logischen Funktionenkalküls}, Monatshefte für Mathematik und Physik 37 (1930), 349--360; S.~C.~Kleene, \emph{Kurt Gödel, 1906--1978}, Biographical Memoirs of the National Academy of Sciences (1987), 135--178, for the dates of the dissertation; Gödel's papers are in his \emph{Collected Works}, vol.~I, Oxford University Press, 1986, with introductions by B.~Dreben and J.~van Heijenoort.
+\item L.~Löwenheim, \emph{Über Möglichkeiten im Relativkalkül}, Mathematische Annalen 76 (1915), 447--470; Th.~Skolem, \emph{Logisch-kombinatorische Untersuchungen über die Erfüllbarkeit oder Beweisbarkeit mathematischer Sätze nebst einem Theoreme über dichte Mengen}, Videnskapsselskapets Skrifter I, no.~4 (1920), and \emph{Einige Bemerkungen zur axiomatischen Begründung der Mengenlehre} (1922), translated in J.~van Heijenoort (ed.), \emph{From Frege to Gödel}, Harvard University Press, 1967, which also contains Löwenheim's and Gödel's papers; Th.~Skolem, \emph{Über die Nicht-charakterisierbarkeit der Zahlenreihe mittels endlich oder abzählbar unendlich vieler Aussagen mit ausschliesslich Zahlenvariablen}, Fundamenta Mathematicae 23 (1934), 150--161; A.~Malcev, \emph{Untersuchungen aus dem Gebiete der mathematischen Logik}, Matematicheskii Sbornik 1 (1936), 323--336.
+\item A.~Church, \emph{A note on the Entscheidungsproblem}, Journal of Symbolic Logic 1 (1936), 40--41 and 101--102; A.~M.~Turing, \emph{On computable numbers, with an application to the Entscheidungsproblem}, Proceedings of the London Mathematical Society 42 (1937), 230--265. Our reduction from semi-Thue systems follows the textbook of Enderton below.
+\item G.~Cantor, \emph{Beiträge zur Begründung der transfiniten Mengenlehre}, Mathematische Annalen 46 (1895), 481--512, \S9; S.~Tennenbaum, \emph{Non-archimedean models for arithmetic}, Notices of the American Mathematical Society 6 (1959), 270; R.~Kaye, \emph{Models of Peano Arithmetic}, Oxford University Press, 1991, for Theorem~\ref{thm:ordertype} and a proof of Theorem~\ref{thm:tennenbaum}; A.~Robinson, \emph{Non-standard Analysis}, North-Holland, 1966.
+\item J.~Łoś, \emph{On the categoricity in power of elementary deductive systems and some related problems}, Colloquium Mathematicum 3 (1954), 58--62; R.~L.~Vaught, \emph{Applications of the Löwenheim--Skolem--Tarski theorem to problems of completeness and decidability}, Indagationes Mathematicae 16 (1954), 467--472; E.~Steinitz, \emph{Algebraische Theorie der Körper}, Journal für die reine und angewandte Mathematik 137 (1910), 167--309.
+\item J.~Ax, \emph{The elementary theory of finite fields}, Annals of Mathematics 88 (1968), 239--271, and \emph{Injective endomorphisms of varieties and schemes}, Pacific Journal of Mathematics 31 (1969), 1--7; A.~Grothendieck, \emph{Éléments de géométrie algébrique IV}, troisième partie, Publications Mathématiques de l'IHÉS 28 (1966); O.-H.~Keller, \emph{Ganze Cremona-Transformationen}, Monatshefte für Mathematik und Physik 47 (1939), 299--306.
+\item E.~Szpilrajn, \emph{Sur l'extension de l'ordre partiel}, Fundamenta Mathematicae 16 (1930), 386--389.
+\item H.~B.~Enderton, \emph{A Mathematical Introduction to Logic}, 2nd edition, Academic Press, 2001, whose proof system we use; D.~Marker, \emph{Model Theory: An Introduction}, Springer, 2002, for everything after Section~\ref{sec:compactness}.
+\end{itemize}
