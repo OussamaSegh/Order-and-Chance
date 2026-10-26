@@ -88,3 +88,26 @@ A second independent pass, this time over Tome 2 (Structures, 12 chapters, 13 fi
 ### Known and left as is
 
 - Four displays are shrunk slightly in the phone PDF (the build reports them); cosmetic.
+
+## Review 3: Tome 3
+
+A third independent pass, over Tome 3 (Chance, 12 chapters, 39 figures, 12 notebooks). Every proof and every solution was read line by line, and the numerical claims were recomputed in Python: the birthday probabilities (q₂₃ = 0.4927, 99% at n = 57, 253 others for one's own birthday), the medical-test posterior 0.798, H₅₂ ≈ 4.54 and the standard deviation 1.71 of the cycle count, the coupon-collector values (50 H₅₀ ≈ 225, P(T > n ln n + 2n) ≈ 0.12), the prisoners' 1 − (H₁₀₀ − H₅₀) ≈ 0.31, the two roots 0.8193 and 0.9994 of Lotka's law and its mean 1.26, the Poisson(2) survival probability 0.7968, the Chernoff/Hoeffding/exact tail of Bin(1000, ½) at 600 (I = 0.0201, 1.8·10⁻⁹, 1.36·10⁻¹⁰), the 26 492 samples, the Bernstein errors 0.19, 0.10, 0.05, the longest-run statistics (mean ≈ 7, 97% for a run of 6), the Bloom filter 0.6185^(m/n) and the 111 runs of the median trick, the hundred dice (exact 0.00151 against 0.00155), the delta-method constant 1.64, the roulette values (0.0045, 3667 bets, 0.37), the arcsine 0.09, the Pólya return constant F ≈ 0.3405 and 0.52 expected returns, the knight (336, 168, 42), the Bayer–Diaconis total variation table for 52 cards and the 8.6 of the asymptotic formula, the rising-sequence variance (n + 1)/12, the stationary law (4/11, 4/11, 3/11) of the figure chain, ABRACADABRA's 26¹¹ + 26⁴ + 26 and 116 million years, the empty-bins example (367 879, true standard deviation 312, 2e^(−12.5) < 10⁻⁵), Black–Scholes (d± = 0.35, 0.15, C ≈ 10.45, P ≈ 5.57) and the binomial prices 12.16, 10.25, 10.43, 10.449, the Ramsey bounds R(10) > 100, R(20) > 5817 and 115 by alteration, the tournament counts 0.89 and 0.96, the M/M/1 means 1, 9, 99, and Le Cam's 5·10⁻³. All matched the text. Every theorem, proposition, lemma and corollary is followed by its proof (the only admitted facts are the two labelled "Admitted (proved in Tome 6)" in Chapter 5), every solution has its *How to find it* and *Write-up*, there are no duplicate or undefined labels, the three PDFs and the EPUB build cleanly, the twelve notebooks run without error, and every theorem, proposition, example, exercise, figure and section number they cite matches the built book. All pointers to Tomes 0 and 2 were checked against the actual chapters of those tomes (Propositions 4.1(b), 5.1(c) and 8.3, Theorems 5.6, 6.4 and 7.7, Exercises 3.7 and 6.7 of Tome 0; Chapter 11 of Tome 2), and pointers to Tomes 4, 6, 9, 10 and 11 against the series plan. The mathematics was found correct; the three items below are two reference fixes and a wording fix.
+
+### Tome 3
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 3, remark after Lotka's law | ref | Said that Chapter 10 "shows" that the limit of Zₙ/mⁿ is positive on survival under E[ξ ln ξ] < ∞ (Kesten–Stigum). Chapter 10 proves this only under a finite offspring variance (Theorem 10.22) and quotes Kesten–Stigum in a remark. | Reworded: Chapter 10 proves it for finite variance; Kesten–Stigum, quoted there, weakens the condition. |
+| Ch. 10, remark after the convergence theorem | ref | Uniform integrability was pointed to Tome 6 only; the series plan has uniformly integrable martingales in Tome 10 (Martingales II). | "studied with the Lebesgue integral in Tome 6, and uniformly integrable martingales in Tome 10". |
+| Ch. 1, solution of Exercise 1.8 (secretary problem), part (b) | text | The upper bound log((n−1)/(r−2)) for the harmonic sum needs r ≥ 3, which the surrounding range x ≥ 1/√n guarantees but the text did not say. | "for r ≥ 3" added. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 3, ch. 1–12 | None found: all run, all numbered references match the book. | — |
+
+### Known and left as is
+
+- The series plan quotes "about 320 pages" for Tome 3; the A4 build is 165 pages. The plan's figure was an estimate, not a target.
+- Pointers to "Tome 10" for Lévy's continuity theorem, Berry–Esseen and Cramér's theorem, to "Tome 11" for Itô's formula, the strong Markov property and the continuous Dirichlet problem, to "Tome 9" for Diaconis–Shahshahani, and to "Tome 4" for Fourier inversion all agree with the series plan.
