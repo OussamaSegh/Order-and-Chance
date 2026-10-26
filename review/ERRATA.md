@@ -166,3 +166,31 @@ A fifth independent pass, over Tome 6 (Spaces, 11 chapters, 27 figures, 11 noteb
 - The Tome 6 plan lists Lévy's continuity theorem among the exercises prepared for Tome 10 in Chapter 11; the chapter proves Helly's selection theorem instead and leaves Lévy's theorem to Tome 10, where the series plan places it ("characteristic functions and Lévy's continuity theorem"). Nothing in the text promises it earlier.
 - Chapter 6 refers to amenability for Tome 8 (Shapes). The series plan's Tome 8 has matrix Lie groups and Haar measure but does not name amenability; the pointer is plausible and is left to the Part II writing thread.
 - Part III threads cite Tome 6 chapter numbers (Ch. 6 Carathéodory and independent sequences, Ch. 7 convergence theorems and Vitali, Ch. 8 Fubini and change of variables, Ch. 9 Lᵖ, Ch. 10 Radon–Nikodym, Ch. 11 Riesz, portmanteau, Prokhorov, Kolmogorov, Helly). No chapter was renumbered by this review.
+
+## Review: Tome S1
+
+An independent pass over Tome S1 (Linear Algebra in Depth, 12 chapters, 12 notebooks). Every proof and every solution was read line by line, and the numerical claims were recomputed in Python independently of the notebooks: the Lights Out kernels (dimension 0 on 3×3, 4 on 4×4, 2 on 5×5), the lozenge counts T(2,2,2) = 20, T(3,3,3) = 980 and the 34-digit T(10,10,10), Dodgson's example (det −20), the Hilbert determinants 1/det Hₙ = 1, 12, 2160, 6048000, the parabola fit 3/35, 1/5, 6/7, the SVD of [[3,0],[4,5]], the PageRank values of Figure 7.2 recomputed from the figure's own edge list (C 0.351, A 0.329, B 0.169), the low-rank errors 0.30, 0.16, 0.07 recomputed from the pixel data of Figure 6.2, the Wielandt exponents (n−1)²+1 for n ≤ 10, Huang's 48 optimal nine-vertex sets among the 11440 of Q₄, A(8,4) = 16, the Schmidt entropy ≈ 0.843 and λ_max(H₃₀₀₀) ≈ 2.532. Pointers to Tomes 0–7, 12 and C1 were checked against the chapter files of those tomes, pointers to Tomes 8, 9, 11, C2, C4, C5, S2 and S3 against the series plan and the Tome C1 plan; the dates and attributions in the storytelling openings (Erdős–Rényi–Sós 1966, Nisan–Szegedy 1992, Huang's preprint of 1 July 2019, Schmidt 1907, Eckart–Young 1936, Wielandt 1950, Robbins–Rumsey, Schur 1911, de Bruijn–Wilf 1962) were checked against the sources, and the quotations in Chapter 8 against Aaronson's blog post. All four PDF formats, the KDP print and cover files and the EPUB build without errors, with no undefined or multiply defined labels; all twelve notebooks run to completion and every numbered reference in them was matched against the built numbering.
+
+### Tome S1
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 3, proof of Cayley–Hamilton | math / ref | The identity (XI − A)·adj(XI − A) = χ_A(X)·I over the ring K[X] was attributed to "Tome 0, Chapter 7", which never mentions the adjugate; nowhere in the series was A·adj(A) = (det A)·I proved over a commutative ring (Tome 2, Ch. 7 states it without proof). | New Corollary "adjugate identity" in Ch. 2 after Jacobi's theorem: the case k = 1 of Jacobi gives it for invertible matrices over ℚ, and a polynomial-identity argument extends it to every commutative ring. Cayley–Hamilton now cites that corollary. |
+| Ch. 9, Delsarte's inequality | text | `\qedhere` inside a displayed equation; pandoc does not know it, so the EPUB rendered the whole display as raw TeX. | Removed; the box falls on the next line. |
+| Ch. 8, epigraph and opening | text | The epigraph ("I think I have found a proof… surprisingly short") and the Aaronson quotations ("one of the most spectacular things", the elevator ride) could not be traced to any source; Aaronson's post of 2 July 2019 says neither. | Epigraph replaced by Huang's own account of the key idea (his comment on that post); Aaronson is now quoted with what he wrote: the conjecture was "one of the most frustrating and embarrassing open problems in all of combinatorics and theoretical computer science", and the "elementary 1.5-page argument" took him half an hour to read. |
+| Ch. 6, opening | text | "Two psychologists, Carl Eckart and Gale Young": Eckart was a physicist (quantum mechanics); Young was the psychometrician. | Physicist and psychometrician, writing in Psychometrika. |
+| Ch. 7, Wielandt's bound | text | "The first published proof is from 1964": the 1964 paper of Dulmage and Mendelsohn is about gaps in the exponent set; the first published proofs are Rosenblatt (1957) and Holladay–Varga (1958), Wielandt's own proof appearing only in Schneider's 2002 paper. | Corrected, with the sources entry expanded. |
+| Ch. 9, solution of the Fourier matrix exercise | text | "Their multiplicities, roughly n/4 each, were found by Gauss": Gauss evaluated the trace (the quadratic Gauss sum); the exact multiplicities of ±1, ±i are due to McClellan and Parks (1972). | Attribution split accordingly. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome S1, ch. 2 | The new corollary shifts the numbering of the theorem-style statements after Jacobi's theorem in Chapter 2 by one. | Numbered references in the notebook updated to the rebuilt numbering. |
+| Tome S1, ch. 1–12 | All twelve run; every other numbered reference matches the book. | — |
+
+### Known and left as is
+
+- Chapter 1 (twice) points to "Tome C1, Chapter 11" for the linear algebra method and Fisher's inequality. Tome C1 has nine chapters on main so far; its own plan has twelve, with the linear algebra method as Chapter 11, and the computing thread agreed to that pointer. Left as is.
+- Chapters 8, 9 and 11 point to Tome S3 for the Moore graph of degree 57, Paley graphs and the Hadamard conjecture, and Chapter 1 to Tome S2, Chapters 4 (projective duality) and 9 (Pick's theorem); neither tome exists yet, and all four pointers match the series plan.
+- Chapter 11 quotes the de Bruijn–Wilf asymptotic π − λ_max(H_N) ~ π⁵/(2 log² N). At N = 3000 the formula gives 2.4 while the true gap is 0.61; the text only says the gap "behaves like" the formula, which is the asymptotic statement, and is left as is.
