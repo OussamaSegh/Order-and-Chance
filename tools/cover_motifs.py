@@ -893,6 +893,53 @@ def e8_roots():
                 lines.append(r"\draw[accent,line width=0.12pt,opacity=0.30] (%.3fin,%.3fin)--(%.3fin,%.3fin);" % (x1, y1, x2, y2))
     for x, y in pts:
         lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.030in);" % (x, y))
+def gd_nesterov(kappa=16.0, angle=24.0, n_levels=12):
+    """Level sets of an elongated convex quadratic f(u,v) = (u^2 + kappa v^2)/2 (rotated), with two
+    minimisers started at the same point: steepest descent with exact line search (Cauchy, 1847),
+    which zigzags across the valley, and Nesterov's accelerated gradient (1983), which glides along
+    it (Tome C5, Chapter 4)."""
+    th = math.radians(angle)
+    c, s_ = math.cos(th), math.sin(th)
+    a = 2.2                               # half-length of the outermost level set along the valley
+    sc = a / math.sqrt(2 * 0.5 * a * a)   # inches per unit
+    P = lambda u, v: (sc * (c * u - s_ * v), sc * (s_ * u + c * v))
+    lines = ["%% Gradient descent (exact line search) and Nesterov's method on the level sets of (u^2+%g v^2)/2." % kappa]
+    fmax = 0.5 * a * a
+    for k in range(1, n_levels + 1):
+        lev = fmax * (k / n_levels) ** 2
+        ru, rv = math.sqrt(2 * lev), math.sqrt(2 * lev / kappa)
+        pts = []
+        for t in range(0, 181):
+            al = 2 * math.pi * t / 180
+            x, y = P(ru * math.cos(al), rv * math.sin(al))
+            pts.append("(%.4fin,%.4fin)" % (x, y))
+        lines.append(r"\draw[accent,line width=0.45pt,opacity=%.2f] " % (0.25 + 0.4 * k / n_levels) + "--".join(pts) + "--cycle;")
+    grad = lambda u, v: (u, kappa * v)
+    u0 = -2.05
+    v0 = -u0 / kappa * 1.6                # near the worst start for steepest descent, inside the outer level
+    # steepest descent with exact line search: t = |g|^2 / g^T A g
+    gd = [(u0, v0)]
+    u, v = u0, v0
+    for _ in range(30):
+        gu, gv = grad(u, v)
+        t = (gu * gu + gv * gv) / (gu * gu + kappa * gv * gv)
+        u, v = u - t * gu, v - t * gv
+        gd.append((u, v))
+    # Nesterov, step 1/L with L = kappa, momentum (sqrt(k)-1)/(sqrt(k)+1)
+    L, q = kappa, (math.sqrt(kappa) - 1) / (math.sqrt(kappa) + 1)
+    xs = [(u0, v0)]
+    x, xp = (u0, v0), (u0, v0)
+    for _ in range(40):
+        y = (x[0] + q * (x[0] - xp[0]), x[1] + q * (x[1] - xp[1]))
+        gu, gv = grad(*y)
+        xp, x = x, (y[0] - gu / L, y[1] - gv / L)
+        xs.append(x)
+    fmt = lambda pts: "--".join("(%.4fin,%.4fin)" % P(*p) for p in pts)
+    lines.append(r"\draw[accent,line width=1.1pt,opacity=0.95,line join=round] " + fmt(gd) + ";")
+    for p in gd[:16]:
+        lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.028in);" % P(*p))
+    lines.append(r"\draw[accent,line width=1.6pt,opacity=0.95,line join=round,dash pattern=on 5pt off 2.5pt] " + fmt(xs) + ";")
+    lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.06in);" % P(0, 0))
     return "\n".join(lines) + "\n"
 
 
@@ -923,6 +970,7 @@ MOTIFS = {
     "tomeP2-machinery": hilbert_curve,
     "tome14-random": multiplicative_walks,
     "tomeC4-information": e8_roots,
+    "tomeC5-learning": gd_nesterov,
 }
 
 if __name__ == "__main__":

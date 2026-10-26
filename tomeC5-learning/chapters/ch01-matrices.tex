@@ -1,0 +1,788 @@
+\chapter{Computing with Matrices}\label{ch:matrices}
+
+\begin{center}\itshape
+I felt sure that none of the variables could have more than six correct figures and yet the agreement was as good\\
+as it would have been if I had been given the exact answer and had then rounded it to ten figures.\\
+\upshape(James H. Wilkinson, Turing Award lecture, 1970)
+\end{center}
+
+In 1946 a young mathematician named James Hardy Wilkinson arrived at the National Physical Laboratory near London, to work half of his time with the
+computing section of Leslie Fox and Charles Goodwin and the other half with Alan Turing, who was designing an electronic computer. He found the
+laboratory in a gloomy mood. Bounds had been published which suggested that the error in the solution of a system of $n$ linear equations by
+elimination could grow like $4^n$, and as Wilkinson remembered it, ``it was the more distinguished mathematicians who were most pessimistic''. If the
+bounds were right, the new machines would be useless for systems of quite modest size.
+
+Wilkinson had a secret. During the war, at the Armament Research Department, he had been handed twelve equations in twelve unknowns and had
+solved them by hand on a desk calculator, by Gaussian elimination. The last reduced equation had a coefficient of order $10^{-5}$, so he expected at most six
+correct figures, and he computed everything to ten figures only because a fixed routine causes fewer blunders. Then he substituted his
+answer back into the twelfth equation, and the two sides agreed to ten figures. ``That, I said to myself, was a coincidence.'' Eleven more
+coincidences followed. Not wanting to look foolish, he kept quiet.
+
+Then a system of eighteen equations arrived at the laboratory, and Fox, Goodwin, Turing and Wilkinson decided to solve it by hand, as a team.
+Turing ``was convinced that it would be a failure''. History repeated itself: the residuals were of order $10^{-10}$, as small as for the exact
+solution rounded to ten decimals, while a later check showed the solution itself had only about six correct figures. ``I suppose this must be
+regarded as a defeat for Turing'', Wilkinson wrote, but ``the second round undoubtedly went to Turing'': a year later Turing published
+\emph{Rounding-off errors in matrix processes}, which, together with a long paper of John von Neumann and Herman Goldstine, began to dispel the gloom.
+It was Turing who named the \emph{condition number}.
+
+The resolution of the puzzle, worked out by Wilkinson over the next fifteen years, is the subject of this chapter. Its key idea is to stop asking
+how wrong the computed answer is, and to ask instead: for which nearby problem is it exactly right? Wilkinson's computed solution was the exact
+solution of a system differing from his in the tenth figure; whether that makes the answer accurate depends on the system, not on the algorithm, and is
+measured by the condition number. We prove this for triangular systems, Gaussian elimination and the $QR$ factorisation by Householder reflections,
+then turn to the harder problem of eigenvalues, where the $QR$ algorithm, invented by John Francis in 1959--1961, is one of the great algorithms of
+the century, and finally to the singular value decomposition. The theory of the SVD, of the pseudo-inverse and of least squares was done in Tome~S1,
+Chapter~6; this chapter is its numerical side, as promised there.
+
+\begin{think}
+The Hilbert matrix $H_n=\bigl(1/(i+j-1)\bigr)_{1\le i,j\le n}$ is symmetric positive definite. Take $x=(1,\dots,1)$, compute $b=H_{10}x$, and solve
+$H_{10}y=b$ with a good library routine, working with $16$ significant digits. How many correct digits do you expect in $y$? And how small do you expect
+the residual $H_{10}y-b$ to be?
+\end{think}
+
+\section{Floating-point arithmetic}\label{sec:float}
+
+A computer represents real numbers by a finite set $\mathbb F\subset\R$ of \emph{floating-point numbers} $\pm m\cdot2^{e}$, where the
+\emph{significand} $m$ has $t$ binary digits, $2^{t-1}\le m<2^t$, and the exponent $e$ lies in a range wide enough that we may ignore overflow and
+underflow. In the IEEE~754 standard of 1985 used by essentially every processor, double precision has $t=53$. Every real number $x$ in the range
+has a nearest element $\mathrm{fl}(x)$ of $\mathbb F$, and
+\[
+\mathrm{fl}(x)=x(1+\delta),\qquad|\delta|\le u=2^{-t},
+\]
+where $u$ is the \emph{unit roundoff}: $u=2^{-53}\approx1.11\times10^{-16}$ in double precision. Indeed, if $2^{e+t-1}\le|x|<2^{e+t}$, consecutive
+floating-point numbers near $x$ are $2^e$ apart, so $|\mathrm{fl}(x)-x|\le2^{e-1}\le2^{-t}|x|$. The standard requires the four operations and the
+square root to be \emph{correctly rounded}: the computed result is the rounded exact result. This gives the only property we shall use.
+
+\begin{definition}[standard model]\label{def:model}
+For $a,b\in\mathbb F$ and $\mathrm{op}\in\{+,-,\times,/\}$,
+\[
+\mathrm{fl}(a\mathbin{\mathrm{op}}b)=(a\mathbin{\mathrm{op}}b)(1+\delta),\qquad\mathrm{fl}(\sqrt a)=\sqrt a\,(1+\delta),\qquad|\delta|\le u.
+\]
+\end{definition}
+
+So each single operation is almost perfect, with relative error at most $10^{-16}$. The danger is in what follows: errors accumulate, and above all
+they are amplified when nearly equal numbers are subtracted. In $\mathrm{fl}(a-b)$ with $a=1+10^{-12}$ and $b=1$, both computed earlier with relative
+errors of order $u$, the subtraction is exact, but the absolute errors of $a$ and $b$, of order $10^{-16}$, now sit on a result of size $10^{-12}$: the
+relative error has become $10^{-4}$. This is \emph{cancellation}, and it is never the fault of the subtraction, only of what came before.
+
+Errors that look negligible can also add up over a long run. On 25 February 1991 a Patriot missile battery at Dhahran, Saudi Arabia, failed to
+intercept an incoming Scud missile, which hit an army barracks and killed 28 American soldiers. The system counted time in tenths of a second and
+multiplied by $1/10$ in a 24-bit fixed-point register. The binary expansion of $1/10=0.000110011001100\dots_2$ does not terminate, and chopping it after
+23 binary places makes an error of about $9.5\times10^{-8}$ per tenth of a second. After the 100 hours the battery had been running, $3.6$ million
+tenths, the clock was off by $0.3433$ seconds, during which a Scud travels more than half a kilometre; the government report lists a shift of 687
+metres in the range gate where the radar looked for the target. A corrected version of the software reached Dhahran the next day.
+
+We shall carry products of many factors $1+\delta_i$, and bound them by the following device.
+
+\begin{lemma}[accumulating roundoff]\label{lem:gamma}
+For $k\ge1$ with $ku<1$ put $\gamma_k=ku/(1-ku)$.
+\begin{enumerate}
+\item If $|\delta_i|\le u$ and $\rho_i\in\{1,-1\}$ for $i\le k$, then $\prod_{i=1}^k(1+\delta_i)^{\rho_i}=1+\theta$ with $|\theta|\le\gamma_k$.
+\item $\gamma_j\le\gamma_k$ for $j\le k$, $c\gamma_k\le\gamma_{ck}$ for integers $c\ge1$, and $\gamma_j+\gamma_k+\gamma_j\gamma_k\le\gamma_{j+k}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) Each factor lies in $[1-u,(1-u)^{-1}]$, since $1+u\le(1-u)^{-1}$ and $(1+u)^{-1}\ge1-u$. Hence the product lies between $(1-u)^k\ge1-ku\ge1-\gamma_k$
+(Bernoulli's inequality) and $(1-u)^{-k}\le(1-ku)^{-1}=1+\gamma_k$. (2) The first two follow from $ck u/(1-ku)\le cku/(1-cku)$. For the third,
+$1+\gamma_j+\gamma_k+\gamma_j\gamma_k=(1+\gamma_j)(1+\gamma_k)=\frac1{(1-ju)(1-ku)}\le\frac1{1-(j+k)u}=1+\gamma_{j+k}$, as $(1-ju)(1-ku)\ge1-(j+k)u$.
+\end{proof}
+
+In double precision $\gamma_k$ is $ku$ up to a factor $1.0001$ as long as $k\le10^{12}$; think of $\gamma_k$ as ``$k$ roundings''. We write $|A|$ for
+the matrix of absolute values of the entries of $A$, and inequalities between matrices or vectors entrywise.
+
+\begin{proposition}[inner products]\label{prop:dot}
+For $x,y\in\mathbb F^n$, the inner product computed by recursive summation $s_1=x_1y_1$, $s_i=s_{i-1}+x_iy_i$ satisfies
+\[
+\mathrm{fl}(x^{\mathsf T}y)=\sum_{i=1}^nx_iy_i(1+\theta_i),\quad|\theta_i|\le\gamma_n,\qquad\text{so}\quad\bigl|\mathrm{fl}(x^{\mathsf T}y)-x^{\mathsf T}y\bigr|\le\gamma_n\,|x|^{\mathsf T}|y|.
+\]
+Consequently $\mathrm{fl}(Ax)=(A+\Delta A)x$ for a matrix $A$ with $n$ columns, with $|\Delta A|\le\gamma_n|A|$.
+\end{proposition}
+\begin{proof}
+The term $x_iy_i$ is rounded once when formed and once in each of the additions $s_i,\dots,s_n$ (the first term in $s_2,\dots,s_n$): at most $n$
+factors $1+\delta$, and Lemma~\ref{lem:gamma} applies. Each row of $\mathrm{fl}(Ax)$ is such an inner product, $\sum_ja_{ij}(1+\theta_{ij})x_j$, and we put
+$(\Delta A)_{ij}=a_{ij}\theta_{ij}$.
+\end{proof}
+
+The second statement is the model of everything that follows: the computed product is the \emph{exact} product of a slightly perturbed matrix. When
+$x^{\mathsf T}y$ is much smaller than $|x|^{\mathsf T}|y|$, that is, when cancellation occurs, the computed inner product can still have a large
+relative error; but it is exactly right for slightly different data.
+
+\section{Conditioning and backward stability}\label{sec:conditioning}
+
+Let us separate two questions. How sensitive is the \emph{problem} to its data? And how good is the \emph{algorithm} at solving it? We use the
+Euclidean norm on vectors and the induced operator norm $\|A\|=\max_{\|x\|=1}\|Ax\|=\sigma_1(A)$ on matrices (Tome~S1, Chapter~6), and occasionally the
+Frobenius norm $\|A\|_F=(\sum a_{ij}^2)^{1/2}$.
+
+\begin{definition}\label{def:cond}
+The \emph{condition number} of an invertible matrix $A$ is $\kappa(A)=\|A\|\,\|A^{-1}\|=\sigma_1(A)/\sigma_n(A)\ge1$.
+\end{definition}
+
+\begin{theorem}[perturbation of linear systems]\label{thm:perturb}
+Let $Ax=b$ with $A$ invertible and $b\ne0$, and $(A+\Delta A)(x+\Delta x)=b+\Delta b$ with $\|\Delta A\|\le\varepsilon\|A\|$, $\|\Delta b\|\le\varepsilon\|b\|$
+and $\varepsilon\kappa(A)<1$. Then
+\[
+\frac{\|\Delta x\|}{\|x\|}\le\frac{2\varepsilon\kappa(A)}{1-\varepsilon\kappa(A)}.
+\]
+\end{theorem}
+\begin{proof}
+Subtracting $Ax=b$ gives $(A+\Delta A)\Delta x=\Delta b-\Delta A\,x$, so $\Delta x=A^{-1}(\Delta b-\Delta A\,x-\Delta A\,\Delta x)$ and
+\[
+\|\Delta x\|\le\|A^{-1}\|\bigl(\varepsilon\|b\|+\varepsilon\|A\|\|x\|+\varepsilon\|A\|\|\Delta x\|\bigr).
+\]
+Since $\|b\|\le\|A\|\|x\|$, this is $\|\Delta x\|\le2\varepsilon\kappa(A)\|x\|+\varepsilon\kappa(A)\|\Delta x\|$, which rearranges to the claim.
+\end{proof}
+
+The bound is attained up to the factor $2$: take $b$ along the top left singular vector $u_1$ and $\Delta b=\varepsilon\|b\|u_n$, so that
+$\|x\|=\|b\|/\sigma_1$ and $\|\Delta x\|=\varepsilon\|b\|/\sigma_n$. So $\kappa(A)$ is the factor by which relative errors in the data may be amplified, and
+$\log_{10}\kappa(A)$ the number of decimal digits one should expect to lose, \emph{whatever the algorithm}. The condition number has a second meaning.
+
+\begin{theorem}[distance to singularity; Gastinel, Kahan]\label{thm:distsing}
+For invertible $A$, $\min\{\|\Delta A\|/\|A\|:A+\Delta A\text{ singular}\}=1/\kappa(A)$.
+\end{theorem}
+\begin{proof}
+If $A+\Delta A$ is singular, take $x\ne0$ with $Ax=-\Delta A\,x$; then $\|x\|=\|A^{-1}\Delta A\,x\|\le\|A^{-1}\|\|\Delta A\|\|x\|$, so
+$\|\Delta A\|\ge1/\|A^{-1}\|=\sigma_n$. Conversely, with the SVD $A=\sum_i\sigma_iu_iv_i^{\mathsf T}$, the matrix $\Delta A=-\sigma_nu_nv_n^{\mathsf T}$ has norm
+$\sigma_n$ and $(A+\Delta A)v_n=0$. Divide by $\|A\|=\sigma_1$.
+\end{proof}
+
+An ill-conditioned matrix is one that is relatively close to a singular one. Hilbert matrices are the classical example: $\kappa(H_{10})\approx1.6\times10^{13}$
+and $\kappa(H_{12})\approx1.6\times10^{16}$, so $H_{12}$ is within rounding distance of a singular matrix (Exercise~\ref{ex:hilbertcond} explains the
+growth, about $e^{3.5n}$).
+
+\begin{definition}[backward stability]\label{def:backward}
+An algorithm computing $y=f(x)$ is \emph{backward stable} if, for every input $x$, the computed $\hat y$ equals $f(x+\Delta x)$ exactly for some
+$\Delta x$ with $\|\Delta x\|\le Cu\|x\|$, where $C$ is a modest function of the dimensions.
+\end{definition}
+
+Wilkinson's riddle is now resolved in one line. A backward stable algorithm for $Ax=b$ returns the exact solution of a system whose data differ from
+$(A,b)$ in the last digits, so by Theorem~\ref{thm:perturb} its relative error is at most about $2Cu\kappa(A)$: forward error $\lesssim$ condition number
+$\times$ backward error. And its residual is tiny: $\|b-A\hat x\|=\|\Delta A\,\hat x-\Delta b\|\le Cu(\|A\|\|\hat x\|+\|b\|)$. With $\kappa$ of order $10^4$ or $10^5$ and
+ten figures, Wilkinson's residuals had to be of order $10^{-10}$ and his solutions could have five or six correct figures, as he observed. For $H_{10}$
+in double precision, expect a residual of order $10^{-16}$ and at least $16-13=3$ correct digits; the notebook finds about five, since the bound is a worst case.
+
+\section{Triangular systems and Gaussian elimination}\label{sec:ge}
+
+All the elimination algorithms repeatedly solve one linear equation for one unknown, and their analysis rests on the following lemma.
+
+\begin{lemma}[one equation]\label{lem:oneeq}
+Let $y=(c-\sum_{k=1}^{s-1}a_kb_k)/b_s$ be computed as $c$ minus the products $a_kb_k$ subtracted one at a time, followed by one division (or no
+division if $b_s=1$). Then the computed $\hat y$ satisfies
+\[
+b_s\hat y(1+\theta_s)=c-\sum_{k=1}^{s-1}a_kb_k(1+\theta_k),\qquad|\theta_k|\le\gamma_s\quad(1\le k\le s).
+\]
+\end{lemma}
+\begin{proof}
+Put $t_0=c$ and $t_k=\bigl(t_{k-1}-a_kb_k(1+\delta_k)\bigr)(1+\delta_k')$, so $\hat y=t_{s-1}(1+\delta'')/b_s$. Unrolling,
+$t_{s-1}=c\prod_{k}(1+\delta_k')-\sum_ka_kb_k(1+\delta_k)\prod_{l\ge k}(1+\delta'_l)$. Divide by $\prod_k(1+\delta'_k)$:
+\[
+b_s\hat y\,(1+\delta'')^{-1}\prod_{k=1}^{s-1}(1+\delta_k')^{-1}=c-\sum_{k=1}^{s-1}a_kb_k(1+\delta_k)\prod_{l<k}(1+\delta_l')^{-1}.
+\]
+The left factor has $s$ roundings, the $k$th term on the right at most $k\le s-1$; apply Lemma~\ref{lem:gamma}.
+\end{proof}
+
+\begin{theorem}[back substitution is backward stable]\label{thm:backsub}
+Let $T$ be an invertible upper triangular $n\times n$ matrix, and let $\hat x$ be computed by $x_n=b_n/t_{nn}$ and
+$x_i=(b_i-\sum_{j>i}t_{ij}x_j)/t_{ii}$ for $i=n-1,\dots,1$. Then $(T+\Delta T)\hat x=b$ with $|\Delta T|\le\gamma_n|T|$.
+\end{theorem}
+\begin{proof}
+Row $i$ is Lemma~\ref{lem:oneeq} with $s=n-i+1$: $t_{ii}\hat x_i(1+\theta_{ii})+\sum_{j>i}t_{ij}\hat x_j(1+\theta_{ij})=b_i$, with all
+$|\theta_{ij}|\le\gamma_{n-i+1}\le\gamma_n$. Put $(\Delta T)_{ij}=t_{ij}\theta_{ij}$.
+\end{proof}
+
+Note that $\Delta T$ depends on $b$; that is allowed, since backward stability is a statement about one input at a time.
+
+Gaussian elimination reduces $Ax=b$ to triangular form. At step $k$ it subtracts $l_{ik}=a^{(k)}_{ik}/a^{(k)}_{kk}$ times row $k$ from row $i>k$; the
+multipliers form a unit lower triangular $L$, the final rows an upper triangular $U$, and $A=LU$. With \emph{partial pivoting} one first swaps row $k$
+with the row $i\ge k$ having the largest $|a^{(k)}_{ik}|$, so that $|l_{ik}|\le1$; this amounts to $PA=LU$ for a permutation matrix $P$, which we absorb
+into $A$. Without pivoting the method can fail stupidly: for $A=\begin{psmallmatrix}\varepsilon&1\\1&1\end{psmallmatrix}$ with $\varepsilon=10^{-20}$, the
+multiplier is $10^{20}$, the computed $u_{22}=\mathrm{fl}(1-10^{20})=-10^{20}$ forgets the $1$, and the computed solution of $Ax=(1,2)$ is $(0,1)$ instead
+of approximately $(1,1)$ (Exercise~\ref{ex:nopivot}).
+
+\begin{theorem}[Wilkinson, 1961]\label{thm:geerror}
+Gaussian elimination (with the rows already in pivot order) computes factors $\hat L,\hat U$ with $\hat L\hat U=A+\Delta A$, $|\Delta A|\le\gamma_n|\hat L||\hat U|$.
+Solving $Ax=b$ by $\hat Ly=b$ and $\hat Ux=\hat y$ gives $(A+E)\hat x=b$ with $|E|\le\gamma_{3n}|\hat L||\hat U|$.
+\end{theorem}
+\begin{proof}
+The entry $a_{ij}$, $i\le j$, is transformed in the steps $k=1,\dots,i-1$ by $a_{ij}^{(k+1)}=a_{ij}^{(k)}-\hat l_{ik}\hat u_{kj}$, and the last value is
+$\hat u_{ij}$: this is the computation of Lemma~\ref{lem:oneeq} with $c=a_{ij}$, $s=i$ and $b_s=1$ (no division), giving
+$\hat u_{ij}(1+\theta_{ii})=a_{ij}-\sum_{k<i}\hat l_{ik}\hat u_{kj}(1+\theta_k)$. For $i>j$, the entry is transformed in the steps $k<j$ and then divided by
+$\hat u_{jj}$ to give $\hat l_{ij}$: Lemma~\ref{lem:oneeq} with $s=j$ and $b_s=\hat u_{jj}$. In both cases $a_{ij}=\sum_k\hat l_{ik}\hat u_{kj}(1+\theta'_{k})$
+with $|\theta'_k|\le\gamma_n$, since $\hat l_{ii}=1$; this is the first claim. By Theorem~\ref{thm:backsub} and its lower triangular twin,
+$(\hat L+\Delta L)\hat y=b$ and $(\hat U+\Delta U)\hat x=\hat y$ with $|\Delta L|\le\gamma_n|\hat L|$, $|\Delta U|\le\gamma_n|\hat U|$. So
+$b=(\hat L+\Delta L)(\hat U+\Delta U)\hat x=(A+E)\hat x$ with $E=\Delta A+\Delta L\hat U+\hat L\Delta U+\Delta L\Delta U$, and
+$|E|\le(3\gamma_n+\gamma_n^2)|\hat L||\hat U|\le\gamma_{3n}|\hat L||\hat U|$ by Lemma~\ref{lem:gamma}.
+\end{proof}
+
+So elimination is backward stable \emph{provided $|\hat L||\hat U|$ is not much larger than $|A|$}. With partial pivoting $|\hat l_{ij}|\le1$, and everything
+depends on the \emph{growth factor} $\rho_n=\max_{i,j,k}|a^{(k)}_{ij}|/\max_{i,j}|a_{ij}|$, since then
+$\||\hat L||\hat U|\|_\infty\le n^2\rho_n\max|a_{ij}|$.
+
+\begin{proposition}[growth]\label{prop:growth}
+With partial pivoting $\rho_n\le2^{n-1}$, and this bound is attained.
+\end{proposition}
+\begin{proof}
+Since $|l_{ik}|\le1$, each step gives $|a_{ij}^{(k+1)}|\le|a_{ij}^{(k)}|+|a_{kj}^{(k)}|\le2\max|a^{(k)}|$, and there are $n-1$ steps. For the example, let $W_n$ have
+$1$ on the diagonal and in the last column, $-1$ below the diagonal, and $0$ elsewhere. No row swaps occur (the pivots and all entries below them have modulus
+$1$, and ties keep the current row), and step $k$ adds row $k$ to every later row: the last column doubles at each step, ending with $u_{nn}=2^{n-1}$
+(Exercise~\ref{ex:wilkinsongrowth}).
+\end{proof}
+
+So Gaussian elimination with partial pivoting is not backward stable in the worst case. Yet it is the method every library uses, because matrices
+with large growth are extraordinarily rare. In 1990 Lloyd Trefethen and Robert Schreiber reported that for random matrices the growth factor
+stays small, growing only like a small power of $n$ (about $\sqrt n$ in the notebook's experiments), and in 2006 Arvind Sankar, Daniel Spielman and Shang-Hua Teng proved, in the spirit of smoothed analysis, that small random
+perturbations of any matrix make large growth unlikely (for elimination without pivoting). Why the bad matrices are so rare is still not fully
+understood. The next algorithm has no such mystery.
+
+\section{Householder reflections and the QR factorisation}\label{sec:householder}
+
+Orthogonal matrices preserve lengths, so multiplying by them cannot amplify errors. In 1958 Alston Householder proposed to triangularise a matrix by
+reflections. For $v\ne0$, the \emph{Householder reflection}
+\[
+P=I-\frac{2vv^{\mathsf T}}{v^{\mathsf T}v}
+\]
+is the reflection in the hyperplane $v^\perp$: $Pv=-v$ and $Pw=w$ for $w\perp v$; so $P$ is symmetric, orthogonal and $P^2=I$. Given $x\ne0$, the
+reflection exchanging $x$ and $y$ with $\|y\|=\|x\|$ is the one with $v=x-y$ (Figure~\ref{fig:householder}). To send $x$ to a multiple of $e_1$, the two
+choices are $y=\pm\|x\|e_1$, and we choose
+\[
+v=x+\operatorname{sign}(x_1)\|x\|e_1,\qquad Px=-\operatorname{sign}(x_1)\|x\|e_1\qquad(\operatorname{sign}0=1).
+\]
+The sign is chosen so that $v_1=x_1+\operatorname{sign}(x_1)\|x\|$ adds two numbers of the same sign: no cancellation, even when $x$ is nearly parallel
+to $e_1$. That every orthogonal matrix of $\R^n$ is a product of at most $n$ such reflections is the Cartan--Dieudonn\'e theorem (Tome~S1, Exercise~4.13).
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-householder}
+\caption{The Householder reflection with $v=x+\|x\|e_1$ maps $x$ to $-\|x\|e_1$, mirroring it in the hyperplane $v^\perp$. The other choice, $v'=x-\|x\|e_1$,
+would be short when $x$ is close to the $e_1$ axis and would be computed with cancellation.}
+\label{fig:householder}
+\end{figure}
+
+\emph{Householder $QR$.} Let $A$ be $m\times n$ with $m\ge n$. Step $k=1,\dots,n$ takes the part $x=(a_{kk},\dots,a_{mk})$ of column $k$ on and below the
+diagonal, forms $v_k$ from it, and applies $P_k=I_{k-1}\oplus(I-2v_kv_k^{\mathsf T}/v_k^{\mathsf T}v_k)$ to the columns $k+1,\dots,n$, while column $k$ is
+replaced by $(-\operatorname{sign}(x_1)\|x\|,0,\dots,0)$. After $n$ steps $P_n\cdots P_1A=R$ is upper triangular, so $A=QR$ with $Q=P_1\cdots P_n$
+orthogonal. One never forms $P_k$: applying it to a vector $b$ costs one inner product and one update, $b-\beta v(v^{\mathsf T}b)$ with
+$\beta=2/v^{\mathsf T}v$, about $4(m-k)$ operations; the whole factorisation costs about $2mn^2-\frac23n^3$ operations.
+
+\begin{lemma}[one reflection]\label{lem:onereflection}
+Let $x\in\mathbb F^m$, $x\ne0$, and let $\hat v$ be the computed $v$, $\tilde P=I-2\hat v\hat v^{\mathsf T}/\hat v^{\mathsf T}\hat v$ the \emph{exact} reflection
+defined by it, and $\eta=\gamma_{10m+20}$. Then:
+\begin{enumerate}
+\item for every $b\in\mathbb F^m$, the computed $\hat y=\mathrm{fl}(b-\hat\beta\hat v(\hat v^{\mathsf T}b))$ equals $\tilde P(b+\Delta b)$ with $\|\Delta b\|\le\eta\|b\|$;
+\item the computed image $\hat r e_1$ of $x$, with $\hat r=-\operatorname{sign}(x_1)\hat\sigma$ and $\hat\sigma=\mathrm{fl}(\|x\|)$, equals
+$\tilde P(x+\Delta x)$ with $\|\Delta x\|\le\eta\|x\|$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\emph{The vector.} By Proposition~\ref{prop:dot} the computed $\sum x_i^2$ is $\|x\|^2(1+\theta)$ with $|\theta|\le\gamma_m$ (all terms are
+nonnegative), and $\hat\sigma=\|x\|(1+\theta)^{1/2}(1+\delta)$, so $|\hat\sigma-\|x\||\le\gamma_{m+1}\|x\|$ (as $|(1+\theta)^{1/2}-1|\le|\theta|$). Then
+$\hat v_1=(x_1+\operatorname{sign}(x_1)\hat\sigma)(1+\delta)$, and since $x_1$ and $\operatorname{sign}(x_1)\hat\sigma$ have the same sign,
+$|x_1+\operatorname{sign}(x_1)\hat\sigma-v_1|=|\hat\sigma-\|x\||\le\gamma_{m+1}\|x\|\le\gamma_{m+1}|v_1|$. With Lemma~\ref{lem:gamma}, $|\hat v_1-v_1|\le\gamma_{m+2}|v_1|$,
+while $\hat v_i=x_i=v_i$ for $i\ge2$. Hence $\|\hat v-v\|\le\gamma_{m+2}\|v\|$.
+
+(1) Let $\tilde\beta=2/\hat v^{\mathsf T}\hat v$. The computed $\hat\beta$ is $\tilde\beta(1+\theta')$ with $|\theta'|\le\gamma_{m+1}$. The computed
+$w=\mathrm{fl}(\hat v^{\mathsf T}b)$ is $\hat v^{\mathsf T}b+e$ with $|e|\le\gamma_m\|\hat v\|\|b\|$ (Proposition~\ref{prop:dot} and Cauchy--Schwarz). Then
+$c=\mathrm{fl}(\hat\beta w)$ and $z_i=\mathrm{fl}(c\hat v_i)$ give $z_i=\tilde\beta(\hat v^{\mathsf T}b+e)(1+\theta'')\hat v_i$ with $|\theta''|\le\gamma_{m+3}$, so
+\[
+\|z-\tilde\beta(\hat v^{\mathsf T}b)\hat v\|\le\tilde\beta\|\hat v\|\bigl(\gamma_{m+3}\|\hat v\|\|b\|+(1+\gamma_{m+3})\gamma_m\|\hat v\|\|b\|\bigr)\le2\gamma_{2m+3}\|b\|,
+\]
+using $\tilde\beta\|\hat v\|^2=2$ and Lemma~\ref{lem:gamma}. Finally $\hat y_i=(b_i-z_i)(1+\delta_i)$, so $\hat y-\tilde Pb=(\tilde\beta(\hat v^{\mathsf T}b)\hat v-z)+\delta\circ(b-z)$,
+where $\|z\|\le\|\tilde\beta(\hat v^{\mathsf T}b)\hat v\|+2\gamma_{2m+3}\|b\|\le(2+2\gamma_{2m+3})\|b\|$. Altogether
+$\|\hat y-\tilde Pb\|\le(2\gamma_{2m+3}+3u+2u\gamma_{2m+3})\|b\|\le\gamma_{4m+9}\|b\|$ by Lemma~\ref{lem:gamma}. Put $\Delta b=\tilde P(\hat y-\tilde Pb)$; then
+$\tilde P(b+\Delta b)=\tilde Pb+(\hat y-\tilde Pb)=\hat y$, as $\tilde P^2=I$, and $\|\Delta b\|=\|\hat y-\tilde Pb\|$.
+
+(2) Let $P$ be the exact reflection defined by $v$, so $Px=re_1$ with $r=-\operatorname{sign}(x_1)\|x\|$. For unit vectors $p,q$,
+$\|pp^{\mathsf T}-qq^{\mathsf T}\|=\|p(p-q)^{\mathsf T}+(p-q)q^{\mathsf T}\|\le2\|p-q\|$, and for nonzero $a,b$,
+$\bigl\|\frac a{\|a\|}-\frac b{\|b\|}\bigr\|\le\frac{\|a-b\|}{\|b\|}+\frac{|\|b\|-\|a\||}{\|b\|}\le\frac{2\|a-b\|}{\|b\|}$. Hence
+$\|\tilde P-P\|\le4\cdot2\gamma_{m+2}=8\gamma_{m+2}$. Put $\Delta x=\tilde P(\hat re_1)-x$. Then $\tilde P(x+\Delta x)=\hat re_1$ and
+\[
+\|\Delta x\|=\|\hat re_1-\tilde Px\|\le|\hat r-r|+\|Px-\tilde Px\|\le(\gamma_{m+1}+8\gamma_{m+2})\|x\|\le\gamma_{9m+17}\|x\|.
+\]
+Both bounds are at most $\eta=\gamma_{10m+20}$.
+\end{proof}
+
+We made no effort to optimise the constant $10m+20$; a finer analysis gives about $m$, and what matters is that it is a modest multiple of $u$.
+
+\begin{theorem}[Householder $QR$ is backward stable]\label{thm:qrstable}
+Let $\hat R$ be the triangular factor computed by Householder $QR$ of an $m\times n$ matrix $A$ in floating point, and $\eta=\gamma_{10m+20}$ with
+$n\eta<1$. There is an exactly orthogonal $Q$ with
+\[
+A+\Delta A=Q\hat R,\qquad\|\Delta a_j\|\le\frac{n\eta}{1-n\eta}\|a_j\|\quad\text{for each column }j.
+\]
+Moreover, the computed $\widehat{Q^{\mathsf T}b}$ for a vector $b$, obtained by applying the computed reflections in turn, equals $Q^{\mathsf T}(b+\Delta b)$ with
+$\|\Delta b\|\le\frac{n\eta}{1-n\eta}\|b\|$, for the same $Q$.
+\end{theorem}
+\begin{proof}
+Let $\tilde P_k=I_{k-1}\oplus\tilde P$ be the exact reflection of step $k$ defined by the computed $\hat v_k$, and $Q=\tilde P_1\cdots\tilde P_n$. Fix a column
+$j$ and let $a^{(k)}$ be its computed value after step $k$, with $a^{(0)}=a_j$. At each step $k\le j$, the active part of $a^{(k-1)}$ is transformed as in
+Lemma~\ref{lem:onereflection} (part (1) if $k<j$, part (2) if $k=j$), while its first $k-1$ entries are untouched; so
+$a^{(k)}=\tilde P_k(a^{(k-1)}+\Delta_k)$ with $\|\Delta_k\|\le\eta\|a^{(k-1)}\|$, and $\|a^{(k)}\|\le(1+\eta)\|a^{(k-1)}\|$. Steps $k>j$ leave the column alone,
+since its entries in rows $k,\dots,m$ are zero. Multiplying by $\tilde P_1\cdots\tilde P_k$ and using $\tilde P_i^2=I$,
+\[
+\tilde P_1\cdots\tilde P_ka^{(k)}=\tilde P_1\cdots\tilde P_{k-1}a^{(k-1)}+\tilde P_1\cdots\tilde P_{k-1}\Delta_k,
+\]
+and telescoping, $Q\hat r_j=a_j+\Delta a_j$ with $\Delta a_j=\sum_{k\le j}\tilde P_1\cdots\tilde P_{k-1}\Delta_k$. Hence
+$\|\Delta a_j\|\le\sum_{k\le n}\eta(1+\eta)^{k-1}\|a_j\|=((1+\eta)^n-1)\|a_j\|$, and $(1+\eta)^n-1\le e^{n\eta}-1\le\frac{n\eta}{1-n\eta}$. The vector $b$ is
+treated exactly like a column $j>n$, with $n$ steps of part (1).
+\end{proof}
+
+Note the elegance of the trick: we never compare the computed reflections with the exact ones of the problem, which may be ill-conditioned; we only use
+that each computed vector $\hat v_k$ defines \emph{some} exact reflection, and that orthogonal maps do not enlarge perturbations.
+
+\begin{corollary}[least squares by QR]\label{cor:lsq}
+Let $A$ be $m\times n$ of rank $n$. Computing $\hat R$ and $\hat c=\widehat{Q^{\mathsf T}b}$ by Householder reflections and then solving $\hat R_1x=\hat c_1$ (the
+top $n$ rows) by back substitution gives an $\hat x$ which minimises $\|(A+\delta A)x-(b+\delta b)\|$ exactly, with
+$\|\delta A\|_F\le\varepsilon\|A\|_F$ and $\|\delta b\|\le\varepsilon\|b\|$, where $\varepsilon=\frac{n\eta}{1-n\eta}+\gamma_n\bigl(1+\frac{n\eta}{1-n\eta}\bigr)$.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:backsub}, $(\hat R_1+\Delta R)\hat x=\hat c_1$ with $\|\Delta R\|_F\le\gamma_n\|\hat R_1\|_F$, and
+$\|\hat R\|_F=\|A+\Delta A\|_F\le(1+\frac{n\eta}{1-n\eta})\|A\|_F$. Let $\delta A=\Delta A+Q\begin{psmallmatrix}\Delta R\\0\end{psmallmatrix}$ and $\delta b=\Delta b$,
+so that $A+\delta A=Q\begin{psmallmatrix}\hat R_1+\Delta R\\0\end{psmallmatrix}$ and $b+\delta b=Q\hat c$. For every $x$,
+$\|(A+\delta A)x-(b+\delta b)\|^2=\|(\hat R_1+\Delta R)x-\hat c_1\|^2+\|\hat c_2\|^2$, which is minimal at $x=\hat x$.
+\end{proof}
+
+Compare with the \emph{normal equations} $A^{\mathsf T}Ax=A^{\mathsf T}b$ of Tome~S1, Theorem~4.8: they are mathematically equivalent, but
+$\kappa(A^{\mathsf T}A)=\kappa(A)^2$ (Exercise~\ref{ex:condprops}), so forming $A^{\mathsf T}A$ squares the condition number and throws away half the digits
+before any solving starts. When $\kappa(A)=10^8$, the normal equations in double precision can return nonsense, while $QR$ still gives about eight digits.
+
+\begin{think}
+The Gram--Schmidt process (Tome~S1, Theorem~4.5) also computes $A=QR$. Is it backward stable? Try to predict what happens to the orthogonality of the
+computed columns $\hat q_j$ when the columns of $A$ are nearly dependent.
+\end{think}
+
+Classical Gram--Schmidt computes $q_j$ by subtracting from $a_j$ its projections $(q_i^{\mathsf T}a_j)q_i$ on the previous $q_i$. When $a_j$ is nearly in
+the span of the $q_i$, the difference is small and dominated by rounding errors, which are not orthogonal to anything: the computed $\hat q_j$ can be far
+from orthogonal to the earlier ones. For the matrix of Peter L\"auchli (1961) with columns $(1,\varepsilon,0,0)$, $(1,0,\varepsilon,0)$, $(1,0,0,\varepsilon)$ and
+$\varepsilon^2<u$, classical Gram--Schmidt returns $\hat q_2^{\mathsf T}\hat q_3=\frac12$ (Exercise~\ref{ex:lauchli}). The \emph{modified} version, which projects
+the current vector rather than the original $a_j$, keeps $\|\hat Q^{\mathsf T}\hat Q-I\|$ of order $u\kappa(A)$; Householder keeps it of order $u$, by
+Theorem~\ref{thm:qrstable}. The notebook plots all three.
+
+\section{Eigenvalues: from the power method to QR}\label{sec:eigen}
+
+Eigenvalues are roots of the characteristic polynomial, and Abel and Galois showed there is no formula for roots of degree five or more: every
+eigenvalue algorithm must be iterative. Worse, computing the characteristic polynomial and then its roots is a numerical disaster, since roots are
+very sensitive to coefficients (Wilkinson's famous polynomial $\prod_{k=1}^{20}(x-k)$ loses its real roots when one coefficient changes by $2^{-23}$). The
+algorithms work with the matrix itself.
+
+\emph{The power method.} Let $A$ be diagonalisable with eigenvalues $|\lambda_1|>|\lambda_2|\ge\dots\ge|\lambda_n|$ and eigenvectors $x_1,\dots,x_n$. Start
+from $q_0$ and iterate $q_{k}=Aq_{k-1}/\|Aq_{k-1}\|$.
+
+\begin{proposition}[power method]\label{prop:power}
+If $q_0=\sum_ic_ix_i$ with $c_1\ne0$, then the distance from $q_k$ to the line $\R x_1$ is $O(|\lambda_2/\lambda_1|^k)$. If moreover $A$ is symmetric, with
+orthonormal $x_i$, then the Rayleigh quotient $\rho_k=q_k^{\mathsf T}Aq_k$ satisfies $|\rho_k-\lambda_1|\le2\|A\|\tan^2\phi_k$, where $\phi_k$ is the angle
+between $q_k$ and $x_1$, with $\tan\phi_k\le\tan\phi_0\,|\lambda_2/\lambda_1|^k$.
+\end{proposition}
+\begin{proof}
+$A^kq_0=\lambda_1^k\bigl(c_1x_1+\sum_{i\ge2}c_i(\lambda_i/\lambda_1)^kx_i\bigr)$, and $q_k$ is this vector normalised; the sum is $O(|\lambda_2/\lambda_1|^k)$.
+In the symmetric case, write $q_k=\cos\phi_k\,x_1+\sin\phi_k\,w$ with $w\perp x_1$ a unit vector. The tangent of the angle is the ratio of the
+norms of the components, $\tan\phi_k=\|\sum_{i\ge2}c_i\lambda_i^kx_i\|/|c_1\lambda_1^k|\le|\lambda_2/\lambda_1|^k\tan\phi_0$. Then
+$\rho_k=\cos^2\phi_k\lambda_1+\sin^2\phi_k\,w^{\mathsf T}Aw$ (the cross terms vanish as $Ax_1=\lambda_1x_1\perp w$), so
+$|\rho_k-\lambda_1|=\sin^2\phi_k|w^{\mathsf T}Aw-\lambda_1|\le2\|A\|\sin^2\phi_k\le2\|A\|\tan^2\phi_k$.
+\end{proof}
+
+For symmetric matrices the Rayleigh quotient doubles the number of correct digits of the vector: an eigenvector known to $8$ digits gives an eigenvalue
+to $16$. Applied to $(A-\mu I)^{-1}$, the power method is \emph{inverse iteration}, which converges to the eigenvector of the eigenvalue nearest to $\mu$ at
+rate $|\lambda-\mu|/|\lambda'-\mu|$, very fast when $\mu$ is a good guess (Exercise~\ref{ex:inverseiteration}). Taking for $\mu$ the current Rayleigh quotient
+gives \emph{Rayleigh quotient iteration}, which for symmetric matrices converges cubically.
+
+\emph{Subspaces and QR.} To find all eigenvalues, iterate a whole orthonormal basis: $Z_k=AQ_{k-1}$, then $Z_k=Q_kR_k$ (re-orthonormalise). This
+\emph{simultaneous iteration} is the power method on each initial segment of columns at once. In 1961 John Francis in London, and independently Vera
+Kublanovskaya in Leningrad, found a way to run it implicitly, on the matrix rather than on the basis. Heinz Rutishauser's LR algorithm of 1958 had shown the
+way, with triangular factorisations.
+
+\begin{definition}[the QR algorithm]\label{def:qralg}
+Put $A_0=A$, and for $k\ge1$ factor $A_{k-1}=Q_kR_k$ (QR factorisation, with $R_k$ having positive diagonal) and set $A_k=R_kQ_k$.
+\end{definition}
+
+Then $A_k=Q_k^{\mathsf T}A_{k-1}Q_k$, so all the $A_k$ are orthogonally similar to $A$ and have its eigenvalues. Why should they converge to anything?
+
+\begin{proposition}\label{prop:qrpowers}
+Let $\mathcal Q_k=Q_1Q_2\cdots Q_k$ and $\mathcal R_k=R_kR_{k-1}\cdots R_1$. Then $A_k=\mathcal Q_k^{\mathsf T}A\mathcal Q_k$ and $A^k=\mathcal Q_k\mathcal R_k$:
+$\mathcal Q_k\mathcal R_k$ is the $QR$ factorisation of the $k$th power of $A$.
+\end{proposition}
+\begin{proof}
+The first claim follows from $A_k=Q_k^{\mathsf T}A_{k-1}Q_k$ by induction. For the second, by induction:
+$\mathcal Q_k\mathcal R_k=\mathcal Q_{k-1}(Q_kR_k)\mathcal R_{k-1}=\mathcal Q_{k-1}A_{k-1}\mathcal R_{k-1}=A\mathcal Q_{k-1}\mathcal R_{k-1}=A\cdot A^{k-1}$,
+using $\mathcal Q_{k-1}A_{k-1}=A\mathcal Q_{k-1}$.
+\end{proof}
+
+So the first $j$ columns of $\mathcal Q_k$ span $A^k$ applied to the first $j$ coordinate vectors: the $QR$ algorithm is simultaneous iteration started from
+the identity, in disguise. The convergence theorem makes this precise in the symmetric case.
+
+\begin{theorem}[convergence of the QR algorithm]\label{thm:qrconv}
+Let $A=X\Lambda X^{\mathsf T}$ be symmetric with $X$ orthogonal and $\Lambda=\operatorname{diag}(\lambda_1,\dots,\lambda_n)$,
+$|\lambda_1|>|\lambda_2|>\dots>|\lambda_n|>0$, and suppose all leading principal minors of $X^{\mathsf T}$ are nonzero. Then $A_k\to\Lambda$ up to the signs of
+the off-diagonal entries; precisely, there are diagonal sign matrices $D_k$ with $D_kA_kD_k\to\Lambda$, and the entry $(A_k)_{ij}$, $i\ne j$, is
+$O(\max_{l}|\lambda_{l+1}/\lambda_l|^k)$.
+\end{theorem}
+\begin{proof}
+The hypothesis means $X^{\mathsf T}=LU$ with $L$ unit lower triangular and $U$ upper triangular and invertible (Gaussian elimination without row swaps
+succeeds exactly when the leading minors are nonzero). Then
+\[
+A^k=X\Lambda^kLU=X(\Lambda^kL\Lambda^{-k})\Lambda^kU,
+\]
+and $\Lambda^kL\Lambda^{-k}=I+E_k$, where $(E_k)_{ij}=l_{ij}(\lambda_i/\lambda_j)^k$ for $i>j$ and $0$ otherwise, so $\|E_k\|=O(\rho^k)$ with
+$\rho=\max_l|\lambda_{l+1}/\lambda_l|<1$. Let $I+E_k=\tilde Q_k\tilde R_k$ be the $QR$ factorisation with positive diagonal. The map sending an invertible
+matrix to the factors of its $QR$ factorisation with positive diagonal is given by the Gram--Schmidt formulas, which are rational functions and square
+roots of the entries, smooth near $I$, where it takes the value $(I,I)$; so $\tilde Q_k=I+O(\rho^k)$ and $\tilde R_k=I+O(\rho^k)$. Now
+$A^k=(X\tilde Q_k)(\tilde R_k\Lambda^kU)$, an orthogonal matrix times an upper triangular one. By uniqueness of the $QR$ factorisation up to signs,
+$\mathcal Q_k=X\tilde Q_kD_k$ for a diagonal sign matrix $D_k$ (chosen so that the diagonal of $D_k\tilde R_k\Lambda^kU$ is positive). By
+Proposition~\ref{prop:qrpowers},
+\[
+D_kA_kD_k=D_k\mathcal Q_k^{\mathsf T}A\mathcal Q_kD_k=\tilde Q_k^{\mathsf T}X^{\mathsf T}AX\tilde Q_k=\tilde Q_k^{\mathsf T}\Lambda\tilde Q_k=\Lambda+O(\rho^k).
+\]
+\end{proof}
+
+The hypothesis on the minors holds for almost every $A$, and rounding errors enforce it in practice. The off-diagonal entry in position $(l+1,l)$ decays
+like $|\lambda_{l+1}/\lambda_l|^k$, which is slow when two eigenvalues are close (Figure~\ref{fig:qrconv}). Three ideas make the algorithm fast.
+
+\begin{enumerate}
+\item \emph{Hessenberg form.} A matrix is \emph{upper Hessenberg} if $a_{ij}=0$ for $i>j+1$. Householder reflections reduce any $A$ to Hessenberg form
+$H=Q^{\mathsf T}AQ$ in $\frac{10}3n^3$ operations (Exercise~\ref{ex:hessenberg}); for symmetric $A$, $H$ is tridiagonal. A $QR$ step preserves the
+Hessenberg form (Proposition~\ref{prop:hesspreserved}) and costs only $O(n^2)$, or $O(n)$ for tridiagonal matrices.
+\item \emph{Shifts.} Factor $A_{k-1}-\mu_kI=Q_kR_k$ and set $A_k=R_kQ_k+\mu_kI$; this is again an orthogonal similarity, and the entry $(n,n-1)$ now decays like
+$|(\lambda_n-\mu_k)/(\lambda_{n-1}-\mu_k)|$: with $\mu_k$ the current $(A_{k-1})_{nn}$, a Rayleigh quotient, convergence becomes cubic in the symmetric case. With
+the \emph{Wilkinson shift}, the eigenvalue of the trailing $2\times2$ block closer to $(A_{k-1})_{nn}$, convergence is guaranteed for symmetric tridiagonal
+matrices (Wilkinson, 1968). When $(A_k)_{n,n-1}$ is negligible, $\lambda_n$ is found and the problem \emph{deflates} to size $n-1$.
+\item \emph{Implicit double shifts.} For real nonsymmetric matrices with complex eigenvalues, Francis showed how to apply two complex conjugate shifts at
+once in real arithmetic, by chasing a small bulge down the Hessenberg matrix.
+\end{enumerate}
+
+With these, all eigenvalues of a symmetric $n\times n$ matrix cost about $\frac43n^3$ operations for the tridiagonal reduction and $O(n^2)$ for the
+iteration, typically about two $QR$ steps per eigenvalue; and the whole computation is backward stable, being a sequence of orthogonal transformations.
+
+\begin{proposition}\label{prop:hesspreserved}
+If $H$ is upper Hessenberg and $H-\mu I=QR$ with $R$ invertible, then $RQ+\mu I$ is upper Hessenberg.
+\end{proposition}
+\begin{proof}
+$Q=(H-\mu I)R^{-1}$, and $R^{-1}$ is upper triangular, so each column of $Q$ is a combination of the same and earlier columns of $H-\mu I$: $Q$ is upper
+Hessenberg. Then $RQ$, an upper triangular matrix times an upper Hessenberg one, is upper Hessenberg: $(RQ)_{ij}=\sum_kr_{ik}q_{kj}$ needs $i\le k\le j+1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-qrconv}
+\caption{The unshifted $QR$ algorithm on a symmetric $5\times5$ matrix with eigenvalues $10,7,6,3,1$: the subdiagonal entries $|(A_k)_{l+1,l}|$ decay
+like $|\lambda_{l+1}/\lambda_l|^k$ (dashed lines), slowest for the close pair $7,6$. With Wilkinson shifts (dots), the last entry falls below $10^{-15}$
+in five steps, the error being roughly cubed at each of the last ones.}
+\label{fig:qrconv}
+\end{figure}
+
+Francis, then in his mid-twenties, left numerical analysis in 1962. When Gene Golub and Frank Uhlig tracked him down in 2007, he had no idea that his
+algorithm had become one of the most used in scientific computing; he gave the opening talk at a meeting for its fiftieth anniversary in 2009.
+
+\section{The singular value decomposition}\label{sec:svdcompute}
+
+Tome~S1, Chapter~6 proves that every $m\times n$ matrix is $A=U\Sigma V^{\mathsf T}$, and explains what the singular values do: best low rank approximation,
+the pseudo-inverse, principal components. How are they computed? The tempting route, eigenvalues of $A^{\mathsf T}A$, squares the condition number:
+singular values below $\sqrt u\,\sigma_1$, that is $10^{-8}\sigma_1$, are lost in forming $A^{\mathsf T}A$ (Exercise~\ref{ex:squaring}). The good algorithms
+never form it.
+
+\emph{Golub and Kahan, 1965.} Alternating Householder reflections from the left (to annihilate a column below the diagonal) and from the right (to
+annihilate a row to the right of the superdiagonal) reduces $A$ to upper \emph{bidiagonal} form.
+
+\begin{proposition}[bidiagonalisation]\label{prop:bidiag}
+For every $m\times n$ matrix $A$ with $m\ge n$ there are orthogonal $U,V$, products of at most $n$ and $n-2$ Householder reflections, with $U^{\mathsf T}AV=B$ upper
+bidiagonal: $b_{ij}=0$ unless $j\in\{i,i+1\}$. The singular values of $A$ are those of $B$.
+\end{proposition}
+\begin{proof}
+Step $k$ applies a reflection on the left acting on rows $k,\dots,m$ that zeroes column $k$ below the diagonal; it does not touch the earlier rows, so
+the zeros made earlier stay. Then, if $k\le n-2$, a reflection on the right acting on columns $k+1,\dots,n$ zeroes row $k$ beyond position $k+1$; it does not
+touch columns $1,\dots,k$, whose entries below row $k$ are already zero, so it does not destroy the zeros of column $k$. After $n$ steps the matrix is
+upper bidiagonal. Orthogonal factors do not change singular values: $B^{\mathsf T}B=V^{\mathsf T}A^{\mathsf T}AV$ is similar to $A^{\mathsf T}A$.
+\end{proof}
+
+Then $B^{\mathsf T}B$ is symmetric tridiagonal, and the shifted $QR$ algorithm is applied to it \emph{implicitly}, working on $B$ alone by rotations,
+so that $B^{\mathsf T}B$ is never formed (Golub and Kahan, 1965; Golub and Reinsch, 1970). This is what every library does, at a cost of
+$O(mn^2)$ operations.
+
+\emph{Jacobi, 1846.} A slower but strikingly simple algorithm goes back to Carl Gustav Jacobi, who used it in 1846, by hand, on the equations of the
+secular perturbations of the planets. For a symmetric matrix $S$, let $\operatorname{off}(S)=\sum_{i\ne j}s_{ij}^2$. A \emph{Jacobi rotation} $J$ in the plane $(p,q)$,
+by the angle $\theta$ with $\cot2\theta=(s_{qq}-s_{pp})/(2s_{pq})$, makes the entry $(p,q)$ of $J^{\mathsf T}SJ$ zero (Exercise~\ref{ex:jacobiangle}).
+
+\begin{theorem}[convergence of Jacobi's method]\label{thm:jacobi}
+Let $S$ be symmetric $n\times n$, $n\ge2$, and let $S'=J^{\mathsf T}SJ$ where $J$ is the Jacobi rotation annihilating an entry $(p,q)$ of maximal modulus
+among the off-diagonal entries. Then $\operatorname{off}(S')\le\bigl(1-\frac2{n(n-1)}\bigr)\operatorname{off}(S)$. In particular the iterates converge to a
+diagonal matrix carrying the eigenvalues of $S$.
+\end{theorem}
+\begin{proof}
+The rotation changes only rows and columns $p$ and $q$. The Frobenius norm is invariant, $\|S'\|_F=\|S\|_F$, and so is the Frobenius norm of the
+$2\times2$ block on rows and columns $p,q$, which is rotated: $s'^2_{pp}+s'^2_{qq}+2s'^2_{pq}=s_{pp}^2+s_{qq}^2+2s_{pq}^2$. For $i\notin\{p,q\}$, the pair
+$(s_{ip},s_{iq})$ is rotated, so $s'^2_{ip}+s'^2_{iq}=s_{ip}^2+s_{iq}^2$, and other entries are unchanged. Hence the sum of the squares of the
+off-diagonal entries outside the block is unchanged, while $s'_{pq}=0$: $\operatorname{off}(S')=\operatorname{off}(S)-2s_{pq}^2$. As $s_{pq}^2$ is the
+largest of the $n(n-1)$ terms of $\operatorname{off}(S)$, $2s_{pq}^2\ge\frac2{n(n-1)}\operatorname{off}(S)$. So $\operatorname{off}\to0$ geometrically, and
+the diagonal parts $D_k$ satisfy $\|S_k-D_k\|_F\to0$ where $S_k$ is similar to $S$. The eigenvalues of $S_k$ and those of $D_k$ (its diagonal entries, sorted)
+then differ by at most $\|S_k-D_k\|$ (Weyl's inequality, Tome~S1, Corollary~5.7), so the sorted diagonal converges to the sorted eigenvalues.
+\end{proof}
+
+The theorem gives only linear convergence, but in fact Jacobi's method becomes quadratically convergent once off$(S)$ is small (Sch\"onhage, 1961), and it
+is often \emph{more} accurate than $QR$ for the small eigenvalues of well-scaled matrices (Demmel and Veseli\'c, 1992). For the SVD, the \emph{one-sided}
+version of Magnus Hestenes (1958) applies the rotations to the columns of $A$: rotating columns $p,q$ of $A$ by the Jacobi rotation of $A^{\mathsf T}A$
+for $(p,q)$ makes them orthogonal, and the three numbers needed, $\|a_p\|^2$, $\|a_q\|^2$ and $a_p^{\mathsf T}a_q$, are computed from the columns at each step
+rather than from a stored $A^{\mathsf T}A$. When all columns are orthogonal, $AV=U\Sigma$ with $\sigma_j$ the column norms. The notebook builds an SVD this
+way in twenty lines and compares it with the library.
+
+\begin{beauty}
+The $QR$ algorithm hides a power method inside a similarity: by Proposition~\ref{prop:qrpowers}, factoring and multiplying back in reverse order
+computes, without ever forming it, the orthonormal basis of $A^k$ applied to the coordinate axes. Each eigenvalue emerges at the corner where it has
+won its race against the others, at the speed $|\lambda_{l+1}/\lambda_l|$ dictated by the power method, and the shifts turn the race into a sprint.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:summation}
+Show that recursive summation of $x_1,\dots,x_n\ge0$ gives $|\mathrm{fl}(\sum x_i)-\sum x_i|\le\gamma_{n-1}\sum x_i$, and that the error bound is smaller
+when the terms are added in increasing order. Compute $\sum_{k=1}^{N}1/k^2$ in single precision both ways for $N=10^6$, and explain.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:quadratic}
+The roots of $x^2-2bx+c$ with $b^2>c>0$ and $b>0$ are $b\pm\sqrt{b^2-c}$. Explain why the formula for the smaller root loses accuracy when $c\ll b^2$, and
+give a formula for it without cancellation.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:condprops}
+Show that $\kappa(AB)\le\kappa(A)\kappa(B)$, that $\kappa(Q)=1$ for orthogonal $Q$, and that $\kappa(A^{\mathsf T}A)=\kappa(A)^2$ for $A$ of full column rank
+(with $\kappa=\sigma_1/\sigma_n$ for rectangular matrices).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nopivot}
+For $A=\begin{psmallmatrix}\varepsilon&1\\1&1\end{psmallmatrix}$ with $\varepsilon=10^{-20}$ and $b=(1,2)$, follow Gaussian elimination without pivoting in
+double precision and find the computed solution. Then do it with partial pivoting. Which part of Theorem~\ref{thm:geerror} explains the failure?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:wilkinsongrowth}
+Prove that partial pivoting performs no row swaps on the matrix $W_n$ of Proposition~\ref{prop:growth}, and that $u_{nn}=2^{n-1}$. Show also that
+$W_n$ is well conditioned: $\kappa_\infty(W_n)=\|W_n\|_\infty\|W_n^{-1}\|_\infty=n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lauchli}
+Let $\varepsilon>0$ with $\mathrm{fl}(1+\varepsilon^2)=1$. Run classical Gram--Schmidt on the columns $a_1=(1,\varepsilon,0,0)$, $a_2=(1,0,\varepsilon,0)$,
+$a_3=(1,0,0,\varepsilon)$, assuming that the only rounding errors are $\mathrm{fl}(1+\varepsilon^2)=1$, and show that $\hat q_2^{\mathsf T}\hat q_3=\frac12$.
+Then do the same with modified Gram--Schmidt, where $a_3$ is first projected off $\hat q_1$ and the \emph{result} is projected off $\hat q_2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hilbertcond}
+(a) Show that the Hilbert matrix is the Gram matrix of the functions $x^{i-1}$ in $L^2(0,1)$, hence positive definite. (b) Show that $\|H_n^{-1}\|\ge
+1/\min_p\int_0^1p^2$, the minimum over polynomials of degree $<n$ with coefficient vector of norm $1$, and use the shifted Legendre polynomial to show that
+$\kappa(H_n)$ grows at least like $c^n$ for some $c>1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:inverseiteration}
+Let $A$ be diagonalisable with eigenvalues $\lambda_i$, and $\mu$ not an eigenvalue, with $\lambda$ the unique eigenvalue nearest to $\mu$ and $\lambda'$ the
+next nearest. Show that the power method applied to $(A-\mu I)^{-1}$ converges to an eigenvector for $\lambda$ at rate $|\lambda-\mu|/|\lambda'-\mu|$. Why is the
+near singularity of $A-\mu I$ harmless?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hessenberg}
+Show how $n-2$ Householder reflections, applied on both sides, reduce an $n\times n$ matrix to upper Hessenberg form by an orthogonal similarity, and
+that the cost is about $\frac{10}3n^3$ operations. Why can one not reduce all the way to triangular form in the same way?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:jacobiangle}
+Let $S$ be symmetric and $J$ the rotation by $\theta$ in the plane of coordinates $p<q$. Compute the entry $(p,q)$ of $J^{\mathsf T}SJ$ and show it vanishes
+when $\cot2\theta=(s_{qq}-s_{pp})/(2s_{pq})$. Show that one can always choose $|\theta|\le\pi/4$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:squaring}
+Let $A=\begin{psmallmatrix}1&1\\\delta&0\\0&\delta\end{psmallmatrix}$ with $\delta^2<u$. Compute its singular values exactly, then show that the
+floating-point $A^{\mathsf T}A$ is singular. What does the one-sided Jacobi method compute instead?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:givens}
+A \emph{Givens rotation} acts on two coordinates. Show that $QR$ factorisation by Givens rotations, zeroing the entries below the diagonal one at a
+time, satisfies the conclusion of Theorem~\ref{thm:qrstable} with a constant of order $m+n$, by proving the analogue of Lemma~\ref{lem:onereflection} for
+one rotation and counting how many rotations touch each column. When are rotations preferable to reflections?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:summation}
+Use Lemma~\ref{lem:oneeq} with all $b$'s equal to $1$; the term added first is rounded the most times.
+\end{hint}
+\begin{hint}{ex:quadratic}
+The product of the roots is $c$.
+\end{hint}
+\begin{hint}{ex:condprops}
+$\|AB\|\le\|A\|\|B\|$; for the last one, use the SVD of $A$.
+\end{hint}
+\begin{hint}{ex:nopivot}
+Compute $u_{22}=1-10^{20}$ in floating point, then back substitute.
+\end{hint}
+\begin{hint}{ex:wilkinsongrowth}
+At step $k$, all entries of column $k$ on and below the diagonal are $\pm1$. For the inverse, solve $W_nx=b$ using the partial sums $x_1+\dots+x_i$, or guess the inverse for $n=3,4$ and check it.
+\end{hint}
+\begin{hint}{ex:lauchli}
+$\hat q_1=(1,\varepsilon,0,0)$ after rounding; then $\hat q_2=(0,-1,1,0)/\sqrt2$.
+\end{hint}
+\begin{hint}{ex:hilbertcond}
+$x^{\mathsf T}H_nx=\int_0^1(\sum_ix_it^{i-1})^2\dd t$. The shifted Legendre polynomial of degree $n-1$ has integer coefficients of size about $(3+2\sqrt2)^n$.
+\end{hint}
+\begin{hint}{ex:inverseiteration}
+The eigenvalues of $(A-\mu I)^{-1}$ are $1/(\lambda_i-\mu)$. The error in solving with $A-\mu I$ is mostly along the wanted eigenvector.
+\end{hint}
+\begin{hint}{ex:hessenberg}
+At step $k$ the reflection acts on rows $k+1,\dots,n$, so applying it on the right does not touch column $k$.
+\end{hint}
+\begin{hint}{ex:jacobiangle}
+The $(p,q)$ entry is $\cos2\theta\,s_{pq}+\tfrac12\sin2\theta\,(s_{pp}-s_{qq})$.
+\end{hint}
+\begin{hint}{ex:squaring}
+$A^{\mathsf T}A=\begin{psmallmatrix}1+\delta^2&1\\1&1+\delta^2\end{psmallmatrix}$.
+\end{hint}
+\begin{hint}{ex:givens}
+A rotation touches two entries; each entry of a column is touched at most $m+n$ times in a suitable order.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:summation}
+\idea Summation is the special case of Lemma~\ref{lem:oneeq} with no products and no division; the error depends on which terms are rounded most often.
+\writeup Recursive summation $s_1=x_1$, $s_i=\mathrm{fl}(s_{i-1}+x_i)$ gives $\hat s_n=\sum_ix_i(1+\theta_i)$ where $x_1$ and $x_2$ are rounded $n-1$ times and $x_i$
+($i\ge3$) $n-i+1$ times, so $|\theta_i|\le\gamma_{n-1}$ and, all terms being nonnegative, $|\hat s_n-\sum x_i|\le\gamma_{n-1}\sum x_i$. A sharper bound is
+$\sum_i|\theta_i|x_i\lesssim u\sum_i(n-i+1)x_i$ (for $i\ge2$), which is smallest when the large weights $n-i+1$ multiply the small terms: add in increasing
+order. Equivalently, the error made at step $i$ is at most $u\hat s_i$, and the sum of the partial sums is smallest when the small terms come first. For
+$\sum_{k\le10^6}1/k^2$ in single precision ($u=2^{-24}$), adding from $k=1$ the partial sum reaches $1.64$ quickly, and later terms below $u\cdot1.64\approx10^{-7}$,
+that is for $k$ beyond a few thousand, are entirely lost: the sum stalls at $1.6447\dots$ with an error of about $2\times10^{-4}$. Adding from $k=10^6$ down, the
+small terms accumulate first and the result is correct to about seven digits, $1.644933$ (the exact value is $\pi^2/6-\sum_{k>10^6}k^{-2}\approx1.6449331$).
+The notebook checks these numbers.
+\end{solution}
+
+\begin{solution}{ex:quadratic}
+\idea Cancellation is harmless in itself; it is the subtraction of two nearly equal computed numbers that loses digits. Avoid it by an algebraic identity.
+\writeup When $c\ll b^2$, $\sqrt{b^2-c}\approx b$, and $b-\sqrt{b^2-c}$ subtracts two nearly equal numbers, the second of which carries a rounding error of size
+$ub$: the relative error of the difference, which is about $c/(2b)$, is of order $ub/(c/2b)=2ub^2/c$, large when $c\ll b^2$. Compute instead the large root
+$x_+=b+\sqrt{b^2-c}$, a sum of positive numbers with relative error a few $u$, and then $x_-=c/x_+$, since $x_+x_-=c$. This also has relative error a few $u$.
+\end{solution}
+
+\begin{solution}{ex:condprops}
+\idea Write everything in terms of norms and singular values.
+\writeup $\kappa(AB)=\|AB\|\|B^{-1}A^{-1}\|\le\|A\|\|B\|\|B^{-1}\|\|A^{-1}\|=\kappa(A)\kappa(B)$. For orthogonal $Q$, $\|Q\|=\|Q^{-1}\|=1$. If $A=U\Sigma V^{\mathsf T}$
+(thin SVD, $\Sigma$ of size $n$), then $A^{\mathsf T}A=V\Sigma^2V^{\mathsf T}$ has eigenvalues, hence singular values, $\sigma_i^2$, so
+$\kappa(A^{\mathsf T}A)=\sigma_1^2/\sigma_n^2=\kappa(A)^2$.
+\end{solution}
+
+\begin{solution}{ex:nopivot}
+\idea Find the single operation where information is lost.
+\writeup Without pivoting $l_{21}=1/\varepsilon=10^{20}$, $u_{22}=\mathrm{fl}(1-10^{20})=-10^{20}$ (the $1$ is far below the last digit), and
+$y_2=\mathrm{fl}(2-10^{20}\cdot1)=-10^{20}$. Back substitution: $x_2=y_2/u_{22}=1$, then $x_1=(1-x_2)/\varepsilon=0$. The true solution is
+$x_1=1/(1-\varepsilon)\approx1$, $x_2=(1-2\varepsilon)/(1-\varepsilon)\approx1$; the computed one has $x_1$ completely wrong although $\kappa(A)\approx2.6$. In
+Theorem~\ref{thm:geerror}, $|\hat L||\hat U|=\begin{psmallmatrix}\varepsilon&1\\1&2\cdot10^{20}\end{psmallmatrix}$ is huge compared with $|A|$: the backward
+error bound is useless. With partial pivoting the rows are swapped, $l_{21}=\varepsilon$, $u_{22}=\mathrm{fl}(1-\varepsilon)=1$, and the computed solution is
+$x_2=\mathrm{fl}(1-2\varepsilon)=1$, $x_1=2-x_2=1$, correct to full precision.
+\end{solution}
+
+\begin{solution}{ex:wilkinsongrowth}
+\idea Follow the first two steps by hand and guess the invariant.
+\writeup Claim: before step $k$, the active submatrix (rows and columns $\ge k$) has $1$ on its diagonal, $-1$ below it, $0$ above it except in the last column,
+whose entries are $2^{k-1}$ in rows $k,\dots,n$. True for $k=1$. In column $k$ all candidates for the pivot have modulus $1$, so (with ties broken in favour
+of the current row) no swap occurs, $l_{ik}=-1$ for $i>k$, and step $k$ adds row $k$ to each later row: the entries in columns $k+1,\dots,n-1$ of row $k$ are $0$,
+so these columns are unchanged, and the last column becomes $2^{k-1}+2^{k-1}=2^k$ in rows $k+1,\dots,n$. At the end $u_{nn}=2^{n-1}$ while $\max|a_{ij}|=1$, so
+$\rho_n=2^{n-1}$. For the conditioning, $\|W_n\|_\infty=n$ (the last row). The inverse is the matrix $V$ with, for $i<n$, $v_{ii}=\frac12$,
+$v_{ij}=-2^{-(j-i+1)}$ for $i<j<n$, $v_{in}=-2^{-(n-i)}$, zeros below the diagonal, and last row $v_{nj}=2^{-j}$ for $j<n$, $v_{nn}=2^{1-n}$; one checks $VW_n=I$ by
+multiplying out (the notebook does it for $n\le8$; this formula is found by solving $W_nx=b$ with the partial sums $S_i=x_1+\dots+x_i$, which satisfy
+$S_i=2S_{i-1}+b_i-x_n$). Each row of $V$ has absolute sum $\frac12+(\frac12-2^{-(n-i)})+2^{-(n-i)}=1$ for $i<n$, and $\sum_{j<n}2^{-j}+2^{1-n}=1$ for the last.
+So $\|W_n^{-1}\|_\infty=1$ and $\kappa_\infty(W_n)=n$: the growth $2^{n-1}$ has nothing to do with ill conditioning, and the computed solution of $W_nx=b$ can
+be badly wrong for $n=60$ although the problem is perfectly well posed.
+\end{solution}
+
+\begin{solution}{ex:lauchli}
+\idea Only $1+\varepsilon^2$ is rounded, so everything else can be followed exactly; watch which vector is projected.
+\writeup $\|a_1\|=\sqrt{1+\varepsilon^2}$ rounds to $1$, so $\hat q_1=a_1$. Then $\hat q_1^{\mathsf T}a_2=1$ (rounded), $a_2-\hat q_1=(0,-\varepsilon,\varepsilon,0)$, and
+$\hat q_2=(0,-1,1,0)/\sqrt2$. Classical: $\hat q_1^{\mathsf T}a_3=1$ and $\hat q_2^{\mathsf T}a_3=0$, so $a_3-\hat q_1=(0,-\varepsilon,0,\varepsilon)$ and
+$\hat q_3=(0,-1,0,1)/\sqrt2$. Then $\hat q_2^{\mathsf T}\hat q_3=\frac12$: the computed vectors make an angle of $60^\circ$. Modified: first
+$w=a_3-(\hat q_1^{\mathsf T}a_3)\hat q_1=(0,-\varepsilon,0,\varepsilon)$, then $w-(\hat q_2^{\mathsf T}w)\hat q_2$ with $\hat q_2^{\mathsf T}w=\varepsilon/\sqrt2$, giving
+$(0,-\frac\varepsilon2,-\frac\varepsilon2,\varepsilon)$ and $\hat q_3=(0,-1,-1,2)/\sqrt6$, now orthogonal to $\hat q_2$; and
+$\hat q_1^{\mathsf T}\hat q_3=-\varepsilon/\sqrt6$, $\hat q_1^{\mathsf T}\hat q_2=-\varepsilon/\sqrt2$, of order $\varepsilon\approx\sqrt u$, consistent with $u\kappa(A)$
+since $\kappa(A)\approx\sqrt3/\varepsilon$.
+\end{solution}
+
+\begin{solution}{ex:hilbertcond}
+\idea A Gram matrix of nearly dependent functions is nearly singular; the monomials on $[0,1]$ are nearly dependent, and orthogonal polynomials measure how much.
+\writeup (a) $\int_0^1t^{i-1}t^{j-1}\dd t=1/(i+j-1)$, so $x^{\mathsf T}H_nx=\int_0^1p_x(t)^2\dd t$ with $p_x(t)=\sum_ix_it^{i-1}$, positive unless $x=0$.
+(b) $1/\|H_n^{-1}\|=\lambda_{\min}(H_n)=\min_{\|x\|=1}\int_0^1p_x^2$. Take $p$ the shifted Legendre polynomial $\tilde P_{n-1}(t)=P_{n-1}(2t-1)$, with
+$\int_0^1\tilde P_{n-1}^2=1/(2n-1)$ and coefficient vector $c$; its leading coefficient is $\binom{2n-2}{n-1}\ge4^{n-1}/(2n-1)$, so $\|c\|\ge4^{n-1}/(2n-1)$ and
+$\lambda_{\min}\le\frac{1/(2n-1)}{\|c\|^2}\le(2n-1)16^{-(n-1)}$. As $\|H_n\|\ge h_{11}=1$, $\kappa(H_n)\ge16^{n-1}/(2n-1)$. The true growth rate is about
+$(1+\sqrt2)^{4n}\approx e^{3.53n}$, from the full coefficient vector rather than its leading term.
+\end{solution}
+
+\begin{solution}{ex:inverseiteration}
+\idea Inverse iteration is the power method for a matrix whose dominant eigenvalue is the one we want.
+\writeup $(A-\mu I)^{-1}$ has the same eigenvectors as $A$ and eigenvalues $1/(\lambda_i-\mu)$, the largest in modulus being $1/(\lambda-\mu)$ and the next
+$1/(\lambda'-\mu)$. By Proposition~\ref{prop:power} the iterates converge to the line of the eigenvector for $\lambda$ at rate
+$\frac{1/|\lambda'-\mu|}{1/|\lambda-\mu|}=\frac{|\lambda-\mu|}{|\lambda'-\mu|}$. Solving $(A-\mu I)z=q$ with a backward stable method gives the exact $z$ for
+$A-\mu I+\Delta$, and the error, though large, is amplified by $(A-\mu I)^{-1}$ mainly along its dominant eigenvector, which is the direction we want; after
+normalisation the computed vector is accurate. (Wilkinson made this precise; the notebook shows a shift within $10^{-14}$ of the eigenvalue converging in one step.)
+\end{solution}
+
+\begin{solution}{ex:hessenberg}
+\idea Copy Householder $QR$, but leave one subdiagonal so that the right multiplication does not undo the work of the left one.
+\writeup At step $k=1,\dots,n-2$, let $P_k$ act on coordinates $k+1,\dots,n$ and zero the entries $(k+2,k),\dots,(n,k)$ of column $k$. Then $P_kAP_k$: the
+left multiplication changes rows $k+1,\dots,n$, creating the zeros; the right multiplication changes columns $k+1,\dots,n$ and so does not touch column
+$k$, keeping them. Earlier columns are untouched by both since their entries in rows $k+1,\dots$ beyond the subdiagonal are already zero and the left
+action mixes zeros. The left update on the trailing $(n-k)\times(n-k+1)$ block costs about $4(n-k)^2$ operations, and the right update on the $n\times(n-k)$
+block about $4n(n-k)$; summing, $\sum_k(4(n-k)^2+4n(n-k))\approx\frac43n^3+2n^3=\frac{10}3n^3$. To reach triangular form we would have to zero column $1$
+below the diagonal by a reflection acting on rows $1,\dots,n$; the right multiplication by it would then act on columns $1,\dots,n$ and fill column $1$ again.
+Indeed no finite procedure can triangularise all matrices, since that would compute eigenvalues exactly in finitely many steps.
+\end{solution}
+
+\begin{solution}{ex:jacobiangle}
+\idea Only a $2\times2$ problem is involved.
+\writeup With $c=\cos\theta$, $s=\sin\theta$, the entry is $(J^{\mathsf T}SJ)_{pq}=cs(s_{pp}-s_{qq})+(c^2-s^2)s_{pq}=\frac12\sin2\theta(s_{pp}-s_{qq})+\cos2\theta\,s_{pq}$
+for $J$ with $J_{pp}=J_{qq}=c$, $J_{pq}=s$, $J_{qp}=-s$. It vanishes iff $\cot2\theta=(s_{qq}-s_{pp})/(2s_{pq})$ (for $s_{pq}\ne0$). As $\cot$ takes every real value
+on $(0,\pi)$, there is $2\theta\in(0,\pi)$, and replacing $2\theta$ by $2\theta-\pi$ if needed, $2\theta\in(-\pi/2,\pi/2]$, so $|\theta|\le\pi/4$. The small angle
+keeps the rotation close to the identity, which is important for the asymptotic quadratic convergence.
+\end{solution}
+
+\begin{solution}{ex:squaring}
+\idea Rounding kills the information in $A^{\mathsf T}A$, not in $A$.
+\writeup $A^{\mathsf T}A=\begin{psmallmatrix}1+\delta^2&1\\1&1+\delta^2\end{psmallmatrix}$ has eigenvalues $2+\delta^2$ and $\delta^2$, so $\sigma_1=\sqrt{2+\delta^2}$ and
+$\sigma_2=\delta$. In floating point $\mathrm{fl}(1+\delta^2)=1$, so the computed $A^{\mathsf T}A$ is $\begin{psmallmatrix}1&1\\1&1\end{psmallmatrix}$, singular, and the
+computed $\sigma_2$ is $0$ (or a rounding error), with no correct digit. One-sided Jacobi rotates the columns $a_1=(1,\delta,0)$, $a_2=(1,0,\delta)$ by $45^\circ$
+(as $\|a_1\|=\|a_2\|$), giving $(a_1+a_2)/\sqrt2=(\sqrt2,\delta/\sqrt2,\delta/\sqrt2)$ and $(a_1-a_2)/\sqrt2=(0,\delta/\sqrt2,-\delta/\sqrt2)$, which are computed with small
+relative error in each entry; the second has norm $\delta$, correct to full relative precision.
+\end{solution}
+
+\begin{solution}{ex:givens}
+\idea The proof of Theorem~\ref{thm:qrstable} only used that each step is an exact orthogonal map applied to a slightly perturbed column; this holds for rotations
+too, and only the number of steps per column changes.
+\writeup A rotation in the plane $(i,j)$ is defined by $c=a/r$, $s=b/r$ with $r=\sqrt{a^2+b^2}$; the computed $\hat c,\hat s$ have relative errors at most
+$\gamma_4$, and define an exact rotation $\tilde G$ after renormalisation by $\sqrt{\hat c^2+\hat s^2}=1+O(\gamma_4)$. Applying $\hat G$ to the pair $(x_i,x_j)$ of a
+vector gives $(\hat cx_i+\hat sx_j)(1+\theta)$ and similarly, so $\mathrm{fl}(\hat Gx)=\tilde G(x+\Delta x)$ with $\|\Delta x\|\le\gamma_{c}\|(x_i,x_j)\|\le\gamma_c\|x\|$
+for a small absolute constant $c$. Zeroing the subdiagonal column by column, from the bottom up, each column is touched by at most $m-1$ rotations for each of the
+$n$ columns processed, but the rotations in different rows are disjoint and can be grouped into at most $m+n-2$ stages, each stage an orthogonal map acting on
+disjoint pairs, with error $\gamma_c\|x\|$ per stage. The telescoping argument of Theorem~\ref{thm:qrstable} then gives $\|\Delta a_j\|\le((1+\gamma_c)^{m+n-2}-1)\|a_j\|$.
+Rotations cost about twice as much as reflections for dense matrices, but they touch two rows at a time, which is better for matrices that are already almost
+triangular (a Hessenberg matrix needs only $n-1$ rotations), and for updating a factorisation when a row is added.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} A.~M.~Turing, \emph{Rounding-off errors in matrix processes}, Quarterly Journal of Mechanics and Applied Mathematics 1
+(1948), 287--308. Read Section~1 for the setting, then the definition of the ``$N$-condition number'' and ``$M$-condition number'' and how they control the error of
+the solution (our Theorem~\ref{thm:perturb}); Turing also introduces the triangular resolution $A=LDU$. Then read the opening sections of J.~H.~Wilkinson,
+\emph{Error analysis of direct methods of matrix inversion}, Journal of the ACM 8 (1961), 281--330, where backward error analysis appears in full, with the growth
+factor of Proposition~\ref{prop:growth}.
+\item \emph{The stories.} J.~H.~Wilkinson, \emph{Some comments from a numerical analyst} (1970 Turing Award lecture), Journal of the ACM 18 (1971), 137--147, for
+the twelve and the eighteen equations, the pessimism of 1946, Turing's defeat and his ``second round'', and all the quotations of our opening. The bounds growing like
+$4^n$ are those of H.~Hotelling, \emph{Some new methods in matrix calculation}, Annals of Mathematical Statistics 14 (1943), 1--34. J.~von~Neumann and H.~H.~Goldstine,
+\emph{Numerical inverting of matrices of high order}, Bulletin of the AMS 53 (1947), 1021--1099. The Patriot failure: United States General Accounting Office,
+\emph{Patriot Missile Defense: Software Problem Led to System Failure at Dhahran, Saudi Arabia}, report GAO/IMTEC-92-26, February 1992 (the date, the 28 deaths, the
+24-bit register, the 100 hours, the $0.3433$ seconds and the 687 metres of its Appendix~II, and the corrected software arriving on 26 February). G.~H.~Golub and F.~Uhlig,
+\emph{The QR algorithm: 50 years later, its genesis by John Francis and Vera Kublanovskaya and subsequent developments}, IMA Journal of Numerical Analysis 29 (2009), 467--485,
+for Francis' story.
+\item A.~S.~Householder, \emph{Unitary triangularization of a nonsymmetric matrix}, Journal of the ACM 5 (1958), 339--342; J.~G.~F.~Francis, \emph{The QR transformation:
+a unitary analogue to the LR transformation}, Computer Journal 4 (1961), 265--271 and 332--345; V.~N.~Kublanovskaya, \emph{On some algorithms for the solution of the
+complete eigenvalue problem}, USSR Computational Mathematics and Mathematical Physics 1 (1962), 637--657; H.~Rutishauser, \emph{Solution of eigenvalue problems with the
+LR-transformation}, National Bureau of Standards Applied Mathematics Series 49 (1958), 47--81; G.~H.~Golub and W.~Kahan, \emph{Calculating the singular values and
+pseudo-inverse of a matrix}, SIAM Journal on Numerical Analysis B 2 (1965), 205--224; G.~H.~Golub and C.~Reinsch, \emph{Singular value decomposition and least squares
+solutions}, Numerische Mathematik 14 (1970), 403--420; C.~G.~J.~Jacobi, \emph{\"Uber ein leichtes Verfahren die in der Theorie der S\"acularst\"orungen vorkommenden
+Gleichungen numerisch aufzul\"osen}, Journal f\"ur die reine und angewandte Mathematik 30 (1846), 51--94; M.~R.~Hestenes, \emph{Inversion of matrices by
+biorthogonalization and related results}, Journal of the SIAM 6 (1958), 51--90; P.~L\"auchli, \emph{Jordan-Elimination und Ausgleichung nach kleinsten Quadraten},
+Numerische Mathematik 3 (1961), 226--240; A.~Sch\"onhage, \emph{Zur Konvergenz des Jacobi-Verfahrens}, Numerische Mathematik 3 (1961), 374--380; J.~H.~Wilkinson, \emph{Global convergence of tridiagonal QR algorithm with origin shifts}, Linear Algebra and its Applications 1 (1968), 409--420; J.~Demmel and K.~Veseli\'c, \emph{Jacobi's method is more accurate than QR}, SIAM Journal on Matrix Analysis and Applications 13
+(1992), 1204--1245.
+\item L.~N.~Trefethen and R.~S.~Schreiber, \emph{Average-case stability of Gaussian elimination}, SIAM Journal on Matrix Analysis and Applications 11 (1990), 335--360;
+A.~Sankar, D.~A.~Spielman and S.-H.~Teng, \emph{Smoothed analysis of the condition numbers and growth factors of matrices}, SIAM Journal on Matrix Analysis and
+Applications 28 (2006), 446--476.
+\item N.~J.~Higham, \emph{Accuracy and Stability of Numerical Algorithms}, 2nd edition, SIAM, 2002, is the reference for Sections~\ref{sec:float}--\ref{sec:householder} (its
+Chapters~2, 3, 8, 9 and 19; our constants are cruder than its). L.~N.~Trefethen and D.~Bau, \emph{Numerical Linear Algebra}, SIAM, 1997, is the most readable
+introduction, and G.~H.~Golub and C.~F.~Van~Loan, \emph{Matrix Computations}, 4th edition, Johns Hopkins, 2013, the encyclopedia.
+\end{itemize}
