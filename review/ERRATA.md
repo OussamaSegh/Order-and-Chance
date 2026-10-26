@@ -314,3 +314,68 @@ notebook appears in its output.
 - Chapter 8 quotes Washington's theorem numbers (5.34, 8.2, 9.3, 4.17) and Chapter 10 its Chapter 14; not re-checked against the book.
 - Chapter 9 says Weil "added the additive version, the adèles"; the ring was first written down by Artin and Whaples (1945) as "valuation vectors" and the name is Weil's. Left as is.
 - The figures were not regenerated; the cycle-type bars of Chapter 2 were generated with one prime fewer than the recount (3037 against 3038 for the type 2 3), a difference below the resolution of the drawing.
+
+## Review: Tome 7
+
+What was checked and found correct: all ten chapters of Analysis in Depth, every proof
+and every solution re-read line by line, with particular care for Hahn–Banach and the
+three Baire consequences, the mean ergodic theorem and Moore–Aronszajn, Gelfand's theory
+and Wiener's lemma, the spectral theorem and Sturm–Liouville (the Green function bounds,
+Weyl's law, Mercer), Plancherel, Hermite functions, Riesz–Thorin and the lattice Poisson
+formula, Sobolev embeddings and Lax–Milgram, Chebotarev's minors lemma and Tao's
+uncertainty principle, the slice-rank cap set bound (every inequality in the chain to
+32·3ⁿ/n), the Haar measure on GL_n and on Q_p, Hausdorff's free rotations (the 3 ∤ b
+induction), the Jordan curve theorem (Maehara's proof), Dixon's Cauchy theorem,
+Phragmén–Lindelöf, Hadamard's factorisation, the Riemann mapping theorem, Mellin inversion,
+Karamata's theorem, Wiener's L¹ theorem, the Wiener–Ikehara theorem and the Landau–
+Ramanujan count. Numbers recomputed in Python independently of the notebooks: the
+Sturm–Liouville eigenvalues 36.2, 70.4, 119.5, 188.3 for q = 60x; the Karhunen–Loève share
+8/π² ≈ 81%; the cap set exponents 2.7552 (t = 0.6) and 2.7551 (t = 0.5931); y₁ ≈ 9.06 and
+the wobble bound |P| < 1.6·10⁻⁶ in the maximum-of-geometrics theorem, with γ/ln 2 − ½ =
+0.3327; the Landau–Ramanujan constant K = 0.76422365…; the oscillation bounds 0.29 and 1.71
+of Exercise 10.6; the Lebesgue constants, the squares-in-Z_p densities p/(2(p+1)), the
+Legendre fits and the Basel sums of the exercises. Every cross-tome pointer checked: the
+numbered ones (about 150) against the `.aux` files of Tomes 0–6, 12 and S1, all correct, and
+the forward ones (Tome 10 for Birkhoff and Lévy, Tome 11 for the Karhunen–Loève path,
+Tome 12 for Tate's thesis, modular forms and Chebotarev density, Tome C5 for convex
+optimisation) against the series plan. The promises of Tome 4 (general Cauchy, Jordan curve,
+L² Fourier theory, Wiener–Ikehara) are all kept, and the chapters match the map that
+Part III cites. Dates and attributions checked against sources: Hahn 1927 and Banach 1929,
+Steinhaus 1919, Fréchet and Riesz 1907, von Neumann 1929, Fredholm 1903, Gelfand 1941,
+Wiener 1932, Mercer 1909, Weyl's inequality 1912, Plancherel 1910, Lax–Milgram 1954,
+Chebotarev 1926, Tao 2005, Meshulam 1995, Croot–Lev–Pach and Ellenberg–Gijswijt 2016,
+the 2.2202ⁿ construction of 2024, Blum–Luby–Rubinfeld 1990, Haar 1933, Hausdorff 1914,
+Jordan 1887 and Veblen 1905, Maehara 1984, Dixon 1971, Bourgain's 13/84, Riemann 1851
+and Koebe's trick of 1912, Abel 1826, Tauber 1897 and his death in Theresienstadt, Littlewood
+1911, Hardy–Littlewood 1914, Karamata 1930, Ikehara 1931, Landau 1908, Ramanujan's letter
+of 16 January 1913, Hardy–Ramanujan 1918, Delange 1954, and the journal references of every
+"Sources" section. All formats build (A4,
+phone, Kindle, EPUB, KDP print and cover) with no multiply-defined labels and no undefined
+references; all ten notebooks run.
+
+### Tome 7
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 1, duals of the classical spaces | text | "Frigyes Riesz proved in 1909 that there are no others" (the dual of L^p). Riesz's paper is Math. Ann. 69 (1910). | 1910. |
+| Ch. 2, opening | text | "Erhard Schmidt who, in 1907, saw that all this was geometry", and Riesz–Fischer "the same year". Schmidt's paper is Rend. Circ. Mat. Palermo 25 (1908), as the chapter's own sources say; Riesz–Fischer is 1907. | 1908, and "the year before, in 1907". |
+| Ch. 2, mean ergodic theorem | text | "von Neumann's came first, and the two men argued for years about who had done what" overstates the story: von Neumann proved his theorem first and told Birkhoff, Birkhoff's paper appeared first (December 1931, von Neumann's in January 1932), and the dispute is a historians' question rather than a years-long quarrel. | Rewritten with the dates; Birkhoff's paper and Zund's study (Historia Math. 29, 2002) added to the sources. |
+| Ch. 5, interpolation | text | "In 1926 Marcel Riesz proved a general principle": the paper is Acta Math. 49 (1927), as cited in the sources. Thorin's paper is dated 1939 in the sources; it is 1938. | 1927; 1938. |
+| Ch. 8, amenability | math | "an extension of the abelian group of rotations and reflections O(2)": O(2) is not abelian (a reflection and a rotation do not commute). The argument only needs the two-element extension of SO(2), which is what the sentence goes on to say. | "the group O(2) of rotations and reflections". |
+| Ch. 8, Banach–Tarski remark | text | "S. Wagon and G. Tomkowicz" in the text, "Tomkowicz and Wagon" in the sources (the book's author order). | Tomkowicz and Wagon. |
+| Ch. 10, Wiener's L¹ theorem (twice) | ref | Fourier inversion and uniqueness of transforms cited as Theorem 5.3, which is the Schwartz-space proposition; inversion is Theorem 5.2. | Theorem 5.2. |
+| Ch. 10, solution of the quicksort exercise | math | "about 2·10⁶ log 10⁶ ≈ 2.8·10⁷ comparisons, against log₂(10⁶!) ≈ 1.9·10⁷: 38% more". The quoted numbers give 47% more; the exact C_n = 2(n+1)H_n − 4n is 2.48·10⁷ against 1.85·10⁷ (34% more), and 38.6% is the limit 2 ln 2 − 1 of the leading terms. | Rewritten with the exact count, a third more, and the limit 2 ln 2 ≈ 1.39. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 7, ch. 9 | The convexity bound was cited as Theorem 9.17 (that is the zero-counting lemma) and the Γ-size lemma as Lemma 9.15(a) (that is the convexity theorem). | Theorem 9.15 and Lemma 9.14(a). |
+| Tome 7, ch. 10 | Progressions cited as Corollary 10.16 (that is the Euler product proposition); Abel's theorem and its Cesàro corollary cited as Theorem 10.3 and Corollary 10.4. | Corollary 10.15; Theorem 10.2 and Corollary 10.3. |
+| Tome 7, ch. 1–10 | All ten run; every other numbered reference matches the book. | — |
+
+### Known and left as is
+
+- Chapter 2 tells the story of Hilbert asking "what is a Hilbert space?" and flags it as untraceable; Chapter 10 paraphrases Abel's "devil's invention" and says so. Both are left as they are.
+- Chapter 10 states Landau's unweighted count B(x) ~ Kx/√log x without proof and says so; only the logarithmically weighted version is proved.
+- The figures were not regenerated; every number in a caption was recomputed and agrees.
