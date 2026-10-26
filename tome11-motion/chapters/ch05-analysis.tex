@@ -1,0 +1,468 @@
+\chapter{Brownian Motion and Analysis}
+
+\begin{center}\itshape
+Heat spreads as Brownian particles wander; a harmonic function is the average of its boundary values\\
+seen by a wandering particle; and in the plane, the wandering is unchanged by conformal maps.\\
+Three chapters of classical analysis become three sentences about Brownian motion.
+\end{center}
+
+In 1944, in the same volume of the \emph{Proceedings of the Imperial Academy} of Tokyo in which It\^o published his stochastic integral, Shizuo Kakutani published a short note,
+\emph{Two-dimensional Brownian motion and harmonic functions}. He had spent the years 1940 to 1942 at the Institute for Advanced Study in Princeton, and his note contained a sentence that
+changed potential theory: the solution of the Dirichlet problem in a domain, at a point $x$, is the expected value of the boundary data at the place where a Brownian motion started at $x$ first
+leaves the domain. The difficult questions of the nineteenth century (when does a solution exist? in which sense does it take the boundary values?) became questions about Brownian paths:
+does the path started at a boundary point leave the domain immediately?
+
+Five years later, Mark Kac found a second bridge. He had attended a lecture of Richard Feynman at Cornell about Feynman's new formulation of quantum mechanics, in which the evolution of a particle
+is an integral over all its possible paths, weighted by $e^{i\times\text{action}}$. Kac saw that with real exponents and Wiener's measure in place of Feynman's undefined path integral, the formula
+becomes a theorem: solutions of the heat equation with a potential, $\partial_tu=\frac12\Delta u-Vu$, are averages over Brownian paths of $e^{-\int V}$. He told the story in his autobiography,
+\emph{Enigmas of Chance} (1985). The \emph{Feynman--Kac formula} turned the computation of laws of Brownian functionals into the solution of ordinary differential equations.
+
+The third bridge is a change of measure. Robert Cameron and William Martin showed in 1944 that shifting a Brownian path by a smooth function changes Wiener measure into an equivalent one, with an
+explicit density, and Igor Girsanov extended this in 1960 to random shifts: adding a drift to Brownian motion is the same as reweighting the paths. This is the continuous version of the likelihood
+ratios of Tome~6, Chapter~10, promised there, and it is the principle of importance sampling, of the pricing of options and of statistical tests on paths.
+
+This chapter proves the three bridges and uses them: the heat equation, the Feynman--Kac formula with a famous example of Cameron and Martin, Girsanov's theorem, the Dirichlet problem with Poincar\'e's
+cone condition (keeping the promise of Tome~3, Chapter~7), recurrence and transience in every dimension, and L\'evy's conformal invariance of planar Brownian motion, from which it follows, in two lines,
+that planar Brownian motion never hits a given point but winds around it infinitely often.
+
+\begin{reminder}[from Chapters 2 to 4 and Tome 6]
+\emph{Brownian motion in $\R^d$} started at $x$: $x+B$ with $B$ a $d$-dimensional Brownian motion; we write $P_x$ and $\mathbb E_x$. It\^o's formula (Theorem~\ref{thm:itoformula}) for $f\in C^2(\R^d)$:
+$f(B_t)=f(B_0)+\int_0^t\nabla f(B_s)\cdot\dd B_s+\frac12\int_0^t\Delta f(B_s)\dd s$. L\'evy's characterisation (Theorem~\ref{thm:levychar}). Bounded local martingales are martingales. \emph{Polar coordinates}
+(Tome~6, Theorem~8.10): there is a rotation invariant measure $\sigma$ on the sphere $S^{d-1}$ with $\int_{\R^d}f=\int_0^\infty\int_{S^{d-1}}f(r\omega)\dd\sigma(\omega)\,r^{d-1}\dd r$; we write $\bar\sigma=\sigma/\sigma(S^{d-1})$. If $Z$ is a
+standard Gaussian vector and $R$ is orthogonal, $RZ$ is standard Gaussian (Tome~6, Theorem~8.12). Likelihood ratios: if $Q=Z\cdot P$, then $\mathbb E_Q[X]=\mathbb E_P[XZ]$ (Tome~6, Chapter~10).
+\end{reminder}
+
+\section{The heat equation and the Feynman--Kac formula}
+
+Let $p_t(x)=(2\pi t)^{-d/2}e^{-|x|^2/2t}$, the density of $B_t$. A direct computation gives $\partial_tp_t=\frac12\Delta p_t$: the Gaussian kernel is the fundamental solution of the heat equation (with the
+probabilists' factor $\frac12$; Tome~4, Chapter~8, uses $\partial_t=\Delta$, which is $B_{2t}$).
+
+\begin{theorem}[the heat equation]\label{thm:heat}
+Let $f$ be bounded and continuous on $\R^d$ and $u(t,x)=\mathbb Ef(x+B_t)=\int p_t(x-y)f(y)\dd y$. Then $u$ is $C^\infty$ on $]0,\infty[\times\R^d$, $\partial_tu=\frac12\Delta u$, and $u(t,x')\to f(x)$ as
+$(t,x')\to(0,x)$. Conversely, every bounded continuous function $v$ on $[0,\infty[\times\R^d$ which is $C^{1,2}$ on $]0,\infty[\times\R^d$ and solves $\partial_tv=\frac12\Delta v$ with $v(0,\cdot)=f$ equals $u$.
+\end{theorem}
+
+The converse is a special case ($V=0$) of the next theorem. For the first part, differentiate under the integral sign: on $[a,b]\times\R^d$ with $a>0$, every derivative of $p_t(x-y)$ in $(t,x)$ is bounded by a
+polynomial in $|x-y|$ times $e^{-|x-y|^2/2b}$, which is integrable in $y$ locally uniformly in $x$; and $|u(t,x')-f(x)|\le\mathbb E|f(x'+B_t)-f(x)|\to0$ by dominated convergence.
+
+The proofs below apply It\^o's formula to functions $v(t,x)$ that are only $C^1$ in $t$. This is allowed: in the proof of Theorem~\ref{thm:itoformula}, expand to first order in the coordinate $t$ (which has finite
+variation and no bracket) by the mean value theorem, and to second order in $x$; the extra error is $\sum_i\bigl(\partial_tv(\xi_i,X_{t_i})-\partial_tv(t_{i-1},X_{t_{i-1}})\bigr)\Delta t_i$, which tends to $0$ by uniform continuity.
+
+\begin{theorem}[Feynman--Kac formula]\label{thm:feynmankac}
+Let $V$ be continuous and bounded below on $\R^d$, $f$ bounded and continuous, and $v$ a function, continuous on $[0,\infty[\times\R^d$, $C^{1,2}$ on $]0,\infty[\times\R^d$, bounded on $[0,T]\times\R^d$ for every $T$, with
+\[
+\partial_tv=\tfrac12\Delta v-Vv,\qquad v(0,\cdot)=f .
+\]
+Then $v(t,x)=\mathbb E_x\Bigl[f(B_t)\exp\Bigl(-\int_0^tV(B_s)\dd s\Bigr)\Bigr]$.
+\end{theorem}
+
+\begin{proof}
+Fix $t>0$ and $x$, let $E_s=\exp(-\int_0^sV(B_r)\dd r)$ and $M_s=v(t-s,B_s)E_s$ for $s<t$. By It\^o's formula (with $E$ of finite variation, $\mathrm dE_s=-V(B_s)E_s\dd s$),
+\[
+\mathrm dM_s=E_s\Bigl(-\partial_tv+\tfrac12\Delta v-Vv\Bigr)(t-s,B_s)\dd s+E_s\nabla v(t-s,B_s)\cdot\dd B_s=E_s\nabla v(t-s,B_s)\cdot\dd B_s .
+\]
+So $M$ is a continuous local martingale on $[0,t[$, bounded on $[0,t-\varepsilon]$ (by $\sup|v|\,e^{ct}$ if $V\ge-c$), hence a martingale there: $v(t,x)=M_0=\mathbb E_xM_{t-\varepsilon}$. As $\varepsilon\to0$, $M_{t-\varepsilon}\to f(B_t)E_t$
+by continuity of $v$, boundedly, and the formula follows.
+\end{proof}
+
+\begin{example}[Cameron and Martin, 1944]\label{ex:cmcosh}
+For $\lambda>0$ and $t\ge0$,
+\[
+\mathbb E\exp\Bigl(-\frac{\lambda^2}2\int_0^tB_s^2\dd s\Bigr)=\frac1{\sqrt{\cosh\lambda t}} .
+\]
+Indeed, look for a solution of $\partial_tv=\frac12v''-\frac{\lambda^2}2x^2v$, $v(0,\cdot)=1$, of Gaussian form $v=a(t)e^{-b(t)x^2/2}$. Substituting and comparing the coefficients of $1$ and $x^2$ gives $\frac{a'}a=-\frac b2$ and
+$b'=\lambda^2-b^2$, with $a(0)=1$, $b(0)=0$: so $b=\lambda\tanh\lambda t$ and $a=(\cosh\lambda t)^{-1/2}$. This $v$ is smooth and bounded by $1$, and $V=\frac{\lambda^2}2x^2\ge0$; Theorem~\ref{thm:feynmankac} at $x=0$ gives the
+formula. Exercise~\ref{ex:cmproduct} recovers it from the Karhunen--Lo\`eve expansion of Chapter~1, through Euler's product for $\cosh$.
+\end{example}
+
+\section{Changing the probability: Girsanov's theorem}
+
+\begin{lemma}[Bayes]\label{lem:bayes}
+Let $T>0$, $Z$ a positive continuous martingale on $[0,T]$ with $\mathbb EZ_T=1$, and $Q=Z_T\cdot P$ on $\mathcal F_T$. For $s\le t\le T$ and $X$ $\mathcal F_t$-measurable and $Q$-integrable,
+$\mathbb E_Q[X\mid\mathcal F_s]=\mathbb E_P[XZ_t\mid\mathcal F_s]/Z_s$. Hence an adapted process $Y$ with $YZ$ a $P$-martingale on $[0,T]$ is a $Q$-martingale on $[0,T]$.
+\end{lemma}
+
+\begin{proof}
+For $A\in\mathcal F_s$, $\mathbb E_Q[X\mathbf 1_A]=\mathbb E_P[XZ_T\mathbf 1_A]=\mathbb E_P[XZ_t\mathbf 1_A]=\mathbb E_P\bigl[\mathbb E_P[XZ_t\mid\mathcal F_s]\mathbf 1_A\bigr]=\mathbb E_Q\bigl[\mathbb E_P[XZ_t\mid\mathcal F_s]Z_s^{-1}\mathbf 1_A\bigr]$, using
+$Z_t=\mathbb E_P[Z_T\mid\mathcal F_t]$ twice. For the second claim, take $X=Y_t$: $\mathbb E_Q[Y_t\mid\mathcal F_s]=Y_sZ_s/Z_s$.
+\end{proof}
+
+\begin{theorem}[Girsanov, 1960]\label{thm:girsanov}
+Let $B$ be a $d$-dimensional Brownian motion, $\theta$ a progressive process in $\R^d$ with $|\theta|\le C$, and
+\[
+Z_t=\exp\Bigl(\int_0^t\theta_s\cdot\dd B_s-\frac12\int_0^t|\theta_s|^2\dd s\Bigr).
+\]
+Then $Z$ is a martingale. For $T>0$ let $Q=Z_T\cdot P$ on $\mathcal F_T$. Then $Q$ and $P$ have the same null sets on $\mathcal F_T$, and $W_t=B_t-\int_0^t\theta_s\dd s$, $t\le T$, is a $Q$-Brownian motion.
+\end{theorem}
+
+\begin{proof}
+\emph{$Z$ is a martingale.} By Proposition~\ref{prop:expmartgen}, $Z=1+\int Z\theta\cdot\dd B$ is a positive local martingale, and $Z_t^2=\exp\bigl(\int2\theta\cdot\dd B-\frac12\int|2\theta|^2\bigr)e^{\int_0^t|\theta|^2}$ is a
+supermartingale with mean at most $1$ times a factor at most $e^{C^2t}$; so $\mathbb EZ_t^2\le e^{C^2t}$. Then $\mathbb E\langle Z\rangle_T=\mathbb E\int_0^TZ_s^2|\theta_s|^2\dd s\le C^2Te^{C^2T}$, and $Z^T$ is a martingale bounded in
+$L^2$ by Corollary~\ref{cor:L2bracket}; by Doob's inequality, $\mathbb E\sup_{t\le T}Z_t^2\le4e^{C^2T}$. In particular $\mathbb EZ_T=1$, and $Z_T>0$, so $Q$ is a probability with the same null sets as $P$ on $\mathcal F_T$.
+
+\emph{$W$ under $Q$.} By It\^o's formula and $\mathrm d\langle B^i,Z\rangle=Z\theta^i\dd t$,
+\[
+\mathrm d(W^iZ)=W^i\dd Z+Z\dd B^i-Z\theta^i\dd t+Z\theta^i\dd t=W^i\dd Z+Z\dd B^i,
+\]
+a local martingale. Similarly $N^{ij}=W^iW^j-\delta_{ij}t$ satisfies $\mathrm dN^{ij}=W^i\dd B^j+W^j\dd B^i-(W^i\theta^j+W^j\theta^i)\dd t$, and the drift cancels again in $\mathrm d(N^{ij}Z)$ against
+$\mathrm d\langle N^{ij},Z\rangle=Z(W^i\theta^j+W^j\theta^i)\dd t$. These local martingales are dominated on $[0,T]$ by $(1+\sup_{t\le T}|W_t|)^2\sup_{t\le T}Z_t$, which is integrable by Cauchy--Schwarz, since
+$|W_t|\le|B_t|+Ct$; so they are martingales (Proposition~\ref{prop:localmart}). By Lemma~\ref{lem:bayes}, $W^i$ and $W^iW^j-\delta_{ij}t$ are $Q$-martingales on $[0,T]$. The filtration still satisfies the usual
+conditions under $Q$, so $\langle W^i,W^j\rangle^Q_t=\delta_{ij}t$, and L\'evy's characterisation (whose proof works on $[0,T]$) shows that $W$ is a $Q$-Brownian motion.
+\end{proof}
+
+\begin{remark}
+The boundedness of $\theta$ can be replaced by \emph{Novikov's condition} $\mathbb E\exp(\frac12\int_0^T|\theta|^2)<\infty$ (Novikov, 1972; Revuz and Yor, Chapter~VIII). The theorem cannot be extended to $T=\infty$:
+for $\theta=\mu\ne0$ constant, $W_t/t\to0$ and $B_t/t\to\mu$, so the laws of the whole paths of $B$ and of $W$ are mutually singular. On every finite horizon they are equivalent, at infinity they are singular: this is the
+dichotomy of Kakutani (Tome~10, Theorem~9.13) in continuous time.
+\end{remark}
+
+\begin{corollary}[Cameron--Martin formula, 1944]\label{cor:cameronmartin}
+Let $T>0$, $\dot h\in L^2[0,T]$, $h(t)=\int_0^t\dot h$, and $F$ bounded and measurable on $C([0,T])$. Then
+\[
+\mathbb EF(B+h)=\mathbb E\Bigl[F(B)\exp\Bigl(\int_0^T\dot h\dd B-\frac12\int_0^T\dot h^2\Bigr)\Bigr].
+\]
+\end{corollary}
+
+\begin{proof}
+If $\dot h$ is bounded, Theorem~\ref{thm:girsanov} with $\theta=\dot h$ says that under $Q$, $B=W+h$ with $W$ a Brownian motion, so $\mathbb EF(W+h)=\mathbb E_QF(B)=\mathbb E[F(B)Z_T]$. In general, choose bounded $\dot h_n\to\dot h$ in $L^2$.
+Then $h_n\to h$ uniformly (Cauchy--Schwarz), and the exponentials $Z^n_T=\exp(G_n-\frac12\|\dot h_n\|^2)$, with $G_n=\int\dot h_n\dd B$ Gaussian, converge almost surely along a subsequence and are bounded in $L^2$
+($\mathbb E(Z^n_T)^2=e^{\|\dot h_n\|^2}$), hence converge in $L^1$. For $F$ bounded and continuous, both sides pass to the limit. Two finite Borel measures on the metric space $C([0,T])$ that agree on bounded continuous functions are
+equal (approximate the indicator of a closed set by continuous functions), so the formula holds for all bounded measurable $F$.
+\end{proof}
+
+The translates $h$ allowed here form the \emph{Cameron--Martin space}. For any other continuous $h$ with $h(0)=0$, the laws of $B+h$ and $B$ are mutually singular; a Brownian path cannot be shifted by a
+Brownian path (Revuz and Yor, Chapter~VIII). Exercise~\ref{ex:driftmax} uses the corollary to compute the law of the maximum of Brownian motion with drift on a finite horizon, and the notebook uses it for
+importance sampling of rare events.
+
+\section{Harmonic functions and Brownian motion}
+
+A function $u\in C^2(D)$ on an open set $D\subseteq\R^d$ is \emph{harmonic} if $\Delta u=0$. Three lemmas connect harmonic functions with Brownian motion.
+
+\begin{lemma}[the uniform law on the sphere]\label{lem:uniformsphere}
+$\bar\sigma$ is the only probability on $S^{d-1}$ invariant under all orthogonal maps. In particular, if $\tau_r=\inf\{t:|B_t|=r\}$ for a Brownian motion $B$ started at $0$, then $B_{\tau_r}/r$ has law $\bar\sigma$.
+\end{lemma}
+
+\begin{proof}
+Let $G$ be a $d\times d$ matrix with independent $N(0,1)$ entries, almost surely invertible, and $U$ the orthogonal matrix obtained by the Gram--Schmidt process applied to its columns. For orthogonal $R$, $RG$ has the same
+law as $G$ (its columns are independent standard Gaussian vectors), and Gram--Schmidt commutes with $R$, so $RU$ has the law of $U$, and $U^{\mathsf T}R^{\mathsf T}$ the law of $U^{\mathsf T}$. Let $\mu$ be an invariant
+probability, $\Theta\sim\mu$ independent of $U$, and $f$ continuous on the sphere. For $\theta=Re_1$, $U^{\mathsf T}\theta=U^{\mathsf T}Re_1$ has the law of $U^{\mathsf T}e_1$, so $c_f=\mathbb Ef(U^{\mathsf T}\theta)$ does not depend on $\theta$.
+By invariance of $\mu$ and Fubini, $\int f\dd\mu=\mathbb Ef(U^{\mathsf T}\Theta)=c_f$. So every invariant probability gives the same integral $c_f$ to every continuous $f$: there is only one, and $\bar\sigma$ is one (Tome~6,
+Theorem~8.10). If $R$ is orthogonal, $RB$ is a Brownian motion with the same $\tau_r$, so the law of $B_{\tau_r}$ is invariant, and $\tau_r<\infty$ because $|B^1_t|$ exceeds $r$ eventually.
+\end{proof}
+
+\begin{proposition}[strong Markov property in $\R^d$]\label{prop:strongmarkovd}
+Let $B$ be a $d$-dimensional Brownian motion and $\tau$ an almost surely finite stopping time. Then $W_t=B_{\tau+t}-B_\tau$ is a Brownian motion independent of $\mathcal F_\tau$.
+\end{proposition}
+
+\begin{proof}
+First let $\tau\le K$. Let $\mathcal G_t=\mathcal F_{\tau+t}$, which satisfies the usual conditions (as in the proof of Theorem~\ref{thm:dds}). For $s<t$, optional stopping (Theorem~\ref{thm:ostcont}) at the bounded times
+$\tau+s\le\tau+t$, applied to the martingales $B^i$ and $B^iB^j-\delta_{ij}t$, shows that $W^i$ and $W^iW^j-\delta_{ij}t$ are $(\mathcal G_t)$-martingales (expand $W^iW^j$ around $B_\tau$, which is
+$\mathcal G_0$-measurable). By Theorem~\ref{thm:levychar}, $W$ is a $(\mathcal G_t)$-Brownian motion, so $W=W-W_0$ is independent of $\mathcal G_0=\mathcal F_\tau$. In general apply this to $\tau\wedge n$: for $A\in\mathcal F_\tau$,
+$A\cap\{\tau\le n\}\in\mathcal F_{\tau\wedge n}$, and on it the two processes agree; so $\mathbb E[F(W)\mathbf 1_{A\cap\{\tau\le n\}}]=\mathbb EF(B)\,P(A\cap\{\tau\le n\})$ for bounded measurable $F$, and we let $n\to\infty$.
+\end{proof}
+
+This is Tome~10, Theorem~3.8, again, now in every dimension and with a proof by stochastic calculus. Blumenthal's zero--one law (Theorem~\ref{thm:blumenthal}) holds in $\R^d$ with the same proof.
+
+\begin{lemma}[mean value property]\label{lem:meanvalue}
+Let $D\subseteq\R^d$ be open.
+\begin{enumerate}[label=(\alph*)]
+\item If $u\in C^2(D)$ is harmonic and $\bar B(x,r)\subseteq D$, then $u(x)=\int u(x+r\omega)\dd\bar\sigma(\omega)$.
+\item Conversely, if $u$ is locally bounded and measurable on $D$ and has this property for every closed ball in $D$, then $u$ is $C^\infty$ and harmonic.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) Let $\chi$ be smooth with compact support in $D$ and $\chi=1$ near $\bar B(x,r)$; then $\chi u\in C^2(\R^d)$. For a Brownian motion from $x$ and $\tau$ its exit time from $B(x,r)$, It\^o's formula shows that $u(B_{t\wedge\tau})$
+is a bounded local martingale, hence a martingale, and $u(x)=\mathbb E_xu(B_\tau)$; by Lemma~\ref{lem:uniformsphere} this is the spherical mean.
+
+(b) Integrating the spherical means against $r^{d-1}\dd r$ (polar coordinates) shows that $u(x)$ equals its mean over every ball $B(x,\rho)$ with closure in $D$. So $|u(x)-u(y)|\le\sup|u|\,\lambda(B(x,\rho)\triangle B(y,\rho))/\lambda(B(x,\rho))$,
+which tends to $0$ as $y\to x$: $u$ is continuous. Let $\varphi_\varepsilon(y)=\psi(|y|)$ be a smooth radial probability density supported in $B(0,\varepsilon)$. In polar coordinates,
+$(u*\varphi_\varepsilon)(x)=\int_0^\varepsilon\psi(r)r^{d-1}\sigma(S^{d-1})\int u(x+r\omega)\dd\bar\sigma(\omega)\dd r=u(x)$ when $\bar B(x,\varepsilon)\subseteq D$: so $u$ is $C^\infty$. Finally, by Taylor's formula and the
+symmetries of $\bar\sigma$ ($\int\omega_i\dd\bar\sigma=0$, $\int\omega_i\omega_j\dd\bar\sigma=\frac{\delta_{ij}}d$, by the reflections $\omega_i\mapsto-\omega_i$, the permutations of coordinates, and $\sum\omega_i^2=1$),
+\[
+0=\int u(x+r\omega)\dd\bar\sigma(\omega)-u(x)=\frac{r^2}{2d}\Delta u(x)+o(r^2),
+\]
+so $\Delta u(x)=0$.
+\end{proof}
+
+\section{The Dirichlet problem}
+
+Let $D$ be a bounded open set, $g$ continuous on $\partial D$, and $\tau=\inf\{t\ge0:B_t\notin D\}$, which is finite since $D$ is bounded. The \emph{Dirichlet problem} asks for $u$ continuous on $\bar D$, harmonic in $D$, with
+$u=g$ on $\partial D$. A point $z\in\partial D$ is \emph{regular} if $P_z(\sigma_D=0)=1$, where $\sigma_D=\inf\{t>0:B_t\notin D\}$: a Brownian motion started at $z$ leaves $D$ immediately. By Blumenthal's zero--one law,
+$P_z(\sigma_D=0)$ is $0$ or $1$.
+
+\begin{theorem}[Kakutani, 1944]\label{thm:kakutani}
+Let $u(x)=\mathbb E_x\,g(B_\tau)$ for $x\in D$.
+\begin{enumerate}[label=(\alph*)]
+\item $u$ is harmonic in $D$.
+\item If $z\in\partial D$ is regular, then $u(x)\to g(z)$ as $x\to z$, $x\in D$.
+\item If every point of $\partial D$ is regular, $u$ (extended by $g$) is the unique solution of the Dirichlet problem.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) $u$ is bounded by $\sup|g|$ and measurable (Fubini). If $\bar B(x,r)\subseteq D$, the exit time $\tau_r$ of $B(x,r)$ is at most $\tau$, and by Proposition~\ref{prop:strongmarkovd} the path after $\tau_r$ is a Brownian motion from
+$B_{\tau_r}$, independent of $\mathcal F_{\tau_r}$; its exit point from $D$ is $B_\tau$. So $u(x)=\mathbb E_xu(B_{\tau_r})$, the spherical mean by Lemma~\ref{lem:uniformsphere}, and Lemma~\ref{lem:meanvalue}(b) applies.
+
+(b) Fix $\varepsilon>0$ and $\eta>0$ with $|g(y)-g(z)|<\varepsilon$ for $y\in\partial D$, $|y-z|<\eta$. For $|x-z|<\eta/2$ and $\delta>0$,
+\[
+|u(x)-g(z)|\le\varepsilon+2\sup|g|\Bigl(P_x(\tau>\delta)+P_0\bigl(\max_{s\le\delta}|B_s|\ge\eta/2\bigr)\Bigr),
+\]
+because on the complement of the two events, $B_\tau$ is a point of $\partial D$ within $\eta$ of $z$. The last probability is small for $\delta$ small. For the other, fix $0<s<\delta$: $P_x(\tau>\delta)\le P_x(B_r\in D\text{ for }r\in[s,\delta])=
+\int p_s(x-y)\phi(y)\dd y$ with $\phi(y)=P_y(B_r\in D\text{ for }r\le\delta-s)$, by the Markov property at time $s$. This is continuous in $x$, so
+$\limsup_{x\to z}P_x(\tau>\delta)\le P_z(B_r\in D\text{ for }r\in[s,\delta])$, which decreases, as $s\downarrow0$, to $P_z(B_r\in D\text{ for }r\in\,]0,\delta])\le P_z(\sigma_D>0)=0$.
+
+(c) $u$ is a solution by (a) and (b). If $v$ is another one, let $D_n=\{x\in D:d(x,\partial D)>\frac1n\}$ and $\tau_n$ the exit time of $D_n$. As in Lemma~\ref{lem:meanvalue}(a), $v(x)=\mathbb E_xv(B_{\tau_n})$ for $x\in D_n$. The
+times $\tau_n$ increase to a limit $\tau'\le\tau$ with $d(B_{\tau'},\partial D)=\lim\frac1n=0$, so $B_{\tau'}\in\partial D$ and $\tau'=\tau$. By continuity of $v$ on $\bar D$ and bounded convergence, $v(x)=\mathbb E_xg(B_\tau)=u(x)$.
+\end{proof}
+
+\begin{theorem}[Poincar\'e's cone condition]\label{thm:cone}
+If $z\in\partial D$ and there is an open cone $C$ with vertex $z$ and $r>0$ with $C\cap B(z,r)\subseteq\R^d\setminus D$, then $z$ is regular. In particular, if $D$ is convex, or has a $C^2$ boundary, every boundary point
+is regular, and the Dirichlet problem has a unique solution for every continuous $g$.
+\end{theorem}
+
+\begin{proof}
+Translate so that $z=0$. By scaling, $P_0(B_t\in C)=P_0(B_1\in C)=p>0$ for every $t>0$, since $C$ is an open cone. Hence $P_0(\sigma_D\le t)\ge P_0(B_t\in C\cap B(0,r))\ge p-P_0(|B_t|\ge r)\to p$ as $t\to0$, and
+$P_0(\sigma_D=0)=\lim_{t\downarrow0}P_0(\sigma_D\le t)\ge p>0$. By Blumenthal's zero--one law it is $1$. A convex domain has a supporting half-space at each boundary point, which contains a cone; a $C^2$ boundary has an
+exterior ball at each point, which contains a small cone.
+\end{proof}
+
+Not every boundary point is regular. In the punctured disc $\{0<|x|<1\}$ of the plane, the centre is not: Brownian motion from $0$ never comes back to $0$ (Corollary~\ref{cor:recurrence}), and the Dirichlet problem with
+$g=1$ at the centre and $g=0$ on the circle has no solution (Exercise~\ref{ex:zaremba}; Stanis\l aw Zaremba, 1911). In dimension three, Henri Lebesgue found in 1913 a domain whose boundary has an inward
+pointing thorn so sharp that its tip is irregular.
+
+\section{Recurrence and transience}
+
+\begin{theorem}[exit from an annulus]\label{thm:annulus}
+Let $d\ge2$, $0<r<|x|<R$, and $T_\rho=\inf\{t:|B_t|=\rho\}$ for Brownian motion from $x$. Then
+\[
+P_x(T_r<T_R)=\frac{\log R-\log|x|}{\log R-\log r}\quad(d=2),\qquad P_x(T_r<T_R)=\frac{|x|^{2-d}-R^{2-d}}{r^{2-d}-R^{2-d}}\quad(d\ge3).
+\]
+\end{theorem}
+
+\begin{proof}
+The function $f(y)=\log|y|$ ($d=2$) or $|y|^{2-d}$ ($d\ge3$) is harmonic on $\R^d\setminus\{0\}$: for $f=\phi(|y|)$, $\Delta f=\phi''+\frac{d-1}{|y|}\phi'$. Modify it inside $B(0,r/2)$ to get a $C^2$ function on $\R^d$. Up to $T=T_r\wedge T_R$,
+which is finite, $f(B_{t\wedge T})$ is a bounded local martingale by It\^o's formula, so $f(x)=\mathbb Ef(B_T)=p\,\phi(r)+(1-p)\phi(R)$ with $p=P_x(T_r<T_R)$.
+\end{proof}
+
+\begin{corollary}\label{cor:recurrence}
+\begin{enumerate}[label=(\alph*)]
+\item Points are polar for $d\ge2$: for every $x$ and $y$, $P_x(B_t=y\text{ for some }t>0)=0$.
+\item For $d=2$, Brownian motion is \emph{neighbourhood recurrent}: almost surely it visits every disc at arbitrarily large times.
+\item For $d\ge3$, it is \emph{transient}: $|B_t|\to\infty$ almost surely, and $P_x(T_r<\infty)=(r/|x|)^{d-2}$ for $|x|>r$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+(a) For $x\ne0$, let $r\to0$ in Theorem~\ref{thm:annulus}: $P_x(T_0<T_R)=0$ for every $R$, and $T_R\to\infty$ as $R\to\infty$. For $x=0$, by the Markov property at time $\varepsilon$, $P_0(B_t=0\text{ for some }t>\varepsilon)=\mathbb E_0P_{B_\varepsilon}(T_0<\infty)=0$;
+let $\varepsilon\to0$. Translate for general $y$. (b) Let $R\to\infty$ for $d=2$: $P_x(T_r<\infty)=1$ for all $x$ and $r$. Apply this at the times when $|B|$ first reaches $n=1,2,\dots$ (strong Markov property), for discs
+centred anywhere. (c) Let $R\to\infty$ for $d\ge3$. Then, by the strong Markov property at $T_{n^3}$, the probability that $B$ returns to $B(0,n)$ after reaching the sphere of radius $n^3$ is $n^{2(2-d)}\le n^{-2}$, summable;
+by Borel--Cantelli, almost surely for $n$ large $|B_t|>n$ for all $t\ge T_{n^3}$.
+\end{proof}
+
+\begin{think}
+Simple random walk is recurrent on $\Z^2$ and transient on $\Z^3$ (P\'olya, Tome~3, Chapter~7). Brownian motion in the plane is recurrent only for neighbourhoods: it comes back near every point but never to it. Why
+can't the lattice walk tell the difference?
+\end{think}
+
+\section{Conformal invariance in the plane}
+
+Identify $\R^2$ with $\C$ and let $B=B^1+iB^2$ be planar Brownian motion. If $f=u+iv$ is holomorphic, $u$ and $v$ are harmonic, and the Cauchy--Riemann equations $u_x=v_y$, $u_y=-v_x$ give
+$|\nabla u|^2=|\nabla v|^2=|f'|^2$ and $\nabla u\cdot\nabla v=0$.
+
+\begin{lemma}[a common clock]\label{lem:commonclock}
+Let $X=(U,V)$ be continuous local martingales with $U_0=V_0=0$, $\langle U\rangle=\langle V\rangle=A$, $\langle U,V\rangle=0$ and $A_\infty=\infty$ almost surely. With $T_s=\inf\{t:A_t>s\}$, the process $W_s=X_{T_s}$ is a
+planar Brownian motion and $X_t=W_{A_t}$.
+\end{lemma}
+
+\begin{proof}
+The proof of Theorem~\ref{thm:dds} applies to $U$ and $V$ with the same clock, giving continuity and the martingale properties of $W^1$, $W^2$, $(W^1)^2-s$ and $(W^2)^2-s$ for $\mathcal G_s=\mathcal F_{T_s}$. It also applies to
+$UV$, a local martingale since $\langle U,V\rangle=0$, which stopped at $T_u$ is dominated by $\sup_tU_{T_u\wedge t}^2+\sup_tV_{T_u\wedge t}^2$, integrable by Doob's inequality: so $W^1W^2$ is a $(\mathcal G_s)$-martingale and
+$\langle W^1,W^2\rangle=0$. Theorem~\ref{thm:levychar} in dimension two concludes.
+\end{proof}
+
+\begin{theorem}[L\'evy's conformal invariance, 1948]\label{thm:conformal}
+Let $f$ be a non-constant entire function and $B$ a planar Brownian motion from $z_0$. Then $A_t=\int_0^t|f'(B_s)|^2\dd s$ is continuous, increasing, with $A_\infty=\infty$, and there is a planar Brownian motion $W$ from $f(z_0)$ with
+\[
+f(B_t)=W_{A_t}\qquad\text{for all }t\ge0 .
+\]
+\end{theorem}
+
+\begin{proof}
+By It\^o's formula, $u(B_t)=u(z_0)+\int_0^t\nabla u(B)\cdot\dd B$ (since $\Delta u=0$), and the same for $v$. By Proposition~\ref{prop:itoprops}(a), $\langle u(B)\rangle=\int|\nabla u(B)|^2\dd s=A=\langle v(B)\rangle$ and
+$\langle u(B),v(B)\rangle=\int\nabla u\cdot\nabla v(B)\dd s=0$. It remains to see that $A_\infty=\infty$. Since $f'$ is not identically zero, $|f'|\ge c>0$ on some disc $D(w,2\rho)$. By neighbourhood recurrence, the successive times
+$S_1<S_2<\cdots$ at which $B$ enters $\bar D(w,\rho)$ after having left $D(w,2\rho)$ (after the previous one) are finite, and after each $S_k$ the path spends in $D(w,2\rho)$ at least the exit time of the disc of radius $\rho$ centred at
+$B_{S_k}$. By the strong Markov property these times are independent with the same law, positive; so their sum is infinite almost surely, and $A_\infty\ge c^2\cdot\infty$. Lemma~\ref{lem:commonclock} applies to
+$f(B)-f(z_0)$.
+\end{proof}
+
+\begin{corollary}[L\'evy]\label{cor:winding}
+Planar Brownian motion $W$ from $1$ never hits $0$, and a continuous determination of its argument has $\limsup=+\infty$ and $\liminf=-\infty$: it winds around $0$ infinitely often in both directions.
+\end{corollary}
+
+\begin{proof}
+Take $f=\exp$ and $B$ from $0$. Then $W_{A_t}=e^{B_t}\ne0$, and $t\mapsto A_t$ maps $[0,\infty[$ onto $[0,\infty[$, so $W_s\ne0$ for all $s$. Along $s=A_t$, the continuous function $\theta_s=B^2_{T_s}$ is a determination of
+$\arg W_s$, and $B^2_t$ has $\limsup=+\infty$ and $\liminf=-\infty$ (Corollary~\ref{cor:infinity}).
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-winding}
+\caption{Left: planar Brownian motion $B$ from $0$ on $[0,3]$. Right: its image $e^{B_t}$, a time-changed Brownian motion from $1$ (Theorem~\ref{thm:conformal}); the vertical motion of $B$ becomes winding around
+$0$, the horizontal motion becomes radial motion on a logarithmic scale, and $0$ is never reached.}
+\label{fig:winding}
+\end{figure}
+
+\begin{beauty}
+The exponential map turns the line into the circle, and Brownian motion along the imaginary axis into winding around the origin. A theorem about all the paths of planar Brownian motion, that they avoid a point and
+turn around it forever, is read off a property of one-dimensional Brownian motion, that it oscillates between $-\infty$ and $+\infty$.
+\end{beauty}
+
+\begin{remark}
+L\'evy's theorem holds for any non-constant holomorphic $f$ on a domain $D$, up to the exit time of $D$. With the Riemann mapping theorem (Tome~7, Theorem~9.22) it shows that the \emph{harmonic measure}, the law of the
+exit point of Brownian motion from a simply connected domain, is carried to the harmonic measure of the disc by the Riemann map: exit points from the unit disc started at $0$ are uniform (Lemma~\ref{lem:uniformsphere}), so the
+harmonic measure of any simply connected domain is the image of the uniform law on the circle under the boundary values of the Riemann map. This is the starting point of the modern theory of planar random curves,
+Schramm--Loewner evolutions (Lawler, \emph{Conformally Invariant Processes in the Plane}, 2005).
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:ballexit}
+Let $\tau$ be the exit time of the ball $B(0,R)\subseteq\R^d$ for Brownian motion from $x$, $|x|<R$. Show that $\mathbb E_x\tau=\frac{R^2-|x|^2}d$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:halfplane}
+Planar Brownian motion starts at $(0,1)$ and is stopped when it hits the real axis. Show that the hitting point has the Cauchy law, of density $\frac1{\pi(1+x^2)}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:zaremba}
+Let $D=\{x\in\R^2:0<|x|<1\}$, $g=0$ on the unit circle and $g(0)=1$. Show that the Dirichlet problem has no solution. What is $\mathbb E_x\,g(B_\tau)$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:driftmax}
+Let $\mu\in\R$, $a>0$ and $X_t=B_t+\mu t$. With Corollary~\ref{cor:cameronmartin} and Theorem~\ref{thm:jointreflection}, show that
+\[
+P\Bigl(\max_{t\le T}X_t\ge a\Bigr)=1-\Phi\Bigl(\frac{a-\mu T}{\sqrt T}\Bigr)+e^{2\mu a}\Bigl(1-\Phi\Bigl(\frac{a+\mu T}{\sqrt T}\Bigr)\Bigr),
+\]
+with $\Phi$ the standard Gaussian distribution function. Check the limit $T\to\infty$ against Corollary~\ref{cor:driftmax} for $\mu<0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cmproduct}
+Using the Karhunen--Lo\`eve expansion $\int_0^1B_s^2\dd s=\sum_{n\ge1}\frac{\xi_n^2}{(n-\frac12)^2\pi^2}$ (Theorem~\ref{thm:wienerseries} and Parseval) and Euler's product $\cosh z=\prod_{n\ge1}\bigl(1+\frac{z^2}{(n-\frac12)^2\pi^2}\bigr)$, recover
+Example~\ref{ex:cmcosh} at $t=1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:strip}
+Let $a>0$ and $\tau$ the exit time of $]-a,a[$ by one-dimensional Brownian motion. (a) Show that $\mathbb E_x[\cos(\frac{\pi B_t}{2a})\mathbf 1_{\{\tau>t\}}]=e^{-\pi^2t/8a^2}\cos\frac{\pi x}{2a}$. (b) Deduce that
+$\frac1t\log P_0(\tau>t)\to-\frac{\pi^2}{8a^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:liouville}
+Prove Liouville's theorem, that a bounded harmonic function on $\R^d$ is constant, by \emph{coupling}: given $x\ne y$, let $H$ be the hyperplane bisecting $[x,y]$, $X=x+B$, and $Y$ the reflection of $X$ in $H$ until the first
+time $T$ that $X$ hits $H$, and $Y=X$ afterwards. Show that $Y$ is a Brownian motion from $y$, that $T<\infty$, and conclude.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:ballexit}
+$|B_t|^2-dt$ is a martingale.
+\end{hint}
+
+\begin{hint}{ex:halfplane}
+The hitting time $\tau$ depends only on $B^2$, and $B^1$ is independent of it. Compute $\mathbb Ee^{i\xi B^1_\tau}$ with Corollary~\ref{cor:hitlaplace}.
+\end{hint}
+
+\begin{hint}{ex:zaremba}
+A solution would be harmonic in $D$ and continuous on $\bar D$; Theorem~\ref{thm:kakutani}(c)'s uniqueness argument still applies, and Corollary~\ref{cor:recurrence}(a) says $B_\tau$ is never $0$.
+\end{hint}
+
+\begin{hint}{ex:driftmax}
+Under the reweighted probability with $\dot h=\mu$, the event depends on $(\max_{t\le T}B_t,B_T)$, whose joint law is in Theorem~\ref{thm:jointreflection}; the density is $e^{\mu B_T-\mu^2T/2}$.
+\end{hint}
+
+\begin{hint}{ex:cmproduct}
+The $\xi_n$ are independent, and $\mathbb Ee^{-s\xi^2}=(1+2s)^{-1/2}$.
+\end{hint}
+
+\begin{hint}{ex:strip}
+(a) Feynman--Kac's argument with $V=0$, the function $v(t,x)=e^{-\pi^2t/8a^2}\cos\frac{\pi x}{2a}$, stopped at $\tau$ where $v=0$. (b) For the upper bound, $P_y(\tau>1)\le C\cos\frac{\pi y}{2a}$ on $]-a,a[$.
+\end{hint}
+
+\begin{hint}{ex:liouville}
+$Y$ is obtained from $X$ by an orthogonal map until $T$, so its increments have the right brackets; $T$ is the hitting time of a level by a one-dimensional Brownian motion. And $u(x)=\mathbb Eu(X_t)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:ballexit}
+\idea The squared distance grows on average at rate $d$, one unit per coordinate, so the mean time to grow from $|x|^2$ to $R^2$ is the difference divided by $d$.
+\writeup It\^o's formula: $|B_t|^2=|x|^2+2\int B\cdot\dd B+dt$. Stopped at $\tau\wedge t$, the integral is a bounded martingale (its integrand is bounded by $R$ and its clock by $R^2t$), so $\mathbb E_x|B_{\tau\wedge t}|^2=|x|^2+d\,\mathbb E_x[\tau\wedge t]$.
+The left side is at most $R^2$, so $\mathbb E_x\tau<\infty$ by monotone convergence; letting $t\to\infty$ with bounded convergence on the left, $R^2=|x|^2+d\,\mathbb E_x\tau$.
+\end{solution}
+
+\begin{solution}{ex:halfplane}
+\idea The horizontal position at the hitting time is a Gaussian with a random variance, the hitting time of level $1$ by the vertical coordinate. Mixing Gaussians by the hitting-time law gives the Cauchy law; the
+Laplace transform of Chapter~3 does the mixing in one line.
+\writeup $\tau=\inf\{t:B^2_t=0\}$ is the hitting time of $-1$ by the Brownian motion $B^2-1$, independent of $B^1$. Conditioning on $\tau$, $\mathbb Ee^{i\xi B^1_\tau}=\mathbb Ee^{-\xi^2\tau/2}=e^{-|\xi|}$ by Corollary~\ref{cor:hitlaplace} with
+$\mu=\xi^2/2$. This is the characteristic function of the Cauchy law (Tome~6, Chapter~9).
+\end{solution}
+
+\begin{solution}{ex:zaremba}
+\idea Brownian motion does not see the centre: it never hits it. So the probabilistic solution ignores the boundary value there, and a genuine solution, which would have to coincide with it, cannot exist.
+\writeup Suppose $v$ is continuous on the closed disc, harmonic in $D$, $v=0$ on the circle and $v(0)=1$. The proof of Theorem~\ref{thm:kakutani}(c) uses only harmonicity in $D$ and continuity on $\bar D$, and gives
+$v(x)=\mathbb E_x\,g(B_\tau)$ for $x\in D$. By Corollary~\ref{cor:recurrence}(a), $B_\tau$ is on the circle almost surely, so $v(x)=0$ for all $x\in D$, and by continuity $v(0)=0$: a contradiction. The probabilistic candidate is
+$\mathbb E_x\,g(B_\tau)=0$, harmonic in $D$, but it does not take the value $1$ at the irregular point $0$.
+\end{solution}
+
+\begin{solution}{ex:driftmax}
+\idea A drift is a reweighting of the paths. After reweighting, the question is about driftless Brownian motion, whose maximum and endpoint have the explicit joint law of Chapter~2, and the weight depends
+only on the endpoint.
+\writeup By Corollary~\ref{cor:cameronmartin} with $\dot h=\mu$ on $[0,T]$, $P(\max_{t\le T}X_t\ge a)=\mathbb E[\mathbf 1_{\{M_T\ge a\}}e^{\mu B_T-\mu^2T/2}]$, with $M_T=\max_{t\le T}B_t$. Split according to $B_T\ge a$ (then $M_T\ge a$
+automatically) or $B_T=b<a$, where by Theorem~\ref{thm:jointreflection} $P(M_T\ge a,B_T\in\dd b)=P(B_T\in2a-\dd b)$, so
+\[
+P\Bigl(\max X\ge a\Bigr)=\mathbb E\bigl[e^{\mu B_T-\frac{\mu^2T}2};B_T\ge a\bigr]+\mathbb E\bigl[e^{\mu(2a-B_T)-\frac{\mu^2T}2};B_T>a\bigr].
+\]
+Completing the square, $\mathbb E[e^{\mu B_T-\mu^2T/2};B_T\ge a]=P(B_T+\mu T\ge a)=1-\Phi(\frac{a-\mu T}{\sqrt T})$, and the second term is $e^{2\mu a}P(B_T-\mu T>a)=e^{2\mu a}(1-\Phi(\frac{a+\mu T}{\sqrt T}))$. As
+$T\to\infty$ with $\mu<0$, the first term tends to $0$ and the second to $e^{2\mu a}$, which is Corollary~\ref{cor:driftmax} with $-\mu$ in place of $\mu$.
+\end{solution}
+
+\begin{solution}{ex:cmproduct}
+\idea A quadratic functional of a Gaussian process is a sum of independent squared Gaussians along its eigenbasis; its Laplace transform is an infinite product, and the product is a classical function.
+\writeup With $s=\frac{\lambda^2}2\cdot\frac1{(n-\frac12)^2\pi^2}$ for the $n$-th term and independence (monotone convergence for the infinite product),
+$\mathbb E\exp(-\frac{\lambda^2}2\int_0^1B^2)=\prod_n\bigl(1+\frac{\lambda^2}{(n-\frac12)^2\pi^2}\bigr)^{-1/2}=(\cosh\lambda)^{-1/2}$. The expansion of $\int_0^1B^2$ is Parseval's identity for the uniformly convergent series
+$B_t=\sqrt2\sum\xi_n\frac{\sin((n-\frac12)\pi t)}{(n-\frac12)\pi}$, whose functions are orthogonal in $L^2[0,1]$ with squared norms $\frac1{(n-\frac12)^2\pi^2}$. Euler's product is the factorisation of $\cosh z=\cos(iz)$ over
+its zeros $z=\pm i(n-\frac12)\pi$ (Tome~5).
+\end{solution}
+
+\begin{solution}{ex:strip}
+\idea The slowest decaying solution of the heat equation in a strip with zero boundary values is the first sine mode, and its decay rate $\frac{\pi^2}{8a^2}$ is the rate at which Brownian motion is killed at the boundary.
+\writeup (a) $v(t,x)=e^{-\pi^2t/8a^2}\cos\frac{\pi x}{2a}$ satisfies $\partial_tv=\frac12v''$ and vanishes at $\pm a$. As in Theorem~\ref{thm:feynmankac}, $s\mapsto v(t-s,B_{s\wedge\tau})$ is a bounded martingale on $[0,t]$, so
+$v(t,x)=\mathbb E_xv(0,B_{t\wedge\tau})=\mathbb E_x[\cos(\frac{\pi B_t}{2a})\mathbf 1_{\{\tau>t\}}]$, since $v(\cdot,B_\tau)=0$. (b) Lower bound: $P_0(\tau>t)\ge\mathbb E_0[\cos(\frac{\pi B_t}{2a})\mathbf 1_{\{\tau>t\}}]=e^{-\pi^2t/8a^2}$. Upper
+bound: for $|y|<a$, $P_y(\tau>1)\le P(|B_1|<a-|y|)\le\frac{2(a-|y|)}{\sqrt{2\pi}}$ (to stay inside, the path must not reach the nearer endpoint), and $\cos\frac{\pi y}{2a}=\sin\frac{\pi(a-|y|)}{2a}\ge\frac{a-|y|}a$. By the Markov
+property at $t-1$, $P_0(\tau>t)=\mathbb E_0[\mathbf 1_{\{\tau>t-1\}}P_{B_{t-1}}(\tau>1)]\le\frac{2a}{\sqrt{2\pi}}e^{-\pi^2(t-1)/8a^2}$. Take logarithms.
+\end{solution}
+
+\begin{solution}{ex:liouville}
+\idea Two Brownian motions started at different points can be made to meet, by running one as the mirror image of the other until they reach the mirror. A harmonic function averages over the future, and after
+the meeting the two futures coincide.
+\writeup Let $n$ be the unit vector from $x$ to $y$, $c=\frac12(x+y)$, and $R$ the reflection $z\mapsto z-2((z-c)\cdot n)n$, which maps $x$ to $y$. Put $Y_t=R(X_t)$ for $t\le T$ and $Y_t=X_t$ for $t\ge T$, where $T$ is the hitting time
+of $H=\{(z-c)\cdot n=0\}$ by $X$; it is the hitting time of $\frac12|y-x|$ by the one-dimensional Brownian motion $B\cdot n$, finite almost surely. $Y=y+\int_0^tO_s\dd B_s$ with $O_s=I-2nn^{\mathsf T}$ for $s\le T$ and $I$ after,
+orthogonal and progressive, so $Y$ is a Brownian motion from $y$ (Exercise~\ref{ex:rotation}). If $u$ is bounded and harmonic, $u(x+B_t)$ is a bounded martingale (It\^o), so $u(x)=\mathbb Eu(X_t)$ and $u(y)=\mathbb Eu(Y_t)$, and
+$|u(x)-u(y)|\le\mathbb E|u(X_t)-u(Y_t)|\le2\sup|u|\,P(T>t)\to0$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} S.~Kakutani, ``Two-dimensional Brownian motion and harmonic functions'', \emph{Proceedings of the Imperial Academy Tokyo} 20 (1944), 706--714. M.~Kac, ``On distributions of certain Wiener
+functionals'', \emph{Transactions of the American Mathematical Society} 65 (1949), 1--13, and \emph{Enigmas of Chance}, Harper and Row, 1985 (the Cornell lecture). R.~P.~Feynman, ``Space-time approach to
+non-relativistic quantum mechanics'', \emph{Reviews of Modern Physics} 20 (1948), 367--387. R.~H.~Cameron and W.~T.~Martin, ``Transformations of Wiener integrals under translations'', \emph{Annals of Mathematics}
+45 (1944), 386--396, and ``The Wiener measure of Hilbert neighborhoods in the space of real continuous functions'', \emph{Journal of Mathematics and Physics} 23 (1944), 195--209. I.~V.~Girsanov, ``On transforming a
+certain class of stochastic processes by absolutely continuous substitution of measures'', \emph{Theory of Probability and its Applications} 5 (1960), 285--301. A.~A.~Novikov, ``On an identity for stochastic integrals'',
+\emph{Theory of Probability and its Applications} 17 (1972), 717--720. H.~Poincar\'e, ``Sur les \'equations aux d\'eriv\'ees partielles de la physique math\'ematique'', \emph{American Journal of Mathematics} 12 (1890),
+211--294. S.~Zaremba, ``Sur le principe de Dirichlet'', \emph{Acta Mathematica} 34 (1911), 293--316. P.~L\'evy, \emph{Processus stochastiques et mouvement brownien}, 1948 (conformal invariance).
+\item P.~M\"orters and Y.~Peres, \emph{Brownian Motion}, Cambridge University Press, 2010, Chapters~3 and~7. Harmonic functions, the Dirichlet problem, recurrence and conformal invariance; the route followed here.
+\item R.~F.~Bass, \emph{Probabilistic Techniques in Analysis}, Springer, 1995. Brownian proofs of the classical theorems of potential theory.
+\item J.-F.~Le~Gall, \emph{Brownian Motion, Martingales, and Stochastic Calculus}, Springer, 2016, Chapters~5 and~7. Girsanov's theorem and the Dirichlet problem.
+\item G.~F.~Lawler, \emph{Conformally Invariant Processes in the Plane}, American Mathematical Society, 2005. Where conformal invariance leads.
+\end{itemize}
