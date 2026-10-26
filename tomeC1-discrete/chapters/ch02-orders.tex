@@ -1,0 +1,606 @@
+\chapter{Orders}
+
+\begin{center}\itshape
+Every sequence of $n^2+1$ distinct numbers contains a monotone subsequence of length $n+1$.\\
+\upshape(Erd\H os and Szekeres, 1935)
+\end{center}
+
+Budapest, the winter of 1933. A group of students meets on Sunday afternoons in a park or a caf\'e to trade
+problems; among them are Paul Erd\H os, barely twenty, George Szekeres, a chemistry student, and Esther Klein. One
+afternoon Klein puts five points on the table, no three on a line, and announces that four of them always form a
+convex quadrilateral. The others check it; she explains why. Then the question that would not let go: for a
+convex pentagon, how many points are needed? For a hexagon? Szekeres found that the answer exists, by rediscovering
+Ramsey's theorem on the way, and Erd\H os found a second proof, built on a lemma about sequences: the epigraph of this
+chapter. The paper appeared in 1935. Szekeres and Klein married in 1937, and Erd\H os, who loved the story, called the
+whole subject \emph{the happy ending problem}.
+
+The lemma on sequences is a theorem about \emph{orders}: two orders on the same terms, by position and by size,
+that must agree for a long stretch or disagree for a long stretch. Orders are everywhere in computing. A build system
+compiles files in an order compatible with their dependencies; a scheduler runs tasks after their prerequisites; a
+compiler computes the meaning of a recursive definition as the least solution of an equation; a proof that a program
+terminates exhibits a quantity that decreases in a well-ordered set. This chapter develops the mathematics behind all
+of these: partial orders and lattices, the fixed point theorem of Knaster and Tarski, well-founded orders and the art
+of proving termination, the theorems of Mirsky and Dilworth on chains and antichains, and the beautiful structure of
+the lattice of all subsets of a set, which our cover shows.
+
+\begin{think}
+Write down any ten distinct numbers in a row. Can you always find four of them, read from left to right, that increase,
+or four that decrease? Try to build a row of nine numbers without such a quadruple. Then try ten.
+\end{think}
+
+\section{Relations and partial orders}
+
+A \emph{relation} on a set $P$ is a subset $R\subseteq P\times P$; we write $x\,R\,y$ for $(x,y)\in R$. An \emph{equivalence relation} is reflexive
+($x\,R\,x$), symmetric ($x\,R\,y\Rightarrow y\,R\,x$) and transitive ($x\,R\,y\,R\,z\Rightarrow x\,R\,z$). Its classes form a partition of $P$, and every partition
+comes from exactly one equivalence relation, ``being in the same block''; Chapter~3 counts them.
+
+\begin{definition}\label{def:poset}
+A \emph{partial order} is a relation $\le$ that is reflexive, antisymmetric ($x\le y\le x\Rightarrow x=y$) and transitive; $(P,\le)$ is a
+\emph{poset}. We write $x<y$ for $x\le y$, $x\ne y$. Two elements are \emph{comparable} if $x\le y$ or $y\le x$. A \emph{chain} is a set of pairwise
+comparable elements, an \emph{antichain} a set of pairwise incomparable ones. The order is \emph{total} (or linear) if any two
+elements are comparable. An element $m$ is \emph{minimal} if no $x<m$, and \emph{least} if $m\le x$ for all $x$; similarly maximal and
+greatest. We say $y$ \emph{covers} $x$ if $x<y$ and no $z$ satisfies $x<z<y$.
+\end{definition}
+
+Examples: the integers with divisibility; the subsets of a set with inclusion; the tasks of a project with ``must come
+before''; the vectors of $\R^n$ with the coordinatewise order; words with the dictionary order (total) or the prefix order
+(not total). A finite poset is drawn as a \emph{Hasse diagram}: one point per element, higher points for larger elements, and
+a segment for each covering pair. Since $x<y$ holds exactly when a path of coverings climbs from $x$ to $y$ (in a finite poset,
+refine $x<y$ by inserting elements until no more fit), the diagram determines the order.
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-divisors}
+\caption{The divisors of $60$ ordered by divisibility. Each segment goes up by multiplying by one prime. The lattice is the
+product of three chains, $\{1,2,4\}$, $\{1,3\}$ and $\{1,5\}$, and its middle rank (shaded), the divisors with two prime factors $\{4,6,10,15\}$, is an antichain of maximal size
+(Exercise~\ref{ex:divisorscd}).}
+\label{fig:divisors}
+\end{figure}
+
+A \emph{linear extension} of a poset is a total order $\preceq$ on the same set with $x\le y\Rightarrow x\preceq y$: a way of doing all the tasks one
+after the other while respecting the prerequisites.
+
+\begin{proposition}[topological sorting]\label{prop:topsort}
+Every finite poset has a linear extension.
+\end{proposition}
+\begin{proof}
+A finite non-empty poset has a minimal element: start anywhere and go down while possible; as the elements met are
+strictly decreasing they are distinct, so this stops. Take a minimal element $m_1$ of $P$, then a minimal element $m_2$ of
+$P\setminus\{m_1\}$, and so on, and order $m_1\prec m_2\prec\dots\prec m_n$. If $m_i<m_j$ in $P$, then $j>i$: when $m_j$ was chosen it was minimal among the
+remaining elements, so $m_i$ was no longer there.
+\end{proof}
+
+This is the algorithm run by \texttt{make} and by every package manager; Tome~C2 implements it in linear time. For infinite
+posets, every partial order still extends to a total one (Szpilrajn, 1930), by Zorn's lemma (Tome~6, Chapter~1).
+
+\section{Lattices and fixed points}
+
+\begin{definition}\label{def:lattice}
+A poset is a \emph{lattice} if any two elements $x,y$ have a least upper bound $x\lor y$ (their \emph{join}) and a greatest lower bound
+$x\land y$ (their \emph{meet}). It is a \emph{complete lattice} if every subset $S$, even infinite or empty, has a least upper bound $\bigvee S$
+and a greatest lower bound $\bigwedge S$.
+\end{definition}
+
+The subsets of a set form a complete lattice ($\bigcup$ and $\bigcap$); so do the divisors of $n$ (lcm and gcd), the subspaces of a
+vector space (sum and intersection), the partitions of a set ordered by refinement, and the interval $[0,1]$. A finite
+lattice is complete: take iterated joins and meets, with $\bigvee\emptyset$ the least element (the meet of everything) and $\bigwedge\emptyset$ the
+greatest. Boolean algebras (Chapter~1) are the lattices with complements and distributivity.
+
+In 1928 Bronis\l aw Knaster, in Warsaw, proved a small lemma about sets; in 1955 Alfred Tarski stated it for lattices.
+It has since become the foundation of the semantics of programming languages.
+
+\begin{theorem}[Knaster and Tarski]\label{thm:tarski}
+Let $L$ be a complete lattice and $f\colon L\to L$ monotone ($x\le y\Rightarrow f(x)\le f(y)$). Then $f$ has a least fixed point, namely
+$a=\bigwedge\{x:f(x)\le x\}$, and a greatest fixed point. More generally, the fixed points of $f$ form a complete lattice.
+\end{theorem}
+\begin{proof}
+Let $D=\{x:f(x)\le x\}$, which contains the greatest element, and $a=\bigwedge D$. For $x\in D$, $a\le x$ so $f(a)\le f(x)\le x$; thus $f(a)$ is a lower bound
+of $D$ and $f(a)\le a$. Then $f(f(a))\le f(a)$, so $f(a)\in D$ and $a\le f(a)$. Hence $f(a)=a$. Every fixed point lies in $D$, so it is $\ge a$: $a$ is the
+least fixed point. The greatest one is obtained dually, as $\bigvee\{x:x\le f(x)\}$.
+
+Now let $S$ be a set of fixed points and $s=\bigvee S$. For $y\in S$, $y=f(y)\le f(s)$, so $s\le f(s)$, and $f$ maps the interval $[s,\top]=\{x:x\ge s\}$
+into itself (if $x\ge s$ then $f(x)\ge f(s)\ge s$). This interval is a complete lattice, so $f$ has a least fixed point $b$ in it. Every
+fixed point that is an upper bound of $S$ lies in $[s,\top]$ and so is $\ge b$: $b$ is the least upper bound of $S$ among fixed points.
+Greatest lower bounds are obtained dually.
+\end{proof}
+
+The fixed points need not form a \emph{sublattice}: the join of two fixed points among fixed points may be larger than their
+join in $L$. A famous consequence is the Schr\"oder--Bernstein theorem, which Cantor had stated without being able to prove.
+
+\begin{corollary}[Schr\"oder--Bernstein]\label{cor:sb}
+If there are injections $f\colon A\to B$ and $g\colon B\to A$, there is a bijection between $A$ and $B$.
+\end{corollary}
+\begin{proof}
+On the complete lattice of subsets of $A$, the map $\Phi(S)=A\setminus g(B\setminus f(S))$ is monotone: a larger $S$ makes $f(S)$ larger, $B\setminus f(S)$
+smaller, its image under $g$ smaller, and the complement larger. Let $S$ be a fixed point, so that $A\setminus S=g(B\setminus f(S))$. Define $h(x)=f(x)$ for
+$x\in S$ and $h(x)=g^{-1}(x)$ for $x\in A\setminus S$, which makes sense since every such $x$ is $g(y)$ for exactly one $y\in B\setminus f(S)$. Then $h$ maps $S$
+bijectively onto $f(S)$ and $A\setminus S$ bijectively onto $B\setminus f(S)$; these two images partition $B$, so $h$ is a bijection.
+\end{proof}
+
+On a finite lattice the least fixed point can be computed by iteration, and this is how compilers and databases do
+it.
+
+\begin{proposition}[Kleene iteration]\label{prop:kleene}
+Let $L$ be a finite lattice with least element $\bot$ and $f$ monotone. The sequence $\bot\le f(\bot)\le f^2(\bot)\le\cdots$ is non-decreasing and
+becomes constant, equal to the least fixed point of $f$, after at most $h$ steps, where $h+1$ is the largest size of a chain in $L$.
+\end{proposition}
+\begin{proof}
+$\bot\le f(\bot)$, and applying $f$ repeatedly gives $f^k(\bot)\le f^{k+1}(\bot)$ by monotonicity. A strictly increasing stretch of this sequence
+is a chain, so after at most $h$ strict increases the sequence stops increasing, and then $f^k(\bot)=f^{k+1}(\bot)$ is a fixed point. If $x$ is
+any fixed point, $\bot\le x$ gives by induction $f^k(\bot)\le f^k(x)=x$; so the limit is the least fixed point.
+\end{proof}
+
+\begin{example}\label{ex:reach}
+\emph{Reachability.} In a directed graph with vertex set $V$ and a start vertex $s$, consider on the lattice of subsets of $V$ the
+monotone map $f(X)=\{s\}\cup\{v:\text{some }u\in X\text{ has an arc }u\to v\}$. Its least fixed point is the set of vertices reachable from $s$, and Kleene
+iteration is breadth-first search: $f^k(\emptyset)$ is the set of vertices at distance less than $k$. The least model of a set of Horn
+clauses (Theorem~\ref{thm:horn}) is the least fixed point of ``add every conclusion whose hypotheses are true'', and recursive
+queries in SQL are evaluated in the same way.
+\end{example}
+
+\section{Well-founded orders and termination}
+
+Why does Euclid's algorithm stop? Because the second argument is a natural number that decreases at each step, and
+natural numbers cannot decrease forever. Every termination proof has this shape; only the set where the quantity
+decreases changes.
+
+\begin{definition}\label{def:wf}
+A poset is \emph{well-founded} if every non-empty subset has a minimal element. A total well-founded order is a
+\emph{well-order}.
+\end{definition}
+
+A well-founded poset has no infinite strictly decreasing sequence $x_0>x_1>\cdots$, since the set of its terms would have no
+minimal element. Conversely, if a non-empty subset $S$ has no minimal element, we can choose $x_0\in S$, then $x_1<x_0$ in $S$, and so
+on, which gives an infinite decreasing sequence; this step-by-step choice is the axiom of dependent choice (Tome~6,
+Chapter~1), and we use the two forms of the definition interchangeably. For instance $\N$, finite posets and $\N^k$ with
+the coordinatewise order are well-founded; $\Z$ and $\Q_{\ge0}$ are not.
+
+\begin{theorem}[well-founded induction]\label{thm:wfind}
+Let $(P,<)$ be well-founded and $\mathcal P(x)$ a property of the elements of $P$. If, for every $x$, $\mathcal P(y)$ for all $y<x$ implies $\mathcal P(x)$,
+then $\mathcal P(x)$ holds for all $x\in P$.
+\end{theorem}
+\begin{proof}
+Otherwise the set of counterexamples has a minimal element $x$; then $\mathcal P(y)$ holds for all $y<x$, so $\mathcal P(x)$ holds, a
+contradiction.
+\end{proof}
+
+Ordinary induction is the case $P=\N$. To build well-founded orders from simpler ones, the \emph{lexicographic order} on $A\times B$
+says $(a,b)<(a',b')$ if $a<a'$, or $a=a'$ and $b<b'$.
+
+\begin{proposition}\label{prop:lex}
+If $A$ and $B$ are well-founded, so is $A\times B$ with the lexicographic order.
+\end{proposition}
+\begin{proof}
+Let $S\subseteq A\times B$ be non-empty. Let $a_0$ be a minimal element of the set of first coordinates of $S$, and $b_0$ a minimal element of
+$\{b:(a_0,b)\in S\}$. If $(a,b)<(a_0,b_0)$ with $(a,b)\in S$, then either $a<a_0$, against the choice of $a_0$, or $a=a_0$ and $b<b_0$, against the choice of $b_0$.
+So $(a_0,b_0)$ is minimal in $S$.
+\end{proof}
+
+\begin{example}\label{ex:ackermann}
+\emph{Ackermann's function} is defined by $A(0,n)=n+1$, $A(m+1,0)=A(m,1)$ and $A(m+1,n+1)=A(m,A(m+1,n))$. Does the recursion
+always stop? Each recursive call is made on a pair that is lexicographically smaller: $(m,1)<(m+1,0)$, $(m+1,n)<(m+1,n+1)$,
+and $(m,k)<(m+1,n+1)$ whatever $k$ is. By well-founded induction on $\N\times\N$, $A(m,n)$ is defined for all $m,n$. Its growth is
+spectacular: $A(2,n)=2n+3$, $A(3,n)=2^{n+3}-3$, and $A(4,2)=2^{65536}-3$ has $19\,729$ digits (Exercise~\ref{ex:ackermannvalues}). Its slowly
+growing inverse governs the union--find data structure of Tome~C2.
+\end{example}
+
+Sometimes no single quantity decreases, but a \emph{bag} of quantities does: one element is removed and replaced by any
+number of smaller ones. Think of a to-do list in which finishing a task may create many new, smaller tasks. Will the list
+ever be empty? A \emph{multiset} over $X$ is a finite collection of elements of $X$ with repetitions allowed. For multisets $M,N$, write
+$N<_{\mathrm{mul}}M$ if $N$ is obtained from $M$ by removing a non-empty submultiset $R$ and adding a multiset $Q$ each of whose elements is
+smaller than some element of $R$.
+
+\begin{theorem}[Dershowitz and Manna, 1979]\label{thm:multiset}
+If $(X,<)$ has no infinite decreasing sequence, then neither has the multiset order: every sequence of multisets
+$M_0>_{\mathrm{mul}}M_1>_{\mathrm{mul}}\cdots$ is finite.
+\end{theorem}
+\begin{proof}
+Suppose $M_0>_{\mathrm{mul}}M_1>_{\mathrm{mul}}\cdots$ is infinite. Grow a rooted tree whose vertices, apart from the root, are the individual copies of
+elements that appear: the copies in $M_0$ are the children of the root, and when step $i$ removes $R_i$ and adds $Q_i$, attach every
+copy in $Q_i$ as a child of one copy in $R_i$ that is larger than it. Each vertex gets children at most once, when it is
+removed, and finitely many; so every vertex has finitely many children. Each step removes at least one copy, never
+the same one twice, so the tree is infinite.
+
+By K\H onig's lemma (Exercise~\ref{ex:konig}, whose direct proof is two lines: always move to a child with infinitely many
+descendants), the tree has an infinite path from the root, $x_1,x_2,\dots$, and each child is smaller than its parent:
+$x_1>x_2>\cdots$ is an infinite decreasing sequence in $X$, a contradiction.
+\end{proof}
+
+The to-do list empties. The theorem is used inside proof assistants and rewriting systems to show that programs and
+simplification rules terminate. Exercise~\ref{ex:hydra} uses it to kill the Hydra of Kirby and Paris, a monster whose
+heads grow back by the hundreds and which, nevertheless, always dies.
+
+\section{Chains and antichains}
+
+Back to Budapest. In a poset, a chain and an antichain meet in at most one point, so if $P$ is covered by $k$ chains it has
+no antichain larger than $k$, and if it is covered by $k$ antichains it has no chain larger than $k$. The two theorems of this
+section say that in both cases the obvious obstruction is the only one. The \emph{height} of a finite poset is the size of
+its largest chain, its \emph{width} the size of its largest antichain.
+
+\begin{theorem}[Mirsky, 1971]\label{thm:mirsky}
+A finite poset of height $h$ can be partitioned into $h$ antichains, and not into fewer.
+\end{theorem}
+\begin{proof}
+Fewer is impossible, since a chain of size $h$ meets each antichain at most once. For $x\in P$ let $r(x)$ be the size of the largest
+chain whose greatest element is $x$; then $1\le r(x)\le h$. If $x<y$, a largest chain ending at $x$ can be continued by $y$, so $r(y)>r(x)$. Hence
+each level set $\{x:r(x)=i\}$ is an antichain, and the $h$ level sets partition $P$.
+\end{proof}
+
+The dual statement is harder, and Robert Dilworth's proof of 1950 made it a classic.
+
+\begin{theorem}[Dilworth, 1950]\label{thm:dilworth}
+A finite poset of width $w$ can be partitioned into $w$ chains, and not into fewer.
+\end{theorem}
+\begin{proof}[Proof (Perles, 1963)]
+Fewer is impossible, since an antichain of size $w$ meets each chain at most once. We show by induction on $|P|$ that $w$
+chains suffice; the empty poset is clear. Let $a$ be a minimal element of $P$ and $b$ a maximal element with $a\le b$ (go up from $a$
+while possible). The set $C=\{a,b\}$ is a chain. If $P\setminus C$ has width at most $w-1$, it is a union of $w-1$ chains by induction, and $C$
+completes the partition. Otherwise $P\setminus C$ contains an antichain $A$ of size $w$. Let
+\[
+\begin{gathered}P^+=\{x\in P:x\ge y\text{ for some }y\in A\},\qq P^-=\{x\in P:x\le y\text{ for some }y\in A\}.\end{gathered}
+\]
+Every $x\in P$ is comparable with some element of $A$, otherwise $A\cup\{x\}$ would be an antichain of size $w+1$; so $P^+\cup P^-=P$. If $x\in P^+\cap P^-$,
+then $y\le x\le y'$ with $y,y'\in A$, so $y=y'=x$: thus $P^+\cap P^-=A$. Moreover $a\notin P^+$: $a\ge y\in A$ would force $a=y$ by minimality, but $a\notin A$.
+Likewise $b\notin P^-$. So $P^+$ and $P^-$ are smaller than $P$, both have width $w$ (they contain $A$), and by induction each is a union of $w$
+chains. Each of the $w$ chains of $P^+$ contains exactly one element of $A$, and that element is its least element: if $y\in A$ and $z<y$
+were in the same chain of $P^+$, then $z\ge y'$ for some $y'\in A$, and $y'<y$ contradicts that $A$ is an antichain. Likewise each chain of
+$P^-$ has exactly one element of $A$, as its greatest element. Gluing the chain of $P^-$ ending at $y$ to the chain of $P^+$ starting at
+$y$, for each $y\in A$, gives $w$ chains covering $P$.
+\end{proof}
+
+Chapter~6 gives a second proof, through K\H onig's theorem on matchings, which also yields an efficient algorithm. Now
+the happy ending.
+
+\begin{theorem}[Erd\H os and Szekeres, 1935]\label{thm:es}
+Every sequence of $mn+1$ distinct real numbers contains an increasing subsequence of length $m+1$ or a decreasing
+subsequence of length $n+1$. The bound $mn+1$ is sharp.
+\end{theorem}
+\begin{proof}
+Let the sequence be $a_1,\dots,a_N$ with $N=mn+1$, and order the indices by $i\preceq j$ if $i\le j$ and $a_i\le a_j$. This is a partial order whose
+chains are the increasing subsequences and whose antichains are the decreasing ones (if $i<j$ are incomparable, then
+$a_i>a_j$). If there is no increasing subsequence of length $m+1$, the height is at most $m$, and Mirsky's theorem covers the $mn+1$
+indices by $m$ antichains; one of them has at least $n+1$ elements, a decreasing subsequence.
+
+For sharpness, take $m$ decreasing blocks of $n$ numbers, each block above the previous one, for instance for $m=n=3$:
+$3,2,1,\;6,5,4,\;9,8,7$. An increasing subsequence takes at most one term from each block, and a decreasing one stays in one
+block.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-es}
+\caption{A sequence of $10$ distinct numbers (blue dots, position across, value up). Each term is labelled with the
+length of the longest increasing subsequence ending at it, the function $r$ of Mirsky's proof. Three terms share
+the label $2$, and they decrease from left to right: equal labels always form a decreasing subsequence.}
+\label{fig:es}
+\end{figure}
+
+\begin{remark}
+The \emph{happy ending problem} itself asks for the least $f(n)$ such that any $f(n)$ points in the plane, no three on a line,
+contain the vertices of a convex $n$-gon. Klein's observation is $f(4)=5$ (Exercise~\ref{ex:klein}); $f(5)=9$ was proved by Endre Makai, and $f(6)=17$ by a computer search of Szekeres and Peters in 2006, the year after Szekeres and Klein died within an
+hour of each other. Erd\H os and Szekeres conjectured $f(n)=2^{n-2}+1$, and proved $f(n)\le\binom{2n-4}{n-2}+1$. In 2017 Andrew Suk proved
+$f(n)=2^{n+o(n)}$, a near-miss of the conjecture that is still open.
+\end{remark}
+
+\section{The Boolean lattice}
+
+The subsets of $\{1,\dots,n\}$, ordered by inclusion, form the \emph{Boolean lattice} $B_n$; its elements of rank $k$ are the $k$-subsets. How
+many subsets can be chosen so that none contains another? Taking all the subsets of size $\lfloor n/2\rfloor$ gives $\binom n{\lfloor n/2\rfloor}$. Emanuel
+Sperner, a student in Hamburg, proved in 1928 that one cannot do better. Here is the proof that Lubell, Yamamoto and
+Meshalkin found independently, a counting argument that weighs each set by the number of ways to reach it.
+
+\begin{theorem}[LYM inequality]\label{thm:lym}
+If $\mathcal F$ is an antichain in $B_n$, then $\displaystyle\sum_{A\in\mathcal F}\binom n{|A|}^{-1}\le1$. Consequently $|\mathcal F|\le\binom n{\lfloor n/2\rfloor}$ (Sperner's theorem).
+\end{theorem}
+\begin{proof}
+A \emph{maximal chain} $\emptyset\subset\{\sigma_1\}\subset\{\sigma_1,\sigma_2\}\subset\dots\subset\{1,\dots,n\}$ is determined by a permutation $\sigma$ of $\{1,\dots,n\}$, so there are $n!$ of them. A set $A$
+of size $k$ lies on the maximal chains whose permutation lists the elements of $A$ first, in any order, and then the others:
+there are $k!(n-k)!$ of them. Since a chain meets the antichain $\mathcal F$ at most once, these sets of chains are disjoint for $A\in\mathcal F$, so
+$\sum_{A\in\mathcal F}|A|!\,(n-|A|)!\le n!$. Dividing by $n!$ gives the inequality. Since every binomial coefficient $\binom nk$ is at most $\binom n{\lfloor n/2\rfloor}$, each term of
+the sum is at least $\binom n{\lfloor n/2\rfloor}^{-1}$, and $|\mathcal F|\le\binom n{\lfloor n/2\rfloor}$.
+\end{proof}
+
+By Dilworth's theorem, Sperner's theorem says that $B_n$ is a union of $\binom n{\lfloor n/2\rfloor}$ chains. These chains can be chosen
+remarkably well. A chain $A_1\subset A_2\subset\dots\subset A_m$ in $B_n$ is \emph{saturated} if $|A_{i+1}|=|A_i|+1$, and \emph{symmetric} if moreover $|A_1|+|A_m|=n$: it climbs
+from rank $k$ to rank $n-k$ without skipping a rank.
+
+\begin{theorem}[de Bruijn, van Ebbenhorst Tengbergen and Kruyswijk, 1951]\label{thm:scd}
+$B_n$ is the disjoint union of symmetric saturated chains; there are $\binom n{\lfloor n/2\rfloor}$ of them.
+\end{theorem}
+\begin{proof}
+Induction on $n$; for $n=1$, the single chain $\emptyset\subset\{1\}$ works. Given such a decomposition of $B_{n-1}$, replace each of its chains
+$A_1\subset\dots\subset A_m$ by two chains of $B_n$:
+\[
+\begin{gathered}A_1\subset\dots\subset A_m\subset A_m\cup\{n\}\qq\text{and, if }m\ge2,\qq A_1\cup\{n\}\subset\dots\subset A_{m-1}\cup\{n\}.\end{gathered}
+\]
+If the old chain ran from rank $k$ to rank $n-1-k$, the first new chain runs from $k$ to $n-k$ and the second from $k+1$ to $n-1-k$; both are
+saturated and symmetric in $B_n$. Every subset of $\{1,\dots,n\}$ appears exactly once: a set $A$ not containing $n$ lies in exactly one old chain,
+hence in the first new chain built from it; a set $A\cup\{n\}$ lies in the first new chain if $A$ is the top of its old chain, and in the
+second otherwise. Finally every symmetric saturated chain meets the middle rank $\lfloor n/2\rfloor$ exactly once, so the number of chains is
+$\binom n{\lfloor n/2\rfloor}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-scd}
+\caption{A symmetric chain decomposition of $B_4$ built by the proof of Theorem~\ref{thm:scd}: six chains (thick), one from $\emptyset$ to
+$\{1,2,3,4\}$, three from rank $1$ to rank $3$, two inside the middle rank. The thin segments are the other covering
+relations. The cover of this book shows the same construction for $B_5$.}
+\label{fig:scd}
+\end{figure}
+
+\begin{beauty}
+One recursive rule, ``each chain splits into a longer one and a shorter one'', organises all $2^n$ subsets into
+$\binom n{\lfloor n/2\rfloor}$ ladders standing symmetrically about the middle. It proves Sperner's theorem with no computation, shows that the
+binomial coefficients are unimodal ($\binom nk\le\binom n{k+1}$ for $k<n/2$, since each chain through rank $k$ continues to rank $k+1$), and gives a
+fast algorithm, which Exercise~\ref{ex:hansel} turns into a bound on the number of monotone Boolean functions.
+\end{beauty}
+
+One last classic. A family of sets is \emph{intersecting} if any two of its members meet. All $k$-subsets of $\{1,\dots,n\}$ containing
+the element $1$ form an intersecting family of size $\binom{n-1}{k-1}$. Paul Erd\H os, Chao Ko and Richard Rado proved in 1938 that one
+cannot do better when $n\ge2k$, but did not publish until 1961, as nobody seemed to care about such questions; today it is
+one of the most cited theorems of combinatorics. The proof below, by Gyula Katona (1972), puts the elements around a
+round table.
+
+\begin{theorem}[Erd\H os, Ko and Rado]\label{thm:ekr}
+If $n\ge2k$ and $\mathcal F$ is an intersecting family of $k$-subsets of $\{1,\dots,n\}$, then $|\mathcal F|\le\binom{n-1}{k-1}$.
+\end{theorem}
+\begin{proof}
+Seat $1,\dots,n$ around a round table in some cyclic order $\sigma$; an \emph{arc} is a set of $k$ consecutive seats. We claim that at most $k$ arcs
+of $\sigma$ belong to $\mathcal F$. Suppose $A\in\mathcal F$ is an arc, occupying seats $1,\dots,k$. Every other arc meeting $A$ either starts at a seat
+$i+1$ or ends at a seat $i$, for some $1\le i\le k-1$, and for each such $i$ these two arcs are disjoint, since together they occupy
+$2k\le n$ consecutive seats. As $\mathcal F$ is intersecting, it contains at most one of the two, so at most $1+(k-1)=k$ arcs in all.
+
+Now count pairs $(\sigma,A)$ with $\sigma$ a cyclic order and $A\in\mathcal F$ an arc of $\sigma$. There are $(n-1)!$ cyclic orders, so at most $k\,(n-1)!$ pairs.
+A given $k$-set $A$ is an arc of exactly $k!\,(n-k)!$ cyclic orders: seat the elements of $A$ in a block in one of $k!$ orders, then the
+others in $(n-k)!$ orders, and count cyclic orders by fixing the block's position. So $|\mathcal F|\,k!\,(n-k)!\le k\,(n-1)!$, that is,
+$|\mathcal F|\le\frac{k\,(n-1)!}{k!\,(n-k)!}=\binom{n-1}{k-1}$.
+\end{proof}
+
+For $n<2k$ the bound fails, as any two $k$-subsets then meet and all $\binom nk$ of them form an intersecting family.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:klein}
+\emph{Esther Klein's observation.} Show that among any five points of the plane, no three on a line, four are the vertices of
+a convex quadrilateral.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:esproduct}
+Show that in every sequence of $N$ distinct numbers, the length of the longest increasing subsequence times the length of
+the longest decreasing subsequence is at least $N$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ackermannvalues}
+Show that $A(1,n)=n+2$, $A(2,n)=2n+3$ and $A(3,n)=2^{n+3}-3$, and that $A(4,n)+3$ is a tower of $n+3$ twos. How many decimal digits has
+$A(4,2)$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rewriting}
+Start with a word over the letters $a,b$ and repeatedly replace some occurrence of $ba$ by $aab$. Show that this always
+stops, whatever the choices, and that from $b^ka$ it stops at $a^{2^k}b^k$ after exactly $2^k-1$ steps.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hydra}
+\emph{Hercules and the Hydra} (Kirby and Paris, 1982). A hydra is a finite rooted tree; its heads are the leaves other than the
+root. At step $n$, Hercules cuts a head $h$; let $p$ be its parent. If $p$ is the root, nothing grows. Otherwise, let $g$ be the parent
+of $p$: the hydra grows $n$ new copies of the subtree at $p$ (as it is after the cut), attached to $g$. Show that Hercules wins, that is,
+the hydra is reduced to its root after finitely many steps, whatever heads he cuts.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:fixedpoints}
+(a) Give a map of the two-element lattice $\{0,1\}$ to itself with no fixed point. (b) Give a monotone map $f$ of $[0,1]$ to itself
+whose least fixed point is not reached by the iterates $f^k(0)$ after finitely many steps. Is it their limit?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:youngtableaux}
+Show that the number of linear extensions of the poset $\{1,2\}\times\{1,\dots,n\}$ with the coordinatewise order is the Catalan number
+$\frac1{n+1}\binom{2n}n$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:dedekind}
+Show that the antichains of $B_n$ are in bijection with the monotone Boolean functions of $n$ variables. Count them for $n=2$
+and $n=3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hansel}
+Let $D(n)$ be the number of antichains of $B_n$. Show that $2^{\binom n{\lfloor n/2\rfloor}}\le D(n)\le(n+2)^{\binom n{\lfloor n/2\rfloor}}$, so that $\log_2D(n)$ is $\binom n{\lfloor n/2\rfloor}$ up to a factor
+$\log_2(n+2)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:divisorscd}
+Let $n=p_1^{a_1}\cdots p_r^{a_r}$. Show that the divisors of $n$, ordered by divisibility, can be partitioned into symmetric
+saturated chains (rank being the number of prime factors counted with multiplicity), and deduce that the largest
+antichain of divisors of $n$ consists of the divisors with $\lfloor(a_1+\dots+a_r)/2\rfloor$ prime factors. (Start with a grid
+$\{0,\dots,p\}\times\{0,\dots,q\}$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:klein}
+Look at the convex hull of the five points. The hard case is a triangle with two points inside.
+\end{hint}
+\begin{hint}{ex:esproduct}
+Mirsky's theorem, with the order of the proof of Theorem~\ref{thm:es}.
+\end{hint}
+\begin{hint}{ex:ackermannvalues}
+Induction on $n$ in each line, using the line above. $2^{65536}$ has $\lfloor65536\log_{10}2\rfloor+1$ digits.
+\end{hint}
+\begin{hint}{ex:rewriting}
+Write the word as $a^{c_0}ba^{c_1}b\cdots ba^{c_k}$; a step at the $j$-th $b$ changes $c_j$ and $c_{j-1}$. Order the vectors $(c_k,\dots,c_1)$
+lexicographically.
+\end{hint}
+\begin{hint}{ex:hydra}
+Encode a tree as the multiset of the encodings of its subtrees at the children of the root, and use
+Theorem~\ref{thm:multiset} once per level. The depth of the hydra never increases.
+\end{hint}
+\begin{hint}{ex:fixedpoints}
+(b) Try a map that jumps at $\frac12$.
+\end{hint}
+\begin{hint}{ex:youngtableaux}
+Write a linear extension as the word listing, at each step, the row of the next element.
+\end{hint}
+\begin{hint}{ex:dedekind}
+To a monotone function, associate the minimal points where it is $1$.
+\end{hint}
+\begin{hint}{ex:hansel}
+A monotone function restricted to a saturated chain is $0$ up to some point and $1$ after it.
+\end{hint}
+\begin{hint}{ex:divisorscd}
+In the grid, use hooks: a vertical segment followed by a horizontal one. Then show that the product of a poset having a
+symmetric chain decomposition with a chain has one too.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:klein}
+\idea Four points are in convex position when each of them is a vertex of their convex hull, and a point is a hull vertex
+when some line through it leaves the other points on one side. The convex hull of the five points tells us where to look.
+\writeup If the convex hull of the five points has $5$ or $4$ vertices, any four of them, or these four, form a convex
+quadrilateral. Otherwise the hull is a triangle $ABC$ with two points $D,E$ inside. The line $DE$ passes through no vertex, as no three
+points are collinear, so two of the vertices, say $A$ and $B$, lie strictly on the same side of it. Then the line $DE$ leaves $A$ and $B$
+on one side, so $D$ and $E$ are vertices of the convex hull of $\{A,B,D,E\}$; and the line $AB$ leaves $D$ and $E$ on one side (the side of
+the triangle), so $A$ and $B$ are vertices of that hull too. All four points are hull vertices: $A,B,D,E$ form a convex
+quadrilateral.
+\end{solution}
+
+\begin{solution}{ex:esproduct}
+\idea Mirsky covers the sequence by as many antichains as the longest chain is long, and each antichain is short.
+\writeup With the order of Theorem~\ref{thm:es}, chains are increasing and antichains decreasing subsequences. If the longest
+increasing subsequence has length $h$ and the longest decreasing one length $d$, Mirsky's theorem partitions the $N$ terms into $h$
+antichains of size at most $d$, so $N\le hd$. The blocks example of Theorem~\ref{thm:es} shows equality is possible when $N=hd$.
+\end{solution}
+
+\begin{solution}{ex:ackermannvalues}
+\idea Each row of Ackermann's function iterates the previous one: $A(m+1,n)$ is $A(m,\cdot)$ applied $n+1$ times to $1$.
+\writeup Induction on $n$. $A(1,0)=A(0,1)=2$ and $A(1,n+1)=A(0,A(1,n))=A(1,n)+1$, so $A(1,n)=n+2$. $A(2,0)=A(1,1)=3$ and
+$A(2,n+1)=A(2,n)+2$, so $A(2,n)=2n+3$. $A(3,0)=A(2,1)=5=2^3-3$ and $A(3,n+1)=2A(3,n)+3$, so $A(3,n)+3$ doubles at each step:
+$A(3,n)=2^{n+3}-3$. $A(4,0)=A(3,1)=13=2^{2^2}-3$ and $A(4,n+1)+3=2^{A(4,n)+3}$, so $A(4,n)+3$ is a tower of $n+3$ twos. Then
+$A(4,1)=2^{16}-3=65533$ and $A(4,2)=2^{65536}-3$, which has $\lfloor65536\log_{10}2\rfloor+1=19\,729$ digits ($2^{65536}$ does not end in a string of
+zeros, so subtracting $3$ keeps the number of digits).
+\end{solution}
+
+\begin{solution}{ex:rewriting}
+\idea The word gets longer, so length is useless. But a step moves an $a$ leftwards past a $b$: the $a$'s drift to the left,
+and the counts of $a$'s between the $b$'s, read from the right, decrease lexicographically.
+\writeup The number $k$ of $b$'s never changes. Write the word as $a^{c_0}ba^{c_1}b\cdots ba^{c_k}$. Replacing $ba$ by $aab$ at the $j$-th $b$ (which needs
+$c_j\ge1$) turns $c_j$ into $c_j-1$ and $c_{j-1}$ into $c_{j-1}+2$, other counts unchanged. So the vector $(c_k,c_{k-1},\dots,c_1)$ decreases in the
+lexicographic order of $\N^k$ (the first changed coordinate, $c_j$, decreases; $c_0$ is not recorded), which is well-founded by
+Proposition~\ref{prop:lex} and induction. Hence the process stops, and it stops exactly when $c_1=\dots=c_k=0$, at $a^{c_0}b^k$.
+From $b^ka$, an $a$ sitting after $j\ge1$ letters $b$ is eventually moved once and becomes two $a$'s after $j-1$ letters $b$; so the
+final word is $a^{2^k}b^k$, and the number of steps is the number of moves, $1+2+\dots+2^{k-1}=2^k-1$, whatever the order.
+\end{solution}
+
+\begin{solution}{ex:hydra}
+\idea The hydra grows, but it only grows \emph{lower} copies of what was cut: in the right order, cutting always makes it
+smaller. Represent a node by the multiset of the representations of its children; then a cut replaces one element, at each
+level from the cut up to the root, by smaller ones.
+\writeup The cut and the regrowth never increase the depth of the tree, since the copies of the subtree at $p$ hang at $p$'s own
+depth. So fix $D$, the initial depth. Define sets $M_0\subseteq M_1\subseteq\cdots$ and orders: $M_0=\{\emptyset\}$, and $M_{d+1}$ is the set of finite multisets of
+elements of $M_d$, with the multiset order $<_{d+1}$ induced by $<_d$. By Theorem~\ref{thm:multiset} and induction on $d$, no $<_d$ has an
+infinite decreasing sequence. Encode a node $v$ whose subtree has depth at most $d$ by $\varphi(v)\in M_d$: a leaf is $\emptyset$, and an
+inner node is the multiset of the codes of its children. (One checks by induction that this is consistent across the
+$M_d$, since $M_d\subseteq M_{d+1}$ and the order $<_{d+1}$ restricted to $M_d$ is $<_d$.)
+
+Consider a step. At $p$, the head $h$ (code $\emptyset$) is removed and nothing added, so the new code $\varphi'(p)$ is smaller than $\varphi(p)$. If $p$ is the
+root, we are done. Otherwise, at $g$ the element $\varphi(p)$ is removed and $n+1$ copies of $\varphi'(p)$, each smaller, are added: $\varphi(g)$
+decreases. At each ancestor of $g$, one element (the code of a child on the path) is replaced by a smaller one: the code
+decreases. So the code of the root decreases at every step in $(M_D,<_D)$, which has no infinite decreasing sequence. The
+fight ends, and since Hercules can always cut while a head exists, it ends with the bare root.
+\end{solution}
+
+\begin{remark}
+Kirby and Paris proved that this statement, which only speaks of finite trees, cannot be proved in Peano arithmetic: any
+proof must use an argument equivalent to the well-foundedness of the ordinal $\varepsilon_0$, which is what the nested multisets
+encode. And the fight is long: for a hydra of depth $4$ it can outlast any number that you can write down. Tome~C3 returns
+to such unprovable truths.
+\end{remark}
+
+\begin{solution}{ex:fixedpoints}
+\idea Without monotonicity a map can simply swap the bottom and the top. With monotonicity a fixed point exists, but the
+iterates from $0$ may creep towards it forever, or even towards a point that is not fixed, if $f$ jumps.
+\writeup (a) $f(0)=1$ and $f(1)=0$. (b) Let $f(x)=\frac{1+x}2$. It is increasing, its only fixed point is $1$, and $f^k(0)=1-2^{-k}$ never reaches
+it; here the limit of the iterates is the least fixed point. It need not be: let $f(x)=\frac x2+\frac14$ for $x<\frac12$ and $f(x)=1$ for
+$x\ge\frac12$. This $f$ is non-decreasing, since $f(x)<\frac12$ for $x<\frac12$. A fixed point $x<\frac12$ would satisfy $\frac x2+\frac14=x$, that is, $x=\frac12$, which is
+absurd; so the only fixed point is $1$. The iterates $f^k(0)=\frac12-2^{-k-1}$ increase to $\frac12$, which is not a fixed point, and one more
+step, $f(\frac12)=1$, reaches the least fixed point. In general the iteration must be continued ``beyond infinity'', through the
+ordinals; when $f$ preserves limits of increasing sequences (Scott continuity) the limit is the least fixed point, and
+this is the setting of the semantics of recursive programs.
+\end{solution}
+
+\begin{solution}{ex:youngtableaux}
+\idea A linear extension lists the $2n$ cells one at a time; reading only the rows, it is a word of $n$ ones and $n$ twos, and
+the constraints say a two can never overtake the ones.
+\writeup In a linear extension, the elements of each row appear in increasing order, so the extension is determined by the word
+$w_1\cdots w_{2n}$ giving the row of each successive element. Such a word has $n$ letters $1$ and $n$ letters $2$, and the constraint
+$(1,j)<(2,j)$ says that the $j$-th $2$ comes after the $j$-th $1$, that is, every prefix has at least as many $1$s as $2$s. Conversely
+every such word gives a linear extension. Replacing $1$ by an up-step and $2$ by a down-step, these words are the Dyck paths of
+length $2n$, counted by the Catalan number $\frac1{n+1}\binom{2n}n$ (Tome~3, Chapter~3, or the cycle lemma of Chapter~3 below).
+\end{solution}
+
+\begin{solution}{ex:dedekind}
+\idea A monotone function is determined by its minimal true points (Exercise~\ref{ex:monotone}), and minimal points form an antichain.
+\writeup Identify $\{0,1\}^n$ with $B_n$. To a monotone $f$ associate the set $\mathcal A_f$ of minimal sets $A$ with $f(A)=1$, an antichain; conversely an
+antichain $\mathcal A$ defines the monotone function ``$f(X)=1$ if $X$ contains a member of $\mathcal A$''. These maps are inverse to each other (the
+empty antichain corresponds to $f\equiv0$, the antichain $\{\emptyset\}$ to $f\equiv1$). For $n=2$: $\emptyset$, $\{\emptyset\}$, $\{\{1\}\}$, $\{\{2\}\}$, $\{\{1\},\{2\}\}$,
+$\{\{1,2\}\}$: six. For $n=3$, count by the size of the smallest member: the two antichains $\emptyset$ and $\{\emptyset\}$; those whose smallest
+sets are singletons; and so on. The total is $20$, and the next values are $168$, $7581$, $7\,828\,354$: the \emph{Dedekind numbers}, known
+only up to $n=9$ (computed in 2023).
+\end{solution}
+
+\begin{solution}{ex:hansel}
+\idea Antichains of the middle rank give the lower bound; for the upper bound, a symmetric chain decomposition cuts $B_n$ into
+$\binom n{\lfloor n/2\rfloor}$ chains on each of which a monotone function is a single threshold.
+\writeup Every subset of the middle rank is an antichain: $2^{\binom n{\lfloor n/2\rfloor}}$ of them. By Exercise~\ref{ex:dedekind}, $D(n)$ counts monotone functions. A
+monotone function is determined by its restrictions to the chains of a symmetric chain decomposition
+(Theorem~\ref{thm:scd}). On a chain $A_1\subset\dots\subset A_m$ a monotone function is $0$ up to some index and $1$ after it: $m+1\le n+2$ possibilities. With
+$\binom n{\lfloor n/2\rfloor}$ chains, $D(n)\le(n+2)^{\binom n{\lfloor n/2\rfloor}}$. Hansel (1966) refined the argument, using that the values on shorter chains leave at most
+three possibilities on each chain, to get $D(n)\le3^{\binom n{\lfloor n/2\rfloor}}$, and Korshunov (1981) found the asymptotics of $D(n)$.
+\end{solution}
+
+\begin{solution}{ex:divisorscd}
+\idea A grid is a product of two chains; it splits into ``hooks'' which are symmetric. A product of a symmetric chain with a chain
+is a grid, so symmetric decompositions survive multiplication by chains, and the divisor lattice is a product of chains.
+\writeup \emph{Grids.} In $G=\{0,\dots,p\}\times\{0,\dots,q\}$ with rank $x+y$, for $0\le j\le\min(p,q)$ let $H_j$ be the vertical segment from $(j,0)$ to $(j,q-j)$
+followed by the horizontal segment from $(j+1,q-j)$ to $(p,q-j)$. It is saturated, from rank $j$ to rank $p+q-j$, hence symmetric. A
+point $(x,y)$ lies on the vertical part of $H_x$ if $y\le q-x$, and otherwise on the horizontal part of $H_{q-y}$ (then $0\le q-y<x\le p$); it
+lies on no other hook. So the hooks partition $G$.
+
+\emph{Products.} Let $P$ be a ranked poset of rank $R$ with a symmetric chain decomposition, and $L=\{0,\dots,\ell\}$ a chain. For a chain $C$
+of $P$ from rank $r$ to rank $R-r$, $C\times L$ is a grid $\{0,\dots,R-2r\}\times\{0,\dots,\ell\}$ shifted by rank $r$. Its hooks run from rank $r+j$ to rank
+$r+(R-2r)+\ell-j$, and these add up to $R+\ell$, the rank of $P\times L$: they are symmetric in $P\times L$, and saturated there. So $P\times L$ has a
+symmetric chain decomposition.
+
+\emph{Divisors.} Sending $d=\prod p_i^{b_i}$ to $(b_1,\dots,b_r)$ identifies the divisors of $n$ with the product of chains $\prod\{0,\dots,a_i\}$, rank being
+$\sum b_i$. By induction on $r$, it has a symmetric chain decomposition. Each chain meets the middle rank $\lfloor(\sum a_i)/2\rfloor$ exactly
+once, so the number of chains equals the size of that rank; an antichain meets each chain at most once, so no antichain is
+larger. For $n=60$ this is Figure~\ref{fig:divisors}: the largest antichain is $\{4,6,10,15\}$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item P.~Erd\H os and G.~Szekeres, \emph{A combinatorial problem in geometry}, Compositio Mathematica 2 (1935), 463--470.
+The happy ending paper.
+\item A.~Suk, \emph{On the Erd\H os--Szekeres convex polygon problem}, Journal of the AMS 30 (2017), 1047--1053; G.~Szekeres
+and L.~Peters, \emph{Computer solution to the 17-point Erd\H os--Szekeres problem}, ANZIAM Journal 48 (2006), 151--164.
+\item R.~P.~Dilworth, \emph{A decomposition theorem for partially ordered sets}, Annals of Mathematics 51 (1950), 161--166;
+M.~A.~Perles, \emph{A proof of Dilworth's decomposition theorem for partially ordered sets}, Israel Journal of Mathematics 1
+(1963), 105--107; L.~Mirsky, \emph{A dual of Dilworth's decomposition theorem}, American Mathematical Monthly 78 (1971), 876--877.
+\item A.~Tarski, \emph{A lattice-theoretical fixpoint theorem and its applications}, Pacific Journal of Mathematics 5 (1955),
+285--309.
+\item N.~Dershowitz and Z.~Manna, \emph{Proving termination with multiset orderings}, Communications of the ACM 22 (1979),
+465--476.
+\item L.~Kirby and J.~Paris, \emph{Accessible independence results for Peano arithmetic}, Bulletin of the London
+Mathematical Society 14 (1982), 285--293. The Hydra.
+\item E.~Sperner, \emph{Ein Satz \"uber Untermengen einer endlichen Menge}, Mathematische Zeitschrift 27 (1928), 544--548;
+D.~Lubell, \emph{A short proof of Sperner's lemma}, Journal of Combinatorial Theory 1 (1966), 299.
+\item N.~G.~de Bruijn, C.~van Ebbenhorst Tengbergen and D.~Kruyswijk, \emph{On the set of divisors of a number}, Nieuw
+Archief voor Wiskunde 23 (1951), 191--193.
+\item P.~Erd\H os, C.~Ko and R.~Rado, \emph{Intersection theorems for systems of finite sets}, Quarterly Journal of
+Mathematics 12 (1961), 313--320; G.~O.~H.~Katona, \emph{A simple proof of the Erd\H os--Chao Ko--Rado theorem}, Journal of
+Combinatorial Theory B 13 (1972), 183--184.
+\item B.~A.~Davey and H.~A.~Priestley, \emph{Introduction to Lattices and Order}, 2nd ed., Cambridge University Press, 2002.
+Lattices, fixed points and their use in computer science.
+\item I.~Anderson, \emph{Combinatorics of Finite Sets}, Oxford University Press, 1987. Sperner theory and symmetric chains.
+\end{itemize}
