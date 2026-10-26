@@ -328,6 +328,26 @@ def gaussian_primes(N=26):
     return "\n".join(lines) + "\n"
 
 
+def confocal_grid(Y=1.45, n_ell=9, n_hyp=8):
+    """The image of a rectangular grid under the conformal map z -> sin z: the horizontal lines
+    become confocal ellipses, the vertical lines confocal hyperbolas, and they still cross at right
+    angles (Tome 7, Chapter 9). The foci are +-1, where the map stops being conformal."""
+    scale = 0.97 * R / math.cosh(Y)
+    lines = ["% Image of a rectangular grid under sin z: confocal ellipses and hyperbolas."]
+    pt = lambda w: "(%.4fin,%.4fin)" % (w.real * scale, w.imag * scale)
+    for k in range(1, n_ell + 1):
+        c = Y * k / n_ell
+        pts = [pt(complex(math.sin(2 * math.pi * t / 400) * math.cosh(c), math.cos(2 * math.pi * t / 400) * math.sinh(c))) for t in range(401)]
+        lines.append(r"\draw[accent,line width=%.2fpt] " % (0.5 + 0.6 * k / n_ell) + "--".join(pts) + ";")
+    for k in range(-n_hyp + 1, n_hyp):
+        c = math.pi / 2 * k / n_hyp
+        pts = [pt(complex(math.sin(c) * math.cosh(y), math.cos(c) * math.sinh(y)))
+               for y in (Y * (2 * t / 300 - 1) for t in range(301))]
+        lines.append(r"\draw[accent,line width=0.5pt,opacity=0.75] " + "--".join(pts) + ";")
+    lines.append(r"\fill[accent] (%.4fin,0) circle (2.4pt) (%.4fin,0) circle (2.4pt);" % (scale, -scale))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -336,6 +356,7 @@ MOTIFS = {
     "tome4-calculation": fourier_square,
     "tome5-meets": zeta_critical_line,
     "tome6-spaces": sierpinski_carpet,
+    "tome7-analysis": confocal_grid,
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
     "tomeS1-linear": lozenge_tiling,
