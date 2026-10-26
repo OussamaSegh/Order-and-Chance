@@ -28,7 +28,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 0 | Back in Shape | The MP toolkit, relearned through problems | Complete draft (8 chapters) |
 | 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters) |
-| 3 | Chance | Probability, from counting to martingales | In progress (11 of 12 chapters) |
+| 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Planned |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Planned |
 | 6 | Spaces | Sets, topology, measure and integration | Planned |
