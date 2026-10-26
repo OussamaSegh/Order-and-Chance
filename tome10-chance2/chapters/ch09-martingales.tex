@@ -1,0 +1,587 @@
+\chapter{Martingales II: Closing the Circle}
+\begin{center}\itshape
+A martingale is a fair game, and a fair game can still cheat you: its value can converge to zero while its average stays at one.\\
+Uniform integrability is exactly what forbids the trick. With it come martingales that run backwards in time,\\
+de Finetti's theorem on exchangeable sequences, the question of when two infinite experiments can be told apart,\\
+and statistical tests that you may check as often as you like.
+\end{center}
+
+In March 1939, on the eve of the Second World War, a young Frenchman named Jean Ville defended a thesis with a polemical title,
+\emph{\'Etude critique de la notion de collectif}. Its target was Richard von Mises' definition of a random sequence: a ``collective'' was a sequence of
+heads and tails whose frequency of heads tends to $\frac12$ along every subsequence picked by a reasonable selection rule. Ville showed that selection rules are
+too weak a test of randomness. A gambler is more dangerous: for every property that has probability zero for a fair coin, there is a betting strategy, never
+risking more than the gambler owns, whose capital becomes unbounded on every sequence with that property. To describe the gambler's capital Ville borrowed a word from the
+casinos, where a \emph{martingale} was the system of doubling the stake after every loss; the dictionary of the Acad\'emie fran\c caise of 1762 already explains
+that ``to play the martingale is to always bet all that was lost''. A few months later Ville was mobilized; he spent a year at the front and a year in a
+German prison camp. Joseph Doob, who built the general theory in the 1940s, kept Ville's word for his book \emph{Stochastic Processes} of 1953, and it stuck.
+
+Tome~3 proved the convergence theorems for martingales bounded in $L^1$ and in $L^2$, and warned that convergence in mean needs something more. This chapter supplies it, as Tome~3 promised:
+uniform integrability, which tells exactly when a martingale is the sequence of predictions of a final outcome. Then we run martingales backwards and obtain the strong law of
+large numbers once again, de Finetti's theorem, which explains why a Bayesian may treat exchangeable data as if they came from an unknown coin, Doob's theorem that Bayesian
+learning succeeds, and Kakutani's dichotomy on infinite products. We end where Ville began: his inequality for non-negative martingales gives statistical tests that remain valid
+however often the experimenter looks at the data, the honest answer to the ``peeking problem'' of online A/B testing.
+
+\begin{reminder}[from Tome 3 and Tome 6]
+For an integrable $X$ and a $\sigma$-algebra $\mathcal G$, $\mathbb E[X\mid\mathcal G]$ is the $\mathcal G$-measurable variable with $\mathbb E[\mathbb E[X\mid\mathcal G]\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$ for $A\in\mathcal G$
+(Tome~3, Theorem~10.4); it is linear, monotone, satisfies $|\mathbb E[X\mid\mathcal G]|\le\mathbb E[|X|\mid\mathcal G]$, the tower property and ``taking out what is known''
+(Tome~3, Proposition~10.5). A martingale $(M_n)$ for a filtration $(\mathcal F_n)$ is adapted, integrable, with $\mathbb E[M_{n+1}\mid\mathcal F_n]=M_n$ (Tome~3, Definition~10.7); a stopped
+martingale is a martingale (Proposition~10.11), and so is a stopped supermartingale a supermartingale. A supermartingale bounded in $L^1$ converges almost surely (Theorem~10.20, through the upcrossing
+inequality, Lemma~10.19), and for a non-negative submartingale in $L^2$, $\mathbb E\max_{k\le n}X_k^2\le4\,\mathbb EX_n^2$ (Theorem~10.15).
+A family $\mathcal F$ of random variables is \emph{uniformly integrable} if $\sup_{X\in\mathcal F}\mathbb E[|X|\mathbf 1_{\{|X|>M\}}]\to0$ as $M\to\infty$; if $X_n\to X$ in probability, then $\mathbb E|X_n-X|\to0$
+if and only if $(X_n)$ is uniformly integrable (Vitali, Tome~6, Theorem~7.16). For an integrable $X$, $\mathbb E[|X|\mathbf 1_A]$ is small when $P(A)$ is small (Tome~6, Lemma~7.15).
+Two probabilities that agree on a $\pi$-system agree on the $\sigma$-algebra it generates (Tome~6, Theorem~6.5).
+\end{reminder}
+
+\section{Uniformly integrable martingales}
+
+Here is the cheat. Toss a fair coin; at each toss a gambler bets everything on heads. Starting with one euro, after $n$ tosses he has $M_n=2^n$ if all tosses were heads, and
+$0$ otherwise. This is a martingale with $\mathbb EM_n=1$ for all $n$, and $M_n\to0$ almost surely: the limit has mean $0$. The mass $2^n$ hides on an event of probability $2^{-n}$,
+exactly the escape that uniform integrability forbids.
+
+\begin{lemma}\label{lem:condui}
+If $X$ is integrable, the family of all conditional expectations $\mathbb E[X\mid\mathcal G]$, where $\mathcal G$ ranges over the sub-$\sigma$-algebras of $\mathcal F$, is uniformly integrable.
+\end{lemma}
+\begin{proof}
+Let $Y=\mathbb E[X\mid\mathcal G]$ and $A=\{|Y|>M\}$, which belongs to $\mathcal G$. Since $|Y|\le\mathbb E[|X|\mid\mathcal G]$,
+\[
+\mathbb E[|Y|\mathbf 1_A]\le\mathbb E\bigl[\mathbb E[|X|\mid\mathcal G]\mathbf 1_A\bigr]=\mathbb E[|X|\mathbf 1_A],
+\]
+and $P(A)\le\frac{\mathbb E|Y|}M\le\frac{\mathbb E|X|}M$ by Markov's inequality. Given $\varepsilon>0$, choose $\delta$ such that $P(A)<\delta$ implies $\mathbb E[|X|\mathbf 1_A]<\varepsilon$ (Tome~6, Lemma~7.15), and then
+$M>\mathbb E|X|/\delta$. The bound $\varepsilon$ does not depend on $\mathcal G$.
+\end{proof}
+
+\begin{theorem}[uniformly integrable martingales]\label{thm:uimart}
+For a martingale $(M_n)$ with respect to $(\mathcal F_n)$, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item $(M_n)$ is uniformly integrable;
+\item $M_n$ converges almost surely and in $L^1$;
+\item there is an integrable $X$ with $M_n=\mathbb E[X\mid\mathcal F_n]$ for all $n$.
+\end{enumerate}
+In that case the limit $M_\infty$ satisfies $M_n=\mathbb E[M_\infty\mid\mathcal F_n]$ for every $n$.
+\end{theorem}
+\begin{proof}
+(a)$\Rightarrow$(b). A uniformly integrable family is bounded in $L^1$, so $M_n$ converges almost surely to an integrable $M_\infty$ (Tome~3, Theorem~10.20), hence in probability, hence in $L^1$
+by Vitali's theorem.
+
+(b)$\Rightarrow$(c). Let $A\in\mathcal F_n$. For $m\ge n$, $\mathbb E[M_m\mathbf 1_A]=\mathbb E[M_n\mathbf 1_A]$ by the martingale property and the tower rule. As $m\to\infty$,
+$|\mathbb E[M_m\mathbf 1_A]-\mathbb E[M_\infty\mathbf 1_A]|\le\mathbb E|M_m-M_\infty|\to0$. So $\mathbb E[M_\infty\mathbf 1_A]=\mathbb E[M_n\mathbf 1_A]$ for all $A\in\mathcal F_n$, that is, $M_n=\mathbb E[M_\infty\mid\mathcal F_n]$: take $X=M_\infty$.
+
+(c)$\Rightarrow$(a) is Lemma~\ref{lem:condui}.
+\end{proof}
+
+A uniformly integrable martingale is thus a sequence of \emph{predictions}: $M_n$ is the best guess of the final value $M_\infty$ with the information of time $n$. The gambler's
+fortune above is not uniformly integrable: it predicts nothing. Which final value does $\mathbb E[X\mid\mathcal F_n]$ converge to? Not $X$ itself, in general, but its best
+prediction given everything that will ever be known.
+
+\begin{theorem}[L\'evy's upward theorem, 1937]\label{thm:levyup}
+Let $X$ be integrable, $(\mathcal F_n)$ a filtration and $\mathcal F_\infty=\sigma\bigl(\bigcup_n\mathcal F_n\bigr)$. Then
+\[
+\mathbb E[X\mid\mathcal F_n]\longrightarrow\mathbb E[X\mid\mathcal F_\infty]\qquad\text{almost surely and in }L^1.
+\]
+\end{theorem}
+\begin{proof}
+$M_n=\mathbb E[X\mid\mathcal F_n]$ is a martingale by the tower rule, uniformly integrable by Lemma~\ref{lem:condui}, so it converges almost surely and in $L^1$ to some $M_\infty$, and we may take
+$M_\infty=\limsup_nM_n$ (where finite, $0$ elsewhere), which is $\mathcal F_\infty$-measurable. Let $\mathcal L$ be the class of $A\in\mathcal F_\infty$ with $\mathbb E[M_\infty\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$. It contains each
+$\mathcal F_n$: for $A\in\mathcal F_n$, Theorem~\ref{thm:uimart} gives $\mathbb E[M_\infty\mathbf 1_A]=\mathbb E[M_n\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$. So the two finite signed measures
+$A\mapsto\mathbb E[M_\infty\mathbf 1_A]$ and $A\mapsto\mathbb E[X\mathbf 1_A]$ agree on the $\pi$-system $\bigcup_n\mathcal F_n$. Splitting $M_\infty$ and $X$ into positive and negative parts, the measures
+$A\mapsto\mathbb E[(M_\infty^++X^-)\mathbf 1_A]$ and $A\mapsto\mathbb E[(X^++M_\infty^-)\mathbf 1_A]$ are finite, agree on that $\pi$-system (which contains $\Omega$), hence agree on $\mathcal F_\infty$ (Tome~6, Theorem~6.5).
+So $\mathcal L=\mathcal F_\infty$, and $M_\infty=\mathbb E[X\mid\mathcal F_\infty]$.
+\end{proof}
+
+\begin{corollary}[L\'evy's zero--one law]\label{cor:levy01}
+If $A\in\mathcal F_\infty$, then $P(A\mid\mathcal F_n)\to\mathbf 1_A$ almost surely.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:levyup} to $X=\mathbf 1_A$, which is $\mathcal F_\infty$-measurable, so that $\mathbb E[X\mid\mathcal F_\infty]=\mathbf 1_A$.
+\end{proof}
+
+As information accumulates, every question about the whole future gets answered: the conditional probability of $A$ goes to $0$ or $1$, and it goes to the right one. Kolmogorov's zero--one law
+(Theorem~\ref{thm:kolmogorov01}) is a special case: if $X_1,X_2,\dots$ are independent, $\mathcal F_n=\sigma(X_1,\dots,X_n)$ and $A$ is a tail event, then $A$ is independent of $\mathcal F_n$, so
+$P(A\mid\mathcal F_n)=P(A)$ for every $n$, and the limit $\mathbf 1_A$ is the constant $P(A)$: so $P(A)\in\{0,1\}$.
+
+\subsection*{Optional stopping without bounds}
+
+Tome~3 proved $\mathbb EM_T=\mathbb EM_0$ for bounded stopping times, for bounded stopped martingales and for steps bounded with $\mathbb ET<\infty$. Uniform integrability gives the
+definitive version, with stopping times that may even be infinite. For a stopping time $T$, the \emph{information at time $T$} is the $\sigma$-algebra
+\[
+\mathcal F_T=\bigl\{A\in\mathcal F_\infty:A\cap\{T=n\}\in\mathcal F_n\text{ for every }n\bigr\}.
+\]
+It is a $\sigma$-algebra (the conditions are stable under complements, as $A^c\cap\{T=n\}=\{T=n\}\setminus(A\cap\{T=n\})$, and countable unions). If $S\le T$ are stopping times, $\mathcal F_S\subseteq\mathcal F_T$: for $A\in\mathcal F_S$,
+\[
+A\cap\{T=n\}=\bigcup_{k\le n}\bigl(A\cap\{S=k\}\bigr)\cap\{T=n\}\in\mathcal F_n .
+\]
+If $M_n\to M_\infty$, we set $M_T=M_\infty$ on $\{T=\infty\}$. Then $M_T$ is $\mathcal F_T$-measurable, since $\{M_T\in B\}\cap\{T=n\}=\{M_n\in B\}\cap\{T=n\}$.
+
+\begin{theorem}[optional stopping for uniformly integrable martingales]\label{thm:uiost}
+Let $(M_n)$ be a uniformly integrable martingale with limit $M_\infty$, and $T$ a stopping time with values in $\{0,1,\dots\}\cup\{\infty\}$. Then $M_T$ is integrable and
+\[
+M_T=\mathbb E[M_\infty\mid\mathcal F_T].
+\]
+In particular $\mathbb EM_T=\mathbb EM_0$, and $\mathbb E[M_T\mid\mathcal F_S]=M_S$ for stopping times $S\le T$.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:uimart}, $M_n=\mathbb E[M_\infty\mid\mathcal F_n]$, so $|M_n|\le\mathbb E[|M_\infty|\mid\mathcal F_n]$ and, as $\{T=n\}\in\mathcal F_n$,
+\[
+\mathbb E|M_T|=\sum_{n\le\infty}\mathbb E\bigl[|M_n|\mathbf 1_{\{T=n\}}\bigr]\le\sum_{n\le\infty}\mathbb E\bigl[|M_\infty|\mathbf 1_{\{T=n\}}\bigr]=\mathbb E|M_\infty|.
+\]
+Let $A\in\mathcal F_T$. Each $A\cap\{T=n\}$ lies in $\mathcal F_n$, so $\mathbb E[M_n\mathbf 1_{A\cap\{T=n\}}]=\mathbb E[M_\infty\mathbf 1_{A\cap\{T=n\}}]$, also for $n=\infty$. Summing over $n$ (dominated convergence, both
+sums being dominated by integrable variables) gives $\mathbb E[M_T\mathbf 1_A]=\mathbb E[M_\infty\mathbf 1_A]$. With the measurability of $M_T$ this is the claim. Taking $A=\Omega$ and comparing with
+$T=0$ gives $\mathbb EM_T=\mathbb EM_\infty=\mathbb EM_0$. For $S\le T$, the tower rule and $\mathcal F_S\subseteq\mathcal F_T$ give
+$\mathbb E[M_T\mid\mathcal F_S]=\mathbb E[M_\infty\mid\mathcal F_S]=M_S$.
+\end{proof}
+
+\begin{example}[a gambler against the house]\label{ex:biasedruin}
+A gambler wins $1$ with probability $p$ and loses $1$ with probability $q=1-p$ at each round, with $p<q$: the house has an edge. Starting from $0$ and allowed unlimited credit, what is the
+probability that the gambler is ever ahead by $a$, a positive integer? Let $S_n$ be the gain and $T$ the first time $S_n=a$ (possibly $T=\infty$). Then $Z_n=(q/p)^{S_n}$ is a martingale,
+since $\mathbb E[(q/p)^{\xi}]=p\cdot\frac qp+q\cdot\frac pq=1$ for a step $\xi$. The stopped martingale $Z_{T\wedge n}$ takes values in $(0,(q/p)^a]$, since $S_{T\wedge n}\le a$, so it is
+uniformly integrable. On $\{T=\infty\}$, $S_n\to-\infty$ by the strong law, and $Z_{T\wedge n}\to0$. By Theorem~\ref{thm:uiost} applied to $Z^T$,
+\[
+1=\mathbb EZ_0=(q/p)^a\,P(T<\infty),\qquad\text{so}\qquad P(T<\infty)=\Bigl(\frac pq\Bigr)^a.
+\]
+At European roulette, betting on red, $p=\frac{18}{37}$: the chance of ever being $20$ euros ahead is $(18/19)^{20}\approx0.34$.
+\end{example}
+
+For the fair game $p=q$, the walk does reach $a$ almost surely, while $\mathbb ES_T=a\neq0=\mathbb ES_0$: the stopped walk is not uniformly integrable (Exercise~\ref{ex:symwalk}).
+
+\section{Martingales that run backwards}
+
+Martingales accumulate information. Sometimes the natural structure \emph{forgets} it: a decreasing sequence of $\sigma$-algebras $\mathcal G_0\supseteq\mathcal G_1\supseteq\cdots$, and
+the predictions $\mathbb E[X\mid\mathcal G_n]$ of a fixed variable with less and less information. These \emph{backward martingales} converge even more easily than forward ones: they are
+automatically uniformly integrable.
+
+\begin{theorem}[L\'evy's downward theorem]\label{thm:levydown}
+Let $X$ be integrable, $\mathcal G_0\supseteq\mathcal G_1\supseteq\cdots$ $\sigma$-algebras and $\mathcal G_\infty=\bigcap_n\mathcal G_n$. Then
+\[
+\mathbb E[X\mid\mathcal G_n]\longrightarrow\mathbb E[X\mid\mathcal G_\infty]\qquad\text{almost surely and in }L^1.
+\]
+\end{theorem}
+\begin{proof}
+Let $M_n=\mathbb E[X\mid\mathcal G_n]$. For fixed $N$, the reversed sequence $M_N,M_{N-1},\dots,M_0$ is a martingale for the increasing filtration $\mathcal G_N\subseteq\cdots\subseteq\mathcal G_0$, by the tower
+rule. Let $a<b$. The upcrossings of $[a,b]$ by this reversed sequence are the downcrossings of $[a,b]$ by $M_0,\dots,M_N$; call their number $D_N$. By the upcrossing inequality (Tome~3, Lemma~10.19) applied
+to the reversed martingale, $(b-a)\,\mathbb ED_N\le\mathbb E[(M_0-a)^-]\le\mathbb E|X|+|a|$, a bound independent of $N$. By monotone convergence, the total number of downcrossings of $[a,b]$ by $(M_n)$ has finite mean, so it is
+finite almost surely. If $\liminf M_n<a<b<\limsup M_n$ there are infinitely many downcrossings; so, taking all rational $a<b$, $M_n$ converges almost surely in $[-\infty,\infty]$. By Fatou's lemma
+$\mathbb E\liminf|M_n|\le\mathbb E|X|$, so the limit $M_\infty$ is finite almost surely. The family $(M_n)$ is uniformly integrable by Lemma~\ref{lem:condui}, so $M_n\to M_\infty$ in $L^1$ by Vitali's theorem.
+
+Taking $M_\infty=\limsup_{n\ge m}M_n$ (where finite), $M_\infty$ is $\mathcal G_m$-measurable for every $m$, hence $\mathcal G_\infty$-measurable. For $A\in\mathcal G_\infty$, $A\in\mathcal G_n$ for all $n$, so
+$\mathbb E[M_n\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$, and letting $n\to\infty$ in $L^1$ gives $\mathbb E[M_\infty\mathbf 1_A]=\mathbb E[X\mathbf 1_A]$.
+\end{proof}
+
+\subsection*{The strong law, by symmetry}
+
+Here is perhaps the most elegant proof of the strong law of large numbers: the empirical mean is a backward martingale. The decreasing information is ``the values of the sequence, but not
+the order of the first $n$ of them''.
+
+Let $X=(X_1,X_2,\dots)$ be a sequence of random variables, viewed as a random element of $\R^\N$. For $n\ge1$, let $\mathcal E_n$ be the $\sigma$-algebra of events $\{X\in B\}$ where $B\subseteq\R^\N$ is
+measurable and invariant under every permutation of the first $n$ coordinates. (Invariant sets form a $\sigma$-algebra, so $\mathcal E_n$ is one.) These decrease, and $\mathcal E_\infty=\bigcap_n\mathcal E_n$ is
+the $\sigma$-algebra of exchangeable events of Chapter~1. (If $A=\{X\in B_n\}$ with $B_n$ invariant under the permutations of the first $n$ coordinates, for each $n$, then $A=\{X\in B\}$ with $B=\bigcup_N\bigcap_{n\ge N}B_n$, which is invariant under every finite permutation.) Any function of $X$ that is symmetric in $X_1,\dots,X_n$, such as $S_n=X_1+\dots+X_n$, or $X_{n+1}$, is $\mathcal E_n$-measurable.
+Recall that $X$ is \emph{exchangeable} if its law is invariant under finite permutations: $(X_{\pi(1)},X_{\pi(2)},\dots)$ has the same law as $X$ for every finite permutation $\pi$. An i.i.d.\ sequence is exchangeable.
+
+\begin{lemma}[symmetrization]\label{lem:symm}
+Let $X$ be exchangeable, $n\ge k\ge1$, and $h:\R^k\to\R$ measurable with $h(X_1,\dots,X_k)$ integrable. Then
+\[
+\mathbb E\bigl[h(X_1,\dots,X_k)\mid\mathcal E_n\bigr]=\frac{(n-k)!}{n!}\sum_{(i_1,\dots,i_k)}h(X_{i_1},\dots,X_{i_k}),
+\]
+the average over all $k$-tuples of distinct indices in $\{1,\dots,n\}$.
+\end{lemma}
+\begin{proof}
+The right side $R$ is symmetric in $X_1,\dots,X_n$, hence $\mathcal E_n$-measurable. Let $A=\{X\in B\}\in\mathcal E_n$ and $(i_1,\dots,i_k)$ distinct indices in $\{1,\dots,n\}$. Choose a permutation $\pi$ of $\{1,\dots,n\}$ with
+$\pi(j)=i_j$ for $j\le k$, and let $X^\pi=(X_{\pi(1)},X_{\pi(2)},\dots)$, which has the law of $X$. Since $B$ is invariant, $\{X^\pi\in B\}=\{X\in B\}$, so
+\[
+\mathbb E\bigl[h(X_{i_1},\dots,X_{i_k})\mathbf 1_A\bigr]=\mathbb E\bigl[h(X^\pi_1,\dots,X^\pi_k)\mathbf 1_{\{X^\pi\in B\}}\bigr]=\mathbb E\bigl[h(X_1,\dots,X_k)\mathbf 1_A\bigr].
+\]
+Averaging over the $n!/(n-k)!$ tuples gives
+\[
+\mathbb E[R\mathbf 1_A]=\mathbb E[h(X_1,\dots,X_k)\mathbf 1_A].
+\]
+\end{proof}
+
+\begin{theorem}[strong law of large numbers, by backward martingales]\label{thm:slllnback}
+If $X_1,X_2,\dots$ are i.i.d.\ and integrable, then $\frac{S_n}n\to\mathbb EX_1$ almost surely and in $L^1$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:symm} with $k=1$ and $h(x)=x$, $\frac{S_n}n=\mathbb E[X_1\mid\mathcal E_n]$. By Theorem~\ref{thm:levydown}, $\frac{S_n}n$ converges almost surely and in $L^1$ to
+$L=\mathbb E[X_1\mid\mathcal E_\infty]$. Every event of $\mathcal E_\infty$ is exchangeable, so it has probability $0$ or $1$ by the Hewitt--Savage law (Theorem~\ref{thm:hewittsavage}); hence $L$ is almost surely
+constant (as in Corollary~\ref{cor:tailconst}: $c\mapsto P(L\le c)$ takes only the values $0$ and $1$). The constant is $\mathbb EL=\mathbb EX_1$.
+\end{proof}
+
+We proved the strong law in Chapter~2 by Etemadi's method; this proof adds the convergence in $L^1$ for free, and, more importantly, it generalizes at once to averages over pairs, triples and
+so on (Exercise~\ref{ex:ustat}): the statistician's $U$-statistics.
+
+\section{De Finetti's theorem}
+
+Bruno de Finetti opened his treatise \emph{Theory of Probability} (1970; English translation 1974) with a provocation set in capital letters:
+``PROBABILITY DOES NOT EXIST''. He meant that probability is not a property of coins or dice, like their mass, but a degree of belief of a person; the
+abandonment of objective probability, he wrote, was as necessary as the abandonment of ``Phlogiston, the Cosmic Ether, Absolute Space and Time, \ldots, or Fairies and Witches''.
+This raises a puzzle. Statisticians speak constantly of ``the unknown probability $\theta$ that this coin falls heads''. If probability does not exist, what are they estimating?
+
+De Finetti's answer, in a memoir of 1931 and in his lectures at the Institut Henri Poincar\'e in 1935 (published in 1937), was a theorem. Suppose your beliefs about a sequence of tosses are
+\emph{exchangeable}: the order of the results does not matter to you, only how many heads and tails occur. Then, necessarily, you behave exactly as if there were an unknown parameter $\Theta$,
+with some prior law, and the tosses were independent with probability $\Theta$ of heads, given $\Theta$. The ``unknown probability'' is not a physical property; it is the limiting frequency,
+and its existence is a theorem about your beliefs.
+
+\begin{theorem}[de Finetti, 1931]\label{thm:definetti}
+Let $X_1,X_2,\dots$ be an exchangeable sequence with values in $\{0,1\}$, and $S_n=X_1+\dots+X_n$. Then:
+\begin{enumerate}[label=(\alph*)]
+\item $\Theta=\lim_n\frac{S_n}n$ exists almost surely;
+\item given $\Theta$, the $X_i$ are independent Bernoulli$(\Theta)$: for every $n$ and $x\in\{0,1\}^n$ with $s$ ones,
+\[
+P\bigl((X_1,\dots,X_n)=x\mid\Theta\bigr)=\Theta^s(1-\Theta)^{n-s};
+\]
+\item consequently, if $\mu$ is the law of $\Theta$,
+\[
+P\bigl((X_1,\dots,X_n)=x\bigr)=\int_0^1\theta^s(1-\theta)^{n-s}\,\mu(\dd\theta),
+\]
+and $\mu$ is the only probability on $[0,1]$ with this property.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Write $(a)_j=a(a-1)\cdots(a-j+1)$ for the falling factorial. Fix $n$ and $x$ with $s$ ones, and let $m\ge n$. Apply Lemma~\ref{lem:symm} with $k=n$ and $h=\mathbf 1_{\{x\}}$. A tuple of distinct indices
+$(i_1,\dots,i_n)$ in $\{1,\dots,m\}$ has $(X_{i_1},\dots,X_{i_n})=x$ when the $s$ positions where $x$ has a one receive distinct indices $i$ with $X_i=1$, in order, and the others distinct indices
+with $X_i=0$: there are $(S_m)_s(m-S_m)_{n-s}$ such tuples. So
+\begin{equation}\label{eq:urnformula}
+P\bigl((X_1,\dots,X_n)=x\mid\mathcal E_m\bigr)=\frac{(S_m)_s\,(m-S_m)_{n-s}}{(m)_n}.
+\end{equation}
+For $n=1$ and $x=(1)$ this reads $\mathbb E[X_1\mid\mathcal E_m]=\frac{S_m}m$, which by Theorem~\ref{thm:levydown} converges almost surely to $\Theta=\mathbb E[X_1\mid\mathcal E_\infty]$: this is (a). In general, the left side
+of~\eqref{eq:urnformula} converges almost surely to $P((X_1,\dots,X_n)=x\mid\mathcal E_\infty)$, again by Theorem~\ref{thm:levydown}. On the right, the numerator is a product of $s$ factors $S_m-j$ and $n-s$ factors $m-S_m-j$, and the
+denominator a product of $n$ factors $m-j$, with $j<n$; divided by $m$, each factor tends to $\Theta$, $1-\Theta$ or $1$. So
+\[
+P\bigl((X_1,\dots,X_n)=x\mid\mathcal E_\infty\bigr)=\Theta^s(1-\Theta)^{n-s}.
+\]
+Since $\Theta$ is $\mathcal E_\infty$-measurable, conditioning both sides on $\sigma(\Theta)\subseteq\mathcal E_\infty$ (tower rule) gives (b), and taking expectations gives the formula in (c).
+For uniqueness: taking $x=(1,\dots,1)$, the formula determines $\int\theta^n\,\mu(\dd\theta)$ for every $n$, hence $\int p\,\dd\mu$ for every polynomial $p$. Polynomials are uniformly dense in the continuous
+functions on $[0,1]$ (Weierstrass; Bernstein's proof is Tome~6, Exercise~4.6), so $\int f\,\dd\mu$ is determined for every continuous $f$, and so is $\mu([0,t])$, the decreasing limit of $\int f_k\,\dd\mu$ for
+continuous $f_k$ equal to $1$ on $[0,t]$, to $0$ on $[t+\frac1k,1]$ and linear in between. Two probabilities on $[0,1]$ with the same distribution function are equal.
+\end{proof}
+
+Formula~\eqref{eq:urnformula} has a concrete meaning: given the first $m$ results as an unordered collection, the first $n$ behave like draws \emph{without replacement} from an urn containing $S_m$ ones and
+$m-S_m$ zeros. As $m\to\infty$, drawing without replacement from a huge urn becomes drawing with replacement: independent tosses of a $\Theta$-coin.
+
+\begin{example}[P\'olya's urn again]\label{ex:polyadf}
+In Exercise~\ref{ex:polya} we saw that the colours drawn from P\'olya's urn (one red and one green ball to start) are exchangeable, with
+\[
+P\bigl((X_1,\dots,X_n)=x\bigr)=\frac{s!\,(n-s)!}{(n+1)!}=\int_0^1\theta^s(1-\theta)^{n-s}\,\dd\theta,
+\]
+the Beta integral. By uniqueness in de Finetti's theorem, $\Theta$ is uniform on $[0,1]$, as Tome~3 (Theorem~10.21) proved directly. The urn, which has a memory and no coin in it at all, cannot be
+distinguished by any experiment from the following two-stage procedure: pick $\Theta$ uniformly, then toss a $\Theta$-coin forever. Figure~\ref{fig:polyadf} shows the limits of several runs.
+\end{example}
+
+\begin{figure}[ht]
+\centering\fig{ch09-polya}
+\caption{Twelve runs of P\'olya's urn: the proportion $S_n/n$ of red draws, for $n$ up to $2000$ (logarithmic time axis). Each run settles at its own limit $\Theta$; the limits are uniform on $[0,1]$. De Finetti's
+theorem says that, given its limit, each run is a sequence of independent tosses of a $\Theta$-coin.}
+\label{fig:polyadf}
+\end{figure}
+
+The theorem needs an \emph{infinite} exchangeable sequence. Two draws without replacement from an urn with one red and one green ball are exchangeable, but no mixture of i.i.d.\ coins can make
+them always different (Exercise~\ref{ex:finiteexch}). The same proof works for any finite set of values instead of $\{0,1\}$; for real-valued sequences, de Finetti's theorem still holds, with $\Theta$ replaced by a random probability measure, the
+limit of the empirical measures (Hewitt and Savage, 1955).
+
+\subsection*{Bayesian learning succeeds}
+
+Take the Bayesian story literally: a parameter $\Theta$ with prior law $\mu$ on $[0,1]$, and given $\Theta$, independent tosses with $P(X_i=1\mid\Theta)=\Theta$. Concretely, let $\Theta,U_1,U_2,\dots$ be independent,
+$\Theta$ with law $\mu$ and the $U_i$ uniform on $[0,1]$, and $X_i=\mathbf 1_{\{U_i<\Theta\}}$. After $n$ tosses, the Bayesian's \emph{posterior law} is the conditional law of $\Theta$ given $\mathcal F_n=\sigma(X_1,\dots,X_n)$,
+and her estimate is the posterior mean $\mathbb E[\Theta\mid\mathcal F_n]$. Does she learn the truth?
+
+\begin{theorem}[Doob, 1949]\label{thm:doobconsistency}
+In this model, $\mathbb E[\Theta\mid\mathcal F_n]\to\Theta$ almost surely and in $L^1$, and for every Borel set $B$, the posterior probability $P(\Theta\in B\mid\mathcal F_n)$ tends to $\mathbf 1_{\{\Theta\in B\}}$ almost surely.
+\end{theorem}
+\begin{proof}
+First, $\frac{S_n}n\to\Theta$ almost surely. Indeed, by Fubini's theorem (Tome~6, Theorem~8.6) applied to the independent pair $\Theta$ and $(U_i)$,
+\[
+P\Bigl(\frac1n\sum_{i\le n}\mathbf 1_{\{U_i<\Theta\}}\to\Theta\Bigr)=\int_0^1P\Bigl(\frac1n\sum_{i\le n}\mathbf 1_{\{U_i<\theta\}}\to\theta\Bigr)\mu(\dd\theta)=1,
+\]
+by the strong law for each fixed $\theta$. So $\Theta$ is almost surely equal to $\limsup_nS_n/n$, an $\mathcal F_\infty$-measurable variable, and $\mathbb E[\Theta\mid\mathcal F_\infty]=\Theta$. Theorem~\ref{thm:levyup} gives
+the first claim, and Corollary~\ref{cor:levy01} applied to $\{\Theta\in B\}\in\mathcal F_\infty$ (up to a null set) gives the second.
+\end{proof}
+
+The theorem is a statement about \emph{almost every} $\theta$ for the prior $\mu$, and the caveat is real: David Freedman showed in 1963 that for parameters outside a set of prior measure one,
+Bayes estimates can fail to be consistent, once the parameter space is infinite-dimensional. For a coin, all is well: if $\mu$ has a positive density, the posterior concentrates around every $\theta$.
+The notebook puts consistency to work in \emph{Thompson sampling}, proposed by William R.\ Thompson in 1933 for allocating patients to treatments and now used to choose which advertisement to
+show: sample $\Theta$ from each posterior, play the best-looking arm, update.
+
+\begin{think}
+A sequence is exchangeable and you observe $X_1=\dots=X_{10}=1$. Is the probability that $X_{11}=1$ greater or smaller than $P(X_1=1)$? Show that $\operatorname{Cov}(X_1,X_2)=\operatorname{Var}\Theta\ge0$:
+in an infinite exchangeable sequence, outcomes can never be negatively correlated. Laplace's rule of succession, $P(X_{n+1}=1\mid S_n=s)=\frac{s+1}{n+2}$, is the case of a uniform prior.
+\end{think}
+
+\section{Kakutani's dichotomy}
+
+You are given an infinite sequence of tosses and told that it comes either from a fair coin or from a coin whose bias at toss $n$ is $\frac12+\varepsilon_n$, with $\varepsilon_n\to0$. With the whole infinite sequence in
+hand, can you decide without error? If $\varepsilon_n=\frac1{10}$, certainly: the frequency tells. If $\varepsilon_n=2^{-n}$, certainly not: the two coins differ only in the first few tosses, and those are not enough. Shizuo Kakutani
+proved in 1948 that there is nothing in between: two infinite product measures are either perfectly distinguishable or not distinguishable even with probability one.
+
+Two probabilities $P$ and $Q$ on the same space are \emph{equivalent} if they have the same null sets, and \emph{mutually singular}, $P\perp Q$, if there is an event $A$ with $P(A)=0$ and $Q(A)=1$ (Tome~6,
+Chapter~10). For probabilities $p$ and $q$ on $\R$ with $q\ll p$, the \emph{Hellinger affinity} is
+\[
+\rho(p,q)=\int\sqrt{\frac{\dd q}{\dd p}}\;\dd p\in[0,1],
+\]
+where $\frac{\dd q}{\dd p}$ is the Radon--Nikodym derivative (Tome~6, Theorem~10.4). By Cauchy--Schwarz, $\rho\le\bigl(\int\frac{\dd q}{\dd p}\dd p\bigr)^{1/2}=1$, with equality only if $\frac{\dd q}{\dd p}=1$, that is $p=q$. If $p$ and $q$ are equivalent, $\rho>0$
+and $\rho(p,q)=\rho(q,p)$, since both equal $\int\sqrt{fg}\,\dd\lambda$ for densities $f$, $g$ of $p$, $q$ with respect to $\lambda=p+q$.
+
+\begin{theorem}[Kakutani, 1948]\label{thm:kakutani}
+For each $n$, let $p_n$ and $q_n$ be equivalent probabilities on $\R$, and let $P=\bigotimes_np_n$ and $Q=\bigotimes_nq_n$ be the product probabilities on $\R^\N$ (Tome~6, Theorem~11.8). Then $P$ and $Q$ are
+either equivalent or mutually singular:
+\[
+\prod_{n=1}^\infty\rho(p_n,q_n)>0\ \Longrightarrow\ P\text{ and }Q\text{ are equivalent};\qquad\prod_{n=1}^\infty\rho(p_n,q_n)=0\ \Longrightarrow\ P\perp Q.
+\]
+In the first case, $\frac{\dd Q}{\dd P}=\prod_{n=1}^\infty f_n(X_n)$, an almost surely convergent product, where $f_n=\frac{\dd q_n}{\dd p_n}$ and $X_n$ is the $n$-th coordinate.
+\end{theorem}
+\begin{proof}
+Work under $P$, where the coordinates $X_n$ are independent with laws $p_n$, with $\mathcal F_n=\sigma(X_1,\dots,X_n)$. Let $\rho_n=\rho(p_n,q_n)$ and
+\[
+M_n=\prod_{k\le n}f_k(X_k).
+\]
+Since $\mathbb E_Pf_k(X_k)=q_k(\R)=1$, $M_n$ is a non-negative martingale with mean $1$. For $B\subseteq\R^n$ a product of Borel sets, $Q((X_1,\dots,X_n)\in B)=\mathbb E_P[M_n\mathbf 1_{\{(X_1,\dots,X_n)\in B\}}]$, by
+independence; both sides are probabilities in $B$, so by uniqueness (Tome~6, Theorem~6.5) this holds for all Borel $B\subseteq\R^n$:
+\begin{equation}\label{eq:densityn}
+Q(A)=\mathbb E_P[M_n\mathbf 1_A]\qquad\text{for }A\in\mathcal F_n .
+\end{equation}
+
+\emph{Case $\prod\rho_n>0$.} The variables $N_n=\prod_{k\le n}\sqrt{f_k(X_k)}/\rho_k$ form a non-negative martingale, with $\mathbb E_PN_n^2=\prod_{k\le n}\rho_k^{-2}\le c^{-2}$, where
+$c=\prod_{k=1}^\infty\rho_k>0$ (the partial products decrease to $c$). By Doob's inequality (Tome~3, Theorem~10.15) and monotone convergence, $\mathbb E_P\sup_nN_n^2\le4c^{-2}$. Since
+$M_n=N_n^2\prod_{k\le n}\rho_k^2\le N_n^2$, the martingale $(M_n)$ is dominated by an integrable variable, so it is uniformly integrable and converges almost surely and in $L^1$ to some $M_\infty$, with
+$M_n=\mathbb E_P[M_\infty\mid\mathcal F_n]$ (Theorem~\ref{thm:uimart}). The probability $Q'(A)=\mathbb E_P[M_\infty\mathbf 1_A]$ agrees with $Q$ on every $\mathcal F_n$, by~\eqref{eq:densityn}, hence on $\sigma(\bigcup_n\mathcal F_n)$, the product
+$\sigma$-algebra. So $Q\ll P$ with density $M_\infty$. Exchanging the roles of $p_n$ and $q_n$, which does not change $\rho_n$, gives $P\ll Q$.
+
+\emph{Case $\prod\rho_n=0$.} Now $\mathbb E_P\sqrt{M_n}=\prod_{k\le n}\rho_k\to0$. Choose $n_1<n_2<\cdots$ with $\mathbb E_P\sqrt{M_{n_j}}\le4^{-j}$, and let $A_j=\{M_{n_j}>1\}\in\mathcal F_{n_j}$. Then
+$P(A_j)\le\mathbb E_P\sqrt{M_{n_j}}\le4^{-j}$ by Markov's inequality applied to $\sqrt{M_{n_j}}$, and by~\eqref{eq:densityn},
+\[
+Q(A_j^c)=\mathbb E_P\bigl[M_{n_j}\mathbf 1_{\{M_{n_j}\le1\}}\bigr]\le\mathbb E_P\sqrt{M_{n_j}}\le4^{-j},
+\]
+since $m\le\sqrt m$ for $0\le m\le1$. Let $A=\limsup_jA_j$. By Borel--Cantelli, $P(A)=0$. And $A^c=\bigcup_i\bigcap_{j\ge i}A_j^c$, where $Q(\bigcap_{j\ge i}A_j^c)\le\inf_{j\ge i}4^{-j}=0$; so $Q(A^c)=0$, and $Q(A)=1$.
+\end{proof}
+
+\begin{example}[shifted Gaussians and biased coins]\label{ex:kakutaniex}
+(a) Let $p_n=\mathcal N(0,1)$ and $q_n=\mathcal N(a_n,1)$. Completing the square, $\varphi(x)\varphi(x-a)=\frac1{2\pi}e^{-(x-a/2)^2-a^2/4}$, so
+\[
+\rho(p_n,q_n)=\int\sqrt{\varphi(x)\varphi(x-a_n)}\,\dd x=e^{-a_n^2/8}.
+\]
+So the shifted sequence $(Z_n+a_n)$ of independent standard Gaussians has a law equivalent to that of $(Z_n)$ if $\sum a_n^2<\infty$, and singular otherwise. This is the discrete shadow of the Cameron--Martin
+theorem for Brownian motion: shifting a Brownian path by a function $h$ gives an equivalent law exactly when $h'$ is square integrable.
+
+(b) Let $p_n$ be the fair coin and $q_n$ the coin with $P(1)=\frac12+\varepsilon_n$. Then
+\[
+\rho(p_n,q_n)=\frac{\sqrt{1+2\varepsilon_n}+\sqrt{1-2\varepsilon_n}}2=1-\frac{\varepsilon_n^2}2+O(\varepsilon_n^4).
+\]
+Since $\prod(1-u_n)>0$ if and only if $\sum u_n<\infty$ (for $0\le u_n<1$), the biased sequence can be detected with certainty if and only if $\sum\varepsilon_n^2=\infty$. For $\varepsilon_n=n^{-1/2}$ it can, although the bias
+tends to $0$; for $\varepsilon_n=n^{-0.51}$ it cannot.
+\end{example}
+
+\section{Peeking at the data: Ville's inequality}
+
+An online shop tests a new design of its checkout page. Half the visitors see the old page, half the new one, and the analyst computes, every morning, the usual test statistic: with $n$ visitors per
+group and $D_n$ the difference in the number of purchases, she declares the new page better as soon as the standardized difference exceeds $1.96$, a test ``at level $5\%$''. Each single test does have level $5\%$.
+But she looks every day, and stops at the first success. By the law of the iterated logarithm (Theorem~\ref{thm:hartmanwintner}), even when the two pages are identical, the standardized difference exceeds
+$1.96$, indeed exceeds any fixed level, infinitely often, almost surely. Given enough patience, the analyst is \emph{certain} to declare a winner that does not exist. The notebook measures how fast:
+with daily looks over a long experiment, the false alarm rate is several times the advertised $5\%$.
+
+Ville's thesis contains the remedy. A non-negative supermartingale cannot often become large.
+
+\begin{theorem}[Ville's inequality, 1939]\label{thm:ville}
+Let $(M_n)_{n\ge0}$ be a non-negative supermartingale and $c>0$. Then
+\[
+P\Bigl(\sup_{n\ge0}M_n\ge c\Bigr)\le\frac{\mathbb EM_0}c .
+\]
+\end{theorem}
+\begin{proof}
+Let $T$ be the first $n$ with $M_n\ge c$ ($T=\infty$ if there is none), a stopping time. The stopped process $M_{T\wedge n}$ is a supermartingale (Tome~3, Proposition~10.11), so
+\[
+c\,P(T\le n)\le\mathbb E\bigl[M_{T\wedge n}\mathbf 1_{\{T\le n\}}\bigr]\le\mathbb EM_{T\wedge n}\le\mathbb EM_0,
+\]
+using $M_{T\wedge n}=M_T\ge c$ on $\{T\le n\}$ and $M\ge0$. Let $n\to\infty$: $P(T<\infty)\le\mathbb EM_0/c$.
+\end{proof}
+
+Think of $M_n$ as the capital of a gambler who bets against the hypothesis, starting with one euro, at fair odds if the hypothesis is true. Ville's inequality says that the chance that the
+gambler ever multiplies his euro by $20$ is at most $5\%$. So ``reject the hypothesis as soon as the gambler's capital reaches $1/\alpha$'' is a test of level $\alpha$, \emph{whatever the stopping rule}: one may look
+after every observation, stop when one likes, or never stop. Here is such a gambler for the fair coin.
+
+\begin{theorem}[an anytime-valid test of a coin]\label{thm:anytime}
+Let $X_1,X_2,\dots$ be tosses with values in $\{0,1\}$, $S_n=X_1+\dots+X_n$, and
+\[
+M_n=\int_0^1\frac{\theta^{S_n}(1-\theta)^{n-S_n}}{2^{-n}}\,\dd\theta=\frac{2^n\,S_n!\,(n-S_n)!}{(n+1)!}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item If the coin is fair, $(M_n)$ is a martingale with $M_0=1$, so $P(M_n\ge1/\alpha\text{ for some }n)\le\alpha$ for every $\alpha\in(0,1)$.
+\item If the tosses are i.i.d.\ with $P(X_i=1)=\theta\neq\frac12$, then $M_n\to\infty$ almost surely: the test rejects the fair coin eventually, with probability $1$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) The second expression is the Beta integral. From it, $M_{n+1}/M_n$ equals $\frac{2(S_n+1)}{n+2}$ if $X_{n+1}=1$ and $\frac{2(n-S_n+1)}{n+2}$ if $X_{n+1}=0$; for a fair toss independent of $\mathcal F_n$,
+\[
+\mathbb E\bigl[M_{n+1}/M_n\,\big|\,\mathcal F_n\bigr]=\frac12\cdot\frac{2(S_n+1)+2(n-S_n+1)}{n+2}=1 .
+\]
+Apply Theorem~\ref{thm:ville} with $c=1/\alpha$.
+
+(b) For $0\le k\le n$, $\binom nkt^k(1-t)^{n-k}\le1$ at $t=\frac kn$ gives $\binom nk\le e^{nH(k/n)}$, where $H(t)=-t\log t-(1-t)\log(1-t)$ is the entropy in nats. So
+\[
+M_n=\frac{2^n}{(n+1)\binom n{S_n}}\ge\frac{\exp\bigl(n(\log2-H(S_n/n))\bigr)}{n+1}.
+\]
+By the strong law $S_n/n\to\theta$, and $H(\theta)<\log2$ for $\theta\neq\frac12$ (Gibbs' inequality, Tome~3, Proposition~4.16: $\log2-H(t)$ is the relative entropy of the $t$-coin from the fair coin). So the numerator grows exponentially, the denominator only linearly,
+and $M_n\to\infty$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch09-ville}
+\caption{The capital $M_n$ of the betting test of Theorem~\ref{thm:anytime}, logarithmic scale, for $n\le3000$. Grey: ten runs with a fair coin; Ville's inequality says that at most $5\%$ of such runs ever reach the
+red line $1/\alpha=20$. Blue: ten runs with $\theta=0.58$; each crosses the line and goes on growing exponentially.}
+\label{fig:ville}
+\end{figure}
+
+The betting test pays a modest price for its freedom: with a fixed sample size, the classical test needs fewer observations to detect a given bias. But the analyst who cannot resist looking, or who must
+stop early when the evidence is overwhelming, has no honest alternative. Such \emph{e-values}, \emph{confidence sequences} and \emph{anytime-valid} tests, going back to Ville and to Herbert Robbins'
+work of 1967--1970, are today a lively part of statistics, driven in part by online experiments (the survey of Ramdas, Gr\"unwald, Vovk and Shafer is a good entry point). Exercise~\ref{ex:confseq} turns the test into a confidence sequence: an interval for an unknown
+bias that is valid at all times simultaneously.
+
+\begin{think}
+In Theorem~\ref{thm:anytime}, the prior on $\theta$ was uniform. What happens with a prior concentrated near $\frac12$? Near $0.9$? A gambler who knows the true $\theta$ would bet with the likelihood ratio
+$\prod(2\theta)^{X_i}(2-2\theta)^{1-X_i}$: how fast does its capital grow, and why is this growth rate the exponent of the Chernoff--Stein lemma (Theorem~7.9)?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:doubling}
+Let $\xi_1,\xi_2,\dots$ be independent fair bits and $M_n=\prod_{k\le n}2\xi_k$. Check directly that $(M_n)$ is not uniformly integrable, and that $M_n\neq\mathbb E[M_\infty\mid\mathcal F_n]$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:symwalk}
+Let $S_n$ be the simple symmetric random walk started at $0$ and $T$ the first time it reaches $1$. Using recurrence (Tome~3), $T<\infty$ almost surely. Show that $(S_{T\wedge n})$ is not uniformly integrable,
+and deduce from case~(c) of optional stopping (Tome~3, Theorem~10.12) that $\mathbb ET=\infty$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:finiteexch}
+(a) Let $(X_1,X_2)$ take the values $(1,0)$ and $(0,1)$ with probability $\frac12$ each. Show that it is exchangeable but not of the form of Theorem~\ref{thm:definetti}~(c).
+(b) Show that for an infinite exchangeable binary sequence, $\operatorname{Cov}(X_1,X_2)=\operatorname{Var}\Theta\ge0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:polyabeta}
+P\'olya's urn starts with $a$ red and $b$ green balls ($a,b\ge1$ integers); each drawn ball is returned with one more of its colour. Show that the sequence of colours is exchangeable and that the limiting proportion of
+red has the Beta$(a,b)$ law, with density $\frac{(a+b-1)!}{(a-1)!\,(b-1)!}\theta^{a-1}(1-\theta)^{b-1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ustat}
+Let $X_1,X_2,\dots$ be i.i.d.\ and $h:\R^2\to\R$ symmetric with $h(X_1,X_2)$ integrable. Show that
+\[
+U_n=\binom n2^{-1}\sum_{1\le i<j\le n}h(X_i,X_j)\longrightarrow\mathbb Eh(X_1,X_2)
+\]
+almost surely and in $L^1$. Example: for $h(x,y)=\frac12(x-y)^2$, $U_n$ is the usual unbiased sample variance.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:kakutanipoisson}
+(a) Show that the Hellinger affinity of the Poisson laws with means $\lambda$ and $\mu$ is $e^{-(\sqrt\lambda-\sqrt\mu)^2/2}$. When are the laws of two sequences of independent Poisson variables, with means
+$\lambda_n$ and $\mu_n$, equivalent?
+(b) In Example~\ref{ex:kakutaniex}~(a) with $\sum a_n^2<\infty$, show that $\frac{\dd Q}{\dd P}=\exp\bigl(\sum_na_nX_n-\frac12\sum_na_n^2\bigr)$, the series converging almost surely under $P$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:confseq}
+For $\theta_0\in(0,1)$ let
+\[
+M_n(\theta_0)=\frac{\int_0^1\theta^{S_n}(1-\theta)^{n-S_n}\,\dd\theta}{\theta_0^{S_n}(1-\theta_0)^{n-S_n}},
+\]
+and let $C_n=\{\theta_0:M_n(\theta_0)<1/\alpha\}$. Show that if the tosses are i.i.d.\ with bias $\theta$, then $P(\theta\in C_n\text{ for all }n)\ge1-\alpha$. Show that $C_n$ is an interval.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:doubling}
+$\mathbb E[M_n\mathbf 1_{\{M_n>K\}}]=1$ as soon as $2^n>K$. What is $M_\infty$?
+\end{hint}
+\begin{hint}{ex:symwalk}
+If the family were uniformly integrable, Theorem~\ref{thm:uiost} would give $\mathbb ES_T=0$. If $\mathbb ET$ were finite, Tome~3's case~(c) would give the same.
+\end{hint}
+\begin{hint}{ex:finiteexch}
+(a) A mixture would need $\int\theta^2\dd\mu=0$ and $\int(1-\theta)^2\dd\mu=0$. (b) Use Theorem~\ref{thm:definetti}~(c) with $n=2$.
+\end{hint}
+\begin{hint}{ex:polyabeta}
+Compute the probability of a sequence with $s$ reds: its numerators are $a(a+1)\cdots(a+s-1)$ and $b\cdots(b+n-s-1)$ in some order. Compare with the Beta integral.
+\end{hint}
+\begin{hint}{ex:ustat}
+Lemma~\ref{lem:symm} with $k=2$ gives $U_n=\mathbb E[h(X_1,X_2)\mid\mathcal E_n]$.
+\end{hint}
+\begin{hint}{ex:kakutanipoisson}
+(a) Sum $e^{-(\lambda+\mu)/2}\frac{(\sqrt{\lambda\mu})^k}{k!}$. (b) $M_n=\exp(\sum_{k\le n}a_kX_k-\frac12\sum_{k\le n}a_k^2)$; the series $\sum a_kX_k$ converges almost surely, for example by Tome~3, Theorem~10.18.
+\end{hint}
+\begin{hint}{ex:confseq}
+For the true $\theta$, $M_n(\theta)$ is a martingale with mean $1$. For the interval, look at $\log M_n(\theta_0)$ as a function of $\theta_0$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:doubling}
+\idea All the mean sits on a single event of probability $2^{-n}$, which vanishes in the limit.
+\writeup $M_n=2^n$ on the event that $\xi_1=\dots=\xi_n=1$, of probability $2^{-n}$, and $0$ elsewhere. For any $K$ and $n$ with $2^n>K$, $\mathbb E[M_n\mathbf 1_{\{M_n>K\}}]=2^n\cdot2^{-n}=1$, so
+$\sup_n\mathbb E[M_n\mathbf 1_{\{M_n>K\}}]=1$ for every $K$: not uniformly integrable. Almost surely some $\xi_k=0$, so $M_\infty=0$, and $\mathbb E[M_\infty\mid\mathcal F_n]=0\neq M_n$ on an event of probability $2^{-n}>0$.
+\end{solution}
+
+\begin{solution}{ex:symwalk}
+\idea The walk reaches $1$ for sure, so the stopped value has mean $1$, not $0$: the fair game was beaten, and the only way this is possible is that the stopped martingale is not uniformly integrable and the waiting time has infinite mean.
+\writeup $S_T=1$ almost surely, so $\mathbb ES_T=1\neq0=\mathbb ES_0$. If $(S_{T\wedge n})$ were uniformly integrable, Theorem~\ref{thm:uiost} applied to the martingale $S^T$ (whose limit is $S_T$) would give
+$\mathbb ES_T=0$. If $\mathbb ET<\infty$, Tome~3's case~(c), with steps bounded by $1$, would also give $\mathbb ES_T=0$. Both are impossible. (The losses before $T$ hide in rare excursions far below $0$.)
+\end{solution}
+
+\begin{solution}{ex:finiteexch}
+\idea Two draws from a two-ball urn are perfectly negatively correlated; mixtures of coins only produce non-negative correlation.
+\writeup (a) The law gives probability $\frac12$ to $(1,0)$ and to $(0,1)$, a set invariant under the swap, so it is exchangeable. If $P(X_1=X_2=1)=\int\theta^2\dd\mu$ and $P(X_1=X_2=0)=\int(1-\theta)^2\dd\mu$ for some $\mu$,
+both would be $0$, forcing $\mu$ to be carried by $\{\theta:\theta=0\}\cap\{\theta:\theta=1\}=\emptyset$. (b) By Theorem~\ref{thm:definetti}~(c), $P(X_1=1)=\mathbb E\Theta$ and $P(X_1=X_2=1)=\mathbb E\Theta^2$, so
+$\operatorname{Cov}(X_1,X_2)=\mathbb E\Theta^2-(\mathbb E\Theta)^2=\operatorname{Var}\Theta$.
+\end{solution}
+
+\begin{solution}{ex:polyabeta}
+\idea As in Exercise~\ref{ex:polya}, the probability of a sequence depends only on its number of reds; then recognize a Beta integral and use uniqueness in de Finetti's theorem.
+\writeup When $r$ reds and $g$ greens have been drawn, the urn holds $a+r$ reds and $b+g$ greens. So a sequence of $n$ draws with $s$ reds has probability
+\[
+\frac{a(a+1)\cdots(a+s-1)\cdot b(b+1)\cdots(b+n-s-1)}{(a+b)(a+b+1)\cdots(a+b+n-1)},
+\]
+which depends only on $s$: the sequence is exchangeable. With $B(x,y)=\int_0^1\theta^{x-1}(1-\theta)^{y-1}\dd\theta=\frac{(x-1)!\,(y-1)!}{(x+y-1)!}$ for positive integers (Tome~4, Section~5.4 gives $B(x,y)$ in general), the probability equals
+\[
+\frac{(a+s-1)!\,(b+n-s-1)!\,(a+b-1)!}{(a-1)!\,(b-1)!\,(a+b+n-1)!}=\frac{B(a+s,b+n-s)}{B(a,b)}=\int_0^1\theta^s(1-\theta)^{n-s}\,\beta_{a,b}(\theta)\,\dd\theta,
+\]
+with $\beta_{a,b}$ the Beta$(a,b)$ density. By uniqueness in Theorem~\ref{thm:definetti}, $\Theta=\lim S_n/n$ has the Beta$(a,b)$ law; and the proportion of red balls in the urn, $\frac{a+S_n}{a+b+n}$, has the same limit.
+\end{solution}
+
+\begin{solution}{ex:ustat}
+\idea Averaging over pairs is the best prediction of one pair given the unordered sample; as the sample grows, the backward martingale converges, and Hewitt--Savage makes the limit constant.
+\writeup By Lemma~\ref{lem:symm} with $k=2$, $\mathbb E[h(X_1,X_2)\mid\mathcal E_n]$ is the average of $h(X_i,X_j)$ over ordered pairs of distinct indices, which is $U_n$ by symmetry of $h$. By Theorem~\ref{thm:levydown}, $U_n$
+converges almost surely and in $L^1$ to $\mathbb E[h(X_1,X_2)\mid\mathcal E_\infty]$, which is almost surely constant by Theorem~\ref{thm:hewittsavage}, equal to its mean $\mathbb Eh(X_1,X_2)$. For
+$h=\frac12(x-y)^2$, $\sum_{i<j}(X_i-X_j)^2=n\sum_i(X_i-\bar X)^2$, so $U_n=\frac1{n-1}\sum_i(X_i-\bar X)^2$, and the limit is $\operatorname{Var}X_1$ when $X_1\in L^2$.
+\end{solution}
+
+\begin{solution}{ex:kakutanipoisson}
+\idea Affinities of exponential families are explicit; the density of the product is the limit of the martingale of partial likelihood ratios.
+\writeup (a) $\rho=\sum_k\sqrt{e^{-\lambda}\frac{\lambda^k}{k!}e^{-\mu}\frac{\mu^k}{k!}}=e^{-(\lambda+\mu)/2}\sum_k\frac{(\sqrt{\lambda\mu})^k}{k!}=e^{-(\lambda+\mu)/2+\sqrt{\lambda\mu}}=e^{-(\sqrt\lambda-\sqrt\mu)^2/2}$. For positive means the laws are equivalent,
+and by Theorem~\ref{thm:kakutani} the products are equivalent if and only if $\sum_n(\sqrt{\lambda_n}-\sqrt{\mu_n})^2<\infty$, and singular otherwise.
+(b) Here $f_n(x)=\varphi(x-a_n)/\varphi(x)=e^{a_nx-a_n^2/2}$, so $M_n=\exp(\sum_{k\le n}a_kX_k-\frac12\sum_{k\le n}a_k^2)$. Under $P$, $\sum_{k\le n}a_kX_k$ is a martingale with
+$\mathbb E(\sum_{k\le n}a_kX_k)^2=\sum_{k\le n}a_k^2$, bounded, so it converges almost surely (Tome~3, Theorem~10.18). Hence $M_n\to\exp(\sum a_nX_n-\frac12\sum a_n^2)$, and Theorem~\ref{thm:kakutani} identifies this limit as
+$\frac{\dd Q}{\dd P}$.
+\end{solution}
+
+\begin{solution}{ex:confseq}
+\idea For the true parameter, the betting capital is a non-negative martingale with mean $1$; Ville's inequality bounds the chance that it ever reaches $1/\alpha$, that is, the chance that the truth ever leaves the set.
+\writeup Under bias $\theta$, $M_{n+1}(\theta)/M_n(\theta)$ equals $\frac{S_n+1}{(n+2)\theta}$ if $X_{n+1}=1$ and $\frac{n-S_n+1}{(n+2)(1-\theta)}$ otherwise (as in Theorem~\ref{thm:anytime}), with conditional mean
+\[
+\theta\cdot\frac{S_n+1}{(n+2)\theta}+(1-\theta)\cdot\frac{n-S_n+1}{(n+2)(1-\theta)}=1 .
+\]
+So $M_n(\theta)$ is a non-negative martingale with $M_0(\theta)=1$, and $P(\theta\notin C_n\text{ for some }n)=P(\sup_nM_n(\theta)\ge1/\alpha)\le\alpha$ by Theorem~\ref{thm:ville}. Finally,
+$\log M_n(\theta_0)=\text{const}-S_n\log\theta_0-(n-S_n)\log(1-\theta_0)$ is a convex function of $\theta_0$ (a sum of convex functions $-\log\theta_0$ and $-\log(1-\theta_0)$ with non-negative coefficients), so its sublevel set
+$C_n$ is an interval.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} J.~Ville, \emph{\'Etude critique de la notion de collectif}, Gauthier-Villars, 1939 (the word ``martingale'' and the inequality). L.~Bienvenu, G.~Shafer and A.~Shen, ``On the history of martingales in
+the study of randomness'', \emph{Electronic J.\ History Probab.\ Statist.}\ 5(1) (2009), for Ville's thesis, its defence in March 1939 and his war. R.~Mansuy, ``The origins of the word `martingale' '', same issue
+(the 1762 dictionary of the Acad\'emie fran\c caise is quoted there). J.~L.~Doob, \emph{Stochastic Processes}, Wiley, 1953. P.~L\'evy, \emph{Th\'eorie de l'addition des variables al\'eatoires}, Gauthier-Villars, 1937.
+\item \emph{De Finetti.} B.~de Finetti, ``Funzione caratteristica di un fenomeno aleatorio'', \emph{Atti R.\ Accad.\ Naz.\ Lincei, Mem.}\ (6) 4 (1931), 251--299; ``La pr\'evision: ses lois logiques, ses sources
+subjectives'', \emph{Ann.\ Inst.\ H.\ Poincar\'e} 7 (1937), 1--68; \emph{Theory of Probability}, Wiley, 1974, preface (``PROBABILITY DOES NOT EXIST''). E.~Hewitt and L.~J.~Savage, ``Symmetric measures on Cartesian
+products'', \emph{Trans.\ Amer.\ Math.\ Soc.}\ 80 (1955), 470--501. D.~Aldous, ``Exchangeability and related topics'', \emph{\'Ecole d'\'et\'e de Saint-Flour XIII}, Lecture Notes in Math.\ 1117, Springer, 1985: the
+general theory.
+\item \emph{Bayesian consistency.} J.~L.~Doob, ``Application of the theory of martingales'', in \emph{Le Calcul des Probabilit\'es et ses Applications}, Colloques Internationaux du CNRS 13 (1949), 23--27.
+D.~A.~Freedman, ``On the asymptotic behavior of Bayes' estimates in the discrete case'', \emph{Ann.\ Math.\ Statist.}\ 34 (1963), 1386--1403. W.~R.~Thompson, ``On the likelihood that one unknown probability
+exceeds another in view of the evidence of two samples'', \emph{Biometrika} 25 (1933), 285--294.
+\item \emph{Kakutani.} S.~Kakutani, ``On equivalence of infinite product measures'', \emph{Ann.\ of Math.}\ 49 (1948), 214--224.
+\item \emph{Anytime-valid inference.} D.~A.~Darling and H.~Robbins, ``Confidence sequences for mean, variance, and median'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 58 (1967), 66--68. H.~Robbins, ``Statistical methods related
+to the law of the iterated logarithm'', \emph{Ann.\ Math.\ Statist.}\ 41 (1970), 1397--1409. S.~R.~Howard, A.~Ramdas, J.~McAuliffe and J.~Sekhon, ``Time-uniform, nonparametric, nonasymptotic confidence sequences'',
+\emph{Ann.\ Statist.}\ 49 (2021), 1055--1080. A.~Ramdas, P.~Gr\"unwald, V.~Vovk and G.~Shafer, ``Game-theoretic statistics and safe anytime-valid inference'', \emph{Statist.\ Sci.}\ 38 (2023), 576--601.
+\item D.~Williams, \emph{Probability with Martingales}, Cambridge University Press, 1991. The friendliest book on the subject; uniform integrability, backward martingales and Kakutani's theorem are all there.
+\item G.~Shafer and V.~Vovk, \emph{Game-Theoretic Foundations for Probability and Finance}, Wiley, 2019. Probability rebuilt on Ville's betting idea.
+\end{itemize}
