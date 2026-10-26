@@ -1,0 +1,685 @@
+\chapter{Planarity and Colouring}
+
+\begin{center}\itshape
+A graph can be drawn in the plane without crossings if and only if it contains no subdivision of $K_5$ or $K_{3,3}$.\\
+\upshape(Kuratowski, 1930)
+\end{center}
+
+On 23 October 1852 Augustus De Morgan wrote to William Rowan Hamilton: ``A student of mine asked me today to give him a
+reason for a fact which I did not know was a fact, and do not yet. He says that if a figure be anyhow divided and the
+compartments differently coloured, so that figures with any portion of common boundary line are differently coloured, four
+colours may be wanted, but not more.'' The student was Frederick Guthrie, whose brother Francis had noticed it while colouring
+a map of the counties of England. Hamilton answered three days later that he was not likely to attempt the ``quaternion of colour''
+very soon.
+
+The problem then had one of the most dramatic careers in mathematics. In 1879 Alfred Kempe, a barrister, published a proof;
+it was accepted for eleven years, until Percy Heawood found a gap in it, and salvaged from the wreck a proof that \emph{five} colours
+suffice. The question stayed open for another 86 years. In 1976 Kenneth Appel and Wolfgang Haken, at the University of
+Illinois, settled it with Kempe's own ideas pushed to an extreme: they reduced the problem to $1\,936$ configurations and had a
+computer check them, for over a thousand hours. The university's postmark read ``Four colors suffice''. Many mathematicians
+were unhappy with a proof that no human could check, and the controversy only calmed down when a simpler computer proof was given
+in 1997 and the whole argument was verified in a formal proof assistant by Georges Gonthier in 2005.
+
+This chapter tells the parts of the story that fit in a book. First, what a drawing is, and Euler's formula $n-m+f=2$, which
+already shows that $K_5$ and the ``three houses, three utilities'' graph $K_{3,3}$ cannot be drawn without crossings. Then
+Kuratowski's theorem, with complete proof: these two graphs are the only obstructions. Then colourings: Heawood's five colour
+theorem with Kempe's chains, Brooks' theorem, Vizing's theorem on colouring edges, and the chromatic polynomial, whose value
+at $-1$ counts something nobody would expect.
+
+\begin{think}
+Three houses must each be connected to water, gas and electricity by pipes that do not cross. Draw as much as you can on
+paper. Now try on the surface of a coffee mug, where the handle can carry a pipe over another.
+\end{think}
+
+\section{Drawings and Euler's formula}
+
+To prove theorems about drawings, we must say what a drawing is. An \emph{arc} is a polygonal path in $\R^2$, the union of finitely many
+segments $[p_0,p_1],[p_1,p_2],\dots,[p_{k-1},p_k]$ meeting only as consecutive segments do; $p_0$ and $p_k$ are its \emph{ends}. A \emph{polygon} is the same with
+$p_k=p_0$. A graph is \emph{drawn} in the plane, or is a \emph{plane graph}, when its vertices are distinct points and its edges are arcs joining their
+ends, such that the interior of an edge contains no vertex and no point of another edge. A graph is \emph{planar} if it can be drawn.
+Restricting to polygonal arcs loses nothing: any drawing with continuous curves can be approximated by a polygonal one, and
+F\'ary proved in 1948 that one can even use straight segments. Identify $G$ with the union of its
+points and edges. The \emph{faces} of $G$ are the regions of $\R^2\setminus G$: two points are in the same face if an arc avoiding $G$ joins them.
+Exactly one face is unbounded, the \emph{outer} face. The \emph{frontier} of a face is the set of points of $G$ that are limits of points of the face.
+
+\begin{lemma}[local structure]\label{lem:local}
+Let $G$ be a plane graph.
+\begin{enumerate}
+\item If $z$ is an interior point of an edge $e$, every small enough disc around $z$ meets $G$ in one or two segments of $e$, and the disc
+minus $e$ has two components, the two \emph{sides} of $e$ at $z$. Moving $z$ along $e$, each side stays in one face: so $e$ has a left and a right
+side, each contained in a face.
+\item If $v$ is a vertex of degree $d\ge1$, every small enough disc around $v$ meets $G$ in $d$ segments from $v$, the beginnings of the edges at $v$, in
+distinct directions. They cut the disc into $d$ \emph{sectors} (one if $d=1$). A sector is bordered by two edges consecutive around $v$ and lies in one
+face, which contains a side of each of these edges (both sides of the edge if $d=1$).
+\item If $G$ has at least one edge, every face contains a side of some edge.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Everything follows from the finiteness of the drawing. (1) The point $z$ lies in a segment $s$ of $e$, at a positive distance from every
+other segment of $G$ not containing $z$; a disc of smaller radius meets only $s$ (or the two segments of $e$ meeting at $z$, if $z$ is a bend),
+and a line, or two half-lines from $z$, cut a disc into two parts. Along a segment $s$ of $e$, the points at distance less than $\delta$ on one side of
+$s$, away from its ends, form a strip avoiding $G$ for small $\delta$, which joins all the half-discs on that side; at a bend, the two strips
+on the same side meet. (2) The same argument at $v$, where the segments leaving $v$ have distinct directions since edges do not overlap; going
+around $v$, each sector touches the edges that border it, so it contains a side of each. (3) From a point $x$ of a face, move in a straight
+line to a nearest point of $G$; just before arriving, the moving point is in a side of an edge or in a sector at a vertex.
+\end{proof}
+
+\begin{lemma}[Jordan curve theorem for polygons]\label{lem:jordan}
+A polygon $P$ has exactly two faces, a bounded \emph{interior} and an unbounded \emph{exterior}. Every point of $P$ is in the frontier of both, and the two
+sides of each segment of $P$ lie in different faces.
+\end{lemma}
+\begin{proof}
+Regard $P$ as a plane graph, a cycle. By Lemma~\ref{lem:local}, going around $P$, the left side of each edge and the left side of the next one are in one
+sector, so all left sides lie in one face; likewise all right sides. By part (3) of that lemma there are at most two faces.
+
+For at least two, fix a direction $u$ not parallel to any segment of $P$. For $x\notin P$, let $\pi(x)$ be the parity of the number of times the half-line
+$x+tu$, $t>0$, crosses $P$, where passing through a corner $p_i$ counts as a crossing if the two segments at $p_i$ lie on opposite sides of the line, and
+not otherwise. Moving $x$ along a segment avoiding $P$, the half-line sweeps the plane continuously; the number of crossings changes only when the
+half-line passes through a corner of $P$, and then by $0$ or $\pm2$ by the rule chosen. So $\pi$ is constant on faces. Two points close to an interior point $z$ of a
+segment, on opposite sides of it, have half-lines that differ by exactly one crossing near $z$ (choosing $z$ so that the half-lines meet no corner), so $\pi$
+takes both values, and the two sides at $z$ are in different faces. Far away, the half-line misses $P$, so the unbounded face has $\pi=0$ and the face where
+$\pi=1$ is bounded. Finally, each point of $P$ is a limit of interior points of segments, near which both faces come arbitrarily close.
+\end{proof}
+
+The theorem for arbitrary continuous closed curves, stated by Camille Jordan in 1887, is much harder; it was the first theorem to be
+formally verified in a proof assistant at full generality (Hales, 2007). Polygons are all we need.
+
+\begin{lemma}\label{lem:theta}
+\begin{enumerate}
+\item A plane forest has exactly one face.
+\item Let $P_1,P_2,P_3$ be three arcs with the same two ends and otherwise disjoint. Then $P_1\cup P_2\cup P_3$ has exactly three faces, with frontiers
+$P_1\cup P_2$, $P_2\cup P_3$ and $P_1\cup P_3$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) Induction on the number of edges; with no edge, $\R^2$ minus finitely many points is connected. Let $e=uv$ be an edge where $v$ has degree $1$, and $F'$ the
+forest without $e$ and $v$, whose complement is connected by induction. By Lemma~\ref{lem:local} the single sector at $v$ contains both sides of $e$, so all
+sides of $e$ lie in one face $f_e$ of $F$. The complement of $F'$ is the disjoint union of the open sets $f_e\cup\mathring e\cup\{v\}$ (open, since around points of the
+interior $\mathring e$ of $e$ and around $v$ small discs minus $e$ lie in $f_e$) and the union of the other faces of $F$. Being connected, it equals the first one: $f_e$ is the
+only face.
+
+(2) Let $u$ be a common end. The three arcs leave $u$ in distinct directions and cut a small disc around $u$ into three sectors, bordered by
+$P_1,P_2$, by $P_2,P_3$ and by $P_3,P_1$; each contains one side of each of its two arcs, and a side stays in one face along the whole arc
+(Lemma~\ref{lem:local}). Since every face contains a side, every face is the face of one of these three sectors: there are at most three faces.
+Two sectors cannot be in the same face: if those bordered by $P_1,P_2$ and by $P_2,P_3$ were, both sides of $P_2$ would be in one face, whereas by
+Lemma~\ref{lem:jordan} they are in different faces of the polygon $P_1\cup P_2$, hence of the union. So there are exactly three faces, the one of the sector
+bordered by $P_i,P_j$ contains sides of $P_i$ and $P_j$ but not of the third arc, and its frontier is $P_i\cup P_j$.
+\end{proof}
+
+\begin{proposition}\label{prop:faces}
+In a $2$-connected plane graph every face is bounded by a cycle, and every edge lies in the frontier of exactly two faces.
+\end{proposition}
+\begin{proof}
+By Whitney's theorem (Theorem~\ref{thm:ears}), $G$ has an ear decomposition $H_0\subseteq H_1\subseteq\cdots$. For the cycle $H_0$, this is Lemma~\ref{lem:jordan}.
+Suppose it holds for $H$, and add an ear $P$ joining distinct vertices $x,y$ of $H$. The interior of $P$ is connected and avoids $H$, so it lies in a face $f$ of
+$H$, bounded by a cycle $C$; the vertices $x$ and $y$ are approached from $f$ along $P$, so they lie on $C$, which they split into two arcs $C_1,C_2$. The face $f$ is a whole
+face of the polygon $C$ (a face of $C$ containing $f$ and more would contain a frontier point of $f$, which lies on $C$). By Lemma~\ref{lem:theta}, $C\cup P$ has three faces;
+one of them, with frontier $C$, is the face of $C$ not containing $P$; so the other two, with frontiers $C_1\cup P$ and $C_2\cup P$, are the regions into which $P$
+cuts $f$. The other faces of $H$ are untouched. So the faces of $H\cup P$ are again bounded by cycles, and the edges of $P$ border exactly two faces, as do those
+of $C$ ($f$ was replaced by two faces, one on each side of $C_1$ and of $C_2$).
+\end{proof}
+
+\begin{theorem}[Euler's formula]\label{thm:euler2}
+A connected plane graph with $n$ vertices, $m$ edges and $f$ faces satisfies $n-m+f=2$.
+\end{theorem}
+\begin{proof}
+Induction on $m-n+1\ge0$. If it is $0$, the graph is a tree and $f=1$ by Lemma~\ref{lem:theta}. Otherwise some edge $e$ lies on a cycle $C$. Its two sides lie in
+different faces of $C$ (Lemma~\ref{lem:jordan}), hence in different faces $f_1\ne f_2$ of $G$. In $G-e$, the set $f_1\cup f_2\cup\mathring e$ is open and connected, and avoids
+$G-e$; the other faces of $G$ are unchanged. So $G-e$, still connected, has one face fewer and one edge fewer, and $n-m+f$ does not change.
+\end{proof}
+
+The formula says that the number of faces does not depend on the drawing. It was discovered by Euler in 1750 for convex polyhedra
+(vertices, edges and faces: $8-12+6=2$ for the cube), after Descartes had come close; the polyhedron's surface, punctured at a point of one face
+and flattened, is a plane graph. Its consequences are a census of what fits in the plane.
+
+\begin{corollary}\label{cor:planarbounds}
+Let $G$ be a simple planar graph with $n\ge3$ vertices and $m$ edges.
+\begin{enumerate}
+\item $m\le3n-6$, and $m\le2n-4$ if $G$ is $2$-connected and has no triangle.
+\item $G$ has a vertex of degree at most $5$.
+\item $K_5$ and $K_{3,3}$ are not planar.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(1) Suppose first $G$ connected, so $m\ge2$. Count the pairs (face, side of an edge in it): there
+are $2m$ of them. Every face $\varphi$ contains at least $3$ sides. Indeed $\varphi$ contains a side of some edge $e=uv$; if both $u$ and $v$ had degree $1$, $G$ would be
+the single edge $e$. Say $v$ has degree at least $2$: the sector at $v$ containing this side contains a side of the next edge $e'=vw$ around $v$, and $e'\ne e$. If $w$ has
+degree $1$, $\varphi$ contains both sides of $e'$; otherwise it contains a side of the next edge $e''$ around $w$, which is not $e$ (else $e$ and $e'$ would both join $v$ and $w$).
+So $3f\le2m$, and Euler's formula gives $2=n-m+f\le n-m+\frac23m$, that is $m\le3n-6$. If $G$ is not connected, apply this to each component with at least $3$
+vertices; the other components have at most one edge, and adding up gives $m\le3n-6$ again. If $G$ is $2$-connected and has no triangle, each face is bounded by a
+cycle of length at least $4$ (Proposition~\ref{prop:faces}) and each edge borders two faces, so $4f\le2m$, and Euler's formula gives $m\le2n-4$.
+(2) If every degree were at least $6$, then $2m\ge6n$, against $m\le3n-6$.
+(3) $K_5$ has $10>3\cdot5-6$ edges, and $K_{3,3}$, which is $2$-connected without triangles, has $9>2\cdot6-4$ edges.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-k5k33}
+\caption{$K_5$ and $K_{3,3}$ drawn with a single crossing; by Corollary~\ref{cor:planarbounds}, no drawing avoids it.}
+\label{fig:k5k33}
+\end{figure}
+
+\section{Kuratowski's theorem}
+
+Subdividing an edge (replacing it by a path) does not change planarity, so a graph containing a \emph{subdivision} of $K_5$ or $K_{3,3}$ is not planar.
+In 1930 Kazimierz Kuratowski proved the converse, which Frink and Smith had also found independently and which Pontryagin may have
+known earlier. We follow the proof of Carsten Thomassen (1980), which reduces everything to $3$-connected graphs, where drawings are
+almost rigid.
+
+A graph $H$ is a \emph{minor} of $G$ if $G$ has disjoint sets of vertices $V_h$, $h\in V(H)$ (the \emph{branch sets}), each inducing a connected subgraph, with an
+edge of $G$ between $V_h$ and $V_{h'}$ whenever $hh'$ is an edge of $H$. Equivalently, $H$ is obtained from a subgraph of $G$ by contracting edges
+(and removing loops and parallel edges): contract each branch set to a point. A minor of a minor is a minor, and a subdivision of $H$ in
+$G$ gives $H$ as a minor (branch sets: a branch vertex with half of each subdivided edge leaving it).
+
+\begin{lemma}\label{lem:minorsub}
+If $G$ has $K_{3,3}$ as a minor, it contains a subdivision of $K_{3,3}$. If $G$ has $K_5$ as a minor, it contains a subdivision of $K_5$ or of $K_{3,3}$.
+\end{lemma}
+\begin{proof}
+For each $h$ choose one edge of $G$ between $V_h$ and $V_{h'}$ for each neighbour $h'$ of $h$, and let $A_h$ be the list of their ends in $V_h$ (with repetitions).
+Let $T_h$ be a smallest tree in $G[V_h]$ containing $A_h$. As in the proof of the centroid lemma (Lemma~\ref{lem:centroid}), there is a vertex $c$ of $T_h$ such that each
+component of $T_h-c$ contains at most half of the list $A_h$: start anywhere and move towards a component containing more than half; one never moves
+back, so this stops.
+
+If $H$ has maximum degree $3$, as $K_{3,3}$ does, each component of $T_h-c$ contains at most one point of $A_h$, so $T_h$ consists of paths from $c$ to the points of
+$A_h$ meeting only at $c$. Joining these paths through the chosen edges gives a subdivision of $H$ with branch vertices the points $c$.
+
+For $K_5$ each list has four points. If every $T_h$ is of the same kind, with paths from a centre, we obtain a subdivision of $K_5$. Otherwise some $T_1$ has a
+component $K$ of $T_1-c$ containing two points $a_2,a_3$ of the list (towards $V_2$ and $V_3$, say). Let $p\in K$ be the vertex where the paths from $c$ to $a_2$
+and to $a_3$ separate. Then $\alpha=$ the vertices of the paths from $p$ to $a_2$ and $a_3$, and $\beta=$ the rest of $T_1$, are connected, disjoint, and adjacent; $\alpha$ is
+adjacent to $V_2$ and $V_3$, $\beta$ to $V_4$ and $V_5$. With the branch sets $\{\alpha,V_4,V_5\}$ against $\{\beta,V_2,V_3\}$, $G$ has $K_{3,3}$ as a minor, and the first part
+applies.
+\end{proof}
+
+So ``no subdivision of $K_5$ or $K_{3,3}$'' and ``no minor $K_5$ or $K_{3,3}$'' are the same condition. We call a graph satisfying it \emph{Kuratowski-free}.
+
+\begin{lemma}[Thomassen, 1980]\label{lem:contractible}
+Every $3$-connected graph $G$ with at least $5$ vertices has an edge $xy$ such that $G/xy$ is $3$-connected.
+\end{lemma}
+\begin{proof}
+Suppose not. For each edge $xy$, the graph $G/xy$ has at least $4$ vertices and a separating set of at most $2$ vertices, which must contain the
+contracted vertex (otherwise it would separate $G$); so there is a vertex $z$ such that $\{x,y,z\}$ separates $G$. Among all edges $xy$ and such vertices $z$, choose
+one for which $G-\{x,y,z\}$ has a component $C$ as small as possible. The vertex $z$ has a neighbour $v$ in $C$, otherwise $\{x,y\}$ would separate $C$ from the rest.
+By assumption there is a vertex $w$ such that $\{z,v,w\}$ separates $G$. As $x$ and $y$ are adjacent, they are not in two different components of $G-\{z,v,w\}$, so
+some component $D$ of $G-\{z,v,w\}$ contains neither $x$ nor $y$. Again $v$ has a neighbour $u$ in $D$; as $u\notin\{x,y,z\}$ and $v\in C$, $u\in C$. So $D$, which is connected and avoids
+$x,y,z$, lies inside $C$, and it does not contain $v$: $|D|<|C|$, against the choice of $C$.
+\end{proof}
+
+\begin{lemma}\label{lem:facechoice}
+For every face $\varphi$ of a plane graph $G$, $G$ has a drawing whose outer face has the same frontier as $\varphi$.
+\end{lemma}
+\begin{proof}
+Choose a point $p$ in $\varphi$ and apply the inversion $x\mapsto p+\frac{x-p}{|x-p|^2}$, a homeomorphism of $\R^2\setminus\{p\}$ which sends points near $p$ far away and
+segments to segments or arcs of circles, preserving angles. The image is a drawing of $G$ by arcs of circles in which $\varphi$ has become the outer face. Replace
+each circular arc by an inscribed polygonal arc with very short segments: the edges stay disjoint (distinct edges are at positive distance
+away from their common ends, and at a common end they leave in distinct directions, since inversion preserves angles), and the faces keep
+their frontiers.
+\end{proof}
+
+\begin{lemma}\label{lem:threeconn}
+Every $3$-connected Kuratowski-free graph is planar.
+\end{lemma}
+\begin{proof}
+Induction on $n$. For $n=4$, $G=K_4$, which is planar. Let $n\ge5$, take an edge $xy$ as in Lemma~\ref{lem:contractible}, and let $G'=G/xy$, with contracted vertex $v$.
+It is $3$-connected and Kuratowski-free (a minor of $G'$ is a minor of $G$), so it has a drawing. The graph $G'-v$ is $2$-connected, so the face $\varphi$ of $G'-v$ containing
+the point $v$ is bounded by a cycle $C$ (Proposition~\ref{prop:faces}), and the edges at $v$, which do not meet $G'-v$, run inside $\varphi$ to vertices of $C$. Let
+$X=N(x)\setminus\{y\}$ and $Y=N(y)\setminus\{x\}$, both contained in $C$. Let $x_1,\dots,x_k$ be the vertices of $X$ in their order around $C$ ($k\ge2$, as $x$ has degree at least $3$), and
+$P_i$ the arc of $C$ from $x_i$ to $x_{i+1}$ (indices modulo $k$). There are three cases (Figure~\ref{fig:thomassen}).
+
+\emph{(a) $Y$ contains three vertices of $X$.} With $x$ and $y$ they are the branch vertices of a subdivision of $K_5$: the three arcs of $C$ between them, and the
+edges from $x$ and $y$.
+
+\emph{(b) $Y$ is contained in no $P_i$, and (a) fails.} Then there are $y_1,y_2\in Y$ and $x_i,x_j\in X$ in the order $y_1,x_i,y_2,x_j$ around $C$. (If some $y_1\in Y$ is not in $X$, it lies inside one
+$P_i$, and some $y_2\in Y$ lies outside $P_i$; take $x_i,x_{i+1}$. If $Y\subseteq X$, then $Y$ has two vertices, not consecutive among the $x_i$, since $y$ has degree at least $3$
+and (a) fails; take one $x_i$ on each side.) The four arcs of $C$ between these vertices, the edges $xx_i$, $xx_j$, $yy_1$, $yy_2$ and $xy$ form a subdivision of $K_{3,3}$
+with sides $\{x,y_1,y_2\}$ and $\{y,x_i,x_j\}$.
+
+\emph{(c) $Y\subseteq P_i$ for some $i$.} Both (a) and (b) contradict Kuratowski-freeness, so this case occurs, and we draw $G$. Erase $v$, put $x$ at the
+point $v$, and draw the edges $xx_j$ along the old edges $vx_j$. By Lemma~\ref{lem:theta}, applied repeatedly as in Proposition~\ref{prop:faces}, they cut $\varphi$ into faces,
+one of which, $\varphi_i$, is bounded by $xx_i\cup P_i\cup x_{i+1}x$. The old edges from $v$ to the vertices of $Y$ inside $P_i$ run in $\varphi_i$. In a small disc around $v$, where all
+edges at $v$ are segments from $v$, put $y$ in the sector of $\varphi_i$ next to $v$, join it to $x$ by a segment and to the old edges towards $Y$ by short
+segments; for $x_i$ and $x_{i+1}$, if they are in $Y$, run a new edge from $y$ alongside the edge $xx_i$ or $xx_{i+1}$, inside $\varphi_i$. This draws $G$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-thomassen}
+\caption{The three cases of Thomassen's proof. The cycle $C$ bounds the face where $x$ and $y$ must go; the neighbours of $x$ are the dots, those of $y$ the
+squares. Left: three common neighbours give $K_5$. Middle: interleaved neighbours give $K_{3,3}$. Right: all neighbours of $y$ in one arc $P_i$, and $y$
+can be drawn.}
+\label{fig:thomassen}
+\end{figure}
+
+\begin{lemma}\label{lem:glue}
+Let $G_1$ and $G_2$ be planar graphs such that $V(G_1)\cap V(G_2)$ is a single vertex, or two vertices $x,y$ with $xy$ an edge of both. Then $G_1\cup G_2$ is planar.
+\end{lemma}
+\begin{proof}
+First, contracting an edge $ab$ of a plane graph gives a plane graph: erase $b$, and redraw each other edge $bc$ as an arc that starts at $a$, runs alongside $ab$
+on the side where $bc$ leaves $b$ (at slightly different distances for different edges), turns around $b$ inside a small disc and continues along $bc$.
+Now, by Lemma~\ref{lem:facechoice}, draw $G_1$ with the common vertex $s$, or the common edge $xy$, on the frontier of the outer face, and draw $G_2$ likewise, far away,
+with its copy $s'$, or $x'y'$, of the common part. In the first case join $s$ to $s'$ by an arc through the outer faces. In the second, take an arc $Q$ in the
+outer faces from a point beside the middle of $xy$ to a point beside the middle of $x'y'$, and join $x$ to $x'$ by an arc running alongside $xy$, then alongside
+$Q$ on its left, then alongside $x'y'$; and $y$ to $y'$ in the same way on the right of $Q$. Contracting the new edges (and merging the two copies of $xy$)
+gives a drawing of $G_1\cup G_2$.
+\end{proof}
+
+\begin{theorem}[Kuratowski, 1930; Wagner, 1937]\label{thm:kuratowski}
+For a graph $G$, the following are equivalent: (i) $G$ is planar; (ii) $G$ contains no subdivision of $K_5$ or $K_{3,3}$; (iii) $G$ has no minor $K_5$ or $K_{3,3}$.
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii): a drawing of a subdivision of $K_5$ or $K_{3,3}$ would give one of $K_5$ or $K_{3,3}$, merging each subdivided edge into one arc, against
+Corollary~\ref{cor:planarbounds}. (ii)$\Rightarrow$(iii) is Lemma~\ref{lem:minorsub}. For (iii)$\Rightarrow$(i) we induct on $n$; graphs with at most $4$ vertices are subgraphs of $K_4$, which is planar. Let $G$ be
+Kuratowski-free with $n\ge5$; its subgraphs are Kuratowski-free too. If $G$ is disconnected, draw its components by induction, far apart. If $G$ has a cut
+vertex $s$, it is the union of two smaller graphs meeting only at $s$, planar by induction, and Lemma~\ref{lem:glue} applies. If $G$ is $3$-connected,
+Lemma~\ref{lem:threeconn} applies. Otherwise $G$ is $2$-connected with a separating pair $\{x,y\}$: $G=G_1\cup G_2$ with $V(G_1)\cap V(G_2)=\{x,y\}$, both $G_i-\{x,y\}$ non-empty,
+and no edge between them. Let $G_i^+=G_i+xy$ (adding the edge if it is missing). Each $G_i^+$ is Kuratowski-free. Indeed, a subdivision $K$ of $K_5$ or $K_{3,3}$ in $G_1^+$
+would use the edge $xy$, as $G_1\subseteq G$; since $G$ is $2$-connected, $x$ and $y$ both have neighbours in each component of $G-\{x,y\}$ (otherwise the other one would be a cut
+vertex), so there is a path from $x$ to $y$ through $G_2-\{x,y\}$, which meets $K$ only at $x$ and $y$; replacing the edge $xy$ by this path gives a subdivision of $K_5$ or $K_{3,3}$
+in $G$, which is impossible. The graphs $G_i^+$ have fewer vertices than $G$, so they are planar by induction, and by Lemma~\ref{lem:glue} so is $G_1^+\cup G_2^+$, which
+contains $G$.
+\end{proof}
+
+Hopcroft and Tarjan found in 1974 an algorithm that decides planarity in linear time, and finds a drawing; Tome~C2 explains the
+simpler left-right algorithm of de Fraysseix and Rosenstiehl, which the notebook uses as an oracle. Wagner's form of the theorem has a
+majestic generalisation: Robertson and Seymour proved, in twenty-three papers written from 1983 to 2004, that every family of graphs
+closed under taking minors is characterised by a \emph{finite} list of forbidden minors. For graphs drawable on the torus, thousands of forbidden minors
+are known, and nobody is sure that the list is complete.
+
+\section{Colouring vertices}
+
+A \emph{proper colouring} of $G$ with $k$ colours gives each vertex one of $k$ colours so that adjacent vertices differ; the \emph{chromatic number} $\chi(G)$ is the
+least such $k$. Colourings model conflicts: exams sharing a student cannot be at the same time, two variables alive at the same moment of
+a program cannot share a register, two radio transmitters close to each other need different frequencies. Deciding whether $\chi(G)\le3$ is
+NP-complete (Tome~C3), so we look for bounds. The \emph{clique number} $\omega(G)$, the size of a largest complete subgraph, is a lower bound; it can be far
+from the truth, since there are triangle-free graphs of any chromatic number (Exercise~\ref{ex:mycielski}).
+
+\begin{proposition}[greedy colouring]\label{prop:greedy}
+Colour the vertices in some order $v_1,\dots,v_n$, giving each the smallest colour not used by its already coloured neighbours. If each $v_i$ has at most $d$
+neighbours among $v_1,\dots,v_{i-1}$, at most $d+1$ colours are used. In particular $\chi(G)\le\Delta(G)+1$, and $\chi(G)\le d+1$ if every subgraph of $G$ has a vertex of
+degree at most $d$ ($G$ is \emph{$d$-degenerate}).
+\end{proposition}
+\begin{proof}
+When $v_i$ is coloured, at most $d$ colours are forbidden, so one of $1,\dots,d+1$ is free. For a $d$-degenerate graph, choose $v_n$ of degree at most $d$, then $v_{n-1}$ of
+degree at most $d$ in $G-v_n$, and so on: each $v_i$ has at most $d$ neighbours before it.
+\end{proof}
+
+By Corollary~\ref{cor:planarbounds}, planar graphs are $5$-degenerate (subgraphs of planar graphs are planar), so they are $6$-colourable. Kempe's idea
+improves this to five. A \emph{Kempe chain} for colours $\alpha,\beta$ is a connected component of the subgraph spanned by the vertices of colours $\alpha$ and $\beta$; exchanging
+$\alpha$ and $\beta$ on a Kempe chain gives another proper colouring.
+
+\begin{theorem}[Heawood, 1890]\label{thm:fivecolour}
+Every planar graph is $5$-colourable.
+\end{theorem}
+\begin{proof}
+Induction on $n$; we may assume $G$ simple and drawn. Take a vertex $v$ of degree at most $5$, and colour $G-v$ with five colours. If the neighbours of $v$
+use at most four colours, $v$ gets the fifth. Otherwise $v$ has five neighbours $v_1,\dots,v_5$, in this order around $v$, with colours $1,\dots,5$. Consider the
+Kempe chain $K$ of colours $1,3$ containing $v_1$. If it does not contain $v_3$, exchange $1$ and $3$ on $K$: now $v_1$ has colour $3$, colour $1$ is free around $v$, and
+$v$ gets it. Otherwise there is a path from $v_1$ to $v_3$ coloured $1$ and $3$, which with $v$ forms a cycle $C$ (Figure~\ref{fig:kempe}). Near $v$, the edges $vv_2$ and $vv_4$
+leave $v$ in the two different sectors cut by $vv_1$ and $vv_3$, which contain the two sides of the edge $vv_1$; by Lemma~\ref{lem:jordan}, $v_2$ and $v_4$ lie in different
+faces of $C$ (neither is on $C$, whose vertices are $v$ and vertices coloured $1$ or $3$). Any path from $v_2$ to $v_4$ meets $C$, at a vertex, which is not coloured $2$
+or $4$. So the Kempe chain of colours $2,4$ containing $v_2$ does not contain $v_4$; exchanging $2$ and $4$ on it frees colour $2$ for $v$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-kempe}
+\caption{Kempe chains around a vertex $v$ of degree $5$. If a chain of colours $1$ and $3$ joins $v_1$ to $v_3$, it closes a cycle with $v$ that separates $v_2$ from $v_4$,
+so the chain of colours $2$ and $4$ starting at $v_2$ cannot reach $v_4$.}
+\label{fig:kempe}
+\end{figure}
+
+Kempe's 1879 argument for four colours ran the same way at a vertex of degree $5$, with two exchanges at once; Heawood showed that the two
+exchanges can interfere. The four colour theorem is true, but its proof needs, instead of one configuration (a vertex of degree at most
+$5$), a list of $633$ ``reducible'' configurations, and a discharging argument showing that every planar triangulation contains one; both
+halves are checked by computer (Robertson, Sanders, Seymour and Thomas, 1997).
+
+For general graphs, the greedy bound $\Delta+1$ is attained by complete graphs and odd cycles. These are the only exceptions.
+
+\begin{theorem}[Brooks, 1941]\label{thm:brooks}
+If $G$ is connected and is neither a complete graph nor an odd cycle, then $\chi(G)\le\Delta(G)$.
+\end{theorem}
+\begin{proof}[Proof (Lov\'asz, 1975)]
+Let $\Delta=\Delta(G)$. If $\Delta\le2$, $G$ is a path or an even cycle, $2$-colourable. Let $\Delta\ge3$. The trick is to colour greedily in an order in which every vertex but the
+last has a neighbour coming later (so at most $\Delta-1$ neighbours earlier), and to treat the last vertex specially.
+
+\emph{$G$ is not regular.} Let $r$ be a vertex of degree less than $\Delta$, and order the vertices by decreasing distance from $r$, ending with $r$. Each vertex other than $r$
+has a later neighbour on a shortest path to $r$, and $r$ has fewer than $\Delta$ neighbours: $\Delta$ colours suffice.
+
+\emph{$G$ is regular with a cut vertex $s$.} For each component $D$ of $G-s$, the graph $G[D\cup\{s\}]$ is connected and not regular ($s$ has smaller degree there), so it is
+$\Delta$-colourable; permuting colours, all give $s$ the same colour, and they combine.
+
+\emph{$G$ is regular and $2$-connected.} Suppose we find a vertex $z$ with two non-adjacent neighbours $x,y$ such that $G-\{x,y\}$ is connected. Colour $x$ and $y$ with colour $1$;
+then colour the vertices of $G-\{x,y\}$ by decreasing distance from $z$ in $G-\{x,y\}$, ending with $z$. Every vertex but $z$ has a later neighbour, and $z$ has two
+neighbours of the same colour, so at most $\Delta-1$ colours around it: $\Delta$ colours suffice. To find $z,x,y$: if $G$ is $3$-connected, take any vertex $z$ with two non-adjacent
+neighbours (one exists, since $G$ is connected and not complete). Otherwise some $\{z,w\}$ separates $G$, and $H=G-z$ is connected with a cut vertex. Choose a cut vertex $w_1$ of
+$H$ and a component $D_1$ of $H-w_1$ with $|D_1|$ smallest; then no vertex $u$ of $D_1$ is a cut vertex of $H$ (a component of $H-u$ avoiding $w_1$ would lie in $D_1\setminus\{u\}$). Next
+choose a cut vertex $w_2$ and a component $D_2$ of $H-w_2$ disjoint from $D_1\cup\{w_1\}$ with $|D_2|$ smallest (the other components of $H-w_1$ qualify); by the same argument no
+vertex of $D_2$ is a cut vertex of $H$ (a component of $H-u$ avoiding $w_2$ lies in $D_2$, hence avoids $D_1\cup\{w_1\}$). The vertex $z$ has a neighbour $x\in D_1$, otherwise $w_1$ would
+separate $D_1$ in $G$; likewise a neighbour $y\in D_2$. They are not adjacent, as $D_1$ is a component of $H-w_1$ and $y\notin D_1\cup\{w_1\}$. Finally $H-\{x,y\}$ is connected: every vertex of
+$D_1-x$ reaches $w_1$ in $H-x$ without leaving $D_1\cup\{w_1\}$, and every other vertex reaches $w_1$ in $H-y$ before entering $D_1$. As $z$ has $\Delta\ge3$ neighbours, it has one
+besides $x$ and $y$, and $G-\{x,y\}$ is connected.
+\end{proof}
+
+\section{Colouring edges}
+
+An \emph{edge colouring} gives colours to edges so that edges sharing a vertex differ; the least number of colours is the \emph{chromatic index} $\chi'(G)$. Each
+colour class is a matching, and the $\Delta$ edges at a vertex of maximum degree need distinct colours, so $\chi'(G)\ge\Delta$. For bipartite graphs, K\H onig's
+theorem $\chi'=\Delta$ (Exercise~\ref{ex:edgecolour}) settles the matter; in general one more colour always suffices.
+
+\begin{theorem}[Vizing, 1964]\label{thm:vizing}
+Every simple graph has $\chi'(G)\le\Delta(G)+1$.
+\end{theorem}
+\begin{proof}
+Induction on the number of edges; let $e=xy_0$ be an edge, and colour $G-e$ with $\Delta+1$ colours. Every vertex has degree at most $\Delta$, so it \emph{misses} some colour (no
+edge of that colour at it). Let $\alpha$ be a colour missing at $x$. A \emph{fan} is a sequence $y_0,y_1,\dots,y_k$ of distinct neighbours of $x$ such that the colour of $xy_i$ is missing at
+$y_{i-1}$, for $1\le i\le k$ (Figure~\ref{fig:vizing}); take a longest one. For $0\le j\le k$, \emph{shifting the fan at $j$} means giving $xy_i$ the colour of $xy_{i+1}$ for $i<j$ and
+uncolouring $xy_j$: this is again a proper colouring of $G$ minus one edge, since the colour of $xy_{i+1}$ is missing at $y_i$, and at $x$ the colours are only moved around.
+
+Let $\beta$ be a colour missing at $y_k$. If $\beta$ is also missing at $x$, shift at $k$ and colour $xy_k$ with $\beta$: done. Otherwise some edge $xy$ has colour $\beta$; since the fan
+cannot be extended, $y$ is one of the $y_i$, with $1\le i<k$ ($xy_0$ is uncoloured, and $\beta$ is missing at $y_k$).
+
+Shift at $k$. Now $xy_{i-1}$ has colour $\beta$, $y_i$ misses $\beta$ (its $\beta$-edge $xy_i$ was recoloured), and $x$ still misses $\alpha$. If $y_k$ also misses $\alpha$, colour $xy_k$ with $\alpha$:
+done. Otherwise let $P$ be the maximal path starting at $y_k$ whose edges are coloured alternately $\alpha$ and $\beta$, beginning with $\alpha$ (the edges of two colours form paths and
+cycles, and $y_k$ misses $\beta$). If $P$ does not reach $x$, exchange $\alpha$ and $\beta$ on $P$: then $y_k$ misses $\alpha$, $x$ still misses it, and $xy_k$ gets $\alpha$. If $P$ reaches $x$, it does
+so through its only $\alpha$- or $\beta$-edge, $xy_{i-1}$, and ends there, since $x$ misses $\alpha$.
+
+In this last case, go back to the colouring shifted at $i-1$ instead. It differs from the colouring shifted at $k$ only on edges at $x$: in it, $xy_{i-1}$ is uncoloured
+and $xy_i$ has colour $\beta$. The path $P$ without its last edge is an $\alpha\beta$-path from $y_k$ to $y_{i-1}$; it is still a maximal one, as $y_{i-1}$ misses $\beta$ (by the fan property)
+and the only new $\beta$-edge, $xy_i$, has its ends off this path ($y_i$ could only have been an end of $P$, having missed $\beta$). Exchange $\alpha$ and $\beta$ on it: $y_{i-1}$ now misses
+$\alpha$, and so does $x$; colour $xy_{i-1}$ with $\alpha$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-vizing}
+\caption{A fan at $x$ in Vizing's proof: the colour of each edge $xy_i$ is missing at the previous vertex $y_{i-1}$, so the colours can be shifted down the fan,
+freeing $xy_j$ for any $j$.}
+\label{fig:vizing}
+\end{figure}
+
+So every graph is of \emph{class 1} ($\chi'=\Delta$) or \emph{class 2} ($\chi'=\Delta+1$). Deciding which is NP-complete, even for $\Delta=3$ (Holyer, 1981), although
+almost all graphs are of class 1. A regular graph with an odd number of vertices is of class 2 (Exercise~\ref{ex:classtwo}), and so is the
+Petersen graph, which explains why the four colour theorem is equivalent to the $3$-edge-colourability of bridgeless cubic planar graphs (Tait, 1880):
+the Petersen graph is not planar.
+
+\section{The chromatic polynomial}
+
+Let $P(G,k)$ be the number of proper colourings of $G$ with colours $1,\dots,k$. For the empty graph on $n$ vertices it is $k^n$, for $K_n$ it is $k(k-1)\cdots(k-n+1)$, for a tree
+$k(k-1)^{n-1}$ (colour a root, then each vertex differently from its parent). George Birkhoff introduced it in 1912, hoping to prove the four
+colour theorem by showing $P(G,4)>0$ for planar $G$ with analysis; this never worked, but the polynomial is beautiful. For an edge $e=uv$, write $G-e$ for the
+deletion and $G/e$ for the contraction, with parallel edges merged.
+
+\begin{proposition}[deletion--contraction]\label{prop:delcon}
+$P(G,k)=P(G-e,k)-P(G/e,k)$. Consequently $P(G,k)$ is a polynomial in $k$ of degree $n$ with leading coefficient $1$, its next coefficient is $-m$, and its
+coefficients alternate in sign.
+\end{proposition}
+\begin{proof}
+The colourings of $G-e$ split into those with $u,v$ coloured differently, which are the colourings of $G$, and those with the same colour, which are the
+colourings of $G/e$. Induction on $m$, with the empty graph as base, gives the rest: $G-e$ has $n$ vertices and $m-1$ edges, $G/e$ has $n-1$ vertices and at most $m-1$
+edges, and $(-1)^{n-i}$ times the coefficient of $k^i$ is non-negative in both, so subtracting keeps the alternation; the coefficient of $k^{n-1}$ is $-(m-1)-1$.
+\end{proof}
+
+The coefficients themselves count something. Number the edges $e_1<e_2<\dots<e_m$. A \emph{broken circuit} is a cycle with its smallest edge removed.
+
+\begin{theorem}[Whitney, 1932]\label{thm:whitney}
+$P(G,k)=\sum_{i\ge0}(-1)^ia_ik^{n-i}$, where $a_i$ is the number of sets of $i$ edges containing no broken circuit.
+\end{theorem}
+\begin{proof}
+For a set $A$ of edges, the colourings in which every edge of $A$ is monochromatic are constant on the components of the graph $(V,A)$; there are $k^{c(A)}$ of them,
+$c(A)$ being the number of components. By inclusion--exclusion over the set of monochromatic edges,
+\[
+P(G,k)=\sum_{A\subseteq E}(-1)^{|A|}k^{c(A)}.
+\]
+Call an edge $e$ \emph{active} for $A$ if $e$ is the smallest edge of a cycle $C$ with $C-e\subseteq A$; then $A$ contains a broken circuit if and only if it has an active edge. For such $A$, let
+$e$ be its smallest active edge and $\iota(A)=A\triangle\{e\}$. Adding or removing $e$ does not change $c(A)$, since the ends of $e$ are joined by $C-e\subseteq A\setminus\{e\}$, and it
+changes the sign. And $e$ is still the smallest active edge for $\iota(A)$: it is active ($C-e$ is untouched); and if $f<e$ were active for $\iota(A)$, through a cycle $C'$, then $C'-f\not\subseteq A$
+(otherwise $f$ would be active for $A$), so $e\in C'-f$, and the ends of $f$ are joined by $(C'-f-e)\cup(C-e)\subseteq A$, giving a cycle $C''$ through $f$ in $A\cup\{f\}$ whose edges, from $C'$ or $C$, are all
+at least $f$; so $f$ would be active for $A$. Thus $\iota$ is an involution pairing the sets with a broken circuit, with opposite signs and equal $k^{c(A)}$: they cancel. The
+remaining sets contain no cycle (a cycle contains a broken circuit), so they are forests with $c(A)=n-|A|$.
+\end{proof}
+
+\begin{theorem}[Stanley, 1973]\label{thm:stanley}
+$(-1)^nP(G,-1)$ is the number of acyclic orientations of $G$.
+\end{theorem}
+\begin{proof}
+Let $a(G)$ be the number of acyclic orientations. Both sides equal $1$ for graphs without edges, and $(-1)^nP(G,-1)$ satisfies $(-1)^nP(G,-1)=(-1)^nP(G-e,-1)+(-1)^{n-1}P(G/e,-1)$
+by Proposition~\ref{prop:delcon}. So it suffices to show $a(G)=a(G-e)+a(G/e)$ for $e=uv$, and induct on $m$.
+
+Take an acyclic orientation $O$ of $G-e$. Orienting $e$ as $u\to v$ creates a directed cycle only if $O$ has a directed path from $v$ to $u$, and $v\to u$ only if it has one from $u$
+to $v$; both cannot happen, as $O$ is acyclic. So $O$ extends to one or two acyclic orientations of $G$, two exactly when $O$ has no directed path between $u$ and $v$. Hence
+$a(G)=a(G-e)+b$, where $b$ is the number of such $O$. These $O$ correspond to the acyclic orientations of $G/e$: if $w$ is adjacent to both $u$ and $v$, the edges $uw$ and $vw$ point
+the same way in $O$ (otherwise there would be a path $u\to w\to v$ or $v\to w\to u$), so $O$ induces an orientation of $G/e$, acyclic since a directed cycle through the merged vertex
+would lift to a directed path between $u$ and $v$ or a cycle in $O$; conversely an acyclic orientation of $G/e$ lifts to an acyclic $O$ without $u$--$v$ paths, which would
+project to cycles. So $b=a(G/e)$.
+\end{proof}
+
+For $K_n$, $(-1)^nP(K_n,-1)=n!$: the acyclic orientations of a complete graph are the linear orders, the tournaments without cycles of
+Chapter~5. ``Evaluating a counting polynomial at a negative number counts something else'' is a phenomenon called \emph{combinatorial reciprocity},
+and it has become a theory of its own (Beck and Sanyal's book).
+
+\section{Beyond the plane}
+
+On a surface with $g$ handles (the sphere has $g=0$, the torus and the coffee mug $g=1$), Euler's formula becomes $n-m+f=2-2g$ for suitable drawings,
+so $m\le3n-6+6g$. Applied to a smallest graph that needs more than $h$ colours, whose minimum degree is at least $h$ and which has more than $h$ vertices,
+this counting gives Heawood's bound of 1890,
+\[
+\chi\le\Bigl\lfloor\frac{7+\sqrt{1+48g}}2\Bigr\rfloor\qquad(g\ge1).
+\]
+For the torus it gives $7$, and $K_7$ can indeed be drawn on a torus: seven countries on a doughnut can all touch each other. Ringel
+and Youngs proved in 1968 that the bound is attained on every surface with $g\ge1$; for the sphere ($g=0$) it would say $4$, and that is the four colour
+theorem, the only case the surface methods could not reach. On the coffee mug of the opening question the three houses can be connected:
+$K_{3,3}$, and even $K_7$, can be drawn on a torus without crossings.
+
+\begin{beauty}
+Euler's formula is a statement about a drawing that does not depend on the drawing: the alternating count $n-m+f$ is an invariant of the
+surface. It is the first instance of the Euler characteristic, which topology later computed for every space through homology, and which
+reappears in the Gauss--Bonnet theorem as the total curvature of a surface divided by $2\pi$. A child's count of corners, edges and faces of a box
+is the shadow of one of the deepest invariants of mathematics.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:girth}
+Let $G$ be a $2$-connected plane graph with $n$ vertices, $m$ edges, and no cycle of length less than $g\ge3$. Show that $m\le\frac g{g-2}(n-2)$. Deduce that the
+Petersen graph is not planar.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:platonic}
+\emph{The Platonic solids.} A convex polyhedron is regular if all vertices have the same degree $k\ge3$ and all faces have the same number $d\ge3$ of sides. Using
+Euler's formula, show that $(k,d)$ is one of $(3,3)$, $(3,4)$, $(4,3)$, $(3,5)$, $(5,3)$, and find $n$, $m$, $f$ in each case.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:football}
+A football (or a fullerene molecule) is a convex polyhedron whose faces are pentagons and hexagons, with three faces at each vertex. Show that it has
+exactly $12$ pentagons, however many hexagons it has.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:crossing}
+The \emph{crossing number} $\mathrm{cr}(G)$ is the least number of crossings in a drawing of $G$ where edges may cross (at single points, two at a time). Show that
+$\mathrm{cr}(G)\ge m-3n+6$ for $n\ge3$, and that $\mathrm{cr}(K_6)=3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hakimi}
+Using Hall's theorem (Theorem~\ref{thm:hall}), show that the edges of every simple planar graph can be oriented so that every vertex has out-degree at most $3$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:greedyorder}
+Show that for every graph there is an order in which greedy colouring uses exactly $\chi(G)$ colours, and that for the graph $K_{n,n}$ minus a perfect matching
+there is an order in which it uses $n$ colours.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:interval}
+\emph{Register allocation.} An \emph{interval graph} has a vertex for each of finitely many intervals of $\R$, adjacent when the intervals intersect (variables alive
+during intervals of a program, adjacent when alive together). Show that greedy colouring in the order of left endpoints uses $\omega(G)$ colours.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:mycielski}
+\emph{Mycielski, 1955.} From a graph $G$ with vertices $v_1,\dots,v_n$ build $M(G)$ by adding vertices $u_1,\dots,u_n,w$, with $u_i$ adjacent to the neighbours of $v_i$ and $w$
+adjacent to all $u_i$. Show that if $G$ has no triangle, neither has $M(G)$, and that $\chi(M(G))=\chi(G)+1$. Deduce that there are triangle-free graphs of every chromatic
+number.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:classtwo}
+Show that a $\Delta$-regular graph with an odd number of vertices has chromatic index $\Delta+1$. What does this say about $K_n$ for $n$ odd?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:chromcycle}
+Show that $P(C_n,k)=(k-1)^n+(-1)^n(k-1)$ for the cycle $C_n$, $n\ge3$. Check Stanley's theorem on it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:eulerc}
+Show that a plane graph with $n$ vertices, $m$ edges, $f$ faces and $c$ components satisfies $n-m+f=1+c$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:listfive}
+\emph{Thomassen's five list colouring, 1994.} Let $G$ be a plane graph whose inner faces are triangles and whose outer face is bounded by a cycle $C=v_1v_2\cdots v_k$. Suppose
+$v_1,v_2$ are coloured differently, every other vertex of $C$ has a list of at least $3$ allowed colours, and every inner vertex a list of at least $5$. Show that the colouring
+extends, every vertex getting a colour from its list. (Hence planar graphs can be coloured from any lists of size $5$, a strengthening of Heawood's theorem.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:girth}
+Each face has at least $g$ edges on its boundary cycle, and each edge borders two faces.
+\end{hint}
+\begin{hint}{ex:platonic}
+$kn=2m=df$; divide Euler's formula by $2m$.
+\end{hint}
+\begin{hint}{ex:football}
+Count edges twice: $3n=2m=5p+6h$.
+\end{hint}
+\begin{hint}{ex:crossing}
+Remove one edge per crossing. For $K_6$, nest two triangles.
+\end{hint}
+\begin{hint}{ex:hakimi}
+Match each edge with one of three copies of one of its ends.
+\end{hint}
+\begin{hint}{ex:greedyorder}
+List the colour classes of an optimal colouring one after the other.
+\end{hint}
+\begin{hint}{ex:interval}
+When an interval is coloured, its earlier neighbours all contain its left endpoint.
+\end{hint}
+\begin{hint}{ex:mycielski}
+Given a colouring of $M(G)$, recolour each $v_i$ that has $w$'s colour with the colour of $u_i$.
+\end{hint}
+\begin{hint}{ex:classtwo}
+How many edges can one colour class have?
+\end{hint}
+\begin{hint}{ex:chromcycle}
+Delete and contract an edge of $C_n$.
+\end{hint}
+\begin{hint}{ex:eulerc}
+Follow the proof of Theorem~\ref{thm:euler2}.
+\end{hint}
+\begin{hint}{ex:listfive}
+Induction on $n$. Use a chord of $C$ if there is one; otherwise remove $v_k$ and protect it with two colours.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:girth}
+\idea Double counting of edge--face incidences, as for $K_{3,3}$, with $g$ in place of $4$.
+\writeup By Proposition~\ref{prop:faces}, each face is bounded by a cycle, of length at least $g$, and each edge borders exactly two faces: $gf\le2m$. Euler's formula gives
+$2=n-m+f\le n-m+\frac{2m}g$, so $m(1-\frac2g)\le n-2$. The Petersen graph is $3$-connected, has $n=10$, $m=15$ and girth $5$; the bound would give $15\le\frac53\cdot8$, false.
+\end{solution}
+
+\begin{solution}{ex:platonic}
+\idea Euler's formula becomes an inequality between $\frac1k$ and $\frac1d$ with few solutions.
+\writeup From $kn=2m=df$ and $n-m+f=2$: $\frac{2m}k-m+\frac{2m}d=2$, so $\frac1k+\frac1d=\frac12+\frac1m>\frac12$. With $k,d\ge3$, the solutions are $(3,3)$, $(3,4)$, $(4,3)$, $(3,5)$, $(5,3)$ (if
+both are at least $4$, or one is $3$ and the other at least $6$, the sum is at most $\frac12$). Then $m$ follows from $\frac1m=\frac1k+\frac1d-\frac12$: $6$, $12$, $12$, $30$, $30$. Tetrahedron
+$(4,6,4)$, cube $(8,12,6)$, octahedron $(6,12,8)$, dodecahedron $(20,30,12)$, icosahedron $(12,30,20)$, listing $(n,m,f)$.
+\end{solution}
+
+\begin{solution}{ex:football}
+\idea Written in terms of faces, Euler's formula gives each hexagon weight $0$ and each pentagon weight $1$.
+\writeup Let $p$ and $h$ be the numbers of pentagons and hexagons. Each edge borders two faces and each vertex three: $2m=5p+6h$ and $3n=2m$. Euler's formula times $6$:
+$6n-6m+6f=12$, with $6n=4m$: $-2m+6p+6h=12$, so $-(5p+6h)+6p+6h=12$ and $p=12$. The classic football has $12$ pentagons and $20$ hexagons, the molecule $C_{60}$ too.
+\end{solution}
+
+\begin{solution}{ex:crossing}
+\idea Each crossing can be destroyed by deleting one edge.
+\writeup Take a drawing with $\mathrm{cr}(G)$ crossings and delete one edge at each crossing; at least $m-\mathrm{cr}(G)$ edges remain, forming a plane graph, so $m-\mathrm{cr}(G)\le3n-6$.
+For $K_6$, $m=15$, $n=6$: $\mathrm{cr}\ge3$. A drawing with $3$ crossings: put the vertices at $(0,0)$, $(6,0)$, $(3,5.2)$ (an outer triangle) and $(3.3,2.9)$, $(1.8,1.4)$, $(3.9,0.9)$ (a
+rotated inner triangle) and draw all edges straight; exactly three pairs of edges cross (the notebook checks it).
+\end{solution}
+
+\begin{solution}{ex:hakimi}
+\idea An orientation with out-degrees at most $3$ assigns each edge to one of its ends, each end used at most three times: a matching problem.
+\writeup Form a bipartite graph with the edges of $G$ on one side and three copies $(v,1),(v,2),(v,3)$ of each vertex on the other, the edge $uv$ being adjacent to the six copies of $u$
+and $v$. A matching covering all edges orients each edge away from the vertex it is matched to, with out-degrees at most $3$. Hall's condition: a set $F$ of edges with
+$s$ ends has $3s$ neighbours; the graph formed by $F$ is simple and planar, so $|F|\le3s-6<3s$ if $s\ge3$, and $|F|=1<6$ if $s=2$.
+\end{solution}
+
+\begin{solution}{ex:greedyorder}
+\idea Greedy never does worse than the colouring whose classes it follows.
+\writeup Let $C_1,\dots,C_\chi$ be the classes of an optimal colouring and list $C_1$, then $C_2$, and so on. By induction, greedy gives each vertex of $C_j$ a colour at most $j$: its
+earlier neighbours are in $C_1,\dots,C_{j-1}$ (none in $C_j$), with colours at most $j-1$, so some colour at most $j$ is free. For $K_{n,n}$ minus the matching $a_ib_i$, use the order
+$a_1,b_1,a_2,b_2,\dots$: by induction $a_i$ and $b_i$ both get colour $i$, as they are adjacent to all earlier $a_j,b_j$ of the other side, which use colours $1,\dots,i-1$. Yet
+the graph is bipartite.
+\end{solution}
+
+\begin{solution}{ex:interval}
+\idea Earlier neighbours of an interval form a clique with it.
+\writeup Order the intervals by left endpoint. When $I=[a,b]$ is coloured, every earlier interval $J$ meeting $I$ starts at or before $a$ and ends at or after $a$, so it contains $a$.
+These intervals and $I$ all contain $a$: a clique. So at most $\omega-1$ colours are forbidden, and greedy uses at most $\omega$; as $\chi\ge\omega$, it is optimal. For register allocation
+this means that the number of registers needed for straight-line code is the maximum number of variables alive at the same time.
+\end{solution}
+
+\begin{solution}{ex:mycielski}
+\idea The shadow vertex $u_i$ can replace $v_i$ in any colouring, and $w$ forces a colour that the shadows avoid.
+\writeup Triangles: the $u_i$ are pairwise non-adjacent, so a triangle contains at most one of them, and not $w$ together with a $v_j$ ($w$ has no $v_j$ neighbour). A triangle $u_iv_jv_l$ would give
+$v_j,v_l$ adjacent neighbours of $v_i$, a triangle in $G$. A triangle among the $v_j$ is in $G$. Colouring: colour $v_i$ and $u_i$ alike with a $\chi(G)$-colouring and $w$ with a new colour:
+$\chi(M(G))\le\chi(G)+1$. Conversely, suppose $M(G)$ is coloured with $k=\chi(G)$ colours, $w$ having colour $k$. No $u_i$ has colour $k$. Recolour each $v_i$ of colour $k$ with the colour of $u_i$. For an
+edge $v_iv_j$: they cannot both have had colour $k$; if $v_i$ had it, its new colour, that of $u_i$, differs from that of $v_j$, which is adjacent to $u_i$. So $G$ has a colouring with $k-1$
+colours, a contradiction. Starting from $K_2$, the graphs $M(K_2)=C_5$, $M(C_5)$ (the Gr\"otzsch graph, $11$ vertices) and so on are triangle-free with chromatic numbers
+$2,3,4,\dots$.
+\end{solution}
+
+\begin{solution}{ex:classtwo}
+\idea A colour class is a matching, which leaves a vertex uncovered when $n$ is odd.
+\writeup With $n$ odd, each colour class has at most $\frac{n-1}2$ edges, while there are $\frac{\Delta n}2$ edges, so at least $\frac{\Delta n}{n-1}>\Delta$ colours are needed; by Vizing's theorem,
+exactly $\Delta+1$. For $K_n$ with $n$ odd, $\chi'=n$; with $n$ even, $\chi'=n-1$ (the round-robin schedule of a tournament with an even number of teams, $n-1$ rounds).
+\end{solution}
+
+\begin{solution}{ex:chromcycle}
+\idea Deleting an edge of a cycle gives a path, contracting it a shorter cycle.
+\writeup By Proposition~\ref{prop:delcon}, $P(C_n,k)=P(\text{path on }n\text{ vertices},k)-P(C_{n-1},k)=k(k-1)^{n-1}-P(C_{n-1},k)$ for $n\ge4$, with $P(C_3,k)=k(k-1)(k-2)=(k-1)^3-(k-1)$. If the
+formula holds for $n-1$, $P(C_n,k)=k(k-1)^{n-1}-(k-1)^{n-1}-(-1)^{n-1}(k-1)=(k-1)^n+(-1)^n(k-1)$. At $k=-1$: $(-1)^nP(C_n,-1)=2^n-2$, and indeed the acyclic orientations of a
+cycle are all $2^n$ orientations but the $2$ directed ones.
+\end{solution}
+
+\begin{solution}{ex:eulerc}
+\idea Run the proof of Euler's formula again: delete edges on cycles until a forest remains.
+\writeup Induction on the number of edges lying on cycles. If an edge $e$ lies on a cycle, its two sides are in different faces, which merge in $G-e$ (as in the proof
+of Theorem~\ref{thm:euler2}); $m$ and $f$ both drop by $1$ and $c$ does not change. If no edge lies on a cycle, $G$ is a forest, with $m=n-c$ edges and one face
+(Lemma~\ref{lem:theta}): $n-m+f=c+1$.
+\end{solution}
+
+\begin{solution}{ex:listfive}
+\idea Split along a chord, or peel off the vertex $v_k$ next to $v_1$, keeping two of its colours in reserve and forbidding them to its inner neighbours, which have colours to spare.
+\writeup Induction on $n$; for $n=3$, $v_3$ has three colours, at most two forbidden. If $C$ has a chord $v_iv_j$, it splits $G$ into two such graphs $G_1\ni v_1v_2$ and $G_2$ sharing the edge $v_iv_j$;
+colour $G_1$ by induction, then $G_2$ with $v_iv_j$ as the precoloured edge. Without chords, let $v_1,u_1,\dots,u_r,v_{k-1}$ be the neighbours of $v_k$ in order; since the inner faces at
+$v_k$ are triangles, $v_1u_1\cdots u_rv_{k-1}$ is a path, the $u_j$ are inner vertices (no chords), and $G-v_k$ is again of the required type, with outer cycle $v_1\cdots v_{k-1}u_r\cdots u_1$.
+Choose two colours $\gamma,\delta$ in the list of $v_k$ other than the colour of $v_1$, and remove them from the lists of the $u_j$, which keep at least $3$ colours. Colour $G-v_k$ by
+induction. Then $v_k$ has neighbours $v_1$ (colour neither $\gamma$ nor $\delta$), the $u_j$ (neither $\gamma$ nor $\delta$) and $v_{k-1}$ (at most one of them): one of $\gamma,\delta$ is free for $v_k$. Every
+planar graph is a subgraph of such a graph (add edges inside faces), with all lists of size $5$ and any two adjacent outer vertices precoloured from their lists.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item R.~Wilson, \emph{Four Colors Suffice: How the Map Problem Was Solved}, Princeton University Press, 2002 (revised 2014): the whole story,
+with De Morgan's letter. K.~Appel and W.~Haken, \emph{Every planar map is four colorable}, Illinois Journal of Mathematics 21 (1977), 429--567;
+N.~Robertson, D.~Sanders, P.~Seymour and R.~Thomas, \emph{The four-colour theorem}, Journal of Combinatorial Theory B 70 (1997), 2--44; G.~Gonthier,
+\emph{Formal proof: the four-color theorem}, Notices of the AMS 55 (2008), 1382--1393.
+\item K.~Kuratowski, \emph{Sur le probl\`eme des courbes gauches en topologie}, Fundamenta Mathematicae 15 (1930), 271--283; C.~Thomassen, \emph{Kuratowski's
+theorem}, Journal of Graph Theory 5 (1981), 225--241; R.~Diestel, \emph{Graph Theory}, 5th ed., Springer, 2017, Chapter 4, whose presentation we
+followed; B.~Mohar and C.~Thomassen, \emph{Graphs on Surfaces}, Johns Hopkins University Press, 2001, for all topological details.
+\item P.~J.~Heawood, \emph{Map-colour theorem}, Quarterly Journal of Mathematics 24 (1890), 332--338; R.~L.~Brooks, \emph{On colouring the nodes of a
+network}, Proceedings of the Cambridge Philosophical Society 37 (1941), 194--197; L.~Lov\'asz, \emph{Three short proofs in graph theory}, Journal of
+Combinatorial Theory B 19 (1975), 269--271; V.~G.~Vizing, \emph{On an estimate of the chromatic class of a $p$-graph} (in Russian), Diskretnyi Analiz 3
+(1964), 25--30.
+\item H.~Whitney, \emph{A logical expansion in mathematics}, Bulletin of the AMS 38 (1932), 572--579; R.~P.~Stanley, \emph{Acyclic orientations of graphs},
+Discrete Mathematics 5 (1973), 171--178; M.~Beck and R.~Sanyal, \emph{Combinatorial Reciprocity Theorems}, AMS, 2018.
+\item C.~Thomassen, \emph{Every planar graph is 5-choosable}, Journal of Combinatorial Theory B 62 (1994), 180--181: a whole paper of one page and a half.
+\end{itemize}
