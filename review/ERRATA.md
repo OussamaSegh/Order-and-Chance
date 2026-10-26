@@ -134,3 +134,35 @@ A fourth independent pass, over Tome 4 (Calculation, 12 chapters, 29 figures, 12
 
 - Chapter 9 promises the homology form of Cauchy's theorem and the Jordan curve theorem for Tome 7, and Chapter 11 promises the Hardy–Ramanujan asymptotic for p(n) by the circle method for Tome 13. The plan's Tome 7 lists "Complex analysis II" and its Tome 13 the circle method without naming these results; the Part II writing thread has recorded both promises, so they are left as is.
 - Pointers to Tome 6 (Tonelli for Ritelli's integral, Fubini and change of variables for Γ(x)Γ(y) = B(x, y)Γ(x + y), Lebesgue measure and Cavalieri for the n-ball) all appear in the Tome 6 plan's promise table; pointers to Tome 5 (ζ(1 + it) ≠ 0 and the prime number theorem, Mertens, sums of squares through theta functions), Tome 11 (Brownian motion) and Tome 12 (elliptic functions and modular forms) agree with the series plan.
+
+## Review 5: Tome 6
+
+A fifth independent pass, over Tome 6 (Spaces, 11 chapters, 27 figures, 11 notebooks). Every proof and every solution was read line by line, and the numerical claims were recomputed in Python: the Newton error bounds for √2 (e₅ ≤ 3.8·10⁻²², 24 correct digits from x₀ = 2), the 5-adic digits 2, 1, 2 of √−1 (57² + 1 = 26·125), the 29 topologies on three points (brute force over the 256 families of subsets), the Dottie number and its contraction ratio sin x* ≈ 0.67, the volumes 2, π, 4π/3, π²/2 of the unit balls, λ₁₀₀(B¹⁰⁰) ≈ 2.4·10⁻⁴⁰ against 2¹⁰⁰, and the Hausdorff dimensions log 2/log 3, log 9/log 10, log 8/log 3, log 3/log 2. Each of the fifteen promises of the Tome 6 plan was traced to the theorem that keeps it (least upper bound property, Ch. 1; exp, cos, sin and π, Ch. 2; intermediate value theorem, Ch. 3; extreme values, Heine, mean value theorem, Ch. 4; Riemann integral, Lebesgue's criterion, differentiation under the integral, Ch. 7; Lebesgue measure and independent sequences, Ch. 6; Tonelli–Fubini, |det T|, change of variables, the n-ball and the Gaussian density, Ch. 8; Hölder and Jensen, Ch. 9; uniform integrability and Vitali, Ch. 7; Kolmogorov's extension theorem, Ch. 11). Pointers to Tomes 0–4 were checked against the chapter files of those tomes, pointers to Tomes 7–12 and C3 against the series plan, and the dates in the storytelling openings (Cantor's letters to Dedekind of 1873, Fréchet 1906, Hausdorff 1914, Banach–Tarski 1924, Solovay 1970, Richardson's coastline data and Mandelbrot 1967, Prokhorov 1956) against the sources. All four PDF formats, the KDP print and cover files and the EPUB build without errors, with no undefined or multiply defined labels; all eleven notebooks run to completion and all their numbered references were matched against the built numbering.
+
+### Tome 6
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 7, proof of Lebesgue's criterion, Step 1 | math | "At most m intervals of Pₙ contain a point of P": a point of P that is also an endpoint of Pₙ lies in two closed intervals of Pₙ, so the count is 2m. The bound 2m·2M(b−a)/2ⁿ on the next line was already the right one. | "at most 2m intervals". |
+| Ch. 3, Furstenberg's topology as an ultrametric (after the profinite remark) | ref | Pointed to Tome 1, Exercise 2.10; Furstenberg's proof is Tome 1, Exercise 2.8. | Exercise 2.8. |
+| Ch. 6, after Borel's theorem | ref | Pointed to Tome 3, Chapter 4, for the strong law with a fourth moment; it is Tome 3, Chapter 6 (Theorem "strong law, fourth moment"). | Chapter 6. |
+| Ch. 7, remark after the three convergence theorems | ref | Attributed Tannery's theorem to Tome 0, which does not state it (Tome 0 treats only sequences and series without a dominated limit theorem). | The pointer to Tome 0 is removed. |
+| Ch. 4, definition of the derivative before the mean value theorem | ref | Pointed to Tome 0, Chapter 3, which is about polynomials; Tome 0 takes the derivative from the analysis course and defines it nowhere. | "(as throughout Tome 0)". |
+| Ch. 2, proof of the theorem on exp, cos, sin and π, part (f) | ref | The length of a C¹ curve as ∫|γ'| was attributed to Tome 0; it is defined in Tome 4, Chapter 9 (complex line integrals). | Tome 4, Chapter 9. |
+| Ch. 11, after Prokhorov's theorem | ref | Donsker's theorem was placed in Tome 10; the series plan puts the invariance principle in Tome 11 (The Markov property), where Chapter 4 of this tome already places the construction of Brownian motion. | Tome 11. |
+| Ch. 1, storytelling opening | text | "Two weeks later Cantor had the answer": Cantor wrote to Dedekind on 29 November 1873 and sent the proof on 7 December 1873, eight days later. | "A week later". |
+| Ch. 6, opening and remark after the Vitali set | text | Banach and Tarski (1924) are credited with five pieces; their paper gives finitely many, and five (the minimum) is Robinson's theorem of 1947. | "finitely many pieces", with Robinson's five noted in the remark. |
+| Ch. 3, sources | text | Steen and Seebach's book has 143 examples: the four named ones "and 139 more". | 139. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 6, ch. 5, exercises P5.1(c), P5.6 and its solution | Referred to "Proposition 5.13" for the comeagre set of non-normal numbers; that statement is Proposition 5.14 (5.13 is the theorem on Liouville numbers). | 5.14, three times. |
+| Tome 6, ch. 1–11 | All eleven run; every other numbered reference matches the book. | — |
+
+### Known and left as is
+
+- The Tome 6 plan lists Lévy's continuity theorem among the exercises prepared for Tome 10 in Chapter 11; the chapter proves Helly's selection theorem instead and leaves Lévy's theorem to Tome 10, where the series plan places it ("characteristic functions and Lévy's continuity theorem"). Nothing in the text promises it earlier.
+- Chapter 6 refers to amenability for Tome 8 (Shapes). The series plan's Tome 8 has matrix Lie groups and Haar measure but does not name amenability; the pointer is plausible and is left to the Part II writing thread.
+- Part III threads cite Tome 6 chapter numbers (Ch. 6 Carathéodory and independent sequences, Ch. 7 convergence theorems and Vitali, Ch. 8 Fubini and change of variables, Ch. 9 Lᵖ, Ch. 10 Radon–Nikodym, Ch. 11 Riesz, portmanteau, Prokhorov, Kolmogorov, Helly). No chapter was renumbered by this review.
