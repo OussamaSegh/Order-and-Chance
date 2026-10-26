@@ -1,0 +1,899 @@
+\chapter{Counting}
+
+\begin{center}\itshape
+There are $n^{n-2}$ trees on $n$ labelled vertices.\\
+\upshape(Borchardt, 1860; Cayley, 1889)
+\end{center}
+
+London, 1857. Arthur Cayley is a lawyer. He will spend fourteen years at the bar drafting conveyances, and in his spare
+time he writes some two hundred papers of mathematics. That year he is composing differential operators, and he notices
+that the terms they produce are organised like the branches of a tree: one trunk, which splits, whose branches split
+again. He calls these diagrams \emph{trees}, and counts them: $1,1,2,4,9,20,48,\dots$ rooted trees with $1,2,3,\dots$ vertices.
+
+Seventeen years later the trees come back from an unexpected direction. The chemists of the 1860s have learned that a
+carbon atom makes four bonds and a hydrogen atom one. A molecule of formula $\mathrm C_n\mathrm H_{2n+2}$, a \emph{paraffin} (an
+\emph{alkane}, today), is then a tree of $n$ carbon atoms, each with at most four carbon neighbours, the free bonds filled
+with hydrogen. Different trees give different substances with the same formula: \emph{isomers}. Butane and isobutane are
+both $\mathrm C_4\mathrm H_{10}$; there are three pentanes, and five hexanes (Figure~\ref{fig:hexanes}). Chemists were
+synthesising them one by one and wanted to know how many to look for. In 1875 Cayley answered, up to thirteen carbon atoms,
+with a method based on the \emph{centre} of a tree, an idea of Camille Jordan. Sixty years later, in Z\"urich, George P\'olya
+turned his ad hoc computations into a single theorem, which also counts alcohols, benzene derivatives and graphs; we met it
+in Tome~2, Chapter~3.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-hexanes}
+\caption{The five hexanes $\mathrm C_6\mathrm H_{14}$, drawn as their carbon skeletons (the hydrogens fill the free bonds). From
+left to right: hexane, 2-methylpentane, 3-methylpentane, 2,2-dimethylbutane and 2,3-dimethylbutane. Section~\ref{sec:alkanes}
+counts such skeletons for any number of carbons.}
+\label{fig:hexanes}
+\end{figure}
+
+Counting is the oldest part of combinatorics and one of the most useful parts of computer science. It tells us how big a
+search space is before we search it, how many inputs an algorithm must handle, how likely a hash collision is, how to
+generate a random object uniformly, and how many genuinely different test cases a problem has once symmetric ones are
+identified. This chapter is about the ideas that make counting \emph{exact}: double counting, the M\"obius function of a poset,
+bijections (a tree is a word, Pr\"ufer's discovery), a little lemma on cyclic shifts that counts Catalan objects and ballots,
+counting up to symmetry, and the $q$-analogues of binomial coefficients that count subspaces of vector spaces over finite
+fields. Chapter~4 will add the machinery of generating functions.
+
+\begin{think}
+Draw all the trees on the four vertices $1,2,3,4$ (connected graphs with three edges). There are $16$ of them. If you erase
+the labels, how many different shapes remain? Then guess how many trees there are on $5$ labelled vertices.
+\end{think}
+
+\section{Double counting}
+
+The principle is simple: to count a set, count it twice, in two different ways, and equate. The set is usually a set of
+pairs, counted once by grouping by the first coordinate and once by the second.
+
+The first example is the \emph{handshake lemma}. In a graph with vertex set $V$ and edge set $E$, count the pairs $(v,e)$ with
+$v$ an endpoint of $e$: grouping by $v$ gives $\sum_v\deg v$, grouping by $e$ gives $2|E|$. So $\sum_v\deg v=2|E|$, and in particular the
+number of vertices of odd degree is even. At any party, the number of guests who shook an odd number of hands is even.
+
+The second example is a loop that every programmer has written, the sieve:
+\begin{center}
+\texttt{for d in 1..n: for k in d, 2d, 3d, ..., up to n: visit(d, k)}
+\end{center}
+It visits each pair $(d,k)$ with $d\mid k\le n$ once. Grouping by $d$, there are $\lfloor n/d\rfloor$ multiples of $d$; grouping by $k$, there
+are $\tau(k)$ divisors of $k$. Hence
+\[
+\sum_{k=1}^n\tau(k)=\sum_{d=1}^n\Big\lfloor\frac nd\Big\rfloor .
+\]
+Since $\frac nd-1<\lfloor\frac nd\rfloor\le\frac nd$ and $\ln(n+1)\le H_n=\sum_{d\le n}\frac1d\le1+\ln n$, the loop takes $n\ln n+O(n)$ steps, and an integer below $n$ has
+$\ln n+O(1)$ divisors on average. Tome~1, Chapter~4 sharpens this with Dirichlet's hyperbola method, and Tome~1,
+Proposition~4.5 proved Gauss' identity $\sum_{d\mid n}\varphi(d)=n$ by another double count. Burnside's lemma (Tome~2,
+Theorem~3.6), the proof of the Erd\H os--Ko--Rado theorem in Chapter~2, and Pitman's proof of Cayley's formula
+(Exercise~\ref{ex:pitman}) are double counts too.
+
+\section{The M\"obius function of a poset}
+
+Two formulas from earlier tomes look like cousins. The inclusion--exclusion principle (Tome~0, Theorem~8.2) recovers the
+number of elements in none of the sets $A_1,\dots,A_n$ from the sizes of all intersections, with signs $(-1)^{|S|}$. M\"obius
+inversion (Tome~1, Theorem~4.4) recovers $f$ from $g(n)=\sum_{d\mid n}f(d)$, with the signs $\mu(n/d)$. In 1964 Gian-Carlo Rota
+showed that they are one theorem, about posets, and that every locally finite poset has its own M\"obius function. His paper,
+\emph{On the foundations of combinatorial theory}, is often said to have turned combinatorics from a bag of tricks into a
+subject.
+
+A poset is \emph{locally finite} if every interval $[x,y]=\{z:x\le z\le y\}$ is finite. Its \emph{incidence algebra} is the set of functions
+$f(x,y)$ with rational values defined for all pairs $x\le y$, with pointwise sum and the \emph{convolution}
+\[
+(f*g)(x,y)=\sum_{x\le z\le y}f(x,z)\,g(z,y),
+\]
+a finite sum. Two functions play a special role: $\delta(x,y)=1$ if $x=y$ and $0$ otherwise, and the \emph{zeta function} $\zeta(x,y)=1$
+for all $x\le y$.
+
+\begin{proposition}\label{prop:incidence}
+The convolution is associative and $\delta$ is its identity. A function $f$ has a two-sided inverse if and only if $f(x,x)\ne0$
+for all $x$; the inverse is then unique. If moreover $f$ has integer values and $f(x,x)=1$ for all $x$, its inverse has integer
+values.
+\end{proposition}
+\begin{proof}
+Both $((f*g)*h)(x,y)$ and $(f*(g*h))(x,y)$ equal the sum of $f(x,z)\,g(z,w)\,h(w,y)$ over the pairs $x\le z\le w\le y$, and $f*\delta=\delta*f=f$
+is clear. If $f*g=\delta$ then $f(x,x)g(x,x)=1$, so $f(x,x)\neq0$. Conversely, define $g$ by induction on the size of the interval $[x,y]$:
+\[
+\begin{gathered}g(x,x)=\frac1{f(x,x)},\qq g(x,y)=-\frac1{f(y,y)}\sum_{x\le z<y}g(x,z)\,f(z,y);;(x<y),\end{gathered}
+\]
+which is exactly $(g*f)(x,y)=\delta(x,y)$. In the same way $h(x,x)=\frac1{f(x,x)}$ and $h(x,y)=-\frac1{f(x,x)}\sum_{x<z\le y}f(x,z)\,h(z,y)$ give
+$f*h=\delta$. Then $g=g*(f*h)=(g*f)*h=h$, a two-sided inverse, and any other inverse $g'$ satisfies $g'=g'*(f*h)=h$. When
+$f(x,x)=1$ and $f$ is integer valued, the recursion only adds and multiplies integers.
+\end{proof}
+
+\begin{definition}\label{def:mobius}
+The \emph{M\"obius function} of a locally finite poset is $\mu=\zeta^{-1}$. Explicitly, $\mu(x,x)=1$ and
+\[
+\begin{aligned}{}&\mu(x,y)=-\sum_{x\le z<y}\mu(x,z)\eqbr=-\sum_{x<z\le y}\mu(z,y)\qquad\text{for }x<y.\end{aligned}
+\]
+\end{definition}
+
+The two recursions are $\mu*\zeta=\delta$ and $\zeta*\mu=\delta$. Computing $\mu$ by hand is a walk up the Hasse diagram: write $1$ at $x$, and at
+each element above it write minus the sum of what is written below it.
+
+\begin{theorem}[M\"obius inversion, Rota]\label{thm:mobiusinv}
+Let $P$ be a poset in which every set $\{x:x\le y\}$ is finite, and $f,g:P\to\Q$. Then
+\[
+\begin{gathered}g(y)=\sum_{x\le y}f(x)\ \text{ for all }y\qq\iff\qq f(y)=\sum_{x\le y}g(x)\,\mu(x,y)\ \text{ for all }y.\end{gathered}
+\]
+Dually, if every set $\{y:y\ge x\}$ is finite, $g(x)=\sum_{y\ge x}f(y)$ for all $x$ if and only if $f(x)=\sum_{y\ge x}\mu(x,y)\,g(y)$ for all $x$.
+\end{theorem}
+\begin{proof}
+If $g(y)=\sum_{x\le y}f(x)$ for all $y$, then, exchanging two finite sums,
+\[
+\begin{aligned}{}&\sum_{x\le y}g(x)\mu(x,y)=\sum_{x\le y}\sum_{w\le x}f(w)\mu(x,y)\eqbr=\sum_{w\le y}f(w)\sum_{w\le x\le y}\zeta(w,x)\mu(x,y)\eqbr=\sum_{w\le y}f(w)\,\delta(w,y)=f(y).\end{aligned}
+\]
+Conversely, if $f(y)=\sum_{x\le y}g(x)\mu(x,y)$, then $\sum_{x\le y}f(x)=\sum_{w\le y}g(w)\sum_{w\le x\le y}\mu(w,x)\zeta(x,y)=\sum_{w\le y}g(w)\delta(w,y)=g(y)$.
+The dual statement is the same computation with the products written in the other order.
+\end{proof}
+
+To use the theorem, we need $\mu$. Three posets cover most applications, and a product rule computes all three.
+
+\begin{proposition}\label{prop:mobiusproduct}
+If $P$ and $Q$ are locally finite, the M\"obius function of the product order on $P\times Q$ is
+$\mu((x,x'),(y,y'))=\mu_P(x,y)\,\mu_Q(x',y')$. Consequently:
+\begin{enumerate}
+\item on the chain $0<1<2<\cdots$, $\mu(i,i)=1$, $\mu(i,i+1)=-1$ and $\mu(i,j)=0$ for $j\ge i+2$;
+\item on the Boolean lattice of subsets of a finite set, $\mu(S,T)=(-1)^{|T\setminus S|}$ for $S\subseteq T$;
+\item on the positive integers ordered by divisibility, $\mu(d,e)=\mu(e/d)$ for $d\mid e$, the classical M\"obius function of Tome~1.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Let $\nu((x,x'),(y,y'))=\mu_P(x,y)\mu_Q(x',y')$. The interval from $(x,x')$ to $(y,y')$ is $[x,y]\times[x',y']$, so
+\[
+\begin{aligned}{}&\sum_{(x,x')\le(z,z')\le(y,y')}\nu((x,x'),(z,z'))\eqbr=\Big(\sum_{x\le z\le y}\mu_P(x,z)\Big)\Big(\sum_{x'\le z'\le y'}\mu_Q(x',z')\Big)\eqbr=\delta(x,y)\,\delta(x',y'),\end{aligned}
+\]
+that is, $\nu*\zeta=\delta$, and $\nu=\mu$ by uniqueness of inverses. (1) The recursion gives $\mu(i,i+1)=-1$, then $\mu(i,i+2)=-(1-1)=0$, and
+by induction $\mu(i,j)=-(1-1+0+\dots+0)=0$ for $j\ge i+2$. (2) The subsets of $\{1,\dots,n\}$ are the product of $n$ chains $\{0<1\}$ (a
+subset is its indicator vector), so $\mu(S,T)$ is a product of $|S|$ factors $\mu(1,1)=1$, $|T\setminus S|$ factors $\mu(0,1)=-1$ and factors
+$\mu(0,0)=1$. (3) The divisors of $e$ form the product of the chains $\{0,1,\dots,a_p\}$ of exponents, $e=\prod p^{a_p}$. So $\mu(d,e)$ is
+$0$ if some prime divides $e/d$ twice, and $(-1)^r$ if $e/d$ is a product of $r$ distinct primes: this is $\mu(e/d)$.
+\end{proof}
+
+Case~(3) turns Theorem~\ref{thm:mobiusinv} into the M\"obius inversion of Tome~1. Case~(2) gives inclusion--exclusion. Let
+$A_1,\dots,A_n$ be subsets of a finite set $\Omega$, and for $S\subseteq\{1,\dots,n\}$ let $f(S)$ be the number of elements of $\Omega$ that lie in $A_i$
+exactly for $i\in S$, and $g(S)=|\bigcap_{i\in S}A_i|$ (with $g(\emptyset)=|\Omega|$). An element counted by $g(S)$ lies in the $A_i$ for $i$ in some set
+$T\supseteq S$, so $g(S)=\sum_{T\supseteq S}f(T)$. The dual inversion gives $f(S)=\sum_{T\supseteq S}(-1)^{|T\setminus S|}g(T)$, and at $S=\emptyset$:
+\[
+\Big|\Omega\setminus\bigcup_iA_i\Big|=\sum_{T\subseteq\{1,\dots,n\}}(-1)^{|T|}\Big|\bigcap_{i\in T}A_i\Big| .
+\]
+One proof, two classical formulas, and infinitely many new ones: every poset now has an inversion formula.
+
+\begin{think}
+Compute $\mu(\hat0,\hat1)$ for the poset with a bottom $\hat0$, a top $\hat1$ and $k$ incomparable elements in between. For which $k$ is it zero?
+\end{think}
+
+A last formula shows what $\mu$ measures. Call a \emph{chain of length $k$} from $x$ to $y$ a sequence $x=x_0<x_1<\dots<x_k=y$.
+
+\begin{proposition}[Philip Hall, 1936]\label{prop:hall}
+In a locally finite poset, $\mu(x,y)=\sum_{k\ge0}(-1)^kc_k(x,y)$, where $c_k(x,y)$ is the number of chains of length $k$ from $x$ to $y$.
+\end{proposition}
+\begin{proof}
+Let $\eta=\zeta-\delta$, so $\eta(x,y)=1$ if $x<y$ and $0$ otherwise. Expanding the convolution, $\eta^{*k}(x,y)$ is the number of sequences
+$x=x_0<x_1<\dots<x_k=y$, that is, $c_k(x,y)$; it vanishes for $k\ge|[x,y]|$, since a chain of length $k$ has $k+1$ distinct elements. So
+$\nu(x,y)=\sum_{k\ge0}(-1)^k\eta^{*k}(x,y)$ is a finite sum for each pair. The value of $\zeta*\nu$ at $(x,y)$ only involves the interval
+$[x,y]$, on which $\nu$ agrees with $\sum_{k=0}^N(-\eta)^{*k}$ for $N=|[x,y]|$, and
+\[
+\begin{aligned}{}&\zeta*\sum_{k=0}^N(-\eta)^{*k}=(\delta+\eta)*\sum_{k=0}^N(-\eta)^{*k}\eqbr=\delta-(-\eta)^{*(N+1)},\end{aligned}
+\]
+a telescoping sum, whose last term vanishes on $[x,y]$. So $\zeta*\nu=\delta$ and $\nu=\mu$.
+\end{proof}
+
+\begin{remark}
+The chains of the open interval $(x,y)$ form a simplicial complex, and Hall's formula says that $\mu(x,y)$ is its reduced Euler
+characteristic. This is the start of \emph{topological combinatorics}: the M\"obius function of the lattice of partitions of a set,
+$\mu(\hat0,\hat1)=(-1)^{n-1}(n-1)!$ (Exercise~\ref{ex:partitionlattice}), comes from a complex that is, up to homotopy, a bouquet of $(n-1)!$
+spheres. See Stanley's \emph{Enumerative Combinatorics}, Volume~1, Chapter~3.
+\end{remark}
+
+\subsection*{Primitive words}
+
+A word of length $n$ over an alphabet of $q$ letters is \emph{primitive} if it is not a power $u^m=uu\cdots u$ with $m\ge2$: \texttt{abab} is not,
+\texttt{abba} is. The \emph{rotation} by $r$ of $w=w_0w_1\cdots w_{n-1}$ is $w_rw_{r+1}\cdots w_{r-1}$ (indices mod $n$).
+
+\begin{lemma}\label{lem:primitive}
+Every non-empty word $w$ is $u^{n/d}$ for exactly one primitive word $u$, whose length $d$ divides $n=|w|$.
+\end{lemma}
+\begin{proof}
+For $d\mid n$, $w=u^{n/d}$ with $|u|=d$ if and only if $w_i=w_{i+d}$ for all $i$ (mod $n$), that is, the rotation by $d$ fixes $w$. The rotations that
+fix $w$ form a subgroup of $\Z/n\Z$, hence (Tome~2, Chapter~1) the multiples of some $d\mid n$, its least positive element. So $w=u^{n/d}$
+where $u$ is the prefix of length $d$, and $u$ is primitive: if $u=v^r$ with $r\ge2$, the rotation by $|v|<d$ would fix $w$. If also $w=v^{n/e}$
+with $v$ primitive, the rotation by $e$ fixes $w$, so $d\mid e$ and $v=u^{e/d}$; as $v$ is primitive, $e=d$ and $v=u$.
+\end{proof}
+
+So if $M(d)$ is the number of primitive words of length $d$, then $q^n=\sum_{d\mid n}M(d)$, and Theorem~\ref{thm:mobiusinv} on the
+divisor poset gives
+\[
+M(n)=\sum_{d\mid n}\mu\Big(\frac nd\Big)\,q^d .
+\]
+For $q=2$: $M(1)=2$, $M(2)=2$, $M(3)=6$, $M(4)=12$, $M(6)=54$. The rotations of a primitive word are $n$ distinct primitive words, so
+primitive words come in classes of $n$, and there are $M(n)/n$ classes. This is \emph{exactly} the number of monic irreducible
+polynomials of degree $n$ over $\mathbb F_q$ (Tome~2, Theorem~9.10), and also the dimension of the degree-$n$ part of the free Lie
+algebra on $q$ generators (Witt's formula, 1937). Exercise~\ref{ex:lyndon} picks one word in each class, the Lyndon word, which
+is how these coincidences are turned into bijections.
+
+\section{Trees are words}
+
+We need a few facts about trees here; Chapter~5 studies graphs in general. A \emph{graph} is a set $V$ of vertices with a set $E$ of
+\emph{edges}, which are pairs of distinct vertices. A \emph{path} is a sequence of distinct vertices with consecutive ones adjacent, a \emph{cycle}
+is a path $v_0\cdots v_k$ with $k\ge2$ and $v_kv_0$ an edge, and the graph is \emph{connected} if any two vertices are joined by a path. A \emph{tree} is a
+connected graph without cycles, and a \emph{leaf} is a vertex of degree $1$.
+
+\begin{lemma}\label{lem:trees}
+Let $T$ be a tree with $n\ge2$ vertices.
+\begin{enumerate}
+\item $T$ has at least two leaves.
+\item If $v$ is a leaf, $T-v$ is a tree.
+\item $T$ has $n-1$ edges.
+\item Adding a new vertex joined to one vertex of $T$ gives a tree.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(1) As $T$ is connected with $n\ge2$ vertices, it has an edge. Take a path $v_0v_1\cdots v_k$ with $k\ge1$ as long as possible. A neighbour $u\ne v_1$
+of $v_0$ is either some $v_i$ with $i\ge2$, and $v_0v_1\cdots v_i$ is a cycle, or not on the path, and $uv_0\cdots v_k$ is longer. Both are impossible, so
+$v_0$ is a leaf, and so is $v_k$. (2) $T-v$ has no cycle. Two vertices $x,y\ne v$ are joined in $T$ by a path, whose interior vertices have
+two neighbours on it, so $v$ is not among them, and the path lives in $T-v$. (3) follows from (1) and (2) by induction on $n$. (4) The
+new vertex has degree $1$, and a cycle has two edges at each of its vertices, so a cycle of the new graph would be a cycle of $T$.
+\end{proof}
+
+Now take a tree $T$ whose $n\ge2$ vertices are labelled by distinct integers, so that ``the smallest leaf'' makes sense. Its
+\emph{Pr\"ufer code} $P(T)$ is the word of length $n-2$ defined by: $P(T)$ is empty if $n=2$; otherwise, if $\ell$ is the smallest leaf and $a$ its
+neighbour, $P(T)=a\,P(T-\ell)$. In words: pluck the smallest leaf, write down its neighbour, repeat until two vertices remain
+(Figure~\ref{fig:prufer}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-prufer}
+\caption{Computing a Pr\"ufer code. The leaves are plucked in the order $1,2,3,4,5$ (the circled numbers give the step), and
+their neighbours are written down: the code is $(4,4,5,5,6)$. Each vertex appears its degree minus one times: $4$ and $5$ twice,
+$6$ once, the leaves $1,2,3,7$ never.}
+\label{fig:prufer}
+\end{figure}
+
+\begin{lemma}\label{lem:pruferdeg}
+Every vertex $v$ of $T$ appears exactly $\deg_T(v)-1$ times in $P(T)$. In particular, the leaves of $T$ are the vertices absent from $P(T)$.
+\end{lemma}
+\begin{proof}
+By induction on $n$. For $n=2$ both vertices have degree $1$ and the code is empty. For $n\ge3$, let $T'=T-\ell$. In $T'$, the vertex $a$ has
+lost one edge and the other degrees are unchanged. By induction $v\ne\ell$ appears $\deg_{T'}(v)-1$ times in $P(T')$; adding the first
+letter $a$ gives $\deg_T(a)-1$ occurrences of $a$ and $\deg_T(v)-1$ of the other $v\ne\ell$. Finally $\ell$ is not a vertex of $T'$, so it occurs
+$0=\deg_T(\ell)-1$ times.
+\end{proof}
+
+\begin{theorem}[Pr\"ufer, 1918; Cayley's formula]\label{thm:prufer}
+Let $V$ be a set of $n\ge2$ integers. The Pr\"ufer code is a bijection from the trees with vertex set $V$ to the words $V^{n-2}$.
+In particular there are $n^{n-2}$ trees on $n$ labelled vertices.
+\end{theorem}
+\begin{proof}
+By induction on $n$; for $n=2$ there is one tree and one empty word. Let $n\ge3$ and $a=(a_1,\dots,a_{n-2})\in V^{n-2}$. Let $\ell$ be the smallest
+element of $V$ that does not occur in $a$ (there is one, as $a$ has $n-2<n$ letters).
+
+\emph{At most one tree has code $a$.} If $P(T)=a$, then by Lemma~\ref{lem:pruferdeg} the leaves of $T$ are the elements of $V$ absent from $a$, so the
+smallest leaf of $T$ is $\ell$, its neighbour is $a_1$, and $P(T-\ell)=(a_2,\dots,a_{n-2})$. By Lemma~\ref{lem:trees}, $T-\ell$ is a tree on
+$V\setminus\{\ell\}$, which by induction is determined by its code; and $T$ is $T-\ell$ plus the edge $\ell a_1$.
+
+\emph{Some tree has code $a$.} The letters $a_2,\dots,a_{n-2}$ lie in $V\setminus\{\ell\}$, so by induction there is a tree $T'$ on $V\setminus\{\ell\}$ with code
+$(a_2,\dots,a_{n-2})$. Let $T$ be $T'$ plus the edge $\ell a_1$ (note $a_1\ne\ell$), a tree by Lemma~\ref{lem:trees}. For $v\ne\ell$, Lemma~\ref{lem:pruferdeg}
+applied to $T'$ gives $\deg_T(v)=1+(\text{occurrences of }v\text{ in }a_2\cdots a_{n-2})+[v=a_1]$, which is $1$ exactly when $v$ does not occur in $a$. So
+the leaves of $T$ are $\ell$ and the elements of $V\setminus\{\ell\}$ absent from $a$, and $\ell$ is the smallest of them. Hence $P(T)=a_1P(T')=a$.
+\end{proof}
+
+Lemma~\ref{lem:pruferdeg} says more: the code of a tree knows its degrees. Counting words with prescribed numbers of
+occurrences of each letter is the multinomial theorem.
+
+\begin{corollary}\label{cor:degrees}
+Let $d_1,\dots,d_n\ge1$ with $d_1+\dots+d_n=2n-2$. The number of trees on $\{1,\dots,n\}$ in which vertex $i$ has degree $d_i$ for all $i$ is
+\[
+\begin{aligned}{}&\binom{n-2}{d_1-1,\ d_2-1,\ \dots,\ d_n-1}\eqbr=\frac{(n-2)!}{(d_1-1)!\cdots(d_n-1)!}.\end{aligned}
+\]
+Equivalently, $\displaystyle\sum_T x_1^{\deg_T(1)}\cdots x_n^{\deg_T(n)}=x_1x_2\cdots x_n\,(x_1+\dots+x_n)^{n-2}$, the sum over all trees on $\{1,\dots,n\}$.
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{thm:prufer} and Lemma~\ref{lem:pruferdeg}, these trees correspond to the words of length $n-2$ in which $i$ occurs $d_i-1$
+times, and choosing the positions of each letter gives the multinomial coefficient. For the identity, the word $a$ of a tree
+$T$ satisfies $\prod_ix_i^{\deg_T(i)}=x_1\cdots x_n\,x_{a_1}\cdots x_{a_{n-2}}$, and the sum of $x_{a_1}\cdots x_{a_{n-2}}$ over all words is $(x_1+\dots+x_n)^{n-2}$.
+\end{proof}
+
+For $n=4$: degrees $(3,1,1,1)$ give $\frac{2!}{2!}=1$ tree, the star centred at $1$; degrees $(2,2,1,1)$ give $\frac{2!}{1!\,1!}=2$ trees, the paths
+$3\,1\,2\,4$ and $4\,1\,2\,3$. Over all choices of centres, $4$ stars and $6\times2=12$ paths: the $16=4^2$ trees of the opening, with two
+shapes.
+
+\begin{beauty}
+A tree, a two-dimensional branching object, is the same thing as a word of $n-2$ letters, and the degree of each vertex can be
+read from the word by counting. This one bijection proves Cayley's formula, counts trees by degrees, and gives an algorithm: to
+draw a uniformly random tree on $n$ vertices, draw $n-2$ independent uniform letters and decode, in time $O(n\log n)$ with a heap.
+The companion notebook does exactly this, and checks with it a fact of Exercise~\ref{ex:leaf}: about $n/e$ of the vertices of a random
+tree are leaves.
+\end{beauty}
+
+\begin{remark}
+Cayley's formula has an unusual number of beautiful proofs. Borchardt's original one (1860) used determinants, and is the
+case of complete graphs of the matrix-tree theorem of Chapter~9. Joyal (1981) matched doubly rooted trees with maps from
+$\{1,\dots,n\}$ to itself; Pitman (1999) found the double count of Exercise~\ref{ex:pitman}. Aigner and Ziegler's \emph{Proofs from THE BOOK}
+gives four of them. Tome~3, Chapter~12 used the formula to decide when a random graph is connected.
+\end{remark}
+
+\section{The cycle lemma}
+
+In 1887 Joseph Bertrand asked: in an election where candidate A receives $a$ votes and B receives $b<a$, counted in random order,
+what is the probability that A is ahead throughout the count? The answer, $\frac{a-b}{a+b}$, was proved in Tome~3, Theorem~1.12 by
+D\'esir\'e Andr\'e's reflection trick. In 1947 Aryeh Dvoretzky and Theodore Motzkin found a proof that needs no reflection at all,
+only rotation, and it counts much more than ballots.
+
+\begin{theorem}[cycle lemma, Dvoretzky and Motzkin]\label{thm:cyclelemma}
+Let $x_1,\dots,x_m$ be integers, each at most $1$, with sum $k\ge1$. Among the $m$ cyclic shifts $x_{i+1},x_{i+2},\dots,x_{i+m}$ ($0\le i<m$, indices mod $m$),
+exactly $k$ have all their partial sums positive.
+\end{theorem}
+\begin{proof}
+Extend the sequence periodically, $x_{j+m}=x_j$ for all $j\in\Z$, and let $S_j$ be its walk: $S_0=0$ and $S_j-S_{j-1}=x_j$ for all $j\in\Z$. Then
+$S_{j+m}=S_j+k$, so $S_j\to+\infty$ as $j\to+\infty$ and $S_j\to-\infty$ as $j\to-\infty$; and the walk goes up by at most $1$ at each step. The shift starting
+after $i$ has all partial sums positive if and only if $S_j>S_i$ for $i<j\le i+m$; call $i$ \emph{good} if $S_j>S_i$ for \emph{all} $j>i$. The two conditions
+are the same, because $S_j=S_{j-m}+k>S_{j-m}$ propagates the inequality from one period to the next.
+
+Since the walk climbs by steps of at most $1$ from $-\infty$ to $+\infty$, it visits every level $v\in\Z$, and finitely often; let $t(v)$ be the last
+time it is at level $v$. After $t(v)$ the walk never goes below $v$ either, since it would have to climb back through $v$. So $t(v)$ is
+good, and conversely a good $i$ is the last visit $t(S_i)$ to its level. Thus $v\mapsto t(v)$ is a bijection from $\Z$ to the good times, and
+it is increasing: if $v<w$, the walk is above $w>v$ after $t(w)$, so $t(v)<t(w)$. Finally $t(v+k)=t(v)+m$, by periodicity. The good
+times in the window $t(0)\le i<t(k)=t(0)+m$ are therefore $t(0),\dots,t(k-1)$: exactly $k$ of them. As the set of good times is invariant
+under $i\mapsto i+m$, every window of $m$ consecutive integers, in particular $\{0,\dots,m-1\}$, contains exactly $k$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-cyclelemma}
+\caption{The cycle lemma for the sequence $(1,-2,1,1,-1,1,1)$, of sum $k=2$, extended periodically. A time is good when the
+walk stays strictly above its current level forever after (dashed lines). The good times are the last visits to each
+level, and there are exactly $2$ per period: the shifts starting after positions $2$ and $5$, that is $(1,1,-1,1,1,1,-2)$ and
+$(1,1,1,-2,1,1,-1)$, have all partial sums positive.}
+\label{fig:cyclelemma}
+\end{figure}
+
+\begin{corollary}[ballots and Catalan numbers]\label{cor:ballot}
+Let $a>b\ge0$. The number of sequences of $a$ terms $+1$ and $b$ terms $-1$ whose partial sums are all positive is
+$\frac{a-b}{a+b}\binom{a+b}a$. In particular, the number of \emph{Dyck words} of length $2n$, sequences of $n$ terms $+1$ and $n$ terms $-1$
+whose partial sums are all $\ge0$, is the Catalan number
+\[
+C_n=\frac1{2n+1}\binom{2n+1}n=\frac1{n+1}\binom{2n}n .
+\]
+\end{corollary}
+\begin{proof}
+Let $m=a+b$ and $k=a-b$. Count the pairs $(s,i)$ where $s$ is one of the $\binom ma$ sequences and $0\le i<m$ is a position such that the
+shift of $s$ starting after $i$ has positive partial sums. By the cycle lemma each $s$ has $k$ such positions: $k\binom ma$ pairs. On the
+other hand, each sequence $g$ with positive partial sums arises from exactly $m$ pairs, namely $s$ the rotation of $g$ by $-i$, with this
+$i$, for $i=0,\dots,m-1$. Hence the number of such $g$ is $\frac km\binom ma$. For Dyck words, $w$ has partial sums $\ge0$ if and only if $(+1)w$ has
+partial sums $\ge1$; these are the sequences of $n+1$ terms $+1$ and $n$ terms $-1$ with positive partial sums, and there are
+$\frac1{2n+1}\binom{2n+1}{n+1}=\frac1{n+1}\binom{2n}n$ of them.
+\end{proof}
+
+The proof divides by $m$, and the division is exact for a reason that a computer scientist loves: the $m$ rotations of the
+\emph{pairs} $(s,i)$ always form a full orbit, even when $s$ has symmetries, because the position $i$ breaks them.
+
+The Catalan numbers $1,1,2,5,14,42,132,\dots$ count more than two hundred families of objects (Stanley's \emph{Catalan Numbers}
+lists 214). Here is the one that matters most for computing. A \emph{plane tree} is a rooted tree in which the children of each vertex
+are ordered, left to right: the shape of a parse tree, an XML document, or a recursive call. Visit its vertices in \emph{preorder}
+(the root, then the subtrees from left to right, each in preorder), and record the number of children $c_1,\dots,c_m$ of each.
+
+\begin{proposition}[\L ukasiewicz words]\label{prop:lukasiewicz}
+A sequence $(c_1,\dots,c_m)$ of non-negative integers is the preorder sequence of numbers of children of a plane tree if and
+only if $h_j=1+\sum_{i\le j}(c_i-1)$ satisfies $h_j\ge1$ for $j<m$ and $h_m=0$; and the tree is then unique. Consequently the number of plane
+trees with $m$ vertices whose numbers of children form a given multiset with sum $m-1$ is $\frac1m$ times the number of
+arrangements of the multiset; in particular there are $C_{m-1}$ plane trees with $m$ vertices.
+\end{proposition}
+\begin{proof}
+More generally, call a sequence a \emph{code of $r$ trees} if $h_j=r+\sum_{i\le j}(c_i-1)$ satisfies $h_j\ge1$ for $j<m$ and $h_m=0$; think of $h_j$ as the
+number of subtrees still to be read after $j$ vertices. We show by induction on $m$ that the codes of $r$ trees are exactly the
+concatenations of the preorder sequences of $r$ plane trees, each obtained in exactly one way. The preorder sequence of a tree
+is $c_1$ followed by the sequences of its $c_1$ subtrees, so the claim for $r$ trees with $m$ vertices in all reduces to the claim for $c_1$
+trees, then $r-1$ trees, with fewer vertices. For the converse, $h$ starts at $r$ and goes down by at most $1$ at each step, so a code of $r$
+trees first reaches $r-1$ at some time $j_1$; the part up to $j_1$ is a code of one tree (shifted by $r-1$), the rest a code of $r-1$ trees; and
+a code of one tree, read after its first term $c_1$, is a code of $c_1$ trees. The induction hypothesis applies to each piece, and the
+cutting points are forced, which gives uniqueness.
+
+For the count, set $x_i=1-c_i\le1$, of sum $m-(m-1)=1$. The condition on $h$ says that every \emph{suffix} $x_{j+1}+\dots+x_m=1-\sum_{i\le j}x_i=h_j$ for
+$j<m$ is positive, and the full sum is $1$: the reversed sequence $(x_m,\dots,x_1)$ has positive partial sums. By the cycle lemma with $k=1$
+and the pair count of Corollary~\ref{cor:ballot}, a fraction exactly $\frac1m$ of the arrangements qualifies. For all plane trees with $m$
+vertices, the sequences of $m$ non-negative integers with sum $m-1$ number $\binom{2m-2}{m-1}$ (stars and bars), and $\frac1m\binom{2m-2}{m-1}=C_{m-1}$.
+\end{proof}
+
+This is how a stack-based parser checks a prefix expression such as \texttt{+ * a b c}: arities $2,2,0,0,0$, counter
+$1,2,3,2,1,0$, accepted. Exercise~\ref{ex:fusscatalan} counts $r$-ary trees in the same way. In 1960 George Raney rediscovered the
+cycle lemma and used it to prove the Lagrange inversion formula, which Chapter~4 will prove by another route.
+
+\section{Counting up to symmetry}\label{sec:alkanes}
+
+\begin{reminder}[Tome~2, Theorems~3.6 and~3.7]
+Let a finite group $G$ act on a finite set $X$. \emph{Burnside}: the number of orbits is $\frac1{|G|}\sum_g|X^g|$, the average number of
+fixed points. \emph{P\'olya}: if $g$ has $c_j(g)$ cycles of length $j$ on $X$, and the colours $c$ have weights $w_c$, the colourings of $X$ up to the
+action of $G$, each weighted by the product of the weights of its colours, have total weight $Z_G(t_1,t_2,\dots)$ evaluated at
+$t_j=\sum_cw_c^{\,j}$, where $Z_G=\frac1{|G|}\sum_g\prod_jt_j^{c_j(g)}$ is the \emph{cycle index}.
+\end{reminder}
+
+Tome~2 counted necklaces. Here we count graphs and trees, and finally answer Cayley's question about alkanes.
+
+\subsection*{Graphs up to isomorphism}
+
+A graph on the vertex set $\{1,\dots,n\}$ is a colouring of the $\binom n2$ pairs in two colours, ``edge'' and ``no edge''. Two graphs are
+isomorphic if a permutation of the vertices maps one to the other, so the unlabelled graphs are the orbits of the symmetric
+group $S_n$ acting on colourings of pairs. To apply P\'olya we need the cycles of a permutation $\sigma$ on \emph{pairs}. For $n=4$ (six
+pairs), by conjugacy class of $S_4$:
+\begin{itemize}
+\item the identity fixes the $6$ pairs: $t_1^6$;
+\item a transposition, $(12)$, fixes $\{1,2\}$ and $\{3,4\}$ and swaps $\{1,3\}\leftrightarrow\{2,3\}$ and $\{1,4\}\leftrightarrow\{2,4\}$: $t_1^2t_2^2$, $6$ of them;
+\item a double transposition, $(12)(34)$, fixes $\{1,2\}$, $\{3,4\}$ and swaps $\{1,3\}\leftrightarrow\{2,4\}$, $\{1,4\}\leftrightarrow\{2,3\}$: $t_1^2t_2^2$, $3$ of them;
+\item a $3$-cycle, $(123)$, rotates $\{1,2\}\to\{2,3\}\to\{1,3\}$ and $\{1,4\}\to\{2,4\}\to\{3,4\}$: $t_3^2$, $8$ of them;
+\item a $4$-cycle, $(1234)$, rotates the four sides of the square and swaps the two diagonals: $t_2t_4$, $6$ of them.
+\end{itemize}
+So $Z=\frac1{24}\big(t_1^6+9t_1^2t_2^2+8t_3^2+6t_2t_4\big)$. With $t_j=1+x^j$ (an edge has weight $x$),
+\[
+\begin{aligned}{}&\tfrac1{24}\big((1+x)^6+9(1+x)^2(1+x^2)^2\eqbr{}+8(1+x^3)^2+6(1+x^2)(1+x^4)\big)\eqbr=1+x+2x^2+3x^3+2x^4+x^5+x^6:\end{aligned}
+\]
+there are $11$ graphs on $4$ vertices, of which $3$ have three edges (Figure~\ref{fig:graphs4}). With $5$ vertices there are $34$
+(Exercise~\ref{ex:graphs5}), then $156$, $1044$, $12346$, \dots{} Since a single graph has at most $n!$ labellings, there are at least
+$2^{\binom n2}/n!$ unlabelled graphs; P\'olya, and later Erd\H os and R\'enyi, showed that this is asymptotically exact, because almost all
+graphs have no symmetry at all.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-graphs4}
+\caption{The $11$ graphs on $4$ unlabelled vertices, sorted by number of edges: $1,1,2,3,2,1,1$, the coefficients of P\'olya's
+polynomial. Complementing (swapping edges and non-edges) reverses the list.}
+\label{fig:graphs4}
+\end{figure}
+
+\subsection*{Multisets and rooted trees}
+
+Most counting problems up to symmetry have the same shape: an object is made of several sub-objects whose order does not
+matter. Let $\mathcal A$ be a class of objects, each with a size $\ge1$, with $a_n$ objects of size $n$ (finitely many), and $A(x)=\sum_na_nx^n$. A
+\emph{multiset of $k$ elements} of $\mathcal A$ is a $k$-tuple up to permutation, that is, an orbit of $S_k$ acting on $\mathcal A^k$.
+
+\begin{proposition}\label{prop:multisets}
+The generating function, by total size, of the multisets of $k$ elements of $\mathcal A$ is $Z_{S_k}(A(x),A(x^2),A(x^3),\dots)$, where $Z_{S_k}$ is the
+cycle index of $S_k$ acting on $\{1,\dots,k\}$. The generating function of all finite multisets is $\prod_{n\ge1}(1-x^n)^{-a_n}$.
+\end{proposition}
+\begin{proof}
+A $k$-tuple is a colouring of $k$ slots, the colours being the objects of $\mathcal A$ and the weight of a colour $x^{\text{size}}$. Then $\sum_cw_c^{\,j}=A(x^j)$,
+and P\'olya's theorem gives the first formula. There are infinitely many colours, but the coefficient of $x^N$ only involves
+objects of size $\le N$, finitely many, so we may apply the theorem to them. For the second, a multiset is determined by the
+multiplicity $m_o\ge0$ of each object $o$, and contributes $\prod_ox^{m_o|o|}$; summing over the choices independently gives
+$\prod_o(1+x^{|o|}+x^{2|o|}+\cdots)=\prod_n(1-x^n)^{-a_n}$, a product in which only finitely many factors affect each coefficient.
+\end{proof}
+
+The small cycle indices, from the conjugacy classes of $S_k$:
+\[
+\begin{gathered}Z_{S_2}=\frac{t_1^2+t_2}2,\qquad Z_{S_3}=\frac{t_1^3+3t_1t_2+2t_3}6,\qq Z_{S_4}=\frac{t_1^4+6t_1^2t_2+3t_2^2+8t_1t_3+6t_4}{24}.\end{gathered}
+\]
+
+A rooted tree is a root together with the multiset of subtrees hanging from its children. Two rooted trees are isomorphic if and
+only if these multisets agree up to isomorphism: an isomorphism sends the root to the root and children to children, so it
+matches the subtrees; conversely, isomorphisms between matched subtrees glue together. So if $t_n$ is the number of rooted trees
+with $n$ vertices up to isomorphism and $T(x)=\sum t_nx^n$, Proposition~\ref{prop:multisets} gives Cayley's equation of 1857:
+\[
+\begin{aligned}{}&T(x)=x\prod_{n\ge1}(1-x^n)^{-t_n}\eqbr=x+x^2+2x^3+4x^4+9x^5+20x^6+\cdots\end{aligned}
+\]
+It determines the $t_n$ one after the other, since the coefficient of $x^{n+1}$ on the right only involves $t_1,\dots,t_n$; Exercise~\ref{ex:rootedrec}
+turns it into a fast recursion.
+
+\subsection*{Alcohols and alkanes}
+
+Now the chemistry. An \emph{alcohol} $\mathrm C_n\mathrm H_{2n+1}\mathrm{OH}$ is an alkane skeleton with one hydrogen replaced by a hydroxyl group: a tree
+of $n$ carbons of degrees $\le4$ with a marked carbon that has at most three carbon neighbours. Rooted at the marked carbon, every
+vertex has at most three children. Let $r_n$ be the number of such \emph{ternary rooted trees} with $n$ vertices, up to isomorphism, with
+$r_0=1$ for the empty tree (which a chemist calls a hydrogen atom), and $R(x)=\sum_{n\ge0}r_nx^n$. A non-empty ternary tree is a root with
+three slots, each holding a possibly empty ternary tree, up to permutation of the slots, so
+\[
+\begin{aligned}{}&R(x)=1+x\,Z_{S_3}\big(R(x),R(x^2),R(x^3)\big)\eqbr=1+x\,\frac{R(x)^3+3R(x)R(x^2)+2R(x^3)}6 .\end{aligned}
+\]
+This gives $1,1,1,2,4,8,17,39,89,211,507,\dots$: one methanol, one ethanol, two propanols, four butanols, eight pentanols, in
+agreement with the chemists (Henze and Blair, 1931).
+
+For the alkanes themselves the tree has no root, and we need a canonical vertex to root it at. For a vertex $v$ of a tree $T$, the
+\emph{branches} at $v$ are the components of $T-v$.
+
+\begin{lemma}[Jordan, 1869]\label{lem:centroid}
+Let $T$ be a tree with $n$ vertices. Exactly one of the following holds: (i) exactly one vertex has all its branches of size
+$<\frac n2$; (ii) $n$ is even and exactly one edge splits $T$ into two components of size $\frac n2$.
+\end{lemma}
+\begin{proof}
+Call $v$ \emph{central} if all its branches have size $\le\frac n2$. Some vertex is central: start anywhere, and while the current vertex $v$ has a
+branch $B$ of size $>\frac n2$, move to the neighbour $u$ of $v$ in $B$. The branches at $u$ are the component of $v$, of size $n-|B|<\frac n2$, and
+the branches of $u$ inside $B$, of size $<|B|$. So the size of the large branch decreases strictly, and the walk stops at a central vertex.
+
+Let $u\ne w$ be central, $A$ the branch at $u$ containing $w$, and $B$ the branch at $w$ containing $u$. Every vertex is in $A$ or in $B$:
+if $x\notin A$, the path from $x$ to $w$ goes through $u$, and its part from $x$ to $u$ avoids $w$, so $x\in B$. Since $|A|,|B|\le\frac n2$, we get
+$|A|=|B|=\frac n2$ and $A\cap B=\emptyset$. If $u$ and $w$ were not adjacent, an inner vertex of the path from $u$ to $w$ would be in $A\cap B$. So $u$ and $w$
+are adjacent, and the edge $uw$ splits $T$ into $B$ and $A$, of size $\frac n2$ each: a \emph{halving edge}. Conversely both ends of a halving edge
+are central. Two distinct halving edges would have at least three distinct ends, central and pairwise adjacent, a triangle,
+impossible in a tree. Finally, a central vertex $v$ with a branch $C$ of size exactly $\frac n2$ is the end of a halving edge, the edge from
+$v$ into $C$.
+
+So either there is a halving edge, unique, whose two ends are the only central vertices (case (ii)), or there is none, and
+then there is exactly one central vertex, and all its branches have size $<\frac n2$ (case (i)).
+\end{proof}
+
+\begin{theorem}[counting alkanes]\label{thm:alkanes}
+Let $\rho(x)=\sum_{m<n/2}r_mx^m$, and $\varepsilon_n=\binom{r_{n/2}+1}2$ if $n$ is even, $\varepsilon_n=0$ if $n$ is odd. The number of alkanes $\mathrm C_n\mathrm H_{2n+2}$,
+that is, of trees with $n$ vertices of degrees $\le4$ up to isomorphism, is
+\[
+\begin{aligned}{}&a_n=[x^{n-1}]\,Z_{S_4}\big(\rho(x),\rho(x^2),\rho(x^3),\rho(x^4)\big)\eqbr{}+\varepsilon_n.\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+An isomorphism of trees maps branches to branches of the same size, hence the vertex of case (i) of Lemma~\ref{lem:centroid} to the
+vertex of case (i), and the halving edge to the halving edge. Count the two cases separately.
+
+(i) Root the tree at its centroid $c$. Each branch at $c$, rooted at the neighbour of $c$, is a ternary rooted tree (its vertices have
+at most $4$ neighbours, one of which is the parent), with fewer than $\frac n2$ vertices; there are at most $4$ branches, of total size $n-1$.
+Conversely, a root with at most $4$ such branches is a tree of degrees $\le4$ whose root is the vertex of case (i). As isomorphisms
+preserve the centroid, the classes of such trees are the classes of these rooted trees, which are the multisets of $4$ slots each
+holding a ternary tree (possibly empty) with $<\frac n2$ vertices, of total size $n-1$. Proposition~\ref{prop:multisets}, with the empty tree
+allowed as an object of size $0$ (the proof is unchanged, as $r_0=1$), gives the first term.
+
+(ii) Cut the halving edge $uv$. The two halves, rooted at $u$ and $v$, are ternary rooted trees with $\frac n2$ vertices, and conversely
+joining the roots of two such trees gives a tree of degrees $\le4$ with a halving edge. Isomorphisms may swap the halves, so the
+classes correspond to unordered pairs, with repetition, of classes of ternary trees of size $\frac n2$: $\binom{r_{n/2}+1}2$ of them.
+\end{proof}
+
+For $n=6$: the branches at a centroid have at most $2$ vertices, and the multisets of $4$ such branches of total size $5$ are $\{2,2,1,0\}$
+and $\{2,1,1,1\}$, that is, 3-methylpentane and 2,2-dimethylbutane; and $r_3=2$ gives $\binom32=3$ trees with a halving edge: hexane,
+2-methylpentane and 2,3-dimethylbutane. Five hexanes, as in Figure~\ref{fig:hexanes}. The sequence goes on, $1$, $1$, $1$, $2$, $3$, $5$, $9$, $18$, $35$, $75$, $159$, $355$, $802$, $1858$, $4347$, \dots,
+and the notebook checks it against a brute-force enumeration of trees. There are $366\,319$ isomers of $\mathrm C_{20}\mathrm H_{42}$ and more
+than $4\times10^{9}$ of $\mathrm C_{30}\mathrm H_{62}$; Cayley's thirteen carbons took him a great deal of patience, and take a computer a millisecond.
+
+\section{Gaussian binomial coefficients}
+
+\begin{think}
+How many lines through the origin are there in the plane $\mathbb F_2^2$? In $\mathbb F_3^2$? How many planes through the origin in $\mathbb F_2^3$?
+\end{think}
+
+In 1808 Gauss, studying the sign of the sums that now bear his name, needed polynomials in a variable $q$ that behave like binomial
+coefficients. A century and a half later they turned out to count subspaces of vector spaces over finite fields, a fact used
+every day in coding theory. For an integer $n\ge0$ let
+\[
+\begin{gathered}[n]_q=1+q+\dots+q^{n-1}=\frac{q^n-1}{q-1},\qq{}[n]_q!=[1]_q[2]_q\cdots[n]_q,\qq \binom nk_{\!q}=\frac{[n]_q!}{[k]_q!\,[n-k]_q!}\quad(0\le k\le n),\end{gathered}
+\]
+and $\binom nk_q=0$ if $k<0$ or $k>n$. At $q=1$ these are $n$, $n!$ and $\binom nk$.
+
+\begin{proposition}[$q$-Pascal]\label{prop:qpascal}
+For $n\ge1$,
+\[
+\begin{aligned}{}&\binom nk_{\!q}=\binom{n-1}{k-1}_{\!q}+q^k\binom{n-1}k_{\!q}\eqbr=q^{n-k}\binom{n-1}{k-1}_{\!q}+\binom{n-1}k_{\!q}.\end{aligned}
+\]
+Hence $\binom nk_q$ is a polynomial in $q$ with non-negative integer coefficients, of degree $k(n-k)$.
+\end{proposition}
+\begin{proof}
+For $0<k<n$, divide the first identity by $\frac{[n-1]_q!}{[k]_q!\,[n-k]_q!}$: it becomes $[n]_q=[k]_q+q^k[n-k]_q$, which says $1+\dots+q^{n-1}=(1+\dots+q^{k-1})+(q^k+\dots+q^{n-1})$.
+The second is the same with $k$ and $n-k$ exchanged, using the symmetry $\binom nk_q=\binom n{n-k}_q$. For $k=0$ or $k=n$ both sides are $1$. The
+last claims follow by induction on $n$.
+\end{proof}
+
+\begin{theorem}\label{thm:subspaces}
+Let $q$ be a prime power. The number of subspaces of dimension $k$ of $\mathbb F_q^n$ is $\binom nk_q$. The number of invertible $n\times n$
+matrices over $\mathbb F_q$ is $|\mathrm{GL}_n(\mathbb F_q)|=(q^n-1)(q^n-q)\cdots(q^n-q^{n-1})$.
+\end{theorem}
+\begin{proof}
+The linear algebra of Tome~0, Chapter~7 works word for word over any field, and $\mathbb F_q$ exists by Tome~2, Theorem~9.6. Count the
+sequences $(v_1,\dots,v_k)$ of linearly independent vectors of $\mathbb F_q^n$: $v_1$ is any of the $q^n-1$ non-zero vectors, and $v_{i+1}$ is any vector
+outside the span of $v_1,\dots,v_i$, which has $q^i$ elements: $(q^n-1)(q^n-q)\cdots(q^n-q^{k-1})$ sequences. For $k=n$ these are the columns of the
+invertible matrices. Each sequence is a basis of exactly one subspace of dimension $k$, and each such subspace, being isomorphic
+to $\mathbb F_q^k$, has $(q^k-1)(q^k-q)\cdots(q^k-q^{k-1})$ bases. So the number of subspaces is
+\[
+\begin{aligned}{}&\prod_{i=0}^{k-1}\frac{q^n-q^i}{q^k-q^i}=\prod_{i=0}^{k-1}\frac{q^{n-i}-1}{q^{k-i}-1}\eqbr=\frac{[n]_q[n-1]_q\cdots[n-k+1]_q}{[k]_q[k-1]_q\cdots[1]_q}=\binom nk_{\!q}.\end{aligned}
+\]
+\end{proof}
+
+So $\mathbb F_2^3$ has $\binom31_2=1+2+4=7$ lines and $7$ planes: the Fano plane, which Chapter~12 will meet again. And the polynomial has
+a meaning for every $q$, not only prime powers. An \emph{inversion} of a word $w\in\{0,1\}^n$ is a pair of positions $i<j$ with $w_i=1$ and $w_j=0$.
+
+\begin{theorem}\label{thm:qinv}
+$\displaystyle\binom nk_{\!q}=\sum_wq^{\operatorname{inv}(w)}$, the sum over the words $w\in\{0,1\}^n$ with $k$ ones.
+\end{theorem}
+\begin{proof}
+Call the right-hand side $I(n,k)$; $I(n,0)=I(n,n)=1$. For $0<k<n$, split by the last letter. If $w=w'1$, the final $1$ is in no inversion,
+so these words contribute $I(n-1,k-1)$. If $w=w'0$, the final $0$ makes an inversion with each of the $k$ ones of $w'$, so they contribute
+$q^kI(n-1,k)$. So $I$ satisfies the first recursion of Proposition~\ref{prop:qpascal}, with the same initial values.
+\end{proof}
+
+Draw $w$ as a lattice path, a $1$ being a step right and a $0$ a step up: the inversions are the unit squares above the path
+and inside the $k\times(n-k)$ rectangle. So $\binom nk_q$ is the generating function of lattice paths by the area they cut off, and its
+coefficients are symmetric and unimodal (the unimodality is a deep theorem of Sylvester, 1878). Exercise~\ref{ex:rref} explains
+why subspaces and inversions give the same count: row reduction turns each subspace into a lattice path.
+
+\begin{theorem}[$q$-binomial theorem]\label{thm:qbinomial}
+$\displaystyle\prod_{i=0}^{n-1}(1+q^ix)=\sum_{k=0}^nq^{k(k-1)/2}\binom nk_{\!q}\,x^k$.
+\end{theorem}
+\begin{proof}
+By induction on $n$, the case $n=0$ being $1=1$. Multiplying the identity for $n-1$ by $1+q^{n-1}x$, the coefficient of $x^k$ on the left
+becomes
+\[
+\begin{aligned}{}&q^{k(k-1)/2}\binom{n-1}k_{\!q}+q^{n-1}q^{(k-1)(k-2)/2}\binom{n-1}{k-1}_{\!q}\eqbr=q^{k(k-1)/2}\Big(\binom{n-1}k_{\!q}+q^{n-k}\binom{n-1}{k-1}_{\!q}\Big)\eqbr=q^{k(k-1)/2}\binom nk_{\!q},\end{aligned}
+\]
+since $n-1+\frac{(k-1)(k-2)}2-\frac{k(k-1)}2=n-k$, and by the second recursion of Proposition~\ref{prop:qpascal}.
+\end{proof}
+
+\begin{beauty}
+At $q=1$ everything collapses to the binomial theorem and to subsets of a set. Jacques Tits joked in 1957 that a set is a vector
+space over ``the field with one element'', and that combinatorics is linear algebra at $q=1$. The joke became a research
+programme, still alive: a geometry over $\mathbb F_1$ in which, some hope, the Riemann hypothesis might become as provable as it is
+for curves over finite fields.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:binomdouble}
+Prove by double counting, without computation: (a) $\sum_kk\binom nk=n2^{n-1}$; (b) $\sum_k\binom nk^2=\binom{2n}n$; (c) $\sum_{k=r}^n\binom kr=\binom{n+1}{r+1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:partitionlattice}
+The partitions of $\{1,\dots,n\}$ into blocks, ordered by refinement (a partition is below another if each of its blocks lies in a
+block of the other), form the \emph{partition lattice} $\Pi_n$, with bottom $\hat0$ (all singletons) and top $\hat1$ (one block). Show that the
+interval $[\hat0,\pi]$ is isomorphic to the product of the $\Pi_{|B|}$ over the blocks $B$ of $\pi$, compute $\mu(\hat0,\hat1)$ for $\Pi_3$ and $\Pi_4$, and guess
+the general formula.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lyndon}
+Order words over $\{0,\dots,q-1\}$ lexicographically. A \emph{Lyndon word} is a non-empty word strictly smaller than all its proper
+rotations. Show that the number of Lyndon words of length $n$ is $\frac1n\sum_{d\mid n}\mu(n/d)\,q^d$, and list the binary Lyndon words of
+lengths $4$ and $6$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:leaf}
+Show that in a uniformly random tree on $\{1,\dots,n\}$, the probability that vertex $1$ is a leaf is $(1-\frac1n)^{n-2}$, and that the expected
+number of leaves is $n(1-\frac1n)^{n-2}\sim\frac ne$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pitman}
+\emph{Pitman's proof.} Count in two ways the sequences of directed edges which, added one by one to the graph with vertices
+$\{1,\dots,n\}$ and no edges, produce a rooted tree with all edges directed away from the root. Deduce Cayley's formula.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fusscatalan}
+A plane tree is \emph{$r$-ary} if every vertex has $0$ or $r$ children. Show that the number of $r$-ary plane trees with $n$ vertices having
+$r$ children is $\frac1{rn+1}\binom{rn+1}n=\frac1{(r-1)n+1}\binom{rn}n$ (the \emph{Fuss--Catalan numbers}). How many ternary trees have $3$ internal
+vertices?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cube}
+Show that the number of ways to colour the faces of a cube with $q$ colours, up to rotation, is $\frac1{24}(q^6+3q^4+12q^3+8q^2)$. How many
+with $2$ colours?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:graphs5}
+Compute the cycle index of $S_5$ acting on the $10$ pairs of $\{1,\dots,5\}$, and deduce that there are $34$ graphs on $5$ unlabelled
+vertices.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rootedrec}
+From $T(x)=x\prod_n(1-x^n)^{-t_n}$, derive the recursion $nt_{n+1}=\sum_{m=1}^ns_m\,t_{n+1-m}$, where $s_m=\sum_{d\mid m}d\,t_d$, and compute $t_1,\dots,t_7$.
+Draw the four rooted trees with $4$ vertices.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rref}
+Every subspace $V$ of dimension $k$ of $\mathbb F_q^n$ is the row space of exactly one $k\times n$ matrix in \emph{reduced row echelon form}: each row
+starts with a $1$ (its pivot), the pivots move strictly to the right from row to row, and the pivot columns are zero outside the
+pivots. Prove this, and deduce a second proof of Theorem~\ref{thm:qinv} when $q$ is a prime power, then for every $q$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:glprob}
+Show that a random $n\times n$ matrix over $\mathbb F_2$, with independent uniform entries, is invertible with probability $\prod_{i=1}^n(1-2^{-i})$, and
+that this decreases to a limit between $\frac14$ and $\frac38$. (It is $0.2887\ldots$)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:menage}
+\emph{The m\'enage problem} (Lucas, 1891). In how many ways can $n$ couples sit at a round table, men and women alternating, with
+nobody next to their partner? Seat the women first; show that the men can then be seated in
+\[
+M_n=\sum_{k=0}^n(-1)^k\,\frac{2n}{2n-k}\binom{2n-k}k\,(n-k)!
+\]
+ways (Touchard, 1934), and check $M_3=1$ and $M_4=2$. You may first show that a cycle of $m$ points has $\frac m{m-k}\binom{m-k}k$ sets of $k$
+points with no two adjacent ($0\le k<m$).
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:binomdouble}
+(a) Committees with a chair. (b) Choose $n$ people from $n$ women and $n$ men. (c) Sort the $(r+1)$-subsets of $\{1,\dots,n+1\}$ by their largest
+element.
+\end{hint}
+\begin{hint}{ex:partitionlattice}
+A partition below $\pi$ is a choice of a partition of each block of $\pi$. Then use Proposition~\ref{prop:mobiusproduct}.
+\end{hint}
+\begin{hint}{ex:lyndon}
+In each class of $n$ rotations of a primitive word, take the smallest. Is a Lyndon word primitive?
+\end{hint}
+\begin{hint}{ex:leaf}
+Lemma~\ref{lem:pruferdeg}: vertex $1$ is a leaf if and only if its letter is absent from the code.
+\end{hint}
+\begin{hint}{ex:pitman}
+When the current forest has $k$ rooted trees, which edges can be added?
+\end{hint}
+\begin{hint}{ex:fusscatalan}
+Proposition~\ref{prop:lukasiewicz}, with numbers of children in $\{0,r\}$.
+\end{hint}
+\begin{hint}{ex:cube}
+The rotations: the identity, $\pm90^\circ$ and $180^\circ$ about the $3$ axes through opposite faces, $\pm120^\circ$ about the $4$ diagonals, $180^\circ$ about the
+$6$ axes through midpoints of opposite edges. Count the cycles of each on the faces.
+\end{hint}
+\begin{hint}{ex:graphs5}
+There are seven cycle types in $S_5$. For each, follow the pairs as in the text.
+\end{hint}
+\begin{hint}{ex:rootedrec}
+Take the logarithmic derivative: $x\frac{T'(x)}{T(x)}=1+\sum_nt_n\frac{nx^n}{1-x^n}$.
+\end{hint}
+\begin{hint}{ex:rref}
+The pivot columns of $V$ are the positions $j$ at which some vector of $V$ has its first non-zero coordinate. The free entries of an
+echelon matrix are inversions of the word marking the pivot columns.
+\end{hint}
+\begin{hint}{ex:glprob}
+Theorem~\ref{thm:subspaces}, and $\prod(1-a_i)\ge1-\sum a_i$ for $a_i\in[0,1]$.
+\end{hint}
+\begin{hint}{ex:menage}
+Man $i$ may not sit in two of the $n$ gaps. Use inclusion--exclusion over sets of forbidden (man, gap) pairs, and note which of them
+can occur together.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:binomdouble}
+\idea Each sum counts a set of structures sorted by a parameter; find the structures, and count them once without sorting.
+\writeup (a) Count committees with a chair chosen from $n$ people. Choosing the committee first, of size $k$, then the chair: $\sum_kk\binom nk$.
+Choosing the chair first, then any subset of the other $n-1$: $n2^{n-1}$. (b) Choose $n$ people from $n$ women and $n$ men: $\binom{2n}n$ ways. Sorting
+by the number $k$ of women chosen, there are $\binom nk\binom n{n-k}=\binom nk^2$ choices with $k$ women. (c) An $(r+1)$-subset of $\{1,\dots,n+1\}$ with largest element
+$k+1$ consists of $k+1$ and an $r$-subset of $\{1,\dots,k\}$: $\binom kr$ of them, for $r\le k\le n$.
+\end{solution}
+
+\begin{solution}{ex:partitionlattice}
+\idea A refinement of $\pi$ refines each block independently, so the interval below $\pi$ is a product, and $\mu$ is multiplicative.
+\writeup If $\pi$ has blocks $B_1,\dots,B_r$, a partition $\sigma\le\pi$ is the same thing as a partition $\sigma_i$ of each $B_i$, and $\sigma\le\sigma'\le\pi$ if and only if
+$\sigma_i\le\sigma'_i$ for all $i$: so $[\hat0,\pi]\cong\Pi_{|B_1|}\times\dots\times\Pi_{|B_r|}$, and by Proposition~\ref{prop:mobiusproduct} $\mu(\hat0,\pi)=\prod_i\mu_{|B_i|}$, where
+$\mu_m=\mu_{\Pi_m}(\hat0,\hat1)$ and $\mu_1=1$. In $\Pi_2$, $\mu_2=-1$. In $\Pi_3$, the three partitions of type $2+1$ have $\mu=-1$, so $\mu_3=-(1-3)=2$.
+In $\Pi_4$, below $\hat1$ there are: $\hat0$ ($\mu=1$), six partitions of type $2+1+1$ ($\mu=-1$), three of type $2+2$ ($\mu=\mu_2^2=1$) and four of type
+$3+1$ ($\mu=\mu_3=2$). So $\mu_4=-(1-6+3+8)=-6$. The pattern $1,-1,2,-6$ suggests $\mu_n=(-1)^{n-1}(n-1)!$, which is true (Stanley,
+\emph{Enumerative Combinatorics}, Volume~1, Example~3.10.4); the notebook checks it up to $n=6$.
+\end{solution}
+
+\begin{solution}{ex:lyndon}
+\idea Group primitive words into their rotation classes and pick the least element of each.
+\writeup A rotation of a power $u^m$ is a power of a rotation of $u$, so rotations of primitive words are primitive, and a primitive
+word $w$ of length $n$ has $n$ distinct rotations (the rotations fixing $w$ form the trivial subgroup, Lemma~\ref{lem:primitive}). So the
+$M(n)$ primitive words split into $M(n)/n$ classes of $n$ distinct words, and each class has a unique smallest element, which is
+strictly smaller than its other rotations: a Lyndon word. Conversely a Lyndon word is primitive, since for $w=u^m$ with $m\ge2$ the
+rotation by $|u|$ equals $w$; and it is the smallest of its class. So Lyndon words of length $n$ correspond to classes, and their number
+is $\frac{M(n)}n=\frac1n\sum_{d\mid n}\mu(n/d)q^d$. For $q=2$: length $4$ gives $\frac{16-4}4=3$, namely $0001$, $0011$, $0111$; length $6$ gives $\frac{64-8-4+2}6=9$, namely
+$000001$, $000011$, $000101$, $000111$, $001011$, $001101$, $001111$, $010111$, $011111$.
+\end{solution}
+
+\begin{solution}{ex:leaf}
+\idea Through the Pr\"ufer bijection, a uniform tree is a uniform word, and ``$1$ is a leaf'' becomes ``the letter $1$ is missing''.
+\writeup By Lemma~\ref{lem:pruferdeg}, $1$ is a leaf if and only if $1$ does not occur in the code. The codes avoiding $1$ are the $(n-1)^{n-2}$ words
+on the other letters, so the probability is $\frac{(n-1)^{n-2}}{n^{n-2}}=(1-\frac1n)^{n-2}$. By symmetry (or linearity of expectation, summing
+indicators over the $n$ vertices), the expected number of leaves is $n(1-\frac1n)^{n-2}$, and $(1-\frac1n)^{n-2}=\exp((n-2)\ln(1-\frac1n))\to e^{-1}$.
+\end{solution}
+
+\begin{solution}{ex:pitman}
+\idea Build the tree edge by edge: the result is a rooted tree with an ordering of its edges, or, counted forwards, a sequence
+of choices whose number does not depend on the earlier ones.
+\writeup Call such a sequence of $n-1$ edges a \emph{building sequence}. First count: choose a tree ($T_n$ ways, $T_n$ the number of trees on
+$\{1,\dots,n\}$), a root ($n$ ways, which directs the edges away from it), and an order of its $n-1$ edges: $T_n\,n\,(n-1)!$ building sequences.
+Second count: after $n-k$ edges have been added, the graph is a forest of $k$ rooted trees with edges directed away from the roots
+(every vertex has at most one incoming edge, and there are no cycles). The edge $u\to v$ can be added, keeping this property, if and
+only if $v$ is the root of a tree not containing $u$: $n$ choices of $u$ and then $k-1$ choices of $v$. So there are $\prod_{k=2}^nn(k-1)=n^{n-1}(n-1)!$
+building sequences. Equating, $T_n=n^{n-2}$.
+\end{solution}
+
+\begin{solution}{ex:fusscatalan}
+\idea An $r$-ary tree is determined by its \L ukasiewicz word, a word in the letters $0$ and $r$; count the arrangements and divide by
+the length.
+\writeup An $r$-ary tree with $n$ vertices having $r$ children has $rn$ children in all, hence $rn+1$ vertices, of which $rn+1-n$ have $0$ children.
+By Proposition~\ref{prop:lukasiewicz}, the number of such plane trees is $\frac1{rn+1}$ times the number of arrangements of $n$ letters $r$ and
+$(r-1)n+1$ letters $0$, that is $\frac1{rn+1}\binom{rn+1}n$. And $\frac1{rn+1}\binom{rn+1}n=\frac{(rn)!}{n!\,((r-1)n+1)!}=\frac1{(r-1)n+1}\binom{rn}n$. For $r=2$ these are the Catalan
+numbers (binary trees); for $r=3$, $n=3$: $\frac1{10}\binom{10}3=12$ ternary trees.
+\end{solution}
+
+\begin{solution}{ex:cube}
+\idea P\'olya with the faces as slots: list the rotations by type and count their cycles on the six faces.
+\writeup The identity has $6$ cycles. A rotation by $\pm90^\circ$ about a face axis fixes the two faces on the axis and cycles the four others:
+$3$ cycles, $6$ such rotations. A rotation by $180^\circ$ about a face axis fixes two faces and swaps the others in pairs: $4$ cycles, $3$
+rotations. A rotation by $\pm120^\circ$ about a diagonal cycles the three faces at each end: $2$ cycles, $8$ rotations. A rotation by $180^\circ$
+about an edge axis swaps the faces in three pairs: $3$ cycles, $6$ rotations. That is $1+6+3+8+6=24$ rotations, and Burnside gives
+$\frac1{24}(q^6+6q^3+3q^4+8q^2+6q^3)=\frac1{24}(q^6+3q^4+12q^3+8q^2)$. For $q=2$: $\frac{64+48+96+32}{24}=10$.
+\end{solution}
+
+\begin{solution}{ex:graphs5}
+\idea Follow the pairs under one permutation of each cycle type; a pair inside a cycle of $\sigma$ or across two cycles moves along a
+predictable orbit.
+\writeup The classes of $S_5$, with their sizes and the cycles induced on the $10$ pairs:
+identity ($1$): $t_1^{10}$; $(12)$ ($10$): $\{1,2\}$ and the $3$ pairs inside $\{3,4,5\}$ are fixed, $\{1,j\}\leftrightarrow\{2,j\}$ for $j=3,4,5$: $t_1^4t_2^3$;
+$(12)(34)$ ($15$): $\{1,2\},\{3,4\}$ fixed, $\{1,3\}\leftrightarrow\{2,4\}$, $\{1,4\}\leftrightarrow\{2,3\}$, $\{1,5\}\leftrightarrow\{2,5\}$, $\{3,5\}\leftrightarrow\{4,5\}$: $t_1^2t_2^4$;
+$(123)$ ($20$): the pairs inside $\{1,2,3\}$, the pairs $\{i,4\}$ and the pairs $\{i,5\}$ form three $3$-cycles, $\{4,5\}$ is fixed: $t_1t_3^3$;
+$(123)(45)$ ($20$): a $3$-cycle inside $\{1,2,3\}$, $\{4,5\}$ fixed, and the six pairs $\{i,j\}$ with $i\le3<j$ form one $6$-cycle: $t_1t_3t_6$;
+$(1234)$ ($30$): the four sides of the square $1234$ form a $4$-cycle, the two diagonals a $2$-cycle, the pairs $\{i,5\}$ a $4$-cycle: $t_2t_4^2$;
+$(12345)$ ($24$): two $5$-cycles (sides and diagonals of the pentagon): $t_5^2$. The sizes add up to $120$. With $t_j=2$:
+\[
+\begin{aligned}{}&\tfrac1{120}\big(2^{10}+10\cdot2^7+15\cdot2^6+20\cdot2^4\eqbr{}+20\cdot2^3+30\cdot2^3+24\cdot2^2\big)\eqbr=\tfrac{1024+1280+960+320+160+240+96}{120}\eqbr=\tfrac{4080}{120}=34.\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:rootedrec}
+\idea A product becomes a sum under the logarithmic derivative, and each factor $(1-x^n)^{-t_n}$ contributes a geometric series.
+\writeup The logarithmic derivative $F\mapsto xF'/F$ turns products into sums, by the product rule (for formal power series with
+non-zero constant term, Chapter~4; each coefficient involves finitely many factors). For $F=x$ it is $1$; for $F=(1-x^n)^{-t_n}$ it is
+$t_n\frac{nx^n}{1-x^n}=t_n\sum_{j\ge1}nx^{nj}$. Collecting the terms in $x^m$: $\frac{xT'}T=1+\sum_{m\ge1}s_mx^m$. Multiply by $T$ and compare the coefficients of $x^{n+1}$:
+$(n+1)t_{n+1}=t_{n+1}+\sum_{m=1}^ns_mt_{n+1-m}$, the recursion. With $t_1=1$: $s_1=1$, $t_2=1$; $s_2=3$, $2t_3=1+3$, $t_3=2$; $s_3=7$, $3t_4=2+3+7$, $t_4=4$;
+$s_4=19$, $4t_5=4+6+7+19$, $t_5=9$; $s_5=46$, $5t_6=9+12+14+19+46$, $t_6=20$; $s_6=129$, $6t_7=20+27+28+38+46+129$, $t_7=48$. The four rooted trees
+with $4$ vertices: a path rooted at an end; a root with one child having two children; a root with two children, one of which has
+a child; a root with three children.
+\end{solution}
+
+\begin{solution}{ex:rref}
+\idea The pivot columns of a subspace can be read without choosing a basis; once they are known, the echelon rows are forced.
+\writeup Let $J$ be the set of positions $j$ such that some vector of $V$ has its first non-zero coordinate at $j$. For each $j\in J$ choose such a
+vector; these vectors are independent (their leading positions differ), and a vector of $V$ not in their span could be reduced,
+by subtracting multiples of them, to a non-zero vector of $V$ whose leading position is not in $J$, absurd. So $|J|=k$. Reducing
+each chosen vector by the others (Gaussian elimination) gives a basis $u_j$, $j\in J$, with $u_j$ leading at $j$ with coefficient $1$ and zero
+at the other positions of $J$: the rows of a reduced echelon matrix. It is unique: if $u'_j$ is another such basis, $u_j-u'_j\in V$ vanishes
+at every position of $J$, so its leading position is not in $J$, and $u_j=u'_j$. Conversely the row space of a reduced echelon matrix has
+dimension $k$. So the subspaces correspond to the reduced echelon matrices. Encode the pivot columns $J$ by the word $w$ with $w_j=1$ for
+$j\in J$. The entries of row $i$ that are not forced are those in the non-pivot columns to the right of its pivot: summing over rows,
+there are as many free entries as pairs (a $1$ of $w$, a later $0$ of $w$), that is, $\operatorname{inv}(w)$. So the number of subspaces is $\sum_wq^{\operatorname{inv}(w)}$, which with
+Theorem~\ref{thm:subspaces} proves Theorem~\ref{thm:qinv} for all prime powers $q$. Two polynomials that agree at infinitely many
+points are equal (Tome~0, Chapter~3), so the identity holds for every $q$.
+\end{solution}
+
+\begin{solution}{ex:glprob}
+\idea Divide the number of invertible matrices by the number of all matrices; the product converges because its factors approach $1$
+geometrically fast.
+\writeup By Theorem~\ref{thm:subspaces}, the probability is $\frac{\prod_{i=0}^{n-1}(2^n-2^i)}{2^{n^2}}=\prod_{i=0}^{n-1}(1-2^{i-n})=\prod_{i=1}^n(1-2^{-i})$. Each new factor is $<1$, so the
+products decrease to a limit $L$. Upper bound: $L\le(1-\frac12)(1-\frac14)=\frac38$. Lower bound: $\prod(1-a_i)\ge1-\sum a_i$ for $a_i\in[0,1]$, by induction, since
+$(1-s)(1-a)\ge1-s-a$. So $L\ge\frac12(1-\sum_{i\ge2}2^{-i})=\frac12\cdot\frac12=\frac14$. Random linear codes and random linear hashing (Tome~C4) rely on such numbers:
+a random square binary matrix is singular more often than not.
+\end{solution}
+
+\begin{solution}{ex:menage}
+\idea Inclusion--exclusion over forbidden seats; the forbidden (man, gap) pairs form a cycle in which only non-adjacent pairs can
+occur together, so the count reduces to independent sets on a cycle.
+\writeup \emph{Cycles.} On a path of $p$ points, sets of $k$ points with no two adjacent number $\binom{p-k+1}k$: remove one point after each chosen
+point but the last, getting any $k$-subset of $p-k+1$ points. On a cycle of $m$ points $1,\dots,m$: the sets avoiding point $1$ live on a
+path of $m-1$ points, $\binom{m-k}k$ of them; the sets containing $1$ avoid $2$ and $m$, and the rest lives on a path of $m-3$ points, $\binom{m-k-1}{k-1}$ of them.
+The total is $\binom{m-k}k+\frac k{m-k}\binom{m-k}k=\frac m{m-k}\binom{m-k}k$.
+
+\emph{M\'enage.} With the women seated, the men go in the $n$ gaps, gap $j$ lying between women $j$ and $j+1$ (mod $n$), and man $i$ must avoid
+gaps $i-1$ and $i$. A seating is a permutation $\sigma$ (man $i$ to gap $\sigma(i)$) avoiding the $2n$ forbidden cells $(i,i-1),(i,i)$. List them cyclically:
+$(1,n),(1,1),(2,1),(2,2),\dots,(n,n-1),(n,n)$; two of them share a man or a gap exactly when they are consecutive in this cyclic list (for
+$n\ge3$; check $n\le2$ by hand). By inclusion--exclusion, the number of permutations using no forbidden cell is $\sum_S(-1)^{|S|}N(S)$ over
+sets $S$ of forbidden cells, where $N(S)$ is the number of permutations using all cells of $S$. $N(S)=0$ if two cells of $S$ share a man or a
+gap, and $N(S)=(n-|S|)!$ otherwise. The sets of the second kind with $|S|=k$ are the sets of $k$ pairwise non-adjacent points on a cycle of
+$2n$ points: $\frac{2n}{2n-k}\binom{2n-k}k$ (for $k=n$ it is $2$, the two alternate halves). This gives Touchard's formula. For $n=3$:
+$6-6\cdot2+9\cdot1-2\cdot1=1$. For $n=4$: $24-8\cdot6+20\cdot2-16\cdot1+2\cdot1=2$. The answer to Lucas's question is $2\cdot n!\cdot M_n$ (seat the women in one of
+$2\,n!$ ways: choose the alternate seats and the order of the women).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item A.~Cayley, \emph{On the theory of the analytical forms called trees}, Philosophical Magazine 13 (1857), 172--176;
+\emph{On the analytical forms called trees, with application to the theory of chemical combinations}, Report of the British
+Association for the Advancement of Science (1875), 257--305; \emph{A theorem on trees}, Quarterly Journal of Pure and Applied
+Mathematics 23 (1889), 376--378.
+\item C.~W.~Borchardt, \emph{\"Uber eine der Interpolation entsprechende Darstellung der Eliminations-Resultante}, Journal f\"ur
+die reine und angewandte Mathematik 57 (1860), 111--121.
+\item H.~Pr\"ufer, \emph{Neuer Beweis eines Satzes \"uber Permutationen}, Archiv der Mathematik und Physik 27 (1918), 142--144.
+\item J.~Pitman, \emph{Coalescent random forests}, Journal of Combinatorial Theory A 85 (1999), 165--193. A research paper
+whose first pages contain the proof of Exercise~\ref{ex:pitman}, then use the same building process to study random forests
+and the coalescence of clusters, a model of physics and population genetics.
+\item G.-C.~Rota, \emph{On the foundations of combinatorial theory I. Theory of M\"obius functions}, Zeitschrift f\"ur
+Wahrscheinlichkeitstheorie 2 (1964), 340--368; P.~Hall, \emph{The Eulerian functions of a group}, Quarterly Journal of
+Mathematics 7 (1936), 134--151.
+\item A.~Dvoretzky and Th.~Motzkin, \emph{A problem of arrangements}, Duke Mathematical Journal 14 (1947), 305--313;
+G.~N.~Raney, \emph{Functional composition patterns and power series reversion}, Transactions of the AMS 94 (1960), 441--451.
+\item C.~Jordan, \emph{Sur les assemblages de lignes}, Journal f\"ur die reine und angewandte Mathematik 70 (1869), 185--190.
+\item G.~P\'olya, \emph{Kombinatorische Anzahlbestimmungen f\"ur Gruppen, Graphen und chemische Verbindungen}, Acta
+Mathematica 68 (1937), 145--254; English translation with commentary by R.~C.~Read, \emph{Combinatorial Enumeration of Groups,
+Graphs, and Chemical Compounds}, Springer, 1987.
+\item H.~R.~Henze and C.~M.~Blair, \emph{The number of structurally isomeric alcohols of the methanol series}, Journal of the
+American Chemical Society 53 (1931), 3077--3085.
+\item J.~Touchard, \emph{Sur un probl\`eme de permutations}, Comptes Rendus de l'Acad\'emie des Sciences 198 (1934), 631--633.
+\item R.~P.~Stanley, \emph{Enumerative Combinatorics}, Volume~1, 2nd ed., Cambridge University Press, 2012 (M\"obius functions,
+$q$-analogues), and \emph{Catalan Numbers}, Cambridge University Press, 2015.
+\item F.~Harary and E.~M.~Palmer, \emph{Graphical Enumeration}, Academic Press, 1973. Counting graphs and trees with P\'olya's
+theorem.
+\item M.~Lothaire, \emph{Combinatorics on Words}, Addison-Wesley, 1983. Primitive words, Lyndon words and their factorisations.
+\item M.~Aigner and G.~M.~Ziegler, \emph{Proofs from THE BOOK}, 6th ed., Springer, 2018. Four proofs of Cayley's formula.
+\end{itemize}
