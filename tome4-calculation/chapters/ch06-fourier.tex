@@ -1,0 +1,544 @@
+\chapter{Fourier Series}
+
+\begin{center}\itshape
+Profound study of nature is the most fertile source of mathematical discoveries.\\
+\upshape --- Joseph Fourier, \emph{Th\'eorie analytique de la chaleur}, 1822
+\end{center}
+
+In 1807 Fourier claimed that every function on an interval, even one given by different formulas on different pieces,
+is a sum of sines and cosines. Lagrange objected, and he had a point: Fourier could not say in which sense the sum
+converges, and the question kept analysts busy for a century. It forced the modern definitions of function, of
+integral and of uniform convergence, and it led Cantor to set theory.
+
+This chapter answers the question in the three senses that matter for computing. Pointwise, the series of a piecewise
+$C^1$ function converges to the function, or to the average of its two limits at a jump (Dirichlet). Uniformly, the
+averages of the partial sums of a continuous function converge to it (Fej\'er), even though the partial sums themselves
+may diverge. In mean square, the series of any piecewise continuous function converges to it, and the energy of the
+function is the sum of the energies of its harmonics (Parseval). Along the way we meet the Gibbs overshoot, two more
+proofs of $\zeta(2)=\frac{\pi^2}6$, Weyl's theorem on the equidistribution of $n\alpha$ modulo $1$, Fourier inversion on $\Z^d$
+promised in Tome~3, and Hurwitz's proof that the circle encloses the largest area for its length.
+
+\begin{think}
+The functions $\sin x,\sin2x,\sin3x,\dots$ are all smooth. Can a sum of them have a jump? And if it has one, what value do
+you expect the series to take at the jump?
+\end{think}
+
+\section{Fourier coefficients and best approximation}
+
+Throughout, functions are $2\pi$-periodic from $\R$ to $\C$. Such a function is \emph{piecewise continuous} if $[-\pi,\pi]$ splits
+into finitely many intervals on whose interiors $f$ is continuous with finite limits at both ends; its integral is the
+sum of the integrals over the pieces. It is \emph{piecewise $C^1$} if moreover on each piece $f$ coincides with a $C^1$ function
+on the closed interval. Since $f$ is periodic, its integral over any interval of length $2\pi$ is the same (cut the interval
+at a multiple of $\pi$ and translate one part by $2\pi$).
+
+For such functions let
+\[
+\begin{gathered}\langle f,g\rangle=\frac1{2\pi}\int_{-\pi}^\pi f(t)\overline{g(t)}\dd t,\qq\|f\|_2=\sqrt{\langle f,f\rangle},\end{gathered}
+\]
+and let $e_n(t)=e^{int}$ for $n\in\Z$. Since $\int_{-\pi}^\pi e^{ikt}\dd t=0$ for every integer $k\ne0$, the $e_n$ are \emph{orthonormal}:
+$\langle e_m,e_n\rangle$ is $1$ if $m=n$ and $0$ otherwise. The form $\langle\cdot,\cdot\rangle$ is linear in its first argument, Hermitian, and
+$\langle f,f\rangle\ge0$, so Cauchy--Schwarz holds with the proof of Tome~0, Chapter~4: $|\langle f,g\rangle|\le\|f\|_2\|g\|_2$. (A piecewise continuous
+$f$ can have $\|f\|_2=0$ without vanishing, by changing finitely many values; this does no harm below.)
+
+\begin{definition}
+The \emph{Fourier coefficients} of $f$ are $c_n(f)=\langle f,e_n\rangle=\frac1{2\pi}\int_{-\pi}^\pi f(t)e^{-int}\dd t$, and its \emph{partial Fourier sums}
+are $S_Nf=\sum_{|n|\le N}c_n(f)e_n$. A \emph{trigonometric polynomial of degree at most $N$} is a combination of $e_{-N},\dots,e_N$.
+\end{definition}
+
+For real $f$, grouping $n$ with $-n$ gives the real form $S_Nf(x)=\frac{a_0}2+\sum_{n=1}^N(a_n\cos nx+b_n\sin nx)$, with
+$a_n=\frac1\pi\int f(t)\cos nt\dd t$ and $b_n=\frac1\pi\int f(t)\sin nt\dd t$.
+
+\begin{proposition}[best approximation]\label{prop:bestapprox}
+Let $f$ be piecewise continuous and $P$ a trigonometric polynomial of degree at most $N$. Then
+\[
+\|f-P\|_2^2=\|f-S_Nf\|_2^2+\|S_Nf-P\|_2^2.
+\]
+In particular $S_Nf$ is the trigonometric polynomial of degree at most $N$ closest to $f$, and
+$\|f-S_Nf\|_2^2=\|f\|_2^2-\sum_{|n|\le N}|c_n(f)|^2$.
+\end{proposition}
+\begin{proof}
+For $|n|\le N$, $\langle f-S_Nf,e_n\rangle=c_n(f)-c_n(f)=0$ by orthonormality, so $u=f-S_Nf$ is orthogonal to $v=S_Nf-P$, which is a
+combination of these $e_n$. Then $\|u+v\|_2^2=\|u\|_2^2+\|v\|_2^2+2\operatorname{Re}\langle u,v\rangle=\|u\|_2^2+\|v\|_2^2$. With $P=0$ this reads
+$\|f\|_2^2=\|f-S_Nf\|_2^2+\|S_Nf\|_2^2$, and $\|S_Nf\|_2^2=\sum_{|n|\le N}|c_n(f)|^2$ by orthonormality.
+\end{proof}
+
+\begin{corollary}[Bessel's inequality and Riemann--Lebesgue]\label{cor:bessel}
+For $f$ piecewise continuous, $\sum_{n\in\Z}|c_n(f)|^2\le\|f\|_2^2$. Hence $c_n(f)\to0$ as $|n|\to\infty$, and also
+\[
+\int_{-\pi}^\pi f(t)\sin\Bigl(N+\frac12\Bigr)t\dd t\xrightarrow[N\to\infty]{}0.
+\]
+\end{corollary}
+\begin{proof}
+The partial sums of $\sum|c_n|^2$ are at most $\|f\|_2^2$ by Proposition~\ref{prop:bestapprox}; the terms of a convergent series tend
+to $0$. For the last claim, $\sin(N+\frac12)t=\sin Nt\cos\frac t2+\cos Nt\sin\frac t2$, and $\sin Nt$, $\cos Nt$ are combinations of $e_{\pm N}$,
+so the integral is a combination of $c_{\pm N}(f\cos\frac t2)$ and $c_{\pm N}(f\sin\frac t2)$ with bounded coefficients.
+\end{proof}
+
+This completes the Riemann--Lebesgue lemma of Tome~0, Exercise~6.6, which assumed $f$ of class $C^1$: here $f$ is only
+piecewise continuous, and the proof is geometry (Pythagoras in a space of functions) rather than an integration by parts.
+
+\section{Dirichlet's theorem}
+
+\begin{lemma}[Dirichlet kernel]\label{lem:dirichletkernel}
+For every $N\ge0$ and every $x$, $S_Nf(x)=\frac1{2\pi}\int_{-\pi}^\pi f(x+u)D_N(u)\dd u$, where
+\[
+D_N(u)=\sum_{|n|\le N}e^{inu}=\frac{\sin(N+\frac12)u}{\sin\frac u2}
+\]
+for $u\notin2\pi\Z$, and $D_N(0)=2N+1$. Moreover $D_N$ is even and $\frac1{2\pi}\int_0^\pi D_N(u)\dd u=\frac12$.
+\end{lemma}
+\begin{proof}
+By definition,
+\[
+\begin{aligned}S_Nf(x)&=\frac1{2\pi}\int_{-\pi}^\pi f(t)\sum_{|n|\le N}e^{in(x-t)}\dd t\eqbr=\frac1{2\pi}\int_{-\pi}^\pi f(t)D_N(t-x)\dd t,\end{aligned}
+\]
+using that $D_N$ is even; substitute $t=x+u$ and use periodicity. The closed form is a geometric sum:
+$D_N(u)\bigl(e^{iu/2}-e^{-iu/2}\bigr)=e^{i(N+\frac12)u}-e^{-i(N+\frac12)u}$. Finally $\frac1{2\pi}\int_{-\pi}^\pi D_N=1$, since only the term $n=0$
+contributes, and the two halves are equal because $D_N$ is even.
+\end{proof}
+
+\begin{theorem}[Dirichlet, 1829]\label{thm:dirichletfourier}
+Let $f$ be piecewise $C^1$. For every $x$,
+\[
+S_Nf(x)\xrightarrow[N\to\infty]{}\frac{f(x^+)+f(x^-)}2.
+\]
+In particular $S_Nf(x)\to f(x)$ wherever $f$ is continuous.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:dirichletkernel}, writing $\frac12f(x^\pm)=\frac1{2\pi}\int f(x^\pm)D_N$ over $[0,\pi]$ and $[-\pi,0]$ respectively,
+\[
+\begin{aligned}S_Nf(x)&-\frac{f(x^+)+f(x^-)}2\eqbr=\frac1{2\pi}\int_{-\pi}^\pi G(u)\sin\Bigl(N+\frac12\Bigr)u\dd u,\end{aligned}
+\]
+where $G(u)=\frac{f(x+u)-f(x^+)}{\sin(u/2)}$ for $0<u\le\pi$ and $G(u)=\frac{f(x+u)-f(x^-)}{\sin(u/2)}$ for $-\pi\le u<0$. Away from $0$, $G$ is
+piecewise continuous. Near $0^+$, $f$ coincides on some $\left]x,x+\eta\right]$ with a $C^1$ function $h$ on $[x,x+\eta]$ with $h(x)=f(x^+)$, so
+\[
+G(u)=\frac{h(x+u)-h(x)}u\cdot\frac u{\sin(u/2)},
+\]
+which tends to $2h'(x)$ as $u\to0^+$, and similarly at $0^-$. So $G$ is piecewise continuous on $[-\pi,\pi]$, and the integral tends to $0$ by Corollary~\ref{cor:bessel}.
+\end{proof}
+
+The proof shows that convergence at $x$ depends only on the behaviour of $f$ near $x$ (the \emph{localisation principle}):
+far from $u=0$ the factor $\sin(N+\frac12)u$ oscillates so fast that it averages everything out.
+
+\begin{example}[the sawtooth]\label{ex:sawtooth}
+Let $f(x)=\frac{\pi-x}2$ on $\left]0,2\pi\right[$, extended $2\pi$-periodically, with $f(0)=0$. Then $c_0(f)=0$ and, integrating by parts,
+$c_n(f)=-\frac i{2n}$ for $n\ne0$, so $S_Nf(x)=\sum_{n=1}^N\frac{\sin nx}n$. The function is piecewise $C^1$, and $\frac{f(0^+)+f(0^-)}2=\frac{\frac\pi2-\frac\pi2}2=0$,
+so Theorem~\ref{thm:dirichletfourier} gives, for every real $x$,
+\[
+\sum_{n\ge1}\frac{\sin nx}n=\frac{\pi-x}2\qquad(0<x<2\pi),
+\]
+and the sum is $0$ for $x\in2\pi\Z$.
+This is the sum promised after Theorem~\ref{thm:dirichlet} in Chapter~1. At $x=\frac\pi2$ it is Leibniz's series
+$1-\frac13+\frac15-\cdots=\frac\pi4$ once more.
+\end{example}
+
+\section{Fej\'er's theorem}
+
+Pointwise convergence can fail for continuous functions (Exercise~\ref{ex:divergent}). Fej\'er discovered in 1900, at
+nineteen, that averaging repairs everything.
+
+\begin{definition}
+The \emph{Fej\'er means} of $f$ are $\sigma_Nf=\frac1N\sum_{k=0}^{N-1}S_kf$ for $N\ge1$, trigonometric polynomials of degree at most $N-1$.
+\end{definition}
+
+\begin{lemma}[Fej\'er kernel]\label{lem:fejerkernel}
+$\sigma_Nf(x)=\frac1{2\pi}\int_{-\pi}^\pi f(x+u)F_N(u)\dd u$, where $F_N=\frac1N\sum_{k<N}D_k$ satisfies, for $u\notin2\pi\Z$,
+\[
+F_N(u)=\frac1N\Bigl(\frac{\sin(Nu/2)}{\sin(u/2)}\Bigr)^2.
+\]
+Hence $F_N\ge0$, $\frac1{2\pi}\int_{-\pi}^\pi F_N=1$, and $F_N(u)\le\frac1{N\sin^2(\delta/2)}$ for $\delta\le|u|\le\pi$.
+\end{lemma}
+\begin{proof}
+The integral formula follows from Lemma~\ref{lem:dirichletkernel} by averaging. Since
+$2\sin(k+\frac12)u\,\sin\frac u2=\cos ku-\cos(k+1)u$, the sum telescopes:
+\[
+\sin\frac u2\sum_{k=0}^{N-1}\sin\Bigl(k+\frac12\Bigr)u=\frac{1-\cos Nu}2=\sin^2\frac{Nu}2.
+\]
+Divide by $N\sin^2\frac u2$. Each $D_k$ has mean $1$, so $F_N$ does too, and $\sin^2\frac u2\ge\sin^2\frac\delta2$ for $\delta\le|u|\le\pi$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-kernels}
+\caption{The Dirichlet kernel $D_8$ (blue) and the Fej\'er kernel $F_8$ (orange) on $[-\pi,\pi]$. Both have mean $1$. The Dirichlet kernel
+takes negative values and its oscillations decay slowly; the Fej\'er kernel is non-negative and concentrates at $0$.}
+\label{fig:kernels}
+\end{figure}
+
+\begin{theorem}[Fej\'er, 1900]\label{thm:fejer}
+If $f$ is continuous and $2\pi$-periodic, then $\sigma_Nf\to f$ uniformly on $\R$.
+\end{theorem}
+\begin{proof}
+$f$ is bounded, say by $M$, and uniformly continuous (it is continuous on $[-2\pi,2\pi]$, and periodic): given $\varepsilon>0$ there is
+$\delta\in\left]0,\pi\right]$ with $|f(x+u)-f(x)|\le\varepsilon$ for all $x$ and $|u|\le\delta$. Since $F_N\ge0$ has mean $1$, with $\Delta(u)=|f(x+u)-f(x)|$,
+\[
+\begin{aligned}|\sigma_Nf(x)-f(x)|&\le\frac1{2\pi}\int_{-\pi}^\pi\Delta(u)F_N(u)\dd u\eqbr\le\varepsilon+\frac{2M}{N\sin^2(\delta/2)},\end{aligned}
+\]
+splitting the integral at $|u|=\delta$. The bound is uniform in $x$, and is at most $2\varepsilon$ for $N$ large.
+\end{proof}
+
+The positivity of $F_N$ is the whole difference with $D_N$: an average with non-negative weights of values close to $f(x)$
+is close to $f(x)$. Three consequences follow at once.
+
+\begin{corollary}\label{cor:fejer}
+\begin{enumerate}[label=(\alph*)]
+\item Trigonometric polynomials are uniformly dense among continuous $2\pi$-periodic functions.
+\item A continuous $2\pi$-periodic function whose Fourier coefficients all vanish is zero.
+\item \emph{Weierstrass's theorem}: every continuous function on $[a,b]$ is a uniform limit of polynomials.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) is Theorem~\ref{thm:fejer}. (b) All $\sigma_Nf$ vanish. (c) By an affine change of variable, take $[a,b]=[-1,1]$. The function
+$g(\theta)=f(\cos\theta)$ is continuous, even and $2\pi$-periodic, so $c_{-n}(g)=c_n(g)$ and $\sigma_Ng(\theta)=\sum_na_n\cos n\theta$ for some coefficients $a_n$.
+From $\cos(n+1)\theta+\cos(n-1)\theta=2\cos\theta\cos n\theta$, by induction $\cos n\theta=T_n(\cos\theta)$ for a polynomial $T_n$ of degree $n$ (the
+Chebyshev polynomials). So $\sup_{[-1,1]}\bigl|f-\sum_na_nT_n\bigr|=\sup_\theta|g-\sigma_Ng|\to0$.
+\end{proof}
+
+\section{Parseval's identity}
+
+\begin{theorem}[Parseval]\label{thm:parseval}
+For $f$ piecewise continuous, $\|f-S_Nf\|_2\to0$ and
+\[
+\frac1{2\pi}\int_{-\pi}^\pi|f(t)|^2\dd t=\sum_{n\in\Z}|c_n(f)|^2.
+\]
+More generally, $\langle f,g\rangle=\sum_nc_n(f)\overline{c_n(g)}$ for $f,g$ piecewise continuous.
+\end{theorem}
+\begin{proof}
+First let $f$ be continuous. $\sigma_{N+1}f$ has degree at most $N$, so by Proposition~\ref{prop:bestapprox}
+\[
+\begin{aligned}\|f-S_Nf\|_2&\le\|f-\sigma_{N+1}f\|_2\eqbr\le\sup|f-\sigma_{N+1}f|\to0.\end{aligned}
+\]
+Next let $f$ be piecewise continuous, bounded by $M$, with $k$ points of discontinuity in a period. Given $\eta>0$ small, let $g$
+equal $f$ except on intervals of length $\eta$ centred at these points, where $g$ is affine and joins the values of $f$ at the
+ends. Then $g$ is continuous, $|f-g|\le2M$, and $\|f-g\|_2^2\le\frac{4M^2k\eta}{2\pi}$, which is small for $\eta$ small. Since $S_Ng$ has
+degree at most $N$,
+\[
+\begin{aligned}\|f-S_Nf\|_2&\le\|f-S_Ng\|_2\eqbr\le\|f-g\|_2+\|g-S_Ng\|_2,\end{aligned}
+\]
+which is small for $N$ large by the first step. The identity follows from $\|f-S_Nf\|_2^2=\|f\|_2^2-\sum_{|n|\le N}|c_n(f)|^2$. For the
+general form, $\langle S_Nf,S_Ng\rangle=\sum_{|n|\le N}c_n(f)\overline{c_n(g)}$ by orthonormality, and by Cauchy--Schwarz
+\[
+\begin{aligned}\bigl|\langle f,g\rangle-\langle S_Nf,S_Ng\rangle\bigr|&\le\|f-S_Nf\|_2\|g\|_2\eqbr+\|S_Nf\|_2\|g-S_Ng\|_2,\end{aligned}
+\]
+which tends to $0$.
+\end{proof}
+
+Parseval's identity is Pythagoras's theorem with infinitely many orthogonal directions: the $e_n$ form a complete
+orthonormal system, and the squared length of $f$ is the sum of the squares of its coordinates. Its physical meaning is
+conservation of energy between a signal and its spectrum. Exercise~\ref{ex:x2} uses it for the fourth and fifth proofs of
+$\zeta(2)=\frac{\pi^2}6$ and for $\zeta(4)=\frac{\pi^4}{90}$. Tome~7 places it in the theory of Hilbert spaces, where $L^2$ is the completion of
+the space of piecewise continuous functions for $\|\cdot\|_2$.
+
+\section{The Gibbs phenomenon}
+
+Let $f$ be the square wave: $f=1$ on $\left]0,\pi\right[$, $f=-1$ on $\left]-\pi,0\right[$, $f(0)=f(\pi)=0$. Then $c_n(f)=\frac2{i\pi n}$ for $n$ odd and $0$ for $n$ even, so
+\[
+S_{2N-1}f(x)=\frac4\pi\sum_{k=1}^N\frac{\sin(2k-1)x}{2k-1}.
+\]
+By Theorem~\ref{thm:dirichletfourier} this tends to $f(x)$ for every $x$. In 1898 the physicist Michelson built a machine that summed
+$80$ terms of such series and was surprised by bumps near the jumps that did not shrink; Gibbs explained them in 1899
+(Wilbraham had found them in 1848).
+
+\begin{theorem}[Gibbs phenomenon]\label{thm:gibbs}
+The first maximum of $S_{2N-1}f$ on $\left]0,\pi\right[$ is at $x_N=\frac\pi{2N}$, and
+\[
+S_{2N-1}f(x_N)\xrightarrow[N\to\infty]{}\frac2\pi\int_0^\pi\frac{\sin t}t\dd t=1.17897\ldots
+\]
+So the partial sums overshoot the jump of height $2$ by about $0.179$, nearly $9\%$ of the jump, however large $N$ is.
+\end{theorem}
+\begin{proof}
+Differentiating and summing the geometric series of $\cos(2k-1)x$ (the sum $2\sin x\sum_{k\le N}\cos(2k-1)x$ telescopes to $\sin2Nx$),
+\[
+\begin{aligned}\frac{\mathrm d}{\mathrm dx}S_{2N-1}f(x)&=\frac4\pi\sum_{k=1}^N\cos(2k-1)x\eqbr=\frac2\pi\cdot\frac{\sin2Nx}{\sin x},\end{aligned}
+\]
+which is positive on $\left]0,\frac\pi{2N}\right[$ and changes sign at $\frac\pi{2N}$: this is the first maximum. With $t_k=\frac{(2k-1)\pi}{2N}$, the midpoints of a
+subdivision of $[0,\pi]$ into $N$ intervals of length $\frac\pi N$,
+\[
+S_{2N-1}f(x_N)=\frac4\pi\sum_{k=1}^N\frac{\sin t_k}{2k-1}=\frac2\pi\cdot\frac\pi N\sum_{k=1}^N\frac{\sin t_k}{t_k},
+\]
+a Riemann sum of the continuous function $\frac{\sin t}t$ on $[0,\pi]$. It tends to $\frac2\pi\operatorname{Si}(\pi)$, with $\operatorname{Si}(\pi)\approx1.85194$ as in
+Figure~\ref{fig:si}.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-gibbs}
+\caption{The square wave and its partial sums $S_5$ (green) and $S_{39}$ (blue). The overshoot near the jump moves closer to it but
+keeps its height, about $1.179$ (dashed).}
+\label{fig:gibbs}
+\end{figure}
+
+\begin{think}
+Theorem~\ref{thm:dirichletfourier} says $S_Nf(x)\to f(x)$ at every point, and Theorem~\ref{thm:gibbs} says $\sup_{]0,\pi[}S_Nf$ does not tend to $1$. Why is there no
+contradiction? What does the Fej\'er mean $\sigma_Nf$ do near the jump?
+\end{think}
+
+The phenomenon is universal: a piecewise $C^1$ function with a jump of size $J$ at $a$ is a continuous piecewise $C^1$
+function plus $\frac J2$ times a translated square wave, and the first part has uniformly convergent Fourier series
+(Exercise~\ref{ex:abs}). So every jump produces an overshoot of $\bigl(\frac1\pi\operatorname{Si}(\pi)-\frac12\bigr)J\approx0.0895J$. Fej\'er means do not overshoot at
+all, since $F_N\ge0$ keeps $\sigma_Nf$ between the bounds of $f$; this is why signal processing uses smooth windows instead of
+sharp truncations of a spectrum.
+
+\section{Equidistribution}
+
+A real sequence $(u_n)$ is \emph{equidistributed modulo $1$} if, for all $0\le a<b\le1$, the proportion of $n\le N$ with fractional part
+$\{u_n\}\in[a,b[$ tends to $b-a$. Fourier analysis on the circle $\R/\Z$ reduces this to exponential sums.
+
+\begin{theorem}[Weyl's criterion, 1916]\label{thm:weyl}
+$(u_n)$ is equidistributed modulo $1$ if and only if, for every integer $h\ne0$,
+\[
+\frac1N\sum_{n=1}^Ne^{2\pi ihu_n}\xrightarrow[N\to\infty]{}0.
+\]
+\end{theorem}
+\begin{proof}
+For a $1$-periodic function $F$ let $A_N(F)=\frac1N\sum_{n\le N}F(u_n)$, and say that $F$ is \emph{good} if $A_N(F)\to\int_0^1F$. Good functions form a
+vector space. Equidistribution says that the $1$-periodic extensions of the indicators $\mathbf 1_{[a,b[}$ are good, and the
+criterion says that the $e^{2\pi ihx}$, $h\ne0$, are good (their integral is $0$); constants are always good.
+
+Suppose that all $\mathbf 1_{[a,b[}$ are good, so all step functions are. A continuous $1$-periodic $F$ is uniformly continuous, so for
+$\varepsilon>0$ there is a step function $s$ with $|F-s|\le\varepsilon$ everywhere; then $\bigl|A_N(F)-\int F\bigr|\le2\varepsilon+\bigl|A_N(s)-\int s\bigr|$, so $F$ is good.
+In particular the real and imaginary parts of $e^{2\pi ihx}$ are good, which gives the criterion.
+
+Conversely, suppose the criterion holds; then every trigonometric polynomial in $e^{2\pi ihx}$ is good. By Fej\'er's theorem
+(applied to $x\mapsto F(\frac x{2\pi})$), every continuous $1$-periodic $F$ is a uniform limit of such polynomials, and the same $2\varepsilon$
+argument shows that $F$ is good. Now fix $[a,b[$ and $\varepsilon>0$. There are continuous $1$-periodic functions $F_-\le\mathbf 1_{[a,b[}\le F_+$ with
+$\int F_+-\int F_-\le4\varepsilon$: take $F_+$ equal to $1$ on $[a,b]$, $0$ at distance more than $\varepsilon$, affine in between, and $F_-$ similarly
+inside $[a,b]$ (or $F_-=0$ if $b-a<2\varepsilon$). Since $A_N$ is monotone,
+\[
+\begin{aligned}\int F_-&\le\liminf A_N(\mathbf 1_{[a,b[})\eqbr\le\limsup A_N(\mathbf 1_{[a,b[})\le\int F_+,\end{aligned}
+\]
+and both bounds are within $4\varepsilon$ of $b-a$.
+\end{proof}
+
+\begin{corollary}[Bohl, Sierpi\'nski, Weyl, 1909--1910]\label{cor:nalpha}
+If $\alpha$ is irrational, $(n\alpha)$ is equidistributed modulo $1$.
+\end{corollary}
+\begin{proof}
+For $h\ne0$, $h\alpha\notin\Z$, so $q=e^{2\pi ih\alpha}\ne1$ and $\bigl|\sum_{n=1}^Nq^n\bigr|=\bigl|\frac{q^{N+1}-q}{q-1}\bigr|\le\frac2{|q-1|}$, a bound independent of $N$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-weyl}
+\caption{The fractional parts $\{n\varphi\}$ for $n=1,\dots,60$, with $\varphi$ the golden ratio, plotted at height $n$. Each new point
+falls into one of the largest gaps left by the previous ones; at every stage the gaps take at most three lengths (the
+three-gap theorem).}
+\label{fig:weyl}
+\end{figure}
+
+For rational $\alpha=\frac pq$ the fractional parts take only $q$ values, so irrationality is necessary. Exercise~\ref{ex:benford} applies
+the corollary to the first digits of the powers of $2$, and Tome~5 uses Weyl sums $\sum e^{2\pi ihf(n)}$ for polynomials $f$.
+
+\section{Several variables and inversion on \texorpdfstring{$\Z^d$}{Zd}}
+
+For $k\in\Z^d$ and $t\in\R^d$ write $k\cdot t=k_1t_1+\cdots+k_dt_d$. Integrals of continuous functions over the cube $Q=[-\pi,\pi]^d$ are iterated
+integrals; by Theorem~\ref{thm:fubinirect} and induction on $d$, the order does not matter. A uniform limit of continuous functions on $Q$
+can be integrated term by term, one variable at a time.
+
+\begin{proposition}[Fourier inversion on $\Z^d$]\label{prop:inversionZd}
+Let $(a_k)_{k\in\Z^d}$ be complex numbers with $\sum_k|a_k|<\infty$, and $\varphi(t)=\sum_ka_ke^{ik\cdot t}$. The series converges uniformly on $\R^d$,
+$\varphi$ is continuous, and for every $k\in\Z^d$
+\[
+a_k=\frac1{(2\pi)^d}\int_Q\varphi(t)e^{-ik\cdot t}\dd t.
+\]
+\end{proposition}
+\begin{proof}
+Enumerate $\Z^d$; the terms are bounded by $|a_k|$, so the series converges uniformly (Weierstrass test, Lemma~\ref{lem:uniform}) and
+in any order to the same sum (Lemma~\ref{lem:packets}), and $\varphi$ is continuous. For $k,l\in\Z^d$, the iterated integral factorises:
+$\int_Qe^{i(l-k)\cdot t}\dd t=\prod_{j=1}^d\int_{-\pi}^\pi e^{i(l_j-k_j)t_j}\dd t_j$, which is $(2\pi)^d$ if $l=k$ and $0$ otherwise. Multiply the series by $e^{-ik\cdot t}$
+(still uniformly convergent) and integrate term by term.
+\end{proof}
+
+\begin{example}[return probabilities of random walks]
+Let $S_n=X_1+\cdots+X_n$ be a random walk on $\Z^d$ with independent steps distributed like $X$, and let $\varphi(t)=E\bigl[e^{it\cdot X}\bigr]=\sum_kP(X=k)e^{ik\cdot t}$
+be its characteristic function. By independence (Tome~3, Chapter~7), $E\bigl[e^{it\cdot S_n}\bigr]=\varphi(t)^n=\sum_kP(S_n=k)e^{ik\cdot t}$, and the
+probabilities are summable, so Proposition~\ref{prop:inversionZd} gives
+\[
+P(S_n=0)=\frac1{(2\pi)^d}\int_Q\varphi(t)^n\dd t.
+\]
+This is the formula used in Tome~3, Chapter~7, to decide when a walk returns to its start infinitely often.
+\end{example}
+
+\section{The isoperimetric inequality}
+
+Among closed curves of given length, which encloses the largest area? The Greeks knew the answer, the circle, but a proof
+had to wait for the nineteenth century, and Hurwitz found the shortest one in 1901, with Parseval's identity.
+
+Let $z(s)=x(s)+iy(s)$, $s\in[0,2\pi]$, be a closed curve of length $L$, of class $C^1$, parametrised proportionally to arc length:
+$|z'(s)|=\frac L{2\pi}$ for all $s$. If it is simple and traversed counterclockwise, the area it encloses is
+\[
+\begin{aligned}A&=\frac12\int_0^{2\pi}\bigl(xy'-yx'\bigr)\dd s\eqbr=\frac12\operatorname{Im}\int_0^{2\pi}\overline{z(s)}z'(s)\dd s.\end{aligned}
+\]
+This is Green's formula; for a polygon it is the shoelace formula, and here we take it as the definition of the area.
+
+\begin{theorem}[isoperimetric inequality]\label{thm:isoperimetric}
+$4\pi A\le L^2$, with equality if and only if the curve is a circle.
+\end{theorem}
+\begin{proof}
+Extend $z$ to a $2\pi$-periodic function; it is continuous, and $z'$ is piecewise continuous. Let $c_n=c_n(z)$. Integration by parts,
+with $z(-\pi)=z(\pi)$, gives $c_n(z')=inc_n$. By Parseval for $z'$,
+\[
+\Bigl(\frac L{2\pi}\Bigr)^2=\frac1{2\pi}\int_{-\pi}^\pi|z'|^2=\sum_nn^2|c_n|^2,
+\]
+and by the general form of Parseval, $\frac1{2\pi}\int z'\bar z=\sum_n(inc_n)\overline{c_n}=i\sum_nn|c_n|^2$, so $A=\pi\sum_nn|c_n|^2$. Hence
+\[
+L^2-4\pi A=4\pi^2\sum_{n\in\Z}\bigl(n^2-n\bigr)|c_n|^2\ge0,
+\]
+since $n^2\ge n$ for every integer $n$, with equality only for $n\in\{0,1\}$. So equality holds if and only if $c_n=0$ for $n\ne0,1$,
+that is, $z(s)=c_0+c_1e^{is}$: a circle.
+\end{proof}
+
+\begin{beauty}
+One identity, Pythagoras in a space of functions, gives the energy of a sound, two values of $\zeta$, the shape of a soap
+film's boundary and the probability that a random walk comes home. Fourier's ``profound study of nature'' turned out to
+be a theorem about orthogonality.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:x2}
+Compute the Fourier coefficients of the $2\pi$-periodic functions equal to $x$ and to $x^2$ on $\left]-\pi,\pi\right]$. Deduce $\zeta(2)=\frac{\pi^2}6$ twice,
+from Dirichlet's theorem at $x=\pi$ for $x^2$ and from Parseval for $x$, and $\zeta(4)=\frac{\pi^4}{90}$ from Parseval for $x^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:abs}
+Let $f$ be continuous, $2\pi$-periodic and piecewise $C^1$. Show that $c_n(f')=inc_n(f)$, that $\sum_n|c_n(f)|<\infty$, and that $S_Nf\to f$
+uniformly.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:heat}
+Let $f$ be as in Exercise~\ref{ex:abs}, and for $t>0$ let $u(t,x)=\sum_nc_n(f)e^{-n^2t}e^{inx}$. Show that $\partial_tu=\partial_x^2u$ for $t>0$, and that
+$u(t,\cdot)\to f$ uniformly as $t\to0^+$. Which harmonics of the initial temperature survive longest?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:wirtinger}
+(Wirtinger's inequality.) Let $f$ be real, $2\pi$-periodic and of class $C^1$, with $\int_{-\pi}^\pi f=0$. Show that $\int_{-\pi}^\pi f^2\le\int_{-\pi}^\pi f'^2$, and find
+the cases of equality.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:benford}
+Show that the proportion of $n\le N$ for which $2^n$ starts with the digit $d$ tends to $\log_{10}\bigl(1+\frac1d\bigr)$. How often does $2^n$ start
+with $1$? With $7$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:divergent}
+(A continuous function whose Fourier series diverges at $0$, after Fej\'er.)
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\bigl|\sum_{j=1}^n\frac{\sin jx}j\bigr|\le1+\pi$ for all $n$ and $x$.
+\item Let $P_n(x)=2\sin(2nx)\sum_{j=1}^n\frac{\sin jx}j$. Show that $|P_n|\le2+2\pi$, that $P_n(x)=\sum_{j=1}^n\frac{\cos(2n-j)x-\cos(2n+j)x}j$, and that $P_n(0)=0$.
+\item Let $n_k=2^{k^3}$ and $f=\sum_{k\ge1}\frac1{k^2}P_{n_k}$. Show that $f$ is continuous and that $S_{2n_k-1}f(0)\ge k\ln2$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:x2}
+Integrate by parts; $c_n(x)=\frac{i(-1)^n}n$ and $c_n(x^2)=\frac{2(-1)^n}{n^2}$ for $n\ne0$.
+\end{hint}
+\begin{hint}{ex:abs}
+Integrate by parts on each piece; the boundary terms cancel by continuity and periodicity. Then Cauchy--Schwarz:
+$\sum_{n\ne0}|c_n|=\sum_{n\ne0}\frac1{|n|}\cdot|nc_n|$.
+\end{hint}
+\begin{hint}{ex:heat}
+For $t\ge t_0>0$, the derivatives of the terms are bounded by $n^2|c_n|e^{-n^2t_0}$, which is summable. For the limit, split the series
+into $|n|\le M$ and $|n|>M$.
+\end{hint}
+\begin{hint}{ex:wirtinger}
+Parseval for $f$ and $f'$, with $c_0(f)=0$.
+\end{hint}
+\begin{hint}{ex:benford}
+$2^n$ starts with $d$ when $\{n\log_{10}2\}\in\bigl[\log_{10}d,\log_{10}(d+1)\bigr[$. Is $\log_{10}2$ rational?
+\end{hint}
+\begin{hint}{ex:divergent}
+(a) For $0<x<\pi$, treat $j\le\frac1x$ with $|\sin jx|\le jx$, and $j>\frac1x$ with summation by parts (Proposition~\ref{prop:abel}) and
+$\bigl|\sum_{j=a}^b\sin jx\bigr|\le\frac1{\sin(x/2)}\le\frac\pi x$. (c) Which frequencies does each $P_{n_k}$ contain?
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:x2}
+\idea Two integrations by parts give the coefficients; then evaluate at the point where the cosines all have sign
+$(-1)^n$, or square and integrate.
+\writeup For $n\ne0$, $\int_{-\pi}^\pi xe^{-inx}\dd x=\bigl[\frac{xe^{-inx}}{-in}\bigr]_{-\pi}^\pi=\frac{2\pi(-1)^n}{-in}$, so $c_n(x)=\frac{i(-1)^n}n$, and $c_0(x)=0$. Then
+$\int x^2e^{-inx}\dd x=\frac2{in}\int xe^{-inx}\dd x$ (the bracket vanishes), so $c_n(x^2)=\frac2{in}\cdot\frac{i(-1)^n}n=\frac{2(-1)^n}{n^2}$, and $c_0(x^2)=\frac{\pi^2}3$. In real form,
+\[
+x^2=\frac{\pi^2}3+4\sum_{n\ge1}\frac{(-1)^n}{n^2}\cos nx\qquad(|x|\le\pi),
+\]
+with equality everywhere by Theorem~\ref{thm:dirichletfourier}, since the periodic extension of $x^2$ is continuous and piecewise $C^1$. At $x=\pi$,
+$\cos n\pi=(-1)^n$ and $\pi^2=\frac{\pi^2}3+4\zeta(2)$: $\zeta(2)=\frac{\pi^2}6$. Parseval for $x$: $\frac1{2\pi}\int x^2=\frac{\pi^2}3=\sum_{n\ne0}\frac1{n^2}=2\zeta(2)$, the
+same value again. Parseval for $x^2$: $\frac1{2\pi}\int x^4=\frac{\pi^4}5=\frac{\pi^4}9+8\zeta(4)$, so $\zeta(4)=\frac{\pi^4}8\bigl(\frac15-\frac19\bigr)=\frac{\pi^4}{90}$.
+\end{solution}
+
+\begin{solution}{ex:abs}
+\idea Differentiation multiplies the coefficients by $in$; since $f'$ has square-summable coefficients, those of $f$ decay fast
+enough to be summable.
+\writeup Let $-\pi=a_0<\cdots<a_m=\pi$ be the pieces. On each, $\int_{a_j}^{a_{j+1}}f'e^{-inx}=\bigl[fe^{-inx}\bigr]_{a_j}^{a_{j+1}}+in\int_{a_j}^{a_{j+1}}fe^{-inx}$; since $f$
+is continuous the brackets telescope to $f(\pi)e^{-in\pi}-f(-\pi)e^{in\pi}=0$ by periodicity. So $c_n(f')=inc_n(f)$. By Cauchy--Schwarz in $\ell^2$
+and Bessel for $f'$,
+\[
+\begin{aligned}\sum_{n\ne0}|c_n(f)|&\le\Bigl(\sum_{n\ne0}\frac1{n^2}\Bigr)^{1/2}\Bigl(\sum_n|c_n(f')|^2\Bigr)^{1/2}\eqbr\le\sqrt{2\zeta(2)}\,\|f'\|_2.\end{aligned}
+\]
+By the Weierstrass test $S_Nf$ converges uniformly, to a continuous $g$; integrating term by term, $c_n(g)=c_n(f)$, so $g=f$ by
+Corollary~\ref{cor:fejer}(b).
+\end{solution}
+
+\begin{solution}{ex:heat}
+\idea Each harmonic $e^{inx}$ solves the heat equation once multiplied by $e^{-n^2t}$; the factor $e^{-n^2t}$ also makes every series
+converge fast for $t>0$.
+\writeup Each term $c_ne^{-n^2t}e^{inx}$ satisfies $\partial_t=\partial_x^2$ (both give $-n^2$ times the term). On $t\ge t_0$, the term and its derivatives in $t$
+and in $x$ up to order two are bounded by $(1+n^2)|c_n|e^{-n^2t_0}$, summable, so by Lemma~\ref{lem:uniform}(d) (applied in each variable)
+$u$ is differentiable term by term and solves the equation. For the limit, $|u(t,x)-f(x)|\le\sum_n|c_n|(1-e^{-n^2t})$ by Exercise~\ref{ex:abs}.
+Given $\varepsilon$, choose $M$ with $\sum_{|n|>M}|c_n|\le\varepsilon$; then the sum is at most $(1-e^{-M^2t})\sum|c_n|+\varepsilon\le2\varepsilon$ for $t$ small. The harmonic
+$n$ decays like $e^{-n^2t}$: high frequencies die first, the constant $c_0$, the mean temperature, survives, and after a while
+only $c_0+c_{\pm1}e^{-t}e^{\pm ix}$ is visible.
+\end{solution}
+
+\begin{solution}{ex:wirtinger}
+\idea On the Fourier side, differentiation multiplies the $n$-th coefficient by $in$, and $|n|\ge1$ once $c_0$ is gone.
+\writeup By Exercise~\ref{ex:abs}, $c_n(f')=inc_n(f)$, and $c_0(f)=0$. By Parseval,
+$\frac1{2\pi}\int f'^2=\sum n^2|c_n|^2\ge\sum|c_n|^2=\frac1{2\pi}\int f^2$. Equality holds iff $c_n=0$ for $|n|\ge2$, that is, $f(x)=a\cos x+b\sin x$.
+\end{solution}
+
+\begin{solution}{ex:benford}
+\idea The first digit of $2^n$ is read from the fractional part of $\log_{10}2^n=n\log_{10}2$, and these fractional parts are equidistributed.
+\writeup $2^n$ starts with $d$ iff $d\cdot10^m\le2^n<(d+1)10^m$ for some $m$, iff $\{n\log_{10}2\}\in[\log_{10}d,\log_{10}(d+1)[$. If $\log_{10}2=\frac pq$ with $q\ge1$,
+then $2^q=10^p$, impossible since $5$ does not divide $2^q$ (and $p=0$ gives $2^q=1$). So by Corollary~\ref{cor:nalpha} the proportion tends
+to $\log_{10}(d+1)-\log_{10}d=\log_{10}(1+\frac1d)$: about $30.1\%$ of powers of $2$ start with $1$, and $5.8\%$ with $7$. This is Benford's law,
+observed in many tables of data that span several orders of magnitude.
+\end{solution}
+
+\begin{solution}{ex:divergent}
+\idea Build blocks of trigonometric polynomials that stay bounded but whose partial sums at $0$ are as large as $\ln n$, then
+place the blocks at frequencies so far apart that they do not interact.
+\writeup (a) The sum is odd and $2\pi$-periodic in $x$, so take $0<x<\pi$, and let $m=\lfloor\frac1x\rfloor$. For $j\le m$, $\bigl|\frac{\sin jx}j\bigr|\le x$, so these
+terms contribute at most $mx\le1$. For $j>m$, the partial sums $\sum_{j=m+1}^b\sin jx=\frac{\cos(m+\frac12)x-\cos(b+\frac12)x}{2\sin(x/2)}$ are at most $\frac1{\sin(x/2)}\le\frac\pi x$
+in absolute value (since $\sin\frac x2\ge\frac x\pi$ on $[0,\pi]$). By Abel summation with the decreasing weights $\frac1j$, as in the proof of
+Theorem~\ref{thm:dirichlet}, the rest contributes at most $\frac1{m+1}\cdot\frac\pi x\le\pi$, since $m+1>\frac1x$.
+
+(b) The bound follows from (a). The product formula $2\sin a\sin b=\cos(a-b)-\cos(a+b)$ gives the expansion, whose frequencies lie in
+$[n,3n]$; and $P_n(0)=0$ since $\sin0=0$.
+
+(c) The series converges uniformly, by (b) and $\sum\frac1{k^2}<\infty$, so $f$ is continuous and its coefficients are obtained term by
+term. Since $3n_k<n_{k+1}$, the blocks occupy disjoint ranges of frequencies. The partial sum $S_{2n_k-1}$ keeps all the blocks
+$i<k$ (their frequencies are at most $3n_i<n_k$), none of the blocks $i>k$ (frequencies at least $n_{k+1}>2n_k$), and from block $k$ exactly the terms
+$\frac{\cos(2n_k-j)x}{j}$. At $x=0$, the blocks $i<k$ give $\frac{P_{n_i}(0)}{i^2}=0$, so
+\[
+S_{2n_k-1}f(0)=\frac1{k^2}\sum_{j=1}^{n_k}\frac1j\ge\frac{\ln n_k}{k^2}=k\ln2\to\infty.
+\]
+So the Fourier series of the continuous function $f$ diverges at $0$. In 1966 Carleson proved that this can only happen on a set
+of measure zero; Kahane and Katznelson showed that any set of measure zero can occur.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item T.~W.~K\"orner, \emph{Fourier Analysis}, Cambridge University Press, 1988. Short chapters, full of history and
+applications; the Gibbs phenomenon, Weyl and the heat equation are all there.
+\item E.~Stein and R.~Shakarchi, \emph{Fourier Analysis: An Introduction}, Princeton University Press, 2003, Chapters~2--4
+(including Hurwitz's isoperimetric proof and Weyl's criterion).
+\item Y.~Katznelson, \emph{An Introduction to Harmonic Analysis}, 3rd ed., Cambridge University Press, 2004.
+\item A.~Hurwitz, \emph{Sur quelques applications g\'eom\'etriques des s\'eries de Fourier}, Annales scientifiques de l'\'E.N.S.
+19 (1902), 357--408.
+\item H.~Weyl, \emph{\"Uber die Gleichverteilung von Zahlen mod.~Eins}, Mathematische Annalen 77 (1916), 313--352.
+\item E.~Hewitt and R.~Hewitt, \emph{The Gibbs--Wilbraham phenomenon: an episode in Fourier analysis}, Archive for History of
+Exact Sciences 21 (1979), 129--160.
+\end{itemize}
