@@ -1,0 +1,522 @@
+\chapter{Incompleteness}\label{ch:incompleteness}
+
+\begin{center}\itshape
+Any honest list of axioms for arithmetic leaves some truth out;\\
+and the truth it leaves out can be its own honesty.\\
+\upshape(the content of this chapter, in our words)
+\end{center}
+
+From 5 to 7 September 1930, philosophers and mathematicians met in Königsberg for a conference on the foundations of the exact sciences. The three schools of the day each had a speaker: Rudolf Carnap for logicism, Arend Heyting for intuitionism, and John von Neumann for Hilbert's formalism, whose programme was to prove, by finite and indisputable means, that the axioms of mathematics never lead to a contradiction. On the last day, near the end of a round-table discussion, a young man from Vienna remarked that one could ``even give examples of propositions (and in fact of those of the type of Goldbach or Fermat)'' that are true but unprovable in the formal system of classical mathematics. It was Kurt Gödel, who had just proved the completeness theorem of Chapter~\ref{ch:completeness}. Hardly anyone reacted. Von Neumann did: he took Gödel aside after the session to ask about his methods.
+
+The following day, Hilbert, retiring from his chair, gave an address in the same city that ended with the words that would be engraved on his tomb: ``We must know, we will know.'' He did not yet know what Gödel had said. On 20 November von Neumann wrote to Gödel that, using his methods, he had found a remarkable result: ``I was able to show that the consistency of mathematics is unprovable.'' Gödel's answer is lost, but he had already sent his paper, second theorem included, to the \emph{Monatshefte}, and he sent von Neumann a copy. Von Neumann wrote back on 29 November that, since Gödel had established the theorem on the unprovability of consistency, ``I clearly won't publish on this subject.'' The paper appeared in 1931. Hilbert's programme, in its original form, was over.
+
+This chapter proves Gödel's theorems. The machinery is the arithmetisation of Chapter~\ref{ch:turing}: numbers code formulas, proofs and computations, so that arithmetic can talk about its own proofs. With it we prove the first incompleteness theorem in Barkley Rosser's sharper form of 1936, Tarski's theorem that truth cannot be defined, the second incompleteness theorem from three properties of provability, and Löb's theorem. Then we turn to the question that Gödel's examples left open: are there \emph{natural} true statements that arithmetic cannot prove? Goodstein's theorem about hereditary base notation is one; its proof goes through the infinite ordinals.
+
+\begin{think}
+A program can print its own text (Chapter~\ref{ch:turing}). Can a sentence of arithmetic talk about its own provability? If it says ``I am not provable'', is it true? And if a theory could prove its own consistency, why would that be suspicious rather than reassuring?
+\end{think}
+
+\section{A weak theory of numbers}\label{sec:robinson}
+
+In this chapter the signature of arithmetic is $0,S,+,\times$, where $S$ is the successor; the numeral $\overline n$ is the term $S(S(\cdots S(0)))$ with $n$ letters $S$, and $\N$ is the standard model. (Chapter~\ref{ch:completeness} used $1$ in place of $S$; nothing changes.) We write $x\le y$ for $\exists z\,(z+x=y)$, $x<y$ for $Sx\le y$, and use the bounded quantifiers $\forall x\le t\,\varphi$ for $\forall x\,(x\le t\to\varphi)$ and $\exists x\le t\,\varphi$ for $\exists x\,(x\le t\land\varphi)$, where $x$ does not occur in the term $t$.
+
+\begin{definition}\label{def:robinsonq}
+\emph{Robinson arithmetic} $\mathrm Q$ has the seven axioms (universally quantified)
+\[
+Sx\ne0,\qquad Sx=Sy\to x=y,\qquad x\ne0\to\exists y\,(x=Sy),
+\]
+\[
+x+0=x,\qquad x+Sy=S(x+y),\qquad x\times0=0,\qquad x\times Sy=x\times y+x.
+\]
+\emph{Peano arithmetic} $\mathrm{PA}$ adds the \emph{induction axioms} $\varphi(0)\to\bigl(\forall x\,(\varphi(x)\to\varphi(Sx))\to\forall x\,\varphi(x)\bigr)$, one for each formula $\varphi$, with its other free variables universally quantified.
+\end{definition}
+
+$\mathrm Q$, introduced by Raphael Robinson in 1950, is very weak: it does not prove that addition is commutative, nor even that $Sx\ne x$ (Exercise~\ref{ex:qweak}). But it can compute, and that is all we need.
+
+\begin{lemma}\label{lem:qfacts}
+For all $n,m,j\in\N$:
+\begin{enumerate}
+\item $\mathrm Q\vdash\overline n+\overline m=\overline{n+m}$ and $\mathrm Q\vdash\overline n\times\overline m=\overline{nm}$; more generally, $\mathrm Q\vdash t=\overline{k}$ for every closed term $t$ with value $k$;
+\item $\mathrm Q\vdash\overline n\ne\overline m$ if $n\ne m$;
+\item $\mathrm Q\vdash\forall x\,\bigl(x\le\overline n\to x=\overline0\lor x=\overline1\lor\cdots\lor x=\overline n\bigr)$;
+\item $\mathrm Q\vdash\forall x\,(x\le\overline n\lor\overline n\le x)$;
+\item $\mathrm Q\vdash\forall w\,(\overline n\le w\to\overline j\le w)$ if $j\le n$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+We use two auxiliary facts, proved by induction on $m$ in the metatheory: $\mathrm Q\vdash\forall w\,(Sw+\overline m=S(w+\overline m))$, since $Sw+0=Sw=S(w+0)$ and $Sw+S\overline m=S(Sw+\overline m)=SS(w+\overline m)=S(w+S\overline m)$; and similarly $\mathrm Q\vdash\forall z\,\bigl(z+(\overline a+\overline m)=(z+\overline a)+\overline m\bigr)$.
+
+(a) By induction on $m$: $\overline n+0=\overline n$, and $\overline n+S\overline m=S(\overline n+\overline m)=S\,\overline{n+m}=\overline{n+m+1}$; then $\overline n\times\overline m$ the same way, using addition. A closed term is evaluated from the inside out. (b) Say $n>m$; by induction on $m$: $\overline n=S\overline{n-1}\ne0$ by the first axiom, and if $S\overline{n'}=S\overline{m'}$ then $\overline{n'}=\overline{m'}$ by the second, which the induction refutes.
+
+(c) By induction on $n$. Suppose $z+x=\overline n$. If $x\ne0$, then $x=Sy$ by the third axiom, and $z+Sy=S(z+y)$. For $n=0$ this contradicts $S(z+y)\ne0$, so $x=0$. For $n+1$, $S(z+y)=S\overline n$ gives $z+y=\overline n$, so $y\le\overline n$, and by induction $y$ is one of $\overline0,\dots,\overline n$ and $x=Sy$ one of $\overline1,\dots,\overline{n+1}$.
+
+(d) By induction on $n$. For $n=0$, $x+0=x$ gives $0\le x$. Suppose the statement for $n$. If $x\le\overline n$, then $x=\overline k$ with $k\le n$ by (c), and $\overline{n+1-k}+\overline k=\overline{n+1}$ by (a), so $x\le\overline{n+1}$. If $z+\overline n=x$: either $z=0$, then $x=0+\overline n=\overline n\le\overline{n+1}$; or $z=Sw$, then $x=Sw+\overline n=S(w+\overline n)=w+S\overline n$, so $\overline{n+1}\le x$.
+
+(e) If $z+\overline n=w$, then $\overline n=\overline{n-j}+\overline j$ by (a), so $w=z+(\overline{n-j}+\overline j)=(z+\overline{n-j})+\overline j$, and $\overline j\le w$.
+\end{proof}
+
+\begin{definition}\label{def:delta0}
+The \emph{$\Delta_0$ formulas} are built from atomic formulas $s=t$ and $s\le t$ by $\neg$, $\to$ (hence $\land,\lor$) and bounded quantifiers $\forall x\le t$, $\exists x\le t$. A \emph{$\Sigma_1$ formula} has the form $\exists y_1\cdots\exists y_k\,\delta$ with $\delta$ in $\Delta_0$, and a \emph{$\Pi_1$ formula} the form $\forall y_1\cdots\forall y_k\,\delta$. A relation $R\subseteq\N^k$ is \emph{$\Sigma_1$} if $R(\bar n)\iff\N\models\sigma(\overline n_1,\dots,\overline n_k)$ for a $\Sigma_1$ formula $\sigma$.
+\end{definition}
+
+The truth of a $\Delta_0$ sentence can be checked by a program, with loops whose lengths are known in advance. A $\Sigma_1$ sentence says that a search succeeds, as in ``there is an even number which is not a sum of two primes'' (the negation of Goldbach's conjecture, so Goldbach's conjecture is $\Pi_1$, as Gödel said at Königsberg).
+
+\begin{theorem}[$\Sigma_1$-completeness]\label{thm:sigma1complete}
+Every $\Delta_0$ sentence true in $\N$ is provable in $\mathrm Q$, and every false one is refutable in $\mathrm Q$. Every $\Sigma_1$ sentence true in $\N$ is provable in $\mathrm Q$.
+\end{theorem}
+
+\begin{proof}
+By induction on $\Delta_0$ sentences. For $s=t$ and $s\le t$ with values $a,b$, Lemma~\ref{lem:qfacts}(a) gives $\mathrm Q\vdash s=\overline a$ and $t=\overline b$. If $a=b$ then $s=t$ is provable, and otherwise refutable by (b). If $a\le b$, then $\overline{b-a}+\overline a=\overline b$ proves $s\le t$; if $a>b$, then (c) says $\overline a\le\overline b$ implies $\overline a$ equals one of $\overline0,\dots,\overline b$, which (b) refutes. The connectives follow by tautology. For $\forall x\le t\,\varphi(x)$, with $t$ of value $b$: by (c), $\mathrm Q$ proves it equivalent to $\varphi(\overline0)\land\cdots\land\varphi(\overline b)$, and by induction each conjunct is provable or refutable according to its truth; $\exists x\le t$ is the same with a disjunction. Finally, if $\exists\bar y\,\delta(\bar y)$ is true, then $\delta(\overline{\bar m})$ is true for some numerals, hence provable, and $\exists\bar y\,\delta$ follows by (A2) and tautology.
+\end{proof}
+
+\section{Arithmetisation}\label{sec:arithmetisation}
+
+To speak about finite sequences with a fixed number of quantifiers, Gödel used the Chinese remainder theorem. Let
+\[
+\beta(c,d,i)=\text{the remainder of }c\text{ modulo }1+(i+1)d.
+\]
+Its graph is $\Delta_0$: $\beta(c,d,i)=r$ if and only if $r<1+(i+1)d$ and $\exists q\le c\,\bigl(c=q\times(1+(i+1)d)+r\bigr)$.
+
+\begin{lemma}[Gödel's $\beta$-function]\label{lem:beta}
+For every finite sequence $a_0,\dots,a_n$ of natural numbers there are $c,d$ with $\beta(c,d,i)=a_i$ for $i=0,\dots,n$.
+\end{lemma}
+
+\begin{proof}
+Let $s=\max(n,a_0,\dots,a_n)+1$ and $d=s!$. The numbers $m_i=1+(i+1)d$, $0\le i\le n$, are pairwise coprime: a prime $p$ dividing $m_i$ and $m_j$, $i<j$, divides $(j-i)d$ but not $d$ (since it divides $1+(i+1)d$), so $p\mid j-i$; then $p\le n<s$, so $p\mid s!=d$, a contradiction. By the Chinese remainder theorem (Tome~1, Theorem~3.5) there is $c$ with $c\equiv a_i\pmod{m_i}$ for all $i$, and since $a_i<s\le d<m_i$, the remainder is $a_i$.
+\end{proof}
+
+\begin{lemma}\label{lem:sigma1closure}
+The $\Sigma_1$ relations are closed under $\land$, $\lor$, $\exists y$, bounded universal quantification $\forall i<t$, and substitution of functions whose graphs are $\Sigma_1$.
+\end{lemma}
+
+\begin{proof}
+Several existential quantifiers merge into one, by bounding them: $\exists y_1\exists y_2\,\delta$ holds in $\N$ if and only if $\exists w\,\exists y_1\le w\,\exists y_2\le w\,\delta$ does. So $\exists w_1\delta_1\land\exists w_2\delta_2$ is equivalent to $\exists w\,(\exists w_1\le w\,\delta_1\land\exists w_2\le w\,\delta_2)$, and the same with $\lor$. For bounded $\forall$: in $\N$, $\forall i<t\,\exists w\,\delta$ is equivalent to $\exists W\,\forall i<t\,\exists w\le W\,\delta$, taking for $W$ the largest of the finitely many witnesses. If $f$ has a $\Sigma_1$ graph $G_f$, then $R(f(\bar x))$ is $\exists y\,(G_f(\bar x,y)\land R(y))$.
+\end{proof}
+
+\begin{theorem}[Gödel, 1931]\label{thm:arithmetisation}
+A relation $R\subseteq\N^k$ is $\Sigma_1$ if and only if it is recognisable (computably enumerable). In particular every decidable relation, and the graph of every total computable function, is $\Sigma_1$.
+\end{theorem}
+
+\begin{proof}
+A $\Sigma_1$ relation is recognisable: search through the tuples of witnesses, checking the $\Delta_0$ part with bounded loops. Conversely, we first show that every primitive recursive function (Definition~\ref{def:primrec}) has a $\Sigma_1$ graph, by induction on its definition. The basic functions have the graphs $y=0$, $y=Sx$, $y=x_i$. Composition is handled by Lemma~\ref{lem:sigma1closure}. If $f(\bar x,0)=g(\bar x)$ and $f(\bar x,y+1)=h(\bar x,y,f(\bar x,y))$, with $G_g$, $G_h$ the $\Sigma_1$ graphs, then $f(\bar x,y)=z$ if and only if
+\[
+\exists c\,\exists d\,\Bigl[G_g\bigl(\bar x,\beta(c,d,0)\bigr)\land\forall i<y\;G_h\bigl(\bar x,i,\beta(c,d,i),\beta(c,d,i+1)\bigr)\land\beta(c,d,y)=z\Bigr].
+\]
+If $f(\bar x,y)=z$, Lemma~\ref{lem:beta} gives $c,d$ coding the sequence $f(\bar x,0),\dots,f(\bar x,y)$; conversely, if $c,d$ satisfy the bracket, then $\beta(c,d,i)=f(\bar x,i)$ for all $i\le y$ by induction on $i$, so $z=f(\bar x,y)$. By Lemma~\ref{lem:sigma1closure} the formula is $\Sigma_1$.
+
+Now let $R$ be recognisable, by a machine which we modify to run forever instead of rejecting, so that it halts exactly on $R$. By Kleene's theorem (Theorem~\ref{thm:kleenenf}), the partial function it computes is $V(\mu z\,[T(\bar x,z)=0])$ with $T$ primitive recursive, defined exactly on $R$. So $R(\bar x)\iff\exists z\,T(\bar x,z)=0$, which is $\Sigma_1$. A decidable relation, and the graph of a total computable function, are recognisable.
+\end{proof}
+
+Theorem~\ref{thm:arithmetisation} is the bridge: every question about computations becomes a question about numbers, of a precise logical shape. With it, Theorem~\ref{thm:sigma1complete} turns into a statement about what $\mathrm Q$ can prove.
+
+\begin{theorem}[representability]\label{thm:representability}
+\begin{enumerate}
+\item For every total computable $f:\N\to\N$ there is a $\Sigma_1$ formula $\psi_f(x,y)$ with $\mathrm Q\vdash\forall y\,\bigl(\psi_f(\overline n,y)\leftrightarrow y=\overline{f(n)}\bigr)$ for every $n$.
+\item For every decidable $R\subseteq\N$ there is a $\Sigma_1$ formula $\rho(x)$ with $\mathrm Q\vdash\rho(\overline n)$ if $n\in R$ and $\mathrm Q\vdash\neg\rho(\overline n)$ if $n\notin R$.
+\end{enumerate}
+The same holds for functions and relations of several variables.
+\end{theorem}
+
+\begin{proof}
+(a) By Theorem~\ref{thm:arithmetisation} and Lemma~\ref{lem:sigma1closure}, there is a $\Delta_0$ formula $\theta(x,y,v)$ with $f(n)=m\iff\N\models\exists v\,\theta(\overline n,\overline m,v)$. Let $\theta'(x,y,w)$ be $y\le w\land\exists v\le w\,\theta(x,y,v)$, which has the same property with the witness bounding $y$ as well, and let
+\[
+\psi_f(x,y):\quad\exists w\,\Bigl[\theta'(x,y,w)\land\forall u\le w\;\forall v\le w\;\bigl(\theta'(x,u,v)\to u=y\bigr)\Bigr].
+\]
+Fix $n$, let $m=f(n)$, and choose $K$ with $\theta'(n,m,K)$ true. The sentence $\psi_f(\overline n,\overline m)$ is a true $\Sigma_1$ sentence (with $w=K$, since $\theta'(n,u,v)$ implies $u=f(n)=m$), so $\mathrm Q$ proves it, and with it $y=\overline m\to\psi_f(\overline n,y)$. Conversely, reason in $\mathrm Q$ from $\theta'(\overline n,y,w)$ and the clause $\forall u\le w\,\forall v\le w\,(\dots)$. By Lemma~\ref{lem:qfacts}(d), $\overline K\le w$ or $w\le\overline K$. If $\overline K\le w$, then $\overline m\le w$ by (e), and the true $\Delta_0$ sentence $\theta'(\overline n,\overline m,\overline K)$ is provable, so the clause gives $\overline m=y$. If $w\le\overline K$, then by (c) $w=\overline j$ for some $j\le K$, and since $y\le w$, $y=\overline i$ for some $i\le j$; the $\Delta_0$ sentence $\theta'(\overline n,\overline i,\overline j)$ is then provable, which happens only when it is true, that is when $i=m$; for $i\ne m$ it is refutable. So in every case $y=\overline m$.
+
+(b) Apply (a) to the characteristic function $f$ of $R$ and let $\rho(x)=\psi_f(x,\overline1)$. If $n\in R$, $\mathrm Q\vdash\psi_f(\overline n,\overline1)$. If not, $\mathrm Q\vdash\psi_f(\overline n,\overline1)\leftrightarrow\overline1=\overline0$, which is refutable.
+\end{proof}
+
+\subsection*{Gödel numbers}
+
+Number the symbols of the signature, the connectives, the quantifier, the parentheses and the variables $v_0,v_1,\dots$, and code a string of symbols with numbers $s_1,\dots,s_k$ by a number from which the string can be recovered by a program, for instance $2^{s_1+1}3^{s_2+1}\cdots p_k^{s_k+1}$. The code of a formula $\varphi$ is its \emph{Gödel number} $\ulcorner\varphi\urcorner$; a proof, a sequence of formulas, is coded the same way. Everything we need to do with codes, such as recognising formulas, substituting a numeral for a variable, or checking that a sequence is a proof, is done by obvious programs, so by Theorem~\ref{thm:representability} it is represented in $\mathrm Q$. We use two instances.
+
+Let $T$ be a theory in the signature of arithmetic whose set of axioms is decidable. The relation ``$p$ is the code of a proof from $T$ of the formula with code $x$'' is decidable; let $\mathrm{Prf}_T(p,x)$ be a $\Sigma_1$ formula representing it, and
+\[
+\mathrm{Prov}_T(x):\quad\exists p\,\mathrm{Prf}_T(p,x).
+\]
+If $T\vdash\varphi$, then $\mathrm{Prov}_T(\overline{\ulcorner\varphi\urcorner})$ is a true $\Sigma_1$ sentence, so $\mathrm Q\vdash\mathrm{Prov}_T(\overline{\ulcorner\varphi\urcorner})$. We will abbreviate $\overline{\ulcorner\varphi\urcorner}$ as $\ulcorner\varphi\urcorner$.
+
+\section{The first incompleteness theorem}\label{sec:first}
+
+Two disjoint sets $A,B\subseteq\N$ are \emph{computably inseparable} if no decidable set $C$ contains $A$ and is disjoint from $B$.
+
+\begin{lemma}\label{lem:inseparable}
+There are two disjoint recognisable sets which are computably inseparable.
+\end{lemma}
+
+\begin{proof}
+Number the Turing machines computing partial functions $\N\to\N$ as $M_0,M_1,\dots$, and let $A=\{e:M_e\text{ halts on }e\text{ with output }0\}$ and $B=\{e:M_e\text{ halts on }e\text{ with output }1\}$. They are disjoint and recognisable, with the universal machine (Theorem~\ref{thm:universal}). Suppose a decidable $C$ contains $A$ and avoids $B$, and let $M_e$ be a machine that outputs $1$ on inputs in $C$ and $0$ on the others. If $e\in C$, then $M_e$ outputs $1$ on $e$, so $e\in B$, which avoids $C$. If $e\notin C$, it outputs $0$, so $e\in A\subseteq C$. Both are absurd.
+\end{proof}
+
+\begin{theorem}[Gödel, 1931; Rosser, 1936]\label{thm:firstincompleteness}
+Let $T$ be a consistent theory containing $\mathrm Q$. Then the set of sentences provable in $T$ is not decidable. If moreover the axioms of $T$ form a decidable set, then $T$ is incomplete: some sentence $\sigma$ has neither $T\vdash\sigma$ nor $T\vdash\neg\sigma$.
+\end{theorem}
+
+\begin{proof}
+Let $A,B$ be as in Lemma~\ref{lem:inseparable}. By Theorem~\ref{thm:arithmetisation}, $n\in A\iff\N\models\exists y\,\alpha(\overline n,y)$ and $n\in B\iff\N\models\exists y\,\beta(\overline n,y)$ with $\alpha,\beta$ in $\Delta_0$ (merging quantifiers). Rosser's idea is to race the two searches against each other:
+\[
+\varphi(x):\quad\exists y\,\bigl(\alpha(x,y)\land\forall z\le y\;\neg\beta(x,z)\bigr),
+\]
+``a witness for $A$ appears, and no witness for $B$ appears before it''.
+
+If $n\in A$, let $m$ be a witness. As $n\notin B$, no $z$ is a witness for $B$, so $\varphi(\overline n)$ is a true $\Sigma_1$ sentence and $\mathrm Q\vdash\varphi(\overline n)$. If $n\in B$, let $k$ be a witness, so $\mathrm Q\vdash\beta(\overline n,\overline k)$. We show $\mathrm Q\vdash\neg\varphi(\overline n)$, reasoning in $\mathrm Q$: let $y$ satisfy $\alpha(\overline n,y)$. By Lemma~\ref{lem:qfacts}(d), $y\le\overline k$ or $\overline k\le y$. In the second case $z=\overline k$ is a $z\le y$ with $\beta(\overline n,z)$. In the first, $y$ is one of $\overline0,\dots,\overline k$, and each $\alpha(\overline n,\overline j)$ is a false $\Delta_0$ sentence (as $n\notin A$), refutable in $\mathrm Q$; so this case is impossible. Either way $\varphi(\overline n)$ fails.
+
+Now suppose that provability in $T$ were decidable. Then $C=\{n:T\vdash\varphi(\overline n)\}$ would be decidable. It contains $A$, as $\mathrm Q\subseteq T$. It avoids $B$: for $n\in B$, $T\vdash\neg\varphi(\overline n)$, and $T$, being consistent, does not also prove $\varphi(\overline n)$. This contradicts Lemma~\ref{lem:inseparable}. Finally, if $T$ had a decidable set of axioms and were complete, provability in $T$ would be decidable by Proposition~\ref{prop:completedecidable}.
+\end{proof}
+
+The theorem needs nothing about $T$ but consistency, the axioms of $\mathrm Q$, and a list of axioms that a program can recognise. Every extension of $\mathrm Q$ by more axioms that a program can recognise, $\mathrm{PA}$, $\mathrm{PA}$ with large cardinal axioms coded inside it, or the axioms of set theory with arithmetic interpreted in them, is incomplete; adding the missing sentence as a new axiom only creates a new incomplete theory. Three corollaries come at once.
+
+\begin{corollary}\label{cor:thn}
+The set of sentences true in $\N$ is not recognisable; in particular no decidable set of axioms proves exactly the true sentences of arithmetic.
+\end{corollary}
+
+\begin{proof}
+$\mathrm{Th}(\N)$ is consistent and contains $\mathrm Q$, so it is not decidable. If it were recognisable, it would be decidable: given $\sigma$, enumerate $\mathrm{Th}(\N)$ until $\sigma$ or $\neg\sigma$ appears, as one of them does.
+\end{proof}
+
+\begin{corollary}[Church, 1936]\label{cor:churcharith}
+The set of valid sentences in the signature $0,S,+,\times$ is not decidable.
+\end{corollary}
+
+\begin{proof}
+Let $\chi$ be the conjunction of the seven axioms of $\mathrm Q$. By the deduction lemma, $\mathrm Q\vdash\sigma$ if and only if $\chi\to\sigma$ is valid. A decision procedure for validity would decide provability in $\mathrm Q$, which Theorem~\ref{thm:firstincompleteness} forbids.
+\end{proof}
+
+\section{Sentences that speak about themselves}\label{sec:selfreference}
+
+Theorem~\ref{thm:firstincompleteness} shows that undecided sentences exist, but it does not show one. Gödel's own proof does: it builds a sentence which says ``I am not provable''. The tool is the arithmetic version of the quines of Chapter~\ref{ch:turing}.
+
+\begin{lemma}[diagonal lemma; Gödel, 1931; Carnap, 1934]\label{lem:diagonal}
+For every formula $\varphi(x)$ with one free variable there is a sentence $\delta$ with $\mathrm Q\vdash\delta\leftrightarrow\varphi(\ulcorner\delta\urcorner)$.
+\end{lemma}
+
+\begin{proof}
+Let $\mathrm{diag}$ be the computable function sending the code of a formula $\chi(x)$ with free variable $x$ to the code of the sentence $\chi(\overline{\ulcorner\chi\urcorner})$, and say $0$ on other numbers. Let $D(x,y)$ represent it as in Theorem~\ref{thm:representability}(a), and let
+\[
+\chi(x):\quad\exists y\,\bigl(D(x,y)\land\varphi(y)\bigr),\qquad\delta=\chi(\overline{\ulcorner\chi\urcorner}).
+\]
+Then $\mathrm{diag}(\ulcorner\chi\urcorner)=\ulcorner\delta\urcorner$, so $\mathrm Q\vdash\forall y\,(D(\overline{\ulcorner\chi\urcorner},y)\leftrightarrow y=\ulcorner\delta\urcorner)$, and therefore $\mathrm Q\vdash\delta\leftrightarrow\exists y\,(y=\ulcorner\delta\urcorner\land\varphi(y))\leftrightarrow\varphi(\ulcorner\delta\urcorner)$.
+\end{proof}
+
+The sentence $\delta$ does not contain its own code, which is impossible, as the code of a sentence is much larger than any numeral it contains. It contains a description of a computation whose result is its code, exactly as a quine contains instructions that print it.
+
+\begin{theorem}[Tarski, 1933]\label{thm:tarski}
+There is no formula $\tau(x)$ such that, for every sentence $\sigma$, $\N\models\sigma\leftrightarrow\tau(\ulcorner\sigma\urcorner)$. Truth in arithmetic is not definable in arithmetic.
+\end{theorem}
+
+\begin{proof}
+Apply the diagonal lemma to $\neg\tau(x)$: there is $\delta$ with $\mathrm Q\vdash\delta\leftrightarrow\neg\tau(\ulcorner\delta\urcorner)$. This equivalence holds in $\N$, a model of $\mathrm Q$; with the property of $\tau$ it gives $\N\models\delta\leftrightarrow\neg\delta$.
+\end{proof}
+
+This is the liar paradox, ``this sentence is false'', turned into a theorem: the paradox shows that no formula expresses truth. Provability, unlike truth, \emph{is} expressed by a formula, and the same construction gives Gödel's sentence. Let $T\supseteq\mathrm Q$ have a decidable set of axioms, and let $G_T$ satisfy
+\[
+\mathrm Q\vdash G_T\leftrightarrow\neg\mathrm{Prov}_T(\ulcorner G_T\urcorner).
+\]
+If $T$ is consistent, then $T\nvdash G_T$: otherwise $\mathrm Q\vdash\mathrm{Prov}_T(\ulcorner G_T\urcorner)$, so $T\vdash\neg G_T$ too. So $G_T$ is not provable, which is what it says: it is true. (Gödel also showed $T\nvdash\neg G_T$ under a stronger hypothesis, Exercise~\ref{ex:omegaconsistent}; Rosser's version of the sentence removes it, Exercise~\ref{ex:rossersentence}.)
+
+\subsection*{The second incompleteness theorem}
+
+``$T$ is consistent'' is the sentence $\mathrm{Con}_T:\neg\mathrm{Prov}_T(\ulcorner0=S0\urcorner)$. The argument just given, ``if $T$ is consistent then $G_T$ is not provable, which is what $G_T$ says'', is elementary, and Gödel observed that it can be carried out inside $T$ as soon as $T$ proves enough about numbers, for instance when $T\supseteq\mathrm{PA}$. Then $T\vdash\mathrm{Con}_T\to G_T$, and $T$ cannot prove $\mathrm{Con}_T$. The formalisation is long but routine; Hilbert and Bernays extracted from it, in 1939, the three properties of provability it uses, in the form given by Martin Löb in 1955.
+
+\begin{theorem}[derivability conditions; Hilbert, Bernays, 1939; Löb, 1955; quoted]\label{thm:derivability}
+Let $T\supseteq\mathrm{PA}$ have a decidable set of axioms. For a suitable natural choice of the formula $\mathrm{Prf}_T$, for all sentences $\varphi,\psi$:
+\begin{enumerate}
+\item[(D1)] if $T\vdash\varphi$, then $T\vdash\mathrm{Prov}_T(\ulcorner\varphi\urcorner)$;
+\item[(D2)] $T\vdash\mathrm{Prov}_T(\ulcorner\varphi\to\psi\urcorner)\to\bigl(\mathrm{Prov}_T(\ulcorner\varphi\urcorner)\to\mathrm{Prov}_T(\ulcorner\psi\urcorner)\bigr)$;
+\item[(D3)] $T\vdash\mathrm{Prov}_T(\ulcorner\varphi\urcorner)\to\mathrm{Prov}_T(\ulcorner\mathrm{Prov}_T(\ulcorner\varphi\urcorner)\urcorner)$.
+\end{enumerate}
+\end{theorem}
+
+(D1) was proved above, from $\Sigma_1$-completeness. (D2) says that $T$ knows modus ponens; it holds when $\mathrm{Prf}_T$ is written out naturally, following the definition of a proof. (D3) is (D1) proved inside $T$: it says that $T$ knows its own $\Sigma_1$-completeness, and it is the formalised version of Theorem~\ref{thm:sigma1complete}, with induction replacing the induction we did outside. Writing $\Box\varphi$ for $\mathrm{Prov}_T(\ulcorner\varphi\urcorner)$, we use the conditions in the following form: if $T\vdash\varphi\to\psi$ then $T\vdash\Box\varphi\to\Box\psi$ (by (D1) and (D2)), and more generally if $T\vdash\varphi_1\to(\varphi_2\to\psi)$ then $T\vdash\Box\varphi_1\to(\Box\varphi_2\to\Box\psi)$.
+
+\begin{theorem}[Löb, 1955]\label{thm:lob}
+Let $T$ be as in Theorem~\ref{thm:derivability}. If $T\vdash\Box\varphi\to\varphi$, then $T\vdash\varphi$.
+\end{theorem}
+
+\begin{proof}
+By the diagonal lemma there is $\lambda$ with $T\vdash\lambda\leftrightarrow(\Box\lambda\to\varphi)$. From $\lambda\to(\Box\lambda\to\varphi)$ we get $T\vdash\Box\lambda\to(\Box\Box\lambda\to\Box\varphi)$, and with (D3), $\Box\lambda\to\Box\Box\lambda$, this gives $T\vdash\Box\lambda\to\Box\varphi$. With the hypothesis $\Box\varphi\to\varphi$: $T\vdash\Box\lambda\to\varphi$. By the choice of $\lambda$, $T\vdash\lambda$; by (D1), $T\vdash\Box\lambda$; so $T\vdash\varphi$.
+\end{proof}
+
+\begin{theorem}[Gödel's second incompleteness theorem, 1931]\label{thm:second}
+Let $T$ be as in Theorem~\ref{thm:derivability}. If $T$ is consistent, then $T\nvdash\mathrm{Con}_T$.
+\end{theorem}
+
+\begin{proof}
+Let $\varphi$ be $0=S0$. Then $\mathrm{Con}_T$ is $\neg\Box\varphi$, which is equivalent by tautology to $\Box\varphi\to\varphi$, as $T\vdash\neg\varphi$. If $T\vdash\mathrm{Con}_T$, Löb's theorem gives $T\vdash0=S0$, and $T$ is inconsistent.
+\end{proof}
+
+Löb's theorem answered a question that Leon Henkin had asked in 1952: the sentence $H$ which says ``I am provable'', $T\vdash H\leftrightarrow\Box H$, is it provable? Gödel's sentence is unprovable because it denies its own provability; Henkin's sentence affirms its own, and Löb's theorem says it is right: $T\vdash\Box H\to H$, so $T\vdash H$.
+
+The second theorem is often summarised as ``a theory cannot prove its own consistency''. The precise content is more modest and more striking. A consistency proof inside $T$ would be worthless anyway, since an inconsistent theory proves everything, its own consistency included. What the theorem rules out is Hilbert's hope: a consistency proof for strong theories, such as set theory, carried out in a weak and safe theory such as $\mathrm{PA}$; for if $\mathrm{PA}$ proved the consistency of set theory, it would prove its own, which is a theorem of set theory. Consistency proofs must use principles beyond the theory. Gerhard Gentzen gave one for $\mathrm{PA}$ in 1936, using induction along the ordinal $\varepsilon_0$; the next section uses the same ordinals.
+
+\section{A natural independent statement}\label{sec:goodstein}
+
+Gödel's sentences are about provability. For decades it was unknown whether $\mathrm{PA}$ fails to prove any statement that a number theorist would care about. In 1977 Jeff Paris and Leo Harrington found the first (Tome~C1, Chapter~8), and in 1982 Laurie Kirby and Paris showed that a theorem proved by Reuben Goodstein in 1944 is another.
+
+Write a number $m$ in base $b\ge2$, then write the exponents in base $b$, then their exponents, and so on: this is the \emph{hereditary base-$b$ representation}. For instance, in base $2$,
+\[
+266=2^{2^{2+1}}+2^{2+1}+2^{1}.
+\]
+\emph{Bumping the base} replaces every $b$ by $b+1$: $266$ becomes $3^{3^{3+1}}+3^{3+1}+3$, about $4\times10^{38}$. The \emph{Goodstein sequence} of $m$ starts with $g_2=m$ and, for $b\ge2$, $g_{b+1}$ is $g_b$ with the base bumped from $b$ to $b+1$, minus one (if $g_b=0$ the sequence stops). For $m=3=2+1$: $g_3=3+1-1=3=3^1$, $g_4=4-1=3$, $g_5=2$, $g_6=1$, $g_7=0$. For $m=4=2^2$:
+\begin{center}
+\begin{tabular}{rll}
+base & term & ordinal\\\hline
+$2$ & $4=2^2$ & $\omega^\omega$\\
+$3$ & $26=2\cdot3^2+2\cdot3+2$ & $\omega^2\cdot2+\omega\cdot2+2$\\
+$4$ & $41=2\cdot4^2+2\cdot4+1$ & $\omega^2\cdot2+\omega\cdot2+1$\\
+$5$ & $60=2\cdot5^2+2\cdot5$ & $\omega^2\cdot2+\omega\cdot2$\\
+$6$ & $83=2\cdot6^2+6+5$ & $\omega^2\cdot2+\omega+5$\\
+$7$ & $109=2\cdot7^2+7+4$ & $\omega^2\cdot2+\omega+4$
+\end{tabular}
+\end{center}
+The terms grow for a very long time (Figure~\ref{fig:goodstein}). Yet the last column, obtained by replacing the base by the symbol $\omega$, decreases at each step; that is the whole proof, once we know what it means.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-goodstein}
+\caption{The Goodstein sequences of $3,4,5,6$ (base-$10$ logarithm of the terms, first $40$ steps). The sequence of $3$ reaches $0$ at step $5$. The sequence of $4$ reaches $0$ after $3\cdot2^{402653211}-3$ steps, a number with more than $121$ million digits; those of $5$ and $6$ take much longer still.}
+\label{fig:goodstein}
+\end{figure}
+
+\subsection*{Ordinals below \texorpdfstring{$\varepsilon_0$}{epsilon 0}}
+
+We build the ordinals we need as finite expressions. A \emph{Cantor normal form} (CNF) is either $0$ or an expression
+\[
+\alpha=\omega^{\alpha_1}c_1+\omega^{\alpha_2}c_2+\cdots+\omega^{\alpha_k}c_k,\qquad k\ge1,\ c_i\ge1\text{ integers},
+\]
+where $\alpha_1>\alpha_2>\cdots>\alpha_k$ are CNFs. The order is defined by recursion on the expressions: $0$ is the least; two non-zero CNFs are compared by their sequences of pairs $(\alpha_1,c_1),(\alpha_2,c_2),\dots$, lexicographically, comparing pairs first by the exponent and then by the coefficient, a proper prefix being smaller. The natural numbers are the CNFs $\omega^0c$, and $\omega=\omega^{\omega^0}$. The \emph{height} is $h(0)=0$ and $h(\alpha)=1+h(\alpha_1)$: the height of a CNF is the height of its tower of exponents. These are the ordinals below $\varepsilon_0=\omega^{\omega^{\omega^{\cdot^{\cdot}}}}$; we need only that they are well-ordered.
+
+\begin{lemma}\label{lem:omegaw}
+Let $(W,<)$ be a well-order: a linear order with no infinite strictly decreasing sequence. Let $\omega^W$ be the set of maps $f:W\to\N$ with $f(w)\ne0$ for finitely many $w$, where $f<g$ if $f\ne g$ and $f(w)<g(w)$ at the largest $w$ with $f(w)\ne g(w)$. Then $\omega^W$ is a well-order.
+\end{lemma}
+
+\begin{proof}
+It is a linear order (compare at the largest point of difference). Suppose $f_1>f_2>\cdots$. Let $\mu(f)$ be the largest $w$ with $f(w)\ne0$, for $f\ne0$; no $f_n$ is $0$, the least element, except perhaps the last, so there is none. If $f>g$, then $\mu(g)\le\mu(f)$, since at any $w>\mu(f)$ the maps agree (both are $0$, or $g$ would be larger). So $\mu(f_n)$ is a decreasing sequence in $W$, constant from some $n_1$ on, equal to $w_1$; then the values $f_n(w_1)\in\N$ are non-increasing, hence constant from some $n_2\ge n_1$ on. From $n_2$ on, the maps $f_n$ agree at $w_1$ and above, so their restrictions below $w_1$ decrease strictly, and are not $0$. Repeating the argument with these restrictions gives $w_2<w_1$, then $w_3<w_2$, and so on: an infinite decreasing sequence in $W$, which is impossible.
+\end{proof}
+
+\begin{proposition}\label{prop:cnfwellorder}
+The CNFs, with their order, form a well-order. If $\alpha<\beta$, then $h(\alpha)\le h(\beta)$.
+\end{proposition}
+
+\begin{proof}
+The order is linear, by induction on the expressions (comparisons reduce to comparisons of exponents, which are smaller expressions). If $\alpha<\beta$ are non-zero, their leading exponents satisfy $\alpha_1\le\beta_1$, so $h(\alpha)\le h(\beta)$ by induction on the expressions. So a decreasing sequence starting at $\alpha$ stays among the CNFs of height at most $h(\alpha)$, and it suffices to show that $C_h$, the set of CNFs of height at most $h$, is well-ordered, by induction on $h$. $C_0=\{0\}$. A CNF of height at most $h+1$ is determined by the map sending each $\gamma\in C_h$ to the coefficient of $\omega^\gamma$ in it ($0$ if absent), and every map with finite support arises; comparing two CNFs lexicographically from the largest exponent down is comparing these maps at their largest difference. So $C_{h+1}$ is isomorphic to $\omega^{C_h}$, a well-order by Lemma~\ref{lem:omegaw}.
+\end{proof}
+
+\begin{theorem}[Goodstein, 1944]\label{thm:goodstein}
+Every Goodstein sequence reaches $0$.
+\end{theorem}
+
+\begin{proof}
+For $b\ge2$, let $o_b(m)$ be the CNF obtained from the hereditary base-$b$ representation of $m$ by replacing $b$ by $\omega$: if $m=\sum_ib^{e_i}d_i$ with $e_1>e_2>\cdots$ and digits $1\le d_i<b$, then $o_b(m)=\sum_i\omega^{o_b(e_i)}d_i$. We claim that $o_b$ is strictly increasing, and in particular that $o_b(m)$ is a CNF. By strong induction on $m$: the exponents $e_i<m$ satisfy $o_b(e_1)>o_b(e_2)>\cdots$ by induction, so $o_b(m)$ is a CNF; and if $m<m'$, compare their base-$b$ representations from the top: at the first difference, either the exponent of $m'$ is larger, or the exponents are equal and the digit of $m'$ is larger, or $m$'s representation is a prefix of that of $m'$. By induction on the exponents, which are smaller than $m'$, the same holds for $o_b(m)$ and $o_b(m')$, so $o_b(m)<o_b(m')$.
+
+Bumping the base does not change the CNF: if $m'$ is $m$ with the base bumped from $b$ to $b+1$, then the expression obtained is the hereditary base-$(b+1)$ representation of $m'$ (its digits are less than $b<b+1$), so $o_{b+1}(m')=o_b(m)$. Hence, if $g_b\ne0$,
+\[
+o_{b+1}(g_{b+1})=o_{b+1}(m'-1)<o_{b+1}(m')=o_b(g_b).
+\]
+The CNFs $o_b(g_b)$ decrease strictly as long as $g_b\ne0$; by Proposition~\ref{prop:cnfwellorder} this cannot go on forever.
+\end{proof}
+
+The proof uses the well-ordering of all CNFs of every height, and that is the obstacle in $\mathrm{PA}$.
+
+\begin{theorem}[Kirby and Paris, 1982; quoted]\label{thm:kirbyparis}
+The sentence ``every Goodstein sequence reaches $0$'', written in the signature of arithmetic, is true but not provable in $\mathrm{PA}$.
+\end{theorem}
+
+The sentence is $\Pi_2$: ``for all $m$ there is $b$ with $g_b=0$''. Kirby and Paris proved it with non-standard models of arithmetic, the objects of Chapter~\ref{ch:completeness}. Behind the theorem is a growth rate: the number of steps before $0$, as a function of $m$, grows faster than every function that $\mathrm{PA}$ can prove to be total. In the same paper they introduced the battle of Hercules and the hydra, a tree whose heads Hercules cuts one at a time while new necks grow back (Figure~\ref{fig:hydra}). Every strategy kills every hydra (Exercise~\ref{ex:hydra}), and $\mathrm{PA}$ cannot prove it.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-hydra}
+\caption{One move of the hydra game, at step $n=2$. Hercules cuts a head (red). If its neck is not attached to the root, the hydra goes down one node, to the grandparent of the head, and grows there $n$ new copies (orange) of the subtree that lost the head.}
+\label{fig:hydra}
+\end{figure}
+
+Paris and Harrington's statement is a strengthening of the finite Ramsey theorem of Tome~C1. Call a finite set $H\subseteq\N$ \emph{large} if $|H|\ge\min H$.
+
+\begin{theorem}[Paris and Harrington, 1977]\label{thm:parisharrington}
+For all $k,r,m\ge1$ there is $N$ such that for every colouring of the $k$-subsets of $\{1,\dots,N\}$ with $r$ colours there is a large homogeneous set with at least $m$ elements. This statement is true, but it is not provable in $\mathrm{PA}$ (quoted).
+\end{theorem}
+
+\begin{proof}[Proof of the first part]
+This is the proof of Tome~C1, Theorem~8.12, with one change: let the formulas of $\Gamma$ forbid every finite set $M$ which is large and has at least $m$ elements from being homogeneous. A model of $\Gamma$ gives a colouring of all $k$-subsets of $\{1,2,\dots\}$, which has an infinite homogeneous set $Y$ by Ramsey's theorem; the first $\max(m,\min Y)$ elements of $Y$ form a large homogeneous set with at least $m$ elements, and $\Gamma$ forbids it.
+\end{proof}
+
+\section{Information and incompleteness}\label{sec:chaitin}
+
+Gregory Chaitin gave Gödel's theorem a quantitative form in 1974. Fix a universal machine, and let the \emph{Kolmogorov complexity} $K(x)$ of a natural number $x$ be the length of the shortest program (a binary string fed to the machine) that prints $x$ and halts. Most numbers are complex: there are fewer than $2^L$ programs of length less than $L$, so fewer than $2^L$ numbers have $K(x)<L$, and all the others have $K(x)\ge L$. The statement $K(\overline x)\ge\overline L$ is a $\Pi_1$ sentence: ``for every program $p$ of length less than $L$ and every number of steps $t$, $p$ has not printed $x$ after $t$ steps''.
+
+\begin{theorem}[Chaitin, 1974]\label{thm:chaitin}
+Let $T\supseteq\mathrm Q$ have a decidable set of axioms and prove only true sentences. There is a constant $L_T$ such that $T$ proves no sentence $K(\overline x)\ge\overline L$ with $L\ge L_T$, although all but finitely many of them are true.
+\end{theorem}
+
+\begin{proof}
+For each $L$, consider the program $P_L$: ``enumerate the theorems of $T$; when one of the form $K(\overline x)\ge\overline L$ appears, print $x$ and halt.'' It consists of a fixed part, of some length $c$, which knows $T$, and of the binary digits of $L$, so its length is at most $c+\log_2L+1$. Choose $L_T$ with $c+\log_2L+1<L$ for all $L\ge L_T$. If $T$ proved some $K(\overline x)\ge\overline L$ with $L\ge L_T$, then $P_L$ would print a number $x$, with $K(x)\ge L$ because $T$ proves only true sentences; but $P_L$ itself prints $x$, so $K(x)\le|P_L|<L$.
+\end{proof}
+
+A theory described by $c$ bits cannot certify that any number has complexity much more than $c$: Chaitin's slogan is that ``a theory cannot prove more information than it contains''. It is Berry's paradox, ``the least number not definable in fewer than twenty words'', made precise, as Gödel's theorem is the liar made precise. And it is the most common case: almost every true statement $K(\overline x)\ge\overline L$ is unprovable.
+
+\begin{beauty}
+Gödel's proof is a three-line argument, ``this sentence is not provable'', surrounded by a large and careful construction which makes the sentence exist. The construction, numbers coding formulas and the Chinese remainder theorem coding sequences, is the same that makes the universal machine possible: incompleteness and the existence of computers are the same discovery, arithmetic talking about itself. And the limit is not a curiosity of artificial sentences: a statement about bumping bases, which a child can check step by step, is true, and its truth needs infinite ordinals.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:qweak}
+On $\N\cup\{\infty\}$, extend $S$, $+$, $\times$ by $S\infty=\infty$, $x+\infty=\infty+x=\infty$, $0\times\infty=\infty\times0=0$, and $x\times\infty=\infty\times x=\infty$ for $x\ne0$. Show that this is a model of $\mathrm Q$, and deduce that $\mathrm Q\nvdash\forall x\,(Sx\ne x)$, while $\mathrm{PA}$ proves it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:betaexample}
+Find $c$ and $d$ with $\beta(c,d,0)=2$, $\beta(c,d,1)=0$, $\beta(c,d,2)=1$, following the proof of Lemma~\ref{lem:beta}, and then smaller ones by search.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:omegaconsistent}
+Call $T$ \emph{$\Sigma_1$-sound} if every $\Sigma_1$ sentence provable in $T$ is true. Show that if $T\supseteq\mathrm Q$ has a decidable set of axioms and is $\Sigma_1$-sound, then $T\nvdash\neg G_T$. (Gödel assumed the slightly weaker ``$\omega$-consistency''.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:henkin}
+Let $T$ be as in Theorem~\ref{thm:derivability}. Show that every sentence $H$ with $T\vdash H\leftrightarrow\mathrm{Prov}_T(\ulcorner H\urcorner)$ is provable in $T$, and that if $T$ is consistent, then $T+\neg\mathrm{Con}_T$ is consistent.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:godelsentencefromcon}
+Let $T$ be as in Theorem~\ref{thm:derivability}. Show that $T\vdash G_T\leftrightarrow\mathrm{Con}_T$: Gödel's sentence says exactly that $T$ is consistent.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:rossersentence}
+Let $T\supseteq\mathrm Q$ be consistent with a decidable set of axioms, and let $\rho$ satisfy
+\[
+\mathrm Q\vdash\rho\leftrightarrow\forall p\,\bigl(\mathrm{Prf}_T(p,\ulcorner\rho\urcorner)\to\exists q\le p\;\mathrm{Prf}_T(q,\ulcorner\neg\rho\urcorner)\bigr)
+\]
+(``if I am provable, my negation has a shorter proof''). Show that $T$ proves neither $\rho$ nor $\neg\rho$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:beaver}
+Let $T\supseteq\mathrm Q$ have a decidable set of axioms and prove only true sentences. Show that there is $n$ such that, for no $m$, $T$ proves the sentence ``$S(\overline n)=\overline m$'' expressing the value of Radó's busy beaver function $S$ of Chapter~\ref{ch:turing} (Theorem~\ref{thm:beaver}), the largest number of steps made by a halting machine with $n$ states.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:goodsteinsmall}
+Compute the Goodstein sequences of $1$, $2$ and $3$ by hand, with the ordinals of each step. Then compute the first five terms of the sequence of $5$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weakgoodstein}
+In the \emph{weak} Goodstein sequence, only the base is bumped, not the exponents: $m=\sum_ib^id_i$ becomes $\sum_i(b+1)^id_i-1$. Show that it reaches $0$, using only CNFs below $\omega^\omega$, that is, the lexicographic order on finite sequences of digits.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hydra}
+Show that Hercules wins against every hydra, whatever he cuts: attach to a tree the CNF $o(\text{tree})=\sum_i\omega^{o(T_i)}$ (in non-increasing order of the exponents), where the $T_i$ are the subtrees at the children of the root, and show that each move decreases it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:kolmogorov}
+Show that for every $n$, at least $2^n-2^{n-10}+1$ of the $2^n$ binary strings of length $n$ cannot be printed by a program shorter than $n-10$ bits. Deduce that the function $K$ is not computable, using the program $P_L$ of Theorem~\ref{thm:chaitin}.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:qweak}
+Check the seven axioms one by one, separating the cases $x=\infty$, $y=\infty$. For $\mathrm{PA}$, use induction on $x$.
+\end{hint}
+\begin{hint}{ex:betaexample}
+$n=2$ and $s=3$, so $d=6$ and the moduli are $7,13,19$.
+\end{hint}
+\begin{hint}{ex:omegaconsistent}
+$\neg G_T$ is equivalent to the $\Sigma_1$ sentence $\mathrm{Prov}_T(\ulcorner G_T\urcorner)$.
+\end{hint}
+\begin{hint}{ex:henkin}
+For $H$, apply Löb's theorem. For the second part, use the second incompleteness theorem.
+\end{hint}
+\begin{hint}{ex:godelsentencefromcon}
+One direction is the proof of the second theorem. For the other, $\neg G_T$ is $\Box G_T$, and from $\Box G_T$ the conditions give $\Box\neg G_T$.
+\end{hint}
+\begin{hint}{ex:rossersentence}
+If $T\vdash\rho$, take the code $p$ of a proof and refute the right-hand side with $\Delta_0$ facts about the finitely many $q\le p$. If $T\vdash\neg\rho$, take the code $q$ of that proof, and use Lemma~\ref{lem:qfacts}(d) to compare an arbitrary $p$ with $q$.
+\end{hint}
+\begin{hint}{ex:beaver}
+If $T$ proved a value for every $n$, a program could search the theorems of $T$ for it.
+\end{hint}
+\begin{hint}{ex:goodsteinsmall}
+$1$ becomes $0$ at once; $2=2^1$ becomes $3-1=2$, then $1$, then $0$.
+\end{hint}
+\begin{hint}{ex:weakgoodstein}
+Map $m=\sum_ib^id_i$ to $\sum_i\omega^id_i$.
+\end{hint}
+\begin{hint}{ex:hydra}
+Cutting a head attached to the root removes a term $\omega^0$. Otherwise, a term $\omega^{\gamma+1}$ in the subtree of the parent becomes $\omega^{\gamma}$, which decreases that subtree's CNF, and the grandparent gains $n$ copies of a smaller term: compare at the largest difference.
+\end{hint}
+\begin{hint}{ex:kolmogorov}
+Count programs. If $K$ were computable, a program could search for the first $x$ with $K(x)\ge L$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:qweak}
+\idea A single point at infinity, which is its own successor, satisfies all the axioms of $\mathrm Q$, since none of them says anything that induction would derive.
+\writeup On $\N$ the operations are the usual ones. The axioms: $Sx\ne0$ holds since $S\infty=\infty\ne0$. $Sx=Sy\to x=y$: $S$ is injective on $\N$, sends $\N$ into $\N\setminus\{0\}$ and only $\infty$ to $\infty$. $x\ne0\to\exists y\,(x=Sy)$: $\infty=S\infty$. $x+0=x$: $\infty+0=\infty$. $x+Sy=S(x+y)$: if $x$ or $y$ is $\infty$, both sides are $\infty$. $x\times0=0$: $\infty\times0=0$. $x\times Sy=x\times y+x$: if $y=\infty$ and $x=0$, both sides are $0$; if $y=\infty$ and $x\ne0$, both sides are $\infty$; if $x=\infty$ and $y\in\N$, the left side is $\infty\times(y+1)=\infty$, and the right side is $\infty\times y+\infty=\infty$. So it is a model of $\mathrm Q$ in which $S\infty=\infty$, and by soundness $\mathrm Q\nvdash\forall x\,(Sx\ne x)$. In $\mathrm{PA}$, induction on $\varphi(x):Sx\ne x$: $S0\ne0$ by the first axiom, and if $Sx\ne x$, then $SSx\ne Sx$ by the second.
+\end{solution}
+
+\begin{solution}{ex:betaexample}
+\idea Gödel's construction is generous; the moduli only need to be coprime and large enough.
+\writeup With $n=2$ and $s=\max(2,2,0,1)+1=3$, $d=3!=6$ and the moduli are $1+6=7$, $1+12=13$, $1+18=19$, pairwise coprime. We need $c\equiv2\pmod7$, $c\equiv0\pmod{13}$, $c\equiv1\pmod{19}$. The multiples of $13$ that are $1$ modulo $19$: $13k\equiv1\pmod{19}$ gives $k\equiv3$, since $39=2\cdot19+1$; so $c=39+247j$. Then $39+247j\equiv2\pmod7$: $39\equiv4$ and $247\equiv2$, so $4+2j\equiv2$, $j\equiv6\pmod 7$, and $c=39+1482=1521$. Check: $1521=217\cdot7+2$, $1521=117\cdot13$, $1521=80\cdot19+1$. A search over small pairs finds smaller ones: with $d=2$, the moduli $3,5,7$ give $c=50$, since $50=16\cdot3+2=10\cdot5=7\cdot7+1$; and the least $c$ is $27$, with $d=4$ and the moduli $5,9,13$, which are not pairwise coprime: $27=5\cdot5+2=3\cdot9=2\cdot13+1$. So $(c,d)=(50,2)$ works.
+\end{solution}
+
+\begin{solution}{ex:omegaconsistent}
+\idea Refuting Gödel's sentence means claiming it is provable, a $\Sigma_1$ claim; a sound theory only makes true $\Sigma_1$ claims.
+\writeup Suppose $T\vdash\neg G_T$. Since $\mathrm Q\vdash G_T\leftrightarrow\neg\mathrm{Prov}_T(\ulcorner G_T\urcorner)$, $T\vdash\mathrm{Prov}_T(\ulcorner G_T\urcorner)$, a $\Sigma_1$ sentence. By $\Sigma_1$-soundness it is true, so $T\vdash G_T$. Then $T$ proves $G_T$ and $\neg G_T$, and is inconsistent; but a $\Sigma_1$-sound theory is consistent, since an inconsistent one proves the false $\Sigma_1$ sentence $0=S0$. So $T\nvdash\neg G_T$.
+\end{solution}
+
+\begin{solution}{ex:henkin}
+\idea A sentence asserting its own provability satisfies the hypothesis of Löb's theorem trivially; and adding the falsehood ``I am inconsistent'' to a consistent theory leaves it consistent, by the second theorem.
+\writeup If $T\vdash H\leftrightarrow\Box H$, then in particular $T\vdash\Box H\to H$, so $T\vdash H$ by Theorem~\ref{thm:lob}. For the second part: if $T+\neg\mathrm{Con}_T$ were inconsistent, then $T\vdash\neg\neg\mathrm{Con}_T$ by the deduction lemma, so $T\vdash\mathrm{Con}_T$, contradicting Theorem~\ref{thm:second}. So $T+\neg\mathrm{Con}_T$ is consistent, although (if $T$ is consistent) it proves the false sentence $\neg\mathrm{Con}_T$: a consistent theory can be wrong about $\Sigma_1$ facts, and this one has non-standard models in which a non-standard number codes a ``proof'' of $0=S0$.
+\end{solution}
+
+\begin{solution}{ex:godelsentencefromcon}
+\idea Gödel's sentence says ``I am not provable'', and the only way for a sentence to be unprovable is for the theory not to prove everything.
+\writeup Write $\Box\varphi$ for $\mathrm{Prov}_T(\ulcorner\varphi\urcorner)$ and $\bot$ for $0=S0$, so that $\mathrm{Con}_T$ is $\neg\Box\bot$ and $T\vdash G\leftrightarrow\neg\Box G$, with $G=G_T$. ($\Rightarrow$, that is $\mathrm{Con}_T\to G$.) From $T\vdash G\to\neg\Box G$ and (D1), (D2): $T\vdash\Box G\to\Box\neg\Box G$. From (D3): $T\vdash\Box G\to\Box\Box G$. Since $\Box G\to(\neg\Box G\to\bot)$ is a tautology, the conditions give $T\vdash\Box\Box G\to(\Box\neg\Box G\to\Box\bot)$, so $T\vdash\Box G\to\Box\bot$, that is $T\vdash\mathrm{Con}_T\to\neg\Box G$, that is $T\vdash\mathrm{Con}_T\to G$. ($\Leftarrow$, that is $G\to\mathrm{Con}_T$.) Since $\bot\to G$ is a tautology, $T\vdash\Box\bot\to\Box G$, that is $T\vdash\neg\Box G\to\neg\Box\bot$, and $\neg\Box G$ is equivalent to $G$.
+\end{solution}
+
+\begin{solution}{ex:rossersentence}
+\idea Comparing proof lengths turns ``my negation is provable'' into a statement with bounded quantifiers once a proof is fixed, and bounded statements are decided by $\mathrm Q$.
+\writeup Recall that $\mathrm{Prf}_T$ represents the proof relation: for numbers $p,x$, $\mathrm Q\vdash\mathrm{Prf}_T(\overline p,\overline x)$ if $p$ codes a proof of the formula coded by $x$, and $\mathrm Q\vdash\neg\mathrm{Prf}_T(\overline p,\overline x)$ otherwise.
+
+Suppose $T\vdash\rho$, with a proof of code $p$. Then $\mathrm Q\vdash\mathrm{Prf}_T(\overline p,\ulcorner\rho\urcorner)$, and instantiating the right-hand side of the equivalence at $\overline p$ gives $T\vdash\exists q\le\overline p\,\mathrm{Prf}_T(q,\ulcorner\neg\rho\urcorner)$. As $T$ is consistent, no $q$ codes a proof of $\neg\rho$, so $\mathrm Q\vdash\neg\mathrm{Prf}_T(\overline q,\ulcorner\neg\rho\urcorner)$ for each $q\le p$, and by Lemma~\ref{lem:qfacts}(c), $\mathrm Q\vdash\neg\exists q\le\overline p\,\mathrm{Prf}_T(q,\ulcorner\neg\rho\urcorner)$. So $T$ is inconsistent, a contradiction.
+
+Suppose $T\vdash\neg\rho$, with a proof of code $q$, so $\mathrm Q\vdash\mathrm{Prf}_T(\overline q,\ulcorner\neg\rho\urcorner)$. We show $T\vdash\rho$, a contradiction. Reason in $\mathrm Q$: let $p$ satisfy $\mathrm{Prf}_T(p,\ulcorner\rho\urcorner)$. By Lemma~\ref{lem:qfacts}(d), $\overline q\le p$ or $p\le\overline q$. If $\overline q\le p$, then $q'=\overline q$ is a $q'\le p$ with $\mathrm{Prf}_T(q',\ulcorner\neg\rho\urcorner)$. If $p\le\overline q$, then $p$ is one of $\overline0,\dots,\overline q$; but no $p'\le q$ codes a proof of $\rho$ (as $T$ is consistent and proves $\neg\rho$), so each $\mathrm{Prf}_T(\overline{p'},\ulcorner\rho\urcorner)$ is refuted, and this case is impossible. So the right-hand side holds, and $\mathrm Q\vdash\rho$.
+\end{solution}
+
+\begin{solution}{ex:beaver}
+\idea A theory with a list of axioms is a program; if it knew every value of a function, the function would be computable.
+\writeup The relation $S(n)=m$ is expressed by a formula $\beta(x,y)$ of arithmetic: ``some machine with $x$ states halts after exactly $y$ steps, and no machine with $x$ states halts after more than $y$ steps''; the relation ``machine $e$ halts after exactly $t$ steps'' is decidable, hence represented by Theorem~\ref{thm:representability}. Suppose that for every $n$, $T$ proves $\beta(\overline n,\overline m)$ for some $m$. Since $T$ proves only true sentences, that $m$ is $S(n)$. Then the following program computes $S$: on input $n$, enumerate the theorems of $T$ until one of the form $\beta(\overline n,\overline m)$ appears, and output $m$. But $S$ is not computable (Theorem~\ref{thm:beaver}): a contradiction. So for some $n$, $T$ proves no value of $S(n)$, although $S(n)$ has a value. For set theory such an $n$ has been made explicit: in 2016 Adam Yedidia and Scott Aaronson built a machine with $7918$ states whose behaviour set theory cannot settle (assuming a slightly stronger theory is consistent), and later work has lowered the number of states considerably.
+\end{solution}
+
+\begin{solution}{ex:goodsteinsmall}
+\idea Follow the definition; the ordinals tell in advance how long it takes.
+\writeup $1=2^0$: bumping changes nothing, $g_3=0$; ordinals $1,0$. $2=2^1$: $g_3=3-1=2$ (ordinal $\omega\to2$), $g_4=1$, $g_5=0$; ordinals $\omega,2,1,0$. $3=2^1+1$: $g_3=3=3^1$, $g_4=4-1=3$, $g_5=2$, $g_6=1$, $g_7=0$; ordinals $\omega+1,\omega,3,2,1,0$. For $5=2^{2}+1$: $g_3=3^3+1-1=27=3^3$, $g_4=4^4-1=255=3\cdot4^3+3\cdot4^2+3\cdot4+3$, $g_5=3\cdot125+3\cdot25+3\cdot5+3-1=467$, $g_6=3\cdot216+3\cdot36+3\cdot6+2-1=775$; ordinals $\omega^\omega+1$, $\omega^\omega$, $\omega^3\cdot3+\omega^2\cdot3+\omega\cdot3+3$, then the last coefficient decreases.
+\end{solution}
+
+\begin{solution}{ex:weakgoodstein}
+\idea Without bumping the exponents, the number of digits never grows, and the digits decrease lexicographically.
+\writeup Let $m_b=\sum_{i}b^id_{b,i}$ be the term at base $b$, with digits $d_{b,i}<b$, and $w_b=\sum_i\omega^id_{b,i}$, a CNF below $\omega^\omega$ (exponents are integers). Bumping gives $\sum_i(b+1)^id_{b,i}$, whose base-$(b+1)$ digits are the same, so the CNF is unchanged. Subtracting $1$ from a positive number decreases its base-$(b+1)$ representation, hence its CNF (by the monotonicity in the proof of Theorem~\ref{thm:goodstein}, with integer exponents). So $w_b$ decreases strictly while $m_b>0$, and the CNFs below $\omega^\omega$ are well-ordered: they are the finite-support maps $\N\to\N$, which form $\omega^{\N}$, a well-order by Lemma~\ref{lem:omegaw}. So the sequence reaches $0$. Unlike Goodstein's theorem, this one is provable in $\mathrm{PA}$.
+\end{solution}
+
+\begin{solution}{ex:hydra}
+\idea Each tree has a CNF, defined from the leaves up; a cut lowers one exponent by one somewhere, which outweighs any finite number of copies of what lies below.
+\writeup Define $o(T)=\sum_i\omega^{o(T_i)}$, the sum over the subtrees $T_i$ at the children of the root, written in non-increasing order (equal terms grouped into coefficients); a single node has $o=0$, so a head contributes $\omega^0=1$ to its parent. If $o(T_i)$ decreases and the others stay fixed, $o(T)$ decreases: in the comparison at the largest difference, the multiset of exponents loses one exponent and gains only smaller ones. Now let Hercules cut a head $h$ with parent $u$. If $u$ is the root, $o$ loses a term $1$ and decreases. Otherwise let $v$ be the parent of $u$. The subtree $U$ at $u$ loses a head, so $o(U)=\gamma+1$ becomes $o(U^-)=\gamma$. At $v$, the term $\omega^{\gamma+1}$ is replaced by $n+1$ terms $\omega^{\gamma}$: the comparison at the largest difference sees $\omega^{\gamma+1}$ removed and only smaller exponents added, so $o$ of the subtree at $v$ decreases, whatever $n$ is. Going up from $v$ to the root, each subtree's CNF decreases because one of its children's does. So $o(\text{hydra})$ decreases strictly at each move and, by Proposition~\ref{prop:cnfwellorder}, the battle ends: the hydra is reduced to its root.
+\end{solution}
+
+\begin{solution}{ex:kolmogorov}
+\idea There are not enough short programs to go around.
+\writeup Programs shorter than $n-10$ bits are binary strings of length at most $n-11$; there are $1+2+\cdots+2^{n-11}=2^{n-10}-1$ of them, each printing at most one string. So at most $2^{n-10}-1$ strings of length $n$ are printed by such programs, and at least $2^n-2^{n-10}+1$ are not: more than $99.9\%$. If $K$ were computable, the program ``find the first $x$ with $K(x)\ge L$ and print it'' would, as in the proof of Theorem~\ref{thm:chaitin}, have length at most $c+\log_2L+1<L$ for large $L$ and print a number $x$ with $K(x)\ge L$: a contradiction. So $K$ is not computable, and no algorithm can tell, in general, whether a string is compressible.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} K.~Gödel, \emph{Über formal unentscheidbare Sätze der Principia Mathematica und verwandter Systeme I}, Monatshefte für Mathematik und Physik 38 (1931), 173--198; English translations in J.~van Heijenoort (ed.), \emph{From Frege to Gödel}, Harvard University Press, 1967, and in Gödel's \emph{Collected Works}, vol.~I, Oxford University Press, 1986, with an introduction by S.~C.~Kleene. Read Section~1 first: in two pages Gödel gives the whole idea, the liar in the form ``I am unprovable'', and compares it with Richard's paradox and Cantor's diagonal. Section~2 is the hard part: his ``recursive'' functions are our primitive recursive ones, and he defines $45$ of them, one after the other, ending with ``$x$ is a provable formula''; match them with Theorem~\ref{thm:arithmetisation}, which replaces all of them by one appeal to Kleene's normal form. His Theorem~VII is our Theorem~\ref{thm:arithmetisation} for primitive recursive functions, with the $\beta$-function of Lemma~\ref{lem:beta}. Theorem~VI is the first incompleteness theorem, under the hypothesis of $\omega$-consistency (Exercise~\ref{ex:omegaconsistent}), and Theorem~XI the second, with a sketch only: the promised Part~II never appeared, as no one doubted the result.
+\item \emph{The stories.} J.~W.~Dawson Jr., \emph{Logical Dilemmas: The Life and Work of Kurt Gödel}, A K Peters, 1997, for Königsberg; K.~Gödel, \emph{Collected Works}, vol.~V, Oxford University Press, 2003, for the correspondence with von Neumann, including his letters of 20 and 29 November 1930; the discussion at Königsberg is printed in vol.~I.
+\item J.~B.~Rosser, \emph{Extensions of some theorems of Gödel and Church}, Journal of Symbolic Logic 1 (1936), 87--91; A.~Tarski, \emph{Der Wahrheitsbegriff in den formalisierten Sprachen}, Studia Philosophica 1 (1936), 261--405 (Polish original 1933); R.~M.~Robinson, \emph{An essentially undecidable axiom system}, Proceedings of the International Congress of Mathematicians 1950, vol.~1, 729--730; A.~Tarski, A.~Mostowski and R.~M.~Robinson, \emph{Undecidable Theories}, North-Holland, 1953, for $\mathrm Q$ and the method of Theorem~\ref{thm:firstincompleteness}; R.~Carnap, \emph{Logische Syntax der Sprache}, Springer, 1934, for the general diagonal lemma.
+\item D.~Hilbert and P.~Bernays, \emph{Grundlagen der Mathematik}, vol.~II, Springer, 1939; M.~H.~Löb, \emph{Solution of a problem of Leon Henkin}, Journal of Symbolic Logic 20 (1955), 115--118; L.~Henkin, \emph{A problem concerning provability}, Journal of Symbolic Logic 17 (1952), 160; G.~Boolos, \emph{The Logic of Provability}, Cambridge University Press, 1993, for the conditions (D1)--(D3) and a proof of (D3).
+\item G.~Gentzen, \emph{Die Widerspruchsfreiheit der reinen Zahlentheorie}, Mathematische Annalen 112 (1936), 493--565; R.~L.~Goodstein, \emph{On the restricted ordinal theorem}, Journal of Symbolic Logic 9 (1944), 33--41; L.~Kirby and J.~Paris, \emph{Accessible independence results for Peano arithmetic}, Bulletin of the London Mathematical Society 14 (1982), 285--293; J.~Paris and L.~Harrington, \emph{A mathematical incompleteness in Peano arithmetic}, in J.~Barwise (ed.), \emph{Handbook of Mathematical Logic}, North-Holland, 1977, 1133--1142.
+\item G.~J.~Chaitin, \emph{Information-theoretic limitations of formal systems}, Journal of the ACM 21 (1974), 403--424; M.~Li and P.~Vitányi, \emph{An Introduction to Kolmogorov Complexity and Its Applications}, 4th edition, Springer, 2019.
+\item A.~Yedidia and S.~Aaronson, \emph{A relatively small Turing machine whose behavior is independent of set theory}, Complex Systems 25 (2016), 297--327.
+\item P.~Smith, \emph{An Introduction to Gödel's Theorems}, 2nd edition, Cambridge University Press, 2013, a careful textbook on everything in this chapter; T.~Franzén, \emph{Gödel's Theorem: An Incomplete Guide to Its Use and Abuse}, A K Peters, 2005, on what the theorems do not say.
+\end{itemize}
