@@ -770,6 +770,44 @@ def hilbert_curve(order=6):
     return "\n".join(lines) + "\n"
 
 
+
+def multiplicative_walks(N=3000, walks=3, seed=14):
+    """Partial sums S(n) = f(1)+...+f(n) of Steinhaus random multiplicative functions, drawn as
+    planar walks: f(p) = e^{i theta_p} with independent uniform angles, f multiplicative
+    (Tome 14, Chapter 5). They wander like random walks, but not quite."""
+    import random
+    rng = random.Random(seed)
+    spf = list(range(N + 1))
+    for i in range(2, int(N ** 0.5) + 1):
+        if spf[i] == i:
+            for j in range(i * i, N + 1, i):
+                if spf[j] == j:
+                    spf[j] = i
+    paths = []
+    for _ in range(walks):
+        theta = {}
+        f = [0j, 1 + 0j] + [0j] * (N - 1)
+        for n in range(2, N + 1):
+            p = spf[n]
+            if p not in theta:
+                theta[p] = complex(math.cos(2 * math.pi * rng.random()), math.sin(2 * math.pi * rng.random()))
+                theta[p] = theta[p] / abs(theta[p])
+            f[n] = f[n // p] * theta[p]
+        s, pts = 0j, [0j]
+        for n in range(1, N + 1):
+            s += f[n]
+            pts.append(s)
+        paths.append(pts)
+    allp = [z for pts in paths for z in pts]
+    scale = 0.95 * R / max(abs(z) for z in allp)
+    lines = ["%% Steinhaus random multiplicative functions: %d walks of %d steps from the origin." % (walks, N)]
+    styles = ["line width=0.8pt,opacity=0.95", "line width=0.5pt,opacity=0.7", "line width=0.35pt,opacity=0.5"]
+    for k, pts in enumerate(paths):
+        lines.append(r"\draw[accent,%s,line join=round] " % styles[k % 3] + "--".join(
+            "(%.4fin,%.4fin)" % (z.real * scale, z.imag * scale) for z in pts[::2]) + ";")
+    lines.append(r"\fill[accent] (0,0) circle (2.2pt);")
+    return "\n".join(lines) + "\n"
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -794,6 +832,7 @@ MOTIFS = {
     "tomeS4-companion": series_chords,
     "tomeP1-crossroads": gaussian_primes,
     "tomeP2-machinery": hilbert_curve,
+    "tome14-random": multiplicative_walks,
 }
 
 if __name__ == "__main__":
