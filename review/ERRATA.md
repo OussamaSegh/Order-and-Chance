@@ -473,3 +473,28 @@ dictionaries, the 2ⁿ − 1 Dantzig and Fibonacci-like Bland pivot counts on Kl
 | Notebook | Problem | Fix |
 |---|---|---|
 | Tome C2, ch. 1–12 | All run to completion (about 7 minutes in all); the numbers printed agree with the chapters after the two fixes above. The chapter 7 notebook reports two random programs on which SciPy's HiGHS disagrees with its exact simplex ("unbounded"); checked by hand and with HiGHS's presolve switched off, the programs are unbounded and the notebook is right. | — |
+
+## Review: Tome 8
+
+An independent pass over Tome 8 (Shapes, 10 chapters, 10 notebooks). Every proof and every solution was read line by line and re-derived, with extra care for the three chapters the coordinator flagged. Chapter 8: the left invariant form det(g)^{-n} ∧dg_ij on GL_n, the modular function |det Ad(h^{-1})|, uniqueness of the normalized Haar measure on a compact group, the QR sampling recipe with the phase correction, Weyl's integration formula with the constant 1/((2π)^n n!), Andreief's identity, Heine's Toeplitz determinant, Gaudin's lemma, the k-point correlations and Dyson's sine-kernel limit, and the solutions (the 126.5° angle, the ratio ≈ 600, the Toeplitz gap) are all correct; the date of the Montgomery–Dyson tea (6 April 1972) was checked against the IAS account. Chapter 9: the hyperbolic metric, geodesics, the polar formula 2π sinh r, the isometry group PSL₂(ℝ), the Iwasawa decomposition, the geodesic flow and its trace formula, the Farey tessellation and Series' cutting sequences (the L/R runs give the continued fraction), the closed geodesic of length 4 log(1+√2), the class-number examples −20 and −23 and the Klein quartic 336 are correct. Chapter 10: the uniqueness of the invariant measure dp dθ on lines, Bertrand's answer 1/2, Crofton's formula 2L, Buffon's noodle 2L/(πd), Cauchy's perimeter formula, Poincaré's 4L₁L₂, Cauchy's surface area formula A/4 and the solutions (the hat-box, Laplace's grid (4ld − l²)/(πd²), the sphere Crofton L/π) are correct. The numerical claims were recomputed independently of the notebooks (Gauss's triangle Hohenhagen–Brocken–Inselsberg and its ≈ 15″ excess, the hairy-ball and Euler-characteristic counts, the Nielsen–Schreier rank 1 + k(n−1), the Betti numbers of the surfaces, Weyl's law on the flat torus). Every numbered pointer to Tomes 1, 2, 5, 6, 7, 12, S1 and S2 was checked against the aux files of those tomes, and the unnumbered chapter pointers (Weyl's criterion, the Riemann–von Mangoldt formula, the explicit formula, Galois theory, the plate trick, Buffon and Bertrand in Tome 3, invariance of domain in Tome 6, Pell in Tome 1, noodles in Tome S2) against their chapter files: all correct. The dates and attributions of the openings (Riemann 1854, Whitney 1936 and 1944, Sard 1942, Morse 1939, Lie 1870, Frobenius 1877, Milnor 1978, Adams 1962, Thomson–Stokes 1850 and 1854, Cartan 1899, de Rham 1931, Chern 1944, Nielsen 1921 and Schreier 1927, Euler 1750 and 1758, Uhlenbeck–Goudsmit 1925, Hurwitz 1897, Weyl 1925, Haar 1933, Montgomery 1973, Odlyzko 1987, Poincaré's Coutances omnibus 1880, Series 1985, Artin 1924, Hopf 1936, Bertrand 1889, Poincaré 1896, Jaynes 1973, Crofton 1868, Hadwiger 1957) were checked. All four PDF formats, the KDP print and cover files and the EPUB build without errors, with no undefined or multiply defined labels, no overfull box and no pandoc warning; all ten notebooks run to completion and their printed numbers agree with the chapters.
+
+### Tome 8
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 9, after the polar-coordinates proposition | math | "A circle of radius 10 has length about 69 000 times its radius." The length is 2π sinh 10 ≈ 69 000; divided by the radius that is about 6 900 times. | "has length 2π sinh 10 ≈ 69 000, nearly seven thousand times its radius". |
+| Ch. 2, sources | text | Lie's remark about mathematicians and prison was said to be "reported" by the MacTutor biography; the MacTutor page tells the arrest but has no such remark. | Attributed to Lie's letters as quoted by Stubhaug. |
+| Ch. 1, sources | text | "F. Lafontaine, *An Introduction to Differential Manifolds*": the author is Jacques Lafontaine. | J. Lafontaine. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 8, ch. 10 | Problem P10.3 asked to "verify Theorem 10.10"; Cauchy's surface area formula is Theorem 10.9 (the chapter has no 10.10). | Theorem 10.9. |
+| Tome 8, ch. 1–10 | All ten run; every other numbered reference matches the book (Theorems 1.30, 2.10, 4.19, 5.16, 5.23, 7.8, 8.7, 8.15, 9.8, 10.1, 10.4, Propositions 1.22, 2.9, 5.11, 6.5, 7.3, 7.4, 9.3, Corollaries 3.21, 8.16, 10.2 and the exercises cited). The zeta-zero cell of ch. 8 takes about two minutes. | — |
+
+### Known and left as is
+
+- Chapter 1 quotes without proof that ℝP² does not embed in ℝ³, Chapter 3 that de Rham's theorem identifies de Rham cohomology with singular cohomology, Chapter 4 that the eigenfunctions of the round sphere are the spherical harmonics; each is flagged as quoted in the text.
+- Chapter 8 presents Montgomery's pair correlation conjecture and Odlyzko's 1987 computation as what they are, a conjecture and numerical evidence; the companion notebook reproduces a small version (500 zeros).
+- The figures were not regenerated; every number in a caption was recomputed and agrees.
