@@ -29,17 +29,25 @@ jobs:
   build:
     needs: list
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
     strategy:
       fail-fast: false
       matrix:
         tome: ${{ fromJson(needs.list.outputs.tomes) }}
     steps:
       - uses: actions/checkout@v4
+      # A mirror sometimes stalls for the whole job; give each attempt five minutes and retry.
       - name: Install LaTeX, pandoc and poppler
+        timeout-minutes: 20
         run: |
-          sudo apt-get update
-          sudo apt-get install -y --no-install-recommends texlive-latex-base texlive-latex-recommended \
-            texlive-latex-extra texlive-fonts-recommended tex-gyre texlive-pictures pandoc poppler-utils
+          for i in 1 2 3; do
+            sudo timeout 300 apt-get -o Acquire::Retries=3 update &&
+            sudo timeout 600 apt-get -o Acquire::Retries=3 install -y --no-install-recommends texlive-latex-base \
+              texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended tex-gyre texlive-pictures \
+              pandoc poppler-utils && break
+            echo "apt attempt $i failed, retrying"; sleep 10
+          done
+          command -v pdflatex && command -v pandoc
       - name: Build PDF and EPUB
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
@@ -62,7 +70,7 @@ jobs:
           merge-multiple: true
           path: .
       - name: Install poppler
-        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends poppler-utils
+        run: sudo timeout 300 apt-get update && sudo timeout 300 apt-get install -y --no-install-recommends poppler-utils
       - uses: actions/upload-artifact@v4
         with:
           name: books
