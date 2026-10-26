@@ -46,7 +46,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
 | 6 | Spaces | Sets, topology, measure and integration | Complete (11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (10 chapters) |
-| 8 | Shapes | Manifolds, algebraic topology, Lie groups | In progress (9 of 10 chapters) |
+| 8 | Shapes | Manifolds, algebraic topology, Lie groups | Complete (10 chapters) |
 | 9 | Structures II | Categories, commutative and homological algebra, representations | Planned |
 | 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | In progress (11 of 12 chapters) |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Planned |
