@@ -1,0 +1,396 @@
+\chapter{The Circle Method II: Three Primes and Waring's Problem}
+\begin{center}\itshape
+On 7 June 1742 Christian Goldbach wrote to Euler that every number\\
+seems to be a sum of three primes. Two centuries later Vinogradov\\
+proved it for every large odd number, with the circle of Chapter~6.
+\end{center}
+
+Goldbach's letter of 1742 asked, in the language of the time, whether every integer greater than $2$ is a sum of three primes (Goldbach counted $1$ as a prime). Euler replied that it would follow from the statement that every even number is a sum of two primes, which he was sure of and could not prove. Nobody can, still. Twenty-eight years later Edward Waring, Lucasian professor at Cambridge, stated in his \emph{Meditationes Algebraicae} that every number is a sum of four squares, of nine cubes, of nineteen fourth powers, ``and so on''. Lagrange proved the four squares the same year; the cubes waited until 1909, when Wieferich showed that nine suffice, and in the same year Hilbert proved that for every $k$ some number $g(k)$ of $k$-th powers suffices.
+
+Hilbert's proof gave no reasonable bound. In 1920 Hardy and Littlewood, in the first of their papers \emph{Partitio Numerorum}, brought the method of Chapter~6 to bear: the number of representations of $n$ as a sum of $s$ $k$-th powers is a Fourier coefficient of the $s$-th power of a Weyl sum, and the circle splits into major arcs, where the Weyl sum is computed, and minor arcs, where Weyl's inequality makes it small. In 1923 they treated three primes the same way, but only under the generalized Riemann hypothesis. In 1937 Vinogradov removed the hypothesis with his estimate of Chapter~5, and in 1938 Hua Loo-Keng, who had taught himself mathematics in his father's shop in Jintan and had come to Cambridge in 1936 to work with Hardy, found a mean value estimate that made the Waring asymptotics work for $2^k+1$ powers.
+
+This chapter proves both theorems. For three primes, the major arcs come from Siegel--Walfisz (Lemma~\ref{lem:majorarc}) and the minor arcs from Vinogradov (Theorem~\ref{thm:vinogradov3}). For Waring, we prove Weyl's inequality for degree $k$ and Hua's lemma, both by Weyl's differencing, and compute the singular integral exactly.
+
+\begin{reminder}[from Tomes 4, 5 and 7, and Chapter~5]
+\emph{Sums} (Tome~5, Lemmas~11.1 and~11.6, Exercise~2.6). $|\sum_{n\in I}e(\beta n)|\le\min(|I|+1,\frac1{2\|\beta\|})$ for an interval $I$. If $|\alpha-\frac aq|\le\frac1{q^2}$ with $(a,q)=1$, then $\sum_{1\le x\le X}\min(N,\frac1{\|\alpha x\|})\le(\frac Xq+1)(4N+2q+2q\log q)$. For every $\varepsilon>0$, $\tau(m)\ll_\varepsilon m^\varepsilon$.
+\emph{Beta and Fourier} (Tome~4, Theorem~5.11; Tome~7, Theorem~5.2). $\int_0^1t^{x-1}(1-t)^{y-1}\dd t=\frac{\Gamma(x)\Gamma(y)}{\Gamma(x+y)}$. If $h\in L^1(\R)$ is continuous and $\hat h\in L^1$, then $h(x)=\int\hat h(\xi)e(x\xi)\dd\xi$ for every $x$.
+\emph{Primes} (Chapter~5). Dirichlet's approximation (Lemma~\ref{lem:dirichlet}); Vinogradov's estimate (Theorem~\ref{thm:vinogradov3}): if $|\alpha-\frac aq|\le\frac1{q^2}$ with $(a,q)=1$, then $S(\alpha)=\sum_{n\le N}\Lambda(n)e(n\alpha)\ll(\frac N{\sqrt q}+N^{4/5}+\sqrt{Nq})(\log N)^5$; and the major arc lemma (Lemma~\ref{lem:majorarc}), with Ramanujan's sum $c_q(a)=\mu(q)$ for $(a,q)=1$.
+\end{reminder}
+
+\section{The singular series of three primes}
+
+The number we want is
+\[
+R(N)=\sum_{n_1+n_2+n_3=N}\Lambda(n_1)\Lambda(n_2)\Lambda(n_3)=\int_0^1S(\alpha)^3e(-N\alpha)\dd\alpha,
+\]
+where $S(\alpha)=\sum_{n\le N}\Lambda(n)e(n\alpha)$; the integral picks out the coefficient of $e(N\alpha)$. The main term will contain a product over primes that records the local obstructions. Its ingredients are Ramanujan's sums for every $a$, not only for $a$ prime to $q$.
+
+\begin{lemma}\label{lem:ramsum}
+For $q\ge1$ and an integer $N$, let $c_q(N)=\sum_{r\le q,\,(r,q)=1}e(\frac{rN}q)$. Then $c_q(N)=\sum_{d\mid(q,N)}\mu(\frac qd)d$. In particular $c_q(N)$ is a real integer, multiplicative in $q$, and $c_p(N)=p-1$ if $p\mid N$, $c_p(N)=-1$ if $p\nmid N$.
+\end{lemma}
+\begin{proof}
+By $\sum_{d\mid(r,q)}\mu(d)=\mathbf 1_{(r,q)=1}$,
+\[
+c_q(N)=\sum_{d\mid q}\mu(d)\sum_{s\le q/d}e\Bigl(\frac{sN}{q/d}\Bigr)=\sum_{d\mid q}\mu(d)\,\frac qd\,\mathbf 1_{\frac qd\mid N},
+\]
+and with $e=\frac qd$ this is $\sum_{e\mid q,\,e\mid N}\mu(\frac qe)e$. As a function of $q$ it is the Dirichlet convolution of $\mu$ with the multiplicative function $e\mapsto e\mathbf 1_{e\mid N}$, hence multiplicative. For $q=p$ the divisors are $e=1$, giving $-1$, and $e=p$ if $p\mid N$, giving $p$.
+\end{proof}
+
+\begin{lemma}\label{lem:phi34}
+For every $q\ge1$, $\varphi(q)\ge\frac1{64}q^{3/4}$. Consequently $\sum_{q>Q}\frac1{\varphi(q)^2}\le\frac{2^{14}}{\sqrt Q}$ for $Q\ge1$.
+\end{lemma}
+\begin{proof}
+$\frac{\varphi(q)}{q^{3/4}}=\prod_{p^j\,\|\,q}p^{j/4}(1-\frac1p)\ge\prod_{p\mid q}p^{1/4}(1-\frac1p)$. For $p\ge16$ the factor is at least $2\cdot\frac12=1$, and for the six primes $p<16$ it is at least $2^{1/4}\cdot\frac12>\frac12$. So the product is at least $2^{-6}$. Then $\sum_{q>Q}\varphi(q)^{-2}\le2^{12}\sum_{q>Q}q^{-3/2}\le2^{12}(Q^{-3/2}+\int_Q^\infty t^{-3/2}\dd t)\le2^{12}\cdot\frac3{\sqrt Q}$.
+\end{proof}
+
+\begin{proposition}\label{prop:sing3}
+The \emph{singular series} $\mathfrak S(N)=\sum_{q\ge1}\frac{\mu(q)c_q(N)}{\varphi(q)^3}$ converges absolutely, and
+\[
+\mathfrak S(N)=\prod_{p\mid N}\Bigl(1-\frac1{(p-1)^2}\Bigr)\prod_{p\nmid N}\Bigl(1+\frac1{(p-1)^3}\Bigr).
+\]
+If $N$ is even, $\mathfrak S(N)=0$. If $N$ is odd, $1\le\mathfrak S(N)\le4$.
+\end{proposition}
+\begin{proof}
+Since $|c_q(N)|\le\varphi(q)$, the terms are at most $\varphi(q)^{-2}$ in absolute value, and Lemma~\ref{lem:phi34} gives absolute convergence. The term is a multiplicative function of $q$ (Lemma~\ref{lem:ramsum}), supported on squarefree $q$, so the series equals its Euler product $\prod_p(1-\frac{c_p(N)}{(p-1)^3})$, which is the product displayed. At $p=2$ the factor is $0$ if $2\mid N$ and $2$ otherwise. For odd $N$, the factors with $p\mid N$, $p\ge3$, are at least $\prod_{m\ge2}(1-\frac1{m^2})=\frac12$ in total, since the numbers $p-1$ are distinct integers $\ge2$ and the product telescopes: $\prod_{m=2}^M\frac{(m-1)(m+1)}{m^2}=\frac{M+1}{2M}$. The factors with $p\nmid N$ are at least $1$. So $\mathfrak S(N)\ge2\cdot\frac12=1$. Similarly $\mathfrak S(N)\le2\prod_{m\ge2}(1+\frac1{m^3})\le2\exp(\zeta(3)-1)<4$.
+\end{proof}
+
+\section{Vinogradov's three primes theorem}
+
+\begin{theorem}[Vinogradov, 1937]\label{thm:threeprimes}
+For every $A>0$, as $N\to\infty$,
+\[
+R(N)=\frac12\mathfrak S(N)N^2+O_A\Bigl(\frac{N^2}{(\log N)^A}\Bigr).
+\]
+The implied constant cannot be computed by the proof.
+\end{theorem}
+
+\begin{proof}
+Let $\mathcal L=\log N$, let $B=2A+12$ and $P=\mathcal L^B$, and assume $N$ is large.
+
+\emph{The arcs.} For $1\le q\le P$ and $(a,q)=1$, let $\mathfrak M(q,a)$ be the set of $\alpha$ modulo $1$ with $|\alpha-\frac aq|\le\frac PN$. Two distinct fractions with denominators at most $P$ differ by at least $\frac1{P^2}>\frac{2P}N$, so these arcs are disjoint. Let $\mathfrak M$ be their union, the \emph{major arcs}, and $\mathfrak m$ the complement, the \emph{minor arcs}. The measure of $\mathfrak M$ is at most $\sum_{q\le P}q\cdot\frac{2P}N\le\frac{2P^3}N$.
+
+\emph{Minor arcs.} Let $\alpha\in\mathfrak m$. By Lemma~\ref{lem:dirichlet} with $Q=\frac NP$ there are coprime $a$, $q$ with $q\le\frac NP$ and $|\alpha-\frac aq|\le\frac P{qN}\le\frac1{q^2}$. If $q\le P$, then $|\alpha-\frac aq|\le\frac PN$ and $\alpha\in\mathfrak M$; so $q>P$. Theorem~\ref{thm:vinogradov3} gives
+\[
+|S(\alpha)|\ll\Bigl(\frac N{\sqrt P}+N^{4/5}+\frac N{\sqrt P}\Bigr)\mathcal L^5\ll N\mathcal L^{5-B/2}.
+\]
+By Parseval, $\int_0^1|S|^2=\sum_{n\le N}\Lambda(n)^2\le\mathcal L\psi(N)\le2N\mathcal L$ (Chebyshev). So
+\[
+\Bigl|\int_{\mathfrak m}S(\alpha)^3e(-N\alpha)\dd\alpha\Bigr|\le\sup_{\mathfrak m}|S|\int_0^1|S|^2\ll N^2\mathcal L^{6-B/2}=N^2\mathcal L^{-A}.
+\]
+
+\emph{Major arcs.} Let $\alpha=\frac aq+\beta\in\mathfrak M(q,a)$ and $T(\beta)=\sum_{n\le N}e(\beta n)$. Lemma~\ref{lem:majorarc}, with $A'=4B+A$ in place of $A$, gives $S(\alpha)=\frac{\mu(q)}{\varphi(q)}T(\beta)+O(E)$ with $E=PN\mathcal L^{-A'}$, since $|\beta|N\le P$. Both $S(\alpha)$ and $\frac{\mu(q)}{\varphi(q)}T(\beta)$ have modulus at most $2N$, and $|x^3-y^3|\le3\max(|x|,|y|)^2|x-y|$, so on $\mathfrak M$ the cube $S^3$ differs from $(\frac{\mu(q)}{\varphi(q)}T)^3$ by $O(N^2E)$. Integrated over $\mathfrak M$ this costs $O(N^2E\cdot\frac{P^3}N)=O(N^2\mathcal L^{4B-A'})=O(N^2\mathcal L^{-A})$. What remains is, since $\mu(q)^3=\mu(q)$ and $\sum_{(a,q)=1}e(-\frac{aN}q)=c_q(-N)=c_q(N)$,
+\[
+\sum_{q\le P}\frac{\mu(q)c_q(N)}{\varphi(q)^3}\int_{-P/N}^{P/N}T(\beta)^3e(-N\beta)\dd\beta.
+\]
+
+\emph{The singular integral.} Over the full interval, $\int_{-1/2}^{1/2}T(\beta)^3e(-N\beta)\dd\beta$ counts the triples of integers in $[1,N]$ with sum $N$, which is $\binom{N-1}2=\frac{N^2}2+O(N)$. For $\frac PN\le|\beta|\le\frac12$, $|T(\beta)|\le\frac1{2|\beta|}$, so the two tails together are at most $2\int_{P/N}^\infty\frac{\dd\beta}{8\beta^3}=\frac{N^2}{8P^2}$. So the integral over $|\beta|\le\frac PN$ is $\frac{N^2}2+O(\frac{N^2}{P^2})$.
+
+\emph{The singular series.} The sum over $q\le P$ of $|\frac{\mu(q)c_q(N)}{\varphi(q)^3}|\le\varphi(q)^{-2}$ is bounded, and by Lemma~\ref{lem:phi34} it differs from $\mathfrak S(N)$ by $O(P^{-1/2})$. So the major arcs give $\frac12\mathfrak S(N)N^2+O(N^2P^{-1/2})+O(N^2\mathcal L^{-A})$, and $P^{-1/2}=\mathcal L^{-A-6}$.
+\end{proof}
+
+\begin{corollary}[Vinogradov, 1937]\label{cor:threeprimes}
+Every sufficiently large odd number is a sum of three primes.
+\end{corollary}
+\begin{proof}
+Let $N$ be odd and large. By Proposition~\ref{prop:sing3} and the theorem, $R(N)\ge\frac12N^2-O(\frac{N^2}{\log N})\ge\frac13N^2$. The triples in which some $n_i$ is a power $p^j$ with $j\ge2$ contribute little: there are at most $\sqrt N\log_2N$ such $n_i\le N$, at most $N$ choices for the other two entries once one entry is fixed, three positions, and weight at most $(\log N)^3$, in total $O(N^{3/2}(\log N)^4)$. So the triples of primes contribute at least $\frac14N^2>0$, and some $p_1+p_2+p_3=N$.
+\end{proof}
+
+The corollary is ineffective: ``sufficiently large'' depends on the Siegel constant, which no one can compute. Later versions of the proof, which avoid Siegel's theorem by treating a possible exceptional zero separately, gave explicit bounds; Borozdin's bound of 1956, $N\ge3^{3^{15}}$, is a number with almost seven million digits. In 2013 Harald Helfgott closed the gap: every odd number greater than $5$ is a sum of three primes. His proof sharpens both arcs until the analytic argument covers every $N$ beyond a modest explicit bound, and a computer check by Helfgott and Platt, built on the verification of the binary conjecture up to $4\cdot10^{18}$ by Oliveira e Silva, Herzog and Pardi, does the rest.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-threeprimes}
+\caption{$R(N)$ divided by $\frac12\mathfrak S(N)N^2$, for the odd $N=1001,2001,\dots,99001$, with $R(N)$ computed exactly by a fast Fourier transform of $\Lambda$. The ratio is $0.945$ at $N=1001$, $0.993$ at $N=10001$ and $0.998$ at $N=99001$. The singular series itself moves a lot, between $1.33$ and $2.3$ for these $N$ (it is smallest when $N$ has many small prime factors), and the main term follows it.}
+\label{fig:threeprimes}
+\end{figure}
+
+\begin{think}
+Why does the same method fail for two primes? The minor arc bound used $\int|S|^2\approx N\log N$ and a saving of a power of $\log N$ in $\sup_{\mathfrak m}|S|$. For two primes, the minor arc integral $\int_{\mathfrak m}S(\alpha)^2e(-N\alpha)\dd\alpha$ must be compared with a main term of size $N$, and the only general bound is $\int_{\mathfrak m}|S|^2$, which is about $N\log N$ (Exercise~\ref{ex:binary}). One factor of $S$ less, and the method has nothing left to absorb the loss. What it can still prove is that \emph{almost all} even numbers are sums of two primes (Exercise~\ref{ex:almostall}).
+\end{think}
+
+\section{Weyl's inequality and Hua's lemma}
+
+For Waring's problem the generating function is the Weyl sum
+\[
+f(\alpha)=\sum_{1\le x\le P}e(\alpha x^k),\qquad k\ge2,\ P\ge1,
+\]
+and the tool is differencing. For a function $\psi$ on the integers and $h\in\Z$, let $\Delta_h\psi(x)=\psi(x+h)-\psi(x)$, and for $\mathbf h=(h_1,\dots,h_j)$ let $\Delta_{\mathbf h}=\Delta_{h_1}\cdots\Delta_{h_j}$. Expanding, $\Delta_{\mathbf h}\psi(x)=\sum_{S\subseteq\{1,\dots,j\}}(-1)^{j-|S|}\psi(x+h_S)$ with $h_S=\sum_{i\in S}h_i$. For an interval $I\subseteq[1,P]$ let $T(\psi,I)=\sum_{x\in I\cap\Z}e(\psi(x))$, let $H=\Z\cap\left]-P,P\right[$, and let $I_{\mathbf h}$ be the set of $x$ with $x+h_S\in I$ for all $S$, an interval contained in $I$.
+
+\begin{lemma}[Weyl differencing]\label{lem:weyldiff}
+For $j\ge1$,
+\[
+|T(\psi,I)|^{2^j}\le(2P)^{2^j-j-1}\sum_{\mathbf h\in H^j}T(\Delta_{\mathbf h}\psi,I_{\mathbf h}),
+\]
+and the right side is real and non-negative.
+\end{lemma}
+\begin{proof}
+For any interval $J\subseteq[1,P]$ and function $\phi$, writing $x=y+h$,
+\[
+|T(\phi,J)|^2=\sum_{x,y\in J}e(\phi(x)-\phi(y))=\sum_{h\in H}T(\Delta_h\phi,J\cap(J-h)).\tag{$\ast$}
+\]
+For $j=1$ this is the claim. Suppose the claim holds for $j$. By $(\ast)$ with $\phi=\Delta_{\mathbf h}\psi$ and $J=I_{\mathbf h}$, summed over $\mathbf h\in H^j$, the right side for $j+1$ is $(2P)^{2^{j+1}-j-2}\sum_{\mathbf h\in H^j}|T(\Delta_{\mathbf h}\psi,I_{\mathbf h})|^2\ge0$; and the right side for $j$ is $\sum_{\mathbf h\in H^{j-1}}|\cdots|^2\ge0$ by the same identity (for $j=1$ it is $|T(\psi,I)|^2$). Squaring the inequality for $j$ and applying Cauchy--Schwarz over the at most $(2P)^j$ vectors $\mathbf h$,
+\[
+|T(\psi,I)|^{2^{j+1}}\le(2P)^{2^{j+1}-2j-2}(2P)^j\sum_{\mathbf h\in H^j}|T(\Delta_{\mathbf h}\psi,I_{\mathbf h})|^2,
+\]
+which is the claim for $j+1$.
+\end{proof}
+
+For $\psi(x)=\alpha x^k$ the differences have a simple shape. For $j\le k$ and $x\in I_{\mathbf h}$,
+\[
+\Delta_{\mathbf h}x^k=h_1\cdots h_j\,p_j(x;\mathbf h),\qquad p_j(x;\mathbf h)=\int_{[0,1]^j}\frac{k!}{(k-j)!}(x+\mathbf t\cdot\mathbf h)^{k-j}\dd\mathbf t,\tag{7.1}
+\]
+by the fundamental theorem of calculus applied in each variable $t_i$ in turn. The point $x+\mathbf t\cdot\mathbf h$ is multi-affine in $\mathbf t$, so it lies in the convex hull of the points $x+h_S$, all in $[1,P]$; hence $p_j(x;\mathbf h)\ge\frac{k!}{(k-j)!}\ge1$, and for $j<k$, $p_j$ is strictly increasing in $x$. For $j=k-1$, $p_{k-1}(x;\mathbf h)=k!\,(x+\frac{h_1+\cdots+h_{k-1}}2)$.
+
+\begin{theorem}[Weyl's inequality]\label{thm:weylk}
+Let $k\ge2$ and $\varepsilon>0$. If $|\alpha-\frac aq|\le\frac1{q^2}$ with $(a,q)=1$, then
+\[
+|f(\alpha)|\ll_{k,\varepsilon}P^{1+\varepsilon}\Bigl(\frac1q+\frac1P+\frac q{P^k}\Bigr)^{2^{1-k}}.
+\]
+\end{theorem}
+\begin{proof}
+We may assume $q\le P^k$, since otherwise the bound exceeds $P$. Apply Lemma~\ref{lem:weyldiff} with $j=k-1$ and $I=[1,P]$. By (7.1), $\Delta_{\mathbf h}(\alpha x^k)$ is linear in $x$ with slope $\alpha k!h_1\cdots h_{k-1}$, so the reminder bounds each inner sum by $\min(P+1,\frac1{2\|\alpha k!h_1\cdots h_{k-1}\|})$, and
+\[
+|f(\alpha)|^{2^{k-1}}\le(2P)^{2^{k-1}-k}\sum_{\mathbf h\in H^{k-1}}\min\Bigl(2P,\frac1{\|\alpha k!h_1\cdots h_{k-1}\|}\Bigr).
+\]
+The $\mathbf h$ with some $h_i=0$ contribute at most $(k-1)(2P)^{k-2}\cdot2P\ll P^{k-1}$. For the others, $m=k!|h_1\cdots h_{k-1}|$ lies in $[1,k!P^{k-1}]$, and a given $m$ comes from at most $2^{k-1}\tau(m)^{k-1}\ll P^\varepsilon$ vectors $\mathbf h$, since each $|h_i|$ divides $m$. With $X=k!P^{k-1}$, the second reminder bounds the sum over $m$ by
+\[
+\Bigl(\frac Xq+1\Bigr)(8P+2q+2q\log q)\ll\Bigl(\frac{P^k}q+P^{k-1}+P+q\Bigr)\log P\ll P^k\Bigl(\frac1q+\frac1P+\frac q{P^k}\Bigr)\log P.
+\]
+Altogether $|f(\alpha)|^{2^{k-1}}\ll P^{2^{k-1}-k}\cdot P^{k+2\varepsilon}(\frac1q+\frac1P+\frac q{P^k})$; take the $2^{k-1}$-th root and rename $\varepsilon$.
+\end{proof}
+
+For $k=2$ this is Tome~5's Weyl inequality for squares. The exponent $2^{1-k}$ is the price of $k-1$ applications of Cauchy--Schwarz; Vinogradov's mean value theorem (Theorem~\ref{thm:vmvt}) improves it to about $\frac1{k^2}$, but we shall not need that.
+
+\begin{theorem}[Hua, 1938]\label{thm:hua}
+For $1\le j\le k$ and $\varepsilon>0$, $\displaystyle\int_0^1|f(\alpha)|^{2^j}\dd\alpha\ll_{k,\varepsilon}P^{2^j-j+\varepsilon}$.
+\end{theorem}
+\begin{proof}
+For $j=1$, Parseval gives $\int_0^1|f|^2=\lfloor P\rfloor\le P$. Suppose the bound holds for some $j\le k-1$. Expanding,
+\[
+|f(\alpha)|^{2^j}=f(\alpha)^{2^{j-1}}\overline{f(\alpha)}^{2^{j-1}}=\sum_m\rho(m)e(\alpha m),
+\]
+where $\rho(m)\ge0$ counts the solutions of $y_1^k+\cdots+y_{2^{j-1}}^k-z_1^k-\cdots-z_{2^{j-1}}^k=m$ in integers of $[1,P]$; and $\rho(m)\le\rho(0)=\int_0^1|f|^{2^j}$ by Cauchy--Schwarz, $\sum_m\rho(m)=\lfloor P\rfloor^{2^j}$. Lemma~\ref{lem:weyldiff} and (7.1) give
+\[
+|f(\alpha)|^{2^j}\le(2P)^{2^j-j-1}\sum_{\mathbf h\in H^j}\sum_{x\in I_{\mathbf h}}e\bigl(\alpha D(x;\mathbf h)\bigr),\qquad D(x;\mathbf h)=h_1\cdots h_jp_j(x;\mathbf h),
+\]
+with a non-negative right side. Multiplying by $|f(\alpha)|^{2^j}$ and integrating, since $\int_0^1e(\alpha D)|f|^{2^j}=\rho(-D)$,
+\[
+\int_0^1|f|^{2^{j+1}}\le(2P)^{2^j-j-1}\sum_{\mathbf h\in H^j}\sum_{x\in I_{\mathbf h}}\rho(-D(x;\mathbf h)).
+\]
+If some $h_i=0$, then $D=0$; there are at most $j(2P)^{j-1}P$ such pairs $(\mathbf h,x)$, each contributing $\rho(0)\ll P^{2^j-j+\varepsilon}$, in total $O(P^{2^j+\varepsilon})$. If no $h_i$ is $0$, then $D\ne0$ and $|D|\le k!P^k$. A given value $m=D$ determines the $h_i$ up to $(2\tau(|m|))^j\ll P^\varepsilon$ choices, since each divides $m$; then $p_j=\frac m{h_1\cdots h_j}$, which determines $x$ because $p_j$ is strictly increasing in $x$. So these pairs contribute at most $O(P^\varepsilon)\sum_m\rho(-m)\ll P^{2^j+\varepsilon}$. Hence $\int_0^1|f|^{2^{j+1}}\ll P^{2^j-j-1}\cdot P^{2^j+\varepsilon}=P^{2^{j+1}-(j+1)+\varepsilon}$.
+\end{proof}
+
+For $j=k$ the lemma says that $\int|f|^{2^k}\ll P^{2^k-k+\varepsilon}$, which is the number of trivial solutions $P^{2^{k-1}}$ only when $k=2$, but is always within $P^\varepsilon$ of the lower bound $P^{2^k-k}$: the $P^{2^k}$ tuples of $2^k$ variables produce values in a range of length $O(P^k)$, so some value is hit $P^{2^k-k}$ times. Hua's lemma says that, on average, the sums of $2^{k-1}$ $k$-th powers are as well spread as they can be.
+
+\section{Waring's problem}
+
+Let $r_{s,k}(n)$ be the number of $(x_1,\dots,x_s)$ in positive integers with $x_1^k+\cdots+x_s^k=n$. Take $P=n^{1/k}$; then every solution has $x_i\le P$ and $r_{s,k}(n)=\int_0^1f(\alpha)^se(-n\alpha)\dd\alpha$. The major arc approximation involves the complete sums
+\[
+S(q,a)=\sum_{r=1}^qe\Bigl(\frac{ar^k}q\Bigr),\qquad v(\beta)=\int_0^Pe(\beta t^k)\dd t.
+\]
+
+\begin{lemma}\label{lem:waringmajor}
+If $1\le q\le P$ and $\alpha=\frac aq+\beta$, then $f(\alpha)=q^{-1}S(q,a)v(\beta)+O_k(q(1+P^k|\beta|))$.
+\end{lemma}
+\begin{proof}
+Since $x^k\equiv r^k\pmod q$ when $x\equiv r$,
+\[
+f(\alpha)=\sum_{r=1}^qe\Bigl(\frac{ar^k}q\Bigr)\sum_{\substack{x\le P\\x\equiv r}}g(x),\qquad g(t)=e(\beta t^k).
+\]
+ For fixed $r$, write $x=r+qm$, $0\le m\le M$. Each term $g(r+qm)$ differs from $\frac1q\int_{r+qm}^{r+q(m+1)}g$ by at most $\int_{r+qm}^{r+q(m+1)}|g'|$, and $\frac1q\int_{r}^{r+q(M+1)}g$ differs from $\frac1qv(\beta)$ by at most $2$, the two pieces $[0,r]$ and $[P,r+q(M+1)]$ having length at most $q$. With $|g'(t)|=2\pi k|\beta|t^{k-1}$ and $q\le P$, $\int_0^{2P}|g'|=2\pi|\beta|(2P)^k$. So the inner sum is $\frac{v(\beta)}q+O(1+P^k|\beta|)$; multiply by the $q$ roots of unity and add.
+\end{proof}
+
+\begin{lemma}\label{lem:singint}
+(a) $|v(\beta)|\le\min(P,2|\beta|^{-1/k})$.
+(b) If $s\ge2k$, then $\displaystyle\int_\R v(\beta)^se(-n\beta)\dd\beta=\frac{\Gamma(1+\frac1k)^s}{\Gamma(\frac sk)}\,n^{\frac sk-1}$.
+\end{lemma}
+\begin{proof}
+Substituting $u=t^k$, $v(\beta)=\int_0^ng(u)e(\beta u)\dd u$ with $g(u)=\frac1ku^{1/k-1}$ on $\left]0,n\right]$ and $g=0$ elsewhere.
+(a) $|v|\le P$ is clear. For $|\beta|\ge\frac1n$ let $U=\frac1{|\beta|}$; then $\int_0^Ug=U^{1/k}$. On $[U,n]$, $g$ is positive and decreasing, and $E(u)=\int_U^ue(\beta w)\dd w$ has $|E|\le\frac1{\pi|\beta|}$; integrating by parts, $|\int_U^nge(\beta u)\dd u|\le\frac{2g(U)}{\pi|\beta|}=\frac{2U^{1/k}}{k\pi}$. So $|v(\beta)|\le(1+\frac2{k\pi})U^{1/k}\le2|\beta|^{-1/k}$; for $|\beta|<\frac1n$, $P<|\beta|^{-1/k}$.
+(b) By (a), $|v|^s$ is integrable when $s>k$. Let $g^{*j}$ be the $j$-fold convolution of $g$. Tome~4's Beta integral gives, by induction on $j$, $\int_0^m\frac{u^{a-1}}{\Gamma(a)}\frac{(m-u)^{b-1}}{\Gamma(b)}\dd u=\frac{m^{a+b-1}}{\Gamma(a+b)}$, hence
+\[
+g^{*j}(m)=\frac{\Gamma(\frac1k)^j}{k^j\Gamma(\frac jk)}m^{\frac jk-1}=\frac{\Gamma(1+\frac1k)^j}{\Gamma(\frac jk)}m^{\frac jk-1}\qquad(0<m\le n),
+\]
+because for $m\le n$ the cut-off at $n$ plays no role; for $m>n$, $g^{*j}(m)$ is at most the same expression. In particular $g^{*k}$ is bounded, so $g^{*2k}=g^{*k}*g^{*k}$ is continuous (a convolution of two functions in $L^2$), and so is $g^{*s}=g^{*2k}*g^{*(s-2k)}$ when $s>2k$, a convolution of a bounded uniformly continuous function with an integrable one. Its Fourier transform is $\hat g(\xi)^s=v(-\xi)^s$, which is integrable. By Fourier inversion at the point $n$, $g^{*s}(n)=\int v(-\xi)^se(n\xi)\dd\xi=\int v(\beta)^se(-n\beta)\dd\beta$.
+\end{proof}
+
+The condition $s\ge2k$ in (b) only serves to make the continuity easy; it holds in the theorem below, since $2^k+1\ge2k$.
+
+\begin{theorem}[Hardy and Littlewood, 1920; Hua, 1938]\label{thm:waring}
+Let $k\ge2$ and $s\ge2^k+1$. The series
+\[
+\mathfrak S_{s,k}(n)=\sum_{q\ge1}\sum_{\substack{a\bmod q\\(a,q)=1}}\Bigl(\frac{S(q,a)}q\Bigr)^se\Bigl(-\frac{an}q\Bigr)
+\]
+converges absolutely, uniformly in $n$, and there is $\delta=\delta(k)>0$ such that
+\[
+r_{s,k}(n)=\frac{\Gamma(1+\frac1k)^s}{\Gamma(\frac sk)}\,\mathfrak S_{s,k}(n)\,n^{\frac sk-1}+O_{s,k}\bigl(n^{\frac sk-1-\delta}\bigr).
+\]
+\end{theorem}
+\begin{proof}
+Fix $\varepsilon>0$ small in terms of $s$ and $k$, and let $\nu=\frac1{10}$.
+
+\emph{Complete sums.} For $(a,q)=1$, $S(q,a)$ is the Weyl sum of length $q$ at $\alpha=\frac aq$, so Theorem~\ref{thm:weylk} with $P=q$ gives $|S(q,a)|\ll q^{1+\varepsilon}(\frac2q+q^{1-k})^{2^{1-k}}\ll q^{1-2^{1-k}+\varepsilon}$. As $s2^{1-k}\ge2+2^{1-k}$, the inner sum in $\mathfrak S_{s,k}$ is $O(q\cdot q^{-s2^{1-k}+s\varepsilon})=O(q^{-1-2^{1-k}+s\varepsilon})$, so the series converges absolutely, and its tail beyond $Q$ is $O(Q^{-2^{1-k}+s\varepsilon})$.
+
+\emph{Arcs.} For $q\le P^\nu$ and $(a,q)=1$ let $\mathfrak M(q,a)=\{\alpha:|\alpha-\frac aq|\le P^{\nu-k}\}$; they are disjoint for $P$ large, as $P^{-2\nu}>2P^{\nu-k}$, and their union $\mathfrak M$ has measure at most $2P^{3\nu-k}$. On the complement $\mathfrak m$, Lemma~\ref{lem:dirichlet} with $Q=P^{k-\nu}$ gives $q\le Q$ with $|\alpha-\frac aq|\le\frac1{qQ}\le\frac1{q^2}$, and $q>P^\nu$ (otherwise $\alpha\in\mathfrak M$). Theorem~\ref{thm:weylk} then gives $|f(\alpha)|\ll P^{1+\varepsilon}(3P^{-\nu})^{2^{1-k}}$.
+
+\emph{Minor arcs.} By Hua's lemma with $j=k$,
+\[
+\int_{\mathfrak m}|f|^s\le\sup_{\mathfrak m}|f|^{s-2^k}\int_0^1|f|^{2^k}\ll P^{(s-2^k)(1-\nu2^{1-k}+\varepsilon)}P^{2^k-k+\varepsilon}\le P^{s-k-\nu2^{1-k}+s\varepsilon}.
+\]
+
+\emph{Major arcs.} On $\mathfrak M(q,a)$, with $V=q^{-1}S(q,a)v(\beta)$, Lemma~\ref{lem:waringmajor} gives $|f-V|\ll P^\nu(1+P^\nu)\ll P^{2\nu}$, and $|f|,|V|\le P$, so $|f^s-V^s|\le sP^{s-1}|f-V|\ll P^{s-1+2\nu}$. Over $\mathfrak M$ this costs $O(P^{s-k-1+5\nu})$. The main part is
+\[
+\sum_{q\le P^\nu}\sum_{(a,q)=1}\Bigl(\frac{S(q,a)}q\Bigr)^se\Bigl(-\frac{an}q\Bigr)\int_{|\beta|\le P^{\nu-k}}v(\beta)^se(-n\beta)\dd\beta.
+\]
+By Lemma~\ref{lem:singint}(a), the integral over $|\beta|>P^{\nu-k}$ is at most $2\int_{P^{\nu-k}}^\infty(2\beta^{-1/k})^s\dd\beta\ll P^{(\nu-k)(1-s/k)}=P^{s-k-\nu(s/k-1)}$, so the integral is $J(n)+O(P^{s-k-\nu(s-k)/k})$ with $J(n)=\frac{\Gamma(1+1/k)^s}{\Gamma(s/k)}P^{s-k}$ by Lemma~\ref{lem:singint}(b). The sum over $q\le P^\nu$ is bounded, and differs from $\mathfrak S_{s,k}(n)$ by $O(P^{-\nu(2^{1-k}-s\varepsilon)})$.
+
+\emph{Conclusion.} Every error is $O(P^{s-k-\delta'})$ for some $\delta'>0$ once $\varepsilon$ is small: the exponents saved are $\nu2^{1-k}-s\varepsilon$, $1-5\nu$, $\nu\frac{s-k}k$ and $\nu(2^{1-k}-s\varepsilon)$. Since $P^{s-k}=n^{s/k-1}$, the theorem holds with $\delta=\frac{\delta'}k$.
+\end{proof}
+
+The singular series is a product of local densities, $\mathfrak S_{s,k}(n)=\prod_p\chi_p(n)$, where $\chi_p(n)=\lim_{j\to\infty}p^{j(1-s)}\#\{\mathbf x\bmod p^j:x_1^k+\cdots+x_s^k\equiv n\}$ measures how often $n$ is a sum of $s$ $k$-th powers $p$-adically. It can vanish: fourth powers are $0$ or $1$ modulo $16$, so for $s\le14$ no $n\equiv15\pmod{16}$ is a sum of $s$ fourth powers even modulo $16$, and $\chi_2(n)=0$. Hensel's lemma shows that it is bounded below as soon as there are enough variables.
+
+\begin{theorem}[Hardy and Littlewood; quoted]\label{thm:singpos}
+If $s\ge4k$, then $\mathfrak S_{s,k}(n)\ge c(s,k)>0$ for all $n\ge1$.
+\end{theorem}
+
+\begin{corollary}[Hua, 1938]\label{cor:gk}
+For $k\ge4$, every sufficiently large integer is a sum of $2^k+1$ positive $k$-th powers: $G(k)\le2^k+1$.
+\end{corollary}
+\begin{proof}
+For $k\ge4$, $s=2^k+1\ge4k$, so Theorems~\ref{thm:waring} and~\ref{thm:singpos} give $r_{s,k}(n)\ge c\,n^{s/k-1}-O(n^{s/k-1-\delta})>0$ for $n$ large.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-fivesquares}
+\caption{Sums of five squares ($k=2$, $s=5=2^k+1$), for $n=2000,2010,\dots,4000$. Horizontally, the singular series $\mathfrak S_{5,2}(n)$, summed over $q\le200$; vertically, $r_{5,2}(n)$, computed exactly, divided by $\frac{\Gamma(3/2)^5}{\Gamma(5/2)}n^{3/2}$. The correlation is $0.993$. The points lie along a line slightly below the diagonal (the average ratio is $0.93$), because of a lower-order term of relative size about $n^{-1/2}$, coming from the representations that would use $0$.}
+\label{fig:fivesquares}
+\end{figure}
+
+\begin{beauty}
+The two halves of the chapter are the same proof. A count of solutions is written as an integral over the circle; near the fractions with small denominators the integrand factorizes into a \emph{local} part, a complete exponential sum modulo $q$, and an \emph{archimedean} part, an integral over the reals; summing over all $q$ assembles the local parts into a product over all primes. The main term is then a product of densities, one for each completion of $\Q$: the singular integral for $\R$, the factor $\chi_p$ for each $\Q_p$. Everything else, the minor arcs, is noise, and the whole difficulty is to prove that it is noise.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:sing3}
+Show that for odd $N$, $\mathfrak S(N)=2\prod_{p\mid N,\,p>2}\bigl(1-\frac1{(p-1)^2}\bigr)\prod_{p\nmid N,\,p>2}\bigl(1+\frac1{(p-1)^3}\bigr)$. By what factor does the main term of $R(N)$ drop when $3\mid N$, compared with a nearby $N$ prime to $3$ and with the same other prime factors? Check it against the values of $\mathfrak S(N)$ in Figure~\ref{fig:threeprimes}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gausssq}
+For $k=2$ and $(a,q)=1$, show that $|S(q,a)|^2\le2q$. Deduce directly, without Weyl's inequality, that $\mathfrak S_{s,2}(n)$ converges absolutely for $s\ge5$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:r3count}
+Let $r_3(N)$ be the number of ordered triples of primes with $p_1+p_2+p_3=N$. Deduce from Theorem~\ref{thm:threeprimes} that $r_3(N)\sim\frac{\mathfrak S(N)N^2}{2(\log N)^3}$ for odd $N\to\infty$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:binary}
+With the arcs of the proof of Theorem~\ref{thm:threeprimes}, show that $\int_{\mathfrak M}|S|^2\ll N\log\log N$, and deduce that $\int_{\mathfrak m}|S|^2\sim N\log N$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:density}
+Use Hua's lemma and Cauchy--Schwarz to show that at least $X^{1-\varepsilon}$ of the integers $n\le X$ are sums of $2^{k-1}$ positive $k$-th powers, for $X\ge X_0(k,\varepsilon)$. What does it say for four cubes?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:almostall}
+\emph{Almost all even numbers are sums of two primes} (Chudakov, van der Corput, Estermann, 1937--1938). Let $R_2(n)=\sum_{m_1+m_2=n}\Lambda(m_1)\Lambda(m_2)$. Show that for every $A>0$, all but $O_A(N(\log N)^{-A})$ even $n\in\left]\frac N2,N\right]$ have $R_2(n)\ge\frac N8$, and deduce that the number of even $n\le N$ that are not sums of two primes is $O_A(N(\log N)^{-A})$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:sing3}
+Read off the factor at $p=2$ and at $p=3$ in Proposition~\ref{prop:sing3}.
+\end{hint}
+
+\begin{hint}{ex:gausssq}
+Expand $|S(q,a)|^2$, put $x=y+h$, and sum over $y$ first: $x^2-y^2=h^2+2hy$.
+\end{hint}
+
+\begin{hint}{ex:r3count}
+Each triple carries a weight $w$ with $w\le(\log N)^3$, and $w\ge(1-\eta)^3(\log N)^3$ unless some $p_i\le N^{1-\eta}$.
+\end{hint}
+
+\begin{hint}{ex:binary}
+On $\mathfrak M(q,a)$, $|S|\le\frac{|T|}{\varphi(q)}+O(E)$, and $\int_{-1/2}^{1/2}|T|^2\le N$.
+\end{hint}
+
+\begin{hint}{ex:density}
+$\sum_nr_{s,k}(n)=\lfloor P\rfloor^s$ and $\sum_nr_{s,k}(n)^2=\int_0^1|f|^{2s}$; take $2s=2^k$.
+\end{hint}
+
+\begin{hint}{ex:almostall}
+Split $R_2(n)=\int_{\mathfrak M}+\int_{\mathfrak m}$. The major arcs give $\mathfrak S_2(n;P)\,n+O(N\log P/P)+O(N\mathcal L^{-A})$ with $\mathfrak S_2(n;P)=\sum_{q\le P}\frac{\mu(q)^2c_q(n)}{\varphi(q)^2}$, which is at least $1$ unless $\tau(n)$ is unusually large. The minor arc parts $E(n)$ satisfy $\sum_n|E(n)|^2\le\int_{\mathfrak m}|S|^4$ by Parseval.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:sing3}
+\idea Each prime contributes its own factor, so changing the divisibility by $3$ changes one factor only.
+\writeup For odd $N$ the factor at $p=2$ is $1+\frac1{(2-1)^3}=2$, and the other factors are as in Proposition~\ref{prop:sing3}. The factor at $3$ is $1-\frac14=\frac34$ if $3\mid N$ and $1+\frac18=\frac98$ if not; their ratio is $\frac{3/4}{9/8}=\frac23$. So, other things equal, odd multiples of $3$ have two thirds as many representations as three primes: if $3\mid N$, a representation with all $p_i\ne3$ needs residues modulo $3$ adding to $0$, from $\{1,2\}^3$ only $(1,1,1)$ and $(2,2,2)$ work, $2$ out of $8$; if $N\equiv1$ or $2$, three out of eight work. In Figure~\ref{fig:threeprimes}, the prime $N=3001$ has $\mathfrak S(N)=2.301$, the generic value $2\prod_{p>2}(1+\frac1{(p-1)^3})$ up to a factor $1-O(\frac1{N^3})$, while $N=2001=3\cdot23\cdot29$ has $\mathfrak S(N)=1.529$; the factors at $23$ and $29$ change it by less than $0.4\%$, and $\frac{1.529}{2.301}=0.664\approx\frac23$.
+\end{solution}
+
+\begin{solution}{ex:gausssq}
+\idea Squaring a Gauss sum linearizes the phase in one of the two variables.
+\writeup $|S(q,a)|^2=\sum_{x,y\bmod q}e(\frac{a(x^2-y^2)}q)$. With $x=y+h$, $x^2-y^2=h^2+2hy$, so
+\[
+|S(q,a)|^2=\sum_{h\bmod q}e\Bigl(\frac{ah^2}q\Bigr)\sum_{y\bmod q}e\Bigl(\frac{2ahy}q\Bigr).
+\]
+The inner sum is $q$ if $q\mid2ah$, that is $q\mid2h$ since $(a,q)=1$, and $0$ otherwise. At most two classes $h$ modulo $q$ have $q\mid2h$, so $|S(q,a)|^2\le2q$. Then the $q$-th term of $\mathfrak S_{s,2}$ is at most $q(\frac{2}{q})^{s/2}=2^{s/2}q^{1-s/2}$, and $\sum_qq^{1-s/2}$ converges for $s\ge5$.
+\end{solution}
+
+\begin{solution}{ex:r3count}
+\idea The logarithmic weights are essentially constant, $\log N$, for all but a negligible set of triples.
+\writeup Let
+\[
+R'(N)=\sum_{p_1+p_2+p_3=N}\log p_1\log p_2\log p_3.
+\]
+The proof of Corollary~\ref{cor:threeprimes} shows $R'(N)=R(N)+O(N^{3/2}(\log N)^4)=\frac12\mathfrak S(N)N^2(1+o(1))$, using $\mathfrak S(N)\ge1$. First, $R'(N)\le(\log N)^3r_3(N)$, so $r_3(N)\ge(1+o(1))\frac{\mathfrak S(N)N^2}{2(\log N)^3}$. Next fix $\eta\in\left]0,1\right[$. The triples with some $p_i\le N^{1-\eta}$ number at most $3N^{1-\eta}\cdot N$, since $p_i$ and one other prime determine the third. For the others the weight is at least $(1-\eta)^3(\log N)^3$, so
+\[
+r_3(N)\le\frac{R'(N)}{(1-\eta)^3(\log N)^3}+3N^{2-\eta}=\frac{(1+o(1))\mathfrak S(N)N^2}{2(1-\eta)^3(\log N)^3}.
+\]
+As $\eta$ is arbitrary and $\mathfrak S(N)\le4$, the asymptotic follows.
+\end{solution}
+
+\begin{solution}{ex:binary}
+\idea On the major arcs $S$ is a scaled copy of $T$, whose square integral is only $N$; the factor $\frac1{\varphi(q)^2}$ summed against the $\varphi(q)$ arcs gives $\sum\frac1{\varphi(q)}\asymp\log P$.
+\writeup On $\mathfrak M(q,a)$, $|S|^2\le2\frac{|T|^2}{\varphi(q)^2}+2|S-\frac{\mu(q)}{\varphi(q)}T|^2\le2\frac{|T(\beta)|^2}{\varphi(q)^2}+O(E^2)$ with $E=PN\mathcal L^{-A'}$. Since $\int_{-1/2}^{1/2}|T|^2=\lfloor N\rfloor$,
+\[
+\int_{\mathfrak M}|S|^2\le2N\sum_{q\le P}\frac{\varphi(q)}{\varphi(q)^2}+O\Bigl(E^2\frac{P^3}N\Bigr)=2N\sum_{q\le P}\frac1{\varphi(q)}+O(NP^5\mathcal L^{-2A'}).
+\]
+By Lemma~\ref{lem:phisum}, $\sum_{q\le P}\frac1{\varphi(q)}\le e(1+\log P)\ll\log\mathcal L$. With $A'$ large the error is $O(N)$, so $\int_{\mathfrak M}|S|^2\ll N\log\log N$. Since $\int_0^1|S|^2=\sum_{n\le N}\Lambda(n)^2=N\log N(1+o(1))$ (partial summation from $\psi(N)\sim N$), $\int_{\mathfrak m}|S|^2=N\log N(1+o(1))$. For two primes the main term is of order $N$, smaller than this by a factor $\log N$, so bounding $|\int_{\mathfrak m}S^2e(-N\alpha)|$ by $\int_{\mathfrak m}|S|^2$ cannot work.
+\end{solution}
+
+\begin{solution}{ex:density}
+\idea If the values were concentrated on few integers, the number of coincidences, which is the $2s$-th moment, would be large.
+\writeup Let $s=2^{k-1}$, $P=X^{1/k}$, and let $Z$ be the number of $n\le X$ with $r_{s,k}(n)>0$; all values $\sum x_i^k$ with $x_i\le P/s^{1/k}$ are at most $X$, so with $P'=P/s^{1/k}$ and $r'$ counting those, Cauchy--Schwarz gives
+\[
+\lfloor P'\rfloor^{2s}=\Bigl(\sum_nr'(n)\Bigr)^2\le Z\sum_nr'(n)^2=Z\int_0^1|f_{P'}|^{2^k}\ll ZP'^{2^k-k+\varepsilon}
+\]
+by Hua's lemma with $j=k$ ($2s=2^k$). So $Z\gg P'^{k-\varepsilon}\gg X^{1-\varepsilon/k}$. For cubes, $s=4$: almost every integer, in the sense that $X^{1-\varepsilon}$ of those up to $X$, is a sum of four positive cubes. Much more is true: Davenport proved in 1939, with a refined circle method, that almost all integers are sums of four positive cubes.
+\end{solution}
+
+\begin{solution}{ex:almostall}
+\idea Bessel's inequality turns a bound for $\int_{\mathfrak m}|S|^4$, which is fine (one factor of $\sup|S|$ to spare), into a bound for the number of $n$ whose minor arc contribution is large.
+\writeup Use the arcs of Theorem~\ref{thm:threeprimes} with $P=\mathcal L^B$, $B$ to be chosen, and $A'$ large. For $n\le N$, $R_2(n)=\int_0^1S^2e(-n\alpha)=M(n)+E(n)$, the major and minor parts.
+\emph{Minor arcs.} $E(n)$ is the $n$-th Fourier coefficient of $S^2\mathbf 1_{\mathfrak m}$, so by Parseval $\sum_{n}|E(n)|^2=\int_{\mathfrak m}|S|^4\le\sup_{\mathfrak m}|S|^2\int_0^1|S|^2\ll N^2\mathcal L^{10-B}\cdot N\mathcal L$. Hence $|E(n)|\ge\frac N8$ for at most $O(N\mathcal L^{11-B})$ values of $n$.
+\emph{Major arcs.} As in the theorem, $|S^2-\frac{\mu(q)^2}{\varphi(q)^2}T^2|\ll NE$ on $\mathfrak M(q,a)$, which costs $O(NE\frac{P^3}N)=O(N\mathcal L^{4B-A'})$, and
+\[
+M(n)=\sum_{q\le P}\frac{\mu(q)^2c_q(n)}{\varphi(q)^2}\int_{-P/N}^{P/N}T^2e(-n\beta)\dd\beta+O(N\mathcal L^{4B-A'}).
+\]
+The full integral is $n-1$ (pairs in $[1,N]^2$ with sum $n\le N$), and the tails are at most $2\int_{P/N}^\infty\frac{\dd\beta}{4\beta^2}=\frac N{2P}$. As $|c_q(n)|\le\varphi(q)$, $\sum_{q\le P}\frac{|c_q(n)|}{\varphi(q)^2}\le e(1+\log P)$, so $M(n)=\mathfrak S_2(n;P)(n-1)+O(\frac{N\log P}P)+O(N\mathcal L^{4B-A'})$.
+\emph{The singular series.} As in Proposition~\ref{prop:sing3}, the full series $\mathfrak S_2(n)=\sum_q\frac{\mu(q)^2c_q(n)}{\varphi(q)^2}$, if absolutely convergent, equals $\prod_{p\mid n}(1+\frac1{p-1})\prod_{p\nmid n}(1-\frac1{(p-1)^2})$, which for even $n$ is $2\prod_{p\mid n,p>2}\frac p{p-1}\prod_{p\nmid n,p>2}(1-\frac1{(p-1)^2})\ge2\cdot\frac12=1$, by the telescoping product. For convergence and the tail, by Lemma~\ref{lem:ramsum} $|c_q(n)|\le\sum_{d\mid(q,n)}d$, so, with Lemma~\ref{lem:phi34},
+\[
+\sum_{q>P}\frac{\mu(q)^2|c_q(n)|}{\varphi(q)^2}\le2^{12}\sum_{d\mid n}d\sum_{m>P/d}(dm)^{-3/2}\le2^{12}\sum_{d\mid n}d\cdot d^{-3/2}\cdot3\Bigl(\frac dP\Bigr)^{1/2}=\frac{3\cdot2^{12}\tau(n)}{\sqrt P},
+\]
+using $\sum_{m>Y}m^{-3/2}\le3Y^{-1/2}$ for $Y\ge1$ and the trivial bound $\sum_mm^{-3/2}\le3\le3(\frac dP)^{1/2}$ when $d>P$. The $n\le N$ with $\tau(n)>P^{1/4}$ number at most $P^{-1/4}\sum_{n\le N}\tau(n)\le2N\mathcal L^{1-B/4}$. For the other even $n$, $\mathfrak S_2(n;P)\ge1-O(P^{-1/4})\ge\frac34$.
+\emph{Conclusion.} For even $n\in\left]\frac N2,N\right]$ outside both exceptional sets, $R_2(n)\ge\frac34(\frac N2-1)-o(N)-\frac N8\ge\frac N8$ for $N$ large. Choosing $B=4A+20$ and $A'=4B+A$, the exceptional sets have $O(N\mathcal L^{-A})$ elements. When $R_2(n)\ge\frac N8$, the pairs involving a prime power $p^j$, $j\ge2$, contribute $O(\sqrt N\mathcal L^3)$, so $n$ is a sum of two primes. Applying this to $N,\frac N2,\frac N4,\dots$ covers all even $n\le N$ with $O(N\mathcal L^{-A})$ exceptions.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} Goldbach's letter to Euler of 7 June 1742 and Euler's reply of 30 June 1742 are in P.-H.~Fuss, \emph{Correspondance mathématique et physique de quelques célèbres géomètres du XVIII\textsuperscript{ème} siècle}, St.\ Petersburg, 1843, vol.~1. E.~Waring, \emph{Meditationes Algebraicae}, Cambridge, 1770. D.~Hilbert, ``Beweis für die Darstellbarkeit der ganzen Zahlen durch eine feste Anzahl $n^{\text{ter}}$ Potenzen (Waringsches Problem)'', \emph{Math.\ Ann.}\ 67 (1909), 281--300. On Hua: J.~J.~O'Connor and E.~F.~Robertson, ``Hua Loo-Keng'', MacTutor History of Mathematics archive.
+\item \emph{The circle method.} G.~H.~Hardy and J.~E.~Littlewood, ``Some problems of `Partitio Numerorum' I: A new solution of Waring's problem'', \emph{Nachr.\ Ges.\ Wiss.\ Göttingen} (1920), 33--54; ``III: On the expression of a number as a sum of primes'', \emph{Acta Math.}\ 44 (1923), 1--70. L.-K.~Hua, ``On Waring's problem'', \emph{Quart.\ J.\ Math.\ Oxford} 9 (1938), 199--202. R.~C.~Vaughan, \emph{The Hardy--Littlewood Method}, 2nd ed., Cambridge, 1997, Chapters~2--4 (Theorem~\ref{thm:singpos} is Theorem~4.6 there). H.~Davenport, \emph{Analytic Methods for Diophantine Equations and Diophantine Inequalities}, 2nd ed., Cambridge, 2005.
+\item \emph{Three primes.} I.~M.~Vinogradov, ``Representation of an odd number as a sum of three primes'', \emph{C.\ R.\ (Doklady) Acad.\ Sci.\ URSS} 15 (1937), 291--294. K.~G.~Borozdin, an explicit bound announced in 1956; see the survey in H.~A.~Helfgott, ``The ternary Goldbach problem'', arXiv:1501.05438. H.~A.~Helfgott, ``The ternary Goldbach conjecture is true'', arXiv:1312.7748 (2013). The almost-all result: N.~G.~Chudakov, \emph{Dokl.\ Akad.\ Nauk SSSR} 17 (1937); J.~G.~van der Corput, \emph{Acta Arith.}\ 2 (1937); T.~Estermann, \emph{Proc.\ London Math.\ Soc.}\ (2) 44 (1938).
+\end{itemize}
