@@ -4,6 +4,7 @@ Usage: python3 tools/cover_motifs.py
 Writes <tome>/cover-motif.tex, a TikZ fragment centred at the origin that fits in a
 disc of radius 2.3in. tools/cover.tex draws it in the cover's accent colour.
 """
+import itertools
 import math
 from pathlib import Path
 
@@ -844,6 +845,57 @@ def brw_barrier(depth=11, seed=15):
     return "\n".join(lines) + "\n"
 
 
+def e8_roots():
+    """The 240 roots of E8, the 240 minimal vectors of the lattice obtained from the extended Hamming
+    code by Construction A (Tome C4, Chapter 5), drawn in the Coxeter plane: the plane on which a
+    Coxeter element acts as a rotation by 2 pi/30. The roots fall on 8 rings of 30, and two roots are
+    joined when their inner product is 1 (each root has 56 such neighbours)."""
+    roots = []
+    for i, j in itertools.combinations(range(8), 2):
+        for si in (1, -1):
+            for sj in (1, -1):
+                v = [0.0] * 8
+                v[i], v[j] = si, sj
+                roots.append(v)
+    for signs in itertools.product((0.5, -0.5), repeat=8):
+        if sum(s < 0 for s in signs) % 2 == 0:
+            roots.append(list(signs))
+    dot = lambda a, b: sum(x * y for x, y in zip(a, b))
+    simple = [[0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, 0.5], [1, 1, 0, 0, 0, 0, 0, 0]]
+    simple += [[-1 if k == i else 1 if k == i + 1 else 0 for k in range(8)] for i in range(6)]
+    def refl(a, v):
+        c = 2 * dot(a, v) / dot(a, a)
+        return [x - c * y for x, y in zip(v, a)]
+    def cox(v):
+        for a in simple:
+            v = refl(a, v)
+        return v
+    # projector onto the plane where the Coxeter element (order 30) rotates by 2 pi/30
+    def proj(v):
+        out, w = [0.0] * 8, v
+        for k in range(30):
+            out = [o + math.cos(2 * math.pi * k / 30) * x for o, x in zip(out, w)]
+            w = cox(w)
+        return out
+    u = proj([1, 2, 3, 4, 5, 6, 7, 8.5])
+    w = proj(cox(u))
+    nu = math.sqrt(dot(u, u)); u = [x / nu for x in u]
+    w = [x - dot(w, u) * y for x, y in zip(w, u)]
+    nw = math.sqrt(dot(w, w)); w = [x / nw for x in w]
+    pts = [(dot(r, u), dot(r, w)) for r in roots]
+    scale = (R - 0.05) / max(math.hypot(x, y) for x, y in pts)
+    pts = [(x * scale, y * scale) for x, y in pts]
+    lines = ["% The 240 roots of E8 in the Coxeter plane, with the edges between roots at inner product 1."]
+    for a in range(240):
+        for b in range(a + 1, 240):
+            if abs(dot(roots[a], roots[b]) - 1) < 1e-9:
+                (x1, y1), (x2, y2) = pts[a], pts[b]
+                lines.append(r"\draw[accent,line width=0.12pt,opacity=0.30] (%.3fin,%.3fin)--(%.3fin,%.3fin);" % (x1, y1, x2, y2))
+    for x, y in pts:
+        lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.030in);" % (x, y))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -870,6 +922,7 @@ MOTIFS = {
     "tomeP1-crossroads": gaussian_primes,
     "tomeP2-machinery": hilbert_curve,
     "tome14-random": multiplicative_walks,
+    "tomeC4-information": e8_roots,
 }
 
 if __name__ == "__main__":

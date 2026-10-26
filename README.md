@@ -63,7 +63,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | C1 | Discrete Structures | Logic, combinatorics, graph theory, orders | Complete draft (12 chapters) |
 | C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised, algebraic, number-theoretic, string and approximation algorithms | Complete draft (12 chapters) |
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | In progress (11 of 12 chapters) |
-| C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
+| C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | In progress (1 of 12 chapters) |
 | C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
 | S1 | Linear Algebra in Depth | Duality, spectral theory, SVD, Perron–Frobenius, graph spectra, symmetry, tensors, matrix inequalities, linear dynamics | Complete (12 chapters) |
 | S2 | Geometry | Projective geometry, conics, cubic curves, lattices, non-Euclidean and convex geometry, curvature | Complete (12 chapters) |

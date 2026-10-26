@@ -1,0 +1,485 @@
+\chapter{Measuring Information}\label{ch:entropy}
+
+\begin{center}\itshape
+The fundamental problem of communication is that of reproducing at one point\\
+either exactly or approximately a message selected at another point.\\
+\upshape(Claude Shannon, \emph{A mathematical theory of communication}, 1948)
+\end{center}
+
+In July 1948 the \emph{Bell System Technical Journal}, a house journal full of articles on cables, relays and vacuum tubes, printed the first half of a paper by Claude Shannon, a thirty-two-year-old mathematician of Bell Telephone Laboratories. Its introduction, after a nod to earlier work, declares the meaning of messages irrelevant to the engineering problem: what matters is that the actual message is \emph{selected} from a set of possible messages. Two Bell engineers had already said as much. Harry Nyquist in 1924 and Ralph Hartley in 1928 had proposed to measure the information in a choice among $m$ equally likely messages by $\log m$, so that two independent choices add their information. Shannon's step was to allow the messages to be unequally likely. For a choice with probabilities $p_1,\dots,p_m$ he proposed
+\[
+H=-\sum_ip_i\log_2p_i,
+\]
+measured in units he called \emph{bits}, ``a word suggested by J.~W.~Tukey''. He then proved that this number is exactly the cost of describing the choice, and, in the second half of the paper, published in October, that a noisy channel has a number of the same kind, its capacity, below which communication without error is possible and above which it is not.
+
+Why the name \emph{entropy}? According to Myron Tribus, who said he had the story from Shannon in 1961, it was John von Neumann's advice: the function already had that name in statistical mechanics, and, more important, since nobody really knows what entropy is, whoever uses the word will always have the advantage in a debate. (This is Tribus's account, in our paraphrase; it may have improved with retelling.) Whatever the truth of the anecdote, the name stuck, and so did a family of quantities built from it: conditional entropy, mutual information, divergence. This chapter introduces them and proves the inequalities between them that the rest of the book uses again and again. Tome~3, Chapter~4 already defined entropy and proved its first theorems; we start from there.
+
+\begin{think}
+I pick a whole number $X$ between $1$ and $8$, uniformly, and tell you only whether it is even. How much did you learn, in bits? Now I pick two bits $X$ and $Y$ at random and tell you $Z=X\oplus Y$, their exclusive or. Does $Z$ tell you anything about $X$? About the pair $(X,Y)$?
+\end{think}
+
+\section{Entropy, recalled}\label{sec:recall}
+
+All random variables in this chapter take finitely many values, unless said otherwise. For a variable $X$ with values in a finite set $A$ and law $p(x)=P(X=x)$,
+\[
+H(X)=\sum_{x\in A}p(x)\log_2\frac1{p(x)}=\mathbb E\Bigl[\log_2\frac1{p(X)}\Bigr],
+\]
+with $0\log_2\frac10=0$; it depends only on the law of $X$, and we also write $H(p)$. The \emph{binary entropy function} is $h(t)=t\log_2\frac1t+(1-t)\log_2\frac1{1-t}$, the entropy of a coin that shows heads with probability $t$ (Figure~\ref{fig:binaryentropy}). For two laws $p$, $q$ on $A$, the \emph{divergence} (or relative entropy, or Kullback--Leibler divergence, after Solomon Kullback and Richard Leibler, 1951) is $D(p\,\|\,q)=\sum_{x:p(x)>0}p(x)\log_2\frac{p(x)}{q(x)}$, possibly $+\infty$.
+
+\begin{reminder}[title={Reminder (Tome~3, Chapter~4)}]
+\begin{itemize}
+\item \emph{Gibbs' inequality} (Proposition~4.16): $D(p\,\|\,q)\ge0$, with equality if and only if $p=q$; hence $H(X)\le\log_2|A|$, with equality if and only if $X$ is uniform. \emph{Proof:} $\ln y\le y-1$ with $y=q(x)/p(x)$, multiplied by $p(x)$ and summed.
+\item \emph{Kraft's inequality} (Proposition~4.18): the lengths of a prefix code satisfy $\sum_x2^{-\ell(x)}\le1$, and any lengths satisfying it are those of a prefix code. \emph{Proof:} codewords are disjoint dyadic intervals of $[0,1[$.
+\item \emph{Shannon's source coding theorem} (Theorem~4.19): every prefix code has expected length at least $H(X)$, and some prefix code has expected length less than $H(X)+1$. \emph{Proof:} Gibbs against $q(x)\propto2^{-\ell(x)}$; lengths $\lceil\log_2\frac1{p(x)}\rceil$.
+\item \emph{The asymptotic equipartition property} (Theorem~4.21): for independent copies $X_1,\dots,X_n$ of $X$, the probability that $2^{-n(H+\varepsilon)}\le p(X_1)\cdots p(X_n)\le2^{-n(H-\varepsilon)}$ tends to $1$, and the set $T^{(n)}_\varepsilon$ of these \emph{typical} sequences has between $(1-\varepsilon)2^{n(H-\varepsilon)}$ (for large $n$) and $2^{n(H+\varepsilon)}$ elements. \emph{Proof:} the weak law of large numbers applied to $\log_2\frac1{p(X_i)}$.
+\end{itemize}
+\end{reminder}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-binary}
+\caption{The binary entropy function $h(t)$, in bits. It is concave, symmetric about $\frac12$, where it reaches $1$, and has infinite slope at $0$ and $1$: a nearly certain event still carries a little information, $h(0.01)\approx0.081$ bits, and a coin with bias $0.1$ carries $h(0.1)\approx0.469$ bits per toss.}
+\label{fig:binaryentropy}
+\end{figure}
+
+Entropy is the average of the \emph{surprise} $\log_2\frac1{p(x)}$ of the outcome. The rest of this chapter answers a question that Shannon's formula raises at once: if $X$ and $Y$ are two variables, how is the information they carry shared between them?
+
+\section{Joint and conditional entropy}\label{sec:conditional}
+
+A pair $(X,Y)$ is one random variable, with values in $A\times B$, so it has an entropy $H(X,Y)$, the \emph{joint entropy}. If we learn that $X=x$, the law of $Y$ becomes the conditional law $p(y\mid x)=P(Y=y\mid X=x)$, whose entropy we write $H(Y\mid X=x)$.
+
+\begin{definition}\label{def:condentropy}
+The \emph{conditional entropy} of $Y$ given $X$ is the average of these entropies:
+\[
+H(Y\mid X)=\sum_{x:p(x)>0}p(x)\,H(Y\mid X=x)=\mathbb E\Bigl[\log_2\frac1{p(Y\mid X)}\Bigr].
+\]
+\end{definition}
+
+The second form follows by writing $H(Y\mid X=x)=\sum_yp(y\mid x)\log_2\frac1{p(y\mid x)}$ and $p(x)p(y\mid x)=p(x,y)$. Conditional entropy is the information still missing about $Y$ once $X$ is known. It is zero if and only if each $H(Y\mid X=x)$ with $p(x)>0$ is zero, that is, if $Y$ is a function of $X$ almost surely.
+
+\begin{proposition}[chain rule]\label{prop:chain}
+$H(X,Y)=H(X)+H(Y\mid X)$. More generally, for variables $X_1,\dots,X_n$,
+\[
+H(X_1,\dots,X_n)=\sum_{i=1}^nH(X_i\mid X_1,\dots,X_{i-1}).
+\]
+\end{proposition}
+
+\begin{proof}
+Where $p(x,y)>0$, $\log_2\frac1{p(x,y)}=\log_2\frac1{p(x)}+\log_2\frac1{p(y\mid x)}$; take expectations under the law of $(X,Y)$. For $n$ variables, apply this to $(X_1,\dots,X_{n-1})$ and $X_n$ and induct.
+\end{proof}
+
+So describing a pair costs describing the first, then the second knowing the first. In the box, $X$ uniform on $\{1,\dots,8\}$ has $H(X)=3$, and its parity $E$ is a function of $X$, so $H(X)=H(X,E)=H(E)+H(X\mid E)=1+2$: learning the parity removes exactly one of the three bits.
+
+\begin{definition}\label{def:mutual}
+The \emph{mutual information} of $X$ and $Y$ is
+\[
+\begin{aligned}I(X;Y)&=H(X)+H(Y)-H(X,Y)\eqbr=H(Y)-H(Y\mid X)\eqbr=H(X)-H(X\mid Y).\end{aligned}
+\]
+\end{definition}
+
+The three expressions agree by the chain rule, applied in both orders. $I(X;Y)$ is symmetric: what $X$ tells about $Y$ is what $Y$ tells about $X$. Figure~\ref{fig:venn} shows the bookkeeping.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-venn}
+\caption{The information diagram of two variables. The left disc stands for $H(X)$, the right one for $H(Y)$, the union for $H(X,Y)$. The overlap is $I(X;Y)$, and the crescents are $H(X\mid Y)$ and $H(Y\mid X)$. Every identity of this section can be read off the picture. (With three variables the central region of such a picture can be negative: see Exercise~\ref{ex:xor}.)}
+\label{fig:venn}
+\end{figure}
+
+\begin{theorem}\label{thm:mutualpos}
+$I(X;Y)=D\bigl(p_{XY}\,\|\,p_X\otimes p_Y\bigr)$, where $p_{XY}$ is the law of $(X,Y)$ and $p_X\otimes p_Y$ the product of the laws of $X$ and $Y$. Consequently $I(X;Y)\ge0$, with equality if and only if $X$ and $Y$ are independent. Equivalently:
+\begin{enumerate}[label=(\alph*)]
+\item \emph{conditioning reduces entropy}: $H(Y\mid X)\le H(Y)$;
+\item \emph{subadditivity}: $H(X_1,\dots,X_n)\le H(X_1)+\dots+H(X_n)$, with equality if and only if the $X_i$ are independent.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+Where $p(x,y)>0$ we have $p(x),p(y)>0$ and
+\[
+\log_2\frac{p(x,y)}{p(x)p(y)}=\log_2\frac1{p(x)}+\log_2\frac1{p(y)}-\log_2\frac1{p(x,y)};
+\]
+taking expectations gives $D(p_{XY}\,\|\,p_X\otimes p_Y)=H(X)+H(Y)-H(X,Y)$. Gibbs' inequality gives $I\ge0$, with equality if and only if $p_{XY}=p_X\otimes p_Y$, which is independence. Statement (a) is $I\ge0$. For (b), the chain rule and (a), applied to the pair $\bigl(X_i,(X_1,\dots,X_{i-1})\bigr)$, give $H(X_1,\dots,X_n)=\sum_iH(X_i\mid X_1,\dots,X_{i-1})\le\sum_iH(X_i)$. Equality holds if and only if each $X_i$ is independent of $(X_1,\dots,X_{i-1})$, which for all $i$ is the independence of $X_1,\dots,X_n$.
+\end{proof}
+
+Conditioning reduces entropy \emph{on average} only: a particular piece of news can increase the uncertainty. If $X$ is $0$ with probability $0.99$ and otherwise uniform on $\{1,\dots,1000\}$, and $Y$ tells whether $X=0$, then $H(X\mid Y=\text{no})=\log_21000\approx9.97$, much more than $H(X)\approx0.18$ bits.
+
+Everything conditions. For a third variable $Z$, let $H(X\mid Y,Z)$ be the conditional entropy of $X$ given the pair $(Y,Z)$, and define the \emph{conditional mutual information}
+\[
+I(X;Y\mid Z)=H(X\mid Z)-H(X\mid Y,Z)=\sum_{z:p(z)>0}p(z)\,I(X;Y\mid Z=z),
+\]
+where $I(X;Y\mid Z=z)$ is the mutual information computed under the conditional law given $Z=z$. (The equality is $H(X\mid Z)=\sum_zp(z)H(X\mid Z=z)$ and $H(X\mid Y,Z)=\sum_zp(z)H(X\mid Y,Z=z)$, both from the second form of Definition~\ref{def:condentropy}.) By Theorem~\ref{thm:mutualpos} applied under each conditional law, $I(X;Y\mid Z)\ge0$, with equality if and only if $X$ and $Y$ are independent given $Z$. In particular conditioning on more reduces entropy: $H(X\mid Y,Z)\le H(X\mid Z)$. The chain rule for mutual information follows from the chain rule for entropy:
+\[
+I(X;Y,Z)=I(X;Y)+I(X;Z\mid Y).
+\]
+
+\section{Processing cannot create information}\label{sec:dataprocessing}
+
+Three variables form a \emph{Markov chain} $X\to Y\to Z$ if $X$ and $Z$ are independent given $Y$: once $Y$ is known, $X$ is of no further use for predicting $Z$. This is the case when $Z=g(Y)$ for a function $g$, or when $Z$ is obtained from $Y$ by a random process that does not look at $X$, such as sending $Y$ through a noisy wire.
+
+\begin{theorem}[data processing inequality]\label{thm:dataprocessing}
+If $X\to Y\to Z$ is a Markov chain, then $I(X;Z)\le I(X;Y)$. In particular $I(X;g(Y))\le I(X;Y)$ for every function $g$.
+\end{theorem}
+
+\begin{proof}
+Expand $I(X;Y,Z)$ by the chain rule in two ways:
+\[
+I(X;Y)+I(X;Z\mid Y)=I(X;Y,Z)=I(X;Z)+I(X;Y\mid Z).
+\]
+The Markov property says $I(X;Z\mid Y)=0$, and $I(X;Y\mid Z)\ge0$.
+\end{proof}
+
+No computation on the data, however clever, can increase what the data say about its source. Statisticians call a function $T(Y)$ \emph{sufficient} for $X$ when equality holds, so that $T$ throws nothing relevant away; this is the ``sufficiency'' in the title of Kullback and Leibler's paper. The divergence obeys its own data processing inequality, which is the key to the next section.
+
+\begin{lemma}[log-sum inequality]\label{lem:logsum}
+For non-negative numbers $a_1,\dots,a_k$ and $b_1,\dots,b_k$, with $a=\sum a_i$ and $b=\sum b_i$,
+\[
+\sum_ia_i\log_2\frac{a_i}{b_i}\ge a\log_2\frac ab,
+\]
+with the conventions $0\log\frac0b=0$, $a\log\frac a0=+\infty$ for $a>0$. If $a,b>0$, equality holds if and only if $a_i/b_i$ is the same for all $i$ with $a_i>0$, and $b_i=0$ whenever $a_i=0$.
+\end{lemma}
+
+\begin{proof}
+If $a=0$ both sides are $0$. If $b_i=0$ for some $i$ with $a_i>0$, the left side is $+\infty$. Otherwise, dropping the indices with $a_i=0$ only decreases $b$ (and so increases the right side) unless the dropped $b_i$ are $0$; so it is enough to treat the case where all $a_i>0$, $b_i>0$, if we remember that a dropped positive $b_i$ makes the inequality strict. Then $p_i=a_i/a$ and $q_i=b_i/b$ are laws and
+\[
+\begin{aligned}\sum_ia_i\log_2\frac{a_i}{b_i}&=a\sum_ip_i\log_2\frac{p_i}{q_i}+a\log_2\frac ab\eqbr=a\,D(p\,\|\,q)+a\log_2\frac ab\ge a\log_2\frac ab,\end{aligned}
+\]
+with equality if and only if $p=q$ (Gibbs), that is, $a_i/b_i=a/b$ for all $i$.
+\end{proof}
+
+\begin{proposition}[data processing for divergence]\label{prop:dpdiv}
+Let $p$, $q$ be laws on $A$ and $f:A\to B$ a map; write $f_*p$ for the law of $f(X)$ when $X$ has law $p$. Then $D(f_*p\,\|\,f_*q)\le D(p\,\|\,q)$. In particular, for every event $S\subseteq A$,
+\[
+D(p\,\|\,q)\ge d\bigl(p(S)\,\|\,q(S)\bigr),\qq\text{where }d(a\,\|\,b)=a\log_2\frac ab+(1-a)\log_2\frac{1-a}{1-b}
+\]
+is the divergence between two coins.
+\end{proposition}
+
+\begin{proof}
+Group the terms of $D(p\,\|\,q)$ according to the value $y=f(x)$ and apply the log-sum inequality to each group: $\sum_{x\in f^{-1}(y)}p(x)\log_2\frac{p(x)}{q(x)}\ge f_*p(y)\log_2\frac{f_*p(y)}{f_*q(y)}$. Sum over $y$. For the event, take $f$ the indicator of $S$.
+\end{proof}
+
+\section{How far apart are two laws?}\label{sec:pinsker}
+
+The \emph{total variation distance} between two laws $p$, $q$ on $A$ is
+\[
+\delta(p,q)=\max_{S\subseteq A}\bigl|p(S)-q(S)\bigr|=\frac12\sum_{x\in A}\bigl|p(x)-q(x)\bigr|,
+\]
+the largest difference in the probability of an event; the maximum is reached at $S=\{x:p(x)>q(x)\}$, which gives the second form. It is the best advantage of anyone who must guess, from one sample, whether it came from $p$ or from $q$ (Exercise~\ref{ex:distinguish}). Divergence is not a distance (it is not symmetric), but it controls total variation.
+
+\begin{theorem}[Pinsker's inequality]\label{thm:pinsker}
+For laws $p$, $q$ on a finite set,
+\[
+\delta(p,q)\le\sqrt{\frac{\ln2}2\,D(p\,\|\,q)}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $S=\{x:p(x)>q(x)\}$, $a=p(S)$ and $b=q(S)$, so that $\delta(p,q)=a-b\ge0$. By Proposition~\ref{prop:dpdiv}, $D(p\,\|\,q)\ge d(a\,\|\,b)$, so it is enough to prove $(\ln2)\,d(a\,\|\,b)\ge2(a-b)^2$ for $0\le b\le a\le1$. If $b=0<a$ or $a=1>b$, the left side is infinite. If $a=b$ both sides vanish. Otherwise fix $a$ and consider, for $b\in\,]0,a]$ (with $b<1$),
+\[
+g(b)=a\ln\frac ab+(1-a)\ln\frac{1-a}{1-b}-2(a-b)^2.
+\]
+Then $g(a)=0$ and
+\[
+g'(b)=-\frac ab+\frac{1-a}{1-b}+4(a-b)=(a-b)\Bigl(4-\frac1{b(1-b)}\Bigr)\le0,
+\]
+since $b(1-b)\le\frac14$. So $g$ is non-increasing on $]0,a]$ and $g(b)\ge g(a)=0$.
+\end{proof}
+
+Mark Pinsker proved an inequality of this kind in 1960; the sharp constant was found independently by Imre Csisz\'ar (1967), Solomon Kullback (1967) and Johannes Kemperman (1969). The inequality is the bridge between information and probability: a small divergence forces the two laws to give nearly the same probability to every event. It will bound the advantage of an adversary in Chapter~8. Data processing for divergence alone already shows that Chernoff's bound for coins has nearly the right exponent (Exercise~\ref{ex:pinskerhoeffding}).
+
+\section{Fano's inequality}\label{sec:fano}
+
+Suppose we try to recover $X$ from an observation $Y$, by a guess $\hat X=g(Y)$. If the guess is usually right, then $Y$ must determine $X$ nearly, so $H(X\mid Y)$ must be small. Robert Fano, Shannon's colleague at MIT, made this quantitative in his 1961 book \emph{Transmission of Information}; it is the inequality behind every ``converse'' theorem of information theory, which says that something \emph{cannot} be done.
+
+\begin{theorem}[Fano's inequality]\label{thm:fano}
+Let $X$ take values in a finite set $A$ with $|A|\ge2$, let $Y$ be any variable, $\hat X=g(Y)$ a guess, and $P_e=P(\hat X\ne X)$. Then
+\[
+H(X\mid Y)\le h(P_e)+P_e\log_2\bigl(|A|-1\bigr)\le1+P_e\log_2|A|.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $E$ be the indicator of the error $\{\hat X\ne X\}$, a function of $(X,Y)$. By the chain rule (conditioned on $Y$), $H(X\mid Y)\le H(X\mid Y)+H(E\mid X,Y)=H(X,E\mid Y)=H(E\mid Y)+H(X\mid E,Y)$. First, $H(E\mid Y)\le H(E)=h(P_e)$. Second,
+\[
+H(X\mid E,Y)=P(E=0)\,H(X\mid E=0,Y)+P(E=1)\,H(X\mid E=1,Y).
+\]
+Given $E=0$, $X=g(Y)$ is a function of $Y$, so the first conditional entropy is $0$. Given $E=1$ and $Y=y$, $X$ takes values in $A\setminus\{g(y)\}$, a set of $|A|-1$ elements, so its conditional entropy is at most $\log_2(|A|-1)$ (Gibbs); averaging over $y$, $H(X\mid E=1,Y)\le\log_2(|A|-1)$. Adding up gives the first inequality; the second uses $h\le1$.
+\end{proof}
+
+The inequality is sharp (Exercise~\ref{ex:fanosharp}). Read backwards, it says that if $H(X\mid Y)$ is a fixed fraction of $\log_2|A|$, then the error of every guessing rule is bounded below: $P_e\ge\frac{H(X\mid Y)-1}{\log_2|A|}$. Chapter~3 will use exactly this form.
+
+\section{Why this formula?}\label{sec:axioms}
+
+Why $\sum p_i\log\frac1{p_i}$, and not, say, $\log\frac1{\max p_i}$ or $-\log\sum p_i^2$, which also vanish for a certain outcome and equal $\log m$ for $m$ equally likely ones? Shannon gave an answer in his Theorem~2, proved in an appendix: three natural requirements force his formula. He added at once that the theorem was not needed for the theory, and that ``the real justification of these definitions, however, will reside in their implications.'' The implications fill this book; here is the theorem.
+
+For each $n\ge1$ let $\Delta_n$ be the set of probability vectors $(p_1,\dots,p_n)$, and suppose that for each $n$ we are given a function $H_n:\Delta_n\to\R$. A \emph{grouping} of $\{1,\dots,n\}$ is a partition into nonempty blocks $B_1,\dots,B_k$; for $p\in\Delta_n$ let $q_j=\sum_{i\in B_j}p_i$.
+
+\begin{theorem}[Shannon 1948]\label{thm:axioms}
+Suppose that
+\begin{enumerate}[label=(\roman*)]
+\item each $H_n$ is continuous;
+\item $A(n)=H_n(\frac1n,\dots,\frac1n)$ is a non-decreasing function of $n$, and $A(2)=1$;
+\item (\emph{grouping}) for every $p\in\Delta_n$ and every grouping with all $q_j>0$,
+\[
+H_n(p)=H_k(q_1,\dots,q_k)+\sum_{j=1}^kq_j\,H_{|B_j|}\Bigl(\Bigl(\frac{p_i}{q_j}\Bigr)_{i\in B_j}\Bigr).
+\]
+\end{enumerate}
+Then $H_n(p)=\sum_ip_i\log_2\frac1{p_i}$ for all $n$ and all $p\in\Delta_n$.
+\end{theorem}
+
+Condition (iii) says that choosing in two stages, first a block and then an element of it, costs the same on average as choosing directly. It is the chain rule $H(X)=H(B)+H(X\mid B)$ for the block $B$ of $X$.
+
+\begin{proof}
+\emph{Step 1: $A(st)=A(s)+A(t)$.} With one block, (iii) reads $H_1(1)=H_1(1)+H_1(1)$, so $A(1)=0$. Group $st$ equally likely outcomes into $s$ blocks of $t$: each block has probability $\frac1s$ and, inside it, the conditional law is uniform on $t$ points, so (iii) gives $A(st)=A(s)+\sum_{j=1}^s\frac1sA(t)=A(s)+A(t)$. By induction $A(t^n)=nA(t)$.
+
+\emph{Step 2: $A(t)=\log_2t$.} Let $t\ge2$ and $n\ge1$, and let $m=\lfloor n\log_2t\rfloor$, so that $2^m\le t^n<2^{m+1}$. Since $A$ is non-decreasing, $A(2^m)\le A(t^n)\le A(2^{m+1})$, that is, $m\le nA(t)\le m+1$ (as $A(2)=1$). Also $m\le n\log_2t<m+1$. Hence $|A(t)-\log_2t|\le\frac1n$ for every $n$, and $A(t)=\log_2t$; this also holds for $t=1$.
+
+\emph{Step 3: rational laws.} Let $p_i=\frac{n_i}N$ with positive integers $n_i$ summing to $N$. Group $N$ equally likely outcomes into blocks of sizes $n_1,\dots,n_k$: block $j$ has probability $p_j$ and inside it the law is uniform on $n_j$ points, so (iii) gives $A(N)=H_k(p)+\sum_jp_jA(n_j)$, and by Step~2
+\[
+H_k(p)=\log_2N-\sum_jp_j\log_2n_j=\sum_jp_j\log_2\frac N{n_j}=\sum_jp_j\log_2\frac1{p_j}.
+\]
+
+\emph{Step 4: all laws.} Vectors with positive rational coordinates are dense in $\Delta_k$ (round all but one coordinate, then adjust it); both sides are continuous on $\Delta_k$, the right one because $t\log_2\frac1t\to0$ as $t\to0$. So they agree everywhere.
+\end{proof}
+
+The other candidates fail grouping. For instance, the \emph{collision entropy} $-\log_2\sum p_i^2$ ($2^{-H_2}$ is the probability that two independent samples agree) gives $\log_23\approx1.585$ for $(\frac13,\frac13,\frac13)$, but grouping the last two outcomes predicts $-\log_2\frac59+\frac23\approx1.515$. Such entropies of R\'enyi (1961) are still useful, as measures of how well a source can be hashed into uniform bits; the \emph{min-entropy} $\log_2\frac1{\max p_i}$ of Tome~C3, Chapter~11 is one of them, and Chapter~8 will use it.
+
+\section{Counting with entropy}\label{sec:shearer}
+
+Entropy is a surprisingly sharp tool for counting. If $X$ is uniform on a finite set $S$, then $H(X)=\log_2|S|$; any upper bound on $H(X)$ obtained from the structure of $S$ is an upper bound on $|S|$. Here is the lemma that makes this work, due to Fan Chung, Ronald Graham, Peter Frankl and James Shearer (1986). For $X=(X_1,\dots,X_n)$ and $F\subseteq\{1,\dots,n\}$, write $X_F=(X_i)_{i\in F}$.
+
+\begin{theorem}[Shearer's lemma]\label{thm:shearer}
+Let $X=(X_1,\dots,X_n)$, and let $\mathcal F$ be a family of subsets of $\{1,\dots,n\}$ (repetitions allowed) such that each $i$ belongs to at least $t$ members of $\mathcal F$. Then
+\[
+t\,H(X)\le\sum_{F\in\mathcal F}H(X_F).
+\]
+\end{theorem}
+
+\begin{proof}
+For $F=\{i_1<\dots<i_k\}$, the chain rule gives $H(X_F)=\sum_{j}H(X_{i_j}\mid X_{i_1},\dots,X_{i_{j-1}})$. Each term is at least $H(X_{i_j}\mid X_1,\dots,X_{i_j-1})$, since conditioning on more variables reduces entropy. Hence
+\[
+\begin{aligned}\sum_{F\in\mathcal F}H(X_F)&\ge\sum_{F\in\mathcal F}\sum_{i\in F}H(X_i\mid X_1,\dots,X_{i-1})\eqbr\ge t\sum_{i=1}^nH(X_i\mid X_1,\dots,X_{i-1})=t\,H(X),\end{aligned}
+\]
+where the second inequality uses that each $i$ occurs in at least $t$ sets and that the terms are non-negative, and the last equality is the chain rule.
+\end{proof}
+
+\begin{corollary}[Loomis and Whitney 1949, discrete form]\label{cor:loomis}
+A finite set $S$ of points of $\Z^3$ satisfies $|S|^2\le|S_{xy}|\,|S_{yz}|\,|S_{xz}|$, where $S_{xy}$ is its projection on the coordinate plane of the first two coordinates, and so on.
+\end{corollary}
+
+\begin{proof}
+Let $(X,Y,Z)$ be uniform on $S$. The family $\{\{1,2\},\{2,3\},\{1,3\}\}$ covers each coordinate twice, so $2\log_2|S|\le H(X,Y)+H(Y,Z)+H(X,Z)$. Since $(X,Y)$ takes values in $S_{xy}$, $H(X,Y)\le\log_2|S_{xy}|$, and similarly for the others.
+\end{proof}
+
+\begin{corollary}\label{cor:triangles}
+A graph with $m$ edges contains at most $\frac{\sqrt2}3m^{3/2}$ triangles.
+\end{corollary}
+
+\begin{proof}
+Let $T$ be the number of triangles, and let $(X_1,X_2,X_3)$ be uniform among the $6T$ ordered triples of vertices forming a triangle. Each pair $(X_i,X_j)$ is an edge with an orientation, so it takes at most $2m$ values. Shearer's lemma with the three pairs gives $2\log_2(6T)\le3\log_2(2m)$, that is, $36T^2\le8m^3$.
+\end{proof}
+
+The complete graph on $k$ vertices has $m=\binom k2$ edges and $\binom k3$ triangles, and $\binom k3\big/\bigl(\frac{\sqrt2}3\binom k2^{3/2}\bigr)\to1$ as $k\to\infty$: the bound is asymptotically sharp. The same method counts subsets of a cube with few ones.
+
+\begin{proposition}[binomial coefficients and entropy]\label{prop:binomial}
+For integers $0\le k\le n$,
+\[
+\frac1{n+1}\,2^{nh(k/n)}\le\binom nk\le2^{nh(k/n)},
+\]
+and for $0\le\lambda\le\frac12$, $\sum_{j\le\lambda n}\binom nj\le2^{nh(\lambda)}$.
+\end{proposition}
+
+\begin{proof}
+Let $t=\frac kn$ and $b_j=\binom nj t^j(1-t)^{n-j}$, so that $\sum_{j=0}^nb_j=(t+1-t)^n=1$. Since $t^k(1-t)^{n-k}=2^{-nh(t)}$ (take $\log_2$), $b_k=\binom nk2^{-nh(t)}\le1$, which is the upper bound. For the lower bound we show that $b_k$ is the largest of the $n+1$ terms, so that $1\le(n+1)b_k$. If $0<k<n$, then for $j<n$,
+\[
+\frac{b_{j+1}}{b_j}=\frac{(n-j)k}{(j+1)(n-k)},
+\]
+which is at least $1$ exactly when $nk-jk\ge jn-jk+n-k$, that is, $j\le k-1+\frac kn$; so the terms increase up to $j=k$ and decrease after it. If $k=0$ or $k=n$ the bound reads $\binom nk=1\ge\frac1{n+1}$.
+
+For the sum, let $0<\lambda\le\frac12$ (the case $\lambda=0$ is clear). For $j\le\lambda n$, since $\frac\lambda{1-\lambda}\le1$,
+\[
+\lambda^j(1-\lambda)^{n-j}=(1-\lambda)^n\Bigl(\frac\lambda{1-\lambda}\Bigr)^j\ge(1-\lambda)^n\Bigl(\frac\lambda{1-\lambda}\Bigr)^{\lambda n}=2^{-nh(\lambda)}.
+\]
+So $1\ge\sum_{j\le\lambda n}\binom nj\lambda^j(1-\lambda)^{n-j}\ge2^{-nh(\lambda)}\sum_{j\le\lambda n}\binom nj$.
+\end{proof}
+
+So the number of ways to split $n$ objects into two groups in proportions $\lambda$ and $1-\lambda$ is $2^{nh(\lambda)}$ up to a polynomial factor. This is the entropy of a split that Tome~C2, Chapter~1 met in the analysis of divide-and-conquer recurrences, where a split of $n$ into $\frac n3$ and $\frac{2n}3$ gave $h(\frac13)\approx0.918$. In Chapter~5 the second inequality will count the words in a Hamming ball, and in Chapter~3 the first will count the typical outputs of a noisy channel.
+
+\begin{beauty}
+Shannon chose his formula by demanding that information add up correctly when a choice is made in stages, and everything else followed. The chain rule is that demand, and it has a remarkable consequence: every inequality of this chapter, from data processing to Shearer's lemma, is a rearrangement of chain rules plus the single fact $D\ge0$, which is the convexity of the logarithm. Out of one concavity come limits on compression, on communication, on statistics, and, as we have just seen, a sharp bound on the number of triangles in a graph.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:dice}
+Two fair dice are thrown; let $S$ be the sum and $D$ the absolute difference. Compute $H(S)$, $H(D)$, $H(S,D)$ and $I(S;D)$. Is the pair $(S,D)$ enough to recover the unordered pair of results?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:function}
+Show that $H(g(X))\le H(X)$ for every function $g$, with equality if and only if $g$ is injective on the set of values of $X$ of positive probability. Show that $H(X\mid Y)=0$ if and only if $X$ is almost surely a function of $Y$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:xor}
+Let $X$, $Y$ be independent fair bits and $Z=X\oplus Y$. Compute $I(X;Y)$, $I(X;Y\mid Z)$, $I(X;Z)$ and $I(X;Y,Z)$. Conclude that conditioning can increase mutual information, and that the ``central region'' $I(X;Y)-I(X;Y\mid Z)$ of a three-variable information diagram can be negative.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:convex}
+Show that $D(p\,\|\,q)$ is jointly convex: for laws $p_1,p_2,q_1,q_2$ and $\lambda\in[0,1]$, $D(\lambda p_1+(1-\lambda)p_2\,\|\,\lambda q_1+(1-\lambda)q_2)\le\lambda D(p_1\,\|\,q_1)+(1-\lambda)D(p_2\,\|\,q_2)$. Deduce that $H$ is concave.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:distinguish}
+A sample is drawn from $p$ or from $q$, each with probability $\frac12$, and you must guess which. Show that the best probability of a correct guess is $\frac12+\frac12\delta(p,q)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pinskerhoeffding}
+Let $\varepsilon>0$ with $(\frac12+\varepsilon)n$ an integer, $p$ the law of $n$ fair coin flips, $q$ the law of $n$ flips of a coin that shows heads with probability $\frac12+\varepsilon$, and $S$ the event ``at least $(\frac12+\varepsilon)n$ heads''. Chernoff's bound gives $p(S)\le2^{-n\,d(\frac12+\varepsilon\,\|\,\frac12)}$. Show that $D(q\,\|\,p)=n\,d(\frac12+\varepsilon\,\|\,\frac12)$ and, using Proposition~\ref{prop:dpdiv} and $q(S)\ge\frac12$ (a binomial law whose mean is an integer has this mean as a median), that $p(S)\ge\frac14\,2^{-2n\,d(\frac12+\varepsilon\,\|\,\frac12)}$. So Chernoff's exponent cannot be improved by more than a factor $2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fanosharp}
+Show that Fano's inequality is an equality when $Y$ is constant, $\hat X$ is the most likely value $a$ of $X$, $P(X=a)=1-P_e$, and the other $|A|-1$ values have probability $\frac{P_e}{|A|-1}$ each.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sorting}
+A comparison sort that sorts $n$ distinct keys is a binary tree whose leaves are the $n!$ orders. Using the source coding theorem, show that on a uniformly random order it makes on average at least $\log_2n!$ comparisons. Evaluate $\log_2 n!$ for $n=10$ and $n=1000$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sparse}
+Let $\mathcal S\subseteq\{0,1\}^n$ be a set of binary words such that, for each coordinate $i$, at most a fraction $\lambda\le\frac12$ of the words of $\mathcal S$ have a $1$ in position $i$. Show that $|\mathcal S|\le2^{nh(\lambda)}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:han}
+Prove Han's inequality: for $X=(X_1,\dots,X_n)$, $\frac1{n-1}\sum_{i=1}^nH(X_1,\dots,X_{i-1},X_{i+1},\dots,X_n)\ge H(X)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:geometric}
+Among all random variables with values in $\{0,1,2,\dots\}$ and mean $\mu>0$, show that the geometric law $q(k)=(1-\theta)\theta^k$ with $\theta=\frac\mu{1+\mu}$ has the largest entropy, equal to $(\mu+1)\log_2(\mu+1)-\mu\log_2\mu$. (Tome~3, Chapter~4 allows countable alphabets in Gibbs' inequality.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:collision}
+Show that the collision entropy $H_2(p)=-\log_2\sum_ip_i^2$ and the min-entropy $H_\infty(p)=\log_2\frac1{\max_ip_i}$ satisfy $H_\infty(p)\le H_2(p)\le H(p)$, and that $H_2(p)\le2H_\infty(p)$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:dice}
+List the $36$ outcomes; $S$ and $D$ have the same parity.
+\end{hint}
+\begin{hint}{ex:function}
+Chain rule on $(X,g(X))$ in both orders.
+\end{hint}
+\begin{hint}{ex:xor}
+Given $Z$, $Y$ determines $X$.
+\end{hint}
+\begin{hint}{ex:convex}
+Log-sum inequality with two terms, for each $x$.
+\end{hint}
+\begin{hint}{ex:distinguish}
+A guessing rule is a set $S$: guess $p$ when the sample is in $S$.
+\end{hint}
+\begin{hint}{ex:pinskerhoeffding}
+Divergence of product laws adds up over coordinates; then bound $d(a\,\|\,b)$ from below when $a\ge\frac12$.
+\end{hint}
+\begin{hint}{ex:fanosharp}
+Compute $H(X)$ for this law.
+\end{hint}
+\begin{hint}{ex:sorting}
+The sequence of answers to the comparisons is a prefix code for the order.
+\end{hint}
+\begin{hint}{ex:sparse}
+Subadditivity, with $X$ uniform on $\mathcal S$, and the monotonicity of $h$ on $[0,\frac12]$.
+\end{hint}
+\begin{hint}{ex:han}
+Shearer's lemma.
+\end{hint}
+\begin{hint}{ex:geometric}
+Compute $\sum_kp(k)\log_2\frac1{q(k)}$; it depends only on the mean.
+\end{hint}
+\begin{hint}{ex:collision}
+Jensen for the concave $\log$ against the law $p$ itself; and $\sum p_i^2\ge(\max p_i)^2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:dice}
+\idea Tabulate the laws; then notice that $(S,D)$ determines the two results up to order.
+\writeup $S$ takes the values $2,\dots,12$ with probabilities $\frac1{36}$, $\frac2{36}$, \dots, $\frac6{36}$, \dots, $\frac1{36}$, so $H(S)=\sum_s\frac{n_s}{36}\log_2\frac{36}{n_s}\approx3.274$ bits. $D$ takes the values $0,1,\dots,5$ with probabilities $\frac6{36}$, $\frac{10}{36}$, $\frac8{36}$, $\frac6{36}$, $\frac4{36}$, $\frac2{36}$, so $H(D)\approx2.441$ bits. From $S$ and $D$ we recover the larger result $\frac{S+D}2$ and the smaller $\frac{S-D}2$, so $(S,D)$ is a function of the unordered pair and conversely: $(S,D)$ takes $21$ values, $6$ of probability $\frac1{36}$ (doubles) and $15$ of probability $\frac2{36}$, and $H(S,D)=\frac6{36}\log_236+\frac{30}{36}\log_218\approx4.337$ bits. Hence $I(S;D)=H(S)+H(D)-H(S,D)\approx1.379$ bits: the sum and the difference are far from independent, since they have the same parity, among other things.
+\end{solution}
+
+\begin{solution}{ex:function}
+\idea A function of $X$ adds nothing to $X$; the chain rule in two orders compares the two.
+\writeup Since $g(X)$ is a function of $X$, $H(g(X)\mid X)=0$, so $H(X)=H(X,g(X))=H(g(X))+H(X\mid g(X))\ge H(g(X))$. Equality holds if and only if $H(X\mid g(X))=0$, that is, if for each value $y$ of $g(X)$ the conditional law of $X$ given $g(X)=y$ is a point mass: $g$ is injective on the values of positive probability. For the second statement, $H(X\mid Y)=\sum_yp(y)H(X\mid Y=y)$ vanishes if and only if each conditional law of $X$ given $Y=y$ ($p(y)>0$) is a point mass $f(y)$; then $X=f(Y)$ almost surely, and conversely.
+\end{solution}
+
+\begin{solution}{ex:xor}
+\idea Pairwise independent but not independent: any two of $X,Y,Z$ determine the third.
+\writeup $X$ and $Y$ are independent, so $I(X;Y)=0$. $Z$ is a fair bit independent of $X$ (for each $x$, $Z=x\oplus Y$ is uniform), so $I(X;Z)=0$. Given $Z$, $X=Y\oplus Z$ is determined by $Y$, while $H(X\mid Z)=1$; so $I(X;Y\mid Z)=H(X\mid Z)-H(X\mid Y,Z)=1-0=1$. By the chain rule, $I(X;Y,Z)=I(X;Y)+I(X;Z\mid Y)=0+1=1$. So learning $Z$ raised the information that $Y$ gives about $X$ from $0$ to $1$ bit, and $I(X;Y)-I(X;Y\mid Z)=-1$. This is the box's second question: $Z$ alone tells nothing about $X$, but it tells one bit about the pair $(X,Y)$. It is also the principle of the one-time pad of Chapter~8, with $Y$ as the key.
+\end{solution}
+
+\begin{solution}{ex:convex}
+\idea The log-sum inequality is exactly convexity for two terms.
+\writeup Write $p_\lambda=\lambda p_1+(1-\lambda)p_2$ and $q_\lambda=\lambda q_1+(1-\lambda)q_2$. For each $x$, apply Lemma~\ref{lem:logsum} to $a_1=\lambda p_1(x)$, $a_2=(1-\lambda)p_2(x)$, $b_1=\lambda q_1(x)$, $b_2=(1-\lambda)q_2(x)$:
+\[
+\begin{aligned}p_\lambda(x)\log_2\frac{p_\lambda(x)}{q_\lambda(x)}&\le\lambda p_1(x)\log_2\frac{p_1(x)}{q_1(x)}\eqbr+(1-\lambda)p_2(x)\log_2\frac{p_2(x)}{q_2(x)},\end{aligned}
+\]
+and sum over $x$. For concavity of $H$ on a set of $m$ points, use $H(p)=\log_2m-D(p\,\|\,u)$ with $u$ uniform, and convexity of $p\mapsto D(p\,\|\,u)$ (take $q_1=q_2=u$).
+\end{solution}
+
+\begin{solution}{ex:distinguish}
+\idea A deterministic rule is an event; randomised rules are averages of deterministic ones.
+\writeup A deterministic rule guesses ``$p$'' exactly when the sample lies in some set $S$. It is right with probability $\frac12p(S)+\frac12(1-q(S))=\frac12+\frac12\bigl(p(S)-q(S)\bigr)$, which is at most $\frac12+\frac12\delta(p,q)$, with equality for $S=\{x:p(x)>q(x)\}$. A randomised rule guesses ``$p$'' with some probability $r(x)\in[0,1]$ on seeing $x$; its success probability $\frac12+\frac12\sum_xr(x)\bigl(p(x)-q(x)\bigr)$ is again at most $\frac12+\frac12\sum_{p>q}(p(x)-q(x))=\frac12+\frac12\delta(p,q)$.
+\end{solution}
+
+\begin{solution}{ex:pinskerhoeffding}
+\idea Compare the fair coin with the coin that makes the rare event typical: the cost of this change of law is a divergence, divergences of independent coordinates add up, and data processing turns the divergence into a statement about the single event $S$.
+\writeup For product laws, $\log_2\frac{q(x)}{p(x)}=\sum_i\log_2\frac{q_1(x_i)}{p_1(x_i)}$, where $p_1$, $q_1$ are the laws of one flip; taking expectations under $q$ gives $D(q\,\|\,p)=n\,d(\frac12+\varepsilon\,\|\,\frac12)$. By Proposition~\ref{prop:dpdiv} applied to $q$, $p$ and the event $S$, $d\bigl(q(S)\,\|\,p(S)\bigr)\le n\,d(\frac12+\varepsilon\,\|\,\frac12)$. Let $a=q(S)\ge\frac12$ and $b=p(S)$. Then
+\[
+\begin{aligned}d(a\,\|\,b)&=a\log_2\frac1b+(1-a)\log_2\frac1{1-b}-h(a)\eqbr\ge a\log_2\frac1b-1\ge\frac12\log_2\frac1b-1,\end{aligned}
+\]
+using $h(a)\le1$ and $\log_2\frac1{1-b}\ge0$. So $\frac12\log_2\frac1b\le1+n\,d(\frac12+\varepsilon\,\|\,\frac12)$, that is, $b\ge\frac14\,2^{-2n\,d(\frac12+\varepsilon\,\|\,\frac12)}$. Together with Chernoff, $\frac1n\log_2\frac1{p(S)}$ lies between $d$ and $2d+\frac2n$. (A finer change of law, conditioning $q$ on $S$, gives the exact exponent $d$; the notebook compares the three numbers.)
+\end{solution}
+
+\begin{solution}{ex:fanosharp}
+\idea Fano's proof loses only in $H(E\mid Y)\le H(E)$ and in the bound by $\log_2(|A|-1)$; make both exact.
+\writeup With $Y$ constant, $H(X\mid Y)=H(X)=(1-P_e)\log_2\frac1{1-P_e}+P_e\log_2\frac{|A|-1}{P_e}=h(P_e)+P_e\log_2(|A|-1)$, and the guess $a$ errs with probability exactly $P_e$. So the inequality is an equality.
+\end{solution}
+
+\begin{solution}{ex:sorting}
+\idea Record the answers to the comparisons: they form a binary word that identifies the order, and no word is a prefix of another, because the algorithm stops at a leaf.
+\writeup Run the sort on the order $\sigma$ and write $1$ for each ``yes'' and $0$ for each ``no''. The word $c(\sigma)$ obtained is the path from the root to the leaf of $\sigma$ in the decision tree; distinct leaves give words none of which is a prefix of another. So $c$ is a prefix code for the $n!$ orders and, by the source coding theorem (Tome~3, Theorem~4.19), its expected length, the average number of comparisons, is at least the entropy of a uniform order, $\log_2n!$. Numerically $\log_210!\approx21.79$, so some inputs need $22$ comparisons, and $\log_21000!\approx8529.4$, close to $1000\log_21000-1000\log_2e\approx8523.1$ as Stirling's formula predicts.
+\end{solution}
+
+\begin{solution}{ex:sparse}
+\idea Count by entropy: the uniform law on $\mathcal S$ has entropy $\log_2|\mathcal S|$, and its coordinates are biased coins.
+\writeup Let $X=(X_1,\dots,X_n)$ be uniform on $\mathcal S$. Each $X_i$ is a coin with $P(X_i=1)=\lambda_i\le\lambda\le\frac12$, so $H(X_i)=h(\lambda_i)\le h(\lambda)$, since $h$ is increasing on $[0,\frac12]$. By subadditivity, $\log_2|\mathcal S|=H(X)\le\sum_iH(X_i)\le nh(\lambda)$. For the set of all words of weight at most $\lambda n$, which is symmetric, this recovers the second statement of Proposition~\ref{prop:binomial}.
+\end{solution}
+
+\begin{solution}{ex:han}
+\idea The $n$ sets ``all but $i$'' cover each coordinate $n-1$ times.
+\writeup Apply Shearer's lemma to the family $\mathcal F=\{F_1,\dots,F_n\}$ with $F_i=\{1,\dots,n\}\setminus\{i\}$. Each coordinate $j$ belongs to the $n-1$ sets $F_i$ with $i\ne j$, so $(n-1)H(X)\le\sum_iH(X_{F_i})$.
+\end{solution}
+
+\begin{solution}{ex:geometric}
+\idea Gibbs' inequality against the candidate maximiser turns ``maximise $H$'' into ``compute a cross-entropy'', which only depends on the mean because $\log_2\frac1{q(k)}$ is affine in $k$.
+\writeup Let $p$ have mean $\mu$. Since $\log_2\frac1{q(k)}=\log_2\frac1{1-\theta}+k\log_2\frac1\theta$,
+\[
+\begin{aligned}\sum_kp(k)\log_2\frac1{q(k)}&=\log_2\frac1{1-\theta}+\mu\log_2\frac1\theta\eqbr=(\mu+1)\log_2(\mu+1)-\mu\log_2\mu,\end{aligned}
+\]
+using $1-\theta=\frac1{1+\mu}$ and $\theta=\frac\mu{1+\mu}$. The same computation for $p=q$, whose mean is $\frac\theta{1-\theta}=\mu$, shows that this is $H(q)$. If $H(p)$ is finite, Gibbs gives $0\le D(p\,\|\,q)=\sum_kp(k)\log_2\frac1{q(k)}-H(p)=H(q)-H(p)$, with equality only for $p=q$. (And $H(p)$ cannot be infinite: the same computation bounds every finite partial sum.)
+\end{solution}
+
+\begin{solution}{ex:collision}
+\idea All three are averages of the surprise $\log_2\frac1{p(X)}$ in different senses: arithmetic mean, logarithm of the mean of $p(X)$, and worst case.
+\writeup Let $X$ have law $p$. Then $\sum_ip_i^2=\mathbb E[p(X)]$ and, by Jensen for the concave $\log_2$, $\log_2\mathbb E[p(X)]\ge\mathbb E[\log_2p(X)]=-H(p)$, so $H_2(p)\le H(p)$. Next, $\mathbb E[p(X)]\le\max_ip_i$, so $H_2(p)\ge H_\infty(p)$. Finally, $\sum_ip_i^2\ge(\max_ip_i)^2$, so $H_2(p)\le2\log_2\frac1{\max_ip_i}=2H_\infty(p)$. For the uniform law all three equal $\log_2m$; for a law with one atom of mass $\frac12$ and the rest spread over $2^{20}$ points, $H_\infty=1$ while $H\approx11$: min-entropy, which governs guessing a password in one try, can be much smaller than Shannon entropy.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} C.~E.~Shannon, \emph{A mathematical theory of communication}, Bell System Technical Journal 27 (1948), 379--423 and 623--656. Read Part~I (Sections~1--12) now and keep Part~II for Chapter~3. The introduction sets up the model of a source, a transmitter, a channel with noise and a receiver, and says why meaning is irrelevant; Section~6 introduces $H$ with the three requirements of our Theorem~\ref{thm:axioms} (proved in Appendix~2) and the remark about the real justification; Sections~7--9 contain the AEP (Theorem~3) and the source coding theorem for Markov sources, with examples of English approximated by random letters and random words. Compare Shannon's informal grouping axiom with our condition~(iii), and notice how much of this chapter (conditional entropy, the inequality $H(X,Y)\le H(X)+H(Y)$) is already in his Section~6.
+\item \emph{The stories.} H.~Nyquist, \emph{Certain factors affecting telegraph speed}, Bell System Technical Journal 3 (1924), 324--346; R.~V.~L.~Hartley, \emph{Transmission of information}, Bell System Technical Journal 7 (1928), 535--563. The von Neumann anecdote is told in M.~Tribus and E.~C.~McIrvine, \emph{Energy and information}, Scientific American 225 (1971), no.~3, 179--188. For Shannon's life and work, J.~Soni and R.~Goodman, \emph{A Mind at Play: How Claude Shannon Invented the Information Age}, Simon \& Schuster, 2017.
+\item S.~Kullback and R.~A.~Leibler, \emph{On information and sufficiency}, Annals of Mathematical Statistics 22 (1951), 79--86; M.~S.~Pinsker, \emph{Information and Information Stability of Random Variables and Processes}, Izdat.\ Akad.\ Nauk SSSR, Moscow, 1960 (English translation Holden-Day, 1964); I.~Csisz\'ar, \emph{Information-type measures of difference of probability distributions and indirect observations}, Studia Scientiarum Mathematicarum Hungarica 2 (1967), 299--318; R.~M.~Fano, \emph{Transmission of Information: A Statistical Theory of Communications}, MIT Press and Wiley, 1961.
+\item A.~R\'enyi, \emph{On measures of entropy and information}, Proceedings of the Fourth Berkeley Symposium on Mathematical Statistics and Probability, vol.~1 (1961), 547--561; D.~K.~Faddeev, \emph{On the concept of entropy of a finite probabilistic scheme} (in Russian), Uspekhi Matematicheskikh Nauk 11 (1956), no.~1, 227--231, which replaces monotonicity by symmetry and the grouping of two outcomes.
+\item F.~R.~K.~Chung, R.~L.~Graham, P.~Frankl and J.~B.~Shearer, \emph{Some intersection theorems for ordered sets and graphs}, Journal of Combinatorial Theory, Series A 43 (1986), 23--37; L.~H.~Loomis and H.~Whitney, \emph{An inequality related to the isoperimetric inequality}, Bulletin of the American Mathematical Society 55 (1949), 961--962; T.~S.~Han, \emph{Nonnegative entropy measures of multivariate symmetric correlations}, Information and Control 36 (1978), 133--156. J.~Radhakrishnan, \emph{Entropy and counting}, in \emph{Computational Mathematics, Modelling and Algorithms}, Narosa, 2003, is a lovely survey of the counting method.
+\item T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd ed., Wiley, 2006, Chapters~2 and~11; I.~Csisz\'ar and J.~K\"orner, \emph{Information Theory: Coding Theorems for Discrete Memoryless Systems}, 2nd ed., Cambridge University Press, 2011.
+\end{itemize}
