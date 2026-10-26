@@ -1,0 +1,422 @@
+\chapter{Tensors and Exactness}
+
+\begin{center}\itshape
+Kernels and cokernels fit into exact sequences, and a single diagram chase, the snake lemma, connects them all. Tensor products turn bilinear maps into linear ones, and an
+adjunction from Chapter~1 decides which exact sequences they preserve and which they break.
+\end{center}
+
+The film \emph{It's My Turn} (1980) opens in a lecture hall. Jill Clayburgh, playing a mathematics professor in Chicago, stands at the blackboard and proves the snake lemma, while a
+student heckles from the back row. The lines had been written, and Clayburgh coached in them, by Benedict Gross, then a young number theorist at Princeton, who later said the
+mathematics was ``just for show'' and asked for his name to be taken off the credits. The choice of lemma was a good one. The snake lemma is the one result of homological algebra
+that fits on a blackboard, its proof is a pure chase through a diagram, and it produces, out of nothing, a map that nobody asked for: the connecting homomorphism that joins
+kernels to cokernels. That map is behind the Mayer--Vietoris sequence of Tome~8, and in Chapter~6 it will generate the whole of homological algebra.
+
+The second half of the chapter is about the tensor product, defined for abelian groups by Hassler Whitney in 1938. It answers a simple question: how can a bilinear map be made
+linear? The answer is a universal property, and with the adjunction between $\otimes$ and $\operatorname{Hom}$ it explains at once which exact sequences tensoring keeps exact. The
+modules that keep all of them exact, the projective, injective and flat ones, are the raw material of Chapter~6.
+
+Throughout, $R$ is a commutative ring with $1$, and ``module'' means $R$-module, as in Tome~2, Chapter~7. All of this works for abelian groups, the case $R=\Z$, which the reader may keep in mind.
+
+\section{Exact sequences}
+
+\begin{definition}\label{def:exact}
+A sequence of modules and homomorphisms $\cdots\to M_{i-1}\xrightarrow{f_{i-1}}M_i\xrightarrow{f_i}M_{i+1}\to\cdots$ is \emph{exact at $M_i$} if $\operatorname{im}f_{i-1}=\ker f_i$, and \emph{exact} if it is exact
+at each inner module. A \emph{short exact sequence} is an exact sequence
+\[0\to A\xrightarrow{f}B\xrightarrow{g}C\to0;\]
+that is, $f$ is injective, $g$ is surjective, and $\operatorname{im}f=\ker g$.
+\end{definition}
+
+So $0\to A\xrightarrow fB$ is exact when $f$ is injective, $B\xrightarrow gC\to0$ when $g$ is surjective, and in a short exact sequence $A$ is a submodule of $B$ and $C$ the quotient: $C\cong B/f(A)$. For
+any homomorphism $h\colon M\to N$, with $\operatorname{coker}h=N/\operatorname{im}h$, the sequence
+\[0\to\ker h\to M\xrightarrow hN\to\operatorname{coker}h\to0\]
+is exact. The simplest short exact sequences are $0\to A\to A\oplus C\to C\to0$, with $a\mapsto(a,0)$ and $(a,c)\mapsto c$; they are called \emph{split}, and recognising them is the first problem.
+
+\begin{example}\label{ex:ses}
+The sequences $0\to\Z\xrightarrow{2}\Z\to\Z/2\to0$ and $0\to\Z/2\xrightarrow{2}\Z/4\to\Z/2\to0$ are exact and not split: $\Z$ is not isomorphic to $\Z\oplus\Z/2$, which has torsion, and $\Z/4$
+not to $\Z/2\oplus\Z/2$, which has no element of order $4$. The middle term is not determined by the two ends.
+\end{example}
+
+\begin{proposition}[splitting lemma]\label{prop:split}
+For a short exact sequence $0\to A\xrightarrow fB\xrightarrow gC\to0$, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item there is $r\colon B\to A$ with $r\circ f=\mathrm{id}_A$ (a \emph{retraction});
+\item there is $s\colon C\to B$ with $g\circ s=\mathrm{id}_C$ (a \emph{section});
+\item there is an isomorphism $\varphi\colon B\to A\oplus C$ with $\varphi(f(a))=(a,0)$ and $g=p_C\circ\varphi$, where $p_C$ is the projection.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a)$\Rightarrow$(c). Let $\varphi(b)=(r(b),g(b))$, a homomorphism with $\varphi(f(a))=(a,0)$ since $g\circ f=0$. It is injective: if $r(b)=0$ and $g(b)=0$, then $b=f(a)$ by exactness and $a=r(f(a))=0$. It is surjective: given
+$(a,c)$, choose $b_0$ with $g(b_0)=c$ and put $b=b_0+f(a-r(b_0))$; then $r(b)=a$ and $g(b)=c$.
+
+(b)$\Rightarrow$(c). Let $\psi(a,c)=f(a)+s(c)$. If $f(a)+s(c)=0$, applying $g$ gives $c=0$, then $f(a)=0$ and $a=0$. Every $b$ is $\bigl(b-s(g(b))\bigr)+s(g(b))$, and the first term lies in $\ker g=\operatorname{im}f$. So $\psi$ is an
+isomorphism, and $\varphi=\psi^{-1}$ has the required properties.
+
+(c)$\Rightarrow$(a) and (b). Take $r=p_A\circ\varphi$ and $s=\varphi^{-1}\circ i_C$, with $i_C(c)=(0,c)$.
+\end{proof}
+
+\section{The snake lemma}
+
+\begin{theorem}[snake lemma]\label{thm:snake}
+Consider a commutative diagram of modules with exact rows $A\xrightarrow fB\xrightarrow gC\to0$ and $0\to A'\xrightarrow{f'}B'\xrightarrow{g'}C'$, and vertical maps
+$a\colon A\to A'$, $b\colon B\to B'$, $c\colon C\to C'$ (Figure~\ref{fig:snake}), so that $b\circ f=f'\circ a$ and $c\circ g=g'\circ b$. There is a homomorphism $\partial\colon\ker c\to\operatorname{coker}a$, the \emph{connecting homomorphism}, such that the sequence
+\[\ker a\xrightarrow{f}\ker b\xrightarrow{g}\ker c\xrightarrow{\partial}\operatorname{coker}a\xrightarrow{\bar f'}\operatorname{coker}b\xrightarrow{\bar g'}\operatorname{coker}c\]
+is exact, where the first two maps are restrictions of $f,g$ and the last two are induced by $f',g'$. If moreover $f$ is injective, so is $\ker a\to\ker b$; if $g'$ is surjective, so is $\operatorname{coker}b\to\operatorname{coker}c$.
+\end{theorem}
+
+The name comes from the shape of the sequence when it is drawn on the diagram (Figure~\ref{fig:snake}): it runs along the kernels on top, down through $\partial$, and along the cokernels at the bottom.
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-snake}
+\caption{The snake lemma. The kernels of the vertical maps sit above the diagram, their cokernels below; the connecting homomorphism $\partial$ is the snake's body, running from the
+top right to the bottom left. To compute $\partial(z)$: lift $z$ to $y\in B$, push it down to $b(y)\in B'$, which lies in $f'(A')$, pull it back to $x'\in A'$, and take its class.}
+\label{fig:snake}
+\end{figure}
+
+\begin{proof}
+\emph{The restricted and induced maps.} If $a(x)=0$ then $b(f(x))=f'(a(x))=0$, so $f$ maps $\ker a$ into $\ker b$; likewise $g$ maps $\ker b$ into $\ker c$. Since $f'(\operatorname{im}a)=\operatorname{im}(f'\circ a)=\operatorname{im}(b\circ f)\subseteq\operatorname{im}b$, $f'$
+induces $\bar f'\colon\operatorname{coker}a\to\operatorname{coker}b$, and likewise $\bar g'$.
+
+\emph{Definition of $\partial$.} Let $z\in\ker c$. Choose $y\in B$ with $g(y)=z$. Then $g'(b(y))=c(g(y))=c(z)=0$, so $b(y)=f'(x')$ for a unique $x'\in A'$, by exactness and injectivity of $f'$. Put $\partial(z)=x'+\operatorname{im}a$. If $y_1$ is another
+choice, $y_1-y\in\ker g=\operatorname{im}f$, say $y_1=y+f(x)$; then $b(y_1)=f'(x'+a(x))$, and $x'+a(x)$ has the same class as $x'$. So $\partial$ is well defined, and it is a homomorphism because if $y,y_1$ serve for $z,z_1$, then $y+y_1$
+and $ry$ serve for $z+z_1$ and $rz$.
+
+\emph{Exactness at $\ker b$.} $g\circ f=0$. Conversely let $y\in\ker b$ with $g(y)=0$. Then $y=f(x)$ for some $x\in A$, and $f'(a(x))=b(f(x))=0$, so $a(x)=0$: $y$ comes from $\ker a$.
+
+\emph{Exactness at $\ker c$.} If $z=g(y)$ with $y\in\ker b$, we may use this $y$ to compute $\partial(z)$; then $b(y)=0=f'(0)$ and $\partial(z)=0$. Conversely suppose $\partial(z)=0$: with $y$, $x'$ as above, $x'=a(x)$ for some $x\in A$. Then
+$y-f(x)$ still maps to $z$, and $b(y-f(x))=f'(x')-f'(a(x))=0$; so $z$ is the image of an element of $\ker b$.
+
+\emph{Exactness at $\operatorname{coker}a$.} $\bar f'(\partial(z))$ is the class of $f'(x')=b(y)$, which is $0$ in $\operatorname{coker}b$. Conversely let $x'\in A'$ with $f'(x')=b(y)$ for some $y\in B$. Put $z=g(y)$; then $c(z)=g'(b(y))=g'(f'(x'))=0$,
+so $z\in\ker c$, and computing $\partial(z)$ with this $y$ gives the class of $x'$.
+
+\emph{Exactness at $\operatorname{coker}b$.} $g'\circ f'=0$, so $\bar g'\circ\bar f'=0$. Conversely let $y'\in B'$ with $g'(y')\in\operatorname{im}c$, say $g'(y')=c(z)$. Since $g$ is onto, $z=g(y)$, and $g'(y'-b(y))=c(z)-c(g(y))=0$. So $y'-b(y)=f'(x')$ for some
+$x'$, and the class of $y'$ in $\operatorname{coker}b$ is $\bar f'$ of the class of $x'$.
+
+\emph{The extra statements} are immediate: a restriction of an injective map is injective, and a map induced on quotients by a surjective map is surjective.
+\end{proof}
+
+\begin{corollary}[short five lemma]\label{cor:fivelemma}
+Let a commutative diagram connect two short exact sequences $0\to A\to B\to C\to0$ and $0\to A'\to B'\to C'\to0$ by vertical maps $a,b,c$. If $a$ and $c$ are isomorphisms, so is $b$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:snake}, $0\to\ker a\to\ker b\to\ker c$ and $\operatorname{coker}a\to\operatorname{coker}b\to\operatorname{coker}c\to0$ are exact. The outer terms vanish, so $\ker b=0$ and $\operatorname{coker}b=0$.
+\end{proof}
+
+\begin{think}
+Two extensions $0\to A\to B\to C\to0$ and $0\to A\to B_1\to C\to0$, with a homomorphism $B\to B_1$ compatible with the maps from $A$ and to $C$: why must it be an isomorphism? In Chapter~6 this is what makes
+``the set of extensions of $C$ by $A$'' a sensible object, which turns out to be a group.
+\end{think}
+
+\section{Hom and exactness}
+
+For a module $M$, $\operatorname{Hom}_R(M,N)$ is itself an $R$-module, by $(rf)(x)=rf(x)$ (here commutativity of $R$ is used), and $\operatorname{Hom}(M,-)$ and $\operatorname{Hom}(-,N)$ are functors to modules, covariant and contravariant
+(Example~\ref{ex:functors}(f)). A homomorphism $h\colon N\to N'$ acts by $h_*=h\circ-$, and a homomorphism $h\colon M'\to M$ by $h^*=-\circ h$.
+
+\begin{proposition}[Hom is left exact]\label{prop:homleft}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item If $0\to A\xrightarrow fB\xrightarrow gC$ is exact, so is $0\to\operatorname{Hom}(M,A)\xrightarrow{f_*}\operatorname{Hom}(M,B)\xrightarrow{g_*}\operatorname{Hom}(M,C)$.
+\item If $A\xrightarrow fB\xrightarrow gC\to0$ is exact, so is $0\to\operatorname{Hom}(C,N)\xrightarrow{g^*}\operatorname{Hom}(B,N)\xrightarrow{f^*}\operatorname{Hom}(A,N)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) If $f\circ u=0$ then $u=0$, as $f$ is injective. Clearly $g\circ f\circ u=0$. If $g\circ v=0$ for $v\colon M\to B$, then $v(m)\in\ker g=\operatorname{im}f$ for every $m$, and $u(m)=f^{-1}(v(m))$ is a well-defined homomorphism with $f\circ u=v$.
+
+(b) If $u\circ g=0$ then $u=0$, as $g$ is surjective. Clearly $u\circ g\circ f=0$. If $v\circ f=0$ for $v\colon B\to N$, then $v$ vanishes on $\operatorname{im}f=\ker g$, so it factors through $B/\ker g\cong C$: $v=u\circ g$.
+\end{proof}
+
+The right ends are lost. Apply $\operatorname{Hom}(\Z/2,-)$ to $0\to\Z\xrightarrow2\Z\to\Z/2\to0$: since $\operatorname{Hom}(\Z/2,\Z)=0$, the identity of $\Z/2$ does not come from any map to $\Z$, and $g_*$ is not surjective. The
+converse of (b) holds, and it is the tool for proving exactness by testing against all modules, in the spirit of Yoneda.
+
+\begin{lemma}\label{lem:testexact}
+If for every module $N$ the sequence
+\[0\to\operatorname{Hom}(C,N)\xrightarrow{g^*}\operatorname{Hom}(B,N)\xrightarrow{f^*}\operatorname{Hom}(A,N)\]
+is exact, then $A\xrightarrow fB\xrightarrow gC\to0$ is exact.
+\end{lemma}
+
+\begin{proof}
+\emph{$g$ is onto.} Take $N=C/\operatorname{im}g$ and the projection $\pi\colon C\to N$. Then $g^*(\pi)=\pi\circ g=0$, so $\pi=0$ by injectivity of $g^*$, that is $\operatorname{im}g=C$.
+\emph{$g\circ f=0$.} Take $N=C$: $f^*(g^*(\mathrm{id}_C))=g\circ f$ vanishes, since $f^*\circ g^*=0$.
+\emph{$\ker g\subseteq\operatorname{im}f$.} Take $N=B/\operatorname{im}f$ and the projection $\pi\colon B\to N$. Then $f^*(\pi)=\pi\circ f=0$, so $\pi=g^*(u)=u\circ g$ for some $u$, and $\ker g\subseteq\ker\pi=\operatorname{im}f$.
+\end{proof}
+
+\section{The tensor product}
+
+A map $\beta\colon M\times N\to P$ is \emph{bilinear} if it is linear in each variable when the other is fixed. The product of a ring, the dot product, the determinant of two columns, the evaluation $V^*\times V\to K$
+are bilinear. Bilinear maps are not linear (the dot product of $2x$ and $2y$ is four times that of $x$ and $y$), and the tensor product is the module that turns them into linear maps.
+
+\begin{definition}\label{def:tensor}
+A \emph{tensor product} of $M$ and $N$ is a module $M\otimes_RN$ with a bilinear map $\otimes\colon M\times N\to M\otimes_RN$, $(m,n)\mapsto m\otimes n$, such that for every bilinear $\beta\colon M\times N\to P$ there is exactly one
+linear map $\tilde\beta\colon M\otimes_RN\to P$ with $\tilde\beta(m\otimes n)=\beta(m,n)$.
+\end{definition}
+
+\begin{theorem}\label{thm:tensorexists}
+The tensor product exists, and is unique up to a unique isomorphism compatible with $\otimes$. It is generated by the \emph{pure tensors} $m\otimes n$.
+\end{theorem}
+
+\begin{proof}
+\emph{Uniqueness.} The pair $(M\otimes N,\otimes)$ is an initial object in the category whose objects are bilinear maps out of $M\times N$, and whose morphisms from $\beta\colon M\times N\to P$ to $\beta'\colon M\times N\to P'$ are the linear
+maps $u\colon P\to P'$ with $u\circ\beta=\beta'$. Proposition~\ref{prop:initialunique} applies.
+
+\emph{Existence.} Let $F$ be the free module with basis the set $M\times N$, its basis vectors written $[m,n]$, and $K$ the submodule generated by all
+\[[m+m',n]-[m,n]-[m',n],\qquad[m,n+n']-[m,n]-[m,n'],\]
+\[[rm,n]-r[m,n],\qquad[m,rn]-r[m,n].\]
+Put $M\otimes N=F/K$ and $m\otimes n=[m,n]+K$. The map $\otimes$ is bilinear precisely because the generators of $K$ vanish in the quotient. Given a bilinear $\beta$, the linear map $F\to P$ with $[m,n]\mapsto\beta(m,n)$
+vanishes on the generators of $K$, by bilinearity, hence on $K$, and induces $\tilde\beta$. It is unique because the classes $[m,n]+K$ generate $F/K$, which also proves the last statement.
+\end{proof}
+
+Every element of $M\otimes N$ is thus a finite sum $\sum m_i\otimes n_i$, but not every element is a pure tensor, and a pure tensor can vanish for reasons that are not visible: in $\Z/2\otimes_{\Z}\Z/3$,
+$x\otimes y=3x\otimes y-2x\otimes y=x\otimes3y-0=0$. The universal property is the only safe way to reason. By it, linear maps $u\colon M\to M'$ and $v\colon N\to N'$ give a linear map $u\otimes v\colon M\otimes N\to M'\otimes N'$ with
+$(u\otimes v)(m\otimes n)=u(m)\otimes v(n)$, since $(m,n)\mapsto u(m)\otimes v(n)$ is bilinear. Uniqueness in the universal property gives $(u'\otimes v')\circ(u\otimes v)=(u'\circ u)\otimes(v'\circ v)$, so $-\otimes N$ is a functor.
+
+\begin{proposition}\label{prop:tensorrules}
+There are natural isomorphisms
+\begin{enumerate}[label=(\alph*)]
+\item $R\otimes M\cong M$, $r\otimes m\mapsto rm$;
+\item $M\otimes N\cong N\otimes M$, $m\otimes n\mapsto n\otimes m$;
+\item $\bigl(\bigoplus_iM_i\bigr)\otimes N\cong\bigoplus_i(M_i\otimes N)$, $(m_i)_i\otimes n\mapsto(m_i\otimes n)_i$;
+\item $(R/I)\otimes M\cong M/IM$ for an ideal $I$, $\bar r\otimes m\mapsto\overline{rm}$, where $IM$ is the submodule generated by the $im$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+In each case the map is defined by the universal property, from a bilinear map, and we write down an inverse.
+(a) $(r,m)\mapsto rm$ is bilinear. The inverse is $m\mapsto1\otimes m$, linear, and indeed $r\otimes m=1\otimes rm$ by bilinearity, so the two composites are identities on generators.
+(b) The inverse is the same construction with the roles exchanged; both composites fix the pure tensors.
+(c) The map is induced by the bilinear $((m_i),n)\mapsto(m_i\otimes n)_i$ (a finite family of non-zero terms). In the other direction, on each summand $M_j\otimes N$ use $\iota_j\otimes\mathrm{id}_N$, where $\iota_j$ is the inclusion of $M_j$; the sum of
+these maps is defined on the direct sum. Both composites fix generators: $(m_i)\otimes n=\sum_i\iota_i(m_i)\otimes n$.
+(d) The map $(\bar r,m)\mapsto\overline{rm}$ is well defined, since changing $r$ by an element of $I$ changes $rm$ by an element of $IM$, and bilinear. The inverse is $\bar m\mapsto\bar1\otimes m$, well defined because for $i\in I$,
+$\bar1\otimes im=\bar i\otimes m=0$. The composites fix generators, as $\bar r\otimes m=\bar1\otimes rm$.
+Naturality in each case means compatibility with maps $u\otimes v$, which is checked on pure tensors.
+\end{proof}
+
+\begin{example}\label{ex:zmzn}
+By (d), $\Z/m\otimes_{\Z}\Z/n\cong(\Z/n)/m(\Z/n)\cong\Z/\gcd(m,n)$, because $m\Z+n\Z=\gcd(m,n)\Z$. With (c) and the structure theorem (Tome~2, Theorem~7.6) this computes the tensor product of any two finitely
+generated abelian groups: $\Z^a\oplus\bigoplus_i\Z/m_i$ tensored with $\Z^b\oplus\bigoplus_j\Z/n_j$ is $\Z^{ab}\oplus\bigoplus_i(\Z/m_i)^b\oplus\bigoplus_j(\Z/n_j)^a\oplus\bigoplus_{i,j}\Z/\gcd(m_i,n_j)$. For
+vector spaces, if $(e_i)$ and $(f_j)$ are bases of $V$ and $W$, then $(e_i\otimes f_j)$ is a basis of $V\otimes_KW$, by (c) and (a) applied to $V\cong\bigoplus Ke_i$; so $\dim(V\otimes W)=\dim V\dim W$.
+\end{example}
+
+The defining property of $M\otimes N$ is about bilinear maps, and a bilinear map $M\times N\to P$ is the same thing as a linear map from $M$ to $\operatorname{Hom}(N,P)$: fix the first variable. This is currying (Example~\ref{ex:adjunctions}(c)) in the world of modules.
+
+\begin{theorem}[tensor and Hom are adjoint]\label{thm:tensorhom}
+For modules $M,N,P$ there is an isomorphism, natural in $M$ and $P$,
+\[\Phi\colon\operatorname{Hom}(M\otimes N,P)\to\operatorname{Hom}\bigl(M,\operatorname{Hom}(N,P)\bigr),\qquad\Phi(u)(m)=\bigl(n\mapsto u(m\otimes n)\bigr).\]
+So $-\otimes N$ is left adjoint to $\operatorname{Hom}(N,-)$.
+\end{theorem}
+
+\begin{proof}
+$\Phi(u)(m)$ is linear in $n$ and $\Phi(u)$ linear in $m$, because $u(m\otimes n)$ is bilinear. Conversely, a linear $v\colon M\to\operatorname{Hom}(N,P)$ gives a bilinear $(m,n)\mapsto v(m)(n)$, hence a linear $\Psi(v)$ on
+$M\otimes N$ with $\Psi(v)(m\otimes n)=v(m)(n)$. Then $\Phi(\Psi(v))=v$, and $\Psi(\Phi(u))=u$ because both agree on pure tensors. For naturality, let $\mu\colon M'\to M$ and $\pi\colon P\to P'$; then both
+$\Phi(\pi\circ u\circ(\mu\otimes\mathrm{id}_N))(m')$ and $\pi_*\circ\Phi(u)\circ\mu$ evaluated at $m'$ are the map $n\mapsto\pi(u(\mu(m')\otimes n))$.
+\end{proof}
+
+\begin{corollary}[tensor is right exact]\label{cor:rightexact}
+If $A\xrightarrow fB\xrightarrow gC\to0$ is exact, so is $A\otimes N\xrightarrow{f\otimes1}B\otimes N\xrightarrow{g\otimes1}C\otimes N\to0$.
+\end{corollary}
+
+\begin{proof}
+Let $P$ be any module. By Proposition~\ref{prop:homleft}(b) applied with $\operatorname{Hom}(N,P)$ in place of $N$, the sequence
+\[0\to\operatorname{Hom}(C,\operatorname{Hom}(N,P))\to\operatorname{Hom}(B,\operatorname{Hom}(N,P))\to\operatorname{Hom}(A,\operatorname{Hom}(N,P))\]
+is exact. By Theorem~\ref{thm:tensorhom} and its naturality in the first variable, it is isomorphic, term by term and compatibly with the maps, to
+\[0\to\operatorname{Hom}(C\otimes N,P)\xrightarrow{(g\otimes1)^*}\operatorname{Hom}(B\otimes N,P)\xrightarrow{(f\otimes1)^*}\operatorname{Hom}(A\otimes N,P),\]
+which is therefore exact for every $P$. Lemma~\ref{lem:testexact} concludes.
+\end{proof}
+
+Left exactness fails. Tensor the injective map $\Z\xrightarrow2\Z$ with $\Z/2$: by Proposition~\ref{prop:tensorrules}(a) it becomes $\Z/2\xrightarrow2\Z/2$, the zero map on a non-zero group. Multiplication by $2$, invisible on
+$\Z$, becomes visible in $\Z/2$ and kills it. Measuring this failure is the purpose of the functor $\operatorname{Tor}$ of Chapter~6.
+
+\section{Projective, injective and flat modules}
+
+\begin{definition}\label{def:projective}
+A module $P$ is \emph{projective} if $\operatorname{Hom}(P,-)$ preserves short exact sequences; by Proposition~\ref{prop:homleft} this means that for every surjection $g\colon B\to C$, every homomorphism $P\to C$ lifts to $P\to B$.
+A module $E$ is \emph{injective} if $\operatorname{Hom}(-,E)$ preserves short exact sequences: for every injection $f\colon A\to B$, every homomorphism $A\to E$ extends to $B\to E$. A module $N$ is \emph{flat} if $-\otimes N$ preserves short
+exact sequences: for every injection $f$, $f\otimes1_N$ is injective.
+\end{definition}
+
+\begin{proposition}\label{prop:projective}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item Free modules are projective, and a module is projective if and only if it is a direct summand of a free module.
+\item Free modules are flat, a direct summand of a flat module is flat, and hence projective modules are flat.
+\item Over a domain, a flat module $N$ is \emph{torsion-free}: $rx=0$ with $r\ne0$ implies $x=0$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(a) Let $F$ be free with basis $(e_i)$, $g\colon B\to C$ onto and $u\colon F\to C$. Choose $b_i$ with $g(b_i)=u(e_i)$ and let $\tilde u(e_i)=b_i$; then $g\circ\tilde u=u$ on the basis, hence everywhere. If $P$ is projective, choose a free $F$ with a
+surjection $g\colon F\to P$ (a basis vector for each element of $P$); lifting $\mathrm{id}_P$ gives $s$ with $g\circ s=\mathrm{id}_P$, and by Proposition~\ref{prop:split} $F\cong P\oplus\ker g$. Conversely, if $F=P\oplus Q$ is free and $u\colon P\to C$, lift
+$u\circ p_P\colon F\to C$ to $v\colon F\to B$ and restrict $v$ to $P$.
+
+(b) A homomorphism $f\otimes1_{N\oplus N'}$ is, by Proposition~\ref{prop:tensorrules}(c), the direct sum of $f\otimes1_N$ and $f\otimes1_{N'}$, so it is injective if and only if both are. For $N=R$, $f\otimes1_R$ is $f$ by
+Proposition~\ref{prop:tensorrules}(a), so $R$ is flat, and so is every direct sum of copies of $R$ (the same argument for infinitely many summands). Direct summands of flat modules are flat by the first sentence.
+
+(c) Multiplication by $r\ne0$ is injective on $R$, so $r\otimes1_N$, which is multiplication by $r$ on $R\otimes N\cong N$, is injective.
+\end{proof}
+
+Injective modules are harder to recognise, and Reinhold Baer found in 1940 that it is enough to test the ideals of $R$.
+
+\begin{theorem}[Baer's criterion]\label{thm:baer}
+A module $E$ is injective if and only if every homomorphism $I\to E$, from an ideal $I$ of $R$, extends to $R$.
+\end{theorem}
+
+\begin{proof}
+The condition is the special case $A=I\subseteq B=R$. Conversely let $A\subseteq B$ and $u\colon A\to E$. Consider the pairs $(A_1,u_1)$ with $A\subseteq A_1\subseteq B$ a submodule and $u_1$ extending $u$, ordered by extension. A chain has an upper bound,
+its union with the common extension, so by Zorn's lemma (Tome~6, Theorem~1.19) there is a maximal pair $(A_1,u_1)$. Suppose $A_1\ne B$ and pick $b\in B\setminus A_1$. The set $I=\{r\in R:rb\in A_1\}$ is an ideal, and $r\mapsto u_1(rb)$ is a
+homomorphism $I\to E$; let $w\colon R\to E$ extend it. Define $u_2$ on $A_1+Rb$ by $u_2(a+rb)=u_1(a)+w(r)$. It is well defined: if $a+rb=a'+r'b$, then $(r-r')b=a'-a\in A_1$, so $r-r'\in I$ and $w(r-r')=u_1((r-r')b)=u_1(a')-u_1(a)$. So $u_2$
+extends $u_1$ strictly, contradicting maximality. Hence $A_1=B$.
+\end{proof}
+
+\begin{corollary}\label{cor:divisible}
+Over a principal ideal domain, a module $E$ is injective if and only if it is \emph{divisible}: for every $e\in E$ and $r\ne0$ there is $e'$ with $re'=e$. In particular $\Q$ and $\Q/\Z$ are injective abelian groups, and $\Z$ is not.
+\end{corollary}
+
+\begin{proof}
+A non-zero ideal is $(r)$ with $r\ne0$, and a homomorphism $u\colon(r)\to E$ is determined by $e=u(r)$, any $e$ being possible because $R$ is a domain. It extends to $w\colon R\to E$ if and only if $e=w(r)=rw(1)$ for some value $w(1)$, that is, if
+$e$ is divisible by $r$. The zero ideal causes no trouble. Apply Theorem~\ref{thm:baer}. Quotients of divisible groups are divisible, which covers $\Q/\Z$, and $1\in\Z$ is not divisible by $2$.
+\end{proof}
+
+\begin{theorem}\label{thm:pidflat}
+For a finitely generated module $M$ over a principal ideal domain, the following are equivalent: $M$ is free; $M$ is projective; $M$ is flat; $M$ is torsion-free.
+\end{theorem}
+
+\begin{proof}
+Free implies projective implies flat implies torsion-free, by Proposition~\ref{prop:projective}. If $M$ is torsion-free, its decomposition $M\cong R^n\oplus R/(d_1)\oplus\cdots\oplus R/(d_k)$ (Tome~2, Theorem~7.6), with $d_i$ non-zero non-units,
+has no cyclic torsion summand, since the generator of $R/(d_1)$ is killed by $d_1$. So $M\cong R^n$ is free.
+\end{proof}
+
+The hypothesis ``finitely generated'' matters: $\Q$ is a torsion-free abelian group, flat (Chapter~4 proves it), but neither free nor projective (Exercise~\ref{ex:qnotproj}).
+
+For vector spaces everything is free, and the tensor product is the familiar one of Tome~S1, Chapter~10. Let $V,W$ be finite-dimensional. The bilinear map $V^*\times W\to\operatorname{Hom}(V,W)$, $(\varphi,w)\mapsto(v\mapsto\varphi(v)w)$, induces a
+linear map $V^*\otimes W\to\operatorname{Hom}(V,W)$ which sends the basis $e_i^*\otimes f_j$ to the elementary map sending $e_i$ to $f_j$ and the other basis vectors to $0$: it is an isomorphism. Under it, the pure tensors
+$\varphi\otimes w$ are the linear maps of rank at most $1$, and a sum of $r$ pure tensors has rank at most $r$. The least number of pure tensors needed to write an element is its \emph{tensor rank}; for two factors it is the
+rank of a matrix, and for three or more it is one of the hardest invariants in algebra.
+
+\begin{beauty}
+Multiplication of $2\times2$ matrices is a bilinear map $M_2(K)\times M_2(K)\to M_2(K)$, so a single tensor $T\in M_2^*\otimes M_2^*\otimes M_2$, and each way of writing $T$ as a sum of $r$ pure tensors is an algorithm that multiplies
+$2\times2$ matrices with $r$ multiplications. The school algorithm gives $r=8$. In 1969 Volker Strassen found $r=7$ (Tome~S1, Theorem~10.12), and applied recursively to blocks it multiplies $n\times n$ matrices with
+$O(n^{\log_27})=O(n^{2.81})$ operations. Shmuel Winograd showed in 1971 that $7$ cannot be improved: the tensor rank of $T$ is exactly $7$. The exponent $\omega$ of matrix multiplication, the least exponent that works for all
+large $n$, is the asymptotic rank of the matrix multiplication tensors; it is known to lie between $2$ and about $2.37$, and whether it equals $2$ is open.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:zmzncomp}
+Show that $\operatorname{Hom}_{\Z}(\Z/m,\Z/n)\cong\Z/\gcd(m,n)$, and that $\Q\otimes_{\Z}\Q/\Z=0$. More generally, show that $D\otimes T=0$ when $D$ is divisible and $T$ is torsion (every element killed by some $n\ne0$).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:whichsplit}
+Which of these short exact sequences split? $0\to\Z/2\to\Z/6\to\Z/3\to0$; $0\to\Z/3\to\Z/9\to\Z/3\to0$; $0\to\Z^2\xrightarrow{u}\Z^2\to\Z/5\to0$ with $u(x,y)=(x,5y)$; and $0\to K\to\Z^2\to\Z\to0$ for any surjection $\Z^2\to\Z$ with kernel $K$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:composite}
+Let $f\colon A\to B$ and $g\colon B\to C$ be homomorphisms. Show that there is an exact sequence
+\[0\to\ker f\to\ker(g\circ f)\to\ker g\to\operatorname{coker}f\to\operatorname{coker}(g\circ f)\to\operatorname{coker}g\to0.\]
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:qnotproj}
+\leavevmode
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\operatorname{Hom}_{\Z}(\Q,\Z)=0$, and deduce that $\Q$ is not a projective abelian group.
+\item Show that a direct sum of injective modules indexed by a finite set is injective, and that $\Q/\Z\cong\bigoplus_p\Z[1/p]/\Z$, the sum over the primes.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:tensoralgebra}
+If $A,B$ are commutative $R$-algebras, $A\otimes_RB$ is a commutative ring with $(a\otimes b)(a'\otimes b')=aa'\otimes bb'$ (one may take this for granted). Show that $\C\otimes_{\R}\C\cong\C\times\C$ as rings, and that
+$\Q(\sqrt2)\otimes_{\Q}\Q(\sqrt3)$ is a field, isomorphic to $\Q(\sqrt2,\sqrt3)$. (Use $R[X]/(p)\otimes_RA\cong A[X]/(p)$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fivelemma}
+\emph{The five lemma.} In a commutative diagram with exact rows $A_1\to A_2\to A_3\to A_4\to A_5$ and $B_1\to\dots\to B_5$, connected by vertical maps $h_1,\dots,h_5$, suppose $h_2,h_4$ are isomorphisms, $h_1$ is surjective and $h_5$ is
+injective. Show that $h_3$ is an isomorphism.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:zmzncomp}
+A homomorphism $\Z/m\to\Z/n$ is determined by the image $x$ of $1$, subject to $mx=0$. For $D\otimes T$, write $d\otimes t=\frac dn n\otimes t$.
+\end{hint}
+
+\begin{hint}{ex:whichsplit}
+Proposition~\ref{prop:split}, and count elements of each order; the last one has a free quotient.
+\end{hint}
+
+\begin{hint}{ex:composite}
+Apply the snake lemma to the diagram whose rows are $A\xrightarrow fB\to\operatorname{coker}f\to0$ and $0\to C\xrightarrow{\mathrm{id}}C\to0$, with vertical maps $g\circ f$, $g$ and $0$.
+\end{hint}
+
+\begin{hint}{ex:qnotproj}
+An element of $\Q$ is divisible by every integer, but a non-zero integer is not. For (a), a projective is a submodule of a free module.
+\end{hint}
+
+\begin{hint}{ex:tensoralgebra}
+$\C=\R[X]/(X^2+1)$, and over $\C$ the polynomial $X^2+1$ has two distinct roots: use the Chinese remainder theorem.
+\end{hint}
+
+\begin{hint}{ex:fivelemma}
+Chase: for injectivity of $h_3$ start from $x\in\ker h_3$ and push it to $A_4$; for surjectivity, start from $y\in B_3$ and push it to $B_4$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:zmzncomp}
+\idea Everything is about cyclic groups, where a homomorphism is the image of a generator.
+\writeup A homomorphism $u\colon\Z/m\to\Z/n$ is determined by $x=u(1)$, and any $x$ with $mx=0$ in $\Z/n$ works. The solutions of $mx\equiv0\pmod n$ are the multiples of $n/\gcd(m,n)$, a cyclic subgroup of order $\gcd(m,n)$, and adding
+homomorphisms adds the values $x$. So $\operatorname{Hom}(\Z/m,\Z/n)\cong\Z/\gcd(m,n)$, the same as $\Z/m\otimes\Z/n$ (Example~\ref{ex:zmzn}). For $D$ divisible and $T$ torsion, take $d\otimes t$ with $nt=0$, $n\ne0$, and $d=nd'$; then
+$d\otimes t=nd'\otimes t=d'\otimes nt=0$. Pure tensors generate, so $D\otimes T=0$; this applies to $\Q\otimes\Q/\Z$.
+\end{solution}
+
+\begin{solution}{ex:whichsplit}
+\idea A splitting would make the middle term a direct sum, and orders of elements tell sums apart.
+\writeup $\Z/6\cong\Z/2\oplus\Z/3$ by the Chinese remainder theorem, compatibly with the maps (the subgroup of order $2$ and the quotient of order $3$), so the first sequence splits; for instance the section sends $1\in\Z/3$ to $4\in\Z/6$, of order $3$,
+mapping to $1$ since $4\equiv1\pmod3$. The second does not: $\Z/9$ has an element of order $9$ and $\Z/3\oplus\Z/3$ none. The third does not: $\Z^2$ is torsion-free, $\Z^2\oplus\Z/5$ is not. The fourth always splits: by
+Proposition~\ref{prop:projective}(a) the free module $\Z$ is projective, so the identity of $\Z$ lifts to a section $\Z\to\Z^2$; hence $\Z^2\cong K\oplus\Z$, and $K$, finitely generated and torsion-free of rank $1$, is $\cong\Z$.
+\end{solution}
+
+\begin{solution}{ex:composite}
+\idea The hint's diagram has the kernels and cokernels of $g\circ f$, $g$ in the right places, and the snake does the rest.
+\writeup The rows $A\xrightarrow fB\xrightarrow\pi\operatorname{coker}f\to0$ and $0\to C\xrightarrow{\mathrm{id}}C\to0\to0$ are exact (the second row is read as $0\to C\to C\to0$, its third term being $0$). With the vertical maps $g\circ f$, $g$ and $0$, the squares
+commute: $g\circ f=\mathrm{id}\circ(g\circ f)$ and $0\circ\pi=0$. The kernel of the third vertical map is $\operatorname{coker}f$ and its cokernel is $0$. The snake lemma gives the exact sequence
+\[\ker(g\circ f)\xrightarrow f\ker g\xrightarrow\partial\operatorname{coker}f\to\operatorname{coker}(g\circ f)\to\operatorname{coker}g\to0.\]
+Here the map $\ker g\to\operatorname{coker}f$ is the restriction of $\pi$, and the connecting map sends the class of $y\in B$ to the class of $g(y)$ in $\operatorname{coker}(g\circ f)$: lift, push down by $g$, and pull back along $\mathrm{id}_C$. It remains to add $0\to\ker f\to\ker(g\circ f)\to\ker g$ at the left: $\ker f\subseteq\ker(g\circ f)$
+is an inclusion, and $x\in\ker(g\circ f)$ maps to $0$ in $\ker g$ exactly when $f(x)=0$.
+\end{solution}
+
+\begin{solution}{ex:qnotproj}
+\idea Divisibility is preserved by homomorphisms, and integers are not divisible.
+\writeup (a) If $u\colon\Q\to\Z$ and $q\in\Q$, then for every $n\ge1$, $u(q)=nu(q/n)$ is divisible by $n$, so $u(q)=0$. If $\Q$ were projective, it would be a submodule of a free abelian group $F=\Z^{(S)}$ by Proposition~\ref{prop:projective}(a).
+Some coordinate function $F\to\Z$ would be non-zero on $\Q$, a contradiction.
+(b) If $E_1,E_2$ are injective and $u\colon A\to E_1\oplus E_2$, extend the two components separately. For the decomposition, every $x\in\Q/\Z$ has finite order $n$, and writing $x=a/n$, partial fractions (Bézout) split $a/n$ as a sum of fractions
+whose denominators are the prime powers dividing $n$, uniquely modulo $\Z$ for each prime. The map $\bigoplus_p\Z[1/p]/\Z\to\Q/\Z$ induced by the inclusions is therefore bijective. Each $\Z[1/p]/\Z$, the Prüfer group, is divisible, and so is their direct sum; all are injective
+by Corollary~\ref{cor:divisible}.
+\end{solution}
+
+\begin{solution}{ex:tensoralgebra}
+\idea Present each field as a quotient of a polynomial ring, and let the tensor product act on the coefficients.
+\writeup First, $R[X]\otimes_RA\cong A[X]$: by Proposition~\ref{prop:tensorrules}(c) and (a), $R[X]=\bigoplus_kRX^k$ tensored with $A$ is $\bigoplus_kAX^k$. Right exactness (Corollary~\ref{cor:rightexact}) applied to
+$R[X]\xrightarrow{p}R[X]\to R[X]/(p)\to0$ then gives $R[X]/(p)\otimes A\cong A[X]/(p)$, and the isomorphism is multiplicative, as one checks on pure tensors. So $\C\otimes_{\R}\C\cong\C[X]/(X^2+1)=\C[X]/((X-i)(X+i))$, which is
+$\C\times\C$ by the Chinese remainder theorem (Tome~2, Theorem~6.9), since $X-i$ and $X+i$ are coprime. Likewise $\Q(\sqrt2)\otimes_{\Q}\Q(\sqrt3)\cong\Q(\sqrt2)[X]/(X^2-3)$. Now $X^2-3$ is irreducible over $\Q(\sqrt2)$: a root would be
+$a+b\sqrt2$ with $a^2+2b^2=3$ and $2ab=0$, which has no rational solution ($b=0$ gives $a^2=3$, $a=0$ gives $b^2=\frac32$). So the quotient is the field $\Q(\sqrt2)(\sqrt3)=\Q(\sqrt2,\sqrt3)$.
+\end{solution}
+
+\begin{solution}{ex:fivelemma}
+\idea Each half is a chase through the diagram, using exactness where it is needed and the hypotheses on $h_1,h_2,h_4,h_5$ once each.
+\writeup Call the horizontal maps $\alpha_i\colon A_i\to A_{i+1}$ and $\beta_i\colon B_i\to B_{i+1}$.
+\emph{Injectivity.} Let $h_3(x)=0$. Then $h_4(\alpha_3(x))=\beta_3(h_3(x))=0$, so $\alpha_3(x)=0$ and $x=\alpha_2(w)$. Now $\beta_2(h_2(w))=h_3(x)=0$, so $h_2(w)=\beta_1(v')$, and $v'=h_1(v)$ as $h_1$ is onto. Then $h_2(\alpha_1(v))=\beta_1(h_1(v))=h_2(w)$, so
+$w=\alpha_1(v)$ as $h_2$ is injective, and $x=\alpha_2(\alpha_1(v))=0$.
+\emph{Surjectivity.} Let $y\in B_3$. Write $\beta_3(y)=h_4(z)$. Then $h_5(\alpha_4(z))=\beta_4(\beta_3(y))=0$, so $\alpha_4(z)=0$ and $z=\alpha_3(x)$. Now $\beta_3(y-h_3(x))=h_4(z)-h_4(\alpha_3(x))=0$, so $y-h_3(x)=\beta_2(u')$ with $u'=h_2(u)$. Then
+$y=h_3(x)+\beta_2(h_2(u))=h_3(x+\alpha_2(u))$.
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+The scene of \emph{It's My Turn} (Columbia Pictures, 1980, directed by Claudia Weill) and Benedict Gross's part in it are described in ``Lights, camera and algebraic topology. Imagine'', \emph{The Harvard Crimson}, 23~October~2003.
+H.~Whitney, ``Tensor products of Abelian groups'', \emph{Duke Math.\ J.} 4 (1938), 495--528; R.~Baer, ``Abelian groups that are direct summands of every containing Abelian group'', \emph{Bull.\ Amer.\ Math.\ Soc.} 46 (1940),
+800--806; V.~Strassen, ``Gaussian elimination is not optimal'', \emph{Numer.\ Math.} 13 (1969), 354--356; S.~Winograd, ``On multiplication of $2\times2$ matrices'', \emph{Linear Algebra Appl.} 4 (1971), 381--388.
+
+For more: M.~F.~Atiyah and I.~G.~Macdonald, \emph{Introduction to Commutative Algebra} (Addison-Wesley, 1969), Chapter~2, which covers this chapter in twenty pages; S.~Lang, \emph{Algebra} (Springer, 3rd ed.\ 2002),
+Chapters~III and XVI; and J.~J.~Rotman, \emph{An Introduction to Homological Algebra} (Springer, 2nd ed.\ 2009), Chapters~2 and~3, with everything about projective, injective and flat modules.
