@@ -46,11 +46,7 @@ def copyright_section(main_tex: Path) -> str:
     isbn = "ISBN (eBook): " + b["bookisbnebook"] + "\n\n" if b.get("bookisbnebook") else ""
     return ("\\chapter*{Copyright}\n" + (r"\emph{" + title.group(1) + "}\n\n" if title else "")
             + b["bookcopyright"] + "\n\n" + b["booklicence"] + "\n\n"
-            + b["bookedition"] + ". " + b["bookpublisher"] + ".\n\n" + isbn
-            + "SEGHAIER Oussama and Claude Opus 5.5, an AI model made by Anthropic, wrote this book together. "
-            "Every statement is proved in the text and every number was checked by computer, but errors may "
-            "remain; corrections are welcome at the address below, where the companion Python notebooks "
-            "are also published.\n\n\\url{" + b["bookrepo"] + "}\n\n")
+            + b["bookedition"] + ". " + b["bookpublisher"] + ".\n\n" + isbn)
 
 
 def main(src: str, dst: str, figdir: str) -> None:

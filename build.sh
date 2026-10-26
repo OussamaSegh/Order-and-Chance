@@ -25,12 +25,19 @@ for tome in "${tomes[@]}"; do
   pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
 
   # Three PDFs: A4 (dist/<tome>.pdf), phone (-phone.pdf) and 7-inch e-reader (-kindle.pdf).
+  # Each opens with the cover drawn in the proportions of its page (common/preamble.tex):
+  # 6in wide and 6 x height/width high, scaled to the page by \makecover.
   for format in a4 phone kindle; do
     job=main; [ "$format" = a4 ] || job="main-$format"
+    case $format in a4) ch=8.4857 ;; phone) ch=13 ;; kindle) ch=7.9626 ;; esac
+    (cd "$root" &&
+      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="cover-$format" \
+        "$meta\\def\\CH{$ch}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
+        >"$out/cover-$format.out" || { tail -30 "$out/cover-$format.out"; exit 1; })
     (cd "$root/$tome" &&
       for _ in 1 2 3; do
         pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="$job" \
-          "$meta\\def\\FORMAT{$format}\\def\\COVER{$out/cover.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
+          "$meta\\def\\FORMAT{$format}\\def\\COVER{$out/cover-$format.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
           { tail -40 "$out/$job.stdout"; exit 1; }
       done)
     suffix=""; [ "$format" = a4 ] || suffix="-$format"
@@ -59,11 +66,20 @@ for tome in "${tomes[@]}"; do
   spine=$(python3 -c "print(f'{$pages * 0.002252:.4f}')")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
   blurb="$tome/blurb"; [ -e "$root/$blurb.tex" ] || blurb=tools/blurb-default
+  # The ISBN barcode on the back cover, once the tome has its paperback ISBN (\bookisbnprint in main.tex).
+  barcode=""
+  isbn=$(sed -n 's/^\\renewcommand{\\bookisbnprint}{\([0-9-]*\)}.*/\1/p' "$root/$tome/main.tex")
+  if [ -n "$isbn" ]; then
+    python3 "$root/tools/ean13.py" "$isbn" "$out/barcode.tex"
+    barcode="\\def\\BARCODE{$out/barcode.tex}"
+  fi
   (cd "$root" &&
     pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover-wrap \
-      "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}\\input{tools/cover-wrap.tex}" \
+      "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}" \
       >"$out/cover-wrap.out" || { tail -30 "$out/cover-wrap.out"; exit 1; })
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
+  # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
+  python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
   # Kindle eBook cover: KDP asks for a JPEG of 1600 x 2560 pixels.
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$tome-ebook-cover"
@@ -85,7 +101,7 @@ for tome in "${tomes[@]}"; do
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
       --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
-      --metadata title="${title:-$tome}" --metadata author="SEGHAIER Oussama & Claude Opus 5.5" --metadata lang=en \
+      --metadata title="${title:-$tome}" --metadata author="SEGHAIER Oussama" --metadata lang=en \
       --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$tome/main.tex")" \
       --metadata subject=Mathematics \
       -o "$root/dist/$tome.epub")

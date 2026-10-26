@@ -2,7 +2,8 @@
 
 Usage: python3 tools/site.py <dist dir> <output dir>
 Copies every dist/<tome>.pdf (with its -phone and -kindle variants) and .epub into the
-output directory and writes index.html.
+output directory and writes index.html. Each tome's card also links its Amazon KDP files from
+dist/kdp/: the Kindle cover, the paperback cover, the paperback interior and the listing.
 """
 import datetime
 import html
@@ -39,6 +40,8 @@ PAGE = """<!doctype html>
   .tome p {{ margin:2px 0 0; color:var(--muted); font-size:.92em; }}
   .links a {{ display:inline-block; margin:4px 0 4px 8px; padding:6px 14px; border:1px solid var(--accent); border-radius:6px;
              color:var(--accent); text-decoration:none; font-family:system-ui, sans-serif; font-size:.9em; }}
+  .kdp {{ flex-basis:100%; font-family:system-ui, sans-serif; font-size:.82em; color:var(--muted); }}
+  .kdp a {{ color:var(--accent); margin-left:10px; }}
   .links a:hover {{ background:var(--accent); color:var(--card); }}
   footer {{ margin-top:2.5em; color:var(--muted); font-size:.88em; }}
   footer a {{ color:var(--accent); }}
@@ -47,7 +50,7 @@ PAGE = """<!doctype html>
 <body>
 <main>
 <h1>Order and Chance</h1>
-<p class="subtitle">Number theory, algebra and probability, all proved<br>by SEGHAIER Oussama &amp; Claude Opus 5.5</p>
+<p class="subtitle">Number theory, algebra and probability, all proved<br>by SEGHAIER Oussama</p>
 <p class="lead">A series of books of beautiful mathematics, written for pleasure, from a refresher of undergraduate mathematics
 toward research in probability, probabilistic number theory and algebra. Every statement is proved, and every exercise
 has a solution that explains how to find it.</p>
@@ -61,7 +64,14 @@ Python companion notebooks are in the repository's <code>python/</code> folder.<
 """
 
 CARD = """<div class="tome">{cover}<div class="info"><h2>{title}</h2><p>{subtitle} · {size}</p></div>
-<div class="links"><a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div></div>"""
+<div class="links"><a href="{pdf}" title="A4 pages, for a computer, tablet or printing">PDF</a>{variants}<a href="{epub}">EPUB</a></div>
+{kdp}</div>"""
+
+# Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
+KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1600 x 2560 JPEG, for a Kindle eBook"),
+       ("cover-wrap.pdf", "Paperback cover", "Back, spine and front with bleed, for a 6 x 9 in paperback"),
+       ("print.pdf", "Paperback interior", "6 x 9 in pages for printing on demand"),
+       ("listing.md", "Description and keywords", "Title fields, description and keywords for the KDP form")]
 
 # Extra PDF layouts made by build.sh, with their button labels.
 VARIANTS = [("phone", "Phone PDF", "Pages sized for a large phone screen (Galaxy S25 Ultra)"),
@@ -99,6 +109,15 @@ def main(dist: str, out: str) -> None:
                 variants += f'<a href="{extra.name}" title="{tip}">{label}</a>'
         if epub.exists():
             shutil.copy(epub, out_dir / epub.name)
+        kdp = []
+        for suffix, label, tip in KDP:
+            src = dist_dir / "kdp" / f"{tome}-{suffix}"
+            if src.exists():
+                # The listing is served as plain text, so that browsers show it instead of downloading it.
+                name = src.name.replace(".md", ".txt")
+                shutil.copy(src, out_dir / name)
+                kdp.append(f'<a href="{name}" title="{tip}">{label}</a>')
+        kdp = f'<div class="kdp">For Amazon KDP:{"".join(kdp)}</div>' if kdp else ""
         size = f"{pdf.stat().st_size / 1e6:.1f} MB PDF"
         # Cover thumbnail, rendered from the cover page that build.sh made.
         cover = ""
@@ -108,7 +127,8 @@ def main(dist: str, out: str) -> None:
                             str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
             cover = f'<img src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         cards.append(CARD.format(title=html.escape(rest or series), subtitle=html.escape(series if rest else ""),
-                                 size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name))
+                                 size=size, cover=cover, pdf=pdf.name, variants=variants, epub=epub.name,
+                                 kdp=kdp))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/Order-and-Chance")

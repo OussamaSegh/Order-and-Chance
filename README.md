@@ -1,6 +1,6 @@
 # Order and Chance
 
-*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama & Claude Opus 5.5.
+*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama.
 
 A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 companion notebook with computer-science applications.
