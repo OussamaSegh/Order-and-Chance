@@ -741,6 +741,35 @@ def series_chords():
     return "\n".join(lines) + "\n"
 
 
+def hilbert_curve(order=6):
+    """Problem Book P2: Hilbert's space-filling curve (1891) at stage 6. In the limit it is a continuous
+    surjection of [0,1] onto the square that carries Lebesgue measure on the line to Lebesgue measure
+    on the square, a meeting of topology and measure (Tome 6)."""
+    n = 2 ** order
+    def d2xy(d):
+        x = y = 0
+        s, t = 1, d
+        while s < n:
+            rx = 1 & (t // 2)
+            ry = 1 & (t ^ rx)
+            if ry == 0:
+                if rx == 1:
+                    x, y = s - 1 - x, s - 1 - y
+                x, y = y, x
+            x += s * rx
+            y += s * ry
+            t //= 4
+            s *= 2
+        return x, y
+    side = 2 * R / 2 ** 0.5
+    h = side / n
+    pts = ["(%.4fin,%.4fin)" % (-side / 2 + h * (x + 0.5), -side / 2 + h * (y + 0.5)) for x, y in map(d2xy, range(n * n))]
+    lines = ["%% Hilbert's space-filling curve, stage %d." % order]
+    for i in range(0, len(pts) - 1, 300):
+        lines.append(r"\draw[accent,line width=0.9pt,line join=round,line cap=round] " + "--".join(pts[i:i + 301]) + ";")
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -764,6 +793,7 @@ MOTIFS = {
     "tomeS3-conjectures": collatz_coral,
     "tomeS4-companion": series_chords,
     "tomeP1-crossroads": gaussian_primes,
+    "tomeP2-machinery": hilbert_curve,
 }
 
 if __name__ == "__main__":
