@@ -36,12 +36,12 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 
 | Tome | Title | Theme | Status |
 | --- | --- | --- | --- |
-| 0 | Back in Shape | The MP toolkit, relearned through problems | Complete draft (8 chapters) |
+| 0 | Back in Shape | The core toolkit, relearned through problems | Complete draft (8 chapters) |
 | 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters) |
 | 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
-| 5 | Where It All Meets | Analytic and probabilistic number theory | In progress (11 of 12 chapters) |
+| 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
 | 6 | Spaces | Sets, topology, measure and integration | Complete draft (11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | In progress (5 of 10 chapters) |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups | Planned |
