@@ -1,0 +1,474 @@
+\chapter{Random Permutations and the Poisson--Dirichlet Law}
+\begin{center}\itshape
+Shuffle a deck of a million cards and look at its cycles. The small ones are independent Poisson variables; the big ones are a stick broken at random,\\
+again and again. Now take a random integer with a hundred digits and look at its prime factors on a logarithmic scale.\\
+The same stick, broken in the same way: this is the last and most surprising universality of the book.
+\end{center}
+
+In 1964 Solomon Golomb, an engineer and mathematician who worked on shift register sequences, asked how long the longest cycle of a random permutation of $n$ elements is, on average. He found that it grows like
+$\lambda n$, and estimated $\lambda$ numerically. Two years later Larry Shepp and Stuart Lloyd, at Bell Labs, proved it, and gave $\lambda$ as an integral. The same number had in fact appeared in 1930, in a Swedish journal, in a paper by Karl
+Dickman, who had worked in the Swedish insurance business. Dickman was not interested in permutations at all: his question was how often an integer $n$ has all its prime factors below $n^{1/u}$, and his answer was a function $\rho(u)$ defined by
+a strange delay differential equation, whose average gives the same $\lambda$.
+
+Why should cycles and primes know the same constant? In 1972, in a volume dedicated to the memory of Alfr\'ed R\'enyi, Patrick Billingsley proved that the sizes of the prime factors of a random integer, on a logarithmic scale, have a limit law, and three years later
+John Kingman, who had met the same law in population genetics, gave it its name: the \emph{Poisson--Dirichlet law}. It is the law of the cycle lengths of a random permutation, divided by $n$, in the limit. This chapter proves both limit theorems, by putting
+the permutation and the integer side by side and showing that the same numbers come out of both.
+
+\begin{reminder}[from Tomes 3 and 5, and Chapters 3, 6 and 11]
+Feller's coupling (Tome~3, Theorem~2.12) writes a uniform permutation in canonical cycle notation, each cycle starting with its smallest element, by independent choices. The total variation distance between laws on a countable set is
+$\|\mu-\nu\|=\max_A|\mu(A)-\nu(A)|=\frac12\sum_x|\mu(x)-\nu(x)|$ (Chapter~6). Chebyshev: $\pi(x)=O(\frac x{\log x})$ (Tome~5, Proposition~1.2). Mertens: $\sum_{p\le x}\frac1p=\log\log x+M+O(\frac1{\log x})$ (Tome~5, Theorem~1.5).
+Almost sure convergence implies convergence in law (Lemma~\ref{lem:together}).
+\end{reminder}
+
+\section{Small cycles are independent Poisson variables}
+
+For a permutation $\sigma$ of $\{1,\dots,n\}$, let $C_j(\sigma)$ be its number of cycles of length $j$, so that $\sum_jjC_j=n$. The vector $(C_1,\dots,C_n)$ is the \emph{cycle type} of $\sigma$.
+
+\begin{proposition}[Cauchy's formula]\label{prop:cauchy}
+If $c_1,\dots,c_n\ge0$ and $\sum_jjc_j=n$, the number of permutations of $\{1,\dots,n\}$ with cycle type $(c_1,\dots,c_n)$ is
+\[
+\frac{n!}{\prod_{j=1}^nj^{c_j}c_j!}.
+\]
+\end{proposition}
+\begin{proof}
+Write the $n$ elements in a row, in one of $n!$ orders, and cut the row into $c_1$ blocks of length $1$, then $c_2$ blocks of length $2$, and so on. Read each block $(a_1\,a_2\cdots a_j)$ as a cycle. This gives a permutation of the required type, and every such permutation
+arises: list its cycles of length $1$, then those of length $2$, and so on. A given permutation arises exactly $\prod_jj^{c_j}c_j!$ times, since each cycle of length $j$ can be written starting from any of its $j$ elements, and the $c_j$ cycles of length $j$ can be listed in any of $c_j!$ orders.
+\end{proof}
+
+\begin{theorem}[the conditioning relation]\label{thm:conditioning}
+Let $Z_1,Z_2,\dots$ be independent, $Z_j$ Poisson with mean $\frac1j$, and $T_n=\sum_{j=1}^njZ_j$. Then $P(T_n=n)=e^{-H_n}$, and the cycle type of a uniform random permutation of $\{1,\dots,n\}$ has the law of $(Z_1,\dots,Z_n)$ conditioned on $T_n=n$.
+\end{theorem}
+\begin{proof}
+For $c=(c_1,\dots,c_n)$, $P(Z_1=c_1,\dots,Z_n=c_n)=\prod_je^{-1/j}\frac{j^{-c_j}}{c_j!}=e^{-H_n}\prod_j\frac{j^{-c_j}}{c_j!}$. If $\sum_jjc_j=n$, Proposition~\ref{prop:cauchy} says that the probability of type $c$ is $\prod_j\frac{j^{-c_j}}{c_j!}$, which is $e^{H_n}P(Z=c)$.
+Summing over all types gives $1=e^{H_n}P(T_n=n)$, and then $P(C=c)=P(Z=c)/P(T_n=n)=P(Z=c\mid T_n=n)$.
+\end{proof}
+
+The condition $T_n=n$ is a single linear constraint on infinitely many independent variables, and it should not matter much to the first few of them. To make this precise we need the proportion $q_b(k)$ of permutations of $\{1,\dots,k\}$ with no cycle of length $\le b$
+(with $q_b(0)=1$). For $b=1$ these are the derangements, and $q_1(k)\to e^{-1}$ by Tome~3, Theorem~2.13.
+
+\begin{lemma}\label{lem:qb}
+For every fixed $b\ge1$, $q_b(k)\to e^{-H_b}$ as $k\to\infty$.
+\end{lemma}
+\begin{proof}
+By Proposition~\ref{prop:cauchy}, $q_b(k)=\sum\prod_{j>b}\frac{j^{-c_j}}{c_j!}$, the sum over the $(c_j)_{j>b}$ with $\sum_jjc_j=k$. For $0\le x<1$, all terms being nonnegative, we may sum in any order:
+\[
+\sum_{k\ge0}q_b(k)x^k=\prod_{j>b}\sum_{c\ge0}\frac{(x^j/j)^c}{c!}=\exp\Bigl(\sum_{j>b}\frac{x^j}j\Bigr)=\frac{g(x)}{1-x},\qquad g(x)=\exp\Bigl(-\sum_{j\le b}\frac{x^j}j\Bigr),
+\]
+using $\sum_{j\ge1}\frac{x^j}j=-\log(1-x)$. Expand $g(x)=\sum_ig_ix^i$: the exponential of a polynomial is an entire function, and $\sum_i|g_i|\le\exp(\sum_{j\le b}\frac1j)<\infty$. Comparing coefficients, $q_b(k)=\sum_{i\le k}g_i$, which converges to $\sum_ig_i=g(1)=e^{-H_b}$.
+\end{proof}
+
+\begin{theorem}\label{thm:smallcycles}
+For every fixed $b$, the law of $(C_1,\dots,C_b)$ for a uniform permutation of $\{1,\dots,n\}$ converges in total variation, as $n\to\infty$, to the law of $(Z_1,\dots,Z_b)$, independent Poisson variables with means $1,\frac12,\dots,\frac1b$.
+\end{theorem}
+\begin{proof}
+Let $n>b$, $c=(c_1,\dots,c_b)$ and $m=\sum_{j\le b}jc_j$. Split $T_n=T_b+T_{b,n}$ with $T_{b,n}=\sum_{b<j\le n}jZ_j$, independent of $(Z_1,\dots,Z_b)$. By Theorem~\ref{thm:conditioning},
+\[
+P\bigl((C_1,\dots,C_b)=c\bigr)=\frac{P\bigl((Z_1,\dots,Z_b)=c,\ T_{b,n}=n-m\bigr)}{P(T_n=n)}=P\bigl((Z_1,\dots,Z_b)=c\bigr)\frac{P(T_{b,n}=n-m)}{e^{-H_n}}.
+\]
+For $0\le k\le n$, the event $T_{b,n}=k$ forces $Z_j=0$ for $j>k$, so
+\[
+P(T_{b,n}=k)=\sum\prod_{b<j\le k}e^{-1/j}\frac{j^{-c_j}}{c_j!}\prod_{k<j\le n}e^{-1/j}=e^{-(H_n-H_b)}q_b(k),
+\]
+the sum over the $(c_j)_{b<j\le k}$ with $\sum jc_j=k$. Hence, for $m\le n$, $P((C_1,\dots,C_b)=c)=P((Z_1,\dots,Z_b)=c)\,e^{H_b}q_b(n-m)$, and by Lemma~\ref{lem:qb} the ratio tends to $1$ for every fixed $c$. So the probability functions converge
+pointwise. Write $p_n(c)$ and $p(c)$ for them; then $(p(c)-p_n(c))^+\le p(c)$, and dominated convergence gives $\sum_c(p(c)-p_n(c))^+\to0$. Since both sum to $1$, $\sum_c|p(c)-p_n(c)|=2\sum_c(p(c)-p_n(c))^+\to0$.
+\end{proof}
+
+So a shuffled deck of a million cards has, approximately, a Poisson$(1)$ number of fixed points, an independent Poisson$(\frac12)$ number of transpositions, an independent Poisson$(\frac13)$ number of $3$-cycles, and so on. The approximation is remarkably good: Richard Arratia and Simon Tavar\'e
+showed in 1992 that the total variation distance tends to $0$ superexponentially fast in $\frac nb$. But it says nothing about the long cycles, which hold almost all the elements: $\mathbb E\sum_{j\le b}jZ_j=b$, while the
+permutation has $n$ elements. For them we need another picture.
+
+\section{The broken stick}
+
+Order the cycles of $\sigma$ as in the canonical notation: first the cycle containing $1$, then the cycle containing the smallest element not yet seen, and so on. Let $L_1,L_2,\dots$ be their lengths, with $L_i=0$ once the cycles are exhausted. Let $R_i=n-L_1-\dots-L_i$ be the number of
+elements not in the first $i$ cycles.
+
+\begin{proposition}\label{prop:firstcycle}
+For a uniform permutation of $\{1,\dots,n\}$, $P(L_1=k)=\frac1n$ for $k=1,\dots,n$. Given the first cycle, the permutation induced on the other $n-L_1$ elements is uniform. Consequently, for $k_1,\dots,k_r\ge1$ with $k_1+\dots+k_r\le n$,
+\[
+P(L_1=k_1,\dots,L_r=k_r)=\prod_{i=1}^r\frac1{n-k_1-\dots-k_{i-1}}.
+\]
+\end{proposition}
+\begin{proof}
+A permutation whose cycle through $1$ is $(1\,a_2\cdots a_k)$ is determined by the ordered list $a_2,\dots,a_k$ of distinct elements other than $1$, and by an arbitrary permutation of the $n-k$ others. So for each of the $\frac{(n-1)!}{(n-k)!}$ possible first cycles of length
+$k$ there are exactly $(n-k)!$ permutations: this proves both the conditional uniformity and $P(L_1=k)=\frac{(n-1)!}{n!}=\frac1n$. The second cycle is the cycle, in the uniform permutation of the remaining $n-k_1$ elements, of the smallest of them; so the same argument gives
+$P(L_2=k_2\mid L_1=k_1)=\frac1{n-k_1}$, and so on by induction.
+\end{proof}
+
+Here is a way to produce these lengths with a knife. Take independent $U_1,U_2,\dots$ uniform on $(0,1]$ and set
+\[
+V_1=U_1,\qquad V_i=U_i\prod_{j<i}(1-U_j),\qquad W_i=\prod_{j\le i}(1-U_j).
+\]
+Break a stick of length $1$ at a uniform point and keep the piece $V_1$; break the rest, of length $W_1$, at a uniform point and keep the piece $V_2$; and so on. The sequence $(V_i)$ has the \emph{GEM law} (after Griffiths, Engen and McCloskey, who met it in genetics and ecology). Its
+decreasing rearrangement $V_{(1)}\ge V_{(2)}\ge\cdots$ has, by definition, the \emph{Poisson--Dirichlet law} $\mathrm{PD}(1)$.
+
+\begin{lemma}\label{lem:gem}
+Almost surely, every $V_i$ is positive, $W_r\downarrow0$ and $\sum_iV_i=1$. For every $a$, $P(V_i=a)=0$.
+\end{lemma}
+\begin{proof}
+$V_i>0$ since $U_i>0$ and $U_j<1$ almost surely. $W_r$ decreases, and $\mathbb EW_r=2^{-r}\to0$, so its limit has expectation $0$ (monotone convergence) and is $0$ almost surely. By induction $\sum_{i\le r}V_i=1-W_r$, which gives the sum. Finally $U_i$ is independent of $W_{i-1}>0$
+and has a continuous law, so $P(V_i=a)=\mathbb E\bigl[P(U_i=a/W_{i-1}\mid W_{i-1})\bigr]=0$.
+\end{proof}
+
+\begin{theorem}[the cycle lengths are a broken stick]\label{thm:gemcoupling}
+With the $U_i$ above, define $R_0=n$ and, recursively, $L_i=\lceil R_{i-1}U_i\rceil$, $R_i=R_{i-1}-L_i$. Then $(L_i)_{i\ge1}$ has the law of the canonical cycle lengths of a uniform permutation of $\{1,\dots,n\}$, and for every $i$,
+\[
+\Bigl|\frac{L_i}n-V_i\Bigr|\le\frac in,\qquad\Bigl|\frac{R_i}n-W_i\Bigr|\le\frac in.
+\]
+\end{theorem}
+\begin{proof}
+If $R_{i-1}=m\ge1$, then $\lceil mU_i\rceil$ is uniform on $\{1,\dots,m\}$ and independent of $L_1,\dots,L_{i-1}$; if $m=0$, $L_i=0$. So $P(L_1=k_1,\dots,L_r=k_r)$ is the product of Proposition~\ref{prop:firstcycle}, for every $r$: the two sequences have the same law.
+
+For the bounds, let $e_i=|\frac{R_i}n-W_i|$, so $e_0=0$. Since $R_{i-1}U_i\le L_i<R_{i-1}U_i+1$,
+\[
+\begin{aligned}\frac{R_i}n-W_i&=\frac{R_{i-1}}n-\frac{L_i}n-W_{i-1}(1-U_i)\eqbr=\Bigl(\frac{R_{i-1}}n-W_{i-1}\Bigr)(1-U_i)-\Bigl(\frac{L_i}n-\frac{R_{i-1}U_i}n\Bigr),\end{aligned}
+\]
+so $e_i\le e_{i-1}+\frac1n$ and $e_i\le\frac in$. Similarly $|\frac{L_i}n-V_i|\le U_i\,e_{i-1}+\frac1n\le\frac in$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch12-sticks}
+\caption{Top: the canonical cycle lengths of a uniform random permutation of $1000$ elements, as consecutive pieces of a stick of length $1000$ (here the first cycle has length $251$, and there are $9$ cycles). Below: the same permutation's cycle lengths sorted, and the
+pieces $V_{(1)},V_{(2)},\dots$ of the coupled broken stick of Theorem~\ref{thm:gemcoupling}, which they follow to within $0.0015$. Pieces shorter than $1\%$ of the stick are grey.}
+\label{fig:sticks}
+\end{figure}
+
+The first piece is uniform, so the cycle of a given element has a uniform length: a random permutation of a million elements puts the element $1$ in a cycle of length more than $500\,000$ with probability $\frac12$. To compare the \emph{largest} cycles we sort.
+
+\begin{lemma}\label{lem:sortlip}
+For a sequence $x=(x_i)$ of nonnegative numbers tending to $0$, let $x_{(1)}\ge x_{(2)}\ge\cdots$ be its terms in decreasing order (with multiplicity, followed by zeros if $x$ has finitely many nonzero terms). Then $|x_{(k)}-y_{(k)}|\le\sup_i|x_i-y_i|$ for every $k$.
+\end{lemma}
+\begin{proof}
+$x_{(k)}=\max_S\min_{i\in S}x_i$, the maximum over the sets $S$ of $k$ indices: a set of $k$ indices contains an index of rank at least $k$, so the minimum is at most $x_{(k)}$, and the indices of the $k$ largest terms give equality. The maximum is attained, because only finitely many terms exceed any positive level. Let
+$\varepsilon=\sup_i|x_i-y_i|$ and $S$ attain the maximum for $x$; then $y_{(k)}\ge\min_{i\in S}y_i\ge\min_{i\in S}x_i-\varepsilon=x_{(k)}-\varepsilon$. By symmetry, $|x_{(k)}-y_{(k)}|\le\varepsilon$.
+\end{proof}
+
+\begin{theorem}[Poisson--Dirichlet limit for cycles]\label{thm:pdcycles}
+Let $L_{(1)}\ge L_{(2)}\ge\cdots$ be the cycle lengths of a uniform permutation of $\{1,\dots,n\}$ in decreasing order. In the coupling of Theorem~\ref{thm:gemcoupling},
+\[
+\sup_k\Bigl|\frac{L_{(k)}}n-V_{(k)}\Bigr|\le\inf_{r\ge0}\Bigl(W_r+\frac rn\Bigr)\xrightarrow[n\to\infty]{}0\quad\text{almost surely.}
+\]
+In particular, for every $m$, $(\frac{L_{(1)}}n,\dots,\frac{L_{(m)}}n)$ converges in law to $(V_{(1)},\dots,V_{(m)})$.
+\end{theorem}
+\begin{proof}
+Fix $r$. For $i\le r$, $|\frac{L_i}n-V_i|\le\frac rn$. For $i>r$, both $\frac{L_i}n\le\frac{R_r}n\le W_r+\frac rn$ and $V_i\le W_r$ lie in $[0,W_r+\frac rn]$, so they differ by at most $W_r+\frac rn$. Apply Lemma~\ref{lem:sortlip}. The infimum tends to $0$: given $\varepsilon$, choose $r$ with
+$W_r<\varepsilon$ (Lemma~\ref{lem:gem}), then $n$ with $\frac rn<\varepsilon$. Almost sure convergence implies convergence in law.
+\end{proof}
+
+\section{Dickman's function}
+
+How long is the longest cycle? By Theorem~\ref{thm:pdcycles}, $P(L_{(1)}\le\frac nu)\to P(V_{(1)}\le\frac1u)$ at every $u$ where the limit is continuous, and the broken stick has a self-similarity that computes it. After the first break, the rest of the stick, rescaled by $\frac1{1-U_1}$,
+is again a broken stick: $V'_i=\frac{V_{i+1}}{1-U_1}=U_{i+1}\prod_{2\le j\le i}(1-U_j)$ has the GEM law and is independent of $U_1$. And
+\begin{equation}\label{eq:selfsim}
+V_{(1)}=\max\bigl(U_1,(1-U_1)V'_{(1)}\bigr).
+\end{equation}
+
+\begin{theorem}[Dickman's function]\label{thm:dickman}
+Let $\rho(u)=P(V_{(1)}\le\frac1u)$ for $u>0$, and $\rho(0)=1$. Then $\rho=1$ on $[0,1]$, $\rho$ is continuous, and
+\[
+u\rho(u)=\int_{u-1}^u\rho(v)\,\dd v\qquad(u\ge1).
+\]
+Consequently $\rho$ is differentiable on $(1,\infty)$ with $u\rho'(u)=-\rho(u-1)$, $\rho(u)=1-\log u$ for $1\le u\le2$, and these properties determine $\rho$. For every $u>0$, $P(L_{(1)}\le\frac nu)\to\rho(u)$.
+\end{theorem}
+\begin{proof}
+Let $F(t)=P(V_{(1)}\le t)$, so $F(t)=1$ for $t\ge1$. For $0<t\le1$, by \eqref{eq:selfsim}, independence and Fubini, $F(t)=P(U_1\le t,\ V'_{(1)}\le\frac t{1-U_1})=\int_0^tF(\frac t{1-s})\,\dd s$. Substitute $s=1-tv$, so that $v$ runs from $\frac1t=u$ down to
+$\frac{1-t}t=u-1$:
+\[
+\rho(u)=F(t)=t\int_{u-1}^uF\Bigl(\frac1v\Bigr)\dd v=\frac1u\int_{u-1}^u\rho(v)\,\dd v,
+\]
+where $F(\frac1v)=1=\rho(v)$ for $v\le1$. The right side is continuous in $u$, so $\rho$ is continuous on $[1,\infty)$, with $\rho(1)=\int_0^11=1$, hence on $[0,\infty)$. By the fundamental theorem of calculus, $u\rho(u)$ is differentiable with derivative
+$\rho(u)-\rho(u-1)$, which gives $u\rho'(u)=-\rho(u-1)$. On $[1,2]$ this is $\rho'(u)=-\frac1u$, so $\rho(u)=1-\log u$.
+
+Uniqueness: let $\rho_1,\rho_2$ be continuous, equal to $1$ on $[0,1]$, and satisfy the integral equation; let $d=\rho_1-\rho_2$, and suppose $d=0$ on $[0,k]$ for an integer $k\ge1$. For $u\in[k,k+1)$, $ud(u)=\int_k^ud$, so $M(u)=\max_{[k,u]}|d|$ satisfies $M(u)\le\frac{u-k}kM(u)$, and $\frac{u-k}k<1$ forces
+$M(u)=0$. By continuity $d=0$ on $[0,k+1]$, and by induction everywhere.
+
+Finally, $F$ is continuous on $(0,\infty)$ since $\rho$ is, so $P(\frac{L_{(1)}}n\le t)\to F(t)$ for every $t>0$ (Tome~6, Theorem~11.4, (e), applied to the set $[0,t]$ whose boundary has probability $0$).
+\end{proof}
+
+So with probability tending to $1-\rho(2)=\log2\approx0.69$, a random permutation has a cycle longer than $\frac n2$: this is the hundred prisoners' puzzle of Tome~3 (Exercise~2.6), whose answer $1-\log2$ is $\rho(2)$. The function $\rho$ falls very fast. Since it is
+decreasing ($\rho'\le0$), the integral equation gives $u\rho(u)\le\rho(u-1)$, and by induction:
+
+\begin{proposition}\label{prop:rhobound}
+$\rho$ is positive and decreasing, and $\rho(u)\le\frac1{\lfloor u\rfloor!}$ for $u\ge0$.
+\end{proposition}
+\begin{proof}
+$\rho\ge0$ as a probability. If $\rho$ vanished somewhere, let $u_0$ be its first zero; $u_0>1$, and $u_0\rho(u_0)=\int_{u_0-1}^{u_0}\rho>0$ since $\rho>0$ on $[u_0-1,u_0)$, a contradiction. So $\rho'(u)=-\rho(u-1)/u<0$ for $u>1$. Then $u\rho(u)=\int_{u-1}^u\rho\le\rho(u-1)$, and with
+$k=\lfloor u\rfloor$, $\rho(u)\le\frac{\rho(u-k)}{u(u-1)\cdots(u-k+1)}\le\frac1{k!}$, since $\rho(u-k)=1$ and $u-i\ge k-i$.
+\end{proof}
+
+Nicolaas de Bruijn showed in 1951 that in fact $\rho(u)=u^{-u(1+o(1))}$. Figure~\ref{fig:rho} shows $\rho$ with the two experiments that it predicts.
+
+\begin{corollary}[the Golomb--Dickman constant]\label{cor:golomb}
+\[
+\frac{\mathbb E[L_{(1)}]}n\longrightarrow\lambda=\mathbb E[V_{(1)}]=\int_1^\infty\frac{1-\rho(u)}{u^2}\,\dd u=0.6243299885\ldots
+\]
+\end{corollary}
+\begin{proof}
+$\frac{L_{(1)}}n\to V_{(1)}$ almost surely in the coupling, and everything is bounded by $1$, so the expectations converge (dominated convergence). Then $\mathbb E[V_{(1)}]=\int_0^1P(V_{(1)}>t)\,\dd t=\int_0^1(1-\rho(\frac1t))\,\dd t$, and $t=\frac1u$ gives the integral. Its numerical value is computed in
+the notebook from the delay equation.
+\end{proof}
+
+\section{Correlation functions}
+
+To compare the cycles with the primes, we need a description of the limit law that a sieve can compute. Count the pieces in an interval: for $I\subset(0,1]$, let $N_n(I)$ be the number of cycles $c$ of $\sigma$ with $\frac{|c|}n\in I$, and $N(I)$ the number of $i$ with $V_i\in I$.
+Write $(N)_k=N(N-1)\cdots(N-k+1)$.
+
+\begin{proposition}\label{prop:corrcycles}
+Let $0<\delta\le1$, let $I_1,\dots,I_r\subset[\delta,1]$ be disjoint intervals, $k_1,\dots,k_r\ge0$, $K=k_1+\dots+k_r$, and let $B\subset[\delta,1]^K$ be the product of $k_1$ copies of $I_1$, \ldots, $k_r$ copies of $I_r$. Then
+\[
+\mathbb E\prod_{j=1}^r(N_n(I_j))_{k_j}\longrightarrow\Phi=\int_{B\cap\{t_1+\dots+t_K\le1\}}\frac{\dd t_1\cdots\dd t_K}{t_1\cdots t_K}.
+\]
+\end{proposition}
+\begin{proof}
+$(N_n(I))_k$ is the number of ordered $k$-tuples of distinct cycles with relative length in $I$, and since the $I_j$ are disjoint, $\prod_j(N_n(I_j))_{k_j}$ is the number of ordered $K$-tuples of distinct cycles $(c_1,\dots,c_K)$ with $\frac{|c_i|}n$ in the
+$i$-th factor of $B$. Fix lengths $\ell_1,\dots,\ell_K$ with $s=\sum\ell_i\le n$. An ordered $K$-tuple of disjoint cycles of these lengths, together with a permutation of the $n-s$ remaining elements, is a permutation with $K$ marked cycles; writing each marked cycle as a list starting anywhere,
+there are $\frac{n!}{(n-s)!}$ ways to choose the lists and $(n-s)!$ ways to finish, and each marked permutation is obtained $\ell_1\cdots\ell_K$ times. So the expected number of such $K$-tuples is $\frac1{\ell_1\cdots\ell_K}$, and $0$ if $s>n$. Hence
+\[
+\mathbb E\prod_j(N_n(I_j))_{k_j}=\sum_{\substack{\ell\in\mathbb Z^K,\ \ell/n\in B\\ \ell_1+\dots+\ell_K\le n}}\frac1{\ell_1\cdots\ell_K}=\sum\frac1{n^K}\prod_{i=1}^K\Bigl(\frac{\ell_i}n\Bigr)^{-1},
+\]
+a Riemann sum, over the cells of side $\frac1n$, of $f(t)=\frac{\mathbf 1\{\sum t_i\le1\}}{t_1\cdots t_K}$ on $B$. This $f$ is bounded by $\delta^{-K}$, and continuous on the cells that meet neither the boundary of $B$ nor the hyperplane $\sum t_i=1$; the other cells number $O(n^{K-1})$, of total volume
+$O(\frac1n)$. So the sum converges to $\int_Bf=\Phi$.
+\end{proof}
+
+\begin{corollary}\label{cor:pdcorr}
+With the same notation, $\mathbb E\prod_j(N(I_j))_{k_j}=\Phi$. In words: the Poisson--Dirichlet pieces have $k$-point correlation function $\frac1{t_1\cdots t_k}$ on $\{t_1+\dots+t_k\le1\}$.
+\end{corollary}
+\begin{proof}
+In the coupling, the ranked sequences converge uniformly (Theorem~\ref{thm:pdcycles}). Almost surely no $V_i$ is an endpoint of an $I_j$ (Lemma~\ref{lem:gem}), and only finitely many $V_{(k)}$ exceed $\frac\delta2$; so for $n$ large, $\frac{L_{(k)}}n\in I_j$ exactly when $V_{(k)}\in I_j$, and
+$N_n(I_j)\to N(I_j)$ almost surely. All counts are at most $\frac1\delta$, because the pieces of length $\ge\delta$ have total length $\le1$. By bounded convergence, the factorial moments converge, and Proposition~\ref{prop:corrcycles} identifies the limit.
+\end{proof}
+
+Bounded counts are determined by their factorial moments, by a finite inversion formula.
+
+\begin{lemma}\label{lem:inversion}
+Let $(N_1,\dots,N_r)$ be random integers with $0\le N_j\le M$. Then for all $m=(m_1,\dots,m_r)$ with $0\le m_j\le M$,
+\[
+P(N_1=m_1,\dots,N_r=m_r)=\sum_{m\le k\le M}\ \prod_{j=1}^r(-1)^{k_j-m_j}\binom{k_j}{m_j}\cdot\mathbb E\prod_{j=1}^r\frac{(N_j)_{k_j}}{k_j!},
+\]
+the sum over the vectors $k$ with $m_j\le k_j\le M$ for all $j$.
+\end{lemma}
+\begin{proof}
+For an integer $0\le N\le M$,
+\[
+\begin{aligned}\sum_{k=m}^M(-1)^{k-m}\binom km\binom Nk&=\binom Nm\sum_{k}(-1)^{k-m}\binom{N-m}{k-m}\eqbr=\binom Nm(1-1)^{N-m}=\mathbf 1\{N=m\},\end{aligned}
+\]
+using $\binom km\binom Nk=\binom Nm\binom{N-m}{k-m}$. Multiply these identities for $j=1,\dots,r$, note that
+$\binom Nk=\frac{(N)_k}{k!}$, and take expectations.
+\end{proof}
+
+\section{Billingsley's theorem}
+
+Now the integers. Let $x\ge2$ and let $n$ be uniform on $\{1,\dots,\lfloor x\rfloor\}$. Its distinct prime factors, on the scale $\log x$, form a finite set of points of $(0,1]$: $\{\frac{\log p}{\log x}:p\mid n\}$. Let $N_x(I)$ be the number of these points in $I$, and let $Y_{(1)}\ge Y_{(2)}\ge\cdots$
+be the points in decreasing order, followed by zeros.
+
+\begin{proposition}\label{prop:corrprimes}
+With the notation of Proposition~\ref{prop:corrcycles}, $\mathbb E\prod_j(N_x(I_j))_{k_j}\to\Phi$ as $x\to\infty$.
+\end{proposition}
+\begin{proof}
+The case $K=0$ is trivial; let $K\ge1$. As for cycles, the product counts the ordered $K$-tuples of distinct primes $(p_1,\dots,p_K)$ dividing $n$ with $(\frac{\log p_i}{\log x})_i\in B$. Distinct primes all divide $n$ exactly when their product $d$ does, and
+$P(d\mid n)=\lfloor x/d\rfloor/\lfloor x\rfloor$, which is $0$ for $d>x$ and differs from $\frac1d$ by at most $\frac2{\lfloor x\rfloor}$ for $d\le x$. So
+\[
+\mathbb E\prod_j(N_x(I_j))_{k_j}=S_x+O\Bigl(\frac{T_x}x\Bigr),\qquad S_x=\sum\frac1{p_1\cdots p_K},
+\]
+where both $S_x$ and the count $T_x$ run over the tuples of distinct primes with $(\frac{\log p_i}{\log x})\in B$ and $p_1\cdots p_K\le x$.
+
+\emph{$T_x$ is small.} All $p_i\ge x^\delta$. Given $p_1,\dots,p_{K-1}$, the last prime satisfies $x^\delta\le p_K\le y=\frac x{p_1\cdots p_{K-1}}$, so there are at most $\pi(y)\le\frac{Cy}{\log y}\le\frac{Cx}{\delta\log x\cdot p_1\cdots p_{K-1}}$ choices (Chebyshev). Summing over $p_1,\dots,p_{K-1}\le x$,
+\[
+T_x\le\frac{Cx}{\delta\log x}\Bigl(\sum_{p\le x}\frac1p\Bigr)^{K-1}=O\Bigl(\frac{x(\log\log x)^{K-1}}{\log x}\Bigr)=o(x).
+\]
+
+\emph{$S_x\to\Phi$.} Let $\mu_x$ be the measure on $[\delta,1]$ that puts mass $\frac1p$ at $\frac{\log p}{\log x}$ for each prime $p$, and $\nu(\dd t)=\frac{\dd t}t$. By Mertens, for $\delta\le a<b\le1$,
+\[
+\mu_x\bigl((a,b]\bigr)=\log\log x^b-\log\log x^a+O\Bigl(\frac1{\delta\log x}\Bigr)=\log\frac ba+o(1)=\nu\bigl((a,b]\bigr)+o(1),
+\]
+and a single point carries $\mu_x$-mass at most $x^{-\delta}$; so $\mu_x(I)\to\nu(I)$ for every interval $I\subset[\delta,1]$. Let $H=\{t_1+\dots+t_K\le1\}$, and $S'_x=\mu_x^{\otimes K}(B\cap H)$, the same sum as $S_x$ without the condition that the primes are distinct. The tuples with $p_i=p_{i'}$ for some
+$i\ne i'$ contribute at most $\binom K2\sum_{p\ge x^\delta}\frac1{p^2}\,\mu_x([\delta,1])^{K-2}\to0$, so $S_x-S'_x\to0$. Fix $\eta>0$ and cut $[\delta,1]^K$ into a grid of boxes of side at most $\eta$, each a product of intervals. Let $A_-$ be the union of the boxes of the grid, intersected with $B$, that lie in $H$, and $A_+$
+the union of those that meet $H$. Then $\mu_x^{\otimes K}(A_-)\le S'_x\le\mu_x^{\otimes K}(A_+)$. The measure of a product of intervals is the product of their measures, so $\mu_x^{\otimes K}(A_\pm)\to\nu^{\otimes K}(A_\pm)$. The difference $A_+\setminus A_-$ lies within distance $\sqrt K\eta$ of the hyperplane
+$\sum t_i=1$, so $\nu^{\otimes K}(A_+\setminus A_-)\le C_K\delta^{-K}\eta$. Hence $\limsup|S'_x-\Phi|\le C_K\delta^{-K}\eta$ for every $\eta$, and $S'_x\to\Phi$.
+\end{proof}
+
+\begin{theorem}[Billingsley, 1972]\label{thm:billingsley}
+For every $m\ge1$ and all $a_1,\dots,a_m>0$,
+\[
+P\bigl(Y_{(1)}\le a_1,\dots,Y_{(m)}\le a_m\bigr)\longrightarrow P\bigl(V_{(1)}\le a_1,\dots,V_{(m)}\le a_m\bigr)\qquad(x\to\infty).
+\]
+The largest prime factors of a random integer, on the scale $\log x$, follow the Poisson--Dirichlet law.
+\end{theorem}
+\begin{proof}
+Both sequences are decreasing and bounded by $1$, so we may replace $a_i$ by $\min(1,a_1,\dots,a_i)$ without changing either event, and assume $1\ge a_1\ge\dots\ge a_m>0$. Let $a_0=1$, $J_i=(a_i,a_{i-1}]$, and $\delta=a_m$. For a decreasing sequence $y$,
+\[
+\{y_{(i)}\le a_i\text{ for all }i\le m\}=\Bigl\{\sum_{l\le i}N(J_l)\le i-1\text{ for all }i\le m\Bigr\},
+\]
+since $y_{(i)}>a_i$ means that at least $i$ points lie in $(a_i,1]$. So both probabilities are sums, over the same finite set of vectors $c$, of $P\bigl((N_x(J_l))_{l\le m}=c\bigr)$ and $P\bigl((N(J_l))_{l\le m}=c\bigr)$. All these counts are at most $M=\lfloor\frac1\delta\rfloor$: an integer
+$n\le x$ has at most $\frac1\delta$ distinct prime factors $\ge x^\delta$, and the pieces of length $\ge\delta$ of the stick number at most $\frac1\delta$. The $J_l$ are disjoint intervals of $[\delta,1]$, so Proposition~\ref{prop:corrprimes} and Corollary~\ref{cor:pdcorr} say that the factorial moments
+of $(N_x(J_l))_l$ converge to those of $(N(J_l))_l$. By Lemma~\ref{lem:inversion}, each probability $P((N_x(J_l))_l=c)$ is a fixed finite combination of these moments, so it converges to $P((N(J_l))_l=c)$.
+\end{proof}
+
+The theorem is stated for distinct primes on the scale $\log x$; neither choice matters (Exercise~\ref{ex:multiplicity}), and the convergence of distribution functions is convergence in law (Exercise~\ref{ex:cdflaw}). Its first case is Dickman's theorem. An integer
+is \emph{$y$-smooth} if all its prime factors are at most $y$; let $\Psi(x,y)$ be the number of $y$-smooth integers $n\le x$.
+
+\begin{corollary}[Dickman, 1930]\label{cor:smooth}
+For every fixed $u>0$, $\Psi(x,x^{1/u})\sim\rho(u)\,x$ as $x\to\infty$.
+\end{corollary}
+\begin{proof}
+$n\le x$ is $x^{1/u}$-smooth exactly when $Y_{(1)}\le\frac1u$. By Theorem~\ref{thm:billingsley} with $m=1$, $\Psi(x,x^{1/u})/\lfloor x\rfloor\to P(V_{(1)}\le\frac1u)=\rho(u)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch12-rho}
+\caption{Dickman's function $\rho(u)$ (red), with the proportion of $x^{1/u}$-smooth integers $n\le x=10^7$ (blue dots) and the proportion of random permutations of $1000$ elements whose longest cycle is at most $\frac{1000}u$ ($20\,000$ samples, green dots). Both
+approach $\rho$, the integers more slowly, from above: at $u=3$ the proportion of smooth integers is $0.067$, against $\rho(3)=0.049$. The dashed steps are the bound $\frac1{\lfloor u\rfloor!}$ of Proposition~\ref{prop:rhobound}.}
+\label{fig:rho}
+\end{figure}
+
+So the proportion of integers below $x$ whose prime factors are all below $\sqrt x$ tends to $1-\log2\approx0.31$, and below $x^{1/3}$, to $\rho(3)\approx0.048$. Smooth numbers are rare, and their rarity, $\rho(u)=u^{-u(1+o(1))}$, governs the modern factoring algorithms. The quadratic sieve of
+Tome~C2 looks for values of a polynomial that are $y$-smooth: a smaller $y$ makes each smooth value easier to use but rarer to find, and the balance between $\rho(u)$ and the size of the factor base gives running times of the form $e^{c\sqrt{\log n\log\log n}}$. In 1976 Donald Knuth and Luis Trabb Pardo
+analysed the simplest algorithm of all, trial division, with exactly this law: trial division by all primes up to $n^{1/u}$ factors $n$ completely, apart from one last prime, when the \emph{second} largest prime factor is below $n^{1/u}$, and the probability of that is the
+distribution function of $V_{(2)}$ (see the notebook).
+
+\begin{think}
+Why are cycles and primes the same? The prime factors of $n\le x$ behave like independent events of probability $\frac1p$, and on the scale $t=\frac{\log p}{\log x}$ the density of $\sum_p\frac1p$ is $\frac{\dd t}t$, exactly as the cycles of length $\ell=tn$ appear with intensity $\frac1\ell$, that
+is $\frac{\dd t}t$. In both cases the constraint is the same: the sizes add up to at most the whole, $\sum\log p\le\log x$ and $\sum\ell\le n$. Which part of the proof of Proposition~\ref{prop:corrprimes} is the analogue of $\sum_{j\le n}\frac1j\approx\log n$? And what plays the role of
+Theorem~\ref{thm:smallcycles} for small primes (look back at the Dirichlet random integer of Chapter~11)?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:rho3}
+Show that $\rho(u)=1-\log u+\int_2^u\frac{\log(t-1)}t\,\dd t$ for $2\le u\le3$. Deduce that a random integer has a prime factor larger than its square root with probability tending to $\log2$, and compute $\rho(3)$ to two significant digits with Simpson's rule.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:samecycle}
+Show that $1$ and $2$ lie in the same cycle of a uniform random permutation ($n\ge2$) with probability exactly $\frac12$. Show that $\mathbb E\sum_iV_i^2=\frac12$, and explain why the two results are the same.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ewens}
+\emph{The Ewens sampling formula.} Let $\theta>0$. Build a permutation of $\{1,\dots,n\}$ by placing $1,2,\dots$ one at a time: element $i$ starts a new cycle with probability $\frac\theta{\theta+i-1}$, and otherwise is inserted in an existing cycle immediately after one of
+the $i-1$ elements already placed, chosen uniformly. Show that a permutation $\sigma$ is obtained with probability $\frac{\theta^{K(\sigma)}}{\theta(\theta+1)\cdots(\theta+n-1)}$, where $K(\sigma)$ is its number of cycles; that $K$ is a sum of independent Bernoulli$(\frac\theta{\theta+i-1})$ variables; and that the
+cycle type has the law
+\[
+P(C=c)=\frac{n!}{\theta(\theta+1)\cdots(\theta+n-1)}\prod_{j=1}^n\frac{(\theta/j)^{c_j}}{c_j!}\qquad\Bigl(\sum_jjc_j=n\Bigr).
+\]
+For $\theta=1$ this is Cauchy's formula.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cdflaw}
+Let $X_n,X$ be random vectors in $[0,1]^m$ with $P(X_n\le a)\to P(X\le a)$ for every $a\in(0,\infty)^m$ (coordinatewise inequalities), where $P(X_i=c)=0$ for all $i$ and all $c\in[0,1]$. Show that $\mathbb Ef(X_n)\to\mathbb Ef(X)$ for every bounded Lipschitz $f$, so that $X_n$ converges in law to $X$.
+Apply this to Theorem~\ref{thm:billingsley}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:multiplicity}
+Let $P_1(n)\ge P_2(n)\ge\cdots$ be the prime factors of $n$ with multiplicity, followed by $1$'s. Show that Theorem~\ref{thm:billingsley} still holds with $Y_{(i)}$ replaced by $\frac{\log P_i(n)}{\log n}$ (with $\frac{\log P_i(1)}{\log1}=0$). (Show that $P(n\le x^{1-\varepsilon})\to0$ and that
+$P(p^2\mid n$ for some $p\ge x^\delta)\to0$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:meanlargest}
+Let $P^+(n)$ be the largest prime factor of $n$ ($P^+(1)=1$). Show that $\frac1x\sum_{n\le x}\frac{\log P^+(n)}{\log x}\to\lambda=0.62433\ldots$, the constant of Corollary~\ref{cor:golomb}: the largest prime factor of a number with a hundred digits has, on average, about $62$ digits.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:rho3}
+Integrate $\rho'(t)=-\frac{\rho(t-1)}t=-\frac{1-\log(t-1)}t$ from $2$ to $u$. Simpson's rule with step $\frac14$ needs the values of $\frac{\log(t-1)}t$ at $2,\frac94,\frac52,\frac{11}4,3$.
+\end{hint}
+
+\begin{hint}{ex:samecycle}
+The cycle of $1$ has a uniform length $L_1$, and given $L_1=k$ its other $k-1$ elements are a uniform subset of $\{2,\dots,n\}$. For the stick, $V_i=U_iW_{i-1}$ with independent factors.
+\end{hint}
+
+\begin{hint}{ex:ewens}
+Show that the construction is a bijection between sequences of choices and permutations, as in Feller's coupling, and multiply the probabilities of the choices: each new cycle contributes a factor $\theta$.
+\end{hint}
+
+\begin{hint}{ex:cdflaw}
+Inclusion--exclusion gives $P(X_n\in(a,b])\to P(X\in(a,b])$ for boxes with $a_i>0$. Cut $[0,1]^m$ into small boxes, and handle the boxes touching $\{x_i=0\}$ with $P(X_{n,i}\le\varepsilon)\to P(X_i\le\varepsilon)$.
+\end{hint}
+
+\begin{hint}{ex:multiplicity}
+On the event that $n>x^{1-\varepsilon}$ and no $p\ge x^{\delta}$ has $p^2\mid n$, the prime factors $\ge x^\delta$ are counted once, and $\frac{\log p}{\log n}$ lies between $\frac{\log p}{\log x}$ and $\frac1{1-\varepsilon}\frac{\log p}{\log x}$.
+\end{hint}
+
+\begin{hint}{ex:meanlargest}
+$\frac{\log P^+(n)}{\log x}=Y_{(1)}$, and $\mathbb EY_{(1)}=\int_0^1P(Y_{(1)}>t)\,\dd t$. Use dominated convergence.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:rho3}
+\idea On $[2,3]$ the delay equation sees $\rho$ on $[1,2]$, where it is $1-\log$; one integration gives the formula.
+\writeup For $2\le t\le3$, $\rho'(t)=-\frac{\rho(t-1)}t=-\frac{1-\log(t-1)}t$. Integrating from $2$, with $\rho(2)=1-\log2$,
+\[
+\rho(u)=1-\log2-\log\frac u2+\int_2^u\frac{\log(t-1)}t\,\dd t=1-\log u+\int_2^u\frac{\log(t-1)}t\,\dd t.
+\]
+A random integer $n\le x$ has a prime factor $>\sqrt x$ with probability $1-\Psi(x,\sqrt x)/\lfloor x\rfloor\to1-\rho(2)=\log2$ (Corollary~\ref{cor:smooth}); by Exercise~\ref{ex:multiplicity}, the same holds with $\sqrt n$ instead of $\sqrt x$. Finally, with $g(t)=\frac{\log(t-1)}t$, $g(2)=0$, $g(\frac94)=0.09917$, $g(\frac52)=0.16219$, $g(\frac{11}4)=0.20350$, $g(3)=0.23105$, and Simpson's rule gives
+\[
+\int_2^3g\approx\frac1{12}\bigl(0+4\cdot0.09917+2\cdot0.16219+4\cdot0.20350+0.23105\bigr)=0.14718,
+\]
+so $\rho(3)\approx1-1.09861+0.14718=0.0486$. (The true value is $\rho(3)=0.04860\ldots$, computed in the notebook.)
+\end{solution}
+
+\begin{solution}{ex:samecycle}
+\idea Condition on the length of the cycle of $1$, which is uniform; then the cycle is a uniform set around $1$.
+\writeup By Proposition~\ref{prop:firstcycle}, $P(L_1=k)=\frac1n$, and given $L_1=k$ the other $k-1$ elements of the cycle of $1$ form a uniform subset of $\{2,\dots,n\}$ (every list $a_2,\dots,a_k$ is equally likely). So $2$ is among them with probability $\frac{k-1}{n-1}$, and
+\[
+P(1\sim2)=\frac1n\sum_{k=1}^n\frac{k-1}{n-1}=\frac1n\cdot\frac{n(n-1)/2}{n-1}=\frac12.
+\]
+For the stick, $\mathbb EV_i^2=\mathbb EU_i^2\,\mathbb EW_{i-1}^2=\frac13\cdot(\frac13)^{i-1}$, so $\mathbb E\sum_iV_i^2=\frac13\cdot\frac1{1-1/3}=\frac12$ (Tonelli). They are the same quantity: given the cycle lengths, two uniform distinct elements lie in the same cycle with probability
+$\sum_iL_i(L_i-1)/(n(n-1))$, and the probability that $1$ and $2$ are in the same cycle is the same as for any two distinct elements, by symmetry. So $\frac12=\mathbb E\sum_i\frac{L_i(L_i-1)}{n(n-1)}=\frac n{n-1}\mathbb E\sum_i\frac{L_i^2}{n^2}-\frac1{n-1}$. In the coupling,
+\[
+\Bigl|\sum_i\frac{L_i^2}{n^2}-\sum_iV_i^2\Bigr|\le\sum_i\Bigl|\frac{L_i}n-V_i\Bigr|\Bigl(\frac{L_i}n+V_i\Bigr)\le2\sup_i\Bigl|\frac{L_i}n-V_i\Bigr|\le2\inf_r\Bigl(W_r+\frac rn\Bigr)\to0,
+\]
+as in the proof of Theorem~\ref{thm:pdcycles}, and everything is bounded by $1$; so letting $n\to\infty$ gives $\frac12=\mathbb E\sum_iV_i^2$ again. In the limit, two random points of the stick fall in the same piece with probability $\frac12$.
+\end{solution}
+
+\begin{solution}{ex:ewens}
+\idea Each run of the construction is a sequence of choices, the choices determine the permutation, and conversely; the probability of each sequence is a product in which every new cycle brings a $\theta$.
+\writeup At step $i$ there are $i$ options: a new cycle, or ``right after $j$'' for $j<i$. Inserting $i$ after $j$ in the cycle notation means $\sigma(j)=i$ and $\sigma(i)=$ the old image of $j$. The permutation built from the first $i$ elements determines the choice at step $i$: remove
+$i$ from its cycle; if $i$ was alone it was a new cycle, otherwise it was inserted after its predecessor $\sigma^{-1}(i)$. So the $n!$ sequences of choices and the $n!$ permutations are in bijection. The probability of a sequence is $\prod_i\frac{w_i}{\theta+i-1}$ with $w_i=\theta$ for a new
+cycle and $w_i=1$ for an insertion, that is $\frac{\theta^{K(\sigma)}}{\theta(\theta+1)\cdots(\theta+n-1)}$. The indicators of ``new cycle at step $i$'' are independent, since the choices are, with probabilities $\frac\theta{\theta+i-1}$, and $K$ is their sum. Finally, all $\sigma$ of cycle type $c$ have the
+same probability, and by Proposition~\ref{prop:cauchy} there are $\frac{n!}{\prod_jj^{c_j}c_j!}$ of them; with $K=\sum_jc_j$ this gives the formula. Warren Ewens found it in 1972 as the law of the allele counts in a sample of $n$ genes under neutral mutation, with $\theta$ the scaled mutation rate.
+\end{solution}
+
+\begin{solution}{ex:cdflaw}
+\idea Distribution functions give the probabilities of boxes, and a Lipschitz function is nearly constant on small boxes.
+\writeup For $a,b\in(0,\infty)^m$ with $a<b$, $P(X_n\in(a,b])$ is a signed sum of $2^m$ values of the distribution function at points of $(0,\infty)^m$ (inclusion--exclusion), so it converges to $P(X\in(a,b])$. Let $\varepsilon>0$ and
+$P_i(\varepsilon)=P(X_i\le\varepsilon)$, which tends to $P(X_i=0)=0$ as $\varepsilon\to0$. By hypothesis (with the other coordinates of $a$ equal to $1$), $P(X_{n,i}\le\varepsilon)\to P_i(\varepsilon)$. Cut $(\varepsilon,1]^m$ into boxes $Q$ of the form $(a,b]$ with sides at most $\eta$, and let $x_Q$ be a point of $Q$. For $f$
+bounded by $\|f\|$ and $L$-Lipschitz,
+\[
+\Bigl|\mathbb Ef(X_n)-\sum_Qf(x_Q)P(X_n\in Q)\Bigr|\le L\sqrt m\,\eta+\|f\|\sum_iP(X_{n,i}\le\varepsilon),
+\]
+and the same for $X$. The finite sums converge, so $\limsup_n|\mathbb Ef(X_n)-\mathbb Ef(X)|\le2L\sqrt m\,\eta+2\|f\|\sum_iP_i(\varepsilon)$, which is arbitrarily small. By the portmanteau theorem (Tome~6, Theorem~11.4), $X_n\Rightarrow X$. For Theorem~\ref{thm:billingsley}, take
+$X=(V_{(1)},\dots,V_{(m)})$: each $V_{(i)}$ is one of the $V_j$, so $P(V_{(i)}=c)\le\sum_jP(V_j=c)=0$ by Lemma~\ref{lem:gem}.
+\end{solution}
+
+\begin{solution}{ex:multiplicity}
+\idea Two small differences: a prime factor may be repeated, and $\log n$ is slightly smaller than $\log x$. Big primes are almost never repeated, and $\log n\approx\log x$ for most $n$.
+\writeup Let $Z_i=\frac{\log P_i(n)}{\log n}$. First, $P(n\le x^{1-\varepsilon})\le\frac{x^{1-\varepsilon}}{\lfloor x\rfloor}\to0$, and $P(p^2\mid n\text{ for some }p\ge x^\delta)\le\sum_{p\ge x^\delta}\frac1{p^2}+\frac{\pi(\sqrt x)}{\lfloor x\rfloor}\to0$. Fix $a_1\ge\dots\ge a_m>0$ as in the proof of the theorem, and $\delta<\frac{a_m}2$. On the
+event $G$ where $n>x^{1-\varepsilon}$ and no prime $p\ge x^\delta$ has $p^2\mid n$, the factors $P_i(n)\ge x^\delta$ are distinct, and $Y_{(i)}\le Z_i\le\frac{Y_{(i)}}{1-\varepsilon}$ whenever $Y_{(i)}\ge\delta$; if $Y_{(i)}<\delta$ then $Z_j<\frac\delta{1-\varepsilon}$ for all $j\ge i$ as well. Hence, on $G$, for $\varepsilon$ small,
+\[
+\{Y_{(i)}\le(1-\varepsilon)a_i\ \forall i\}\subset\{Z_i\le a_i\ \forall i\}\subset\{Y_{(i)}\le a_i\ \forall i\}.
+\]
+Take probabilities, let $x\to\infty$ with Theorem~\ref{thm:billingsley}, then $\varepsilon\to0$: the limit distribution function of $(V_{(i)})$ is continuous, since $P(V_{(i)}=c)=0$ (solution of Exercise~\ref{ex:cdflaw}), so both bounds tend to $P(V_{(i)}\le a_i\ \forall i)$.
+\end{solution}
+
+\begin{solution}{ex:meanlargest}
+\idea The mean of a variable in $[0,1]$ is the integral of its tail, and the tails converge.
+\writeup $Y_{(1)}=\frac{\log P^+(n)}{\log x}$ for $n\ge2$. By Theorem~\ref{thm:billingsley} with $m=1$, $P(Y_{(1)}>t)\to P(V_{(1)}>t)$ for every $t>0$, and the tails are bounded by $1$, so by dominated convergence
+\[
+\frac1{\lfloor x\rfloor}\sum_{n\le x}\frac{\log P^+(n)}{\log x}=\int_0^1P(Y_{(1)}>t)\,\dd t\longrightarrow\int_0^1P(V_{(1)}>t)\,\dd t=\mathbb EV_{(1)}=\lambda.
+\]
+Replacing $\lfloor x\rfloor$ by $x$ changes nothing in the limit. For a number with a hundred digits, $\lambda\cdot100\approx62$ digits: by Exercise~\ref{ex:multiplicity}, the same holds with $\log n$ in place of $\log x$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The longest cycle and smooth numbers.} S.~W.~Golomb, ``Random permutations'', \emph{Bull.\ Amer.\ Math.\ Soc.}\ 70 (1964), 747 (abstract). L.~A.~Shepp and S.~P.~Lloyd, ``Ordered cycle lengths in a random permutation'', \emph{Trans.\ Amer.\ Math.\ Soc.}\ 121 (1966), 340--357.
+K.~Dickman, ``On the frequency of numbers containing prime factors of a certain relative magnitude'', \emph{Arkiv f\"or Mat., Astron.\ och Fys.}\ 22A (1930), 1--14. P.~Moree, ``Integers without large prime factors: from Ramanujan to de Bruijn'', \emph{Integers} 14A (2014), A5: the history,
+including Dickman's career in insurance, de Bruijn's work, and the discovery that Ramanujan had met $\rho$ before Dickman.
+\item \emph{The Poisson--Dirichlet law.} P.~Billingsley, ``On the distribution of large prime divisors'', \emph{Period.\ Math.\ Hungar.}\ 2 (1972), 283--289. J.~F.~C.~Kingman, ``Random discrete distributions'', \emph{J.\ Roy.\ Statist.\ Soc.\ Ser.\ B} 37 (1975), 1--22.
+P.~Donnelly and G.~Grimmett, ``On the asymptotic distribution of large prime factors'', \emph{J.\ London Math.\ Soc.}\ 47 (1993), 395--404, a proof of Billingsley's theorem by size-biased sampling, close in spirit to the broken stick. W.~J.~Ewens, ``The sampling theory of selectively neutral alleles'',
+\emph{Theoret.\ Population Biology} 3 (1972), 87--112.
+\item \emph{Small cycles.} R.~Arratia and S.~Tavar\'e, ``The cycle structure of random permutations'', \emph{Ann.\ Probab.}\ 20 (1992), 1567--1591. R.~Arratia, A.~D.~Barbour and S.~Tavar\'e, \emph{Logarithmic Combinatorial Structures: a Probabilistic Approach}, EMS, 2003, the
+unified theory of permutations, polynomials and integers.
+\item \emph{Algorithms.} D.~E.~Knuth and L.~Trabb Pardo, ``Analysis of a simple factorization algorithm'', \emph{Theoret.\ Comput.\ Sci.}\ 3 (1976), 321--348.
+\end{itemize}
