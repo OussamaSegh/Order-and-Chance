@@ -1,0 +1,545 @@
+\chapter{Stein's Method}
+\begin{center}\itshape
+Characteristic functions prove limit theorems beautifully, but they need independence and they hide the error.\\
+Stein found a way to measure the distance to a Gaussian, or to a Poisson law, with one integration by parts,\\
+and it works just as well for dependent pieces: colliding hashes, triangles in random graphs, samples without replacement.
+\end{center}
+
+Charles Stein (1920--2016) was a statistician who liked to prove that the obvious thing is wrong. In 1956 he showed that when you estimate three or more
+unrelated means from Gaussian data, the obvious estimator, the vector of sample means, can be beaten uniformly: ``Stein's paradox'', which statisticians
+still argue about over coffee. Fourteen years later, at the Sixth Berkeley Symposium of 1970, he did the same to the central limit theorem. Everybody
+proved it with characteristic functions; Stein proved it with a single identity satisfied by the Gaussian law and by nothing else,
+\[
+\mathbb E f'(Z)=\mathbb E\,Zf(Z),
+\]
+and he showed that when a random variable $W$ \emph{almost} satisfies it, $W$ is \emph{almost} Gaussian, with an explicit error. The paper, published in 1972,
+treated sums of dependent variables, exactly where Fourier methods struggle.
+
+His student Louis Chen, in a Stanford thesis completed in 1972 and a paper of 1975, ran the same idea for the Poisson law. For a decade few people
+noticed; then in 1989 Richard Arratia, Larry Goldstein and Louis Gordon turned the Chen--Stein method into a tool anybody could use, under the title
+``Two moments suffice for Poisson approximations''. Today it is how one proves that the number of hash collisions, of near-birthdays, of triangles in a
+sparse random graph or of long runs of heads is Poisson, with a bound on the error.
+
+This chapter builds Stein's method twice, for the normal law and for the Poisson law, and uses it on samples without replacement, birthdays and
+hashes, and random graphs.
+
+\begin{reminder}[from Tome 3 and Chapters 3 and 4]
+The total variation distance between laws on a countable set is $\|\mu-\nu\|=\max_A|\mu(A)-\nu(A)|$ (Tome~3, Chapter~8), and Le Cam's inequality says that a
+sum $S$ of independent Bernoulli$(p_i)$ variables with $\sum p_i=\lambda$ satisfies $\|\mathcal L(S)-\text{Poisson}(\lambda)\|\le\sum p_i^2$ (Tome~3, Theorem~9.11).
+We write $\varphi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$ and $\Phi$ for the standard Gaussian density and distribution function, and use the lower tail bound
+of~\eqref{eq:gausstail}: $1-\Phi(x)\ge\frac x{1+x^2}\varphi(x)$ for $x>0$. By symmetry, $\Phi(x)\ge\frac{|x|}{1+x^2}\varphi(x)$ for $x<0$.
+\end{reminder}
+
+\section{The Gaussian integration by parts}
+
+\begin{lemma}[Stein's lemma]\label{lem:stein}
+Let $W$ be a random variable with $\mathbb E|W|<\infty$.
+\begin{enumerate}[label=(\roman*)]
+\item If $W\sim N(0,1)$, then $\mathbb Ef'(W)=\mathbb E\,Wf(W)$ for every $C^1$ function $f$ with $f'$ bounded.
+\item Conversely, if $\mathbb Ef'(W)=\mathbb E\,Wf(W)$ for every bounded $C^1$ function $f$ with $f'$ bounded, then $W\sim N(0,1)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Since $\varphi'(x)=-x\varphi(x)$, integration by parts on $[-R,R]$ gives
+\[
+\int_{-R}^Rf'(x)\varphi(x)\dd x=f(R)\varphi(R)-f(-R)\varphi(-R)+\int_{-R}^Rxf(x)\varphi(x)\dd x .
+\]
+As $f'$ is bounded, $|f(x)|\le|f(0)|+\|f'\|\,|x|$, so the boundary terms tend to $0$ and both integrals converge absolutely as $R\to\infty$.
+
+(ii) is a consequence of Lemma~\ref{lem:steinsol} below: for $h(x)=\cos tx$ or $h(x)=\sin tx$, that lemma produces a bounded $C^1$ function $f$ with bounded
+derivative such that $f'(w)-wf(w)=h(w)-\mathbb Eh(Z)$ for all $w$, where $Z\sim N(0,1)$. Taking expectations at $w=W$, $\mathbb Eh(W)=\mathbb Eh(Z)$. So $W$ and $Z$
+have the same characteristic function, hence the same law.
+\end{proof}
+
+Part (ii) is the seed of the method. Fix a test function $h$ and solve the \emph{Stein equation}
+\begin{equation}\label{eq:steineq}
+f'(w)-wf(w)=h(w)-\mathbb Eh(Z).
+\end{equation}
+Put $W$ in it and take expectations:
+\begin{equation}\label{eq:steinid}
+\mathbb Eh(W)-\mathbb Eh(Z)=\mathbb E\bigl[f'(W)-Wf(W)\bigr].
+\end{equation}
+The left side is what we want to bound, a question about two laws. The right side involves only $W$, and if $f$ is smooth with controlled derivatives we
+can attack it with Taylor's formula, independence, symmetry, whatever structure $W$ has. Everything rests on bounds for the solution~$f$.
+
+\begin{think}
+Why not simply check that $W$ has the Gaussian moments $\mathbb EW^k$? The identity of Lemma~\ref{lem:stein} with $f(w)=w^{k-1}$ gives
+$\mathbb EZ^k=(k-1)\mathbb EZ^{k-2}$, and the moments do characterize the Gaussian. What does the method of moments \emph{not} give you, that a bound on
+$\mathbb E[f'(W)-Wf(W)]$ for a whole class of $f$ will?
+\end{think}
+
+\section{Solving the Stein equation}
+
+\begin{lemma}[the solution and its derivatives]\label{lem:steinsol}
+Let $h:\R\to\R$ be $C^1$ with $\|h'\|=\sup|h'|<\infty$, and $\tilde h=h-\mathbb Eh(Z)$. The function
+\[
+f(w)=\frac1{\varphi(w)}\int_{-\infty}^w\tilde h(x)\varphi(x)\dd x
+\]
+is $C^2$, solves~\eqref{eq:steineq}, and satisfies
+\[
+\|f\|\le\|h'\|,\qquad\|f'\|\le2\|h'\|,\qquad\|f''\|\le2\|h'\|.
+\]
+\end{lemma}
+\begin{proof}
+Since $\frac{\dd}{\dd w}\frac1{\varphi(w)}=\frac w{\varphi(w)}$, differentiating gives $f'(w)=wf(w)+\tilde h(w)$, which is~\eqref{eq:steineq}; $f'$ is continuous,
+and so is $f''=f+wf'+h'$. The work is in the bounds, and the trick is to write everything in terms of $h'$.
+
+\emph{Step 1: $\tilde h$ in terms of $h'$.} Writing $h(x)-h(y)=\int_y^xh'(z)\dd z$ and integrating against $\varphi(y)\dd y$, Fubini gives
+\[
+\tilde h(x)=\int_{\R}\bigl(h(x)-h(y)\bigr)\varphi(y)\dd y=\int_{-\infty}^xh'(z)\Phi(z)\dd z-\int_x^\infty h'(z)\bigl(1-\Phi(z)\bigr)\dd z,
+\]
+since $z<x$ lies between $y$ and $x$ exactly when $y<z$, which has weight $\Phi(z)$, and $z>x$ lies between $x$ and $y$ when $y>z$, of weight $1-\Phi(z)$.
+Call the two integrals $A(x)$ and $B(x)$, so $\tilde h=A-B$.
+
+\emph{Step 2: $f$ in terms of $h'$.} Integrate $\tilde h\varphi$ up to $w$ and use Fubini again: $\int_{-\infty}^wA\varphi=\int_{-\infty}^wh'(z)\Phi(z)\bigl(\Phi(w)-\Phi(z)\bigr)\dd z$
+and $\int_{-\infty}^wB\varphi=\int_{-\infty}^wh'(z)(1-\Phi(z))\Phi(z)\dd z+\Phi(w)B(w)$. Subtracting,
+\begin{equation}\label{eq:steinrep}
+f(w)=-\frac{\bigl(1-\Phi(w)\bigr)A(w)+\Phi(w)B(w)}{\varphi(w)}.
+\end{equation}
+Introduce the two positive functions
+\[
+\psi(w)=\int_w^\infty\bigl(1-\Phi(z)\bigr)\dd z=\varphi(w)-w\bigl(1-\Phi(w)\bigr),\qquad\psi(-w)=\int_{-\infty}^w\Phi(z)\dd z=\varphi(w)+w\Phi(w)
+\]
+(differentiate the right sides, using $\varphi'=-w\varphi$, and check the limits). Then $|A(w)|\le\|h'\|\psi(-w)$ and $|B(w)|\le\|h'\|\psi(w)$.
+
+\emph{Step 3: $\|f\|$.} By~\eqref{eq:steinrep}, $|f(w)|\le\|h'\|\bigl((1-\Phi)\psi(-w)+\Phi\psi(w)\bigr)/\varphi$, and
+\[
+(1-\Phi)(\varphi+w\Phi)+\Phi\bigl(\varphi-w(1-\Phi)\bigr)=\varphi .
+\]
+So $|f|\le\|h'\|$.
+
+\emph{Step 4: $\|f'\|$.} From $f'=wf+A-B$ and~\eqref{eq:steinrep},
+\[
+f'(w)=A(w)\Bigl(1-\frac{w(1-\Phi(w))}{\varphi(w)}\Bigr)-B(w)\Bigl(1+\frac{w\Phi(w)}{\varphi(w)}\Bigr)=\frac{A(w)\psi(w)-B(w)\psi(-w)}{\varphi(w)}.
+\]
+Hence $|f'(w)|\le\|h'\|\cdot2\psi(w)\psi(-w)/\varphi(w)$, an even function of $w$. For $w\ge0$ the tail bound gives
+$\psi(w)\le\varphi(w)-\frac{w^2}{1+w^2}\varphi(w)=\frac{\varphi(w)}{1+w^2}$, and $\psi(-w)\le\varphi(0)+w$, so
+\[
+\frac{2\psi(w)\psi(-w)}{\varphi(w)}\le\frac{2\varphi(0)}{1+w^2}+\frac{2w}{1+w^2}\le2\varphi(0)+1<2 .
+\]
+
+\emph{Step 5: $\|f''\|$.} From $f''=f+wf'+h'=(1+w^2)f+w\tilde h+h'$ and~\eqref{eq:steinrep},
+\[
+(1+w^2)f+w\tilde h=A(w)\,\alpha(w)+B(w)\,\beta(w),\qquad
+\alpha=w-\frac{(1+w^2)(1-\Phi)}{\varphi},\quad\beta=-w-\frac{(1+w^2)\Phi}\varphi .
+\]
+The tail bound says exactly that $\alpha\le0$ for $w>0$, and $\alpha\le0$ is clear for $w\le0$; likewise $\beta\le0$ everywhere. So
+\[
+\bigl|(1+w^2)f+w\tilde h\bigr|\le\|h'\|\bigl(-\alpha\,\psi(-w)-\beta\,\psi(w)\bigr),
+\]
+and expanding with the formulas for $\psi(\pm w)$, the $w\varphi$ terms cancel, the $\Phi(1-\Phi)$ terms cancel, and what is left is
+\[
+-w(\varphi+w\Phi)+w\bigl(\varphi-w(1-\Phi)\bigr)+\frac{1+w^2}{\varphi}\bigl((1-\Phi)\varphi+\Phi\varphi\bigr)=-w^2+(1+w^2)=1.
+\]
+Therefore $|f''|\le\|h'\|+|h'|\le2\|h'\|$.
+\end{proof}
+
+The constant $2$ for $f'$ is not sharp: the function $2\psi(w)\psi(-w)/\varphi(w)$ has its maximum $2\varphi(0)=\sqrt{2/\pi}\approx0.80$ at $w=0$, a fact proved
+in Chen, Goldstein and Shao's book (Lemma~2.4) and checked numerically in the notebook. The constant $1$ for $f$ is sharp: $h(x)=x$ gives $f\equiv-1$.
+
+\begin{figure}[ht]
+\centering\fig{ch06-steinsol}
+\caption{The solution $f$ of the Stein equation for $h(x)=|x|$, and its derivative. The dashed envelope $\pm2\psi(w)\psi(-w)/\varphi(w)$ bounds $|f'|$ for every
+$1$-Lipschitz $h$; here $f'$ touches it at $w=0$, where it equals $\sqrt{2/\pi}$. (This $h$ has a corner at $0$; Steps~1--4 of the proof only use $|h'|\le1$ almost everywhere, so they apply.)}
+\label{fig:steinsol}
+\end{figure}
+
+\section{Wasserstein distance and the central limit theorem}
+
+Lemma~\ref{lem:steinsol} controls $f$ through $\|h'\|$, so the natural distance is the one tested by Lipschitz functions. For random variables $X,Y$ with
+finite means, the \emph{Wasserstein distance} is
+\[
+d_W(X,Y)=\sup\bigl\{|\mathbb Eh(X)-\mathbb Eh(Y)|:\ |h(x)-h(y)|\le|x-y|\text{ for all }x,y\bigr\}.
+\]
+It depends only on the laws, and $d_W(X_n,Y)\to0$ implies $X_n\Rightarrow Y$ (Exercise~\ref{ex:dwlaw}). Two remarks make it usable. First, the supremum may be taken
+over $C^1$ functions with $\|h'\|\le1$: if $h$ is $1$-Lipschitz and $N\sim N(0,1)$, then $h_\varepsilon(x)=\mathbb Eh(x+\varepsilon N)$ is $C^1$ (differentiate the Gaussian
+density), $1$-Lipschitz, and $|h_\varepsilon-h|\le\varepsilon\mathbb E|N|\le\varepsilon$. Second, it controls the Kolmogorov distance
+$d_K(X,Y)=\sup_x|P(X\le x)-P(Y\le x)|$ to a Gaussian.
+
+\begin{proposition}\label{prop:dkdw}
+For any $W$ with finite mean,
+\[
+d_K(W,Z)\le\sqrt{2\varphi(0)\,d_W(W,Z)}=(2/\pi)^{1/4}\sqrt{d_W(W,Z)} .
+\]
+\end{proposition}
+\begin{proof}
+Fix $x$ and $\varepsilon>0$, and let $h$ be $1$ on $(-\infty,x]$, $0$ on $[x+\varepsilon,\infty)$ and linear in between. Then $\varepsilon h$ is $1$-Lipschitz and
+\[
+P(W\le x)-\Phi(x)\le\mathbb Eh(W)-\mathbb Eh(Z)+\mathbb Eh(Z)-\Phi(x)\le\frac{d_W}\varepsilon+\int_x^{x+\varepsilon}\Bigl(1-\frac{t-x}\varepsilon\Bigr)\varphi(t)\dd t
+\le\frac{d_W}\varepsilon+\frac{\varepsilon\varphi(0)}2 .
+\]
+The ramp from $x-\varepsilon$ to $x$ gives the same bound for $\Phi(x)-P(W\le x)$. Take $\varepsilon=\sqrt{2d_W/\varphi(0)}$.
+\end{proof}
+
+\begin{theorem}[CLT with an error in Wasserstein distance]\label{thm:steinclt}
+Let $X_1,\dots,X_n$ be independent, with $\mathbb EX_i=0$, $\sum_i\mathbb EX_i^2=1$ and $\mathbb E|X_i|^3<\infty$, and let $W=X_1+\dots+X_n$. Then
+\[
+d_W(W,Z)\le3\sum_{i=1}^n\mathbb E|X_i|^3 .
+\]
+In particular, for i.i.d.\ $\xi_i$ with mean $0$, variance $\sigma^2$ and $\rho=\mathbb E|\xi|^3/\sigma^3$,
+$d_W\bigl(\frac{\xi_1+\dots+\xi_n}{\sigma\sqrt n},Z\bigr)\le\frac{3\rho}{\sqrt n}$.
+\end{theorem}
+\begin{proof}
+Let $h$ be $C^1$ with $\|h'\|\le1$ and $f$ the solution of Lemma~\ref{lem:steinsol}; by~\eqref{eq:steinid} we must bound $\mathbb E[f'(W)-Wf(W)]$. Let
+$\sigma_i^2=\mathbb EX_i^2$ and $W^{(i)}=W-X_i$, which is independent of $X_i$. Since $\mathbb EX_i=0$,
+\[
+\mathbb E\,X_if(W)=\mathbb E\,X_i\bigl(f(W)-f(W^{(i)})\bigr)=\mathbb E\Bigl[X_i^2\int_0^1f'\bigl(W^{(i)}+tX_i\bigr)\dd t\Bigr].
+\]
+Sum over $i$, and write $\mathbb Ef'(W)=\sum_i\sigma_i^2\mathbb Ef'(W)$ and $\mathbb E\,X_i^2f'(W^{(i)})=\sigma_i^2\mathbb Ef'(W^{(i)})$ by independence:
+\[
+\begin{aligned}
+\mathbb E\bigl[f'(W)-Wf(W)\bigr]&=\sum_i\sigma_i^2\,\mathbb E\bigl[f'(W)-f'(W^{(i)})\bigr]\\
+&\quad-\sum_i\mathbb E\Bigl[X_i^2\int_0^1\bigl(f'(W^{(i)}+tX_i)-f'(W^{(i)})\bigr)\dd t\Bigr].
+\end{aligned}
+\]
+The first sum is at most $\|f''\|\sum_i\sigma_i^2\mathbb E|X_i|$ in absolute value, and the second at most $\|f''\|\sum_i\mathbb E|X_i|^3\int_0^1t\dd t$. By
+Jensen's inequality $\sigma_i^2\le(\mathbb E|X_i|^3)^{2/3}$ and $\mathbb E|X_i|\le(\mathbb E|X_i|^3)^{1/3}$, so $\sigma_i^2\mathbb E|X_i|\le\mathbb E|X_i|^3$. With $\|f''\|\le2$
+the total is at most $2\sum\mathbb E|X_i|^3+\sum\mathbb E|X_i|^3$. The i.i.d.\ case is $X_i=\xi_i/(\sigma\sqrt n)$.
+\end{proof}
+
+The order $n^{-1/2}$ is right: for fair $\pm1$ steps the lattice forces $d_W\ge\frac1{2\sqrt n}-O(\frac1n)$ (Exercise~\ref{ex:latticedw}). Through
+Proposition~\ref{prop:dkdw} the theorem only gives $d_K=O(n^{-1/4})$, worse than Berry--Esseen (Theorem~\ref{thm:berryesseen}); Stein's method can recover
+$n^{-1/2}$ for $d_K$ too, with a ``concentration inequality'' that is more delicate (Chen, Goldstein and Shao, Chapter~3). The point of the proof above is
+different: it used independence in exactly one place, to write $\mathbb EX_if(W^{(i)})=0$ and $\mathbb EX_i^2f'(W^{(i)})=\sigma_i^2\mathbb Ef'(W^{(i)})$. Any structure
+that gives approximate versions of these two facts gives a CLT with an error bound.
+
+\section{Exchangeable pairs}
+
+Stein's own device for dependence: build a second copy $W'$ of $W$ by a small random change, so that the pair $(W,W')$ is \emph{exchangeable},
+$(W,W')\overset{\mathrm d}=(W',W)$.
+
+\begin{theorem}[exchangeable pairs]\label{thm:exch}
+Let $(W,W')$ be exchangeable with $\mathbb EW^2=1$, let $\mathcal G$ be a $\sigma$-field for which $W$ is measurable, and suppose that for some $\lambda>0$
+\[
+\mathbb E[W'-W\mid\mathcal G]=-\lambda W .
+\]
+Then, with $D=W'-W$,
+\[
+d_W(W,Z)\le2\,\mathbb E\Bigl|1-\frac{\mathbb E[D^2\mid\mathcal G]}{2\lambda}\Bigr|+\frac{\mathbb E|D|^3}{2\lambda}.
+\]
+\end{theorem}
+\begin{proof}
+Let $f$ be bounded, $C^2$, with $f',f''$ bounded. By exchangeability, the antisymmetric function $(w,w')\mapsto(w'-w)(f(w')+f(w))$ has mean $0$ at $(W,W')$.
+Writing $f(W')+f(W)=(f(W')-f(W))+2f(W)$ and using $\mathbb E[Df(W)]=\mathbb E\bigl[f(W)\mathbb E[D\mid\mathcal G]\bigr]=-\lambda\mathbb E\,Wf(W)$,
+\[
+\mathbb E\,Wf(W)=\frac1{2\lambda}\mathbb E\bigl[D\bigl(f(W')-f(W)\bigr)\bigr]=\frac1{2\lambda}\mathbb E\bigl[D^2f'(W)\bigr]+\frac1{2\lambda}\mathbb E[DR],
+\]
+where $R=f(W')-f(W)-Df'(W)$ satisfies $|R|\le\frac12\|f''\|D^2$. Conditioning the first term on $\mathcal G$,
+\[
+\mathbb E\bigl[f'(W)-Wf(W)\bigr]=\mathbb E\Bigl[f'(W)\Bigl(1-\frac{\mathbb E[D^2\mid\mathcal G]}{2\lambda}\Bigr)\Bigr]-\frac1{2\lambda}\mathbb E[DR],
+\]
+which is at most $\|f'\|\,\mathbb E|1-\mathbb E[D^2\mid\mathcal G]/(2\lambda)|+\|f''\|\,\mathbb E|D|^3/(4\lambda)$ in absolute value. Apply this to the solution of Lemma~\ref{lem:steinsol}
+for $C^1$ functions $h$ with $\|h'\|\le1$, so that $\|f'\|,\|f''\|\le2$. (All expectations are finite if $\mathbb E|D|^3<\infty$; otherwise there is nothing to prove.)
+\end{proof}
+
+Two sanity checks. Taking expectations in the hypothesis gives $\mathbb EW=0$; and $\mathbb E\,WW'=(1-\lambda)\mathbb EW^2$, so $\mathbb ED^2=2\lambda$: the quantity
+$\mathbb E[D^2\mid\mathcal G]/(2\lambda)$ always has mean $1$, and the first term of the bound measures how much it fluctuates.
+
+\begin{example}[sampling without replacement]\label{ex:hypergeom}
+An urn holds $N$ balls, $K$ of them white; we draw $m$ without replacement and count the white ones, $S$. This is the situation of every opinion poll, and of
+every audit that checks $m$ invoices out of $N$. With $p=K/N$, $\mathbb ES=mp$ and $\sigma^2=\operatorname{Var}S=mp(1-p)\frac{N-m}{N-1}$. Then
+\[
+d_W\Bigl(\frac{S-mp}\sigma,Z\Bigr)\le\frac2\sigma+\frac4N .
+\]
+\end{example}
+\begin{proof}
+Make the exchangeable pair by swapping a uniformly chosen ball of the sample with a uniformly chosen ball outside it. This move from one $m$-subset to
+another has the same probability $\frac1{m(N-m)}$ as the reverse move, and the sample is uniform, so (sample, new sample) is exchangeable, and so is $(S,S')$.
+The count changes by $+1$ if we discard a black ball and bring in a white one, by $-1$ in the opposite case:
+\[
+P(S'-S=1\mid S)=\frac{(m-S)(K-S)}{m(N-m)},\qquad P(S'-S=-1\mid S)=\frac{S(N-m-K+S)}{m(N-m)} .
+\]
+Subtracting, the $S^2$ and $mS$ and $KS$ terms cancel: $\mathbb E[S'-S\mid S]=\frac{mK-NS}{m(N-m)}=-\frac N{m(N-m)}(S-mp)$. So
+$W=(S-mp)/\sigma$ satisfies the hypothesis with $\mathcal G=\sigma(S)$ and $\lambda=\frac N{m(N-m)}$. Adding instead of subtracting, and writing $S=mp+x$,
+\[
+m(N-m)\,\mathbb E[(S'-S)^2\mid S]=mK+S(N-2m-2K)+2S^2=c+N(1-2a)(1-2p)\,x+2(x^2-\sigma^2),
+\]
+with $a=\frac mN$ and a constant $c$; the constant is whatever makes the mean right, since $\mathbb E[D^2]=2\lambda$. As $D^2=(S'-S)^2/\sigma^2$ and $2\lambda m(N-m)\sigma^2=2N\sigma^2$,
+\[
+\mathbb E\Bigl|1-\frac{\mathbb E[D^2\mid S]}{2\lambda}\Bigr|=\frac{\mathbb E\bigl|N(1-2a)(1-2p)x+2(x^2-\sigma^2)\bigr|}{2N\sigma^2}\le\frac{N\sigma+4\sigma^2}{2N\sigma^2}=\frac1{2\sigma}+\frac2N,
+\]
+using $\mathbb E|x|\le\sigma$ and $\mathbb E|x^2-\sigma^2|\le2\sigma^2$. Finally $|D|$ is $0$ or $\frac1\sigma$, so $\mathbb E|D|^3=\frac1\sigma\mathbb ED^2=\frac{2\lambda}\sigma$.
+Theorem~\ref{thm:exch} gives $2\bigl(\frac1{2\sigma}+\frac2N\bigr)+\frac1\sigma$.
+\end{proof}
+
+The bound depends on $m$ and $N$ only through $\sigma$, and does not care whether $m$ is a small or large fraction of $N$, the case where binomial
+approximations fail. For a poll of $m=1000$ out of $N=10^4$ with $p=\frac12$, $\sigma\approx15$ and the bound is $0.13$, while the true distance, computed in the
+notebook, is $0.017$. Stein bounds are honest, not tight.
+
+\section{The Chen--Stein method}
+
+The Poisson law has its own integration by parts. If $W\sim$ Poisson$(\lambda)$ and $g$ is bounded on $\N$, then
+\[
+\mathbb E\,Wg(W)=\sum_{k\ge1}kg(k)e^{-\lambda}\frac{\lambda^k}{k!}=\lambda\sum_{k\ge1}g(k)e^{-\lambda}\frac{\lambda^{k-1}}{(k-1)!}=\lambda\,\mathbb Eg(W+1),
+\]
+and conversely this identity characterizes the Poisson law (Exercise~\ref{ex:poissonchar}). Write $\pi_k=e^{-\lambda}\frac{\lambda^k}{k!}$, $\mathrm{Po}(A)=\sum_{k\in A}\pi_k$ and
+$U_k=\{0,1,\dots,k\}$. The Stein equation for a set $A\subseteq\N$ is
+\begin{equation}\label{eq:chensteineq}
+\lambda g(k+1)-kg(k)=\mathbf 1_A(k)-\mathrm{Po}(A),\qquad k\ge0 .
+\end{equation}
+Multiply by $\pi_k$ and use $k\pi_k=\lambda\pi_{k-1}$: the left side becomes $\lambda\bigl(\pi_kg(k+1)-\pi_{k-1}g(k)\bigr)$, which telescopes. With $g(0)=0$ the
+unique solution is, for $k\ge0$,
+\begin{equation}\label{eq:chensteinsol}
+g_A(k+1)=\frac{\mathrm{Po}(A\cap U_k)-\mathrm{Po}(A)\,\mathrm{Po}(U_k)}{\lambda\pi_k} .
+\end{equation}
+
+\begin{lemma}[the Poisson Stein solution]\label{lem:chensteinsol}
+For every $A\subseteq\N$, $\displaystyle\sup_{k\ge0}|g_A(k+1)-g_A(k)|\le\frac{1-e^{-\lambda}}\lambda\le\min\Bigl(1,\frac1\lambda\Bigr)$.
+\end{lemma}
+\begin{proof}
+Write $\Delta g(k)=g(k+1)-g(k)$. The solution is linear in $\mathbf 1_A$, so $g_A=\sum_{j\in A}g_j$ with $g_j=g_{\{j\}}$, and $\sum_{j\ge0}g_j=g_\N=0$ because
+the right side of~\eqref{eq:chensteineq} vanishes for $A=\N$.
+
+\emph{Signs.} From~\eqref{eq:chensteinsol}, for $k\ge j$,
+\[
+g_j(k+1)=\frac{\pi_j\bigl(1-\mathrm{Po}(U_k)\bigr)}{\lambda\pi_k}=\pi_j\sum_{i>k}\frac{k!\,\lambda^{i-k-1}}{i!}=\pi_j\sum_{r\ge0}\frac{k!\,\lambda^r}{(k+1+r)!},
+\]
+positive and decreasing in $k$; and for $k<j$,
+\[
+g_j(k+1)=-\frac{\pi_j\mathrm{Po}(U_k)}{\lambda\pi_k}=-\pi_j\sum_{r=0}^k\frac{k(k-1)\cdots(k-r+1)}{\lambda^{r+1}},
+\]
+negative and decreasing in $k$, as is $g_j(0)=0\ge g_j(1)$. So $g_j$ decreases on $\{0,\dots,j\}$ and on $\{j+1,j+2,\dots\}$: $\Delta g_j(k)\le0$ for every $k\ne j$.
+
+\emph{Reduction.} Fix $k$. If $k\in A$, then $\Delta g_A(k)=\sum_{j\in A}\Delta g_j(k)\le\Delta g_k(k)$, dropping the non-positive terms $j\ne k$; if $k\notin A$,
+$\Delta g_A(k)\le0$. Applying this to $A^c$ and using $g_A=-g_{A^c}$ gives the lower bound $\Delta g_A(k)\ge-\Delta g_k(k)$. So $|\Delta g_A(k)|\le\Delta g_k(k)$.
+
+\emph{The value.} By the two formulas, $g_k(k+1)=\frac1\lambda\sum_{i>k}\pi_i$ and $g_k(k)=-\frac1k\sum_{i<k}\pi_i$ (and $g_0(0)=0$). Since $\frac1k\le\frac1{i+1}$ for $i<k$,
+\[
+\Delta g_k(k)=e^{-\lambda}\Bigl(\sum_{i>k}\frac{\lambda^{i-1}}{i!}+\sum_{i<k}\frac{\lambda^i}{i!\,k}\Bigr)\le e^{-\lambda}\Bigl(\sum_{i>k}\frac{\lambda^{i-1}}{i!}+\sum_{i=1}^{k}\frac{\lambda^{i-1}}{i!}\Bigr)
+=e^{-\lambda}\frac{e^\lambda-1}\lambda .
+\]
+Finally $1-e^{-\lambda}\le\min(1,\lambda)$.
+\end{proof}
+
+Now let $W=\sum_{\alpha\in\Gamma}I_\alpha$ be a finite sum of indicators, $p_\alpha=\mathbb EI_\alpha$, $\lambda=\sum p_\alpha=\mathbb EW$. Suppose each $\alpha$ has a
+\emph{neighbourhood} $B_\alpha\ni\alpha$ such that $I_\alpha$ is independent of the family $(I_\beta)_{\beta\notin B_\alpha}$. Put
+\[
+b_1=\sum_{\alpha\in\Gamma}\sum_{\beta\in B_\alpha}p_\alpha p_\beta,\qquad b_2=\sum_{\alpha\in\Gamma}\sum_{\beta\in B_\alpha\setminus\{\alpha\}}\mathbb E[I_\alpha I_\beta].
+\]
+$b_1$ is small when the neighbourhoods are small; $b_2$ is small when neighbouring events rarely happen together, so that occurrences do not come in clumps.
+
+\begin{theorem}[Chen--Stein, local dependence]\label{thm:chenstein}
+Under these assumptions, $\displaystyle\|\mathcal L(W)-\text{Poisson}(\lambda)\|\le(b_1+b_2)\frac{1-e^{-\lambda}}\lambda$.
+\end{theorem}
+\begin{proof}
+Fix $A$ and let $g=g_A$; by~\eqref{eq:chensteineq} at $k=W$, $P(W\in A)-\mathrm{Po}(A)=\mathbb E[\lambda g(W+1)-Wg(W)]=\sum_\alpha\bigl(p_\alpha\mathbb Eg(W+1)-\mathbb E\,I_\alpha g(W)\bigr)$.
+Fix $\alpha$ and split $W=I_\alpha+Z_\alpha+V_\alpha$ with $Z_\alpha=\sum_{\beta\in B_\alpha\setminus\{\alpha\}}I_\beta$ and $V_\alpha=\sum_{\beta\notin B_\alpha}I_\beta$, independent of $I_\alpha$.
+On $\{I_\alpha=1\}$, $W=1+Z_\alpha+V_\alpha$, so
+\[
+\mathbb E\,I_\alpha g(W)=\mathbb E\,I_\alpha g(V_\alpha+1)+\mathbb E\bigl[I_\alpha\bigl(g(1+Z_\alpha+V_\alpha)-g(1+V_\alpha)\bigr)\bigr],
+\]
+and $\mathbb E\,I_\alpha g(V_\alpha+1)=p_\alpha\mathbb Eg(V_\alpha+1)$ by independence. Hence
+\[
+p_\alpha\mathbb Eg(W+1)-\mathbb E\,I_\alpha g(W)=p_\alpha\mathbb E\bigl[g(W+1)-g(V_\alpha+1)\bigr]-\mathbb E\bigl[I_\alpha\bigl(g(1+Z_\alpha+V_\alpha)-g(1+V_\alpha)\bigr)\bigr].
+\]
+A difference $g(a+b)-g(a)$ with $b\ge0$ is a sum of $b$ increments, so it is at most $b\sup|\Delta g|$. Here $W-V_\alpha=\sum_{\beta\in B_\alpha}I_\beta$ and the second
+difference is at most $Z_\alpha\sup|\Delta g|$, so the right side is at most $\sup|\Delta g|\bigl(\sum_{\beta\in B_\alpha}p_\alpha p_\beta+\mathbb E\,I_\alpha Z_\alpha\bigr)$.
+Sum over $\alpha$, use Lemma~\ref{lem:chensteinsol}, and take the supremum over $A$.
+\end{proof}
+
+With independent indicators take $B_\alpha=\{\alpha\}$: $b_2=0$, $b_1=\sum p_\alpha^2$, and the bound is $\frac{1-e^{-\lambda}}\lambda\sum p_\alpha^2$, which improves Le Cam's
+inequality by the factor $\min(1,\frac1\lambda)$, as promised in Tome~3. For binomial$(n,\frac\lambda n)$ it reads $\frac{\lambda(1-e^{-\lambda})}n\le\frac\lambda n$ instead of $\frac{\lambda^2}n$.
+
+\section{Birthdays, hashes and triangles}
+
+\begin{example}[birthdays and hash collisions]\label{ex:hashcs}
+Hash $n$ keys independently and uniformly into $d$ buckets, and let $W$ be the number of colliding pairs. Then $\lambda=\binom n2/d$ and
+\[
+\Bigl|P(\text{no collision})-e^{-\lambda}\Bigr|\le\|\mathcal L(W)-\text{Poisson}(\lambda)\|\le\frac{(4n-7)(1-e^{-\lambda})}d .
+\]
+\end{example}
+\begin{proof}
+Index by pairs $\alpha=\{i,j\}$, $I_\alpha=\mathbf 1\{h(i)=h(j)\}$, $p_\alpha=\frac1d$. $I_{\{i,j\}}$ is a function of $h(i),h(j)$, so it is independent of the
+indicators of pairs disjoint from $\{i,j\}$; take $B_\alpha$ to be the $2(n-2)+1=2n-3$ pairs meeting $\alpha$. For $\beta\ne\alpha$ in $B_\alpha$, say $\alpha=\{i,j\}$
+and $\beta=\{i,k\}$, $P(h(i)=h(j)=h(k))=\frac1{d^2}$: the collision indicators are pairwise independent even when they overlap. So
+$b_1=\binom n2(2n-3)\frac1{d^2}$, $b_2=\binom n2\,2(n-2)\frac1{d^2}$, and $(b_1+b_2)/\lambda=\frac{4n-7}d$.
+\end{proof}
+
+For $23$ people and $365$ days, $\lambda=0.693$ and $e^{-\lambda}=0.500$, while the exact probability of no shared birthday is $0.493$ (Tome~3, Proposition~1.8);
+the bound $0.12$ is true but loose (Figure~\ref{fig:birthday}). The bound shines where the exact product is unpleasant and the stakes are real. With $32$-bit identifiers
+($d=2^{32}$) and $n=10^5$ objects, $\lambda=1.164$: the probability that all identifiers are distinct is $e^{-1.164}=0.312$ up to an error at most
+$6.5\times10^{-5}$. With $77\,163$ objects the probability of a collision is $\frac12$, within $4\times10^{-5}$. A $32$-bit identifier is not unique for a hundred
+thousand objects, and the Chen--Stein bound says so with a certificate.
+
+\begin{figure}[ht]
+\centering\fig{ch06-birthday}
+\caption{The birthday problem with $d=365$. Exact probability of no shared birthday among $n$ people (dots), the Poisson approximation $e^{-\binom n2/365}$ (line),
+and the Chen--Stein band of half-width $(4n-7)(1-e^{-\lambda})/365$ (shaded). The true error never exceeds $0.011$; the band is wider, but it is a proof.}
+\label{fig:birthday}
+\end{figure}
+
+\begin{example}[triangles in a sparse random graph]\label{ex:triangles}
+In the random graph $G(n,p)$ of Tome~3 (each of the $\binom n2$ edges present independently with probability $p$) with $p=c/n$, let $T$ be the number of
+triangles. Then $\|\mathcal L(T)-\text{Poisson}(\lambda_n)\|\le\frac{c^5}{2n}+\frac{c^6}{2n^2}$ with $\lambda_n=\binom n3p^3\to\frac{c^3}6$. In particular
+$P(G(n,c/n)\text{ has no triangle})\to e^{-c^3/6}$.
+\end{example}
+\begin{proof}
+Index by triples $\alpha$ of vertices, and let $I_\alpha$ indicate that the three edges of $\alpha$ are present, so $p_\alpha=p^3$. Triples that share at most one vertex share
+no edge, so $I_\alpha$ is independent of the indicators of those triples; take $B_\alpha$ to be $\alpha$ and the $3(n-3)$ triples sharing an edge with $\alpha$.
+Two triangles sharing an edge use $5$ edges, so
+\[
+\begin{gathered}b_1=\binom n3\bigl(3n-8\bigr)p^6\le\frac{n^3}6\cdot3n\cdot\frac{c^6}{n^6},\qq b_2=\binom n3\,3(n-3)\,p^5\le\frac{n^3}6\cdot3n\cdot\frac{c^5}{n^5} .\end{gathered}
+\]
+Since $\frac{1-e^{-\lambda}}\lambda\le1$, Theorem~\ref{thm:chenstein} gives the bound, and $\lambda_n=\frac{n(n-1)(n-2)}6\frac{c^3}{n^3}\to\frac{c^3}6$.
+\end{proof}
+
+In the dense regime $p$ fixed, $\lambda\to\infty$ and the triangle count is approximately normal instead; the bound of Theorem~\ref{thm:chenstein} then grows, as it
+should, since a Poisson law with large mean is itself close to normal and is no longer the right description of the fluctuations.
+
+\begin{think}
+The number of fixed points of a uniform random permutation tends to Poisson$(1)$ (Tome~3, Theorem~2.13). Write it as $\sum_i\mathbf 1\{\sigma(i)=i\}$. Why does
+Theorem~\ref{thm:chenstein} not apply directly? The indicators are only weakly dependent, but none is independent of the others. Arratia, Goldstein and
+Gordon's paper, and Barbour, Holst and Janson's book, handle such cases with \emph{couplings} instead of neighbourhoods: build, next to $W$, a variable with the
+law of $W-1$ given $I_\alpha=1$, and measure how far it is from $W-I_\alpha$.
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:gaussmoments}
+Use Lemma~\ref{lem:stein} to compute $\mathbb EZ^{2k}$ for $Z\sim N(0,1)$, and show that $X\sim N(\mu,s^2)$ if and only if $\mathbb E(X-\mu)f(X)=s^2\mathbb Ef'(X)$ for all
+bounded $C^1$ functions $f$ with $f'$ bounded.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:dwlaw}
+Show that $d_W(X_n,Y)\to0$ implies $X_n\Rightarrow Y$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:poissonchar}
+Let $W$ take values in $\N$ with $\mathbb EW<\infty$. Show that $W\sim$ Poisson$(\lambda)$ if and only if $\mathbb E\,Wg(W)=\lambda\mathbb Eg(W+1)$ for every bounded $g$. Deduce the
+factorial moments $\mathbb E\,W(W-1)\cdots(W-r+1)=\lambda^r$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nearbirthday}
+On a circular calendar of $d=365$ days, call two birthdays \emph{close} if they are equal or adjacent. Show that the number $W$ of close pairs among $n$ people
+satisfies $\|\mathcal L(W)-\text{Poisson}(3\binom n2/d)\|\le\frac{3(4n-7)}d$, and estimate the probability that $14$ people have no close pair.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:headruns}
+Flip $n+r$ fair coins $X_0,X_1,\dots,X_{n+r-1}$, and for $1\le i\le n$ let $I_i=\mathbf 1\{X_{i-1}=\mathrm T,\ X_i=\dots=X_{i+r-1}=\mathrm H\}$: a run of at least $r$ heads starts at $i$.
+Show that $W=\sum_iI_i$ satisfies $\|\mathcal L(W)-\text{Poisson}(n2^{-r-1})\|\le(2r+1)2^{-r-1}$. For $n=10^6$, which $r$ makes $P(W=0)$ closest to $\frac12$, and how good is the bound there?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:latticedw}
+Let $W_n=(\varepsilon_1+\dots+\varepsilon_n)/\sqrt n$ with $\varepsilon_i=\pm1$ fair and independent. Show that $d_W(W_n,Z)\ge\frac1{2\sqrt n}-\frac{4\varphi(0)}n$, so the order of
+Theorem~\ref{thm:steinclt} cannot be improved.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:exchclt}
+In the setting of Theorem~\ref{thm:steinclt}, let $X_1',\dots,X_n'$ be an independent copy of $X_1,\dots,X_n$, let $J$ be uniform on $\{1,\dots,n\}$ and independent of
+everything, and $W'=W-X_J+X_J'$. Show that $(W,W')$ is exchangeable with $\mathbb E[W'-W\mid X_1,\dots,X_n]=-\frac Wn$, and deduce from Theorem~\ref{thm:exch} that
+$d_W(W,Z)\le\sqrt{\sum_i\mathbb EX_i^4}+4\sum_i\mathbb E|X_i|^3$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:gaussmoments}
+Take $f(w)=w^{2k-1}$, after checking that Lemma~\ref{lem:stein}(i) extends to polynomials. For the second part, look at $(X-\mu)/s$.
+\end{hint}
+\begin{hint}{ex:dwlaw}
+Approximate the bounded continuous test functions of convergence in law by Lipschitz ones; or use $h(x)=\cos tx$ and $\sin tx$, which are $|t|$-Lipschitz.
+\end{hint}
+\begin{hint}{ex:poissonchar}
+For the converse take $g=\mathbf 1_{\{k\}}$. For the factorial moments take $g(w)=w(w-1)\cdots(w-r+2)$, after a truncation argument, or compute directly.
+\end{hint}
+\begin{hint}{ex:nearbirthday}
+Copy Example~\ref{ex:hashcs}. Given person $i$'s birthday, the events ``$j$ close to $i$'' and ``$k$ close to $i$'' are independent.
+\end{hint}
+\begin{hint}{ex:headruns}
+Two runs cannot \emph{start} within distance $r$ of each other: if $0<j-i\le r$ then $X_{j-1}$ would have to be both heads and tails. So $b_2=0$.
+\end{hint}
+\begin{hint}{ex:latticedw}
+$W_n$ lives on a lattice of spacing $\delta=\frac2{\sqrt n}$. Test with $h(x)=$ distance from $x$ to that lattice.
+\end{hint}
+\begin{hint}{ex:exchclt}
+Compute $\mathbb E[X_J'-X_J\mid X]$ and $\mathbb E[(X_J'-X_J)^2\mid X]$, and use Theorem~\ref{thm:exch} with $\mathcal G=\sigma(X_1,\dots,X_n)$. For the third moment, $|a-b|^3\le4(|a|^3+|b|^3)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:gaussmoments}
+\idea The identity $\mathbb E\,Zf(Z)=\mathbb Ef'(Z)$ lowers the power of $Z$ by two at the cost of a factor: a recursion for the moments.
+\writeup Lemma~\ref{lem:stein}(i) holds for any $C^1$ function $f$ of polynomial growth with $f'$ of polynomial growth: the proof only used that the boundary terms
+$f(\pm R)\varphi(\pm R)$ vanish and the integrals converge. With $f(w)=w^{2k-1}$, $\mathbb EZ^{2k}=(2k-1)\mathbb EZ^{2k-2}$, so $\mathbb EZ^{2k}=(2k-1)(2k-3)\cdots1$.
+For the second part, $X\sim N(\mu,s^2)$ if and only if $Y=(X-\mu)/s\sim N(0,1)$. Given $f$, put $f_1(y)=f(\mu+sy)$, so $f_1'(y)=sf'(\mu+sy)$; the condition
+$\mathbb E(X-\mu)f(X)=s^2\mathbb Ef'(X)$ reads $s\,\mathbb E\,Yf_1(Y)=s\,\mathbb Ef_1'(Y)$, and as $f$ runs over the bounded $C^1$ functions with bounded derivative so does $f_1$.
+Lemma~\ref{lem:stein} concludes.
+\end{solution}
+
+\begin{solution}{ex:dwlaw}
+\idea Convergence in law can be tested on characteristic functions, and $\cos tx$, $\sin tx$ are Lipschitz.
+\writeup For fixed $t$, $x\mapsto\cos tx$ and $x\mapsto\sin tx$ are $|t|$-Lipschitz, so $|\mathbb Ee^{itX_n}-\mathbb Ee^{itY}|\le2|t|\,d_W(X_n,Y)\to0$. L\'evy's continuity theorem
+(Theorem~\ref{thm:levycont}) gives $X_n\Rightarrow Y$.
+\end{solution}
+
+\begin{solution}{ex:poissonchar}
+\idea Testing the identity on indicators of single points gives a recursion between consecutive probabilities: the recursion of the Poisson law.
+\writeup The direct implication is the computation before~\eqref{eq:chensteineq}. Conversely, take $g=\mathbf 1_{\{k\}}$ with $k\ge1$: $kP(W=k)=\lambda P(W=k-1)$. So
+$P(W=k)=\frac{\lambda^k}{k!}P(W=0)$, and the probabilities add up to $1$ only if $P(W=0)=e^{-\lambda}$. For the factorial moments of $W\sim$ Poisson$(\lambda)$, compute
+directly: $\mathbb E\,W(W-1)\cdots(W-r+1)=\sum_{k\ge r}\frac{k!}{(k-r)!}e^{-\lambda}\frac{\lambda^k}{k!}=\lambda^r\sum_{k\ge r}e^{-\lambda}\frac{\lambda^{k-r}}{(k-r)!}=\lambda^r$. (The identity with
+$g(w)=w(w-1)\cdots(w-r+2)$, justified by truncating $g$ and monotone convergence, gives the same recursion $\mathbb E(W)_r=\lambda\,\mathbb E(W+1)_{r-1}$.)
+\end{solution}
+
+\begin{solution}{ex:nearbirthday}
+\idea Same neighbourhoods as for exact birthdays; overlapping pairs are again independent because they are independent given the shared person.
+\writeup For a pair $\{i,j\}$, $P(\text{close})=\frac3d$, since $j$'s birthday must be one of three days. The indicator depends only on the birthdays of $i$ and $j$, so take
+$B_\alpha$ to be the $2n-3$ pairs meeting $\alpha$. For $\alpha=\{i,j\}$, $\beta=\{i,k\}$, given $i$'s birthday the two events are independent, each of probability $\frac3d$,
+so $\mathbb E\,I_\alpha I_\beta=\frac9{d^2}$. Then $b_1+b_2=\binom n2(4n-7)\frac9{d^2}$, $\lambda=\frac{3\binom n2}d$ and the bound is $(4n-7)\frac3d(1-e^{-\lambda})\le\frac{3(4n-7)}d$.
+For $n=14$, $\lambda=\frac{273}{365}=0.748$, $e^{-\lambda}=0.473$, with the bound $0.21$ on the error. The exact value, by counting arrangements on the circle, is
+$0.463$: fourteen people suffice for even odds of two birthdays at most a day apart, against $23$ for an exact match (Diaconis and Mosteller, who credit the
+result to Abramson and Moser).
+\end{solution}
+
+\begin{solution}{ex:headruns}
+\idea Counting only the \emph{starts} of runs, marked by a tail just before, removes the clumping: a long run of heads contains many runs of $r$ heads, but only
+one start.
+\writeup $p_i=2^{-r-1}$ and $\lambda=n2^{-r-1}$. $I_i$ depends on $X_{i-1},\dots,X_{i+r-1}$, so it is independent of the $I_j$ with $|j-i|>r$; let $B_i=\{j:|j-i|\le r\}$,
+of size at most $2r+1$. If $0<j-i\le r$ then $i\le j-1\le i+r-1$, so $I_i=1$ forces $X_{j-1}=\mathrm H$ and $I_j=1$ forces $X_{j-1}=\mathrm T$: $I_iI_j=0$ and $b_2=0$.
+Then $b_1\le n(2r+1)2^{-2r-2}$, and $\frac{b_1}\lambda\le(2r+1)2^{-r-1}$. For $n=10^6$, $P(W=0)\approx e^{-\lambda}$ is closest to $\frac12$ when $\lambda=n2^{-r-1}$ is
+closest to $\log2$, that is $2^{r+1}\approx1.44\times10^6$, $r=19$, with $\lambda=0.95$, $e^{-\lambda}=0.39$ and error at most $39\cdot2^{-20}<4\times10^{-5}$.
+So a million flips contain a run of $19$ heads with probability about $0.61$, and that figure is guaranteed to within $4\times10^{-5}$.
+(Runs starting at $X_0$ are not counted; they add at most $2^{-r}$ to the probability of a long run.)
+\end{solution}
+
+\begin{solution}{ex:latticedw}
+\idea A lattice law is far from a density at the scale of the lattice: the distance-to-the-lattice function vanishes on one and averages a quarter of the
+spacing on the other.
+\writeup $W_n$ takes values in $L=\{\frac{n-2k}{\sqrt n}\}$, a subset of a lattice $L'=x_0+\delta\Z$ with $\delta=\frac2{\sqrt n}$. Let $h(x)=\operatorname{dist}(x,L')$, which is
+$1$-Lipschitz, periodic of period $\delta$, with values in $[0,\frac\delta2]$ and mean value $\frac\delta4$ over a period. Then $\mathbb Eh(W_n)=0$. On a period cell
+$C$, $\varphi$ varies by at most $\int_C|\varphi'|$, so
+\[
+\Bigl|\int_Ch\varphi-\frac\delta4\int_C\varphi\Bigr|\le\frac\delta2\cdot\delta\int_C|\varphi'| ,
+\]
+because $\int_C(h-\frac\delta4)=0$ lets us replace $\varphi$ by $\varphi-\varphi(c)$ for any $c\in C$. Summing over cells, $\mathbb Eh(Z)\ge\frac\delta4-\frac{\delta^2}2\int|\varphi'|=\frac\delta4-\delta^2\varphi(0)$,
+as $\int|\varphi'|=2\varphi(0)$. So $d_W\ge\frac1{2\sqrt n}-\frac{4\varphi(0)}n$. The upper bound of Theorem~\ref{thm:steinclt} is $\frac3{\sqrt n}$.
+\end{solution}
+
+\begin{solution}{ex:exchclt}
+\idea Replacing one coordinate by a fresh copy is a reversible move; on average it shrinks $W$ by $W/n$, which is the linear regression the theorem asks for.
+\writeup Given $J=j$, $(X,X')$ with coordinate $j$ exchanged has the same law as $(X,X')$, so $(W,W')\overset{\mathrm d}=(W',W)$. Next
+$\mathbb E[X_J'-X_J\mid X]=\frac1n\sum_j(0-X_j)=-\frac Wn$, so $\lambda=\frac1n$, and $\mathbb E[D^2\mid X]=\frac1n\sum_j(X_j^2+\sigma_j^2)$. Hence
+\[
+\mathbb E\Bigl|1-\frac{\mathbb E[D^2\mid X]}{2\lambda}\Bigr|=\frac12\mathbb E\Bigl|\sum_j(X_j^2-\sigma_j^2)\Bigr|\le\frac12\Bigl(\sum_j\operatorname{Var}X_j^2\Bigr)^{1/2}\le\frac12\Bigl(\sum_j\mathbb EX_j^4\Bigr)^{1/2},
+\]
+by Cauchy--Schwarz and independence. And $\mathbb E|D|^3=\frac1n\sum_j\mathbb E|X_j'-X_j|^3\le\frac8n\sum_j\mathbb E|X_j|^3$, so $\frac{\mathbb E|D|^3}{2\lambda}\le4\sum_j\mathbb E|X_j|^3$. Theorem~\ref{thm:exch}
+gives the bound. It is weaker than Theorem~\ref{thm:steinclt}, which needs no fourth moments, but its proof never looked inside $W$: only at how $W$ moves.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} C.~Stein, ``Inadmissibility of the usual estimator for the mean of a multivariate normal distribution'', \emph{Proc.\ Third Berkeley Symp.\ Math.\ Statist.\
+Prob.}\ 1 (1956), 197--206. C.~Stein, ``A bound for the error in the normal approximation to the distribution of a sum of dependent random variables'',
+\emph{Proc.\ Sixth Berkeley Symp.\ Math.\ Statist.\ Prob.}\ 2 (1972), 583--602 (the symposium was held in 1970). L.~H.~Y.~Chen, \emph{Poisson Approximation for Sums of Dependent Bernoulli
+Random Variables}, PhD thesis, Stanford University, 1972, advised by Stein (Mathematics Genealogy Project), and ``Poisson approximation for dependent trials'',
+\emph{Ann.\ Probab.}\ 3 (1975), 534--545. R.~Arratia, L.~Goldstein and L.~Gordon, ``Two moments suffice for Poisson approximations: the Chen--Stein method'',
+\emph{Ann.\ Probab.}\ 17 (1989), 9--25. L.~H.~Y.~Chen, ``Stein's method of normal approximation: some recollections and reflections'', arXiv:2104.08302 (2021),
+for Stein's discovery of the method in the words of his student.
+\item C.~Stein, \emph{Approximate Computation of Expectations}, IMS Lecture Notes--Monograph Series~7, 1986. The method by its author.
+\item L.~H.~Y.~Chen, L.~Goldstein and Q.-M.~Shao, \emph{Normal Approximation by Stein's Method}, Springer, 2011. Lemma~2.4 has the sharp bounds on the solution;
+Chapter~3 gets Berry--Esseen with the optimal rate.
+\item A.~D.~Barbour, L.~Holst and S.~Janson, \emph{Poisson Approximation}, Oxford University Press, 1992. Lemma~1.1.1 is Lemma~\ref{lem:chensteinsol}; the book treats
+couplings, random graphs and much more.
+\item N.~Ross, ``Fundamentals of Stein's method'', \emph{Probab.\ Surveys} 8 (2011), 210--293. The best place to start.
+\item P.~Diaconis and F.~Mosteller, ``Methods for studying coincidences'', \emph{J.\ Amer.\ Statist.\ Assoc.}\ 84 (1989), 853--861. Birthdays, near-birthdays and why
+coincidences are not surprising.
+\end{itemize}
