@@ -1,0 +1,536 @@
+\chapter{Number-Theoretic Algorithms}\label{ch:numbertheory}
+
+\begin{center}\itshape
+To know that a number is composite, it is enough to be lucky once;\\
+to know its factors, luck is not enough;\\
+and between these two facts lies most of modern cryptography.\\
+\upshape(the asymmetry of arithmetic, in our words)
+\end{center}
+
+At the beginning of August 2002 a nine-page paper with a four-word title, \emph{PRIMES is in P}, began to circulate from the Indian Institute of Technology in Kanpur. Its authors were Manindra Agrawal, a professor of
+computer science, and two of his students, Neeraj Kayal and Nitin Saxena; the work had grown out of their undergraduate research project. The claim was startling. Since Gauss, who had called the problem of distinguishing primes from composites and of factoring the composites one of the most
+important and useful in arithmetic, mathematicians had found fast primality tests that used a coin, fast tests that assumed the generalised Riemann hypothesis, and unconditional tests that were almost but not quite polynomial. The Kanpur paper gave a test that was deterministic, unconditional and polynomial, and
+its proof used nothing beyond the arithmetic of finite fields taught in a first algebra course. It appeared in the \emph{Annals of Mathematics} in 2004, and in 2006 its authors received the G\"odel Prize.
+
+This chapter tells the story of that test, from its ancestors to its proof. We start with the basic operations: powers, inverses and the Chinese remainder theorem, done fast and counted in bits. Then square roots modulo a prime, by two
+algorithms from around 1900. Then primality: Fermat's test and the Carmichael numbers that fool it, the Miller--Rabin test that nobody can fool more than one time in four, and the AKS test, proved in full. The chapter ends on the other side of the
+asymmetry, with factoring, where the best algorithms are much slower and the analysis of the simplest one, Pollard's rho, is still a heuristic.
+
+The number theory comes from Tome~1: Bézout's identity and Lamé's theorem (Theorems~1.4 and~1.8), Euler's theorem and the Chinese remainder theorem (Theorems~3.3 and~3.5), primitive roots (Theorems~5.3 and~5.5), and the symbols of Legendre and Jacobi (Theorem~6.2 and Proposition~6.8).
+Finite fields are those of Tome~2, Chapter~9. Throughout, an integer $n$ has $k=\lfloor\log_2n\rfloor+1$ bits, and we count bit operations with schoolbook arithmetic: adding $k$-bit numbers costs $O(k)$, and multiplying them or dividing with remainder costs $O(k^2)$. With the fast multiplication of
+Chapter~\ref{ch:algebraic} every $k^2$ below can be replaced by $\mathsf M(k)=O(k\log k)$, up to the logarithmic factors that division costs.
+
+\begin{think}
+Is $n=1\,000\,000\,007$ prime? Trial division by all odd numbers up to $\sqrt n\approx31623$ takes some sixteen thousand divisions, which a computer does instantly. Now take a number of $600$ digits. Trial division would need about $10^{300}$ divisions, far more than the number of atoms in the universe.
+Yet your web browser decides the primality of numbers of this size every day, in a fraction of a second. What could it be doing?
+\end{think}
+
+\section{Arithmetic modulo $n$}\label{sec:modarith}
+
+Almost every algorithm of this chapter is built from three operations: raising to a power modulo $n$, inverting modulo $n$, and reassembling a number from its residues.
+
+\begin{proposition}\label{prop:modops}
+Let $n$ have $k$ bits.
+\begin{enumerate}
+\item For $0\le a<n$ and $e\ge1$, the residue $a^e\bmod n$ can be computed with at most $2\lfloor\log_2e\rfloor$ multiplications modulo $n$, that is $O(k^2\log e)$ bit operations.
+\item For $a>b\ge1$, the extended Euclidean algorithm computes $g=\gcd(a,b)$ and integers $u,v$ with $ua+vb=g$ and $|u|\le b$, with $O(\ell(a)\ell(b))$ bit operations, where $\ell$ is the number of bits. In particular the inverse of a unit modulo $n$ costs $O(k^2)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) This is repeated squaring (Section~\ref{sec:recurrences}) in the monoid $\mathbb Z/n\mathbb Z$, each product being reduced modulo $n$ at once, so that all numbers stay below $n$.
+
+(2) Write $r_{-1}=a$, $r_0=b$ and $r_{i+1}=r_{i-1}-q_ir_i$ with $0\le r_{i+1}<r_i$, until $r_{m+1}=0$, so $g=r_m$. Define $s_{-1}=1$, $s_0=0$ and $s_{i+1}=s_{i-1}-q_is_i$; by induction $r_i\equiv s_ia\pmod b$, so $r_i=s_ia+t_ib$ for an integer $t_i$, and we take $u=s_m$ and $v=(g-ua)/b$, an exact division.
+The $s_i$ alternate in sign from $s_1=1$ on (induction: $s_{i+1}=s_{i-1}-q_is_i$ with $s_{i-1}$ of the sign opposite to $s_i$, and $q_i\ge1$), so $|s_{i+1}|=|s_{i-1}|+q_i|s_i|$ for $i\ge0$. Hence
+\[
+|s_{i+1}|r_i+|s_i|r_{i+1}=(|s_{i-1}|+q_i|s_i|)r_i+|s_i|(r_{i-1}-q_ir_i)=|s_i|r_{i-1}+|s_{i-1}|r_i,
+\]
+and going down to $i=-1$ this common value is $|s_0|r_{-1}+|s_{-1}|r_0=b$. So $|s_i|\le b/r_{i-1}\le b$ for all $i$. Computing $q_is_i$ costs $O(\ell(q_i)\ell(b))$, and since $q_1q_2\cdots q_m\le a$ (each $r_{i-1}\ge q_ir_i$), $\sum_i\ell(q_i)\le m+\log_2a$, where $m=O(\ell(b))$ by Lamé's theorem (Tome~1, Theorem~1.8).
+So the cofactors cost $O(\ell(a)\ell(b))$, as does Euclid's algorithm itself (Proposition~\ref{prop:euclidbits}) and the final computation of $v$. For the inverse of $a$ modulo $n$, run the algorithm on $(n,a\bmod n)$ and read off the cofactor of $a\bmod n$, which is $v$.
+\end{proof}
+
+The \emph{Chinese remainder theorem} (Tome~1, Theorem~3.5) says that for pairwise coprime moduli $m_1,\dots,m_r$ with product $M$, reduction is a bijection from $\mathbb Z/M\mathbb Z$ onto $\prod_i\mathbb Z/m_i\mathbb Z$. Going back is an algorithm.
+
+\begin{proposition}[Chinese remaindering]\label{prop:crt}
+Given pairwise coprime $m_1,\dots,m_r\ge2$ with product $M$, and residues $c_i\bmod m_i$, the unique $x\in[0,M)$ with $x\equiv c_i\pmod{m_i}$ for all $i$ is
+\[
+x=\Bigl(\sum_{i=1}^rc_iM_iv_i\Bigr)\bmod M,\qquad M_i=M/m_i,\quad v_i=M_i^{-1}\bmod m_i,
+\]
+and it can be computed with $O((\log M)^2)$ bit operations.
+\end{proposition}
+\begin{proof}
+For $j\ne i$, $m_j\mid M_i$; and $M_iv_i\equiv1\pmod{m_i}$. So the sum is congruent to $c_iM_iv_i\equiv c_i$ modulo $m_i$ for every $i$, and uniqueness is the injectivity in the Chinese remainder theorem. Write $\lambda=\log_2M$ and $\lambda_i=\log_2m_i$, so $\sum\lambda_i=\lambda$. Computing $M$ by successive products costs $O(\lambda\sum_i\lambda_i)=O(\lambda^2)$, and each
+$M_i=M/m_i$ costs $O(\lambda\lambda_i)$, in total $O(\lambda^2)$. Reducing $M_i$ modulo $m_i$ costs $O(\lambda\lambda_i)$, and inverting it $O(\lambda_i^2)$ (Proposition~\ref{prop:modops}). The products $c_iv_iM_i$ cost $O(\lambda_i\lambda)$ each, and the sum, of $r\le\lambda$ numbers below $M^2$, then reduced modulo $M$, costs $O(\lambda^2)$. Altogether $O(\lambda^2)$.
+\end{proof}
+
+With the subproduct trees of Section~\ref{sec:multipoint}, adapted to integers, the same reconstruction takes $O(\mathsf M(\lambda)\log r)$ bit operations; for most purposes the quadratic version is enough. Chinese remaindering is the standard trick to keep intermediate numbers small: to compute an integer that is known to be at most $B$ in absolute value,
+such as the determinant of an integer matrix, compute it modulo many small primes, where the arithmetic is cheap and exact, and reconstruct it once the product of the primes exceeds $2B$ (Exercise~\ref{ex:crtdet}).
+
+\section{Square roots modulo a prime}\label{sec:sqrtmodp}
+
+Let $p$ be an odd prime. By Euler's criterion (Tome~1, Theorem~6.2), a unit $a$ is a square modulo $p$ if and only if $a^{(p-1)/2}\equiv1$, and this costs one exponentiation. Finding the square root is harder. When $p\equiv3\pmod4$ there is a formula: $x=a^{(p+1)/4}$ satisfies $x^2=a^{(p+1)/2}=a\cdot a^{(p-1)/2}=a$. For $p\equiv1\pmod4$ no formula of this kind is known, and
+both algorithms below need, at one point, a number that is \emph{not} a square. Half of the units are nonsquares, so a random choice succeeds with probability $\frac12$; but no deterministic polynomial method to find one is known without assuming the generalised Riemann hypothesis. This small gap is the reason why, unlike primality testing, square roots modulo $p$
+remain a problem with a fast randomised algorithm and no proved deterministic one.
+
+The first algorithm was published by Alberto Tonelli in 1891 and rediscovered, with a careful analysis, by Daniel Shanks in 1973.
+
+\begin{theorem}[Tonelli--Shanks]\label{thm:tonelli}
+Let $p$ be an odd prime, $p-1=2^sq$ with $q$ odd, $a$ a nonzero square modulo $p$, and $z$ a nonsquare. Start with
+\[
+m=s,\qquad c=z^q,\qquad x=a^{(q+1)/2},\qquad b=a^q,
+\]
+and repeat: if $b=1$, return $x$; otherwise let $i$ be the least integer with $b^{2^i}=1$, put $d=c^{2^{m-i-1}}$, and replace $(m,c,x,b)$ by $(i,d^2,xd,bd^2)$. The algorithm returns a square root of $a$ modulo $p$ after at most $s-1$ rounds and $O(\log p+s^2)$ multiplications modulo $p$.
+\end{theorem}
+\begin{proof}
+We work in the field $\mathbb F_p$ and show that at the start of each round
+\[
+x^2=ab,\qquad b^{2^{m-1}}=1,\qquad c\text{ has order exactly }2^m.
+\]
+At the start, $x^2=a^{q+1}=ab$, and $b^{2^{s-1}}=a^{(p-1)/2}=1$ by Euler's criterion. The order of $c=z^q$ divides $2^s$, and $c^{2^{s-1}}=z^{(p-1)/2}=-1\ne1$, so it is exactly $2^s$.
+Suppose the invariant holds and $b\ne1$. Since $b^{2^{m-1}}=1$, the least $i$ with $b^{2^i}=1$ satisfies $1\le i\le m-1$, so $d=c^{2^{m-i-1}}$ is defined and has order $2^{i+1}$. Then $(xd)^2=ab\,d^2$, and the new $c=d^2$ has order exactly $2^i$. Finally $b^{2^{i-1}}$ is a square root of $1$ different from $1$, so it is $-1$ (the field $\mathbb F_p$ has no other square roots
+of $1$), and $d^{2^i}=-1$ for the same reason; so $(bd^2)^{2^{i-1}}=b^{2^{i-1}}d^{2^i}=(-1)(-1)=1$. The invariant holds again, with $m$ replaced by $i<m$. Since $m$ decreases and $b^{2^0}=b=1$ is forced when $m=1$, the loop stops after at most $s-1$ rounds, and then $x^2=a$.
+Each round costs $O(s)$ squarings to find $i$ and to compute $d$, and the setup costs $O(\log p)$ multiplications.
+\end{proof}
+
+When $p-1$ is divisible by a large power of $2$, the $s^2$ term can be as large as $(\log p)^2$; the second algorithm, published by Michele Cipolla in 1903, avoids it by computing in a field with $p^2$ elements.
+
+\begin{theorem}[Cipolla]\label{thm:cipolla}
+Let $p$ be an odd prime and $a$ a nonzero square modulo $p$. Let $t\in\mathbb F_p$ be such that $w=t^2-a$ is not a square, and let $\mathbb F_{p^2}=\mathbb F_p[\omega]$ with $\omega^2=w$. Then $x=(t+\omega)^{(p+1)/2}$ lies in $\mathbb F_p$ and $x^2=a$. Exactly $\frac{p-1}2$ elements $t$ of $\mathbb F_p$ are suitable, so a random $t$ succeeds with probability $\frac{p-1}{2p}$,
+and the algorithm uses an expected $O(\log p)$ multiplications modulo $p$.
+\end{theorem}
+\begin{proof}
+Since $w$ is not a square, $X^2-w$ is irreducible over $\mathbb F_p$ and $\mathbb F_p[\omega]$ is a field with $p^2$ elements, whose elements $u+v\omega$ multiply with four products in $\mathbb F_p$. The Frobenius map $y\mapsto y^p$ is a ring homomorphism fixing $\mathbb F_p$ (Tome~2, Lemma~9.2), and $\omega^p=\omega\,(\omega^2)^{(p-1)/2}=\omega\,w^{(p-1)/2}=-\omega$ by Euler's criterion.
+So $(t+\omega)^p=t-\omega$, and $(t+\omega)^{p+1}=(t-\omega)(t+\omega)=t^2-w=a$. Thus $x^2=a$. The polynomial $X^2-a$ has at most two roots in the field $\mathbb F_{p^2}$, and it already has two in $\mathbb F_p$, the square roots of $a$; so $x$ is one of them.
+
+For the count, the pairs $(t,u)\in\mathbb F_p^2$ with $t^2-u^2=a$ correspond to the factorisations $a=(t-u)(t+u)$, that is to the choices of $e=t-u\in\mathbb F_p^*$ (then $t+u=a/e$, and $t,u$ follow since $2$ is invertible): there are $p-1$ of them. Exactly two values of $t$ have $t^2-a=0$, each giving one pair; every $t$ for which $t^2-a$ is a nonzero square gives two. So the number of $t$
+with $t^2-a$ a nonzero square is $\frac{p-1-2}2=\frac{p-3}2$, and the number of $t$ with $t^2-a$ a nonsquare is $p-2-\frac{p-3}2=\frac{p-1}2$. Testing a candidate $t$ is one exponentiation (Euler's criterion for $t^2-a$), and the expected number of candidates is $\frac{2p}{p-1}\le3$.
+\end{proof}
+
+\section{Fermat's test and the Carmichael numbers}\label{sec:fermat}
+
+If $n$ is prime and $\gcd(a,n)=1$, then $a^{n-1}\equiv1\pmod n$ (Fermat's little theorem). If this fails for a single $a$, $n$ is composite, although we learn nothing about its factors. This is \emph{Fermat's test}.
+
+\begin{definition}
+Let $n>1$ be odd. A unit $a$ modulo $n$ is a \emph{Fermat liar} for $n$ if $a^{n-1}\equiv1\pmod n$, and a \emph{Fermat witness} otherwise. A composite $n$ with no Fermat witness, that is with $a^{n-1}\equiv1$ for every unit $a$, is a \emph{Carmichael number}.
+\end{definition}
+
+\begin{proposition}\label{prop:fermathalf}
+If $n$ is composite and not a Carmichael number, at least half of the units modulo $n$ are Fermat witnesses.
+\end{proposition}
+\begin{proof}
+The liars $L=\{a:a^{n-1}\equiv1\}$ form a subgroup of the group of units $(\mathbb Z/n\mathbb Z)^\times$, since $(ab)^{n-1}=a^{n-1}b^{n-1}$. By hypothesis $L$ is a proper subgroup, so by Lagrange's theorem its index is at least $2$: $|L|\le\frac12\varphi(n)$.
+\end{proof}
+
+So Fermat's test, with random bases, is an excellent test for every composite number except the Carmichael numbers. These exist: in 1910 Robert Carmichael published $561=3\cdot11\cdot17$, the smallest, and they were already characterised in 1899 by Alwin Korselt, who did not give an example.
+
+\begin{theorem}[Korselt's criterion]\label{thm:korselt}
+A composite odd $n$ is a Carmichael number if and only if $n$ is squarefree and $p-1\mid n-1$ for every prime $p\mid n$.
+\end{theorem}
+\begin{proof}
+Suppose $p^2\mid n$ for a prime $p$, and let $p^j$ be the exact power of $p$ dividing $n$. By the Chinese remainder theorem there is $a$ with $a\equiv1+p\pmod{p^j}$ and $a\equiv1\pmod{n/p^j}$; it is a unit. If $a^{n-1}\equiv1\pmod n$ then $(1+p)^{n-1}\equiv1\pmod{p^2}$. But the binomial theorem gives $(1+p)^{n-1}\equiv1+(n-1)p\pmod{p^2}$,
+and $p\nmid n-1$ since $p\mid n$. So $a$ is a witness, and $n$ is not a Carmichael number.
+
+Now let $n=p_1\cdots p_r$ be squarefree. By the Chinese remainder theorem, $a^{n-1}\equiv1\pmod n$ holds for all units $a$ if and only if, for each $i$, $b^{n-1}\equiv1\pmod{p_i}$ for all units $b$ modulo $p_i$ (the units modulo $n$ reduce onto all units modulo each $p_i$). Since $(\mathbb Z/p_i\mathbb Z)^\times$ is cyclic of order $p_i-1$ (Tome~1, Theorem~5.3), this holds if and only if a generator $g$ satisfies $g^{n-1}=1$, that is if and only if $p_i-1\mid n-1$.
+\end{proof}
+
+\begin{lemma}\label{lem:carmthree}
+A Carmichael number has at least three prime factors.
+\end{lemma}
+\begin{proof}
+By Korselt's criterion it is squarefree and composite, so it has at least two. Suppose $n=pq$ with primes $p<q$. Then $q-1\mid n-1=pq-1=p(q-1)+(p-1)$, so $q-1\mid p-1$, which is impossible since $0<p-1<q-1$.
+\end{proof}
+
+The next Carmichael numbers after $561$ are $1105$, $1729$, $2465$ and $2821$. They are rare, but in 1994 W.~R.~Alford, Andrew Granville and Carl Pomerance proved that there are infinitely many of them, and even more than $x^{2/7}$ of them below $x$ for $x$ large. Fermat's test, used alone, is therefore wrong infinitely often, whatever the number of bases tried.
+
+\section{The Miller--Rabin test}\label{sec:millerrabin}
+
+The cure comes from one more property of primes. Modulo a prime, the only square roots of $1$ are $\pm1$, because $x^2-1=(x-1)(x+1)$ and $\mathbb F_p$ has no zero divisors. Write $n-1=2^sd$ with $d$ odd. If $n$ is an odd prime and $a$ a unit, the sequence
+\[
+a^d,\ a^{2d},\ a^{4d},\ \dots,\ a^{2^sd}=a^{n-1}\equiv1
+\]
+ends with $1$, each term is the square of the previous one, and so the first $1$ in it is either the first term or preceded by $-1$.
+
+\begin{definition}
+Let $n>1$ be odd, $n-1=2^sd$ with $d$ odd. A unit $a$ is a \emph{strong liar} for $n$ if $a^d\equiv1\pmod n$ or $a^{2^jd}\equiv-1\pmod n$ for some $0\le j<s$, and a \emph{strong witness} otherwise. The \emph{Miller--Rabin test} with base $a$ declares $n$ composite if $a$ is a strong witness (or if $\gcd(a,n)>1$), and probably prime otherwise.
+\end{definition}
+
+By the remark above, a prime has no strong witness. Gary Miller showed in 1976 that if the generalised Riemann hypothesis holds, every odd composite $n$ has a strong witness below $2(\ln n)^2$ (the constant is Eric Bach's, 1990), which gives a deterministic polynomial test conditional on that hypothesis. Michael Rabin turned it into an unconditional randomised test by proving that witnesses are plentiful.
+The sharp bound below is due to Rabin and, independently, to Louis Monier, both in 1980.
+
+\begin{theorem}[Monier, Rabin]\label{thm:mr}
+Let $n>1$ be an odd composite number. Then at most $\frac{n-1}4$ of the numbers $1,2,\dots,n-1$ are strong liars for $n$.
+\end{theorem}
+\begin{proof}
+Every strong liar is a Fermat liar: if $a^{2^jd}\equiv\pm1$ for some $j<s$, squaring $s-j$ times gives $a^{n-1}\equiv1$.
+
+\emph{Case 1: $p^2\mid n$ for some prime $p$.} The Fermat liars form a subgroup $L$ of $(\mathbb Z/n\mathbb Z)^\times$. Reduction modulo $p^2$ is a surjective homomorphism $(\mathbb Z/n\mathbb Z)^\times\to(\mathbb Z/p^2\mathbb Z)^\times$, whose kernel has $\varphi(n)/(p(p-1))$ elements, and it maps $L$ into $H=\{x:x^{n-1}=1\}\subseteq(\mathbb Z/p^2\mathbb Z)^\times$. The latter group is cyclic of order $p(p-1)$ (Tome~1, Theorem~5.5), so $|H|=\gcd(n-1,p(p-1))$, which divides $p-1$ because $p\nmid n-1$. Hence
+$|L|\le\frac{\varphi(n)}{p(p-1)}(p-1)=\frac{\varphi(n)}p$. If $p\ge5$ this is at most $\frac{\varphi(n)}5<\frac{n-1}4$. If $p=3$, then $9\mid n$, $\varphi(n)\le\frac23n$, and $\frac{\varphi(n)}3\le\frac{2n}9\le\frac{n-1}4$ because $n\ge9$.
+
+\emph{Case 2: $n=p_1p_2\cdots p_r$ is squarefree,} with $r\ge2$ distinct odd primes. Since $n-1$ is even, $-1$ is a unit with $(-1)^{2^0d}=-1$; let $\nu$ be the largest $j\in\{0,\dots,s-1\}$ for which some unit $b$ satisfies $b^{2^jd}\equiv-1\pmod n$, fix such a $b$, and put $m=2^\nu d$. Consider
+\[
+G=\{a:a^m\equiv\pm1\pmod n\}\subseteq K=\{a:a^m\equiv\pm1\pmod{p_i}\text{ for each }i\}\subseteq(\mathbb Z/n\mathbb Z)^\times.
+\]
+Both are subgroups. Every strong liar $a$ lies in $G$: either $a^d\equiv1$, and then $a^m\equiv1$; or $a^{2^jd}\equiv-1$ for some $j$, then $j\le\nu$ by the choice of $\nu$, and $a^m=(a^{2^jd})^{2^{\nu-j}}\equiv\pm1$.
+The map $\psi:K\to\{\pm1\}^r$, $a\mapsto(a^m\bmod p_i)_i$, is a homomorphism, and it is surjective: for a set $S$ of indices, the unit $a$ with $a\equiv b\pmod{p_i}$ for $i\in S$ and $a\equiv1\pmod{p_i}$ otherwise (Chinese remainder theorem) has $\psi(a)=-1$ exactly on $S$, since $b^m\equiv-1$ modulo each $p_i$.
+Now $G=\psi^{-1}(\{(1,\dots,1),(-1,\dots,-1)\})$, so $[K:G]=2^r/2=2^{r-1}$.
+
+If $r\ge3$, the index of $G$ in the units is at least $4$. If $r=2$, we claim that $K$ is not all of $(\mathbb Z/n\mathbb Z)^\times$, so that the index is at least $2\cdot2=4$ again. Indeed, if every unit satisfied $a^m\equiv\pm1$ modulo $p_1$ and $p_2$, then every unit would satisfy $a^{2m}\equiv1\pmod n$, and since $2m=2^{\nu+1}d$ divides $2^sd=n-1$, every unit would be a Fermat liar:
+$n$ would be a Carmichael number with two prime factors, which Lemma~\ref{lem:carmthree} excludes. In both cases the number of strong liars is at most $|G|\le\frac14\varphi(n)<\frac{n-1}4$.
+\end{proof}
+
+So $t$ independent random bases leave a composite number undetected with probability at most $4^{-t}$; with $t=40$, this is below $10^{-24}$. The bound $\frac14$ is nearly attained: $n=9$ has exactly two strong liars, $\pm1$, among eight bases, and $703=19\cdot37$ has $168$ among $702$. For most composites the proportion is tiny (Figure~\ref{fig:liars}), and when the candidates are random numbers rather than adversarial ones, a few bases are already overwhelming evidence.
+For numbers of bounded size there is even a finite answer: Jonathan Sorenson and Jonathan Webster showed in 2017 that no composite $n<3.18\times10^{23}$ is a strong liar to all twelve bases $2,3,5,\dots,37$, the first twelve primes; this makes Miller--Rabin a deterministic test for every $64$-bit integer, and many software libraries test such integers exactly this way.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-liars}
+\caption{The proportion of bases that lie, for every odd composite $n<1800$. Fermat's test is fooled by more than half of the bases for the Carmichael numbers $561$, $1105$ and $1729$; the strong liars never exceed the dashed line $\frac14$, which is attained only at $n=9$.}
+\label{fig:liars}
+\end{figure}
+
+A few months before Rabin, in 1977, Robert Solovay and Volker Strassen had published another randomised test, with a weaker bound but a more transparent proof. The \emph{Jacobi symbol} $\left(\frac an\right)$, for odd $n$, can be computed by a Euclid-like algorithm using reciprocity (Tome~1, Proposition~6.8) with $O(k^2)$ bit operations, without factoring $n$.
+If $n$ is prime, it equals $a^{(n-1)/2}$ modulo $n$ by Euler's criterion. A unit $a$ is an \emph{Euler liar} for $n$ if $\left(\frac an\right)\equiv a^{(n-1)/2}\pmod n$.
+
+\begin{theorem}[Solovay--Strassen]\label{thm:solovay}
+If $n>1$ is odd and composite, at most half of the units modulo $n$ are Euler liars.
+\end{theorem}
+\begin{proof}
+The Jacobi symbol is multiplicative in $a$, so the Euler liars form a subgroup of the units, and it suffices to find one unit that is not a liar. If $p^2\mid n$ for a prime $p$, take the unit $a$ built in the proof of Korselt's criterion: it is not a Fermat liar, while an Euler liar $a$ satisfies $a^{n-1}=\bigl(\left(\frac an\right)\bigr)^2=1$. Otherwise $n=pm$ with $p$ prime, $m>1$ odd and $\gcd(p,m)=1$.
+Let $g$ be a nonsquare modulo $p$ and take $a\equiv g\pmod p$, $a\equiv1\pmod m$. Then $\left(\frac an\right)=\left(\frac ap\right)\left(\frac am\right)=(-1)\cdot1=-1$. If $a$ were a liar, $a^{(n-1)/2}\equiv-1\pmod n$, hence modulo $m$; but $a\equiv1\pmod m$ gives $a^{(n-1)/2}\equiv1\pmod m$, and $1\not\equiv-1$ modulo $m\ge3$.
+\end{proof}
+
+When $n\equiv3\pmod4$ the two notions of liar coincide (Exercise~\ref{ex:eulerstrong}), and in general every strong liar is an Euler liar, a theorem of Pomerance, Selfridge and Wagstaff (1980) that we only quote; so Miller--Rabin is never worse, and it replaced Solovay--Strassen in practice. Problem Book~I, Chapter~3, gives another route to the bound $\frac14$.
+
+\section{Primes is in P}\label{sec:aks}
+
+The Kanpur test starts from a polynomial version of Fermat's little theorem. For integer polynomials $f,g$ and $n\ge2$, write $f\equiv g\pmod n$ if all coefficients of $f-g$ are divisible by $n$, and $f\equiv g\pmod{h,n}$ if $f-g=hu+nv$ for integer polynomials $u,v$; that is, $f$ and $g$ agree in $(\mathbb Z/n\mathbb Z)[X]/(h)$.
+
+\begin{lemma}\label{lem:aksidentity}
+Let $n\ge2$ and let $a$ be an integer prime to $n$. Then $n$ is prime if and only if $(X+a)^n\equiv X^n+a\pmod n$.
+\end{lemma}
+\begin{proof}
+The coefficient of $X^i$ in $(X+a)^n-(X^n+a)$ is $\binom ni a^{n-i}$ for $0<i<n$, and $a^n-a$ for $i=0$. If $n$ is prime, $n$ divides $\binom ni$ for $0<i<n$ (the numerator $n!$ has a factor $n$ that the denominator lacks), and $a^n\equiv a$ by Fermat. If $n$ is composite, let $p$ be a prime factor and $p^j$ the exact power of $p$ dividing $n$. Then
+$\binom np=\frac{n(n-1)\cdots(n-p+1)}{p!}$, and in the numerator only the factor $n$ is divisible by $p$ (the others are $n-1,\dots,n-p+1$), so $p$ divides $\binom np$ exactly $j-1$ times. Since $p\nmid a$, the coefficient $\binom npa^{n-p}$ is not divisible by $p^j$, hence not by $n$.
+\end{proof}
+
+This is a perfect test, and a useless one: the polynomial $(X+a)^n$ has $n+1$ coefficients, exponentially many. The idea of Agrawal and his students is to compute modulo $X^r-1$ for a small $r$, where polynomials have only $r$ coefficients, and to compensate the loss of information by testing several $a$. Two counting lemmas come first. Throughout, $\log$ is the logarithm to base $2$,
+and for $r$ prime to $n$, $o_r(n)$ is the order of $n$ modulo $r$.
+
+\begin{lemma}[Nair]\label{lem:nair}
+For $N\ge7$, $\operatorname{lcm}(1,2,\dots,N)\ge2^N$.
+\end{lemma}
+\begin{proof}
+Let $d_N=\operatorname{lcm}(1,\dots,N)$. For $1\le j\le N$, the integral $I=\int_0^1x^{j-1}(1-x)^{N-j}\,dx$ equals, by expanding $(1-x)^{N-j}$, the sum $\sum_{i=0}^{N-j}(-1)^i\binom{N-j}i\frac1{j+i}$, whose denominators all divide $d_N$; so $d_NI$ is an integer. Integrating by parts $j-1$ times (or by the Beta function, Tome~4) gives $I=\frac{(j-1)!(N-j)!}{N!}=\frac1{j\binom Nj}$.
+So $j\binom Nj$ divides $d_N$ for all $j\le N$. With $N=2m$, $j=m$: $m\binom{2m}m\mid d_{2m}\mid d_{2m+1}$. With $N=2m+1$, $j=m+1$: $(m+1)\binom{2m+1}{m+1}=(2m+1)\binom{2m}m$ divides $d_{2m+1}$. As $\gcd(m,2m+1)=1$, $m(2m+1)\binom{2m}m\mid d_{2m+1}$. Since $\binom{2m}m$ is the largest of the $2m+1$ coefficients $\binom{2m}i$, whose sum is $4^m$,
+$\binom{2m}m\ge\frac{4^m}{2m+1}$, and $d_{2m+1}\ge m4^m$. For $m\ge2$ this is at least $2^{2m+1}$, which proves the claim for odd $N\ge5$; for even $N=2m+2$ with $m\ge4$, $d_N\ge d_{2m+1}\ge m4^m\ge2^{2m+2}$. The remaining case $N=8$ is $d_8=840\ge256$.
+\end{proof}
+
+\begin{lemma}\label{lem:aksr}
+Let $n\ge4$. There is an integer $r\le\lceil\log^5n\rceil$ with $\gcd(r,n)=1$ and $o_r(n)>\log^2n$.
+\end{lemma}
+\begin{proof}
+Write $L=\log n\ge2$ and $B=\lceil L^5\rceil\ge32$, and suppose the contrary: every $r\le B$ prime to $n$ has $o_r(n)\le L^2$. Let
+\[
+P=n^{\lfloor\log B\rfloor}\prod_{i=1}^{\lfloor L^2\rfloor}(n^i-1).
+\]
+We claim that every $r\le B$ divides $P$. Write $r=gr'$ where $g$ collects the prime powers of $r$ at primes dividing $n$, so that $\gcd(r',n)=1$. Then $r'\le B$, so $r'\mid n^{o_{r'}(n)}-1$ with $o_{r'}(n)\le L^2$ (trivially if $r'=1$), and $r'$ divides the product. Each prime power $q^e$ in $g$ has $q\mid n$ and $e\le\log r\le\log B$, so $g\mid n^{\lfloor\log B\rfloor}$. As $\gcd(g,r')=1$, $r\mid P$.
+Hence $\operatorname{lcm}(1,\dots,B)$ divides $P$, and by Lemma~\ref{lem:nair}
+\[
+2^B\le P<n^{\log B+\sum_{i\le L^2}i}\le2^{L\log B+(L^5+L^3)/2}.
+\]
+Now $B\le L^5+1\le2L^5$, so $\log B\le1+5\log L$, and we get $L^5\le B<L(1+5\log L)+\frac12(L^5+L^3)$, that is $L^4<2+10\log L+L^2$. At $L=2$ this reads $16<16$, which is false; and the difference $L^4-L^2-10\log L$ increases for $L\ge2$ (its derivative $4L^3-2L-10/(L\ln2)$ is positive), so the inequality fails for all $L\ge2$. This contradiction proves the lemma.
+\end{proof}
+
+Here is the algorithm, in the version of the published paper.
+
+\begin{center}
+\begin{minipage}{0.92\linewidth}
+\textbf{AKS}$(n)$, for an integer $n\ge2$, with $L=\log n$:
+\begin{enumerate}
+\item If $n=a^b$ for integers $a\ge2$, $b\ge2$, output \textsf{composite}.
+\item Find the least $r$ with $\gcd(r,n)=1$ and $o_r(n)>L^2$.
+\item If $1<\gcd(a,n)<n$ for some $a\le r$, output \textsf{composite}.
+\item If $n\le r$, output \textsf{prime}.
+\item For $a=1,\dots,\ell$, where $\ell=\lfloor\sqrt{\varphi(r)}\,L\rfloor$: if $(X+a)^n\not\equiv X^n+a\pmod{X^r-1,n}$, output \textsf{composite}.
+\item Output \textsf{prime}.
+\end{enumerate}
+\end{minipage}
+\end{center}
+
+\begin{theorem}[Agrawal, Kayal, Saxena]\label{thm:aks}
+The algorithm outputs \textsf{prime} if and only if $n$ is prime.
+\end{theorem}
+\begin{proof}
+If $n$ is prime, steps~1 and~3 cannot answer, and step~5 cannot either, by Lemma~\ref{lem:aksidentity} reduced modulo $X^r-1$. So the output is \textsf{prime}.
+
+Conversely, suppose the output is \textsf{prime}. If it came from step~4, then $n\le r$ and no $a\le r$ has $1<\gcd(a,n)<n$, so $n$ has no divisor strictly between $1$ and $n$: it is prime. So suppose it came from step~6. Then $n>r$, every prime factor $p$ of $n$ is larger than $r$ (step~3), and the identities of step~5 hold. Note that $L^2<o_r(n)\le\varphi(r)$, so $L<\sqrt{\varphi(r)}$ and $\ell<\varphi(r)<r<p$. Fix a prime $p\mid n$. Since $\ell<p$, the polynomials $X+a$, $0\le a\le\ell$, are distinct in $\mathbb F_p[X]$.
+We shall prove that $n$ is a power of $p$; then step~1 forces $n=p$.
+
+\emph{Introspection.} Call an integer $m\ge1$ \emph{introspective} for $f\in\mathbb F_p[X]$ if $f(X)^m=f(X^m)$ in $R=\mathbb F_p[X]/(X^r-1)$. Three facts:
+\begin{enumerate}
+\item[(a)] If $m$ and $m'$ are introspective for $f$, so is $mm'$. Indeed $f(X)^{mm'}=(f(X)^m)^{m'}=f(X^m)^{m'}$ in $R$. Substituting $X^m$ for $X$ in the identity $f(X)^{m'}-f(X^{m'})=(X^r-1)u(X)$ gives $f(X^m)^{m'}-f(X^{mm'})=(X^{mr}-1)u(X^m)$, a multiple of $X^r-1$. So $f(X^m)^{m'}=f(X^{mm'})$ in $R$.
+\item[(b)] If $m$ is introspective for $f$ and $g$, it is for $fg$: $(fg)(X)^m=f(X)^mg(X)^m=f(X^m)g(X^m)$.
+\item[(c)] $p$ is introspective for every $f$, by the Frobenius identity $f(X)^p=f(X^p)$ in $\mathbb F_p[X]$ (Tome~2, Lemma~9.2). And $n$ is introspective for each $X+a$, $1\le a\le\ell$, by step~5 reduced modulo $p$, and for $X$ trivially. Finally $n/p$ is introspective for $X+a$: with $f=X+a$, Frobenius and the previous facts give
+$\bigl(f(X)^{n/p}\bigr)^p=f(X)^n=f(X^n)=\bigl(f(X^{n/p})\bigr)^p$ in $R$. The map $y\mapsto y^p$ is injective on $R$: since $p\nmid r$, $X^r-1$ is coprime to its derivative $rX^{r-1}$, hence squarefree, so $R$ is a product of fields by the Chinese remainder theorem (Tome~2, Theorem~6.9), and Frobenius is injective on each field. So $f(X)^{n/p}=f(X^{n/p})$.
+\end{enumerate}
+By (a), (b) and (c), every element of $I=\{(n/p)^ip^j:i,j\ge0\}$ is introspective for every polynomial of $\mathcal P=\bigl\{\prod_{a=0}^\ell(X+a)^{e_a}:e_a\ge0\bigr\}$.
+
+\emph{Two groups.} Let $G$ be the set of residues modulo $r$ of the elements of $I$. It is a subgroup of $(\mathbb Z/r\mathbb Z)^\times$, generated by $n$ and $p$ (both prime to $r$), and it contains the powers of $n$, so its order $t$ satisfies $L^2<o_r(n)\le t\le\varphi(r)$.
+Let $\mathbb F_q$ be a finite field of characteristic $p$ containing an element $\zeta$ of order exactly $r$: since $p\nmid r$, the field with $q=p^{o_r(p)}$ elements will do, its multiplicative group being cyclic of order $q-1$, a multiple of $r$ (Tome~2, Theorems~9.4 and~9.6). Let $h$ be the minimal polynomial of $\zeta$ over $\mathbb F_p$; since $\zeta^r=1$, $h$ divides $X^r-1$. Let $F=\mathbb F_p[X]/(h)\cong\mathbb F_p(\zeta)$, a field in which $X$ has order $r$.
+Let $\mathcal G\subseteq F$ be the set of images of the polynomials of $\mathcal P$. Because $h\mid X^r-1$, every identity in $R$ also holds in $F$; in particular $f(X)^m=f(X^m)$ in $F$ for $m\in I$ and $f\in\mathcal P$.
+
+\emph{Lower bound: $|\mathcal G|\ge\binom{t+\ell}{t-1}$.} Let $f\ne g$ be polynomials of $\mathcal P$ of degree less than $t$, and suppose they have the same image in $F$. For each $m\in I$, $f(X^m)=f(X)^m=g(X)^m=g(X^m)$ in $F$, so $X^m$ is a root of $Q(Y)=f(Y)-g(Y)\in\mathbb F_p[Y]$. As $m$ runs through $I$, $X^m$ takes $t$ distinct values in $F$, since $X$ has order $r$ and $m\bmod r$ takes $t$ values. But $Q$ is nonzero of degree less than $t$, so it has fewer than $t$ roots in the field $F$: a contradiction.
+So the polynomials of $\mathcal P$ of degree less than $t$ have distinct images. They are as many as the exponent vectors $(e_0,\dots,e_\ell)$ with $e_0+\dots+e_\ell\le t-1$ (distinct vectors give distinct polynomials by unique factorisation in $\mathbb F_p[X]$, the $X+a$ being distinct monic irreducibles), and there are $\binom{t-1+\ell+1}{\ell+1}=\binom{t+\ell}{t-1}$ of them.
+
+\emph{Upper bound: if $n$ is not a power of $p$, then $|\mathcal G|\le n^{\sqrt t}$.} Consider the $(\lfloor\sqrt t\rfloor+1)^2>t$ integers $(n/p)^ip^j$ with $0\le i,j\le\lfloor\sqrt t\rfloor$. They are distinct: an equality $(n/p)^ip^j=(n/p)^{i'}p^{j'}$ with $(i,j)\ne(i',j')$ forces $i\ne i'$ and then makes a power of $n/p$ equal to a power of $p$, so $n/p$ and $n$ would be powers of $p$ by unique factorisation. Since $|G|=t$, two of them, $m_1>m_2$, are congruent modulo $r$.
+Then $X^{m_1}=X^{m_2}$ in $F$, and for each $f\in\mathcal P$, $f(X)^{m_1}=f(X^{m_1})=f(X^{m_2})=f(X)^{m_2}$. So every element of $\mathcal G$ is a root of $Y^{m_1}-Y^{m_2}$, a nonzero polynomial of degree $m_1\le(n/p\cdot p)^{\lfloor\sqrt t\rfloor}\le n^{\sqrt t}$. Hence $|\mathcal G|\le n^{\sqrt t}$.
+
+\emph{The contradiction.} Let $s=\lfloor\sqrt t\,L\rfloor$. As $t>L^2$, we have $t>\sqrt t\,L\ge s$, so $t-1\ge s$; and $\ell=\lfloor\sqrt{\varphi(r)}\,L\rfloor\ge s$ since $t\le\varphi(r)$. As $\binom{a+b}{a}$ increases in $a$ and in $b$,
+\[
+|\mathcal G|\ge\binom{t+\ell}{t-1}=\binom{(t-1)+(\ell+1)}{t-1}\ge\binom{2s+1}{s}>2^{s+1}>2^{\sqrt t\,L}=n^{\sqrt t}.
+\]
+Here $\binom{2s+1}s>2^{s+1}$ holds for $s\ge2$ (it is $10>8$ for $s=2$, and the ratio of consecutive terms is $\frac{2(2s+3)}{s+2}\ge2$), and indeed $s\ge4$ because $\sqrt tL>L^2\ge4$. If $n$ were not a power of $p$, this would contradict the upper bound. So $n$ is a power of $p$, and by step~1, $n=p$.
+\end{proof}
+
+\begin{proposition}\label{prop:akstime}
+The algorithm AKS runs in $O(\log^{10.5}n\cdot(\log\log n)^c)$ bit operations for some constant $c$, with fast multiplication.
+\end{proposition}
+\begin{proof}
+Write $L=\log n$ and ignore factors that are powers of $\log L$. Step~1: for each $b\le L$, a binary search for the integer $b$-th root of $n$ uses $O(L)$ trial powers, each $O(\log b)$ multiplications of $O(L)$-bit numbers, in total $\tilde O(L^3)$ (Exercise~\ref{ex:perfectpower}). Step~2: by Lemma~\ref{lem:aksr} at most $\lceil L^5\rceil$ values of $r$ are tried, each needing a gcd and at most $L^2$ multiplications modulo $r$ of numbers of $O(\log L)$ bits: $\tilde O(L^7)$.
+Step~3: $r$ gcds of $n$ with numbers $a\le r$ of $O(\log L)$ bits, each dominated by the first division, $\tilde O(L)$: in total $\tilde O(L^6)$. Step~5: $\ell\le\sqrt rL$ identities, each needing $O(L)$ squarings and multiplications of polynomials of degree less than $r$ with coefficients below $n$, each $\tilde O(rL)$ bit operations with fast multiplication (Chapter~\ref{ch:algebraic}), followed by reduction modulo $X^r-1$, which is free (fold $X^{r+i}$ onto $X^i$), and modulo $n$.
+In total $\tilde O(\sqrt r\,L\cdot L\cdot rL)=\tilde O(r^{3/2}L^3)=\tilde O(L^{10.5})$, since $r\le\lceil L^5\rceil$.
+\end{proof}
+
+The exponent has come down since. Lenstra and Pomerance, in 2005, replaced $X^r-1$ by more cleverly chosen polynomials and reached $\tilde O(\log^6n)$. Agrawal, Kayal and Saxena had noted that if one can take $r$ near $\log^2 n$, which Artin's conjecture on primitive roots and its relatives suggest, the exponent drops to $6$ as well, and that a conjecture of Agrawal (that $(X-1)^n\equiv X^n-1\pmod{X^r-1,n}$ with a suitable small $r$ already characterises primes)
+would give $\tilde O(\log^3n)$; Lenstra and Pomerance gave a heuristic argument that this last conjecture is probably false. In practice, Miller--Rabin with random bases is many orders of magnitude faster than AKS, and certified primes for cryptography are produced by other methods (elliptic curves, or Pocklington-type certificates as in the problem book). The value of AKS is that it settles the question: deciding primality is a polynomial problem, and no coin is needed.
+
+\section{Factoring}\label{sec:factoring}
+
+Recognising a composite number is easy; finding its factors is another matter. Trial division up to $\sqrt n$ costs $\sqrt n=2^{k/2}$ divisions, exponential in the number of bits. Every known classical factoring algorithm is superpolynomial, and the security of the RSA cryptosystem (Tome~C4) depends on this being unavoidable.
+
+The first improvement is a gem of John Pollard, from 1975. Choose $f(x)=x^2+c\bmod n$ and a starting value $x_0$, and set $x_{i+1}=f(x_i)$. If $p$ is an unknown prime factor of $n$, the residues $x_i\bmod p$ follow the same rule modulo $p$, and since there are only $p$ residues, they must eventually repeat; from then on they cycle. Drawn, the sequence looks like the Greek letter $\rho$, a tail followed by a loop (Figure~\ref{fig:rho}).
+Once $x_i\equiv x_j\pmod p$ for some $i\ne j$, $\gcd(x_i-x_j,n)$ is divisible by $p$, and unless it is $n$ itself we have a factor. Two problems remain: we cannot see the residues modulo $p$, and we cannot afford to compare all pairs. The solution to both is a cycle-detection trick attributed to Robert Floyd.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-rho}
+\caption{The iteration $x\mapsto x^2+2$ modulo $97$, started at $x_0=2$. After a tail of $\mu=2$ steps the sequence enters a cycle of length $\lambda=8$. Floyd's tortoise ($x_i$) and hare ($x_{2i}$) first meet at $i=8$.}
+\label{fig:rho}
+\end{figure}
+
+\begin{proposition}[Floyd's cycle detection]\label{prop:floyd}
+Let $f:S\to S$ be a map of a finite set, $x_0\in S$ and $x_{i+1}=f(x_i)$. Let $\mu\ge0$ and $\lambda\ge1$ be the least integers with $x_{\mu+\lambda}=x_\mu$ (the tail and the cycle length). Then $x_i=x_{2i}$ for some $i\ge1$, the least such $i$ is the least multiple of $\lambda$ that is at least $\max(\mu,1)$, and in particular $i\le\mu+\lambda$.
+\end{proposition}
+\begin{proof}
+By minimality of $\mu$ and $\lambda$, the elements $x_0,\dots,x_{\mu+\lambda-1}$ are distinct and $x_a=x_b$ for $a<b$ if and only if $a\ge\mu$ and $\lambda\mid b-a$. So for $i\ge1$, $x_i=x_{2i}$ if and only if $i\ge\mu$ and $\lambda\mid i$. Among $\max(\mu,1),\dots,\max(\mu,1)+\lambda-1$ there is a multiple of $\lambda$, so the least one is at most $\mu+\lambda$ (if $\mu=0$ it is $\lambda$).
+\end{proof}
+
+\noindent\textbf{Pollard's rho algorithm.} Keep a tortoise $x=x_i$ and a hare $y=x_{2i}$, both computed modulo $n$; at each step replace $x$ by $f(x)$ and $y$ by $f(f(y))$, and compute $g=\gcd(y-x,n)$. If $1<g<n$, output $g$; if $g=n$, restart with another $c$.
+
+By Proposition~\ref{prop:floyd} applied to the residues modulo $p$, the gcd becomes divisible by $p$ after at most $\mu_p+\lambda_p$ steps, where $\mu_p,\lambda_p$ are the tail and cycle of the sequence modulo $p$, and the gcd is $n$ itself only if the sequences modulo all the prime factors of $n$ close up at the same step, which is rare. How long is $\mu_p+\lambda_p$? For a \emph{random} map it is small.
+
+\begin{proposition}[the birthday bound]\label{prop:birthday}
+Let $f$ be chosen uniformly among all maps from a set $S$ of $p$ elements to itself, and $x_0\in S$ fixed. Then $\mathbb E[\mu+\lambda]\le1+\sqrt{\pi p/2}$.
+\end{proposition}
+\begin{proof}
+The number $\mu+\lambda$ is the first index $T$ such that $x_T\in\{x_0,\dots,x_{T-1}\}$. As long as $x_0,\dots,x_j$ are distinct, the value $x_{j+1}=f(x_j)$ is a value of $f$ at a point not yet visited, hence uniform on $S$ and independent of the past. So $\mathbb P(T>j\mid T>j-1)=1-j/p$, and
+\[
+\mathbb P(T>j)=\prod_{i=1}^j\Bigl(1-\frac ip\Bigr)\le\exp\Bigl(-\sum_{i=1}^j\frac ip\Bigr)\le e^{-j^2/(2p)}.
+\]
+Hence $\mathbb E[T]=\sum_{j\ge0}\mathbb P(T>j)\le\sum_{j\ge0}e^{-j^2/(2p)}\le1+\int_0^\infty e^{-x^2/(2p)}\,dx=1+\sqrt{\pi p/2}$, comparing the sum for $j\ge1$ with the integral of a decreasing function.
+\end{proof}
+
+The map $x\mapsto x^2+c$ modulo $p$ is not random, and no one has proved that its rho has length $O(\sqrt p)$ on average over $c$ and $x_0$. But experiments agree remarkably well with the random model (the notebook checks it), and under this \emph{heuristic} the rho method finds the smallest prime factor $p$ of $n$ in about $\sqrt p\le n^{1/4}$ steps, each costing a few multiplications and a gcd modulo $n$. In 1980 Richard Brent and Pollard used it to factor the eighth Fermat number $2^{256}+1$, whose smaller prime factor has $16$ digits.
+
+Pollard had found another method in 1974, which exploits a different weakness of a factor $p$: that $p-1$ might have only small prime factors. Call an integer \emph{$B$-powersmooth} if all prime powers dividing it are at most $B$.
+
+\begin{proposition}[Pollard's $p-1$ method]\label{prop:pminus1}
+Let $p$ be a prime factor of $n$ such that $p-1$ is $B$-powersmooth, let $E=\operatorname{lcm}(1,2,\dots,B)$, and let $a$ be prime to $n$. Then $p$ divides $\gcd(a^E-1,n)$. The residue $a^E\bmod n$ costs $O(B)$ multiplications modulo $n$.
+\end{proposition}
+\begin{proof}
+Every prime power dividing $p-1$ is at most $B$, hence divides $E$, so $p-1\mid E$, and $a^E\equiv1\pmod p$ by Fermat. For the cost, $a^E=\prod_qa^{q^{e_q}}$ over primes $q\le B$ with $q^{e_q}\le B<q^{e_q+1}$; raising successively to each $q^{e_q}$ costs $O(\log B)$ multiplications per prime, and there are $O(B/\log B)$ primes below $B$ (Tome~1, Theorem~2.4).
+\end{proof}
+
+The method fails if $p-1$ has a large prime factor for every $p\mid n$, which is why RSA moduli were once required to avoid it; Hendrik Lenstra's elliptic curve method of 1985 removes this weakness by replacing the group $\mathbb F_p^\times$, of fixed order $p-1$, by the group of an elliptic curve modulo $p$, of order near $p$ but varying with the curve, until one of them has a smooth order.
+
+The fastest general methods rest on a much older idea, going back to Fermat and Maurice Kraitchik: find two squares that are congruent modulo $n$ without being trivially so.
+
+\begin{proposition}\label{prop:squares}
+\begin{enumerate}
+\item If $x^2\equiv y^2\pmod n$ and $x\not\equiv\pm y\pmod n$, then $\gcd(x-y,n)$ is a proper factor of $n$.
+\item Let $n$ be odd with $r\ge2$ distinct prime factors. The square of a unit has exactly $2^r$ square roots among the units modulo $n$. Consequently, if $x$ is uniform among the units and $y$ is a square root of $x^2$ that depends only on $x^2$, then $\mathbb P(y\not\equiv\pm x)=1-2^{1-r}\ge\frac12$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(1) $n$ divides $(x-y)(x+y)$ but neither factor. If $\gcd(x-y,n)=n$ then $n\mid x-y$; if it were $1$, then $n\mid x+y$. Both are excluded.
+(2) Let $n=\prod_ip_i^{j_i}$. Modulo each $p_i^{j_i}$ the units form a cyclic group of even order (Tome~1, Theorem~5.5), in which the equation $z^2=x^2$ has exactly two solutions $\pm x$ (in a cyclic group of even order, exactly two elements satisfy $u^2=1$). By the Chinese remainder theorem the square roots of $x^2$ modulo $n$ correspond to the $2^r$ choices of signs, of which two give $\pm x$. Since squaring is $2^r$-to-one on the units, given the value $c=x^2$ the unit $x$ is uniform among the $2^r$ roots of $c$, while $y$ is fixed by $c$; so $\mathbb P(x\equiv\pm y\mid c)=2/2^r$.
+\end{proof}
+
+So factoring reduces to producing a random congruence of squares, and this is what John Dixon's method (1981) and Carl Pomerance's \emph{quadratic sieve} (1982) do. They look for many numbers $x$ such that $x^2\bmod n$ factors completely over a set of small primes $p_1,\dots,p_K$; each such $x$ gives a vector of exponents modulo $2$ in $\mathbb F_2^K$, and as soon as there are more than $K$ of them, a linear dependency over $\mathbb F_2$ exists, and Gaussian elimination finds it. Multiplying the corresponding $x$'s gives a product whose square
+is congruent to a product of small primes with even exponents, that is, to a square $y^2$ known explicitly, and Proposition~\ref{prop:squares} then factors $n$ with probability at least $\frac12$. The art is in finding the smooth values fast, and the quadratic sieve does it by sieving the values of the polynomial $(\lfloor\sqrt n\rfloor+i)^2-n$ like Eratosthenes sieves integers. Its running time, under plausible hypotheses on the distribution of smooth numbers, is
+$\exp\bigl((1+o(1))\sqrt{\ln n\ln\ln n}\bigr)$, subexponential in the number of bits. The \emph{number field sieve} of the early 1990s, working in rings of algebraic integers, brings the square root down to a cube root: $\exp\bigl((c+o(1))(\ln n)^{1/3}(\ln\ln n)^{2/3}\bigr)$ with $c=(64/9)^{1/3}\approx1.92$.
+
+The most famous factorisation with the quadratic sieve is a story in itself. In August 1977, Martin Gardner's column in \emph{Scientific American} presented the new RSA cryptosystem with a challenge: a message encrypted with a public modulus of $129$ digits, now called RSA-129, which its inventors estimated would take millions of years to break. On 26 April 1994, Derek Atkins, Michael Graff, Arjen Lenstra and Paul Leyland announced its factorisation, obtained by
+about $600$ volunteers in more than $20$ countries, who had sieved for eight months on their computers using the double large prime variation of the multiple polynomial quadratic sieve. The decrypted message read ``THE MAGIC WORDS ARE SQUEAMISH OSSIFRAGE''. Factoring had not become easy, but the estimate of millions of years had assumed the algorithms of 1977.
+
+\begin{remark}[Quantum computers]
+Peter Shor showed in 1994 that a quantum computer could factor $n$ in time polynomial in $\log n$, by finding the order of a random $a$ modulo $n$ (if the order $o$ is even and $a^{o/2}\not\equiv-1$, Proposition~\ref{prop:squares} applies to $x=a^{o/2}$, $y=1$). No quantum computer built so far comes anywhere near factoring numbers of cryptographic size, but the possibility has reshaped cryptography; Tome~C4 returns to it.
+\end{remark}
+
+\begin{beauty}
+The chapter turns on one asymmetry. A prime leaves fingerprints everywhere: Fermat's identity, the square roots of $1$, the binomial coefficients of $(X+a)^n$; any one of them, checked cheaply, gives a composite number away without revealing its factors. The AKS proof makes this into a theorem by an extraordinary piece of bookkeeping: if $n$ passed the test without being prime,
+one particular finite group would have to be at the same time larger than $n^{\sqrt t}$ and no larger than $n^{\sqrt t}$. Factoring, by contrast, has no such fingerprint, and its best algorithms, from Pollard's rho to the number field sieve, are ingenious ways of being lucky more often.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:powmod561}
+Compute $2^{35}$, $2^{70}$, $2^{140}$ and $2^{280}$ modulo $561$ by repeated squaring. Deduce that $2$ is a strong witness for $561$ although it is a Fermat liar, and use the square root of $1$ that appears to find the factors of $561$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:crtdet}
+Let $A$ be a $100\times100$ integer matrix with entries of absolute value at most $100$. Use Hadamard's inequality $|\det A|\le\prod_i\|A_i\|_2$ (where $A_i$ are the rows) to bound $|\det A|$, and find how many distinct primes between $2^{29}$ and $2^{30}$ suffice to recover $\det A$, sign included, by Chinese remaindering. Why is this better than Gaussian elimination over $\mathbb Q$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sqrt34}
+\begin{enumerate}[label=(\alph*)]
+\item Find a square root of $2$ modulo $23$ with the formula for $p\equiv3\pmod4$.
+\item Let $p\equiv5\pmod8$ and $a$ a nonzero square. Show that $a^{(p-1)/4}=\pm1$, that $x=a^{(p+3)/8}$ is a square root of $a$ in the first case, and that $x\cdot2^{(p-1)/4}$ is one in the second.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:liars25}
+Find all strong liars for $n=25$, and compare their number with $\frac{n-1}4$ and with the bound $\frac{\varphi(n)}p$ of Case~1 in the proof of Theorem~\ref{thm:mr}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:eulerstrong}
+Let $n\equiv3\pmod4$ be odd and composite. Show that a unit is a strong liar for $n$ if and only if it is an Euler liar.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:perfectpower}
+Show that one can decide whether a $k$-bit integer $n$ is a perfect power $a^b$ ($a,b\ge2$) with $O(k^3\log k)$ bit operations using schoolbook multiplication.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:aksnecessary}
+Show that the composite number $341=11\cdot31$ satisfies $(X+1)^{341}\equiv X^{341}+1\pmod{X^2-1,341}$, using $2^{340}\equiv1\pmod{341}$. Why does this not contradict Theorem~\ref{thm:aks}?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:brent}
+Richard Brent's variant of cycle detection keeps a saved value $x_{2^e-1}$ and compares it with $x_j$ for $2^e\le j<2^{e+1}$, then saves $x_{2^{e+1}-1}$ and continues. Show that it finds a repetition after fewer than $2\mu+3\lambda$ evaluations of $f$, with the notation of Proposition~\ref{prop:floyd}, and that it uses one evaluation of $f$ per comparison, against three for Floyd.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pminus1}
+Factor $n=299$ with Pollard's $p-1$ method, $a=2$ and $B=4$. Which prime factor is found, and why not the other?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sqrtoracle}
+Suppose a machine computes, for any square $c$ modulo $n=pq$ (with $p\ne q$ odd primes), one of its square roots, in a way that we do not control. Show how to factor $n$ with an expected number of at most two calls to the machine. (This is why computing square roots modulo $n$ is as hard as factoring $n$, an observation of Rabin in 1979.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:powmod561}
+$560=2^4\cdot35$. A square root of $1$ that is not $\pm1$ gives a congruence of squares.
+\end{hint}
+\begin{hint}{ex:crtdet}
+Each row has norm at most $\sqrt{100}\cdot100$. The primes must have a product larger than $2|\det A|$.
+\end{hint}
+\begin{hint}{ex:sqrt34}
+(b) $a^{(p-1)/2}=1$, so $a^{(p-1)/4}$ is a square root of $1$. And $2$ is a nonsquare modulo $p\equiv5\pmod8$ (Tome~1, Corollary~6.4).
+\end{hint}
+\begin{hint}{ex:liars25}
+$24=2^3\cdot3$. A liar satisfies $a^{24}\equiv1$; in the cyclic group of order $20$, how many elements is that?
+\end{hint}
+\begin{hint}{ex:eulerstrong}
+Here $s=1$ and $d=\frac{n-1}2$ is odd. Compute $\left(\frac{a^d}n\right)$ in two ways.
+\end{hint}
+\begin{hint}{ex:perfectpower}
+Only $b\le\log_2n$ matter, and for each $b$ the candidate $a$ can be found by binary search.
+\end{hint}
+\begin{hint}{ex:aksnecessary}
+Modulo $X^2-1$, $(X+1)^2=2(X+1)$.
+\end{hint}
+\begin{hint}{ex:brent}
+Let $e$ be the least integer with $2^e-1\ge\mu$ and $2^e\ge\lambda$.
+\end{hint}
+\begin{hint}{ex:pminus1}
+$299=13\cdot23$, $12=2^2\cdot3$, $22=2\cdot11$.
+\end{hint}
+\begin{hint}{ex:sqrtoracle}
+Choose $x$ at random, give $x^2$ to the machine, and use Proposition~\ref{prop:squares}.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:powmod561}
+\idea Run the Miller--Rabin sequence and look for the step where $1$ appears without $-1$ before it.
+\writeup $561-1=560=2^4\cdot35$. By repeated squaring, $2^{35}\equiv263$, then $263^2\equiv166$, $166^2\equiv67$ and $67^2=4489=8\cdot561+1\equiv1$. So the sequence $2^{35},2^{70},2^{140},2^{280},2^{560}$ is $263,166,67,1,1$: it reaches $1$ at $2^{280}$, and the term before is $67\not\equiv-1$. So $2$ is a strong witness, although $2^{560}\equiv1$ makes it a Fermat liar ($561$ is a Carmichael number).
+The number $67$ is a square root of $1$ modulo $561$ different from $\pm1$, so $67^2\equiv1^2$ with $67\not\equiv\pm1$, and Proposition~\ref{prop:squares} gives the factors $\gcd(66,561)=33$ and $\gcd(68,561)=17$. Indeed $561=3\cdot11\cdot17$, and $33=3\cdot11$.
+\end{solution}
+
+\begin{solution}{ex:crtdet}
+\idea Bound the answer, then take enough primes to cover the interval $[-B,B]$.
+\writeup Each row has $100$ entries of absolute value at most $100$, so its Euclidean norm is at most $\sqrt{100\cdot100^2}=1000$, and Hadamard gives $|\det A|\le1000^{100}=10^{300}$. If the product $P$ of the primes exceeds $2\cdot10^{300}$, the integer $\det A\in[-10^{300},10^{300}]$ is determined by its residue modulo $P$: take the representative of the residue in $(-P/2,P/2]$.
+Each prime exceeds $2^{29}$, so $j$ primes give $P>2^{29j}$, and $2^{29j}\ge2\cdot10^{300}$ as soon as $29j\ge1+300\log_210\approx997.6$, that is $j\ge35$. So $35$ primes suffice (there are millions of primes between $2^{29}$ and $2^{30}$). Modulo each prime, Gaussian elimination costs $O(100^3)$ operations on $30$-bit numbers, which fit in a machine word.
+Over $\mathbb Q$, by contrast, the intermediate fractions can have numerators and denominators of hundreds of digits each, and every operation then costs far more; the modular method trades one hard computation for $35$ easy ones and a cheap reconstruction (Proposition~\ref{prop:crt}).
+\end{solution}
+
+\begin{solution}{ex:sqrt34}
+\idea Exponentiate to a power that makes $x^2$ equal to $a$ times a square root of $1$, then correct the sign.
+\writeup (a) $23\equiv3\pmod4$ and $2$ is a square modulo $23$ ($23\equiv7\pmod8$), so $x=2^{(23+1)/4}=2^6=64\equiv18$. Check: $18^2=324=14\cdot23+2$.
+(b) $a^{(p-1)/2}=1$ by Euler's criterion, so $a^{(p-1)/4}$ is a square root of $1$ in $\mathbb F_p$, that is $\pm1$. With $x=a^{(p+3)/8}$ (an integer exponent since $p\equiv5\pmod8$), $x^2=a^{(p+3)/4}=a\cdot a^{(p-1)/4}=\pm a$. If the sign is $+$, $x$ is a square root of $a$. If it is $-$, let $c=2^{(p-1)/4}$; since $2$ is a nonsquare modulo $p$, $c^2=2^{(p-1)/2}=-1$, and $(xc)^2=-a\cdot(-1)=a$.
+This costs two exponentiations and needs no search for a nonsquare.
+\end{solution}
+
+\begin{solution}{ex:liars25}
+\idea A strong liar is a Fermat liar; count those in a cyclic group, then check the strong condition.
+\writeup $(\mathbb Z/25\mathbb Z)^\times$ is cyclic of order $20$, so $a^{24}=1$ has $\gcd(24,20)=4$ solutions: the elements of order dividing $4$, namely $\pm1$ and $\pm7$ ($7^2=49\equiv-1$). With $24=2^3\cdot3$, $d=3$: $1^3=1$ and $(-1)^3=-1$ are liars; $7^3=343\equiv18$, $18^2=324\equiv-1$, so $7$ is a liar; and $18^3\equiv(-7)^3\equiv-18\equiv7$, $7^2\equiv-1$, so $18$ is a liar. The strong liars are $1,7,18,24$: four of them, against the bound $\frac{n-1}4=6$ and the bound $\frac{\varphi(n)}p=\frac{20}5=4$ of the proof, which is attained.
+\end{solution}
+
+\begin{solution}{ex:eulerstrong}
+\idea When $s=1$ both tests look at the single number $a^{(n-1)/2}$, and the Jacobi symbol of $\pm1$ is forced.
+\writeup Here $n-1=2d$ with $d$ odd, so $a$ is a strong liar if and only if $a^d\equiv\pm1$. An Euler liar has $a^d\equiv\left(\frac an\right)=\pm1$, so it is a strong liar. Conversely, let $a^d\equiv\varepsilon$ with $\varepsilon=\pm1$. The Jacobi symbol is multiplicative and depends only on $a$ modulo $n$, so $\left(\frac\varepsilon n\right)=\left(\frac{a^d}n\right)=\left(\frac an\right)^d=\left(\frac an\right)$, as $d$ is odd.
+And $\left(\frac1n\right)=1$, $\left(\frac{-1}n\right)=(-1)^{(n-1)/2}=-1$ as $n\equiv3\pmod4$ (Tome~1, Proposition~6.8), so $\left(\frac\varepsilon n\right)=\varepsilon$. Hence $\left(\frac an\right)=\varepsilon\equiv a^d$: $a$ is an Euler liar.
+\end{solution}
+
+\begin{solution}{ex:perfectpower}
+\idea Few exponents, and for each one a binary search over the base; the powers are cheap because the base is short.
+\writeup If $n=a^b$ with $a\ge2$ then $b\le\log_2n<k$. Fix $b$ with $2\le b<k$. The base $a$ has at most $\lceil k/b\rceil$ bits, and $a\mapsto a^b$ is increasing, so a binary search over $a\in[2,2^{\lceil k/b\rceil}]$ decides whether some $a$ has $a^b=n$ in $O(k/b)$ steps. Each step computes $a^b$ by repeated squaring and stops as soon as an intermediate value exceeds $n$.
+Then the numbers involved have at most $2k$ bits, and the $i$th squaring acts on a number of $O(2^ik/b)$ bits, so the squarings cost $O\bigl(\sum_{i\le\log_2b}(2^ik/b)^2\bigr)=O(k^2)$, a geometric sum dominated by its last term; the multiplications into the accumulated result, of at most $2k$ bits, cost $O\bigl(\sum_i k\cdot2^ik/b\bigr)=O(k^2)$ as well. So each step costs $O(k^2)$, and the total is $\sum_{2\le b<k}O(k/b)\cdot O(k^2)=O(k^3\log k)$.
+\end{solution}
+
+\begin{solution}{ex:aksnecessary}
+\idea For tiny $r$ the ring $(\mathbb Z/n\mathbb Z)[X]/(X^r-1)$ is too small to see the difference between a prime and a Fermat pseudoprime.
+\writeup Modulo $X^2-1$, $(X+1)^2=X^2+2X+1=2(X+1)$, so by induction $(X+1)^m=2^{m-1}(X+1)$ for $m\ge1$. Hence $(X+1)^{341}=2^{340}(X+1)\equiv X+1$ modulo $341$, since $2^{340}\equiv1$ (indeed $2^{10}=1024=3\cdot341+1$, so $2^{340}=(2^{10})^{34}\equiv1$). And $X^{341}=X\cdot(X^2)^{170}\equiv X$, so $X^{341}+1\equiv X+1$ as well.
+There is no contradiction: the theorem uses an $r$ with $o_r(n)>\log^2n\approx70.8$, while here $r=2$ and $o_2(341)=1$; and it tests all $a\le\ell$, not just one. With $r=2$ the test only sees whether $2^{n-1}\equiv1$, which is Fermat's test to base $2$, and $341$ is the smallest composite number that passes it.
+\end{solution}
+
+\begin{solution}{ex:brent}
+\idea Once the saved value is on the cycle and the window is longer than the cycle, the next window must contain the repetition.
+\writeup Let $e$ be the least integer with $2^e-1\ge\mu$ and $2^e\ge\lambda$. During window $e$, the saved value $x_{2^e-1}$ is on the cycle (its index is at least $\mu$), and the window contains $j=2^e-1+\lambda$, since $2^e\le j<2^{e+1}$; at this $j$, $x_j=x_{2^e-1}$, and the repetition is found at the latest there, after $2^e-1+\lambda$ evaluations of $f$. (A repetition may also be found earlier, in a smaller window, which only helps.)
+By minimality of $e$, either $e=0$, or $2^{e-1}-1<\mu$, or $2^{e-1}<\lambda$; so $2^e\le\max(2\mu,2\lambda,1)$ and $2^e-1+\lambda<2\mu+3\lambda$. Each step of the search evaluates $f$ once and compares once; Floyd's method evaluates $f$ three times per comparison (once for the tortoise and twice for the hare). Brent reported in 1980 that his variant makes Pollard's rho about $24$ per cent faster.
+\end{solution}
+
+\begin{solution}{ex:pminus1}
+\idea The method finds exactly the prime factors $p$ for which $p-1$ is smooth enough.
+\writeup $E=\operatorname{lcm}(1,2,3,4)=12$, and $2^{12}-1=4095=3^2\cdot5\cdot7\cdot13$. So $\gcd(4095,299)=13$, and $299=13\cdot23$. The factor $13$ is found because $13-1=12=2^2\cdot3$ is $4$-powersmooth, so $12\mid E$. The factor $23$ is not: $2$ has order $11$ modulo $23$ ($2^{11}=2048=89\cdot23+1$), and $11\nmid12$, so $2^{12}\not\equiv1\pmod{23}$. The obstacle is the prime $11$ in $23-1=2\cdot11$, larger than $B$.
+\end{solution}
+
+\begin{solution}{ex:sqrtoracle}
+\idea Hide the sign pattern of $x$ from the machine: it answers with one of four roots, and with probability $\frac12$ not $\pm x$.
+\writeup Choose $x$ uniformly among the units modulo $n$ (if a random $x$ is not a unit, $\gcd(x,n)$ already factors $n$), and give $c=x^2$ to the machine, which returns $y$ with $y^2\equiv c$. The four square roots of $c$ are $\pm x$ and $\pm x'$ (Proposition~\ref{prop:squares}), and given $c$, the number $x$ is uniform among them, since the four roots of $c$ were equally likely to be chosen. The answer $y$ depends only on $c$, so
+$\mathbb P(y\equiv\pm x)=\frac12$. When $y\not\equiv\pm x$, $\gcd(x-y,n)$ is $p$ or $q$. Each call succeeds with probability $\frac12$ independently, so the expected number of calls is $2$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} M.~Agrawal, N.~Kayal and N.~Saxena, \emph{PRIMES is in P}, Annals of Mathematics 160 (2004), 781--793 (preprint circulated in August 2002). After this chapter the paper reads easily. Read the section on the algorithm and its correctness, where the lemmas appear in the same order as here, and compare: the paper chooses a prime $p\mid n$ with $o_r(p)>1$ and works with a group of units in the field $F$, while this chapter counts polynomials and roots directly; check where the extra condition is used there and why it is not needed here.
+Then read the time analysis and the closing conjectures that would improve it, and look up H.~W.~Lenstra and C.~Pomerance, \emph{Primality testing with Gaussian periods}, Journal of the European Mathematical Society 21 (2019), no.~4, for the $\tilde O(\log^6n)$ version.
+\item \emph{The stories.} Gauss's remark is in article~329 of the \emph{Disquisitiones Arithmeticae} (1801). The 2006 G\"odel Prize citation of the ACM SIGACT (dates of the August 2002 announcement and of publication); the undergraduate project is described in Indian accounts of the discovery, for instance the essay \emph{I am a number, am I prime?} in Swarajya. The RSA-129 factorisation was announced by D.~Atkins on 26 April 1994 in a message that gives the method, the eight months of sieving, the $600$ volunteers and the decrypted text; it is the subject of D.~Atkins, M.~Graff, A.~K.~Lenstra and P.~C.~Leyland, \emph{The magic words are squeamish ossifrage}, ASIACRYPT 1994, Lecture Notes in Computer Science 917 (1995), 263--277; the 1977 challenge is in M.~Gardner, \emph{Mathematical Games}, Scientific American, August 1977.
+\item A.~Tonelli, \emph{Bemerkung \"uber die Aufl\"osung quadratischer Congruenzen}, G\"ottinger Nachrichten (1891), 344--346; D.~Shanks, \emph{Five number-theoretic algorithms}, Proceedings of the Second Manitoba Conference on Numerical Mathematics (1973), 51--70; M.~Cipolla, \emph{Un metodo per la risoluzione della congruenza di secondo grado}, Rendiconto dell'Accademia delle Scienze Fisiche e Matematiche di Napoli 9 (1903), 154--163.
+\item A.~Korselt, \emph{Probl\`eme chinois}, L'Interm\'ediaire des Math\'ematiciens 6 (1899), 142--143; R.~D.~Carmichael, \emph{Note on a new number theory function}, Bulletin of the American Mathematical Society 16 (1910), 232--238; W.~R.~Alford, A.~Granville and C.~Pomerance, \emph{There are infinitely many Carmichael numbers}, Annals of Mathematics 139 (1994), 703--722.
+\item G.~L.~Miller, \emph{Riemann's hypothesis and tests for primality}, Journal of Computer and System Sciences 13 (1976), 300--317; M.~O.~Rabin, \emph{Probabilistic algorithm for testing primality}, Journal of Number Theory 12 (1980), 128--138; L.~Monier, \emph{Evaluation and comparison of two efficient probabilistic primality testing algorithms}, Theoretical Computer Science 12 (1980), 97--108; R.~Solovay and V.~Strassen, \emph{A fast Monte-Carlo test for primality}, SIAM Journal on Computing 6 (1977), 84--85; E.~Bach, \emph{Explicit bounds for primality testing and related problems}, Mathematics of Computation 55 (1990), 355--380;
+C.~Pomerance, J.~L.~Selfridge and S.~S.~Wagstaff, \emph{The pseudoprimes to $25\cdot10^9$}, Mathematics of Computation 35 (1980), 1003--1026; J.~Sorenson and J.~Webster, \emph{Strong pseudoprimes to twelve prime bases}, Mathematics of Computation 86 (2017), no.~304.
+\item J.~M.~Pollard, \emph{Theorems on factorization and primality testing}, Proceedings of the Cambridge Philosophical Society 76 (1974), 521--528, and \emph{A Monte Carlo method for factorization}, BIT 15 (1975), 331--334; R.~P.~Brent, \emph{An improved Monte Carlo factorization algorithm}, BIT 20 (1980), 176--184; R.~P.~Brent and J.~M.~Pollard, \emph{Factorization of the eighth Fermat number}, Mathematics of Computation 36 (1981), 627--630; C.~Pomerance, \emph{A tale of two sieves}, Notices of the American Mathematical Society 43 (1996), 1473--1485, a delightful account of the quadratic and number field sieves by the inventor of the first.
+\item R.~Crandall and C.~Pomerance, \emph{Prime Numbers: A Computational Perspective}, 2nd edition, Springer, 2005, is the reference for this whole chapter; A.~Granville, \emph{It is easy to determine whether a given integer is prime}, Bulletin of the American Mathematical Society 42 (2005), 3--38, is a beautiful survey centred on AKS; V.~Shoup, \emph{A Computational Introduction to Number Theory and Algebra}, 2nd edition, Cambridge University Press, 2009, freely available from its author, proves everything in this chapter with care.
+\end{itemize}
