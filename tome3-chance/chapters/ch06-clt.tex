@@ -1,0 +1,561 @@
+\chapter{Convergence and the Central Limit Theorem}
+
+\begin{center}\itshape
+Roll a hundred dice and add them up. The total is $350$ on average, but what is the chance that it exceeds\\
+$400$? A hundred dice have $6^{100}$ outcomes, and yet the answer, about $0.15\%$, comes from one function,\\
+the bell curve, which knows nothing about dice.
+\end{center}
+
+The law of large numbers says that an average of $n$ independent copies of $X$ is close to $\mathbb E[X]$. The central
+limit theorem says how close, and in which way: the error, magnified by $\sqrt n$, is approximately Gaussian, whatever
+the law of $X$, as soon as its variance is finite. This universality is why the bell curve appears in measurement
+errors, in heights, in polls and in the noise of electronic circuits.
+
+The chapter first sorts out what ``converge'' means for random variables: almost surely, in probability, in mean,
+or in law. It proves the strong law of large numbers under a fourth moment, and its consequence for empirical
+distribution functions. Then it proves the central limit theorem by Lindeberg's replacement method, which only
+uses Taylor's formula: the variables are swapped one at a time for Gaussian ones, and each swap costs little.
+Characteristic functions, the Fourier transforms of laws, appear as a second tool, strong enough to show that a law
+is determined by its Fourier transform and that averaging Cauchy variables is useless. The chapter ends with the
+local version of de Moivre and Laplace, with Stirling's constant computed from the central limit theorem, and with
+Gaussian vectors, the multivariate bell curves promised in Tome~0.
+
+\section{Modes of convergence}
+
+\begin{definition}
+Let $X,X_1,X_2,\ldots$ be random variables. We say that $X_n\to X$
+\begin{itemize}
+\item \emph{almost surely} if $P(X_n\to X)=1$;
+\item \emph{in probability} if $P(|X_n-X|>\varepsilon)\to0$ for every $\varepsilon>0$;
+\item \emph{in $L^p$} ($p=1,2$) if $\mathbb E|X_n-X|^p\to0$;
+\item \emph{in law} if $\mathbb E[f(X_n)]\to\mathbb E[f(X)]$ for every bounded continuous $f:\R\to\R$.
+\end{itemize}
+\end{definition}
+
+The first three need all the variables on one probability space; convergence in law only concerns their laws, and
+we also write $X_n\to\mu$ in law when $\mu$ is the law of $X$. The weak law of Chapter~4 is a convergence in probability,
+and Corollary~\ref{cor:slln} an almost sure one.
+
+\begin{think}
+Let $A_1,A_2,\ldots$ be independent events with $P(A_n)=\frac1n$. Does $\mathbf 1_{A_n}$ converge to $0$? In which of the four senses?
+\end{think}
+
+\begin{proposition}\label{prop:modes}
+\begin{enumerate}[label=(\alph*)]
+\item Almost sure convergence and convergence in $L^p$ each imply convergence in probability.
+\item Convergence in probability implies convergence in law; and if $X_n\to c$ in law for a constant $c$, then $X_n\to c$ in
+probability.
+\item If $X_n\to X$ in probability, a subsequence converges almost surely.
+\item No other implication holds in general: there are sequences that converge in probability and in $L^p$ but not almost
+surely; almost surely but not in $L^1$; and in law but not in probability.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) If $X_n\to X$ a.s., then $\mathbf 1_{|X_n-X|>\varepsilon}\to0$ a.s., and dominated convergence (bounded by $1$) gives $P(|X_n-X|>\varepsilon)\to0$. In $L^p$,
+Markov's inequality gives $P(|X_n-X|>\varepsilon)\le\varepsilon^{-p}\mathbb E|X_n-X|^p$.
+
+(b) Let $f$ be bounded by $K$ and continuous, and $\varepsilon\in\,]0,1]$. Choose $M$ with $P(|X|>M)<\varepsilon$ (continuity of $P$ along $\{|X|>M\}\downarrow\varnothing$), and,
+by Heine (Lemma~\ref{lem:heine}) on $[-M-1,M+1]$, a $\delta\in\,]0,1]$ with $|f(x)-f(y)|<\varepsilon$ when $x,y$ lie there and $|x-y|<\delta$. If $|X|\le M$ and
+$|X_n-X|<\delta$, then $|f(X_n)-f(X)|<\varepsilon$; otherwise it is at most $2K$. So $\mathbb E|f(X_n)-f(X)|\le\varepsilon+2K\varepsilon+2KP(|X_n-X|\ge\delta)$, and the last term
+tends to $0$. For the converse with a constant, let $f(x)=\min(1,|x-c|/\varepsilon)$: then $P(|X_n-c|\ge\varepsilon)\le\mathbb E[f(X_n)]\to f(c)=0$.
+
+(c) Choose $n_1<n_2<\cdots$ with $P(|X_{n_k}-X|>2^{-k})<2^{-k}$. By Borel--Cantelli (Theorem~\ref{thm:bc}(a)), almost surely $|X_{n_k}-X|\le2^{-k}$ for all
+large $k$.
+
+(d) With the $A_n$ of the think box, $X_n=\mathbf 1_{A_n}$ satisfies $P(|X_n|>\varepsilon)\le\mathbb E|X_n|^p=\frac1n\to0$, but $X_n=1$ infinitely often almost surely by
+Borel--Cantelli (b). With $U$ uniform on $]0,1[$, $X_n=n\mathbf 1_{U<1/n}\to0$ everywhere, but $\mathbb E[X_n]=1$. With $X$ a $N(0,1)$ variable, $X_n=-X$ has
+the law of $X$ for every $n$, so $X_n\to X$ in law, but $|X_n-X|=2|X|$ does not tend to $0$ in probability.
+\end{proof}
+
+Convergence in law can be read on distribution functions, and can be tested with smooth functions only. A
+non-decreasing $F$ has at most countably many jumps (at most $k$ jumps of size $\ge\frac1k$), so its continuity points are dense.
+
+\begin{proposition}\label{prop:law}
+Let $F_n$ and $F$ be the distribution functions of $X_n$ and $X$.
+\begin{enumerate}[label=(\alph*)]
+\item $X_n\to X$ in law if and only if $F_n(t)\to F(t)$ at every point $t$ where $F$ is continuous.
+\item If $\mathbb E[f(X_n)]\to\mathbb E[f(X)]$ for every $f$ of class $C^3$ with $f,f',f'',f'''$ bounded, then $X_n\to X$ in law.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Let $t$ be a continuity point of $F$ and $\delta>0$. Suppose $g\le\mathbf 1_{]-\infty,t]}\le h$ for functions $g$, $h$ with values in $[0,1]$ such that $g=1$ on
+$]-\infty,t-\delta]$ and $h=0$ on $[t+\delta,\infty[$. If $\mathbb E[g(X_n)]\to\mathbb E[g(X)]$ and likewise for $h$, then
+\[
+\begin{aligned}F(t-\delta)\le\mathbb E[g(X)]&\le\liminf F_n(t)\eqbr\le\limsup F_n(t)\\&\le\mathbb E[h(X)]\le F(t+\delta),\end{aligned}
+\]
+and letting $\delta\to0$ gives $F_n(t)\to F(t)$. For (a), take $g$ and $h$ piecewise linear. For (b), let $H(u)=1$ for $u\le0$, $H(u)=0$ for $u\ge1$ for $0\le u\le1$,
+\[
+H(u)=1-u^4(35-84u+70u^2-20u^3).
+\]
+Then $H(1)=0$ and $H'(u)=-140u^3(1-u)^3$ on $[0,1]$, so $H$ is non-increasing and its first three derivatives vanish at $0$ and $1$: $H$ is of
+class $C^3$ on $\R$, with bounded derivatives. Take $g(x)=H(\frac{x-t+\delta}\delta)$ and $h(x)=H(\frac{x-t}\delta)$. This proves (b) once the converse half of (a) is
+established.
+
+Conversely, suppose $F_n\to F$ at continuity points, and let $f$ be continuous with $|f|\le K$, and $\varepsilon>0$. Choose continuity points $a<b$
+of $F$ with $F(a)<\varepsilon$ and $1-F(b)<\varepsilon$, and by Heine continuity points $a=s_0<s_1<\dots<s_m=b$ such that $f$ varies by less than $\varepsilon$ on each
+$[s_{j-1},s_j]$. Let $g=\sum_jf(s_j)\mathbf 1_{]s_{j-1},s_j]}$. Then $|f-g|\le\varepsilon$ on $]a,b]$ and $|f-g|\le K$ elsewhere, so for $Y=X_n$ or $X$,
+$|\mathbb E f(Y)-\mathbb E g(Y)|\le\varepsilon+K\,P(Y\notin\,]a,b])$. Now $\mathbb E g(X_n)=\sum_jf(s_j)(F_n(s_j)-F_n(s_{j-1}))\to\mathbb E g(X)$ and
+$P(X_n\notin\,]a,b])=F_n(a)+1-F_n(b)\to F(a)+1-F(b)<2\varepsilon$. Hence $\limsup|\mathbb E f(X_n)-\mathbb E f(X)|\le2\varepsilon+4K\varepsilon$.
+\end{proof}
+
+\section{The strong law of large numbers}
+
+\begin{theorem}[strong law, fourth moment]\label{thm:slln4}
+Let $X_1,X_2,\ldots$ be independent with the same mean $\mu$ and $\sup_i\mathbb E[(X_i-\mu)^4]=K<\infty$. Then $\frac{S_n}n\to\mu$ almost surely and in $L^2$.
+\end{theorem}
+\begin{proof}
+Let $Y_i=X_i-\mu$, so $\mathbb E Y_i=0$. Expand $\mathbb E[(Y_1+\dots+Y_n)^4]$ as a sum of $\mathbb E[Y_iY_jY_kY_l]$. By independence, a term in which some index
+appears exactly once vanishes, since it factors with a factor $\mathbb E[Y_i]=0$. What remains is the $n$ terms $\mathbb E[Y_i^4]$ and, for each of the
+$\binom n2$ pairs $i<j$, the $6$ arrangements of $Y_i^2Y_j^2$, with $\mathbb E[Y_i^2Y_j^2]=\mathbb E[Y_i^2]\mathbb E[Y_j^2]\le\sqrt{\mathbb E[Y_i^4]\,\mathbb E[Y_j^4]}\le K$ by Cauchy--Schwarz.
+So
+\[
+\mathbb E\bigl[(S_n-n\mu)^4\bigr]\le nK+3n(n-1)K\le3n^2K,
+\]
+and by Markov, $P(|\frac{S_n}n-\mu|\ge\varepsilon)\le\frac{3K}{n^2\varepsilon^4}$, which is summable. Conclude as in Corollary~\ref{cor:slln} with Borel--Cantelli. The $L^2$
+convergence is the weak law's computation: $\mathbb E[(\frac{S_n}n-\mu)^2]\le\frac{\sqrt K}n$, since $\operatorname{Var}X_i\le\sqrt K$.
+\end{proof}
+
+The strong law holds for every i.i.d.\ sequence with $\mathbb E|X_1|<\infty$ (Kolmogorov 1933; Etemadi's 1981 proof uses only
+pairwise independence), with a truncation argument that we leave for later in the series. Its most used consequence
+is that simulation works: the empirical distribution of a sample converges to the true law.
+
+\begin{theorem}[Glivenko--Cantelli]\label{thm:gc}
+Let $X_1,X_2,\ldots$ be i.i.d.\ with a continuous distribution function $F$, and $F_n(t)=\frac1n\#\{i\le n:X_i\le t\}$ the empirical distribution
+function. Then $\sup_{t\in\R}|F_n(t)-F(t)|\to0$ almost surely.
+\end{theorem}
+\begin{proof}
+Fix $k\ge1$. By the intermediate value theorem there are $t_1\le\dots\le t_{k-1}$ with $F(t_j)=\frac jk$; put $t_0=-\infty$, $t_k=+\infty$ (with $F_n=F=0$ at
+$-\infty$ and $=1$ at $+\infty$). For each $j$, $F_n(t_j)$ is the average of the independent bounded variables $\mathbf 1_{X_i\le t_j}$ of mean $F(t_j)$, so by
+Corollary~\ref{cor:slln} the event $E_k=\{F_n(t_j)\to F(t_j)\text{ for all }j\}$ has probability $1$. For $t_{j-1}\le t<t_j$, monotonicity gives
+\[
+\begin{aligned}F_n(t)-F(t)&\le F_n(t_j)-F(t_{j-1})\eqbr=F_n(t_j)-F(t_j)+\tfrac1k,\\
+F_n(t)-F(t)&\ge F_n(t_{j-1})-F(t_j)\eqbr=F_n(t_{j-1})-F(t_{j-1})-\tfrac1k.\end{aligned}
+\]
+So $\sup_t|F_n(t)-F(t)|\le\max_j|F_n(t_j)-F(t_j)|+\frac1k$, and on $E_k$ its $\limsup$ is at most $\frac1k$. On $\bigcap_kE_k$, an event of probability $1$, it tends to $0$.
+\end{proof}
+
+The same holds without continuity, with a little more care at the jumps. Kolmogorov showed that $\sqrt n\sup_t|F_n-F|$ has a
+limit law that does not depend on $F$; this is the Kolmogorov--Smirnov test used to check random number generators,
+as in the notebook of Chapter~5.
+
+\section{Characteristic functions}
+
+For a random vector $X$ in $\R^d$, the \emph{characteristic function} is $\varphi_X(t)=\mathbb E\bigl[e^{i\langle t,X\rangle}\bigr]=\mathbb E\cos\langle t,X\rangle+i\,\mathbb E\sin\langle t,X\rangle$
+for $t\in\R^d$, the Fourier transform of the law. It always exists, $|\varphi_X|\le1$ (by Jensen for the convex modulus, or by
+Cauchy--Schwarz on the real and imaginary parts), $\varphi_X(0)=1$, $\varphi_X$ is continuous by dominated convergence, and
+$\varphi_{aX+b}(t)=e^{itb}\varphi_X(at)$ for real $X$. If $X$ and $Y$ are independent, $\varphi_{X+Y}=\varphi_X\varphi_Y$: expand $e^{i\langle t,X\rangle}e^{i\langle t,Y\rangle}$ into real and
+imaginary parts and use $\mathbb E[UV]=\mathbb E[U]\mathbb E[V]$ for bounded independent $U$, $V$ (Proposition~\ref{prop:indepcdf}).
+
+\begin{lemma}[differentiation under the integral]\label{lem:diffint}
+Let $g(t,x)$ be defined for $t$ in an open interval $J$ and $x\in E$, integrable in $x$ for each $t$, and differentiable in $t$ with
+$|\partial_tg(t,x)|\le G(x)$ for an integrable $G$. Then $t\mapsto\int g(t,x)\dd\mu(x)$ is differentiable on $J$, with derivative $\int\partial_tg(t,x)\dd\mu(x)$.
+\end{lemma}
+\begin{proof}
+For $h_k\to0$, the quotients $\frac{g(t+h_k,x)-g(t,x)}{h_k}$ equal $\partial_tg(t+\theta h_k,x)$ for some $\theta\in\,]0,1[$ (mean value theorem), so they are bounded by $G(x)$,
+and they tend to $\partial_tg(t,x)$. Apply dominated convergence.
+\end{proof}
+
+\begin{proposition}\label{prop:cfexamples}
+\begin{enumerate}[label=(\alph*)]
+\item If $X$ is $N(m,\sigma^2)$, then $\varphi_X(t)=e^{imt-\sigma^2t^2/2}$.
+\item If $X$ has the Laplace density $\frac12e^{-|x|}$, then $\varphi_X(t)=\frac1{1+t^2}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) By the scaling rule it suffices to take $m=0$, $\sigma=1$. Since the density $\phi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$ is even, $\mathbb E\sin(tX)=0$ and $\varphi(t)=\int\cos(tx)\phi(x)\dd x$.
+By the lemma with $G(x)=|x|\phi(x)$, $\varphi'(t)=-\int x\sin(tx)\phi(x)\dd x$. Since $-x\phi(x)=\phi'(x)$, an integration by parts (on $[-A,A]$, then $A\to\infty$) gives
+$\varphi'(t)=\int\sin(tx)\phi'(x)\dd x=-t\int\cos(tx)\phi(x)\dd x=-t\varphi(t)$. So $(\varphi(t)e^{t^2/2})'=0$, and $\varphi(t)=\varphi(0)e^{-t^2/2}=e^{-t^2/2}$.
+(b) By symmetry $\varphi(t)=\int_0^\infty e^{-x}\cos(tx)\dd x=:I$. Two integrations by parts give $I=1-t\int_0^\infty e^{-x}\sin(tx)\dd x=1-t^2I$.
+\end{proof}
+
+\begin{theorem}[uniqueness and inversion]\label{thm:inversion}
+\begin{enumerate}[label=(\alph*)]
+\item Two random vectors in $\R^d$ with the same characteristic function have the same law.
+\item If $X$ is real and $\int_\R|\varphi_X(t)|\dd t<\infty$, then $X$ has the continuous density $f(x)=\frac1{2\pi}\int_\R e^{-itx}\varphi_X(t)\dd t$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $Z$ be a vector of $d$ independent $N(0,1)$ variables, independent of $X$ (by (A1) we may enlarge the probability space,
+which does not change the law of $X$), and $\sigma>0$. The density of $\sigma Z$ is $\psi_\sigma(y)=\prod_j\frac1{\sigma\sqrt{2\pi}}e^{-y_j^2/(2\sigma^2)}$, and by (a) of
+Proposition~\ref{prop:cfexamples} applied to a $N(0,\sigma^{-2})$ variable, coordinate by coordinate,
+\[
+\psi_\sigma(y)=\frac1{(2\pi)^d}\int_{\R^d}e^{i\langle t,y\rangle}e^{-\sigma^2|t|^2/2}\dd t.
+\]
+By Tonelli and the translation invariance of $\lambda_d$ (the one-dimensional case in each coordinate), $X+\sigma Z$ has the density
+$p_\sigma(x)=\mathbb E[\psi_\sigma(x-X)]$. Insert the formula for $\psi_\sigma$ and exchange $\mathbb E$ and $\int\dd t$ (Fubini: the integrand has modulus
+$e^{-\sigma^2|t|^2/2}$, integrable on $\Omega\times\R^d$):
+\[
+p_\sigma(x)=\frac1{(2\pi)^d}\int_{\R^d}e^{i\langle t,x\rangle}\varphi_X(-t)\,e^{-\sigma^2|t|^2/2}\dd t.
+\]
+(a) So the law of $X+\sigma Z$ depends only on $\varphi_X$. For bounded continuous $g$, $\mathbb E[g(X+\sigma Z)]\to\mathbb E[g(X)]$ as $\sigma\to0$ by dominated
+convergence; so $\mathbb E[g(X)]$ is determined by $\varphi_X$ for every such $g$. For a box $B=\prod_j\,]-\infty,s_j]$, the continuous functions
+$g_k(x)=\prod_j\min\bigl(1,\max(0,1-k(x_j-s_j))\bigr)$ decrease to $\mathbf 1_B$, so $P(X\in B)=\lim\mathbb E[g_k(X)]$ is determined too. Boxes form a
+$\pi$-system generating $\mathcal B(\R^d)$: the law is determined (Theorem~\ref{thm:uniqueness}).
+
+(b) Here $d=1$. Substituting $t\to-t$,
+\[
+p_\sigma(x)=\frac1{2\pi}\int e^{-itx}\varphi_X(t)e^{-\sigma^2t^2/2}\dd t,
+\]
+and
+\[
+\begin{aligned}|p_\sigma(x)-f(x)|&\eqbr\le\frac1{2\pi}\int|\varphi_X(t)|\bigl(1-e^{-\sigma^2t^2/2}\bigr)\dd t,\end{aligned}
+\]
+which tends to $0$ as $\sigma\to0$, uniformly in $x$, by dominated convergence. So $f$ is real, non-negative, and continuous (dominated convergence again). For a
+continuous $g$ vanishing outside a segment, $\mathbb E[g(X)]=\lim_{\sigma\to0}\int gp_\sigma=\int gf$. Trapezoidal $g_k$ equal to $1$ on $[a,b]$ and $0$ outside
+$[a-\frac1k,b+\frac1k]$ decrease to $\mathbf 1_{[a,b]}$, so $P(a\le X\le b)=\int_a^bf$ for all $a<b$, and $f$ is a density of $X$.
+\end{proof}
+
+\begin{corollary}[averaging Cauchy variables]\label{cor:cauchy}
+A Cauchy variable has characteristic function $e^{-|t|}$. If $X_1,\dots,X_n$ are independent Cauchy variables, then $\frac{X_1+\dots+X_n}n$ is
+again Cauchy.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{thm:inversion}(b) to the Laplace law, whose characteristic function $\frac1{1+t^2}$ is integrable:
+$\frac12e^{-|x|}=\frac1{2\pi}\int e^{-itx}\frac{\dd t}{1+t^2}$, that is, $\int e^{-itx}\frac{\dd t}{\pi(1+t^2)}=e^{-|x|}$. Read with $x=-s$, this says that the Cauchy law has
+characteristic function $e^{-|s|}$. The average then has characteristic function $(e^{-|t|/n})^n=e^{-|t|}$, and (a) concludes.
+\end{proof}
+
+The average of a million Cauchy variables is as spread out as a single one: the law of large numbers fails, as it
+must without a mean (Exercise~\ref{ex:cauchy}). Lévy's continuity theorem, that $X_n\to X$ in law iff $\varphi_{X_n}\to\varphi_X$ pointwise, gives
+another proof of the central limit theorem; it is proved in Tome~10, together with the Berry--Esseen bound below.
+
+\section{The central limit theorem}
+
+\begin{think}
+Throw $100$ fair dice. The total has mean $350$ and standard deviation $\sqrt{100\cdot\frac{35}{12}}\approx17.1$. Estimate the probability that it
+exceeds $400$, using only the bell curve and the fact that $400$ is about $2.9$ standard deviations above the mean.
+\end{think}
+
+Let $\Phi(t)=\int_{-\infty}^t\frac1{\sqrt{2\pi}}e^{-x^2/2}\dd x$ be the $N(0,1)$ distribution function. The theorem is stated for a \emph{triangular array}: for
+each $n$, a finite family of independent variables, possibly with different laws.
+
+\begin{theorem}[Lindeberg, 1922]\label{thm:lindeberg}
+For each $n$ let $X_{n,1},\dots,X_{n,k_n}$ be independent, with $\mathbb E[X_{n,k}]=0$, variances $\sigma_{n,k}^2$ with $\sum_k\sigma_{n,k}^2=1$, and suppose that for every
+$\varepsilon>0$
+\[
+L_n(\varepsilon)=\sum_{k=1}^{k_n}\mathbb E\bigl[X_{n,k}^2\mathbf 1_{|X_{n,k}|>\varepsilon}\bigr]\xrightarrow[n\to\infty]{}0.
+\]
+Then $T_n=X_{n,1}+\dots+X_{n,k_n}$ converges in law to $N(0,1)$: $P(T_n\le t)\to\Phi(t)$ for every $t$.
+\end{theorem}
+\begin{proof}
+Fix $f$ of class $C^3$ with $f''$ and $f'''$ bounded, and write $R(x,h)=f(x+h)-f(x)-f'(x)h-\frac12f''(x)h^2$. By Taylor's formula to order $3$,
+$|R(x,h)|\le\frac16\|f'''\|\,|h|^3$, and to order $2$, $f(x+h)-f(x)-f'(x)h=\frac12f''(\xi)h^2$, so $|R(x,h)|\le\|f''\|h^2$. Hence, for any $\varepsilon>0$,
+\[
+|R(x,h)|\le\tfrac16\|f'''\|\,\varepsilon h^2+\|f''\|h^2\mathbf 1_{|h|>\varepsilon}.\tag{$*$}
+\]
+Drop the variables with $\sigma_{n,k}=0$, which vanish almost surely. Let $Z_{n,k}$ be $N(0,\sigma_{n,k}^2)$, independent of each other and of the $X_{n,k}$
+(enlarging the probability space by (A1)). By Proposition~\ref{prop:gausssum}, $N=\sum_kZ_{n,k}$ is $N(0,1)$. Fix $n$, drop it from the notation,
+and let $H_k=\sum_{j<k}Z_j+\sum_{j>k}X_j$ be the \emph{hybrid} in which the first $k-1$ variables have been replaced. Since $H_k+Z_k=H_{k+1}+X_{k+1}$,
+the sum telescopes:
+\[
+f(T_n)-f(N)=\sum_{k=1}^{k_n}\bigl(f(H_k+X_k)-f(H_k+Z_k)\bigr).
+\]
+Now $H_k$ is independent of $X_k$ and of $Z_k$ (it is a function of the other variables), and $X_k$, $Z_k$ have the same first two moments. So
+\[
+\begin{aligned}\mathbb E[f(H_k+X_k)]&\eqbr=\mathbb E[f(H_k)]+\mathbb E[f'(H_k)]\,\mathbb E[X_k]\eqbr+\tfrac12\mathbb E[f''(H_k)]\,\mathbb E[X_k^2]\eqbr+\mathbb E[R(H_k,X_k)],\end{aligned}
+\]
+and likewise with $Z_k$; the first three terms are the same, and $|\mathbb E f(H_k+X_k)-\mathbb E f(H_k+Z_k)|\le\mathbb E|R(H_k,X_k)|+\mathbb E|R(H_k,Z_k)|$. By $(*)$,
+$\sum_k\mathbb E|R(H_k,X_k)|\le\frac16\|f'''\|\varepsilon+\|f''\|L_n(\varepsilon)$. For the Gaussian terms, $\mathbb E|Z_k|^3=\sigma_k^3\,\mathbb E|N|^3\le2\sigma_k^3$ (since $\mathbb E|N|^3=2\sqrt{2/\pi}$), so
+\[
+\begin{aligned}\sum_k\mathbb E|R(H_k,Z_k)|&\le\tfrac13\|f'''\|\sum_k\sigma_k^3\eqbr\le\tfrac13\|f'''\|\max_k\sigma_k,\end{aligned}
+\]
+and $\sigma_k^2\le\varepsilon^2+\mathbb E[X_k^2\mathbf 1_{|X_k|>\varepsilon}]\le\varepsilon^2+L_n(\varepsilon)$. Altogether
+\[
+\begin{aligned}\limsup_n\bigl|\mathbb E f(T_n)-\mathbb E f(N)\bigr|&\eqbr\le\tfrac16\|f'''\|\varepsilon+\tfrac13\|f'''\|\varepsilon,\end{aligned}
+\]
+for every $\varepsilon>0$, so $\mathbb E f(T_n)\to\mathbb E f(N)$. By Proposition~\ref{prop:law}(b) and the continuity of $\Phi$, $P(T_n\le t)\to\Phi(t)$ for all $t$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-lindeberg}
+\caption{Lindeberg's replacement. Each row is a hybrid sum: from top to bottom, the variables $X_k$ (orange) are replaced one at a
+time by Gaussian variables $Z_k$ (blue) with the same mean and variance. The top row is $T_n$, the bottom row is exactly $N(0,1)$, and
+each step changes $\mathbb E f$ only by a third-order Taylor remainder.}
+\label{fig:lindeberg}
+\end{figure}
+
+\begin{corollary}[central limit theorem]\label{cor:clt}
+Let $X_1,X_2,\ldots$ be i.i.d.\ with mean $\mu$ and variance $\sigma^2\in\,]0,\infty[$, and $S_n=X_1+\dots+X_n$. Then for every $t$,
+\[
+P\Bigl(\frac{S_n-n\mu}{\sigma\sqrt n}\le t\Bigr)\xrightarrow[n\to\infty]{}\Phi(t).
+\]
+\end{corollary}
+\begin{proof}
+Take $X_{n,k}=\frac{X_k-\mu}{\sigma\sqrt n}$ for $k\le n$. Then $\sum_k\mathbb E[X_{n,k}^2]=1$ and
+\[
+L_n(\varepsilon)=\mathbb E\Bigl[\frac{(X_1-\mu)^2}{\sigma^2}\mathbf 1_{|X_1-\mu|>\varepsilon\sigma\sqrt n}\Bigr],
+\]
+which tends to $0$ by
+dominated convergence (dominated by $\frac{(X_1-\mu)^2}{\sigma^2}$, integrable).
+\end{proof}
+
+For the hundred dice, $P(S>400)=P(S\ge401)\approx1-\Phi(\frac{400.5-350}{17.08})=1-\Phi(2.96)\approx0.00155$, where $400.5$ rather than $400$ is the usual
+correction for an integer-valued sum; the exact value, computed in the notebook, is $0.00151$. For Bernoulli
+variables the corollary is the theorem of de Moivre (1733, for $p=\frac12$) and Laplace (1812): the binomial law is
+approximately Gaussian.
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-sums}
+\caption{The density of $\frac{S_n-n}{\sqrt n}$, where $S_n$ is a sum of $n$ independent exponential$(1)$ variables (a Gamma$(n)$ law), for $n=1$, $2$, $4$ and
+$16$, against the $N(0,1)$ density (black). The skewness of the exponential law fades like $\frac1{\sqrt n}$.}
+\label{fig:sums}
+\end{figure}
+
+\begin{remark}
+How fast? The Berry--Esseen theorem says that $\sup_t\bigl|P(\frac{S_n-n\mu}{\sigma\sqrt n}\le t)-\Phi(t)\bigr|\le\frac{C\,\mathbb E|X_1-\mu|^3}{\sigma^3\sqrt n}$, with an absolute constant $C$
+known to be less than $0.48$ (Shevtsova, 2011). The rate $\frac1{\sqrt n}$ is attained for coin flips, because of the jumps of the binomial
+distribution function. It is proved in Tome~10.
+\end{remark}
+
+\begin{beauty}
+Lindeberg's proof never looks at the law of $X$ beyond its first two moments: replacing one summand by a
+Gaussian of the same mean and variance changes $\mathbb E f$ by a third-order term, and $n$ such changes of size $n^{-3/2}$
+add up to almost nothing. The same \emph{swapping} idea proves universality theorems far beyond this chapter, for the
+eigenvalues of random matrices (Tao and Vu) and for the outcomes of Boolean functions (the invariance principle of
+Mossel, O'Donnell and Oleszkiewicz).
+\end{beauty}
+
+\section{The local theorem and Stirling's constant}
+
+The central limit theorem is about $P(S_n\le t)$. For coin flips one can say more: each individual probability $P(S_n=k)$ is
+close to the bell curve, and the proof is Stirling's formula together with the exponent $I_p$ of Chapter~4.
+
+\begin{theorem}[local de Moivre--Laplace]\label{thm:local}
+Let $S_n$ be binomial$(n,p)$ with $0<p<1$, $q=1-p$, $\phi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$ and $x_k=\frac{k-np}{\sqrt{npq}}$. For every $A>0$,
+\[
+\sup_{k:\,|x_k|\le A}\ \Bigl|\frac{\sqrt{npq}\;P(S_n=k)}{\phi(x_k)}-1\Bigr|\xrightarrow[n\to\infty]{}0.
+\]
+\end{theorem}
+\begin{proof}
+Write $m!=\sqrt{2\pi m}\,(\frac me)^me^{\varepsilon_m}$, with $\varepsilon_m\to0$ (Tome~0, Theorems~5.6 and~6.4). Let $a=\frac kn$; then $|a-p|\le\frac{A\sqrt{pq}}{\sqrt n}$, so $k$ and
+$n-k$ tend to infinity uniformly. As in the proof of Theorem~\ref{thm:cramer},
+\[
+\begin{aligned}P(S_n=k)&=\binom nkp^kq^{n-k}\eqbr=e^{\varepsilon_n-\varepsilon_k-\varepsilon_{n-k}}\frac1{\sqrt{2\pi na(1-a)}}\,e^{-nI_p(a)}.\end{aligned}
+\]
+Uniformly in the allowed $k$: $a(1-a)\to pq$, the factor $e^{\varepsilon_n-\varepsilon_k-\varepsilon_{n-k}}$ tends to $1$, and it remains to see that $nI_p(a)-\frac{x_k^2}2\to0$.
+Now $I_p(p)=I_p'(p)=0$, $I_p''(a)=\frac1{a(1-a)}$ so $I_p''(p)=\frac1{pq}$, and $I_p'''(a)=\frac1{(1-a)^2}-\frac1{a^2}$ is bounded by some $C$ for $a$ in $[\frac p2,\frac{1+p}2]$. By
+Taylor's formula, $|I_p(a)-\frac{(a-p)^2}{2pq}|\le\frac C6|a-p|^3$, and since $\frac{x_k^2}2=\frac{n(a-p)^2}{2pq}$,
+$|nI_p(a)-\frac{x_k^2}2|\le\frac{Cn}6|a-p|^3\le\frac{C(A\sqrt{pq})^3}{6\sqrt n}\to0$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-local}
+\caption{The binomial$(40,0.3)$ probabilities (bars) and $\frac1{\sqrt{npq}}\phi(x_k)$ (curve). Even at $n=40$ the agreement is close; it is worst in the
+tails, where the theorem says nothing, and the relative error there is governed by $I_p$ rather than by its quadratic
+approximation.}
+\label{fig:local}
+\end{figure}
+
+Tome~0 proved Stirling's formula in two steps: $n!\sim C\sqrt n(\frac ne)^n$ for some constant $C$, then $C=\sqrt{2\pi}$ by Wallis' integrals.
+The central limit theorem finds the constant independently, since the only $\sqrt{2\pi}$ it uses is the Gaussian
+integral.
+
+\begin{theorem}[Stirling's constant from the CLT]\label{thm:stirlingclt}
+$\dfrac{n!\,e^n}{n^{n+1/2}}\to\sqrt{2\pi}$.
+\end{theorem}
+\begin{proof}
+Let $S_n$ be Poisson$(n)$, the law of a sum of $n$ independent Poisson$(1)$ variables (Chapter~3: PGFs multiply), with mean and
+variance $1$ each. By Corollary~\ref{cor:clt}, $Y_n=\frac{S_n-n}{\sqrt n}\to N$ in law, where $N$ is $N(0,1)$. First, an exact computation: since
+\[
+\sum_{k=0}^n(n-k)\frac{n^k}{k!}=\sum_{k=0}^n\frac{n^{k+1}}{k!}-\sum_{k=1}^n\frac{n^k}{(k-1)!}=\frac{n^{n+1}}{n!}
+\]
+(the second sum is the first without its last term), $\mathbb E[(n-S_n)^+]=e^{-n}\frac{n^{n+1}}{n!}$, that is, $\mathbb E[g(Y_n)]=\frac{n^{n+1/2}e^{-n}}{n!}$ with $g(y)=\max(-y,0)$.
+Second, $\mathbb E[g(Y_n)]\to\mathbb E[g(N)]=\int_0^\infty x\phi(x)\dd x=\frac1{\sqrt{2\pi}}$. Indeed, $g_M=\min(g,M)$ is bounded and continuous, so $\mathbb E g_M(Y_n)\to\mathbb E g_M(N)$
+(Proposition~\ref{prop:law}(a)); and $0\le g-g_M\le|y|\mathbf 1_{|y|>M}\le\frac{y^2}M$, with $\mathbb E[Y_n^2]=\mathbb E[N^2]=1$, so both errors are at most $\frac1M$.
+\end{proof}
+
+\section{Gaussian vectors}
+
+\begin{think}
+Let $X$ be $N(0,1)$ and $\varepsilon=\pm1$ a fair sign independent of $X$, and $Y=\varepsilon X$. Is $Y$ Gaussian? Are $X$ and $Y$ uncorrelated? Are they
+independent?
+\end{think}
+
+\begin{definition}
+A random vector $X=(X_1,\dots,X_d)$ is \emph{Gaussian} if $\langle u,X\rangle=\sum_ju_jX_j$ is Gaussian for every $u\in\R^d$, where constants count as
+Gaussian $N(m,0)$.
+\end{definition}
+
+Each $X_j$ is then Gaussian, hence square-integrable, so $X$ has a mean $m=\mathbb E[X]$ and a \emph{covariance matrix} $\Sigma$ with
+$\Sigma_{jk}=\operatorname{Cov}(X_j,X_k)$. By bilinearity $\operatorname{Var}\langle u,X\rangle=u^{\mathsf T}\Sigma u$, so $\Sigma$ is symmetric and positive semi-definite, and $\langle u,X\rangle$ is $N(\langle u,m\rangle,u^{\mathsf T}\Sigma u)$.
+
+\begin{theorem}\label{thm:gaussvec}
+\begin{enumerate}[label=(\alph*)]
+\item A Gaussian vector with mean $m$ and covariance $\Sigma$ has characteristic function $e^{i\langle u,m\rangle-u^{\mathsf T}\Sigma u/2}$, so its law depends only on
+$(m,\Sigma)$.
+\item For every $m\in\R^d$ and every symmetric positive semi-definite $\Sigma$, there is a Gaussian vector with mean $m$ and covariance $\Sigma$.
+\item The components of a Gaussian vector are independent if and only if they are uncorrelated ($\Sigma$ diagonal).
+\item If $X$ is Gaussian, so is $AX+b$, with mean $Am+b$ and covariance $A\Sigma A^{\mathsf T}$. In particular, if $Z$ has independent $N(0,1)$
+components and $Q$ is orthogonal, then $QZ$ has the law of $Z$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) $\varphi_X(u)$ is the characteristic function of the real variable $\langle u,X\rangle$ at $1$, given by Proposition~\ref{prop:cfexamples}(a) (directly if the
+variance is $0$); then Theorem~\ref{thm:inversion}(a).
+(b) By the spectral theorem (Tome~0, Theorem~7.7), $\Sigma=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal with entries $\lambda_j\ge0$. Let $A=PD^{1/2}$ and
+$X=m+AZ$ with $Z$ as in (d). Then $\langle u,X\rangle=\langle u,m\rangle+\sum_j(A^{\mathsf T}u)_jZ_j$ is a sum of independent Gaussian variables, hence Gaussian with
+variance $|A^{\mathsf T}u|^2=u^{\mathsf T}AA^{\mathsf T}u=u^{\mathsf T}\Sigma u$ (Proposition~\ref{prop:gausssum}).
+(c) Independent square-integrable variables are uncorrelated. Conversely, if $\Sigma$ is diagonal, the vector $(m_j+\sqrt{\Sigma_{jj}}Z_j)_j$ has independent
+components and is Gaussian with the same mean and covariance, so by (a) it has the law of $X$; independence is a property
+of the law.
+(d) $\langle u,AX+b\rangle=\langle A^{\mathsf T}u,X\rangle+\langle u,b\rangle$ is Gaussian, and the mean and covariance follow by linearity. For $QZ$, the covariance is $QQ^{\mathsf T}=I$.
+\end{proof}
+
+In the think box, $Y$ is $N(0,1)$ (symmetry) and $\operatorname{Cov}(X,Y)=\mathbb E[\varepsilon]\,\mathbb E[X^2]=0$, but $|Y|=|X|$, so they are not independent: $(X,Y)$ is not a
+Gaussian vector ($X+Y$ is $0$ with probability $\frac12$). Part (c) needs the \emph{joint} Gaussianity. When $\Sigma$ is invertible, a Gaussian
+vector has the density $\frac1{(2\pi)^{d/2}\sqrt{\det\Sigma}}e^{-(x-m)^{\mathsf T}\Sigma^{-1}(x-m)/2}$, whose level sets are the ellipsoids of Tome~0's spectral theorem; this
+needs the change of variables formula in $\R^d$ (Tome~6). The multivariate central limit theorem follows from
+Corollary~\ref{cor:clt} applied to every $\langle u,X\rangle$, together with Lévy's theorem in $\R^d$ (Tome~10): sums of i.i.d.\ random vectors with a
+covariance matrix are approximately Gaussian vectors.
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:slutsky}
+\emph{Slutsky's lemma.} Suppose $X_n\to X$ in law and $Y_n\to c$ in probability, for a constant $c$. Show that $X_n+Y_n\to X+c$ and
+$X_nY_n\to cX$ in law.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:confidence}
+\emph{Monte Carlo confidence intervals.} Let $X_1,X_2,\ldots$ be i.i.d.\ with mean $\mu$ and variance $\sigma^2>0$, $\bar X_n$ the sample mean and
+$\hat\sigma_n^2=\frac1n\sum_i(X_i-\bar X_n)^2$. Show that $P\bigl(|\bar X_n-\mu|\le1.96\,\hat\sigma_n/\sqrt n\bigr)\to2\Phi(1.96)-1\approx0.95$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:delta}
+\emph{The delta method.} With $X_i$ as in Exercise~\ref{ex:confidence} and $g$ of class $C^1$ near $\mu$ with $g'(\mu)\ne0$, show that
+$\sqrt n\bigl(g(\bar X_n)-g(\mu)\bigr)\to N(0,g'(\mu)^2\sigma^2)$ in law. Apply it to the estimate $4\bar X_n$ of $\pi$ by points in a quarter disc, and to $1/\bar X_n$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cauchyclt}
+Let $X_i$ be i.i.d.\ Cauchy. Show that $\frac{S_n}{\sqrt n}$ does not converge in law. Which hypothesis of the central limit theorem fails?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:poissonhalf}
+Show that $e^{-n}\sum_{k=0}^n\frac{n^k}{k!}\to\frac12$. (Ramanujan found the next term: the sum is $\frac12+\frac1{3\sqrt{2\pi n}}+O(\frac1n)$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:returns}
+Let $S_{2n}$ be the position after $2n$ steps of a simple random walk ($\pm1$ with probability $\frac12$). Show that $P(S_{2n}=0)\sim\frac1{\sqrt{\pi n}}$, and that
+the expected number of returns to $0$ before time $2n$ is of order $\sqrt n$. (Chapter~7 builds on this.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:cyclesclt}
+Let $C_n$ be the number of cycles of a uniformly random permutation of $\{1,\dots,n\}$. Show that $\frac{C_n-\ln n}{\sqrt{\ln n}}\to N(0,1)$ in law
+(Goncharov, 1944). (Use Theorem~\ref{thm:feller} and Theorem~\ref{thm:lindeberg}.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:slutsky}
+By Proposition~\ref{prop:law}(b) it suffices to test smooth $f$ with bounded derivatives; compare $f(X_n+Y_n)$ with $f(X_n+c)$ using the mean value
+theorem on $\{|Y_n-c|\le\delta\}$. For the product, first bound $P(|X_n|>M)$ uniformly in $n$.
+\end{hint}
+\begin{hint}{ex:confidence}
+Show that $\hat\sigma_n\to\sigma$ almost surely (strong law, or the weak law for $X_i^2$ if you only know $\mathbb E X^2<\infty$: in probability suffices), and use
+Slutsky.
+\end{hint}
+\begin{hint}{ex:delta}
+$g(\bar X_n)-g(\mu)=g'(\xi_n)(\bar X_n-\mu)$ with $\xi_n$ between $\mu$ and $\bar X_n$.
+\end{hint}
+\begin{hint}{ex:cauchyclt}
+$\frac{S_n}{\sqrt n}$ has the law of $\sqrt n\,X_1$; compute $P(|\sqrt nX_1|\le A)$.
+\end{hint}
+\begin{hint}{ex:poissonhalf}
+The sum is $P(S_n\le n)$ for $S_n$ Poisson$(n)$.
+\end{hint}
+\begin{hint}{ex:returns}
+$P(S_{2n}=0)=\binom{2n}n4^{-n}$; use Theorem~\ref{thm:local} with $k=n$, or Stirling directly.
+\end{hint}
+\begin{hint}{ex:cyclesclt}
+$X_{n,j}=\frac{B_j-1/j}{s_n}$ with $s_n^2=\operatorname{Var}C_n\sim\ln n$; the variables are bounded by $\frac1{s_n}$. Then replace $s_n$ by $\sqrt{\ln n}$ and $H_n$ by $\ln n$ with
+Slutsky.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:slutsky}
+\idea A perturbation that is small in probability moves $f(X_n+\cdot)$ by little, except on an event of small probability.
+\writeup Let $f$ be $C^3$ with bounded derivatives, $|f|\le K$, $|f'|\le K'$. On $\{|Y_n-c|\le\delta\}$, $|f(X_n+Y_n)-f(X_n+c)|\le K'\delta$; elsewhere it is at most $2K$.
+So $|\mathbb E f(X_n+Y_n)-\mathbb E f(X_n+c)|\le K'\delta+2KP(|Y_n-c|>\delta)$, and $\mathbb E f(X_n+c)\to\mathbb E f(X+c)$ since $x\mapsto f(x+c)$ is bounded continuous. Let $n\to\infty$,
+then $\delta\to0$; Proposition~\ref{prop:law}(b) concludes. For the product, choose $M$ with $P(|X|\ge M)<\varepsilon$ and $\pm M$ continuity points of $F_X$; by
+Proposition~\ref{prop:law}(a), $P(|X_n|>M)<2\varepsilon$ for large $n$. On $\{|X_n|\le M,\ |Y_n-c|\le\delta\}$, $|f(X_nY_n)-f(cX_n)|\le K'M\delta$. So
+$|\mathbb E f(X_nY_n)-\mathbb E f(cX_n)|\le K'M\delta+2K(2\varepsilon+P(|Y_n-c|>\delta))$, and $\mathbb E f(cX_n)\to\mathbb E f(cX)$. Let $n\to\infty$, then $\delta\to0$, then $\varepsilon\to0$.
+\end{solution}
+
+\begin{solution}{ex:confidence}
+\idea The CLT holds with the true $\sigma$; replacing it by a consistent estimate changes nothing in the limit.
+\writeup $\hat\sigma_n^2=\frac1n\sum X_i^2-\bar X_n^2$. Chebyshev's proof of the weak law (Theorem~\ref{thm:weaklaw}) works word for word with the integral of
+Chapter~5, so $\bar X_n\to\mu$ in probability. The $Y_i=X_i^2$ are i.i.d.\ and integrable with mean $m=\sigma^2+\mu^2$, but may have no variance; truncate. For
+$M>0$ let $Y_i'=Y_i\mathbf 1_{Y_i\le M}$ and $Y_i''=Y_i-Y_i'$, and $\eta_M=\mathbb E[Y_1'']$, which tends to $0$ as $M\to\infty$ by dominated convergence. Then
+$\frac1n\sum_iY_i-m=\bigl(\frac1n\sum_iY_i'-\mathbb E Y_1'\bigr)+\frac1n\sum_iY_i''-\eta_M$. Chebyshev bounds the first bracket ($\operatorname{Var}Y_1'\le M^2$) and Markov the second, so
+\[
+P\Bigl(\Bigl|\frac1n\sum_iY_i-m\Bigr|>3\varepsilon\Bigr)\le\frac{M^2}{n\varepsilon^2}+\frac{\eta_M}\varepsilon
+\]
+as soon as $\eta_M\le\varepsilon$. Choose $M$ with $\eta_M\le\varepsilon^2$, then $n$ large: the average of the $Y_i$ tends to $m$ in probability. Hence $\hat\sigma_n^2\to\sigma^2$ and $\hat\sigma_n\to\sigma$ in probability, and $\frac\sigma{\hat\sigma_n}\to1$ in probability (on
+$\{\hat\sigma_n>\sigma/2\}$, $|\frac\sigma{\hat\sigma_n}-1|\le\frac2\sigma|\hat\sigma_n-\sigma|$). By the CLT and Slutsky, $\frac{\sqrt n(\bar X_n-\mu)}{\hat\sigma_n}\to N(0,1)$, and since $\Phi$ is continuous,
+$P(|\cdot|\le1.96)\to\Phi(1.96)-\Phi(-1.96)=2\Phi(1.96)-1$.
+\end{solution}
+
+\begin{solution}{ex:delta}
+\idea Near $\mu$, $g$ is linear with slope $g'(\mu)$, and a linear map of an asymptotically Gaussian error is Gaussian.
+\writeup $\sqrt n(g(\bar X_n)-g(\mu))=g'(\xi_n)\cdot\sqrt n(\bar X_n-\mu)$ (mean value theorem, on the event that $\bar X_n$ lies in the neighbourhood where $g$ is
+$C^1$, whose probability tends to $1$). Since $\bar X_n\to\mu$ in probability, so does $\xi_n$, and $g'(\xi_n)\to g'(\mu)$ in probability by continuity of $g'$. The
+second factor tends in law to $N(0,\sigma^2)$, so by Slutsky the product tends to $g'(\mu)N(0,\sigma^2)=N(0,g'(\mu)^2\sigma^2)$. For the quarter disc, $X_i$ is
+Bernoulli$(\frac\pi4)$ and $g(x)=4x$: the error of $4\bar X_n$ is about $\frac4{\sqrt n}\sqrt{\frac\pi4(1-\frac\pi4)}\approx\frac{1.64}{\sqrt n}$. For $g(x)=\frac1x$ (with $\mu\ne0$), the variance is
+$\frac{\sigma^2}{\mu^4}$.
+\end{solution}
+
+\begin{solution}{ex:cauchyclt}
+\idea A Cauchy sum grows like $n$, not like $\sqrt n$.
+\writeup By Corollary~\ref{cor:cauchy}, $\frac{S_n}n$ is Cauchy, so $\frac{S_n}{\sqrt n}=\sqrt n\frac{S_n}n$ has the law of $\sqrt nX_1$, and
+$P(|\sqrt nX_1|\le A)=\frac2\pi\arctan\frac A{\sqrt n}\to0$ for every $A$. If $\frac{S_n}{\sqrt n}$ converged in law to some $Y$, then taking $\pm A$ continuity points with
+$P(|Y|<A)>\frac12$ would give $P(|\frac{S_n}{\sqrt n}|\le A)\to P(-A\le Y\le A)>\frac12$ by Proposition~\ref{prop:law}(a), a contradiction. The variance is infinite.
+\end{solution}
+
+\begin{solution}{ex:poissonhalf}
+\idea Read the sum as a probability for a sum of $n$ independent Poisson$(1)$ variables, and apply the CLT at $t=0$.
+\writeup With $S_n$ Poisson$(n)$ as in Theorem~\ref{thm:stirlingclt}, the sum is $P(S_n\le n)=P(\frac{S_n-n}{\sqrt n}\le0)\to\Phi(0)=\frac12$.
+\end{solution}
+
+\begin{solution}{ex:returns}
+\idea Returning to $0$ at time $2n$ is the central term of a binomial law.
+\writeup $S_{2n}=0$ iff exactly $n$ of the $2n$ steps are $+1$: $P(S_{2n}=0)=\binom{2n}n4^{-n}$. Theorem~\ref{thm:local} with $2n$ trials, $p=\frac12$, $k=n$ and $x_k=0$ gives
+$P(S_{2n}=0)\sim\frac{\phi(0)}{\sqrt{2n/4}}=\frac1{\sqrt{2\pi}}\sqrt{\frac2n}=\frac1{\sqrt{\pi n}}$. The expected number of returns at times $2,4,\dots,2n$ is
+$\sum_{j\le n}P(S_{2j}=0)$; since the terms are equivalent to $\frac1{\sqrt{\pi j}}$ and $\sum_{j\le n}\frac1{\sqrt j}\sim2\sqrt n$ (compare with $\int_0^n\frac{\dd x}{\sqrt x}$), the
+sum is $\sim2\sqrt{n/\pi}$.
+\end{solution}
+
+\begin{solution}{ex:cyclesclt}
+\idea The number of cycles is a sum of independent Bernoulli$(\frac1j)$ variables; they are bounded and their total
+variance $\ln n$ tends to infinity, which is all Lindeberg needs.
+\writeup By Theorem~\ref{thm:feller}, $C_n$ has the law of $B_1+\dots+B_n$ with $B_j$ independent Bernoulli$(\frac1j)$, so we may assume equality. Let
+$s_n^2=\operatorname{Var}C_n=H_n-\sum_jj^{-2}$, so $s_n^2\sim\ln n$ (as $H_n=\ln n+O(1)$ and $\sum j^{-2}\le\frac{\pi^2}6$). Put $X_{n,j}=\frac{B_j-1/j}{s_n}$: independent, centred, with
+$\sum_j\mathbb E X_{n,j}^2=1$, and $|X_{n,j}|\le\frac1{s_n}$. For fixed $\varepsilon>0$, once $\frac1{s_n}<\varepsilon$ every indicator in $L_n(\varepsilon)$ vanishes, so $L_n(\varepsilon)=0$. By Lindeberg,
+$\frac{C_n-H_n}{s_n}\to N(0,1)$. Finally
+\[
+\begin{aligned}\frac{C_n-\ln n}{\sqrt{\ln n}}&=\frac{s_n}{\sqrt{\ln n}}\cdot\frac{C_n-H_n}{s_n}\eqbr+\frac{H_n-\ln n}{\sqrt{\ln n}},\end{aligned}
+\]
+where $\frac{s_n}{\sqrt{\ln n}}\to1$ and the last term tends to $0$; Slutsky concludes. A random permutation of a million elements has on average
+$H_{10^6}\approx14.4$ cycles, give or take $s_{10^6}\approx3.6$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~W.~Lindeberg, \emph{Eine neue Herleitung des Exponentialgesetzes in der Wahrscheinlichkeitsrechnung},
+Mathematische Zeitschrift 15 (1922), 211--225. The replacement method, in its original form.
+\item T.~Tao, \emph{Topics in Random Matrix Theory}, AMS, 2012, Section~2.2: the central limit theorem by several
+methods, including Lindeberg's swapping and its modern descendants.
+\item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968,
+Chapter~VII: de Moivre--Laplace, local and global.
+\item R.~Durrett, \emph{Probability: Theory and Examples}, 5th ed., Cambridge University Press, 2019, Chapters~2--3:
+the strong law, characteristic functions, Lévy's continuity theorem and Berry--Esseen.
+\item I.~Shevtsova, \emph{On the absolute constants in the Berry--Esseen type inequalities for identically distributed
+summands}, arXiv:1111.6554 (2011).
+\item S.~M.~Stigler, \emph{The History of Statistics}, Harvard University Press, 1986. How de Moivre, Laplace and Gauss
+found the bell curve.
+\item V.~Goncharov, \emph{Du domaine d'analyse combinatoire}, Izvestiya Akad.\ Nauk SSSR 8 (1944), 3--48. Cycles of random
+permutations and the CLT.
+\end{itemize}
