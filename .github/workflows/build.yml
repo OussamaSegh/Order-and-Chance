@@ -12,8 +12,27 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  build:
+  # One build job per tome, run in parallel: a serial build of every tome takes too long once
+  # several threads push to main, and a pending run is replaced by the next push.
+  list:
     runs-on: ubuntu-24.04
+    outputs:
+      tomes: ${{ steps.ls.outputs.tomes }}
+      notebooks: ${{ steps.ls.outputs.notebooks }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: ls
+        run: |
+          echo "tomes=$(ls -d tome*/ | tr -d / | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+          echo "notebooks=$(ls -d python/*/ | xargs -n1 basename | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: list
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        tome: ${{ fromJson(needs.list.outputs.tomes) }}
     steps:
       - uses: actions/checkout@v4
       - name: Install LaTeX, pandoc and poppler
@@ -22,7 +41,23 @@ jobs:
           sudo apt-get install -y --no-install-recommends texlive-latex-base texlive-latex-recommended \
             texlive-latex-extra texlive-fonts-recommended tex-gyre texlive-pictures pandoc poppler-utils
       - name: Build PDF and EPUB
-        run: ./build.sh
+        run: ./build.sh ${{ matrix.tome }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: books-${{ matrix.tome }}
+          path: dist/
+
+  # Gathers the books of every tome and builds the download page.
+  site:
+    needs: build
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: books-*
+          merge-multiple: true
+          path: dist
       - uses: actions/upload-artifact@v4
         with:
           name: books
@@ -34,11 +69,16 @@ jobs:
         with:
           path: build/site
 
-  # The companion notebooks are checked separately, so that a slow or failing notebook
-  # never holds back the books.
+  # The companion notebooks are checked separately, one job per folder, so that a slow or
+  # failing notebook never holds back the books.
   notebooks:
+    needs: list
     runs-on: ubuntu-24.04
     timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        folder: ${{ fromJson(needs.list.outputs.notebooks) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -47,14 +87,14 @@ jobs:
       - name: Run the notebooks
         run: |
           pip install -r requirements.txt
-          for nb in python/*/*.ipynb; do
+          for nb in python/${{ matrix.folder }}/*.ipynb; do
             echo "== $nb"
             jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 "$nb" --output-dir build/notebooks
           done
 
   # On main, publish the books for visitors: a GitHub Pages download page and a rolling release.
   publish:
-    needs: build
+    needs: site
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     permissions:
