@@ -65,3 +65,26 @@ all 20 notebooks run without error.
 - A few overfull lines (up to 35 pt, mostly wide figures and long inline formulas) in the phone PDFs of both tomes; cosmetic.
 - Tome 0, Ch. 4: the optimality of the constant e in Carleman's inequality is shown numerically (notebook), not proved; it is stated as a remark, not a theorem.
 - The series plan lists Legendre's theorem on ax² + by² = cz² as the last section of Tome 1, Chapter 12; the chapter instead ends with the Hasse principle and Selmer's cubic. A candidate addition.
+
+## Review 2: Tome 2
+
+A second independent pass, this time over Tome 2 (Structures, 12 chapters, 13 figures, 12 notebooks). Every proof and every solution was read line by line, and the computations were redone by hand and in Python: the counts of Chapter 3 (necklaces, bracelets, cube colourings, graphs on four vertices), the 15-puzzle (every short loop is a cycle of the stated length, and the generated group has 15!/2 elements), the Landau values, the class sums of A₅, the Smith form of the figure (invariants 2, 6, 12), the minimal polynomial of √2 + ∛2, the discriminants, the Reed–Solomon decoding over F₇, the Gauss period for the 17-gon, the Gauss sum for ζ₇, the character tables of S₃, S₄ and A₅ (orthogonality relations), the Rubik's cube count, the 24 Hurwitz units and the four-square examples. All matched the text. The twelve notebooks run without error, and every theorem, proposition, example and section number they cite matches the built book. All pointers to Tomes 0 and 1 were checked against the actual chapters of those tomes, and pointers to later tomes against the series plan. The mathematics was found correct; the four items below are two reference bugs and two wording fixes.
+
+### Tome 2
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 3, Exercises 3.4 and 3.8 (hints and solutions) | ref | The label of Exercise 2.2 (G/Z(G) cyclic ⇒ G abelian) was reused by Exercise 11.4, so the four references in Chapter 3 printed "Exercise 11.4" (LaTeX warned "label multiply defined"). | Exercise 11.4 relabelled; the references now print 2.2. |
+| Ch. 11, solution of Exercise 11.7 (A₅) | text | The two 3-dimensional characters were called ψ and ψ′, while the figure, the notebook and Chapter 12 call them ψ₃ and ψ₃′. | ψ₃, ψ₃′. |
+| Ch. 4, closing remark | ref | Read as if Tome 3 proved the Diaconis–Shahshahani ½ n log n bound; the plan has riffle shuffles in Tome 3 and that proof in Tome 9. | Sentence split; "a proof that Tome 9 gives in full". |
+| Ch. 7, closing remark | text | "(Chapter 11, Tome 5)" could be read as a chapter of Tome 5. | "(Chapter 11, then Tome 5)". |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome 2, ch. 1–12 | None found: all run, all numbered references match the book. | — |
+
+### Known and left as is
+
+- Four displays are shrunk slightly in the phone PDF (the build reports them); cosmetic.
