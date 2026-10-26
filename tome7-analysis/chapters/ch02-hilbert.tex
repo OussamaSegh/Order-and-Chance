@@ -1,0 +1,410 @@
+\chapter{Hilbert Spaces}
+
+\begin{center}\itshape
+Pythagoras's theorem holds for functions. A function is a point, its Fourier coefficients are its coordinates, and the best
+approximation of a point by a subspace is the foot of a perpendicular. How far can the geometry of the plane be pushed?
+\end{center}
+
+Around 1900, the hot topic in G\"ottingen was integral equations. Ivar Fredholm, a Swede who spent his days as an actuary for an
+insurance company, had shown in 1900 how to solve $f(x)-\int_0^1K(x,y)f(y)\,dy=g(x)$ by treating it as the limit of a linear system
+with infinitely many unknowns. David Hilbert heard about it in the winter of 1900--1901 from his student Holmgren, dropped what he was
+doing, and spent the next decade on it. In six long papers (1904--1910) he invented the spectral theory of ``quadratic forms in
+infinitely many variables'', the variables being the coefficients $x_1,x_2,\dots$ of a function in an orthonormal system, with
+$\sum x_n^2<\infty$.
+
+It was Hilbert's student Erhard Schmidt who, in 1907, saw that all this was \emph{geometry}. In Schmidt's paper the sequences with
+$\sum|x_n|^2<\infty$ have a length, two of them can be orthogonal, Pythagoras's theorem holds, and a point has a projection on a
+closed subspace. The same year, Frigyes Riesz and Ernst Fischer proved independently that $L^2([a,b])$ is complete, so that
+\emph{every} square-summable sequence is the sequence of Fourier coefficients of some function. Functions and sequences were the same
+space, seen in two coordinate systems. When the young John von Neumann axiomatised the space in 1929 for quantum mechanics, he called it
+\emph{Hilbert space}. The story goes that Hilbert, attending a lecture on quantum mechanics a little later, raised his hand and asked:
+``Dr.~von Neumann, I would very much like to know: what after all \emph{is} a Hilbert space?''
+
+This chapter answers him. It proves that the closest point of a closed convex set always exists, that the dual of a Hilbert space is
+itself, and that every separable Hilbert space is a copy of $\ell^2$. Fourier series find their natural home, von Neumann's ergodic
+theorem shows that averages along an orbit converge, his proof of the Radon--Nikodym theorem takes ten lines, and spaces of functions
+with a kernel turn into the most practical tool of machine learning.
+
+\section{Inner products}
+
+An \emph{inner product} on a vector space $H$ over $\mathbb K$ is a map $\langle\cdot,\cdot\rangle:H\times H\to\mathbb K$, linear in the first variable, with $\langle y,x\rangle=\overline{\langle x,y\rangle}$ and $\langle x,x\rangle>0$ for
+$x\ne0$. It is conjugate-linear in the second variable. Put $\|x\|=\langle x,x\rangle^{1/2}$. Expanding $\|x+ty\|^2\ge0$ gives the \emph{Cauchy--Schwarz inequality} $|\langle x,y\rangle|\le\|x\|\|y\|$ (Tome~0), and with it
+$\|x+y\|^2=\|x\|^2+2\operatorname{Re}\langle x,y\rangle+\|y\|^2\le(\|x\|+\|y\|)^2$: $\|\cdot\|$ is a norm. A \emph{Hilbert space} is an inner product space complete for this norm.
+
+The examples are $\mathbb K^n$, $\ell^2$ with $\langle x,y\rangle=\sum_nx_n\overline{y_n}$, and above all $L^2(\mu)$ with $\langle f,g\rangle=\int f\overline g\,d\mu$, complete by the Riesz--Fischer theorem (Tome~6, Theorem~9.4). Two vectors are
+\emph{orthogonal}, $x\perp y$, if $\langle x,y\rangle=0$; then $\|x+y\|^2=\|x\|^2+\|y\|^2$. Adding the expansions of $\|x+y\|^2$ and $\|x-y\|^2$ gives the \emph{parallelogram law}
+\[\|x+y\|^2+\|x-y\|^2=2\|x\|^2+2\|y\|^2,\]
+which says that the diagonals of a parallelogram carry as much squared length as its four sides. It characterises the norms that come from an inner product (Exercise~\ref{ex:jvn}), and it is the only property of Hilbert
+spaces that the next theorem uses.
+
+\section{The projection theorem}
+
+\begin{theorem}[projection on a closed convex set]\label{thm:projection}
+Let $C$ be a non-empty closed convex subset of a Hilbert space $H$ and $x\in H$. There is a unique $p=P_C(x)\in C$ with $\|x-p\|=d(x,C)$. It is characterised by
+\[p\in C\quad\text{and}\quad\operatorname{Re}\langle x-p,c-p\rangle\le0\quad\text{for all }c\in C,\]
+and $\|P_C(x)-P_C(y)\|\le\|x-y\|$.
+\end{theorem}
+\begin{proof}
+\emph{Existence.} Let $d=d(x,C)$ and $c_n\in C$ with $\|x-c_n\|^2\le d^2+\frac1n$. The parallelogram law applied to $x-c_n$ and $x-c_m$ gives
+\[\|c_n-c_m\|^2=2\|x-c_n\|^2+2\|x-c_m\|^2-4\Bigl\|x-\frac{c_n+c_m}2\Bigr\|^2\le2\Bigl(d^2+\frac1n\Bigr)+2\Bigl(d^2+\frac1m\Bigr)-4d^2,\]
+because $\frac{c_n+c_m}2\in C$ by convexity. So $(c_n)$ is Cauchy; its limit $p$ is in $C$ (closed) and $\|x-p\|=d$. The same computation with two minimisers $p,p'$ in place of $c_n,c_m$ gives $\|p-p'\|^2\le0$: uniqueness.
+
+\emph{Characterisation.} If $p$ is the minimiser and $c\in C$, then $p+t(c-p)\in C$ for $t\in]0,1]$, so
+$\|x-p\|^2\le\|x-p-t(c-p)\|^2=\|x-p\|^2-2t\operatorname{Re}\langle x-p,c-p\rangle+t^2\|c-p\|^2$; divide by $t$ and let $t\to0$. Conversely, if $p\in C$ satisfies the inequality, then for $c\in C$,
+$\|x-c\|^2=\|x-p\|^2+\|p-c\|^2-2\operatorname{Re}\langle x-p,c-p\rangle\ge\|x-p\|^2$.
+
+\emph{Contraction.} With $p=P_C(x)$, $q=P_C(y)$, the characterisation gives $\operatorname{Re}\langle x-p,q-p\rangle\le0$ and $\operatorname{Re}\langle y-q,p-q\rangle\le0$. Adding, $\operatorname{Re}\langle(x-y)-(p-q),q-p\rangle\le0$, that is
+$\|p-q\|^2\le\operatorname{Re}\langle x-y,p-q\rangle\le\|x-y\|\|p-q\|$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-projection}
+\caption{The projection $p$ of $x$ on a closed convex set $C$: the angle between $x-p$ and $c-p$ is obtuse for every $c\in C$. On a closed subspace the angle is right, and $p$ is the foot of the perpendicular.}
+\label{fig:projection}
+\end{figure}
+
+When $C=M$ is a closed subspace, $c-p$ runs over all of $M$, and the inequality applied to $\pm m$ and $\pm im$ becomes $\langle x-p,m\rangle=0$: $P_M(x)$ is the unique $p\in M$ with $x-p\perp M$. The \emph{orthogonal}
+$M^\perp=\{y:y\perp M\}$ is a closed subspace (an intersection of kernels of continuous forms).
+
+\begin{corollary}\label{cor:orthdecomp}
+If $M$ is a closed subspace, then $H=M\oplus M^\perp$, and $P_M$ is linear with $P_M^2=P_M$, $\|P_M\|\le1$ and $\langle P_Mx,y\rangle=\langle x,P_My\rangle$. For any subspace $N$, $(N^\perp)^\perp=\overline N$; so $N$ is dense if and only if
+$N^\perp=\{0\}$.
+\end{corollary}
+\begin{proof}
+$x=P_Mx+(x-P_Mx)$ with $x-P_Mx\in M^\perp$, and $M\cap M^\perp=\{0\}$ because $m\perp m$ forces $m=0$. Linearity follows from the characterisation (if $x-p\perp M$ and $y-q\perp M$, then $(\lambda x+y)-(\lambda p+q)\perp M$), and
+$\langle P_Mx,y\rangle=\langle P_Mx,P_My\rangle=\langle x,P_My\rangle$. For any $N$, $N^\perp=\overline N^\perp$ by continuity of the inner product; clearly $\overline N\subseteq(\overline N^\perp)^\perp$, and if $x\perp\overline N^\perp$, then $x-P_{\overline N}x$ is in
+$\overline N^\perp$ and orthogonal to itself, so $x\in\overline N$.
+\end{proof}
+
+\begin{think}
+In $\R^2$ with the norm $\|(a,b)\|_\infty=\max(|a|,|b|)$, how many points of the line $b=0$ are closest to $(0,1)$? Which step of the proof of Theorem~\ref{thm:projection} fails? (Exercise~\ref{ex:noclosest} shows that a closest
+point may not exist at all in a Banach space.)
+\end{think}
+
+\section{The Riesz representation theorem}
+
+Every $y\in H$ defines a bounded linear form $x\mapsto\langle x,y\rangle$ of norm $\|y\|$ (Cauchy--Schwarz, with equality at $x=y$). There are no others. This was proved by Fr\'echet and by Riesz in 1907, in the same issue of the
+\emph{Comptes rendus}.
+
+\begin{theorem}[Riesz--Fr\'echet]\label{thm:rieszrep}
+For every $\varphi\in H^*$ there is a unique $y\in H$ with $\varphi(x)=\langle x,y\rangle$ for all $x$, and $\|\varphi\|=\|y\|$. The map $\varphi\mapsto y$ is a conjugate-linear isometric bijection $H^*\to H$.
+\end{theorem}
+\begin{proof}
+If $\varphi=0$, take $y=0$. Otherwise $M=\ker\varphi$ is a closed subspace different from $H$, so $M^\perp\ne\{0\}$ (Corollary~\ref{cor:orthdecomp}); take $z\in M^\perp$ with $\|z\|=1$. For every $x$, $\varphi(x)z-\varphi(z)x\in M$, so it is orthogonal to $z$:
+$\varphi(x)-\varphi(z)\langle x,z\rangle=0$. Hence $\varphi(x)=\langle x,y\rangle$ with $y=\overline{\varphi(z)}z$. Uniqueness: if $\langle x,y-y'\rangle=0$ for all $x$, take $x=y-y'$.
+\end{proof}
+
+In particular Hilbert spaces are reflexive, and their bounded sets are weakly sequentially compact.
+
+\begin{corollary}\label{cor:weakcompact}
+Every bounded sequence in a Hilbert space has a weakly convergent subsequence. If $x_n\rightharpoonup x$ and $\|x_n\|\to\|x\|$, then $x_n\to x$ in norm.
+\end{corollary}
+\begin{proof}
+Let $\|x_n\|\le M$ and $H_0$ the closed span of the $x_n$, a separable Hilbert space. By diagonal extraction, a subsequence $(y_k)$ has $\langle y_k,x_n\rangle$ convergent for every $n$, hence $\langle y_k,z\rangle$ convergent for every $z$ in
+the span of the $x_n$, and then for every $z\in H_0$ (approximate $z$ within $\varepsilon$ and use $|\langle y_k,z-z'\rangle|\le M\varepsilon$). The limit $\overline{\varphi(z)}$ defines $\varphi\in H_0^*$ with $\|\varphi\|\le M$; by
+Theorem~\ref{thm:rieszrep} in $H_0$ there is $x\in H_0$ with $\langle y_k,z\rangle\to\langle x,z\rangle$ for $z\in H_0$. For $z\in H$, $\langle y_k,z\rangle=\langle y_k,P_{H_0}z\rangle\to\langle x,P_{H_0}z\rangle=\langle x,z\rangle$. So $y_k\rightharpoonup x$.
+For the second statement, $\|x_n-x\|^2=\|x_n\|^2-2\operatorname{Re}\langle x_n,x\rangle+\|x\|^2\to\|x\|^2-2\|x\|^2+\|x\|^2=0$.
+\end{proof}
+
+\section{Orthonormal bases}
+
+A family $(e_i)_{i\in I}$ is \emph{orthonormal} if $\langle e_i,e_j\rangle$ is $1$ for $i=j$ and $0$ otherwise. For a finite orthonormal family $e_1,\dots,e_n$, the projection on its span is $\sum_k\langle x,e_k\rangle e_k$ (the difference with $x$ is
+orthogonal to every $e_k$), and Pythagoras gives $\|x\|^2=\sum_{k\le n}|\langle x,e_k\rangle|^2+\|x-\sum_{k\le n}\langle x,e_k\rangle e_k\|^2$. Hence \emph{Bessel's inequality}: $\sum_i|\langle x,e_i\rangle|^2\le\|x\|^2$ for every orthonormal
+family, finite or not. In particular only countably many $\langle x,e_i\rangle$ are non-zero. We state the next theorem for sequences; the case of uncountable families is the same with sums over arbitrary index sets.
+
+\begin{theorem}[orthonormal bases]\label{thm:onb}
+Let $(e_n)_{n\ge1}$ be an orthonormal sequence in a Hilbert space $H$. For every $x$, the series $\sum_n\langle x,e_n\rangle e_n$ converges, to the projection of $x$ on the closed span of the $e_n$. The following are equivalent:
+\begin{enumerate}
+\item[(a)] the span of the $e_n$ is dense in $H$;
+\item[(b)] if $\langle x,e_n\rangle=0$ for all $n$, then $x=0$;
+\item[(c)] $x=\sum_n\langle x,e_n\rangle e_n$ for every $x\in H$;
+\item[(d)] (Parseval) $\|x\|^2=\sum_n|\langle x,e_n\rangle|^2$ for every $x\in H$.
+\end{enumerate}
+Such a sequence is a \emph{Hilbert basis}. Moreover, for every $(c_n)\in\ell^2$ the series $\sum_nc_ne_n$ converges, so that $x\mapsto(\langle x,e_n\rangle)_n$ is an isometric bijection from $H$ onto $\ell^2$ when the $e_n$ form a Hilbert basis.
+\end{theorem}
+\begin{proof}
+If $\sum_n|c_n|^2<\infty$, the partial sums $s_N=\sum_{n\le N}c_ne_n$ satisfy $\|s_N-s_M\|^2=\sum_{M<n\le N}|c_n|^2$, so they form a Cauchy sequence and converge. By Bessel, this applies to $c_n=\langle x,e_n\rangle$; the sum $s$ satisfies
+$\langle x-s,e_n\rangle=0$ for all $n$ (continuity of the inner product), so $x-s$ is orthogonal to the closed span $M$ of the $e_n$, and $s\in M$: $s=P_Mx$. (a)$\Rightarrow$(b): such an $x$ is orthogonal to a dense subspace, hence to
+itself. (b)$\Rightarrow$(c): $x-s$ is orthogonal to all $e_n$. (c)$\Rightarrow$(d): $\|s_N\|^2=\sum_{n\le N}|\langle x,e_n\rangle|^2$ and $\|s_N\|\to\|x\|$. (d)$\Rightarrow$(a): $\|x-s_N\|^2=\|x\|^2-\sum_{n\le N}|\langle x,e_n\rangle|^2\to0$, and $s_N$
+is in the span.
+\end{proof}
+
+\begin{corollary}\label{cor:separable}
+Every infinite-dimensional separable Hilbert space has a Hilbert basis, and is therefore isometrically isomorphic to $\ell^2$.
+\end{corollary}
+\begin{proof}
+Let $(x_k)$ be dense. Discard every $x_k$ that is in the span of the previous ones, and apply the Gram--Schmidt process to the rest: $f_1=x_{k_1}$, $f_n=x_{k_n}-\sum_{j<n}\langle x_{k_n},e_j\rangle e_j$, $e_n=f_n/\|f_n\|$. The $e_n$ are orthonormal
+and have the same span as the $x_k$, which is dense; Theorem~\ref{thm:onb} concludes.
+\end{proof}
+
+Without separability, Zorn's lemma gives a maximal orthonormal family, which satisfies (b), and $H$ is isometric to $\ell^2(I)$ for some set $I$. All Hilbert spaces of the same ``dimension'' are the same. This is
+the answer to Hilbert's question: up to isometry, the Hilbert space is $\ell^2$, and the content of a theorem about a particular $L^2$ is the choice of a good basis.
+
+\section{Fourier series and orthogonal polynomials}
+
+On $L^2(\mathbb T)=L^2([-\pi,\pi])$ with the normalised inner product $\langle f,g\rangle=\frac1{2\pi}\int_{-\pi}^\pi f\overline g$, the functions $e_n(t)=e^{int}$, $n\in\Z$, are orthonormal, and $\langle f,e_n\rangle=\hat f(n)$ is the $n$-th Fourier
+coefficient (Tome~4, Chapter~6).
+
+\begin{theorem}\label{thm:fourierl2}
+The trigonometric system $(e^{int})_{n\in\Z}$ is a Hilbert basis of $L^2(\mathbb T)$. Hence, for every $f\in L^2(\mathbb T)$, $\sum_{|n|\le N}\hat f(n)e^{int}\to f$ in $L^2$, $\frac1{2\pi}\int|f|^2=\sum_n|\hat f(n)|^2$, and every
+$(c_n)\in\ell^2(\Z)$ is the sequence of Fourier coefficients of a unique $f\in L^2(\mathbb T)$.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:onb} (for an orthonormal family indexed by $\Z$) it suffices that trigonometric polynomials are dense. Let $f\in L^2$ and $\varepsilon>0$. By Tome~6, Theorem~9.7, there is a continuous $g$ with compact support in
+$]-\pi,\pi[$ and $\|f-g\|_2<\varepsilon$; it extends to a continuous $2\pi$-periodic function. By the trigonometric Weierstrass theorem (Tome~6, Corollary~4.20(b)) there is a trigonometric polynomial $P$ with
+$\|g-P\|_\infty<\varepsilon$, and $\|g-P\|_2\le\|g-P\|_\infty$ for the normalised norm. So $\|f-P\|_2<2\varepsilon$.
+\end{proof}
+
+Tome~4 proved Parseval's identity for piecewise continuous functions; the new content is that it holds for every square-integrable function, and the converse statement, which needs completeness: any square-summable sequence of
+coefficients, however wild, is the spectrum of an honest function. A sequence like $c_n=\frac1{|n|^{0.51}}$ is the Fourier series of a function in $L^2$ whose Fourier series converges absolutely at no point.
+
+The same method works on an interval with polynomials. On $L^2([-1,1])$, Gram--Schmidt applied to $1,x,x^2,\dots$ produces orthogonal polynomials, which turn out to be the \emph{Legendre polynomials}
+\[P_n(x)=\frac1{2^nn!}\frac{d^n}{dx^n}(x^2-1)^n,\qquad P_0=1,\ P_1=x,\ P_2=\tfrac12(3x^2-1),\ P_3=\tfrac12(5x^3-3x).\]
+
+\begin{proposition}\label{prop:legendre}
+The $P_n$ are orthogonal in $L^2([-1,1])$ with $\int_{-1}^1P_n^2=\frac2{2n+1}$, and the $\sqrt{n+\frac12}\,P_n$ form a Hilbert basis.
+\end{proposition}
+\begin{proof}
+Let $u=(x^2-1)^n$, of degree $2n$; it vanishes to order $n$ at $\pm1$, so $u^{(k)}(\pm1)=0$ for $k<n$. If $q$ is a polynomial, $k$ integrations by parts move all derivatives off $u$ with no boundary terms:
+$\int_{-1}^1u^{(n)}q=(-1)^n\int_{-1}^1u\,q^{(n)}$. If $\deg q<n$, this is $0$: $P_n$ is orthogonal to all polynomials of lower degree, hence to $P_m$ for $m<n$. With $q=u^{(n)}$, $q^{(n)}=u^{(2n)}=(2n)!$, so
+\[\int_{-1}^1(u^{(n)})^2=(2n)!\int_{-1}^1(1-x^2)^n\,dx=(2n)!\,\frac{2^{2n+1}(n!)^2}{(2n+1)!},\]
+by the Beta integral (substitute $x=2t-1$; Tome~4, Chapter~5), and dividing by $(2^nn!)^2$ gives $\frac2{2n+1}$. Polynomials are dense in $C([-1,1])$ for the sup norm (Weierstrass, Tome~6, Corollary~4.20(a)), hence in
+$L^2([-1,1])$ as in Theorem~\ref{thm:fourierl2}, and $P_0,\dots,P_n$ span the polynomials of degree at most $n$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-legendre}
+\caption{The Legendre polynomials $P_1,\dots,P_5$ on $[-1,1]$. Each $P_n$ has $n$ simple zeros in $]-1,1[$ and is orthogonal to all polynomials of lower degree. The zeros are the nodes of Gauss's quadrature (this chapter's
+notebook).}
+\label{fig:legendre}
+\end{figure}
+
+Other weights give other families: Hermite polynomials for $e^{-x^2}$ on $\R$ (whose completeness needs the Fourier transform, Chapter~5), Laguerre for $e^{-x}$ on $[0,\infty[$, Chebyshev for $(1-x^2)^{-1/2}$. Each is
+the right basis for some problem, and the projection theorem says what they all do: $\sum_{k\le n}\langle f,e_k\rangle e_k$ is the \emph{best} approximation of $f$ by a polynomial of degree $n$ in the mean-square sense.
+
+\section{Averages along orbits}
+
+Tome~4 proved Weyl's theorem: if $\alpha$ is irrational, the points $n\alpha$ modulo $1$ are equidistributed. Here is the version in several dimensions and, behind it, a theorem of von Neumann that belongs to Hilbert space
+geometry. Write $\mathbb T^d=\R^d/\Z^d$, with Lebesgue measure on $[0,1[^d$, and $e_k(x)=e^{2\pi ik\cdot x}$ for $k\in\Z^d$. By the argument of Theorem~\ref{thm:fourierl2}, with Stone--Weierstrass in $d$ variables (Tome~6,
+Theorem~4.19(b): the $e_k$ separate the points of $\mathbb T^d$), trigonometric polynomials are dense in $C(\mathbb T^d)$, and the $e_k$ form a Hilbert basis of $L^2(\mathbb T^d)$.
+
+\begin{theorem}[Kronecker--Weyl]\label{thm:kroneckerweyl}
+Let $\alpha\in\R^d$ be such that $1,\alpha_1,\dots,\alpha_d$ are linearly independent over $\Q$. For every continuous $f$ on $\mathbb T^d$, uniformly in $x$,
+\[\frac1N\sum_{n=0}^{N-1}f(x+n\alpha)\longrightarrow\int_{\mathbb T^d}f.\]
+In particular every orbit $\{x+n\alpha\}$ is dense in $\mathbb T^d$, and equidistributed: the proportion of $n<N$ with $x+n\alpha\in B$ tends to the volume of $B$, for every box $B$.
+\end{theorem}
+\begin{proof}
+For $f=e_k$ with $k\ne0$, $k\cdot\alpha\notin\Z$ by the independence hypothesis, so $e^{2\pi ik\cdot\alpha}\ne1$ and the geometric sum gives
+\[\Bigl|\frac1N\sum_{n<N}e_k(x+n\alpha)\Bigr|=\frac1N\Bigl|\frac{e^{2\pi iNk\cdot\alpha}-1}{e^{2\pi ik\cdot\alpha}-1}\Bigr|\le\frac2{N|e^{2\pi ik\cdot\alpha}-1|}\to0=\int e_k,\]
+uniformly in $x$. For $k=0$ both sides are $1$. By linearity the theorem holds for trigonometric polynomials. Given $f$ continuous and $\varepsilon>0$, take $P$ with $\|f-P\|_\infty<\varepsilon$; then averages and integrals of $f$
+and $P$ differ by at most $\varepsilon$, so $\limsup_N\sup_x|\frac1N\sum_{n<N}f(x+n\alpha)-\int f|\le2\varepsilon$. For a box $B$ and $\varepsilon>0$, there are continuous $g\le\mathbf 1_B\le h$ with $\int(h-g)<\varepsilon$; the proportion of
+visits lies between the averages of $g$ and of $h$, whose limits are within $\varepsilon$ of $\lambda(B)$. Density follows, since every open set contains a small box.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-kronecker}
+\caption{The first $600$ points of the orbit $n(\sqrt2,\sqrt3)$ modulo $1$ in the unit square. Since $1,\sqrt2,\sqrt3$ are independent over $\Q$, the orbit fills the torus evenly (Theorem~\ref{thm:kroneckerweyl}).}
+\label{fig:kronecker}
+\end{figure}
+
+The proof used the specific structure of the torus. Von Neumann found in 1931 that the convergence of averages holds in $L^2$ for \emph{any} measure-preserving transformation, and that it is a statement about operators of norm
+at most $1$ on a Hilbert space.
+
+\begin{theorem}[von Neumann's mean ergodic theorem]\label{thm:meanergodic}
+Let $T$ be a bounded operator on a Hilbert space with $\|T\|\le1$, and $P$ the orthogonal projection on $\ker(I-T)=\{x:Tx=x\}$. For every $x$,
+\[A_Nx=\frac1N\sum_{n=0}^{N-1}T^nx\longrightarrow Px\quad\text{in norm}.\]
+\end{theorem}
+\begin{proof}
+Recall the \emph{adjoint} $T^*$, defined by $\langle Tx,y\rangle=\langle x,T^*y\rangle$ (by Theorem~\ref{thm:rieszrep}, $y\mapsto T^*y$ is well defined, linear, and $\|T^*\|=\|T\|$). If $Tx=x$, then
+\[\begin{aligned}\|T^*x-x\|^2&=\|T^*x\|^2-2\operatorname{Re}\langle T^*x,x\rangle+\|x\|^2\\&=\|T^*x\|^2-2\operatorname{Re}\langle x,Tx\rangle+\|x\|^2\eqbr\le\|x\|^2-2\|x\|^2+\|x\|^2=0,\end{aligned}\]
+so $T^*x=x$; by symmetry ($T^{**}=T$) the fixed points of $T$ and $T^*$ coincide. Now $y\perp(I-T)z$ for all $z$ means $(I-T^*)y=0$, so the orthogonal of the range $R$ of $I-T$ is $\ker(I-T^*)=\ker(I-T)$, and by
+Corollary~\ref{cor:orthdecomp}, $H=\ker(I-T)\oplus\overline R$. On $\ker(I-T)$, $A_Nx=x=Px$. For $y=(I-T)z\in R$, the sum telescopes: $A_Ny=\frac1N(z-T^Nz)$, of norm at most $\frac2N\|z\|$. For $y\in\overline R$ and
+$\varepsilon>0$, pick $y'\in R$ with $\|y-y'\|<\varepsilon$; since $\|A_N\|\le1$, $\limsup\|A_Ny\|\le\varepsilon$. So $A_N\to0=P$ on $\overline R$.
+\end{proof}
+
+If $\tau:X\to X$ preserves a probability measure $\mu$, then $Tf=f\circ\tau$ is an isometry of $L^2(\mu)$, and the theorem says that the time averages $\frac1N\sum_{n<N}f\circ\tau^n$ converge in $L^2$ to the projection of $f$ on the
+$\tau$-invariant functions; when the only invariant functions are constants ($\tau$ is \emph{ergodic}), the limit is $\int f\,d\mu$: time averages equal space averages. For the rotation $x\mapsto x+\alpha$ of
+Theorem~\ref{thm:kroneckerweyl}, $Te_k=e^{2\pi ik\cdot\alpha}e_k$, and the invariant functions are the constants exactly when $1,\alpha_1,\dots,\alpha_d$ are independent. Birkhoff's pointwise ergodic theorem (1931), proved
+in Tome~10, upgrades $L^2$ convergence to almost sure convergence; von Neumann's came first, and the two men argued for years about who had done what.
+
+\section{Von Neumann's proof of the Radon--Nikodym theorem}
+
+Tome~6 proved the Radon--Nikodym theorem with the Hahn decomposition. Von Neumann's proof (1940) obtains the density from the Riesz representation theorem, in a few lines.
+
+\begin{theorem}\label{thm:rnvn}
+Let $\mu,\nu$ be finite measures on $(E,\mathcal A)$ with $\nu\ll\mu$. There is $h\ge0$ with $\nu(A)=\int_Ah\,d\mu$ for all $A$.
+\end{theorem}
+\begin{proof}
+Let $\rho=\mu+\nu$. The linear form $f\mapsto\int f\,d\nu$ on real $L^2(\rho)$ is bounded: $|\int f\,d\nu|\le\int|f|\,d\rho\le\rho(E)^{1/2}\|f\|_{L^2(\rho)}$. By Theorem~\ref{thm:rieszrep} there is $g\in L^2(\rho)$ with
+\[\int f\,d\nu=\int fg\,d\rho\qquad\text{for all }f\in L^2(\rho).\]
+With $f=\mathbf 1_A$, $0\le\nu(A)=\int_Ag\,d\rho\le\rho(A)$ for all $A$, so $0\le g\le1$ $\rho$-almost everywhere. Rewrite the identity as $\int f(1-g)\,d\nu=\int fg\,d\mu$. For $B=\{g=1\}$ and $f=\mathbf 1_B$ it gives $\mu(B)=0$,
+hence $\nu(B)=0$ by absolute continuity. For $A\in\mathcal A$ and $f=(1+g+\cdots+g^n)\mathbf 1_A$ (bounded, so in $L^2(\rho)$),
+\[\int_A(1-g^{n+1})\,d\nu=\int_A(g+g^2+\cdots+g^{n+1})\,d\mu.\]
+As $n\to\infty$, the left side tends to $\nu(A\setminus B)=\nu(A)$ by dominated convergence ($g^{n+1}\to0$ off $B$), and the right side increases to $\int_Ah\,d\mu$ with $h=\frac g{1-g}$ (and $h=+\infty$ on the $\mu$-null set $B$, where
+we set $h=0$) by monotone convergence.
+\end{proof}
+
+The $\sigma$-finite case follows by cutting $E$ into countably many pieces of finite measure. The proof is a model of the Hilbert space method: guess a quantity (here $\int f\,d\nu$) that is a bounded linear form on a well-chosen
+$L^2$, and let Riesz produce the object that represents it.
+
+\section{Spaces with a reproducing kernel}
+
+In $L^2$, the value of a function at a point means nothing. Some Hilbert spaces of functions are better: in them, point evaluation is continuous. A \emph{reproducing kernel Hilbert space} (RKHS) on a set $X$ is a Hilbert space $H$ of
+functions $X\to\mathbb K$ in which every evaluation $f\mapsto f(x)$ is a bounded linear form. By Theorem~\ref{thm:rieszrep} there is then $k_x\in H$ with $f(x)=\langle f,k_x\rangle$, and the \emph{kernel} of $H$ is
+$K(x,y)=k_y(x)=\langle k_y,k_x\rangle$. It is \emph{positive semi-definite}: for points $x_1,\dots,x_n$ and scalars $a_1,\dots,a_n$,
+\[\sum_{i,j}a_i\overline{a_j}K(x_j,x_i)=\Bigl\|\sum_ia_ik_{x_i}\Bigr\|^2\ge0.\]
+
+\begin{theorem}[Moore--Aronszajn]\label{thm:aronszajn}
+Every positive semi-definite kernel $K$ on a set $X$ (with $K(x,y)=\overline{K(y,x)}$) is the kernel of a unique RKHS of functions on $X$.
+\end{theorem}
+\begin{proof}
+On the span $H_0$ of the functions $K_y=K(\cdot,y)$, define $\langle\sum_ia_iK_{x_i},\sum_jb_jK_{y_j}\rangle=\sum_{i,j}a_i\overline{b_j}K(y_j,x_i)$. It is well defined: with $f=\sum_ia_iK_{x_i}$ and $g=\sum_jb_jK_{y_j}$, it equals
+$\sum_j\overline{b_j}f(y_j)$, which depends on $f$ only through its values, and also $\sum_ia_i\overline{g(x_i)}$ (since $K(y_j,x_i)=\overline{K(x_i,y_j)}$), which depends on $g$ only through its values. It is sesquilinear and $\langle f,f\rangle\ge0$ by positivity; and $\langle f,K_x\rangle=f(x)$, the
+reproducing property. Cauchy--Schwarz holds for semi-inner products (its proof uses only $\langle f+tg,f+tg\rangle\ge0$), so $|f(x)|=|\langle f,K_x\rangle|\le\langle f,f\rangle^{1/2}K(x,x)^{1/2}$; hence $\langle f,f\rangle=0$ forces $f=0$, and
+$H_0$ is an inner product space.
+
+To complete it inside the functions on $X$: if $(f_n)$ is Cauchy in $H_0$, then $(f_n(x))$ is Cauchy for each $x$ by the last inequality; let $f$ be the pointwise limit, and let $H$ be the set of such limits, with
+$\|f\|=\lim\|f_n\|$. This is consistent: if $(f_n)$ is Cauchy with $f_n\to0$ pointwise, then $\|f_n\|\to0$. Indeed, with $\|f_n\|\le M$ and $\|f_n-f_m\|\le\varepsilon$ for $n,m\ge N$,
+$\|f_n\|^2=\langle f_n,f_n-f_m\rangle+\langle f_n,f_m\rangle$; the first term is at most $M\varepsilon$, and the second, for fixed $n$ with $f_n=\sum_ia_iK_{x_i}$, equals $\sum_ia_i\overline{f_m(x_i)}\to0$ as $m\to\infty$. So
+$\|f_n\|^2\le M\varepsilon$ for $n\ge N$. Then $H$, the completion of $H_0$ realised as functions, is a Hilbert space in which $f(x)=\lim f_n(x)=\lim\langle f_n,K_x\rangle=\langle f,K_x\rangle$. Uniqueness: in any RKHS with kernel $K$, the $K_x$
+span a dense subspace (a function orthogonal to all $K_x$ vanishes everywhere), on which the inner product is forced.
+\end{proof}
+
+The kernel that machine learning uses most is the Gaussian kernel $K(x,y)=e^{-|x-y|^2/2}$ on $\R^d$. It is positive semi-definite because it is a characteristic function: $e^{-|u|^2/2}=\int_{\R^d}e^{i\xi\cdot u}\,d\gamma(\xi)$ with $\gamma$
+the standard Gaussian law (Tome~3, Chapter~6), so $\sum_{i,j}a_i\overline{a_j}K(x_j,x_i)=\int|\sum_ia_ie^{-i\xi\cdot x_i}|^2\,d\gamma(\xi)\ge0$. Its RKHS consists of very smooth functions, and the representer theorem
+(Exercise~\ref{ex:representer}) reduces learning in this infinite-dimensional space to linear algebra on the $n\times n$ matrix $(K(x_i,x_j))$ of the data. Chapter~4 diagonalises such kernels (Mercer's theorem).
+
+\begin{beauty}
+A kernel measures similarity: the number $K(x,y)$ says how much $x$ and $y$ are alike. Moore--Aronszajn turns any reasonable similarity into a geometry, a Hilbert space in which the data points $K_x$ live and where similarity becomes
+an inner product. Points that no line can separate in $\R^d$ become separable by a hyperplane there. This is the \emph{kernel trick}, and it is Riesz's theorem at work.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:jvn}
+\emph{Jordan--von Neumann.} Let $E$ be a real normed space whose norm satisfies the parallelogram law. Show that $\langle x,y\rangle=\frac14(\|x+y\|^2-\|x-y\|^2)$ is an inner product with $\langle x,x\rangle=\|x\|^2$. Deduce that
+$L^p$ is a Hilbert space only for $p=2$ (when it has two disjoint sets of positive finite measure).
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:legendrefit}
+Find the polynomial $p$ of degree at most $2$ minimising $\int_{-1}^1(|x|-p(x))^2\,dx$, and the minimum value.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:noclosest}
+\emph{No closest point.} On $C([0,1])$ with the sup norm let $\varphi(f)=\int_0^{1/2}f-\int_{1/2}^1f$ and $M=\ker\varphi$. (a) Show that $\|\varphi\|=1$ and that $|\varphi(f)|<\|f\|$ for every $f\ne0$. (b) In any normed space, show that
+$d(x,\ker\psi)=\frac{|\psi(x)|}{\|\psi\|}$ for $\psi\in E^*\setminus\{0\}$. (c) Deduce that no $g\notin M$ has a closest point in the closed subspace $M$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:vandercorput}
+\emph{Van der Corput.} (a) For complex numbers $u_1,\dots,u_N$ (set $u_n=0$ for other $n$) and $1\le H\le N$, prove
+\[\Bigl|\sum_nu_n\Bigr|^2\le\frac{N+H-1}{H^2}\sum_{|r|<H}(H-|r|)\gamma(r),\qquad\gamma(r)=\sum_mu_{m+r}\overline{u_m}.\]
+(b) Deduce that if, for every integer $r\ge1$, the sequence $(x_{n+r}-x_n)_n$ is equidistributed modulo $1$, then so is $(x_n)$. (c) Show that $n^2\alpha$ is equidistributed modulo $1$ for irrational $\alpha$, and more generally $P(n)$ for
+every real polynomial $P$ of degree at least $1$ with irrational leading coefficient (Weyl, 1916).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hardy2}
+\emph{The Hardy space.} Let $H^2$ be the space of power series $f(z)=\sum_{n\ge0}a_nz^n$ with $\|f\|^2=\sum_n|a_n|^2<\infty$. (a) Show that each $f\in H^2$ is holomorphic on the unit disc $D$ with $|f(w)|\le\|f\|(1-|w|^2)^{-1/2}$. (b) Show that
+$H^2$ is an RKHS on $D$ with kernel $K(z,w)=\frac1{1-z\overline w}$ (Szeg\H o's kernel). (c) Show that $\|f\|^2=\lim_{r\to1}\frac1{2\pi}\int_0^{2\pi}|f(re^{it})|^2\,dt$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:representer}
+\emph{The representer theorem.} Let $H$ be a real RKHS on $X$ with kernel $K$, data $(x_i,y_i)\in X\times\R$ for $i\le n$, and $\lambda>0$. Show that $J(f)=\sum_i(f(x_i)-y_i)^2+\lambda\|f\|^2$ has a unique minimiser on $H$, that it lies in
+the span of the $K_{x_i}$, and that it is $f=\sum_ia_iK_{x_i}$ with $a=(G+\lambda I)^{-1}y$, where $G=(K(x_i,x_j))_{i,j}$ (kernel ridge regression).
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:jvn}
+Apply the parallelogram law to $x+y$ and $x'$, and to $x-y$ and $x'$, to get $\langle x+x',y\rangle+\langle x-x',y\rangle=2\langle x,y\rangle$. For $L^p$, test $\mathbf 1_A$ and $\mathbf 1_B$.
+\end{hint}
+\begin{hint}{ex:legendrefit}
+$p=c_0P_0+c_1P_1+c_2P_2$ with $c_n=\frac{2n+1}2\int_{-1}^1|x|P_n$; the error is given by Pythagoras.
+\end{hint}
+\begin{hint}{ex:noclosest}
+(a) Approximate $\mathbf 1_{[0,1/2[}-\mathbf 1_{]1/2,1]}$. (b) $\psi(x)=\psi(x-m)$ for $m\in\ker\psi$. (c) A closest point would make $\varphi$ attain its norm.
+\end{hint}
+\begin{hint}{ex:vandercorput}
+(a) Write $H\sum_nu_n=\sum_n\sum_{h<H}u_{n+h}$, with $N+H-1$ non-zero values of $n$, and apply Cauchy--Schwarz. (b) Weyl's criterion, with $u_n=e^{2\pi ikx_n}$. (c) $(n+r)^2\alpha-n^2\alpha=2r\alpha n+r^2\alpha$; induct on the degree.
+\end{hint}
+\begin{hint}{ex:hardy2}
+$f(w)=\langle f,k_w\rangle$ with $k_w(z)=\sum_n\overline w^nz^n$. For (c), Parseval on the circle of radius $r$.
+\end{hint}
+\begin{hint}{ex:representer}
+Split $f=v+w$ with $v$ in the span $V$ of the $K_{x_i}$ and $w\perp V$; then $f(x_i)=v(x_i)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:jvn}
+\idea The candidate is forced by the polarisation identity. What must be shown is additivity in $x$, and the parallelogram law is a relation between four norms, which is exactly the size of an additivity statement.
+\writeup Symmetry and $\langle x,x\rangle=\|x\|^2$ are clear. The parallelogram law applied to $x+y$ and $x'$, then to $x-y$ and $x'$, gives
+$\|x+x'+y\|^2+\|x-x'+y\|^2=2\|x+y\|^2+2\|x'\|^2$ and $\|x+x'-y\|^2+\|x-x'-y\|^2=2\|x-y\|^2+2\|x'\|^2$. Subtracting and dividing by $4$:
+$\langle x+x',y\rangle+\langle x-x',y\rangle=2\langle x,y\rangle$. With $x'=x$ (and $\langle0,y\rangle=0$), $\langle2x,y\rangle=2\langle x,y\rangle$. For any $a,b$, put $x=\frac{a+b}2$, $x'=\frac{a-b}2$: $\langle a,y\rangle+\langle b,y\rangle=2\langle\frac{a+b}2,y\rangle=\langle a+b,y\rangle$.
+So $\langle\cdot,y\rangle$ is additive, hence $\langle qx,y\rangle=q\langle x,y\rangle$ for rational $q$, and for real $q$ by continuity of the norm. Positivity is $\langle x,x\rangle=\|x\|^2$. For $L^p$, if $A,B$ are disjoint with
+$\mu(A)=\mu(B)=1$, then $\|\mathbf 1_A\pm\mathbf 1_B\|_p^2=2^{2/p}$ and the law reads $2\cdot2^{2/p}=4$, so $p=2$; if $\mu(A)=a$, $\mu(B)=b$, rescale the indicators.
+\end{solution}
+
+\begin{solution}{ex:legendrefit}
+\idea Best approximation in $L^2$ is orthogonal projection, and with an orthogonal basis the projection is read off coefficient by coefficient. Symmetry kills the odd Legendre polynomials.
+\writeup By Theorem~\ref{thm:projection} and Proposition~\ref{prop:legendre}, $p=\sum_{n\le2}c_nP_n$ with $c_n=\frac{\int|x|P_n}{\int P_n^2}=\frac{2n+1}2\int_{-1}^1|x|P_n$. $c_1=0$ by parity, $c_0=\frac12$, and
+$c_2=\frac52\cdot2\int_0^1x\frac{3x^2-1}2\,dx=\frac52(\frac34-\frac12)=\frac58$. So $p(x)=\frac12+\frac58\cdot\frac{3x^2-1}2=\frac3{16}+\frac{15}{16}x^2$. By Pythagoras the minimum is
+$\int x^2-c_0^2\cdot2-c_2^2\cdot\frac25=\frac23-\frac12-\frac5{32}=\frac1{96}$.
+\end{solution}
+
+\begin{solution}{ex:noclosest}
+\idea In a Hilbert space the closest point exists because of the parallelogram law. In $C([0,1])$ the closest point would have to make a linear form attain its norm, and this form only reaches its norm on a discontinuous
+function.
+\writeup (a) $|\varphi(f)|\le\int_0^1|f|\le\|f\|$. Continuous functions $f_n$, equal to $1$ on $[0,\frac12-\frac1n]$, to $-1$ on $[\frac12+\frac1n,1]$ and linear in between, have $\|f_n\|=1$ and $\varphi(f_n)=1-\frac1n$, so $\|\varphi\|=1$. If
+$\|f\|=1$ and $\varphi(f)=1$, then $\int_0^{1/2}(1-f)+\int_{1/2}^1(1+f)=0$ with continuous non-negative integrands, so $f=1$ on $[0,\frac12]$ and $f=-1$ on $[\frac12,1]$, impossible at $\frac12$. Replacing $f$ by $-f$ handles
+$\varphi(f)=-1$; and scaling gives $|\varphi(f)|<\|f\|$ for all $f\ne0$. (b) For $m\in\ker\psi$, $|\psi(x)|=|\psi(x-m)|\le\|\psi\|\|x-m\|$. Conversely, given $\varepsilon$, pick $u$ with $\|u\|=1$ and $|\psi(u)|>\|\psi\|-\varepsilon$;
+$m=x-\frac{\psi(x)}{\psi(u)}u$ is in $\ker\psi$ and $\|x-m\|=\frac{|\psi(x)|}{|\psi(u)|}$. (c) If $m\in M$ were closest to $g$, then $\|g-m\|=|\varphi(g)|=|\varphi(g-m)|$, contradicting (a) since $g-m\ne0$.
+\end{solution}
+
+\begin{solution}{ex:vandercorput}
+\idea To show that a sum of unimodular numbers is small, square it: the square involves the correlations $u_{n+r}\overline{u_n}$, which may be easier to understand. For $u_n=e^{2\pi ikx_n}$ they are exponentials of the
+differences $x_{n+r}-x_n$, and differencing lowers the degree of a polynomial.
+\writeup (a) For each $m$, $u_m$ appears in $\sum_{h<H}u_{n+h}$ for exactly $H$ values of $n$, so $H\sum_nu_n=\sum_n\sum_{0\le h<H}u_{n+h}$, where the inner sum vanishes unless $1-H<n\le N$: at most $N+H-1$ values. By
+Cauchy--Schwarz,
+\[H^2\Bigl|\sum_nu_n\Bigr|^2\le(N+H-1)\sum_n\Bigl|\sum_{h<H}u_{n+h}\Bigr|^2=(N+H-1)\sum_{h,h'<H}\sum_nu_{n+h}\overline{u_{n+h'}},\]
+and $\sum_nu_{n+h}\overline{u_{n+h'}}=\gamma(h-h')$, while each $r$ with $|r|<H$ equals $h-h'$ for exactly $H-|r|$ pairs. (b) Fix $k\ne0$ and $u_n=e^{2\pi ikx_n}$ for $n\le N$. Then $\gamma(0)=N$, $\gamma(-r)=\overline{\gamma(r)}$, and
+$\gamma(r)=\sum_{m=1}^{N-r}e^{2\pi ik(x_{m+r}-x_m)}$ for $r\ge1$, so by (a)
+\[\Bigl|\frac1N\sum_{n\le N}u_n\Bigr|^2\le\frac{N+H-1}{NH}+\frac{2(N+H-1)}{NH}\sum_{r=1}^{H-1}\frac{|\gamma(r)|}N.\]
+For fixed $H$ and $N\to\infty$, each $\frac{\gamma(r)}N\to0$ by Weyl's criterion (Tome~4) for the sequence $x_{m+r}-x_m$, so the $\limsup$ is at most $\frac1H$. As $H$ is arbitrary, $\frac1N\sum_ne^{2\pi ikx_n}\to0$ for all $k\ne0$, and
+$(x_n)$ is equidistributed by Weyl's criterion. (c) Induct on the degree $d$. For $d=1$, $P(n)=\alpha n+\beta$, and $\frac1N\sum_ne^{2\pi ik(\alpha n+\beta)}=e^{2\pi ik\beta}\frac1N\sum_ne^{2\pi ik\alpha n}\to0$ for $k\ne0$ (Tome~4): equidistributed. If $d\ge2$ and the leading
+coefficient $\alpha_d$ is irrational, then for each $r\ge1$, $P(n+r)-P(n)$ is a polynomial in $n$ of degree $d-1$ with leading coefficient $rd\alpha_d$, irrational; by induction it is equidistributed, and (b) applies. For
+$n^2\alpha$ the differences are $2r\alpha n+r^2\alpha$.
+\end{solution}
+
+\begin{solution}{ex:hardy2}
+\idea $H^2$ is $\ell^2$ in disguise, with the coefficients as coordinates. Evaluation at $w$ is the inner product with the sequence $(\overline w^n)$, which is square summable exactly when $|w|<1$.
+\writeup (a) For $|w|<1$, Cauchy--Schwarz gives $\sum|a_n||w|^n\le\|f\|(\sum|w|^{2n})^{1/2}=\|f\|(1-|w|^2)^{-1/2}$: the series converges absolutely, normally on each disc $|w|\le r<1$, so $f$ is holomorphic on $D$ (Tome~4, Chapter~9) and
+satisfies the bound. (b) $H^2$ is isometric to $\ell^2$, hence a Hilbert space, and $f(w)=\sum a_nw^n=\langle f,k_w\rangle$ with $k_w=\sum_n\overline w^nz^n\in H^2$. So evaluations are bounded, and $K(z,w)=k_w(z)=\sum_n(z\overline w)^n=\frac1{1-z\overline w}$.
+(c) The function $t\mapsto f(re^{it})=\sum_na_nr^ne^{int}$ has Fourier coefficients $a_nr^n$ (the series converges uniformly in $t$), so by Parseval $\frac1{2\pi}\int|f(re^{it})|^2\,dt=\sum_n|a_n|^2r^{2n}$, which increases to $\|f\|^2$ by
+monotone convergence as $r\uparrow1$.
+\end{solution}
+
+\begin{solution}{ex:representer}
+\idea The data only see $f$ through its values at the $x_i$, which are inner products with the $K_{x_i}$. The component of $f$ orthogonal to them is invisible to the data and costs norm, so it is zero at the optimum.
+The problem becomes finite-dimensional.
+\writeup Write $f=v+w$ with $v\in V=\operatorname{span}(K_{x_i})$ and $w\perp V$ (Corollary~\ref{cor:orthdecomp}; $V$ is finite-dimensional, hence closed). Then $f(x_i)=\langle f,K_{x_i}\rangle=v(x_i)$ and $\|f\|^2=\|v\|^2+\|w\|^2$, so
+$J(f)=J(v)+\lambda\|w\|^2$: a minimiser lies in $V$. On $V$, $J$ is continuous and $J(f)\ge\lambda\|f\|^2$, so it attains its minimum on a large ball, a compact set in finite dimension. It is unique because $J$ is strictly
+convex ($f\mapsto\|f\|^2$ is strictly convex by the parallelogram law, and the other terms are convex). For $f=\sum_ia_iK_{x_i}$, $f(x_j)=(Ga)_j$ and $\|f\|^2=a^TGa$, so $J=|Ga-y|^2+\lambda a^TGa$, whose gradient in $a$ is
+$2G(Ga-y)+2\lambda Ga=2G((G+\lambda I)a-y)$. It vanishes at $a=(G+\lambda I)^{-1}y$ ($G$ is positive semi-definite, so $G+\lambda I$ is invertible). A convex differentiable function is minimal where its gradient vanishes, so
+this $a$ gives the minimiser.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~Schmidt, ``\"Uber die Aufl\"osung linearer Gleichungen mit unendlich vielen Unbekannten'', \emph{Rend. Circ. Mat. Palermo} 25 (1908), 53--77. The geometry of $\ell^2$.
+\item F.~Riesz, ``Sur les syst\`emes orthogonaux de fonctions'', and E.~Fischer, ``Sur la convergence en moyenne'', \emph{C. R. Acad. Sci. Paris} 144 (1907); F.~Riesz and M.~Fr\'echet on the representation of linear forms, same volume.
+\item J.~von Neumann, ``Proof of the quasi-ergodic hypothesis'', \emph{Proc. Nat. Acad. Sci.} 18 (1932), 70--82; and ``On rings of operators III'', \emph{Ann. of Math.} 41 (1940), 94--161, for the proof of Radon--Nikodym.
+\item N.~Aronszajn, ``Theory of reproducing kernels'', \emph{Trans. Amer. Math. Soc.} 68 (1950), 337--404.
+\item H.~Weyl, ``\"Uber die Gleichverteilung von Zahlen mod.~Eins'', \emph{Math. Ann.} 77 (1916), 313--352; L.~Kuipers and H.~Niederreiter, \emph{Uniform Distribution of Sequences}, Wiley, 1974 (van der Corput's inequality).
+\item N.~Young, \emph{An Introduction to Hilbert Space}, Cambridge, 1988; H.~Brezis, \emph{Functional Analysis}, Springer, 2011, Chapter~5.
+\item B.~Sch\"olkopf and A.~Smola, \emph{Learning with Kernels}, MIT Press, 2002. Kernels in machine learning.
+\item C.~Reid, \emph{Hilbert}, Springer, 1970. The life of Hilbert and of G\"ottingen mathematics.
+\end{itemize}
