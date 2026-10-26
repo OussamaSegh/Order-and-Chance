@@ -1,0 +1,304 @@
+\chapter{A Glimpse Beyond: Quaternions and Rotations}
+
+\begin{center}\itshape
+Hold a plate flat on your palm and turn it one full turn, keeping it horizontal: your arm is twisted.\\
+Keep turning in the same direction: after a second full turn, your arm is straight again.\\
+Why two turns, and not one?
+\end{center}
+
+On 16 October 1843, walking along the Royal Canal in Dublin, Hamilton found how to multiply ``triples'': one needs four numbers, not three, and one must give up commutativity. He carved $i^2=j^2=k^2=ijk=-1$ into Brougham Bridge. His quaternions turned out to be the natural language of rotations in space: a rotation is $v\mapsto qvq^{-1}$ for a unit quaternion $q$, and $q$ and $-q$ give the same rotation. The rotations of space are thus covered twice by the unit quaternions, a $3$-dimensional sphere, and this double cover is what the plate trick shows with an arm.
+
+This last chapter brings together several threads of the tome: groups acting on sets (Chapter~3), the simplicity of $A_5$ (Chapter~4), Sylow's theorems (Chapter~5), and finite subgroups of the multiplicative group of a field (Chapter~9). We classify the finite groups of rotations of space: apart from the cyclic and dihedral families, there are only the rotation groups of the tetrahedron, the cube and the icosahedron, which are $A_4$, $\mathfrak S_4$ and $A_5$. Quaternions also keep a promise of Tome~1: they make the four-square theorem transparent.
+
+\section{Quaternions}
+
+Instead of postulating Hamilton's rules and checking associativity by hand, we realise quaternions as complex matrices, for which associativity is automatic.
+
+\begin{definition}
+Let $\mathbb H$ be the set of complex matrices
+\[
+\begin{pmatrix}z&w\\-\bar w&\bar z\end{pmatrix},\qquad z,w\in\C.
+\]
+It is a real vector space of dimension $4$, with basis $1=I$ and
+\[
+i=\begin{pmatrix}i&0\\0&-i\end{pmatrix},\quad j=\begin{pmatrix}0&1\\-1&0\end{pmatrix},\quad k=\begin{pmatrix}0&i\\i&0\end{pmatrix};
+\]
+so $q=a+bi+cj+dk$ corresponds to $z=a+bi$, $w=c+di$ (here $i$ on the right is the complex number). Its elements are \emph{quaternions}. The \emph{conjugate} of $q$ is $\bar q=a-bi-cj-dk$, its \emph{norm} is $N(q)=a^2+b^2+c^2+d^2$, its \emph{real part} is $a$, and $q$ is \emph{pure} if $a=0$; the pure quaternions form a copy of $\R^3$.
+\end{definition}
+
+\begin{proposition}\label{prop:quat}
+\begin{enumerate}[label=(\alph*)]
+\item $\mathbb H$ is closed under matrix multiplication; it is an associative ring, and
+\[
+\begin{gathered}i^2=j^2=k^2=-1,\qq ij=-ji=k,\quad jk=-kj=i,\qq ki=-ik=j.\end{gathered}
+\]
+\item $\bar q$ is the conjugate transpose of the matrix $q$, so $\overline{pq}=\bar q\,\bar p$; and $q\bar q=\bar qq=N(q)=\det q$. Hence $N(pq)=N(p)N(q)$.
+\item Every $q\ne0$ has an inverse $q^{-1}=\bar q/N(q)$: $\mathbb H$ is a \emph{division ring} (a non-commutative field).
+\item For pure quaternions $u,v$, identified with vectors of $\R^3$, $uv=-u\cdot v+u\times v$. In particular $u^2=-|u|^2$, and $u,v$ anticommute iff they are orthogonal.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The product of two such matrices is
+\[
+\begin{gathered}\begin{pmatrix}z&w\\-\bar w&\bar z\end{pmatrix}\begin{pmatrix}z'&w'\\-\bar w'&\bar z'\end{pmatrix}\qq=\begin{pmatrix}zz'-w\bar w'&zw'+w\bar z'\\-\bar wz'-\bar z\bar w'&-\bar ww'+\bar z\bar z'\end{pmatrix},\end{gathered}
+\]
+whose second row is $(-\bar W,\bar Z)$ for the first row $(Z,W)$. Matrix multiplication is associative and distributive. The relations are $2\times2$ products; for instance $ij=\begin{psmallmatrix}0&i\\i&0\end{psmallmatrix}=k$, and $ji=-k$.
+
+(b) The conjugate transpose of $\begin{psmallmatrix}z&w\\-\bar w&\bar z\end{psmallmatrix}$ is $\begin{psmallmatrix}\bar z&-w\\\bar w&z\end{psmallmatrix}$, the matrix of $\bar z,-w$, i.e.\ of $a-bi-cj-dk$. The conjugate transpose reverses products. The matrix $q\bar q$ has entries $|z|^2+|w|^2$ on the diagonal and $0$ elsewhere, as does $\bar qq$; and $\det q=|z|^2+|w|^2=N(q)$. The determinant is multiplicative.
+
+(c) $q\cdot\bar q/N(q)=\bar q/N(q)\cdot q=1$ by (b).
+
+(d) Both sides are bilinear in $(u,v)$, so it suffices to check basis vectors: $i\cdot i=-1=-i\cdot i+i\times i$, and $ij=k=-0+i\times j$, and similarly for the other pairs. If $u\perp v$ then $vu=v\times u=-u\times v=-uv$; conversely $uv+vu=-2u\cdot v$.
+\end{proof}
+
+Taking norms in $(a+bi+cj+dk)(a'+b'i+c'j+d'k)$ gives Euler's four-square identity (Exercise~\ref{ex:euler4}), used in Tome~1 to reduce the four-square theorem to primes. Frobenius proved in 1878 that $\R$, $\C$ and $\mathbb H$ are the only finite-dimensional associative division algebras over $\R$; dropping associativity adds Cayley's octonions, of dimension $8$, and nothing else.
+
+\section{Unit quaternions and rotations}
+
+The unit quaternions form a group $S^3=\{q:N(q)=1\}$ under multiplication (by Proposition~\ref{prop:quat}(b)), geometrically the unit sphere of $\R^4$. As matrices they are exactly $SU(2)$, the unitary $2\times2$ matrices of determinant $1$: such a matrix $\begin{psmallmatrix}\alpha&\beta\\\gamma&\delta\end{psmallmatrix}$ has inverse $\begin{psmallmatrix}\delta&-\beta\\-\gamma&\alpha\end{psmallmatrix}$ (determinant $1$) equal to its conjugate transpose, so $\delta=\bar\alpha$ and $\gamma=-\bar\beta$.
+
+\begin{lemma}[Euler]\label{lem:euler}
+Every $A\in SO(3)$ is a rotation about some axis: there are a unit vector $u$ and an angle $\theta$ such that $Au=u$ and $A$ turns the plane $u^\perp$ by $\theta$.
+\end{lemma}
+\begin{proof}
+$\det(A-I)=\det(A-AA^{\mathsf T})=\det A\,\det(I-A^{\mathsf T})=\det(I-A)=-\det(A-I)$ (a $3\times3$ determinant changes sign with its matrix). So $\det(A-I)=0$ and $A$ has a unit vector $u$ with $Au=u$. Being orthogonal, $A$ preserves $u^\perp$; on this plane it is orthogonal with determinant $\det A=1$, hence a rotation by some $\theta$ (Tome~0).
+\end{proof}
+
+\begin{theorem}\label{thm:su2so3}
+For a unit quaternion $q$ and a pure quaternion $v$, $R_q(v)=qvq^{-1}=qv\bar q$ is pure, and $R_q\in SO(3)$. The map $q\mapsto R_q$ is a surjective homomorphism $S^3\to SO(3)$ with kernel $\{\pm1\}$, so that
+\[
+SO(3)\cong S^3/\{\pm1\}=SU(2)/\{\pm I\}.
+\]
+Explicitly, if $u$ is a unit pure quaternion and $q=\cos\frac\theta2+\sin\frac\theta2\,u$, then $R_q$ is the rotation by $\theta$ about $u$.
+\end{theorem}
+\begin{proof}
+A quaternion $x$ is pure iff $\bar x=-x$. For pure $v$, $\overline{qv\bar q}=q\bar v\bar q=-qv\bar q$, so $R_q(v)$ is pure. $R_q$ is linear and $N(R_q(v))=N(q)N(v)N(\bar q)=N(v)$, so $R_q$ is orthogonal. Clearly $R_{pq}=R_pR_q$ and $R_1=\mathrm{id}$.
+
+\emph{The explicit formula.} Let $c=\cos\frac\theta2$, $s=\sin\frac\theta2$, $q=c+su$. Since $q$ commutes with $u$, $R_q(u)=u$. Let $w$ be a pure quaternion orthogonal to $u$; by Proposition~\ref{prop:quat}(d), $uw=u\times w=-wu$, and $(u\times w)u=(u\times w)\times u=w$ (since $(u\times w)\perp u$ and $|u|=1$). Then
+\[
+\begin{aligned}
+qw\bar q&=(cw+s\,u\times w)(c-su)\\
+&=c^2w-cs\,wu+cs\,u\times w-s^2(u\times w)u\\
+&=(c^2-s^2)\,w+2cs\,u\times w\eqbr=\cos\theta\,w+\sin\theta\,u\times w,
+\end{aligned}
+\]
+the rotation of $w$ by $\theta$ in the plane $u^\perp$ (oriented by $u$). In particular $\det R_q=1$, and $R_q\in SO(3)$.
+
+\emph{Surjectivity.} By Lemma~\ref{lem:euler}, every element of $SO(3)$ is a rotation by some $\theta$ about some $u$, which is $R_q$ for $q=\cos\frac\theta2+\sin\frac\theta2u$.
+
+\emph{Kernel.} Write $q=a+x$, $x$ pure. If $R_q=\mathrm{id}$, $q$ commutes with every pure $w$, hence so does $x$, and $xw-wx=2\,x\times w=0$ for all $w$: $x=0$. So $q=a$ with $a^2=1$, i.e.\ $q=\pm1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-rotation}
+\caption{The unit quaternion $q=\cos\frac\theta2+\sin\frac\theta2u$ turns every vector $v$ by the angle $\theta$ about the axis $u$: $v\mapsto qvq^{-1}$. The half-angle explains why $q$ and $-q$, which differ by a turn of $2\pi$ in $\theta$, give the same rotation.}
+\label{fig:rotation}
+\end{figure}
+
+Composing rotations is multiplying quaternions (Exercise~\ref{ex:compose}): four numbers instead of nine, no drift away from orthogonality that cannot be cured by dividing by the norm, and smooth interpolation between orientations. This is why flight software, robots and video games store orientations as unit quaternions (notebook).
+
+\begin{remark}[the plate trick]
+Turning the plate by an angle $2\pi t$, $0\le t\le1$, about the vertical axis $k$ is the path $q(t)=\cos\pi t+\sin\pi t\,k$ in $S^3$, which goes from $1$ to $-1$: it does not close up, although the rotations $R_{q(t)}$ do. Two turns give $\cos2\pi t+\sin2\pi t\,k$, a closed loop on the $3$-sphere, which can be shrunk to a point on the sphere; its shrinking, projected to $SO(3)$, is the motion that untwists your arm. In topological language $S^3$ is simply connected and $SO(3)$ is not: its fundamental group is $\Z/2\Z$. In physics, electrons are described by vectors on which $S^3=SU(2)$, not $SO(3)$, acts, and a rotation by $2\pi$ multiplies them by $-1$: they have spin $\frac12$.
+\end{remark}
+
+\begin{think}
+How many rotations map a regular icosahedron to itself? (Count where a given vertex can go, and how many rotations fix it.) Which group of Chapter~4 has that order and should be its rotation group?
+\end{think}
+
+\section{Finite groups of rotations}
+
+For each regular polyhedron (Figure~\ref{fig:solids}), the rotations preserving it form a finite subgroup of $SO(3)$. A rotation is determined by the image of a vertex and of an adjacent vertex (a rotation fixing a vertex $x$ and an adjacent vertex $y$ fixes the two independent vectors $x,y$, hence their cross product, hence everything). For the icosahedron, a vertex can go to any of the $12$ vertices, and then its $5$ neighbours can be rotated in $5$ ways: $60$ rotations. In the same way the tetrahedron has $4\cdot3=12$ rotations, the cube and the octahedron $24$, the dodecahedron and the icosahedron $60$. The orbit--stabiliser theorem is behind each count.
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-solids}
+\caption{The five Platonic solids and their rotation groups. Dual solids (cube and octahedron, dodecahedron and icosahedron: put a vertex at the centre of each face) have the same rotation group, and the tetrahedron is self-dual.}
+\label{fig:solids}
+\end{figure}
+
+\begin{theorem}\label{thm:finiteso3}
+A finite subgroup $G$ of $SO(3)$ is cyclic, or dihedral of order $2n\ge4$, or isomorphic to $A_4$, $\mathfrak S_4$ or $A_5$ (of orders $12$, $24$, $60$).
+\end{theorem}
+\begin{proof}
+Let $N=|G|>1$. Each $g\ne1$ in $G$ is a rotation about an axis, which meets the unit sphere in two \emph{poles} $\pm u$, the only unit vectors fixed by $g$. Let $P$ be the set of poles of all non-identity elements. If $p$ is a pole of $g$ and $h\in G$, then $hp$ is a pole of $hgh^{-1}$: so $G$ acts on $P$. The stabiliser $G_p$ consists of the rotations of $G$ about the axis $\R p$; it is a finite group of rotations of the plane $p^\perp$, isomorphic to a finite subgroup of $\{z\in\C:|z|=1\}$, hence cyclic (Theorem~\ref{thm:cyclicmult}), of order $n_p\ge2$.
+
+\emph{Counting.} Count the pairs $(g,p)$ with $g\ne1$ and $p$ a pole of $g$. Each $g\ne1$ has $2$ poles, and each pole $p$ belongs to $n_p-1$ elements $g\ne1$. Group the poles into orbits $O_1,\dots,O_r$; on $O_i$, $n_p=n_i$ is constant (conjugate stabilisers) and $|O_i|=N/n_i$ (orbit--stabiliser). So
+\[
+\begin{gathered}2(N-1)=\sum_{i=1}^r\frac N{n_i}(n_i-1),\qq\text{i.e.}\quad2-\frac2N=\sum_{i=1}^r\Bigl(1-\frac1{n_i}\Bigr).\end{gathered}
+\]
+The left side is in $[1,2)$, each term on the right in $[\frac12,1)$, so $r=2$ or $r=3$.
+
+\emph{$r=2$.} Then $\frac2N=\frac1{n_1}+\frac1{n_2}$ with $n_i\le N$, so $n_1=n_2=N$: every pole is fixed by all of $G$. There are two of them, $\pm p$, and $G=G_p$ is cyclic.
+
+\emph{$r=3$.} Order $n_1\le n_2\le n_3$. Then $1+\frac2N=\frac1{n_1}+\frac1{n_2}+\frac1{n_3}$, so $n_1=2$ (otherwise the right side is $\le1$), and $\frac12+\frac2N=\frac1{n_2}+\frac1{n_3}$. If $n_2\ge4$ the right side is $\le\frac12$; so $n_2\in\{2,3\}$. If $n_2=2$, then $n_3=N/2$. If $n_2=3$, then $\frac1{n_3}=\frac16+\frac2N>\frac16$ gives $n_3\in\{3,4,5\}$ and $N=12,24,60$. Four cases remain: $(n_1,n_2,n_3)=(2,2,n)$ with $N=2n$, and $(2,3,3)$, $(2,3,4)$, $(2,3,5)$.
+
+\emph{$(2,2,n)$, $N=2n$.} If $n=2$, $N=4$ and every element has order $1$ or $2$, so $G\cong(\Z/2\Z)^2=D_2$. Let $n\ge3$. The orbit $O_3$ has $N/n=2$ poles; if $p\in O_3$, then $-p$ (with the same stabiliser) has $n_{-p}=n\ge3$, so $-p\in O_3$, and $O_3=\{\pm p\}$. Let $C=G_p$, cyclic of order $n$ and index $2$. An element $s\notin C$ maps $p$ to $-p$, so it is not a rotation about $\R p$. Its poles have stabiliser of order $2$ (otherwise they would be in $O_3$), so $s$ has order $2$: it is a half-turn about an axis perpendicular to $p$ (it reverses $p$). Conjugating by $s$ maps the rotation by $\alpha$ about $p$ to the rotation by $\alpha$ about $-p$, i.e.\ by $-\alpha$ about $p$: $scs^{-1}=c^{-1}$ for $c\in C$. With $C=\langle c\rangle$ of order $n$ and $G=C\cup sC$, this is the dihedral group $D_n$ (Chapter~1: the same multiplication rules).
+
+\emph{$(2,3,3)$, $N=12$.} The orbit $O_2$ has $4$ poles, and $G$ permutes them. A non-identity rotation fixes only $2$ unit vectors, so only the identity fixes all four: $G$ embeds in $\mathfrak S_4$, as a subgroup of order $12$. A subgroup $H$ of index $2$ in $\mathfrak S_4$ is normal and contains the square of every element ($g^2H=(gH)^2=H$ in $\mathfrak S_4/H\cong\Z/2\Z$); every $3$-cycle is a square (of its inverse), so $H$ contains the $3$-cycles, which generate $A_4$ (Proposition~\ref{prop:gens}); so $H=A_4$ and $G\cong A_4$.
+
+\emph{$(2,3,4)$, $N=24$.} $O_2$ has $8$ poles, with stabilisers of order $3$; it is the only orbit with $n=3$, so it contains $-p$ with $p$: it consists of $4$ lines $\ell_1,\dots,\ell_4$ through $0$, which $G$ permutes. Let $g\ne1$ fix every $\ell_m$. Let $r$ be the rotation of order $3$ about $\ell_1$ in $G$. A rotation by $\pm120^\circ$ maps no line to itself except its axis, so $r$ moves $\ell_2,\ell_3,\ell_4$. If $g$ had one of the $\ell_m$ as its axis, $g$ would be a rotation of order $3$ about it (it is in the stabiliser of a pole of $O_2$), and would move the other three lines: impossible. So no $\ell_m$ is the axis of $g$, and $g$ maps each $\ell_m$ to itself only by reversing it: $g$ is a half-turn and all $\ell_m$ are perpendicular to its axis, hence lie in one plane $\Pi$. But $r$ permutes the $\ell_m$, so it maps $\Pi$, the plane they span, to itself, and therefore also the line $\Pi^\perp$; as $r$ preserves only its axis $\ell_1$, $\Pi^\perp=\ell_1\subseteq\Pi$, a contradiction. So $G$ acts faithfully on $4$ lines and embeds in $\mathfrak S_4$; with $|G|=24$, $G\cong\mathfrak S_4$.
+
+\emph{$(2,3,5)$, $N=60$.} The orbits have $30$, $20$ and $12$ poles, with stabilisers of orders $2$, $3$, $5$. Since an axis carries $2$ poles, with the same stabiliser, $G$ consists of the identity, $15$ half-turns, $10\cdot2=20$ elements of order $3$ and $6\cdot4=24$ of order $5$ (total $60$). First, $G$ is simple. Let $H\trianglelefteq G$, $H\ne\{1\}$, contain $g\ne1$, with pole $p$. As $G_p$ has prime order, $g$ generates it, so $G_p\subseteq H$, and then $G_{hp}=hG_ph^{-1}\subseteq H$ for all $h$. So $H$ contains every element whose poles lie in the orbit of $p$: $15$, $20$ or $24$ elements. Hence $|H|=1+$ a sum of distinct terms among $15,20,24$, and $|H|$ divides $60$; the only possibility is $1+15+20+24=60$ (the others are $16,21,25,36,40,45$). So $H=G$.
+
+Next, the half-turns are all conjugate (their poles form one orbit), so each one, $a$, has a centraliser of order $60/15=4$. By Sylow's theorems (Theorem~\ref{thm:sylow23}), $a$ lies in a subgroup $P$ of order $4$, which is abelian (Corollary~\ref{cor:pgroup}), so $P\subseteq C_G(a)$ and $P=C_G(a)$. Elements of $P\setminus\{1\}$ have order $2$ ($G$ has no element of order $4$). So the Sylow $2$-subgroups each contain $3$ half-turns, each half-turn lies in exactly one of them, and there are $15/3=5$ of them. $G$ acts on these $5$ subgroups by conjugation, transitively (Sylow), so the homomorphism $G\to\mathfrak S_5$ is not trivial; its kernel is a normal subgroup other than $G$, hence trivial. So $G$ is isomorphic to a subgroup of index $2$ of $\mathfrak S_5$, which is $A_5$ by the argument used for $\mathfrak S_4$.
+\end{proof}
+
+All these cases occur: rotations about one axis by multiples of $2\pi/n$, the symmetries of a regular $n$-gon in a plane (turning it over is a half-turn in space), and the rotation groups of the tetrahedron, the cube and the icosahedron, of orders $12$, $24$, $60$, which by the theorem are $A_4$, $\mathfrak S_4$ and $A_5$. One can show that two finite subgroups of $SO(3)$ that are isomorphic are conjugate; so up to a change of axes these are \emph{all} the finite rotation groups, and every finite symmetry of a molecule or a crystal, up to reflections, is in this list. In particular the rotation group of the icosahedron is $A_5$, and its natural $3$-dimensional representation is the character $\psi_3$ of Chapter~11.
+
+The preimages of these groups in $S^3$ are the \emph{binary} polyhedral groups, of orders $24$, $48$ and $120$ (Exercises~\ref{ex:2T} and~\ref{ex:2I}). The binary icosahedral group $2I$, of order $120$, is especially rich: the quotient $S^3/2I$ is the Poincaré homology sphere, a $3$-manifold with the same homology as $S^3$ but a different fundamental group, and the $120$ elements of $2I$ are the vertices of the regular $4$-dimensional polytope called the $600$-cell. These connections, found one by one over a century, are still being explored.
+
+\section{Quaternions and four squares}
+
+Tome~1 proved that every positive integer is a sum of four squares, by Lagrange's descent. Quaternions explain the theorem as unique factorisation explains the two-square theorem in $\Z[i]$. The \emph{Hurwitz quaternions} $\mathcal H$ are the quaternions $a+bi+cj+dk$ whose four coordinates $a,b,c,d$ are either all in $\Z$ or all in $\Z+\frac12$.
+They form a ring in which division with remainder works on one side, and the proof that a prime is a norm follows the proof for $\Z[i]$; Exercise~\ref{ex:hurwitz} carries it out in full.
+
+\begin{remark}[a first look at categories]
+Many constructions of this tome share a pattern: they take objects (groups, rings, fields, representations) to other objects, and maps between objects to maps between the new objects, respecting composition. $G\mapsto G/G'$, $R\mapsto R[X]$, a finite abelian group $A\mapsto\widehat A$, $q\mapsto R_q$: the language of \emph{categories} (objects and morphisms) and \emph{functors} (maps between categories) was invented in 1945 by Eilenberg and Mac Lane to make such patterns precise. The duality $A\mapsto\widehat A$ reverses arrows (a homomorphism $A\to B$ gives $\widehat B\to\widehat A$), and the Galois correspondence of Chapter~10 is an order-reversing dictionary of the same kind. Tome~9 uses this language systematically.
+\end{remark}
+
+\begin{beauty}
+Three facts from different chapters meet in the icosahedron: its rotation group is $A_5$, the smallest non-abelian simple group (Chapter~4), which is why the quintic has no formula (Chapter~10); its character table contains the golden ratio (Chapter~11); and its double cover in the quaternions is the binary icosahedral group, whose $120$ elements are the vertices of a regular polytope in four dimensions, the $600$-cell. Klein's \emph{Lectures on the Icosahedron} (1884) used these symmetries to solve the quintic, not by radicals, but with one extra function, exactly as the cubic is solved with trigonometry. Symmetry, algebra and arithmetic are one subject.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:compose}
+Use quaternions to find the axis and angle of the rotation obtained by turning by $90^\circ$ about the $z$-axis, then by $90^\circ$ about the $x$-axis.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:euler4}
+Write Euler's identity expressing $(a^2+b^2+c^2+d^2)(a'^2+b'^2+c'^2+d'^2)$ as a sum of four squares of bilinear expressions, using $N(pq)=N(p)N(q)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rotmatrix}
+Let $q=a+bi+cj+dk$ be a unit quaternion. Write the matrix of $R_q$ in the basis $i,j,k$, and check that its trace is $4a^2-1=1+2\cos\theta$, where $\theta$ is the angle of the rotation.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:conjS3}
+Show that two unit quaternions are conjugate in $S^3$ iff they have the same real part. Deduce that two rotations are conjugate in $SO(3)$ iff they have the same angle (in $[0,\pi]$).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:2T}
+Show that the $24$ quaternions $\pm1,\pm i,\pm j,\pm k,\frac12(\pm1\pm i\pm j\pm k)$ form a subgroup $2T$ of $S^3$, that its image in $SO(3)$ has order $12$, and that this image is isomorphic to $A_4$ (count its elements of order $2$).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:2I}
+Let $2I\subset S^3$ be the preimage of a rotation group $G\cong A_5$. Show that $|2I|=120$, that $-1$ is the only element of order $2$ in $S^3$, and deduce that $2I$ is isomorphic neither to $\mathfrak S_5$ nor to $A_5\times\Z/2\Z$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hurwitz}
+(Four squares with quaternions.)
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathcal H$ is a subring of $\mathbb H$, stable under conjugation, and that $N(x)\in\Z$ for $x\in\mathcal H$. Show that the units of $\mathcal H$ (elements of norm $1$) are the $24$ elements of $2T$.
+\item Show that for every real quaternion $x$ there is $h\in\mathcal H$ with $N(x-h)<1$. Deduce: for $a,b\in\mathcal H$, $b\ne0$, there are $q,r\in\mathcal H$ with $a=qb+r$ and $N(r)<N(b)$; and every left ideal of $\mathcal H$ is of the form $\mathcal Hb$.
+\item Let $p$ be an odd prime. Using integers $x,y$ with $1+x^2+y^2\equiv0\pmod p$ (Tome~1, Chapter~7), show that $p=N(\delta)$ for some $\delta\in\mathcal H$, and then that $p$ is a sum of four integer squares.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:compose}
+The quaternions are $\frac{1+k}{\sqrt2}$ and $\frac{1+i}{\sqrt2}$; the composite ``first $q_1$, then $q_2$'' is $R_{q_2q_1}$.
+\end{hint}
+\begin{hint}{ex:euler4}
+Multiply $p=a+bi+cj+dk$ by $q=a'+b'i+c'j+d'k$ with the rules of Proposition~\ref{prop:quat}.
+\end{hint}
+\begin{hint}{ex:rotmatrix}
+Compute $qi\bar q$, $qj\bar q$, $qk\bar q$, or use Theorem~\ref{thm:su2so3}: the trace of a rotation by $\theta$ is $1+2\cos\theta$.
+\end{hint}
+\begin{hint}{ex:conjS3}
+$q=\cos\alpha+\sin\alpha\,u$, and $pup^{-1}$ can be any unit pure quaternion.
+\end{hint}
+\begin{hint}{ex:2T}
+Check closure on the generators $i$ and $\omega=\frac12(1+i+j+k)$, or check that the $24$ elements are the units of $\mathcal H$. Real parts: $\pm1$, $0$, $\pm\frac12$.
+\end{hint}
+\begin{hint}{ex:2I}
+The kernel $\{\pm1\}$ lies in $2I$. Solve $q^2=1$ with $q=a+x$.
+\end{hint}
+\begin{hint}{ex:hurwitz}
+(b) Round each coordinate; the bad case is when all four errors are $\frac12$. Then take $q$ close to $ab^{-1}$. (c) Look at the left ideal $\mathcal Hp+\mathcal H(1+xi+yj)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:compose}
+\idea Multiply the two unit quaternions in the right order and read off the half-angle and the axis.
+\writeup $q_1=\cos45^\circ+\sin45^\circ\,k=\frac{1+k}{\sqrt2}$ and $q_2=\frac{1+i}{\sqrt2}$. The composite $R_{q_2}R_{q_1}=R_{q_2q_1}$, and
+\[
+\begin{aligned}q_2q_1&=\tfrac12(1+i)(1+k)\eqbr=\tfrac12(1+k+i+ik)\eqbr=\tfrac12(1+i-j+k),\end{aligned}
+\]
+since $ik=-j$. Its real part is $\cos\frac\theta2=\frac12$, so $\theta=120^\circ$, and its pure part $\frac12(i-j+k)=\sin60^\circ\cdot\frac{i-j+k}{\sqrt3}$ gives the axis $\frac1{\sqrt3}(1,-1,1)$. Check on basis vectors: $R_{q_1}$ is the quarter turn about $z$, so $i\mapsto j$ and $k\mapsto k$; $R_{q_2}$ is the quarter turn about $x$, so $j\mapsto k$ and $k\mapsto-j$. The composite therefore sends $i\mapsto k$ and $k\mapsto-j$. On the other hand, a rotation by $120^\circ$ about $(1,-1,1)$ permutes the three vectors $e_1,e_3,-e_2$, which make equal angles with the axis, cyclically: $e_1\mapsto e_3\mapsto-e_2\mapsto e_1$. Both descriptions agree.
+\end{solution}
+
+\begin{solution}{ex:euler4}
+\idea The norm is multiplicative; expand the product.
+\writeup With $p=a+bi+cj+dk$ and $q=a'+b'i+c'j+d'k$,
+\[
+\begin{aligned}
+pq={}&(aa'-bb'-cc'-dd')\eqbr+(ab'+ba'+cd'-dc')\,i\\
+&+(ac'-bd'+ca'+db')\,j\eqbr+(ad'+bc'-cb'+da')\,k,
+\end{aligned}
+\]
+and $N(p)N(q)=N(pq)$ reads
+\[
+\begin{aligned}
+&(a^2+b^2+c^2+d^2)\eqbr\cdot(a'^2+b'^2+c'^2+d'^2)\\
+&=(aa'-bb'-cc'-dd')^2\eqbr+(ab'+ba'+cd'-dc')^2\\
+&\quad+(ac'-bd'+ca'+db')^2\eqbr+(ad'+bc'-cb'+da')^2.
+\end{aligned}
+\]
+So a product of sums of four squares is a sum of four squares, which reduces the four-square theorem to primes (Tome~1).
+\end{solution}
+
+\begin{solution}{ex:rotmatrix}
+\idea Apply $v\mapsto qv\bar q$ to the basis vectors, using the multiplication table.
+\writeup A direct computation (or the notebook) gives the images of the basis vectors, which are the columns of the matrix of $R_q$:
+\[
+\begin{gathered}
+R_q(i)=\begin{pmatrix}a^2+b^2-c^2-d^2\\2(bc+ad)\\2(bd-ac)\end{pmatrix},\qq
+R_q(j)=\begin{pmatrix}2(bc-ad)\\a^2-b^2+c^2-d^2\\2(cd+ab)\end{pmatrix},\\
+R_q(k)=\begin{pmatrix}2(bd+ac)\\2(cd-ab)\\a^2-b^2-c^2+d^2\end{pmatrix}.
+\end{gathered}
+\]
+For instance the first column is $qi\bar q$: with $q=a+x$, $qi\bar q=(a+x)i(a-x)$, and for $x=bi+cj+dk$ one finds the coefficient of $i$ to be $a^2+b^2-c^2-d^2$. The trace is $3a^2-(b^2+c^2+d^2)=3a^2-(1-a^2)=4a^2-1$. With $a=\cos\frac\theta2$, $4a^2-1=2(1+\cos\theta)-1=1+2\cos\theta$, the trace of a rotation by $\theta$ (in a basis $u,w,u\times w$ its matrix has diagonal $1,\cos\theta,\cos\theta$).
+\end{solution}
+
+\begin{solution}{ex:conjS3}
+\idea Conjugation preserves the real part and rotates the pure part; $S^3$ acts transitively on directions.
+\writeup Conjugation preserves real parts: $\operatorname{Re}x=\frac12(x+\bar x)$, and $\overline{pqp^{-1}}=p\bar qp^{-1}$ for unit $p$. Conversely, write unit quaternions as $q=\cos\alpha+\sin\alpha\,u$, $q'=\cos\alpha+\sin\alpha\,u'$ with the same real part $\cos\alpha$, $\alpha\in[0,\pi]$, and $u,u'$ unit pure. By Theorem~\ref{thm:su2so3} some $p$ has $R_p(u)=u'$ (there is a rotation mapping any unit vector to any other), and then $pqp^{-1}=\cos\alpha+\sin\alpha\,u'=q'$. For rotations: $R_q$ and $R_{q'}$ are conjugate in $SO(3)$ iff $q'$ is conjugate to $q$ or to $-q$ (because $R$ is onto with kernel $\pm1$), iff $\operatorname{Re}q'=\pm\operatorname{Re}q$, iff $\cos\frac{\theta'}2=\pm\cos\frac\theta2$, iff the angles in $[0,\pi]$ coincide (replacing $u$ by $-u$ changes $\theta$ into $-\theta$, so angles can be taken in $[0,\pi]$).
+\end{solution}
+
+\begin{solution}{ex:2T}
+\idea A finite subset of a group closed under products is a subgroup; then count elements by order.
+\writeup Let $T$ be the set of the $24$ quaternions. Its elements are exactly the quaternions of norm $1$ whose four coordinates are either all integers or all halves of odd integers: with integer coordinates, $a^2+b^2+c^2+d^2=1$ forces one coordinate $\pm1$ and the others $0$; with half-odd coordinates $\frac{m_t}2$, $\sum m_t^2=4$ with all $m_t$ odd forces every $m_t=\pm1$. In the language of Exercise~\ref{ex:hurwitz}(a), $T$ is the set of elements of norm $1$ of the Hurwitz quaternions $\mathcal H$. That part of Exercise~\ref{ex:hurwitz} shows, by a direct computation that does not use the present exercise, that $\mathcal H$ is closed under products. Since the norm is multiplicative, the product of two elements of $T$ lies in $\mathcal H$ and has norm $1$, so it lies in $T$; and $q^{-1}=\bar q$ has the same kind of coordinates as $q$. So $T$ is a subgroup of $S^3$. (For instance $i\cdot\frac12(1+i+j+k)=\frac12(-1+i-j+k)$ and $\frac12(1+i+j+k)^2=\frac12(-1+i+j+k)$, as the reader can check with Proposition~\ref{prop:quat}.) The image has $24/2=12$ elements. The orders in $SO(3)$: $\pm i,\pm j,\pm k$ give half-turns ($\cos\frac\theta2=0$), so $3$ elements of order $2$; the $16$ elements with real part $\pm\frac12$ give rotations by $120^\circ$ ($\cos\frac\theta2=\pm\frac12$), so $8$ elements of order $3$. A group of order $12$ in $SO(3)$ is $A_4$ or $D_6$ (Theorem~\ref{thm:finiteso3}), and $D_6$ has $7$ elements of order $2$; so the image is $A_4$: the rotation group of the tetrahedron with vertices $(1,1,1)$, $(1,-1,-1)$, $(-1,1,-1)$, $(-1,-1,1)$.
+\end{solution}
+
+\begin{solution}{ex:2I}
+\idea Elements of order $2$ in $S^3$ are square roots of $1$, and a pure quaternion squares to a negative number.
+\writeup $2I$ is the preimage of a group of order $60$ under a two-to-one surjective homomorphism, so $|2I|=120$. If $q=a+x$ with $x$ pure and $q^2=1$, then $q^2=a^2-|x|^2+2ax=1$ (Proposition~\ref{prop:quat}(d)), so $ax=0$. If $x\ne0$, then $a=0$ and $q^2=-|x|^2<0$: impossible. So $x=0$, $q=\pm1$, and $-1$ is the only element of order $2$. But $\mathfrak S_5$ has many elements of order $2$ (the $10$ transpositions, for instance), and so has $A_5\times\Z/2\Z$ (all $(a,0)$ with $a$ a double transposition, and $(e,1)$). So $2I$ is isomorphic to neither, although it has order $120$ and maps onto $A_5$. (In fact $2I\cong SL_2(\mathbb F_5)$.)
+\end{solution}
+
+\begin{solution}{ex:hurwitz}
+\idea Copy the Gaussian proof: a Euclidean division gives principal (left) ideals, and a prime that divides a product without dividing the factors splits into two factors of equal norm. The only new feature is non-commutativity, which forces us to work with left ideals.
+\writeup (a) $\mathcal H=\Z^4+\Z\omega$ with $\omega=\frac12(1+i+j+k)$, as an additive group. It is closed under products because the Lipschitz quaternions $\Z+\Z i+\Z j+\Z k$ are, and $\omega^2=\omega-1$, $i\omega=\frac12(-1+i-j+k)$, $\omega i=\frac12(-1+i+j-k)$ and the similar products with $j$, $k$ lie in $\mathcal H$ (all four coordinates are half-odd). Conjugation changes signs, so it preserves $\mathcal H$. For four half-odd integers $\frac{m_t}2$, $\sum\frac{m_t^2}4$ is an integer because each odd $m_t^2\equiv1\pmod8$, so $\sum m_t^2\equiv4\pmod8$. Units: norm $1$ with integer coordinates gives $\pm1,\pm i,\pm j,\pm k$; with half-odd coordinates, $\sum m_t^2=4$ forces all $m_t=\pm1$: the $16$ elements $\frac12(\pm1\pm i\pm j\pm k)$.
+
+(b) Round each coordinate of $x$ to a nearest integer, giving $m\in\Z^4$ with all $|x_t-m_t|\le\frac12$, so $N(x-m)\le1$, with equality only if all four differences are $\pm\frac12$; but then $x\in m+\frac12(\pm1\pm i\pm j\pm k)\subseteq\mathcal H$, and $h=x$ works. Otherwise $h=m$ works. For $a,b$: let $x=ab^{-1}$, $h$ as above, $q=h$ and $r=a-qb=(x-h)b$; then $r\in\mathcal H$ and $N(r)=N(x-h)N(b)<N(b)$. If $I$ is a non-zero left ideal (stable under addition and left multiplication by $\mathcal H$), let $b\in I$ have the least non-zero norm; for $a\in I$, $r=a-qb\in I$ has $N(r)<N(b)$, so $r=0$: $I=\mathcal Hb$.
+
+(c) Let $\alpha=1+xi+yj$, with $N(\alpha)=1+x^2+y^2=pm$. By (b), $\mathcal Hp+\mathcal H\alpha=\mathcal H\delta$. As $p\in\mathcal H\delta$, $p=\gamma\delta$, so $p^2=N(\gamma)N(\delta)$.
+If $N(\delta)=1$, $\delta$ is a unit and $1=up+v\alpha$ for some $u,v\in\mathcal H$; multiplying on the right by $\bar\alpha$, $\bar\alpha=p(u\bar\alpha+vm)$ (as $p$ is central), so $\bar\alpha/p\in\mathcal H$, which is false: its real part $\frac1p$ is neither an integer nor a half-integer.
+If $N(\delta)=p^2$, $\gamma$ is a unit, $\mathcal H\delta=\mathcal Hp$, and $\alpha\in\mathcal Hp$, i.e.\ $\alpha/p\in\mathcal H$: false for the same reason.
+So $N(\delta)=p$. If $\delta$ has integer coordinates, $p$ is a sum of four squares. Otherwise its coordinates are half-odd; subtracting even integers, $\delta=2\mu+\varepsilon$ with $\mu\in\Z^4$ and $\varepsilon=\frac12(\pm1\pm i\pm j\pm k)$, a unit. Then $\delta\bar\varepsilon=2\mu\bar\varepsilon+1$, with $\mu\bar\varepsilon\in\mathcal H$, so $2\mu\bar\varepsilon$ has integer coordinates, and so has $\delta\bar\varepsilon$, of norm $N(\delta)=p$. Finally $2=1^2+1^2+0^2+0^2$, and Euler's identity (Exercise~\ref{ex:euler4}) extends the result to all positive integers.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item W.~R.~Hamilton, \emph{On quaternions, or on a new system of imaginaries in algebra}, Philosophical Magazine 25 (1844), 10--13, and the following instalments. The discovery, a few months after the walk.
+\item F.~Klein, \emph{Vorlesungen über das Ikosaeder und die Auflösung der Gleichungen vom fünften Grade}, Teubner, 1884 (English: \emph{Lectures on the Icosahedron}, Dover). Finite rotation groups, and the quintic solved with the icosahedron.
+\item A.~Hurwitz, \emph{Über die Zahlentheorie der Quaternionen}, Nachr.\ Ges.\ Wiss.\ Göttingen (1896), 313--340. The ring $\mathcal H$ and the four-square theorem.
+\item J.~Stillwell, \emph{Naive Lie Theory}, Springer, 2008. Quaternions, $SU(2)$, $SO(3)$, and the first steps of Lie theory.
+\item J.~H.~Conway and D.~A.~Smith, \emph{On Quaternions and Octonions}, A K Peters, 2003. The finite groups of quaternions, Hurwitz arithmetic, and the octonions.
+\item M.~A.~Armstrong, \emph{Groups and Symmetry}, Springer, 1988, Chapter~19. The classification of finite rotation groups by counting poles.
+\item K.~Shoemake, \emph{Animating rotation with quaternion curves}, SIGGRAPH Computer Graphics 19 (1985), 245--254. Quaternion interpolation (slerp) in computer graphics.
+\end{itemize}
