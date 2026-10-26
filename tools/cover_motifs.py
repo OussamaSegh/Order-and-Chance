@@ -609,6 +609,39 @@ def plancherel_young(n=1500, seed=9):
     return "\n".join(lines) + "\n"
 
 
+def prime_constellations(rings=56, r0=0.55):
+    """Tome 13: the integers 30k+a on rings, k on the radius and a on the angle. Primes above 5
+    lie on the eight spokes a = 1, 7, 11, 13, 17, 19, 23, 29; twin primes are joined by arcs,
+    and the prime quadruplets p, p+2, p+6, p+8 are ringed."""
+    ps = set(primes_upto(30 * rings + 40))
+    dr = (R - r0) / rings
+    pos = lambda m: (r0 + (m // 30) * dr, 90 - 12 * (m % 30))
+    lines = [f"% Prime constellations: 30k+a at radius k, angle a, for k < {rings}."]
+    for a in (1, 7, 11, 13, 17, 19, 23, 29):
+        t = math.radians(90 - 12 * a)
+        lines.append(r"\draw[accent,line width=0.3pt,opacity=0.35] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                     % (r0 * math.cos(t), r0 * math.sin(t), R * math.cos(t), R * math.sin(t)))
+    for m in sorted(ps):
+        if m < 7 or m >= 30 * rings:
+            continue
+        r, d = pos(m)
+        t = math.radians(d)
+        lines.append(r"\fill[accent,opacity=0.9] (%.4fin,%.4fin) circle (%.3fin);"
+                     % (r * math.cos(t), r * math.sin(t), 0.012 + 0.010 * r / R))
+        if m + 2 in ps and m + 2 < 30 * rings and m % 30 != 29:
+            lines.append(r"\draw[accent,line width=1.0pt,opacity=0.85] (%.3f:%.4fin) arc (%.3f:%.3f:%.4fin);"
+                         % (d, r, d, d - 24, r))
+        if m + 2 in ps and m + 2 < 30 * rings and m % 30 == 29:
+            r2, d2 = pos(m + 2)
+            t2 = math.radians(d2)
+            lines.append(r"\draw[accent,line width=1.0pt,opacity=0.85] (%.4fin,%.4fin)--(%.4fin,%.4fin);"
+                         % (r * math.cos(t), r * math.sin(t), r2 * math.cos(t2), r2 * math.sin(t2)))
+        if all(m + k in ps for k in (2, 6, 8)) and m + 8 < 30 * rings and m % 30 == 11:
+            lines.append(r"\draw[accent,line width=0.6pt] (%.3f:%.4fin) circle (%.3fin);"
+                         % (d - 48, r, 0.05))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -622,6 +655,7 @@ MOTIFS = {
     "tome9-structures2": plancherel_young,
     "tome10-chance2": stick_breaking,
     "tome12-arithmetic": ford_circles,
+    "tome13-primes": prime_constellations,
     "tomeC1-discrete": boolean_lattice,
     "tomeC2-algorithms": bitonic_network,
     "tomeC3-complexity": mod3_automaton,
