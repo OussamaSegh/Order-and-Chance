@@ -1,0 +1,456 @@
+\chapter{Concentration of Measure}
+\begin{center}\itshape
+A function of many independent variables that does not depend too much on any one of them is nearly constant.\\
+This simple principle, made quantitative, explains why high-dimensional spheres are thin, why random projections preserve distances,\\
+and why the longest increasing subsequence of a random permutation hardly fluctuates.
+\end{center}
+
+In his lectures on functional analysis of 1922, Paul L\'evy proved that on a high-dimensional sphere, a set of half the area has almost the whole sphere within a short distance of it: the
+measure ``concentrates'' around any equator. For half a century this looked like a curiosity of geometry. Then in 1971 Vitali Milman used it to give a new
+proof of Dvoretzky's theorem on almost Euclidean sections of convex bodies, and saw that the same phenomenon is everywhere: in Gaussian space, on the cube,
+in products of arbitrary probability spaces. Its master was Michel Talagrand, whose 1995 memoir on ``concentration of measure and isoperimetric inequalities
+in product spaces'' gave inequalities strong enough to handle combinatorial problems that had resisted everything else. The Abel Prize of 2024 honoured him
+``for his groundbreaking contributions to probability theory and functional analysis, with outstanding applications in mathematical physics and statistics''.
+
+Tome~3 met the first instance: the bounded difference inequality, proved with martingales. This chapter sharpens it, adds the variance version of
+Efron and Stein, proves the Gaussian concentration inequality through the Ornstein--Uhlenbeck semigroup and the logarithmic Sobolev inequality, and ends with
+Talagrand's convex distance inequality. The applications: random projections that compress data without distorting it (Johnson and Lindenstrauss), and Ulam's
+problem on increasing subsequences.
+
+\begin{reminder}[from Tome 3, Tome 7 and Chapter 6]
+Hoeffding's lemma: if $Y$ takes values in an interval of length $c$ and $\mathbb EY=0$, then $\mathbb Ee^{\lambda Y}\le e^{\lambda^2c^2/8}$ (Tome~3, Lemma~4.8, rescaled from $[0,1]$).
+The bounded difference inequality (Tome~3, Theorem~10.25): if changing the $i$-th coordinate changes $f$ by at most $c_i$, then
+$P(|F-\mathbb EF|\ge t)\le2e^{-t^2/2C}$ with $C=\sum c_i^2$. Fubini's theorem (Tome~7, Theorem~8.6) lets us integrate out some coordinates of a function of independent
+variables. The Gaussian integration by parts $\mathbb E\,Zf(Z)=\mathbb Ef'(Z)$ is Lemma~\ref{lem:stein}.
+\end{reminder}
+
+Throughout, $X=(X_1,\dots,X_n)$ has independent coordinates, $X_i$ with law $\mu_i$ on a measurable space $E_i$, and $f:E_1\times\dots\times E_n\to\R$ is measurable. For
+$x\in\prod E_i$ we write $x^{(i)}$ for $x$ with its $i$-th coordinate replaced: $X^{(i)}=(X_1,\dots,X_i',\dots,X_n)$, where $X'$ is an independent copy of $X$.
+
+\section{Variance: the Efron--Stein inequality}
+
+\begin{theorem}[Efron--Stein]\label{thm:efronstein}
+If $\mathbb Ef(X)^2<\infty$, then
+\[
+\operatorname{Var}f(X)\le\frac12\sum_{i=1}^n\mathbb E\bigl[(f(X)-f(X^{(i)}))^2\bigr].
+\]
+\end{theorem}
+\begin{proof}
+For $0\le k\le n$ let
+\[
+g_k(x_1,\dots,x_k)=\int f(x_1,\dots,x_k,y_{k+1},\dots,y_n)\,\mu_{k+1}(\dd y_{k+1})\cdots\mu_n(\dd y_n),
+\]
+so that $g_n=f$ and $g_0=\mathbb Ef(X)$ (Fubini). Put $\Delta_k=g_k(X_1,\dots,X_k)-g_{k-1}(X_1,\dots,X_{k-1})$. For $j<k$, integrating $\Delta_k$ in $x_k$ with the earlier coordinates fixed gives $0$, so
+$\mathbb E\Delta_j\Delta_k=0$, and $\operatorname{Var}f(X)=\mathbb E\bigl(\sum_k\Delta_k\bigr)^2=\sum_k\mathbb E\Delta_k^2$.
+
+Now let $\bar f_k$ be the function $f$ with its $k$-th coordinate integrated out: $\bar f_k(x)=\int f(x_1,\dots,z,\dots,x_n)\,\mu_k(\dd z)$. Then
+\[
+\Delta_k=\int\bigl(f-\bar f_k\bigr)(X_1,\dots,X_k,y_{k+1},\dots,y_n)\,\prod_{j>k}\mu_j(\dd y_j),
+\]
+and by the Cauchy--Schwarz inequality,
+$\mathbb E\Delta_k^2\le\mathbb E\bigl[(f-\bar f_k)(X)^2\bigr]$. Finally, for fixed values of the other coordinates, $\int(f-\bar f_k)^2\dd\mu_k$ is the variance of $f$ in the $k$-th
+coordinate, which is
+\[
+\frac12\iint\bigl(f(\dots,z,\dots)-f(\dots,z',\dots)\bigr)^2\mu_k(\dd z)\,\mu_k(\dd z').
+\]
+Integrating over the other coordinates gives $\frac12\mathbb E(f(X)-f(X^{(k)}))^2$.
+\end{proof}
+
+For $f(x)=x_1+\dots+x_n$ this is an equality (Exercise~\ref{ex:esequality}). In general it says: the variance is at most the sum of the sensitivities to single coordinates.
+Since $f(X)-f(X^{(i)})$ is symmetric in law, $\frac12\mathbb E(f-f^{(i)})^2=\mathbb E[(f-f^{(i)})_+^2]$, where $f^{(i)}=f(X^{(i)})$, and only the coordinates whose change can \emph{lower}
+$f$ count. That makes the inequality powerful for maxima.
+
+\begin{proposition}[increasing subsequences have small variance]\label{prop:lisvar}
+Let $X_1,\dots,X_n$ be i.i.d.\ uniform on $[0,1]$ and $L_n$ the length of their longest increasing subsequence. Then $\sqrt n\le\mathbb EL_n\le2e\sqrt n+1$ and
+$\operatorname{Var}L_n\le\mathbb EL_n$.
+\end{proposition}
+\begin{proof}
+Ties have probability $0$, and the order of the $X_i$ is a uniform random permutation. \emph{Mean.} By the Erd\H os--Szekeres theorem (Tome~C1, Theorem~2.15), a sequence of
+$n$ distinct numbers with no increasing subsequence longer than $L$ and no decreasing one longer than $D$ has $n\le LD$. So $L_n+D_n\ge2\sqrt{L_nD_n}\ge2\sqrt n$; reversing
+the sequence shows that $L_n$ and $D_n$ have the same law, so $\mathbb EL_n\ge\sqrt n$. The upper bound is Exercise~\ref{ex:lismean}.
+\emph{Variance.} Fix a rule choosing one longest increasing subsequence $I$ of $X$. If $i\notin I$, replacing $X_i$ leaves $I$ increasing, so $L_n^{(i)}\ge L_n$. If $i\in I$, the
+replacement lowers $L_n$ by at most $1$. So $\sum_i(L_n-L_n^{(i)})_+^2\le|I|=L_n$, and Theorem~\ref{thm:efronstein} gives $\operatorname{Var}L_n\le\mathbb EL_n$.
+\end{proof}
+
+So $L_n$, of order $\sqrt n$, fluctuates by at most $O(n^{1/4})$. This was the question asked by Stanis\l aw Ulam in 1961, and the story ends at the close of
+the chapter.
+
+\section{Exponential bounds: McDiarmid's inequality}
+
+\begin{theorem}[McDiarmid]\label{thm:mcdiarmid}
+Suppose $|f(x)-f(x^{(i)})|\le c_i$ for all $x$, all $i$ and all replacements of the $i$-th coordinate, and let $C=\sum_ic_i^2$. Then for $t>0$,
+\[
+P\bigl(f(X)-\mathbb Ef(X)\ge t\bigr)\le e^{-2t^2/C},\qquad P\bigl(|f(X)-\mathbb Ef(X)|\ge t\bigr)\le2e^{-2t^2/C}.
+\]
+\end{theorem}
+\begin{proof}
+With $g_k$ and $\Delta_k$ as in the previous proof ($f$ is bounded, since changing coordinates one at a time moves it by at most $\sum c_i$), fix $x_1,\dots,x_{k-1}$. As a
+function of $z$, $g_k(x_1,\dots,x_{k-1},z)$ is an average over the later coordinates of functions whose values, as $z$ varies, lie in an interval of length $c_k$; so it
+takes values in an interval of length $c_k$, and its $\mu_k$-mean is $g_{k-1}(x_1,\dots,x_{k-1})$. By Hoeffding's lemma,
+\[
+\int e^{\lambda(g_k(x_1,\dots,x_{k-1},z)-g_{k-1}(x_1,\dots,x_{k-1}))}\,\mu_k(\dd z)\le e^{\lambda^2c_k^2/8}.
+\]
+Integrating out $x_n$, then $x_{n-1}$, and so on (Fubini), $\mathbb Ee^{\lambda(f(X)-\mathbb Ef(X))}=\mathbb Ee^{\lambda(\Delta_1+\dots+\Delta_n)}\le e^{\lambda^2C/8}$. Markov's inequality with
+$\lambda=4t/C$ gives $e^{-\lambda t+\lambda^2C/8}=e^{-2t^2/C}$. Apply this to $-f$ for the lower tail.
+\end{proof}
+
+Compared with Tome~3, the exponent improves by a factor of $4$, because Hoeffding's lemma sees that each increment lies in an interval of length $c_k$, not in
+$[-c_k,c_k]$. For the $m=10^6$ balls in $n=10^6$ bins of Tome~3, the probability that the number of empty bins deviates from its mean by $5000$ drops from at most
+$2e^{-12.5}$ to at most $2e^{-50}$.
+
+\section{Gaussian concentration}
+
+Let $Z$ be a standard Gaussian vector in $\R^n$ and $\gamma$ its law. We work with functions in the class $\mathcal C$ of $C^2$ functions on $\R^n$ whose values and first and
+second partial derivatives are bounded by $Ce^{c|x|}$ for some constants: Gaussian expectations of such functions are finite, and we may differentiate under them
+(dominated convergence). The \emph{Ornstein--Uhlenbeck semigroup} is
+\[
+P_th(x)=\mathbb E\,h\bigl(e^{-t}x+\sqrt{1-e^{-2t}}\,Z\bigr),\qquad t\ge0 .
+\]
+It interpolates between $P_0h=h$ and $P_\infty h=\mathbb Eh(Z)$: for each $x$, $P_th(x)\to\mathbb Eh(Z)$ as $t\to\infty$ by dominated convergence.
+
+\begin{lemma}[Ornstein--Uhlenbeck calculus]\label{lem:ou}
+For $h,g\in\mathcal C$ and $t\ge0$, with $Lh=\Delta h-x\cdot\nabla h$:
+\begin{enumerate}[label=(\roman*)]
+\item $\mathbb EP_th(Z)=\mathbb Eh(Z)$;
+\item $\nabla P_th=e^{-t}P_t(\nabla h)$ (coordinatewise);
+\item $\frac{\partial}{\partial t}P_th=LP_th$;
+\item $\mathbb E[g(Z)\,Lh(Z)]=-\mathbb E[\nabla g(Z)\cdot\nabla h(Z)]$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+Write $\sigma_t=\sqrt{1-e^{-2t}}$ and $Y=e^{-t}x+\sigma_tZ$. (i) If $Z'$ is an independent copy of $Z$, then $e^{-t}Z'+\sigma_tZ$ is centred Gaussian with covariance $(e^{-2t}+\sigma_t^2)I=I$.
+(ii) Differentiate under the expectation. (iv) Apply Lemma~\ref{lem:stein}(i) in the $i$-th coordinate to $u=g\,\partial_ih$ (with the others fixed, then Fubini):
+$\mathbb E[\partial_ig\,\partial_ih+g\,\partial_i^2h]=\mathbb E[Z_ig\,\partial_ih]$; sum over $i$. (iii) By the chain rule, $\frac{\partial}{\partial t}P_th(x)=\mathbb E\bigl[\nabla h(Y)\cdot(-e^{-t}x+\sigma_t'Z)\bigr]$.
+Gaussian integration by parts in $Z$ turns $\mathbb E[\partial_ih(Y)Z_i]$ into $\sigma_t\mathbb E[\partial_i^2h(Y)]$, and $\sigma_t\sigma_t'=e^{-2t}$. So
+$\frac{\partial}{\partial t}P_th=e^{-2t}P_t(\Delta h)-e^{-t}x\cdot P_t(\nabla h)$, which by (ii) is $\Delta P_th-x\cdot\nabla P_th$.
+\end{proof}
+
+The semigroup trades time for smoothness: it starts from $h$, ends at a constant, and along the way (ii) shrinks gradients at rate $e^{-t}$. Integrating the change
+over time gives two inequalities.
+
+\begin{theorem}[Gaussian Poincar\'e and logarithmic Sobolev inequalities]\label{thm:gausslsi}
+For $f\in\mathcal C$,
+\[
+\operatorname{Var}f(Z)\le\mathbb E|\nabla f(Z)|^2 .
+\]
+For $h=e^G$ with $G\in C^2$ having bounded first and second derivatives, writing $\operatorname{Ent}(h)=\mathbb E[h\log h]-\mathbb Eh\log\mathbb Eh$ (all at $Z$),
+\[
+\operatorname{Ent}(h)\le\frac12\,\mathbb E\Bigl[\frac{|\nabla h|^2}h\Bigr].
+\]
+\end{theorem}
+\begin{proof}
+Let $\phi$ be $C^2$ on the range of the functions involved, and $u_t=P_th$. By Lemma~\ref{lem:ou}(iii) and (iv),
+\[
+\frac{\dd}{\dd t}\mathbb E\phi(u_t(Z))=\mathbb E\bigl[\phi'(u_t)Lu_t\bigr]=-\mathbb E\bigl[\phi''(u_t)|\nabla u_t|^2\bigr].
+\]
+Integrating from $0$ to $\infty$ and using $u_t\to\mathbb Eh(Z)$,
+\begin{equation}\label{eq:ouint}
+\mathbb E\phi(h(Z))-\phi(\mathbb Eh(Z))=\int_0^\infty\mathbb E\bigl[\phi''(u_t)|\nabla u_t|^2\bigr]\dd t .
+\end{equation}
+\emph{Poincar\'e.} Take $h=f$ and $\phi(u)=u^2$. By (ii) and Jensen, $|\nabla u_t|^2=e^{-2t}|P_t\nabla f|^2\le e^{-2t}P_t(|\nabla f|^2)$, whose expectation is $e^{-2t}\mathbb E|\nabla f(Z)|^2$
+by (i). So the right side of~\eqref{eq:ouint} is at most $\int_0^\infty2e^{-2t}\dd t\,\mathbb E|\nabla f|^2$.
+
+\emph{Log-Sobolev.} Here $h>0$, $h\in\mathcal C$, and we take $\phi(u)=u\log u$, $\phi''(u)=\frac1u$. By (ii) and the Cauchy--Schwarz inequality for the expectation defining $P_t$,
+\[
+|\nabla u_t|=e^{-t}|P_t\nabla h|\le e^{-t}P_t|\nabla h|=e^{-t}P_t\Bigl(\frac{|\nabla h|}{\sqrt h}\sqrt h\Bigr)\le e^{-t}\Bigl(P_t\frac{|\nabla h|^2}h\Bigr)^{1/2}(P_th)^{1/2}.
+\]
+So $\frac{|\nabla u_t|^2}{u_t}\le e^{-2t}P_t\frac{|\nabla h|^2}h$, and~\eqref{eq:ouint} with (i) gives $\operatorname{Ent}(h)\le\int_0^\infty e^{-2t}\dd t\,\mathbb E\frac{|\nabla h|^2}h$.
+\end{proof}
+
+The logarithmic Sobolev inequality is due to Leonard Gross (1975), and the semigroup proof is in the spirit of Bakry and \'Emery. Its strength is that it
+tensorizes without loss and turns into concentration by a two-line argument found by Ira Herbst in an unpublished letter.
+
+\begin{theorem}[Gaussian concentration]\label{thm:gaussconc}
+Let $F:\R^n\to\R$ be $L$-Lipschitz for the Euclidean norm. Then for $t>0$,
+\[
+P\bigl(F(Z)-\mathbb EF(Z)\ge t\bigr)\le e^{-t^2/2L^2},\qquad\operatorname{Var}F(Z)\le L^2 .
+\]
+\end{theorem}
+\begin{proof}
+By scaling, $L=1$. \emph{Smooth case.} Suppose first that $F$ is $C^2$ with bounded second derivatives; being $1$-Lipschitz, $|\nabla F|\le1$. The Poincar\'e inequality gives
+$\operatorname{Var}F\le1$. For $\lambda>0$ let $H(\lambda)=\mathbb Ee^{\lambda F(Z)}$. The log-Sobolev inequality for $h=e^{\lambda F}$, for which $|\nabla h|^2/h=\lambda^2|\nabla F|^2h\le\lambda^2h$, reads
+\[
+\lambda H'(\lambda)-H(\lambda)\log H(\lambda)\le\frac{\lambda^2}2H(\lambda)
+\]
+(Herbst's argument). Divide by $\lambda^2H$: the function $K(\lambda)=\frac1\lambda\log H(\lambda)$ satisfies $K'(\lambda)\le\frac12$, and $K(\lambda)\to\frac{H'(0)}{H(0)}=\mathbb EF$ as $\lambda\to0$. So
+$\log\mathbb Ee^{\lambda(F-\mathbb EF)}\le\frac{\lambda^2}2$, and Markov's inequality with $\lambda=t$ gives $e^{-t^2/2}$.
+
+\emph{General case.} Let $W$ be a standard Gaussian vector independent of $Z$ and $F_\varepsilon(x)=\mathbb EF(x+\varepsilon W)$. It is $1$-Lipschitz, $|F_\varepsilon-F|\le\varepsilon\mathbb E|W|\le\varepsilon\sqrt n$, and it
+is $C^2$ with bounded second derivatives: differentiating the Gaussian density of $x+\varepsilon W$ twice,
+$\partial_i\partial_jF_\varepsilon(x)=\varepsilon^{-2}\mathbb E[(F(x+\varepsilon W)-F(x))(W_iW_j-\delta_{ij})]$, bounded by $\varepsilon^{-1}\mathbb E[|W|\,|W_iW_j-\delta_{ij}|]$. So
+$P(F-\mathbb EF\ge t)\le P(F_\varepsilon-\mathbb EF_\varepsilon\ge t-2\varepsilon\sqrt n)\le e^{-(t-2\varepsilon\sqrt n)^2/2}$ and $\operatorname{Var}F\le(1+\varepsilon\sqrt n)^2$ (Minkowski's inequality for the standard deviations of $F_\varepsilon$ and $F-F_\varepsilon$); let $\varepsilon\to0$.
+\end{proof}
+
+The bound does not depend on the dimension. Two consequences show what that means.
+
+\begin{example}[the thin shell]\label{ex:thinshell}
+$F(z)=|z|$ is $1$-Lipschitz, so $|Z|$ deviates from its mean by more than $t$ with probability at most $2e^{-t^2/2}$, while $\mathbb E|Z|^2=n$ and $\sqrt n-1\le\mathbb E|Z|\le\sqrt n$
+(Exercise~\ref{ex:thinshellmean}). A Gaussian vector in dimension $10^6$ has a length within $3$ of its mean, which is between $999$ and $1000$, with probability at least $0.97$: its
+law is a thin shell, not a fuzzy ball (Figure~\ref{fig:thinshell}).
+\end{example}
+
+\begin{figure}[ht]
+\centering\fig{ch08-thinshell}
+\caption{Histograms of $|Z|-\sqrt n$ for a standard Gaussian vector $Z$ in dimension $n=2$, $20$, $200$ and $2000$ ($10^5$ samples each). The mean tends to $0$ (it is about
+$-\frac1{4\sqrt n}$, see Exercise~\ref{ex:thinshellmean}) while the standard deviation stays near $\frac1{\sqrt2}\approx0.71$, as Theorem~\ref{thm:gaussconc} predicts: the
+length of $Z$ is $\sqrt n$ up to an error of order one, whatever the dimension.}
+\label{fig:thinshell}
+\end{figure}
+
+\begin{example}[maxima of Gaussian vectors]\label{ex:gaussmax}
+Let $G=AZ$ be a centred Gaussian vector in $\R^m$ whose coordinates have variances $\sum_jA_{ij}^2\le1$. Then $F(z)=\max_i(Az)_i$ is $1$-Lipschitz (each $(Az)_i$ is, by
+Cauchy--Schwarz), so $\max_iG_i$ fluctuates around its mean by $O(1)$, \emph{whatever the correlations}, while its mean may grow like $\sqrt{2\log m}$
+(Exercise~\ref{ex:maxmean}).
+\end{example}
+
+\section{Random projections: Johnson--Lindenstrauss}
+
+A data set of $N$ points in $\R^d$, with $d$ huge (documents as word counts, images as pixels, users as ratings), must be stored and searched by distance. William Johnson
+and Joram Lindenstrauss proved in 1984, as a lemma in a paper about extending Lipschitz maps, that a \emph{random} linear map to dimension $k=O(\varepsilon^{-2}\log N)$
+preserves all pairwise distances up to a factor $1\pm\varepsilon$. The dimension $d$ does not appear.
+
+\begin{lemma}[chi-square tails]\label{lem:chisq}
+Let $Q=Z_1^2+\dots+Z_k^2$ with $Z_i$ independent standard Gaussians, and $0<\varepsilon<1$. Then
+\[
+P\bigl(Q\ge(1+\varepsilon)k\bigr)\le e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)},\qquad P\bigl(Q\le(1-\varepsilon)k\bigr)\le e^{-\frac k2\cdot\frac{\varepsilon^2}2}.
+\]
+\end{lemma}
+\begin{proof}
+$\mathbb Ee^{\theta Z^2}=(1-2\theta)^{-1/2}$ for $\theta<\frac12$ (a Gaussian integral). Upper tail: with $\theta=\frac\varepsilon{2(1+\varepsilon)}$, Markov gives
+$P(Q\ge(1+\varepsilon)k)\le(1-2\theta)^{-k/2}e^{-\theta(1+\varepsilon)k}=\bigl((1+\varepsilon)e^{-\varepsilon}\bigr)^{k/2}$, and $\log(1+\varepsilon)-\varepsilon\le-\frac{\varepsilon^2}2+\frac{\varepsilon^3}3$. Lower tail: with
+$\theta=\frac\varepsilon{2(1-\varepsilon)}$, $P(Q\le(1-\varepsilon)k)\le\mathbb Ee^{-\theta Q}e^{\theta(1-\varepsilon)k}=\bigl((1-\varepsilon)e^{\varepsilon}\bigr)^{k/2}$, and $\log(1-\varepsilon)+\varepsilon\le-\frac{\varepsilon^2}2$.
+\end{proof}
+
+\begin{theorem}[Johnson--Lindenstrauss]\label{thm:jl}
+Let $x_1,\dots,x_N\in\R^d$, $0<\varepsilon<1$, and $k>\frac{4\log N}{\varepsilon^2/2-\varepsilon^3/3}$. Let $A$ be a $k\times d$ matrix of independent $N(0,\frac1k)$ entries. Then with probability
+at least $1-N^2e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)}>0$, for all $i,j$,
+\[
+(1-\varepsilon)|x_i-x_j|^2\le|Ax_i-Ax_j|^2\le(1+\varepsilon)|x_i-x_j|^2 .
+\]
+\end{theorem}
+\begin{proof}
+For a fixed unit vector $u$, the coordinates of $\sqrt kAu$ are independent standard Gaussians (each is $\sum_jg_{ij}u_j$ with $g_{ij}$ i.i.d.\ $N(0,1)$ and $\sum u_j^2=1$),
+so $k|Au|^2$ has the law of $Q$ in Lemma~\ref{lem:chisq}, and $|Au|^2\notin[1-\varepsilon,1+\varepsilon]$ with probability at most $2e^{-\frac k2(\frac{\varepsilon^2}2-\frac{\varepsilon^3}3)}$. Apply this to
+$u=\frac{x_i-x_j}{|x_i-x_j|}$ for the $\binom N2<\frac{N^2}2$ pairs and use the union bound. The probability is positive by the choice of $k$.
+\end{proof}
+
+For a million points and $\varepsilon=0.1$ the theorem asks for $k\ge11\,842$, independent of $d$: a database of a million documents described by ten million word counts
+can be compressed a thousandfold and still be searched by distance. The constant is not the point; the logarithm is. In practice one uses $\pm1$ entries or sparse
+matrices, which are faster and satisfy the same lemma (Achlioptas, 2003), and the notebook shows how much smaller $k$ can be in practice.
+
+\section{Talagrand's convex distance}
+
+Bounded differences treat all coordinates alike. Many functions, like the length of a longest increasing subsequence, change by one when \emph{some} coordinate changes,
+but only a few coordinates matter for any given input. Talagrand found the right distance for this.
+
+For a product space $\Omega=\prod_iE_i$ (in this section each $E_i$ is countable, so that everything is measurable), $x\in\Omega$ and $A\subseteq\Omega$, the \emph{convex distance} is
+\[
+d_T(x,A)=\sup_{\alpha}\ \inf_{y\in A}\ \sum_{i:\,x_i\ne y_i}\alpha_i,
+\]
+the supremum over $\alpha\in\R^n$ with $\alpha_i\ge0$ and $\sum\alpha_i^2=1$. With $\alpha=\frac1{\sqrt n}(1,\dots,1)$ it is at least $\frac1{\sqrt n}$ times the Hamming distance; the freedom to
+choose $\alpha$ \emph{depending on $x$} is the point.
+
+\begin{lemma}[convex distance as a Euclidean distance]\label{lem:dtgeom}
+Let $U_A(x)$ be the set of $s\in\{0,1\}^n$ such that some $y\in A$ has $y_i=x_i$ whenever $s_i=0$, and $V_A(x)$ its convex hull. If $A\ne\emptyset$, then
+$d_T(x,A)=\min\{|v|:v\in V_A(x)\}$.
+\end{lemma}
+\begin{proof}
+For a given $\alpha$, $\inf_{y\in A}\sum_{x_i\ne y_i}\alpha_i=\min_{s\in U_A(x)}\alpha\cdot s=\min_{v\in V_A(x)}\alpha\cdot v$ (the indicator of $\{x_i\ne y_i\}$ belongs to $U_A(x)$, every $s\in U_A(x)$ dominates one
+such indicator, and a linear function is minimized on a convex hull at a vertex). If $v\in V_A(x)$, $\alpha\cdot v\le|v|$, so $d_T\le\min|v|$. Conversely let $v^*$ be the point of the compact
+convex set $V_A(x)$ closest to $0$. If $v^*=0$ both sides vanish. Otherwise, for $v\in V_A(x)$ and $0<s\le1$, $|v^*+s(v-v^*)|^2\ge|v^*|^2$ gives $v\cdot v^*\ge|v^*|^2$;
+so $\alpha=v^*/|v^*|$, which has non-negative coordinates, gives $\min_{v\in V}\alpha\cdot v\ge|v^*|$.
+\end{proof}
+
+\begin{theorem}[Talagrand's convex distance inequality]\label{thm:talagrand}
+For every $A\subseteq\Omega$ with $P(X\in A)>0$,
+\[
+\mathbb E\,e^{d_T(X,A)^2/4}\le\frac1{P(X\in A)} .\qquad\text{Consequently}\qquad P(X\in A)\,P\bigl(d_T(X,A)\ge t\bigr)\le e^{-t^2/4}.
+\]
+\end{theorem}
+\begin{proof}
+The consequence follows by Markov's inequality. We prove the first inequality by induction on $n$, writing $P$ for the law of $X$ on each product space.
+
+\emph{An inequality of numbers.} For $0\le r\le1$,
+\[
+\min_{0\le\lambda\le1}r^{-\lambda}e^{(1-\lambda)^2/4}\le2-r.
+\] If $r<e^{-1/2}$, take $\lambda=0$: $e^{1/4}<1.29<2-e^{-1/2}$. Otherwise take
+$\lambda=1+2\log r\in[0,1]$; the value is $\exp(-u-u^2)$ with $u=\log r\in[-\frac12,0]$, and $\psi(u)=\log(2-e^u)+u+u^2$ satisfies $\psi(0)=0$, $\psi'(0)=0$ and
+$\psi''(u)=2-\frac{2e^u}{(2-e^u)^2}\ge0$ for $u\le0$, so $\psi'\le0$ and $\psi\ge0$ on $[-\frac12,0]$: $e^{-u-u^2}\le2-e^u$.
+
+\emph{$n=1$.} Here $d_T(x,A)$ is $0$ if $x\in A$ and $1$ otherwise. With $p=P(A)$: $p+(1-p)e^{1/4}\le\frac1p$, since $\frac1p-p=(1-p)\frac{1+p}p\ge2(1-p)$.
+
+\emph{From $n$ to $n+1$.} Write points of $\Omega\times E$ as $(x,\omega)$. Let $B=\{x:(x,\omega)\in A\text{ for some }\omega\}$ and $A_\omega=\{x:(x,\omega)\in A\}$. If $s\in U_{A_\omega}(x)$ then $(s,0)\in U_A(x,\omega)$
+(the witness $y$ in $A_\omega$ gives the witness $(y,\omega)$ in $A$); if $s\in U_B(x)$ then $(s,1)\in U_A(x,\omega)$. Hence for $v\in V_{A_\omega}(x)$, $w\in V_B(x)$ and $\lambda\in[0,1]$, the point
+$(\lambda v+(1-\lambda)w,\,1-\lambda)$ lies in $V_A(x,\omega)$, and by Lemma~\ref{lem:dtgeom} and the convexity of $|\cdot|^2$,
+\[
+d_T((x,\omega),A)^2\le(1-\lambda)^2+\lambda\,d_T(x,A_\omega)^2+(1-\lambda)\,d_T(x,B)^2 .
+\]
+Fix $\omega$ with $P(A_\omega)>0$. Exponentiate, integrate in $x$, use H\"older's inequality with exponents $\frac1\lambda$, $\frac1{1-\lambda}$, and the induction hypothesis for $A_\omega$ and $B$:
+\[
+\int e^{d_T((x,\omega),A)^2/4}P(\dd x)\le e^{(1-\lambda)^2/4}P(A_\omega)^{-\lambda}P(B)^{-(1-\lambda)}=\frac1{P(B)}\,r^{-\lambda}e^{(1-\lambda)^2/4},
+\]
+with $r=P(A_\omega)/P(B)\le1$. Minimize over $\lambda$: the integral is at most $\frac{2-r}{P(B)}$, a bound that also holds when $P(A_\omega)=0$ (take $\lambda=0$). Integrate over $\omega$; since
+$\int P(A_\omega)\,P(\dd\omega)=P(A)$, with $a=P(A)/P(B)\in(0,1]$,
+\[
+\mathbb Ee^{d_T(X,A)^2/4}\le\frac{2-a}{P(B)}=\frac{a(2-a)}{P(A)}\le\frac1{P(A)} ,
+\]
+since $a(2-a)=1-(1-a)^2\le1$.
+\end{proof}
+
+How is it used? The function only needs short \emph{certificates}: if $f(x)\ge s$ can be witnessed by a few coordinates, the convex distance controls how far below $s$
+a nearby point can go.
+
+\begin{theorem}[concentration of increasing subsequences]\label{thm:lisconc}
+Let $L_n$ be the length of the longest increasing subsequence of a uniform random permutation of $\{1,\dots,n\}$, and $M_n$ a median of $L_n$. For $t>0$,
+\[
+P(L_n\ge M_n+t)\le2e^{-t^2/4(M_n+t)},\qquad P(L_n\le M_n-t)\le2e^{-t^2/4M_n}.
+\]
+\end{theorem}
+\begin{proof}
+\emph{The certificate.} Let $X_1,\dots,X_n$ be independent with values in a countable totally ordered set, $\ell(x)$ the length of the longest strictly increasing subsequence of
+$x$, and $a\ge0$. Let $A=\{y:\ell(y)\le a\}$. If $\ell(x)=\ell$, let $I$ be the index set of a longest increasing subsequence of $x$ and $\alpha=\mathbf 1_I/\sqrt\ell$. For $y\in A$, the indices of $I$
+where $y$ agrees with $x$ carry an increasing subsequence of $y$, so there are at most $a$ of them, and $\sum_{x_i\ne y_i}\alpha_i\ge\frac{\ell-a}{\sqrt\ell}$. As $\frac{\ell-a}{\sqrt\ell}$ increases with $\ell$,
+$\ell(x)\ge a+t$ implies $d_T(x,A)\ge\frac t{\sqrt{a+t}}$, and Theorem~\ref{thm:talagrand} gives
+\[
+P(\ell(X)\le a)\,P(\ell(X)\ge a+t)\le e^{-t^2/4(a+t)} .
+\]
+\emph{Back to permutations.} Take $X_i$ uniform on $\{1,\dots,m\}$. With probability at least $1-\binom n2\frac1m$ the values are distinct, and then their relative order is a uniform permutation;
+so as $m\to\infty$ the law of $\ell(X)$ tends to the law of $L_n$, and the inequality holds for $L_n$. With $a=M_n$, $P(L_n\le M_n)\ge\frac12$ gives the first bound; with
+$a=M_n-t$, $P(L_n\ge M_n)\ge\frac12$ gives the second.
+\end{proof}
+
+Ulam asked in 1961 how $L_n$ behaves. John Hammersley proved in 1972 that $L_n/\sqrt n$ converges in probability to a constant $c$, and in 1977 Benjamin Logan and Larry Shepp, and
+independently Anatoly Vershik and Sergei Kerov, showed that $c=2$. With $M_n\approx2\sqrt n$, Theorem~\ref{thm:lisconc} says that the fluctuations are at most of order
+$n^{1/4}$, which is what Talagrand obtained in 1995. The truth is smaller still: in 1999 Jinho Baik, Percy Deift and Kurt Johansson proved that
+$(L_n-2\sqrt n)/n^{1/6}$ converges to the Tracy--Widom law of the largest eigenvalue of a random Hermitian matrix, a connection nobody had expected (Figure~\ref{fig:lis}).
+
+\begin{figure}[ht]
+\centering\fig{ch08-lis}
+\caption{A uniform random permutation of $\{1,\dots,300\}$ drawn as the points $(i,\sigma(i))$, with a longest increasing subsequence in red; its length is $29$,
+compared with $2\sqrt{300}\approx34.6$ (the correction of order $n^{1/6}$ is negative). Concentration says that every random permutation of this size has an
+increasing path of nearly the same length.}
+\label{fig:lis}
+\end{figure}
+
+\begin{think}
+In the proof of Theorem~\ref{thm:lisconc}, the certificate of $\ell(x)\ge s$ has size $s$, and the bound depends on $s$, not on $n$. What would the bounded difference inequality
+give for $L_n$? For which other functions (the size of a largest clique in a random graph, the length of a shortest travelling salesman tour through random points) can
+you find small certificates?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:esequality}
+Show that the Efron--Stein inequality is an equality for $f(x)=x_1+\dots+x_n$ (with square-integrable coordinates), and that it can be strict for $f(x)=x_1x_2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lismean}
+Show that $P(L_n\ge k)\le\binom nk\frac1{k!}\le\bigl(\frac{e\sqrt n}k\bigr)^{2k}$, and deduce $\mathbb EL_n\le2e\sqrt n+1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:thinshellmean}
+Show that $\sqrt n-1\le\mathbb E|Z|\le\sqrt n$ for a standard Gaussian vector $Z$ in $\R^n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:maxmean}
+Let $G_1,\dots,G_m$ be centred Gaussians with variances at most $1$ (not necessarily independent). Show that $\mathbb E\max_iG_i\le\sqrt{2\log m}$, and that equality holds asymptotically
+for independent standard Gaussians: $\mathbb E\max_iZ_i\ge(1-\varepsilon)\sqrt{2\log m}$ for large $m$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:rademachersum}
+Let $v_1,\dots,v_n$ be vectors in a normed space and $\varepsilon_i$ independent fair signs. Show that $\|\sum_i\varepsilon_iv_i\|$ deviates from its mean by $t$ with probability at most
+$2e^{-t^2/2\sum\|v_i\|^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:convexlip}
+Let $X_1,\dots,X_n$ be independent, each taking finitely many values in $[0,1]$, and $F:[0,1]^n\to\R$ convex and $1$-Lipschitz for the Euclidean norm, with median $M$. Show that
+$P(|F(X)-M|\ge t)\le4e^{-t^2/4}$. (First show that if $A\subseteq[0,1]^n$ is convex, then the Euclidean distance from $x$ to $A$ is at most $d_T(x,A)$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:esequality}
+Both sides equal $\sum\operatorname{Var}X_i$. For $x_1x_2$ with independent fair signs, compute both sides.
+\end{hint}
+\begin{hint}{ex:lismean}
+Each $k$-subset of positions carries an increasing subsequence with probability $\frac1{k!}$. Use $\binom nk\le\frac{n^k}{k!}$ and $k!\ge(k/e)^k$; for $k\ge2e\sqrt n$ the bound is at most $4^{-k}$.
+\end{hint}
+\begin{hint}{ex:thinshellmean}
+$\mathbb E|Z|\le\sqrt{\mathbb E|Z|^2}$; and $(\mathbb E|Z|)^2=n-\operatorname{Var}|Z|\ge n-1$.
+\end{hint}
+\begin{hint}{ex:maxmean}
+$e^{\lambda\mathbb E\max G_i}\le\mathbb Ee^{\lambda\max G_i}\le\sum_i\mathbb Ee^{\lambda G_i}$. For the lower bound, $P(\max Z_i<x)=\Phi(x)^m$; use~\eqref{eq:gausstail} at $x=(1-\varepsilon)\sqrt{2\log m}$.
+\end{hint}
+\begin{hint}{ex:rademachersum}
+Changing $\varepsilon_i$ moves the norm by at most $2\|v_i\|$. Use Theorem~\ref{thm:mcdiarmid}.
+\end{hint}
+\begin{hint}{ex:convexlip}
+Write the minimal $v\in V_A(x)$ as a convex combination $\sum_j\lambda_js_j$ of points of $U_A(x)$ with witnesses $y_j\in A$, and look at $y=\sum_j\lambda_jy_j$. Then apply Theorem~\ref{thm:talagrand} to
+$A=\{F\le M\}$ and to $A=\{F\le M-t\}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:esequality}
+\idea For a sum, each coordinate contributes its own variance, independently: there is nothing to lose.
+\writeup For $f=\sum x_i$, $f(X)-f(X^{(i)})=X_i-X_i'$, so the right side is $\frac12\sum\mathbb E(X_i-X_i')^2=\sum\operatorname{Var}X_i=\operatorname{Var}f(X)$. For $f=x_1x_2$ with fair signs, $\operatorname{Var}(X_1X_2)=1$,
+while $f-f^{(1)}=(X_1-X_1')X_2$ has $\frac12\mathbb E(\cdot)^2=\frac12\cdot2=1$ and likewise for $i=2$: the right side is $2$.
+\end{solution}
+
+\begin{solution}{ex:lismean}
+\idea An increasing subsequence of length $k$ lives on one of $\binom nk$ position sets, each of which is increasing with probability $\frac1{k!}$.
+\writeup By the union bound over $k$-subsets of positions, each sorted with probability $\frac1{k!}$ (all orders of $k$ distinct i.i.d.\ values are equally likely),
+$P(L_n\ge k)\le\binom nk\frac1{k!}\le\frac{n^k}{(k!)^2}\le\frac{n^k}{(k/e)^{2k}}=\bigl(\frac{e\sqrt n}k\bigr)^{2k}$, using $k!\ge(k/e)^k$ (from $e^k=\sum\frac{k^j}{j!}\ge\frac{k^k}{k!}$). For $k\ge2e\sqrt n$ this is at most $4^{-k}$. So
+$\mathbb EL_n=\sum_{k\ge1}P(L_n\ge k)\le2e\sqrt n+\sum_{k\ge1}4^{-k}\le2e\sqrt n+1$.
+\end{solution}
+
+\begin{solution}{ex:thinshellmean}
+\idea The mean of the length is squeezed between the root mean square, by Jensen, and the root mean square minus the variance, which concentration bounds by $1$.
+\writeup $(\mathbb E|Z|)^2\le\mathbb E|Z|^2=n$. And $\operatorname{Var}|Z|\le1$ by Theorem~\ref{thm:gaussconc}, so $(\mathbb E|Z|)^2=n-\operatorname{Var}|Z|\ge n-1$ and $\mathbb E|Z|\ge\sqrt{n-1}\ge\sqrt n-1$. (In
+fact $\mathbb E|Z|=\sqrt n-\frac1{4\sqrt n}+O(n^{-3/2})$, as the notebook checks.)
+\end{solution}
+
+\begin{solution}{ex:maxmean}
+\idea The exponential moment of a maximum is at most the sum of the exponential moments: a union bound with a free parameter.
+\writeup For $\lambda>0$, by Jensen, $e^{\lambda\mathbb E\max G_i}\le\mathbb Ee^{\lambda\max G_i}\le\sum_i\mathbb Ee^{\lambda G_i}\le me^{\lambda^2/2}$, so $\mathbb E\max G_i\le\frac{\log m}\lambda+\frac\lambda2$; take $\lambda=\sqrt{2\log m}$.
+For the lower bound with independent $Z_i$, let $x=(1-\varepsilon)\sqrt{2\log m}$. By~\eqref{eq:gausstail}, $1-\Phi(x)\ge\frac x{1+x^2}\frac{e^{-x^2/2}}{\sqrt{2\pi}}=m^{-(1-\varepsilon)^2+o(1)}$, so
+$P(\max Z_i<x)=\Phi(x)^m\le\exp(-m(1-\Phi(x)))\to0$. Since $\max Z_i\ge Z_1$, $\mathbb E\max Z_i\ge xP(\max Z_i\ge x)-\mathbb E|Z_1|$, which is $\ge(1-2\varepsilon)\sqrt{2\log m}$ for large $m$.
+\end{solution}
+
+\begin{solution}{ex:rademachersum}
+\idea A norm of a sum is a function of independent signs with bounded differences.
+\writeup Let $f(\varepsilon)=\|\sum\varepsilon_iv_i\|$. Flipping $\varepsilon_i$ changes the sum by $\pm2v_i$, so by the triangle inequality $f$ changes by at most $c_i=2\|v_i\|$. Theorem~\ref{thm:mcdiarmid}
+gives $2e^{-2t^2/\sum4\|v_i\|^2}=2e^{-t^2/2\sum\|v_i\|^2}$.
+\end{solution}
+
+\begin{solution}{ex:convexlip}
+\idea Convexity turns the combinatorial distance into a geometric one: averaging the witnesses produces a point of $A$ that is close coordinate by coordinate.
+\writeup Let $A$ be convex and $v=\sum_j\lambda_js_j$ the point of $V_A(x)$ of minimal norm, with $s_j\in U_A(x)$ witnessed by $y_j\in A$, so $y_{j,i}=x_i$ whenever $s_{j,i}=0$. Then
+$y=\sum_j\lambda_jy_j\in A$ and, since all coordinates lie in $[0,1]$, $|x_i-y_i|\le\sum_j\lambda_j|x_i-y_{j,i}|\le\sum_j\lambda_js_{j,i}=v_i$. So $\operatorname{dist}(x,A)\le|x-y|\le|v|=d_T(x,A)$.
+Now let $A=\{F\le M\}$, convex. If $F(x)\ge M+t$, then every $y\in A$ has $|x-y|\ge F(x)-F(y)\ge t$, so $d_T(x,A)\ge t$, and Theorem~\ref{thm:talagrand} (the values form a countable
+product space) gives $P(F\ge M+t)\le\frac{e^{-t^2/4}}{P(A)}\le2e^{-t^2/4}$. With $A=\{F\le M-t\}$, every $x$ with $F(x)\ge M$ has $d_T(x,A)\ge t$, so $P(F\le M-t)\cdot\frac12\le e^{-t^2/4}$. Add the two bounds.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} P.~L\'evy, \emph{Le\c cons d'analyse fonctionnelle}, Gauthier-Villars, 1922 (the isoperimetric inequality on the sphere). V.~D.~Milman, ``A new proof of
+A.~Dvoretzky's theorem on cross-sections of convex bodies'', \emph{Funkcional.\ Anal.\ i Prilo\v zen.}\ 5 (1971), 28--37. M.~Talagrand, ``Concentration of measure and isoperimetric
+inequalities in product spaces'', \emph{Publ.\ Math.\ IH\'ES} 81 (1995), 73--205. The Abel Prize citation, 2024. B.~Efron and C.~Stein, ``The jackknife estimate of variance'',
+\emph{Ann.\ Statist.}\ 9 (1981), 586--596 (the same Charles Stein as in Chapter~6). C.~McDiarmid, ``On the method of bounded differences'', in \emph{Surveys in Combinatorics 1989},
+Cambridge University Press, 1989, 148--188. L.~Gross, ``Logarithmic Sobolev inequalities'', \emph{Amer.\ J.\ Math.}\ 97 (1975), 1061--1083. W.~B.~Johnson and J.~Lindenstrauss,
+``Extensions of Lipschitz mappings into a Hilbert space'', \emph{Contemp.\ Math.}\ 26 (1984), 189--206. S.~Dasgupta and A.~Gupta, ``An elementary proof of a theorem of Johnson
+and Lindenstrauss'', \emph{Random Structures Algorithms} 22 (2003), 60--65 (the constant used here). D.~Achlioptas, ``Database-friendly random projections'', \emph{J.\ Comput.\ System Sci.}\
+66 (2003), 671--687.
+\item \emph{Increasing subsequences.} J.~M.~Hammersley, ``A few seedlings of research'', \emph{Proc.\ Sixth Berkeley Symp.\ Math.\ Statist.\ Prob.}\ 1 (1972), 345--394. B.~F.~Logan and L.~A.~Shepp,
+``A variational problem for random Young tableaux'', \emph{Adv.\ Math.}\ 26 (1977), 206--222. A.~M.~Vershik and S.~V.~Kerov, ``Asymptotics of the Plancherel measure of the symmetric group
+and the limiting form of Young tables'', \emph{Soviet Math.\ Dokl.}\ 18 (1977), 527--531. J.~Baik, P.~Deift and K.~Johansson, ``On the distribution of the length of the longest increasing
+subsequence of random permutations'', \emph{J.\ Amer.\ Math.\ Soc.}\ 12 (1999), 1119--1178. D.~Romik, \emph{The Surprising Mathematics of Longest Increasing Subsequences}, Cambridge
+University Press, 2015, tells the whole story, Ulam's question included.
+\item S.~Boucheron, G.~Lugosi and P.~Massart, \emph{Concentration Inequalities: A Nonasymptotic Theory of Independence}, Oxford University Press, 2013. The modern reference, with
+Efron--Stein, entropy methods and many applications.
+\item M.~Ledoux, \emph{The Concentration of Measure Phenomenon}, AMS, 2001. The geometric and semigroup point of view, Herbst's argument included.
+\item N.~Alon and J.~H.~Spencer, \emph{The Probabilistic Method}, 4th ed., Wiley, 2016, Chapter~7. Martingales and Talagrand's inequality for combinatorics; our proof of
+Theorem~\ref{thm:talagrand} follows theirs.
+\item R.~Vershynin, \emph{High-Dimensional Probability}, Cambridge University Press, 2018. Concentration for data science, Johnson--Lindenstrauss included.
+\end{itemize}
