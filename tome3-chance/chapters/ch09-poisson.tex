@@ -1,0 +1,451 @@
+\chapter{Poisson Processes}
+
+\begin{center}\itshape
+Buses arrive on average every ten minutes, at random. You reach the stop at a random time.\\
+Your expected wait is not five minutes but ten, and the gap you fall into lasts twenty on average.
+\end{center}
+
+Calls reaching a switchboard, requests hitting a web server, decays of radioactive atoms, mutations along a DNA
+strand: whenever many independent sources each produce a rare event, the events form a \emph{Poisson process}. It is the
+continuous-time version of coin tossing, with an exponential waiting time between successes instead of a geometric
+one, and it is the basic model of queueing theory and of network traffic.
+
+The exponential law is the only memoryless waiting time, and this one property explains almost everything in the
+chapter. We define the Poisson process by its exponential gaps, and prove that it has two other descriptions: by
+independent Poisson counts, and by an infinitesimal rate. Given the number of points in an interval, the points are
+independent and uniform, which makes thinning and superposition of processes easy. The bus paradox is explained by
+size-biased sampling. Le Cam's inequality turns the Poisson limit of Chapter~2 into an explicit error bound, by a
+coupling. And the single-server queue M/M/1 settles, when the server is fast enough, into a geometric law whose mean
+explodes as the load approaches $100\%$.
+
+\begin{think}
+A server receives on average $9$ requests per second and can handle on average $10$. How many requests do you expect to
+be waiting or in service at a typical moment: about $1$, about $10$, about $100$? What if it receives $9.9$ per second?
+\end{think}
+
+\section{The exponential law}
+
+A random variable $E$ is \emph{exponential with rate $\lambda>0$}, written Exp$(\lambda)$, if $P(E>t)=e^{-\lambda t}$ for $t\ge0$; its density is $\lambda e^{-\lambda t}$ and its mean is $\frac1\lambda$.
+
+\begin{proposition}[memorylessness]\label{prop:memoryless}
+Let $T$ be a random variable with $T>0$ and $T<\infty$ almost surely, such that $P(T>s+t)=P(T>s)P(T>t)$ for all $s,t\ge0$; equivalently,
+$P(T>s+t\mid T>s)=P(T>t)$ whenever $P(T>s)>0$. Then $T$ is exponential.
+\end{proposition}
+\begin{proof}
+Let $G(t)=P(T>t)$, non-increasing and right-continuous, with $G(0)=1$. If $G(1)=0$ then $G(\frac1n)^n=G(1)=0$, so $G(\frac1n)=0$ for all $n$, contradicting
+$G(\frac1n)\to G(0)=1$. If $G(1)=1$ then $G(n)=G(1)^n=1$ for all $n$, so $T=\infty$ almost surely, which is excluded. So $G(1)=e^{-\lambda}$ for some $\lambda>0$.
+Then $G(\frac pq)^q=G(p)=G(1)^p$ gives $G(\frac pq)=e^{-\lambda p/q}$ for all positive rationals, and by monotonicity $G(t)=e^{-\lambda t}$ for all $t\ge0$.
+\end{proof}
+
+``The bus has not come for ten minutes, so it must be about to arrive'' is false for exponential waiting times: the
+remaining wait has the same law as if you had just arrived. The geometric law is the discrete analogue
+(Chapter~2).
+
+\begin{lemma}[gaps and arrival times]\label{lem:gamma}
+Let $E_1,E_2,\ldots$ be independent Exp$(\lambda)$ and $T_n=E_1+\dots+E_n$. Then $(T_1,\dots,T_n)$ has density $\lambda^ne^{-\lambda t_n}$ on the set
+\[
+\Delta_n=\{(t_1,\dots,t_n):0<t_1<t_2<\dots<t_n\},
+\]
+and $0$ elsewhere.
+\end{lemma}
+\begin{proof}
+$(E_1,\dots,E_n)$ has density $\prod_i\lambda e^{-\lambda e_i}=\lambda^ne^{-\lambda(e_1+\dots+e_n)}$ on $]0,\infty[^n$ (independence, Proposition~\ref{prop:joint}). The map $(e_i)\mapsto(t_i)$,
+$t_k=e_1+\dots+e_k$, is a linear bijection from $]0,\infty[^n$ onto $\Delta_n$ with triangular matrix of determinant $1$, and $e_1+\dots+e_n=t_n$. Conclude by the
+change of variables formula (Proposition~\ref{prop:cov}).
+\end{proof}
+
+\section{The Poisson process}
+
+\begin{definition}\label{def:pp}
+Let $E_1,E_2,\ldots$ be independent Exp$(\lambda)$, $T_0=0$ and $T_n=E_1+\dots+E_n$. The \emph{Poisson process of rate $\lambda$} is the counting process
+\[
+N(t)=\#\{n\ge1:T_n\le t\}\qquad(t\ge0).
+\]
+The $T_n$ are the \emph{arrival times} (or points), and the $E_n$ the \emph{gaps}.
+\end{definition}
+
+Since $T_n/n\to\frac1\lambda$ almost surely (Theorem~\ref{thm:slln4}; the gaps have all their moments), $T_n\to\infty$ and $N(t)$ is finite. The path
+$t\mapsto N(t)$ is a non-decreasing, right-continuous staircase with jumps of size $1$, and $N(t)\ge n$ if and only if $T_n\le t$.
+
+\begin{theorem}[uniform points]\label{thm:uniform}
+Let $t>0$ and $n\ge0$. Then $P(N(t)=n)=e^{-\lambda t}\frac{(\lambda t)^n}{n!}$, and conditionally on $N(t)=n$, the arrival times $(T_1,\dots,T_n)$ have the law of the
+order statistics of $n$ independent uniform variables on $[0,t]$: their density is $\frac{n!}{t^n}$ on $\Delta_n(t)=\{0<t_1<\dots<t_n<t\}$.
+\end{theorem}
+\begin{proof}
+Let $B\subseteq\R^n$. The event $\{N(t)=n,\ (T_1,\dots,T_n)\in B\}$ is $\{(T_1,\dots,T_n)\in B,\ T_n\le t<T_n+E_{n+1}\}$. Since $E_{n+1}$ is independent of $(T_1,\dots,T_n)$, with
+$P(E_{n+1}>t-t_n)=e^{-\lambda(t-t_n)}$, Lemma~\ref{lem:gamma} and Tonelli show that its probability $q$ is
+\[
+\begin{aligned}q&=\int_{B\cap\Delta_n(t)}\lambda^ne^{-\lambda t_n}e^{-\lambda(t-t_n)}\dd t_1\cdots\dd t_n\eqbr=\lambda^ne^{-\lambda t}\,|B\cap\Delta_n(t)|,\end{aligned}
+\]
+where $|\cdot|$ is the volume. With $B=\R^n$ and $|\Delta_n(t)|=\frac{t^n}{n!}$ (the $n!$ orderings of $n$ points of $[0,t]^n$ give congruent pieces, up to the null set where
+two coordinates agree), $P(N(t)=n)=e^{-\lambda t}\frac{(\lambda t)^n}{n!}$, and the conditional law has density $\frac{n!}{t^n}$ on $\Delta_n(t)$.
+
+For the order statistics $(U_{(1)},\dots,U_{(n)})$ of independent uniforms $U_1,\dots,U_n$ on $[0,t]$: for $B\subseteq\Delta_n(t)$, $P((U_{(i)})\in B)$ is the sum over the
+$n!$ orderings $\sigma$ of $P(U_{\sigma(1)}<\dots<U_{\sigma(n)},\ (U_{\sigma(i)})\in B)=\frac{|B|}{t^n}$, so it is $\frac{n!}{t^n}|B|$: the same law.
+\end{proof}
+
+So, given that $n$ points fell in $[0,t]$, they are scattered like $n$ independent uniform points. The counts in disjoint
+intervals then follow from the next computation.
+
+\begin{lemma}[colouring]\label{lem:colouring}
+Let $N$ be Poisson$(\mu)$, and conditionally on $N=n$ let $(N_1,\dots,N_k)$ be multinomial with $n$ trials and probabilities $p_1,\dots,p_k$ (summing to
+$1$). Then $N_1,\dots,N_k$ are independent, and $N_j$ is Poisson$(\mu p_j)$.
+\end{lemma}
+\begin{proof}
+For $n_1+\dots+n_k=n$, the probability $p=P(N_1=n_1,\dots,N_k=n_k)$ is
+\[
+\begin{aligned}p&=e^{-\mu}\frac{\mu^n}{n!}\cdot\frac{n!}{n_1!\cdots n_k!}p_1^{n_1}\cdots p_k^{n_k}\eqbr=\prod_{j=1}^ke^{-\mu p_j}\frac{(\mu p_j)^{n_j}}{n_j!},\end{aligned}
+\]
+using $e^{-\mu}=\prod_je^{-\mu p_j}$. A product of the marginal Poisson probabilities is independence.
+\end{proof}
+
+\begin{theorem}[independent Poisson increments]\label{thm:increments}
+For $0=t_0<t_1<\dots<t_k$, the increments $N(t_j)-N(t_{j-1})$, $1\le j\le k$, are independent, and $N(t_j)-N(t_{j-1})$ is Poisson$(\lambda(t_j-t_{j-1}))$.
+\end{theorem}
+\begin{proof}
+Let $t=t_k$. Conditionally on $N(t)=n$, the points are distributed as $n$ independent uniform points of $[0,t]$, sorted; the increments count
+how many of them fall in each interval $]t_{j-1},t_j]$, which does not depend on the sorting, so they are multinomial with probabilities
+$\frac{t_j-t_{j-1}}t$. Lemma~\ref{lem:colouring} with $\mu=\lambda t$ concludes.
+\end{proof}
+
+The Poisson process has three classical descriptions, and they are equivalent. Call a \emph{counting process} a family $(N(t))_{t\ge0}$ of
+random variables with values in $\N$, with $N(0)=0$ and non-decreasing, right-continuous paths.
+
+\begin{theorem}[three definitions]\label{thm:threedefs}
+For a counting process $N$ and $\lambda>0$, the following are equivalent.
+\begin{enumerate}
+\item[(A)] $N$ has the law of the process of Definition~\ref{def:pp}: its jump times $T_n=\inf\{t:N(t)\ge n\}$ have independent Exp$(\lambda)$ gaps.
+\item[(B)] For all $0=t_0<t_1<\dots<t_k$, the increments $N(t_j)-N(t_{j-1})$ are independent and Poisson$(\lambda(t_j-t_{j-1}))$.
+\item[(C)] The increments over disjoint intervals are independent, the law of $N(t+h)-N(t)$ depends only on $h$, and as $h\to0$,
+\[
+\begin{gathered}P(N(h)=1)=\lambda h+o(h),\qq P(N(h)\ge2)=o(h).\end{gathered}
+\]
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(A)$\Rightarrow$(B) is Theorem~\ref{thm:increments}. (B)$\Rightarrow$(C): $P(N(h)=1)=\lambda he^{-\lambda h}=\lambda h+o(h)$ and $P(N(h)\ge2)=1-e^{-\lambda h}-\lambda he^{-\lambda h}=o(h)$.
+
+(B)$\Rightarrow$(A). By right-continuity, $T_n\le t$ if and only if $N(t)\ge n$. So $P(T_1\le s_1,\dots,T_n\le s_n)$ equals
+\[
+P\bigl(N(s_1)\ge1,\dots,N(s_n)\ge n\bigr),
+\]
+and the right side depends only on the joint law of $(N(s_1),\dots,N(s_n))$, which (B) determines (sort the $s_i$ and use the independent
+Poisson increments). So $(T_1,\dots,T_n)$ has the same distribution function, hence the same law (Theorem~\ref{thm:uniqueness}, the orthants $]-\infty,s_1]\times\dots\times\,]-\infty,s_n]$
+forming a $\pi$-system), as for the process of Definition~\ref{def:pp}, which satisfies (B). Its gaps are therefore independent Exp$(\lambda)$.
+
+(C)$\Rightarrow$(B). Let $p_k(t)=P(N(t)=k)$. Splitting $[0,t+h]$ at $t$ and using independence and stationarity of the increments,
+\[
+\begin{gathered}p_0(t+h)=p_0(t)p_0(h),\qq p_k(t+h)=p_k(t)p_0(h)+p_{k-1}(t)p_1(h)+r_k(t,h),\end{gathered}
+\]
+with $0\le r_k(t,h)\le P(N(h)\ge2)=o(h)$. From the first equation, $\frac{p_0(t+h)-p_0(t)}h=-p_0(t)\frac{1-p_0(h)}h\to-\lambda p_0(t)$, since $1-p_0(h)=\lambda h+o(h)$; the same holds for
+$h<0$ by writing $p_0(t)=p_0(t-|h|)p_0(|h|)$, and $p_0$ is continuous ($|p_k(t)-p_k(s)|\le P(N(t)-N(s)\ge1)=1-p_0(t-s)$ for $s<t$). So $p_0'=-\lambda p_0$, $p_0(0)=1$: $p_0(t)=e^{-\lambda t}$. In
+the same way the second equation gives $p_k'=-\lambda p_k+\lambda p_{k-1}$ with $p_k(0)=0$, so $(e^{\lambda t}p_k)'=\lambda e^{\lambda t}p_{k-1}$, and by induction $p_k(t)=e^{-\lambda t}\frac{(\lambda t)^k}{k!}$. By
+stationarity every increment $N(t)-N(s)$ is Poisson$(\lambda(t-s))$, and (C) assumes their independence.
+\end{proof}
+
+Description (C) is the one that explains why Poisson processes are everywhere: if in each short time interval an event
+happens with probability proportional to its length, independently of the past, then the counts are Poisson.
+
+\section{Thinning and superposition}
+
+Mark each point of a Poisson process independently: given marks $\xi_1,\xi_2,\ldots$, independent of the process, independent, equal to $1$ with
+probability $p$ and $2$ with probability $1-p$, let $N_c(t)=\#\{n:T_n\le t,\ \xi_n=c\}$ for $c=1,2$.
+
+\begin{theorem}[thinning]\label{thm:thinning}
+$N_1$ and $N_2$ are independent Poisson processes, of rates $\lambda p$ and $\lambda(1-p)$: for all times $0=t_0<\dots<t_k$, the $2k$ increments of $N_1$ and $N_2$ are
+independent Poisson variables with parameters $\lambda p(t_j-t_{j-1})$ and $\lambda(1-p)(t_j-t_{j-1})$.
+\end{theorem}
+\begin{proof}
+Let $t=t_k$. Conditionally on $N(t)=n$, the points in $[0,t]$ are the sorted values of $n$ independent uniform variables, and their marks are
+independent of them and i.i.d. Attaching the marks in sorted order or in the original order gives the same law of the
+(position, mark) pairs, because the marks are i.i.d. and independent of the positions. So the $n$ pairs fall independently in the $2k$
+cells (interval $j$, mark $c$), with probabilities $\frac{t_j-t_{j-1}}t\,p_c$ ($p_1=p$, $p_2=1-p$): the cell counts are multinomial. Lemma~\ref{lem:colouring} with $\mu=\lambda t$ concludes.
+\end{proof}
+
+\begin{corollary}[superposition]\label{cor:superposition}
+If $N_1$ and $N_2$ are independent Poisson processes of rates $\lambda_1$ and $\lambda_2$, then $N_1+N_2$ is a Poisson process of rate $\lambda_1+\lambda_2$. Moreover, the
+pair $(N_1,N_2)$ has the law obtained by marking each point of a Poisson process of rate $\lambda_1+\lambda_2$ independently, as $1$ with probability
+$\frac{\lambda_1}{\lambda_1+\lambda_2}$ and $2$ otherwise.
+\end{corollary}
+\begin{proof}
+The increments of $N_1+N_2$ over disjoint intervals are independent, and are sums of independent Poisson variables, hence Poisson
+with the summed parameters (Chapter~3); so $N_1+N_2$ satisfies (B) of Theorem~\ref{thm:threedefs}. For the second statement, Theorem~\ref{thm:thinning} applied to
+a process of rate $\lambda_1+\lambda_2$ produces a pair of independent processes of rates $\lambda_1$ and $\lambda_2$; the joint law of the counts of such a pair is
+determined (independent Poisson increments), so it is the law of $(N_1,N_2)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-thinning}
+\caption{A Poisson process of rate $2$ on $[0,10]$ (top), and its thinning with $p=\frac13$: the kept points (middle, orange) and the
+discarded ones (bottom, blue) form two independent Poisson processes, of rates $\frac23$ and $\frac43$. Read from bottom to top, the
+figure is a superposition.}
+\label{fig:thinning}
+\end{figure}
+
+Thinning is how Poisson processes are simulated with a varying rate (keep a point at time $t$ with probability $\frac{\lambda(t)}{\lambda_{\max}}$),
+and how network traffic is split between servers. It is also the statement promised in Chapter~3 (Exercise~\ref{ex:thinning}): the
+hatched and unhatched eggs are independent Poisson numbers.
+
+\section{The inspection paradox}
+
+Fix a time $t>0$ and look at the gap that contains it: let $A_t=t-T_{N(t)}$ be the \emph{age} (time since the last point, or since $0$) and
+$R_t=T_{N(t)+1}-t$ the \emph{residual} time until the next point.
+
+\begin{proposition}\label{prop:inspection}
+$R_t$ and $A_t$ are independent, $R_t$ is Exp$(\lambda)$, and $A_t$ has the law of $\min(E,t)$ with $E$ Exp$(\lambda)$. The gap $L_t=A_t+R_t$ containing $t$ has
+\[
+\mathbb E[L_t]=\frac2\lambda-\frac{e^{-\lambda t}}\lambda\xrightarrow[t\to\infty]{}\frac2\lambda,
+\]
+twice the mean gap.
+\end{proposition}
+\begin{proof}
+For $s\ge0$ and $0\le a<t$, $\{R_t>s,\ A_t>a\}$ is the event that there is no point in $]t-a,t+s]$, of probability $e^{-\lambda(a+s)}$ by (B). With $a=0$, $R_t$ is
+Exp$(\lambda)$; with $s=0$, $P(A_t>a)=e^{-\lambda a}$ for $a<t$, and $A_t\le t$ always, which is the law of $\min(E,t)$. The joint probability is the product, so they
+are independent (the events $\{R_t>s\}$ and $\{A_t>a\}$ generate their $\sigma$-algebras; Theorem~\ref{thm:uniqueness}). Finally
+$\mathbb E[\min(E,t)]=\int_0^te^{-\lambda a}\dd a=\frac{1-e^{-\lambda t}}\lambda$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-inspection}
+\caption{An observer arriving at a fixed time $t$ (black triangle) lands in a gap; long gaps cover more of the time axis, so they
+are more likely to be hit. For Poisson arrivals the observed gap is on average twice as long as a typical one.}
+\label{fig:inspection}
+\end{figure}
+
+There is no contradiction with the mean gap $\frac1\lambda$: the gap containing a fixed time is not a typical gap, because a long gap is
+more likely to contain $t$. Choosing a gap in proportion to its length is called \emph{size-biased sampling}, and it appears whenever one
+samples ``by inspection'': the bus you wait for, the class size reported by a student (large classes have more
+students to report them), the family size reported by a child, the length of the job a server is busy with when you
+look. Exercise~\ref{ex:bus} computes the paradox for any law of gaps: the observed gap has mean $\frac{\mathbb E[X^2]}{\mathbb E[X]}\ge\mathbb E[X]$, with equality only for
+regular gaps.
+
+\section{Poisson approximation}
+
+Chapter~2 proved that binomial$(n,\frac\lambda n)$ tends to Poisson$(\lambda)$. A coupling gives an explicit error, for sums of independent Bernoulli
+variables with different parameters.
+
+\begin{theorem}[Le Cam's inequality]\label{thm:lecam}
+Let $X_1,\dots,X_n$ be independent Bernoulli variables with $P(X_i=1)=p_i$, $S=X_1+\dots+X_n$ and $\mu=p_1+\dots+p_n$. Then
+\[
+\bigl\|\mathcal L(S)-\text{Poisson}(\mu)\bigr\|\le\sum_{i=1}^np_i^2,
+\]
+where $\mathcal L(S)$ is the law of $S$ and $\|\cdot\|$ the total variation distance of Chapter~8.
+\end{theorem}
+\begin{proof}
+For one $p\in[0,1]$, build $X$ Bernoulli$(p)$ and $Y$ Poisson$(p)$ from the same uniform $U$ on $[0,1]$: $X=\mathbf 1_{U\ge1-p}$, and $Y=0$ if $U<e^{-p}$, $Y=1$ if
+$e^{-p}\le U<e^{-p}(1+p)$, and $Y=k$ on an interval of length $e^{-p}\frac{p^k}{k!}$ further to the right for $k\ge2$. Since $1-p\le e^{-p}$, $X$ and $Y$ differ only when
+$1-p\le U<e^{-p}$ or $U\ge e^{-p}(1+p)$, so
+\[
+\begin{aligned}P(X\ne Y)&=\bigl(e^{-p}-1+p\bigr)+\bigl(1-e^{-p}-pe^{-p}\bigr)\eqbr=p(1-e^{-p})\le p^2.\end{aligned}
+\]
+Do this independently for each $i$, with independent uniforms $U_i$. Then $S'=Y_1+\dots+Y_n$ is Poisson$(\mu)$, as a sum of independent Poisson variables,
+and $P(S\ne S')\le\sum_iP(X_i\ne Y_i)\le\sum_ip_i^2$. The coupling inequality (Lemma~\ref{lem:coupling}) concludes.
+\end{proof}
+
+For the binomial$(n,\frac\lambda n)$ the bound is $\frac{\lambda^2}n$. In general $\sum_ip_i^2\le\max_ip_i\cdot\mu$: a sum of many independent rare events, none of which
+dominates, is Poisson. For example, if $10^6$ users each click on an advertisement independently, with probabilities
+between $10^{-6}$ and $10^{-4}$ adding up to $50$, the number of clicks is within $5\times10^{-3}$ of Poisson$(50)$ in total variation, whatever the
+individual probabilities. Le Cam's bound is not sharp; Chen and Stein's method gives $\min(1,\frac1\mu)\sum_ip_i^2$, and also handles
+dependent events, such as coincident birthdays.
+
+\section{The M/M/1 queue}
+
+Customers arrive at a single server at the times of a Poisson process of rate $\lambda$ and are served one at a time, in order
+of arrival. Service is modelled by an independent Poisson process of rate $\mu$ of \emph{completion signals}: at each signal, if
+someone is being served, that customer leaves. (By memorylessness, each service then lasts an Exp$(\mu)$ time; this is the
+M/M/1 queue, the letters standing for Markovian arrivals, Markovian services and $1$ server.) Let $Q(t)$ be the number of
+customers present at time $t$, waiting or in service, and $\rho=\frac\lambda\mu$, the \emph{load}.
+
+By Corollary~\ref{cor:superposition}, the arrivals and the signals together form a Poisson process of rate $\nu=\lambda+\mu$ whose points are,
+independently, arrivals with probability $p=\frac\lambda\nu$ and signals with probability $q=\frac\mu\nu$. So $Q(t)=Y_{K(t)}$, where $K(t)$ is the number of
+events by time $t$, a Poisson process of rate $\nu$, and $(Y_m)$ is the Markov chain on $\N$, independent of $K$, with
+\[
+\begin{gathered}P(k,k+1)=p,\qq P(k,k-1)=q\ (k\ge1),\qq P(0,0)=q,\end{gathered}
+\]
+started at $Y_0=Q(0)$.
+
+\begin{theorem}[M/M/1]\label{thm:mm1}
+If $\rho<1$, then for every initial queue length, $Q(t)$ converges in law, as $t\to\infty$, to the geometric law
+\[
+\pi(k)=(1-\rho)\rho^k\qquad(k\ge0),
+\]
+whose mean is $\frac\rho{1-\rho}$. If $\rho\ge1$, the chain $(Y_m)$ has no stationary law.
+\end{theorem}
+\begin{proof}
+\emph{Stationary law.} A stationary law of $(Y_m)$ must balance the flows across each cut between $k$ and $k+1$: for $\pi P=\pi$, summing the
+equations for the states $0,\dots,k$ gives $\pi(k)p=\pi(k+1)q$ (the mass entering $\{0,\dots,k\}$ equals the mass leaving it). So $\pi(k)=\pi(0)\rho^k$,
+which can be normalised if and only if $\rho<1$, giving $\pi(k)=(1-\rho)\rho^k$; conversely this $\pi$ satisfies detailed balance, hence is stationary
+(Proposition~\ref{prop:detailed}).
+
+\emph{Convergence of $(Y_m)$, by a monotone coupling.} Drive two copies $Y$ and $Y'$, started at $x$ and from $\pi$, with the same sequence of
+independent signs $\epsilon_m$ ($+1$ with probability $p$): $Y_{m+1}=\max(Y_m+\epsilon_{m+1},0)$, and likewise $Y'$. Each copy is a chain with matrix $P$. The map
+$y\mapsto\max(y+\epsilon,0)$ is non-decreasing and does not increase distances, so the order between $Y_m$ and $Y'_m$ never changes, and once the upper
+one is at $0$ both are at $0$ and stay together. The upper copy is the chain started at $\max(x,Y'_0)$; before it reaches $0$ it is a walk
+with $p<q$, which reaches $0$ almost surely (Corollary~\ref{cor:infinitebank}). So $P(Y_m\ne Y'_m)\to0$, and by the coupling inequality
+$\|\mathcal L(Y_m)-\pi\|\le P(Y_m\ne Y'_m)\to0$.
+
+\emph{Continuous time.} As $K(t)$ is independent of $Y$, $P(Q(t)=k)=\sum_mP(K(t)=m)P(Y_m=k)$, so $\delta(t)=\|\mathcal L(Q(t))-\pi\|$ satisfies
+\[
+\begin{aligned}\delta(t)&\le\sum_mP(K(t)=m)\,\|\mathcal L(Y_m)-\pi\|\eqbr\le P(K(t)<M)+\sup_{m\ge M}\|\mathcal L(Y_m)-\pi\|.\end{aligned}
+\]
+For fixed $M$, $P(K(t)<M)\to0$ as $t\to\infty$; then let $M\to\infty$. The mean of $\pi$ is $\sum_kk(1-\rho)\rho^k=\frac\rho{1-\rho}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-mm1}
+\caption{The number of customers in an M/M/1 queue with $\mu=1$, for $\lambda=0.5$ (blue) and $\lambda=0.9$ (orange), over $300$ time units. The
+stationary means are $1$ and $9$; at high load the queue makes long excursions.}
+\label{fig:mm1}
+\end{figure}
+
+\begin{beauty}
+The mean queue length $\frac\rho{1-\rho}$ is $1$ at load $50\%$, $9$ at $90\%$ and $99$ at $99\%$. A system that is ``only'' $10\%$ below saturation already has
+long queues, and the last few percent of capacity are paid for in waiting time: this one formula is behind the rule of
+thumb that servers, roads and hospitals should not run near full load.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:race}
+\emph{Competing exponentials.} Let $E_1,\dots,E_k$ be independent, $E_i$ Exp$(\lambda_i)$, $\Lambda=\lambda_1+\dots+\lambda_k$, $M=\min_iE_i$ and $I$ the index achieving it. Show that $M$ is
+Exp$(\Lambda)$, that $P(I=i)=\frac{\lambda_i}\Lambda$, and that $M$ and $I$ are independent.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:binomialsplit}
+For a Poisson process, show that conditionally on $N(t)=n$, $N(s)$ is binomial$(n,\frac st)$ for $0<s<t$. Passengers arrive at a bus stop as a
+Poisson process of rate $\lambda$, and a bus leaves at time $t$: show that their expected total waiting time is $\frac{\lambda t^2}2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:records2}
+Let $R$ be the number of records among $n$ numbers in random order that occur at positions $m+1,\dots,n$ (Exercise~\ref{ex:records}).
+Show that $R$ is within $\frac1m$ of Poisson$(H_n-H_m)$ in total variation.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:coupon2}
+\emph{Coupons in continuous time.} Coupons of $n$ types arrive at the times of a Poisson process of rate $1$, each of a uniformly random
+type. Let $T$ be the time when every type has arrived. Show that $P(T\le t)=(1-e^{-t/n})^n$, that $\mathbb E[T]=nH_n$, and that
+$P(T\le n\ln n+cn)\to e^{-e^{-c}}$ for every real $c$ (the Gumbel law).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:little}
+In a stationary M/M/1 queue, a customer who arrives finds a number of customers distributed according to $\pi$ (take this
+from the event chain $(Y_m)$: an arrival is an event chosen independently of the current state). Show that the customer's
+expected time in the system is $\frac1{\mu-\lambda}$, and check \emph{Little's law} $L=\lambda W$, where $L$ is the mean number in the system and $W$ the mean
+time spent in it.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bus}
+\emph{The bus paradox for any gaps.} Buses arrive at times $T_n=X_1+\dots+X_n$, with independent gaps of the same law, bounded by a
+constant and with $\mathbb E[X]>0$. Let $L_t$ be the length of the gap containing $t$. Show that $\frac1{T_n}\int_0^{T_n}L_t\dd t\to\frac{\mathbb E[X^2]}{\mathbb E[X]}$ almost surely. Compute this for
+gaps uniform on $[0,2m]$ and for constant gaps $m$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:superpose}
+Two independent Poisson processes of rates $\lambda_1$ and $\lambda_2$ are observed. Show that the number of points of the first one before the first
+point of the second is geometric: $P(k\text{ points})=\bigl(\frac{\lambda_1}{\lambda_1+\lambda_2}\bigr)^k\frac{\lambda_2}{\lambda_1+\lambda_2}$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:race}
+$P(M>t,\ I=i)=\int_t^\infty\lambda_ie^{-\lambda_is}\prod_{j\ne i}e^{-\lambda_js}\dd s$.
+\end{hint}
+\begin{hint}{ex:binomialsplit}
+Theorem~\ref{thm:uniform}. Given $N(t)=n$, the total waiting time is $\sum_i(t-U_i)$ with $U_i$ uniform.
+\end{hint}
+\begin{hint}{ex:records2}
+The record indicators are independent Bernoulli$(\frac1k)$, and $\sum_{k>m}\frac1{k^2}\le\frac1m$.
+\end{hint}
+\begin{hint}{ex:coupon2}
+Thin the arrival process by types: $n$ independent Poisson processes of rate $\frac1n$. For the mean, write $T=\sum_{j=1}^K E_j$ with $K$ the discrete
+coupon collector's time, independent of the gaps $E_j$.
+\end{hint}
+\begin{hint}{ex:little}
+A customer who finds $k$ customers waits for $k+1$ services; the one in progress has a residual Exp$(\mu)$ duration by memorylessness.
+\end{hint}
+\begin{hint}{ex:bus}
+$\int_0^{T_n}L_t\dd t=\sum_{i\le n}X_i^2$. Use the strong law for the $X_i$ and for the $X_i^2$.
+\end{hint}
+\begin{hint}{ex:superpose}
+Corollary~\ref{cor:superposition}: the points of the superposition are marked independently.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:race}
+\idea Each clock rings at its own rate; the first ring comes at the total rate, and which clock rings is decided by the
+rates alone.
+\writeup By independence,
+\[
+\begin{aligned}P(M>t,\ I=i)&=\int_t^\infty\lambda_ie^{-\lambda_is}\prod_{j\ne i}e^{-\lambda_js}\dd s\eqbr=\frac{\lambda_i}\Lambda e^{-\Lambda t},\end{aligned}
+\]
+since $\{M>t,\ I=i\}=\{E_i>t,\ E_j>E_i\ \forall j\ne i\}$ (ties have probability $0$) and $P(E_j>s)=e^{-\lambda_js}$ (Tonelli). With $t=0$, $P(I=i)=\frac{\lambda_i}\Lambda$; summing over $i$,
+$P(M>t)=e^{-\Lambda t}$. The joint probability is the product, so $M$ and $I$ are independent.
+\end{solution}
+
+\begin{solution}{ex:binomialsplit}
+\idea Given the number of points, they are independent uniform points, and each falls before $s$ with probability $\frac st$.
+\writeup By Theorem~\ref{thm:uniform}, given $N(t)=n$ the points have the law of $n$ sorted independent uniforms on $[0,t]$, and $N(s)$ counts those below $s$:
+binomial$(n,\frac st)$. The passengers arriving in $[0,t]$ wait in total $\sum_{i\le N(t)}(t-T_i)$. Given $N(t)=n$, this is $\sum_{i\le n}(t-U_i)$ in law (the sum does not
+depend on the order), of mean $\frac{nt}2$. So the expected total is $\mathbb E[N(t)]\frac t2=\frac{\lambda t^2}2$.
+\end{solution}
+
+\begin{solution}{ex:records2}
+\idea Independent rare events with known probabilities: exactly Le Cam's setting.
+\writeup By Exercise~\ref{ex:records}, the indicators $I_k$ that position $k$ holds a record are independent Bernoulli$(\frac1k)$. So $R=\sum_{k=m+1}^nI_k$ and, by
+Theorem~\ref{thm:lecam}, its distance to Poisson$(\sum_{k>m}\frac1k)=$ Poisson$(H_n-H_m)$ is at most $\sum_{k>m}\frac1{k^2}\le\sum_{k>m}\frac1{k(k-1)}=\frac1m$ (a telescoping sum). (For all
+the records, $m=1$, the bound $1$ is useless, because the first positions are records with probabilities $1$, $\frac12$, \dots, not rare.)
+\end{solution}
+
+\begin{solution}{ex:coupon2}
+\idea Poissonisation: in continuous time the types arrive independently, so ``all types present'' is a product of
+independent events.
+\writeup Marking each arrival by its type (probability $\frac1n$ each) and applying Theorem~\ref{thm:thinning} repeatedly (or Lemma~\ref{lem:colouring} with $n$ colours),
+the arrivals of the $n$ types are independent Poisson processes of rate $\frac1n$. Type $j$ first arrives at an Exp$(\frac1n)$ time $F_j$, independent
+across types, and $T=\max_jF_j$. So $P(T\le t)=\prod_jP(F_j\le t)=(1-e^{-t/n})^n$. The type sequence is independent of the gaps $E_1,E_2,\ldots$, so $T=E_1+\dots+E_K$, where
+$K$ is the discrete coupon collector's time (Theorem~\ref{thm:coupon}), independent of the $E_j$; by Wald's identity (Corollary~\ref{cor:wald}),
+$\mathbb E[T]=\mathbb E[K]\,\mathbb E[E_1]=nH_n$. Finally, with $t=n\ln n+cn$, $e^{-t/n}=\frac{e^{-c}}n$ and $(1-\frac{e^{-c}}n)^n\to e^{-e^{-c}}$.
+\end{solution}
+
+\begin{solution}{ex:little}
+\idea The newcomer waits for everyone ahead, and memorylessness makes each of those services, including the one in
+progress, a fresh Exp$(\mu)$ time.
+\writeup Given that the customer finds $k$ customers, the time in the system is the residual service of the customer in service (Exp$(\mu)$ by
+memorylessness, if $k\ge1$), plus $k-1$ full services, plus the customer's own: $k+1$ independent Exp$(\mu)$ times, of mean $\frac{k+1}\mu$. Averaging over
+$k\sim\pi$, $W=\frac{\mathbb E[k]+1}\mu=\frac1\mu\bigl(\frac\rho{1-\rho}+1\bigr)=\frac1{\mu(1-\rho)}=\frac1{\mu-\lambda}$. Then $\lambda W=\frac\lambda{\mu-\lambda}=\frac\rho{1-\rho}=L$. Little's law holds for very general queues,
+with essentially the same reason: count customer-seconds in two ways.
+\end{solution}
+
+\begin{solution}{ex:bus}
+\idea Integrate over time: each gap of length $X_i$ contributes $X_i$ times its own length.
+\writeup On the $i$-th gap, of length $X_i$, $L_t=X_i$, so $\int_0^{T_n}L_t\dd t=\sum_{i\le n}X_i^2$ (the gaps of length $0$ contribute nothing). By the strong law (Theorem~\ref{thm:slln4},
+all moments being finite for bounded gaps), $\frac1n\sum X_i^2\to\mathbb E[X^2]$ and $\frac{T_n}n\to\mathbb E[X]>0$ almost surely, so the ratio tends to $\frac{\mathbb E[X^2]}{\mathbb E[X]}$. This is at
+least $\mathbb E[X]$ by Cauchy--Schwarz ($\mathbb E[X]^2\le\mathbb E[X^2]$), with equality only for constant gaps. For gaps uniform on $[0,2m]$: $\mathbb E[X^2]=\frac{4m^2}3$, giving $\frac{4m}3$; for
+constant gaps, $m$. For exponential gaps of mean $m$, $\mathbb E[X^2]=2m^2$ and the answer is $2m$, as in Proposition~\ref{prop:inspection}.
+\end{solution}
+
+\begin{solution}{ex:superpose}
+\idea In the superposition, each point is a coin flip between the two processes, so we wait for the first ``tail''.
+\writeup By Corollary~\ref{cor:superposition}, the points of $N_1+N_2$ are marked independently, $1$ with probability $r=\frac{\lambda_1}{\lambda_1+\lambda_2}$. The number of points of $N_1$ before
+the first point of $N_2$ is the number of marks $1$ before the first mark $2$, which is $k$ with probability $r^k(1-r)$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item G.~Grimmett and D.~Stirzaker, \emph{Probability and Random Processes}, 4th ed., Oxford University Press, 2020,
+Chapter~6: the Poisson process, its three definitions and the inspection paradox.
+\item J.~F.~C.~Kingman, \emph{Poisson Processes}, Oxford University Press, 1993. Colouring, thinning and superposition,
+in a short and elegant book.
+\item L.~Le Cam, \emph{An approximation theorem for the Poisson binomial distribution}, Pacific Journal of Mathematics
+10 (1960), 1181--1197.
+\item A.~D.~Barbour, L.~Holst and S.~Janson, \emph{Poisson Approximation}, Oxford University Press, 1992. The Chen--Stein
+method.
+\item L.~Kleinrock, \emph{Queueing Systems}, Vol.~1, Wiley, 1975. The M/M/1 queue and its relatives.
+\item J.~D.~C.~Little, \emph{A proof for the queuing formula $L=\lambda W$}, Operations Research 9 (1961), 383--387.
+\item S.~L.~Feld, \emph{Why your friends have more friends than you do}, American Journal of Sociology 96 (1991),
+1464--1477. Size-biased sampling in social networks.
+\end{itemize}
