@@ -5,6 +5,7 @@ local exnum = {}      -- label -> "c.n"
 local count = 0
 local fignum = {}     -- label -> "c.n"
 local figcount = 0
+local exname = "Exercise"  -- what the book calls its exercises
 
 local function optarg(blocks)
   -- Remove a leading OPTARG marker (from tools/epub_prep.py) and return its content.
@@ -60,7 +61,7 @@ local function rewrite(b)
   if b.t ~= "Div" then return nil end
   if b.classes:includes("exercise") then
     local level = optarg(b.content)
-    local t = pandoc.Inlines({ pandoc.Strong({ pandoc.Str("Exercise " .. b.attributes["number"]) }) })
+    local t = pandoc.Inlines({ pandoc.Strong({ pandoc.Str(exname .. " " .. b.attributes["number"]) }) })
     local l = label_of(b.content)
     if level then
       t:insert(pandoc.Space())
@@ -87,7 +88,7 @@ local function rewrite(b)
     if first and first.t == "Span" and first.content[1] then
       local l = pandoc.utils.stringify(first.content)
       local n = exnum[l] or l
-      local what = b.classes:includes("hint") and "Hint for Exercise " or "Solution of Exercise "
+      local what = b.classes:includes("hint") and ("Hint for " .. exname .. " ") or ("Solution of " .. exname .. " ")
       para.content[1] = pandoc.Link({ pandoc.Strong({ pandoc.Str(what .. n .. ".") }) }, "#" .. l)
     end
     return b
@@ -117,6 +118,16 @@ local function fix_ref(el)
 end
 
 function Pandoc(doc)
+  -- A book may call its exercises otherwise (marker made by tools/epub_prep.py).
+  local kept = pandoc.Blocks({})
+  for _, b in ipairs(doc.blocks) do
+    if b.t == "Div" and b.classes:includes("exname") then
+      exname = pandoc.utils.stringify(b.content)
+    else
+      kept:insert(b)
+    end
+  end
+  doc.blocks = kept
   number_pass(doc)
   doc = doc:walk({ Div = rewrite, Figure = number_figure })
   doc = doc:walk({ Link = fix_ref })

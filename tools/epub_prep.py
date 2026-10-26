@@ -20,6 +20,9 @@ def inline(path: Path) -> str:
             target = target.with_name("epub-preamble.tex")
         if target.name == "figure-packages.tex":
             return ""
+        # A file whose first line is "% pdf-only" (PDF layout tweaks) is left out of the EPUB.
+        if target.read_text(encoding="utf-8").startswith("% pdf-only"):
+            return ""
         return inline(target)
 
     return re.sub(r"\\input\{([^}]*)\}", repl, text)
@@ -53,6 +56,10 @@ def copyright_section(main_tex: Path) -> str:
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
     text = text.replace("\\maketitle\n", copyright_section(Path(src)), 1)
+    # A book may rename its exercises ("% exercise-name: Problem" in main.tex); tools/epub.lua reads the marker.
+    name = re.search(r"^% exercise-name: (\w+)", text, re.M)
+    if name:
+        text = text.replace("\\begin{document}", "\\begin{document}\n\\begin{exname}" + name.group(1) + "\\end{exname}", 1)
     # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)

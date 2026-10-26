@@ -306,6 +306,28 @@ def lozenge_tiling(a=28, sweeps=8000, seed=7):
         lines.append(r"\filldraw[fill=accent,fill opacity=%.2f,draw=navy,line width=0.2pt] %s--cycle;" % (op, path))
     return "\n".join(lines) + "\n"
 
+
+def gaussian_primes(N=26):
+    """Problem Book P1: the Gaussian primes a+bi with a^2+b^2 <= N^2, a picture where Tome 1
+    (which primes split), Tome 2 (the ring Z[i]) and geometry meet. It has the eight symmetries
+    of the square."""
+    s = R / (N + 0.5)
+    pr = set(primes_upto(2 * N * N + 2))
+    def is_gp(a, b):
+        a, b = abs(a), abs(b)
+        if a == 0 or b == 0:
+            m = a + b
+            return m in pr and m % 4 == 3
+        return a * a + b * b in pr
+    lines = ["%% Gaussian primes a+bi with a^2+b^2 <= %d^2." % N]
+    for a in range(-N, N + 1):
+        for b in range(-N, N + 1):
+            if a * a + b * b <= N * N and is_gp(a, b):
+                lines.append(r"\fill[accent] (%.4fin,%.4fin) rectangle ++(%.4fin,%.4fin);"
+                             % (s * (a - 0.42), s * (b - 0.42), 0.84 * s, 0.84 * s))
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -317,6 +339,7 @@ MOTIFS = {
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
     "tomeS1-linear": lozenge_tiling,
+    "tomeP1-crossroads": gaussian_primes,
 }
 
 if __name__ == "__main__":
