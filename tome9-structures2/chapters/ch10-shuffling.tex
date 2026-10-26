@@ -1,0 +1,356 @@
+\chapter{Shuffling Cards}
+
+\begin{center}\itshape
+How many random transpositions mix a deck of $n$ cards? Fourier analysis on $\mathfrak S_n$ turns the question into a sum over Young diagrams, and the character formula of Chapter~9 evaluates it: the answer is $\frac12n\ln n$, and the deck goes from ordered to
+mixed abruptly, in a window of order $n$ swaps. This is the first proof of the cutoff phenomenon.
+\end{center}
+
+Persi Diaconis left school at about fourteen to travel with the magician Dai Vernon, described by Martin Gardner as ``a professional card shark, or a card mechanic, as they call it in the trade''. Years later, when a friend told him that the best book
+on probability was William Feller's \emph{Introduction to Probability Theory and its Applications}, he tried it and found that he could not read it: ``I didn't know calculus, or at least not enough.'' So he took evening classes at City College in New York, paying
+for them with magic shows. When he applied to graduate school, Gardner wrote to Frederick Mosteller at Harvard: ``This young student is one of the best card mechanics in the country.'' Mosteller answered: ``If he's willing to major in statistics, I can get him into
+Harvard.'' Diaconis took his doctorate there in 1974 and went to Stanford.
+
+In 1981, with Mehrdad Shahshahani, he solved a problem that a card mechanic could appreciate. Swap two random cards, again and again: when is the deck mixed? Tome~3, Chapter~8, proved that about $2n\ln n$ swaps suffice (Broder's marking argument) and
+that $\frac12n\ln n-2n$ do not. Diaconis and Shahshahani closed the gap with representation theory: $\frac12n\ln n+cn$ swaps suffice, for a constant $c$. For a deck of $52$ cards, $\frac12n\ln n\approx103$. Their tool, a Fourier transform on the non-commutative
+group $\mathfrak S_n$, is what Tome~2 (Chapter~4) and Tome~3 (Chapter~8) promised; their key formula is Theorem~\ref{thm:transposition}.
+
+The answer has a striking shape. The distance to uniform stays near $1$ for $\frac12n\ln n-cn$ swaps, then falls to near $0$ within a few multiples of $n$ more (Figure~\ref{fig:cutoff}). David Aldous and Diaconis named this the \emph{cutoff phenomenon} in 1986; it
+is the reason why ``seven riffle shuffles'' (Tome~3, Chapter~8) is a meaningful answer.
+
+Throughout, $G$ is a finite group, and $\widehat G$ is a set of representatives of its irreducible representations $\rho:G\to\mathrm{GL}(V_\rho)$, with $d_\rho=\dim V_\rho$ and character $\chi_\rho$. Each $V_\rho$ carries an inner product for which $\rho(g)$ is unitary (average any inner product
+over $G$, as in the proof of Maschke's theorem), and we use orthonormal bases, so that $\rho(g^{-1})=\rho(g)^*$, the conjugate transpose. We use the notation of Tome~3, Chapter~8: $\|\mu-\nu\|=\frac12\sum_g|\mu(g)-\nu(g)|$ is the total variation distance, and $d(t)$ the
+distance to stationarity after $t$ steps, from the worst starting point.
+
+\section{Fourier analysis on a finite group}
+
+\begin{definition}\label{def:fouriergroup}
+The \emph{Fourier transform} of a function $f:G\to\C$ at $\rho\in\widehat G$ is the matrix $\hat f(\rho)=\sum_{g\in G}f(g)\rho(g)$. The \emph{convolution} of $f_1,f_2$ is $(f_1*f_2)(g)=\sum_{h\in G}f_1(h)f_2(h^{-1}g)$.
+\end{definition}
+
+In other words, $\hat f(\rho)$ is the image of $\sum f(g)g\in\C[G]$ in the factor $\operatorname{End}(V_\rho)$ of Wedderburn's isomorphism (Corollary~\ref{cor:wedderburnCG}), and convolution is the product of $\C[G]$. So $\widehat{f_1*f_2}(\rho)=\hat f_1(\rho)\hat f_2(\rho)$, as one can also
+check directly: $\sum_g\sum_hf_1(h)f_2(h^{-1}g)\rho(h)\rho(h^{-1}g)$ is $\hat f_1(\rho)\hat f_2(\rho)$ after the substitution $g=hx$. If $X$ and $Y$ are independent random elements of $G$ with laws $\mu$ and $\nu$, the law of $XY$ is $\mu*\nu$: $P(XY=g)=\sum_hP(X=h)P(Y=h^{-1}g)$.
+For $G$ abelian, $\widehat G$ is the dual group, the matrices are $1\times1$, and this is the Fourier analysis of Tome~2, Theorem~11.14, up to a complex conjugation.
+
+\begin{theorem}[Fourier inversion and Plancherel]\label{thm:plancherelG}
+For $f,f':G\to\C$ and $g\in G$,
+\[
+f(g)=\frac1{|G|}\sum_{\rho\in\widehat G}d_\rho\operatorname{tr}\bigl(\rho(g^{-1})\hat f(\rho)\bigr),\qquad
+\sum_{g\in G}f(g)\overline{f'(g)}=\frac1{|G|}\sum_{\rho\in\widehat G}d_\rho\operatorname{tr}\bigl(\hat f(\rho)\hat f'(\rho)^*\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{The regular character.} $G$ acts on $\C[G]$ by left multiplication, permuting the basis; $g\ne e$ fixes no basis element, so the character of this \emph{regular representation} is $\chi_{\mathrm{reg}}(g)=|G|$ if $g=e$ and $0$ otherwise. The multiplicity of
+$\rho$ in it is $\langle\chi_{\mathrm{reg}},\chi_\rho\rangle=\frac1{|G|}|G|\overline{\chi_\rho(e)}=d_\rho$ (Tome~2, Theorem~11.8), so $\chi_{\mathrm{reg}}=\sum_\rho d_\rho\chi_\rho$, that is,
+\[
+\sum_{\rho}d_\rho\chi_\rho(x)=|G|\,\mathbf 1_{x=e}.
+\]
+
+\emph{Inversion.} Both sides are linear in $f$, so it suffices to take $f=\mathbf 1_h$, with $\hat f(\rho)=\rho(h)$. The right side is $\frac1{|G|}\sum_\rho d_\rho\chi_\rho(g^{-1}h)$, which is $1$ if $g=h$ and $0$ otherwise, by the identity above.
+
+\emph{Plancherel.} Apply inversion to $f$, multiply by $\overline{f'(g)}$ and sum over $g$:
+\[
+\sum_gf(g)\overline{f'(g)}=\frac1{|G|}\sum_\rho d_\rho\operatorname{tr}\Bigl(\Bigl(\sum_g\overline{f'(g)}\rho(g)^*\Bigr)\hat f(\rho)\Bigr)=\frac1{|G|}\sum_\rho d_\rho\operatorname{tr}\bigl(\hat f'(\rho)^*\hat f(\rho)\bigr),
+\]
+using $\rho(g^{-1})=\rho(g)^*$; and $\operatorname{tr}(AB)=\operatorname{tr}(BA)$.
+\end{proof}
+
+\begin{proposition}\label{prop:classfourier}
+If $f$ is constant on conjugacy classes, then $\hat f(\rho)$ is the scalar matrix $\frac1{d_\rho}\bigl(\sum_gf(g)\chi_\rho(g)\bigr)I$.
+\end{proposition}
+
+\begin{proof}
+For $x\in G$, substituting $g\mapsto x^{-1}gx$,
+\[
+\rho(x)\hat f(\rho)\rho(x)^{-1}=\sum_gf(g)\rho(xgx^{-1})=\hat f(\rho).
+\] So $\hat f(\rho)$ commutes with every $\rho(x)$, and is a scalar by Schur's lemma; taking traces identifies the scalar.
+\end{proof}
+
+\section{The upper bound lemma}
+
+A random walk on $G$ driven by a probability $Q$ moves from $x$ to $\tau x$, where $\tau$ is drawn from $Q$ independently at each step. Started at $e$, its law after $t$ steps is the $t$-fold convolution $Q^{*t}$, with Fourier transform $\hat Q(\rho)^t$. Started at $x$, its law is the
+translate $g\mapsto Q^{*t}(gx^{-1})$, at the same distance from the uniform law $U$; so $d(t)=\|Q^{*t}-U\|$. Note that $\hat U(\rho)=0$ for $\rho\ne1$: the sum $\sum_g\rho(g)$ commutes with $\rho(G)$, so it is a scalar, of trace $|G|\langle\chi_\rho,1\rangle=0$.
+
+\begin{lemma}[Diaconis--Shahshahani upper bound lemma]\label{lem:upperbound}
+For a probability $\mu$ on $G$,
+\[
+\|\mu-U\|^2\le\frac14\sum_{\rho\ne1}d_\rho\operatorname{tr}\bigl(\hat\mu(\rho)\hat\mu(\rho)^*\bigr),
+\]
+the sum running over the non-trivial irreducible representations.
+\end{lemma}
+
+\begin{proof}
+By Cauchy--Schwarz, $\bigl(\sum_g|\mu(g)-U(g)|\bigr)^2\le|G|\sum_g|\mu(g)-U(g)|^2$. By Plancherel, applied to $f=f'=\mu-U$, the last sum is $\frac1{|G|}\sum_\rho d_\rho\operatorname{tr}(\hat f(\rho)\hat f(\rho)^*)$. Here $\hat f(1)=1-1=0$, and $\hat f(\rho)=\hat\mu(\rho)$ for $\rho\ne1$.
+Divide by $4$.
+\end{proof}
+
+The proof throws away very little when $\mu$ is spread out: Cauchy--Schwarz is nearly an equality when $|\mu-U|$ is nearly constant. Its strength is that it turns a sum over the $n!$ permutations into a sum over the much fewer irreducible representations, each weighted by
+explicit numbers. For the lazy walk on a cycle, it is exactly the computation of Tome~3, Theorem~8.17.
+
+\section{Random transpositions}
+
+The shuffle of Tome~3 picks a card $L$ with the left hand and a card $R$ with the right, independently and uniformly, and swaps them. So the step $\tau$ has law
+\[
+Q(e)=\frac1n,\qquad Q(\tau)=\frac2{n^2}\ \text{for each transposition }\tau,
+\]
+and $Q=0$ elsewhere. (Whether we swap cards or positions, that is, multiply on the left or on the right, makes no difference, since $Q$ is constant on conjugacy classes: Exercise~\ref{ex:leftright}.) For $\lambda\vdash n$, write
+\[
+r(\lambda)=\frac{\chi^\lambda(\tau)}{f^\lambda}=\frac1{\binom n2}\sum_{(i,j)\in\lambda}(j-i),\qquad s(\lambda)=\frac1n+\frac{n-1}n\,r(\lambda).
+\]
+
+\begin{proposition}\label{prop:eigenvalues}
+$\hat Q(S^\lambda)=s(\lambda)I$. Consequently, the probability that the deck is in the arrangement $\sigma$ after $t$ swaps from the ordered deck is
+\[
+Q^{*t}(\sigma)=\frac1{n!}\sum_{\lambda\vdash n}f^\lambda\chi^\lambda(\sigma)\,s(\lambda)^t,
+\]
+and
+\[
+d(t)^2\le\frac14\sum_{\lambda\ne(n)}(f^\lambda)^2s(\lambda)^{2t}.
+\]
+\end{proposition}
+
+\begin{proof}
+By Proposition~\ref{prop:classfourier}, $\hat Q(S^\lambda)$ is the scalar $\frac1{f^\lambda}\bigl(\frac1nf^\lambda+\binom n2\frac2{n^2}\chi^\lambda(\tau)\bigr)=\frac1n+\frac{n-1}nr(\lambda)$. Then $\widehat{Q^{*t}}(S^\lambda)=s(\lambda)^tI$, and Fourier inversion gives the formula, as characters of
+$\mathfrak S_n$ are real (each $\sigma$ is conjugate to $\sigma^{-1}$). The last claim is Lemma~\ref{lem:upperbound}, with $\operatorname{tr}(s^tI\cdot s^tI)=f^\lambda s^{2t}$ and $d_\rho=f^\lambda$.
+\end{proof}
+
+So the whole problem is to bound a sum over Young diagrams. The eigenvalue $s(\lambda)$ is close to $1$ only when $\lambda$ has a very long first row: for $\lambda=(n-1,1)$, $r=\frac{n-3}{n-1}$ and $s=1-\frac2n$, and this term alone is $(n-1)^2(1-\frac2n)^{2t}\approx n^2e^{-4t/n}$,
+which is small exactly when $t$ exceeds $\frac12n\ln n$ by a multiple of $n$. The work is to show that the other $p(n)-2$ diagrams do not spoil this. Two lemmas do it: one bounds $s(\lambda)$, the other counts.
+
+\begin{lemma}\label{lem:ratiobounds}
+Let $\lambda\vdash n$, let $m=\max(\lambda_1,\lambda'_1)$ be the length of its longest row or column, and $k=n-m$. Then
+\[
+|s(\lambda)|\le\frac mn,\qquad\text{and}\qquad|s(\lambda)|\le\max\Bigl(1-\frac{2k(n-k)}{n^2},\ \frac{k+1}n\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+\emph{Crude bounds.} Since $\sum_i\lambda_i(\lambda_i-1)\le(\lambda_1-1)\sum_i\lambda_i=n(\lambda_1-1)$, and similarly for columns, Theorem~\ref{thm:transposition} gives
+\[
+-\frac{\lambda'_1-1}{n-1}\le r(\lambda)\le\frac{\lambda_1-1}{n-1},\qquad\text{so}\qquad\frac{2-\lambda'_1}n\le s(\lambda)\le\frac{\lambda_1}n.
+\]
+Both bounds are at most $\frac mn$ in absolute value, which is the first claim.
+
+\emph{Long first row.} Suppose $\lambda_1=n-k$. The other rows hold $k$ cells, so $\sum_{i\ge2}\lambda_i(\lambda_i-1)\le k(k-1)$ (a sum of squares with a fixed sum is largest when concentrated). Dropping the columns,
+\[
+r(\lambda)\le\frac{(n-k)(n-k-1)+k(k-1)}{n(n-1)}=1-\frac{2k(n-k)}{n(n-1)},\qquad\text{so}\qquad s(\lambda)\le1-\frac{2k(n-k)}{n^2}.
+\]
+Also $\lambda'_1\le k+1$ (the first column has at most $k$ cells below row $1$), so the crude bound gives $s(\lambda)\ge\frac{1-k}n$. This proves the second claim when $m=\lambda_1$.
+
+\emph{Long first column.} If $m=\lambda'_1$, apply the previous case to $\lambda'$, whose first row is $n-k$. Since contents change sign under conjugation (Corollary~\ref{cor:conjugate}), $r(\lambda)=-r(\lambda')$, and $s(\lambda)=\frac2n-s(\lambda')$. So
+\[
+-1+\frac2n+\frac{2k(n-k)}{n^2}\le s(\lambda)\le\frac2n+\frac{k-1}n=\frac{k+1}n,
+\]
+which proves the second claim in this case too.
+\end{proof}
+
+\begin{lemma}\label{lem:countshapes}
+For $0\le k\le n$, the sum of $(f^\lambda)^2$ over the $\lambda\vdash n$ with $\lambda_1=n-k$ is at most $\binom nk^2k!\le n^{2k}/k!$. The sum over the $\lambda$ with $\max(\lambda_1,\lambda'_1)=n-k$ is at most twice this.
+\end{lemma}
+
+\begin{proof}
+A standard tableau of shape $\lambda$, with $\lambda_1=n-k$, is determined by the set of $k$ entries below the first row, and by the way they fill the diagram $\mu=(\lambda_2,\lambda_3,\dots)\vdash k$, which, relabelled increasingly by $1,\dots,k$, is a standard tableau of shape $\mu$.
+So $f^\lambda\le\binom nkf^\mu$, and distinct $\lambda$ give distinct $\mu$. By Theorem~\ref{thm:rs}, $\sum_{\mu\vdash k}(f^\mu)^2=k!$, which gives the first bound, and $\binom nk\le n^k/k!$ gives the second. Conjugation preserves $f^\lambda$ (Corollary~\ref{cor:conjugate}), and the shapes with
+$\lambda'_1=n-k$ are the conjugates of those with $\lambda_1=n-k$.
+\end{proof}
+
+\begin{theorem}[Diaconis and Shahshahani, 1981]\label{thm:ds}
+For random transpositions on $n\ge10^4$ cards, if $c\ge\frac32$ and $t\ge\frac12n\ln n+cn$, then
+\[
+d(t)\le3e^{-4c/3}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $S=\sum_{\lambda\ne(n)}(f^\lambda)^2|s(\lambda)|^{2t}$; by Proposition~\ref{prop:eigenvalues}, $d(t)\le\frac12\sqrt S$. As $|s(\lambda)|\le1$ and $2t\ge N=n\ln n+2cn$, we may replace the exponent $2t$ by $N$. Group the diagrams by $m=\max(\lambda_1,\lambda'_1)=n-k$, and let $x=\frac kn$.
+
+\emph{The sign representation} ($k=0$, $\lambda=(1^n)$): $s=-1+\frac2n$, and $(1-\frac2n)^N\le e^{-2N/n}=n^{-2}e^{-4c}$.
+
+\emph{Long rows or columns: $1\le k\le\frac n3$.} On $[0,\frac13]$, $1-2x(1-x)$ decreases from $1$ to $\frac59$, and $\frac{k+1}n\le\frac13+\frac1n\le\frac59$; so Lemma~\ref{lem:ratiobounds} gives $|s(\lambda)|\le1-2x(1-x)\le e^{-2x(1-x)}$. With Lemma~\ref{lem:countshapes}, these $\lambda$ contribute at most
+\[
+\frac{2n^{2k}}{k!}\,e^{-2x(1-x)(n\ln n+2cn)}=\frac{2n^{2k}}{k!}\,n^{-2k(1-x)}e^{-4ck(1-x)}\le2\,\frac{n^{2k^2/n}}{k!}\,e^{-8ck/3},
+\]
+using $1-x\ge\frac23$. Now $k!\ge(k/e)^k$, so $\frac{n^{2k^2/n}}{k!}\le h_k^k$ with $\ln h_k=1+\frac{2k}n\ln n-\ln k$. This is a convex function of $k$, so on $[1,\frac n3]$ it is at most its value at an endpoint: $1+\frac{2\ln n}n\le1+\frac2e$ at $k=1$, and
+$1+\ln3-\frac13\ln n\le2.1$ at $k=\frac n3$. So $h_k\le e^{2.1}<8.2$, and with $q=8.2e^{-8c/3}\le8.2e^{-4}<0.151$, the contribution of all these $k$ is at most
+\[
+2\sum_{k\ge1}q^k=\frac{2q}{1-q}\le2.36\,q<19.4\,e^{-8c/3}.
+\]
+
+\emph{Middle shapes: $\frac n3<k\le\frac n2$.} Now $1-2x(1-x)\le\frac59$ and $\frac{k+1}n\le\frac12+\frac1n$, so $|s(\lambda)|\le\sigma_x=\max\bigl(1-2x(1-x),x+\frac1n\bigr)\le0.56$, and $\ln\sigma_x<-0.57$. Using $k!\ge(k/e)^k$ and $\ln k=\ln x+\ln n$, the logarithm of the
+contribution of one value of $k$ is at most
+\[
+\begin{aligned}\ln2+2k\ln n-k\ln k+k+N\ln\sigma_x&=\ln2+n\ln n\,(x+\ln\sigma_x)\\&\quad+nx(1-\ln x)+2cn\ln\sigma_x.\end{aligned}
+\]
+The function $x+\ln(1-2x+2x^2)$ has derivative $\frac{2x^2+2x-1}{1-2x+2x^2}$, so on $[\frac13,\frac12]$ it is largest at an endpoint, where it is $-0.254$ or $-0.193$; and $x+\ln(x+\frac1n)\le\frac12+\ln(0.5001)<-0.19$. So $x+\ln\sigma_x<-0.19$. Also
+$x(1-\ln x)\le0.85$ on this interval. Since $\ln n\ge9.2$, the bound is at most $\ln2-0.89n-1.14cn$, and the $n/6$ or so values of $k$ contribute in total less than $n\,e^{-0.89n}e^{-8c/3}$, which is negligible.
+
+\emph{Short rows and columns: $k>\frac n2$}, that is, $m<\frac n2$. Let $y=\frac mn<\frac12$; then $|s(\lambda)|\le y$ by Lemma~\ref{lem:ratiobounds}. By Lemma~\ref{lem:countshapes}, the weight is at most $2\binom nk^2k!=2n!\binom nk/m!\le2^{n+1}n!/m!$. With $n!\le n^n$ and
+$m!\ge(m/e)^m$, the logarithm of the contribution of one value of $m$ is at most
+\[
+\begin{aligned}(n+1)\ln2+n\ln n-m\ln m+m+N\ln y&=(n+1)\ln2+n\ln n\,(1-y+\ln y)\\&\quad+ny(1-\ln y)+2cn\ln y.\end{aligned}
+\]
+On $(0,\frac12]$, $1-y+\ln y$ is increasing, hence $\le\frac12-\ln2<-0.19$, $y(1-\ln y)$ is increasing, hence $\le0.85$, and $\ln y\le-\ln2$. With $\ln n\ge9.2$ this is at most $\ln2-0.20n-1.38cn$, and the fewer than $n$ values of $m$ contribute
+less than $2n\,e^{-0.2n}e^{-8c/3}$, again negligible for $n\ge10^4$.
+
+\emph{Total.} Adding up,
+\[
+S\le n^{-2}e^{-4c}+19.4e^{-8c/3}+(\text{negligible})\,e^{-8c/3}\le19.5\,e^{-8c/3},
+\]
+and $d(t)\le\frac12\sqrt{19.5}\,e^{-4c/3}<3e^{-4c/3}$.
+\end{proof}
+
+The threshold $n\ge10^4$ and the constants come from our crude treatment of the middle and short shapes, and are far from optimal. Diaconis and Shahshahani proved $d(\frac12n\ln n+cn)\le ae^{-2c}$ for all $n$ and $c>0$, with a universal constant $a$; the exponent $2c$
+is the right one, as the term of $(n-1,1)$ shows. Numerically, for $n=52$ the sum of Proposition~\ref{prop:eigenvalues} already gives $d(155)\le0.06$, with $155\approx\frac12n\ln n+n$ (Figure~\ref{fig:cutoff}).
+
+\begin{corollary}[Cutoff for random transpositions]\label{cor:cutoff}
+For $n\ge10^4$,
+\[
+d\bigl(\tfrac12n\ln n-cn\bigr)\ge1-6e^{1-2c}\quad(c>1),\qquad d\bigl(\tfrac12n\ln n+cn\bigr)\le3e^{-4c/3}\quad(c\ge\tfrac32).
+\]
+In particular $\frac12n\ln n-2n\le t_{\mathrm{mix}}\le\frac12n\ln n+2n$, and for every $\varepsilon\in(0,1)$, $t_{\mathrm{mix}}(\varepsilon)=\frac12n\ln n+O_\varepsilon(n)$.
+\end{corollary}
+
+\begin{proof}
+The lower bound is Tome~3, Proposition~8.21, and the upper bound is Theorem~\ref{thm:ds}; at $c=2$, $3e^{-8/3}<0.21<\frac14$. For $\varepsilon\in(0,1)$, choose $c$ with $3e^{-4c/3}\le\varepsilon$ and $c'$ with $1-6e^{1-2c'}>\varepsilon$: then
+$\frac12n\ln n-c'n\le t_{\mathrm{mix}}(\varepsilon)\le\frac12n\ln n+cn$.
+\end{proof}
+
+So the mixing time is $\frac12n\ln n$, with a window of order $n$, much smaller than $n\ln n$: rescaled by $\frac12n\ln n$, the distance $d$ drops from $1$ to $0$ at time $1$, like a step function. This is the cutoff.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-cutoff}
+\caption{The distance $d(t)$ to uniform for random transpositions, against $c=(t-\frac12n\ln n)/n$. Solid: the exact value for $n=10$ and $n=20$, computed from the formula of Proposition~\ref{prop:eigenvalues} and the characters of $\mathfrak S_n$ (see the notebook). Dashed: the upper bound
+$\frac12\sqrt S$ for $n=52$. Dotted: the lower bound $1-6e^{1+2c}$ of Tome~3. In the scale $c$, the curves for different $n$ almost coincide, and the transition from $1$ to $0$ takes place in a window of a few units, that is, a few multiples of $n$ swaps.}
+\label{fig:cutoff}
+\end{figure}
+
+\begin{think}
+Why $\frac12n\ln n$? After $t$ swaps, $2t$ cards have been touched, counted with repetition, and a card never touched is a sure sign of a non-random deck. By the coupon collector of Tome~3, all cards have been touched after about $n\ln n$ touches, that is, $\frac12n\ln n$ swaps.
+The lower bound is this argument; the content of the theorem is that nothing else delays mixing. Can you see why the time to touch every card cannot be an upper bound in itself?
+\end{think}
+
+\begin{beauty}
+Cutoff has since been proved for many shuffles and walks: riffle shuffles (Bayer and Diaconis, 1992, at $\frac32\log_2n$ shuffles; for $52$ cards the distance is still about $0.61$ after six shuffles and $0.33$ after seven, which is where ``seven shuffles'' comes from), random walks on hypercubes, many random walks on groups generated by conjugacy classes, and random walks on random
+regular graphs. Yet there is no general theory saying which chains have a cutoff. In 2004 Yuval Peres proposed a simple criterion: the mixing time should be much larger than the inverse of the spectral gap. It is necessary, and it is sufficient for some large classes of
+chains, but not in general. For random transpositions, the gap is $\frac2n$ and the mixing time $\frac12n\ln n$; their product $\ln n$ tends to infinity, as the criterion asks.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:leftright}
+Show that if $\mu$ is constant on conjugacy classes, then $\mu*\nu=\nu*\mu$ for every $\nu$. Deduce that swapping two random \emph{cards} and swapping the cards in two random \emph{positions} produce the same law of the deck at every time.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:threecards}
+For $n=3$, compute $s(\lambda)$ for the three partitions of $3$, and deduce the law of the deck after $t$ swaps and the exact formula $d(t)=\frac{11-(-1)^t}{12}\,3^{-t}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:spectralonly}
+For $n\ge7$, show that the largest $|s(\lambda)|$, $\lambda\ne(n)$, is $1-\frac2n$, attained at $(n-1,1)$ and $(1^n)$. How many swaps does the spectral bound of Tome~3 (Proposition~8.16) guarantee? Compare with Theorem~\ref{thm:ds}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fixedpoints}
+Show that $\mathbb E[\chi^\lambda(X_t)]=f^\lambda s(\lambda)^t$ for the deck $X_t$ after $t$ swaps from the ordered deck. Deduce that the expected number of cards in their original positions is $1+(n-1)(1-\frac2n)^t$, and comment on the value at $t=\frac12n\ln n+cn$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lazyhalf}
+In the \emph{lazy} version of the shuffle, the deck stays put with probability $\frac12$, and otherwise a uniformly random transposition is applied. Find the eigenvalues $s_{1/2}(\lambda)$, show that the expected number of cards in their original positions after $t$ steps is
+$1+(n-1)\bigl(1-\frac1{n-1}\bigr)^t$, and that it is at least $1+e^c$ for $t\le(n-2)(\ln(n-1)-c)$. Why does the lazy walk need about twice as many steps as the shuffle of Theorem~\ref{thm:ds}?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:orderedpairs}
+Let $M$ be the permutation representation of $\mathfrak S_n$ on ordered pairs $(a,b)$ of distinct points, $n\ge4$. (a) Show that
+\[
+M\cong S^{(n)}\oplus2S^{(n-1,1)}\oplus S^{(n-2,2)}\oplus S^{(n-2,1,1)},
+\]
+using the remark after Theorem~\ref{thm:specht}, Exercise~\ref{ex:youngmult}, and the fact that for permutation representations on sets $A$ and $B$, $\langle\chi_A,\chi_B\rangle$ is the number of orbits of $\mathfrak S_n$ on $A\times B$. (b) Compute $s(n-2,2)$ and $s(n-2,1,1)$, and
+show that the number $F$ of cards in their original positions satisfies
+\[
+\begin{aligned}\mathbb E\bigl[F(X_t)(F(X_t)-1)\bigr]&=1+2(n-1)\Bigl(1-\frac2n\Bigr)^t\\&\quad+\frac{n(n-3)}2\Bigl(1-\frac2n\Bigr)^{2t}+\frac{(n-1)(n-2)}2\Bigl(1-\frac4n\Bigr)^t.\end{aligned}
+\]
+\end{exercise}
+
+\section{Hints}
+
+\noindent\textbf{\ref{ex:leftright}.} In $\sum_h\mu(h)\nu(h^{-1}g)$, put $x=h^{-1}g$ and conjugate.
+
+\noindent\textbf{\ref{ex:threecards}.} The contents of $(2,1)$ add up to $0$. Use the formula of Proposition~\ref{prop:eigenvalues} on the three classes.
+
+\noindent\textbf{\ref{ex:spectralonly}.} Use Lemma~\ref{lem:ratiobounds} for the first part, and $\pi_{\min}=1/n!$.
+
+\noindent\textbf{\ref{ex:fixedpoints}.} $\mathbb E[\chi^\lambda(X_t)]=\sum_\sigma Q^{*t}(\sigma)\chi^\lambda(\sigma)$ is the trace of a Fourier transform; and $F=\chi^{(n)}+\chi^{(n-1,1)}$ by Exercise~\ref{ex:standardrep}.
+
+\noindent\textbf{\ref{ex:lazyhalf}.} $s_{1/2}(\lambda)=\frac12+\frac12r(\lambda)$, and $\ln(1-u)\ge-\frac u{1-u}$.
+
+\noindent\textbf{\ref{ex:orderedpairs}.} $M=M^{(n-2,1,1)}$. Count orbits on pairs of ordered pairs (there are $7$) and on (ordered pair, point) (there are $3$). Then $\chi_M(\sigma)=F(\sigma)(F(\sigma)-1)$.
+
+\section{Solutions}
+
+\begin{solution}{ex:leftright}
+\idea Conjugation moves the factor $\mu$ from one side to the other.
+\writeup Put $x=h^{-1}g$, so $h=gx^{-1}$ and $(\mu*\nu)(g)=\sum_x\mu(gx^{-1})\nu(x)$. Conjugating by $x$, $\mu(gx^{-1})=\mu(x^{-1}(gx^{-1})x)=\mu(x^{-1}g)$, so
+\[
+(\mu*\nu)(g)=\sum_x\nu(x)\mu(x^{-1}g)=(\nu*\mu)(g).
+\] Swapping two cards is $X_{t}=\tau_tX_{t-1}$, with law $Q*\mathcal L(X_{t-1})$;
+swapping two positions is $X_t=X_{t-1}\tau_t$, with law $\mathcal L(X_{t-1})*Q$. Since $Q$ is constant on conjugacy classes, the two recursions coincide, and by induction the laws agree at all times.
+\end{solution}
+
+\begin{solution}{ex:threecards}
+\idea Three eigenvalues, three classes.
+\writeup The contents of $(3)$, $(2,1)$, $(1,1,1)$ add up to $3,0,-3$, so $r=1,0,-1$ and $s=1,\frac13,-\frac13$, with $f=1,2,1$. With $a=3^{-t}$ and $b=(-\frac13)^t$, and the characters $(1,1,1)$, $(2,0,-1)$, $(1,-1,1)$ on the classes of $e$, transpositions and $3$-cycles, Proposition~\ref{prop:eigenvalues} gives
+\[
+Q^{*t}(e)=\frac{1+4a+b}6,\qquad Q^{*t}(\tau)=\frac{1-b}6,\qquad Q^{*t}(\text{3-cycle})=\frac{1-2a+b}6.
+\]
+(They add up to $1$ over the $1+3+2$ elements.) As $|b|=a$, $4a+b>0$ and $-2a+b<0$, so
+\[
+d(t)=\frac12\cdot\frac{(4a+b)+3a+2(2a-b)}6=\frac{11a-b}{12}=\frac{11-(-1)^t}{12}\,3^{-t}.
+\]
+Check: $d(0)=\frac56$, the distance from a point mass to uniform on $6$ points, and $d(1)=\frac13$.
+\end{solution}
+
+\begin{solution}{ex:spectralonly}
+\idea Only the largest eigenvalue enters the spectral bound, and it pays $\ln n!$ instead of $\ln n$.
+\writeup Let $k=n-\max(\lambda_1,\lambda'_1)$ as in Lemma~\ref{lem:ratiobounds}. If $2\le k\le\frac n2$, then $k(n-k)\ge2(n-2)$, so $1-\frac{2k(n-k)}{n^2}\le1-\frac{4(n-2)}{n^2}<1-\frac2n$ (as $n>4$), and $\frac{k+1}n\le\frac12+\frac1n<1-\frac2n$ (as $n>6$). If $k>\frac n2$, then $|s|\le\frac{n-k}n<\frac12$. For $k=1$ the only shapes are $(n-1,1)$ and $(2,1^{n-2})$, with $s=1-\frac2n$ and
+$\frac2n-(1-\frac2n)=-1+\frac4n$; and for $k=0$, $(1^n)$ has $s=-1+\frac2n$. So $\lambda_*=1-\frac2n$. The spectral bound gives $d(t)\le\frac{n!}2(1-\frac2n)^t\le\frac{n!}2e^{-2t/n}$, which is $\le\frac14$ once $t\ge\frac n2\ln(2\,n!)\approx\frac12n^2\ln n$: a factor $n$ worse than the truth.
+The spectral bound uses only the largest eigenvalue but must pay for all $n!$ dimensions; the upper bound lemma uses every eigenvalue with its exact multiplicity $(f^\lambda)^2$.
+\end{solution}
+
+\begin{solution}{ex:fixedpoints}
+\idea The expectation of a character is the trace of a Fourier coefficient.
+\writeup $\mathbb E[\chi^\lambda(X_t)]=\sum_\sigma Q^{*t}(\sigma)\operatorname{tr}\rho_\lambda(\sigma)=\operatorname{tr}\widehat{Q^{*t}}(S^\lambda)=\operatorname{tr}(s(\lambda)^tI)=f^\lambda s(\lambda)^t$. The number of fixed points is the character of $\C^n=M^{(n-1,1)}\cong S^{(n)}\oplus S^{(n-1,1)}$ (Exercise~\ref{ex:standardrep}), so
+$\mathbb E[F(X_t)]=1+(n-1)(1-\frac2n)^t$. At $t=\frac12n\ln n+cn$, $(1-\frac2n)^t\approx e^{-2t/n}=\frac{e^{-2c}}n$, and $\mathbb E[F]\approx1+e^{-2c}$: for $c$ large it is close to $1$, the value under the uniform law; for $c$ very negative it is huge, and the deck is visibly not mixed.
+\end{solution}
+
+\begin{solution}{ex:lazyhalf}
+\idea The same Fourier analysis with a different weight on the identity; half the steps are wasted.
+\writeup The step has law $\frac12\mathbf 1_e+\frac1{2\binom n2}\sum_\tau\mathbf 1_\tau$, with Fourier coefficient $\frac12+\frac12r(\lambda)$ on $S^\lambda$, by Proposition~\ref{prop:classfourier}. For $(n-1,1)$, $r=\frac{n-3}{n-1}$ and $s_{1/2}=\frac{n-2}{n-1}=1-\frac1{n-1}$. As in Exercise~\ref{ex:fixedpoints},
+$\mathbb E[F(X_t)]=1+(n-1)(1-\frac1{n-1})^t$. With $u=\frac1{n-1}$, $\ln(1-u)\ge-\frac u{1-u}=-\frac1{n-2}$ (the inequality holds since $\ln(1-u)+\frac u{1-u}$ vanishes at $0$ and has derivative $\frac u{(1-u)^2}\ge0$), so
+$\mathbb E[F(X_t)]-1\ge(n-1)e^{-t/(n-2)}\ge e^c$ when $t\le(n-2)(\ln(n-1)-c)$. So the expected number of fixed points is still far from its uniform value $1$, and the upper bound lemma, whose term for $(n-1,1)$ is $(n-1)^2s_{1/2}^{2t}=(\mathbb E[F]-1)^2\ge e^{2c}$, cannot prove mixing before about $n\ln n$ steps. The lazy walk performs a transposition only half the time, and a uniform transposition
+corresponds to $\frac{n-1}n$ of a step of the original walk (which wastes a step with probability $\frac1n$); so $t$ lazy steps are worth about $\frac t2$ steps of the original, and $n\ln n$ lazy steps are needed instead of $\frac12n\ln n$.
+\end{solution}
+
+\begin{solution}{ex:orderedpairs}
+\idea Dominance limits the constituents to four; orbit counts fix the multiplicities. Then each constituent contributes $f^\lambda s(\lambda)^t$.
+\writeup (a) Tabloids of shape $(n-2,1,1)$ are determined by their second and third rows, an ordered pair of distinct points, so $M=M^{(n-2,1,1)}$. The partitions dominating $(n-2,1,1)$ are $(n)$, $(n-1,1)$, $(n-2,2)$ and $(n-2,1,1)$; so
+$M\cong m_1S^{(n)}\oplus m_2S^{(n-1,1)}\oplus m_3S^{(n-2,2)}\oplus m_4S^{(n-2,1,1)}$ with $m_4=1$ by Exercise~\ref{ex:youngmult}. The orbits of $\mathfrak S_n$ on pairs $((a,b),(c,d))$ are classified by the coincidences between $\{a,b\}$ and $\{c,d\}$: $(c,d)=(a,b)$; $(c,d)=(b,a)$; exactly one coincidence,
+$c=a$, $c=b$, $d=a$ or $d=b$, the other point new; or no coincidence (possible since $n\ge4$). That is $7$ orbits, so $m_1^2+m_2^2+m_3^2+m_4^2=\langle\chi_M,\chi_M\rangle=7$. The action on $M$'s basis is transitive, so $m_1=\langle\chi_M,1\rangle=1$. The orbits on pairs $((a,b),c)$ are $c=a$, $c=b$, and $c$ new:
+$3$ of them, and $\C^n\cong S^{(n)}\oplus S^{(n-1,1)}$, so $m_1+m_2=3$ and $m_2=2$. Then $m_3^2=7-1-4-1=1$.
+
+(b) The contents of $(n-2,2)$ are $0,\dots,n-3$ and $-1,0$, with sum $\binom{n-2}2-1$; so $r=\frac{(n-2)(n-3)-2}{n(n-1)}=\frac{(n-1)(n-4)}{n(n-1)}=\frac{n-4}n$ and $s=\frac1n+\frac{(n-1)(n-4)}{n^2}=\frac{(n-2)^2}{n^2}=(1-\frac2n)^2$. Those of $(n-2,1,1)$ are $0,\dots,n-3$ and $-1,-2$, with sum $\binom{n-2}2-3$;
+so $r=\frac{n^2-5n}{n(n-1)}=\frac{n-5}{n-1}$ and $s=\frac1n+\frac{n-5}n=1-\frac4n$. The hook length formula gives $f^{(n-2,2)}=\frac{n(n-3)}2$ and $f^{(n-2,1,1)}=\frac{(n-1)(n-2)}2$. An ordered pair of distinct points is fixed by $\sigma$ if and only if both points are fixed, so $\chi_M(\sigma)=F(\sigma)(F(\sigma)-1)$, and
+by (a) and Exercise~\ref{ex:fixedpoints},
+\[
+\mathbb E[F(X_t)(F(X_t)-1)]=\sum_\lambda m_\lambda f^\lambda s(\lambda)^t,
+\]
+which is the stated formula. At $t=0$ it gives $1+2(n-1)+\frac{n(n-3)}2+\frac{(n-1)(n-2)}2=n(n-1)$, as it should. With Exercise~\ref{ex:fixedpoints}, this gives the variance of $F(X_t)$ exactly, and a second-moment proof of the lower bound of Corollary~\ref{cor:cutoff}.
+\end{solution}
+
+\section*{Sources and further reading}
+\addcontentsline{toc}{section}{Sources and further reading}
+
+P.~Diaconis and M.~Shahshahani, ``Generating a random permutation with random transpositions'', \emph{Z.\ Wahrscheinlichkeitstheorie verw.\ Gebiete} 57 (1981), 159--179; D.~Aldous and P.~Diaconis, ``Shuffling cards and stopping times'', \emph{Amer.\ Math.\ Monthly} 93 (1986), 333--348;
+D.~Bayer and P.~Diaconis, ``Trailing the dovetail shuffle to its lair'', \emph{Ann.\ Appl.\ Probab.} 2 (1992), 294--313. The biographical facts and quotations about Diaconis, Vernon, Gardner and Mosteller are from the MacTutor biography of Persi Diaconis (J.~J.~O'Connor and E.~F.~Robertson).
+
+For more: P.~Diaconis, \emph{Group Representations in Probability and Statistics} (Institute of Mathematical Statistics, 1988), Chapters~3 and~4, the source of this chapter; D.~A.~Levin and Y.~Peres, \emph{Markov Chains and Mixing Times} (American Mathematical Society, 2nd edition 2017), Chapters~8, 18 and~23, on
+cutoff and Peres' criterion; L.~Saloff-Coste, ``Random walks on finite groups'', in \emph{Probability on Discrete Structures}, Encyclopaedia Math.\ Sci.\ 110 (Springer, 2004), 263--346.
