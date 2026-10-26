@@ -55,7 +55,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
 | 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | Planned |
 | C1 | Discrete Structures | Logic, combinatorics, graph theory, orders | Complete draft (12 chapters) |
-| C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised, algebraic and number-theoretic algorithms | In progress (10 of 12 chapters) |
+| C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised, algebraic, number-theoretic and string algorithms | In progress (11 of 12 chapters) |
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Planned |
 | C4 | Information, Codes and Secrets | Information theory, error-correcting codes, cryptography, quantum computing | Planned |
 | C5 | Data, Optimisation and Learning | Numerical linear algebra, convex optimisation, learning theory | Planned |
