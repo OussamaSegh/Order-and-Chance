@@ -544,6 +544,32 @@ def collatz_coral(N=2500, even_turn=0.13, odd_turn=-0.23):
     return "\n".join(lines) + "\n"
 
 
+def mod3_automaton():
+    """The three-state automaton that reads a binary number, most significant bit first, and
+    accepts exactly the multiples of 3 (Tome C3, Chapter 1): state r means "the bits read so
+    far are r mod 3", and reading b moves to 2r + b mod 3. State 0 is initial and accepting."""
+    r_st, d = 0.4, 1.65
+    pos = {0: (-d, -0.2), 1: (0.0, -0.2), 2: (d, -0.2)}
+    lines = ["% The binary multiples-of-3 automaton.", r"\begin{scope}[>=latex]"]
+    for q, (x, y) in pos.items():
+        lines.append(r"\node[draw=accent,circle,line width=1.4pt,minimum size=%.2fin,inner sep=0pt] (q%d) at (%.3fin,%.3fin) {};"
+                     % (2 * r_st, q, x, y))
+        lines.append(r"\node[accent,scale=2.2] at (q%d) {$%d$};" % (q, q))
+    lines.append(r"\draw[accent,line width=0.8pt] (q0) circle (%.3fin);" % (r_st - 0.07))
+    lab = r"node[accent,scale=1.7,auto,inner sep=5pt] {$%s$}"
+    arrow = r"\draw[->,accent,line width=1.1pt] "
+    lines += [
+        arrow + r"(q0) to[bend left=35] " + lab % "1" + r" (q1);",
+        arrow + r"(q1) to[bend left=35] " + lab % "1" + r" (q0);",
+        arrow + r"(q1) to[bend left=35] " + lab % "0" + r" (q2);",
+        arrow + r"(q2) to[bend left=35] " + lab % "0" + r" (q1);",
+        arrow + r"(q0) to[out=125,in=55,looseness=6] " + lab % "0" + r" (q0);",
+        arrow + r"(q2) to[out=125,in=55,looseness=6] " + lab % "1" + r" (q2);",
+        arrow + r"(%.3fin,-1.4in) -- (q0);" % (-d),
+        r"\end{scope}"]
+    return "\n".join(lines) + "\n"
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -558,6 +584,7 @@ MOTIFS = {
     "tome12-arithmetic": ford_circles,
     "tomeC1-discrete": boolean_lattice,
     "tomeC2-algorithms": bitonic_network,
+    "tomeC3-complexity": mod3_automaton,
     "tomeS1-linear": lozenge_tiling,
     "tomeS2-geometry": apollonian_gasket,
     "tomeS3-conjectures": collatz_coral,

@@ -1,0 +1,380 @@
+\chapter{Finite Automata}\label{ch:automata}
+
+\begin{center}\itshape
+A machine with finitely many states can remember only finitely much;\\
+the whole theory is the art of deciding what is worth remembering.\\
+\upshape(the lesson of this chapter, in our words)
+\end{center}
+
+According to the friends who later told his story, Walter Pitts, a twelve-year-old boy from Detroit, once spent three days in a public library reading the \emph{Principia Mathematica} of Whitehead and Russell. He found what he took to be serious problems in the first volume and wrote to Russell about them; Russell answered and invited him to study in Cambridge. Pitts did not go. At fifteen he ran away to Chicago, attended Russell's lectures there, walked into the office of the logician Rudolf Carnap with an annotated copy of Carnap's book \emph{The Logical Syntax of Language}, and, homeless and without any degree, became part of the university's intellectual life. In 1942 the neurophysiologist Warren McCulloch took him into his family's home, and the next year the two published \emph{A logical calculus of the ideas immanent in nervous activity}: a model of the brain as a network of idealised neurons, each of which fires or stays silent according to a threshold rule. It is the ancestor of every neural network, and also of the subject of this chapter.
+
+In August 1951, at the RAND Corporation, the logician Stephen Kleene asked a precise question about McCulloch and Pitts' nets: which patterns of input, which \emph{events}, can such a net recognise? His answer, written up in a RAND memorandum dated 15 December 1951 and published in 1956, introduced the \emph{regular events}, today's regular languages, and proved that they are exactly what finite nets recognise. Eight years later Michael Rabin and Dana Scott cleaned the theory into its modern form, finite automata, and added a twist: machines allowed to guess. Their paper won them the 1976 Turing Award, whose citation praises it for introducing ``the idea of nondeterministic machines, which has proved to be an enormously valuable concept''.
+
+The story did not stay in logic. In 1968 Ken Thompson, at Bell Labs, published a way of compiling a regular expression into a nondeterministic automaton and simulating it, and put regular expressions into the text editors he wrote. When Doug McIlroy asked him for a program that would find lines matching a pattern in large files, Thompson lifted the search out of his editor \texttt{ed}, whose command \texttt{g/re/p} (``globally, for a regular expression, print'') gave the new program its name. ``The next morning I found a note in my mail announcing a program named grep,'' McIlroy recalled. Kleene's theorem has been running on almost every computer since.
+
+\begin{think}
+You are fed a binary number, one bit at a time, starting with the most significant bit, and you must say at the end whether it is a multiple of~$3$. You may not write anything down: you can only be in one of a fixed, finite number of moods. How many moods do you need? What about multiples of $7$? And can you tell, in the same way, whether the bits you are reading form a palindrome?
+\end{think}
+
+\section{Deterministic automata}\label{sec:dfa}
+
+An \emph{alphabet} is a finite nonempty set $\Sigma$, whose elements are \emph{letters}. A \emph{word} is a finite sequence of letters, written $w=a_1a_2\cdots a_n$, of length $|w|=n$; the empty word is $\varepsilon$, and $\Sigma^*$ is the set of all words. Words are multiplied by concatenation, $uv$, which is associative with unit $\varepsilon$. A \emph{language} is a subset of $\Sigma^*$.
+
+\begin{definition}\label{def:dfa}
+A \emph{deterministic finite automaton} (DFA) is $A=(Q,\Sigma,\delta,q_0,F)$, where $Q$ is a finite set of \emph{states}, $\delta:Q\times\Sigma\to Q$ the \emph{transition function}, $q_0\in Q$ the \emph{initial state} and $F\subseteq Q$ the set of \emph{accepting states}. The transition function extends to words by $\delta^*(q,\varepsilon)=q$ and $\delta^*(q,wa)=\delta(\delta^*(q,w),a)$, so that $\delta^*(q,uv)=\delta^*(\delta^*(q,u),v)$. The automaton \emph{accepts} $w$ if $\delta^*(q_0,w)\in F$, and it \emph{recognises} the language $L(A)$ of the words it accepts. A language is \emph{regular} if some DFA recognises it.
+\end{definition}
+
+An automaton reads its input once, from left to right, and its only memory is the current state. Here is the answer to the first question of the box, in every base.
+
+\begin{proposition}\label{prop:multiples}
+Let $b\ge2$ and $m\ge1$. Over the alphabet $\{0,1,\dots,b-1\}$, read a word $w=d_1\cdots d_k$ as the number $\mathrm{val}(w)=\sum_id_ib^{k-i}$ (with $\mathrm{val}(\varepsilon)=0$). The DFA with states $\{0,\dots,m-1\}$, initial and only accepting state $0$, and transitions $\delta(r,d)=(br+d)\bmod m$, recognises the words whose value is a multiple of $m$.
+\end{proposition}
+
+\begin{proof}
+We show $\delta^*(0,w)=\mathrm{val}(w)\bmod m$ by induction on $|w|$. It holds for $\varepsilon$. Since $\mathrm{val}(wd)=b\,\mathrm{val}(w)+d$, we get $\delta^*(0,wd)=\delta(\mathrm{val}(w)\bmod m,d)=(b\,\mathrm{val}(w)+d)\bmod m=\mathrm{val}(wd)\bmod m$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-mod3}
+\caption{The automaton of Proposition~\ref{prop:multiples} for $b=2$, $m=3$. State $r$ means ``the bits read so far form a number congruent to $r$ modulo $3$''. The arrow on the left marks the initial state, the double circle the accepting one. Reading $1001$ (nine) visits $0,1,2,1,0$ and accepts.}
+\label{fig:mod3}
+\end{figure}
+
+So three moods suffice for multiples of $3$ and seven for multiples of $7$; Exercise~\ref{ex:basebminimal} shows that fewer will not do. The palindromes are another matter, as we shall see in Section~\ref{sec:pumping}.
+
+\section{Machines that guess}\label{sec:nfa}
+
+A nondeterministic automaton may have several possible moves, or none, and it may also move without reading anything. It accepts a word if \emph{some} way of reading it ends in an accepting state.
+
+\begin{definition}\label{def:nfa}
+A \emph{nondeterministic finite automaton} (NFA) is $N=(Q,\Sigma,\delta,q_0,F)$ as before, except that $\delta:Q\times(\Sigma\cup\{\varepsilon\})\to\mathcal P(Q)$. A \emph{path} labelled $w$ from $p$ to $q$ is a sequence of moves $p=p_0\xrightarrow{x_1}p_1\cdots\xrightarrow{x_k}p_k=q$ with $p_i\in\delta(p_{i-1},x_i)$, each $x_i$ a letter or $\varepsilon$, and $x_1\cdots x_k=w$. The NFA accepts $w$ if there is a path labelled $w$ from $q_0$ to a state of $F$. For $S\subseteq Q$, the \emph{$\varepsilon$-closure} $E(S)$ is the set of states reachable from $S$ by paths labelled $\varepsilon$.
+\end{definition}
+
+A DFA is an NFA whose sets $\delta(q,a)$ are singletons and whose $\delta(q,\varepsilon)$ are empty. Guessing seems to be a great power; it is not, as far as the languages are concerned.
+
+\begin{theorem}[Rabin--Scott, the subset construction]\label{thm:subset}
+For every NFA $N$ with $n$ states there is a DFA with at most $2^n$ states recognising the same language.
+\end{theorem}
+
+\begin{proof}
+Let the states of the DFA be the subsets of $Q$, with initial state $S_0=E(\{q_0\})$, transitions $\Delta(S,a)=E\bigl(\bigcup_{q\in S}\delta(q,a)\bigr)$, and accepting states the sets $S$ meeting $F$. We prove by induction on $|w|$ that $\Delta^*(S_0,w)$ is the set $R(w)$ of states $q$ such that some path labelled $w$ leads from $q_0$ to $q$; then the DFA accepts $w$ if and only if $R(w)$ meets $F$, that is, if and only if $N$ accepts $w$.
+
+For $w=\varepsilon$, a path labelled $\varepsilon$ uses only $\varepsilon$-moves, so $R(\varepsilon)=E(\{q_0\})=S_0$. Suppose the claim holds for $w$ and let $a$ be a letter. A path labelled $wa$ has a last move reading a letter, which is $a$; cutting it there writes the path as a path labelled $w$ to some $p$, a move $p\xrightarrow{a}p'$, and a path labelled $\varepsilon$ from $p'$. So $q\in R(wa)$ if and only if $q\in E(\delta(p,a))$ for some $p\in R(w)$, which is $q\in\Delta(R(w),a)=\Delta^*(S_0,wa)$.
+\end{proof}
+
+In practice one builds only the subsets reachable from $S_0$, often few. But sometimes the price $2^n$ must be paid.
+
+\begin{proposition}\label{prop:blowup}
+Let $L_n$ be the set of words over $\{a,b\}$ whose $n$th letter from the end is $a$. Some NFA with $n+1$ states recognises $L_n$, and every DFA recognising $L_n$ has at least $2^n$ states.
+\end{proposition}
+
+\begin{proof}
+The NFA has states $0,1,\dots,n$, initial state $0$, accepting state $n$, loops $0\xrightarrow{a,b}0$, and moves $0\xrightarrow{a}1$ and $i\xrightarrow{a,b}i+1$ for $1\le i<n$: it stays in $0$ until it guesses that the current $a$ is the right one, then checks that exactly $n-1$ letters follow.
+
+Let $A$ be a DFA for $L_n$, and let $u\ne v$ be two words of length $n$; say they differ at position $i$, with $u_i=a$ and $v_i=b$. In $ub^{i-1}$ and $vb^{i-1}$ the $n$th letter from the end is the $i$th letter of $u$ and of $v$, so the first word is in $L_n$ and the second is not. If $\delta^*(q_0,u)=\delta^*(q_0,v)$, reading $b^{i-1}$ from this common state would accept both or neither. So the $2^n$ words of length $n$ lead to $2^n$ different states.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-debruijn}
+\caption{A DFA with $2^3$ states for $L_3$, the words whose third letter from the end is $a$. Each state remembers the last three letters read (padded with $b$'s at the start); solid arrows read $a$, dashed arrows read $b$, and the shaded states, whose oldest remembered letter is $a$, accept. By Proposition~\ref{prop:blowup} no smaller DFA exists. The graph is the de Bruijn graph of words of length~$3$.}
+\label{fig:debruijn}
+\end{figure}
+
+\section{Regular expressions and Kleene's theorem}\label{sec:kleene}
+
+Languages are multiplied like words: $LM=\{uv:u\in L,\ v\in M\}$, with $L^0=\{\varepsilon\}$ and $L^{k+1}=L^kL$. The \emph{star} of $L$ is $L^*=\bigcup_{k\ge0}L^k$, the set of concatenations of any number of words of $L$; this is consistent with the notation $\Sigma^*$.
+
+\begin{definition}\label{def:regex}
+The \emph{regular expressions} over $\Sigma$ and the languages they denote are defined inductively: $\emptyset$ denotes the empty language, $\varepsilon$ denotes $\{\varepsilon\}$, each letter $a$ denotes $\{a\}$; if $r,s$ denote $L,M$, then $(r+s)$, $(rs)$ and $r^*$ denote $L\cup M$, $LM$ and $L^*$.
+\end{definition}
+
+For instance $(a+b)^*a(a+b)(a+b)$ denotes $L_3$, and $(0+1(01^*0)^*1)^*$ denotes the multiples of $3$ in binary (Exercise~\ref{ex:arden} finds it). Kleene's theorem says that expressions and automata describe the same languages.
+
+\begin{theorem}[Kleene, 1951]\label{thm:kleene}
+A language is regular if and only if it is denoted by a regular expression.
+\end{theorem}
+
+\begin{proof}
+\emph{From expressions to automata.} By Theorem~\ref{thm:subset} it suffices to build an NFA. We build, by induction on $r$, an NFA $N(r)$ with a single accepting state $f$ different from the initial state $s$, no move into $s$ and no move out of $f$ (the construction of Thompson). For $\emptyset$ take two states and no move; for $\varepsilon$ a move $s\xrightarrow{\varepsilon}f$; for $a$ a move $s\xrightarrow{a}f$. Given $N(r)$ and $N(r')$ with disjoint states:
+\begin{itemize}
+\item for $r+r'$, add new states $s,f$ and moves $s\xrightarrow{\varepsilon}s_r$, $s\xrightarrow{\varepsilon}s_{r'}$, $f_r\xrightarrow{\varepsilon}f$, $f_{r'}\xrightarrow{\varepsilon}f$;
+\item for $rr'$, add the move $f_r\xrightarrow{\varepsilon}s_{r'}$, with initial state $s_r$ and accepting state $f_{r'}$;
+\item for $r^*$, add new states $s,f$ and moves $s\xrightarrow{\varepsilon}s_r$, $s\xrightarrow{\varepsilon}f$, $f_r\xrightarrow{\varepsilon}s_r$, $f_r\xrightarrow{\varepsilon}f$.
+\end{itemize}
+In each case a path from the new initial state to the new accepting state is, respectively, an $\varepsilon$-move followed by an accepting path of one of the two automata and an $\varepsilon$-move; an accepting path of $N(r)$ followed by one of $N(r')$; or a sequence of $k\ge0$ accepting paths of $N(r)$ joined by $\varepsilon$-moves (the conditions on $s_r$ and $f_r$ ensure that a path cannot leave a sub-automaton other than through these moves). So the languages are $L\cup M$, $LM$ and $L^*$. The automaton $N(r)$ has at most $2\ell$ states, if $r$ has $\ell$ symbols.
+
+\emph{From automata to expressions} (McNaughton and Yamada). Let the DFA have states $1,\dots,n$, with initial state $1$. Let $R^k_{ij}$ be the set of words $w$ such that the path labelled $w$ from $i$ ends in $j$ and all the states it visits strictly in between are $\le k$. Then $R^0_{ij}$ is a finite set of letters (plus $\varepsilon$ if $i=j$), so it is denoted by an expression, and
+\[
+R^k_{ij}=R^{k-1}_{ij}\ \cup\ R^{k-1}_{ik}\bigl(R^{k-1}_{kk}\bigr)^*R^{k-1}_{kj}.
+\]
+Indeed, a path from $i$ to $j$ with intermediate states $\le k$ either never passes through $k$ in between, or does so $t+1\ge1$ times; cutting it at these visits gives a path from $i$ to $k$, then $t$ loops from $k$ to $k$, then a path from $k$ to $j$, each with intermediate states $\le k-1$. Conversely each such concatenation is such a path. By induction on $k$ every $R^k_{ij}$ is denoted by an expression, and so is $L(A)=\bigcup_{j\in F}R^n_{1j}$.
+\end{proof}
+
+The second construction is the Floyd--Warshall algorithm of Tome~C2 (Chapter~4) run in the algebra of languages, and it may produce expressions of size about $4^n$. That is not an artefact: Ehrenfeucht and Zeiger showed in 1976 that some automata with $n$ states need regular expressions of size exponential in $n$, a result we quote.
+
+\begin{remark}[searching with automata]
+To decide whether a text of length $n$ matches an expression of size $m$, Thompson's method keeps the set of states of $N(r)$ that are reachable after each letter, as in the proof of Theorem~\ref{thm:subset}, computing only the subsets that actually occur: time $O(mn)$. Many programming languages instead try the possible paths one at a time, backtracking on failure, which can take exponential time: the notebook of this chapter makes Python's \texttt{re} module struggle on $(a?)^ka^k$ against $a^k$, an example made popular by Russ Cox in 2007, while the automaton answers at once.
+\end{remark}
+
+\section{Closure properties}\label{sec:closure}
+
+\begin{proposition}\label{prop:closure}
+If $L$ and $M$ are regular languages over $\Sigma$, so are $L\cup M$, $L\cap M$, $\Sigma^*\setminus L$, $L\setminus M$, $LM$, $L^*$ and the reversal $L^R=\{a_n\cdots a_1:a_1\cdots a_n\in L\}$. If $h:\Sigma^*\to\Gamma^*$ is a homomorphism ($h(uv)=h(u)h(v)$), then $h(L)$ is regular, and so is $h^{-1}(K)=\{w:h(w)\in K\}$ for every regular $K\subseteq\Gamma^*$.
+\end{proposition}
+
+\begin{proof}
+Union, concatenation and star follow from Theorem~\ref{thm:kleene}. For the complement, swap accepting and non-accepting states of a DFA for $L$: since a DFA has exactly one path for each word, it now accepts exactly the words it rejected. For the intersection, run two DFAs side by side: the \emph{product automaton} has states $Q_L\times Q_M$, transitions $(p,q)\xrightarrow{a}(\delta_L(p,a),\delta_M(q,a))$, and accepting states $F_L\times F_M$; by induction $\delta^*((p_0,q_0),w)=(\delta_L^*(p_0,w),\delta_M^*(q_0,w))$. Then $L\setminus M=L\cap(\Sigma^*\setminus M)$. For the reversal, reverse every move of an NFA for $L$, add a new initial state with $\varepsilon$-moves to the old accepting states, and make the old initial state the only accepting one; paths are reversed one for one. For $h(L)$, replace every letter $a$ in an expression for $L$ by an expression for the word $h(a)$; by induction on the expression, the new one denotes $h(L)$. For $h^{-1}(K)$, take a DFA for $K$ and define $\delta'(q,a)=\delta^*(q,h(a))$; by induction $\delta'^*(q,w)=\delta^*(q,h(w))$, so the new DFA accepts $w$ if and only if $h(w)\in K$.
+\end{proof}
+
+The product construction is worth remembering: it multiplies the numbers of states, and Exercise~\ref{ex:countab} shows that this is sometimes necessary.
+
+\section{What finite memory cannot do}\label{sec:pumping}
+
+\begin{think}
+Can a finite automaton recognise the words over $\{a,b\}$ that contain as many $a$'s as $b$'s? What would it have to remember after reading $a^{1000}$?
+\end{think}
+
+\begin{lemma}[pumping lemma]\label{lem:pumping}
+Let $L$ be recognised by a DFA with $p$ states. Every $w\in L$ with $|w|\ge p$ can be written $w=xyz$ with $|xy|\le p$ and $y\ne\varepsilon$, such that $xy^kz\in L$ for every $k\ge0$.
+\end{lemma}
+
+\begin{proof}
+Reading the first $p$ letters of $w$ visits $p+1$ states $\delta^*(q_0,w_1\cdots w_i)$, $0\le i\le p$, so two coincide, for some $i<j\le p$. Let $x=w_1\cdots w_i$, $y=w_{i+1}\cdots w_j$, and $z$ the rest. Then $y$ leads from the state $q=\delta^*(q_0,x)$ back to $q$, so $\delta^*(q_0,xy^kz)=\delta^*(q,z)=\delta^*(q_0,w)\in F$ for every $k$.
+\end{proof}
+
+\begin{proposition}\label{prop:nonregular}
+The languages $\{a^nb^n:n\ge0\}$, the words with as many $a$'s as $b$'s, the palindromes over $\{a,b\}$, and the well-parenthesised words over $\{(,)\}$ are not regular.
+\end{proposition}
+
+\begin{proof}
+If $\{a^nb^n\}$ were recognised by a DFA with $p$ states, pump $w=a^pb^p$: as $|xy|\le p$, the word $y$ is $a^j$ with $j\ge1$, and $xz=a^{p-j}b^p$ would be in the language. The words with as many $a$'s as $b$'s, intersected with the regular language $a^*b^*$, give $\{a^nb^n\}$; so they are not regular, by Proposition~\ref{prop:closure}. Palindromes: pump $a^pba^p$ to get $a^{p-j}ba^p$. Parentheses: the homomorphism $h(a)={(}$, $h(b)={)}$ maps $\{a^nb^n\}$ to the well-parenthesised words of $h(a^*b^*)$; if $D$ were regular, so would be $h^{-1}(D)\cap a^*b^*=\{a^nb^n\}$.
+\end{proof}
+
+So the answer to the last question of the opening box is no. Over a one-letter alphabet, the situation is completely understood, and it brings back the picture of Pollard's rho method (Tome~C2, Chapter~10).
+
+\begin{proposition}\label{prop:unary}
+A language $L\subseteq\{a\}^*$ is regular if and only if $S=\{n:a^n\in L\}$ is \emph{ultimately periodic}: there are $\mu\ge0$ and $\lambda\ge1$ with $n\in S\iff n+\lambda\in S$ for all $n\ge\mu$.
+\end{proposition}
+
+\begin{proof}
+In a DFA over one letter, the states $q_n=\delta^*(q_0,a^n)$ satisfy $q_{n+1}=\delta(q_n,a)$, so the sequence is determined by its first repetition: if $q_\mu=q_{\mu+\lambda}$ is the first one, then $q_{n+\lambda}=q_n$ for all $n\ge\mu$. The states form a tail of length $\mu$ and a cycle of length $\lambda$, the letter $\rho$; since $n\in S$ if and only if $q_n\in F$, the set $S$ is ultimately periodic. Conversely, if $S$ is ultimately periodic with $\mu,\lambda$, the DFA with states $0,\dots,\mu+\lambda-1$, moves $n\to n+1$ for $n<\mu+\lambda-1$ and $\mu+\lambda-1\to\mu$, and accepting states $S\cap[0,\mu+\lambda)$, recognises $L$.
+\end{proof}
+
+\begin{corollary}\label{cor:primes}
+The languages $\{a^p:p\text{ prime}\}$ and $\{a^{n^2}:n\ge0\}$ are not regular.
+\end{corollary}
+
+\begin{proof}
+Suppose the primes are ultimately periodic with $\mu,\lambda$. There are infinitely many primes (Tome~1), so take a prime $p\ge\mu$; then $p+k\lambda$ is prime for all $k\ge0$, but $k=p$ gives $p(1+\lambda)$, which is composite. If the squares were ultimately periodic, take a square $n\ge\max(\mu,\lambda^2)$; then $n+\lambda$ is a square too, but the next square after $n=m^2$ is $n+2m+1>n+\lambda$, since $m\ge\lambda$.
+\end{proof}
+
+\begin{remark}
+In base $10$ the primes are not a regular language either, a theorem of Hartmanis and Shank (1968) which we quote.
+\end{remark}
+
+\section{The Myhill--Nerode theorem}\label{sec:myhill}
+
+The pumping lemma proves that some languages are not regular, but it does not characterise the regular ones. The following theorem does, and it tells what the states of an automaton \emph{mean}.
+
+\begin{definition}\label{def:nerode}
+For a language $L\subseteq\Sigma^*$, two words $x,y$ are \emph{equivalent for $L$}, written $x\equiv_Ly$, if for every word $z$, $xz\in L$ if and only if $yz\in L$. A word $z$ with $xz\in L$ and $yz\notin L$, or the reverse, \emph{distinguishes} $x$ and $y$. The \emph{index} of $L$ is the number of equivalence classes, possibly infinite.
+\end{definition}
+
+Two words are equivalent when no future can tell them apart: everything an automaton needs to know about the past is the class of the word read so far. The relation is a \emph{right congruence}: if $x\equiv_Ly$ then $xa\equiv_Lya$, since a word $z$ distinguishing $xa$ and $ya$ would give $az$ distinguishing $x$ and $y$.
+
+\begin{theorem}[Myhill, Nerode]\label{thm:myhillnerode}
+A language $L$ is regular if and only if its index is finite. In that case the index is the least number of states of a DFA recognising $L$, and all DFAs with this number of states recognising $L$ are the same up to renaming of the states.
+\end{theorem}
+
+\begin{proof}
+Let $A$ be a DFA recognising $L$. If $\delta^*(q_0,x)=\delta^*(q_0,y)$, then $\delta^*(q_0,xz)=\delta^*(q_0,yz)$ for every $z$, so $x\equiv_Ly$: words leading to the same state are equivalent. Hence the index is at most the number of reachable states of $A$.
+
+Conversely, suppose the index is finite. Let $A_L$ have as states the classes $[x]$, initial state $[\varepsilon]$, transitions $\delta([x],a)=[xa]$, which does not depend on the representative because $\equiv_L$ is a right congruence, and accepting states the classes $[x]$ with $x\in L$, which does not depend on the representative either (take $z=\varepsilon$). By induction $\delta^*([\varepsilon],w)=[w]$, so $A_L$ accepts $w$ if and only if $w\in L$. It has exactly the index as number of states, which is therefore the least possible.
+
+Finally let $A$ recognise $L$ with as many states as the index. By the first paragraph, all its states are reachable (otherwise the index would be smaller than the number of states). Map the state $q=\delta^*(q_0,x)$ to $[x]$: this is well defined by the first paragraph, onto, and hence one-to-one since both sets have the same size. It maps $q_0$ to $[\varepsilon]$, the state $\delta(q,a)=\delta^*(q_0,xa)$ to $[xa]=\delta([x],a)$, and $q\in F$ exactly when $x\in L$. So it is an isomorphism between $A$ and $A_L$.
+\end{proof}
+
+For instance, the classes of $L_n$ are given by the last $n$ letters, two words with different last $n$ letters being distinguished as in the proof of Proposition~\ref{prop:blowup}: the index is $2^n$, and Figure~\ref{fig:debruijn} shows \emph{the} minimal DFA of $L_3$. For $\{a^nb^n\}$ the words $a^i$ are pairwise inequivalent ($b^i$ distinguishes $a^i$ from $a^j$), so the index is infinite, a second proof of non-regularity.
+
+Every DFA can be reduced to the minimal one, by merging the states that no future can distinguish. Assume the DFA \emph{complete} (every $\delta(q,a)$ defined, as in our definition) and with all states reachable. Call $p$ and $q$ \emph{$k$-equivalent}, $p\sim_kq$, if for every $z$ with $|z|\le k$, $\delta^*(p,z)\in F$ if and only if $\delta^*(q,z)\in F$, and \emph{equivalent}, $p\sim q$, if they are $k$-equivalent for every $k$.
+
+\begin{theorem}[Moore's minimisation]\label{thm:moore}
+\begin{enumerate}
+\item $p\sim_0q$ if and only if $p,q$ are both in $F$ or both outside; and $p\sim_{k+1}q$ if and only if $p\sim_kq$ and $\delta(p,a)\sim_k\delta(q,a)$ for every letter $a$.
+\item If $\sim_{k+1}$ equals $\sim_k$, then $\sim$ equals $\sim_k$. If the DFA has $n\ge2$ states, this happens for some $k\le n-2$.
+\item Merging the classes of $\sim$ gives the minimal DFA of $L(A)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) A word of length at most $k+1$ is either $\varepsilon$ or $az$ with $|z|\le k$, and $\delta^*(p,az)=\delta^*(\delta(p,a),z)$.
+
+(2) By (1), $\sim_{k+2}$ is computed from $\sim_{k+1}$ by the same rule as $\sim_{k+1}$ from $\sim_k$; if the last two agree, all the following ones agree. Each $\sim_{k+1}$ refines $\sim_k$, so as long as they differ the number of classes increases by at least one. If $F$ is empty or all of $Q$, all states are equivalent and $\sim_1=\sim_0$. Otherwise $\sim_0$ has two classes, and the number cannot exceed $n$, so $\sim_{k+1}=\sim_k$ for some $k\le n-2$.
+
+(3) Since $\delta(p,a)\sim\delta(q,a)$ whenever $p\sim q$ (by (1) for every $k$), the quotient automaton, with the classes as states and $\delta([p],a)=[\delta(p,a)]$, is well defined, and $F$ is a union of classes. It recognises $L(A)$, because $[\delta^*(q_0,w)]$ is accepting if and only if $\delta^*(q_0,w)$ is. Its number of states is the index of $L(A)$: for $p=\delta^*(q_0,x)$ and $q=\delta^*(q_0,y)$, the condition $p\sim q$ says that no $z$ distinguishes $x$ and $y$, that is $x\equiv_Ly$. By Theorem~\ref{thm:myhillnerode} it is the minimal DFA.
+\end{proof}
+
+Each refinement costs $O(n|\Sigma|)$ with a hash table on the pairs (class, classes of successors), so Moore's algorithm runs in $O(n^2|\Sigma|)$. John Hopcroft found in 1971 an $O(n|\Sigma|\log n)$ algorithm, by refining with the smaller half of each split class only, the trick of the union-by-size argument of Tome~C2, Chapter~3.
+
+\section{Deciding questions about automata}\label{sec:decide}
+
+\begin{proposition}\label{prop:decide}
+Let $A,B$ be DFAs with $p$ and $p'$ states.
+\begin{enumerate}
+\item $L(A)$ is empty if and only if no accepting state is reachable from $q_0$, which a graph search decides in time $O(p|\Sigma|)$.
+\item $L(A)$ is infinite if and only if it contains a word $w$ with $p\le|w|<2p$.
+\item $L(A)=L(B)$ if and only if the product automaton accepting $L(A)\triangle L(B)$ has an empty language; this is decided in time $O(pp'|\Sigma|)$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+(1) is the definition of acceptance. (3) The symmetric difference is recognised by the product automaton of Proposition~\ref{prop:closure} with accepting states the pairs with exactly one component accepting; apply (1). (2) If $w\in L(A)$ and $|w|\ge p$, Lemma~\ref{lem:pumping} gives infinitely many words $xy^kz$ in $L(A)$. Conversely, if $L(A)$ is infinite, it contains words of length $\ge p$; let $w$ be a shortest one. If $|w|\ge2p$, write $w=xyz$ as in Lemma~\ref{lem:pumping}; then $xz\in L(A)$ and $|xz|\ge|w|-p\ge p$, contradicting the minimality of $w$. So $p\le|w|<2p$.
+\end{proof}
+
+For NFAs everything remains decidable through the subset construction, at an exponential price. That price seems unavoidable: deciding whether an NFA accepts \emph{every} word is complete for the class $\mathsf{PSPACE}$ (Meyer and Stockmeyer, 1972), a notion of Chapter~10, so a polynomial algorithm for it would be a surprise of the first order.
+
+\begin{beauty}
+The Myhill--Nerode theorem says that a regular language has a canonical machine, which nobody designed: its states are the possible meanings of the past, ``what I still need to see to be accepted'', and it exists before any engineer draws a circle. Every DFA for the language is a redundant description of it, and minimisation is the act of forgetting the redundancy. The subset construction makes guessing harmless, at the price of an exponential that the de Bruijn graph shows to be real; and the rho of a one-letter automaton is the same rho that factors integers. Finite memory is a severe constraint, and yet the languages it allows are closed under every natural operation, described by three operations on expressions, and decidable in every respect. Few corners of mathematics are so completely understood.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:basebminimal}
+Show that the automaton of Proposition~\ref{prop:multiples} is minimal when $\gcd(b,m)=1$. Find the minimal automaton for the multiples of $10$ in base $10$, and show that it has $2$ states.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lsbfirst}
+Build a DFA with $6$ states that reads a binary number from its \emph{least} significant bit and accepts the multiples of $3$. (Use $2^i\bmod3$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nonregular}
+Show that the following languages are not regular: $\{a^ib^j:i\ne j\}$; $\{ww:w\in\{a,b\}^*\}$; $\{a^{2^n}:n\ge0\}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:arden}
+(Arden's lemma.) Let $A,B$ be languages with $\varepsilon\notin A$. Show that $X=A^*B$ is the only language with $X=AX\cup B$. Using it on the automaton of Figure~\ref{fig:mod3}, with one unknown per state (the words leading from that state to acceptance), show that the multiples of $3$ in binary are denoted by $(0+1(01^*0)^*1)^*$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:half}
+Show that if $L$ is regular, so is $\tfrac12L=\{x:\ xy\in L\text{ for some }y\text{ with }|y|=|x|\}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:countab}
+Let $m,n\ge1$. Show that the minimal DFA of the words over $\{a,b\}$ whose number of $a$'s is a multiple of $m$ and whose number of $b$'s is a multiple of $n$ has exactly $mn$ states.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:moorebound}
+Show that the bound $n-2$ of Theorem~\ref{thm:moore} is attained: find, for each $n\ge3$, a DFA with $n$ states for which $\sim_{n-3}$ differs from $\sim_{n-2}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:frobenius}
+Let $p,q\ge1$ be coprime. Describe the minimal DFA of $(a^p+a^q)^*$, using that every integer $n\ge(p-1)(q-1)$ is of the form $ip+jq$ with $i,j\ge0$ while $pq-p-q$ is not (Sylvester, 1884). Prove these two facts.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:synchro}
+A word $w$ \emph{synchronises} a DFA if $\delta^*(p,w)=\delta^*(q,w)$ for all states $p,q$. Show that a DFA with $n$ states has a synchronising word if and only if every pair of states can be synchronised by some word, and that it then has one of length at most $(n-1)\binom n2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:equivbound}
+Show that two DFAs with $p$ and $p'$ states are equivalent if and only if they agree on all words of length less than $pp'$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:basebminimal}
+Distinguish $r\ne s$ by a word $z$ of length $k$ with $b^k\ge m$, chosen so that $b^kr+\mathrm{val}(z)\equiv0$. For base $10$, divisibility by $10$ depends only on the last digit.
+\end{hint}
+\begin{hint}{ex:lsbfirst}
+The state must remember the value read so far modulo $3$ and the parity of the number of bits read.
+\end{hint}
+\begin{hint}{ex:nonregular}
+Use closure: complement and intersect with $a^*b^*$; intersect $\{ww\}$ with $a^*ba^*b$; use Proposition~\ref{prop:unary}.
+\end{hint}
+\begin{hint}{ex:arden}
+For uniqueness, compare the shortest word in the symmetric difference of two solutions. For the automaton, write $X_0=0X_0\cup1X_1\cup\{\varepsilon\}$ and so on, and eliminate $X_2$, then $X_1$.
+\end{hint}
+\begin{hint}{ex:half}
+Run, at the same time, the DFA forwards on $x$ and, backwards, the set of states from which some word of the same length leads to acceptance.
+\end{hint}
+\begin{hint}{ex:countab}
+Use Theorem~\ref{thm:myhillnerode}: the class of a word depends on two residues; distinguish words with different residues by appending $a$'s or $b$'s.
+\end{hint}
+\begin{hint}{ex:moorebound}
+A one-letter alphabet, a path $0\to1\to\cdots\to n-1\to n-1$, and a single accepting state at the end.
+\end{hint}
+\begin{hint}{ex:frobenius}
+For the first fact, the numbers $jq$, $0\le j<p$, cover all residues modulo $p$. For the second, reduce a representation modulo $p$ and modulo $q$.
+\end{hint}
+\begin{hint}{ex:synchro}
+Merge two states of the current image at a time. The shortest word merging a pair is found by a search in the automaton of pairs, which has $\binom n2$ states that are not merged.
+\end{hint}
+\begin{hint}{ex:equivbound}
+Proposition~\ref{prop:decide}: a nonempty language has a word shorter than the number of states.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:basebminimal}
+\idea Every state of the automaton is reachable, so by Theorem~\ref{thm:myhillnerode} we need only show that two different residues are distinguished by some future; the future $z$ multiplies the current residue by $b^{|z|}$ and adds $\mathrm{val}(z)$.
+\writeup Every residue $r$ is reached, by the base-$b$ digits of $r$. Let $r\ne s$ be residues and choose $k$ with $b^k\ge m$. The words of length $k$ (leading zeros allowed) have all values $0,\dots,b^k-1$, so some $z$ has $\mathrm{val}(z)\equiv-b^kr\pmod m$. From state $r$, reading $z$ leads to $b^kr+\mathrm{val}(z)\equiv0$, accepted; from state $s$, to $b^k(s-r)$ modulo $m$, which is not $0$ because $b$ is invertible modulo $m$ and $s\not\equiv r$. So the $m$ states are pairwise distinguishable, and the automaton is minimal.
+For multiples of $10$ in base $10$, the number is a multiple of $10$ exactly when its last digit is $0$ (or the word is empty). Two states suffice: ``the last digit read was $0$, or nothing was read'' (accepting) and ``the last digit read was not $0$''; they are distinguished by $\varepsilon$, so the minimal DFA has $2$ states, against $10$ in Proposition~\ref{prop:multiples}.
+\end{solution}
+
+\begin{solution}{ex:lsbfirst}
+\idea Reading from the least significant end, the $i$th bit (counting from $0$) contributes $2^i$, and $2^i\bmod3$ is $1,2,1,2,\dots$, so we only need the parity of $i$.
+\writeup Take the states $(r,e)$ with $r\in\{0,1,2\}$ and $e\in\{0,1\}$, initial state $(0,0)$, transitions $\delta((r,e),d)=((r+d\cdot2^e)\bmod3,\ 1-e)$, and accepting states $(0,0)$ and $(0,1)$. By induction, after reading the bits $d_0,\dots,d_{i-1}$ the state is $(\sum_{j<i}d_j2^j\bmod3,\ i\bmod2)$, using $2^j\equiv2^{j\bmod2}\pmod3$.
+\end{solution}
+
+\begin{solution}{ex:nonregular}
+\idea Turn each language, by regular operations, into one we already know is not regular.
+\writeup If $\{a^ib^j:i\ne j\}$ were regular, so would be its complement intersected with $a^*b^*$, which is $\{a^nb^n\}$, contradicting Proposition~\ref{prop:nonregular}. If $\{ww\}$ were regular, so would be its intersection with $a^*ba^*b$, which is $\{a^nba^nb:n\ge0\}$; pumping $a^pba^pb$ gives $a^{p-j}ba^pb$, not of this form. Finally $\{2^n\}$ is not ultimately periodic: if it were, with $\mu,\lambda$, take $2^n\ge\max(\mu,\lambda)$; then $2^n+\lambda$ would be a power of $2$ strictly between $2^n$ and $2^{n+1}$.
+\end{solution}
+
+\begin{solution}{ex:arden}
+\idea $A^*B$ solves the equation by unfolding it: $X=B\cup AB\cup AAB\cup\cdots$. Uniqueness comes from $\varepsilon\notin A$, which makes every word of $AX$ longer than the word of $X$ it comes from.
+\writeup Since $AA^*\cup\{\varepsilon\}=A^*$, we get $A(A^*B)\cup B=(AA^*\cup\{\varepsilon\})B=A^*B$. Let $X,Y$ be two solutions and suppose $X\ne Y$; let $w$ be a shortest word in one but not the other, say $w\in X\setminus Y$. If $w\in B$ then $w\in Y$; so $w=uv$ with $u\in A$, $v\in X$, and $|v|<|w|$ since $u\ne\varepsilon$. By minimality $v\in Y$, so $w\in AY\subseteq Y$, a contradiction.
+For the automaton, let $X_r$ be the set of words leading from state $r$ to state $0$. Then $X_0=0X_0\cup1X_1\cup\{\varepsilon\}$, $X_1=1X_0\cup0X_2$, $X_2=0X_1\cup1X_2$. Arden's lemma on the last gives $X_2=1^*0X_1$, so $X_1=1X_0\cup01^*0X_1$, whence $X_1=(01^*0)^*1X_0$. Then $X_0=(0\cup1(01^*0)^*1)X_0\cup\{\varepsilon\}$, and $X_0=(0+1(01^*0)^*1)^*$.
+\end{solution}
+
+\begin{solution}{ex:half}
+\idea A word $x$ is in $\frac12L$ when the state reached after $x$ can reach $F$ in exactly $|x|$ steps. The set of states that can reach $F$ in exactly $k$ steps evolves with $k$ by a rule that does not depend on the letters, so an automaton can update it while reading $x$.
+\writeup Let $A$ be a DFA for $L$. Let $T_0=F$ and $T_{k+1}=\{q:\delta(q,a)\in T_k\text{ for some letter }a\}$, the set of states from which some word of length $k+1$ leads to $F$. Build the DFA with states $(q,T)$, $q\in Q$, $T\subseteq Q$, initial state $(q_0,F)$, transitions $\delta'((q,T),a)=(\delta(q,a),\ \{p:\delta(p,c)\in T\text{ for some }c\})$, and accepting states the pairs with $q\in T$. After reading $x$ it is in $(\delta^*(q_0,x),T_{|x|})$, so it accepts if and only if some $y$ of length $|x|$ leads from $\delta^*(q_0,x)$ to $F$, that is, $x\in\frac12L$.
+\end{solution}
+
+\begin{solution}{ex:countab}
+\idea The class of a word should be the pair of residues (number of $a$'s mod $m$, number of $b$'s mod $n$); we must show that these $mn$ pairs are exactly the classes.
+\writeup Let $\alpha(w)$ and $\beta(w)$ be the numbers of $a$'s and $b$'s of $w$. The DFA with states $\mathbb Z/m\times\mathbb Z/n$ that adds $1$ to the right coordinate recognises the language, so the index is at most $mn$. If $\alpha(x)\not\equiv\alpha(y)\pmod m$, then $z=a^ib^j$ with $i\equiv-\alpha(x)$ and $j\equiv-\beta(x)$ is accepted after $x$ and not after $y$; similarly if the numbers of $b$'s differ. So the $mn$ classes are distinct, and the minimal DFA has $mn$ states by Theorem~\ref{thm:myhillnerode}.
+\end{solution}
+
+\begin{solution}{ex:moorebound}
+\idea We want the classes to split one at a time, which happens if each new round can only see one step further along a path.
+\writeup Take the alphabet $\{a\}$, states $0,\dots,n-1$, moves $i\to i+1$ for $i<n-1$ and $n-1\to n-1$, initial state $0$ and $F=\{n-1\}$. All states are reachable. From state $i$ the shortest accepted word has length $n-1-i$, so $i\sim_kj$ if and only if $\min(n-1-i,k+1)=\min(n-1-j,k+1)$: the classes of $\sim_k$ are the states $n-1,n-2,\dots,n-1-k$ individually and the rest together. Thus $\sim_k$ has $\min(k+2,n)$ classes: $\sim_{n-3}$ has $n-1$ classes and $\sim_{n-2}$ has $n$, so they differ, and the first $k$ with $\sim_{k+1}=\sim_k$ is $k=n-2$.
+\end{solution}
+
+\begin{solution}{ex:frobenius}
+\idea The language is $\{a^n:n\in S\}$ with $S=\{ip+jq\}$, the numerical semigroup generated by $p$ and $q$. It contains all integers from $(p-1)(q-1)=pq-p-q+1$ on, and $pq-p-q$ is its largest gap; so the minimal DFA is a tail with no cycle to speak of, a path ending in a loop.
+\writeup First, let $n\ge(p-1)(q-1)$. The numbers $jq$ for $0\le j<p$ are pairwise incongruent modulo $p$ (as $q$ is invertible modulo $p$), so one of them is $\equiv n\pmod p$; then $n-jq\ge(p-1)(q-1)-(p-1)q=1-p>-p$ and $n-jq\equiv0\pmod p$, hence $n-jq=ip$ with $i\ge0$. Second, if $pq-p-q=ip+jq$ with $i,j\ge0$, then $p(i+1)+q(j+1)=pq$, so $p\mid j+1$ and $q\mid i+1$, giving $j+1\ge p$ and $i+1\ge q$, and $pq\ge2pq$, impossible.
+By Proposition~\ref{prop:unary} the language is ultimately periodic with $\mu=(p-1)(q-1)$ and $\lambda=1$, so the DFA with states $0,1,\dots,\mu$, moves $n\to n+1$ and $\mu\to\mu$, and accepting states $S\cap[0,\mu]$ recognises it. It is minimal: if $i<j\le\mu$, the word $a^{\mu-1-i}$ leads from $i$ to $\mu-1=pq-p-q$, rejected, and from $j$ to a state $\ge\mu$, accepted (when $p$ or $q$ is $1$, $\mu=0$ and there is a single state).
+\end{solution}
+
+\begin{solution}{ex:synchro}
+\idea If a word shrinks the image $\delta^*(Q,w)$, applying another word that merges two of the remaining states shrinks it further; $n-1$ merges bring it down to one state. To bound the length, merge pairs by shortest words.
+\writeup If $w$ synchronises the DFA, it synchronises every pair. Conversely, suppose every pair can be synchronised. Start with $w_0=\varepsilon$ and $S_0=Q$. While $|S_t|\ge2$, pick $p\ne q$ in $S_t$ and a shortest word $u$ with $\delta^*(p,u)=\delta^*(q,u)$, and let $w_{t+1}=w_tu$, $S_{t+1}=\delta^*(S_t,u)=\delta^*(Q,w_{t+1})$. Then $|S_{t+1}|\le|S_t|-1$, so after at most $n-1$ steps $S_t$ is a single state and $w_t$ synchronises. To bound $|u|$: along the shortest $u=a_1\cdots a_\ell$, the pairs $\{\delta^*(p,a_1\cdots a_i),\delta^*(q,a_1\cdots a_i)\}$ for $0\le i<\ell$ are unordered pairs of distinct states, and they are pairwise different, for otherwise a part of $u$ could be cut out to give a shorter merging word. So $\ell\le\binom n2$, and the synchronising word has length at most $(n-1)\binom n2$. (Černý conjectured in 1964 that $(n-1)^2$ always suffices, and showed that it is needed for some automata; the conjecture is still open, and the best known bounds are of order $n^3/6$.)
+\end{solution}
+
+\begin{solution}{ex:equivbound}
+\idea Disagreement is membership in the symmetric difference, which the product automaton recognises with $pp'$ states.
+\writeup If the automata disagree on some word, the language of the product automaton for $L(A)\triangle L(B)$ is nonempty, and a shortest word in it visits no state twice (otherwise the loop could be removed), so its length is less than $pp'$. Conversely, agreement on all words includes the short ones.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The stories.} N.~R.~Smalheiser, \emph{Walter Pitts}, Perspectives in Biology and Medicine 43 (2000), 217--226; J.~A.~Anderson and E.~Rosenfeld (eds.), \emph{Talking Nets: An Oral History of Neural Networks}, MIT Press, 1998, with Jerome Lettvin's account of the letter to Russell; W.~S.~McCulloch and W.~Pitts, \emph{A logical calculus of the ideas immanent in nervous activity}, Bulletin of Mathematical Biophysics 5 (1943), 115--133. S.~C.~Kleene, \emph{Representation of events in nerve nets and finite automata}, RAND Research Memorandum RM-704, 15 December 1951, published in C.~E.~Shannon and J.~McCarthy (eds.), \emph{Automata Studies}, Annals of Mathematics Studies 34, Princeton University Press, 1956, 3--41. M.~O.~Rabin and D.~Scott, \emph{Finite automata and their decision problems}, IBM Journal of Research and Development 3 (1959), 114--125; the citation of the 1976 Turing Award is on the A.M.~Turing Award site of the ACM. K.~Thompson, \emph{Regular expression search algorithm}, Communications of the ACM 11 (1968), 419--422; McIlroy's recollection of the birth of \texttt{grep} is quoted in M.~Hauben and R.~Hauben, \emph{Netizens: On the History and Impact of Usenet and the Internet}, IEEE Computer Society Press, 1997, p.~136.
+\item R.~McNaughton and H.~Yamada, \emph{Regular expressions and state graphs for automata}, IRE Transactions on Electronic Computers EC-9 (1960), 39--47; A.~Ehrenfeucht and P.~Zeiger, \emph{Complexity measures for regular expressions}, Journal of Computer and System Sciences 12 (1976), 134--146; R.~Cox, \emph{Regular expression matching can be simple and fast}, 2007, \url{https://swtch.com/~rsc/regexp/regexp1.html}.
+\item J.~Myhill, \emph{Finite automata and the representation of events}, WADD Technical Report 57-624, Wright Air Development Center, 1957; A.~Nerode, \emph{Linear automaton transformations}, Proceedings of the American Mathematical Society 9 (1958), 541--544; E.~F.~Moore, \emph{Gedanken-experiments on sequential machines}, in \emph{Automata Studies} (above), 129--153; J.~Hopcroft, \emph{An $n\log n$ algorithm for minimizing states in a finite automaton}, in Z.~Kohavi and A.~Paz (eds.), \emph{Theory of Machines and Computations}, Academic Press, 1971, 189--196.
+\item J.~Hartmanis and H.~Shank, \emph{On the recognition of primes by automata}, Journal of the ACM 15 (1968), 382--389; A.~R.~Meyer and L.~J.~Stockmeyer, \emph{The equivalence problem for regular expressions with squaring requires exponential space}, 13th Annual Symposium on Switching and Automata Theory (1972), 125--129; J.~Černý, \emph{Poznámka k homogénnym experimentom s konečnými automatmi}, Matematicko-fyzikálny časopis 14 (1964), 208--216; J.~J.~Sylvester, Question 7382, Mathematical Questions from the Educational Times 41 (1884), 21.
+\item J.~E.~Hopcroft, R.~Motwani and J.~D.~Ullman, \emph{Introduction to Automata Theory, Languages, and Computation}, 3rd edition, Addison-Wesley, 2006, the standard textbook; M.~Sipser, \emph{Introduction to the Theory of Computation}, 3rd edition, Cengage, 2012, the clearest; J.~Sakarovitch, \emph{Elements of Automata Theory}, Cambridge University Press, 2009, for the algebraic side.
+\end{itemize}
