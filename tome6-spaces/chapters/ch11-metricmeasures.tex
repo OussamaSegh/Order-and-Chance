@@ -1,0 +1,377 @@
+\chapter{Measures on Metric Spaces}
+
+\begin{center}\itshape
+How long is the coast of Britain? Measure it with a ruler a kilometre long, then with a ruler a metre long, then with a
+centimetre: the answer keeps growing. Is the coastline a curve at all, or something between a curve and a surface?
+\end{center}
+
+In 1961 the English meteorologist Lewis Fry Richardson, who had spent his life trying to predict wars and the weather with
+mathematics, left behind a strange table. Measuring the borders and coastlines of several countries on maps of increasing
+precision, he had found that the measured length $L$ grows like a power of the inverse ruler size, $L\approx C\varepsilon^{1-D}$, with
+$D\approx1.25$ for the west coast of Britain. Nobody paid attention until Beno\^it Mandelbrot published ``How long is the coast of
+Britain?'' in \emph{Science} in 1967 and gave the exponent its meaning: $D$ is a \emph{dimension}, and coastlines have dimension
+strictly between $1$ and $2$. The right notion had been invented half a century before, by Felix Hausdorff in 1918, with a measure
+that can be computed in any metric space, in any real dimension.
+
+This chapter is about measures that live on metric spaces, where distances give them extra structure. Three stories meet
+here. The first is Frigyes Riesz's discovery (1909) that measures and integrals are two faces of one thing: a positive linear way of
+averaging continuous functions \emph{is} a measure. The second is weak convergence, the convergence of laws that the central
+limit theorem is about, with its portmanteau of equivalent forms and Prokhorov's compactness theorem (1956). The third is
+Kolmogorov's extension theorem (1933), the last step in founding probability: a random sequence is determined by its finite
+pieces, and any consistent choice of finite pieces is realised. Tome~3 admitted it; here it is proved. And at the end, Hausdorff
+measures compute the dimension of the Cantor set, $\frac{\log2}{\log3}$, and of the carpet on the cover of this book.
+
+\section{Regularity and tightness}
+
+Throughout, $X$ is a metric space and its Borel sets are those of its topology. Lemma~\ref{lem:outerreg} showed that every finite Borel measure $\mu$ on $X$ is \emph{regular}: for every Borel
+set $A$ and $\varepsilon>0$ there are a closed $C$ and an open $U$ with $C\subseteq A\subseteq U$ and $\mu(U\setminus C)<\varepsilon$. Compact sets are better than closed ones, and in the spaces probabilists use they
+suffice. A metric space is \emph{Polish} if it is complete and separable: $\R^d$, $C([0,1])$, $\R^\N$ with its product metric, every closed subset of these.
+
+\begin{theorem}[Ulam]\label{thm:ulam}
+Every finite Borel measure $\mu$ on a Polish space $X$ is \emph{tight}: for every $\varepsilon>0$ there is a compact $K$ with $\mu(X\setminus K)<\varepsilon$. Hence $\mu(A)=\sup\{\mu(K):K\subseteq A\text{ compact}\}$ for every
+Borel $A$.
+\end{theorem}
+\begin{proof}
+Let $(x_i)$ be dense. For each $k\ge1$ the closed balls $\overline B(x_i,\frac1k)$ cover $X$, so by continuity from below there is $n_k$ with $\mu\bigl(X\setminus\bigcup_{i\le n_k}\overline B(x_i,\frac1k)\bigr)<\varepsilon2^{-k}$. The set
+$K=\bigcap_k\bigcup_{i\le n_k}\overline B(x_i,\frac1k)$ is closed, hence complete, and totally bounded (covered by $n_k$ balls of radius $\frac1k$ for every $k$), hence compact (Theorem~\ref{thm:compactmetric}), and
+$\mu(X\setminus K)<\varepsilon$. For the second statement, take $C\subseteq A$ closed with $\mu(A\setminus C)<\varepsilon$; then $C\cap K$ is compact.
+\end{proof}
+
+So a probability on a Polish space is, up to $\varepsilon$, carried by a compact set, even when the space is as large as $C([0,1])$: this is what makes Brownian motion (Tome~11) manageable.
+
+\section{The Riesz representation theorem}
+
+Every finite Borel measure $\mu$ on a compact metric space $K$ defines a linear form $\Lambda f=\int f\,d\mu$ on $C(K)$, which is \emph{positive}: $f\ge0$ implies $\Lambda f\ge0$. Riesz's theorem says that there are no other
+positive linear forms. We need a partition of unity. The \emph{support} of $f$ is the closure of $\{f\ne0\}$, and $f\prec U$ means that $f\in C(K)$, $0\le f\le1$ and the support of $f$ lies in the open set $U$.
+
+\begin{lemma}[partitions of unity]\label{lem:pou}
+Let $C\subseteq K$ be closed and $C\subseteq V_1\cup\cdots\cup V_n$ with $V_i$ open. There are $h_i\prec V_i$ with $h_1+\cdots+h_n=1$ on $C$.
+\end{lemma}
+\begin{proof}
+Each $x\in C$ has a radius $r_x>0$ with $\overline B(x,2r_x)\subseteq V_i$ for some $i=i(x)$. Finitely many balls $B(x,r_x)$ cover the compact $C$; let $W_i$ be the union of those with $i(x)=i$. Then $\overline{W_i}$ is compact and inside
+$V_i$, so $\delta_i=d(\overline{W_i},K\setminus V_i)>0$ (or $V_i=K$), and $U_i=\{y:d(y,\overline{W_i})<\frac{\delta_i}2\}$ has $\overline{U_i}\subseteq V_i$. The Urysohn function $g_i(y)=\frac{d(y,K\setminus U_i)}{d(y,K\setminus U_i)+d(y,\overline{W_i})}$
+(Proposition~\ref{prop:urysohn}) equals $1$ on $\overline{W_i}$ and $g_i\prec V_i$. Put $h_1=g_1$, $h_2=(1-g_1)g_2$, \ldots, $h_n=(1-g_1)\cdots(1-g_{n-1})g_n$. Then $h_i\prec V_i$, and by induction
+$h_1+\cdots+h_n=1-(1-g_1)\cdots(1-g_n)$, which is $1$ on $C\subseteq\bigcup_i\overline{W_i}$.
+\end{proof}
+
+\begin{theorem}[Riesz representation]\label{thm:riesz}
+Let $K$ be a compact metric space and $\Lambda$ a positive linear form on $C(K,\R)$. There is a unique finite Borel measure $\mu$ on $K$ with $\Lambda f=\int f\,d\mu$ for all $f\in C(K)$.
+\end{theorem}
+\begin{proof}
+\emph{Construction.} For $U$ open let $\mu(U)=\sup\{\Lambda f:f\prec U\}$, and for any $A\subseteq K$ let $\mu^*(A)=\inf\{\mu(U):U\supseteq A\text{ open}\}$. Positivity makes $\mu$ monotone on open sets, so $\mu^*=\mu$ on them.
+
+\emph{$\mu^*$ is an outer measure.} It suffices to show $\mu(\bigcup_iU_i)\le\sum_i\mu(U_i)$ for open sets (then argue as in Theorem~\ref{thm:extension}). Let $f\prec U=\bigcup_iU_i$. Its support is compact, so it lies in
+$U_1\cup\cdots\cup U_n$ for some $n$; Lemma~\ref{lem:pou} gives $h_i\prec U_i$ with $\sum_{i\le n}h_i=1$ on the support, so $f=\sum_ih_if$ with $h_if\prec U_i$, and $\Lambda f=\sum_i\Lambda(h_if)\le\sum_i\mu(U_i)$.
+
+\emph{Open sets are measurable.} By Carath\'eodory's criterion we need $\mu^*(A)\ge\mu^*(A\cap U)+\mu^*(A\setminus U)$, and by the definition of $\mu^*$ it suffices to take $A=V$ open. Given $\varepsilon$, pick $f\prec V\cap U$ with
+$\Lambda f>\mu(V\cap U)-\varepsilon$, then $g\prec V\setminus\operatorname{supp}f$ (an open set containing $V\setminus U$) with $\Lambda g>\mu(V\setminus\operatorname{supp}f)-\varepsilon\ge\mu^*(V\setminus U)-\varepsilon$. Since $f+g\prec V$,
+$\mu(V)\ge\Lambda f+\Lambda g\ge\mu(V\cap U)+\mu^*(V\setminus U)-2\varepsilon$. So $\mu^*$ restricts to a Borel measure $\mu$ (Theorem~\ref{thm:caratheodory}), with $\mu(K)=\Lambda1$ (as $f\prec K$ means $0\le f\le1$).
+
+\emph{$\Lambda f=\int f\,d\mu$.} It suffices to prove $\Lambda f\le\int f\,d\mu$ for every real $f$, then apply it to $-f$. Let $f(K)\subseteq\,]a,b[$, $\varepsilon>0$, and $y_0<a<y_1<\cdots<y_n=b$ with $y_i-y_{i-1}<\varepsilon$. The sets
+$E_i=\{y_{i-1}<f\le y_i\}$ are disjoint Borel sets covering $K$. Choose open $V_i\supseteq E_i$ with $\mu(V_i)<\mu(E_i)+\frac\varepsilon n$ and $f<y_i+\varepsilon$ on $V_i$ (intersect with $\{f<y_i+\varepsilon\}$), and $h_i\prec V_i$ with $\sum_ih_i=1$
+on $K$ (Lemma~\ref{lem:pou}). Then $\Lambda h_i\le\mu(V_i)$, $\sum_i\Lambda h_i=\Lambda1=\mu(K)$, and $h_if\le(y_i+\varepsilon)h_i$, so with $c=|a|$,
+\[\begin{aligned}\Lambda f=\sum_i\Lambda(h_if)&\le\sum_i(c+y_i+\varepsilon)\Lambda h_i-c\,\mu(K)\eqbr\le\sum_i(c+y_i+\varepsilon)\Bigl(\mu(E_i)+\frac\varepsilon n\Bigr)-c\sum_i\mu(E_i)\\&\le\sum_i(y_i-\varepsilon)\mu(E_i)+2\varepsilon\mu(K)+\varepsilon(c+b+\varepsilon)\eqbr\le\int f\,d\mu+\varepsilon\bigl(2\mu(K)+c+b+\varepsilon\bigr),\end{aligned}\]
+using $c+y_i+\varepsilon\ge0$ and $y_i-\varepsilon\le f$ on $E_i$. Let $\varepsilon\to0$.
+
+\emph{Uniqueness.} If $\int f\,d\mu=\int f\,d\nu$ for all $f\in C(K)$, apply it to $f_n(x)=\max(0,1-n\,d(x,C))$, which decreases to $\mathbf 1_C$ for $C$ closed: $\mu(C)=\nu(C)$ by dominated convergence. Closed sets form a
+$\pi$-system generating the Borel sets, and $\mu(K)=\nu(K)$, so $\mu=\nu$ (Theorem~\ref{thm:uniq6}).
+\end{proof}
+
+Riesz proved this in 1909 for $K=[0,1]$, where it says that every positive linear form on $C([0,1])$ is a Stieltjes integral $\int f\,dF$ with $F$ non-decreasing. The theorem turns measure theory upside down:
+one may start from the integral, a linear form on continuous functions, and recover the measure. Tome~7 extends it to signed measures, which makes the space of finite measures the dual of $C(K)$.
+
+\section{Weak convergence}
+
+A sequence of probabilities $\mu_n$ on $X$ \emph{converges weakly} to $\mu$, written $\mu_n\Rightarrow\mu$, if $\int f\,d\mu_n\to\int f\,d\mu$ for every bounded continuous $f$. For random variables, $X_n\Rightarrow X$ means that
+their laws converge weakly; this is convergence in distribution, as in the central limit theorem of Tome~3.
+
+\begin{think}
+If $\mu_n\Rightarrow\mu$, must $\mu_n(A)\to\mu(A)$ for every Borel set $A$? Try $\mu_n=\delta_{1/n}$ and $A=\{0\}$, or $A=]0,1]$.
+\end{think}
+
+$\delta_{1/n}\Rightarrow\delta_0$, since $f(\frac1n)\to f(0)$ for continuous $f$; but $\delta_{1/n}(\{0\})=0\not\to1$ and $\delta_{1/n}(]0,1])=1\not\to0$. Mass can move onto the boundary of a set at the last moment, and the boundary is
+exactly where things go wrong. The \emph{boundary} of $A$ is $\partial A=\overline A\setminus\mathring A$, and $A$ is a \emph{$\mu$-continuity set} if $\mu(\partial A)=0$.
+
+\begin{theorem}[portmanteau]\label{thm:portmanteau}
+For probabilities $\mu_n,\mu$ on a metric space $X$, the following are equivalent:
+\begin{enumerate}[label=(\alph*)]
+\item $\mu_n\Rightarrow\mu$;
+\item $\int f\,d\mu_n\to\int f\,d\mu$ for every bounded Lipschitz $f$;
+\item $\limsup_n\mu_n(F)\le\mu(F)$ for every closed $F$;
+\item $\liminf_n\mu_n(U)\ge\mu(U)$ for every open $U$;
+\item $\mu_n(A)\to\mu(A)$ for every Borel $\mu$-continuity set $A$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a)$\Rightarrow$(b) is clear. (b)$\Rightarrow$(c): $f_k(x)=\max(0,1-k\,d(x,F))$ is Lipschitz, $\mathbf 1_F\le f_k$, and $f_k\downarrow\mathbf 1_F$. So $\limsup_n\mu_n(F)\le\lim_n\int f_k\,d\mu_n=\int f_k\,d\mu$, which tends to $\mu(F)$ as
+$k\to\infty$. (c)$\Leftrightarrow$(d) by complements. (c),(d)$\Rightarrow$(e): $\mu(\mathring A)\le\liminf\mu_n(\mathring A)\le\liminf\mu_n(A)\le\limsup\mu_n(A)\le\limsup\mu_n(\overline A)\le\mu(\overline A)$, and the two ends are equal to
+$\mu(A)$ when $\mu(\partial A)=0$. (e)$\Rightarrow$(a): let $f$ be continuous with $0<f<1$ (after an affine change). For all but countably many $t$, $\mu(\{f=t\})=0$ (these sets are disjoint), and $\partial\{f>t\}\subseteq\{f=t\}$ by continuity.
+So $\mu_n(f>t)\to\mu(f>t)$ for almost every $t$, and by the layer-cake formula (Exercise~\ref{ex:layercake}) and dominated convergence on $[0,1]$,
+$\int f\,d\mu_n=\int_0^1\mu_n(f>t)\,dt\to\int_0^1\mu(f>t)\,dt=\int f\,d\mu$.
+\end{proof}
+
+\begin{corollary}\label{cor:cdfweak}
+Probabilities on $\R$ converge weakly iff their distribution functions converge at every continuity point of the limit: $F_n(t)\to F(t)$ whenever $F$ is continuous at $t$.
+\end{corollary}
+\begin{proof}
+$\partial\,]-\infty,t]=\{t\}$, so (e) gives the convergence at continuity points. Conversely, if $F_n\to F$ on the dense set $D$ of continuity points, every open set is a countable disjoint union of open
+intervals, and each $]a,b[$ contains $]a',b']$ with $a',b'\in D$ and $\mu(]a,b[\setminus\,]a',b'])$ small; then $\liminf\mu_n(]a,b[)\ge\lim(F_n(b')-F_n(a'))=F(b')-F(a')$, close to $\mu(]a,b[)$. Fatou's lemma for sums
+extends this to countable unions, giving (d).
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-empirical}
+\caption{Empirical distribution functions of $n=10$, $100$ and $1000$ uniform samples on $[0,1]$, converging to $F(t)=t$. The empirical laws $\frac1n\sum_i\delta_{U_i}$ converge weakly to the uniform law with probability
+$1$ (Exercise~\ref{ex:glivenko}); each of them is carried by a finite, hence null, set.}
+\label{fig:empirical}
+\end{figure}
+
+\section{Prokhorov's theorem}
+
+When does a sequence of laws have a weakly convergent subsequence? Mass must not escape to infinity: a family $\mathcal M$ of probabilities is \emph{tight} if for every $\varepsilon>0$ there is a compact $K$ with $\mu(K)\ge1-\varepsilon$ for all
+$\mu\in\mathcal M$. The laws $\delta_n$ on $\R$ are not tight, and indeed have no weakly convergent subsequence.
+
+\begin{lemma}\label{lem:separable}
+If $K$ is a compact metric space, $C(K)$ is separable.
+\end{lemma}
+\begin{proof}
+Let $(a_k)$ be dense in $K$ (Chapter~4). The algebra generated over $\Q$ by $1$ and the functions $d(\cdot,a_k)$ is countable. Its closure is a closed subalgebra (closed under real multiples, as limits of rational ones),
+contains the constants, and separates points: if $x\ne y$, pick $a_k$ with $d(x,a_k)<\frac13d(x,y)$, so $d(x,a_k)\ne d(y,a_k)$. By Stone--Weierstrass (Theorem~\ref{thm:sw}) it is $C(K)$.
+\end{proof}
+
+\begin{theorem}[Prokhorov]\label{thm:prokhorov}
+A tight sequence of probabilities on a compact metric space, or on $\R^d$, has a weakly convergent subsequence.
+\end{theorem}
+\begin{proof}
+\emph{Compact $K$.} Every sequence is tight. Let $(f_j)$ be dense in $C(K)$. Each $(\int f_j\,d\mu_n)_n$ is bounded by $\|f_j\|_\infty$, so a diagonal extraction gives a subsequence, still written $\mu_n$, along which $\int f_j\,d\mu_n$
+converges for every $j$. For $f\in C(K)$ and $\|f-f_j\|_\infty<\varepsilon$, the sequence $\int f\,d\mu_n$ is within $2\varepsilon$ of a convergent one, so it is Cauchy: $\Lambda f=\lim\int f\,d\mu_n$ exists. $\Lambda$ is linear, positive and
+$\Lambda1=1$, so by Riesz $\Lambda f=\int f\,d\mu$ for a probability $\mu$, and $\mu_n\Rightarrow\mu$.
+
+\emph{$\R^d$.} The map $\varphi(x)=(\frac{x_i}{1+|x_i|})_i$ is a homeomorphism of $\R^d$ onto the open cube $Q=\,]-1,1[^d$, inside the compact $\overline Q$. Let $\nu_n=\varphi_*\mu_n$, probabilities on $\overline Q$; a subsequence converges
+weakly to some $\nu$ on $\overline Q$. For $\varepsilon>0$ let $K$ be compact with $\mu_n(K)\ge1-\varepsilon$ for all $n$; $\varphi(K)$ is compact, and by the portmanteau theorem $\nu(\varphi(K))\ge\limsup\nu_n(\varphi(K))\ge1-\varepsilon$. So
+$\nu(Q)=1$, and $\mu=\varphi^{-1}_*\nu$ is a probability on $\R^d$. For $g\in C_c(\R^d)$, $g\circ\varphi^{-1}$ extends by $0$ to a continuous function on $\overline Q$, so $\int g\,d\mu_n\to\int g\,d\mu$ along the subsequence. To pass to
+bounded continuous $f$, take $\chi\in C_c$ with $0\le\chi\le1$ and $\int\chi\,d\mu>1-\varepsilon$; then $\int(1-\chi)\,d\mu_n<\varepsilon$ for $n$ large, and
+\[\Bigl|\int f\,d\mu_n-\int f\,d\mu\Bigr|\le\Bigl|\int f\chi\,d\mu_n-\int f\chi\,d\mu\Bigr|+\|f\|_\infty\Bigl(\int(1-\chi)\,d\mu_n+\int(1-\chi)\,d\mu\Bigr),\]
+which is eventually less than $(2\|f\|_\infty+1)\varepsilon$, since $f\chi\in C_c$.
+\end{proof}
+
+Prokhorov proved more (1956): on a Polish space, a family is tight if and only if every sequence in it has a weakly convergent subsequence. This is the compactness behind Donsker's theorem, the
+central limit theorem for random walks seen as random functions (Tome~10), and Exercise~\ref{ex:helly} gives Helly's original one-dimensional version.
+
+\section{Kolmogorov's extension theorem}
+
+A random sequence $(X_1,X_2,\ldots)$ is a random point of $\R^\N$. Its finite-dimensional laws $\mu_n=$ law of $(X_1,\dots,X_n)$ are \emph{consistent}: $\mu_{n+1}(B\times\R)=\mu_n(B)$ for every Borel $B\subseteq\R^n$. Kolmogorov's
+theorem says that consistency is the only condition. On $\R^\N$, let $\pi_n(x)=(x_1,\dots,x_n)$; a \emph{cylinder} is a set $\pi_n^{-1}(B)$ with $B$ Borel in $\R^n$, and the product $\sigma$-algebra is generated by the cylinders.
+
+\begin{theorem}[Kolmogorov, 1933]\label{thm:kolmogorov}
+Let $\mu_n$ be consistent probabilities on $\R^n$, $n\ge1$. There is a unique probability $\mu$ on the product $\sigma$-algebra of $\R^\N$ with $\mu(\pi_n^{-1}(B))=\mu_n(B)$ for all $n$ and Borel $B\subseteq\R^n$.
+\end{theorem}
+\begin{proof}
+The cylinders form an algebra $\mathcal C$ (two cylinders can be written with the same $n$, by consistency of the description $\pi_n^{-1}(B)=\pi_{n+1}^{-1}(B\times\R)$), and $\mu_0(\pi_n^{-1}(B))=\mu_n(B)$ is well defined by consistency and finitely
+additive. An algebra is a semiring, so by Carath\'eodory's extension theorem (Theorem~\ref{thm:extension}) it suffices to show that $\mu_0$ is countably additive on $\mathcal C$; uniqueness then follows from Theorem~\ref{thm:uniq6}.
+By finite additivity, it is enough to show: if cylinders $C_k\downarrow\varnothing$, then $\mu_0(C_k)\to0$.
+
+Suppose instead that $\mu_0(C_k)\ge\delta>0$ for all $k$, with $C_k=\pi_{n_k}^{-1}(B_k)$, $n_1<n_2<\cdots$. Each $\mu_{n_k}$ is tight (Theorem~\ref{thm:ulam}), so there is a compact $K_k\subseteq B_k$ with
+$\mu_{n_k}(B_k\setminus K_k)<\delta2^{-k-1}$. Let $D_k=\bigcap_{j\le k}\pi_{n_j}^{-1}(K_j)\subseteq C_k$. Then $\mu_0(C_k\setminus D_k)\le\sum_{j\le k}\mu_0(C_j\setminus\pi_{n_j}^{-1}(K_j))<\frac\delta2$, so $\mu_0(D_k)>\frac\delta2$ and $D_k\ne\varnothing$.
+Pick $x^{(k)}\in D_k$. For each $j$, the points $\pi_{n_j}(x^{(k)})$, $k\ge j$, lie in the compact $K_j$; a diagonal extraction gives a subsequence along which every coordinate of $x^{(k)}$ converges, to some $x\in\R^\N$, and
+$\pi_{n_j}(x)\in K_j$ for every $j$ since $K_j$ is closed. So $x\in\bigcap_j\pi_{n_j}^{-1}(K_j)\subseteq\bigcap_jC_j=\varnothing$: a contradiction.
+\end{proof}
+
+With $\mu_n=\nu_1\otimes\cdots\otimes\nu_n$ this gives independent sequences with any laws, a second proof of Theorem~\ref{thm:independent}. But the theorem builds much more: Markov chains from transition kernels, Gaussian
+sequences from covariances, any process indexed by $\N$ whose finite-dimensional laws are known. Tome~3 admitted it, and Tome~11 extends it to processes indexed by $[0,\infty[$, where it is the first step in constructing
+Brownian motion. The product $\sigma$-algebra is the Borel $\sigma$-algebra of $\R^\N$ with the product topology, a Polish space (as in Proposition~\ref{prop:borelproduct}).
+
+\section{Hausdorff measures and dimension}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-carpet}
+\caption{The Sierpi\'nski carpet, the attractor of eight similarities of ratio $\frac13$ (Chapter~2). Each level of the construction keeps $8$ of the $9$ subsquares. Its Hausdorff dimension is $\frac{\log8}{\log3}\approx1.893$
+(Exercise~\ref{ex:carpet}).}
+\label{fig:carpet}
+\end{figure}
+
+Lengths, areas and volumes scale like $r^1$, $r^2$, $r^3$ under a dilation by $r$. Hausdorff's idea is to measure a set by covering it with small pieces and adding up $(\text{diameter})^s$, for any real $s\ge0$. For $A\subseteq X$
+and $\delta>0$ let
+\[\mathcal H^s_\delta(A)=\inf\Bigl\{\sum_i(\operatorname{diam}U_i)^s:A\subseteq\bigcup_iU_i,\ \operatorname{diam}U_i\le\delta\Bigr\},\]
+over countable covers, with $(\operatorname{diam}\varnothing)^s=0$. As $\delta$ decreases, fewer covers are allowed and $\mathcal H^s_\delta(A)$ increases; its limit $\mathcal H^s(A)\in[0,\infty]$ is the \emph{$s$-dimensional Hausdorff measure}. Like
+$\lambda^*$, $\mathcal H^s_\delta$ and $\mathcal H^s$ are outer measures (the proof of Theorem~\ref{thm:extension} applies word for word).
+
+\begin{remark}
+$\mathcal H^s$ restricted to the Borel sets is a measure, because it is a \emph{metric} outer measure ($\mathcal H^s(A\cup B)=\mathcal H^s(A)+\mathcal H^s(B)$ when $d(A,B)>0$), and on $\R^d$, $\mathcal H^d$ is a constant multiple of $\lambda_d$.
+Proofs are in Falconer's book (Sources); we shall only need $\mathcal H^s$ as an outer measure.
+\end{remark}
+
+\begin{proposition}\label{prop:jump}
+If $\mathcal H^s(A)<\infty$ and $t>s$, then $\mathcal H^t(A)=0$. Hence there is a unique $\dim_HA\in[0,\infty]$, the \emph{Hausdorff dimension}, with $\mathcal H^s(A)=\infty$ for $s<\dim_HA$ and $\mathcal H^s(A)=0$ for $s>\dim_HA$.
+\end{proposition}
+\begin{proof}
+For a cover by sets of diameter at most $\delta$, \[\sum_i(\operatorname{diam}U_i)^t\le\delta^{t-s}\sum_i(\operatorname{diam}U_i)^s,\] so $\mathcal H^t_\delta(A)\le\delta^{t-s}\mathcal H^s_\delta(A)\le\delta^{t-s}\mathcal H^s(A)\to0$.
+\end{proof}
+
+\begin{think}
+What is the dimension of a set that is ``between'' a line and a plane? Can a set of Lebesgue measure zero in the plane have dimension $2$?
+\end{think}
+
+Upper bounds on dimension come from explicit covers. Lower bounds are harder, since they concern \emph{all} covers, and the trick is to spread a measure on the set.
+
+\begin{lemma}[mass distribution principle]\label{lem:massdist}
+Let $\mu$ be a finite Borel measure with $\mu(A)>0$, and suppose $\mu(U)\le c\,(\operatorname{diam}U)^s$ for every closed set $U$ of diameter at most $\delta$. Then $\mathcal H^s(A)\ge\frac{\mu(A)}c>0$, so $\dim_HA\ge s$.
+\end{lemma}
+\begin{proof}
+If $A\subseteq\bigcup_iU_i$ with $\operatorname{diam}U_i\le\delta$, replace each $U_i$ by its closure (same diameter); then \[\mu(A)\le\sum_i\mu(\overline{U_i})\le c\sum_i(\operatorname{diam}U_i)^s.\] Take the infimum over covers.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-cantorcover}
+\caption{Covering the Cantor set at three scales: $2$ intervals of length $\frac13$, $4$ of length $\frac19$, $8$ of length $\frac1{27}$. With $s=\frac{\log2}{\log3}$, each cover has $\sum(\operatorname{diam})^s=2^n3^{-ns}=1$: the
+number of pieces and their size balance exactly at this exponent.}
+\label{fig:cantorcover}
+\end{figure}
+
+\begin{theorem}\label{thm:cantordim}
+The Cantor set has Hausdorff dimension $s=\frac{\log2}{\log3}\approx0.631$, and $\frac12\le\mathcal H^s(C)\le1$.
+\end{theorem}
+\begin{proof}
+\emph{Upper bound.} The $2^n$ intervals of $C_n$ have length $3^{-n}$ and cover $C$, and $2^n(3^{-n})^s=1$ since $3^s=2$. So $\mathcal H^s_{3^{-n}}(C)\le1$ for every $n$, and $\mathcal H^s(C)\le1$.
+
+\emph{Lower bound.} Let $\mu_c$ be the Cantor law (Chapter~6), which gives mass $2^{-k}$ to each of the $2^k$ intervals of $C_k$ and lives on $C$. Two intervals of $C_k$ are separated by a gap of length at least $3^{-k}$.
+Let $U$ be closed with $0<\operatorname{diam}U<1$, and $k$ such that $3^{-k-1}\le\operatorname{diam}U<3^{-k}$. Then $U$ meets at most one interval of $C_k$, so
+$\mu_c(U)\le2^{-k}=(3^{-k})^s=3^s(3^{-k-1})^s\le2(\operatorname{diam}U)^s$. A set of diameter $0$ is a point, of measure $0$. Lemma~\ref{lem:massdist} with $c=2$ gives $\mathcal H^s(C)\ge\frac12$.
+\end{proof}
+
+So the Cantor set is too thin to have a length ($\mathcal H^1(C)=0$, as $1>s$) and too fat to be counted ($\mathcal H^0$ is counting measure, and $C$ is uncountable); in dimension $0.631$ its size is a positive, finite number.
+In fact $\mathcal H^s(C)=1$, a theorem of Hausdorff that needs a sharper lower bound. The same argument gives the dimension of every set built by $m$ similar copies of ratio $r$ that do not overlap too much:
+$\frac{\log m}{\log(1/r)}$ (Moran 1946, Hutchinson 1981). The exercises do the numbers without a digit $7$ and the Sierpi\'nski carpet.
+
+\begin{beauty}
+A measure is a way of saying how big a set is. Lebesgue measure answers for lines, planes and space; Hausdorff measures answer in every real dimension, and the answer for the Cantor set, the coast of
+Britain or the carpet on the cover is a dimension that is not a whole number. On the probabilistic side, Riesz, Prokhorov and Kolmogorov turn measures into the points of a space with its own topology, where laws
+converge, subsequences exist, and random sequences are built from their finite pieces. The stage is set for Tomes~10 and~11.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nodigit7}
+Let $E$ be the set of $x\in[0,1]$ having a decimal expansion without the digit $7$. Show that $E$ is closed, that $\lambda(E)=0$, and that $\dim_HE=\frac{\log9}{\log10}$. (Adjacent intervals of the construction may touch: count how many a
+small set can meet.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:carpet}
+Show that the Sierpi\'nski triangle has dimension $\frac{\log3}{\log2}$ and the Sierpi\'nski carpet $\frac{\log8}{\log3}$. Give an example of a set in the plane of dimension $2$ and Lebesgue measure $0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lipschitzdim}
+Let $f:A\to Y$ be $L$-Lipschitz. Show that $\mathcal H^s(f(A))\le L^s\mathcal H^s(A)$ and $\dim_Hf(A)\le\dim_HA$. Deduce that the Cantor set and $[0,1]$ are not bi-Lipschitz equivalent, although there is a continuous surjection from
+one onto the other (Exercise~\ref{ex:lebesguecurve}). Show that $\dim_H$ of a countable set is $0$ and that $\dim_H(\bigcup_kA_k)=\sup_k\dim_HA_k$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:helly}
+\emph{Helly's selection theorem.} Let $F_n$ be distribution functions on $\R$. (a) Show that a subsequence converges at every rational to a limit $G$, and that $F(t)=\inf_{q>t}G(q)$ is non-decreasing and right-continuous
+with $F_{n_k}(t)\to F(t)$ at every continuity point of $F$. (b) Show that $F$ is a distribution function (limits $0$ and $1$) if the laws are tight, and give an example where it is not.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:glivenko}
+\emph{Empirical laws.} Let $U_1,U_2,\ldots$ be independent uniform on $[0,1]$ and $F_n(t)=\frac1n\#\{i\le n:U_i\le t\}$. Using the strong law of large numbers at the points $\frac jm$ and monotonicity, show that
+$\sup_t|F_n(t)-t|\to0$ almost surely (Glivenko--Cantelli). Deduce that $\frac1n\sum_{i\le n}\delta_{U_i}\Rightarrow\lambda|_{[0,1]}$ almost surely.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weakexamples}
+(a) Show that $\mathcal N(0,\frac1n)\Rightarrow\delta_0$, and that the uniform laws on $\{\frac1n,\frac2n,\dots,1\}$ converge weakly to $\lambda|_{[0,1]}$. (b) Find laws $\mu_n\Rightarrow\mu$ on $\R$ with $\int x\,d\mu_n\not\to\int x\,d\mu$. (c) Show that
+if $\mu_n\Rightarrow\mu$ and $\sup_n\int|x|^2\,d\mu_n<\infty$, then $\int x\,d\mu_n\to\int x\,d\mu$ (compare Vitali's theorem).
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nodigit7}
+At stage $k$ there are $9^k$ closed intervals of length $10^{-k}$. A closed set of diameter less than $10^{-k}$ meets at most two of them. The law of the random decimal with independent digits uniform on
+$\{0,\ldots,9\}\setminus\{7\}$ spreads mass $9^{-k}$ on each.
+\end{hint}
+\begin{hint}{ex:carpet}
+At stage $k$ the carpet is covered by $8^k$ squares of side $3^{-k}$; a set of diameter less than $3^{-k}$ meets at most $4$ of them. For the last question, take a countable union of compact sets of dimensions
+tending to $2$.
+\end{hint}
+\begin{hint}{ex:lipschitzdim}
+Map a cover of $A$ to a cover of $f(A)$. For countable unions, $\mathcal H^s$ is countably subadditive.
+\end{hint}
+\begin{hint}{ex:helly}
+(a) Diagonal extraction over the rationals. If $F$ is continuous at $t$, compare $F_{n_k}(t)$ with $F_{n_k}(q)$ for rationals $q$ close to $t$ on each side. (b) $F_n=\mathbf 1_{[n,\infty[}$.
+\end{hint}
+\begin{hint}{ex:glivenko}
+For $t\in[\frac{j-1}m,\frac jm]$, $F_n(\frac{j-1}m)-\frac jm\le F_n(t)-t\le F_n(\frac jm)-\frac{j-1}m$.
+\end{hint}
+\begin{hint}{ex:weakexamples}
+(a) Use Corollary~\ref{cor:cdfweak}, or Riemann sums. (b) Put mass $\frac1n$ at $n$. (c) Truncate: $|\int x\,d\mu_n-\int x\wedge M\vee(-M)\,d\mu_n|\le\frac1M\int x^2d\mu_n$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:nodigit7}
+\idea Same structure as the Cantor set, with $9$ pieces of ratio $\frac1{10}$ instead of $2$ of ratio $\frac13$. The only new feature is that kept intervals can touch, so a small set may meet two of them, which costs a factor $2$ in
+the mass distribution principle and nothing in the dimension.
+\writeup Let $E_k$ be the union of the $9^k$ closed intervals $[\frac m{10^k},\frac{m+1}{10^k}]$ where $m$ has $k$ decimal digits none of which is $7$. Then $E=\bigcap_kE_k$: a number with an expansion avoiding $7$ is in every $E_k$;
+conversely a point of every $E_k$ has, at each level, a chosen digit different from $7$, and these choices are consistent (nested intervals), giving an expansion avoiding $7$. So $E$ is closed, and $\lambda(E)\le\lambda(E_k)=(\frac9{10})^k\to0$.
+Upper bound: $\mathcal H^s_{10^{-k}}(E)\le9^k10^{-ks}=1$ for $s=\frac{\log9}{\log10}$. Lower bound: let $\mu$ be the law of $\sum_jD_j10^{-j}$ with independent $D_j$ uniform on the nine digits other than $7$; it lives on $E$ and gives
+mass $9^{-k}$ to each interval of $E_k$. If $U$ is closed with $10^{-k-1}\le\operatorname{diam}U<10^{-k}$, it meets at most two intervals of $E_k$ (they have length $10^{-k}$ and disjoint interiors), so
+$\mu(U)\le2\cdot9^{-k}=2(10^{-k})^s\le2\cdot10^s(\operatorname{diam}U)^s=18(\operatorname{diam}U)^s$. By Lemma~\ref{lem:massdist}, $\mathcal H^s(E)\ge\frac1{18}$, so $\dim_HE=\frac{\log9}{\log10}\approx0.954$. Almost every number has a $7$ in its
+expansion, yet those without one form a set of dimension close to $1$.
+\end{solution}
+
+\begin{solution}{ex:carpet}
+\idea Count pieces and measure their size at each stage for the upper bound; spread the natural uniform mass for the lower bound, controlling how many pieces of the right size a small set can touch.
+\writeup \emph{Carpet.} Stage $k$ consists of $8^k$ closed squares of side $3^{-k}$, diameter $\sqrt2\,3^{-k}$, covering the carpet $S$; with $s=\frac{\log8}{\log3}$, $\mathcal H^s_{\sqrt23^{-k}}(S)\le8^k(\sqrt2\,3^{-k})^s=2^{s/2}$, so $\mathcal H^s(S)<\infty$.
+Let $\mu$ be the law of the random point whose base-$3$ digit pairs are chosen independently and uniformly among the $8$ allowed pairs; it gives mass $8^{-k}$ to each square of stage $k$. A closed $U$ with
+$3^{-k-1}\le\operatorname{diam}U<3^{-k}$ lies in a square of side $3^{-k}$ placed anywhere, which meets at most $4$ squares of the stage-$k$ grid. So $\mu(U)\le4\cdot8^{-k}=4(3^{-k})^s\le4\cdot3^s(\operatorname{diam}U)^s$, and
+$\mathcal H^s(S)>0$. \emph{Triangle.} Stage $k$ has $3^k$ triangles of side $2^{-k}$, and the same argument with $s=\frac{\log3}{\log2}$ (a set of diameter less than $2^{-k}$ meets a bounded number of them, at most $6$ say,
+since they lie in the triangular grid of side $2^{-k}$) gives $0<\mathcal H^s<\infty$. \emph{Dimension $2$, measure $0$.} Let $S_m$ be the generalised carpet removing $1$ central square out of $m^2$, at every stage, so
+$\dim S_m=\frac{\log(m^2-1)}{\log m}\to2$, and each $S_m$ is null (its area is multiplied by $1-m^{-2}$ at each stage). Then $\bigcup_mS_m$ is null, and has dimension $\sup_m\dim S_m=2$ (Exercise~\ref{ex:lipschitzdim}).
+\end{solution}
+
+\begin{solution}{ex:lipschitzdim}
+\idea A Lipschitz map shrinks diameters by at most $L$, so it maps covers to covers with sums multiplied by at most $L^s$. Dimension cannot go up.
+\writeup If $A\subseteq\bigcup_iU_i$ with $\operatorname{diam}U_i\le\delta$, then $f(A)\subseteq\bigcup_if(U_i\cap A)$, with $\operatorname{diam}f(U_i\cap A)\le L\operatorname{diam}U_i\le L\delta$, so $\mathcal H^s_{L\delta}(f(A))\le L^s\sum_i(\operatorname{diam}U_i)^s$; take the
+infimum and let $\delta\to0$. If $s>\dim_HA$, $\mathcal H^s(A)=0$, so $\mathcal H^s(f(A))=0$ and $\dim_Hf(A)\le s$. A bi-Lipschitz bijection would preserve dimension, but $\dim_HC=0.631\ne1=\dim_H[0,1]$ ($0<\mathcal H^1([0,1])<\infty$: it is
+at most $1$ by covering with small intervals, and at least $\lambda([0,1])=1$ because $\lambda^*\le\mathcal H^1_\delta$, an interval of diameter $\ell$ having length $\ell$). A point has $\mathcal H^s=0$ for $s>0$, and $\mathcal H^s$ is countably
+subadditive, so a countable set has $\mathcal H^s=0$ for all $s>0$. For a countable union: monotonicity gives $\ge$; if $s>\sup_k\dim_HA_k$, all $\mathcal H^s(A_k)=0$, so $\mathcal H^s(\bigcup A_k)=0$.
+\end{solution}
+
+\begin{solution}{ex:helly}
+\idea Distribution functions are monotone and bounded, so countably many values can be made to converge by a diagonal argument, and monotonicity fills in the rest, except at jumps of the limit. Mass can
+escape to infinity, and tightness is exactly what forbids it.
+\writeup (a) The values $F_n(q)\in[0,1]$, $q\in\Q$, can be made to converge along one subsequence by diagonal extraction; let $G(q)$ be the limits, non-decreasing in $q$. $F(t)=\inf_{q>t}G(q)$ is non-decreasing and right-continuous
+(an infimum over $q>t$ is the limit of the infima over $q>t'$ as $t'\downarrow t$). Let $F$ be continuous at $t$ and $\varepsilon>0$. By the definition of $F(t)$ there is a rational $q>t$ with $G(q)<F(t)+\varepsilon$. By continuity there is $s<t$ with $F(s)>F(t)-\varepsilon$; take a rational $r\in\,]s,t[$, so that $G(r)\ge\inf_{q'>s}G(q')=F(s)$. Monotonicity gives $F_{n_k}(r)\le F_{n_k}(t)\le F_{n_k}(q)$, and letting $k\to\infty$, $F(t)-\varepsilon<G(r)\le\liminf_kF_{n_k}(t)\le\limsup_kF_{n_k}(t)\le G(q)<F(t)+\varepsilon$. (b) If $\mu_n([-M,M])\ge1-\varepsilon$ for all $n$, then $F_n(-M-1)\le\varepsilon$ and
+$F_n(M)\ge1-\varepsilon$, so the limits satisfy $F(t)\le\varepsilon$ for $t<-M-1$ and $F(t)\ge1-\varepsilon$ for $t>M$ (at continuity points, dense): $F$ goes from $0$ to $1$. With $F_n=\mathbf 1_{[n,\infty[}$ (the law $\delta_n$), $F=0$: all the
+mass has escaped to $+\infty$.
+\end{solution}
+
+\begin{solution}{ex:glivenko}
+\idea The strong law handles one point at a time; countably many points are no harder, since a countable union of null sets is null. Monotonicity of $F_n$ and of $t$ then controls all $t$ at once, up to the grid
+size $\frac1m$.
+\writeup For each rational $t$, $F_n(t)=\frac1n\sum_{i\le n}\mathbf 1_{U_i\le t}\to t$ almost surely by the strong law (Tome~3). Outside a null set this holds for all rational $t$ simultaneously. Fix $m$ and $t\in[\frac{j-1}m,\frac jm]$; by
+monotonicity, $F_n(t)-t\le F_n(\frac jm)-\frac jm+\frac1m$ and $F_n(t)-t\ge F_n(\frac{j-1}m)-\frac{j-1}m-\frac1m$. So $\sup_t|F_n(t)-t|\le\max_{j\le m}|F_n(\frac jm)-\frac jm|+\frac1m$, whose $\limsup$ is at most $\frac1m$; let $m\to\infty$. Weak
+convergence follows by Corollary~\ref{cor:cdfweak}.
+\end{solution}
+
+\begin{solution}{ex:weakexamples}
+\idea Weak convergence controls integrals of bounded continuous functions only; $x\mapsto x$ is unbounded, and a vanishing amount of mass far away can carry a non-vanishing amount of mean. A uniform bound on a higher
+moment forbids this, exactly as uniform integrability did in Chapter~7.
+\writeup (a) The distribution function of $\mathcal N(0,\frac1n)$ at $t$ is $\Phi(t\sqrt n)$, which tends to $0$ for $t<0$ and $1$ for $t>0$, the distribution function of $\delta_0$ at its continuity points. For the uniform laws on
+$\{\frac kn\}$, $F_n(t)=\frac{\lfloor nt\rfloor}n\to t$ on $[0,1]$. (b) $\mu_n=(1-\frac1n)\delta_0+\frac1n\delta_n\Rightarrow\delta_0$ (for bounded continuous $f$, $\int f\,d\mu_n=(1-\frac1n)f(0)+\frac1nf(n)\to f(0)$), but $\int x\,d\mu_n=1$ for all
+$n$. (c) Let $C=\sup_n\int x^2d\mu_n$ and $\tau_M(x)=\max(-M,\min(x,M))$, bounded and continuous. Since $|x-\tau_M(x)|\le\frac{x^2}M$, $|\int x\,d\mu_n-\int\tau_M\,d\mu_n|\le\frac CM$; also $\int x^2d\mu\le C$ (apply weak convergence to
+$\min(x^2,K)$ and let $K\to\infty$), so the same bound holds for $\mu$. Hence $\limsup_n|\int x\,d\mu_n-\int x\,d\mu|\le\frac{2C}M$ for every $M$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item F.~Hausdorff, ``Dimension und \"au\ss eres Ma\ss'', \emph{Math. Ann.} 79 (1918), 157--179.
+\item B.~Mandelbrot, ``How long is the coast of Britain? Statistical self-similarity and fractional dimension'', \emph{Science} 156 (1967), 636--638.
+\item F.~Riesz, ``Sur les op\'erations fonctionnelles lin\'eaires'', \emph{C. R. Acad. Sci. Paris} 149 (1909), 974--977.
+\item Yu.~V.~Prokhorov, ``Convergence of random processes and limit theorems in probability theory'', \emph{Theory Probab. Appl.} 1 (1956), 157--214.
+\item A.~N.~Kolmogorov, \emph{Grundbegriffe der Wahrscheinlichkeitsrechnung}, Springer, 1933.
+\item P.~Billingsley, \emph{Convergence of Probability Measures}, 2nd ed., Wiley, 1999, Chapter~1. The portmanteau theorem, tightness and Prokhorov.
+\item K.~Falconer, \emph{Fractal Geometry: Mathematical Foundations and Applications}, 3rd ed., Wiley, 2014, Chapters~2--4 and~9. Hausdorff measures, the mass distribution principle, self-similar sets.
+\item W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed., McGraw--Hill, 1987, Chapter~2. The Riesz representation theorem, whose proof we followed.
+\end{itemize}
