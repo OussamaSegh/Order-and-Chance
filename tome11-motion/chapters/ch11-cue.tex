@@ -1,0 +1,594 @@
+\chapter{Random Matrices II: Unitary Matrices and the Zeros of Zeta}\chaptermark{Unitary Matrices and the Zeros of Zeta}
+
+\begin{center}\itshape
+Choose a unitary matrix at random and look at its eigenvalues on the circle.\\
+Then compute the zeros of the Riemann zeta function, high up the critical line.\\
+You will not be able to tell the two pictures apart, and nobody knows why.
+\end{center}
+
+In 1972 Hugh Montgomery, a young American number theorist visiting the Institute for Advanced Study in Princeton, had a formula in his pocket. Assuming the Riemann hypothesis, he had studied how the
+zeros $\frac12+i\gamma$ of the zeta function are spaced, and he had found that the pairs of zeros seem to obey a law: the density of pairs at distance $u$ (in units of the mean spacing) should be $1-\bigl(\frac{\sin\pi u}{\pi u}\bigr)^2$.
+The function vanishes at $u=0$: the zeros repel each other. At afternoon tea Sarvadaman Chowla introduced him to Freeman Dyson. Montgomery started to explain what he was doing, and Dyson, as Montgomery later told the
+writer Karl Sabbagh, recognised the formula at once: it was the pair correlation of the eigenvalues of a random Hermitian matrix, which Dyson had computed ten years earlier while thinking about heavy nuclei.
+A number theorist and a physicist had found the same function for reasons that had, apparently, nothing to do with each other.
+
+Fifteen years later Andrew Odlyzko, at Bell Laboratories, computed $10^5$ consecutive zeros around the $10^{12}$-th zero, rescaled them, and drew the histogram of their spacings next to the random matrix prediction. The curves are
+indistinguishable to the eye. In 2000 Jon Keating and Nina Snaith went one step further: they computed the moments of the characteristic polynomial of a random unitary matrix, and the result predicted the moments of the
+zeta function on the critical line, including two constants, $42$ and $24024$, that number theorists were obtaining at the same time by much harder heuristics.
+
+This chapter proves everything on the random matrix side. The eigenvalues of a random unitary matrix, seen at the scale of their spacing, form the \emph{sine process}; they are so rigid that the number of them in an arc
+fluctuates only by $\sqrt{\log}$ of its length; and the characteristic polynomial factors, in law, into independent pieces, which gives its moments in closed form and a central limit theorem for its logarithm. The zeta side is
+stated, and checked on ten thousand zeros computed in the companion notebook.
+
+\begin{reminder}[from Tome 8, Tome S1, Tome 3 and Tome 10]
+$U$ is Haar distributed on $U(n)$, with eigenvalues $e^{i\theta_1},\dots,e^{i\theta_n}$, $\theta_j\in[0,2\pi)$. Haar measure is left and right invariant and unique (Tome~8, Theorem~8.3). \emph{Heine's identity}: for $f$ bounded and
+Borel on the circle, $\mathbb E\prod_jf(e^{i\theta_j})=\det\bigl(\hat f(j-k)\bigr)_{0\le j,k\le n-1}$ (Tome~8, Theorem~8.13). With $K_n(\theta,\varphi)=\sum_{a=0}^{n-1}e^{ia(\theta-\varphi)}$, the \emph{correlation functions} are determinants: for bounded Borel
+$g$ on $[0,2\pi)^k$,
+\[
+\mathbb E\sum_{j_1,\dots,j_k\text{ distinct}}g(\theta_{j_1},\dots,\theta_{j_k})=\int_{[0,2\pi)^k}g(\varphi)\det\bigl(K_n(\varphi_a,\varphi_b)\bigr)_{a,b\le k}\frac{\dd\varphi_1\cdots\dd\varphi_k}{(2\pi)^k}
+\]
+(Tome~8, Theorem~8.15), and $|K_n(\theta,\varphi)|=\bigl|\frac{\sin(n(\theta-\varphi)/2)}{\sin((\theta-\varphi)/2)}\bigr|\le n$. Dyson's pair correlation $1-(\frac{\sin\pi u}{\pi u})^2$ is Tome~8, Corollary~8.16. \emph{Hadamard's inequality}: a positive semidefinite
+matrix has determinant at most the product of its diagonal entries (Tome~S1, Theorem~11.5). \emph{Lyapunov's condition}: if the rows $X_{n,1},\dots,X_{n,k_n}$ are independent and centred with $\sum_k\mathbb EX_{n,k}^2=1$ and
+$\sum_k\mathbb E|X_{n,k}|^{2+\delta}\to0$, then $\sum_kX_{n,k}\Rightarrow N(0,1)$ (Tome~10, Corollary~4.2). Slutsky's lemma: Tome~3, Exercise~6.1.
+\end{reminder}
+
+\section{Counting eigenvalues}
+
+For a Borel set $D\subset[0,2\pi)$ let $N(D)=\#\{j:\theta_j\in D\}$ and $|D|$ its length. The first surprise is that $N(D)$, a count of strongly dependent points, is a sum of \emph{independent} coin flips.
+
+\begin{proposition}[a sum of independent Bernoulli variables]\label{prop:bernoulli}
+Let $M_D$ be the $n\times n$ matrix $\bigl(\int_De^{i(a-b)\theta}\frac{\dd\theta}{2\pi}\bigr)_{0\le a,b<n}$. It is Hermitian with eigenvalues $p_1,\dots,p_n\in[0,1]$, and $N(D)$ has the law of $B_1+\dots+B_n$ with independent $B_j\sim\mathrm{Bernoulli}(p_j)$. In particular
+\[
+\mathbb EN(D)=\frac{n|D|}{2\pi},\qquad\operatorname{Var}N(D)=\operatorname{tr}M_D-\operatorname{tr}M_D^2.
+\]
+\end{proposition}
+
+\begin{proof}
+For $v\in\mathbb C^n$,
+\[
+v^*M_Dv=\sum_{a,b}\bar v_av_b\int_De^{i(a-b)\theta}\frac{\dd\theta}{2\pi}=\int_D\Bigl|\sum_a\bar v_ae^{ia\theta}\Bigr|^2\frac{\dd\theta}{2\pi}.
+\]
+This is at least $0$, and at most the same integral over the whole circle, which is $\|v\|^2$ by orthogonality of
+the $e^{ia\theta}$. So $M_D$ is Hermitian with $0\le M_D\le I$, and its eigenvalues lie in $[0,1]$.
+
+Fix $z\in\mathbb C$ and let $f=1+(z-1)\mathbf 1_D$, so that $\prod_jf(e^{i\theta_j})=z^{N(D)}$. Its Fourier coefficients are $\hat f(m)=\delta_{m0}+(z-1)\int_De^{-im\theta}\frac{\dd\theta}{2\pi}$, so the Toeplitz matrix of Heine's identity is
+$I+(z-1)M_D^{\mathsf T}$, and
+\[
+\mathbb Ez^{N(D)}=\det\bigl(I+(z-1)M_D^{\mathsf T}\bigr)=\prod_{j=1}^n\bigl(1+(z-1)p_j\bigr)=\prod_{j=1}^n(1-p_j+p_jz).
+\]
+The right side is the generating function of $B_1+\dots+B_n$. Two random variables with values in $\{0,\dots,n\}$ whose generating polynomials agree have the same law. The mean and variance of the sum are
+$\sum p_j=\operatorname{tr}M_D=\frac{n|D|}{2\pi}$ and $\sum p_j(1-p_j)=\operatorname{tr}M_D-\operatorname{tr}M_D^2$.
+\end{proof}
+
+The representation is an instance of a theorem of Ben Hough, Manjunath Krishnapur, Yuval Peres and B\'alint Vir\'ag (2006) on all determinantal point processes. It reduces every question about $N(D)$ to the eigenvalues of
+$M_D$, and the variance needs only their sum and the sum of their squares.
+
+\begin{theorem}[the number variance]\label{thm:numbervariance}
+Let $D$ be an arc of length $2\pi\alpha$, and $L=n\alpha$ the expected number of eigenvalues in it. Then
+\begin{equation}\label{eq:numbervariance}
+\begin{split}
+\operatorname{Var}N(D)&=\frac2{\pi^2}\sum_{m=1}^{n-1}\frac{\sin^2\pi m\alpha}m\\
+&\quad+\frac{2n}{\pi^2}\sum_{m\ge n}\frac{\sin^2\pi m\alpha}{m^2},
+\end{split}
+\end{equation}
+and there is an absolute constant $C$ such that $\bigl|\operatorname{Var}N(D)-\frac1{\pi^2}\log L\bigr|\le C$ whenever $1\le L\le\frac n2$.
+\end{theorem}
+
+\begin{proof}
+By rotation invariance ($e^{i\varphi}U$ is again Haar distributed) we may take $D=[0,2\pi\alpha)$. Then $(M_D)_{ab}=c_{a-b}$ with $c_m=\int_0^{2\pi\alpha}e^{im\theta}\frac{\dd\theta}{2\pi}$, so $c_0=\alpha$ and $|c_m|=\frac{|\sin\pi m\alpha|}{\pi|m|}$ for $m\ne0$. Counting the
+pairs $(a,b)$ with $a-b=\pm m$,
+\[
+\operatorname{tr}M_D^2=\sum_{a,b}|c_{a-b}|^2=n\alpha^2+2\sum_{m=1}^{n-1}(n-m)\frac{\sin^2\pi m\alpha}{\pi^2m^2}.
+\]
+Parseval's identity for the indicator of the arc gives $\sum_{m\in\mathbb Z}|c_m|^2=\int_0^{2\pi\alpha}\frac{\dd\theta}{2\pi}=\alpha$, that is $\alpha-\alpha^2=2\sum_{m\ge1}\frac{\sin^2\pi m\alpha}{\pi^2m^2}$. Hence
+\begin{align*}
+\operatorname{Var}N(D)&=n(\alpha-\alpha^2)-2\sum_{m=1}^{n-1}(n-m)\frac{\sin^2\pi m\alpha}{\pi^2m^2}\\
+&=\frac{2n}{\pi^2}\sum_{m\ge1}\frac{\sin^2\pi m\alpha}{m^2}\\
+&\quad-\frac2{\pi^2}\sum_{m=1}^{n-1}(n-m)\frac{\sin^2\pi m\alpha}{m^2},
+\end{align*}
+which is \eqref{eq:numbervariance}. Now let $1\le L\le\frac n2$, so $\frac1n\le\alpha\le\frac12$. In \eqref{eq:numbervariance}, $n\sum_{m\ge n}\frac{\sin^2\pi m\alpha}{m^2}\le n\sum_{m\ge n}\frac1{m^2}\le2$. Split the other sum at $\frac1\alpha$. For $m\le\frac1\alpha$,
+$\sin^2\pi m\alpha\le\pi^2m^2\alpha^2$, and these terms add up to at most $\pi^2\alpha^2\sum_{m\le1/\alpha}m\le\pi^2$. For $\frac1\alpha<m<n$ write $\sin^2\pi m\alpha=\frac12-\frac12\cos2\pi m\alpha$. The constant part gives
+$\frac12\sum_{1/\alpha<m<n}\frac1m=\frac12\log(n\alpha)+O(1)$. For the oscillating part, the partial sums $S(M)=\sum_{A\le m\le M}\cos2\pi m\alpha$ satisfy $|S(M)|\le\frac2{|1-e^{2\pi i\alpha}|}=\frac1{\sin\pi\alpha}\le\frac1{2\alpha}$
+(concavity of $\sin$ on $[0,\frac\pi2]$), and summation by parts gives, with $A$ the first integer above $\frac1\alpha$,
+\[
+\Bigl|\sum_{m=A}^{B}\frac{\cos2\pi m\alpha}m\Bigr|=\Bigl|\frac{S(B)}B+\sum_{m=A}^{B-1}S(m)\Bigl(\frac1m-\frac1{m+1}\Bigr)\Bigr|\le\frac1{2\alpha}\cdot\frac1A\le\frac12.
+\]
+Altogether $\sum_{m<n}\frac{\sin^2\pi m\alpha}m=\frac12\log L+O(1)$ with an absolute $O(1)$, and the variance is $\frac1{\pi^2}\log L+O(1)$.
+\end{proof}
+
+Compare with $n$ independent uniform points: then $N(D)$ is binomial, with variance $n\alpha(1-\alpha)\approx L$. An arc that expects $1000$ independent points sees about $1000\pm32$ of them; an arc that expects
+$1000$ eigenvalues sees $1000\pm0.84$, since $\sqrt{\log1000}/\pi\approx0.84$. The eigenvalues are not random points: they are a crystal that has been gently shaken. Still, a variance that tends to infinity, however slowly, is
+enough for a Gaussian limit, and the coin flips make it easy.
+
+\begin{corollary}[Costin--Lebowitz, Soshnikov]\label{cor:countclt}
+If $D_n$ are arcs of lengths $2\pi\alpha_n$ with $L_n=n\alpha_n\to\infty$ and $\alpha_n\le\frac12$, then
+\[
+\frac{N(D_n)-L_n}{\sqrt{\frac1{\pi^2}\log L_n}}\Longrightarrow N(0,1).
+\]
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:bernoulli}, $N(D_n)$ has the law of $\sum_jB_{n,j}$ with independent Bernoulli variables of parameters $p_{n,j}$; let $\sigma_n^2=\sum_jp_{n,j}(1-p_{n,j})=\operatorname{Var}N(D_n)$, which tends to infinity
+by Theorem~\ref{thm:numbervariance}. The variables $X_{n,j}=(B_{n,j}-p_{n,j})/\sigma_n$ are centred with total variance $1$, and since $|B-p|\le1$,
+$\sum_j\mathbb E|X_{n,j}|^3\le\sigma_n^{-3}\sum_j\mathbb E(B_{n,j}-p_{n,j})^2=\sigma_n^{-1}\to0$. Lyapunov's condition holds with $\delta=1$, so $(N(D_n)-L_n)/\sigma_n\Rightarrow N(0,1)$, and $\sigma_n^2\sim\frac1{\pi^2}\log L_n$; conclude with Slutsky's lemma.
+\end{proof}
+
+\section{The sine kernel}
+
+On the circle the mean spacing of the eigenvalues is $\frac{2\pi}n$. Measured in this unit, the eigenvalues near the angle $0$ are the points $x_j=\frac n{2\pi}\langle\theta_j\rangle$, where $\langle\theta\rangle\in(-\pi,\pi]$ is the
+representative of $\theta$ modulo $2\pi$; on average there is one per unit length. Let
+\[
+S(u)=\frac{\sin\pi u}{\pi u}\quad(u\ne0),\qquad S(0)=1 .
+\]
+
+\begin{theorem}[the sine kernel]\label{thm:sinekernel}
+For every $k\ge1$ and every bounded Borel function $g$ with compact support on $\R^k$,
+\[
+\lim_{n\to\infty}\mathbb E\sum_{j_1,\dots,j_k\text{ distinct}}g(x_{j_1},\dots,x_{j_k})=\int_{\R^k}g(x)\det\bigl(S(x_a-x_b)\bigr)_{a,b\le k}\dd x_1\cdots\dd x_k .
+\]
+\end{theorem}
+
+\begin{proof}
+Apply Theorem~8.15 of Tome~8 to the bounded Borel function
+\[
+\varphi\mapsto g\Bigl(\frac n{2\pi}\langle\varphi_1\rangle,\dots,\frac n{2\pi}\langle\varphi_k\rangle\Bigr),
+\]
+and substitute $\varphi_a=\frac{2\pi x_a}n$ with $x_a\in(-\frac n2,\frac n2]$, so that
+$\frac{\dd\varphi}{(2\pi)^k}=\frac{\dd x}{n^k}$. Summing the geometric series,
+\[
+K_n(\varphi_a,\varphi_b)=e^{i(n-1)(\varphi_a-\varphi_b)/2}\,\frac{\sin\frac{n(\varphi_a-\varphi_b)}2}{\sin\frac{\varphi_a-\varphi_b}2}.
+\]
+The phase is $e^{i\psi_a}e^{-i\psi_b}$ with $\psi_a=\frac{(n-1)\varphi_a}2$, so the matrix $(K_n(\varphi_a,\varphi_b))$ is $\Delta A\Delta^{-1}$ with $\Delta=\operatorname{diag}(e^{i\psi_a})$, and has the determinant of $A$. Therefore the expectation equals
+\[
+\int_{(-\frac n2,\frac n2]^k}g(x)\det\Bigl(S_n(x_a-x_b)\Bigr)_{a,b\le k}\dd x,\qquad S_n(u)=\frac{\sin\pi u}{n\sin\frac{\pi u}n}\quad(S_n(0)=1).
+\]
+For each $u$, $S_n(u)\to S(u)$, since $n\sin\frac{\pi u}n\to\pi u$. Each $|S_n|\le1$ (as $|K_n|\le n$), so the determinant is bounded by $k!$, and $g$ is bounded with compact support, contained in $(-\frac n2,\frac n2]^k$ for $n$ large.
+Dominated convergence gives the limit.
+\end{proof}
+
+In words: the rescaled eigenvalues converge to a point process on $\R$ whose $k$-point correlation functions are $\det(S(x_a-x_b))$, the \emph{sine process}. (That correlation functions of this form determine a unique point
+process is a theorem of Odile Macchi (1975) and Alexander Soshnikov (2000), which we shall not need: every statement below is about limits of expectations.) For $k=1$ the density is $1$; for $k=2$ it is $1-S(x_1-x_2)^2$,
+Dyson's pair correlation.
+
+The determinantal structure is also what makes gaps computable. The matrix $(S(x_a-x_b))$ is positive semidefinite, since $S(u)=\int_{-1/2}^{1/2}e^{2\pi iu\xi}\dd\xi$ makes it a Gram matrix: $\sum_{a,b}\bar v_av_bS(x_a-x_b)=\int_{-1/2}^{1/2}|\sum_bv_be^{2\pi ix_b\xi}|^2\dd\xi$. Likewise
+$(K_n(\varphi_a,\varphi_b))$ is the Gram matrix of the vectors $(e^{-ic\varphi_a})_{c<n}$. Both have diagonal entries $1$ and $n$, so by Hadamard's inequality
+\begin{equation}\label{eq:detbound}
+\begin{gathered}
+0\le\det\bigl(S(x_a-x_b)\bigr)_{a,b\le k}\le1,\\
+0\le\det\bigl(K_n(\varphi_a,\varphi_b)\bigr)_{a,b\le k}\le n^k .
+\end{gathered}
+\end{equation}
+
+\begin{theorem}[gap probability]\label{thm:gap}
+For $s>0$, the probability that $U$ has no eigenvalue $e^{i\theta}$ with $0\le\theta\le\frac{2\pi s}n$ converges, as $n\to\infty$, to
+\[
+E(0;s)=1+\sum_{k\ge1}\frac{(-1)^k}{k!}\int_{[0,s]^k}\det\bigl(S(x_a-x_b)\bigr)_{a,b\le k}\dd x_1\cdots\dd x_k .
+\]
+\end{theorem}
+
+\begin{proof}
+Let $D=[0,\frac{2\pi s}n]$ and $n>s$. Expanding the product,
+\[
+\mathbf 1_{\{N(D)=0\}}=\prod_{j=1}^n\bigl(1-\mathbf 1_D(\theta_j)\bigr)=\sum_{k=0}^n(-1)^k\!\!\sum_{|J|=k}\prod_{j\in J}\mathbf 1_D(\theta_j)=\sum_{k=0}^n\frac{(-1)^k}{k!}\sum_{j_1,\dots,j_k\text{ distinct}}\prod_{a=1}^k\mathbf 1_D(\theta_{j_a}).
+\]
+Take expectations and apply Tome~8, Theorem~8.15 with $g=\mathbf 1_{D^k}$, then rescale as in the proof of Theorem~\ref{thm:sinekernel}:
+\[
+P\bigl(N(D)=0\bigr)=\sum_{k=0}^n\frac{(-1)^k}{k!}\int_{[0,s]^k}\det\bigl(S_n(x_a-x_b)\bigr)\dd x .
+\]
+For $k>n$ the matrix $(K_n(\varphi_a,\varphi_b))_{a,b\le k}$ is a Gram matrix of $k$ vectors in $\mathbb C^n$, so its determinant vanishes and we may let the sum run over all $k\ge0$. By \eqref{eq:detbound} the $k$-th term is at most $\frac{s^k}{k!}$ in
+absolute value, uniformly in $n$, and by Theorem~\ref{thm:sinekernel} (with $g=\mathbf 1_{[0,s]^k}$) it converges to the $k$-th term of $E(0;s)$. Dominated convergence for series concludes.
+\end{proof}
+
+The series is a \emph{Fredholm determinant}, $E(0;s)=\det(I-\mathcal S_s)$ with $\mathcal S_s$ the integral operator with kernel $S(x-y)$ on $L^2[0,s]$, and that is how one computes it: Folkmar Bornemann showed in 2010 that replacing the integral
+by a Gauss--Legendre quadrature with $m$ nodes, $E(0;s)\approx\det\bigl(\delta_{ij}-\sqrt{w_i}S(y_i-y_j)\sqrt{w_j}\bigr)_{i,j\le m}$, converges exponentially fast in $m$. For $n$ independent uniform points the same probability tends to $e^{-s}$.
+Near $s=0$, $E(0;s)=1-s+\frac{\pi^2}{36}s^4+O(s^6)$ (Exercise~\ref{ex:smallgap}), against $1-s+\frac{s^2}2-\cdots$ for independent points: the term in $s^2$, the chance of two points close together, has disappeared.
+
+\begin{remark}[spacings]
+The gap probability determines the law of the distance between consecutive points: for a stationary point process of intensity $1$, the density of the spacing between a point and the next is $p(s)=\frac{\dd^2}{\dd s^2}E(0;s)$ (a standard fact on stationary point processes, see Mehta's book). For the sine process $p(s)\sim\frac{\pi^2}3s^2$ near $0$, and its tail decays like $e^{-\pi^2s^2/8}$, much faster than the $e^{-s}$ of independent points. Michel Gaudin computed $p$ in 1961, through
+prolate spheroidal functions; Wigner had guessed in 1956 a simpler curve, $\frac{\pi s}2e^{-\pi s^2/4}$, for real symmetric matrices, and the analogous guess $\frac{32}{\pi^2}s^2e^{-4s^2/\pi}$ for the unitary case is remarkably close to $p$.
+Figure~\ref{fig:zeta} draws $p$, computed by Bornemann's method.
+\end{remark}
+
+\section{The characteristic polynomial}
+
+The characteristic polynomial of $U$ on the circle is $Z_n(\theta)=\det(I-e^{-i\theta}U)=\prod_j(1-e^{i(\theta_j-\theta)})$. Since $e^{-i\theta}U$ is again Haar distributed, the law of $Z_n(\theta)$ does not depend on $\theta$, and we write
+$Z_n=Z_n(0)=\det(I-U)$. It vanishes exactly at the eigenvalues, and $|Z_n|$ can be as large as $2^n$ (when all eigenvalues are near $-1$). On average it is much more modest.
+
+\begin{proposition}\label{prop:secondmoment}
+$\mathbb E|\det(I-U)|^2=n+1$.
+\end{proposition}
+
+\begin{proof}
+Apply Heine's identity to $f(e^{i\theta})=|1-e^{i\theta}|^2=2-e^{i\theta}-e^{-i\theta}$: $\hat f(0)=2$, $\hat f(\pm1)=-1$, and all other coefficients vanish. The Toeplitz matrix is tridiagonal, with $2$ on the diagonal and $-1$ next to it; expanding
+its determinant $D_n$ along the first row gives $D_n=2D_{n-1}-D_{n-2}$, with $D_1=2$ and $D_2=3$. Hence $D_n=n+1$.
+\end{proof}
+
+Higher moments by the same route lead to banded Toeplitz determinants that get out of hand quickly. A better idea, due to Paul Bourgade, Chris Hughes, Ashkan Nikeghbali and Marc Yor (2008), is to build $U$ one column at a time.
+We need the uniform distribution on the unit sphere of $\mathbb C^k$.
+
+\begin{lemma}[uniform vectors]\label{lem:uniformvector}
+Let $g=(g_1,\dots,g_k)$ have independent standard complex Gaussian coordinates (density $\frac1\pi e^{-|z|^2}$ on $\mathbb C$), and $u=g/\|g\|$.
+\begin{enumerate}
+\item $Vu$ has the law of $u$ for every $V\in U(k)$.
+\item If $U$ is Haar distributed on $U(k)$, its first column $Ue_1$ has the law of $u$.
+\item $\gamma=u_1$ satisfies $P(|\gamma|^2>x)=(1-x)^{k-1}$ for $0\le x\le1$, so $\mathbb E|\gamma|^{2j}=\frac{j!}{(k)_j}$ with $(k)_j=k(k+1)\cdots(k+j-1)$; and $\mathbb E\bigl[h(|\gamma|)\gamma^a\bar\gamma^b\bigr]=0$ for bounded $h$ and integers $a\ne b$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(1) The density of $g$ on $\mathbb C^k=\R^{2k}$ is $\pi^{-k}e^{-\|z\|^2}$, and $V$ is a real orthogonal map of $\R^{2k}$, so $Vg$ has the law of $g$; and $Vu=Vg/\|Vg\|$.
+
+(2) Take $g$ independent of $U$, and let $R_g\in U(k)$ be a unitary matrix depending measurably on $g$ with $R_ge_1=u$ (one is constructed in Lemma~\ref{lem:reflection} below). Given $g$, $UR_g$ is Haar distributed by right invariance, so $UR_ge_1=Uu$ has the
+law of $Ue_1$. Given $U$, $Uu$ has the law of $u$ by (1). So $Ue_1$ and $u$ have the same law.
+
+(3) In polar coordinates $P(|g_1|^2>r)=\int_{|z|^2>r}\frac1\pi e^{-|z|^2}\dd z=e^{-r}$: the $E_j=|g_j|^2$ are independent exponential variables, with $\mathbb Ee^{-tE_j}=\frac1{1+t}$. With $T=E_2+\dots+E_k$, independent of $E_1$,
+\[
+P(|\gamma|^2>x)=P\bigl(E_1(1-x)>xT\bigr)=\mathbb E\,e^{-xT/(1-x)}=\Bigl(1+\frac x{1-x}\Bigr)^{-(k-1)}=(1-x)^{k-1}.
+\]
+Hence $\mathbb E|\gamma|^{2j}=\int_0^1jx^{j-1}(1-x)^{k-1}\dd x=j\frac{(j-1)!\,(k-1)!}{(j+k-1)!}=\frac{j!}{(k)_j}$. Finally $e^{i\varphi}g_1$ is again standard complex Gaussian and independent of $g_2,\dots,g_k$, so $(|\gamma|,\gamma)$ and
+$(|\gamma|,e^{i\varphi}\gamma)$ have the same law; the expectation in question is multiplied by $e^{i(a-b)\varphi}$ for every $\varphi$, so it is $0$.
+\end{proof}
+
+For $k=1$, $\gamma$ is uniform on the circle; for $k\ge2$, $|\gamma|<1$ almost surely, and the tail bound gives, for $t\ge0$,
+\begin{equation}\label{eq:logtail}
+\begin{split}
+P\bigl(-\log(1-|\gamma|)>t\bigr)&\le P\bigl(1-|\gamma|^2<2e^{-t}\bigr)\\
+&=\min(1,2e^{-t})^{k-1}\le2e^{-t},
+\end{split}
+\end{equation}
+so $\Lambda=-\log(1-|\gamma|)$ has finite moments of all orders.
+
+\begin{lemma}[a reflection]\label{lem:reflection}
+Let $m$ be a unit vector of $\mathbb C^k$ with $m\ne e_1$, put $w=e_1-m$, $c=1-\bar m_1$, and $R_m=I-\frac1cww^*$ (and $R_{e_1}=I$). Then $R_m$ is unitary, $R_me_1=m$, and for every $V'\in U(k-1)$
+\[
+\det\bigl(I-R_m\operatorname{diag}(1,V')\bigr)=(1-m_1)\det(I-V').
+\]
+\end{lemma}
+
+\begin{proof}
+Since $m\ne e_1$ and $|m_1|\le1$, $m_1\ne1$ and $c\ne0$. Now $w^*e_1=1-\bar m_1=c$, so $R_me_1=e_1-w=m$. Next $\|w\|^2=|1-m_1|^2+(1-|m_1|^2)=2-2\operatorname{Re}m_1=2\operatorname{Re}c$, and $\frac1c+\frac1{\bar c}=\frac{2\operatorname{Re}c}{|c|^2}$, so
+\[
+R_m^*R_m=I-\Bigl(\frac1c+\frac1{\bar c}\Bigr)ww^*+\frac{\|w\|^2}{|c|^2}ww^*=I .
+\]
+For the determinant, let $D=\operatorname{diag}(1,V')$ and $A=I-D=\operatorname{diag}(0,I-V')$. Then $I-R_mD=A+\frac1cw(D^*w)^*$. For any square $A$ and vectors $x,y$, $\det(A+xy^*)=\det A+y^*\operatorname{adj}(A)x$: for invertible $A$ this is
+$\det A\,(1+y^*A^{-1}x)$, and both sides are polynomials in the entries of $A$, which agree on the dense set of invertible matrices. Here $\det A=0$, and $\operatorname{adj}(A)=\det(I-V')\,e_1e_1^{\mathsf T}$: every cofactor of $A$ other than the
+$(1,1)$ one contains the zero first row or the zero first column. With $x=w$ and $y=\frac1{\bar c}D^*w$, whose first coordinate is $\frac{w_1}{\bar c}$,
+\[
+\det(I-R_mD)=\det(I-V')\,\frac{\bar w_1w_1}{c}=\det(I-V')\frac{|1-m_1|^2}{1-\bar m_1}=(1-m_1)\det(I-V').
+\]
+\end{proof}
+
+\begin{theorem}[Bourgade--Hughes--Nikeghbali--Yor]\label{thm:bhny}
+Let $\gamma_1,\dots,\gamma_n$ be independent, $\gamma_k$ distributed as the first coordinate of a uniform vector on the unit sphere of $\mathbb C^k$. If $U$ is Haar distributed on $U(n)$,
+\[
+\det(I-U)\overset{d}{=}\prod_{k=1}^n(1-\gamma_k).
+\]
+\end{theorem}
+
+\begin{proof}
+By induction on $n$. For $n=1$, $U=e^{i\theta}$ with $\theta$ uniform, and $\gamma_1$ is uniform on the circle. Let $n\ge2$, let $m=Ue_1$ and $W=R_m^{-1}U$. Then $We_1=e_1$, and since $W$ is unitary its first row is also $e_1^{\mathsf T}$, so
+$W=\operatorname{diag}(1,U')$ with $U'\in U(n-1)$, and $U=R_m\operatorname{diag}(1,U')$. By Lemma~\ref{lem:reflection}, $\det(I-U)=(1-m_1)\det(I-U')$ (also when $m=e_1$, both sides being $0$).
+
+We claim that $m$ and $U'$ are independent, and that $U'$ is Haar distributed on $U(n-1)$. Fix $V'\in U(n-1)$. The matrix $U\operatorname{diag}(1,V')$ is Haar distributed (right invariance), has the same first column $m$, and
+$R_m^{-1}U\operatorname{diag}(1,V')=\operatorname{diag}(1,U'V')$. So $(m,U')$ and $(m,U'V')$ have the same law. For bounded Borel $\phi$ and $\psi$, integrate $\mathbb E[\phi(m)\psi(U'V')]=\mathbb E[\phi(m)\psi(U')]$ against
+the Haar measure $\mu$ of $U(n-1)$ in $V'$ and use Fubini: since $\int\psi(xV')\dd\mu(V')=\int\psi\dd\mu$ for every $x$ (left invariance),
+\[
+\mathbb E[\phi(m)\psi(U')]=\mathbb E\Bigl[\phi(m)\int\psi(U'V')\dd\mu(V')\Bigr]=\mathbb E[\phi(m)]\int\psi\dd\mu .
+\]
+This is the claim. By Lemma~\ref{lem:uniformvector}(2), $m_1$ has the law of $\gamma_n$, and by the induction hypothesis $\det(I-U')$ has the law of $\prod_{k<n}(1-\gamma_k)$.
+\end{proof}
+
+A random unitary matrix is thus a product of $n$ independent reflections, and its characteristic polynomial at $1$ a product of $n$ independent factors, the $k$-th of which is close to $1$ when $k$ is large ($\mathbb E|\gamma_k|^2=\frac1k$). Everything
+about $|Z_n|$ is now a matter of independent random variables. Proposition~\ref{prop:secondmoment} is the case $m=1$ of the next theorem, as $\prod_{k=1}^n\frac{k+1}k=n+1$.
+
+\begin{theorem}[Keating--Snaith moments]\label{thm:ksmoments}
+For every integer $m\ge0$,
+\[
+\mathbb E|\det(I-U)|^{2m}=\prod_{l=0}^{m-1}\prod_{i=1}^m\frac{n+l+i}{l+i}\qquad\text{and}\qquad\lim_{n\to\infty}\frac{\mathbb E|\det(I-U)|^{2m}}{n^{m^2}}=\frac{G(m+1)^2}{G(2m+1)},
+\]
+where $G(m+1)=0!\,1!\cdots(m-1)!$.
+\end{theorem}
+
+\begin{proof}
+First one factor. Expanding $|1-\gamma|^{2m}=(1-\gamma)^m(1-\bar\gamma)^m=\sum_{a,b}\binom ma\binom mb(-\gamma)^a(-\bar\gamma)^b$ and using Lemma~\ref{lem:uniformvector}(3), only $a=b$ survives:
+\[
+\mathbb E|1-\gamma_k|^{2m}=\sum_{j=0}^m\binom mj^2\frac{j!}{(k)_j}.
+\]
+Multiply by $(k)_m$. Since $\frac{(k)_m}{(k)_j}=(k+j)_{m-j}=(m-j)!\binom{k+m-1}{m-j}$ and $\binom mjj!\,(m-j)!=m!$,
+\[
+(k)_m\,\mathbb E|1-\gamma_k|^{2m}=m!\sum_{j=0}^m\binom mj\binom{k+m-1}{m-j}=m!\binom{k+2m-1}m=(k+m)_m,
+\]
+by Vandermonde's identity. So $\mathbb E|1-\gamma_k|^{2m}=\frac{(k+m)_m}{(k)_m}=\prod_{l=0}^{m-1}\frac{k+m+l}{k+l}$. By Theorem~\ref{thm:bhny} and independence,
+\[
+\mathbb E|Z_n|^{2m}=\prod_{l=0}^{m-1}\prod_{k=1}^n\frac{k+l+m}{k+l}=\prod_{l=0}^{m-1}\frac{(n+l+m)!\,l!}{(l+m)!\,(n+l)!}=\prod_{l=0}^{m-1}\prod_{i=1}^m\frac{n+l+i}{l+i}.
+\]
+This is a polynomial in $n$ of degree $m^2$ with leading coefficient $\prod_{l=0}^{m-1}\frac{l!}{(l+m)!}=\frac{G(m+1)}{G(2m+1)/G(m+1)}$.
+\end{proof}
+
+For $m=2$: $\mathbb E|Z_n|^4=\frac{(n+1)(n+2)^2(n+3)}{12}$. The constants $\frac{G(m+1)^2}{G(2m+1)}$ are $1,\frac1{12},\frac1{8640},\frac1{870912000},\dots$, which look unremarkable until they are multiplied by $(m^2)!$: the
+products are $1,2,42,24024$. Keep these numbers in mind.
+
+\begin{theorem}[a central limit theorem for $\log|\det|$]\label{thm:logclt}
+As $n\to\infty$,
+\[
+\frac{\log|\det(I-U)|}{\sqrt{\frac12\log n}}\Longrightarrow N(0,1).
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:bhny} we may replace $\log|\det(I-U)|$ by $\sum_{k=1}^nX_k$ with $X_k=\log|1-\gamma_k|$ independent (finite almost surely). Fix $k\ge2$. Then $|\gamma_k|<1$, the series $L_k=\sum_{j\ge1}\frac{\gamma_k^j}j$ converges to
+$-\log(1-\gamma_k)$, $X_k=-\operatorname{Re}L_k$, and $\sum_j\frac{|\gamma_k|^j}j=\Lambda_k=-\log(1-|\gamma_k|)$ has moments of all orders by \eqref{eq:logtail}. Expanding products of the series and exchanging sums and expectations (justified by
+$\mathbb E\Lambda_k^4<\infty$), Lemma~\ref{lem:uniformvector}(3) kills every term in which the powers of $\gamma_k$ and $\bar\gamma_k$ differ. Thus $\mathbb EX_k=0$, $\mathbb EL_k^2=0$, and
+\[
+\operatorname{Var}X_k=\frac14\mathbb E\bigl(L_k+\bar L_k\bigr)^2=\frac12\mathbb E|L_k|^2=\frac12\sum_{j\ge1}\frac{\mathbb E|\gamma_k|^{2j}}{j^2}=\frac12\sum_{j\ge1}\frac{j!}{j^2(k)_j}.
+\]
+The term $j=1$ is $\frac1{2k}$. For $j\ge2$, $\frac{j!}{(k)_j}=\prod_{i=1}^j\frac i{k+i-1}\le\frac2{k(k+1)}$, since each factor is at most $1$; so the other terms add up to at most $\frac1{k^2}\sum_{j\ge2}\frac1{j^2}\le\frac1{k^2}$, and $\operatorname{Var}X_k=\frac1{2k}+O(k^{-2})$.
+
+For the fourth moment, $\mathbb EX_k^4\le\mathbb E|L_k|^4=\sum_{s\ge2}\mathbb E|\gamma_k|^{2s}c_s^2$ with $c_s=\sum_{a+b=s}\frac1{ab}=\frac2sH_{s-1}\le2$ ($H$ the harmonic numbers). For $k\ge3$, $\frac{s!}{(k)_s}\le\frac2{k(k+1)}\prod_{i=3}^s\frac i{i+2}=\frac2{k(k+1)}\cdot\frac{12}{(s+1)(s+2)}$, so
+\[
+\mathbb EX_k^4\le4\cdot\frac{24}{k(k+1)}\sum_{s\ge2}\frac1{(s+1)(s+2)}=\frac{32}{k(k+1)}.
+\]
+Let $s_n^2=\sum_{k=3}^n\operatorname{Var}X_k=\frac12\log n+O(1)$ and $X_{n,k}=X_k/s_n$ for $3\le k\le n$. These are independent, centred, with total variance $1$, and $\sum_k\mathbb EX_{n,k}^4\le\frac{32}{s_n^4}\sum_k\frac1{k(k+1)}\to0$. Lyapunov's condition
+(with $\delta=2$) gives $\sum_{k=3}^nX_k/s_n\Rightarrow N(0,1)$. Finally $(X_1+X_2)/s_n\to0$ almost surely and $s_n/\sqrt{\frac12\log n}\to1$; Slutsky's lemma concludes.
+\end{proof}
+
+So $|\det(I-U)|$ is typically $e^{\pm\sqrt{\frac12\log n}}$, which is tiny compared with its mean square $n+1$: the moments are dominated by rare matrices whose eigenvalues stay away from $1$. The same argument, with
+$\operatorname{Im}L_k$ in place of $\operatorname{Re}L_k$, shows that the imaginary part of $\log\det(I-U)$, defined as $\sum_k\arg(1-\gamma_k)$, also satisfies a central limit theorem with the same normalisation, and that the
+two parts are asymptotically independent (Exercise~\ref{ex:argclt}).
+
+\section{The zeros of zeta}
+
+Here is the dictionary. The zeros $\frac12+i\gamma$ of $\zeta$ with $0<\gamma\le T$ number $N(T)=\frac T{2\pi}\log\frac T{2\pi e}+O(\log T)$ (the Riemann--von Mangoldt formula, Tome~5, Chapter~6), so near height $T$ their mean spacing is
+$\frac{2\pi}{\log(T/2\pi)}$; the eigenangles of $U\in U(n)$ have mean spacing $\frac{2\pi}n$. The dictionary is $n\leftrightarrow\log\frac T{2\pi}$, and the analogue of $Z_n$ is $\zeta(\frac12+it)$ for $t$ chosen at random near $T$. We first prove one
+more statement on the matrix side, the one that Montgomery's theorem mirrors exactly.
+
+\begin{proposition}[traces of powers]\label{prop:formfactor}
+For integers $j,l\ge1$, $\mathbb E\operatorname{tr}U^j=0$, $\mathbb E\bigl[\operatorname{tr}U^j\,\overline{\operatorname{tr}U^l}\bigr]=0$ if $j\ne l$, and
+\[
+\mathbb E|\operatorname{tr}U^j|^2=\min(j,n).
+\]
+\end{proposition}
+
+\begin{proof}
+Replacing $U$ by the Haar distributed $e^{i\varphi}U$ multiplies $\operatorname{tr}U^j\,\overline{\operatorname{tr}U^l}$ by $e^{i(j-l)\varphi}$ and $\operatorname{tr}U^j$ by $e^{ij\varphi}$; so these expectations vanish for $j\ne l$ and $j\ge1$. Next,
+$|\operatorname{tr}U^j|^2=n+\sum_{a\ne b}e^{ij(\theta_a-\theta_b)}$, and by Tome~8, Theorem~8.15 with $k=2$ (applied to real and imaginary parts),
+\[
+\mathbb E\sum_{a\ne b}e^{ij(\theta_a-\theta_b)}=\iint e^{ij(\varphi_1-\varphi_2)}\Bigl(n^2-\sum_{c,d=0}^{n-1}e^{i(c-d)(\varphi_1-\varphi_2)}\Bigr)\frac{\dd\varphi_1\dd\varphi_2}{(2\pi)^2}=0-\#\{(c,d):d-c=j\},
+\]
+since only the exponentials with total frequency $0$ survive. There are $\max(n-j,0)$ such pairs, and $n-\max(n-j,0)=\min(j,n)$.
+\end{proof}
+
+In terms of the rescaled pair correlation: $\frac1n\mathbb E|\operatorname{tr}U^j|^2=\min(\frac jn,1)$, and since $S(u)^2$ is the Fourier transform of the triangle $(1-|\alpha|)_+$, the function $\min(|\alpha|,1)=1-(1-|\alpha|)_+$ is, up to a spike at $\alpha=0$, the Fourier transform of the pair correlation $1-S(u)^2$, read at the frequency $\alpha=\frac jn$. Montgomery's
+function is the zeta version. For $T\ge2$ and real $\alpha$ let
+\[
+F(\alpha)=\frac{2\pi}{T\log T}\sum_{0<\gamma,\gamma'\le T}T^{i\alpha(\gamma-\gamma')}\,\frac4{4+(\gamma-\gamma')^2},
+\]
+the sum running over pairs of zeros counted with multiplicity; the weight only keeps the sum convergent and does not matter at the scale of the spacing.
+
+\begin{theorem}[Montgomery, 1973; admitted]\label{thm:montgomery}
+Assume the Riemann hypothesis. For every $\varepsilon>0$, uniformly for $0\le\alpha\le1-\varepsilon$,
+\[
+F(\alpha)=\bigl(1+o(1)\bigr)T^{-2\alpha}\log T+\alpha+o(1)\qquad(T\to\infty).
+\]
+\end{theorem}
+
+The proof is an application of the explicit formula of Tome~5, Chapter~7, and Tome~13 gives it. Compare with Proposition~\ref{prop:formfactor}: the term $T^{-2\alpha}\log T$ is the trace of $U^0$, a spike at $\alpha=0$, and $\alpha$ is
+$\frac jn$. Montgomery conjectured that $F(\alpha)=1+o(1)$ for $\alpha\ge1$, uniformly on bounded intervals, which is $\min(\frac jn,1)=1$ for $j\ge n$, proved above for matrices. By Fourier inversion the conjecture is equivalent to:
+
+\begin{beauty}
+\textbf{Montgomery's pair correlation conjecture.} Let $\tilde\gamma=\frac\gamma{2\pi}\log\frac\gamma{2\pi e}$ be the zeros rescaled to mean spacing $1$. For $a<b$, as $T\to\infty$,
+\[
+\frac1{N(T)}\#\bigl\{(\gamma,\gamma'):0<\gamma\ne\gamma'\le T,\ \tilde\gamma-\tilde\gamma'\in[a,b]\bigr\}\longrightarrow\int_a^b\bigl(1-S(u)^2\bigr)\dd u .
+\]
+The zeros of zeta, assuming the Riemann hypothesis, would then be indistinguishable from the eigenvalues of a random unitary matrix as far as pairs are concerned, and the natural extension, that all the correlation functions
+are the determinants of Theorem~\ref{thm:sinekernel}, was proved by Zeev Rudnick and Peter Sarnak in 1996 for test functions with restricted Fourier support, Montgomery's restriction in higher dimensions. Figure~\ref{fig:zeta}
+shows the spacings of $9533$ consecutive zeros above height $10^6$ against the spacing density of the sine process.
+\end{beauty}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-zeta}
+\caption{Left: the spacings between consecutive rescaled zeros $\tilde\gamma$ of $\zeta$ with $10^6<\gamma<10^6+5000$, computed in the companion notebook with the Riemann--Siegel formula (all $9533$ zeros predicted by the
+Riemann--von Mangoldt formula are found), against the spacing density $p(s)$ of the sine process (red) and the exponential density of independent points (dashed). Right: $\log|\det(I-U)|$ for $20000$ Haar random $U\in U(50)$, divided
+by its exact standard deviation $\sqrt{2.74}$, against the standard Gaussian density. The normalisation $\sqrt{\frac12\log50}=\sqrt{1.96}$ of Theorem~\ref{thm:logclt} is only reached slowly, and the left tail, made of the matrices
+with an eigenvalue very close to $1$, is still heavy at $n=50$.}
+\label{fig:zeta}
+\end{figure}
+
+The moments come next. Hardy and Littlewood proved in 1918 that $\frac1T\int_0^T|\zeta(\frac12+it)|^2\dd t\sim\log T$, and Albert Ingham in 1926 that $\frac1T\int_0^T|\zeta(\frac12+it)|^4\dd t\sim\frac1{2\pi^2}(\log T)^4$. No higher moment is known. It was
+conjectured that
+\[
+\frac1T\int_0^T|\zeta(\tfrac12+it)|^{2m}\dd t\sim a_m\frac{g_m}{(m^2)!}(\log T)^{m^2},\qquad a_m=\prod_p\Bigl(1-\frac1p\Bigr)^{m^2}\sum_{r\ge0}\binom{m+r-1}r^2p^{-r},
+\]
+with an arithmetic factor $a_m$ and a mysterious integer $g_m$: $g_1=1$, $g_2=2$ (Ingham, since $a_2=\frac6{\pi^2}$), and Brian Conrey and Amit Ghosh (1998) and Conrey and Steve Gonek (2001) predicted $g_3=42$ and
+$g_4=24024$ by long number-theoretic heuristics. Keating and Snaith's suggestion was to take the arithmetic factor from the primes and the rest from the matrices, with $n=\log\frac T{2\pi}$: by Theorem~\ref{thm:ksmoments},
+\[
+\frac{g_m}{(m^2)!}=\frac{G(m+1)^2}{G(2m+1)},
+\]
+which gives $1,2,42,24024$ and every $g_m$ after. Tome~14 tells the rest of the story, together with the analogue of Theorem~\ref{thm:logclt} for zeta, which is older than random matrices: Atle Selberg proved in 1946 that
+$\log|\zeta(\frac12+it)|/\sqrt{\frac12\log\log T}$, for $t$ uniform in $[T,2T]$, converges to a standard Gaussian. The dictionary $n\leftrightarrow\log T$ turns $\sqrt{\frac12\log n}$ into Selberg's $\sqrt{\frac12\log\log T}$.
+
+\begin{remark}[the Gaussian unitary ensemble]
+Dyson and Montgomery spoke of Hermitian matrices, not unitary ones. The \emph{Gaussian unitary ensemble} is the random Hermitian matrix with density proportional to $e^{-\operatorname{tr}H^2/2}$; its eigenvalues have joint density proportional to
+$\prod_{i<j}|\lambda_i-\lambda_j|^2e^{-\sum_i\lambda_i^2/2}$, the same squared Vandermonde as Weyl's formula with a Gaussian weight, and their correlation functions are determinants of a kernel built from Hermite polynomials. In the bulk of the
+semicircle, at the scale of the local spacing, this kernel converges to the sine kernel, so the local statistics of the two ensembles coincide (see Anderson, Guionnet and Zeitouni, Chapter~3). Since 2010 the work of
+L\'aszl\'o Erd\H os, Horng-Tzer Yau and their collaborators, and of Terence Tao and Van Vu, has shown that the sine kernel appears in the bulk of every Wigner matrix of Chapter~10: local universality, the strongest form of
+Wigner's original bet.
+\end{remark}
+
+\begin{remark}[general moments]
+The decomposition gives every moment, not only the integer ones: for real $t>-\frac12$,
+\[
+\mathbb E|\det(I-U)|^{2t}=\prod_{k=1}^n\frac{\Gamma(k)\Gamma(k+2t)}{\Gamma(k+t)^2},
+\]
+the formula in which Keating and Snaith first found their constants, through Selberg's integral (Exercise~\ref{ex:kstreal}). As $n\to\infty$ it behaves like $\frac{G(1+t)^2}{G(1+2t)}n^{t^2}$ with Barnes' $G$-function.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:meandet}
+Show that $\mathbb E\det(I-U)=1$, in two ways: with Heine's identity, and with Theorem~\ref{thm:bhny}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:varbound}
+Show that $\operatorname{Var}N(D)\le\min\bigl(\mathbb EN(D),\,n-\mathbb EN(D)\bigr)$ for every Borel $D$. Which sets $D$ give variance $0$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:smallgap}
+Show that $E(0;s)=1-s+\frac{\pi^2}{36}s^4+O(s^6)$ as $s\to0$, and deduce that the spacing density of the remark on spacings behaves like $\frac{\pi^2}3s^2$ near $0$, assuming it equals $\frac{\dd^2}{\dd s^2}E(0;s)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:linearstat}
+Let $f(e^{i\theta})=\sum_{|j|\le J}\hat f(j)e^{ij\theta}$ be a real trigonometric polynomial, and $\Sigma_f=\sum_{k=1}^nf(e^{i\theta_k})$. Show that
+\[
+\operatorname{Var}\Sigma_f=\sum_{j\in\mathbb Z}|\hat f(j)|^2\min(|j|,n),
+\]
+so that for $n\ge J$ the variance no longer depends on $n$. Compare with $n$ independent uniform points.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:meanlog}
+Show that $\int_0^{2\pi}\log|1-e^{i\theta}|\dd\theta=0$, and deduce that $\mathbb E\log|\det(I-U)|=0$ for every $n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:argclt}
+With the notation of the proof of Theorem~\ref{thm:logclt}, let $Y_k=-\operatorname{Im}L_k$ for $k\ge2$. Show that $\mathbb EY_k^2=\mathbb EX_k^2$ and $\mathbb EX_kY_k=0$, and deduce that $\bigl(\sum_kX_k,\sum_kY_k\bigr)/\sqrt{\frac12\log n}$ converges in law to a
+pair of independent standard Gaussians. (Use the Cram\'er--Wold device: a linear combination $aX_k+bY_k$ is again a real part.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:ratio}
+Let $w=e^{i\varphi}$. Show that $\mathbb E\bigl[\det(I-U)\,\overline{\det(I-wU)}\bigr]=1+\bar w+\dots+\bar w^n$, and deduce that for real $x$
+\[
+\lim_{n\to\infty}\frac1n\mathbb E\Bigl[Z_n(0)\,\overline{Z_n\bigl(\tfrac{2\pi x}n\bigr)}\Bigr]=e^{i\pi x}\,\frac{\sin\pi x}{\pi x}.
+\]
+The sine kernel reappears in the characteristic polynomial itself.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:kstreal}
+Let $t>-\frac12$. Show that $\mathbb E|1-\gamma_k|^{2t}=\sum_{j\ge0}\binom tj^2\frac{j!}{(k)_j}$ and, using Gauss's identity $\sum_{j\ge0}\frac{(a)_j(b)_j}{j!\,(c)_j}=\frac{\Gamma(c)\Gamma(c-a-b)}{\Gamma(c-a)\Gamma(c-b)}$ for $c-a-b>0$, deduce the
+formula of the remark on general moments. Deduce that $\operatorname{Var}\log|\det(I-U)|=\frac12\sum_{k=1}^n\psi'(k)$, where $\psi'(k)=\sum_{r\ge k}\frac1{r^2}$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:meandet}
+With $f(e^{i\theta})=1-e^{i\theta}$ the Toeplitz matrix is triangular. With the decomposition, $\mathbb E\gamma_k=0$.
+\end{hint}
+
+\begin{hint}{ex:varbound}
+$\sum p_j(1-p_j)$ is at most $\sum p_j$ and at most $\sum(1-p_j)$. Variance $0$ means every $p_j\in\{0,1\}$.
+\end{hint}
+
+\begin{hint}{ex:smallgap}
+The matrix $(S(x_a-x_b))$ is the Gram matrix of unit vectors $v_a$ (the functions $\xi\mapsto e^{2\pi ix_a\xi}$ in $L^2[-\frac12,\frac12]$), and a Gram determinant is the product of the squared distances of each $v_a$ to the span of the previous ones. Each such distance is at most the distance to $v_{a-1}$ alone. Also $1-S(u)^2\le2(1-S(u))\le\frac{\pi^2}3u^2$.
+\end{hint}
+
+\begin{hint}{ex:linearstat}
+$\Sigma_f-n\hat f(0)=\sum_{j\ne0}\hat f(j)\operatorname{tr}U^j$, and apply Proposition~\ref{prop:formfactor}.
+\end{hint}
+
+\begin{hint}{ex:meanlog}
+$\log|1-re^{i\theta}|=-\operatorname{Re}\sum_j\frac{r^je^{ij\theta}}j$ for $r<1$ integrates to $0$; let $r\to1$, dominating $|\log|1-re^{i\theta}||$ by $\log2+|\log|\sin\theta||$.
+\end{hint}
+
+\begin{hint}{ex:argclt}
+$aX_k+bY_k=-\operatorname{Re}\bigl((a-ib)L_k\bigr)$, and $\mathbb E\bigl((a-ib)L_k\bigr)^2=0$.
+\end{hint}
+
+\begin{hint}{ex:ratio}
+Heine's identity with $f(e^{i\theta})=(1-e^{i\theta})(1-\bar we^{-i\theta})$ gives a tridiagonal Toeplitz determinant with recursion $D_n=(1+\bar w)D_{n-1}-\bar wD_{n-2}$.
+\end{hint}
+
+\begin{hint}{ex:kstreal}
+For $|\gamma|<1$, $(1-\gamma)^t=\sum_j\binom tj(-\gamma)^j$ and $|1-\gamma|^{2t}=(1-\gamma)^t(1-\bar\gamma)^t$. Note $\binom tj^2=\frac{(-t)_j^2}{j!^2}$. For the variance, differentiate $\log\mathbb E|Z_n|^{2t}$ twice at $t=0$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:meandet}
+\idea The expected determinant only sees the constant term of every expansion, and there is just one.
+\writeup Heine: $f(e^{i\theta})=1-e^{i\theta}$ has $\hat f(0)=1$, $\hat f(1)=-1$ and no other coefficient, so the Toeplitz matrix $(\hat f(j-k))$ has $1$ on the diagonal, $-1$ just below it, and $0$ above: it is triangular with determinant
+$1$. Decomposition: $\mathbb E\prod(1-\gamma_k)=\prod(1-\mathbb E\gamma_k)=1$ by independence, since $\mathbb E\gamma_k=0$ by Lemma~\ref{lem:uniformvector}(3) with $a=1$, $b=0$.
+\end{solution}
+
+\begin{solution}{ex:varbound}
+\idea The coin flips do all the work.
+\writeup By Proposition~\ref{prop:bernoulli}, $\operatorname{Var}N(D)=\sum_jp_j(1-p_j)$ with $p_j\in[0,1]$. Each term is at most $p_j$ and at most $1-p_j$, and $\sum p_j=\mathbb EN(D)$, $\sum(1-p_j)=n-\mathbb EN(D)$. The variance is $0$ exactly when
+every $p_j$ is $0$ or $1$, that is when $\operatorname{tr}M_D^2=\operatorname{tr}M_D$. With $c_m=\int_De^{im\theta}\frac{\dd\theta}{2\pi}$, $\operatorname{tr}M_D^2=\sum_{a=0}^{n-1}\sum_{b=0}^{n-1}|c_{a-b}|^2$, and for each $a$ the inner sum is at most $\sum_{m\in\mathbb Z}|c_m|^2=c_0$ (Parseval), while
+$\operatorname{tr}M_D=nc_0$. Equality for $a=0$ forces $c_m=0$ for every $m\ge1$, hence also $c_{-m}=\bar c_m=0$: the indicator of $D$ has no Fourier coefficient but the constant one, so it is constant almost everywhere, $|D|=0$ or $|D|=2\pi$. Then $N(D)$ is almost surely $0$ or $n$. Every other set, however cleverly chosen, has a random count.
+\end{solution}
+
+\begin{solution}{ex:smallgap}
+\idea Each extra point in a cluster costs a factor $s$ for its position and a factor $s^2$ for its repulsion, so only one and two points matter.
+\writeup The term $k=1$ is $-\int_0^s1\dd x=-s$. For $k=2$, $\det=1-S(x_1-x_2)^2$, and $S(u)=1-\frac{\pi^2u^2}6+O(u^4)$ gives $1-S(u)^2=\frac{\pi^2}3u^2+O(u^4)$; since $\iint_{[0,s]^2}(x_1-x_2)^2=\frac{s^4}6$, the term is
+$\frac12\bigl(\frac{\pi^2}3\cdot\frac{s^4}6+O(s^6)\bigr)=\frac{\pi^2}{36}s^4+O(s^6)$. For $k\ge3$, write $(S(x_a-x_b))$ as the Gram matrix of the unit vectors $v_a=e^{2\pi ix_a\xi}$ of $L^2[-\frac12,\frac12]$. By Gram--Schmidt, its determinant is $\prod_{a=2}^kd_a^2$ with $d_a$ the
+distance from $v_a$ to the span of $v_1,\dots,v_{a-1}$, and $d_a^2\le1-|\langle v_a,v_{a-1}\rangle|^2=1-S(x_a-x_{a-1})^2$. Since $\frac{\sin x}x\ge1-\frac{x^2}6$, $1-S(u)^2\le2(1-S(u))\le\frac{\pi^2}3u^2$. On $[0,s]^k$ the determinant is therefore at most
+$(\frac{\pi^2}3s^2)^{k-1}$, and the $k$-th term at most $\frac{s^k}{k!}(\frac{\pi^2}3s^2)^{k-1}$; the terms $k\ge3$ add up to $O(s^7)$. Hence $E(0;s)=1-s+\frac{\pi^2}{36}s^4+O(s^6)$.
+
+For the derivatives: substituting $x=sy$, the $k$-th term is $\frac{(-s)^k}{k!}\int_{[0,1]^k}\det\bigl(S(s(y_a-y_b))\bigr)\dd y$, an entire function of $s$; for complex $|s|\le1$ its entries are bounded by a constant $C$, so the term is at most $|s|^kC^k$ in modulus (expand the
+determinant into $k!$ products), and the series converges uniformly for $|s|\le\frac1{2C}$. So $E(0;s)$ is analytic near $0$, its expansion can be differentiated, and $p(s)=E''(0;s)=\frac{\pi^2}3s^2+O(s^4)$. For independent points, $p(s)=e^{-s}$ starts at $1$: small gaps are the commonest of all.
+\end{solution}
+
+\begin{solution}{ex:linearstat}
+\idea A linear statistic is a combination of traces of powers, and the traces of different powers are uncorrelated.
+\writeup Since $\sum_ke^{ij\theta_k}=\operatorname{tr}U^j$, $\Sigma_f=n\hat f(0)+\sum_{0<|j|\le J}\hat f(j)\operatorname{tr}U^j$ (with $\operatorname{tr}U^{-j}=\overline{\operatorname{tr}U^j}$). By Proposition~\ref{prop:formfactor} the traces are centred and
+$\mathbb E\bigl[\operatorname{tr}U^j\overline{\operatorname{tr}U^l}\bigr]=\delta_{jl}\min(|j|,n)$ for $j,l\ne0$ (for $j$ and $l$ of opposite signs, $\operatorname{tr}U^j\overline{\operatorname{tr}U^l}$ involves $\operatorname{tr}U^{|j|}\operatorname{tr}U^{|l|}$, which rotation multiplies by
+$e^{i(|j|+|l|)\varphi}$, so its expectation also vanishes). Hence $\operatorname{Var}\Sigma_f=\sum_{j\ne0}|\hat f(j)|^2\min(|j|,n)$, which equals $\sum_j|j||\hat f(j)|^2$ as soon as $n\ge J$. For independent uniform points, $\operatorname{Var}\Sigma_f=n\operatorname{Var}f(e^{i\theta})=n\sum_{j\ne0}|\hat f(j)|^2$,
+which grows linearly. A smooth statistic of the eigenvalues has bounded fluctuations, without any normalisation: this is the theorem of Diaconis and Shahshahani, and the starting point of a central limit theorem without
+$\sqrt n$, due to Kurt Johansson (1997).
+\end{solution}
+
+\begin{solution}{ex:meanlog}
+\idea Average the logarithm on a smaller circle, where the series converges, and let the circle grow.
+\writeup For $r<1$, $\log|1-re^{i\theta}|=-\operatorname{Re}\sum_{j\ge1}\frac{r^je^{ij\theta}}j$, a series converging uniformly in $\theta$; each term integrates to $0$. As $r\to1$, $\log|1-re^{i\theta}|\to\log|1-e^{i\theta}|$ for $\theta\ne0$. For domination: $|1-re^{i\theta}|\le2$, and $|1-re^{i\theta}|\ge|\sin\theta|$, the distance from $1$ to the line through $0$ and $e^{i\theta}$. Since $\log|\sin\theta|$ is
+integrable, dominated convergence gives $\int_0^{2\pi}\log|1-e^{i\theta}|\dd\theta=0$, that is $\mathbb EX_1=0$. For $k\ge2$, $\mathbb EX_k=0$ was shown in the proof of Theorem~\ref{thm:logclt}, and all $X_k$ are integrable. So
+$\mathbb E\log|\det(I-U)|=\sum_k\mathbb EX_k=0$, although $\log\mathbb E|\det(I-U)|^2=\log(n+1)$: Jensen's inequality is far from equality here.
+\end{solution}
+
+\begin{solution}{ex:argclt}
+\idea A real part of a rotation-invariant variable has the same law whichever way it is rotated, so the real and imaginary parts carry equal and uncorrelated variance.
+\writeup For real $a,b$, $aX_k+bY_k=-\operatorname{Re}\bigl((a-ib)L_k\bigr)$. As in the proof of Theorem~\ref{thm:logclt}, $\mathbb EL_k^2=0$, so $\mathbb E\bigl(\operatorname{Re}(cL_k)\bigr)^2=\frac12|c|^2\mathbb E|L_k|^2$ for every complex $c$. With $c=1$ and $c=-i$:
+$\mathbb EX_k^2=\mathbb EY_k^2$; with $c=1-i$: $\mathbb E(X_k+Y_k)^2=2\mathbb EX_k^2$, so $\mathbb EX_kY_k=0$. The fourth moment bound holds for $\operatorname{Re}(cL_k)$ with the factor $|c|^4$. So for every $(a,b)$, Lyapunov's condition gives
+$\sum_{k=3}^n(aX_k+bY_k)/s_n\Rightarrow N(0,a^2+b^2)$, which is the law of $aG_1+bG_2$ for independent standard Gaussians; the first two terms are negligible as before. By the Cram\'er--Wold device (Tome~10), the pair converges to $(G_1,G_2)$, and
+$s_n\sim\sqrt{\frac12\log n}$.
+\end{solution}
+
+\begin{solution}{ex:ratio}
+\idea Heine's identity turns the mixed moment into a tridiagonal determinant, which is a geometric series.
+\writeup $\det(I-U)\overline{\det(I-wU)}=\prod_jf(e^{i\theta_j})$ with $f(e^{i\theta})=(1-e^{i\theta})(1-\bar we^{-i\theta})=1+\bar w-e^{i\theta}-\bar we^{-i\theta}$, so $\hat f(0)=1+\bar w$, $\hat f(1)=-1$, $\hat f(-1)=-\bar w$. The Toeplitz determinant satisfies
+$D_n=(1+\bar w)D_{n-1}-\bar wD_{n-2}$ (expand along the first row; the product of the two off-diagonal entries is $\bar w$), with $D_0=1$, $D_1=1+\bar w$; so $D_n-D_{n-1}=\bar w(D_{n-1}-D_{n-2})=\bar w^n$ and $D_n=\sum_{r=0}^n\bar w^r$.
+Now $Z_n(0)\overline{Z_n(\varphi)}=\det(I-U)\overline{\det(I-e^{-i\varphi}U)}$, so $w=e^{-i\varphi}$, $\bar w=e^{i\varphi}$, and for $\varphi=\frac{2\pi x}n$ with $x\ne0$,
+\[
+\frac1n\sum_{r=0}^ne^{2\pi ixr/n}=\frac1n\cdot\frac{e^{2\pi ix(n+1)/n}-1}{e^{2\pi ix/n}-1}\longrightarrow\frac{e^{2\pi ix}-1}{2\pi ix}=e^{i\pi x}\frac{\sin\pi x}{\pi x},
+\]
+since $n(e^{2\pi ix/n}-1)\to2\pi ix$; for $x=0$ both sides are $1$ in the limit.
+\end{solution}
+
+\begin{solution}{ex:kstreal}
+\idea Expand both binomial series, keep the diagonal, and recognise a hypergeometric series at $1$.
+\writeup For $k\ge2$ and $|\gamma|<1$, $|1-\gamma|^{2t}=\sum_{a,b}\binom ta\binom tb(-\gamma)^a(-\bar\gamma)^b$. The coefficients satisfy $|\binom ta|\le Ca^{-1-t}$, so $\sum_a|\binom ta|r^a\le C'(1-r)^{-\max(0,-t)}$ for $r<1$ (with a logarithm when $t=0$, a trivial case),
+and the square of this is integrable against the law of $r=|\gamma|$, whose density is bounded near $1$ for $k\ge2$, because $2t>-1$. So the expectation may be taken termwise, and Lemma~\ref{lem:uniformvector}(3) keeps $a=b=j$:
+$\mathbb E|1-\gamma_k|^{2t}=\sum_j\binom tj^2\frac{j!}{(k)_j}=\sum_j\frac{(-t)_j(-t)_j}{j!\,(k)_j}$. For $k=1$, $\gamma$ is uniform on the circle, $(1-e^{i\theta})^t=\sum_j\binom tj(-1)^je^{ij\theta}$ in $L^2$ (the coefficients are square summable since $2t+2>1$), and
+Parseval gives the same formula with $(1)_j=j!$. Gauss's identity with $a=b=-t$, $c=k$ and $c-a-b=k+2t>0$ gives $\frac{\Gamma(k)\Gamma(k+2t)}{\Gamma(k+t)^2}$, and the product over $k$ is the formula of the remark. Then
+$\log\mathbb E|Z_n|^{2t}=\sum_k\bigl(\log\Gamma(k)+\log\Gamma(k+2t)-2\log\Gamma(k+t)\bigr)$ has second derivative $\sum_k(4\psi'(k)-2\psi'(k))=2\sum_k\psi'(k)$ at $t=0$, where $\psi=(\log\Gamma)'$. The left side is the cumulant generating function of
+$2\log|Z_n|$, whose second derivative at $0$ is $4\operatorname{Var}\log|Z_n|$. So $\operatorname{Var}\log|Z_n|=\frac12\sum_{k=1}^n\psi'(k)$, with $\psi'(k)=\sum_{r\ge k}r^{-2}$ (differentiate $\psi(x+1)=\psi(x)+\frac1x$ and use $\psi'(x)\to0$). Comparing with the proof
+of Theorem~\ref{thm:logclt} gives the curious identity $\sum_{j\ge1}\frac{j!}{j^2(k)_j}=\psi'(k)$; for $k=1$ it is $\sum\frac1{j^2}=\frac{\pi^2}6$. For $n=50$ the variance is $2.74$, the value used in Figure~\ref{fig:zeta}.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} The tea-time meeting of Montgomery and Dyson is told, from interviews with Montgomery, in K.~Sabbagh, \emph{Dr Riemann's Zeros}, Atlantic Books, 2002, pp.~134--136. H.~L.~Montgomery, ``The pair correlation of zeros
+of the zeta function'', in \emph{Analytic Number Theory}, Proceedings of Symposia in Pure Mathematics 24, American Mathematical Society, 1973, 181--193. F.~J.~Dyson, ``Statistical theory of the energy levels of complex systems.~I'',
+\emph{Journal of Mathematical Physics} 3 (1962), 140--156. M.~Gaudin, ``Sur la loi limite de l'espacement des valeurs propres d'une matrice al\'eatoire'', \emph{Nuclear Physics} 25 (1961), 447--458. A.~M.~Odlyzko, ``On the distribution of
+spacings between zeros of the zeta function'', \emph{Mathematics of Computation} 48 (1987), 273--308.
+\item \emph{Counts.} J.~B.~Hough, M.~Krishnapur, Y.~Peres and B.~Vir\'ag, ``Determinantal processes and independence'', \emph{Probability Surveys} 3 (2006), 206--229. O.~Costin and J.~L.~Lebowitz, ``Gaussian fluctuation in random
+matrices'', \emph{Physical Review Letters} 75 (1995), 69--72. A.~Soshnikov, ``Gaussian fluctuation for the number of particles in Airy, Bessel, sine, and other determinantal random point fields'', \emph{Journal of Statistical Physics} 100
+(2000), 491--522. P.~Diaconis and M.~Shahshahani, ``On the eigenvalues of random matrices'', \emph{Journal of Applied Probability} 31A (1994), 49--62. E.~M.~Rains, ``High powers of random elements of compact Lie groups'', \emph{Probability
+Theory and Related Fields} 107 (1997), 219--241. F.~Bornemann, ``On the numerical evaluation of Fredholm determinants'', \emph{Mathematics of Computation} 79 (2010), 871--915.
+\item \emph{The characteristic polynomial.} J.~P.~Keating and N.~C.~Snaith, ``Random matrix theory and $\zeta(1/2+it)$'', \emph{Communications in Mathematical Physics} 214 (2000), 57--89. P.~Bourgade, C.~P.~Hughes, A.~Nikeghbali and
+M.~Yor, ``The characteristic polynomial of a random unitary matrix: a probabilistic approach'', \emph{Duke Mathematical Journal} 145 (2008), 45--69. J.~B.~Conrey and A.~Ghosh, ``A conjecture for the sixth power moment of the Riemann
+zeta-function'', \emph{International Mathematics Research Notices} 1998, 775--780. J.~B.~Conrey and S.~M.~Gonek, ``High moments of the Riemann zeta-function'', \emph{Duke Mathematical Journal} 107 (2001), 577--604. Z.~Rudnick and
+P.~Sarnak, ``Zeros of principal $L$-functions and random matrix theory'', \emph{Duke Mathematical Journal} 81 (1996), 269--322.
+\item M.~L.~Mehta, \emph{Random Matrices}, 3rd ed., Elsevier, 2004. The classical reference for gap probabilities and spacings.
+\item E.~S.~Meckes, \emph{The Random Matrix Theory of the Classical Compact Groups}, Cambridge University Press, 2019. Haar matrices, counts, traces of powers and the characteristic polynomial, at exactly the level of this chapter.
+\end{itemize}
