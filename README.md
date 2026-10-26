@@ -37,7 +37,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | In progress (4 of 12 chapters) |
-| 6 | Spaces | Sets, topology, measure and integration | In progress (6 of 11 chapters) |
+| 6 | Spaces | Sets, topology, measure and integration | In progress (7 of 11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | Planned |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups | Planned |
 | 9 | Structures II | Categories, commutative and homological algebra, representations | Planned |
