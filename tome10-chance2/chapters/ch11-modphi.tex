@@ -1,0 +1,341 @@
+\chapter{Mod-\texorpdfstring{$\varphi$}{phi} Convergence}
+\begin{center}\itshape
+The central limit theorem is a magnifying glass that shows only the bell curve. Divide the characteristic function by the bell curve\\
+before taking the limit, and something survives: a ``residue'' that remembers where the sum came from.\\
+The cycles of a permutation and the prime factors of an integer leave the same fingerprint, $1/\Gamma(z)$.
+\end{center}
+
+By the Erd\H{o}s--Kac theorem of Tome~5, the number $\omega(n)$ of distinct prime factors of a random integer $n\le x$ is approximately Gaussian, with mean and variance $\log\log x$. The theorem is true,
+but almost useless in practice: $\log\log x$ grows so slowly that at $x=10^{100}$ it is only $5.4$, and the error term is of order $1/\sqrt{\log\log x}$, as R\'enyi and Tur\'an showed. The Gaussian limit has thrown
+away almost everything. What does it throw away, and can we keep it?
+
+The answer came from an unexpected direction. In 2000, Jon Keating and Nina Snaith computed the characteristic function of $\log|\det(I-U)|$ for a random unitary matrix $U$ of size $N$, a model for $\log|\zeta(\frac12+it)|$.
+It is Gaussian with variance $\frac12\log N$, up to a factor which converges, as $N\to\infty$, to an explicit product of Barnes functions. Their conjecture for the moments of the zeta function, built on that factor, matched every
+known result of number theory. A decade later Jean Jacod, Emmanuel Kowalski and Ashkan Nikeghbali made the factor into a definition: a sequence \emph{converges mod-Gaussian} if its characteristic function, divided by the
+Gaussian one, has a limit. Kowalski and Nikeghbali did the same with Poisson laws, and the theory of \emph{mod-$\varphi$ convergence} was born, with Valentin F\'eray and Pierre-Lo\"ic M\'eliot developing its consequences.
+
+This chapter proves the two basic consequences of mod-Poisson convergence, a central limit theorem and a local limit theorem at the scale of large deviations, in which the limiting factor is the correction to the
+Poisson law. Then we compute the factor for the cycles of a random permutation, where it is $1/\Gamma(z)$, and for the prime factors of a random integer, where it is an arithmetic Euler product, and we see how the two fit together.
+
+\begin{reminder}[from Tomes 3, 4 and 5, and Chapter 3]
+The number of cycles of a uniform random permutation of $\{1,\dots,n\}$ has the law of $B_1+\dots+B_n$, independent with $B_j$ Bernoulli$(\frac1j)$ (Feller's coupling, Tome~3, Theorem~2.12). L\'evy's continuity theorem (Theorem~\ref{thm:levycont}):
+convergence of characteristic functions to a characteristic function implies convergence in law. Weierstrass' product $\frac1{\Gamma(x)}=xe^{\gamma x}\prod_{k\ge1}(1+\frac xk)e^{-x/k}$ for $x>0$ (Tome~4, Corollary~5.7); $\frac1\Gamma$ extends to an entire function
+(Tome~4, Theorem~9.36), and two holomorphic functions on a connected open set that agree on a segment are equal (Tome~4, Theorem~9.18). $\sum_p\frac1p$ diverges, and $\sum_{p\le x}\frac1p=\log\log x+M+o(1)$ (Mertens, Tome~5, Theorem~1.5).
+\end{reminder}
+
+\section{Beyond the central limit theorem}
+
+\begin{definition}\label{def:modgauss}
+Real random variables $X_n$ \emph{converge mod-Gaussian}, with parameters $\sigma_n^2\to\infty$ and limiting function $\psi$, if for every real $t$
+\[
+\mathbb E\bigl[e^{itX_n}\bigr]\,e^{\sigma_n^2t^2/2}\longrightarrow\psi(t),
+\]
+locally uniformly in $t$, where $\psi$ is continuous with $\psi(0)=1$.
+\end{definition}
+
+If $\psi$ were the characteristic function of a variable $Y$, the definition would say that $X_n$ looks like a Gaussian of variance $\sigma_n^2$ \emph{plus} an independent copy of $Y$. In general $\psi$ need not be a characteristic function, and
+it is better thought of as a residue: what is left of the law of $X_n$ after the Gaussian part has been divided out.
+
+\begin{proposition}\label{prop:modgaussclt}
+If $X_n$ converges mod-Gaussian with parameters $\sigma_n^2$, then $X_n/\sigma_n\to\mathcal N(0,1)$ in law.
+\end{proposition}
+\begin{proof}
+For fixed $t$, $\mathbb Ee^{itX_n/\sigma_n}=e^{-t^2/2}\psi_n(t/\sigma_n)$, where $\psi_n(u)=\mathbb E[e^{iuX_n}]e^{\sigma_n^2u^2/2}$ tends to $\psi$ uniformly on $[-1,1]$. Since $t/\sigma_n\to0$ and $\psi$ is continuous with $\psi(0)=1$, $\psi_n(t/\sigma_n)\to1$. Apply L\'evy's continuity theorem.
+\end{proof}
+
+\begin{example}[a harmonic random walk]\label{ex:harmonicwalk}
+Let $\varepsilon_k$ be independent fair signs and $X_n=\sum_{k\le n}\varepsilon_k/\sqrt k$, with variance $\sigma_n^2=H_n=\sum_{k\le n}\frac1k$. Then
+\[
+\mathbb E\bigl[e^{itX_n}\bigr]e^{H_nt^2/2}=\prod_{k\le n}\cos\Bigl(\frac t{\sqrt k}\Bigr)e^{t^2/2k}.
+\]
+For $|u|\le1$, $\log\cos u=-\frac{u^2}2-\frac{u^4}{12}+O(u^6)$, so the $k$-th factor is $\exp(-\frac{t^4}{12k^2}+O(\frac{t^6}{k^3}))$ once $k\ge t^2$, and the product converges locally uniformly to $\psi(t)=\prod_{k\ge1}\cos(t/\sqrt k)e^{t^2/2k}$:
+mod-Gaussian convergence. Replacing the signs by other symmetric variables of variance $1$ changes $\psi$ but not the Gaussian limit (Exercise~\ref{ex:residues}). The residue remembers what the central limit theorem forgets.
+\end{example}
+
+For integer-valued variables, such as counts, the natural reference law is the Poisson law, whose generating function $e^{\lambda(z-1)}$ makes sense for all complex $z$.
+
+\begin{definition}\label{def:modpoisson}
+Let $X_n$ be random variables with values in $\{0,1,2,\dots\}$, $\lambda_n\to\infty$, and $0<r_1<1<r_2\le\infty$. The $X_n$ \emph{converge mod-Poisson} on the annulus $A=\{r_1<|z|<r_2\}$, with parameters $\lambda_n$ and limiting function
+$\psi$, if $\mathbb E[r_2'^{\,X_n}]<\infty$ for every $r_2'<r_2$, and
+\[
+\psi_n(z)=e^{-\lambda_n(z-1)}\,\mathbb E\bigl[z^{X_n}\bigr]\longrightarrow\psi(z)
+\]
+uniformly on every closed annulus $\{a\le|z|\le b\}$ with $r_1<a\le b<r_2$, where $\psi$ is continuous on $A$ and $\psi(1)=1$.
+\end{definition}
+
+\begin{example}[sums of rare independent events]\label{ex:bernsums}
+Let $X_n=\sum_{j\le n}B_j$ with independent Bernoulli$(p_j)$ variables, $\lambda_n=\sum_{j\le n}p_j\to\infty$ and $\sum_jp_j^2<\infty$. Then
+\[
+\psi_n(z)=\prod_{j\le n}\bigl(1+(z-1)p_j\bigr)e^{-(z-1)p_j}.
+\]
+With $w=z-1$ and $|wp_j|\le\frac12$, the factor is $\exp(\log(1+wp_j)-wp_j)$ with $|\log(1+u)-u|\le|u|^2$ for $|u|\le\frac12$. So on $|z|\le b$ the tail of the product beyond the finitely many $j$ with $(b+1)p_j>\frac12$ converges
+uniformly, and $\psi_n\to\psi(z)=\prod_{j\ge1}(1+(z-1)p_j)e^{-(z-1)p_j}$ uniformly on compact subsets of $\C$: mod-Poisson convergence on $A=\C\setminus\{0\}$ ($r_1=0$, $r_2=\infty$; we may take $r_1$ as small as we like). The limit $\psi$ is an entire function vanishing
+exactly at the points $1-\frac1{p_j}$.
+\end{example}
+
+The Poisson law itself converges mod-Poisson with $\psi=1$, and adding an independent bounded variable $Y$ multiplies $\psi$ by $\mathbb E[z^Y]$ (Exercise~\ref{ex:shift}).
+
+\section{What mod-Poisson convergence gives}
+
+\begin{theorem}[central limit theorem]\label{thm:modpoissonclt}
+If $X_n$ converges mod-Poisson with parameters $\lambda_n$, then $\frac{X_n-\lambda_n}{\sqrt{\lambda_n}}\to\mathcal N(0,1)$ in law.
+\end{theorem}
+\begin{proof}
+For real $t$, put $z_n=e^{it/\sqrt{\lambda_n}}$, on the unit circle, inside $A$. Then
+\[
+\mathbb E\bigl[e^{it(X_n-\lambda_n)/\sqrt{\lambda_n}}\bigr]=e^{-it\sqrt{\lambda_n}}e^{\lambda_n(z_n-1)}\psi_n(z_n)=\exp\Bigl(\lambda_n\bigl(e^{it/\sqrt{\lambda_n}}-1-\tfrac{it}{\sqrt{\lambda_n}}\bigr)\Bigr)\psi_n(z_n).
+\]
+The exponent is $\lambda_n(-\frac{t^2}{2\lambda_n}+O(\lambda_n^{-3/2}))\to-\frac{t^2}2$. And $\psi_n(z_n)-\psi(z_n)\to0$ by uniform convergence on $|z|=1$, while $\psi(z_n)\to\psi(1)=1$ by continuity. L\'evy's continuity theorem concludes.
+\end{proof}
+
+The real content of mod-Poisson convergence is at the scale of large deviations, where the central limit theorem says nothing. Write $\pi_\lambda(k)=e^{-\lambda}\frac{\lambda^k}{k!}$ for the Poisson probabilities.
+
+\begin{theorem}[local limit theorem with residue]\label{thm:modpoissonlocal}
+Let $X_n$ converge mod-Poisson on $A=\{r_1<|z|<r_2\}$ with parameters $\lambda_n$ and limit $\psi$, and let $r_1<a\le b<r_2$. Then, uniformly in the integers $k$ with $a\le\frac k{\lambda_n}\le b$,
+\[
+P(X_n=k)=\pi_{\lambda_n}(k)\Bigl(\psi\Bigl(\frac k{\lambda_n}\Bigr)+o(1)\Bigr)\qquad(n\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+Write $\lambda=\lambda_n$, $\varphi_n(z)=\mathbb E[z^{X_n}]$, and let $r=k/\lambda\in[a,b]$. Since $\sum_jP(X_n=j)r^j<\infty$, we may integrate the series term by term, and orthogonality of the $e^{ij\theta}$ gives
+\[
+\begin{gathered}P(X_n=k)=\frac1{2\pi}\int_{-\pi}^\pi\varphi_n(re^{i\theta})\,r^{-k}e^{-ik\theta}\,\dd\theta,\qq\pi_\lambda(k)=\frac1{2\pi}\int_{-\pi}^\pi e^{\lambda(re^{i\theta}-1)}r^{-k}e^{-ik\theta}\,\dd\theta .\end{gathered}
+\]
+Since $\varphi_n(z)=e^{\lambda(z-1)}\psi_n(z)$ and
+\[
+\bigl|e^{\lambda(re^{i\theta}-1)}\bigr|=e^{\lambda(r-1)}e^{-\lambda r(1-\cos\theta)},
+\]
+we get
+\[
+\begin{aligned}\bigl|P(X_n=k)-\psi(r)\pi_\lambda(k)\bigr|&\le\frac{e^{\lambda(r-1)}r^{-k}}{2\pi}\eqbr\times\int_{-\pi}^\pi e^{-\lambda r(1-\cos\theta)}\bigl|\psi_n(re^{i\theta})-\psi(r)\bigr|\,\dd\theta .\end{aligned}
+\]
+Let $\varepsilon>0$ and $M=1+\sup_{a\le|z|\le b}|\psi(z)|$. For $n$ large, $|\psi_n-\psi|\le\varepsilon$ on the closed annulus, and $|\psi_n|\le M$. By uniform continuity of $\psi$ there, there is $\delta>0$ with $|\psi(re^{i\theta})-\psi(r)|\le\varepsilon$ for $|\theta|\le\delta$ and all
+$r\in[a,b]$. On $[-\pi,\pi]$, $1-\cos\theta\ge\frac{2\theta^2}{\pi^2}$. Hence, using $\lambda r=k$, the integral is at most
+\[
+2\varepsilon\int_\R e^{-2k\theta^2/\pi^2}\,\dd\theta+4\pi Me^{-2a\lambda\delta^2/\pi^2}=2\varepsilon\sqrt{\frac{\pi^3}{2k}}+4\pi Me^{-2a\lambda\delta^2/\pi^2}.
+\]
+On the other hand, $k!\le e\sqrt k\,(k/e)^k$ for $k\ge1$ (Tome~4, Theorem~5.8 gives more), so
+\[
+\pi_\lambda(k)\ge\frac{e^{-\lambda}\lambda^ke^k}{e\sqrt k\,k^k}=\frac{e^{\lambda(r-1)}r^{-k}}{e\sqrt k}.
+\]
+Dividing,
+\[
+\Bigl|\frac{P(X_n=k)}{\pi_\lambda(k)}-\psi(r)\Bigr|\le e\,\varepsilon\sqrt{\frac\pi2}+2eM\sqrt{b\lambda}\,e^{-2a\lambda\delta^2/\pi^2},
+\]
+and the last term tends to $0$ as $n\to\infty$, uniformly in $k$. Since $\varepsilon$ is arbitrary, the theorem follows.
+\end{proof}
+
+At $k\approx\lambda_n$, where $\psi(1)=1$, the theorem says that $X_n$ is locally Poisson, a strong form of the central limit theorem. At $k=x\lambda_n$ with $x\neq1$, it says that the probability of a large deviation is the Poisson one
+multiplied by $\psi(x)$: the residue, invisible to the central limit theorem, is exactly the correction factor for rare events. The bound $k!\le e\sqrt k(k/e)^k$ follows by comparing $\log k!=\sum_{j\le k}\log j$ with
+$\int_1^k\log t\,\dd t+\frac12\log k$, the trapezoid rule for a concave function.
+
+\section{Cycles of a random permutation}
+
+Let $K_n$ be the number of cycles of a uniform random permutation of $\{1,\dots,n\}$. Vladimir Goncharov proved in 1944 that $K_n$ is asymptotically Gaussian with mean and variance $\log n$ (Tome~3, Exercise~6.7, asked you to prove it).
+Mod-Poisson convergence tells the whole story.
+
+\begin{theorem}\label{thm:cyclesmod}
+For every complex $z$,
+\[
+\mathbb E\bigl[z^{K_n}\bigr]=\prod_{j=1}^n\Bigl(1+\frac{z-1}j\Bigr)=\frac{z(z+1)\cdots(z+n-1)}{n!},
+\]
+and $K_n$ converges mod-Poisson on $\C\setminus\{0\}$ with parameters $H_n=\sum_{j\le n}\frac1j$ and limiting function
+\[
+\psi(z)=\prod_{j\ge1}\Bigl(1+\frac{z-1}j\Bigr)e^{-(z-1)/j}=\frac{e^{-\gamma(z-1)}}{\Gamma(z)}.
+\]
+Equivalently, with parameters $\log n$, the limiting function is $\frac1{\Gamma(z)}$.
+\end{theorem}
+\begin{proof}
+By Feller's coupling, $K_n$ is a sum of independent Bernoulli$(\frac1j)$, $j\le n$, so $\mathbb Ez^{K_n}=\prod_j(1-\frac1j+\frac zj)$, which is the product formula. Example~\ref{ex:bernsums} with $p_j=\frac1j$ gives the mod-Poisson
+convergence with limit $\psi(z)=\prod_j(1+\frac wj)e^{-w/j}$, $w=z-1$, an entire function. For real $w>0$, Weierstrass' product at $x=w$ gives
+\[
+\prod_{j\ge1}\Bigl(1+\frac wj\Bigr)e^{-w/j}=\frac{e^{-\gamma w}}{w\Gamma(w)}=\frac{e^{-\gamma w}}{\Gamma(w+1)}=\frac{e^{-\gamma(z-1)}}{\Gamma(z)}.
+\]
+Both sides are entire in $z$ and agree for real $z>1$, so they agree everywhere (Tome~4, Theorem~9.18). Finally $H_n-\log n\to\gamma$, so $e^{-(z-1)\log n}\mathbb Ez^{K_n}=e^{(z-1)(H_n-\log n)}\psi_n(z)\to e^{\gamma(z-1)}\psi(z)=\frac1{\Gamma(z)}$, uniformly on compact sets.
+\end{proof}
+
+\begin{corollary}\label{cor:cyclesdev}
+Uniformly for $a\le\frac k{\log n}\le b$, with $0<a<b$ fixed,
+\[
+P(K_n=k)=e^{-H_n}\frac{H_n^k}{k!}\Bigl(\frac{e^{-\gamma(x-1)}}{\Gamma(x)}+o(1)\Bigr),\qquad x=\frac k{H_n}.
+\]
+\end{corollary}
+\begin{proof}
+Theorem~\ref{thm:modpoissonlocal} with $\lambda_n=H_n$; the ranges $a\le\frac k{\log n}\le b$ and $a'\le\frac k{H_n}\le b'$ differ by a factor tending to $1$.
+\end{proof}
+
+So a permutation of a million elements, which has on average $H_{10^6}\approx14.4$ cycles, has twice that many with a probability about $\frac{e^{-\gamma}}{\Gamma(2)}\approx0.56$ times the Poisson prediction, and half that many with
+about $\frac{e^{\gamma/2}}{\Gamma(1/2)}\approx0.75$ times it. Figure~\ref{fig:cyclesratio} shows the ratio for $n=10^3$ and $n=10^6$. Since $P(K_n=k)=\frac{|s(n,k)|}{n!}$, where $s(n,k)$ are the Stirling numbers of the first kind, the corollary is
+also an asymptotic formula for them (Exercise~\ref{ex:stirling1}).
+
+\begin{figure}[ht]
+\centering\fig{ch11-cycles}
+\caption{The ratio $P(K_n=k)/\pi_{H_n}(k)$ as a function of $x=k/H_n$, computed exactly, for $n=10^3$ (blue dots) and $n=10^6$ (green dots), and the limiting residue $e^{-\gamma(x-1)}/\Gamma(x)$ (red). The residue equals $1$ at $x=1$: the
+Poisson law is right in the bulk, and wrong by the factor $\psi(x)$ in the tails. At finite $n$ the ratio still differs from the limit by a few per cent, an error of order $1/\log n$.}
+\label{fig:cyclesratio}
+\end{figure}
+
+\section{Prime factors of a random integer}
+
+Choose an integer $N$ at random with $P(N=n)=\frac{n^{-s}}{\zeta(s)}$, for a parameter $s>1$. This ``Dirichlet random integer'' has a marvellous property.
+
+\begin{proposition}\label{prop:dirichletint}
+For the Dirichlet random integer $N_s$, the events $\{p\mid N_s\}$, $p$ prime, are independent, with $P(p\mid N_s)=p^{-s}$. Consequently $\omega(N_s)=\sum_pB_p$ with independent Bernoulli$(p^{-s})$ variables $B_p$.
+\end{proposition}
+\begin{proof}
+For $d\ge1$, $P(d\mid N_s)=\sum_{m\ge1}\frac{(dm)^{-s}}{\zeta(s)}=d^{-s}$. For distinct primes $p_1,\dots,p_r$, all divide $N_s$ exactly when their product does, so $P(p_1\mid N_s,\dots,p_r\mid N_s)=(p_1\cdots p_r)^{-s}=\prod_iP(p_i\mid N_s)$. This is
+the product rule for every finite subfamily, hence independence of the events (Tome~3: the product rule for intersections implies it for complements). $\omega(N_s)$ counts the primes dividing $N_s$, and it is finite since $N_s$ is.
+\end{proof}
+
+The exact independence of divisibility by different primes, which is only approximate for a uniform $n\le x$ and which Tome~5 had to fight for in the Erd\H{o}s--Kac theorem, is free in this model. Euler's product
+$\zeta(s)=\prod_p(1-p^{-s})^{-1}$ is the same fact in disguise.
+
+\begin{theorem}\label{thm:omegamod}
+Let $\lambda_s=\sum_pp^{-s}$. As $s\downarrow1$, $\lambda_s\to\infty$, and $\omega(N_s)$ converges mod-Poisson on $\C\setminus\{0\}$ with parameters $\lambda_s$ and limiting function
+\[
+\Psi(z)=\prod_p\Bigl(1+\frac{z-1}p\Bigr)e^{-(z-1)/p}.
+\]
+\end{theorem}
+\begin{proof}
+By monotone convergence $\lambda_s\to\sum_p\frac1p=\infty$. By Proposition~\ref{prop:dirichletint}, $e^{-\lambda_s(z-1)}\mathbb Ez^{\omega(N_s)}=\prod_p(1+wp^{-s})e^{-wp^{-s}}$ with $w=z-1$. Fix $R$ and let $|w|\le R$. For $p>2R$ and every $s\ge1$,
+$|wp^{-s}|\le\frac12$ and the logarithm of the $p$-th factor is at most $|w|^2p^{-2}$ in modulus, as in Example~\ref{ex:bernsums}: the tails of the products are uniformly small, uniformly in $s\in[1,2]$. Each of the finitely many factors with
+$p\le2R$ is continuous in $(s,w)$. So the product converges, as $s\downarrow1$, uniformly for $|w|\le R$, to its value at $s=1$, which is $\Psi(z)$. (Here the parameter is the continuous $s\downarrow1$ instead of $n\to\infty$; the proofs of the
+two theorems above apply verbatim.)
+\end{proof}
+
+For a uniform integer $n\le x$ the answer is the same, with one extra factor. Atle Selberg in 1954, and Hubert Delange in general in 1959 and 1971, proved by contour integration around the singularity of $\zeta(s)^z$ at $s=1$ that
+\begin{equation}\label{eq:selbergdelange}
+\begin{aligned}\frac1x\sum_{n\le x}z^{\omega(n)}&=(\log x)^{z-1}\Bigl(\frac{F(z)}{\Gamma(z)}+O\Bigl(\frac1{\log x}\Bigr)\Bigr),\qq F(z)&=\prod_p\Bigl(1+\frac{z-1}p\Bigr)\Bigl(1-\frac1p\Bigr)^{z-1},\end{aligned}
+\end{equation}
+uniformly for $|z|\le R$. This is the \emph{Selberg--Delange theorem}; its proof belongs to analytic number theory and is given in Tome~14, which builds on the contour methods of Tome~5. In the language of this chapter: $\omega(n)$, for $n$ uniform in $[1,x]$,
+converges mod-Poisson with parameters $\log\log x$ and limiting function
+\[
+\Psi_{\mathrm{unif}}(z)=\frac1{\Gamma(z)}\prod_p\Bigl(1+\frac{z-1}p\Bigr)\Bigl(1-\frac1p\Bigr)^{z-1}=\frac{e^{c(z-1)}}{\Gamma(z)}\,\Psi(z),\qquad c=\sum_p\Bigl(\log\Bigl(1-\frac1p\Bigr)+\frac1p\Bigr).
+\]
+(The last equality is the convergent product $\prod_p(1-\frac1p)^{z-1}e^{(z-1)/p}=e^{c(z-1)}$; the factor $e^{c(z-1)}$ only shifts the parameter $\lambda$ by a constant.) The residue of a uniform random integer is the product of two factors:
+an arithmetic one, $\Psi$, which the Dirichlet model already sees and which comes from the independence of primes; and $\frac1{\Gamma(z)}$, \emph{the same as for permutations}, which comes from the sharp cut-off $n\le x$. The Dirichlet weights cut off
+smoothly, and their residue has no Gamma factor.
+
+\begin{figure}[ht]
+\centering\fig{ch11-omega}
+\caption{The ratio of the proportion of $n\le10^8$ with $\omega(n)=k$ to the Poisson probability $\pi_\lambda(k)$, $\lambda=\log\log10^8$, against $x=k/\lambda$ (dots), and the Selberg--Delange residue $\Psi_{\mathrm{unif}}(x)$ (red). The residue gets the
+direction right, fewer integers than Poisson in both tails, but at $\lambda\approx2.9$ the local theorem is far from its limit and the true ratio is much more extreme. No $n\le10^8$ has more than $8$ prime factors, since $2\cdot3\cdots23>10^8$.}
+\label{fig:omegaratio}
+\end{figure}
+
+The parallel between the cycles of a permutation of size $m$ and the prime factors of an integer of size $x$, with $m\leftrightarrow\log x$, goes much further: the sizes of the prime factors, on a logarithmic scale, have the same limit
+law as the sizes of the cycles. That is the subject of Chapter~12.
+
+\begin{think}
+Theorem~\ref{thm:modpoissonlocal} needs convergence on an annulus. For $\Omega(N_s)$, the number of prime factors counted with multiplicity, $\mathbb Ez^{\Omega(N_s)}=\prod_p\frac{1-p^{-s}}{1-zp^{-s}}$ has a pole at $z=2^s$ (Exercise~\ref{ex:bigomega}). What does that
+say about integers with many more than $2\log\log x$ prime factors? (Think of $n=2^km$.)
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:shift}
+Show that Poisson variables of parameters $\lambda_n\to\infty$ converge mod-Poisson with $\psi=1$, and that if $Y$ is a bounded variable with values in $\{0,1,2,\dots\}$, independent of $X_n$, then $X_n+Y$ converges mod-Poisson with $\psi(z)=\mathbb E[z^Y]$.
+The central limit theorem cannot tell $X_n$ from $X_n+Y$; Theorem~\ref{thm:modpoissonlocal} can.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lambdas}
+Show that for the Dirichlet random integer, $P(N_s\le y)\to0$ as $s\downarrow1$ for every fixed $y$: the model describes ``large'' integers. Show that $\mathbb E\,\omega(N_s)=\lambda_s$ and that $\lambda_s=\log\frac1{s-1}+O(1)$. (Compare $\sum_pp^{-s}$ with
+$\log\zeta(s)=\sum_p\sum_m\frac{p^{-ms}}m$ and use $\zeta(s)=\frac1{s-1}+O(1)$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:residues}
+Let $U_k$ be independent and uniform on $[-\sqrt3,\sqrt3]$ (variance $1$) and $Y_n=\sum_{k\le n}U_k/\sqrt k$. Show that $Y_n$ converges mod-Gaussian with parameters $H_n$ and compute its limiting function. Show that it differs from the one of
+Example~\ref{ex:harmonicwalk}, by comparing the coefficients of $t^4$ in their logarithms.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bigomega}
+Show that $\mathbb Ez^{\Omega(N_s)}=\prod_p\frac{1-p^{-s}}{1-zp^{-s}}$ for $|z|<2^s$, and that $\Omega(N_s)$ converges mod-Poisson on $\{0<|z|<2\}$ with parameters $\lambda_s$ and limiting function
+$\prod_p\frac{1-1/p}{1-z/p}e^{-(z-1)/p}$. Why can the annulus not be larger?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:stirling1}
+The unsigned Stirling numbers of the first kind are defined by $z(z+1)\cdots(z+n-1)=\sum_k|s(n,k)|z^k$. Show that, uniformly for $a\le x\le b$ with $x=\frac k{\log n}$ and $0<a<b$ fixed,
+\[
+|s(n,k)|\sim\frac{(n-1)!\,(\log n)^{k-1}}{(k-1)!\;\Gamma(1+x)}.
+\]
+(Use Theorem~\ref{thm:cyclesmod} with parameters $\log n$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:shift}
+$\mathbb Ez^{X_n+Y}=e^{\lambda_n(z-1)}\mathbb Ez^Y$.
+\end{hint}
+\begin{hint}{ex:lambdas}
+$P(N_s\le y)\le\frac{\sum_{n\le y}n^{-1}}{\zeta(s)}$ and $\zeta(s)\ge\int_1^\infty t^{-s}\dd t=\frac1{s-1}$. The terms $m\ge2$ in $\log\zeta(s)$ sum to at most $\sum_pp^{-2}(1-p^{-1})^{-1}<\infty$.
+\end{hint}
+\begin{hint}{ex:residues}
+$\mathbb Ee^{iuU}=\frac{\sin\sqrt3u}{\sqrt3u}$, and $\log\frac{\sin v}v=-\frac{v^2}6-\frac{v^4}{180}+O(v^6)$.
+\end{hint}
+\begin{hint}{ex:bigomega}
+The exponent of $p$ in $N_s$ is geometric: $P(p^m\mid N_s)=p^{-ms}$. At $z=2$, the factor for $p=2$ blows up as $s\downarrow1$.
+\end{hint}
+\begin{hint}{ex:stirling1}
+$P(K_n=k)=|s(n,k)|/n!$. Apply Theorem~\ref{thm:modpoissonlocal} with $\lambda_n=\log n$ and $\psi=\frac1\Gamma$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:shift}
+\idea The Poisson law is its own reference; an independent addition multiplies generating functions.
+\writeup For $X_n$ Poisson$(\lambda_n)$, $e^{-\lambda_n(z-1)}\mathbb Ez^{X_n}=1$ for all $z$. If $Y$ is independent, bounded and integer-valued, $\mathbb Ez^{X_n+Y}=\mathbb Ez^{X_n}\mathbb Ez^Y$, so $\psi_n(z)=\mathbb Ez^Y$, a polynomial, continuous with value $1$ at $1$.
+Both $X_n$ and $X_n+Y$ satisfy the central limit theorem with the same normalization. But Theorem~\ref{thm:modpoissonlocal} says $P(X_n+Y=k)\approx\pi_{\lambda_n}(k)\,\mathbb E[x^Y]$ at $k=x\lambda_n$: for $x=2$ and $Y=1$ a.s., the probability is doubled, as it should be,
+since $\pi_\lambda(k-1)=\frac k\lambda\pi_\lambda(k)$.
+\end{solution}
+
+\begin{solution}{ex:lambdas}
+\idea The normalizing constant $\zeta(s)$ blows up as $s\downarrow1$, so every bounded range of integers loses its mass; and $\log\zeta(s)$ is essentially the sum over primes.
+\writeup $P(N_s\le y)=\frac{\sum_{n\le y}n^{-s}}{\zeta(s)}\le(s-1)\sum_{n\le y}\frac1n\to0$. By Proposition~\ref{prop:dirichletint}, $\mathbb E\,\omega(N_s)=\sum_pP(p\mid N_s)=\lambda_s$. From Euler's product,
+$\log\zeta(s)=\sum_p-\log(1-p^{-s})=\lambda_s+\sum_p\sum_{m\ge2}\frac{p^{-ms}}m$, and the double sum is at most $\sum_p\frac{p^{-2}}{1-p^{-1}}\le\sum_p\frac2{p^2}<\infty$. Finally $\frac1{s-1}\le\zeta(s)\le1+\frac1{s-1}$ (compare the sum with $\int_1^\infty t^{-s}\dd t$),
+so $\log\zeta(s)=\log\frac1{s-1}+O(s-1)$, and $\lambda_s=\log\frac1{s-1}+O(1)$.
+\end{solution}
+
+\begin{solution}{ex:residues}
+\idea Both sums have the same variances, so the same Gaussian part; their fourth cumulants differ, and the residue records the difference.
+\writeup $\mathbb Ee^{itY_n}e^{H_nt^2/2}=\prod_{k\le n}\frac{\sin(\sqrt3t/\sqrt k)}{\sqrt3t/\sqrt k}e^{t^2/2k}$. With $v=\sqrt3t/\sqrt k$, $\log\frac{\sin v}v+\frac{v^2}6=-\frac{v^4}{180}+O(v^6)=-\frac{t^4}{20k^2}+O(\frac{t^6}{k^3})$, so as in
+Example~\ref{ex:harmonicwalk} the product converges locally uniformly to $\psi_U(t)=\prod_k\frac{\sin(\sqrt3t/\sqrt k)}{\sqrt3t/\sqrt k}e^{t^2/2k}$. Then
+\[
+\log\psi_U(t)=-\frac{t^4}{20}\sum_k\frac1{k^2}+O(t^6)=-\frac{\pi^2t^4}{120}+O(t^6),\qquad\log\psi(t)=-\frac{t^4}{12}\sum_k\frac1{k^2}+O(t^6)=-\frac{\pi^2t^4}{72}+O(t^6)
+\]
+for the signs. The coefficients differ, so $\psi_U\neq\psi$, although both sequences satisfy the central limit theorem with variance $H_n$. (The fourth cumulant of a sign is $-2$, that of $U$ is $-\frac65$; the residue sees $\sum_k\frac{\kappa_4}{24k^2}t^4$.)
+\end{solution}
+
+\begin{solution}{ex:bigomega}
+\idea With multiplicity, each prime contributes a geometric variable, whose generating function has a pole; the smallest prime gives the nearest pole.
+\writeup $P(p^m\mid N_s)=p^{-ms}$, and as in Proposition~\ref{prop:dirichletint} the exponents $v_p(N_s)$ are independent (the product rule holds for the events $\{p_i^{m_i}\mid N_s\}$). So $v_p$ is geometric: $P(v_p=m)=p^{-ms}(1-p^{-s})$, with
+$\mathbb Ez^{v_p}=\frac{1-p^{-s}}{1-zp^{-s}}$ for $|z|<p^s$, and $\mathbb Ez^{\Omega(N_s)}=\prod_p\frac{1-p^{-s}}{1-zp^{-s}}$ for $|z|<2^s$. Then $e^{-\lambda_s(z-1)}\mathbb Ez^{\Omega}=\prod_p\frac{1-p^{-s}}{1-zp^{-s}}e^{-(z-1)p^{-s}}$, and
+$\log\frac{1-u}{1-zu}-(z-1)u=O(|u|^2)$ uniformly for $|z|\le b<2$ and $u=p^{-s}\le\frac12$ with $|zu|\le\frac b2<1$; as in Theorem~\ref{thm:omegamod}, the product converges uniformly on $|z|\le b$ to the stated limit. The annulus cannot reach $|z|=2$: the factor
+$\frac{1-2^{-s}}{1-z2^{-s}}$ has a pole at $z=2^s\to2$, and indeed $\mathbb E[2^{\Omega(N_s)}]=\infty$ for $s$ close to $1$ (the term $p=2$ alone gives $\sum_m2^m2^{-ms}(1-2^{-s})$, which diverges for $s\le1$ and is huge near $1$). Integers with $k>2\lambda$ prime
+factors are dominated by powers of $2$ times typical integers, a regime where the Poisson approximation, corrected or not, is the wrong model.
+\end{solution}
+
+\begin{solution}{ex:stirling1}
+\idea The Stirling numbers are $n!$ times the probabilities of the number of cycles; the local theorem with residue $1/\Gamma$ gives them.
+\writeup By Theorem~\ref{thm:cyclesmod} with parameters $\lambda=\log n$ and $\psi=\frac1\Gamma$, Theorem~\ref{thm:modpoissonlocal} gives, uniformly for $x=\frac k{\log n}\in[a,b]$,
+\[
+\frac{|s(n,k)|}{n!}=P(K_n=k)\sim\frac1n\cdot\frac{(\log n)^k}{k!}\cdot\frac1{\Gamma(x)}
+\]
+(since $e^{-\log n}=\frac1n$, and $\frac1{\Gamma(x)}$ is bounded away from $0$ on $[a,b]$, so the $o(1)$ becomes a relative error). Hence
+\[
+|s(n,k)|\sim\frac{(n-1)!\,(\log n)^k}{k!\,\Gamma(x)}=\frac{(n-1)!\,(\log n)^{k-1}}{(k-1)!}\cdot\frac{\log n}{k\,\Gamma(x)}=\frac{(n-1)!\,(\log n)^{k-1}}{(k-1)!\,\Gamma(1+x)},
+\]
+using $x\Gamma(x)=\Gamma(1+x)$. Leo Moser and Max Wyman studied these asymptotics by the saddle point method in 1958; this uniform form, with a full expansion, is due to Hsien-Kuei Hwang (1995).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Mod-$\varphi$ convergence.} J.~P.~Keating and N.~C.~Snaith, ``Random matrix theory and $\zeta(1/2+it)$'', \emph{Comm.\ Math.\ Phys.}\ 214 (2000), 57--89. J.~Jacod, E.~Kowalski and A.~Nikeghbali, ``Mod-Gaussian convergence: new limit theorems
+in probability and number theory'', \emph{Forum Math.}\ 23 (2011), 835--873. E.~Kowalski and A.~Nikeghbali, ``Mod-Poisson convergence in probability and number theory'', \emph{Int.\ Math.\ Res.\ Not.}\ 2010, 3549--3587, where the factorization of the residue
+of $\omega(n)$ into $\frac1\Gamma$ times an Euler product is explained. V.~F\'eray, P.-L.~M\'eliot and A.~Nikeghbali, \emph{Mod-$\phi$ Convergence: Normality Zones and Precise Deviations}, SpringerBriefs, Springer, 2016. H.-K.~Hwang, ``On convergence rates in the central limit
+theorems for combinatorial structures'', \emph{European J.\ Combin.}\ 19 (1998), 329--343, the ``quasi-powers'' theorem, an ancestor of Theorem~\ref{thm:modpoissonlocal}.
+\item \emph{Cycles and prime factors.} V.~Gontcharoff, ``Du domaine de l'analyse combinatoire'', \emph{Izv.\ Akad.\ Nauk SSSR Ser.\ Mat.}\ 8 (1944), 3--48. L.~Moser and M.~Wyman, ``Asymptotic development of the Stirling numbers of the first kind'', \emph{J.\ London Math.\ Soc.}\ 33 (1958), 133--146. H.-K.~Hwang, ``Asymptotic expansions for the Stirling numbers of the first kind'', \emph{J.\ Combin.\ Theory Ser.\ A} 71 (1995), 343--351.
+A.~Selberg, ``Note on a paper by L.~G.~Sathe'', \emph{J.\ Indian Math.\ Soc.}\ 18 (1954), 83--87. H.~Delange, ``Sur des formules de Atle Selberg'', \emph{Acta Arith.}\ 19 (1971), 105--146. A.~R\'enyi and P.~Tur\'an, ``On a theorem of Erd\H os--Kac'', \emph{Acta Arith.}\ 4 (1958), 71--84.
+\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., AMS, 2015, Chapter~II.5: the Selberg--Delange method in full.
+\item R.~Arratia, A.~D.~Barbour and S.~Tavar\'e, \emph{Logarithmic Combinatorial Structures: a Probabilistic Approach}, EMS, 2003. Permutations, polynomials over finite fields and integers, side by side.
+\end{itemize}
