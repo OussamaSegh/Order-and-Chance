@@ -1,0 +1,415 @@
+\chapter{Random Walks on Networks and Groups}
+
+\begin{center}\itshape
+A random walker on a graph and an electric current in a network of resistors solve the same equations.\\
+So a question of probability, does the walker come back?, becomes a question of physics:\\
+is the resistance to infinity finite? And physics has excellent tools.
+\end{center}
+
+In 1847 Gustav Kirchhoff, then a twenty-three year old \emph{Privatdozent} in Berlin, published the solution of a problem he had posed as a student: given a network of wires and a battery, find the
+current in each wire. His two laws, that the currents entering a node sum to zero and that the voltage drops around a loop sum to zero, determine everything, and the voltages solve a discrete Laplace
+equation. A century later probabilists noticed that the same equation governs a random walk on the network: the probability that the walker, started at $x$, reaches $a$ before $b$ is the voltage at $x$ when
+$a$ is held at one volt and $b$ is earthed (Tome~3, Exercise~7.8).
+
+The dictionary was made systematic by Crispin Nash-Williams, in a 1959 paper in the \emph{Proceedings of the Cambridge Philosophical Society}, and popularised by Peter Doyle and Laurie Snell in their little
+book \emph{Random Walks and Electric Networks} (1984), which proves P\'olya's theorem again by cutting and shorting wires. Its key physical principle is
+older: Lord Rayleigh knew that increasing the resistance of a single wire cannot decrease the resistance of the network, and William Thomson (Lord Kelvin) that the current chooses, among all the flows with
+the same input, the one that dissipates the least energy. Terry Lyons turned Thomson's principle into a criterion for transience in 1983: a walk escapes to infinity exactly when one can send a unit of
+current to infinity with finite energy.
+
+Groups enter through their Cayley graphs. In his 1958 Cornell thesis, written under Mark Kac, Harry Kesten asked how fast the return probability of a random walk on a group decays, and found that the
+answer, a number between $0$ and $1$, detects a deep property of the group, its \emph{amenability}. For the free group he computed it exactly: $\frac{\sqrt{2k-1}}k$, the number behind the Ramanujan graphs of the
+next chapter.
+
+\begin{reminder}[from Tome 3 and Tome C1]
+A walk returns to its starting point infinitely often (\emph{recurrence}) if and only if the expected number of returns $\sum_nu_n$ is infinite (Tome~3, Theorem~7.12), and simple random walk on $\Z^d$ is recurrent for
+$d\le2$ and transient for $d\ge3$ (P\'olya, Tome~3, Theorem~7.13). The discrete Dirichlet problem (Tome~3, Theorem~7.14). Rayleigh's quotient and the Laplacian matrix of a graph (Tome~C1, Chapter~9). The Catalan numbers
+$C_m=\frac1{m+1}\binom{2m}m$ count the paths of $2m$ steps $\pm1$ from $0$ to $0$ that never go below $0$.
+\end{reminder}
+
+\section{Networks and reversible walks}
+
+A \emph{network} is a connected graph $G=(V,E)$, finite or countable and locally finite, with a \emph{conductance} $c(e)>0$ on each edge; $r(e)=1/c(e)$ is its \emph{resistance}. We write $c(xy)$ for the conductance of the edge
+$\{x,y\}$ ($0$ if there is none), $\pi(x)=\sum_yc(xy)$, and define the \emph{network walk} by
+\[
+P(x,y)=\frac{c(xy)}{\pi(x)} .
+\]
+With all conductances $1$ it is simple random walk. The walk is \emph{reversible}: $\pi(x)P(x,y)=c(xy)=\pi(y)P(y,x)$. Conversely every irreducible Markov chain with a positive measure $\pi$ satisfying this
+\emph{detailed balance} is a network walk, with $c(xy)=\pi(x)P(x,y)$. On a finite network, $\pi/\pi(V)$ is a stationary law.
+
+A function $f$ on $V$ is \emph{harmonic} at $x$ if $f(x)=\sum_yP(x,y)f(y)$, that is if $\Delta f(x)=0$, where
+\[
+\Delta f(x)=\sum_yc(xy)\bigl(f(x)-f(y)\bigr)=\pi(x)\Bigl(f(x)-\sum_yP(x,y)f(y)\Bigr).
+\]
+(With this sign, $\Delta$ is the \emph{positive} Laplacian of Tome~C1.) The \emph{energy} of $f$ is $\mathcal E(f)=\frac12\sum_{x,y}c(xy)(f(x)-f(y))^2$, and for finitely supported $f$ or finite $V$ summation by parts gives
+\begin{equation}\label{eq:green}
+\begin{aligned}
+&\sum_xg(x)\Delta f(x)\\
+&\qquad=\frac12\sum_{x,y}c(xy)\bigl(f(x)-f(y)\bigr)\bigl(g(x)-g(y)\bigr).
+\end{aligned}
+\end{equation}
+
+\begin{lemma}[maximum principle]\label{lem:maxprinciple}
+Let $G$ be finite, $Z\subseteq V$ non-empty, and $f$ harmonic on $V\setminus Z$. Then $\max_Vf=\max_Zf$. Consequently, for every $g$ on $Z$ there is exactly one $f$ harmonic on $V\setminus Z$ with $f=g$ on $Z$, namely
+$f(x)=\mathbb E_x[g(X_{\tau_Z})]$, where $\tau_Z$ is the hitting time of $Z$.
+\end{lemma}
+
+\begin{proof}
+If the maximum $M$ is attained at $x\notin Z$, it is attained at every neighbour of $x$ (an average equal to the maximum), hence along a path from $x$ to $Z$, by connectedness. Uniqueness follows by applying this to
+$\pm(f_1-f_2)$. The function $\mathbb E_x[g(X_{\tau_Z})]$ equals $g$ on $Z$ and is harmonic off $Z$ by conditioning on the first step; $\tau_Z<\infty$ almost surely since from every vertex there is a path to $Z$ of length at most
+$|V|$, followed with probability at least some $\delta>0$, so $P_x(\tau_Z>m|V|)\le(1-\delta)^m$.
+\end{proof}
+
+\section{Voltage, current and effective resistance}
+
+Fix a finite network, a vertex $a$ and a set $Z\not\ni a$. The \emph{voltage} is the harmonic function on $V\setminus(\{a\}\cup Z)$ with $v(a)=1$ and $v=0$ on $Z$: by Lemma~\ref{lem:maxprinciple},
+\[
+v(x)=P_x(\tau_a<\tau_Z) .
+\]
+The \emph{current} is $i(xy)=c(xy)(v(x)-v(y))$ (Ohm's law), antisymmetric, with $\sum_yi(xy)=\Delta v(x)=0$ at every $x\notin\{a\}\cup Z$ (Kirchhoff's node law). The total current leaving $a$ is
+$I=\Delta v(a)=\sum_yi(ay)$, and the \emph{effective resistance} between $a$ and $Z$ is $R(a\leftrightarrow Z)=1/I$: the voltage needed to push a unit current.
+
+\begin{proposition}[escape probability]\label{prop:escape}
+$P_a(\tau_Z<\tau_a^+)=\dfrac1{\pi(a)R(a\leftrightarrow Z)}$, where $\tau_a^+=\min\{n\ge1:X_n=a\}$.
+\end{proposition}
+
+\begin{proof}
+Conditioning on the first step, $P_a(\tau_a^+<\tau_Z)=\sum_yP(a,y)v(y)$, so $P_a(\tau_Z<\tau_a^+)=\sum_yP(a,y)(v(a)-v(y))=\frac{\Delta v(a)}{\pi(a)}=\frac I{\pi(a)}$.
+\end{proof}
+
+A \emph{flow} from $a$ to $Z$ is an antisymmetric function $\theta$ on oriented edges with \emph{divergence} $\operatorname{div}\theta(x)=\sum_y\theta(xy)$ equal to $0$ for $x\notin\{a\}\cup Z$; it is a \emph{unit} flow if $\operatorname{div}\theta(a)=1$. Its energy is
+$\mathcal E(\theta)=\frac12\sum_{x,y}r(xy)\theta(xy)^2$. The \emph{unit current} is $i/I$.
+
+\begin{theorem}[Thomson's principle]\label{thm:thomson}
+$R(a\leftrightarrow Z)=\min\{\mathcal E(\theta):\theta\text{ a unit flow from }a\text{ to }Z\}$, and the minimum is attained exactly at the unit current.
+\end{theorem}
+
+\begin{proof}
+Let $j=i/I$, with potential $u=v/I$, so that $r(xy)j(xy)=u(x)-u(y)$. For any antisymmetric $\eta$, summation by parts gives
+\begin{equation}\label{eq:sumparts}
+\begin{aligned}
+\frac12\sum_{x,y}r(xy)j(xy)\eta(xy)&=\frac12\sum_{x,y}(u(x)-u(y))\eta(xy)\\
+&=\sum_xu(x)\operatorname{div}\eta(x).
+\end{aligned}
+\end{equation}
+With $\eta=j$: $\mathcal E(j)=\sum_xu(x)\operatorname{div}j(x)=u(a)\cdot1=\frac1I$, since $u=0$ on $Z$ and $\operatorname{div}j=0$ elsewhere. If $\theta$ is a unit flow, $\eta=\theta-j$ has divergence $0$ off $Z$, so \eqref{eq:sumparts} vanishes and
+$\mathcal E(\theta)=\mathcal E(j)+\mathcal E(\theta-j)\ge\mathcal E(j)$, with equality iff $\theta=j$.
+\end{proof}
+
+\begin{corollary}[Rayleigh's monotonicity law]\label{cor:rayleigh}
+If the conductances are increased (in particular if edges are added, or vertices are \emph{shorted}, that is glued together), the effective resistance $R(a\leftrightarrow Z)$ does not increase.
+\end{corollary}
+
+\begin{proof}
+Each energy $\mathcal E(\theta)=\frac12\sum r\theta^2$ decreases when the resistances decrease, and so does their minimum. Adding an edge is increasing its conductance from $0$ (a unit flow of the old network is one of the new
+network with $\theta=0$ on the new edge). Shorting $x$ and $y$ is the limit of adding an edge of conductance $n\to\infty$ between them; effective resistances of finite networks are continuous in the conductances (the
+voltage solves a linear system with an invertible matrix).
+\end{proof}
+
+The \emph{Dirichlet principle} is the dual statement, with functions instead of flows (Exercise~\ref{ex:dirichletprinciple}): $\frac1{R(a\leftrightarrow Z)}=\min\{\mathcal E(f):f(a)=1,\ f=0\text{ on }Z\}$.
+
+\begin{theorem}[commute time identity; Chandra, Raghavan, Ruzzo, Smolensky and Tiwari, 1989]\label{thm:commute}
+On a finite network, with $c(G)=\sum_x\pi(x)=2\sum_ec(e)$, for all vertices $a\ne b$,
+\[
+\mathbb E_a\tau_b+\mathbb E_b\tau_a=c(G)\,R(a\leftrightarrow b) .
+\]
+\end{theorem}
+
+\begin{proof}
+Let $\varphi_b(x)=\mathbb E_x\tau_b$, finite as in Lemma~\ref{lem:maxprinciple}. Conditioning on the first step, $\varphi_b(x)=1+\sum_yP(x,y)\varphi_b(y)$ for $x\ne b$, that is $\Delta\varphi_b(x)=\pi(x)$. By \eqref{eq:green} with
+$g=1$, $\sum_x\Delta\varphi_b(x)=0$, so $\Delta\varphi_b(b)=\pi(b)-c(G)$. The same holds for $\varphi_a$. Hence $\psi=\varphi_b-\varphi_a$ satisfies $\Delta\psi=0$ off $\{a,b\}$, $\Delta\psi(a)=\pi(a)-(\pi(a)-c(G))=c(G)$ and
+$\Delta\psi(b)=-c(G)$.
+
+The potential $u$ of the unit current from $a$ to $b$ satisfies $\Delta u=\delta_a-\delta_b$ and $u(a)-u(b)=R(a\leftrightarrow b)$. The function $\psi/c(G)-u$ is harmonic everywhere, hence constant by the maximum principle (with
+$Z$ any single vertex). So $\psi(a)-\psi(b)=c(G)R(a\leftrightarrow b)$, and $\psi(a)-\psi(b)=\varphi_b(a)-0-0+\varphi_a(b)$.
+\end{proof}
+
+On the path $0,1,\dots,n$ with unit conductances, $c(G)=2n$ and $R(0\leftrightarrow n)=n$, so $\mathbb E_0\tau_n+\mathbb E_n\tau_0=2n^2$, and by symmetry $\mathbb E_0\tau_n=n^2$: the gambler's ruin time of Tome~3, now from Ohm's law. The proof also
+gives Kac's formula $\mathbb E_a\tau_a^+=c(G)/\pi(a)$ (Exercise~\ref{ex:kac}).
+
+\section{Recurrence and transience by electricity}
+
+Let now $G$ be an infinite network, $a$ a vertex, and $G_n$ an increasing sequence of finite connected sets of vertices containing $a$ with union $V$. Let $G_n^*$ be the finite network obtained from $G$ by shorting all the
+vertices outside $G_n$ into a single vertex $z_n$ (keeping the edges, now possibly multiple, from $G_n$ to $z_n$). By Rayleigh, $R(a\leftrightarrow z_n)$ in $G_n^*$ is non-decreasing in $n$ (shorting fewer vertices); its limit
+$R(a\leftrightarrow\infty)\in]0,\infty]$ is the \emph{resistance to infinity}.
+
+\begin{theorem}\label{thm:recurrentR}
+The network walk is recurrent if and only if $R(a\leftrightarrow\infty)=\infty$. More precisely $P_a(\tau_a^+=\infty)=\frac1{\pi(a)R(a\leftrightarrow\infty)}$.
+\end{theorem}
+
+\begin{proof}
+Until it leaves $G_n$, the walk on $G$ and the walk on $G_n^*$ coincide, so by Proposition~\ref{prop:escape} the probability that the walk on $G$ from $a$ leaves $G_n$ before returning to $a$ is $\frac1{\pi(a)R(a\leftrightarrow z_n)}$. These events
+decrease to $\{\tau_a^+=\infty\}$: a walk that never returns to $a$ leaves every finite set, since a walk confined to the finite connected set $G_n$ forever would visit $a$ (Lemma~\ref{lem:maxprinciple}). Recurrence means that
+$P_a(\tau_a^+<\infty)=1$ (Tome~3, Theorem~7.12, whose proof applies to any Markov chain).
+\end{proof}
+
+A \emph{flow from $a$ to infinity} is an antisymmetric $\theta$ on oriented edges with $\operatorname{div}\theta(x)=0$ for $x\ne a$ and $\operatorname{div}\theta(a)=1$.
+
+\begin{theorem}[T.~Lyons, 1983]\label{thm:lyons}
+If there is a flow from $a$ to infinity with finite energy, the network walk is transient.
+\end{theorem}
+
+\begin{proof}
+Let $\theta$ be such a flow. Its restriction to the edges of $G_n^*$ (the edges leaving $G_n$ now ending at $z_n$) is a unit flow from $a$ to $z_n$, with energy at most $\mathcal E(\theta)$. By Thomson,
+$R(a\leftrightarrow z_n)\le\mathcal E(\theta)$ for all $n$, so $R(a\leftrightarrow\infty)<\infty$.
+\end{proof}
+
+The converse holds too: when $R(a\leftrightarrow\infty)<\infty$ the unit currents of $G_n^*$ converge to a flow to infinity of energy $R(a\leftrightarrow\infty)$ (Lyons and Peres, Chapter~2). For recurrence one needs lower bounds on
+resistance, and the simplest are cuts. A set $\Pi$ of edges is a \emph{cutset} separating $a$ from infinity if every infinite simple path from $a$ uses an edge of $\Pi$.
+
+\begin{theorem}[Nash-Williams, 1959]\label{thm:nashwilliams}
+If $\Pi_1,\Pi_2,\dots$ are disjoint finite cutsets separating $a$ from infinity, then
+\[
+R(a\leftrightarrow\infty)\ge\sum_k\Bigl(\sum_{e\in\Pi_k}c(e)\Bigr)^{-1}.
+\]
+In particular, if the sum diverges, the walk is recurrent.
+\end{theorem}
+
+\begin{proof}
+Fix $m$ and $n$ so large that $G_n$ contains both endpoints of every edge of $\Pi_1,\dots,\Pi_m$. A unit flow $\theta$ from $a$ to $z_n$ in $G_n^*$ sends a total of $1$ across each cutset: the set $S$ of vertices reachable from $a$
+without using $\Pi_k$ is finite and does not contain $z_n$, so summing the divergence over $S$ gives $1=\sum_{x\in S}\operatorname{div}\theta(x)=\sum\theta(xy)$ over the edges leaving $S$, all in $\Pi_k$. So
+$\sum_{e\in\Pi_k}|\theta(e)|\ge1$ and by Cauchy--Schwarz
+\[
+1\le\Bigl(\sum_{e\in\Pi_k}|\theta(e)|\Bigr)^2\le\sum_{e\in\Pi_k}c(e)\cdot\sum_{e\in\Pi_k}r(e)\theta(e)^2 .
+\]
+Summing over $k\le m$ and using disjointness, $\mathcal E(\theta)\ge\sum_{k\le m}(\sum_{\Pi_k}c)^{-1}$. Thomson's principle and $n,m\to\infty$ conclude.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-cuts}
+\caption{Left: in $\Z^2$ the edges joining the boundary of the box $[-k,k]^2$ to the outside form disjoint cutsets $\Pi_k$, with $8k+4$ edges each; $\sum_k\frac1{8k+4}=\infty$, so the walk is recurrent. Right: on the binary tree, the
+flow that splits equally at each vertex sends $2^{-n}$ through each of the $2^n$ edges of generation $n$, with energy $\sum_n2^n4^{-n}<\infty$, so the walk is transient.}
+\label{fig:cuts}
+\end{figure}
+
+\begin{corollary}\label{cor:z2rec}
+Simple random walk on $\Z^2$ is recurrent, and so is simple random walk on every subgraph of $\Z^2$.
+\end{corollary}
+
+\begin{proof}
+The cutsets $\Pi_k$ of Figure~\ref{fig:cuts} give $R(0\leftrightarrow\infty)\ge\sum_k\frac1{8k+4}=\infty$. Removing edges increases the resistance (Rayleigh).
+\end{proof}
+
+\begin{theorem}\label{thm:zdtransient}
+Simple random walk on $\Z^d$, $d\ge3$, is transient; so is simple random walk on every graph containing $\Z^d$, $d\ge3$, as a subgraph.
+\end{theorem}
+
+\begin{proof}
+We build a finite-energy flow from $0$ to infinity out of the electric field of a point charge. Let $\sigma_{d-1}$ be the area of the unit sphere and $F(y)=\frac{y}{\sigma_{d-1}|y|^d}$ on $\R^d\setminus\{0\}$. It is
+divergence-free there (a direct computation: $\operatorname{div}(y|y|^{-d})=d|y|^{-d}-d|y|^{-d}=0$), and its flux out of any sphere around $0$ is $1$. For $x\in\Z^d$ let $Q_x=x+[-\frac12,\frac12]^d$, and for neighbours $x,y$ let $\theta(xy)$ be
+the flux of $F$ through the common face of $Q_x$ and $Q_y$, oriented from $Q_x$ to $Q_y$. Then $\operatorname{div}\theta(x)$ is the flux of $F$ out of $\partial Q_x$: $0$ for $x\ne0$ by the divergence theorem, and $1$ for $x=0$ (compare with a small
+sphere around $0$, by the divergence theorem in the region between them). A face at distance at least $\frac12|x|$ from $0$ (for $|x|\ge2$) carries a flux at most $\sup|F|\le C|x|^{1-d}$, so
+\[
+\mathcal E(\theta)\le C'+\sum_{x\ne0}2d\,C^2|x|^{2-2d}<\infty ,
+\]
+since $\sum_{x\in\Z^d\setminus\{0\}}|x|^{-s}<\infty$ for $s>d$, and $2d-2>d$ when $d\ge3$. Theorem~\ref{thm:lyons} applies. For a graph containing $\Z^d$, the same flow (zero on the other edges) works.
+\end{proof}
+
+This is P\'olya's theorem again, proved without a single return probability, and much more robust: the triangular lattice, $\Z^2$ with a few extra edges, or any subgraph of $\Z^2$ is recurrent; the cubic lattice with
+any edges added, or a slab $\Z^2\times\{0,\dots,k\}$ thickened into $\Z^3$, is transient. (The slab itself is recurrent: Exercise~\ref{ex:slab}.)
+
+\begin{beauty}
+The walker never sees the whole lattice, yet whether it comes home depends on a global quantity, the resistance to infinity. In dimension $2$, the cuts at distance $k$ have about $k$ edges and the resistance grows
+like $\sum\frac1k$, a logarithm; in dimension $3$ the field of a point charge carries the current away with energy $\sum k^{2}\cdot k^{-4}$, and the walker escapes. The planar Brownian motion of Chapter~5, recurrent
+only for neighbourhoods, sits exactly on the logarithmic borderline.
+\end{beauty}
+
+\section{Trees and groups}
+
+\begin{proposition}\label{prop:treetransient}
+On the $d$-regular tree, $d\ge3$, simple random walk is transient, with $P_a(\tau_a^+=\infty)=\frac{d-2}{d-1}$.
+\end{proposition}
+
+\begin{proof}
+By symmetry the voltage from $a$ to the vertices at distance $n$ depends only on the distance, so shorting each sphere changes nothing (no current flows within a sphere), and the network becomes a path in which
+the $k$-th edge consists of $d(d-1)^{k-1}$ parallel unit resistors. Hence $R(a\leftrightarrow\infty)=\sum_{k\ge1}\frac1{d(d-1)^{k-1}}=\frac{d-1}{d(d-2)}$, and $\pi(a)=d$ in Theorem~\ref{thm:recurrentR}.
+\end{proof}
+
+Let $\Gamma$ be a group generated by a finite symmetric set $S$ ($s\in S\Rightarrow s^{-1}\in S$). Its \emph{Cayley graph} has vertex set $\Gamma$ and an edge between $g$ and $gs$ for $s\in S$; simple random walk on it is
+$X_n=s_1s_2\cdots s_n$ with $s_i$ independent and uniform on $S$. Let $p_n=P(X_n=e)$, the return probability. Since $p_{2m+2n}\ge p_{2m}p_{2n}$ (return at time $2m$, then again at time $2m+2n$), the limit
+\[
+\rho=\lim_{n\to\infty}p_{2n}^{1/(2n)}=\sup_np_{2n}^{1/(2n)}
+\]
+exists by Fekete's lemma (for $a_n=-\log p_{2n}$, which is subadditive). It is the \emph{spectral radius} of the walk. On $\Z^d$, $p_{2n}\asymp n^{-d/2}$ and $\rho=1$.
+
+\begin{lemma}[Schur's test]\label{lem:schur}
+Let $P$ be a symmetric non-negative kernel on a countable set and $f>0$ with $\sum_yP(x,y)f(y)\le\lambda f(x)$ for all $x$. Then $|\langle g,Ph\rangle|\le\lambda\|g\|_2\|h\|_2$ for $g,h\in\ell^2$, so $\|P\|_{\ell^2\to\ell^2}\le\lambda$.
+\end{lemma}
+
+\begin{proof}
+$|g(x)h(y)|\le\frac12\bigl(g(x)^2\frac{f(y)}{f(x)}+h(y)^2\frac{f(x)}{f(y)}\bigr)$. Multiply by $P(x,y)$ and sum: the first term gives at most $\frac12\sum_xg(x)^2\lambda$, and by symmetry the second at most $\frac12\sum_yh(y)^2\lambda$.
+\end{proof}
+
+\begin{theorem}[Kesten, 1959]\label{thm:kesten}
+For simple random walk on the free group $F_k$, $k\ge1$, with generators $a_1^{\pm1},\dots,a_k^{\pm1}$,
+\[
+\rho=\frac{\sqrt{2k-1}}k .
+\]
+\end{theorem}
+
+\begin{proof}
+Every element of $F_k$ is a unique reduced word, and the Cayley graph is the $2k$-regular tree. If $|g|$ denotes the length of the reduced word, from $g\ne e$ exactly one of the $2k$ generators shortens the word and the
+others lengthen it.
+
+\emph{Upper bound.} Let $f(g)=(2k-1)^{-|g|/2}$. For $g\ne e$, $\sum_sP(g,gs)f(gs)=\frac1{2k}\bigl(\sqrt{2k-1}+\frac{2k-1}{\sqrt{2k-1}}\bigr)f(g)=\frac{\sqrt{2k-1}}kf(g)$, and at $e$ the sum is $(2k-1)^{-1/2}\le\frac{\sqrt{2k-1}}k$. Lemma~\ref{lem:schur}
+gives $\|P\|\le\frac{\sqrt{2k-1}}k$, so $p_{2n}=\langle\delta_e,P^{2n}\delta_e\rangle\le\|P\|^{2n}$.
+
+\emph{Lower bound.} The length $|X_n|$ is a Markov chain on $\{0,1,\dots\}$, going from $0$ to $1$, and from $j\ge1$ up with probability $p=\frac{2k-1}{2k}$ and down with probability $q=\frac1{2k}$. A return to $e$ at time $2n$
+happens in particular when the length goes up at the first step, then follows one of the $C_{n-1}$ paths from $1$ to $1$ in $2n-2$ steps that stay $\ge1$, then goes down: $p_{2n}\ge C_{n-1}p^{n-1}q^n$. Since
+$C_m\ge\frac{4^m}{(2m+1)(m+1)}$ (the central binomial coefficient is the largest of the $2m+1$ coefficients summing to $4^m$), $p_{2n}^{1/(2n)}\to$ at least $\sqrt{4pq}=\frac{\sqrt{2k-1}}k$.
+\end{proof}
+
+For $k\ge2$, $\rho<1$: the return probabilities decay exponentially and the walk is transient, more strongly than on any $\Z^d$. For $k=1$, $F_1=\Z$ and $\rho=1$. Kesten proved much more: for every symmetric finitely
+supported walk on a group, $\rho=1$ if and only if the group is \emph{amenable} (it has almost invariant finite sets, F\o lner sets). Abelian and nilpotent groups are amenable; groups containing a free subgroup
+are not.
+
+\begin{think}
+The number $\frac{\sqrt{2k-1}}k$ is $\frac{2\sqrt{d-1}}d$ with $d=2k$. The adjacency operator of the $d$-regular tree thus has norm $2\sqrt{d-1}$, although every vertex has degree $d$. Where does the walk ``lose'' the
+missing mass, and why is a finite $d$-regular graph unable to do the same (Tome~C1, Theorem~9.11)?
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:dirichletprinciple}
+Prove the Dirichlet principle: on a finite network, $\frac1{R(a\leftrightarrow Z)}=\min\{\mathcal E(f):f(a)=1,\ f=0\text{ on }Z\}$, attained at the voltage. Deduce Rayleigh's law again.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:kac}
+Deduce from the proof of Theorem~\ref{thm:commute} that $\mathbb E_a\tau_a^+=\frac{c(G)}{\pi(a)}$ (Kac's formula), and check it for the walk on a cycle and on a star.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:hypercube}
+On the hypercube $\{0,1\}^n$ with unit conductances, use symmetry and shorting to show that $R(0\leftrightarrow\mathbf 1)=\sum_{j=0}^{n-1}\frac1{(n-j)\binom nj}$, that $nR(0\leftrightarrow\mathbf 1)\to2$, and deduce that the
+commute time between opposite corners is asymptotic to $2^{n+1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:spherical}
+A \emph{spherically symmetric tree} has a root, and every vertex at distance $n$ from the root has $b_{n+1}\ge1$ children. Show that simple random walk on it is transient if and only if $\sum_n\frac1{b_1b_2\cdots b_n}<\infty$. Deduce that on a recurrent such tree the generation sizes $|T_n|=b_1\cdots b_n$
+cannot all exceed $n^{1+\delta}$, and yet construct a recurrent one with $\limsup_n|T_n|/n^k=\infty$ for every $k$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:slab}
+Show that simple random walk on the slab $\Z^2\times\{0,1,\dots,k\}$ is recurrent, and that on the triangular lattice ($\Z^2$ with the edges from $x$ to $x+(1,1)$ added) it is recurrent.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:znreturn}
+Show that $p_{2n}=\binom{2n}n^24^{-2n}$ for simple random walk on $\Z^2$ (rotate by $45^\circ$), and that $p_{2n}\le Cn^{-d/2}$ on $\Z^d$, so that $\rho=1$ on $\Z^d$. Compare with $F_2$, where $\rho=\frac{\sqrt3}2$: after $100$ steps,
+how many orders of magnitude separate the return probabilities?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:regulartree}
+Let $\Gamma=\Z/2*\Z/2*\Z/2$, generated by three involutions $a,b,c$ with no other relation. Show that its Cayley graph is the $3$-regular tree and that $\rho=\frac{2\sqrt2}3$. More generally show that simple random walk on the
+$d$-regular tree has $\rho=\frac{2\sqrt{d-1}}d$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:speed}
+On the free group $F_k$, $k\ge2$, show that $|X_n|/n\to\frac{k-1}k$ almost surely, so the walk escapes at linear speed. Show that $X_n$ converges to an infinite reduced word $X_\infty$, and that the law of $X_\infty$ is the
+uniform measure on the boundary of the tree (each first letter has probability $\frac1{2k}$, each next letter is uniform among the $2k-1$ allowed ones).
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:dirichletprinciple}
+Write $f=v+g$ with $g(a)=0$, $g=0$ on $Z$, and use \eqref{eq:green}.
+\end{hint}
+
+\begin{hint}{ex:kac}
+In the proof, $\Delta\varphi_a(a)=\pi(a)-c(G)$; express $\Delta\varphi_a(a)$ with $\mathbb E_a\tau_a^+=1+\sum_yP(a,y)\varphi_a(y)$.
+\end{hint}
+
+\begin{hint}{ex:hypercube}
+The voltage depends only on the number of ones. Short each level. The $j$-th level has $\binom nj$ vertices, each with $n-j$ edges to the next level. In the sum, the terms $j=0$ and $j=n-1$ dominate.
+\end{hint}
+
+\begin{hint}{ex:spherical}
+Short the generations, as in Proposition~\ref{prop:treetransient}.
+\end{hint}
+
+\begin{hint}{ex:slab}
+For the slab, cutsets made of the edges leaving the boxes $[-k',k']^2\times\{0,\dots,k\}$. For the triangular lattice, the same boxes as in $\Z^2$.
+\end{hint}
+
+\begin{hint}{ex:znreturn}
+In $\Z^2$, $X_n=(U_n+V_n,U_n-V_n)/2$ with independent walks $U,V$ on $\Z$ of steps $\pm1$. For $\Z^d$, a local limit bound, or the Fourier formula $p_{2n}=(2\pi)^{-d}\int\bigl(\frac1d\sum\cos\theta_j\bigr)^{2n}\mathrm d\theta$.
+\end{hint}
+
+\begin{hint}{ex:regulartree}
+Reduced words alternate letters. Repeat the proof of Theorem~\ref{thm:kesten} with $p=\frac{d-1}d$, $q=\frac1d$ and $f=(d-1)^{-|g|/2}$.
+\end{hint}
+
+\begin{hint}{ex:speed}
+$|X_n|$ is a walk on $\{0,1,\dots\}$ with drift $p-q=\frac{k-1}k$ away from $0$, reflected at $0$; it visits $0$ finitely often. Once $|X_n|$ is large, the first letters are frozen.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:dirichletprinciple}
+\idea Flows and potentials are dual: the current minimises energy among flows, and the voltage minimises energy among potentials. The two minima are $R$ and $1/R$.
+\writeup Let $v$ be the voltage and $f=v+g$ with $g(a)=0$, $g|_Z=0$. By \eqref{eq:green}, $\mathcal E(f)=\mathcal E(v)+\mathcal E(g)+2\sum_xg(x)\Delta v(x)$, and the last sum vanishes because $\Delta v=0$ where $g\ne0$. So
+$\mathcal E(f)\ge\mathcal E(v)$, with equality iff $\mathcal E(g)=0$, that is $g$ constant, hence $g=0$ since $g(a)=0$ and $G$ is connected. Finally $\mathcal E(v)=\sum_xv(x)\Delta v(x)=v(a)I=I=\frac1R$. When conductances increase, each $\mathcal E(f)$
+increases, so $\frac1R$ increases.
+\end{solution}
+
+\begin{solution}{ex:kac}
+\idea The walk from $a$ spends, between two visits to $a$, on average $c(G)/\pi(a)$ steps: the inverse of the stationary probability of $a$.
+\writeup Since $\varphi_a(a)=0$ and $\mathbb E_a\tau_a^+=1+\sum_yP(a,y)\varphi_a(y)$, we have $\Delta\varphi_a(a)=-\pi(a)(\mathbb E_a\tau_a^+-1)$, and the proof showed $\Delta\varphi_a(a)=\pi(a)-c(G)$. Hence $\mathbb E_a\tau_a^+=\frac{c(G)}{\pi(a)}$. On a cycle of length $n$,
+$c(G)=2n$ and $\pi(a)=2$: return time $n$. On a star with $m$ leaves, from the centre: $c(G)=2m$, $\pi=m$, return time $2$ (out and back); from a leaf: $\pi=1$, return time $2m$.
+\end{solution}
+
+\begin{solution}{ex:hypercube}
+\idea Symmetry makes each level an equipotential, so shorting levels changes nothing and the cube becomes a path of bundles of parallel resistors.
+\writeup The automorphisms of the cube fixing $0$ and $\mathbf 1$ act transitively on each level (permutations of coordinates), and they preserve the voltage, so it is constant on levels and no current flows between vertices
+of the same potential when they are glued. The bundle between levels $j$ and $j+1$ has $(n-j)\binom nj$ parallel unit resistors. So $R=\sum_{j=0}^{n-1}\frac1{(n-j)\binom nj}$. The terms $j=0$ and $j=n-1$ are both $\frac1n$, the terms
+$j=1$ and $j=n-2$ are $O(n^{-2})$, and the others are $O(n^{-3})$ each, at most $n$ of them: so $nR\to2$. By Theorem~\ref{thm:commute}, with $c(G)=2\cdot n2^{n-1}=n2^n$, the commute time is $n2^nR\sim2^{n+1}$.
+\end{solution}
+
+\begin{solution}{ex:spherical}
+\idea Shorting generations is free by symmetry, and the tree becomes a path whose $n$-th edge is a bundle of $b_1\cdots b_n$ parallel wires.
+\writeup The voltage from the root to the generation $N$ (shorted) depends only on the generation, by symmetry, so shorting each generation does not change the resistance. Between generations $n-1$ and $n$ there are
+$b_1\cdots b_n$ edges in parallel, so $R(\text{root}\leftrightarrow\text{generation }N)=\sum_{n\le N}\frac1{b_1\cdots b_n}$, and $R(\text{root}\leftrightarrow\infty)$ is the full sum. Theorem~\ref{thm:recurrentR} concludes. If $|T_n|\ge n^{1+\delta}$ for large $n$, the series converges and the walk is transient. For the construction, let
+$n_1=1$, $b_{n_j}=n_j^{\,j}$, $n_{j+1}=n_j+|T_{n_j}|$, and $b_n=1$ for the other $n$. Then $|T_{n_j}|\ge n_j^{\,j}$, so $|T_n|/n^k$ is unbounded for every $k$; but $|T_n|=|T_{n_j}|$ for $n_j\le n<n_{j+1}$, so each stretch contributes
+$\frac{n_{j+1}-n_j}{|T_{n_j}|}=1$ to $\sum_n\frac1{|T_n|}$, which diverges: the walk is recurrent.
+\end{solution}
+
+\begin{solution}{ex:slab}
+\idea Thickening the plane by a bounded amount multiplies the size of each cutset by a constant, which does not change the divergence of $\sum\frac1k$.
+\writeup The edges joining $[-m,m]^2\times\{0,\dots,k\}$ to its complement form disjoint cutsets with $(k+1)(8m+4)$ edges, and $\sum_m\frac1{(k+1)(8m+4)}=\infty$: recurrent by Theorem~\ref{thm:nashwilliams}. In the triangular lattice the
+edges leaving $[-m,m]^2$ are at most $3(8m+4)$, and the same argument applies.
+\end{solution}
+
+\begin{solution}{ex:znreturn}
+\idea In two dimensions the walk is a pair of independent one-dimensional walks in rotated coordinates; in $d$ dimensions the Fourier integral is concentrated near $\theta=0$, where the characteristic function is $1-\frac{|\theta|^2}{2d}$.
+\writeup With $U=X^1+X^2$ and $V=X^1-X^2$, each step changes $U$ and $V$ by $\pm1$, independently and uniformly, so $X_{2n}=0$ iff $U_{2n}=V_{2n}=0$, of probability $(\binom{2n}n4^{-n})^2$. For $\Z^d$, $p_{2n}=(2\pi)^{-d}\int_{[-\pi,\pi]^d}\phi(\theta)^{2n}\dd\theta$
+with $\phi=\frac1d\sum\cos\theta_j$; near $0$, $|\phi|\le1-c|\theta|^2$, and near the points where $|\phi|=1$ (namely $\theta=0$ and $\theta=(\pi,\dots,\pi)$) the same bound holds after translation; elsewhere $|\phi|\le1-c'$. So
+$p_{2n}\le C\int e^{-2nc|\theta|^2}\dd\theta+e^{-2nc'}(2\pi)^d\le C'n^{-d/2}$, and $p_{2n}^{1/(2n)}\to1$ because of the lower bound $p_{2n}=\sum_xP(X_n=x)P(X_n=-x)=\sum_xP(X_n=x)^2\ge(2n+1)^{-d}$ (symmetry and Cauchy--Schwarz, since $X_n$ takes at most $(2n+1)^d$ values). On $F_2$, $p_{100}\approx(\frac{\sqrt3}2)^{100}\approx5.7\times10^{-7}$ up to a polynomial factor, while on $\Z^2$, $p_{100}\approx\frac1{50\pi}\approx6\times10^{-3}$: four orders of magnitude, and the gap grows exponentially.
+\end{solution}
+
+\begin{solution}{ex:regulartree}
+\idea Only the local structure matters: from every vertex but the start, one neighbour is closer and $d-1$ are farther.
+\writeup Reduced words in $a,b,c$ are those with no two equal consecutive letters, and every element is a unique reduced word; from a reduced word one can append any of the $2$ letters different from the last, or cancel the
+last: the Cayley graph is the $3$-regular tree. On the $d$-regular tree, Schur's test with $f=(d-1)^{-|g|/2}$ gives $\sum_yP(g,y)f(y)=\frac1d(\sqrt{d-1}+\frac{d-1}{\sqrt{d-1}})f(g)=\frac{2\sqrt{d-1}}df(g)$, and the distance chain with
+$p=\frac{d-1}d$, $q=\frac1d$ gives the matching lower bound $\sqrt{4pq}=\frac{2\sqrt{d-1}}d$. For $d=3$, $\rho=\frac{2\sqrt2}3$.
+\end{solution}
+
+\begin{solution}{ex:speed}
+\idea The distance from the identity is a biased walk; once far away, the walk never comes back to undo its first letters.
+\writeup $|X_n|$ is the chain of the proof of Theorem~\ref{thm:kesten}. Off $0$ its increments are i.i.d.\ $\pm1$ with mean $p-q=\frac{2k-2}{2k}=\frac{k-1}k$; it is transient (Proposition~\ref{prop:treetransient} or $\rho<1$), so after its last visit to $0$
+$|X_n|$ differs from a sum of $n$ i.i.d.\ increments of mean $\frac{k-1}k$ by at most twice the (finite) number of visits to $0$, and the strong law of large numbers gives $|X_n|/n\to\frac{k-1}k$. Since the biased walk on $\{1,2,\dots\}$ from $j$ returns to $j-1$ with probability $q/p<1$, each
+level is visited finitely often, so for each $m$ the length exceeds $m$ from some time on; at a time after which $|X_n|>m$ forever, the first $m$ letters of the reduced word can no longer change (changing the $m$-th
+letter requires going back to length $m-1$). So $X_n$ converges letter by letter to an infinite word $X_\infty$. By symmetry of the generators under the automorphisms of $F_k$ permuting $\{a_i^{\pm1}\}$, the first letter is
+uniform; given the first $j$ letters, the automorphisms fixing them (and the subtree they define) permute the $2k-1$ allowed continuations, so the next letter is uniform among them.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} G.~Kirchhoff, ``\"Uber die Aufl\"osung der Gleichungen, auf welche man bei der Untersuchung der linearen Vertheilung galvanischer Str\"ome gef\"uhrt wird'', \emph{Annalen der Physik und Chemie} 72 (1847),
+497--508. C.~St.~J.~A.~Nash-Williams, ``Random walk and electric currents in networks'', \emph{Proceedings of the Cambridge Philosophical Society} 55 (1959), 181--194. H.~Kesten, ``Symmetric random walks on groups'',
+\emph{Transactions of the American Mathematical Society} 92 (1959), 336--354, and ``Full Banach mean values on countable groups'', \emph{Mathematica Scandinavica} 7 (1959), 146--156. T.~Lyons, ``A simple criterion for
+transience of a reversible Markov chain'', \emph{Annals of Probability} 11 (1983), 393--402. A.~K.~Chandra, P.~Raghavan, W.~L.~Ruzzo, R.~Smolensky and P.~Tiwari, ``The electrical resistance of a graph captures its commute
+and cover times'', \emph{Proceedings of the 21st ACM Symposium on Theory of Computing} (1989), 574--586.
+\item P.~G.~Doyle and J.~L.~Snell, \emph{Random Walks and Electric Networks}, Mathematical Association of America, 1984 (free at arXiv:math/0001057). The dictionary, with Rayleigh's and Thomson's principles and P\'olya's theorem.
+\item R.~Lyons and Y.~Peres, \emph{Probability on Trees and Networks}, Cambridge University Press, 2016 (free online). Chapters~2, 3 and~6: flows, transience criteria, amenability and Kesten's theorem.
+\item W.~Woess, \emph{Random Walks on Infinite Graphs and Groups}, Cambridge University Press, 2000. Spectral radius, amenability and the geometry of groups.
+\end{itemize}
