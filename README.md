@@ -61,7 +61,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | In progress (12 of 14 chapters) |
 | 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
-| 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | In progress (5 of 12 chapters) |
+| 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | In progress (6 of 12 chapters) |
 | C1 | Discrete Structures | Logic, combinatorics, graph theory, orders | Complete draft (12 chapters) |
 | C2 | Algorithms | Design and analysis, graph algorithms, linear programming, randomised, algebraic, number-theoretic, string and approximation algorithms | Complete draft (12 chapters) |
 | C3 | Computation and Complexity | Automata, computability, Gödel, complexity classes, type theory | Complete draft (12 chapters) |

@@ -1,0 +1,349 @@
+\chapter{Proofs a Computer Can Check}
+\label{ch:lean}
+
+\begin{center}\itshape
+A referee reads a proof once, tired, on a train.\\
+A proof assistant reads it every time, and never gets tired.\\
+It also never understands it. That part is still yours.
+\end{center}
+
+In 1998 Thomas Hales announced a proof of the Kepler conjecture: no packing of equal balls in space is denser than the greengrocer's stack of oranges. The proof combined
+three hundred pages of mathematics with billions of computer-checked inequalities. The \emph{Annals of Mathematics} sent it to a panel of referees, who worked on it for four
+years and then reported that they were ``99\% certain'' it was correct, but could not certify the computations. The paper appeared in 2005. Hales's answer was not to argue; it was
+to start a project, Flyspeck, to check the whole proof line by line in a proof assistant. It took a team of twenty-two people eleven years, and the result, ``A formal proof of the
+Kepler conjecture'', appeared in 2017. Nobody is 99\% certain any more.
+
+This chapter explains what such a check is, shows a few short proofs written for the proof assistant Lean~4 and its library Mathlib, and proves the theorem that makes the
+whole enterprise possible: a proof is a program, and checking a proof is checking that a program has the right type.
+
+\section{Four stories}
+
+\begin{itemize}
+\item \emph{The four colour theorem.} Appel and Haken's 1976 proof needed a computer to check over a thousand configurations, and for decades it was accepted with a shrug. In 2005
+Georges Gonthier, with Benjamin Werner, gave a complete formal proof in the proof assistant Coq; his account in the \emph{Notices of the AMS} (2008) is a model of how to explain
+such work to mathematicians.
+\item \emph{Flyspeck}, above: the formal proof of the Kepler conjecture, completed in 2014 and published in 2017.
+\item \emph{The Liquid Tensor Experiment.} In December 2020 Peter Scholze posted a challenge on Kevin Buzzard's blog: formalise a theorem of his with Dustin Clausen on liquid
+vector spaces, of which he wrote ``I think this may be my most important theorem to date''. He was not sure the proof was right in every detail. A team led by Johan Commelin and
+Adam Topaz finished the formalisation in Lean on 14 July 2022. On the way, the formalisers found simplifications of parts of the argument.
+\item \emph{The polynomial Freiman--Ruzsa conjecture.} In November 2023 Gowers, Green, Manners and Tao posted a proof of this conjecture of additive combinatorics. Tao immediately
+organised an open formalisation in Lean; about three weeks later, in early December 2023, it was complete.
+\end{itemize}
+
+Since October 2024 Buzzard leads a five-year project, funded by the UK research council EPSRC, to formalise a proof of Fermat's Last Theorem, with the stated aim of reducing it to results
+known in the 1980s. The pattern is clear: formal proof has moved from checking old theorems to checking new ones as they are written.
+
+\section{What a proof assistant does}
+
+A proof assistant is a programming language whose types can express mathematical statements. A statement is a type; a proof of the statement is a program (a \emph{term}) of that type;
+and the assistant's \emph{kernel}, a small program that one can read and trust, checks that the term has the type. Everything else (the tactics that help you build the term, the
+automation, the library) can be as clever and as buggy as it likes: if it produces a term, the kernel checks it.
+
+Here is the simplest possible example in Lean~4. The text after \texttt{--} is a comment.
+\begin{verbatim}
+-- a statement, and a proof of it
+theorem two_add_two : 2 + 2 = 4 := rfl
+\end{verbatim}
+The statement \texttt{2 + 2 = 4} is a type; \texttt{rfl} (``reflexivity'') is a term of type \texttt{a = a}, and the kernel accepts it because both sides compute to the same natural number.
+Implication is literally a function type: a proof of $A\to B$ is a function sending proofs of $A$ to proofs of $B$.
+\begin{verbatim}
+theorem mp (A B : Prop)
+    (ha : A) (hab : A -> B) : B :=
+  hab ha
+
+theorem k (A B : Prop) : A -> B -> A :=
+  fun a _ => a
+\end{verbatim}
+Modus ponens is function application, and the tautology $A\to(B\to A)$ is the function that takes $a$, ignores the second argument, and returns $a$. Section~\ref{sec:curryhoward} turns this
+observation into a theorem.
+
+\emph{Dependent types in one paragraph.} In Lean, a type may depend on a value: \texttt{Fin n} is the type of natural numbers below \texttt{n}, so a function \texttt{(n : Nat) -> Fin (n+1)}
+returns a value whose type depends on its input. This is exactly what a universal statement needs. A proof of $\forall n,\ P(n)$ is a function that sends each $n$ to a proof of $P(n)$,
+whose type depends on $n$. Existential statements are pairs: a witness and a proof that it works.
+
+\emph{Tactics.} Writing terms by hand is like writing machine code. Instead one writes a proof script of \emph{tactics}, each of which transforms the current goal: \texttt{intro},
+\texttt{apply}, \texttt{induction}, \texttt{simp} (rewriting with known equalities), \texttt{ring} (proving identities in commutative rings), \texttt{omega} (linear arithmetic over the integers),
+\texttt{decide} (deciding a statement about finitely many cases by computation). Here is induction:
+\begin{verbatim}
+import Mathlib
+
+def oddSum : Nat -> Nat
+  | 0 => 0
+  | n + 1 => oddSum n + (2 * n + 1)
+
+theorem oddSum_eq (n : Nat) :
+    oddSum n = n * n := by
+  induction n with
+  | zero => rfl
+  | succ n ih =>
+    rw [oddSum, ih]
+    ring
+\end{verbatim}
+After \texttt{rw} (rewrite) the goal is $n\cdot n+(2n+1)=(n+1)(n+1)$, which \texttt{ring} proves. A human reader sees the familiar proof that $1+3+\dots+(2n-1)=n^2$; the kernel sees a term
+built by the recursor of the natural numbers.
+
+\section{Two theorems of the series, formalised}
+
+Euclid's theorem, in the form ``above every $n$ there is a prime'', with the proof of Tome~1: a prime factor of $n!+1$ cannot be at most $n$. The function \texttt{Nat.minFac} returns the
+smallest prime factor of a number different from $1$.
+\begin{verbatim}
+open Nat in
+theorem euclid (n : Nat) :
+    ∃ p, n ≤ p ∧ p.Prime := by
+  let p := minFac (n ! + 1)
+  have f1 : n ! + 1 ≠ 1 := by
+    have := factorial_pos n
+    omega
+  have pp : p.Prime := minFac_prime f1
+  refine ⟨p, ?_, pp⟩
+  by_contra h
+  push_neg at h
+  have h1 : p ∣ n ! :=
+    dvd_factorial (minFac_pos _) h.le
+  have h2 : p ∣ n ! + 1 := minFac_dvd _
+  have h3 : p ∣ 1 :=
+    (Nat.dvd_add_right h1).mp h2
+  exact pp.not_dvd_one h3
+\end{verbatim}
+Read it line by line against the proof you know: \texttt{f1} says $n!+1\ne1$ (because $n!>0$), so it has a smallest prime factor $p$; if $p<n$ (the hypothesis \texttt{h} after \texttt{push\_neg}),
+then $p$ divides $n!$ and $n!+1$, hence $1$, which no prime does. Every step a human would skip (that $n!>0$, that $p\le n$ follows from $p<n$) has to be said, but only once:
+the library then knows it for ever.
+
+The obstruction of Proposition~\ref{prop:mod9} is a computation in $\Z/9\Z$, and computations are what \texttt{decide} is for:
+\begin{verbatim}
+theorem cubes_mod_nine (x : ZMod 9) :
+    x^3 = 0 ∨ x^3 = 1 ∨ x^3 = -1 := by
+  revert x
+  decide
+\end{verbatim}
+The kernel checks the nine cases by evaluation. Turning this into the statement about integers is Exercise~\ref{ex:leanmod9}.
+
+\begin{remark}[about the listings]\label{rem:leanlistings}
+The listings of this chapter are written for Lean~4 with a recent Mathlib, and use only standard tactics and long-established library names. They were not compiled in the
+environment in which this edition was produced, and library names do change over time: the first exercise of the chapter is to paste them into the online Lean editor
+(\url{https://live.lean-lang.org}), which loads Mathlib, and repair whatever the current version objects to. Doing so is also the quickest way to learn how a proof assistant talks back.
+\end{remark}
+
+\section{Proofs are programs}
+\label{sec:curryhoward}
+
+Why should a type checker be able to check proofs at all? The answer, found independently by Haskell Curry (1934, for combinators) and William Howard (in notes written in 1969 and
+published in 1980), is that proofs in a natural deduction system and programs in the typed $\lambda$-calculus are the same objects. We prove it for the simplest fragment of logic, where
+the only connective is implication; the full correspondence (with $\wedge$, $\vee$, $\forall$, $\exists$) is the same idea with more cases.
+
+\begin{definition}\label{def:nd}
+\emph{Formulas} are built from atoms $p,q,\dots$ by $A\to B$. A \emph{context} is a finite list $\Gamma=(A_1,\dots,A_k)$ of formulas. \emph{Derivations} of judgements $\Gamma\vdash A$ are built by three rules:
+\begin{enumerate}[label=(\roman*)]
+\item (hypothesis $i$) $\Gamma\vdash A_i$ for each $1\le i\le k$;
+\item ($\to$-introduction) from a derivation of $\Gamma,A\vdash B$, a derivation of $\Gamma\vdash A\to B$;
+\item ($\to$-elimination) from derivations of $\Gamma\vdash A\to B$ and of $\Gamma\vdash A$, a derivation of $\Gamma\vdash B$.
+\end{enumerate}
+A derivation is a finite tree labelled by rules; two derivations are equal when their trees and labels are equal.
+\end{definition}
+
+\begin{definition}\label{def:stlc}
+\emph{Terms} are built from variables $x_1,x_2,\dots$ by abstraction $\lambda x{:}A.\,t$ (with $A$ a formula) and application $t\,u$. A \emph{typing context} is a list $\Delta=(x_1{:}A_1,\dots,x_k{:}A_k)$
+of distinct variables with formulas. Typing judgements $\Delta\vdash t:A$ are derived by three rules:
+\begin{enumerate}[label=(\roman*)]
+\item $\Delta\vdash x_i:A_i$;
+\item from $\Delta,x_{k+1}{:}A\vdash t:B$, conclude $\Delta\vdash\lambda x_{k+1}{:}A.\,t:A\to B$;
+\item from $\Delta\vdash t:A\to B$ and $\Delta\vdash u:A$, conclude $\Delta\vdash t\,u:B$.
+\end{enumerate}
+\end{definition}
+
+The bound variable of an abstraction is always the next free index $x_{k+1}$; this convention (a cousin of de~Bruijn indices) means we never need to rename variables. Write $|\Delta|$ for the
+context $(A_1,\dots,A_k)$ obtained by forgetting the names.
+
+\begin{lemma}[uniqueness of types]\label{lem:uniquetype}
+For every $\Delta$ and $t$ there is at most one $A$ with $\Delta\vdash t:A$, and at most one derivation of it.
+\end{lemma}
+
+\begin{proof}
+Induction on $t$. The form of $t$ determines the last rule. If $t=x_i$, the rule is (i), which needs $x_i$ in $\Delta$, and the type is $A_i$. If $t=\lambda x_{k+1}{:}A.\,s$, the rule is (ii) and its premise
+is a derivation of $\Delta,x_{k+1}{:}A\vdash s:B$; by induction $B$ and that derivation are unique, so the type $A\to B$ and the derivation are. If $t=s\,u$, the rule is (iii), with premises
+$\Delta\vdash s:C\to B$ and $\Delta\vdash u:C$ for some $C$; by induction $u$ has at most one type, so $C$ is determined, then $s$ has the unique type $C\to B$, which determines $B$, and both
+premise derivations are unique.
+\end{proof}
+
+\begin{theorem}[Curry--Howard, implicational fragment]\label{thm:curryhoward}
+Let $\Delta=(x_1{:}A_1,\dots,x_k{:}A_k)$ and $A$ be given. Erasing terms is a bijection
+\[
+\{t:\ \Delta\vdash t:A\}\ \longrightarrow\ \{\text{derivations of }|\Delta|\vdash A\},
+\]
+from the terms of type $A$ in $\Delta$ to the natural deduction derivations of $A$ from $|\Delta|$. In particular $A$ is derivable from $|\Delta|$ if and only if some term has type $A$ in $\Delta$.
+\end{theorem}
+
+\begin{proof}
+\emph{The map.} By Lemma~\ref{lem:uniquetype}, a term $t$ with $\Delta\vdash t:A$ has exactly one typing derivation. Erase it: replace each judgement $\Delta'\vdash s:B$ by $|\Delta'|\vdash B$, and each rule
+by the rule with the same number (rule (i) for $x_i$ becomes hypothesis $i$). The three typing rules become exactly the three rules of Definition~\ref{def:nd}, so the result is a derivation $\Phi(t)$ of $|\Delta|\vdash A$.
+
+\emph{The inverse.} Given a derivation $D$ of $|\Delta|\vdash A$, define a term $\Psi(D)$ by induction on $D$: if $D$ is hypothesis $i$, $\Psi(D)=x_i$; if $D$ ends with $\to$-introduction from $D'$ deriving
+$|\Delta|,B\vdash C$, then $\Psi(D)=\lambda x_{k+1}{:}B.\,\Psi(D')$, where $\Psi(D')$ is computed in the context $\Delta,x_{k+1}{:}B$; if $D$ ends with $\to$-elimination from $D_1$ and $D_2$, then $\Psi(D)=\Psi(D_1)\,\Psi(D_2)$.
+By the same induction, $\Delta\vdash\Psi(D):A$, since each case is the matching typing rule.
+
+\emph{They are inverse.} $\Phi(\Psi(D))=D$ by induction on $D$: the typing derivation of $\Psi(D)$ built in the previous step erases, rule by rule, to $D$ (and it is \emph{the} typing derivation of $\Psi(D)$, by uniqueness). Conversely
+$\Psi(\Phi(t))=t$ by induction on $t$: if $t=x_i$, $\Phi(t)$ is hypothesis $i$ and $\Psi$ returns $x_i$; if $t=\lambda x_{k+1}{:}B.\,s$, $\Phi(t)$ ends with $\to$-introduction from $\Phi(s)$, and $\Psi$ returns
+$\lambda x_{k+1}{:}B.\,\Psi(\Phi(s))=t$; applications are the same.
+\end{proof}
+
+So a proof checker for this logic is a type checker for $\lambda$-terms, and the type checker is a dozen lines (Exercise~\ref{ex:typecheck}). Lean's kernel is the same idea for a much richer type
+theory, the calculus of inductive constructions, in which types can depend on terms and quantifiers are dependent function types.
+
+\section{What cannot be proved, and why Lean has an axiom}
+
+The logic of Definition~\ref{def:nd} is \emph{intuitionistic}: there is no rule for proof by contradiction. Is anything missing? Peirce's law $((A\to B)\to A)\to A$ is a tautology of classical logic
+(check the truth table), but it has no proof in our system. To show that something is \emph{not} derivable we need a semantics in which every derivable formula is true but Peirce's law is not.
+
+\begin{definition}\label{def:heyting3}
+Let $H=\{0,\frac12,1\}$ with its usual order, and for $a,b\in H$ put $a\Rightarrow b=1$ if $a\le b$ and $a\Rightarrow b=b$ otherwise. A \emph{valuation} $v$ assigns an element of $H$ to each atom, and extends
+to formulas by $v(A\to B)=v(A)\Rightarrow v(B)$. For a context $\Gamma=(A_1,\dots,A_k)$ put $v(\Gamma)=\min(v(A_1),\dots,v(A_k))$, with $v(\Gamma)=1$ for the empty context.
+\end{definition}
+
+\begin{lemma}\label{lem:heytingadj}
+For all $a,b,g\in H$: $\min(g,a)\le b$ if and only if $g\le(a\Rightarrow b)$.
+\end{lemma}
+
+\begin{proof}
+If $a\le b$, both sides hold: $\min(g,a)\le a\le b$, and $a\Rightarrow b=1$. If $a>b$, then $a\Rightarrow b=b$, and $\min(g,a)\le b$ holds if and only if $g\le b$ (when $g\le b<a$ the minimum is $g$; when $g>b$ the minimum is $\min(g,a)>b$).
+\end{proof}
+
+\begin{theorem}[soundness]\label{thm:heytingsound}
+If $\Gamma\vdash A$ is derivable, then $v(\Gamma)\le v(A)$ for every valuation $v$.
+\end{theorem}
+
+\begin{proof}
+Induction on the derivation. Hypothesis $i$: $v(\Gamma)\le v(A_i)$ as a minimum. Introduction: by induction $\min(v(\Gamma),v(A))=v(\Gamma,A)\le v(B)$, so $v(\Gamma)\le v(A)\Rightarrow v(B)=v(A\to B)$ by Lemma~\ref{lem:heytingadj}.
+Elimination: by induction $v(\Gamma)\le v(A)\Rightarrow v(B)$ and $v(\Gamma)\le v(A)$; the lemma with $g=v(\Gamma)$ gives $\min(v(\Gamma),v(A))\le v(B)$, and the left side is $v(\Gamma)$.
+\end{proof}
+
+\begin{corollary}\label{cor:peirce}
+Peirce's law $((p\to q)\to p)\to p$ is not derivable from the empty context. Consequently there is no closed $\lambda$-term of type $((p\to q)\to p)\to p$.
+\end{corollary}
+
+\begin{proof}
+Take $v(p)=\frac12$, $v(q)=0$. Then $v(p\to q)=\frac12\Rightarrow0=0$, $v((p\to q)\to p)=0\Rightarrow\frac12=1$, and $v(\text{Peirce})=1\Rightarrow\frac12=\frac12<1=v(\emptyset)$. By Theorem~\ref{thm:heytingsound}
+it is not derivable, and by Theorem~\ref{thm:curryhoward} no term has that type.
+\end{proof}
+
+This is not a curiosity. In programming terms, Peirce's law is the type of the control operator \texttt{call/cc}, which jumps out of a computation: classical reasoning needs more than pure
+functions. Lean's logic is intuitionistic at its core, and classical mathematics is obtained by adding axioms, among them \texttt{Classical.choice}, from which the law of the excluded middle
+\texttt{Classical.em} is derived. Mathlib uses them freely; the command \texttt{\#print axioms euclid} lists exactly which axioms a given theorem depends on, which is a kind of honesty
+no paper offers.
+
+\begin{think}
+The proof of Corollary~\ref{cor:peirce} needed the third value $\frac12$. Why can no two-element semantics show that Peirce's law is not derivable?
+\end{think}
+
+\begin{beauty}
+Two definitions written for different purposes, one for proofs and one for programs, turn out to be the same definition. Every theorem of this series is, in principle, a program, and
+the referee of last resort is a type checker short enough to read in an afternoon. What remains human is the part no kernel checks: choosing what is worth proving, and seeing why it is true.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:leanrun}
+Paste the listings of this chapter into \url{https://live.lean-lang.org} and make them compile with the current Mathlib. For each error, say which line of the human proof it corresponds to.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sterm}
+Find a closed term of type $(A\to B\to C)\to(A\to B)\to A\to C$ and draw the natural deduction derivation that Theorem~\ref{thm:curryhoward} associates with it. Then write it in Lean as \texttt{fun f g a => ...}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:typecheck}
+Write a type checker for Definition~\ref{def:stlc} in Python: a function that takes a context and a term and returns its type or reports an error. Use Lemma~\ref{lem:uniquetype} to see why it never needs to search.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:leanmod9}
+Prove in Lean that $x^3+y^3+z^3\not\equiv4\pmod9$ for all \texttt{x y z : ZMod 9}, and deduce the statement for integers by casting with \texttt{Int.cast}. (Expect \texttt{decide} to be slow on $729$ cases; there is a smarter route through \texttt{cubes\_mod\_nine}.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:dne}
+Add an atom $\bot$ with $v(\bot)=0$ and put $\neg A=A\to\bot$. Show with Theorem~\ref{thm:heytingsound} that $\neg\neg p\to p$ is not derivable, but find a term of type $p\to\neg\neg p$ and one of type $\neg\neg\neg p\to\neg p$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:twovalue}
+Answer the question of the \emph{think} box: show that every formula of the implicational fragment that is not derivable takes a value $<1$ under \emph{some} valuation in \emph{some} finite Heyting algebra, but that
+the two-element algebra $\{0,1\}$ cannot refute Peirce's law. (The first half is a completeness theorem; you may restrict to formulas with at most two atoms and argue by computer.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:leanrun}
+Library names are the usual culprit: search the Mathlib documentation for the statement you need, or use the tactic \texttt{exact?}, which searches the library for you.
+\end{hint}
+
+\begin{hint}{ex:sterm}
+The answer applies \texttt{f} to \texttt{a} and to \texttt{g a}.
+\end{hint}
+
+\begin{hint}{ex:typecheck}
+Represent formulas as nested tuples and terms as tagged tuples; recurse on the term.
+\end{hint}
+
+\begin{hint}{ex:leanmod9}
+For the integers, the cast of $x^3+y^3+z^3$ to \texttt{ZMod 9} is the sum of the cubes of the casts, by \texttt{push\_cast}; and an integer is $\equiv4\pmod9$ exactly when its cast is $4$.
+\end{hint}
+
+\begin{hint}{ex:dne}
+The valuation $v(p)=\frac12$ works again. For $p\to\neg\neg p$: given $a$ and $f:\neg p$, apply $f$ to $a$.
+\end{hint}
+
+\begin{hint}{ex:twovalue}
+In $\{0,1\}$ the operation $\Rightarrow$ is classical implication, and Peirce's law is a classical tautology.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:leanrun}
+\idea A proof assistant is a strict but helpful reader; the error messages point to the gap.
+\writeup The typical errors are a renamed lemma (search the documentation or use \texttt{exact?}), a changed implicit argument (add it explicitly with \texttt{(n := n)}), or a tactic that no longer closes a goal
+(look at the goal state in the editor and add the missing step). Each is a step a human proof leaves implicit: for instance \texttt{h.le} is ``$p<n$ implies $p\le n$''.
+\end{solution}
+
+\begin{solution}{ex:sterm}
+\idea Follow the types: to produce $C$ from $f:A\to B\to C$ we need an $A$ and a $B$.
+\writeup The term is $\lambda f{:}(A\to B\to C).\,\lambda g{:}(A\to B).\,\lambda a{:}A.\,f\,a\,(g\,a)$, in Lean \texttt{fun f g a => f a (g a)}. Its derivation, in the context $(A\to B\to C,\ A\to B,\ A)$, has three
+hypothesis leaves at the top: $\to$-elimination of hypotheses 1 and 3 gives $B\to C$, elimination of hypotheses 2 and 3 gives $B$, one more elimination gives $C$, and three introductions discharge the hypotheses in
+reverse order. This is the combinator $S$ of Curry's combinatory logic, and $k$ of the chapter is his $K$.
+\end{solution}
+
+\begin{solution}{ex:typecheck}
+\idea Uniqueness of types means the checker can compute types bottom-up, deterministically.
+\writeup With formulas \texttt{'p'} or \texttt{('->', A, B)} and terms \texttt{('var', i)}, \texttt{('lam', A, t)}, \texttt{('app', t, u)}: for a variable, return the $i$-th type of the context; for \texttt{lam}, check $t$ in the context
+extended by $A$ and return \texttt{('->', A, B)}; for \texttt{app}, compute the types of $t$ and $u$, check that the first is \texttt{('->', C, B)} with $C$ equal to the second, and return $B$. Any mismatch is an error. Each case
+is one case of the proof of Lemma~\ref{lem:uniquetype}, and the running time is linear in the size of the term (up to comparing formulas). The notebook implements it.
+\end{solution}
+
+\begin{solution}{ex:leanmod9}
+\idea Do the arithmetic where it is finite, then transport.
+\writeup Over \texttt{ZMod 9}, \texttt{decide} on all $729$ triples works but is slow; better, by \texttt{cubes\_mod\_nine} each cube is one of $0,1,-1$, and the $27$ combinations (\texttt{rcases} on the three disjunctions, then
+\texttt{decide} or \texttt{norm\_num} in each case) give sums in $\{-3,\dots,3\}$, never $4$. For integers, if $x^3+y^3+z^3\equiv4\pmod 9$, cast to \texttt{ZMod 9} (\texttt{push\_cast} moves the cast inside the sum and the powers) to
+get a sum of three cubes equal to $4$ there, a contradiction. The equivalence between ``$\equiv4\pmod9$'' and ``cast equals $4$'' is the library lemma \texttt{ZMod.intCast\_eq\_intCast\_iff} or one of its relatives.
+\end{solution}
+
+\begin{solution}{ex:dne}
+\idea The third value again separates intuitionistic from classical logic.
+\writeup With $v(p)=\frac12$: $v(\neg p)=\frac12\Rightarrow0=0$, $v(\neg\neg p)=0\Rightarrow0=1$, and $v(\neg\neg p\to p)=1\Rightarrow\frac12=\frac12<1$; by soundness (the proof of Theorem~\ref{thm:heytingsound} is unchanged by the new atom)
+the formula is not derivable. On the other hand $\lambda a{:}p.\,\lambda f{:}\neg p.\,f\,a$ has type $p\to\neg\neg p$, and $\lambda h{:}\neg\neg\neg p.\,\lambda a{:}p.\,h\,(\lambda f{:}\neg p.\,f\,a)$ has type $\neg\neg\neg p\to\neg p$: three negations
+reduce to one intuitionistically, though two do not reduce to none.
+\end{solution}
+
+\begin{solution}{ex:twovalue}
+\idea Two values give classical logic; refuting a classical tautology needs more.
+\writeup In $\{0,1\}$, $a\Rightarrow b$ is $0$ exactly when $a=1$ and $b=0$, which is the truth table of implication, so every valuation gives a classical tautology the value $1$; Peirce's law is one, so $\{0,1\}$ cannot refute it, although
+by Corollary~\ref{cor:peirce} it is not derivable. The completeness half (the finite model property of intuitionistic logic) goes back to Ja\'skowski in 1936; see S{\o}rensen and Urzyczyn; for formulas with at most two atoms one can check by computer that the non-derivable
+ones, found by a proof search that terminates in this fragment, are all refuted in a small finite algebra. We do not prove the general theorem here.
+\end{solution}
+
+\section{Sources}
+
+\begin{itemize}
+\item T.~C.~Hales et al., A formal proof of the Kepler conjecture, \emph{Forum of Mathematics, Pi} 5 (2017), e2; the introduction recounts the refereeing of the 2005 \emph{Annals} paper and the ``99\% certain'' report.
+\item G.~Gonthier, Formal proof---the four-color theorem, \emph{Notices of the AMS} 55 (2008), 1382--1393.
+\item P.~Scholze, Liquid tensor experiment, post on the Xena blog, December 2020, and \emph{Experimental Mathematics} 31 (2022); project page \url{https://github.com/leanprover-community/lean-liquid} (completion on 14 July 2022).
+\item T.~Tao, blog posts of November and December 2023 on the formalisation of the polynomial Freiman--Ruzsa conjecture; W.~T.~Gowers, B.~Green, F.~Manners, T.~Tao, On a conjecture of Marton, arXiv:2311.05762 (2023).
+\item K.~Buzzard, announcement of the EPSRC-funded project to formalise Fermat's Last Theorem (October 2023, project start October 2024), Xena blog.
+\item W.~A.~Howard, The formulae-as-types notion of construction, in \emph{To H.\,B.~Curry: Essays on Combinatory Logic, Lambda Calculus and Formalism}, Academic Press, 1980 (notes circulated 1969).
+\item M.~H.~S{\o}rensen and P.~Urzyczyn, \emph{Lectures on the Curry--Howard Isomorphism}, Elsevier, 2006: the reference for this section, including Heyting semantics and completeness.
+\item The Lean~4 and Mathlib documentation, \url{https://lean-lang.org} and \url{https://leanprover-community.github.io}.
+\end{itemize}
