@@ -1,0 +1,263 @@
+\chapter{Roth's Theorem}
+\begin{center}\itshape
+How many integers can you choose below $N$\\
+without ever choosing three in arithmetic progression?\\
+Fewer than a vanishing proportion, said Roth; more than you would think, said Behrend.
+\end{center}
+
+Choose integers one at a time, always the smallest one that does not complete an arithmetic progression of length three with two numbers already chosen: $0,1,3,4,9,10,12,13,27,\dots$ The pattern is easy to spot, these are the numbers with no digit $2$ in base $3$, and below $N$ there are about $N^{0.63}$ of them, a vanishing proportion. Can one do better? Is there a set of positive density with no three-term progression?
+
+Paul Erdős and Pál Turán asked this in 1936, together with the same question for longer progressions. Raphaël Salem and Donald Spencer showed in 1942 that one can do much better than the greedy set: there are progression-free sets of size $N^{1-c/\log\log N}$. Four years later Felix Behrend found an astonishingly simple construction of size $N\exp(-c\sqrt{\log N})$, by putting integers on a sphere. Behrend, born in Berlin in 1911, had left Germany in 1933; in 1940 Britain deported him to Australia on the ship \emph{Dunera} as an ``enemy alien'', and he taught mathematics to his fellow internees in the camps until his release in 1942, when he joined the University of Melbourne. Then in 1953 Klaus Roth, who five years later received the Fields Medal for his theorem on rational approximation, proved that the proportion does tend to $0$. His proof was the first appearance of the \emph{density increment}: a progression-free set must be unusually dense on some long progression, and iterating this leads to a contradiction.
+
+For seventy years the two bounds stayed far apart. The upper bound improved slowly, from Roth's $\frac N{\log\log N}$ through the work of Roger Heath-Brown, Szemerédi, Bourgain, Tom Sanders, and Thomas Bloom and Olof Sisask, to just past $\frac N{\log N}$ in 2020. Then in February 2023 two computer scientists, Zander Kelley and Raghu Meka, proved an upper bound of the same shape as Behrend's lower bound. This chapter proves Roth's theorem with Roth's bound and Behrend's construction, and explains what lies between them.
+
+\begin{reminder}[from Tomes~7,~10 and~C1]
+\emph{Van der Waerden} (Tome~C1, Theorem~8.15). For every colouring of the integers with finitely many colours, some colour class contains arbitrarily long arithmetic progressions.
+\emph{Roth via ergodic theory} (Tome~10, Theorems~10.15 and~10.16). Furstenberg's double recurrence gives a progression $a,a+n,a+2n$ in every set of positive upper density, without a bound.
+\emph{Cap sets} (Tome~7, Theorem~7.16 and Exercise~7.7). Meshulam's density increment in $\mathbb F_3^n$, and the polynomial bound $2.756^n$ of Ellenberg and Gijswijt.
+\end{reminder}
+
+Throughout, $[N]=\{1,\dots,N\}$, a \emph{three-term progression}, or $3$-AP, is a triple $x,x+d,x+2d$ with $d\neq0$, and $r_3(N)$ is the largest size of a subset of $[N]$ containing no $3$-AP. Figure~\ref{fig:r3} shows its first values.
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-r3}
+\caption{The exact values of $r_3(N)$ for $N\le70$, computed by an exhaustive search ($r_3(70)=20$), against the greedy set of numbers with ternary digits $0$ and $1$, and the curve $N^{\log2/\log3}$. The greedy set is optimal for many small $N$ and then falls behind.}
+\label{fig:r3}
+\end{figure}
+
+\section{Counting progressions with Fourier analysis}
+
+Let $M$ be an odd integer, $e(t)=e^{2\pi it}$, and for $f:\Z/M\Z\to\C$ let
+\[
+\hat f(\xi)=\sum_{x\in\Z/M\Z}f(x)\,e\Bigl(-\frac{x\xi}M\Bigr),\qquad\|f\|_2=\Bigl(\sum_x|f(x)|^2\Bigr)^{1/2},\qquad\|\hat f\|_\infty=\max_\xi|\hat f(\xi)|.
+\]
+Orthogonality, $\sum_{\xi}e(\frac{t\xi}M)=M$ if $t\equiv0\pmod M$ and $0$ otherwise, gives Parseval's identity $\sum_\xi|\hat f(\xi)|^2=M\|f\|_2^2$ and the following formula.
+
+\begin{lemma}[counting lemma]\label{lem:count3}
+For $f,g,h:\Z/M\Z\to\C$, with $M$ odd, let $\Lambda(f,g,h)=\sum_{x,d\in\Z/M\Z}f(x)g(x+d)h(x+2d)$. Then
+\[
+\Lambda(f,g,h)=\frac1M\sum_\xi\hat f(-\xi)\,\hat g(2\xi)\,\hat h(-\xi),
+\]
+and $|\Lambda(f,g,h)|$ is at most $\|\hat f\|_\infty\|g\|_2\|h\|_2$, at most $\|\hat g\|_\infty\|f\|_2\|h\|_2$ and at most $\|\hat h\|_\infty\|f\|_2\|g\|_2$.
+\end{lemma}
+\begin{proof}
+The map $(x,d)\mapsto(x,x+d,x+2d)$ is a bijection onto the triples $(x,y,z)$ with $x-2y+z=0$. So
+\[
+\Lambda(f,g,h)=\sum_{x,y,z}f(x)g(y)h(z)\,\frac1M\sum_\xi e\Bigl(\frac{\xi(x-2y+z)}M\Bigr)=\frac1M\sum_\xi\hat f(-\xi)\hat g(2\xi)\hat h(-\xi).
+\]
+For the bounds, take out the maximum of one factor and apply the Cauchy--Schwarz inequality and Parseval's identity to the other two; since $M$ is odd, $\xi\mapsto2\xi$ and $\xi\mapsto-\xi$ are bijections. For instance
+\[
+\frac1M\sum_\xi|\hat f(-\xi)||\hat h(-\xi)|\le\frac1M\Bigl(\sum_\xi|\hat f(\xi)|^2\Bigr)^{1/2}\Bigl(\sum_\xi|\hat h(\xi)|^2\Bigr)^{1/2}=\|f\|_2\|h\|_2.
+\]
+\end{proof}
+
+A set whose non-trivial Fourier coefficients are all small therefore contains about as many progressions as a random set of the same density (Exercise~\ref{ex:pseudo}). A progression-free set must thus have a large Fourier coefficient, and this is the first half of Roth's argument.
+
+\begin{lemma}\label{lem:largecoef}
+Let $A\subseteq[N]$ contain no $3$-AP, let $\alpha=\frac{|A|}N$ with $\alpha^2N\ge4$, and let $M$ be odd with $M>2N$. Regard $[N]$ as a subset of $\Z/M\Z$ and let $f=\mathbf1_A-\alpha\mathbf1_{[N]}$. Then $\|\hat f\|_\infty\ge\frac{\alpha^2N}{28}$, and the maximum is attained at some $\xi\neq0$.
+\end{lemma}
+\begin{proof}
+If $x,y,z\in[N]$ and $x-2y+z\equiv0\pmod M$, then $|x-2y+z|<2N<M$ forces $x+z=2y$: a progression in $[N]$, so $x=y=z$ when all three lie in $A$. Hence $\Lambda(\mathbf1_A,\mathbf1_A,\mathbf1_A)=|A|=\alpha N$. On the other hand $\Lambda(\mathbf1_{[N]},\mathbf1_{[N]},\mathbf1_{[N]})$ is the number of pairs $(x,d)$ of integers with $x,x+2d\in[N]$, which is $N+2\sum_{1\le d<N/2}(N-2d)\ge\frac{N^2}2$. Write $\mathbf1_A=g+f$ with $g=\alpha\mathbf1_{[N]}$, and expand by multilinearity:
+\[
+\Lambda(\mathbf1_A,\mathbf1_A,\mathbf1_A)-\Lambda(g,g,g)
+\]
+is a sum of $7$ terms, each with $f$ in at least one place. Bound each with $\|\hat f\|_\infty$ for that place, by Lemma~\ref{lem:count3}; the other two functions are $f$ or $g$, with $\|g\|_2^2=\alpha^2N\le\alpha N$ and $\|f\|_2^2=\alpha(1-\alpha)N\le\alpha N$. So
+\[
+\frac{\alpha^3N^2}2-\alpha N\le\Lambda(g,g,g)-\Lambda(\mathbf1_A,\mathbf1_A,\mathbf1_A)\le7\alpha N\|\hat f\|_\infty,
+\]
+and $\|\hat f\|_\infty\ge\frac{\alpha^2N/2-1}7\ge\frac{\alpha^2N}{28}$ since $\alpha^2N\ge4$. Finally $\hat f(0)=\sum_xf(x)=0$.
+\end{proof}
+
+\section{The density increment}
+
+A large Fourier coefficient means that $A$ correlates with a character $x\mapsto e(\frac{x\xi}M)$. On a long progression whose common difference $q$ makes $\frac{q\xi}M$ nearly an integer, the character is nearly constant, and the correlation turns into an excess of elements of $A$.
+
+\begin{lemma}[density increment]\label{lem:increment}
+Let $A\subseteq[N]$ contain no $3$-AP, with $\alpha=\frac{|A|}N$ and $\alpha^2N\ge1792$. There is an arithmetic progression $P\subseteq[N]$ with
+\[
+|P|\ge\frac{\alpha\sqrt N}{85}\qquad\text{and}\qquad|A\cap P|\ge\Bigl(\alpha+\frac{\alpha^2}{112}\Bigr)|P|.
+\]
+\end{lemma}
+\begin{proof}
+Let $M$ be an odd prime with $2N<M\le4N$ (Bertrand's postulate), and let $f$ and $\xi\ne0$ be as in Lemma~\ref{lem:largecoef}: with $\eta=\frac{\alpha^2}{28}$,
+\[
+\Bigl|\sum_{x\in[N]}f(x)\,e\Bigl(-\frac{x\xi}M\Bigr)\Bigr|\ge\eta N.
+\]
+\emph{Choice of parameters.} Let $L=\lfloor\frac{\sqrt{\eta N}}8\rfloor$; as $\eta N\ge64$, $L\ge1$ and $L\ge\frac{\sqrt{\eta N}}{16}\ge\frac{\alpha\sqrt N}{85}$. Let $Q=\lceil\frac{26L}\eta\rceil\le\frac{27L}\eta$. By Dirichlet's principle there is $1\le q\le Q$ with $\|\frac{q\xi}M\|\le\frac1Q$, where $\|t\|$ is the distance to the nearest integer: among the $Q+1$ numbers $\{\frac{j\xi}M\}$, $0\le j\le Q$, two lie in the same of the intervals $[\frac iQ,\frac{i+1}Q)$, and their difference is $\frac{q\xi}M$ up to an integer, with $q=|j-j'|$.
+
+\emph{Partition.} Each residue class modulo $q$ meets $[N]$ in at least $\lfloor\frac NQ\rfloor$ consecutive terms of a progression of difference $q$, and $\lfloor\frac NQ\rfloor\ge L$ because $(L+1)Q\le2L\cdot\frac{27L}\eta\le\frac{54}{64}N$. Cut each class into blocks of between $L$ and $2L-1$ consecutive terms. This partitions $[N]$ into progressions $P$ of difference $q$ and length $|P|\ge L$.
+
+\emph{The character is nearly constant on each block.} If $x_P$ is the first term of $P$ and $x=x_P+jq\in P$, then $0\le j<2L$ and, since $|e(t)-1|\le2\pi\|t\|$,
+\[
+\Bigl|e\Bigl(-\frac{x\xi}M\Bigr)-e\Bigl(-\frac{x_P\xi}M\Bigr)\Bigr|\le2\pi j\Bigl\|\frac{q\xi}M\Bigr\|\le\frac{4\pi L}Q\le\frac{4\pi\eta}{26}<\frac\eta2.
+\]
+\emph{Increment.} Write $f(P)=\sum_{x\in P}f(x)=|A\cap P|-\alpha|P|$. Since $|f|\le1$,
+\[
+\eta N\le\Bigl|\sum_Pe\Bigl(-\frac{x_P\xi}M\Bigr)f(P)\Bigr|+\frac\eta2N,\qquad\text{so}\qquad\sum_P|f(P)|\ge\frac{\eta N}2.
+\]
+As $\sum_Pf(P)=\sum_xf(x)=0$, we get $\sum_P\bigl(|f(P)|+f(P)\bigr)\ge\frac\eta2N=\frac\eta2\sum_P|P|$. So some block has $|f(P)|+f(P)\ge\frac\eta2|P|>0$; then $f(P)>0$ and $f(P)\ge\frac\eta4|P|=\frac{\alpha^2}{112}|P|$.
+\end{proof}
+
+\begin{theorem}[Roth, 1953]\label{thm:roth}
+For $N\ge16$, every subset of $[N]$ without a $3$-AP has at most $\dfrac{500N}{\log\log N}$ elements.
+\end{theorem}
+\begin{proof}
+Let $A\subseteq[N]$ contain no $3$-AP and suppose $\alpha=\frac{|A|}N>\frac{500}{\log\log N}$; in particular $\log\log N>500$. Set $A_0=A$, $N_0=N$, $\alpha_0=\alpha$. While $\alpha_i^2N_i\ge1792$, Lemma~\ref{lem:increment} gives a progression $P_i\subseteq[N_i]$; the increasing affine bijection from $P_i$ onto $[N_{i+1}]$, $N_{i+1}=|P_i|$, maps $A_i\cap P_i$ to a set $A_{i+1}$ without $3$-AP, of density $\alpha_{i+1}\ge\alpha_i+\frac{\alpha_i^2}{112}$, and $N_{i+1}\ge\frac{\alpha\sqrt{N_i}}{85}$.
+
+\emph{The process stops after at most $s=\lfloor\frac{226}\alpha\rfloor$ steps.} While the density lies in $[2^k\alpha,2^{k+1}\alpha)$, each step adds at least $\frac{4^k\alpha^2}{112}$, so this happens at most $\frac{112}{2^k\alpha}+1$ times; densities never exceed $1$, so $k\le\log_2\frac1\alpha$, and the total is at most $\frac{224}\alpha+\log_2\frac1\alpha+1\le\frac{226}\alpha$.
+
+\emph{But it cannot stop.} By induction, $N_i\ge(\frac\alpha{85})^{2-2^{1-i}}N^{2^{-i}}\ge(\frac\alpha{85})^2N^{2^{-i}}$. If the process stops at step $i\le s$, then
+\[
+1792>\alpha_i^2N_i\ge\frac{\alpha^4}{7225}N^{2^{-s}},\qquad\text{so}\qquad2^{-s}\log N<\log(1.3\cdot10^7)+4\log\frac1\alpha<17+4\log\log\log N,
+\]
+using $\frac1\alpha<\log\log N$. On the other hand $2^{-s}\ge\exp(-\frac{226\log2}\alpha)>\exp(-0.32\log\log N)$, so the left side exceeds $(\log N)^{0.68}$. With $\log N>e^{500}$ this is far larger than $17+4\log\log\log N$, a contradiction.
+\end{proof}
+
+\begin{beauty}
+The proof never finds a progression. It shows instead that a set without progressions is not random, that its lack of randomness is a bias along a character, that a bias along a character is a bias along a long progression, and that a set cannot keep getting denser forever. Structure or randomness, and if structure then more density: this dichotomy, run in a loop, is the template of Szemerédi's theorem, of the Green--Tao theorem of the next chapter, and of the cap set argument in $\mathbb F_3^n$ (Tome~7), where the progression is replaced by a hyperplane and nothing is lost in the passage.
+\end{beauty}
+
+\begin{think}
+In $\mathbb F_3^n$ (Tome~7, Theorem~7.16) the increment passes from $\mathbb F_3^n$ to a hyperplane, losing a factor $3$ in size. Here it passes from $[N]$ to a progression of length about $\alpha\sqrt N$. Where is the square root lost, and why does this loss produce the double logarithm in Theorem~\ref{thm:roth}?
+\end{think}
+
+\section{Behrend's construction}
+
+Behrend's idea is that a sphere contains no three collinear points, and that integers can be made to add like vectors.
+
+\begin{theorem}[Behrend, 1946]\label{thm:behrend}
+For $N\ge e^9$, $r_3(N)\ge N\exp\bigl(-4\sqrt{\log N}\bigr)$.
+\end{theorem}
+\begin{proof}
+Let $n,d\ge2$ be integers, to be chosen. For $x=(x_0,\dots,x_{n-1})\in\{0,\dots,d-1\}^n$ let
+\[
+\phi(x)=1+\sum_{i<n}x_i(2d)^i\in\bigl[1,(2d)^n\bigr].
+\]
+For $k\ge0$ let $S_k=\{x:\ x_0^2+\dots+x_{n-1}^2=k\}$ and $B_k=\phi(S_k)$.
+
+\emph{$B_k$ has no $3$-AP.} If $\phi(x)+\phi(z)=2\phi(y)$ with $x,y,z\in S_k$, then $\sum_i(x_i+z_i)(2d)^i=\sum_i2y_i(2d)^i$, where all the digits $x_i+z_i$ and $2y_i$ lie in $[0,2d-2]$: there are no carries, and uniqueness of base-$2d$ expansions gives $x+z=2y$. Then $|y|=\frac{|x+z|}2\le\frac{|x|+|z|}2=\sqrt k=|y|$, so equality holds in the triangle inequality: $x$ and $z$ are proportional with a positive factor, and as $|x|=|z|$, $x=z=y$.
+
+\emph{Some $B_k$ is large.} The value $k$ ranges over $[0,n(d-1)^2]$, so one of the at most $nd^2$ spheres contains at least $\frac{d^n}{nd^2}$ points, and $|B_k|=|S_k|$ since $\phi$ is injective.
+
+\emph{Choice of parameters.} Let $L=\log N\ge9$, $n=\lceil\sqrt L\rceil$ and $d=\lfloor\frac{N^{1/n}}2\rfloor$, so that $(2d)^n\le N$ and $B_k\subseteq[N]$. As $N^{1/n}\ge e^{L/(\sqrt L+1)}\ge e^{9/4}>4$, $d\ge\frac{N^{1/n}}2-1\ge\frac{N^{1/n}}4$, hence $d^n\ge4^{-n}N$ and $d^2\le\frac{N^{2/n}}4$. Therefore
+\[
+|B_k|\ge\frac{d^{n-2}}n\ge\frac{4^{1-n}N^{1-2/n}}n\ge N\exp\Bigl(-\sqrt L\log4-2\sqrt L-\frac{\sqrt L}2\Bigr)\ge Ne^{-4\sqrt L},
+\]
+using $n\le\sqrt L+1$, $\frac Ln\le\sqrt L$ and $n\le\sqrt L+1\le e^{\sqrt L/2}$ for $\sqrt L\ge3$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-behrend}
+\caption{Behrend's construction with $n=2$ and $d=20$: the $400$ points of $\{0,\dots,19\}^2$, and the $6$ points on the circle $x_0^2+x_1^2=325$, the most populated circle. Their images $x_0+40x_1$ are $58,257,415,610,686,721$: no three in progression. In dimension $2$ circles hold few lattice points; in dimension $n\approx\sqrt{\log N}$ some sphere holds a proportion $\frac1{nd^2}$ of them.}
+\label{fig:behrend}
+\end{figure}
+
+\section{Between the bounds}
+
+Behrend's construction gives $\frac{r_3(N)}N\ge e^{-4\sqrt{\log N}}$, and Roth's theorem $\frac{r_3(N)}N\le\frac{500}{\log\log N}$. Every improvement of the upper bound until 2023 refined the density increment. Heath-Brown and Szemerédi (1987 and 1990) incremented on many characters at once and reached $(\log N)^{-c}$; Bourgain (1999) replaced progressions by \emph{Bohr sets}, sets of $x$ on which several characters are simultaneously close to $1$, which lose much less than a square root; Sanders (2011) reached $\frac{(\log\log N)^6}{\log N}$, and Bloom and Sisask (2020) broke the logarithmic barrier. The barrier mattered for a reason: the primes have density $\frac1{\log N}$ (Exercise~\ref{ex:primes}).
+
+\begin{theorem}[Kelley and Meka, 2023; quoted]\label{thm:km}
+There is $c>0$ such that every subset of $[N]$ without a $3$-AP has at most $N\exp\bigl(-c(\log N)^{1/12}\bigr)$ elements.
+\end{theorem}
+
+Kelley and Meka's argument still increments density, on Bohr sets, but it finds the increment through a new ``sifting'' argument combined with the almost-periodicity results of Ernie Croot and Sisask, instead of through a single large Fourier coefficient. Bloom and Sisask improved the exponent $\frac1{12}$ to $\frac19$ within months. The truth is believed to be close to Behrend's $\exp(-c\sqrt{\log N})$.
+
+For progressions of every length the qualitative statement is Szemerédi's theorem.
+
+\begin{theorem}[Szemerédi, 1975; quoted]\label{thm:szemeredi}
+For every $k\ge3$ and $\delta>0$, every subset of $[N]$ of size at least $\delta N$ contains a $k$-term arithmetic progression once $N\ge N_0(k,\delta)$.
+\end{theorem}
+
+Szemerédi's proof was combinatorial, Furstenberg's ergodic (Tome~10), and in 2001 Gowers found a Fourier-analytic proof with explicit bounds. For $k=4$, characters no longer control progressions: a set like $\{x:\ \{x^2\theta\}<\frac12\}$ has the right number of $3$-APs but not of $4$-APs. Gowers's remedy, the \emph{uniformity norms}, and their use by Green and Tao to find long progressions in the primes are the subject of the next chapter.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:base3}
+Show that the set of integers $m\ge0$ whose ternary digits are all $0$ or $1$ contains no $3$-AP, and that it has at least $\frac12N^{\log2/\log3}$ elements in $[0,N)$ for $N\ge1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:fekete}
+Show that $r_3(M+N)\le r_3(M)+r_3(N)$ and deduce that $\frac{r_3(N)}N$ has a limit as $N\to\infty$. (By Theorem~\ref{thm:roth} the limit is $0$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:primes}
+Show that Theorem~\ref{thm:roth} does not imply that the primes contain a $3$-AP, but that Theorem~\ref{thm:km} does: for $N$ large, $\pi(N)$ exceeds the Kelley--Meka bound. (Van der Corput proved in 1939 that the primes contain infinitely many $3$-APs, with the circle method of Chapter~7.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pseudo}
+Let $M$ be odd, $A\subseteq\Z/M\Z$ with $|A|=\alpha M$, and $\beta=\max_{\xi\neq0}|\hat{\mathbf1}_A(\xi)|$. Show that the number of pairs $(x,d)\in(\Z/M\Z)^2$ with $x,x+d,x+2d\in A$ satisfies
+\[
+\bigl|\Lambda(\mathbf1_A,\mathbf1_A,\mathbf1_A)-\alpha^3M^2\bigr|\le\alpha M\beta.
+\]
+Deduce that if $\beta<\alpha^2M-1$, then $A$ contains a progression with $d\neq0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:varnavides}
+\emph{Varnavides's theorem (1959).} Let $\delta>0$ and let $m$ be such that $r_3(m)<\frac\delta2m$. Show that for $N\ge\frac{8m}\delta$ every $A\subseteq[N]$ with $|A|\ge\delta N$ contains at least $\frac{\delta^2N^2}{32m^3}$ three-term progressions $x,x+d,x+2d$ with $d\ge1$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:base3}
+Add in base $3$: when no digit is $2$, $x+z$ has no carries.
+\end{hint}
+
+\begin{hint}{ex:fekete}
+Split $[M+N]$ into $[M]$ and $M+[N]$. Then use Fekete's lemma, or prove the convergence directly.
+\end{hint}
+
+\begin{hint}{ex:primes}
+Compare $\frac N{\log N}$ with $\frac{500N}{\log\log N}$ and with $N\exp(-c(\log N)^{1/12})$.
+\end{hint}
+
+\begin{hint}{ex:pseudo}
+Separate the term $\xi=0$ in Lemma~\ref{lem:count3}; use Parseval on two of the three factors.
+\end{hint}
+
+\begin{hint}{ex:varnavides}
+Look at all progressions of length $m$ and difference $d\le\frac{\delta N}{4m}$ inside $[N]$. Many of them meet $A$ in more than $r_3(m)$ points, and a single $3$-AP lies in few of them.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:base3}
+\idea Without the digit $2$, addition in base $3$ is digitwise, so a progression would have to be one in every digit, and the digits $0,1$ admit only constant progressions.
+\writeup Let $x,y,z$ have ternary digits $x_i,y_i,z_i\in\{0,1\}$ and $x+z=2y$. The digits of $2y$ are $2y_i\in\{0,2\}$ and those of $x+z$ are $x_i+z_i\in\{0,1,2\}$, without carries in either sum. By uniqueness of base-$3$ expansions, $x_i+z_i=2y_i$ for every $i$; the only solutions in $\{0,1\}$ are $x_i=y_i=z_i$. So $x=y=z$. For the count, let $3^k\le N<3^{k+1}$: all $2^k$ numbers below $3^k$ with digits $0,1$ lie in $[0,N)$, and $2^k=3^{k\log2/\log3}>\bigl(\frac N3\bigr)^{\log2/\log3}=\frac{N^{\log2/\log3}}2$.
+\end{solution}
+
+\begin{solution}{ex:fekete}
+\idea Progression-free sets restrict to progression-free sets, and subadditive sequences have limits.
+\writeup If $A\subseteq[M+N]$ has no $3$-AP, then $A\cap[M]$ and $(A\cap(M+[N]))-M$ have none, so $|A|\le r_3(M)+r_3(N)$. Let $\ell=\inf_N\frac{r_3(N)}N$ and $\varepsilon>0$; choose $m$ with $\frac{r_3(m)}m<\ell+\varepsilon$. Writing $N=qm+t$ with $0\le t<m$, subadditivity gives $r_3(N)\le q\,r_3(m)+t$, so $\frac{r_3(N)}N\le\frac{r_3(m)}m+\frac mN<\ell+2\varepsilon$ for $N$ large. Hence $\frac{r_3(N)}N\to\ell$.
+\end{solution}
+
+\begin{solution}{ex:primes}
+\idea The primes have density $\frac1{\log N}$; Roth's bound is only $\frac1{\log\log N}$, but Kelley--Meka's is smaller than any power of $\frac1{\log N}$.
+\writeup Theorem~\ref{thm:roth} applies only to sets with more than $\frac{500N}{\log\log N}$ elements, while $\pi(N)\le\frac{2N}{\log N}$ (Tome~5, Chapter~1) is much smaller for large $N$; the theorem says nothing about the primes. For Theorem~\ref{thm:km}: $\pi(N)\ge\frac N{2\log N}$ for $N$ large, and $\frac N{2\log N}>N\exp(-c(\log N)^{1/12})$ as soon as $c(\log N)^{1/12}>\log(2\log N)$, which holds for $N$ large because a power of $\log N$ beats a logarithm of $\log N$. So the primes up to $N$ cannot be progression-free.
+\end{solution}
+
+\begin{solution}{ex:pseudo}
+\idea The frequency $0$ gives the count of a random set; every other frequency is a correction, controlled by the largest one and Parseval.
+\writeup By Lemma~\ref{lem:count3} with $f=g=h=\mathbf1_A$, the term $\xi=0$ is $\frac1M|A|^3=\alpha^3M^2$. The others contribute at most
+\[
+\frac1M\sum_{\xi\ne0}|\hat{\mathbf1}_A(-\xi)|^2|\hat{\mathbf1}_A(2\xi)|\le\frac\beta M\sum_\xi|\hat{\mathbf1}_A(\xi)|^2=\beta|A|=\alpha M\beta,
+\]
+because $2\xi\neq0$ when $\xi\ne0$ and $M$ is odd. The $M\alpha$ pairs with $d=0$ are trivial; if $\alpha^3M^2-\alpha M\beta>\alpha M$, that is $\beta<\alpha^2M-1$, there is a pair with $d\neq0$.
+\end{solution}
+
+\begin{solution}{ex:varnavides}
+\idea Roth for a fixed length $m$ applies to every progression of length $m$ on which $A$ is dense, and $A$ is dense on many of them by averaging; each $3$-AP is then counted at most $m^2$ times.
+\writeup Let $D=\lfloor\frac{\delta N}{4m}\rfloor\ge\frac{\delta N}{8m}$ (as $\frac{\delta N}{4m}\ge2$). For $1\le d\le D$ and $1\le a\le N-(m-1)d$, let $P_{a,d}=\{a+jd:0\le j<m\}\subseteq[N]$. Fix $d$ and $j$: as $a$ varies, $a+jd$ runs over an interval of $[N]$ missing at most $(m-1)d\le\frac{\delta N}4$ elements, so it hits $A$ at least $\frac34\delta N$ times. Summing over $j$, $\sum_a|A\cap P_{a,d}|\ge\frac34\delta Nm$. If $g_d$ is the number of $a$ with $|A\cap P_{a,d}|\ge\frac\delta2m$, then $\sum_a|A\cap P_{a,d}|\le g_dm+N\frac\delta2m$, so $g_d\ge\frac{\delta N}4$. For such a pair $(a,d)$, $\{j:a+jd\in A\}$ has more than $r_3(m)$ elements, so it contains a $3$-AP, and so does $A\cap P_{a,d}$. This gives at least $D\frac{\delta N}4\ge\frac{\delta^2N^2}{32m}$ pairs (progression $P_{a,d}$, $3$-AP inside it). A given $3$-AP $x,x+e,x+2e$ lies in $P_{a,d}$ only if $d$ divides $e$ with $\frac ed<\frac m2$, and $x$ is one of the $m$ terms of $P_{a,d}$: at most $m^2$ choices of $(a,d)$. So $A$ contains at least $\frac{\delta^2N^2}{32m^3}$ distinct $3$-APs.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} P.~Erdős and P.~Turán, ``On some sequences of integers'', \emph{J.\ London Math.\ Soc.}\ 11 (1936), 261--264. R.~Salem and D.~C.~Spencer, ``On sets of integers which contain no three terms in arithmetical progression'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 28 (1942), 561--563. F.~A.~Behrend, ``On sets of integers which contain no three terms in arithmetical progression'', \emph{Proc.\ Nat.\ Acad.\ Sci.\ USA} 32 (1946), 331--332. K.~F.~Roth, ``On certain sets of integers'', \emph{J.\ London Math.\ Soc.}\ 28 (1953), 104--109. P.~Varnavides, ``On certain sets of positive density'', \emph{J.\ London Math.\ Soc.}\ 34 (1959), 358--360.
+\item \emph{Upper bounds.} D.~R.~Heath-Brown, ``Integer sets containing no arithmetic progressions'', \emph{J.\ London Math.\ Soc.}\ (2) 35 (1987), 385--394. E.~Szemerédi, ``Integer sets containing no arithmetic progressions'', \emph{Acta Math.\ Hungar.}\ 56 (1990), 155--158. J.~Bourgain, ``On triples in arithmetic progression'', \emph{Geom.\ Funct.\ Anal.}\ 9 (1999), 968--984. T.~Sanders, ``On Roth's theorem on progressions'', \emph{Ann.\ of Math.}\ 174 (2011), 619--636. T.~F.~Bloom and O.~Sisask, ``Breaking the logarithmic barrier in Roth's theorem on arithmetic progressions'', arXiv:2007.03528 (2020).
+\item \emph{Kelley--Meka.} Z.~Kelley and R.~Meka, ``Strong bounds for 3-progressions'', \emph{FOCS} 2023 (arXiv:2302.05537, February 2023); the authors are in the computer science departments of the University of Illinois and of UCLA. T.~F.~Bloom and O.~Sisask, ``The Kelley--Meka bounds for sets free of three-term arithmetic progressions'', \emph{Essent.\ Number Theory} 2 (2023), with the exponent $\frac1{12}$, and ``An improvement to the Kelley--Meka bounds on three-term arithmetic progressions'', arXiv:2309.02353 (2023), with $\frac19$.
+\item \emph{Szemerédi's theorem.} E.~Szemerédi, ``On sets of integers containing no $k$ elements in arithmetic progression'', \emph{Acta Arith.}\ 27 (1975), 199--245. W.~T.~Gowers, ``A new proof of Szemerédi's theorem'', \emph{Geom.\ Funct.\ Anal.}\ 11 (2001), 465--588. The exposition of Roth's argument follows Y.~Zhao, \emph{Graph Theory and Additive Combinatorics}, Cambridge University Press, 2023, Chapter~6, with explicit constants of our own.
+\item \emph{Behrend's life.} The Wikipedia article ``Felix Behrend'' and the sources cited there.
+\item \emph{Van der Corput.} J.~G.~van der Corput, ``Über Summen von Primzahlen und Primzahlquadraten'', \emph{Math.\ Ann.}\ 116 (1939), 1--50.
+\end{itemize}
