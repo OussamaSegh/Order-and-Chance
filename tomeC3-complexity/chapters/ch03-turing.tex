@@ -1,0 +1,406 @@
+\chapter{Turing Machines and Computability}\label{ch:turing}
+
+\begin{center}\itshape
+Whatever a clerk with pencil, paper and patience can compute,\\
+a machine with a tape can compute; and some things neither can.\\
+\upshape(the content of Turing's 1936 paper, in our words)
+\end{center}
+
+In the spring of 1935 Alan Turing, a twenty-two-year-old fellow of King's College, Cambridge, attended a course on the foundations of mathematics given by Max Newman. The course reached Gödel's incompleteness theorems and a question asked by David Hilbert and Wilhelm Ackermann in their logic textbook of 1928, the \emph{Entscheidungsproblem}: is there a definite method which, given a statement of first-order logic, decides whether it is provable? According to Turing's biographer Andrew Hodges, Newman spoke of such a method as a ``mechanical process'', and Turing took the phrase literally. To show that no method exists, he first had to say what a method is, and he did it by imagining a human computer at work: ``We may compare a man in the process of computing a real number to a machine which is only capable of a finite number of conditions''. The man writes symbols on squares of paper, looks at a few squares at a time, and changes his state of mind according to what he sees. Strip the picture down and you get a machine with a finite set of states, an infinite tape of squares and a head that reads and writes one square at a time.
+
+Turing finished a first version of the paper in April 1936. But Alonzo Church, in Princeton, had just published a proof, by means of his $\lambda$-calculus, that the Entscheidungsproblem has no solution, and Newman had to argue the case for publishing Turing's work anyway. It was received by the London Mathematical Society on 28 May 1936 and appeared in its \emph{Proceedings}, dated 1936--37, with an appendix proving that Turing's computable functions are exactly Church's $\lambda$-definable ones. Turing then went to Princeton to work with Church, and took his doctorate there in 1938. Gödel, who had not been convinced by Church's definition, was convinced by Turing's: the clerk argument showed why nothing more could be computed by any method at all.
+
+Hidden in the paper, almost in passing, is the idea of a \emph{universal} machine, one machine that can imitate any other when it is given the other's description: the stored-program computer, more than a decade before the first ones were built.
+
+\begin{think}
+Someone gives you a program and an input, and asks whether the program will ever stop. You may run it, but if it has not stopped after a billion steps, you have learnt nothing. Could a cleverer program, reading the first one, always tell? Suppose it existed, and feed it a program that asks the oracle about itself and then does the opposite. What happens?
+\end{think}
+
+\section{Turing machines}\label{sec:tm}
+
+\begin{definition}\label{def:tm}
+A \emph{Turing machine} is $M=(Q,\Sigma,\Gamma,\delta,q_0,q_{\mathrm{acc}},q_{\mathrm{rej}})$, where $Q$ is a finite set of states, $\Sigma$ the input alphabet, $\Gamma\supseteq\Sigma\cup\{\sqcup\}$ the finite tape alphabet with a \emph{blank} $\sqcup\notin\Sigma$, $q_0,q_{\mathrm{acc}},q_{\mathrm{rej}}\in Q$ the initial, accepting and rejecting states, and
+\[
+\delta:(Q\setminus\{q_{\mathrm{acc}},q_{\mathrm{rej}}\})\times\Gamma\to Q\times\Gamma\times\{\mathrm L,\mathrm R\}
+\]
+the transition function. The tape is a sequence of cells indexed by $\mathbb Z$. On input $w=a_1\cdots a_n$, the machine starts in state $q_0$ with $a_i$ in cell $i-1$, blanks elsewhere, and the head on cell $0$. At each \emph{step}, in state $q$ reading $s$, with $\delta(q,s)=(q',s',D)$, it writes $s'$, moves the head one cell left or right according to $D$, and enters $q'$. It \emph{accepts} or \emph{rejects} $w$ if it reaches $q_{\mathrm{acc}}$ or $q_{\mathrm{rej}}$, and it \emph{halts} in either case; otherwise it runs forever. Its \emph{language} $L(M)$ is the set of words it accepts.
+\end{definition}
+
+A \emph{configuration} (state, tape contents, head position) describes a moment of the computation, and a step maps a configuration to the next one. A machine computes a partial function $f:\Sigma^*\to\Gamma^*$ if, on every input $w$ in the domain of $f$, it halts with $f(w)$ written from the head position onwards, followed by blanks, and it does not halt on the other inputs.
+
+\begin{proposition}\label{prop:tmpal}
+Some Turing machine decides the palindromes over $\{a,b\}$, halting on every input of length $n$ after $O(n^2)$ steps.
+\end{proposition}
+
+\begin{proof}
+The machine erases the first letter, remembering it in its state ($r_a$ or $r_b$), runs right to the first blank, steps back onto the last letter, and checks that it is the remembered one: if not, it rejects; if so, it erases it and runs back left to the blank, then right, and starts again. If there is no first letter, or no last letter to compare with (the remembered letter was the middle one), it accepts. Each round compares the two ends of the remaining word, which is a palindrome if and only if they agree and the inside is a palindrome; each round costs at most $2n+4$ steps and removes two letters, so there are at most $n/2+1$ rounds.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-spacetime}
+\caption{The machine of Proposition~\ref{prop:tmpal} on the input $abbbba$, one row per configuration, time going down: blue cells hold $a$, orange cells $b$, white cells blanks, and the circle is the head. The machine zigzags across the shrinking word and accepts after $28$ steps. Exercise~\ref{ex:hennie} shows that zigzags of quadratic total length cannot be avoided with a single tape.}
+\label{fig:spacetime}
+\end{figure}
+
+\section{Robustness of the model}\label{sec:robust}
+
+The definition seems arbitrary: why one tape, why two directions, why not a random-access memory? It turns out that none of these choices changes what can be computed, and they change the running time only polynomially. A \emph{$k$-tape machine} has $k$ tapes, each with its own head; the transition function reads the $k$ symbols under the heads and writes and moves on each tape; the input is on the first tape.
+
+\begin{theorem}\label{thm:multitape}
+Every $k$-tape machine $M$ is simulated by a one-tape machine $S$ that accepts, rejects or runs forever on the same inputs, and performs $O(t^2)$ steps where $M$ performs $t\ge n$ steps.
+\end{theorem}
+
+\begin{proof}
+$S$ stores the $k$ tapes one after the other on its single tape, separated by a new symbol $\#$, and marks the cell under each head by using, for each symbol $s$, a \emph{dotted} copy $\dot s$. To simulate a step, $S$ sweeps from the leftmost $\#$ to the rightmost, remembering in its state the $k$ dotted symbols (finitely many possibilities); it then knows the step of $M$, and makes a second sweep in which it rewrites each dotted symbol and moves each dot one cell left or right. If a dot must move onto a $\#$, the tape of $M$ needs a new cell there: $S$ shifts everything to its right by one cell (carrying one symbol in its state while it moves right) and writes a blank. After $t$ steps of $M$, each of its tapes has used at most $n+t+1$ cells, so the stored contents have length $O(k(n+t))=O(t)$ when $t\ge n$, and each simulated step, including at most $k$ shifts, costs $O(t)$ steps of $S$. The total is $O(t^2)$.
+\end{proof}
+
+\begin{theorem}\label{thm:ntm}
+Let $N$ be a \emph{nondeterministic} Turing machine, whose transition function gives a finite set of possible moves, and which accepts $w$ if some sequence of choices leads to $q_{\mathrm{acc}}$. Some deterministic machine $D$ accepts the same words. If moreover every computation of $N$ halts on every input, $D$ halts on every input.
+\end{theorem}
+
+\begin{proof}
+Let $b$ be the largest number of possible moves. A word $c\in\{1,\dots,b\}^d$ is an \emph{address}: it says which move to choose at each of the first $d$ steps. The three-tape machine $D$ keeps the input on its first tape, an address on its third, and for $d=0,1,2,\dots$ and each address $c$ of length $d$ in lexicographic order, copies the input to the second tape and simulates $N$ there for at most $d$ steps following $c$ (stopping early if $c$ asks for a move that does not exist). If one of these simulations accepts, $D$ accepts. If $N$ accepts $w$, an accepting computation has some length $d$ and an address, which $D$ eventually tries. Conversely $D$ accepts only when an accepting computation of $N$ exists.
+
+For the second statement, $D$ also records whether some simulation at depth $d$ was still running after $d$ steps; if none was, all computations of $N$ have halted within $d$ steps, and $D$ rejects. The computations of $N$ on $w$ form a tree in which each node has at most $b$ children; if all branches are finite, the tree is finite by K\H{o}nig's lemma (an infinite, finitely branching tree has an infinite branch), so this happens for some $d$. By Theorem~\ref{thm:multitape}, $D$ can be made a one-tape machine.
+\end{proof}
+
+The same kind of simulation shows that the RAM of Tome~C2 (Chapter~1), the cellular automata, the $\lambda$-calculus of Chapter~5, the recursive functions of Section~\ref{sec:recursive} and every programming language compute the same functions as Turing machines. The \emph{Church--Turing thesis} states that these are exactly the functions computable by any mechanical method. It is not a theorem, since ``mechanical method'' has no definition other than these; it is a claim about the world, supported by Turing's analysis of the clerk and by the fact that every reasonable model ever proposed has turned out to be equivalent.
+
+\section{Descriptions and the universal machine}\label{sec:universal}
+
+A Turing machine is a finite object, so it can be written as a word. Fix an encoding: number the states and symbols, and write the table of $\delta$ in binary with separators; let $\langle M\rangle\in\{0,1\}^*$ be the description of $M$, and $\langle M,w\rangle$ that of a machine together with an input (for instance $\langle M\rangle$ with each bit doubled, then $01$, then $w$ in binary). We may assume that every binary word describes some machine, by letting the ill-formed words describe a machine that rejects everything.
+
+\begin{theorem}[Turing, 1936]\label{thm:universal}
+There is a Turing machine $U$ which, on input $\langle M,w\rangle$, accepts if $M$ accepts $w$, rejects if $M$ rejects $w$, and runs forever if $M$ runs forever on $w$. It simulates $t$ steps of $M$ in $O(t^2\,p(|\langle M\rangle|))$ steps for a polynomial $p$.
+\end{theorem}
+
+\begin{proof}
+We describe a three-tape machine and conclude by Theorem~\ref{thm:multitape}. Tape~1 keeps $\langle M\rangle$. Tape~2 holds the tape of $M$, each symbol of $M$ written as a block of $m=O(\log|\Gamma_M|)$ bits, with the simulated head at the start of a block. Tape~3 holds the current state of $M$ in binary. Initially $U$ checks that the input is well formed, writes the encoding of $w$ on tape~2 and that of $q_0$ on tape~3. To simulate a step, $U$ scans tape~1 for the entry of $\delta$ whose state matches tape~3 and whose symbol matches the block under the head of tape~2 (comparing bit by bit); it copies the new symbol into the block, the new state onto tape~3, and moves the head of tape~2 by $m$ cells left or right. When tape~3 holds the accepting or rejecting state, $U$ accepts or rejects. Each simulated step costs a number of steps polynomial in $|\langle M\rangle|$, plus the cost of moving across tape~2, which is $O(t\,m)$ after $t$ steps if a new blank block has to be created at an end.
+\end{proof}
+
+\section{The halting problem}\label{sec:halting}
+
+\begin{definition}\label{def:decidable}
+A language $L\subseteq\Sigma^*$ is \emph{decidable} if some Turing machine accepts every word of $L$ and rejects every other word (it halts on all inputs), and \emph{recognisable} (or \emph{recursively enumerable}) if some machine accepts exactly the words of $L$ (and may run forever on the others).
+\end{definition}
+
+\begin{theorem}[Turing, 1936]\label{thm:halting}
+The language $A_{\mathrm{TM}}=\{\langle M,w\rangle:M\text{ accepts }w\}$ is recognisable but not decidable.
+\end{theorem}
+
+\begin{proof}
+The universal machine $U$ recognises $A_{\mathrm{TM}}$. Suppose some machine $H$ decides it. Build the machine $D$ which, on input $\langle M\rangle$, runs $H$ on $\langle M,\langle M\rangle\rangle$, and then does the opposite: it rejects if $H$ accepts, and accepts if $H$ rejects. Since $H$ always halts, so does $D$, and $D$ accepts $\langle M\rangle$ if and only if $M$ does not accept $\langle M\rangle$. Taking $M=D$: $D$ accepts $\langle D\rangle$ if and only if $D$ does not accept $\langle D\rangle$, a contradiction.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-diagonal}
+\caption{The proof of Theorem~\ref{thm:halting} as Cantor's diagonal (Tome~6, Chapter~1). Row $M_i$ lists what the machine $M_i$ does on the descriptions of all machines. The machine $D$ disagrees with $M_i$ on $\langle M_i\rangle$, the shaded diagonal cell: it accepts where $M_i$ rejects or runs forever, and rejects where $M_i$ accepts. So $D$ is none of the rows, although every machine is a row; if $H$ existed, $D$ would be a machine.}
+\label{fig:diagonal}
+\end{figure}
+
+\begin{corollary}\label{cor:halt}
+The \emph{halting problem} $\mathrm{HALT}=\{\langle M,w\rangle:M\text{ halts on }w\}$ is undecidable.
+\end{corollary}
+
+\begin{proof}
+If a machine $H'$ decided $\mathrm{HALT}$, the following machine would decide $A_{\mathrm{TM}}$: on $\langle M,w\rangle$, run $H'$; if it rejects, reject; if it accepts, $M$ halts on $w$, so running $U$ on $\langle M,w\rangle$ halts, and we answer as $U$ does.
+\end{proof}
+
+\begin{proposition}\label{prop:corecog}
+A language is decidable if and only if both it and its complement are recognisable. Consequently, the complement of $A_{\mathrm{TM}}$ is not recognisable.
+\end{proposition}
+
+\begin{proof}
+A decider recognises $L$, and with accepting and rejecting states exchanged it recognises the complement. Conversely, if $M_1$ recognises $L$ and $M_2$ its complement, run them alternately, one step each (on two tapes); every word is accepted by exactly one of them, so this halts, and we accept if $M_1$ accepted and reject if $M_2$ did. The consequence follows from Theorem~\ref{thm:halting}, since $A_{\mathrm{TM}}$ is recognisable.
+\end{proof}
+
+The name ``recursively enumerable'' comes from another description. An \emph{enumerator} is a machine without input that prints words, one after the other, on an output tape, possibly forever.
+
+\begin{proposition}\label{prop:enumerator}
+A language is recognisable if and only if some enumerator prints exactly its words (in some order, possibly with repetitions).
+\end{proposition}
+
+\begin{proof}
+If an enumerator $E$ prints $L$, the machine that on input $w$ runs $E$ and accepts when $w$ is printed recognises $L$. Conversely, if $M$ recognises $L$, let $w_1,w_2,\dots$ be all words of $\Sigma^*$ in order of length. For $k=1,2,\dots$, the enumerator runs $M$ for $k$ steps on each of $w_1,\dots,w_k$, and prints those that are accepted. A word $w_i$ accepted after $s$ steps is printed at every stage $k\ge\max(i,s)$, and only accepted words are printed. This interleaving of infinitely many computations is called \emph{dovetailing}.
+\end{proof}
+
+\section{Reductions and Rice's theorem}\label{sec:rice}
+
+\begin{definition}\label{def:reduction}
+A function $f:\Sigma^*\to\Sigma^*$ is \emph{computable} if some machine halts on every input $w$ with $f(w)$ on its tape. A language $A$ \emph{reduces} to $B$, written $A\le_mB$, if there is a computable $f$ with $w\in A\iff f(w)\in B$ for all $w$.
+\end{definition}
+
+If $A\le_mB$ and $B$ is decidable (respectively recognisable), so is $A$: compute $f(w)$ and run the machine for $B$ on it. Read backwards: if $A$ is undecidable and $A\le_mB$, then $B$ is undecidable. Note that $A\le_mB$ implies $\bar A\le_m\bar B$ with the same $f$.
+
+\begin{proposition}\label{prop:emptiness}
+The language $E_{\mathrm{TM}}=\{\langle M\rangle:L(M)=\emptyset\}$ is undecidable.
+\end{proposition}
+
+\begin{proof}
+Given $\langle M,w\rangle$, let $M_w$ be the machine that ignores its input, runs $M$ on $w$, and accepts if $M$ accepts. Its description is computed from $\langle M,w\rangle$ (by writing $w$ into a fixed program). Then $L(M_w)=\Sigma^*$ if $M$ accepts $w$, and $\emptyset$ otherwise. So $A_{\mathrm{TM}}\le_m\overline{E_{\mathrm{TM}}}$; if $E_{\mathrm{TM}}$ were decidable, so would be its complement and $A_{\mathrm{TM}}$.
+\end{proof}
+
+The trick of the proof, building a machine whose language is ``all or nothing'' depending on a computation, proves much more. A \emph{property} of recognisable languages is a set $P$ of recognisable languages; it is \emph{nontrivial} if some recognisable language has it and some does not.
+
+\begin{theorem}[Rice, 1953]\label{thm:rice}
+For every nontrivial property $P$ of recognisable languages, $\{\langle M\rangle:L(M)\in P\}$ is undecidable.
+\end{theorem}
+
+\begin{proof}
+Suppose first that $\emptyset\notin P$, and let $M_1$ be a machine with $L(M_1)\in P$. Given $\langle M,w\rangle$, build the machine $N$ which, on input $x$, runs $M$ on $w$ and, if $M$ accepts, runs $M_1$ on $x$ and accepts if $M_1$ does. Then $L(N)=L(M_1)\in P$ if $M$ accepts $w$, and $L(N)=\emptyset\notin P$ otherwise. So $A_{\mathrm{TM}}$ reduces to $\{\langle M\rangle:L(M)\in P\}$, which is therefore undecidable. If $\emptyset\in P$, apply this to the complementary property, which is nontrivial and does not contain $\emptyset$; a set is decidable if and only if its complement is.
+\end{proof}
+
+Whether a program ever prints something, whether it computes a given function, whether it accepts a finite set, whether two programs are equivalent: every question about what programs \emph{do}, as opposed to what they \emph{look like}, is undecidable. Program analysers must therefore either miss some errors, or report some errors that are not there, or sometimes run forever; there is no fourth option. Exercise~\ref{ex:ricesyntax} shows the limits of the theorem.
+
+\section{Recursive functions}\label{sec:recursive}
+
+Turing's machines are not the only definition of computability. The oldest one, going back to Dedekind's definition of addition and multiplication by recursion and to the work of Skolem, Gödel, Herbrand and Kleene, builds functions on $\mathbb N$ from simple ones.
+
+\begin{definition}\label{def:primrec}
+The \emph{primitive recursive} functions $\mathbb N^k\to\mathbb N$ form the smallest class containing the zero function, the successor $S(x)=x+1$ and the projections $(x_1,\dots,x_k)\mapsto x_i$, and closed under
+\begin{itemize}
+\item \emph{composition}: $f(\bar x)=h(g_1(\bar x),\dots,g_j(\bar x))$;
+\item \emph{primitive recursion}: $f(\bar x,0)=g(\bar x)$ and $f(\bar x,y+1)=h(\bar x,y,f(\bar x,y))$.
+\end{itemize}
+The \emph{partial recursive} (or $\mu$-recursive) functions are obtained by also allowing \emph{minimisation}: $f(\bar x)=\mu y\,[g(\bar x,y)=0]$, the least $y$ such that $g(\bar x,y)=0$ and $g(\bar x,z)$ is defined for all $z<y$, undefined if there is none.
+\end{definition}
+
+Addition, multiplication, exponentiation, the predecessor, truncated subtraction $x\mathbin{\dot-}y=\max(x-y,0)$, the sign, definitions by cases, bounded sums and products, and \emph{bounded} minimisation $\mu y\le z\,[g(\bar x,y)=0]$ (with value $z+1$ if there is no such $y$) are primitive recursive; from them come quotient and remainder, $\lfloor x/y\rfloor=\mu q\le x\,[(q+1)y>x]$ for $y\ge1$, and the Cantor pairing of Exercise~\ref{ex:pairing}. Every primitive recursive function is total and computable: by induction on its definition, a primitive recursive definition is a program with nested \texttt{for} loops whose numbers of iterations are known before they start. The converse fails.
+
+\begin{definition}\label{def:ackermann}
+The \emph{Ackermann function} is defined by $A(0,n)=n+1$, $A(m+1,0)=A(m,1)$ and $A(m+1,n+1)=A(m,A(m+1,n))$.
+\end{definition}
+
+The definition is a recursion on the pairs $(m,n)$ ordered lexicographically, which is a well-order (Tome~C1, Chapter~2): each call is on a smaller pair, so the recursion terminates and defines a total computable function. One finds $A(1,n)=n+2$, $A(2,n)=2n+3$, $A(3,n)=2^{n+3}-3$, and $A(4,n)$ is a tower of exponentials (Exercise~\ref{ex:ackermann}). Tome~C2, Chapter~3, met its inverse in the analysis of union--find.
+
+\begin{lemma}\label{lem:ackmono}
+For all $m,n$: (a) $A(m,n)>n$; (b) $A(m,n+1)>A(m,n)$; (c) $A(m+1,n)\ge A(m,n+1)$; (d) $A(m+1,n)>A(m,n)$.
+\end{lemma}
+
+\begin{proof}
+(a) By induction on $m$, and for $m+1$ on $n$: $A(0,n)=n+1$; $A(m+1,0)=A(m,1)>1$; and $A(m+1,n+1)=A(m,k)>k$ with $k=A(m+1,n)>n$, so $A(m+1,n+1)>k\ge n+1$.
+(b) $A(0,n+1)>A(0,n)$, and $A(m+1,n+1)=A(m,A(m+1,n))>A(m+1,n)$ by (a).
+(c) By induction on $n$: for $n=0$ it is an equality. If $A(m+1,n)\ge A(m,n+1)$, then $A(m+1,n)\ge A(m,n+1)>n+1$ by (a), so $A(m+1,n)\ge n+2$, and by (b) $A(m+1,n+1)=A(m,A(m+1,n))\ge A(m,n+2)$.
+(d) By (c) and (b), $A(m+1,n)\ge A(m,n+1)>A(m,n)$.
+\end{proof}
+
+\begin{theorem}[Ackermann, 1928]\label{thm:ackermann}
+For every primitive recursive $f:\mathbb N^k\to\mathbb N$ there is $m$ with $f(\bar x)<A(m,\max\bar x)$ for all $\bar x$. Consequently the Ackermann function is computable but not primitive recursive.
+\end{theorem}
+
+\begin{proof}
+We say that $m$ \emph{bounds} $f$ if $f(\bar x)<A(m,\max\bar x)$ for all $\bar x$ (with $\max\bar x=0$ for $k=0$). By Lemma~\ref{lem:ackmono}(d), if $m$ bounds $f$ so does every $m'\ge m$. We show by induction on the definition of $f$ that some $m$ bounds it, writing $M=\max\bar x$.
+
+The zero function and the projections are bounded by $0$, since $x_i\le M<M+1$; the successor by $1$, since $x+1<x+2=A(1,x)$.
+
+Composition: let $m_0$ bound $h$ and $m_1,\dots,m_j$ bound $g_1,\dots,g_j$, and let $p=\max(m_0,\dots,m_j)$. Then $g_i(\bar x)<A(p,M)$, so by (b) $f(\bar x)<A(p,\max_ig_i(\bar x))\le A(p,A(p,M))$. As $A(p,M)<A(p+1,M)$ by (d), this is less than $A(p,A(p+1,M))=A(p+1,M+1)\le A(p+2,M)$ by (c). So $p+2$ bounds $f$.
+
+Primitive recursion: let $c$ bound both $g$ and $h$. We claim $f(\bar x,y)<A(c+1,M+y)$. For $y=0$, $f(\bar x,0)=g(\bar x)<A(c,M)<A(c+1,M)$. If it holds for $y$, the arguments $\bar x$, $y$ and $f(\bar x,y)$ of $h$ are all less than $A(c+1,M+y)$ (using (a) for $\bar x$ and $y$), so $f(\bar x,y+1)<A(c,A(c+1,M+y))=A(c+1,M+y+1)$. Now let $N=\max(M,y)$. Since $M+y\le2N<2N+3=A(2,N)$, with $d=\max(c+1,2)$ we get $f(\bar x,y)<A(d,A(2,N))\le A(d,A(d+1,N))=A(d+1,N+1)\le A(d+2,N)$. So $d+2$ bounds $f$.
+
+If $A$ were primitive recursive, so would be $n\mapsto A(n,n)$, bounded by some $m$: $A(n,n)<A(m,n)$ for all $n$, which fails for $n=m$.
+\end{proof}
+
+So primitive recursion is too weak, and minimisation, with its unbounded search, is what is missing. With it nothing is missing.
+
+\begin{theorem}[Kleene]\label{thm:kleenenf}
+A partial function $\mathbb N^k\to\mathbb N$ is partial recursive if and only if it is computed by a Turing machine (numbers being written in unary). Moreover every such function can be written $f(\bar x)=V\bigl(\mu t\,[T(\bar x,t)=0]\bigr)$, with $T$ and $V$ primitive recursive and a single minimisation.
+\end{theorem}
+
+\begin{proof}
+\emph{Recursive functions are computable.} By induction on the definition, on multitape machines (Theorem~\ref{thm:multitape}): the basic functions are easy; for a composition, compute the $g_i$ one after the other on spare tapes, then $h$; for a primitive recursion, compute $f(\bar x,0)$, then apply $h$ $y$ times, counting; for a minimisation, compute $g(\bar x,0),g(\bar x,1),\dots$ until a value $0$ appears. If some $g(\bar x,z)$ is undefined, the machine computing it runs forever, as it should.
+
+\emph{Computable functions are recursive.} Take a one-tape machine computing $f$, with tape symbols $0,1,\dots,b-1$ where $0$ is the blank and $1$ the unary digit, states $0,\dots,s-1$, and a single halting state $h$. Encode a configuration by three numbers: the state $q$; the number $r=\sum_{i\ge0}c_{i}b^{i}$, where $c_i$ is the symbol $i$ cells to the right of the head (head cell included); and $\ell=\sum_{i\ge1}c_{-i}b^{i-1}$ for the cells to the left. These sums are finite since the tape holds finitely many non-blanks. Pack the triple into one number with the Cantor pairing $\langle q,\ell,r\rangle$ (Exercise~\ref{ex:pairing}).
+
+The step function $\mathrm{Step}$ is primitive recursive. Indeed, the symbol read is $c=r\bmod b$; the transition $\delta(q,c)=(q',c',D)$ is given by a finite table, hence by a definition by cases; writing gives $r'=r-c+c'$; moving right gives $\ell''=b\ell+c'$ and $r''=\lfloor r'/b\rfloor$; moving left gives $r''=br'+(\ell\bmod b)$ and $\ell''=\lfloor\ell/b\rfloor$. On the halting state, let $\mathrm{Step}$ do nothing. The configuration after $t$ steps, $\mathrm{Conf}(\bar x,t)$, is defined by primitive recursion on $t$ from the initial configuration, whose code is a primitive recursive function of $\bar x$ (for one argument, $\ell=0$ and $r=\sum_{i<x}b^i$; several arguments are separated by blanks). Let $T(\bar x,z)$ be $0$ if $z=\pi(t,\mathrm{Conf}(\bar x,t))$ for some $t\le z$ such that the state of $\mathrm{Conf}(\bar x,t)$ is $h$, and $1$ otherwise; it is primitive recursive (the search over $t\le z$ is bounded). Such a $z$ exists if and only if the machine halts, and then, since $\mathrm{Step}$ does nothing in state $h$, the second component of every such $z$ is the final configuration. Let $V(z)$ extract from the second component of $z$ the number $r$ and return the $y$ with $r=\sum_{i<y}b^i$, found by a bounded minimisation $\mu y\le r$: by our convention on outputs, this is the output. Then $f(\bar x)=V(\mu z\,[T(\bar x,z)=0])$, defined exactly when the machine halts.
+\end{proof}
+
+Every computable function needs only one unbounded search; everything else is loops with known bounds. Chapter~7 uses the same arithmetisation of computations, with numbers coding sequences, to talk about machines inside arithmetic.
+
+\section{Programs that know themselves}\label{sec:recursion}
+
+Can a program print its own text? It seems to need its text inside itself, which would then need to contain itself, and so on. Kleene showed that self-reference costs nothing.
+
+\begin{theorem}[Kleene's recursion theorem]\label{thm:recursion}
+Let $T$ be a Turing machine that takes as input a pair $\langle x,w\rangle$. There is a Turing machine $R$ such that, for every $w$, $R$ on input $w$ behaves exactly as $T$ on input $\langle\langle R\rangle,w\rangle$.
+\end{theorem}
+
+\begin{proof}
+For a word $y$, let $P_y$ be the machine which, on any input $w$, replaces it by $\langle y,w\rangle$ and halts in the state where the next machine begins. The map $q:y\mapsto\langle P_y\rangle$ is computable: the program of $P_y$ is a fixed program with $y$ written into it. For machines $X,Y$ let $XY$ denote the machine that runs $X$ and, when $X$ halts, runs $Y$ on what $X$ left on the tape; $\langle XY\rangle$ is computable from $\langle X\rangle$ and $\langle Y\rangle$.
+
+Let $B$ be the machine which, on a tape $\langle y,w\rangle$, computes $\langle P_y\rangle=q(y)$, then the description $\langle P_yY\rangle$ of the machine ``$P_y$ followed by the machine described by $y$'', and leaves $\langle\langle P_yY\rangle,w\rangle$ on the tape. Let $A=P_{\langle BT\rangle}$ and $R=ABT$.
+
+On input $w$, $R$ first runs $A$, which leaves $\langle\langle BT\rangle,w\rangle$. Then $B$ computes $\langle P_{\langle BT\rangle}\rangle=\langle A\rangle$, and the description of $A$ followed by $BT$, which is $\langle ABT\rangle=\langle R\rangle$, and leaves $\langle\langle R\rangle,w\rangle$. Then $T$ runs on it.
+\end{proof}
+
+The proof is a program in two parts: $A$ is data, a description of the rest, and $B$ is code that rebuilds the whole from that description. Exercise~\ref{ex:quine} writes it in Python. The theorem lets a machine say ``obtain your own description'' as one of its instructions, which gives a second proof of Theorem~\ref{thm:halting}: if $H$ decided $A_{\mathrm{TM}}$, the machine that obtains its own description $\langle D\rangle$, runs $H$ on $\langle D,w\rangle$ and does the opposite would contradict $H$. In the same way, for every computable $f$ mapping descriptions to descriptions there is a machine $F$ with $L(F)=L(M)$ where $\langle M\rangle=f(\langle F\rangle)$: let $F$ obtain its description, compute $f$ of it and simulate the result. No computable transformation of programs changes the behaviour of every program; computer viruses that copy themselves, and compilers that compile themselves, are practical applications of the same idea.
+
+\section{The busy beaver}\label{sec:beaver}
+
+Undecidability is often presented through problems, but it can also be seen in a number. In 1962 Tibor Radó asked: among Turing machines with $n$ states (plus a halting state) and the two symbols $0$ (blank) and $1$, started on a blank tape, which ones run longest before halting? Let $S(n)$ be the largest number of steps of such a machine that halts. There are finitely many machines with $n$ states, so $S(n)$ is a well-defined integer.
+
+\begin{theorem}[Radó, 1962]\label{thm:beaver}
+For every total computable function $f:\mathbb N\to\mathbb N$, $S(n)>f(n)$ for all sufficiently large $n$. In particular $S$ is not computable.
+\end{theorem}
+
+\begin{proof}
+Let $g(x)=1+\max_{k\le2x}f(k)$, a total computable function. Fix a machine $C$ with two symbols which, started on a tape $1^x$ with the head at its left end, computes $g(x)$ and then writes $g(x)$ ones, hence runs at least $g(x)$ steps before halting; let $c$ be its number of states. For each $n$, let $M_n$ be the machine with $n+c$ states whose $i$th state, for $i\le n$, writes $1$, moves right and enters state $i+1$, and whose last $c$ states are those of $C$, which we let begin by walking back to the left end of the block of ones. It halts after at least $g(n)$ steps. So for every $m\ge2c$, with $n=m-c\ge m/2$, the machine $M_n$ has $m$ states and $S(m)\ge g(m-c)>f(m)$, since $2(m-c)\ge m$.
+
+If $S$ were computable, taking $f=S$ would give $S(m)>S(m)$.
+\end{proof}
+
+Small values are known: $S(1)=1$, $S(2)=6$, $S(3)=21$, $S(4)=107$. For five states the record of $47\,176\,870$ steps, set by a machine found by Heiner Marxen and Jürgen Buntrock in 1989, was proved optimal in 2024 by an online collaboration, the bbchallenge, whose proof, checked by the Coq proof assistant, decides the halting of each of the $181\,385\,789$ five-state machines it had to examine. For six states, some machines are known to halt only after more steps than can be written in decimal on any physical medium, and the question for others is tied to problems of the Collatz type (Chapter~4). The busy beaver is the halting problem made visible: knowing $S(n)$ would decide the halting of all machines with $n$ states, by running them for $S(n)$ steps.
+
+\begin{beauty}
+Turing's paper does three things at once, each of which would have made it famous: it defines computation by analysing what a person does when computing, it builds the universal machine that runs any program from its description, and it uses that universality against itself, by the diagonal, to find a precise question no machine can answer. The diagonal argument, which Cantor invented to compare infinities, becomes in Turing's hands a statement about the most concrete objects imaginable, finite tables of instructions. And every attempt at a different definition, recursion with Kleene's single search, Church's $\lambda$-calculus, Post's systems, our programming languages, has led to the same class of functions: computability is not an artefact of a model but a natural kind.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:closure}
+Show that decidable languages are closed under union, intersection, complement, concatenation and star.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:recogclosure}
+Show that recognisable languages are closed under union and intersection, but not under complement.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:eqtm}
+Show that $EQ_{\mathrm{TM}}=\{\langle M_1,M_2\rangle:L(M_1)=L(M_2)\}$ is neither recognisable nor co-recognisable (its complement is not recognisable either).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:total}
+Show that $\mathrm{TOTAL}=\{\langle M\rangle:M\text{ halts on every input}\}$ is neither recognisable nor co-recognisable.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:infinitesubset}
+Show that every infinite recognisable language has an infinite decidable subset.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ackermann}
+Prove the formulas $A(1,n)=n+2$, $A(2,n)=2n+3$, $A(3,n)=2^{n+3}-3$, and express $A(4,n)$ as a tower of powers of $2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:pairing}
+Show that $\pi(x,y)=\frac{(x+y)(x+y+1)}2+y$ is a bijection $\mathbb N^2\to\mathbb N$, and that $\pi$ and its two inverse components are primitive recursive.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quine}
+Write a Python program that prints its own text, and explain it with the proof of Theorem~\ref{thm:recursion}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ricesyntax}
+Show that $\{\langle M\rangle:M\text{ has at most }10\text{ states}\}$ and $\{\langle M\rangle:M\text{ runs at least }100\text{ steps on the empty input}\}$ are decidable. Why does this not contradict Rice's theorem?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:hennie}
+(Hennie, 1965.) Show that every one-tape Turing machine deciding the palindromes over $\{a,b\}$ uses, on some input of each length $3n$, at least $cn^2$ steps, for a constant $c>0$ depending on the machine. (Use \emph{crossing sequences}: the sequence of states in which the head crosses a given boundary between two cells.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:closure}
+For the star, decide whether $w=a_1\cdots a_n$ splits into words of $L$ by computing, for each $i$, whether the prefix of length $i$ does.
+\end{hint}
+\begin{hint}{ex:recogclosure}
+For the union, do not run one machine after the other.
+\end{hint}
+\begin{hint}{ex:eqtm}
+Reduce $A_{\mathrm{TM}}$ and its complement to $EQ_{\mathrm{TM}}$, comparing the machine $M_w$ of Proposition~\ref{prop:emptiness} with machines accepting everything or nothing.
+\end{hint}
+\begin{hint}{ex:total}
+For one direction, build a machine that halts on input $x$ unless $M$ halts on $w$ within $|x|$ steps.
+\end{hint}
+\begin{hint}{ex:infinitesubset}
+Enumerate the language and keep only the words longer than all those kept before.
+\end{hint}
+\begin{hint}{ex:ackermann}
+Induction on $n$, using $A(m+1,n+1)=A(m,A(m+1,n))$.
+\end{hint}
+\begin{hint}{ex:pairing}
+The pairs with $x+y=d$ are numbered consecutively from $\frac{d(d+1)}2$.
+\end{hint}
+\begin{hint}{ex:quine}
+A string $s$ with a hole, and a line that prints $s$ with $s$ itself in the hole.
+\end{hint}
+\begin{hint}{ex:ricesyntax}
+Rice's theorem is about properties of $L(M)$.
+\end{hint}
+\begin{hint}{ex:hennie}
+If two palindromes $xa^nx^R$ and $ya^ny^R$ have the same crossing sequence at a boundary inside the middle block, the machine also accepts $xa^ny^R$. Count the crossing sequences of length less than $\ell$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:closure}
+\idea Deciders always halt, so we may run them one after the other and combine their answers; for concatenation and star we try all ways of cutting the word.
+\writeup Let $M_1,M_2$ decide $L_1,L_2$. For union and intersection, run $M_1$ then $M_2$ on $w$ and combine the answers with ``or'' and ``and''; for the complement, exchange the accepting and rejecting states. For $L_1L_2$, for each of the $n+1$ cuts $w=uv$, run $M_1$ on $u$ and $M_2$ on $v$; accept if some cut works. For $L_1^*$, let $p_0=\text{true}$ and, for $i=1,\dots,n$, let $p_i$ be true if $p_j$ is true and $M_1$ accepts $a_{j+1}\cdots a_i$ for some $j<i$; accept if $p_n$ is true. All these machines halt, and they decide the right languages.
+\end{solution}
+
+\begin{solution}{ex:recogclosure}
+\idea A recogniser may run forever, so running $M_1$ first could prevent us from ever seeing that $M_2$ accepts.
+\writeup For the union, run $M_1$ and $M_2$ alternately, one step at a time, and accept as soon as one of them accepts; a word of $L_1\cup L_2$ is accepted by one of them after finitely many steps. For the intersection, running $M_1$ and then, if it accepts, $M_2$ is fine: a word in both is accepted by both. The complement of the recognisable language $A_{\mathrm{TM}}$ is not recognisable (Proposition~\ref{prop:corecog}).
+\end{solution}
+
+\begin{solution}{ex:eqtm}
+\idea Equality with a machine that accepts everything says ``$M$ accepts $w$'', which is recognisable but not co-recognisable; equality with one that accepts nothing says the opposite. So $EQ_{\mathrm{TM}}$ inherits both difficulties.
+\writeup Let $M_w$ be the machine of Proposition~\ref{prop:emptiness}, with $L(M_w)=\Sigma^*$ if $M$ accepts $w$ and $\emptyset$ otherwise, and let $M_{\mathrm{all}}$ and $M_{\mathrm{none}}$ accept everything and nothing. The computable map $\langle M,w\rangle\mapsto\langle M_{\mathrm{all}},M_w\rangle$ shows $A_{\mathrm{TM}}\le_mEQ_{\mathrm{TM}}$, hence $\overline{A_{\mathrm{TM}}}\le_m\overline{EQ_{\mathrm{TM}}}$; since $\overline{A_{\mathrm{TM}}}$ is not recognisable, neither is $\overline{EQ_{\mathrm{TM}}}$. The map $\langle M,w\rangle\mapsto\langle M_{\mathrm{none}},M_w\rangle$ shows $\overline{A_{\mathrm{TM}}}\le_mEQ_{\mathrm{TM}}$, so $EQ_{\mathrm{TM}}$ is not recognisable.
+\end{solution}
+
+\begin{solution}{ex:total}
+\idea To show that $\mathrm{TOTAL}$ is not recognisable, encode ``$M$ never halts on $w$'' as totality: a machine that runs a clock and gives up exactly when $M$ halts. To show its complement is not recognisable, encode ``$M$ halts on $w$'' as totality of a machine that ignores its input.
+\writeup Since $\mathrm{HALT}$ is recognisable (by $U$, accepting also when $M$ rejects) and undecidable, its complement is not recognisable (Proposition~\ref{prop:corecog}). Given $\langle M,w\rangle$, let $N$ be the machine which, on input $x$, simulates $M$ on $w$ for $|x|$ steps; if $M$ halted within them, $N$ runs forever, and otherwise $N$ accepts. If $M$ never halts on $w$, $N$ halts on every input; if $M$ halts after $s$ steps, $N$ runs forever on inputs of length $\ge s$. So $\overline{\mathrm{HALT}}\le_m\mathrm{TOTAL}$, and $\mathrm{TOTAL}$ is not recognisable. Next, let $N'$ ignore its input and run $M$ on $w$, accepting if $M$ halts. Then $N'$ is total if and only if $M$ halts on $w$, so $\mathrm{HALT}\le_m\mathrm{TOTAL}$ and $\overline{\mathrm{HALT}}\le_m\overline{\mathrm{TOTAL}}$: the complement of $\mathrm{TOTAL}$ is not recognisable.
+\end{solution}
+
+\begin{solution}{ex:infinitesubset}
+\idea An enumerator prints the words in a random order, which makes membership hard to refute. If we keep only words printed in increasing order of length, we can stop the enumeration as soon as it has passed the length of the word we are asked about.
+\writeup Let $E$ enumerate $L$ (Proposition~\ref{prop:enumerator}). Let $K$ be the set of words $w$ printed by $E$ that are strictly longer than all the words printed before them. Since $L$ is infinite, it contains arbitrarily long words, so $K$ is infinite, and $K\subseteq L$. To decide whether $x\in K$, run $E$, keeping track of the longest length printed so far, until a word longer than $x$ is printed (this happens, since $L$ has words longer than $x$). The words of $K$ are printed in increasing order of length, so all words of $K$ of length $\le|x|$ have been printed by then: accept if $x$ was among them, reject otherwise.
+\end{solution}
+
+\begin{solution}{ex:ackermann}
+\idea Each level iterates the previous one: $A(m+1,n)$ applies $n\mapsto A(m,n)$ to $1$, $n+1$ times.
+\writeup $A(1,0)=A(0,1)=2$ and $A(1,n+1)=A(0,A(1,n))=A(1,n)+1$, so $A(1,n)=n+2$. Then $A(2,0)=A(1,1)=3$ and $A(2,n+1)=A(2,n)+2$, so $A(2,n)=2n+3$. Then $A(3,0)=A(2,1)=5$ and $A(3,n+1)=2A(3,n)+3$, so $A(3,n)+3$ doubles at each step from $8$: $A(3,n)=2^{n+3}-3$. Finally $A(4,0)=A(3,1)=13$ and $A(4,n+1)=2^{A(4,n)+3}-3$, so $A(4,n)+3$ is a tower of $n+3$ twos: $A(4,n)=2^{2^{\cdot^{\cdot^{2}}}}-3$ with $n+3$ twos (for $n=0$, $2^{2^2}=16$ and $16-3=13$). Already $A(4,2)=2^{65536}-3$.
+\end{solution}
+
+\begin{solution}{ex:pairing}
+\idea Number the pairs along the diagonals $x+y=d$; the diagonal $d$ has $d+1$ pairs and starts after $1+2+\cdots+d=\frac{d(d+1)}2$ pairs.
+\writeup Let $\Delta(d)=\frac{d(d+1)}2$. The pairs with $x+y=d$ are mapped to $\Delta(d),\Delta(d)+1,\dots,\Delta(d)+d=\Delta(d+1)-1$, so the diagonals cover consecutive disjoint intervals that partition $\mathbb N$, and $\pi$ is a bijection. It is primitive recursive, since $\Delta(d)=\lfloor d(d+1)/2\rfloor$. For the inverse, $d(z)=\mu d\le z\,[\Delta(d+1)>z]$ is a bounded minimisation, $y=z-\Delta(d(z))$ and $x=d(z)-y$; all are primitive recursive. Triples are coded as $\pi(q,\pi(\ell,r))$.
+\end{solution}
+
+\begin{solution}{ex:quine}
+\idea Follow the proof: the program is a piece of data $A$, a description of the code, followed by code $B$ which prints the data twice, once as a quoted description and once as code.
+\writeup The two-line program
+\begin{center}
+\verb|s = 's = %r\nprint(s %% s)'|\\
+\verb|print(s % s)|
+\end{center}
+prints its own text. The first line is $A$: it stores a description of the program with a hole \verb|%r| where the description itself must go. The second line is $B$: the formatting operation \verb|s % s| puts the quoted form of $s$ (\verb|%r| is Python's \texttt{repr}) into the hole, rebuilding the first line, while the rest of $s$ rebuilds the second line (\verb|%%| becomes \verb|%|). As in the proof of Theorem~\ref{thm:recursion}, $B$ computes from a description $y$ of itself the description of ``print $y$, then $y$'', which is the whole program. The notebook runs it and checks that the output equals the source.
+\end{solution}
+
+\begin{solution}{ex:ricesyntax}
+\idea Both questions are about the machine, not about its language; one is read off the table, the other is answered by running the machine for a bounded time.
+\writeup The number of states is part of the description, so the first set is decidable by reading $\langle M\rangle$. For the second, simulate $M$ on the empty input for $100$ steps with the universal machine; accept if it has not halted before step $100$, reject otherwise. This always halts. Rice's theorem concerns sets of the form $\{\langle M\rangle:L(M)\in P\}$, which contain, with a machine, every machine with the same language. Our sets do not: adding useless states, or $100$ useless steps at the start, changes membership without changing the language.
+\end{solution}
+
+\begin{solution}{ex:hennie}
+\idea A boundary between two cells is a narrow channel: everything the left part of the tape learns about the right part passes through it as the sequence of states in which the head crosses. If two inputs send the same messages across the boundary, the machine cannot tell their left halves apart from their right halves, and we can swap halves. Palindromes force the left third to communicate $n$ bits to the right third, across each of the $n$ boundaries of the middle third; a crossing sequence of length $\ell$ carries about $\ell\log|Q|$ bits.
+\writeup Let $M$ decide the palindromes, with state set $Q$, $|Q|\ge2$. For an input $w$ and a boundary between the cells $i-1$ and $i$, let $C_i(w)$ be the sequence of states that $M$ enters at the steps where the head crosses this boundary.
+\emph{Cut and paste.} Let $u_1v_1$ and $u_2v_2$ be inputs with $|u_1|=|u_2|=i$, both accepted, with $C_i(u_1v_1)=C_i(u_2v_2)=(p_1,\dots,p_k)$. Then $M$ accepts $u_1v_2$. Indeed, the computation of $M$ on an input is cut by the crossings into segments spent alternately on the left (cells $<i$) and on the right (cells $\ge i$). By induction on $j$, the $j$th segment of the computation on $u_1v_2$ coincides with the $j$th segment on $u_1v_1$ if it is on the left, and on $u_2v_2$ if it is on the right: a left segment starts in state $p_{j-1}$ (or $q_0$), on the left part of the tape as left by the previous left segment, which only depends on the input $u_1$ and the earlier left segments; it is therefore the same as on $u_1v_1$ and ends by crossing in state $p_j$; symmetrically on the right. The last segment, which ends in the accepting state of $u_1v_1$ or of $u_2v_2$, ends in the accepting state.
+\emph{Distinct sequences.} For $x\in\{a,b\}^n$ let $w_x=xa^nx^R$, a palindrome of length $3n$. Fix a boundary $i$ with $n\le i\le2n$. If $x\ne y$ and $C_i(w_x)=C_i(w_y)$, cut and paste with $u_1=xa^{i-n}$, $v_2=a^{2n-i}y^R$ shows that $M$ accepts $xa^ny^R$, which is not a palindrome. So the $2^n$ sequences $C_i(w_x)$ are distinct.
+\emph{Counting.} There are fewer than $|Q|^\ell$ sequences of length less than $\ell$, for $\ell\ge1$ (namely $\sum_{j<\ell}|Q|^j<|Q|^\ell$). Take $\ell=\lfloor n/(2\log_2|Q|)\rfloor$, so that $|Q|^\ell\le2^{n/2}$: for each $i$, at least $2^n-2^{n/2}$ words $x$ have $|C_i(w_x)|\ge\ell$. Each crossing is a step, so the running time on $w_x$ is at least $\sum_{i=n}^{2n}|C_i(w_x)|$, and summing over $x$,
+\[
+\sum_x\mathrm{time}(w_x)\ \ge\ (n+1)(2^n-2^{n/2})\,\ell.
+\]
+So some $x$ has $\mathrm{time}(w_x)\ge(n+1)(1-2^{-n/2})\ell$. For $n\ge n_0=\max(2,4\log_2|Q|)$ we have $1-2^{-n/2}\ge\frac12$ and $\ell\ge n/(4\log_2|Q|)$, so the time is at least $n^2/(8\log_2|Q|)$; for $n<n_0$ the machine makes at least one step. Thus $c=\min\bigl(1/(8\log_2|Q|),1/n_0^2\bigr)$ works. With two tapes, copying the input and comparing takes $O(n)$ steps: Theorem~\ref{thm:multitape} cannot be improved in general.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} A.~M.~Turing, \emph{On computable numbers, with an application to the Entscheidungsproblem}, Proceedings of the London Mathematical Society (2) 42 (1936--37), 230--265, received 28 May 1936; a correction, ibid.\ 43 (1937), 544--546. Read Section~1 and Section~9 first: they contain the analysis of the human computer, the argument behind the Church--Turing thesis, and they need no notation. Then Sections~2 to 4, where the machines are defined (Turing's machines compute infinite binary sequences, and the good ones are those that print infinitely many digits, called \emph{circle-free}; there is no halting problem as such in the paper, the name came later). Section~5 numbers the machines by their \emph{description numbers}, Sections~6 and~7 build the universal machine with a system of abbreviated tables that is a programming language with subroutines, and Section~8 applies the diagonal process: no machine decides whether a description number is circle-free. Section~11 derives the negative answer to the Entscheidungsproblem by writing a formula of logic that expresses the behaviour of a machine, an idea we shall meet again in Chapter~9. Compare with Church's paper below: the results are the same, the analysis is not.
+\item \emph{The stories.} K.~Gödel, Postscriptum (1964) to \emph{On undecidable propositions of formal mathematical systems}, in M.~Davis (ed.), \emph{The Undecidable}, Raven Press, 1965, 71--73, where Gödel accepts Turing's analysis as the precise definition of a formal system; A.~Hodges, \emph{Alan Turing: The Enigma}, Burnett Books, 1983, for Newman's course and the reception of the paper; J.~J.~O'Connor and E.~F.~Robertson, \emph{Alan Mathison Turing}, MacTutor History of Mathematics Archive, for the dates; A.~Church, \emph{An unsolvable problem of elementary number theory}, American Journal of Mathematics 58 (1936), 345--363, and \emph{A note on the Entscheidungsproblem}, Journal of Symbolic Logic 1 (1936), 40--41; D.~Hilbert and W.~Ackermann, \emph{Grundzüge der theoretischen Logik}, Springer, 1928.
+\item H.~G.~Rice, \emph{Classes of recursively enumerable sets and their decision problems}, Transactions of the American Mathematical Society 74 (1953), 358--366; W.~Ackermann, \emph{Zum Hilbertschen Aufbau der reellen Zahlen}, Mathematische Annalen 99 (1928), 118--133; S.~C.~Kleene, \emph{General recursive functions of natural numbers}, Mathematische Annalen 112 (1936), 727--742; S.~C.~Kleene, \emph{On notation for ordinal numbers}, Journal of Symbolic Logic 3 (1938), 150--155, where the recursion theorem first appears.
+\item T.~Radó, \emph{On non-computable functions}, Bell System Technical Journal 41 (1962), 877--884; The bbchallenge Collaboration, \emph{Determination of the fifth Busy Beaver value}, arXiv:2509.12337 (2025); F.~C.~Hennie, \emph{One-tape, off-line Turing machine computations}, Information and Control 8 (1965), 553--578.
+\item M.~Davis, \emph{Computability and Unsolvability}, McGraw-Hill, 1958 (Dover reprint 1982), a classic; M.~Sipser's textbook of Chapter~\ref{ch:automata}, whose presentation of the recursion theorem we follow; N.~Cutland, \emph{Computability: An Introduction to Recursive Function Theory}, Cambridge University Press, 1980.
+\end{itemize}
