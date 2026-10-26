@@ -51,7 +51,7 @@ for tome in "${tomes[@]}"; do
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
       --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
-      --metadata title="${title:-$tome}" --metadata lang=en \
+      --metadata title="${title:-$tome}" --metadata author="SEGHAIER Oussama & Claude Opus 5.5" --metadata lang=en \
       -o "$root/dist/$tome.epub")
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
   echo "   dist/$tome.pdf  dist/$tome-phone.pdf  dist/$tome-kindle.pdf  dist/$tome.epub"

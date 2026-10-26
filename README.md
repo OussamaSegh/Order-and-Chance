@@ -1,6 +1,8 @@
-# Numbers, Structures and Chance
+# Order and Chance
 
-A series of books of beautiful mathematics, written for pleasure with Claude. Every chapter has graded exercises with complete solutions and a Python
+*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama & Claude Opus 5.5.
+
+A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 companion notebook with computer-science applications.
 
 ## Download the books

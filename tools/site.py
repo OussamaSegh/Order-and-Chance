@@ -20,7 +20,7 @@ PAGE = """<!doctype html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Numbers, Structures and Chance</title>
+<title>Order and Chance</title>
 <style>
   :root {{ --ink:#1d1d1f; --muted:#5f6368; --line:#e3e0d8; --bg:#fbfaf6; --card:#fff; --accent:#1f4e79; }}
   @media (prefers-color-scheme: dark) {{
@@ -29,6 +29,7 @@ PAGE = """<!doctype html>
   body {{ margin:0; background:var(--bg); color:var(--ink); font:17px/1.6 Georgia, "Palatino Linotype", serif; }}
   main {{ max-width:760px; margin:0 auto; padding:48px 16px 64px; }}
   h1 {{ font-size:2.1em; margin:0 0 .2em; }}
+  .subtitle {{ font-style:italic; margin:0 0 1.2em; }}
   .lead {{ color:var(--muted); margin:0 0 2em; }}
   .tome {{ background:var(--card); border:1px solid var(--line); border-radius:8px; padding:16px 20px; margin:14px 0;
           display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:12px; }}
@@ -45,7 +46,8 @@ PAGE = """<!doctype html>
 </head>
 <body>
 <main>
-<h1>Numbers, Structures and Chance</h1>
+<h1>Order and Chance</h1>
+<p class="subtitle">Number theory, algebra and probability, all proved<br>by SEGHAIER Oussama &amp; Claude Opus 5.5</p>
 <p class="lead">A series of books of beautiful mathematics, written for pleasure, from a refresher of undergraduate mathematics
 toward research in probability, probabilistic number theory and algebra. Every statement is proved, and every exercise
 has a solution that explains how to find it.</p>
