@@ -1,0 +1,639 @@
+\chapter{Stochastic Differential Equations}
+
+\begin{center}\itshape
+A particle pushed by a force and kicked by noise, a price that grows and trembles, eigenvalues that wander and repel:\\
+each is described by an equation in which $\mathrm dB$ appears next to $\mathrm dt$.\\
+This chapter solves such equations, and finds that some solutions refuse to do what they seem able to do.
+\end{center}
+
+In 1908, three years after Einstein's paper on Brownian motion, Paul Langevin presented to the Paris Academy of Sciences a derivation of Einstein's formula for the mean square displacement which was,
+in his words, ``infinitely more simple'' (in the English translation of Lemons and Gythiel, 1997). Einstein had written a diffusion equation for the density of particles. Langevin wrote Newton's law for
+a single particle: mass times acceleration equals a friction force proportional to the velocity, plus a ``complementary force'' that is irregular, as likely to push one way as the other, and
+independent of the position. He then averaged, and the formula came out in a few lines. What his complementary force was, as a mathematical object, nobody could say. The velocity of his particle
+satisfied, in modern notation, $\mathrm dV=-\theta V\dd t+\sigma\dd B$.
+
+In 1930, George Uhlenbeck and Leonard Ornstein computed the law of Langevin's velocity: it is Gaussian, it forgets its initial value exponentially fast, and it settles into an equilibrium. Their paper
+in the \emph{Physical Review} gave the process its name. Twenty years later, It\^o's integral gave Langevin's equation a meaning, and It\^o proved in 1951 that such equations have exactly one solution
+when their coefficients are Lipschitz.
+
+The next equation came from finance. In 1973 Fischer Black and Myron Scholes, and independently Robert Merton, priced an option on a stock whose price follows $\mathrm dS=\mu S\dd t+\sigma S\dd B$. Their
+argument is an application of It\^o's formula: a portfolio of the stock and a bond, readjusted continuously, reproduces the option exactly, so the option has a single fair price, in which the
+expected return $\mu$ of the stock does not even appear. The paper of Black and Scholes was first rejected by the \emph{Journal of Political Economy}, which published it after a second look, as Black
+later recalled (1989). Merton and Scholes received the Nobel prize in economics in 1997; Black had died in 1995.
+
+The last equation of this chapter is Freeman Dyson's. In 1962 he let the entries of a Hermitian matrix perform independent Brownian motions and asked how its eigenvalues move. They perform Brownian
+motions too, but they repel each other with a force inversely proportional to their distance, a two-dimensional Coulomb gas on a line. Dyson's paper was called \emph{A Brownian-motion model for the
+eigenvalues of a random matrix}; Henry McKean found, a few years later, a short argument that the eigenvalues never collide. That argument, a Lyapunov function and It\^o's formula, ends the chapter
+before a theorem on the numerical solution of all these equations.
+
+\begin{reminder}[from Chapters 3 to 5]
+$B$ is an $m$-dimensional $(\mathcal F_t)$-Brownian motion, the filtration satisfying the usual conditions. For progressive $H$ with $\mathbb E\int_0^tH_s^2\dd s<\infty$, $\int_0^tH\dd B^j$ is a
+square-integrable martingale with $\mathbb E(\int_0^tH\dd B^j)^2=\mathbb E\int_0^tH^2\dd s$, and $\langle H\cdot B^j,K\cdot B^k\rangle=\delta_{jk}\int HK\dd s$ (Theorem~\ref{thm:itoloc}, Proposition~\ref{prop:itoprops}). Doob's
+inequality $\mathbb E\sup_{s\le t}M_s^2\le4\mathbb EM_t^2$ (Theorem~\ref{thm:doobcont}). It\^o's formula (Theorem~\ref{thm:itoformula}), also for functions that are $C^1$ in time and $C^2$ in space (the paragraph
+before Theorem~\ref{thm:feynmankac}). L\'evy's characterisation (Theorem~\ref{thm:levychar}).
+\end{reminder}
+
+\section{Existence and uniqueness}
+
+Let $b:\R^d\to\R^d$ and $\sigma:\R^d\to\R^{d\times m}$ be measurable. For a $d\times m$ matrix $A$ we write $|A|$ for its Euclidean (Frobenius) norm, and for a progressive $\R^{d\times m}$-valued $H$,
+$\int_0^tH\dd B$ is the vector whose $i$-th coordinate is $\sum_j\int_0^tH_{ij}\dd B^j$. The reminder gives the isometry
+\begin{equation}\label{eq:isomvec}
+\mathbb E\Bigl|\int_0^tH\dd B\Bigr|^2=\mathbb E\int_0^t|H_s|^2\dd s ,
+\end{equation}
+since the cross terms vanish: for $j\ne j'$,
+\[
+\mathbb E\Bigl[\int H_{ij}\dd B^j\int H_{ij'}\dd B^{j'}\Bigr]=\mathbb E\int H_{ij}H_{ij'}\dd\langle B^j,B^{j'}\rangle=0 .
+\]
+
+\begin{definition}\label{def:strongsol}
+Let $\xi$ be an $\mathcal F_0$-measurable random vector. A \emph{(strong) solution} of
+\[
+\dd X_t=b(X_t)\dd t+\sigma(X_t)\dd B_t,\qquad X_0=\xi,
+\]
+is a continuous adapted process $X$ in $\R^d$ such that, almost surely, $\int_0^t(|b(X_s)|+|\sigma(X_s)|^2)\dd s<\infty$ and $X_t=\xi+\int_0^tb(X_s)\dd s+\int_0^t\sigma(X_s)\dd B_s$ for all $t\ge0$.
+\end{definition}
+
+\begin{lemma}[Gronwall]\label{lem:gronwall}
+Let $\varphi$ be bounded, measurable and non-negative on $[0,T]$, with $\varphi(t)\le a+L\int_0^t\varphi(s)\dd s$ for all $t\le T$, where $a,L\ge0$. Then $\varphi(t)\le ae^{Lt}$ for $t\le T$.
+\end{lemma}
+
+\begin{proof}
+Substituting the inequality into itself $n$ times gives
+\[
+\varphi(t)\le a\sum_{k<n}\frac{(Lt)^k}{k!}+L^n\int_{0\le s_n\le\dots\le s_1\le t}\varphi(s_n)\dd s_n\cdots\dd s_1 ,
+\]
+and the last term is at most $\sup\varphi\cdot\frac{(Lt)^n}{n!}\to0$.
+\end{proof}
+
+\begin{theorem}[It\^o, 1951]\label{thm:sdeexist}
+Assume that $b$ and $\sigma$ are Lipschitz: $|b(x)-b(y)|+|\sigma(x)-\sigma(y)|\le K|x-y|$. For every $\mathcal F_0$-measurable $\xi$ with $\mathbb E|\xi|^2<\infty$ there is a solution $X$, unique up to
+indistinguishability, and for every $T$ there is $C_T$, depending only on $T$, $K$, $|b(0)|$, $|\sigma(0)|$, with
+\[
+\mathbb E\sup_{t\le T}|X_t|^2\le C_T(1+\mathbb E|\xi|^2) .
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $T$ and let $\mathcal S_T$ be the space of continuous adapted processes on $[0,T]$ with $\|X\|^2=\mathbb E\sup_{t\le T}|X_t|^2<\infty$; it is complete (a Cauchy sequence has a subsequence converging
+uniformly almost surely, as in Theorem~\ref{thm:L2cont}). For $X\in\mathcal S_T$ put
+\[
+\Phi(X)_t=\xi+\int_0^tb(X_s)\dd s+\int_0^t\sigma(X_s)\dd B_s .
+\]
+Since $|b(x)|\le|b(0)|+K|x|$ and similarly for $\sigma$, the integrands are square integrable, and by Cauchy--Schwarz for the first integral, Doob's inequality and \eqref{eq:isomvec} for the second,
+$\Phi(X)\in\mathcal S_T$. Write $D_t(X,Y)=\mathbb E\sup_{s\le t}|X_s-Y_s|^2$. The same two inequalities give, for $X,Y\in\mathcal S_T$ and $t\le T$, with $L=2(T+4)K^2$,
+\begin{equation}\label{eq:picard}
+D_t\bigl(\Phi(X),\Phi(Y)\bigr)\le L\int_0^tD_s(X,Y)\dd s .
+\end{equation} Start from $X^0=\xi$ and put $X^{n+1}=\Phi(X^n)$. By induction from \eqref{eq:picard}, $D_t(X^{n+1},X^n)\le\frac{(Lt)^n}{n!}\|X^1-X^0\|^2$, whose square roots are
+summable. So $(X^n)$ is Cauchy in $\mathcal S_T$ and converges to some $X$; by \eqref{eq:picard} $\Phi$ is continuous on $\mathcal S_T$, so $X=\Phi(X)$: $X$ solves the equation on $[0,T]$.
+
+\emph{Uniqueness.} Let $X$ and $Y$ be two solutions on $[0,T]$ (not assumed square integrable) and $\tau_k=\inf\{t:|X_t|\vee|Y_t|\ge k\}$. On $\{s\le\tau_k\}$ we have $|X_s-Y_s|\le|X_{s\wedge\tau_k}-Y_{s\wedge\tau_k}|$, and
+the stopped integrals are integrals of $\mathbf 1_{\{s\le\tau_k\}}$ times the integrands (Proposition~\ref{prop:itoprops}(c)), so the proof of \eqref{eq:picard} applies to
+$\varphi(t)=\mathbb E\sup_{s\le t}|X_{s\wedge\tau_k}-Y_{s\wedge\tau_k}|^2\mathbf 1_{\{\tau_k>0\}}$, which is bounded by $4k^2$:
+$\varphi(t)\le L\int_0^t\varphi$. Gronwall gives $\varphi=0$, so $X=Y$ on $[0,\tau_k]$, and $\tau_k\to\infty$.
+
+\emph{The bound.} $\mathbb E\sup_{s\le t}|X_s|^2\le3\mathbb E|\xi|^2+3T\,\mathbb E\int_0^t|b(X_s)|^2\dd s+12\,\mathbb E\int_0^t|\sigma(X_s)|^2\dd s$, and $|b(x)|^2\le2|b(0)|^2+2K^2|x|^2$; Gronwall applied to
+$\varphi(t)=\mathbb E\sup_{s\le t}|X_s|^2$, which is finite, gives the bound.
+
+Finally the solutions on $[0,N]$, $N=1,2,\dots$, agree on their common intervals by uniqueness, and define a solution on $[0,\infty[$.
+\end{proof}
+
+The proof is Picard's iteration for ordinary differential equations, with Doob's inequality in place of the supremum bound of the integral. The same Gronwall argument compares two solutions with
+different initial values.
+
+\begin{proposition}\label{prop:sdeflow}
+Under the hypotheses of Theorem~\ref{thm:sdeexist}, if $X$ and $Y$ are the solutions from $\xi$ and $\eta$, then $\mathbb E\sup_{t\le T}|X_t-Y_t|^2\le3e^{LT}\,\mathbb E|\xi-\eta|^2$, with $L=6(T+4)K^2$.
+\end{proposition}
+
+\begin{proof}
+$X-Y=\xi-\eta+\int(b(X)-b(Y))\dd s+\int(\sigma(X)-\sigma(Y))\dd B$, so as in \eqref{eq:picard}, with $(a+b+c)^2\le3(a^2+b^2+c^2)$, $\varphi(t)=\mathbb E\sup_{s\le t}|X_s-Y_s|^2$ satisfies
+$\varphi(t)\le3\mathbb E|\xi-\eta|^2+L\int_0^t\varphi$. Apply Gronwall.
+\end{proof}
+
+For $x\in\R^d$ let $X^x$ be the solution from $x$, and define $P_tf(x)=\mathbb Ef(X^x_t)$ for bounded measurable $f$. The solution forgets the past: at time $t$ it starts afresh from where it is.
+
+\begin{theorem}[Markov property]\label{thm:sdemarkov}
+Under the hypotheses of Theorem~\ref{thm:sdeexist}, $x\mapsto P_sf(x)$ is measurable, and for all $x$, $s,t\ge0$ and bounded measurable $f$,
+\[
+\mathbb E\bigl[f(X^x_{t+s})\bigm|\mathcal F_t\bigr]=P_sf(X^x_t)\qquad\text{almost surely.}
+\]
+\end{theorem}
+
+\begin{proof}
+Let $B'_u=B_{t+u}-B_t$, a Brownian motion for the filtration $\mathcal G_u=\mathcal F_{t+u}$, independent of $\mathcal G_0=\mathcal F_t$, and $Y_u=X^x_{t+u}$. Then
+$Y_u=X^x_t+\int_0^ub(Y_v)\dd v+\int_0^u\sigma(Y_v)\dd B'_v$: for elementary integrands the shift of the stochastic integral is clear, and both sides are continuous for the isometry. So $Y$ is the solution
+driven by $B'$, for the filtration $(\mathcal G_u)$, from the $\mathcal G_0$-measurable initial value $\xi=X^x_t$.
+
+For $y\in\R^d$ let $Z^y$ be the solution from $y$ driven by $B'$ in the (augmented) filtration of $B'$. The Picard iterates are built from $B'$ alone, so $Z^y$ is measurable with respect to $\sigma(B')$, which is
+independent of $\mathcal F_t$, and $Z^y$ has the law of $X^y$, since the law of each iterate depends only on the law of the driving Brownian motion. A stochastic integral with respect to $B'$ of a process
+adapted to the smaller filtration is the same in both filtrations (again clear for elementary integrands), so $Z^y$ also solves the equation for $(\mathcal G_u)$.
+
+Let $\xi_k$ be $\mathcal F_t$-measurable with finitely many values $y_1,\dots,y_r$ and $|\xi_k-\xi|\le1/k$. Then $\hat Y^k=\sum_i\mathbf 1_{\{\xi_k=y_i\}}Z^{y_i}$ solves the equation from $\xi_k$ for $(\mathcal G_u)$
+(the indicators are $\mathcal G_0$-measurable and pass through the integrals), so by Proposition~\ref{prop:sdeflow} $\mathbb E\sup_{u\le s}|\hat Y^k_u-Y_u|^2\le Ck^{-2}$. For $f$ bounded and Lipschitz,
+independence gives
+\[
+\mathbb E[f(\hat Y^k_s)\mid\mathcal F_t]=\sum_i\mathbf 1_{\{\xi_k=y_i\}}\mathbb E f(Z^{y_i}_s)=P_sf(\xi_k) .
+\]
+As $k\to\infty$, the left side tends to $\mathbb E[f(Y_s)\mid\mathcal F_t]$ in $L^1$, and the right side to $P_sf(\xi)$, because $|P_sf(y)-P_sf(z)|\le\mathrm{Lip}(f)\,\mathbb E|X^y_s-X^z_s|\le C|y-z|$ by
+Proposition~\ref{prop:sdeflow}. This proves the identity for bounded Lipschitz $f$, for which $P_sf$ is continuous. For a closed set $F$, $f_n=\max(0,1-n\,d(\cdot,F))$ decreases to $\mathbf 1_F$, and monotone convergence
+extends both the measurability and the identity to $\mathbf 1_F$; the class of Borel sets $A$ for which they hold for $\mathbf 1_A$ is a $\lambda$-system containing the $\pi$-system of closed sets, hence all Borel sets,
+and linearity and monotone convergence give all bounded measurable $f$.
+\end{proof}
+
+Lipschitz conditions are not a technicality. The equation $\dd X=3X^{1/3}\dd t+3X^{2/3}\dd B$, $X_0=0$, has the two solutions $X=0$ and $X=B^3$ (Exercise~\ref{ex:nonunique}). In dimension one, however,
+the diffusion coefficient may be much rougher than Lipschitz.
+
+\begin{theorem}[Yamada and Watanabe, 1971]\label{thm:yamada}
+Let $d=m=1$, $b$ Lipschitz and $\sigma$ such that $|\sigma(x)-\sigma(y)|\le K\sqrt{|x-y|}$. If $X$ and $Y$ are two solutions with $X_0=Y_0$, driven by the same Brownian motion, then $X$ and $Y$ are indistinguishable.
+\end{theorem}
+
+\begin{proof}
+The idea is to apply It\^o's formula to $|X-Y|$, smoothed so that the second derivative is of order $1/(n|x|)$ near $0$, which exactly compensates the $|x|$ coming from $|\sigma(X)-\sigma(Y)|^2\le K^2|X-Y|$.
+
+Let $a_0=1$ and $a_n=a_{n-1}e^{-n}$, so that $\int_{a_n}^{a_{n-1}}\frac{\mathrm du}u=n$. Choose continuous $\rho_n\ge0$ supported in $]a_n,a_{n-1}[$ with $\rho_n(u)\le\frac2{nu}$ and $\int\rho_n=1$, and put
+$\psi_n(x)=\int_0^{|x|}\int_0^y\rho_n(u)\dd u\dd y$. Then $\psi_n\in C^2(\R)$ (it vanishes near $0$), $|\psi_n'|\le1$, $\psi_n''(x)=\rho_n(|x|)\le\frac2{n|x|}$, and $\psi_n(x)\uparrow|x|$ as $n\to\infty$,
+since $\psi'_n(y)=1$ for $y\ge a_{n-1}$.
+
+Let $\Delta=X-Y$ and $\tau_k=\inf\{t:|X_t|\vee|Y_t|\ge k\}$. By It\^o's formula,
+with $\delta b_s=b(X_s)-b(Y_s)$ and $\delta\sigma_s=\sigma(X_s)-\sigma(Y_s)$,
+\[
+\psi_n(\Delta_t)=\int_0^t\psi_n'(\Delta_s)\,\delta b_s\dd s+\int_0^t\psi_n'(\Delta_s)\,\delta\sigma_s\dd B_s+\frac12\int_0^t\psi_n''(\Delta_s)\,\delta\sigma_s^2\dd s .
+\]
+Stopped at $\tau_k$, the stochastic integral has a bounded integrand and mean $0$. The last term is at most $\frac12\int_0^t\frac2{n|\Delta_s|}K^2|\Delta_s|\dd s=\frac{K^2t}n$. Hence
+\[
+\mathbb E\psi_n(\Delta_{t\wedge\tau_k})\le K\,\mathbb E\int_0^{t\wedge\tau_k}|\Delta_s|\dd s+\frac{K^2t}n\le K\int_0^t\mathbb E|\Delta_{s\wedge\tau_k}|\dd s+\frac{K^2t}n .
+\]
+Let $n\to\infty$ (monotone convergence): $\varphi(t)=\mathbb E|\Delta_{t\wedge\tau_k}|\le2k$ satisfies $\varphi(t)\le K\int_0^t\varphi$, so $\varphi=0$ by Gronwall. Thus $X_t=Y_t$ almost surely on $\{t\le\tau_k\}$ for each $t$ and
+$k$; let $k\to\infty$ and use continuity.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-ou}
+\caption{Three paths of the Ornstein--Uhlenbeck process $\mathrm dX=-X\dd t+\dd B$, started at $3$, $0$ and $-3$. They forget their starting points at the exponential rate $e^{-t}$ and then fluctuate in the
+stationary law $N(0,\frac12)$; the dashed lines are at $\pm2/\sqrt2$, two standard deviations.}
+\label{fig:ou}
+\end{figure}
+
+\section{Linear equations: Langevin and Black--Scholes}
+
+\begin{proposition}[Ornstein--Uhlenbeck, 1930]\label{prop:ou}
+Let $\theta,\sigma>0$. The solution of $\dd X=-\theta X\dd t+\sigma\dd B$, $X_0=x$, is
+\[
+X_t=e^{-\theta t}x+\sigma\int_0^te^{-\theta(t-s)}\dd B_s ,
+\]
+a Gaussian process with $X_t\sim N\bigl(e^{-\theta t}x,\frac{\sigma^2}{2\theta}(1-e^{-2\theta t})\bigr)$. As $t\to\infty$, $X_t$ converges in law to $N(0,\frac{\sigma^2}{2\theta})$, and if $X_0$ is independent of $B$ with this law, then
+$X_t$ has this law for every $t$.
+\end{proposition}
+
+\begin{proof}
+It\^o's formula for $f(t,x)=e^{\theta t}x$ gives $\dd(e^{\theta t}X_t)=\theta e^{\theta t}X_t\dd t+e^{\theta t}\dd X_t=\sigma e^{\theta t}\dd B_t$, whence the formula; conversely the formula defines a solution by the same
+computation, and the solution is unique (Theorem~\ref{thm:sdeexist}). The integral of the deterministic function $e^{-\theta(t-s)}$ is a Wiener integral (Exercise~\ref{ex:wienerito}), Gaussian, centred, with
+variance $\sigma^2\int_0^te^{-2\theta(t-s)}\dd s=\frac{\sigma^2}{2\theta}(1-e^{-2\theta t})$, and jointly Gaussian at several times. The limit in law follows from the characteristic functions. If $X_0\sim N(0,\frac{\sigma^2}{2\theta})$ is
+independent of $B$, then $X_t$ is the sum of the independent Gaussians $e^{-\theta t}X_0$ and $\sigma\int_0^te^{-\theta(t-s)}\dd B_s$, with variance $\frac{\sigma^2}{2\theta}e^{-2\theta t}+\frac{\sigma^2}{2\theta}(1-e^{-2\theta t})$.
+\end{proof}
+
+With $\sigma=\sqrt2$, $\theta=1$ and $X_0\sim N(0,1)$ this is the stationary process of covariance $e^{-|t-s|}$ met in Chapter~1 (Exercise~\ref{ex:ou}). Langevin's velocity has a position $\int_0^tX_s\dd s$; over long times it behaves like
+a Brownian motion with variance $\frac{\sigma^2}{\theta^2}t$ (Exercise~\ref{ex:langevin}), which is Einstein's diffusion recovered from Newton's law.
+
+\begin{proposition}[geometric Brownian motion]\label{prop:gbm}
+Let $\mu\in\R$, $\sigma>0$, $s>0$. The solution of $\dd S=\mu S\dd t+\sigma S\dd B$, $S_0=s$, is $S_t=s\exp\bigl(\sigma B_t+(\mu-\frac{\sigma^2}2)t\bigr)$.
+\end{proposition}
+
+\begin{proof}
+It\^o's formula for $f(t,y)=s\exp(\sigma y+(\mu-\frac{\sigma^2}2)t)$ gives $\dd f(t,B_t)=f\cdot\bigl((\mu-\frac{\sigma^2}2)\dd t+\sigma\dd B_t+\frac{\sigma^2}2\dd t\bigr)=\mu S\dd t+\sigma S\dd B$; the coefficients are linear, so
+the solution is unique.
+\end{proof}
+
+The correction $-\frac{\sigma^2}2$ is It\^o's: the median of $S_t$ grows at rate $\mu-\frac{\sigma^2}2$, the mean at rate $\mu$. If $0<\mu<\frac{\sigma^2}2$, the mean tends to infinity while almost every path tends
+to $0$ (Exercise~\ref{ex:gbm}).
+
+\medskip
+\emph{The Black--Scholes model.} A market has a bond worth $e^{rt}$ at time $t$ (interest rate $r\ge0$) and a stock with price $S$ as in Proposition~\ref{prop:gbm}. A \emph{European call} with strike $K>0$ and
+maturity $T$ pays $(S_T-K)^+$ at time $T$: the right to buy the stock at price $K$. A \emph{strategy} holds $a_t$ shares and $c_t$ bonds, with $a,c$ progressive and locally bounded on $[0,T[$; its value is
+$V_t=a_tS_t+c_te^{rt}$, and it is \emph{self-financing} if
+\[
+V_t=V_0+\int_0^ta_u\dd S_u+\int_0^tc_u\,re^{ru}\dd u\qquad(t<T),
+\]
+that is, if the value changes only through the price movements, without money added or withdrawn. Let $\Phi$ and $\varphi$ be the standard normal distribution function and density, $\tau=T-t$, and
+\[
+d_\pm(t,s)=\frac{\log(s/K)+(r\pm\frac{\sigma^2}2)\tau}{\sigma\sqrt\tau},\qquad C(t,s)=s\,\Phi(d_+)-Ke^{-r\tau}\Phi(d_-)\quad(t<T),
+\]
+and $C(T,s)=(s-K)^+$.
+
+\begin{theorem}[Black, Scholes and Merton, 1973]\label{thm:blackscholes}
+The strategy $a_t=\Phi(d_+(t,S_t))$, $c_t=e^{-rt}(C(t,S_t)-a_tS_t)$ is self-financing, its value is $V_t=C(t,S_t)$, and $V_t\to(S_T-K)^+$ as $t\to T$. An investor who starts with $C(0,S_0)$ can therefore
+reproduce the payoff of the call exactly, whatever the path of the stock.
+\end{theorem}
+
+\begin{proof}
+\emph{The formula as an expectation.} With $Z\sim N(0,1)$ and $t<T$,
+\[
+C(t,s)=e^{-r\tau}\,\mathbb E\bigl[(se^{\sigma\sqrt\tau Z+(r-\sigma^2/2)\tau}-K)^+\bigr].
+\]
+Indeed the payoff is positive exactly when $Z>-d_-$, and $Ke^{-r\tau}P(Z>-d_-)=Ke^{-r\tau}\Phi(d_-)$; completing the square,
+\[
+\mathbb E\bigl[e^{\sigma\sqrt\tau Z-\sigma^2\tau/2}\mathbf 1_{\{Z>-d_-\}}\bigr]=P(Z>-d_--\sigma\sqrt\tau)=\Phi(d_+) .
+\]
+By dominated convergence this expression tends to $(s-K)^+$ as $t\to T$, locally uniformly in $s$, so $C$ is continuous on $[0,T]\times]0,\infty[$.
+
+\emph{The partial differential equation.} Since $d_+^2-d_-^2=(d_+-d_-)(d_++d_-)=2(\log\frac sK+r\tau)$, we have $s\varphi(d_+)=Ke^{-r\tau}\varphi(d_-)$. As $d_+-d_-=\sigma\sqrt\tau$ does not depend on $s$,
+\[
+\partial_sC=\Phi(d_+)+s\varphi(d_+)\partial_sd_+-Ke^{-r\tau}\varphi(d_-)\partial_sd_-=\Phi(d_+),\qquad\partial_{ss}C=\frac{\varphi(d_+)}{s\sigma\sqrt\tau} ,
+\]
+and in the same way, using $\partial_t(d_+-d_-)=-\frac{\sigma}{2\sqrt\tau}$,
+\[
+\partial_tC=-\frac{s\varphi(d_+)\sigma}{2\sqrt\tau}-rKe^{-r\tau}\Phi(d_-) .
+\]
+Therefore, on $[0,T[\times]0,\infty[$, where $C$ is $C^\infty$,
+\begin{equation}\label{eq:bspde}
+\partial_tC+rs\,\partial_sC+\frac{\sigma^2s^2}2\partial_{ss}C=rC .
+\end{equation}
+
+\emph{Replication.} $S$ stays in $]0,\infty[$, and It\^o's formula (in the $C^{1,2}$ form, on $[0,T-\varepsilon]$, after stopping when $S$ leaves $[1/k,k]$ and letting $k\to\infty$) gives, with
+$\dd\langle S\rangle=\sigma^2S^2\dd t$ and \eqref{eq:bspde},
+\[
+\dd C(t,S_t)=\partial_sC\dd S_t+\Bigl(\partial_tC+\frac{\sigma^2S_t^2}2\partial_{ss}C\Bigr)\dd t=a_t\dd S_t+r\bigl(C(t,S_t)-a_tS_t\bigr)\dd t=a_t\dd S_t+c_t\,re^{rt}\dd t .
+\]
+So $V_t=a_tS_t+c_te^{rt}=C(t,S_t)$ satisfies the self-financing identity, and $V_t\to C(T,S_T)=(S_T-K)^+$ by continuity.
+\end{proof}
+
+\begin{remark}
+If the call were sold at a price $p>C(0,S_0)$, one could sell it, run the strategy with $C(0,S_0)$, and keep $p-C(0,S_0)$ without risk; if $p<C(0,S_0)$, the reverse trade works. This \emph{no-arbitrage}
+argument makes $C(0,S_0)$ the only rational price. The drift $\mu$ has disappeared: two investors who disagree about the expected return of the stock agree on the price of the option. The expectation
+formula in the proof says that $C(0,S_0)$ is the discounted mean payoff for a stock with drift $r$ instead of $\mu$: by Girsanov's theorem (Theorem~\ref{thm:girsanov}) the price is an expectation under the
+\emph{risk-neutral} probability, under which $e^{-rt}S_t$ is a martingale. This is the starting point of mathematical finance; see Karatzas and Shreve (1998) or Shreve (2004).
+\end{remark}
+
+\begin{think}
+The strategy holds $\Phi(d_+)$ shares, a number between $0$ and $1$ which moves continuously. What happens to $a_t$ just before maturity, according to whether $S_t$ is above or below $K$? And why can a
+strategy that only buys and sells the stock reproduce a payoff that is not linear in $S_T$?
+\end{think}
+
+\section{Bessel processes: which dimensions hit zero}
+
+Let $B$ be a Brownian motion in $\R^d$ from $x$ and $Z=|B|^2$. It\^o's formula gives $Z_t=|x|^2+2\sum_i\int_0^tB^i\dd B^i+dt$. The martingale part is a time-changed Brownian motion run with the
+speed $4Z$:
+
+\begin{proposition}\label{prop:besqd}
+Let $\beta_t=\sum_{i=1}^d\int_0^t\frac{B^i_s}{|B_s|}\mathbf 1_{\{B_s\ne0\}}\dd B^i_s+\int_0^t\mathbf 1_{\{B_s=0\}}\dd B^1_s$. Then $\beta$ is a Brownian motion and
+\[
+Z_t=|x|^2+dt+2\int_0^t\sqrt{Z_s}\dd\beta_s .
+\]
+\end{proposition}
+
+\begin{proof}
+$\beta$ is a continuous local martingale with $\langle\beta\rangle_t=\int_0^t(\mathbf 1_{\{B_s\ne0\}}+\mathbf 1_{\{B_s=0\}})\dd s=t$, a Brownian motion by L\'evy's characterisation. By Proposition~\ref{prop:itoprops}(b),
+$\int\sqrt{Z}\dd\beta=\sum_i\int|B|\frac{B^i}{|B|}\mathbf 1_{\{B\ne0\}}\dd B^i=\sum_i\int B^i\dd B^i$, since $\sqrt Z=0$ on $\{B=0\}$.
+\end{proof}
+
+The equation $\dd Z=\delta\dd t+2\sqrt{Z}\dd\beta$ makes sense for every real $\delta\ge0$, and its coefficient $2\sqrt z$ is $\frac12$-H\"older, so by Theorem~\ref{thm:yamada} (applied with $\sigma(z)=2\sqrt{|z|}$)
+it has at most one solution for a given $\beta$.
+
+\begin{definition}\label{def:besq}
+Let $\delta\ge0$ and $z\ge0$. A \emph{squared Bessel process of dimension $\delta$} from $z$ is a continuous adapted process $Z\ge0$ with $Z_t=z+\delta t+2\int_0^t\sqrt{Z_s}\dd\beta_s$ for a Brownian motion $\beta$.
+$\sqrt Z$ is a \emph{Bessel process} of dimension $\delta$.
+\end{definition}
+
+For integer $\delta=d$, Proposition~\ref{prop:besqd} constructs one: the squared distance from the origin of $d$-dimensional Brownian motion. For non-integer $\delta$ a solution also exists (Revuz and Yor,
+Chapter~XI); we shall not need it. The dimension decides whether the origin is reached, and the answer extends Corollary~\ref{cor:recurrence} to fractional dimensions.
+
+\begin{theorem}\label{thm:besqzero}
+Let $Z$ be a squared Bessel process of dimension $\delta>0$ from $z>0$, and $T_0=\inf\{t:Z_t=0\}$. If $\delta\ge2$, then $T_0=\infty$ almost surely; if $0<\delta<2$, then $T_0<\infty$ almost surely.
+\end{theorem}
+
+\begin{proof}
+Let $0<\varepsilon<z<R$, $T_a=\inf\{t:Z_t=a\}$ and $\tau=T_\varepsilon\wedge T_R$. First, $\tau\le T_R<\infty$ almost surely: stopped at $T_R\wedge t$ the stochastic integral has an integrand bounded by $\sqrt R$, so
+$\mathbb EZ_{T_R\wedge t}=z+\delta\,\mathbb E[T_R\wedge t]\le R$, and $\mathbb ET_R\le R/\delta$ by monotone convergence.
+
+The generator of $Z$ acts on $C^2$ functions by $\mathcal Lf(z)=\delta f'(z)+2zf''(z)$, since $\dd\langle Z\rangle=4Z\dd t$. The \emph{scale function}
+\[
+s(z)=z^{1-\delta/2}\ (\delta\ne2),\qquad s(z)=\log z\ (\delta=2)
+\]
+satisfies $\mathcal Ls=0$ on $]0,\infty[$: for $p=1-\frac\delta2$, $\mathcal Lz^p=pz^{p-1}(\delta+2(p-1))=0$, and $\mathcal L\log z=\frac{\delta-2}z$. By It\^o's formula (for a $C^2$ function equal to $s$ on $[\varepsilon,R]$),
+$s(Z_{t\wedge\tau})$ is a bounded martingale, so $s(z)=\mathbb Es(Z_\tau)$, that is
+\[
+P(T_\varepsilon<T_R)=\frac{s(R)-s(z)}{s(R)-s(\varepsilon)} .
+\]
+\emph{Case $\delta\ge2$.} As $\varepsilon\to0$, $s(\varepsilon)\to-\infty$ if $\delta=2$ and $s(\varepsilon)\to+\infty$ if $\delta>2$, so $P(T_\varepsilon<T_R)\to0$. Since $T_0\ge T_\varepsilon$, $P(T_0<T_R)=0$ for every $R$. A
+continuous path is bounded on $[0,T_0]$ when $T_0<\infty$, so $\{T_0<\infty\}\subseteq\bigcup_R\{T_0<T_R\}$, a null set.
+
+\emph{Case $\delta<2$.} Now $p>0$ and $s(\varepsilon)\to0$: $P(T_\varepsilon<T_R)\to1-(z/R)^p$. The events $\{T_\varepsilon<T_R\}$ decrease as $\varepsilon\downarrow0$; on their intersection $T_\varepsilon<T_R<\infty$ for all
+$\varepsilon$, and $T_\varepsilon$ increases to a limit at which $Z=0$ by continuity, so $T_0\le T_R<\infty$. Hence $P(T_0<\infty)\ge1-(z/R)^p$ for every $R$, and $T_0<\infty$ almost surely.
+\end{proof}
+
+For $\delta=2$ this is again the fact that planar Brownian motion never hits a given point; for $\delta=1$, $\sqrt Z$ is $|x+B|$, which does. The threshold $2$ is a dimension, but nothing forces it to be an
+integer. The next section meets a process that lives exactly at the threshold.
+
+\section{Dyson Brownian motion}
+
+Let $\mathcal H_n$ be the real vector space of Hermitian $n\times n$ matrices, of dimension $n^2$, with the inner product $\langle A,A'\rangle=\operatorname{tr}(AA')$. An orthonormal basis is formed by the
+$e_je_j^*$, the $\frac1{\sqrt2}(e_je_l^*+e_le_j^*)$ and the $\frac{i}{\sqrt2}(e_je_l^*-e_le_j^*)$, $j<l$. A \emph{Hermitian Brownian motion} is $H_t=\sum_\alpha B^\alpha_tE_\alpha$, where $(E_\alpha)$ is an orthonormal
+basis and the $B^\alpha$ are independent Brownian motions: the diagonal entries are real Brownian motions and the entries above the diagonal are $\frac1{\sqrt2}$ times complex Brownian motions. An orthogonal change
+of basis maps an $n^2$-dimensional Brownian motion to another (Exercise~\ref{ex:rotation}), so the definition does not depend on the basis; in particular $UH_tU^*$ is again a Hermitian Brownian motion for a fixed
+unitary $U$.
+
+Write $\lambda_1(H)\le\dots\le\lambda_n(H)$ for the eigenvalues of $H$, and $\mathcal G$ for the set of matrices with $n$ distinct eigenvalues, which is open (it is $\{\mathrm{disc}\ne0\}$, where the
+discriminant of the characteristic polynomial is a polynomial in the entries).
+
+\begin{lemma}[eigenvalue perturbation]\label{lem:perturb}
+The functions $\lambda_i$ are $C^\infty$ on $\mathcal G$. If $H\in\mathcal G$ has orthonormal eigenvectors $u_1,\dots,u_n$ and $E\in\mathcal H_n$, then
+\[
+D\lambda_i(H)[E]=u_i^*Eu_i,\qquad D^2\lambda_i(H)[E,E]=2\sum_{k\ne i}\frac{|u_k^*Eu_i|^2}{\lambda_i-\lambda_k} .
+\]
+\end{lemma}
+
+\begin{proof}
+Since $\lambda_i(UHU^*)=\lambda_i(H)$ for unitary $U$, we may assume $H=D=\mathrm{diag}(\lambda_1,\dots,\lambda_n)$ and $u_k=e_k$. Fix $i$ and consider, for $H'$ near $D$, $v\in e_i^\perp\subseteq\mathbb C^n$ and
+$\mu\in\mathbb C$, the smooth map $G(v,\mu;H')=H'(e_i+v)-\mu(e_i+v)$. Its differential in $(v,\mu)$ at $(0,\lambda_i;D)$ is $(w,\nu)\mapsto(D-\lambda_i)w-\nu e_i$, a bijection from $e_i^\perp\times\mathbb C$ onto
+$\mathbb C^n$ because $D-\lambda_i$ is invertible on $e_i^\perp$. The implicit function theorem gives smooth $v(H')$, $\mu_i(H')$ near $D$ with $G=0$: $\mu_i(H')$ is an eigenvalue of $H'$. Doing this for each $i$,
+the $n$ eigenvalues $\mu_1(H'),\dots,\mu_n(H')$ are close to the distinct $\lambda_1<\dots<\lambda_n$, hence distinct, hence they are all the eigenvalues of $H'$, in increasing order: $\mu_i=\lambda_i$ near $D$.
+
+For the derivatives, put $H'=D+\varepsilon E$, $\lambda(\varepsilon)=\lambda_i(D+\varepsilon E)$ and $v(\varepsilon)$ as above. The $i$-th coordinate of $G=0$ reads
+$\lambda(\varepsilon)=\lambda_i+\varepsilon E_{ii}+\varepsilon\sum_{k\ne i}E_{ik}v_k(\varepsilon)$, and the $k$-th coordinate, $k\ne i$, reads $(\lambda(\varepsilon)-\lambda_k)v_k(\varepsilon)=\varepsilon(E(e_i+v(\varepsilon)))_k$, so that
+$v_k(\varepsilon)=\varepsilon\frac{E_{ki}}{\lambda_i-\lambda_k}+O(\varepsilon^2)$. Hence
+\[
+\lambda(\varepsilon)=\lambda_i+\varepsilon E_{ii}+\varepsilon^2\sum_{k\ne i}\frac{E_{ik}E_{ki}}{\lambda_i-\lambda_k}+O(\varepsilon^3),
+\]
+and $E_{ik}E_{ki}=|E_{ki}|^2$ since $E$ is Hermitian. The first two derivatives of the smooth function $\lambda$ at $0$ are read off.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch06-dyson}
+\caption{Left: the eigenvalues of $H_0+W_t$, with $H_0=\mathrm{diag}(-1,-\frac12,0,\frac12,1)$ and $H$ a Hermitian Brownian motion, on $[0,3]$. Right: five independent Brownian motions from the same points.
+The eigenvalues repel and never cross; the independent paths cross freely.}
+\label{fig:dyson}
+\end{figure}
+
+\begin{theorem}[Dyson, 1962; McKean, 1969]\label{thm:dyson}
+Let $H_0\in\mathcal G$ and $H_t=H_0+W_t$ with $W$ a Hermitian Brownian motion. Almost surely, $H_t\in\mathcal G$ for all $t\ge0$: the eigenvalues never collide. The eigenvalues $\lambda_i(t)=\lambda_i(H_t)$ satisfy
+\[
+\lambda_i(t)=\lambda_i(0)+\beta_i(t)+\int_0^t\sum_{k\ne i}\frac{\mathrm ds}{\lambda_i(s)-\lambda_k(s)},\qquad i=1,\dots,n,
+\]
+where $\beta_1,\dots,\beta_n$ are independent Brownian motions.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1: the generator.} Let $f\in C^2$ on the open set $\Omega=\{x\in\R^n:x_1<\dots<x_n\}$ and $F=f\circ\lambda$ on $\mathcal G$, which is $C^2$ by Lemma~\ref{lem:perturb}. Put $b_i(x)=\sum_{k\ne i}(x_i-x_k)^{-1}$. We claim that
+for any orthonormal basis $(E_\alpha)$ of $\mathcal H_n$ and $H\in\mathcal G$, with $x=\lambda(H)$,
+\begin{equation}\label{eq:dysongen}
+\begin{gathered}
+\sum_\alpha D\lambda_i(H)[E_\alpha]\,D\lambda_j(H)[E_\alpha]=\delta_{ij},\\
+\frac12\sum_\alpha D^2F(H)[E_\alpha,E_\alpha]=\frac12\Delta f(x)+\sum_ib_i(x)\partial_if(x) .
+\end{gathered}
+\end{equation}
+Both sums are unchanged by an orthogonal change of basis (they are the trace of a quadratic form, and a sum of products of coordinates of two vectors), so we may use the basis $UE'_\alpha U^*$, where
+$H=U\mathrm{diag}(x)U^*$ and $(E'_\alpha)$ is the basis listed above. By Lemma~\ref{lem:perturb}, $D\lambda_i[Ue_je_j^*U^*]=\delta_{ij}$ and $D^2\lambda_i[Ue_je_j^*U^*,\cdot]=0$; for the two basis elements attached to
+$j<l$, $D\lambda_i=0$ (their diagonal entries vanish) and $D^2\lambda_i=2\cdot\frac12\bigl(\frac{\delta_{ij}}{x_j-x_l}+\frac{\delta_{il}}{x_l-x_j}\bigr)$ for each. The first identity follows, and summing,
+$\sum_\alpha D^2\lambda_i[E_\alpha,E_\alpha]=2b_i(x)$. The chain rule $D^2F[E,E]=\sum_{i,j}\partial_{ij}f\,D\lambda_i[E]D\lambda_j[E]+\sum_i\partial_if\,D^2\lambda_i[E,E]$ gives the second identity.
+
+\emph{Step 2: It\^o's formula.} For $\varepsilon,R>0$ let $\mathcal K_{\varepsilon,R}=\{H:\|H\|\le R,\ \lambda_{i+1}(H)-\lambda_i(H)\ge\varepsilon\ \forall i\}$, a compact subset of $\mathcal G$, and $\tau_{\varepsilon,R}$ the exit time of $H_t$ from it.
+Multiplying $F$ by a smooth function equal to $1$ on $\mathcal K_{\varepsilon,R}$ and supported in $\mathcal G$, It\^o's formula in the $n^2$ coordinates $B^\alpha$ gives, for $t\le\tau_{\varepsilon,R}$, by \eqref{eq:dysongen},
+\[
+f(\lambda(t))=f(\lambda(0))+\sum_i\int_0^t\partial_if(\lambda(s))\dd\beta_i(s)+\int_0^t\Bigl(\frac12\Delta f+\sum_ib_i\partial_if\Bigr)(\lambda(s))\dd s,
+\]
+where $\beta_i(t)=\sum_\alpha\int_0^tD\lambda_i(H_s)[E_\alpha]\mathbf 1_{\{H_s\in\mathcal G\}}\dd B^\alpha_s$ (an integrand bounded by $\|E_\alpha\|\le1$).
+
+\emph{Step 3: McKean's Lyapunov function.} Take $f=\psi$, with
+\[
+\psi(x)=\sum_ix_i^2-\sum_{i<j}\log(x_j-x_i) .
+\]
+For $g(x)=\sum_{i<j}\log(x_j-x_i)$ we have $\partial_ig=b_i$, so $\frac12\Delta g=-\frac12S$ with $S=\sum_{i\ne k}(x_i-x_k)^{-2}$, and
+\[
+\sum_ib_i\partial_ig=\sum_ib_i^2=S+\sum_{i,k,l\ \text{distinct}}\frac1{(x_i-x_k)(x_i-x_l)}=S,
+\]
+because the sum over distinct triples vanishes: grouping the six orderings of $\{i,k,l\}$, it is a sum of terms $\frac{(x_k-x_l)+(x_l-x_i)+(x_i-x_k)}{(x_i-x_k)(x_k-x_l)(x_l-x_i)}=0$. So the drift of $g$ is $\frac12S$.
+For $\sum x_i^2$ the drift is $n+2\sum_ix_ib_i=n+\sum_{i\ne k}\frac{2x_i}{x_i-x_k}=n+\sum_{i<k}2=n^2$. Hence $\frac12\Delta\psi+\sum b_i\partial_i\psi=n^2-\frac12S\le n^2$.
+
+On the other hand $\psi$ is bounded below. Since $\log y\le cy^2+C_c$ for every $c>0$ and $(x_j-x_i)^2\le2x_i^2+2x_j^2$, choosing $c$ small gives $\sum_{i<j}\log(x_j-x_i)\le\frac12\sum_ix_i^2+C$, with $C$ depending on $n$ only.
+Hence $\psi\ge-C$, and more precisely, if some gap $x_{i+1}-x_i$ equals $\varepsilon$, then, isolating that term, $\psi(x)\ge\log\frac1\varepsilon-C'$.
+
+The stochastic integral stopped at $\tau_{\varepsilon,R}$ has bounded integrands, so taking expectations,
+$\mathbb E\psi(\lambda(t\wedge\tau_{\varepsilon,R}))\le\psi(\lambda(0))+n^2t$. Let $\tau_\varepsilon=\inf\{t:\min_i(\lambda_{i+1}-\lambda_i)(t)\le\varepsilon\}$; since $\|H_t\|$ is bounded on bounded intervals, $\tau_{\varepsilon,R}=\tau_\varepsilon$ for $R$
+large (depending on $\omega$ and $t$), and Fatou's lemma applied to $\psi+C\ge0$ gives $\mathbb E[\psi(\lambda(t\wedge\tau_\varepsilon))+C]\le\psi(\lambda(0))+n^2t+C$. On $\{\tau_\varepsilon\le t\}$ a gap equals $\varepsilon$ at time $\tau_\varepsilon$, so
+\[
+P(\tau_\varepsilon\le t)\Bigl(\log\frac1\varepsilon-C'+C\Bigr)\le\psi(\lambda(0))+n^2t+C .
+\]
+A collision before $t$ implies $\tau_\varepsilon\le t$ for every $\varepsilon$, so its probability is $0$. This holds for every $t$: almost surely $H_t\in\mathcal G$ for all $t$.
+
+\emph{Step 4: the equation.} The $\beta_i$ are continuous local martingales with $\langle\beta_i,\beta_j\rangle_t=\int_0^t\sum_\alpha D\lambda_i[E_\alpha]D\lambda_j[E_\alpha]\dd s=\delta_{ij}t$ by \eqref{eq:dysongen}, so they are independent
+Brownian motions (Theorem~\ref{thm:levychar}). Step 2 with $f(x)=x_i$, valid up to $\tau_{\varepsilon,R}$ for all $\varepsilon,R$, hence for all $t$ by Step 3, is the stated equation.
+\end{proof}
+
+\begin{beauty}
+Nothing in the definition of $H_t$ prevents two eigenvalues from meeting: the matrices with a repeated eigenvalue are a perfectly good subset of $\mathcal H_n$. But it has codimension $3$, and the
+eigenvalues feel it as a force $\frac1{\lambda_i-\lambda_k}$, exactly the force that makes a three-dimensional Brownian motion avoid the origin. For $n=2$ this is literal: the gap
+$\lambda_2-\lambda_1$, divided by $\sqrt2$, is a Bessel process of dimension $3$ (Exercise~\ref{ex:twobytwo}). The repulsion that random matrix theory finds between the zeros of the zeta function
+(Chapter~11) is already here.
+\end{beauty}
+
+\begin{remark}
+Dyson also considered real symmetric and quaternionic matrices; the eigenvalues then satisfy the same equation with the Brownian terms multiplied by $\sqrt{2/\beta}$, where $\beta=1,2,4$ is Dyson's index (in a suitable normalisation), and
+they never collide for any $\beta\ge1$ (Anderson, Guionnet and Zeitouni, Section~4.3). Started from $H_0=0$, where all the eigenvalues coincide, they separate instantly, and $\lambda(1)$ has the joint density proportional to
+$\prod_{i<j}(x_j-x_i)^2e^{-\sum x_i^2/2}$ of the Gaussian unitary ensemble, which Chapter~10 studies.
+\end{remark}
+
+\section{Solving equations numerically: Euler--Maruyama}
+
+The simplest scheme freezes the coefficients on each step. For a step $h>0$ let $\eta(s)=h\lfloor s/h\rfloor$ and define $X^h$ by $X^h_0=x$ and
+\[
+X^h_t=X^h_{\eta(t)}+b(X^h_{\eta(t)})(t-\eta(t))+\sigma(X^h_{\eta(t)})(B_t-B_{\eta(t)}) ,
+\]
+so that $X^h$ at the grid times is computed with one Gaussian vector per step, and $X^h_t=x+\int_0^tb(X^h_{\eta(s)})\dd s+\int_0^t\sigma(X^h_{\eta(s)})\dd B_s$. This is Maruyama's 1955 scheme, Euler's method with noise.
+
+\begin{theorem}[strong order $\frac12$]\label{thm:eulermaruyama}
+Under the hypotheses of Theorem~\ref{thm:sdeexist}, let $X$ be the solution from $x$. For every $T$ there is $C$, depending on $T,K,b(0),\sigma(0)$ and $|x|$, with
+$\mathbb E\sup_{t\le T}|X_t-X^h_t|^2\le Ch$ for all $h\le1$.
+\end{theorem}
+
+\begin{proof}
+As for Theorem~\ref{thm:sdeexist}, Gronwall applied to $\mathbb E\sup_{s\le t}|X^h_s|^2$ gives $\mathbb E\sup_{t\le T}|X^h_t|^2\le C_1$, uniformly in $h$. Then for every $s\le T$,
+\[
+\mathbb E|X^h_s-X^h_{\eta(s)}|^2\le2h^2\,\mathbb E|b(X^h_{\eta(s)})|^2+2h\,\mathbb E|\sigma(X^h_{\eta(s)})|^2\le C_2h .
+\]
+Let $e_t=X_t-X^h_t=\int_0^t(b(X_s)-b(X^h_{\eta(s)}))\dd s+\int_0^t(\sigma(X_s)-\sigma(X^h_{\eta(s)}))\dd B_s$. By Cauchy--Schwarz, Doob's inequality, \eqref{eq:isomvec} and
+$|X_s-X^h_{\eta(s)}|\le|e_s|+|X^h_s-X^h_{\eta(s)}|$, the function $\varphi(t)=\mathbb E\sup_{s\le t}|e_s|^2$ satisfies
+with $L=2(T+4)K^2$,
+\[
+\varphi(t)\le L\int_0^t\mathbb E|X_s-X^h_{\eta(s)}|^2\dd s\le2L\int_0^t\bigl(\varphi(s)+C_2h\bigr)\dd s ,
+\]
+and Gronwall gives $\varphi(T)\le2LTC_2h\,e^{2LT}$.
+\end{proof}
+
+The rate $\sqrt h$ for the error is the size of one Brownian increment, and it is sharp in general (Exercise~\ref{ex:emgbm}). Adding the next term of the It\^o--Taylor expansion,
+$\frac12\sigma\sigma'(X^h_{\eta(t)})((B_t-B_{\eta(t)})^2-(t-\eta(t)))$ in dimension one, gives Milstein's scheme (1974), of strong order $1$; and for expectations $\mathbb Ef(X_T)$ of smooth $f$ the Euler scheme
+already has \emph{weak} order $1$ (Kloeden and Platen, 1992). The companion notebook measures both orders.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nonunique}
+Show that $X=0$ and $X=B^3$ both solve $\dd X=3X^{1/3}\dd t+3X^{2/3}\dd B$, $X_0=0$ (real cube roots). Which hypothesis of Theorem~\ref{thm:yamada} fails?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gbm}
+Let $S$ be the geometric Brownian motion of Proposition~\ref{prop:gbm}. Show that $\mathbb ES_t=se^{\mu t}$, and that $S_t\to0$ almost surely if $\mu<\frac{\sigma^2}2$. What happens to a gambler who, at each instant,
+invests a fixed fraction of a fortune growing at mean rate $\mu$ with $0<\mu<\frac{\sigma^2}2$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:putcall}
+In the Black--Scholes model, a \emph{put} pays $(K-S_T)^+$. Show that $(S_T-K)^+-(K-S_T)^+=S_T-K$ and deduce that the price of the put is $C(t,s)-s+Ke^{-r(T-t)}$. Show that $C$ increases with the
+volatility $\sigma$: $\partial_\sigma C=s\varphi(d_+)\sqrt{T-t}>0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bridgesde}
+Let $X_t=(1-t)\int_0^t\frac{\mathrm dB_s}{1-s}$ for $t<1$. Show that $X$ solves $\dd X=-\frac{X}{1-t}\dd t+\dd B$, that it is a centred Gaussian process with covariance $s(1-t)$ for $s\le t<1$ (a Brownian bridge),
+and that $X_t\to0$ almost surely as $t\to1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:langevin}
+Let $X$ be the stationary Ornstein--Uhlenbeck process ($\theta,\sigma>0$, $X_0\sim N(0,\frac{\sigma^2}{2\theta})$ independent of $B$) and $Y_t=\int_0^tX_s\dd s$. Show that $\theta Y_t=X_0-X_t+\sigma B_t$, and deduce that
+$Y_{ct}/\sqrt c$ converges in law to $\frac\sigma\theta B_t$ as $c\to\infty$, and that $\mathbb EY_t^2\sim\frac{\sigma^2}{\theta^2}t$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bessel3}
+Let $Z$ be the squared Bessel process of dimension $\delta>1$ from $z>0$, and suppose $T_0=\infty$ (which holds for $\delta\ge2$). Show that $R=\sqrt Z$ satisfies $R_t=\sqrt z+\beta_t+\frac{\delta-1}2\int_0^t\frac{\mathrm ds}{R_s}$.
+For $\delta=3$, show that $\mathbb E\int_0^t\frac{\mathrm ds}{R_s}<\infty$ and that $R_t\to\infty$ almost surely.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:twobytwo}
+For $n=2$, write $H_t=H_0+W_t$ as $\frac{\operatorname{tr}H_t}2I+\begin{pmatrix}a_t&c_t\\\bar c_t&-a_t\end{pmatrix}$. Show that $\lambda_2-\lambda_1=2\sqrt{a^2+|c|^2}$, that $(a,\operatorname{Re}c,\operatorname{Im}c)$ is a
+three-dimensional Brownian motion with variance $\frac12$ per coordinate, and deduce that $(\lambda_2-\lambda_1)/\sqrt2$ is a Bessel process of dimension $3$. Check this against Theorem~\ref{thm:dyson}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:emgbm}
+Let $d=m=1$, $b(x)=0$, $\sigma(x)=x$ and $x=1$, so that $X_t=e^{B_t-t/2}$, and let $X^h$ be the Euler--Maruyama approximation. Show that $X^h_1=\prod_{k=1}^{1/h}(1+\Delta_kB)$ ($1/h$ an integer), and that
+$\mathbb E|X_1-X^h_1|^2\ge ch$ for some $c>0$ and all small $h$, so that the order $\frac12$ cannot be improved for this scheme.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:sdegenerator}
+Under the hypotheses of Theorem~\ref{thm:sdeexist}, let $f\in C^2$ with compact support and $\mathcal Lf=b\cdot\nabla f+\frac12\sum_{i,j}(\sigma\sigma^{\mathsf T})_{ij}\partial_{ij}f$. Show that
+$f(X^x_t)-f(x)-\int_0^t\mathcal Lf(X^x_s)\dd s$ is a martingale, and that $\frac1t(P_tf(x)-f(x))\to\mathcal Lf(x)$ as $t\to0$, uniformly in $x$ if $b$ and $\sigma$ are bounded.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nonunique}
+It\^o's formula for $B^3$. Is $x\mapsto3x^{1/3}$ Lipschitz?
+\end{hint}
+
+\begin{hint}{ex:gbm}
+$\mathbb Ee^{\sigma B_t}=e^{\sigma^2t/2}$, and $B_t/t\to0$.
+\end{hint}
+
+\begin{hint}{ex:putcall}
+Both sides of the parity are replicated by static portfolios. For $\partial_\sigma C$, use $s\varphi(d_+)=Ke^{-r\tau}\varphi(d_-)$ as in the proof of Theorem~\ref{thm:blackscholes}.
+\end{hint}
+
+\begin{hint}{ex:bridgesde}
+It\^o's formula for the product of $(1-t)$ and a martingale. For the limit, write $M_t=\int_0^t\frac{\mathrm dB_s}{1-s}$ as a time-changed Brownian motion with clock $\frac t{1-t}$.
+\end{hint}
+
+\begin{hint}{ex:langevin}
+Integrate the equation. $X_0$ and $X_t$ stay bounded in $L^2$.
+\end{hint}
+
+\begin{hint}{ex:bessel3}
+It\^o's formula for $\sqrt z$, which is smooth on $]0,\infty[$. For $\delta=3$, compute $\mathbb E[1/R_s]$ from $R_s=|x+B_s|$ with $B$ three-dimensional.
+\end{hint}
+
+\begin{hint}{ex:twobytwo}
+The traceless part is $\sum$ of three orthogonal basis elements with Brownian coefficients. Then use Proposition~\ref{prop:besqd} and Exercise~\ref{ex:bessel3}.
+\end{hint}
+
+\begin{hint}{ex:emgbm}
+Compare $\log X^h_1=\sum\log(1+\Delta_kB)$ with $B_1-\frac12$, using $\log(1+y)=y-\frac{y^2}2+\frac{y^3}3+O(y^4)$; the cubic terms have variance of order $h^2$ each.
+\end{hint}
+
+\begin{hint}{ex:sdegenerator}
+It\^o's formula, then take expectations; for the limit, $\mathcal Lf$ is bounded and continuous, and $X^x_s\to x$ as $s\to0$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:nonunique}
+\idea Cubing a Brownian motion produces an It\^o drift $3B\dd t$; expressed in terms of $X=B^3$, both coefficients become powers of $X$, and the zero solution sits alongside.
+\writeup $\dd(B^3)=3B^2\dd B+3B\dd t$, and $B^2=X^{2/3}$, $B=X^{1/3}$ with real cube roots. The zero function is also a solution. The diffusion coefficient $3x^{2/3}$ is $\frac12$-H\"older near $0$, so the
+hypothesis on $\sigma$ in Theorem~\ref{thm:yamada} holds locally; it is the drift $3x^{1/3}$ that is not Lipschitz at $0$, exactly as in the deterministic example $x'=3x^{2/3}$, which has the solutions $0$ and $t^3$.
+\end{solution}
+
+\begin{solution}{ex:gbm}
+\idea The mean is carried by rare paths on which $B$ is large; the typical path is governed by the exponent $\sigma B_t+(\mu-\frac{\sigma^2}2)t$, whose drift wins over $B_t$.
+\writeup $\mathbb ES_t=se^{(\mu-\sigma^2/2)t}\mathbb Ee^{\sigma B_t}=se^{\mu t}$. Since $B_t/t=X_{1/t}\to0$ almost surely, where $X_u=uB_{1/u}$ is the time-inverted Brownian motion of Chapter~2,
+$\frac1t\log S_t\to\mu-\frac{\sigma^2}2<0$, so $S_t\to0$. The gambler's expected fortune grows exponentially, and yet he is ruined almost surely: the long-run growth rate of a typical fortune is
+$\mu-\frac{\sigma^2}2$, the quantity that Kelly's criterion (1956) maximises.
+\end{solution}
+
+\begin{solution}{ex:putcall}
+\idea A call minus a put is a forward contract, worth today the stock minus the discounted strike; and more volatility makes the option's convex payoff more valuable.
+\writeup The identity $y^+-(-y)^+=y$ with $y=S_T-K$. Holding one share and borrowing $Ke^{-rT}$ is a self-financing strategy (constant holdings) worth $S_t-Ke^{-r(T-t)}$ at time $t$ and $S_T-K$ at $T$; the strategy of
+Theorem~\ref{thm:blackscholes} minus this one replicates $(S_T-K)^+-(S_T-K)=(K-S_T)^+$, starting from $C(t,s)-s+Ke^{-r(T-t)}$, which is therefore the price of the put. Differentiating, $\partial_\sigma C=s\varphi(d_+)\partial_\sigma d_+-Ke^{-r\tau}\varphi(d_-)\partial_\sigma d_-
+=s\varphi(d_+)\partial_\sigma(d_+-d_-)=s\varphi(d_+)\sqrt\tau$.
+\end{solution}
+
+\begin{solution}{ex:bridgesde}
+\idea The factor $(1-t)$ crushes the process to $0$ at time $1$, while the integral $\int\frac{\mathrm dB}{1-s}$ explodes only like $\sqrt{t/(1-t)}$.
+\writeup Let $M_t=\int_0^t\frac{\mathrm dB_s}{1-s}$. It\^o's formula for $f(t,m)=(1-t)m$: $\dd X=-M\dd t+(1-t)\dd M=-\frac X{1-t}\dd t+\dd B$. $X$ is centred Gaussian (Wiener integrals), and for $s\le t$,
+$\mathbb EX_sX_t=(1-s)(1-t)\int_0^s\frac{\mathrm du}{(1-u)^2}=(1-s)(1-t)\frac s{1-s}=s(1-t)$, the covariance of the Brownian bridge. $M$ is a continuous martingale with $\langle M\rangle_t=\frac t{1-t}$, so
+$M_t=\gamma_{t/(1-t)}$ for a Brownian motion $\gamma$ (Exercise~\ref{ex:wienerito}(c) or Theorem~\ref{thm:dds}), and $X_t=(1-t)\gamma_{u}$ with $u=\frac t{1-t}\to\infty$, $1-t=\frac1{1+u}$; since $\gamma_u/u\to0$
+almost surely (time inversion again), $X_t\to0$.
+\end{solution}
+
+\begin{solution}{ex:langevin}
+\idea Integrating Langevin's equation, the friction term is $\theta$ times the displacement, and the force term is a Brownian motion; the velocity itself stays bounded and disappears at large scales.
+\writeup $X_t=X_0-\theta\int_0^tX_s\dd s+\sigma B_t$, which is the identity. Then $Y_{ct}/\sqrt c=\frac\sigma\theta B_{ct}/\sqrt c+\frac{X_0-X_{ct}}{\theta\sqrt c}$; the first term has the law of $\frac\sigma\theta B_t$ and the second
+tends to $0$ in $L^2$, since $\mathbb EX_u^2=\frac{\sigma^2}{2\theta}$ for all $u$. For the variance, $\mathbb EY_t^2=\theta^{-2}\mathbb E(X_0-X_t+\sigma B_t)^2=\frac{\sigma^2}{\theta^2}t+O(\sqrt t)$ by Cauchy--Schwarz. Einstein's
+diffusion coefficient appears as $\frac{\sigma^2}{2\theta^2}$.
+\end{solution}
+
+\begin{solution}{ex:bessel3}
+\idea On $]0,\infty[$ the square root is smooth and It\^o's formula turns the constant drift $\delta$ of $Z$ into a drift $\frac{\delta-1}{2R}$ that pushes away from $0$.
+\writeup For $g(z)=\sqrt z$, $g'=\frac1{2\sqrt z}$, $g''=-\frac1{4z^{3/2}}$, and It\^o's formula, valid on $]0,\infty[$ (stop when $Z$ leaves $[1/k,k]$), gives
+$\dd R=\frac1{2R}(\delta\dd t+2R\dd\beta)-\frac18\frac{4R^2}{R^3}\dd t=\dd\beta+\frac{\delta-1}{2R}\dd t$. For $\delta=3$ we may take $R_s=|x+B_s|$ with $|x|^2=z$ (Proposition~\ref{prop:besqd} and pathwise uniqueness).
+Given $|B_s|=\rho$, the point $x+B_s$ is uniform on the sphere of centre $x$ and radius $\rho$ (Lemma~\ref{lem:uniformsphere}), and the mean of $\frac1{|y|}$ on that sphere is $\frac1{\max(|x|,\rho)}$: for $\rho<|x|$ by the
+mean value property of the harmonic function $\frac1{|y|}$ (Lemma~\ref{lem:meanvalue}); for $\rho>|x|$ because the mean of $\frac1{|x-z|}$ over $|z|=\rho$ is a radial harmonic function of $x$ in the ball $|x|<\rho$, hence
+equal to its value $\frac1\rho$ at the centre. So $\mathbb E\frac1{|x+B_s|}\le\mathbb E\frac1{|B_s|}=\sqrt{\frac2{\pi s}}$, which is integrable on $[0,t]$. Finally $R_t\to\infty$ is the transience of three-dimensional Brownian motion (Corollary~\ref{cor:recurrence}).
+\end{solution}
+
+\begin{solution}{ex:twobytwo}
+\idea A $2\times2$ Hermitian matrix minus its trace is a vector in a three-dimensional space, its eigenvalues are $\pm$ its length, and the length of a three-dimensional Brownian motion is a Bessel(3) process.
+\writeup The traceless matrix $A=\begin{pmatrix}a&c\\\bar c&-a\end{pmatrix}$ has $A^2=(a^2+|c|^2)I$, so its eigenvalues are $\pm\sqrt{a^2+|c|^2}$ and the gap is $2\sqrt{a^2+|c|^2}$. In the orthonormal basis of the text,
+$a_t=a_0+\frac12(B^{11}_t-B^{22}_t)$, $\operatorname{Re}c_t=\operatorname{Re}c_0+\frac1{\sqrt2}B^{12}_t$, $\operatorname{Im}c_t=\operatorname{Im}c_0+\frac1{\sqrt2}B'^{12}_t$,
+three independent Brownian motions each of variance $\frac12$ per unit time. So $\sqrt2(a,\operatorname{Re}c,\operatorname{Im}c)$ is a standard three-dimensional Brownian motion $Y$, the gap is $2|Y|/\sqrt2=\sqrt2|Y|$, and
+$(\lambda_2-\lambda_1)/\sqrt2=|Y|$, a Bessel process of dimension $3$. Check: Theorem~\ref{thm:dyson} gives $\dd(\lambda_2-\lambda_1)=\dd(\beta_2-\beta_1)+\frac2{\lambda_2-\lambda_1}\dd t$, so $\rho=(\lambda_2-\lambda_1)/\sqrt2$ satisfies
+$\dd\rho=\dd\gamma+\frac1\rho\dd t$ with $\gamma=(\beta_2-\beta_1)/\sqrt2$ a Brownian motion: the equation of Exercise~\ref{ex:bessel3} with $\delta=3$.
+\end{solution}
+
+\begin{solution}{ex:emgbm}
+\idea The scheme multiplies by $1+\Delta B$ where the solution multiplies by $e^{\Delta B-h/2}$; the logarithms differ by about $\frac{(\Delta B)^2-h}2$ and $\frac{(\Delta B)^3}3$, and these errors, independent from step
+to step, add up to a fluctuation of order $\sqrt h$.
+\writeup With $b=0$ and $\sigma(x)=x$, $X^h_{(k+1)h}=X^h_{kh}(1+\Delta_{k+1}B)$. On the event $A_h=\{\max_k|\Delta_kB|\le\frac12\}$, whose probability tends to $1$, $\log X^h_1-\log X_1=\sum_k\bigl(\log(1+\Delta_kB)-\Delta_kB+\frac h2\bigr)
+=-\sum_k\frac{(\Delta_kB)^2-h}2+\sum_k\frac{(\Delta_kB)^3}3+R$, with $|R|\le C\sum(\Delta_kB)^4$, $\mathbb E|R|\le C'h$. The first sum has variance $\frac1h\cdot\frac{2h^2}4=\frac h2$ and the second $\frac1h\cdot\frac{15h^3}9$; so
+$D_h=(\log X^h_1-\log X_1)/\sqrt h$ converges in law to $N(0,\frac12)$ (central limit theorem for the first sum). Then $|X_1-X^h_1|=X_1|1-e^{\sqrt hD_h}|$, and on $A_h\cap\{X_1\ge\frac12\}\cap\{|D_h|\in[\frac12,2]\}$, an event of probability
+at least some $p>0$ for small $h$, $|X_1-X^h_1|\ge\frac12\cdot\frac{\sqrt h}2\cdot\frac12$. This event has probability bounded below for small $h$: $P(X_1\ge\frac12)=P(B_1\ge\frac12-\log2)>0.57$, $P(|D_h|\in[\frac12,2])\to P(|N(0,\frac12)|\in[\frac12,2])>0.47$ and $P(A_h)\to1$,
+so their intersection has probability at least $p=0.03$ for small $h$, by $P(E\cap F)\ge P(E)+P(F)-1$. Hence $\mathbb E|X_1-X^h_1|^2\ge p\,h/64$.
+\end{solution}
+
+\begin{solution}{ex:sdegenerator}
+\idea It\^o's formula splits $f(X_t)$ into a martingale and the integral of $\mathcal Lf$; at small times the integral is $t\,\mathcal Lf(x)$ to first order.
+\writeup It\^o's formula, with $\dd\langle X^i,X^j\rangle=(\sigma\sigma^{\mathsf T})_{ij}(X)\dd t$, gives $f(X_t)=f(x)+\int_0^t\nabla f(X)\cdot\sigma(X)\dd B+\int_0^t\mathcal Lf(X)\dd s$. The integrand $\nabla f\cdot\sigma$ is bounded
+($f$ has compact support and $\sigma$ is continuous), so the stochastic integral is a martingale. Taking expectations, $\frac1t(P_tf(x)-f(x))-\mathcal Lf(x)=\frac1t\int_0^t\mathbb E[\mathcal Lf(X^x_s)-\mathcal Lf(x)]\dd s$. $\mathcal Lf$ is
+bounded and continuous, and $X^x_s\to x$ almost surely as $s\to0$, so the right side tends to $0$ by dominated convergence. If $b,\sigma$ are bounded, $\mathcal Lf$ is uniformly continuous and
+$\mathbb E|X^x_s-x|^2\le2\|b\|^2s^2+2\|\sigma\|^2s$ uniformly in $x$, which gives uniformity. Chapter~7 starts from this.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} P.~Langevin, ``Sur la th\'eorie du mouvement brownien'', \emph{Comptes rendus de l'Acad\'emie des sciences} 146 (1908), 530--533; English translation by A.~Gythiel, with an introduction by D.~S.~Lemons,
+\emph{American Journal of Physics} 65 (1997), 1079--1081. G.~E.~Uhlenbeck and L.~S.~Ornstein, ``On the theory of the Brownian motion'', \emph{Physical Review} 36 (1930), 823--841. K.~It\^o, \emph{On Stochastic Differential
+Equations}, Memoirs of the American Mathematical Society 4, 1951. G.~Maruyama, ``Continuous Markov processes and stochastic equations'', \emph{Rendiconti del Circolo Matematico di Palermo} 4 (1955), 48--90.
+F.~Black and M.~Scholes, ``The pricing of options and corporate liabilities'', \emph{Journal of Political Economy} 81 (1973), 637--654. R.~C.~Merton, ``Theory of rational option pricing'', \emph{Bell Journal of
+Economics and Management Science} 4 (1973), 141--183. F.~Black, ``How we came up with the option formula'', \emph{Journal of Portfolio Management} 15 (1989), 4--8. F.~J.~Dyson, ``A Brownian-motion model for the
+eigenvalues of a random matrix'', \emph{Journal of Mathematical Physics} 3 (1962), 1191--1198. H.~P.~McKean, \emph{Stochastic Integrals}, Academic Press, 1969. T.~Yamada and S.~Watanabe, ``On the uniqueness of
+solutions of stochastic differential equations'', \emph{Journal of Mathematics of Kyoto University} 11 (1971), 155--167. J.~L.~Kelly, ``A new interpretation of information rate'', \emph{Bell System Technical Journal} 35 (1956), 917--926. G.~N.~Milstein, ``Approximate integration of stochastic differential equations'', \emph{Theory of
+Probability and its Applications} 19 (1974), 557--562.
+\item D.~Revuz and M.~Yor, \emph{Continuous Martingales and Brownian Motion}, 3rd edition, Springer, 1999, Chapters~IX and~XI. Strong and weak solutions, Yamada--Watanabe, Bessel processes in every dimension.
+\item G.~W.~Anderson, A.~Guionnet and O.~Zeitouni, \emph{An Introduction to Random Matrices}, Cambridge University Press, 2010, Section~4.3. Dyson Brownian motion for $\beta=1,2,4$ and McKean's argument.
+\item I.~Karatzas and S.~E.~Shreve, \emph{Methods of Mathematical Finance}, Springer, 1998; S.~E.~Shreve, \emph{Stochastic Calculus for Finance II}, Springer, 2004. Black--Scholes and risk-neutral pricing.
+\item P.~E.~Kloeden and E.~Platen, \emph{Numerical Solution of Stochastic Differential Equations}, Springer, 1992. Euler--Maruyama, Milstein and higher-order schemes, strong and weak orders.
+\end{itemize}
