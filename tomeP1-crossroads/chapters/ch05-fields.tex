@@ -1,0 +1,1260 @@
+\chapter{Finite Fields at Play}
+
+\begin{center}\itshape
+A mathematician, like a painter or a poet, is a maker of patterns. If his patterns are more permanent than theirs, it is
+because they are made with ideas.\\
+\upshape --- G.~H.~Hardy, \emph{A Mathematician's Apology} (1940)
+\end{center}
+
+In 1974 Marsha Falco, a geneticist in Cambridge, was studying epilepsy in German shepherd dogs. To keep track of the genes she
+drew little symbols on cards, each card showing a number of shapes with a colour and a shading. Her family started playing
+with the cards, and in 1991 they became the game \emph{SET}. There are $81$ cards, one for each choice of four attributes
+(number, colour, shape, shading) with three values each. Three cards form a \emph{set} when, for every attribute, they are all
+the same or all different. The players lay out twelve cards and race to spot a set.
+
+Write the three values of each attribute as $0,1,2$, so that a card is a vector of $\mathbb F_3^4$. Three numbers of $\mathbb F_3$
+are all equal or all different exactly when their sum is $0$, so three cards $x,y,z$ form a set exactly when $x+y+z=0$: they
+are the three points of a line of the affine space $\mathbb F_3^4$. A collection of cards without a set is a \emph{cap}. The
+largest cap has $20$ cards (Pellegrino, 1971), which is why a table of $21$ cards always holds a set.
+
+The \emph{cap set problem} asks the same question in $\mathbb F_3^n$. For decades the best upper bound was a little smaller than
+$3^n$: Meshulam proved $O(3^n/n)$ in 1995 with Fourier analysis, and Bateman and Katz, after years of work, shaved off a tiny bit
+more in 2012. Then in May 2016 Ernie Croot, Vsevolod Lev and Péter Pál Pach posted a paper on the group $(\Z/4\Z)^n$ with a new
+polynomial trick, and within days Jordan Ellenberg and Dion Gijswijt, independently, adapted it to $\mathbb F_3^n$. Their proof
+was three pages long and gave $2.756^n$: an exponentially small fraction of the space. Terence Tao rewrote it the same week on
+his blog in the language of ``slice rank'' that we use in Problem~\ref{pb:capset}.
+
+This chapter is about the polynomial method and its cousins. Finite fields are small enough to count everything and rigid
+enough that a polynomial of low degree cannot vanish in too many places. Out of these two facts come point counts on curves,
+additive combinatorics, Kakeya sets, and objects that look random without being random.
+
+\begin{think}
+Lay out SET cards one by one, never completing a set. How long can you go? Try it in $\mathbb F_3^2$ (nine cards with two
+attributes) and in $\mathbb F_3^3$. Do you believe that, in $\mathbb F_3^n$, a cap can fill a fixed proportion of the space,
+say a hundredth of it, for every $n$?
+\end{think}
+
+\section{Counting points}
+
+Over a finite field every equation has a number of solutions, and the problems of this section compute some of them. In most
+of them $p$ is an odd prime, $\chi(a)=\bigl(\frac ap\bigr)$ is the Legendre symbol with $\chi(0)=0$, and $e(t)=e^{2i\pi t/p}$.
+
+\begin{exercise}[$\star$]\label{pb:conics}
+\emph{Conics.} Let $p$ be an odd prime.
+\begin{enumerate}[label=(\alph*)]
+\item Let $a\ne0$ and $b,c$ be in $\mathbb F_p$, and $D=b^2-4ac$. Show that
+\[
+\sum_{x\in\mathbb F_p}\chi(ax^2+bx+c)=\begin{cases}-\chi(a)&\text{if }D\ne0,\\(p-1)\chi(a)&\text{if }D=0.\end{cases}
+\]
+\item Let $Q(x,y)=ax^2+bxy+cy^2$ with $D=b^2-4ac\ne0$. Show that the equation $Q(x,y)=1$ has exactly $p-\chi(D)$ solutions in
+$\mathbb F_p^2$.
+\item Deduce that a binary quadratic form with non-zero discriminant takes every non-zero value of $\mathbb F_p$, and that
+$x^2+y^2=1$ has $p-\chi(-1)$ solutions.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:sumsquares}
+\emph{Sums of squares over $\mathbb F_p$.} Let $p$ be an odd prime, $n\ge1$, and $N_n(c)$ the number of $x\in\mathbb F_p^n$ with
+$x_1^2+\dots+x_n^2=c$. Write $\eta=\chi$ for short.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for $c\ne0$,
+\[
+N_n(c)=\begin{cases}p^{n-1}-p^{n/2-1}\,\eta\bigl((-1)^{n/2}\bigr)&n\text{ even},\\[2pt]
+p^{n-1}+p^{(n-1)/2}\,\eta\bigl((-1)^{(n-1)/2}c\bigr)&n\text{ odd},\end{cases}
+\]
+and find $N_n(0)$.
+\item Draw $x$ uniformly in $\mathbb F_p^n$. Show that the total variation distance between the law of $x_1^2+\dots+x_n^2$ and
+the uniform law on $\mathbb F_p$ is
+\[
+\Bigl(1-\frac1p\Bigr)p^{-n/2}\quad(n\text{ even}),\qquad\frac{p-1}2\,p^{-(n+1)/2}\quad(n\text{ odd}).
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:fermatcubic}
+\emph{Gauss's cubic.} Let $p\equiv1\pmod3$ be prime and $N$ the number of $(x,y)\in\mathbb F_p^2$ with $x^3+y^3=1$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $\chi$ be a character of order $3$ of $\mathbb F_p^*$, extended by $\chi(0)=0$, and for characters $\alpha,\beta$
+let $J(\alpha,\beta)=\sum_{u+v=1}\alpha(u)\beta(v)$ (with the convention that the trivial character takes the value $1$ at $0$).
+Show that $N=p-2+2\operatorname{Re}J(\chi,\chi)$.
+\item Let $g(\alpha)=\sum_{t\in\mathbb F_p}\alpha(t)e(t)$. Show that $g(\alpha)g(\beta)=J(\alpha,\beta)g(\alpha\beta)$ when
+$\alpha\beta$ is not trivial, that $|g(\chi)|^2=p$, and that $g(\chi)^3=p\,J(\chi,\chi)$.
+\item Write $\omega=e^{2i\pi/3}$, so that $J(\chi,\chi)=a'+b'\omega$ with $a',b'\in\Z$. Show that $a'\equiv-1$ and
+$b'\equiv0\pmod 3$.
+\item Conclude: $N=p-2+a$, where $a$ is the integer with $a\equiv1\pmod3$ and $4p=a^2+27b^2$ for some integer $b$. Check $p=7$
+and $p=13$, and show that $|N-(p-2)|\le2\sqrt p$.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-cubic}
+\caption{For every prime $p\equiv1\pmod3$ below $3000$, the error $a=N-(p-2)$ in the number of points of $x^3+y^3=1$, divided by
+$2\sqrt p$ (Problem~\ref{pb:fermatcubic}). It never leaves $[-1,1]$, and it does not settle anywhere: the points fill the band
+with a density that peaks near the edges.}
+\label{fig:cubic}
+\end{figure}
+
+\begin{exercise}[$\star\star\star$]\label{pb:nilpotent}
+\emph{Counting nilpotent matrices.} Let $N_n$ be the number of nilpotent matrices in $M_n(\mathbb F_q)$, with $N_0=1$.
+\begin{enumerate}[label=(\alph*)]
+\item (Fitting.) For $A\in M_n(\mathbb F_q)$ acting on $V=\mathbb F_q^n$, show that $V=\ker A^n\oplus\operatorname{im}A^n$,
+that both are $A$-stable, that $A$ is nilpotent on the first and invertible on the second, and that this is the only
+decomposition of $V$ into two $A$-stable subspaces with these properties.
+\item Deduce that $\displaystyle\sum_{k=0}^n\frac{N_k}{|GL_k(\mathbb F_q)|}=\frac{q^{n^2}}{|GL_n(\mathbb F_q)|}$ for every $n\ge0$.
+\item (Fine and Herstein, 1958.) Prove that $N_n=q^{n^2-n}$. So a random matrix is nilpotent with probability exactly $q^{-n}$.
+\item (Steinberg.) How many unipotent matrices ($A-I$ nilpotent) does $GL_n(\mathbb F_q)$ contain?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:rankdist}
+\emph{The rank of a random matrix.}
+\begin{enumerate}[label=(\alph*)]
+\item Show that the number of matrices of rank $r$ in $M_n(\mathbb F_q)$ is
+\[
+\prod_{i=0}^{r-1}\frac{(q^n-q^i)^2}{q^r-q^i}.
+\]
+\item Let $A$ be uniform in $M_n(\mathbb F_q)$. Show that for each $k\ge0$, as $n\to\infty$,
+\[
+P(\operatorname{corank}A=k)\longrightarrow q^{-k^2}\,\frac{\prod_{j>k}(1-q^{-j})}{\prod_{j=1}^k(1-q^{-j})}.
+\]
+\item Deduce Durfee's identity: for $|x|<1$, writing $(x)_k=(1-x)(1-x^2)\cdots(1-x^k)$,
+\[
+\sum_{k\ge0}\frac{x^{k^2}}{(x)_k^{\,2}}=\prod_{j\ge1}\frac1{1-x^j},
+\]
+first for $x=\frac1q$, then for all $x$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:flags}
+\emph{Flags and the field with one element.} Let $V=\mathbb F_q^n$ and $[m]_q=1+q+\dots+q^{m-1}$, $[n]_q!=[1]_q[2]_q\cdots[n]_q$.
+A \emph{complete flag} is a chain $0=V_0\subset V_1\subset\dots\subset V_n=V$ with $\dim V_i=i$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $V$ has $[n]_q!$ complete flags.
+\item Let $U$ be a subspace of dimension $k$. Show that $U$ has exactly $q^{k(n-k)}$ complements $W$ (subspaces with $U\oplus W=V$).
+\item Show that $|GL_n(\mathbb F_q)|=q^{\binom n2}(q-1)^n\,[n]_q!$, by letting $GL_n$ act on flags.
+\item Set $q=1$ in the formulas of (a) and (b). What do flags and complements become, and what does (c) say about the
+symmetric group?
+\end{enumerate}
+\end{exercise}
+
+\section{The polynomial method}
+
+A non-zero polynomial of degree $d$ in one variable has at most $d$ roots. In several variables there is no such bound, since
+$x_1x_2$ vanishes on two whole lines, but the right generalisations are just as strong. They turn a combinatorial question into
+the question of whether some polynomial can vanish everywhere.
+
+\begin{exercise}[$\star$]\label{pb:schwartz}
+\emph{Schwartz--Zippel.} Let $F$ be a field and $S\subset F$ finite.
+\begin{enumerate}[label=(\alph*)]
+\item Let $f\in F[x_1,\dots,x_n]$ be non-zero of total degree $d$, and $r$ uniform in $S^n$. Show that $P(f(r)=0)\le\frac d{|S|}$,
+and that the bound is reached.
+\item (Edmonds, 1967.) Let $G$ be a bipartite graph on $\{u_1,\dots,u_n\}\cup\{v_1,\dots,v_n\}$, and $X$ the $n\times n$ matrix with
+$X_{ij}=x_{ij}$ (a variable) if $u_iv_j$ is an edge and $0$ otherwise. Show that $\det X\ne0$ in $\Q[x_{ij}]$ if and only if $G$ has
+a perfect matching.
+\item Deduce a randomised test for perfect matchings that uses one determinant over $\mathbb F_p$ and errs with probability at
+most $\frac np$, and only in one direction. Which one?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:nullstellensatz}
+\emph{Alon's Combinatorial Nullstellensatz.} Let $F$ be a field and $f\in F[x_1,\dots,x_n]$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $S_1,\dots,S_n\subset F$ be finite. Show that if $\deg_{x_i}f<|S_i|$ for every $i$ and $f$ vanishes on
+$S_1\times\dots\times S_n$, then $f=0$.
+\item (Alon, 1999.) Suppose that $\deg f=t_1+\dots+t_n$ and that the coefficient of $x_1^{t_1}\cdots x_n^{t_n}$ in $f$ is non-zero.
+Show that if $|S_i|>t_i$ for every $i$, then $f(s)\ne0$ for some $s\in S_1\times\dots\times S_n$.
+\item (Alon's permanent lemma.) Let $A\in M_n(F)$ have non-zero permanent $\operatorname{per}A=\sum_\sigma\prod_iA_{i\sigma(i)}$,
+let $b\in F^n$, and let $S_1,\dots,S_n\subset F$ have two elements each. Show that there is $x\in S_1\times\dots\times S_n$ such
+that $(Ax)_i\ne b_i$ for every $i$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:cauchydav}
+\emph{Cauchy--Davenport.} Let $p$ be prime and $A,B\subset\Z/p\Z$ non-empty.
+\begin{enumerate}[label=(\alph*)]
+\item (Cauchy 1813, Davenport 1935.) Prove that $|A+B|\ge\min(p,|A|+|B|-1)$, using Problem~\ref{pb:nullstellensatz}.
+\item Deduce $|A_1+\dots+A_k|\ge\min\bigl(p,\sum|A_i|-k+1\bigr)$.
+\item Let $a_1,\dots,a_{p-1}$ be non-zero residues, not necessarily distinct. Show that every residue is the sum of some of the
+$a_i$. Is $p-1$ the least number that works?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:erdosheil}
+\emph{Sums of distinct elements.} For $A\subset\Z/p\Z$ let $A\dotplus A=\{a+a':a,a'\in A,\ a\ne a'\}$.
+\begin{enumerate}[label=(\alph*)]
+\item (Dias da Silva and Hamidoune 1994; the proof is due to Alon, Nathanson and Ruzsa, 1995.) Prove the Erdős--Heilbronn
+conjecture: $|A\dotplus A|\ge\min(p,2|A|-3)$.
+\item Show that the bound is reached for every size $|A|\le\frac{p+3}2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:egz}
+\emph{Erdős--Ginzburg--Ziv (1961).} We show that among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
+\begin{enumerate}[label=(\alph*)]
+\item Prove Chevalley--Warning for systems: if $f_1,\dots,f_r\in\mathbb F_p[x_1,\dots,x_m]$ and $\sum_j\deg f_j<m$, then the number
+of common zeros of the $f_j$ in $\mathbb F_p^m$ is divisible by $p$.
+\item Prove the theorem for $n=p$ prime, with $f_1=\sum_ia_ix_i^{p-1}$ and $f_2=\sum_ix_i^{p-1}$.
+\item Show that if the theorem holds for $m$ and for $n$, it holds for $mn$. Conclude.
+\item Show that $2n-1$ cannot be replaced by $2n-2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:hyperplanes}
+\emph{Covering a cube minus a point.}
+\begin{enumerate}[label=(\alph*)]
+\item (Alon and Füredi, 1993.) Show that affine hyperplanes of $\mathbb F_q^n$ that cover every point except $0$ must number at
+least $n(q-1)$, and that $n(q-1)$ is enough.
+\item (Jamison 1977, Brouwer and Schrijver 1978.) A \emph{blocking set} is a set of points of $\mathbb F_q^n$ that meets every affine
+hyperplane. Show that a blocking set has at least $n(q-1)+1$ points. Find one of that size.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:kakeya}
+\emph{Dvir's Kakeya theorem.} A \emph{Kakeya set} $K\subset\mathbb F_q^n$ contains a line in every direction: for every
+$v\ne0$ there is $a$ with $\{a+tv:t\in\mathbb F_q\}\subset K$.
+\begin{enumerate}[label=(\alph*)]
+\item (Dvir, 2008.) Show that $|K|\ge\binom{q+n-1}n$. In particular $|K|\ge\frac{q^n}{n!}$: a Kakeya set fills a fixed fraction
+of the space.
+\item For $q$ odd, build a Kakeya set in $\mathbb F_q^2$ with $\frac{q(q+1)}2+\frac{q-1}2$ points.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:moore}
+\emph{The Moore determinant.} Let $q$ be a prime power and $\Delta(x_1,\dots,x_n)=\det\bigl(x_i^{q^{j-1}}\bigr)_{1\le i,j\le n}$.
+\begin{enumerate}[label=(\alph*)]
+\item (Moore, 1896.) Show that
+\[
+\Delta(x_1,\dots,x_n)=\prod_{i=1}^n\ \prod_{c\in\mathbb F_q^{i-1}}\bigl(x_i+c_1x_1+\dots+c_{i-1}x_{i-1}\bigr)
+\]
+in $\mathbb F_q[x_1,\dots,x_n]$.
+\item Deduce that $\alpha_1,\dots,\alpha_n\in\mathbb F_{q^m}$ are linearly independent over $\mathbb F_q$ if and only if
+$\Delta(\alpha_1,\dots,\alpha_n)\ne0$.
+\item Let $V\subset\mathbb F_{q^m}$ be an $\mathbb F_q$-subspace. Show that $P_V(X)=\prod_{v\in V}(X-v)$ is a linear combination
+of $X,X^q,X^{q^2},\dots$, so that $P_V(x+y)=P_V(x)+P_V(y)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:capset}
+\emph{The cap set theorem.} Let $A\subset\mathbb F_3^n$ contain no three distinct points $x,y,z$ with $x+y+z=0$. We prove
+$|A|\le3\cdot2.756^n$, following Ellenberg--Gijswijt and Tao.
+
+For a finite set $A$ and a field $F$, a function $T:A^3\to F$ is a \emph{slice} if it has one of the forms $f(x)g(y,z)$,
+$f(y)g(x,z)$, $f(z)g(x,y)$. The \emph{slice rank} of $T$ is the least number of slices whose sum is $T$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that every subspace of $F^A$ of dimension $m$ contains a vector with at least $m$ non-zero coordinates.
+\item Let $T(x,y,z)=\sum_{a\in A}c_a\,[x=y=z=a]$ with every $c_a\ne0$. Show that the slice rank of $T$ is $|A|$.
+\item Show that for $x,y,z\in A$, $x+y+z=0$ if and only if $x=y=z$. Deduce that $T(x,y,z)=[x+y+z=0]$ has slice rank $|A|$.
+\item Write $[x+y+z=0]=\prod_{i=1}^n\bigl(1-(x_i+y_i+z_i)^2\bigr)$ in $\mathbb F_3$, and deduce that the slice rank is at most $3M_n$,
+where $M_n$ is the number of $\alpha\in\{0,1,2\}^n$ with $\alpha_1+\dots+\alpha_n\le\frac{2n}3$.
+\item Show that $M_n\le\theta^n$ with $\theta=\min_{0<t\le1}\frac{1+t+t^2}{t^{2/3}}$, compute $\theta=2.7551\ldots$, and
+conclude.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-cap}
+\caption{A cap of $20$ points in $\mathbb F_3^4$, the largest possible: twenty SET cards with no set among them. The big
+$3\times3$ block gives the first two coordinates, the cell inside the block the last two. No three blue cells $x,y,z$
+satisfy $x+y+z=0$, even across blocks. The bound of Problem~\ref{pb:capset} is $3M_4=45$ here. It is useless for $n\le3$, but from $n=4$ on it beats the
+trivial $3^n$, and by an exponential factor as $n$ grows.}
+\label{fig:cap}
+\end{figure}
+
+\section{Pseudo-randomness}
+
+The squares modulo $p$, the bits of a linear recurrence, a well-chosen set of $q+1$ residues: these are rigid algebraic objects,
+and yet they pass every simple test of randomness. The reason, each time, is a character sum that is as small as a random sum
+would be.
+
+\begin{exercise}[$\star\star$]\label{pb:paley}
+\emph{Paley graphs.} Let $p\equiv1\pmod4$ be prime. The Paley graph $P_p$ has vertex set $\mathbb F_p$, with $x$ and $y$ joined
+when $x-y$ is a non-zero square (this is symmetric because $-1$ is a square).
+\begin{enumerate}[label=(\alph*)]
+\item Show that two adjacent vertices have $\frac{p-5}4$ common neighbours and two non-adjacent vertices have $\frac{p-1}4$.
+Deduce that $P_p$ has $\frac{p(p-1)(p-5)}{48}$ triangles.
+\item For $S,T\subset\mathbb F_p$ let $e(S,T)$ be the number of pairs $(s,t)\in S\times T$ with $s,t$ adjacent. Show that
+\[
+\Bigl|e(S,T)-\frac{|S||T|-|S\cap T|}2\Bigr|\le\frac12\sqrt{p\,|S|\,|T|}.
+\]
+\item Show that $P_p$ has no clique and no independent set with more than $\sqrt p$ vertices.
+\item Deduce from $P_{17}$ that the Ramsey number $R(4,4)$ is at least $18$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:mseq}
+\emph{Maximal length sequences.} Let $\alpha$ generate the cyclic group $\mathbb F_{2^n}^*$, $f=x^n+c_{n-1}x^{n-1}+\dots+c_0$ its
+minimal polynomial over $\mathbb F_2$, $\operatorname{Tr}(\beta)=\beta+\beta^2+\dots+\beta^{2^{n-1}}$, and
+$s_k=\operatorname{Tr}(\alpha^k)\in\mathbb F_2$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $s_{k+n}=c_{n-1}s_{k+n-1}+\dots+c_0s_k$ for all $k$.
+\item Show that the map $\beta\mapsto\bigl(\operatorname{Tr}(\beta),\operatorname{Tr}(\beta\alpha),\dots,\operatorname{Tr}(\beta\alpha^{n-1})\bigr)$ is a bijection
+$\mathbb F_{2^n}\to\mathbb F_2^n$. Deduce that $(s_k)$ has period $2^n-1$, that every non-zero block of $n$ bits appears exactly
+once among the windows $(s_k,\dots,s_{k+n-1})$, $0\le k<2^n-1$, and that every non-zero sequence satisfying the recurrence of (a)
+is a shift of $(s_k)$.
+\item Show that a period contains $2^{n-1}$ ones and $2^{n-1}-1$ zeros, and that for $0<t<2^n-1$,
+$\sum_{k=0}^{2^n-2}(-1)^{s_k+s_{k+t}}=-1$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:singer}
+\emph{Singer's difference sets (1938).} Let $q$ be a prime power, $N=q^2+q+1$, and $g$ a generator of $\mathbb F_{q^3}^*$. View
+$\mathbb F_{q^3}$ as a $3$-dimensional vector space over $\mathbb F_q$, fix a $2$-dimensional subspace $U$, and let
+$D=\{i\in\Z/N\Z:g^i\in U\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $D$ is well defined, that $|D|=q+1$, and that every non-zero $d\in\Z/N\Z$ is a difference $i-j$ of elements of
+$D$ in exactly one way.
+\item Show that the $N$ translates $D+t$ are the lines of a projective plane on the points $\Z/N\Z$: two points lie on exactly one
+translate, and two translates meet in exactly one point.
+\item Check that $\{0,1,3\}\bmod7$, $\{0,1,3,9\}\bmod13$ and $\{0,1,4,14,16\}\bmod21$ are perfect difference sets.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-singer}
+\caption{The Singer set $\{0,1,3,9\}$ modulo $13$, for $q=3$. Its six chords have the six lengths $\pm1,\dots,\pm6$, so each
+non-zero residue is a difference of two of its points exactly once (Problem~\ref{pb:singer}). Turning the picture by $t$ steps
+gives the $13$ lines of the projective plane of order $3$.}
+\label{fig:singer}
+\end{figure}
+
+\begin{exercise}[$\star\star$]\label{pb:sidon}
+\emph{Sidon sets.} A set $A$ of integers is a \emph{Sidon set} if all the sums $a+b$, $a\le b$ in $A$, are distinct. Let $F(n)$
+be the largest size of a Sidon set in $\{1,\dots,n\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $F(n)<\sqrt{2n}+1$.
+\item (Erdős and Turán, 1941.) Let $p$ be an odd prime. Show that $\{2pk+(k^2\bmod p):0\le k<p\}$ is a Sidon set, with all elements
+below $2p^2$.
+\item (Erdős and Turán.) Show that $F(n)\le\sqrt n+O(n^{1/4})$. Count the pairs of elements of $A$ that fall in a common window
+of $m$ consecutive integers, in two ways.
+\item Using Singer sets and the prime number theorem, show that $F(n)\sim\sqrt n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:randpoly}
+\emph{Random polynomials, random permutations.} Let $f$ be a uniformly random monic polynomial of degree $n$ over $\mathbb F_q$,
+and $M(j,q)$ the number of monic irreducible polynomials of degree $j$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that, for $n\ge2$, $f$ is squarefree with probability exactly $1-\frac1q$.
+\item Show that $f$ is irreducible with probability $\frac1n+\varepsilon$ with $|\varepsilon|\le\frac2n q^{-n/2}$.
+\item For a partition $\lambda$ of $n$ with $m_j$ parts equal to $j$, show that the probability that $f$ factors into irreducibles of
+degrees given by $\lambda$ (with multiplicity) tends, as $q\to\infty$, to $1/z_\lambda$, where $z_\lambda=\prod_jj^{m_j}m_j!$.
+Interpret $1/z_\lambda$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:noroots}
+\emph{Roots of a random polynomial.} Let $f$ be a uniformly random monic polynomial of degree $n\ge1$ over $\mathbb F_q$ and $R$ its
+number of roots in $\mathbb F_q$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that if $n\ge q$, the values $f(a)$, $a\in\mathbb F_q$, are independent and uniform, so that $R$ is exactly binomial
+with parameters $q$ and $\frac1q$. In particular $P(R=0)=(1-\frac1q)^q$.
+\item For $n<q$, show that
+\[
+P(R=0)=\sum_{k=0}^n(-1)^k\binom qk q^{-k},
+\]
+and compare with the probability $\sum_{k=0}^n\frac{(-1)^k}{k!}$ that a random permutation of $n$ points has no fixed point.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:waring}
+\emph{Two $k$-th powers.} Let $p$ be prime, $k\ge2$ a divisor of $p-1$, and $N(c)$ the number of $(x,y)\in\mathbb F_p^2$ with
+$x^k+y^k=c$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for $c\ne0$,
+\[
+|N(c)-p|\le(k-1)(k-2)\sqrt p+k-1.
+\]
+\item Deduce that every residue modulo $p$ is a sum of two $k$-th powers when $p\ge k^4$.
+\item What happens when $k$ does not divide $p-1$?
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{pb:conics}
+(a) Complete the square: $4a(ax^2+bx+c)=(2ax+b)^2-D$. Then count the solutions of $y^2-z^2=D$. (b) For fixed $y$, the number of
+$x$ is $1+\chi(\text{discriminant})$.
+\end{hint}
+
+\begin{hint}{pb:sumsquares}
+Detect the equation with $\frac1p\sum_te(t(\sum x_i^2-c))$, and evaluate $\sum_xe(tx^2)$ with Tome~1, Exercise~6.7.
+\end{hint}
+
+\begin{hint}{pb:fermatcubic}
+(a) The number of cube roots of $u$ is $1+\chi(u)+\chi^2(u)$. (c) Raise $g(\chi)$ to the cube modulo $3$: in characteristic $3$,
+cubing is additive.
+\end{hint}
+
+\begin{hint}{pb:nilpotent}
+(b) A matrix is the same thing as a decomposition $V=U\oplus W$, a nilpotent map on $U$ and an invertible map on $W$. (c) Show
+by induction that $\sum_{k\le n}q^{\binom k2}/D_k=q^{\binom{n+1}2}/D_n$, where $D_k=\prod_{i=1}^k(q^i-1)$.
+\end{hint}
+
+\begin{hint}{pb:rankdist}
+(a) Choose the image first. (b) Pull $q^{n}$ out of every factor. (c) The probabilities add up to $1$; justify the limit with a
+uniform bound.
+\end{hint}
+
+\begin{hint}{pb:flags}
+(b) A complement is the graph of a linear map from a fixed complement to $U$.
+\end{hint}
+
+\begin{hint}{pb:schwartz}
+(a) Induction on $n$. Write $f$ as a polynomial in $x_1$ whose coefficients are polynomials in the other variables:
+\[
+f=\sum_{i\le k}x_1^i\,g_i(x_2,\dots,x_n),\qquad g_k\ne0.
+\]
+\end{hint}
+
+\begin{hint}{pb:nullstellensatz}
+(b) Shrink the $S_i$ to size $t_i+1$, and divide $f$ by the polynomials $\prod_{s\in S_i}(x_i-s)$. If $f$ vanished on the grid, the
+remainder would vanish by (a).
+\end{hint}
+
+\begin{hint}{pb:cauchydav}
+(a) If $A+B$ were inside a set $C$ of size $|A|+|B|-2$, the polynomial $\prod_{c\in C}(x+y-c)$ would vanish on $A\times B$.
+\end{hint}
+
+\begin{hint}{pb:erdosheil}
+Use $(x-y)\prod_{c\in C}(x+y-c)$ and the monomial $x^{k-1}y^{k-2}$. Its coefficient is a Catalan number.
+\end{hint}
+
+\begin{hint}{pb:egz}
+(a) The number of common zeros is $\sum_x\prod_j(1-f_j(x)^{p-1})$ modulo $p$. (c) Extract groups of $n$ one at a time.
+\end{hint}
+
+\begin{hint}{pb:hyperplanes}
+(a) Compare $\prod_i(1-a_i\cdot x)$ with $\prod_j\prod_{s\ne0}(x_j-s)$. (b) The hyperplanes $\{x:a\cdot x=1\}$ avoid $0$; swap the
+roles of $a$ and $x$.
+\end{hint}
+
+\begin{hint}{pb:kakeya}
+(a) A non-zero polynomial of degree at most $q-1$ vanishing on $K$ exists if $K$ is small. Restrict it to a line and look at the
+top coefficient. (b) Use the lines $y=mx+m^2$.
+\end{hint}
+
+\begin{hint}{pb:moore}
+(a) Expand along the last row, and note that the last row is a combination of the others when $x_n$ is an $\mathbb F_q$-combination
+of $x_1,\dots,x_{n-1}$.
+\end{hint}
+
+\begin{hint}{pb:capset}
+(b) Contract $T$ against a function $h(z)$ that is orthogonal to the $f$'s of the third kind of slices and has large support.
+(d) In each monomial one of the three variables has degree at most $\frac{2n}3$.
+\end{hint}
+
+\begin{hint}{pb:paley}
+(a) Count with $\frac{1+\chi}2$ and use Problem~\ref{pb:conics}(a). (b) Cauchy--Schwarz in $s$, then sum over all $s\in\mathbb F_p$.
+(c) If $K$ is a clique and $n$ a non-square, $(c,c')\mapsto c+nc'$ is injective on $K\times K$.
+\end{hint}
+
+\begin{hint}{pb:mseq}
+(b) The trace is a non-zero linear form, and $(\beta,\gamma)\mapsto\operatorname{Tr}(\beta\gamma)$ is non-degenerate.
+(c) $s_k+s_{k+t}=\operatorname{Tr}(\alpha^k(1+\alpha^t))$.
+\end{hint}
+
+\begin{hint}{pb:singer}
+(a) $i-j=d$ with $i,j\in D$ means that the point $g^j$ lies in $U\cap g^{-d}U$. Why are these two planes different?
+\end{hint}
+
+\begin{hint}{pb:sidon}
+(b) Equal sums give equal $k+l$ and equal $k^2+l^2$ modulo $p$. (c) Window length $m\approx n^{3/4}$; a difference $d<m$ occurs at
+most once.
+\end{hint}
+
+\begin{hint}{pb:randpoly}
+(a) $f=g^2h$ with $h$ squarefree, in generating functions. (c) Choose $m_j$ irreducibles of degree $j$ with repetition.
+\end{hint}
+
+\begin{hint}{pb:noroots}
+(a) Evaluation at all points of $\mathbb F_q$ is a surjective linear map on polynomials of degree $<q$. (b) Inclusion--exclusion.
+\end{hint}
+
+\begin{hint}{pb:waring}
+Write the number of $k$-th roots of $u$ as a sum of characters, and use Jacobi sums of absolute value $\sqrt p$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{pb:conics}
+\idea A square completion reduces every quadratic character sum to the one for $y^2-D$, and $y^2-z^2=D$ factors as
+$(y-z)(y+z)=D$, which is easy to count.
+
+\writeup (a) Since $p$ is odd, $4a\ne0$ and $\chi(4a)=\chi(a)$. From $4a(ax^2+bx+c)=(2ax+b)^2-D$ we get
+$\chi(ax^2+bx+c)=\chi(a)\chi\bigl((2ax+b)^2-D\bigr)$, and $y=2ax+b$ runs over $\mathbb F_p$ once when $x$ does. So the sum is
+$\chi(a)\sum_y\chi(y^2-D)$. If $D=0$ this is $\chi(a)(p-1)$. If $D\ne0$, the number of $z$ with $z^2=w$ is $1+\chi(w)$, so
+\[
+\sum_y\chi(y^2-D)=\#\{(y,z):y^2-z^2=D\}-p.
+\]
+With $u=y-z$, $v=y+z$ (an invertible change of variables, $2$ being invertible) the equation is $uv=D$, which has $p-1$
+solutions. So the sum is $-1$, and the total is $-\chi(a)$.
+
+(b) Suppose first $a\ne0$. For fixed $y$, the equation $ax^2+(by)x+(cy^2-1)=0$ in $x$ has $1+\chi(\Delta_y)$ solutions, where
+$\Delta_y=b^2y^2-4a(cy^2-1)=Dy^2+4a$. The polynomial $Dy^2+4a$ has leading coefficient $D\ne0$ and discriminant $-16aD\ne0$, so
+by (a)
+\[
+N=\sum_y\bigl(1+\chi(Dy^2+4a)\bigr)=p-\chi(D).
+\]
+If $a=0$, then $D=b^2\ne0$ and $\chi(D)=1$. The equation is $y(bx+cy)=1$: any $y\ne0$, and then $x=(y^{-1}-cy)/b$ is unique. That is
+$p-1=p-\chi(D)$ solutions.
+
+(c) For $n\ne0$, $Q=n$ is the equation $Q'=1$ with $Q'=Q/n$, whose discriminant $D/n^2$ has the same character. So $Q=n$ has
+$p-\chi(D)\ge p-1>0$ solutions. For $x^2+y^2$, $D=-4$ and $\chi(-4)=\chi(-1)$.
+
+\tools Tome~1, Chapter~6 (Legendre symbol).
+\leads $x^2+y^2=1$ is a circle with $p+1$ or $p-1$ points: the $p-1$ case corresponds to a circle with two points at
+infinity, $x\pm iy=0$, defined over $\mathbb F_p$. Every smooth conic has $p+1$ points in the projective plane, and the problem
+is the affine shadow of that fact.
+\end{solution}
+
+\begin{solution}{pb:sumsquares}
+\idea Additive characters detect the equation, and the sum over each coordinate is a quadratic Gauss sum, whose square is
+$\pm p$. All the answer needs is the sign.
+
+\writeup Let $G=\sum_t\chi(t)e(t)$. By Tome~1, Exercise~6.7, $G^2=\chi(-1)p$. For $t\ne0$,
+\[
+S(t)=\sum_xe(tx^2)=\sum_u(1+\chi(u))e(tu)=\sum_u\chi(u)e(tu)=\chi(t)G,
+\]
+using $\sum_ue(tu)=0$ and the substitution $u\mapsto u/t$. Since $\frac1p\sum_te(tm)$ is $1$ if $m=0$ and $0$ otherwise,
+\[
+N_n(c)=\frac1p\sum_{t}e(-tc)S(t)^n=p^{n-1}+\frac{G^n}p\sum_{t\ne0}\chi(t)^ne(-tc).
+\]
+(a) If $n$ is even, $\chi(t)^n=1$, $G^n=(\chi(-1)p)^{n/2}=\eta\bigl((-1)^{n/2}\bigr)p^{n/2}$, and $\sum_{t\ne0}e(-tc)$ is $p-1$ if
+$c=0$ and $-1$ otherwise. So
+\[
+N_n(c)=p^{n-1}+p^{n/2-1}\eta\bigl((-1)^{n/2}\bigr)\cdot\begin{cases}p-1&c=0,\\-1&c\ne0.\end{cases}
+\]
+If $n$ is odd, $\chi(t)^n=\chi(t)$. For $c=0$ the sum $\sum_{t\ne0}\chi(t)$ vanishes and $N_n(0)=p^{n-1}$. For $c\ne0$,
+$\sum_t\chi(t)e(-tc)=\chi(-c)G$ (substitute $t\mapsto-t/c$), so
+\[
+N_n(c)=p^{n-1}+\frac{\chi(-c)G^{n+1}}p=p^{n-1}+\chi(-c)\chi(-1)^{\frac{n+1}2}p^{\frac{n-1}2}=p^{n-1}+\eta\bigl((-1)^{\frac{n-1}2}c\bigr)p^{\frac{n-1}2},
+\]
+since $\chi(-1)^{\frac{n+1}2+1}=\chi(-1)^{\frac{n-1}2}$.
+
+(b) Let $P(c)=N_n(c)/p^n$. The distance is $\frac12\sum_c|P(c)-\frac1p|$. For $n$ even, $|P(0)-\frac1p|=(p-1)p^{-n/2-1}$ and
+$|P(c)-\frac1p|=p^{-n/2-1}$ for the $p-1$ others, so the distance is $(p-1)p^{-n/2-1}=(1-\frac1p)p^{-n/2}$. For $n$ odd,
+$P(0)=\frac1p$ and $|P(c)-\frac1p|=p^{-(n+1)/2}$ for $c\ne0$, giving $\frac{p-1}2p^{-(n+1)/2}$.
+
+\tools Tome~1, Chapter~6 (Exercise~6.7, the quadratic Gauss sum); Tome~3, Chapter~8 (total variation).
+\leads So the sum of $n$ random squares is uniform up to an error $p^{-n/2}$, exactly the size that the square root
+cancellation of Gauss sums predicts. For $n=4$ and $c=m\bmod p$ the formula $p^3-p$ is the local factor in Jacobi's count of
+representations of $m$ as a sum of four squares, which Part~II will meet with modular forms.
+\end{solution}
+
+\begin{solution}{pb:fermatcubic}
+\idea Counting solutions of $u+v=1$ with $u,v$ cubes is a sum of Jacobi sums. The only non-trivial one is $J(\chi,\chi)$, an
+integer of $\Z[\omega]$ of norm $p$, and a congruence modulo $3$ picks it out among the six associates.
+
+\writeup (a) Since $p\equiv1\pmod 3$, $\mathbb F_p^*$ is cyclic of order divisible by $3$; it has two characters $\chi,\chi^2=\bar\chi$
+of order $3$. For $u\ne0$, the number of $x$ with $x^3=u$ is $3$ if $u$ is a cube and $0$ otherwise, which is $1+\chi(u)+\chi^2(u)$;
+for $u=0$ it is $1$, which is also $1+\chi(0)+\chi^2(0)$ with our conventions. Writing $\varepsilon$ for the trivial character,
+\[
+N=\sum_{u+v=1}\Bigl(\sum_{i=0}^2\chi^i(u)\Bigr)\Bigl(\sum_{j=0}^2\chi^j(v)\Bigr)=\sum_{i,j}J(\chi^i,\chi^j).
+\]
+Now $J(\varepsilon,\varepsilon)=p$ and $J(\varepsilon,\psi)=\sum_v\psi(v)=0$ for $\psi$ non-trivial. Next
+$J(\chi,\bar\chi)=\sum_{u\ne0,1}\chi\bigl(\frac u{1-u}\bigr)$, and $u\mapsto\frac u{1-u}$ is a bijection from
+$\mathbb F_p\setminus\{0,1\}$ to $\mathbb F_p\setminus\{0,-1\}$; so $J(\chi,\bar\chi)=-\chi(-1)=-1$, because
+$\chi(-1)^2=\chi(1)=1$ and $\chi(-1)^3=1$ force $\chi(-1)=1$. The same holds for $J(\bar\chi,\chi)$. Finally
+$J(\bar\chi,\bar\chi)=\overline{J(\chi,\chi)}$. So $N=p-2+2\operatorname{Re}J(\chi,\chi)$.
+
+(b) Expanding,
+\[
+g(\alpha)g(\beta)=\sum_s e(s)\sum_{x+y=s}\alpha(x)\beta(y).
+\]
+For $s\ne0$, put $x=su$, $y=sv$: the inner sum is $\alpha\beta(s)J(\alpha,\beta)$. For $s=0$ it is
+\[
+\sum_x\alpha(x)\beta(-x)=\beta(-1)\sum_x\alpha\beta(x)=0,
+\]
+since $\alpha\beta$ is non-trivial. So
+\[
+g(\alpha)g(\beta)=J(\alpha,\beta)\sum_s\alpha\beta(s)e(s)=J(\alpha,\beta)g(\alpha\beta).
+\]
+
+Next, $|g(\chi)|^2=\sum_{x,y\ne0}\chi(x)\bar\chi(y)e(x-y)$. Put $x=ty$: this is
+$\sum_{t\ne0}\chi(t)\sum_{y\ne0}e(y(t-1))$. The inner sum is $p-1$ for $t=1$ and $-1$ otherwise, so
+$|g|^2=(p-1)-\sum_{t\ne0,1}\chi(t)=(p-1)+1=p$. Also $\overline{g(\chi)}=\sum\bar\chi(t)e(-t)=\chi(-1)g(\bar\chi)=g(\bar\chi)$.
+Apply the first identity twice: $g(\chi)^2=J(\chi,\chi)g(\chi^2)=J(\chi,\chi)g(\bar\chi)$, so
+$g(\chi)^3=J(\chi,\chi)g(\bar\chi)g(\chi)=J(\chi,\chi)|g(\chi)|^2=pJ(\chi,\chi)$.
+
+(c) Work in the ring $R=\Z[\omega,\zeta]$ with $\zeta=e^{2i\pi/p}$. Modulo $3R$, $(a+b)^3\equiv a^3+b^3$ (the middle binomial
+coefficients are $3$), so
+\[
+g(\chi)^3\equiv\sum_t\chi(t)^3\zeta^{3t}=\sum_{t\ne0}\zeta^{3t}=-1\pmod{3R},
+\]
+because $\chi(t)^3=1$ for $t\ne0$ and $3t$ runs over $\mathbb F_p^*$. Since $p\equiv1\pmod3$, (b) gives $J(\chi,\chi)\equiv-1$,
+that is $\frac{J+1}3\in R$. But $\frac{J+1}3=\frac{a'+1}3+\frac{b'}3\omega$ is in $\Q(\omega)$ and is an algebraic integer, so it lies
+in $\Z[\omega]$; as $1,\omega$ is a basis of $\Z[\omega]$ and of $\Q(\omega)$, $3\mid a'+1$ and $3\mid b'$.
+
+(d) Let $a=2\operatorname{Re}J=2a'-b'$ (because $\operatorname{Re}\omega=-\frac12$). Then $a\equiv-2\equiv1\pmod 3$. By (b),
+$|J|^2=\frac{|g|^6}{p^2}=p$, and $|a'+b'\omega|^2=a'^2-a'b'+b'^2$, so $4p=(2a'-b')^2+3b'^2=a^2+27b^2$ with $b=\frac{b'}3$. And
+$N=p-2+a$. Since $27b^2\ge0$, $|a|\le2\sqrt p$.
+
+For $p=7$: $28=1+27$, $a=1$, $N=6$. Directly: the cubes mod $7$ are $0,1,6$, and $u+v=1$ with $u,v$ cubes forces $\{u,v\}=\{0,1\}$,
+giving $1\cdot3+3\cdot1=6$ solutions. For $p=13$: $52=25+27$, $a\equiv1\pmod3$ picks $a=-5$, so $N=6$. (Why is $a$ determined?
+If $4p=a^2+27b^2=c^2+27d^2$, the numbers $\frac{a\pm3b\sqrt{-3}}2$ and $\frac{c\pm3d\sqrt{-3}}2$ have norm $p$ in the unique
+factorisation ring $\Z[\omega]$, so they are associates, and the congruence modulo $3$ leaves only $c=a$.)
+
+\tools Tome~1, Chapters~5 and~6 (characters, Gauss sums); Tome~1, Chapters~10 and~11 ($\Z[\omega]$, algebraic integers); Tome~2, Chapter~9 (Frobenius).
+\leads This is Gauss's result in article~358 of the \emph{Disquisitiones} (1801), and André Weil's 1949 paper on equations over
+finite fields starts from it: the projective curve $x^3+y^3=z^3$ has $p+1-a$ points, and $|a|\le2\sqrt p$ is the Hasse bound for
+this elliptic curve. Figure~\ref{fig:cubic} shows $\frac a{2\sqrt p}$; because the curve has complex multiplication by $\Z[\omega]$,
+its distribution is not the Sato--Tate semicircle but the arcsine-like law of $\cos\theta$ for uniform $\theta$, which piles up at
+$\pm1$.
+\end{solution}
+
+\begin{solution}{pb:nilpotent}
+\idea Every matrix splits uniquely into a nilpotent part and an invertible part on complementary subspaces. Counting matrices
+this way gives one identity per $n$, and these identities determine all the $N_k$, so it is enough to check that $q^{k^2-k}$
+satisfies them.
+
+\writeup (a) The kernels $\ker A^k$ increase and the images $\operatorname{im}A^k$ decrease, and both stabilise by $k=n$ (the
+dimension cannot change more than $n$ times). If $x\in\ker A^n\cap\operatorname{im}A^n$, write $x=A^ny$; then $A^{2n}y=0$, so
+$y\in\ker A^{2n}=\ker A^n$ and $x=0$. By rank--nullity the dimensions add up to $n$, so $V=\ker A^n\oplus\operatorname{im}A^n$.
+Both are $A$-stable. $A$ is nilpotent on $\ker A^n$, and on $\operatorname{im}A^n$ it is onto
+($A(\operatorname{im}A^n)=\operatorname{im}A^{n+1}=\operatorname{im}A^n$), hence invertible. If $V=U\oplus W$ is another such
+decomposition, then $A^n=0$ on $U$, so $U\subset\ker A^n$, and $W=A^nW\subset\operatorname{im}A^n$; the dimensions force equality.
+
+(b) By (a), $A\mapsto(U,W,A|_U,A|_W)$ is a bijection from $M_n(\mathbb F_q)$ to the set of quadruples where $V=U\oplus W$, $A|_U$
+is nilpotent on $U$ and $A|_W$ is invertible on $W$. $GL_n$ acts transitively on the ordered pairs $(U,W)$ with
+$\dim U=k$, $V=U\oplus W$ (send a basis adapted to one pair to a basis adapted to another), with stabiliser $GL(U)\times GL(W)$.
+So there are $\frac{|GL_n|}{|GL_k||GL_{n-k}|}$ such pairs, and
+\[
+q^{n^2}=\sum_{k=0}^n\frac{|GL_n|}{|GL_k|\,|GL_{n-k}|}\,N_k\,|GL_{n-k}|=|GL_n|\sum_{k=0}^n\frac{N_k}{|GL_k|}.
+\]
+
+(c) The identity of (b) for $n$ determines $N_n$ from $N_0,\dots,N_{n-1}$, so it suffices to show that $N_k=q^{k^2-k}$ satisfies
+it. Write $|GL_k|=\prod_{i=0}^{k-1}(q^k-q^i)=q^{\binom k2}D_k$ with $D_k=\prod_{i=1}^k(q^i-1)$. Then
+$\frac{q^{k^2-k}}{|GL_k|}=\frac{q^{\binom k2}}{D_k}$ and $\frac{q^{n^2}}{|GL_n|}=\frac{q^{\binom{n+1}2}}{D_n}$, so we need
+\[
+\sum_{k=0}^n\frac{q^{\binom k2}}{D_k}=\frac{q^{\binom{n+1}2}}{D_n}.
+\]
+For $n=0$ both sides are $1$. If it holds for $n$, adding the term $k=n+1$ gives
+$\frac{q^{\binom{n+1}2}}{D_n}+\frac{q^{\binom{n+1}2}}{D_{n+1}}=\frac{q^{\binom{n+1}2}(q^{n+1}-1+1)}{D_{n+1}}=\frac{q^{\binom{n+2}2}}{D_{n+1}}$.
+
+(d) $A\mapsto I+A$ is a bijection from nilpotent to unipotent matrices, so there are $q^{n^2-n}$ unipotent matrices.
+
+\tools Tome~0, Chapter~7 (rank--nullity, invariant subspaces); Tome~2, Chapter~3 (orbit--stabiliser); Companion~C1, Chapter~3 for the
+order of $GL_n(\mathbb F_q)$.
+\leads $q^{n^2-n}=q^{2\binom n2}$ is the square of the order of a Sylow $p$-subgroup of $GL_n$ (the unitriangular matrices).
+Steinberg proved that in every finite group of Lie type the number of unipotent elements is the square of the order of a Sylow
+$p$-subgroup. Over a general field the nilpotent matrices form the \emph{nilpotent cone}, of dimension $n^2-n$.
+\end{solution}
+
+\begin{solution}{pb:rankdist}
+\idea A matrix of rank $r$ is a choice of an $r$-dimensional image and of a surjection onto it. In the limit only the corank
+matters, and summing the limit law to $1$ is a partition identity.
+
+\writeup (a) A matrix $A$ of rank $r$ is a linear map $\mathbb F_q^n\to\mathbb F_q^n$ with image $W$ of dimension $r$. Given $W$, with a
+basis, the maps onto $W$ correspond to $r\times n$ matrices of rank $r$, whose rows are independent: $\prod_{i<r}(q^n-q^i)$ of them.
+The number of $W$ is the Gaussian binomial $\prod_{i<r}\frac{q^n-q^i}{q^r-q^i}$ (Companion~C1, Theorem~3.18). Multiply.
+
+(b) Let $r=n-k$. Factor $q^n$ out of each $q^n-q^i$ and $q^r$ out of each $q^r-q^i$:
+\[
+\frac{\#\{\text{rank }r\}}{q^{n^2}}=q^{2nr-r^2-n^2}\,\frac{\prod_{i<r}(1-q^{i-n})^2}{\prod_{i<r}(1-q^{i-r})}
+=q^{-k^2}\,\frac{\prod_{j=k+1}^{n}(1-q^{-j})^2}{\prod_{j=1}^{n-k}(1-q^{-j})}.
+\]
+As $n\to\infty$ the products converge (since $\sum q^{-j}<\infty$), to $\prod_{j>k}(1-q^{-j})^2/\prod_{j\ge1}(1-q^{-j})$, which is the
+stated limit.
+
+(c) Let $c_q=\prod_{j\ge1}(1-q^{-j})>0$. The $n$-th probabilities are at most $q^{-k^2}/c_q$, a summable bound, and they add up to
+$1$ for each $n$; by dominated convergence the limits add up to $1$:
+\[
+\sum_{k\ge0}q^{-k^2}\frac{\prod_{j>k}(1-q^{-j})}{\prod_{j\le k}(1-q^{-j})}=1,\quad\text{that is}\quad
+\sum_k\frac{x^{k^2}}{(x)_k^2}=\frac1{\prod_j(1-x^j)}\ \text{ at }x=\tfrac1q,
+\]
+after dividing by $c_q$ and writing $\prod_{j>k}(1-x^j)=c_q/(x)_k$. Both sides are power series in $x$ with non-negative integer
+coefficients, convergent for $|x|<1$, and they agree at $x=\frac1q$ for every prime power $q$, a sequence tending to $0$. By the
+identity theorem for power series (Tome~4, Chapter~9) they are equal.
+
+\tools Companion~C1, Chapter~3 (Gaussian binomials; Exercise~3.11 is the case $k=0$); Tome~3, Chapter~5 (dominated convergence);
+Tome~4, Chapter~9 (power series).
+\leads A partition has a largest square $k\times k$ in its Young diagram (its Durfee square), and the two pieces outside the square
+are partitions into parts at most $k$: this is the combinatorial proof, $\frac{x^{k^2}}{(x)_k^2}$ counting partitions with
+Durfee square $k$. For $q=2$ the limit law is $0.2888$, $0.5776$, $0.1284$, $0.0052$ for coranks $0,1,2,3$, the Cohen--Lenstra
+type law that also governs, conjecturally, the class groups of number fields.
+\end{solution}
+
+\begin{solution}{pb:flags}
+\idea Build a flag one step at a time, and count complements as graphs of linear maps.
+
+\writeup (a) $V$ has $\frac{q^n-1}{q-1}=[n]_q$ lines. A complete flag is a line $V_1$ followed by a complete flag of $V/V_1$, a space
+of dimension $n-1$ (subspaces of $V/V_1$ are subspaces of $V$ containing $V_1$). By induction there are $[n]_q[n-1]_q\cdots[1]_q$.
+
+(b) Fix one complement $W_0$ and let $\pi:V\to W_0$ be the projection along $U$. A complement $W$ meets $U$ trivially and has
+dimension $n-k$, so $\pi|_W$ is an isomorphism $W\to W_0$, and $W=\{w+f(w):w\in W_0\}$ where $f=(\mathrm{id}-\pi)\circ(\pi|_W)^{-1}$ maps
+$W_0$ to $U$. Conversely, every linear $f:W_0\to U$ gives such a complement, the graph of $f$. So the complements correspond to
+$\operatorname{Hom}(W_0,U)$, which has $q^{k(n-k)}$ elements.
+
+(c) $GL_n$ acts transitively on complete flags (choose a basis $e_1,\dots,e_n$ with $V_i=\langle e_1,\dots,e_i\rangle$), and the
+stabiliser of the standard flag is the group $B$ of invertible upper triangular matrices: $q-1$ choices for each diagonal entry
+and $q$ for each of the $\binom n2$ entries above it. So $|GL_n|=[n]_q!\,(q-1)^nq^{\binom n2}$.
+
+(d) At $q=1$, $[n]_q!$ becomes $n!$, the number of orderings of an $n$-element set, which is what a ``complete flag of a set''
+$\emptyset\subset S_1\subset\dots\subset S_n$ is. And $q^{k(n-k)}$ becomes $1$: a subset has exactly one complement. In (c),
+$|GL_n|/(q-1)^n=q^{\binom n2}[n]_q!$ becomes $n!=|\mathfrak S_n|$: the symmetric group behaves like $GL_n$ over a ``field with
+one element''.
+
+\tools Tome~0, Chapter~7; Tome~2, Chapter~3; Companion~C1, Chapter~3 ($q$-analogues).
+\leads Tits suggested in 1957 that $\mathfrak S_n$ should be $GL_n(\mathbb F_1)$, and the dream of a geometry over $\mathbb F_1$ that
+would explain the Riemann hypothesis by imitating Weil's proof over $\mathbb F_q$ is still alive. Summing over the cells of the
+Bruhat decomposition also gives $[n]_q!=\sum_{\sigma\in\mathfrak S_n}q^{\operatorname{inv}\sigma}$.
+\end{solution}
+
+\begin{solution}{pb:schwartz}
+\idea A polynomial in $x_1$ with coefficients in the other variables can only vanish if either its top coefficient vanishes
+(probability by induction) or $x_1$ hits one of its few roots.
+
+\writeup (a) Induction on $n$. For $n=1$, $f$ has at most $d$ roots. For $n\ge2$, write $f=\sum_{i=0}^kx_1^ig_i(x_2,\dots,x_n)$ with
+$g_k\ne0$; then $\deg g_k\le d-k$. Let $r=(r_1,r')$. By induction $P(g_k(r')=0)\le\frac{d-k}{|S|}$. When $g_k(r')\ne0$, the polynomial
+$f(x_1,r')$ is non-zero of degree $k$, so for each such $r'$, at most $k$ values of $r_1$ (independent of $r'$) make it vanish.
+So $P(f(r)=0)\le\frac{d-k}{|S|}+\frac k{|S|}$. For $f=\prod_{i=1}^d(x_1-s_i)$ with distinct $s_i\in S$ the probability is exactly
+$\frac d{|S|}$.
+
+(b) $\det X=\sum_\sigma\operatorname{sgn}\sigma\prod_iX_{i\sigma(i)}$. The term of $\sigma$ is non-zero exactly when every
+$u_iv_{\sigma(i)}$ is an edge, that is when $\sigma$ is a perfect matching, and it is then the monomial $\pm\prod_ix_{i\sigma(i)}$.
+Different $\sigma$ give different monomials, so nothing cancels: $\det X\ne0$ if and only if a perfect matching exists.
+
+(c) Substitute independent uniform values of $\mathbb F_p$ for the $x_{ij}$ and compute the determinant modulo $p$. If there is no
+perfect matching, $\det X$ is the zero polynomial and the answer is always $0$. If there is one, $\det X$ reduced mod $p$ is still
+non-zero (its coefficients are $\pm1$) of degree $n$, and by (a) it vanishes with probability at most $\frac np$. So the test
+says ``matching'' only when there is one: it can only miss matchings.
+
+\tools Tome~0, Chapter~3 (roots of polynomials); Tome~0, Chapter~7 (determinants).
+\leads Lovász (1979) extended the test to general graphs with the Tutte matrix, and Mulmuley, Vazirani and Vazirani (1987) used
+the same determinant, with an isolation lemma, to find matchings in parallel. Polynomial identity testing is the most famous
+problem that is easy with randomness and not known to be easy without it.
+\end{solution}
+
+\begin{solution}{pb:nullstellensatz}
+\idea Dividing $f$ by the polynomials $g_i=\prod_{s\in S_i}(x_i-s)$ leaves a remainder of low degree in each variable that agrees
+with $f$ on the grid. If $f$ vanished on the grid, the remainder would be $0$, and every top-degree monomial of $f$ would be
+divisible by some $x_i^{t_i+1}$.
+
+\writeup (a) Induction on $n$. For $n=1$ a polynomial of degree $<|S_1|$ with $|S_1|$ roots is $0$. For $n\ge2$ write
+$f=\sum_{i<|S_n|}f_i(x_1,\dots,x_{n-1})x_n^i$. For fixed $s'\in S_1\times\dots\times S_{n-1}$, the polynomial $f(s',x_n)$ has degree
+$<|S_n|$ and $|S_n|$ roots, so all $f_i(s')=0$. By induction each $f_i$ is $0$.
+
+(b) Replacing $S_i$ by a subset, we may assume $|S_i|=t_i+1$. Suppose $f$ vanishes on the grid. Let
+$g_i=\prod_{s\in S_i}(x_i-s)=x_i^{t_i+1}-h_i(x_i)$ with $\deg h_i\le t_i$. As long as some monomial of $f$ contains $x_i^{t_i+1}$,
+replace that factor by $h_i(x_i)$. Each replacement subtracts $g_i\cdot m$ for a monomial $m$, does not raise the total degree, and
+lowers the degree in $x_i$; the process stops at $\bar f$ with $\deg_{x_i}\bar f\le t_i$ and
+\[
+f=\bar f+\sum_ig_iu_i,\qquad\deg(g_iu_i)\le\deg f.
+\]
+Since $g_i=0$ on the grid, $\bar f=f=0$ there, so $\bar f=0$ by (a). Now look at the part of degree $d=\deg f$: on the right it is
+$\sum_ix_i^{t_i+1}\cdot(\text{the part of degree }d-t_i-1\text{ of }u_i)$, a sum of monomials each divisible by some
+$x_i^{t_i+1}$. But $x_1^{t_1}\cdots x_n^{t_n}$ has degree $d$, is divisible by no $x_i^{t_i+1}$, and has a non-zero coefficient in $f$.
+Contradiction.
+
+(c) Let $f(x)=\prod_{i=1}^n\bigl((Ax)_i-b_i\bigr)$, of degree $n$. Its part of degree $n$ is $\prod_i\sum_jA_{ij}x_j$, in which the
+coefficient of $x_1x_2\cdots x_n$ is $\sum_\sigma\prod_iA_{i\sigma(i)}=\operatorname{per}A\ne0$. Apply (b) with all $t_i=1$.
+
+\tools Tome~0, Chapter~3 (division, roots).
+\leads Alon's paper (1999) derives a dozen classical theorems from (b), several of which follow here. The permanent lemma gives,
+for instance, that for every $n\times n$ matrix with non-zero permanent over $\mathbb F_p$ and every $b$ there is a $0$--$1$ vector
+$x$ with $Ax$ differing from $b$ in every coordinate (Alon and Tarsi's conjecture on nowhere-zero points for $p$ odd builds on it).
+\end{solution}
+
+\begin{solution}{pb:cauchydav}
+\idea If the sumset were small, a polynomial of controlled degree would vanish on $A\times B$; its key coefficient is a binomial
+coefficient below $p$, hence non-zero.
+
+\writeup (a) If $|A|+|B|>p$, then for every $c$ the sets $A$ and $c-B$ have total size $>p$, so they meet: $c\in A+B$. Suppose
+$|A|+|B|\le p$ and $|A+B|\le|A|+|B|-2$, and choose $C\supset A+B$ with $|C|=|A|+|B|-2$. The polynomial
+$f(x,y)=\prod_{c\in C}(x+y-c)$ vanishes on $A\times B$ and has degree $|A|+|B|-2$. Its top part is $(x+y)^{|A|+|B|-2}$, in which
+the coefficient of $x^{|A|-1}y^{|B|-1}$ is $\binom{|A|+|B|-2}{|A|-1}$, not divisible by $p$ since $|A|+|B|-2<p$. Problem~\ref{pb:nullstellensatz}(b)
+with $t_1=|A|-1<|A|$ and $t_2=|B|-1<|B|$ gives $(a,b)\in A\times B$ with $f(a,b)\ne0$, that is $a+b\notin C$: a contradiction.
+
+(b) Induction on $k$: $|A_1+\dots+A_k|\ge\min\bigl(p,|A_1+\dots+A_{k-1}|+|A_k|-1\bigr)$, and if the first set already has $p$
+elements so does the sum.
+
+(c) Let $A_i=\{0,a_i\}$, of size $2$. By (b), the set of subset sums $A_1+\dots+A_{p-1}$ has at least
+$\min(p,2(p-1)-(p-1)+1)=p$ elements. With $p-2$ copies of $1$, the residue $p-1$ is not a subset sum, so $p-1$ terms are needed.
+
+\tools Tome~1, Chapter~3 (binomial coefficients modulo $p$); Problem~\ref{pb:nullstellensatz}.
+\leads Cauchy proved (a) in 1813 to fill a gap in Lagrange's four squares theorem, and Davenport rediscovered it in 1935. Vosper
+(1956) showed that equality with $|A|,|B|\ge2$ and $|A+B|\le p-2$ forces arithmetic progressions with the same difference. Over
+$\Z$ and other groups the subject became additive combinatorics.
+\end{solution}
+
+\begin{solution}{pb:erdosheil}
+\idea Multiply the Cauchy--Davenport polynomial by $x-y$ to kill the diagonal $a=a'$, which is exactly what ``distinct'' removes.
+The price is that the key coefficient is now a difference of two binomial coefficients, which is a Catalan number.
+
+\writeup (a) Let $k=|A|$. For $k\le2$ the bound is trivial. If $2k-3\ge p$, then $p$ is odd (for $p=2$, $k\le2$) and $A$ contains a
+subset $A'$ with $|A'|=\frac{p+3}2$, so it suffices to prove $|A'\dotplus A'|\ge p$; so we may assume $2k-3\le p$, hence
+$2k-4<p$. Suppose $|A\dotplus A|\le2k-4$ and take $C\supset A\dotplus A$ with $|C|=2k-4$. Let
+\[
+f(x,y)=(x-y)\prod_{c\in C}(x+y-c).
+\]
+It vanishes on $A\times A$: on the diagonal because of $x-y$, off it because $x+y\in C$. Its degree is $2k-3=(k-1)+(k-2)$, and the
+coefficient of $x^{k-1}y^{k-2}$ in $(x-y)(x+y)^{2k-4}$ is
+\[
+\binom{2k-4}{k-2}-\binom{2k-4}{k-1}=\binom{2k-4}{k-2}\Bigl(1-\frac{k-2}{k-1}\Bigr)=\frac1{k-1}\binom{2k-4}{k-2},
+\]
+the Catalan number $C_{k-2}$. Since $2k-4<p$, $p\nmid\binom{2k-4}{k-2}$, so $p\nmid C_{k-2}$. Problem~\ref{pb:nullstellensatz}(b) with
+$S_1=S_2=A$, $t_1=k-1$, $t_2=k-2$, gives a point of $A\times A$ where $f\ne0$: a contradiction.
+
+(b) For $A=\{0,1,\dots,k-1\}$ the sums of distinct elements are $1,2,\dots,2k-3$, which are $2k-3$ distinct residues when
+$2k-3\le p$, that is $k\le\frac{p+3}2$.
+
+\tools Problems~\ref{pb:nullstellensatz} and~\ref{pb:cauchydav}; Tome~0, Chapter~1 (binomial and Catalan numbers).
+\leads Erdős and Heilbronn conjectured (a) in the 1960s; Dias da Silva and Hamidoune proved it in 1994 with exterior algebra, and
+the polynomial proof above appeared a year later. The same polynomial with $\prod_{i<j}(x_i-x_j)$ bounds sums of $h$ distinct
+elements: $|h^\wedge A|\ge\min(p,h|A|-h^2+1)$. The notebook checks (a) for all subsets when $p\le11$.
+\end{solution}
+
+\begin{solution}{pb:egz}
+\idea Chevalley--Warning turns ``an equation of low degree has a non-trivial zero'' into a congruence. The polynomial $x^{p-1}$
+is the indicator of $x\ne0$, so the two equations say ``choose $p$ indices whose $a_i$ add to $0$''.
+
+\writeup (a) For $y\in\mathbb F_p$, $1-y^{p-1}$ is $1$ if $y=0$ and $0$ otherwise (Fermat). So the number $Z$ of common zeros
+satisfies, in $\mathbb F_p$,
+\[
+Z\equiv\sum_{x\in\mathbb F_p^m}\prod_{j=1}^r\bigl(1-f_j(x)^{p-1}\bigr).
+\]
+The product is a polynomial of degree at most $(p-1)\sum_j\deg f_j<(p-1)m$, so each of its monomials $x_1^{e_1}\cdots x_m^{e_m}$ has
+some $e_i<p-1$. Its sum over $\mathbb F_p^m$ is $\prod_i\sum_{x_i}x_i^{e_i}$, and $\sum_{x\in\mathbb F_p}x^e=0$ for $0\le e<p-1$
+(Tome~2, Exercise~9.6, with $0^0=1$). So $Z\equiv0\pmod p$.
+
+(b) Let $a_1,\dots,a_{2p-1}$ be the integers, read in $\mathbb F_p$. The system $f_1=f_2=0$ in $m=2p-1$ variables has degrees
+$2(p-1)<m$, and $x=0$ is a common zero; by (a) there is another, $x\ne0$. Let $I=\{i:x_i\ne0\}$. Then $x_i^{p-1}=1$ for $i\in I$ and
+$0$ otherwise, so $f_2(x)=|I|\equiv0$ and $f_1(x)=\sum_{i\in I}a_i\equiv0$. Since $0<|I|\le2p-1$, $|I|=p$.
+
+(c) Take $2mn-1$ integers. As long as at least $2n-1$ remain, the theorem for $n$ lets us remove $n$ of them with sum divisible by
+$n$. After $j$ removals $2mn-1-jn$ remain, which is at least $2n-1$ for $j\le2m-2$; so we get $2m-1$ disjoint groups, with sums
+$nb_1,\dots,nb_{2m-1}$. The theorem for $m$ gives $m$ of the $b_i$ with sum divisible by $m$, and the union of these $m$ groups is a
+set of $mn$ integers with sum divisible by $mn$. Since the theorem holds for $1$ and for primes, it holds for all $n$.
+
+(d) Take $n-1$ zeros and $n-1$ ones: $n$ of them contain between $1$ and $n-1$ ones, so their sum is not divisible by $n$.
+
+\tools Tome~2, Exercises~9.6 and~9.8 (power sums, Chevalley--Warning for one polynomial); Tome~1, Chapter~3 (Fermat).
+\leads The original 1961 proof used Cauchy--Davenport instead. In the plane, Reiher proved in 2007 Kemnitz's conjecture: among
+any $4n-3$ lattice points there are $n$ whose centroid is a lattice point.
+\end{solution}
+
+\begin{solution}{pb:hyperplanes}
+\idea If fewer than $n(q-1)$ hyperplanes did the job, the product of their equations would agree, on all of $\mathbb F_q^n$, with
+a polynomial whose leading monomial is $x_1^{q-1}\cdots x_n^{q-1}$, and the Nullstellensatz forbids this.
+
+\writeup (a) The $n(q-1)$ hyperplanes $x_j=s$, $1\le j\le n$, $s\in\mathbb F_q^*$, cover every $x\ne0$ (some $x_j\ne0$) and miss $0$.
+Suppose $m<n(q-1)$ hyperplanes $H_i=\{x:a_i\cdot x=b_i\}$ cover $\mathbb F_q^n\setminus\{0\}$ and miss $0$; then $b_i\ne0$ and we
+may take $b_i=1$. Let
+\[
+f(x)=\prod_{i=1}^m(1-a_i\cdot x)-c\prod_{j=1}^n\prod_{s\in\mathbb F_q^*}(x_j-s),
+\]
+with $c$ chosen so that $f(0)=0$ (the second product is non-zero at $0$). For $x\ne0$, $x$ lies on some $H_i$, so the first product
+vanishes, and some $x_j\in\mathbb F_q^*$, so the second does too. Thus $f$ vanishes on $\mathbb F_q^n$. But $\deg f=n(q-1)$, since
+$m<n(q-1)$, and the coefficient of $x_1^{q-1}\cdots x_n^{q-1}$ is $-c\ne0$. Problem~\ref{pb:nullstellensatz}(b) with $S_j=\mathbb F_q$ and
+$t_j=q-1$ gives a point where $f\ne0$: a contradiction.
+
+(b) Let $B$ be a blocking set; translating, we may assume $0\in B$. Every hyperplane $\{x:a\cdot x=1\}$, $a\ne0$, misses $0$, so it
+contains some $y\in B\setminus\{0\}$. In other words the sets $\{a:a\cdot y=1\}$, for $y\in B\setminus\{0\}$, are hyperplanes (in the
+space of the $a$'s) missing $0$ and covering every $a\ne0$. By (a), $|B|-1\ge n(q-1)$. The union of the $n$ coordinate axes, with
+$1+n(q-1)$ points, is blocking: a hyperplane $a\cdot x=b$ with $b\ne0$ meets the axis $j$ for any $a_j\ne0$, and one with $b=0$
+contains $0$.
+
+\tools Problem~\ref{pb:nullstellensatz}; Tome~0, Chapter~7 (hyperplanes).
+\leads Over $\R$ the cube $\{0,1\}^n$ minus a point needs $n$ hyperplanes, and the same proof works. Projective blocking sets are
+different: in a projective plane of order $q$ a line has $q+1$ points, and the real question is how small a blocking set
+containing no line can be (Blokhuis 1994: at least $\frac32(q+1)$ for $q$ prime).
+\end{solution}
+
+\begin{solution}{pb:kakeya}
+\idea Linear algebra gives a low-degree polynomial vanishing on a small $K$. On each line of $K$ it vanishes at $q$ points, more
+than its degree, so it vanishes identically there, and its top coefficient along the line, which is the top homogeneous part
+evaluated at the direction, is $0$. A polynomial of low degree that vanishes at every direction is $0$.
+
+\writeup (a) The polynomials of degree at most $q-1$ in $n$ variables form a space of dimension $\binom{q-1+n}n$, the number of
+monomials. If $|K|<\binom{q+n-1}n$, the linear map $f\mapsto(f(x))_{x\in K}$ has a non-trivial kernel: some $f\ne0$ of degree
+$d\le q-1$ vanishes on $K$. Since $K\ne\emptyset$, $f$ is not a non-zero constant, so $d\ge1$. Let $f_d\ne0$ be its homogeneous part of
+degree $d$. For $v\ne0$, take $a$ with $a+tv\in K$ for all $t$. Then $t\mapsto f(a+tv)$ is a polynomial in $t$ of degree at most $d<q$
+with $q$ roots, so it is $0$, and its coefficient of $t^d$, which is $f_d(v)$, is $0$. Also $f_d(0)=0$. So $f_d$ vanishes on
+$\mathbb F_q^n$ while $\deg_{x_i}f_d\le q-1<q$; by Problem~\ref{pb:nullstellensatz}(a), $f_d=0$. Contradiction. Finally
+$\binom{q+n-1}n=\frac{q(q+1)\cdots(q+n-1)}{n!}\ge\frac{q^n}{n!}$.
+
+(b) For $m\in\mathbb F_q$ let $L_m$ be the line $y=mx+m^2$, of slope $m$, and let $K$ be the union of the $L_m$ and the vertical line
+$x=0$. A point $(x,y)$ lies on some $L_m$ when $m^2+mx-y=0$ has a root, that is when $x^2+4y$ is a square (zero included). For fixed
+$x$, $y\mapsto x^2+4y$ is a bijection of $\mathbb F_q$, and $\frac{q+1}2$ elements are squares; so $\bigcup L_m$ has $\frac{q(q+1)}2$
+points. On $x=0$ these are the points $(0,y)$ with $y$ a square, $\frac{q+1}2$ of them, so the vertical line adds $\frac{q-1}2$.
+
+\tools Tome~0, Chapter~7 (dimension counting); Problem~\ref{pb:nullstellensatz}(a).
+\leads Dvir's proof (2008) took one page and settled a problem that Wolff had posed in 1999 as a model for the real Kakeya
+conjecture, still open in dimensions $\ge4$ (Wang and Zahl announced dimension $3$ in 2025). For $n=2$ and $q$ odd the
+construction (b) is optimal (Blokhuis and Mazzocca, 2008); for $q=3$ the notebook confirms by brute force that the minimum is $7$,
+one more than Dvir's bound $6$.
+\end{solution}
+
+\begin{solution}{pb:moore}
+\idea The Frobenius $x\mapsto x^q$ is $\mathbb F_q$-linear. So the Moore matrix has dependent rows whenever the $x_i$ are
+dependent over $\mathbb F_q$, and this gives all the linear factors of the determinant.
+
+\writeup (a) Induction on $n$; for $n=1$, $\Delta=x_1$. Expanding along the last row, $\Delta(x_1,\dots,x_n)$ is a polynomial in
+$x_n$ of degree $q^{n-1}$ with leading coefficient $\Delta_{n-1}=\Delta(x_1,\dots,x_{n-1})$. For $c\in\mathbb F_q^{n-1}$, substitute
+$x_n=-\sum c_jx_j$: since $(\sum c_jx_j)^{q^k}=\sum c_jx_j^{q^k}$ (Frobenius is additive and fixes $\mathbb F_q$), the last row becomes
+$-\sum c_j(\text{row }j)$, and the determinant vanishes. So each $x_n+\sum c_jx_j$ divides $\Delta$ in
+$\mathbb F_q(x_1,\dots,x_{n-1})[x_n]$. These $q^{n-1}$ linear factors are pairwise distinct, so their product, of degree $q^{n-1}$ in
+$x_n$, divides $\Delta$, and comparing leading coefficients
+\[
+\Delta(x_1,\dots,x_n)=\Delta_{n-1}\prod_{c\in\mathbb F_q^{n-1}}\Bigl(x_n+\sum_jc_jx_j\Bigr).
+\]
+The induction hypothesis on $\Delta_{n-1}$ finishes the proof (the identity holds in $\mathbb F_q[x_1,\dots,x_n]$ since both sides lie
+there).
+
+(b) Evaluate (a) at $\alpha$: $\Delta(\alpha)=0$ if and only if $\alpha_i+\sum_{j<i}c_j\alpha_j=0$ for some $i$ and some
+$c\in\mathbb F_q^{i-1}$, that is, if and only if the $\alpha_i$ are linearly dependent over $\mathbb F_q$.
+
+(c) Let $\alpha_1,\dots,\alpha_n$ be a basis of $V$. By (a),
+\[
+\Delta(\alpha_1,\dots,\alpha_n,X)=\Delta(\alpha)\prod_{v\in V}(X+v),
+\]
+and $\prod_{v\in V}(X+v)=\prod_{v\in V}(X-v)$ since $V=-V$. Expanding the determinant along its last row, $(X,X^q,\dots,X^{q^n})$,
+gives a combination of $X,X^q,\dots,X^{q^n}$. Divide by $\Delta(\alpha)\ne0$. Each $X^{q^k}$ is additive, so $P_V$ is too.
+
+\tools Tome~2, Chapter~9 (Frobenius); Tome~0, Chapter~7 (determinants).
+\leads Moore's determinant is the $q$-analogue of the Vandermonde determinant. Linearised polynomials built this way give the
+Gabidulin codes used in network coding, and Dickson's invariants of $GL_n(\mathbb F_q)$, the coefficients of
+$\prod_{v\in\mathbb F_q^n}(X-v)$ written in the $x_i$.
+\end{solution}
+
+\begin{solution}{pb:capset}
+\idea A diagonal tensor with $|A|$ non-zero entries has slice rank $|A|$, just as a diagonal matrix has rank $|A|$. A cap makes
+$[x+y+z=0]$ diagonal on $A^3$. But the same function is a polynomial of degree $2n$, and in every monomial one variable has degree
+at most $\frac{2n}3$: that writes it with few slices.
+
+\writeup (a) Let $W$ have dimension $m$, and let $h\in W$ have the largest support $S$. If $|S|<m$, the subspace of $W$ of vectors
+vanishing on $S$ is cut out by $|S|$ linear conditions, so it has dimension at least $m-|S|>0$ and contains some $w\ne0$. Since $w$
+vanishes on $S$ and $h$ vanishes outside $S$, the support of $h+w$ is $S\cup\operatorname{supp}w\supsetneq S$, a contradiction.
+
+(b) $T$ is the sum of the $|A|$ slices $c_a[x=a]\cdot[y=z=a]$, so its slice rank is at most $|A|$. Suppose
+\[
+T=\sum_{i=1}^{r_1}f_i(x)g_i(y,z)+\sum_{i=1}^{r_2}f'_i(y)g'_i(x,z)+\sum_{i=1}^{r_3}f''_i(z)g''_i(x,y).
+\]
+The functions $h:A\to F$ with $\sum_zf''_i(z)h(z)=0$ for all $i$ form a subspace of dimension at least $|A|-r_3$; by (a) one of
+them has at least $|A|-r_3$ non-zero values. Multiply by $h(z)$ and sum over $z$. The left side becomes the diagonal matrix
+$(x,y)\mapsto c_xh(x)[x=y]$, of rank at least $|A|-r_3$. The third sum disappears, and the first two become
+$\sum_if_i(x)\tilde g_i(y)+\sum_i\tilde g'_i(x)f'_i(y)$, of rank at most $r_1+r_2$. So $r_1+r_2+r_3\ge|A|$.
+
+(c) If $x+y+z=0$ and $x=y$, then $z=-2x=x$. If $x,y,z$ are pairwise distinct the cap condition forbids $x+y+z=0$. And if exactly
+two coincide, say $x=y\ne z$, the first remark shows $x+y+z\ne0$. So on $A^3$, $[x+y+z=0]=[x=y=z]$, which is the $T$ of (b) with
+$c_a=1$ (here $F=\mathbb F_3$).
+
+(d) For $t\in\mathbb F_3$, $1-t^2$ is $1$ if $t=0$ and $0$ otherwise. Expanding the product gives a combination of monomials
+$x^\alpha y^\beta z^\gamma$ with $\alpha,\beta,\gamma\in\{0,1,2\}^n$ and $|\alpha|+|\beta|+|\gamma|\le2n$, where
+$|\alpha|=\sum\alpha_i$. In each monomial, one of $|\alpha|,|\beta|,|\gamma|$ is at most $\frac{2n}3$. Gather the monomials with
+$|\alpha|\le\frac{2n}3$ by the value of $\alpha$: they form $\sum_\alpha x^\alpha G_\alpha(y,z)$, at most $M_n$ slices. Then those
+remaining with $|\beta|\le\frac{2n}3$, then the rest, with $|\gamma|\le\frac{2n}3$. So the slice rank is at most $3M_n$, and by (c),
+$|A|\le3M_n$.
+
+(e) For $0<t\le1$, each $\alpha$ with $|\alpha|\le\frac{2n}3$ satisfies $t^{|\alpha|-2n/3}\ge1$, so
+\[
+M_n\le\sum_{\alpha\in\{0,1,2\}^n}t^{|\alpha|-2n/3}=\Bigl(\frac{1+t+t^2}{t^{2/3}}\Bigr)^n.
+\]
+The logarithmic derivative of $\frac{1+t+t^2}{t^{2/3}}$ vanishes when $\frac{1+2t}{1+t+t^2}=\frac2{3t}$, that is $4t^2+t-2=0$,
+$t=\frac{\sqrt{33}-1}8=0.5931$, where the value is $\theta=2.7551$. So $|A|\le3\theta^n<3\cdot2.756^n$.
+
+\tools Tome~0, Chapter~7 (rank, dimension); Tome~3, Chapter~4 (the exponential moment trick of Chernoff in (e)).
+\leads The bound $\theta$ is optimal for this method, and the true growth rate is unknown: the best constructions give caps of size
+about $2.22^n$ (Edel 2004; in 2023 a computer search guided by a language model, FunSearch, found a cap of $512$ points in $\mathbb F_3^8$).
+The known maximum caps for $n=1,\dots,6$ are $2,4,9,20,45,112$, against $3M_n=3,9,30,45,153,504$. The slice rank method has since
+proved the sunflower-free conjecture of Erdős and Szemerédi and bounded many other configurations.
+\end{solution}
+
+\begin{solution}{pb:paley}
+\idea Adjacency is a value of the quadratic character, so every count in the Paley graph is a quadratic character sum, and those
+are all $O(\sqrt p)$ by Problem~\ref{pb:conics}.
+
+\writeup (a) The number of common neighbours of $0$ and $d\ne0$ is
+\[
+\sum_{z\ne0,d}\frac{1+\chi(z)}2\cdot\frac{1+\chi(z-d)}2=\frac14\Bigl[(p-2)+\sum_{z\ne0,d}\chi(z)+\sum_{z\ne0,d}\chi(z-d)+\sum_z\chi(z^2-dz)\Bigr].
+\]
+The two middle sums are $-\chi(d)$ and $-\chi(-d)=-\chi(d)$, and the last is $-1$ by Problem~\ref{pb:conics}(a) (discriminant $d^2\ne0$).
+So it is $\frac{p-3-2\chi(d)}4$: $\frac{p-5}4$ if $d$ is a square (adjacent), $\frac{p-1}4$ otherwise. By translation the same holds for
+any two vertices. Each of the $\frac{p(p-1)}4$ edges lies in $\frac{p-5}4$ triangles and each triangle has $3$ edges, so there are
+$\frac{p(p-1)(p-5)}{48}$ triangles.
+
+(b) For $s\ne t$, $[s\sim t]=\frac{1+\chi(s-t)}2$, and $\chi(0)=0$, so
+$e(S,T)=\frac{|S||T|-|S\cap T|}2+\frac12\sum_{s\in S,t\in T}\chi(s-t)$. By Cauchy--Schwarz, extending the sum over $s$ to all of
+$\mathbb F_p$,
+\[
+\Bigl|\sum_{s\in S}\sum_{t\in T}\chi(s-t)\Bigr|^2\le|S|\sum_{s\in\mathbb F_p}\Bigl|\sum_{t\in T}\chi(s-t)\Bigr|^2
+=|S|\sum_{t,t'\in T}\sum_s\chi\bigl((s-t)(s-t')\bigr).
+\]
+The inner sum is $p-1$ if $t=t'$ and $-1$ otherwise (Problem~\ref{pb:conics}(a) again), so the total is
+$|S|\bigl(|T|(p-1)-|T|(|T|-1)\bigr)=|S||T|(p-|T|)\le p|S||T|$.
+
+(c) Let $K$ be a clique and $n$ a non-square. If $c+nc'=d+nd'$ with $c,c',d,d'\in K$ and $c\ne d$, then $c'\ne d'$, and
+$c-d=n(d'-c')$ is a square times a non-square: a non-square, contradicting $c\sim d$. So $c=d$, then $c'=d'$: the map
+$(c,c')\mapsto c+nc'$ is injective on $K\times K$, and $|K|^2\le p$. The map $x\mapsto nx$ is an isomorphism from $P_p$ to its
+complement, so independent sets are bounded in the same way.
+
+(d) $\sqrt{17}<5$, so by (c) $P_{17}$ has no clique and no independent set of size $5$. A direct check (done in the notebook)
+shows that the largest ones have size $3$. A colouring of the edges of $K_{17}$ by ``square'' and
+``non-square'' has no monochromatic $K_4$, so $R(4,4)>17$.
+
+\tools Problem~\ref{pb:conics}; Tome~3, Chapter~2 (Cauchy--Schwarz); Tome~1, Chapter~6.
+\leads Greenwood and Gleason (1955) proved $R(4,4)=18$, with $P_{17}$ as the extremal graph. The discrepancy bound (b) is the
+definition of a \emph{quasirandom} graph in the sense of Chung, Graham and Wilson (1989): such graphs have about as many copies of
+every small subgraph as a random graph. The clique bound $\sqrt p$ is far from the truth, which is believed to be $O(\log^2p)$,
+the size of the cliques of a random graph being about $2\log_2p$; improving $\sqrt p$ even to $\sqrt{p/2}$ came only in 2021
+(Hanson and Petridis).
+\end{solution}
+
+\begin{solution}{pb:mseq}
+\idea $s_k$ is a fixed linear form evaluated at $\alpha^k$, and $\alpha^k$ runs over all of $\mathbb F_{2^n}^*$. Every statistic
+of the sequence becomes a statistic of a linear form on the whole field, which is perfectly balanced.
+
+\writeup (a) $\operatorname{Tr}$ is $\mathbb F_2$-linear (Frobenius is additive). From $f(\alpha)=0$, $\alpha^{k+n}=\sum_ic_i\alpha^{k+i}$,
+and applying $\operatorname{Tr}$ gives the recurrence (signs do not matter in characteristic $2$).
+
+(b) The trace is a polynomial of degree $2^{n-1}$, so it is not zero on all $2^n$ elements; it is a non-zero linear form onto
+$\mathbb F_2$. If $\operatorname{Tr}(\beta\alpha^i)=0$ for $0\le i<n$, then $\operatorname{Tr}(\beta\gamma)=0$ for all $\gamma$, since the
+$\alpha^i$ span $\mathbb F_{2^n}$ (it has degree $n$); if $\beta\ne0$, $\beta\gamma$ runs over the whole field, which is impossible.
+So the linear map is injective, hence bijective. The window at $k$ is the image of $\beta=\alpha^k$. As $k$ runs over
+$0,\dots,2^n-2$, $\alpha^k$ runs over the non-zero elements once each, so the windows are the non-zero $n$-bit blocks, once each.
+Distinct windows mean the period is exactly $2^n-1$ (a window determines all later terms by (a), and $\alpha^{2^n-1}=1$). A sequence
+satisfying (a) is determined by its first window; if that window is non-zero it equals the window of $(s_k)$ at some $k_0$, and then
+the sequence is $(s_{k+k_0})$.
+
+(c) The ones in a period are the non-zero $\beta$ with $\operatorname{Tr}\beta=1$; the kernel of $\operatorname{Tr}$ has $2^{n-1}$
+elements, so $2^{n-1}$ have trace $1$, and $2^{n-1}-1$ non-zero ones have trace $0$. For the correlation,
+$s_k+s_{k+t}=\operatorname{Tr}(\alpha^k(1+\alpha^t))$ with $1+\alpha^t\ne0$; as $k$ varies, $\alpha^k(1+\alpha^t)$ runs over the
+non-zero elements, and
+\[
+\sum_{\beta\ne0}(-1)^{\operatorname{Tr}\beta}=\sum_\beta(-1)^{\operatorname{Tr}\beta}-1=0-1=-1.
+\]
+
+\tools Tome~2, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Tome~0, Chapter~7.
+\leads These are Golomb's three randomness postulates (1967): balance, runs, two-valued autocorrelation. For $x^4+x+1$ the period is
+$000100110101111$. The sequence is useless for cryptography, since $2n$ bits reveal the recurrence (Berlekamp--Massey), but its
+flat correlation is what GPS satellites use: each one transmits a Gold code, the sum of two $m$-sequences of degree $10$.
+\end{solution}
+
+\begin{solution}{pb:singer}
+\idea Multiplication by $g$ permutes the points of the projective plane $\mathbb P(\mathbb F_{q^3})$ cyclically. Two lines meet in
+one point, and a line is never mapped to itself by a non-trivial power of $g$: that is the whole proof.
+
+\writeup (a) $g^i$ and $g^{i+N}$ differ by the factor $g^N$, which has order $q-1$ and so generates $\mathbb F_q^*$; hence
+$g^i\in U\iff g^{i+N}\in U$ and $D$ is well defined. The map $i\mapsto\mathbb F_qg^i$ is a bijection from $\Z/N\Z$ to the
+$\frac{q^3-1}{q-1}=N$ points (lines through $0$), and $U$ contains $\frac{q^2-1}{q-1}=q+1$ of them: $|D|=q+1$.
+
+Now fix $d\not\equiv0\pmod N$. The pairs $(i,j)\in D^2$ with $i-j=d$ correspond to the $j$ with $g^j\in U$ and $g^{j+d}\in U$, that is
+to the points of $U\cap g^{-d}U$. Let $c=g^d$; then $c\notin\mathbb F_q$, because $\mathbb F_q^*=\langle g^N\rangle$. So
+$\mathbb F_q(c)$ is a subfield of $\mathbb F_{q^3}$ strictly bigger than $\mathbb F_q$, and since its degree divides $3$ it is
+$\mathbb F_{q^3}$. If $cU=U$, then $U$ would be stable under $\mathbb F_q[c]=\mathbb F_{q^3}$, a sub-$\mathbb F_{q^3}$-space of dimension
+$2$ over $\mathbb F_q$, impossible. So $g^{-d}U$ and $U$ are distinct $2$-dimensional subspaces of a $3$-dimensional space; their
+intersection has dimension $2+2-3=1$, a single point. So $d$ is a difference in exactly one way.
+
+(b) Two points $x\ne y$ lie on $D+t$ when $x-t,y-t\in D$; their difference $x-y$ is a difference of $D$ in exactly one way, which
+determines $x-t$, hence $t$. Two translates $D+t$ and $D+t'$, $t\ne t'$, meet at the points $x$ with $x-t$ and $x-t'$ in $D$; the
+difference $t'-t$ is represented once, so there is one such $x$. (The translates are exactly the images $g^{-t}U$, the lines of the
+plane.)
+
+(c) Modulo $7$, the differences of $\{0,1,3\}$ are $\pm1,\pm2,\pm3$. Modulo $13$, those of $\{0,1,3,9\}$ are
+\[
+\pm1,\ \pm3,\ \pm9,\ \pm2,\ \pm8,\ \pm6,
+\]
+which are $\pm1,\dots,\pm6$ since $9\equiv-4$ and $8\equiv-5$. Modulo $21$, the differences of $\{0,1,4,14,16\}$ are
+\[
+\pm1,\ \pm4,\ \pm14,\ \pm16,\ \pm3,\ \pm13,\ \pm15,\ \pm10,\ \pm12,\ \pm2,
+\]
+and with $14\equiv-7$, $16\equiv-5$, $13\equiv-8$, $15\equiv-6$, $12\equiv-9$ these are $\pm1,\dots,\pm10$.
+
+\tools Tome~2, Chapter~9 (subfields of $\mathbb F_{q^3}$, cyclicity of $\mathbb F_q^*$); Tome~0, Chapter~7 (dimension of an
+intersection).
+\leads Every known projective plane of order $n$ has $n$ a prime power, and every known cyclic one comes from Singer's construction;
+the prime power conjecture for cyclic planes has been checked up to orders in the billions. The notebook rebuilds Singer sets for
+$q=2,3,5,7$ from an explicit $\mathbb F_{q^3}$.
+\end{solution}
+
+\begin{solution}{pb:sidon}
+\idea A Sidon set is a set with distinct differences. There are only $n-1$ possible differences, which gives $\sqrt{2n}$; counting
+only short differences, in windows, saves the factor $\sqrt2$. Singer sets reach the bound.
+
+\writeup (a) $a+b=a'+b'$ is the same as $a-a'=b'-b$, so in a Sidon set the $\binom k2$ positive differences are distinct, and they
+lie in $\{1,\dots,n-1\}$. So $k(k-1)\le2(n-1)$ and $k<\sqrt{2n}+1$.
+
+(b) Let $a_k=2pk+r_k$ with $r_k=k^2\bmod p\in[0,p)$. Then $a_k+a_l=2p(k+l)+(r_k+r_l)$ with $0\le r_k+r_l<2p$, so $a_k+a_l=a_{k'}+a_{l'}$
+forces $k+l=k'+l'$ and $r_k+r_l=r_{k'}+r_{l'}$, hence $k^2+l^2\equiv k'^2+l'^2\pmod p$. With $s=k+l$, $2kl=s^2-(k^2+l^2)$, so
+$kl\equiv k'l'$, and $\{k,l\}$, $\{k',l'\}$ are both the roots of $X^2-sX+kl$ in $\mathbb F_p$; as $0\le k,l,k',l'<p$, they are the
+same pair. The largest element is below $2p(p-1)+p<2p^2$.
+
+(c) Let $A\subset\{1,\dots,n\}$ be Sidon, $|A|=k$, and $1\le m\le n$. For $j=-m+1,\dots,n-1$ (that is $n+m-1$ values) let
+$I_j=\{j+1,\dots,j+m\}$ and $A_j=|A\cap I_j|$. Each $a\in A$ lies in exactly $m$ windows, so $\sum_jA_j=km$, and by Cauchy--Schwarz
+\[
+\sum_j\binom{A_j}2\ge\frac12\Bigl(\frac{(km)^2}{n+m-1}-km\Bigr).
+\]
+On the other hand $\sum_j\binom{A_j}2$ counts pairs $a<b$ of $A$ with a common window, with multiplicity: if $b-a=d<m$ they share $m-d$
+windows. Each $d$ is the difference of at most one pair, so $\sum_j\binom{A_j}2\le\sum_{d=1}^{m-1}(m-d)=\frac{m(m-1)}2$. Combining,
+$\frac{k^2m}{n+m}-k\le m-1$, that is
+\[
+k^2\le\frac{(n+m)(m+k-1)}m=n\Bigl(1+\frac mn\Bigr)\Bigl(1+\frac{k-1}m\Bigr).
+\]
+Take $m=\lceil n^{3/4}\rceil$. By (a), $\frac{k-1}m\le\sqrt2\,n^{-1/4}$, so $k^2\le n\bigl(1+O(n^{-1/4})\bigr)$ and
+$k\le\sqrt n+O(n^{1/4})$.
+
+(d) Let $q$ be the largest prime with $q^2+q+1\le n$. The Singer set of Problem~\ref{pb:singer}, read as integers in $[0,N)$ and
+shifted by $1$, is a Sidon set in $\{1,\dots,n\}$ with $q+1$ elements: distinct differences modulo $N$ are distinct differences
+in $\Z$. By the prime number theorem (Tome~5, Chapter~5), consecutive primes satisfy $p_{j+1}/p_j\to1$, so $q\sim\sqrt n$. With
+(c), $F(n)\sim\sqrt n$.
+
+\tools Tome~3, Chapter~2 (Cauchy--Schwarz); Problem~\ref{pb:singer}; Tome~5 (the prime number theorem).
+\leads Erdős offered \$500 for a proof or disproof of $F(n)=\sqrt n+O(1)$. The best upper bound is
+$\sqrt n+0.998n^{1/4}$ for large $n$ (Balogh, Füredi and Roy, 2023), improving the constant $1$ of Lindström (1969). Sidon sets are
+also the rulers with all distances distinct, \emph{Golomb rulers}, used to place radio antennas.
+\end{solution}
+
+\begin{solution}{pb:randpoly}
+\idea Polynomials over $\mathbb F_q$ factor uniquely, so their counting functions satisfy Euler products, exactly like the
+integers, but with power series in $t=q^{-s}$ that can be summed in closed form.
+
+\writeup (a) Every monic $f$ is uniquely $g^2h$ with $g$, $h$ monic and $h$ squarefree (group the irreducible factors by parity of
+their multiplicity). With $s_n$ the number of squarefree monic polynomials of degree $n$ and $S(t)=\sum s_nt^n$, this says
+$\frac1{1-qt}=S(t)\cdot\frac1{1-qt^2}$, so $S(t)=\frac{1-qt^2}{1-qt}$ and $s_n=q^n-q^{n-1}$ for $n\ge2$.
+
+(b) By Tome~2, Theorem~9.10, $nM(n,q)=\sum_{d\mid n}\mu(d)q^{n/d}$. The term $d=1$ is $q^n$, and the others have $n/d\le n/2$, so
+$|nM(n,q)-q^n|\le\sum_{e\le n/2}q^e\le\frac q{q-1}q^{n/2}\le2q^{n/2}$. Divide by $nq^n$.
+
+(c) Choosing $f$ of type $\lambda$ means choosing, for each $j$, a multiset of $m_j$ monic irreducibles of degree $j$: there are
+$\prod_j\binom{M(j,q)+m_j-1}{m_j}$ such $f$. As $q\to\infty$, $M(j,q)\sim\frac{q^j}j$ by (b), so
+$\binom{M+m-1}m\sim\frac{M^m}{m!}\sim\frac{q^{jm}}{j^mm!}$, and the product is $\sim q^{\sum jm_j}/\prod_jj^{m_j}m_j!=q^n/z_\lambda$. And
+$1/z_\lambda$ is the probability that a uniform permutation of $\mathfrak S_n$ has cycle type $\lambda$, because the class of type
+$\lambda$ has $n!/z_\lambda$ elements (Tome~2, Chapter~4).
+
+\tools Tome~2, Chapter~9 (counting irreducibles); Tome~4, Chapter~2 (generating functions); Tome~2, Chapter~4 (conjugacy classes of
+$\mathfrak S_n$).
+\leads Compare with the integers: squarefree density $1/\zeta(2)=6/\pi^2$, and here $1/Z(q^{-2})=1-\frac1q$ where
+$Z(t)=\frac1{1-qt}$ plays the role of $\zeta$. The error $q^{-n/2}$ in (b) is the Riemann hypothesis for $\mathbb F_q[t]$, which is
+easy; for the integers it is the open problem. The analogy ``factor degrees = cycle lengths'' is the Frobenius acting on the roots,
+and Chebotarev's theorem makes it precise.
+\end{solution}
+
+\begin{solution}{pb:noroots}
+\idea Evaluation at the $q$ points of $\mathbb F_q$ is a linear map, onto as soon as the degree allows interpolation. The roots then
+behave like $q$ independent coins of bias $\frac1q$, exactly when $n\ge q$, and like the first terms of inclusion--exclusion
+otherwise.
+
+\writeup Write $f=x^n+g$ with $g$ uniform among polynomials of degree $<n$. For a set $E\subset\mathbb F_q$ with $|E|\le n$, the linear map
+$g\mapsto(g(a))_{a\in E}$ is onto (Lagrange interpolation with polynomials of degree $<|E|$), so it takes every value equally often,
+and so does $f\mapsto(f(a))_{a\in E}$, which is a translate of it.
+
+(a) If $n\ge q$, take $E=\mathbb F_q$: $(f(a))_a$ is uniform on $\mathbb F_q^q$, the coordinates are independent and uniform, the events
+$f(a)=0$ are independent with probability $\frac1q$, and $R\sim\mathrm{Bin}(q,\frac1q)$. Hence $P(R=0)=(1-\frac1q)^q$.
+
+(b) By inclusion--exclusion,
+\[
+P(R=0)=\sum_{E\subset\mathbb F_q}(-1)^{|E|}P(f=0\text{ on }E).
+\]
+For $|E|\le n$ this probability is $q^{-|E|}$ by the
+remark above; for $|E|>n$ it is $0$, a monic polynomial of degree $n$ having at most $n$ roots. So
+$P(R=0)=\sum_{k\le n}(-1)^k\binom qkq^{-k}$, and since
+\[
+\binom qkq^{-k}=\frac1{k!}\prod_{i<k}\Bigl(1-\frac iq\Bigr)\longrightarrow\frac1{k!},
+\]
+as $q\to\infty$ this tends to $\sum_{k\le n}\frac{(-1)^k}{k!}$, the derangement probability: a random polynomial has no root as often as a random
+permutation has no fixed point, in agreement with Problem~\ref{pb:randpoly}(c), roots being factors of degree $1$.
+
+\tools Tome~0, Chapter~3 (Lagrange interpolation); Tome~3, Chapter~1 (inclusion--exclusion, binomial law); Chapter~4 of this book
+(derangements).
+\leads For $n\ge q$ the answer does not depend on $n$ at all. Over $\Z$ the analogue is the number of roots modulo $p$ of a random
+polynomial, and for a fixed polynomial the Chebotarev density theorem gives the law of the number of roots modulo a random prime.
+\end{solution}
+
+\begin{solution}{pb:waring}
+\idea The number of $k$-th roots of $u$ is a sum over the $k$ characters of order dividing $k$. Then $N(c)$ is $p$ plus a sum of
+$(k-1)^2$ Jacobi sums, of which $k-1$ have size $1$ and the others size $\sqrt p$.
+
+\writeup (a) $\mathbb F_p^*$ is cyclic and $k\mid p-1$, so the characters $\chi$ with $\chi^k=\varepsilon$ form a group of order $k$,
+and for $u\ne0$, $\sum_{\chi^k=\varepsilon}\chi(u)$ is $k$ if $u$ is a $k$-th power and $0$ otherwise: the number of $x$ with $x^k=u$.
+With $\varepsilon(0)=1$ and $\chi(0)=0$ for $\chi\ne\varepsilon$ it is also right for $u=0$. So
+\[
+N(c)=\sum_{\chi,\psi}\sum_{u+v=c}\chi(u)\psi(v)=\sum_{\chi,\psi}\chi\psi(c)J(\chi,\psi),
+\]
+after the substitution $u=cu'$, $v=cv'$. The pair $(\varepsilon,\varepsilon)$ gives $p$; pairs with exactly one trivial character
+give $0$; the $k-1$ pairs $(\chi,\bar\chi)$ with $\chi\ne\varepsilon$ give $J(\chi,\bar\chi)=-\chi(-1)$, of absolute value $1$ (as in
+Problem~\ref{pb:fermatcubic}(a)); and the remaining $(k-1)^2-(k-1)=(k-1)(k-2)$ pairs have $\chi,\psi,\chi\psi$ all non-trivial,
+so $|J(\chi,\psi)|=|g(\chi)||g(\psi)|/|g(\chi\psi)|=\sqrt p$ by Problem~\ref{pb:fermatcubic}(b), whose proof works for any characters.
+
+(b) $c=0$ is $0^k+0^k$. For $c\ne0$, $N(c)>0$ if $p>(k^2-3k+2)\sqrt p+k-1$. If $p\ge k^4$, then $\sqrt p\ge k^2$ and
+$p-(k^2-3k+2)\sqrt p-(k-1)\ge(3k-2)\sqrt p-(k-1)>0$.
+
+(c) If $d=\gcd(k,p-1)$, the $k$-th powers of $\mathbb F_p^*$ are the $d$-th powers (the image of $x\mapsto x^k$ in the cyclic group
+of order $p-1$ is the subgroup of index $d$). So the question reduces to $d$; when $d=1$, every residue is a $k$-th power.
+
+\tools Tome~1, Chapter~5 (characters of $\mathbb F_p^*$); Problem~\ref{pb:fermatcubic}.
+\leads For $k=3$ the bound is $2\sqrt p+2$, matching Problem~\ref{pb:fermatcubic}. Weil's theorem bounds the error by
+$(k-1)(k-2)\sqrt p$ for the projective curve, of genus $\frac{(k-1)(k-2)}2$. The notebook lists the primes where two $k$-th powers
+miss a residue: for $k=3$ only $p=7$, for $k=4$ the largest is $29$, for $k=8$ it is $761$. They are all well below $k^4$, so the
+exponent $4$ is far from sharp.
+\end{solution}
+
+\section*{Map of the chapter}
+
+\begin{center}
+\small
+\adjustbox{max width=\linewidth}{\begin{tabular}{lll}
+Problem & Topic & Tomes used\\\hline
+\ref{pb:conics} & points on conics & 1\\
+\ref{pb:sumsquares} & sums of squares, Gauss sums & 1, 3\\
+\ref{pb:fermatcubic} & Gauss's cubic, Jacobi sums & 1, 2\\
+\ref{pb:nilpotent} & nilpotent matrices (Fine--Herstein) & 0, 2\\
+\ref{pb:rankdist} & rank of a random matrix, Durfee & C1, 3, 4\\
+\ref{pb:flags} & flags, the field with one element & 0, 2, C1\\
+\ref{pb:schwartz} & Schwartz--Zippel, matchings & 0\\
+\ref{pb:nullstellensatz} & Combinatorial Nullstellensatz & 0\\
+\ref{pb:cauchydav} & Cauchy--Davenport & 1\\
+\ref{pb:erdosheil} & Erdős--Heilbronn & 0\\
+\ref{pb:egz} & Erdős--Ginzburg--Ziv & 1, 2\\
+\ref{pb:hyperplanes} & covering by hyperplanes, blocking sets & 0\\
+\ref{pb:kakeya} & Dvir's Kakeya theorem & 0\\
+\ref{pb:moore} & Moore determinant, linearised polynomials & 0, 2\\
+\ref{pb:capset} & the cap set theorem & 0, 3\\
+\ref{pb:paley} & Paley graphs & 1, 3\\
+\ref{pb:mseq} & maximal length sequences & 0, 2\\
+\ref{pb:singer} & Singer difference sets & 0, 2\\
+\ref{pb:sidon} & Sidon sets & 3, 5\\
+\ref{pb:randpoly} & random polynomials and permutations & 2, 4\\
+\ref{pb:noroots} & roots of a random polynomial & 0, 3\\
+\ref{pb:waring} & two $k$-th powers & 1\\
+\end{tabular}}
+\end{center}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer, 1990, Chapters~8 and~10
+(Gauss and Jacobi sums, the equation $x^3+y^3=1$).
+\item A.~Weil, Numbers of solutions of equations in finite fields, \emph{Bulletin of the American Mathematical Society} 55 (1949),
+497--508.
+\item R.~Lidl and H.~Niederreiter, \emph{Finite Fields}, Cambridge University Press, 1997 (linearised polynomials, the Moore
+determinant, sequences).
+\item N.~J.~Fine and I.~N.~Herstein, The probability that a matrix be nilpotent, \emph{Illinois Journal of Mathematics} 2 (1958),
+499--504.
+\item J.~Fulman, Random matrix theory over finite fields, \emph{Bulletin of the American Mathematical Society} 39 (2002), 51--85.
+\item N.~Alon, Combinatorial Nullstellensatz, \emph{Combinatorics, Probability and Computing} 8 (1999), 7--29.
+\item N.~Alon, M.~B.~Nathanson and I.~Ruzsa, The polynomial method and restricted sums of congruence classes, \emph{Journal of Number
+Theory} 56 (1996), 404--417.
+\item N.~Alon and Z.~Füredi, Covering the cube by affine hyperplanes, \emph{European Journal of Combinatorics} 14 (1993), 79--83.
+\item Z.~Dvir, On the size of Kakeya sets in finite fields, \emph{Journal of the American Mathematical Society} 22 (2009), 1093--1097.
+\item L.~Guth, \emph{Polynomial Methods in Combinatorics}, American Mathematical Society, 2016.
+\item E.~Croot, V.~Lev and P.~P.~Pach, Progression-free sets in $\Z_4^n$ are exponentially small, \emph{Annals of Mathematics} 185
+(2017), 331--337.
+\item J.~S.~Ellenberg and D.~Gijswijt, On large subsets of $\mathbb F_q^n$ with no three-term arithmetic progression, \emph{Annals of
+Mathematics} 185 (2017), 339--343.
+\item T.~Tao, A symmetric formulation of the Croot--Lev--Pach--Ellenberg--Gijswijt capset bound, blog post, 18 May 2016.
+\item B.~Romera-Paredes et al., Mathematical discoveries from program search with large language models, \emph{Nature} 625 (2024),
+468--475.
+\item F.~R.~K.~Chung, R.~L.~Graham and R.~M.~Wilson, Quasi-random graphs, \emph{Combinatorica} 9 (1989), 345--362.
+\item S.~W.~Golomb, \emph{Shift Register Sequences}, Holden-Day, 1967.
+\item J.~Singer, A theorem in finite projective geometry and some applications to number theory, \emph{Transactions of the American
+Mathematical Society} 43 (1938), 377--385.
+\item P.~Erdős and P.~Turán, On a problem of Sidon in additive number theory, and on some related problems, \emph{Journal of the
+London Mathematical Society} 16 (1941), 212--215.
+\item K.~O'Bryant, A complete annotated bibliography of work related to Sidon sequences, \emph{Electronic Journal of Combinatorics}
+DS11 (2004).
+\item A.~Granville, Cycle lengths in a permutation are typically Poisson, \emph{Electronic Journal of Combinatorics} 13 (2006), R107
+(the analogy between polynomials and permutations).
+\end{itemize}
