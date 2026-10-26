@@ -31,7 +31,7 @@ Every push to `main` rebuilds all the books and republishes them, both on the do
 | 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters) |
 | 3 | Chance | Probability, from counting to martingales | Complete draft (12 chapters) |
-| 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | In progress (10 of 12 chapters) |
+| 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | In progress (11 of 12 chapters) |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Planned |
 | 6 | Spaces | Sets, topology, measure and integration | In progress (1 of 11 chapters) |
 | 7 | Analysis in Depth | Functional, harmonic and complex analysis | Planned |

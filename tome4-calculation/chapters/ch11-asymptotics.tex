@@ -1,0 +1,621 @@
+\chapter{Asymptotics}
+
+\begin{center}\itshape
+Divergent series are the invention of the devil, and it is shameful to base on them any demonstration whatsoever.\\
+\upshape --- Niels Henrik Abel, letter to Holmboe (1826)
+\end{center}
+
+Most quantities in this tome have no closed form: $H_n$, $\ln n!$, the number of partitions of $n$, the cost of quicksort. What one can
+almost always find is their \emph{size}: a simple function that they approach, with an error one can bound. This chapter gives four tools
+for that. The \emph{Euler--Maclaurin formula} compares a sum with an integral, with corrections given by the Bernoulli numbers of
+Chapter~1. Applied to $\ln\Gamma$, it gives \emph{Stirling's series}, a series that diverges for every $x$ and yet computes $\ln\Gamma(x)$
+to twelve digits from $x=4$ on. \emph{Laplace's method} finds the size of an integral $\int e^{n\varphi}$ by looking only near the
+maximum of $\varphi$. Finally, the coefficients of a generating function are read off from its behaviour near its singularity, which keeps a
+promise of Chapter~2.
+
+Abel's sentence in the epigraph was a fair warning in 1826. Divergent series had produced nonsense in careless hands, and Cauchy and Abel
+were putting analysis on firm ground. We follow their rule here: every divergent series below comes with an explicit bound on its error,
+and that bound is what we use.
+
+\begin{think}
+Euler wrote $0!-1!+2!-3!+4!-\cdots\approx0.596$. The series diverges, since its terms grow. Can you find a function $f(x)$ whose
+Taylor coefficients at $0$ are $(-1)^kk!$, so that Euler's series is ``$f(1)$''? (Try an integral: $k!=\int_0^\infty t^ke^{-t}\dd t$.)
+\end{think}
+
+\section{Asymptotic expansions}
+
+Let $f,g$ be functions defined near $x_0$ (a real number or $\pm\infty$), with $g$ non-zero near $x_0$. We write, as $x\to x_0$,
+\begin{itemize}
+\item $f=O(g)$ if $|f/g|$ is bounded near $x_0$;
+\item $f=o(g)$ if $f/g\to0$;
+\item $f\sim g$ if $f/g\to1$, that is, $f=g+o(g)$.
+\end{itemize}
+These are the notations of Tome~0, used freely since. An \emph{asymptotic expansion} goes one step further.
+
+\begin{definition}
+Let $(\varphi_k)_{k\ge0}$ be functions defined near $x_0$ with $\varphi_{k+1}=o(\varphi_k)$, for instance $\varphi_k(x)=x^{-k}$ as $x\to\infty$ or $\varphi_k(x)=x^k$ as
+$x\to0$. We say that $f$ has the \emph{asymptotic expansion} $\sum a_k\varphi_k$, and write $f\approx\sum_ka_k\varphi_k$, if for every $K\ge0$
+\[
+f-\sum_{k<K}a_k\varphi_k=O(\varphi_K).
+\]
+\end{definition}
+
+Nothing is said about the convergence of $\sum a_k\varphi_k$: the definition fixes the number of terms $K$ and lets $x\to x_0$, while convergence
+fixes $x$ and lets $K\to\infty$. These are different limits, and the next example shows that the first can hold when the second fails.
+
+\begin{proposition}\label{prop:asymunique}
+\begin{enumerate}[label=(\alph*)]
+\item An asymptotic expansion is unique: if $f\approx\sum a_k\varphi_k$ and $f\approx\sum b_k\varphi_k$, then $a_k=b_k$ for every $k$.
+\item Different functions can have the same expansion: $e^{-x}\approx\sum_k0\cdot x^{-k}$ as $x\to\infty$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Suppose $a_j=b_j$ for $j<K$. Subtracting the two expansions at order $K+1$ gives $(a_K-b_K)\varphi_K=O(\varphi_{K+1})=o(\varphi_K)$, so
+$a_K-b_K=o(1)$, a constant tending to $0$: $a_K=b_K$. Induction on $K$ concludes.
+
+(b) For every $K$, $x^Ke^{-x}\to0$ (Tome~0), so $e^{-x}=O(x^{-K})$.
+\end{proof}
+
+\begin{proposition}[Euler's series]\label{prop:eulerseries}
+For $x>0$ let $f(x)=\displaystyle\int_0^\infty\frac{e^{-t}}{1+xt}\dd t$. For every $K\ge0$,
+\[
+\begin{gathered}f(x)=\sum_{k=0}^{K-1}(-1)^kk!\,x^k+r_K(x),\qq |r_K(x)|\le K!\,x^K,\end{gathered}
+\]
+and $r_K(x)$ has the sign $(-1)^K$ of the first omitted term. So $f(x)\approx\sum_k(-1)^kk!\,x^k$ as $x\to0^+$, although this series
+diverges for every $x\ne0$.
+\end{proposition}
+\begin{proof}
+For $u\ge0$ and $K\ge0$, summing a geometric progression gives $\frac1{1+u}=\sum_{k<K}(-u)^k+\frac{(-u)^K}{1+u}$. Take $u=xt$, multiply by $e^{-t}$
+and integrate, using $\int_0^\infty t^ke^{-t}\dd t=k!$:
+\[
+r_K(x)=(-1)^Kx^K\int_0^\infty\frac{t^Ke^{-t}}{1+xt}\dd t.
+\]
+The last integral is positive and at most $\int_0^\infty t^Ke^{-t}\dd t=K!$. The ratio of consecutive terms of the series is $(k+1)x$, which tends
+to infinity, so the series diverges.
+\end{proof}
+
+This answers the think box: Euler's ``$0!-1!+2!-\cdots$'' is $f(1)=\int_0^\infty\frac{e^{-t}}{1+t}\dd t=0.5963473623\ldots$
+
+How should one use a divergent expansion? For fixed $x$, the bound $K!\,x^K$ first decreases (while $Kx<1$) and then increases. The best
+choice is $K\approx\frac1x$, where by Stirling's formula $K!\,x^K\approx\sqrt{2\pi K}\,(Kx/e)^K\approx\sqrt{2\pi/x}\,e^{-1/x}$. At $x=0.1$, where
+$f(0.1)=0.9156333394\ldots$, the bound is $3.6\cdot10^{-4}$ at $K=10$, and the actual error is $1.77\cdot10^{-4}$; with $K=20$ terms the error grows to $8\cdot10^{-3}$.
+This is \emph{optimal truncation}: stop at the smallest term. The error is then exponentially small in $\frac1x$, far better than any fixed
+number of terms could promise, but it never reaches $0$.
+
+\begin{think}
+In Proposition~\ref{prop:eulerseries}, $f(x)$ always lies between two consecutive partial sums, since the error has the sign of the first
+omitted term. Use this to compute $f(0.1)$ with an error you can certify, using only the first eleven terms.
+\end{think}
+
+\section{The Euler--Maclaurin formula}
+
+Chapter~1 observed that $\sum_{k<n}k^p$ is $\int_0^nx^p\dd x$ plus corrections given by Bernoulli numbers. The general statement replaces $x^p$ by
+any smooth function. The corrections come from the \emph{periodic Bernoulli functions} $\bar B_m(x)=B_m(x-\lfloor x\rfloor)$, where the $B_m$ are the
+Bernoulli polynomials of Chapter~1.
+
+\begin{lemma}\label{lem:bernoullifn}
+\begin{enumerate}[label=(\alph*)]
+\item $B_m'=mB_{m-1}$ for $m\ge1$; $B_m(1)=B_m(0)=B_m$ for $m\ge2$; and $\int_0^1B_m(x)\dd x=0$ for $m\ge1$. So for $m\ge2$, $\bar B_m$ is continuous,
+and $\bar B_m'=m\bar B_{m-1}$ off the integers.
+\item For $m\ge2$ and every real $x$,
+\[
+\bar B_m(x)=-\frac{m!}{(2\pi i)^m}\sum_{n\ne0}\frac{e^{2\pi inx}}{n^m}.
+\]
+\item For $m\ge2$, $|\bar B_m(x)|\le\frac{2\,m!\,\zeta(m)}{(2\pi)^m}$. For $m=2k$ this bound is $|B_{2k}|$, and $(-1)^{k+1}\bigl(B_{2k}-\bar B_{2k}(x)\bigr)\ge0$,
+with equality only at the integers.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Differentiate $B_m(x)=\sum_k\binom mkB_kx^{m-k}$ and use $(m-k)\binom mk=m\binom{m-1}k$. Proposition~\ref{prop:bernoulli}(c) at $x=0$ gives
+$B_m(1)-B_m(0)=m\cdot0^{m-1}=0$ for $m\ge2$, and then $\int_0^1B_m=\frac{B_{m+1}(1)-B_{m+1}(0)}{m+1}=0$ for $m\ge1$. Continuity of $\bar B_m$ at an integer
+is the equality $B_m(1)=B_m(0)$.
+
+(b) Let $c_n(m)=\int_0^1B_m(x)e^{-2\pi inx}\dd x$, the Fourier coefficients of $\bar B_m$ for period $1$. By (a), $c_0(m)=0$ for $m\ge1$. Let $n\ne0$. For
+$m=1$, $B_1(x)=x-\frac12$ and an integration by parts gives $c_n(1)=-\frac1{2\pi in}$. For $m\ge2$, integrate by parts: the boundary term
+$\bigl[B_m(x)\frac{e^{-2\pi inx}}{-2\pi in}\bigr]_0^1$ vanishes since $B_m(1)=B_m(0)$, and $B_m'=mB_{m-1}$, so $c_n(m)=\frac m{2\pi in}c_n(m-1)$. By induction
+$c_n(m)=-\frac{m!}{(2\pi in)^m}$. For $m\ge2$, $\bar B_m$ is continuous and piecewise $C^1$, so its Fourier series converges to it at every point
+(Theorem~\ref{thm:dirichletfourier}, after the change of variable $t=2\pi x$ that makes the period $2\pi$).
+
+(c) The bound follows from (b), since $\sum_{n\ne0}|n|^{-m}=2\zeta(m)$. For $m=2k$, $(2\pi i)^{2k}=(-1)^k(2\pi)^{2k}$, and grouping $n$ with $-n$,
+\[
+\bar B_{2k}(x)=(-1)^{k+1}\frac{2\,(2k)!}{(2\pi)^{2k}}\sum_{n\ge1}\frac{\cos2\pi nx}{n^{2k}}.
+\]
+At $x=0$ this is Euler's formula for $\zeta(2k)$ (Theorem~\ref{thm:zeta2k}), so the bound is $|B_{2k}|$. Subtracting,
+$(-1)^{k+1}\bigl(B_{2k}-\bar B_{2k}(x)\bigr)=\frac{2\,(2k)!}{(2\pi)^{2k}}\sum_{n\ge1}\frac{1-\cos2\pi nx}{n^{2k}}\ge0$, and the term $n=1$ is positive unless $x\in\Z$.
+\end{proof}
+
+\begin{theorem}[Euler--Maclaurin formula]\label{thm:eulermaclaurin}
+Let $a<b$ be integers, $m\ge1$, and $f$ of class $C^m$ on $[a,b]$. Then
+\[
+\begin{aligned}\sum_{a<n\le b}f(n)&=\int_a^bf(x)\dd x+R_m\\&\quad+\sum_{j=1}^m\frac{(-1)^jB_j}{j!}\eqbr\quad\cdot\bigl(f^{(j-1)}(b)-f^{(j-1)}(a)\bigr),\end{aligned}
+\]
+with
+\[
+R_m=\frac{(-1)^{m+1}}{m!}\int_a^b\bar B_m(x)f^{(m)}(x)\dd x.
+\]
+\end{theorem}
+
+Since $-B_1=\frac12$ and $B_j=0$ for odd $j\ge3$, the correction terms are $\frac{f(b)-f(a)}2$ and then
+$\frac{B_{2k}}{(2k)!}\bigl(f^{(2k-1)}(b)-f^{(2k-1)}(a)\bigr)$: with $B_2=\frac16$, $B_4=-\frac1{30}$, $B_6=\frac1{42}$, the first ones are
+$\frac1{12}(f'(b)-f'(a))$, $-\frac1{720}(f'''(b)-f'''(a))$, $\frac1{30240}(f^{(5)}(b)-f^{(5)}(a))$.
+
+\begin{proof}
+For $m=1$: on $]n,n+1[$, $\bar B_1(x)=x-n-\frac12$, so an integration by parts gives
+\[
+\begin{aligned}\int_n^{n+1}\bar B_1f'&=\Bigl[\bigl(x-n-\tfrac12\bigr)f(x)\Bigr]_n^{n+1}-\int_n^{n+1}f\\&=\frac{f(n)+f(n+1)}2-\int_n^{n+1}f.\end{aligned}
+\]
+Summing over $a\le n<b$, the half-values add up to $\sum_{a<n\le b}f(n)-\frac{f(b)-f(a)}2$, which is the formula for $m=1$, since $(-1)^1B_1=\frac12$.
+
+From $m$ to $m+1$, for $f$ of class $C^{m+1}$: $\bar B_{m+1}$ is continuous with derivative $(m+1)\bar B_m$ off the integers, and equals $B_{m+1}$ at
+$a$ and $b$ (Lemma~\ref{lem:bernoullifn}(a)). Integrating by parts on each $[n,n+1]$ and adding,
+\[
+\begin{aligned}\int_a^b\bar B_mf^{(m)}&=\frac{B_{m+1}}{m+1}\bigl(f^{(m)}(b)-f^{(m)}(a)\bigr)\eqbr-\frac1{m+1}\int_a^b\bar B_{m+1}f^{(m+1)}.\end{aligned}
+\]
+Multiplying by $\frac{(-1)^{m+1}}{m!}$ gives
+\[
+\begin{aligned}R_m&=\frac{(-1)^{m+1}B_{m+1}}{(m+1)!}\bigl(f^{(m)}(b)-f^{(m)}(a)\bigr)\eqbr+R_{m+1},\end{aligned}
+\]
+which is the formula at order $m+1$.
+\end{proof}
+
+The formula is exact: nothing is lost, the error is just moved into $R_m$. What makes it useful is that $R_m$ is often small and
+easy to bound with Lemma~\ref{lem:bernoullifn}(c).
+
+\begin{corollary}[harmonic numbers]\label{cor:harmonic}
+For every $M\ge1$, as $n\to\infty$,
+\[
+H_n=\ln n+\gamma+\frac1{2n}-\sum_{k=1}^{M-1}\frac{B_{2k}}{2k\,n^{2k}}+O\Bigl(\frac1{n^{2M}}\Bigr),
+\]
+and the error term has the sign of the first omitted term $-\frac{B_{2M}}{2M\,n^{2M}}$ and is smaller in absolute value. So $H_n=\ln n+\gamma+\frac1{2n}-\frac1{12n^2}+\frac1{120n^4}-\frac1{252n^6}+\cdots$
+\end{corollary}
+\begin{proof}
+Apply the theorem to $f(x)=\frac1x$ on $[1,n]$ at order $2M$. Here $f^{(2k-1)}(x)=-\frac{(2k-1)!}{x^{2k}}$ and $f^{(2M)}(x)=\frac{(2M)!}{x^{2M+1}}$, so
+\[
+\begin{aligned}H_n-1&=\ln n+\frac12\Bigl(\frac1n-1\Bigr)\eqbr+\sum_{k=1}^M\frac{B_{2k}}{2k}\Bigl(1-\frac1{n^{2k}}\Bigr)\eqbr-\int_1^n\frac{\bar B_{2M}(x)}{x^{2M+1}}\dd x.\end{aligned}
+\]
+Since $\bar B_{2M}$ is bounded, the last integral converges as $n\to\infty$; letting $n\to\infty$ in $H_n-\ln n$ (which tends to $\gamma$, Tome~0,
+Proposition~5.5) gives $\gamma=\frac12+\sum_{k=1}^M\frac{B_{2k}}{2k}-\int_1^\infty\bar B_{2M}x^{-2M-1}\dd x$. Subtracting,
+\[
+\begin{aligned}H_n&=\ln n+\gamma+\frac1{2n}-\sum_{k=1}^M\frac{B_{2k}}{2k\,n^{2k}}\eqbr+\int_n^\infty\frac{\bar B_{2M}(x)}{x^{2M+1}}\dd x.\end{aligned}
+\]
+Call $E_M(n)$ the error of the statement, that is, the term $k=M$ of the sum and the last integral together, and $U_M(n)=-\frac{B_{2M}}{2Mn^{2M}}$ the first
+omitted term. Since $\int_n^\infty x^{-2M-1}\dd x=\frac1{2Mn^{2M}}$,
+\[
+E_M(n)=\int_n^\infty\frac{\bar B_{2M}(x)-B_{2M}}{x^{2M+1}}\dd x.
+\]
+By Lemma~\ref{lem:bernoullifn}(c), $\bar B_{2M}-B_{2M}$ has the sign $(-1)^M$ and modulus at most $2|B_{2M}|$, and is non-zero off the integers. So $E_M(n)$ has
+the sign $(-1)^M$ of $U_M(n)$, is non-zero, and $|E_M(n)|\le\frac{|B_{2M}|}{Mn^{2M}}$: this proves the $O$. The displayed formula holds for every $M$, and comparing it
+at $M$ and $M+1$ gives $E_M=U_M+E_{M+1}$, where $E_{M+1}$ has the sign opposite to $U_M$. So $E_M-U_M$ has the sign opposite to $U_M$, while $E_M$ has the sign
+of $U_M$: hence $0<E_M/U_M<1$.
+\end{proof}
+
+At $n=10$, the expansion up to $-\frac1{252n^6}$ gives $H_{10}=2.928968253968\ldots$ with an error of $4.1\cdot10^{-11}$, while the next term
+$\frac1{240n^8}$ is $4.2\cdot10^{-11}$. Ten terms of a sum and five terms of an expansion give eleven digits.
+
+The same computation with $f(x)=x^{-s}$ continues $\zeta$ to the left, independently of Chapter~10. For complex $s$ and $k\ge0$ write
+$(s)_k=s(s+1)\cdots(s+k-1)$, so that $\frac{\mathrm d^k}{\mathrm dx^k}x^{-s}=(-1)^k(s)_kx^{-s-k}$.
+
+\begin{proposition}\label{prop:zetaem}
+For integers $N\ge1$, $M\ge1$ and $\operatorname{Re}s>1$,
+\[
+\begin{aligned}\zeta(s)&=\sum_{n=1}^N\frac1{n^s}+\frac{N^{1-s}}{s-1}-\frac{N^{-s}}2\eqbr+\sum_{k=1}^M\frac{B_{2k}}{(2k)!}(s)_{2k-1}N^{1-s-2k}\eqbr-\frac{(s)_{2M}}{(2M)!}\int_N^\infty\frac{\bar B_{2M}(x)}{x^{s+2M}}\dd x.\end{aligned}
+\]
+The right side is holomorphic on $\operatorname{Re}s>1-2M$ except for a simple pole at $s=1$, so it is the continuation of $\zeta$ to that half-plane.
+\end{proposition}
+\begin{proof}
+Apply Theorem~\ref{thm:eulermaclaurin} to $f(x)=x^{-s}$ on $[N,b]$ at order $2M$ and let $b\to\infty$: for $\operatorname{Re}s>1$, every term at $b$ tends to $0$ and
+$\int_N^\infty x^{-s}\dd x=\frac{N^{1-s}}{s-1}$. The terms at $N$ are $-\frac{f(N)}2$ and $-\frac{B_{2k}}{(2k)!}f^{(2k-1)}(N)=\frac{B_{2k}}{(2k)!}(s)_{2k-1}N^{1-s-2k}$, and
+$R_{2M}=-\frac1{(2M)!}\int_N^\infty\bar B_{2M}(x)(s)_{2M}x^{-s-2M}\dd x$. Add $\sum_{n\le N}n^{-s}$.
+
+On $\operatorname{Re}s\ge1-2M+\varepsilon$ the integrand is bounded by $|B_{2M}|x^{-1-\varepsilon}$, so the integral converges uniformly on compact sets of
+$\operatorname{Re}s>1-2M$ and is holomorphic there (Theorem~\ref{thm:holoparam}(b)). The other terms are entire except $\frac{N^{1-s}}{s-1}$. By the identity theorem
+(Theorem~\ref{thm:identity}), this function agrees with the continuation of Chapter~10 wherever both are defined.
+\end{proof}
+
+At $s=-n$ with $n\ge0$ and $2M\ge n+1$, the factor $(s)_{2M}=(-n)(1-n)\cdots(2M-1-n)$ contains $0$, so the integral disappears and $\zeta(-n)$ is a
+finite combination of Bernoulli numbers; the notebook checks that it equals $-\frac{B_{n+1}}{n+1}$ (Theorem~\ref{thm:zetaneg}) for $n\le20$. For
+$\operatorname{Re}s>1$ the proposition is also the best way to compute $\zeta(s)$: Exercise~\ref{ex:zeta3} gets ten digits of $\zeta(3)$ from ten terms.
+
+\section{Stirling's series}
+
+Chapter~5 proved $\Gamma(x)\sim\sqrt{2\pi}\,x^{x-\frac12}e^{-x}$. Euler--Maclaurin, applied to Gauss's product formula, gives the full expansion, with an
+error that is easy to control.
+
+\begin{theorem}[Stirling's series]\label{thm:stirlingseries}
+For $x>0$ and $m\ge1$,
+\[
+\begin{aligned}\ln\Gamma(x)&=\Bigl(x-\frac12\Bigr)\ln x-x+\frac12\ln2\pi\eqbr+\sum_{k=1}^{m-1}\frac{B_{2k}}{2k(2k-1)x^{2k-1}}+\rho_m(x),\end{aligned}
+\]
+where
+\[
+\rho_m(x)=\frac1{2m}\int_0^\infty\frac{B_{2m}-\bar B_{2m}(t)}{(x+t)^{2m}}\dd t.
+\]
+The remainder $\rho_m(x)$ has the sign of the first omitted term $T_m(x)=\frac{B_{2m}}{2m(2m-1)x^{2m-1}}$, and $|\rho_m(x)|<|T_m(x)|$.
+\end{theorem}
+
+With $B_2=\frac16$, $B_4=-\frac1{30}$, $B_6=\frac1{42}$, $B_8=-\frac1{30}$, the series reads
+\[
+\begin{aligned}\ln\Gamma(x)&\approx\Bigl(x-\frac12\Bigr)\ln x-x+\frac12\ln2\pi\eqbr+\frac1{12x}-\frac1{360x^3}+\frac1{1260x^5}-\frac1{1680x^7}+\cdots\end{aligned}
+\]
+For $m=1$ the theorem says $0<\rho_1(x)<\frac1{12x}$, so for every integer $n\ge1$,
+$\sqrt{2\pi n}\,(n/e)^n<n!<\sqrt{2\pi n}\,(n/e)^ne^{1/(12n)}$ (apply it at $x=n$ and use $n!=n\Gamma(n)$).
+
+\begin{proof}
+\emph{Step 1: the formula with $\bar B_{2m}$.} By Gauss's formula (Chapter~5), $\ln\Gamma(x)=\lim_N\bigl(\ln N!+x\ln N-\sum_{k=0}^N\ln(x+k)\bigr)$. Apply
+Theorem~\ref{thm:eulermaclaurin} to $f(t)=\ln(x+t)$ on $[0,N]$ at order $2m$. Here $f^{(2k-1)}(t)=\frac{(2k-2)!}{(x+t)^{2k-1}}$ and $f^{(2m)}(t)=-\frac{(2m-1)!}{(x+t)^{2m}}$, and
+$\int_0^N\ln(x+t)\dd t=(x+N)\ln(x+N)-x\ln x-N$. Adding the term $k=0$, $\ln x$, one gets
+\[
+\begin{aligned}\sum_{k=0}^N\ln(x+k)&=\Bigl(x+N+\frac12\Bigr)\ln(x+N)-N\eqbr+\Bigl(\frac12-x\Bigr)\ln x\\
+&\quad+\sum_{k=1}^m\frac{B_{2k}}{2k(2k-1)}\eqbr\cdot\Bigl(\frac1{(x+N)^{2k-1}}-\frac1{x^{2k-1}}\Bigr)\\
+&\quad+\frac1{2m}\int_0^N\frac{\bar B_{2m}(t)}{(x+t)^{2m}}\dd t.\end{aligned}
+\]
+As $N\to\infty$: the terms in $(x+N)^{1-2k}$ tend to $0$; the integral converges absolutely; and
+$(x+N+\frac12)\ln(x+N)=(x+N+\frac12)\ln N+x+o(1)$, because $\ln(x+N)-\ln N=\frac xN+O(N^{-2})$. Tome~0's Stirling formula says
+$\ln N!-(N+\frac12)\ln N+N\to\frac12\ln2\pi$. Putting everything into Gauss's formula,
+\[
+\begin{aligned}\ln\Gamma(x)&=\Bigl(x-\frac12\Bigr)\ln x-x+\frac12\ln2\pi\eqbr+\sum_{k=1}^m\frac{B_{2k}}{2k(2k-1)x^{2k-1}}\eqbr-\frac1{2m}\int_0^\infty\frac{\bar B_{2m}(t)}{(x+t)^{2m}}\dd t.\end{aligned}
+\]
+
+\emph{Step 2: cancelling the last term.} Since $\frac1{2m}\int_0^\infty\frac{B_{2m}}{(x+t)^{2m}}\dd t=\frac{B_{2m}}{2m(2m-1)x^{2m-1}}=T_m(x)$, the term $k=m$ of the sum and the
+integral combine into $\rho_m(x)$. This is the formula of the theorem.
+
+\emph{Step 3: the sign and the size.} By Lemma~\ref{lem:bernoullifn}(c), $B_{2m}-\bar B_{2m}$ has the sign $(-1)^{m+1}$ of $B_{2m}$, and is non-zero
+off the integers. So $\rho_m(x)$ has the sign of $T_m(x)$ and is non-zero. The formula holds for every $m$, and comparing it at $m$ and $m+1$ gives
+$\rho_m=T_m+\rho_{m+1}$. Now $\rho_{m+1}$ has the sign of $T_{m+1}$, which is opposite to that of $T_m$. So $\rho_m-T_m$ has the sign opposite to
+$T_m$, while $\rho_m$ has the sign of $T_m$: this forces $0<\rho_m/T_m<1$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-stirling}
+\caption{The error of Stirling's series for $\ln\Gamma(x)$ with $m$ correction terms, in logarithmic scale, for $x=1,2,4$. The error first decreases, then
+grows without bound. The best $m$ is close to $\pi x$, and the best error is about $10^{-3.5}$, $10^{-6.4}$ and $10^{-12}$.}
+\label{fig:stirlingerr}
+\end{figure}
+
+Since $|B_{2k}|=\frac{2(2k)!\,\zeta(2k)}{(2\pi)^{2k}}$, the terms $T_k(x)$ behave like $\frac{(2k-2)!}{(2\pi x)^{2k-1}}$ up to bounded factors. They decrease while
+$2k\lesssim2\pi x$, then grow faster than any geometric sequence, so the series diverges for every $x$ (Figure~\ref{fig:stirlingerr}). With Stirling's
+formula one finds that the smallest term, at $k\approx\pi x$, is about $\frac{e^{-2\pi x}}{\pi\sqrt x}$; the notebook checks this. The theorem guarantees
+an error below that.
+
+\begin{beauty}
+The sign argument of Step~3 is the same as in Proposition~\ref{prop:eulerseries}: the error lies between $0$ and the first omitted term. So
+consecutive partial sums of Stirling's series bracket $\ln\Gamma(x)$, and one can certify digits without ever computing $\Gamma$. This is how
+tables of $\ln\Gamma$ were computed for two centuries: Stirling's series at a large argument, then $\Gamma(x)=\Gamma(x+n)/\bigl(x(x+1)\cdots(x+n-1)\bigr)$ to come back.
+\end{beauty}
+
+\section{Laplace's method}
+
+Many quantities are integrals $\int e^{n\varphi(x)}\dd x$ with a large parameter $n$: $n!=\int_0^\infty t^ne^{-t}\dd t$, the Wallis integrals, the Beta function.
+For large $n$, the integrand is negligible except near the maximum of $\varphi$, where $\varphi$ looks like a parabola, so the integral looks like a Gaussian
+integral (Figure~\ref{fig:laplace}).
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-laplace}
+\caption{The functions $(ue^{1-u})^n=e^{n(\ln u-u+1)}$ for $n=1,4,16,64$ (solid), and the Gaussians $e^{-n(u-1)^2/2}$ that approximate them near $u=1$
+(dashed). The peak narrows like $\frac1{\sqrt n}$, and outside it the functions are exponentially small.}
+\label{fig:laplace}
+\end{figure}
+
+\begin{theorem}[Laplace's method]\label{thm:laplace}
+Let $I=\left]a,b\right[$ with $-\infty\le a<b\le+\infty$, let $\varphi:I\to\R$ be of class $C^2$ and $g:I\to\R$ continuous, with $\int_I|g|e^\varphi<\infty$.
+Suppose that $c\in I$ satisfies $\varphi'(c)=0$, $\varphi''(c)<0$, and, for every $\delta>0$,
+\[
+\sup\bigl\{\varphi(x):x\in I,\ |x-c|\ge\delta\bigr\}<\varphi(c).
+\]
+Then, as $n\to\infty$,
+\[
+\begin{aligned}\int_Ig(x)e^{n\varphi(x)}\dd x&=e^{n\varphi(c)}\eqbr\cdot\biggl(g(c)\sqrt{\frac{2\pi}{n|\varphi''(c)|}}+o\Bigl(\frac1{\sqrt n}\Bigr)\biggr).\end{aligned}
+\]
+\end{theorem}
+
+\begin{proof}
+Replacing $\varphi$ by $\varphi-\varphi(c)$ multiplies both sides by $e^{-n\varphi(c)}$ and keeps the hypotheses, so assume $\varphi(c)=0$. Let $A=-\varphi''(c)>0$.
+We use $\int_\R e^{-\lambda u^2}\dd u=\sqrt{\pi/\lambda}$ for $\lambda>0$ (substitute $t=\lambda u^2$ and use $\Gamma(\frac12)=\sqrt\pi$, Proposition~\ref{prop:gammahalf}).
+
+Fix $\varepsilon\in\left]0,\frac12\right[$, and choose $\delta>0$ with $[c-\delta,c+\delta]\subset I$ such that $|\varphi''(x)+A|\le\varepsilon A$ and $|g(x)-g(c)|\le\varepsilon$ for
+$|x-c|\le\delta$. Since $\varphi(c)=\varphi'(c)=0$, Taylor's formula with Lagrange remainder gives $\varphi(c+u)=\frac12\varphi''(\xi)u^2$ for some $\xi$ between $c$ and $c+u$, so for $|u|\le\delta$
+\[
+-(1+\varepsilon)\frac{Au^2}2\le\varphi(c+u)\le-(1-\varepsilon)\frac{Au^2}2.
+\]
+
+\emph{Near $c$.} Let $K_n=\int_{-\delta}^\delta e^{n\varphi(c+u)}\dd u$. The upper bound and the Gaussian integral give $K_n\le\sqrt{2\pi/((1-\varepsilon)An)}$.
+The lower bound gives $K_n\ge\sqrt{2\pi/((1+\varepsilon)An)}-2\int_\delta^\infty e^{-\kappa nu^2}\dd u$ with $\kappa=\frac{(1+\varepsilon)A}2$, and
+$\int_\delta^\infty e^{-\kappa nu^2}\dd u\le\int_\delta^\infty\frac u\delta e^{-\kappa nu^2}\dd u=\frac{e^{-\kappa n\delta^2}}{2\kappa n\delta}$, which is $o(n^{-1/2})$.
+Moreover $\bigl|\int_{-\delta}^\delta g(c+u)e^{n\varphi(c+u)}\dd u-g(c)K_n\bigr|\le\varepsilon K_n$.
+
+\emph{Away from $c$.} By hypothesis there is $\eta>0$ with $\varphi(x)\le-\eta$ for $|x-c|\ge\delta$. There $e^{n\varphi}=e^{(n-1)\varphi}e^\varphi\le e^{-(n-1)\eta}e^\varphi$, so
+the integral of $ge^{n\varphi}$ over $\{|x-c|\ge\delta\}$ is at most $e^{-(n-1)\eta}\int_I|g|e^\varphi$, which is $o(n^{-1/2})$.
+
+\emph{Conclusion.} Let $L=\sqrt{2\pi/A}$ and $J_n=\int_Ige^{n\varphi}$. The three estimates give
+\[
+\limsup_{n\to\infty}\bigl|\sqrt n\,J_n-g(c)L\bigr|\le L\,\eta(\varepsilon),
+\]
+where $\eta(\varepsilon)=|g(c)|\bigl((1-\varepsilon)^{-1/2}-1\bigr)+\varepsilon(1-\varepsilon)^{-1/2}$,
+using $1-(1+\varepsilon)^{-1/2}\le(1-\varepsilon)^{-1/2}-1$. The right side tends to $0$ with $\varepsilon$, and the left side does not depend on $\varepsilon$, so it is $0$.
+\end{proof}
+
+\begin{example}[Stirling's formula, a third proof]\label{ex:stirlinglaplace}
+Substituting $t=nu$ in $n!=\int_0^\infty t^ne^{-t}\dd t$ gives $n!=n^{n+1}\int_0^\infty e^{n(\ln u-u)}\dd u$. Here $\varphi(u)=\ln u-u$ on $\left]0,\infty\right[$, $g=1$, and
+$\int_0^\infty e^\varphi=\int_0^\infty ue^{-u}\dd u=1$. The function $\varphi$ increases on $\left]0,1\right]$ and decreases on $[1,\infty[$, so the supremum off
+$]1-\delta,1+\delta[$ is $\max\bigl(\varphi(1-\delta),\varphi(1+\delta)\bigr)<\varphi(1)=-1$, and $\varphi''(1)=-1$. Laplace's method gives
+\[
+n!\sim n^{n+1}e^{-n}\sqrt{\frac{2\pi}n}=\sqrt{2\pi n}\Bigl(\frac ne\Bigr)^n.
+\]
+\end{example}
+
+\begin{think}
+In Figure~\ref{fig:laplace} the peak has width about $\frac1{\sqrt n}$. Where does the factor $\frac1{\sqrt n}$ in Laplace's method come from, and why does
+the formula involve $\varphi''(c)$ but not $\varphi'''(c)$? What would change if $\varphi$ were maximal at an end point $a$ with $\varphi'(a)<0$?
+\end{think}
+
+\section{The size of coefficients}
+
+A generating function $F(z)=\sum a_nz^n$ that converges on a disc $|z|<R$ knows its coefficients through Cauchy's formula. For $0<r<R$,
+integrating term by term on the circle $|z|=r$ (the series converges uniformly there), and using $\int_{-\pi}^\pi e^{ik\theta}\dd\theta=2\pi[k=0]$,
+\[
+a_n=\frac1{2\pi}\int_{-\pi}^\pi\frac{F(re^{i\theta})}{r^ne^{in\theta}}\dd\theta.
+\]
+Two ideas extract the size of $a_n$ from this formula. The first chooses $r$ well and applies Laplace's method. The second looks at the
+singularity of $F$ on the circle of convergence.
+
+\subsection*{The saddle point}
+
+\begin{example}[central binomial coefficients]\label{ex:centralsaddle}
+Take $F(z)=(1+z)^{2n}$ and the coefficient of $z^n$. On the circle $|z|=r$, the integrand has modulus at most $\frac{(1+r)^{2n}}{r^n}$, and
+$\frac{(1+r)^2}r=r+2+\frac1r$ is smallest at $r=1$. On $|z|=1$, $(1+e^{i\theta})^{2n}e^{-in\theta}=\bigl(e^{i\theta/2}\cdot2\cos\frac\theta2\bigr)^{2n}e^{-in\theta}=\bigl(4\cos^2\frac\theta2\bigr)^n$, so
+\[
+\begin{gathered}\binom{2n}n=\frac1{2\pi}\int_{-\pi}^\pi e^{n\varphi(\theta)}\dd\theta,\qq\varphi(\theta)=\ln\Bigl(4\cos^2\frac\theta2\Bigr).\end{gathered}
+\]
+On $]-\pi,\pi[$, $\varphi$ is maximal only at $0$, with $\varphi(0)=\ln4$, and $\ln\cos^2\frac\theta2=-\frac{\theta^2}4+O(\theta^4)$, so $\varphi''(0)=-\frac12$. The function $\varphi$
+increases on $]-\pi,0]$ and decreases on $[0,\pi[$, and $\int e^\varphi=\int4\cos^2\frac\theta2\dd\theta<\infty$. Laplace's method gives
+\[
+\binom{2n}n\sim\frac{4^n}{2\pi}\sqrt{\frac{2\pi}{n/2}}=\frac{4^n}{\sqrt{\pi n}}.
+\]
+\end{example}
+
+The choice of $r$ is the idea. In general, one chooses $r$ to minimise $\frac{F(r)}{r^n}$; this is where $\frac{\mathrm d}{\mathrm dr}\bigl(\ln F(r)-n\ln r\bigr)=0$. As a function
+of the complex variable $z$, $|F(z)z^{-n}|$ then has a \emph{saddle point} at $z=r$: minimal along the real axis, maximal along the circle. The contour
+crosses the mountain pass at its lowest point, and Laplace's method does the rest.
+
+\subsection*{Singularities}
+
+When $F$ has radius of convergence $1$ and a singularity of the form $(1-z)^{-\alpha}$ at $z=1$, the coefficients grow like a power of $n$. The model case is
+exact.
+
+\begin{proposition}\label{prop:binomcoef}
+Let $\alpha\in\R$, not a negative integer or $0$. The coefficients of $(1-z)^{-\alpha}=\sum_na_n(\alpha)z^n$ (for $|z|<1$) are
+\[
+a_n(\alpha)=\frac{\alpha(\alpha+1)\cdots(\alpha+n-1)}{n!}=\frac{\Gamma(n+\alpha)}{\Gamma(\alpha)\,n!},
+\]
+and, as $n\to\infty$,
+\[
+a_n(\alpha)=\frac{n^{\alpha-1}}{\Gamma(\alpha)}\Bigl(1+\frac{\alpha(\alpha-1)}{2n}+O\Bigl(\frac1{n^2}\Bigr)\Bigr).
+\]
+\end{proposition}
+\begin{proof}
+Let $S(z)=\sum_na_nz^n$ with $a_n$ the product formula. Since $\frac{a_{n+1}}{a_n}=\frac{\alpha+n}{n+1}\to1$, $S$ has radius of convergence $1$, and
+$(n+1)a_{n+1}-na_n=\alpha a_n$ says that $(1-z)S'(z)=\alpha S(z)$. With $(1-z)^\alpha=\exp\bigl(\alpha\operatorname{Log}(1-z)\bigr)$, holomorphic on the unit disc with derivative
+$-\alpha(1-z)^{\alpha-1}$, the derivative of $(1-z)^\alpha S(z)$ is $(1-z)^{\alpha-1}\bigl((1-z)S'-\alpha S\bigr)=0$; so $(1-z)^\alpha S(z)$ is constant, equal to its value $1$ at $0$.
+The Gamma form follows from $\Gamma(y+1)=y\Gamma(y)$, applied $n$ times.
+
+For the asymptotics, apply Theorem~\ref{thm:stirlingseries} with $m=2$ at $y=n+\alpha$ and at $y=n+1$ (both positive for $n$ large):
+$\ln\Gamma(y)=(y-\frac12)\ln y-y+\frac12\ln2\pi+\frac1{12y}+\rho_2(y)$ with $|\rho_2(y)|<\frac1{360y^3}$. The difference of the terms $\frac1{12y}+\rho_2(y)$ at the two
+points is $O(n^{-2})$. With $\ln(1+\frac\beta n)=\frac\beta n-\frac{\beta^2}{2n^2}+O(n^{-3})$,
+\[
+\begin{aligned}\Bigl(n+\beta-\frac12\Bigr)\ln\Bigl(1+\frac\beta n\Bigr)&=\beta+\frac{\beta(\beta-1)}{2n}\eqbr+O\Bigl(\frac1{n^2}\Bigr),\end{aligned}
+\]
+and $\ln(n+\beta)=\ln n+\ln(1+\frac\beta n)$.
+Subtracting the case $\beta=1$ from the case $\beta=\alpha$, and the terms $-(n+\alpha)+(n+1)$,
+$\ln\Gamma(n+\alpha)-\ln\Gamma(n+1)=(\alpha-1)\ln n+\frac{\alpha(\alpha-1)}{2n}+O(n^{-2})$. Exponentiate.
+\end{proof}
+
+For $\alpha=\frac12$, $\sum_n\binom{2n}nz^n=(1-4z)^{-1/2}$, and the proposition gives $\binom{2n}n=\frac{4^n}{\sqrt{\pi n}}\bigl(1-\frac1{8n}+O(n^{-2})\bigr)$, a second proof of
+Example~\ref{ex:centralsaddle} with one more term. The Catalan numbers $\frac1{n+1}\binom{2n}n$ are therefore $\frac{4^n}{\sqrt\pi\,n^{3/2}}\bigl(1+O(\frac1n)\bigr)$.
+
+The next theorem says that the model case controls every function with the same singularity, up to a factor that is analytic across the circle.
+
+\begin{theorem}[transfer]\label{thm:transfer}
+Let $\alpha\in\R$, not a negative integer or $0$, and let $h(z)=\sum_kh_kz^k$ be a power series with radius of convergence greater than $1$. Then the
+coefficients of $F(z)=(1-z)^{-\alpha}h(z)$ satisfy
+\[
+[z^n]F(z)=\frac{h(1)}{\Gamma(\alpha)}n^{\alpha-1}+O(n^{\alpha-2}).
+\]
+\end{theorem}
+
+\begin{proof}
+Fix $\rho>1$ less than the radius of $h$; then $h_k\rho^k\to0$, so $|h_k|\le C\rho^{-k}$ for some $C$, and $\sum_kk|h_k|<\infty$. Write $a_j=a_j(\alpha)$, so that
+$[z^n]F=\sum_{k=0}^nh_ka_{n-k}$ (product of power series), and $h(1)a_n=\sum_{k\ge0}h_ka_n$. Then
+\[
+\begin{aligned}{}[z^n]F-h(1)a_n&=\sum_{k\le n/2}h_k(a_{n-k}-a_n)\eqbr+\sum_{n/2<k\le n}h_ka_{n-k}-\sum_{k>n/2}h_ka_n.\end{aligned}
+\]
+Since $(1-z)\cdot(1-z)^{-\alpha}=(1-z)^{-(\alpha-1)}$, the differences $a_j-a_{j-1}$ are the coefficients of $(1-z)^{-(\alpha-1)}$. If $\alpha-1$ is not a negative integer or $0$, they are
+$O(j^{\alpha-2})$ by Proposition~\ref{prop:binomcoef}; otherwise $(1-z)^{1-\alpha}$ is a polynomial and they vanish for $j$ large. In both cases, for $k\le\frac n2$,
+$|a_n-a_{n-k}|\le\sum_{n-k<j\le n}|a_j-a_{j-1}|\le C'kn^{\alpha-2}$, where $C'$ depends only on $\alpha$ (the $j$ involved lie between $\frac n2$ and $n$). So the first sum is
+at most $C'n^{\alpha-2}\sum_kk|h_k|$. Proposition~\ref{prop:binomcoef} also gives $|a_j|\le C''(1+j)^{|\alpha|+1}$ for all $j$, so the last two sums are at most
+$2C''(1+n)^{|\alpha|+1}\sum_{k>n/2}C\rho^{-k}$, which decreases exponentially. So $[z^n]F=h(1)a_n+O(n^{\alpha-2})$, and
+$a_n=\frac{n^{\alpha-1}}{\Gamma(\alpha)}+O(n^{\alpha-2})$ by Proposition~\ref{prop:binomcoef}.
+\end{proof}
+
+\begin{example}[2-regular graphs]\label{ex:tworegular}
+A graph on $\{1,\dots,n\}$ in which every vertex has degree $2$ is a disjoint union of cycles of length at least $3$. On $k\ge3$ labelled vertices there
+are $\frac{(k-1)!}2$ cycles (orderings up to rotation and reflection). By the exponential formula (Theorem~\ref{thm:expformula}), the number $g_n$ of such graphs
+satisfies
+\[
+\sum_{n\ge0}g_n\frac{z^n}{n!}=\exp\Bigl(\sum_{k\ge3}\frac{z^k}{2k}\Bigr)=\frac{e^{-z/2-z^2/4}}{\sqrt{1-z}},
+\]
+since $\sum_{k\ge1}\frac{z^k}k=-\ln(1-z)$. Here $\alpha=\frac12$ and $h(z)=e^{-z/2-z^2/4}$ is entire, with $h(1)=e^{-3/4}$. So
+\[
+\frac{g_n}{n!}=\frac{e^{-3/4}}{\sqrt{\pi n}}+O\bigl(n^{-3/2}\bigr).
+\]
+The first values are $g_3=1$, $g_4=3$, $g_5=12$, $g_6=70$, $g_7=465$. At $n=30$ the approximation is $2\%$ too large, as the $O(n^{-3/2})$ predicts.
+\end{example}
+
+The same reasoning gives the derangements: a permutation without fixed point is a set of cycles of length at least $2$, so its exponential generating
+function is $\exp\bigl(-\ln(1-z)-z\bigr)=\frac{e^{-z}}{1-z}$, and the theorem with $\alpha=1$ gives $\frac{D_n}{n!}=e^{-1}+O(\frac1n)$. Here the truth is much better:
+$\frac{D_n}{n!}=\sum_{k\le n}\frac{(-1)^k}{k!}$ differs from $e^{-1}$ by less than $\frac1{(n+1)!}$. The theorem's error term is only an upper bound; it is sharp when $h$ is
+not analytic much beyond the circle, and wasteful for an entire $h$ with $\alpha=1$, where every coefficient of $h(z)/(1-z)$ is a partial sum of $h(1)$.
+
+\begin{remark}
+Flajolet and Odlyzko (1990) proved the transfer theorem under much weaker hypotheses: $F$ needs only to be analytic in a ``Pac-Man'' domain around the
+disc, with $F(z)\sim C(1-z)^{-\alpha}$ near $1$, and logarithmic factors are allowed. Their proof uses a Cauchy integral on a contour that hugs the singularity.
+It is the main tool of analytic combinatorics; see the book of Flajolet and Sedgewick.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:kk}
+Show that $\sum_{k=1}^nk^k=n^n\bigl(1+\frac1{en}+O(\frac1{n^2})\bigr)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:wallislaplace}
+Use Laplace's method to show that $W_n=\int_0^{\pi/2}\cos^n\theta\dd\theta\sim\sqrt{\frac\pi{2n}}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:quickexp}
+Chapter~2 (Example~\ref{ex:quicksortexact}) showed that randomised quicksort makes on average $C_n=2(n+1)H_n-4n$ comparisons. Show that
+\[
+\begin{aligned}C_n&=2n\ln n+(2\gamma-4)n+2\ln n\eqbr+2\gamma+1+\frac5{6n}+O\Bigl(\frac1{n^2}\Bigr).\end{aligned}
+\]
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:zeta3}
+Using Proposition~\ref{prop:zetaem} with $s=3$, $N=10$ and the terms up to $B_6$, show that
+\[
+\begin{aligned}\zeta(3)&=\sum_{n=1}^{10}\frac1{n^3}+\frac1{200}-\frac1{2000}\eqbr+\frac1{4\cdot10^4}-\frac1{12\cdot10^6}+\frac1{12\cdot10^8}+r,\end{aligned}
+\]
+with $|r|\le1.1\cdot10^{-10}$. (Use the remainder of order $7$ rather than $6$.) Compute $\zeta(3)$ to ten digits.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:partitionbound}
+Let $p(n)$ be the number of partitions of $n$ and $P(x)=\sum_np(n)x^n=\prod_{k\ge1}\frac1{1-x^k}$ for $0<x<1$ (Chapter~2).
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\ln P(e^{-t})\le\frac{\pi^2}{6t}$ for $t>0$.
+\item Deduce that $\ln p(n)\le\pi\sqrt{2n/3}$ for every $n\ge1$.
+\item Show that $p(n)\ge2^{\lfloor\sqrt n\rfloor-1}$, so that $\ln p(n)$ is of order exactly $\sqrt n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:motzkinasym}
+The Motzkin numbers of Exercise~\ref{ex:motzkin} have generating function $M(z)=\frac{1-z-\sqrt{(1-3z)(1+z)}}{2z^2}$. Show that
+\[
+M_n\sim\frac{3^{n+3/2}}{2\sqrt\pi\,n^{3/2}}.
+\]
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:kk}
+The last term is $n^n$, the one before is $n^{n-1}(1-\frac1n)^{n-1}$. Bound all the others together crudely.
+\end{hint}
+\begin{hint}{ex:wallislaplace}
+Use the symmetry $\theta\mapsto-\theta$ to put the maximum of $\ln\cos\theta$ inside the interval.
+\end{hint}
+\begin{hint}{ex:quickexp}
+Corollary~\ref{cor:harmonic} with two correction terms; multiply out and collect powers of $n$.
+\end{hint}
+\begin{hint}{ex:zeta3}
+Compute $(3)_{2k-1}$. For the remainder, $R_6=R_7$ because $B_7=0$, and Lemma~\ref{lem:bernoullifn}(c) bounds $\bar B_7$.
+\end{hint}
+\begin{hint}{ex:partitionbound}
+(a) Expand $-\ln(1-y)=\sum_m\frac{y^m}m$ and swap the sums; use $e^u-1\ge u$. (b) $p(n)x^n\le P(x)$; optimise in $t$. (c) Use parts from $\{2,\dots,\lfloor\sqrt n\rfloor\}$ and fill up with $1$'s.
+\end{hint}
+\begin{hint}{ex:motzkinasym}
+Find the coefficient of $z^{n+2}$ in $\sqrt{(1-3z)(1+z)}$, and put $w=3z$ to bring the singularity to $1$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:kk}
+\idea In $\sum k^k$ the last term dominates so strongly that the sum is essentially its last two terms; the question is only how to bound the rest.
+\writeup The last two terms are $n^n$ and $(n-1)^{n-1}=n^{n-1}(1-\frac1n)^{n-1}$. Now $(n-1)\ln(1-\frac1n)=-1+\frac1{2n}+O(n^{-2})$, so $(1-\frac1n)^{n-1}=e^{-1}+O(\frac1n)$, and
+$(n-1)^{n-1}=\frac{n^n}{en}+O(n^{n-2})$. The term $k=n-2$ is at most $n^{n-2}$, and each of the at most $n$ terms with $k\le n-3$ is at most $(n-3)^{n-3}\le n^{n-3}$, so together they are at most
+$n^{n-2}$. Altogether $\sum_{k\le n}k^k=n^n+\frac{n^n}{en}+O(n^{n-2})$. (The notebook finds that the $O$ term divided by $n^{n-2}$ is about $0.32$ at $n=100$.)
+\end{solution}
+
+\begin{solution}{ex:wallislaplace}
+\idea $\cos^n\theta=e^{n\ln\cos\theta}$ is a Laplace integral; the only snag is that the maximum $\theta=0$ is an end point of $[0,\frac\pi2]$, and symmetry fixes that.
+\writeup Since $\cos$ is even,
+\[
+\begin{gathered}W_n=\frac12\int_{-\pi/2}^{\pi/2}e^{n\varphi(\theta)}\dd\theta,\qq\varphi=\ln\cos.\end{gathered}
+\]
+Then $\varphi'=-\tan$, $\varphi''=-1-\tan^2$, so
+$\varphi(0)=0$, $\varphi'(0)=0$, $\varphi''(0)=-1$. The function $\varphi$ increases up to $0$ and decreases after, so its supremum for $|\theta|\ge\delta$ is
+$\ln\cos\delta<0$; and $\int e^\varphi=\int\cos=2$. By Theorem~\ref{thm:laplace} with $g=1$, $W_n\sim\frac12\sqrt{2\pi/n}=\sqrt{\frac\pi{2n}}$. Combined with $W_{2n}W_{2n+1}$ computed by
+integration by parts, this gives the Wallis product (Corollary~\ref{cor:wallis}) again.
+\end{solution}
+
+\begin{solution}{ex:quickexp}
+\idea Substitute the expansion of $H_n$ and keep every term down to $\frac1n$; since $H_n$ is multiplied by $n+1$, terms of $H_n$ of order $\frac1{n^2}$ contribute to order $\frac1n$.
+\writeup Corollary~\ref{cor:harmonic} with $M=2$ gives $H_n=\ln n+\gamma+\frac1{2n}-\frac1{12n^2}+O(n^{-4})$. Multiply by $2(n+1)=2n+2$:
+\[
+\begin{aligned}2(n+1)H_n&=2n\ln n+2\gamma n+1-\frac1{6n}\eqbr+2\ln n+2\gamma+\frac1n+O\Bigl(\frac1{n^2}\Bigr).\end{aligned}
+\]
+Subtracting $4n$ and collecting, $-\frac1{6n}+\frac1n=\frac5{6n}$, which gives the formula. The notebook checks that $n^2$ times the error is close to $-\frac16$ for $n=10,100,1000$.
+\end{solution}
+
+\begin{solution}{ex:zeta3}
+\idea The proposition trades the slow tail $\sum_{n>10}n^{-3}$, which is about $0.005$, for a few explicit terms and a remainder that is tiny because $\bar B_7$ is
+small and $x^{-10}$ decreases fast.
+\writeup With $s=3$, $(3)_{2k-1}=3\cdot4\cdots(2k+1)=\frac{(2k+1)!}2$, so the term $k$ is $\frac{B_{2k}}{(2k)!}\cdot\frac{(2k+1)!}2N^{-2-2k}=\frac{(2k+1)B_{2k}}2N^{-2k-2}$: for $k=1,2,3$
+this is $\frac1{4N^4}$, $-\frac1{12N^6}$, $\frac1{12N^8}$. The other terms are $\frac{N^{-2}}2$ and $-\frac{N^{-3}}2$. With $N=10$ this gives the formula, with $r=R_6$.
+Since $B_7=0$, the step from order $6$ to order $7$ in Theorem~\ref{thm:eulermaclaurin} adds nothing, so $R_6=R_7=\frac1{7!}\int_{10}^\infty\bar B_7(x)f^{(7)}(x)\dd x$ with
+$f^{(7)}(x)=-\frac{9!}2x^{-10}$. By Lemma~\ref{lem:bernoullifn}(c), $|\bar B_7|\le\frac{2\cdot7!\,\zeta(7)}{(2\pi)^7}$, so
+\[
+\begin{aligned}|r|&\le\frac{2\zeta(7)}{(2\pi)^7}\cdot\frac{9!}2\int_{10}^\infty\frac{\mathrm dx}{x^{10}}\eqbr=\frac{2\zeta(7)}{(2\pi)^7}\cdot\frac{8!}{2\cdot10^9}\approx1.05\cdot10^{-10},\end{aligned}
+\]
+using $\zeta(7)\le1.01$. Numerically the first sum is $1.19753198567\ldots$; the formula and the true value are
+\[
+\begin{gathered}\zeta(3)\approx1.2020569031742,\qq\zeta(3)=1.2020569031596\ldots,\end{gathered}
+\]
+so the actual error is $1.5\cdot10^{-11}$, seven times smaller than the bound.
+\end{solution}
+
+\begin{solution}{ex:partitionbound}
+\idea $P(x)$ is a sum of positive terms, so any one of them, $p(n)x^n$, is at most $P(x)$. Bounding $P$ and choosing $x$ optimally is the saddle point
+method used as an inequality.
+\writeup (a) With $x=e^{-t}$, $\ln P(x)=\sum_k-\ln(1-x^k)=\sum_k\sum_{m\ge1}\frac{x^{km}}m$, a double series of positive terms, so we may sum over $k$ first:
+$\sum_kx^{km}=\frac1{e^{mt}-1}\le\frac1{mt}$, since $e^u-1\ge u$. So $\ln P(e^{-t})\le\frac1t\sum_m\frac1{m^2}=\frac{\pi^2}{6t}$.
+
+(b) For every $t>0$, $p(n)e^{-nt}\le P(e^{-t})$, so $\ln p(n)\le nt+\frac{\pi^2}{6t}$. The right side is smallest at $t=\frac\pi{\sqrt{6n}}$, where it equals
+$2\pi\sqrt{n/6}=\pi\sqrt{2n/3}$.
+
+(c) Let $m=\lfloor\sqrt n\rfloor$. For each subset $S$ of $\{2,\dots,m\}$, the sum of $S$ is at most $\frac{m(m+1)}2\le n$ (since $m^2\le n$ and $m\le n$), so $S$ completed by
+$n-\sum S$ parts equal to $1$ is a partition of $n$. Different subsets give different partitions (read off the parts larger than $1$). There are $2^{m-1}$ subsets.
+
+The truth is in between, and much closer to (b): Hardy and Ramanujan proved in 1918 that $p(n)\sim\frac{e^{\pi\sqrt{2n/3}}}{4\sqrt3\,n}$, so $\ln p(n)\sim\pi\sqrt{2n/3}$. Their proof
+analyses $P$ near every root of unity, not just near $1$ (the circle method); it is proved in Tome~13. The notebook shows $\frac{\ln p(n)}{\pi\sqrt{2n/3}}$ creeping
+up: $0.74$ at $n=100$, $0.89$ at $n=1000$, $0.92$ at $n=2000$. The slow convergence comes from the factor $\frac1n$ in front.
+\end{solution}
+
+\begin{solution}{ex:motzkinasym}
+\idea The singularity closest to $0$ is at $z=\frac13$, where $\sqrt{1-3z}$ vanishes; the other factor $\sqrt{1+z}$ is analytic there and only contributes its value.
+\writeup For $n\ge1$, the polynomial $1-z$ does not contribute to $[z^{n+2}]$, so
+\[
+M_n=-\frac12[z^{n+2}]\sqrt{(1-3z)(1+z)}.
+\]
+With $w=3z$, $[z^N]G(z)=3^N[w^N]G(w/3)$, and $\sqrt{(1-3z)(1+z)}=(1-w)^{1/2}h(w)$ with $h(w)=\sqrt{1+w/3}$, a power series of radius $3>1$. Theorem~\ref{thm:transfer}
+with $\alpha=-\frac12$ and $\Gamma(-\frac12)=-2\sqrt\pi$ gives
+\[
+\begin{aligned}{}[w^N](1-w)^{1/2}h(w)&\sim\frac{h(1)N^{-3/2}}{\Gamma(-\frac12)}\eqbr=-\frac{1}{\sqrt3\,\sqrt\pi\,N^{3/2}},\end{aligned}
+\]
+since $h(1)=\frac2{\sqrt3}$. With $N=n+2\sim n$, $M_n\sim\frac12\cdot\frac{3^{n+2}}{\sqrt{3\pi}\,n^{3/2}}=\frac{3^{n+3/2}}{2\sqrt\pi\,n^{3/2}}$. The notebook finds the ratio $0.988$ at $n=200$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item N.~G.~de~Bruijn, \emph{Asymptotic Methods in Analysis}, North-Holland, 1958 (Dover reprint 1981). The classic: Laplace's method, saddle points,
+Euler--Maclaurin, iterated functions, all through worked examples.
+\item R.~L.~Graham, D.~E.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994, Chapter~9 (asymptotics, Euler's
+summation formula, Stirling's series).
+\item P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009, Chapters~VI and~VIII (singularity analysis and the
+saddle point method). Free online from the authors.
+\item P.~Flajolet and A.~Odlyzko, \emph{Singularity analysis of generating functions}, SIAM Journal on Discrete Mathematics 3 (1990), 216--240.
+\item E.~T.~Whittaker and G.~N.~Watson, \emph{A Course of Modern Analysis}, Cambridge, 1927, Chapter~12 (Stirling's series with the bound of
+Theorem~\ref{thm:stirlingseries}).
+\item G.~H.~Hardy, \emph{Divergent Series}, Oxford, 1949. What divergent series can mean, by the analyst who made them respectable; Chapter~1 opens
+with Abel's letter.
+\item D.~J.~Newman, \emph{Analytic Number Theory}, Springer, 1998, Chapter~I (a short proof of the Hardy--Ramanujan asymptotic for $p(n)$).
+\end{itemize}
