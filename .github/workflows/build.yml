@@ -7,7 +7,9 @@ on:
 
 concurrency:
   group: build-${{ github.ref }}
-  cancel-in-progress: true
+  # Several writing threads push to main; let a running build finish and publish.
+  # GitHub keeps at most one pending run per group, so the newest commit is built next.
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
   build:
