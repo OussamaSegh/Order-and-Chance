@@ -1,0 +1,500 @@
+\chapter{Large Deviations}
+\begin{center}\itshape
+The central limit theorem describes the usual fluctuations of an average. Insurers, engineers and physicists care about the unusual ones:\\
+the year when claims are twice the average, the code word that the noise turns into another, the magnet that chooses a direction.\\
+Their probabilities are exponentially small, and the exponent is an entropy.
+\end{center}
+
+An insurance company that collects premiums slightly above the expected claims will be ruined only if the claims of the year are far above their
+mean: an event far in the tail of the sum. The Scandinavian actuaries of the early twentieth century needed its probability, and they found that the
+Gaussian approximation is useless there. In 1932 Fredrik Esscher, a Swedish actuary, proposed a trick: change the probabilities, multiplying the law of each claim by
+$e^{\theta x}$ and renormalizing, so that the rare event becomes typical, then pay for the change with an explicit factor. Harald Cramér, who worked on
+insurance mathematics all his life, turned the trick into a theorem for a probability conference held in Geneva in 1937, published in 1938. It was the
+first \emph{large deviation} theorem.
+
+Twenty years later Ivan Sanov, in Moscow, asked the same question one level up: not ``how likely is a strange average?'' but ``how likely is a strange
+histogram?'', and found that the answer is the relative entropy of Tome~3. In the 1960s S.~R.~Srinivasa Varadhan saw a single principle behind these
+results and many others, from diffusions to statistical mechanics; the Abel Prize of 2007 was awarded to him ``for his fundamental contributions to
+probability theory and in particular for creating a unified theory of large deviations''.
+
+This chapter proves Cram\'er's theorem on the line and Sanov's theorem for finite alphabets, and draws four consequences: the shape of a rare event (the Gibbs
+conditioning principle), the best possible statistical test (a lemma of Chernoff and Stein), the asymptotics of exponential integrals (Varadhan's lemma), and the
+spontaneous magnetization of a toy magnet.
+
+\begin{reminder}[from Tome 3]
+For Bernoulli$(p)$ variables and $p<a<1$, $\frac1n\ln P(S_n\ge na)\to-I_p(a)$, where $I_p(a)=a\ln\frac ap+(1-a)\ln\frac{1-a}{1-p}$ (Tome~3, Theorem~4.7); the upper bound came
+from Markov's inequality applied to $e^{\lambda S_n}$. The relative entropy $D(\nu\,\|\,\mu)=\sum_a\nu(a)\log\frac{\nu(a)}{\mu(a)}$ is non-negative and vanishes only for $\nu=\mu$
+(Gibbs' inequality, Tome~3, Proposition~4.16). Tome~3 used $\log_2$; \emph{in this chapter all logarithms are natural}, and $D$ is measured in nats. The weak law of large
+numbers holds for i.i.d.\ variables with finite variance (Tome~3, Theorem~4.2).
+\end{reminder}
+
+\section{Cram\'er's theorem}
+
+Let $X$ be a real random variable with law $\mu$, not almost surely constant, and assume throughout this section that
+\begin{equation}\label{eq:cramercond}
+\Lambda(\theta)=\log\mathbb Ee^{\theta X}<\infty\qquad\text{for every }\theta\in\R .
+\end{equation}
+This holds for bounded, Gaussian and Poisson variables; Exercise~\ref{ex:heavyld} shows what goes wrong without it. Let $m=\mathbb EX$, and let $L<M$ be the essential
+infimum and supremum of $X$ (possibly infinite). For each $\theta$, the \emph{tilted law} is $\mu_\theta(\dd x)=e^{\theta x-\Lambda(\theta)}\mu(\dd x)$: Esscher's trick.
+
+\begin{lemma}[the cumulant generating function]\label{lem:Lambda}
+$\Lambda$ is $C^\infty$, $\Lambda'(\theta)$ is the mean of $\mu_\theta$ and $\Lambda''(\theta)>0$ its variance. The map $\Lambda'$ is an increasing bijection from $\R$ onto $(L,M)$.
+\end{lemma}
+\begin{proof}
+For $|\theta'-\theta|\le1$ and $k\ge0$, $|x|^ke^{\theta'x}\le C_k\bigl(e^{(\theta+2)x}+e^{(\theta-2)x}\bigr)$, an integrable bound, so we may differentiate $\mathbb Ee^{\theta X}$ under the
+expectation as often as we like. Then $\Lambda'=\mathbb E[Xe^{\theta X}]/\mathbb Ee^{\theta X}$ is the mean of $\mu_\theta$, and $\Lambda''$ is its variance, positive since $\mu_\theta$ has the same null sets as
+$\mu$ and is not a point mass. So $\Lambda'$ is continuous and strictly increasing, and its values lie in $(L,M)$, as means of laws carried by $[L,M]$ that are not point masses at
+an endpoint.
+
+It remains to see that $\Lambda'(\theta)\to M$ as $\theta\to\infty$ (the limit at $-\infty$ is symmetric). Let $b<b'<M$. Then
+\[
+\Lambda'(\theta)-b'=\frac{\mathbb E[(X-b')e^{\theta X}]}{\mathbb Ee^{\theta X}}\ge-\frac{\mathbb E[(b'-X)^+e^{\theta X}]}{\mathbb Ee^{\theta X}} .
+\]
+Split the numerator on the right. On $\{b\le X<b'\}$, $(b'-X)^+\le b'-b$, which contributes at most $b'-b$ to the ratio. On $\{X<b\}$, $e^{\theta X}\le e^{\theta b}$ for $\theta>0$,
+while $\mathbb Ee^{\theta X}\ge e^{\theta b'}P(X>b')$ with $P(X>b')>0$; that part of the ratio is at most $e^{-\theta(b'-b)}\mathbb E|b'-X|/P(X>b')\to0$. So
+$\liminf_{\theta\to\infty}\Lambda'(\theta)\ge b$, for every $b<M$.
+\end{proof}
+
+The \emph{rate function} is the Legendre transform
+\[
+\Lambda^*(x)=\sup_{\theta\in\R}\bigl(\theta x-\Lambda(\theta)\bigr)\in[0,\infty] .
+\]
+
+\begin{lemma}[the rate function]\label{lem:ratefn}
+\begin{enumerate}[label=(\roman*)]
+\item $\Lambda^*$ is convex and lower semicontinuous, $\Lambda^*\ge0$ and $\Lambda^*(m)=0$.
+\item If $x\ge m$, $\Lambda^*(x)=\sup_{\theta\ge0}(\theta x-\Lambda(\theta))$; if $x\le m$, the supremum may be taken over $\theta\le0$.
+\item For $x\in(L,M)$, let $\theta_x$ be the solution of $\Lambda'(\theta_x)=x$. Then $\Lambda^*(x)=\theta_xx-\Lambda(\theta_x)$, $\Lambda^*$ is $C^1$ on $(L,M)$ with
+$(\Lambda^*)'(x)=\theta_x$; it decreases on $(L,m]$ and increases on $[m,M)$.
+\item $\Lambda^*(x)=\infty$ for $x\notin[L,M]$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) A supremum of affine functions of $x$ is convex and lower semicontinuous; $\theta=0$ gives $\Lambda^*\ge0$. By Jensen, $\Lambda(\theta)\ge\theta m$, so $\theta m-\Lambda(\theta)\le0$ and $\Lambda^*(m)=0$.
+(ii) If $x\ge m$ and $\theta<0$, then $\theta x-\Lambda(\theta)\le\theta x-\theta m\le0$, which does not beat $\theta=0$. (iii) The function $\theta\mapsto\theta x-\Lambda(\theta)$ is concave with
+derivative $x-\Lambda'(\theta)$, which vanishes at $\theta_x$, so the maximum is there. By the inverse function theorem $x\mapsto\theta_x$ is $C^1$, and differentiating
+$\theta_xx-\Lambda(\theta_x)$ gives $\theta_x+(x-\Lambda'(\theta_x))\theta_x'=\theta_x$, negative for $x<m=\Lambda'(0)$ and positive for $x>m$. (iv) If $x>M$, then $\Lambda(\theta)\le\theta M$ for $\theta>0$
+and $\theta x-\Lambda(\theta)\ge\theta(x-M)\to\infty$; similarly below $L$.
+\end{proof}
+
+Four rate functions to keep in mind (Exercise~\ref{ex:ratefns}): $\frac{x^2}2$ for $N(0,1)$; $x\log\frac x\lambda-x+\lambda$ for Poisson$(\lambda)$; $x-1-\log x$ for the exponential law
+of mean $1$; and $I_p(x)$ for Bernoulli$(p)$. Figure~\ref{fig:ratefns} compares three of them with the same mean and variance: they agree near the mean,
+where the central limit theorem rules, and nowhere else.
+
+\begin{figure}[ht]
+\centering\fig{ch07-ratefns}
+\caption{Rate functions of three laws with mean $1$ and variance $1$: Gaussian $\frac{(x-1)^2}2$, Poisson$(1)$ $x\log x-x+1$, exponential $x-1-\log x$. All have curvature $1$
+at the mean, as the central limit theorem demands, but their tails differ: the exponential law makes large values cheap, the Poisson law makes them expensive.}
+\label{fig:ratefns}
+\end{figure}
+
+\begin{theorem}[Cram\'er]\label{thm:cramerR}
+Let $X_1,X_2,\dots$ be i.i.d.\ copies of $X$, satisfying~\eqref{eq:cramercond}, and $S_n=X_1+\dots+X_n$.
+\begin{enumerate}[label=(\alph*)]
+\item For every $n\ge1$: $P(S_n\ge nx)\le e^{-n\Lambda^*(x)}$ if $x\ge m$, and $P(S_n\le nx)\le e^{-n\Lambda^*(x)}$ if $x\le m$.
+\item For every closed $F\subseteq\R$, $\displaystyle\limsup_{n\to\infty}\frac1n\log P\Bigl(\frac{S_n}n\in F\Bigr)\le-\inf_F\Lambda^*$.
+\item For every open $G\subseteq\R$, $\displaystyle\liminf_{n\to\infty}\frac1n\log P\Bigl(\frac{S_n}n\in G\Bigr)\ge-\inf_G\Lambda^*$.
+\end{enumerate}
+In particular $\frac1n\log P(S_n\ge na)\to-\Lambda^*(a)$ for $m<a<M$.
+\end{theorem}
+\begin{proof}
+(a) For $\theta\ge0$, Markov's inequality gives $P(S_n\ge nx)\le e^{-n\theta x}\mathbb Ee^{\theta S_n}=e^{-n(\theta x-\Lambda(\theta))}$. Take the infimum over $\theta\ge0$ and use
+Lemma~\ref{lem:ratefn}(ii). The lower tail is the same with $\theta\le0$.
+
+(b) If $m\in F$ there is nothing to prove. Otherwise let $x_+$ be the smallest point of $F$ above $m$ and $x_-$ the largest below (if they exist; $F$ is closed). Then
+$P(S_n/n\in F)\le P(S_n\ge nx_+)+P(S_n\le nx_-)\le2e^{-n\min(\Lambda^*(x_+),\Lambda^*(x_-))}$ by (a), and this minimum is $\inf_F\Lambda^*$, because $\Lambda^*$, convex with minimum
+$0$ at $m$, is non-decreasing on $[m,\infty)$ and non-increasing on $(-\infty,m]$.
+
+(c) It suffices to show that for every $x\in G$ with $\Lambda^*(x)<\infty$ and every small $\delta>0$,
+\begin{equation}\label{eq:locallower}
+\liminf_{n\to\infty}\frac1n\log P\Bigl(\Bigl|\frac{S_n}n-x\Bigr|<\delta\Bigr)\ge-\Lambda^*(x).
+\end{equation}
+First let $x\in(L,M)$ and $\theta=\theta_x$. Under the product of tilted laws $\mu_\theta^{\otimes n}$, the density of $\mu^{\otimes n}$ is $e^{-\theta(x_1+\dots+x_n)+n\Lambda(\theta)}$. On the event
+$|S_n/n-x|<\delta$ this density is at least $e^{-n(\theta x-\Lambda(\theta))-n|\theta|\delta}$, so
+\[
+P\Bigl(\Bigl|\frac{S_n}n-x\Bigr|<\delta\Bigr)\ge e^{-n\Lambda^*(x)-n|\theta|\delta}\,P_\theta\Bigl(\Bigl|\frac{S_n}n-x\Bigr|<\delta\Bigr),
+\]
+where under $P_\theta$ the $X_i$ are i.i.d.\ with law $\mu_\theta$, of mean $x$ and finite variance. By the weak law the last probability tends to $1$, so the $\liminf$ in~\eqref{eq:locallower}
+is at least $-\Lambda^*(x)-|\theta|\delta$. The probability decreases when $\delta$ decreases, so the same bound holds with any $\delta'<\delta$ in place of $\delta$ on the right; let
+$\delta'\to0$.
+
+If $x\notin(L,M)$ but $\Lambda^*(x)<\infty$, then $x$ is a finite endpoint, say $x=M$. For $0\le t<1$ the point $x_t=tM+(1-t)m$ lies in $(m,M)$, and by convexity
+$\Lambda^*(x_t)\le t\Lambda^*(M)\le\Lambda^*(M)$. For $t$ close to $1$, $(x_t-\delta',x_t+\delta')\subseteq(x-\delta,x+\delta)$ for a small $\delta'$, and the first case applies at $x_t$.
+
+Finally, for $m<a<M$, apply (b) to $[a,\infty)$ and (c) to $(a,\infty)$; both infima equal $\Lambda^*(a)$, by monotonicity and continuity of $\Lambda^*$ on $(L,M)$.
+\end{proof}
+
+The proof of (c) is the heart of the subject. To see a rare event, \emph{change the law} so that it becomes typical, here by tilting until the mean is $x$; the cost of the
+change is the exponential of the relative entropy between the two laws, which is exactly $n\Lambda^*(x)$ (Exercise~\ref{ex:tiltentropy}). The notebook turns this into an
+algorithm, \emph{importance sampling}, which estimates probabilities of order $10^{-15}$ with a few thousand samples.
+
+How good is the exponent alone? Cram\'er's 1938 paper already contained a sharper expansion; in the following form the result is due to Bahadur and Ranga Rao
+(1960): if $X$ is not lattice,
+\[
+P(S_n\ge na)\sim\frac{e^{-n\Lambda^*(a)}}{\theta_a\sigma_a\sqrt{2\pi n}},\qquad\sigma_a^2=\Lambda''(\theta_a).
+\]
+For the Gaussian this is the tail estimate~\eqref{eq:gausstail} (Exercise~\ref{ex:gaussprefactor}). For an insurer facing $100$ independent claims with exponential law of mean $1$,
+the probability that the total exceeds $200$ is $1.84\times10^{-15}$ (it is a gamma tail, computable exactly). The bound $e^{-n\Lambda^*(2)}$ gives $4.7\times10^{-14}$, the
+Bahadur--Rao formula $1.88\times10^{-15}$, and the central limit theorem, $1-\Phi(10)$, gives $7.6\times10^{-24}$: wrong by a factor of $10^8$, and on the dangerous side.
+That is the error Cram\'er warned the actuaries about.
+
+\begin{think}
+The Gaussian approximation is excellent at $a=m+\frac c{\sqrt n}$ and terrible at $a=m+c$. Where does it stop being good? Expand $\Lambda^*$ around $m$:
+$\Lambda^*(m+h)=\frac{h^2}{2\sigma^2}-\frac{\kappa_3h^3}{6\sigma^6}+\dots$, with $\kappa_3$ the third cumulant. For which $h$, as a function of $n$, does the cubic term change $n\Lambda^*$ by
+a bounded amount?
+\end{think}
+
+\section{Types and Sanov's theorem}
+
+Now let $X$ take values in a finite alphabet $A$, with law $\mu$ such that $\mu(a)>0$ for every $a$. Write $\mathcal P(A)$ for the simplex of probability vectors on $A$, a
+compact subset of $\R^A$, and $D(\nu\,\|\,\mu)=\sum_a\nu(a)\log\frac{\nu(a)}{\mu(a)}$, a continuous function of $\nu\in\mathcal P(A)$ since $\mu>0$. The \emph{type} of a word
+$x=(x_1,\dots,x_n)\in A^n$ is its histogram $L_x(a)=\frac1n\#\{i:x_i=a\}$, and the random type of $X_1,\dots,X_n$ is the \emph{empirical measure} $L_n$. Let $\mathcal P_n$ be the set of
+possible types of words of length $n$, and $T(\nu)=\{x\in A^n:L_x=\nu\}$ the \emph{type class} of $\nu\in\mathcal P_n$. Finally $H(\nu)=-\sum_a\nu(a)\log\nu(a)$.
+
+\begin{lemma}[the method of types]\label{lem:types}
+For $\nu\in\mathcal P_n$:
+\begin{enumerate}[label=(\roman*)]
+\item $|\mathcal P_n|\le(n+1)^{|A|}$;
+\item every $x\in T(\nu)$ has $\mu^{\otimes n}(x)=e^{-n(H(\nu)+D(\nu\|\mu))}$;
+\item $(n+1)^{-|A|}e^{nH(\nu)}\le|T(\nu)|\le e^{nH(\nu)}$;
+\item $(n+1)^{-|A|}e^{-nD(\nu\|\mu)}\le P(L_n=\nu)\le e^{-nD(\nu\|\mu)}$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(i) Each $n\nu(a)$ is an integer in $\{0,\dots,n\}$. (ii) $\mu^{\otimes n}(x)=\prod_a\mu(a)^{n\nu(a)}=\exp\bigl(n\sum_a\nu(a)\log\mu(a)\bigr)$, and $\sum_a\nu\log\mu=-H(\nu)-D(\nu\|\mu)$.
+(iii) By (ii) with $\mu=\nu$ (allowing zeros, with $0^0=1$), every word of $T(\nu)$ has probability $e^{-nH(\nu)}$ under $\nu^{\otimes n}$, so $|T(\nu)|e^{-nH(\nu)}=\nu^{\otimes n}(T(\nu))\le1$.
+For the lower bound we show that $T(\nu)$ is the most likely type class under $\nu^{\otimes n}$. For $\nu'\in\mathcal P_n$, counting words,
+\[
+\frac{\nu^{\otimes n}(T(\nu'))}{\nu^{\otimes n}(T(\nu))}=\prod_a\frac{(n\nu(a))!}{(n\nu'(a))!}\,\nu(a)^{n\nu'(a)-n\nu(a)} .
+\]
+If $\nu(a)=0<\nu'(a)$ the product is $0$. Otherwise use $\frac{k!}{l!}\le k^{k-l}$ for integers $k\ge1$, $l\ge0$ (for $l\le k$ it is a product of $k-l$ factors at most $k$; for
+$l>k$ it is $1$ over a product of $l-k$ factors at least $k+1$); the factors with $\nu(a)=\nu'(a)=0$ equal $1$. Then the product is at most
+$\prod_a(n\nu(a))^{n\nu(a)-n\nu'(a)}\nu(a)^{n\nu'(a)-n\nu(a)}=n^{\,n\sum_a(\nu(a)-\nu'(a))}=1$. Summing over the at most $(n+1)^{|A|}$ type classes,
+$1\le(n+1)^{|A|}\nu^{\otimes n}(T(\nu))=(n+1)^{|A|}|T(\nu)|e^{-nH(\nu)}$. (iv) Multiply (ii) and (iii).
+\end{proof}
+
+So the probability of seeing the histogram $\nu$ is $e^{-nD(\nu\|\mu)}$, up to a polynomial factor that is invisible on the exponential scale. Boltzmann had made the same count in
+1877 for the molecules of a gas: the number of microscopic states compatible with a histogram is $e^{nH}$.
+
+\begin{theorem}[Sanov, finite alphabet]\label{thm:sanov}
+For every $\Gamma\subseteq\mathcal P(A)$, with interior $\Gamma^\circ$ and closure $\overline\Gamma$ taken in $\mathcal P(A)$,
+\[
+-\inf_{\Gamma^\circ}D(\cdot\,\|\,\mu)\le\liminf_{n\to\infty}\frac1n\log P(L_n\in\Gamma)\le\limsup_{n\to\infty}\frac1n\log P(L_n\in\Gamma)\le-\inf_{\overline\Gamma}D(\cdot\,\|\,\mu).
+\]
+\end{theorem}
+\begin{proof}
+Upper bound: by Lemma~\ref{lem:types}, $P(L_n\in\Gamma)=\sum_{\nu\in\Gamma\cap\mathcal P_n}P(L_n=\nu)\le(n+1)^{|A|}e^{-n\inf_\Gamma D}$, and $\inf_\Gamma D\ge\inf_{\overline\Gamma}D$.
+Lower bound: let $\nu\in\Gamma^\circ$. Fix $a_0\in A$, and let $\nu_n(a)=\lfloor n\nu(a)\rfloor/n$ for $a\ne a_0$ and $\nu_n(a_0)=1-\sum_{a\ne a_0}\nu_n(a)$. Then $\nu_n\in\mathcal P_n$ and
+$|\nu_n(a)-\nu(a)|\le\frac{|A|}n$ for all $a$, so $\nu_n\in\Gamma$ for large $n$, and $P(L_n\in\Gamma)\ge P(L_n=\nu_n)\ge(n+1)^{-|A|}e^{-nD(\nu_n\|\mu)}$. By continuity of $D$,
+$\liminf\frac1n\log P(L_n\in\Gamma)\ge-D(\nu\,\|\,\mu)$; take the supremum over $\nu\in\Gamma^\circ$.
+\end{proof}
+
+Sanov's theorem contains Cram\'er's for functions of $X$: if $f:A\to\R$, then $\frac1n\sum f(X_i)=\sum_af(a)L_n(a)$ is a linear function of $L_n$, and the exponent is a
+minimum of relative entropy under a linear constraint. Computing it is Gibbs' variational principle.
+
+\begin{proposition}[Gibbs' variational principle]\label{prop:gibbsvar}
+Let $f:A\to\R$, $\langle f,\nu\rangle=\sum_af(a)\nu(a)$, $\Lambda(\theta)=\log\langle e^{\theta f},\mu\rangle$, and $\mu_\theta(a)=\mu(a)e^{\theta f(a)-\Lambda(\theta)}$. For every $\nu\in\mathcal P(A)$ and $\theta\in\R$,
+\[
+D(\nu\,\|\,\mu)=\theta\langle f,\nu\rangle-\Lambda(\theta)+D(\nu\,\|\,\mu_\theta).
+\]
+Consequently, if $f$ is not constant and $\langle f,\mu\rangle\le x<\max f$, then $\min\{D(\nu\,\|\,\mu):\langle f,\nu\rangle\ge x\}=\Lambda^*(x)$, attained only at $\nu=\mu_{\theta_x}$.
+\end{proposition}
+\begin{proof}
+$\log\frac{\nu(a)}{\mu(a)}=\log\frac{\nu(a)}{\mu_\theta(a)}+\theta f(a)-\Lambda(\theta)$; average over $\nu$. Here $\Lambda$ is the cumulant generating function of $f(X)$, whose essential
+supremum is $\max f$. If $\langle f,\nu\rangle=y\ge x$, take $\theta=\theta_x\ge0$: $D(\nu\|\mu)=\theta_xy-\Lambda(\theta_x)+D(\nu\|\mu_{\theta_x})\ge\theta_xx-\Lambda(\theta_x)=\Lambda^*(x)$, with
+equality only if $\theta_x(y-x)=0$ and $\nu=\mu_{\theta_x}$; and $\nu=\mu_{\theta_x}$ does satisfy $\langle f,\nu\rangle=\Lambda'(\theta_x)=x$.
+\end{proof}
+
+The minimizer is a \emph{Gibbs measure}: among all histograms with the required average, the cheapest one tilts $\mu$ exponentially. That is why Boltzmann's distribution
+$e^{-E/kT}$ appears in physics, and the next theorem makes the statement precise.
+
+\section{The shape of a rare event}
+
+\begin{theorem}[Gibbs conditioning principle]\label{thm:gibbscond}
+Let $A$, $\mu$, $f$ be as above, $X_1,X_2,\dots$ i.i.d.\ with law $\mu$, $\langle f,\mu\rangle<x<\max f$, $E_n=\{f(X_1)+\dots+f(X_n)\ge nx\}$, and $\nu^*=\mu_{\theta_x}$. For each fixed $k$
+and $a_1,\dots,a_k\in A$,
+\[
+P(X_1=a_1,\dots,X_k=a_k\mid E_n)\longrightarrow\nu^*(a_1)\cdots\nu^*(a_k).
+\]
+\end{theorem}
+\begin{proof}
+\emph{The empirical measure concentrates.} Let $\Gamma=\{\nu:\langle f,\nu\rangle\ge x\}$, closed, so $E_n=\{L_n\in\Gamma\}$. Fix $\delta>0$ and let $K=\{\nu\in\Gamma:\max_a|\nu(a)-\nu^*(a)|\ge\delta\}$, a
+compact set on which the continuous function $D(\cdot\|\mu)$ has a minimum, larger than $\Lambda^*(x)$ by Proposition~\ref{prop:gibbsvar}: say $\Lambda^*(x)+2\eta$. By Theorem~\ref{thm:sanov},
+$P(L_n\in K)\le e^{-n(\Lambda^*(x)+\eta)}$ for large $n$. On the other side, $\Gamma^\circ$ contains $\{\nu:\langle f,\nu\rangle>x\}$, which contains $\mu_{\theta_y}$ for $x<y<\max f$, with
+$D(\mu_{\theta_y}\|\mu)=\Lambda^*(y)\to\Lambda^*(x)$ as $y\downarrow x$. So $\inf_{\Gamma^\circ}D=\Lambda^*(x)$, and $P(E_n)\ge e^{-n(\Lambda^*(x)+\eta/2)}$ for large $n$. Therefore
+$P(L_n\in K\mid E_n)\to0$.
+
+\emph{Given its type, a word is uniform.} By Lemma~\ref{lem:types}(ii), all words with type $\nu$ are equally likely, so given $L_n=\nu$ the first $k$ letters are $k$ draws without
+replacement from an urn with $n\nu(a)$ balls of colour $a$:
+\[
+P(X_1=a_1,\dots,X_k=a_k\mid L_n=\nu)=\prod_{i=1}^k\frac{(n\nu(a_i)-c_i)^+}{n-i+1},
+\]
+where $c_i\le i-1$ is the number of $j<i$ with $a_j=a_i$ (the positive part makes the formula right when the urn runs out of colour $a_i$). Each factor is in $[0,1]$
+and differs from $\nu(a_i)$ by at most $\frac{|c_i-(i-1)\nu(a_i)|}{n-i+1}\le\frac{i-1}{n-k}$, and a product of numbers in $[0,1]$ moves by at most the sum of the changes, so
+$\bigl|P(X_1=a_1,\dots,X_k=a_k\mid L_n=\nu)-\prod_i\nu(a_i)\bigr|\le\frac{k^2}{n-k}$.
+
+\emph{Conclusion.} $E_n$ depends only on $L_n$, so averaging over $L_n$ given $E_n$: the conditional probability is within $\frac{k^2}{n-k}+P(L_n\in K\mid E_n)$ of a product
+$\prod_i\nu(a_i)$ with $\max_a|\nu(a)-\nu^*(a)|<\delta$, hence within $\frac{k^2}{n-k}+P(L_n\in K\mid E_n)+k\delta$ of $\prod_i\nu^*(a_i)$. Let $n\to\infty$, then $\delta\to0$.
+\end{proof}
+
+\begin{example}[the Brandeis dice]\label{ex:brandeis}
+At a summer school at Brandeis University in 1962, Edwin Jaynes posed a problem: a die has been tossed a very large number of times, and the average number of
+spots was $4.5$ rather than $3.5$. What should we predict for the next toss? Jaynes answered with the maximum entropy principle; Theorem~\ref{thm:gibbscond} gives the
+same answer for a fair die conditioned on a rare average. With $f(a)=a$ on $\{1,\dots,6\}$ and $\mu$ uniform, solve $\Lambda'(\theta)=4.5$: $\theta=0.371$ and
+\[
+\nu^*=(0.054,\ 0.079,\ 0.114,\ 0.165,\ 0.240,\ 0.348)\quad\text{on }1,\dots,6 .
+\]
+Each die in the lucky sequence behaves as if its probabilities were tilted geometrically: not ``a few sixes and the rest normal'', but a little more of everything above
+$3.5$. The rate is $\Lambda^*(4.5)=0.178$; for $100$ dice, $P(\text{sum}\ge450)=1.5\times10^{-9}$ exactly, against the upper bound $e^{-17.8}=1.8\times10^{-8}$.
+\end{example}
+
+The conditioning principle explains why the heavy-tailed sums of Exercise~\ref{ex:heavyld} behave so differently: there the cheapest way to a large sum is one huge
+term, not a uniform tilt.
+
+\section{The best test}
+
+A coin is either fair ($\mu_0$) or biased with $P(\text{heads})=0.6$ ($\mu_1$). We see $n$ tosses and must decide. A test is a set $B\subseteq A^n$ of outcomes on which we
+declare ``fair''. It errs in two ways: rejecting a fair coin, with probability $\mu_0^{\otimes n}(B^c)$, and accepting a biased one, with probability $\mu_1^{\otimes n}(B)$. A spam filter,
+a medical screening and an A/B test all face the same trade-off. Let
+\[
+\beta_n(\varepsilon)=\min\bigl\{\mu_1^{\otimes n}(B):\ B\subseteq A^n,\ \mu_0^{\otimes n}(B^c)\le\varepsilon\bigr\}
+\]
+be the smallest second error compatible with a first error at most $\varepsilon$.
+
+\begin{theorem}[Chernoff--Stein lemma]\label{thm:chernoffstein}
+Let $\mu_0,\mu_1$ be laws on a finite set $A$ with full support. For every $0<\varepsilon<1$, $\displaystyle\frac1n\log\beta_n(\varepsilon)\to-D(\mu_0\,\|\,\mu_1)$.
+\end{theorem}
+\begin{proof}
+Write $D=D(\mu_0\|\mu_1)$ and $P_j=\mu_j^{\otimes n}$.
+
+\emph{A good test.} Fix $\delta>0$ and let $B=\{x:\max_a|L_x(a)-\mu_0(a)|<\delta\}$. By the weak law applied to each indicator $\mathbf 1\{X_i=a\}$, $P_0(B^c)\to0$, so $P_0(B^c)\le\varepsilon$ for
+large $n$. And by Lemma~\ref{lem:types}, $P_1(B)\le(n+1)^{|A|}e^{-nd_\delta}$, where $d_\delta=\min\{D(\nu\|\mu_1):\max_a|\nu(a)-\mu_0(a)|\le\delta\}\to D$ as $\delta\to0$, by continuity. So
+$\limsup\frac1n\log\beta_n(\varepsilon)\le-d_\delta$ for every $\delta$.
+
+\emph{No test is better.} The log-likelihood ratio $\frac1n\log\frac{P_0(X)}{P_1(X)}=\frac1n\sum_i\log\frac{\mu_0(X_i)}{\mu_1(X_i)}$ is an average of bounded i.i.d.\ variables of mean $D$ under $P_0$.
+By the weak law, $T=\{x:P_1(x)\ge P_0(x)e^{-n(D+\delta)}\}$ has $P_0(T)\to1$. If $P_0(B^c)\le\varepsilon$, then $P_0(B\cap T)\ge1-\varepsilon-P_0(T^c)\ge\frac{1-\varepsilon}2$ for large $n$ (uniformly in $B$), and
+\[
+P_1(B)\ge\sum_{x\in B\cap T}P_1(x)\ge e^{-n(D+\delta)}P_0(B\cap T)\ge\frac{1-\varepsilon}2e^{-n(D+\delta)} .
+\]
+So $\liminf\frac1n\log\beta_n(\varepsilon)\ge-D-\delta$.
+\end{proof}
+
+The lemma carries the names of Herman Chernoff and of the Charles Stein of the previous chapter. It says that relative entropy is not only a measure of surprise but the
+exact price of telling two hypotheses apart, and that the first error $\varepsilon$ does not affect the exponent. For the coin, $D(\mu_0\|\mu_1)=0.0204$, so pushing the second error
+down to $10^{-6}$ costs about $\log(10^6)/0.0204\approx680$ tosses, to leading order; the exact optimum for $\varepsilon=0.05$, computed in the notebook, is about $1000$, because
+the correction to the exponent is of order $n^{-1/2}$. Note the asymmetry: $D(\mu_1\|\mu_0)=0.0201$ is the exponent if the roles are exchanged.
+
+\section{Varadhan's lemma and a toy magnet}
+
+Laplace's method says that $\int e^{nF(x)}g(x)\dd x$ grows like $e^{n\max F}$. Varadhan's lemma is its probabilistic form: an exponential integral against a law satisfying
+large deviation bounds is governed by a balance between the integrand and the rate.
+
+\begin{theorem}[Varadhan's lemma, for sample means]\label{thm:varadhan}
+Under the assumptions of Theorem~\ref{thm:cramerR}, let $F:\R\to\R$ be continuous and bounded. Then
+\[
+\lim_{n\to\infty}\frac1n\log\mathbb E\,e^{nF(S_n/n)}=\sup_{x\in\R}\bigl(F(x)-\Lambda^*(x)\bigr),
+\]
+and for every closed $C\subseteq\R$,
+\[
+\limsup_{n\to\infty}\frac1n\log\mathbb E\Bigl[e^{nF(S_n/n)};\ \frac{S_n}n\in C\Bigr]\le\sup_C(F-\Lambda^*).
+\]
+\end{theorem}
+\begin{proof}
+Let $s=\sup(F-\Lambda^*)$; it is finite, between $F(m)$ and $\sup F$.
+
+\emph{Lower bound.} Let $x$ with $\Lambda^*(x)<\infty$ and $\varepsilon>0$; choose $\delta$ with $F\ge F(x)-\varepsilon$ on $(x-\delta,x+\delta)$. Then
+$\mathbb Ee^{nF(S_n/n)}\ge e^{n(F(x)-\varepsilon)}P(|S_n/n-x|<\delta)$, and Theorem~\ref{thm:cramerR}(c) gives $\liminf\frac1n\log\mathbb Ee^{nF(S_n/n)}\ge F(x)-\varepsilon-\Lambda^*(x)$.
+
+\emph{Upper bound on a closed set $C$.} Taking $\theta=\pm1$ in the definition, $\Lambda^*(y)\ge|y|-c$ with $c=\max(\Lambda(1),\Lambda(-1))$. Fix $K>0$ and choose $R$ with $R-c>\sup|F|+K+1$.
+By Theorem~\ref{thm:cramerR}(b) applied to $\{|y|\ge R\}$, $\mathbb E[e^{nF(S_n/n)};|S_n/n|\ge R]\le e^{n\sup|F|}e^{-n(R-c-1)}\le e^{-nK}$ for large $n$. Next, $F$ is uniformly
+continuous on $[-R,R]$: cover $C\cap[-R,R]$ by finitely many closed intervals $J_1,\dots,J_k$, of length so small that $F$ varies by at most $\varepsilon$ on each. By Theorem~\ref{thm:cramerR}(b) for the
+closed set $C\cap J_i$,
+\[
+\limsup_{n\to\infty}\frac1n\log\mathbb E\Bigl[e^{nF(S_n/n)};\frac{S_n}n\in C\cap J_i\Bigr]\le\sup_{C\cap J_i}F-\inf_{C\cap J_i}\Lambda^*\le\sup_{C\cap J_i}(F-\Lambda^*)+\varepsilon .
+\]
+The $\limsup$ of $\frac1n\log$ of a sum of $k+1$ terms is the largest of the $\limsup$s, so the left side of the claim is at most $\max\bigl(\sup_C(F-\Lambda^*)+\varepsilon,-K\bigr)$. Let
+$\varepsilon\to0$ and $K\to\infty$. With $C=\R$ this is the upper bound for the first statement.
+\end{proof}
+
+\emph{The Curie--Weiss magnet.} In his thesis of 1895 Pierre Curie found that iron loses its magnetism above a critical temperature, now the Curie point. In 1907 Pierre
+Weiss explained it with a ``molecular field'': each elementary magnet feels the average of all the others. The simplest model has $n$ spins $\sigma_i\in\{-1,+1\}$, an energy
+$-\frac1{2n}(\sigma_1+\dots+\sigma_n)^2$ that rewards alignment, and, at inverse temperature $\beta>0$, the Gibbs probability
+\[
+P_{n,\beta}(\sigma)=\frac1{Z_n}\exp\Bigl(\frac\beta{2n}\Bigl(\sum_i\sigma_i\Bigr)^2\Bigr),\qquad Z_n=\sum_{\sigma\in\{\pm1\}^n}\exp\Bigl(\frac\beta{2n}\Bigl(\sum_i\sigma_i\Bigr)^2\Bigr).
+\]
+The \emph{magnetization} is $m_n=\frac1n\sum_i\sigma_i$. If the $\sigma_i$ are fair independent signs, $Z_n=2^n\mathbb E\,e^{nF(m_n)}$ with $F(y)=\frac\beta2\min(y^2,1)$, which is bounded
+and continuous and equals $\frac\beta2y^2$ on $[-1,1]$, where $m_n$ lives. For a fair sign, $\Lambda(\theta)=\log\cosh\theta$ and
+\[
+\Lambda^*(y)=J(y)=\frac{1+y}2\log(1+y)+\frac{1-y}2\log(1-y)\quad\text{on }[-1,1]
+\]
+(Exercise~\ref{ex:ratefns}).
+
+\begin{theorem}[phase transition]\label{thm:curieweiss}
+$\frac1n\log Z_n\to\log2+\max_{|y|\le1}\bigl(\frac\beta2y^2-J(y)\bigr)$. If $\beta\le1$ the maximum is attained only at $y=0$; if $\beta>1$ it is attained exactly at $\pm m^*(\beta)$, where
+$m^*(\beta)$ is the unique positive solution of $m=\tanh(\beta m)$. In both cases, for every $\delta>0$, $P_{n,\beta}\bigl(\operatorname{dist}(m_n,\mathcal M)\ge\delta\bigr)\to0$ exponentially fast,
+where $\mathcal M$ is the set of maximizers.
+\end{theorem}
+\begin{proof}
+The limit is Theorem~\ref{thm:varadhan}, since $\Lambda^*=\infty$ outside $[-1,1]$. Let $g(y)=\frac\beta2y^2-J(y)$, even, continuous on $[-1,1]$, with $g'(y)=\beta y-\operatorname{artanh}y$ on
+$(-1,1)$ and $g'(y)\to-\infty$ as $y\to1$; so maximizers are interior critical points, solutions of $y=\tanh(\beta y)$. If $\beta\le1$, $\tanh(\beta y)<\beta y\le y$ for $y>0$, and $0$ is the only
+critical point. If $\beta>1$, $h(y)=\tanh(\beta y)-y$ is strictly concave on $[0,\infty)$, with $h(0)=0$, $h'(0)=\beta-1>0$ and $h(1)<0$: it has exactly one zero $m^*$ in $(0,1)$. Then
+$g'>0$ on $(0,m^*)$ and $g'<0$ on $(m^*,1)$, so $m^*$ is the maximum on $[0,1]$, and by evenness $\pm m^*$ are the maximizers, while $0$ is not one.
+
+For the concentration, let $C=\{y\in[-1,1]:\operatorname{dist}(y,\mathcal M)\ge\delta\}$, compact. On $C$ the continuous $g$ has maximum $<\max g$, say $\max g-2\eta$. Then
+\[
+P_{n,\beta}\bigl(m_n\in C\bigr)=\frac{\mathbb E[e^{nF(m_n)};m_n\in C]}{\mathbb Ee^{nF(m_n)}},
+\]
+whose numerator is at most $e^{n(\max g-\eta)}$ for large $n$ by the second part of Theorem~\ref{thm:varadhan}, and whose denominator is at least $e^{n(\max g-\eta/2)}$.
+\end{proof}
+
+At high temperature ($\beta<1$) the spins disagree and the magnet is not magnetized. Below the Curie point ($\beta>1$) the magnetization is close to $+m^*$ or $-m^*$, each with
+probability $\frac12$ by symmetry: $m^*(1.5)=0.859$, $m^*(2)=0.958$. The system must choose a direction, and the symmetric average hides it. Figure~\ref{fig:curieweiss} shows the
+function $g$ changing shape at $\beta=1$. The square-root law $m^*(\beta)\sim\sqrt{3(\beta-1)}$ near the transition is Exercise~\ref{ex:curieweiss}. At $\beta=1$ exactly, $g(y)=-\frac{y^4}{12}+O(y^6)$ is so flat that
+$m_n$ lives at the scale $n^{-1/4}$ instead of $n^{-1/2}$: Ellis and Newman (1978) proved that $n^{1/4}m_n$ converges in law to the density proportional to $e^{-u^4/12}$, a
+non-Gaussian limit for a sum of $\pm1$ spins.
+
+\begin{figure}[ht]
+\centering\fig{ch07-curieweiss}
+\caption{The function $g(y)=\frac\beta2y^2-J(y)$ of the Curie--Weiss model, whose maximum gives the free energy, for $\beta=0.8$, $1$ and $1.5$. At $\beta=1$ the maximum at $0$
+becomes flat; beyond it splits into two, at $\pm m^*(\beta)$ (dots), and the magnet magnetizes.}
+\label{fig:curieweiss}
+\end{figure}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:ratefns}
+Compute $\Lambda^*$ for $N(0,1)$, Poisson$(\lambda)$, the exponential law of mean $1$ (for which $\Lambda(\theta)=\infty$ when $\theta\ge1$; check that Theorem~\ref{thm:cramerR}(a) still
+holds), Bernoulli$(p)$, and a uniform sign $\pm1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:tiltentropy}
+Show that $D(\mu_\theta\,\|\,\mu)=\theta\Lambda'(\theta)-\Lambda(\theta)=\Lambda^*(\Lambda'(\theta))$ (for a law on a finite set, or using densities in general). So the cost of tilting the mean to $x$
+is exactly the rate $\Lambda^*(x)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:gaussprefactor}
+For $N(0,1)$ variables, check the Bahadur--Rao formula: $P(S_n\ge na)\sim\frac{e^{-na^2/2}}{a\sqrt{2\pi n}}$ for $a>0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:endpoint}
+Suppose $M=\operatorname{ess\,sup}X<\infty$ and $P(X=M)=p>0$. Show that $\Lambda^*(M)=-\log p$ and $P(S_n\ge nM)=p^n$. What if $P(X=M)=0$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:heavyld}
+Let $X\ge0$ with $P(X>t)=(1+t)^{-3}$. Show that $\Lambda(\theta)=\infty$ for $\theta>0$, that $\Lambda^*(x)=0$ for every $x\ge m$, and that for $a>m$,
+$P(S_n\ge na)$ decays only polynomially: $P(S_n\ge na)\ge\frac12P\bigl(X_1\ge n(a-m)+m+n^{2/3}\bigr)$ for large $n$. How does the large sum happen?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:testcoin}
+In the setting of Theorem~\ref{thm:chernoffstein}, suppose instead that we want both errors small, with the same exponent. Show that the likelihood ratio test
+$B=\{x:P_0(x)\ge P_1(x)\}$ has both errors at most $e^{-nC}$, where $C=-\min_{0\le s\le1}\log\sum_a\mu_0(a)^{1-s}\mu_1(a)^s$ (the \emph{Chernoff information}), and compute $C$ for the fair coin
+against $P(\text{heads})=0.6$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:curieweiss}
+In Theorem~\ref{thm:curieweiss}, show that $m^*(\beta)\sim\sqrt{3(\beta-1)}$ as $\beta\downarrow1$, and that for $\beta>1$ and small $\delta>0$, $P_{n,\beta}(|m_n-m^*|<\delta)\to\frac12$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:ratefns}
+Solve $\Lambda'(\theta)=x$. For the exponential law, $\Lambda(\theta)=-\log(1-\theta)$ for $\theta<1$; Markov's inequality only needs $\theta$ where $\Lambda$ is finite.
+\end{hint}
+\begin{hint}{ex:tiltentropy}
+$\log\frac{\dd\mu_\theta}{\dd\mu}=\theta x-\Lambda(\theta)$; integrate against $\mu_\theta$.
+\end{hint}
+\begin{hint}{ex:gaussprefactor}
+$S_n/\sqrt n$ is exactly $N(0,1)$; use~\eqref{eq:gausstail}.
+\end{hint}
+\begin{hint}{ex:endpoint}
+$\Lambda(\theta)=\theta M+\log\mathbb Ee^{\theta(X-M)}$, and $\mathbb Ee^{\theta(X-M)}\downarrow P(X=M)$ as $\theta\to\infty$.
+\end{hint}
+\begin{hint}{ex:heavyld}
+One large value and $n-1$ ordinary ones: by the weak law, $X_2+\dots+X_n\ge(n-1)m-n^{2/3}$ with probability tending to $1$.
+\end{hint}
+\begin{hint}{ex:testcoin}
+For each $s\in[0,1]$, $\mathbf 1\{P_0(x)<P_1(x)\}\le P_0(x)^{-s}P_1(x)^s$. Multiply by $P_0(x)$ and sum.
+\end{hint}
+\begin{hint}{ex:curieweiss}
+Expand $\tanh u=u-\frac{u^3}3+O(u^5)$, after checking that $m^*(\beta)\to0$. For the second part, use the symmetry $\sigma\mapsto-\sigma$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:ratefns}
+\idea Each rate function is $\theta_xx-\Lambda(\theta_x)$ at the tilt that moves the mean to $x$.
+\writeup Gaussian: $\Lambda=\frac{\theta^2}2$, $\theta_x=x$, $\Lambda^*=\frac{x^2}2$. Poisson: $\Lambda=\lambda(e^\theta-1)$, $\theta_x=\log\frac x\lambda$ for $x>0$, $\Lambda^*=x\log\frac x\lambda-x+\lambda$; at
+$x=0$, $\Lambda^*(0)=\sup_\theta(-\lambda(e^\theta-1))=\lambda$, which is the same formula with $0\log0=0$; $\Lambda^*=\infty$ for $x<0$. Exponential: $\Lambda=-\log(1-\theta)$ for $\theta<1$ and $\infty$
+otherwise; $\theta_x=1-\frac1x$, $\Lambda^*=x-1-\log x$ for $x>0$. In the proof of Theorem~\ref{thm:cramerR}(a), Markov's inequality with $\theta\in[0,1)$ gives
+$P(S_n\ge nx)\le e^{-n(\theta x-\Lambda(\theta))}$, and the supremum over these $\theta$ is still $\Lambda^*(x)$ for $x\ge1$. Bernoulli$(p)$: $\Lambda=\log(1-p+pe^\theta)$, and the
+computation of Tome~3, Theorem~4.7 gives $I_p(x)$ on $[0,1]$. Uniform sign: $X=2B-1$ with $B$ Bernoulli$(\frac12)$, so $\Lambda(\theta)=\log\cosh\theta$ and
+$\Lambda^*(y)=I_{1/2}(\frac{1+y}2)=\frac{1+y}2\log(1+y)+\frac{1-y}2\log(1-y)$, since $\frac{1+y}2\log\frac{(1+y)/2}{1/2}=\frac{1+y}2\log(1+y)$.
+\end{solution}
+
+\begin{solution}{ex:tiltentropy}
+\idea Relative entropy is the mean log-density, and the log-density of a tilt is affine.
+\writeup $D(\mu_\theta\|\mu)=\int\log\frac{\dd\mu_\theta}{\dd\mu}\dd\mu_\theta=\int(\theta x-\Lambda(\theta))\mu_\theta(\dd x)=\theta\Lambda'(\theta)-\Lambda(\theta)$, and by Lemma~\ref{lem:ratefn}(iii) with
+$x=\Lambda'(\theta)$, $\theta=\theta_x$, this is $\Lambda^*(x)$. In the proof of Theorem~\ref{thm:cramerR}(c), the product of $n$ tilted laws costs $e^{-nD(\mu_\theta\|\mu)}$ on its typical
+event: the price of making the rare event typical.
+\end{solution}
+
+\begin{solution}{ex:gaussprefactor}
+\idea For Gaussians everything is explicit: $S_n\sim N(0,n)$.
+\writeup $P(S_n\ge na)=P(Z\ge a\sqrt n)$. By~\eqref{eq:gausstail}, $\frac{x}{1+x^2}\varphi(x)\le P(Z\ge x)$, and the upper bound $P(Z\ge x)\le\frac{\varphi(x)}x$ follows from
+$\int_x^\infty\varphi(t)\dd t\le\int_x^\infty\frac txe^{-t^2/2}\frac{\dd t}{\sqrt{2\pi}}$. With $x=a\sqrt n$, $P(S_n\ge na)\sim\frac{\varphi(a\sqrt n)}{a\sqrt n}=\frac{e^{-na^2/2}}{a\sqrt{2\pi n}}$. Here $\theta_a=a$,
+$\sigma_a=1$, as in the general formula.
+\end{solution}
+
+\begin{solution}{ex:endpoint}
+\idea At the top of the support there is nothing to tilt towards: the only way to average $M$ is to be $M$ every time.
+\writeup $S_n\ge nM$ with $X_i\le M$ forces all $X_i=M$, so $P(S_n\ge nM)=p^n$. Next $\theta M-\Lambda(\theta)=-\log\mathbb Ee^{\theta(X-M)}$; as $\theta\to\infty$, $e^{\theta(X-M)}$ decreases to
+$\mathbf 1\{X=M\}$, so by monotone convergence $-\log\mathbb Ee^{\theta(X-M)}$ increases to $-\log p$, and for $\theta\le0$ the expression is at most $0$ by Lemma~\ref{lem:ratefn}(ii). So
+$\Lambda^*(M)=-\log p$, and the bound of Theorem~\ref{thm:cramerR}(a) is an equality for every $n$. If $P(X=M)=0$, then $P(S_n\ge nM)=0$ and $\Lambda^*(M)=\infty$, consistent with the convention $e^{-\infty}=0$.
+\end{solution}
+
+\begin{solution}{ex:heavyld}
+\idea Without exponential moments, a large deviation is caused by one variable doing all the work, which costs only a power of $n$.
+\writeup For $\theta>0$, $\mathbb Ee^{\theta X}\ge e^{\theta t}(1+t)^{-3}\to\infty$ as $t\to\infty$, so $\Lambda(\theta)=\infty$. For $\theta\le0$, $\theta x-\Lambda(\theta)\le\theta(x-m)\le0$ when $x\ge m$ (Jensen), so $\Lambda^*(x)=0$.
+The variance is finite ($\mathbb EX^2=2\int_0^\infty t(1+t)^{-3}\dd t<\infty$), so by Chebyshev $P(X_2+\dots+X_n<(n-1)m-n^{2/3})\le\frac{(n-1)\operatorname{Var}X}{n^{4/3}}\to0$; let $n$ be so
+large that this is at most $\frac12$. On the intersection of the independent events $\{X_1\ge n(a-m)+m+n^{2/3}\}$ and $\{X_2+\dots+X_n\ge(n-1)m-n^{2/3}\}$, the sum is
+$S_n\ge n(a-m)+m+(n-1)m=na$. So $P(S_n\ge na)\ge\frac12P(X_1\ge n(a-m)+m+n^{2/3})=\frac12\bigl(1+n(a-m)+m+n^{2/3}\bigr)^{-3}$, which is of order $n^{-3}$. The sum is large because one claim is enormous, and the others are
+typical: the opposite of the Gibbs picture.
+\end{solution}
+
+\begin{solution}{ex:testcoin}
+\idea Bound an indicator by a power of the likelihood ratio; optimizing the power is a Chernoff bound, and the exponent is symmetric in the two errors.
+\writeup On $B^c$, $P_0(x)<P_1(x)$, so for $s\in[0,1]$, $P_0(x)\le P_0(x)^{1-s}P_1(x)^s$, and $P_0(B^c)\le\sum_xP_0(x)^{1-s}P_1(x)^s=\bigl(\sum_a\mu_0(a)^{1-s}\mu_1(a)^s\bigr)^n$, since the sum
+factorizes over the coordinates. On $B$, $P_1(x)\le P_1(x)^sP_0(x)^{1-s}$, the same bound. Minimize over $s$. For the coins, $\sum_a\mu_0(a)^{1-s}\mu_1(a)^s=0.5^{1-s}(0.6^s+0.4^s)$, minimal at $s=0.498$, which gives $C=0.00508$, about a quarter of $D(\mu_0\|\mu_1)=0.0204$.
+Demanding that both errors be small costs four times as many tosses as the Chernoff--Stein regime, where one error is only required to stay below a fixed $\varepsilon$.
+\end{solution}
+
+\begin{solution}{ex:curieweiss}
+\idea Near the transition, $\tanh$ is a line minus a cube, and the positive fixed point is where the two balance.
+\writeup \emph{$m^*\to0$.} Let $h_\beta(y)=\tanh(\beta y)-y$; the proof of Theorem~\ref{thm:curieweiss} shows $h_\beta>0$ on $(0,m^*)$ and $h_\beta<0$ on $(m^*,1]$. Fix
+$y_0\in(0,1)$. As $\beta\downarrow1$, $h_\beta(y_0)\to\tanh y_0-y_0<0$, so $h_\beta(y_0)<0$ and $m^*(\beta)<y_0$ for $\beta$ close to $1$.
+\emph{The asymptotics.} Now divide $m^*=\tanh(\beta m^*)=\beta m^*-\frac{(\beta m^*)^3}3+O(m^{*5})$ by $m^*$: $1=\beta-\frac{\beta^3m^{*2}}3+O(m^{*4})$, so
+$m^{*2}=\frac{3(\beta-1)}{\beta^3}(1+O(m^{*2}))$ and $m^*\sim\sqrt{3(\beta-1)}$.
+\emph{The two states.} The Gibbs weight depends on $\sigma$ only through $(\sum\sigma_i)^2$, so $\sigma\mapsto-\sigma$ preserves $P_{n,\beta}$ and $m_n$ is symmetric. For $\delta<m^*$ the intervals
+$(m^*-\delta,m^*+\delta)$ and its mirror image are disjoint, have equal probabilities, and by Theorem~\ref{thm:curieweiss} their union has probability tending to $1$. Each tends to $\frac12$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{History.} F.~Esscher, ``On the probability function in the collective theory of risk'', \emph{Skand.\ Aktuarietidskr.}\ 15 (1932), 175--195. H.~Cram\'er, ``Sur un nouveau
+th\'eor\`eme-limite de la th\'eorie des probabilit\'es'', in \emph{Colloque consacr\'e \`a la th\'eorie des probabilit\'es}, Actualit\'es scientifiques et industrielles 736, Hermann, 1938
+(the Geneva conference of 1937); English translation by H.~Touchette, arXiv:1802.05988, whose introduction tells the story. I.~N.~Sanov, ``On the probability of large
+deviations of random variables'' (in Russian), \emph{Mat.\ Sb.}\ 42(84) (1957), 11--44. S.~R.~S.~Varadhan, ``Asymptotic probabilities and differential equations'', \emph{Comm.\ Pure
+Appl.\ Math.}\ 19 (1966), 261--286. S.~R.~S.~Varadhan, ``Large deviations'', \emph{Ann.\ Probab.}\ 36 (2008), 397--419 (his own overview, with history). Abel Prize committee, citation for
+S.~R.~S.~Varadhan, 2007. R.~R.~Bahadur and R.~Ranga Rao, ``On deviations of the sample mean'', \emph{Ann.\ Math.\ Statist.}\ 31 (1960), 1015--1027.
+\item E.~T.~Jaynes, ``Information theory and statistical mechanics'', in \emph{Statistical Physics}, Brandeis Summer Institute 1962, vol.~3, Benjamin, 1963, 181--218 (the dice).
+P.~Curie, ``Propri\'et\'es magn\'etiques des corps \`a diverses temp\'eratures'', \emph{Ann.\ Chim.\ Phys.}, 1895 (his thesis). P.~Weiss, ``L'hypoth\`ese du champ mol\'eculaire et la propri\'et\'e
+ferromagn\'etique'', \emph{J.\ Phys.\ Th\'eor.\ Appl.}\ 6 (1907), 661--690.
+\item A.~Dembo and O.~Zeitouni, \emph{Large Deviations Techniques and Applications}, 2nd ed., Springer, 1998. The standard reference: Cram\'er without condition~\eqref{eq:cramercond},
+Sanov on Polish spaces, the contraction principle, Varadhan's lemma in general, and the Gibbs conditioning principle.
+\item T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd ed., Wiley, 2006, Chapter~11. The method of types, Sanov, and the Chernoff--Stein lemma
+from the information theorist's side.
+\item R.~S.~Ellis, \emph{Entropy, Large Deviations, and Statistical Mechanics}, Springer, 1985. The Curie--Weiss model and its relatives, with full proofs. R.~S.~Ellis and
+C.~M.~Newman, ``Limit theorems for sums of dependent random variables occurring in statistical mechanics'', \emph{Z.\ Wahrsch.\ Verw.\ Gebiete} 44 (1978), 117--139.
+\item F.~den Hollander, \emph{Large Deviations}, Fields Institute Monographs 14, AMS, 2000. A short and lively introduction.
+\end{itemize}
