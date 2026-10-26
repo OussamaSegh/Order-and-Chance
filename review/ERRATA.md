@@ -412,3 +412,64 @@ An independent pass over Tome S2 (Geometry, 12 chapters, 12 notebooks). Every pr
 | Where | Kind | Problem | Fix |
 |---|---|---|---|
 | Ch. 6, Exercise 6.5 (`ex:poissonhalf`) | math | The next term of Ramanujan's expansion was given as 1/(3√(2πn)). At n = 100 the true value 0.526562 is matched by 1/2 + 2/(3√(2πn)) = 0.526596, not by 0.513298. | e^{−n} Σ_{k≤n} n^k/k! = 1/2 + 2/(3√(2πn)) + O(1/n). |
+## Review: Tome C2
+
+An independent pass over Tome C2 (Algorithms, 12 chapters, 12 notebooks). Every proof,
+every algorithm, every running-time claim and every solution was read line by line and
+re-derived: the master theorem and its lopsided and root-heavy variants, the amortised
+analyses (dynamic array, binary counter, potential functions), the information
+bound and Ford–Johnson counts, the 0–1 principle and the bitonic and odd–even networks,
+LazySelect, the AVL height bound N(h) = F_{h+3} − 1, universal and perfect (FKS) hashing,
+the log* bound for union–find, the backward analysis of skip lists, DFS and Tarjan's
+strongly connected components, Dijkstra, Bellman–Ford and Johnson, the quadrangle
+inequality for optimal search trees, Edmonds–Karp, Hopcroft–Karp, the blossom algorithm,
+successive shortest paths, the simplex method with Bland's rule, strong duality, Farkas,
+total unimodularity and matroid intersection, Karger–Stein, Schwartz–Zippel, the power of
+two choices, Morris counters, count-min and AMS sketches, Toom–Cook, the Schönhage–Strassen
+ring, Newton iteration, multipoint evaluation, Strassen inversion, Tonelli–Shanks, Cipolla,
+Korselt, the Monier–Rabin bound, the full AKS proof with its constants, Pollard's rho and
+p − 1, KMP, the Z-algorithm, Karp–Rabin, Aho–Corasick, suffix arrays and Kasai's LCP, the
+Burrows–Wheeler transform and FM-index, HyperLogLog, the vertex-cover and set-cover
+analyses, Christofides–Serdyukov, the Ibarra–Kim FPTAS, the 3/4 MAX-SAT rounding, the
+Goemans–Williamson hyperplane constant (the six-digit values of θ₁, θ₂, cos θ₂ and h(θ₂)
+recomputed), ski rental, the LRU phase argument and multiplicative weights. Numbers
+recomputed in Python independently of the notebooks: the 17 comparisons of the quicksort
+figure, the optimal search tree cost 62 for the frequencies 4,1,6,2,9,3,5, the maximum
+load of 10⁶ balls, the Pollard rho figure (μ = 2, λ = 8 for x ↦ x² + 2 mod 97 from 2),
+every pivot of the bakery dictionaries (one coefficient wrong, see below), the Klee–Minty
+solution, the AKS lemmas, the number of strong liars of 703 (wrong in the text, see
+below) and the pentagon value 5(1 + cos π/5)/2 ≈ 4.523. Every cross-tome pointer was
+checked against the `.aux` files of Tomes 0, 1, 2, 3, 4, C1 and S1 (all correct) and the
+four hard-coded in-tome numbers (Propositions 1.8, 1.9, 1.12 and Theorem 1.15) against the
+tome's own `.aux` file (all correct); pointers to Tomes C3 and C5 carry no chapter number,
+as agreed. Dates and attributions checked against sources: the Brooks quotation (the
+original has the plural), the Hoare interview (Plus Magazine, 2021), Knuth's 1970 von
+Neumann paper, Lamé 1844, Ford–Johnson 1959, Hoare 1961, Blum et al. 1973, Batcher 1968,
+AKS 2002/2004, Christofides 1976, Serdyukov 1978, van Bevern–Slugina 2020, Karlin–Klein–
+Oveis Gharan 2020/2021, Dinur–Safra 2005, Khot–Regev 2008, Feige 1998, Dinur–Steurer 2014,
+Ibarra–Kim 1975, Håstad 2001, Goemans–Williamson 1994/1995, Khot–Kindler–Mossel–O'Donnell
+2007, Sleator–Tarjan 1985, Belady 1966, Fiat et al. 1991, Littlestone–Warmuth 1994,
+Freund–Schapire 1997, and the journal references of every "Sources" section. All formats
+build (A4, phone, Kindle, EPUB, KDP print and cover, 272 printed pages) with no undefined
+references, no multiply-defined labels and no overfull box over 10pt in the A4 build; all
+12 notebooks run without error and their printed values agree with the text (the bakery
+dictionaries, the 2ⁿ − 1 Dantzig and Fibonacci-like Bland pivot counts on Klee–Minty cubes,
+162/702 strong liars for 703, the max-load tables, the comparison counts of Chapter 2).
+
+### Tome C2
+
+| Place | Severity | Problem | Fix |
+|---|---|---|---|
+| Ch. 7, the bakery after the second pivot | math | The second dictionary gives x₅ = 5/2 + 3/4 x₄ − 3/8 x₃. Substituting x₁ = 3 − 1/4 x₃ + 1/2 x₄ and x₂ = 3/2 + 1/8 x₃ − 3/4 x₄ into x₅ = 1 + x₁ − x₂ gives x₅ = 5/2 + 5/4 x₄ − 3/8 x₃ (the notebook prints the same). The optimum and the other rows are unaffected. | 5/4. |
+| Ch. 10, after the Monier–Rabin theorem | math | "703 = 19·37 has 168 strong liars among 702." A direct count gives 162 (fraction 0.2308, as plotted in the liars figure and printed by the notebook). | 162. |
+| Ch. 10, Solovay–Strassen | text | "A few months before Rabin, in 1977, Solovay and Strassen had published another randomised test": Chapter 8 dates Rabin's paper to 1976 and the Solovay–Strassen paper is from 1977, so the order was reversed. | "At about the same time, in 1977, …". |
+| Ch. 12, opening | text | "For forty-five years nobody could beat the factor 3/2": 1976 to 2020 is forty-four years. | "For more than forty years". |
+| Ch. 3, epigraph | text | Brooks's sentence was quoted with "flowchart … it'll be obvious"; the original (The Mythical Man-Month, Ch. 9) has "flowcharts … they'll be obvious". | Wording of the original. |
+| Ch. 3, skip-list search length | text | The backward walk "until it reaches level L or the sentinel" is bounded by the waiting time for L heads, but once at the sentinel every step is up, not a coin flip; the bound still holds (those steps only shorten the walk) and the proof now says so. | One parenthesis. |
+| Ch. 7, dual of matroid intersection | layout | The one-line display of the dual program overflowed the line by 14pt in the KDP print format and by 117pt on the phone format. | Objective and constraints on two lines. |
+
+### Notebooks
+
+| Notebook | Problem | Fix |
+|---|---|---|
+| Tome C2, ch. 1–12 | All run to completion (about 7 minutes in all); the numbers printed agree with the chapters after the two fixes above. The chapter 7 notebook reports two random programs on which SciPy's HiGHS disagrees with its exact simplex ("unbounded"); checked by hand and with HiGHS's presolve switched off, the programs are unbounded and the notebook is right. | — |
