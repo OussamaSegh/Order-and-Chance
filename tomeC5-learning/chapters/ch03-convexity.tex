@@ -1,0 +1,659 @@
+\chapter{Convexity and Duality}\label{ch:convexity}
+
+\begin{center}\itshape
+In fact the great watershed in optimization isn't between linearity and nonlinearity, but convexity and nonconvexity.\\
+\upshape(R.~Tyrrell Rockafellar, 1993)
+\end{center}
+
+Some time around 1640, Pierre de Fermat, a magistrate in Toulouse who did mathematics in his letters, sent a challenge to Evangelista Torricelli,
+Galileo's successor in Florence: given three points in the plane, find the point whose total distance to the three is smallest. Think of three towns
+that want to share a railway station and pay for the track by the mile. Torricelli solved it, and the answer is pure geometry: if every angle of the
+triangle is below $120^\circ$, the best point is the one from which the three towns are seen at angles of exactly $120^\circ$ to each other; otherwise it is the
+vertex with the obtuse angle. Bonaventura Cavalieri published the $120^\circ$ property in 1647 and Torricelli's pupil Vincenzo Viviani published the
+solution in 1659.
+
+Two centuries later, in 1846, a schoolteacher named Fasbender noticed something stranger. Draw any equilateral triangle whose three sides pass through
+the three towns. Its height is \emph{never larger} than the total distance from any point to the towns, and the largest such triangle has height
+\emph{exactly} equal to the smallest total distance. A minimum problem over points equals a maximum problem over triangles. Harold Kuhn, who dug up
+this history in 1974, saw in it the earliest example of a pair of dual nonlinear programs.
+
+This chapter is about that phenomenon. Convex problems come with a mirror problem, the dual, whose values bound the original from the other side,
+and under a mild condition the two meet. The meeting point is a certificate: to convince someone that $6.541$ kilometres of track is the least possible,
+you do not need to search the plane, you show them a triangle. The tools are separating hyperplanes, the Fenchel conjugate and the Lagrangian, and
+the payoffs include the conditions of Karush, Kuhn and Tucker, the water-filling rule for sharing power between noisy channels, the maximum entropy
+principle that makes exponential families appear in Chapter~8, and von Neumann's minimax theorem for games. Linear programming duality, proved by
+the simplex method in Tome~C2, Chapter~7, reappears as a special case.
+
+\begin{think}
+The towns are at $(0,0)$, $(4,0)$ and $(1,3)$. A station at the centre of gravity $(\frac53,1)$ needs $6.611$ units of track. Is the
+optimum much better? And what kind of object could \emph{prove} that no station needs less than some number?
+\end{think}
+
+\section{Convex sets and separation}\label{sec:separation}
+
+A set $C\subseteq\R^n$ is \emph{convex} if it contains the segment between any two of its points: $x,y\in C$ and $t\in[0,1]$ give $(1-t)x+ty\in C$. Intersections of convex
+sets are convex; balls, half-spaces $\{x:a^{\mathsf T}x\le\alpha\}$, polyhedra and the cone of positive semidefinite matrices are convex. The \emph{convex hull} $\operatorname{conv}S$ is
+the smallest convex set containing $S$, the set of all convex combinations $\sum_it_ix_i$ of finitely many points of $S$ ($t_i\ge0$, $\sum_it_i=1$).
+
+\begin{lemma}[projection]\label{lem:projection}
+Let $C\subseteq\R^n$ be non-empty, closed and convex, and $z\in\R^n$. There is a unique point $p=P_C(z)\in C$ nearest to $z$, and it is characterised by
+\[
+(z-p)^{\mathsf T}(y-p)\le0\qquad\text{for all }y\in C.
+\]
+\end{lemma}
+\begin{proof}
+Fix $y_0\in C$. A nearest point, if any, lies in the compact set $C\cap\{y:\|y-z\|\le\|y_0-z\|\}$, on which the continuous function $\|y-z\|$ attains its minimum: so a nearest point $p$ exists.
+For $y\in C$ and $t\in(0,1]$, $p+t(y-p)\in C$, so $\|z-p-t(y-p)\|^2\ge\|z-p\|^2$, that is $-2t(z-p)^{\mathsf T}(y-p)+t^2\|y-p\|^2\ge0$; divide by $t$ and let $t\to0$ to get
+the inequality. Conversely, if $p\in C$ satisfies the inequality, then for every $y\in C$,
+\[
+\|z-y\|^2=\|z-p\|^2+\|p-y\|^2-2(z-p)^{\mathsf T}(y-p)\ge\|z-p\|^2+\|p-y\|^2,
+\]
+so $p$ is nearest, and any other nearest point $y$ has $\|p-y\|=0$.
+\end{proof}
+
+\begin{theorem}[separating a point]\label{thm:pointsep}
+If $C\subseteq\R^n$ is non-empty, closed and convex and $z\notin C$, there is $a\in\R^n$ with $a^{\mathsf T}y<a^{\mathsf T}z$ for all $y\in C$; one can take $a=z-P_C(z)$.
+\end{theorem}
+\begin{proof}
+Let $p=P_C(z)$ and $a=z-p\ne0$. By Lemma~\ref{lem:projection}, $a^{\mathsf T}y\le a^{\mathsf T}p=a^{\mathsf T}z-\|a\|^2<a^{\mathsf T}z$.
+\end{proof}
+
+To separate two convex sets that may touch, we need to know that the closure of a convex set adds nothing to its interior.
+
+\begin{lemma}\label{lem:intclosure}
+If $K\subseteq\R^n$ is convex, then every interior point of $\overline K$ lies in $K$.
+\end{lemma}
+\begin{proof}
+Let $x$ be interior to $\overline K$, with the ball $B(x,r)\subseteq\overline K$. Choose $n+1$ points $w_0,\dots,w_n$ in $B(x,r)$, the vertices of a simplex with $x$ in its interior,
+so that $x=\sum_jt_jw_j$ with all barycentric coordinates $t_j>0$. The barycentric coordinates of $x$ with respect to $n+1$ affinely independent points are the solution of
+the linear system $\sum_jt_jw_j=x$, $\sum_jt_j=1$, and depend continuously on the points (Cramer's rule). Each $w_j$ is a limit of points of $K$; choosing
+$y_j\in K$ close enough to $w_j$, the coordinates of $x$ with respect to $y_0,\dots,y_n$ stay positive, so $x\in\operatorname{conv}\{y_0,\dots,y_n\}\subseteq K$.
+\end{proof}
+
+\begin{theorem}[separation of convex sets]\label{thm:separation}
+Let $C,D\subseteq\R^n$ be non-empty, convex and disjoint. There are $a\ne0$ and $\alpha\in\R$ with
+\[
+a^{\mathsf T}x\ge\alpha\ge a^{\mathsf T}y\qquad\text{for all }x\in C,\ y\in D.
+\]
+\end{theorem}
+\begin{proof}
+The set $K=C-D=\{x-y:x\in C,y\in D\}$ is convex and does not contain $0$. By Lemma~\ref{lem:intclosure}, $0$ is not interior to $\overline K$, so there are points $z_k\notin\overline K$ with
+$z_k\to0$. By Theorem~\ref{thm:pointsep} applied to $\overline K$ and $z_k$, there are unit vectors $a_k$ with $a_k^{\mathsf T}w<a_k^{\mathsf T}z_k$ for all $w\in K$. A subsequence of
+$(a_k)$ converges to a unit vector $b$, and in the limit $b^{\mathsf T}w\le0$ on $K$. Put $a=-b$: then $a^{\mathsf T}x\ge a^{\mathsf T}y$ for all $x\in C$, $y\in D$, and
+$\alpha=\inf_{x\in C}a^{\mathsf T}x$ is finite and works.
+\end{proof}
+
+In infinite dimension the same statement needs one of the sets to be open, and it is the geometric Hahn--Banach theorem (Tome~7, Theorem~1.6). In
+$\R^n$ nothing is needed, but separation may not be strict: the disjoint closed convex sets $\{(s,t):s>0,\ st\ge1\}$ and $\{(s,t):t\le0\}$ can be
+separated only by the horizontal axis, which touches neither (Exercise~\ref{ex:nostrict}).
+
+\section{Convex functions}\label{sec:convexfunctions}
+
+We allow the value $+\infty$, which encodes constraints: a function $f:\R^n\to(-\infty,+\infty]$ is \emph{convex} if
+$f((1-t)x+ty)\le(1-t)f(x)+tf(y)$ for $t\in[0,1]$, equivalently if its \emph{epigraph} $\operatorname{epi}f=\{(x,s):s\ge f(x)\}$ is a convex subset of $\R^{n+1}$. Its
+\emph{domain} $\operatorname{dom}f=\{f<\infty\}$ is then convex; $f$ is \emph{proper} if the domain is not empty, and \emph{closed} if the epigraph is closed (that is, $f$ is lower
+semicontinuous). The \emph{indicator} $\iota_C$ of a set, $0$ on $C$ and $+\infty$ outside, is convex exactly when $C$ is. Jensen's inequality
+$f(\mathbb EX)\le\mathbb Ef(X)$ was proved in Tome~0, Theorem~4.2, and for random variables in Tome~3, Theorem~4.14.
+
+\begin{proposition}[first and second order tests]\label{prop:convextests}
+Let $f$ be differentiable on an open convex set $U\subseteq\R^n$.
+\begin{enumerate}
+\item $f$ is convex on $U$ if and only if $f(y)\ge f(x)+\nabla f(x)^{\mathsf T}(y-x)$ for all $x,y\in U$.
+\item If $f$ is twice differentiable, $f$ is convex on $U$ if and only if its Hessian $\nabla^2f(x)$ is positive semidefinite for every $x\in U$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+Both properties hold on $U$ if and only if they hold on every segment, so it suffices to look at $\phi(t)=f(x+t(y-x))$, $t$ in an open interval containing $[0,1]$, with
+$\phi'(t)=\nabla f(x+t(y-x))^{\mathsf T}(y-x)$ and $\phi''(t)=(y-x)^{\mathsf T}\nabla^2f(\cdot)(y-x)$. (1) If $f$ is convex, $\frac{\phi(t)-\phi(0)}t\le\phi(1)-\phi(0)$ for
+$t\in(0,1]$, and letting $t\to0$ gives $\phi'(0)\le\phi(1)-\phi(0)$, the inequality. Conversely, if the inequality holds, apply it at $z=(1-t)x+ty$ towards $x$ and towards $y$,
+and add the two results with weights $1-t$ and $t$: the gradient terms cancel and $(1-t)f(x)+tf(y)\ge f(z)$. (2) A function of one variable is convex if and only if
+its derivative is non-decreasing, which by the mean value theorem holds if and only if $\phi''\ge0$; and $\phi''\ge0$ for all segments is the positive
+semidefiniteness of the Hessian.
+\end{proof}
+
+So a differentiable convex function lies above all its tangent planes, and a point where the gradient vanishes is a \emph{global} minimum. This is the
+watershed of the epigraph: for convex problems, local information certifies global optimality. Functions that are not differentiable, like the distance
+$\|x-a\|$ at $x=a$, still have one-sided derivatives.
+
+\begin{lemma}\label{lem:dirderiv}
+Let $f:\R^n\to\R$ be convex. For every $x$ and $d$ the \emph{directional derivative} $f'(x;d)=\lim_{t\downarrow0}\frac{f(x+td)-f(x)}t$ exists, and
+$f(x+d)\ge f(x)+f'(x;d)$. Hence $x$ minimises $f$ if and only if $f'(x;d)\ge0$ for every direction $d$.
+\end{lemma}
+\begin{proof}
+For $0<s<t$, convexity applied to $x+sd=(1-\frac st)x+\frac st(x+td)$ shows that the quotient $q(t)=\frac{f(x+td)-f(x)}t$ satisfies $q(s)\le q(t)$. Applied to
+$x=\frac1{1+t}(x+td)+\frac t{1+t}(x-d)$, it shows $q(t)\ge f(x)-f(x-d)$. A non-decreasing function bounded below has a limit as $t\downarrow0$, and $q(1)\ge\lim q$ is the
+inequality. If $f'(x;d)\ge0$ for all $d$, then $f(x+d)\ge f(x)$ for all $d$; the converse is clear.
+\end{proof}
+
+\begin{theorem}[Torricelli; Cavalieri, 1647]\label{thm:fermat}
+Let $a_1,a_2,a_3$ be three points of the plane, not on a line, and $f(x)=\sum_i\|x-a_i\|$. Then $f$ has a unique minimiser $x_*$.
+\begin{enumerate}
+\item If the angle of the triangle at $a_1$ is at least $120^\circ$, then $x_*=a_1$.
+\item If all angles are below $120^\circ$, $x_*$ is the unique point at which the unit vectors $u_i=(a_i-x_*)/\|a_i-x_*\|$ satisfy $u_1+u_2+u_3=0$, that is, from which each side is
+seen under an angle of $120^\circ$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+$f$ is convex, as a sum of norms of affine functions, and continuous, and $f(x)\ge\|x\|-\sum\|a_i\|$ tends to infinity, so $f$ attains its minimum on a large closed disc. Restricted to a
+line, $\|x-a\|$ is strictly convex unless the line passes through $a$ (the graph is then the hyperbola-like curve $t\mapsto\sqrt{t^2+h^2}$ with $h>0$); since no line contains all three
+points, $f$ is strictly convex on every line, and two minimisers would give a third, their midpoint, with smaller value. So the minimiser is unique.
+
+At a point $x$ different from the $a_i$, $f$ is differentiable with $\nabla f(x)=-\sum_iu_i$, the $u_i$ being the unit vectors from $x$ towards the $a_i$. It vanishes if and
+only if three unit vectors sum to zero, which happens if and only if they make pairwise angles of $120^\circ$: indeed $\|u_1+u_2\|^2=\|u_3\|^2$ reads $2+2u_1^{\mathsf T}u_2=1$.
+
+At $a_1$, put $v_j=(a_j-a_1)/\|a_j-a_1\|$ for $j=2,3$. The term $\|a_1+td-a_1\|=t\|d\|$ and the two differentiable terms give $f'(a_1;d)=\|d\|-(v_2+v_3)^{\mathsf T}d$, which is
+$\ge0$ for every $d$ if and only if $\|v_2+v_3\|\le1$, that is $2+2v_2^{\mathsf T}v_3\le1$, an angle at $a_1$ of at least $120^\circ$. By Lemma~\ref{lem:dirderiv}, $a_1$ is the minimiser in case (1).
+In case (2) no vertex is a minimiser, so $x_*$ is a point where the gradient vanishes, and it is unique.
+\end{proof}
+
+For the towns of the \emph{Pause and think} all angles are below $120^\circ$ (they are $71.6^\circ$, $45^\circ$ and $63.4^\circ$), and the station goes to
+$x_*\approx(1.302,1.047)$ with $f(x_*)\approx6.541$: the centre of gravity was only $1\%$ worse. Endre Weiszfeld found in 1937 the iteration
+$x\leftarrow\sum_ia_i\|x-a_i\|^{-1}/\sum_i\|x-a_i\|^{-1}$, whose fixed points are exactly the points where the gradient vanishes, and it is how the notebook finds $x_*$
+(Kuhn proved in 1973 that it converges, unless it lands on one of the $a_i$).
+
+Now Fasbender's triangle. For any unit vectors, or more generally any $v_1,v_2,v_3$ with $\|v_i\|\le1$ and $v_1+v_2+v_3=0$, and any point $x$, Cauchy--Schwarz gives
+\begin{equation}\label{eq:fasbender}
+f(x)=\sum_i\|a_i-x\|\ge\sum_iv_i^{\mathsf T}(a_i-x)=\sum_iv_i^{\mathsf T}a_i,
+\end{equation}
+because $\sum_iv_i^{\mathsf T}x=0$. The left side does not depend on the $v_i$, the right side does not depend on $x$: every admissible triple $(v_i)$ certifies a lower bound for the
+whole problem. In case (2), the triple $v_i=u_i$ makes~\eqref{eq:fasbender} an equality at $x=x_*$, so
+\[
+\min_x f(x)=\max\Bigl\{\sum_iv_i^{\mathsf T}a_i:\ \|v_i\|\le1,\ v_1+v_2+v_3=0\Bigr\}.
+\]
+When the $v_i$ are unit vectors at $120^\circ$, the lines through $a_i$ perpendicular to $v_i$ bound an equilateral triangle, and $\sum_iv_i^{\mathsf T}a_i$ is its height, by Viviani's
+theorem on the distances from an interior point to the sides of an equilateral triangle (Exercise~\ref{ex:viviani}). This is the picture of Figure~\ref{fig:fermat}: the
+minimum over stations equals the maximum over circumscribed equilateral triangles. The rest of the chapter turns this trick into a theory.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-fermat}
+\caption{The Fermat--Torricelli point of the towns $(0,0)$, $(4,0)$, $(1,3)$, with the three roads at $120^\circ$, and Fasbender's dual certificate: the largest equilateral
+triangle whose sides pass through the towns, perpendicular to the roads. Its height equals the total length of the roads, $6.541$.}
+\label{fig:fermat}
+\end{figure}
+
+\section{The Fenchel conjugate}\label{sec:conjugate}
+
+A closed convex set is the intersection of the half-spaces that contain it (Theorem~\ref{thm:pointsep}). The analogue for functions: a closed convex function is the supremum
+of the affine functions below it. The affine functions $x\mapsto y^{\mathsf T}x-\beta$ below $f$ with a given slope $y$ are those with $\beta\ge\sup_x(y^{\mathsf T}x-f(x))$, and the best
+intercept defines the conjugate.
+
+\begin{definition}\label{def:conjugate}
+The \emph{Fenchel conjugate} of $f:\R^n\to(-\infty,+\infty]$ is $f^*(y)=\sup_x\bigl(y^{\mathsf T}x-f(x)\bigr)$, and its \emph{biconjugate} is $f^{**}=(f^*)^*$.
+\end{definition}
+
+Whatever $f$ is, $f^*$ is a supremum of affine functions of $y$, hence convex and closed. Directly from the definition comes the \emph{Fenchel--Young inequality}
+\[
+f(x)+f^*(y)\ge y^{\mathsf T}x,
+\]
+and so $f^{**}(x)=\sup_y(y^{\mathsf T}x-f^*(y))\le f(x)$. Figure~\ref{fig:conjugate} shows the geometry: $-f^*(y)$ is where the lowest line of slope $y$ touching the graph
+crosses the vertical axis. Some conjugates to remember (Exercise~\ref{ex:conjugates}): $\frac12\|x\|^2$ is its own conjugate; the conjugate of $e^x$ is $y\ln y-y$ for $y\ge0$
+(with $0\ln0=0$) and $+\infty$ for $y<0$; the conjugate of a norm is the indicator of the unit ball of the dual norm; and the conjugate of the \emph{log-sum-exp} function
+$\ln\sum_je^{x_j}$ is the negative entropy $\sum_jy_j\ln y_j$ on the probability simplex, $+\infty$ elsewhere (Exercise~\ref{ex:logsumexp}). The last pair is the heart of the maximum
+entropy principle of Section~\ref{sec:kkt}.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-conjugate}
+\caption{The conjugate read off the graph. For each slope $y$, the line $x\mapsto yx-f^*(y)$ is the highest line of slope $y$ below $f$; it touches the graph where $f'(x)=y$.
+Here $f(x)=\frac{x^4}4-x$ and $y=1$, and the supremum of all these lines gives $f$ back: $f^{**}=f$.}
+\label{fig:conjugate}
+\end{figure}
+
+\begin{theorem}[Fenchel, 1949; Moreau, 1962]\label{thm:fenchelmoreau}
+If $f:\R^n\to(-\infty,+\infty]$ is proper, convex and closed, then $f^{**}=f$.
+\end{theorem}
+\begin{proof}
+\emph{Step 1: $f$ has an affine minorant.} Take $x_1\in\operatorname{dom}f$. The point $(x_1,f(x_1)-1)$ is not in the closed convex set $\operatorname{epi}f\subseteq\R^{n+1}$, so by
+Theorem~\ref{thm:pointsep} there is $(a,\alpha)\in\R^n\times\R$ with $a^{\mathsf T}x+\alpha s<a^{\mathsf T}x_1+\alpha(f(x_1)-1)$ for all $(x,s)\in\operatorname{epi}f$. Letting $s\to\infty$ shows
+$\alpha\le0$, and $(x,s)=(x_1,f(x_1))$ excludes $\alpha=0$. Dividing by $-\alpha>0$: $f(x)\ge b^{\mathsf T}x-\beta$ for all $x$, with $b=-a/\alpha$ and some $\beta\in\R$. In particular
+$f^*(b)\le\beta<\infty$.
+
+\emph{Step 2.} We know $f^{**}\le f$. Suppose $f^{**}(x_0)<f(x_0)$ for some $x_0$; then $f^{**}(x_0)$ is finite (it is at least $b^{\mathsf T}x_0-f^*(b)>-\infty$), and the point
+$(x_0,f^{**}(x_0))$ lies outside $\operatorname{epi}f$. Separate it strictly: some $(a,\alpha)$ and $c$ satisfy $a^{\mathsf T}x+\alpha s\le c<a^{\mathsf T}x_0+\alpha f^{**}(x_0)$ for all
+$(x,s)\in\operatorname{epi}f$, and again $\alpha\le0$.
+
+If $\alpha<0$, scale to $\alpha=-1$: then $a^{\mathsf T}x-f(x)\le c$ for all $x$, that is $f^*(a)\le c$, and $f^{**}(x_0)\ge a^{\mathsf T}x_0-f^*(a)\ge a^{\mathsf T}x_0-c>f^{**}(x_0)$, a
+contradiction.
+
+If $\alpha=0$, then $a^{\mathsf T}x\le c<a^{\mathsf T}x_0$ for $x\in\operatorname{dom}f$: the hyperplane is vertical. Tilt the minorant of Step~1 with it: for $\lambda\ge0$ and
+$x\in\operatorname{dom}f$, $f(x)\ge b^{\mathsf T}x-\beta+\lambda(a^{\mathsf T}x-c)$, so $f^*(b+\lambda a)\le\beta+\lambda c$ and
+\[
+f^{**}(x_0)\ge(b+\lambda a)^{\mathsf T}x_0-\beta-\lambda c=b^{\mathsf T}x_0-\beta+\lambda(a^{\mathsf T}x_0-c)\xrightarrow[\lambda\to\infty]{}+\infty,
+\]
+contradicting the finiteness of $f^{**}(x_0)$.
+\end{proof}
+
+For a function that is not convex, $f^{**}$ is its \emph{convex envelope}, the largest closed convex function below it (Exercise~\ref{ex:envelope}): conjugating twice
+convexifies, which is how the notebook draws convex envelopes.
+
+\section{Lagrange duality}\label{sec:lagrange}
+
+The general problem of this book's optimisation chapters is
+\begin{equation}\label{eq:primalconvex}
+\text{minimise }f_0(x)\quad\text{subject to}\quad f_i(x)\le0\ (1\le i\le m),\qquad Ax=b,
+\end{equation}
+with $f_0,\dots,f_m:\R^n\to\R$ and $A\in\R^{p\times n}$; it is a \emph{convex program} when $f_0,\dots,f_m$ are convex. Let $p^*$ be its optimal value (the infimum over feasible points,
+$+\infty$ if there are none). Joseph-Louis Lagrange's idea, in his \emph{M\'ecanique analytique} of 1788, was to price the constraints: the \emph{Lagrangian} is
+\[
+L(x,\lambda,\nu)=f_0(x)+\sum_{i=1}^m\lambda_if_i(x)+\nu^{\mathsf T}(Ax-b),\qquad\lambda\in\R^m,\ \nu\in\R^p,
+\]
+and the \emph{dual function} is $g(\lambda,\nu)=\inf_xL(x,\lambda,\nu)$, an infimum of affine functions of $(\lambda,\nu)$, hence concave, possibly $-\infty$.
+
+\begin{proposition}[weak duality]\label{prop:weakdualityc}
+For every $\lambda\ge0$ and $\nu$, $g(\lambda,\nu)\le p^*$. Hence the \emph{dual problem}, maximise $g(\lambda,\nu)$ subject to $\lambda\ge0$, has value $d^*\le p^*$.
+\end{proposition}
+\begin{proof}
+If $x$ is feasible and $\lambda\ge0$, then $\lambda_if_i(x)\le0$ and $Ax-b=0$, so $g(\lambda,\nu)\le L(x,\lambda,\nu)\le f_0(x)$. Take the infimum over feasible $x$.
+\end{proof}
+
+Weak duality holds for every problem, convex or not, and it is often all one needs: a dual feasible point is a certificate of a lower bound, as Fasbender's
+triangle was. The difference $p^*-d^*$ is the \emph{duality gap}. For convex programs it vanishes under a condition that is usually easy to check.
+
+\begin{theorem}[Slater, 1950]\label{thm:slater}
+Let~\eqref{eq:primalconvex} be a convex program with $p^*$ finite, and suppose there is a \emph{strictly feasible} point: $\bar x$ with $f_i(\bar x)<0$ for all $i$ and $A\bar x=b$. Then
+$d^*=p^*$, and the dual optimum is attained: there are $\lambda^*\ge0$ and $\nu^*$ with $g(\lambda^*,\nu^*)=p^*$.
+\end{theorem}
+\begin{proof}
+Since $\bar x$ is feasible, the system $Ax=b$ is consistent, and removing equations that are linear combinations of others changes neither the feasible set nor
+$p^*$; a dual solution of the reduced problem extends by zero multipliers. So we may assume that $A$ has full row rank. Consider the convex sets of $\R^m\times\R^p\times\R$
+\[
+\mathcal A=\{(u,v,t):\ \exists x\ \ f_i(x)\le u_i\ (\forall i),\ Ax-b=v,\ f_0(x)\le t\},\qquad\mathcal B=\{(0,0,s):s<p^*\}.
+\]
+They are disjoint, since a point of $\mathcal A$ with $u\le0$, $v=0$ comes from a feasible $x$ with $f_0(x)\le t$, so $t\ge p^*$. By Theorem~\ref{thm:separation} there are
+$(\lambda,\nu,\mu)\ne0$ and $\alpha$ with $\lambda^{\mathsf T}u+\nu^{\mathsf T}v+\mu t\ge\alpha$ on $\mathcal A$ and $\mu s\le\alpha$ for all $s<p^*$. As $\mathcal A$ is unchanged when $u$ or $t$ increase,
+$\lambda\ge0$ and $\mu\ge0$; and $\mu p^*\le\alpha$. Taking $u_i=f_i(x)$, $v=Ax-b$, $t=f_0(x)$:
+\begin{equation}\label{eq:slaterkey}
+\mu f_0(x)+\sum_i\lambda_if_i(x)+\nu^{\mathsf T}(Ax-b)\ge\mu p^*\qquad\text{for all }x.
+\end{equation}
+If $\mu>0$, divide by $\mu$: $L(x,\lambda/\mu,\nu/\mu)\ge p^*$ for all $x$, so $g(\lambda/\mu,\nu/\mu)\ge p^*$, and weak duality gives equality. If $\mu=0$, \eqref{eq:slaterkey} at
+$x=\bar x$ gives $\sum_i\lambda_if_i(\bar x)\ge0$ with every $f_i(\bar x)<0$ and $\lambda\ge0$, so $\lambda=0$; then $\nu\ne0$ and $\nu^{\mathsf T}(Ax-b)\ge0$ for all $x$. An affine function
+bounded below on $\R^n$ is constant, so $A^{\mathsf T}\nu=0$, which for $A$ of full row rank forces $\nu=0$: a contradiction.
+\end{proof}
+
+Without a strictly feasible point the theorem can fail, and Exercise~\ref{ex:slaterfail} shows two ways. For linear programs, however, no Slater condition is needed: a
+feasible linear program with finite value always has zero duality gap (Tome~C2, Theorem~7.7, proved there by the simplex method). Let us see the Lagrangian
+produce the linear programming dual. For the program, minimise $c^{\mathsf T}x$ subject to $Ax=b$ and $-x\le0$,
+\[
+g(\mu,\nu)=\inf_x\bigl((c-\mu+A^{\mathsf T}\nu)^{\mathsf T}x-b^{\mathsf T}\nu\bigr)=\begin{cases}-b^{\mathsf T}\nu&\text{if }c-\mu+A^{\mathsf T}\nu=0,\\-\infty&\text{otherwise.}\end{cases}
+\]
+With $y=-\nu$ and $\mu=c-A^{\mathsf T}y\ge0$, the dual is: maximise $b^{\mathsf T}y$ subject to $A^{\mathsf T}y\le c$, the dual of Tome~C2, Chapter~7, in another standard form.
+
+\section{The conditions of Karush, Kuhn and Tucker}\label{sec:kkt}
+
+When the functions are differentiable, zero duality gap becomes a system of equations and inequalities. William Karush wrote it down in his 1939 master's
+thesis at the University of Chicago, which nobody read; Harold Kuhn and Albert Tucker found it again in 1951, and the conditions now carry all three names.
+
+\begin{theorem}[Karush, 1939; Kuhn and Tucker, 1951]\label{thm:kkt}
+Let~\eqref{eq:primalconvex} be a convex program with $f_0,\dots,f_m$ differentiable. Consider the \emph{KKT conditions} for $x^*\in\R^n$, $\lambda^*\in\R^m$, $\nu^*\in\R^p$:
+\begin{enumerate}
+\item[(a)] primal feasibility: $f_i(x^*)\le0$ for all $i$, and $Ax^*=b$;
+\item[(b)] dual feasibility: $\lambda^*\ge0$;
+\item[(c)] complementary slackness: $\lambda_i^*f_i(x^*)=0$ for all $i$;
+\item[(d)] stationarity: $\nabla f_0(x^*)+\sum_i\lambda_i^*\nabla f_i(x^*)+A^{\mathsf T}\nu^*=0$.
+\end{enumerate}
+If they hold, $x^*$ is optimal, $(\lambda^*,\nu^*)$ is dual optimal and $p^*=d^*$. Conversely, if $x^*$ is optimal and Slater's condition holds, there are $\lambda^*,\nu^*$
+satisfying the KKT conditions.
+\end{theorem}
+\begin{proof}
+Suppose (a)--(d). Since $\lambda^*\ge0$, $x\mapsto L(x,\lambda^*,\nu^*)$ is convex and differentiable, and by (d) its gradient vanishes at $x^*$; by Proposition~\ref{prop:convextests}(1)
+it is minimised there. So $g(\lambda^*,\nu^*)=L(x^*,\lambda^*,\nu^*)=f_0(x^*)$ by (a) and (c). Weak duality, $g(\lambda^*,\nu^*)\le p^*\le f_0(x^*)$, turns into equalities: $x^*$ is primal
+optimal, $(\lambda^*,\nu^*)$ dual optimal, and the gap is zero.
+
+Conversely, let $x^*$ be optimal and $(\lambda^*,\nu^*)$ a dual optimum given by Theorem~\ref{thm:slater}. Then
+\[
+f_0(x^*)=g(\lambda^*,\nu^*)\le L(x^*,\lambda^*,\nu^*)=f_0(x^*)+\sum_i\lambda_i^*f_i(x^*)\le f_0(x^*),
+\]
+so both inequalities are equalities. The second says $\sum_i\lambda_i^*f_i(x^*)=0$, a sum of non-positive terms, hence (c). The first says that $x^*$ minimises the differentiable
+function $L(\cdot,\lambda^*,\nu^*)$ on $\R^n$, hence (d).
+\end{proof}
+
+The multiplier $\lambda_i^*$ is the price of the $i$th constraint: complementary slackness says that a constraint that is not tight costs nothing. Two examples show the
+conditions at work; each time they do more than verify a solution, they \emph{find} it.
+
+\paragraph{Water-filling.} A transmitter has total power $P>0$ to share between $n$ parallel channels with noise levels $\alpha_1,\dots,\alpha_n>0$. Putting power
+$x_i$ in channel $i$ yields a rate proportional to $\ln(\alpha_i+x_i)-\ln\alpha_i$ (for Gaussian channels this is Shannon's capacity formula; see Cover and Thomas, Section~9.4,
+and Tome~C4, Chapter~3, for channel capacity). The transmitter wants to
+\[
+\text{maximise}\ \sum_{i=1}^n\ln(\alpha_i+x_i)\quad\text{subject to}\quad x\ge0,\ \sum_ix_i=P.
+\]
+
+\begin{proposition}[water-filling]\label{prop:waterfilling}
+There is a unique level $w>0$ with $\sum_i\max(0,w-\alpha_i)=P$, and the unique optimal allocation is $x_i^*=\max(0,w-\alpha_i)$.
+\end{proposition}
+\begin{proof}
+The function $w\mapsto\sum_i\max(0,w-\alpha_i)$ is continuous, zero for $w\le\min\alpha_i$, strictly increasing after that and unbounded, so the level $w$ exists and is unique. Write the
+problem as minimising the convex function $-\sum_i\ln(\alpha_i+x_i)$ (with value $+\infty$ when some $\alpha_i+x_i\le0$; it is differentiable on the open set where all are positive, which
+contains the feasible set) under $-x_i\le0$ and $\sum_ix_i=P$. We check the KKT conditions for $x^*$, $\nu^*=1/w$ and $\lambda_i^*=1/w-1/(\alpha_i+x_i^*)$. Stationarity reads
+$-\frac1{\alpha_i+x_i^*}-\lambda_i^*+\nu^*=0$, true by the choice of $\lambda^*$. If $x_i^*>0$, then $\alpha_i+x_i^*=w$ and $\lambda_i^*=0$; if $x_i^*=0$, then $\alpha_i\ge w$ and
+$\lambda_i^*=\frac1w-\frac1{\alpha_i}\ge0$. So $\lambda^*\ge0$ and $\lambda_i^*x_i^*=0$, and Theorem~\ref{thm:kkt} shows that $x^*$ is optimal. The objective is strictly concave, so the optimum is
+unique.
+\end{proof}
+
+Picture the noise levels as the uneven floor of a tank and pour in a volume $P$ of water: the water surface is flat at height $w$, and the depth above channel $i$
+is its power (Figure~\ref{fig:waterfilling}). Channels that are too noisy stay dry.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-waterfilling}
+\caption{Water-filling for noise levels $\alpha=(0.5,1.6,0.9,2.5,0.3,1.2,3.0,0.8)$ and power $P=5$: the water level is $w=10.3/6\approx1.717$, and the two noisiest channels receive nothing.}
+\label{fig:waterfilling}
+\end{figure}
+
+\paragraph{Maximum entropy.} In 1957 Edwin Jaynes proposed a rule for choosing a probability distribution when all one knows are some averages: among all
+distributions with those averages, take the one with the largest entropy $H(p)=-\sum_\omega p_\omega\ln p_\omega$, the least committal one. He showed that it reproduces the Gibbs
+distributions of statistical mechanics, and his favourite toy was a die whose average throw is known to be $4.5$ instead of $3.5$. Let $\Omega$ be a finite set,
+$\phi:\Omega\to\R^K$ a vector of observables and $c\in\R^K$ the known averages. For $\theta\in\R^K$ put
+\[
+Z(\theta)=\sum_{\omega\in\Omega}e^{\theta^{\mathsf T}\phi(\omega)},\qquad p_\theta(\omega)=\frac{e^{\theta^{\mathsf T}\phi(\omega)}}{Z(\theta)}.
+\]
+The distributions $p_\theta$ form an \emph{exponential family}, and $\ln Z$ is a log-sum-exp function, convex in $\theta$.
+
+\begin{theorem}[maximum entropy; Jaynes, 1957]\label{thm:maxent}
+\begin{enumerate}
+\item If $p$ is a probability on $\Omega$ with $\sum_\omega p_\omega\phi(\omega)=c$, then $H(p)\le\ln Z(\theta)-\theta^{\mathsf T}c$ for every $\theta\in\R^K$.
+\item If some $p_\theta$ has averages $c$, it is the unique distribution of maximum entropy with averages $c$, and $H(p_\theta)=\ln Z(\theta)-\theta^{\mathsf T}c=\min_{\theta'}\bigl(\ln Z(\theta')-\theta'^{\mathsf T}c\bigr)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+For probabilities $p$ and $q$ with $q>0$, \emph{Gibbs' inequality} $\sum_\omega p_\omega\ln\frac{p_\omega}{q_\omega}\ge0$ holds, with equality only if $p=q$: by $\ln u\le u-1$, with equality only at
+$u=1$, $-\sum_\omega p_\omega\ln\frac{q_\omega}{p_\omega}\ge-\sum_\omega p_\omega(\frac{q_\omega}{p_\omega}-1)\ge0$, the sums running over $p_\omega>0$. With $q=p_\theta$ and $\ln p_\theta(\omega)=\theta^{\mathsf T}\phi(\omega)-\ln Z(\theta)$,
+\[
+H(p)\le-\sum_\omega p_\omega\ln p_\theta(\omega)=\ln Z(\theta)-\theta^{\mathsf T}\sum_\omega p_\omega\phi(\omega)=\ln Z(\theta)-\theta^{\mathsf T}c,
+\]
+which is (1), with equality if and only if $p=p_\theta$. If $p_\theta$ itself has averages $c$, the same computation gives $H(p_\theta)=\ln Z(\theta)-\theta^{\mathsf T}c$, which by (1) is at most
+$\ln Z(\theta')-\theta'^{\mathsf T}c$ for all $\theta'$ and at least $H(p)$ for all admissible $p$, with equality only for $p=p_\theta$.
+\end{proof}
+
+Part (1) is weak duality and part (2) is zero gap: the dual of entropy maximisation is the minimisation of the convex function $\ln Z(\theta)-\theta^{\mathsf T}c$, exactly the
+Lagrange dual (Exercise~\ref{ex:logsumexp} computes it). Its gradient vanishes where $\nabla\ln Z(\theta)=\sum_\omega p_\theta(\omega)\phi(\omega)=c$, the moment equation, which the notebook
+solves by Newton's method. For Jaynes' die, $\phi(\omega)=\omega$ on $\{1,\dots,6\}$ and $c=4.5$: the answer is $p_\omega\propto e^{\theta\omega}$ with $\theta\approx0.371$, the probabilities
+$0.054$, $0.079$, $0.114$, $0.165$, $0.240$, $0.347$. The same theorem with the mean and the variance as constraints is why the Gaussian appears everywhere
+(Exercise~\ref{ex:maxentgauss}), and Chapter~8 will estimate the parameter $\theta$ of an exponential family from data.
+
+\section{Games and the minimax theorem}\label{sec:minimax}
+
+Two players choose simultaneously: Rose a row $i\in\{1,\dots,m\}$, Colin a column $j\in\{1,\dots,n\}$, and Rose pays Colin $M_{ij}$. Mixed strategies are probability vectors
+$x\in\Delta_m$ and $y\in\Delta_n$ (the simplices), and the expected payment is $x^{\mathsf T}My$. If Rose announces $x$, Colin answers with the best column, and she pays
+$\max_yx^{\mathsf T}My$; Rose minimises this. If Colin announces first, he gets $\min_xx^{\mathsf T}My$. Announcing first can only hurt:
+\[
+\max_{y\in\Delta_n}\min_{x\in\Delta_m}x^{\mathsf T}My\le\min_{x\in\Delta_m}\max_{y\in\Delta_n}x^{\mathsf T}My,
+\]
+because $\min_{x'}x'^{\mathsf T}My\le x^{\mathsf T}My\le\max_{y'}x^{\mathsf T}My'$ for any $x,y$. \'Emile Borel asked in 1921 whether equality always holds, and believed it would fail
+for large games; John von Neumann proved in 1928 that it never fails. The order of announcement does not matter.
+
+\begin{theorem}[von Neumann, 1928]\label{thm:minimax}
+For every real $m\times n$ matrix $M$, $\displaystyle\max_{y\in\Delta_n}\min_{x\in\Delta_m}x^{\mathsf T}My=\min_{x\in\Delta_m}\max_{y\in\Delta_n}x^{\mathsf T}My$, and both extrema are attained.
+\end{theorem}
+\begin{proof}
+A linear function on a simplex reaches its maximum at a vertex, so $\max_yx^{\mathsf T}My=\max_j(M^{\mathsf T}x)_j$. Rose's problem is therefore the convex program
+\[
+\text{minimise }t\quad\text{over }(x,t)\in\R^m\times\R\quad\text{subject to}\quad(M^{\mathsf T}x)_j-t\le0\ (j\le n),\quad-x_i\le0\ (i\le m),\quad\textstyle\sum_ix_i=1.
+\]
+Its value $p^*$ is finite (it is a continuous function minimised on the compact simplex) and attained, and $x_i=\frac1m$, $t=1+\max_j(M^{\mathsf T}x)_j$ is strictly feasible. By Theorem~\ref{thm:slater},
+the dual has value $p^*$ and is attained. With multipliers $y\in\R^n$, $\mu\in\R^m$ and $\nu\in\R$,
+\[
+L=t\Bigl(1-\sum_jy_j\Bigr)+x^{\mathsf T}(My-\mu+\nu\mathbf1)-\nu,
+\]
+whose infimum over $(x,t)$ is $-\nu$ if $\sum_jy_j=1$ and $My-\mu+\nu\mathbf1=0$, and $-\infty$ otherwise. Given $y\ge0$ with $\sum_jy_j=1$, the best choice is the smallest $\nu$ with
+$\mu=My+\nu\mathbf1\ge0$, namely $\nu=-\min_i(My)_i$. So the dual problem is to maximise $\min_i(My)_i=\min_xx^{\mathsf T}My$ over $y\in\Delta_n$, and its value is $p^*$.
+\end{proof}
+
+So every finite zero-sum game has a \emph{value} and optimal mixed strategies for both players. Tome~C2 met this theorem twice, as a consequence of linear programming
+duality (Exercise~7.7 there) and through two Hedge players learning against each other (Chapter~12 there); Chapter~\ref{ch:convexity}'s proof is the third, and
+Chapter~7 of this book will turn the second into a general method. Von Neumann's own proof was topological; the one through separation is due to Jean Ville
+(1938), and the generalisation to convex-concave functions on compact convex sets is Sion's theorem (1958).
+
+\begin{beauty}
+Duality is a theorem about seeing a convex set from outside. A closed convex set is the intersection of its supporting half-spaces, a closed convex function the
+supremum of its affine minorants, and an optimisation problem is bounded below by every price system on its constraints. That these outside descriptions
+are complete, that nothing hides between the supporting hyperplanes, is the separation theorem, and every certificate in this chapter, Fasbender's triangle,
+the water level, Jaynes' temperature and von Neumann's mixed strategy, is a supporting hyperplane in disguise.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nonexpansive}
+Show that the projection onto a non-empty closed convex set is non-expansive: $\|P_C(z)-P_C(z')\|\le\|z-z'\|$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nostrict}
+Show that the closed convex sets $C=\{(s,t):s>0,\ st\ge1\}$ and $D=\{(s,t):t\le0\}$ are disjoint, that the only hyperplane separating them is the horizontal axis, and that
+no hyperplane separates them strictly. Why does Theorem~\ref{thm:pointsep} not apply?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:viviani}
+(Viviani.) Show that the sum of the distances from a point inside an equilateral triangle to its three sides equals the height. Deduce the geometric meaning
+of~\eqref{eq:fasbender}: if $v_1,v_2,v_3$ are unit vectors at $120^\circ$ and the lines through $a_i$ perpendicular to $v_i$ bound an equilateral triangle containing the $a_i$, then
+$\sum_iv_i^{\mathsf T}a_i$ is its height.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weiszfeld}
+(Weighted Fermat problem.) For points $a_1,\dots,a_k$ and weights $w_i>0$, show that a point $x$ different from the $a_i$ minimises $\sum_iw_i\|x-a_i\|$ if and only if it is a fixed
+point of Weiszfeld's map $T(x)=\sum_iw_ia_i\|x-a_i\|^{-1}/\sum_iw_i\|x-a_i\|^{-1}$, and that $a_1$ is a minimiser if and only if $\|\sum_{i\ge2}w_i\frac{a_i-a_1}{\|a_i-a_1\|}\|\le w_1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:conjugates}
+Compute the conjugates of: (a) $\frac12x^{\mathsf T}Qx$ with $Q$ symmetric positive definite; (b) $e^x$ on $\R$; (c) a norm $\|\cdot\|$ on $\R^n$, in terms of the dual norm
+$\|y\|_*=\max_{\|x\|\le1}y^{\mathsf T}x$; (d) $\iota_C$ for a convex set $C$ (the \emph{support function}).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:logsumexp}
+Let $\operatorname{lse}(x)=\ln\sum_{j=1}^ne^{x_j}$. Show that its Hessian is $\operatorname{diag}(p)-pp^{\mathsf T}$ with $p_j=e^{x_j}/\sum_ke^{x_k}$, hence positive semidefinite. Show that
+$\operatorname{lse}^*(y)=\sum_jy_j\ln y_j$ if $y\in\Delta_n$ and $+\infty$ otherwise. Deduce that the Lagrange dual function of the maximum entropy problem of Theorem~\ref{thm:maxent} is
+$\ln Z(\theta)-\theta^{\mathsf T}c$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:envelope}
+Show that for every $f:\R^n\to(-\infty,+\infty]$ having an affine minorant, $f^{**}$ is the largest closed convex function below $f$. Compute $f^{**}$ for
+$f(x)=\min\bigl((x-1)^2,(x+1)^2\bigr)$ on $\R$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:slaterfail}
+(a) For the problem, minimise $x$ subject to $x^2\le0$, show that $p^*=d^*=0$ but the dual optimum is not attained. (b) For the problem in $\R^2$, minimise $e^{-x_1}$ subject to
+$f_1(x)\le0$ where $f_1(x)=x_1^2/x_2$ for $x_2>0$ and $+\infty$ otherwise (a convex function), show that $p^*=1$ and $d^*=0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:leastnorm}
+Let $A\in\R^{p\times n}$ have full row rank. Use the KKT conditions to show that the solution of $Ax=b$ of least norm is $x^*=A^{\mathsf T}(AA^{\mathsf T})^{-1}b$, and identify the multiplier.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:waterlevel}
+In Proposition~\ref{prop:waterfilling}, show that the optimal value is a concave, increasing function of $P$ whose derivative is $1/w$, the multiplier $\nu^*$. (The multiplier is
+the marginal value of power.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:maxentgauss}
+Let $p$ be a probability density on $\R$ with mean $0$ and variance $\sigma^2$, and $h(p)=-\int p\ln p$ its differential entropy (assumed finite). Show that
+$h(p)\le\frac12\ln(2\pi e\sigma^2)$, with equality only for the Gaussian density. (Imitate the proof of Theorem~\ref{thm:maxent}.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:saddle}
+Let $\phi:X\times Y\to\R$ be any function. Show that $\max_y\min_x\phi=\min_x\max_y\phi$, with all extrema attained, holds if and only if $\phi$ has a saddle point: $(x^*,y^*)$ with
+$\phi(x^*,y)\le\phi(x^*,y^*)\le\phi(x,y^*)$ for all $x,y$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:rps}
+Find the value and all optimal strategies of rock--paper--scissors (payment $1$ for a win, $0$ for a tie), and of the game where Rose and Colin each show one or two fingers
+and Rose pays Colin the total number of fingers if it is even and receives it if it is odd.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nonexpansive}
+Write the characterisation of Lemma~\ref{lem:projection} for $z$ with $y=P_C(z')$ and for $z'$ with $y=P_C(z)$, and add.
+\end{hint}
+\begin{hint}{ex:nostrict}
+The points $(s,1/s)$ approach the axis. For Theorem~\ref{thm:pointsep}, a point is compact; here neither set is.
+\end{hint}
+\begin{hint}{ex:viviani}
+Cut the triangle into three triangles with apex at the point.
+\end{hint}
+\begin{hint}{ex:weiszfeld}
+The gradient condition $\sum_iw_i\frac{x-a_i}{\|x-a_i\|}=0$ can be solved for the $x$ in the numerators. At $a_1$ compute the directional derivative as in Theorem~\ref{thm:fermat}.
+\end{hint}
+\begin{hint}{ex:conjugates}
+For (a), maximise a concave quadratic. For (c), if $\|y\|_*>1$ take $x$ along a direction where $y^{\mathsf T}x>\|x\|$ and scale.
+\end{hint}
+\begin{hint}{ex:logsumexp}
+For the Hessian, $v^{\mathsf T}(\operatorname{diag}(p)-pp^{\mathsf T})v$ is a variance. For the conjugate, set the gradient $p(x)$ equal to $y$; outside the simplex let $x$ run to infinity along a suitable
+direction.
+\end{hint}
+\begin{hint}{ex:envelope}
+$f^{**}$ is the supremum of the affine minorants of $f$. Apply Theorem~\ref{thm:fenchelmoreau} to a closed convex $h\le f$.
+\end{hint}
+\begin{hint}{ex:slaterfail}
+(a) $g(\lambda)=-1/(4\lambda)$. (b) The only feasible points have $x_1=0$; and $g(\lambda)=\inf_x(e^{-x_1}+\lambda x_1^2/x_2)$: let $x_2$ grow faster than $x_1^2$.
+\end{hint}
+\begin{hint}{ex:leastnorm}
+Minimise $\frac12\|x\|^2$ subject to $Ax=b$; stationarity is $x+A^{\mathsf T}\nu=0$.
+\end{hint}
+\begin{hint}{ex:waterlevel}
+The level $w(P)$ is increasing and continuous; differentiate $\sum_{i:\alpha_i<w}\ln w+\sum_{i:\alpha_i\ge w}\ln\alpha_i$.
+\end{hint}
+\begin{hint}{ex:maxentgauss}
+Use $\int p\ln(p/q)\ge0$ with $q$ the Gaussian density, and $\ln q(x)=-\frac12\ln(2\pi\sigma^2)-\frac{x^2}{2\sigma^2}$.
+\end{hint}
+\begin{hint}{ex:saddle}
+Take $x^*$ attaining the min--max and $y^*$ attaining the max--min.
+\end{hint}
+\begin{hint}{ex:rps}
+For the finger game, guess an optimal strategy for Rose that makes Colin indifferent between his two columns.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:nonexpansive}
+\idea The characterisation says that $z-P_C(z)$ points away from $C$; two such inequalities, added, compare the projections with the points.
+\writeup Let $p=P_C(z)$ and $p'=P_C(z')$. Lemma~\ref{lem:projection} gives $(z-p)^{\mathsf T}(p'-p)\le0$ and $(z'-p')^{\mathsf T}(p-p')\le0$. Adding,
+$\bigl((z-z')-(p-p')\bigr)^{\mathsf T}(p'-p)\le0$, that is $\|p-p'\|^2\le(z-z')^{\mathsf T}(p-p')\le\|z-z'\|\,\|p-p'\|$ by Cauchy--Schwarz. Divide by $\|p-p'\|$ (if it is not zero).
+\end{solution}
+
+\begin{solution}{ex:nostrict}
+\idea The hyperbola is asymptotic to the axis, so any separating line must be squeezed onto it.
+\writeup Points of $C$ have $t\ge1/s>0$ and points of $D$ have $t\le0$: disjoint. Both sets are closed and convex ($C$ is the epigraph of the convex function $1/s$ on $s>0$, together with
+its domain). A separating line $\{a_1s+a_2t=\alpha\}$ with $a_1s+a_2t\ge\alpha$ on $C$ and $\le\alpha$ on $D$: since $D$ contains $(s,0)$ for all $s\in\R$, $a_1=0$; then $a_2\ne0$, and $D$
+containing $(0,t)$ for all $t\le0$ forces $a_2>0$, so the line is $t=\alpha/a_2$ with $\alpha\ge0$ (from $D$) and $\alpha/a_2\le\inf_Ct=0$ (from $C$): it is the axis $t=0$. It touches the closure
+of the gap: $\operatorname{dist}(C,D)=\inf_{s>0}1/s=0$, so no strict separation is possible. Theorem~\ref{thm:pointsep} separates a closed convex set from a \emph{point}; the
+proof of strict separation between two sets would need $C-D$ to be closed, and here $C-D=\{t>0\}\cup\dots$ is not: $0$ is in its closure but not in it.
+\end{solution}
+
+\begin{solution}{ex:viviani}
+\idea Area, computed two ways.
+\writeup Let the triangle have side $s$ and height $h$, and let $d_1,d_2,d_3$ be the distances from an interior point $x$ to the sides. Joining $x$ to the vertices cuts the triangle into three
+triangles with bases the sides and heights the $d_i$: the area is $\frac12s(d_1+d_2+d_3)=\frac12sh$, so $d_1+d_2+d_3=h$. Now let $v_i$ be unit vectors at $120^\circ$ and $\ell_i$ the line
+through $a_i$ perpendicular to $v_i$, and suppose they bound an equilateral triangle $T$ with the $v_i$ pointing outwards. For $x$ inside $T$, the distance from $x$ to $\ell_i$ is
+$v_i^{\mathsf T}(a_i-x)$. Summing and using $\sum_iv_i=0$, the height of $T$ is $\sum_iv_i^{\mathsf T}a_i$: the right side of~\eqref{eq:fasbender} is the height of a circumscribed
+equilateral triangle, and the duality of Section~\ref{sec:convexfunctions} says that the largest one has height $\min f$.
+\end{solution}
+
+\begin{solution}{ex:weiszfeld}
+\idea Away from the $a_i$, the function is differentiable, and the zero-gradient equation, read as a fixed point equation, is Weiszfeld's map.
+\writeup Let $F(x)=\sum_iw_i\|x-a_i\|$, convex. At $x\ne a_i$, $\nabla F(x)=\sum_iw_i(x-a_i)/\|x-a_i\|$, which vanishes if and only if $x\sum_iw_i\|x-a_i\|^{-1}=\sum_iw_ia_i\|x-a_i\|^{-1}$, that
+is $x=T(x)$; and for a convex differentiable function a zero gradient is equivalent to a minimum (Proposition~\ref{prop:convextests}). At $a_1$, with
+$v_i=(a_i-a_1)/\|a_i-a_1\|$, $F'(a_1;d)=w_1\|d\|-\sum_{i\ge2}w_iv_i^{\mathsf T}d$, and $\min_{\|d\|=1}F'(a_1;d)=w_1-\|\sum_{i\ge2}w_iv_i\|$ (take $d$ along $\sum_{i\ge2}w_iv_i$). By
+Lemma~\ref{lem:dirderiv}, $a_1$ is a minimiser if and only if this is $\ge0$.
+\end{solution}
+
+\begin{solution}{ex:conjugates}
+\idea Each supremum is attained where the derivative of $y^{\mathsf T}x-f(x)$ vanishes, or not at all.
+\writeup (a) $y^{\mathsf T}x-\frac12x^{\mathsf T}Qx$ is a concave quadratic maximised at $x=Q^{-1}y$, with value $\frac12y^{\mathsf T}Q^{-1}y$; for $Q=I$, $\frac12\|x\|^2$ is its own conjugate. (b) $yx-e^x$: for
+$y>0$ the maximum is at $x=\ln y$, value $y\ln y-y$; for $y=0$ the supremum is $0$; for $y<0$, $x\to-\infty$ gives $+\infty$. (c) If $\|y\|_*\le1$, then $y^{\mathsf T}x\le\|y\|_*\|x\|\le\|x\|$ and the
+supremum of $y^{\mathsf T}x-\|x\|$ is $0$ (at $x=0$). If $\|y\|_*>1$, pick $x_0$ with $\|x_0\|\le1$ and $y^{\mathsf T}x_0>1$; then $y^{\mathsf T}(tx_0)-\|tx_0\|\ge t(y^{\mathsf T}x_0-1)\to\infty$. So $\|\cdot\|^*$ is the
+indicator of the dual unit ball. (d) $\iota_C^*(y)=\sup_{x\in C}y^{\mathsf T}x$, the support function of $C$; by Theorem~\ref{thm:fenchelmoreau} it determines $\iota_C$, hence $C$, when $C$ is closed.
+\end{solution}
+
+\begin{solution}{ex:logsumexp}
+\idea The Hessian of log-sum-exp is a covariance matrix; the gradient is a probability vector, and inverting the gradient map gives the conjugate.
+\writeup With $S=\sum_ke^{x_k}$, $\partial_j\operatorname{lse}=e^{x_j}/S=p_j$ and $\partial_{jk}\operatorname{lse}=p_j\delta_{jk}-p_jp_k$. For $v\in\R^n$,
+$v^{\mathsf T}(\operatorname{diag}(p)-pp^{\mathsf T})v=\sum_jp_jv_j^2-(\sum_jp_jv_j)^2$, the variance of $v_J$ when $J$ has law $p$: non-negative. For the conjugate: if some $y_j<0$, let $x=-te_j$,
+$t\to\infty$: $y^{\mathsf T}x-\operatorname{lse}(x)\ge-ty_j-\ln n\to\infty$. If $y\ge0$ but $\sum_jy_j\ne1$, let $x=t\mathbf1$: $y^{\mathsf T}x-\operatorname{lse}(x)=t(\sum_jy_j-1)-\ln n$, unbounded as
+$t\to\pm\infty$. If $y\in\Delta_n$ with all $y_j>0$, the concave function $y^{\mathsf T}x-\operatorname{lse}(x)$ has zero gradient where $p(x)=y$, for instance at $x_j=\ln y_j$, with value
+$\sum_jy_j\ln y_j-\ln1$. If some $y_j=0$, the same value is the limit of the values at $y_\varepsilon=(1-\varepsilon)y+\varepsilon\mathbf1/n$, and the supremum of the closed convex function $\operatorname{lse}^*$
+along this segment is attained at the end by lower semicontinuity and convexity; so $\operatorname{lse}^*(y)=\sum_jy_j\ln y_j$ on $\Delta_n$.
+
+For maximum entropy, maximise $H(p)$ subject to $\sum_\omega p_\omega\phi(\omega)=c$ over $p\in\Delta_\Omega$, keeping the simplex as the domain. With multiplier $\theta$ for the moment constraint,
+the dual function is $\sup_{p\in\Delta}\bigl(H(p)+\theta^{\mathsf T}(\sum_\omega p_\omega\phi(\omega)-c)\bigr)=\sup_p\bigl(\sum_\omega p_\omega\theta^{\mathsf T}\phi(\omega)-\sum_\omega p_\omega\ln p_\omega\bigr)-\theta^{\mathsf T}c$, and the
+supremum is $(\text{negative entropy})^*$ at the vector $(\theta^{\mathsf T}\phi(\omega))_\omega$, which by Theorem~\ref{thm:fenchelmoreau} applied to $\operatorname{lse}$ is $\operatorname{lse}(\theta^{\mathsf T}\phi)=\ln Z(\theta)$.
+\end{solution}
+
+\begin{solution}{ex:envelope}
+\idea The biconjugate is built only from affine functions below $f$, and a closed convex function is the supremum of such functions.
+\writeup By definition $f^{**}(x)=\sup_y(y^{\mathsf T}x-f^*(y))$, and $x\mapsto y^{\mathsf T}x-\beta$ is below $f$ if and only if $\beta\ge f^*(y)$: so $f^{**}$ is the supremum of all affine minorants of $f$.
+It is closed, convex, below $f$, and proper (it is at least the given affine minorant). Let $h\le f$ be closed and convex with values in $(-\infty,+\infty]$. If $h\equiv+\infty$, then $f\equiv+\infty$ and there is nothing to prove. Otherwise $h$ is proper, and
+Theorem~\ref{thm:fenchelmoreau} writes $h=h^{**}$ as the supremum of its affine minorants, which are affine minorants of $f$; so $h\le f^{**}$. For $f(x)=\min((x-1)^2,(x+1)^2)=(|x|-1)^2$, the envelope is $0$ on $[-1,1]$ and $(|x|-1)^2$ outside:
+it is convex, below $f$, and any convex function below $f$ is at most $0$ at $\pm1$, hence at most $0$ on $[-1,1]$, and at most $f$ elsewhere.
+\end{solution}
+
+\begin{solution}{ex:slaterfail}
+\idea In (a) the multiplier would have to be infinite; in (b) the constraint is degenerate and the Lagrangian can escape along a parabola.
+\writeup (a) The only feasible point is $0$, so $p^*=0$, and no point is strictly feasible. $g(\lambda)=\inf_x(x+\lambda x^2)=-\frac1{4\lambda}$ for $\lambda>0$ and $-\infty$ for $\lambda=0$; so
+$d^*=\sup_{\lambda>0}(-\frac1{4\lambda})=0=p^*$, not attained. (b) $x_1^2/x_2\le0$ with $x_2>0$ forces $x_1=0$, so $f_0=e^0=1$ and $p^*=1$. For $\lambda\ge0$, along $x_1=t$, $x_2=t^3$,
+$e^{-t}+\lambda/t\to0$ as $t\to\infty$, so $g(\lambda)=0$ and $d^*=0$: a duality gap of $1$. Again no point is strictly feasible.
+\end{solution}
+
+\begin{solution}{ex:leastnorm}
+\idea Stationarity puts $x^*$ in the row space of $A$, and the constraint fixes where.
+\writeup Minimise $\frac12\|x\|^2$ subject to $Ax=b$. The KKT conditions are $Ax^*=b$ and $x^*+A^{\mathsf T}\nu^*=0$. Then $-AA^{\mathsf T}\nu^*=b$; $AA^{\mathsf T}$ is invertible because $A$ has full row
+rank, so $\nu^*=-(AA^{\mathsf T})^{-1}b$ and $x^*=A^{\mathsf T}(AA^{\mathsf T})^{-1}b$, which is optimal by Theorem~\ref{thm:kkt}. The multiplier is $-(AA^{\mathsf T})^{-1}b$, and $\frac12\|x^*\|^2=\frac12b^{\mathsf T}(AA^{\mathsf T})^{-1}b$
+is the dual value. This is the pseudo-inverse solution $A^+b$ of Tome~S1, Theorem~6.7.
+\end{solution}
+
+\begin{solution}{ex:waterlevel}
+\idea Only the channels below the water line contribute, each with $\ln w$.
+\writeup Let $V(P)=\sum_i\ln(\alpha_i+x_i^*)=\sum_{\alpha_i<w}\ln w+\sum_{\alpha_i\ge w}\ln\alpha_i$, with $w=w(P)$ the level. The map $w\mapsto P(w)=\sum_i\max(0,w-\alpha_i)$ is continuous, strictly
+increasing for $w>\min\alpha_i$, and piecewise linear with slope $k(w)=\#\{i:\alpha_i<w\}$, so $w(P)$ is continuous, increasing and piecewise linear with slope $1/k$. Between breakpoints,
+$V=k\ln w+\text{const}$ and $V'(P)=\frac kw\cdot\frac1k=\frac1w$; $V$ is continuous and its derivative $1/w(P)$ is continuous and decreasing, so $V$ is $C^1$, increasing and concave. The multiplier
+$\nu^*=1/w$ of the power constraint is exactly the marginal rate per unit of power.
+\end{solution}
+
+\begin{solution}{ex:maxentgauss}
+\idea Gibbs' inequality against the Gaussian, whose logarithm is a quadratic, turns the constraint on the variance into a bound on the entropy.
+\writeup Let $q(x)=(2\pi\sigma^2)^{-1/2}e^{-x^2/2\sigma^2}$. As in Theorem~\ref{thm:maxent}, $\ln u\le u-1$ gives $\int p\ln\frac qp\le\int(q-p)=0$ over $\{p>0\}$, with equality only if $p=q$ almost
+everywhere. Hence
+\[
+h(p)=-\int p\ln p\le-\int p\ln q=\tfrac12\ln(2\pi\sigma^2)+\frac{1}{2\sigma^2}\int x^2p(x)\dd x=\tfrac12\ln(2\pi\sigma^2)+\tfrac12=\tfrac12\ln(2\pi e\sigma^2),
+\]
+with equality only for $p=q$. The Gaussian is the maximum entropy law for a given mean and variance; its exponential family form $e^{\theta_1x+\theta_2x^2}$ is that of
+Theorem~\ref{thm:maxent} with $\phi(x)=(x,x^2)$.
+\end{solution}
+
+\begin{solution}{ex:saddle}
+\idea A saddle point is a pair of mutual best responses, and the two values meet at it.
+\writeup If $(x^*,y^*)$ is a saddle point, $\min_x\max_y\phi\le\max_y\phi(x^*,y)=\phi(x^*,y^*)=\min_x\phi(x,y^*)\le\max_y\min_x\phi$, and the reverse inequality always holds; so they are
+equal, attained at $x^*$ and $y^*$. Conversely, if $x^*$ attains $\min_x\max_y\phi=v$ and $y^*$ attains $\max_y\min_x\phi=v$, then $\phi(x^*,y)\le v$ for all $y$ and $\phi(x,y^*)\ge v$ for all $x$; with
+$x=x^*$, $y=y^*$ these give $\phi(x^*,y^*)=v$, and $(x^*,y^*)$ is a saddle point.
+\end{solution}
+
+\begin{solution}{ex:rps}
+\idea Symmetric games have value $0$; for the finger game, equalise the opponent's options.
+\writeup In rock--paper--scissors $M$ is antisymmetric, so $x^{\mathsf T}Mx=0$ and the value is $0$. The uniform strategy gives $M\mathbf1/3=0$, so it guarantees $0$ against everything. If
+Rose plays $x\ne$ uniform, some pure answer wins strictly in expectation for Colin (the three expected payments $(M^{\mathsf T}x)_j$ sum to $0$ and are not all zero), so the uniform strategy is
+the only optimal one, for both players. In the finger game, with rows and columns indexed by $1$ and $2$ fingers, Rose pays $M=\begin{psmallmatrix}2&-3\\-3&4\end{psmallmatrix}$. If Rose shows one
+finger with probability $x$, Colin's columns cost her $2x-3(1-x)=5x-3$ and $-3x+4(1-x)=4-7x$; these are equal at $x=\frac7{12}$, where both are $-\frac1{12}$. By symmetry Colin's
+equaliser is also $\frac7{12}$, giving $\min_i(My)_i=-\frac1{12}$. So the value is $-\frac1{12}$: Rose, who looked like the loser, wins $\frac1{12}$ per round on average.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{A research paper to read.} H.~W.~Kuhn, \emph{``Steiner's'' problem revisited}, in G.~B.~Dantzig and B.~C.~Eaves (eds.), \emph{Studies in Optimization}, MAA Studies in
+Mathematics 10 (1974), 52--70. A short and lively paper: read it for the history of the Fermat--Torricelli problem, Fasbender's dual, and the way the general Lagrangian theory
+of this chapter recovers both. Then compare with H.~W.~Kuhn, \emph{A note on Fermat's problem}, Mathematical Programming 4 (1973), 98--107, on the convergence of Weiszfeld's
+algorithm, and with E.~Weiszfeld, \emph{Sur le point pour lequel la somme des distances de $n$ points donn\'es est minimum}, T\^ohoku Mathematical Journal 43 (1937), 355--386.
+\item \emph{The stories.} The epigraph is from R.~T.~Rockafellar, \emph{Lagrange multipliers and optimality}, SIAM Review 35 (1993), 183--238. For Fermat, Torricelli, Cavalieri and
+Viviani: Kuhn (1974) above, and B.~S.~Mordukhovich and N.~M.~Nam, \emph{The Fermat--Torricelli problem and Weiszfeld's algorithm in the light of convex analysis}, Journal of
+Applied and Numerical Optimization 1 (2019), 205--215. On Karush: H.~W.~Kuhn, \emph{Being in the right place at the right time}, Operations Research 50 (2002), 132--134, and
+W.~Karush, \emph{Minima of functions of several variables with inequalities as side conditions}, Master's thesis, University of Chicago, 1939; H.~W.~Kuhn and A.~W.~Tucker,
+\emph{Nonlinear programming}, Proceedings of the Second Berkeley Symposium (1951), 481--492. M.~Slater, \emph{Lagrange multipliers revisited}, Cowles Commission Discussion
+Paper Math.~403 (1950). E.~T.~Jaynes, \emph{Information theory and statistical mechanics}, Physical Review 106 (1957), 620--630, and \emph{Where do we stand on maximum entropy?},
+in \emph{The Maximum Entropy Formalism} (R.~D.~Levine and M.~Tribus, eds.), MIT Press, 1979, for the die with average $4.5$.
+\item J.~von Neumann, \emph{Zur Theorie der Gesellschaftsspiele}, Mathematische Annalen 100 (1928), 295--320; \'E.~Borel, \emph{La th\'eorie du jeu et les \'equations int\'egrales \`a noyau
+sym\'etrique}, Comptes Rendus 173 (1921), 1304--1308; J.~Ville, \emph{Sur la th\'eorie g\'en\'erale des jeux o\`u intervient l'habilet\'e des joueurs}, in E.~Borel, \emph{Trait\'e du calcul des
+probabilit\'es et de ses applications} IV.2 (1938), 105--113; M.~Sion, \emph{On general minimax theorems}, Pacific Journal of Mathematics 8 (1958), 171--176.
+\item W.~Fenchel, \emph{On conjugate convex functions}, Canadian Journal of Mathematics 1 (1949), 73--77; J.-J.~Moreau, \emph{Fonctions convexes duales et points proximaux dans un espace
+hilbertien}, Comptes Rendus 255 (1962), 2897--2899. T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd edition, Wiley, 2006, Section~9.4, for water-filling.
+\item For the whole chapter: S.~Boyd and L.~Vandenberghe, \emph{Convex Optimization}, Cambridge University Press, 2004, Chapters~2--5 (our proof of Slater's theorem follows
+their Section~5.3); R.~T.~Rockafellar, \emph{Convex Analysis}, Princeton University Press, 1970; J.-B.~Hiriart-Urruty and C.~Lemar\'echal, \emph{Fundamentals of Convex Analysis},
+Springer, 2001.
+\end{itemize}
