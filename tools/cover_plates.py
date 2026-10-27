@@ -2,7 +2,7 @@
 
 Run from any directory with the build's Python (numpy is needed for matrix plates).
 Geometry primitives in cover_motifs are reused as mathematical algorithms, with
-fresh parameters and new compositions. Volumes 0 and 1 use immutable author-approved images; other mathematical plates remain vectors.
+fresh parameters and new compositions. Volumes 0, 1 and 2 use immutable author-approved images; other mathematical plates remain vectors.
 """
 import math
 from pathlib import Path
@@ -49,7 +49,7 @@ def gem_bands():
 PLATES={
  'tome0-mathematical-maturity':(None,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
  'tome1-integers':(None,'Approved Ulam-inspired prime lattice artwork','ch02-primes.tex'),
- 'tome2-structures':(g.buckyball,'Truncated icosahedron, rotations and A5','ch11-characters.tex; ch12-quaternions.tex'),
+ 'tome2-structures':(None,'Approved polyhedral symmetry wireframe artwork','ch11-characters.tex; ch12-quaternions.tex'),
  'tome3-chance':(lambda:g.galton_board(rows=10,balls=18),'Binomial board and Gaussian approximation','ch02-discrete.tex; ch06-clt.tex'),
  'tome4-calculation':(lambda:g.fourier_square((1,3,11,31)),'Fourier partial sums and Gibbs overshoot','ch06-fourier.tex'),
  'tome5-meets':(lambda:g.zeta_critical_line(t_max=35,steps=1600),'Critical-line zeta curve','ch06-zeros.tex'),

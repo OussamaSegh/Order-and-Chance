@@ -27,7 +27,8 @@ class LibraryTest(unittest.TestCase):
             dist, out = root / "dist", root / "site"
             dist.mkdir()
             books = [("0", "tome0-mathematical-maturity", "Mathematical Maturity"),
-                     ("1", "tome1-integers", "The Integers")]
+                     ("1", "tome1-integers", "The Integers"),
+                     ("2", "tome2-structures", "Structures")]
             for number, book, title in books:
                 (root / book).mkdir()
                 (root / book / "main.tex").write_text(

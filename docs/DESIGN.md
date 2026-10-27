@@ -1,3 +1,31 @@
+# Volume 2 approved-image update
+
+The author approved the revised **fine coral polyhedral symmetry wireframe** cover
+with the subtitle restored to the Volume 0 reference grid, and requested its
+implementation. The exact chosen image is
+`docs/reference/approved-charcoal-coral-volume-2.png`; its immutable production copy
+is `tools/assets/approved-volume-2.png`, recorded in `approved-cover-2.json`.
+SHA-256: `7573466f2b3889ec0088efe3d0272443b7035e7f2a51fb725c76ed98bcd6c26f`.
+The first, heavier Volume 2 concept was not selected. Do not redraw, retype,
+recolor, stretch or crop the approved replacement. Its native resolution is
+1049 × 1500 pixels, about 150 ppi at 7 × 10 inches.
+
+The reading PDF, EPUB, HTML reader, library thumbnail and paperback front all use
+this approved master. EPUB/reader/library PNGs preserve its exact file bytes.
+`check_cover_reference.py --number 2` verifies actual embedded PDF pixels and
+unchanged digital PNGs. The former vector plate is retired; the illustration
+manifest records this approved symmetry artwork, with sixteen other vector plates.
+Volumes 0 and 1 retain their approved masters. The print interior remains separate
+from the covered reading PDF, and wrap geometry still derives from actual print
+pages, with 0.125-inch outside bleed and existing ISBN/barcode handling.
+Latest main **ce45718** was pulled before editing.
+
+Local checks: all 41 publishing tests pass, including exact PNG copying for
+Volumes 0–2. Volume 2 passes both front-size/font/copy previews (digital and 7 × 10)
+and the actual embedded-pixel comparison against the approved master.
+
+---
+
 # Volume 1 approved-image update
 
 The author approved the generated **Ulam-inspired coral prime lattice** cover and

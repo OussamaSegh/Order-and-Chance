@@ -1,6 +1,6 @@
 # Mathematical cover illustrations
 
-Volumes 0 and 1 use their exact approved images unchanged. The other seventeen illustrations
+Volumes 0, 1 and 2 use their exact approved images unchanged. The other sixteen illustrations
 use the coordinated charcoal/coral vector style. Each cover has
 one substantial main plate tied to its own mathematics, without a top supporting mark.
 The table identifies the main subject and manuscript evidence; the generator
@@ -11,7 +11,7 @@ they are not proofs of open conjectures.
 |---|---|---|
 | 0: Mathematical Maturity | Gaussian wireframe surface | ch06-integrals-taylor.tex; ch08-counting-probability.tex |
 | 1: The Integers | Approved Ulam-inspired prime lattice artwork | ch02-primes.tex |
-| 2: Structures | Truncated icosahedron, rotations and A5 | ch11-characters.tex; ch12-quaternions.tex |
+| 2: Structures | Approved polyhedral symmetry wireframe artwork | ch11-characters.tex; ch12-quaternions.tex |
 | 3: Chance | Binomial board and Gaussian approximation | ch02-discrete.tex; ch06-clt.tex |
 | 4: The Art of Calculation | Fourier partial sums and Gibbs overshoot | ch06-fourier.tex |
 | 5: Where It All Meets | Critical-line zeta curve | ch06-zeros.tex |
@@ -29,8 +29,11 @@ they are not proofs of open conjectures.
 | P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
 | P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |
 
-Generate the seventeen vector plates and record both unchanged approved masters with `python3 tools/cover_plates.py`. The machine-readable
+Generate the sixteen vector plates and record all three unchanged approved masters with `python3 tools/cover_plates.py`. The machine-readable
 manifest is [cover-art-manifest.json](cover-art-manifest.json).
+
+Volume 2 uses approved illustrative symmetry artwork, replacing the former
+truncated-icosahedron vector plate.
 
 Volume 1’s generated artwork evokes Ulam prime patterns; it is an approved illustration,
 not a certified numerical Ulam plot. The former circle/triangle plate is retired.
