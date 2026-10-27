@@ -1,0 +1,340 @@
+\chapter{Gaps and Clumps}\label{ch:gaps}
+\begin{center}\itshape
+Near $x$, one integer in $\log x$ is prime.\\
+Cramér's coin says the primes are spread like rain.\\
+Maier found puddles and droughts, and Rankin found deserts.
+\end{center}
+
+Tome~5 ended its tour of random models of the primes with two surprises, told but not proved. Cramér's model, in which each $n$ is ``prime'' with probability $\frac1{\log n}$ independently, predicts that an interval $]x,x+(\log x)^\lambda]$ with $\lambda>1$ contains about $(\log x)^{\lambda-1}$ primes, for every large $x$. In 1985 Helmut Maier showed in a four-page paper that this is false for every $\lambda>1$: some such intervals contain noticeably more primes than they should, and others noticeably fewer. The model also predicts, through Cramér's theorem (Tome~5, Theorem~10.4), that the largest gap between consecutive primes below $X$ is about $\log^2X$. Nobody can prove anything close to that. What can be proved is that the gaps are, infinitely often, larger than the average gap $\log X$ by an unbounded factor, and that story began in 1931.
+
+That year the Finnish mathematician Erik Westzynthius showed that the ratio of the largest gap below $X$ to $\log X$ is unbounded. Paul Erd\H{o}s, in 1935, improved this to a gap of size $c\log X\frac{\log\log X}{(\log\log\log X)^2}$, and Robert Rankin, in 1938, multiplied it by one more slowly growing factor:
+\[
+G(X)\ge c\,\frac{\log X\,\log_2X\,\log_4X}{(\log_3X)^2},
+\]
+where $G(X)$ is the largest gap between consecutive primes up to $X$ and $\log_k$ is the $k$-fold iterated logarithm. Rankin's constant was $c=\frac13$. For the next 76 years the shape of the bound did not move; only the constant did, through the work of Arnold Schönhage, Rankin again, Maier and Carl Pomerance, and finally János Pintz, who reached $c=2e^\gamma$ in 1997. In 1979 Erd\H{o}s offered $10\,000$ dollars, one of the largest prizes he ever put on a problem, for a proof that $c$ can be taken arbitrarily large. The prize was won in 2014, independently and within days of each other, by James Maynard and by the team of Kevin Ford, Ben Green, Sergei Konyagin and Terence Tao.
+
+This chapter proves the two theorems that the random models could not foresee: Maier's theorem on short intervals and the Erd\H{o}s--Rankin bound on long gaps. Both rest on one idea. Below a multiple of the product of all the small primes, the integers $x+1,\dots,x+y$ have exactly the small prime factors of $1,\dots,y$, so the position of $x$ can make an interval look like the beginning of the integers, which is anything but random. Maier exploits this to bias the primes in a short interval, and Rankin pushes it to the extreme by choosing $x$ so that every integer of the interval has a small prime factor. The bias is measured by a curious function introduced by Aleksandr Buchstab in 1937, which oscillates around $e^{-\gamma}$ forever.
+
+\begin{reminder}[from Tomes~5 and~13, and Chapters~4 and~10]
+\emph{Mertens} (Tome~5, Theorem~1.6). $\prod_{p\le z}(1-\frac1p)=\frac{e^{-\gamma}}{\log z}(1+O(\frac1{\log z}))$.
+\emph{The prime number theorem} (Tome~5, Corollary~7.9). $\pi(x)=\operatorname{Li}(x)+O(xe^{-c\sqrt{\log x}})$; in particular $\pi(x)=\frac x{\log x}+O(\frac x{\log^2x})$, and $\theta(x)=\sum_{p\le x}\log p\sim x$.
+\emph{The fundamental lemma} (Tome~13, Theorem~3.4). Let $\mathcal A=(a_n)_{n\le N}$ be integers, $\mathcal P$ a set of primes, $P(z)$ the product of the primes of $\mathcal P$ below $z$, and suppose that for squarefree $d\mid P(z)$, $\#\{n:d\mid a_n\}=Xg(d)+r_d$ with $g$ multiplicative and $0\le g(p)\le\min(\frac\kappa p,1-\frac1K)$. Then for $s\ge1$ and $D=z^s$, the number $S$ of $n$ with $\gcd(a_n,P(z))=1$ satisfies
+\[
+S\le XV(z)(1+Ce^{-s})+\sum_{d\mid P(z),\,d<D}\tau(d)|r_d|,\qquad V(z)=\prod_{p\mid P(z)}(1-g(p)),
+\]
+with $C$ depending only on $\kappa$ and $K$. In particular (Tome~13, Corollary~3.5), the number of $n\le x$ with no prime factor $\le z$ is $x\prod_{p\le z}(1-\frac1p)(1+O(e^{-u/2}))+O(\sqrt x\log x)$ for $2\le z\le\sqrt x$, $u=\frac{\log x}{\log z}$.
+\emph{Rankin's bound} (Theorem~\ref{thm:rankin}). For fixed $0<\sigma_0<1$, $\Psi(x,y)\le x\exp(-u\log u-u\log\log u+C(u+\log\log y))$ when $u=\frac{\log x}{\log y}\ge e$ and $\log(u\log u)\le(1-\sigma_0)\log y$.
+\emph{Exceptional zeros} (Tome~13, Theorems~2.3 and~2.4). There are absolute $c_1,c_2>0$ such that $L(s,\chi)$, $\chi\bmod q$, has no zero with $\sigma\ge1-\frac{c_1}{\log(q(|t|+2))}$ except possibly one real zero when $\chi$ is real; and two distinct real primitive characters of moduli $q_1$, $q_2$ cannot both have a real zero above $1-\frac{c_2}{\log(q_1q_2)}$.
+\emph{Gallagher's theorem} (Theorem~\ref{thm:gallagher} and Lemma~\ref{lem:onezero}). With $w$ the smooth weight of Chapter~\ref{ch:largemoduli}, supported in $[1,2]$: if no $L(s,\chi)$, $\chi\bmod q$, has a zero with $\sigma\ge1-\frac{c_4}{\log(q(|t|+2))}$, where $c_4=\min(c_1,\frac{c_2}4)$, then for $(a,q)=1$ and $X\ge q^{C_0}$,
+\[
+\sum_{n\equiv a\,(q)}\Lambda(n)w\Bigl(\frac nX\Bigr)=\frac X{\varphi(q)}\bigl(\hat w(1)+O(e^{-c\log X/\log q}+q^{-c})\bigr),\qquad\hat w(1)=\int w.
+\]
+\end{reminder}
+
+\section{Buchstab's function}
+
+Let $\Phi(x,z)$ be the number of integers $1\le n\le x$ all of whose prime factors are at least $z$ (so $n=1$ is counted). The density of these integers is \emph{not} $\prod_{p<z}(1-\frac1p)$ when $x$ is a bounded power of $z$. If $z>\sqrt x$, for instance, the only such $n>1$ are the primes in $[z,x]$, and their number $\frac x{\log x}-\frac z{\log z}$ has nothing to do with Mertens' product. The correct density is given by Buchstab's function.
+
+\begin{definition}\label{def:buchstab}
+\emph{Buchstab's function} $\omega:[1,\infty[\to\R$ is defined by $\omega(u)=\frac1u$ for $1\le u\le2$ and
+\[
+u\,\omega(u)=1+\int_1^{u-1}\omega(t)\dd t\qquad(u\ge2).
+\]
+\end{definition}
+
+The right side only involves $\omega$ on $[1,u-1]$, so the definition proceeds interval by interval, and the two formulas agree at $u=2$.
+
+\begin{lemma}\label{lem:buchstabprops}
+$\omega$ is continuous, $\frac12\le\omega\le1$, $\omega$ is continuously differentiable on $]1,2[$ and on $]2,\infty[$ with $|\omega'|\le1$, and
+\[
+(u\,\omega(u))'=\omega(u-1)\qquad(u>2).
+\]
+\end{lemma}
+\begin{proof}
+Continuity and the differential equation follow from the definition, by induction on the interval $[k,k+1]$ containing $u$. On $[1,2]$, $\omega=\frac1u\in[\frac12,1]$. If $\frac12\le\omega\le1$ on $[1,u-1]$, then $1+\frac{u-2}2\le u\omega(u)\le1+(u-2)$, so $\frac12\le\omega(u)\le\frac{u-1}u\le1$. Finally $\omega'=-\frac1{u^2}$ on $]1,2[$, and $\omega'(u)=\frac{\omega(u-1)-\omega(u)}u$ for $u>2$, which is at most $\frac1{2u}$ in absolute value.
+\end{proof}
+
+\begin{theorem}[Buchstab, 1937; de~Bruijn, 1950]\label{thm:buchstab}
+For every $U\ge1$ there is $C_U$ such that, for $z\ge2$ and $x=z^u$ with $1\le u\le U$,
+\[
+\Bigl|\Phi(x,z)-\frac{x\,\omega(u)-z}{\log z}\Bigr|\le C_U\frac x{\log^2z}.
+\]
+In particular, for $u\ge2$, $\Phi(x,z)=\omega(u)\frac x{\log z}+O_U(\frac x{\log^2z})$.
+\end{theorem}
+\begin{proof}
+\emph{The identity.} For $2\le z\le w$, an integer $n\le x$ counted by $\Phi(x,z)$ but not by $\Phi(x,w)$ is $n=pm$, where $p\in[z,w[$ is its least prime factor and $m\le\frac xp$ has all its prime factors at least $p$. Hence
+\[
+\Phi(x,z)=\Phi(x,w)+\sum_{z\le p<w}\Phi\Bigl(\frac xp,p\Bigr).\tag{11.1}
+\]
+
+\emph{The range $1\le u\le2$.} Here the integers counted are $1$ and the primes of $[z,x]$, so $\Phi(x,z)=1+\pi(x)-\pi(z)+O(1)=\frac x{\log x}-\frac z{\log z}+O(\frac x{\log^2z})$ by the prime number theorem, and $\frac x{\log x}=\frac{x\omega(u)}{\log z}$.
+
+\emph{Induction.} Let $k\ge2$, assume the theorem for $1\le u\le k$, and let $k<u\le k+1$. Apply (11.1) with $w=x^{1/k}$. The first term is $\Phi(x,x^{1/k})=\frac{k(x\omega(k)-x^{1/k})}{\log x}+O(\frac x{\log^2z})$. In the sum, $\frac xp=p^{v_p}$ with $v_p=\frac{\log x}{\log p}-1\in\,]k-1,u-1]\subseteq[1,k]$, so by hypothesis
+\[
+\Phi\Bigl(\frac xp,p\Bigr)=\frac{x\,\omega(v_p)}{p\log p}-\frac p{\log p}+O\Bigl(\frac x{p\log^2p}\Bigr).
+\]
+The error terms add up to $O(\frac x{\log^2z})$, since $\sum_{p\ge z}\frac1{p\log^2p}=O(\frac1{\log^2z})$. The terms $\frac p{\log p}$ add up to at most $\frac{w^2}{\log^2w}\cdot O(1)=O(\frac x{\log^2z})$, because $w^2=x^{2/k}\le x$. For the main terms, let $G(t)=\frac{x\,\omega(\log x/\log t-1)}{t\log t}$ on $[z,w]$ and write $\pi(t)=\operatorname{li}(t)+E(t)$ with $E(t)=O(\frac t{\log^3t})$. Then $\sum_{z\le p<w}G(p)=\int_z^wG(t)\frac{\dd t}{\log t}+\int_z^wG\,\dd E$, and integrating by parts, $|\int G\,\dd E|\le|GE|_z^w+\int_z^w|E||G'|\dd t$. By Lemma~\ref{lem:buchstabprops}, $|G'(t)|\le\frac{x}{t^2\log t}\bigl(3+\frac{\log x}{\log^2t}\bigr)\le\frac{C_Ux}{t^2\log t}$, since $\frac{\log x}{\log t}\le U$, so this is $O(\frac x{\log^4z}+x\int_z^\infty\frac{\dd t}{t\log^4t})=O(\frac x{\log^3z})$. Finally, the substitution $t=x^{1/s}$, $\frac{\dd t}{t\log^2t}=-\frac{\dd s}{\log x}$, gives
+\[
+\int_z^wx\,\omega\Bigl(\frac{\log x}{\log t}-1\Bigr)\frac{\dd t}{t\log^2t}=\frac x{\log x}\int_k^u\omega(s-1)\dd s=\frac x{\log x}\bigl(u\omega(u)-k\omega(k)\bigr)
+\]
+by Lemma~\ref{lem:buchstabprops}. Adding up, $\Phi(x,z)=\frac{x\,u\,\omega(u)}{\log x}+O(\frac x{\log^2z})=\frac{x\omega(u)}{\log z}+O(\frac x{\log^2z})$, where the term $\frac{kx^{1/k}}{\log x}\le\sqrt x$ was absorbed in the error. Since $u>2$, so is $\frac z{\log z}\le\sqrt x$, which proves the claim on $]k,k+1]$, with a constant depending on $k$.
+\end{proof}
+
+\begin{corollary}\label{cor:buchstablimit}
+There is an absolute constant $C$ such that $|\omega(u)-e^{-\gamma}|\le Ce^{-u/2}$ for $u\ge2$. In particular $\omega(u)\to e^{-\gamma}$.
+\end{corollary}
+\begin{proof}
+Fix $u\ge2$ and let $z\to\infty$, $x=z^u$. The integers counted by $\Phi(x,z)$ differ from those with no prime factor $\le z$ by at most the multiples of $z$, of which there are at most $\frac xz$. So by Tome~13, Corollary~3.5, and Mertens,
+\[
+\Phi(x,z)=\frac{xe^{-\gamma}}{\log z}\Bigl(1+O\Bigl(\frac1{\log z}\Bigr)\Bigr)\bigl(1+\theta Ce^{-u/2}\bigr)+O(\sqrt x\log x),\qquad|\theta|\le1.
+\]
+Compare with Theorem~\ref{thm:buchstab}, multiply by $\frac{\log z}x$ and let $z\to\infty$: $|\omega(u)-e^{-\gamma}|\le Ce^{-\gamma}e^{-u/2}$.
+\end{proof}
+
+So the density of the integers without prime factors below $z$, in $[1,z^u]$, is $\frac{\omega(u)}{\log z}$, and it converges to Mertens' $\frac{e^{-\gamma}}{\log z}$ as $u\to\infty$, but it never settles. The way it approaches its limit is the heart of Maier's theorem.
+
+\begin{proposition}\label{prop:buchstabsign}
+For every $v\ge1$ there are $u_1,u_2\ge v$ with $\omega(u_1)>e^{-\gamma}$ and $\omega(u_2)<e^{-\gamma}$.
+\end{proposition}
+\begin{proof}
+Let $\Omega(u)=\omega(u)-e^{-\gamma}$. Since $(ue^{-\gamma})'=e^{-\gamma}$, Lemma~\ref{lem:buchstabprops} gives $(u\Omega(u))'=\Omega(u-1)$, that is $u\Omega'(u)=\Omega(u-1)-\Omega(u)$, for $u>2$.
+
+\emph{Step 1: the minimum over a window cannot decrease.} Let $m(u)=\min_{[u-1,u]}\Omega$ for $u\ge3$. Let $3\le u<u'$ and let $t_1$ be the smallest point of $[u-1,u']$ where $\Omega$ attains its minimum over $[u-1,u']$. Suppose $t_1>u$. Then $t_1-1\in[u-1,u']$, so $\Omega(t_1-1)\ge\Omega(t_1)$, and equality is impossible because $t_1$ is the smallest minimum point. Hence $\Omega'(t_1)=\frac{\Omega(t_1-1)-\Omega(t_1)}{t_1}>0$, so $\Omega$ takes smaller values just to the left of $t_1$, inside $[u-1,u']$: a contradiction. So $t_1\le u$, and $m(u')\ge\Omega(t_1)=m(u)$. In the same way, $M(u)=\max_{[u-1,u]}\Omega$ is non-increasing.
+
+\emph{Step 2: no definite sign.} By Corollary~\ref{cor:buchstablimit}, $\Omega(u)\to0$, so $m(u)\le0\le M(u)$ for all $u\ge3$: if $m(u_0)>0$, then $\Omega\ge m(u_0)>0$ on $[u_0-1,\infty[$ by Step~1. Suppose now that $\Omega\ge0$ on $[v,\infty[$. Then $m(u)=0$ for $u\ge v+1$: every interval $[u-1,u]$ beyond $v$ contains a zero of $\Omega$. Moreover $(u\Omega(u))'=\Omega(u-1)\ge0$ for $u\ge v+1$, so $u\Omega(u)$ is non-negative and non-decreasing there. If $\Omega(t)=0$ with $t\ge v+1$, then $u\Omega(u)=0$ on $[v+1,t]$; as such $t$ exist arbitrarily far, $\Omega\equiv0$ on $[v+1,\infty[$.
+
+\emph{Step 3: $\Omega$ vanishes on no half-line.} Suppose it does, and let $a$ be the infimum of the $t\ge1$ such that $\Omega\equiv0$ on $[t,\infty[$; by continuity $\Omega\equiv0$ on $[a,\infty[$. On $[1,2]$, $\Omega(u)=\frac1u-e^{-\gamma}$ vanishes only at $u=e^\gamma$, so $a\ge2$. For $a<u<a+1$, $0=(u\Omega(u))'=\Omega(u-1)$, so $\Omega\equiv0$ on $]a-1,a[$, hence on $[a-1,\infty[$, contradicting the choice of $a$.
+
+So $\Omega\ge0$ on a half-line is impossible, and so is $\Omega\le0$ (the same argument with $M$). This is the claim.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch11-buchstab}
+\caption{The oscillation of Buchstab's function: $\log_{10}|e^\gamma\omega(u)-1|$, blue where $\omega(u)>e^{-\gamma}$ and red where $\omega(u)<e^{-\gamma}$. The sign changes at $u=1.781$ ($=e^\gamma$), $2.483$, $3.227$, $4.002$, $4.786$, $5.567$, $6.351$, $7.140$, about once per unit, as Proposition~\ref{prop:buchstabsign} requires; the largest excess after $u=2$ is $e^\gamma\omega(u)=1.0101$, at $u=2.763$. The decay is faster than any exponential.}
+\label{fig:buchstab}
+\end{figure}
+
+Figure~\ref{fig:buchstab} shows much more than the proposition: the sign changes come about once per unit, and $|\omega(u)-e^{-\gamma}|$ decays faster than any exponential. Both are known to hold in general (see Tenenbaum's book in the Sources), but we only need what we proved.
+
+\section{Maier's theorem}
+
+\begin{theorem}[Maier, 1985]\label{thm:maier}
+For every $\lambda>1$,
+\[
+\limsup_{x\to\infty}\frac{\pi(x+(\log x)^\lambda)-\pi(x)}{(\log x)^{\lambda-1}}>1\qquad\text{and}\qquad\liminf_{x\to\infty}\frac{\pi(x+(\log x)^\lambda)-\pi(x)}{(\log x)^{\lambda-1}}<1.
+\]
+More precisely, the $\limsup$ is at least $e^\gamma\omega(u)$ and the $\liminf$ at most $e^\gamma\omega(u)$, for every $u>\lambda$.
+\end{theorem}
+
+By Proposition~\ref{prop:buchstabsign} there are values $u>\lambda$ with $e^\gamma\omega(u)>1$ and others with $e^\gamma\omega(u)<1$, so the first statement follows from the second. For $1<\lambda<e^\gamma=1.781$ the effect is large: $u\in\,]\lambda,e^\gamma[$ gives $e^\gamma\omega(u)=\frac{e^\gamma}u$, and the intervals of length $(\log x)^{1.1}$ can contain $60\%$ more primes than expected.
+
+The plan is to count primes in the intervals $]rP,rP+y]$ for a product $P$ of small primes, on average over $r$: the \emph{Maier matrix}, whose rows are these intervals and whose columns are the progressions $k\bmod P$. Column by column, the count is a prime number theorem for the modulus $P$, which is a small power of $x$: this is where Gallagher's theorem enters. To use it, $P$ must have no exceptional zero, and the following lemma removes one prime factor if needed.
+
+\begin{lemma}[good moduli]\label{lem:goodmoduli}
+Let $P(z)=\prod_{p<z}p$. For every large $z$ there is a divisor $P^*$ of $P(z)$, equal to $P(z)$ or to $\frac{P(z)}{p_1}$ for a prime $p_1<z$, such that no $L(s,\chi)$, $\chi\bmod P^*$, has a zero with $\sigma\ge1-\frac{c_4}{\log(P^*(|t|+2))}$. Moreover, if $P^*\ne P(z)$ for infinitely many $z$, then $p_1\to\infty$ along them.
+\end{lemma}
+\begin{proof}
+Let $Q=P(z)$ and $\eta=\frac{c_2}{2\log2Q}$. If two distinct real primitive characters with moduli dividing $Q$ both had a real zero $\ge1-\eta$, then, as the product of their moduli is at most $Q^2$, the theorem of Landau and Page would give a zero $\le1-\frac{c_2}{2\log Q}<1-\eta$. So at most one such character exists. If none exists, let $P^*=Q$; otherwise call it $\chi_1^*$, of modulus $q_1\mid Q$, $q_1>1$, let $p_1$ be the largest prime factor of $q_1$ and $P^*=\frac Q{p_1}$.
+
+Let $\chi\bmod P^*$ and suppose $L(s,\chi)$ has a zero with $\sigma\ge1-\frac{c_4}{\log(P^*(|t|+2))}$. Since $c_4\le c_1$, this zero is real and $\chi$ is real and non-principal, and the zero $\beta$ is also a zero of $L(s,\chi^*)$, where $\chi^*$ is the primitive character inducing $\chi$, of modulus dividing $P^*$. For $z$ large, $P^*\ge\frac Qz\ge\sqrt Q$, so $\beta\ge1-\frac{c_4}{\log2P^*}\ge1-\frac{2c_4}{\log2Q}\ge1-\eta$, as $c_4\le\frac{c_2}4$. So $\chi^*=\chi_1^*$; but $q_1\nmid P^*$, since $q_1$ is squarefree (it divides $Q$) and $p_1\nmid P^*$. This contradiction proves the first claim.
+
+For the second, fix $B$. Each of the finitely many real primitive characters of modulus at most $B$ has an $L$-function with no zero on some interval $[1-\eta_\chi,1]$. Once $\eta=\frac{c_2}{2\log 2P(z)}$ is smaller than all these $\eta_\chi$, the character $\chi_1^*$, if it exists, has modulus $q_1>B$. As $q_1$ is squarefree with all prime factors at most $p_1$, $q_1\le\prod_{p\le p_1}p$; since $q_1>B$ and $B$ is arbitrary, $p_1\to\infty$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:maier}]
+Fix $\lambda>1$ and $u>\lambda$. Let $X$ be a large parameter, and set
+\[
+y=(\log X)^\lambda\ \text{(for the }\limsup\text{)}\quad\text{or}\quad y=(\log2X)^\lambda\ \text{(for the }\liminf\text{)},\qquad z=y^{1/u}.
+\]
+Let $P=P^*$ be the modulus of Lemma~\ref{lem:goodmoduli} for this $z$. Then $\log P\le\theta(z)\le2z=2(\log2X)^{\lambda/u}$, so $\frac{\log X}{\log P}\to\infty$ and $X\ge P^{C_0}$ once $X$ is large.
+
+\emph{The matrix.} For an integer $r$ let $N(r)$ be the number of primes in $]rP,rP+y]$, and let $R=\frac XP$ and $S=\sum_rw(\frac rR)N(r)$. An element $rP+k$ with $1\le k\le y$ and $\gcd(k,P)>1$ is divisible by a prime $p\mid\gcd(k,P)$, $p<z$, and is larger than $p$, so it is not prime. Hence
+\[
+S=\sum_{\substack{1\le k\le y\\(k,P)=1}}\ \sum_{n\equiv k\,(P)}\mathbf 1_{\text{prime}}(n)\,w\Bigl(\frac{n-k}{X}\Bigr).
+\]
+
+\emph{One column.} Fix $k$. On the support, $X\le n-k\le2X$. Replacing $w(\frac{n-k}X)$ by $w(\frac nX)$ costs at most $\|w'\|_\infty\frac yX$ per term, over at most $\frac{2X}P+1$ terms: $O(\frac yP)$ in total. Replacing $\mathbf 1_{\text{prime}}(n)$ by $\frac{\Lambda(n)}{\log X}$ costs a factor $1+O(\frac1{\log X})$, since $\log n=\log X+O(1)$, plus the prime powers $n\le3X$, of which there are $O(\sqrt X)$. By Gallagher's theorem, which applies by the choice of $P$,
+\[
+\sum_{n\equiv k\,(P)}\mathbf 1_{\text{prime}}(n)w\Bigl(\frac{n-k}X\Bigr)=\frac{X\hat w(1)}{\varphi(P)\log X}\bigl(1+o(1)\bigr)+O(\sqrt X),
+\]
+with $o(1)$ uniform in $k$, because $e^{-c\log X/\log P}+P^{-c}\to0$.
+
+\emph{All columns.} Let $\Phi_P(y)$ be the number of $1\le k\le y$ prime to $P$. Since $\sum_rw(\frac rR)=R\hat w(1)+O(1)$,
+\[
+\frac{S}{\sum_rw(r/R)}=\frac{P}{\varphi(P)}\cdot\frac{\Phi_P(y)}{\log X}\bigl(1+o(1)\bigr)+O\Bigl(\frac{y\sqrt X}{R}\Bigr),
+\]
+and the last term is $O(yP X^{-1/2})=o(1)$.
+
+\emph{The sieve factor.} If $P=P(z)$, then $\Phi_P(y)=\Phi(y,z)$ and $\frac P{\varphi(P)}=\prod_{p<z}(1-\frac1p)^{-1}$. If $P=\frac{P(z)}{p_1}$, the two factors change by $1-\frac1{p_1}$ and by at most the number of $k=p_1^ij\le y$ with $i\ge1$ and all prime factors of $j$ at least $z$, which is at most $\sum_{1\le i\le\log_2y}\Phi(\frac y{p_1^i},z)\le\log_2y+\frac{2Cy}{p_1\log z}$, because $\Phi(t,z)\le1+C\frac t{\log z}$ for all $t\ge1$ (by Tome~13, Corollary~3.5, if $t\ge z^2$; by Chebyshev's bound $\pi(t)=O(\frac t{\log t})$ if $z\le t<z^2$; and $\Phi(t,z)=1$ if $t<z$). Since $p_1\to\infty$ and $\log y=o(\frac y{\log z})$, in both cases, by Theorem~\ref{thm:buchstab} and Mertens,
+\[
+\frac P{\varphi(P)}\Phi_P(y)=e^\gamma\log z\cdot\frac{\omega(u)y}{\log z}\bigl(1+o(1)\bigr)=e^\gamma\omega(u)\,y\,(1+o(1)).
+\]
+(For $1<u<2$ we used Theorem~\ref{thm:buchstab} in its first form, where $\frac z{\log z}=o(\frac y{\log z})$.)
+
+\emph{Conclusion.} The weighted average of $N(r)$ over $r$ is therefore $e^\gamma\omega(u)\frac y{\log X}(1+o(1))$, and $w\ge0$. For the $\limsup$, choose $r$ with $w(\frac rR)>0$ and $N(r)$ at least this average, and let $x=rP\in[X,2X]$. Then $(\log x)^\lambda\ge y$, so
+\[
+\pi(x+(\log x)^\lambda)-\pi(x)\ge N(r)\ge e^\gamma\omega(u)(1+o(1))\frac{(\log X)^\lambda}{\log X}=e^\gamma\omega(u)(1+o(1))(\log x)^{\lambda-1},
+\]
+since $\log x=\log X+O(1)$. For the $\liminf$, choose $r$ with $N(r)$ at most the average; now $(\log x)^\lambda\le(\log2X)^\lambda=y$, and the same computation gives $\pi(x+(\log x)^\lambda)-\pi(x)\le e^\gamma\omega(u)(1+o(1))(\log x)^{\lambda-1}$. Letting $X\to\infty$ proves the theorem.
+\end{proof}
+
+\begin{figure}[ht]
+\centering\fig{ch11-maier}
+\caption{A Maier matrix in numbers. With $P=2\cdot3\cdot5\cdot7\cdot11\cdot13\cdot17=510\,510$ and $1000\le r<2000$, the average number of primes in $]rP,rP+y]$, divided by $\frac y{\log rP}$ (blue), against $u=\frac{\log y}{\log17}$. Red: the prediction $\frac{P}{\varphi(P)}\frac{\Phi_P(y)}y$ of the proof. Grey: the same average for $1000$ random starting points $x$ in the same range, which stays near $1$. Here $z=17$ is small, so the curve is not yet $e^\gamma\omega(u)$, but it shows the same mechanism: too few primes when $y$ is barely above $17$, too many around $u=1.75$, and a damped oscillation after.}
+\label{fig:maier}
+\end{figure}
+
+\begin{think}
+The proof shows that the intervals $]x,x+y]$ starting at multiples of $P$ are special. Why does this not contradict Selberg's theorem that, under the Riemann hypothesis, $\pi(x+y)-\pi(x)\sim\frac y{\log x}$ for \emph{almost all} $x$ when $y=(\log x)^\lambda$, $\lambda>2$? How many multiples of $P$ are there up to $X$?
+\end{think}
+
+\section{Long gaps}
+
+The same matrix, pushed to the extreme, produces long gaps. If $x$ is chosen so that every $x+k$, $1\le k\le y$, has a prime factor below some bound, the whole interval is free of primes. By the Chinese remainder theorem, the question is purely combinatorial.
+
+\begin{lemma}\label{lem:covering}
+Let $x\ge2$ and $y\ge1$, and suppose that for each prime $p\le x$ there is a class $a_p\bmod p$ such that every integer $k\in[1,y]$ satisfies $k\equiv a_p\pmod p$ for at least one $p\le x$. Then, for $x$ large, $G(e^{3x})>y$.
+\end{lemma}
+\begin{proof}
+Let $P=\prod_{p\le x}p$; by the prime number theorem $\log P=\theta(x)\le2x$ for $x$ large. By the Chinese remainder theorem there is $n$ with $x<n\le x+P$ and $n\equiv-a_p\pmod p$ for every $p\le x$. For $1\le k\le y$, some $p\le x$ has $k\equiv a_p$, so $p\mid n+k$, and $n+k>x\ge p$: every $n+k$ is composite. Let $p'$ be the largest prime $\le n$ and $p''$ the next one. Then $p''-p'>y$, and $p''\le2n\le2(x+e^{2x})\le e^{3x}$ by Bertrand's postulate.
+\end{proof}
+
+The naive choice $a_p=0$ for $p\le\frac x2$ leaves uncovered $1$ and the primes of $]\frac x2,y]$; covering these with the primes of $]\frac x2,x]$, one each, allows $y$ up to about $\frac x2$, so $G(X)\gg\log X$ (Exercise~\ref{ex:westzynthius}). Nothing new. The gain comes from using the small primes more cleverly: with the class $1$ instead of $0$.
+
+\begin{lemma}\label{lem:siftedprimes}
+There is an absolute constant $C$ with the following property. Let $Y\ge2$, $m\ge2$ even and $2\le z\le Y^{1/20}$, and let $N$ be the number of primes $q\in\,]Y^{1/20},Y]$ such that $mq-1$ has no prime factor $\le z$. Then
+\[
+N\le C\frac{Y}{\log Y\log z}\Bigl(\frac m{\varphi(m)}\Bigr)^2+C\sqrt Y\log^3Y.
+\]
+\end{lemma}
+\begin{proof}
+Let $w=Y^{1/20}$. For each prime $p\le w$ let $\mathcal R_p$ be the set of classes $n\bmod p$ with $p\mid n$, or with $p\mid mn-1$ when $p\le z$; it has $\omega(p)$ elements, with $\omega(p)=2$ if $3\le p\le z$ and $p\nmid m$, and $\omega(p)=1$ otherwise (for $p=2$ because $mn-1$ is odd, for $p\mid m$ because $p\nmid mn-1$). Every prime $q$ counted, $q>w$, is an $n\le Y$ lying in no $\mathcal R_p$. For $n\le Y$ let $a_n$ be the product of the primes $p\le w$ with $n\bmod p\in\mathcal R_p$. By the Chinese remainder theorem, for squarefree $d\mid P(w)$, $\#\{n\le Y:d\mid a_n\}=Y\frac{\omega(d)}d+r_d$ with $|r_d|\le\omega(d)\le\tau(d)$. The function $g(p)=\frac{\omega(p)}p$ satisfies $g(p)\le\min(\frac2p,\frac23)$. The fundamental lemma with $\kappa=2$, $K=3$, $s=10$ and $D=w^{10}=\sqrt Y$ bounds the count by
+\[
+2YV(w)+\sum_{d<\sqrt Y}\tau(d)^2,\qquad V(w)=\prod_{p\le w}\Bigl(1-\frac{\omega(p)}p\Bigr).
+\]
+The last sum is $O(\sqrt Y\log^3Y)$: since $(j+1)^2\le\binom{j+3}3$, $\tau(d)^2\le\tau_4(d)$, and $\sum_{d\le N}\tau_4(d)\le N(\sum_{n\le N}\frac1n)^3$. Since $1-\frac2p=(1-\frac1p)(1-\frac1{p-1})$ and $\frac{p-1}{p-2}\le(\frac p{p-1})^2$ for $p\ge3$,
+\[
+V(w)\le\prod_{p\le w}\Bigl(1-\frac1p\Bigr)\prod_{3\le p\le z}\Bigl(1-\frac1{p-1}\Bigr)\prod_{p\mid m,\,p\ge3}\frac{p-1}{p-2}\le\frac C{\log w}\cdot\frac C{\log z}\cdot\Bigl(\frac m{\varphi(m)}\Bigr)^2,
+\]
+by Mertens, using $1-\frac1{p-1}\le1-\frac1p$.
+\end{proof}
+
+\begin{theorem}[Erd\H{o}s, 1935; Rankin, 1938]\label{thm:erdosrankin}
+There is $c>0$ such that, for all large $X$,
+\[
+G(X)\ge c\,\frac{\log X\,\log_2X\,\log_4X}{(\log_3X)^2}.
+\]
+\end{theorem}
+\begin{proof}
+Let $x$ be large, write $\log_k$ for the iterated logarithms of $x$, let $C_R$ be the constant of Rankin's bound with $\sigma_0=\frac12$, $K=2C_R+6$, and
+\[
+y=c_0\frac{x\log x\log_3x}{(\log_2x)^2},\qquad z=\exp\Bigl(\frac{\log x\log_3x}{K\log_2x}\Bigr),\qquad M=\frac{2y}x,
+\]
+with $c_0>0$ chosen below. We choose $a_p=1$ for $p\le z$ and $a_p=0$ for $z<p\le\frac x2$, and let $\mathcal S$ be the set of $k\in[1,y]$ in none of these classes. We show that $|\mathcal S|<\pi(x)-\pi(\frac x2)$; then the primes of $]\frac x2,x]$ can be assigned injectively to the elements of $\mathcal S$, each $p$ taking as $a_p$ the class of its element, and Lemma~\ref{lem:covering} applies.
+
+\emph{Shape of the survivors.} A $k\in\mathcal S$ has no prime factor in $]z,\frac x2]$, and at most one prime factor (with multiplicity) above $\frac x2$, since $y<\frac{x^2}4$. So either (i) all prime factors of $k$ are at most $z$, or (ii) $k=mq$ with $q>\frac x2$ prime and $m\le\frac yq<M$. Moreover $k\not\equiv1\pmod p$ for $p\le z$, so in case (ii) $mq-1$ has no prime factor up to $z$; in particular $m$ is even, as otherwise $mq-1$ is even.
+
+\emph{Case (i).} Their number is at most $\Psi(y,z)$. Let $u=\frac{\log y}{\log z}$, so that $U_0\le u\le2U_0$ with $U_0=\frac{K\log_2x}{\log_3x}$. As $t\mapsto t\log t$ increases,
+\[
+u\log u+u\log\log u=u\log(u\log u)\ge U_0\log(U_0\log U_0)\ge(K-1)\log_2x
+\]
+for $x$ large, because $\log(U_0\log U_0)=\log_3x+O(\log_4x)$. Also $u+\log\log y\le2\log_2x$, and the conditions of Rankin's bound hold, for $x$ large. Hence $\Psi(y,z)\le y\exp(-(K-1)\log_2x+2C_R\log_2x)=\frac y{(\log x)^5}\le\frac x{(\log x)^3}$.
+
+\emph{Case (ii).} For each even $m<M$, apply Lemma~\ref{lem:siftedprimes} with $Y=\frac ym\ge\frac x2$: then $Y^{1/20}\le x^{1/10}<\frac x2<q$ and $z\le x^{1/40}\le Y^{1/20}$. The number of elements of type (ii) is at most
+\[
+\sum_{m<M}\Bigl(C\frac{y}{m\log(x/2)\log z}\Bigl(\frac m{\varphi(m)}\Bigr)^2+C\sqrt y\log^3y\Bigr)\le C'\frac{y\log M}{\log x\log z}+CM\sqrt y\log^3y,
+\]
+using $\sum_{m<M}\frac1m(\frac m{\varphi(m)})^2\le C''(1+\log M)$, proved below. Now $\log M\le\log_2x$ and $\log z=\frac{\log x\log_3x}{K\log_2x}$, so the first term is at most $C'K\frac{y(\log_2x)^2}{(\log x)^2\log_3x}=C'Kc_0\frac x{\log x}$. Choose $c_0=\frac1{10C'K}$. The second term is $O(x^{0.6})$.
+
+\emph{Counting.} Altogether $|\mathcal S|\le\frac x{(\log x)^3}+\frac x{10\log x}+O(x^{0.6})<\frac x{3\log x}<\pi(x)-\pi(\frac x2)$ for $x$ large, by the prime number theorem. Lemma~\ref{lem:covering} gives $G(e^{3x})>y$. Given a large $X$, apply this with $x=\frac13\log X$; the iterated logarithms of $x$ and of $X$ differ by bounded factors, so $y\ge c\frac{\log X\log_2X\log_4X}{(\log_3X)^2}$.
+
+\emph{The sum over $m$.} Write $(\frac m{\varphi(m)})^2=\sum_{d\mid m}h(d)$ with $h$ multiplicative, $h(p)=(\frac p{p-1})^2-1=\frac{2p-1}{(p-1)^2}$ and $h(p^j)=0$ for $j\ge2$. Then $\sum_{m<M}\frac1m\sum_{d\mid m}h(d)\le\sum_d\frac{h(d)}d\sum_{j<M}\frac1j\le(1+\log M)\prod_p\bigl(1+\frac{h(p)}p\bigr)$, and the product converges because $h(p)\le\frac{2p-1}{(p-1)^2}\le\frac 6p$.
+\end{proof}
+
+The proof is a tug of war between two kinds of survivors. The smooth numbers of case~(i) are rare when $y$ is a large power of $z$, so $z$ should be small. The numbers $mq$ of case~(ii) lose, through the classes $1\bmod p$, the factor $\prod_{p\le z}(1-\frac1{p-1})\approx\frac{1}{\log z}$, so $z$ should be large. The balance is struck where $\log z$ is $\log x$ divided by a power of $\log_2x$, and the factor $\frac{\log z}{\log M}$ that the small primes win, over the trivial bound $y\approx x$, is Rankin's $\frac{\log x\log_3x}{(\log_2x)^2}$.
+
+\begin{remark}
+These are quoted for culture; see the Sources. (a) \emph{Arbitrarily large constant.} Ford, Green, Konyagin and Tao, and independently Maynard (2014), proved that $G(X)\ge f(X)\frac{\log X\log_2X\log_4X}{(\log_3X)^2}$ with $f(X)\to\infty$; together (2018) they reached $G(X)\gg\frac{\log X\log_2X\log_4X}{\log_3X}$. The new ingredient is in the last step: instead of one prime of $]\frac x2,x]$ for each survivor, each large prime covers many survivors at once, chosen with the help of the Green--Tao theorem on primes in progressions (Ford--Green--Konyagin--Tao) or of Maynard's sieve weights from Tome~13. (b) \emph{The truth.} Cramér's model predicts $\limsup\frac{G(X)}{\log^2X}=1$ (Tome~5, Theorem~10.4); Granville's model, which sieves by the small primes before tossing the coin, predicts at least $2e^{-\gamma}=1.1229$. The largest known gaps have $\frac{g}{\log^2p}$ below $1$. (c) \emph{Upper bounds.} The best unconditional upper bound is $G(X)=O(X^{0.525})$ (Baker, Harman and Pintz, 2001); the Riemann hypothesis gives only $O(\sqrt X\log X)$ (Cramér, 1920).
+\end{remark}
+
+\begin{beauty}
+Maier's theorem and the Erd\H{o}s--Rankin theorem are the same picture seen at two scales. Write the integers in rows of length $P$, a product of small primes. The columns $k$ prime to $P$ carry all the primes, evenly, by the prime number theorem for progressions; the other columns are empty. An interval at the start of a row inherits the pattern of the columns, which is the pattern of $1,2,\dots,y$: Buchstab's function measures how many columns survive, and the primes follow. Rankin chooses the row cleverly and finds a window where no column survives at all. Randomness, here, is not destroyed. It is concentrated in the columns, and the arithmetic decides where the columns are.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:omega23}
+Show that $\omega(u)=\frac{1+\log(u-1)}u$ for $2\le u\le3$, and that $\omega(u)>e^{-\gamma}$ for $u$ close to $3$. (Use $e^{-\gamma}=0.56146$.) Where in $[2,3]$ does $\omega$ attain its maximum?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:jacobsthal}
+The \emph{Jacobsthal function} $j(N)$ is the largest gap between consecutive integers prime to $N$. Show that $j(\prod_{p\le x}p)$ is the largest $y+1$ such that $[1,y]$ can be covered by classes $a_p\bmod p$, one for each $p\le x$, and deduce from the proof of Theorem~\ref{thm:erdosrankin} that $j(\prod_{p\le x}p)\ge c\frac{x\log x\log_3x}{(\log_2x)^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:averageshort}
+Let $h\ge1$. Show that $\sum_{n\le X}(\pi(n+h)-\pi(n))=h\pi(X)+O(h^2)$. Deduce that, for $h=(\log X)^\lambda$, the average over $n\le X$ of $\pi(n+h)-\pi(n)$ is $\sim(\log X)^{\lambda-1}$: Maier's intervals are exceptions, not the rule.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:maierconst}
+For $1<\lambda<e^\gamma$, show that the $\limsup$ in Theorem~\ref{thm:maier} is at least $\frac{e^\gamma}\lambda$. For $\lambda=1.1$, how many more primes than expected does this give?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:westzynthius}
+Run the proof of Theorem~\ref{thm:erdosrankin} with $a_p=0$ for all $p\le\frac x2$ and the primes of $]\frac x2,x]$ covering the survivors. Which survivors remain, and what lower bound for $G(X)$ does this give? Then show that the choice $a_p=1$ for $p\le z$ and $a_p=0$ for $z<p\le\frac x2$, with $z=x^{1/\log_2x}$, already gives $\frac{G(X)}{\log X}\to\infty$, Westzynthius's theorem.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:omega23}
+$u\omega(u)=1+\int_1^{u-1}\frac{\dd t}t$. Differentiate: the maximum is where $\omega(u-1)=\omega(u)$.
+\end{hint}
+\begin{hint}{ex:jacobsthal}
+$n+1,\dots,n+y$ all share a factor with $N$ if and only if $-n$ covers $[1,y]$ prime by prime.
+\end{hint}
+\begin{hint}{ex:averageshort}
+Each prime $p\le X$ is counted for the $n\in[p-h,p-1]$.
+\end{hint}
+\begin{hint}{ex:maierconst}
+Take $u\in\,]\lambda,e^\gamma[$ in Theorem~\ref{thm:maier}, close to $\lambda$.
+\end{hint}
+\begin{hint}{ex:westzynthius}
+In case (ii) the factor $\frac1{\log z}$ is the gain over the trivial bound; in case (i) use Rankin's bound with $u\approx\log_2x$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:omega23}
+\idea On $[2,3]$, the integral only sees $\omega=\frac1t$ on $[1,2]$.
+\writeup For $2\le u\le3$, $u-1\in[1,2]$, so $u\omega(u)=1+\int_1^{u-1}\frac{\dd t}t=1+\log(u-1)$. At $u=3$, $\omega(3)=\frac{1+\log2}3=0.56438>0.56146$, and by continuity $\omega>e^{-\gamma}$ near $3$. The derivative is $\omega'(u)=\frac{\omega(u-1)-\omega(u)}u$, with $\omega(u-1)=\frac1{u-1}$; it vanishes when $\frac u{u-1}=1+\log(u-1)$, that is $\log(u-1)=\frac1{u-1}$, at $u-1=1.763$ (the solution of $t\log t=1$), so $u=2.763$, where $\omega=\frac1{1.763}=0.5671$. This is the maximum $e^\gamma\omega=1.0101$ of Figure~\ref{fig:buchstab}.
+\end{solution}
+
+\begin{solution}{ex:jacobsthal}
+\idea Integers prime to $N$ are the integers that avoid the class $0$ modulo every $p\mid N$; shifting turns $0$ into $a_p$.
+\writeup Let $N=\prod_{p\le x}p$. The integers $n+1,\dots,n+y$ are all not prime to $N$ if and only if each $k\in[1,y]$ has some $p\le x$ with $n+k\equiv0$, that is $k\equiv a_p:=-n\pmod p$. As $n$ runs over all residues modulo $N$, the vector $(a_p)$ runs over all choices of classes, by the Chinese remainder theorem. So the longest run of integers not prime to $N$ is the largest coverable $y$, and $j(N)$, the gap between the two integers prime to $N$ around such a run, is $y+1$. The proof of Theorem~\ref{thm:erdosrankin} produces a covering of $[1,y]$ with $y=c_0\frac{x\log x\log_3x}{(\log_2x)^2}$.
+\end{solution}
+
+\begin{solution}{ex:averageshort}
+\idea Swap the order of summation.
+\writeup $\sum_{n\le X}(\pi(n+h)-\pi(n))=\sum_p\#\{n\le X:n<p\le n+h\}$. A prime $p\le X$ with $p>h$ is counted for exactly $h$ values of $n$ (those in $[p-h,p-1]$); primes $p\le h$ and primes in $]X,X+h]$ are counted at most $h$ times each, and there are $O(h)$ of them. So the sum is $h\pi(X)+O(h^2)$. Dividing by $X$, with $h=(\log X)^\lambda$ and $\pi(X)\sim\frac X{\log X}$, the average is $(\log X)^{\lambda-1}(1+o(1))+O(\frac{(\log X)^{2\lambda}}X)\sim(\log X)^{\lambda-1}$.
+\end{solution}
+
+\begin{solution}{ex:maierconst}
+\idea On $]1,2]$, Buchstab's function is $\frac1u$.
+\writeup For $\lambda<u<e^\gamma<2$, $e^\gamma\omega(u)=\frac{e^\gamma}u$, so by Theorem~\ref{thm:maier} the $\limsup$ is at least $\frac{e^\gamma}u$ for every such $u$, hence at least $\frac{e^\gamma}\lambda$. For $\lambda=1.1$: $\frac{1.7811}{1.1}=1.619$, so there are intervals of length $(\log x)^{1.1}$ with $62\%$ more primes than the expected $(\log x)^{0.1}$. In the same way the $\liminf$ is at most $e^\gamma\omega(u)$ for $u$ just above $e^\gamma$, which is only slightly below $1$; the largest deficits come from $u$ slightly larger than $2$, where $e^\gamma\omega(2)=0.8905$, and need $\lambda<2$.
+\end{solution}
+
+\begin{solution}{ex:westzynthius}
+\idea Trading small primes against medium ones is the whole method; even a crude balance gains an unbounded factor.
+\writeup With $a_p=0$ for all $p\le\frac x2$, the survivors in $[1,y]$, $y<\frac{x^2}4$, are $1$ and the primes of $]\frac x2,y]$, about $\frac y{\log y}$ of them; covering them by the $\sim\frac x{2\log x}$ primes of $]\frac x2,x]$ needs $y\le(\frac12+o(1))x$, so $G(X)\ge(\frac16+o(1))\log X$, nothing better than the average. With $z=x^{1/\log_2x}$, $a_p=1$ for $p\le z$ and $a_p=0$ for $z<p\le\frac x2$, and $y=Ax$ for a large constant $A$: in case (i), $u=\frac{\log y}{\log z}\sim\log_2x$, and Rankin's bound gives $\Psi(y,z)\le y\exp(-(1+o(1))\log_2x\log_3x)=o(\frac x{\log x})$. In case (ii), $m<2A$, and Lemma~\ref{lem:siftedprimes}, summed over $m$ as in the proof of the theorem, bounds the count by $C\frac{y\log(2A)}{\log x\log z}=CA\log(2A)\frac{\log_2x}{\log x}\cdot\frac x{\log x}=o(\frac x{\log x})$. So $[1,Ax]$ is covered for $x$ large, for every $A$, and $\frac{G(X)}{\log X}\ge\frac A3$ for $X$ large: the ratio is unbounded.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Maier.} H.~Maier, ``Primes in short intervals'', \emph{Michigan Math.\ J.}\ 32 (1985), 221--225. The matrix method was developed further in J.~Friedlander and A.~Granville, ``Limitations to the equi-distribution of primes I'', \emph{Ann.\ of Math.}\ 129 (1989), 363--382.
+\item \emph{Buchstab's function.} A.~A.~Buchstab, ``Asymptotic estimates of a general number-theoretic function'' (in Russian), \emph{Mat.\ Sbornik} 2(44) (1937), 1239--1246; N.~G.~de~Bruijn, ``On the number of uncancelled elements in the sieve of Eratosthenes'', \emph{Proc.\ Kon.\ Ned.\ Akad.\ Wetensch.}\ 53 (1950), 803--812. G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, Chapter III.6, is the standard reference.
+\item \emph{Long gaps.} E.~Westzynthius, ``Über die Verteilung der Zahlen, die zu den $n$ ersten Primzahlen teilerfremd sind'', \emph{Commentationes Phys.-Math.\ Helsingfors} 5 (1931), 1--37; P.~Erd\H{o}s, ``On the difference of consecutive primes'', \emph{Quart.\ J.\ Math.\ Oxford} 6 (1935), 124--128; R.~A.~Rankin, ``The difference between consecutive prime numbers'', \emph{J.\ London Math.\ Soc.}\ 13 (1938), 242--247; H.~Maier and C.~Pomerance, ``Unusually large gaps between consecutive primes'', \emph{Trans.\ Amer.\ Math.\ Soc.}\ 322 (1990), 201--237; J.~Pintz, ``Very large gaps between consecutive primes'', \emph{J.\ Number Theory} 63 (1997), 286--301.
+\item \emph{The prize.} K.~Ford, B.~Green, S.~Konyagin and T.~Tao, ``Large gaps between consecutive prime numbers'', \emph{Ann.\ of Math.}\ 183 (2016), 935--974; J.~Maynard, ``Large gaps between primes'', \emph{Ann.\ of Math.}\ 183 (2016), 915--933, whose introduction recalls Erd\H{o}s's 1979 offer of $10\,000$ dollars; K.~Ford, B.~Green, S.~Konyagin, J.~Maynard and T.~Tao, ``Long gaps between primes'', \emph{J.\ Amer.\ Math.\ Soc.}\ 31 (2018), 65--105.
+\item \emph{Models.} A.~Granville, ``Harald Cramér and the distribution of prime numbers'', \emph{Scand.\ Actuarial J.}\ 1995, 12--28; W.~Banks, K.~Ford and T.~Tao, ``Large prime gaps and probabilistic models'', \emph{Invent.\ Math.}\ 233 (2023), 1471--1518.
+\item \emph{Upper bounds.} R.~C.~Baker, G.~Harman and J.~Pintz, ``The difference between consecutive primes, II'', \emph{Proc.\ London Math.\ Soc.}\ 83 (2001), 532--562.
+\end{itemize}
