@@ -6,7 +6,7 @@ plus separate covers and publishing metadata:
 | File | What it is | Where it goes in KDP |
 |---|---|---|
 | `dist/<tome>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
-| `dist/kdp/<tome>-ebook-cover.jpg` | Front cover, 1600 x 2560 px JPEG | Kindle eBook > Cover |
+| `dist/kdp/<tome>-ebook-cover.jpg` | Front cover, 1792 x 2560 px JPEG | Kindle eBook > Cover |
 | `dist/<tome>.pdf` | Standard reading PDF and identical paperback interior: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
 | `dist/kdp/<tome>-cover-wrap.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
 | `dist/kdp/<tome>-print-metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
@@ -106,3 +106,15 @@ Before snapshotting, every canonical PDF is checked for 7 × 10 geometry and emb
 vector fonts, and its page count must agree with the paperback metadata. Retired
 variants are removed during cache assembly and rejected before release. Missing
 PDF, EPUB, reader, covers or metadata makes a cached book incomplete.
+
+
+## Exact approved cover master
+
+Volume 0 uses `tools/assets/approved-volume-0.png` unchanged. It is embedded as-is
+in the paperback front, copied byte-for-byte into EPUB, reader and library PNGs,
+and checked by `tools/check_cover_reference.py`. The source is 1049 × 1500 pixels
+(about 150 ppi at 7 × 10); no resampling can add detail. All front-cover outputs
+preserve the approved proportions; thumbnails use contain/auto height, never crop.
+Cover/wrap builds require XeLaTeX and bundled Inter fonts, plus Pillow for the exact
+image check (`texlive-xetex` and `python3-pil` in Ubuntu CI). Body builds still use
+pdfLaTeX. The author explicitly preferred the exact image over the old recreation.

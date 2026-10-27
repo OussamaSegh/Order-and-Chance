@@ -69,7 +69,7 @@ if __name__=='__main__':
         check_interior(args.pdf)
     else:
         check_cover(args.pdf,2*LAYOUT['trim_width_in']+2*LAYOUT['bleed_in']+args.spine if args.spine is not None else 6,
-                    args.height or (LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'] if args.spine is not None else 9.6))
+                    args.height or (LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'] if args.spine is not None else 6*LAYOUT['trim_height_in']/LAYOUT['trim_width_in']))
 
     if args.title:
         if not args.number or args.spine is None:

@@ -1,28 +1,56 @@
-% Fonts and colours shared by the e-book cover and the paperback wrap.
-\usepackage[T1]{fontenc}
-\usepackage{tgheros}
-\renewcommand{\familydefault}{\sfdefault}
+% OpenType weights and tracking matched to the author's approved cover reference.
+\usepackage{fontspec}
+\setmainfont[Path=tools/assets/fonts/,UprightFont=Inter-Light.ttf,
+ BoldFont=Inter-SemiBold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
+\setsansfont[Path=tools/assets/fonts/,UprightFont=Inter-Light.ttf,
+ BoldFont=Inter-SemiBold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
 \usepackage{amsmath,amssymb}
 \usepackage{etoolbox}
-\renewcommand{\ttdefault}{txtt}
-% Vector Heros for the few sans-serif diagram labels (T1 Computer Modern is bitmap).
-\renewcommand{\sfdefault}{qhv}
-\usepackage[letterspace=180]{microtype}
 \usepackage{tikz}
 \usetikzlibrary{calc,shapes.geometric}
 \input{common/design-colors}
 \input{common/volume-subtitles}
-% Coral mathematical linework with a quieter comparison tone.
-\colorlet{ocInk}{ocCoral!55!ocBlack}
+\colorlet{ocInk}{ocCoral!70!ocBlack}
 \colorlet{accent}{ocCoral}
 \colorlet{ivory}{ocCream}
 \colorlet{navy}{ocBlack}
 \colorlet{navytop}{ocBlack}
 \usepackage{adjustbox}
-% Flat matte charcoal, vector lettering and vector mathematical illustrations.
+\usepackage{xsavebox}
+\XeTeXgenerateactualtext=1
+\newcommand{\covertracking}[2]{{\addfontfeatures{LetterSpace=#1}#2}}
+% Matching charcoal texture for backs and variable-content fronts.
 \newcommand{\coverpaper}[2]{%
-  \begin{scope}
-    \fill[ocBlack] (0,0) rectangle ({#1},{#2});
-    \clip (0,0) rectangle ({#1},{#2});
-  \end{scope}}
+ \pgfmathsetlengthmacro{\paperw}{#1}
+ \pgfmathsetlengthmacro{\paperh}{#2}
+ \begin{scope}
+  \fill[ocBlack] (0,0) rectangle ({#1},{#2});
+  \clip (0,0) rectangle ({#1},{#2});
+  \node[anchor=south west,inner sep=0pt,opacity=1] at (0,0)
+   {\includegraphics[width=\paperw,height=\paperh]{tools/assets/approved-charcoal-paper.png}};
+ \end{scope}}
 \newif\ifcoverbg
+
+% Draw the original pixels without retyping, recoloring, cropping or distorting.
+\newcommand{\covermasterimage}{%
+ \pgfmathsetlengthmacro{\covercanvasheight}{\CH*1in}
+ \ifcsname ocMasterPrepared\endcsname\else
+  \global\def\ocMasterPrepared{1}
+  \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/approved-volume-0.png}}
+ \fi
+ \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocMaster}};
+}
+% Identical original frame, series heading, slogan and author for the other books.
+\newcommand{\covercommonidentity}{%
+ \foreach \xa/\ya/\xb/\yb in {0/0/.22/1,5.79/0/6/1,0/.9533/6/1,0/.8533/6/.9467,0/0/6/.0467,.32/.05/3.3/.105}{
+  \begin{scope}
+   \clip ($(O)+(\xa in,{\CH*\ya*1in})$) rectangle ($(O)+(\xb in,{\CH*\yb*1in})$);
+   \covermasterimage
+  \end{scope}
+ }
+}
+\newcommand{\covercommoncopy}{%
+ \node[opacity=0,anchor=west,font=\fontsize{12}{15}\selectfont] at ($(O)+(.43in,{\CH*.92in})$) {ORDER AND CHANCE};
+ \node[opacity=0,anchor=west,font=\fontsize{10}{12}\selectfont] at ($(O)+(.43in,{\CH*.88in})$) {Discover the patterns. Understand the proofs.};
+ \node[opacity=0,anchor=west,font=\fontsize{12}{15}\selectfont] at ($(O)+(.43in,{\CH*.08in})$) {SEGHAIER Oussama};
+}

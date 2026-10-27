@@ -32,7 +32,7 @@ CARD = """<article class="tome" data-collection="{collection}" data-search="{sea
 <div class="links"><a class="primary" href="{pdf}" download>Download PDF</a>{read}{epub}</div>{kdp}</article>"""
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
-KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1600 x 2560 JPEG, for a Kindle eBook"),
+KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1792 x 2560 JPEG, for a Kindle eBook"),
        ("cover-wrap.pdf", "Paperback cover", f"Back, spine and front with bleed, for a {PRINT_TRIM} paperback"),
        ("listing.md", "Description and keywords", "Title fields, description and keywords for the KDP form")]
 
@@ -46,6 +46,9 @@ def tome_order(pdf: Path):
 def main(dist: str, out: str) -> None:
     dist_dir, out_dir = Path(dist), Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
+    assets = Path(__file__).resolve().parent / "assets"
+    shutil.copytree(assets / "fonts", out_dir / "fonts", dirs_exist_ok=True)
+    shutil.copy2(assets / "approved-charcoal-paper.png", out_dir / "paper.png")
     clean(out_dir)
     current = {p.parent.name for p in ROOT.glob("tome*/main.tex")}
     # Remove stale downloads from an earlier library built into the same directory.
@@ -90,9 +93,11 @@ def main(dist: str, out: str) -> None:
         cover = '<div class="cover placeholder" aria-hidden="true">∑</div>'
         cover_pdf = ROOT / "build" / tome / "cover.pdf"
         if cover_pdf.exists():
-            subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to-x", "300", "-scale-to-y", "480",
+            subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to", "480",
                             str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
-            cover = f'<img class="cover" width="300" height="480" loading="lazy" src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
+            if tome == "tome0-mathematical-maturity":
+                shutil.copy2(assets / "approved-volume-0.png", out_dir / f"{tome}-cover.png")
+            cover = f'<img class="cover" width="336" height="480" loading="lazy" src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         match = re.match(r"tome([A-Z]?)", tome)
         prefix = match.group(1) if match else ""
         collection, label = {"P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))

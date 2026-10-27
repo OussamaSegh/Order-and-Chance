@@ -1,7 +1,7 @@
 """Render every series front at production sizes without rebuilding the books.
 
 Usage: python3 tools/preview_covers.py [tome0-mathematical-maturity tome1-integers] [--jobs 4]
-Requires the same pdflatex/poppler setup as build.sh. Writes preview PDFs and PNGs,
+Requires the same xelatex/poppler setup as build.sh. Writes preview PDFs and PNGs,
 not release assets or production paperback wraps. Mathematical motifs are read as-is.
 """
 import argparse
@@ -15,7 +15,7 @@ from print_layout import LAYOUT, check_sync as check_print_sync
 
 ROOT = Path(__file__).resolve().parent.parent
 PRINT = (LAYOUT["trim_width_in"], LAYOUT["trim_height_in"])
-FORMATS = {"reference": PRINT, "ebook": (6, 9.6)}
+FORMATS = {"reference": PRINT, "ebook": (6, 6*PRINT[1]/PRINT[0])}
 
 
 def render(main: Path, output: Path) -> str:
@@ -30,9 +30,11 @@ def render(main: Path, output: Path) -> str:
                rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{tome}/cover-motif}}"
                r"\input{tools/cover.tex}")
         with (out / f"{fmt}.stdout").open("w") as log:
-            subprocess.run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error",
-                            f"-output-directory={out}", f"-jobname={fmt}", tex],
-                           cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
+            # xsavebox needs one XDV-only pass for references; encode images once.
+            for flags in (["-no-pdf"], []):
+                subprocess.run(["xelatex", *flags, "-interaction=nonstopmode", "-halt-on-error",
+                                f"-output-directory={out}", f"-jobname={fmt}", tex],
+                               cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
         check_cover(out / f"{fmt}.pdf", width, height)
         text = subprocess.check_output(["pdftotext", str(out / f"{fmt}.pdf"), "-"]).decode()
         text = " ".join(text.split())

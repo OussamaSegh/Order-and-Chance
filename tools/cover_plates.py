@@ -2,7 +2,7 @@
 
 Run from any directory with the build's Python (numpy is needed for matrix plates).
 Geometry primitives in cover_motifs are reused as mathematical algorithms, with
-fresh parameters and new compositions. No generated raster mathematics is used.
+fresh parameters and new compositions. Volume 0 uses the immutable author-approved image; other mathematical plates remain vectors.
 """
 import math
 from pathlib import Path
@@ -16,26 +16,6 @@ def dot(x,y,r=.026,style='accent'):
     return r'\fill['+style+'] '+point(x,y)+f' circle ({r}in);'
 def circle(r,style='accent,line width=.55pt'):
     return r'\draw['+style+f'] (0,0) circle ({r}in);'
-
-def gaussian_surface():
-    """A graph z=exp(-(x²+y²)), with exact projected samples (V0 calculus/normal law)."""
-    # Vertical z-axis and a symmetric sampling domain; the shared front frames
-    # this scene toward the lower right, cropping only its outer ground mesh.
-    P=lambda x,y,z:(.73*(x-y),.20*(x+y)+2.25*z-.52)
-    out=['% Graph z = exp(-x^2-y^2), exact samples in a fixed parallel projection.']
-    values=[-2.1+4.2*i/30 for i in range(31)]
-    for a in values:
-        for swap in [False,True]:
-            pts=[]
-            for j in range(101):
-                b=-2.1+4.2*j/100
-                x,y=(b,a) if swap else (a,b)
-                pts.append(P(x,y,math.exp(-x*x-y*y)))
-            style=f'accent,line width={.38 if abs(a)>1 else .60}pt,opacity={.42 if abs(a)>1.5 else .95}'
-            if abs(a)<.45:
-                style+=',preaction={draw=accent,opacity=.10,line width=1.8pt}'
-            out.append(line(pts,style))
-    return '\n'.join(out)
 
 def integer_circle():
     """Radius-5 lattice circle and exact 3-4-5 triangle: Chapter 7 sums of squares."""
@@ -82,7 +62,7 @@ def gem_bands():
 
 # One main plate per book, mathematical subject and chapter evidence.
 PLATES={
- 'tome0-mathematical-maturity':(gaussian_surface,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
+ 'tome0-mathematical-maturity':(None,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
  'tome1-integers':(integer_circle,'Lattice circle and 3–4–5 triangle','ch07-sums-of-squares.tex'),
  'tome2-structures':(g.buckyball,'Truncated icosahedron, rotations and A5','ch11-characters.tex; ch12-quaternions.tex'),
  'tome3-chance':(lambda:g.galton_board(rows=10,balls=18),'Binomial board and Gaussian approximation','ch02-discrete.tex; ch06-clt.tex'),
@@ -109,6 +89,13 @@ def main():
     sync_metadata()
     manifest=[]
     for book,(make,subject,evidence) in PLATES.items():
+        if make is None:
+            asset='tools/assets/approved-volume-0.png'
+            content=(ROOT/asset).read_bytes()
+            manifest.append(dict(book=book,subject=subject,evidence=evidence,
+                renderer='approved-image',source=asset,sha256=hashlib.sha256(content).hexdigest()))
+            print('preserved exact approved master',book,flush=True)
+            continue
         content='% Approved charcoal/coral vector plate: '+subject+'\n'+make()
         # Fresh geometry/parameters + a common engraving vocabulary; no decoration
         # that claims additional mathematical content is appended to the plate.

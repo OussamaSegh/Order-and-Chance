@@ -1,11 +1,23 @@
 #!/usr/bin/env bash
 # Build the standard 7 x 10 PDF and EPUB of each requested tome
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
-# Requires pdflatex, pandoc >= 3, python3 and poppler-utils.
+# Requires pdflatex, xelatex, pandoc >= 3, python3 and poppler-utils.
 set -euo pipefail
 export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-8
 root="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$root/dist/kdp" "$root/build"
+# Cache the approved image as a PDF XObject. First pass only writes XDV/aux;
+# the second pass encodes the final one-page PDF without a temporary extra page.
+compile_cover() {
+  local output="$1" job="$2" source="$3" pass
+  for pass in 1 2; do
+    local flags=()
+    if [ "$pass" = 1 ]; then flags=(-no-pdf); fi
+    (cd "$root" && xelatex "${flags[@]}" -interaction=nonstopmode -halt-on-error \
+      -output-directory="$output" -jobname="$job" "$source" > "$output/$job.out" ||
+      { tail -30 "$output/$job.out"; exit 1; })
+  done
+}
 python3 "$root/tools/series_metadata.py" --check
 python3 "$root/tools/print_layout.py" --check
 pdf_only=false
@@ -23,17 +35,21 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/check_edition_copy.py" "$tome"
   out="$root/build/$tome"
   mkdir -p "$out"
-  # The vector front cover supplies the EPUB image and library thumbnail.
+  # The approved master supplies Volume 0; all other fronts reuse its exact identity.
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
   # The EPUB front is a separate asset; the standard PDF begins with book front matter.
-  (cd "$root" &&
-    pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
-      "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
-      >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
+  compile_cover "$out" cover "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}"
+  if [ "$num" = 0 ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf"
+  fi
   if ! $pdf_only; then
-    pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
+    if [ "$num" = 0 ]; then
+      cp "$root/tools/assets/approved-volume-0.png" "$out/cover.png"
+    else
+      pdftoppm -png -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
+    fi
   fi
 
   # One canonical PDF for reading and paperback upload: 7 x 10 in, no bleed. The full
@@ -65,16 +81,16 @@ for tome in "${tomes[@]}"; do
     python3 "$root/tools/ean13.py" "$isbn" "$out/barcode.tex"
     barcode="\\def\\BARCODE{$out/barcode.tex}"
   fi
-  (cd "$root" &&
-    pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover-wrap \
-      "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}" \
-      >"$out/cover-wrap.out" || { tail -30 "$out/cover-wrap.out"; exit 1; })
+  compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
+  if [ "$num" = 0 ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover-wrap.pdf"
+  fi
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
-  # Separate eBook cover: 1600 x 2560 pixels, also used for publishing.
-  pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" \
+  # Separate eBook cover: 1792 x 2560 pixels, preserving the approved 7:10 design, also used for publishing.
+  pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$tome-ebook-cover"
   if $pdf_only; then
     echo "   dist/$tome.pdf ($pages pages, 7 x 10 in); publishing assets in dist/kdp/"
@@ -105,6 +121,9 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
+  if [ "$num" = 0 ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf" --epub "$root/dist/$tome.epub" --reader "$root/dist/html/$tome"
+  fi
   echo "   dist/$tome.pdf (7 x 10 in)  dist/$tome.epub  dist/html/$tome/"
   echo "   KDP: $pages interior pages;  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
 done

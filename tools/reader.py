@@ -52,10 +52,15 @@ def main(tome: str, build: str, out: str) -> None:
         text = re.sub(r'src="(/[^"]*\.(?:svg|jpg))"', figure, text)
         page.write_text(text, encoding="utf-8")
     (out_dir / "sitemap.json").unlink(missing_ok=True)
+    shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
     shutil.copy(TOOLS / "reader.js", out_dir / "reader.js")
-    subprocess.run(["pdftoppm", "-jpeg", "-jpegopt", "quality=90", "-singlefile", "-scale-to-x", "600",
-                    "-scale-to-y", "960", str(build_dir / "cover.pdf"), str(out_dir / "cover")], check=True)
+    if tome == "tome0-mathematical-maturity":
+        shutil.copy2(TOOLS / "assets/approved-volume-0.png", out_dir / "cover.png")
+    else:
+        subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to", "960",
+                        str(build_dir / "cover.pdf"), str(out_dir / "cover")], check=True)
+
 
 
 if __name__ == "__main__":

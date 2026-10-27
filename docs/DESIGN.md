@@ -1,3 +1,45 @@
+# Exact approved-image cover policy — correction
+
+The author rejected the published recreation and then explicitly asked **“i want
+exactly the same please”**. The earlier vector approximation, font substitutions,
+flattened background and reconstructed Volume 0 illustration below are superseded.
+
+The definitive visible front is the original file
+[`tools/assets/approved-volume-0.png`](../tools/assets/approved-volume-0.png), copied
+byte-for-byte from the approved reference. Its SHA-256 is recorded in
+[`approved-cover.json`](../tools/assets/approved-cover.json). Volume 0's front embeds
+this image unchanged: no retyping, recoloring, redrawing, stretching or cropping.
+Transparent text provides search/accessibility without changing visible pixels.
+
+The other eighteen covers directly reuse the original image's frame, series heading,
+slogan and author. Their variable content uses licensed Inter weights and their own
+mathematical vector illustration on a matching blank charcoal texture. No top mark
+is added. Covers/wraps use XeLaTeX with bundled fonts; body PDFs retain pdfLaTeX,
+Palatino, whole-box pagination, black-ink settings and existing mathematical content.
+The approved image is cached as a reusable PDF XObject rather than re-encoded for
+each clipped identity region.
+
+EPUB images, readers and library thumbnails preserve the approved proportions.
+The previous forced 1600 × 2560 output and 100 × 160 thumbnail crop altered the
+composition; these are replaced by the standard 7:10 front. Volume 0's EPUB,
+reader and library PNGs are the **original PNG bytes**, not a PDF rasterization.
+Other EPUB/Kindle images use 1792 × 2560. The original master is 1049 × 1500 pixels,
+about **150 ppi at 7 × 10 inches**; embedding/upscaling it does not create more detail.
+This is an explicit exception to the old vector-only production rule.
+
+`tools/check_cover_reference.py` verifies the master file hash and actual decoded
+image pixels extracted from the production PDF. When supplied, it also checks EPUB,
+reader and library images byte-for-byte. This replaces the discarded approximate
+text-landmark comparison. New print wraps still use actual rebuilt interior page
+counts and the existing barcode/bleed rules. `docs/COVER-MOTIFS.md` records the
+master/vector distinction. The source was pulled to **dc98d05** before this correction,
+preserving the author's intervening pagination fixes.
+
+The remainder of this file records the previous implementation and its historical
+checks; its approximation claims do not override the exact-image policy above.
+
+---
+
 # Approved charcoal/coral editorial series design
 
 On 27 October 2026 the author selected the **left-aligned** cover shown in

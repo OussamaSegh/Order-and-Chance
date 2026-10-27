@@ -86,11 +86,12 @@ three stages of the main sequence.
 
 The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
 matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
-frame, and one substantial mathematical illustration per book. Each of the nineteen
-illustrations is generated from its own mathematics as crisp vector art. The slogan
+frame, and one substantial mathematical illustration per book. Volume 0 uses the exact approved image unchanged; the other eighteen covers reuse
+its original frame/header/footer and retain their own vector mathematical art. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
-readable deep-coral accents; the standard paperback PDF retains black-ink grayscale.
+readable deep-coral accents; the standard paperback PDF retains black-ink grayscale. EPUB and web images preserve the approved 7:10 proportions.
+The native Volume 0 master is 1049 × 1500 pixels; it is never silently redrawn.
 Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
 changing design or publishing templates. Earlier designs are archived separately.
 

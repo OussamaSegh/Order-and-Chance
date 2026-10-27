@@ -12,19 +12,31 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 
 - Series: **Order and Chance**. Author: **SEGHAIER Oussama**.
 - Slogan: **Discover the patterns. Understand the proofs.**
-- Matte charcoal #191919, coral #F28B79, ivory #F5F1E9. Clean sans-serif cover
-  typography, left-aligned series/slogan/volume/title/subtitle/author, bold book
-  title, fine double rectangular coral border without corner ornaments.
-- Exactly one substantial content-specific mathematical illustration in the lower
-  right; no supporting mark at the top. Preserve each volume's mathematical subject.
-- Vector type, diagrams, borders and background in production. The approved image
-  is a visual reference, never a raster production cover. Use TeX Gyre Heros for
-  cover lettering and retain readable Palatino mathematics in the body.
-- `tools/cover_plates.py` generates the 19 `cover-motif.tex` files and the manifest;
-  `tools/cover_motifs.py` supplies geometry. Commit the generator and its outputs.
+- The author rejected the vector recreation and explicitly requested **exactly the
+  same image**. `tools/assets/approved-volume-0.png` is an immutable byte-for-byte
+  copy of the approved reference; use it unchanged as Volume 0's visible front.
+  Do not retype, redraw, recolor, regenerate, stretch or crop that front.
+- The other eighteen fronts reuse the original frame, header, slogan and author
+  directly from the approved image. Only their volume label, title, subtitle and
+  content-specific illustration change. Bundled licensed Inter light/semibold/italic
+  supplies variable text; the common visible lettering is the original image.
+- This explicit exact-image request supersedes previous vector-only restrictions.
+  Volume 0 has raster visible art/type and a transparent searchable text layer.
+  Preserve the original 1049 × 1500 pixels (about 150 ppi at 7 × 10); never claim
+  that enlarging this image adds print detail. Other illustrations remain vectors.
+- Preserve the approved aspect ratio in EPUB, reader and library thumbnails.
+  EPUB fronts use the same 7:10 composition as print, not the old stretched 1:1.6
+  version. Volume 0's EPUB/reader/library PNG is the original file unchanged.
+- Covers/wraps compile with XeLaTeX; bodies remain pdfLaTeX/Palatino. The shared
+  template uses an image XObject to reuse the approved identity without re-encoding
+  multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,
+  actual embedded PDF pixels, and unchanged EPUB/reader/website PNGs when supplied.
+- `tools/cover_plates.py` regenerates eighteen vector plates and records the approved
+  master for Volume 0 in the manifest. Do not recreate Volume 0's discarded diagram.
 - Canonical explanatory subtitles are `common/volume-subtitles.json`; keep covers,
   PDF title pages, EPUB metadata, KDP listings, readers and library cards in sync.
-  Volume 0 keeps **A Foundations Prelude**.
+  Volume 0 keeps **A Foundations Prelude**; changing its visible text requires a
+  newly approved master, never a silently retyped replacement.
 - Interior/online light themes use neutral paper and accessible deep coral
   #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
   distinguishable and preserve scientific figure distinctions. The sole standard
@@ -55,7 +67,7 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.
 - Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
-- `python3 tools/cover_plates.py` regenerates all 19 main mathematical plates.
+- `python3 tools/cover_plates.py` regenerates eighteen plates and records the unchanged Volume 0 master.
 - `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
 - `./build.sh [tome...]` builds the standard 7×10 PDF, EPUB, eBook cover,
