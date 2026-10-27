@@ -20,7 +20,7 @@ The shared publishing conventions and system dependencies are documented in `../
 | `dist/tome1-integers-kindle.pdf` | Fixed-page e-reader edition; the EPUB is the reflowable KDP manuscript |
 | `dist/html/tome1-integers/` | Online chapter reader |
 
-Use the generated listing: author **SEGHAIER Oussama**, book title **Tome 1: The Integers**, subtitle **Order and Chance: number theory, algebra and probability, all proved**, series **Order and Chance**, volume **1**, edition number **1**. The book itself displays **First edition, 2026**. Preserve any existing series/edition association when updating an already published title.
+Use the generated listing: author **SEGHAIER Oussama**, book title **Tome 1: The Integers**, subtitle **Order and Chance: Beautiful mathematics through problems and proofs**, series **Order and Chance**, volume **1**, edition number **1**. The book itself displays **First edition, 2026**. Preserve any existing series/edition association when updating an already published title.
 
 No paperback ISBN has been supplied for this volume. `main.tex` deliberately leaves `\bookisbnprint` empty; the copyright page prints no placeholder and the cover leaves its barcode area clear. Once KDP assigns the paperback ISBN, set `\renewcommand{\bookisbnprint}{979-...}` to the actual value and rebuild. That adds the ISBN line and the matching barcode. If uploading the current cover without a barcode, allow KDP to place one; with a rebuilt barcode cover, choose the corresponding cover setting. Never invent an ISBN.
 

@@ -82,7 +82,7 @@ def main(tome_dir: str, out: str) -> None:
              "| Field | Value |", "|---|---|",
              f"| Language | English |",
              f"| Book title | Tome {number}: {title} |",
-             f"| Subtitle | {series}: number theory, algebra and probability, all proved |",
+             f"| Subtitle | {series}: Beautiful mathematics through problems and proofs |",
              f"| Series | {series} (volume: {number}) |",
              "| Edition number | 1 |",
              "| Author | SEGHAIER Oussama |",

@@ -1,6 +1,6 @@
 # Order and Chance
 
-*Number theory, algebra and probability, all proved.* By SEGHAIER Oussama.
+*Beautiful mathematics through problems and proofs.* By SEGHAIER Oussama.
 
 A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 companion notebook with computer-science applications.
