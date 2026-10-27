@@ -799,3 +799,18 @@ bound, continued-fraction/Pell precision, integer versus rational undecidability
 and local/p-adic hypotheses. Actual EPUB validation also exposed and corrected
 shared conversion defects. Full findings and reproducible publication checks:
 [Tome 1 enhancement review](TOME1-ENHANCEMENT.md).
+
+## Volume 0: local print review, 27 October 2026
+
+The local 6 × 9 / 7 × 10 comparison is documented in
+[TOME0-PRINT-COMPARISON.md](TOME0-PRINT-COMPARISON.md).
+
+| Location | Finding | Correction |
+| --- | --- | --- |
+| Ch. 4, Hardy challenge note | `a_n=1/n` was incorrectly proposed as the sharpness test for constant 4. | Use truncated `a_n=n^(-1/2)` and compare `4 log N + O(1)` with `log N + O(1)`. |
+| Ch. 4, Carleman challenge note | The displayed numerical ratios silently changed the denominator from `e sum a_n` to `sum a_n`. | Name the denominator of the numerical ratios explicitly. |
+| Exercise 8.9(c), solution | Conditional success after observing a particular set of opened doors was asserted without a host-selection rule. | State unconditional success 99/100; distinguish the conditional probability. |
+| Ch. 2 cosine-sum solution; Theorem 4.4 | Inline formulas overflowed in the direct 7 × 10 trial. | Use displayed formulas; both trim sizes compile without overfull boxes. |
+
+Exercise, theorem and label numbering is preserved. These review changes and
+comparison interiors are local; the production trim remains 6 × 9.

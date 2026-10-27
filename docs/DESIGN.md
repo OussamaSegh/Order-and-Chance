@@ -157,3 +157,11 @@ A final clean release run validates this correction across all volumes.
 - Local review artifacts: `build/cover-review/contact-sheet.jpg` and the vector
   `build/cover-review/current-series-covers.pdf`. These previews do not publish the
   changes or replace the live release.
+
+## Local Volume 0 trim comparison
+
+The author requested a detailed print review and a local 7 × 10 proof. The results,
+mathematical corrections and outstanding monochrome-figure refinements are in
+[the Volume 0 print review](../review/TOME0-PRINT-COMPARISON.md). The proofs contain
+291 pages at 6 × 9 and 233 at 7 × 10 with the same 11 pt text. This is a local
+comparison; the shared production trim has not been changed.
