@@ -64,3 +64,17 @@ paperback-interior link points to the same file.
 
 Earlier trim comparisons and review records describe their formats at the time.
 This document and the current author instructions supersede their format policy.
+
+## Source adapted to the final pages
+
+The final PDF keeps every framed exercise, problem, reminder, beauty note,
+pause-and-think prompt and challenge whole. Hint/solution openings reserve space;
+widows and orphans are blocked, with natural bottom whitespace when needed.
+Long formulas that protruded in the narrower measure have been reflowed in the
+source. The build rejects split/oversized boxes, overflowing text or figures and
+unresolved references. Exercise numbers and moved reference pages have dedicated
+typesetting regression tests. EPUB carries corresponding pagination preferences.
+
+See [the pagination review](../review/7X10-PAGINATION.md) for the rebuilt library
+counts and verification record. The earlier 233-page Volume 0 count above belongs
+to the format migration before this pagination revision.

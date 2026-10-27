@@ -43,6 +43,14 @@ A4, Kindle PDF, phone PDF and duplicate `-print.pdf` editions are retired.
 Covers, listings and print metadata remain separate publishing assets. Historical
 comparison records do not override this decision.
 
+Adapt source to this final page size. Framed exercises, problems, reminders,
+beauty notes, pause-and-think prompts and challenges must stay on one page.
+Reorganise any box taller than the text area into logically complete units;
+do not reduce the body type to fit. Reflow long inline mathematics as displays.
+The shared preamble records box heights and rejects split/oversized frames;
+`tools/check_book_layout.py` rejects overflow and unresolved references after the
+final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
+
 ## Build and publication
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.

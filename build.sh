@@ -51,6 +51,7 @@ for tome in "${tomes[@]}"; do
     [ "$pages" -le 700 ] || [ "$inner" = 0.875in ] && break
     inner=0.875in
   done
+  python3 "$root/tools/check_book_layout.py" "$out/main.log" "$out/main.oclayout"
   python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
   cp "$out/main.pdf" "$root/dist/$tome.pdf"
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"

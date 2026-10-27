@@ -146,3 +146,28 @@ All nineteen **published** paperback wraps were downloaded from that run and che
 again for physical dimensions, embedded fonts, full front copy and actual-page spine
 metadata, then visually reviewed as a complete wrap contact sheet. Production wrap
 review artifacts and page/spine records are in `build/ci-coral-wraps/`.
+
+## Source pagination for the final 7 × 10 pages
+
+Framed exercises/problems, reminders, beauty notes, pause-and-think prompts and
+challenges are now unbreakable. The preamble measures every frame and rejects a
+frame taller than the text area or a locally reenabled split frame. Larger future
+material must be reorganised into logically complete units in the source. Box
+labels and reference anchors travel with their exercises, preserving numbering.
+
+Long inline formulas that protruded beyond the final measure have been reflowed
+as unnumbered displays, and two prose/citation lines were adjusted for line fit.
+Hint/solution starts reserve space; paragraph widows and orphans are blocked.
+Ragged page bottoms preserve natural paragraph spacing when a whole box moves.
+Body type, trim, margins and approved cover identity are preserved. EPUB styles
+request matching keeps within the reading system's pagination capabilities.
+
+`tools/check_book_layout.py` runs after the final TeX pass and rejects horizontal
+or vertical overflow, oversized figures, unresolved/duplicate references and
+missing/invalid box measurements. Eight new tests cover diagnostics, actual moved
+box reference placement, solution and section openings, oversized boxes and forbidden
+split frames. CI executes the typesetting tests after installing TeX. All 34 publishing
+tests pass locally.
+Full-library PDF checks, page counts and review evidence are in
+[7X10-PAGINATION.md](../review/7X10-PAGINATION.md). All production wraps are rebuilt
+from their revised interior page counts.

@@ -82,6 +82,25 @@ spine, gutter and exact cover sheet size. Never reuse a wrap from the former tri
 All interior pages are checked at 504 × 720 PDF points; wraps are checked at
 (14.25 + spine) × 10.25 inches. Fonts must be embedded vector fonts.
 
+### Pagination and source preparation
+
+All framed material stays on one page in the standard PDF. Keep each box shorter
+than the text area; reorganise longer material in the source instead of shrinking
+the text. Long inline formulas should become readable displays. Natural spacing
+at the foot of a page is allowed when the next box moves to the following page.
+Hint and solution openings reserve space, and paragraph widows/orphans are blocked.
+
+The preamble writes box measurements with source locations to `main.oclayout` and
+fails on oversized or split frames. After the final pass, `check_book_layout.py`
+also rejects horizontal/vertical overflow, oversized floats and unresolved or
+duplicate references. Its regression tests typeset moved exercises and problems,
+verify their numbers and reference pages, and require invalid boxes to fail.
+CI runs those tests with TeX installed. Rebuild the cover wrap after pagination
+changes because its spine depends on the new actual page count.
+
+EPUB CSS requests whole boxes and keeps headings with following content. Reading
+systems control pagination and may divide material taller than their viewport.
+
 Cache schema 3 and the `library-v3-` Actions namespace force a full migration.
 Before snapshotting, every canonical PDF is checked for 7 × 10 geometry and embedded
 vector fonts, and its page count must agree with the paperback metadata. Retired

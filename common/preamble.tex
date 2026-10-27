@@ -36,6 +36,34 @@
   \colorlet{ocThink}{black!75}
 \fi
 \usepackage[most]{tcolorbox}
+\usepackage{needspace}
+\usepackage{currfile}
+% Book pages keep framed material whole. Record natural heights for the print
+% audit; oversized material must be reorganised in the source, never clipped.
+\makeatletter
+\newwrite\ocLayoutFile
+\AtBeginDocument{\immediate\openout\ocLayoutFile=\jobname.oclayout\relax}
+\AtEndDocument{\immediate\closeout\ocLayoutFile}
+\newcommand{\ocCheckBox}{%
+  \immediate\write\ocLayoutFile{BOX|\currfilepath|\the\inputlineno|\tcb@height|\the\textheight}%
+  \ifdim\tcb@height>\textheight
+    \PackageError{orderchance}{Box exceeds the 7x10 text height at \currfilepath:\the\inputlineno}%
+      {Reorganise this material into shorter, logically complete boxes. Do not shrink the type.}%
+  \fi}
+\newcommand{\ocSplitBoxError}{%
+  \PackageError{orderchance}{A framed box was split across pages}%
+    {Use an unbreakable box and reorganise oversized source material.}}
+\tcbset{finish unbroken={\ocCheckBox},
+  finish first={\ocSplitBoxError},finish middle={\ocSplitBoxError},finish last={\ocSplitBoxError}}
+% Needspace inserts a break opportunity. Preserve LaTeX's heading keep when the
+% first hint or solution immediately follows a section heading.
+\newcommand{\ocOpeningSpace}{\if@nobreak\else\Needspace{3\baselineskip}\fi}
+\makeatother
+% Avoid isolated opening/closing lines and an isolated line before a display.
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\raggedbottom
 \input{../common/figure-packages}
 \usepackage{pdfpages}
 \usepackage{adjustbox}
@@ -81,26 +109,27 @@
 % Exercises and solutions
 \newcounter{exo}[chapter]
 \renewcommand{\theexo}{\thechapter.\arabic{exo}}
-\newenvironment{exercise}[1][]{%
-  \refstepcounter{exo}%
-  \begin{tcolorbox}[enhanced,breakable,colback=ocExercise!6,colframe=ocExercise,
+% The counter anchor travels inside the box when it moves to the next page.
+\tcbset{oc exercise/.style={code={\stepcounter{exo}},
+  before upper={\addtocounter{exo}{-1}\refstepcounter{exo}}}}
+\newtcolorbox{exercise}[1][]{%
+    oc exercise,enhanced,unbreakable,colback=ocExercise!6,colframe=ocExercise,
     boxrule=0.6pt,arc=2pt,left=6pt,right=6pt,
-    title={\textbf{Exercise \theexo}\ifx\relax#1\relax\else\ \textit{(#1)}\fi}]}%
-  {\end{tcolorbox}}
+    title={\textbf{Exercise \theexo}\ifx\relax#1\relax\else\ \textit{(#1)}\fi}}
 \newenvironment{solution}[1]{%
-  \par\medskip\noindent\textbf{\color{ocReminder}Solution of Exercise~\ref{#1}.}\quad}%
+  \par\ocOpeningSpace\medskip\noindent\textbf{\color{ocReminder}Solution of Exercise~\ref{#1}.}\quad}%
   {\hfill$\blacksquare$\par\medskip}
-\newtcolorbox{reminder}[1][]{enhanced,breakable,colback=ocReminder!4,colframe=ocReminder,
+\newtcolorbox{reminder}[1][]{enhanced,unbreakable,colback=ocReminder!4,colframe=ocReminder,
   boxrule=0.6pt,arc=2pt,title={\textbf{Reminder}\ifx\relax#1\relax\else: #1\fi}}
-\newtcolorbox{beauty}{enhanced,breakable,colback=ocBeauty!5,colframe=ocBeauty,
+\newtcolorbox{beauty}{enhanced,unbreakable,colback=ocBeauty!5,colframe=ocBeauty,
   boxrule=0.6pt,arc=2pt,title={\textbf{Why this is beautiful}}}
 
 % Pause and think: a question to try before reading on.
-\newtcolorbox{think}{enhanced,breakable,colback=ocThink!5,colframe=ocThink,
+\newtcolorbox{think}{enhanced,unbreakable,colback=ocThink!5,colframe=ocThink,
   boxrule=0.6pt,arc=2pt,title={\textbf{Pause and think}}}
 % Hints, printed between the exercises and the solutions.
 \newenvironment{hint}[1]{%
-  \par\smallskip\noindent\textbf{\color{ocThink}Hint for Exercise~\ref{#1}.}\quad}%
+  \par\ocOpeningSpace\smallskip\noindent\textbf{\color{ocThink}Hint for Exercise~\ref{#1}.}\quad}%
   {\par\smallskip}
 % Figures: \fig{name} draws figures/name.tex (a tikzpicture); the EPUB uses an SVG of it.
 \newcommand{\fig}[1]{\adjustbox{max width=\linewidth}{\input{figures/#1}}}
@@ -116,5 +145,5 @@
 \newcommand{\stirlingi}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \setlist{itemsep=2pt}
 % Solutions: \idea explains how to find the approach, \writeup gives the full argument.
-\newcommand{\idea}{\par\noindent\textit{How to find it.}\quad}
+\newcommand{\idea}{\par\nobreak\noindent\textit{How to find it.}\quad}
 \newcommand{\writeup}{\par\smallskip\noindent\textit{Write-up.}\quad}
