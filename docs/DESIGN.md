@@ -116,3 +116,15 @@ Production completion is determined by a clean all-volume build from the publish
 commit, not by partially refreshed local outputs. All-volume build and deployment
 results are recorded below once available. Earlier in-progress local builds were
 restarted for subtitle integration; clean CI is the authoritative final validation.
+
+### Final font correction and clean-build guard
+
+The first clean all-volume run succeeded at `e0839a5`, with all 28 builds and
+release/Pages deployment successful. Subsequent checks of all cover fonts found
+that Geometry's small sans-serif curvature labels used a Type 3 fallback. Covers
+now explicitly select vector TeX Gyre Heros for sans-serif labels. The same
+setting is applied to interior and standalone figure labels, since the Geometry
+interior used the same fallback.
+`tools/check_cover_pdf.py` checks physical dimensions and rejects Type 3 or
+unembedded fonts, in every front preview, paperback interior and production wrap pipeline.
+A final clean release run validates this correction across all volumes.
