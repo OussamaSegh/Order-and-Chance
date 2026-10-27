@@ -1,6 +1,6 @@
 # Mathematical cover illustrations
 
-All 28 illustrations use the approved black/gold vector style. Each cover has one
+All 19 illustrations use the approved black/gold vector style. Each cover has one
 main plate and one smaller supporting construction tied to its own mathematics.
 The table identifies the main subject and manuscript evidence; the generator
 records exact parameters and seeds. Finite simulations illustrate mathematics;

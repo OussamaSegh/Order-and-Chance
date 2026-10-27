@@ -136,3 +136,24 @@ interior used the same fallback.
 `tools/check_cover_pdf.py` checks physical dimensions and rejects Type 3 or
 unembedded fonts, in every front preview, paperback interior and production wrap pipeline.
 A final clean release run validates this correction across all volumes.
+
+## Cover review after the structural revision (27 October 2026)
+
+- Reviewed all nineteen current front covers as a contact sheet, with the renamed
+  titles checked individually. No title/subtitle/illustration collisions were found.
+- All **19 × 5 = 95 front PDFs** passed complete title/subtitle/slogan extraction,
+  physical-size and embedded-vector-font checks. No extracted text crossed a page
+  boundary. The latest vector-font correction from main is incorporated.
+- Inspected Higher Structures' production paperback wrap, including its spine,
+  back-cover text, barcode reserve and bleed. Its actual 184-page interior gives a
+  0.4144-inch spine. Other integrated-volume paperback wraps will be regenerated
+  from their own rebuilt interiors by the normal publishing workflow.
+- Updated Volume 9's explanatory subtitle to **Categories, Rings and Homology**,
+  making the transition beyond Volume 2 explicit. Its five front sizes were checked
+  again, and its complete production pipeline succeeded. The subtitle was verified
+  in the front, reading PDF, wrap, KDP listing, EPUB metadata and online reader.
+- All fifteen publishing tests and `git diff --check` pass. The motif guide's
+  remaining obsolete illustration count now reads nineteen.
+- Local review artifacts: `build/cover-review/contact-sheet.jpg` and the vector
+  `build/cover-review/current-series-covers.pdf`. These previews do not publish the
+  changes or replace the live release.
