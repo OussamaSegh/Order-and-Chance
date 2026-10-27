@@ -6,8 +6,6 @@ Twelve chapters go from divisibility and the Euclidean algorithm, primes and con
 
 Every numbered theorem, proposition, lemma and corollary has a proof; advanced results quoted for perspective are clearly identified. Each chapter opens with the story behind its ideas, has exercises graded from warm-ups to gems, each with a hint and a complete solution that first explains how to find the idea, worked examples, mathematical diagrams, historical portraits and photographs, think boxes, and sources for further reading. An arithmetic field guide collects notation, problem-solving strategies and common pitfalls.
 
-Every chapter comes with a Python notebook that follows the arithmetic into modern computing, from fast exponentiation to RSA.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -17,5 +15,5 @@ primes, congruences and quadratic reciprocity
 sums of squares and Pell's equation
 continued fractions and Diophantine problems
 p-adic numbers and algebraic number theory
-number theory with Python and RSA
+elementary number theory and RSA
 Fermat's Last Theorem history for readers

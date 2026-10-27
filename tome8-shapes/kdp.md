@@ -8,7 +8,7 @@ Then algebraic topology. The fundamental group and covering spaces turn the wind
 
 The last four chapters bring geometry back to algebra, probability and number theory. Matrix Lie groups and their Lie algebras, with the double cover of the rotation group by the unit quaternions and Dirac's belt trick. Haar measure and Weyl's integration formula, which give the joint law of the eigenvalues of a random unitary matrix and prove Dyson's pair correlation formula, the one Montgomery found among the zeros of zeta. The hyperbolic plane and the modular group, where the geodesic flow is a matrix product and continued fractions are the records of geodesics crossing the Farey tessellation. And integral geometry, where the only symmetric measure on lines resolves Bertrand's paradox and turns Buffon's needle into Crofton's formula for the length of any curve.
 
-Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found. Every chapter comes with a Python notebook in which the ideas are put to work: robot arms, numerical integrators, curvature of triangle meshes, the word problem in free groups, topological data analysis, rotations in computer graphics, random matrices and quantum benchmarking, lattice reduction, and the measurement of lengths in images.
+Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
 
 Written for the reader who wants to understand, not to pass an examination.
 

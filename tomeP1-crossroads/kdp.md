@@ -8,8 +8,6 @@ Each chapter opens with a true story, checked against its sources: Ramanujan rea
 
 Every problem has a hint, kept apart so that you can try first, and a complete solution that begins with the idea, how one might find it, before writing the proof in full. Each solution names the tools it used and ends with where the problem leads, often to current research. Figures show what the formulas mean, and every chapter closes with a map of its problems and references for further reading.
 
-Every chapter has a companion Python notebook that checks each number in the text and turns the problems into experiments, from counting points on curves to simulating random integers.
-
 Written for readers who have learned the theorems and now want the pleasure of using them.
 
 # Keywords
@@ -20,4 +18,4 @@ number theory puzzles and proofs
 combinatorics and generating functions
 finite fields and group actions problems
 probabilistic number theory exercises
-mathematics with Python notebooks
+mathematical problem solving and proofs

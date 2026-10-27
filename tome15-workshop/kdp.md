@@ -12,8 +12,6 @@ The beauty of research is that the exercises run out. For the first time nobody 
 
 The book never reproves a result of an earlier tome: it says precisely where each one is proved. Each chapter opens with the story behind its ideas, checked against the sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
-Every chapter comes with a Python notebook that recomputes its numbers and opens a window on computer science: lattice attacks on knapsack cryptosystems, point-in-polygon algorithms, program synthesis by proof search, segmented sieves, backtracking search, and branching processes.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -24,4 +22,4 @@ sums of three cubes and number heuristics
 Lean proof assistant and Curry-Howard
 random multiplicative functions, Harper
 card shuffling cutoff, Bayer-Diaconis
-open problems in number theory, Python
+open problems and research in number theory

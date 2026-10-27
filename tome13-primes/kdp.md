@@ -12,8 +12,6 @@ The beauty of the subject is that the primes, which no formula describes, obey l
 
 Every result is proved in full, except a short list of deep theorems that are quoted, each clearly marked where it appears. Each chapter opens with the story behind its ideas, checked against the original sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
-Every chapter comes with a Python notebook that checks the numbers in the text and opens a window on computer science: generating primes for cryptography, primality testing, sieving algorithms, pseudorandomness, fast Fourier transforms, property testing, and the fast evaluation of the zeta function that found billions of its zeros.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords

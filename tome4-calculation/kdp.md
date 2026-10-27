@@ -6,8 +6,6 @@ Its tools are finite calculus and generating functions; classic series and infin
 
 Every result is proved in full. Each chapter opens with the story behind its ideas and has graded exercises, each with a hint and a complete solution that explains how to find the idea, figures, and sources for further reading.
 
-Every chapter has a Python notebook that checks every identity to fifty digits and puts the methods to work.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -18,4 +16,4 @@ complex analysis and residues
 Gamma function and Riemann zeta
 asymptotics and Stirling's formula
 arithmetic-geometric mean and pi
-mathematical analysis with Python
+mathematical analysis and asymptotics

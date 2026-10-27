@@ -8,7 +8,7 @@ Then Fourier analysis, in every setting at once: on the circle and on the line, 
 
 The last three chapters are complex analysis in earnest. The Jordan curve theorem, proved in full from the Brouwer fixed point theorem. Cauchy's theorem in its final form, in Dixon's one-page proof. The Phragmen-Lindelof principle and the growth of the zeta function. Hadamard's factorisation of entire functions. The Riemann mapping theorem. The Mellin transform, which measures the cost of algorithms and reveals the microscopic oscillations hidden in them. And finally Tauberian theorems, from Tauber's own to Wiener's and Wiener-Ikehara, which recover a sequence from its transform and deliver the prime number theorem with no contour integral in sight.
 
-Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found. Every chapter comes with a Python notebook in which the ideas are put to work.
+Every theorem is proved in full. Every chapter opens with the story and the people behind the idea, and ends with exercises chosen for their beauty, each with a hint and a solution that explains how the argument is found.
 
 Written for the reader who wants to understand, not to pass an examination.
 

@@ -12,6 +12,7 @@ tomes=("$@")
 
 for tome in "${tomes[@]}"; do
   echo "== $tome"
+  python3 "$root/tools/check_edition_copy.py" "$tome"
   # Remove the retired output when refreshing an existing build directory.
   rm -f "$root/dist/$tome-phone.pdf"
   out="$root/build/$tome"

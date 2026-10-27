@@ -12,8 +12,6 @@ The book ends where probability meets arithmetic. Mod-phi convergence sharpens t
 
 Every result is proved in full, with one clearly marked exception from analytic number theory. Each chapter opens with the story behind its ideas, checked against the original sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
-Every chapter comes with a Python notebook that checks the numbers in the text and opens a window on computer science: Monte Carlo error, tests for random number generators, A/B testing, hash collisions, importance sampling, dimension reduction, bandit algorithms, Markov chain Monte Carlo, irreducible polynomials for finite fields, and the analysis of factoring by trial division.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -24,4 +22,4 @@ large deviations, Cramer and Sanov theorems
 concentration of measure, Stein's method
 martingales, de Finetti, ergodic theorem
 random permutations, Poisson-Dirichlet law
-probabilistic number theory, Python notebooks
+probabilistic number theory, random permutations

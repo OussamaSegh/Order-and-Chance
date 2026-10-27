@@ -63,3 +63,13 @@ The latest structural decision is recorded in `docs/SERIES-STRUCTURE.md`. There
 are sixteen main volumes and three problem books. Do not recreate computing or
 companion shelves. Volume 0 is Mathematical Maturity; Volume 9 is Higher Structures.
 Supporting mathematics has been integrated as appendices of the main volumes.
+
+## First-edition copy policy
+
+Do not mention or promise accompanying Python/Jupyter notebooks in the books,
+including prefaces, chapters, appendices, captions, exercises, hints, solutions,
+back covers and KDP descriptions or keywords. Numerical examples must stand on
+their own and must not direct readers to unpublished companion files. Historical
+handwritten notebooks and personal research journals are distinct mathematical
+content and may retain their proper names. This policy applies to all first-edition
+formats and future writing sessions.

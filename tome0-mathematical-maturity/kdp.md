@@ -10,8 +10,6 @@ The proofs include results a refresher often quotes: the intermediate value theo
 
 Eight new guided workshops explore false patterns, complex-number navigation, sensitive polynomial roots, the cost of imbalance, certified decimals, Taylor error bounds, least squares and Bayesian testing. Each includes a worked example, a mission, hints, a complete solution and a warning about a tempting mistake. Eight new vector graphs and three NASA/SpaceX photographs connect the ideas to pictures and applications. A final field guide helps choose the next tool.
 
-Every chapter has a companion Python notebook in which the mathematics is tested, drawn and put to work, with exact checks of the new examples.
-
 This volume opens a series that climbs from these foundations through number theory, algebra and probability to the place where they meet: the statistical behaviour of the prime numbers.
 
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
@@ -24,4 +22,4 @@ sums, induction and complex numbers
 calculus and linear algebra problems
 math puzzles with step-by-step solutions
 recreational mathematics for adults
-mathematics with Python notebooks
+mathematical problem solving and proofs

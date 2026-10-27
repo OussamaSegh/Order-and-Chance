@@ -6,8 +6,6 @@ It starts with Mertens's theorems and the averages of arithmetic functions, buil
 
 Every result is proved in full. Each chapter opens with the story behind its ideas and has graded exercises, each with a hint and a complete solution that explains how to find the idea, figures, and sources for further reading.
 
-Every chapter has a Python notebook that turns the computer into a laboratory for primes.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -18,4 +16,4 @@ Dirichlet L-functions and progressions
 sieve methods and twin primes
 probabilistic number theory Erdos-Kac
 Ramanujan tau and modular forms
-prime numbers with Python experiments
+prime numbers and mathematical experiments

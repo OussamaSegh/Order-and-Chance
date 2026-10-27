@@ -8,7 +8,7 @@ The second half measures. Lebesgue's length and the set that has none; the integ
 
 The summits are these: the construction of the reals, Baire's theorem on nowhere differentiable functions, the existence of a non-measurable set, the dominated convergence theorem, the Riesz representation of the dual of an integrable-function space, the Radon-Nikodym theorem, and the computation of the dimension of self-similar sets.
 
-Nothing is asserted without proof. Every theorem, including the ones usually waved through, is proved in full. Every chapter opens with the story and the people behind the idea, and closes with exercises chosen for their beauty, each with a hint and a solution that explains how to find the argument rather than only how to check it. Every chapter also comes with a Python notebook in which the ideas are put to work on a computational problem, from fixed-point iteration to numerical integration to the box-counting dimension of a coastline.
+Nothing is asserted without proof. Every theorem, including the ones usually waved through, is proved in full. Every chapter opens with the story and the people behind the idea, and closes with exercises chosen for their beauty, each with a hint and a solution that explains how to find the argument rather than only how to check it.
 
 Written for the reader who wants to understand, not to pass an examination.
 

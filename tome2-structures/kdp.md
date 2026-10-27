@@ -8,8 +8,6 @@ On the way come group actions and the art of counting orbits, the symmetric grou
 
 Every result is proved in full. Each chapter opens with the story behind its ideas and has graded exercises, each with a hint and a complete solution that explains how to find the idea, figures, and sources for further reading.
 
-Every chapter has a Python notebook where groups are built and counted, and algebra meets error-correcting codes and cryptography.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -20,4 +18,4 @@ Galois theory and the quintic
 rings, fields and finite fields
 representation theory and characters
 Rubik's cube and permutation puzzles
-algebra with Python notebooks
+algebra exercises and worked examples

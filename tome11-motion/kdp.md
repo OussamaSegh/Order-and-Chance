@@ -10,8 +10,6 @@ The third part is about random matrices. Wigner's semicircle law, the Marchenko-
 
 Every result is proved, with two clearly marked exceptions at the research frontier. Each chapter opens with the story behind its ideas, checked against the original sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
-Every chapter comes with a Python notebook that checks the numbers in the text and opens a window on computer science and statistics: fractal dimensions and long memory, anytime-valid A/B tests, hedging with finitely many trades, walk-on-spheres solvers, sampling stable laws, graph sparsification, expander walks, principal component analysis in high dimension, ten thousand zeros of the zeta function computed from scratch, and the height of random binary search trees.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -22,4 +20,4 @@ Levy processes, martingales, Girsanov theorem
 walks on graphs, expander graphs, Ramanujan
 matrix spectra, semicircle law, sine kernel
 Riemann zeta zeros, Montgomery, Keating-Snaith
-log-correlated fields, Python notebooks
+log-correlated fields and multiplicative chaos

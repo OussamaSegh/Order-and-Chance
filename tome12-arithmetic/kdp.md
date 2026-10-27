@@ -12,8 +12,6 @@ The beauty of the subject lies in coincidences that turn out not to be coinciden
 
 Every result is proved in full, except two clearly marked theorems of class field theory. Each chapter opens with the story behind its ideas, checked against the original sources, and has pause-and-think questions, figures, and graded exercises, each with a hint and a complete solution that first explains how to find the idea.
 
-Every chapter comes with a Python notebook using PARI/GP that checks the numbers in the text and opens a window on computer science: factoring polynomials over finite fields, lattice reduction and lattice cryptography, number-theoretic transforms, elliptic-curve cryptography, point counting, codes from curves, and computing pi to many digits.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -24,4 +22,4 @@ p-adic numbers and local-global principle
 class field theory and Kronecker-Weber
 elliptic curves and Mordell's theorem
 Riemann hypothesis for curves, Hasse bound
-modular forms, Hecke operators, Python
+modular forms, Hecke operators, elliptic curves

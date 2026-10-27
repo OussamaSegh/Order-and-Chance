@@ -6,8 +6,6 @@ It starts with puzzles that a few lines of counting settle and paradoxes where i
 
 Every theorem is proved, apart from a few foundations of measure theory that are clearly labelled and proved in a later volume. Each chapter opens with its story and has graded exercises, each with a hint and a complete solution that explains how to find the idea, figures, and sources for further reading.
 
-Every chapter has a Python notebook where every theorem is watched at work and randomness is followed into computer science, from hash tables and randomised algorithms to PageRank.
-
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 
 # Keywords
@@ -18,4 +16,4 @@ random walks and Markov chains
 martingales and Brownian motion
 probabilistic method in combinatorics
 probability puzzles and paradoxes
-probability with Python simulations
+probability problems with full solutions
