@@ -979,6 +979,86 @@ def cue_and_zeta(n=48, first=1000, seed=3):
     return "\n".join(lines) + "\n"
 
 
+def entropy_plate():
+    """Binary entropy h(p) and BSC capacity 1-h(p), Computing C4 chapters 1 and 3."""
+    lines = ['% Binary entropy h(p) (cream) and binary symmetric channel capacity 1-h(p) (ink).']
+    P = lambda x,y: (4.1*(x-.5), 3.4*(y-.5))
+    for y in (0, .25, .5, .75, 1):
+        lines.append(r'\draw[accent,opacity=.25,line width=.25pt] (%.4fin,%.4fin)--(%.4fin,%.4fin);' % (*P(0,y),*P(1,y)))
+    for flip,color,width in ((False,'accent','1.2pt'),(True,'ocInk','1pt')):
+        pts=[]
+        for i in range(301):
+            p=i/300
+            h=0 if i in (0,300) else -p*math.log2(p)-(1-p)*math.log2(1-p)
+            pts.append('(%.4fin,%.4fin)' % P(p,1-h if flip else h))
+        lines.append(r'\draw[%s,line width=%s] ' % (color,width)+'--'.join(pts)+';')
+    for x in (0,.5,1):
+        lines.append(r'\node[accent,font=\small,below] at (%.4fin,%.4fin) {%g};' % (*P(x,-.04),x))
+    lines.append(r'\node[accent,font=\small] at (-.9in,1.9in) {$h(p)$};')
+    lines.append(r'\node[ocInk,font=\small] at (.95in,-1.15in) {$1-h(p)$};')
+    return '\n'.join(lines)+'\n'
+
+
+def irrational_rotation():
+    """Kronecker equidistribution: first 89 multiples of the golden-ratio rotation (P2 ch.1--2)."""
+    lines=['% First 89 iterates of x -> x + (sqrt(5)-1)/2 modulo 1; a Kronecker orbit.']
+    alpha=(math.sqrt(5)-1)/2
+    lines.append(r'\draw[accent,line width=.6pt] (0,0) circle (2.1in);')
+    last=None
+    for n in range(89):
+        a=2*math.pi*(n*alpha % 1)
+        p=(2.1*math.cos(a),2.1*math.sin(a))
+        if n<13 and last is not None:
+            lines.append(r'\draw[ocInk,line width=.45pt,opacity=.8] (%.4fin,%.4fin)--(%.4fin,%.4fin);' % (*last,*p))
+        lines.append(r'\fill[accent] (%.4fin,%.4fin) circle (%.3fin);' % (*p,.026 if n>=13 else .045))
+        last=p
+    lines.append(r'\node[accent,font=\small] at (0,-.15in) {$n\alpha\pmod 1$};')
+    return '\n'.join(lines)+'\n'
+
+
+def binomial_limits():
+    """Exact standardized symmetric binomial masses approaching the Gaussian density (P3 ch.1)."""
+    lines=['% Exact binomial masses, scaled by lattice spacing, for n=8,32,128, with Gaussian reference.']
+    for n,base in ((8,1.45),(32,0),(128,-1.45)):
+        dx=2/math.sqrt(n)
+        lines.append(r'\draw[accent,opacity=.5,line width=.3pt] (-2.1in,%.4fin)--(2.1in,%.4fin);' % (base-.45,base-.45))
+        for k in range(n+1):
+            z=(2*k-n)/math.sqrt(n)
+            if abs(z)>3: continue
+            mass=math.comb(n,k)/(2**n)/dx
+            x=.65*z;y=base-.45
+            lines.append(r'\draw[accent,line width=%.3fpt] (%.4fin,%.4fin)--(%.4fin,%.4fin);' % (max(.35,3/math.sqrt(n)),x,y,x,y+2.4*mass))
+        pts=['(%.4fin,%.4fin)' % (.65*z,base-.45+2.4*math.exp(-z*z/2)/math.sqrt(2*math.pi)) for z in [i/50 for i in range(-150,151)]]
+        lines.append(r'\draw[ocInk,line width=.65pt] '+'--'.join(pts)+';')
+        lines.append(r'\node[accent,font=\small,anchor=east] at (-1.7in,%.4fin) {$n=%d$};' % (base+.5,n))
+    return '\n'.join(lines)+'\n'
+
+
+def conjugate_gradient_plate():
+    """Steepest descent versus two-step conjugate gradients on a positive quadratic (C5 ch.2)."""
+    kappa=16.0;theta=math.radians(24);c,s=math.cos(theta),math.sin(theta)
+    P=lambda u,v:(c*u-s*v,s*u+c*v)
+    dot=lambda a,b:sum(x*y for x,y in zip(a,b))
+    A=lambda x:(x[0],kappa*x[1])
+    lines=['% Level sets of (u^2+16v^2)/2: steepest descent (cream), conjugate gradients (ink, two steps).']
+    for j in range(1,13):
+        a=2.2*j/12;b=a/math.sqrt(kappa)
+        pts=['(%.4fin,%.4fin)' % P(a*math.cos(t),b*math.sin(t)) for t in [2*math.pi*i/180 for i in range(181)]]
+        lines.append(r'\draw[accent,opacity=.6,line width=.35pt] '+'--'.join(pts)+'--cycle;')
+    x0=(-2.05,.205);x=x0;gd=[x]
+    for _ in range(26):
+        g=A(x);t=dot(g,g)/dot(g,A(g));x=tuple(a-t*b for a,b in zip(x,g));gd.append(x)
+    x=x0;r=tuple(-z for z in A(x));d=r;cg=[x]
+    for _ in range(2):
+        rr=dot(r,r);ad=A(d);t=rr/dot(d,ad);x=tuple(a+t*b for a,b in zip(x,d));cg.append(x)
+        rnew=tuple(a-t*b for a,b in zip(r,ad));beta=dot(rnew,rnew)/rr;d=tuple(a+beta*b for a,b in zip(rnew,d));r=rnew
+    assert math.hypot(*x)<1e-10
+    for points,color in ((gd,'accent'),(cg,'ocInk')):
+        lines.append(r'\draw[%s,line width=1pt] ' % color+'--'.join('(%.4fin,%.4fin)' % P(*q) for q in points)+';')
+        for q in points[:12]:lines.append(r'\fill[%s] (%.4fin,%.4fin) circle (.025in);' % (color,*P(*q)))
+    return '\n'.join(lines)+'\n'
+
+
 MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
@@ -1003,12 +1083,12 @@ MOTIFS = {
     "tomeS3-conjectures": collatz_coral,
     "tomeS4-companion": series_chords,
     "tomeP1-crossroads": gaussian_primes,
-    "tomeP2-machinery": hilbert_curve,
+    "tomeP2-machinery": irrational_rotation,
     "tome14-random": multiplicative_walks,
-    "tomeC4-information": e8_roots,
-    "tomeC5-learning": gd_nesterov,
+    "tomeC4-information": entropy_plate,
+    "tomeC5-learning": conjugate_gradient_plate,
 
-    "tomeP3-frontiers": cue_and_zeta,
+    "tomeP3-frontiers": binomial_limits,
 }
 
 if __name__ == "__main__":

@@ -22,7 +22,8 @@ class PlanningTest(unittest.TestCase):
         for name in self.books:
             self.write(name + '/main.tex', name)
         for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh',
-                     'tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb']:
+                     'tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb',
+                     'tools/assets/paper.jpg']:
             self.write(path, 'original')
         subprocess.run(['git', 'add', '.'], cwd=self.root, check=True)
         for book in self.books:
@@ -53,7 +54,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics', 'tomeS4-companion'])
 
     def test_shared_sources_and_converter_rebuild_all(self):
-        for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh']:
+        for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg']:
             with self.subTest(path=path):
                 self.write(path, 'updated')
                 self.assertEqual(bp.plan(self.root, self.cache)['changed'], self.books)

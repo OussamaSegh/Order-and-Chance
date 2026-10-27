@@ -78,6 +78,15 @@ Tomes 0–5 are the foundations, 6–9 the graduate toolbox, and 10–15 the roa
 probabilistic number theory and algebra. The Computing track C1–C5 runs alongside and treats the
 mathematics of computer science in the same spirit. The Companion shelf S1–S4 serves the whole series: linear algebra and geometry in depth, a book of open problems, and a map of every theorem. The problem books P1–P3, one per Part, mix the tomes in harder problems where nobody says which chapter applies. The detailed plan of every tome lives in the series plan document.
 
+## Design and future sessions
+
+The author-approved visual identity follows the [attached cover reference](docs/reference/approved-cover.jpg):
+textured burnt-orange paper, cream serif masthead and border details, large dark
+book titles, and mathematical artwork meaningful to each volume. The slogan is **Beautiful
+mathematics through problems and proofs.** All volumes share this identity.
+Read [the design guide and session record](docs/DESIGN.md) and [AGENTS.md](AGENTS.md)
+before changing the design or publishing templates.
+
 ## Layout
 
 ```

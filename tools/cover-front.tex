@@ -1,27 +1,56 @@
-% The front cover of the series, drawn with its lower-left corner at the coordinate (O) and
-% height \CH inches (width 6in). Used by tools/cover.tex (the e-book cover, 6in x 9.6in) and by
-% tools/cover-wrap.tex (the paperback, 6in x 9in trim). Vertical positions scale with \CH.
-% Needs \TOMENUM, \TOMETITLE and \MOTIF; \ifcoverbg draws the background shading.
+% Author's attached reference, approved 2026-10-27; see docs/DESIGN.md.
+% Width 6in, trim lower-left O, height CH inches. All lettering and diagrams are vector.
 \pgfmathsetmacro{\cs}{\CH/9.6}
 \ifcoverbg
-  \shade[top color=navytop,bottom color=navy] (O) rectangle ++(6in,{\CH*1in});
+  \begin{scope}[shift={(O)}]\coverpaper{6in}{\CH*1in}\end{scope}
 \fi
-\draw[accent,line width=1pt] ($(O)+(0.3in,0.3in)$) rectangle ($(O)+(5.7in,{\CH*1in-0.3in})$);
-\draw[accent!70,line width=0.3pt] ($(O)+(0.38in,0.38in)$) rectangle ($(O)+(5.62in,{\CH*1in-0.38in})$);
-% Series name
-\node[ivory,font=\fontsize{22}{26}\selectfont] at ($(O)+(3in,{8.62in*\cs})$) {\textls{ORDER AND CHANCE}};
-\node[ivory!80,font=\itshape\fontsize{11}{13}\selectfont] at ($(O)+(3in,{8.2in*\cs})$)
-  {Beautiful mathematics through problems and proofs};
-\draw[accent,line width=0.6pt] ($(O)+(2.2in,{7.9in*\cs})$) -- ++(1.6in,0);
-\fill[accent] ($(O)+(3in,{7.9in*\cs})$) circle (1.6pt);
-% The tome's picture
-\pgfmathsetmacro{\ms}{min(\cs,1)}
-\begin{scope}[shift={($(O)+(3in,{5.15in*\cs})$)},scale=\ms]
+% Fine double rule and quadrant ornaments echo the supplied reference.
+\draw[ocCream,opacity=0.8,line width=0.45pt]
+  ($(O)+(0.18in,0.18in)$) rectangle ($(O)+(5.82in,{\CH*1in-0.18in})$);
+\draw[ocCream,opacity=0.5,line width=0.22pt]
+  ($(O)+(0.24in,0.24in)$) rectangle ($(O)+(5.76in,{\CH*1in-0.24in})$);
+\foreach \x/\y/\r in {0.28/0.28/0,5.72/0.28/90,5.72/\CH-0.28/180,0.28/\CH-0.28/270} {
+  \begin{scope}[shift={($(O)+(\x in,{(\y)*1in})$)},rotate=\r]
+    \draw[ocCream,opacity=0.75,line width=0.3pt] (-0.15in,0)--(0.16in,0);
+    \draw[ocCream,opacity=0.75,line width=0.3pt] (0,-0.15in)--(0,0.16in);
+    \draw[ocCream,opacity=0.7,line width=0.3pt] (0.16in,0) arc (0:90:0.16in);
+    \fill[ocCream] (0,0) circle (1.6pt);
+    \fill[ocCream,opacity=0.7] (0.055in,0.055in) circle (0.7pt);
+  \end{scope}
+}
+% Prominent two-line cream masthead, as in the approved artwork.
+\node[ocCream,align=center,font=\fontsize{52}{51}\selectfont]
+  at ($(O)+(3in,{8.63in*\cs})$) {ORDER\\[-0.035em]AND CHANCE};
+\draw[ocCream,opacity=0.7,line width=0.35pt]
+  ($(O)+(1.8in,{7.70in*\cs})$)--($(O)+(4.2in,{7.70in*\cs})$);
+\node[ocCream,fill=ocCream,diamond,inner sep=1.4pt] at ($(O)+(3in,{7.70in*\cs})$) {};
+\node[ocCream,align=center,font=\fontsize{14}{17}\selectfont]
+  at ($(O)+(3in,{7.29in*\cs})$)
+  {Beautiful mathematics\\through problems and proofs.};
+\node[ocCream,font=\fontsize{11}{13}\selectfont]
+  at ($(O)+(3in,{6.77in*\cs})$) {\textls[180]{VOLUME \TOMENUM}};
+\draw[ocCream,opacity=0.7,line width=0.35pt]
+  ($(O)+(1.65in,{6.77in*\cs})$)--++(0.55in,0);
+\draw[ocCream,opacity=0.7,line width=0.35pt]
+  ($(O)+(3.8in,{6.77in*\cs})$)--++(0.55in,0);
+% Each plate is computed from the book's mathematics, not decorative pseudo-maths.
+\pgfmathsetmacro{\ms}{min(\cs,1)*0.88}
+\begin{scope}[shift={($(O)+(3in,{4.36in*\cs})$)},scale=\ms]
   \input{\MOTIF}
 \end{scope}
-% Tome number and title (a long title shrinks to fit inside the frame)
-\node[accent,font=\fontsize{13}{16}\selectfont] at ($(O)+(3in,{2.35in*\cs})$) {\textls{TOME \TOMENUM}};
-\node[ivory,font=\fontsize{36}{40}\selectfont] at ($(O)+(3in,{1.7in*\cs})$) {\resizebox{\ifdim\width>4.8in 4.8in\else\width\fi}{!}{\TOMETITLE}};
-\draw[accent,line width=0.4pt] ($(O)+(2.4in,{1.12in*\cs})$) -- ++(1.2in,0);
-\node[ivory!85,font=\fontsize{11}{13}\selectfont] at ($(O)+(3in,{0.8in*\cs})$)
-  {\textls[60]{SEGHAIER Oussama}};
+\draw[ocCream,opacity=0.65,line width=0.4pt]
+  ($(O)+(1.9in,{2.10in*\cs})$)--($(O)+(4.1in,{2.10in*\cs})$);
+\node[ocCream,fill=ocCream,diamond,inner sep=1.4pt] at ($(O)+(3in,{2.10in*\cs})$) {};
+% Short titles approach the scale of the reference. Longer ones stay legible on two lines.
+\ifdim\covertitlewidth<5.3in
+  \node[ocInk,font=\fontsize{60}{62}\selectfont]
+    at ($(O)+(3in,{1.49in*\cs})$) {\TOMETITLE};
+\else
+  \node[ocInk,text width=5.15in,align=center,
+    font=\fontsize{36}{38}\selectfont,execute at begin node={\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}]
+    at ($(O)+(3in,{1.49in*\cs})$) {\TOMETITLE};
+\fi
+\draw[ocCream,opacity=0.65,line width=0.35pt]
+  ($(O)+(2.4in,{0.91in*\cs})$)--++(1.2in,0);
+\node[ocCream,font=\fontsize{12}{14}\selectfont]
+  at ($(O)+(3in,{0.55in*\cs})$) {\textls[100]{SEGHAIER Oussama}};

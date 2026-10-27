@@ -16,7 +16,7 @@ def fingerprints(root):
     books = sorted(p.name for p in root.glob('tome*') if (p / 'main.tex').is_file())
     if not all(NAME.fullmatch(book) for book in books):
         raise ValueError('Unsupported book directory name')
-    shared = [f for f in files if f == 'build.sh' or f.startswith('common/') or (
+    shared = [f for f in files if f == 'build.sh' or f.startswith('common/') or f.startswith('tools/assets/') or (
         f.startswith('tools/') and Path(f).suffix in {'.py', '.tex', '.lua', '.css', '.html'}
         and Path(f).name not in {'site.py', 'site-template.html', 'build_plan.py'}
         and not Path(f).name.startswith('test_'))]
