@@ -15,15 +15,14 @@ which he could not find. Nor could Leibniz. Nor could Jacob Bernoulli, who in hi
 $2$ and then wrote, in Dunham's translation, ``If anyone finds and communicates to us that which thus far has eluded our efforts, great will be our
 gratitude.'' The Bernoullis lived in Basel, and the question became the \emph{Basel problem}.
 
-The person who found it, in 1734, was a former student of Jacob's brother Johann, twenty-seven years old and newly settled in St Petersburg:
+The person who found it was a former student of Jacob's brother Johann, working in St Petersburg:
 Leonhard Euler. His paper was read to the Academy there on 5 December 1735, and his idea was outrageous. A polynomial with roots $a_1,\dots,a_n$
 and constant term $1$ is $\prod_k(1-\frac x{a_k})$, and the sum of the $\frac1{a_k}$ can be read off its coefficient of $x$. Euler treated
 $\frac{\sin x}x$, whose roots are $\pm\pi,\pm2\pi,\dots$, as a polynomial of infinite degree,
 \[
 \frac{\sin x}x=\Bigl(1-\frac{x^2}{\pi^2}\Bigr)\Bigl(1-\frac{x^2}{4\pi^2}\Bigr)\Bigl(1-\frac{x^2}{9\pi^2}\Bigr)\cdots,
 \]
-compared the coefficients of $x^2$ on both sides, and found $\frac{\pi^2}6$. The argument was not a proof, and Euler knew it (it took him until
-1741 to find one he trusted), but the answer was right to every decimal he could check, and he could check many. Figure~\ref{fig:sineprod} shows
+compared the coefficients of $x^2$ on both sides, and found $\frac{\pi^2}6$. The formal infinite-polynomial step still needed justification; Euler later developed other arguments, but the answer was right to every decimal he could check, and he could check many. Figure~\ref{fig:sineprod} shows
 his product converging. This chapter builds the tools that make the idea honest, and Exercise~\ref{ex:basel} carries it out with a genuine
 polynomial of finite degree, whose roots $\cot^2\frac{k\pi}N$ we know exactly and whose coefficients squeeze the Basel sum.
 
@@ -60,7 +59,7 @@ consequence we will use constantly: if $AB=0$ then $A=0$ or $B=0$, and if $AB=AC
 Why ``formal''? Because a polynomial and the function $x\mapsto P(x)$ it defines are different things, and keeping them apart avoids a trap. Over
 $\R$ or $\C$ no harm is done: Proposition~\ref{prop:rootsfactor} will show that a non-zero polynomial has finitely many roots, so two polynomials
 that agree as functions on an infinite set are equal as polynomials. Over a finite field the two notions really differ: over $\Z/2\Z$, the polynomial
-$X^2+X$ is not zero, yet $x^2+x=0$ for both values $x=0$ and $x=1$. Tome~1 lives in that world; in this tome, $\mathbb K$ is always infinite.
+$X^2+X$ is not zero, yet $x^2+x=0$ for both values $x=0$ and $x=1$. Tome~1 lives in that world; in this tome, $\mathbb K$ is infinite unless explicitly specified otherwise, as in the secret-sharing example.
 
 \begin{examplex}[Horner's scheme]
 To evaluate $P=2X^4-3X^3+X-5$ at $x=3$, do not compute the powers of $3$. Write $P=(((2X-3)X+0)X+1)X-5$ and work from the inside:
@@ -218,11 +217,12 @@ Lagrange taught it at the \'Ecole normale in 1795.
 
 \begin{examplex}[sharing a secret]
 In 1979 Adi Shamir turned Theorem~\ref{thm:lagrange} into a security device. A bank wants its vault code $s$ to be recoverable by any three of its
-five directors, but by no two of them. Pick a random polynomial $P=s+aX+bX^2$ of degree $2$ with constant term $s$, and hand director $i$ the
-``share'' $(i,P(i))$. Any three directors hold three values of a polynomial of degree at most $2$: by the theorem it is determined, and $s=P(0)$.
-Any two directors hold two values, and for \emph{every} candidate secret $s'$ there is exactly one quadratic through their two points and $(0,s')$: their
-shares say nothing at all about $s$. (In practice one works over $\Z/p\Z$ for a large prime $p$, where ``nothing at all'' can be made precise;
-Tome~1 explains why that is a field.) Exercise~\ref{ex:secret} recovers a secret from three shares.
+five directors, but by no two of them. Work in the finite field $\mathbb F_p=\Z/p\Z$ for a prime $p>5$, with $s\in\mathbb F_p$.
+Choose $a,b$ independently and uniformly from the entire field, including zero, and put $P=s+aX+bX^2$, of degree \emph{at most} $2$.
+Hand director $i$ the ``share'' $(i,P(i))$. Any three directors determine $P$ by interpolation, and recover $s=P(0)$.
+For two distinct directors and every candidate $s'$, there is exactly one pair $(a,b)$ fitting their shares and $(0,s')$.
+Thus each particular pair of share values has probability $1/p^2$, whatever the secret: its distribution contains no information about $s$.
+The finite field and the uniform choice are essential to this secrecy statement. Exercise~\ref{ex:secret} recovers a secret from three shares.
 \end{examplex}
 
 \section{Chebyshev polynomials}
@@ -260,12 +260,12 @@ For every $x\in\C$, with either choice of the square root,
 \[
 T_n(x)=\frac{\bigl(x+\sqrt{x^2-1}\bigr)^n+\bigl(x-\sqrt{x^2-1}\bigr)^n}2.
 \]
-In particular $T_n(\cosh t)=\cosh nt$ for real $t$, and $T_n(x)\sim\frac12(2x)^n$ as $x\to+\infty$.
+In particular $T_n(\cosh t)=\cosh nt$ for real $t$, and, for each fixed $n\ge1$, $T_n(x)\sim\frac12(2x)^n$ as $x\to+\infty$.
 \end{propositionx}
 \begin{proof}
 Let $u=x+\sqrt{x^2-1}$ and $v=x-\sqrt{x^2-1}$. Then $u+v=2x$ and $uv=x^2-(x^2-1)=1$, so $u$ and $v$ are the roots of $t^2-2xt+1$, and
 $s_n=\frac{u^n+v^n}2$ satisfies $s_{n+1}=2xs_n-s_{n-1}$ (multiply $u^2=2xu-1$ by $u^{n-1}$, the same for $v$, add). Since $s_0=1=T_0(x)$ and
-$s_1=x=T_1(x)$, induction gives $s_n=T_n(x)$. For $x=\cosh t$, $\sqrt{x^2-1}=\sinh t$ and $u,v=e^{\pm t}$. For $x\to+\infty$, $u\sim2x$ and $v\to0$.
+$s_1=x=T_1(x)$, induction gives $s_n=T_n(x)$. For $x=\cosh t$ with $t\ge0$, $\sqrt{x^2-1}=\sinh t$ and $u,v=e^{\pm t}$; evenness extends the identity to $t<0$. For $x\to+\infty$, $u\sim2x$ and $v\to0$.
 \end{proof}
 
 Now to Chebyshev's question. Among monic polynomials of degree $n$, how small can $\sup_{[-1,1]}|P|$ be? The monic multiple of $T_n$ is
@@ -331,7 +331,7 @@ $\bar P$ with coefficients in $\Z/p\Z$. If $\bar P$ has no factorisation into tw
 irreducible over $\Q$.
 \end{propositionx}
 \begin{proof}
-We take from Tome~1 the one fact that $\Z/p\Z$ is a field (the product of two non-zero classes is non-zero: this is Euclid's lemma), so that
+The arithmetic bridge in Chapter~1 shows that $\Z/p\Z$ is a field: Euclid's lemma excludes zero divisors, and B\'ezout's identity gives an inverse to each nonzero class. Thus
 degrees add under multiplication in $(\Z/p\Z)[X]$. If $P=BC$ in $\Q[X]$ with $\deg B,\deg C\ge1$, Gauss' lemma gives such a factorisation in $\Z[X]$.
 Reducing modulo $p$ is compatible with sums and products, so $\bar P=\bar B\bar C$. Since $p$ does not divide the leading coefficient of $P$, which is
 the product of those of $B$ and $C$, it divides neither of them: $\deg\bar B=\deg B$ and $\deg\bar C=\deg C$. This is the factorisation that was
@@ -412,14 +412,14 @@ $(d_1,d_2,d_3)=(1,1,0)$, and we subtract $\sigma_1\sigma_2=\sum_{i\ne j}x_i^2x_j
 $F=\sigma_1\sigma_2-3\sigma_3$. For the roots of $X^3-X+1$ this gives $\sum_{i\ne j}x_i^2x_j=0\cdot(-1)-3(-1)=3$.
 \end{examplex}
 
-The theorem is the engine of Tome~2: it is why every ``reasonable'' question about the roots of an equation can be answered inside the field of its
+The theorem is the engine of Tome~2: it is why every symmetric polynomial expression in the roots of an equation can be expressed inside the field of its
 coefficients, and it is the first thing Galois theory needs.
 
 \section{Real roots: counting and locating}
 
 Over $\C$ a polynomial of degree $n$ has exactly $n$ roots, multiplicities counted. Over $\R$ it has between $0$ and $n$, and the coefficients
 contain more information about this number than one might expect. Descartes noticed it in 1637, in the \emph{G\'eom\'etrie} appended to the
-\emph{Discours de la m\'ethode}; the proof had to wait for Gauss (1828). For a polynomial $P=\sum a_kX^k$ with real coefficients, let $V(P)$ be the
+\emph{Discours de la m\'ethode}; proofs appeared in the eighteenth century, before Gauss's algebraic proof of 1828. For a polynomial $P=\sum a_kX^k$ with real coefficients, let $V(P)$ be the
 number of \emph{sign changes} in the sequence $a_n,a_{n-1},\dots,a_0$ after the zeros are deleted, and let $Z^+(P)$ be the number of positive roots
 counted with multiplicity.
 
@@ -457,8 +457,8 @@ there are no negative roots. The unique real root, $1.3247\ldots$, is the \emph{
 \end{examplex}
 
 Our last theorem locates the roots of $P'$ from those of $P$. Over $\R$ this is Rolle's theorem (Chapter~5): between two real roots of $P$ there is
-a root of $P'$. Over $\C$ there is no ``between'', but there is a convex hull, and the statement is just as clean. Gauss noted it in 1836, and
-F\'elix Lucas published the proof in 1874.
+a root of $P'$. Over $\C$ there is no ``between'', but there is a convex hull, and the statement is just as clean. The theorem bears the names of Gauss and
+F\'elix Lucas, whose papers of 1874 and 1879 developed the result.
 
 \begin{theorem}[Gauss--Lucas]\label{thm:gausslucas}
 Let $P\in\C[X]$ be non-constant. Every root of $P'$ lies in the convex hull of the roots of $P$, that is, it is a combination
@@ -477,12 +477,12 @@ $\lambda_i=w_i/\sum_jw_j$.
 \begin{figure}[ht]
 \centering
 \fig{ch03-gausslucas}
-\caption{Gauss--Lucas for a polynomial of degree $5$. The roots of $P$ (filled) span a convex pentagon; the four roots of $P'$ (circles) lie inside it. The proof shows more: each root of $P'$ is a weighted average of the roots of $P$, with weights $|z-x_i|^{-2}$ that favour the nearby roots.}
+\caption{Gauss--Lucas for a polynomial of degree $5$. The roots of $P$ (filled) span a convex quadrilateral (the fifth root lies inside); the four roots of $P'$ (circles) lie inside it. The proof shows more: each root of $P'$ is a weighted average of the roots of $P$, with weights $|z-x_i|^{-2}$ that favour the nearby roots.}
 \label{fig:gausslucas}
 \end{figure}
 
 \begin{think}
-A physicist's reading of the proof: put a unit positive charge at each root $x_i$, in a plane where charges repel with force $\frac1{\text{distance}}$ (the two-dimensional law). The force at $z$ is the conjugate of $\sum\frac1{z-x_i}$, up to a constant. So the roots of $P'$ are exactly the points of equilibrium of this electric field. Can a point outside the hull be in equilibrium? Every charge pushes it further out.
+A physicist's reading of the proof: put a unit positive charge at each root $x_i$, in a plane where charges repel with force $\frac1{\text{distance}}$ (the two-dimensional law). The force at $z$ is the conjugate of $\sum\frac1{z-x_i}$, up to a constant. Away from the charges, the roots of $P'$ are exactly the points of equilibrium of this electric field. A multiple root of $P$ is also a root of $P'$, but the field is singular there. Can a point outside the hull be in equilibrium? Every charge pushes it further out.
 \end{think}
 
 \begin{beauty}
@@ -629,7 +629,7 @@ Let $P=\sum_{k=0}^na_kX^k\in\R[X]$ have $n$ real roots (with multiplicity).
 \emph{The Mason--Stothers theorem.} For $F\in\C[X]$ non-zero let $n_0(F)$ be the number of distinct roots of $F$. Let $A,B,C\in\C[X]$ be
 pairwise coprime, not all constant, with $A+B=C$.
 \begin{enumerate}[label=(\alph*)]
-\item Show that $W=AB'-A'B$ is not zero, and that $W=AC'-A'C=BC'-B'C$.
+\item Show that $W=AB'-A'B$ is not zero, and that $W=AC'-A'C=B'C-BC'$.
 \item Show that if $a$ is a root of $A$ of multiplicity $m$, then $(X-a)^{m-1}$ divides $W$. Deduce that $\frac{ABC}{\prod(X-a)}$, the product over
 the distinct roots $a$ of $ABC$, divides $W$.
 \item Conclude that $\max(\deg A,\deg B,\deg C)\le n_0(ABC)-1$.
@@ -682,7 +682,7 @@ Proposition~\ref{prop:rootsfactor}(c): compute $P(1)$, $P'(1)$, $P''(1)$. For $X
 Newton's forward difference formula (Theorem~\ref{thm:newton}): all the differences $\Delta^jP(0)$ equal $1$. Then Chapter~1 sums the binomials.
 \end{hint}
 \begin{hint}{ex:secret}
-$P(0)=\sum_iy_iL_i(0)$, and $L_i(0)$ is a product of three fractions. For the last question, use Theorem~\ref{thm:lagrange} with the three points $(1,8)$, $(2,15)$, $(0,s')$.
+$P(0)=\sum_iy_iL_i(0)$, and $L_i(0)$ is a product of two fractions. For the last question, use Theorem~\ref{thm:lagrange} with the three points $(1,8)$, $(2,15)$, $(0,s')$.
 \end{hint}
 \begin{hint}{ex:chebprod}
 Everything is $\cos$: put $x=\cos\theta$. (c) Substitute $x=\cos\theta$ in the integral.
@@ -813,8 +813,7 @@ $L_1(0)=\frac{(0-2)(0-3)}{(1-2)(1-3)}=3$, $L_2(0)=\frac{(0-1)(0-3)}{(2-1)(2-3)}=
 $s=8\cdot3-15\cdot3+24\cdot1=3$. Indeed $P=X^2+4X+3$ fits: $P(1)=8$, $P(2)=15$, $P(3)=24$, $P(0)=3$.
 
 For every $s'$, Theorem~\ref{thm:lagrange} gives exactly one polynomial of degree at most $2$ through $(0,s')$, $(1,8)$, $(2,15)$, and the
-directors $1$ and $2$ hold exactly the information ``$P(1)=8$, $P(2)=15$''. So each candidate secret is consistent with their shares, and
-equally so: they have learned nothing.
+directors $1$ and $2$ hold exactly the information ``$P(1)=8$, $P(2)=15$''. So each candidate secret is algebraically consistent with their shares. Statistical secrecy additionally requires the finite-field uniform sampling specified in the sharing example; algebraic consistency alone does not prove it.
 \end{solution}
 
 \begin{solution}{ex:chebprod}
@@ -869,12 +868,12 @@ so $P'^2>PP''$ there. At a root of $P$ the inequality reads $P'(x)^2\ge0$. By co
 \[
 a_k^2\ge\frac{k+1}k\,a_{k-1}a_{k+1}.
 \]
-If $a_{k-1}a_{k+1}\le0$ the claim $a_k^2\ge a_{k-1}a_{k+1}$ is trivial; otherwise it follows from $\frac{k+1}k>1$. (The sharper inequality with the factor $\frac{k+1}k$ is Newton's, and Chapter~4 meets its cousin, Maclaurin's inequality between the $\sigma_k$.)
+If $a_{k-1}a_{k+1}\le0$ the claim $a_k^2\ge a_{k-1}a_{k+1}$ is trivial; otherwise it follows from $\frac{k+1}k>1$. (The inequality with the factor $\frac{k+1}k$ is a consequence of Newton's sharper inequalities, and Chapter~4 meets its cousin, Maclaurin's inequality between the $\sigma_k$.)
 \end{solution}
 
 \begin{solution}{ex:mason}
 \idea The whole proof rests on one observation: a root of multiplicity $m$ of a polynomial is a root of multiplicity at least $m-1$ of its derivative. So the ``Wronskian'' $AB'-A'B$ inherits almost all the multiple roots of $A$, of $B$, and (by the relation $A+B=C$) of $C$, while its degree is small. Comparing degrees gives the bound. Part (d) then falls out, because raising to the $n$-th power multiplies degrees by $n$ but does not change the number of distinct roots.
-\writeup (a) First, $W=AB'-A'B=A(C'-A')-A'(C-A)=AC'-A'C$, and symmetrically $W=BC'-B'C$ (replace $A=C-B$). Suppose $W=0$. If $A$ were a non-zero constant then $AB'=0$ gives $B$ constant and then $C$ constant, excluded; so $A$ is non-constant (the same for $B$), and it has a root $a$ of some multiplicity $m\ge1$. Then $a$ is a root of $AB'$ of multiplicity at least $m$, while it has multiplicity exactly $m-1$ in $A'$ (Taylor's formula, Proposition~\ref{prop:rootsfactor}(c)); from $AB'=A'B$, $a$ must be a root of $B$, contradicting $\gcd(A,B)=1$. So $W\ne0$.
+\writeup (a) First, $W=AB'-A'B=A(C'-A')-A'(C-A)=AC'-A'C$, and symmetrically $W=B'C-BC'$ (replace $A=C-B$). Suppose $W=0$. If $A$ were a non-zero constant then $AB'=0$ gives $B$ constant and then $C$ constant, excluded; so $A$ is non-constant (the same for $B$), and it has a root $a$ of some multiplicity $m\ge1$. Then $a$ is a root of $AB'$ of multiplicity at least $m$, while it has multiplicity exactly $m-1$ in $A'$ (Taylor's formula, Proposition~\ref{prop:rootsfactor}(c)); from $AB'=A'B$, $a$ must be a root of $B$, contradicting $\gcd(A,B)=1$. So $W\ne0$.
 
 (b) $(X-a)^{m-1}$ divides $A$ and $A'$, hence $W=AB'-A'B$. The same holds for roots of $B$ (using $W=AB'-A'B$) and of $C$ (using $W=AC'-A'C$). The polynomials $\prod_a(X-a)^{m_a-1}$ built from the roots of $A$, of $B$ and of $C$ respectively are pairwise coprime, since $A,B,C$ are; so their product, which is $\frac{ABC}{\prod_a(X-a)}$ over all distinct roots of $ABC$ (the roots of $A,B,C$ are distinct from each other), divides $W$.
 
@@ -899,6 +898,7 @@ If $a_{k-1}a_{k+1}\le0$ the claim $a_k^2\ge a_{k-1}a_{k+1}$ is trivial; otherwis
 \item E.~Meijering, ``A chronology of interpolation'', \emph{Proceedings of the IEEE} 90 (2002), 319--342. Waring 1779, Euler 1783, Lagrange 1795, and two thousand years of what came before.
 \item A.~Shamir, ``How to share a secret'', \emph{Communications of the ACM} 22 (1979), 612--613. Two pages, and Lagrange interpolation became cryptography.
 \item D.~A.~Cox, ``Why Eisenstein proved the Eisenstein criterion and why Sch\"onemann discovered it first'', \emph{American Mathematical Monthly} 118 (2011), 3--21.
+\item A.~Fontana, \emph{A Proof of Descartes' Rule of Signs}, Ratio Mathematica 35 (2018), 47--52, doi:10.23755/rm.v35i0.425. Earlier proofs and Gauss's contribution.
 \item D.~G.~Mead, ``Newton's identities'', \emph{American Mathematical Monthly} 99 (1992), 749--751. The one-page proof via Horner's scheme used above.
 \item N.~Snyder, ``An alternate proof of Mason's theorem'', \emph{Elemente der Mathematik} 55 (2000), 93--94. The Wronskian proof of Exercise~\ref{ex:mason}, found by the author while in high school.
 \item M.~Marden, \emph{Geometry of Polynomials}, 2nd ed., AMS, 1966. Gauss--Lucas and everything else about where roots live.

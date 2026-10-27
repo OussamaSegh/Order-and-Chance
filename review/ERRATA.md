@@ -1,9 +1,10 @@
 # Errata and review log
 
-Each finished tome is reviewed after it is written: every proof re-read, every
-solution re-derived, every number in the text and the figure captions recomputed
-in Python, every cross-reference checked against the built `.aux` files, and every
-companion notebook executed. This file records what was found and how it was fixed.
+The entries below record earlier reviews and their reported checks. They are a
+historical log, not a certification that a volume is free of errors. For Volume 0,
+the independent review of 27 October 2026 supersedes the earlier blanket assurance
+of correctness: see [TOME0-FACT-REVIEW.md](TOME0-FACT-REVIEW.md) for the implemented
+mathematical, factual and print corrections and reproducible calculations.
 Severity: **math** (a false statement or a gap in a proof), **ref** (a wrong pointer
 or citation), **text** (clarity, typos).
 

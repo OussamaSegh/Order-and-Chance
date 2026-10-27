@@ -193,3 +193,13 @@ front-copy and page-boundary checks. All 95 front proofs and 20 publishing tests
 passed. A complete Volume 9 pipeline passed with the existing reading dimensions.
 Final page counts, spine sizes, typesetting corrections and verification limits
 are recorded in [the production trim audit](../review/7X10-PRODUCTION.md).
+
+## Volume 0 mathematical and factual review (27 October 2026)
+
+All eight chapters, 130 exercise/hint/solution sets, workshops and challenge notes
+were reviewed against the mathematics and selected primary/historical sources.
+Corrected proof gaps, algebraic signs, sampling assumptions, numerical error bounds,
+figure captions, historical overclaims and outdated open-problem status. The full
+record and reproducible calculations are in [TOME0-FACT-REVIEW.md](../review/TOME0-FACT-REVIEW.md).
+The 7 × 10 trim and approved cover identity are preserved. Every Volume 0 output
+and its actual-page-derived paperback wrap are rebuilt from the corrected source.
