@@ -1,0 +1,440 @@
+\chapter{Log-Correlated Fields and the Largest Values}\chaptermark{Log-Correlated Fields}
+
+\begin{center}\itshape
+How large does the characteristic polynomial of a random matrix get on the circle?\\
+How large does the zeta function get on a stretch of the critical line?\\
+The answer to both is a family tree in disguise, and a correction of $\frac34$.
+\end{center}
+
+In 1937 Ronald Fisher, and independently Andrey Kolmogorov, Ivan Petrovsky and Nikolai Piskunov, studied how an advantageous gene invades a population spread along a line. The front of the invasion moves at a constant speed,
+and the equation they wrote down, now called the KPP equation, became a classic of partial differential equations. In 1975 Henry McKean noticed that the same equation describes the position of the rightmost particle in a
+\emph{branching Brownian motion}: particles diffuse and split in two at random times, and the front of the cloud is the front of the gene. Three years later Maury Bramson, then a young probabilist, computed the position of
+the front with a precision nobody expected: it is $\sqrt2\,t-\frac3{2\sqrt2}\log t+O(1)$. The constant $\frac32$ is not what one gets for independent particles (that would be $\frac12$); it is the signature of the family tree, of the
+correlations between relatives.
+
+In 2012 Yan Fyodorov, Ghaith Hiary and Jon Keating, a physicist, a computational number theorist and a mathematical physicist, asked how large $|\zeta(\frac12+it)|$ gets on a short stretch of the critical line, say for $t$ in $[T,T+1]$ with
+$T$ huge. Hiary had just designed one of the fastest algorithms for computing $\zeta$ at large height, so they could look. Their answer, a conjecture backed by random matrices and by the physics of disordered systems, was
+\[
+\max_{|h|\le1}\log\bigl|\zeta(\tfrac12+i(T+h))\bigr|=\log\log T-\frac34\log\log\log T+O(1),
+\]
+and the $\frac34$ came straight out of Bramson's $\frac32$. The reason is that $\log|\zeta|$ on the critical line, like $\log|\det(I-e^{-i\theta}U)|$ on the circle, is a \emph{log-correlated field}: two values at distance $x$ have a
+covariance close to $\frac12\log\frac1x$, as if the points of the line were the leaves of a family tree and $\log\frac1x$ the age of their last common ancestor.
+
+This last chapter builds the family tree (the branching random walk), proves that the characteristic polynomial of Chapter~11 is log-correlated, constructs Kahane's \emph{multiplicative chaos}, the random measure that
+log-correlated fields carry, and proves the upper bound for the maximum of the characteristic polynomial. The second-order terms are stated, with pointers: they are the research frontier, and some of them were proved
+only in the last ten years.
+
+\begin{reminder}[from Tome 3, Tome 4, Tome 6, Chapter 11]
+A Galton--Watson process with offspring mean $m>1$ and $P(\text{no offspring})>0$ survives with positive probability (Tome~3, Theorem~3.8). A martingale bounded in $L^2$ converges almost surely and in $L^2$ (Tome~3, Theorem~10.18).
+Continuous $2\pi$-periodic functions are uniform limits of trigonometric polynomials (Fej\'er, Tome~4, Theorem~6.9). A positive linear form on $C(K)$, $K$ compact metric, is integration against a unique finite Borel measure
+(Tome~6, Theorem~11.3). For $U$ Haar distributed on $U(n)$: $\mathbb E|\det(I-U)|^2=n+1$ (Proposition~\ref{prop:secondmoment}), and the traces $T_j=\operatorname{tr}U^j$ satisfy $\mathbb ET_j=0$, $\mathbb E[T_j\overline{T_l}]=\delta_{jl}\min(j,n)$ for $j,l\ge1$
+(Proposition~\ref{prop:formfactor}); the one-point density of the eigenangles is uniform (Tome~8, Theorem~8.15 with $k=1$). Gaussian tails: $P(N(0,1)\ge x)\le e^{-x^2/2}$ for $x\ge0$.
+\end{reminder}
+
+\section{The branching random walk}
+
+Take the binary tree of depth $n$: the root, its two children, their four children, and so on down to the $2^n$ leaves at depth $n$. Put on each edge $e$ an independent standard Gaussian $\xi_e$, and for a vertex $v$ let $S_v$ be the sum
+of the $\xi_e$ along the path from the root to $v$. Seen from the root, each $S_v$ is a Gaussian random walk; two leaves $v,w$ share the first $|v\wedge w|$ steps, where $v\wedge w$ is their last common ancestor and $|\cdot|$ the depth, and then
+go their independent ways:
+\[
+\operatorname{Cov}(S_v,S_w)=|v\wedge w|.
+\]
+Most pairs of leaves separate at the root; a leaf has exactly $2^{n-k-1}$ relatives that separate from it at depth $k$. Let $M_n=\max_{|v|=n}S_v$.
+
+\begin{theorem}[the speed of the branching random walk]\label{thm:brwspeed}
+With $c^*=\sqrt{2\log2}$, $\frac{M_n}n\to c^*$ in probability.
+\end{theorem}
+
+\begin{proof}
+\emph{Upper bound.} For $a>c^*$, by the union bound over the $2^n$ leaves, $P(M_n\ge an)\le2^nP\bigl(N(0,n)\ge an\bigr)\le2^ne^{-a^2n/2}=e^{-n(a^2/2-\log2)}\to0$.
+
+\emph{Lower bound.} Fix $b<c^*$ and $\varepsilon>0$. Since $P(N(0,1)\ge y)\ge\int_y^{y+1}\frac{e^{-u^2/2}}{\sqrt{2\pi}}\dd u\ge\frac{e^{-(y+1)^2/2}}{\sqrt{2\pi}}$,
+\[
+m_K:=2^KP\bigl(N(0,K)\ge bK\bigr)\ge\frac1{\sqrt{2\pi}}\exp\Bigl(K\bigl(\log2-\tfrac{b^2}2\bigr)-b\sqrt K-\tfrac12\Bigr),
+\]
+which tends to infinity with $K$; fix $K$ with $m_K>1$. Fix also $r\ge1$. For a vertex $u$ at depth $r+lK$, call its \emph{good children} the descendants $w$ at depth $r+(l+1)K$ with $S_w-S_u\ge bK$. Their number has mean $m_K$ and is $0$ with positive
+probability, and it depends only on the edges between $u$ and its descendants $K$ levels down. Starting from a vertex $u$ at depth $r$, the good children, their good children, and so on, therefore form a Galton--Watson process with
+offspring mean $m_K>1$, which survives with some probability $1-q>0$ independent of $r$. The $2^r$ vertices at depth $r$ start independent processes (they use disjoint sets of edges), so the event $A$ that one of them survives has
+$P(A^c)=q^{2^r}$. Let $B$ be the event that $S_u\ge-2r$ for all $u$ at depth $r$; then $P(B^c)\le2^re^{-2r}\le e^{-r}$.
+
+Write $n=r+LK+\rho$ with $0\le\rho<K$. On $A\cap B$ there is a vertex $w$ at depth $r+LK$ with $S_w\ge-2r+bLK$. Which vertex it is depends only on the edges above depth $r+LK$; let $w'$ be its leftmost descendant at depth $n$. The
+increment $S_{w'}-S_w$ is $N(0,\rho)$ and independent of the choice of $w$, so it is at least $-\varepsilon n$ except with probability at most $e^{-\varepsilon^2n^2/2K}$. Since $LK\ge n-r-K$,
+\[
+P\Bigl(M_n\ge bn-(b+2)(r+K)-\varepsilon n\Bigr)\ge1-q^{2^r}-e^{-r}-e^{-\varepsilon^2n^2/2K}.
+\]
+Let $n\to\infty$: $\liminf_nP(M_n\ge(b-2\varepsilon)n)\ge1-q^{2^r}-e^{-r}$ for every $r$, and the right side tends to $1$ as $r\to\infty$. As $b<c^*$ and $\varepsilon$ are arbitrary, $P(M_n\ge(c^*-\delta)n)\to1$ for every $\delta>0$.
+\end{proof}
+
+\begin{think}
+The union bound counted $2^n$ leaves as if they were independent, and still found the right speed. Where could the correlations hide? (Not in the speed, but in the probability of reaching it: the leaves that reach the line $c^*n$ come in clusters of close relatives, so the expected number of them overstates the chance that there is at least one. The remark below on Bramson's correction quantifies this.)
+\end{think}
+
+The proof is a small renormalisation argument: blocks of $K$ levels are treated as single generations of a supercritical family, and the first $r$ levels supply $2^r$ independent chances. The first moment gave the right
+answer; correlations only enter at the next order.
+
+\begin{remark}[Bramson's correction]
+For $2^n$ \emph{independent} $N(0,n)$ variables the maximum is $c^*n-\frac1{2c^*}\log n+O_P(1)$ (Exercise~\ref{ex:indepmax} gives the first order). For the branching random walk it is
+\[
+M_n=c^*n-\frac3{2c^*}\log n+O_P(1),
+\]
+proved by Louigi Addario-Berry and Bruce Reed (2009) and by Yueyun Hu and Zhan Shi (2009); Elie A\"\i d\'ekon showed in 2013 that $M_n-c^*n+\frac3{2c^*}\log n$ converges in law. The extra $\frac1{c^*}\log n$ is a ballot problem: the leaf
+that achieves the maximum must have stayed below the line $j\mapsto c^*j$ at all intermediate depths $j$, or one of its many cousins would have done better, and a random walk constrained to stay below a line until time $n$ and
+to end near it has probability of order $n^{-3/2}$ instead of $n^{-1/2}$. The same $\frac32$ is Bramson's 1978 correction for branching Brownian motion.
+\end{remark}
+
+The tree also explains the name. Index the leaves by points of $[0,1)$ through their binary expansions, and let $d(v,w)=2^{-|v\wedge w|}$, the length of the smallest dyadic interval containing both. Then
+$\operatorname{Cov}(S_v,S_w)=\log_2\frac1{d(v,w)}$: the covariance is the logarithm of the inverse distance. This is the defining property of a \emph{log-correlated field}, and we now meet one on the circle.
+
+\section{Log-correlated fields on the circle}
+
+\begin{lemma}[cosine sums]\label{lem:cosine}
+For $N\ge1$ and $0<|x|\le\pi$,
+\[
+\Bigl|\sum_{j=1}^N\frac{\cos jx}j-\log\min\Bigl(N,\frac1{|x|}\Bigr)\Bigr|\le6 .
+\]
+\end{lemma}
+
+\begin{proof}
+Partial sums of the cosines are bounded: $\bigl|\sum_{j=A}^B\cos jx\bigr|\le\bigl|\sum_{j=A}^Be^{ijx}\bigr|\le\frac2{|1-e^{ix}|}=\frac1{|\sin\frac x2|}\le\frac\pi{|x|}$, by concavity of $\sin$ on $[0,\frac\pi2]$. Summation by parts, as in the proof of
+Theorem~\ref{thm:numbervariance}, gives $\bigl|\sum_{j=A}^B\frac{\cos jx}j\bigr|\le\frac\pi{|x|A}$. If $|x|>1$, apply this with $A=1$: the sum is at most $\pi$ in absolute value, while $\log\min(N,\frac1{|x|})=\log\frac1{|x|}\in[-\log\pi,0]$. If $|x|\le1$, let
+$A=\min(N,\lfloor\frac1{|x|}\rfloor)\ge1$. For $j\le A$, $0\le1-\cos jx\le\frac{j^2x^2}2$, so $0\le H_A-\sum_{j\le A}\frac{\cos jx}j\le\frac{x^2A(A+1)}4\le\frac12$, where $H_A=\sum_{j\le A}\frac1j\in[\log A,\log A+1]$. The terms $j>A$ exist only if
+$A=\lfloor\frac1{|x|}\rfloor$, and then add at most $\frac\pi{|x|(A+1)}\le\pi$. Finally $\log\min(N,\frac1{|x|})-\log A\in[0,\log2]$, because $\lfloor y\rfloor\ge\frac y2$ for $y\ge1$. The errors add up to at most $1+\frac12+\pi+\log2<6$.
+\end{proof}
+
+The simplest log-correlated field on the circle is a random Fourier series. Let $G_1,G_2,\dots$ be independent standard complex Gaussians ($\mathbb E|G_j|^2=1$, $\mathbb EG_j^2=0$) and
+\begin{equation}\label{eq:fourierfield}
+X_N(\theta)=\operatorname{Re}\sum_{j=1}^N\frac{G_je^{-ij\theta}}{\sqrt j}.
+\end{equation}
+Its covariance is
+\[
+C_N(x)=\operatorname{Cov}\bigl(X_N(\theta),X_N(\theta+x)\bigr)=\frac12\sum_{j=1}^N\frac{\cos jx}j,
+\]
+because $\mathbb E[\operatorname{Re}a\operatorname{Re}b]=\frac12\operatorname{Re}\mathbb E[a\bar b]+\frac12\operatorname{Re}\mathbb E[ab]$, with $\mathbb E[G_j\overline{G_l}]=\delta_{jl}$ and $\mathbb E[G_jG_l]=0$. So $\operatorname{Var}X_N(\theta)=\frac12H_N\approx\frac12\log N$, and by Lemma~\ref{lem:cosine},
+$C_N(x)=\frac12\log\min(N,\frac1{|x|})+O(1)$: points closer than $\frac1N$ are perfectly correlated, and beyond that the covariance decays like $\frac12\log\frac1{|x|}$. The characteristic polynomial of Chapter~11 has exactly this structure,
+with the normalised traces $\frac{T_j}{\sqrt j}$ in the role of the $G_j$.
+
+\begin{proposition}[the characteristic polynomial is log-correlated]\label{prop:cuelogcorr}
+Let $Z_n(\theta)=\det(I-e^{-i\theta}U)$ with $U$ Haar distributed on $U(n)$. Then $\mathbb E\log|Z_n(\theta)|=0$, and for all $\theta,\varphi$,
+\[
+\operatorname{Cov}\bigl(\log|Z_n(\theta)|,\log|Z_n(\varphi)|\bigr)=\frac12\sum_{j\ge1}\frac{\min(j,n)}{j^2}\cos j(\theta-\varphi).
+\]
+In particular $\operatorname{Var}\log|Z_n(\theta)|=\frac12\log n+O(1)$, and for $x=\langle\theta-\varphi\rangle\ne0$ the covariance differs from $\frac12\log\min(n,\frac1{|x|})$ by at most $4$.
+\end{proposition}
+
+\begin{proof}
+For $0<r<1$ let $Y_r(\theta)=\log|\det(I-re^{-i\theta}U)|=\sum_k\log|1-re^{i(\theta_k-\theta)}|$. Expanding each logarithm in its absolutely convergent series, $Y_r(\theta)=-\operatorname{Re}\sum_{j\ge1}\frac{r^jT_je^{-ij\theta}}j$, a series that converges
+absolutely since $|T_j|\le n$. With the moments of the traces (and $\mathbb E[T_jT_l]=0$ for $j,l\ge1$, since $e^{i\varphi}U$ is Haar distributed), $\mathbb EY_r(\theta)=0$ and
+\[
+\operatorname{Cov}\bigl(Y_r(\theta),Y_r(\varphi)\bigr)=\frac12\sum_{j\ge1}\frac{r^{2j}\min(j,n)}{j^2}\cos j(\theta-\varphi).
+\]
+Now let $r\uparrow1$. Almost surely no eigenvalue equals $e^{i\theta}$, and then $Y_r(\theta)\to\log|Z_n(\theta)|$. For domination, $|1-re^{i\alpha}|\le2$ and $|1-re^{i\alpha}|\ge|\sin\alpha|$ (the distance from $1$ to the line through $0$ and $e^{i\alpha}$), so
+$|Y_r(\theta)|\le\sum_kg(\theta_k-\theta)$ with $g(\alpha)=\log2+|\log|\sin\alpha||$. By Cauchy--Schwarz and the uniform one-point density, $\mathbb E\bigl(\sum_kg(\theta_k-\theta)\bigr)^2\le n\sum_k\mathbb Eg(\theta_k-\theta)^2=n^2\int g^2\frac{\dd\alpha}{2\pi}<\infty$.
+By dominated convergence $Y_r(\theta)\to\log|Z_n(\theta)|$ in $L^2$, and means and covariances pass to the limit; the series converges absolutely at $r=1$.
+
+For the estimates, split the series at $n$: it is $\frac12\sum_{j\le n}\frac{\cos jx}j+\frac n2\sum_{j>n}\frac{\cos jx}{j^2}$, and the second part is at most $\frac n2\sum_{j>n}\frac1{j^2}\le\frac12$ in absolute value. Lemma~\ref{lem:cosine} gives the
+covariance; for the variance, $\frac12H_n=\frac12\log n+O(1)$.
+\end{proof}
+
+Comparing with Exercise~\ref{ex:kstreal}: $\frac12\sum_{k\le n}\psi'(k)=\frac12\sum_{r}\frac{\min(r,n)}{r^2}$, the same variance computed twice. The traces are more than uncorrelated: Persi Diaconis and Mehrdad Shahshahani proved in 1994 that for
+fixed $J$, $(T_1,\frac{T_2}{\sqrt2},\dots,\frac{T_J}{\sqrt J})$ converges in law to independent standard complex Gaussians, so $\log|Z_n|$ looks, at large scales, exactly like the field $X_n$ of \eqref{eq:fourierfield}.
+
+\section{Multiplicative chaos}
+
+A log-correlated field cannot be evaluated at a point in the limit: its variance is infinite. Its exponential, suitably normalised, is a perfectly good random \emph{measure}. Jean-Pierre Kahane built this measure in 1985, under the
+name \emph{Gaussian multiplicative chaos}, to put on firm ground a model of turbulence proposed by Beno\^it Mandelbrot in 1972. Today it describes the geometry of random surfaces in two-dimensional quantum gravity, and, as we shall
+see, the shape of $|\det(I-e^{-i\theta}U)|$. For $\gamma>0$ and a bounded Borel function $f$ on the circle let
+\[
+M_N(f)=\int_0^{2\pi}f(\theta)\exp\Bigl(\gamma X_N(\theta)-\frac{\gamma^2}2\mathbb EX_N(\theta)^2\Bigr)\frac{\dd\theta}{2\pi}.
+\]
+The normalisation makes $\mathbb EM_N(f)=\int f\frac{\dd\theta}{2\pi}$, since $\mathbb Ee^{\gamma Y}=e^{\gamma^2\operatorname{Var}Y/2}$ for a centred Gaussian $Y$.
+
+\begin{theorem}[Kahane, the $L^2$ phase]\label{thm:gmc}
+Let $0<\gamma<\sqrt2$.
+\begin{enumerate}
+\item For every bounded Borel $f$, $M_N(f)$ converges almost surely and in $L^2$ to a limit $M(f)$, with $\mathbb EM(f)=\int f\frac{\dd\theta}{2\pi}$ and
+\[
+\mathbb E\bigl[M(f)M(g)\bigr]=\iint f(\theta)g(\varphi)e^{\gamma^2C(\theta-\varphi)}\frac{\dd\theta\dd\varphi}{4\pi^2},\qquad C(x)=\sum_{j\ge1}\frac{\cos jx}{2j}.
+\]
+\item Almost surely the measures $M_N(\dd\theta)$ converge weakly to a random finite Borel measure $M$, and for each continuous $f$, $\int f\dd M=M(f)$ almost surely.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(1) Let $f\ge0$ first, and let $\mathcal F_N$ be generated by $G_1,\dots,G_N$. Write $X_{N+1}=X_N+\xi$ with $\xi(\theta)=\operatorname{Re}\frac{G_{N+1}e^{-i(N+1)\theta}}{\sqrt{N+1}}$, a centred Gaussian of variance $v=\frac1{2(N+1)}$ independent of $\mathcal F_N$. By
+Fubini for conditional expectations of non-negative integrands,
+\[
+\mathbb E\bigl[M_{N+1}(f)\mid\mathcal F_N\bigr]=\int f(\theta)e^{\gamma X_N(\theta)-\frac{\gamma^2}2\mathbb EX_N(\theta)^2}\,\mathbb E\bigl[e^{\gamma\xi(\theta)-\frac{\gamma^2}2v}\bigr]\frac{\dd\theta}{2\pi}=M_N(f).
+\]
+So $(M_N(f))$ is a martingale. Its second moment is, by Fubini and the Gaussian formula applied to $X_N(\theta)+X_N(\varphi)$, of variance $2\operatorname{Var}X_N+2C_N(\theta-\varphi)$,
+\[
+\mathbb EM_N(f)^2=\iint f(\theta)f(\varphi)e^{\gamma^2C_N(\theta-\varphi)}\frac{\dd\theta\dd\varphi}{4\pi^2}.
+\]
+By Lemma~\ref{lem:cosine} and $\min(N,\frac1{|x|})\le\frac1{|x|}$, $C_N(x)\le\frac12\log\frac1{|x|}+3$ for $0<|x|\le\pi$, so $e^{\gamma^2C_N(x)}\le e^{3\gamma^2}|x|^{-\gamma^2/2}$ with $x=\langle\theta-\varphi\rangle$. For fixed $\varphi$ the map $\theta\mapsto\langle\theta-\varphi\rangle$ preserves
+$\frac{\dd\theta}{2\pi}$, hence
+\[
+\sup_N\mathbb EM_N(f)^2\le\|f\|_\infty^2e^{3\gamma^2}\int_{-\pi}^\pi|x|^{-\gamma^2/2}\frac{\dd x}{2\pi}<\infty,
+\]
+precisely because $\frac{\gamma^2}2<1$. The martingale is bounded in $L^2$ and converges almost surely and in $L^2$. For general $f$ write $f=f^+-f^-$. Convergence in $L^2$ carries the mean, and the second moments converge by
+dominated convergence, with the same bound and $C_N\to C$ pointwise on $x\ne0$ (Lemma~\ref{lem:cosine}'s summation by parts shows the series converges); polarisation gives the mixed moment.
+
+(2) Apply (1) to the countably many functions $1$, $\cos k\theta$, $\sin k\theta$, $k\ge1$, and let $\Omega_0$ be the event of probability one on which all these $M_N(\cdot)$ converge. On $\Omega_0$, $B=\sup_NM_N(1)<\infty$. Let $f$ be continuous and
+$\eta>0$; by Fej\'er's theorem there is a trigonometric polynomial $p$ with $\|f-p\|_\infty\le\eta$, so
+\[
+|M_N(f)-M_{N'}(f)|\le|M_N(p)-M_{N'}(p)|+2\eta B,
+\]
+and $M_N(f)$ is a Cauchy sequence on $\Omega_0$. Its limit $\Lambda(f)$ is a positive linear form on $C$ of the circle, which is integration against a finite Borel measure $M$ by the Riesz representation theorem; by definition
+$M_N(f)\to\int f\dd M$ for every continuous $f$, which is weak convergence, and $\int f\dd M=M(f)$ almost surely by uniqueness of limits.
+\end{proof}
+
+The $L^2$ threshold $\gamma^2<2$ is where the second moment stops being finite, not where the measure dies. Kahane proved that the limit exists and is non-zero for all $\gamma<2$, and that it vanishes for $\gamma\ge2$; at the critical
+value $\gamma=2$ a different normalisation is needed (Duplantier, Rhodes, Sheffield and Vargas, 2014). The measure $M$ is carried by the \emph{$\gamma$-thick points}, where $X_N(\theta)\approx\frac\gamma2\log N$ instead of the typical
+$O(\sqrt{\log N})$ (Exercise~\ref{ex:thickchaos}). Thick points exist for every $\gamma<2$, so the maximum of $X_N$ should be close to $\frac22\log N=\log N$: the critical $\gamma$ and the maximum are the same question.
+
+\begin{remark}[chaos from random matrices]
+Christian Webb proved in 2015 that for $\gamma<\sqrt2$ the random measures $\frac{|Z_n(\theta)|^\gamma}{\mathbb E|Z_n(\theta)|^\gamma}\frac{\dd\theta}{2\pi}$ converge in law to the multiplicative chaos of Theorem~\ref{thm:gmc}, the $L^2$ phase; Miika Nikula, Eero Saksman
+and Webb extended it to the whole range $\gamma<2$ in 2020. The moments $\mathbb E|Z_n|^{2t}$ of Chapter~11 are exactly the normalisations, and the threshold $t>-\frac12$ of their finiteness is the $L^2$ threshold seen
+from the other side (Exercise~\ref{ex:gmcmass}).
+\end{remark}
+
+\section{The largest value of the characteristic polynomial}
+
+A trigonometric polynomial of degree $n$ cannot change much between two points at distance much less than $\frac1n$; a grid of a little more than $n$ points sees its maximum. The precise statement is a classical inequality of
+Sergei Bernstein (1912), here with a constant $e$ that is good enough for us.
+
+\begin{lemma}[a Bernstein inequality]\label{lem:bernstein}
+Let $P$ be a polynomial of degree at most $n$, $n\ge1$, and $\|P\|=\max_{|z|=1}|P(z)|$. Then $|P'(z)|\le e\,n\|P\|$ for $|z|=1$.
+\end{lemma}
+
+\begin{proof}
+The reversed polynomial $Q(w)=w^nP(1/w)$ has $|Q(w)|=|P(1/w)|$ for $|w|=1$, so $\max_{|w|=1}|Q|=\|P\|$, and by the maximum principle $|Q(w)|\le\|P\|$ for $|w|\le1$. Hence for $|z|=R>1$, $|P(z)|=R^n|Q(1/z)|\le R^n\|P\|$; and for $|z|\le1$,
+$|P(z)|\le\|P\|$. Fix $z_0$ on the unit circle; on the circle $|z-z_0|=\frac1n$ we have $|z|\le1+\frac1n$, so $|P(z)|\le(1+\frac1n)^n\|P\|\le e\|P\|$, and Cauchy's estimate gives $|P'(z_0)|\le n\cdot e\|P\|$.
+\end{proof}
+
+\begin{theorem}[the maximum, upper bound]\label{thm:maxupper}
+For every $\varepsilon>0$,
+\[
+P\Bigl(\max_\theta\log|Z_n(\theta)|\le(1+\varepsilon)\log n\Bigr)\longrightarrow1 .
+\]
+\end{theorem}
+
+\begin{proof}
+$P(z)=\det(I-zU)$ is a polynomial of degree $n$ with $Z_n(\theta)=P(e^{-i\theta})$. Let $\|P\|=|P(z^*)|$ with $|z^*|=1$, and let $K=\lceil n^{1+\varepsilon/2}\rceil$ and $z_l=e^{2\pi il/K}$. Some $z_l$ is within $\frac\pi K$ of $z^*$ along the circle, and by
+Lemma~\ref{lem:bernstein}, $\bigl||P(z^*)|-|P(z_l)|\bigr|\le\frac\pi K\cdot en\|P\|\le\frac12\|P\|$ as soon as $2\pi en\le K$, which holds for large $n$. So $\|P\|\le2\max_l|P(z_l)|$. Each $|P(z_l)|$ has the law of $|\det(I-U)|$ (rotation
+invariance), so by Markov's inequality and Proposition~\ref{prop:secondmoment},
+\[
+P\Bigl(\max_l|P(z_l)|>\tfrac12n^{1+\varepsilon}\Bigr)\le K\cdot\frac{n+1}{\frac14n^{2+2\varepsilon}}=O\bigl(n^{-3\varepsilon/2}\bigr)\to0 .
+\]
+Outside this event $\max_\theta|Z_n(\theta)|=\|P\|\le n^{1+\varepsilon}$.
+\end{proof}
+
+A single value $\log|Z_n(\theta)|$ is of order $\sqrt{\frac12\log n}$ (Theorem~\ref{thm:logclt}); the maximum over the circle is of order $\log n$, as for $n$ independent Gaussians of variance $\frac12\log n$, whose maximum is about
+$\sqrt{2\cdot\frac12\log n\cdot\log n}=\log n$. The leading order does not see the correlations, exactly as for the branching random walk. The matching lower bound and the next term are much harder, and were the subject of a
+small race.
+
+\begin{theorem}[Arguin--Belius--Bourgade, Paquette--Zeitouni, Chhaibi--Madaule--Najnudel; admitted]\label{thm:cuemax}
+As $n\to\infty$, $\displaystyle\max_\theta\log|Z_n(\theta)|-\Bigl(\log n-\frac34\log\log n\Bigr)$ is tight: for every $\eta>0$ there is $C$ with $P(|\cdot|>C)<\eta$ for all $n$.
+\end{theorem}
+
+Louis-Pierre Arguin, David Belius and Paul Bourgade proved in 2017 that the maximum divided by $\log n$ tends to $1$; Elliot Paquette and Ofer Zeitouni found the $\frac34\log\log n$ in 2018; and Reda Chhaibi, Thomas Madaule and Joseph
+Najnudel proved tightness in 2018, for the whole family of circular $\beta$-ensembles, using the Verblunsky coefficients, a cousin of the decomposition of Theorem~\ref{thm:bhny}. For $n$ independent variables of variance $\frac12\log n$ the
+correction would be $\frac14\log\log n$: the factor $3$ between $\frac34$ and $\frac14$ is Bramson's factor $3$ between $\frac3{2c^*}$ and $\frac1{2c^*}$. Figure~\ref{fig:maxima} shows both the profile of $\log|Z_n|$ and the growth of its maximum.
+
+\begin{figure}[ht]
+\centering
+\fig{ch12-maxima}
+\caption{Left: $\log|Z_{1000}(\theta)|$ for one Haar random $U\in U(1000)$ (values below $-9$ cut off); its maximum is $5.62$, against $\log n=6.91$ and $\log n-\frac34\log\log n=5.46$. Right: the mean of $\max_\theta\log|Z_n(\theta)|$ over many
+samples, $n=16,\dots,1024$, against $\log n-\frac34\log\log n+c$ (solid) and $\log n-\frac14\log\log n+c'$ (dashed), each with the best constant. With $\frac34$, the mean minus $\log n-\frac34\log\log n$ stays between $0.31$ and $0.44$ over the whole range; with $\frac14$ the corresponding difference drifts steadily, from $-0.11$ to $-0.66$.}
+\label{fig:maxima}
+\end{figure}
+
+\begin{beauty}
+\textbf{The Fyodorov--Hiary--Keating conjecture.} With the dictionary $n\leftrightarrow\log\frac T{2\pi}$ of Chapter~11, an interval of length $2\pi$ on the critical line near height $T$ holds about $\log\frac T{2\pi}$ zeros, as the circle holds
+$n$ eigenvalues, and Theorem~\ref{thm:cuemax} becomes: for $\tau$ uniform in $[T,2T]$,
+\[
+\max_{|h|\le1}\log\bigl|\zeta(\tfrac12+i(\tau+h))\bigr|=\log\log T-\frac34\log\log\log T+O_P(1).
+\]
+Behind it lies the log-correlated structure of $\log|\zeta|$, visible in Selberg's work: $\log|\zeta(\frac12+it)|\approx\operatorname{Re}\sum_{p\le T}p^{-1/2-it}$, a sum over primes in which the primes $p\approx e^{e^k}$ play the role of the $k$-th
+generation of the tree. The leading order was proved by Joseph Najnudel (2018, assuming the Riemann hypothesis) and by Arguin, Belius, Bourgade, Maksym Radziwi\l\l\ and Kannan Soundararajan (2019, unconditionally); Arguin,
+Bourgade and Radziwi\l\l\ proved the conjecture up to bounded terms in two papers (2020 and 2023). It took the random matrix model, the family tree, and a great deal of analytic number theory to settle one $\frac34$. Tome~14 takes
+up the zeta side.
+\end{beauty}
+
+\begin{remark}[freezing]
+The physicists' route to the $\frac34$ goes through the \emph{free energy} $F_n(\beta)=\frac1n\log\sum_{|v|=n}e^{\beta S_v}$ of the branching random walk, a model of a polymer in a random medium studied by Bernard Derrida and Herbert
+Spohn in 1988. As $n\to\infty$ it converges to $\log2+\frac{\beta^2}2$ for $\beta\le c^*$ and to $\beta c^*$ for $\beta\ge c^*$ (Exercises~\ref{ex:freeup} and~\ref{ex:freelow} prove parts of this): above the critical temperature the sum is dominated by
+the maximum, and the free energy \emph{freezes} into a straight line. For the characteristic polynomial, $\int|Z_n(\theta)|^{2\beta}\dd\theta$ freezes in the same way at $\beta=1$, and Fyodorov and Keating read the $\frac34$ off the
+behaviour of the frozen phase.
+\end{remark}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:indepmax}
+Let $Y_1,\dots,Y_{2^n}$ be independent $N(0,n)$ variables. Show that $\frac1n\max_iY_i\to c^*$ in probability. (For the lower bound, compute $P(\max_iY_i<an)$ directly.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:ultrametric}
+For two leaves $v\ne w$ of the binary tree, show that $d(v,w)=2^{-|v\wedge w|}$ satisfies $d(u,w)\le\max\bigl(d(u,v),d(v,w)\bigr)$ (an \emph{ultrametric}), and count the leaves at distance exactly $2^{-k}$ from a given leaf.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:thickcount}
+For $0<a<c^*$, let $\mathcal N_n(a)$ be the number of leaves with $S_v\ge an$. Show that $\frac1n\log\mathbb E\mathcal N_n(a)\to\log2-\frac{a^2}2$ and that, for every $\varepsilon>0$, $P\bigl(\mathcal N_n(a)\le e^{n(\log2-a^2/2+\varepsilon)}\bigr)\to1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cosinesum}
+Show that $C(x)=\sum_{j\ge1}\frac{\cos jx}{2j}=-\frac12\log|2\sin\frac x2|$ for $0<|x|\le\pi$. (Compare with $-\operatorname{Re}\log(1-re^{ix})$ and let $r\uparrow1$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gmcmass}
+For $0<\gamma<\sqrt2$, show that $\mathbb EM(1)^2=\frac{\Gamma(1-\gamma^2/2)}{\Gamma(1-\gamma^2/4)^2}$, using Exercise~\ref{ex:cosinesum} and the case $k=1$ of Exercise~\ref{ex:kstreal}. What happens as $\gamma^2\uparrow2$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:thickchaos}
+Let $0<\gamma<\sqrt2$ and $\delta>0$, and $V_N=\operatorname{Var}X_N(\theta)=\frac12H_N$. Show that
+\[
+\mathbb E\int\mathbf 1\bigl\{|X_N(\theta)-\gamma V_N|>\delta V_N\bigr\}M_N(\dd\theta)\longrightarrow0 .
+\]
+So most of the mass of $M_N$ sits where $X_N\approx\gamma V_N\approx\frac\gamma2\log N$. (Under the tilted law $e^{\gamma Y-\gamma^2\sigma^2/2}\dd P$, a centred Gaussian $Y$ of variance $\sigma^2$ becomes $N(\gamma\sigma^2,\sigma^2)$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:freeup}
+Show that for every $\beta>0$ and $\varepsilon>0$, $P\bigl(F_n(\beta)\le f(\beta)+\varepsilon\bigr)\to1$, where $f(\beta)=\log2+\frac{\beta^2}2$ for $\beta\le c^*$ and $f(\beta)=\beta c^*$ for $\beta>c^*$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:freelow}
+Let $W_n=\sum_{|v|=n}e^{\beta S_v-n(\log2+\beta^2/2)}$. Show that $(W_n)$ is a martingale, that it is bounded in $L^2$ if $\beta^2<\log2$, and deduce that then $F_n(\beta)\to\log2+\frac{\beta^2}2$ with positive probability. (Kahane and Peyri\`ere showed in
+1976 that $W_\infty>0$ almost surely for all $\beta<c^*$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:indepmax}
+$P(\max_iY_i<an)=\bigl(1-P(N(0,n)\ge an)\bigr)^{2^n}\le\exp\bigl(-2^nP(N(0,n)\ge an)\bigr)$, and use the lower Gaussian bound of the proof of Theorem~\ref{thm:brwspeed}.
+\end{hint}
+
+\begin{hint}{ex:ultrametric}
+$|u\wedge w|\ge\min(|u\wedge v|,|v\wedge w|)$: if $u$ and $v$ agree up to depth $a$ and $v$ and $w$ up to depth $b$, then $u$ and $w$ agree up to depth $\min(a,b)$.
+\end{hint}
+
+\begin{hint}{ex:thickcount}
+$\mathbb E\mathcal N_n(a)=2^nP(N(0,1)\ge a\sqrt n)$, with the two Gaussian bounds. Then Markov's inequality.
+\end{hint}
+
+\begin{hint}{ex:cosinesum}
+$-\log|1-re^{ix}|=\operatorname{Re}\sum_j\frac{r^je^{ijx}}j$, and Abel's theorem: a convergent series $\sum a_j$ satisfies $\sum a_jr^j\to\sum a_j$ as $r\uparrow1$.
+\end{hint}
+
+\begin{hint}{ex:gmcmass}
+$e^{\gamma^2C(x)}=|1-e^{ix}|^{-\gamma^2/2}$, and $\int_0^{2\pi}|1-e^{ix}|^{2t}\frac{\dd x}{2\pi}=\frac{\Gamma(1+2t)}{\Gamma(1+t)^2}$ for $t>-\frac12$.
+\end{hint}
+
+\begin{hint}{ex:thickchaos}
+By Fubini the expectation is
+\[
+\int\mathbb E\bigl[\mathbf 1\{\dots\}e^{\gamma X_N(\theta)-\gamma^2V_N/2}\bigr]\frac{\dd\theta}{2\pi},
+\]
+and the inner expectation is $P\bigl(|Y-\gamma V_N|>\delta V_N\bigr)$ for $Y\sim N(\gamma V_N,V_N)$.
+\end{hint}
+
+\begin{hint}{ex:freeup}
+For $\beta\le c^*$: Markov's inequality with $\mathbb E\sum_ve^{\beta S_v}=2^ne^{n\beta^2/2}$. For $\beta>c^*$: $\sum_ve^{\beta S_v}\le e^{(\beta-c^*)M_n}\sum_ve^{c^*S_v}$.
+\end{hint}
+
+\begin{hint}{ex:freelow}
+Condition on the first $n$ levels: each leaf $v$ has two children with independent increments. For the second moment, group the pairs $(v,w)$ by $k=|v\wedge w|$: $\mathbb Ee^{\beta(S_v+S_w)}=e^{\beta^2(n+k)}$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:indepmax}
+\idea For independent variables the second moment is trivial, and the probability that all of them stay low is a product.
+\writeup The upper bound is the union bound of Theorem~\ref{thm:brwspeed}, which never used the tree. For $a<c^*$, with $p=P(N(0,1)\ge a\sqrt n)\ge\frac1{\sqrt{2\pi}}e^{-(a\sqrt n+1)^2/2}$,
+\[
+P\Bigl(\max_iY_i<an\Bigr)=(1-p)^{2^n}\le e^{-2^np}\le\exp\Bigl(-\tfrac1{\sqrt{2\pi}}e^{n(\log2-a^2/2)-a\sqrt n-1/2}\Bigr)\to0,
+\]
+since $\log2-\frac{a^2}2>0$. So $P(\max_iY_i\ge an)\to1$ for every $a<c^*$, and $\frac1n\max_iY_i\to c^*$ in probability. The tree and the independent variables have the same first-order behaviour: Theorem~\ref{thm:brwspeed} needed a
+renormalisation only because the second moment of the tree is not controlled.
+\end{solution}
+
+\begin{solution}{ex:ultrametric}
+\idea Two leaves are as close as their common ancestry is long.
+\writeup If $u,v$ have the same first $a$ steps and $v,w$ the same first $b$ steps, then $u,w$ have the same first $\min(a,b)$ steps, so $|u\wedge w|\ge\min(|u\wedge v|,|v\wedge w|)$, that is $d(u,w)\le\max(d(u,v),d(v,w))$, which is stronger
+than the triangle inequality. The leaves at distance exactly $2^{-k}$ from $v$, $0\le k<n$, are those that agree with $v$ for $k$ steps and then take the other branch: $2^{n-k-1}$ of them. Every triangle is isosceles with a short base:
+two of the three distances are equal and at least the third.
+\end{solution}
+
+\begin{solution}{ex:thickcount}
+\idea Thick points are counted by their expectation; the count cannot be much larger than its mean.
+\writeup $\mathbb E\mathcal N_n(a)=2^nP(N(0,1)\ge a\sqrt n)$, and
+\[
+\frac1{\sqrt{2\pi}}e^{-(a\sqrt n+1)^2/2}\le P\bigl(N(0,1)\ge a\sqrt n\bigr)\le e^{-a^2n/2},
+\]
+so $\frac1n\log\mathbb E\mathcal N_n(a)=\log2-\frac{a^2}2+O(n^{-1/2})$. By Markov's inequality, with $\lambda=\log2-\frac{a^2}2+\varepsilon$,
+\[
+P\bigl(\mathcal N_n(a)>e^{n\lambda}\bigr)\le\mathbb E\mathcal N_n(a)\,e^{-n\lambda}\le e^{-n\varepsilon}\to0 .
+\] The exponent $\log2-\frac{a^2}2$, in units of $\log 2$, is the Hausdorff dimension of the set of $a$-thick leaves seen as a subset
+of $[0,1)$; it vanishes at $a=c^*$, where thick points disappear.
+\end{solution}
+
+\begin{solution}{ex:cosinesum}
+\idea The cosine series is the real part of the logarithm series, evaluated on the circle by Abel's theorem.
+\writeup For $r<1$, $\log(1-re^{ix})=-\sum_j\frac{r^je^{ijx}}j$, so $-\log|1-re^{ix}|=\sum_j\frac{r^j\cos jx}j$. For $0<|x|\le\pi$ the series $\sum_j\frac{\cos jx}j$ converges (summation by parts, as in Lemma~\ref{lem:cosine}), so by Abel's theorem
+the right side tends to $\sum_j\frac{\cos jx}j$ as $r\uparrow1$, while the left side tends to $-\log|1-e^{ix}|$ by continuity. Finally $|1-e^{ix}|=|e^{-ix/2}-e^{ix/2}|=|2\sin\frac x2|$. Hence $C(x)=-\frac12\log|2\sin\frac x2|$, which is $\frac12\log\frac1{|x|}+O(x^2)$
+near $0$: a log-correlated covariance with no error term at all.
+\end{solution}
+
+\begin{solution}{ex:gmcmass}
+\idea The second moment of the total mass is a moment of $|1-e^{ix}|$, which Chapter~11 computed.
+\writeup By Theorem~\ref{thm:gmc} with $f=g=1$ and the invariance of $\frac{\dd\theta}{2\pi}$ under rotations, $\mathbb EM(1)^2=\int_0^{2\pi}e^{\gamma^2C(x)}\frac{\dd x}{2\pi}$, and by Exercise~\ref{ex:cosinesum}, $e^{\gamma^2C(x)}=|2\sin\frac x2|^{-\gamma^2/2}=|1-e^{ix}|^{-\gamma^2/2}$. This is
+$\mathbb E|1-\gamma_1|^{2t}$ with $t=-\frac{\gamma^2}4$ and $\gamma_1$ uniform on the circle, and the case $k=1$ of Exercise~\ref{ex:kstreal} gives $\frac{\Gamma(1+2t)}{\Gamma(1+t)^2}=\frac{\Gamma(1-\gamma^2/2)}{\Gamma(1-\gamma^2/4)^2}$, valid for $t>-\frac12$, that is $\gamma^2<2$. As $\gamma^2\uparrow2$,
+$\Gamma(1-\gamma^2/2)\sim\frac1{1-\gamma^2/2}\to\infty$: the second moment explodes exactly at the edge of the $L^2$ phase, while the mean stays $1$. Fyodorov and Bouchaud conjectured in 2008, and Guillaume Remy proved in 2020, that
+$\mathbb EM(1)^p=\frac{\Gamma(1-p\gamma^2/4)}{\Gamma(1-\gamma^2/4)^p}$ for all $p<\frac4{\gamma^2}$.
+\end{solution}
+
+\begin{solution}{ex:thickchaos}
+\idea Weighting by $e^{\gamma X}$ shifts the Gaussian by $\gamma$ times its variance; the shifted Gaussian is concentrated.
+\writeup By Fubini (the integrand is non-negative), the expectation equals $\int\mathbb E\bigl[\mathbf 1\{|X_N(\theta)-\gamma V_N|>\delta V_N\}e^{\gamma X_N(\theta)-\gamma^2V_N/2}\bigr]\frac{\dd\theta}{2\pi}$. For $Y\sim N(0,\sigma^2)$ and Borel $A$,
+$\mathbb E[\mathbf 1_A(Y)e^{\gamma Y-\gamma^2\sigma^2/2}]=\int_A\frac{e^{-(y-\gamma\sigma^2)^2/2\sigma^2}}{\sqrt{2\pi}\sigma}\dd y=P(Y+\gamma\sigma^2\in A)$, completing the square. With $\sigma^2=V_N$, the inner expectation is $P(|Y|>\delta V_N)\le2e^{-\delta^2V_N/2}$, independent of
+$\theta$, and $V_N=\frac12H_N\to\infty$. So the expectation tends to $0$. The mass of the chaos lives on the $\gamma$-thick points, and since $\mathbb EM_N(1)=1$, these points carry a total mass of order $1$ although each of them is rare;
+for $\gamma\ge2$ they no longer exist, which is why the chaos degenerates there.
+\end{solution}
+
+\begin{solution}{ex:freeup}
+\idea Below the critical temperature the mean controls the sum; above it the maximum does.
+\writeup Let $\Sigma_n=\sum_{|v|=n}e^{\beta S_v}$, so $\mathbb E\Sigma_n=2^ne^{n\beta^2/2}=e^{n(\log2+\beta^2/2)}$. For $\beta\le c^*$, Markov's inequality gives $P(F_n(\beta)>\log2+\frac{\beta^2}2+\varepsilon)=P(\Sigma_n>e^{n\varepsilon}\mathbb E\Sigma_n)\le e^{-n\varepsilon}$. For $\beta>c^*$,
+$\Sigma_n\le e^{(\beta-c^*)M_n}\Sigma_n(c^*)$, where $\Sigma_n(c^*)=\sum_ve^{c^*S_v}$ and $\log2+\frac{(c^*)^2}2=2\log2=(c^*)^2$. So $F_n(\beta)\le(\beta-c^*)\frac{M_n}n+F_n(c^*)$, and with probability tending to $1$, $\frac{M_n}n\le c^*+\varepsilon$
+(Theorem~\ref{thm:brwspeed}) and $F_n(c^*)\le(c^*)^2+\varepsilon$ (the first case). Then $F_n(\beta)\le(\beta-c^*)c^*+(c^*)^2+\beta\varepsilon=\beta c^*+\beta\varepsilon$. The matching lower bound $F_n(\beta)\ge\beta\frac{M_n}n$ is immediate for every $\beta$, so in the frozen
+phase $\beta>c^*$ the free energy converges to $\beta c^*$ in probability.
+\end{solution}
+
+\begin{solution}{ex:freelow}
+\idea In the high-temperature phase the normalised partition function is a martingale bounded in $L^2$, whose limit is not zero.
+\writeup Let $\mathcal F_n$ be generated by the edges down to depth $n$, and $\lambda=\log2+\frac{\beta^2}2$. A leaf $v$ at depth $n$ has two children $v0,v1$ with independent $N(0,1)$ increments, so
+$\mathbb E[e^{\beta S_{v0}}+e^{\beta S_{v1}}\mid\mathcal F_n]=2e^{\beta^2/2}e^{\beta S_v}=e^\lambda e^{\beta S_v}$, and $\mathbb E[W_{n+1}\mid\mathcal F_n]=W_n$. For the second moment, a pair $(v,w)$ with $|v\wedge w|=k$ has $S_v+S_w=2A+B+B'$ with independent $A\sim N(0,k)$, $B,B'\sim N(0,n-k)$, so
+$\mathbb Ee^{\beta(S_v+S_w)}=e^{\beta^2(4k+2(n-k))/2}=e^{\beta^2(n+k)}$. There are $2^n\cdot2^{n-k-1}$ ordered pairs with $|v\wedge w|=k<n$, and $2^n$ with $v=w$. Hence
+\[
+\mathbb EW_n^2=e^{-2n\lambda}\Bigl(\sum_{k<n}2^{2n-k-1}e^{\beta^2(n+k)}+2^ne^{2\beta^2n}\Bigr)=\frac12\sum_{k<n}\Bigl(\frac{e^{\beta^2}}2\Bigr)^k+\Bigl(\frac{e^{\beta^2}}2\Bigr)^n,
+\]
+bounded if $e^{\beta^2}<2$, that is $\beta^2<\log2$. Then $W_n\to W_\infty$ almost surely and in $L^2$, with $\mathbb EW_\infty=1$, so $P(W_\infty>0)>0$. On $\{W_\infty>0\}$, $\frac1n\log W_n\to0$ and $F_n(\beta)=\lambda+\frac1n\log W_n\to\log2+\frac{\beta^2}2$. The condition
+$\beta^2<\log2=\frac{(c^*)^2}2$ is the analogue of $\gamma^2<2$ in Theorem~\ref{thm:gmc}: the $L^2$ phase is half of the true phase in the square of the parameter.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Fronts and trees.} R.~A.~Fisher, ``The wave of advance of advantageous genes'', \emph{Annals of Eugenics} 7 (1937), 355--369. A.~Kolmogorov, I.~Petrovsky and N.~Piskunov, ``\'Etude de l'\'equation de la diffusion avec croissance de la quantit\'e de
+mati\`ere et son application \`a un probl\`eme biologique'', \emph{Bulletin de l'Universit\'e d'\'Etat de Moscou}, S\'erie Internationale A 1 (1937), 1--26. H.~P.~McKean, ``Application of Brownian motion to the equation of
+Kolmogorov--Petrovskii--Piskunov'', \emph{Communications on Pure and Applied Mathematics} 28 (1975), 323--331. M.~Bramson, ``Maximal displacement of branching Brownian motion'', \emph{Communications on Pure and Applied Mathematics} 31
+(1978), 531--581. L.~Addario-Berry and B.~Reed, ``Minima in branching random walks'', \emph{Annals of Probability} 37 (2009), 1044--1079. E.~A\"\i d\'ekon, ``Convergence in law of the minimum of a branching random walk'', \emph{Annals of
+Probability} 41 (2013), 1362--1426. B.~Derrida and H.~Spohn, ``Polymers on disordered trees, spin glasses, and traveling waves'', \emph{Journal of Statistical Physics} 51 (1988), 817--840.
+\item \emph{Chaos.} J.-P.~Kahane, ``Sur le chaos multiplicatif'', \emph{Annales des Sciences Math\'ematiques du Qu\'ebec} 9 (1985), 105--150. J.-P.~Kahane and J.~Peyri\`ere, ``Sur certaines martingales de Beno\^it Mandelbrot'', \emph{Advances in
+Mathematics} 22 (1976), 131--145. R.~Rhodes and V.~Vargas, ``Gaussian multiplicative chaos and applications: a review'', \emph{Probability Surveys} 11 (2014), 315--392. C.~Webb, ``The characteristic polynomial of a random unitary matrix
+and Gaussian multiplicative chaos: the $L^2$-phase'', \emph{Electronic Journal of Probability} 20 (2015), no.~104.
+\item \emph{Maxima.} Y.~V.~Fyodorov, G.~A.~Hiary and J.~P.~Keating, ``Freezing transition, characteristic polynomials of random matrices, and the Riemann zeta function'', \emph{Physical Review Letters} 108 (2012), 170601. L.-P.~Arguin, D.~Belius
+and P.~Bourgade, ``Maximum of the characteristic polynomial of random unitary matrices'', \emph{Communications in Mathematical Physics} 349 (2017), 703--751. E.~Paquette and O.~Zeitouni, ``The maximum of the CUE field'', \emph{International
+Mathematics Research Notices} 2018, 5028--5119. R.~Chhaibi, T.~Madaule and J.~Najnudel, ``On the maximum of the C$\beta$E field'', \emph{Duke Mathematical Journal} 167 (2018), 2243--2345. L.-P.~Arguin, D.~Belius, P.~Bourgade, M.~Radziwi\l\l\ and
+K.~Soundararajan, ``Maximum of the Riemann zeta function on a short interval of the critical line'', \emph{Communications on Pure and Applied Mathematics} 72 (2019), 500--535. L.-P.~Arguin, P.~Bourgade and M.~Radziwi\l\l, ``The
+Fyodorov--Hiary--Keating conjecture. I'' (2020) and ``II'' (2023), preprints.
+\item L.-P.~Arguin, \emph{Extrema of log-correlated random variables: principles and examples}, in \emph{Advances in Disordered Systems, Random Processes and Some Applications}, Cambridge University Press, 2017. The best introduction to the
+whole chapter.
+\item Z.~Shi, \emph{Branching Random Walks}, Lecture Notes in Mathematics 2151, Springer, 2015.
+\end{itemize}
