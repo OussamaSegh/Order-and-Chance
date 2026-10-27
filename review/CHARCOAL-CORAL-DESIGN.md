@@ -45,3 +45,18 @@ The final local Volume 0 cover is applied to its EPUB, reader image, eBook JPEG 
 actual-page-derived paperback wrap. The nineteen-book clean CI run is authoritative
 for the complete release; source publication, successful CI and Pages deployment
 are verified separately. No assets are uploaded to Amazon KDP by this repository.
+
+## Verified publication
+
+- Source/design commit: **5936eedb1b130bd86905cec6e828485bb3fc7bc7**.
+- [Exact clean workflow run](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/40564431866):
+  **all nineteen book jobs succeeded**, complete-library validation succeeded, release
+  publication succeeded and the actual Pages deployment step succeeded.
+- [Published books release](https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books):
+  **114 assets**, targeting the exact design commit.
+- [Live Pages library](https://oussamasegh.github.io/Order-and-Chance/): confirmed nineteen
+  books, the new theme, exact design commit and updated Volume 0 reader stylesheet.
+- Downloaded the clean-run published archive and independently verified all nineteen
+  paperback wraps: dimensions, embedded vector fonts, complete front text and
+  page-count-derived spine metadata. The full wrap contact sheet was inspected.
+  Artifacts and page/spine records: `build/ci-coral-wraps/`.

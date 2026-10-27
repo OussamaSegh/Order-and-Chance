@@ -131,3 +131,18 @@ and [the Volume 0 factual review](../review/TOME0-FACT-REVIEW.md).
 - Existing one-PDF/EPUB production formats, dimensions, ISBN, metadata and authored
   mathematical content are preserved. The source change invalidates all nineteen
   book fingerprints; complete-library CI/release publication is checked separately.
+
+### Verified complete publication
+
+Implementation commit **5936eed** passed the [complete nineteen-book clean run](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/40564431866).
+All nineteen build jobs, complete-library snapshot validation, release publication
+and the actual **Deploy the download page** step succeeded. The rolling [books
+release](https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books) targets
+that exact commit and contains **114 assets**. The [live library](https://oussamasegh.github.io/Order-and-Chance/)
+was checked for all nineteen books, the exact design commit, the new theme and
+updated Volume 0 reader CSS.
+
+All nineteen **published** paperback wraps were downloaded from that run and checked
+again for physical dimensions, embedded fonts, full front copy and actual-page spine
+metadata, then visually reviewed as a complete wrap contact sheet. Production wrap
+review artifacts and page/spine records are in `build/ci-coral-wraps/`.
