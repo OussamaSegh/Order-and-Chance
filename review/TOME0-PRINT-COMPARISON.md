@@ -14,6 +14,10 @@ these choices; the production trim has not been changed or published.
 - [7 × 10 interior](../build/volume0-print-review/Mathematical-Maturity-7x10-print.pdf)
 - [Twelve comparison spreads](../build/volume0-print-review/Volume-0-print-comparison.pdf)
 
+The comparison PDF is a grayscale proof for judging black-ink reproduction. The
+individual interiors retain the production pipeline's scientific figure colours,
+while print boxes use grayscale accents.
+
 The comparison spreads place both source pages at their native physical size;
 text is not enlarged to make one format appear more readable. PDF viewer zoom
 still affects what appears on a screen. A physical comparison should be printed
@@ -143,7 +147,7 @@ original artwork and type remain vector where appropriate.
    polynomial legend also relies heavily on colour. These should be made
    unambiguous for monochrome printing and their captions should identify the
    curves by mathematical role or line style. The newer workshop diagrams already
-   use labels, markers or line patterns effectively. The rendered comparison previews
+   use labels, markers or line patterns effectively. The comparison PDF and rendered previews
    are grayscale so that this limitation is visible.
 2. **Final page rhythm.** A few chapter-end bibliography pages are sparse and some
    long solution/challenge notes cross a page turn. These are not clipped or lost
