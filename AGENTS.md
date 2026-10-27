@@ -4,36 +4,32 @@ Read `docs/DESIGN.md` before changing design or publishing templates.
 
 ## Approved series identity (27 October 2026)
 
-The author approved the **balanced black-and-gold** Volumes 0/1 proofs, then asked:
-“apply the same style for all covers, kdp covers, even content colors themes make
-it coherent” and “Generate new illustration for each volume, that reflects its
-content and [is] beautiful”. This authorises the all-volume implementation and
-build. Earlier restrictions to two-volume validation are superseded.
+The author's latest selection is the **left-aligned charcoal/coral editorial**
+cover, `docs/reference/approved-charcoal-coral-volume-0.png`. This supersedes the
+previous black/gold identity, centered layouts, serif covers and top supporting
+marks. The author explicitly requested implementation across all books, paperback
+wraps, content accents, HTML readers and the GitHub Pages library.
 
 - Series: **Order and Chance**. Author: **SEGHAIER Oussama**.
 - Slogan: **Discover the patterns. Understand the proofs.**
-- References: `docs/reference/approved-balanced-volume-0.png` and
-  `docs/reference/approved-balanced-volume-1.png`.
-- Near-black textured paper, warm gold serif lettering, fine double border,
-  one-line masthead, clear central book title, **one substantial lower plate and
-  one small supporting construction at the top**. No four-corner collage and no
-  tiny isolated motif surrounded by excessive empty space.
-- Every volume has its own meaningful vector illustration. The approved Volume 0
-  uses a Gaussian surface, Volume 1 a lattice circle and 3–4–5 triangle. Volume 0
-  keeps the decorative subtitle **A Foundations Prelude**.
-- `tools/cover_plates.py` generates every `cover-motif.tex` and `cover-motif-mark.tex`.
-  `tools/cover_motifs.py` supplies mathematical geometry algorithms; its command
-  entry point delegates to the approved generator. Commit generator and outputs.
-- Each volume has an explanatory subtitle in the spirit of **A Foundations Prelude**.
-  Canonical text is `common/volume-subtitles.json`; run `tools/series_metadata.py`
-  to sync its TeX lookup. Covers, PDF title pages, EPUB metadata, KDP listings and
-  reader/library pages must agree.
-- Covers are vector type/diagrams/borders on the generated blank black paper asset.
-  No raster cover-art exception remains. Preserve correct mathematics and labels.
-- Interior and online themes use charcoal, neutral paper and readable deep gold;
-  dark themes use near-black and warm gold. Black-ink print interiors remain gray.
-  Preserve scientific figure distinctions rather than recolouring every curve.
-- Preserve ISBNs, volume identifiers, editions, author spelling, mathematical text,
+- Matte charcoal #191919, coral #F28B79, ivory #F5F1E9. Clean sans-serif cover
+  typography, left-aligned series/slogan/volume/title/subtitle/author, bold book
+  title, fine double rectangular coral border without corner ornaments.
+- Exactly one substantial content-specific mathematical illustration in the lower
+  right; no supporting mark at the top. Preserve each volume's mathematical subject.
+- Vector type, diagrams, borders and background in production. The approved image
+  is a visual reference, never a raster production cover. Use TeX Gyre Heros for
+  cover lettering and retain readable Palatino mathematics in the body.
+- `tools/cover_plates.py` generates the 19 `cover-motif.tex` files and the manifest;
+  `tools/cover_motifs.py` supplies geometry. Commit the generator and its outputs.
+- Canonical explanatory subtitles are `common/volume-subtitles.json`; keep covers,
+  PDF title pages, EPUB metadata, KDP listings, readers and library cards in sync.
+  Volume 0 keeps **A Foundations Prelude**.
+- Interior/online light themes use neutral paper and accessible deep coral
+  #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
+  distinguishable and preserve scientific figure distinctions. The sole standard
+  PDF is also the paperback manuscript: keep its black-ink grayscale overrides.
+- Preserve ISBNs, identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
 
 ## Standard book formats
@@ -51,7 +47,7 @@ comparison records do not override this decision.
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.
 - Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
-- `python3 tools/cover_plates.py` regenerates all 19 pairs of mathematical plates.
+- `python3 tools/cover_plates.py` regenerates all 19 main mathematical plates.
 - `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
 - `./build.sh [tome...]` builds the standard 7×10 PDF, EPUB, eBook cover,

@@ -1,7 +1,7 @@
 # Mathematical cover illustrations
 
-All 19 illustrations use the approved black/gold vector style. Each cover has one
-main plate and one smaller supporting construction tied to its own mathematics.
+All 19 illustrations use the approved charcoal/coral vector style. Each cover has
+one substantial main plate tied to its own mathematics, without a top supporting mark.
 The table identifies the main subject and manuscript evidence; the generator
 records exact parameters and seeds. Finite simulations illustrate mathematics;
 they are not proofs of open conjectures.
@@ -28,7 +28,7 @@ they are not proofs of open conjectures.
 | P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
 | P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |
 
-Generate both plate files with `python3 tools/cover_plates.py`. The machine-readable
+Generate the main plate files with `python3 tools/cover_plates.py`. The machine-readable
 manifest is [cover-art-manifest.json](cover-art-manifest.json).
 
 Geometry checks include the exact 3–4–5 identity, sorted Hermitian eigenvalues,

@@ -1,229 +1,133 @@
-# Approved black-and-gold series design
+# Approved charcoal/coral editorial series design
 
-The author approved the balanced black-and-gold Volumes 0/1 proofs and requested
-application to **all 19 volumes**, their KDP covers, interiors and online themes.
-This supersedes every prior two-volume-only restriction and earlier rust, navy,
-dense-edge and tiny-motif design. See [DESIGN-HISTORY.md](DESIGN-HISTORY.md) for the
-archived sequence of proposals; it does not override this document.
-
-## Current book formats (27 October 2026)
-
-The author now requires **one standard 7 × 10 inch PDF and one EPUB per volume**.
-`dist/<tome>.pdf` is the canonical PDF for reading and paperback manuscript upload.
-A4, Kindle PDF, phone PDF and duplicate `-print.pdf` downloads are retired. Separate
-paperback wraps, eBook covers, listings and print metadata remain production assets.
-The PDF starts with its half-title; the EPUB has its own front cover. Earlier
-validation and comparison records below describe their formats at the time and
-are superseded by this decision.
+On 27 October 2026 the author selected the **left-aligned** cover shown in
+[the approved Volume 0 reference](reference/approved-charcoal-coral-volume-0.png)
+and requested implementation for all nineteen books, paperback covers, content
+accents, HTML readers and the GitHub Pages library. This latest selection supersedes
+the earlier centered charcoal/coral and black/gold designs. Historical implementation
+and validation records are preserved in [DESIGN-HISTORY.md](DESIGN-HISTORY.md).
 
 ## Visual identity
 
 - Series **Order and Chance**, author **SEGHAIER Oussama**.
 - Slogan **Discover the patterns. Understand the proofs.**
-- Approved visual references: [Volume 0](reference/approved-balanced-volume-0.png)
-  and [Volume 1](reference/approved-balanced-volume-1.png).
-- Black subtly textured paper; warm gold serif typography; fine double border;
-  a single-line masthead and large central book title. One substantial, coherent
-  lower illustration and one small supporting construction above the masthead.
-- Short titles are large; long titles wrap cleanly and fit the title region without
-  hyphenation. No plate, border or text is stretched to a different aspect ratio.
-- Every title, mathematical plate and border is a vector. The background alone is
-  raster: `tools/assets/black-paper.png`, recreated as a blank texture from the
-  approved reference using image generation. Original generated image is retained
-  in the session workspace. Approved concept PNGs are references, not print masters.
-- All 19 fresh main/secondary illustrations are generated from mathematical data
-  and deterministic algorithms by `tools/cover_plates.py`. Underlying constructions
-  are in `tools/cover_motifs.py`; the old command delegates to the new generator.
-  Parameters, seeds and sampling density are fixed for reproducible output.
-- Volume 0: exact sampled graph z=exp(-(x²+y²)); a Fibonacci construction above.
-  Volume 1: exact integer circle a²+b²=25 and 3–4–5 triangle; Fibonacci mark above.
-  Other plates follow their own manuscripts; see [COVER-MOTIFS.md](COVER-MOTIFS.md)
-  and [the machine-readable manifest](cover-art-manifest.json).
+- Matte charcoal **#191919**, warm coral **#F28B79**, ivory **#F5F1E9**.
+- A fine double rectangular coral border, without decorative corners.
+- Minimal sans-serif cover type: left-aligned series heading, slogan, volume label,
+  prominent bold book title, italic explanatory subtitle and author. Book titles
+  wrap at word boundaries without hyphenation, fitting the shared title region.
+- Exactly **one substantial lower-right illustration** per book. No small top
+  construction, collage or decorative formula above the heading.
+- Production cover text, borders, background and illustrations are vectors. The
+  approved concept image is a design reference, never embedded as a print master.
+  Matte charcoal replaces the old textured raster background.
+- Covers and paperback wraps use embedded **TeX Gyre Heros** sans-serif lettering.
+  Palatino remains the readable mathematical body face. PDF front matter uses
+  matching sans-serif series/title typography while keeping black-ink output.
 
-## Explanatory subtitles
+## Mathematical illustrations
 
-After approving the style the author requested an explanatory subtitle for every
-volume, following **A Foundations Prelude**. All 19 unique subtitles are stored in
-`common/volume-subtitles.json`; `tools/series_metadata.py` generates the TeX lookup
-and supplies Python consumers. Subtitles appear below book titles on all front
-cover formats, on PDF title pages, in EPUB subtitle metadata, KDP listing subtitle
-fields, web reader title pages and library cards. The series slogan remains a
-separate, unchanged series line. Bibliographic book titles and volume IDs remain
-unchanged. Every cover preview verifies both the title and its full subtitle.
+`tools/cover_plates.py` generates nineteen distinct `cover-motif.tex` files and
+[the content manifest](cover-art-manifest.json). Geometry algorithms are shared with
+`tools/cover_motifs.py`; the mathematical subjects and evidence are listed in
+[COVER-MOTIFS.md](COVER-MOTIFS.md). Retired `cover-motif-mark.tex` files are removed.
 
-## Coherent colour system
+Volume 0 remains the exact sampled graph **z = exp(-(x²+y²))**. Its taller projection
+and lower-right framing place the peak toward the right without distorting
+the geometry or shearing the surface. Only the outer ground mesh is cropped. Other books retain their existing content-specific constructions.
+All illustrations are fitted uniformly into the lower region, without stretching,
+and clipped at the inside of the frame. Mathematical labels remain vector text.
 
-`common/design-colors.tex` is the source of TeX colours. Cover gold is #EFC779 on
-#080808; cover secondary text is #F5DDA9. Readable deep gold #806023, charcoal
-#191815 and neutral paper tones coordinate the interior boxes, labels and links.
-Semantic box types keep distinguishable gold/stone/olive-gray shades. Printed
-interiors override these with grayscale and hidden link colours for black ink.
-Existing scientific diagrams retain the colours needed to distinguish objects.
+## Palette and reading themes
 
-`tools/reader.css`, `tools/epub.css` and `tools/site-template.html` mirror the palette.
-Light reading pages retain dark text on light paper; dark reader/library themes
-use near-black with warm gold accents. EPUB body colours remain device-controlled.
-The library's black/gold hero, search, collection filters and file links are kept;
-reader navigation, theme switching and mathematical overflow handling are kept.
+`common/design-colors.tex` defines the TeX palette. Older color names remain aliases
+for compatibility with authored figures. Coral linework has a quieter comparison
+tone; ivory is reserved for cover lettering. Light reading surfaces use neutral
+paper **#FBF9F6**, charcoal text **#252323**, and accessible deep coral **#A34232**.
+Dark reading surfaces use charcoal **#191919**, ivory and warm coral **#F28B79**.
 
-## Source and build
+Exercises, reminders, beauty notes and thinking prompts use related muted coral,
+stone, sage-gray and mauve-gray tones so their meanings stay distinguishable.
+Scientific diagrams retain colors needed to distinguish curves or objects. The
+sole standard PDF also serves as the paperback manuscript: its existing grayscale
+semantic-box and black-link overrides remain in effect for black-ink printing.
 
-Shared front: `tools/cover-front.tex`; canvas: `tools/cover.tex`; paperback wrap:
-`tools/cover-wrap.tex`; font/texture setup: `tools/cover-colors.tex`. Fonts are TeX
-Gyre Termes on covers and Palatino in the mathematical text. Volume identifiers,
-book titles, author, ISBNs, edition metadata and mathematical content are preserved.
+`tools/epub.css`, `tools/reader.css` and `tools/site-template.html` mirror this palette.
+EPUB leaves page and body colors under the reading device's control. Online headings
+use restrained sans-serif typography; mathematical paragraphs retain a readable
+serif face. Both website and reader support light/dark preferences; the library's
+new theme switch persists the same `theme` preference used by the reader. Search,
+collection filters, downloads, chapter navigation, mobile contents and collapsible
+hints/solutions remain functional. The website hero repeats the cover's charcoal,
+ivory and fine double coral frame.
+
+## Metadata and production formats
+
+Explanatory subtitles remain canonical in `common/volume-subtitles.json`, synchronized
+by `tools/series_metadata.py`. Covers, PDF title pages, EPUB subtitle metadata, KDP
+listings, reader pages and library cards must agree. Volume 0 keeps **A Foundations
+Prelude**. All titles, ISBNs, volume identifiers, mathematical content, references,
+author spelling and edition metadata are preserved.
+
+Each volume has one canonical **7 × 10 inch PDF**, also its paperback manuscript,
+and one reflowable EPUB. A4, Kindle PDF, phone PDF and duplicate `-print.pdf` editions
+remain retired. `common/print-layout.json` governs trim and margins. Paperback wraps
+have **0.125 inch outside bleed** and use the actual rebuilt interior page count:
+white-paper spine width = even-rounded interior pages × 0.002252 inches. Barcode
+handling and the reserve for KDP-assigned barcodes are preserved. No hypothetical
+page count is used to make a production wrap.
+
+## Shared implementation and rebuild
+
+Shared front `tools/cover-front.tex` is used by EPUB fronts and paperback wraps;
+`tools/cover-colors.tex` sets fonts/palette/background, `tools/cover.tex` supplies
+front canvases and `tools/cover-wrap.tex` supplies back/spine/bleed. All shared inputs
+participate in `tools/build_plan.py` fingerprints, so the palette and typography
+change invalidates every book, EPUB and reader in CI. Cached libraries must still
+be complete before they can be published.
 
 ```
 source /workspace/order-chance-system/activate.sh
 python3 tools/cover_plates.py
-python3 tools/preview_covers.py --out build/gold-covers
+python3 tools/preview_covers.py --out build/coral-covers
 ./build.sh
 python3 tools/site.py dist build/site
 python3 -m unittest discover -s tools -p 'test_*.py'
 ```
 
-`build.sh` creates the standard 7 × 10 PDF, EPUB, eBook covers, paperback wraps,
-listings, print metadata and HTML readers. Wraps use 7x10 trim, 0.125-inch outside bleed and
-white-paper spine width = even-rounded interior pages × 0.002252 inches. ISBN
-barcodes remain intact; books without an ISBN reserve the lower-right back area
-for KDP. No hypothetical page counts are valid production inputs.
+Previews validate both standard-book and EPUB proportions, embedded vector fonts,
+physical dimensions, and full title/subtitle/slogan text. Inspect the full-series
+contact sheet, long titles, real paperback wraps and representative interior pages.
+The release pipeline verifies every standard PDF page, paperback metadata and complete
+library before publishing. GitHub release/Pages deployment does not upload to Amazon
+KDP; the author uploads the generated assets through their Amazon account.
 
-The front preview checks two proportions (7×10 book front and EPUB front); PDF text extraction verifies every title and the slogan,
-including Volume 0. Production PDFs preserve vectors instead of embedding the
-low-resolution concept PNGs. Book fingerprints include all shared assets and the
-new generators; generated per-volume TeX files are tracked with their generator.
+## Validation and rollout
 
-## Validation and rollout record
+The implementation began after `git pull --ff-only origin main` advanced the clean
+workspace to **18cab2c**, incorporating the latest mathematical corrections and
+single-standard-PDF migration before any edits. Verification and publication results
+are recorded below as they complete. Earlier trim and content reviews remain linked
+in [STANDARD-FORMATS.md](STANDARD-FORMATS.md), [the production trim audit](../review/7X10-PRODUCTION.md)
+and [the Volume 0 factual review](../review/TOME0-FACT-REVIEW.md).
 
-Implementation and validation results are recorded here as checks complete.
-GitHub source publication, successful Actions/release publication and Amazon KDP
-account uploads are distinct. This repository does not upload to Amazon accounts.
+### Completed local checks
 
-### Completed source and representative-output checks
-
-- Generated and visually reviewed all **28 main illustrations and 28 supporting
-  marks**; the seven-page catalogue is `build/gold-covers/catalogue.pdf`.
-- **140 front PDFs** compiled across five output types; complete titles, unique
-  explanatory subtitles and the series slogan survive text extraction. Numeric
-  page-size and text-boundary checks passed, allowing zero-width math overlays.
-- Actual-interior-based KDP dimensions and embedded vector font types were checked
-  on five wraps, including Volume 0's existing ISBN barcode and long computing
-  titles. Volume 0 uses 294 KDP pages and a 0.6621-inch white-paper spine.
-- Full representative book pipelines produced reading PDFs, paperback interiors,
-  wraps, EPUB, KDP listings and HTML readers. Light/dark library themes, subtitle
-  search, collection filters, reader subtitles and mobile navigation passed real
-  Chromium checks. Interior reading/print pages and full wraps were inspected.
-- All **14 tests passed**, including an extended EPUB regression ensuring subtitles
-  are encoded as EPUB 3 subtitle titles without replacing the main title and that
-  repeated repair is idempotent. Pandoc otherwise omits the subtitle from OPF.
-- `bash -n build.sh`, Python compilation and `git diff --check` passed.
-- The Companion's generated index/citation snapshot was refreshed from the existing
-  manuscripts as its normal build requires; its citation-map plate was regenerated
-  from that refreshed dataset. No authored mathematical chapters were rewritten.
-
-Production completion is determined by a clean all-volume build from the published
-commit, not by partially refreshed local outputs. All-volume build and deployment
-results are recorded below once available. Earlier in-progress local builds were
-restarted for subtitle integration; clean CI is the authoritative final validation.
-
-## Subsequent structural revision
-
-The author subsequently removed the computing and companion shelves and renamed
-Volumes 0 and 9. The current nineteen-book catalog and integrated mathematical
-appendices are documented in [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). Earlier
-all-volume validation counts above describe the library before this revision.
-The approved black-and-gold visual system is preserved.
-
-### Final font correction and clean-build guard
-
-The first clean all-volume run succeeded at `e0839a5`, with all 28 builds and
-release/Pages deployment successful. Subsequent checks of all cover fonts found
-that Geometry's small sans-serif curvature labels used a Type 3 fallback. Covers
-now explicitly select vector TeX Gyre Heros for sans-serif labels. The same
-setting is applied to interior and standalone figure labels, since the Geometry
-interior used the same fallback.
-`tools/check_cover_pdf.py` checks physical dimensions and rejects Type 3 or
-unembedded fonts, in every front preview, paperback interior and production wrap pipeline.
-A final clean release run validates this correction across all volumes.
-
-## Cover review after the structural revision (27 October 2026)
-
-- Reviewed all nineteen current front covers as a contact sheet, with the renamed
-  titles checked individually. No title/subtitle/illustration collisions were found.
-- All **19 × 5 = 95 front PDFs** passed complete title/subtitle/slogan extraction,
-  physical-size and embedded-vector-font checks. No extracted text crossed a page
-  boundary. The latest vector-font correction from main is incorporated.
-- Inspected Higher Structures' production paperback wrap, including its spine,
-  back-cover text, barcode reserve and bleed. Its actual 184-page interior gives a
-  0.4144-inch spine. Other integrated-volume paperback wraps will be regenerated
-  from their own rebuilt interiors by the normal publishing workflow.
-- Updated Volume 9's explanatory subtitle to **Categories, Rings and Homology**,
-  making the transition beyond Volume 2 explicit. Its five front sizes were checked
-  again, and its complete production pipeline succeeded. The subtitle was verified
-  in the front, reading PDF, wrap, KDP listing, EPUB metadata and online reader.
-- All fifteen publishing tests and `git diff --check` pass. The motif guide's
-  remaining obsolete illustration count now reads nineteen.
-- Local review artifacts: `build/cover-review/contact-sheet.jpg` and the vector
-  `build/cover-review/current-series-covers.pdf`. These previews do not publish the
-  changes or replace the live release.
-
-## Local Volume 0 trim comparison
-
-The author requested a detailed print review and a local 7 × 10 proof. The results,
-mathematical corrections and outstanding monochrome-figure refinements are in
-[the Volume 0 print review](../review/TOME0-PRINT-COMPARISON.md). The proofs contain
-291 pages at 6 × 9 and 233 at 7 × 10 with the same 11 pt text. This is a local
-comparison at the time of that review; the author has since approved 7 × 10
-for every production paperback (see below).
-
-## Production 7 × 10 migration
-
-The author approved the comparison trim for all nineteen current books. The
-interiors retain 11 pt Palatino and mirrored 0.75/0.6-inch inner/outer margins,
-with 0.75/0.8-inch top/bottom margins. A gutter of 0.875 inch is selected if a
-rebuilt interior exceeds 700 pages. Chapters still open on rectos.
-
-`common/print-layout.json` and its generated TeX coordinate interior geometry,
-cover wraps, front previews, KDP listings, download labels and PDF validation.
-Front typography and diagrams scale uniformly from the shared design canvas;
-back-cover text is reflowed for the wider trim. Outside bleed remains 0.125 inch,
-and ISBN barcodes retain their physical size. Every spine uses the actual rebuilt
-interior, rounded up to an even KDP page count. Reading formats are preserved.
-
-CI checks the configuration and publishing tests before planning builds. A new
-cache schema/namespace forces complete production regeneration. Per-book print
-metadata is required in complete cached libraries; every interior page and wrap
-is checked for exact physical size and embedded vector fonts before publication.
-
-### Completed local migration checks
-
-All nineteen interiors/wraps passed physical-size, embedded-vector-font, complete
-front-copy and page-boundary checks. All 95 front proofs and 20 publishing tests
-passed. A complete Volume 9 pipeline passed with the existing reading dimensions.
-Final page counts, spine sizes, typesetting corrections and verification limits
-are recorded in [the production trim audit](../review/7X10-PRODUCTION.md).
-
-## Volume 0 mathematical and factual review (27 October 2026)
-
-All eight chapters, 130 exercise/hint/solution sets, workshops and challenge notes
-were reviewed against the mathematics and selected primary/historical sources.
-Corrected proof gaps, algebraic signs, sampling assumptions, numerical error bounds,
-figure captions, historical overclaims and outdated open-problem status. The full
-record and reproducible calculations are in [TOME0-FACT-REVIEW.md](../review/TOME0-FACT-REVIEW.md).
-The 7 × 10 trim and approved cover identity are preserved. Every Volume 0 output
-and its actual-page-derived paperback wrap are rebuilt from the corrected source.
-
-## Single standard PDF migration
-
-The build compiles the canonical PDF once, validates every page at 504 × 720 pt,
-and derives the matching wrap from its actual page count. There is no separate
-reading-PDF or paperback-interior copy. `--pdf-only` refreshes this same PDF and
-production assets without recompiling EPUB/HTML. Cache schema/fingerprint 3 and
-`library-v3-` force all nineteen volumes to rebuild. Cache assembly removes legacy
-variants; snapshot validation rejects retired files, wrong PDF sizes, unembedded
-fonts and page-count metadata mismatches before any release is uploaded.
-
-Download cards and README tables offer the standard PDF and EPUB. The paperback
-interior link points to the canonical PDF. All ISBNs, titles, mathematical content,
-7×10 margins, black-and-gold covers, EPUB reflow and reader controls are preserved.
-Verification and rollout results are recorded in [STANDARD-FORMATS.md](STANDARD-FORMATS.md).
+- All **19 × 2 = 38** final fronts passed physical-size, complete title/subtitle/
+  slogan/author extraction, text-boundary and embedded-vector-font checks. The
+  entire series contact sheet and long titles were inspected. All nineteen artwork
+  hashes match the manifest. Preview catalogue: `build/coral-covers-final/`.
+- Full pipelines passed for Volume 0 and Volume 9: standard PDF, EPUB, actual-page-
+  derived wrap, eBook cover, listing, metadata and HTML reader. Volume 0 has 233
+  pages (234 KDP pages, **0.527 inch** spine); Volume 9 has 148 pages (**0.3333 inch**
+  spine). Both full wraps, barcode handling and representative interior pages were
+  inspected. The final Volume 0 cover was refreshed in its EPUB and all cover assets.
+- All **26 publishing tests** passed, plus Python compilation, shell syntax and
+  `git diff --check`.
+- Real Chromium checks passed for website and reader light/dark modes, persisted
+  preference across both, search, collection filters, KaTeX mathematics, collapsible
+  hints, mobile contents and no page overflow at **320 and 390 px**. No JavaScript
+  page errors. Primary controls have **5.91:1 light** and **7.32:1 dark** contrast.
+- Existing one-PDF/EPUB production formats, dimensions, ISBN, metadata and authored
+  mathematical content are preserved. The source change invalidates all nineteen
+  book fingerprints; complete-library CI/release publication is checked separately.

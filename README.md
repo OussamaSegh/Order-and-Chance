@@ -84,14 +84,15 @@ three stages of the main sequence.
 
 ## Design and future sessions
 
-The author-approved visual identity follows the [balanced black/gold reference](docs/reference/approved-balanced-volume-0.png):
-black textured paper, warm gold serif lettering, a fine border, one substantial
-mathematical illustration and a smaller supporting construction per volume.
-Each of the 19 illustrations is generated from its own mathematics as crisp vector
-art. The slogan is **Discover the patterns. Understand the proofs.** Paperback
-wraps, ebook covers, interior accents and online light/dark themes share this identity.
+The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
+matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
+frame, and one substantial mathematical illustration per book. Each of the nineteen
+illustrations is generated from its own mathematics as crisp vector art. The slogan
+is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
+interior accents and online light/dark themes share this identity. Light pages use
+readable deep-coral accents; the standard paperback PDF retains black-ink grayscale.
 Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
-changing design or publishing templates. Earlier proposals are archived separately.
+changing design or publishing templates. Earlier designs are archived separately.
 
 ## Layout
 
