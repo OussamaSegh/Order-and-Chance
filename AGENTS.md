@@ -40,7 +40,7 @@ build. Earlier restrictions to two-volume validation are superseded.
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.
 - Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
-- `python3 tools/cover_plates.py` regenerates all 28 pairs of mathematical plates.
+- `python3 tools/cover_plates.py` regenerates all 19 pairs of mathematical plates.
 - `python3 tools/preview_covers.py` checks all fronts in five proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
 - `./build.sh [tome...]` builds A4/Kindle PDFs, EPUB, reading covers, KDP interior,
@@ -56,3 +56,10 @@ build. Earlier restrictions to two-volume validation are superseded.
   not upload files to Amazon KDP; that requires the author's Amazon account.
 - Record implementation, verification and any actual limitations in docs/DESIGN.md.
   Superseded conversations/designs are in docs/DESIGN-HISTORY.md.
+
+## Revised series structure (27 October 2026)
+
+The latest structural decision is recorded in `docs/SERIES-STRUCTURE.md`. There
+are sixteen main volumes and three problem books. Do not recreate computing or
+companion shelves. Volume 0 is Mathematical Maturity; Volume 9 is Higher Structures.
+Supporting mathematics has been integrated as appendices of the main volumes.

@@ -134,7 +134,7 @@ def normal_mark():return line([(.75*x,.5*math.exp(-x*x*2)-.2) for x in [-1.5+3*j
 
 # Main plate, smaller supporting mark, mathematical subject and chapter evidence.
 PLATES={
- 'tome0-back-in-shape':(gaussian_surface,fibonacci,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
+ 'tome0-mathematical-maturity':(gaussian_surface,fibonacci,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
  'tome1-integers':(integer_circle,fibonacci,'Lattice circle and 3–4–5 triangle','ch07-sums-of-squares.tex'),
  'tome2-structures':(g.buckyball,lambda:polygon_mark(5),'Truncated icosahedron, rotations and A5','ch11-characters.tex; ch12-quaternions.tex'),
  'tome3-chance':(lambda:g.galton_board(rows=10,balls=18),tree_mark,'Binomial board and Gaussian approximation','ch02-discrete.tex; ch06-clt.tex'),
@@ -143,22 +143,13 @@ PLATES={
  'tome6-spaces':(lambda:g.sierpinski_carpet(level=3),cantor_mark,'Sierpinski carpet and Cantor construction','ch11-metricmeasures.tex'),
  'tome7-analysis':(lambda:g.confocal_grid(Y=1.3,n_ell=7,n_hyp=6),ellipse_mark,'Image of an orthogonal grid under sin(z)','ch09-complex.tex'),
  'tome8-shapes':(lambda:g.farey_tessellation(depth=6,nmax=25),lambda:polygon_mark(3),'Farey tessellation of the hyperbolic disk','ch09-hyperbolic.tex'),
- 'tome9-structures2':(lambda:g.plancherel_young(n=900,seed=202609),young_mark,'Young diagram and Plancherel limit shape','ch09-symmetric.tex'),
+ 'tome9-higher-structures':(lambda:g.plancherel_young(n=900,seed=202609),young_mark,'Young diagram and Plancherel limit shape','ch09-symmetric.tex'),
  'tome10-chance2':(gem_bands,lambda:formula(r'V_k=U_k\prod_{j<k}(1-U_j)'),'GEM(1) proportional stick-breaking bands','ch12-permutations.tex'),
  'tome11-motion':(dyson,wave_mark,'Hermitian Brownian eigenvalue trajectories','ch10-semicircle.tex'),
  'tome12-arithmetic':(lambda:g.ford_circles(qmax=28),elliptic_mark,'Ford circles over reduced rationals','ch14-modular.tex; ch12-elliptic.tex'),
  'tome13-primes':(lambda:g.prime_constellations(rings=32,r0=.42),prime_mark,'Prime residues, twins and constellations','Prime distribution and progressions'),
  'tome14-random':(lambda:g.multiplicative_walks(N=1800,walks=3,seed=202614),lambda:formula(r'f(mn)=f(m)f(n)'),'Steinhaus multiplicative partial-sum walks','ch05-randommult.tex'),
  'tome15-workshop':(lambda:g.brw_barrier(depth=9,seed=202615),tree_mark,'Branching random walk and critical barrier','ch06-chaos.tex'),
- 'tomeC1-discrete':(lambda:g.boolean_lattice(n=4),lambda:polygon_mark(4),'Boolean lattice and symmetric chains','Orders and combinatorics'),
- 'tomeC2-algorithms':(lambda:g.bitonic_network(n=8),lambda:formula(r'O(n\log n)'),'Eight-wire bitonic sorting network','Sorting networks'),
- 'tomeC3-complexity':(g.mod3_automaton,lambda:formula(r'\{0,1\}^{*}'),'Finite automaton for divisibility by three','ch01-automata.tex'),
- 'tomeC4-information':(g.entropy_plate,lambda:formula(r'H(X)=-\sum_x p_x\log_2p_x'),'Binary entropy and symmetric-channel capacity','ch01-entropy.tex; ch03-channels.tex'),
- 'tomeC5-learning':(g.conjugate_gradient_plate,ellipse_mark,'Quadratic contours and conjugate gradients','ch02-krylov.tex'),
- 'tomeS1-linear':(lambda:g.lozenge_tiling(a=16,sweeps=3500,seed=202601),lambda:formula(r'A v=\lambda v'),'Lozenge tiling and determinant geometry','ch02-volume.tex'),
- 'tomeS2-geometry':(lambda:g.apollonian_gasket(rmin=.018,label_r=.2),lambda:polygon_mark(3),'Apollonian circle packing and integer curvatures','Circle geometry and inversion'),
- 'tomeS3-conjectures':(lambda:g.collatz_coral(N=1100,even_turn=.14,odd_turn=-.25),lambda:formula(r'n\mapsto\begin{cases}n/2&2\mid n\\3n+1&2\nmid n\end{cases}'),'Computed Collatz orbit tree','Collatz iteration'),
- 'tomeS4-companion':(g.series_chords,lambda:polygon_mark(6),'Actual cross-volume mathematical citation map','data/series.json'),
  'tomeP1-crossroads':(lambda:g.gaussian_primes(N=18),lattice_mark,'Gaussian primes in a bounded integer lattice','Gaussian integers and number theory'),
  'tomeP2-machinery':(g.irrational_rotation,rotation_mark,'Golden-ratio rotation and equidistribution','ch01-almost.tex; ch02-hilbert.tex'),
  'tomeP3-frontiers':(g.binomial_limits,normal_mark,'Exact scaled binomial masses and Gaussian limit','ch01-pieces.tex'),
@@ -178,6 +169,6 @@ def main():
         (ROOT/book/'cover-motif-mark.tex').write_text('% Supporting mark: '+subject+'\n'+mark().rstrip()+'\n')
         manifest.append(dict(book=book,subject=subject,evidence=evidence,sha256=hashlib.sha256(content.encode()).hexdigest()))
         print('generated',book,flush=True)
-    assert len(set(m['sha256'] for m in manifest))==len(manifest)==28
+    assert len(set(m['sha256'] for m in manifest))==len(manifest)==19
     (ROOT/'docs/cover-art-manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
 if __name__=='__main__':main()

@@ -17,7 +17,7 @@ class PlanningTest(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.cache = self.root / '.book-cache'
-        self.books = ['tome0-basics', 'tome1-integers', 'tomeS4-companion']
+        self.books = ['tome0-basics', 'tome1-integers', 'tome9-higher-structures']
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:
             self.write(name + '/main.tex', name)
@@ -49,9 +49,9 @@ class PlanningTest(unittest.TestCase):
             self.write(path, 'updated')
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], [])
 
-    def test_one_book_also_invalidates_generated_companion(self):
+    def test_one_book_invalidates_only_itself(self):
         self.write('tome0-basics/main.tex', 'new theorem')
-        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics', 'tomeS4-companion'])
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics'])
 
     def test_shared_sources_and_converter_rebuild_all(self):
         for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg']:

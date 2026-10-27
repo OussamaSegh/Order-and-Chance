@@ -1,0 +1,517 @@
+\chapter{How Conjectures Are Born and Die}\label{conjectures:ch:born}
+
+\begin{center}\itshape
+There aren't enough small numbers to meet the many demands made of them.
+\upshape(Richard K.~Guy, \emph{The strong law of small numbers}, 1988)
+\end{center}
+
+In 1919 George P\'olya noticed something about the numbers below a few thousand. Count the integers $n\le x$ that have an even number of prime factors
+(counted with multiplicity, so $12=2\cdot2\cdot3$ has three), and those that have an odd number. P\'olya checked that the odd ones were never outnumbered: for every
+$x\ge2$ he tried, at least half of the numbers up to $x$ had an odd number of prime factors. Others pushed the check to a million, and it held. In 1958 Brian
+Haselgrove proved that it fails somewhere, without saying where; in 1960 Sherman Lehman found a failure at $906\,180\,359$; and in 1980 Minoru Tanaka found the
+first one, at $906\,150\,257$. For more than nine hundred million numbers the pattern is perfect, and then it breaks.
+
+This book is about open problems: the twin primes, Goldbach, the Riemann hypothesis, Collatz, and a dozen others. Before we meet them, this chapter asks a
+question that hangs over all of them. When a pattern has been checked for every number up to a billion, or up to $10^{18}$, why should we believe it? We
+look at conjectures that died, some of them after a very long life, and at what killed them. We prove two theorems that explain the deaths: a theorem of
+Landau about positive Dirichlet series, which shows that P\'olya's pattern, had it been true, would have proved the Riemann hypothesis; and a probabilistic
+explanation of the Borwein integrals, a sequence of seven integrals equal to $\frac\pi2$ whose eighth member misses $\frac\pi2$ by $2.3\times10^{-11}$. The lesson
+is not that conjectures are worthless. It is that a conjecture is only as good as the reason behind it, and the rest of this book is about those reasons.
+
+\begin{think}
+The polynomial $n^2+n+41$ is prime for $n=0,1,2,\dots,39$. How much would you bet that it is prime for $n=40$? Before computing, look at $n=41$.
+\end{think}
+
+\section{A small gallery of broken patterns}
+
+Some patterns die young. Euler noticed that $n^2+n+41$ is prime for $n=0,\dots,39$; at $n=40$ it is $40^2+40+41=41^2$, and at $n=41$ it is obviously divisible
+by $41$. No non-constant polynomial with integer coefficients can be prime for every $n$ (Exercise~\ref{conjectures:ex:euler41}), so this one had to fail somewhere; the
+surprise is only how late.
+
+Fermat believed that all the numbers $F_n=2^{2^n}+1$ are prime. They are for $n=0,1,2,3,4$: $3,5,17,257,65537$. In 1732 Euler found that
+$F_5=4\,294\,967\,297=641\times6\,700\,417$ (Exercise~\ref{conjectures:ex:fermat641}), and no prime $F_n$ beyond $F_4$ has been found since.
+
+Draw $n$ points on a circle in general position and join them all by chords. The regions inside the circle number $1,2,4,8,16$ for $n=1,\dots,5$, and the reader
+who guesses $32$ for six points finds $31$ (Exercise~\ref{conjectures:ex:moser}). The numbers $31$, $331$, $3331$, $33331$, $333331$, $3333331$, $33333331$ are all prime, and
+$333333331=17\times19\,607\,843$ (Exercise~\ref{conjectures:ex:threes}). Guy collected dozens of such stories in a paper whose title is this chapter's epigraph, and drew the
+moral: small numbers are few, and they are asked to carry too many patterns, so coincidences among them are inevitable.
+
+Other patterns live long. In a letter to Euler of 18 November 1752, Goldbach suggested that every odd number is a prime plus twice a square, $p+2a^2$ (with $1$
+counted as a prime and $a=0$ allowed, as was usual then). A century later, in 1856, Moritz Stern and his students checked the odd numbers up to $9000$ and
+found two exceptions, $5777=53\cdot109$ and $5993$; none is known beyond them. Euler himself guessed that at least $k$ $k$-th powers are needed to make a
+$k$-th power (for $k=3$ this is Fermat's last theorem for cubes). In 1966 Leon Lander and Thomas Parkin, searching on a CDC~6600 computer, found
+\[
+27^5+84^5+110^5+133^5=144^5,
+\]
+and published it in a paper of two sentences. For fourth powers the counterexamples are much rarer: Noam Elkies found the first in 1988,
+\[
+2\,682\,440^4+15\,365\,639^4+18\,796\,760^4=20\,615\,673^4,
+\]
+from an elliptic curve that produces infinitely many, and Roger Frye then found the smallest, $95\,800^4+217\,519^4+414\,560^4=422\,481^4$, by a computer search
+guided by Elkies' method. A reader with Python can check all three identities in a second; nobody found them by hand in two centuries.
+
+\section{P\'olya's problem}
+
+The \emph{Liouville function} is $\lambda(n)=(-1)^{\Omega(n)}$, where $\Omega(n)$ is the number of prime factors of $n$ counted with multiplicity, so
+$\lambda(1)=1$, $\lambda(p)=-1$, $\lambda(12)=-1$. It is completely multiplicative: $\lambda(mn)=\lambda(m)\lambda(n)$ for all $m,n$. Its summatory function
+\[
+L(x)=\sum_{n\le x}\lambda(n)
+\]
+is the number of $n\le x$ with an even number of prime factors minus the number with an odd number. P\'olya's observation was that $L(x)\le0$ for all $x\ge2$, and
+he asked whether it is always so. The left half of Figure~\ref{conjectures:fig:liouville} shows $L(x)/\sqrt x$ up to $10^9$: it hovers around $-\frac12$ and comes near $0$
+only rarely. Haselgrove's 1958 proof that $L(x)>0$ for some $x$ was indirect, through the zeros of $\zeta$; Lehman's 1960 computation found an explicit example,
+and Tanaka's 1980 search found the first: $L(906\,150\,257)=1$. The positive stretch, shown on the right of Figure~\ref{conjectures:fig:liouville}, lasts with a few dips
+until $906\,488\,079$, and its highest point is $L(906\,316\,571)=829$. We recomputed all these numbers with a segmented sieve, in about a minute (the notebook
+of this chapter does the same in Python).
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch01-liouville}
+\caption{Left: $L(x)/\sqrt x$ for $10\le x\le10^9$, on a logarithmic scale in $x$. It stays below $0$, around $-\frac12$, except on a short stretch that the
+picture is too coarse to show. Right: $L(x)$ for $905.9\times10^6\le x\le906.7\times10^6$. It becomes positive for the first time at $x=906\,150\,257$ and
+stays positive, apart from a few dips, until $906\,488\,079$.}
+\label{conjectures:fig:liouville}
+\end{figure}
+
+Why did P\'olya care? The generating Dirichlet series of $\lambda$ is a quotient of two zeta functions. For $\operatorname{Re}s>1$ the Euler product
+(Tome~4, Theorem~10.3) gives
+\[
+\sum_{n\ge1}\frac{\lambda(n)}{n^s}=\prod_p\Bigl(1-\frac1{p^s}+\frac1{p^{2s}}-\cdots\Bigr)=\prod_p\frac1{1+p^{-s}}=\prod_p\frac{1-p^{-s}}{1-p^{-2s}}=\frac{\zeta(2s)}{\zeta(s)}.
+\]
+The zeros of $\zeta$ in the critical strip are poles of the right side, so the size of $L(x)$ is governed by them, as the size of $\psi(x)-x$ is in Tome~5,
+Chapter~7. P\'olya saw that a sign condition alone, with no size condition at all, would force the Riemann hypothesis. The tool is a theorem of Landau.
+
+\section{Landau's theorem}
+
+\begin{theorem}[Landau, 1905]\label{conjectures:thm:landau}
+Let $A:[1,\infty[\to\R$ be bounded on every bounded interval, piecewise continuous, and such that $A(x)\ge0$ for all $x\ge x_0$. Suppose that the integral
+\[
+F(s)=\int_1^\infty A(x)\,x^{-s-1}\dd x
+\]
+converges for some real $s$, and let $\sigma_c$ be the infimum of the real $s$ for which it converges. Then $F$ is holomorphic on $\operatorname{Re}s>\sigma_c$,
+and there is no holomorphic function on a disc around $\sigma_c$ that agrees with $F$ on the part of the disc where $\operatorname{Re}s>\sigma_c$.
+\end{theorem}
+
+In words: a Mellin transform of an eventually positive function always has a singularity at the real point where its convergence stops. It cannot stop
+converging for no visible reason.
+
+\begin{proof}
+The integral over $[1,x_0]$ is an entire function of $s$ (differentiate under the integral sign over a compact interval), so it changes neither the
+convergence nor the singularities, and we may assume $A\ge0$ everywhere. For real $\sigma$ and complex $s$ with $\operatorname{Re}s\ge\sigma$ we have
+$|A(x)x^{-s-1}|=A(x)x^{-\operatorname{Re}s-1}\le A(x)x^{-\sigma-1}$, so convergence at a real $\sigma$ gives absolute convergence on the closed half-plane
+$\operatorname{Re}s\ge\sigma$. Moreover, for every $k\ge0$ and every $\varepsilon>0$, $(\log x)^k\le C_{k,\varepsilon}x^\varepsilon$ on $[1,\infty[$. So for
+$\operatorname{Re}s\ge\sigma+\varepsilon$ with $\sigma>\sigma_c$, the integrands $A(x)(\log x)^kx^{-s-1}$ are dominated by $C_{k,\varepsilon}A(x)x^{-\sigma-1}$,
+which is integrable. Differentiation under the integral sign then shows that $F$ is holomorphic on $\operatorname{Re}s>\sigma_c$, with
+\[
+F^{(k)}(s)=\int_1^\infty A(x)\,(-\log x)^k\,x^{-s-1}\dd x.
+\]
+
+Suppose now that $G$ is holomorphic on a disc $D(\sigma_c,\delta)$ and equals $F$ where both are defined. Then $F$ and $G$ glue to a holomorphic function $H$ on
+$U=\{\operatorname{Re}s>\sigma_c\}\cup D(\sigma_c,\delta)$. Fix the real point $a=\sigma_c+1$ and a small $\eta>0$, and let $R=1+\eta$. A point $s$ of the disc
+$D(a,R)$ with $\operatorname{Re}s\le\sigma_c$ satisfies $\operatorname{Re}s>a-R=\sigma_c-\eta$ and $(\operatorname{Im}s)^2<R^2-1=2\eta+\eta^2$, so
+$|s-\sigma_c|^2<\eta^2+2\eta+\eta^2$, which is less than $\delta^2$ once $\eta$ is small enough. For such an $\eta$, the disc $D(a,R)$ lies in $U$, and the Taylor
+series of $H$ at $a$ converges on it. At the real point $s=\sigma_c-\frac\eta2$, inside $D(a,R)$, it reads
+\[
+H(s)=\sum_{k\ge0}\frac{F^{(k)}(a)}{k!}(s-a)^k=\sum_{k\ge0}\frac{(a-s)^k}{k!}\int_1^\infty A(x)(\log x)^kx^{-a-1}\dd x,
+\]
+since $(s-a)^k(-\log x)^k=(a-s)^k(\log x)^k$. Every term is nonnegative, because $a-s>0$, $A\ge0$ and $\log x\ge0$. So we may exchange the sum and the integral
+(monotone convergence), and the exponential series sums to $x^{a-s}$:
+\[
+H(s)=\int_1^\infty A(x)\,x^{-a-1}\sum_{k\ge0}\frac{((a-s)\log x)^k}{k!}\dd x=\int_1^\infty A(x)\,x^{-s-1}\dd x.
+\]
+The left side is finite, so the integral converges at the real point $s=\sigma_c-\frac\eta2<\sigma_c$. This contradicts the definition of $\sigma_c$.
+\end{proof}
+
+Positivity is essential. The alternating series $\eta(s)=\sum(-1)^{n-1}n^{-s}$ converges exactly for real $s>0$, yet it extends to an entire function
+(Exercise~\ref{conjectures:ex:etaentire}): its convergence stops at $0$ for no visible reason, because cancellation, not size, made it converge.
+
+\section{P\'olya's pattern would have proved the Riemann hypothesis}
+
+We need three facts about $\zeta$ from Tome~4. It extends to a holomorphic function on $\operatorname{Re}s>0$ except for a simple pole at $s=1$
+(Tome~4, Proposition~10.6). It has no zeros on $\operatorname{Re}s>1$, by the Euler product. And its zeros in the strip $0<\operatorname{Re}s<1$ are symmetric
+with respect to the line $\operatorname{Re}s=\frac12$ (Tome~5, Proposition~6.2). We also need one fact about real values.
+
+\begin{lemma}\label{conjectures:lem:zetaneg}
+For real $0<\sigma<1$, $\zeta(\sigma)<0$.
+\end{lemma}
+\begin{proof}
+For $\operatorname{Re}s>1$, $\eta(s)=\sum(-1)^{n-1}n^{-s}=\zeta(s)-2\cdot2^{-s}\zeta(s)=(1-2^{1-s})\zeta(s)$. The series $\eta$ converges on $\operatorname{Re}s>0$
+and is holomorphic there (Tome~4, Chapter~10), so by the identity theorem the equality $\eta(s)=(1-2^{1-s})\zeta(s)$ holds on $\operatorname{Re}s>0$, $s\ne1$. For real
+$0<\sigma<1$, grouping the terms in pairs gives $\eta(\sigma)=(1-2^{-\sigma})+(3^{-\sigma}-4^{-\sigma})+\cdots>0$, while $1-2^{1-\sigma}<0$. So $\zeta(\sigma)<0$.
+\end{proof}
+
+\begin{theorem}[P\'olya, 1919]\label{conjectures:thm:polyarh}
+If $L(x)\le0$ for all sufficiently large $x$, then the Riemann hypothesis holds: every zero of $\zeta$ with $0<\operatorname{Re}s<1$ has real part $\frac12$.
+\end{theorem}
+\begin{proof}
+Since $|L(x)|\le x$, partial summation gives, for $\operatorname{Re}s>1$,
+\[
+\frac{\zeta(2s)}{\zeta(s)}=\sum_{n\ge1}\frac{\lambda(n)}{n^s}=s\int_1^\infty L(x)\,x^{-s-1}\dd x.
+\]
+(Write $n^{-s}=s\int_n^\infty x^{-s-1}\dd x$ and exchange the sum and the integral, which is legitimate since $\sum_n|\lambda(n)|\int_n^\infty|x^{-s-1}|\dd x<\infty$.)
+Apply Theorem~\ref{conjectures:thm:landau} to $A=-L$, which is nonnegative for large $x$. The integral $F(s)=\int_1^\infty A(x)x^{-s-1}\dd x$ converges for $s>1$, so $\sigma_c\le1$,
+and $F(s)=G(s)$ for $\operatorname{Re}s>1$, where
+\[
+G(s)=-\frac{\zeta(2s)}{s\,\zeta(s)}.
+\]
+The function $G$ is meromorphic on $\operatorname{Re}s>\frac12$: there $\zeta(2s)$ is holomorphic (as $\operatorname{Re}2s>1$) and never $0$, so the poles of $G$ are
+exactly the zeros of $\zeta$ in $\operatorname{Re}s>\frac12$. On the real half-line $]\frac12,\infty[$, $G$ is holomorphic: $\zeta$ has no zero there, by
+Lemma~\ref{conjectures:lem:zetaneg} on $]\frac12,1[$ and by the Euler product on $]1,\infty[$, and at $s=1$ the pole of $\zeta$ only makes $G$ vanish.
+
+Suppose $\sigma_c>\frac12$. Then $G$ is holomorphic on a disc around the real point $\sigma_c$ and agrees with $F$ on its right part, by the identity theorem (both
+are holomorphic on $\operatorname{Re}s>\sigma_c$ away from the poles of $G$, and agree on $\operatorname{Re}s>1$). This contradicts Theorem~\ref{conjectures:thm:landau}. So
+$\sigma_c\le\frac12$, and $F$ is holomorphic on $\operatorname{Re}s>\frac12$. If $\zeta(\rho)=0$ with $\operatorname{Re}\rho>\frac12$, then $G=F$ near $\rho$ except
+at $\rho$, and $G$ has a pole at $\rho$ while $F$ is bounded near $\rho$: impossible. So $\zeta$ has no zeros with $\operatorname{Re}s>\frac12$, and by the
+symmetry about the critical line it has none with $0<\operatorname{Re}s<\frac12$ either.
+\end{proof}
+
+So P\'olya's pattern was not an idle curiosity: its truth would have settled the most famous problem in mathematics. Its failure says nothing against the
+Riemann hypothesis, and in fact the same function explains why the pattern was so convincing. The pole of $\zeta(2s)$ at $s=\frac12$ gives $\frac{\zeta(2s)}{s\zeta(s)}$ a pole at $\frac12$ with
+residue $\frac1{\zeta(1/2)}=-0.6848\ldots$ (Exercise~\ref{conjectures:ex:residue}). If the Riemann hypothesis holds and the zeros are simple, the contour argument behind the
+explicit formula of Tome~5, Chapter~7 suggests
+\[
+L(x)\approx\frac{\sqrt x}{\zeta(\frac12)}+\sum_\rho(\text{oscillating terms of size about }\sqrt x/|\rho|).
+\]
+The squares, which all have $\lambda(n)=1$, pull $L(x)$ down by about $0.68\sqrt x$. The oscillating terms come from the zeros $\rho=\frac12+i\gamma$ and have
+amplitudes that decrease like $\frac1{|\rho\zeta'(\rho)|}$; to beat the bias, many of them must line up in phase, and that happens for the first time near
+$9\times10^8$. Figure~\ref{conjectures:fig:liouville} shows the bias and the rare excursion. The same mechanism makes primes $3\bmod4$ lead primes $1\bmod4$ most of the time
+(Chebyshev's bias, Tome~5, Chapter~7), and it makes $\pi(x)<\operatorname{li}(x)$ for every $x$ ever computed.
+
+\begin{remark}[Mertens, Littlewood and Skewes]
+Two other famous patterns died the same way. In 1885 Thomas Stieltjes wrote to Charles Hermite that he could prove $M(x)=\sum_{n\le x}\mu(n)=O(\sqrt x)$, and
+in 1897 Franz Mertens conjectured the stronger $|M(x)|<\sqrt x$ for $x>1$, which would imply the Riemann hypothesis (Tome~5, Exercise~7.3). In 1985 Andrew
+Odlyzko and Herman te Riele disproved it: $\limsup M(x)/\sqrt x>1.06$ and $\liminf M(x)/\sqrt x<-1.009$. No $x$ with $|M(x)|>\sqrt x$ is known; Pintz (1987) proved
+that one exists below an explicit, astronomically large bound, and Hurst (2018) computed $M(x)$ for all $x\le10^{16}$ without finding one. Likewise
+$\pi(x)<\operatorname{li}(x)$ for every $x$ ever computed, yet Littlewood proved in 1914 that the difference changes sign infinitely often (Tome~5, Chapter~5).
+Skewes showed in 1933, assuming the Riemann hypothesis, that a sign change occurs below $e^{e^{e^{79}}}$, and Bays and Hudson (2000) showed that there are sign
+changes near $1.398\times10^{316}$.
+\end{remark}
+
+\begin{think}
+Both $L(x)$ and $\pi(x)-\operatorname{li}(x)$ have a bias of size $\sqrt x$ (up to logarithms) and oscillations of the same size. Why is the excursion of $L$
+found below $10^9$, while that of $\pi-\operatorname{li}$ is far beyond $10^{300}$? Compare the size of the bias with the size of the first oscillating term in each
+case.
+\end{think}
+
+\section{The Borwein integrals}
+
+In 2001 David and Jonathan Borwein published a series of integrals that has fooled many computer algebra systems and their users. Write
+$\operatorname{sinc}x=\frac{\sin x}x$ (with $\operatorname{sinc}0=1$). Then
+\[
+\int_0^\infty\operatorname{sinc}x\dd x=\frac\pi2,\qquad\int_0^\infty\operatorname{sinc}x\operatorname{sinc}\frac x3\dd x=\frac\pi2,\qquad
+\int_0^\infty\operatorname{sinc}x\operatorname{sinc}\frac x3\operatorname{sinc}\frac x5\dd x=\frac\pi2,
+\]
+and so on up to the factor $\operatorname{sinc}\frac x{13}$: seven integrals, all equal to $\frac\pi2$. The eighth,
+\[
+\int_0^\infty\operatorname{sinc}x\operatorname{sinc}\frac x3\cdots\operatorname{sinc}\frac x{15}\dd x
+=\frac{467\,807\,924\,713\,440\,738\,696\,537\,864\,469}{935\,615\,849\,440\,640\,907\,310\,521\,750\,000}\,\pi,
+\]
+is smaller than $\frac\pi2$ by about $2.31\times10^{-11}$. The explanation is a piece of probability.
+
+\begin{theorem}\label{conjectures:thm:borwein}
+Let $a_1,\dots,a_n>0$, let $U_1,\dots,U_n$ be independent and uniform on $[-1,1]$, and let $S=a_1U_1+\dots+a_nU_n$. Then
+\[
+\int_0^\infty\operatorname{sinc}x\prod_{k=1}^n\operatorname{sinc}(a_kx)\dd x=\frac\pi2\,\mathbb P\bigl(|S|<1\bigr).
+\]
+In particular the integral equals $\frac\pi2$ if $a_1+\dots+a_n\le1$, and is strictly smaller if $a_1+\dots+a_n>1$.
+\end{theorem}
+\begin{proof}
+For a uniform $U$ on $[-1,1]$ and real $t$, $\mathbb E[\cos(tU)]=\frac12\int_{-1}^1\cos(tu)\dd u=\operatorname{sinc}t$. Since $S$ is symmetric,
+$\mathbb E[\sin(xS)]=0$, and by independence
+\[
+\mathbb E[\cos(xS)]=\operatorname{Re}\mathbb E[e^{ixS}]=\operatorname{Re}\prod_k\mathbb E[e^{ixa_kU_k}]=\prod_k\operatorname{sinc}(a_kx).
+\]
+For $T>0$, Fubini's theorem on $[0,T]\times\Omega$ (the integrand is bounded by $1$) gives
+\[
+\int_0^T\operatorname{sinc}x\prod_k\operatorname{sinc}(a_kx)\dd x=\mathbb E\int_0^T\frac{\sin x\cos(xS)}x\dd x=\frac12\,\mathbb E\bigl[D_T(1+S)+D_T(1-S)\bigr],
+\]
+where $D_T(c)=\int_0^T\frac{\sin(cx)}x\dd x$, by $2\sin x\cos(xS)=\sin((1+S)x)+\sin((1-S)x)$. Substituting $u=|c|x$, $D_T(c)=\operatorname{sgn}(c)\int_0^{|c|T}\frac{\sin u}u\dd u$.
+The function $t\mapsto\int_0^t\frac{\sin u}u\dd u$ is continuous on $[0,\infty[$ and tends to $\frac\pi2$ (Tome~4, Theorem~4.11), so it is bounded, say by $B$.
+Hence $|D_T(c)|\le B$ for all $c$ and $T$, and $D_T(c)\to\frac\pi2\operatorname{sgn}(c)$ as $T\to\infty$. By dominated convergence,
+\[
+\int_0^\infty\operatorname{sinc}x\prod_k\operatorname{sinc}(a_kx)\dd x=\frac\pi4\,\mathbb E\bigl[\operatorname{sgn}(1+S)+\operatorname{sgn}(1-S)\bigr].
+\]
+The bracket equals $2$ if $|S|<1$, $1$ if $|S|=1$ and $0$ if $|S|>1$. Since $S$ has a density when $n\ge1$, $\mathbb P(|S|=1)=0$, and the value is
+$\frac\pi2\mathbb P(|S|<1)$. Finally $|S|\le a_1+\dots+a_n$, so $\mathbb P(|S|<1)=1$ when the sum is at most $1$. When the sum exceeds $1$, the event
+$S>1$ contains a small box of positive volume around $(1,\dots,1)$, so $\mathbb P(|S|<1)<1$.
+\end{proof}
+
+For the Borwein integrals, $a_k=\frac1{2k+1}$. The sum $\frac13+\frac15+\dots+\frac1{13}=\frac{43\,024}{45\,045}=0.955\ldots$ is less than $1$, but adding $\frac1{15}$
+gives $1.0218\ldots$ (Figure~\ref{conjectures:fig:borwein}). The pattern breaks exactly when the sum crosses $1$, and the deficit is tiny because $S$ can exceed $1$ only
+when all seven $U_k$ are very close to $\pm1$ with the same sign.
+
+\begin{corollary}\label{conjectures:cor:borweindeficit}
+Let $\varepsilon=\sum_{k=1}^7\frac1{2k+1}-1=\frac{982}{45\,045}$. Then
+\[
+\frac\pi2-\int_0^\infty\prod_{k=0}^7\operatorname{sinc}\frac x{2k+1}\dd x=\pi\,\frac{3\cdot5\cdot7\cdots15}{7!\,2^7}\,\varepsilon^7\approx2.31\times10^{-11}.
+\]
+\end{corollary}
+\begin{proof}
+By Theorem~\ref{conjectures:thm:borwein} and symmetry, the deficit is $\frac\pi2\mathbb P(|S|\ge1)=\pi\,\mathbb P(S\ge1)$. Put $V_k=1-U_k$, independent and uniform on $[0,2]$. Then
+$S=\sum a_k-\sum a_kV_k$, and $S\ge1$ means $\sum a_kV_k\le\varepsilon$. This forces $V_k\le\frac\varepsilon{a_k}\le15\varepsilon<2$ for every $k$, so the event is
+the simplex $\{v_k\ge0,\ \sum a_kv_k\le\varepsilon\}$, which lies inside $[0,2]^7$. Its volume is $\frac{\varepsilon^7}{7!\,a_1\cdots a_7}$, and the density of
+$(V_1,\dots,V_7)$ is $2^{-7}$. Multiplying, $\mathbb P(S\ge1)=\frac{\varepsilon^7}{7!\,2^7a_1\cdots a_7}$, which is the formula. Computed in exact arithmetic, it
+agrees with the Borweins' fraction above.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch01-borwein}
+\caption{Left: the densities of $S_n=\frac{U_1}3+\dots+\frac{U_n}{2n+1}$ for $n=1,2,3,6$, computed by convolution; all live inside $[-1,1]$, so the first seven
+Borwein integrals equal $\frac\pi2$. Right: the partial sums $\frac13+\dots+\frac1{2n+1}$. The seventh, $1.0218$, is the first to exceed $1$: from then on $S_n$
+can leave $[-1,1]$, with probability $7.4\times10^{-12}$ on each side for $n=7$.}
+\label{conjectures:fig:borwein}
+\end{figure}
+
+\section{Why we believe what we believe}
+
+These deaths share a pattern. P\'olya's conjecture, Mertens' and the inequality $\pi(x)<\operatorname{li}(x)$ were each the visible part of a bias of size about
+$\sqrt x$ fighting oscillations of the same size, and an oscillation needs many zeros of $\zeta$ in phase to win, which takes astronomically long. The Borwein
+pattern was a threshold, $\sum a_k\le1$, crossed late because $\sum\frac1{2k+1}$ grows like $\frac12\log n$, slowly. Euler's sum of powers conjecture was a
+heuristic count (``$k$ powers give $k$ degrees of freedom'') that ignored the structure of special varieties, and it is that structure, an elliptic curve, that
+Elkies used. In each case, the evidence was large, and the reason was missing or wrong.
+
+The conjectures in the rest of this book come with better reasons. Most of them come from a probabilistic model: Cram\'er's model of the primes as random
+numbers with probability $\frac1{\log n}$ (Tome~5, Definition~10.1), corrected for divisibility by small primes, predicts the number of twin primes, prime
+triples and Goldbach representations with the right constants, and these predictions have matched every computation for a century. A model that predicts
+constants, not just patterns, is much harder to fool. But Tome~5, Chapter~10 also shows Maier's theorem, where even the corrected model fails. A good
+conjecture is a precise prediction that has survived attempts to kill it, by computation and by theory; it is never a proof.
+
+\section{Reading a paper: Guy's strong law}
+
+Richard Guy's \emph{The strong law of small numbers} (American Mathematical Monthly, 1988) is a gallery of 35 examples, presented as a quiz: for each pattern,
+the reader is asked whether it continues. Some do, some do not, and several were open when Guy wrote. It needs no prerequisites, and it is the right first paper
+for this book.
+\begin{itemize}
+\item \emph{What it says.} Two ``laws'': there are not enough small numbers for the demands made of them, and (in its 1990 sequel in Mathematics Magazine) when
+two numbers look equal, it ain't necessarily so.
+\item \emph{How to read it.} Make your own guess for each example before reading the answer, and keep a score. Then check the examples you got wrong with
+Python.
+\item \emph{The idea worth stealing.} When a sequence matches a familiar one for its first few terms, ask how many familiar sequences have those first terms:
+the answer is usually many, and the On-Line Encyclopedia of Integer Sequences will list them.
+\end{itemize}
+
+\section{Open doors}
+
+\begin{itemize}
+\item Is $5777$, $5993$ the complete list of exceptions to Goldbach's ``other conjecture''? Every computation says yes. Estimate, with Cram\'er's model, the expected
+number of representations $n=p+2a^2$, and explain why exceptions should become rare.
+\item The number $L(x)$ is positive on a stretch near $9.06\times10^8$. Find the next stretches (they are known from the literature on P\'olya's problem) and
+compare them with the predictions of the explicit formula.
+\item Does Euler's sum of powers conjecture hold for $k=6$? No counterexample is known: no six sixth powers, or fewer, are known to sum to a sixth power.
+\item Design your own ``Borwein'' sequence, with $a_k$ whose partial sums cross $1$ as late as you like, and compute the deficit exactly.
+\end{itemize}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:euler41}
+Check that $n^2+n+41$ is prime for $0\le n\le39$ and not for $n=40$. Show that no non-constant polynomial $f$ with integer coefficients is prime for every
+integer $n\ge0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:fermat641}
+Using $641=5\cdot2^7+1=5^4+2^4$, show that $641$ divides $2^{32}+1$, without multiplying large numbers.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:threes}
+Let $N_k=33\ldots31$, with $k$ threes. Show that $N_k=\frac{10^{k+1}-7}3$, check that $17\mid N_8$, and deduce that $N_k$ is composite for infinitely many $k$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:moser}
+Put $n$ points on a circle so that no three chords meet at one interior point, and draw all chords. Show that the number of regions inside the circle is
+$\binom n4+\binom n2+1$, and compute it for $n=1,\dots,7$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:squares}
+Show that $\sum_{d\mid n}\lambda(d)$ is $1$ if $n$ is a square and $0$ otherwise. Deduce that $\sum_{n\le x}\lambda(n)\bigl\lfloor\frac xn\bigr\rfloor=\lfloor\sqrt x\rfloor$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:squarefree}
+Show that $\sum_{n\ge1}\mu(n)^2n^{-s}=\frac{\zeta(s)}{\zeta(2s)}$ and $\sum_{n\ge1}2^{\omega(n)}n^{-s}=\frac{\zeta(s)^2}{\zeta(2s)}$ for $\operatorname{Re}s>1$, where
+$\omega(n)$ is the number of distinct prime factors of $n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:etaentire}
+Show that $\eta(s)=\sum_{n\ge1}(-1)^{n-1}n^{-s}$ converges for real $s>0$ and diverges for real $s\le0$, and that $\eta(s)=(1-2^{1-s})\zeta(s)$ extends to an entire
+function. Why does this not contradict Theorem~\ref{conjectures:thm:landau}?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:Lnegative}
+Show, without any hypothesis, that $L(x)<0$ for arbitrarily large $x$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:mertenssign}
+Show that $M(x)=\sum_{n\le x}\mu(n)$ changes sign infinitely often. You may use that $\zeta$ has a zero at $\frac12+14.1347\ldots i$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:residue}
+Show that $\frac{\zeta(2s)}{s\zeta(s)}$ has a simple pole at $s=\frac12$ with residue $\frac1{\zeta(1/2)}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:sincpairs}
+Use Theorem~\ref{conjectures:thm:borwein} to compute $\int_0^\infty\operatorname{sinc}^2x\dd x$, $\int_0^\infty\operatorname{sinc}x\operatorname{sinc}\frac x2\dd x$ and
+$\int_0^\infty\operatorname{sinc}x\operatorname{sinc}2x\dd x$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:harmonicsinc}
+Show that $\int_0^\infty\operatorname{sinc}x\operatorname{sinc}\frac x2\cdots\operatorname{sinc}\frac x{n}\dd x=\frac\pi2$ for $n\le3$, and that for $n=4$ it equals
+$\frac\pi2-\frac\pi{3456}$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{conjectures:ex:euler41}
+For the second part, look at $f(kp)$ where $p=f(0)$, or $f(m)$ for a well-chosen $m$ if $f(0)\in\{0,\pm1\}$.
+\end{hint}
+\begin{hint}{conjectures:ex:fermat641}
+Work modulo $641$: $5\cdot2^7\equiv-1$, so $5^4\cdot2^{28}\equiv1$.
+\end{hint}
+\begin{hint}{conjectures:ex:threes}
+The order of $10$ modulo $17$ is $16$.
+\end{hint}
+\begin{hint}{conjectures:ex:moser}
+Count the vertices and edges of the planar graph formed by the circle, the points, the chords and their intersections, and use Euler's formula.
+\end{hint}
+\begin{hint}{conjectures:ex:squares}
+The function $\sum_{d\mid n}\lambda(d)$ is multiplicative: compute it on prime powers.
+\end{hint}
+\begin{hint}{conjectures:ex:squarefree}
+Euler products.
+\end{hint}
+\begin{hint}{conjectures:ex:etaentire}
+The functional equation of Tome~4 continues $\zeta$ to $\C\setminus\{1\}$. What are the coefficients of $\eta$?
+\end{hint}
+\begin{hint}{conjectures:ex:Lnegative}
+If $L(x)\ge0$ for large $x$, look at $\int_{x_0}^\infty L(x)x^{-s-1}\dd x$ as $s\to\frac12^+$.
+\end{hint}
+\begin{hint}{conjectures:ex:mertenssign}
+Follow the proof of Theorem~\ref{conjectures:thm:polyarh} with $\frac1{s\zeta(s)}$, and look at the real point $0$.
+\end{hint}
+\begin{hint}{conjectures:ex:residue}
+$\zeta(2s)=\frac1{2s-1}+O(1)$ near $s=\frac12$.
+\end{hint}
+\begin{hint}{conjectures:ex:sincpairs}
+The sum $a_1$ is $1$, $\frac12$ and $2$.
+\end{hint}
+\begin{hint}{conjectures:ex:harmonicsinc}
+Copy the proof of Corollary~\ref{conjectures:cor:borweindeficit}.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{conjectures:ex:euler41}
+\idea A polynomial value $f(m)$ divides $f(m+kf(m))-f(m)$, so a prime value $p$ recurs as a factor.
+\writeup The first part is a check (the notebook does it). For $n=40$, $40^2+40+41=40\cdot41+41=41^2$. Now let $f$ be non-constant with integer coefficients.
+Since $f(m)-f(n)$ is divisible by $m-n$, for any $m$ and $k$ the number $f(m+kf(m))$ is divisible by $f(m)$. As $f$ is non-constant, $|f(n)|\to\infty$, so choose
+$m\ge0$ with $|f(m)|\ge2$. If $f(m)$ is not prime we are done. If $f(m)=\pm p$ with $p$ prime, then $p$ divides $f(m+kp)$ for every $k\ge0$, and for $k$ large
+$|f(m+kp)|>p$, so $f(m+kp)$ is not prime.
+\end{solution}
+
+\begin{solution}{conjectures:ex:fermat641}
+\idea Make $2^{32}$ appear from the two expressions of $641$.
+\writeup Modulo $641$, $5\cdot2^7\equiv-1$, so $5^4\cdot2^{28}\equiv(-1)^4=1$. Also $5^4\equiv-2^4$. Hence $-2^4\cdot2^{28}\equiv1$, that is $2^{32}\equiv-1$, and
+$641\mid2^{32}+1$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:threes}
+\idea Numbers with a repeated digit are geometric sums, and divisibility by $17$ is periodic in $k$.
+\writeup $N_k=3(10^k+\dots+10)+1=\frac{10^{k+1}-10}3+1=\frac{10^{k+1}-7}3$. For $k=8$, $N_8=333\,333\,331=17\times19\,607\,843$. Since $3$ is invertible mod $17$, $17\mid N_k$
+if and only if $10^{k+1}\equiv7\pmod{17}$, and $10^{16}\equiv1\pmod{17}$ (Fermat), so $17\mid N_k$ for every $k\equiv8\pmod{16}$. These $N_k$ exceed $17$, so they are
+composite.
+\end{solution}
+
+\begin{solution}{conjectures:ex:moser}
+\idea Every interior crossing comes from a choice of $4$ points, and Euler's formula turns vertices and edges into faces.
+\writeup Each set of $4$ points gives exactly one crossing of two chords (the diagonals of their quadrilateral), so there are $I=\binom n4$ interior crossings.
+Consider the planar graph whose vertices are the $n$ points and the $I$ crossings. A chord crossed by $c$ others is cut into $c+1$ edges; each crossing lies
+on two chords, so the chords give $\binom n2+2I$ edges, and the circle gives $n$ arcs. Euler's formula $V-E+F=2$ gives
+$F=2-n-I+\binom n2+2I+n=2+\binom n2+I$, and removing the outer face leaves $\binom n4+\binom n2+1$ regions. For $n=1,\dots,7$: $1,2,4,8,16,31,57$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:squares}
+\idea A multiplicative function is determined by prime powers.
+\writeup $g(n)=\sum_{d\mid n}\lambda(d)$ is multiplicative as a convolution of multiplicative functions, and $g(p^k)=1-1+1-\cdots\pm1$ ($k+1$ terms) is $1$ if $k$ is
+even and $0$ if $k$ is odd. So $g(n)=1$ exactly when all exponents are even. Then $\sum_{m\le x}g(m)=\sum_{m\le x}\sum_{d\mid m}\lambda(d)=\sum_{d\le x}\lambda(d)\lfloor\frac xd\rfloor$,
+and the left side counts the squares up to $x$, which is $\lfloor\sqrt x\rfloor$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:squarefree}
+\idea Read off the local factor at each prime.
+\writeup The local factor of $\mu^2$ is $1+p^{-s}=\frac{1-p^{-2s}}{1-p^{-s}}$, whose product is $\frac{\zeta(s)}{\zeta(2s)}$. The local factor of $2^\omega$ is
+$1+2\sum_{k\ge1}p^{-ks}=\frac{1+p^{-s}}{1-p^{-s}}=\frac{1-p^{-2s}}{(1-p^{-s})^2}$, whose product is $\frac{\zeta(s)^2}{\zeta(2s)}$. The products converge absolutely for
+$\operatorname{Re}s>1$ (Tome~4, Theorem~10.3).
+\end{solution}
+
+\begin{solution}{conjectures:ex:etaentire}
+\idea Cancellation can make a series converge without making its function singular where convergence stops.
+\writeup For real $s>0$ the terms alternate and decrease to $0$ in absolute value, so the series converges; for $s\le0$ the terms do not tend to $0$. On
+$\operatorname{Re}s>1$, $\eta=(1-2^{1-s})\zeta$, and $\zeta$ is meromorphic on $\C$ with a single simple pole at $1$ (Tome~4, Theorem~10.8). The factor $1-2^{1-s}$
+vanishes at $s=1$, so $(1-2^{1-s})\zeta(s)$ is entire. There is no contradiction, because the coefficients $(-1)^{n-1}$ do not have constant sign. Landau's theorem
+does apply to the integral form: the summatory function $A(x)=\sum_{n\le x}(-1)^{n-1}$ takes only the values $0$ and $1$, so it is nonnegative, and
+$\int_1^\infty A(x)x^{-s-1}\dd x=\frac{\eta(s)}s$ converges exactly for $\operatorname{Re}s>0$. As the theorem predicts, this function is singular at $0$: it has a
+pole there, since $\eta(0)=\frac12\ne0$. Multiplying by $s$ removes the pole, which is why $\eta$ itself is entire.
+\end{solution}
+
+\begin{solution}{conjectures:ex:Lnegative}
+\idea A positive integrand cannot produce an integral that tends to $-\infty$.
+\writeup Suppose $L(x)\ge0$ for $x\ge x_0$. For real $s>1$,
+\[
+\frac{\zeta(2s)}{s\zeta(s)}=\int_1^{x_0}L(x)x^{-s-1}\dd x+\int_{x_0}^\infty L(x)x^{-s-1}\dd x\ge-C,
+\]
+with $C=\int_1^{x_0}|L(x)|\dd x$. By Theorem~\ref{conjectures:thm:landau} applied to $A=L$, exactly as in the proof of Theorem~\ref{conjectures:thm:polyarh}, the integral converges for
+$s>\frac12$ and equals $\frac{\zeta(2s)}{s\zeta(s)}$ there, so the inequality holds for real $s>\frac12$. But as $s\to\frac12^+$, $\zeta(2s)\to+\infty$ while
+$s\zeta(s)\to\frac12\zeta(\frac12)<0$ (Lemma~\ref{conjectures:lem:zetaneg}), so the left side tends to $-\infty$. Contradiction.
+\end{solution}
+
+\begin{solution}{conjectures:ex:mertenssign}
+\idea The function $\frac1{s\zeta(s)}$ is regular on the whole real half-line $]0,\infty[$, so Landau would push convergence down to $0$, past the zeros on the
+critical line.
+\writeup As for $L$, $\frac1{\zeta(s)}=\sum\mu(n)n^{-s}=s\int_1^\infty M(x)x^{-s-1}\dd x$ for $\operatorname{Re}s>1$. Suppose $M(x)\ge0$ for $x\ge x_0$ (the case
+$M\le0$ is the same with $-M$). The function $\frac1{s\zeta(s)}$ is holomorphic near every real point $s>0$: $\zeta$ has no zero on $]0,\infty[$ (Lemma~\ref{conjectures:lem:zetaneg}
+and the Euler product), and $\frac1\zeta$ vanishes at the pole $s=1$. By Theorem~\ref{conjectures:thm:landau}, as in the proof of Theorem~\ref{conjectures:thm:polyarh}, the integral
+converges and is holomorphic on $\operatorname{Re}s>0$, and equals $\frac1{s\zeta(s)}$ there away from the zeros of $\zeta$. But $\frac1{s\zeta(s)}$ has a pole at
+$\frac12+14.1347\ldots i$, near which the integral would be bounded. Contradiction.
+\end{solution}
+
+\begin{solution}{conjectures:ex:residue}
+\idea Only $\zeta(2s)$ is singular at $\frac12$.
+\writeup By Tome~4, Proposition~10.6, $\zeta(w)=\frac1{w-1}+O(1)$ near $w=1$, so $\zeta(2s)=\frac1{2(s-\frac12)}+O(1)$ near $s=\frac12$. The factor $\frac1{s\zeta(s)}$
+is holomorphic at $\frac12$ with value $\frac2{\zeta(1/2)}$, since $\zeta(\frac12)\ne0$ (Lemma~\ref{conjectures:lem:zetaneg}). The residue is $\frac12\cdot\frac2{\zeta(1/2)}=\frac1{\zeta(1/2)}=-0.6848\ldots$
+\end{solution}
+
+\begin{solution}{conjectures:ex:sincpairs}
+\idea Each integral is $\frac\pi2\mathbb P(|a_1U|<1)$.
+\writeup With $a_1=1$, $|U|<1$ almost surely: $\int_0^\infty\operatorname{sinc}^2x\dd x=\frac\pi2$. With $a_1=\frac12$, also $\frac\pi2$. With $a_1=2$,
+$\mathbb P(|2U|<1)=\mathbb P(|U|<\frac12)=\frac12$, so $\int_0^\infty\operatorname{sinc}x\operatorname{sinc}2x\dd x=\frac\pi4$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:harmonicsinc}
+\idea The partial sums $\frac12$, $\frac56$ of $\frac12+\frac13+\cdots$ stay below $1$, and $\frac12+\frac13+\frac14=\frac{13}{12}$ crosses it by $\frac1{12}$.
+\writeup Here $a_k=\frac1{k+1}$ for $k=1,\dots,n-1$. For $n\le3$, $\sum a_k\le\frac56<1$ and Theorem~\ref{conjectures:thm:borwein} gives $\frac\pi2$. For $n=4$,
+$\varepsilon=\frac{13}{12}-1=\frac1{12}$, and the deficit is $\pi\,\mathbb P(S\ge1)$. With $V_k=1-U_k$ uniform on $[0,2]$, $S\ge1$ means $\sum a_kV_k\le\varepsilon$,
+which forces $V_k\le\frac\varepsilon{a_k}\le\frac4{12}<2$; the simplex has volume $\frac{\varepsilon^3}{3!\,a_1a_2a_3}=\frac{24}{6\cdot1728}=\frac1{432}$ and the density is
+$2^{-3}$, so $\mathbb P(S\ge1)=\frac1{3456}$ and the integral is $\frac\pi2-\frac\pi{3456}$. A numerical integration with mpmath confirms this to $15$ digits.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item R.~K.~Guy, \emph{The strong law of small numbers}, American Mathematical Monthly 95 (1988), 697--712 (the epigraph, Moser's circles, the threes and many
+other examples); \emph{The second strong law of small numbers}, Mathematics Magazine 63 (1990), 3--20.
+\item G.~P\'olya, \emph{Verschiedene Bemerkungen zur Zahlentheorie}, Jahresbericht der Deutschen Mathematiker-Vereinigung 28 (1919), 31--40.
+C.~B.~Haselgrove, \emph{A disproof of a conjecture of P\'olya}, Mathematika 5 (1958), 141--145. R.~S.~Lehman, \emph{On Liouville's function}, Mathematics of
+Computation 14 (1960), 311--320. M.~Tanaka, \emph{A numerical investigation on cumulative sum of the Liouville function}, Tokyo Journal of Mathematics 3 (1980),
+187--189.
+\item E.~Landau, \emph{\"Uber einen Satz von Tschebyschef}, Mathematische Annalen 61 (1905), 527--550; H.~L.~Montgomery and R.~C.~Vaughan, \emph{Multiplicative Number Theory I}, Cambridge University Press, 2007, Section~1.3 (Landau's theorem).
+\item A.~M.~Odlyzko and H.~J.~J.~te Riele, \emph{Disproof of the Mertens conjecture}, Journal f\"ur die reine und angewandte Mathematik 357 (1985), 138--160
+(the Stieltjes letter and the bounds $1.06$ and $-1.009$). J.~Pintz, \emph{An effective disproof of the Mertens conjecture}, Ast\'erisque 147--148 (1987),
+325--333. G.~Hurst, \emph{Computations of the Mertens function and improved bounds on the Mertens conjecture}, Mathematics of Computation 87 (2018), arXiv:1610.08551.
+\item C.~Bays and R.~H.~Hudson, \emph{A new bound for the smallest $x$ with $\pi(x)>\operatorname{li}(x)$}, Mathematics of Computation 69 (2000), 1285--1296.
+\item L.~Hodges, \emph{A lesser-known Goldbach conjecture}, Mathematics Magazine 66 (1993), 45--47 (Goldbach's letter of 18 November 1752 and Stern's 1856
+counterexamples, published in M.~A.~Stern, Nouvelles Annales de Math\'ematiques 15 (1856), 23--24).
+\item L.~J.~Lander and T.~R.~Parkin, \emph{Counterexample to Euler's conjecture on sums of like powers}, Bulletin of the American Mathematical Society 72 (1966),
+1079. N.~D.~Elkies, \emph{On $A^4+B^4+C^4=D^4$}, Mathematics of Computation 51 (1988), 825--835. R.~E.~Frye, \emph{Finding $95800^4+217519^4+414560^4=422481^4$ on the Connection Machine}, Proceedings of Supercomputing~88 (1988).
+\item M.~K\v{r}\'{\i}\v{z}ek, F.~Luca and L.~Somer, \emph{17 Lectures on Fermat Numbers}, Springer, 2001 (Fermat's belief and Euler's factor $641$).
+\item D.~Borwein and J.~M.~Borwein, \emph{Some remarkable properties of sinc and related integrals}, The Ramanujan Journal 5 (2001), 73--89 (the exact value of
+the eighth integral); the probabilistic proof follows the well-known interpretation of $\operatorname{sinc}$ as the characteristic function of a uniform variable.
+\end{itemize}

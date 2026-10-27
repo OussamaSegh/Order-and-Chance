@@ -1,7 +1,7 @@
 # Approved black-and-gold series design
 
 The author approved the balanced black-and-gold Volumes 0/1 proofs and requested
-application to **all 28 volumes**, their KDP covers, interiors and online themes.
+application to **all 19 volumes**, their KDP covers, interiors and online themes.
 This supersedes every prior two-volume-only restriction and earlier rust, navy,
 dense-edge and tiny-motif design. See [DESIGN-HISTORY.md](DESIGN-HISTORY.md) for the
 archived sequence of proposals; it does not override this document.
@@ -21,7 +21,7 @@ archived sequence of proposals; it does not override this document.
   raster: `tools/assets/black-paper.png`, recreated as a blank texture from the
   approved reference using image generation. Original generated image is retained
   in the session workspace. Approved concept PNGs are references, not print masters.
-- All 28 fresh main/secondary illustrations are generated from mathematical data
+- All 19 fresh main/secondary illustrations are generated from mathematical data
   and deterministic algorithms by `tools/cover_plates.py`. Underlying constructions
   are in `tools/cover_motifs.py`; the old command delegates to the new generator.
   Parameters, seeds and sampling density are fixed for reproducible output.
@@ -33,7 +33,7 @@ archived sequence of proposals; it does not override this document.
 ## Explanatory subtitles
 
 After approving the style the author requested an explanatory subtitle for every
-volume, following **A Foundations Prelude**. All 28 unique subtitles are stored in
+volume, following **A Foundations Prelude**. All 19 unique subtitles are stored in
 `common/volume-subtitles.json`; `tools/series_metadata.py` generates the TeX lookup
 and supplies Python consumers. Subtitles appear below book titles on all front
 cover formats, on PDF title pages, in EPUB subtitle metadata, KDP listing subtitle
@@ -116,3 +116,11 @@ Production completion is determined by a clean all-volume build from the publish
 commit, not by partially refreshed local outputs. All-volume build and deployment
 results are recorded below once available. Earlier in-progress local builds were
 restarted for subtitle integration; clean CI is the authoritative final validation.
+
+## Subsequent structural revision
+
+The author subsequently removed the computing and companion shelves and renamed
+Volumes 0 and 9. The current nineteen-book catalog and integrated mathematical
+appendices are documented in [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). Earlier
+all-volume validation counts above describe the library before this revision.
+The approved black-and-gold visual system is preserved.

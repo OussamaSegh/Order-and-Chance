@@ -38,19 +38,29 @@ VARIANTS = [("kindle", "Kindle PDF", "Pages sized for a 7-inch e-reader (Kindle 
 
 
 def tome_order(pdf: Path):
-    """Main line by number (tome0..tome15), then the Computing track C1..C5, then S1..S4."""
+    """Main sequence by number, followed by the three problem books."""
     m = re.match(r"tome([A-Z]?)(\d+)", pdf.stem)
-    return ("", "C", "S").index(m.group(1)) if m and m.group(1) in "CS" else 3, int(m.group(2)) if m else 0
+    return (1 if m and m.group(1) == "P" else 0, int(m.group(2)) if m else 0)
 
 
 def main(dist: str, out: str) -> None:
     dist_dir, out_dir = Path(dist), Path(out)
     out_dir.mkdir(parents=True, exist_ok=True)
+    current = {p.parent.name for p in ROOT.glob("tome*/main.tex")}
+    # Remove stale downloads from an earlier library built into the same directory.
+    for path in out_dir.glob("tome*"):
+        if path.is_file() and not any(path.name.startswith(book + ".") or path.name.startswith(book + "-") for book in current):
+            path.unlink()
+    for path in (out_dir / "read").glob("tome*"):
+        if path.is_dir() and path.name not in current:
+            shutil.rmtree(path)
     cards = []
     for pdf in sorted(dist_dir.glob("*.pdf"), key=tome_order):
         if pdf.stem.endswith("-phone") or any(pdf.stem.endswith("-" + v) for v, _, _ in VARIANTS):
             continue
         tome = pdf.stem
+        if not (ROOT / tome / "main.tex").is_file():
+            continue
         epub = pdf.with_suffix(".epub")
         main_tex = ROOT / tome / "main.tex"
         title = tome
@@ -92,8 +102,7 @@ def main(dist: str, out: str) -> None:
             cover = f'<img class="cover" width="300" height="480" loading="lazy" src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         match = re.match(r"tome([A-Z]?)", tome)
         prefix = match.group(1) if match else ""
-        collection, label = {"C": ("computing", "Computing track"), "S": ("companions", "Companion shelf"),
-                             "P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))
+        collection, label = {"P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))
         epub_link = f'<a href="{epub.name}" download>EPUB</a>' if epub.exists() else ""
         number = re.search(r"Tome ([0-9A-Z]+):", title)
         tagline = subtitle(number.group(1)) if number else ""

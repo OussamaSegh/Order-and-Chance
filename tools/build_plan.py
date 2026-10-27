@@ -29,9 +29,6 @@ def fingerprints(root):
 
     inputs = {book: [f for f in files if f.startswith(book + '/')] for book in books}
     result = {book: digest(shared + inputs[book]) for book in books}
-    # S4's generator reads the other tomes, not just its own directory.
-    if 'tomeS4-companion' in result:
-        result['tomeS4-companion'] = digest(shared + [f for paths in inputs.values() for f in paths])
     return result
 
 

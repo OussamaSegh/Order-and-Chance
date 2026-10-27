@@ -26,21 +26,32 @@ class LibraryTest(unittest.TestCase):
             root = Path(directory)
             dist, out = root / "dist", root / "site"
             dist.mkdir()
-            for name in ["tome10-chance", "tome2-structures", "tomeC1-discrete", "tomeS1-linear", "tomeP1-crossroads"]:
+            for name in ["tome10-chance2", "tome2-structures", "tomeC1-discrete", "tomeS1-linear", "tomeP1-crossroads"]:
                 (dist / (name + ".pdf")).write_bytes(b"fixture")
+                if not name.startswith(("tomeC", "tomeS")):
+                    (root / name).mkdir()
+                    (root / name / "main.tex").write_text("fixture")
             (dist / "tome2-structures-phone.pdf").write_bytes(b"retired")
             (dist / "tome2-structures-kindle.pdf").write_bytes(b"fixture")
             (dist / "tome2-structures.epub").write_bytes(b"fixture")
+            out.mkdir()
+            (out / "tomeC1-discrete.pdf").write_bytes(b"stale download")
+            (out / "read/tomeS1-linear").mkdir(parents=True)
+            (out / "read/tomeS1-linear/index.html").write_text("stale reader")
             with patch.object(site, "ROOT", root):
                 site.main(str(dist), str(out))
             text = (out / "index.html").read_text()
             tags = Tags()
             tags.feed(text)
             cards = [a for t, a in tags.tags if t == "article"]
-            self.assertEqual([a["data-collection"] for a in cards], ["main", "main", "computing", "companions", "problems"])
+            self.assertEqual([a["data-collection"] for a in cards], ["main", "main", "problems"])
             self.assertLess(text.index('data-search="tome2-'), text.index('data-search="tome10-'))
             self.assertEqual(text.count('>EPUB</a>'), 1)
             self.assertNotIn('-phone.pdf', text)
+            self.assertNotIn('tomeC1-discrete', text)
+            self.assertNotIn('tomeS1-linear', text)
+            self.assertFalse((out / 'tomeC1-discrete.pdf').exists())
+            self.assertFalse((out / 'read/tomeS1-linear').exists())
             self.assertFalse((out / "tome2-structures-phone.pdf").exists())
             for tag, attrs in tags.tags:
                 if tag == 'a' and attrs.get('href', '').endswith(('.pdf', '.epub')):

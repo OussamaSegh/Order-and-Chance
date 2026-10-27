@@ -1,0 +1,593 @@
+\chapter{Inequalities between Matrices}\label{linear:ch:inequalities}
+
+\begin{center}\itshape
+All analysts spend half their time hunting through the literature for inequalities which they want to use and cannot prove.
+\upshape(G.~H.~Hardy, \emph{Prolegomena to a chapter on inequalities}, 1929)
+\end{center}
+
+In 1893 Jacques Hadamard, then a young teacher at the Lyc\'ee Buffon in Paris, asked how large the determinant of an $n\times n$
+matrix can be when its entries are bounded by $1$ in absolute value. The determinant is the volume of the parallelepiped spanned by
+the columns, each column has length at most $\sqrt n$, and a box is largest when its edges are perpendicular: so $|\det A|\le n^{n/2}$,
+with equality exactly for matrices of $\pm1$ whose columns are orthogonal. Hadamard proved this, built such matrices for $n=12$
+and $n=20$, and observed that they can only exist when $n$ is $1$, $2$ or a multiple of $4$. Whether they exist for \emph{every}
+multiple of $4$ is the \emph{Hadamard conjecture}. It is still open after more than a century; the smallest unsettled order is
+$668$. (Tome~15 tells that story.)
+
+Hadamard's inequality is the ancestor of a whole family of inequalities between matrices, and of a whole way of thinking: matrices
+can be \emph{compared}, $A\succeq B$, much as numbers can, as long as one is careful about what survives the passage from numbers to
+matrices. Some familiar facts survive ($\sqrt{\phantom{t}}$ is increasing, $\log\det$ is concave, products of positive things are
+positive, if the product is the right one), and some do not ($t\mapsto t^2$ is not increasing on matrices). This chapter proves
+the most useful of these inequalities, with an eye on what they mean: volumes, ellipsoids, covariance matrices and kernels. It ends
+with Gershgorin's discs, the cheapest eigenvalue bound there is, and with Hilbert's inequality, whose constant $\pi$ comes out of a
+convex function and an integral.
+
+\begin{think}
+If $A$ and $B$ are symmetric $2\times2$ matrices with $A-B$ positive semidefinite, must $A^2-B^2$ be positive semidefinite?
+Before computing, think of $A$ and $B$ as ellipses. What would a counterexample look like?
+\end{think}
+
+\section{The Loewner order}
+
+Recall (Chapter~\ref{linear:ch:spectral}) that a Hermitian matrix $A$ is \emph{positive semidefinite}, $A\succeq0$, if $x^*Ax\ge0$ for all $x$,
+equivalently if its eigenvalues are $\ge0$; and \emph{positive definite}, $A\succ0$, if $x^*Ax>0$ for $x\ne0$. For Hermitian $A,B$ we
+write $A\succeq B$ when $A-B\succeq0$. This \emph{Loewner order}, named after Charles Loewner (Karel L\"owner), who studied it in 1934,
+is a partial order, and most of its basic properties are one line each.
+
+\begin{proposition}\label{linear:prop:loewner}
+Let $A,B$ be Hermitian of size $n$.
+\begin{enumerate}[label=(\roman*)]
+\item If $A\succeq B$, then $X^*AX\succeq X^*BX$ for every $n\times m$ matrix $X$ (\emph{congruence preserves the order}).
+\item If $A\succeq B$, then $\lambda_k(A)\ge\lambda_k(B)$ for every $k$; in particular $\operatorname{tr}A\ge\operatorname{tr}B$, and
+$\det A\ge\det B$ if $B\succeq0$.
+\item If $A\succeq B\succ0$, then $B^{-1}\succeq A^{-1}\succ0$.
+\item $A\succeq B$ if and only if the ellipsoid $E_A=\{x:x^*Ax\le1\}$ is contained in $E_B$ (for $A,B\succ0$).
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(i) $y^*X^*(A-B)Xy=(Xy)^*(A-B)(Xy)\ge0$. (ii) By Courant--Fischer (Theorem~\ref{linear:thm:courantfischer}), $\lambda_k$ is a max-min of
+Rayleigh quotients, and $x^*Ax\ge x^*Bx$ for every $x$. The determinant is the product of the eigenvalues, which are $\ge0$ when
+$B\succeq0$. (iii) Let $C=B^{-1/2}AB^{-1/2}$, where $B^{-1/2}$ is the inverse of the positive square root (Exercise~\ref{linear:ex:sqrtpsd}).
+By (i), $C\succeq B^{-1/2}BB^{-1/2}=I$, so the eigenvalues of $C$ are $\ge1$ and those of $C^{-1}=B^{1/2}A^{-1}B^{1/2}$ are $\le1$: $C^{-1}
+\preceq I$. Applying (i) with $X=B^{-1/2}$ gives $A^{-1}\preceq B^{-1}$. (iv) If $A\succeq B$ and $x^*Ax\le1$, then $x^*Bx\le x^*Ax\le1$.
+Conversely, if $x^*Bx>x^*Ax$ for some $x$, scale $x$ so that $x^*Ax<1<x^*Bx$ (if $x^*Ax=0$ then $x=0$, as $A\succ0$): this point is
+in $E_A$ but not in $E_B$.
+\end{proof}
+
+So the Loewner order is the order of ellipsoids: bigger matrices, smaller ellipsoids. Figure~\ref{linear:fig:loewner} shows why squaring is
+not monotone. With
+\[
+A=\begin{pmatrix}2&1\\1&1\end{pmatrix},\qquad B=\begin{pmatrix}0.9&0\\0&0.05\end{pmatrix},
+\]
+$A-B$ has positive trace and determinant $1.1\cdot0.95-1>0$, so $A\succeq B$; but $A^2-B^2=\bigl(\begin{smallmatrix}4.19&3\\3&1.9975
+\end{smallmatrix}\bigr)$ has negative determinant. Squaring stretches $E_A$ along its long axis, which is tilted, and it pokes out of
+the strip $E_{B^2}$.
+
+\begin{figure}[ht]
+\centering
+\fig{linear-ch11-loewner}
+\caption{Left: $A\succeq B$ means that the ellipse $E_A$ (blue) lies inside $E_B$ (red, here a long ellipse, clipped). Right:
+$E_{A^2}$ is thinner and longer along a tilted axis, and leaves $E_{B^2}$: $A^2\not\succeq B^2$. Squaring is not monotone for matrices.}
+\label{linear:fig:loewner}
+\end{figure}
+
+Square roots, however, are monotone.
+
+\begin{theorem}[L\"owner--Heinz for the square root]\label{linear:thm:sqrtmonotone}
+If $A\succeq B\succeq0$, then $\sqrt A\succeq\sqrt B$.
+\end{theorem}
+\begin{proof}
+Let $S=\sqrt A$, $T=\sqrt B$, and let $\lambda$ be an eigenvalue of the Hermitian matrix $S-T$, with unit eigenvector $x$. Since
+$(S-T)x=\lambda x$ and, taking adjoints, $x^*(S-T)=\lambda x^*$,
+\[
+0\le x^*(A-B)x=x^*\bigl(S(S-T)+(S-T)T\bigr)x=\lambda\,x^*Sx+\lambda\,x^*Tx.
+\]
+If $\lambda<0$, this forces $x^*Sx+x^*Tx\le0$; both terms are $\ge0$, so both vanish, and for positive semidefinite matrices
+$x^*Sx=0$ implies $Sx=0$ (write $x^*Sx=\|\sqrt Sx\|^2$). Then $Sx=Tx=0$ and $\lambda x=(S-T)x=0$, a contradiction. So every eigenvalue
+of $S-T$ is $\ge0$.
+\end{proof}
+
+\begin{remark}
+A function $f$ on $[0,\infty)$ is \emph{operator monotone} if $A\succeq B\succeq0$ implies $f(A)\succeq f(B)$ in every dimension. Heinz
+proved in 1951 that $t^p$ is operator monotone for $0\le p\le1$, and Loewner's theorem of 1934 characterises all operator monotone
+functions: they are exactly the restrictions of functions holomorphic on the upper half-plane, mapping it to itself (Pick functions).
+So $\sqrt t$, $\log t$ and $\frac t{1+t}$ are operator monotone, $t^2$ and $e^t$ are not. A deep theorem from a two-line definition.
+\end{remark}
+
+\section{Schur complements}
+
+Block matrices are where most matrix inequalities are born. Let
+\[
+M=\begin{pmatrix}A&B\\B^*&C\end{pmatrix}
+\]
+be Hermitian, with $A$ invertible. The \emph{Schur complement} of $A$ in $M$ is $M/A=C-B^*A^{-1}B$.
+
+\begin{proposition}[Schur complements]\label{linear:prop:schurcomplement}
+With $X=\bigl(\begin{smallmatrix}I&-A^{-1}B\\0&I\end{smallmatrix}\bigr)$,
+\[
+X^*MX=\begin{pmatrix}A&0\\0&C-B^*A^{-1}B\end{pmatrix}.
+\]
+Consequently $\det M=\det A\det(M/A)$, and if $A\succ0$, then $M\succeq0$ if and only if $M/A\succeq0$ (and $M\succ0$ if and only if
+$M/A\succ0$).
+\end{proposition}
+\begin{proof}
+Multiply out: $MX=\bigl(\begin{smallmatrix}A&0\\B^*&C-B^*A^{-1}B\end{smallmatrix}\bigr)$, and $X^*$ subtracts $B^*A^{-1}$ times the first block
+row from the second, which kills $B^*$. Since $\det X=1$, the determinants agree. The matrix $X$ is invertible, so by
+Proposition~\ref{linear:prop:loewner}(i) applied with $X$ and $X^{-1}$, $M\succeq0$ if and only if $X^*MX\succeq0$, that is, if and only if
+$A\succeq0$ and $M/A\succeq0$.
+\end{proof}
+
+The same trick with rectangular blocks gives a famous identity.
+
+\begin{proposition}[Sylvester's determinant identity]\label{linear:prop:detIAB}
+For $A\in M_{m,n}(\C)$ and $B\in M_{n,m}(\C)$, $\det(I_m+AB)=\det(I_n+BA)$. In particular $\det(I+uv^*)=1+v^*u$.
+\end{proposition}
+\begin{proof}
+Compute the determinant of $N=\bigl(\begin{smallmatrix}I_m&-A\\B&I_n\end{smallmatrix}\bigr)$ in two ways. Eliminating with the top-left block,
+\[
+\begin{pmatrix}I_m&0\\-B&I_n\end{pmatrix}N=\begin{pmatrix}I_m&-A\\0&I_n+BA\end{pmatrix},
+\]
+so $\det N=\det(I_n+BA)$. Eliminating with the bottom-right block, $N\bigl(\begin{smallmatrix}I_m&0\\-B&I_n\end{smallmatrix}\bigr)=
+\bigl(\begin{smallmatrix}I_m+AB&-A\\0&I_n\end{smallmatrix}\bigr)$, so $\det N=\det(I_m+AB)$.
+\end{proof}
+
+The identity turns an $m\times m$ determinant into an $n\times n$ one, which is a large saving when $n\ll m$; it also says that $AB$ and
+$BA$ have the same non-zero eigenvalues, with multiplicity (replace $I$ by $tI$). Statisticians use it daily in the form of the
+\emph{matrix determinant lemma}, and with it the Sherman--Morrison formula for $(A+uv^*)^{-1}$ (Exercise~\ref{linear:ex:sherman}).
+
+\section{Determinant inequalities}
+
+\begin{theorem}[Hadamard's inequality]\label{linear:thm:hadamard}
+If $A\succeq0$, then $\det A\le a_{11}a_{22}\cdots a_{nn}$. If $A\succ0$, equality holds only for diagonal $A$.
+\end{theorem}
+\begin{proof}
+If some $a_{ii}=0$, then $e_i^*Ae_i=0$ forces $Ae_i=0$, so $\det A=0$ and the inequality holds. Otherwise let $D=\operatorname{diag}(a_{ii}^
+{-1/2})$ and $C=DAD$, which is positive semidefinite with unit diagonal. Its eigenvalues $\mu_i\ge0$ have sum $\operatorname{tr}C=n$,
+so by the inequality of arithmetic and geometric means
+\[
+\det C=\prod\mu_i\le\Bigl(\frac1n\sum\mu_i\Bigr)^n=1,
+\]
+which is $\det A\le\prod a_{ii}$. Equality in AM--GM forces all $\mu_i=1$, so $C=I$ (a Hermitian matrix with all eigenvalues $1$ is
+the identity), and $A=D^{-2}$ is diagonal.
+\end{proof}
+
+\begin{corollary}[Hadamard's volume inequality]\label{linear:cor:hadamardvol}
+For any $n\times n$ matrix $X$ with columns $x_1,\dots,x_n$, $|\det X|\le\|x_1\|\cdots\|x_n\|$, with equality if and only if the
+columns are pairwise orthogonal or one of them is zero. In particular a matrix with entries in $[-1,1]$ has $|\det X|\le n^{n/2}$.
+\end{corollary}
+\begin{proof}
+Apply Theorem~\ref{linear:thm:hadamard} to the Gram matrix $A=X^*X\succeq0$, whose diagonal entries are $\|x_i\|^2$ and whose determinant is
+$|\det X|^2$. If no column is zero and $X$ is invertible, equality forces $X^*X$ to be diagonal, that is, orthogonal columns; if $X$ is
+singular with non-zero columns, the inequality is strict.
+\end{proof}
+
+A matrix of $\pm1$ entries reaching $|\det|=n^{n/2}$ is a \emph{Hadamard matrix}: $HH^{\mathsf T}=nI$. The Walsh--Hadamard matrices of
+Chapter~\ref{linear:ch:symmetry} are examples for $n=2^k$, and Exercise~\ref{linear:ex:hadamard4} shows why $4\mid n$ is necessary for $n\ge3$.
+
+Hadamard's inequality has a block version, with the same proof idea organised by Schur complements.
+
+\begin{theorem}[Fischer's inequality]\label{linear:thm:fischer}
+If $M=\bigl(\begin{smallmatrix}A&B\\B^*&C\end{smallmatrix}\bigr)\succeq0$ with square diagonal blocks, then $\det M\le\det A\det C$.
+\end{theorem}
+\begin{proof}
+If $A$ is singular, then $M$ is singular (a vector $x$ with $x^*Ax=0$ gives $(x,0)^*M(x,0)=0$, hence $M(x,0)=0$), and the inequality
+reads $0\le0\cdot\det C$. If $A\succ0$, then $M/A=C-B^*A^{-1}B\succeq0$ by Proposition~\ref{linear:prop:schurcomplement}, and $C\succeq M/A$
+because $B^*A^{-1}B\succeq0$. By Proposition~\ref{linear:prop:loewner}(ii), $\det C\ge\det(M/A)$, so $\det M=\det A\det(M/A)\le\det A\det C$.
+\end{proof}
+
+Iterating Fischer down to $1\times1$ blocks gives Hadamard again. Our next inequality is about sums.
+
+\begin{theorem}[Minkowski's determinant inequality]\label{linear:thm:minkowskidet}
+For $A,B\succeq0$ of size $n$,
+\[
+\det(A+B)^{1/n}\ge\det(A)^{1/n}+\det(B)^{1/n}.
+\]
+\end{theorem}
+\begin{proof}
+If $A$ and $B$ are both singular there is nothing to prove; by symmetry assume $A\succ0$. Both sides are multiplied by $|\det X|^{2/n}$
+when $A,B$ are replaced by $X^*AX,X^*BX$, so with $X=A^{-1/2}U$ for a suitable unitary $U$ we may assume $A=I$ and $B=\operatorname{diag}
+(d_1,\dots,d_n)$, $d_i\ge0$ (spectral theorem). We must show $\prod(1+d_i)^{1/n}\ge1+\prod d_i^{1/n}$. By AM--GM,
+\[
+\prod_i\Bigl(\frac1{1+d_i}\Bigr)^{1/n}+\prod_i\Bigl(\frac{d_i}{1+d_i}\Bigr)^{1/n}\le\frac1n\sum_i\frac1{1+d_i}+\frac1n\sum_i\frac{d_i}{1+d_i}=1,
+\]
+and multiplying by $\prod(1+d_i)^{1/n}$ gives the claim.
+\end{proof}
+
+So $A\mapsto\det(A)^{1/n}$ is superadditive, and, being homogeneous of degree $1$, concave on the cone of positive semidefinite matrices.
+The logarithm of the determinant is concave too, and this is the form statisticians and information theorists use.
+
+\begin{theorem}[concavity of $\log\det$]\label{linear:thm:logdet}
+For $A,B\succ0$ and $0\le t\le1$,
+\[
+\log\det\bigl(tA+(1-t)B\bigr)\ge t\log\det A+(1-t)\log\det B.
+\]
+\end{theorem}
+\begin{proof}
+Replacing $A,B$ by $X^*AX,X^*BX$ adds $\log|\det X|^2$ to both sides, so as before we may assume $B=I$ and $A=\operatorname{diag}(d_i)$
+with $d_i>0$. The inequality becomes $\sum_i\log(td_i+1-t)\ge\sum_it\log d_i$, which holds term by term because $\log$ is concave:
+$\log(td_i+(1-t)\cdot1)\ge t\log d_i+(1-t)\log1$.
+\end{proof}
+
+\begin{remark}
+For a Gaussian vector with covariance matrix $\Sigma$, the differential entropy is $\frac12\log\det(2\pi e\Sigma)$. Concavity of
+$\log\det$ says that mixing covariances increases entropy; Hadamard's inequality says that, for given variances, entropy is largest
+when the coordinates are uncorrelated; Fischer's says the same for blocks of coordinates. Information theory turns this around
+and proves determinant inequalities from entropy (Cover and Thomas, Chapter~17).
+\end{remark}
+
+\section{The Schur product theorem}
+
+The ordinary product of two positive semidefinite matrices need not even be Hermitian. The right product is the entrywise one.
+
+\begin{definition}\label{linear:def:hadamardproduct}
+The \emph{Hadamard} (or \emph{Schur}) \emph{product} of two $m\times n$ matrices is $(A\circ B)_{ij}=a_{ij}b_{ij}$.
+\end{definition}
+
+\begin{theorem}[Schur, 1911]\label{linear:thm:schurproduct}
+If $A,B\succeq0$, then $A\circ B\succeq0$. If $A,B\succ0$, then $A\circ B\succ0$.
+\end{theorem}
+\begin{proof}
+Write $B=\sum_kb_kb_k^*$ (spectral decomposition, $b_k=\sqrt{\lambda_k}v_k$). For one term, $(A\circ b b^*)_{ij}=b_ia_{ij}\overline{b_j}$, that
+is, $A\circ bb^*=D_bAD_b^*$ with $D_b=\operatorname{diag}(b)$, which is positive semidefinite by Proposition~\ref{linear:prop:loewner}(i).
+Summing over $k$, $A\circ B\succeq0$. If moreover $A,B\succ0$ and $x\ne0$, then $x^*(A\circ B)x=\sum_ky_k^*Ay_k$ with $y_k=D_{b_k}^*x$, whose
+$i$-th entry is $\overline{b_{k,i}}x_i$. Pick $i$ with $x_i\ne0$. Since $\sum_k|b_{k,i}|^2=b_{ii}>0$, some $b_{k,i}$ is non-zero, so that
+$y_k\ne0$ and $y_k^*Ay_k>0$.
+\end{proof}
+
+The Schur product theorem has a striking consequence: entrywise functions with non-negative Taylor coefficients preserve positivity.
+
+\begin{corollary}\label{linear:cor:entrywiseexp}
+If $A\succeq0$, then $\bigl(e^{a_{ij}}\bigr)_{i,j}\succeq0$; more generally $\bigl(f(a_{ij})\bigr)\succeq0$ for every power series $f(z)=\sum c_kz^k$
+with $c_k\ge0$ converging on the entries. Consequently, for any points $x_1,\dots,x_N\in\R^d$ and $\gamma>0$, the \emph{Gaussian kernel
+matrix} $\bigl(e^{-\gamma\|x_i-x_j\|^2}\bigr)_{i,j}$ is positive semidefinite.
+\end{corollary}
+\begin{proof}
+The Schur powers $A^{\circ k}$ are $\succeq0$ by induction ($A^{\circ0}=J=\mathbf 1\mathbf 1^*\succeq0$), so the partial sums
+$\sum_{k\le K}c_kA^{\circ k}$ are $\succeq0$, and so is their limit (the set of positive semidefinite matrices is closed). For the kernel,
+$e^{-\gamma\|x_i-x_j\|^2}=e^{-\gamma\|x_i\|^2}\,e^{2\gamma\langle x_i,x_j\rangle}\,e^{-\gamma\|x_j\|^2}$: the middle factor is the entrywise
+exponential of the Gram matrix $(2\gamma\langle x_i,x_j\rangle)\succeq0$, and the outer factors form a diagonal congruence.
+\end{proof}
+
+This is the mathematical engine of \emph{kernel methods} in machine learning: a kernel $k(x,y)$ whose matrices $(k(x_i,x_j))$ are
+always positive semidefinite is an inner product in a hidden, possibly infinite-dimensional, feature space, and the Schur product
+theorem says that sums, products and limits of such kernels are again kernels. (The Gaussian kernel matrix is in fact positive
+definite for distinct points; the proof uses the Fourier transform, Tome~7.)
+
+\section{Gershgorin's discs}
+
+The last tool is the cheapest of all, and it applies to every square matrix, Hermitian or not.
+
+\begin{theorem}[Gershgorin, 1931]\label{linear:thm:gershgorin}
+Every eigenvalue of $A\in M_n(\C)$ lies in the union of the discs
+\[
+D_i=\Bigl\{z\in\C:|z-a_{ii}|\le r_i\Bigr\},\qquad r_i=\sum_{j\ne i}|a_{ij}|.
+\]
+\end{theorem}
+\begin{proof}
+Let $Ax=\lambda x$ with $x\ne0$, and pick $i$ with $|x_i|=\max_j|x_j|>0$. The $i$-th equation gives $(\lambda-a_{ii})x_i=\sum_{j\ne
+i}a_{ij}x_j$, so $|\lambda-a_{ii}||x_i|\le\sum_{j\ne i}|a_{ij}||x_j|\le r_i|x_i|$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{linear-ch11-gershgorin}
+\caption{The four Gershgorin discs of a $4\times4$ complex matrix (centres $a_{ii}$, radii the row sums $r_i$) and its four eigenvalues
+(black dots). The isolated disc on the right contains exactly one eigenvalue; the three overlapping discs share the other three.}
+\label{linear:fig:gershgorin}
+\end{figure}
+
+\begin{corollary}\label{linear:cor:diagdom}
+A strictly diagonally dominant matrix ($|a_{ii}|>r_i$ for all $i$) is invertible. A Hermitian matrix with $a_{ii}>r_i$ for all $i$ is
+positive definite.
+\end{corollary}
+\begin{proof}
+No disc contains $0$, so $0$ is not an eigenvalue. In the Hermitian case the eigenvalues are real and lie in discs contained in
+$\{\operatorname{Re}z>0\}$.
+\end{proof}
+
+Applying the theorem to $A^{\mathsf T}$ gives discs with column sums; applying it to $D^{-1}AD$ with a well-chosen positive diagonal $D$
+shrinks some discs at the expense of others, a cheap and surprisingly effective way to localise eigenvalues (Exercise~\ref{linear:ex:gershscale}).
+A continuity argument, which we do not give, shows more: a union of $k$ discs disjoint from the others contains exactly $k$ eigenvalues,
+as in Figure~\ref{linear:fig:gershgorin}.
+
+\section{A gem: Hilbert's inequality and the number $\pi$}
+
+The Hilbert matrix $H=\bigl(\frac1{i+j+1}\bigr)_{i,j\ge0}$ is the Gram matrix of the monomials in $L^2[0,1]$, so its finite sections are
+positive definite (Theorem~\ref{linear:thm:gram}), and violently ill-conditioned (Corollary~\ref{linear:cor:hilbert}). Its \emph{largest}
+eigenvalues, on the other hand, stay bounded, and the bound is a surprise.
+
+\begin{theorem}[Hilbert's inequality]\label{linear:thm:hilbertineq}
+For all real sequences $(a_m)_{m\ge0}$, $(b_n)_{n\ge0}$ with $\sum a_m^2<\infty$ and $\sum b_n^2<\infty$,
+\[
+\Bigl|\sum_{m,n\ge0}\frac{a_mb_n}{m+n+1}\Bigr|\le\pi\Bigl(\sum_ma_m^2\Bigr)^{1/2}\Bigl(\sum_nb_n^2\Bigr)^{1/2}.
+\]
+Equivalently, every finite section $H_N$ of the Hilbert matrix has $\|H_N\|_2=\lambda_{\max}(H_N)\le\pi$.
+\end{theorem}
+\begin{proof}
+The idea, due to Issai Schur, is to apply Cauchy--Schwarz with well-chosen weights. Let $p_n=(n+\frac12)^{-1/2}$ and $k_{mn}=\frac1{m+n+1}$.
+
+\emph{Step 1: $\sum_nk_{mn}p_n\le\pi p_m$ for every $m$.} The function $f(x)=\frac1{(m+1+x)\sqrt{x+1/2}}$ is a product of two positive,
+decreasing, convex functions on $(-\frac12,\infty)$, hence convex ($(gh)''=g''h+2g'h'+gh''\ge0$). For a convex function, the value at the
+midpoint of an interval is at most the average over the interval: $f(n)\le\int_{n-1/2}^{n+1/2}f(x)\,dx$. Summing over $n\ge0$ and
+substituting $x+\frac12=y$, then $y=(m+\frac12)u^2$,
+\[
+\sum_{n\ge0}\frac{p_n}{m+n+1}\le\int_0^\infty\frac{dy}{(m+\frac12+y)\sqrt y}=\frac1{\sqrt{m+\frac12}}\int_0^\infty\frac{2\,du}{1+u^2}=
+\pi p_m.
+\]
+
+\emph{Step 2: Cauchy--Schwarz.} Write $k_{mn}|a_m||b_n|=\bigl(k_{mn}\frac{p_n}{p_m}\bigr)^{1/2}|a_m|\cdot\bigl(k_{mn}\frac{p_m}{p_n}\bigr)^{1/2}
+|b_n|$. Then
+\[
+\sum_{m,n}k_{mn}|a_m||b_n|\le\Bigl(\sum_{m,n}k_{mn}\frac{p_n}{p_m}a_m^2\Bigr)^{1/2}\Bigl(\sum_{m,n}k_{mn}\frac{p_m}{p_n}b_n^2\Bigr)^{1/2}.
+\]
+By Step~1, $\sum_nk_{mn}p_n/p_m\le\pi$, so the first factor is at most $(\pi\sum a_m^2)^{1/2}$; by symmetry of $k$, the second is at most
+$(\pi\sum b_n^2)^{1/2}$. For the finite sections, $\|H_N\|_2=\max x^*H_Ny$ over unit vectors, which is at most $\pi$ by the inequality.
+\end{proof}
+
+The constant $\pi$ cannot be improved, as Schur showed in 1911: $\lambda_{\max}(H_N)\to\pi$, but with a gap that de Bruijn and Wilf
+showed in 1962 to behave like $\frac{\pi^5}{2\log^2N}$: so slowly that at $N=3000$ the largest eigenvalue is still only about $2.53$
+(the notebook watches it crawl). Hilbert proved his inequality with the
+constant $2\pi$ in his lectures on integral equations, published by Hermann Weyl in 1908; the integral version,
+$\iint\frac{f(x)g(y)}{x+y}\,dx\,dy\le\pi\|f\|_2\|g\|_2$, is a cornerstone of Hardy, Littlewood and P\'olya's book \emph{Inequalities}.
+
+\begin{beauty}
+Numbers are compared by size; matrices are compared by ellipsoids. Under that one change of viewpoint, volumes obey Hadamard,
+blocks obey Fischer, sums obey Minkowski and mixtures obey the concavity of $\log\det$, each proved by reducing a pair of matrices to a
+pair of diagonal ones and quoting the inequality between arithmetic and geometric means. And when the matrix is Hilbert's, the
+best constant in the comparison is $\pi$, pulled out of an integral by a convex function.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{linear:ex:commutingsquare}
+Show that if $A\succeq B\succeq0$ and $AB=BA$, then $A^2\succeq B^2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{linear:ex:blockcs}
+Show that if $\bigl(\begin{smallmatrix}A&B\\B^*&C\end{smallmatrix}\bigr)\succeq0$, then $|x^*By|^2\le(x^*Ax)(y^*Cy)$ for all vectors $x,y$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:sherman}
+Let $A$ be invertible and $1+v^*A^{-1}u\ne0$. Show that $\det(A+uv^*)=\det A\,(1+v^*A^{-1}u)$ and that
+\[
+(A+uv^*)^{-1}=A^{-1}-\frac{A^{-1}uv^*A^{-1}}{1+v^*A^{-1}u}
+\]
+(Sherman--Morrison). How many operations does it take to update $A^{-1}$ after a rank-one change?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:hadamard4}
+Let $H$ be an $n\times n$ Hadamard matrix with $n\ge3$. Normalise its first three rows to begin with $1$s by multiplying columns by
+$-1$, and count the columns of each sign pattern in the first three rows. Deduce that $4\mid n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:maxdet3}
+Show that the determinant of an $n\times n$ matrix of $\pm1$ is divisible by $2^{n-1}$. Deduce that the maximum determinant of a $3\times3$
+matrix of $\pm1$ is $4$, although Hadamard's bound is $3^{3/2}\approx5.2$, and find a matrix that attains it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{linear:ex:minkowskieq}
+Show that equality holds in Minkowski's inequality for $A,B\succ0$ if and only if $B=cA$ for some $c>0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:logdetderiv}
+For $A\succ0$ and Hermitian $H$, show that $\frac d{dt}\log\det(A+tH)\big|_{t=0}=\operatorname{tr}(A^{-1}H)$ and
+$\frac{d^2}{dt^2}\log\det(A+tH)\big|_{t=0}=-\operatorname{tr}\bigl((A^{-1}H)^2\bigr)\le0$. This is a second proof of Theorem~\ref{linear:thm:logdet}.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:schurmin}
+Show that for $A,B\succeq0$, $\lambda_{\min}(A\circ B)\ge\lambda_{\min}(A)\min_ib_{ii}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:kernels}
+Show that the following matrices are positive semidefinite, for any choice of the points: $\bigl(\min(s_i,s_j)\bigr)$ for $s_i\ge0$;
+$\bigl(\frac1{x_i+x_j}\bigr)$ for $x_i>0$; $\bigl(\cos(\theta_i-\theta_j)\bigr)$ for real $\theta_i$; and $\bigl(\frac1{1-\langle u_i,u_j\rangle}\bigr)$
+for vectors $u_i\in\R^d$ with $\|u_i\|<1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{linear:ex:gershscale}
+Let $A=\begin{pmatrix}1&\varepsilon&\varepsilon\\\varepsilon&2&\varepsilon\\\varepsilon&\varepsilon&3\end{pmatrix}$ with $0<\varepsilon<\frac14$. Weyl's
+inequality (Corollary~\ref{linear:cor:weylpert}) puts the smallest eigenvalue $\mu$ of $A$ within $2\varepsilon$ of $1$. Use Gershgorin's theorem
+for $D^{-1}AD$, with a well-chosen diagonal $D$, to show that in fact $|\mu-1|\le8\varepsilon^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{linear:ex:diagdomdet}
+Show that a strictly diagonally dominant real matrix with positive diagonal has a positive determinant. (Deform it to its diagonal.)
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{linear:ex:oppenheim}
+(Oppenheim's inequality.) For $A,B\succeq0$, show that $\det(A\circ B)\ge\det A\prod_ib_{ii}$. (Induct on $n$, using Schur complements
+and the Schur product theorem.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{linear:ex:commutingsquare}
+Commuting Hermitian matrices are diagonal in a common orthonormal basis (Exercise~\ref{linear:ex:simultaneous}).
+\end{hint}
+\begin{hint}{linear:ex:blockcs}
+Look at the $2\times2$ matrix obtained by testing $M$ against $(sx,ty)$, or apply Proposition~\ref{linear:prop:schurcomplement} to it.
+\end{hint}
+\begin{hint}{linear:ex:sherman}
+Factor $A+uv^*=A(I+A^{-1}uv^*)$ and use Proposition~\ref{linear:prop:detIAB}. For the inverse, multiply out.
+\end{hint}
+\begin{hint}{linear:ex:hadamard4}
+Let $a,b,c,d$ be the numbers of columns whose entries in rows $2,3$ are $(+,+),(+,-),(-,+),(-,-)$. Orthogonality of rows $1,2$, $1,3$ and
+$2,3$ gives three linear equations.
+\end{hint}
+\begin{hint}{linear:ex:maxdet3}
+Add the first row to the others: the new rows have even entries.
+\end{hint}
+\begin{hint}{linear:ex:minkowskieq}
+Look at the equality case in AM--GM in the proof.
+\end{hint}
+\begin{hint}{linear:ex:logdetderiv}
+$\log\det(A+tH)=\log\det A+\sum_i\log(1+t\mu_i)$, where $\mu_i$ are the eigenvalues of $A^{-1/2}HA^{-1/2}$.
+\end{hint}
+\begin{hint}{linear:ex:schurmin}
+$A-\lambda_{\min}(A)I\succeq0$.
+\end{hint}
+\begin{hint}{linear:ex:kernels}
+Find Gram matrices: $\min(s,t)=\int_0^\infty\mathbf 1_{[0,s]}\mathbf 1_{[0,t]}$, $\frac1{x+y}=\int_0^\infty e^{-xr}e^{-yr}\,dr$; for the last one,
+a geometric series.
+\end{hint}
+\begin{hint}{linear:ex:gershscale}
+Try $D=\operatorname{diag}(1,\delta,\delta)$ and choose $\delta$ so that the first disc is small while the other two stay away from $\mu$.
+\end{hint}
+\begin{hint}{linear:ex:diagdomdet}
+$A_t=D+t(A-D)$ stays strictly diagonally dominant for $t\in[0,1]$, so $\det A_t$ never vanishes.
+\end{hint}
+\begin{hint}{linear:ex:oppenheim}
+Write $A=\bigl(\begin{smallmatrix}a&\alpha^*\\\alpha&A_1\end{smallmatrix}\bigr)$ and note that $A_1-\alpha\alpha^*/a\succeq0$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{linear:ex:commutingsquare}
+\idea Commuting matrices can be diagonalised together, and then the question is about numbers.
+\writeup By Exercise~\ref{linear:ex:simultaneous}, $A=U\operatorname{diag}(\alpha_i)U^*$ and $B=U\operatorname{diag}(\beta_i)U^*$ with the same
+unitary $U$. Then $A\succeq B\succeq0$ means $\alpha_i\ge\beta_i\ge0$, so $\alpha_i^2\ge\beta_i^2$, which is $A^2\succeq B^2$. The
+counterexample of the text shows that commutativity cannot be dropped.
+\end{solution}
+
+\begin{solution}{linear:ex:blockcs}
+\idea A positive semidefinite matrix stays positive semidefinite when compressed to a $2\times2$ matrix, and a $2\times2$ positive
+semidefinite matrix has non-negative determinant.
+\writeup Let $Y$ be the matrix with the two columns $(x,0)$ and $(0,y)$. By Proposition~\ref{linear:prop:loewner}(i), $Y^*MY=\bigl(\begin{smallmatrix}
+x^*Ax&x^*By\\y^*B^*x&y^*Cy\end{smallmatrix}\bigr)\succeq0$, so its determinant $(x^*Ax)(y^*Cy)-|x^*By|^2$ is $\ge0$.
+\end{solution}
+
+\begin{solution}{linear:ex:sherman}
+\idea Factor out $A$ and use $\det(I+ab^*)=1+b^*a$; for the inverse, guess a rank-one correction and verify.
+\writeup $\det(A+uv^*)=\det A\det(I+(A^{-1}u)v^*)=\det A\,(1+v^*A^{-1}u)$ by Proposition~\ref{linear:prop:detIAB}. With $c=1+v^*A^{-1}u$,
+\[
+\begin{aligned}
+(A+uv^*)\Bigl(A^{-1}-\frac{A^{-1}uv^*A^{-1}}c\Bigr)&=I+uv^*A^{-1}-\frac{uv^*A^{-1}+u(v^*A^{-1}u)v^*A^{-1}}c\\
+&=I+uv^*A^{-1}-\frac{1+v^*A^{-1}u}c\,uv^*A^{-1}=I.
+\end{aligned}
+\]
+Knowing $A^{-1}$, the update costs two matrix-vector products and one outer product: $O(n^2)$ operations instead of $O(n^3)$.
+\end{solution}
+
+\begin{solution}{linear:ex:hadamard4}
+\idea Orthogonality of $\pm1$ vectors is a counting statement: two rows agree in exactly half of the positions.
+\writeup Multiplying columns by $-1$ preserves $HH^{\mathsf T}=nI$, so assume the first row is all $1$s. Rows $2$ and $3$ are orthogonal to
+row $1$ and to each other. With $a,b,c,d$ as in the hint, $a+b+c+d=n$; orthogonality with row $1$ gives $a+b=c+d$ (row $2$) and $a+c=
+b+d$ (row $3$); orthogonality of rows $2,3$ gives $a+d=b+c$. Subtracting the first two equations gives $b-c=c-b$, so $b=c$; adding them gives $a=d$; then
+the third reads $2a=2b$. So $a=b=c=d$ and $n=4a$.
+\end{solution}
+
+\begin{solution}{linear:ex:maxdet3}
+\idea Row operations do not change the determinant and can make every entry outside the first row even.
+\writeup Adding the first row to every other row gives rows with entries in $\{0,\pm2\}$; factoring $2$ out of each of the $n-1$ rows
+leaves an integer matrix. So $2^{n-1}\mid\det$. For $n=3$, $|\det|$ is a multiple of $4$ and at most $3^{3/2}<8$, so at most $4$. The matrix
+\[
+\begin{pmatrix}1&1&1\\1&-1&1\\1&1&-1\end{pmatrix}
+\]
+has determinant $1(1-1)-1(-1-1)+1(1+1)=4$. Hadamard's bound is not attained, as it must not be: $3$ is not a multiple of $4$.
+\end{solution}
+
+\begin{solution}{linear:ex:minkowskieq}
+\idea Every step of the proof was AM--GM, and AM--GM is an equality only when all terms are equal.
+\writeup After the reduction $A=I$, $B=\operatorname{diag}(d_i)$ with $d_i>0$, equality requires equality in both AM--GM inequalities,
+so $\frac{1}{1+d_i}$ is the same for all $i$: all $d_i$ equal some $c>0$, and $B=cI=cA$. Undoing the congruence, $B=cA$. Conversely,
+$\det((1+c)A)^{1/n}=(1+c)\det(A)^{1/n}$.
+\end{solution}
+
+\begin{solution}{linear:ex:logdetderiv}
+\idea Reduce to eigenvalues, where $\log\det$ is a sum of logarithms.
+\writeup $A+tH=A^{1/2}(I+tK)A^{1/2}$ with $K=A^{-1/2}HA^{-1/2}$ Hermitian, eigenvalues $\mu_i$. So $\log\det(A+tH)=\log\det A+\sum_i\log(1+
+t\mu_i)$, with first derivative $\sum\mu_i=\operatorname{tr}K=\operatorname{tr}(A^{-1}H)$ and second derivative $-\sum\mu_i^2=-\operatorname{tr}
+K^2=-\operatorname{tr}((A^{-1}H)^2)\le0$ at $t=0$. A function on a convex set whose second derivative along every segment is $\le0$ is
+concave; this applies at every point $A$ of the open cone, and gives Theorem~\ref{linear:thm:logdet} again.
+\end{solution}
+
+\begin{solution}{linear:ex:schurmin}
+\idea Peel off the smallest eigenvalue of $A$ as a multiple of the identity, which the Schur product turns into a diagonal matrix.
+\writeup Let $\lambda=\lambda_{\min}(A)\ge0$. Then $A-\lambda I\succeq0$, so $(A-\lambda I)\circ B\succeq0$ by Theorem~\ref{linear:thm:schurproduct},
+that is, $A\circ B\succeq\lambda I\circ B=\lambda\operatorname{diag}(b_{ii})\succeq\lambda\min_ib_{ii}\,I$. By Proposition~\ref{linear:prop:loewner}(ii),
+$\lambda_{\min}(A\circ B)\ge\lambda\min_ib_{ii}$.
+\end{solution}
+
+\begin{solution}{linear:ex:kernels}
+\idea A matrix of inner products is positive semidefinite, whatever the inner product space; so it suffices to write each entry as
+an inner product, possibly in a function space.
+\writeup (a) With $f_i=\mathbf 1_{[0,s_i]}$,
+\[
+\min(s_i,s_j)=\int_0^\infty f_i(r)f_j(r)\,dr=\langle f_i,f_j\rangle_{L^2},
+\]
+so $\sum_{i,j}c_ic_j
+\min(s_i,s_j)=\|\sum c_if_i\|^2\ge0$. (This is the covariance of Brownian motion.) (b) $\frac1{x_i+x_j}=\int_0^\infty e^{-x_ir}e^{-x_jr}\,dr$, the
+same argument. (c) $\cos(\theta_i-\theta_j)=\cos\theta_i\cos\theta_j+\sin\theta_i\sin\theta_j$, the Gram matrix of the vectors
+$(\cos\theta_i,\sin\theta_i)$. (d) $\frac1{1-\langle u_i,u_j\rangle}=\sum_{k\ge0}\langle u_i,u_j\rangle^k$, a convergent series with non-negative
+coefficients applied entrywise to a Gram matrix (it converges since $|\langle u_i,u_j\rangle|<1$ by Cauchy--Schwarz):
+Corollary~\ref{linear:cor:entrywiseexp}.
+\end{solution}
+
+\begin{solution}{linear:ex:gershscale}
+\idea A diagonal similarity does not change the eigenvalues but moves off-diagonal weight between rows and columns. Shrinking
+the off-diagonal part of row $1$ shrinks its disc; the price is paid by the other rows, whose discs only need to stay away from $\mu$.
+\writeup First, $A=\operatorname{diag}(1,2,3)+E$ where $E$ has zero diagonal and off-diagonal entries $\varepsilon$; its eigenvalues are $2\varepsilon$
+and $-\varepsilon$ (twice), so $\|E\|_2=2\varepsilon$, and by Weyl the eigenvalues of $A$ are within $2\varepsilon<\frac12$ of $1,2,3$. In
+particular $\mu\le1+2\varepsilon<\frac32$. Now let $D=\operatorname{diag}(1,\delta,\delta)$ with $\delta=4\varepsilon$. The entries of
+$D^{-1}AD$ are $a_{ij}d_j/d_i$, so its rows are
+\[
+(1,\ \varepsilon\delta,\ \varepsilon\delta),\qquad(\varepsilon/\delta,\ 2,\ \varepsilon),\qquad(\varepsilon/\delta,\ \varepsilon,\ 3).
+\]
+The discs have centres $1,2,3$ and radii $2\varepsilon\delta=8\varepsilon^2$, $\frac\varepsilon\delta+\varepsilon=\frac14+\varepsilon$ and
+$\frac14+\varepsilon$. The second and third discs lie in $\{\operatorname{Re}z\ge2-\frac14-\varepsilon\}\subseteq\{\operatorname{Re}z>\frac32\}$,
+so they do not contain $\mu$. By Gershgorin, $\mu$ lies in the first disc: $|\mu-1|\le8\varepsilon^2$. (Second-order perturbation theory
+predicts $\mu\approx1-\varepsilon^2-\frac{\varepsilon^2}2$, so the true distance is about $1.5\,\varepsilon^2$; the notebook checks it.)
+\end{solution}
+
+\begin{solution}{linear:ex:diagdomdet}
+\idea The determinant is a continuous function that never vanishes along a path from the matrix to its diagonal, so it keeps its sign.
+\writeup Let $D$ be the diagonal part of $A$ and $A_t=D+t(A-D)$, $t\in[0,1]$. The diagonal of $A_t$ is that of $A$, and its off-diagonal
+row sums are $tr_i\le r_i<a_{ii}$, so $A_t$ is strictly diagonally dominant and invertible (Corollary~\ref{linear:cor:diagdom}): $\det A_t\ne0$. The
+function $t\mapsto\det A_t$ is continuous (a polynomial) and never zero on $[0,1]$, so it has constant sign, that of $\det D=\prod a_{ii}>0$.
+\end{solution}
+
+\begin{solution}{linear:ex:oppenheim}
+\idea Peel off the first row and column with Schur complements on both sides; the Schur product theorem shows that the complement
+for $A\circ B$ dominates the Schur product of the complement for $A$ with a block of $B$, and induction does the rest.
+\writeup By continuity (replace $A$ by $A+\varepsilon I$ and let $\varepsilon\to0$) we may assume $A\succ0$; the case $n=1$ is an equality.
+Write
+\[
+A=\begin{pmatrix}a&\alpha^*\\\alpha&A_1\end{pmatrix},\qquad B=\begin{pmatrix}b&\beta^*\\\beta&B_1\end{pmatrix},
+\]
+so $a>0$, and $S=A_1-\alpha\alpha^*/a\succ0$ with $\det A=a\det S$ (Proposition~\ref{linear:prop:schurcomplement}). If $b=0$, then $\beta=0$ (a
+positive semidefinite matrix with a zero diagonal entry has a zero row), so $A\circ B$ has a zero row and both sides vanish. If $b>0$,
+then $B_1-\beta\beta^*/b\succeq0$, and the Schur complement of the entry $ab$ in $A\circ B$ is
+\[
+A_1\circ B_1-\frac{(\alpha\circ\beta)(\alpha\circ\beta)^*}{ab}=S\circ B_1+\frac1a\,\alpha\alpha^*\circ\Bigl(B_1-\frac{\beta\beta^*}b\Bigr),
+\]
+as one sees by expanding the right side and using $(\alpha\alpha^*)\circ(\beta\beta^*)=(\alpha\circ\beta)(\alpha\circ\beta)^*$. The last term is
+$\succeq0$ by the Schur product theorem, so this complement is $\succeq S\circ B_1\succeq0$. By Proposition~\ref{linear:prop:loewner}(ii) and
+induction (applied to $S$ and $B_1$),
+\[
+\begin{aligned}
+\det(A\circ B)&=ab\,\det\Bigl(A_1\circ B_1-\frac{(\alpha\circ\beta)(\alpha\circ\beta)^*}{ab}\Bigr)\\
+&\ge ab\,\det(S\circ B_1)\ge ab\,\det S\prod_{i\ge2}b_{ii}=\det A\prod_ib_{ii}.
+\end{aligned}
+\]
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~Hadamard, \emph{R\'esolution d'une question relative aux d\'eterminants}, Bulletin des Sciences Math\'ematiques 17 (1893),
+240--246; H.~Kharaghani and B.~Tayfeh-Rezaie, \emph{A Hadamard matrix of order 428}, Journal of Combinatorial Designs 13 (2005), 435--440.
+\item R.~Bhatia, \emph{Matrix Analysis}, Springer, 1997, Chapters V (operator monotone functions, L\"owner's theorem) and IX; R.~Bhatia,
+\emph{Positive Definite Matrices}, Princeton University Press, 2007.
+\item R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge University Press, 2013, Chapters 6 (Gershgorin) and 7
+(positive definite matrices, Hadamard, Fischer, Oppenheim, Schur product).
+\item I.~Schur, \emph{Bemerkungen zur Theorie der beschr\"ankten Bilinearformen mit unendlich vielen Ver\"anderlichen}, Journal f\"ur die
+reine und angewandte Mathematik 140 (1911), 1--28 (Schur product theorem; Hilbert's inequality with the sharp constant $\pi$).
+\item G.~H.~Hardy, J.~E.~Littlewood and G.~P\'olya, \emph{Inequalities}, Cambridge University Press, 1934, Chapter IX (Hilbert's inequality);
+J.~M.~Steele, \emph{The Cauchy--Schwarz Master Class}, Cambridge University Press, 2004, Chapter 10.
+\item S.~Gershgorin, \emph{\"Uber die Abgrenzung der Eigenwerte einer Matrix}, Izvestiya Akademii Nauk SSSR 6 (1931), 749--754; R.~S.~Varga,
+\emph{Ger\v{s}gorin and His Circles}, Springer, 2004.
+\item K.~L\"owner, \emph{\"Uber monotone Matrixfunktionen}, Mathematische Zeitschrift 38 (1934), 177--216; E.~Heinz, \emph{Beitr\"age zur
+St\"orungstheorie der Spektralzerlegung}, Mathematische Annalen 123 (1951), 415--438.
+\item B.~Sch\"olkopf and A.~J.~Smola, \emph{Learning with Kernels}, MIT Press, 2002, Chapter 2 (positive definite kernels).
+\item T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd ed., Wiley, 2006, Chapter 17 (determinant inequalities
+from entropy).
+\end{itemize}

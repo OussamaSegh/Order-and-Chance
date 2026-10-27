@@ -263,7 +263,7 @@ def boolean_lattice(n=5):
 
 def lozenge_tiling(a=28, sweeps=8000, seed=7):
     """A uniformly random lozenge tiling of the hexagon of side a, seen as a random plane
-    partition in an a x a x a box (Tome S1, Chapter 2: Lindstrom-Gessel-Viennot). The heights
+    partition in an a x a x a box (Tome 2, Appendix B: Lindstrom-Gessel-Viennot). The heights
     are sampled by heat-bath Glauber dynamics on a checkerboard: given its four neighbours, the
     height of a column is uniform on the allowed interval. The corners freeze and the centre
     stays disordered, inside the 'arctic circle'. Three shades for the three orientations make
@@ -350,7 +350,7 @@ def confocal_grid(Y=1.45, n_ell=9, n_hyp=8):
 
 
 def apollonian_gasket(rmin=0.004, label_r=0.06):
-    """Tome S2: the integral Apollonian gasket with root quadruple (-1, 2, 2, 3). Every circle
+    """Geometry: the integral Apollonian gasket with root quadruple (-1, 2, 2, 3). Every circle
     is tangent to three others, and by Descartes' theorem every curvature is an integer; the
     larger circles carry theirs. New circles come from the reflection d' = 2(a + b + c) - d,
     applied to curvatures and to curvature times centre (the complex Descartes theorem)."""
@@ -390,7 +390,7 @@ def apollonian_gasket(rmin=0.004, label_r=0.06):
 
 
 def bitonic_network(n=16):
-    """Batcher's bitonic sorting network on n wires (Tome C2, Chapter 2): horizontal wires,
+    """Batcher's bitonic sorting network on n wires : horizontal wires,
     each comparator a vertical segment whose arrowhead marks where the larger value goes.
     Comparators of one stage whose spans overlap are drawn in separate sub-columns."""
     cols = []
@@ -503,7 +503,7 @@ def farey_tessellation(depth=8, nmax=40):
 
 
 def collatz_coral(N=2500, even_turn=0.13, odd_turn=-0.23):
-    """Tome S3: the Collatz tree as a coral. Every n <= N is joined to 1 along its Collatz
+    """Conjectures: the Collatz tree as a coral. Every n <= N is joined to 1 along its Collatz
     orbit, read backwards from 1; each step turns left when the value is even and right when
     it is odd. Paths share their common tails, so the picture is the backward Collatz tree
     (Chapter 6), with every edge drawn once."""
@@ -547,7 +547,7 @@ def collatz_coral(N=2500, even_turn=0.13, odd_turn=-0.23):
 
 def mod3_automaton():
     """The three-state automaton that reads a binary number, most significant bit first, and
-    accepts exactly the multiples of 3 (Tome C3, Chapter 1): state r means "the bits read so
+    accepts exactly the multiples of 3 : state r means "the bits read so
     far are r mod 3", and reading b moves to 2r + b mod 3. State 0 is initial and accepting."""
     r_st, d = 0.4, 1.65
     pos = {0: (-d, -0.2), 1: (0.0, -0.2), 2: (d, -0.2)}
@@ -703,44 +703,6 @@ def dyson_fan(n=16, steps=700, seed=11):
     return "\n".join(lines) + "\n"
 
 
-def series_chords():
-    """Tome S4: the map of the series as a chord diagram. The tomes sit on a circle in series
-    order; a chord joins two tomes when one cites the other, its width growing with the number
-    of citations (tomeS4-companion/data/series.json, made by tomeS4-companion/generate.py),
-    and each dot grows with the number of named results of its tome."""
-    import json
-    data = json.loads((ROOT / "tomeS4-companion/data/series.json").read_text())
-    order = [t["num"] for t in data["plan"]]
-    count = {}
-    for c in data["citations"]:
-        if c["status"] == "ok":
-            key = tuple(sorted((c["from"], c["to"]), key=order.index))
-            count[key] = count.get(key, 0) + 1
-    n = len(order)
-    ang = {t: math.pi / 2 - 2 * math.pi * i / n for i, t in enumerate(order)}
-    rr = 0.86 * R
-    pos = {t: (rr * math.cos(a), rr * math.sin(a)) for t, a in ang.items()}
-    top = max(count.values())
-    lines = ["%% Series chord diagram: %d tomes in the plan, %d pairs of tomes linked by citations." % (n, len(count)),
-             r"\begin{scope}",
-             r"\draw[accent,line width=0.5pt,opacity=0.5] (0,0) circle (%.3fin);" % rr]
-    for (a, b), v in sorted(count.items(), key=lambda kv: kv[1]):
-        (x1, y1), (x2, y2) = pos[a], pos[b]
-        w = 0.25 + 2.6 * math.sqrt(v / top)
-        lines.append(r"\draw[accent,line width=%.2fpt,opacity=%.2f] (%.4fin,%.4fin) .. controls (%.4fin,%.4fin) and (%.4fin,%.4fin) .. (%.4fin,%.4fin);"
-                     % (w, 0.35 + 0.5 * math.sqrt(v / top), x1, y1, 0.25 * x1, 0.25 * y1, 0.25 * x2, 0.25 * y2, x2, y2))
-    for t in order:
-        tome = data["tomes"].get(t)
-        named = sum(1 for ch in tome["chapters"] for r in ch["results"] if r.get("name")) if tome else 0
-        rad = 0.035 + 0.075 * math.sqrt(named / 200)
-        x, y = pos[t]
-        style = "fill=accent" if tome or t == "S4" else "draw=accent,line width=0.6pt"
-        lines.append(r"\path[%s] (%.4fin,%.4fin) circle (%.3fin);" % (style, x, y, rad))
-        lx, ly = 1.09 * x, 1.09 * y
-        lines.append(r"\node[accent,font=\scriptsize] at (%.4fin,%.4fin) {%s};" % (lx, ly, t))
-    lines.append(r"\end{scope}")
-    return "\n".join(lines) + "\n"
-
 
 def hilbert_curve(order=6):
     """Problem Book P2: Hilbert's space-filling curve (1891) at stage 6. In the limit it is a continuous
@@ -847,7 +809,7 @@ def brw_barrier(depth=11, seed=15):
 
 def e8_roots():
     """The 240 roots of E8, the 240 minimal vectors of the lattice obtained from the extended Hamming
-    code by Construction A (Tome C4, Chapter 5), drawn in the Coxeter plane: the plane on which a
+    code by Construction A , drawn in the Coxeter plane: the plane on which a
     Coxeter element acts as a rotation by 2 pi/30. The roots fall on 8 rings of 30, and two roots are
     joined when their inner product is 1 (each root has 56 such neighbours)."""
     roots = []
@@ -897,7 +859,7 @@ def gd_nesterov(kappa=16.0, angle=24.0, n_levels=12):
     """Level sets of an elongated convex quadratic f(u,v) = (u^2 + kappa v^2)/2 (rotated), with two
     minimisers started at the same point: steepest descent with exact line search (Cauchy, 1847),
     which zigzags across the valley, and Nesterov's accelerated gradient (1983), which glides along
-    it (Tome C5, Chapter 4)."""
+    it ."""
     th = math.radians(angle)
     c, s_ = math.cos(th), math.sin(th)
     a = 2.2                               # half-length of the outermost level set along the valley
@@ -980,7 +942,7 @@ def cue_and_zeta(n=48, first=1000, seed=3):
 
 
 def entropy_plate():
-    """Binary entropy h(p) and BSC capacity 1-h(p), Computing C4 chapters 1 and 3."""
+    """Binary entropy h(p) and BSC capacity 1-h(p), information theory."""
     lines = ['% Binary entropy h(p) (cream) and binary symmetric channel capacity 1-h(p) (ink).']
     P = lambda x,y: (4.1*(x-.5), 3.4*(y-.5))
     for y in (0, .25, .5, .75, 1):
@@ -1061,7 +1023,7 @@ def conjugate_gradient_plate():
 
 # Historical selections; the active series mapping lives in cover_plates.PLATES.
 LEGACY_MOTIFS = {
-    "tome0-back-in-shape": times_table,
+    "tome0-mathematical-maturity": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
     "tome3-chance": galton_board,
@@ -1070,24 +1032,15 @@ LEGACY_MOTIFS = {
     "tome6-spaces": sierpinski_carpet,
     "tome7-analysis": confocal_grid,
     "tome8-shapes": farey_tessellation,
-    "tome9-structures2": plancherel_young,
+    "tome9-higher-structures": plancherel_young,
     "tome10-chance2": stick_breaking,
     "tome11-motion": dyson_fan,
     "tome12-arithmetic": ford_circles,
     "tome13-primes": prime_constellations,
     "tome15-workshop": brw_barrier,
-    "tomeC1-discrete": boolean_lattice,
-    "tomeC2-algorithms": bitonic_network,
-    "tomeC3-complexity": mod3_automaton,
-    "tomeS1-linear": lozenge_tiling,
-    "tomeS2-geometry": apollonian_gasket,
-    "tomeS3-conjectures": collatz_coral,
-    "tomeS4-companion": series_chords,
     "tomeP1-crossroads": gaussian_primes,
     "tomeP2-machinery": irrational_rotation,
     "tome14-random": multiplicative_walks,
-    "tomeC4-information": entropy_plate,
-    "tomeC5-learning": conjugate_gradient_plate,
 
     "tomeP3-frontiers": binomial_limits,
 }

@@ -51,6 +51,8 @@ def copyright_section(main_tex: Path) -> str:
 
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
+    # Pandoc drops \appendix; preserve the transition for the numbering filter.
+    text = text.replace(r"\appendix", r"\begin{ocappendices}Appendices\end{ocappendices}")
     text = text.replace("\\maketitle\n", copyright_section(Path(src)), 1)
     # A book may rename its exercises ("% exercise-name: Problem" in main.tex); tools/epub.lua reads the marker.
     name = re.search(r"^% exercise-name: (\w+)", text, re.M)

@@ -85,7 +85,7 @@ formula. Changing layout requires rebuilding it.
 KDP/Kindle Previewer, account metadata, accurate AI-content disclosure and a
 physical proof remain publisher checks. No Git push, release replacement, Pages
 deployment or KDP upload is included in this revision. See
-`tome0-back-in-shape/PUBLISHING.md` for the file mapping and upload settings.
+`tome0-mathematical-maturity/PUBLISHING.md` for the file mapping and upload settings.
 
 ## Final measured outputs
 

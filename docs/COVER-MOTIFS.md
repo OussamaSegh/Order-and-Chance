@@ -8,7 +8,7 @@ they are not proofs of open conjectures.
 
 | Volume | New illustration | Manuscript evidence |
 |---|---|---|
-| 0: Back in Shape | Gaussian wireframe surface | ch06-integrals-taylor.tex; ch08-counting-probability.tex |
+| 0: Mathematical Maturity | Gaussian wireframe surface | ch06-integrals-taylor.tex; ch08-counting-probability.tex |
 | 1: The Integers | Lattice circle and 3–4–5 triangle | ch07-sums-of-squares.tex |
 | 2: Structures | Truncated icosahedron, rotations and A5 | ch11-characters.tex; ch12-quaternions.tex |
 | 3: Chance | Binomial board and Gaussian approximation | ch02-discrete.tex; ch06-clt.tex |
@@ -17,22 +17,13 @@ they are not proofs of open conjectures.
 | 6: Spaces | Sierpinski carpet and Cantor construction | ch11-metricmeasures.tex |
 | 7: Analysis in Depth | Image of an orthogonal grid under sin(z) | ch09-complex.tex |
 | 8: Shapes | Farey tessellation of the hyperbolic disk | ch09-hyperbolic.tex |
-| 9: Structures II | Young diagram and Plancherel limit shape | ch09-symmetric.tex |
+| 9: Higher Structures | Young diagram and Plancherel limit shape | ch09-symmetric.tex |
 | 10: Chance II | GEM(1) proportional stick-breaking bands | ch12-permutations.tex |
 | 11: Random Motion | Hermitian Brownian eigenvalue trajectories | ch10-semicircle.tex |
 | 12: Arithmetic | Ford circles over reduced rationals | ch14-modular.tex; ch12-elliptic.tex |
 | 13: Primes in Depth | Prime residues, twins and constellations | Prime distribution and progressions |
 | 14: Random Arithmetic | Steinhaus multiplicative partial-sum walks | ch05-randommult.tex |
 | 15: The Research Workshop | Branching random walk and critical barrier | ch06-chaos.tex |
-| C1: Discrete Structures | Boolean lattice and symmetric chains | Orders and combinatorics |
-| C2: Algorithms | Eight-wire bitonic sorting network | Sorting networks |
-| C3: Computation and Complexity | Finite automaton for divisibility by three | ch01-automata.tex |
-| C4: Information, Codes and Secrets | Binary entropy and symmetric-channel capacity | ch01-entropy.tex; ch03-channels.tex |
-| C5: Data, Optimisation and Learning | Quadratic contours and conjugate gradients | ch02-krylov.tex |
-| S1: Linear Algebra in Depth | Lozenge tiling and determinant geometry | ch02-volume.tex |
-| S2: Geometry | Apollonian circle packing and integer curvatures | Circle geometry and inversion |
-| S3: A Book of Conjectures | Computed Collatz orbit tree | Collatz iteration |
-| S4: The Companion | Actual cross-volume mathematical citation map | data/series.json |
 | P1: Crossroads | Gaussian primes in a bounded integer lattice | Gaussian integers and number theory |
 | P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
 | P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |

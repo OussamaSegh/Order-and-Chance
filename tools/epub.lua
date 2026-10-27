@@ -1,6 +1,11 @@
 -- Pandoc filter giving the EPUB the same numbering and box titles as the PDF.
 
 local chapter = 0
+local chapter_label = 0
+local appendix = false
+local appendix_chapter = 0
+local appendix_refs = {}
+local sections = {}
 local exnum = {}      -- label -> "c.n"
 local count = 0
 local fignum = {}     -- label -> "c.n"
@@ -40,17 +45,54 @@ end
 
 local function number_pass(doc)
   for i, b in ipairs(doc.blocks) do
-    if b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
+    if b.t == "Div" and b.classes:includes("ocappendices") then
+      appendix = true
+    elseif b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
       chapter = chapter + 1
+      chapter_label = chapter
+      if appendix then
+        appendix_chapter = appendix_chapter + 1
+        chapter_label = string.char(64 + appendix_chapter)
+        sections = {}
+        appendix_refs[b.identifier] = chapter_label
+        b.classes:insert("unnumbered")
+        b.content:insert(1, pandoc.Str("Appendix " .. chapter_label .. ": "))
+      end
       count = 0
       figcount = 0
       eqcount = 0
+    elseif appendix and b.t == "Header" and b.level > 1 and not b.classes:includes("unnumbered") then
+      local level = b.level
+      sections[level] = (sections[level] or 0) + 1
+      for deeper = level + 1, 6 do sections[deeper] = nil end
+      local n = chapter_label
+      for depth = 2, level do n = n .. "." .. (sections[depth] or 0) end
+      appendix_refs[b.identifier] = n
+      b.classes:insert("unnumbered")
+      b.content:insert(1, pandoc.Str(n .. " "))
     elseif b.t == "Div" and b.classes:includes("exercise") then
       count = count + 1
       local l = label_of(b.content)
-      local n = chapter .. "." .. count
+      local n = chapter_label .. "." .. count
       b.attributes["number"] = n
       if l then exnum[l] = n end
+    end
+    if appendix and b.t == "Div" then
+      local numbered = {theorem=true, proposition=true, lemma=true, corollary=true, definition=true, example=true}
+      for _, cls in ipairs(b.classes) do
+        if numbered[cls] then
+          local title = b.content[1] and b.content[1].content[1]
+          if title and title.t == "Strong" then
+            local value = pandoc.utils.stringify(title.content)
+            local n = value:match("(%d+%.%d+)$")
+            if n then
+              n = n:gsub("^%d+", chapter_label)
+              appendix_refs[b.identifier] = n
+              title.content = {pandoc.Str(value:gsub("%d+%.%d+$", n))}
+            end
+          end
+        end
+      end
     end
     if b.t ~= "Header" then
       -- A display with a \label is a numbered equation: show its number as a \tag, as in the PDF.
@@ -58,7 +100,7 @@ local function number_pass(doc)
         local l = m.mathtype == "DisplayMath" and m.text:match("\\label{([^}]*)}")
         if not l then return nil end
         eqcount = eqcount + 1
-        eqnum[l] = chapter .. "." .. eqcount
+        eqnum[l] = chapter_label .. "." .. eqcount
         m.text = m.text:gsub("\\label{[^}]*}", "", 1)
         if FORMAT:match("html") then  -- the online reader (KaTeX)
           m.text = m.text .. "\\tag{" .. eqnum[l] .. "}"
@@ -72,7 +114,7 @@ local function number_pass(doc)
     end
     if b.t == "Figure" then
       figcount = figcount + 1
-      local n = chapter .. "." .. figcount
+      local n = chapter_label .. "." .. figcount
       b.attributes["number"] = n
       if b.identifier ~= "" then fignum[b.identifier] = n end
     end
@@ -85,6 +127,7 @@ local unnumbered = { remark = true, theoremx = true, propositionx = true, lemmax
 
 local function rewrite(b)
   if b.t ~= "Div" then return nil end
+  if b.classes:includes("ocappendices") then return {} end
   for _, cls in ipairs(b.classes) do
     if unnumbered[cls] then
       local para = b.content[1]
@@ -173,7 +216,7 @@ local function fix_ref(el)
     return el
   end
   if el.attributes["reference-type"] == "ref" then
-    local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]]
+    local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]] or appendix_refs[el.attributes["reference"]]
     if n then
       el.content = { pandoc.Str(n) }
       el.target = "#" .. el.attributes["reference"]

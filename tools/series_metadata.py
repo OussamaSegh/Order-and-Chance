@@ -17,7 +17,7 @@ def tex_source():
     return '\n'.join(definitions)+'\n'
 def main():
     data=subtitles()
-    assert len(data)==28 and len(set(data.values()))==28
+    assert len(data)==19 and len(set(data.values()))==19
     (ROOT/'common/volume-subtitles.tex').write_text(tex_source())
 def check_sync():
     target=ROOT/'common/volume-subtitles.tex'

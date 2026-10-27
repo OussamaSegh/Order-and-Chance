@@ -38,7 +38,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 ## Conventions for every tome
 
 - `main.tex` keeps its first line `% epub-title: Order and Chance. Tome N: Title`; the build
-  reads the tome number and title from it (numbers may be `0`–`15` or `C1`–`C5`).
+  reads the tome number and title from it (numbers may be `0`–`15` or `P1`–`P3`).
 - `\maketitle` builds the front matter of a published book automatically: half-title, series
   page (from `common/series.tex`), title page and copyright page (`common/frontmatter.tex`).
   The order in `main.tex` stays `\frontmatter \makecover \maketitle` then the preface, then

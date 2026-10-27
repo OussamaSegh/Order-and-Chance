@@ -68,6 +68,37 @@ class EpubRegression(unittest.TestCase):
         alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
         self.assertEqual(alternatives, ["A square with four equal sides.", "An explicitly described square."])
 
+    def test_integrated_appendices_keep_pdf_numbering(self):
+        source = r"""\documentclass{book}
+\newtheorem{theorem}{Theorem}[chapter]
+\begin{document}\chapter{Main}
+\begin{theorem}Original.\end{theorem}
+\appendix
+\chapter{Support}\label{ch:support}
+\section{A section}\label{sec:support}
+\begin{theorem}\label{thm:support}A proof.\end{theorem}
+\begin{exercise}\label{ex:support}A problem.\end{exercise}
+\begin{hint}{ex:support}An idea.\end{hint}
+See Theorem~\ref{thm:support}, Exercise~\ref{ex:support},
+Appendix~\ref{ch:support}, Section~\ref{sec:support}.
+\chapter{More support}
+\begin{exercise}\label{ex:more}Another problem.\end{exercise}
+\end{document}"""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(source)
+            epub_prep.main(str(root / "main.tex"), str(root / "epub.tex"), directory)
+            result = subprocess.run(
+                ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
+                 "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
+                capture_output=True, text=True, check=True)
+        for expected in ["Appendix A: Support", "Appendix B: More support",
+                         "Theorem A.1", "Exercise A.1", "Exercise B.1", "A.1 A section"]:
+            self.assertIn(expected, result.stdout)
+        self.assertRegex(result.stdout, r'href="#thm:support"[^>]*>A\.1</a>')
+        self.assertRegex(result.stdout, r'href="#ch:support"[^>]*>A</a>')
+        self.assertNotIn("ocappendices", result.stdout)
+
     def test_portrait_alternative(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "main.tex"

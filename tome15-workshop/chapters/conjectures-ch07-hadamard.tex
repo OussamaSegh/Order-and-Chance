@@ -1,0 +1,499 @@
+\chapter{Hadamard Matrices}\label{conjectures:ch:hadamard}
+
+\begin{center}\itshape
+Thoughts on inverse orthogonal matrices, simultaneous sign-successions, and tessellated pavements in two or more colours, with applications to
+Newton's rule, ornamental tile-work, and the theory of numbers.
+\upshape(James Joseph Sylvester, the title of his paper of 1867)
+\end{center}
+
+Fill an $n\times n$ square with signs $+1$ and $-1$. How large can its determinant be? For $n=2$ the answer is $2$, from
+$\bigl(\begin{smallmatrix}1&1\\1&-1\end{smallmatrix}\bigr)$; for $n=3$ it is $4$ (Exercise~\ref{conjectures:ex:det3}). In 1893 Jacques Hadamard proved that the
+determinant of such a matrix is at most $n^{n/2}$, and that the bound is reached only when the rows are pairwise orthogonal. That can happen only when $n$
+is $1$, $2$ or a multiple of $4$. Is it enough to be a multiple of $4$?
+
+Nobody knows. Sylvester had already found, in his paper with the wonderful title above, examples of every order $2^k$, by a doubling trick. In 1933
+Raymond Paley, a twenty-six-year-old Cambridge analyst working with Norbert Wiener at MIT, used the squares of finite fields to construct examples of
+orders $q+1$ and $2(q+1)$ for prime powers $q$. His paper on ``orthogonal matrices'' appeared in 1933; on 7 April of that year he was killed by an
+avalanche while skiing alone near Banff. John Williamson added a construction based on quaternions in 1944. With these tools the smallest order
+left open was $92$, until Leonard Baumert, Solomon Golomb and Marshall Hall found a matrix of order $92$ in 1962, with Williamson's construction and
+a computer at the Jet Propulsion Laboratory. The open orders kept falling, one by one, to cleverer constructions and longer searches: $428$ fell in
+2004, to Hadi Kharaghani and Behruz Tayfeh-Rezaie, after twelve hours on a cluster of sixteen PCs. After that the smallest open order was $668$.
+
+The \emph{Hadamard conjecture} says that a Hadamard matrix exists for every multiple of $4$. This chapter proves Hadamard's bound and the four classical
+constructions, explains why a Hadamard matrix is the same thing as a certain block design and an optimal error-correcting code, and shows why the
+problem is so stubborn: every known construction needs an algebraic miracle, and the miracles have gaps.
+
+\begin{think}
+Two vectors of $\pm1$ entries of length $n$ are orthogonal exactly when they agree in $\frac n2$ places. Try to write down four pairwise orthogonal
+$\pm1$ vectors of length $4$, then three of length $6$. Where does the second attempt go wrong?
+\end{think}
+
+\section{Hadamard's bound}
+
+We use Hadamard's inequality: for a real $n\times n$ matrix with rows $r_1,\dots,r_n$, $|\det A|\le\|r_1\|\cdots\|r_n\|$, with equality if and only if
+some row is $0$ or the rows are pairwise orthogonal (Tome~2, Theorem~K.5). Geometrically: the volume of a parallelepiped is at most the product of its
+edge lengths.
+
+\begin{theorem}[Hadamard, 1893]\label{conjectures:thm:hadbound}
+If $A$ is an $n\times n$ matrix with entries in $[-1,1]$, then $|\det A|\le n^{n/2}$. If the entries are $\pm1$, equality holds if and only if
+$AA^{\mathsf T}=nI_n$.
+\end{theorem}
+\begin{proof}
+Each row has $\|r_i\|\le\sqrt n$, so Hadamard's inequality gives $|\det A|\le n^{n/2}$. For a $\pm1$ matrix, $\|r_i\|=\sqrt n$ exactly and no row is $0$,
+so equality holds if and only if the rows are pairwise orthogonal, that is $AA^{\mathsf T}=nI_n$.
+\end{proof}
+
+A \emph{Hadamard matrix} of order $n$ is an $n\times n$ matrix $H$ with entries $\pm1$ and $HH^{\mathsf T}=nI_n$. Then $H^{\mathsf T}=nH^{-1}$, so also
+$H^{\mathsf T}H=nI_n$: the columns are orthogonal too. Permuting rows or columns, or multiplying some of them by $-1$, keeps the property; matrices related
+in this way are called \emph{equivalent}. Every Hadamard matrix is equivalent to a \emph{normalised} one, whose first row and first column consist of $1$s.
+
+\begin{proposition}\label{conjectures:prop:div4}
+If a Hadamard matrix of order $n$ exists, then $n=1$, $n=2$ or $4\mid n$.
+\end{proposition}
+\begin{proof}
+Let $n\ge3$ and normalise $H$, so that its first row consists of $1$s. Let $a,b,c,d$ be the numbers of columns whose entries in rows $2$ and $3$ are
+$(+,+)$, $(+,-)$, $(-,+)$, $(-,-)$; then $a+b+c+d=n$. Orthogonality of row $1$ with rows $2$ and $3$ gives $a+b=c+d$ and $a+c=b+d$, and orthogonality
+of rows $2$ and $3$ gives $a+d=b+c$. Subtracting the second equation from the first gives $b-c=c-b$, so $b=c$, and then $a=d$; the third equation
+becomes $2a=2b$. So $a=b=c=d=\frac n4$, and $4\mid n$.
+\end{proof}
+
+The same argument appears as an exercise in Tome~2 (Exercise~K.4 there), and again in the problem book P1. The
+size of the bound is worth a look: a random $\pm1$ matrix has $|\det A|$ of order roughly $\sqrt{n!}$, which is smaller than $n^{n/2}$ by a factor
+of about $e^{n/2}$, so a Hadamard matrix is exponentially special.
+
+\section{Sylvester's doubling}
+
+The \emph{Kronecker product} of an $m\times m$ matrix $A$ and an $n\times n$ matrix $B$ is the $mn\times mn$ block matrix $A\otimes B=(a_{ij}B)$. It
+satisfies $(A\otimes B)(C\otimes D)=(AC)\otimes(BD)$ and $(A\otimes B)^{\mathsf T}=A^{\mathsf T}\otimes B^{\mathsf T}$, by multiplying blocks.
+
+\begin{proposition}[Sylvester, 1867]\label{conjectures:prop:kron}
+If $H$ and $K$ are Hadamard matrices of orders $m$ and $n$, then $H\otimes K$ is a Hadamard matrix of order $mn$. In particular the matrices
+$S_1=(1)$, $S_{2^{k+1}}=\begin{pmatrix}S_{2^k}&S_{2^k}\\S_{2^k}&-S_{2^k}\end{pmatrix}=\begin{pmatrix}1&1\\1&-1\end{pmatrix}\otimes S_{2^k}$ are
+Hadamard matrices of order $2^k$.
+\end{proposition}
+\begin{proof}
+$(H\otimes K)(H\otimes K)^{\mathsf T}=(HH^{\mathsf T})\otimes(KK^{\mathsf T})=(mI_m)\otimes(nI_n)=mnI_{mn}$, and the entries are products of signs.
+\end{proof}
+
+The rows of $S_{2^k}$ are the \emph{Walsh functions}: the entry in row $i$ and column $j$ is $(-1)^{i\cdot j}$, where $i\cdot j$ is the dot product of
+the binary expansions (Exercise~\ref{conjectures:ex:walsh}). They are the characters of the group $(\mathbb Z/2)^k$, and multiplying by $S_{2^k}$ is the
+Walsh--Hadamard transform of signal processing.
+
+\section{Paley's constructions}
+
+Let $q$ be an odd prime power and $\mathbb F_q$ the field with $q$ elements (Tome~2, Theorem~9.6). Its multiplicative group is cyclic (Tome~2,
+Theorem~9.4); let $g$ be a generator. The \emph{quadratic character} $\chi:\mathbb F_q\to\{0,\pm1\}$ is $\chi(0)=0$, $\chi(x)=1$ if $x$ is a nonzero
+square and $\chi(x)=-1$ otherwise.
+
+\begin{lemma}\label{conjectures:lem:chi}
+\begin{enumerate}
+\item $\chi(g^j)=(-1)^j$, so $\chi$ is multiplicative and there are $\frac{q-1}2$ nonzero squares.
+\item $\chi(-1)=(-1)^{(q-1)/2}$: $-1$ is a square if and only if $q\equiv1\pmod4$.
+\item $\sum_{x\in\mathbb F_q}\chi(x)=0$.
+\item For $c\neq0$, $\sum_{x\in\mathbb F_q}\chi(x)\chi(x+c)=-1$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) The squares of $g^i$ are the $g^{2i}$, so the nonzero squares are the even powers of $g$, which are $\frac{q-1}2$ elements since $g$ has even order
+$q-1$. Hence $\chi(g^j)=(-1)^j$, and $\chi(g^ig^j)=(-1)^{i+j}=\chi(g^i)\chi(g^j)$; with $0$ the multiplicativity is clear. (b) $-1$ is the element of
+order $2$, that is $g^{(q-1)/2}$. (c) There are as many $+1$ as $-1$. (d) The term $x=0$ is $0$. For $x\neq0$,
+$\chi(x)\chi(x+c)=\chi(x)^2\chi(1+cx^{-1})=\chi(1+cx^{-1})$. As $x$ runs over $\mathbb F_q^*$, $1+cx^{-1}$ runs over $\mathbb F_q\setminus\{1\}$, so the sum is
+$\sum_y\chi(y)-\chi(1)=0-1$.
+\end{proof}
+
+Index rows and columns by the elements of $\mathbb F_q$, in any order, and let $Q$ be the \emph{Jacobsthal matrix} $Q_{xy}=\chi(x-y)$. Write $J$ for an
+all-ones matrix and $\mathbf j$ for an all-ones column, with sizes given by the context.
+
+\begin{lemma}\label{conjectures:lem:jacobsthal}
+$Q\mathbf j=0$, $\mathbf j^{\mathsf T}Q=0$, $QQ^{\mathsf T}=qI-J$, and $Q^{\mathsf T}=\chi(-1)Q$: the matrix $Q$ is symmetric if $q\equiv1\pmod4$ and
+skew-symmetric if $q\equiv3\pmod4$.
+\end{lemma}
+\begin{proof}
+The row and column sums are $\sum_y\chi(x-y)=0$ and $\sum_x\chi(x-y)=0$, by Lemma~\ref{conjectures:lem:chi}(c). The entry $(x,z)$ of $QQ^{\mathsf T}$ is
+$\sum_y\chi(x-y)\chi(z-y)$; put $u=x-y$: it is $\sum_u\chi(u)\chi(u+z-x)$, which is $q-1$ if $z=x$ and $-1$ otherwise, by (a) and (d). Finally
+$Q_{yx}=\chi(y-x)=\chi(-1)\chi(x-y)$.
+\end{proof}
+
+\begin{theorem}[Paley I, 1933]\label{conjectures:thm:paley1}
+Let $q\equiv3\pmod4$ be a prime power and
+\[
+S=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\-\mathbf j&Q\end{pmatrix}.
+\]
+Then $H=I+S$ is a Hadamard matrix of order $q+1$.
+\end{theorem}
+\begin{proof}
+The entries of $S$ are $0$ on the diagonal and $\pm1$ elsewhere, because $\chi(x-y)=\pm1$ for $x\neq y$; so $H$ is a $\pm1$ matrix. Since $Q$ is
+skew-symmetric, so is $S$. By Lemma~\ref{conjectures:lem:jacobsthal},
+\[
+SS^{\mathsf T}=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\-\mathbf j&Q\end{pmatrix}\begin{pmatrix}0&-\mathbf j^{\mathsf T}\\\mathbf j&Q^{\mathsf T}\end{pmatrix}
+=\begin{pmatrix}\mathbf j^{\mathsf T}\mathbf j&\mathbf j^{\mathsf T}Q^{\mathsf T}\\Q\mathbf j&\mathbf j\mathbf j^{\mathsf T}+QQ^{\mathsf T}\end{pmatrix}
+=\begin{pmatrix}q&0\\0&J+qI-J\end{pmatrix}=qI.
+\]
+So $HH^{\mathsf T}=(I+S)(I-S)=I-S^2=I+SS^{\mathsf T}=(q+1)I$.
+\end{proof}
+
+\begin{theorem}[Paley II, 1933]\label{conjectures:thm:paley2}
+Let $q\equiv1\pmod4$ be a prime power and
+\[
+S=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\\mathbf j&Q\end{pmatrix},\qquad H=\begin{pmatrix}S+I&S-I\\S-I&-S-I\end{pmatrix}.
+\]
+Then $H$ is a Hadamard matrix of order $2(q+1)$.
+\end{theorem}
+\begin{proof}
+Now $Q$ and $S$ are symmetric, and the computation of the previous proof, with $+\mathbf j$ in place of $-\mathbf j$, gives $S^2=SS^{\mathsf T}=qI$. The
+entries of $S\pm I$ are $\pm1$, and $H$ is symmetric, so
+\[
+\begin{aligned}HH^{\mathsf T}=H^2&=\begin{pmatrix}(S+I)^2+(S-I)^2&(S+I)(S-I)-(S-I)(S+I)\\(S-I)(S+I)-(S+I)(S-I)&(S-I)^2+(S+I)^2\end{pmatrix}\\
+&=\begin{pmatrix}2(q+1)I&0\\0&2(q+1)I\end{pmatrix},\end{aligned}
+\]
+since $S$ commutes with $I$ and $(S+I)^2+(S-I)^2=2S^2+2I$.
+\end{proof}
+
+The matrix $S$ of Paley~I is a \emph{conference matrix}: zero diagonal, $\pm1$ elsewhere, $SS^{\mathsf T}=(n-1)I$. Such matrices were studied for
+telephone conference networks, hence the name. Figure~\ref{conjectures:fig:paley} shows two Paley matrices. With Kronecker products, Paley's two constructions give
+Hadamard matrices of all orders $4,8,\dots,88$; the first order they miss is $92$, and up to $1000$ they miss $55$ multiples of $4$ (Python
+companion, P7.2).
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch07-paley}
+\caption{Two Paley matrices, with $-1$ in black. Left: Paley~I for $q=43$, of order $44$; below the first row and column, the entry in row $x$ and
+column $y$ is $\chi(x-y)$, so the pattern is constant along diagonals and the matrix is skew apart from its diagonal. Right: Paley~II for $q=13$, of
+order $28$, made of four blocks $S\pm I$. Both were checked to satisfy $HH^{\mathsf T}=nI$.}
+\label{conjectures:fig:paley}
+\end{figure}
+
+\section{Williamson's construction}
+
+Euler's four-squares identity says that a product of two sums of four squares is a sum of four squares; behind it is the multiplication of
+quaternions, $|xy|=|x||y|$. Williamson turned the identity into matrices.
+
+\begin{theorem}[Williamson, 1944]\label{conjectures:thm:williamson}
+Let $A,B,C,D$ be symmetric $n\times n$ matrices with entries $\pm1$ that commute pairwise and satisfy $A^2+B^2+C^2+D^2=4nI$. Then
+\[
+W=\begin{pmatrix}A&B&C&D\\-B&A&-D&C\\-C&D&A&-B\\-D&-C&B&A\end{pmatrix}
+\]
+is a Hadamard matrix of order $4n$.
+\end{theorem}
+\begin{proof}
+Write the block rows as $R_1,\dots,R_4$ and compute the blocks $R_iR_k^{\mathsf T}=\sum_mX_mY_m^{\mathsf T}$, using $Y^{\mathsf T}=Y$ for the four
+matrices. Each diagonal block is $A^2+B^2+C^2+D^2=4nI$. Above the diagonal,
+\begin{align*}
+R_1R_2^{\mathsf T}&=-AB+BA-CD+DC,\\ R_1R_3^{\mathsf T}&=-AC+BD+CA-DB,\\
+R_1R_4^{\mathsf T}&=-AD-BC+CB+DA,\\ R_2R_3^{\mathsf T}&=BC+AD-DA-CB,\\
+R_2R_4^{\mathsf T}&=BD-AC-DB+CA,\\ R_3R_4^{\mathsf T}&=CD-DC+AB-BA.
+\end{align*}
+Each is a sum of two commutators $XY-YX$, which vanish. The blocks below the diagonal are the transposes of these. So $WW^{\mathsf T}=4nI$.
+\end{proof}
+
+The four blocks are the coefficients of a quaternion $a+bi+cj+dk$, and $W$ is the matrix of left multiplication by it, with $1,i,j,k$ replaced by
+matrices: the rows of that matrix are orthogonal because of the norm identity, which is Euler's identity. In practice one takes $A,B,C,D$
+\emph{circulant}, determined by their first rows; circulant matrices commute automatically, and the condition becomes a statement about the
+autocorrelations of four short sequences. For $n=3$, $A=J$ and $B=C=D=2I-J$ work (Exercise~\ref{conjectures:ex:williamson3}), which gives order $12$. Baumert,
+Golomb and Hall found Williamson matrices of order $23$, hence a Hadamard matrix of order $92$. They do not exist for every $n$: Djokovi\'c showed by an
+exhaustive search in 1993 that there are none for $n=35$, although a Hadamard matrix of order $140$ comes at once from Paley~I with $q=139$.
+
+\section{Designs and codes}
+
+A Hadamard matrix hides two other objects. A \emph{symmetric $2$-$(v,k,\lambda)$ design} is a set of $v$ points with $v$ subsets called blocks, each of
+$k$ points, such that every pair of distinct points lies in exactly $\lambda$ blocks. Counting the pairs $(y,B)$ with $x,y\in B$, $y\neq x$, for a fixed
+point $x$ shows that $x$ lies in $r=\frac{\lambda(v-1)}{k-1}$ blocks.
+
+\begin{theorem}\label{conjectures:thm:haddesign}
+Let $t\ge2$. Hadamard matrices of order $4t$ correspond to symmetric $2$-$(4t-1,2t-1,t-1)$ designs: from a normalised Hadamard matrix, take as points
+the rows $2,\dots,4t$ and, for each column $j\ge2$, the block of rows $i\ge2$ with $H_{ij}=1$; conversely, from the $0/1$ incidence matrix $N$ of such a
+design, the matrix
+\[
+H=\begin{pmatrix}1&\mathbf j^{\mathsf T}\\\mathbf j&2N-J\end{pmatrix}
+\]
+is a Hadamard matrix.
+\end{theorem}
+\begin{proof}
+From $H$ to the design: column $j\ge2$ is orthogonal to the first column, so it has $2t$ entries $+1$, one of them in row $1$; the block has $2t-1$
+points. For two rows $i\neq k$, both $\ge2$, count the columns by the signs in rows $i$ and $k$: as in Proposition~\ref{conjectures:prop:div4}, all four patterns
+occur $t$ times, so $(+,+)$ occurs in $t$ columns, one of which is column $1$. The pair lies in $t-1$ blocks.
+
+Conversely let $N$ be the $v\times v$ incidence matrix ($N_{xB}=1$ if $x\in B$), with $v=4t-1$, $k=2t-1$, $\lambda=t-1$. Then $NN^{\mathsf T}$ has
+$r$ on the diagonal and $\lambda$ elsewhere, and $r=\frac{(t-1)(4t-2)}{2t-2}=2t-1$; so $NN^{\mathsf T}=tI+(t-1)J$, and $NJ=JN^{\mathsf T}=(2t-1)J$
+because every row and every column of $N$ has $2t-1$ ones. With $M=2N-J$,
+\[
+MM^{\mathsf T}=4NN^{\mathsf T}-2NJ-2JN^{\mathsf T}+J^2=4tI+\bigl(4(t-1)-4(2t-1)+(4t-1)\bigr)J=4tI-J,
+\]
+and $M\mathbf j=(2(2t-1)-(4t-1))\mathbf j=-\mathbf j$. So
+\[
+HH^{\mathsf T}=\begin{pmatrix}4t&\mathbf j^{\mathsf T}+\mathbf j^{\mathsf T}M^{\mathsf T}\\\mathbf j+M\mathbf j&J+MM^{\mathsf T}\end{pmatrix}=4tI.
+\]
+\end{proof}
+
+For $t=2$ the design is a $2$-$(7,3,1)$ design, the \emph{Fano plane} (Figure~\ref{conjectures:fig:fano}); for $t=3$ it is a $2$-$(11,5,2)$ design, a ``biplane''.
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch07-fano}
+\caption{The Fano plane obtained from the Sylvester matrix $S_8$ by Theorem~\ref{conjectures:thm:haddesign}. The points are the rows $1,\dots,7$ of $S_8$ (counted
+from $0$), the lines are its columns $1,\dots,7$, and a point is on a line when the entry is $+1$. The seven lines are the six segments and the
+circle; any two points lie on exactly one line.}
+\label{conjectures:fig:fano}
+\end{figure}
+
+For codes, replace $+1$ by $0$ and $-1$ by $1$. Two $\pm1$ vectors $u,v$ of length $n$ differ in $d(u,v)=\frac{n-\langle u,v\rangle}2$ places.
+
+\begin{proposition}\label{conjectures:prop:hadcode}
+The $2n$ rows of $H$ and $-H$, for a Hadamard matrix $H$ of order $n$, are binary words of length $n$ any two of which differ in at least $\frac n2$
+places. No binary code of length $n$ with this property has more than $2n$ words.
+\end{proposition}
+\begin{proof}
+Two distinct rows of $H$, or of $-H$, are orthogonal, so they differ in $\frac n2$ places; a row of $H$ and a row of $-H$ differ in $\frac n2$ places, or in
+$n$ if one is the negative of the other. For the bound, a code with distance at least $\frac n2$ gives $\pm1$ vectors with
+$\langle u,v\rangle=n-2d(u,v)\le0$ for $u\neq v$, and the next lemma applies.
+\end{proof}
+
+\begin{lemma}\label{conjectures:lem:obtuse}
+At most $2n$ nonzero vectors of $\mathbb R^n$ can have pairwise nonpositive inner products.
+\end{lemma}
+\begin{proof}
+Induction on $n$. For $n=1$, two nonzero numbers with nonpositive product have opposite signs, so there are at most two. Let $n\ge2$ and let
+$v_1,\dots,v_M$ be such vectors. Project the others onto the hyperplane $v_1^\perp$: $w_i=v_i-\frac{\langle v_i,v_1\rangle}{\|v_1\|^2}v_1$. Then for
+$i\neq k$, $\langle w_i,w_k\rangle=\langle v_i,v_k\rangle-\frac{\langle v_i,v_1\rangle\langle v_k,v_1\rangle}{\|v_1\|^2}\le0$, since the subtracted
+product of two nonpositive numbers is nonnegative. A $w_i$ is $0$ only if $v_i$ is a negative multiple of $v_1$, and two such $v_i$ would have a positive
+inner product; so at least $M-2$ of the $w_i$ are nonzero vectors with pairwise nonpositive inner products in an $(n-1)$-dimensional space. By
+induction $M-2\le2(n-1)$.
+\end{proof}
+
+The code of Proposition~\ref{conjectures:prop:hadcode} built from $S_{2^k}$ is the first-order Reed--Muller code. Its decoder is a single Walsh--Hadamard
+transform: correlate the received word with every row and pick the largest correlation.
+
+\begin{remark}[other orders, other counts]\label{conjectures:rem:barba}
+When $4\nmid n$ the bound $n^{n/2}$ is not attained, and better bounds are known: $|\det A|\le\sqrt{2n-1}\,(n-1)^{(n-1)/2}$ for odd $n$ (Guido Barba,
+1933) and $|\det A|\le2(n-1)(n-2)^{(n-2)/2}$ for $n\equiv2\pmod4$ (Hans Ehlich, 1964). There are many Hadamard matrices: Kharaghani and Tayfeh-Rezaie
+showed in 2010 that there are exactly $13\,710\,027$ inequivalent ones of order $32$. And asymptotically the conjecture is ``almost'' true: Jennifer
+Seberry proved in 1976 that for every odd $q$ there is a Hadamard matrix of order $2^tq$ for all $t$ larger than about $2\log_2q$.
+\end{remark}
+
+\section{Why it is hard}
+
+\paragraph{Every construction is a miracle.} Sylvester uses the group $(\mathbb Z/2)^k$, Paley a finite field, Williamson quaternions and sequences with
+vanishing autocorrelations. Each needs a structure that exists only for special $n$, and the products and combinations of known matrices cover a set
+of orders that grows, but has always had gaps. No construction is known that takes $n$ as input and works for all multiples of $4$.
+
+\paragraph{Counting does not help.} There are $2^{n^2}$ sign matrices, and the Hadamard ones are an exponentially small fraction: by
+Theorem~\ref{conjectures:thm:hadbound} they have the largest possible determinant, while a typical one has a determinant smaller by a factor of about $e^{n/2}$.
+A probabilistic argument would have to find a needle in this haystack, and nobody knows how to set one up. At the same time there are a great many
+needles (Remark~\ref{conjectures:rem:barba}), which is why the conjecture is believed.
+
+\paragraph{Searches grow fast.} The open orders are attacked by searching for short sequences with special autocorrelations, which then feed a
+construction. The search space grows exponentially with the length of the sequences. The order $428$ needed four sequences of lengths $36,36,36,35$,
+found after twelve hours on sixteen machines; each new order is a new search.
+
+\begin{remark}[the status of $668$]\label{conjectures:rem:668}
+From 2004 the smallest order without a known Hadamard matrix was $668=4\cdot167$, followed by $716$ and $892$ (the order $764$ was settled by Dragomir
+Djokovi\'c in 2008). In 2026 a group of researchers announced Hadamard matrices for all the open orders up to $2000$, including $668$; at the time of
+writing, the matrices had been posted but no paper had appeared. Whatever the outcome, the conjecture itself, for all multiples of $4$, remains open.
+\end{remark}
+
+\section{Reading a paper: the order 428}
+
+Hadi Kharaghani and Behruz Tayfeh-Rezaie, \emph{A Hadamard matrix of order 428} (Journal of Combinatorial Designs, 2005), is six pages long. It is a
+chain of three classical constructions, and the paper is a good place to see how the field works. Four $\pm1$ sequences of lengths $36,36,36,35$ with
+a condition on their aperiodic autocorrelations (\emph{Turyn-type} sequences) are found by computer; a theorem of Turyn turns them into \emph{base
+sequences} of lengths $71,71,36,36$; these give \emph{T-sequences} of length $107$; and four circulant matrices built from the T-sequences, placed in
+an array of the Williamson type with a reversal matrix, give a Hadamard matrix of order $4\cdot107=428$. Read the paper for the chain, and do not try to
+reproduce the search: it needed $1\,911\,620$ partial solutions before the full one. The idea worth stealing is the reduction of a matrix of size $428^2$
+to four sequences of length about $36$, a search space small enough for a computer.
+
+\section{Open doors}
+
+\begin{itemize}
+\item List the multiples of $4$ up to $2000$ not covered by Sylvester's and Paley's constructions and their Kronecker products. Which of them are
+covered by Williamson matrices of the orders you can find by computer?
+\item Search for symmetric circulant Williamson matrices of every odd order $n\le25$. For which $n$ do they exist? Compare with the literature.
+\item Compute the largest determinant of a $\pm1$ matrix of order $n$ for $n\le7$ by a clever search, and compare with Barba's and Ehlich's bounds.
+\item Build the Hadamard code of length $32$ and measure, by simulation, how many random bit errors its Walsh--Hadamard decoder corrects.
+\end{itemize}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:order4}
+Show that any two Hadamard matrices of order $4$ are equivalent.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:det3}
+Show that the determinant of an $n\times n$ matrix with entries $\pm1$ is divisible by $2^{n-1}$. Deduce that the largest determinant of a $3\times3$
+sign matrix is $4$, and find a matrix that attains it.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:walsh}
+Number the rows and columns of $S_{2^k}$ from $0$ to $2^k-1$ and show that its entry $(i,j)$ is $(-1)^{i\cdot j}$, where $i\cdot j$ is the number of
+positions where the binary expansions of $i$ and $j$ both have a $1$. Show that $S_{2^k}x$ can be computed with $k2^k$ additions and subtractions.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:paley5}
+Write down the Jacobsthal matrix for $q=5$, check that it is symmetric with $Q^2=5I-J$, and write the conference matrix $S$ of order $6$ of
+Theorem~\ref{conjectures:thm:paley2}. What is the order of the resulting Hadamard matrix?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:charsum}
+Let $q$ be an odd prime power and $a\in\mathbb F_q^*$. By counting the solutions of $y^2=x^2-a$, show that $\sum_{x\in\mathbb F_q}\chi(x^2-a)=-1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:williamson3}
+Check that $A=J_3$ and $B=C=D=2I_3-J_3$ satisfy the hypotheses of Theorem~\ref{conjectures:thm:williamson}, and write the resulting Hadamard matrix of order $12$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:williamsonsums}
+Let $A,B,C,D$ be Williamson matrices of odd order $n$ that are circulant, with row sums $a,b,c,d$. Show that $a^2+b^2+c^2+d^2=4n$ and that $a,b,c,d$ are
+odd. For $n=5$, which row sums are possible?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:fano}
+Check, from the matrix $S_8$, the seven lines of Figure~\ref{conjectures:fig:fano}, and that any two points lie on exactly one line.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:obtuseeq}
+Show that if $2n$ nonzero vectors of $\mathbb R^n$ have pairwise nonpositive inner products, they are $\pm$ multiples of the vectors of an orthogonal
+basis: they come in $n$ pairs $u_i$, $-c_iu_i$ ($c_i>0$) with $u_1,\dots,u_n$ pairwise orthogonal.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:biplane}
+Find the parameters of the design of Theorem~\ref{conjectures:thm:haddesign} for $t=3$ and check the relation $r(k-1)=\lambda(v-1)$. How many blocks contain two
+given points, and how many points do two blocks share? (Use $N^{\mathsf T}N$.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{conjectures:ex:order4}
+Normalise, then use Proposition~\ref{conjectures:prop:div4}: each of rows $2$, $3$, $4$ has two $+1$ and two $-1$, and they are orthogonal.
+\end{hint}
+\begin{hint}{conjectures:ex:det3}
+Subtract the first row from the others, then take a factor $2$ from each of the other $n-1$ rows. For $n=3$, $4\mid\det$ and $|\det|\le3^{3/2}$.
+\end{hint}
+\begin{hint}{conjectures:ex:walsh}
+Induction on $k$: the block structure of $S_{2^{k+1}}$ is decided by the top bits of $i$ and $j$. For the speed, $S_{2^{k+1}}x$ needs two products by
+$S_{2^k}$ and $2^{k+1}$ additions.
+\end{hint}
+\begin{hint}{conjectures:ex:paley5}
+The nonzero squares modulo $5$ are $1$ and $4$.
+\end{hint}
+\begin{hint}{conjectures:ex:charsum}
+$y^2=x^2-a$ means $(x-y)(x+y)=a$. And the number of $y$ with $y^2=z$ is $1+\chi(z)$.
+\end{hint}
+\begin{hint}{conjectures:ex:williamson3}
+$(2I-J)^2=4I-4J+J^2$ and $J_3^2=3J_3$.
+\end{hint}
+\begin{hint}{conjectures:ex:williamsonsums}
+Multiply $A^2+B^2+C^2+D^2=4nI$ by $\mathbf j$. A row of odd length with entries $\pm1$ has an odd sum.
+\end{hint}
+\begin{hint}{conjectures:ex:fano}
+Row $i$ of $S_8$ has $+1$ in column $j$ when $i\cdot j$ is even.
+\end{hint}
+\begin{hint}{conjectures:ex:obtuseeq}
+Follow the proof of Lemma~\ref{conjectures:lem:obtuse}: equality forces one $v_i$ to be a negative multiple of $v_1$. What does that say about $\langle v_k,v_1\rangle$
+for the others?
+\end{hint}
+\begin{hint}{conjectures:ex:biplane}
+$t=3$. For the last question, $N^{\mathsf T}$ is the incidence matrix of the dual structure; compute $N^{\mathsf T}N$ from $NN^{\mathsf T}$ and the
+invertibility of $N$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{conjectures:ex:order4}
+\idea Normalisation leaves almost no freedom.
+\writeup Normalise: first row and column all $1$. Each of rows $2,3,4$ is orthogonal to row $1$, so it has two $+1$ and two $-1$, with a $+1$ in column
+$1$: it is $(1,1,-1,-1)$, $(1,-1,1,-1)$ or $(1,-1,-1,1)$. Rows $2,3,4$ are distinct, because two equal rows are not orthogonal, so they are these three
+vectors in some order; permuting rows $2,3,4$ brings any normalised matrix to the same one. Every Hadamard matrix of order $4$ is therefore equivalent to
+it.
+\end{solution}
+
+\begin{solution}{conjectures:ex:det3}
+\idea Row operations make the other rows even.
+\writeup Subtracting row $1$ from each other row does not change the determinant, and the new rows $2,\dots,n$ have entries in $\{0,\pm2\}$. Taking
+a factor $2$ out of each of these $n-1$ rows leaves an integer matrix, so $2^{n-1}\mid\det A$. For $n=3$: $4\mid\det A$ and
+$|\det A|\le3^{3/2}=5.196$, so $|\det A|\le4$. The matrix with rows $(1,1,1)$, $(1,-1,1)$, $(1,1,-1)$ has determinant
+$1\cdot(1-1)-1\cdot(-1-1)+1\cdot(1+1)=4$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:walsh}
+\idea Doubling adds one bit.
+\writeup For $k=0$ the entry is $1=(-1)^0$. Assume the formula for $S_{2^k}$. In $S_{2^{k+1}}$ write $i=i_k2^k+i'$, $j=j_k2^k+j'$ with $i',j'<2^k$. The
+block in position $(i_k,j_k)$ is $S_{2^k}$, except the block $(1,1)$, which is $-S_{2^k}$; so the entry is $(-1)^{i_kj_k}(-1)^{i'\cdot j'}=(-1)^{i\cdot j}$.
+For the speed, write $x=(x',x'')$ in halves: $S_{2^{k+1}}x=(S_{2^k}x'+S_{2^k}x'',S_{2^k}x'-S_{2^k}x'')$, so the cost $c_{k+1}$ satisfies
+$c_{k+1}=2c_k+2^{k+1}$ with $c_0=0$, which gives $c_k=k2^k$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:paley5}
+\idea $\chi$ modulo $5$ is $\chi(1)=\chi(4)=1$, $\chi(2)=\chi(3)=-1$.
+\writeup Number the rows and columns $0,\dots,4$. Row $0$ lists the values $\chi(-y)$, and each next row is the previous one shifted right by one:
+\[
+Q=\begin{pmatrix}0&1&-1&-1&1\\1&0&1&-1&-1\\-1&1&0&1&-1\\-1&-1&1&0&1\\1&-1&-1&1&0\end{pmatrix}.
+\]
+It is symmetric because $\chi(-1)=1$. Each row has four nonzero entries, so the diagonal of $Q^2$ is $4$; two distinct rows, for instance the first two, have inner product
+$0+0-1+1-1=-1$, and the others in the same way, so $Q^2=4I-(J-I)=5I-J$. The conference matrix is the matrix $S$ of order $6$ with first row
+$(0,1,1,1,1,1)$, first column the same, and $Q$ in the remaining block; $S^2=5I$, and Theorem~\ref{conjectures:thm:paley2} gives a Hadamard matrix of order $12$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:charsum}
+\idea Count the points of a hyperbola in two ways.
+\writeup Put $u=x-y$, $w=x+y$; since $2$ is invertible, $(x,y)\mapsto(u,w)$ is a bijection of $\mathbb F_q^2$, and $y^2=x^2-a$ becomes $uw=a$, which has
+$q-1$ solutions ($u\neq0$ arbitrary, $w=a/u$). On the other hand, for each $x$ the number of $y$ with $y^2=x^2-a$ is $1+\chi(x^2-a)$: two if $x^2-a$ is a
+nonzero square, one if it is $0$, none otherwise. So $q-1=\sum_x(1+\chi(x^2-a))=q+\sum_x\chi(x^2-a)$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:williamson3}
+\idea Everything is a polynomial in $J$.
+\writeup All four matrices are symmetric and are polynomials in $J_3$, so they commute. $A^2=J^2=3J$ and $B^2=(2I-J)^2=4I-4J+3J=4I-J$, so
+$A^2+3B^2=3J+12I-3J=12I=4\cdot3\,I$. The Hadamard matrix is the $12\times12$ array of Theorem~\ref{conjectures:thm:williamson}: its first block row is
+$(J,\,2I-J,\,2I-J,\,2I-J)$, where $2I-J$ has $1$ on the diagonal and $-1$ elsewhere, and the other block rows follow the pattern of signs.
+\end{solution}
+
+\begin{solution}{conjectures:ex:williamsonsums}
+\idea A circulant matrix has a constant row sum, and $X\mathbf j$ is that sum times $\mathbf j$.
+\writeup $A\mathbf j=a\mathbf j$, so $A^2\mathbf j=a^2\mathbf j$, and the same for $B,C,D$. Applying $A^2+B^2+C^2+D^2=4nI$ to $\mathbf j$ gives
+$a^2+b^2+c^2+d^2=4n$. A sum of $n$ terms $\pm1$, $n$ odd, is odd. For $n=5$: $20$ as a sum of four odd squares ($1$, $9$; $25>20$) is only $9+9+1+1$, so
+up to order and signs the row sums are $3,3,1,1$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:fano}
+\idea Apply Theorem~\ref{conjectures:thm:haddesign} and Exercise~\ref{conjectures:ex:walsh}.
+\writeup Point $i$ ($1\le i\le7$) is on line $j$ when $i\cdot j$ is even. Line $1$ (binary $001$) contains the $i$ with last bit $0$: $2,4,6$. Line $2$
+($010$): $1,4,5$. Line $3$ ($011$): $i$ with the last two bits equal: $3,4,7$. Line $4$ ($100$): $1,2,3$. Line $5$ ($101$): $2,5,7$. Line $6$ ($110$):
+$1,6,7$. Line $7$ ($111$): $i$ with an even number of $1$s: $3,5,6$. These are the six segments and the circle of the figure. Each of the $21$ pairs of
+points appears in exactly one of the seven lines, which hold $7\cdot3=21$ pairs in total, so no pair is repeated.
+\end{solution}
+
+\begin{solution}{conjectures:ex:obtuseeq}
+\idea Equality in the induction forces a negative partner for every vector, and orthogonality to everything else.
+\writeup Induction on $n$; for $n=1$ the two vectors are $u$ and $-cu$. For $n\ge2$ and $M=2n$, the proof of Lemma~\ref{conjectures:lem:obtuse} gives
+$M-2\le$ the number of nonzero $w_i$, and $M-2=2n-2$ is the maximum possible in dimension $n-1$; so exactly one $v_i$, say $v_2=-cv_1$, is a negative
+multiple of $v_1$. For $k\ge3$, $\langle v_k,v_1\rangle\le0$ and $\langle v_k,v_2\rangle=-c\langle v_k,v_1\rangle\le0$, so $\langle v_k,v_1\rangle=0$:
+all the other vectors lie in $v_1^\perp$, where there are $2n-2$ of them, and induction applies.
+\end{solution}
+
+\begin{solution}{conjectures:ex:biplane}
+\idea Symmetric designs are self-dual.
+\writeup $t=3$: $v=11$, $k=5$, $\lambda=2$, and $r=\frac{2\cdot10}{4}=5$, so $r(k-1)=20=\lambda(v-1)$. Two points lie in $2$ blocks. For two blocks:
+$NN^{\mathsf T}=3I+2J$ is invertible, hence so is $N$, and $NJ=JN=5J$. Then $N^{\mathsf T}N=N^{-1}(NN^{\mathsf T})N=N^{-1}(3I+2J)N=3I+2N^{-1}JN=3I+2J$,
+because $JN=5J$ and $N^{-1}J=\frac15J$. So two blocks share exactly $2$ points: the dual of a symmetric design is again one, with the same parameters.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~J.~Sylvester, \emph{Thoughts on inverse orthogonal matrices, simultaneous sign-successions, and tessellated pavements in two or more colours,
+with applications to Newton's rule, ornamental tile-work, and the theory of numbers}, Philosophical Magazine 34 (1867), 461--475.
+\item J.~Hadamard, \emph{R\'esolution d'une question relative aux d\'eterminants}, Bulletin des Sciences Math\'ematiques 17 (1893), 240--246.
+\item R.~E.~A.~C.~Paley, \emph{On orthogonal matrices}, Journal of Mathematics and Physics 12 (1933), 311--320. For Paley's life and death: the MacTutor
+biography of Raymond Paley, School of Mathematics and Statistics, University of St Andrews.
+\item J.~Williamson, \emph{Hadamard's determinant theorem and the sum of four squares}, Duke Mathematical Journal 11 (1944), 65--81.
+\item L.~Baumert, S.~W.~Golomb and M.~Hall, \emph{Discovery of an Hadamard matrix of order 92}, Bulletin of the AMS 68 (1962), 237--238.
+\item H.~Kharaghani and B.~Tayfeh-Rezaie, \emph{A Hadamard matrix of order 428}, Journal of Combinatorial Designs 13 (2005), 435--440.
+H.~Kharaghani and B.~Tayfeh-Rezaie, \emph{On the classification of Hadamard matrices of order 32}, Journal of Combinatorial Designs 18 (2010), 328--336.
+\item D.~Z.~Djokovi\'c, Discrete Mathematics 115 (1993), 267--271 (the non-existence of Williamson matrices for $n=35$).
+\item D.~Z.~Djokovi\'c, \emph{Hadamard matrices of order 764 exist}, Combinatorica (2008); arXiv:\allowbreak math/0703312.
+\item J.~Seberry Wallis, \emph{On the existence of Hadamard matrices}, Journal of Combinatorial Theory A 21 (1976); and the correction of its bound in
+arXiv:0706.1720.
+\item K.~J.~Horadam, \emph{Hadamard Matrices and Their Applications}, Princeton University Press, 2007. J.~Seberry and M.~Yamada, \emph{Hadamard
+Matrices: Constructions using Number Theory and Linear Algebra}, Wiley, 2020.
+\item On the 2026 announcement for the open orders up to $2000$: Epoch AI, \emph{FrontierMath open problems: Hadamard matrices}, web page (accessed
+October 2026).
+\end{itemize}
