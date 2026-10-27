@@ -26,11 +26,12 @@ def build(book, size, output):
     work.mkdir(parents=True, exist_ok=True)
     command = (rf'\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}'
                r'\def\FORMAT{print}\def\PRINTINNER{0.75in}')
-    if size == '7x10':
+    if size in {'6x9', '7x10'}:
         # Override geometry at the end of the existing preamble. This preserves
         # print boxes, mirrored margins, chapter openings and the original font.
+        geometry = '6in,paperheight=9in' if size == '6x9' else '7in,paperheight=10in'
         command += (r'\RequirePackage{etoolbox}\AtEndPreamble{'
-                    r'\geometry{paperwidth=7in,paperheight=10in}'
+                    r'\geometry{paperwidth=' + geometry + '}' +
                     r'\setlength{\headwidth}{\textwidth}}')
     command += r'\input{main.tex}'
     (work / 'build-command.txt').write_text(command + '\n')

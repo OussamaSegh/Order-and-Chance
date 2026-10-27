@@ -73,7 +73,7 @@ python3 -m unittest discover -s tools -p 'test_*.py'
 ```
 
 `build.sh` creates A4 and Kindle reading PDFs, EPUB, ebook covers, KDP interiors and
-wraps, listings and HTML readers. Wraps use 6x9 trim, 0.125-inch outside bleed and
+wraps, listings and HTML readers. Wraps use 7x10 trim, 0.125-inch outside bleed and
 white-paper spine width = even-rounded interior pages × 0.002252 inches. ISBN
 barcodes remain intact; books without an ISBN reserve the lower-right back area
 for KDP. No hypothetical page counts are valid production inputs.
@@ -164,4 +164,32 @@ The author requested a detailed print review and a local 7 × 10 proof. The resu
 mathematical corrections and outstanding monochrome-figure refinements are in
 [the Volume 0 print review](../review/TOME0-PRINT-COMPARISON.md). The proofs contain
 291 pages at 6 × 9 and 233 at 7 × 10 with the same 11 pt text. This is a local
-comparison; the shared production trim has not been changed.
+comparison at the time of that review; the author has since approved 7 × 10
+for every production paperback (see below).
+
+## Production 7 × 10 migration
+
+The author approved the comparison trim for all nineteen current books. The
+interiors retain 11 pt Palatino and mirrored 0.75/0.6-inch inner/outer margins,
+with 0.75/0.8-inch top/bottom margins. A gutter of 0.875 inch is selected if a
+rebuilt interior exceeds 700 pages. Chapters still open on rectos.
+
+`common/print-layout.json` and its generated TeX coordinate interior geometry,
+cover wraps, front previews, KDP listings, download labels and PDF validation.
+Front typography and diagrams scale uniformly from the shared design canvas;
+back-cover text is reflowed for the wider trim. Outside bleed remains 0.125 inch,
+and ISBN barcodes retain their physical size. Every spine uses the actual rebuilt
+interior, rounded up to an even KDP page count. Reading formats are preserved.
+
+CI checks the configuration and publishing tests before planning builds. A new
+cache schema/namespace forces complete production regeneration. Per-book print
+metadata is required in complete cached libraries; every interior page and wrap
+is checked for exact physical size and embedded vector fonts before publication.
+
+### Completed local migration checks
+
+All nineteen interiors/wraps passed physical-size, embedded-vector-font, complete
+front-copy and page-boundary checks. All 95 front proofs and 20 publishing tests
+passed. A complete Volume 9 pipeline passed with the existing reading dimensions.
+Final page counts, spine sizes, typesetting corrections and verification limits
+are recorded in [the production trim audit](../review/7X10-PRODUCTION.md).

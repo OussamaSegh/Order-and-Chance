@@ -7,7 +7,7 @@ import shutil
 import subprocess
 from pathlib import Path
 
-SCHEMA = 1
+SCHEMA = 2
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -22,7 +22,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v1\0')
+        h = hashlib.sha256(b'book-output-v2\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -36,7 +36,7 @@ def complete(cache, book):
     required = [f'dist/{book}.pdf', f'dist/{book}-kindle.pdf', f'dist/{book}.epub',
                 f'dist/html/{book}/index.html', f'build/{book}/cover.pdf']
     required += [f'dist/kdp/{book}-{suffix}' for suffix in
-                 ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md']]
+                 ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
     return all((cache / p).is_file() and (cache / p).stat().st_size for p in required)
 
 

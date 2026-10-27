@@ -15,6 +15,9 @@ import subprocess
 import sys
 from pathlib import Path
 from series_metadata import subtitle
+from print_layout import LAYOUT
+
+PRINT_TRIM = f"{LAYOUT['trim_width_in']} x {LAYOUT['trim_height_in']} in"
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -29,8 +32,8 @@ CARD = """<article class="tome" data-collection="{collection}" data-search="{sea
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
 KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1600 x 2560 JPEG, for a Kindle eBook"),
-       ("cover-wrap.pdf", "Paperback cover", "Back, spine and front with bleed, for a 6 x 9 in paperback"),
-       ("print.pdf", "Paperback interior", "6 x 9 in pages for printing on demand"),
+       ("cover-wrap.pdf", "Paperback cover", f"Back, spine and front with bleed, for a {PRINT_TRIM} paperback"),
+       ("print.pdf", "Paperback interior", f"{PRINT_TRIM} pages for printing on demand"),
        ("listing.md", "Description and keywords", "Title fields, description and keywords for the KDP form")]
 
 # Extra PDF layouts made by build.sh, with their button labels.

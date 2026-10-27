@@ -35,7 +35,7 @@ notebook for mathematical experiments.
 Each tome comes as two PDFs and an EPUB: A4 pages for a computer, tablet or printing; pages sized for a 7-inch e-reader (Kindle
 Paperwhite); and a reflowable EPUB with its cover, for any e-reader.
 
-Each tome also comes ready for Amazon KDP: a 6 × 9 in paperback interior, a full paperback cover with its spine, and a Kindle cover (`*-print.pdf`, `*-cover-wrap.pdf`, `*-ebook-cover.jpg` on the release; see [tools/PUBLISHING.md](tools/PUBLISHING.md)).
+Each tome also comes ready for Amazon KDP: a 7 × 10 in paperback interior, a full paperback cover with its spine, and a Kindle cover (`*-print.pdf`, `*-cover-wrap.pdf`, `*-ebook-cover.jpg` on the release; see [tools/PUBLISHING.md](tools/PUBLISHING.md)).
 
 Every push to `main` rebuilds all the books and republishes them, both on the download page and on the
 [`books` release](https://github.com/OussamaSegh/Order-and-Chance/releases/tag/books).

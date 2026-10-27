@@ -1,50 +1,52 @@
-% Paperback cover for Amazon KDP: one PDF with back cover, spine and front cover, 6in x 9in trim
-% with 0.125in bleed on every outside edge. KDP's formula: width = bleed + back + spine + front
-% + bleed, height = bleed + 9in + bleed, spine = pages x 0.002252in on white paper (black ink).
-% build.sh compiles it with \TOMENUM, \TOMETITLE, \MOTIF (as for tools/cover.tex), \SPINE (spine
-% width in inches, from the page count of the print interior) and \BLURB (the tome's back-cover
-% text, <tome>/blurb.tex, or tools/blurb-default.tex). KDP puts spine text only on books of 80
-% pages or more, so \SPINETEXT is defined only then. The barcode area (2in x 1.2in, lower right
-% of the back cover) holds the ISBN barcode when \BARCODE is defined, otherwise it is left empty
-% for KDP's own barcode.
-\documentclass[tikz,border=0pt]{standalone}
+% Paperback geometry from common/print-layout.json; spine from actual interior pages.
+\documentclass[border=0pt]{standalone}
 \input{tools/cover-colors}
-\begin{document}
-\settowidth{\covertitlewidth}{{\normalfont\fontsize{60}{62}\selectfont\TOMETITLE}}
+\input{common/print-layout}
+\begin{document}%
+\settowidth{\covertitlewidth}{{\normalfont\fontsize{60}{62}\selectfont\TOMETITLE}}%
+\newsavebox{\printfrontbox}%
+\pgfmathsetmacro{\frontheight}{6*\PRINTHEIGHT/\PRINTWIDTH}%
+\sbox{\printfrontbox}{\resizebox{\PRINTWIDTH in}{!}{%
+  \begin{tikzpicture}%
+    \coordinate (O) at (0,0);%
+    \let\CH\frontheight\coverbgfalse%
+    \useasboundingbox (0,0) rectangle (6in,{\CH*1in});%
+    \input{tools/cover-front}%
+  \end{tikzpicture}}}%
 \begin{tikzpicture}
-  \def\B{0.125}
-  \pgfmathsetmacro{\W}{2*\B+12+\SPINE}
-  \useasboundingbox (0,0) rectangle ({\W*1in},{(9+2*\B)*1in});
-  \coverpaper{\W*1in}{(9+2*\B)*1in}
-  % Front cover, right of the spine
-  \coordinate (O) at ({(\B+6+\SPINE)*1in},{\B*1in});
-  \def\CH{9}\coverbgfalse
-  \input{tools/cover-front}
+  \let\B\PRINTBLEED
+  \let\TW\PRINTWIDTH\let\TH\PRINTHEIGHT
+  \pgfmathsetmacro{\W}{2*\B+2*\TW+\SPINE}
+  \useasboundingbox (0,0) rectangle ({\W*1in},{(\TH+2*\B)*1in});
+  \coverpaper{\W*1in}{(\TH+2*\B)*1in}
+  % Front cover, preboxed outside the wrap's TikZ coordinate system.
+  \node[anchor=south west,inner sep=0pt,outer sep=0pt] at ({(\B+\TW+\SPINE)*1in},{\B*1in})
+    {\usebox{\printfrontbox}};
   % Back cover
   \coordinate (K) at ({\B*1in},{\B*1in});
-  \draw[ocCream,opacity=.8,line width=.45pt] ($(K)+(.18in,.18in)$) rectangle ($(K)+(5.82in,8.82in)$);
-  \draw[ocCream,opacity=.5,line width=.22pt] ($(K)+(.24in,.24in)$) rectangle ($(K)+(5.76in,8.76in)$);
-  \node[ocCream,font=\fontsize{18}{22}\selectfont] at ($(K)+(3in,8.1in)$) {ORDER AND CHANCE};
-  \node[ocCream,text width=4.8in,align=center,font=\fontsize{11}{14}\selectfont,execute at begin node={\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}] at ($(K)+(3in,7.65in)$) {VOLUME \TOMENUM\ \textperiodcentered\ \TOMETITLE};
-  \draw[ocCream,line width=0.4pt] ($(K)+(2.4in,7.3in)$) -- ++(1.2in,0);
-  \node[ivory,anchor=north,text width=4.5in,align=justify,font=\fontsize{10.5}{14.5}\selectfont]
-    at ($(K)+(3in,7.05in)$) {\input{\BLURB}};
+  \draw[ocCream,opacity=.8,line width=.45pt] ($(K)+(.18in,.18in)$) rectangle ($(K)+({(\TW-.18)*1in},{(\TH-.18)*1in})$);
+  \draw[ocCream,opacity=.5,line width=.22pt] ($(K)+(.24in,.24in)$) rectangle ($(K)+({(\TW-.24)*1in},{(\TH-.24)*1in})$);
+  \node[ocCream,font=\fontsize{18}{22}\selectfont] at ($(K)+({\TW/2*1in},{.9*\TH*1in})$) {ORDER AND CHANCE};
+  \node[ocCream,text width=5.8in,align=center,font=\fontsize{11}{14}\selectfont,execute at begin node={\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}] at ($(K)+({\TW/2*1in},{.85*\TH*1in})$) {VOLUME \TOMENUM\ \textperiodcentered\ \TOMETITLE};
+  \draw[ocCream,line width=0.4pt] ($(K)+({(\TW/2-.6)*1in},{.811111*\TH*1in})$) -- ++(1.2in,0);
+  \node[ivory,anchor=north,text width=5.25in,align=justify,font=\fontsize{11.5}{15.5}\selectfont]
+    at ($(K)+({\TW/2*1in},{.783333*\TH*1in})$) {\input{\BLURB}};
   \node[ocCream,font=\fontsize{11}{14}\selectfont\itshape]
-    at ($(K)+(3in,2.3in)$) {Discover the patterns. Understand the proofs.};
+    at ($(K)+({\TW/2*1in},{.255556*\TH*1in})$) {Discover the patterns. Understand the proofs.};
   % ISBN barcode (EAN-13, made by tools/ean13.py) in KDP's barcode area, lower right of the back
   % cover, when the tome has its ISBN; then untick "add a barcode" in KDP.
   \ifdefined\BARCODE
-    \fill[white] ($(K)+(3.4in,0.5in)$) rectangle ++(2.05in,1.25in);
-    \begin{scope}[shift={($(K)+(3.4in,0.5in)$)}]
+    \fill[white] ($(K)+({(\TW-2.6)*1in},0.5in)$) rectangle ++(2.05in,1.25in);
+    \begin{scope}[shift={($(K)+({(\TW-2.6)*1in},0.5in)$)}]
       \input{\BARCODE}
     \end{scope}
   \fi
   % Spine (text reads top to bottom, as on English-language books)
   \ifdefined\SPINETEXT
     \pgfmathsetmacro{\spfs}{min(10,\SPINE*72*0.42)}
-    \coordinate (S) at ({(\B+6+\SPINE/2)*1in},{(\B+4.5)*1in});
+    \coordinate (S) at ({(\B+\TW+\SPINE/2)*1in},{(\B+\TH/2)*1in});
     \node[rotate=-90,ivory,font=\fontsize{\spfs}{\spfs}\selectfont] at (S)
       {\textls[120]{ORDER AND CHANCE}\quad{\color{accent}\textls[60]{VOLUME \TOMENUM}}\quad\TOMETITLE};
   \fi
-\end{tikzpicture}
+\end{tikzpicture}%
 \end{document}

@@ -16,7 +16,7 @@ and series association when revising an already published title.
 
 | Output | Upload/use |
 |---|---|
-| `dist/kdp/tome0-mathematical-maturity-print.pdf` | 6 × 9 inch paperback interior, black ink, white paper, no bleed |
+| `dist/kdp/tome0-mathematical-maturity-print.pdf` | 7 × 10 inch paperback interior, black ink, white paper, no bleed |
 | `dist/kdp/tome0-mathematical-maturity-cover-wrap.pdf` | Matching full paperback cover, 0.125-inch bleed, white-paper spine |
 | `dist/tome0-mathematical-maturity.epub` | Reflowable Kindle manuscript |
 | `dist/kdp/tome0-mathematical-maturity-ebook-cover.jpg` | 1600 × 2560 Kindle cover |

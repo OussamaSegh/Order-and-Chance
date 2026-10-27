@@ -11,9 +11,11 @@ import re
 import subprocess
 from series_metadata import subtitle, check_sync
 from check_cover_pdf import check_cover
+from print_layout import LAYOUT, check_sync as check_print_sync
 
 ROOT = Path(__file__).resolve().parent.parent
-FORMATS = {"reference": 9, "ebook": 9.6, "a4": 8.4857, "kindle": 7.9626, "print-front": 9}
+PRINT = (LAYOUT["trim_width_in"], LAYOUT["trim_height_in"])
+FORMATS = {"reference": PRINT, "ebook": (6, 9.6), "a4": (6, 8.4857), "kindle": (6, 7.9626), "print-front": PRINT}
 
 
 def render(main: Path, output: Path) -> str:
@@ -23,15 +25,15 @@ def render(main: Path, output: Path) -> str:
     tome = main.parent.name
     out = output / tome
     out.mkdir(parents=True, exist_ok=True)
-    for fmt, height in FORMATS.items():
+    for fmt, (width, height) in FORMATS.items():
         tex = (rf"\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}"
-               rf"\def\CH{{{height}}}\def\MOTIF{{{tome}/cover-motif}}"
+               rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{tome}/cover-motif}}"
                r"\input{tools/cover.tex}")
         with (out / f"{fmt}.stdout").open("w") as log:
             subprocess.run(["pdflatex", "-interaction=nonstopmode", "-halt-on-error",
                             f"-output-directory={out}", f"-jobname={fmt}", tex],
                            cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
-        check_cover(out / f"{fmt}.pdf", 6, height)
+        check_cover(out / f"{fmt}.pdf", width, height)
         text = subprocess.check_output(["pdftotext", str(out / f"{fmt}.pdf"), "-"]).decode()
         text = " ".join(text.split())
         expected_text = (title, subtitle(number), "Discover the patterns. Understand the proofs.")
@@ -45,6 +47,7 @@ def render(main: Path, output: Path) -> str:
 
 def main():
     check_sync()
+    check_print_sync()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tomes", nargs="*", help="Only render these volume directories; default: all")
     parser.add_argument("--jobs", type=int, default=4)

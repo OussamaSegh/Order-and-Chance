@@ -10,7 +10,7 @@ The shared publishing conventions and system dependencies are documented in `../
 
 | File | Use |
 |---|---|
-| `dist/kdp/tome1-integers-print.pdf` | 6 × 9 inch paperback manuscript, black ink on white paper, no bleed |
+| `dist/kdp/tome1-integers-print.pdf` | 7 × 10 inch paperback manuscript, black ink on white paper, no bleed |
 | `dist/kdp/tome1-integers-cover-wrap.pdf` | Paperback cover, with 0.125 inch bleed and spine computed from the manuscript page count |
 | `dist/tome1-integers.epub` | Reflowable Kindle manuscript, with MathML and vector diagrams |
 | `dist/kdp/tome1-integers-ebook-cover.jpg` | Kindle front cover, 1600 × 2560 pixels |

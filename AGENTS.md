@@ -36,6 +36,14 @@ build. Earlier restrictions to two-volume validation are superseded.
 - Preserve ISBNs, volume identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
 
+## Production paperback trim
+
+The author approved **7 × 10 inches for all 19 paperbacks** after the Volume 0
+comparison. `common/print-layout.json` is canonical; regenerate its TeX with
+`python3 tools/print_layout.py`. Rebuild each wrap from its actual new interior
+page count. A4, Kindle PDF and EPUB keep their reading formats. The earlier local
+comparison record is historical and does not override this production decision.
+
 ## Build and publication
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.

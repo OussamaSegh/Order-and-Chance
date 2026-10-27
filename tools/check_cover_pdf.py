@@ -3,6 +3,8 @@ import argparse
 import re
 import subprocess
 from pathlib import Path
+from print_layout import LAYOUT
+from series_metadata import subtitle
 
 def check_cover(path, width, height):
     path=Path(path)
@@ -15,6 +17,20 @@ def check_cover(path, width, height):
         raise ValueError(f'{path}: incorrect physical dimensions: {dimensions.groups()}')
     check_fonts(path)
 
+def check_cover_copy(path, title, number):
+    """Check the front region alone so back/spine text cannot mask clipping."""
+    # Cover width minus front trim and outer bleed gives the actual front origin.
+    info = subprocess.check_output(['pdfinfo', str(path)], text=True)
+    width = float(re.search(r'Page size:\s+([\d.]+)', info)[1])
+    x = width - (LAYOUT['trim_width_in'] + LAYOUT['bleed_in']) * 72
+    text = subprocess.check_output(['pdftotext', '-x', str(round(x)), '-y', str(round(LAYOUT['bleed_in']*72)),
+        '-W', str(round(LAYOUT['trim_width_in']*72)), '-H', str(round(LAYOUT['trim_height_in']*72)),
+        str(path), '-'], text=True)
+    text = ' '.join(text.split())
+    for expected in (title, subtitle(number), 'Discover the patterns. Understand the proofs.'):
+        if expected not in text:
+            raise ValueError(f'{path}: incomplete front-panel text: {expected}')
+
 def check_fonts(path):
     path=Path(path)
     fonts=subprocess.check_output(['pdffonts',str(path)],text=True)
@@ -25,15 +41,36 @@ def check_fonts(path):
         if flags and flags[1]!='yes':
             raise ValueError(f'{path}: unembedded cover font: {row.strip()}')
 
+def check_interior(path):
+    """Check every page, including title pages and inserted figures."""
+    info = subprocess.check_output(['pdfinfo', str(path)], text=True)
+    pages = int(re.search(r'Pages:\s+(\d+)', info)[1])
+    details = subprocess.check_output(['pdfinfo', '-f', '1', '-l', str(pages), str(path)], text=True)
+    sizes = re.findall(r'Page\s+\d+ size:\s+([\d.]+) x ([\d.]+)', details)
+    if len(sizes) != pages:
+        raise ValueError(f'{path}: cannot verify every interior page')
+    for number, (width, height) in enumerate(sizes, 1):
+        if (abs(float(width)-LAYOUT['trim_width_in']*72) > .12 or
+                abs(float(height)-LAYOUT['trim_height_in']*72) > .12):
+            raise ValueError(f'{path}: page {number} is not the approved paperback trim')
+    check_fonts(path)
+
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('pdf')
     parser.add_argument('--spine',type=float,help='Paperback spine width in inches; otherwise check a 6-inch front')
     parser.add_argument('--height',type=float)
-    parser.add_argument('--interior',action='store_true',help='Check embedded vector fonts in a multi-page interior')
+    parser.add_argument('--title', help='Verify complete paperback front title/subtitle/slogan')
+    parser.add_argument('--number', help='Volume identifier for subtitle lookup')
+    parser.add_argument('--interior',action='store_true',help='Check every interior page size and embedded vector fonts')
     args=parser.parse_args()
     if args.interior:
-        check_fonts(args.pdf)
+        check_interior(args.pdf)
     else:
-        check_cover(args.pdf,12.25+args.spine if args.spine is not None else 6,
-                    args.height or (9.25 if args.spine is not None else 9.6))
+        check_cover(args.pdf,2*LAYOUT['trim_width_in']+2*LAYOUT['bleed_in']+args.spine if args.spine is not None else 6,
+                    args.height or (LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'] if args.spine is not None else 9.6))
+
+    if args.title:
+        if not args.number or args.spine is None:
+            parser.error('--title requires --number and --spine')
+        check_cover_copy(args.pdf, args.title, args.number)

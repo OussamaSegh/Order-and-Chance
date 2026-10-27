@@ -7,6 +7,9 @@ export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-
 root="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$root/dist/kdp" "$root/build"
 python3 "$root/tools/series_metadata.py" --check
+python3 "$root/tools/print_layout.py" --check
+print_only=false
+if [ "${1:-}" = --print-only ]; then print_only=true; shift; fi
 tomes=("$@")
 [ ${#tomes[@]} -eq 0 ] && tomes=($(cd "$root" && ls -d tome*/ | tr -d /))
 
@@ -22,33 +25,36 @@ for tome in "${tomes[@]}"; do
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
-  (cd "$root" &&
-    pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
-      "\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
-      >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
-  pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
-
-  # Two reading PDFs: A4 (dist/<tome>.pdf) and 7-inch e-reader (-kindle.pdf).
-  # Each opens with the cover drawn in the proportions of its page (common/preamble.tex):
-  # 6in wide and 6 x height/width high, scaled to the page by \makecover.
-  for format in a4 kindle; do
-    job=main; [ "$format" = a4 ] || job="main-$format"
-    case $format in a4) ch=8.4857 ;; kindle) ch=7.9626 ;; esac
+  if ! $print_only; then
     (cd "$root" &&
-      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="cover-$format" \
-        "$meta\\def\\CH{$ch}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
-        >"$out/cover-$format.out" || { tail -30 "$out/cover-$format.out"; exit 1; })
-    (cd "$root/$tome" &&
-      for _ in 1 2 3; do
-        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="$job" \
-          "$meta\\def\\FORMAT{$format}\\def\\COVER{$out/cover-$format.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
-          { tail -40 "$out/$job.stdout"; exit 1; }
-      done)
-    suffix=""; [ "$format" = a4 ] || suffix="-$format"
-    cp "$out/$job.pdf" "$root/dist/$tome$suffix.pdf"
-  done
+      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
+        "\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
+        >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
+    pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
 
-  # Amazon KDP paperback (dist/kdp/): the interior, 6in x 9in trim without bleed, and the full
+    # Two reading PDFs: A4 (dist/<tome>.pdf) and 7-inch e-reader (-kindle.pdf).
+    # Each opens with the cover drawn in the proportions of its page (common/preamble.tex):
+    # 6in wide and 6 x height/width high, scaled to the page by \makecover.
+    for format in a4 kindle; do
+      job=main; [ "$format" = a4 ] || job="main-$format"
+      case $format in a4) ch=8.4857 ;; kindle) ch=7.9626 ;; esac
+      (cd "$root" &&
+        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="cover-$format" \
+          "$meta\\def\\CH{$ch}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
+          >"$out/cover-$format.out" || { tail -30 "$out/cover-$format.out"; exit 1; })
+      (cd "$root/$tome" &&
+        for _ in 1 2 3; do
+          pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="$job" \
+            "$meta\\def\\FORMAT{$format}\\def\\COVER{$out/cover-$format.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
+            { tail -40 "$out/$job.stdout"; exit 1; }
+        done)
+      suffix=""; [ "$format" = a4 ] || suffix="-$format"
+      cp "$out/$job.pdf" "$root/dist/$tome$suffix.pdf"
+    done
+
+  fi
+
+  # Amazon KDP paperback (dist/kdp/): the interior, 7in x 10in trim without bleed, and the full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
   # paper, 0.002252in per page. The inside margin is the one KDP asks for at that page count.
   inner=0.75in
@@ -63,12 +69,10 @@ for tome in "${tomes[@]}"; do
     [ "$pages" -le 700 ] || [ "$inner" = 0.875in ] && break
     inner=0.875in
   done
-  [ "$pages" -le 828 ] || echo "   WARNING: $pages pages, more than KDP's 828 for a 6x9 paperback"
-  [ "$pages" -ge 24 ] || echo "   WARNING: $pages pages, fewer than KDP's minimum of 24"
   python3 "$root/tools/check_cover_pdf.py" "$out/main-print.pdf" --interior
   cp "$out/main-print.pdf" "$root/dist/kdp/$tome-print.pdf"
-  pages=$(( (pages + 1) / 2 * 2 ))
-  spine=$(python3 -c "print(f'{$pages * 0.002252:.4f}')")
+  python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
+  spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$tome-print-metadata.json")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
   blurb="$tome/blurb"; [ -e "$root/$blurb.tex" ] || blurb=tools/blurb-default
   # The ISBN barcode on the back cover, once the tome has its paperback ISBN (\bookisbnprint in main.tex).
@@ -82,10 +86,14 @@ for tome in "${tomes[@]}"; do
     pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover-wrap \
       "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}" \
       >"$out/cover-wrap.out" || { tail -30 "$out/cover-wrap.out"; exit 1; })
-  python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine"
+  python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
+  if $print_only; then
+    echo "   KDP: $pages pages, spine ${spine}in; 7 x 10 in interior and validated wrap"
+    continue
+  fi
   # Kindle eBook cover: KDP asks for a JPEG of 1600 x 2560 pixels.
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$tome-ebook-cover"

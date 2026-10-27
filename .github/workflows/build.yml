@@ -30,14 +30,16 @@ jobs:
       baseline: ${{ steps.library.outputs.cache-matched-key }}
     steps:
       - uses: actions/checkout@v4
-      - name: Test build selection
-        run: python3 -m unittest discover -s tools -p test_build_plan.py
+      - name: Test publishing configuration and build selection
+        run: |
+          python3 tools/print_layout.py --check
+          python3 -m unittest discover -s tools -p 'test_*.py'
       - uses: actions/cache/restore@v4
         id: library
         with:
           path: .book-cache
-          key: library-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v1-
+          key: library-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v2-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -100,7 +102,7 @@ jobs:
           sudo dpkg -i debs/*.deb > /dev/null
           rm -rf debs
           command -v pdflatex && command -v pandoc && command -v pdftoppm
-      - name: Build PDF and EPUB
+      - name: Build reading editions and 7 x 10 paperbacks
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
         with:
@@ -151,7 +153,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -184,7 +186,7 @@ jobs:
           gh release delete books --yes --cleanup-tag || true
           gh release create books dist/*.pdf dist/*.epub dist/kdp/* --target "$GITHUB_SHA" --latest \
             --title "Books (latest build)" \
-            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Files named *-print.pdf, *-cover-wrap.pdf and *-ebook-cover.jpg are the Amazon KDP paperback interior, paperback cover and Kindle cover."
+            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Files named *-print.pdf, *-cover-wrap.pdf and *-ebook-cover.jpg are the Amazon KDP 7 x 10 in paperback interior, paperback cover and Kindle cover."
       # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
       - name: Deploy the download page
         id: deploy

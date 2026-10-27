@@ -1,5 +1,8 @@
 # Volume 0: detailed print review and 7 × 10 comparison
 
+> Subsequent decision: the author approved 7 × 10 for all production paperbacks.
+> The comparison results below document the earlier local review.
+
 Reviewed locally on 27 October 2026, from the current first-edition manuscript.
 
 **Recommendation:** 7 × 10 inches is the stronger working format for this book's

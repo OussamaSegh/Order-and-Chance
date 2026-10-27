@@ -21,14 +21,14 @@ class PlanningTest(unittest.TestCase):
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:
             self.write(name + '/main.tex', name)
-        for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh',
+        for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh',
                      'tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb',
                      'tools/assets/paper.jpg']:
             self.write(path, 'original')
         subprocess.run(['git', 'add', '.'], cwd=self.root, check=True)
         for book in self.books:
             self.outputs(self.cache, book)
-        (self.cache / 'manifest.json').write_text(json.dumps({'schema': 1, 'books': bp.fingerprints(self.root)}))
+        (self.cache / 'manifest.json').write_text(json.dumps({'schema': bp.SCHEMA, 'books': bp.fingerprints(self.root)}))
 
     def write(self, path, text):
         p = self.root / path
@@ -39,7 +39,7 @@ class PlanningTest(unittest.TestCase):
         for path in [f'dist/{book}.pdf', f'dist/{book}-kindle.pdf', f'dist/{book}.epub',
                      f'dist/html/{book}/index.html', f'build/{book}/cover.pdf'] + [
                          f'dist/kdp/{book}-{suffix}' for suffix in
-                         ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md']]:
+                         ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
             p = target / path
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_bytes(b'valid fixture')
@@ -54,7 +54,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics'])
 
     def test_shared_sources_and_converter_rebuild_all(self):
-        for path in ['common/preamble.tex', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg']:
+        for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg']:
             with self.subTest(path=path):
                 self.write(path, 'updated')
                 self.assertEqual(bp.plan(self.root, self.cache)['changed'], self.books)
@@ -64,6 +64,17 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.root / 'missing')['changed'], self.books)
         self.assertEqual(bp.plan(self.root, self.cache, force=True)['changed'], self.books)
         (self.cache / 'dist/tome1-integers.epub').unlink()
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
+
+    def test_old_trim_cache_and_missing_print_spec_force_rebuild(self):
+        manifest = self.cache / 'manifest.json'
+        data = json.loads(manifest.read_text())
+        data['schema'] = bp.SCHEMA - 1
+        manifest.write_text(json.dumps(data))
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], self.books)
+        data['schema'] = bp.SCHEMA
+        manifest.write_text(json.dumps(data))
+        (self.cache / 'dist/kdp/tome1-integers-print-metadata.json').unlink()
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
 
     def test_overlay_preserves_unchanged_and_drops_stale_chapters(self):

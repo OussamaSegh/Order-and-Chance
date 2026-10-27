@@ -813,4 +813,5 @@ The local 6 × 9 / 7 × 10 comparison is documented in
 | Ch. 2 cosine-sum solution; Theorem 4.4 | Inline formulas overflowed in the direct 7 × 10 trial. | Use displayed formulas; both trim sizes compile without overfull boxes. |
 
 Exercise, theorem and label numbering is preserved. These review changes and
-comparison interiors are local; the production trim remains 6 × 9.
+comparison interiors were local. The author subsequently approved 7 × 10
+for all production paperbacks; see `docs/DESIGN.md`.
