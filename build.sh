@@ -64,6 +64,7 @@ for tome in "${tomes[@]}"; do
   done
   [ "$pages" -le 828 ] || echo "   WARNING: $pages pages, more than KDP's 828 for a 6x9 paperback"
   [ "$pages" -ge 24 ] || echo "   WARNING: $pages pages, fewer than KDP's minimum of 24"
+  python3 "$root/tools/check_cover_pdf.py" "$out/main-print.pdf" --interior
   cp "$out/main-print.pdf" "$root/dist/kdp/$tome-print.pdf"
   pages=$(( (pages + 1) / 2 * 2 ))
   spine=$(python3 -c "print(f'{$pages * 0.002252:.4f}')")
@@ -80,6 +81,7 @@ for tome in "${tomes[@]}"; do
     pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover-wrap \
       "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}" \
       >"$out/cover-wrap.out" || { tail -30 "$out/cover-wrap.out"; exit 1; })
+  python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine"
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"

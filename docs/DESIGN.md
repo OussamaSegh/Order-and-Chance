@@ -124,3 +124,15 @@ Volumes 0 and 9. The current nineteen-book catalog and integrated mathematical
 appendices are documented in [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). Earlier
 all-volume validation counts above describe the library before this revision.
 The approved black-and-gold visual system is preserved.
+
+### Final font correction and clean-build guard
+
+The first clean all-volume run succeeded at `e0839a5`, with all 28 builds and
+release/Pages deployment successful. Subsequent checks of all cover fonts found
+that Geometry's small sans-serif curvature labels used a Type 3 fallback. Covers
+now explicitly select vector TeX Gyre Heros for sans-serif labels. The same
+setting is applied to interior and standalone figure labels, since the Geometry
+interior used the same fallback.
+`tools/check_cover_pdf.py` checks physical dimensions and rejects Type 3 or
+unembedded fonts, in every front preview, paperback interior and production wrap pipeline.
+A final clean release run validates this correction across all volumes.
