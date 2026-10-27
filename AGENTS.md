@@ -37,6 +37,10 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 - Preserve the approved aspect ratio in EPUB, reader and library thumbnails.
   EPUB fronts use the same 7:10 composition as print, not the old stretched 1:1.6
   version. Each approved volume’s EPUB/reader/library PNG is its original file unchanged.
+- Back covers reuse the front’s actual frame, masthead, slogan and author image
+  regions. Use the same charcoal fill with restrained grain for approved-image
+  wraps. Keep the wider left-aligned Inter blurb, generous leading and reserved
+  barcode area; do not reinstate the old untracked heading or thin dim frame.
 - Covers/wraps compile with XeLaTeX; bodies remain pdfLaTeX/Palatino. The shared
   template uses an image XObject to reuse the approved identity without re-encoding
   multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,

@@ -12,26 +12,28 @@
     \useasboundingbox (0,0) rectangle (6in,{\CH*1in});%
     \input{tools/cover-front}%
   \end{tikzpicture}}}%
+\newsavebox{\printbackbox}%
+\sbox{\printbackbox}{\resizebox{\PRINTWIDTH in}{!}{%
+  \begin{tikzpicture}%
+    \coordinate (O) at (0,0);%
+    \let\CH\frontheight%
+    \useasboundingbox (0,0) rectangle (6in,{\CH*1in});%
+    \input{tools/cover-back}%
+  \end{tikzpicture}}}%
 \begin{tikzpicture}
   \let\B\PRINTBLEED
   \let\TW\PRINTWIDTH\let\TH\PRINTHEIGHT
   \pgfmathsetmacro{\W}{2*\B+2*\TW+\SPINE}
   \useasboundingbox (0,0) rectangle ({\W*1in},{(\TH+2*\B)*1in});
-  \coverpaper{\W*1in}{(\TH+2*\B)*1in}
+  \IfFileExists{tools/assets/approved-volume-\TOMENUM.png}{%
+    \coverpaper[.35]{\W*1in}{(\TH+2*\B)*1in}%
+  }{\coverpaper{\W*1in}{(\TH+2*\B)*1in}}
   % Front cover, preboxed outside the wrap's TikZ coordinate system.
   \node[anchor=south west,inner sep=0pt,outer sep=0pt] at ({(\B+\TW+\SPINE)*1in},{\B*1in})
     {\usebox{\printfrontbox}};
   % Back cover
   \coordinate (K) at ({\B*1in},{\B*1in});
-  \draw[ocCoral,opacity=.9,line width=.65pt] ($(K)+(.18in,.18in)$) rectangle ($(K)+({(\TW-.18)*1in},{(\TH-.18)*1in})$);
-  \draw[ocCoral,opacity=.85,line width=.35pt] ($(K)+(.24in,.24in)$) rectangle ($(K)+({(\TW-.24)*1in},{(\TH-.24)*1in})$);
-  \node[ocCream,anchor=west,font=\fontsize{18}{22}\selectfont] at ($(K)+(.5in,{.9*\TH*1in})$) {ORDER AND CHANCE};
-  \node[ocCream,text width=5.8in,align=left,font=\fontsize{11}{14}\selectfont,execute at begin node={\hyphenpenalty=10000\relax\exhyphenpenalty=10000\relax}] at ($(K)+({\TW/2*1in},{.85*\TH*1in})$) {VOLUME \TOMENUM\ \textperiodcentered\ \TOMETITLE};
-  \draw[ocCoral,line width=0.4pt] ($(K)+({(\TW/2-.6)*1in},{.811111*\TH*1in})$) -- ++(1.2in,0);
-  \node[ivory,anchor=north,text width=5.25in,align=left,font=\fontsize{11.5}{15.5}\selectfont]
-    at ($(K)+({\TW/2*1in},{.783333*\TH*1in})$) {\input{\BLURB}};
-  \node[ocCream,font=\fontsize{11}{14}\selectfont\itshape]
-    at ($(K)+({\TW/2*1in},{.255556*\TH*1in})$) {Discover the patterns. Understand the proofs.};
+  \node[anchor=south west,inner sep=0pt,outer sep=0pt] at (K) {\usebox{\printbackbox}};
   % ISBN barcode (EAN-13, made by tools/ean13.py) in KDP's barcode area, lower right of the back
   % cover, when the tome has its ISBN; then untick "add a barcode" in KDP.
   \ifdefined\BARCODE

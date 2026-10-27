@@ -1,3 +1,24 @@
+# Back-cover coherence correction
+
+The author rejected the back’s mismatched charcoal appearance and typography.
+The shared paperback back now uses `tools/cover-back.tex`, on the same logical
+canvas as the front. It reuses the actual front image’s frame, masthead, slogan
+and author regions, so their lettering, coral hue, border widths and margins match.
+The approved-image wraps use the charcoal token `#151516` with 35% paper grain;
+legacy vector fronts retain their existing background. Sampled empty strips of
+Volume 2’s rendered front and back both have median RGB **21, 21, 21**.
+
+The blurb uses a wider 6-inch printed column, bundled Inter Light at approximately
+13.4 pt with 18.7 pt leading, and ragged-right text without forced hyphenation.
+Long blurbs fit above the reserved barcode area. Volume/title hierarchy follows
+the same left margin, with the book title in Inter SemiBold. The old untracked
+masthead, dim thin borders and separate centered slogan are retired. Approved
+front images, blurbs, ISBNs and actual-page-count-derived wrap geometry are preserved.
+All 41 publishing tests and the vector-front regression previews pass. Corrected
+Volume 2 and the longer Volume 0 blurb/barcode wrap are checked before publication.
+
+---
+
 # Volume 2 approved-image update
 
 The author approved the revised **fine coral polyhedral symmetry wireframe** cover

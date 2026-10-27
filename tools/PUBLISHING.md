@@ -130,3 +130,8 @@ preserve the approved proportions; thumbnails use contain/auto height, never cro
 Cover/wrap builds require XeLaTeX and bundled Inter fonts, plus Pillow for the exact
 image check (`texlive-xetex` and `python3-pil` in Ubuntu CI). Body builds still use
 pdfLaTeX. The author explicitly preferred the exact image over the old recreation.
+
+Paperback backs reuse the front’s original frame, masthead, slogan and author
+lettering through `tools/cover-back.tex`. Approved-image wraps match charcoal
+`#151516` with restrained (35%) grain. The wider Inter blurb retains room above
+the barcode; the original approved front is never modified by back-cover changes.
