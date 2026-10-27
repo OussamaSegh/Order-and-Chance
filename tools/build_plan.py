@@ -9,6 +9,7 @@ from pathlib import Path
 from book_outputs import clean, check
 from check_cover_pdf import check_interior
 from book_pdf import check_pair
+from check_print_cover import check as check_print_cover
 from print_layout import specification
 
 SCHEMA = 4
@@ -97,6 +98,8 @@ def snapshot(root, cache, data):
         metadata = json.loads((root / 'dist/kdp' / f'{book}-print-metadata.json').read_text())
         if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
+        number = re.match(r'tome([A-Z]?\d+)-', book).group(1)
+        check_print_cover(root / 'dist/kdp' / f'{book}-cover-wrap.pdf', number)
     shutil.rmtree(cache, ignore_errors=True)
     cache.mkdir(parents=True)
     shutil.copytree(root / 'dist', cache / 'dist')

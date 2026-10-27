@@ -93,7 +93,7 @@ its original frame/header/footer and retain their own vector mathematical art. T
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
 readable deep-coral accents; the standard paperback PDF retains black-ink grayscale. EPUB and web images preserve the approved 7:10 proportions.
-All three approved masters are 1049 × 1500 pixels; they are never silently redrawn.
+All three digital masters remain unchanged at 1049 × 1500 pixels. Paperback covers use author-approved traced vector lettering and artwork, with native paper grain at approximately 360 ppi and an enforced 300 ppi print preflight.
 Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
 changing design or publishing templates. Earlier designs are archived separately.
 

@@ -122,7 +122,7 @@ PDF, EPUB, reader, covers or metadata makes a cached book incomplete.
 
 Volumes 0, 1 and 2 use `tools/assets/approved-volume-0.png`,
 `tools/assets/approved-volume-1.png` and `tools/assets/approved-volume-2.png` unchanged. Each is embedded as-is
-in the paperback front, copied byte-for-byte into EPUB, reader and library PNGs,
+in the reading PDF, copied byte-for-byte into EPUB, reader and library PNGs,
 and checked by `tools/check_cover_reference.py` (add `--number 1` or `--number 2` for those volumes).
 Each source is 1049 × 1500 pixels
 (about 150 ppi at 7 × 10); no resampling can add detail. All front-cover outputs
@@ -135,3 +135,37 @@ Paperback backs reuse the front’s original frame, masthead, slogan and author
 lettering through `tools/cover-back.tex`. Approved-image wraps match charcoal
 `#151516` with restrained (35%) grain. The wider Inter blurb retains room above
 the barcode; the original approved front is never modified by back-cover changes.
+
+
+## Print vector masters and resolution preflight
+
+The author selected traced vector paths for paperback print quality. The approved
+digital PNGs remain immutable; print fronts for Volumes 0–2 and the shared back
+identity use source-derived Bezier contours in `tools/assets/print/`. Letter shapes,
+positions and coral artwork come from the approved originals, with straight vector
+borders. This produces scalable boundaries without claiming to recover absent
+source detail. Sixteen other mathematical illustrations remain native vectors.
+The charcoal grain is tiled at native resolution, approximately 360 physical ppi on the panels
+and approximately 420 ppi on the outer wrap. No low-resolution cover bitmap is
+permitted in the print PDF. Fonts are embedded; original cover lettering is paths.
+
+`build.sh` writes `build/<tome>/cover-preflight.json`. The checker validates vector
+asset/source hashes, rejects every raster except the two native paper tiles, and
+uses `pdfimages -list` placement matrices to require >=300 ppi. It runs again on
+cached release assembly. CI retains each report as a build artifact.
+
+Normal builds use the reviewed committed masters and need no art tools. To
+regenerate deliberately, install Inkscape, libpotrace0 and
+`pip install -r tools/requirements-cover-art.txt`, then run:
+
+```sh
+python3 tools/print_cover_vectors.py
+python3 tools/preview_covers.py --print --out build/print-vector-proof
+python3 tools/check_print_cover.py build/<tome>/cover-wrap.pdf --number 2
+```
+
+Inspect source comparison, fine lettering, mesh, full back and barcode area before
+committing regenerated assets. Import PDF masters outside TikZ and reuse their
+forms; importing inside a transformed picture can shift visible artwork even
+when the page dimensions and searchable copy pass. KDP's online preview and a
+physical proof remain the final checks for the printer's rendering and ink color.

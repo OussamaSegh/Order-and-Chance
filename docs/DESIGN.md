@@ -1,3 +1,42 @@
+# Paperback print-quality upgrade
+
+The author approved **vector paths from the approved cover**. This is a print-only
+exception to the historical exact-image wrap policy below: digital PNG masters,
+reading PDF fronts, EPUBs, reader and library images remain unchanged. The source
+was pulled through `0838eb3` before editing, retaining the latest Volume wording.
+
+Volumes 0–2 now have reviewed source-derived print-only Bezier masters in
+`tools/assets/print/`, with their original glyph contours traced separately from
+the mathematical mesh. Straight fitted borders and cumulative coral contours
+retain the layout and visual identity without replacing the fonts. Shared back
+identity uses small matching vector masters; the other sixteen illustration plates
+remain native vectors. This smooths existing boundaries, without recovering detail
+that never existed in the 1049 × 1500 originals. Editable SVGZ/PDF files and a
+source/output hash manifest are committed; regeneration is documented in
+`tools/PUBLISHING.md` and needs Inkscape, libpotrace0 and the art requirements.
+
+The shared print template tiles native charcoal paper, preblended for approved
+fronts/backs, at approximately 360 physical ppi on panels and approximately 420 ppi on the
+outside wrap. Digital background behavior is preserved. Print preflight rejects
+any other bitmap, any image placement below 300 ppi, changed vector/source hashes
+or unembedded fonts. Reports are retained in CI; cached assemblies are checked
+again before publication. Original artwork/type never appears as a bitmap inside
+the print wrap. Actual interior pages still determine every spine and sheet size;
+7 × 10 trim, 0.125 outside bleed and existing barcode handling are preserved.
+
+Visual proofing caught a XeTeX PDF-import translation despite correct page bounds.
+Masters are now cached outside TikZ before placement, and tile drawing is excluded
+from bounding-box calculation. Inspect the visible frame/author as well as the
+searchable copy and physical dimensions when changing these templates.
+
+Verification: all 46 publishing tests pass. Corrected front proofs for Volumes
+0, 1, 2 and the long-title Volume 15 were inspected. Volume 2’s complete wrap
+passes the raster whitelist, 360 ppi, visible frame, embedded fonts and geometry
+checks against its 372-page print interior (0.8377-inch spine). The previously
+shifted proof fails the new visible-frame guard. Digital master hashes are unchanged.
+
+---
+
 # English series terminology
 
 The author chose **Volume/Volumes** for the English series and explicitly asked

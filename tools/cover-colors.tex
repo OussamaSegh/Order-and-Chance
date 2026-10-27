@@ -19,6 +19,44 @@
 \usepackage{xsavebox}
 \XeTeXgenerateactualtext=1
 \newcommand{\covertracking}[2]{{\addfontfeatures{LetterSpace=#1}#2}}
+\newif\ifcoverprint
+% Import PDF forms outside TikZ: XeTeX otherwise captures the current picture
+% translation in the imported PDF, shifting the illustration inside its box.
+\newcommand{\prepareprintcoverassets}[1]{%
+ \ifcoverprint
+  \pgfmathsetlengthmacro{\covercanvasheight}{#1*1in}%
+  \IfFileExists{tools/assets/approved-volume-\TOMENUM.png}{%
+   \global\def\ocMasterPrepared{1}%
+   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/volume-\TOMENUM.pdf}}%
+   \def\identitynumber{\TOMENUM}%
+  }{\def\identitynumber{0}}%
+  \global\def\ocIdentityPrepared{1}%
+  \xsbox{ocIdentity}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/identity-\identitynumber.pdf}}%
+ \fi
+}
+% Native 1049-pixel grain tiles remain >=359 ppi after the 7/6 print scaling.
+% The muted tile is preblended RGB, avoiding transparent paper overlays in print.
+\newcommand{\coverprintpaper}[3]{%
+ \ifdim#1pt<1pt
+  \def\paperstyle{Muted}\def\paperfile{tools/assets/print/paper-muted.png}%
+ \else
+  \def\paperstyle{Plain}\def\paperfile{tools/assets/approved-charcoal-paper.png}%
+ \fi
+ \ifcsname ocPaperPrepared\paperstyle\endcsname\else
+  \expandafter\gdef\csname ocPaperPrepared\paperstyle\endcsname{1}%
+  \xsbox{ocPaper\paperstyle}{\includegraphics[width=2.5in]{\paperfile}}%
+ \fi
+ \pgfmathsetmacro{\tilecols}{int(ceil((#2)/(2.5*1in))-1)}%
+ \pgfmathsetmacro{\tilerows}{int(ceil((#3)/(2.5*1500/1049*1in))-1)}%
+ \begin{pgfinterruptboundingbox}% Tiles outside the clip must not move the cover canvas.
+ \foreach \xx in {0,...,\tilecols}{%
+  \foreach \yy in {0,...,\tilerows}{%
+   \node[anchor=south west,inner sep=0pt] at ({\xx*2.5in},{\yy*2.5*1500/1049*1in})
+    {\xusebox{ocPaper\paperstyle}};%
+  }%
+ }%
+ \end{pgfinterruptboundingbox}%
+}
 % Matching charcoal texture for backs and variable-content fronts.
 \newcommand{\coverpaper}[3][1]{%
  \pgfmathsetlengthmacro{\paperw}{#2}
@@ -26,8 +64,12 @@
  \begin{scope}
   \fill[ocBlack] (0,0) rectangle ({#2},{#3});
   \clip (0,0) rectangle ({#2},{#3});
-  \node[anchor=south west,inner sep=0pt,opacity=#1] at (0,0)
-   {\includegraphics[width=\paperw,height=\paperh]{tools/assets/approved-charcoal-paper.png}};
+  \ifcoverprint
+   \coverprintpaper{#1}{#2}{#3}%
+  \else
+   \node[anchor=south west,inner sep=0pt,opacity=#1] at (0,0)
+    {\includegraphics[width=\paperw,height=\paperh]{tools/assets/approved-charcoal-paper.png}};
+  \fi
  \end{scope}}
 \newif\ifcoverbg
 
@@ -36,18 +78,34 @@
  \pgfmathsetlengthmacro{\covercanvasheight}{\CH*1in}
  \ifcsname ocMasterPrepared\endcsname\else
   \global\def\ocMasterPrepared{1}
-  \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/approved-volume-#1.png}}
+  \ifcoverprint
+   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/volume-#1.pdf}}%
+  \else
+   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/approved-volume-#1.png}}%
+  \fi
  \fi
  \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocMaster}};
 }
 % Identical original frame, series heading, slogan and author for the other books.
 \newcommand{\covercommonidentity}{%
+ \ifcoverprint
+  % The small identity master excludes the illustration, avoiding repeated complex
+  % artwork behind clipped back-cover regions. Its outlines match the front.
+  \IfFileExists{tools/assets/approved-volume-\TOMENUM.png}{\def\identitynumber{\TOMENUM}}{\def\identitynumber{0}}%
+  \pgfmathsetlengthmacro{\covercanvasheight}{\CH*1in}%
+  \ifcsname ocIdentityPrepared\endcsname\else
+   \global\def\ocIdentityPrepared{1}%
+   \xsbox{ocIdentity}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/identity-\identitynumber.pdf}}%
+  \fi
+  \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocIdentity}};%
+ \else
  \foreach \xa/\ya/\xb/\yb in {0/0/.22/1,5.79/0/6/1,0/.9533/6/1,0/.8533/6/.9467,0/0/6/.0467,.32/.05/3.3/.105}{
   \begin{scope}
    \clip ($(O)+(\xa in,{\CH*\ya*1in})$) rectangle ($(O)+(\xb in,{\CH*\yb*1in})$);
    \covermasterimage
   \end{scope}
  }
+ \fi
 }
 \newcommand{\covercommoncopy}{%
  \node[opacity=0,anchor=west,font=\fontsize{12}{15}\selectfont] at ($(O)+(.43in,{\CH*.92in})$) {ORDER AND CHANCE};

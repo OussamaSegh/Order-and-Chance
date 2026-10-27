@@ -24,6 +24,9 @@ class PlanningTest(unittest.TestCase):
         pair_checker = patch.object(bp, 'check_pair', return_value=233)
         self.pair_check = pair_checker.start()
         self.addCleanup(pair_checker.stop)
+        cover_checker = patch.object(bp, 'check_print_cover', return_value={'status': 'pass'})
+        self.cover_check = cover_checker.start()
+        self.addCleanup(cover_checker.stop)
         self.books = ['tome0-basics', 'tome1-integers', 'tome9-higher-structures']
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:

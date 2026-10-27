@@ -2,6 +2,22 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Latest print-quality authorization
+
+The author subsequently approved **vector paths traced from the approved cover**
+for sharp paperback printing. This print-only decision supersedes the older
+raster-only wrap rules below and the terminology task's cover freeze. Keep the
+approved PNG files and every digital front unchanged. Print fronts and common
+back identity use the reviewed source-derived PDF paths in `tools/assets/print/`;
+never substitute newly typeset common lettering or enlarged cover bitmaps.
+`tools/print_cover_vectors.py` regenerates these assets; its manifest records the
+source and output hashes. Contour fitting smooths existing boundaries; it cannot
+recover missing original detail. The only print raster is native paper grain,
+tiled at approximately 360 ppi. `tools/check_print_cover.py` enforces >=300 physical ppi,
+embedded fonts, vector master hashes and a strict paper-only raster whitelist.
+Import the PDF masters outside TikZ before placing the cached forms, to avoid
+XeTeX's picture-transform import shift. Inspect actual fronts and full wraps.
+
 ## Approved series identity (27 October 2026)
 
 The author's latest selection is the **left-aligned charcoal/coral editorial**

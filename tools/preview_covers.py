@@ -18,17 +18,20 @@ PRINT = (LAYOUT["trim_width_in"], LAYOUT["trim_height_in"])
 FORMATS = {"reference": PRINT, "ebook": (6, 6*PRINT[1]/PRINT[0])}
 
 
-def render(main: Path, output: Path) -> str:
+def render(main: Path, output: Path, print_mode=False) -> str:
     metadata = re.search(r"^% epub-title: (.+)$", main.read_text(), re.M).group(1)
     number = re.search(r"Volume ([0-9A-Z]+):", metadata).group(1)
     title = metadata.split(": ", 1)[1]
     tome = main.parent.name
     out = output / tome
     out.mkdir(parents=True, exist_ok=True)
-    for fmt, (width, height) in FORMATS.items():
+    formats = {"reference": PRINT} if print_mode else FORMATS
+    for fmt, (width, height) in formats.items():
         tex = (rf"\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}"
                rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{tome}/cover-motif}}"
                r"\input{tools/cover.tex}")
+        if print_mode:
+            tex = r"\def\PRINTQUALITY{}" + tex
         with (out / f"{fmt}.stdout").open("w") as log:
             # xsavebox needs one XDV-only pass for references; encode images once.
             for flags in (["-no-pdf"], []):
@@ -54,13 +57,15 @@ def main():
     parser.add_argument("tomes", nargs="*", help="Only render these volume directories; default: all")
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--out", type=Path, default=ROOT / "build/cover-previews")
+    parser.add_argument("--print", action="store_true", dest="print_mode",
+                        help="Render the print vector master at 7x10, instead of digital fronts")
     args = parser.parse_args()
     books = [ROOT / tome / "main.tex" for tome in args.tomes] if args.tomes else sorted(ROOT.glob("tome*/main.tex"))
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
-        futures = [pool.submit(render, book, args.out.resolve()) for book in books]
+        futures = [pool.submit(render, book, args.out.resolve(), args.print_mode) for book in books]
         for future in as_completed(futures):
             print("PASS", future.result(), flush=True)
-    print(f"Verified {len(books)} volumes in {len(FORMATS)} cover sizes.", flush=True)
+    print(f"Verified {len(books)} volumes in {1 if args.print_mode else len(FORMATS)} cover sizes.", flush=True)
 
 
 if __name__ == "__main__":

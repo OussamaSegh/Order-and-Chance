@@ -88,9 +88,8 @@ for tome in "${tomes[@]}"; do
   fi
   compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
-  if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
-    python3 "$root/tools/check_cover_reference.py" "$out/cover-wrap.pdf" --number "$num"
-  fi
+  python3 "$root/tools/check_print_cover.py" "$out/cover-wrap.pdf" --number "$num" \
+    --report "$out/cover-preflight.json"
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
