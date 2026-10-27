@@ -1,0 +1,277 @@
+\chapter{Guided Reading: Random Groups}
+\label{ch:sandpiles}
+
+\begin{center}\itshape
+Pour sand on a graph, one grain at a time.\\
+The piles topple, the grains fall off the edge,\\
+and what is left behind is a finite abelian group.\\
+Which one? Ask the class groups of number fields.
+\end{center}
+
+In 1987 three physicists at Brookhaven, Per Bak, Chao Tang and Kurt Wiesenfeld, wanted a toy model for systems that organise themselves into a critical state without anyone tuning a parameter. They took a grid, put grains of sand on its sites, and made a rule: a site holding four grains or more \emph{topples}, sending one grain to each of its four neighbours; grains that fall off the border are lost. Add grains at random and watch. The avalanches have no typical size; their sizes follow a power law. The paper, \emph{Self-organized criticality: an explanation of $1/f$ noise} (Physical Review Letters, 1987), became one of the most cited in physics.
+
+Three years later Deepak Dhar noticed something the physicists had not been looking for: the order in which piles topple does not matter, so the model is \emph{abelian}, and the stable configurations that keep coming back (the \emph{recurrent} ones) form a finite abelian group under ``add, then topple until stable'' (Physical Review Letters, 1990). That group, the \emph{sandpile group} of the graph, had been met before by mathematicians under other names: the critical group, the Jacobian of the graph, the group of components. Its order is the number of spanning trees.
+
+Then came the question this chapter is about: \emph{if the graph is random, what is the distribution of its sandpile group?} In 2015 Julien Clancy, Timothy Leake and Sam Payne computed the sandpile groups of many random graphs and saw a pattern that number theorists recognised at once: the probabilities looked like those that Henri Cohen and Hendrik Lenstra had proposed in 1984 for class groups of quadratic fields, with a twist. Melanie Matchett Wood proved the conjecture in 2017. This chapter reads her work, through her survey for the 2022 International Congress, and proves the two facts at its heart in the simplest model: the moments of the cokernel of a random symmetric matrix, and the law of its rank modulo $p$.
+
+\section{The sandpile group in one page}
+
+Let $\Gamma$ be a connected graph on the vertices $0,1,\dots,n$, with vertex $0$ playing the role of the border (the \emph{sink}). The Laplacian $L=D-A$ has the degrees on the diagonal and $-(\text{number of edges }ij)$ off it. Toppling vertex $i$ subtracts the $i$-th column of $L$ from the configuration. Delete the row and column of the sink to get the \emph{reduced Laplacian} $\tilde L$, an $n\times n$ symmetric integer matrix. Two configurations that differ by toppling moves differ by an element of $\tilde L\Z^n$, so the natural home of configurations up to toppling is
+\[
+S(\Gamma)=\Z^n/\tilde L\Z^n=\operatorname{cok}\tilde L .
+\]
+
+\begin{remark}[what we take from elsewhere]\label{rem:sandpilefacts}
+By the matrix-tree theorem (Tome~C1, Theorem~9.4, applied to the graph with each edge in both directions), $\det\tilde L$ is the number of spanning trees of $\Gamma$, which is positive since $\Gamma$ is connected. By the Smith normal form (Tome~2, Theorem~7.4), $\operatorname{cok}\tilde L\cong\bigoplus_i\Z/d_i$ with $d_1\cdots d_n=\det\tilde L$, so $S(\Gamma)$ is a finite abelian group whose order is the number of spanning trees. Dhar's theorem, that the recurrent configurations form a set of representatives of $S(\Gamma)$, is proved in Dhar's paper and in the book of Klivans listed in the sources; we do not need it.
+\end{remark}
+
+The decomposition into cyclic factors is computable: Figure~\ref{fig:sandpile} comes from Smith normal forms of reduced Laplacians of random graphs, computed modulo $3$ in the notebook. The cycle on $m$ vertices has $S\cong\Z/m$, and the complete graph on $n+1$ vertices has $S\cong(\Z/(n+1))^{n-1}$, which recovers Cayley's count $(n+1)^{n-1}$ of labelled trees (Exercises~\ref{ex:cycle} and~\ref{ex:complete}).
+
+\section{How to read Wood's survey}
+
+Wood's ICM survey, \emph{Probability theory for random groups arising in number theory}, treats class groups of number fields, Selmer groups of elliptic curves and their non-abelian generalisations with one method, the method she had used for sandpiles. Read it with the questions of Chapter~\ref{ch:reading} in mind.
+\begin{enumerate}
+\item \emph{What is the object?} A random finite abelian group $X$, for instance the $p$-part of a sandpile group. A probability distribution on isomorphism classes of finite abelian $p$-groups is an infinite list of numbers, and there is no Fourier transform in sight.
+\item \emph{What replaces the Fourier transform?} The \emph{moments}: for each finite abelian group $G$, the number
+\[
+\mathbb E\,\#\mathrm{Sur}(X,G),
+\]
+the expected number of surjective homomorphisms from $X$ onto $G$. They play the role that $\mathbb EX^k$ plays for a real random variable, and the survey's first theorem says that, when they do not grow too fast, they determine the distribution. That uniqueness theorem is Tome~14's business (Chapter~13); here we take it on trust.
+\item \emph{Why surjections?} Because they are easy to count for cokernels. A surjection $\operatorname{cok}M\to G$ is the same as a surjection $F:\Z^n\to G$ that kills the columns of $M$, so
+\[
+\mathbb E\,\#\mathrm{Sur}(\operatorname{cok}M,G)=\sum_{F\in\mathrm{Sur}(\Z^n,G)}P(FM=0),
+\]
+and $FM=0$ is a system of linear conditions on the entries of $M$. For a matrix with independent uniform entries modulo $|G|$, each condition costs a factor $|G|^{-1}$ per column.
+\item \emph{What is new for sandpiles?} Two things. The matrix is symmetric, so the conditions are no longer independent; the answer changes from $1$ (the Cohen--Lenstra moments of Tome~14) to $|\wedge^2G|$. And the entries of a Laplacian are not uniform modulo $|G|$: the off-diagonal entries are $0$ or $-1$, and the diagonal is determined by the rest. Most of the length of Wood's 2017 paper is a \emph{universality} argument showing that the moments come out the same anyway.
+\end{enumerate}
+
+So the plan for the chapter: prove the moment formula for uniform symmetric matrices (Theorem~\ref{thm:symmoments}), find the law of the rank modulo $p$ by a Markov chain (Theorem~\ref{thm:coranklaw}), and compare with real sandpiles (Figure~\ref{fig:sandpile}).
+
+\section{Moments of symmetric cokernels}
+
+Fix a prime $p$ and an integer $k\ge1$, and put $R=\Z/p^k$. Let $G$ be a finite abelian $p$-group with $p^kG=0$. By the structure theorem (Tome~2, Theorem~7.6),
+\[
+G\cong\Z/p^{\lambda_1}\oplus\dots\oplus\Z/p^{\lambda_r},\qquad1\le\lambda_i\le k,
+\]
+with generators $g_1,\dots,g_r$; $r$ is the \emph{rank} of $G$, the dimension of $G/pG$ over $\mathbb F_p$. Homomorphisms $R^n\to G$ are given by the images of the basis vectors, so there are $|G|^n$ of them.
+
+\begin{lemma}[counting surjections]\label{lem:countsur}
+$\#\mathrm{Sur}(R^n,G)=|G|^n\prod_{i=0}^{r-1}(1-p^{i-n})$.
+\end{lemma}
+
+\begin{proof}
+We show that $x_1,\dots,x_n\in G$ generate $G$ if and only if their images generate $G/pG$. One direction is clear. Conversely, if $H=\langle x_1,\dots,x_n\rangle$ satisfies $H+pG=G$, then the quotient $Q=G/H$ satisfies $pQ=Q$, hence $Q=p^kQ=0$. Now $G\to G/pG\cong\mathbb F_p^r$ is a surjective homomorphism, each fibre has $|pG|$ elements, so uniform independent $x_j$ have uniform independent images in $\mathbb F_p^r$. The images span $\mathbb F_p^r$ exactly when the $r\times n$ matrix they form has rank $r$, that is, has independent rows; choosing the rows one at a time gives $\prod_{i=0}^{r-1}(p^n-p^i)$ such matrices among $p^{rn}$. Hence the proportion of generating $n$-tuples is $\prod_{i<r}(1-p^{i-n})$.
+\end{proof}
+
+\begin{theorem}[moments of symmetric cokernels]\label{thm:symmoments}
+Let $M$ be a uniform random symmetric $n\times n$ matrix over $R=\Z/p^k$, and $G$ as above. Then
+\[
+\mathbb E\,\#\mathrm{Sur}(\operatorname{cok}M,G)=\prod_{i=0}^{r-1}(1-p^{i-n})\cdot p^{\sum_{i<j}\min(\lambda_i,\lambda_j)}
+\ \xrightarrow[n\to\infty]{}\ p^{\sum_{i<j}\min(\lambda_i,\lambda_j)} .
+\]
+\end{theorem}
+
+\begin{proof}
+As in the plan, $\mathbb E\,\#\mathrm{Sur}(\operatorname{cok}M,G)=\sum_{F}P(FM=0)$ over surjections $F:R^n\to G$, where $FM$ is the map $R^n\to G$, $y\mapsto F(My)$. We show that $P(FM=0)=p^{-n\sum\lambda_i+\sum_{i<j}\min(\lambda_i,\lambda_j)}$ for every surjective $F$; since $|G|^n=p^{n\sum\lambda_i}$, Lemma~\ref{lem:countsur} then gives the formula.
+
+\emph{Step 1: every surjection is standard after a change of basis.} Let $\pi:R^n\to G$ send $e_i$ to $g_i$ for $i\le r$ and $e_i$ to $0$ for $i>r$. Given $F$ surjective, choose $x_1,\dots,x_r\in R^n$ with $F(x_i)=g_i$. Their images in $\mathbb F_p^n=R^n/pR^n$ are independent, because $F$ induces $\mathbb F_p^n\to G/pG$ sending them to a basis. Complete them to a basis of $\mathbb F_p^n$ and lift the added vectors to $x_{r+1},\dots,x_n\in R^n$. The matrix $A$ with columns $x_1,\dots,x_n$ has a determinant that is non-zero modulo $p$, hence a unit of $R$, so $A\in GL_n(R)$. Finally, for $j>r$ write $F(x_j)=\sum_ic_{ji}g_i$ with $c_{ji}\in R$ and replace $x_j$ by $x_j-\sum_ic_{ji}x_i$: this is a column operation, $A$ stays invertible, and now $F(x_j)=0$. So $FA=\pi$.
+
+\emph{Step 2: the symmetric matrix does not notice.} Put $M'=A^{-1}M(A^{-1})^{T}$. The map $M\mapsto A^{-1}M(A^{-1})^T$ is a bijection of the set of symmetric matrices (its inverse is $M'\mapsto AM'A^T$), so $M'$ is again uniform. And $FM=\pi A^{-1}M=\pi M'A^T$, which vanishes if and only if $\pi M'=0$, since $A^T$ is invertible.
+
+\emph{Step 3: count.} $\pi M'=0$ means $\sum_{i\le r}M'_{ij}g_i=0$ for every column $j$, that is, $p^{\lambda_i}\mid M'_{ij}$ for all $i\le r$ and all $j$. The independent entries of $M'$ are those with $i\le j$, each uniform on $R$, and a uniform element of $R$ is divisible by $p^a$ ($a\le k$) with probability $p^{-a}$. The conditions are: for $i\le r<j$, $p^{\lambda_i}\mid M'_{ij}$; for $i\le j\le r$, $p^{\max(\lambda_i,\lambda_j)}\mid M'_{ij}$ (the conditions from row $i$ and from row $j$ on the same entry); no condition when $r<i\le j$. So $P(\pi M'=0)=p^{-E}$ with
+\[
+E=(n-r)\sum_i\lambda_i+\sum_{i\le r}\lambda_i+\sum_{i<j\le r}\max(\lambda_i,\lambda_j).
+\]
+Using $\max(a,b)=a+b-\min(a,b)$ and $\sum_{i<j}(\lambda_i+\lambda_j)=(r-1)\sum\lambda_i$, we get $E=n\sum\lambda_i-\sum_{i<j}\min(\lambda_i,\lambda_j)$. The limit holds because the finite product tends to $1$.
+\end{proof}
+
+\begin{remark}[the exterior square]\label{rem:wedge}
+The number $p^{\sum_{i<j}\min(\lambda_i,\lambda_j)}$ is the order of $\wedge^2G$, the quotient of $G\otimes G$ by the subgroup generated by the $x\otimes x$: indeed $\wedge^2(A\oplus B)\cong\wedge^2A\oplus\wedge^2B\oplus(A\otimes B)$, $\wedge^2$ of a cyclic group is $0$, and $\Z/p^a\otimes\Z/p^b\cong\Z/p^{\min(a,b)}$. This is how the theorem is usually stated: the moments of symmetric cokernels are $|\wedge^2G|$, where those of the cokernels of matrices with independent entries are $1$. The exterior square appears because a symmetric matrix defines a symmetric pairing on the torsion of its cokernel, and the conditions $FM=0$ only see the antisymmetric part of $G\otimes G$ once. For $G=\Z/p$ the moment is $1$, for $G=(\Z/p)^2$ it is $p$.
+\end{remark}
+
+\section{The rank modulo $p$: a Markov chain}
+
+Take $k=1$: then $R=\mathbb F_p$ and $\operatorname{cok}M=\mathbb F_p^{K}$, where $K=\dim\ker M$ is the \emph{corank}. The $p$-rank of the cokernel of a symmetric integer matrix is the corank of its reduction modulo $p$. The moments of Theorem~\ref{thm:symmoments} are then polynomials in $p^K$, and in principle determine the law of $K$. But there is a more direct route, which works over any finite field $\mathbb F_q$ and gives the law in closed form: grow the matrix one row and column at a time.
+
+A uniform symmetric $(n+1)\times(n+1)$ matrix is
+\[
+M'=\begin{pmatrix}M&b\\b^T&c\end{pmatrix},
+\]
+with $M$ uniform symmetric $n\times n$, $b$ uniform in $\mathbb F_q^n$ and $c$ uniform in $\mathbb F_q$, all independent. So the coranks $K_0=0,K_1,K_2,\dots$ of the top-left corners of an infinite uniform symmetric matrix form a random process, and the next lemma says it is a Markov chain.
+
+\begin{lemma}[one more row and column]\label{lem:corankstep}
+Let $M$ be a symmetric $n\times n$ matrix over $\mathbb F_q$ of corank $k$. Then the corank of $M'$ is
+\[
+\begin{cases}
+k-1&\text{with probability }1-q^{-k},\\
+k&\text{with probability }q^{-k}(1-q^{-1}),\\
+k+1&\text{with probability }q^{-k-1}.
+\end{cases}
+\]
+\end{lemma}
+
+\begin{proof}
+For a symmetric matrix, $\operatorname{im}M=(\ker M)^\perp$ for the standard form $x\cdot y=x^Ty$: indeed $x\perp\operatorname{im}M$ means $x^TMy=0$ for all $y$, that is $M^Tx=Mx=0$, so $(\operatorname{im}M)^\perp=\ker M$, and taking orthogonals (the form is non-degenerate, so $W^{\perp\perp}=W$) gives the claim. In particular $\operatorname{im}M$ has $q^{n-k}$ elements.
+
+\emph{Case $b\notin\operatorname{im}M$}, probability $1-q^{n-k}/q^n=1-q^{-k}$. The block $(M\ b)$ has rank $\operatorname{rank}M+1$. Its row space consists of the vectors $(y^TM,y^Tb)$; if the last row $(b^T,c)$ were among them, then $b^T=y^TM$, so $b=My\in\operatorname{im}M$, which is excluded. So $\operatorname{rank}M'=\operatorname{rank}M+2$, and the corank of $M'$ is $(n+1)-(n-k+2)=k-1$.
+
+\emph{Case $b\in\operatorname{im}M$}, probability $q^{-k}$. Write $b=My$ and let $T=\begin{psmallmatrix}I&-y\\0&1\end{psmallmatrix}$. Then
+\[
+T^TM'T=\begin{pmatrix}M&0\\0&d\end{pmatrix},\qquad d=c-y^TMy .
+\]
+The number $d$ does not depend on the choice of $y$: another choice is $y+z$ with $z\in\ker M$, and $(y+z)^TM(y+z)=y^TMy+2z^Tb+z^TMz=y^TMy$ because $b\in(\ker M)^\perp$. Given $b$, $d$ is uniform, since $c$ is uniform and independent of $b$. If $d\ne0$ (probability $1-q^{-1}$) the corank of $M'$ is $(n+1)-(n-k+1)=k$; if $d=0$ it is $k+1$.
+\end{proof}
+
+The chain moves by at most one step, and it is pulled down hard: from corank $k$ it goes down with probability $1-q^{-k}$ and up only with probability $q^{-k-1}$. Large coranks are therefore very rare, yet less rare than for matrices with independent entries (P1, Problem~5.5), where $P(\text{corank }k)$ decays like $q^{-k^2}$. Here the decay is like $q^{-k^2/2}$: symmetry makes a large kernel cheaper, since a symmetric matrix has only about half as many independent entries to constrain.
+
+\begin{theorem}[the corank law]\label{thm:coranklaw}
+Let $K_n$ be the corank of a uniform random symmetric $n\times n$ matrix over $\mathbb F_q$. For every $k\ge0$,
+\[
+P(K_n=k)\xrightarrow[n\to\infty]{}\pi_k=\pi_0\,\frac{q^{-k(k+1)/2}}{\prod_{j=1}^k(1-q^{-j})},\qquad\pi_0=\prod_{i\ge1}\bigl(1-q^{-(2i-1)}\bigr).
+\]
+More precisely, $\sum_k|P(K_n=k)-\pi_k|\le\frac8n\sum_kk\pi_k$.
+\end{theorem}
+
+\begin{proof}
+\emph{The stationary law.} Write $u_k=q^{-k-1}$ for the probability of going up from $k$ and $d_{k+1}=1-q^{-k-1}$ for that of going down from $k+1$. The numbers $\pi_k$ satisfy $\pi_ku_k=\pi_{k+1}d_{k+1}$, since $\pi_{k+1}/\pi_k=q^{-k-1}/(1-q^{-k-1})$. For a chain that moves by at most one step, this \emph{detailed balance} implies stationarity: the mass that leaves $k$ upwards, $\pi_ku_k$, equals the mass that enters $k$ from above, $\pi_{k+1}d_{k+1}$, and similarly downwards, so $\sum_j\pi_jP(j\to k)=\pi_k$. It remains to see that the $\pi_k$ add up to $1$, that is, with $x=1/q$,
+\[
+\sum_{k\ge0}\frac{x^{k(k+1)/2}}{(1-x)\cdots(1-x^k)}=\frac1{\prod_{i\ge1}(1-x^{2i-1})}.
+\]
+Both sides are power series in $x$ with non-negative coefficients, convergent for $0\le x<1$, and we compare coefficients. The left-hand term $k$ counts partitions into exactly $k$ distinct parts: subtracting $k,k-1,\dots,1$ from the parts $\mu_1>\mu_2>\dots>\mu_k\ge1$ leaves a partition into at most $k$ parts, of size $k(k+1)/2$ less, and conversely; and $1/((1-x)\cdots(1-x^k))$ counts partitions into parts at most $k$, which are the conjugates of the partitions into at most $k$ parts. So the left side is $\prod_{i\ge1}(1+x^i)$, the generating function of partitions into distinct parts. Euler's identity finishes:
+\[
+\prod_{i\ge1}(1+x^i)=\prod_{i\ge1}\frac{1-x^{2i}}{1-x^i}=\frac1{\prod_{i\ge1}(1-x^{2i-1})},
+\]
+since the even factors of the denominator cancel the numerator (all products converge absolutely for $0\le x<1$).
+
+\emph{A coupling.} Drive the chain with independent uniform variables $U_1,U_2,\dots$ on $[0,1]$: from state $k$, go down if $U<d_k$ (with $d_0=0$), up if $U\ge1-u_k$, and stay otherwise. The threshold for going up from $k$ is $1-u_k=1-q^{-k-1}=d_{k+1}$, the threshold for going down from $k+1$. Hence two copies driven by the same $U$ never cross: if $X\le Y$ before a step, then $X\le Y$ after it. This is clear if $Y\ge X+2$, since each moves by at most one, and if $Y=X+1$ then $X$ goes up only when $U\ge d_{X+1}$, in which case $Y$ does not go down. Run $X$ from $X_0=0$ and $Y$ from an independent $Y_0$ with law $\pi$, with the same $U$'s. Then $X_n$ has the law of $K_n$ and $Y_n$ has law $\pi$ for every $n$, by stationarity. Once $X_n=Y_n$ they stay equal, and $0\le X_n\le Y_n$, so they have met by the time $\tau$ at which $Y$ first hits $0$. Hence
+\[
+\sum_k|P(K_n=k)-\pi_k|\le2P(X_n\ne Y_n)\le2P(\tau>n)\le\frac2n\,\mathbb E\tau .
+\]
+
+\emph{The hitting time.} From any state $k\ge1$ the mean step is $-d_k+u_k=-1+q^{-k}(1+q^{-1})\le-1+\frac12\cdot\frac32=-\frac14$, as $q\ge2$. So $Y_{n\wedge\tau}+\frac14(n\wedge\tau)$ is a supermartingale, and optional stopping at the bounded time $n\wedge\tau$ (Tome~3) gives $\frac14\mathbb E[n\wedge\tau\mid Y_0]\le Y_0$. Letting $n\to\infty$ (monotone convergence), $\mathbb E\tau\le4\,\mathbb EY_0=4\sum_kk\pi_k$, which is finite since $\pi_k\le\pi_0q^{-k(k+1)/2}/\pi_0'$ decays faster than any geometric sequence (here $\pi_0'=\prod_j(1-q^{-j})>0$).
+\end{proof}
+
+For $q=2$ the limit law is $\pi_0=0.4194$, $\pi_1=0.4194$, $\pi_2=0.1398$, $\pi_3=0.0200$; for $q=3$ it is $0.6390$, $0.3195$, $0.0399$, $0.0015$. The notebook checks both against simulations and against the exact distribution of the chain.
+
+\section{Back to the sandpiles}
+
+\begin{figure}[ht]\centering\fig{ch05-sandpile}
+\caption{The $3$-rank of the sandpile group of $G(60,\frac12)$ (1500 random graphs, orange) against the corank law $\pi_r$ of Theorem~\ref{thm:coranklaw} for $q=3$ (blue). Empirical frequencies $0.623$, $0.333$, $0.043$, $0.001$; the statistical error on the first bar is about $0.013$.}
+\label{fig:sandpile}
+\end{figure}
+
+The reduced Laplacian of a random graph is far from a uniform symmetric matrix: its off-diagonal entries are $0$ or $-1$, and each diagonal entry is the number of edges at that vertex. Nevertheless Figure~\ref{fig:sandpile} shows the $3$-rank of its cokernel following the law of Theorem~\ref{thm:coranklaw}. This is the content of Wood's theorem.
+
+\begin{remark}[Wood's theorem, 2017]\label{rem:woodsandpile}
+Let $\Gamma$ be an Erd\H os--R\'enyi random graph $G(n,\rho)$ with fixed $0<\rho<1$, and let $P$ be a finite set of primes. Wood proved that the $P$-part of the sandpile group of $\Gamma$ converges in distribution to the limit, as $n\to\infty$, of the $P$-part of the cokernel of a uniform random symmetric matrix over $\prod_{p\in P}\Z_p$. Her route is the one of this chapter: show that the moments $\mathbb E\,\#\mathrm{Sur}(S(\Gamma),G)$ converge to the same limit as for uniform symmetric matrices (the universality part, which takes most of the paper), then invoke the uniqueness of a distribution with these moments. The limiting distribution itself had been computed earlier from uniform symmetric matrices by Clancy, Kaplan, Leake, Payne and Wood (2015). One consequence: the probability that the sandpile group of $G(n,\rho)$ is cyclic is, asymptotically, at most $\prod_{j\ge1}\zeta(2j+1)^{-1}\approx0.7935$, and conjecturally equal to it: a positive proportion of random graphs have a sandpile group that is not cyclic.
+\end{remark}
+
+\begin{remark}[the cousins in number theory]\label{rem:cohenlenstra}
+Cohen and Lenstra (1984) proposed that the $p$-part of the class group of an imaginary quadratic field ($p$ odd) behaves like the cokernel of a matrix with independent uniform entries over $\Z_p$, a group $G$ appearing with probability proportional to $1/|\mathrm{Aut}\,G|$. The Book of Conjectures, Chapter~11, compares this with the data, and Tome~14 proves what is known (Chapters~13 and~14). Friedman and Washington (1989) explained why matrices appear: for function fields the class group is the cokernel of $1-\mathrm{Frob}$ on a Tate module, and the heuristic becomes a theorem about random matrices as $q\to\infty$. Sandpiles add the symmetric case; Wood's survey explains how other symmetries of the matrix model (for instance alternating matrices, for Selmer groups of elliptic curves) give other laws.
+\end{remark}
+
+\begin{beauty}
+A physicist's toy, a pile of sand on a grid, turns out to have a group inside it; random graphs turn out to have the same groups as random symmetric matrices; and those groups follow the same kind of law as the class groups that Gauss tabulated. The bridge from one to the other is a statement about matrices so simple that its proof fits on a page: a symmetric matrix over $\mathbb F_q$, grown one row at a time, has a corank that is pulled to zero with force $1-q^{-k}$, and Euler's partition identities tell you where it settles.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:fullrank}
+Show directly that a uniform symmetric $2\times2$ matrix over $\mathbb F_2$ is invertible with probability $\frac12$, and check this against Lemma~\ref{lem:corankstep}. Compute $\lim_nP(K_n=0)$ for $q=2$ to three decimals.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:emoment}
+Using Lemma~\ref{lem:corankstep}, show that $\mathbb E\,q^{K_{n+1}}=\frac1q\mathbb E\,q^{K_n}+2(1-\frac1q)$, and deduce $\mathbb E\,q^{K_n}=2-q^{-n}$. Check that this agrees exactly with Theorem~\ref{thm:symmoments} for $q=p$, $k=1$ and $G=\Z/p$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:twomoment}
+For $q=p$ prime, use Theorem~\ref{thm:symmoments} with $G=(\Z/p)^2$ to find $\lim_n\mathbb E[(p^{K_n}-1)(p^{K_n}-p)]$, and check the value numerically against the law $\pi$ for $p=3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nonsym}
+Let $N$ be a uniform $n\times n$ matrix over $\Z/p^k$, with all $n^2$ entries independent. Show that $P(FN=0)=|G|^{-n}$ for every surjection $F:(\Z/p^k)^n\to G$, so that $\mathbb E\,\#\mathrm{Sur}(\operatorname{cok}N,G)\to1$. Where does the proof of Theorem~\ref{thm:symmoments} change?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cycle}
+Show that the sandpile group of the cycle with $m$ vertices is $\Z/m$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:complete}
+Show that the sandpile group of the complete graph on $n+1$ vertices is $(\Z/(n+1))^{n-1}$, and deduce Cayley's formula for the number of spanning trees.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:fullrank}
+Write the matrix $\begin{psmallmatrix}a&b\\b&c\end{psmallmatrix}$; over $\mathbb F_2$, $b^2=b$.
+\end{hint}
+
+\begin{hint}{ex:emoment}
+Condition on $K_n=k$ and compute the three terms.
+\end{hint}
+
+\begin{hint}{ex:twomoment}
+A surjection $\mathbb F_p^K\to\mathbb F_p^2$ is a $2\times K$ matrix of rank $2$.
+\end{hint}
+
+\begin{hint}{ex:nonsym}
+In Step~2 use $N'=A^{-1}N$, which is uniform; in Step~3 the entries of the first $r$ rows are now all independent.
+\end{hint}
+
+\begin{hint}{ex:cycle}
+Find an $(m-2)\times(m-2)$ minor equal to $\pm1$ and use the uniqueness part of the Smith normal form.
+\end{hint}
+
+\begin{hint}{ex:complete}
+The reduced Laplacian is $(n+1)I-J$, where $J$ is the all-ones matrix. Subtract the first row from the others.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:fullrank}
+\idea Count the eight matrices, then run the chain twice.
+\writeup The determinant is $ac-b^2=ac+b$ in $\mathbb F_2$. It is $1$ for $b=0,a=c=1$ (one matrix) and for $b=1$, $ac=0$ (three matrices): four of the eight. By the lemma, $P(K_1=0)=q^0(1-q^{-1})=\frac12$ (stay at $0$), and $P(K_2=0)=\frac12\cdot\frac12+\frac12\cdot(1-\frac12)=\frac12$ (stay at $0$, or come down from $1$). The limit is $\prod_{i\ge1}(1-2^{-(2i-1)})=\frac12\cdot\frac78\cdot\frac{31}{32}\cdot\frac{127}{128}\cdots\approx0.419$.
+\end{solution}
+
+\begin{solution}{ex:emoment}
+\idea The chain is linear on $q^K$.
+\writeup Given $K_n=k$,
+\[
+\mathbb E[q^{K_{n+1}}]=q^{k-1}(1-q^{-k})+q^kq^{-k}(1-q^{-1})+q^{k+1}q^{-k-1}=q^{k-1}+2-\tfrac2q,
+\]
+which also holds for $k=0$, where the first term is $0$. Taking expectations gives the recursion, and $m_n=\mathbb E\,q^{K_n}$ satisfies $m_{n+1}-2=\frac1q(m_n-2)$ with $m_0=1$, so $m_n=2-q^{-n}$. On the other side, $\#\mathrm{Sur}(\mathbb F_p^K,\Z/p)=p^K-1$, and the theorem with $r=1$ gives $\mathbb E(p^{K_n}-1)=1-p^{-n}$: the same.
+\end{solution}
+
+\begin{solution}{ex:twomoment}
+\idea Count surjections onto $(\Z/p)^2$, then use $|\wedge^2G|=p$.
+\writeup The surjections $\mathbb F_p^K\to\mathbb F_p^2$ are the $2\times K$ matrices with independent rows: $(p^K-1)(p^K-p)$ of them. With $\lambda_1=\lambda_2=1$ the theorem gives $p(1-p^{-n})(1-p^{1-n})\to p$. For $p=3$: $\pi_2\cdot48+\pi_3\cdot624+\pi_4\cdot6240+\dots\approx1.917+0.959+0.120+0.005=3.00$ (the terms $K=0,1$ vanish).
+\end{solution}
+
+\begin{solution}{ex:nonsym}
+\idea Without symmetry, every entry carries its own condition.
+\writeup Steps~1 and~3 are as before. In Step~2, $FN=\pi A^{-1}N$, and $N'=A^{-1}N$ is uniform among all matrices because left multiplication by $A^{-1}$ is a bijection. The condition $\pi N'=0$ asks $p^{\lambda_i}\mid N'_{ij}$ for $i\le r$ and all $j$: $nr$ independent entries, with probability $\prod_ip^{-n\lambda_i}=|G|^{-n}$. Summing over the $\#\mathrm{Sur}$ surjections gives $\prod_{i<r}(1-p^{i-n})\to1$. In the symmetric case the entry $M'_{ij}$ with $i,j\le r$ is shared by rows $i$ and $j$; it pays only $\max(\lambda_i,\lambda_j)$ instead of $\lambda_i+\lambda_j$, and the savings are exactly $\sum_{i<j}\min(\lambda_i,\lambda_j)$.
+\end{solution}
+
+\begin{solution}{ex:cycle}
+\idea Determinant $m$, and a unit minor.
+\writeup Number the vertices $0,\dots,m-1$ around the cycle, with sink $0$. The reduced Laplacian is the $(m-1)\times(m-1)$ tridiagonal matrix with $2$ on the diagonal and $-1$ beside it; its determinant is $m$, the number of spanning trees (delete one of the $m$ edges), or directly by expanding along the last row. Delete its first row and its last column: the remaining $(m-2)\times(m-2)$ matrix has entries $-1$ on the diagonal and zeros below it, so its determinant is $\pm1$. Hence $\Delta_{m-2}=1$, so $d_1=\dots=d_{m-2}=1$ and $d_{m-1}=m$: the cokernel is $\Z/m$.
+\end{solution}
+
+\begin{solution}{ex:complete}
+\idea Row and column operations reach the diagonal form.
+\writeup Put $N=n+1$. Every non-sink vertex has degree $n=N-1$ and is joined to every other, so $\tilde L=NI-J$ ($n\times n$). Subtract row $1$ from rows $2,\dots,n$: row $i$ becomes $N(e_i-e_1)$, and row $1$ is $(N-1,-1,\dots,-1)$. Add columns $2,\dots,n$ to column $1$: row $1$ becomes $(1,-1,\dots,-1)$ and the first entry of row $i\ge2$ becomes $-N+N=0$. Now add column $1$ to each column $j\ge2$ to clear row $1$. The result is $\operatorname{diag}(1,N,\dots,N)$, so $S(K_N)\cong(\Z/N)^{n-1}$, of order $N^{N-2}$. By the matrix-tree theorem, this is the number of spanning trees of $K_N$: Cayley's formula.
+\end{solution}
+
+\section{Sources}
+
+\begin{itemize}
+\item P.~Bak, C.~Tang, K.~Wiesenfeld, Self-organized criticality: an explanation of the $1/f$ noise, \emph{Phys.\ Rev.\ Lett.} 59 (1987), 381--384.
+\item D.~Dhar, Self-organized critical state of sandpile automaton models, \emph{Phys.\ Rev.\ Lett.} 64 (1990), 1613--1616: the abelian property and the group.
+\item C.~J.~Klivans, \emph{The Mathematics of Chip-Firing}, CRC Press, 2018: the sandpile group, recurrent configurations and Dhar's theorem.
+\item H.~Cohen, H.~W.~Lenstra, Heuristics on class groups of number fields, in \emph{Number Theory, Noordwijkerhout 1983}, Lecture Notes in Math.\ 1068, Springer, 1984, 33--62.
+\item E.~Friedman, L.~C.~Washington, On the distribution of divisor class groups of curves over a finite field, in \emph{Th\'eorie des nombres (Qu\'ebec, 1987)}, de Gruyter, 1989.
+\item J.~Clancy, T.~Leake, S.~Payne, A note on Jacobians, Tutte polynomials, and two-variable zeta functions of graphs, \emph{Exp.\ Math.} 24 (2015): the data and the conjecture.
+\item J.~Clancy, N.~Kaplan, T.~Leake, S.~Payne, M.~M.~Wood, On a Cohen--Lenstra heuristic for Jacobians of random graphs, \emph{J.\ Algebraic Combin.} 42 (2015): the limiting distribution.
+\item M.~M.~Wood, The distribution of sandpile groups of random graphs, \emph{J.\ Amer.\ Math.\ Soc.} 30 (2017), 915--958; arXiv:1402.5149. The theorem of Remark~\ref{rem:woodsandpile}.
+\item M.~M.~Wood, Probability theory for random groups arising in number theory, \emph{Proceedings of the ICM 2022}, EMS Press, 2023; arXiv:2301.09687. The survey of this chapter.
+\end{itemize}
