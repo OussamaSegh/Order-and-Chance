@@ -160,6 +160,7 @@ fill enough of the final measure to occupy more than one line.
 Show that $\sum_{k=1}^n k=n(n+1)/2$; compare $\N,\Q,\R,\C$.
 Also test $\int_\R f(x)\,\mathrm{d}x$, $A\otimes_\R\C$ and $x^\N$.
 The vector $\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_k)$ uses a bold alphabet.
+The letter-pattern frieze $\textsf{VΛVΛ}$ keeps its upright Greek lambdas.
 \end{exercise}
 \begin{reminder}A useful identity.\end{reminder}
 \begin{verbatim}

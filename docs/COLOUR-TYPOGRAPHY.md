@@ -49,8 +49,10 @@ and [print options](https://kdp.amazon.com/en_US/help/topic/G201834180).
 ## Compatibility and verification
 
 The migration preserves mathematical statements and reference identifiers.
-Long inline formulas in Volumes 0, 4, 10, 14, 15 and P1 are moved to displays where the
-new font metrics require it. One subscript in Volume 12 gains explicit grouping.
+Long inline formulas in Volumes 0, 4, 8, 10, 14, 15, P1 and P2 are moved to displays where the
+new font metrics require it. One subscript in Volume 12 gains explicit grouping. Shapes’ frieze letter patterns
+use upright text lambdas in the sans face, avoiding an unsupported mathematical
+italic Unicode lambda in a text font.
 Legacy number-system commands work in unbraced scripts; Greek/math bookmark
 strings use Unicode equivalents; bold vectors use the font's bold alphabet.
 Lean symbols are native Unicode, with complete code-font coverage. Download-PDF

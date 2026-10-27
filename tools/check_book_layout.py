@@ -8,7 +8,8 @@ def check(log, measurements):
     log, measurements = Path(log), Path(measurements)
     text = log.read_text(errors='replace')
     if 'Missing character:' in text:
-        raise ValueError(f'{log}: missing font glyph; text or mathematics would be lost')
+        missing = '; '.join(dict.fromkeys(re.findall(r'Missing character:[^\n]*', text)))
+        raise ValueError(f'{log}: missing font glyph; text or mathematics would be lost: {missing}')
     if re.search(r'Font shape [^\n]*undefined', text):
         raise ValueError(f'{log}: requested font shape is unavailable')
     if re.search(r'Overfull \\vbox|Float too large for page', text):
