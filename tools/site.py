@@ -4,7 +4,7 @@ Usage: python3 tools/site.py <dist dir> <output dir>
 Copies each standard 7 x 10 dist/<tome>.pdf and .epub into the
 output directory, the online reader dist/html/<tome>/ into read/<tome>/, and writes index.html.
 Each tome's card also links its Amazon KDP files from dist/kdp/: the Kindle cover, the paperback
-cover and the listing. The standard PDF also serves as the paperback interior.
+cover, print interior and listing. The download PDF includes its front cover.
 """
 import datetime
 import html
@@ -28,8 +28,8 @@ for field in ("tomes", "count", "repo", "date", "commit", "trim"):
     PAGE = PAGE.replace("{{" + field + "}}", "{" + field + "}")
 
 CARD = """<article class="tome" data-collection="{collection}" data-search="{search}">{cover}
-<div class="info"><p class="eyebrow">{collection_label}</p><h3>{title}</h3><p class="volume-subtitle">{subtitle}</p><p class="meta">{size} · Standard {trim} PDF</p></div>
-<div class="links"><a class="primary" href="{pdf}" download>Download PDF</a>{read}{epub}</div>{kdp}</article>"""
+<div class="info"><p class="eyebrow">{collection_label}</p><h3>{title}</h3><p class="volume-subtitle">{subtitle}</p><p class="meta">{size} · {trim} PDF with cover</p></div>
+<div class="links"><a class="primary" href="{pdf}" download>PDF with cover</a>{print_pdf}{read}{epub}</div>{kdp}</article>"""
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
 KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1792 x 2560 JPEG, for a Kindle eBook"),
@@ -79,7 +79,12 @@ def main(dist: str, out: str) -> None:
         if (reader / "index.html").exists():
             shutil.copytree(reader, out_dir / "read" / tome, dirs_exist_ok=True)
             read = f'<a class="read" href="read/{tome}/" title="Read in the browser, one page per chapter">Read online</a>'
-        kdp = [f'<a href="{pdf.name}" title="Upload the standard PDF as the paperback manuscript">Paperback interior</a>']
+        print_pdf = ""
+        print_file = dist_dir / "kdp" / f"{tome}-print.pdf"
+        if print_file.exists():
+            shutil.copy(print_file, out_dir / print_file.name)
+            print_pdf = f'<a href="{print_file.name}" download title="Paperback interior without the front cover">Print PDF</a>'
+        kdp = []
         for suffix, label, tip in KDP:
             src = dist_dir / "kdp" / f"{tome}-{suffix}"
             if src.exists():
@@ -105,7 +110,7 @@ def main(dist: str, out: str) -> None:
         number = re.search(r"Tome ([0-9A-Z]+):", title)
         tagline = subtitle(number.group(1)) if number else ""
         cards.append(CARD.format(subtitle=html.escape(tagline), title=html.escape(rest or series), size=size, trim=PRINT_TRIM, cover=cover, read=read,
-                                 pdf=pdf.name, epub=epub_link, kdp=kdp,
+                                 pdf=pdf.name, print_pdf=print_pdf, epub=epub_link, kdp=kdp,
                                  collection=collection, collection_label=label,
                                  search=html.escape((tome + " " + title + " " + tagline + " " + label).lower(), quote=True)))
     sha = os.environ.get("GITHUB_SHA", "")

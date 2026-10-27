@@ -3,7 +3,7 @@ import argparse
 from pathlib import Path
 
 
-RETIRED_SUFFIXES = ('-a4.pdf', '-kindle.pdf', '-phone.pdf', '-print.pdf')
+RETIRED_SUFFIXES = ('-a4.pdf', '-kindle.pdf', '-phone.pdf')
 
 
 def retired_pdfs(directory):

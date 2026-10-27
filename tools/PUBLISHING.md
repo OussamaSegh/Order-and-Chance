@@ -1,13 +1,14 @@
 # Publishing a tome on Amazon KDP
 
-`./build.sh` produces one standard **7 × 10 inch PDF** and one **EPUB** per tome,
-plus separate covers and publishing metadata:
+`./build.sh` produces two distinct **7 × 10 inch PDFs** and one **EPUB** per tome,
+plus the paperback cover and publishing metadata:
 
 | File | What it is | Where it goes in KDP |
 |---|---|---|
 | `dist/<tome>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
 | `dist/kdp/<tome>-ebook-cover.jpg` | Front cover, 1792 x 2560 px JPEG | Kindle eBook > Cover |
-| `dist/<tome>.pdf` | Standard reading PDF and identical paperback interior: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
+| `dist/<tome>.pdf` | Downloadable reading PDF with the approved front cover followed by the complete interior | Public download; use the print file below for KDP |
+| `dist/kdp/<tome>-print.pdf` | Paperback interior without the front cover: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
 | `dist/kdp/<tome>-cover-wrap.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
 | `dist/kdp/<tome>-print-metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
 | `dist/kdp/<tome>-listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
@@ -54,8 +55,10 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   50 characters, not repeating words of the title or series, no claims such as "bestseller").
   `tools/listing.py` checks the limits and fails the build if they are broken; without
   `kdp.md` the listing uses the back-cover text and leaves the keywords to be written.
-- The standard PDF starts with its half-title and contains no external cover page.
-  The EPUB carries its front cover; KDP takes the paperback wrap as a separate file.
+- The reading PDF starts with its approved front cover. The print PDF starts with
+  the half-title and excludes that cover. The EPUB carries its front cover; KDP
+  takes the paperback wrap as a separate file. The reading PDF has one more page
+  than the print PDF. Never use that extra page in a spine calculation.
 - A new tome is added to `common/series.tex` (it is already listed if it is in the series plan).
 - Back-cover text: `<tome>/blurb.tex`, about 120–180 words of plain LaTeX (no maths displays),
   saying what the tome is about and why it is beautiful. Without it, the series text in
@@ -72,10 +75,10 @@ The production trim for all sixteen main volumes and three problem books is
 **7 × 10 inches**. `common/print-layout.json` defines trim, bleed and the white-paper
 spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
 its tracked TeX counterpart. The normal build and CI reject an unsynchronised pair.
-EPUB remains reflowable. A4, Kindle PDF, phone PDF and duplicate `-print.pdf`
-editions are retired; the build removes their old output files.
+EPUB remains reflowable. A4, fixed-page Kindle and phone PDF editions are retired;
+the build removes their old output files. The separate `-print.pdf` is now required.
 
-`./build.sh --pdf-only [tome...]` rebuilds the canonical `dist/<tome>.pdf`, covers,
+`./build.sh --pdf-only [tome...]` rebuilds both PDFs, covers,
 listings and `dist/kdp/<tome>-print-metadata.json` without rebuilding EPUB or HTML.
 The metadata records the actual interior page count, even-rounded KDP page count,
 spine, gutter and exact cover sheet size. Never reuse a wrap from the former trim.
@@ -101,9 +104,16 @@ changes because its spine depends on the new actual page count.
 EPUB CSS requests whole boxes and keeps headings with following content. Reading
 systems control pagination and may divide material taller than their viewport.
 
-Cache schema 3 and the `library-v3-` Actions namespace force a full migration.
-Before snapshotting, every canonical PDF is checked for 7 × 10 geometry and embedded
-vector fonts, and its page count must agree with the paperback metadata. Retired
+`tools/book_pdf.py` clones the complete print PDF and inserts the uniformly scaled
+front page, preserving body streams, annotations, metadata, bookmarks and named
+destinations. The cover has its own page label; interior labels are preserved.
+Install `tools/requirements-build.txt` for the pinned PDF library and Pillow.
+
+Cache schema 4 and the `library-v4-` Actions namespace force a full migration.
+Before snapshotting, both PDFs are checked for 7 × 10 geometry and embedded
+fonts. The print page count must agree with paperback metadata; the reading file
+must have exactly one added cover and identical body streams, annotation counts,
+page labels and correctly shifted named destinations. Retired
 variants are removed during cache assembly and rejected before release. Missing
 PDF, EPUB, reader, covers or metadata makes a cached book incomplete.
 

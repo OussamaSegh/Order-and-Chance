@@ -39,8 +39,8 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   newly approved master, never a silently retyped replacement.
 - Interior/online light themes use neutral paper and accessible deep coral
   #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
-  distinguishable and preserve scientific figure distinctions. The sole standard
-  PDF is also the paperback manuscript: keep its black-ink grayscale overrides.
+  distinguishable and preserve scientific figure distinctions. Keep the print
+  interior's black-ink grayscale overrides in both PDFs' shared body pages.
 - Preserve ISBNs, identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
 
@@ -49,9 +49,13 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 The author approved **7 × 10 inches for all 19 paperbacks** after the Volume 0
 comparison. `common/print-layout.json` is canonical; regenerate its TeX with
 `python3 tools/print_layout.py`. Rebuild each wrap from its actual new interior
-page count. Each volume has exactly one canonical `dist/<tome>.pdf`, using this
-7 × 10 layout for both reading and paperback manuscript upload, plus one EPUB.
-A4, Kindle PDF, phone PDF and duplicate `-print.pdf` editions are retired.
+page count. The latest author decision requires two distinct PDFs per volume:
+`dist/<tome>.pdf` for downloading/reading, with the approved front cover first;
+`dist/kdp/<tome>-print.pdf` for paperback manuscript upload, without that cover.
+Both use the final 7 × 10 layout, plus one reflowable EPUB. Typeset the interior
+once and attach the front without changing its body, links, bookmarks or printed
+page labels. Derive wraps and metadata from the print PDF's page count only.
+A4, fixed-page Kindle and phone PDF editions remain retired.
 Covers, listings and print metadata remain separate publishing assets. Historical
 comparison records do not override this decision.
 
@@ -70,7 +74,7 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 - `python3 tools/cover_plates.py` regenerates eighteen plates and records the unchanged Volume 0 master.
 - `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
-- `./build.sh [tome...]` builds the standard 7×10 PDF, EPUB, eBook cover,
+- `./build.sh [tome...]` builds the 7×10 reading PDF with cover, print PDF, EPUB, eBook cover,
   page-count-derived paperback wrap, listing, metadata and HTML reader. Phone PDFs are retired and
   notebook execution is manual; preserve both decisions.
 - Never invent a page count for a production wrap. Preserve 0.125-inch outside

@@ -1,3 +1,35 @@
+# Current PDF delivery decision
+
+The author now requires **two distinct 7 × 10 inch PDFs per volume**: the public
+reading PDF includes the approved front cover, while the separate print PDF starts
+with the half-title. EPUB remains available. This supersedes all older one-PDF
+statements below; the exact approved-image cover policy remains in force.
+
+`dist/<tome>.pdf` is the reading download; `dist/kdp/<tome>-print.pdf` is the
+paperback manuscript. The body is compiled once. `tools/book_pdf.py` clones the
+complete print PDF and inserts its cover without flattening annotations or
+recreating page content. Printed page labels, named destinations, bookmarks and
+metadata are preserved. The reading file adds one physical page; paperback page
+counts, margins and spines are calculated exclusively from the print file.
+
+The library and README expose both files clearly. Cache schema/fingerprint 4 and
+`library-v4-` force a complete regeneration. Assembly requires both PDFs and checks
+geometry/fonts, matching body streams and annotation counts, page labels, shifted
+named destinations and print metadata. CI installs the pinned PDF helper and runs
+the publishing tests. See [STANDARD-FORMATS.md](STANDARD-FORMATS.md) for the current
+file contract and verification record.
+
+Local checks passed for all **19 PDF pairs**: 4,206 print pages and 4,225 reading
+pages, with unchanged print metadata/spines. Volume 0 has **239 print pages and
+240 reading pages**, spine **0.5405 in**. Its full PDF/EPUB/reader pipeline and the
+exact approved-image check passed. Forty publishing tests pass. The library has
+nineteen distinct reading/print link pairs; desktop and 320-pixel browser checks
+verify working downloads and no horizontal overflow. Evidence is under
+`build/pdf-pair-review/`. Clean CI validates the combined source for every volume
+and checks the complete library before publishing the 133 release assets.
+
+---
+
 # Exact approved-image cover policy — correction
 
 The author rejected the published recreation and then explicitly asked **“i want

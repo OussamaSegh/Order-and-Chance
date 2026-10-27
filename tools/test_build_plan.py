@@ -21,13 +21,16 @@ class PlanningTest(unittest.TestCase):
         checker = patch.object(bp, 'check_interior', return_value=233)
         self.pdf_check = checker.start()
         self.addCleanup(checker.stop)
+        pair_checker = patch.object(bp, 'check_pair', return_value=233)
+        self.pair_check = pair_checker.start()
+        self.addCleanup(pair_checker.stop)
         self.books = ['tome0-basics', 'tome1-integers', 'tome9-higher-structures']
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:
             self.write(name + '/main.tex', name)
         for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh',
                      'tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb',
-                     'tools/assets/paper.jpg']:
+                     'tools/assets/paper.jpg', 'tools/requirements-build.txt']:
             self.write(path, 'original')
         subprocess.run(['git', 'add', '.'], cwd=self.root, check=True)
         for book in self.books:
@@ -43,16 +46,18 @@ class PlanningTest(unittest.TestCase):
         for path in [f'dist/{book}.pdf', f'dist/{book}.epub',
                      f'dist/html/{book}/index.html', f'build/{book}/cover.pdf'] + [
                          f'dist/kdp/{book}-{suffix}' for suffix in
-                         ['cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
+                         ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
             p = target / path
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_bytes(b'valid fixture')
         (target / f'dist/kdp/{book}-print-metadata.json').write_text(json.dumps(bp.specification(233)))
 
-    def test_only_standard_pdf_and_epub_are_required(self):
+    def test_both_pdf_editions_and_epub_are_required(self):
         self.assertTrue(bp.complete(self.cache, self.books[0]))
         self.assertFalse(list((self.cache / 'dist').glob('*-kindle.pdf')))
-        self.assertFalse(list((self.cache / 'dist/kdp').glob('*-print.pdf')))
+        self.assertTrue((self.cache / 'dist/kdp' / (self.books[0] + '-print.pdf')).exists())
+        (self.cache / 'dist/kdp' / (self.books[0] + '-print.pdf')).unlink()
+        self.assertFalse(bp.complete(self.cache, self.books[0]))
 
     def test_unchanged_site_and_notebooks_do_not_rebuild_books(self):
         for path in ['tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb']:
@@ -64,7 +69,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics'])
 
     def test_shared_sources_and_converter_rebuild_all(self):
-        for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg']:
+        for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg', 'tools/requirements-build.txt']:
             with self.subTest(path=path):
                 self.write(path, 'updated')
                 self.assertEqual(bp.plan(self.root, self.cache)['changed'], self.books)
@@ -92,7 +97,7 @@ class PlanningTest(unittest.TestCase):
         stale = self.cache / 'dist/html/tome0-basics/deleted-chapter.html'
         stale.write_text('stale')
         retired = ['dist/tome1-integers-kindle.pdf', 'dist/tome1-integers-a4.pdf',
-                   'dist/tome1-integers-phone.pdf', 'dist/kdp/tome1-integers-print.pdf']
+                   'dist/tome1-integers-phone.pdf']
         for path in retired:
             (self.cache / path).write_bytes(b'old variant')
         data = bp.plan(self.root, self.cache)
@@ -106,7 +111,8 @@ class PlanningTest(unittest.TestCase):
         bp.snapshot(self.root, self.cache, data)
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], [])
         self.assertFalse(stale.exists())
-        self.assertEqual(self.pdf_check.call_count, len(self.books))
+        self.assertEqual(self.pdf_check.call_count, 2 * len(self.books))
+        self.assertEqual(self.pair_check.call_count, len(self.books))
 
     def test_retired_pdf_cannot_enter_snapshot(self):
         data = bp.plan(self.root, self.cache)
@@ -127,6 +133,13 @@ class PlanningTest(unittest.TestCase):
         bp.prepare(self.root, self.cache, data)
         self.write('dist/kdp/tome0-basics-print-metadata.json', json.dumps(bp.specification(234)))
         with self.assertRaisesRegex(ValueError, 'metadata disagree'):
+            bp.snapshot(self.root, self.cache, data)
+
+    def test_coverless_or_mismatched_download_cannot_enter_snapshot(self):
+        data = bp.plan(self.root, self.cache)
+        bp.prepare(self.root, self.cache, data)
+        self.pair_check.side_effect = ValueError('Download must contain one front cover')
+        with self.assertRaisesRegex(ValueError, 'front cover'):
             bp.snapshot(self.root, self.cache, data)
 
     def test_schema_migration_also_removes_deleted_books(self):

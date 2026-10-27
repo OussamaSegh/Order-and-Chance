@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Build the standard 7 x 10 PDF and EPUB of each requested tome
+# Build the 7 x 10 download PDF with cover, print interior and EPUB of each tome
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
-# Requires pdflatex, xelatex, pandoc >= 3, python3 and poppler-utils.
+# Requires pdflatex, xelatex, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
 set -euo pipefail
 export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-8
 root="$(cd "$(dirname "$0")" && pwd)"
@@ -39,7 +39,7 @@ for tome in "${tomes[@]}"; do
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
-  # The EPUB front is a separate asset; the standard PDF begins with book front matter.
+  # The approved front supplies the downloadable PDF, EPUB and separate print wrap.
   compile_cover "$out" cover "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}"
   if [ "$num" = 0 ]; then
     python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf"
@@ -52,7 +52,7 @@ for tome in "${tomes[@]}"; do
     fi
   fi
 
-  # One canonical PDF for reading and paperback upload: 7 x 10 in, no bleed. The full
+  # Typeset the print interior once: 7 x 10 in, no bleed. The full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
   # paper, 0.002252in per page. The inside margin is the one KDP asks for at that page count.
   inner=0.75in
@@ -69,7 +69,12 @@ for tome in "${tomes[@]}"; do
   done
   python3 "$root/tools/check_book_layout.py" "$out/main.log" "$out/main.oclayout"
   python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
-  cp "$out/main.pdf" "$root/dist/$tome.pdf"
+  cp "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf"
+  python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$root/dist/kdp/$tome-print.pdf" "$root/dist/$tome.pdf"
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/$tome.pdf" --interior
+  if [ "$num" = 0 ]; then
+    python3 "$root/tools/check_cover_reference.py" "$root/dist/$tome.pdf"
+  fi
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
   spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$tome-print-metadata.json")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
@@ -93,7 +98,7 @@ for tome in "${tomes[@]}"; do
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$tome-ebook-cover"
   if $pdf_only; then
-    echo "   dist/$tome.pdf ($pages pages, 7 x 10 in); publishing assets in dist/kdp/"
+    echo "   dist/$tome.pdf (cover + $pages pages); dist/kdp/$tome-print.pdf ($pages print pages, 7 x 10 in)"
     continue
   fi
 
@@ -125,5 +130,5 @@ for tome in "${tomes[@]}"; do
     python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf" --epub "$root/dist/$tome.epub" --reader "$root/dist/html/$tome"
   fi
   echo "   dist/$tome.pdf (7 x 10 in)  dist/$tome.epub  dist/html/$tome/"
-  echo "   KDP: $pages interior pages;  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
+  echo "   KDP: dist/kdp/$tome-print.pdf ($pages interior pages); dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)"
 done

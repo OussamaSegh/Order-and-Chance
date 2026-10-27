@@ -30,6 +30,8 @@ jobs:
       baseline: ${{ steps.library.outputs.cache-matched-key }}
     steps:
       - uses: actions/checkout@v4
+      - name: Install PDF publishing helpers
+        run: python3 -m pip install -r tools/requirements-build.txt
       - name: Test publishing configuration and build selection
         run: |
           python3 tools/print_layout.py --check
@@ -38,8 +40,8 @@ jobs:
         id: library
         with:
           path: .book-cache
-          key: library-v3-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v3-
+          key: library-v4-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v4-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -102,14 +104,16 @@ jobs:
           sudo dpkg -i debs/*.deb > /dev/null
           rm -rf debs
           command -v pdflatex && command -v xelatex && command -v pandoc && command -v pdftoppm
+      - name: Install PDF publishing helpers
+        run: python3 -m pip install -r tools/requirements-build.txt
       - name: Test whole-box pagination and reference placement
         run: python3 -m unittest discover -s tools -p test_book_layout.py
-      - name: Build standard 7 x 10 PDF, EPUB and publishing assets
+      - name: Build 7 x 10 reading PDF with cover, print PDF, EPUB and publishing assets
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
         with:
           name: books-${{ matrix.tome }}
-          # dist/ holds the standard PDF, EPUB and dist/kdp/; the cover page is for the site's thumbnails.
+          # dist/ holds the reading PDF, EPUB and dist/kdp/ print PDF/assets; the cover page is for the site's thumbnails.
           path: |
             dist/
             build/${{ matrix.tome }}/cover.pdf
@@ -138,6 +142,8 @@ jobs:
           pattern: books-*
           merge-multiple: true
           path: .
+      - name: Install PDF publishing helpers
+        run: python3 -m pip install -r tools/requirements-build.txt
       - name: Install poppler
         run: sudo timeout 300 apt-get update && sudo timeout 300 apt-get install -y --no-install-recommends poppler-utils
       - name: Test the download page generator
@@ -155,7 +161,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v3-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v4-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -188,7 +194,7 @@ jobs:
           gh release delete books --yes --cleanup-tag || true
           gh release create books dist/*.pdf dist/*.epub dist/kdp/* --target "$GITHUB_SHA" --latest \
             --title "Books (latest build)" \
-            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Each volume has one standard 7 x 10 in PDF (also its paperback interior) and one EPUB. Files named *-cover-wrap.pdf and *-ebook-cover.jpg are separate paperback and eBook covers."
+            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Each volume has a 7 x 10 in reading PDF with front cover, a separate *-print.pdf paperback interior without that cover, and one EPUB. Files named *-cover-wrap.pdf and *-ebook-cover.jpg are separate paperback and eBook covers."
       # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
       - name: Deploy the download page
         id: deploy

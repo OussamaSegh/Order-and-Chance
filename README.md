@@ -10,31 +10,33 @@ notebook for mathematical experiments.
 - **Download page:** https://oussamasegh.github.io/Order-and-Chance/
 - **Direct links (latest build):**
 
-  | Tome | Standard PDF (7 × 10 in) | EPUB |
-  |---|---|---|
-  | 0.  Mathematical Maturity | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome0-mathematical-maturity.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome0-mathematical-maturity.epub) |
-  | 1.  The Integers | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome1-integers.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome1-integers.epub) |
-  | 2.  Structures | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome2-structures.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome2-structures.epub) |
-  | 3.  Chance | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome3-chance.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome3-chance.epub) |
-  | 4.  The Art of Calculation | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.epub) |
-  | 5.  Where It All Meets | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.epub) |
-  | 6.  Spaces | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome6-spaces.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome6-spaces.epub) |
-  | 7.  Analysis in Depth | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome7-analysis.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome7-analysis.epub) |
-  | 8.  Shapes | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome8-shapes.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome8-shapes.epub) |
-  | 9.  Higher Structures | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome9-higher-structures.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome9-higher-structures.epub) |
-  | 10.  Chance II | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome10-chance2.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome10-chance2.epub) |
-  | 11.  Random Motion | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome11-motion.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome11-motion.epub) |
-  | 12.  Arithmetic | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.epub) |
-  | 13.  Primes in Depth | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome13-primes.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome13-primes.epub) |
-  | 14.  Random Arithmetic | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome14-random.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome14-random.epub) |
-  | 15.  The Research Workshop | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome15-workshop.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome15-workshop.epub) |
-  | P1.  Crossroads | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
-  | P2.  Machinery | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.epub) |
-  | P3.  Frontiers | [PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.epub) |
+  | Tome | PDF with cover (7 × 10 in) | Print PDF (7 × 10 in) | EPUB |
+  |---|---|---|---|
+  | 0.  Mathematical Maturity | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome0-mathematical-maturity.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome0-mathematical-maturity-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome0-mathematical-maturity.epub) |
+  | 1.  The Integers | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome1-integers.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome1-integers-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome1-integers.epub) |
+  | 2.  Structures | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome2-structures.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome2-structures-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome2-structures.epub) |
+  | 3.  Chance | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome3-chance.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome3-chance-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome3-chance.epub) |
+  | 4.  The Art of Calculation | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome4-calculation.epub) |
+  | 5.  Where It All Meets | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome5-meets.epub) |
+  | 6.  Spaces | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome6-spaces.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome6-spaces-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome6-spaces.epub) |
+  | 7.  Analysis in Depth | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome7-analysis.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome7-analysis-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome7-analysis.epub) |
+  | 8.  Shapes | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome8-shapes.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome8-shapes-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome8-shapes.epub) |
+  | 9.  Higher Structures | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome9-higher-structures.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome9-higher-structures-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome9-higher-structures.epub) |
+  | 10.  Chance II | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome10-chance2.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome10-chance2-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome10-chance2.epub) |
+  | 11.  Random Motion | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome11-motion.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome11-motion-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome11-motion.epub) |
+  | 12.  Arithmetic | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome12-arithmetic.epub) |
+  | 13.  Primes in Depth | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome13-primes.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome13-primes-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome13-primes.epub) |
+  | 14.  Random Arithmetic | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome14-random.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome14-random-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome14-random.epub) |
+  | 15.  The Research Workshop | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome15-workshop.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome15-workshop-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tome15-workshop.epub) |
+  | P1.  Crossroads | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP1-crossroads.epub) |
+  | P2.  Machinery | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP2-machinery.epub) |
+  | P3.  Frontiers | [PDF with cover](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.pdf) | [Print PDF](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers-print.pdf) | [EPUB](https://github.com/OussamaSegh/Order-and-Chance/releases/download/books/tomeP3-frontiers.epub) |
 
-Each tome has **one standard 7 × 10 inch PDF and one reflowable EPUB**. The PDF
-is also the paperback interior: use the same file for reading or KDP manuscript
-upload. There are no A4, Kindle PDF or duplicate paperback PDF editions.
+Each tome has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
+The reading download includes the approved front cover. The print PDF starts with
+the half-title and is the paperback manuscript; its cover wrap is uploaded
+separately. Both PDFs share the same typeset interior and printed page labels.
+There are no A4, fixed-page Kindle or phone PDF editions.
 
 Separate publishing assets include the full paperback cover with its actual-page-derived
 spine, the eBook cover, listing and print metadata (see [tools/PUBLISHING.md](tools/PUBLISHING.md)).
@@ -103,22 +105,22 @@ tome0-mathematical-maturity/    main.tex + chapters/*.tex (solutions at the end 
 tome1-integers/         same layout, one folder per tome
 python/tomeN/           one Jupyter notebook per chapter
 tools/                  EPUB conversion helpers (pandoc filter, CSS)
-build.sh                builds the standard 7×10 dist/<tome>.pdf and .epub
+build.sh                builds dist/<tome>.pdf with cover, dist/kdp/<tome>-print.pdf, and .epub
 ```
 
 ## Building
 
-Requires `pdflatex` (TeX Live with `latex-extra` and `fonts-recommended`), `pandoc` 3 and Python 3.
+Requires `pdflatex`, `xelatex` (TeX Live with `latex-extra` and `fonts-recommended`), `pandoc` 3, Python 3 and poppler-utils. Install the publishing helpers with `python3 -m pip install -r tools/requirements-build.txt`.
 
 ```
 ./build.sh                       # every tome
 ./build.sh tome0-mathematical-maturity   # one tome
-./build.sh --pdf-only tome0-mathematical-maturity  # standard PDF and publishing assets
+./build.sh --pdf-only tome0-mathematical-maturity  # both PDFs and publishing assets
 pip install -r requirements.txt  # for the notebooks
 ```
 
 Every push builds the PDF and EPUB on GitHub Actions (the run's **books** artifact); pushes to `main` also publish them
-to the download page and the `books` release. Figures are TikZ files in `<tome>/figures/`, converted to SVG for the EPUB. Each tome has a separate front cover (`tools/cover.tex`, with mathematical artwork generated by `tools/cover_plates.py` into `<tome>/cover-motif.tex`). It supplies the EPUB cover image and library thumbnail; the standard PDF starts with its half-title. Paperback wraps use the same artwork and the actual interior page count.
+to the download page and the `books` release. Figures are TikZ files in `<tome>/figures/`, converted to SVG for the EPUB. Each tome has a separate front cover (`tools/cover.tex`, with mathematical artwork generated by `tools/cover_plates.py` into `<tome>/cover-motif.tex`). It supplies the reading PDF front, EPUB cover image and library thumbnail; the print PDF starts with its half-title. Paperback wraps use the same artwork and the actual interior page count.
 
 ## Writing conventions
 
@@ -166,4 +168,4 @@ manual workflow, as described above.
 
 Selection/assembly logic lives in `tools/build_plan.py`; its regression tests run
 before planning. Publishing-toolchain changes should bump the output fingerprint
-version (`book-output-v3`) so previously compiled books are regenerated.
+version (`book-output-v4`) so previously compiled books are regenerated.

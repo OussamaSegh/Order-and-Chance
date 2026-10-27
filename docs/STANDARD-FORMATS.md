@@ -1,80 +1,86 @@
 # Standard book formats
 
-Decision: 27 October 2026. Applies to all sixteen main volumes and three problem books.
+Latest decision: 27 October 2026. Applies to all sixteen main volumes and three problem books.
+The author requires **two distinct PDFs: a reading download with cover, and a print interior**.
+Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF decision.
 
 ## Published files
 
 | File | Purpose |
 |---|---|
-| `dist/<tome>.pdf` | Sole standard book PDF, 7 × 10 inches; also the paperback manuscript |
-| `dist/<tome>.epub` | Reflowable eBook with cover, MathML and vector diagrams |
+| `dist/<tome>.pdf` | Reading download: approved front cover followed by the complete interior, 7 × 10 inches |
+| `dist/kdp/<tome>-print.pdf` | Print interior without the front cover, starting with the half-title; paperback manuscript |
+| `dist/<tome>.epub` | Reflowable eBook with cover, MathML and diagrams |
 | `dist/html/<tome>/` | Online chapter reader |
-| `dist/kdp/<tome>-cover-wrap.pdf` | Separate paperback cover with bleed and actual-page-derived spine |
+| `dist/kdp/<tome>-cover-wrap.pdf` | Separate paperback cover with bleed and actual-print-page-derived spine |
 | `dist/kdp/<tome>-ebook-cover.jpg` | Separate eBook front cover |
-| `dist/kdp/<tome>-print-metadata.json` | Actual PDF pages, even-rounded KDP pages, gutter, spine and wrap size |
+| `dist/kdp/<tome>-print-metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
 | `dist/kdp/<tome>-listing.md` | Title fields, description and keywords |
 
-The PDF starts with the half-title and uses the existing 11 pt Palatino book
-layout, mirrored margins and recto chapter openings. Its black-ink styling and
-scientific figure distinctions are preserved. Covers remain separate so this
-same PDF can be uploaded as the paperback interior. ISBNs, editions, titles,
-subtitles, author spelling and mathematical content are unchanged.
+Both PDFs share identical typeset body pages: 11 pt Palatino, mirrored margins,
+recto chapter openings, black-ink styling and whole framed boxes. The reading PDF
+has exactly one additional front-cover page; its interior labels and references
+are preserved. The print file excludes that page. Never calculate a paperback
+spine from the reading PDF's total count. Upload the print file as the paperback
+manuscript and the wrap separately as its cover.
 
-There is no A4, fixed-page Kindle, phone or duplicate `-print.pdf` edition. The
-old `dist/<tome>.pdf` A4 filename now contains the canonical 7×10 PDF. All download
-buttons, README links and reader PDF links use this file. The publishing panel's
-paperback-interior link points to the same file.
+The reading front is uniformly scaled from the approved front PDF, preserving its
+composition, embedded images and vector elements. Volume 0 retains the exact
+approved image pixels, verified by `tools/check_cover_reference.py`. ISBNs,
+editions, titles, subtitles, author spelling and mathematical content are preserved.
+
+A4, fixed-page Kindle and phone PDF editions remain retired. The library's
+**PDF with cover** and **Print PDF** buttons link to different files. README tables
+offer both; the online reader's PDF link opens the reading download. Release assets
+use the same filenames. Pages flattens the publishing files into its download root.
 
 ## Build and cache migration
 
-- `./build.sh [tome...]` builds the standard PDF, EPUB, reader and publishing assets.
-- `./build.sh --pdf-only [tome...]` refreshes that same PDF and publishing assets
-  without rebuilding EPUB or HTML. The former `--print-only` option is retired.
-- The TeX preamble defaults directly to 7×10; it contains no A4, phone or Kindle
-  layout branch. The existing layout hooks remain for volume-specific typography.
-- Three TeX passes resolve references. If the actual PDF exceeds 700 pages, the
-  existing larger-gutter rule is applied and the same layout is rebuilt.
-- Front previews now check the two supported cover proportions: standard book
-  front and EPUB front. Removed reading formats have no front-preview jobs.
-- Output fingerprint/cache schema 3 and Actions namespace `library-v3-` force a
-  complete rebuild. The TeX package cache remains reusable.
-- Cache assembly removes retired PDF variants from both flat downloads and KDP
-  directories. It also removes deleted books across a cache schema migration.
-- Before a snapshot or release, every canonical PDF is checked page by page at
-  **504 × 720 pt**, with embedded vector fonts. Its actual page count must agree
-  with the print metadata and calculated wrap dimensions. Retired PDF files or
-  incomplete book outputs prevent publication.
-- The complete library is validated before uploading the combined books artifact.
-  Release notes now describe one PDF and one EPUB per volume.
-
-## Verification
-
-- **26 publishing tests pass**, including stale-output cleanup, old-cache migration,
-  rejection of an A4 PDF under the canonical filename, metadata disagreement,
-  library completeness, download links, EPUB anchors and MathML.
-- `bash -n build.sh`, metadata synchronization and `git diff --check` pass.
-- Volume 0 and Higher Structures fronts pass title/subtitle/slogan extraction,
-  exact size and embedded-font checks in both supported proportions.
-- Volume 0 completed the full PDF/EPUB/reader pipeline. Its 233-page standard PDF
-  has identical extracted text to the reviewed paperback; the EPUB ZIP and MathML
-  checks pass. Other volumes are rebuilt and checked during the rollout.
-- Local builds and the clean all-volume publication run are checked as part of
-  the rollout. The final completion message identifies the published commit and
-  confirms the exact Actions run; local output alone is not publication evidence.
-
-Earlier trim comparisons and review records describe their formats at the time.
-This document and the current author instructions supersede their format policy.
+- Install Python publishing helpers with `python3 -m pip install -r tools/requirements-build.txt`.
+- `./build.sh [tome...]` builds both PDFs, EPUB, reader and publishing assets.
+- `./build.sh --pdf-only [tome...]` refreshes both PDFs and publishing assets
+  without rebuilding EPUB or HTML.
+- Three TeX passes resolve references. If the print interior exceeds 700 pages,
+  the larger-gutter rule is applied and the same interior is rebuilt.
+- `tools/book_pdf.py` clones the entire print PDF and inserts the approved front.
+  It preserves body streams, annotations, named destinations, bookmarks and metadata.
+  The added front is labeled “Cover”; original interior page labels are retained.
+- Output fingerprint/cache schema **4** and Actions namespace `library-v4-` force
+  all books to regenerate. Each cached volume must contain both PDFs and EPUB,
+  reader, front, wrap and publishing metadata. Removed books are cleared.
+- Every page of both PDFs is checked at **504 × 720 pt**, with embedded fonts.
+  The pair must have identical body streams, crop boxes, rotations, annotation
+  counts and interior labels. Every named destination must shift by one physical
+  page in the reading file. Missing covers or changed body pages fail validation.
+- The print page count must agree with metadata and the calculated cover dimensions.
+  The complete library passes these checks before release upload or Pages publication.
 
 ## Source adapted to the final pages
 
-The final PDF keeps every framed exercise, problem, reminder, beauty note,
-pause-and-think prompt and challenge whole. Hint/solution openings reserve space;
-widows and orphans are blocked, with natural bottom whitespace when needed.
-Long formulas that protruded in the narrower measure have been reflowed in the
-source. The build rejects split/oversized boxes, overflowing text or figures and
-unresolved references. Exercise numbers and moved reference pages have dedicated
-typesetting regression tests. EPUB carries corresponding pagination preferences.
+Exercises, problems, reminders, beauty notes, thinking prompts and challenges
+stay whole in both PDFs. Hint and solution openings reserve space; section and
+solution headings stay with the following content. Paragraph widows and orphans
+are blocked, with natural bottom whitespace when needed. Long formulas are
+reflowed in the source. Oversized/split frames, overflowing text or figures and
+unresolved references stop the build. EPUB carries corresponding pagination
+preferences, subject to the reading system's reflow.
 
-See [the pagination review](../review/7X10-PAGINATION.md) for the rebuilt library
-counts and verification record. The earlier 233-page Volume 0 count above belongs
-to the format migration before this pagination revision.
+See [the pagination review](../review/7X10-PAGINATION.md) for the print page counts
+and source verification record. These print counts remain authoritative after
+adding the separate reading covers.
+
+## Verification
+
+- **40 publishing tests pass**, including PDF cover attachment, unchanged original
+  print bytes/body streams, preserved labels/metadata/bookmarks/internal and
+  external links, rejection of missing covers or modified body pages, distinct
+  library links, complete-library validation and cache migration.
+- Existing whole-box/reference-placement typesetting tests and source layout gates
+  remain in the build. Shell syntax, metadata synchronization and diff checks pass.
+- Local PDF pairs and the clean all-volume publication run are checked before
+  completion. The final delivery message identifies the exact published commit.
+- All nineteen local pairs pass: **4,206 print pages** and **4,225 reading pages**.
+  Volume 0 is 239 print pages and 240 with its cover; its spine remains 0.5405 in.
+  Its approved front pixels are unchanged. The generated library has nineteen
+  separate reading/print link pairs; browser checks verify their downloads and
+  desktop/320-pixel layout. Evidence: `build/pdf-pair-review/`.

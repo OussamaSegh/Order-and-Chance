@@ -8,9 +8,10 @@ import subprocess
 from pathlib import Path
 from book_outputs import clean, check
 from check_cover_pdf import check_interior
+from book_pdf import check_pair
 from print_layout import specification
 
-SCHEMA = 3
+SCHEMA = 4
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -19,13 +20,13 @@ def fingerprints(root):
     books = sorted(p.name for p in root.glob('tome*') if (p / 'main.tex').is_file())
     if not all(NAME.fullmatch(book) for book in books):
         raise ValueError('Unsupported book directory name')
-    shared = [f for f in files if f == 'build.sh' or f.startswith('common/') or f.startswith('tools/assets/') or (
+    shared = [f for f in files if f in {'build.sh', 'tools/requirements-build.txt'} or f.startswith('common/') or f.startswith('tools/assets/') or (
         f.startswith('tools/') and Path(f).suffix in {'.py', '.tex', '.lua', '.css', '.html'}
         and Path(f).name not in {'site.py', 'site-template.html', 'build_plan.py'}
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v3\0')
+        h = hashlib.sha256(b'book-output-v4\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -39,7 +40,7 @@ def complete(cache, book):
     required = [f'dist/{book}.pdf', f'dist/{book}.epub',
                 f'dist/html/{book}/index.html', f'build/{book}/cover.pdf']
     required += [f'dist/kdp/{book}-{suffix}' for suffix in
-                 ['cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
+                 ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
     return all((cache / p).is_file() and (cache / p).stat().st_size for p in required)
 
 
@@ -87,9 +88,12 @@ def snapshot(root, cache, data):
     for book in data['books']:
         if not complete(root, book):
             raise ValueError(f'Incomplete output for {book}')
-        # The unsuffixed PDF is the sole reading and paperback edition. Reject
-        # an old A4 file even if its filename and the remaining outputs exist.
-        pages = check_interior(root / 'dist' / f'{book}.pdf')
+        download = root / 'dist' / f'{book}.pdf'
+        interior = root / 'dist/kdp' / f'{book}-print.pdf'
+        pages = check_interior(interior)
+        check_interior(download)
+        if check_pair(download, interior) != pages:
+            raise ValueError(f'PDF pair page counts disagree for {book}')
         metadata = json.loads((root / 'dist/kdp' / f'{book}-print-metadata.json').read_text())
         if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
