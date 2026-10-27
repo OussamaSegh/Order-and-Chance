@@ -117,13 +117,21 @@ class EpubRegression(unittest.TestCase):
             (Path(directory) / "diagram.svg").write_text(
                 '<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20">'
                 '<rect x="1" y="1" width="18" height="18"/></svg>')
-            self.convert("epub3", "--toc", "--metadata", "title=Arithmetic",
+            self.convert("epub3", "--toc", "--metadata", "title=Order and Chance. Tome 1: The Integers",
+                         "--metadata", "subtitle=Primes, Patterns and Proofs",
                          "--metadata", "lang=en", "-o", str(book), cwd=directory)
             epub_fix.main(str(book))
             with zipfile.ZipFile(book) as archive:
                 contents = {name: archive.read(name) for name in archive.namelist()}
                 package_name = next(name for name in contents if name.endswith(".opf"))
                 package = ET.fromstring(contents[package_name])
+                dc = "http://purl.org/dc/elements/1.1/"
+                metadata = package.find(f"{{{epub_fix.OPF}}}metadata")
+                titles = metadata.findall(f"{{{dc}}}title")
+                self.assertEqual([t.text for t in titles],
+                                 ["Order and Chance. Tome 1: The Integers", "Primes, Patterns and Proofs"])
+                marker = metadata.find(f"{{{epub_fix.OPF}}}meta[@property='title-type'][.='subtitle']")
+                self.assertEqual(marker.get("refines"), "#" + titles[1].get("id"))
                 items = package.findall(f"{{{epub_fix.OPF}}}manifest/{{{epub_fix.OPF}}}item")
                 nav = next(item for item in items if "nav" in item.get("properties", "").split())
                 self.assertIn("mathml", nav.get("properties", "").split())

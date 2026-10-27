@@ -1,6 +1,6 @@
 # Order and Chance
 
-*Beautiful mathematics through problems and proofs.* By SEGHAIER Oussama.
+*Discover the patterns. Understand the proofs.* By SEGHAIER Oussama.
 
 A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 companion notebook with computer-science applications.
@@ -80,12 +80,14 @@ mathematics of computer science in the same spirit. The Companion shelf S1–S4 
 
 ## Design and future sessions
 
-The author-approved visual identity follows the [attached cover reference](docs/reference/approved-cover.jpg):
-textured burnt-orange paper, cream serif masthead and border details, large dark
-book titles, and mathematical artwork meaningful to each volume. The slogan is **Beautiful
-mathematics through problems and proofs.** All volumes share this identity.
-Read [the design guide and session record](docs/DESIGN.md) and [AGENTS.md](AGENTS.md)
-before changing the design or publishing templates.
+The author-approved visual identity follows the [balanced black/gold reference](docs/reference/approved-balanced-volume-0.png):
+black textured paper, warm gold serif lettering, a fine border, one substantial
+mathematical illustration and a smaller supporting construction per volume.
+Each of the 28 illustrations is generated from its own mathematics as crisp vector
+art. The slogan is **Discover the patterns. Understand the proofs.** Paperback
+wraps, ebook covers, interior accents and online light/dark themes share this identity.
+Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
+changing design or publishing templates. Earlier proposals are archived separately.
 
 ## Layout
 

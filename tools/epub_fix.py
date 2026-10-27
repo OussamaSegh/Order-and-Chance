@@ -38,10 +38,45 @@ def fix_mathml(match: re.Match) -> str:
     return ET.tostring(root, encoding="unicode")
 
 
+def fix_volume_subtitle(root: ET.Element) -> bool:
+    """Keep a volume's subtitle as EPUB 3 subtitle metadata, separate from its title.
+
+    Pandoc renders --metadata subtitle on the title page but omits it from OPF.
+    Recognise only this series' canonical numbered titles, leaving other EPUBs alone.
+    """
+    dc = "http://purl.org/dc/elements/1.1/"
+    metadata = root.find(f"{{{OPF}}}metadata")
+    if metadata is None:
+        return False
+    titles = metadata.findall(f"{{{dc}}}title")
+    main_title = next((t for t in titles if "Order and Chance" in (t.text or "")), None)
+    match = re.search(r"Tome ([0-9A-Z]+):", main_title.text or "") if main_title is not None else None
+    if not match:
+        return False
+    from series_metadata import subtitle
+    value = subtitle(match.group(1))
+    if not value:
+        return False
+    marker = metadata.find(f"{{{OPF}}}meta[@property='title-type'][.='subtitle']")
+    changed = False
+    target = None
+    if marker is not None:
+        target = next((t for t in titles if "#" + t.get("id", "") == marker.get("refines")), None)
+    if target is None:
+        target = ET.SubElement(metadata, f"{{{dc}}}title", {"id": "oc-volume-subtitle"})
+        marker = ET.SubElement(metadata, f"{{{OPF}}}meta", {"refines": "#oc-volume-subtitle", "property": "title-type"})
+        marker.text = "subtitle"
+        changed = True
+    if target.text != value:
+        target.text = value
+        changed = True
+    return changed
+
+
 def fix_manifest(data: bytes, package_path: str, resources: dict[str, bytes]) -> bytes:
     """Declare MathML on all XHTML resources, including the generated TOC."""
     root = ET.fromstring(data)
-    changed = False
+    changed = fix_volume_subtitle(root)
     for item in root.findall(f"{{{OPF}}}manifest/{{{OPF}}}item"):
         if item.get("media-type") != "application/xhtml+xml":
             continue

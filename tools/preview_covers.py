@@ -1,6 +1,6 @@
 """Render every series front at production sizes without rebuilding the books.
 
-Usage: python3 tools/preview_covers.py [--jobs 4] [--out build/cover-previews]
+Usage: python3 tools/preview_covers.py [tome0-back-in-shape tome1-integers] [--jobs 4]
 Requires the same pdflatex/poppler setup as build.sh. Writes preview PDFs and PNGs,
 not release assets or production paperback wraps. Mathematical motifs are read as-is.
 """
@@ -9,9 +9,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import re
 import subprocess
+from series_metadata import subtitle, check_sync
 
 ROOT = Path(__file__).resolve().parent.parent
-FORMATS = {"ebook": 9.6, "a4": 8.4857, "kindle": 7.9626}
+FORMATS = {"reference": 9, "ebook": 9.6, "a4": 8.4857, "kindle": 7.9626, "print-front": 9}
 
 
 def render(main: Path, output: Path) -> str:
@@ -31,20 +32,23 @@ def render(main: Path, output: Path) -> str:
                            cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
         text = subprocess.check_output(["pdftotext", str(out / f"{fmt}.pdf"), "-"]).decode()
         text = " ".join(text.split())
-        for expected in (title, "Beautiful mathematics through problems and proofs."):
+        expected_text = (title, subtitle(number), "Discover the patterns. Understand the proofs.")
+        for expected in expected_text:
             if expected not in text:
                 raise ValueError(f"{tome}/{fmt}: missing or clipped text: {expected}")
     subprocess.run(["pdftoppm", "-singlefile", "-scale-to", "900", "-png",
-                    str(out / "ebook.pdf"), str(out / "cover")], check=True)
+                    str(out / "reference.pdf"), str(out / "cover")], check=True)
     return tome
 
 
 def main():
+    check_sync()
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("tomes", nargs="*", help="Only render these volume directories; default: all")
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--out", type=Path, default=ROOT / "build/cover-previews")
     args = parser.parse_args()
-    books = sorted(ROOT.glob("tome*/main.tex"))
+    books = [ROOT / tome / "main.tex" for tome in args.tomes] if args.tomes else sorted(ROOT.glob("tome*/main.tex"))
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         futures = [pool.submit(render, book, args.out.resolve()) for book in books]
         for future in as_completed(futures):

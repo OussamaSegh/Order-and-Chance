@@ -6,6 +6,7 @@ set -euo pipefail
 export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-8
 root="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$root/dist/kdp" "$root/build"
+python3 "$root/tools/series_metadata.py" --check
 tomes=("$@")
 [ ${#tomes[@]} -eq 0 ] && tomes=($(cd "$root" && ls -d tome*/ | tr -d /))
 
@@ -105,7 +106,7 @@ for tome in "${tomes[@]}"; do
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
       --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
-      --metadata title="${title:-$tome}" --metadata author="SEGHAIER Oussama" --metadata lang=en \
+      --metadata title="${title:-$tome}" --metadata subtitle="$(python3 -c 'import json,sys; from pathlib import Path; print(json.loads(Path(sys.argv[1]).read_text()).get(sys.argv[2], ""))' "$root/common/volume-subtitles.json" "$num")" --metadata author="SEGHAIER Oussama" --metadata lang=en \
       --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$tome/main.tex")" \
       --metadata subject=Mathematics \
       -o "$root/dist/$tome.epub")

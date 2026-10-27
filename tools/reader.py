@@ -9,6 +9,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from series_metadata import subtitle
 
 TOOLS = Path(__file__).resolve().parent
 ROOT = TOOLS.parent
@@ -26,7 +27,8 @@ def main(tome: str, build: str, out: str) -> None:
          "--toc", "--toc-depth=2", "--split-level=1", "--number-sections",
          "--lua-filter", str(TOOLS / "epub.lua"), "--template", str(TOOLS / "reader-template.html"),
          "--metadata", "title=" + title, "--metadata", "lang=en",
-         "-V", "booktitle=" + book, "-V", "tome=" + tome, "-o", str(out_dir)],
+         "-V", "booktitle=" + book,
+         "-V", "volumesubtitle=" + subtitle(re.search(r"Tome ([0-9A-Z]+):", title).group(1)), "-V", "tome=" + tome, "-o", str(out_dir)],
         cwd=ROOT / tome, check=True)
     # Pandoc names the pages of unnumbered chapters "-preface.html", and of chapters with a
     # \label "3-ch:eigen.html"; make plain file names.

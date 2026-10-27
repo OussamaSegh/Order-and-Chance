@@ -14,6 +14,7 @@ import shutil
 import subprocess
 import sys
 from pathlib import Path
+from series_metadata import subtitle
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -23,7 +24,7 @@ for field in ("tomes", "count", "repo", "date", "commit"):
     PAGE = PAGE.replace("{{" + field + "}}", "{" + field + "}")
 
 CARD = """<article class="tome" data-collection="{collection}" data-search="{search}">{cover}
-<div class="info"><p class="eyebrow">{collection_label}</p><h3>{title}</h3><p class="meta">{size} · Standard A4 edition</p></div>
+<div class="info"><p class="eyebrow">{collection_label}</p><h3>{title}</h3><p class="volume-subtitle">{subtitle}</p><p class="meta">{size} · Standard A4 edition</p></div>
 <div class="links"><a class="primary" href="{pdf}" download>Download PDF</a>{read}{epub}{variants}</div>{kdp}</article>"""
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
@@ -94,10 +95,12 @@ def main(dist: str, out: str) -> None:
         collection, label = {"C": ("computing", "Computing track"), "S": ("companions", "Companion shelf"),
                              "P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))
         epub_link = f'<a href="{epub.name}" download>EPUB</a>' if epub.exists() else ""
-        cards.append(CARD.format(title=html.escape(rest or series), size=size, cover=cover, read=read,
+        number = re.search(r"Tome ([0-9A-Z]+):", title)
+        tagline = subtitle(number.group(1)) if number else ""
+        cards.append(CARD.format(subtitle=html.escape(tagline), title=html.escape(rest or series), size=size, cover=cover, read=read,
                                  pdf=pdf.name, variants=variants, epub=epub_link, kdp=kdp,
                                  collection=collection, collection_label=label,
-                                 search=html.escape((tome + " " + title + " " + label).lower(), quote=True)))
+                                 search=html.escape((tome + " " + title + " " + tagline + " " + label).lower(), quote=True)))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/Order-and-Chance")

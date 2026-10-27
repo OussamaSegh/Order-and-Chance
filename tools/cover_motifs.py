@@ -791,8 +791,8 @@ def multiplicative_walks(N=3000, walks=3, seed=14):
         for n in range(2, N + 1):
             p = spf[n]
             if p not in theta:
-                theta[p] = complex(math.cos(2 * math.pi * rng.random()), math.sin(2 * math.pi * rng.random()))
-                theta[p] = theta[p] / abs(theta[p])
+                angle = 2 * math.pi * rng.random()
+                theta[p] = complex(math.cos(angle), math.sin(angle))
             f[n] = f[n // p] * theta[p]
         s, pts = 0j, [0j]
         for n in range(1, N + 1):
@@ -1059,7 +1059,8 @@ def conjugate_gradient_plate():
     return '\n'.join(lines)+'\n'
 
 
-MOTIFS = {
+# Historical selections; the active series mapping lives in cover_plates.PLATES.
+LEGACY_MOTIFS = {
     "tome0-back-in-shape": times_table,
     "tome1-integers": sacks_spiral,
     "tome2-structures": buckyball,
@@ -1092,8 +1093,6 @@ MOTIFS = {
 }
 
 if __name__ == "__main__":
-    for tome, make in MOTIFS.items():
-        if not (ROOT / tome).is_dir():
-            continue
-        (ROOT / tome / "cover-motif.tex").write_text(make())
-        print("wrote", tome + "/cover-motif.tex")
+    # Keep the historical entry point useful while selecting the approved system.
+    from cover_plates import main
+    main()

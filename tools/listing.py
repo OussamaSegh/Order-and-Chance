@@ -18,6 +18,7 @@ Exits with an error if kdp.md breaks KDP's limits.
 import re
 import sys
 from pathlib import Path
+from series_metadata import subtitle
 
 
 def latex_to_text(tex: str) -> str:
@@ -82,7 +83,7 @@ def main(tome_dir: str, out: str) -> None:
              "| Field | Value |", "|---|---|",
              f"| Language | English |",
              f"| Book title | Tome {number}: {title} |",
-             f"| Subtitle | {series}: Beautiful mathematics through problems and proofs |",
+             f"| Subtitle | {subtitle(number)} |",
              f"| Series | {series} (volume: {number}) |",
              "| Edition number | 1 |",
              "| Author | SEGHAIER Oussama |",

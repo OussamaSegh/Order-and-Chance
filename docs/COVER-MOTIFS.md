@@ -1,46 +1,47 @@
-# Mathematical meaning of every cover illustration
+# Mathematical cover illustrations
 
-The author's requirement (27 October 2026): **the illustration must be meaningful
-to the content of its book**. Use the attached visual reference's paper, type and
-border, but derive each plate from the mathematics. Do not copy its generic circles
-onto every volume. All diagrams are computed TikZ vectors; `tools/cover_motifs.py`
-contains the constructions and `<volume>/cover-motif.tex` the generated result.
+All 28 illustrations use the approved black/gold vector style. Each cover has one
+main plate and one smaller supporting construction tied to its own mathematics.
+The table identifies the main subject and manuscript evidence; the generator
+records exact parameters and seeds. Finite simulations illustrate mathematics;
+they are not proofs of open conjectures.
 
-| Volume | Illustration and mathematical connection |
-|---|---|
-| 0 Back in Shape | Chords joining j to 2j modulo 200: roots of unity, modular arithmetic and complex geometry from the refresher. |
-| 1 The Integers | Sacks spiral: plot each prime p at radius sqrt(p), angle 2π sqrt(p). A genuine picture of the primes, central to Chapter 2. |
-| 2 Structures | Truncated icosahedron / Cayley graph of A5, connecting symmetry, groups and actions. |
-| 3 Chance | A Galton board: coin-flip paths and the binomial distribution approaching a Gaussian. |
-| 4 The Art of Calculation | Fourier partial sums of a square wave, showing Gibbs overshoot; Fourier series and summation methods. |
-| 5 Where It All Meets | The complex curve ζ(1/2+it), illustrating the connection between analysis, zeta zeros and prime distribution. |
-| 6 Spaces | Sierpiński carpet: a set of Hausdorff dimension log(8)/log(3), connecting topology and metric measures. |
-| 7 Analysis in Depth | Image of a rectangular grid under sin(z), yielding confocal ellipses/hyperbolas: conformal mapping and complex analysis. |
-| 8 Shapes | Farey tessellation of the hyperbolic disc: geodesics, modular group and continued fractions. |
-| 9 Structures II | A Plancherel-distributed Young diagram and its limit shape: symmetric-group representations. |
-| 10 Chance II | GEM(1) stick-breaking samples: the Poisson–Dirichlet laws studied with permutation cycles. |
-| 11 Random Motion | Dyson Brownian eigenvalue trajectories: stochastic motion and random-matrix repulsion. |
-| 12 Arithmetic | Ford circles with exact radii 1/(2q²) over reduced rationals p/q: modular geometry behind the modular-forms chapter. |
-| 13 Primes in Depth | Prime residue constellations: arithmetic progressions and the distribution of primes. |
-| 14 Random Arithmetic | Partial-sum walks of Steinhaus random multiplicative functions: probabilistic models of arithmetic functions. |
-| 15 The Research Workshop | Binary branching random walk and its barrier: the guided reading on multiplicative chaos and random multiplicative functions. |
-| C1 Discrete Structures | Boolean lattice of subsets of a five-element set, with symmetric chains: orders and combinatorics. |
-| C2 Algorithms | Batcher bitonic sorting network on 16 wires: comparison networks and algorithm design. |
-| C3 Computation and Complexity | Three-state binary divisibility-by-3 automaton: finite-state computation from Chapter 1. |
-| C4 Information, Codes and Secrets | Binary entropy h(p) and binary symmetric channel capacity 1-h(p), from Chapters 1 and 3. |
-| C5 Data, Optimisation and Learning | Level sets of a positive quadratic, steepest-descent iterates and the exact two-step conjugate-gradient solution, from Chapter 2. |
-| S1 Linear Algebra in Depth | Random lozenge tiling, connected to nonintersecting paths and determinants, an application highlighted in the preface. |
-| S2 Geometry | Integral Apollonian gasket: mutually tangent circles and their integer curvatures. |
-| S3 A Book of Conjectures | Collatz orbit tree: finite computed orbits illustrating the open iteration problem. |
-| S4 The Companion | Chord diagram of actual cross-volume citations: the map of the series itself. |
-| P1 Crossroads | Gaussian primes a+bi in a bounded disc: number theory, complex geometry and algebra crossing subjects. |
-| P2 Machinery | First 89 iterates of an irrational rotation by (√5−1)/2: equidistribution and Kronecker's theorem in Chapters 1–2. |
-| P3 Frontiers | Standardized binomial probability masses for n=8,32,128 with the Gaussian reference: local limit theorems for sums of random pieces in Chapter 1. |
+| Volume | New illustration | Manuscript evidence |
+|---|---|---|
+| 0: Back in Shape | Gaussian wireframe surface | ch06-integrals-taylor.tex; ch08-counting-probability.tex |
+| 1: The Integers | Lattice circle and 3–4–5 triangle | ch07-sums-of-squares.tex |
+| 2: Structures | Truncated icosahedron, rotations and A5 | ch11-characters.tex; ch12-quaternions.tex |
+| 3: Chance | Binomial board and Gaussian approximation | ch02-discrete.tex; ch06-clt.tex |
+| 4: The Art of Calculation | Fourier partial sums and Gibbs overshoot | ch06-fourier.tex |
+| 5: Where It All Meets | Critical-line zeta curve | ch06-zeros.tex |
+| 6: Spaces | Sierpinski carpet and Cantor construction | ch11-metricmeasures.tex |
+| 7: Analysis in Depth | Image of an orthogonal grid under sin(z) | ch09-complex.tex |
+| 8: Shapes | Farey tessellation of the hyperbolic disk | ch09-hyperbolic.tex |
+| 9: Structures II | Young diagram and Plancherel limit shape | ch09-symmetric.tex |
+| 10: Chance II | GEM(1) proportional stick-breaking bands | ch12-permutations.tex |
+| 11: Random Motion | Hermitian Brownian eigenvalue trajectories | ch10-semicircle.tex |
+| 12: Arithmetic | Ford circles over reduced rationals | ch14-modular.tex; ch12-elliptic.tex |
+| 13: Primes in Depth | Prime residues, twins and constellations | Prime distribution and progressions |
+| 14: Random Arithmetic | Steinhaus multiplicative partial-sum walks | ch05-randommult.tex |
+| 15: The Research Workshop | Branching random walk and critical barrier | ch06-chaos.tex |
+| C1: Discrete Structures | Boolean lattice and symmetric chains | Orders and combinatorics |
+| C2: Algorithms | Eight-wire bitonic sorting network | Sorting networks |
+| C3: Computation and Complexity | Finite automaton for divisibility by three | ch01-automata.tex |
+| C4: Information, Codes and Secrets | Binary entropy and symmetric-channel capacity | ch01-entropy.tex; ch03-channels.tex |
+| C5: Data, Optimisation and Learning | Quadratic contours and conjugate gradients | ch02-krylov.tex |
+| S1: Linear Algebra in Depth | Lozenge tiling and determinant geometry | ch02-volume.tex |
+| S2: Geometry | Apollonian circle packing and integer curvatures | Circle geometry and inversion |
+| S3: A Book of Conjectures | Computed Collatz orbit tree | Collatz iteration |
+| S4: The Companion | Actual cross-volume mathematical citation map | data/series.json |
+| P1: Crossroads | Gaussian primes in a bounded integer lattice | Gaussian integers and number theory |
+| P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
+| P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |
 
-C4, C5, P2 and P3 were revised during this design session to tie their plates to
-material already included in their manuscripts, rather than later planned topics.
-The conjugate-gradient generator checks that the two-dimensional iterate reaches
-the minimizer within floating-point error. Binomial heights are exact probabilities
-divided by lattice spacing; the normal curve is explicitly an approximation.
-Finite experiments, Collatz trees and zeta plots are illustrations, not proofs of
-open conjectures. Preserve their parameters and meaning when changing presentation.
+Generate both plate files with `python3 tools/cover_plates.py`. The machine-readable
+manifest is [cover-art-manifest.json](cover-art-manifest.json).
+
+Geometry checks include the exact 3–4–5 identity, sorted Hermitian eigenvalues,
+the two-step conjugate-gradient solution, exact binomial masses and rational Ford
+circle radii. Steinhaus samples now use one uniform angle for both sine and cosine;
+this fixes the old nonuniform angle construction. Lozenge tilings are finite
+Glauber-dynamics samples; no claim of exact stationarity is made.

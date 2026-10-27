@@ -1,39 +1,58 @@
-# Order and Chance: session handoff
+# Order and Chance: current author instructions
 
-Read `docs/DESIGN.md` before changing covers, colours, typography or publishing templates.
-It records the author's approved series identity and how it is applied and checked.
+Read `docs/DESIGN.md` before changing design or publishing templates.
 
-## Author-approved decisions (2026-10-27)
+## Approved series identity (27 October 2026)
+
+The author approved the **balanced black-and-gold** Volumes 0/1 proofs, then asked:
+“apply the same style for all covers, kdp covers, even content colors themes make
+it coherent” and “Generate new illustration for each volume, that reflects its
+content and [is] beautiful”. This authorises the all-volume implementation and
+build. Earlier restrictions to two-volume validation are superseded.
 
 - Series: **Order and Chance**. Author: **SEGHAIER Oussama**.
-- Slogan: **Beautiful mathematics through problems and proofs.** Replaces the old
-  "Number theory, algebra and probability, all proved" slogan everywhere.
-- Cover reference: **docs/reference/approved-cover.jpg**, supplied by the author
-  after initially choosing D. This later attachment supersedes the first D concept:
-  textured burnt-orange/rust paper, large cream serif masthead, fine cream double
-  border and corner ornaments, cream slogan/author, large dark book title. Apply to
-  all 28 volumes, paperback wraps and ebook covers.
-- Every illustration must depict mathematics from its own volume. Read
-  `docs/COVER-MOTIFS.md`; keep the illustrated constructions mathematically correct.
-- Coordinate interior and online colours with the cover. Keep paperback interior
-  accents grayscale for black-ink printing and preserve mathematical distinctions in figures.
-- Record substantial decisions, implementation details, validation and outstanding
-  work in the repository so future sessions can continue from evidence.
+- Slogan: **Discover the patterns. Understand the proofs.**
+- References: `docs/reference/approved-balanced-volume-0.png` and
+  `docs/reference/approved-balanced-volume-1.png`.
+- Near-black textured paper, warm gold serif lettering, fine double border,
+  one-line masthead, clear central book title, **one substantial lower plate and
+  one small supporting construction at the top**. No four-corner collage and no
+  tiny isolated motif surrounded by excessive empty space.
+- Every volume has its own meaningful vector illustration. The approved Volume 0
+  uses a Gaussian surface, Volume 1 a lattice circle and 3–4–5 triangle. Volume 0
+  keeps the decorative subtitle **A Foundations Prelude**.
+- `tools/cover_plates.py` generates every `cover-motif.tex` and `cover-motif-mark.tex`.
+  `tools/cover_motifs.py` supplies mathematical geometry algorithms; its command
+  entry point delegates to the approved generator. Commit generator and outputs.
+- Each volume has an explanatory subtitle in the spirit of **A Foundations Prelude**.
+  Canonical text is `common/volume-subtitles.json`; run `tools/series_metadata.py`
+  to sync its TeX lookup. Covers, PDF title pages, EPUB metadata, KDP listings and
+  reader/library pages must agree.
+- Covers are vector type/diagrams/borders on the generated blank black paper asset.
+  No raster cover-art exception remains. Preserve correct mathematics and labels.
+- Interior and online themes use charcoal, neutral paper and readable deep gold;
+  dark themes use near-black and warm gold. Black-ink print interiors remain gray.
+  Preserve scientific figure distinctions rather than recolouring every curve.
+- Preserve ISBNs, volume identifiers, editions, author spelling, mathematical text,
+  figure meanings, cross-volume references, library search and reader controls.
 
-## Working conventions
+## Build and publication
 
-- Read the current git status and fetch the latest `main` before editing; other
-  writing sessions can update the repository. Preserve their work.
-- Phone PDFs were retired by a concurrent author session (2026-10-27); production
-  now includes A4 and Kindle PDFs plus EPUB. Notebook execution is manual. Preserve this.
-- Shared cover templates and `common/design-colors.tex` are the source of the design;
-  avoid per-volume copies or rasterising the mathematical diagrams.
-- CI caches complete book outputs using `tools/build_plan.py`; shared cover assets
-  in `tools/assets/` must participate in book fingerprints.
-- `build.sh` produces reading PDFs, EPUB, ebook covers, paperback interiors/wraps,
-  KDP listings and online readers. Pushing `main` triggers all-volume builds and
-  publication through `.github/workflows/build.yml`.
-- Review representative rendered output and all cover title lengths after layout changes.
-  A source change or queued workflow is not evidence that live downloads are updated.
-- Preserve author spelling, volume identifiers, ISBNs, edition metadata, mathematical
-  contents, figure meanings and cross-volume references during design-only work.
+- Inspect git status and fetch current main before edits; preserve concurrent work.
+- Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
+- `python3 tools/cover_plates.py` regenerates all 28 pairs of mathematical plates.
+- `python3 tools/preview_covers.py` checks all fronts in five proportions. Inspect
+  the contact sheet, long titles, full wraps and representative interior pages.
+- `./build.sh [tome...]` builds A4/Kindle PDFs, EPUB, reading covers, KDP interior,
+  page-count-derived wrap, listing and HTML reader. Phone PDFs are retired and
+  notebook execution is manual; preserve both decisions.
+- Never invent a page count for a production wrap. Preserve 0.125-inch outside
+  bleed and ISBN/barcode handling. Keep all fonts embedded and page bounds exact.
+- Shared assets participate in `tools/build_plan.py` fingerprints. Check new shared
+  dependencies and never publish incomplete cached-library assemblies.
+- Run relevant tests and `git diff --check`; commit the intended design changes.
+  Pushing main triggers all-volume Actions builds and release/Pages publication.
+  Verify the exact run and report completion accurately. GitHub publication does
+  not upload files to Amazon KDP; that requires the author's Amazon account.
+- Record implementation, verification and any actual limitations in docs/DESIGN.md.
+  Superseded conversations/designs are in docs/DESIGN-HISTORY.md.
