@@ -35,6 +35,23 @@ counts and the existing barcode/bleed rules. `docs/COVER-MOTIFS.md` records the
 master/vector distinction. The source was pulled to **dc98d05** before this correction,
 preserving the author's intervening pagination fixes.
 
+## Verified correction publication
+
+Source commit **560804e** was published by successful Actions run
+[40582430929](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/40582430929).
+All nineteen clean book builds, the complete-library assembly, the 114-asset
+release and the actual Pages deployment step succeeded. The 34 unit tests and
+browser checks passed: light/dark controls, contrast, search/filter, shared theme
+preference, reader mathematics/hints and 320/390-pixel navigation.
+
+The downloaded production Volume 0 front and paperback wrap both contain the exact
+decoded original pixels. Its production EPUB and reader contain the original PNG
+bytes. The deployed library and reader PNG hashes both match the approved master;
+all nineteen deployed fronts were downloaded and visually inspected together.
+Representative complete wraps were inspected: Volume 0 has 239 interior pages
+(240 for KDP's even-page calculation), spine 0.5405 in; Volume 9 has 152 pages,
+spine 0.3423 in. All retain 0.125-inch outside bleed.
+
 The remainder of this file records the previous implementation and its historical
 checks; its approximation claims do not override the exact-image policy above.
 
