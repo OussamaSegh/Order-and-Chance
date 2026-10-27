@@ -1,7 +1,7 @@
 \chapter{Arithmetic Functions}
 
 \begin{center}\itshape
-Pick two integers at random. The probability that they have no common factor is $\dfrac6{\pi^2}\approx0.608$.\\
+Pick two integers at random. The limiting probability that they have no common factor is $\dfrac6{\pi^2}\approx0.608$.\\
 The proof is a single inversion formula, plus Euler's $\zeta(2)=\frac{\pi^2}6$.
 \end{center}
 
@@ -11,9 +11,46 @@ is the probability that two random integers are coprime, and the epigraph says i
 number is a whole algebra of functions on the integers, with its own multiplication, Dirichlet's convolution, and an inversion formula found by
 M\"obius in 1832. This chapter builds that algebra.
 
+There is no uniform probability distribution on all positive integers: if each
+integer had the same positive mass the total would be infinite, and if each had
+mass zero it would be zero. The precise experiment is to choose $a$ and $b$
+independently and uniformly from $\{1,\dots,N\}$, then let $N$ grow.
+Exercise~\ref{ex:coprimeprob} proves that the resulting probabilities converge.
+The orchard is a picture of this limit, not a licence to choose a mythical
+``random integer from infinity''.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-orchard}
+\caption{An orchard in the square $1\le a,b\le12$. Filled circles are the
+$91$ visible trees, those with $\gcd(a,b)=1$; crosses are hidden trees. On the
+dashed ray through $(2,3)$, the trees $(4,6)$, $(6,9)$ and $(8,12)$ stand behind
+it. Visibility is decided by the first lattice point on each ray. The finite
+fraction $91/144$ is about $0.632$, not yet the limiting $6/\pi^2$.}
+\label{fig:orchard}
+\end{figure}
+
+\begin{reminder}[The route through this chapter]
+Factorisation lets us work one prime at a time. Convolution collects information
+from divisors; M\"obius inversion uncollects it. We will use the same dictionary
+twice: first to classify even perfect numbers, then to count divisor pairs and
+visible trees. Keep the distinction between an exact identity and an asymptotic
+estimate in view: they answer different questions.
+\end{reminder}
+
 \section{Multiplicative functions}
 
-An \emph{arithmetic function} is a map $f:\N^*\to\C$. It is \emph{multiplicative} if $f(1)=1$ and $f(mn)=f(m)f(n)$ whenever $\gcd(m,n)=1$, and \emph{completely multiplicative} if this holds for all $m,n$. A multiplicative function is determined by its values on prime powers.
+An \emph{arithmetic function} is a map $f:\N^*\to\C$. It is \emph{multiplicative} if $f(1)=1$ and $f(mn)=f(m)f(n)$ whenever $\gcd(m,n)=1$, and \emph{completely multiplicative} if this holds for all $m,n$. A multiplicative function is determined by its values on prime powers:
+if $n=\prod_{i=1}^r p_i^{a_i}$, then $f(n)=\prod_{i=1}^r f(p_i^{a_i})$,
+because those prime powers are pairwise coprime. The empty product at $n=1$
+is $1$.
+
+\paragraph{The coprimality clause earns its keep.}
+For example, $\tau(2)=2$ and $\tau(3)=2$, so $\tau(6)=4$. But
+$\tau(4)=3\ne\tau(2)^2$. A multiplicative function behaves independently at
+different primes; it need not behave independently at repeated copies of the
+same prime. It is tempting to erase ``coprime'' from the definition, and the
+number $4$ is waiting patiently to catch us.
 
 \begin{example}
 The following are multiplicative:
@@ -38,6 +75,33 @@ Commutativity is clear from the symmetric form, and
 \[\begin{aligned}(f*g)(mn)&=\sum_{d_1\mid m,\,d_2\mid n}f(d_1)f(d_2)\eqbr\qquad\times g\left(\frac m{d_1}\right)g\left(\frac n{d_2}\right)\\&=(f*g)(m)\,(f*g)(n).\end{aligned}\]
 \end{proof}
 
+\paragraph{A convolution you can do by hand.}
+For $n=12$, the ordered factor pairs are
+\[
+\begin{gathered}
+(1,12),(2,6),(3,4),\\
+(4,3),(6,2),(12,1).
+\end{gathered}
+\]
+Consequently
+\[
+\begin{aligned}
+ (f*g)(12)&=f(1)g(12)+f(2)g(6)\\
+ &\quad+f(3)g(4)+f(4)g(3)\\
+ &\quad+f(6)g(2)+f(12)g(1).
+\end{aligned}
+\]
+The word ``ordered'' matters: $(3,4)$ and $(4,3)$ are different terms.
+The convolution $\mathbf1*\mathbf1$ counts these pairs and gives
+$\tau(12)=6$. In contrast, ordinary pointwise multiplication would give
+$\mathbf1(12)\mathbf1(12)=1$. There are two multiplications on our desk;
+only the star means convolution.
+
+Why is $\varepsilon$ the identity? In $(f*\varepsilon)(n)$ every summand
+vanishes except the one with $n/d=1$, leaving $f(n)$. Why is associativity
+legitimate? For a fixed $n$ there are only finitely many triples $abc=n$,
+so changing the order of summation involves no convergence question.
+
 \begin{think}
 Compute $\sum_{d\mid n}\mu(d)$ for $n=1,2,\dots,12$. Make a guess, then explain it for $n=p^a$, and for $n=pq$ with two distinct primes. Why should multiplicativity then finish the job?
 \end{think}
@@ -52,6 +116,25 @@ $\mu*\mathbf 1=\varepsilon$. Consequently, for arithmetic functions $f,g$:
 $\mu*\mathbf 1$ is multiplicative, and at a prime power $p^a$ with $a\ge1$ it equals $\mu(1)+\mu(p)=1-1=0$; so it is $\varepsilon$. Then $g=f*\mathbf 1$ implies $g*\mu=f*(\mathbf 1*\mu)=f$, and conversely.
 \end{proof}
 
+\paragraph{Inversion is inclusion--exclusion in disguise.}
+If $n$ has distinct prime divisors $p_1,\dots,p_r$, only squarefree divisors
+contribute to $\sum_{d\mid n}\mu(d)$. Choosing such a divisor means choosing
+a subset of these primes, with sign $(-1)^{\text{size}}$. Thus the sum is
+$(1-1)^r$, which is $0$ for $n>1$ and $1$ for $n=1$.
+The cancellation is not mysterious: every collection of forbidden prime factors
+is being alternately added and removed.
+
+For a numerical inversion, suppose $g(n)=\sum_{d\mid n}f(d)$. At $n=12$,
+M\"obius inversion reads
+\[
+ f(12)=g(12)-g(6)-g(4)+g(2).
+\]
+Expand each $g$ as a divisor sum: $f(12)$ appears once, while every other
+$f(d)$ cancels. Notice that the divisors $4$ and $12$ do not appear as
+coefficients $\mu(d)$: their square factors make those coefficients zero.
+This small calculation is often the quickest way to remember the direction of
+the formula.
+
 \begin{proposition}[Gauss]\label{prop:phisum}
 $\displaystyle\sum_{d\mid n}\varphi(d)=n$. Hence $\varphi=\mu*\operatorname{id}$, and $\varphi(n)=n\displaystyle\sum_{d\mid n}\frac{\mu(d)}d=n\prod_{p\mid n}\left(1-\frac1p\right)$.
 \end{proposition}
@@ -63,6 +146,31 @@ Similarly $\tau=\mathbf 1*\mathbf 1$ and $\sigma=\operatorname{id}*\mathbf 1$ ar
 \[
 \begin{gathered}\tau\left(p_1^{a_1}\cdots p_r^{a_r}\right)=\prod_i(a_i+1),\qq\sigma\left(p_1^{a_1}\cdots p_r^{a_r}\right)=\prod_i\frac{p_i^{a_i+1}-1}{p_i-1}.\end{gathered}
 \]
+
+\paragraph{A local computation, then a global answer.}
+Take $n=72=2^3\cdot3^2$. Its divisors are exactly $2^i3^j$ with
+$0\le i\le3$ and $0\le j\le2$, so
+\[
+\begin{gathered}
+ \tau(72)=4\cdot3=12,\qquad
+ \sigma(72)=(1+2+4+8)(1+3+9)=195,\\
+ \varphi(72)=72(1-1/2)(1-1/3)=24.
+\end{gathered}
+\]
+The divisor formulas come from independent choices of exponents, not independent
+choices of divisors. For $\varphi$, inclusion--exclusion removes the $36$
+multiples of $2$ and the $24$ multiples of $3$, then restores the $12$
+multiples of $6$: $72-36-24+12=24$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-divisor-grid}
+\caption{Every divisor of $72$ occupies exactly one cell, labelled $2^i3^j$.
+There are $4\cdot3$ cells. Summing the rows factors the total as
+$(1+2+4+8)(1+3+9)=195$. A product over primes is a compressed record of
+independent exponent choices.}
+\label{fig:divisorgrid}
+\end{figure}
 
 \section{Perfect numbers}
 
@@ -78,7 +186,20 @@ An even number $n$ is perfect if and only if $n=2^{p-1}(2^p-1)$ with $2^p-1$ pri
 \begin{proof}
 If $q=2^p-1$ is prime, $\sigma(n)=\sigma(2^{p-1})\sigma(q)=(2^p-1)\cdot2^p=2n$.
 Conversely, write $n=2^km$ with $k\ge1$, $m$ odd. Then $2^{k+1}m=\sigma(n)=(2^{k+1}-1)\sigma(m)$. So $2^{k+1}-1$ divides $m$: $m=(2^{k+1}-1)s$ and $\sigma(m)=2^{k+1}s=m+s$. But $m$ and $s$ are distinct divisors of $m$ if $s\ne m$, i.e.\ always (as $2^{k+1}-1>1$), so $\sigma(m)\ge m+s$ with equality only if $m$ has no other divisors: $s=1$ and $m$ is prime. So $m=2^{k+1}-1$ is prime, and $p=k+1$.
+This exponent $p$ must itself be prime: if $p=uv$ with $u,v>1$, then
+$2^u-1$ is a proper divisor of $(2^u)^v-1=2^p-1$, by the geometric-sum
+factorisation. This also justifies the prime exponents used in
+Exercise~\ref{ex:even}.
 \end{proof}
+
+\paragraph{Where the converse proof turns.}
+The equation $\sigma(m)=m+s$ leaves no room for a third positive divisor.
+If $s>1$, then $1,s,m$ would already be three distinct divisors and their sum
+would exceed $m+s$. Thus $s=1$; if $m$ were composite, a proper divisor other
+than $1$ would again make the sum too large. This tiny inequality is the
+engine of Euler's converse. Do not assume that a number of the displayed shape
+is perfect without checking the Mersenne factor: $2^{10}(2^{11}-1)$ fails,
+since $2^{11}-1=23\cdot89$ is composite. A promising shape is not a certificate.
 
 Whether an odd perfect number exists is one of the oldest open problems in mathematics.
 
@@ -98,7 +219,7 @@ $\sum_{n\le x}\tau(n)$ counts the pairs $(a,b)$ of positive integers with $ab\le
 \end{figure}
 
 \begin{theorem}[Dirichlet]\label{thm:hyperbola}
-$\displaystyle\sum_{n\le x}\tau(n)=x\ln x+(2\gamma-1)x+O(\sqrt x)$. So the average number of divisors of an integer near $x$ is about $\ln x$.
+$\displaystyle\sum_{n\le x}\tau(n)=x\ln x+(2\gamma-1)x+O(\sqrt x)$. So the average number of divisors among $1,\dots,\lfloor x\rfloor$ is asymptotic to $\ln x$ as $x\to\infty$.
 \end{theorem}
 \begin{proof}
 $\sum_{n\le x}\tau(n)$ counts the lattice points $(a,b)$ with $a,b\ge1$, $ab\le x$, under a hyperbola. By symmetry about the diagonal, with $y=\sqrt x$,
@@ -107,6 +228,29 @@ $\sum_{n\le x}\tau(n)$ counts the lattice points $(a,b)$ with $a,b\ge1$, $ab\le 
 \]
 Replacing $\lfloor\frac xa\rfloor$ by $\frac xa$ costs $O(y)$ in total, and $\lfloor y\rfloor^2=x+O(y)$. From Tome~0, $\sum_{a\le y}\frac1a=\ln y+\gamma+O\left(\frac1y\right)$ (the adjacent sequences there give an error at most $\ln(1+\frac1n)\le\frac1n$). So the sum is $2x\left(\frac12\ln x+\gamma\right)-x+O(\sqrt x)$.
 \end{proof}
+
+\paragraph{What the error term promises.}
+Here $R(x)=O(\sqrt x)$ means that there are constants $C,x_0>0$ with
+$|R(x)|\le C\sqrt x$ for every $x\ge x_0$. It does not specify the sign
+of $R(x)$ and does not say that $\tau(n)$ itself is close to $\ln n$.
+Dividing the theorem by $\lfloor x\rfloor$ gives a statement about a
+long average. It gives no comparable estimate for every short interval near
+$x$, and certainly not for individual primes, whose divisor count remains $2$.
+
+The floor replacement is now cheap for a visible reason: with
+$m=\lfloor\sqrt x\rfloor$, each of the $m$ discarded fractional parts lies
+in $[0,1)$. Thus the error in the doubled sum is less than $2m$.
+Also $m^2\le x<(m+1)^2$, so $|m^2-x|<2m+1$. The entire geometric
+saving consists of replacing $\lfloor x\rfloor$ potentially troublesome
+columns by only $m$ of them. Symmetry has done the bookkeeping for us.
+
+\begin{think}
+For $x=10$, the exact sum is $27$ and
+$2(10+5+3)-3^2=27$. Locate the $3\times3$ square in the hyperbola picture.
+Then explain why a point with both coordinates greater than $\sqrt x$ cannot
+be counted at all. This is the one-sentence reason the two short sums cover
+every point.
+\end{think}
 
 \section{Exercises}
 
@@ -225,7 +369,9 @@ $C(N)=\sum_{a,b\le N}\sum_{d\mid a,\,d\mid b}\mu(d)=\sum_{d\le N}\mu(d)\cdot\#\{
 
 (b) Both series converge absolutely, so their product can be expanded and regrouped by $n=dm$ (as in the Cauchy product, Tome~0, Chapter~5): $\sum_n\frac1{n^2}\sum_{d\mid n}\mu(d)=\sum_n\frac{\varepsilon(n)}{n^2}=1$.
 
-(c) Write $\left\lfloor\frac Nd\right\rfloor^2=\frac{N^2}{d^2}+O\left(\frac Nd\right)$. Then
+(c) For $t\ge1$, $0\le t^2-\lfloor t\rfloor^2<2t$, so the
+constant in the following estimate is independent of $d$ and $N$.
+Write $\left\lfloor\frac Nd\right\rfloor^2=\frac{N^2}{d^2}+O\left(\frac Nd\right)$. Then
 $\frac{C(N)}{N^2}=\sum_{d\le N}\frac{\mu(d)}{d^2}+O\left(\frac1N\sum_{d\le N}\frac1d\right)=\sum_{d\le N}\frac{\mu(d)}{d^2}+O\left(\frac{\ln N}N\right)$,
 which tends to $\sum_d\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}=\frac6{\pi^2}$ by (b) and the Basel problem (Tome~0, Exercise~3.7).
 \end{solution}

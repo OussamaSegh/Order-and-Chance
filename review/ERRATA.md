@@ -788,3 +788,14 @@ above 1.4, the Cohen–Lenstra table.
 
 - Chapter 7: the 2026 resolution of the orders up to 2000 (including 668) is described as announced without a paper, which is the state of the sources at the time of review.
 - Chapter 12: the bound (1+√17)/4 = 1.2808 is proved and Smyth's 1.3247 is quoted; the figure's reciprocal point at d = 8 (1.28064) sits below the proved non-reciprocal bound, as the caption says.
+
+## Enhancement review: Tome 1 (27 October 2026)
+
+All twelve chapters and companion notebooks were reviewed and expanded, preserving
+existing result and exercise numbers. The revised volume adds six fully solved
+exercises, thirteen mathematical diagrams, four historical reproductions and an
+arithmetic field guide. Corrections include zero/boundary cases, the circle-count
+bound, continued-fraction/Pell precision, integer versus rational undecidability,
+and local/p-adic hypotheses. Actual EPUB validation also exposed and corrected
+shared conversion defects. Full findings and reproducible publication checks:
+[Tome 1 enhancement review](TOME1-ENHANCEMENT.md).

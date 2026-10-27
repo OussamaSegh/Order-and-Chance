@@ -9,7 +9,14 @@ Around 1637, reading Diophantus' \emph{Arithmetica}, Pierre de Fermat wrote in t
 and that he had a marvellous proof which the margin was too narrow to contain. It took three hundred and fifty-seven years and the whole of modern number
 theory to prove him right: Andrew Wiles finished the job in 1994. For $n=4$, though, Fermat really did have a proof, and it is in this chapter.
 
-A \emph{Diophantine equation} is a polynomial equation whose integer (or rational) solutions are sought. There is no general method: Hilbert asked for one in 1900, and Matiyasevich proved in 1970 that none can exist. This chapter collects the methods that work surprisingly often.
+A \emph{Diophantine equation} is a polynomial equation whose integer (or rational) solutions are sought. There is no algorithm deciding whether an arbitrary polynomial equation with integer coefficients has an integer solution: Hilbert asked for one in 1900, and Matiyasevich completed the negative answer in 1970, building on Davis, Putnam and Robinson. For rational solutions the analogous decision problem is still open. These are claims about universal algorithms, not a prohibition on solving particular equations. This chapter collects the methods that work surprisingly often.
+
+\subsection*{Choose the battlefield before choosing the weapon}
+An equation comes with a domain. In non-negative integers, $x^4+y^4=z^2$ has the uninteresting solutions with one of $x,y$ zero; in \emph{positive} integers Fermat's theorem excludes all solutions. In rational numbers $x^2+y^2=3$ is a different question from its solvability in real numbers. Write down the domain first: it determines which divisions, order arguments and congruences are available.
+
+Here is a practical sequence of questions. What happens modulo $4$, $8$ or a prime dividing a coefficient? Can we divide out a common factor? Can a product be split into coprime factors? Is the equation quadratic in one variable, allowing a second root? Is there a natural positive integer that should decrease? These are prompts, not an algorithm guaranteed to finish.
+
+A search has a different job. Finding a solution certifies existence; finding none up to a million certifies only that particular finite range. Number theory keeps a large drawer for plausible statements which survived an impressive search and were still false. Proof is the drawer's lock.
 
 \section{Pythagorean triples}
 
@@ -34,6 +41,24 @@ Conversely, let $(x,y,z)$ be primitive. $x,y$ are not both odd (else $z^2\equiv2
 
 The key step, ``coprime factors of a square are squares'', is the first example of the \emph{factorisation method}. It will be used again with more exotic factorisations in Chapter~10.
 
+\subsection*{Using the parameters, and checking their restrictions}
+Take $(m,n)=(4,1)$. The formula yields $(15,8,17)$, and the inverse calculation recovers $m^2=(17+15)/2=16$ and $n^2=(17-15)/2=1$. Thus the parameters are not lucky guesses: the factorisation forces them.
+
+If $m,n$ are both odd, the three displayed coordinates are all even: $(3,1)$ gives $(8,6,10)$, a doubled $(4,3,5)$. If they share a factor $d$, all three coordinates share $d^2$. This explains both restrictions in the theorem. Conversely, they guarantee primitivity, so we can generate every integer right triangle by taking a permitted pair and then multiplying its three sides by an arbitrary positive integer.
+
+As a small geometric payoff, the inradius $r$ of such a primitive right triangle is
+\[
+r=\frac{x+y-z}{2}=n(m-n).
+\]
+Indeed, its area is $xy/2$ and its semiperimeter is $(x+y+z)/2$; their quotient is $xy/(x+y+z)=(x+y-z)/2$ because $x^2+y^2=z^2$. With an overall scale factor $k$, the inradius is $kn(m-n)$. This provides a useful independent check on generated triples.
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-triangle-incircle}
+\caption{The $3$--$4$--$5$ triangle has area $6$, semiperimeter $6$, and inradius $1$. The three dashed radii meet the sides at right angles. The formula $r=(a+b-c)/2$ connects the geometry with the integer parameters of a Pythagorean triple.}
+\label{fig:incircle}
+\end{figure}
+
 \section{Infinite descent}
 
 \begin{theorem}[Fermat]\label{thm:fermat4}
@@ -44,7 +69,7 @@ Suppose there are solutions, and take one with $z$ minimal. Then $\gcd(x,y)=1$: 
 \[
 x^2=m^2-n^2,\qquad y^2=2mn,\qquad z=m^2+n^2,
 \]
-with $m>n\ge1$ coprime of opposite parity. From $x^2+n^2=m^2$ with $x$ odd, $(x,n,m)$ is a primitive Pythagorean triple (any common prime of $n,m$ would divide $\gcd(m,n)=1$), so $n$ is even, $m$ is odd, and $n=2ab$, $m=a^2+b^2$ with $a,b$ coprime. Now $y^2=2mn=4mab$, so $\left(\frac y2\right)^2=mab$, where $m,a,b$ are pairwise coprime ($a,b$ divide $n$, which is prime to $m$). So each of $m,a,b$ is a square: $a=u^2$, $b=v^2$, $m=w^2$. Then
+with $m>n\ge1$ coprime of opposite parity. From $x^2+n^2=m^2$ with $x$ odd, $(x,n,m)$ is a primitive Pythagorean triple (any common prime of $n,m$ would divide $\gcd(m,n)=1$), so $n$ is even (if $n$ were odd, $m^2=x^2+n^2\equiv2\pmod4$), and $m$ is odd, and $n=2ab$, $m=a^2+b^2$ with $a,b$ coprime. Now $y^2=2mn=4mab$, so $\left(\frac y2\right)^2=mab$, where $m,a,b$ are pairwise coprime ($a,b$ divide $n$, which is prime to $m$). So each of $m,a,b$ is a square: $a=u^2$, $b=v^2$, $m=w^2$. Then
 \[
 u^4+v^4=a^2+b^2=m=w^2,
 \]
@@ -54,6 +79,13 @@ a new solution with $w\le w^2=m\le m^2<m^2+n^2=z$. This contradicts the minimali
 \begin{remark}
 Fermat's Last Theorem, that $x^n+y^n=z^n$ has no solution in positive integers for $n\ge3$, was proved by Wiles (with Taylor) in 1995. Theorem~\ref{thm:fermat4} settles every $n$ divisible by $4$; Euler's case $n=3$ needs the Eisenstein integers of Chapter~10. The general proof is far beyond this series, and we never use it.
 \end{remark}
+
+\subsection*{What makes descent a proof?}
+A descent requires an assumed solution, a rule producing another solution, and a \emph{strictly smaller positive integer}. Here the monitored integer is $z$. We do not assume that repeatedly drawing smaller triangles somehow disappears; we use the well-ordering principle to choose a least $z$ and contradict its minimality in one step.
+
+The stronger equation $x^4+y^4=z^2$ is chosen deliberately. Descending while insisting on $z^4$ would impose a condition the construction need not preserve. By ruling out the square on the right, we automatically rule out a fourth power, since $z^4=(z^2)^2$. Strengthening a claim can sometimes make its proof easier: the stronger form is stable under the operation we need.
+
+The sentence ``coprime factors of a square are squares'' is also doing real work. The product $2\cdot8$ is a square although neither factor is. In the proof, $m,a,b$ are pairwise coprime, so every prime exponent in the product belongs to a single factor and must be even. Without that check, the descent would have a hole large enough for Fermat's missing margin.
 
 \section{Rational points on conics: the chord method}
 
@@ -121,6 +153,19 @@ So from any solution, repeatedly sorting and applying the move decreases $x+y+z$
 
 The \emph{Markov numbers} $1$, $2$, $5$, $13$, $29$, $34$, $89$, $169$, $194$, \dots form a tree. The \emph{uniqueness conjecture} (Frobenius, 1913), that the largest element determines the triple, is still open.
 
+\subsection*{A jump, a check, and a descent}
+Starting from $(1,2,5)$, keep $2$ and $5$ fixed and replace the $1$ by $3\cdot2\cdot5-1=29$. The result is $(29,2,5)$, and
+\[
+29^2+2^2+5^2=841+4+25=870=3\cdot29\cdot2\cdot5.
+\]
+Jumping back replaces $29$ by $30-29=1$. The move is its own inverse: growing and descending use the very same formula. Which direction it takes depends on the coordinate chosen.
+
+In the proof we sort the entries and replace a largest one. This is not cosmetic: replacing a small coordinate usually \emph{increases} the sum, as the example shows. The sign test $g(y)\le0$ locates the smaller root without solving a quadratic by radicals. Vieta jumping turns an apparently static equation into a landscape with a guaranteed downhill path.
+
+\begin{think}
+From $(1,5,13)$, replace the $5$ and then undo the move. You get $(1,13,34)$ because $3\cdot1\cdot13-5=34$. Which entry must be replaced to descend from $(1,13,34)$? Try the two other choices and see why the sorting instruction matters.
+\end{think}
+
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:areaper}
@@ -173,10 +218,10 @@ Add $4$: $y^2+4=x^3-1=(x-1)(x^2+x+1)$. Check $x$ modulo $4$ first, then find a f
 Use the rational point $(-1,0)$ and the lines $y=t(x+1)$. For the triangles, divide $c^2=a^2+ab+b^2$ by $c^2$.
 \end{hint}
 \begin{hint}{ex:markovcoprime}
-The move $x\mapsto3yz-x$ does not change $\gcd(x,y,z)$, and neither do permutations. Then grow the tree of Figure~\ref{fig:chordmarkov} until the largest entries exceed $200$.
+The move $x\mapsto3yz-x$ does not change $\gcd(x,y,z)$, and neither do permutations. \emph{If stuck on pairwise coprimality:} a prime dividing two coordinates also divides the square of the third, hence the third; a common factor of two would become a common factor of all three. Then grow the tree of Figure~\ref{fig:chordmarkov} until the largest entries exceed $200$.
 \end{hint}
 \begin{hint}{ex:imo88}
-Fix $k$ and take a solution $(a,b)$ with $a\ge b$ and $a+b$ minimal. The other root $a'=kb-a=\frac{b^2-k}a$ of $t^2-kbt+b^2-k=0$ is an integer. Show that $a'\ge0$ if $k$ is not a square, and that $a'<b$; what happens when $a'=0$?
+Fix $k$ and take a solution $(a,b)$ with $a\ge b$ and $a+b$ minimal. The other root $a'=kb-a=\frac{b^2-k}a$ of $t^2-kbt+b^2-k=0$ is an integer. Show that $a'\ge0$ if $k$ is not a square, and that $a'<b$; what happens when $a'=0$? \emph{A second hint:} if $a'\le-1$, substitute into $a'^2-kba'+b^2-k$ and use $b\ge1$ to show it is positive, contradicting the root equation.
 \end{hint}
 
 \section{Solutions}
@@ -213,7 +258,7 @@ and the vertical line $x=-1$ adds $(-1,1)$. For $a,b,c>0$ with $c^2=a^2+ab+b^2$,
 \[
 \begin{gathered}a=m^2-n^2,\qq b=2mn+n^2,\qq c=m^2+mn+n^2.\end{gathered}
 \]
-For example $(m,n)=(2,1)$ gives $(3,5,7)$: $9+15+25=49$. Every such triangle is a rational multiple of one of these.
+For example $(m,n)=(2,1)$ gives $(3,5,7)$: $9+15+25=49$. Every such triangle is a rational multiple of one of these. To turn this into a list with no omitted integer triangles, divide the three displayed integers by their common gcd $g$, then take every positive integer multiple of the resulting primitive triple. Indeed, if a rational multiple of a primitive integer triple has integer coordinates, its denominator in lowest terms divides all three coordinates and must therefore be $1$.
 \end{solution}
 
 \begin{solution}{ex:markovcoprime}

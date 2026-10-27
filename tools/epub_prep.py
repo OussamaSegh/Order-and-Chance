@@ -82,7 +82,8 @@ def main(src: str, dst: str, figdir: str) -> None:
                 args.append(text[j + 1:k - 1])
                 j = k
             for name, credit in zip(args[::2], args[1::2]):
-                out.append("\n\\includegraphics[width=0.45\\textwidth]{" + str(photodir / (name + ".jpg"))
+                subject = credit.split(".", 1)[0].strip().replace("--", "–")
+                out.append("\n\\includegraphics[width=0.45\\textwidth,alt={Portrait of " + subject + ".}]{" + str(photodir / (name + ".jpg"))
                            + "}\\\\ {\\small " + credit + "}\n\n")
             i = j
 

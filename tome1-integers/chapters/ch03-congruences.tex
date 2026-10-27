@@ -14,6 +14,16 @@ The last two digits of a number with three trillion digits become a computation 
 
 For $n\ge1$, $a\equiv b\pmod n$ means $n\mid a-b$. This is an equivalence relation whose classes are $\bar a=a+n\Z$, and there are exactly $n$ of them, $\bar0,\dots,\overline{n-1}$ (Euclidean division gives each $a$ a unique remainder).
 
+\subsection*{A class is a whole family, a representative is one member}
+Modulo $5$, the integers $-3$, $2$, $7$ and $12$ represent the same class. We may choose $2$ as a convenient representative, but the class is the entire set $2+5\Z$. For example,
+\[
+(\overline{-3})(\bar7)=\overline{-21}=\bar4
+ =\bar2\,\bar2\quad\text{in }\Z/5\Z.
+\]
+Choosing different representatives must never change the answer. The next proposition proves exactly this; without it, ``multiply the classes'' would be an ambiguous instruction.
+
+A \emph{commutative ring with identity} is a set with addition and multiplication obeying the familiar associative, commutative and distributive laws, with identity elements satisfying $x+0=x$ and $x\cdot1=x$, and with an additive inverse $-x$ satisfying $x+(-x)=0$ for every $x$. We do \emph{not} demand multiplicative inverses. An element $x$ is a \emph{unit} if some $u$ satisfies $xu=1$. A \emph{field} is a commutative ring with $0\ne1$ in which every non-zero element is a unit. These definitions distinguish the two algebraic worlds we need, without assuming an earlier algebra course.
+
 \begin{proposition}\label{prop:ringZn}
 If $a\equiv a'$ and $b\equiv b'\pmod n$, then $a+b\equiv a'+b'$ and $ab\equiv a'b'\pmod n$. Hence $\bar a+\bar b=\overline{a+b}$ and $\bar a\bar b=\overline{ab}$ are well defined and make $\Z/n\Z$ a commutative ring with $n$ elements.
 \end{proposition}
@@ -28,12 +38,28 @@ $\bar a$ is invertible in $\Z/n\Z$ if and only if $\gcd(a,n)=1$. Hence $\Z/n\Z$ 
 $\bar a\bar u=\bar1$ means $au+nv=1$ for some $v$, which is B\'ezout's characterisation of $\gcd(a,n)=1$. The inverse is computed by the extended Euclidean algorithm. So the units are the classes of the integers in $\{1,\dots,n\}$ prime to $n$, which is the definition of $\varphi(n)$. Finally $\Z/n\Z$ is a field iff every $a\in\{1,\dots,n-1\}$ is prime to $n$ (and $n\ge2$), iff $n$ is prime.
 \end{proof}
 
+The units form a \emph{group under multiplication}: their product is a unit, multiplication is associative, $1$ is a unit, and every unit has a multiplicative inverse among the units. For example $(xy)^{-1}=y^{-1}x^{-1}$, since multiplying the two expressions gives $1$. This group is finite here, and its size is $\varphi(n)$. Euler's proof below uses only the fact that multiplication by a unit permutes this finite set.
+
 \begin{theorem}[Euler, Fermat]\label{thm:eulerthm}
 If $\gcd(a,n)=1$ then $a^{\varphi(n)}\equiv1\pmod n$. In particular, for $p$ prime and $p\nmid a$, $a^{p-1}\equiv1\pmod p$.
 \end{theorem}
 \begin{proof}
 Multiplication by $\bar a$ is a bijection of the finite group $(\Z/n\Z)^\times$ (its inverse is multiplication by $\bar a^{-1}$). So the product of all units $x$ equals the product of all $\bar ax$, which is $\bar a^{\varphi(n)}$ times the same product. Cancel that unit.
 \end{proof}
+
+\subsection*{Division has an entrance requirement}
+Modulo $7$, division by $3$ is legal because $3\cdot5\equiv1$: dividing means multiplying by $5$. Modulo $6$, division by $3$ is not legal. In fact $3\cdot1\equiv3\cdot3\pmod6$, but $1\not\equiv3\pmod6$. A ring is not automatically a field; cancelling a non-unit can erase information.
+
+The same issue controls exponents. Euler's theorem allows us to reduce exponents modulo $\varphi(n)$ \emph{only if the base is coprime to $n$}. For instance $\varphi(8)=4$, but $2^4\equiv0\pmod8$ while $2^0\equiv1\pmod8$. Reducing the exponent from $4$ to $0$ here would turn a false equality into an impressively short calculation.
+
+\textbf{Repeated squaring.} Even without Euler's theorem, modular powers are quick. Since $13=8+4+1$, to compute $7^{13}\bmod23$ square repeatedly:
+\[
+\begin{aligned}
+7^2&\equiv3,\qquad 7^4\equiv9,\qquad 7^8\equiv12,\\
+7^{13}&\equiv12\cdot9\cdot7=756\equiv20\pmod{23}.
+\end{aligned}
+\]
+At every step we reduce the result modulo $23$, so no enormous integer is needed. An exponent with $s$ binary digits requires at most $s-1$ squarings and $s-1$ further multiplications. This elementary idea is one of the workhorses of public-key cryptography.
 
 \begin{think}
 Compute $(p-1)!\bmod p$ for $p=5,7,11$. What do you notice? In $\Z/7\Z$, pair each of $1,\dots,6$ with its inverse: which numbers are left alone, and why can there be no others?
@@ -43,7 +69,7 @@ Compute $(p-1)!\bmod p$ for $p=5,7,11$. What do you notice? In $\Z/7\Z$, pair ea
 For $p$ prime, $(p-1)!\equiv-1\pmod p$.
 \end{theorem}
 \begin{proof}
-In the field $\Z/p\Z$, $x^2=1$ means $(x-1)(x+1)=0$, so $x=\pm1$: only $1$ and $-1$ are their own inverses. The other non-zero classes pair off with their inverses, each pair having product $1$. So $(p-1)!\equiv1\cdot(-1)=-1$.
+If $p=2$, the product is $1!=1\equiv-1\pmod2$, so assume $p$ is odd. In the field $\Z/p\Z$, $x^2=1$ means $(x-1)(x+1)=0$, so $x=\pm1$: only $1$ and $-1$ are their own inverses. The other non-zero classes pair off with their inverses, each pair having product $1$. So $(p-1)!\equiv1\cdot(-1)=-1$.
 \end{proof}
 
 \section{The Chinese remainder theorem}
@@ -77,11 +103,28 @@ $ax\equiv b\pmod n$ has a solution if and only if $d=\gcd(a,n)$ divides $b$, and
 Solvability means $b\in a\Z+n\Z=d\Z$. If $d\mid b$, divide through: $\frac adx\equiv\frac bd\pmod{\frac nd}$ has a unique solution $x_0$ modulo $\frac nd$, since $\frac ad$ is a unit there; it gives $d$ classes modulo $n$.
 \end{proof}
 
+\subsection*{Reassembling a number, and knowing when it is possible}
+Solve $x\equiv2\pmod5$ and $x\equiv3\pmod7$. Since $3\cdot5-2\cdot7=1$, the theorem gives
+\[
+x\equiv2(-14)+3(15)=17\pmod{35}.
+\]
+Check both remainders: $17=3\cdot5+2=2\cdot7+3$. The two ingredients $-14$ and $15$ act as switches: one is $1$ modulo $5$ and $0$ modulo $7$, the other reverses those roles. This is why adding the two prescribed remainders works.
+
+\textbf{When the moduli share a factor.} For arbitrary positive $m,n$, put $d=\gcd(m,n)$. The pair $x\equiv a\pmod m$, $x\equiv b\pmod n$ is solvable precisely when $d\mid b-a$, and then the answer is one class modulo $\operatorname{lcm}(m,n)=mn/d$. To prove this, write $x=a+mt$: the second condition becomes $mt\equiv b-a\pmod n$. The linear-congruence proposition gives exactly the compatibility condition and one class of $t$ modulo $n/d$, hence one class of $x$ modulo $mn/d$.
+
+Thus $x\equiv1\pmod6$, $x\equiv3\pmod8$ is compatible and gives $x\equiv19\pmod{24}$, whereas replacing the second remainder by $2$ makes it impossible: an integer cannot be both odd and even. The Chinese remainder theorem is powerful; it does not negotiate with parity.
+
 \section{Lifting modulo prime powers}
 
 \begin{think}
 Modulo $5$, $x=2$ solves $x^2\equiv-1$. Look for a solution modulo $25$ of the form $2+5t$. Expand the square: why does the term $25t^2$ not matter, and why is there exactly one good $t$ in $\{0,\dots,4\}$?
 \end{think}
+
+For $f(X)=\sum_{j=0}^d c_jX^j$, its \emph{formal derivative} is $f'(X)=\sum_{j=1}^d jc_jX^{j-1}$. No analytic limit is needed: the binomial theorem gives
+\[
+f(a+h)=f(a)+hf'(a)+h^2g(a,h)
+\]
+for a polynomial $g$ with integer coefficients. The constant and linear terms are displayed; every remaining term contains at least $h^2$. This elementary expansion is the entire engine of the next theorem.
 
 \begin{theorem}[Hensel's lemma]\label{thm:hensel}
 Let $f\in\Z[X]$, $p$ prime, $k\ge1$, and $a\in\Z$ with $f(a)\equiv0\pmod{p^k}$ and $f'(a)\not\equiv0\pmod p$. Then there is a unique $t\in\{0,\dots,p-1\}$ such that $f(a+tp^k)\equiv0\pmod{p^{k+1}}$.
@@ -93,6 +136,20 @@ $f(a+tp^k)\equiv f(a)+tp^kf'(a)\pmod{p^{k+1}}$. Writing $f(a)=cp^k$, the conditi
 
 Iterating, a simple root modulo $p$ lifts to a unique root modulo every $p^k$. This is Newton's method in the $p$-adic world (Chapter~12).
 
+\subsection*{A root has a family tree}
+The derivative condition in Hensel's lemma is a promise that each root has exactly one child at the next precision. For $f(X)=X^2+1$ and $p=5$, the roots modulo $5$ are $2$ and $3$. The first lifts to $7$ modulo $25$, then $57$ modulo $125$; the second lifts to $18$, then $68$. These branches are negatives of one another. The exercise below derives the first branch step by step.
+
+\begin{figure}[ht]
+\centering\fig{ch03-hensel-branches}
+\caption{Two simple roots of $X^2+1$ lifting through powers of $5$. The integers at each level are representatives, not increasing real approximations: $57$ and $68$ both square to $-1$ modulo $125$. Each arrow records reduction modulo the preceding power of $5$.}
+\label{fig:hensel-branches}
+\end{figure}
+
+If the derivative vanishes modulo $p$, uniqueness can fail in two opposite ways. For $X^2$ the root $0$ modulo $5$ has \emph{five} lifts modulo $25$, namely $0,5,10,15,20$. For $X^2-5$, the same root modulo $5$ has \emph{no} lift modulo $25$, since $(5t)^2-5\equiv-5\not\equiv0\pmod{25}$. So the derivative hypothesis is not decoration: remove it and a root may multiply or disappear.
+
+\subsection*{A compact strategy for congruence problems}
+First decide whether the task concerns an additive equation, a product, or an exponent. For an equation $ax\equiv b$, compute $\gcd(a,n)$ before dividing. For a composite modulus, split into coprime prime powers and reassemble by the Chinese remainder theorem. For exponents, check coprimality before using Euler, and use repeated squaring to perform the remaining computation. For polynomial roots modulo $p^k$, inspect the derivative before promising a unique lift. These are different tools with different hypotheses; choosing the tool is often most of the mathematics.
+
 \section{Exercises}
 
 \begin{exercise}[$\star$]\label{ex:last2}
@@ -100,7 +157,7 @@ Find the last two digits of $7^{2026}$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:sunzi}
-\emph{Sunzi (3rd century).} Find the integers that leave remainders $2$, $3$, $2$ when divided by $3$, $5$, $7$.
+\emph{Sunzi's remainder problem.} Find the integers that leave remainders $2$, $3$, $2$ when divided by $3$, $5$, $7$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:digits}
@@ -138,8 +195,20 @@ Show that the last two digits of $3^{3^{3^3}}$ are $87$.
 with $\binom{n_i}{k_i}=0$ when $k_i>n_i$. \emph{Hint: in $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$.} Deduce that $\binom nk$ is odd if and only if each binary digit of $k$ is at most the corresponding digit of $n$, which explains the Sierpi\'nski triangle of Tome~0.
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{ex:t1-toy-rsa}
+A miniature RSA system uses $N=55=5\cdot11$, public exponent $e=3$ and private exponent $d=27$. Show that encrypting a residue $m$ by $c\equiv m^3\pmod{55}$ and then decrypting by $c^{27}$ returns $m$ for \emph{every} residue $m$, including non-units. Encrypt $m=12$ and decrypt the result. Explain why Euler's theorem alone, applied modulo $55$, does not prove the assertion for all messages.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:t1-two-power-roots}
+Find the solutions of $x^2\equiv1\pmod{2^k}$ for $k=1,2$. Prove that for every $k\ge3$ there are exactly four classes,
+\[
+1,\quad -1,\quad 1+2^{k-1},\quad -1+2^{k-1}\pmod{2^k}.
+\]
+Where does the argument for odd primes in Exercise~\ref{ex:sqrt1} break down?
+\end{exercise}
+
 \begin{beauty}
-The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modulo each prime power of $n$, independently. It makes RSA decryption four times faster (notebook), and in Tome~2 it becomes a statement about products of rings. Hensel's lemma is the door to the $p$-adic numbers of Chapter~12, where $\sqrt{-1}$ exists as a genuine $5$-adic number, the limit of $2,7,57,\dots$ from Exercise~\ref{ex:hensel}.
+The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modulo each prime power of $n$, independently. It speeds up RSA decryption by working with smaller moduli (the gain is roughly a factor of four under a schoolbook arithmetic cost model; see the notebook), and in Tome~2 it becomes a statement about products of rings. Hensel's lemma is the door to the $p$-adic numbers of Chapter~12, where $\sqrt{-1}$ exists as a genuine $5$-adic number, the limit of $2,7,57,\dots$ from Exercise~\ref{ex:hensel}.
 \end{beauty}
 
 \section{Hints}
@@ -172,6 +241,13 @@ By the Chinese remainder theorem it is enough to prove $a^n\equiv a\pmod p$ for 
 In $(\Z/p\Z)[X]$, write
 \[(1+X)^n=\prod_i\left((1+X)^{p^i}\right)^{n_i}=\prod_i\left(1+X^{p^i}\right)^{n_i},\]
 and find the coefficient of $X^k$ on both sides. Uniqueness of base-$p$ expansions does the rest.
+\end{hint}
+
+\begin{hint}{ex:t1-toy-rsa}
+The composed exponent is $81$. Work separately modulo $5$ and modulo $11$, distinguishing a zero residue from a non-zero one. For the numerical decryption, reduce the exponent modulo $20$ or use repeated squaring.
+\end{hint}
+\begin{hint}{ex:t1-two-power-roots}
+A root is odd. Of the two consecutive even integers $x-1,x+1$, one is divisible by $4$ and the other has exactly one factor $2$. Use this to force $x\equiv1$ or $-1\pmod{2^{k-1}}$, then list the two lifts of each class modulo $2^k$.
 \end{hint}
 
 \section{Solutions}
@@ -225,6 +301,20 @@ and find the coefficient of $X^k$ on both sides. Uniqueness of base-$p$ expansio
 (1+X)^n=\prod_i\left(1+X^{p^i}\right)^{n_i}=\prod_i\sum_{j=0}^{n_i}\binom{n_i}jX^{jp^i}.
 \]
 Expanding, each exponent $k$ arises from exactly one choice of digits $j=k_i\le n_i$ (uniqueness of base-$p$ expansion, since all $j\le n_i<p$), with coefficient $\prod_i\binom{n_i}{k_i}$; if some $k_i>n_i$, $X^k$ does not appear. Compare with the coefficient $\binom nk$ of $X^k$. For $p=2$, $\binom{n_i}{k_i}$ is $0$ exactly when $k_i=1$, $n_i=0$.
+\end{solution}
+
+\begin{solution}{ex:t1-toy-rsa}
+\idea Euler works for units, so split the modulus until every non-zero residue is a unit in a field. Fermat handles those residues, and zero handles itself; the Chinese remainder theorem reassembles the answer.
+\writeup We need $m^{81}\equiv m\pmod{55}$. Modulo $5$, if $5\mid m$ both sides vanish; otherwise $m^4\equiv1$ and $81=20\cdot4+1$ gives the claim. Modulo $11$, the same argument uses $m^{10}\equiv1$ and $81=8\cdot10+1$, with zero treated separately. Coprimality of $5$ and $11$ gives the desired congruence modulo $55$. Numerically, $12^3=1728\equiv23$. Since $23^2\equiv34$, $23^4\equiv1$, and $27\equiv3\pmod4$, decryption yields $23^{27}\equiv23^3\equiv34\cdot23=782\equiv12\pmod{55}$. Euler's theorem modulo $55$ requires $\gcd(m,55)=1$, which fails for messages such as $5$ or $11$. These tiny parameters illustrate correctness; their factorisation is visible, so they provide no secrecy.
+\end{solution}
+
+\begin{solution}{ex:t1-two-power-roots}
+\idea The factors $x-1,x+1$ differ by $2$, so they can share a factor $2$, but no higher power. Track which factor owns the remaining powers of $2$.
+\writeup For $k=1$ the only root is $1$; for $k=2$ the roots are $1,3$. Let $k\ge3$ and choose an integer representative $x$ of a root. It must be odd. If $x\equiv1\pmod4$, then $x+1=2u$ with $u$ odd. From $2^k\mid(x-1)(x+1)$, Gauss' lemma gives $2^{k-1}\mid x-1$. If $x\equiv3\pmod4$, the analogous argument gives $2^{k-1}\mid x+1$. Thus $x\equiv\pm1\pmod{2^{k-1}}$, giving at most the four listed lifts modulo $2^k$. Conversely for $x=\varepsilon+t2^{k-1}$ with $\varepsilon=\pm1$, $t=0,1$, expansion gives
+\[
+x^2-1=\varepsilon t2^k+t^22^{2k-2},
+\]
+which is divisible by $2^k$ because $2k-2\ge k$. The two parent classes are distinct modulo $2^{k-1}$ when $k\ge3$, and their two lifts are distinct, so there are exactly four roots. For an odd prime the prime cannot divide both $x-1$ and $x+1$; the prime $2$ can, which is the precise obstruction.
 \end{solution}
 
 \section*{Sources and further reading}

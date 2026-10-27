@@ -7,7 +7,7 @@ Continued fractions are Euclid's algorithm run on a real number, and they find t
 
 According to an epigram attributed to Archimedes, the Sun god's cattle grazed on the plains of Sicily, bulls and cows, white, black, yellow and dappled,
 in proportions given by nine conditions, and the poem promises the solver perfect wisdom (we paraphrase). The problem reduces to a
-\emph{Pell equation}, $x^2-4729494y^2=1$, whose smallest solution makes the herd a number with $206\,545$ digits, first computed in full in 1965. Pell
+\emph{Pell equation}, $x^2-4729494y^2=1$, together with additional divisibility conditions. Those extra conditions force a high power of a Pell unit: the smallest admissible herd has $206\,545$ digits, first computed in full in 1965. It is not simply the fundamental solution of the displayed Pell equation. Pell
 equations are solved by continued fractions, which are Euclid's algorithm run on a real number instead of a fraction. This chapter develops them, and
 shows that they give the best rational approximations of any real number, a fact used daily by gear designers, calendar makers and musicians.
 
@@ -46,9 +46,28 @@ With $t=a_n$ the right side is $\frac{p_n}{q_n}$.
 
 For a rational $\frac ab$ with $b\ge1$, Euclid's algorithm $a=a_0b+r_1$, $b=a_1r_1+r_2,\dots$ gives $\frac ab=a_0+\frac{r_1}b=a_0+\cfrac1{b/r_1}=\cdots=[a_0;a_1,\dots,a_n]$: the partial quotients of a rational number are the quotients of Euclid's algorithm.
 
+\subsection*{A fraction dismantled, one floor at a time}
+Take $43/19$. First remove its integer part, $2$; then turn the remainder $5/19$ upside down. Repeat:
+\[
+\frac{43}{19}=2+\frac5{19},\qquad
+\frac{19}5=3+\frac45,\qquad
+\frac54=1+\frac14.
+\]
+Thus $43/19=[2;3,1,4]$. The recurrence is a bookkeeping device: starting with $(p_{-1},q_{-1})=(1,0)$ and $(p_0,q_0)=(2,1)$ gives
+\[
+\frac21,\qquad\frac73,\qquad\frac94,\qquad\frac{43}{19}.
+\]
+At the last step $4\cdot9+7=43$ and $4\cdot4+3=19$. We retain only the previous two columns, however long the expansion becomes.
+
+The last partial quotient of a non-integral rational may be taken at least $2$. This convention removes the harmless ambiguity
+\[
+[2;3,1,4]=[2;3,1,3,1],
+\]
+because $3+1/1=4$. Infinite expansions have no final digit to split this way. Also, $a_0$ may be negative: the algorithm uses the \emph{floor}, so $-7/3=[-3;1,2]$, not an integer part obtained by rounding toward zero.
+
 \section{The expansion of a real number}
 
-Let $x\in\R$. Put $x_0=x$ and, as long as $x_k\notin\Z$, $a_k=\lfloor x_k\rfloor$ and $x_{k+1}=\frac1{x_k-a_k}>1$. Then $a_k\ge1$ for $k\ge1$ and $x=[a_0;a_1,\dots,a_{k-1},x_k]$ (induction, since $x_k=a_k+\frac1{x_{k+1}}$). The $x_k$ are the \emph{complete quotients}. For rational $x$ the process stops (it is Euclid's algorithm); for irrational $x$ it never stops, since every $x_k$ is irrational.
+Let $x\in\R$. Put $x_0=x$ and set $a_k=\lfloor x_k\rfloor$ at each step. If $x_k$ is an integer, stop; otherwise put $x_{k+1}=\frac1{x_k-a_k}>1$. Then $a_k\ge1$ for $k\ge1$ and $x=[a_0;a_1,\dots,a_{k-1},x_k]$ (induction, since $x_k=a_k+\frac1{x_{k+1}}$). The $x_k$ are the \emph{complete quotients}. For rational $x$ the process stops (it is Euclid's algorithm); for irrational $x$ it never stops, since every $x_k$ is irrational.
 
 \begin{think}
 Take $\sqrt2\approx1.41421$ and its first fractions $1,\frac32,\frac75,\frac{17}{12},\frac{41}{29}$. Which are below $\sqrt2$, and which above? Multiply each error $\frac pq-\sqrt2$ by $q^2$. What do you notice, and what would you guess for the next one?
@@ -89,14 +108,41 @@ $|qx-p|=|u(q_nx-p_n)|+|v(q_{n+1}x-p_{n+1})|\ge|q_nx-p_n|$.
 Let $x$ be irrational, $p\in\Z$, $q\ge1$. If $\left|x-\frac pq\right|<\frac1{2q^2}$, then $\frac pq$ is a convergent of $x$.
 \end{theorem}
 \begin{proof}
-Let $n$ be such that $q_n\le q<q_{n+1}$ (the $q_k$ increase from $q_0=1$ to $\infty$). By the lemma, $|q_nx-p_n|\le|qx-p|<\frac1{2q}$. Suppose $\frac pq\ne\frac{p_n}{q_n}$. Then $|pq_n-p_nq|\ge1$, so
+Let $n$ be such that $q_n\le q<q_{n+1}$ (choose the largest index with $q_n\le q$; $q_0=q_1=1$ is possible, but thereafter the denominators strictly increase to $\infty$). By the lemma, $|q_nx-p_n|\le|qx-p|<\frac1{2q}$. Suppose $\frac pq\ne\frac{p_n}{q_n}$. Then $|pq_n-p_nq|\ge1$, so
 \[
 \begin{aligned}\frac1{qq_n}\le\left|\frac pq-\frac{p_n}{q_n}\right|&\le\left|x-\frac pq\right|+\left|x-\frac{p_n}{q_n}\right|\eqbr<\frac1{2q^2}+\frac1{2qq_n}.\end{aligned}
 \]
 Multiplying by $2qq_n$: $2<\frac{q_n}q+1$, so $q<q_n$, a contradiction.
 \end{proof}
 
-So the convergents are exactly the very good approximations, and every irrational $x$ has infinitely many $\frac pq$ with $\left|x-\frac pq\right|<\frac1{q^2}$ (\emph{Dirichlet's theorem}). For rational $x=\frac ab$ this fails: $\left|\frac ab-\frac pq\right|\ge\frac1{bq}$ when $\frac pq\ne\frac ab$. This gives a criterion of irrationality that we use with $e$ in the notebook.
+\subsection*{Two different meanings of ``best''}
+The quantities
+\[
+\left|x-\frac pq\right|\quad\text{and}\quad|qx-p|=q\left|x-\frac pq\right|
+\]
+ask different questions. The first measures the error in the number itself; the second measures the miss when $q$ copies of $x$ are compared with an integer. The lemma proves a record for the second quantity. Dividing by different denominators can change the winner for the first.
+
+For $\pi$, among denominators at most $100$, $311/99$ is closer than $22/7$ in the first sense:
+\[
+\begin{aligned}
+\left|\pi-\frac{311}{99}\right|&\approx0.0001785,
+&\left|\pi-\frac{22}7\right|&\approx0.0012645.
+\end{aligned}
+\]
+But $|99\pi-311|\approx0.01767$ is \emph{larger} than $|7\pi-22|\approx0.00885$, exactly as the lemma requires. The number $311/99$ is an intermediate fraction, obtained from $(14\cdot22+3)/(14\cdot7+1)$. Its existence is a reason to read a theorem's metric as carefully as its conclusion.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-lattice-errors}
+\caption{Approximation as a lattice problem. A point $(q,p)$ represents $p/q$; its vertical distance from $p=\sqrt2\,q$ is $|q\sqrt2-p|$, while its slope error is $|\sqrt2-p/q|$. The labelled convergents alternate below and above the line. Distances, rather than colours, tell the story.}
+\label{fig:cflattice}
+\end{figure}
+
+\begin{reminder}[A very good approximation is not an equality test]
+Legendre's hypothesis is a sufficient condition: error less than $1/(2q^2)$ guarantees a convergent. It is not necessary for every convergent. Nor does seeing a long decimal agreement establish irrationality or a special identity. Continued fractions turn guesses into certified bounds; a calculator supplies the guesses.
+\end{reminder}
+
+So the convergents include all approximations satisfying Legendre's bound, and every irrational $x$ has infinitely many $\frac pq$ with $\left|x-\frac pq\right|<\frac1{q^2}$ (\emph{Dirichlet's theorem}). For rational $x=\frac ab$ this fails: $\left|\frac ab-\frac pq\right|\ge\frac1{bq}$ when $\frac pq\ne\frac ab$. This gives a criterion of irrationality that we use with $e$ in the notebook.
 
 Figure~\ref{fig:quality} compares the quantity $q_n^2\left|x-\frac{p_n}{q_n}\right|$, which Theorem~\ref{thm:cfapprox} bounds by $1$, for four famous numbers. A large partial quotient $a_{n+1}$ makes it small, so the convergent $\frac{p_n}{q_n}$ is exceptionally good.
 
@@ -119,7 +165,7 @@ A \emph{quadratic irrational} is an irrational root of a polynomial $AX^2+BX+C$ 
 The continued fraction of an irrational $x$ is eventually periodic if and only if $x$ is a quadratic irrational.
 \end{theorem}
 \begin{proof}
-\emph{Periodic implies quadratic} (Euler). Suppose $a_{k+\ell}=a_k$ for all $k\ge m$. Then $x_{m+\ell}$ and $x_m$ have the same expansion, so $x_{m+\ell}=x_m=:y$ (Exercise~\ref{ex:cfunique}), and $y=[a_m;\dots,a_{m+\ell-1},y]=\frac{yP+P'}{yQ+Q'}$ with integers $P,P',Q,Q'$ by Proposition~\ref{prop:cfconv}(a). So $Qy^2+(Q'-P)y-P'=0$ with $Q\ge1$: $y$ is a quadratic irrational. The set $\Q(y)=\{r+sy:r,s\in\Q\}$ is a field: it is stable under products (reduce $y^2$ with the equation) and $\frac1{r+sy}$ is in it (multiply by the conjugate $r+sy'$, where $y'$ is the other root, and note $(r+sy)(r+sy')\in\Q^*$). Since $x=\frac{yp_{m-1}+p_{m-2}}{yq_{m-1}+q_{m-2}}$, $x\in\Q(y)$, a $\Q$-vector space of dimension $2$; so $1,x,x^2$ are linearly dependent over $\Q$, and clearing denominators $x$ is a root of a non-zero integer polynomial of degree $\le2$, of degree exactly $2$ since $x$ is irrational.
+\emph{Periodic implies quadratic} (Euler). Suppose $a_{k+\ell}=a_k$ for all $k\ge m$. Then $x_{m+\ell}$ and $x_m$ have the same expansion, so $x_{m+\ell}=x_m=:y$ (Exercise~\ref{ex:cfunique}), and $y=[a_m;\dots,a_{m+\ell-1},y]=\frac{yP+P'}{yQ+Q'}$ with integers $P,P',Q,Q'$ by Proposition~\ref{prop:cfconv}(a). So $Qy^2+(Q'-P)y-P'=0$ with $Q\ge1$: $y$ is a quadratic irrational. The set $\Q(y)=\{r+sy:r,s\in\Q\}$ is a field: it is stable under products (reduce $y^2$ with the equation) and $\frac1{r+sy}$ is in it (multiply by the conjugate $r+sy'$, where $y'$ is the other root, and note $(r+sy)(r+sy')\in\Q^*$). If $m=0$, then $x=y$ and we are done. If $m\ge1$, $x=\frac{yp_{m-1}+p_{m-2}}{yq_{m-1}+q_{m-2}}$, so $x\in\Q(y)$, a $\Q$-vector space of dimension $2$; so $1,x,x^2$ are linearly dependent over $\Q$, and clearing denominators $x$ is a root of a non-zero integer polynomial of degree $\le2$, of degree exactly $2$ since $x$ is irrational.
 
 \emph{Quadratic implies periodic} (Lagrange). Let $f=AX^2+BX+C$ vanish at $x$, with discriminant $D=B^2-4AC>0$, not a square ($x$ is irrational). For $n\ge2$, substitute $x=\frac{x_np_{n-1}+p_{n-2}}{x_nq_{n-1}+q_{n-2}}$ in $f(x)=0$ and multiply by $(x_nq_{n-1}+q_{n-2})^2$: $A_nx_n^2+B_nx_n+C_n=0$ with
 \[
@@ -158,12 +204,36 @@ So some integer $k$ with $0<|k|\le2\sqrt d+1$ ($k\ne0$ as $\sqrt d\notin\Q$) is 
 \]
 and $pp'-dqq'\equiv p^2-dq^2=k\equiv0$, $pq'-p'q\equiv pq-pq=0\pmod{|k|}$. So $\frac\alpha{\alpha'}=X+Y\sqrt d$ with $X,Y\in\Z$, and $X^2-dY^2=\frac{N(\alpha)}{N(\alpha')}=1$. If $Y=0$ then $X=\pm1$ and $\alpha=\pm\alpha'$, i.e.\ $(p,q)=\pm(p',q')$, impossible as the pairs are distinct with $p,p'>0$.
 
-\emph{Structure.} If $u=x+y\sqrt d$ has norm $1$, so do $-u$, $u^{-1}=x-y\sqrt d$ and $-u^{-1}$; one of these four is $\ge1$. If $u>1$ has norm $1$, then $u^{-1}=x-y\sqrt d\in\left]0,1\right[$, so $x=\frac{u+u^{-1}}2>0$ and $y\sqrt d=\frac{u-u^{-1}}2>0$. So the solutions $>1$ are exactly those with $x,y\ge1$; there is one (existence), and since $x,y$ are positive integers there is a least one, $\varepsilon$. For a solution $u>1$, let $k\ge0$ with $\varepsilon^k\le u<\varepsilon^{k+1}$. Then $u\varepsilon^{-k}$ has norm $1$ and lies in $[1,\varepsilon[$, so it equals $1$ by minimality: $u=\varepsilon^k$.
+\emph{Structure.} If $u=x+y\sqrt d$ has norm $1$, so do $-u$, $u^{-1}=x-y\sqrt d$ and $-u^{-1}$; one of these four is $\ge1$. If $u>1$ has norm $1$, then $u^{-1}=x-y\sqrt d\in\left]0,1\right[$, so $x=\frac{u+u^{-1}}2>0$ and $y\sqrt d=\frac{u-u^{-1}}2>0$. So the solutions $>1$ are exactly those with $x,y\ge1$; there is one (existence). Choose a solution with the least positive integer $y$; since $x=\sqrt{1+dy^2}$ and $x+y\sqrt d$ both increase with $y$, this gives the least solution $\varepsilon>1$. For a solution $u>1$, let $k\ge0$ with $\varepsilon^k\le u<\varepsilon^{k+1}$. Then $u\varepsilon^{-k}$ has norm $1$ and lies in $[1,\varepsilon[$, so it equals $1$ by minimality: $u=\varepsilon^k$.
 \end{proof}
 
 \begin{example}
 For $d=2$, $\varepsilon=3+2\sqrt2$ (try $y=1$: $x^2=3$, no; $y=2$: $x=3$), and the solutions are $(3,2),(17,12),(99,70),(577,408),\dots$ For $d=61$, the fundamental solution is $(1766319049,226153980)$, found by Bh\=askara~II in 1150; the continued fraction of $\sqrt{61}$, of period $11$, finds it at once (notebook).
 \end{example}
+
+\subsection*{How to find the fundamental solution without guessing}
+Existence and structure leave an algorithmic question: where should we look for the first unit? If $x^2-dy^2=1$ with $x,y\ge1$, then
+\[
+0<\frac xy-\sqrt d
+=\frac{1}{y^2(x/y+\sqrt d)}
+<\frac1{2y^2},
+\]
+since $d\ge2$. Legendre's theorem therefore says that $x/y$ is a convergent of $\sqrt d$. Compute the convergents in order and test $p_n^2-dq_n^2=1$ using \emph{integer} arithmetic. Existence guarantees that the search ends; after the possible initial repeated denominator, the denominators grow strictly. Among positive Pell solutions $x=\sqrt{1+dy^2}$ grows with $y$, so the first success is the fundamental solution.
+
+For $d=7$, the complete quotients can be simplified by rationalising:
+\[
+\begin{aligned}
+\sqrt7&=2+\frac1{(\sqrt7+2)/3},\\
+\frac{\sqrt7+2}{3}&=1+\frac1{(\sqrt7+1)/2},\\
+\frac{\sqrt7+1}{2}&=1+\frac1{(\sqrt7+1)/3},\\
+\frac{\sqrt7+1}{3}&=1+\frac1{\sqrt7+2}.
+\end{aligned}
+\]
+The next integer part is $4$ and the cycle restarts, giving $\sqrt7=[2;\overline{1,1,1,4}]$. The convergents begin $2/1,3/1,5/2,8/3$; their norms are $-3,2,-3,1$. Thus $8+3\sqrt7$ is fundamental, and squaring gives the next solution $127+48\sqrt7$. A search through all $y$ would eventually find this too, but the convergents have already done the sifting.
+
+\begin{think}
+If $x^2-dy^2=-1$, why does squaring $x+y\sqrt d$ give a solution of norm $1$? Can the negative equation always be solved? For $d=3$, reducing modulo $3$ would require $x^2\equiv-1$, so the answer is no. The signs $+1$ and $-1$ are close on the page and quite different arithmetically.
+\end{think}
 
 \section{Exercises}
 
@@ -179,7 +249,7 @@ Expand $\frac{415}{93}$ as a continued fraction, list its convergents, and use P
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:calendar}
-The tropical year lasts about $365.24219$ days. Expand $0.24219$ as a continued fraction and list its first convergents. Interpret the Julian calendar (one leap year every $4$ years), the Persian calendar ($8$ leap years every $33$), and compare with the Gregorian rule ($97$ leap years every $400$).
+The tropical year lasts about $365.24219$ days. Expand $0.24219$ as a continued fraction and list its first convergents. Interpret the Julian calendar (one leap year every $4$ years), the idealised $33$-year Persian cycle ($8$ leap years every $33$ years), and compare with the Gregorian rule ($97$ leap years every $400$).
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:n21}
@@ -218,7 +288,7 @@ Run Euclid's algorithm on $(415,93)$ and build the table of $p_k,q_k$. The last 
 The expansion is $0.24219=[0;4,7,1,3,\dots]$. Each convergent $\frac km$ reads as ``$k$ leap years every $m$ years''. Compare the yearly errors.
 \end{hint}
 \begin{hint}{ex:n21}
-Rationalise $\frac1{\sqrt{n^2+1}-n}$. For Pell, $n^2-(n^2+1)\cdot1^2=-1$; square $n+\sqrt{n^2+1}$.
+Rationalise $\frac1{\sqrt{n^2+1}-n}$. For Pell, $n^2-(n^2+1)\cdot1^2=-1$; square $n+\sqrt{n^2+1}$. \emph{If stuck:} $(a+b\sqrt d)^2=(a^2+db^2)+2ab\sqrt d$; identify the two coefficients before taking a norm.
 \end{hint}
 \begin{hint}{ex:sqtri}
 Multiply $\frac{m(m+1)}2=k^2$ by $8$ and complete the square: $(2m+1)^2-2(2k)^2=1$. Then use Theorem~\ref{thm:pell} with $\varepsilon=3+2\sqrt2$, and check which solutions have $x$ odd and $y$ even.
@@ -227,7 +297,7 @@ Multiply $\frac{m(m+1)}2=k^2$ by $8$ and complete the square: $(2m+1)^2-2(2k)^2=
 Theorem~\ref{thm:cfapprox} gives the exact error $\frac1{q_n(x_{n+1}q_n+q_{n-1})}$. For $\varphi$, every $x_{n+1}=\varphi$ and $\frac{q_{n-1}}{q_n}\to\frac1\varphi$. For the second part, combine with Legendre's theorem.
 \end{hint}
 \begin{hint}{ex:liouville}
-(a) Near $x$, $|P(x)-P(\frac pq)|\le M|x-\frac pq|$ with $M=\sup|P'|$ on $[x-1,x+1]$, and $|P(\frac pq)|\ge\frac1{q^d}$. (b) Truncate the series at $k=n$: the error is about $10^{-(n+1)!}$, far smaller than $\frac c{q^d}$ with $q=10^{n!}$.
+(a) Near $x$, $|P(x)-P(\frac pq)|\le M|x-\frac pq|$ with $M=\sup|P'|$ on $[x-1,x+1]$, and $|P(\frac pq)|\ge\frac1{q^d}$. (b) Truncate the series at $k=n$: the error is about $10^{-(n+1)!}$, far smaller than $\frac c{q^d}$ with $q=10^{n!}$. \emph{A second hint:} first prove that $L$ is irrational using the lower bound $1/(bq)$ for two distinct rationals with denominators $b,q$. Otherwise a hypothetical degree-$1$ polynomial would escape part (a).
 \end{hint}
 
 \section{Solutions}
@@ -248,7 +318,7 @@ Theorem~\ref{thm:cfapprox} gives the exact error $\frac1{q_n(x_{n+1}q_n+q_{n-1})
 \idea A calendar rule ``$k$ leap years every $m$ years'' approximates $0.24219$ by $\frac km$, and the convergents are the best such approximations for a given size of $m$ (Lemma~\ref{lem:best}). So expand, and compare the historical rules with the convergents.
 \writeup Running the algorithm,
 \[\begin{gathered}0.24219=[0;4,7,1,3,24,\dots],\qq\text{convergents }\frac14,\ \frac7{29},\ \frac8{33},\ \frac{31}{128},\ \frac{752}{3105},\ \dots\end{gathered}\]
-The Julian calendar uses $\frac14=0.25$: too many leap years, by about $0.0078$ day per year, a day every $128$ years. The Persian calendar uses $\frac8{33}\approx0.24242$, off by $0.00023$ day per year. The Gregorian $\frac{97}{400}=0.2425$ is not a convergent and is slightly worse than $\frac8{33}$, but it is convenient with a decimal century rule; the convergent $\frac{31}{128}=0.2421875$ would be far better still (off by $0.0000025$ day per year, a day in $400\,000$ years; long before that, the slow change of the year's length itself, a few tenths of a second per century, dominates).
+The Julian calendar uses $\frac14=0.25$: too many leap years, by about $0.0078$ day per year, a day every $128$ years. The idealised Persian cycle uses $\frac8{33}\approx0.24242$, off by $0.00023$ day per year. This is a useful arithmetic model, not a complete description of the modern Iranian calendar, whose year begins at the astronomical equinox. The Gregorian $\frac{97}{400}=0.2425$ is not a convergent and is slightly worse than $\frac8{33}$, but it is convenient with a decimal century rule; the convergent $\frac{31}{128}=0.2421875$ would be far better still (off by $0.0000025$ day per year, a day in $400\,000$ years; long before that, the slow change of the year's length itself, a few tenths of a second per century, dominates).
 \end{solution}
 
 \begin{solution}{ex:n21}
@@ -258,7 +328,7 @@ The Julian calendar uses $\frac14=0.25$: too many leap years, by about $0.0078$ 
 
 \begin{solution}{ex:sqtri}
 \idea Complete the square: $\frac{m(m+1)}2=k^2$ becomes $(2m+1)^2-8k^2=1$, i.e.\ $x^2-2y^2=1$ with $x=2m+1$ odd and $y=2k$ even. Theorem~\ref{thm:pell} lists all solutions as powers of $3+2\sqrt2$; then check the parities.
-\writeup Multiply by $8$ and add $1$: $\frac{m(m+1)}2=k^2$ iff $(2m+1)^2-2(2k)^2=1$. By Theorem~\ref{thm:pell} (fundamental solution $3+2\sqrt2$, see the example), the solutions with $x,y\ge1$ are $x_j+y_j\sqrt2=(3+2\sqrt2)^j$, i.e.\ $x_{j+1}=3x_j+4y_j$, $y_{j+1}=2x_j+3y_j$. By induction $x_j$ is odd and $y_j$ is even, so every solution gives $m=\frac{x_j-1}2$, $k=\frac{y_j}2$. The first ones are $(x,y)=(3,2),(17,12),(99,70),(577,408)$, giving $k^2=1,36,1225,41616$, i.e.\ $T_1=1$, $T_8=36$, $T_{49}=1225$, $T_{288}=41616$, and infinitely many more.
+\writeup Multiply by $8$ and add $1$: $\frac{m(m+1)}2=k^2$ iff $(2m+1)^2-2(2k)^2=1$. By Theorem~\ref{thm:pell} (fundamental solution $3+2\sqrt2$, see the example), the solutions with $x,y\ge1$ are $x_j+y_j\sqrt2=(3+2\sqrt2)^j$, i.e.\ $x_{j+1}=3x_j+4y_j$, $y_{j+1}=2x_j+3y_j$. By induction $x_j$ is odd and $y_j$ is even, so every positive solution gives $m=\frac{x_j-1}2$, $k=\frac{y_j}2$. The trivial solution $(x,y)=(1,0)$ adds the square triangular number $T_0=0$. The first ones are $(x,y)=(3,2),(17,12),(99,70),(577,408)$, giving $k^2=1,36,1225,41616$, i.e.\ $T_1=1$, $T_8=36$, $T_{49}=1225$, $T_{288}=41616$, and infinitely many more.
 \end{solution}
 
 \begin{solution}{ex:golden}

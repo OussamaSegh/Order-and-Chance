@@ -10,6 +10,20 @@ Euler assumed, without saying so, that these numbers factor uniquely into primes
 had the idea of treating $a+bi$ as integers in their own right, with their own primes. This chapter does arithmetic in Gauss's ring $\Z[i]$ and in its
 cousin $\Z[\omega]$, where unique factorisation \emph{is} true, and that is how Euler's proof is repaired.
 
+\begin{reminder}[The route through this chapter]
+A new ring is a new playground, but the rules of proof stay the same. First we
+show that rounding gives division with a smaller remainder. Then division gives
+B\'ezout, B\'ezout makes irreducibles prime, and primes give unique factorisation.
+Only after earning those tools do we use them to solve equations. The distinction
+between ``irreducible'' and ``prime'' is the hinge: they coincide in these rings,
+but Chapter~11 will introduce a ring in which they do not.
+\end{reminder}
+
+An integer prime need not remain prime when the surrounding ring changes.
+For instance, $5$ is prime in $\Z$ and reducible in $\Z[i]$; neither statement
+contradicts the other, because the permitted factors have changed. Primality
+comes with an address.
+
 \section{Three rings and their norms}
 
 Let $\omega=e^{2i\pi/3}=\frac{-1+i\sqrt3}2$, so $\omega^2+\omega+1=0$ and $\bar\omega=\omega^2$. We study the rings
@@ -41,6 +55,40 @@ In each of the three rings, for $a,b$ with $b\ne0$, there are $q,r$ with $a=bq+r
 \begin{proof}
 Let $z=\frac ab\in\C$. In each case $z=s+t\theta$ with $s,t\in\Q$ and $\theta\in\{i,\omega,\sqrt{-2}\}$: multiply numerator and denominator by $\bar b$, and note $N(b)\in\Z$, $a\bar b\in R$. Choose integers $m,n$ with $|s-m|\le\frac12$, $|t-n|\le\frac12$, and let $q=m+n\theta$, $\sigma=s-m$, $\tau=t-n$. Then $\left|\frac ab-q\right|^2=|\sigma+\tau\theta|^2$ is $\sigma^2+\tau^2\le\frac12$, or $\sigma^2-\sigma\tau+\tau^2\le\frac34$, or $\sigma^2+2\tau^2\le\frac34$. In all cases it is $<1$, and $r=a-bq\in R$ has $N(r)=N(b)\left|\frac ab-q\right|^2<N(b)$.
 \end{proof}
+
+\subsection*{Rounding is an algorithm, not a picture alone}
+Consider $a=11+3i$ and $b=1+8i$. Exact division gives
+\[
+\frac ab=\frac7{13}-\frac{17}{13}i.
+\]
+Rounding the real and imaginary coordinates gives $q=1-i$, and then
+$a=b(1-i)+(2-4i)$. The remainder has norm $20$, smaller than $N(b)=65$.
+The next divisions are
+\[
+\begin{aligned}
+1+8i&=(-1+i)(2-4i)+(-1+2i),\\
+2-4i&=-2(-1+2i).
+\end{aligned}
+\]
+Thus a gcd is $-1+2i$, of norm $5$. Unlike the ordinary positive gcd, a Gaussian
+gcd has four equally good representatives, related by units. Asking which is
+\emph{the} gcd is like asking which way a square really faces.
+
+\begin{figure}[ht]
+\centering\fig{ch10-rounding}
+\caption{Division in $\Z[i]$. The cross is $a/b=7/13-(17/13)i$;
+the circled lattice point is the rounded quotient $q=1-i$. Their distance is
+$\sqrt{4/13}<1$. The dashed square is the rounding cell of $q$; its farthest
+corners are at distance $1/\sqrt2$.}
+\label{fig:gaussian-rounding}
+\end{figure}
+
+For Eisenstein integers, rounding the coefficients of $1,\omega$ is sufficient;
+it need not choose the geometrically nearest lattice point. The proof only
+needs the bound $3/4<1$. In $\Z[\sqrt{-5}]$, the same coordinate rounding gives
+at best $1/4+5/4=3/2$, which does not prove division. A failed estimate alone
+would not prove that division is impossible; the actual obstruction is the
+failure of unique factorisation shown in Exercise~\ref{ex:zsqrt5}.
 
 \section{Unique factorisation}
 
@@ -108,6 +156,34 @@ with $u$ one of $4$ units. So $N(z)=n$ requires $g'=g$, $a_j+b_j=e_j$ ($e_j+1$ c
 On the other side, $\chi_4$ is completely multiplicative, so $\delta(n)=\sum_{d\mid n}\chi_4(d)$ is multiplicative (Proposition~\ref{prop:conv}), with $\delta(2^g)=1$, $\delta(p^e)=e+1$, and $\delta(q^f)=1-1+\dots\pm1$, which is $1$ if $f$ is even and $0$ if $f$ is odd. The two expressions agree.
 \end{proof}
 
+\subsection*{A factorisation that counts lattice points}
+Let us make Jacobi's formula tangible with $n=65=5\cdot13$. In $\Z[i]$,
+\[
+65=(2+i)(2-i)(3+2i)(3-2i).
+\]
+To choose an element of norm $65$, take one factor above $5$, one above $13$,
+and one of the four units. This gives $2\cdot2\cdot4=16$ elements. For example,
+\[
+(2+i)(3+2i)=4+7i,\qquad
+(2+i)(3-2i)=8-i.
+\]
+The representations are therefore the sign changes and coordinate swaps of
+$(4,7)$ and $(1,8)$, eight of each. No double counting occurs: none of these
+coordinates is zero and their absolute values are unequal.
+
+Now compare $n=45=3^2\cdot5$. The prime $3$ has norm $9$, so an element of norm
+$45$ must contain precisely one factor $3$ and either $2+i$ or $2-i$.
+There are $8$ possibilities, the sign changes and swaps of $(3,6)$.
+For $n=15$, the exponent of the inert prime $3$ is odd, so there are none.
+The zero in the formula is a structural impossibility, not a numerical accident.
+
+\begin{think}
+Before calculating any divisors, predict $r_2(325)$, where $325=5^2\cdot13$.
+Why does the exponent $2$ give three choices rather than four?
+\emph{Check:} the exponents of $2+i$ and $2-i$ must sum to $2$, so they are
+$(0,2),(1,1),(2,0)$; hence $r_2(325)=4\cdot3\cdot2=24$.
+\end{think}
+
 \section{Eisenstein integers and Fermat for cubes}
 
 Let $\lambda=1-\omega$. Then $N(\lambda)=1+1+1=3$, so $\lambda$ is irreducible, and $\lambda^2=1-2\omega+\omega^2=-3\omega$, so $3=-\omega^2\lambda^2$.
@@ -160,6 +236,31 @@ $(\alpha+\beta)+\omega(\alpha+\omega\beta)+\omega^2(\alpha+\omega^2\beta)=(1+\om
 \]
 for some units $\eta,\eta'$. As $n\ge2$, the right side is divisible by $\lambda^3$, and by Lemma~\ref{lem:cube} the left side is $\equiv\pm1\pm\eta\pmod{\lambda^4}$, so $\lambda^2\mid\pm1\pm\eta$. Among the units, $\pm1\pm\eta\equiv0\pmod{\lambda^2}$ only for $\eta=\pm1$: indeed $1-\omega=\lambda$ and $1-\omega^2=-\omega^2\lambda$ have $v_\lambda=1$, and $1+\omega=-\omega^2$, $1+\omega^2=-\omega$ are units. So $\eta=\pm1$, and $\theta_2^3+(\pm\theta_3)^3=\eta'\lambda^{3(n-1)}\theta_1^3$ is an equation of the same type with $n-1$ in place of $n$ ($\theta_2,\pm\theta_3$ are coprime, as $\kappa_2,\kappa_3$ are). So, if we choose at the start an equation of this type with $n$ minimal, then $n\ge2$ by (i), and (iii) produces one with exponent $n-1\ge1$: a contradiction. So Case~2 is impossible too.
 \end{proof}
+
+\subsection*{Reading the descent without getting lost}
+The proof above has three logically separate jobs.
+\begin{enumerate}
+\item The congruence modulo $\lambda^4$ rules out the smallest exponent $n=1$.
+This is the bottom stair that every descent needs.
+\item Factoring $\alpha^3+\beta^3$ distributes the exceptional prime $\lambda$
+with valuations $3n-2,1,1$. Every other prime belongs to at most one factor,
+so its exponent is a multiple of $3$ there.
+\item The linear relation among the three factors turns those three cubes into
+a new equation with $n-1$. The short check on units is essential: without it,
+the coefficient $\eta$ need not itself be a cube.
+\end{enumerate}
+Why permit a unit $\varepsilon$ on the right, even though the original equation
+had none? Because factorisation produces units, and a descent must stay inside
+a family closed under its own operations. Enlarging the family makes the
+induction honest.
+
+\begin{reminder}[A reusable equation-solving checklist]
+When $AB=C^k$ in a ring with unique factorisation, first find every possible
+common prime factor of $A$ and $B$. Only after proving coprimality may you say
+that each is a unit times a $k$th power. Next handle the units explicitly, and
+only then compare coefficients. The two words ``clearly coprime'' are a
+surprisingly roomy hiding place for a false proof.
+\end{reminder}
 
 \section{Exercises}
 
@@ -258,7 +359,7 @@ $x^3=(y+\sqrt{-2})(y-\sqrt{-2})$ in $\Z[\sqrt{-2}]$, a ring with unique factoris
 
 \begin{solution}{ex:y2x3m2}
 \idea Same pattern as Exercise~\ref{ex:x3y21} in $\Z[\sqrt{-2}]$, which has unique factorisation by Proposition~\ref{prop:eucl}: $x^3=y^2+2=(y+\sqrt{-2})(y-\sqrt{-2})$. Check the factors are coprime (this needs $y$ odd), then $y+\sqrt{-2}=(a+b\sqrt{-2})^3$ since the units $\pm1$ are cubes, and compare coefficients of $\sqrt{-2}$.
-\writeup If $y$ is even, then $x$ is even and $8\mid x^3=y^2+2\equiv2$ or $6\pmod8$: impossible. So $y$ is odd and $N(y\pm\sqrt{-2})=y^2+2$ is odd. A common factor of $y+\sqrt{-2}$ and $y-\sqrt{-2}$ divides $2\sqrt{-2}=-\sqrt{-2}^3$, so it is $\sqrt{-2}$ up to a unit, whose norm $2$ does not divide $y^2+2$. So the factors are coprime, and $y+\sqrt{-2}=\pm(a+b\sqrt{-2})^3=(a'+b'\sqrt{-2})^3$ (absorb the sign into the cube). Expanding, $(a+b\sqrt{-2})^3=a^3-6ab^2+(3a^2b-2b^3)\sqrt{-2}$, so $b(3a^2-2b^2)=1$: $b=\pm1$, and $3a^2-2=\pm1$ with the same sign. $b=1$ gives $a=\pm1$; $b=-1$ gives $3a^2=1$, impossible. Then $y=a^3-6a=\mp5$ and $x^3=25+2=27$, $x=3$. The solutions are $(3,\pm5)$.
+\writeup If $y$ is even, then $x$ is even and $8\mid x^3=y^2+2\equiv2$ or $6\pmod8$: impossible. So $y$ is odd and $N(y\pm\sqrt{-2})=y^2+2$ is odd. A common irreducible factor of $y+\sqrt{-2}$ and $y-\sqrt{-2}$ divides $2\sqrt{-2}=-(\sqrt{-2})^3$. Since $N(\sqrt{-2})=2$ is prime, unique factorisation makes that common irreducible an associate of $\sqrt{-2}$; but its norm $2$ does not divide $y^2+2$. So the factors are coprime, and $y+\sqrt{-2}=\pm(a+b\sqrt{-2})^3=(a'+b'\sqrt{-2})^3$ (absorb the sign into the cube). Expanding, $(a+b\sqrt{-2})^3=a^3-6ab^2+(3a^2b-2b^3)\sqrt{-2}$, so $b(3a^2-2b^2)=1$: $b=\pm1$, and $3a^2-2=\pm1$ with the same sign. $b=1$ gives $a=\pm1$; $b=-1$ gives $3a^2=1$, impossible. Then $y=a^3-6a=\mp5$ and $x^3=25+2=27$, $x=3$. The solutions are $(3,\pm5)$.
 \end{solution}
 
 \section*{Sources and further reading}
@@ -269,5 +370,4 @@ $x^3=(y+\sqrt{-2})(y-\sqrt{-2})$ in $\Z[\sqrt{-2}]$, a ring with unique factoris
 \item H.~M.~Edwards, \emph{Fermat's Last Theorem: A Genetic Introduction to Algebraic Number Theory}, Springer, 1977, Chapters~2--4. Euler's proof for cubes, its gap, and Kummer's ideal numbers.
 \item E.~Gethner, S.~Wagon and B.~Wick, A stroll through the Gaussian primes, \emph{American Mathematical Monthly} 105 (1998), 327--337. Can one walk to infinity on Gaussian primes with steps of bounded length? It is still an open problem.
 \item F.~Lemmermeyer, \emph{Reciprocity Laws: From Euler to Eisenstein}, Springer, 2000, Chapters~6--7. The cubic and quartic reciprocity laws that live in these two rings.
-\item H.~M.~Edwards, \emph{Fermat's Last Theorem: A Genetic Introduction to Algebraic Number Theory}, Springer, 1977, Chapter~2. Euler's 1770 proof for cubes and its gap.
 \end{itemize}

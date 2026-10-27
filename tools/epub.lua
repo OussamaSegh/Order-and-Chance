@@ -105,7 +105,16 @@ local function rewrite(b)
       t:insert(pandoc.Emph(pandoc.Inlines({ pandoc.Str("(") }) .. level .. pandoc.Inlines({ pandoc.Str(")") })))
     end
     b.content:insert(1, title_para("exercise", t))
-    if l then b.identifier = l end
+    if l then
+      b.identifier = l
+      -- The exercise owns this anchor. Pandoc also emits an empty Span for
+      -- \label; keeping both gives duplicate IDs in EPUB and online HTML.
+      b = b:walk({ Span = function(el)
+        if el.attributes.label == l and el.identifier == l then
+          return el.content
+        end
+      end })
+    end
     return b
   elseif b.classes:includes("reminder") then
     local arg = optarg(b.content)
@@ -138,6 +147,16 @@ end
 local function number_figure(b)
   local n = b.attributes["number"]
   if not n then return nil end
+  -- The LaTeX figure caption explains the picture; include that explanation
+  -- for readers who cannot see the SVG. Keep any explicitly supplied alt text.
+  local description = pandoc.utils.stringify(b.caption.long)
+  b = b:walk({ Image = function(img)
+    local alternative = pandoc.utils.stringify(img.caption)
+    if (alternative == "" or alternative == "image") and description ~= "" then
+      img.caption = { pandoc.Str(description) }
+      return img
+    end
+  end })
   local cap = b.caption.long[1]
   if cap and (cap.t == "Plain" or cap.t == "Para") then
     cap.content:insert(1, pandoc.Strong({ pandoc.Str("Figure " .. n .. ".") }))
@@ -177,5 +196,13 @@ function Pandoc(doc)
   number_pass(doc)
   doc = doc:walk({ Div = rewrite, Figure = number_figure })
   doc = doc:walk({ Link = fix_ref })
+  -- LaTeX reader bookkeeping is not an HTML attribute. Preserve any genuine
+  -- anchor, but do not emit the invalid `label` attribute on its Span.
+  doc = doc:walk({ Span = function(el)
+    if el.attributes.label then
+      el.attributes.label = nil
+      return el
+    end
+  end })
   return doc
 end
