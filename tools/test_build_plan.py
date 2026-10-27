@@ -5,6 +5,7 @@ from pathlib import Path
 import subprocess
 import tempfile
 import unittest
+from unittest.mock import patch
 
 spec = importlib.util.spec_from_file_location('build_plan', Path(__file__).with_name('build_plan.py'))
 bp = importlib.util.module_from_spec(spec)
@@ -17,6 +18,9 @@ class PlanningTest(unittest.TestCase):
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
         self.cache = self.root / '.book-cache'
+        checker = patch.object(bp, 'check_interior', return_value=233)
+        self.pdf_check = checker.start()
+        self.addCleanup(checker.stop)
         self.books = ['tome0-basics', 'tome1-integers', 'tome9-higher-structures']
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:
@@ -36,13 +40,19 @@ class PlanningTest(unittest.TestCase):
         p.write_text(text)
 
     def outputs(self, target, book):
-        for path in [f'dist/{book}.pdf', f'dist/{book}-kindle.pdf', f'dist/{book}.epub',
+        for path in [f'dist/{book}.pdf', f'dist/{book}.epub',
                      f'dist/html/{book}/index.html', f'build/{book}/cover.pdf'] + [
                          f'dist/kdp/{book}-{suffix}' for suffix in
-                         ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
+                         ['cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
             p = target / path
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_bytes(b'valid fixture')
+        (target / f'dist/kdp/{book}-print-metadata.json').write_text(json.dumps(bp.specification(233)))
+
+    def test_only_standard_pdf_and_epub_are_required(self):
+        self.assertTrue(bp.complete(self.cache, self.books[0]))
+        self.assertFalse(list((self.cache / 'dist').glob('*-kindle.pdf')))
+        self.assertFalse(list((self.cache / 'dist/kdp').glob('*-print.pdf')))
 
     def test_unchanged_site_and_notebooks_do_not_rebuild_books(self):
         for path in ['tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb']:
@@ -81,15 +91,55 @@ class PlanningTest(unittest.TestCase):
         self.write('tome0-basics/main.tex', 'changed')
         stale = self.cache / 'dist/html/tome0-basics/deleted-chapter.html'
         stale.write_text('stale')
+        retired = ['dist/tome1-integers-kindle.pdf', 'dist/tome1-integers-a4.pdf',
+                   'dist/tome1-integers-phone.pdf', 'dist/kdp/tome1-integers-print.pdf']
+        for path in retired:
+            (self.cache / path).write_bytes(b'old variant')
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
         self.assertTrue((self.root / 'dist/tome1-integers.pdf').exists())
         self.assertFalse((self.root / 'dist/html/tome0-basics').exists())
+        for path in retired:
+            self.assertFalse((self.root / path).exists())
         for book in data['changed']:
             self.outputs(self.root, book)
         bp.snapshot(self.root, self.cache, data)
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], [])
         self.assertFalse(stale.exists())
+        self.assertEqual(self.pdf_check.call_count, len(self.books))
+
+    def test_retired_pdf_cannot_enter_snapshot(self):
+        data = bp.plan(self.root, self.cache)
+        bp.prepare(self.root, self.cache, data)
+        self.write('dist/tome0-basics-kindle.pdf', 'stale')
+        with self.assertRaisesRegex(ValueError, 'Retired PDF'):
+            bp.snapshot(self.root, self.cache, data)
+
+    def test_a4_pdf_with_canonical_filename_cannot_enter_snapshot(self):
+        data = bp.plan(self.root, self.cache)
+        bp.prepare(self.root, self.cache, data)
+        self.pdf_check.side_effect = ValueError('page 1 is not the approved paperback trim')
+        with self.assertRaisesRegex(ValueError, 'page 1'):
+            bp.snapshot(self.root, self.cache, data)
+
+    def test_metadata_must_match_the_standard_pdf(self):
+        data = bp.plan(self.root, self.cache)
+        bp.prepare(self.root, self.cache, data)
+        self.write('dist/kdp/tome0-basics-print-metadata.json', json.dumps(bp.specification(234)))
+        with self.assertRaisesRegex(ValueError, 'metadata disagree'):
+            bp.snapshot(self.root, self.cache, data)
+
+    def test_schema_migration_also_removes_deleted_books(self):
+        subprocess.run(['git', 'rm', '-qrf', 'tome1-integers'], cwd=self.root, check=True)
+        manifest = self.cache / 'manifest.json'
+        old = json.loads(manifest.read_text())
+        old['schema'] = bp.SCHEMA - 1
+        manifest.write_text(json.dumps(old))
+        data = bp.plan(self.root, self.cache)
+        self.assertEqual(data['removed'], ['tome1-integers'])
+        self.assertEqual(data['changed'], ['tome0-basics', 'tome9-higher-structures'])
+        bp.prepare(self.root, self.cache, data)
+        self.assertFalse((self.root / 'dist/tome1-integers.pdf').exists())
 
     def test_incomplete_library_cannot_be_snapshotted(self):
         with self.assertRaisesRegex(ValueError, 'Incomplete output'):

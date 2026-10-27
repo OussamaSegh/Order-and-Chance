@@ -1,19 +1,19 @@
 # Publishing a tome on Amazon KDP
 
-`./build.sh` makes, for every tome, the files a Kindle eBook and a paperback need, next to the
-screen PDFs and the EPUB:
+`./build.sh` produces one standard **7 × 10 inch PDF** and one **EPUB** per tome,
+plus separate covers and publishing metadata:
 
 | File | What it is | Where it goes in KDP |
 |---|---|---|
 | `dist/<tome>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
 | `dist/kdp/<tome>-ebook-cover.jpg` | Front cover, 1600 x 2560 px JPEG | Kindle eBook > Cover |
-| `dist/kdp/<tome>-print.pdf` | Paperback interior: 7 x 10 in trim, no bleed, all fonts embedded | Paperback > Manuscript |
+| `dist/<tome>.pdf` | Standard reading PDF and identical paperback interior: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
 | `dist/kdp/<tome>-cover-wrap.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
 | `dist/kdp/<tome>-print-metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
 | `dist/kdp/<tome>-listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
 
 In KDP choose: trim size 7 x 10 in, black ink on white paper, no bleed, matte or glossy cover.
-The download page links the publishing files on each tome's card ("For Amazon KDP").
+The download page links the publishing files on each tome's card ("Paperback & publishing files").
 The spine width is computed for white paper (0.002252 in per page); for cream paper the cover
 must be rebuilt with 0.0025 in per page. The `books` release on GitHub carries the same files.
 
@@ -54,9 +54,8 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   50 characters, not repeating words of the title or series, no claims such as "bestseller").
   `tools/listing.py` checks the limits and fails the build if they are broken; without
   `kdp.md` the listing uses the back-cover text and leaves the keywords to be written.
-- The cover page of the A4 and Kindle PDFs is drawn in the proportions of that PDF's
-  page and fills it exactly; the paperback interior has no cover page (KDP takes the cover
-  as a separate file).
+- The standard PDF starts with its half-title and contains no external cover page.
+  The EPUB carries its front cover; KDP takes the paperback wrap as a separate file.
 - A new tome is added to `common/series.tex` (it is already listed if it is in the series plan).
 - Back-cover text: `<tome>/blurb.tex`, about 120–180 words of plain LaTeX (no maths displays),
   saying what the tome is about and why it is beautiful. Without it, the series text in
@@ -64,8 +63,8 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 - The preface talks only about the content, the goal and the beauty of the mathematics:
   what the tome is about, its summits, what it assumes, how the chapters are organised, and
   how to use the exercises and solutions. No personal story, no exams.
-- `\ifprintformat` is true in the paperback build, `\ifsmallformat` in the phone, Kindle and
-  paperback builds (the paperback text block is 5.65 in wide).
+- `\ifprintformat` and `\ifsmallformat` are true in every PDF build. The shared
+  preamble defaults to the standard 7 × 10 layout even when compiled manually.
 
 ## Shared print layout and local paperback builds
 
@@ -73,15 +72,18 @@ The production trim for all sixteen main volumes and three problem books is
 **7 × 10 inches**. `common/print-layout.json` defines trim, bleed and the white-paper
 spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
 its tracked TeX counterpart. The normal build and CI reject an unsynchronised pair.
-A4, Kindle PDF and EPUB retain their reading formats.
+EPUB remains reflowable. A4, Kindle PDF, phone PDF and duplicate `-print.pdf`
+editions are retired; the build removes their old output files.
 
-`./build.sh --print-only [tome...]` rebuilds paperback interiors, wraps, listings and
-`dist/kdp/<tome>-print-metadata.json` without rebuilding the reading editions.
+`./build.sh --pdf-only [tome...]` rebuilds the canonical `dist/<tome>.pdf`, covers,
+listings and `dist/kdp/<tome>-print-metadata.json` without rebuilding EPUB or HTML.
 The metadata records the actual interior page count, even-rounded KDP page count,
 spine, gutter and exact cover sheet size. Never reuse a wrap from the former trim.
 All interior pages are checked at 504 × 720 PDF points; wraps are checked at
 (14.25 + spine) × 10.25 inches. Fonts must be embedded vector fonts.
 
-The library cache schema and Actions cache namespace were advanced for the trim
-migration. Missing print metadata makes a cached book incomplete. Shared layout
-changes invalidate every volume, ensuring that a release cannot mix the two trims.
+Cache schema 3 and the `library-v3-` Actions namespace force a full migration.
+Before snapshotting, every canonical PDF is checked for 7 × 10 geometry and embedded
+vector fonts, and its page count must agree with the paperback metadata. Retired
+variants are removed during cache assembly and rejected before release. Missing
+PDF, EPUB, reader, covers or metadata makes a cached book incomplete.

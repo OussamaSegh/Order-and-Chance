@@ -10,13 +10,11 @@ The shared publishing conventions and system dependencies are documented in `../
 
 | File | Use |
 |---|---|
-| `dist/kdp/tome1-integers-print.pdf` | 7 × 10 inch paperback manuscript, black ink on white paper, no bleed |
+| `dist/tome1-integers.pdf` | Standard 7 × 10 inch reading PDF and paperback manuscript, black ink on white paper, no bleed |
 | `dist/kdp/tome1-integers-cover-wrap.pdf` | Paperback cover, with 0.125 inch bleed and spine computed from the manuscript page count |
 | `dist/tome1-integers.epub` | Reflowable Kindle manuscript, with MathML and vector diagrams |
 | `dist/kdp/tome1-integers-ebook-cover.jpg` | Kindle front cover, 1600 × 2560 pixels |
 | `dist/kdp/tome1-integers-listing.md` | Description and seven keywords for the book details |
-| `dist/tome1-integers.pdf` | A4 reading/printing edition |
-| `dist/tome1-integers-kindle.pdf` | Fixed-page e-reader edition; the EPUB is the reflowable KDP manuscript |
 | `dist/html/tome1-integers/` | Online chapter reader |
 
 Use the generated listing: author **SEGHAIER Oussama**, book title **Tome 1: The Integers**, subtitle **Primes, Patterns and Proofs**, series **Order and Chance**, volume **1**, edition number **1**. The book itself displays **First edition, 2026**. Preserve any existing series/edition association when updating an already published title.

@@ -6,6 +6,16 @@ This supersedes every prior two-volume-only restriction and earlier rust, navy,
 dense-edge and tiny-motif design. See [DESIGN-HISTORY.md](DESIGN-HISTORY.md) for the
 archived sequence of proposals; it does not override this document.
 
+## Current book formats (27 October 2026)
+
+The author now requires **one standard 7 × 10 inch PDF and one EPUB per volume**.
+`dist/<tome>.pdf` is the canonical PDF for reading and paperback manuscript upload.
+A4, Kindle PDF, phone PDF and duplicate `-print.pdf` downloads are retired. Separate
+paperback wraps, eBook covers, listings and print metadata remain production assets.
+The PDF starts with its half-title; the EPUB has its own front cover. Earlier
+validation and comparison records below describe their formats at the time and
+are superseded by this decision.
+
 ## Visual identity
 
 - Series **Order and Chance**, author **SEGHAIER Oussama**.
@@ -72,14 +82,13 @@ python3 tools/site.py dist build/site
 python3 -m unittest discover -s tools -p 'test_*.py'
 ```
 
-`build.sh` creates A4 and Kindle reading PDFs, EPUB, ebook covers, KDP interiors and
-wraps, listings and HTML readers. Wraps use 7x10 trim, 0.125-inch outside bleed and
+`build.sh` creates the standard 7 × 10 PDF, EPUB, eBook covers, paperback wraps,
+listings, print metadata and HTML readers. Wraps use 7x10 trim, 0.125-inch outside bleed and
 white-paper spine width = even-rounded interior pages × 0.002252 inches. ISBN
 barcodes remain intact; books without an ISBN reserve the lower-right back area
 for KDP. No hypothetical page counts are valid production inputs.
 
-The all-volume front preview checks five formats (print/reference, ebook, A4,
-Kindle and print-front); PDF text extraction verifies every title and the slogan,
+The front preview checks two proportions (7×10 book front and EPUB front); PDF text extraction verifies every title and the slogan,
 including Volume 0. Production PDFs preserve vectors instead of embedding the
 low-resolution concept PNGs. Book fingerprints include all shared assets and the
 new generators; generated per-volume TeX files are tracked with their generator.
@@ -203,3 +212,18 @@ figure captions, historical overclaims and outdated open-problem status. The ful
 record and reproducible calculations are in [TOME0-FACT-REVIEW.md](../review/TOME0-FACT-REVIEW.md).
 The 7 × 10 trim and approved cover identity are preserved. Every Volume 0 output
 and its actual-page-derived paperback wrap are rebuilt from the corrected source.
+
+## Single standard PDF migration
+
+The build compiles the canonical PDF once, validates every page at 504 × 720 pt,
+and derives the matching wrap from its actual page count. There is no separate
+reading-PDF or paperback-interior copy. `--pdf-only` refreshes this same PDF and
+production assets without recompiling EPUB/HTML. Cache schema/fingerprint 3 and
+`library-v3-` force all nineteen volumes to rebuild. Cache assembly removes legacy
+variants; snapshot validation rejects retired files, wrong PDF sizes, unembedded
+fonts and page-count metadata mismatches before any release is uploaded.
+
+Download cards and README tables offer the standard PDF and EPUB. The paperback
+interior link points to the canonical PDF. All ISBNs, titles, mathematical content,
+7×10 margins, black-and-gold covers, EPUB reflow and reader controls are preserved.
+Verification and rollout results are recorded in [STANDARD-FORMATS.md](STANDARD-FORMATS.md).

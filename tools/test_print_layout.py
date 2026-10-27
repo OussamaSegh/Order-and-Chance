@@ -29,6 +29,12 @@ class PaperbackTest(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'page 2'):
                 check_interior('mixed.pdf')
 
+    def test_canonical_a4_pdf_is_rejected(self):
+        with patch('check_cover_pdf.subprocess.check_output', side_effect=[
+                'Pages: 1\n', 'Page 1 size: 595.276 x 841.89 pts\n']):
+            with self.assertRaisesRegex(ValueError, 'page 1'):
+                check_interior('tome0.pdf')
+
     def test_missing_page_dimensions_are_rejected(self):
         with patch('check_cover_pdf.subprocess.check_output', side_effect=[
                 'Pages: 2\n', 'Page 1 size: 504 x 720 pts\n']):

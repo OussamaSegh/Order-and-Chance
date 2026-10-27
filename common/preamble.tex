@@ -7,49 +7,22 @@
 % Embedded vector sans-serif labels, consistent with the covers.
 \renewcommand{\sfdefault}{qhv}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
-% Page format, chosen by build.sh through \FORMAT: A4 (default), a phone screen
-% (Galaxy S25 Ultra, 9:19.5), a 7-inch e-reader (Kindle Paperwhite, 1264x1680 pixels), or
-% print: the Amazon KDP paperback interior, 7in x 10in trim, no bleed. KDP asks for an inside
-% (gutter) margin of 0.375in up to 150 pages, 0.5in to 300, 0.625in to 500, 0.75in to 700
-% and 0.875in to 828, and at least 0.25in outside; build.sh passes \PRINTINNER for the page count.
-\providecommand{\FORMAT}{a4}
+% Every PDF uses the standard 7 x 10 inch book layout. Its identical file also
+% serves as the paperback interior; the full cover is a separate publishing asset.
 \input{../common/print-layout}
 \providecommand{\PRINTINNER}{0.75in}
-\def\formatphone{phone}\def\formatkindle{kindle}\def\formatprint{print}
-\newif\ifprintformat
-\ifx\FORMAT\formatprint\printformattrue\fi
-\ifx\FORMAT\formatphone
-  \usepackage[paperwidth=90mm,paperheight=195mm,hmargin=4mm,top=6mm,bottom=9mm,headsep=3mm,footskip=5mm]{geometry}
-\else\ifx\FORMAT\formatkindle
-  \usepackage[paperwidth=107mm,paperheight=142mm,hmargin=4mm,top=5mm,bottom=8mm,headsep=3mm,footskip=5mm]{geometry}
-\else\ifprintformat
-  % A printed book: facing pages, chapters open on a right-hand page.
-  \makeatletter\@twosidetrue\@mparswitchtrue\@openrighttrue\makeatother
-  \usepackage[paperwidth=\PRINTWIDTH in,paperheight=\PRINTHEIGHT in,twoside,inner=\PRINTINNER,outer=0.6in,
-    top=0.75in,bottom=0.8in,headsep=0.2in,footskip=0.4in]{geometry}
-\else
-  \usepackage[a4paper,margin=2.6cm]{geometry}
-\fi\fi\fi
-% Narrow measures (phone, Kindle, and the 5.65in text block of print): wide displayed formulas
-% \[...\] shrink to the line width; on the two screens, page numbers are plain.
-\newif\ifsmallformat
-\ifx\FORMAT\formatphone\smallformattrue\fi
-\ifx\FORMAT\formatkindle\smallformattrue\fi
-\ifprintformat\smallformattrue\fi
-% Line breaks that only happen on small screens, for use inside displays:
-% \qq separates independent formulas (a \qquad on A4), \eqbr breaks a chain of
-% equalities inside aligned (nothing on A4).
-\ifsmallformat
-  \newcommand{\qq}{\\}\newcommand{\eqbr}{\\&}
-\else
-  \newcommand{\qq}{\qquad}\newcommand{\eqbr}{}
-\fi
-\ifsmallformat
-  \AtBeginDocument{\ifprintformat\else\pagestyle{plain}\fi%
-    \def\[#1\]{\begin{equation*}\sbox0{$\displaystyle#1$}%
-      \ifdim\wd0>\linewidth\typeout{SHRINK \the\wd0\space > \the\linewidth\space at line \the\inputlineno}%
-        \resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi\end{equation*}}}
-\fi
+% Keep these hooks for volume layouts and stacked mathematical figures.
+\newif\ifprintformat\printformattrue
+\newif\ifsmallformat\smallformattrue
+\makeatletter\@twosidetrue\@mparswitchtrue\@openrighttrue\makeatother
+\usepackage[paperwidth=\PRINTWIDTH in,paperheight=\PRINTHEIGHT in,twoside,inner=\PRINTINNER,outer=0.6in,
+  top=0.75in,bottom=0.8in,headsep=0.2in,footskip=0.4in]{geometry}
+% Break long formula chains for the book's text measure and constrain displays.
+\newcommand{\qq}{\\}\newcommand{\eqbr}{\\&}
+\AtBeginDocument{%
+  \def\[#1\]{\begin{equation*}\sbox0{$\displaystyle#1$}%
+    \ifdim\wd0>\linewidth\typeout{SHRINK \the\wd0\space > \the\linewidth\space at line \the\inputlineno}%
+      \resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi\end{equation*}}}
 \usepackage[final]{microtype}
 \setlength{\emergencystretch}{3em}
 \usepackage{enumitem}
@@ -66,10 +39,9 @@
 \input{../common/figure-packages}
 \usepackage{pdfpages}
 \usepackage{adjustbox}
-% The cover page, made by build.sh from tools/cover.tex (skipped when \COVER is not defined,
-% and in print, where KDP takes the cover as a separate file, tools/cover-wrap.tex).
-% The cover has the proportions of the page, and fills it exactly.
-\newcommand{\makecover}{\ifprintformat\else\ifdefined\COVER\includepdf[pages=1]{\COVER}\fi\fi}
+% The PDF starts with its half-title; EPUB and paperback covers are separate.
+% Retain the manuscript hook so every main.tex keeps the same front-matter order.
+\newcommand{\makecover}{}
 % Running heads in print: the chapter title on left pages, the section on right pages, in small
 % italics, cut short with an ellipsis when too long for the text measure.
 \ifprintformat
@@ -87,7 +59,7 @@
     \hbox{}\thispagestyle{empty}\newpage\fi\fi}
   \makeatother
 \fi
-% Links are coloured on screens and black on paper.
+% PDF links are black; online and EPUB themes are configured separately.
 \ifprintformat
   \usepackage[hidelinks]{hyperref}
 \else

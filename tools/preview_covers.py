@@ -15,7 +15,7 @@ from print_layout import LAYOUT, check_sync as check_print_sync
 
 ROOT = Path(__file__).resolve().parent.parent
 PRINT = (LAYOUT["trim_width_in"], LAYOUT["trim_height_in"])
-FORMATS = {"reference": PRINT, "ebook": (6, 9.6), "a4": (6, 8.4857), "kindle": (6, 7.9626), "print-front": PRINT}
+FORMATS = {"reference": PRINT, "ebook": (6, 9.6)}
 
 
 def render(main: Path, output: Path) -> str:

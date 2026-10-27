@@ -6,8 +6,11 @@ import re
 import shutil
 import subprocess
 from pathlib import Path
+from book_outputs import clean, check
+from check_cover_pdf import check_interior
+from print_layout import specification
 
-SCHEMA = 2
+SCHEMA = 3
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -22,7 +25,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v2\0')
+        h = hashlib.sha256(b'book-output-v3\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -33,10 +36,10 @@ def fingerprints(root):
 
 
 def complete(cache, book):
-    required = [f'dist/{book}.pdf', f'dist/{book}-kindle.pdf', f'dist/{book}.epub',
+    required = [f'dist/{book}.pdf', f'dist/{book}.epub',
                 f'dist/html/{book}/index.html', f'build/{book}/cover.pdf']
     required += [f'dist/kdp/{book}-{suffix}' for suffix in
-                 ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
+                 ['cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
     return all((cache / p).is_file() and (cache / p).stat().st_size for p in required)
 
 
@@ -44,12 +47,14 @@ def plan(root, cache, force=False):
     current = fingerprints(root)
     try:
         previous = json.loads((cache / 'manifest.json').read_text())
-        old = previous['books'] if previous.get('schema') == SCHEMA else {}
+        previous_books = previous['books']
+        old = previous_books if previous.get('schema') == SCHEMA else {}
     except (OSError, ValueError, KeyError):
+        previous_books = {}
         old = {}
     changed = [b for b, key in current.items() if force or old.get(b) != key or not complete(cache, b)]
     return {'schema': SCHEMA, 'books': current, 'changed': changed,
-            'removed': sorted(set(old) - set(current))}
+            'removed': sorted(set(previous_books) - set(current))}
 
 
 def remove_book(root, book):
@@ -74,14 +79,20 @@ def prepare(root, cache, data):
     # Clear rebuilt readers too, so deleted chapters cannot survive the overlay.
     for book in data['changed'] + data['removed']:
         remove_book(root, book)
-    for p in (root / 'dist').glob('*-phone.pdf'):
-        p.unlink()
+    clean(root / 'dist')
 
 
 def snapshot(root, cache, data):
+    check(root / 'dist')
     for book in data['books']:
         if not complete(root, book):
             raise ValueError(f'Incomplete output for {book}')
+        # The unsuffixed PDF is the sole reading and paperback edition. Reject
+        # an old A4 file even if its filename and the remaining outputs exist.
+        pages = check_interior(root / 'dist' / f'{book}.pdf')
+        metadata = json.loads((root / 'dist/kdp' / f'{book}-print-metadata.json').read_text())
+        if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
+            raise ValueError(f'PDF and paperback metadata disagree for {book}')
     shutil.rmtree(cache, ignore_errors=True)
     cache.mkdir(parents=True)
     shutil.copytree(root / 'dist', cache / 'dist')

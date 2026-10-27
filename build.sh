@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the PDF and EPUB of every tome (or of the tomes given as arguments)
+# Build the standard 7 x 10 PDF and EPUB of each requested tome
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
 # Requires pdflatex, pandoc >= 3, python3 and poppler-utils.
 set -euo pipefail
@@ -8,69 +8,51 @@ root="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$root/dist/kdp" "$root/build"
 python3 "$root/tools/series_metadata.py" --check
 python3 "$root/tools/print_layout.py" --check
-print_only=false
-if [ "${1:-}" = --print-only ]; then print_only=true; shift; fi
+pdf_only=false
+case "${1:-}" in
+  --pdf-only) pdf_only=true; shift ;;
+  --help) echo "Usage: ./build.sh [--pdf-only] [tome...]"; exit 0 ;;
+  --*) echo "Unknown option: $1" >&2; exit 2 ;;
+esac
+python3 "$root/tools/book_outputs.py" clean "$root/dist"
 tomes=("$@")
 [ ${#tomes[@]} -eq 0 ] && tomes=($(cd "$root" && ls -d tome*/ | tr -d /))
 
 for tome in "${tomes[@]}"; do
   echo "== $tome"
   python3 "$root/tools/check_edition_copy.py" "$tome"
-  # Remove the retired output when refreshing an existing build directory.
-  rm -f "$root/dist/$tome-phone.pdf"
   out="$root/build/$tome"
   mkdir -p "$out"
-  # The cover (tools/cover.tex with the tome's picture from tools/cover_motifs.py): a PDF page
-  # for the book and a 1600x2560 PNG for the EPUB, which e-readers and Kindle show as the cover.
+  # The vector front cover supplies the EPUB image and library thumbnail.
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
-  if ! $print_only; then
-    (cd "$root" &&
-      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
-        "\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
-        >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
+  # The EPUB front is a separate asset; the standard PDF begins with book front matter.
+  (cd "$root" &&
+    pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=cover \
+      "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
+      >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
+  if ! $pdf_only; then
     pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
-
-    # Two reading PDFs: A4 (dist/<tome>.pdf) and 7-inch e-reader (-kindle.pdf).
-    # Each opens with the cover drawn in the proportions of its page (common/preamble.tex):
-    # 6in wide and 6 x height/width high, scaled to the page by \makecover.
-    for format in a4 kindle; do
-      job=main; [ "$format" = a4 ] || job="main-$format"
-      case $format in a4) ch=8.4857 ;; kindle) ch=7.9626 ;; esac
-      (cd "$root" &&
-        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="cover-$format" \
-          "$meta\\def\\CH{$ch}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
-          >"$out/cover-$format.out" || { tail -30 "$out/cover-$format.out"; exit 1; })
-      (cd "$root/$tome" &&
-        for _ in 1 2 3; do
-          pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="$job" \
-            "$meta\\def\\FORMAT{$format}\\def\\COVER{$out/cover-$format.pdf}\\input{main.tex}" >"$out/$job.stdout" ||
-            { tail -40 "$out/$job.stdout"; exit 1; }
-        done)
-      suffix=""; [ "$format" = a4 ] || suffix="-$format"
-      cp "$out/$job.pdf" "$root/dist/$tome$suffix.pdf"
-    done
-
   fi
 
-  # Amazon KDP paperback (dist/kdp/): the interior, 7in x 10in trim without bleed, and the full
+  # One canonical PDF for reading and paperback upload: 7 x 10 in, no bleed. The full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
   # paper, 0.002252in per page. The inside margin is the one KDP asks for at that page count.
   inner=0.75in
   for pass in 1 2; do
     (cd "$root/$tome" &&
       for _ in 1 2 3; do
-        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main-print \
-          "$meta\\def\\FORMAT{print}\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main-print.stdout" ||
-          { tail -40 "$out/main-print.stdout"; exit 1; }
+        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
+          "$meta\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main.stdout" ||
+          { tail -40 "$out/main.stdout"; exit 1; }
       done)
-    pages=$(pdfinfo "$out/main-print.pdf" | sed -n 's/^Pages: *//p')
+    pages=$(pdfinfo "$out/main.pdf" | sed -n 's/^Pages: *//p')
     [ "$pages" -le 700 ] || [ "$inner" = 0.875in ] && break
     inner=0.875in
   done
-  python3 "$root/tools/check_cover_pdf.py" "$out/main-print.pdf" --interior
-  cp "$out/main-print.pdf" "$root/dist/kdp/$tome-print.pdf"
+  python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
+  cp "$out/main.pdf" "$root/dist/$tome.pdf"
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
   spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$tome-print-metadata.json")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
@@ -90,13 +72,13 @@ for tome in "${tomes[@]}"; do
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
-  if $print_only; then
-    echo "   KDP: $pages pages, spine ${spine}in; 7 x 10 in interior and validated wrap"
-    continue
-  fi
-  # Kindle eBook cover: KDP asks for a JPEG of 1600 x 2560 pixels.
+  # Separate eBook cover: 1600 x 2560 pixels, also used for publishing.
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$tome-ebook-cover"
+  if $pdf_only; then
+    echo "   dist/$tome.pdf ($pages pages, 7 x 10 in); publishing assets in dist/kdp/"
+    continue
+  fi
 
   # Each figure also becomes an SVG for the EPUB (needs pdftocairo, from poppler-utils).
   mkdir -p "$out/figures"
@@ -122,6 +104,6 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
-  echo "   dist/$tome.pdf  dist/$tome-kindle.pdf  dist/$tome.epub  dist/html/$tome/"
-  echo "   KDP: dist/kdp/$tome-print.pdf ($pages pages)  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
+  echo "   dist/$tome.pdf (7 x 10 in)  dist/$tome.epub  dist/html/$tome/"
+  echo "   KDP: $pages interior pages;  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
 done

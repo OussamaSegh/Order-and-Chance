@@ -54,6 +54,7 @@ def check_interior(path):
                 abs(float(height)-LAYOUT['trim_height_in']*72) > .12):
             raise ValueError(f'{path}: page {number} is not the approved paperback trim')
     check_fonts(path)
+    return pages
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)

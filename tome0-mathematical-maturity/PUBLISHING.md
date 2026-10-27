@@ -3,7 +3,7 @@
 From the repository root, activate the environment and build:
 
 ```sh
-source /workspace/order-chance-activate.sh
+source /workspace/order-chance-system/activate.sh
 ./build.sh tome0-mathematical-maturity
 ```
 
@@ -16,13 +16,11 @@ and series association when revising an already published title.
 
 | Output | Upload/use |
 |---|---|
-| `dist/kdp/tome0-mathematical-maturity-print.pdf` | 7 × 10 inch paperback interior, black ink, white paper, no bleed |
+| `dist/tome0-mathematical-maturity.pdf` | Standard 7 × 10 inch reading PDF and paperback interior, black ink, white paper, no bleed |
 | `dist/kdp/tome0-mathematical-maturity-cover-wrap.pdf` | Matching full paperback cover, 0.125-inch bleed, white-paper spine |
 | `dist/tome0-mathematical-maturity.epub` | Reflowable Kindle manuscript |
 | `dist/kdp/tome0-mathematical-maturity-ebook-cover.jpg` | 1600 × 2560 Kindle cover |
 | `dist/kdp/tome0-mathematical-maturity-listing.md` | Generated details: description and seven keywords |
-| `dist/tome0-mathematical-maturity.pdf` | A4 reading/printing edition |
-| `dist/tome0-mathematical-maturity-kindle.pdf` | Fixed-page reading edition; use EPUB for reflowable Kindle upload |
 | `dist/html/tome0-mathematical-maturity/` | Chapter-by-chapter web reader |
 
 Author: **SEGHAIER Oussama**. Use the title/subtitle and series fields in the generated

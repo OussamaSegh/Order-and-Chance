@@ -36,23 +36,26 @@ build. Earlier restrictions to two-volume validation are superseded.
 - Preserve ISBNs, volume identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
 
-## Production paperback trim
+## Standard book formats
 
 The author approved **7 × 10 inches for all 19 paperbacks** after the Volume 0
 comparison. `common/print-layout.json` is canonical; regenerate its TeX with
 `python3 tools/print_layout.py`. Rebuild each wrap from its actual new interior
-page count. A4, Kindle PDF and EPUB keep their reading formats. The earlier local
-comparison record is historical and does not override this production decision.
+page count. Each volume has exactly one canonical `dist/<tome>.pdf`, using this
+7 × 10 layout for both reading and paperback manuscript upload, plus one EPUB.
+A4, Kindle PDF, phone PDF and duplicate `-print.pdf` editions are retired.
+Covers, listings and print metadata remain separate publishing assets. Historical
+comparison records do not override this decision.
 
 ## Build and publication
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.
 - Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
 - `python3 tools/cover_plates.py` regenerates all 19 pairs of mathematical plates.
-- `python3 tools/preview_covers.py` checks all fronts in five proportions. Inspect
+- `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
-- `./build.sh [tome...]` builds A4/Kindle PDFs, EPUB, reading covers, KDP interior,
-  page-count-derived wrap, listing and HTML reader. Phone PDFs are retired and
+- `./build.sh [tome...]` builds the standard 7×10 PDF, EPUB, eBook cover,
+  page-count-derived paperback wrap, listing, metadata and HTML reader. Phone PDFs are retired and
   notebook execution is manual; preserve both decisions.
 - Never invent a page count for a production wrap. Preserve 0.125-inch outside
   bleed and ISBN/barcode handling. Keep all fonts embedded and page bounds exact.

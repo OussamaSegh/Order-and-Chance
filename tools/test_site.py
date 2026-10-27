@@ -33,9 +33,14 @@ class LibraryTest(unittest.TestCase):
                     (root / name / "main.tex").write_text("fixture")
             (dist / "tome2-structures-phone.pdf").write_bytes(b"retired")
             (dist / "tome2-structures-kindle.pdf").write_bytes(b"fixture")
+            (dist / "tome2-structures-a4.pdf").write_bytes(b"retired")
+            (dist / "kdp").mkdir()
+            (dist / "kdp/tome2-structures-print.pdf").write_bytes(b"retired")
             (dist / "tome2-structures.epub").write_bytes(b"fixture")
             out.mkdir()
             (out / "tomeC1-discrete.pdf").write_bytes(b"stale download")
+            for suffix in ['a4', 'kindle', 'phone', 'print']:
+                (out / f'tome2-structures-{suffix}.pdf').write_bytes(b'stale download')
             (out / "read/tomeS1-linear").mkdir(parents=True)
             (out / "read/tomeS1-linear/index.html").write_text("stale reader")
             with patch.object(site, "ROOT", root):
@@ -48,6 +53,12 @@ class LibraryTest(unittest.TestCase):
             self.assertLess(text.index('data-search="tome2-'), text.index('data-search="tome10-'))
             self.assertEqual(text.count('>EPUB</a>'), 1)
             self.assertNotIn('-phone.pdf', text)
+            self.assertNotIn('-kindle.pdf', text)
+            self.assertNotIn('-print.pdf', text)
+            self.assertNotIn('A4', text)
+            self.assertIn('Standard 7 × 10 in PDF', text)
+            for suffix in ['a4', 'kindle', 'phone', 'print']:
+                self.assertFalse((out / f'tome2-structures-{suffix}.pdf').exists())
             self.assertNotIn('tomeC1-discrete', text)
             self.assertNotIn('tomeS1-linear', text)
             self.assertFalse((out / 'tomeC1-discrete.pdf').exists())

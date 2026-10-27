@@ -38,8 +38,8 @@ jobs:
         id: library
         with:
           path: .book-cache
-          key: library-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v2-
+          key: library-v3-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v3-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -102,12 +102,12 @@ jobs:
           sudo dpkg -i debs/*.deb > /dev/null
           rm -rf debs
           command -v pdflatex && command -v pandoc && command -v pdftoppm
-      - name: Build reading editions and 7 x 10 paperbacks
+      - name: Build standard 7 x 10 PDF, EPUB and publishing assets
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
         with:
           name: books-${{ matrix.tome }}
-          # dist/ holds the PDFs, the EPUB and dist/kdp/; the cover page is for the site's thumbnails.
+          # dist/ holds the standard PDF, EPUB and dist/kdp/; the cover page is for the site's thumbnails.
           path: |
             dist/
             build/${{ matrix.tome }}/cover.pdf
@@ -138,22 +138,22 @@ jobs:
           path: .
       - name: Install poppler
         run: sudo timeout 300 apt-get update && sudo timeout 300 apt-get install -y --no-install-recommends poppler-utils
-      - uses: actions/upload-artifact@v4
-        if: needs.list.outputs.snapshot_changed == 'true'
-        with:
-          name: books
-          path: dist/
       - name: Test the download page generator
         run: python3 -m unittest discover -s tools -p test_site.py
       - name: Build the download page
         run: python3 tools/site.py dist build/site
       - name: Validate and snapshot the complete library
         run: python3 tools/build_plan.py snapshot
+      - uses: actions/upload-artifact@v4
+        if: needs.list.outputs.snapshot_changed == 'true'
+        with:
+          name: books
+          path: dist/
       - uses: actions/cache/save@v4
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v2-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v3-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -186,7 +186,7 @@ jobs:
           gh release delete books --yes --cleanup-tag || true
           gh release create books dist/*.pdf dist/*.epub dist/kdp/* --target "$GITHUB_SHA" --latest \
             --title "Books (latest build)" \
-            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Files named *-print.pdf, *-cover-wrap.pdf and *-ebook-cover.jpg are the Amazon KDP 7 x 10 in paperback interior, paperback cover and Kindle cover."
+            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Each volume has one standard 7 x 10 in PDF (also its paperback interior) and one EPUB. Files named *-cover-wrap.pdf and *-ebook-cover.jpg are separate paperback and eBook covers."
       # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
       - name: Deploy the download page
         id: deploy
