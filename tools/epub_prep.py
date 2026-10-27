@@ -66,7 +66,7 @@ def main(src: str, dst: str, figdir: str) -> None:
     def portraits(text):
         out, i = [], 0
         while True:
-            m = re.search(r"\\portraits?\{", text[i:])
+            m = re.search(r"\\(?:portraits?|photograph)\{", text[i:])
             if not m:
                 return "".join(out) + text[i:]
             out.append(text[i:i + m.start()])
@@ -81,9 +81,15 @@ def main(src: str, dst: str, figdir: str) -> None:
                         break
                 args.append(text[j + 1:k - 1])
                 j = k
-            for name, credit in zip(args[::2], args[1::2]):
-                subject = credit.split(".", 1)[0].strip().replace("--", "–")
-                out.append("\n\\includegraphics[width=0.45\\textwidth,alt={Portrait of " + subject + ".}]{" + str(photodir / (name + ".jpg"))
+            if m.group().startswith("\\photograph"):
+                entries = [(args[0], args[1], args[2])]
+            else:
+                entries = []
+                for name, credit in zip(args[::2], args[1::2]):
+                    subject = credit.split(".", 1)[0].strip().replace("--", "–")
+                    entries.append((name, "Portrait of " + subject + ".", credit))
+            for name, alternative, credit in entries:
+                out.append("\n\\includegraphics[width=0.45\\textwidth,alt={" + alternative + "}]{" + str(photodir / (name + ".jpg"))
                            + "}\\\\ {\\small " + credit + "}\n\n")
             i = j
 

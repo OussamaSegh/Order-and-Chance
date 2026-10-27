@@ -191,7 +191,7 @@ Variance adds for independent variables, standard deviations do not: the sum of 
 \[
 P(S=k)=\binom nkp^k(1-p)^{n-k}\ (0\le k\le n),\qquad\mathbb E S=np,\qquad\operatorname{Var}S=np(1-p).
 \]
-\item (\textbf{hypergeometric}) Draw $n$ objects without replacement from $N$ objects of which $K$ are marked, and let $X$ be the number of marked objects drawn. Then
+\item (\textbf{hypergeometric}) Let $N\ge2$, $0\le K\le N$ and $0\le n\le N$ be integers. Draw $n$ objects without replacement from $N$ objects of which $K$ are marked, and let $X$ be the number of marked objects drawn. Then
 \[
 P(X=k)=\frac{\binom Kk\binom{N-K}{n-k}}{\binom Nn},\qquad\mathbb E X=n\frac KN,\qquad\operatorname{Var}X=n\frac KN\Big(1-\frac KN\Big)\frac{N-n}{N-1}.
 \]
@@ -212,12 +212,12 @@ using $nq(N-1)=nK-nq$ in the middle step.
 (d) $\mathbb EX=\frac1n\sum_{k=1}^nk=\frac{n+1}2$ and $\mathbb E[X^2]=\frac1n\sum k^2=\frac{(n+1)(2n+1)}6$ (Chapter~1); subtract.
 \end{proof}
 
-The factor $\frac{N-n}{N-1}$ in (c) is the \emph{finite population correction}: drawing without replacement is less variable than with replacement, and for $n=N$ (draw everything) the variance is $0$, as it must be. When $N$ is huge compared with $n$ the correction is invisible, which is why a poll of $1000$ people is as informative in a country of $60$ million as in one of $300$ million; Exercise~\ref{ex:poll} makes this quantitative.
+For the excluded case $N=1$, the draw is deterministic (whether $n=0$ or $1$), so its variance is $0$; the formula with denominator $N-1$ is not used. The factor $\frac{N-n}{N-1}$ in (c) is the \emph{finite population correction}: drawing without replacement is less variable than with replacement, and for $n=N$ (draw everything) the variance is $0$, as it must be. When $N$ is huge compared with $n$ the correction is invisible, which is why a poll of $1000$ people is as informative in a country of $60$ million as in one of $300$ million; Exercise~\ref{ex:poll} makes this quantitative.
 
 \begin{figure}[ht]
 \centering
 \fig{ch08-binomial}
-\caption{Left: the law of the \emph{frequency} $S/n$ of heads in $n$ tosses of a fair coin, for $n=10$, $50$ and $200$ (bars of width $\frac1n$, scaled to compare areas). The mass concentrates around $\frac12$, in a window of width about $\frac1{\sqrt n}$: the standard deviation of $S/n$ is $\frac1{2\sqrt n}$. Right: the running frequency of heads in three simulated sequences of $1000$ tosses (coloured), with the band $\frac12\pm\frac1{2\sqrt n}$ (grey). Each path wanders and then settles: Bernoulli's theorem in action.}
+\caption{Left: the law of the \emph{frequency} $S/n$ of heads in $n$ tosses of a fair coin, for $n=10$, $50$ and $200$ (bars of width $\frac1n$, scaled to compare areas). The mass concentrates around $\frac12$, in a window of width about $\frac1{\sqrt n}$: the standard deviation of $S/n$ is $\frac1{2\sqrt n}$. Right: the running frequency of heads in three simulated sequences of $1000$ tosses (coloured), with the band $\frac12\pm\frac1{2\sqrt n}$ (grey). The finite paths illustrate concentration. A simulation cannot establish eventual convergence of an infinite path; the theorem below bounds error probabilities at each fixed sample size.}
 \label{fig:binomial}
 \end{figure}
 
@@ -260,6 +260,38 @@ method of Tome~3, where one proves that an object exists by showing that a rando
 \end{beauty}
 
 \portraits{chebyshev}{Pafnuty Chebyshev (1821--1894). Photograph, c.\,1890. Public domain, via Wikimedia Commons.}{erdos}{Paul Erd\H os (1913--1996) in Budapest, 1992. Photograph by Topsy Kretts, CC BY 3.0, via Wikimedia Commons.}
+
+\section{Workshop: when a positive result is a surprise}
+Probability is not only about counting possibilities; it is about specifying the experiment. A test with impressive accuracy can still generate mostly false alarms in a population where the condition is rare. The denominator in Bayes' formula is where intuition usually leaves its umbrella.
+
+\begin{examplex}[a test in a population of ten thousand]
+Suppose a uniformly chosen person has a condition with probability $0.01$. A test is positive with probability $0.99$ when the condition is present, and with probability $0.05$ when it is absent. If $D$ means ``condition'' and $+$ means ``positive'', then
+\[
+P(+)=0.99\cdot0.01+0.05\cdot0.99=0.0594,
+\qquad P(D\mid+)=\frac{0.0099}{0.0594}=\frac16.
+\]
+Per ten thousand people the \emph{expected} counts are $99$ true positives and $495$ false positives. These counts describe the model's rates, not guaranteed realised totals. Neither $99\%$ sensitivity nor $95\%$ specificity is the probability of having the condition after a positive result.
+\end{examplex}
+
+\begin{figure}[ht]\centering\fig{review08-bayes}
+\caption{Expected positive results per ten thousand under the example's model: $99$ true positives versus $495$ false positives. Different gray fills as well as labels distinguishes the two groups in grayscale.}\end{figure}
+
+\subsection*{Does a second test settle it?}
+\textbf{Mission.} Suppose two tests have these same rates and are independent \emph{conditional on} whether the condition is present. Find $P(D\mid+,+)$. What if the second test simply repeats the first result?
+
+\textbf{Hint.} Square the conditional rates in the first model, not the posterior $1/6$.
+
+\textbf{Solution.} Under conditional independence,
+\[
+P(D\mid+,+)=\frac{0.01(0.99)^2}{0.01(0.99)^2+0.99(0.05)^2}
+=\frac{99}{124}\approx0.7984.
+\]
+If the second result is a copy of the first, the event of two positives is just the event of one positive, so the answer remains $1/6$. The same marginal accuracies can yield radically different posteriors. Independence must describe the mechanism; it is not a discount coupon you apply because multiplication looks convenient.
+
+\begin{reminder}[what a sampling bound promises]
+For independent Bernoulli trials, Chebyshev guarantees an error probability at most $1/(4n\varepsilon^2)$ at the \emph{chosen} size $n$. For error tolerance $0.05$ and failure probability at most $0.05$, $n\ge2000$ suffices. This conservative bound does not correct biased sampling, changing success rates, dependence, or repeated inspection until a convenient answer appears. A bound greater than $1$ is true but uninformative; replace it by the minimum of that bound and $1$.
+\end{reminder}
+
 
 \section{Exercises}
 
@@ -609,7 +641,7 @@ using $\binom{a+b-1}a=\frac{(a+b-1)!}{a!\,(b-1)!}=\frac b{a+b}\binom{a+b}a$. For
 
 \section*{Sources and further reading}
 
-\begin{itemize}
+\begin{itemize}\raggedright
 \item R.~L.~Graham, D.~E.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994, Chapters~5 and~8. Binomial coefficients, derangements, harmonic numbers and discrete probability, with a computer scientist's eye.
 \item W.~Feller, \emph{An Introduction to Probability Theory and Its Applications}, Vol.~1, 3rd ed., Wiley, 1968, Chapters~II--IV and~IX. The matching problem (hats), the occupancy problems, inclusion--exclusion in probability, the ballot problem and the law of large numbers.
 \item P.~Flajolet and R.~Sedgewick, \emph{Analytic Combinatorics}, Cambridge University Press, 2009 (free online). Cycles, fixed points and records of random permutations, through generating functions; the road from this chapter to Tome~3.
@@ -619,7 +651,7 @@ using $\binom{a+b-1}a=\frac{(a+b-1)!}{a!\,(b-1)!}=\frac b{a+b}\binom{a+b}a$. For
 \item P.~R.~de Montmort, \emph{Essay d'analyse sur les jeux de hazard}, Paris, 1708; 2nd ed.\ 1713, with the correspondence with Nicolaus Bernoulli on the \emph{probl\`eme des rencontres}. L.~Euler, \emph{Calcul de la probabilit\'e dans le jeu de rencontre}, M\'emoires de l'Acad\'emie des sciences de Berlin 7 (1751, printed 1753), 255--270, for the series and the recurrence of Exercise~\ref{ex:derangrec}.
 \item J.~Bernoulli, \emph{Ars Conjectandi}, Basel, 1713; English translation by E.~D.~Sylla, Johns Hopkins University Press, 2006. Part~IV contains the ``golden theorem'' of Theorem~\ref{thm:wlln}, with the twenty-year story in the translator's introduction.
 \item P.~L.~Chebyshev, \emph{Des valeurs moyennes}, J.\ Math.\ Pures Appl.\ 12 (1867), 177--184; the inequality was published earlier by I.-J.~Bienaym\'e, C.\ R.\ Acad.\ Sci.\ Paris 37 (1853), 309--324, which is why it is often called the Bienaym\'e--Chebyshev inequality.
-\item R.~von Mises, \emph{\"Uber Aufteilungs- und Besetzungs-Wahrscheinlichkeiten}, Revue de la Facult\'e des Sciences de l'Universit\'e d'Istanbul 4 (1939), 145--163. The birthday problem.
+\item R.~von Mises, \emph{\"Uber Aufteilungs- und Besetzungs-\allowbreak Wahrscheinlichkeiten}, Revue de la Facult\'e des Sciences de l'Universit\'e d'Istanbul 4 (1939), 145--163. The birthday problem.
 \item P.~Erd\H{o}s and G.~Szekeres, \emph{A combinatorial problem in geometry}, Compositio Math.\ 2 (1935), 463--470; P.~Erd\H os, \emph{Some remarks on the theory of graphs}, Bull.\ Amer.\ Math.\ Soc.\ 53 (1947), 292--294. Exercises~\ref{ex:erdos} and~\ref{ex:ramsey}. R.~E.~Greenwood and A.~M.~Gleason, Canad.\ J.\ Math.\ 7 (1955), 1--7, for $R(4,4)=18$; V.~Angeltveit and B.~D.~McKay, \emph{$R(5,5)\le46$}, preprint, 2024.
 \item S.~Selvin, \emph{A problem in probability}, Amer.\ Statist.\ 29 (1975), 67, where the Monty Hall problem was first posed; M.~vos Savant, \emph{Ask Marilyn}, Parade, 9 September 1990 and the following months, for the storm of letters.
 \item J.~Bertrand, C.\ R.\ Acad.\ Sci.\ Paris 105 (1887), 369, and D.~Andr\'e, ibid., 436--437. The ballot problem and the reflection.

@@ -81,6 +81,20 @@ class EpubRegression(unittest.TestCase):
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
             self.assertEqual(alternatives, ["Portrait of Pierre de Fermat (1601–1665)."])
 
+    def test_photograph_alternative_is_not_a_portrait(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "main.tex"
+            destination = Path(directory) / "epub.tex"
+            source.write_text(r"\photograph{rocket}{Rocket rising above the launch pad.}{SpaceX Photos, public domain.}" + "\n")
+            epub_prep.main(str(source), str(destination), directory)
+            result = subprocess.run(["pandoc", "-f", "latex", "-t", "html5", str(destination)],
+                                    capture_output=True, text=True, check=True)
+            tags = Tags()
+            tags.feed(result.stdout)
+            alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
+            self.assertEqual(alternatives, ["Rocket rising above the launch pad."])
+            self.assertIn("SpaceX Photos", result.stdout)
+
     def test_reader_index_has_unique_contents_ids(self):
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "reader"
