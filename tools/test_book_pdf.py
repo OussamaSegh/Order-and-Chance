@@ -32,6 +32,8 @@ class DownloadPdfTest(unittest.TestCase):
         body.add_annotation(0, Link(rect=(10, 10, 50, 30), target_page_index=1))
         # Local PDF destinations refer to page objects, as pdfLaTeX does.
         body.pages[0]['/Annots'][0].get_object()['/Dest'][0] = body.pages[1].indirect_reference
+        # XeLaTeX uses indirect annotation arrays; retain coverage for both forms.
+        body.pages[0][NameObject('/Annots')] = body._add_object(body.pages[0]['/Annots'])
         body.add_annotation(1, Link(rect=(10, 10, 50, 30), url='https://example.org'))
         body.set_page_label(0, 0, style='/r', start=1)
         body.set_page_label(1, 1, style='/D', start=1)

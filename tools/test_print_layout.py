@@ -17,7 +17,9 @@ class PaperbackTest(unittest.TestCase):
         self.assertEqual(odd['interior_pages'], 233)
         self.assertEqual(odd['kdp_pages'], 234)
         self.assertEqual(odd['spine_in'], even['spine_in'])
-        self.assertAlmostEqual(odd['wrap_width_in'], 14.25 + 0.5270)
+        self.assertAlmostEqual(odd['wrap_width_in'], 14.25 + 0.5492)
+        self.assertEqual(odd['ink'], 'premium_color')
+        self.assertEqual(odd['paper'], 'white')
         self.assertEqual(odd['wrap_height_in'], 10.25)
         for pages in (23, 829):
             with self.assertRaises(ValueError):

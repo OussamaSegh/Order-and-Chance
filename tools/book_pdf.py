@@ -51,6 +51,11 @@ def _contents(page):
     return stream.get_data() if stream is not None else b''
 
 
+def _annotation_count(page):
+    annotations = page.get('/Annots')
+    return len(annotations.get_object()) if annotations is not None else 0
+
+
 def check_pair(download, interior):
     """Reject missing covers, changed body pages, broken labels or destinations."""
     download, interior = PdfReader(download), PdfReader(interior)
@@ -66,7 +71,7 @@ def check_pair(download, interior):
     for number, (printed, reading) in enumerate(zip(interior.pages, download.pages[1:]), 1):
         if (_contents(printed) != _contents(reading) or printed.cropbox != reading.cropbox or
                 printed.rotation != reading.rotation or
-                len(printed.get('/Annots', [])) != len(reading.get('/Annots', []))):
+                _annotation_count(printed) != _annotation_count(reading)):
             raise ValueError(f'Download body differs from print interior on page {number}')
     if download.page_labels[1:] != interior.page_labels:
         raise ValueError('Download changed the interior page labels')

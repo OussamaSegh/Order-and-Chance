@@ -7,6 +7,7 @@ import tempfile
 import unittest
 
 from check_book_layout import check
+from check_interior_style import check as check_style
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -30,7 +31,8 @@ class DiagnosticsTest(unittest.TestCase):
             for diagnostic in [r'Overfull \vbox (1pt too high)',
                                r'Overfull \hbox (2pt too wide)',
                                'Float too large for page', 'There were undefined references',
-                               'Label x multiply defined']:
+                               'Label x multiply defined', 'Missing character: no glyph in font',
+                               'LaTeX Font Warning: Font shape TU/Math/b/n undefined']:
                 with self.subTest(diagnostic=diagnostic):
                     log.write_text(diagnostic)
                     with self.assertRaises(ValueError):
@@ -45,7 +47,7 @@ class DiagnosticsTest(unittest.TestCase):
                 check(log, sizes)
 
 
-@unittest.skipUnless(shutil.which('pdflatex') and shutil.which('pdftotext'),
+@unittest.skipUnless(shutil.which('xelatex') and shutil.which('pdftotext'),
                      'TeX and poppler are required for the pagination proof')
 class TypesetPaginationTest(unittest.TestCase):
     def compile(self, directory, body, problem_book=False, passes=1):
@@ -55,7 +57,7 @@ class TypesetPaginationTest(unittest.TestCase):
                           (r'\input{../tomeP1-crossroads/pbook}' + '\n' if problem_book else '') +
                           r'\begin{document}' + '\n' + body + '\n' + r'\end{document}')
         for _ in range(passes):
-            result = subprocess.run(['pdflatex', '-interaction=nonstopmode', '-halt-on-error',
+            result = subprocess.run(['xelatex', '-interaction=nonstopmode', '-halt-on-error',
                                      '-output-directory=' + directory, str(source)],
                                     cwd=ROOT / 'tome0-mathematical-maturity',
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -149,6 +151,36 @@ fill enough of the final measure to occupy more than one line.
             result = self.compile(directory, body)
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('A framed box was split across pages', result.stdout)
+
+    def test_colour_math_fonts_and_unicode_code_symbols(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
+\section{Colour mathematics and $\sigma$-algebras over $\R$}
+\begin{exercise}
+Show that $\sum_{k=1}^n k=n(n+1)/2$; compare $\N,\Q,\R,\C$.
+Also test $\int_\R f(x)\,\mathrm{d}x$, $A\otimes_\R\C$ and $x^\N$.
+The vector $\boldsymbol\alpha=(\alpha_1,\ldots,\alpha_k)$ uses a bold alphabet.
+\end{exercise}
+\begin{reminder}A useful identity.\end{reminder}
+\begin{verbatim}
+ℚ ∣ ∧ ∨ ≠ ≤ ⟨a, b⟩
+\end{verbatim}
+''')
+            self.assertEqual(result.returncode, 0, result.stdout[-3000:])
+            check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
+            check_style(Path(directory) / 'sample.pdf')
+
+    def test_grayscale_override_is_rejected(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
+\colorlet{ocExercise}{black}\colorlet{ocReminder}{black}\colorlet{ocAccent}{black}
+\section*{Grayscale regression}
+\begin{exercise}Calculate $\int_0^1x^2\,\mathrm{d}x$.\end{exercise}
+\begin{reminder}A useful identity.\end{reminder}
+''')
+            self.assertEqual(result.returncode, 0, result.stdout[-3000:])
+            with self.assertRaisesRegex(ValueError, 'missing colour accents'):
+                check_style(Path(directory) / 'sample.pdf')
 
 
 if __name__ == '__main__':

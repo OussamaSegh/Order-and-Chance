@@ -25,7 +25,7 @@ def specification(pages, inner='0.75in'):
     return dict(LAYOUT, interior_pages=pages, kdp_pages=kdp_pages, inner_margin=inner,
                 spine_in=spine, wrap_width_in=2*LAYOUT['trim_width_in']+2*LAYOUT['bleed_in']+spine,
                 wrap_height_in=LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'],
-                ink='black', paper='white', interior_bleed=False)
+                interior_bleed=False)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)

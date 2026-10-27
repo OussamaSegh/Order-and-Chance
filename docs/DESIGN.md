@@ -1,3 +1,41 @@
+# Full-colour interiors and reading typography
+
+The author now explicitly requires **colour printing and better fonts**. This
+supersedes the earlier Palatino/black-ink interior policy below. Approved cover
+art, image masters, cover text and cover fonts remain unchanged.
+
+Interiors and figures now use bundled **Libertinus Serif + Libertinus Math**,
+with **Inter Text** at optical size 14 for headings and **DejaVu Sans Mono** for
+Unicode code. Body size stays 11 pt, with 1.045 leading. XeLaTeX handles the OTF
+mathematics and embedded fonts; the build grants extra token memory for the 3D
+PGFPlots surfaces. The source's legacy number-system commands remain valid in
+unbraced scripts. No mathematical statement or reference numbering is changed.
+
+Coral chapter/section headings and reminders, blue exercises, teal beauty notes
+and plum thinking prompts provide visible colour structure. Pale fills, white
+box-heading text and dark body text/math keep pages readable. Existing figure
+colours preserve their scientific meaning. Long formula chains are reflowed when
+the new font metrics need it; whole-box and heading pagination guards remain.
+
+The paperback production setting is **Premium color ink, white paper**, 7 × 10
+inches, no bleed. This accommodates the short problem books from 24 pages; standard
+colour starts at 72. Premium-colour spines use **0.002347 inch per even-rounded
+print page**, as documented in the KDP cover/print-option help pages. Canonical
+JSON/TeX, listings, metadata and actual-page-derived wraps use the new setting.
+Both PDFs share the colour body; only the reading PDF adds its approved cover.
+
+EPUB embeds the licensed OTF/TTF faces; HTML readers use matching WOFF2 files.
+Devices retain control over EPUB rendering. Font sources, licences and SHA-256
+hashes are recorded in `common/fonts/`. Build/cache schema 5 forces a clean full
+regeneration. The actual PDFs must contain the new font families and colour
+accents; missing glyphs and accidental monochrome output fail validation. Tests
+exercise Unicode mathematics/code, legacy scripts, font/colour output and the
+existing reference-placement/pagination behaviours. Review artifacts and logs
+are under `build/colour-typography/`. See [the implementation/review record](COLOUR-TYPOGRAPHY.md)
+for the palette, font provenance, print settings and Volume 0 preview.
+
+---
+
 # Paperback print-quality upgrade
 
 The author approved **vector paths from the approved cover**. This is a print-only

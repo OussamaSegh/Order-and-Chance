@@ -8,11 +8,12 @@ import subprocess
 from pathlib import Path
 from book_outputs import clean, check
 from check_cover_pdf import check_interior
+from check_interior_style import check as check_style
 from book_pdf import check_pair
 from check_print_cover import check as check_print_cover
 from print_layout import specification
 
-SCHEMA = 4
+SCHEMA = 5
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -27,7 +28,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v4\0')
+        h = hashlib.sha256(b'book-output-v5\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -92,6 +93,7 @@ def snapshot(root, cache, data):
         download = root / 'dist' / f'{book}.pdf'
         interior = root / 'dist/kdp' / f'{book}-print.pdf'
         pages = check_interior(interior)
+        check_style(interior)
         check_interior(download)
         if check_pair(download, interior) != pages:
             raise ValueError(f'PDF pair page counts disagree for {book}')

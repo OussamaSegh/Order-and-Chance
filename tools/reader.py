@@ -53,6 +53,8 @@ def main(tome: str, build: str, out: str) -> None:
         page.write_text(text, encoding="utf-8")
     (out_dir / "sitemap.json").unlink(missing_ok=True)
     shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
+    for font in (ROOT / "common/fonts").glob("*.woff2"):
+        shutil.copy2(font, out_dir / "fonts" / font.name)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
     shutil.copy(TOOLS / "reader.js", out_dir / "reader.js")
     number = re.search(r"Volume ([0-9A-Z]+):", title).group(1)

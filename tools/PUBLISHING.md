@@ -13,10 +13,11 @@ plus the paperback cover and publishing metadata:
 | `dist/kdp/<tome>-print-metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
 | `dist/kdp/<tome>-listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
 
-In KDP choose: trim size 7 x 10 in, black ink on white paper, no bleed, matte or glossy cover.
+In KDP choose: trim size 7 x 10 in, **Premium color ink on white paper**, no bleed, matte or glossy cover.
 The download page links the publishing files on each volume's card ("Paperback & publishing files").
-The spine width is computed for white paper (0.002252 in per page); for cream paper the cover
-must be rebuilt with 0.0025 in per page. The `books` release on GitHub carries the same files.
+The spine width is computed for Premium color on white paper (**0.002347 in per page**).
+Colour interiors do not use the black-ink/cream-paper coefficients. Premium colour
+supports the short volumes from 24 pages; standard colour requires at least 72. The `books` release on GitHub carries the same files.
 
 KDP rules followed by the build (checked against the KDP help pages in October 2026):
 
@@ -29,7 +30,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   barcode area (lower right of the back cover) holds the ISBN barcode (EAN-13, `tools/ean13.py`)
   as soon as the volume's `main.tex` sets `\bookisbnprint`; in KDP, say the cover has a barcode.
   Before that it is left empty.
-- Fonts: every font is an embedded Type 1 font (no bitmap fonts); links are black in print.
+- Fonts: every font is embedded (no bitmap/Type 3 fonts); links use readable deep-blue/coral accents.
 - Publisher: the books are published from the authors' own KDP account with free KDP ISBNs,
   so the imprint is "Independently published". Once KDP assigns a volume's paperback ISBN, put it
   in that volume's `main.tex` with `\renewcommand{\bookisbnprint}{978-...}`.
@@ -73,7 +74,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 
 The production trim for all sixteen main volumes and three problem books is
 **7 × 10 inches**. `common/print-layout.json` defines trim, bleed and the white-paper
-spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
+premium-colour spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
 its tracked TeX counterpart. The normal build and CI reject an unsynchronised pair.
 EPUB remains reflowable. A4, fixed-page Kindle and phone PDF editions are retired;
 the build removes their old output files. The separate `-print.pdf` is now required.
@@ -109,7 +110,7 @@ front page, preserving body streams, annotations, metadata, bookmarks and named
 destinations. The cover has its own page label; interior labels are preserved.
 Install `tools/requirements-build.txt` for the pinned PDF library and Pillow.
 
-Cache schema 4 and the `library-v4-` Actions namespace force a full migration.
+Cache schema 5 and the `library-v5-` Actions namespace force a full migration.
 Before snapshotting, both PDFs are checked for 7 × 10 geometry and embedded
 fonts. The print page count must agree with paperback metadata; the reading file
 must have exactly one added cover and identical body streams, annotation counts,
@@ -128,8 +129,9 @@ Each source is 1049 × 1500 pixels
 (about 150 ppi at 7 × 10); no resampling can add detail. All front-cover outputs
 preserve the approved proportions; thumbnails use contain/auto height, never crop.
 Cover/wrap builds require XeLaTeX and bundled Inter fonts, plus Pillow for the exact
-image check (`texlive-xetex` and `python3-pil` in Ubuntu CI). Body builds still use
-pdfLaTeX. The author explicitly preferred the exact image over the old recreation.
+image check (`texlive-xetex` and `python3-pil` in Ubuntu CI). Interiors and standalone figures also use XeLaTeX, with the separate bundled
+Libertinus/Inter Text/DejaVu fonts in `common/fonts/`. The approved covers retain
+their own fonts and image masters. The author explicitly preferred the exact image over the old recreation.
 
 Paperback backs reuse the front’s original frame, masthead, slogan and author
 lettering through `tools/cover-back.tex`. Approved-image wraps match charcoal
@@ -169,3 +171,21 @@ committing regenerated assets. Import PDF masters outside TikZ and reuse their
 forms; importing inside a transformed picture can shift visible artwork even
 when the page dimensions and searchable copy pass. KDP's online preview and a
 physical proof remain the final checks for the printer's rendering and ink color.
+
+## Colour typography
+
+The serif body and matching mathematical face are Libertinus; headings are Inter
+Text and code is DejaVu Sans Mono. Files, licences and hashes are bundled in
+`common/fonts/`, independently of the cover assets. The PDF colophon names the new
+fonts. EPUB embeds the original OTF/TTF files, and readers use WOFF2 companions.
+
+Deep coral, blue, teal and plum distinguish the editorial roles on white paper.
+Body text/math stays dark; scientific figures keep their existing distinctions.
+Do not reinstate grayscale box overrides or hidden black links for print.
+`check_interior_style.py` rejects missing font families or colour accents, and
+`check_book_layout.py` rejects missing glyphs in addition to layout errors.
+`build.sh` sets XeTeX's extra token memory for the detailed 3D plots.
+
+KDP references checked for this change:
+- https://kdp.amazon.com/en_US/help/topic/G201953020 (premium colour spine coefficient).
+- https://kdp.amazon.com/en_US/help/topic/G201834180 (ink/paper options and page limits).

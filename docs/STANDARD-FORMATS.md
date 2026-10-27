@@ -17,8 +17,8 @@ Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF d
 | `dist/kdp/<tome>-print-metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
 | `dist/kdp/<tome>-listing.md` | Title fields, description and keywords |
 
-Both PDFs share identical typeset body pages: 11 pt Palatino, mirrored margins,
-recto chapter openings, black-ink styling and whole framed boxes. The reading PDF
+Both PDFs share identical typeset body pages: 11 pt Libertinus Serif/Math with Inter headings, mirrored margins,
+recto chapter openings, full-colour styling and whole framed boxes. The reading PDF
 has exactly one additional front-cover page; its interior labels and references
 are preserved. The print file excludes that page. Never calculate a paperback
 spine from the reading PDF's total count. Upload the print file as the paperback
@@ -45,7 +45,7 @@ use the same filenames. Pages flattens the publishing files into its download ro
 - `tools/book_pdf.py` clones the entire print PDF and inserts the approved front.
   It preserves body streams, annotations, named destinations, bookmarks and metadata.
   The added front is labeled “Cover”; original interior page labels are retained.
-- Output fingerprint/cache schema **4** and Actions namespace `library-v4-` force
+- Output fingerprint/cache schema **5** and Actions namespace `library-v5-` force
   all books to regenerate. Each cached volume must contain both PDFs and EPUB,
   reader, front, wrap and publishing metadata. Removed books are cleared.
 - Every page of both PDFs is checked at **504 × 720 pt**, with embedded fonts.
@@ -71,7 +71,7 @@ adding the separate reading covers.
 
 ## Verification
 
-- **40 publishing tests pass**, including PDF cover attachment, unchanged original
+- **48 publishing tests pass**, including PDF cover attachment, unchanged original
   print bytes/body streams, preserved labels/metadata/bookmarks/internal and
   external links, rejection of missing covers or modified body pages, distinct
   library links, complete-library validation and cache migration.
@@ -84,3 +84,29 @@ adding the separate reading covers.
   Its approved front pixels are unchanged. The generated library has nineteen
   separate reading/print link pairs; browser checks verify their downloads and
   desktop/320-pixel layout. Evidence: `build/pdf-pair-review/`.
+
+## Colour print and typefaces
+
+The latest author instruction requires colour printing. Both PDFs preserve the
+same full-colour interior, using 11 pt Libertinus Serif and Libertinus Math with
+Inter Text headings, 1.045 line spacing and DejaVu Sans Mono for Unicode code.
+The licensed font files are bundled in `common/fonts/`. EPUB embeds OTF/TTF faces;
+the online reader uses their WOFF2 companions. Reading systems may override EPUB
+fonts, colours or MathML rendering.
+
+Headings/reminders use deep coral; exercises blue, beauty notes teal and thinking
+prompts plum. Pale fills, dark body text and labelled box types preserve clarity.
+Existing scientific figure colours keep their meaning. Approved cover art and
+cover fonts are preserved; each print wrap uses its actual new page count.
+
+The paperback is **Premium color ink on white paper**, 7 × 10 inches, no bleed.
+This supports books down to 24 pages, including the short problem books; standard
+colour starts at 72 pages. Premium-colour spines use **0.002347 inch per page**,
+after even rounding. Metadata, listings, wrappers and cache validation share the
+canonical settings in `common/print-layout.json`.
+
+`check_interior_style.py` verifies actual embedded font families and coral/blue
+PDF drawing commands, while the TeX log gate rejects missing glyphs. Tests typeset
+mathematical alphabets, legacy domain notation and Unicode code, and reject an
+accidental grayscale override. The extra XeTeX token memory in `build.sh` supports
+the dense 3D plots with Unicode mathematics. These checks precede publication.

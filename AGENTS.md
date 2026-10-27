@@ -61,7 +61,8 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   regions. Use the same charcoal fill with restrained grain for approved-image
   wraps. Keep the wider left-aligned Inter blurb, generous leading and reserved
   barcode area; do not reinstate the old untracked heading or thin dim frame.
-- Covers/wraps compile with XeLaTeX; bodies remain pdfLaTeX/Palatino. The shared
+- Covers, interiors and standalone figures compile with XeLaTeX. Interiors use bundled
+  Libertinus Serif/Math, Inter Text headings and DejaVu Sans Mono for code. The shared
   template uses an image XObject to reuse the approved identity without re-encoding
   multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,
   actual embedded PDF pixels, and unchanged EPUB/reader/website PNGs when supplied.
@@ -73,8 +74,9 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   newly approved master, never a silently retyped replacement.
 - Interior/online light themes use neutral paper and accessible deep coral
   #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
-  distinguishable and preserve scientific figure distinctions. Keep the print
-  interior's black-ink grayscale overrides in both PDFs' shared body pages.
+  distinguishable and preserve scientific figure distinctions. Both PDFs use the same full-colour body: coral headings/reminders, blue exercises,
+  teal beauty notes and plum thinking prompts. Keep body text/maths dark on white.
+  The author's colour-print instruction supersedes the old grayscale overrides.
 - Preserve ISBNs, identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
 
@@ -90,6 +92,15 @@ Both use the final 7 × 10 layout, plus one reflowable EPUB. Typeset the interio
 once and attach the front without changing its body, links, bookmarks or printed
 page labels. Derive wraps and metadata from the print PDF's page count only.
 A4, fixed-page Kindle and phone PDF editions remain retired.
+Production paperback setting: **Premium color ink, white paper**, 7 × 10 inches,
+no bleed. Its spine coefficient is **0.002347 inch per even-rounded print page**.
+Premium colour accommodates the short problem books (24-page minimum); standard
+colour has a 72-page minimum. `common/print-layout.json` governs these settings.
+Body size remains 11 pt with 1.045 line spacing. Font files, licences and hashes
+are in `common/fonts/`; do not substitute machine fonts. `build.sh` supplies extra
+XeTeX token memory for dense plots. Missing glyphs, incorrect font families and
+lost colour accents fail the build as well as the existing pagination checks.
+
 Covers, listings and print metadata remain separate publishing assets. Historical
 comparison records do not override this decision.
 

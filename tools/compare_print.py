@@ -6,6 +6,7 @@ formats, build paperback wraps, copy to dist/, or publish anything.
 import argparse
 from concurrent.futures import ThreadPoolExecutor
 import json
+import os
 from pathlib import Path
 import re
 import shutil
@@ -39,9 +40,10 @@ def build(book, size, output):
         log = work / f'pass-{iteration}.stdout'
         with log.open('w') as stream:
             result = subprocess.run([
-                'pdflatex', '-interaction=nonstopmode', '-halt-on-error', '-recorder',
+                'xelatex', '-interaction=nonstopmode', '-halt-on-error', '-recorder',
                 '-output-directory=' + str(work), '-jobname=interior', command],
-                cwd=book, stdout=stream, stderr=subprocess.STDOUT)
+                cwd=book, stdout=stream, stderr=subprocess.STDOUT,
+                env={**os.environ, 'extra_mem_top': '12000000'})
         if result.returncode:
             raise RuntimeError(f'{size}: TeX failed; see {log}')
     filename = f'Mathematical-Maturity-{size}-print.pdf' if number == '0' else f'{book.name}-{size}-print.pdf'

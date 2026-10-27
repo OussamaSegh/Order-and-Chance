@@ -1,12 +1,6 @@
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\usepackage{mathpazo}
-% Typewriter text in the txfonts typewriter, a vector font (the default EC one is a bitmap without cm-super),
-% so that every font is an embedded Type 1 font, as print shops ask.
-\renewcommand{\ttdefault}{txtt}
-% Embedded vector sans-serif labels, consistent with the covers.
-\renewcommand{\sfdefault}{qhv}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\input{../common/interior-fonts}
+\linespread{1.045}
 % Every PDF uses the standard 7 x 10 inch book layout. Its identical file also
 % serves as the paperback interior; the full cover is a separate publishing asset.
 \input{../common/print-layout}
@@ -28,13 +22,7 @@
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \input{../common/design-colors}
-% Paperback interiors are black ink on white paper; tint hierarchy survives in gray.
-\ifprintformat
-  \colorlet{ocExercise}{black!65}
-  \colorlet{ocReminder}{black!70}
-  \colorlet{ocBeauty}{black!60}
-  \colorlet{ocThink}{black!75}
-\fi
+% The reading and print PDFs share the same full-colour interior on white paper.
 \usepackage[most]{tcolorbox}
 \usepackage{needspace}
 \usepackage{currfile}
@@ -64,6 +52,14 @@
 \widowpenalty=10000
 \displaywidowpenalty=10000
 \raggedbottom
+\usepackage{titlesec}
+\titleformat{\chapter}[display]
+  {\normalfont\sffamily\bfseries\raggedright\color{ocInk}}
+  {\large\color{ocAccent}\chaptertitlename\ \thechapter}{9pt}
+  {\fontsize{28}{33}\selectfont}[{\vspace{5pt}\color{ocAccent}\titlerule[0.7pt]}]
+\titlespacing*{\chapter}{0pt}{20pt}{26pt}
+\titleformat{\section}{\large\sffamily\bfseries\raggedright\color{ocAccent}}{\thesection}{0.7em}{}
+\titleformat{\subsection}{\normalsize\sffamily\bfseries\raggedright\color{ocBeauty}}{\thesubsection}{0.7em}{}
 \input{../common/figure-packages}
 \usepackage{pdfpages}
 \usepackage{adjustbox}
@@ -88,12 +84,8 @@
     \hbox{}\thispagestyle{empty}\newpage\fi\fi}
   \makeatother
 \fi
-% PDF links are black; online and EPUB themes are configured separately.
-\ifprintformat
-  \usepackage[hidelinks]{hyperref}
-\else
-  \usepackage[colorlinks=true,linkcolor=ocRust,urlcolor=ocRust]{hyperref}
-\fi
+\usepackage[colorlinks=true,linkcolor=ocLink,citecolor=ocLink,urlcolor=ocAccent]{hyperref}
+\input{../common/pdf-strings}
 % Half-title, series page, title page and copyright page (\maketitle builds all four).
 \input{../common/frontmatter}
 
@@ -111,7 +103,8 @@
 \newcounter{exo}[chapter]
 \renewcommand{\theexo}{\thechapter.\arabic{exo}}
 % The counter anchor travels inside the box when it moves to the next page.
-\tcbset{oc exercise/.style={code={\stepcounter{exo}},
+\tcbset{oc framed/.style={fonttitle=\sffamily\small\bfseries,coltitle=white},
+  oc exercise/.style={oc framed,code={\stepcounter{exo}},
   before upper={\addtocounter{exo}{-1}\refstepcounter{exo}}}}
 \newtcolorbox{exercise}[1][]{%
     oc exercise,enhanced,unbreakable,colback=ocExercise!6,colframe=ocExercise,
@@ -120,13 +113,13 @@
 \newenvironment{solution}[1]{%
   \par\ocOpeningSpace\medskip\noindent\textbf{\color{ocReminder}Solution of Exercise~\ref{#1}.}\quad}%
   {\hfill$\blacksquare$\par\medskip}
-\newtcolorbox{reminder}[1][]{enhanced,unbreakable,colback=ocReminder!4,colframe=ocReminder,
+\newtcolorbox{reminder}[1][]{oc framed,enhanced,unbreakable,colback=ocReminder!4,colframe=ocReminder,
   boxrule=0.6pt,arc=2pt,title={\textbf{Reminder}\ifx\relax#1\relax\else: #1\fi}}
-\newtcolorbox{beauty}{enhanced,unbreakable,colback=ocBeauty!5,colframe=ocBeauty,
+\newtcolorbox{beauty}{oc framed,enhanced,unbreakable,colback=ocBeauty!5,colframe=ocBeauty,
   boxrule=0.6pt,arc=2pt,title={\textbf{Why this is beautiful}}}
 
 % Pause and think: a question to try before reading on.
-\newtcolorbox{think}{enhanced,unbreakable,colback=ocThink!5,colframe=ocThink,
+\newtcolorbox{think}{oc framed,enhanced,unbreakable,colback=ocThink!5,colframe=ocThink,
   boxrule=0.6pt,arc=2pt,title={\textbf{Pause and think}}}
 % Hints, printed between the exercises and the solutions.
 \newenvironment{hint}[1]{%
@@ -135,11 +128,12 @@
 % Figures: \fig{name} draws figures/name.tex (a tikzpicture); the EPUB uses an SVG of it.
 \newcommand{\fig}[1]{\adjustbox{max width=\linewidth}{\input{figures/#1}}}
 
-\newcommand{\N}{\mathbb{N}}
-\newcommand{\Z}{\mathbb{Z}}
-\newcommand{\Q}{\mathbb{Q}}
-\newcommand{\R}{\mathbb{R}}
-\newcommand{\C}{\mathbb{C}}
+% Atomic groups also work in the manuscripts' unbraced scripts, e.g. \int_\R.
+\newcommand{\N}{{\mathbb{N}}}
+\newcommand{\Z}{{\mathbb{Z}}}
+\newcommand{\Q}{{\mathbb{Q}}}
+\newcommand{\R}{{\mathbb{R}}}
+\newcommand{\C}{{\mathbb{C}}}
 \newcommand{\dd}{\,\mathrm{d}}
 % Stirling numbers (Volume 4): \stirlingii nk (partitions), \stirlingi nk (cycles).
 \newcommand{\stirlingii}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}

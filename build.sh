@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 # Build the 7 x 10 download PDF with cover, print interior and EPUB of each tome
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
-# Requires pdflatex, xelatex, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
+# Requires xelatex, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
 set -euo pipefail
 export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-8
+# Unicode math plus dense PGFPlots surfaces needs more token memory than XeTeX's default.
+export extra_mem_top=12000000
 root="$(cd "$(dirname "$0")" && pwd)"
 mkdir -p "$root/dist/kdp" "$root/build"
 # Cache the approved image as a PDF XObject. First pass only writes XDV/aux;
@@ -54,12 +56,15 @@ for tome in "${tomes[@]}"; do
 
   # Typeset the print interior once: 7 x 10 in, no bleed. The full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
-  # paper, 0.002252in per page. The inside margin is the one KDP asks for at that page count.
+  # paper, 0.002347in per page for premium colour. The inside margin is the one KDP asks for at that page count.
   inner=0.75in
+  # Discard generated state from earlier font engines (e.g. Palatino's PazoBB
+  # tokens in an old TOC). Three clean passes rebuild all reference state.
+  rm -f "$out/main.aux" "$out/main.toc" "$out/main.out" "$out/main.lof" "$out/main.lot"
   for pass in 1 2; do
     (cd "$root/$tome" &&
       for _ in 1 2 3; do
-        pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
+        xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
           "$meta\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main.stdout" ||
           { tail -40 "$out/main.stdout"; exit 1; }
       done)
@@ -69,6 +74,7 @@ for tome in "${tomes[@]}"; do
   done
   python3 "$root/tools/check_book_layout.py" "$out/main.log" "$out/main.oclayout"
   python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
+  python3 "$root/tools/check_interior_style.py" "$out/main.pdf"
   cp "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf"
   python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$root/dist/kdp/$tome-print.pdf" "$root/dist/$tome.pdf"
   python3 "$root/tools/check_cover_pdf.py" "$root/dist/$tome.pdf" --interior
@@ -107,7 +113,7 @@ for tome in "${tomes[@]}"; do
     [ -e "$fig" ] || continue
     name=$(basename "$fig" .tex)
     (cd "$root" &&
-      pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out/figures" -jobname="$name" \
+      xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out/figures" -jobname="$name" \
         "\\def\\FIG{$tome/figures/$name}\\input{tools/figure.tex}" >"$out/figures/$name.log" ||
         { tail -30 "$out/figures/$name.log"; exit 1; })
     pdftocairo -svg "$out/figures/$name.pdf" "$out/figures/$name.svg"
@@ -118,6 +124,7 @@ for tome in "${tomes[@]}"; do
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
       --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
+      --epub-embed-font="$root/common/fonts/*.otf" --epub-embed-font="$root/common/fonts/*.ttf" \
       --metadata title="${title:-$tome}" --metadata subtitle="$(python3 -c 'import json,sys; from pathlib import Path; print(json.loads(Path(sys.argv[1]).read_text()).get(sys.argv[2], ""))' "$root/common/volume-subtitles.json" "$num")" --metadata author="SEGHAIER Oussama" --metadata lang=en \
       --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$tome/main.tex")" \
       --metadata subject=Mathematics \

@@ -7,6 +7,10 @@ import re
 def check(log, measurements):
     log, measurements = Path(log), Path(measurements)
     text = log.read_text(errors='replace')
+    if 'Missing character:' in text:
+        raise ValueError(f'{log}: missing font glyph; text or mathematics would be lost')
+    if re.search(r'Font shape [^\n]*undefined', text):
+        raise ValueError(f'{log}: requested font shape is unavailable')
     if re.search(r'Overfull \\vbox|Float too large for page', text):
         raise ValueError(f'{log}: vertical overflow or oversized figure')
     if re.search(r'Overfull \\hbox', text):
