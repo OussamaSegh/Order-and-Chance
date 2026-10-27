@@ -16,23 +16,28 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   same image**. `tools/assets/approved-volume-0.png` is an immutable byte-for-byte
   copy of the approved reference; use it unchanged as Volume 0's visible front.
   Do not retype, redraw, recolor, regenerate, stretch or crop that front.
-- The other eighteen fronts reuse the original frame, header, slogan and author
+- Volume 1 now uses the separately approved immutable Ulam-inspired image
+  `tools/assets/approved-volume-1.png` for every front, including the reading PDF,
+  EPUB, HTML/library PNGs and 7 × 10 paperback wrap. Do not redraw or retype it.
+  Its reference/hash are `docs/reference/approved-charcoal-coral-volume-1.png` and
+  `tools/assets/approved-cover-1.json`; verify with `--number 1`.
+- The other seventeen fronts reuse the original frame, header, slogan and author
   directly from the approved image. Only their volume label, title, subtitle and
   content-specific illustration change. Bundled licensed Inter light/semibold/italic
   supplies variable text; the common visible lettering is the original image.
 - This explicit exact-image request supersedes previous vector-only restrictions.
-  Volume 0 has raster visible art/type and a transparent searchable text layer.
+  Volumes 0 and 1 have raster visible art/type and a transparent searchable text layer.
   Preserve the original 1049 × 1500 pixels (about 150 ppi at 7 × 10); never claim
-  that enlarging this image adds print detail. Other illustrations remain vectors.
+  that enlarging this image adds print detail. The remaining seventeen illustrations remain vectors.
 - Preserve the approved aspect ratio in EPUB, reader and library thumbnails.
   EPUB fronts use the same 7:10 composition as print, not the old stretched 1:1.6
-  version. Volume 0's EPUB/reader/library PNG is the original file unchanged.
+  version. Volumes 0 and 1's EPUB/reader/library PNGs is the original file unchanged.
 - Covers/wraps compile with XeLaTeX; bodies remain pdfLaTeX/Palatino. The shared
   template uses an image XObject to reuse the approved identity without re-encoding
   multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,
   actual embedded PDF pixels, and unchanged EPUB/reader/website PNGs when supplied.
-- `tools/cover_plates.py` regenerates eighteen vector plates and records the approved
-  master for Volume 0 in the manifest. Do not recreate Volume 0's discarded diagram.
+- `tools/cover_plates.py` regenerates seventeen vector plates and records the approved
+  masters for Volumes 0 and 1 in the manifest. Do not recreate Volume 0's discarded diagram.
 - Canonical explanatory subtitles are `common/volume-subtitles.json`; keep covers,
   PDF title pages, EPUB metadata, KDP listings, readers and library cards in sync.
   Volume 0 keeps **A Foundations Prelude**; changing its visible text requires a
@@ -71,7 +76,7 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 
 - Inspect git status and fetch current main before edits; preserve concurrent work.
 - Activate this workspace's toolchain with `source /workspace/order-chance-system/activate.sh`.
-- `python3 tools/cover_plates.py` regenerates eighteen plates and records the unchanged Volume 0 master.
+- `python3 tools/cover_plates.py` regenerates seventeen plates and records both unchanged approved masters.
 - `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
 - `./build.sh [tome...]` builds the 7×10 reading PDF with cover, print PDF, EPUB, eBook cover,

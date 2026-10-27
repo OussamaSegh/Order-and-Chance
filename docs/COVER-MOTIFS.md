@@ -1,6 +1,6 @@
 # Mathematical cover illustrations
 
-Volume 0 uses the exact approved image unchanged. The other eighteen illustrations
+Volumes 0 and 1 use their exact approved images unchanged. The other seventeen illustrations
 use the coordinated charcoal/coral vector style. Each cover has
 one substantial main plate tied to its own mathematics, without a top supporting mark.
 The table identifies the main subject and manuscript evidence; the generator
@@ -10,7 +10,7 @@ they are not proofs of open conjectures.
 | Volume | New illustration | Manuscript evidence |
 |---|---|---|
 | 0: Mathematical Maturity | Gaussian wireframe surface | ch06-integrals-taylor.tex; ch08-counting-probability.tex |
-| 1: The Integers | Lattice circle and 3–4–5 triangle | ch07-sums-of-squares.tex |
+| 1: The Integers | Approved Ulam-inspired prime lattice artwork | ch02-primes.tex |
 | 2: Structures | Truncated icosahedron, rotations and A5 | ch11-characters.tex; ch12-quaternions.tex |
 | 3: Chance | Binomial board and Gaussian approximation | ch02-discrete.tex; ch06-clt.tex |
 | 4: The Art of Calculation | Fourier partial sums and Gibbs overshoot | ch06-fourier.tex |
@@ -29,10 +29,13 @@ they are not proofs of open conjectures.
 | P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
 | P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |
 
-Generate the eighteen vector plates and record the unchanged approved master with `python3 tools/cover_plates.py`. The machine-readable
+Generate the seventeen vector plates and record both unchanged approved masters with `python3 tools/cover_plates.py`. The machine-readable
 manifest is [cover-art-manifest.json](cover-art-manifest.json).
 
-Geometry checks include the exact 3–4–5 identity, sorted Hermitian eigenvalues,
+Volume 1’s generated artwork evokes Ulam prime patterns; it is an approved illustration,
+not a certified numerical Ulam plot. The former circle/triangle plate is retired.
+
+Geometry checks include sorted Hermitian eigenvalues,
 the two-step conjugate-gradient solution, exact binomial masses and rational Ford
 circle radii. Steinhaus samples now use one uniform angle for both sine and cosine;
 this fixes the old nonuniform angle construction. Lozenge tilings are finite

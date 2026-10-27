@@ -1,4 +1,4 @@
-"""Verify that the approved Volume 0 image is used unchanged, not reconstructed.
+"""Verify that the approved cover image is used unchanged, not reconstructed.
 
 Usage: python3 tools/check_cover_reference.py front.pdf [--epub book.epub]
 Requires poppler and Pillow. Compares actual decoded PDF image pixels, plus exact
@@ -18,15 +18,18 @@ from PIL import Image
 ROOT=Path(__file__).resolve().parent.parent
 
 
-def check(pdf, epub=None, reader=None, site=None):
-    spec=json.loads((ROOT/'tools/assets/approved-cover.json').read_text())
+def check(pdf, epub=None, reader=None, site=None, number="0"):
+    if not str(number).isalnum():
+        raise ValueError("Invalid volume number")
+    name = "approved-cover.json" if str(number) == "0" else f"approved-cover-{number}.json"
+    spec=json.loads((ROOT/'tools/assets'/name).read_text())
     source=ROOT/spec['source']
     master=ROOT/spec['asset']
     data=source.read_bytes()
     assert hashlib.sha256(data).hexdigest()==spec['sha256'], 'Approved reference was changed'
     assert master.read_bytes()==data, 'Production master differs from approved reference'
     metadata=(ROOT/spec['book']/'main.tex').read_text()
-    assert f"Tome 0: {spec['title']}" in metadata, 'Visible master no longer matches the book title'
+    assert f"Tome {number}: {spec['title']}" in metadata, 'Visible master no longer matches the book title'
     expected=Image.open(master).convert('RGB')
     with tempfile.TemporaryDirectory() as directory:
         prefix=Path(directory)/'embedded'
@@ -54,8 +57,9 @@ def check(pdf, epub=None, reader=None, site=None):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('pdf',type=Path)
+    p.add_argument('--number',default='0',help='Approved volume number (default: 0)')
     p.add_argument('--epub',type=Path)
     p.add_argument('--reader',type=Path)
     p.add_argument('--site',type=Path)
     a=p.parse_args()
-    check(a.pdf,a.epub,a.reader,a.site)
+    check(a.pdf,a.epub,a.reader,a.site,a.number)

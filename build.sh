@@ -35,18 +35,18 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/check_edition_copy.py" "$tome"
   out="$root/build/$tome"
   mkdir -p "$out"
-  # The approved master supplies Volume 0; all other fronts reuse its exact identity.
+  # Approved image masters supply their volumes; other fronts reuse the series identity.
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
   num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
   # The approved front supplies the downloadable PDF, EPUB and separate print wrap.
   compile_cover "$out" cover "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}"
-  if [ "$num" = 0 ]; then
-    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf"
+  if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf" --number "$num"
   fi
   if ! $pdf_only; then
-    if [ "$num" = 0 ]; then
-      cp "$root/tools/assets/approved-volume-0.png" "$out/cover.png"
+    if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
+      cp "$root/tools/assets/approved-volume-$num.png" "$out/cover.png"
     else
       pdftoppm -png -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
     fi
@@ -72,8 +72,8 @@ for tome in "${tomes[@]}"; do
   cp "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf"
   python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$root/dist/kdp/$tome-print.pdf" "$root/dist/$tome.pdf"
   python3 "$root/tools/check_cover_pdf.py" "$root/dist/$tome.pdf" --interior
-  if [ "$num" = 0 ]; then
-    python3 "$root/tools/check_cover_reference.py" "$root/dist/$tome.pdf"
+  if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
+    python3 "$root/tools/check_cover_reference.py" "$root/dist/$tome.pdf" --number "$num"
   fi
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
   spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$tome-print-metadata.json")
@@ -88,8 +88,8 @@ for tome in "${tomes[@]}"; do
   fi
   compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
-  if [ "$num" = 0 ]; then
-    python3 "$root/tools/check_cover_reference.py" "$out/cover-wrap.pdf"
+  if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover-wrap.pdf" --number "$num"
   fi
   cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
@@ -126,8 +126,8 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
-  if [ "$num" = 0 ]; then
-    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf" --epub "$root/dist/$tome.epub" --reader "$root/dist/html/$tome"
+  if [ -f "$root/tools/assets/approved-volume-$num.png" ]; then
+    python3 "$root/tools/check_cover_reference.py" "$out/cover.pdf" --number "$num" --epub "$root/dist/$tome.epub" --reader "$root/dist/html/$tome"
   fi
   echo "   dist/$tome.pdf (7 x 10 in)  dist/$tome.epub  dist/html/$tome/"
   echo "   KDP: dist/kdp/$tome-print.pdf ($pages interior pages); dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)"

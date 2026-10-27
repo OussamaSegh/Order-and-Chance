@@ -120,9 +120,11 @@ PDF, EPUB, reader, covers or metadata makes a cached book incomplete.
 
 ## Exact approved cover master
 
-Volume 0 uses `tools/assets/approved-volume-0.png` unchanged. It is embedded as-is
+Volumes 0 and 1 use `tools/assets/approved-volume-0.png` and
+`tools/assets/approved-volume-1.png` unchanged. Each is embedded as-is
 in the paperback front, copied byte-for-byte into EPUB, reader and library PNGs,
-and checked by `tools/check_cover_reference.py`. The source is 1049 × 1500 pixels
+and checked by `tools/check_cover_reference.py` (add `--number 1` for Volume 1).
+Each source is 1049 × 1500 pixels
 (about 150 ppi at 7 × 10); no resampling can add detail. All front-cover outputs
 preserve the approved proportions; thumbnails use contain/auto height, never crop.
 Cover/wrap builds require XeLaTeX and bundled Inter fonts, plus Pillow for the exact

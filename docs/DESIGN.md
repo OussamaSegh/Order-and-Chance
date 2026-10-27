@@ -1,3 +1,30 @@
+# Volume 1 approved-image update
+
+The author approved the generated **Ulam-inspired coral prime lattice** cover and
+requested it for Volume 1’s digital and print covers. The approved image is
+`docs/reference/approved-charcoal-coral-volume-1.png`; its immutable production copy
+is `tools/assets/approved-volume-1.png`, recorded in `approved-cover-1.json`.
+Its SHA-256 is `0e75f9581d6a25d59d7230a7b028bf7dcd617368fbddf5ee8cc535ea8868e90a`.
+Use this whole image unchanged; the previous circle/triangle plate is retired.
+This is approved illustrative artwork inspired by prime patterns, not a certified
+numerical plot. Its native 1049 × 1500 pixels give about 150 ppi at 7 × 10 inches.
+
+The reading PDF, EPUB, HTML reader, library thumbnail and paperback front all use
+the same master. EPUB/reader/library PNGs retain its exact file bytes. The print
+wrap retains actual interior-page-derived spine sizing, bleed and ISBN/barcode.
+`check_cover_reference.py --number 1` checks embedded production pixels and digital
+copies; its default Volume 0 checks remain intact. Seventeen other covers retain
+their existing content-specific vector art. Latest main **73f370d** was pulled first,
+preserving the separate covered reading PDF and coverless print PDF policy below.
+
+Local verification: all 41 publishing tests pass; both approved-image covers pass
+the embedded-pixel check and the front-size/font/copy checks in digital and 7 × 10
+formats. A regression test confirms both library PNGs bypass rasterization.
+The previous main run failed because site assembly imported `pypdf` before its
+installation step; the helper installation now runs immediately after checkout.
+
+---
+
 # Current PDF delivery decision
 
 The author now requires **two distinct 7 × 10 inch PDFs per volume**: the public

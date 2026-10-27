@@ -55,8 +55,10 @@ def main(tome: str, build: str, out: str) -> None:
     shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
     shutil.copy(TOOLS / "reader.js", out_dir / "reader.js")
-    if tome == "tome0-mathematical-maturity":
-        shutil.copy2(TOOLS / "assets/approved-volume-0.png", out_dir / "cover.png")
+    number = re.search(r"Tome ([0-9A-Z]+):", title).group(1)
+    master = TOOLS / f"assets/approved-volume-{number}.png"
+    if master.is_file():
+        shutil.copy2(master, out_dir / "cover.png")
     else:
         subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to", "960",
                         str(build_dir / "cover.pdf"), str(out_dir / "cover")], check=True)

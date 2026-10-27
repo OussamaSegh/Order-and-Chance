@@ -21,6 +21,29 @@ class Tags(HTMLParser):
 
 
 class LibraryTest(unittest.TestCase):
+    def test_approved_cover_pngs_are_copied_without_rasterization(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dist, out = root / "dist", root / "site"
+            dist.mkdir()
+            books = [("0", "tome0-mathematical-maturity", "Mathematical Maturity"),
+                     ("1", "tome1-integers", "The Integers")]
+            for number, book, title in books:
+                (root / book).mkdir()
+                (root / book / "main.tex").write_text(
+                    f"% epub-title: Order and Chance. Tome {number}: {title}\n")
+                (dist / f"{book}.pdf").write_bytes(b"fixture")
+                (root / "build" / book).mkdir(parents=True)
+                (root / "build" / book / "cover.pdf").write_bytes(b"fixture")
+            with patch.object(site, "ROOT", root), patch.object(site.subprocess, "run") as render:
+                site.main(str(dist), str(out))
+                render.assert_not_called()
+            assets = Path(site.__file__).parent / "assets"
+            for number, book, _ in books:
+                with self.subTest(volume=number):
+                    self.assertEqual((out / f"{book}-cover.png").read_bytes(),
+                                     (assets / f"approved-volume-{number}.png").read_bytes())
+
     def test_available_formats_collections_and_retired_outputs(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -2,7 +2,7 @@
 
 Run from any directory with the build's Python (numpy is needed for matrix plates).
 Geometry primitives in cover_motifs are reused as mathematical algorithms, with
-fresh parameters and new compositions. Volume 0 uses the immutable author-approved image; other mathematical plates remain vectors.
+fresh parameters and new compositions. Volumes 0 and 1 use immutable author-approved images; other mathematical plates remain vectors.
 """
 import math
 from pathlib import Path
@@ -16,21 +16,6 @@ def dot(x,y,r=.026,style='accent'):
     return r'\fill['+style+'] '+point(x,y)+f' circle ({r}in);'
 def circle(r,style='accent,line width=.55pt'):
     return r'\draw['+style+f'] (0,0) circle ({r}in);'
-
-def integer_circle():
-    """Radius-5 lattice circle and exact 3-4-5 triangle: Chapter 7 sums of squares."""
-    out=['% Integer points a^2+b^2=25, with exact triangle (0,0),(3,0),(3,4).']
-    u=.38
-    for k in range(-5,6):
-        out += [line([(u*k,-5*u),(u*k,5*u)],'accent,opacity=.21,line width=.3pt'),line([(-5*u,u*k),(5*u,u*k)],'accent,opacity=.21,line width=.3pt')]
-    out += [circle(5*u,'accent,line width=1pt'),line([(-5.5*u,0),(5.5*u,0)],'accent,opacity=.7,line width=.6pt,->'),line([(0,-5.5*u),(0,5.5*u)],'accent,opacity=.7,line width=.6pt,->')]
-    for x in range(-5,6):
-        for y in range(-5,6):
-            if x*x+y*y==25:out.append(dot(x*u,y*u,.045))
-    out.append(line([(0,0),(3*u,0),(3*u,4*u),(0,0)],'accent,line width=1.3pt'))
-    out.append(line([(2.65*u,0),(2.65*u,.35*u),(3*u,.35*u)],'accent,line width=.6pt'))
-    assert 3*3+4*4==25
-    return '\n'.join(out)
 
 def dyson():
     """Fresh Hermitian Brownian eigenvalue paths, computed with numpy.linalg.eigvalsh."""
@@ -63,7 +48,7 @@ def gem_bands():
 # One main plate per book, mathematical subject and chapter evidence.
 PLATES={
  'tome0-mathematical-maturity':(None,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
- 'tome1-integers':(integer_circle,'Lattice circle and 3–4–5 triangle','ch07-sums-of-squares.tex'),
+ 'tome1-integers':(None,'Approved Ulam-inspired prime lattice artwork','ch02-primes.tex'),
  'tome2-structures':(g.buckyball,'Truncated icosahedron, rotations and A5','ch11-characters.tex; ch12-quaternions.tex'),
  'tome3-chance':(lambda:g.galton_board(rows=10,balls=18),'Binomial board and Gaussian approximation','ch02-discrete.tex; ch06-clt.tex'),
  'tome4-calculation':(lambda:g.fourier_square((1,3,11,31)),'Fourier partial sums and Gibbs overshoot','ch06-fourier.tex'),
@@ -90,7 +75,8 @@ def main():
     manifest=[]
     for book,(make,subject,evidence) in PLATES.items():
         if make is None:
-            asset='tools/assets/approved-volume-0.png'
+            number=book.split('-',1)[0].removeprefix('tome')
+            asset=f'tools/assets/approved-volume-{number}.png'
             content=(ROOT/asset).read_bytes()
             manifest.append(dict(book=book,subject=subject,evidence=evidence,
                 renderer='approved-image',source=asset,sha256=hashlib.sha256(content).hexdigest()))
