@@ -1,6 +1,6 @@
 # Tome C4, Information, Codes and Secrets: handoff (paused 2026-10-26)
 
-Paused at the user's request (all computing-track threads paused).
+Paused at the user's request (first 2026-10-26 23:25, resumed 2026-10-27 00:47, paused again 00:49).
 
 Plan (12 chapters, promises table, conventions): https://claude.ai/artifact/Ez2z1vnNAfWswgD92i9WPG
 
@@ -11,8 +11,8 @@ Plan (12 chapters, promises table, conventions): https://claude.ai/artifact/Ez2z
 | 1 Measuring information | chapters/ch01-entropy.tex | Done: text, figures, notebook python/tomeC4/ch01-entropy.ipynb, all formats clean |
 | 2 Compression | chapters/ch02-compression.tex | Done: text, figures, notebook, all formats clean |
 | 3 Noisy channels | chapters/ch03-channels.tex | Done: text, figure, notebook (numbers diffed), all formats clean |
-| 4 Kolmogorov complexity | chapters/ch04-kolmogorov.tex, figures/ch04-landscape.tex | Drafted and fact-checked; builds cleanly in all four formats. NOT yet in main.tex (its \input line is commented out). To do: notebook ch04-kolmogorov (compression proxies, pi bits, 57 letters of the Berry phrase, runs, sorting bound, p_k <= A k (log k)^2 ratios), then uncomment the \input line |
-| 5–12 | — | Not started; see the plan |
+| 4 Kolmogorov complexity | chapters/ch04-kolmogorov.tex | Done: text, figure ch04-landscape, notebook (numbers checked), in the book, all formats clean |
+| 5–12 | — | Not started; next step is Chapter 5 (linear codes), see the plan |
 
 Front matter, preface, blurb.tex, kdp.md and the E8 cover motif (tools/cover_motifs.py, e8_roots) are done.
 
