@@ -57,7 +57,7 @@ def main(tome_dir: str, out: str) -> None:
     title_line = re.search(r"^% epub-title: (.*)$", (tome / "main.tex").read_text(encoding="utf-8"), re.M).group(1)
     series, _, book = title_line.partition(". ")
     number, _, title = book.partition(": ")
-    number = number.replace("Tome ", "")
+    number = number.replace("Volume ", "")
     kdp = tome / "kdp.md"
     problems = []
     if kdp.exists():
@@ -76,14 +76,16 @@ def main(tome_dir: str, out: str) -> None:
     else:
         blurb = tome / "blurb.tex"
         description = latex_to_text(blurb.read_text(encoding="utf-8")) if blurb.exists() else ""
+        # Listings use the English series term without editing protected back covers.
+        description = re.sub(r'\btome(s?)\b', lambda m: 'volume' + m[1], description)
         keywords = []
         source = "blurb.tex (no kdp.md yet)"
-    lines = [f"# KDP listing: {series}, Tome {number}: {title}", "",
+    lines = [f"# KDP listing: {series}, Volume {number}: {title}", "",
              "Paste these fields into KDP (Kindle eBook and Paperback details). "
              f"Description and keywords from {source}.", "",
              "| Field | Value |", "|---|---|",
              f"| Language | English |",
-             f"| Book title | Tome {number}: {title} |",
+             f"| Book title | Volume {number}: {title} |",
              f"| Subtitle | {subtitle(number)} |",
              f"| Series | {series} (volume: {number}) |",
              "| Edition number | 1 |",

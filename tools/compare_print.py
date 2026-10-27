@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 def build(book, size, output):
-    metadata = re.search(r'^% epub-title: .*?Tome ([^:]+): (.+)$',
+    metadata = re.search(r'^% epub-title: .*?Volume ([^:]+): (.+)$',
                          (book / 'main.tex').read_text(), re.M)
     if not metadata:
         raise ValueError('Book lacks title metadata')

@@ -32,7 +32,7 @@ class LibraryTest(unittest.TestCase):
             for number, book, title in books:
                 (root / book).mkdir()
                 (root / book / "main.tex").write_text(
-                    f"% epub-title: Order and Chance. Tome {number}: {title}\n")
+                    f"% epub-title: Order and Chance. Volume {number}: {title}\n")
                 (dist / f"{book}.pdf").write_bytes(b"fixture")
                 (root / "build" / book).mkdir(parents=True)
                 (root / "build" / book / "cover.pdf").write_bytes(b"fixture")

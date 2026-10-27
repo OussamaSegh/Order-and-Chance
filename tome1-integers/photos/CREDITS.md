@@ -1,6 +1,6 @@
 # Historical illustrations
 
-These four public-domain reproductions are reused from the series’ Tome 0 image collection. Credits also appear beside the images and in Tome 1’s final illustration credits. No new third-party photographs were commissioned or generated.
+These four public-domain reproductions are reused from the series’ Volume 0 image collection. Credits also appear beside the images and in Volume 1’s final illustration credits. No new third-party photographs were commissioned or generated.
 
 | File | Subject and source credit | Status |
 |---|---|---|

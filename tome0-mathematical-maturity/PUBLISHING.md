@@ -1,4 +1,4 @@
-# Tome 0 publication handoff
+# Volume 0 publication handoff
 
 From the repository root, activate the environment and build:
 

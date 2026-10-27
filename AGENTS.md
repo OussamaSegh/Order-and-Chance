@@ -11,6 +11,10 @@ marks. The author explicitly requested implementation across all books, paperbac
 wraps, content accents, HTML readers and the GitHub Pages library.
 
 - Series: **Order and Chance**. Author: **SEGHAIER Oussama**.
+- Use **Volume/Volumes** in English book text, titles, cross-references, metadata
+  and public pages. Existing `tome…` directory/file identifiers and TeX macro names
+  remain stable. The author explicitly excluded the already approved covers from
+  this terminology change; do not edit their artwork, templates or back-cover text.
 - Slogan: **Discover the patterns. Understand the proofs.**
 - The author rejected the vector recreation and explicitly requested **exactly the
   same image**. `tools/assets/approved-volume-0.png` is an immutable byte-for-byte

@@ -1,3 +1,30 @@
+# English series terminology
+
+The author chose **Volume/Volumes** for the English series and explicitly asked
+to leave the covers alone. Book half-title/title/copyright pages, PDF and EPUB
+metadata, chapter prose, cross-volume references, the series catalogue, publishing
+listings, website labels and reader metadata now use that term. Numbering and
+reference identifiers are preserved. Existing `tome…` paths, TeX macros and
+technical identifiers remain stable so download URLs and build inputs keep working.
+
+Title parsers and the approved-image validator now read the `Volume N:` metadata
+prefix; cover artwork, cover templates, back-cover text and image masters are
+unchanged. Listings generated from protected back-cover text normalize the word
+in the listing alone. Normal production wraps still derive their spine geometry
+from rebuilt print interiors. Historical review records retain their original
+terminology. The source audit checks the protected cover files by hash, while
+the normal layout guards check the reflow caused by the longer English word.
+
+Verification: 41 publishing tests pass, all 19 generated listing titles and
+descriptions use the new term, and label/reference identifiers are unchanged
+across 270 edited book source files. Hash checks confirm that the protected
+cover source/assets are untouched by this terminology change. Local proof logs, source/hash audits and title
+page previews are retained in `build/volume-terminology/`; the all-volume build
+checks both PDFs and EPUB/reader outputs before publication.
+
+
+---
+
 # Back-cover coherence correction
 
 The author rejected the back’s mismatched charcoal appearance and typography.

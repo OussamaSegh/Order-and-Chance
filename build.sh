@@ -37,7 +37,7 @@ for tome in "${tomes[@]}"; do
   mkdir -p "$out"
   # Approved image masters supply their volumes; other fronts reuse the series identity.
   title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
-  num=$(sed -n 's/^.*Tome \([0-9A-Z]*\):.*/\1/p' <<<"$title")
+  num=$(sed -n 's/^.*Volume \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
   # The approved front supplies the downloadable PDF, EPUB and separate print wrap.
   compile_cover "$out" cover "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}"

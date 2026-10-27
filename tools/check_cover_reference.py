@@ -29,7 +29,7 @@ def check(pdf, epub=None, reader=None, site=None, number="0"):
     assert hashlib.sha256(data).hexdigest()==spec['sha256'], 'Approved reference was changed'
     assert master.read_bytes()==data, 'Production master differs from approved reference'
     metadata=(ROOT/spec['book']/'main.tex').read_text()
-    assert f"Tome {number}: {spec['title']}" in metadata, 'Visible master no longer matches the book title'
+    assert f"Volume {number}: {spec['title']}" in metadata, 'Visible master no longer matches the book title'
     expected=Image.open(master).convert('RGB')
     with tempfile.TemporaryDirectory() as directory:
         prefix=Path(directory)/'embedded'

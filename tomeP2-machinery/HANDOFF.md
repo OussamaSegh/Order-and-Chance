@@ -1,9 +1,9 @@
 # Problem Book II: Machinery, handoff (paused 2026-10-26)
 
-Paused at the user's request (only the Tome 11 to 15 threads keep working). Resume from here.
+Paused at the user's request (only the Volume 11 to 15 threads keep working). Resume from here.
 
 - Plan (chapter headlines for all 14 chapters, section "P2"): https://claude.ai/artifact/UVGXXYeZ1nXLUUkzxtF7LC
-- Scope: Tomes 6 to 9, 14 chapters, about 300 problems (Chapters 1 to 13 have 22 problems, Chapter 13 has 20, Chapter 14 has 16 Journeys). Write Chapters 1 to 9 first, then 10 to 14 (Tome 9 material).
+- Scope: Volumes 6 to 9, 14 chapters, about 300 problems (Chapters 1 to 13 have 22 problems, Chapter 13 has 20, Chapter 14 has 16 Journeys). Write Chapters 1 to 9 first, then 10 to 14 (Volume 9 material).
 - Format: the same as Problem Book I (sourced story, epigraph, think box; statements never name the tool; hints before solutions; solutions with \idea, \writeup, \tools, \leads; map table and sources; at least 2 figures; companion notebook in python/tomeP2 with Part A checking every number and Part B a lab).
 - Cover motif: Hilbert curve (tools/cover_motifs.py, hilbert_curve).
 - Figure and notebook generator scripts live outside the repo, in the project files folder math-book/problem-scripts (figs_p2cNN.py, mknb_p2cNN.py).

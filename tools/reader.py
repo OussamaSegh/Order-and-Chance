@@ -28,7 +28,7 @@ def main(tome: str, build: str, out: str) -> None:
          "--lua-filter", str(TOOLS / "epub.lua"), "--template", str(TOOLS / "reader-template.html"),
          "--metadata", "title=" + title, "--metadata", "lang=en",
          "-V", "booktitle=" + book,
-         "-V", "volumesubtitle=" + subtitle(re.search(r"Tome ([0-9A-Z]+):", title).group(1)), "-V", "tome=" + tome, "-o", str(out_dir)],
+         "-V", "volumesubtitle=" + subtitle(re.search(r"Volume ([0-9A-Z]+):", title).group(1)), "-V", "tome=" + tome, "-o", str(out_dir)],
         cwd=ROOT / tome, check=True)
     # Pandoc names the pages of unnumbered chapters "-preface.html", and of chapters with a
     # \label "3-ch:eigen.html"; make plain file names.
@@ -55,7 +55,7 @@ def main(tome: str, build: str, out: str) -> None:
     shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
     shutil.copy(TOOLS / "reader.js", out_dir / "reader.js")
-    number = re.search(r"Tome ([0-9A-Z]+):", title).group(1)
+    number = re.search(r"Volume ([0-9A-Z]+):", title).group(1)
     master = TOOLS / f"assets/approved-volume-{number}.png"
     if master.is_file():
         shutil.copy2(master, out_dir / "cover.png")

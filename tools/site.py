@@ -98,7 +98,7 @@ def main(dist: str, out: str) -> None:
         cover = '<div class="cover placeholder" aria-hidden="true">∑</div>'
         cover_pdf = ROOT / "build" / tome / "cover.pdf"
         if cover_pdf.exists():
-            number = re.search(r"Tome ([0-9A-Z]+):", title)
+            number = re.search(r"Volume ([0-9A-Z]+):", title)
             master = assets / f"approved-volume-{number.group(1)}.png" if number else None
             if master and master.is_file():
                 shutil.copy2(master, out_dir / f"{tome}-cover.png")
@@ -110,7 +110,7 @@ def main(dist: str, out: str) -> None:
         prefix = match.group(1) if match else ""
         collection, label = {"P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))
         epub_link = f'<a href="{epub.name}" download>EPUB</a>' if epub.exists() else ""
-        number = re.search(r"Tome ([0-9A-Z]+):", title)
+        number = re.search(r"Volume ([0-9A-Z]+):", title)
         tagline = subtitle(number.group(1)) if number else ""
         cards.append(CARD.format(subtitle=html.escape(tagline), title=html.escape(rest or series), size=size, trim=PRINT_TRIM, cover=cover, read=read,
                                  pdf=pdf.name, print_pdf=print_pdf, epub=epub_link, kdp=kdp,

@@ -50,7 +50,7 @@ def fix_volume_subtitle(root: ET.Element) -> bool:
         return False
     titles = metadata.findall(f"{{{dc}}}title")
     main_title = next((t for t in titles if "Order and Chance" in (t.text or "")), None)
-    match = re.search(r"Tome ([0-9A-Z]+):", main_title.text or "") if main_title is not None else None
+    match = re.search(r"Volume ([0-9A-Z]+):", main_title.text or "") if main_title is not None else None
     if not match:
         return False
     from series_metadata import subtitle

@@ -20,7 +20,7 @@ FORMATS = {"reference": PRINT, "ebook": (6, 6*PRINT[1]/PRINT[0])}
 
 def render(main: Path, output: Path) -> str:
     metadata = re.search(r"^% epub-title: (.+)$", main.read_text(), re.M).group(1)
-    number = re.search(r"Tome ([0-9A-Z]+):", metadata).group(1)
+    number = re.search(r"Volume ([0-9A-Z]+):", metadata).group(1)
     title = metadata.split(": ", 1)[1]
     tome = main.parent.name
     out = output / tome
