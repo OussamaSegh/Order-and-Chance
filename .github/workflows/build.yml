@@ -7,6 +7,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+    inputs:
+      rebuild_all:
+        description: Rebuild every book, ignoring cached outputs
+        type: boolean
+        default: false
 
 concurrency:
   group: build-${{ github.ref }}
@@ -15,21 +20,45 @@ concurrency:
   cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
 jobs:
-  # One build job per tome, run in parallel: a serial build of every tome takes too long once
-  # several threads push to main, and a pending run is replaced by the next push.
+  # Compare all publishing inputs against the exact restored library snapshot.
   list:
     runs-on: ubuntu-24.04
     outputs:
-      tomes: ${{ steps.ls.outputs.tomes }}
+      tomes: ${{ steps.plan.outputs.tomes }}
+      has_changes: ${{ steps.plan.outputs.has_changes }}
+      snapshot_changed: ${{ steps.plan.outputs.snapshot_changed }}
+      baseline: ${{ steps.library.outputs.cache-matched-key }}
     steps:
       - uses: actions/checkout@v4
-      - id: ls
+      - name: Test build selection
+        run: python3 -m unittest discover -s tools -p test_build_plan.py
+      - uses: actions/cache/restore@v4
+        id: library
+        with:
+          path: .book-cache
+          key: library-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v1-
+      - id: plan
+        env:
+          FORCE_ALL: ${{ inputs.rebuild_all || false }}
         run: |
-          echo "tomes=$(ls -d tome*/ | tr -d / | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
+          args=()
+          if [ "$FORCE_ALL" = true ]; then args+=(--force); fi
+          python3 tools/build_plan.py plan "${args[@]}"
+          echo "tomes=$(jq -c .changed build-plan.json)" >> "$GITHUB_OUTPUT"
+          echo "has_changes=$(jq '.changed | length > 0' build-plan.json)" >> "$GITHUB_OUTPUT"
+          echo "snapshot_changed=$(jq '(.changed | length) + (.removed | length) > 0' build-plan.json)" >> "$GITHUB_OUTPUT"
+          jq '{rebuilt: .changed, removed: .removed}' build-plan.json >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: build-plan
+          path: build-plan.json
 
   # The Ubuntu mirror is sometimes very slow, and a dozen parallel jobs downloading 120 MB each make it worse.
   # One job downloads the TeX packages once and caches the .deb files; every build job installs from the cache.
   debs:
+    needs: list
+    if: needs.list.outputs.has_changes == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     steps:
@@ -52,6 +81,7 @@ jobs:
 
   build:
     needs: [list, debs]
+    if: needs.list.outputs.has_changes == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 45
     strategy:
@@ -82,11 +112,24 @@ jobs:
 
   # Gathers the books of every tome and builds the download page.
   site:
-    needs: build
+    needs: [list, build]
+    if: ${{ always() && needs.list.result == 'success' && (needs.build.result == 'success' || (needs.build.result == 'skipped' && needs.list.outputs.has_changes == 'false')) }}
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
+        with:
+          name: build-plan
+      - uses: actions/cache/restore@v4
+        if: needs.list.outputs.baseline != ''
+        with:
+          path: .book-cache
+          key: ${{ needs.list.outputs.baseline }}
+          fail-on-cache-miss: true
+      - name: Restore unchanged books and clear replaced outputs
+        run: python3 tools/build_plan.py prepare
+      - uses: actions/download-artifact@v4
+        if: needs.list.outputs.has_changes == 'true'
         with:
           pattern: books-*
           merge-multiple: true
@@ -94,6 +137,7 @@ jobs:
       - name: Install poppler
         run: sudo timeout 300 apt-get update && sudo timeout 300 apt-get install -y --no-install-recommends poppler-utils
       - uses: actions/upload-artifact@v4
+        if: needs.list.outputs.snapshot_changed == 'true'
         with:
           name: books
           path: dist/
@@ -101,6 +145,13 @@ jobs:
         run: python3 -m unittest discover -s tools -p test_site.py
       - name: Build the download page
         run: python3 tools/site.py dist build/site
+      - name: Validate and snapshot the complete library
+        run: python3 tools/build_plan.py snapshot
+      - uses: actions/cache/save@v4
+        if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
+        with:
+          path: .book-cache
+          key: library-v1-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -108,7 +159,7 @@ jobs:
 
   # On main, publish the books for visitors: a GitHub Pages download page and a rolling release.
   publish:
-    needs: site
+    needs: [list, site]
     if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
     runs-on: ubuntu-24.04
     permissions:
@@ -120,10 +171,12 @@ jobs:
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
       - uses: actions/download-artifact@v4
+        if: needs.list.outputs.snapshot_changed == 'true'
         with:
           name: books
           path: dist
       - name: Update the "books" release
+        if: needs.list.outputs.snapshot_changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
@@ -131,7 +184,7 @@ jobs:
           gh release delete books --yes --cleanup-tag || true
           gh release create books dist/*.pdf dist/*.epub dist/kdp/* --target "$GITHUB_SHA" --latest \
             --title "Books (latest build)" \
-            --notes "PDF and EPUB of every tome, rebuilt automatically from commit ${GITHUB_SHA::7}. Files named *-print.pdf, *-cover-wrap.pdf and *-ebook-cover.jpg are the Amazon KDP paperback interior, paperback cover and Kindle cover."
+            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Files named *-print.pdf, *-cover-wrap.pdf and *-ebook-cover.jpg are the Amazon KDP paperback interior, paperback cover and Kindle cover."
       # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
       - name: Deploy the download page
         id: deploy

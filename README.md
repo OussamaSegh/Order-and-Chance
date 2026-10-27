@@ -119,3 +119,33 @@ for nb in python/tome0/*.ipynb; do
   jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 "$nb" --output-dir build/notebooks || exit
 done
 ```
+
+## Incremental book builds
+
+The **Build books** workflow keeps book compilation in one workflow, with a
+parallel matrix containing only books whose publishing inputs changed.
+
+| Change | Automatic compilation |
+|---|---|
+| One tome's manuscript, figures, photographs or listing | That tome and the generated S4 companion |
+| Shared preambles, covers, EPUB/reader helpers, or `build.sh` | All books |
+| Website generator or template | No book compilation; regenerate Pages |
+| Notebook sources | No automatic notebook execution or book compilation |
+| Missing/evicted library cache | Rebuild missing outputs; a cold cache rebuilds all books |
+
+A validated library snapshot retains unchanged PDFs, EPUBs, online readers and
+cover thumbnails. Changed books replace their previous outputs; removed chapters
+and books are cleared before assembly. Pages and the rolling release still contain
+the complete library. A failed required build prevents publication. Website-only
+updates deploy Pages without uploading the book release again.
+
+Use **Actions → Build books → Run workflow → Rebuild every book** to force a full
+refresh. The first successful run seeds the output cache; warm runs benefit from
+incremental compilation. Cache availability is an optimisation, not a correctness
+requirement, and end-to-end speed depends on cache transfer and GitHub runner queues.
+The existing TeX package cache remains in use. Notebook execution remains a separate
+manual workflow, as described above.
+
+Selection/assembly logic lives in `tools/build_plan.py`; its regression tests run
+before planning. Publishing-toolchain changes should bump the output fingerprint
+version (`book-output-v1`) so previously compiled books are regenerated.
