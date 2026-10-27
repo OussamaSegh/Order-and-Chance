@@ -22,7 +22,6 @@ and series association when revising an already published title.
 | `dist/kdp/tome0-back-in-shape-ebook-cover.jpg` | 1600 × 2560 Kindle cover |
 | `dist/kdp/tome0-back-in-shape-listing.md` | Generated details: description and seven keywords |
 | `dist/tome0-back-in-shape.pdf` | A4 reading/printing edition |
-| `dist/tome0-back-in-shape-phone.pdf` | Phone reading edition |
 | `dist/tome0-back-in-shape-kindle.pdf` | Fixed-page reading edition; use EPUB for reflowable Kindle upload |
 | `dist/html/tome0-back-in-shape/` | Chapter-by-chapter web reader |
 

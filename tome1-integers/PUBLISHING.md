@@ -16,7 +16,6 @@ The shared publishing conventions and system dependencies are documented in `../
 | `dist/kdp/tome1-integers-ebook-cover.jpg` | Kindle front cover, 1600 × 2560 pixels |
 | `dist/kdp/tome1-integers-listing.md` | Description and seven keywords for the book details |
 | `dist/tome1-integers.pdf` | A4 reading/printing edition |
-| `dist/tome1-integers-phone.pdf` | Phone edition |
 | `dist/tome1-integers-kindle.pdf` | Fixed-page e-reader edition; the EPUB is the reflowable KDP manuscript |
 | `dist/html/tome1-integers/` | Online chapter reader |
 

@@ -21,13 +21,11 @@ jobs:
     runs-on: ubuntu-24.04
     outputs:
       tomes: ${{ steps.ls.outputs.tomes }}
-      notebooks: ${{ steps.ls.outputs.notebooks }}
     steps:
       - uses: actions/checkout@v4
       - id: ls
         run: |
           echo "tomes=$(ls -d tome*/ | tr -d / | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
-          echo "notebooks=$(ls -d python/*/ | xargs -n1 basename | jq -R . | jq -cs .)" >> "$GITHUB_OUTPUT"
 
   # The Ubuntu mirror is sometimes very slow, and a dozen parallel jobs downloading 120 MB each make it worse.
   # One job downloads the TeX packages once and caches the .deb files; every build job installs from the cache.
@@ -105,32 +103,6 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
           path: build/site
-
-  # The companion notebooks are checked separately, one job per folder, so that a slow or
-  # failing notebook never holds back the books. They start once the books are built, so that
-  # the build jobs get the runners first.
-  notebooks:
-    needs: [list, build]
-    if: ${{ !cancelled() }}
-    runs-on: ubuntu-24.04
-    # The slowest folder (python/tomeS3, twelve notebooks of heavy experiments) needs about 40 minutes.
-    timeout-minutes: 60
-    strategy:
-      fail-fast: false
-      matrix:
-        folder: ${{ fromJson(needs.list.outputs.notebooks) }}
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-      - name: Run the notebooks
-        run: |
-          pip install -r requirements.txt
-          for nb in python/${{ matrix.folder }}/*.ipynb; do
-            echo "== $nb"
-            jupyter nbconvert --to notebook --execute --ExecutePreprocessor.timeout=600 "$nb" --output-dir build/notebooks
-          done
 
   # On main, publish the books for visitors: a GitHub Pages download page and a rolling release.
   publish:

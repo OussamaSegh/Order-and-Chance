@@ -11,6 +11,8 @@ tomes=("$@")
 
 for tome in "${tomes[@]}"; do
   echo "== $tome"
+  # Remove the retired output when refreshing an existing build directory.
+  rm -f "$root/dist/$tome-phone.pdf"
   # A tome made from the others (Tome S4) regenerates its chapters from their sources first.
   if [ -f "$root/$tome/generate.py" ]; then python3 "$root/$tome/generate.py"; fi
   out="$root/build/$tome"
@@ -26,12 +28,12 @@ for tome in "${tomes[@]}"; do
       >"$out/cover.out" || { tail -30 "$out/cover.out"; exit 1; })
   pdftoppm -png -singlefile -scale-to-x 1600 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
 
-  # Three PDFs: A4 (dist/<tome>.pdf), phone (-phone.pdf) and 7-inch e-reader (-kindle.pdf).
+  # Two reading PDFs: A4 (dist/<tome>.pdf) and 7-inch e-reader (-kindle.pdf).
   # Each opens with the cover drawn in the proportions of its page (common/preamble.tex):
   # 6in wide and 6 x height/width high, scaled to the page by \makecover.
-  for format in a4 phone kindle; do
+  for format in a4 kindle; do
     job=main; [ "$format" = a4 ] || job="main-$format"
-    case $format in a4) ch=8.4857 ;; phone) ch=13 ;; kindle) ch=7.9626 ;; esac
+    case $format in a4) ch=8.4857 ;; kindle) ch=7.9626 ;; esac
     (cd "$root" &&
       pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname="cover-$format" \
         "$meta\\def\\CH{$ch}\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}" \
@@ -110,6 +112,6 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
-  echo "   dist/$tome.pdf  dist/$tome-phone.pdf  dist/$tome-kindle.pdf  dist/$tome.epub  dist/html/$tome/"
+  echo "   dist/$tome.pdf  dist/$tome-kindle.pdf  dist/$tome.epub  dist/html/$tome/"
   echo "   KDP: dist/kdp/$tome-print.pdf ($pages pages)  dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)  dist/kdp/$tome-ebook-cover.jpg"
 done

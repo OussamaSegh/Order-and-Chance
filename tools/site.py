@@ -1,7 +1,7 @@
 """Build the download page published on GitHub Pages.
 
 Usage: python3 tools/site.py <dist dir> <output dir>
-Copies every dist/<tome>.pdf (with its -phone and -kindle variants) and .epub into the
+Copies every dist/<tome>.pdf (with its -kindle variant) and .epub into the
 output directory, the online reader dist/html/<tome>/ into read/<tome>/, and writes index.html.
 Each tome's card also links its Amazon KDP files from dist/kdp/: the Kindle cover, the paperback
 cover, the paperback interior and the listing.
@@ -75,8 +75,7 @@ KDP = [("ebook-cover.jpg", "Kindle cover", "Front cover, 1600 x 2560 JPEG, for a
        ("listing.md", "Description and keywords", "Title fields, description and keywords for the KDP form")]
 
 # Extra PDF layouts made by build.sh, with their button labels.
-VARIANTS = [("phone", "Phone PDF", "Pages sized for a large phone screen (Galaxy S25 Ultra)"),
-            ("kindle", "Kindle PDF", "Pages sized for a 7-inch e-reader (Kindle Paperwhite)")]
+VARIANTS = [("kindle", "Kindle PDF", "Pages sized for a 7-inch e-reader (Kindle Paperwhite)")]
 
 
 def tome_order(pdf: Path):
@@ -90,7 +89,7 @@ def main(dist: str, out: str) -> None:
     out_dir.mkdir(parents=True, exist_ok=True)
     cards = []
     for pdf in sorted(dist_dir.glob("*.pdf"), key=tome_order):
-        if any(pdf.stem.endswith("-" + v) for v, _, _ in VARIANTS):
+        if pdf.stem.endswith("-phone") or any(pdf.stem.endswith("-" + v) for v, _, _ in VARIANTS):
             continue
         tome = pdf.stem
         epub = pdf.with_suffix(".epub")
