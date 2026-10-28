@@ -155,3 +155,71 @@ experiment. The density error keeps the primes fixed when taking N→∞. No
 additional mathematical defect was found in this final G material. The birthday
 constant 2/3 is explicitly labelled a referenced outlook, not presented as proved
 by its integral heuristic.
+
+## Final integrated source review (after Batch H; Batch I checks underway)
+
+The revised active manuscript was then inspected separately from the drafts.
+Read the complete integrated preface/foundational contract, ten-bridge reading
+map and final field guide; checked the new Chapter-0 fibre diagram against its
+caption and definitions; re-read the new conditional-integral proof in calculus;
+verified the earlier corrections in the active chapter sources; and scanned all
+chapter source lists for wrongly converted external-book chapter references.
+
+Confirmed in the active source:
+
+- Chapter 3 proves the elementary differentiation rules and real power rule
+  before integral comparisons. It proves Rolle and the mean value theorem from
+  completeness and extreme values, rather than assuming them. Interior and
+  explicitly one-sided endpoint derivatives are distinguished, and limits are
+  restricted to accumulation points; singleton continuity is handled separately.
+- Chapter 7 reuses the early rules and FTC, states smoothness notation and retains
+  its inverse-function argument. The complex exponential series is proved as a
+  representation in `ex:taylorln(c)`, consistent with the Chapter-4 definition.
+- All previously reported external-book chapter citations have been restored:
+  *Concrete Mathematics* 7, Dunham 3, Horn–Johnson 4 and 8, and Stigler 1. No
+  semantic local chapter link remains in the “Sources and further reading”
+  sections inspected.
+- The polynomial gcd statement is now a numbered proposition, so its semantic
+  reference can correctly display a proposition number. Kernel/image,
+  rank-nullity, change of basis, inner products and Gram–Schmidt precede their
+  substantive uses. The spectral proof's complex Euclidean length is defined.
+- The finite probability core, explicit countable extension, stopped-word coupon
+  law, covariance PSD argument and new arithmetic/sampling bridges match the
+  reviewed arguments. The final field guide still distinguishes labelled circular
+  words from rotation classes, and exact formulas from asymptotics.
+- The new fibre diagram has exactly the stated arrows: two inputs map to a, the
+  third to b, and c is an unused codomain value. Its dashed fibre and image caption
+  agree with the mathematical definitions.
+- The added conditional-integral example is rigorous: integration by parts gives
+  a convergent boundary term and an absolutely convergent cosine/x² remainder;
+  the sine/x singularity at zero is removable; half-period integrals of
+  |sine(x)|/x are bounded below by a divergent harmonic comparison. Its value
+  π/2 is correctly identified as a later referenced outlook.
+
+This final pass found three further concrete issues and reported them for
+correction: the unintroduced outward-facing interval brackets used by the
+retained chapters, the absent Archimedean argument behind arbitrarily large
+natural indices, and an inherited promise that Chapter 8 treated Maclaurin's
+symmetric-mean inequalities when it did not. The active source now explicitly
+identifies both interval conventions, derives unboundedness of N from the
+supremum axiom before choosing a limit index, and identifies Maclaurin as an
+external advanced outlook in Hardy–Littlewood–Pólya. The preface's ambiguous
+“Earlier volumes” wording was also changed to “Other volumes.” An unqualified
+“By (c)” in the multiple-roots example, separated from its intended proposition
+by the new gcd insertion, was reported for replacement by its explicit semantic
+root-multiplicity reference.
+
+Executed again after integration: the independent example checker passes 6,088
+assertions. `check_structure.py` reports 155 exercise/hint/solution triples, all
+130 original exercises retained, 299 unique labels and no source-reference or
+pairing errors. The latest reference count was 507 after removing the false
+Maclaurin forward link; counts may increase when the explicit multiplicity
+reference is inserted. `git diff --check` passed at the time inspected. These
+source checks do not establish layout or PDF navigation correctness; those
+remain the final build's recorded responsibility.
+
+No unresolved mathematical defect was found in the newly reviewed arguments
+beyond the specific wording/reference corrections reported above. That assessment
+is limited to the stated source-review scope and numerical checks. It does not
+certify the book error-free, replace the three full subject audits, or claim an
+independent every-page proofread or complete historical-source revalidation.

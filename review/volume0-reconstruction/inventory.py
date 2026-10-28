@@ -30,13 +30,19 @@ def inventory(files):
     return records
 
 def main():
-    names = subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,BOOK],cwd=ROOT,text=True).splitlines()
-    baseline = [(n,subprocess.check_output(['git','show',f'{BASE}:{n}'],cwd=ROOT,text=True)) for n in names if n.endswith('.tex')]
+    try:
+        names = subprocess.check_output(['git','ls-tree','-r','--name-only',BASE,BOOK],cwd=ROOT,text=True,stderr=subprocess.DEVNULL).splitlines()
+        baseline = [(n,subprocess.check_output(['git','show',f'{BASE}:{n}'],cwd=ROOT,text=True)) for n in names if n.endswith('.tex')]
+        old = inventory(baseline)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # A source archive has no .git; its immutable baseline manifest is enough
+        # to repeat identifier conservation and destination checks.
+        old = json.loads((OUT/'baseline-inventory.json').read_text())['units']
     current = [(str(p.relative_to(ROOT)),p.read_text()) for p in sorted((ROOT/BOOK).rglob('*.tex'))]
-    old, new = inventory(baseline), inventory(current)
+    new = inventory(current)
     (OUT/'baseline-inventory.json').write_text(json.dumps(dict(commit=BASE,units=old),indent=2)+'\n')
     (OUT/'current-inventory.json').write_text(json.dumps(dict(units=new),indent=2)+'\n')
-    all_old_labels={l for _,s in baseline for l in re.findall(r'\\label\{([^}]+)\}',s)}
+    all_old_labels={l for u in old for l in u['labels']}
     all_new_labels=[l for _,s in current for l in re.findall(r'\\label\{([^}]+)\}',s)]
     missing=sorted(all_old_labels-set(all_new_labels))
     duplicates=sorted({l for l in all_new_labels if all_new_labels.count(l)>1})
@@ -53,6 +59,10 @@ def main():
             return ['chapters/ch09-probability.tex']
         if name=='ch01-sums.tex' and (324<=u['line']<=351 or ex=='ex:catalan'):
             return ['chapters/ch02-counting.tex']
+        if name=='ch02-complex-roots.tex' and 99<=u['line']<=104:
+            return ['chapters/ch02-complex-roots.tex','chapters/ch06-integrals-taylor.tex']
+        if name=='ch05-sequences-series.tex' and 213<=u['line']<=227:
+            return ['chapters/ch05-sequences-series.tex','chapters/ch02-complex-roots.tex']
         if name=='ch04-inequalities.tex' and 59<=u['line']<=66:
             return ['chapters/ch05-sequences-series.tex','chapters/ch04-inequalities.tex']
         if name=='ch04-inequalities.tex' and 67<=u['line']<=74:

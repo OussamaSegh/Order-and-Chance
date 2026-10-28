@@ -1,0 +1,116 @@
+# Final table of contents
+
+Generated from the complete compiled manuscript.
+
+- 0 The Language of Mathematics — p. 1
+  - 0.1 Definitions, assumptions and conclusions — p. 1
+  - 0.2 Statements, connectives and implication — p. 2
+  - 0.3 Quantifiers: who chooses what? — p. 3
+  - 0.4 Sets: making the domain visible — p. 4
+  - 0.5 Functions: the rule and its two sets — p. 6
+  - 0.6 Injectivity, surjectivity and inverse functions — p. 7
+  - 0.7 Relations, equivalence classes and partitions — p. 8
+  - 0.8 Order: comparable does not mean equal — p. 9
+  - 0.9 Choosing a proof method — p. 10
+  - 0.10 Proof workshop: when does an image preserve an intersection? — p. 12
+  - 0.11 Exercises — p. 13
+  - 0.12 Hints — p. 16
+  - 0.13 Solutions — p. 17
+- 1 Sums, Binomials and Induction — p. 23
+  - 1.1 Sums, and how to write them — p. 24
+  - 1.2 Induction, in three flavours — p. 25
+  - 1.3 Telescoping — p. 28
+  - 1.4 Binomial coefficients — p. 29
+  - 1.5 Polynomials in the binomial basis — p. 31
+  - 1.6 Workshop: a pattern is a suspect, not a verdict — p. 33
+  - 1.7 Exercises — p. 35
+  - 1.8 Hints — p. 38
+  - 1.9 Solutions — p. 39
+- 2 Counting and Discrete Reasoning — p. 49
+  - 2.1 Counting, from scratch — p. 49
+  - 2.2 Lattice paths — p. 51
+  - 2.3 Generating functions: keeping every count at once — p. 53
+  - 2.4 Workshop: remove the restriction by changing the objects — p. 55
+  - 2.5 Exercises — p. 56
+  - 2.6 Hints — p. 59
+  - 2.7 Solutions — p. 60
+- 3 Sequences, Series and Limits — p. 67
+  - 3.1 Limits from scratch — p. 68
+  - 3.2 Sequences — p. 71
+  - 3.3 Continuity and derivatives, from completeness — p. 73
+  - 3.4 Series — p. 78
+  - 3.5 Summation by parts — p. 82
+  - 3.6 Workshop: a limit with a delivery date — p. 83
+  - 3.7 Exercises — p. 85
+  - 3.8 Hints — p. 89
+  - 3.9 Solutions — p. 91
+- 4 Complex Numbers and Roots of Unity — p. 101
+  - 4.1 Complex numbers from scratch — p. 102
+  - 4.2 The exponential form — p. 104
+  - 4.3 Roots of unity — p. 106
+  - 4.4 The roots-of-unity filter — p. 108
+  - 4.5 Geometry with complex numbers — p. 108
+  - 4.6 Cyclotomic polynomials — p. 109
+  - 4.7 Workshop: complex numbers are a steering wheel — p. 111
+  - 4.8 Exercises — p. 112
+  - 4.9 Hints — p. 116
+  - 4.10 Solutions — p. 117
+- 5 Polynomials — p. 127
+  - 5.1 Polynomials from scratch — p. 128
+  - 5.2 Division, roots and multiplicities — p. 129
+  - 5.3 Lagrange interpolation — p. 133
+  - 5.4 Chebyshev polynomials — p. 134
+  - 5.5 Integer polynomials — p. 136
+  - 5.6 Symmetric functions of the roots — p. 137
+  - 5.7 Real roots: counting and locating — p. 139
+  - 5.8 Workshop: interpolation is not prophecy — p. 141
+  - 5.9 Exercises — p. 143
+  - 5.10 Hints — p. 147
+  - 5.11 Solutions — p. 148
+- 6 Linear Algebra — p. 159
+  - 6.1 Vector spaces, from scratch — p. 160
+  - 6.2 Determinants — p. 163
+  - 6.3 Reduction — p. 166
+  - 6.4 Inner products and orthogonal projection — p. 168
+  - 6.5 The spectral theorem and quadratic forms — p. 169
+  - 6.6 Determinants as volumes — p. 171
+  - 6.7 The adjugate and Cayley--Hamilton — p. 172
+  - 6.8 Workshop: least squares, with the geometry left in — p. 175
+  - 6.9 Exercises — p. 176
+  - 6.10 Hints — p. 181
+  - 6.11 Solutions — p. 182
+- 7 Differential and Integral Calculus — p. 195
+  - 7.1 Derivatives and antiderivatives, from scratch — p. 195
+  - 7.2 Tools — p. 198
+  - 7.3 Wallis integrals — p. 201
+  - 7.4 L'H\^opital's rule — p. 203
+  - 7.5 The Gamma function — p. 204
+  - 7.6 Numerical integration, and the next term of Stirling — p. 205
+  - 7.7 Workshop: approximations with a safety net — p. 208
+  - 7.8 Exercises — p. 209
+  - 7.9 Hints — p. 213
+  - 7.10 Solutions — p. 215
+- 8 Inequalities, Convexity and Estimates — p. 225
+  - 8.1 Inequalities from scratch — p. 226
+  - 8.2 Convexity and Jensen — p. 227
+  - 8.3 Cauchy--Schwarz and H\"older — p. 230
+  - 8.4 More means, more norms — p. 232
+  - 8.5 Bridge: convexity selects the factorial interpolation — p. 234
+  - 8.6 Workshop: measure the slack — p. 234
+  - 8.7 Exercises — p. 236
+  - 8.8 Hints — p. 239
+  - 8.9 Solutions — p. 240
+- 9 First Probability — p. 249
+  - 9.1 Finite probability — p. 250
+    - 9.1.1 Outcomes, events and weights — p. 250
+    - 9.1.2 Information and independence — p. 251
+    - 9.1.3 Random variables, laws and averages — p. 251
+  - 9.2 Laws, variance and concentration — p. 254
+    - 9.2.1 Covariance as a quadratic form — p. 255
+  - 9.3 A controlled step beyond finite sample spaces — p. 259
+  - 9.4 Workshop: when a positive result is a surprise — p. 261
+  - 9.5 Exercises — p. 262
+  - 9.6 Hints — p. 267
+  - 9.7 Solutions — p. 268
+
+Back matter: A field guide to the next problem; Image credits.
