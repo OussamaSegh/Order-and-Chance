@@ -8,8 +8,8 @@ identity. An identical camera does not require every object to have the same pos
 
 | Book | Decision and visual purpose | Mathematical connection |
 | --- | --- | --- |
-| 0 — Mathematical Maturity | Retain the approved glowing Gaussian. Its clear silhouette remains the reference. | Calculus, Taylor approximation and first probability, Chapters 6 and 8. |
-| 1 — The Integers | Retain the Ulam prime field, lift it and centre the prime diagonals. | The prime/composite pattern of an integer square spiral, Chapter 2. |
+| 0 — Mathematical Maturity | Retain the Gaussian subject, rebuilding its fine mesh with the same restrained native material and glow as the rest of the series. | Calculus, Taylor approximation and first probability, Chapters 6 and 8. |
+| 1 — The Integers | Retain the Ulam prime pattern, lower and broaden its relief, and add finely triangulated faces to harmonise its wire detail. | The prime/composite pattern of an integer square spiral, Chapter 2. |
 | 2 — Structures | Retain the approved glowing triangulated icosahedron and composition. | Icosahedral rotations, group actions and quaternions, Chapters 3, 11 and 12. |
 | 3 — Chance | Simplify and turn the Galton lattice into a shallow sculpture; give its probability columns visible depth. | Counting paths and the exact binomial law, Chapters 1, 2 and 7. |
 | 4 — The Art of Calculation | Replace the stepped, angular Fourier plot with smooth interference of five harmonics. | Fourier series and transforms, Chapters 6 and 8. |

@@ -55,6 +55,12 @@ def primality(n):
     return n >= 2 and all(n % d for d in range(2, math.isqrt(n)+1))
 
 
+def gaussian_dome():
+    """Keep the Gaussian subject while using the series' native wire mesh."""
+    mesh=height_mesh(lambda x,y:math.exp(-3.8*((x-.30)**2+(y+.20)**2)))
+    return Scene([[(x,y,z*1.42) for x,y,z in curve] for curve in mesh],mesh.faces)
+
+
 def prime_lattice(gaussian=False):
     curves = [[(x, y, .02) for x in (-1, 1)] for y in linspace(-1, 1, 35)]
     curves += [[(x, y, .02) for y in (-1, 1)] for x in linspace(-1, 1, 35)]
@@ -74,11 +80,18 @@ def prime_lattice(gaussian=False):
             if not prime:
                 continue
             x, y = i/8, j/8
-            h = .28 + .36*math.exp(-2*(x*x+y*y))
+            h = .16 + .22*math.exp(-2*(x*x+y*y))
             top = (x, y, h)
-            base = [(x+dx, y+dy, .02) for dx, dy in ((-.04,-.04),(.04,-.04),(.04,.04),(-.04,.04))]
+            base = [(x+dx, y+dy, .02) for dx, dy in ((-.055,-.055),(.055,-.055),(.055,.055),(-.055,.055))]
             for p,q in zip(base,base[1:]+base[:1]):
-                curves.faces.add(len(curves));curves.append([p,q,top,p])
+                def point(i,j):return tuple(p[d]+(q[d]-p[d])*i/3+(top[d]-p[d])*j/3 for d in range(3))
+                for a in range(3):
+                    for b in range(3-a):
+                        triangle=[point(a,b),point(a+1,b),point(a,b+1)]
+                        curves.faces.add(len(curves));curves.append(triangle+[triangle[0]])
+                        if a+b<2:
+                            triangle=[point(a+1,b),point(a+1,b+1),point(a,b+1)]
+                            curves.faces.add(len(curves));curves.append(triangle+[triangle[0]])
     return curves
 
 
@@ -296,6 +309,7 @@ def model(number):
     from cover_sculptures import (fourier_interference, logarithm_helicoid, entropy_bowl,
         dyson_ribbons, young_ferrers_wall, collatz_sculpture, cyclotomic_crown,
         sobolev_kernel, bernoulli_convolutions)
+    if number=='0':return gaussian_dome()
     if number=='1':return prime_lattice()
     if number=='2':return symmetry_mesh()
     if number=='3':return galton_lattice()

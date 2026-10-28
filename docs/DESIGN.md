@@ -1,3 +1,30 @@
+# Volumes 0 and 1 harmonised to the established series style
+
+The author rejected further attempts to match every book to the stronger glow in
+Volume 0 and instead explicitly asked to make Volume 0 look like the others, also
+harmonising Volume 1. Volume 0's Gaussian is now a native parametric height mesh
+using the common renderer, coral material, wire weights and five restrained halo
+layers. The special reference-art draw/import branch is removed from production.
+The traced Gaussian and original approval PNG remain untouched archival references.
+
+Volume 1 retains its exact Ulam prime locations while reducing the needle-like
+height, broadening bases and subdividing each face into a fine triangular mesh.
+It uses the same renderer and material as the rest. Generation verifies that only
+motifs 0 and 1 change; the remaining seventeen artwork hashes are identical.
+Common typography, identity, title-relative subtitles, all book content and the
+concurrent interior styles are preserved. The manifest/composition/material guards
+now apply to Volume 0 without an exemption. Print settings, vector-only artwork,
+native paper and actual-page-derived spines remain unchanged.
+
+The latest main was fetched at f4d797f before editing. Review evidence is under
+build/harmonization-review. Local verification: both new vector fronts pass the shared typography, subtitle,
+identity, material and composition checks; all 65 tests pass. A real previous
+Volume-0 PDF is rejected by the new archived-art guard, while the new native front
+passes. Publication rebuilds print and digital versions and refreshes the full
+high-resolution series image.
+
+---
+
 # Individual mathematical illustration review
 
 The author explicitly requested a separate aesthetic/content review of every

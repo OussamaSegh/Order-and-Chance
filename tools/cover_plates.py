@@ -1,8 +1,8 @@
 """Generate every cover illustration with one locked Volume-0 master.
 
 Original approval PNGs are retained as references; they never bypass the shared
-font/layout. Volume 0 keeps its traced Gaussian art; every other volume receives
-one content-specific world-space 3D model, using the same camera and material.
+font/layout. Every volume receives one content-specific world-space 3D model,
+using the same camera, wire material and glow, including Volumes 0 and 1.
 """
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
@@ -40,8 +40,8 @@ def main():
     directions=json.loads((ROOT/'tools/assets/cover-art-direction.json').read_text())
     manifest=[]
     subjects={
-      '0':'Approved Gaussian wireframe surface',
-      '1':'Ulam prime lattice as raised wire pyramids',
+      '0':'Gaussian dome in the shared native wireframe material',
+      '1':'Ulam prime lattice with lower, broader triangulated relief',
       '2':'Icosahedral symmetry as a triangulated 3D wireframe',
       '3':'Galton branching lattice feeding exact binomial probability columns',
       '4':'Smooth interference of five Fourier harmonics',
@@ -62,13 +62,9 @@ def main():
     }
     for book,evidence in PLATES.items():
         number=book.split('-',1)[0].removeprefix('tome')
-        if number=='0':
-            content='% Volume 0 keeps its approved traced Gaussian illustration.\n'
-            info={'space':'3D','renderer':'reference-vector','source':config['reference_illustration']}
-        else:
-            geometry,info=render(model(number),config,directions[number])
-            content='% Shared-master 3D wireframe: '+subjects[number]+'\n'+geometry
-            info['renderer']='shared-camera-vector'
+        geometry,info=render(model(number),config,directions[number])
+        content='% Shared-master 3D wireframe: '+subjects[number]+'\n'+geometry
+        info['renderer']='shared-camera-vector'
         (ROOT/book/'cover-motif.tex').write_text(content)
         manifest.append(dict(book=book,number=number,subject=subjects[number],evidence=evidence,
             sha256=hashlib.sha256(content.encode()).hexdigest(),**info))

@@ -36,12 +36,12 @@ def check_assets(number):
     path=ROOT/art['book']/'cover-motif.tex'
     if sha(path)!=art['sha256']:raise ValueError(f'Volume {number}: illustration differs from the shared 3D manifest')
     if art['space']!='3D':raise ValueError('Every cover needs one world-space 3D illustration')
-    if str(number)!='0' and (art['shared_camera']!=data['camera'] or art['shared_material']!=data['material']):
+    if art['shared_camera']!=data['camera'] or art['shared_material']!=data['material']:
         raise ValueError('A volume overrides the common camera or wireframe material')
-    if str(number)!='0' and (art.get('glow')!='five-layer-vector-radiance'
+    if (art.get('glow')!='five-layer-vector-radiance'
                             or art.get('hidden_lines')!='depth-tested-before-glow'):
         raise ValueError('A volume bypasses the approved luminous wireframe treatment')
-    if str(number)!='0':
+    if art['renderer']=='shared-camera-vector':
         directions=json.loads((ROOT/'tools/assets/cover-art-direction.json').read_text())
         if art.get('art_direction')!=directions[str(number)]:raise ValueError('Illustration composition differs from its reviewed direction')
         bounds=art['screen_bounds_px'];clip=data['art_clip_px']
@@ -83,8 +83,13 @@ def check(path,number,cover_png=None,epub=None,reader=None):
     if abs(width/height-.7)>.0001:raise ValueError('Cover no longer has the 7:10 master proportions')
     reference=PdfReader(ROOT/data['identity']).pages[0].get_contents().get_data()
     wanted=hashlib.sha256(reference).hexdigest()
-    if wanted not in form_hashes(page['/Resources']):
+    forms=set(form_hashes(page['/Resources']))
+    if wanted not in forms:
         raise ValueError('Cover does not reuse the exact common Volume-0 frame/masthead/author form')
+    if str(number)=='0':
+        archived=PdfReader(ROOT/data['reference_illustration']).pages[0].get_contents().get_data()
+        if hashlib.sha256(archived).hexdigest() in forms:
+            raise ValueError('Volume 0 still embeds the archived Gaussian instead of the common native material')
     check_font_sizes(page,data);check_subtitle(path,number,height)
     if cover_png:
         pixels=Path(cover_png).read_bytes()

@@ -104,3 +104,13 @@ the shared luminous material remain intact. Current main 8135b0b was pulled firs
 retaining the semantic box-colour/frame fix and its real-PDF regression. Only obsolete cover references in the Structures/Chance appendices are corrected;
 mathematical statements, figures and interior styling are preserved. Fresh current
 manuscript counts must determine every final wrap; no old proof count is authoritative.
+
+## Volumes 0 and 1 harmonisation
+
+After f4d797f the author explicitly asked for Volume 0 to use the other books'
+illustration treatment, and for Volume 1 to be harmonised too. The special Gaussian
+trace is now archival only; all nineteen production illustrations use the same
+native renderer/material. Volume 1 retains its prime positions with lower, broader,
+finer-meshed relief. Only motifs 0 and 1 change. No book content, interior styling,
+fonts or print settings change. Preserve the latest semantic box work and derive
+production wraps from current actual manuscript counts as usual.
