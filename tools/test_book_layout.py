@@ -1,5 +1,7 @@
 """Pagination regression: whole boxes, correct moved references, and overflow gates."""
 from pathlib import Path
+import hashlib
+import json
 import re
 import shutil
 import subprocess
@@ -14,6 +16,16 @@ ROOT = Path(__file__).resolve().parent.parent
 
 
 class DiagnosticsTest(unittest.TestCase):
+    def test_display_faces_match_the_approved_covers_and_font_manifest(self):
+        fonts = ROOT / 'common/fonts'
+        for name in ('Inter-Light.ttf', 'Inter-SemiBold.ttf', 'Inter-LightItalic.ttf'):
+            self.assertEqual((fonts / name).read_bytes(),
+                             (ROOT / 'tools/assets/fonts' / name).read_bytes())
+        manifest = json.loads((fonts / 'manifest.json').read_text())
+        for name, expected in manifest.items():
+            with self.subTest(font=name):
+                self.assertEqual(hashlib.sha256((fonts / name).read_bytes()).hexdigest(), expected)
+
     def test_measurements_and_oversized_source_location(self):
         with tempfile.TemporaryDirectory() as directory:
             log, sizes = Path(directory) / 'book.log', Path(directory) / 'book.oclayout'

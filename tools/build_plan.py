@@ -14,7 +14,7 @@ from check_print_cover import check as check_print_cover
 from check_cover_template import check as check_cover_template
 from print_layout import specification
 
-SCHEMA = 5
+SCHEMA = 6
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -29,7 +29,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v5\0')
+        h = hashlib.sha256(b'book-output-v6\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()

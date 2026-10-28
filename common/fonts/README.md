@@ -1,18 +1,22 @@
-# Interior fonts
+# Version C interior fonts
 
-These licensed fonts are bundled for reproducible colour interiors and digital reading.
-Approved cover fonts and image masters live separately in `tools/assets/`.
+The author approved version C: the cover's Inter display faces for headings and
+STIX Two Text/Math for text and mathematics. Files are bundled for reproducible
+PDF, EPUB and web builds.
 
-- **Libertinus Serif** (regular, italic, bold, bold italic) and **Libertinus Math**:
-  original OpenType files from CTAN's `libertinus-fonts` distribution,
-  https://ctan.org/pkg/libertinus-fonts. SIL Open Font License: `OFL-Libertinus.txt`.
-- **Inter Text**: static 400/600 upright/italic instances at optical size 14,
-  instantiated from the Google Fonts Inter variable sources with fontTools.
-  https://github.com/google/fonts/tree/main/ofl/inter. SIL OFL: `OFL-Inter.txt`.
-  These text-size instances are separate from the approved cover's existing weights.
-- **DejaVu Sans Mono**: unchanged regular, bold, oblique and bold oblique TTFs,
-  https://dejavu-fonts.github.io/. The licence is `LICENSE-DejaVu.txt`. Its symbol
-  coverage preserves the mathematical Unicode used in the book's code examples.
+- **STIX Two Text**: regular, italic, bold and bold italic; **STIX Two Math**:
+  original OTF files from https://ctan.org/pkg/stix2-otf. Licence: `OFL-STIX.txt`.
+- **Inter display**: `Inter-Light.ttf`, `Inter-SemiBold.ttf` and
+  `Inter-LightItalic.ttf` are exact copies of the approved cover files in
+  `tools/assets/fonts/`, at optical size 32. The missing semibold italic face is
+  instantiated at weight 600 / optical size 32 from the same Google Fonts Inter
+  italic variable source; its name is `InterDisplay-SemiBoldItalic.ttf`.
+- **Inter Text**: existing optical-size-14 regular/semibold upright/italic faces
+  remain for reader controls and mathematical sans text. Inter sources:
+  https://github.com/google/fonts/tree/main/ofl/inter. Licence: `OFL-Inter.txt`.
+- **DejaVu Sans Mono**: unchanged regular/bold/oblique/bold oblique TTFs preserve
+  the book's Unicode code symbols. https://dejavu-fonts.github.io/;
+  licence: `LICENSE-DejaVu.txt`.
 
-Matching WOFF2 companions were made with fontTools for the online reader. EPUB
-embeds the original OTF/TTF faces. `manifest.json` records all font SHA-256 hashes.
+Matching WOFF2 companions were generated with fontTools. EPUB embeds OTF/TTF
+faces. `manifest.json` records all 34 font-file hashes. Cover assets are unchanged.

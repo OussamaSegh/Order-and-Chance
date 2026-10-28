@@ -58,3 +58,19 @@ preserved as vector forms. Build/site packaging must render this shared template
 not copy the old PNGs. The new shared-template checker complements the existing
 print preflight and all typography checks. Interior font assets, common preamble,
 premium-colour settings, body content and page-count-dependent spines are untouched.
+
+## Version C approval
+
+The author selected version C for all 19 interiors after the font review. The
+implementation preserves cover commit `c839bba`. Headings now use the exact cover
+Inter faces; STIX Two provides body/math. The quieter box styling uses coral left
+rules and charcoal labels. Canonical premium-colour geometry remains unchanged,
+but new fonts require fresh interior page counts and wraps. Preserve schema 6 and
+the STIX/Inter/charcoal/coral gates together with the cover-material preflight.
+
+
+The locked-cover master is integrated with version C (`9c94065`). The cover title
+face lives in `tools/assets/fonts/Inter-Bold.ttf`, separately from version C's
+heading faces in `common/fonts/`. Shared build/cache files retain both validation
+sets. Original approval PNGs stay archived, and every current format renders the
+one common cover template. Fresh version-C manuscript pages determine spines.
