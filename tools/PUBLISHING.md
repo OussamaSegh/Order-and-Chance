@@ -189,3 +189,15 @@ Do not reinstate grayscale box overrides or hidden black links for print.
 KDP references checked for this change:
 - https://kdp.amazon.com/en_US/help/topic/G201953020 (premium colour spine coefficient).
 - https://kdp.amazon.com/en_US/help/topic/G201834180 (ink/paper options and page limits).
+
+
+## Consistent charcoal and luminous coral
+
+All paperback panels now use the restrained native muted paper tile, including
+Volumes 3 onward. Print preflight rejects the older full-strength grain regardless
+of its DPI. The sixteen native illustration plates use `tools/cover_finish.py`:
+vector ember/coral halos, warm highlights and lit edges, with their geometry/data
+unchanged. `tools/cover_plates.py` applies this finish when regenerating. The same
+source refreshes those digital covers, EPUBs and reader/library images. Approved
+Volumes 0–2 remain immutable. The interior typography/palette and premium-colour
+paper coefficient are unaffected. Rebuild wraps from actual print PDF pages.

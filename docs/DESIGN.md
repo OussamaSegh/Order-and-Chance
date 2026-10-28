@@ -1,3 +1,37 @@
+# Cover vibrancy: Volumes 3 onward
+
+The author supplied the Volume 2 and Volume 3 wraps and correctly identified that
+shared tokens alone did not produce the same appearance. The sixteen native-vector
+covers used full-strength background grain, pastel flat fills and dim connecting
+lines. The approved Volumes 0–2 had quieter charcoal and luminous coral artwork.
+The previous all-cover quality check covered resolution and geometry, not this
+visible material mismatch.
+
+All sixteen remaining covers now use the same restrained 35% charcoal grain on
+front, back and spine. `tools/cover_finish.py` applies warm coral linework, ember
+halos and pale hot highlights using nested vector strokes. Filled histograms,
+fractal cells and bands retain translucent colour with lit edges. The secondary
+comparison curves retain a distinct coral tone. Coordinates, mathematical values,
+paths, labels, fonts and page layout remain unchanged. All 16 original geometries
+were compared against their regenerated forms. The three approved image masters
+and their traced print assets remain untouched.
+
+The shared source updates reading-PDF fronts, EPUB/eBook covers, HTML/library
+images and print wraps together. It does not change interior fonts, semantic
+colours, pagination or the premium-colour spine coefficient. Print preflight now
+rejects the older full-strength paper tile even when its resolution is sufficient;
+only the manifest-verified native muted tile is permitted. Native paper still
+measures approximately 360 ppi on the panels, and every halo remains vector.
+
+Regenerate with `python3 tools/cover_plates.py`; inspect the all-cover print proof
+with `tools/preview_covers.py --print`. First proofs include sparse, dense, filled
+and circular artwork (Volumes 3, 6, 8, 12 and P3). New material regression tests
+preserve paths/data and secondary-curve distinctions. The integrated publishing
+suite passes 51 tests. Local review evidence is in `build/vibrancy-review/`.
+Latest `main` was pulled through `9ce62aa` before editing.
+
+---
+
 # Full-colour interiors and reading typography
 
 The author now explicitly requires **colour printing and better fonts**. This

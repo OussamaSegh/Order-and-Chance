@@ -12,6 +12,20 @@ Preserve the premium-colour paper setting, its 0.002347 spine coefficient and
 actual print-PDF page counts when updating wraps. Fetch and integrate current
 `main` before every push; retain both workstreams' checks in shared build files.
 
+## Latest cover-vibrancy correction
+
+The author found that Volumes 3 onward looked flatter and noisier than the approved
+Volumes 0–2. All sixteen remaining covers now use the same restrained 35% charcoal
+grain and luminous coral vector material. `tools/cover_finish.py` adds nested
+coral/ember strokes and warm highlights without changing any mathematical paths,
+coordinates, values or labels. `tools/cover_plates.py` applies this finish on
+regeneration. This latest correction updates those sixteen digital fronts as well
+as their paperback wraps; the three approved PNG masters and print traces stay
+unchanged. Keep the common back/spine/front grain identical across the series.
+Print preflight now permits only the native muted paper tile, still >=300 ppi.
+Interior colours, fonts, premium-colour paper and page-count-derived spines stay
+under the typography workstream's existing rules.
+
 ## Latest print-quality authorization
 
 The author subsequently approved **vector paths traced from the approved cover**

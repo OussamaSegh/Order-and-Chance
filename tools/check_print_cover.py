@@ -124,8 +124,9 @@ def check(path, number, report=None):
     table = subprocess.check_output(['pdfimages', '-list', str(path)], text=True)
     placements = raster_placements(table)
     check_placements(placements)
-    allowed = {pixel_key(Image.open(p)) for p in
-               [ROOT / 'tools/assets/approved-charcoal-paper.png', PRINT / 'paper-muted.png']}
+    # All books share the approved restrained grain; the old full-strength tile
+    # was visibly noisier on Volumes 3 onward even though its resolution passed.
+    allowed = {pixel_key(Image.open(PRINT / 'paper-muted.png'))}
     pdf = PdfReader(path)
     check_frame_alignment(path, float(pdf.pages[0].mediabox.width))
     count = 0
@@ -137,11 +138,12 @@ def check(path, number, report=None):
             key = ((int(image['/Width']), int(image['/Height'])),
                    hashlib.sha256(image.get_data()).hexdigest())
             if key not in allowed:
-                raise ValueError('Print cover contains an unapproved raster image; use vector artwork')
+                raise ValueError('Print cover contains a bitmap other than the approved muted paper; '
+                                 'keep the quiet charcoal grain and vector artwork')
             count += 1
     result = {'schema': 1, 'volume': str(number), 'minimum_required_ppi': MINIMUM_PPI,
               'minimum_observed_ppi': min((min(p['x_ppi'], p['y_ppi']) for p in placements), default=None),
-              'raster_content': 'native paper grain only', 'unique_images': count,
+              'raster_content': 'native muted paper grain only', 'unique_images': count,
               'raster_placements': len(placements), 'vector_masters': masters,
               'embedded_fonts': True, 'visible_frame_alignment': True, 'status': 'pass'}
     if report:

@@ -35,3 +35,14 @@ pushing. Integrate concurrent commits without force-pushing. Use a separate
 checkout for merges while local TeX builds are active. Do not cancel another
 thread's publication run; verify which exact commit a run and release contain.
 This handoff does not authorize changes to the other thread's artwork or fonts.
+
+
+## Subsequent cover-vibrancy correction
+
+The cover workstream now corrects the sixteen native-vector covers' noisier grain
+and flat artwork following the author's Volume 2/3 comparison. The change is confined
+to cover templates, plate rendering and the cover preflight's paper whitelist;
+it preserves all typography work, premium-colour settings and body content.
+Approved Volumes 0–2 and the print-vector assets remain unchanged. Both print
+wraps and the affected digital cover assets use the corrected material. See the
+latest section of `docs/DESIGN.md`; keep this correction during future integration.

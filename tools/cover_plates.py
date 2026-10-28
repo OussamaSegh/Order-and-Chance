@@ -7,6 +7,7 @@ fresh parameters and new compositions. Volumes 0, 1 and 2 use immutable author-a
 import math
 from pathlib import Path
 import cover_motifs as g
+from cover_finish import luminous_plate
 ROOT=Path(__file__).resolve().parent.parent
 
 def point(x,y): return f'({x:.5f}in,{y:.5f}in)'
@@ -82,12 +83,14 @@ def main():
                 renderer='approved-image',source=asset,sha256=hashlib.sha256(content).hexdigest()))
             print('preserved exact approved master',book,flush=True)
             continue
-        content='% Approved charcoal/coral vector plate: '+subject+'\n'+make()
+        content='% Approved charcoal/coral vector plate: '+subject+'\n'+luminous_plate(make())
         # Fresh geometry/parameters + a common engraving vocabulary; no decoration
         # that claims additional mathematical content is appended to the plate.
         content=content.rstrip()+'\n'
         (ROOT/book/'cover-motif.tex').write_text(content)
-        manifest.append(dict(book=book,subject=subject,evidence=evidence,sha256=hashlib.sha256(content.encode()).hexdigest()))
+        manifest.append(dict(book=book,subject=subject,evidence=evidence,
+            finish='Luminous coral vector strokes on restrained charcoal grain',
+            sha256=hashlib.sha256(content.encode()).hexdigest()))
         print('generated',book,flush=True)
     assert len(set(m['sha256'] for m in manifest))==len(manifest)==19
     (ROOT/'docs/cover-art-manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
