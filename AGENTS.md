@@ -316,6 +316,14 @@ Supporting mathematics has been integrated as appendices of the main volumes.
 
 ## First-edition copy policy
 
+All volumes are being prepared for their first edition. Reader-facing copy,
+including prefaces, reading guides and back matter, must not describe this work
+as a revision or reconstruction, compare it with a previous edition or arrangement,
+or include old-to-new numbering concordances. Describe the book as it stands.
+Keep development history and content-migration records in internal editorial
+reports only. This does not prohibit mathematical uses of words such as
+reconstruction, historical discussion or citations of editions of other works.
+
 Do not mention or promise accompanying Python/Jupyter notebooks in the books,
 including prefaces, chapters, appendices, captions, exercises, hints, solutions,
 back covers and KDP descriptions or keywords. Numerical examples must stand on
