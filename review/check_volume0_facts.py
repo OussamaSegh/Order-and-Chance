@@ -39,6 +39,7 @@ for _ in range(1001):
 
 # Coverage: every numbered exercise has exactly one hint and one solution.
 coverage = {}
+retained_exercise_ids = set()
 for path in sorted(CHAPTERS.glob('ch*.tex')):
     text = path.read_text()
     exercises = re.findall(r'\\begin\{exercise\}(?:\[[^\]]*\])?\s*\\label\{([^}]+)\}', text)
@@ -47,7 +48,18 @@ for path in sorted(CHAPTERS.glob('ch*.tex')):
     require(Counter(exercises) == Counter(hints) == Counter(solutions), path.name + ' exercise/hint/solution coverage')
     require(len(set(exercises)) == len(exercises), path.name + ' unique exercise IDs')
     coverage[path.stem] = len(exercises)
-require(sum(coverage.values()) == 130, '130 exercises retained')
+    retained_exercise_ids.update(exercises)
+# A revision can add exercises. Check the original identifiers individually,
+# so deleting one old exercise cannot be concealed by adding another.
+inventory_path = ROOT / 'review/volume0-reconstruction/baseline-inventory.json'
+if inventory_path.exists():
+    baseline_units = json.loads(inventory_path.read_text())['units']
+    baseline_ids = {label for unit in baseline_units if unit['kind'] == 'exercise'
+                    for label in unit['labels'] if label.startswith('ex:')}
+    require(len(baseline_ids) == 130, 'baseline contains 130 exercise IDs')
+    require(baseline_ids <= retained_exercise_ids, 'all 130 original exercise IDs retained')
+else:
+    require(sum(coverage.values()) == 130, '130 exercises retained')
 results['exercise_coverage'] = coverage
 
 # 1. Sums, finite differences, arithmetic and Catalan counting.

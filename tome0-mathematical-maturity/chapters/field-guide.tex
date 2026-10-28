@@ -18,7 +18,100 @@ When a problem looks unfamiliar, first translate it into a question you can ask 
 \section*{How to read a proof actively}
 Cover the next line and predict what would make the current line useful. If you cannot, ask for a small example and a boundary case. At the end, remove one hypothesis and try to break the conclusion. This is not vandalism: it is how you learn which wall holds up the roof.
 
-For a second reading, revisit the eight workshops. Each has a complete worked example, a mission with a staged hint, a solution and a warning about a plausible wrong argument. Try to explain the warning to an imaginary friend who is bright, impatient and very fond of dividing by zero. If your friend survives the explanation, try a real one.
+For a second reading, revisit the chapter workshops. Each has a complete worked example, a mission with a staged hint, a solution and a warning about a plausible wrong argument. Try to explain the warning to an imaginary friend who is bright, impatient and very fond of dividing by zero. If your friend survives the explanation, try a real one.
 
 \section*{Computers as experimental partners}
 Use exact checks where possible, draw examples, and compare numerical approximations against proved error bounds. The calculations can detect a mistake in an identity or an implementation; they cannot establish a universal theorem from finitely many cases. Floating-point output also carries rounding error. A symbolic equality, a truncation bound and a plotted approximation are three different kinds of evidence; keep their labels attached.
+
+\section*{An investigation: binary words on a circle}
+Here is a final problem whose useful language changes as the investigation
+progresses. For $n\ge2$, choose a binary word $x_1\cdots x_n$, with each $x_i$
+equal to $0$ or $1$. Require that no two adjacent entries are both $1$, including
+the pair $(x_n,x_1)$. Positions are labelled: $001$ and $010$ are different words.
+How many words satisfy the rule? What is the probability that a uniformly chosen
+binary word does so?
+
+\subsection*{Experiment and formulate}
+For $n=2$, the words are $00,01,10$: three. For $n=3$, they are $000,001,010,100$:
+four. For $n=4$, there are seven. These numbers suggest a recurrence, but a list
+of counts does not prove one. Breaking the circle at a position leaves a condition
+at each end; remember both ends rather than guessing how the ordinary path count
+changes. This is the same habit as strengthening an induction hypothesis: keep
+enough information for the next step.
+
+\begin{think}
+Use states $0,1$ for the most recently written symbol. Which transitions are
+allowed? Write a $2\times2$ matrix with entry $1$ for an allowed transition and
+$0$ for a forbidden one. What does an entry of its square count? Which entries
+should be added to close a walk into a circle?
+\end{think}
+
+\subsection*{Hints}
+The transition matrix is $M=\left(\begin{smallmatrix}1&1\\1&0\end{smallmatrix}\right)$.
+The $(i,j)$ entry of $M^r$ counts walks of $r$ transitions from state $i$ to state
+$j$. Prove this by induction from the multiplication rule. A circular word gives
+a closed walk of $n$ transitions, with its starting position fixed, so use the
+trace. The eigenvalues solve $X^2-X-1=0$. The probability question then uses a
+count of all $2^n$ words, followed by a limit of a geometric sequence.
+
+\subsection*{Complete solution}
+\idea The constraint only remembers the current symbol. Encode that finite memory
+as a matrix. Matrix multiplication sums over the possible intermediate symbols;
+the diagonal enforces the closing condition. Diagonalisation then turns a
+combinatorial count into two powers whose asymptotic sizes are easy to compare.
+
+\writeup Index rows and columns by $0,1$. The allowed transitions are $0\to0$,
+$0\to1$, and $1\to0$, giving the displayed matrix $M$. For $r=1$ its entries
+count one-step walks. If $(M^r)_{ij}$ counts $r$-step walks, then
+$(M^{r+1})_{ij}=\sum_{k=0}^1(M^r)_{ik}M_{kj}$ counts their disjoint extensions
+according to the penultimate state $k$. Induction proves the interpretation.
+
+A word $x_1\cdots x_n$ satisfying the rule is exactly the closed walk
+$x_1\to x_2\to\cdots\to x_n\to x_1$. No rotation is performed or forgotten;
+the symbol at position $1$ is the initial state. Thus the number is
+$L_n=\operatorname{tr}(M^n)$. The distinct eigenvalues are
+$\varphi=(1+\sqrt5)/2$ and $\psi=(1-\sqrt5)/2$, so $M$ is diagonalizable and
+\[
+L_n=\varphi^n+\psi^n.
+\]
+This formula also gives $L_0=2$ and $L_1=1$ for closed walks. These are convenient
+initial values for the recurrence $L_{n+2}=L_{n+1}+L_n$, since both eigenvalues
+satisfy $t^2=t+1$. The interpretation of $n=0$ is a zero-step walk with a chosen
+state, not an empty circular word. Keeping the interpretation separate prevents
+an erroneous initial count.
+
+Under uniform probability on $\{0,1\}^n$ the required probability is
+\[
+p_n=\frac{L_n}{2^n}
+=\left(\frac\varphi2\right)^n+\left(\frac\psi2\right)^n
+\sim\left(\frac\varphi2\right)^n\longrightarrow0,
+\]
+because $|\psi|<\varphi<2$. The equivalence follows by dividing by the leading
+term: the quotient is $1+(\psi/\varphi)^n\to1$. An exact expression and its
+asymptotic approximation are now clearly distinguished.
+
+\subsection*{A tempting wrong turn, and a new question}
+Dividing $L_n$ by $n$ does not count words up to rotation. Some words return to
+themselves after fewer than $n$ rotations: $0000$ has one distinct rotation,
+whereas $0001$ has four. Equivalence classes need not have equal sizes. Finding
+the count of unlabelled circles requires another idea, developed in Volume~2.
+We have reached a new problem by identifying the assumption that an attractive
+shortcut would need. That is a useful place to stop an investigation.
+
+\section*{Finding a citation from the earlier arrangement}
+\begin{center}
+\begin{tabular}{ll}
+Earlier chapter & Present chapter\\\hline
+1 Sums and induction & 1 (lattice paths now 2)\\
+2 Complex numbers & 4\\
+3 Polynomials & 5\\
+4 Inequalities & 8\\
+5 Sequences and series & 3\\
+6 Integrals and Taylor formulas & 7\\
+7 Linear algebra & 6\\
+8 Counting and probability & 2 and 9
+\end{tabular}
+\end{center}
+Result numbers within a chapter can also change when proofs are reordered.
+Use the mathematical subject to locate an older citation; the editorial
+concordance records the individual labelled results and exercises.
