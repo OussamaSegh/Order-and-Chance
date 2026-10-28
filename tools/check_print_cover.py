@@ -14,15 +14,12 @@ import subprocess
 from PIL import Image
 from pypdf import PdfReader
 
-from check_cover_pdf import check_fonts
+from check_cover_pdf import check_fonts, check_back_copy
+from check_cover_template import check_assets, form_hashes
 
 ROOT = Path(__file__).resolve().parent.parent
 PRINT = ROOT / 'tools/assets/print'
 MINIMUM_PPI = 300
-
-
-def sha(path):
-    return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
 def raster_placements(table):
@@ -78,26 +75,6 @@ def resource_images(resources, seen=None):
             yield from resource_images(obj['/Resources'], seen)
 
 
-def check_masters(number):
-    manifest = json.loads((PRINT / 'manifest.json').read_text())
-    numbers = {'0', str(number)} & manifest['masters'].keys()
-    for value in numbers:
-        spec = manifest['masters'][value]
-        if sha(ROOT / spec['source']) != spec['source_sha256']:
-            raise ValueError(f'Approved Volume {value} image changed after its vector trace')
-        for name, expected in spec['files'].items():
-            path = PRINT / name
-            if sha(path) != expected:
-                raise ValueError(f'Print vector asset does not match its manifest: {name}')
-            if path.suffix == '.pdf':
-                pdf = PdfReader(path)
-                if len(pdf.pages) != 1 or list(resource_images(pdf.pages[0]['/Resources'])):
-                    raise ValueError(f'{name}: vector master contains a raster image')
-    if sha(PRINT / 'paper-muted.png') != manifest['paper_muted_sha256']:
-        raise ValueError('Muted print paper changed after preblending')
-    return sorted(numbers)
-
-
 def check_frame_alignment(path, width):
     """Check visible borders, since searchable text cannot reveal a shifted form."""
     wrap = width > 600
@@ -120,7 +97,8 @@ def check_frame_alignment(path, width):
 def check(path, number, report=None):
     path = Path(path)
     check_fonts(path)
-    masters = check_masters(number)
+    template = check_assets(number)
+    masters = ['0']
     table = subprocess.check_output(['pdfimages', '-list', str(path)], text=True)
     placements = raster_placements(table)
     check_placements(placements)
@@ -128,7 +106,11 @@ def check(path, number, report=None):
     # was visibly noisier on Volumes 3 onward even though its resolution passed.
     allowed = {pixel_key(Image.open(PRINT / 'paper-muted.png'))}
     pdf = PdfReader(path)
+    identity = PdfReader(ROOT / template['identity']).pages[0].get_contents().get_data()
+    if hashlib.sha256(identity).hexdigest() not in form_hashes(pdf.pages[0]['/Resources']):
+        raise ValueError('Print wrap uses a different common identity instead of the Volume-0 master')
     check_frame_alignment(path, float(pdf.pages[0].mediabox.width))
+    if float(pdf.pages[0].mediabox.width)>600:check_back_copy(path)
     count = 0
     for page in pdf.pages:
         for image in resource_images(page['/Resources']):
@@ -145,7 +127,8 @@ def check(path, number, report=None):
               'minimum_observed_ppi': min((min(p['x_ppi'], p['y_ppi']) for p in placements), default=None),
               'raster_content': 'native muted paper grain only', 'unique_images': count,
               'raster_placements': len(placements), 'vector_masters': masters,
-              'embedded_fonts': True, 'visible_frame_alignment': True, 'status': 'pass'}
+              'embedded_fonts': True, 'visible_frame_alignment': True,
+              'shared_volume_0_template': True, 'subtitle_anchor_source_px': 600, 'status': 'pass'}
     if report:
         Path(report).write_text(json.dumps(result, indent=2) + '\n')
     observed = result['minimum_observed_ppi']

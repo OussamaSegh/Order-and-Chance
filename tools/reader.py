@@ -58,7 +58,7 @@ def main(tome: str, build: str, out: str) -> None:
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
     shutil.copy(TOOLS / "reader.js", out_dir / "reader.js")
     number = re.search(r"Volume ([0-9A-Z]+):", title).group(1)
-    master = TOOLS / f"assets/approved-volume-{number}.png"
+    master = build_dir / "cover.png"
     if master.is_file():
         shutil.copy2(master, out_dir / "cover.png")
     else:

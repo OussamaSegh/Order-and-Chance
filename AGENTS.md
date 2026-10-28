@@ -2,6 +2,35 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Latest decision: one locked Volume-0 master for all 19 covers
+
+The author now requires **100% series coherence**, with only the title (including
+its own subtitle), volume number and illustration varying. The subtitle must stay
+at Volume 0's position. This supersedes the earlier separate concept-image fronts
+and the sixteen flat-plate/glow variants below. All production fronts, including
+Volumes 0, 1 and 2, use `tools/cover-editorial-front.tex` and one configuration,
+`tools/assets/series-template.json`; regenerate its TeX with `tools/series_cover.py`.
+
+- The exact Volume-0 frame, masthead and author form is reused on every front/back.
+- Every title uses the same bundled Inter Display Bold 700 face, 54.8 pt, fixed
+  leading and width. No title/subtitle autosizing or volume-specific text offsets.
+- Subtitles retain their own words, with one italic face/size/tracking. Their fixed
+  baseline is source y=632.36, placing capitals at y=600 on the 1500-pixel reference.
+  Base anchors prevent glyph-dependent text-box shifts. Titles reserve two lines.
+- Volume 0 keeps its traced Gaussian illustration. The other eighteen use one
+  world-space 3D mathematical illustration each, with a shared orthographic camera,
+  fine coral mesh, opaque surface cells and selective crown bloom. Regenerate using
+  `tools/cover_plates.py`; no per-volume drawing-material overrides are permitted.
+- Earlier PNG approvals and full-cover traces remain unmodified archival references;
+  they must never bypass the shared title/layout in reading PDFs, EPUB or the site.
+  Live covers now render from the common master, rather than copying those PNGs.
+- `tools/check_cover_template.py` enforces the shared identity, font/size, subtitle
+  position and asset manifest, plus matching EPUB/reader images. The cache assembly
+  checks reading fronts and print wraps. Font substitutions, missing glyphs and
+  overflow fail cover builds; a separately checked back blurb uses fixed type.
+- Preserve print preflight (native muted grain >=300 ppi), premium-colour paper,
+  actual-page-derived spines, interior fonts, semantic colours and all book content.
+
 ## Concurrent cover and typography work
 
 Read `docs/WORKSTREAM-COORDINATION.md` before further cover or publishing edits.

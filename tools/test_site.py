@@ -21,7 +21,7 @@ class Tags(HTMLParser):
 
 
 class LibraryTest(unittest.TestCase):
-    def test_approved_cover_pngs_are_copied_without_rasterization(self):
+    def test_every_volume_uses_the_shared_master_including_earlier_concepts(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             dist, out = root / "dist", root / "site"
@@ -36,14 +36,14 @@ class LibraryTest(unittest.TestCase):
                 (dist / f"{book}.pdf").write_bytes(b"fixture")
                 (root / "build" / book).mkdir(parents=True)
                 (root / "build" / book / "cover.pdf").write_bytes(b"fixture")
-            with patch.object(site, "ROOT", root), patch.object(site.subprocess, "run") as render:
+            def write_preview(command, **kwargs):
+                Path(command[-1]+".png").write_bytes(b"shared-master-render")
+            with patch.object(site, "ROOT", root), patch.object(site.subprocess, "run", side_effect=write_preview) as render:
                 site.main(str(dist), str(out))
-                render.assert_not_called()
-            assets = Path(site.__file__).parent / "assets"
+                self.assertEqual(render.call_count, 3)
             for number, book, _ in books:
                 with self.subTest(volume=number):
-                    self.assertEqual((out / f"{book}-cover.png").read_bytes(),
-                                     (assets / f"approved-volume-{number}.png").read_bytes())
+                    self.assertEqual((out / f"{book}-cover.png").read_bytes(), b"shared-master-render")
 
     def test_available_formats_collections_and_retired_outputs(self):
         with tempfile.TemporaryDirectory() as directory:

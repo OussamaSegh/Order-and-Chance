@@ -1,3 +1,29 @@
+# Current cover master
+
+Every production front now uses the locked Volume-0 master in
+`tools/assets/series-template.json` and `tools/cover-editorial-front.tex`. This
+supersedes the historical exact-PNG front substitution described below. The PNG
+approvals remain archived; even Volumes 0–2 render their title blocks through the
+same font and text anchors as every other book. The original common identity and
+Volume-0 Gaussian illustration are retained. Each other book uses one 3D wireframe
+with the same camera/material. Subtitles stay at source y=600, using a fixed baseline
+and fixed type; neither titles nor subtitles are autosized.
+
+Run `python3 tools/cover_plates.py` after deliberate template/geometry edits. It
+updates the shared TeX, 3D plates and hash manifest. `tools/check_cover_template.py`
+checks fronts and their EPUB/reader assets; cached releases are checked too. All
+library thumbnails render the current cover PDF. The title face is the bundled
+Inter Display Bold 700; original approval PNGs are never copied over current fronts.
+Back text uses a common fixed size and must fit its reserved area. Cover logs fail
+on missing glyphs, substituted fonts or overflow; back text is checked separately.
+
+The print files still use 7 × 10 trim, premium colour on white paper, 0.125 outside
+bleed and an actual-page-derived spine. All previous interior/navigation/colour/font
+checks remain. Native muted grain is approximately 360 ppi, and illustrations/type
+remain vectors. The standard build does not need art-generation dependencies.
+
+---
+
 # Publishing a volume on Amazon KDP
 
 `./build.sh` produces two distinct **7 × 10 inch PDFs** and one **EPUB** per volume,

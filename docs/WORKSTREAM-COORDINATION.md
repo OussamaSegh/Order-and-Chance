@@ -46,3 +46,15 @@ it preserves all typography work, premium-colour settings and body content.
 Approved Volumes 0–2 and the print-vector assets remain unchanged. Both print
 wraps and the affected digital cover assets use the corrected material. See the
 latest section of `docs/DESIGN.md`; keep this correction during future integration.
+
+
+## Locked master following the author's 100% coherence instruction
+
+The cover thread now replaces every production front's layout branch with one
+Volume-0 master, fixed bold type, fixed subtitle baseline and one 3D illustration.
+This includes the title blocks of Volumes 0–2; their earlier PNG references remain
+archived unchanged. The common header/frame/author and Volume-0 Gaussian art are
+preserved as vector forms. Build/site packaging must render this shared template,
+not copy the old PNGs. The new shared-template checker complements the existing
+print preflight and all typography checks. Interior font assets, common preamble,
+premium-colour settings, body content and page-count-dependent spines are untouched.

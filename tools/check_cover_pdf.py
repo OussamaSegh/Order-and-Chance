@@ -41,6 +41,17 @@ def check_fonts(path):
         if flags and flags[1]!='yes':
             raise ValueError(f'{path}: unembedded cover font: {row.strip()}')
 
+def check_cover_log(path):
+    text=Path(path).read_text(errors='replace')
+    if ('Missing character:' in text or 'Some font shapes were not available' in text
+            or re.search(r'Font shape [^\n]*undefined|Overfull \\hbox',text)):
+        raise ValueError(f'{path}: missing cover glyph, substituted font or text overflow')
+
+def check_back_copy(path):
+    text=subprocess.check_output(['pdftotext','-x','9','-y','9','-W','504','-H','720',str(path),'-'],text=True)
+    if len(text.split())<60:
+        raise ValueError(f'{path}: back-cover blurb is missing or incomplete')
+
 def check_interior(path):
     """Check every page, including title pages and inserted figures."""
     info = subprocess.check_output(['pdfinfo', str(path)], text=True)
@@ -58,13 +69,18 @@ def check_interior(path):
 
 if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('pdf')
+    parser.add_argument('pdf',nargs='?')
+    parser.add_argument('--log',type=Path,help='Reject missing glyphs, font substitutions and overflow')
     parser.add_argument('--spine',type=float,help='Paperback spine width in inches; otherwise check a 6-inch front')
     parser.add_argument('--height',type=float)
     parser.add_argument('--title', help='Verify complete paperback front title/subtitle/slogan')
     parser.add_argument('--number', help='Volume identifier for subtitle lookup')
     parser.add_argument('--interior',action='store_true',help='Check every interior page size and embedded vector fonts')
     args=parser.parse_args()
+    if args.log:check_cover_log(args.log)
+    if not args.pdf:
+        if not args.log:parser.error('Supply a PDF or --log')
+        raise SystemExit(0)
     if args.interior:
         check_interior(args.pdf)
     else:

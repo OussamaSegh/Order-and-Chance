@@ -44,7 +44,7 @@ def main(isbn: str, out: str) -> None:
             i = j
         else:
             i += 1
-    font = r"font=\fontfamily{qhv}\selectfont\fontsize{8}{9}\selectfont"
+    font = r"font=\sffamily\fontsize{8}{9}\selectfont"
     lines.append(r"\node[black,%s] at (1.025in,1.16in) {ISBN %s-%s};" % (font, isbn[:3], isbn[3:]))
     lines.append(r"\node[black,%s,anchor=east] at (%.4fin,0.13in) {%s};" % (font, x0 - 0.02, isbn[0]))
     lines.append(r"\node[black,%s] at (%.4fin,0.13in) {%s};" % (font, x0 + 0.013 * 24, isbn[1:7]))

@@ -98,13 +98,8 @@ def main(dist: str, out: str) -> None:
         cover = '<div class="cover placeholder" aria-hidden="true">∑</div>'
         cover_pdf = ROOT / "build" / tome / "cover.pdf"
         if cover_pdf.exists():
-            number = re.search(r"Volume ([0-9A-Z]+):", title)
-            master = assets / f"approved-volume-{number.group(1)}.png" if number else None
-            if master and master.is_file():
-                shutil.copy2(master, out_dir / f"{tome}-cover.png")
-            else:
-                subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to", "480",
-                                str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
+            subprocess.run(["pdftoppm", "-png", "-singlefile", "-scale-to", "480",
+                            str(cover_pdf), str(out_dir / f"{tome}-cover")], check=True)
             cover = f'<img class="cover" width="336" height="480" loading="lazy" src="{tome}-cover.png" alt="Cover of {html.escape(rest or series)}">'
         match = re.match(r"tome([A-Z]?)", tome)
         prefix = match.group(1) if match else ""

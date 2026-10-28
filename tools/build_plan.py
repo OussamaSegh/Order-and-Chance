@@ -11,6 +11,7 @@ from check_cover_pdf import check_interior
 from check_interior_style import check as check_style
 from book_pdf import check_pair
 from check_print_cover import check as check_print_cover
+from check_cover_template import check as check_cover_template
 from print_layout import specification
 
 SCHEMA = 5
@@ -102,6 +103,7 @@ def snapshot(root, cache, data):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
         number = re.match(r'tome([A-Z]?\d+)-', book).group(1)
         check_print_cover(root / 'dist/kdp' / f'{book}-cover-wrap.pdf', number)
+        check_cover_template(root / 'dist' / f'{book}.pdf', number)
     shutil.rmtree(cache, ignore_errors=True)
     cache.mkdir(parents=True)
     shutil.copytree(root / 'dist', cache / 'dist')

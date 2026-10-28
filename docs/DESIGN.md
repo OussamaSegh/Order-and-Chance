@@ -1,3 +1,58 @@
+# One locked Volume-0 master
+
+The author requires every cover to have the same typography, positions, colours,
+frame, background and illustration treatment. Only the volume number, title and
+illustration vary; each book keeps its subtitle, explicitly at Volume 0's position.
+A common palette applied to different layouts/renderers did not meet this request.
+
+All nineteen production fronts now use one template and the measured configuration
+in `tools/assets/series-template.json`. Volume 0's original frame, masthead and author
+are reused as the same vector form everywhere. All title blocks—including Volume
+0's—are typeset with one actual bundled Inter Display Bold 700 font file, rather
+than the differing lettering of separate generated concepts. Point size 54.8,
+leading 49.5, horizontal scale, two-line title area and left margin are fixed.
+Subtitles use one Inter Light Italic face/size/tracking, without shrink-to-fit.
+Their baseline is fixed at source y=632.36: capital tops remain at y=600. Using
+baseline anchors avoids the sub-pixel shifts caused by differing glyph heights.
+The author/footer and masthead positions are inherited directly from the reference.
+
+Volume 0's Gaussian illustration is preserved as source-derived vector contours
+in `tools/assets/series/reference-art.pdf`. Every other cover has one coherent 3D
+wireframe model: prime lattices, probability landscapes, Fourier/zeta surfaces,
+fractal reliefs, symmetry meshes, tori and spatial random structures, grounded in
+their book subjects. `tools/cover_surfaces.py` supplies world-space geometry;
+`cover_surface_renderer.py` supplies one orthographic camera and one fine coral
+material with selective crown highlights. Surface cells occlude rear lines instead
+of producing a flat diagram or uniform neon tubing. Geometry-specific uniform fit
+is part of the illustration; fonts, text anchors and frame never depend on it.
+The manifest records subjects, evidence, 3D models, shared camera/material and hashes.
+
+The earlier approval PNGs and full-cover traces remain untouched as historical
+references. They are no longer substituted into live fronts: that would bypass
+the common typography. Reading PDFs, EPUB/eBook images, reader and library covers
+all render from the same master, including Volumes 0–2. The original reference image
+is preserved; its title block is now represented by the same real font used for all
+other titles. The reference composition, common identity and Gaussian art remain.
+
+Back blurbs retain their content and a common fixed 10.25/14.5 pt Inter layout;
+they are measured before entering TikZ and never autosized. Barcode labels use the
+bundled sans face rather than an unavailable legacy font. Font/glyph/overflow logs
+and a separate back-text check prevent blank or substituted back copy. Print wraps
+retain 7 × 10 trim, 0.125 bleed, >=300 physical ppi native muted paper and spines
+calculated from actual premium-colour manuscript pages. Interior typography,
+mathematical text, labels, semantic colours and paper coefficient are unchanged.
+
+`tools/check_cover_template.py` checks exact shared identity forms, fixed title
+face/size, subtitle bounding baseline, template/source hashes and 3D style provenance.
+It also verifies EPUB/reader images match their freshly rendered cover. Both build
+and cache assembly use it. The library always renders the common cover PDF; it no
+longer copies an earlier concept image for selected volumes. Regression tests cover
+fixed type, moved subtitles, mathematical probability data, 3D surface structure,
+missing back text and font substitutions. Proofs are in `build/series-master/`.
+The baseline pulled before editing was `c839bba`; preserve the typography handoff.
+
+---
+
 # Cover vibrancy: Volumes 3 onward
 
 The author supplied the Volume 2 and Volume 3 wraps and correctly identified that

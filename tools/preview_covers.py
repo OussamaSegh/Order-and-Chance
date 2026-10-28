@@ -10,7 +10,8 @@ from pathlib import Path
 import re
 import subprocess
 from series_metadata import subtitle, check_sync
-from check_cover_pdf import check_cover
+from check_cover_pdf import check_cover, check_cover_log
+from check_cover_template import check as check_template
 from print_layout import LAYOUT, check_sync as check_print_sync
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -39,6 +40,8 @@ def render(main: Path, output: Path, print_mode=False) -> str:
                                 f"-output-directory={out}", f"-jobname={fmt}", tex],
                                cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
         check_cover(out / f"{fmt}.pdf", width, height)
+        check_cover_log(out / f"{fmt}.log")
+        check_template(out / f"{fmt}.pdf", number)
         text = subprocess.check_output(["pdftotext", str(out / f"{fmt}.pdf"), "-"]).decode()
         text = " ".join(text.split())
         expected_text = (title, subtitle(number), "Discover the patterns. Understand the proofs.")

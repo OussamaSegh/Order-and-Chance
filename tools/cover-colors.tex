@@ -1,15 +1,16 @@
 % OpenType weights and tracking matched to the author's approved cover reference.
 \usepackage{fontspec}
 \setmainfont[Path=tools/assets/fonts/,UprightFont=Inter-Light.ttf,
- BoldFont=Inter-SemiBold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
+ BoldFont=Inter-Bold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
 \setsansfont[Path=tools/assets/fonts/,UprightFont=Inter-Light.ttf,
- BoldFont=Inter-SemiBold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
+ BoldFont=Inter-Bold.ttf,ItalicFont=Inter-LightItalic.ttf]{Inter}
 \usepackage{amsmath,amssymb}
 \usepackage{etoolbox}
 \usepackage{tikz}
 \usetikzlibrary{calc,shapes.geometric}
 \input{common/design-colors}
 \input{common/volume-subtitles}
+\input{tools/cover-template}
 \colorlet{ocInk}{ocCoral!70!ocBlack}
 \colorlet{accent}{ocCoral}
 \colorlet{ivory}{ocCream}
@@ -20,23 +21,32 @@
 \definecolor{ocCoverCoral}{HTML}{FF755B}
 \definecolor{ocCoverLight}{HTML}{FF957B}
 \definecolor{ocCoverPeak}{HTML}{FFE7D8}
+\definecolor{ocCoverTitle}{HTML}{FDF8F5}
+\definecolor{ocCoverSub}{HTML}{F9F8F8}
+\definecolor{ocCoverNumber}{HTML}{F4F3F4}
 \usepackage{adjustbox}
 \usepackage{xsavebox}
 \XeTeXgenerateactualtext=1
 \newcommand{\covertracking}[2]{{\addfontfeatures{LetterSpace=#1}#2}}
 \newif\ifcoverprint
+\newsavebox{\ocBackBodyBox}
 % Import PDF forms outside TikZ: XeTeX otherwise captures the current picture
 % translation in the imported PDF, shifting the illustration inside its box.
-\newcommand{\prepareprintcoverassets}[1]{%
- \ifcoverprint
-  \pgfmathsetlengthmacro{\covercanvasheight}{#1*1in}%
-  \IfFileExists{tools/assets/approved-volume-\TOMENUM.png}{%
-   \global\def\ocMasterPrepared{1}%
-   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/volume-\TOMENUM.pdf}}%
-   \def\identitynumber{\TOMENUM}%
-  }{\def\identitynumber{0}}%
-  \global\def\ocIdentityPrepared{1}%
-  \xsbox{ocIdentity}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/identity-\identitynumber.pdf}}%
+\newcommand{\preparecoverassets}[1]{%
+ \pgfmathsetlengthmacro{\covercanvasheight}{#1*1in}%
+ \xsbox{ocIdentity}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/identity-0.pdf}}%
+ \ifdefstring{\TOMENUM}{0}{%
+  \xsbox{ocReferenceArt}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/series/reference-art.pdf}}%
+ }{}%
+ \ifdefined\BLURB
+  % Text must be measured outside TikZ, whose outside-node font is nullfont.
+  \sbox{\ocBackBodyBox}{\parbox{5.12in}{\color{ocCream}%
+   \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
+   \fontsize{\COVERBACKSIZE}{\COVERBACKLEADING}\selectfont\input{\BLURB}}}%
+  \pgfmathsetlengthmacro{\backbodyheight}{#1*\COVERBACKMAXHEIGHT*1in}%
+  \ifdim\dimexpr\ht\ocBackBodyBox+\dp\ocBackBodyBox\relax>\backbodyheight
+   \PackageError{cover}{Blurb exceeds the fixed series body area}{Use the shared body size and reflow the blurb.}%
+  \fi
  \fi
 }
 % Native 1049-pixel grain tiles remain >=359 ppi after the 7/6 print scaling.
@@ -78,39 +88,9 @@
  \end{scope}}
 \newif\ifcoverbg
 
-% Draw the original pixels without retyping, recoloring, cropping or distorting.
-\newcommand{\covermasterimage}[1][0]{%
- \pgfmathsetlengthmacro{\covercanvasheight}{\CH*1in}
- \ifcsname ocMasterPrepared\endcsname\else
-  \global\def\ocMasterPrepared{1}
-  \ifcoverprint
-   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/volume-#1.pdf}}%
-  \else
-   \xsbox{ocMaster}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/approved-volume-#1.png}}%
-  \fi
- \fi
- \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocMaster}};
-}
-% Identical original frame, series heading, slogan and author for the other books.
+% One original Volume-0 frame, masthead and author form for every cover/format.
 \newcommand{\covercommonidentity}{%
- \ifcoverprint
-  % The small identity master excludes the illustration, avoiding repeated complex
-  % artwork behind clipped back-cover regions. Its outlines match the front.
-  \IfFileExists{tools/assets/approved-volume-\TOMENUM.png}{\def\identitynumber{\TOMENUM}}{\def\identitynumber{0}}%
-  \pgfmathsetlengthmacro{\covercanvasheight}{\CH*1in}%
-  \ifcsname ocIdentityPrepared\endcsname\else
-   \global\def\ocIdentityPrepared{1}%
-   \xsbox{ocIdentity}{\includegraphics[width=6in,height=\covercanvasheight,keepaspectratio]{tools/assets/print/identity-\identitynumber.pdf}}%
-  \fi
-  \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocIdentity}};%
- \else
- \foreach \xa/\ya/\xb/\yb in {0/0/.22/1,5.79/0/6/1,0/.9533/6/1,0/.8533/6/.9467,0/0/6/.0467,.32/.05/3.3/.105}{
-  \begin{scope}
-   \clip ($(O)+(\xa in,{\CH*\ya*1in})$) rectangle ($(O)+(\xb in,{\CH*\yb*1in})$);
-   \covermasterimage
-  \end{scope}
- }
- \fi
+ \node[inner sep=0pt] at ($(O)+(3in,{\CH*.5in})$) {\xusebox{ocIdentity}};%
 }
 \newcommand{\covercommoncopy}{%
  \node[opacity=0,anchor=west,font=\fontsize{12}{15}\selectfont] at ($(O)+(.43in,{\CH*.92in})$) {ORDER AND CHANCE};

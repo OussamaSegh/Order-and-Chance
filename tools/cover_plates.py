@@ -1,97 +1,87 @@
-"""Generate the approved charcoal/coral series' content-specific vector artwork.
+"""Generate every cover illustration with one locked Volume-0 master.
 
-Run from any directory with the build's Python (numpy is needed for matrix plates).
-Geometry primitives in cover_motifs are reused as mathematical algorithms, with
-fresh parameters and new compositions. Volumes 0, 1 and 2 use immutable author-approved images; other mathematical plates remain vectors.
+Original approval PNGs are retained as references; they never bypass the shared
+font/layout. Volume 0 keeps its traced Gaussian art; every other volume receives
+one content-specific world-space 3D model, using the same camera and material.
 """
-import math
 from pathlib import Path
-import cover_motifs as g
-from cover_finish import luminous_plate
 ROOT=Path(__file__).resolve().parent.parent
 
-def point(x,y): return f'({x:.5f}in,{y:.5f}in)'
-def line(points,style='accent,line width=.65pt'):
-    return r'\draw['+style+'] '+'--'.join(point(*p) for p in points)+';'
-def dot(x,y,r=.026,style='accent'):
-    return r'\fill['+style+'] '+point(x,y)+f' circle ({r}in);'
-def circle(r,style='accent,line width=.55pt'):
-    return r'\draw['+style+f'] (0,0) circle ({r}in);'
-
-def dyson():
-    """Fresh Hermitian Brownian eigenvalue paths, computed with numpy.linalg.eigvalsh."""
-    import numpy as np
-    rng=np.random.default_rng(202611); n=10; steps=110;dt=1/steps
-    H=np.zeros((n,n),dtype=complex);paths=[np.zeros(n)]
-    for _ in range(steps):
-        Z=rng.normal(size=(n,n))+1j*rng.normal(size=(n,n))
-        dH=(Z+Z.conj().T)*math.sqrt(dt/(4*n))
-        H+=dH;paths.append(np.linalg.eigvalsh(H))
-    out=['% Eigenvalues of a Hermitian Brownian motion; ordered at each time step.']
-    for j in range(n):out.append(line([(-2.4+4.8*k/steps,.78*float(v[j])) for k,v in enumerate(paths)],f'accent,line width={.6+.4*(1-abs(j-4.5)/4.5):.2f}pt,opacity=.9'))
-    assert all(np.all(np.diff(v)>=0) for v in paths)
-    return '\n'.join(out)
-
-def gem_bands():
-    """Five independent GEM(1) stick-breakings, shown as separated proportional bands."""
-    import random
-    rng=random.Random(202610);out=['% Exact GEM(1) stick-breaking samples, one proportional band per row.']
-    for j in range(6):
-        left=1.;start=-2.4;y=1.25-.5*j
-        for _ in range(14):
-            f=left*rng.random();left-=f;w=4.8*f
-            if w>.015:
-                out.append(r'\filldraw[fill=accent,fill opacity='+f'{.3+.6*min(1,f*4):.3f}'+r',draw=navy,line width=.8pt] '+point(start,y-.16)+' rectangle '+point(start+w,y+.16)+';')
-            start+=w
-        assert 0<=left<=1
-    return '\n'.join(out)
-
-# One main plate per book, mathematical subject and chapter evidence.
-PLATES={
- 'tome0-mathematical-maturity':(None,'Gaussian wireframe surface','ch06-integrals-taylor.tex; ch08-counting-probability.tex'),
- 'tome1-integers':(None,'Approved Ulam-inspired prime lattice artwork','ch02-primes.tex'),
- 'tome2-structures':(None,'Approved polyhedral symmetry wireframe artwork','ch11-characters.tex; ch12-quaternions.tex'),
- 'tome3-chance':(lambda:g.galton_board(rows=10,balls=18),'Binomial board and Gaussian approximation','ch02-discrete.tex; ch06-clt.tex'),
- 'tome4-calculation':(lambda:g.fourier_square((1,3,11,31)),'Fourier partial sums and Gibbs overshoot','ch06-fourier.tex'),
- 'tome5-meets':(lambda:g.zeta_critical_line(t_max=35,steps=1600),'Critical-line zeta curve','ch06-zeros.tex'),
- 'tome6-spaces':(lambda:g.sierpinski_carpet(level=3),'Sierpinski carpet and Cantor construction','ch11-metricmeasures.tex'),
- 'tome7-analysis':(lambda:g.confocal_grid(Y=1.3,n_ell=7,n_hyp=6),'Image of an orthogonal grid under sin(z)','ch09-complex.tex'),
- 'tome8-shapes':(lambda:g.farey_tessellation(depth=6,nmax=25),'Farey tessellation of the hyperbolic disk','ch09-hyperbolic.tex'),
- 'tome9-higher-structures':(lambda:g.plancherel_young(n=900,seed=202609),'Young diagram and Plancherel limit shape','ch09-symmetric.tex'),
- 'tome10-chance2':(gem_bands,'GEM(1) proportional stick-breaking bands','ch12-permutations.tex'),
- 'tome11-motion':(dyson,'Hermitian Brownian eigenvalue trajectories','ch10-semicircle.tex'),
- 'tome12-arithmetic':(lambda:g.ford_circles(qmax=28),'Ford circles over reduced rationals','ch14-modular.tex; ch12-elliptic.tex'),
- 'tome13-primes':(lambda:g.prime_constellations(rings=32,r0=.42),'Prime residues, twins and constellations','Prime distribution and progressions'),
- 'tome14-random':(lambda:g.multiplicative_walks(N=1800,walks=3,seed=202614),'Steinhaus multiplicative partial-sum walks','ch05-randommult.tex'),
- 'tome15-workshop':(lambda:g.brw_barrier(depth=9,seed=202615),'Branching random walk and critical barrier','ch06-chaos.tex'),
- 'tomeP1-crossroads':(lambda:g.gaussian_primes(N=18),'Gaussian primes in a bounded integer lattice','Gaussian integers and number theory'),
- 'tomeP2-machinery':(g.irrational_rotation,'Golden-ratio rotation and equidistribution','ch01-almost.tex; ch02-hilbert.tex'),
- 'tomeP3-frontiers':(g.binomial_limits,'Exact scaled binomial masses and Gaussian limit','ch01-pieces.tex'),
-}
+PLATES = {'tome0-mathematical-maturity': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
+ 'tome1-integers': 'ch02-primes.tex',
+ 'tome2-structures': 'ch11-characters.tex; ch12-quaternions.tex',
+ 'tome3-chance': 'ch02-discrete.tex; ch06-clt.tex',
+ 'tome4-calculation': 'ch06-fourier.tex',
+ 'tome5-meets': 'ch06-zeros.tex',
+ 'tome6-spaces': 'ch11-metricmeasures.tex',
+ 'tome7-analysis': 'ch09-complex.tex',
+ 'tome8-shapes': 'ch09-hyperbolic.tex',
+ 'tome9-higher-structures': 'ch09-symmetric.tex',
+ 'tome10-chance2': 'ch12-permutations.tex',
+ 'tome11-motion': 'ch10-semicircle.tex',
+ 'tome12-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
+ 'tome13-primes': 'Prime distribution and progressions',
+ 'tome14-random': 'ch05-randommult.tex',
+ 'tome15-workshop': 'ch06-chaos.tex',
+ 'tomeP1-crossroads': 'Gaussian integers and number theory',
+ 'tomeP2-machinery': 'ch01-almost.tex; ch02-hilbert.tex',
+ 'tomeP3-frontiers': 'ch01-pieces.tex'}
 
 def main():
     import hashlib,json
+    from cover_surfaces import model
+    from cover_surface_renderer import render
+    from series_cover import settings,tex_source,check_titles
     from series_metadata import main as sync_metadata
     sync_metadata()
+    (ROOT/'tools/cover-template.tex').write_text(tex_source())
+    check_titles()
+    config=settings()
     manifest=[]
-    for book,(make,subject,evidence) in PLATES.items():
-        if make is None:
-            number=book.split('-',1)[0].removeprefix('tome')
-            asset=f'tools/assets/approved-volume-{number}.png'
-            content=(ROOT/asset).read_bytes()
-            manifest.append(dict(book=book,subject=subject,evidence=evidence,
-                renderer='approved-image',source=asset,sha256=hashlib.sha256(content).hexdigest()))
-            print('preserved exact approved master',book,flush=True)
-            continue
-        content='% Approved charcoal/coral vector plate: '+subject+'\n'+luminous_plate(make())
-        # Fresh geometry/parameters + a common engraving vocabulary; no decoration
-        # that claims additional mathematical content is appended to the plate.
-        content=content.rstrip()+'\n'
+    subjects={
+      '0':'Approved Gaussian wireframe surface',
+      '1':'Ulam prime lattice as raised wire pyramids',
+      '2':'Icosahedral symmetry as a triangulated 3D wireframe',
+      '3':'Joint binomial probability surface',
+      '4':'Fourier partial-sum surface and Gibbs ridges',
+      '5':'Riemann zeta modulus landscape',
+      '6':'Extruded Sierpinski carpet',
+      '7':'Real part of the complex sine as a surface',
+      '8':'Pseudosphere and hyperbolic geometry',
+      '9':'Plane-partition solid from a Young partition',
+      '10':'GEM stick-breaking probability terraces',
+      '11':'Hermitian Brownian eigenvalue surface',
+      '12':'Elliptic-curve complex torus',
+      '13':'Normalised prime-counting error surface',
+      '14':'Phase projections of a Steinhaus multiplicative walk',
+      '15':'Spatial branching random walk',
+      'P1':'Gaussian prime lattice as raised wire pyramids',
+      'P2':'Irrational winding on a torus',
+      'P3':'Scaled binomial probability surfaces approaching the Gaussian'
+    }
+    for book,evidence in PLATES.items():
+        number=book.split('-',1)[0].removeprefix('tome')
+        if number=='0':
+            content='% Volume 0 keeps its approved traced Gaussian illustration.\n'
+            info={'space':'3D','renderer':'reference-vector','source':config['reference_illustration']}
+        else:
+            geometry,info=render(model(number),config)
+            content='% Shared-master 3D wireframe: '+subjects[number]+'\n'+geometry
+            info['renderer']='shared-camera-vector'
         (ROOT/book/'cover-motif.tex').write_text(content)
-        manifest.append(dict(book=book,subject=subject,evidence=evidence,
-            finish='Luminous coral vector strokes on restrained charcoal grain',
-            sha256=hashlib.sha256(content.encode()).hexdigest()))
-        print('generated',book,flush=True)
-    assert len(set(m['sha256'] for m in manifest))==len(manifest)==19
+        manifest.append(dict(book=book,number=number,subject=subjects[number],evidence=evidence,
+            sha256=hashlib.sha256(content.encode()).hexdigest(),**info))
+        print('generated shared-master illustration',book,flush=True)
+    assert len(manifest)==19
     (ROOT/'docs/cover-art-manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
+    files=[config['identity'],config['reference_illustration'],config['title_font'],
+           config['subtitle_font'],'tools/assets/print/paper-muted.png','tools/assets/series-template.json',
+        'tools/cover-template.tex','tools/cover-editorial-front.tex','tools/cover-colors.tex',
+        'tools/cover-back.tex','tools/cover-wrap.tex','tools/cover-front.tex','tools/cover.tex',
+        'tools/series_cover.py','tools/cover_surface_renderer.py','tools/cover_surfaces.py',
+        'tools/cover_plates.py',*[f'tools/assets/approved-volume-{n}.png' for n in range(3)]]
+    hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in files}
+    (ROOT/'tools/assets/series/manifest.json').write_text(json.dumps({'schema':1,
+        'master':'Volume 0','variable_fields':['title','subtitle','volume number','illustration'],
+        'files':hashes,'subtitle_top_source_px':600,'artwork':manifest},indent=2)+'\n')
 if __name__=='__main__':main()
