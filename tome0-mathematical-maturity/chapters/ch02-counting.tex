@@ -1,0 +1,420 @@
+\chapter{Counting and Discrete Reasoning}\label{ch:counting}
+
+\begin{center}\itshape
+How many ways can every guest receive the wrong hat?\\
+The difficulty is to count overlapping restrictions exactly once.
+\end{center}
+
+In his \emph{Essay d'analyse sur les jeux de hazard} (1708; expanded in 1713), Pierre R\'emond de Montmort studied a shuffled pack whose cards were numbered by their original positions. How many arrangements leave no card in its original position? His correspondence with Nicolaus Bernoulli, printed in the second edition, develops this \emph{probl\`eme des rencontres}. The same problem describes returning hats to guests. We will count the arrangements before asking, in Chapter~\ref{ch:probability}, what the count says about chance. Montmort's book and Euler's later treatment are listed among the sources.
+
+A useful counting argument must specify its objects and explain why each is counted once. The main decisions are often made before any factorial is written: should we count the complement, partition the objects into cases, or describe the same object in a different language?
+
+\section{Counting, from scratch}
+
+\begin{reminder}[the three rules of counting]
+For finite sets, $|A\cup B|=|A|+|B|$ when $A\cap B=\emptyset$ (\emph{sum rule}), $|A\times B|=|A|\,|B|$ (\emph{product rule}, which extends to ``a choice made in $k$ stages with $n_1,\dots,n_k$ options at each stage can be made in $n_1\cdots n_k$ ways'', even when the options at a stage depend on the earlier choices, as long as their \emph{number} does not), and $|A|=|B|$ whenever there is a bijection $A\to B$ (\emph{bijection rule}). Almost every count in this chapter is one of these three, applied with care; the most common mistake is to count something twice, and the cure is to check that the stages of a product-rule count really determine the object and are determined by it.
+\end{reminder}
+
+For the sum rule, list the elements of the disjoint sets one list after the other; no element is repeated or omitted. For the product rule, partition $A\times B$ by its first coordinate: there are $|A|$ disjoint groups of $|B|$ pairs, giving $|A|\,|B|$. Repeated use proves the stage-by-stage form. A bijection transports a list of one set into a list of the other, so the lengths agree. These arguments also explain why disjointness, fixed numbers of choices and invertibility are the hypotheses to check.
+
+\begin{examplex}[counting with the three rules]
+How many five-letter words (any letters) contain at least one vowel? Counting those with a vowel directly leads into cases; count the complement instead: $26^5$ words in all, $21^5$ with no vowel, so $26^5-21^5=7{,}797{,}275$. How many ways to seat $8$ people at a round table, two seatings being the same if one is a rotation of the other? Fix one person's seat, then order the $7$ others: $7!=5040$; or divide $8!$ by the $8$ rotations. How many diagonals has a convex $n$-gon? Pairs of vertices, minus sides: $\binom n2-n=\frac{n(n-3)}2$. How many subsets of $\{1,\dots,n\}$ contain no two consecutive integers? Call the count $f_n$: a subset either avoids $n$ (counted by $f_{n-1}$) or contains $n$ and hence avoids $n-1$ (counted by $f_{n-2}$), so $f_n=f_{n-1}+f_{n-2}$ with $f_1=2$, $f_2=3$: Fibonacci again, $f_n=F_{n+2}$.
+\end{examplex}
+
+\begin{proposition}[basic counts]\label{prop:counts}
+Let $|E|=n\ge1$ and $|F|=k\ge0$.
+\begin{enumerate}[label=(\alph*)]
+\item There are $n^k$ maps $F\to E$, $\frac{n!}{(n-k)!}$ injections for $k\le n$ (and none for $k>n$), and $n!$ permutations of $E$.
+\item There are $\binom nk$ subsets of size $k$ and $\binom{n+k-1}k$ multisets of size $k$ (``stars and bars'').
+\item \textbf{Pigeonhole}: if $m\ge0$ objects go into $n$ boxes, some box holds at least $\lceil m/n\rceil$ of them, where $\lceil x\rceil$ is the least integer greater than or equal to $x$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Enumerate $F=\{f_1,\dots,f_k\}$; a map chooses an image for each $f_i$ independently ($n$ choices each); an injection chooses distinct images, with $n,n-1,\dots,n-k+1$ choices in turn; a permutation is an injection with $k=n$.
+
+(b) Subsets: Proposition~\ref{prop:binom}. A multiset of size $k$ on $E=\{e_1,\dots,e_n\}$ is a choice of multiplicities $m_1+\dots+m_n=k$; encode it as a word of $k$ stars and $n-1$ bars ($m_1$ stars, a bar, $m_2$ stars, \dots). This is a bijection onto the words of length $n+k-1$ with $k$ stars, which are determined by the positions of the stars: $\binom{n+k-1}k$.
+
+(c) If every box held at most $\lceil m/n\rceil-1<m/n$ objects, the total would be $<m$.
+\end{proof}
+
+The pigeonhole principle looks too obvious to deserve a name. Dirichlet made it famous in 1842 by using it to prove that every irrational number $\alpha$ has infinitely many rational approximations $\frac pq$ with $\left|\alpha-\frac pq\right|<\frac1{q^2}$ (Volume~1): the pigeons are the $N+1$ fractional parts of $0,\alpha,2\alpha,\dots,N\alpha$, the boxes the $N$ intervals of length $\frac1N$. Its power is that it proves existence without finding anything, and Exercises~\ref{ex:pigeon} and~\ref{ex:erdos} show how far that goes.
+
+\begin{think}
+How many integers in $\{1,\dots,100\}$ are divisible by $2$, $3$ or $5$? Adding $50+33+20$ counts some numbers twice or three times. Correct the count step by step, and watch the pattern of signs appear.
+\end{think}
+
+\begin{theorem}[inclusion--exclusion]\label{thm:incexc}
+For finite sets $A_1,\dots,A_n$, writing $A_I=\bigcap_{i\in I}A_i$,
+\[
+\left|A_1\cup\dots\cup A_n\right|=\sum_{k=1}^n(-1)^{k+1}\sum_{|I|=k}|A_I|.
+\]
+\end{theorem}
+\begin{proof}
+For a set $A$, its \emph{indicator} $\mathbf 1_A(x)$ is $1$ if $x\in A$ and $0$ otherwise. For $x$ in the union, $1-\prod_{i=1}^n\left(1-\mathbf 1_{A_i}(x)\right)=1$. Expanding the product gives
+\[\mathbf 1_{\bigcup A_i}=\sum_{\emptyset\ne I}(-1)^{|I|+1}\mathbf 1_{A_I},\]
+and this also holds (both sides $0$) outside the union. Sum over $x$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-venn}
+\caption{Inclusion--exclusion for the multiples of $2$, $3$ and $5$ in $\{1,\dots,100\}$. The seven regions hold the numbers divisible by exactly the primes indicated (for instance $3$ numbers, $30$, $60$ and $90$, are divisible by all three). The union has $50+33+20-16-10-6+3=74$ elements, so $26$ numbers up to $100$ have no prime factor below $7$: the number $1$, the $22$ primes from $7$ to $97$, and the composites $49$, $77$ and $91$. Removing multiples of $7$ completes this stage of the sieve, leaving $1$ and those $22$ primes: every composite up to $100$ has a prime factor at most $10$. This is a partial stage of the sieve of Eratosthenes written as a formula, and Volume~5 is about what happens to it for large $n$.}
+\label{fig:venn}
+\end{figure}
+
+The proof is worth a second look: it proves an identity between \emph{functions}, $\mathbf 1_{\bigcup A_i}=\sum(-1)^{|I|+1}\mathbf 1_{A_I}$, and then sums it. In Chapter~\ref{ch:probability}, weighting this identity by probabilities will give the same formula for the probability of a union. Keeping only its first few terms also gives inequalities (Exercise~\ref{ex:bonferroni}).
+
+
+\section{Lattice paths}
+
+Binomial coefficients count much more than subsets. Let $a,b\in\N$. Consider the paths in the plane that go from $(0,0)$ to $(a,b)$ by unit steps east
+($\mathsf E$: $(x,y)\to(x+1,y)$) and north ($\mathsf N$: $(x,y)\to(x,y+1)$), as in Figure~\ref{fig:paths}.
+
+\begin{proposition}[counting paths]\label{prop:paths}
+The number of such paths from $(0,0)$ to $(a,b)$ is $\binom{a+b}a$.
+\end{proposition}
+\begin{proof}
+A path has $a+b$ steps, of which exactly $a$ are $\mathsf E$ (the $x$-coordinate must increase by $a$) and $b$ are $\mathsf N$. Reading the steps in
+order gives a word of length $a+b$ in the letters $\mathsf E,\mathsf N$ with $a$ letters $\mathsf E$; the path is determined by the word, and the word by the set of positions of its
+$\mathsf E$'s, an $a$-subset of $\{1,\dots,a+b\}$. So paths, words and $a$-subsets are in bijection, and there are $\binom{a+b}a$ of them.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-paths}
+\caption{Left: a path from $(0,0)$ to $(4,3)$ and its word. Right: the reflection trick of Exercise~\ref{ex:catalan}. A path to $(4,4)$ that rises above the diagonal $y=x$ touches the line $y=x+1$; reflecting the part after its first touch (dotted, reflected into red) gives a path to $(3,5)$, and the correspondence is a bijection. So the paths that stay on or below the diagonal number $\binom84-\binom83=70-56=14$.}
+\label{fig:paths}
+\end{figure}
+
+Paths make some identities visible. Pascal's rule: a path to $(a,b)$ arrives either from $(a-1,b)$ or from $(a,b-1)$. Vandermonde: a path
+with $m+n$ steps from $(0,0)$ to $(r,m+n-r)$ passes, after its first $m$ steps, through some point $(k,m-k)$; the first half is one of $\binom mk$
+paths and the second half one of $\binom n{r-k}$, so summing over $k$ gives $\binom{m+n}r$. The hockey stick: sort the paths to $(r+1,n-r)$ by
+the height $h$ at which they take their last $\mathsf E$ step; before that step they are a path to $(r,h)$, after it a vertical climb, so
+$\binom{n+1}{r+1}=\sum_{h}\binom{r+h}r$. Each of these is a one-line proof once the picture is drawn. Exercise~\ref{ex:catalan} uses the
+pictures to count the paths that never rise above the diagonal, the \emph{Catalan numbers} $1,1,2,5,14,42,\dots$, which count an astonishing number
+of other things (Stanley lists more than two hundred).
+
+
+\begin{think}
+List the permutations of three hats. Which have no hat in its original position? Can you count derangements by subtracting permutations that fix one or more positions?
+\end{think}
+
+\begin{proposition}[derangements]\label{prop:derang}
+A fixed point of a permutation $\sigma$ is an element $i$ with $\sigma(i)=i$. A permutation without fixed points is a \emph{derangement}. Write $D_n$ for their number on $\{1,\dots,n\}$; the empty permutation gives $D_0=1$. Then
+\[
+D_n=n!\sum_{k=0}^n\frac{(-1)^k}{k!}\qquad(n\ge0).
+\]
+\end{proposition}
+\begin{proof}
+Let $A_i$ be the set of permutations fixing $i$. For $|I|=k$, $|A_I|=(n-k)!$. By Theorem~\ref{thm:incexc}, the number of permutations with a fixed point is
+$\sum_{k=1}^n(-1)^{k+1}\binom nk(n-k)!=n!\sum_{k=1}^n\frac{(-1)^{k+1}}{k!}$; subtract from $n!$. For $n=0$, the empty sum in inclusion--exclusion gives $D_0=1$ directly.
+\end{proof}
+
+
+The first values are $D_0=1$, $D_1=0$, $D_2=1$, $D_3=2$, $D_4=9$. Exercise~\ref{ex:derangrec} finds a recurrence without using inclusion--exclusion. The limiting proportion $D_n/n!$ requires infinite series; we return to it, and compare the number of fixed points with the Poisson law, in Chapter~\ref{ch:probability}.
+
+\subsection*{Following a permutation around its cycles}
+A permutation $\sigma$ of a finite set is a bijection from the set to itself. Starting at an element $a$, follow $a,\sigma(a),\sigma^2(a),\dots$. Finiteness forces a repetition. The first repeated value must be $a$: if $\sigma^i(a)=\sigma^j(a)$ with $0<i<j$, injectivity gives $\sigma^{i-1}(a)=\sigma^{j-1}(a)$, contradicting the first repetition. Thus the successive distinct elements form a \emph{cycle}. Starting from an element not yet visited gives another cycle; the cycles are disjoint and partition the set, because intersecting cycles follow the same successors and predecessors. For example, the map with $1\mapsto3\mapsto2\mapsto1$ and $4\mapsto5\mapsto4$ has cycles $(1\,3\,2)$ and $(4\,5)$. A fixed point is a cycle of length one. This description makes the splice in Exercise~\ref{ex:derangrec} visible and prepares the cycle-length calculation of Exercise~\ref{ex:cycles}.
+
+
+\section{Generating functions: keeping every count at once}
+Suppose a counting problem gives numbers $a_0,a_1,a_2,\dots$, one for each size. A \emph{generating function} records the entire list as
+\[
+A(t)=a_0+a_1t+a_2t^2+\cdots=\sum_{n\ge0}a_nt^n.
+\]
+At this stage $t$ is a marker, not a real number to be substituted. Such an expression is a \emph{formal power series}: equality means equality of every coefficient. We write $[t^n]A(t)=a_n$. No convergence assertion is being made. This distinction lets us use the method now, before limits and infinite numerical series have been developed.
+
+Adding series means adding coefficients. Multiplying them means collecting terms of the same degree:
+\[
+[t^n]\bigl(A(t)B(t)\bigr)=\sum_{j=0}^na_jb_{n-j}.
+\]
+For each fixed $n$, this is a finite sum. If $a_j$ counts objects of size $j$ and $b_\ell$ counts a second kind of object of size $\ell$, then $a_jb_{n-j}$ counts ordered pairs of total size $n$ whose first object has size $j$. The sum over $j$ counts every pair once. Thus multiplication is the product rule together with decomposition by size. The same argument defines products of any fixed finite number of series; associativity follows because a coefficient is a finite sum over triples, which can be grouped in either order.
+
+\begin{examplex}[unrestricted multiplicities]
+The series $G(t)=1+t+t^2+\cdots$ records one choice of each nonnegative multiplicity. Coefficientwise,
+\[
+(1-t)G(t)=1:
+\]
+the constant coefficient is $1$, and the coefficient at every positive degree is $1-1=0$. We abbreviate this identity as $G(t)=1/(1-t)$. Consequently
+\[
+[t^n]\frac1{(1-t)^r}=\binom{n+r-1}{r-1}\qquad(r\ge1),
+\]
+because the coefficient counts $r$ nonnegative multiplicities with sum $n$, exactly the stars-and-bars objects of Exercise~\ref{ex:stars}. Here a fraction denotes a formal inverse, not evaluation of a numerical function. The identity $(1-t)G=1$ determines its coefficients successively and uniquely.
+\end{examplex}
+
+\begin{think}
+A strip of $n$ unit squares is tiled by tiles of lengths $1$ and $2$. What can the last tile be? Work out the counts for $n=0,1,2,3,4$ before writing a formula. Why must the empty strip have one tiling?
+\end{think}
+
+\begin{examplex}[a recurrence becomes an equation]
+Let $u_n$ count these strip tilings. There is one tiling of the empty strip, so $u_0=1$, and $u_1=1$. For $n\ge2$, remove the last tile: a length-$1$ tile leaves a tiling of length $n-1$, and a length-$2$ tile leaves one of length $n-2$. The two cases are disjoint and reversible, giving
+\[
+u_n=u_{n-1}+u_{n-2}.
+\]
+Put $U(t)=\sum_{n\ge0}u_nt^n$. Multiplication by $t$ shifts the list one place to the right, with a zero inserted at the start. Comparing constant, linear and higher coefficients now gives
+\[
+(1-t-t^2)U(t)=1,\qquad U(t)=\frac1{1-t-t^2}.
+\]
+This notation has a precise content: $u_0=1$, $u_1-u_0=0$, and $u_n-u_{n-1}-u_{n-2}=0$ for $n\ge2$. These equations determine the series uniquely. Its first coefficients are $1,1,2,3,5,8$, and $u_n=F_{n+1}$ for the Fibonacci sequence of Exercise~\ref{ex:fibgcd}, because both sequences have the same initial values and recurrence. The generating function organises a decomposition; a proof of the decomposition is still required.
+\end{examplex}
+
+For a finite set of objects, an ordinary polynomial suffices. If each element of $\{1,\dots,m\}$ is either selected or omitted and selection of $j$ contributes size $j$, then
+\[
+\prod_{j=1}^m(1+t^j)
+\]
+has coefficient $[t^n]$ equal to the number of subsets with element sum $n$. Choosing $1$ omits an element; choosing $t^j$ selects it. This is the same expansion principle as the binomial theorem, with a different meaning assigned to degree. Volume~4 develops generating functions further; here the central skill is deciding what each coefficient counts.
+
+\section{Workshop: remove the restriction by changing the objects}
+How many $k$-element subsets of $\{1,\dots,n\}$ contain no consecutive integers? A formula is less useful than a transformation that explains why it holds.
+
+\subsection*{Experiment and diagnosis}
+Take $n=5$ and $k=2$. The admissible pairs are
+\[
+\{1,3\},\{1,4\},\{1,5\},\{2,4\},\{2,5\},\{3,5\}.
+\]
+There are six. The tempting product ``choose the first element, then choose the second'' gives different numbers of choices depending on the first choice; a single product with fixed factors will not describe that process. Instead, list a selected set in increasing order,
+\[
+1\le a_1<a_2<\cdots<a_k\le n,
+\qquad a_{i+1}\ge a_i+2.
+\]
+The extra space is compulsory: after every selected element except the last, one place must remain unused. Can we remove exactly that compulsory space?
+
+\subsection*{Mission and hints}
+Find a bijection from admissible selections to ordinary $k$-subsets of a shorter interval. Treat the empty selection separately, and determine when there are no admissible selections at all.
+
+\textbf{Hint 1.} The second selected element has one compulsory gap before it, the third has two. \textbf{Hint 2.} Subtract $i-1$ from the $i$th selected element. Check that this map is invertible before counting its target.
+
+\subsection*{How to find it}
+We want to replace a gap of at least two by a gap of at least one. If $b_i=a_i-c_i$, then $b_{i+1}-b_i=(a_{i+1}-a_i)-(c_{i+1}-c_i)$. Choosing $c_{i+1}-c_i=1$ removes the extra required gap. The simplest choice is $c_i=i-1$. The upper endpoint then decreases from $n$ to $n-k+1$.
+
+\subsection*{Write-up}
+For $k\ge1$, an admissible set has $a_k\ge2k-1$. Therefore none exists when $n<2k-1$. If $n\ge2k-1$, define $b_i=a_i-(i-1)$. The gap condition implies
+\[
+1\le b_1<b_2<\cdots<b_k\le n-k+1.
+\]
+Conversely, every increasing list in this interval gives an admissible list $a_i=b_i+i-1$. The two constructions undo each other, so the desired count is
+\[
+\binom{n-k+1}{k}\qquad(n\ge2k-1).
+\]
+For $k=0$ there is exactly one selection, the empty set. This boundary value is essential when we add the counts over all $k$.
+
+Let $f_n$ be the number of all subsets of $\{1,\dots,n\}$ with no consecutive elements. The decomposition according to whether $n$ is selected gave $f_n=f_{n-1}+f_{n-2}$, with $f_0=1$ and $f_1=2$. Thus $f_n=F_{n+2}$. Counting the same subsets according to their size gives the identity
+\[
+F_{n+2}=\sum_{k=0}^{\lfloor(n+1)/2\rfloor}\binom{n-k+1}{k}.
+\]
+The bijection, recurrence and sum describe the same objects in three languages. Exercise~\ref{ex:count-circle} asks what changes on a circle, where the two endpoints can no longer be treated independently.
+
+\begin{reminder}[choosing a counting method]
+A local construction suggests a recurrence; a global restriction may suggest its complement; several overlapping restrictions suggest inclusion--exclusion. If a constraint demands compulsory gaps, try removing those gaps by a bijection. In every method, check an empty object, the first nonempty object and a case where no object is possible. A formula that misses one of these cases usually hides a wrong interpretation.
+\end{reminder}
+
+\section{Exercises}
+\begin{exercise}[$\star$]\label{ex:stars}
+Let $n\ge0$ and $k\ge1$ be integers. How many solutions in $\N^k$ does $x_1+\dots+x_k=n$ have? And in $(\N^*)^k$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pigeon}
+Let $n\ge1$. Choose $n+1$ distinct integers in $\{1,\dots,2n\}$. Show that two of them are coprime, and that one of them divides another.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:phi}
+Let $n\ge1$, and write $n=p_1^{a_1}\cdots p_r^{a_r}$ with distinct primes $p_i$. Using inclusion--exclusion, show that the number $\varphi(n)$ of integers in $\{1,\dots,n\}$ coprime to $n$ is
+$n\prod_{i=1}^r\left(1-\frac1{p_i}\right)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:derangrec}
+\emph{Euler's recurrence.} Show directly (by a bijection, not from the formula) that the derangement numbers satisfy $D_n=(n-1)(D_{n-1}+D_{n-2})$ for $n\ge3$, and deduce $D_n=nD_{n-1}+(-1)^n$. Check both against the values in the text.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:surj}
+\emph{Surjections.} Let $k,n\ge0$. For these counts use $0^0=1$, because there is one map from the empty set to itself. Show that the number of surjections from a $k$-element set onto an $n$-element set is
+\[
+S(k,n)=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k ,
+\]
+and deduce that $\sum_{j=0}^n(-1)^j\binom nj(n-j)^k=0$ for $k<n$ and $=n!$ for $k=n$. (Compare with Newton's forward differences, Theorem~\ref{thm:newton}.) How many surjections are there from $5$ elements onto $3$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:catalan}
+\emph{The Catalan numbers.} Let $C_n$ be the number of paths from $(0,0)$ to $(n,n)$ with steps $\mathsf E,\mathsf N$ that never rise above the diagonal $y=x$.
+\begin{enumerate}[label=(\alph*)]
+\item For $n\ge1$, a path to $(n,n)$ that does rise above the diagonal has a first point on the line $y=x+1$. Reflect the rest of the path in that line, as in Figure~\ref{fig:paths}. Show that this gives a bijection between the ``bad'' paths to $(n,n)$ and all paths to $(n-1,n+1)$.
+\item Deduce $C_n=\binom{2n}n-\binom{2n}{n-1}=\frac1{n+1}\binom{2n}n$, and compute $C_1,\dots,C_6$.
+\item Show that $C_n$ also counts the ways to write $n$ pairs of parentheses correctly ($n=3$: ((())), (()()), (())(), ()(()), ()()()), and that $C_{n+1}=\sum_{k=0}^nC_kC_{n-k}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:erdos}
+\emph{Erd\H{o}s--Szekeres.} Show that every sequence of $n^2+1$ distinct real numbers has a monotone subsequence of length $n+1$.
+\end{exercise}
+\begin{figure}[ht]
+\centering
+\fig{ch08-erdos}
+\caption{A sequence of $10=3^2+1$ distinct numbers, plotted as points $(i,a_i)$, with the pair $(u_i,d_i)$ of Exercise~\ref{ex:erdos} written under each point: the lengths of the longest increasing and longest decreasing subsequence ending there. The ten pairs are distinct, so they cannot all fit in $\{1,2,3\}^2$; here $u_{10}=4$, and the increasing subsequence of length $4$ is highlighted. The sequence $3,2,1,6,5,4,9,8,7$ shows that $n^2$ terms are not enough.}
+\label{fig:erdos}
+\end{figure}
+
+\begin{exercise}[$\star$]\label{ex:count-coefficient}
+Find the coefficient of $t^6$ in $(1+t^2+t^4)(1+t+t^2+t^3)(1+t^3)$. Interpret it as a count of triples $(a,b,c)$ with $a\in\{0,2,4\}$, $b\in\{0,1,2,3\}$, $c\in\{0,3\}$ and $a+b+c=6$. Explain why the product rule alone does not give the answer.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:count-tiles}
+Let $v_n$ count tilings of a strip of length $n$ using tiles of lengths $1$ and $3$. Prove a recurrence with its initial conditions, obtain its formal generating function, and compute $v_6$ in two ways: by recurrence and by classifying tilings according to their number of length-$3$ tiles.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:count-derang-gf}
+For the derangement numbers define the formal series $E(t)=\sum_{n\ge0}(D_n/n!)t^n$. Using Proposition~\ref{prop:derang}, show coefficientwise that
+\[
+E(t)=\left(\sum_{j\ge0}\frac{(-1)^jt^j}{j!}\right)\frac1{1-t}.
+\]
+Do not substitute a value of $t$. Deduce $D_n=nD_{n-1}+(-1)^n$ for $n\ge1$ directly from this product identity. Compare with the bijective proof in Exercise~\ref{ex:derangrec}.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:count-circle}
+Place the labels $1,\dots,n$ around a circle, with $n\ge3$. Two labels are adjacent if consecutive around the circle, so $1$ and $n$ are adjacent too. For $1\le k\le\lfloor n/2\rfloor$, prove that the number of $k$-subsets containing no adjacent labels is
+\[
+\binom{n-k}{k}+\binom{n-k-1}{k-1}
+=\frac{n}{n-k}\binom{n-k}{k}.
+\]
+Treat $k=0$ and $k>\lfloor n/2\rfloor$ separately. The labels are fixed: rotations of a chosen subset are counted as different subsets unless they give exactly the same set.
+\end{exercise}
+
+\begin{beauty}
+The same restriction can become a bijection, a recurrence or a generating function. The inclusion--exclusion formula of Exercise~\ref{ex:phi} turns a count into arithmetic; the surjection count of Exercise~\ref{ex:surj} turns a count into a finite difference. Chapter~\ref{ch:probability} assigns probabilities to these finite objects, while the formal generating functions developed here prepare the more systematic methods of Volume~4. The advanced m\'enages and Ramsey challenges appear in Chapter~\ref{ch:probability}, with their full source notes.
+\end{beauty}
+
+\section{Hints}
+\begin{hint}{ex:stars}
+Stars and bars. For positive solutions, set $y_i=x_i-1$.
+\end{hint}
+
+\begin{hint}{ex:pigeon}
+Boxes for coprimality: $\{1,2\},\{3,4\},\dots$. For divisibility: write each integer as $2^a m$ with $m$ odd, and put it in the box of $m$.
+\end{hint}
+
+\begin{hint}{ex:phi}
+Let $A_i$ be the multiples of $p_i$ in $\{1,\dots,n\}$. Then $|A_I|=n/\prod_{i\in I}p_i$, and expand $\prod\left(1-\frac1{p_i}\right)$.
+\end{hint}
+
+\begin{hint}{ex:derangrec}
+In a derangement, $n$ is sent to some $k\ne n$ ($n-1$ choices). Either $k$ is sent back to $n$, or not; in the second case, pretend that $k$'s image is ``what $n$ would have had''.
+\end{hint}
+
+\begin{hint}{ex:surj}
+Let $A_j$ be the set of maps missing the $j$th element of the target; count the maps in no $A_j$.
+\end{hint}
+
+\begin{hint}{ex:catalan}
+(a) The reflection $(x,y)\mapsto(y-1,x+1)$ swaps $\mathsf E$ and $\mathsf N$ steps and sends $(n,n)$ to $(n-1,n+1)$; every path to $(n-1,n+1)$ must cross the line $y=x+1$. (c) A good path is $\mathsf E$, a good path, $\mathsf N$, a good path: split at the first return to the diagonal.
+\end{hint}
+
+\begin{hint}{ex:erdos}
+Attach to each term the lengths of the longest increasing and decreasing subsequences ending there. Show that two different terms get different pairs.
+\end{hint}
+
+\begin{hint}{ex:count-coefficient}
+Split according to $c=0$ or $c=3$, then test the three allowed values of $a$. The total-degree condition couples the choices.
+\end{hint}
+\begin{hint}{ex:count-tiles}
+Remove the last tile. For the second count, a tiling with $j$ length-$3$ tiles contains $6-3j$ length-$1$ tiles, hence $6-2j$ tiles in all.
+\end{hint}
+\begin{hint}{ex:count-derang-gf}
+Multiply by $1-t$ and compare the coefficient of $t^n$. The coefficient coming from $tE(t)$ is $D_{n-1}/(n-1)!$.
+\end{hint}
+\begin{hint}{ex:count-circle}
+Split according to whether label $n$ is selected. In the second case, remove $n$ and its two neighbours, then apply the workshop's line formula to the remaining interval.
+\end{hint}
+
+\section{Solutions}
+\begin{solution}{ex:stars}
+\idea A solution of $x_1+\dots+x_k=n$ in $\N^k$ is a multiset of size $n$ on $k$ labels ($x_i$ = how many times label $i$ is used): this is stars and bars. For positive solutions, shift each variable by $1$ to fall back on the first case.
+\writeup A solution is a row of $n$ stars split by $k-1$ bars into $k$ groups (possibly empty), so by Proposition~\ref{prop:counts}(b) there are $\binom{n+k-1}{n}=\binom{n+k-1}{k-1}$. For positive solutions, put $y_i=x_i-1$:
+$y_1+\dots+y_k=n-k$ in $\N^k$. There are no solutions if $n<k$; for $n\ge k$ the count is $\binom{n-1}{k-1}$.
+\end{solution}
+
+\begin{solution}{ex:pigeon}
+\idea ``Among $n+1$ objects, two share a property'' is pigeonhole with $n$ boxes; the art is to design the boxes. For coprimality, the boxes should contain coprime pairs: consecutive integers are coprime. For divisibility, the boxes should be chains under divisibility: $\{m,2m,4m,\dots\}$ with $m$ odd, and there are exactly $n$ odd numbers available.
+\writeup Split $\{1,\dots,2n\}$ into the $n$ pairs $\{2k-1,2k\}$. Two of the $n+1$ chosen numbers lie in the same pair; they are consecutive, hence coprime (a common divisor divides their difference $1$).
+For divisibility, write each chosen number as $2^am$ with $m$ odd. There are only $n$ odd numbers in $\{1,\dots,2n\}$, so two chosen numbers $2^am$ and $2^bm$ share the same $m$;
+the one with the smaller power of $2$ divides the other.
+\end{solution}
+
+\begin{solution}{ex:phi}
+\idea Counting elements that avoid several properties is the complement of a union, which inclusion--exclusion computes from the sizes of intersections. Here the intersections are easy: being divisible by several distinct primes means being divisible by their product. Finally, recognise the alternating sum as an expanded product.
+\writeup If $n=1$, the empty product gives $1$, as it should: $\gcd(1,1)=1$. For $n>1$, let $A_i$ be the set of multiples of $p_i$ in $\{1,\dots,n\}$. For $I\subset\{1,\dots,r\}$, $A_I$ is the set of multiples of $\prod_{i\in I}p_i$ (distinct primes all divide $x$ iff their product does), so $|A_I|=n/\prod_{i\in I}p_i$.
+An integer is coprime to $n$ if and only if it lies in no $A_i$, so by inclusion--exclusion
+\[
+\begin{aligned}\varphi(n)&=n-\sum_{\emptyset\ne I}(-1)^{|I|+1}\frac n{\prod_{i\in I}p_i}\eqbr=n\sum_{I}\prod_{i\in I}\left(-\frac1{p_i}\right)\eqbr=n\prod_{i=1}^r\left(1-\frac1{p_i}\right).\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:derangrec}
+\idea Classify derangements by what happens to $n$: it goes to some $k$, and the question is whether $k$ goes back to $n$ (then the pair is a $2$-cycle and the rest is a smaller derangement) or not (then $n$ can be ``spliced out'' of its cycle, leaving a derangement of $n-1$ elements, and the splice can be undone if we remember $k$). The second recurrence is a one-line consequence once one looks at $D_n-nD_{n-1}$.
+\writeup Let $\sigma$ be a derangement of $\{1,\dots,n\}$ and $k=\sigma(n)\ne n$: $n-1$ choices. \emph{Case 1}: $\sigma(k)=n$. Then $\sigma$ swaps $k$ and $n$, and restricted to the other $n-2$ elements it is a derangement; conversely any derangement of those elements extends to one of this kind. Count: $D_{n-2}$ for each $k$. \emph{Case 2}: $\sigma(k)\ne n$. Let $i=\sigma^{-1}(n)$, so $i\ne k$ and $i\ne n$. Define $\tau$ on $\{1,\dots,n-1\}$ by $\tau(i)=k$ and $\tau(j)=\sigma(j)$ for $j\ne i$ (these $\sigma(j)$ are all $\ne n$ since $j\ne i$, and $\ne k$ since $k=\sigma(n)$ and $j\ne n$). Then $\tau$ is a permutation of $\{1,\dots,n-1\}$ without fixed point: $\tau(j)=\sigma(j)\ne j$ for $j\ne i$, and $\tau(i)=k\ne i$. Conversely, given $k$ and a derangement $\tau$ of $\{1,\dots,n-1\}$, set $i=\tau^{-1}(k)$, $\sigma(n)=k$, $\sigma(i)=n$ and $\sigma=\tau$ elsewhere: a derangement with $\sigma(k)=\tau(k)\ne n$. The two constructions are inverse, so case~2 contributes $D_{n-1}$ for each $k$. Hence $D_n=(n-1)(D_{n-1}+D_{n-2})$.
+
+For the second form, put $E_n=D_n-nD_{n-1}$. Then $E_n=(n-1)D_{n-1}+(n-1)D_{n-2}-nD_{n-1}=-(D_{n-1}-(n-1)D_{n-2})=-E_{n-1}$, and $E_2=D_2-2D_1=1$, so $E_n=(-1)^n$. Check: $D_4=3(2+1)=9=4\cdot2+1$, $D_5=4(9+2)=44=5\cdot9-1$.
+\end{solution}
+
+\begin{solution}{ex:surj}
+\idea ``Surjective'' means ``misses no element'', the complement of a union of $n$ events ``misses element $j$'', and the intersections of those events are easy to count: a map missing a given set of $j$ elements is a map into the other $n-j$. Inclusion--exclusion does the rest. The vanishing for $k<n$ is then a combinatorial fact (there are no surjections) proved by an algebraic identity, or the reverse: both readings are instructive.
+\writeup Let $A_j$ be the set of maps $\{1,\dots,k\}\to\{1,\dots,n\}$ whose image misses $j$. For $J$ of size $j$, $A_J$ is the set of maps into the $n-j$ elements outside $J$: $|A_J|=(n-j)^k$. The surjections are the maps in no $A_j$, so by Theorem~\ref{thm:incexc}
+\[
+S(k,n)=n^k-\sum_{j=1}^n(-1)^{j+1}\binom nj(n-j)^k=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k .
+\]
+For $k<n$ there is no surjection (the image has at most $k<n$ elements), so the sum is $0$; for $k=n$ a surjection between sets of the same size is a bijection, so the sum is $n!$. In the language of Chapter~\ref{ch:sums}, the sum is the $n$th forward difference of the polynomial $x^k$ evaluated at $0$, which vanishes for $\deg<n$ and equals $n!$ times the leading coefficient for $\deg=n$: Theorem~\ref{thm:newton} and Proposition~\ref{prop:counts} say the same thing. From $5$ elements onto $3$: $3^5-3\cdot2^5+3\cdot1^5=243-96+3=150$.
+\end{solution}
+
+\begin{solution}{ex:catalan}
+\idea The reflection trick converts a hard count (paths avoiding a region) into two easy counts (all paths, minus the bad ones), by matching the bad paths bijectively with paths to a shifted endpoint. The key observations are: a bad path has a well-defined \emph{first} bad moment; reflection in the line $y=x+1$ maps lattice paths to lattice paths (it swaps the two kinds of steps) and moves the endpoint; and every path to the shifted endpoint is bad, so the map can be inverted by the same recipe. For (c), think of $\mathsf E$ as ``('' and $\mathsf N$ as ``)''; the recurrence comes from splitting a path at its first return to the diagonal, where the first step is $\mathsf E$ and the matching step is $\mathsf N$.
+\writeup The empty path gives $C_0=1$, consistent with the formula in (b). For the reflection argument take $n\ge1$. (a) Let $\gamma$ be a path to $(n,n)$ that rises above the diagonal: at some moment its height exceeds its abscissa, and since the coordinates change by $1$ at a time, there is a first point $Q$ of $\gamma$ on the line $y=x+1$. The reflection $\rho:(x,y)\mapsto(y-1,x+1)$ in this line maps an $\mathsf E$ step to an $\mathsf N$ step and conversely. Replace the part of $\gamma$ after $Q$ by its image under $\rho$: the result $\gamma'$ is a lattice path from $(0,0)$ to $\rho(n,n)=(n-1,n+1)$, whose first point on the line $y=x+1$ is still $Q$ (the part before $Q$ is unchanged). Conversely, any path $\delta$ to $(n-1,n+1)$ ends above the line, so it has a first point $Q$ on it; reflecting the part after $Q$ gives a path to $(n,n)$ which touches the line at $Q$, hence is bad, and whose first point on the line is $Q$. The two constructions undo each other, so they are inverse bijections.
+
+(b) By (a) and Proposition~\ref{prop:paths}, the bad paths number $\binom{2n}{n-1}$, so $C_n=\binom{2n}n-\binom{2n}{n-1}$. Now
+$\binom{2n}{n-1}=\binom{2n}n\cdot\frac{n}{n+1}$ (write both with factorials), so $C_n=\binom{2n}n\left(1-\frac n{n+1}\right)=\frac1{n+1}\binom{2n}n$.
+Values: $C_1=1$, $C_2=2$, $C_3=5$, $C_4=14$, $C_5=42$, $C_6=132$.
+
+(c) Read $\mathsf E$ as an opening parenthesis and $\mathsf N$ as a closing one. A word of $n$ pairs is correctly parenthesised exactly when every prefix has at least as many opening as closing parentheses, i.e.\ the path never rises above the diagonal. For the recurrence, a non-empty good path to $(n+1,n+1)$ starts with $\mathsf E$ and returns to the diagonal for the first time at some point $(k+1,k+1)$, $0\le k\le n$, by a step $\mathsf N$. Between these two steps lies a good path translated to start at $(1,0)$ and end at $(k+1,k)$, which stays strictly below the diagonal, i.e.\ a good path of length $k$ in the shifted frame; after the return lies a good path of length $n-k$. Conversely any such pair gives a good path. So $C_{n+1}=\sum_{k=0}^nC_kC_{n-k}$, with $C_0=1$: $C_4=C_0C_3+C_1C_2+C_2C_1+C_3C_0=5+2+2+5=14$.
+\end{solution}
+
+\begin{solution}{ex:erdos}
+\idea $n^2+1$ and $n^2$ suggest pigeonhole with $n^2$ boxes, the pairs in $\{1,\dots,n\}^2$. So label each term with a pair of numbers that are at most $n$ if there is no long monotone subsequence, and show the labels are distinct. The hint's pair (longest increasing, longest decreasing ending here) works because a later term can always extend one of the two subsequences of an earlier term.
+\writeup For each term $a_i$, let $u_i$ (resp.\ $d_i$) be the length of the longest increasing (resp.\ decreasing) subsequence ending at $a_i$. If $i<j$ then $(u_i,d_i)\ne(u_j,d_j)$:
+if $a_i<a_j$, appending $a_j$ to an increasing subsequence ending at $a_i$ gives $u_j\ge u_i+1$; if $a_i>a_j$, then $d_j\ge d_i+1$ likewise. If all the $u_i,d_i$ were at most $n$, the $n^2+1$ distinct pairs would lie in
+$\{1,\dots,n\}^2$, which has $n^2$ elements: impossible by pigeonhole. So some $u_i$ or $d_i$ is at least $n+1$.
+\end{solution}
+
+\begin{solution}{ex:count-coefficient}
+\idea A coefficient of a product records all ways to split its degree among the factors. The small allowed sets make listing by the last component shorter than expanding the whole polynomial.
+\writeup For $c=0$ we need $a+b=6$, and only $(a,b)=(4,2)$ is allowed. For $c=3$ we need $a+b=3$, giving $(a,b)=(0,3)$ and $(2,1)$. Thus the coefficient is $3$. The unrestricted product rule gives $3\cdot4\cdot2=24$ triples of all sums; it cannot impose the shared equation $a+b+c=6$ without a further decomposition.
+\end{solution}
+
+\begin{solution}{ex:count-tiles}
+\idea Removing the last tile partitions all tilings into two disjoint, reversible constructions. This yields the recurrence. Fixing the number of long tiles instead gives a word with a specified number of each type, hence a binomial coefficient.
+\writeup There is one tiling each of lengths $0$, $1$ and $2$, so $v_0=v_1=v_2=1$. For $n\ge3$, the last tile has length $1$ or $3$, leaving a tiling of length $n-1$ or $n-3$ respectively. Hence $v_n=v_{n-1}+v_{n-3}$. If $V(t)=\sum_{n\ge0}v_nt^n$, coefficient comparison gives $(1-t-t^3)V(t)=1$, or $V(t)=1/(1-t-t^3)$ as a formal identity. The recurrence gives $v_3=2$, $v_4=3$, $v_5=4$, $v_6=6$. Alternatively, for $j=0,1,2$ long tiles there are $6-3j$ short tiles, and choosing which of the $6-2j$ tile positions hold long tiles gives $\binom{6-2j}{j}$. The total is $\binom60+\binom41+\binom22=1+4+1=6$. The empty tiling is necessary for the recurrence at $n=3$.
+\end{solution}
+
+\begin{solution}{ex:count-derang-gf}
+\idea The coefficient in the finite derangement formula is a partial sum. Multiplication by $1+t+t^2+\cdots$ turns coefficients into partial sums, and multiplication back by $1-t$ takes their consecutive differences.
+\writeup The coefficient of $t^n$ on the proposed right side is $\sum_{j=0}^n(-1)^j/j!=D_n/n!$, proving equality of every coefficient. Multiplication by $1-t$ gives
+\[
+(1-t)E(t)=\sum_{j\ge0}\frac{(-1)^jt^j}{j!}.
+\]
+For $n\ge1$ its $t^n$ coefficient is $D_n/n!-D_{n-1}/(n-1)!=(-1)^n/n!$. Multiplying by $n!$ gives the claimed recurrence. At degree zero the identity says $D_0=1$. Only finite coefficient sums were used; no convergence or interchange of numerical infinite sums is involved. The bijection of Exercise~\ref{ex:derangrec} explains the underlying objects; this calculation explains the alternating correction term.
+\end{solution}
+
+\begin{solution}{ex:count-circle}
+\idea A circle has no preferred endpoint, but fixing one label creates a two-case partition. If the label is selected, its neighbours are forbidden; if it is omitted, the remaining labels form a line. The workshop already counted both kinds of line selections.
+\writeup Suppose $1\le k\le\lfloor n/2\rfloor$. If $n$ is omitted, choose $k$ nonconsecutive elements from the line $1,\dots,n-1$, giving $\binom{n-k}{k}$. If $n$ is selected, neither $1$ nor $n-1$ is selected. We choose the other $k-1$ labels from $2,\dots,n-2$, a line of length $n-3$. For $k=1$ this is the unique empty selection; for $k\ge2$ the workshop gives $\binom{(n-3)-(k-1)+1}{k-1}=\binom{n-k-1}{k-1}$. The same expression equals $1$ at $k=1$. These cases are disjoint and exhaustive. Since
+\[
+\binom{n-k-1}{k-1}=\frac{k}{n-k}\binom{n-k}{k},
+\]
+the sum has the required form. For $k=0$ there is one empty subset. If $k>\lfloor n/2\rfloor$, map each selected label to its clockwise neighbour. These neighbours are distinct and unselected, so $k\le n-k$ would be necessary; no such subset exists. This final argument also checks the feasibility boundary independently of the formula.
+\end{solution}
+
+\section*{Sources and further reading}
+\begin{itemize}\raggedright
+\item R.~L.~Graham, D.~E.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994, Chapters~5 and~7. Binomial coefficients and generating functions.
+\item R.~P.~Stanley, \emph{Catalan Numbers}, Cambridge University Press, 2015. Many families counted by the Catalan numbers, with their history.
+\item M.~Renault, \emph{Lost (and found) in translation: Andr\'e's actual method and its application to the generalized ballot problem}, Amer.\ Math.\ Monthly 115 (2008), 358--363. The distinction between Andr\'e's own bijection and the reflection proof used here.
+\item P.~R.~de Montmort, \emph{Essay d'analyse sur les jeux de hazard}, Paris, 1708; 2nd ed.\ 1713, with the correspondence with Nicolaus Bernoulli on the \emph{probl\`eme des rencontres}. L.~Euler, \emph{Calcul de la probabilit\'e dans le jeu de rencontre}, M\'emoires de l'Acad\'emie des sciences de Berlin 7 (1751, printed 1753), 255--270.
+\item P.~Erd\H{o}s and G.~Szekeres, \emph{A combinatorial problem in geometry}, Compositio Math.\ 2 (1935), 463--470. The monotone-subsequence theorem.
+\item P.~G.~L.~Dirichlet, \emph{Verallgemeinerung eines Satzes aus der Lehre von den Kettenbr\"uchen}, Bericht Berlin Akad.\ (1842), 93--95. Pigeonhole applied to rational approximation.
+\end{itemize}

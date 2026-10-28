@@ -1,4 +1,4 @@
-\chapter{Counting and First Probability}\label{ch:probability}
+\chapter{First Probability}\label{ch:probability}
 
 \begin{center}\itshape
 $n$ guests leave their hats at the door and get them back at random. The probability that nobody gets their own hat\\
@@ -17,91 +17,13 @@ year 1713 saw the posthumous \emph{Ars Conjectandi} of Jacob Bernoulli, Nicolaus
 that the frequency of an event in many independent trials settles down to its probability. We prove it at the end of this chapter, as the weak
 law of large numbers, with a proof that fits in four lines thanks to an inequality of Chebyshev from 1867.
 
-Counting problems like Montmort's are where probability began, and in this chapter we count carefully, with bijections and inclusion--exclusion,
-before turning the counts into probabilities. Along the way come some of the most surprising facts in elementary mathematics: that $23$ people
+Counting problems like Montmort's are where probability began. Chapter~\ref{ch:counting} supplied bijections and inclusion--exclusion; here we turn those counts into probabilities. Along the way come some of the most surprising facts in elementary mathematics: that $23$ people
 suffice for two of them to probably share a birthday (a calculation Richard von Mises published in 1939); that collecting $n$ coupons takes about
-$n\ln n$ boxes; that any $n^2+1$ distinct real numbers contain a monotone subsequence of length $n+1$ (Erd\H os and Szekeres, 1935); and that in a famous game show it pays to
+$n\ln n$ boxes; that the counting methods of Chapter~\ref{ch:counting} prove that any $n^2+1$ distinct real numbers contain a monotone subsequence of length $n+1$ (Erd\H os and Szekeres, 1935); and that in a famous game show it pays to
 switch doors, a claim which, when Marilyn vos Savant made it in a magazine column in 1990, brought her some ten thousand letters, many from
 people with doctorates, telling her she was wrong. She was right, and Bayes' formula will show why.
 
 \portraits{fermat}{Pierre de Fermat (c.\,1607--1665; the birth year is disputed). Portrait, seventeenth century, artist unknown. Public domain, via Wikimedia Commons.}{jbernoulli}{Jacob Bernoulli (1655--1705). Portrait by his brother Nicolaus Bernoulli, 1687. Public domain, via Wikimedia Commons.}
-
-\section{Counting, from scratch}
-
-\begin{reminder}[the three rules of counting]
-For finite sets, $|A\cup B|=|A|+|B|$ when $A\cap B=\emptyset$ (\emph{sum rule}), $|A\times B|=|A|\,|B|$ (\emph{product rule}, which extends to ``a choice made in $k$ stages with $n_1,\dots,n_k$ options at each stage can be made in $n_1\cdots n_k$ ways'', even when the options at a stage depend on the earlier choices, as long as their \emph{number} does not), and $|A|=|B|$ whenever there is a bijection $A\to B$ (\emph{bijection rule}). Almost every count in this chapter is one of these three, applied with care; the most common mistake is to count something twice, and the cure is to check that the stages of a product-rule count really determine the object and are determined by it.
-\end{reminder}
-
-\begin{examplex}[counting with the three rules]
-How many five-letter words (any letters) contain at least one vowel? Counting those with a vowel directly leads into cases; count the complement instead: $26^5$ words in all, $21^5$ with no vowel, so $26^5-21^5=7{,}797{,}275$. How many ways to seat $8$ people at a round table, two seatings being the same if one is a rotation of the other? Fix one person's seat, then order the $7$ others: $7!=5040$; or divide $8!$ by the $8$ rotations. How many diagonals has a convex $n$-gon? Pairs of vertices, minus sides: $\binom n2-n=\frac{n(n-3)}2$. How many subsets of $\{1,\dots,n\}$ contain no two consecutive integers? Call the count $f_n$: a subset either avoids $n$ (counted by $f_{n-1}$) or contains $n$ and hence avoids $n-1$ (counted by $f_{n-2}$), so $f_n=f_{n-1}+f_{n-2}$ with $f_1=2$, $f_2=3$: Fibonacci again, $f_n=F_{n+2}$.
-\end{examplex}
-
-\begin{proposition}[basic counts]\label{prop:counts}
-Let $|E|=n\ge1$ and $|F|=k\ge0$.
-\begin{enumerate}[label=(\alph*)]
-\item There are $n^k$ maps $F\to E$, $\frac{n!}{(n-k)!}$ injections ($k\le n$), and $n!$ permutations of $E$.
-\item There are $\binom nk$ subsets of size $k$ and $\binom{n+k-1}k$ multisets of size $k$ (``stars and bars'').
-\item \textbf{Pigeonhole}: if $m$ objects go into $n$ boxes, some box holds at least $\lceil m/n\rceil$ of them.
-\end{enumerate}
-\end{proposition}
-\begin{proof}
-(a) Enumerate $F=\{f_1,\dots,f_k\}$; a map chooses an image for each $f_i$ independently ($n$ choices each); an injection chooses distinct images, with $n,n-1,\dots,n-k+1$ choices in turn; a permutation is an injection with $k=n$.
-
-(b) Subsets: Proposition~\ref{prop:binom}. A multiset of size $k$ on $E=\{e_1,\dots,e_n\}$ is a choice of multiplicities $m_1+\dots+m_n=k$; encode it as a word of $k$ stars and $n-1$ bars ($m_1$ stars, a bar, $m_2$ stars, \dots). This is a bijection onto the words of length $n+k-1$ with $k$ stars, which are determined by the positions of the stars: $\binom{n+k-1}k$.
-
-(c) If every box held at most $\lceil m/n\rceil-1<m/n$ objects, the total would be $<m$.
-\end{proof}
-
-The pigeonhole principle looks too obvious to deserve a name. Dirichlet made it famous in 1842 by using it to prove that every irrational number $\alpha$ has infinitely many rational approximations $\frac pq$ with $\left|\alpha-\frac pq\right|<\frac1{q^2}$ (Volume~1): the pigeons are the $N+1$ fractional parts of $0,\alpha,2\alpha,\dots,N\alpha$, the boxes the $N$ intervals of length $\frac1N$. Its power is that it proves existence without finding anything, and Exercises~\ref{ex:pigeon} and~\ref{ex:erdos} show how far that goes.
-
-\begin{think}
-How many integers in $\{1,\dots,100\}$ are divisible by $2$, $3$ or $5$? Adding $50+33+20$ counts some numbers twice or three times. Correct the count step by step, and watch the pattern of signs appear.
-\end{think}
-
-\begin{theorem}[inclusion--exclusion]\label{thm:incexc}
-For finite sets $A_1,\dots,A_n$, writing $A_I=\bigcap_{i\in I}A_i$,
-\[
-\left|A_1\cup\dots\cup A_n\right|=\sum_{k=1}^n(-1)^{k+1}\sum_{|I|=k}|A_I|.
-\]
-\end{theorem}
-\begin{proof}
-For $x$ in the union, $1-\prod_{i=1}^n\left(1-\mathbf 1_{A_i}(x)\right)=1$. Expanding the product gives
-\[\mathbf 1_{\bigcup A_i}=\sum_{\emptyset\ne I}(-1)^{|I|+1}\mathbf 1_{A_I},\]
-and this also holds (both sides $0$) outside the union. Sum over $x$.
-\end{proof}
-
-\begin{figure}[ht]
-\centering
-\fig{ch08-venn}
-\caption{Inclusion--exclusion for the multiples of $2$, $3$ and $5$ in $\{1,\dots,100\}$. The seven regions hold the numbers divisible by exactly the primes indicated (for instance $3$ numbers, $30$, $60$ and $90$, are divisible by all three). The union has $50+33+20-16-10-6+3=74$ elements, so $26$ numbers up to $100$ have no prime factor below $7$: the number $1$, the $22$ primes from $7$ to $97$, and the composites $49$, $77$ and $91$. Removing multiples of $7$ completes this stage of the sieve, leaving $1$ and those $22$ primes: every composite up to $100$ has a prime factor at most $10$. This is a partial stage of the sieve of Eratosthenes written as a formula, and Volume~5 is about what happens to it for large $n$.}
-\label{fig:venn}
-\end{figure}
-
-The proof is worth a second look: it proves an identity between \emph{functions}, $\mathbf 1_{\bigcup A_i}=\sum(-1)^{|I|+1}\mathbf 1_{A_I}$, and then sums it. Summing against a probability instead of counting gives the same formula for $P(A_1\cup\dots\cup A_n)$, which we use below without further comment; and keeping only the first few terms gives inequalities (Exercise~\ref{ex:bonferroni}).
-
-\begin{think}
-Before reading on, guess: as the number $n$ of guests grows, does the probability that nobody gets their own hat tend to $0$, to $1$, or to something in between? Each guest is less and less likely to get their hat ($\frac1n$), but there are more and more guests.
-\end{think}
-
-\begin{proposition}[derangements]\label{prop:derang}
-The number $D_n$ of permutations of $\{1,\dots,n\}$ without fixed point is
-\[
-D_n=n!\sum_{k=0}^n\frac{(-1)^k}{k!},\qquad\text{so}\qquad\frac{D_n}{n!}\to\frac1e.
-\]
-\end{proposition}
-\begin{proof}
-Let $A_i$ be the set of permutations fixing $i$. For $|I|=k$, $|A_I|=(n-k)!$. By Theorem~\ref{thm:incexc}, the number of permutations with a fixed point is
-$\sum_{k=1}^n(-1)^{k+1}\binom nk(n-k)!=n!\sum_{k=1}^n\frac{(-1)^{k+1}}{k!}$; subtract from $n!$. The limit is the series of $e^{-1}$ (Exercise~\ref{ex:taylorln}).
-\end{proof}
-
-The convergence is extremely fast: by the alternating series bound (Proposition~\ref{prop:signedseries}), $\left|\frac{D_n}{n!}-\frac1e\right|\le\frac1{(n+1)!}$. Already for $n=10$ the two agree to seven decimals (Figure~\ref{fig:derang}). Since $D_n$ is an integer and the error is below $\frac12$ for $n\ge1$, $D_n$ is the integer nearest to $\frac{n!}e$: $D_1,\dots,D_8=0,1,2,9,44,265,1854,14833$. The recurrence $D_n=(n-1)(D_{n-1}+D_{n-2})$, which Euler found, is Exercise~\ref{ex:derangrec}.
-
-\begin{figure}[ht]
-\centering
-\fig{ch08-derangements}
-\caption{Left: the proportion $\frac{D_n}{n!}$ of permutations without fixed point, for $n=1,\dots,10$. It oscillates around $\frac1e$ and is within $3\times10^{-8}$ of it at $n=10$. Right: the law of the number of fixed points of a random permutation of $10$ elements (blue), computed exactly as $\binom{10}kD_{10-k}/10!$, against the Poisson law $\frac{e^{-1}}{k!}$ (yellow). The bars agree to four decimals.}
-\label{fig:derang}
-\end{figure}
 
 \section{Finite probability}
 
@@ -152,6 +74,19 @@ In a uniformly random permutation of $\{1,\dots,n\}$, the expected number of fix
 \end{example}
 
 The example is worth savouring. The law of the number of fixed points is complicated (Figure~\ref{fig:derang}, right), and nobody would compute the expectation from it; linearity sidesteps the law entirely. The indicators $\mathbf 1_{\sigma(i)=i}$ are not independent, and it does not matter. Exercises~\ref{ex:fixedvar}, \ref{ex:cycles}, \ref{ex:coupon} and~\ref{ex:records} are variations on this one idea, which is the single most useful tool of discrete probability.
+
+\subsection*{Returning to the hat problem}
+Chapter~\ref{ch:counting} proved that $D_n/n!=\sum_{k=0}^n(-1)^k/k!$. Taylor's formula for the exponential (Exercise~\ref{ex:taylorln}) now gives
+\[\frac{D_n}{n!}\longrightarrow e^{-1}.\]
+The convergence is extremely fast: by the alternating series bound (Proposition~\ref{prop:signedseries}), $\left|\frac{D_n}{n!}-\frac1e\right|\le\frac1{(n+1)!}$. Already for $n=10$ the two agree to seven decimals (Figure~\ref{fig:derang}). Since $D_n$ is an integer and the error is below $\frac12$ for $n\ge1$, $D_n$ is the integer nearest to $\frac{n!}e$: $D_1,\dots,D_8=0,1,2,9,44,265,1854,14833$. The recurrence $D_n=(n-1)(D_{n-1}+D_{n-2})$, which Euler found, is Exercise~\ref{ex:derangrec}.
+
+\begin{figure}[ht]
+\centering
+\fig{ch08-derangements}
+\caption{Left: the proportion $\frac{D_n}{n!}$ of permutations without fixed point, for $n=1,\dots,10$. It oscillates around $\frac1e$ and is within $3\times10^{-8}$ of it at $n=10$. Right: the law of the number of fixed points of a random permutation of $10$ elements (blue), computed exactly as $\binom{10}kD_{10-k}/10!$, against the Poisson law $\frac{e^{-1}}{k!}$ (yellow). The bars agree to four decimals.}
+\label{fig:derang}
+\end{figure}
+
 
 \section{Laws, variance and concentration}
 
@@ -295,9 +230,7 @@ For independent Bernoulli trials, Chebyshev guarantees an error probability at m
 
 \section{Exercises}
 
-\begin{exercise}[$\star$]\label{ex:stars}
-How many solutions in $\N^k$ does $x_1+\dots+x_k=n$ have? And in $(\N^*)^k$?
-\end{exercise}
+
 
 \begin{exercise}[$\star$]\label{ex:birthday}
 \emph{The birthday problem.} Show that the probability that $n$ people (with birthdays uniform and independent among 365 days) all have different birthdays is at most
@@ -311,14 +244,9 @@ $e^{-n(n-1)/730}$, and deduce that it is less than $\frac12$ for $n=23$.
 \label{fig:birthday}
 \end{figure}
 
-\begin{exercise}[$\star\star$]\label{ex:pigeon}
-Choose $n+1$ distinct integers in $\{1,\dots,2n\}$. Show that two of them are coprime, and that one of them divides another.
-\end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:phi}
-Let $n=p_1^{a_1}\cdots p_r^{a_r}$ with distinct primes $p_i$. Using inclusion--exclusion, show that the number $\varphi(n)$ of integers in $\{1,\dots,n\}$ coprime to $n$ is
-$n\prod_{i=1}^r\left(1-\frac1{p_i}\right)$.
-\end{exercise}
+
+
 
 \begin{exercise}[$\star\star$]\label{ex:fixedvar}
 Let $X$ be the number of fixed points of a uniformly random permutation of $\{1,\dots,n\}$, $n\ge2$. Show that $\operatorname{Var}X=1$.
@@ -337,16 +265,9 @@ Let $C$ be the number of cycles of a uniformly random permutation of $\{1,\dots,
 coupons is $nH_n\sim n\ln n$. \emph{You may use that if each trial succeeds with probability $p$ independently, the expected number of trials until the first success is $\frac1p$ (this is justified in the solution).}
 \end{exercise}
 
-\begin{exercise}[$\star\star\star$]\label{ex:erdos}
-\emph{Erd\H{o}s--Szekeres.} Show that every sequence of $n^2+1$ distinct real numbers has a monotone subsequence of length $n+1$.
-\end{exercise}
 
-\begin{figure}[ht]
-\centering
-\fig{ch08-erdos}
-\caption{A sequence of $10=3^2+1$ distinct numbers, plotted as points $(i,a_i)$, with the pair $(u_i,d_i)$ of Exercise~\ref{ex:erdos} written under each point: the lengths of the longest increasing and longest decreasing subsequence ending there. The ten pairs are distinct, so they cannot all fit in $\{1,2,3\}^2$; here $u_{10}=4$, and the increasing subsequence of length $4$ is highlighted. The sequence $3,2,1,6,5,4,9,8,7$ shows that $n^2$ terms are not enough.}
-\label{fig:erdos}
-\end{figure}
+
+
 
 \subsection*{Further exercises}
 
@@ -368,17 +289,9 @@ coupons is $nH_n\sim n\ln n$. \emph{You may use that if each trial succeeds with
 \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:derangrec}
-\emph{Euler's recurrence.} Show directly (by a bijection, not from the formula) that the derangement numbers satisfy $D_n=(n-1)(D_{n-1}+D_{n-2})$ for $n\ge3$, and deduce $D_n=nD_{n-1}+(-1)^n$. Check both against the values in the text.
-\end{exercise}
 
-\begin{exercise}[$\star\star$]\label{ex:surj}
-\emph{Surjections.} Show that the number of surjections from a $k$-element set onto an $n$-element set is
-\[
-S(k,n)=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k ,
-\]
-and deduce that $\sum_{j=0}^n(-1)^j\binom nj(n-j)^k=0$ for $k<n$ and $=n!$ for $k=n$. (Compare with Newton's forward differences, Theorem~\ref{thm:newton}.) How many surjections are there from $5$ elements onto $3$?
-\end{exercise}
+
+
 
 \begin{exercise}[$\star\star$]\label{ex:bonferroni}
 \emph{Bonferroni's inequalities.} For events $A_1,\dots,A_n$, show that
@@ -425,18 +338,12 @@ and deduce that $\sum_{j=0}^n(-1)^j\binom nj(n-j)^k=0$ for $k<n$ and $=n!$ for $
 
 \section{Hints}
 
-\begin{hint}{ex:stars}
-Stars and bars. For positive solutions, set $y_i=x_i-1$.
-\end{hint}
+
 \begin{hint}{ex:birthday}
 The probability is $\prod_{k<n}\left(1-\frac k{365}\right)$. Use $1-x\le e^{-x}$ to turn the product into the exponential of a sum.
 \end{hint}
-\begin{hint}{ex:pigeon}
-Boxes for coprimality: $\{1,2\},\{3,4\},\dots$. For divisibility: write each integer as $2^a m$ with $m$ odd, and put it in the box of $m$.
-\end{hint}
-\begin{hint}{ex:phi}
-Let $A_i$ be the multiples of $p_i$ in $\{1,\dots,n\}$. Then $|A_I|=n/\prod_{i\in I}p_i$, and expand $\prod\left(1-\frac1{p_i}\right)$.
-\end{hint}
+
+
 \begin{hint}{ex:fixedvar}
 $X=\sum\mathbf 1_{\sigma(i)=i}$, so $X^2=\sum_{i,j}\mathbf 1_{\sigma(i)=i,\,\sigma(j)=j}$. What is the probability that both $i\ne j$ are fixed?
 \end{hint}
@@ -446,21 +353,15 @@ $X=\sum\mathbf 1_{\sigma(i)=i}$, so $X^2=\sum_{i,j}\mathbf 1_{\sigma(i)=i,\,\sig
 \begin{hint}{ex:coupon}
 Cut the wait into phases: with $k$ distinct coupons in hand, a new box brings a new coupon with probability $\frac{n-k}n$.
 \end{hint}
-\begin{hint}{ex:erdos}
-Attach to each term the lengths of the longest increasing and decreasing subsequences ending there. Show that two different terms get different pairs.
-\end{hint}
+
 \begin{hint}{ex:monty}
 Redo the computation of the example with the new values of $P(H_3\mid C_i)$. In (a), $P(H_3\mid C_3)$ is no longer $0$, but the event ``door $3$ shows a goat'' is.
 \end{hint}
 \begin{hint}{ex:multinomial}
 (a) Choose the first box, then the second among what remains. (b) Expand the product and count the ways to obtain each monomial. (c) The probability is $\binom n{n/6,\dots,n/6}6^{-n}$; Stirling (Theorem~\ref{thm:stirling}).
 \end{hint}
-\begin{hint}{ex:derangrec}
-In a derangement, $n$ is sent to some $k\ne n$ ($n-1$ choices). Either $k$ is sent back to $n$, or not; in the second case, pretend that $k$'s image is ``what $n$ would have had''.
-\end{hint}
-\begin{hint}{ex:surj}
-Let $A_j$ be the set of maps missing the $j$th element of the target; count the maps in no $A_j$.
-\end{hint}
+
+
 \begin{hint}{ex:bonferroni}
 At a point in exactly $m\ge1$ of the sets, the three expressions are $m-\binom m2$, $1$ and $m$. For the application, use $P(A_i^c\cap\dots)=1-P(\bigcup A_i)$; independence is not even needed.
 \end{hint}
@@ -479,11 +380,7 @@ There are $\binom{a+b}a$ equally likely paths. Those that start with $-1$ are ba
 
 \section{Solutions}
 
-\begin{solution}{ex:stars}
-\idea A solution of $x_1+\dots+x_k=n$ in $\N^k$ is a multiset of size $n$ on $k$ labels ($x_i$ = how many times label $i$ is used): this is stars and bars. For positive solutions, shift each variable by $1$ to fall back on the first case.
-\writeup A solution is a row of $n$ stars split by $k-1$ bars into $k$ groups (possibly empty), so by Proposition~\ref{prop:counts}(b) there are $\binom{n+k-1}{n}=\binom{n+k-1}{k-1}$. For positive solutions, put $y_i=x_i-1$:
-$y_1+\dots+y_k=n-k$ in $\N^k$, giving $\binom{n-1}{k-1}$.
-\end{solution}
+
 
 \begin{solution}{ex:birthday}
 \idea Count favourable outcomes as injections: the probability is a product of factors $1-\frac k{365}$. Products are hard to estimate, sums are easy: the hint $1-x\le e^{-x}$ turns the product into the exponential of a sum. (The hint itself is the tangent-line inequality for the convex function $e^{-x}$, Proposition~\ref{prop:convex}.)
@@ -492,21 +389,9 @@ For $n=23$, $\frac{23\cdot22}{730}=\frac{506}{730}=0.693151\ldots$, just above $
 The exact probability is about $0.4927$.
 \end{solution}
 
-\begin{solution}{ex:pigeon}
-\idea ``Among $n+1$ objects, two share a property'' is pigeonhole with $n$ boxes; the art is to design the boxes. For coprimality, the boxes should contain coprime pairs: consecutive integers are coprime. For divisibility, the boxes should be chains under divisibility: $\{m,2m,4m,\dots\}$ with $m$ odd, and there are exactly $n$ odd numbers available.
-\writeup Split $\{1,\dots,2n\}$ into the $n$ pairs $\{2k-1,2k\}$. Two of the $n+1$ chosen numbers lie in the same pair; they are consecutive, hence coprime (a common divisor divides their difference $1$).
-For divisibility, write each chosen number as $2^am$ with $m$ odd. There are only $n$ odd numbers in $\{1,\dots,2n\}$, so two chosen numbers $2^am$ and $2^bm$ share the same $m$;
-the one with the smaller power of $2$ divides the other.
-\end{solution}
 
-\begin{solution}{ex:phi}
-\idea Counting elements that avoid several properties is the complement of a union, which inclusion--exclusion computes from the sizes of intersections. Here the intersections are easy: being divisible by several distinct primes means being divisible by their product. Finally, recognise the alternating sum as an expanded product.
-\writeup Let $A_i$ be the set of multiples of $p_i$ in $\{1,\dots,n\}$. For $I\subset\{1,\dots,r\}$, $A_I$ is the set of multiples of $\prod_{i\in I}p_i$ (distinct primes all divide $x$ iff their product does), so $|A_I|=n/\prod_{i\in I}p_i$.
-An integer is coprime to $n$ if and only if it lies in no $A_i$, so by inclusion--exclusion
-\[
-\begin{aligned}\varphi(n)&=n-\sum_{\emptyset\ne I}(-1)^{|I|+1}\frac n{\prod_{i\in I}p_i}\eqbr=n\sum_{I}\prod_{i\in I}\left(-\frac1{p_i}\right)\eqbr=n\prod_{i=1}^r\left(1-\frac1{p_i}\right).\end{aligned}
-\]
-\end{solution}
+
+
 
 \begin{solution}{ex:fixedvar}
 \idea The indicator trick computes $\mathbb E[X]$; for the variance we need $\mathbb E[X^2]$, and squaring a sum of indicators gives indicators of \emph{pairs} of events. So we need the probability that two given points are both fixed, a simple count.
@@ -536,12 +421,7 @@ independently, so $\mathbb E[T_k]=\frac n{n-k}$. The total is $T=\sum_kT_k$, and
 $\mathbb E[T]=\sum_{k=0}^{n-1}\frac n{n-k}=n\sum_{j=1}^n\frac1j=nH_n\sim n\ln n$.
 \end{solution}
 
-\begin{solution}{ex:erdos}
-\idea $n^2+1$ and $n^2$ suggest pigeonhole with $n^2$ boxes, the pairs in $\{1,\dots,n\}^2$. So label each term with a pair of numbers that are at most $n$ if there is no long monotone subsequence, and show the labels are distinct. The hint's pair (longest increasing, longest decreasing ending here) works because a later term can always extend one of the two subsequences of an earlier term.
-\writeup For each term $a_i$, let $u_i$ (resp.\ $d_i$) be the length of the longest increasing (resp.\ decreasing) subsequence ending at $a_i$. If $i<j$ then $(u_i,d_i)\ne(u_j,d_j)$:
-if $a_i<a_j$, appending $a_j$ to an increasing subsequence ending at $a_i$ gives $u_j\ge u_i+1$; if $a_i>a_j$, then $d_j\ge d_i+1$ likewise. If all the $u_i,d_i$ were at most $n$, the $n^2+1$ distinct pairs would lie in
-$\{1,\dots,n\}^2$, which has $n^2$ elements: impossible by pigeonhole. So some $u_i$ or $d_i$ is at least $n+1$.
-\end{solution}
+
 
 
 \begin{solution}{ex:monty}
@@ -574,21 +454,9 @@ A word of length $n$ with $k_i$ letters of type $i$ is the same as the assignmen
 about $2.5\times10^{-7}$ for $n=600$ (the exact value is $2.46\times10^{-7}$). The ``most likely'' outcome is very unlikely: the probability is spread over the roughly $\binom{605}5\approx6.6\times10^{11}$ possible count vectors, and even the peak gets only a tiny share.
 \end{solution}
 
-\begin{solution}{ex:derangrec}
-\idea Classify derangements by what happens to $n$: it goes to some $k$, and the question is whether $k$ goes back to $n$ (then the pair is a $2$-cycle and the rest is a smaller derangement) or not (then $n$ can be ``spliced out'' of its cycle, leaving a derangement of $n-1$ elements, and the splice can be undone if we remember $k$). The second recurrence is a one-line consequence once one looks at $D_n-nD_{n-1}$.
-\writeup Let $\sigma$ be a derangement of $\{1,\dots,n\}$ and $k=\sigma(n)\ne n$: $n-1$ choices. \emph{Case 1}: $\sigma(k)=n$. Then $\sigma$ swaps $k$ and $n$, and restricted to the other $n-2$ elements it is a derangement; conversely any derangement of those elements extends to one of this kind. Count: $D_{n-2}$ for each $k$. \emph{Case 2}: $\sigma(k)\ne n$. Let $i=\sigma^{-1}(n)$, so $i\ne k$ and $i\ne n$. Define $\tau$ on $\{1,\dots,n-1\}$ by $\tau(i)=k$ and $\tau(j)=\sigma(j)$ for $j\ne i$ (these $\sigma(j)$ are all $\ne n$ since $j\ne i$, and $\ne k$ since $k=\sigma(n)$ and $j\ne n$). Then $\tau$ is a permutation of $\{1,\dots,n-1\}$ without fixed point: $\tau(j)=\sigma(j)\ne j$ for $j\ne i$, and $\tau(i)=k\ne i$. Conversely, given $k$ and a derangement $\tau$ of $\{1,\dots,n-1\}$, set $i=\tau^{-1}(k)$, $\sigma(n)=k$, $\sigma(i)=n$ and $\sigma=\tau$ elsewhere: a derangement with $\sigma(k)=\tau(k)\ne n$. The two constructions are inverse, so case~2 contributes $D_{n-1}$ for each $k$. Hence $D_n=(n-1)(D_{n-1}+D_{n-2})$.
 
-For the second form, put $E_n=D_n-nD_{n-1}$. Then $E_n=(n-1)D_{n-1}+(n-1)D_{n-2}-nD_{n-1}=-(D_{n-1}-(n-1)D_{n-2})=-E_{n-1}$, and $E_2=D_2-2D_1=1$, so $E_n=(-1)^n$. Check: $D_4=3(2+1)=9=4\cdot2+1$, $D_5=4(9+2)=44=5\cdot9-1$.
-\end{solution}
 
-\begin{solution}{ex:surj}
-\idea ``Surjective'' means ``misses no element'', the complement of a union of $n$ events ``misses element $j$'', and the intersections of those events are easy to count: a map missing a given set of $j$ elements is a map into the other $n-j$. Inclusion--exclusion does the rest. The vanishing for $k<n$ is then a combinatorial fact (there are no surjections) proved by an algebraic identity, or the reverse: both readings are instructive.
-\writeup Let $A_j$ be the set of maps $\{1,\dots,k\}\to\{1,\dots,n\}$ whose image misses $j$. For $J$ of size $j$, $A_J$ is the set of maps into the $n-j$ elements outside $J$: $|A_J|=(n-j)^k$. The surjections are the maps in no $A_j$, so by Theorem~\ref{thm:incexc}
-\[
-S(k,n)=n^k-\sum_{j=1}^n(-1)^{j+1}\binom nj(n-j)^k=\sum_{j=0}^n(-1)^j\binom nj(n-j)^k .
-\]
-For $k<n$ there is no surjection (the image has at most $k<n$ elements), so the sum is $0$; for $k=n$ a surjection between sets of the same size is a bijection, so the sum is $n!$. In the language of Chapter~1, the sum is the $n$th forward difference of the polynomial $x^k$ evaluated at $0$, which vanishes for $\deg<n$ and equals $n!$ times the leading coefficient for $\deg=n$: Theorem~\ref{thm:newton} and Proposition~\ref{prop:counts} say the same thing. From $5$ elements onto $3$: $3^5-3\cdot2^5+3\cdot1^5=243-96+3=150$.
-\end{solution}
+
 
 \begin{solution}{ex:bonferroni}
 \idea Inclusion--exclusion was proved pointwise, by an identity between indicator functions; truncating that identity gives inequalities, also pointwise, and taking expectations turns them into inequalities between probabilities. The whole content is the behaviour of $m-\binom m2$ for integers $m\ge1$.
