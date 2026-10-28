@@ -1,3 +1,20 @@
+# Verified GitHub filename normalization — 28 October 2026
+
+Live run 40703902773 built all nineteen books and validated the complete library,
+but release verification exposed that GitHub replaces spaces with dots on both
+upload and rename. The publisher now explicitly validates either the exact name
+or that known transformation, requires the readable label and matching byte size,
+and verifies the SHA-256 digest when GitHub supplies it. Arbitrary names and
+content mismatches remain failures. Generated files and Pages downloads retain
+spaces. README direct links now use Pages, where those names are preserved.
+This supersedes the earlier expectation that PATCH could restore spaced names.
+
+The preceding subtitle-only run 40701152017 also passed all builds and library
+validation, but its release creation was refused after the newer workflow commit
+changed main. The final combined publication must be verified at its exact SHA.
+
+---
+
 # Readable public filenames — 28 October 2026
 
 The author requested “Volume” and readable filenames with spaces. Public main-book

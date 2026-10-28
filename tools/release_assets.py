@@ -1,4 +1,4 @@
-"""Upload release assets, restoring and verifying canonical names after GitHub upload."""
+"""Upload release assets with readable labels and verify GitHub storage names."""
 import argparse
 import json
 from pathlib import Path
@@ -27,12 +27,18 @@ def upload(repository, tag, directory):
         if len(matches) != 1:
             raise ValueError(f'Cannot identify uploaded release asset: {path.name}')
         asset = matches[0]
-        if asset['name'] != path.name:
-            asset = json.loads(gh('api', '--method', 'PATCH',
-                                  f'repos/{repository}/releases/assets/{asset["id"]}',
-                                  '-f', f'name={path.name}', '-f', f'label={path.name}'))
-        if asset['name'] != path.name or asset['size'] != path.stat().st_size:
+        # GitHub normalizes spaces to dots on both upload and PATCH. Pages keeps
+        # the literal filename; release labels retain the human-readable name.
+        allowed_names = {path.name, path.name.replace(' ', '.')}
+        if (asset['name'] not in allowed_names or asset['size'] != path.stat().st_size
+                or asset.get('state', 'uploaded') != 'uploaded'):
             raise ValueError(f'Release filename/size mismatch: {path.name}')
+        if asset.get('digest'):
+            import hashlib
+            expected = 'sha256:' + hashlib.sha256(path.read_bytes()).hexdigest()
+            if asset['digest'] != expected:
+                raise ValueError(f'Release content digest mismatch: {path.name}')
+
 
 
 if __name__ == '__main__':

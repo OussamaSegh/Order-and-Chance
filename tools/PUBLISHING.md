@@ -9,8 +9,10 @@ Reading PDFs and EPUBs use `.pdf` and `.epub`. KDP assets add ` - Print.pdf`,
 and ` - Print Metadata.json`. Site thumbnails use ` - Cover.png`; listings are
 served as `.txt`. Spaces are literal on disk and percent-encoded in links.
 Quote complete shell paths. `tools/release_assets.py` uploads each asset with its
-readable label, restores any GitHub-normalized name through the asset update API,
-and verifies the returned filename and byte count before deployment continues. Source directories and reader routes keep their
+readable label and verifies its stored name, byte count and supplied SHA-256 digest.
+GitHub replaces spaces with dots even on asset rename; its release labels retain
+the readable names. GitHub Pages downloads preserve literal spaces and are the
+canonical direct download links in the README. Source directories and reader routes keep their
 existing identifiers. Cache schema 8 forces a full rebuild; stale old downloads
 are removed during assembly. There are still exactly two PDFs and one EPUB per book.
 
