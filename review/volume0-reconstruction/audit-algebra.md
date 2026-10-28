@@ -139,6 +139,9 @@ is necessary. Preserving labels alone does not fix hardcoded citations elsewhere
 Complete proof/exercise source reading was performed, with attention to zero
 roots, multiplicity, covariance prerequisites and field restrictions. No new
 universal claim is inferred from sampled computations. The existing reproducible
-fact-check program was started separately; completion must be recorded from its
-actual result. No compilation, formal proof verification, full historical source
+`review/check_volume0_facts.py` completed successfully on the original text with
+1,366 checks passed, including all 130 original exercise/hint/solution triples.
+Representative outputs: Runge maximum errors 1.9156588028 and 0.1091534952;
+det H12 = 2.6377806512535e-78. These checks include sampled identities and
+calculations, not certification of universal statements. No compilation, formal proof verification, full historical source
 retrieval or page-by-page visual proofread is asserted by this report.
