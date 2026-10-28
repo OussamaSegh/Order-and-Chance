@@ -1,3 +1,25 @@
+# Volume 0 subtitle — 28 October 2026
+
+The author approved **Proof, Problem Solving and Mathematical Thinking** for
+Mathematical Maturity, explicitly including the covers. Canonical JSON and its
+generated TeX now supply this wording to the title page, EPUB metadata, KDP
+listing, web reader and library. The shared front used by reading/eBook covers
+and paperback wraps uses a cover-only break after “Solving”, keeping the exact
+words, existing Inter italic size/tracking and title-relative first baseline.
+The established 5.4-inch subtitle area is now explicit in the common template.
+Other subtitles remain on one line; illustrations and their hashes are unchanged.
+
+Verification: 28 cover, site and build-planner tests pass; metadata and generated
+cover configuration are synchronized. Volume 0 and Crossroads fronts pass the
+7×10 geometry, embedded-font, overflow, shared identity and subtitle-position
+checks. The revised Volume 0 front was rendered and visually inspected with two
+balanced subtitle lines and clearance above the Gaussian. Local review files are
+in `build/subtitle-final-review/` and the print-source front proof is in
+`build/subtitle-final-print-review/`. These are local cover proofs; the full book,
+EPUB, KDP export and live release/Pages have not been rebuilt or published here.
+
+---
+
 # Approved KDP exports for every book
 
 The author confirmed the prepared Volume-0 interior and print wrap, then required

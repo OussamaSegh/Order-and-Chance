@@ -20,7 +20,8 @@ def tex_source():
         'COVERTITLETOP':'title_top_ratio','COVERTITLESIZE':'title_size_pt',
         'COVERTITLELEADING':'title_leading_pt','COVERTITLESTRETCH':'title_stretch',
         'COVERTITLEWIDTH':'title_width_in','COVERSUBTOP':'subtitle_top_ratio',
-        'COVERSUBSIZE':'subtitle_size_pt','COVERSUBTRACK':'subtitle_tracking',
+        'COVERSUBSIZE':'subtitle_size_pt','COVERSUBWIDTH':'subtitle_width_in',
+        'COVERSUBTRACK':'subtitle_tracking',
         'COVERSUBSTRETCH':'subtitle_stretch',
         'COVERBACKSIZE':'back_body_size_pt','COVERBACKLEADING':'back_body_leading_pt',
         'COVERBACKMAXHEIGHT':'back_body_max_height_ratio'}

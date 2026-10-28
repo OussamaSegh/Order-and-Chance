@@ -38,20 +38,27 @@ class SharedMasterTest(unittest.TestCase):
         self.assertEqual(wrapped['0'],['Mathematical','Maturity'])
 
     def test_every_subtitle_uses_one_size_and_fits_the_frame(self):
-        from series_metadata import subtitles
+        from series_metadata import subtitles, cover_subtitle_lines
         data=settings();scale=175/72.27
         font=ImageFont.truetype(str(ROOT/data['subtitle_font']),data['subtitle_size_pt']*scale)
         for number,text in subtitles().items():
-            width=(font.getlength(text)+(len(text)-1)*data['subtitle_size_pt']*scale*data['subtitle_tracking']/100)*data['subtitle_stretch']
-            with self.subTest(volume=number):self.assertLess(width,5.4*175)
+            def width(line):
+                return (font.getlength(line)+(len(line)-1)*data['subtitle_size_pt']*scale*data['subtitle_tracking']/100)*data['subtitle_stretch']
+            lines=cover_subtitle_lines(number)
+            self.assertEqual(' '.join(lines),text)
+            with self.subTest(volume=number):
+                self.assertLessEqual(len(lines),2)
+                self.assertTrue(all(width(line)<data['subtitle_width_in']*175 for line in lines))
+                self.assertEqual(len(lines),2 if number=='0' else 1)
         self.assertEqual(data['subtitle_top_ratio'],.6)
         self.assertEqual(data['subtitle_baseline_source_px'],632.36)
         check_sync()
 
     def test_subtitle_follows_last_title_line_and_rejects_an_empty_line_gap(self):
         def xml(top):
-            return ('<html><word yMin="'+str(top*720)+'">A</word>'
-                    '<word>Foundations</word><word>Prelude</word></html>').encode()
+            return ('<html><word yMin="'+str(top*720)+'">Proof,</word>'
+                    '<word>Problem</word><word>Solving</word><word>and</word>'
+                    '<word>Mathematical</word><word>Thinking</word></html>').encode()
         with patch('check_cover_template.subprocess.check_output',return_value=xml(.3928264)):
             check_subtitle('front.pdf','0',720)
         wrong=b'<html><word yMin="282.835008">The</word><word>Language</word><word>of</word><word>Symmetry</word></html>'

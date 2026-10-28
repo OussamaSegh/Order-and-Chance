@@ -7,6 +7,13 @@ def subtitles():
     return json.loads((ROOT/'common/volume-subtitles.json').read_text())
 def subtitle(number):
     return subtitles().get(str(number),'')
+def cover_subtitle_lines(number):
+    text=subtitle(number)
+    if str(number)=='0' and text=='Proof, Problem Solving and Mathematical Thinking':
+        first,second=text.split(' and ',1)
+        return [first,'and '+second]
+    return [text]
+
 def tex_source():
     definitions=[r'% Generated from volume-subtitles.json by tools/series_metadata.py.',
       r'\newcommand{\volumesubtitledef}[2]{\expandafter\def\csname ocsubtitle@#1\endcsname{#2}}',
@@ -14,6 +21,10 @@ def tex_source():
     for number,value in subtitles().items():
         assert not any(c in value for c in '\\{}%&_$#'),value
         definitions.append(r'\volumesubtitledef{'+number+'}{'+value+'}')
+    # Cover-only line breaks; all bibliographic metadata remains plain text.
+    definitions.append(r'\newcommand{\volumecoversubtitle}[1]{\csname occoversubtitle@#1\endcsname}')
+    for number in subtitles():
+        definitions.append(r'\expandafter\def\csname occoversubtitle@'+number+r'\endcsname{'+r'\\'.join(cover_subtitle_lines(number))+'}')
     return '\n'.join(definitions)+'\n'
 def main():
     data=subtitles()

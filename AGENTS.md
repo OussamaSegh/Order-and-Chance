@@ -2,6 +2,15 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Volume 0 subtitle update — 28 October 2026
+
+The author approved **Proof, Problem Solving and Mathematical Thinking** as
+Volume 0's subtitle, including its covers. This supersedes the older
+"A Foundations Prelude" wording and freeze below. Canonical metadata remains in
+`common/volume-subtitles.json`. Covers wrap long subtitles within the existing shared
+5.4-inch subtitle area at the existing font size, tracking and title-relative first baseline;
+Volume 0 uses two lines. Earlier approval images remain historical references.
+
 ## KDP export rule — approved working files, 28 October 2026
 
 The author confirmed the separately prepared Volume-0 KDP interior and print
