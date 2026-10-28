@@ -10,10 +10,11 @@ The shared publishing conventions and system dependencies are documented in `../
 
 | File | Use |
 |---|---|
-| `dist/tome1-integers.pdf` | Standard 7 × 10 inch reading PDF and paperback manuscript, black ink on white paper, no bleed |
+| `dist/tome1-integers.pdf` | Reading PDF with front cover followed by the 7 × 10 inch interior |
+| `dist/kdp/tome1-integers-print.pdf` | Paperback interior without front cover, premium colour on white paper, 7 × 10 inches, no bleed |
 | `dist/kdp/tome1-integers-cover-wrap.pdf` | Paperback cover, with 0.125 inch bleed and spine computed from the manuscript page count |
 | `dist/tome1-integers.epub` | Reflowable Kindle manuscript, with MathML and vector diagrams |
-| `dist/kdp/tome1-integers-ebook-cover.jpg` | Kindle front cover, 1600 × 2560 pixels |
+| `dist/kdp/tome1-integers-ebook-cover.jpg` | Kindle front cover, 1792 × 2560 pixels |
 | `dist/kdp/tome1-integers-listing.md` | Description and seven keywords for the book details |
 | `dist/html/tome1-integers/` | Online chapter reader |
 
@@ -25,4 +26,4 @@ For final upload, use KDP's Print Previewer to review the interior and matching 
 
 Historical image credits appear beside the portraits, at the end of the book, and in `photos/CREDITS.md`. Mathematical figures are vector drawings with labels and line/marker distinctions for grayscale print. The smaller Fermat reproduction is capped at 1.3 inches high to retain at least 300 pixels per inch in the paperback.
 
-The final review record and validation results are in `../review/TOME1-ENHANCEMENT.md`. Changes to the content or page layout require rebuilding the cover wrap as well as the interior, since spine width depends on page count.
+The current reconstruction records are in `../review/volume1-reconstruction/`. The older review is historical and does not specify the current production layout. Changes to the content or page layout require rebuilding the cover wrap as well as the interior, since spine width depends on page count.
