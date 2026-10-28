@@ -11,21 +11,21 @@ PLATES = {'tome0-mathematical-maturity': 'ch06-integrals-taylor.tex; ch08-counti
  'tome1-integers': 'ch02-primes.tex',
  'tome2-structures': 'ch11-characters.tex; ch12-quaternions.tex',
  'tome3-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
- 'tome4-calculation': 'ch06-fourier.tex',
+ 'tome4-calculation': 'ch06-fourier.tex; ch08-transform.tex',
  'tome5-meets': 'ch06-zeros.tex',
  'tome6-spaces': 'ch11-metricmeasures.tex',
- 'tome7-analysis': 'ch09-complex.tex',
+ 'tome7-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
  'tome8-shapes': 'ch09-hyperbolic.tex',
  'tome9-higher-structures': 'ch09-symmetric.tex',
- 'tome10-chance2': 'ch12-permutations.tex',
+ 'tome10-chance2': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
  'tome11-motion': 'ch10-semicircle.tex',
  'tome12-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
  'tome13-primes': 'Prime distribution and progressions',
  'tome14-random': 'ch05-randommult.tex',
- 'tome15-workshop': 'ch06-chaos.tex',
- 'tomeP1-crossroads': 'Gaussian integers and number theory',
- 'tomeP2-machinery': 'ch01-almost.tex; ch02-hilbert.tex',
- 'tomeP3-frontiers': 'ch01-pieces.tex'}
+ 'tome15-workshop': 'conjectures-ch06-collatz.tex: inverse tree of 1 to depth 13',
+ 'tomeP1-crossroads': 'ch02-roots.tex; ch04-symmetry.tex: cyclic roots-of-unity symmetry',
+ 'tomeP2-machinery': 'ch02-hilbert.tex: Problem pb:sobolev, exact H1 reproducing kernel',
+ 'tomeP3-frontiers': 'ch01-pieces.tex: random signs weighted by geometric powers'}
 
 def main():
     import hashlib,json
@@ -37,27 +37,28 @@ def main():
     (ROOT/'tools/cover-template.tex').write_text(tex_source())
     check_titles()
     config=settings()
+    directions=json.loads((ROOT/'tools/assets/cover-art-direction.json').read_text())
     manifest=[]
     subjects={
       '0':'Approved Gaussian wireframe surface',
       '1':'Ulam prime lattice as raised wire pyramids',
       '2':'Icosahedral symmetry as a triangulated 3D wireframe',
       '3':'Galton branching lattice feeding exact binomial probability columns',
-      '4':'Fourier partial-sum surface and Gibbs ridges',
+      '4':'Smooth interference of five Fourier harmonics',
       '5':'Riemann zeta modulus landscape',
-      '6':'Extruded Sierpinski carpet',
-      '7':'Real part of the complex sine as a surface',
+      '6':'Sierpinski carpet as a shallow solid with exposed hole walls',
+      '7':'Helicoid of the multivalued complex logarithm',
       '8':'Pseudosphere and hyperbolic geometry',
-      '9':'Plane-partition solid from a Young partition',
-      '10':'GEM stick-breaking probability terraces',
-      '11':'Hermitian Brownian eigenvalue surface',
+      '9':'A 600-box Plancherel Young diagram as a solid Ferrers wall',
+      '10':'Bernoulli large-deviation entropy bowl',
+      '11':'Seven Hermitian Brownian eigenvalue ribbons',
       '12':'Elliptic-curve complex torus',
-      '13':'Normalised prime-counting error surface',
+      '13':'Locally averaged normalised prime-counting error surface',
       '14':'Phase projections of a Steinhaus multiplicative walk',
-      '15':'Space-time genealogy of a branching random walk',
-      'P1':'Gaussian prime lattice as raised wire pyramids',
-      'P2':'Orthogonal-coordinate saddle: a symmetric quadratic-form projection',
-      'P3':'Scaled binomial probability surfaces approaching the Gaussian'
+      '15':'Exact depth-13 inverse Collatz tree as a branching sculpture',
+      'P1':'Seventh-roots-of-unity star prism with cyclic symmetry',
+      'P2':'Sobolev H1 reproducing-kernel surface, L=2',
+      'P3':'Kernel-smoothed finite Bernoulli-convolution laws'
     }
     for book,evidence in PLATES.items():
         number=book.split('-',1)[0].removeprefix('tome')
@@ -65,7 +66,7 @@ def main():
             content='% Volume 0 keeps its approved traced Gaussian illustration.\n'
             info={'space':'3D','renderer':'reference-vector','source':config['reference_illustration']}
         else:
-            geometry,info=render(model(number),config)
+            geometry,info=render(model(number),config,directions[number])
             content='% Shared-master 3D wireframe: '+subjects[number]+'\n'+geometry
             info['renderer']='shared-camera-vector'
         (ROOT/book/'cover-motif.tex').write_text(content)
@@ -78,7 +79,8 @@ def main():
            config['subtitle_font'],'tools/assets/print/paper-muted.png','tools/assets/series-template.json',
         'tools/cover-template.tex','tools/cover-editorial-front.tex','tools/cover-colors.tex',
         'tools/cover-back.tex','tools/cover-wrap.tex','tools/cover-front.tex','tools/cover.tex',
-        'tools/series_cover.py','tools/cover_surface_renderer.py','tools/cover_surfaces.py',
+        'tools/series_cover.py','tools/cover_surface_renderer.py','tools/cover_surfaces.py','tools/cover_sculptures.py',
+        'tools/assets/cover-art-direction.json',
         'tools/cover_plates.py',*[f'tools/assets/approved-volume-{n}.png' for n in range(3)]]
     hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in files}
     (ROOT/'tools/assets/series/manifest.json').write_text(json.dumps({'schema':1,

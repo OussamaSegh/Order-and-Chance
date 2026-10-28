@@ -40,9 +40,10 @@ def height_mesh(function, n=35, samples=71):
 
 
 def parametric_mesh(function, n=33, samples=71):
-    grid=linspace(0,1,n);curves=[]
-    for a0,a1 in zip(grid,grid[1:]):
-        for b0,b1 in zip(grid,grid[1:]):
+    na,nb=(n,n) if isinstance(n,int) else n
+    aa,bb=linspace(0,1,na),linspace(0,1,nb);curves=[]
+    for a0,a1 in zip(aa,aa[1:]):
+        for b0,b1 in zip(bb,bb[1:]):
             corners=[(a0,b0),(a1,b0),(a1,b1),(a0,b1),(a0,b0)];curve=[]
             for (xa,ya),(xb,yb) in zip(corners,corners[1:]):
                 curve += [function(xa+(xb-xa)*t,ya+(yb-ya)*t) for t in (0,1/3,2/3)]
@@ -111,7 +112,7 @@ def binomial(n, x, p=.5):
     return math.exp(math.lgamma(n+1)-math.lgamma(x+1)-math.lgamma(n-x+1)+x*math.log(p)+(n-x)*math.log1p(-p))
 
 
-def galton_lattice(n=10):
+def galton_lattice(n=8):
     """A shallow 3D Pascal lattice feeding exact binomial probability columns."""
     curves=Scene()
     def point(row,k,back=0):
@@ -121,9 +122,10 @@ def galton_lattice(n=10):
         for k in range(row+1):
             for child in (k,k+1):
                 curves.append([point(row,k),point(row+1,child)])
-                curves.append([point(row,k,.14),point(row+1,child,.14)])
+                if k in (0,row) and child in (0,row+1):
+                    curves.append([point(row,k,.14),point(row+1,child,.14)])
     for row in range(n+1):
-        for k in range(row+1):curves.append([point(row,k),point(row,k,.14)])
+        for k in (0,row):curves.append([point(row,k),point(row,k,.14)])
     peak=binomial(n,n//2)
     for k in range(n+1):
         u=.92*(2*k-n)/n;h=.52*binomial(n,k)/peak
@@ -159,17 +161,20 @@ def zeta(s):
 
 
 def block_surface(heights):
-    n=len(heights); step=2/n; segments=set()
-    def add(a,b):
-        segments.add(tuple(sorted((tuple(a),tuple(b)))))
+    n=len(heights); step=2/n; curves=Scene()
+    def face(points):curves.faces.add(len(curves));curves.append(points+[points[0]])
     for i,row in enumerate(heights):
         for j,z in enumerate(row):
             if not z: continue
             x,y=-1+i*step,-1+j*step
             corners=[(x,y,z),(x+step,y,z),(x+step,y+step,z),(x,y+step,z)]
-            for a,b in zip(corners,corners[1:]+corners[:1]): add(a,b)
-            for a in corners: add((a[0],a[1],0),a)
-    return [list(edge) for edge in sorted(segments)]
+            face(corners)
+            for edge,(di,dj) in enumerate(((0,-1),(1,0),(0,1),(-1,0))):
+                other=heights[i+di][j+dj] if 0<=i+di<n and 0<=j+dj<n else 0
+                if other<z:
+                    a,b=corners[edge],corners[(edge+1)%4]
+                    face([(a[0],a[1],other),(b[0],b[1],other),b,a])
+    return curves
 
 
 def carpet():
@@ -178,7 +183,7 @@ def carpet():
             if i%3==j%3==1:return False
             i//=3; j//=3
         return True
-    return block_surface([[.42 if occupied(i,j) else 0 for j in range(27)] for i in range(27)])
+    return block_surface([[.15 if occupied(i,j) else 0 for j in range(27)] for i in range(27)])
 
 
 def young_solid():
@@ -236,6 +241,7 @@ def torus(winding=False):
 
 
 def prime_error_surface():
+    import numpy as np
     limit=20000;sieve=[True]*(limit+1);sieve[0]=sieve[1]=False
     for k in range(2,math.isqrt(limit)+1):
         if sieve[k]:
@@ -246,9 +252,14 @@ def prime_error_surface():
         x=math.log(n);term=1.;value=.5772156649015329+math.log(x)
         for k in range(1,70):term*=x/k;value+=term/k
         return value
+    raw=np.array([(counts[n]-li(n))/math.sqrt(n) for n in range(100,limit+1)])
+    # A local average preserves the arithmetic error signal while removing the
+    # distracting one-prime staircase at cover scale. No invented oscillations.
+    window=np.arange(-450,451);kernel=np.exp(-.5*(window/150)**2);kernel/=kernel.sum()
+    smooth=np.convolve(np.pad(raw,(450,450),mode='edge'),kernel,mode='valid')
     def function(x,y):
-        n=100+int((x+1)/2*(limit-100))
-        return (counts[n]-li(n))/math.sqrt(n)*(1-.6*y*y)
+        t=(x+1)/2*(limit-100);i=min(len(smooth)-2,int(t));a=t-i
+        return float(((1-a)*smooth[i]+a*smooth[i+1])*(1-.6*y*y))
     return height_mesh(function)
 
 
@@ -260,7 +271,10 @@ def steinhaus_surface():
         else:values.append(values[divisor]*values[k//divisor])
     total=0j
     for k in range(1,n+1):total+=values[k];sums.append(total/math.sqrt(k))
-    return height_mesh(lambda x,y:(sums[1+int((x+1)/2*(n-1))]*cmath.exp(1j*math.pi*y)).real)
+    def field(x,y):
+        t=1+(x+1)/2*(n-1);i=min(n-1,int(t));a=t-i
+        return (((1-a)*sums[i]+a*sums[i+1])*cmath.exp(1j*math.pi*y)).real
+    return height_mesh(field)
 
 
 def branching_tree():
@@ -279,31 +293,29 @@ def branching_tree():
 
 def model(number):
     number=str(number)
+    from cover_sculptures import (fourier_interference, logarithm_helicoid, entropy_bowl,
+        dyson_ribbons, young_ferrers_wall, collatz_sculpture, cyclotomic_crown,
+        sobolev_kernel, bernoulli_convolutions)
     if number=='1':return prime_lattice()
     if number=='2':return symmetry_mesh()
     if number=='3':return galton_lattice()
-    if number=='4':
-        return height_mesh(lambda x,y:sum(math.sin((2*k+1)*math.pi*x)/(2*k+1) for k in range(1+int((y+1)*7))))
+    if number=='4':return fourier_interference()
     if number=='5':return height_mesh(lambda x,y:math.log1p(abs(zeta(complex(.2+(x+1)*.5,10+(y+1)*12.5)))))
     if number=='6':return carpet()
-    if number=='7':return height_mesh(lambda x,y:cmath.sin(complex(2*x,1.4*y)).real)
+    if number=='7':return logarithm_helicoid()
     if number=='8':
         def pseudosphere(a,b):
             t=.12+2.1*b;r=.70/math.cosh(t);theta=2*math.pi*a
             return r*math.cos(theta),r*math.sin(theta),-.4+.85*(t-math.tanh(t))
         return parametric_mesh(pseudosphere)
-    if number=='9':return young_solid()
-    if number=='10':return gem_surface()
-    if number=='11':return dyson_surface()
+    if number=='9':return young_ferrers_wall()
+    if number=='10':return entropy_bowl()
+    if number=='11':return dyson_ribbons()
     if number=='12':return torus()
     if number=='13':return prime_error_surface()
     if number=='14':return steinhaus_surface()
-    if number=='15':return branching_tree()
-    if number=='P1':return prime_lattice(gaussian=True)
-    if number=='P2':return projection_saddle()
-    if number=='P3':
-        def clt(x,y):
-            n=round(8*2**(2*(y+1)));sigma=math.sqrt(n)/2
-            return sigma*binomial(n,n/2+3*x*sigma)
-        return height_mesh(clt)
+    if number=='15':return collatz_sculpture()
+    if number=='P1':return cyclotomic_crown()
+    if number=='P2':return sobolev_kernel()
+    if number=='P3':return bernoulli_convolutions()
     raise ValueError(f'No 3D cover model for Volume {number}')

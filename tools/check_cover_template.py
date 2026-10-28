@@ -41,6 +41,14 @@ def check_assets(number):
     if str(number)!='0' and (art.get('glow')!='five-layer-vector-radiance'
                             or art.get('hidden_lines')!='depth-tested-before-glow'):
         raise ValueError('A volume bypasses the approved luminous wireframe treatment')
+    if str(number)!='0':
+        directions=json.loads((ROOT/'tools/assets/cover-art-direction.json').read_text())
+        if art.get('art_direction')!=directions[str(number)]:raise ValueError('Illustration composition differs from its reviewed direction')
+        bounds=art['screen_bounds_px'];clip=data['art_clip_px']
+        if bounds[0]<clip[0]+10 or bounds[2]>clip[2]-10 or bounds[3]>clip[3]-10:
+            raise ValueError('Illustration silhouette or glow is clipped')
+        minimum=680 if len(check_titles()[str(number)])==2 else 570
+        if bounds[1]<minimum:raise ValueError('Illustration overlaps its title/subtitle area')
     return data
 
 

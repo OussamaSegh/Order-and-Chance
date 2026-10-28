@@ -2,6 +2,25 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Latest instruction: individual mathematical art direction
+
+The author now explicitly asks to review every illustration independently, replace
+subjects where appropriate, and adjust illustration position and orientation.
+This supersedes the earlier assumption that all geometry must keep one pose.
+Fonts, title/subtitle rules, identity, palette and luminous vector material remain
+shared. `tools/assets/cover-art-direction.json` records the separate rotations,
+centres, scale and clearance; the shared renderer still supplies one material and
+camera. See `docs/COVER-ART-DIRECTION.md` for all nineteen decisions and chapter
+connections. Volume 0 and the approved Volume-2 composition remain references.
+
+Keep the Sierpiński carpet and actual Plancherel Young diagram consistent with
+references inside the books. Chance's Galton sculpture differs from Volume 0;
+Machinery uses the exact Sobolev reproducing kernel from its Hilbert-space chapter;
+Crossroads uses a roots-of-unity star instead of repeated prime pyramids; Workshop
+uses the exact inverse Collatz tree. Incidental obsolete cover references may be
+corrected without changing mathematical content. Preserve the concurrent semantic
+box-colour/frame correction from `8135b0b` and its tests.
+
 ## Latest refinement: glowing artwork and title-relative subtitles
 
 The author approved the luminous Volume-2 preview and then explicitly changed the

@@ -94,3 +94,13 @@ hidden full frame plus one explicit 1 pt left rule, preventing saturated frame
 underpainting from showing through at some zoom levels. STIX/Inter, charcoal
 headings and coral chapter accents remain version C. Cover work through
 `dabf093` and all cover templates/assets are preserved; shared fingerprints rebuild all books.
+
+## Independent artwork review after the author's further direction
+
+The author now authorises new illustration subjects and individual geometry poses,
+scale and placement for all nineteen covers. The chapter-based review and decisions
+are in docs/COVER-ART-DIRECTION.md. Cover typography, title-relative subtitles and
+the shared luminous material remain intact. Current main 8135b0b was pulled first,
+retaining the semantic box-colour/frame fix and its real-PDF regression. Only obsolete cover references in the Structures/Chance appendices are corrected;
+mathematical statements, figures and interior styling are preserved. Fresh current
+manuscript counts must determine every final wrap; no old proof count is authoritative.

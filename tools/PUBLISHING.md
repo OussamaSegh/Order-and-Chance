@@ -12,6 +12,13 @@ vector. Subtitles sit directly below their own title: source y=600 capitals for
 two-line titles and one title-leading higher for one-line titles. Font, size and
 gap stay fixed; neither titles nor subtitles are autosized.
 
+Illustrations are individually selected against their chapters; see
+`docs/COVER-ART-DIRECTION.md`. Their rotations, uniform scale, placement and
+clearance are in `tools/assets/cover-art-direction.json`. These affect artwork
+only. Every title/subtitle and common identity retains the shared master, and all
+illustrations use the same luminous material. Mathematical models and exact data
+live in `tools/cover_surfaces.py` and `tools/cover_sculptures.py`.
+
 Run `python3 tools/cover_plates.py` after deliberate template/geometry edits. It
 updates the shared TeX, 3D plates and hash manifest. `tools/check_cover_template.py`
 checks fronts and their EPUB/reader assets; cached releases are checked too. All

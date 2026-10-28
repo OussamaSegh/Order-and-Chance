@@ -33,6 +33,8 @@ def tex_source():
         baseline=subtitle_baseline(number, len(lines))
         text+='\\expandafter\\def\\csname ocSubBase@'+number+'\\endcsname{'+str(1-baseline/1500)+'}\n'
     text+='\\def\\coversubtitlebase#1{\\csname ocSubBase@#1\\endcsname}\n'
+    for name,value in zip(('LEFT','TOP','RIGHT','BOTTOM'),data['art_clip_px']):
+        text+='\\def\\COVERART'+name+'{'+str(value)+'}\n'
     return text
 
 

@@ -59,8 +59,20 @@ def visible_edges(curves, screen, depth):
     return visible,len(edges)
 
 
-def render(curves, data=None):
+def render(curves, data=None, direction=None):
     data=settings() if data is None else data
+    direction={} if direction is None else direction
+    angles=[math.radians(a) for a in direction.get('rotation_deg',(0,0,0))]
+    def rotate(p):
+        x,y,z=p
+        for axis,a in enumerate(angles):
+            c,s=math.cos(a),math.sin(a)
+            if axis==0:y,z=c*y-s*z,s*y+c*z
+            elif axis==1:x,z=c*x+s*z,-s*x+c*z
+            else:x,y=c*x-s*y,s*x+c*y
+        return x,y,z
+    from cover_surfaces import Scene
+    curves=Scene([[rotate(p) for p in curve] for curve in curves],getattr(curves,'faces',()))
     camera=data['camera'];origin=data['camera_origin_px'];material=data['material']
     project=lambda p:tuple(origin[i]+sum(camera[i][j]*p[j] for j in range(3)) for i in range(2))
     points=[p for curve in curves for p in curve]
@@ -69,15 +81,17 @@ def render(curves, data=None):
     projected=[project(p) for p in points]
     ys=[p[1] for p in projected];lo,hi=min(ys),max(ys)
     xs=[p[0] for p in projected];left,right=min(xs),max(xs)
-    clip=data['art_clip_px'];padding=10
-    scale=min(1.,(data['art_height_px']-2*padding)/max(1.,hi-lo),
+    clip=data['art_clip_px'];padding=12
+    minimum_top=max(clip[1],direction.get('minimum_top_px',680))
+    scale=min(direction.get('zoom',1.),(min(data['art_height_px'],clip[3]-minimum_top)-2*padding)/max(1.,hi-lo),
               (clip[2]-clip[0]-2*padding)/max(1.,right-left));mid=(lo+hi)/2
-    # Keep every complete silhouette inside the shared window, including the halo.
-    minx=origin[0]+scale*(left-origin[0]);maxx=origin[0]+scale*(right-origin[0])
-    shiftx=max(clip[0]+padding-minx,min(0.,clip[2]-padding-maxx))
+    target=direction.get('center_px',(660,data['art_center_y_px']))
+    halfx=scale*(right-left)/2;halfy=scale*(hi-lo)/2
+    centerx=max(clip[0]+padding+halfx,min(target[0],clip[2]-padding-halfx))
+    centery=max(minimum_top+padding+halfy,min(target[1],clip[3]-padding-halfy))
     def screen(p):
         x,y=project(p)
-        return origin[0]+scale*(x-origin[0])+shiftx,data['art_center_y_px']+scale*(y-mid)
+        return centerx+scale*(x-(left+right)/2),centery+scale*(y-mid)
     normal=(camera[0][1]*camera[1][2]-camera[0][2]*camera[1][1],
             camera[0][2]*camera[1][0]-camera[0][0]*camera[1][2],
             camera[0][0]*camera[1][1]-camera[0][1]*camera[1][0])
@@ -113,5 +127,6 @@ def render(curves, data=None):
               'unique_world_edges':unique,'visible_wire_segments':len(edges),
               'rendered_segments':len(edges),'shared_camera':camera,'shared_material':material,
               'glow':'five-layer-vector-radiance','hidden_lines':'depth-tested-before-glow',
+              'art_direction':direction,'screen_bounds_px':[centerx-halfx,centery-halfy,centerx+halfx,centery+halfy],
               'model_z_range':[minz,maxz],'uniform_fit_scale':scale}
     return '\n'.join(commands)+'\n',metadata
