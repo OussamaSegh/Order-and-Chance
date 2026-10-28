@@ -104,24 +104,32 @@
 \newcounter{exo}[chapter]
 \renewcommand{\theexo}{\thechapter.\arabic{exo}}
 % The counter anchor travels inside the box when it moves to the next page.
-\tcbset{oc framed/.style={fonttitle=\ocCoverDisplay\fontsize{9.2}{12}\selectfont\bfseries,coltitle=ocInk,colbacktitle=white,titlerule=0pt},
+% Hide the entire frame before drawing the one visible rule. A zero-width frame
+% still paints a full saturated rectangle behind the backgrounds; antialiasing
+% can expose its edges as stray top/bottom hairlines at some PDF zoom levels.
+\tcbset{oc framed/.style={enhanced,unbreakable,boxrule=0pt,leftrule=1pt,arc=0pt,
+    frame hidden,borderline west={1pt}{0pt}{tcbcolframe},
+    fonttitle=\ocCoverDisplay\fontsize{9.2}{12}\selectfont\bfseries,
+    coltitle=ocInk,colbacktitle=white,titlerule=0pt},
   oc exercise/.style={oc framed,code={\stepcounter{exo}},
   before upper={\addtocounter{exo}{-1}\refstepcounter{exo}}}}
 \newtcolorbox{exercise}[1][]{%
-    oc exercise,enhanced,unbreakable,colback=ocExercise!6,colframe=ocExercise,
-    boxrule=0pt,leftrule=1pt,arc=0pt,left=6pt,right=6pt,
+    oc exercise,colback=ocExercise!6,colframe=ocExercise,left=6pt,right=6pt,
     title={\textbf{Exercise \theexo}\ifx\relax#1\relax\else\ \textit{(#1)}\fi}}
 \newenvironment{solution}[1]{%
   \par\ocOpeningSpace\medskip\noindent\textbf{\color{ocReminder}Solution of Exercise~\ref{#1}.}\quad}%
   {\hfill$\blacksquare$\par\medskip}
-\newtcolorbox{reminder}[1][]{oc framed,enhanced,unbreakable,colback=ocReminder!4,colframe=ocReminder,
-  boxrule=0pt,leftrule=1pt,arc=0pt,title={\textbf{Reminder}\ifx\relax#1\relax\else: #1\fi}}
-\newtcolorbox{beauty}{oc framed,enhanced,unbreakable,colback=ocBeauty!5,colframe=ocBeauty,
-  boxrule=0pt,leftrule=1pt,arc=0pt,title={\textbf{Why this is beautiful}}}
+\newtcolorbox{reminder}[1][]{oc framed,colback=ocReminder!4,colframe=ocReminder,
+  title={\textbf{Reminder}\ifx\relax#1\relax\else: #1\fi}}
+\newtcolorbox{beauty}{oc framed,colback=ocBeauty!5,colframe=ocBeauty,
+  title={\textbf{Why this is beautiful}}}
 
 % Pause and think: a question to try before reading on.
-\newtcolorbox{think}{oc framed,enhanced,unbreakable,colback=ocThink!5,colframe=ocThink,
-  boxrule=0pt,leftrule=1pt,arc=0pt,title={\textbf{Pause and think}}}
+\newtcolorbox{think}{oc framed,colback=ocThink!5,colframe=ocThink,
+  title={\textbf{Pause and think}}}
+% Challenges share the same frame implementation as the other teaching boxes.
+\newtcolorbox{challenge}{oc framed,colback=ocReminder!4,colframe=ocReminder,
+  title={\textbf{Challenges}}}
 % Hints, printed between the exercises and the solutions.
 \newenvironment{hint}[1]{%
   \par\ocOpeningSpace\smallskip\noindent\textbf{\color{ocThink}Hint for Exercise~\ref{#1}.}\quad}%

@@ -1,3 +1,35 @@
+# Teaching-box colour and frame correction
+
+The author identified that all teaching boxes used one colour and that some
+appeared to have extra top or bottom rules. The earlier version-C implementation
+had made every semantic accent coral. Its zero-width tcolorbox frame still
+painted a full saturated rectangle underneath the body/title backgrounds. PDF
+antialiasing could expose that underpainting at particular zoom levels.
+
+All box types now share one frame definition: the full frame is hidden, and only
+an explicit 1 pt left rule is drawn. Exercises and problems use blue `#235E82`,
+reminders and challenges coral `#A34232`, beauty notes teal `#22675B`, and thinking
+prompts plum `#704B80`. Pale fills, dark labels, the STIX/Inter version-C fonts,
+charcoal headings and coral chapter/link accents are retained. EPUB and reader
+styles use the same roles, including brighter distinct accents in dark mode.
+Challenges and all three problem-book overrides use the common frame definition.
+
+A real-PDF regression checks every box type, including all problem-book overrides:
+exactly one vertical 1 pt rule per box, the expected distinct colours, and no
+saturated frame underpainting. Existing whole-box/overflow/reference guards stay
+in place. Shared-input fingerprints rebuild all nineteen volumes automatically;
+cover source/artwork, trim and premium-colour settings are unchanged. Current
+cover work from `3259d46` was integrated before these edits; the subsequent
+`dabf093` glow/subtitle update is also preserved during integration. Review
+evidence is under `build/box-review/`. All 61 integrated publishing tests pass
+locally. Rebuilt
+Volume 0 (241 print pages, 200 whole boxes) and P3 (45 pages, 23 whole boxes)
+pass layout, PDF-pair, font/colour and vector-cover preflight. The exact reported
+Volume-0 pages 42 and 56 are visually checked; browser checks verify four colour
+roles and left-only rules in light/dark themes at desktop and 320 px widths.
+
+---
+
 # Approved glow and subtitles below the title
 
 The author approved the glowing Volume-2 proof and its subtitle directly below

@@ -84,3 +84,13 @@ vector radiance. Chance and Machinery receive distinct mathematical silhouettes.
 Interior content, Version C typography, premium-colour settings and actual-page
 spine derivation are unchanged. Keep the title-relative PDF checks and existing
 print/font/layout/navigation gates together. Baseline main was 3259d46.
+
+## Teaching-box correction after version C
+
+The author flagged identical box colours and inconsistent visible top/bottom
+hairlines. Interior work now restores blue exercises/problems, coral
+reminders/challenges, teal beauty notes and plum thinking prompts. All share a
+hidden full frame plus one explicit 1 pt left rule, preventing saturated frame
+underpainting from showing through at some zoom levels. STIX/Inter, charcoal
+headings and coral chapter accents remain version C. Cover work through
+`dabf093` and all cover templates/assets are preserved; shared fingerprints rebuild all books.

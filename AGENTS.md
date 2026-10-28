@@ -61,9 +61,13 @@ The author approved **version C** and requested it for all 19 volumes. The selec
 proof is `build/typography-review/Volume-0-Cover-Matched-Proof.pdf`: the cover's
 exact Inter display faces for headings, STIX Two Text/Math for body/mathematics,
 11 pt with 1.065 line spacing, tracked chapter labels, 24/29 pt chapter titles,
-small Inter running heads and labels, and thin 1 pt coral box rules with pale
-fills. Charcoal headings and coral accents replace the earlier multicolour box
-roles. Scientific figure colours retain their meaning. This supersedes the older
+small Inter running heads and labels, and thin 1 pt left box rules with pale
+fills. The author subsequently requested distinct semantic colours and consistent
+framing: blue exercises/problems, coral reminders/challenges, teal beauty notes
+and plum thinking prompts. Hide the full frame and draw only the left rule; a
+zero-width coloured frame can expose top/bottom seams when rendered. Charcoal
+headings and coral chapter/link accents retain version C. Scientific figure
+colours retain their meaning. This supersedes the older
 Libertinus/Inter Text interior policy below. Preserve the cover thread's `c839bba`
 artwork/material update. Both PDFs, EPUB and readers follow version C; cache schema
 6 forces regeneration. Keep all existing whole-box, font/glyph, PDF-pair and print
@@ -166,7 +170,8 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 - Interior/online light themes use neutral paper and accessible deep coral
   #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
   distinguishable and preserve scientific figure distinctions. Both PDFs use the same version C body: charcoal headings, coral accents and
-  pale boxes with thin coral rules. Keep body text/maths dark on white.
+  pale boxes with thin semantic-colour left rules and no top/bottom/right rules.
+  Keep body text/maths dark on white.
   The author's colour-print instruction supersedes the old grayscale overrides.
 - Preserve ISBNs, identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.

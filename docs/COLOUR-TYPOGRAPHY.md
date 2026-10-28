@@ -8,12 +8,12 @@ half-title. EPUB and the web readers use matching typography and semantic colour
 
 | Use | Typeface |
 | --- | --- |
-| Body, proofs and italic passages | Libertinus Serif |
-| Mathematics, including bold Greek vectors | Libertinus Math |
-| Chapter/section headings and box labels | Inter Text, optical size 14 |
+| Body, proofs and italic passages | STIX Two Text |
+| Mathematics, including bold Greek vectors | STIX Two Math |
+| Chapter/section headings and box labels | Inter Display, the bundled cover faces |
 | Code and Lean Unicode symbols | DejaVu Sans Mono |
 
-The body remains 11 pt, with 1.045 line spacing. Font files, licences, provenance
+The body remains 11 pt, with 1.065 line spacing. Font files, licences, provenance
 and SHA-256 hashes are bundled in `common/fonts/`; builds use these files rather
 than system-installed substitutes. PDF/figure typesetting uses XeLaTeX. EPUB
 embeds the original faces; readers serve matching WOFF2 files. Reading devices
@@ -23,16 +23,19 @@ can override EPUB typography.
 
 | Role | Colour |
 | --- | --- |
-| Chapter accents, section headings, reminders | Coral `#A34232` |
-| Exercises and PDF cross-reference links | Blue `#235E82` |
-| Beauty notes and subsection headings | Teal `#22675B` |
+| Chapter accents, links, reminders and challenges | Coral `#A34232` |
+| Exercises and problems | Blue `#235E82` |
+| Beauty notes | Teal `#22675B` |
 | Thinking prompts | Plum `#704B80` |
 
-Text and mathematics remain dark on white. Box title strips use white lettering;
-light fills preserve contrast in their contents. Scientific figures retain their
-existing colour meanings. Web/EPUB dark themes use brighter accent variants.
+Text and mathematics remain dark on white. Chapter/section headings and box labels
+are charcoal. Every teaching box has a pale body fill and exactly one 1 pt left
+rule in its semantic colour. The full frame is hidden rather than painted behind
+the backgrounds, preventing stray top/bottom seams at some PDF zoom levels.
+Scientific figures retain their existing colour meanings. Web/EPUB dark themes use brighter accent variants.
 
-![Volume 0 title, chapter openings, teaching boxes and hints](reviews/colour-typography-volume0.png)
+The current version-C proof and teaching-box corrections supersede the earlier
+Libertinus comparison image in `docs/reviews/`.
 
 ## Paperback configuration
 
@@ -61,8 +64,8 @@ checks resolve XeLaTeX's indirect annotation arrays before comparing the body.
 The build rejects missing glyphs, unavailable font shapes, wrong font families,
 lost coral/blue accents, split/oversized boxes, horizontal/vertical overflow,
 unresolved references, wrong page sizes and unembedded/bitmap fonts. Cache schema
-5 invalidates older interiors. Regression tests include real typesetting of
-colour/font output, Greek bookmarks, vector notation, Unicode code, whole-box
+6 and shared-input fingerprints invalidate older interiors. Regression tests
+include real typesetting of colour/font output, Greek bookmarks, vector notation, Unicode code, whole-box
 movement and solution-heading placement.
 
 The typography change itself leaves all 65 protected cover source/assets unchanged
@@ -71,9 +74,11 @@ is retained in full, including its resolution preflight; this typography update 
 no cover-art or lettering changes. Production wrap width follows the new page count
 and paper coefficient.
 
-Browser checks confirm loaded Libertinus/Inter fonts, coral headings, readable
+Browser checks cover loaded STIX/Inter fonts, charcoal headings, readable
 dark-mode headings, no page overflow at 320 px and no JavaScript errors.
 
-The integrated publishing suite passes all **48 tests**, including the concurrent
-print-cover preflight regressions. Complete-library publication also checks every
+The publishing suite includes actual-PDF tests for all five teaching-box types
+and all three problem-book overrides: one vertical rule, no saturated frame
+underpainting and the expected semantic colours, alongside the print-cover
+preflight regressions. Complete-library publication also checks every
 PDF pair, current print metadata and cover preflight before assembling the release.
