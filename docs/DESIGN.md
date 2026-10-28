@@ -1,3 +1,69 @@
+# Volumes 0 and 1 harmonised to the established series style
+
+The author rejected further attempts to match every book to the stronger glow in
+Volume 0 and instead explicitly asked to make Volume 0 look like the others, also
+harmonising Volume 1. Volume 0's Gaussian is now a native parametric height mesh
+using the common renderer, coral material, wire weights and five restrained halo
+layers. The special reference-art draw/import branch is removed from production.
+The traced Gaussian and original approval PNG remain untouched archival references.
+
+Volume 1 retains its exact Ulam prime locations while reducing the needle-like
+height, broadening bases and subdividing each face into a fine triangular mesh.
+It uses the same renderer and material as the rest. Generation verifies that only
+motifs 0 and 1 change; the remaining seventeen artwork hashes are identical.
+Common typography, identity, title-relative subtitles, all book content and the
+concurrent interior styles are preserved. The manifest/composition/material guards
+now apply to Volume 0 without an exemption. Print settings, vector-only artwork,
+native paper and actual-page-derived spines remain unchanged.
+
+The latest main was fetched at f4d797f before editing. Review evidence is under
+build/harmonization-review. Local verification: both new vector fronts pass the shared typography, subtitle,
+identity, material and composition checks; all 65 tests pass. A real previous
+Volume-0 PDF is rejected by the new archived-art guard, while the new native front
+passes. Publication rebuilds print and digital versions and refreshes the full
+high-resolution series image.
+
+---
+
+# Individual mathematical illustration review
+
+The author explicitly requested a separate aesthetic/content review of every
+illustration, permitting replacements and individual pose/scale/placement. The
+nineteen decisions and their chapter connections are in COVER-ART-DIRECTION.md;
+compositions live in tools/assets/cover-art-direction.json. This supersedes the
+older assumption that a fixed camera implies identical geometry orientation.
+Type, subtitle spacing, colours, frame, author identity and five-layer vector
+radiance remain shared. Volume 0 and the approved Volume-2 composition are retained.
+
+Substantial replacements include smooth Fourier interference, a logarithm helicoid,
+an actual Plancherel Ferrers wall, a Bernoulli large-deviation bowl, upright Dyson
+eigenvalue ribbons, the inverse Collatz tree, a seventh-roots-of-unity star prism,
+the book's exact Sobolev reproducing kernel, and finite Bernoulli-convolution laws.
+Spaces retains its explicitly referenced Sierpiński carpet with shallow solid
+walls. Existing zeta, prime-error, multiplicative-field, hyperbolic and elliptic
+subjects receive individual composition rather than arbitrary new symbols.
+
+The shared renderer rotates only world geometry and fits its complete silhouette
+and halo within a title-safe viewport. PDF/manifest checks enforce the reviewed
+composition and prevent title/footer overlap. The broader art window permits
+single-line titles to use more space, while two-line titles retain full clearance.
+All halos/geometry remain vector; only native paper is raster. The proof tool now
+uses production's extra token-memory allowance for dense vector sculptures.
+
+Four mathematical regressions independently verify the Collatz inverse graph,
+Plancherel box count, actual H1 kernel values and symmetric normalised finite
+probability laws. All 65 integrated publishing tests pass. Obsolete cover
+claims in the Structures/Chance appendices are corrected without changing mathematical
+statements or figures. The carpet and Young-diagram cover references remain true.
+
+The current interior colour/frame correction from 8135b0b was pulled before this
+pass and is preserved. No interior fonts, teaching-box roles, semantic palette,
+scientific figure colours or print settings are changed. Any copy reflow is
+handled by rebuilding the current manuscripts and deriving new spines from their
+actual pages. Review outputs are under build/art-direction-review. All nineteen final 7 by 10 vector fronts pass the shared type, title-relative subtitle, identity, composition and clipping checks. Every illustration was inspected separately and again in the complete contact sheet. The final integrated suite passes all 65 tests; all-volume CI will recheck the finished print wraps and packaged EPUB/reader images before publication.
+
+---
+
 # Teaching-box colour and frame correction
 
 The author identified that all teaching boxes used one colour and that some

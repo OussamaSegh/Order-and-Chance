@@ -2,6 +2,39 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Latest instruction: harmonise Volumes 0 and 1 to the rest
+
+The author explicitly chose to make Volume 0's illustration look like the other
+books, then requested Volume 1 be harmonised too. This supersedes preserving the
+traced Gaussian in production. Volume 0 keeps its Gaussian subject but now uses
+the same native mesh renderer, material, pen weights and restrained halo as all
+other volumes. No illustration-renderer exception or reference-art import remains.
+Volume 1 keeps its Ulam prime pattern, with lower, broader relief and finely
+triangulated faces instead of sparse needles. Only these two motifs change.
+Typography, identity, subtitle spacing, all other illustrations, interior work and
+premium-colour print geometry are retained. Original approval images and traces
+remain archival files. Apply the common manifest/material/composition guards to
+Volume 0 as strictly as every other book.
+
+## Latest instruction: individual mathematical art direction
+
+The author now explicitly asks to review every illustration independently, replace
+subjects where appropriate, and adjust illustration position and orientation.
+This supersedes the earlier assumption that all geometry must keep one pose.
+Fonts, title/subtitle rules, identity, palette and luminous vector material remain
+shared. `tools/assets/cover-art-direction.json` records the separate rotations,
+centres, scale and clearance; the shared renderer still supplies one material and
+camera. See `docs/COVER-ART-DIRECTION.md` for all nineteen decisions and chapter
+connections. Volume 0 and the approved Volume-2 composition remain references.
+
+Keep the Sierpiński carpet and actual Plancherel Young diagram consistent with
+references inside the books. Chance's Galton sculpture differs from Volume 0;
+Machinery uses the exact Sobolev reproducing kernel from its Hilbert-space chapter;
+Crossroads uses a roots-of-unity star instead of repeated prime pyramids; Workshop
+uses the exact inverse Collatz tree. Incidental obsolete cover references may be
+corrected without changing mathematical content. Preserve the concurrent semantic
+box-colour/frame correction from `8135b0b` and its tests.
+
 ## Latest refinement: glowing artwork and title-relative subtitles
 
 The author approved the luminous Volume-2 preview and then explicitly changed the

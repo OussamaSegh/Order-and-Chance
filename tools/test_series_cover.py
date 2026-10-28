@@ -104,15 +104,11 @@ class WireframeModelTest(unittest.TestCase):
         self.assertTrue(segments)
         self.assertTrue(all(p[2]==1 for curve in segments for p in curve))
 
-    def test_chance_and_machinery_have_distinct_open_silhouettes(self):
-        galton=galton_lattice()
+    def test_galton_lattice_has_real_probability_columns(self):
+        galton=galton_lattice(n=10)
         self.assertEqual(len(galton.faces),55)
         # Galton's lattice is a branching triangle, not the former Gaussian-like hill.
         self.assertGreater(max(p[2] for c in galton for p in c),1.3)
-        saddle=projection_saddle()
-        self.assertTrue(saddle.faces)
-        self.assertLess(min(p[2] for c in saddle for p in c),0)
-        self.assertGreater(max(p[2] for c in saddle for p in c),.6)
 
     def test_symmetry_illustration_is_one_closed_icosahedral_mesh(self):
         scene=symmetry_mesh()

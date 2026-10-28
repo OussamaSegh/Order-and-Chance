@@ -5,6 +5,7 @@ Requires the same xelatex/poppler setup as build.sh. Writes preview PDFs and PNG
 not release assets or production paperback wraps. Mathematical motifs are read as-is.
 """
 import argparse
+import os
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 import re
@@ -26,6 +27,8 @@ def render(main: Path, output: Path, print_mode=False) -> str:
     tome = main.parent.name
     out = output / tome
     out.mkdir(parents=True, exist_ok=True)
+    environment=os.environ.copy()
+    environment.setdefault('extra_mem_top','12000000')  # Match production's dense-vector allowance.
     formats = {"reference": PRINT} if print_mode else FORMATS
     for fmt, (width, height) in formats.items():
         tex = (rf"\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}"
@@ -38,7 +41,7 @@ def render(main: Path, output: Path, print_mode=False) -> str:
             for flags in (["-no-pdf"], []):
                 subprocess.run(["xelatex", *flags, "-interaction=nonstopmode", "-halt-on-error",
                                 f"-output-directory={out}", f"-jobname={fmt}", tex],
-                               cwd=ROOT, stdout=log, stderr=subprocess.STDOUT, check=True)
+                               cwd=ROOT, env=environment, stdout=log, stderr=subprocess.STDOUT, check=True)
         check_cover(out / f"{fmt}.pdf", width, height)
         check_cover_log(out / f"{fmt}.log")
         check_template(out / f"{fmt}.pdf", number)

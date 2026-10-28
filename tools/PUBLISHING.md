@@ -5,12 +5,23 @@ Every production front now uses the locked Volume-0 master in
 supersedes the historical exact-PNG front substitution described below. The PNG
 approvals remain archived; even Volumes 0–2 render their title blocks through the
 same font and text anchors as every other book. The original common identity and
-Volume-0 Gaussian illustration are retained. Each other book uses one 3D wireframe
+Volume-0 Gaussian subject are retained. All nineteen books use one native 3D wireframe
 with the same camera/material and five-layer soft coral radiance. Visible wires
 are deduplicated and depth-tested before lighting, keeping all exported artwork
 vector. Subtitles sit directly below their own title: source y=600 capitals for
 two-line titles and one title-leading higher for one-line titles. Font, size and
 gap stay fixed; neither titles nor subtitles are autosized.
+
+Illustrations are individually selected against their chapters; see
+`docs/COVER-ART-DIRECTION.md`. Their rotations, uniform scale, placement and
+clearance are in `tools/assets/cover-art-direction.json`. These affect artwork
+only. Every title/subtitle and common identity retains the shared master, and all
+illustrations use the same luminous material. Mathematical models and exact data
+live in `tools/cover_surfaces.py` and `tools/cover_sculptures.py`.
+
+Volume 0 now uses the common native Gaussian mesh instead of its archived trace;
+Volume 1 uses lower, broader, finely triangulated prime relief. There are no
+per-volume renderer/material exemptions, and original approvals stay archival.
 
 Run `python3 tools/cover_plates.py` after deliberate template/geometry edits. It
 updates the shared TeX, 3D plates and hash manifest. `tools/check_cover_template.py`
