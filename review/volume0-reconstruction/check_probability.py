@@ -6,9 +6,12 @@ from math import comb, prod, gcd
 from pathlib import Path
 import json, re
 
-DRAFT=Path(__file__).resolve().parent
+ROOT=Path(__file__).resolve().parents[2]
+DRAFT=ROOT/'tome0-mathematical-maturity/chapters'
 s=(DRAFT/'ch09-probability.tex').read_text()
-baseline=Path('/workspace/volume0-drafts/discrete/ch09-probability.tex').read_text()
+old_ids=['ex:birthday','ex:fixedvar','ex:cycles','ex:coupon','ex:monty','ex:multinomial','ex:bonferroni','ex:records','ex:poll','ex:ballot','ex:ramsey']
+baseline=''.join('\\begin{exercise}\\label{'+l+'}' for l in old_ids)
+
 checks=0
 
 def check(ok,what):
@@ -88,5 +91,5 @@ for env in set(re.findall(r'\\begin\{([^}]+)\}',s)):
     check(s.count('\\begin{'+env+'}')==s.count('\\end{'+env+'}'),env+' environment counts')
 res={'checks_passed':checks,'original_probability_exercises':old,'current_exercises':new,
      'scope':'finite exact enumerations and source structure only; no universal proof certification or PDF compilation'}
-(DRAFT/'verification.json').write_text(json.dumps(res,indent=2)+'\n')
+(Path(__file__).parent/'probability-check-results.json').write_text(json.dumps(res,indent=2)+'\n')
 print(json.dumps(res,indent=2))
