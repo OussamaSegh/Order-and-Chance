@@ -622,3 +622,26 @@ tests pass locally.
 Full-library PDF checks, page counts and review evidence are in
 [7X10-PAGINATION.md](../review/7X10-PAGINATION.md). All production wraps are rebuilt
 from their revised interior page counts.
+
+## Volume 0 mathematical reconstruction (28 October 2026)
+
+The author requested a substantive ten-chapter reconstruction of Mathematical
+Maturity. It was implemented on editorial/volume0-reconstruction-20261028 after
+preserving original commit 3259d46 and integrating pre-existing upstream publishing
+changes through 8135b0b. Mathematical edits are confined to Volume 0; the established
+cover identity, version-C fonts and semantic colours remain in use. Local TOC
+chapter spacing is tightened to avoid an orphaned last entry without changing
+body type or page geometry. The blurb/listing now describe mathematical-question
+openings and the ten-chapter content.
+
+The local final production build has a 295-page 7 × 10 premium-colour print interior
+and a covered 296-page reading PDF. Its spine/wrap derive from the actual interior.
+All 130 original exercises and 250 labels remain; there are now 155 complete
+exercise/hint/solution triples and ten explicit bridges. Source audits, independent
+review, cumulative batch reports, migration and numbering maps, exact test logs and
+verification limits are in review/volume0-reconstruction/. Full PDF preflight
+passes without overflow/unresolved references/missing glyphs/display shrinking;
+standard package compatibility and underfull warnings remain disclosed. Other-
+volume citation compatibility, historical retrieval limits, unexecuted EPUB/reader
+validation and physical-proof limits are explicit. No release/Pages or KDP upload
+was performed by the mathematical reconstruction.

@@ -9,7 +9,10 @@ not a claim that the manuscript is error-free or formally verified.
    concordance is supplied. The read-only inventory contains 314 source lines
    mentioning Volume 0 across other volumes; some are generic and some need numeric
    updates. Those manuscripts were not edited. A coordinated series publication
-   must reconcile their hardcoded citations.
+   must reconcile their hardcoded citations. Semantic checking also matters:
+   Volume 2's character chapter credits a unitary spectral variant to Volume 0,
+   whereas this volume proves the real symmetric spectral theorem. That existing
+   citation should be checked against Volume 2's own operator prerequisites.
 2. **Historical verification.** Existing sources, quotations and image credits
    were preserved. The full historical bibliography and original documents behind
    every quotation were not retrieved. Targeted Hadamard/Ramsey source checks are
