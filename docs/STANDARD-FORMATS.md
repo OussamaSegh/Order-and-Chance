@@ -94,7 +94,10 @@ The licensed font files are bundled in `common/fonts/`. EPUB embeds OTF/TTF face
 the online reader uses their WOFF2 companions. Reading systems may override EPUB
 fonts, colours or MathML rendering.
 
-Headings use charcoal; small labels, links and box rules use coral. Pale fills, dark body text and labelled box types preserve clarity.
+Headings and box labels use charcoal; chapter accents and links use coral.
+Teaching boxes have pale fills and one 1 pt left rule: blue exercises/problems,
+coral reminders/challenges, teal beauty notes and plum thinking prompts. The full
+frame is hidden to prevent stray top/bottom seams in PDF rendering.
 Existing scientific figure colours keep their meaning. Approved cover art and
 cover fonts are preserved; each print wrap uses its actual new page count.
 

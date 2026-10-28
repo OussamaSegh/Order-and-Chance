@@ -209,7 +209,9 @@ headings and box labels, and DejaVu Sans Mono for code. Files, licences and hash
 fonts. EPUB embeds the original OTF/TTF files, and readers use WOFF2 companions.
 
 Charcoal and coral carry the cover identity onto white interior pages. Pale
-boxes use thin coral left rules and dark Inter labels.
+boxes use one 1 pt left rule and dark Inter labels: blue exercises/problems,
+coral reminders/challenges, teal beauty notes and plum thinking prompts. Hide
+the full frame; saturated underpainting can expose stray horizontal PDF seams.
 Body text/math stays dark; scientific figures keep their existing distinctions.
 Do not reinstate grayscale box overrides or hidden black links for print.
 `check_interior_style.py` rejects missing font families or colour accents, and

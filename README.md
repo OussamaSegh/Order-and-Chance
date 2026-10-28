@@ -93,7 +93,9 @@ matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double c
 frame, and one substantial mathematical illustration per book. All nineteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
-charcoal Inter headings, coral accents and pale boxes with thin coral rules.
+charcoal Inter headings, coral chapter accents and pale teaching boxes with one
+thin left rule: blue exercises/problems, coral reminders/challenges, teal beauty
+notes and plum thinking prompts.
 Both PDFs share the full-colour interior, typeset in STIX Two Text and Math
 with the cover’s Inter headings. Paperbacks use premium colour on white paper. EPUB and
 web images preserve the approved 7:10 proportions.
