@@ -150,7 +150,7 @@ def navigation(reader):
                             for page in reader.pages]}
 
 
-def compare_pages(source, output, offset=0):
+def compare_pages(source, output, offset=0, ignore_rectangles=None):
     """Check visible content with two-sided ink coverage and colour comparison.
 
     A one-pixel allowance at 72 dpi accommodates the different font antialiasing
@@ -170,9 +170,13 @@ def compare_pages(source, output, offset=0):
             is_flat = bool(before.get_text().strip()) and not page.get_text().strip()
             if is_flat:
                 flattened.append(index + 1)
-            mean = float(np.abs(aa - bb).mean())
+            valid = np.ones(aa.shape[:2], dtype=bool)
+            for rectangle in (ignore_rectangles or {}).get(index, []):
+                rect = pymupdf.Rect(rectangle).irect
+                valid[max(0, rect.y0 - 2):rect.y1 + 2, max(0, rect.x0 - 2):rect.x1 + 2] = False
+            mean = float(np.abs(aa - bb)[valid].mean())
             masks = [(pixels.mean(axis=2) < 160) & (np.ptp(pixels, axis=2) < 40)
-                     for pixels in (aa, bb)]
+                     & valid for pixels in (aa, bb)]
             expanded = [np.asarray(Image.fromarray((mask * 255).astype(np.uint8))
                                    .filter(ImageFilter.MaxFilter(3))) > 0 for mask in masks]
             missing = float((masks[0] & ~expanded[1]).sum() / max(1, masks[0].sum()))

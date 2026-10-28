@@ -7,6 +7,8 @@ import pymupdf
 from pypdf import PdfReader, PdfWriter
 
 from kdp_cover import check_opaque, flatten_art, remove_empty_opacity
+from check_print_cover import check_patch_placements
+from kdp_pdf import compare_pages
 
 ROOT = Path(__file__).resolve().parent.parent
 
@@ -30,6 +32,10 @@ class CoverExportTest(unittest.TestCase):
             patches = flatten_art(source, output, directory)
             self.assertEqual(len(patches), 1)
             self.assertEqual(patches[0]['ppi'], 600)
+            check_patch_placements(output, patches)
+            wrong = [{**patches[0], 'bounds_pt': [v + 20 for v in patches[0]['bounds_pt']]}]
+            with self.assertRaisesRegex(ValueError, 'pixels or placement'):
+                check_patch_placements(output, wrong)
             with pymupdf.open(output) as doc:
                 self.assertIn('Cover typography', doc[0].get_text())
                 self.assertEqual(len(doc[0].get_images()), 1)
@@ -71,6 +77,19 @@ class CoverExportTest(unittest.TestCase):
                 self.assertIn('Cover typography', doc[0].get_text())
                 self.assertNotIn('Invisible duplicate', doc[0].get_text())
                 self.assertTrue(all(s['opacity'] == 1 for s in doc[0].get_texttrace()))
+
+    def test_compositing_comparison_still_rejects_changes_outside_the_art(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = self.source(directory, (180, 300, 400, 500))
+            flattened = Path(directory) / 'flat.pdf'
+            patches = flatten_art(source, flattened, directory)
+            ignore = {0: [patches[0]['bounds_pt']]}
+            compare_pages(source, flattened, ignore_rectangles=ignore)
+            with pymupdf.open(flattened) as doc:
+                doc[0].draw_rect((50, 50, 350, 110), color=(0, 0, 0), fill=(0, 0, 0))
+                doc.save(Path(directory) / 'changed.pdf')
+            with self.assertRaisesRegex(ValueError, 'body differs'):
+                compare_pages(source, Path(directory) / 'changed.pdf', ignore_rectangles=ignore)
 
 
 if __name__ == '__main__':

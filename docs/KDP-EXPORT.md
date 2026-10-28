@@ -60,7 +60,12 @@ final visible-content parity. Visible pagination, mathematics and colours must a
    duplicates of traced identity lettering and stale
    opacity states after compositing. Do not make invisible text visible. Remove
    metadata and interactions, then normalize to the working cover's PDF 1.5.
-5. Compare the complete cover against its raw source. Require vector lettering,
+5. Compare the original and final cover outside composited regions. Inside each
+   region, verify the exact RGB pixels sampled from the original at 600 ppi and
+   their physical placement; then compare the entire final cover against the
+   composited reference. This avoids comparing dense vector meshes rendered at
+   screen resolution to the same meshes sampled at print resolution. Do not
+   relax the comparison threshold to hide antialiasing differences. Require vector lettering,
    no live alpha, valid source/output hashes, the current series manifest, native
    paper >=300 ppi and all generated illustration patches >=600 physical ppi.
    The generated patch hashes extend the paper-only raster whitelist **only for
@@ -129,3 +134,15 @@ cover lettering. The canonical cover sources/assets and mathematical source are
 unchanged by the export implementation. Current main through `637cdb0` is retained,
 including the newer thirteen-chapter Volume 1; clean CI rebuilds each latest
 manuscript rather than publishing the older local conversion fixtures.
+
+### Dense-cover comparison correction
+
+The first clean run passed all nineteen interior exports and sixteen complete book
+jobs. Three dense cover meshes exposed a comparison-resolution mismatch: the same
+art rendered directly at 72 dpi differed from its exact 600 dpi composite reduced
+to screen size. Spaces was reproduced locally: every pixel outside the artwork
+matched exactly. The gate now checks original vector regions, exact source-sampled
+art pixels and physical placement, plus the entire final-versus-composited cover.
+A new regression still rejects changes outside the art region and wrong placement.
+The original thresholds and artwork remain unchanged. The reproduced Spaces cover
+and all six cover-export regressions pass before rerunning the full build.

@@ -96,6 +96,24 @@ def check_frame_alignment(path, width):
                 raise ValueError('Visible cover frame is shifted or clipped; inspect the print proof')
 
 
+def check_patch_placements(path, patches):
+    """Check exact source-sampled RGB pixels and their physical placement."""
+    import pymupdf
+    reader = PdfReader(path)
+    with pymupdf.open(path) as document:
+        images = document[0].get_image_info(xrefs=True)
+    for patch in patches:
+        matches = []
+        for image in images:
+            if [image['width'], image['height']] != patch['size'] or not image['xref']:
+                continue
+            obj = reader.get_object(image['xref'])
+            if hashlib.sha256(obj.get_data()).hexdigest() == patch['pixel_sha256']:
+                matches.append(image)
+        if len(matches) != 1 or any(abs(a - b) > .02 for a, b in zip(matches[0]['bbox'], patch['bounds_pt'])):
+            raise ValueError('Cover illustration pixels or placement differ from the approved source crop')
+
+
 def check(path, number, report=None, press_report=None, spine=None):
     path = Path(path)
     check_fonts(path)
@@ -112,6 +130,7 @@ def check(path, number, report=None, press_report=None, spine=None):
                     (ROOT / 'tools/assets/series/manifest.json').read_bytes()).hexdigest()
                 or press.get('source_preflight', {}).get('status') != 'pass'):
             raise ValueError('Print cover does not match its approved export provenance')
+        check_patch_placements(path, press['illustration_patches'])
     if spine is not None:
         from check_cover_pdf import check_cover as check_size
         check_size(path, 14.25 + spine, 10.25)

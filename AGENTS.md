@@ -26,6 +26,10 @@ and the paper-only raster restriction for the final press cover.
   not run covers through Ghostscript font rewriting. Composite only transparent illustration regions at
   **600 ppi**, with lossless pixels and provenance. Never rasterize the whole cover,
   its title, subtitle, back text or spine, and do not redraw the artwork.
+- For composited covers, compare vector regions against the original, verify exact
+  source-sampled art pixels and placement, and compare the whole final cover with
+  the composited reference. Do not compare dense 72 dpi vector meshes to 600 dpi
+  composites and then relax thresholds; the sampling methods differ.
 - Both print artifacts must pass their structural/provenance checks and visual
   comparison against the original typeset/vector source. Do not bypass a failing
   check, lower resolution, globally flatten every page, or copy raw TeX PDFs to

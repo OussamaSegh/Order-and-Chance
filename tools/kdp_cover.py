@@ -169,7 +169,14 @@ def export(source, output, number, report):
         candidate = directory / 'final.pdf'
         writer.write(candidate)
         check_opaque(candidate)
-        comparison = compare_pages(source, candidate)
+        # Dense meshes rendered directly at 72 dpi differ from the *same* mesh
+        # sampled at 600 dpi then reduced. Do not relax the content threshold:
+        # check original vector regions separately, require exact source pixels
+        # and placement for each composite, and compare the entire final cover
+        # against the composited reference at the same sampling resolution.
+        outside = compare_pages(source, candidate, ignore_rectangles={
+            0: [patch['bounds_pt'] for patch in patches]})
+        comparison = compare_pages(directory / 'composited.pdf', candidate)
         if comparison['flattened_pages']:
             raise ValueError('The cover lettering was rasterized; preserve vector typography')
         data = {'schema': 2, 'volume': str(number), 'press_export': True,
@@ -177,7 +184,8 @@ def export(source, output, number, report):
                 'series_manifest_sha256': sha(ROOT / 'tools/assets/series/manifest.json'),
                 'source_preflight': original_preflight, 'illustration_patches': patches,
                 'pdf_version': '1.5', 'embedded_fonts': True, 'vector_lettering': True,
-                'live_transparency': False, **comparison}
+                'live_transparency': False, 'source_outside_art_comparison': outside,
+                'exact_art_pixels_and_placement': True, **comparison}
         candidate.replace(output)
     report.parent.mkdir(parents=True, exist_ok=True)
     report.write_text(json.dumps(data, indent=2) + '\n')
