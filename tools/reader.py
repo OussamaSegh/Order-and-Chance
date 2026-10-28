@@ -10,6 +10,8 @@ import subprocess
 import sys
 from pathlib import Path
 from series_metadata import subtitle
+from public_names import filename
+from urllib.parse import quote
 
 TOOLS = Path(__file__).resolve().parent
 ROOT = TOOLS.parent
@@ -28,6 +30,8 @@ def main(tome: str, build: str, out: str) -> None:
          "--lua-filter", str(TOOLS / "epub.lua"), "--template", str(TOOLS / "reader-template.html"),
          "--metadata", "title=" + title, "--metadata", "lang=en",
          "-V", "booktitle=" + book,
+         "-V", "downloadpdf=" + quote(filename(tome, "pdf", ROOT)),
+         "-V", "downloadepub=" + quote(filename(tome, "epub", ROOT)),
          "-V", "volumesubtitle=" + subtitle(re.search(r"Volume ([0-9A-Z]+):", title).group(1)), "-V", "tome=" + tome, "-o", str(out_dir)],
         cwd=ROOT / tome, check=True)
     # Pandoc names the pages of unnumbered chapters "-preface.html", and of chapters with a

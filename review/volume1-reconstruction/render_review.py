@@ -4,7 +4,7 @@ import json,re
 import fitz
 from PIL import Image,ImageDraw
 ROOT=Path(__file__).resolve().parents[2];OUT=ROOT/'build/volume1-digital-review'
-doc=fitz.open(ROOT/'dist/kdp/tome1-integers-print.pdf')
+doc=fitz.open(ROOT/'dist/kdp/Volume 1 - The Integers - Print.pdf')
 chapters=[(title,page) for level,title,page in doc.get_toc() if level==1]
 samples=[]
 for title,page in chapters:
@@ -24,7 +24,7 @@ for label in keylabels:
     m=re.search(r'\\newlabel\{'+re.escape(label)+r'\}\{\{[^}]+\}\{([^}]+)\}',aux);assert m,label
     i=next(i for i,p in enumerate(doc) if p.get_label()==m[1])
     pix=doc[i].get_pixmap(matrix=fitz.Matrix(1.5,1.5),alpha=False);pix.save(OUT/(label.replace(':','-')+'.png'))
-reading=fitz.open(ROOT/'dist/tome1-integers.pdf')
+reading=fitz.open(ROOT/'dist/Volume 1 - The Integers.pdf')
 rects={(round(p.rect.width,3),round(p.rect.height,3)) for p in doc}
 assert rects=={(504.0,720.0)},rects
 assert len(reading)==len(doc)+1

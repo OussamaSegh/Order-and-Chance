@@ -35,7 +35,8 @@ tomes=("$@")
 [ ${#tomes[@]} -eq 0 ] && tomes=($(cd "$root" && ls -d tome*/ | tr -d /))
 
 for tome in "${tomes[@]}"; do
-  echo "== $tome"
+  public=$(python3 "$root/tools/public_names.py" "$tome" stem)
+  echo "== $public"
   python3 "$root/tools/check_edition_copy.py" "$tome"
   out="$root/build/$tome"
   mkdir -p "$out"
@@ -73,16 +74,16 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/check_interior_style.py" "$out/main.pdf"
   # Reading keeps the original vectors, font mappings and navigation. The KDP
   # upload is a separately validated, noninteractive PDF 1.3 press export.
-  python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$out/main.pdf" "$root/dist/$tome.pdf"
-  python3 "$root/tools/kdp_pdf.py" "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf" \
+  python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$out/main.pdf" "$root/dist/$public.pdf"
+  python3 "$root/tools/kdp_pdf.py" "$out/main.pdf" "$root/dist/kdp/$public - Print.pdf" \
     --report "$out/kdp-preflight.json"
-  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$tome-print.pdf" --interior
-  python3 "$root/tools/check_interior_style.py" "$root/dist/kdp/$tome-print.pdf"
-  pages=$(pdfinfo "$root/dist/kdp/$tome-print.pdf" | sed -n 's/^Pages: *//p')
-  python3 "$root/tools/check_cover_pdf.py" "$root/dist/$tome.pdf" --interior
-  python3 "$root/tools/check_cover_template.py" "$root/dist/$tome.pdf" --number "$num"
-  python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
-  spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$tome-print-metadata.json")
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$public - Print.pdf" --interior
+  python3 "$root/tools/check_interior_style.py" "$root/dist/kdp/$public - Print.pdf"
+  pages=$(pdfinfo "$root/dist/kdp/$public - Print.pdf" | sed -n 's/^Pages: *//p')
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/$public.pdf" --interior
+  python3 "$root/tools/check_cover_template.py" "$root/dist/$public.pdf" --number "$num"
+  python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$public - Print Metadata.json"
+  spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$public - Print Metadata.json")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
   blurb="$tome/blurb"; [ -e "$root/$blurb.tex" ] || blurb=tools/blurb-default
   # The ISBN barcode on the back cover, once the tome has its paperback ISBN (\bookisbnprint in main.tex).
@@ -94,17 +95,17 @@ for tome in "${tomes[@]}"; do
   fi
   compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
-  python3 "$root/tools/kdp_cover.py" "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf" \
+  python3 "$root/tools/kdp_cover.py" "$out/cover-wrap.pdf" "$root/dist/kdp/$public - Paperback Cover.pdf" \
     --number "$num" --report "$out/cover-preflight.json"
-  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$tome-cover-wrap.pdf" \
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$public - Paperback Cover.pdf" \
     --spine "$spine" --title "${title#*: }" --number "$num" --print-export
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
-  python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
+  python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$public - Publishing Listing.md"
   # Separate eBook cover: 1792 x 2560 pixels, preserving the approved 7:10 design, also used for publishing.
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" \
-    "$root/dist/kdp/$tome-ebook-cover"
+    "$root/dist/kdp/$public - eBook Cover"
   if $pdf_only; then
-    echo "   dist/$tome.pdf (cover + $pages pages); dist/kdp/$tome-print.pdf ($pages print pages, 7 x 10 in)"
+    echo "   dist/$public.pdf (cover + $pages pages); dist/kdp/$public - Print.pdf ($pages print pages, 7 x 10 in)"
     continue
   fi
 
@@ -129,11 +130,11 @@ for tome in "${tomes[@]}"; do
       --metadata title="${title:-$tome}" --metadata subtitle="$(python3 -c 'import json,sys; from pathlib import Path; print(json.loads(Path(sys.argv[1]).read_text()).get(sys.argv[2], ""))' "$root/common/volume-subtitles.json" "$num")" --metadata author="SEGHAIER Oussama" --metadata lang=en \
       --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$tome/main.tex")" \
       --metadata subject=Mathematics \
-      -o "$root/dist/$tome.epub")
-  python3 "$root/tools/epub_fix.py" "$root/dist/$tome.epub"
+      -o "$root/dist/$public.epub")
+  python3 "$root/tools/epub_fix.py" "$root/dist/$public.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
-  python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num" --cover-png "$out/cover.png" --epub "$root/dist/$tome.epub" --reader "$root/dist/html/$tome"
-  echo "   dist/$tome.pdf (7 x 10 in)  dist/$tome.epub  dist/html/$tome/"
-  echo "   KDP: dist/kdp/$tome-print.pdf ($pages interior pages); dist/kdp/$tome-cover-wrap.pdf (spine ${spine}in)"
+  python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num" --cover-png "$out/cover.png" --epub "$root/dist/$public.epub" --reader "$root/dist/html/$tome"
+  echo "   dist/$public.pdf (7 x 10 in)  dist/$public.epub  dist/html/$tome/"
+  echo "   KDP: dist/kdp/$public - Print.pdf ($pages interior pages); dist/kdp/$public - Paperback Cover.pdf (spine ${spine}in)"
 done

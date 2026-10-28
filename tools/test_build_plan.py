@@ -55,21 +55,21 @@ class PlanningTest(unittest.TestCase):
         p.write_text(text)
 
     def outputs(self, target, book):
-        for path in [f'dist/{book}.pdf', f'dist/{book}.epub',
+        for path in [f'dist/{bp.filename(book, "pdf", self.root)}', f'dist/{bp.filename(book, "epub", self.root)}',
                      f'dist/html/{book}/index.html', f'build/{book}/cover.pdf',
                      f'build/{book}/kdp-preflight.json', f'build/{book}/cover-preflight.json'] + [
-                         f'dist/kdp/{book}-{suffix}' for suffix in
-                         ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
+                         f'dist/kdp/{bp.filename(book, kind, self.root)}' for kind in
+                         ['print', 'wrap', 'ebook', 'listing', 'metadata']]:
             p = target / path
             p.parent.mkdir(parents=True, exist_ok=True)
             p.write_bytes(b'valid fixture')
-        (target / f'dist/kdp/{book}-print-metadata.json').write_text(json.dumps(bp.specification(233)))
+        (target / f'dist/kdp/{bp.filename(book, "metadata", self.root)}').write_text(json.dumps(bp.specification(233)))
 
     def test_both_pdf_editions_and_epub_are_required(self):
         self.assertTrue(bp.complete(self.cache, self.books[0]))
         self.assertFalse(list((self.cache / 'dist').glob('*-kindle.pdf')))
-        self.assertTrue((self.cache / 'dist/kdp' / (self.books[0] + '-print.pdf')).exists())
-        (self.cache / 'dist/kdp' / (self.books[0] + '-print.pdf')).unlink()
+        self.assertTrue((self.cache / 'dist/kdp' / bp.filename(self.books[0], 'print', self.root)).exists())
+        (self.cache / 'dist/kdp' / bp.filename(self.books[0], 'print', self.root)).unlink()
         self.assertFalse(bp.complete(self.cache, self.books[0]))
 
     def test_unchanged_site_and_notebooks_do_not_rebuild_books(self):
@@ -91,7 +91,7 @@ class PlanningTest(unittest.TestCase):
     def test_missing_cache_missing_file_and_force(self):
         self.assertEqual(bp.plan(self.root, self.root / 'missing')['changed'], self.books)
         self.assertEqual(bp.plan(self.root, self.cache, force=True)['changed'], self.books)
-        (self.cache / 'dist/tome1-integers.epub').unlink()
+        (self.cache / 'dist/Volume 1 - Integers.epub').unlink()
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
 
     def test_old_trim_cache_and_missing_print_spec_force_rebuild(self):
@@ -102,7 +102,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], self.books)
         data['schema'] = bp.SCHEMA
         manifest.write_text(json.dumps(data))
-        (self.cache / 'dist/kdp/tome1-integers-print-metadata.json').unlink()
+        (self.cache / 'dist/kdp/Volume 1 - Integers - Print Metadata.json').unlink()
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
 
     def test_overlay_preserves_unchanged_and_drops_stale_chapters(self):
@@ -115,7 +115,7 @@ class PlanningTest(unittest.TestCase):
             (self.cache / path).write_bytes(b'old variant')
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
-        self.assertTrue((self.root / 'dist/tome1-integers.pdf').exists())
+        self.assertTrue((self.root / 'dist/Volume 1 - Integers.pdf').exists())
         self.assertFalse((self.root / 'dist/html/tome0-basics').exists())
         for path in retired:
             self.assertFalse((self.root / path).exists())
@@ -134,6 +134,13 @@ class PlanningTest(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Retired PDF'):
             bp.snapshot(self.root, self.cache, data)
 
+    def test_third_pdf_or_obsolete_title_cannot_enter_snapshot(self):
+        data = bp.plan(self.root, self.cache)
+        bp.prepare(self.root, self.cache, data)
+        self.write('dist/Volume 0 - Superseded Title.pdf', 'stale')
+        with self.assertRaisesRegex(ValueError, 'Unexpected public assets'):
+            bp.snapshot(self.root, self.cache, data)
+
     def test_a4_pdf_with_canonical_filename_cannot_enter_snapshot(self):
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
@@ -144,7 +151,7 @@ class PlanningTest(unittest.TestCase):
     def test_metadata_must_match_the_standard_pdf(self):
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
-        self.write('dist/kdp/tome0-basics-print-metadata.json', json.dumps(bp.specification(234)))
+        self.write('dist/kdp/Volume 0 - Basics - Print Metadata.json', json.dumps(bp.specification(234)))
         with self.assertRaisesRegex(ValueError, 'metadata disagree'):
             bp.snapshot(self.root, self.cache, data)
 
@@ -165,7 +172,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(data['removed'], ['tome1-integers'])
         self.assertEqual(data['changed'], ['tome0-basics', 'tome9-higher-structures'])
         bp.prepare(self.root, self.cache, data)
-        self.assertFalse((self.root / 'dist/tome1-integers.pdf').exists())
+        self.assertFalse((self.root / 'dist/Volume 1 - Integers.pdf').exists())
 
     def test_incomplete_library_cannot_be_snapshotted(self):
         with self.assertRaisesRegex(ValueError, 'Incomplete output'):
@@ -176,8 +183,8 @@ class PlanningTest(unittest.TestCase):
         data = bp.plan(self.root, self.cache)
         self.assertEqual(data['removed'], ['tome1-integers'])
         bp.prepare(self.root, self.cache, data)
-        self.assertFalse((self.root / 'dist/tome1-integers.pdf').exists())
-        self.assertTrue((self.root / 'dist/tome0-basics.pdf').exists())
+        self.assertFalse((self.root / 'dist/Volume 1 - Integers.pdf').exists())
+        self.assertTrue((self.root / 'dist/Volume 0 - Basics.pdf').exists())
 
 
 if __name__ == '__main__':

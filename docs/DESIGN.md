@@ -1,3 +1,41 @@
+# Readable public filenames — 28 October 2026
+
+The author requested “Volume” and readable filenames with spaces. Public main-book
+assets now use basenames such as `Volume 0 - Mathematical Maturity`; the problem
+books use `Problem Book 1 - Crossroads`, `Problem Book 2 - Machinery` and
+`Problem Book 3 - Frontiers`. `tools/public_names.py` derives these from current
+book title metadata. This supersedes earlier instructions to retain machine-style
+public filenames; internal source directories, TeX identifiers and reader routes
+remain stable. No manuscript, typography, cover, export setting or pagination changes.
+
+Reading PDFs and EPUBs use their ordinary extensions. Public publishing assets add
+` - Print.pdf`, ` - Paperback Cover.pdf`, ` - eBook Cover.jpg`,
+` - Publishing Listing.md` and ` - Print Metadata.json`. Site thumbnails add
+` - Cover.png`; browser listings use `.txt`. Both build paths and validation use
+one naming helper, with quoted shell arguments and encoded URLs. Cache schema 8
+invalidates prior outputs; assembly removes obsolete names and rejects unexpected
+assets, including a third PDF or a superseded-title download. README release links,
+site downloads, reader links and runnable editorial packaging helpers follow suit.
+
+GitHub documents upload-time filename normalization. The release helper labels
+each uploaded file, restores any changed name using the update API, and requires
+the resulting exact filename and byte count. Pagination handles all nineteen books.
+Tests simulate normalization and rejection; live release writes were not performed.
+See https://docs.github.com/en/rest/releases/assets#upload-a-release-asset.
+
+Verification: 83 publishing tests completed, 65 passing and 18 skipped for missing
+TeX/PDF build-tool dependencies. Naming tests cover all nineteen unique basenames
+and all public suffixes; cache/site tests exercise filenames with spaces, stable
+ordering, URL decoding, copied bytes and stale-output rejection. Shell syntax and
+`git diff --check` pass. The prescribed `/workspace/order-chance-system/activate.sh`
+and XeLaTeX are absent on this Mac; dependencies were installed in a temporary
+isolated Python environment. A full typeset rebuild, real release upload and CI
+publication remain unverified. The existing subtitle publication run 40701152017
+was not changed or cancelled. This naming change is local only, pending the author's
+instruction to push/publish.
+
+---
+
 # Volume 0 subtitle — 28 October 2026
 
 The author approved **Proof, Problem Solving and Mathematical Thinking** for

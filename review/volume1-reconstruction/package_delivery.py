@@ -34,7 +34,7 @@ def main():
             if p.is_file():z.write(p,p.relative_to(site))
     for p in BUNDLE.glob('*.zip'):
         with zipfile.ZipFile(p) as z:assert z.testzip() is None,p
-    files=[ROOT/'dist/tome1-integers.pdf',ROOT/'dist/kdp/tome1-integers-print.pdf',ROOT/'dist/tome1-integers.epub',ROOT/'dist/kdp/tome1-integers-cover-wrap.pdf',*sorted(BUNDLE.glob('*.zip')),backup]
+    files=[ROOT/'dist/Volume 1 - The Integers.pdf',ROOT/'dist/kdp/Volume 1 - The Integers - Print.pdf',ROOT/'dist/Volume 1 - The Integers.epub',ROOT/'dist/kdp/Volume 1 - The Integers - Paperback Cover.pdf',*sorted(BUNDLE.glob('*.zip')),backup]
     items=[]
     for p in files:
         h=hashlib.sha256()

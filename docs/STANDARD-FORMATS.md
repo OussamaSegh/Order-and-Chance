@@ -10,7 +10,7 @@ than identical PDF byte streams. Existing filenames, one EPUB and 7×10 remain.
 
 Both export reports, source/output hashes, complete visual comparisons and original
 reading navigation are checked before publication. Ghostscript and pinned PyMuPDF
-are build dependencies. Cache schema 7 / `library-v7-` supersede older schemas.
+are build dependencies. Cache schema 8 / `library-v8-` supersede older schemas.
 Source fonts, semantic boxes, mathematical content and approved latest artwork
 remain unchanged. Wrap geometry follows the actual new exported print page count.
 
@@ -30,14 +30,14 @@ Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF d
 
 | File | Purpose |
 |---|---|
-| `dist/<tome>.pdf` | Reading download: approved front cover followed by the complete interior, 7 × 10 inches |
-| `dist/kdp/<tome>-print.pdf` | Print interior without the front cover, starting with the half-title; paperback manuscript |
-| `dist/<tome>.epub` | Reflowable eBook with cover, MathML and diagrams |
+| `dist/<Book>.pdf` | Reading download: approved front cover followed by the complete interior, 7 × 10 inches |
+| `dist/kdp/<Book> - Print.pdf` | Print interior without the front cover, starting with the half-title; paperback manuscript |
+| `dist/<Book>.epub` | Reflowable eBook with cover, MathML and diagrams |
 | `dist/html/<tome>/` | Online chapter reader |
-| `dist/kdp/<tome>-cover-wrap.pdf` | Separate paperback cover with bleed and actual-print-page-derived spine |
-| `dist/kdp/<tome>-ebook-cover.jpg` | Separate eBook front cover |
-| `dist/kdp/<tome>-print-metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
-| `dist/kdp/<tome>-listing.md` | Title fields, description and keywords |
+| `dist/kdp/<Book> - Paperback Cover.pdf` | Separate paperback cover with bleed and actual-print-page-derived spine |
+| `dist/kdp/<Book> - eBook Cover.jpg` | Separate eBook front cover |
+| `dist/kdp/<Book> - Print Metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
+| `dist/kdp/<Book> - Publishing Listing.md` | Title fields, description and keywords |
 
 Both PDFs share identical typeset body pages: 11 pt STIX Two Text/Math with Inter headings, mirrored margins,
 recto chapter openings, full-colour styling and whole framed boxes. The reading PDF
@@ -134,3 +134,7 @@ PDF drawing commands, while the TeX log gate rejects missing glyphs. Tests types
 mathematical alphabets, legacy domain notation and Unicode code, and reject an
 accidental grayscale override. The extra XeTeX token memory in `build.sh` supports
 the dense 3D plots with Unicode mathematics. These checks precede publication.
+
+Public `<Book>` basenames are derived by `tools/public_names.py`, for example
+`Volume 0 - Mathematical Maturity` or `Problem Book 1 - Crossroads`. Spaces
+are literal on disk; shell paths are quoted and web links percent-encoded.

@@ -5,6 +5,8 @@ import tempfile
 import unittest
 from unittest.mock import patch
 import importlib.util
+from public_names import filename
+from urllib.parse import unquote
 
 spec = importlib.util.spec_from_file_location("book_site", Path(__file__).with_name("site.py"))
 site = importlib.util.module_from_spec(spec)
@@ -33,7 +35,7 @@ class LibraryTest(unittest.TestCase):
                 (root / book).mkdir()
                 (root / book / "main.tex").write_text(
                     f"% epub-title: Order and Chance. Volume {number}: {title}\n")
-                (dist / f"{book}.pdf").write_bytes(b"fixture")
+                (dist / filename(book, "pdf", root)).write_bytes(b"fixture")
                 (root / "build" / book).mkdir(parents=True)
                 (root / "build" / book / "cover.pdf").write_bytes(b"fixture")
             def write_preview(command, **kwargs):
@@ -43,7 +45,7 @@ class LibraryTest(unittest.TestCase):
                 self.assertEqual(render.call_count, 3)
             for number, book, _ in books:
                 with self.subTest(volume=number):
-                    self.assertEqual((out / f"{book}-cover.png").read_bytes(), b"shared-master-render")
+                    self.assertEqual((out / filename(book, "thumbnail", root)).read_bytes(), b"shared-master-render")
 
     def test_available_formats_collections_and_retired_outputs(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -51,16 +53,17 @@ class LibraryTest(unittest.TestCase):
             dist, out = root / "dist", root / "site"
             dist.mkdir()
             for name in ["tome10-chance2", "tome2-structures", "tomeC1-discrete", "tomeS1-linear", "tomeP1-crossroads"]:
-                (dist / (name + ".pdf")).write_bytes(b"fixture")
+
                 if not name.startswith(("tomeC", "tomeS")):
                     (root / name).mkdir()
                     (root / name / "main.tex").write_text("fixture")
+                    (dist / filename(name, "pdf", root)).write_bytes(b"fixture")
             (dist / "tome2-structures-phone.pdf").write_bytes(b"retired")
             (dist / "tome2-structures-kindle.pdf").write_bytes(b"fixture")
             (dist / "tome2-structures-a4.pdf").write_bytes(b"retired")
             (dist / "kdp").mkdir()
-            (dist / "kdp/tome2-structures-print.pdf").write_bytes(b"print interior")
-            (dist / "tome2-structures.epub").write_bytes(b"fixture")
+            (dist / "kdp/Volume 2 - Structures - Print.pdf").write_bytes(b"print interior")
+            (dist / "Volume 2 - Structures.epub").write_bytes(b"fixture")
             out.mkdir()
             (out / "tomeC1-discrete.pdf").write_bytes(b"stale download")
             for suffix in ['a4', 'kindle', 'phone', 'print']:
@@ -78,14 +81,14 @@ class LibraryTest(unittest.TestCase):
             self.assertEqual(text.count('>EPUB</a>'), 1)
             self.assertNotIn('-phone.pdf', text)
             self.assertNotIn('-kindle.pdf', text)
-            self.assertIn('href="tome2-structures-print.pdf"', text)
+            self.assertIn('href="Volume%202%20-%20Structures%20-%20Print.pdf"', text)
             self.assertIn('>Print PDF</a>', text)
             self.assertNotIn('A4', text)
             self.assertIn('7 × 10 in PDF with cover', text)
             self.assertIn('>PDF with cover</a>', text)
             for suffix in ['a4', 'kindle', 'phone']:
                 self.assertFalse((out / f'tome2-structures-{suffix}.pdf').exists())
-            self.assertEqual((out / 'tome2-structures-print.pdf').read_bytes(), b'print interior')
+            self.assertEqual((out / 'Volume 2 - Structures - Print.pdf').read_bytes(), b'print interior')
             self.assertNotIn('tomeC1-discrete', text)
             self.assertNotIn('tomeS1-linear', text)
             self.assertFalse((out / 'tomeC1-discrete.pdf').exists())
@@ -93,19 +96,19 @@ class LibraryTest(unittest.TestCase):
             self.assertFalse((out / "tome2-structures-phone.pdf").exists())
             for tag, attrs in tags.tags:
                 if tag == 'a' and attrs.get('href', '').endswith(('.pdf', '.epub')):
-                    self.assertTrue((out / attrs['href']).exists())
+                    self.assertTrue((out / unquote(attrs['href'])).exists())
 
     def test_titles_are_escaped_in_text_and_search_attributes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "dist").mkdir()
             (root / "tome0-test").mkdir()
-            (root / "dist/tome0-test.pdf").write_bytes(b"fixture")
-            (root / "tome0-test/main.tex").write_text('% epub-title: Series. A < B & "C"\n')
+            (root / "dist/Volume 0 - Safe Title.pdf").write_bytes(b"fixture")
+            (root / "tome0-test/main.tex").write_text('% epub-title: A < B & "C". Volume 0: Safe Title\n')
             with patch.object(site, "ROOT", root):
                 site.main(str(root / "dist"), str(root / "out"))
             text = (root / "out/index.html").read_text()
-            self.assertIn('A &lt; B &amp; &quot;C&quot;', text)
+            self.assertIn('a &lt; b &amp; &quot;c&quot;', text)
             self.assertNotIn('A < B', text)
 
 

@@ -40,8 +40,8 @@ jobs:
         id: library
         with:
           path: .book-cache
-          key: library-v7-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v7-
+          key: library-v8-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v8-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -167,7 +167,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v7-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v8-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:
@@ -186,6 +186,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deploy.outputs.page_url }}
     steps:
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         if: needs.list.outputs.snapshot_changed == 'true'
         with:
@@ -198,9 +199,10 @@ jobs:
           GH_REPO: ${{ github.repository }}
         run: |
           gh release delete books --yes --cleanup-tag || true
-          gh release create books dist/*.pdf dist/*.epub dist/kdp/* --target "$GITHUB_SHA" --latest \
+          gh release create books --target "$GITHUB_SHA" --latest \
             --title "Books (latest build)" \
-            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Each volume has a 7 x 10 in reading PDF with front cover, a separate *-print.pdf paperback interior without that cover, and one EPUB. Files named *-cover-wrap.pdf and *-ebook-cover.jpg are separate paperback and eBook covers."
+            --notes "Complete PDF and EPUB library, updated automatically at commit ${GITHUB_SHA::7}. Each volume has a 7 x 10 in reading PDF with front cover, a separate * - Print.pdf paperback interior without that cover, and one EPUB. Files named * - Paperback Cover.pdf and * - eBook Cover.jpg are separate paperback and eBook covers."
+          python3 tools/release_assets.py "$GH_REPO" books dist
       # Needs Settings > Pages > Source set to "GitHub Actions"; until then the release above still works.
       - name: Deploy the download page
         id: deploy

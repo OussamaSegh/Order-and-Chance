@@ -13,7 +13,9 @@ def retired_pdfs(directory):
 
 
 def clean(directory):
-    for path in retired_pdfs(directory):
+    legacy = [p for folder in (Path(directory), Path(directory) / "kdp")
+              for p in folder.glob("tome*") if p.is_file()]
+    for path in [*retired_pdfs(directory), *legacy]:
         path.unlink(missing_ok=True)
 
 
@@ -21,6 +23,10 @@ def check(directory):
     retired = retired_pdfs(directory)
     if retired:
         raise ValueError('Retired PDF editions in output: ' + ', '.join(map(str, retired)))
+    legacy = [p for folder in (Path(directory), Path(directory) / 'kdp')
+              for p in folder.glob('tome*') if p.is_file()]
+    if legacy:
+        raise ValueError('Obsolete machine filenames in output: ' + ', '.join(map(str, legacy)))
 
 
 if __name__ == '__main__':

@@ -1,3 +1,19 @@
+# Public download filenames
+
+`tools/public_names.py` derives each public basename from the book's canonical
+`% epub-title` metadata. Main volumes use `Volume 0 - Mathematical Maturity`;
+problem books use `Problem Book 1 - Crossroads`, `Problem Book 2 - Machinery`
+and `Problem Book 3 - Frontiers`. `<Book>` below means this readable basename.
+Reading PDFs and EPUBs use `.pdf` and `.epub`. KDP assets add ` - Print.pdf`,
+` - Paperback Cover.pdf`, ` - eBook Cover.jpg`, ` - Publishing Listing.md`
+and ` - Print Metadata.json`. Site thumbnails use ` - Cover.png`; listings are
+served as `.txt`. Spaces are literal on disk and percent-encoded in links.
+Quote complete shell paths. `tools/release_assets.py` uploads each asset with its
+readable label, restores any GitHub-normalized name through the asset update API,
+and verifies the returned filename and byte count before deployment continues. Source directories and reader routes keep their
+existing identifiers. Cache schema 8 forces a full rebuild; stale old downloads
+are removed during assembly. There are still exactly two PDFs and one EPUB per book.
+
 # Required KDP export preparation
 
 Read [../docs/KDP-EXPORT.md](../docs/KDP-EXPORT.md) before publishing. Every book must
@@ -10,7 +26,7 @@ artwork is preserved. Images must retain genuine >=300 physical ppi.
 
 The final files require structural/provenance checks and visual comparison against
 their raw source, with `kdp-preflight.json` and `cover-preflight.json` retained by
-CI and the schema-7 cache. The actual exported print count determines every spine.
+CI and the schema-8 cache. The actual exported print count determines every spine.
 Ghostscript, Poppler and pinned PyMuPDF are required. This latest rule supersedes
 historical raw-TeX-copy, identical-print/read-stream and paper-only final-cover
 raster instructions below. It does not authorize changes to manuscript content,
@@ -65,13 +81,13 @@ plus the paperback cover and publishing metadata:
 
 | File | What it is | Where it goes in KDP |
 |---|---|---|
-| `dist/<tome>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
-| `dist/kdp/<tome>-ebook-cover.jpg` | Front cover, 1792 x 2560 px JPEG | Kindle eBook > Cover |
-| `dist/<tome>.pdf` | Downloadable reading PDF with the approved front cover followed by the complete interior | Public download; use the print file below for KDP |
-| `dist/kdp/<tome>-print.pdf` | Paperback interior without the front cover: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
-| `dist/kdp/<tome>-cover-wrap.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
-| `dist/kdp/<tome>-print-metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
-| `dist/kdp/<tome>-listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
+| `dist/<Book>.epub` | Reflowable eBook with cover, table of contents and copyright page | Kindle eBook > Manuscript |
+| `dist/kdp/<Book> - eBook Cover.jpg` | Front cover, 1792 x 2560 px JPEG | Kindle eBook > Cover |
+| `dist/<Book>.pdf` | Downloadable reading PDF with the approved front cover followed by the complete interior | Public download; use the print file below for KDP |
+| `dist/kdp/<Book> - Print.pdf` | Paperback interior without the front cover: 7 x 10 in, no bleed, embedded fonts | Paperback > Manuscript |
+| `dist/kdp/<Book> - Paperback Cover.pdf` | Back cover, spine and front cover with 0.125 in bleed | Paperback > Cover ("upload a cover you already have") |
+| `dist/kdp/<Book> - Print Metadata.json` | Actual pages, spine, margins and cover sheet dimensions | Production reference |
+| `dist/kdp/<Book> - Publishing Listing.md` | Title fields, description (at most 4000 characters) and 7 keywords | Kindle eBook and Paperback > Details |
 
 In KDP choose: trim size 7 x 10 in, **Premium color ink on white paper**, no bleed, matte or glossy cover.
 The download page links the publishing files on each volume's card ("Paperback & publishing files").
@@ -140,7 +156,7 @@ EPUB remains reflowable. A4, fixed-page Kindle and phone PDF editions are retire
 the build removes their old output files. The separate `-print.pdf` is now required.
 
 `./build.sh --pdf-only [tome...]` rebuilds both PDFs, covers,
-listings and `dist/kdp/<tome>-print-metadata.json` without rebuilding EPUB or HTML.
+listings and `dist/kdp/<Book> - Print Metadata.json` without rebuilding EPUB or HTML.
 The metadata records the actual interior page count, even-rounded KDP page count,
 spine, gutter and exact cover sheet size. Never reuse a wrap from the former trim.
 All interior pages are checked at 504 × 720 PDF points; wraps are checked at

@@ -8,8 +8,8 @@ cd "$root"
 tar -czf "$record/source-before-build.tar.gz" tome1-integers review/volume1-reconstruction
 source /workspace/order-chance-system/activate.sh
 ./build.sh --pdf-only tome1-integers > "$record/build.log" 2>&1
-cp dist/tome1-integers.pdf "$record/Volume1.pdf"
-cp dist/kdp/tome1-integers-print.pdf "$record/Volume1-interior.pdf"
+cp "dist/Volume 1 - The Integers.pdf" "$record/Volume1.pdf"
+cp "dist/kdp/Volume 1 - The Integers - Print.pdf" "$record/Volume1-interior.pdf"
 cp build/tome1-integers/main.{aux,toc,log} "$record/"
 python3 review/volume1-reconstruction/inventory.py > "$record/structure.json"
 git diff --check
