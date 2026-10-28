@@ -1,4 +1,4 @@
-\chapter{Linear Algebra, Revisited}\label{ch:linear}
+\chapter{Linear Algebra}\label{ch:linear}
 
 \begin{center}\itshape
 Why is $F_{n+1}F_{n-1}-F_n^2$ always $\pm1$? Why is the determinant of $\left(\frac1{i+j-1}\right)_{i,j}$ positive, though tiny?\\
@@ -36,13 +36,19 @@ linear algebra with an eye for such disguises: determinants, eigenvalues and dia
 
 \section{Vector spaces, from scratch}
 
-\begin{reminder}[vector spaces, bases, dimension]
-Let $\mathbb K$ be $\R$ or $\C$ (any field would do). A \emph{vector space} over $\mathbb K$ is a set $E$ with an addition and a multiplication by
-scalars satisfying the usual rules ($\mathbb K^n$, polynomials, functions on a set, sequences are the examples to keep in mind); a \emph{subspace} is a
-non-empty subset closed under both operations. Vectors $v_1,\dots,v_p$ are \emph{linearly independent} if $\lambda_1v_1+\dots+\lambda_pv_p=0$
-forces all $\lambda_i=0$; they \emph{span} $E$ if every vector is such a combination; a \emph{basis} is a family that does both, so that every vector
-has exactly one expression $\sum\lambda_iv_i$, the $\lambda_i$ being its \emph{coordinates}. The space $E$ is \emph{finite-dimensional} if it is spanned by finitely many vectors.
-\end{reminder}
+\begin{definitionx}[vector space]
+Let $\mathbb K$ be $\R$ or $\C$. A \emph{vector space} over $\mathbb K$ is a set $E$ with vector addition and scalar multiplication. Addition is associative and commutative, there is a zero vector $0$, and every vector has an additive inverse. For vectors $v,w$ and scalars $a,b$, the scalar rules are
+\[
+a(v+w)=av+aw,\quad (a+b)v=av+bv,\quad (ab)v=a(bv),\quad 1v=v.
+\]
+These rules imply $0v=0$ and $a0=0$ by adding the appropriate inverse on both sides of $0v=(0+0)v$ and $a0=a(0+0)$.
+\end{definitionx}
+
+In $\mathbb K^n$ both operations act coordinate by coordinate. Polynomials, functions on a fixed set, and sequences form vector spaces with pointwise operations. A \emph{subspace} is a nonempty subset closed under addition and scalar multiplication; it inherits the axioms. For example $\{(x,y,z)\in\R^3:x+y+z=0\}$ is a subspace, because the equation is preserved under both operations. The set given by $x+y+z=1$ is not: it does not contain $0$.
+
+A \emph{linear combination} of $v_1,\dots,v_p$ is $\sum_i a_iv_i$. Their \emph{span} is the set of all such combinations. They are \emph{linearly independent} when $\sum_i a_iv_i=0$ forces every $a_i=0$. They \emph{span} $E$ when every vector of $E$ is a combination. A \emph{basis} has both properties, so every vector has a unique expression in it; the coefficients are its \emph{coordinates}. A space is \emph{finite-dimensional} when some finite family spans it. The empty family is a basis of $\{0\}$, with dimension $0$.
+
+For the subspace $x+y+z=0$, the vectors $(1,0,-1)$ and $(0,1,-1)$ are a basis: every vector is $x(1,0,-1)+y(0,1,-1)$, and its first two coordinates force uniqueness. For polynomials of degree at most $d$, the monomials $1,X,\dots,X^d$ are a basis by equality of coefficients.
 
 The word ``dimension'' is only meaningful because of the following theorem, which says that all bases of a finite-dimensional space have the same size.
 It is the first non-trivial theorem of linear algebra, and everything else leans on it.
@@ -63,9 +69,36 @@ Let $E$ be spanned by $v_1,\dots,v_n$.
 (c) An independent family of $\dim E$ vectors extends to a basis, which has $\dim E$ elements, so nothing was added; a spanning family of $\dim E$ vectors contains a basis, again with nothing removed. For a subspace $F$, independent families in $F$ have at most $\dim E$ elements by (a), so a maximal one exists and is a basis of $F$ (a vector of $F$ outside its span could be added); if $\dim F=\dim E$ that basis is a basis of $E$ by the first claim, so $F=E$.
 \end{proof}
 
-\begin{reminder}[linear maps and matrices]
-A map $u:E\to F$ is \emph{linear} if $u(\lambda x+\mu y)=\lambda u(x)+\mu u(y)$. Its \emph{kernel} $\ker u=u^{-1}(0)$ and \emph{image} $\operatorname{Im}u$ are subspaces, $u$ is injective iff $\ker u=\{0\}$, and the \emph{rank} of $u$ is $\dim\operatorname{Im}u$. Given bases $(e_j)$ of $E$ and $(f_i)$ of $F$, the \emph{matrix} of $u$ has in its $j$th column the coordinates of $u(e_j)$: $u(e_j)=\sum_ia_{ij}f_i$. Composition of maps is multiplication of matrices, $(AB)_{ik}=\sum_ja_{ij}b_{jk}$, which is why matrix multiplication is associative and not commutative. If $P$ is the matrix whose columns are the coordinates of a new basis $(e'_j)$ in the old one, then the coordinates $X$ and $X'$ of a vector in the two bases satisfy $X=PX'$, and the matrix of an endomorphism $u:E\to E$ in the new basis is $A'=P^{-1}AP$: $A$ and $A'$ are \emph{similar}. A statement about $u$ that does not depend on the basis must be invariant under $A\mapsto P^{-1}AP$; the trace, the determinant and the characteristic polynomial below are the basic invariants.
-\end{reminder}
+\subsection*{Linear maps, kernel and image}
+A map $u:E\to F$ between vector spaces over the same field is \emph{linear} if $u(av+bw)=au(v)+bu(w)$ for all vectors and scalars. This implies $u(0)=0$. Define
+\[
+\ker u=\{v\in E:u(v)=0\},\qquad \operatorname{Im}u=\{u(v):v\in E\}.
+\]
+Both are subspaces: the image of a combination is the combination of the images, and the same observation preserves an image equal to zero. Moreover $u$ is injective exactly when $\ker u=\{0\}$: $u(v)=u(w)$ is equivalent to $u(v-w)=0$. If $E$ is finite-dimensional, images of a finite spanning family span $\operatorname{Im}u$; its dimension is the \emph{rank} of $u$.
+
+For example differentiation $D:\R_2[X]\to\R_1[X]$ is linear, has kernel the constant polynomials, and is onto because $D(aX+bX^2/2)=a+bX$. Its kernel has dimension $1$ and its image dimension $2$, accounting for the domain dimension $3$.
+
+\begin{proposition}[rank--nullity]\label{prop:ranknullity}
+For $u:E\to F$ linear with $\dim E<\infty$, $\dim\ker u+\operatorname{rk}u=\dim E$.
+\end{proposition}
+\begin{proof}
+Take a basis $(k_1,\dots,k_p)$ of $\ker u$ and extend it to a basis $(k_1,\dots,k_p,e_1,\dots,e_r)$ of $E$ (possible by the exchange theorem). The vectors $u(e_i)$ span $\operatorname{Im}u$ (the $u(k_i)$ vanish), and they are independent: $\sum\lambda_iu(e_i)=0$ puts $\sum\lambda_ie_i$ in $\ker u$, so it is a combination of the $k_i$, and all coefficients vanish. So $\operatorname{rk}u=r=\dim E-p$.
+\end{proof}
+
+A linear map between spaces of the same finite dimension is injective exactly when it is surjective, by rank--nullity. A bijective linear map has a linear inverse: apply $u$ to both proposed sides of $u^{-1}(ay+bz)=au^{-1}(y)+bu^{-1}(z)$ and use injectivity.
+
+\subsection*{Matrices record a linear map}
+Given bases $(e_j)$ of $E$ and $(f_i)$ of $F$, put the coordinates of $u(e_j)$ in column $j$ of a matrix $A=(a_{ij})$. Linearity then gives $[u(v)]=A[v]$, since $u(\sum_jx_je_j)=\sum_{i,j}a_{ij}x_jf_i$. An $m\times n$ matrix therefore represents a map $\mathbb K^n\to\mathbb K^m$; we write $M_{m,n}(\mathbb K)$ for these matrices and $M_n(\mathbb K)$ when $m=n$.
+
+For composable maps, applying them to a coordinate vector gives $A(Bx)=(AB)x$, where $(AB)_{ik}=\sum_ja_{ij}b_{jk}$. Associativity follows from composition. Commutativity can fail: with $A=\left(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\right)$ and $B=\left(\begin{smallmatrix}0&0\\1&0\end{smallmatrix}\right)$, the products are $\operatorname{diag}(1,0)$ and $\operatorname{diag}(0,1)$. The identity matrix represents the identity map, and a square matrix is \emph{invertible} exactly when its map is bijective; its inverse represents the inverse map. Its columns are independent exactly when its kernel is zero, so rank--nullity makes this another criterion for invertibility.
+
+If $P$ has the coordinates of a new basis $(e'_j)$ as columns in the old basis, then $[v]_{\mathrm{old}}=P[v]_{\mathrm{new}}$. The coordinate maps are bijections, so $P$ is invertible. For an endomorphism $u:E\to E$ with old matrix $A$, the relation $AP[v]_{\mathrm{new}}=P[u(v)]_{\mathrm{new}}$ proves that its new matrix is $P^{-1}AP$. Such matrices are called \emph{similar}.
+
+For example let $u(P)(X)=P(2X)$ on $\R_1[X]$. Its matrix in $(1,X)$ is $A=\operatorname{diag}(1,2)$. In the basis $(1,1+X)$, use
+\[
+P=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad P^{-1}AP=\begin{pmatrix}1&-1\\0&2\end{pmatrix}.
+\]
+Indeed $u(1)=1$ and $u(1+X)=1+2X=-1+2(1+X)$: the columns can be checked without matrix multiplication. Similarity changes the description, not the map.
 
 \begin{examplex}[the $2\times2$ case, worked]
 In the plane, the matrix $R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\ \sin\theta&\cos\theta\end{pmatrix}$ sends $e_1=(1,0)$ to $(\cos\theta,\sin\theta)$ and $e_2$ to $(-\sin\theta,\cos\theta)$: it is the rotation by $\theta$, and $R_\theta R_\varphi=R_{\theta+\varphi}$ by the addition formulas (Exercise~\ref{ex:twobytwo} makes this a statement about complex numbers). The matrix $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ fixes $e_1$ and sends $e_2$ to $e_1+e_2$: a \emph{shear}, which slides each horizontal line along itself by its height; it preserves areas, as Figure~\ref{fig:parallelogram} shows, and it is the key to the area formula below. The matrix $\begin{pmatrix}a&b\\c&d\end{pmatrix}$ is invertible iff $ad-bc\ne0$, with inverse $\frac1{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$ (multiply and see); its kernel is $\{0\}$ iff its columns are not proportional iff $ad-bc\ne0$: the determinant, before it is defined, already decides invertibility.
@@ -133,15 +166,6 @@ Along the first row,
 Along the first column it is $2\cdot18-0+1\cdot(1-12)=25$ too, as it must be. The signs $(-1)^{i+j}$ form a chessboard pattern starting with $+$ in the corner; the row or column with the most zeros is the one to expand along.
 \end{examplex}
 
-\begin{proposition}[rank--nullity]\label{prop:ranknullity}
-For $u:E\to F$ linear with $\dim E<\infty$, $\dim\ker u+\operatorname{rk}u=\dim E$.
-\end{proposition}
-\begin{proof}
-Take a basis $(k_1,\dots,k_p)$ of $\ker u$ and extend it to a basis $(k_1,\dots,k_p,e_1,\dots,e_r)$ of $E$ (possible by the exchange theorem). The vectors $u(e_i)$ span $\operatorname{Im}u$ (the $u(k_i)$ vanish), and they are independent: $\sum\lambda_iu(e_i)=0$ puts $\sum\lambda_ie_i$ in $\ker u$, so it is a combination of the $k_i$, and all coefficients vanish. So $\operatorname{rk}u=r=\dim E-p$.
-\end{proof}
-
-For a matrix, the rank is the dimension of the span of its columns, and rank--nullity says that an $n\times n$ matrix is invertible iff its kernel is $\{0\}$ iff its columns are independent iff its rank is $n$; Theorem~\ref{thm:det}(c) adds ``iff $\det A\ne0$''. The rank of the rows equals the rank of the columns (Exercise~\ref{ex:tracerank}).
-
 \begin{think}
 Compute $\det\begin{pmatrix}1&a\\1&b\end{pmatrix}$, then guess $\det\begin{pmatrix}1&a&a^2\\1&b&b^2\\1&c&c^2\end{pmatrix}$ without expanding: it is a polynomial in $a,b,c$ of total degree $3$ that vanishes when two of the variables are equal.
 \end{think}
@@ -171,7 +195,7 @@ A scalar $\lambda\in\mathbb K$ is an \emph{eigenvalue} of $A$ if $Av=\lambda v$ 
 \end{reminder}
 
 \begin{proposition}[characteristic polynomial]\label{prop:charpoly}
-$\chi_A=X^n-\operatorname{tr}(A)X^{n-1}+\dots+(-1)^n\det A$, and the eigenvalues of $A$ are its roots in $\mathbb K$. Over $\C$, $\operatorname{tr}A$ and $\det A$ are the sum and the product of the eigenvalues, counted with multiplicity as roots of $\chi_A$. Similar matrices have the same $\chi$.
+With $\operatorname{tr}A=\sum_i a_{ii}$, the \emph{trace}, $\chi_A=X^n-\operatorname{tr}(A)X^{n-1}+\dots+(-1)^n\det A$, and the eigenvalues of $A$ are its roots in $\mathbb K$. Over $\C$, $\operatorname{tr}A$ and $\det A$ are the sum and the product of the eigenvalues, counted with multiplicity as roots of $\chi_A$. Similar matrices have the same $\chi$.
 \end{proposition}
 \begin{proof}
 In the formula for $\det(XI_n-A)$, a permutation $\sigma\ne\mathrm{id}$ moves at least two indices, so its term contains at most $n-2$ diagonal entries $X-a_{jj}$ and has degree $\le n-2$. So the coefficients of $X^n$ and $X^{n-1}$ come from $\prod_j(X-a_{jj})$: they are $1$ and $-\operatorname{tr}A$. The constant term is $\chi_A(0)=\det(-A)=(-1)^n\det A$. Next, $\lambda$ is an eigenvalue iff $\ker(\lambda I_n-A)\ne\{0\}$ iff $\det(\lambda I_n-A)=0$ (Theorem~\ref{thm:det}(c)). Over $\C$, $\chi_A$ splits (Theorem~\ref{thm:dalembert}), and Vi\`ete gives the sum and product of the roots. Finally $\det(XI-P^{-1}AP)=\det\left(P^{-1}(XI-A)P\right)=\chi_A$.
@@ -186,7 +210,7 @@ A projection satisfies $A^2=A$, and a reflection satisfies $A^2=I$. Both are dia
 \end{think}
 
 \begin{theorem}[diagonalisability]\label{thm:diag}
-$A$ is diagonalisable if and only if $P(A)=0$ for some polynomial $P=\prod_{i=1}^r(X-\lambda_i)$ with distinct $\lambda_i\in\mathbb K$. In that case $\mathbb K^n=\bigoplus_i\ker(A-\lambda_iI_n)$.
+$A$ is diagonalisable if and only if $P(A)=0$ for some polynomial $P=\prod_{i=1}^r(X-\lambda_i)$ with distinct $\lambda_i\in\mathbb K$. In that case $\mathbb K^n=\bigoplus_i\ker(A-\lambda_iI_n)$: every vector is a unique sum of vectors from these eigenspaces. This is the meaning of a \emph{direct sum}.
 \end{theorem}
 \begin{proof}
 If $A=QDQ^{-1}$ with $D$ diagonal, let $\lambda_1,\dots,\lambda_r$ be the distinct diagonal entries: $\prod(D-\lambda_iI)=0$ (each diagonal entry is killed by one factor), hence $\prod(A-\lambda_iI)=Q\prod(D-\lambda_iI)Q^{-1}=0$.
@@ -199,27 +223,6 @@ The theorem answers the question in the box: $A^2=0$ gives the annihilating poly
 Cayley--Hamilton, the statement that $\chi_A(A)=0$, is proved below as Theorem~\ref{thm:cayleyhamilton}, by a trick with the adjugate. Volume~2 proves it a second time, as a consequence of the structure of modules over $\mathbb K[X]$, and develops the minimal polynomial, which is not needed here.
 \end{remark}
 
-\begin{think}
-An invertible $2\times2$ symmetric matrix maps the unit circle to an ellipse (Figure~\ref{fig:ellipse}). An ellipse has two perpendicular axes. What should they be for the matrix, and what are their lengths?
-\end{think}
-
-\begin{theorem}[spectral theorem]\label{thm:spectral}
-A real symmetric matrix $S$ has real eigenvalues and an orthonormal basis of eigenvectors: $S=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal.
-\end{theorem}
-\begin{proof}
-Let $\lambda\in\C$ be a root of $\chi_S$ and $z\in\C^n\setminus\{0\}$ with $Sz=\lambda z$. Then $\bar z^{\mathsf T}Sz=\lambda\|z\|^2$, and this number is real: its conjugate is $z^{\mathsf T}S\bar z$, which is the same scalar transposed ($S^{\mathsf T}=S$). So $\lambda\in\R$, and $\ker(S-\lambda I)$ contains a real unit vector $u$.
-Induction on $n$: the hyperplane $H=u^\perp$ is stable under $S$, since $x\perp u$ implies $\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0$. The restriction of $S$ to $H$ is symmetric for the induced inner product, so $H$ has an orthonormal basis of eigenvectors; add $u$.
-\end{proof}
-
-\begin{figure}[ht]
-\centering
-\fig{ch07-ellipse}
-\caption{Left: $S=\begin{pmatrix}2&1\\1&2\end{pmatrix}$ maps the unit circle (grey) to an ellipse (blue). Each red arrow joins a point $x$ of the circle to $Sx$. The axes of the ellipse are the orthonormal eigenvectors $u_1=\frac1{\sqrt2}(-1,1)$ and $u_2=\frac1{\sqrt2}(1,1)$, stretched by the eigenvalues $1$ and $3$, the extreme values of $x^{\mathsf T}Sx$ on the circle (Exercise~\ref{ex:rayleigh}). Right: $\det H_n$ for the Hilbert matrix of Exercise~\ref{ex:hilbert}, on a logarithmic scale. It is positive but falls from $\frac1{12}$ for $n=2$ to about $2.6\times10^{-78}$ for $n=12$.}
-\label{fig:ellipse}
-\end{figure}
-
-The spectral theorem is the reason the ellipse of Figure~\ref{fig:ellipse} has perpendicular axes, and the reason the physicists' ``principal axes'' of a rotating body exist: Cauchy's 1829 proof was about exactly that, a quadratic form in three variables and its axes, and the matrix was not yet invented. In Volume~3 the same theorem diagonalises covariance matrices, which is what ``principal component analysis'' means.
-
 \begin{example}[linear recurrences]
 If $u_{n+2}=au_{n+1}+bu_n$, then $\binom{u_{n+1}}{u_n}=M^n\binom{u_1}{u_0}$ with $M=\begin{pmatrix}a&b\\1&0\end{pmatrix}$, whose characteristic polynomial is $X^2-aX-b$.
 When $b\ne0$ and it has two distinct roots $r_1,r_2$, $M$ is diagonalisable by Theorem~\ref{thm:diag}, and $u_n=\alpha r_1^n+\beta r_2^n$ for constants $\alpha,\beta$ fixed by $u_0,u_1$.
@@ -227,9 +230,11 @@ When $b\ne0$ and it has two distinct roots $r_1,r_2$, $M$ is diagonalisable by T
 
 If $b=0$, handle the recurrence directly: $u_1$ is arbitrary and $u_n=a^{n-1}u_1$ for $n\ge2$, while $u_0$ is arbitrary; when $a=0$, all $u_n$ with $n\ge2$ are zero. This avoids treating $0^0$ as an unexplained initial condition. The double-root case is the other case the example leaves out: for $u_{n+2}=2u_{n+1}-u_n$ the matrix $\begin{pmatrix}2&-1\\1&0\end{pmatrix}$ has $\chi=(X-1)^2$ and is not diagonalisable (its only eigenspace is the line spanned by $(1,1)$), and the solutions are $u_n=\alpha+\beta n$: the factor $n$ is the trace that non-diagonalisability leaves behind. Volume~2 explains it with the Jordan form.
 
-\section{Determinants as volumes}
+\section{Inner products and orthogonal projection}
 
-Back to the chessboard. The gap in Figure~\ref{fig:chessboard} is a parallelogram, and its area was a $2\times2$ determinant. This is not a coincidence of the puzzle but the geometric meaning of determinants: $|\det A|$ is the volume of the parallelepiped spanned by the columns of $A$, and the sign records the orientation. To make sense of ``volume'' in $\R^n$ without any theory of measure, we use the inner product $\langle x,y\rangle=\sum x_iy_i$ and the norm $\|x\|=\sqrt{\langle x,x\rangle}$, and we define the volume as the engineers do, base times height, by induction. The tool is orthogonal projection.
+An inner product measures angles and lengths. On a real vector space it is a symmetric bilinear function $\langle v,w\rangle$ with $\langle v,v\rangle>0$ for $v\ne0$. The usual example on $\R^n$ is $\sum_i v_iw_i$. Put $\|v\|=\sqrt{\langle v,v\rangle}$. We say $v\perp w$ when their inner product is zero, and a family is \emph{orthonormal} when $\langle e_i,e_j\rangle$ is $1$ for $i=j$ and $0$ otherwise. Expanding the square proves Pythagoras: orthogonal vectors satisfy $\|v+w\|^2=\|v\|^2+\|w\|^2$. Chapter~\ref{ch:inequalities} proves the triangle inequality and Cauchy--Schwarz in this language. For $z\in\C^n$ we also use the Euclidean length $\|z\|^2=\sum_i|z_i|^2$, a positive real number when $z\ne0$. A real square matrix is \emph{orthogonal} when $P^{\mathsf T}P=I$; its columns are an orthonormal basis, and it preserves inner products because $\langle Px,Py\rangle=x^{\mathsf T}P^{\mathsf T}Py$.
+
+The same geometry works on other spaces. On real polynomials of degree at most $d$, write $f=\sum a_kX^k$, $g=\sum b_kX^k$ and set $\langle f,g\rangle=\sum a_kb_k$. Another inner product, defined by an integral, appears in Exercise~\ref{ex:hilbert}.
 
 \begin{figure}[ht]
 \centering
@@ -239,10 +244,10 @@ Back to the chessboard. The gap in Figure~\ref{fig:chessboard} is a parallelogra
 \end{figure}
 
 \begin{theorem}[Gram--Schmidt and orthogonal projection]\label{thm:gramschmidt}
-Let $F$ be a subspace of $\R^n$ with basis $v_1,\dots,v_p$.
+Let $F$ be a subspace of a finite-dimensional real inner product space $E$, with basis $v_1,\dots,v_p$.
 \begin{enumerate}[label=(\alph*)]
 \item (\textbf{Gram--Schmidt}) There is an orthonormal family $e_1,\dots,e_p$ with $\operatorname{Span}(e_1,\dots,e_k)=\operatorname{Span}(v_1,\dots,v_k)$ for each $k$, given by $w_k=v_k-\sum_{i<k}\langle v_k,e_i\rangle e_i$ and $e_k=w_k/\|w_k\|$.
-\item (\textbf{projection}) Every $x\in\R^n$ is uniquely $x=p(x)+r$ with $p(x)\in F$ and $r\perp F$; explicitly $p(x)=\sum_{i=1}^p\langle x,e_i\rangle e_i$. The map $p$ is linear with $p^2=p$, and $p(x)$ is the point of $F$ closest to $x$:
+\item (\textbf{projection}) Every $x\in E$ is uniquely $x=p(x)+r$ with $p(x)\in F$ and $r\perp F$; explicitly $p(x)=\sum_{i=1}^p\langle x,e_i\rangle e_i$. The map $p$ is linear with $p^2=p$, and $p(x)$ is the point of $F$ closest to $x$:
 \[
 \|x-p(x)\|<\|x-y\|\quad\text{for every }y\in F,\ y\ne p(x).
 \]
@@ -267,7 +272,38 @@ Both spaces have dimension $k$, so they are equal.
 with equality only for $y=p(x)$.
 \end{proof}
 
-Gram--Schmidt is both an algorithm and a proof that every subspace has an orthonormal basis, which the spectral theorem used. The closest-point property is the start of least squares, the method by which Gauss located the lost asteroid Ceres in 1801: ``the best approximation to the data within the subspace of what the model allows'' is an orthogonal projection.
+Gram--Schmidt proves that every subspace has an orthonormal basis, including the zero subspace with its empty basis. The projection formula is then $p(x)=0$. The proof uses only the inner product axioms, so it applies to every finite-dimensional real inner product space. The closest-point property is the foundation of least squares, explored in the workshop.
+
+\section{The spectral theorem and quadratic forms}
+\begin{think}
+An invertible $2\times2$ symmetric matrix maps the unit circle to an ellipse (Figure~\ref{fig:ellipse}). An ellipse has two perpendicular axes. What should they be for the matrix, and what are their lengths?
+\end{think}
+
+\begin{theorem}[spectral theorem]\label{thm:spectral}
+A real symmetric matrix $S$ has real eigenvalues and an orthonormal basis of eigenvectors: $S=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal.
+\end{theorem}
+\begin{proof}
+Let $\lambda\in\C$ be a root of $\chi_S$ and $z\in\C^n\setminus\{0\}$ with $Sz=\lambda z$. Then $\bar z^{\mathsf T}Sz=\lambda\|z\|^2$, and this number is real: its conjugate is $z^{\mathsf T}S\bar z$, which is the same scalar transposed ($S^{\mathsf T}=S$). So $\lambda\in\R$. The real and imaginary parts of $z$ both satisfy the real eigenvalue equation; at least one is nonzero, and normalising it gives a real unit eigenvector $u$.
+Induction on $n$: the hyperplane $H=u^\perp$ is stable under $S$, since $x\perp u$ implies $\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0$. The restriction of $S$ to $H$ is symmetric for the induced inner product, so $H$ has an orthonormal basis of eigenvectors; add $u$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-ellipse}
+\caption{Left: $S=\begin{pmatrix}2&1\\1&2\end{pmatrix}$ maps the unit circle (grey) to an ellipse (blue). Each red arrow joins a point $x$ of the circle to $Sx$. The axes of the ellipse are the orthonormal eigenvectors $u_1=\frac1{\sqrt2}(-1,1)$ and $u_2=\frac1{\sqrt2}(1,1)$, stretched by the eigenvalues $1$ and $3$, the extreme values of $x^{\mathsf T}Sx$ on the circle (Exercise~\ref{ex:rayleigh}). Right: $\det H_n$ for the Hilbert matrix of Exercise~\ref{ex:hilbert}, on a logarithmic scale. It is positive but falls from $\frac1{12}$ for $n=2$ to about $2.6\times10^{-78}$ for $n=12$.}
+\label{fig:ellipse}
+\end{figure}
+
+The spectral theorem is the reason the ellipse of Figure~\ref{fig:ellipse} has perpendicular axes, and the reason the physicists' ``principal axes'' of a rotating body exist: Cauchy's 1829 proof was about exactly that, a quadratic form in three variables and its axes, and the matrix was not yet invented. In Volume~3 the same theorem diagonalises covariance matrices, which is what ``principal component analysis'' means.
+
+\begin{definitionx}[quadratic forms and positivity]
+For a real symmetric matrix $S$, the function $q_S(x)=x^{\mathsf T}Sx$ is its \emph{quadratic form}. The matrix is \emph{positive semidefinite} if $q_S(x)\ge0$ for all $x$, and \emph{positive definite} if $q_S(x)>0$ for every $x\ne0$.
+\end{definitionx}
+
+The spectral theorem gives $q_S(Py)=\sum_i\lambda_i y_i^2$. Consequently $S$ is positive semidefinite exactly when all eigenvalues are nonnegative, and positive definite exactly when all are positive: one direction follows by summing, the other by evaluating at a unit eigenvector. For example $\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)$ has form $(x_1+x_2)^2$, so it is semidefinite but not definite; the nonzero vector $(1,-1)$ gives zero. Covariance matrices in Chapter~\ref{ch:probability} are semidefinite for the same reason: a variance is an average of squares.
+
+\section{Determinants as volumes}
+Back to the chessboard: the gap is a parallelogram. We now define higher-dimensional volume by successive base times height, and prove that its square is a Gram determinant. The preceding projection theorem supplies the required heights.
 
 \begin{definitionx}[volume]
 Let $v_1$, $\dots$, $v_p$ belong to $\R^n$. Define the successive heights by
@@ -300,7 +336,7 @@ If the $v_i$ are dependent, say $\sum c_iv_i=0$ with $c\ne0$, then $Gc=0$ (its $
 \label{fig:gramschmidt}
 \end{figure}
 
-Three things are hidden in this theorem. For $p=2$ it says $\|u\|^2\|v\|^2-\langle u,v\rangle^2\ge0$: the Cauchy--Schwarz inequality of Chapter~4, with its equality case, now as the statement that a parallelogram has non-negative area. For $p=n$ it says that the volume of the image of the unit cube under $A$ is $|\det A|$, and since $\det(AB)=\det A\det B$, the volume of the image of \emph{any} parallelepiped is multiplied by $|\det A|$: this is the meaning of the Jacobian in the change-of-variables formula of Volume~4. And it explains the Hilbert matrix of the epigraph: $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for an inner product on polynomials (Exercise~\ref{ex:hilbert}), so $\det H_n$ is a squared volume, positive; it is tiny because the monomials become nearly linearly dependent in this inner product, so the parallelepiped is almost flat. Hadamard's inequality (Exercise~\ref{ex:hadamard}) is the same picture: a parallelepiped with given edge lengths has the largest volume when it is a box.
+Three things are hidden in this theorem. For $p=2$ it says $\|u\|^2\|v\|^2-\langle u,v\rangle^2\ge0$: the Cauchy--Schwarz inequality of Chapter~\ref{ch:inequalities}, with its equality case, now as the statement that a parallelogram has non-negative area. For $p=n$ it says that the volume of the image of the unit cube under $A$ is $|\det A|$, and since $\det(AB)=\det A\det B$, the volume of the image of \emph{any} parallelepiped is multiplied by $|\det A|$: this is the meaning of the Jacobian in the change-of-variables formula of Volume~4. And it explains the Hilbert matrix of the epigraph: $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for an inner product on polynomials (Exercise~\ref{ex:hilbert}), so $\det H_n$ is a squared volume, positive; it is tiny because the monomials become nearly linearly dependent in this inner product, so the parallelepiped is almost flat. Hadamard's inequality (Exercise~\ref{ex:hadamard}) is the same picture: a parallelepiped with given edge lengths has the largest volume when it is a box.
 
 \section{The adjugate and Cayley--Hamilton}
 
@@ -416,7 +452,7 @@ Let $M=\begin{pmatrix}1&1\\1&0\end{pmatrix}$ and $(F_n)$ the Fibonacci numbers.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:nilp}
-Let $A\in M_n(\C)$ be nilpotent. Show that $\operatorname{tr}A=0$ and $\det(I_n+A)=1$.
+Let $A\in M_n(\C)$ be \emph{nilpotent}, meaning that $A^m=0$ for some integer $m\ge1$. Show that $\operatorname{tr}A=0$ and $\det(I_n+A)=1$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:mindet}
@@ -440,7 +476,7 @@ Let $S$ be real symmetric with eigenvalues $\lambda_1\le\dots\le\lambda_n$.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:hilbert}
-\emph{The Hilbert matrix.} Let $H_n=\left(\frac1{i+j-1}\right)_{1\le i,j\le n}$. Show that $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for the inner product
+\emph{The Hilbert matrix (return after Chapter~\ref{ch:calculus}).} Let $H_n=\left(\frac1{i+j-1}\right)_{1\le i,j\le n}$. Show that $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for the inner product
 $\langle f,g\rangle=\int_0^1fg$, and deduce that $\det H_n>0$.
 \end{exercise}
 
@@ -454,7 +490,7 @@ Let $A,B\in M_n(\C)$ be diagonalisable with $AB=BA$. Show that there is a single
 \emph{Complex numbers as matrices.} To $z=a+ib$ associate $M(z)=\begin{pmatrix}a&-b\\b&a\end{pmatrix}$.
 \begin{enumerate}[label=(\alph*)]
 \item Show that $M(z+w)=M(z)+M(w)$, $M(zw)=M(z)M(w)$ and $\det M(z)=|z|^2$. Deduce $|zw|=|z||w|$ from Theorem~\ref{thm:det}(b).
-\item Show that $M(e^{i\theta})$ is the rotation matrix $R_\theta$, and that the identity $R_\theta R_\varphi=R_{\theta+\varphi}$ is the identity $e^{i\theta}e^{i\varphi}=e^{i(\theta+\varphi)}$ of Chapter~2 in disguise: each is equivalent to the addition formulas for $\cos$ and $\sin$.
+\item Show that $M(e^{i\theta})$ is the rotation matrix $R_\theta$, and that the identity $R_\theta R_\varphi=R_{\theta+\varphi}$ is the identity $e^{i\theta}e^{i\varphi}=e^{i(\theta+\varphi)}$ of Chapter~\ref{ch:complex} in disguise: each is equivalent to the addition formulas for $\cos$ and $\sin$.
 \item What are the eigenvalues of $M(z)$ over $\C$? Is $M(z)$ diagonalisable over $\R$?
 \end{enumerate}
 \end{exercise}
@@ -521,6 +557,15 @@ Let $A,B\in M_n(\C)$ be diagonalisable with $AB=BA$. Show that there is a single
 \end{enumerate}
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{ex:bridge-translation}
+\emph{Bridge: finite differences as a linear operator.} On $E=\R_d[X]$, $d\ge1$, define $S(P)(X)=P(X+1)$ and $\Delta=S-I$. Use the basis $b_k=\binom Xk$, $0\le k\le d$.
+\begin{enumerate}[label=(\alph*)]
+\item Find the matrices of $S$ and $\Delta$. Compute the characteristic polynomial and determinant of $S$.
+\item Show that $\Delta^{d+1}=0$ but $\Delta^d\ne0$. Show that $S$ has only the eigenvalue $1$ and is not diagonalisable.
+\item For every integer $m\ge0$, prove $S^m=\sum_{j=0}^d\binom mj\Delta^j$. Explain what this says about evaluating $P(X+m)$ from its finite differences.
+\end{enumerate}
+\end{exercise}
+
 \begin{challenge}
 \textbf{Three doors in the wall.} (1) \emph{Perron--Frobenius.} Exercise~\ref{ex:stochastic} assumed all entries positive. Show that for any matrix with positive entries (not necessarily stochastic) there is an eigenvalue $r>0$ which is a simple root of $\chi$, has an eigenvector with positive entries, and satisfies $|\lambda|<r$ for every other eigenvalue. Then ask what survives when some entries are $0$: the Google matrix adds $0.15J/n$ precisely to avoid this question.
 (2) \emph{Hadamard's bound is sharp when it is.} A matrix with entries $\pm1$ and $|\det|=n^{n/2}$ is a \emph{Hadamard matrix}; show that it exists only for $n=1,2$ or $n\equiv0\pmod 4$. Whether it exists for \emph{every} multiple of $4$ is open; as of October 2026 the smallest undecided order is $2396$ (see the notes and sources).
@@ -578,6 +623,10 @@ Induction for $M^n$; then compare the entries of $M^{m+n}=M^mM^n$ using Exercise
 (a) Subtract the last column from each other column, factor $y_n-y_j$ out of column $j$ and $\frac1{x_i+y_n}$ out of row $i$; then do the same with rows, and expand along the last column, which has become $(0,\dots,0,1)^{\mathsf T}$. (b) $x_i=i$, $y_j=j-1$. (c) $c_{2n}/c_n^4=\prod_{k=1}^{n-1}\binom{2k}k^2(2k+1)$, and $\binom{2k}k\ge\frac{4^k}{2\sqrt k}$ (induction on $k$).
 \end{hint}
 
+\begin{hint}{ex:bridge-translation}
+Chapter~\ref{ch:sums} gives $\Delta b_k=b_{k-1}$, with $\Delta b_0=0$. For diagonalisation, determine the dimension of the eigenspace, not just the roots of the characteristic polynomial.
+\end{hint}
+
 \section{Solutions}
 
 \begin{solution}{ex:fibmat}
@@ -628,7 +677,7 @@ $\sqrt{\lambda_i}\ge0$ give $x^{\mathsf T}Rx\ge0$ by (a).
 
 \begin{solution}{ex:hilbert}
 \idea The number $\frac1{i+j-1}$ is the integral $\int_0^1x^{i-1}x^{j-1}\dd x$, and seeing it that way turns the matrix into a Gram matrix. Gram matrices of independent vectors are positive definite, because $c^{\mathsf T}Gc$ is a squared norm; positive definite symmetric matrices have positive eigenvalues, hence positive determinant.
-\writeup For the scalar product $\langle f,g\rangle=\int_0^1fg$,
+\writeup On the finite-dimensional space of real polynomials of degree at most $n-1$, put $\langle f,g\rangle=\int_0^1fg$. Bilinearity and symmetry follow from the integral rules. If $f\ne0$, some point of $[0,1]$ has $f(x)\ne0$ by the polynomial root bound; continuity gives a subinterval of positive length on which $f^2$ is bounded below by a positive number. Thus $\int_0^1f^2>0$, proving positive definiteness. For this inner product,
 \[
 \langle x^{i-1},x^{j-1}\rangle=\int_0^1x^{i+j-2}\dd x=\frac1{i+j-1}.
 \]
@@ -663,7 +712,7 @@ M(e^{i\theta})=\begin{pmatrix}\cos\theta&-\sin\theta\\\sin\theta&\cos\theta\end{
 
 \begin{solution}{ex:tracerank}
 \idea (a) Write the trace as a double sum and swap the order. (b) The rank is the number of columns one needs to generate all of them; writing ``each column is a combination of $r$ chosen columns'' as a matrix product $A=BC$ and transposing turns a statement about columns into one about rows.
-\writeup (a) $\operatorname{tr}(AB)=\sum_i\sum_ja_{ij}b_{ji}=\sum_j\sum_ib_{ji}a_{ij}=\operatorname{tr}(BA)$. Then $\operatorname{tr}(P^{-1}AP)=\operatorname{tr}(APP^{-1})=\operatorname{tr}A$, so the trace of a linear map is defined. If $AB-BA=I_n$, taking traces gives $0=n$, impossible in $\R$ or $\C$. (In infinite dimension the identity is possible: on polynomials, $(\frac{d}{dx}\circ x-x\circ\frac{d}{dx})P=P$. This is Heisenberg's commutation relation, and the trace argument is why quantum mechanics needs infinitely many dimensions.)
+\writeup (a) $\operatorname{tr}(AB)=\sum_i\sum_ja_{ij}b_{ji}=\sum_j\sum_ib_{ji}a_{ij}=\operatorname{tr}(BA)$. Then $\operatorname{tr}(P^{-1}AP)=\operatorname{tr}(APP^{-1})=\operatorname{tr}A$, so the trace of a linear map is defined. If $AB-BA=I_n$, taking traces gives $0=n$, impossible in $\R$ or $\C$. (In infinite dimension the identity is possible: on polynomials, $(\frac{d}{dx}\circ x-x\circ\frac{d}{dx})P=P$. This is the canonical commutation relation: the trace argument proves that this exact relation has no finite-dimensional real or complex representation.)
 
 (b) Let $r=\operatorname{rk}A$ be the dimension of the column space and $b_1,\dots,b_r$ a basis of it; let $B\in M_{n,r}$ have these as columns. Each column $a_j$ of $A$ is $\sum_kc_{kj}b_k$, which says $A=BC$ with $C=(c_{kj})\in M_{r,m}$. Transposing, $A^{\mathsf T}=C^{\mathsf T}B^{\mathsf T}$, whose columns are combinations of the $r$ columns of $C^{\mathsf T}$: so $\operatorname{rk}A^{\mathsf T}\le r=\operatorname{rk}A$. Applying this to $A^{\mathsf T}$ gives the reverse inequality.
 \end{solution}
@@ -704,7 +753,7 @@ M^{m+n}&=(F_mM+F_{m-1}I)(F_nM+F_{n-1}I)\\
 &=(F_mF_{n+1}+F_{m-1}F_n)M+(F_mF_n+F_{m-1}F_{n-1})I ,
 \end{aligned}
 \]
-and also $M^{m+n}=F_{m+n}M+F_{m+n-1}I$. Since $M$ is not a scalar matrix, $I$ and $M$ are linearly independent and the coefficients match: $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$. With $m=n$, $F_{2n}=F_n(F_{n+1}+F_{n-1})$; the second factor is the Lucas number $L_n$. So $F_n$ divides $F_{2n}$, and by induction on $k$, $F_n$ divides $F_{kn}$: $F_{(k+1)n}=F_{kn}F_{n+1}+F_{kn-1}F_n$ with both terms divisible by $F_n$. (Exercise~\ref{ex:fibgcd} in Chapter~1 proves the stronger identity $\gcd(F_m,F_n)=F_{\gcd(m,n)}$.)
+and also $M^{m+n}=F_{m+n}M+F_{m+n-1}I$. Since $M$ is not a scalar matrix, $I$ and $M$ are linearly independent and the coefficients match: $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$. With $m=n$, $F_{2n}=F_n(F_{n+1}+F_{n-1})$; the second factor is the Lucas number $L_n$. So $F_n$ divides $F_{2n}$, and by induction on $k$, $F_n$ divides $F_{kn}$: $F_{(k+1)n}=F_{kn}F_{n+1}+F_{kn-1}F_n$ with both terms divisible by $F_n$. (Exercise~\ref{ex:fibgcd} in Chapter~\ref{ch:sums} proves the stronger identity $\gcd(F_m,F_n)=F_{\gcd(m,n)}$.)
 \end{solution}
 
 \begin{solution}{ex:intinverse}
@@ -726,7 +775,7 @@ Gx=\sum_jx_jg_j=c\Big(\sum_jx_j\Big)\mathbf 1+\sum_jx_jh_j=\sum_jx_jh_j ,
 \]
 so $\|Gx\|_1\le\sum_j|x_j|\,\|h_j\|_1=(1-nc)\|x\|_1$. (Note $nc\le1$, since a column has $n$ entries $\ge c$ summing to $1$.) Put $q=1-nc<1$.
 
-(c) $G$ maps probability vectors to probability vectors (non-negative entries, and $\mathbf 1^{\mathsf T}Gx=\mathbf 1^{\mathsf T}x=1$). Let $x_k=G^kx_0$. Then $x_{k+1}-x_k=G^k(x_1-x_0)$ with $x_1-x_0$ of sum $0$, so $\|x_{k+1}-x_k\|_1\le q^k\|x_1-x_0\|_1\le2q^k$ by (b) applied $k$ times (each $G^jx$ keeps sum $0$). Hence $\|x_l-x_k\|_1\le2\sum_{j\ge k}q^j=\frac{2q^k}{1-q}$ for $l>k$: the sequence is Cauchy in each coordinate, so it converges (Chapter~5) to some $\pi$, which is a probability vector (limits of non-negative numbers summing to $1$), and $G\pi=\lim Gx_k=\lim x_{k+1}=\pi$. If $\pi'$ is another fixed probability vector, $\pi-\pi'$ has sum $0$ and $\|\pi-\pi'\|_1=\|G(\pi-\pi')\|_1\le q\|\pi-\pi'\|_1$, forcing $\pi=\pi'$. Each entry is positive: $\pi_i=\sum_jg_{ij}\pi_j\ge c\sum_j\pi_j=c>0$. Finally $x_k-\pi=G^k(x_0-\pi)$ with $x_0-\pi$ of sum $0$ and $\|x_0-\pi\|_1\le2$, so $\|x_k-\pi\|_1\le2q^k$.
+(c) $G$ maps probability vectors to probability vectors (non-negative entries, and $\mathbf 1^{\mathsf T}Gx=\mathbf 1^{\mathsf T}x=1$). Let $x_k=G^kx_0$. Then $x_{k+1}-x_k=G^k(x_1-x_0)$ with $x_1-x_0$ of sum $0$, so $\|x_{k+1}-x_k\|_1\le q^k\|x_1-x_0\|_1\le2q^k$ by (b) applied $k$ times (each $G^jx$ keeps sum $0$). Hence $\|x_l-x_k\|_1\le2\sum_{j\ge k}q^j=\frac{2q^k}{1-q}$ for $l>k$: the sequence is Cauchy in each coordinate, so it converges (Chapter~\ref{ch:sequences}) to some $\pi$, which is a probability vector (limits of non-negative numbers summing to $1$), and $G\pi=\lim Gx_k=\lim x_{k+1}=\pi$. If $\pi'$ is another fixed probability vector, $\pi-\pi'$ has sum $0$ and $\|\pi-\pi'\|_1=\|G(\pi-\pi')\|_1\le q\|\pi-\pi'\|_1$, forcing $\pi=\pi'$. Each entry is positive: $\pi_i=\sum_jg_{ij}\pi_j\ge c\sum_j\pi_j=c>0$. Finally $x_k-\pi=G^k(x_0-\pi)$ with $x_0-\pi$ of sum $0$ and $\|x_0-\pi\|_1\le2$, so $\|x_k-\pi\|_1\le2q^k$.
 
 (d) Here $c=0.15/4=0.0375$ and $q=0.85$. The last row of $G$ is constant, equal to $0.0375$, so $\pi_4=0.0375\sum_j\pi_j=0.0375$ exactly: page~$4$ gets precisely the random-jump traffic. Solving $(G-I)\pi=0$ with $\sum\pi_j=1$ (three unknowns left) gives
 \[
@@ -760,14 +809,27 @@ Now $\binom{2k}k\ge\frac{4^k}{2\sqrt k}$: true for $k=1$ (equality), and if it h
 \det H_n<2^{\,n-1}4^{-n(n-1)}=2^{-(n-1)(2n-1)}\le4^{-(n-1)^2}.
 \end{gathered}
 \]
-This decay is why the Hilbert matrix is the classic example of an invertible matrix whose numerical inversion is unreliable in ordinary floating-point arithmetic at sufficiently large orders: its determinant, the product of its eigenvalues, is astronomically small while its largest eigenvalue stays below $\pi$ (it is about $1.27$ for $n=2$ and $1.80$ for $n=12$), so some eigenvalues are tiny and dividing by them amplifies rounding errors (Figure~\ref{fig:ellipse}, right).
+This also gives an elementary conditioning warning. Write $\lambda_{\min},\lambda_{\max}$ for its positive extreme eigenvalues. Since $e_1^{\mathsf T}H_ne_1=1$, the Rayleigh principle gives $\lambda_{\max}\ge1$. Also $\lambda_{\min}^n\le\prod_i\lambda_i=\det H_n$, hence
+\[
+\frac{\lambda_{\max}}{\lambda_{\min}}\ge(\det H_n)^{-1/n}>4^{(n-1)^2/n}.
+\]
+Thus the ratio of greatest to least stretch grows without bound. Inverting the least-stretched directions amplifies rounding errors; the determinant estimate and the lower bound on the greatest stretch establish this together.
+\end{solution}
+
+\begin{solution}{ex:bridge-translation}
+\idea A familiar operation on polynomials becomes transparent in a basis chosen for that operation. Differences shift the binomial basis down one place; translation is the identity plus this shift. The example separates having eigenvalues from having enough eigenvectors.
+\writeup (a) Proposition~\ref{prop:deltabinom} gives $\Delta b_0=0$ and $\Delta b_k=b_{k-1}$ for $k\ge1$. Thus the matrix $N$ of $\Delta$ has $1$ immediately above the diagonal and zero elsewhere. The matrix of $S$ is $I+N$, upper triangular with diagonal entries $1$, so $\chi_S=(X-1)^{d+1}$ and $\det S=1$.
+
+(b) Repeatedly shifting a basis element gives $\Delta^{d+1}b_k=0$ for every $k$, whereas $\Delta^db_d=b_0=1\ne0$. The eigenspace for $1$ is $\ker\Delta$, exactly the constants: a nonconstant degree-$r$ polynomial has difference of degree $r-1$ with leading coefficient multiplied by $r\ne0$. This eigenspace has dimension $1<d+1$, so it cannot provide a basis and $S$ is not diagonalisable.
+
+(c) Since $I$ and $\Delta$ commute, the binomial theorem gives $(I+\Delta)^m=\sum_{j=0}^m\binom mj\Delta^j$; terms with $j>d$ vanish, and terms with $j>m$ have zero coefficient. Applying to $P$ gives $P(X+m)=\sum_{j=0}^d\binom mj\Delta^jP(X)$. This is an exact finite translation formula, with no convergence question.
 \end{solution}
 
 \subsection*{Notes on the challenges}
 
 (1) The theorem is Perron's, from 1907, extended by Frobenius in 1912 to non-negative matrices that are \emph{irreducible} (the graph of non-zero entries is strongly connected), where the eigenvector stays positive but other eigenvalues of modulus $r$ may appear (a cyclic permutation matrix has all $n$th roots of unity). A proof for positive matrices in the spirit of Exercise~\ref{ex:stochastic}: show that $r=\max\{t\ge0:\ Ax\ge tx\text{ for some }x\ge0,\ x\ne0\}$ is attained, that a maximiser is a positive eigenvector, and that any other eigenvalue has smaller modulus by applying the inequality $|Az|\le A|z|$ entrywise. Horn and Johnson, Chapter~8, is the reference. The damping factor $0.15$ of PageRank makes the Google matrix positive, so that none of the subtleties of the reducible case arise.
 
-(2) Normalise a Hadamard matrix so that its first row is all ones (multiply columns by $\pm1$); orthogonality of rows $1$ and $2$ says row $2$ has $n/2$ entries $+1$, so $n$ is even; then counting the columns where rows $2$ and $3$ agree in sign, using orthogonality of the three pairs, gives $n\equiv0\pmod4$ for $n\ge3$. The conjecture that Hadamard matrices exist for every $n\equiv0\pmod4$ is from Paley's paper of 1933 and remains open; order $428$ was resolved in 2005. In August 2026, Alp\"oge, Voinov and Reynolds-Haertle announced the twelve previously unknown orders below $2000$, including $668$; Egan and coauthors verified them in their October 2026 survey, which lists $2396$ as the smallest still-open order.
+(2) Normalise a Hadamard matrix so that its first row is all ones (multiply columns by $\pm1$); orthogonality of rows $1$ and $2$ says row $2$ has $n/2$ entries $+1$, so $n$ is even; then counting the columns where rows $2$ and $3$ agree in sign, using orthogonality of the three pairs, gives $n\equiv0\pmod4$ for $n\ge3$. The conjecture that Hadamard matrices exist for every $n\equiv0\pmod4$ is from Paley's paper of 1933 and remains open; order $428$ was constructed in 2004 (the paper appeared in 2005). In August 2026, Alp\"oge, Voinov and Reynolds-Haertle announced the twelve previously unknown orders below $2000$, including $668$; Egan and coauthors verified them in their October 2026 survey, which lists $2396$ as the smallest still-open order.
 
 (3) For $n=2$, writing the nilpotent $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ as $S_1S_2$ is already a nice puzzle (try $S_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, and $S_2$ follows); the general theorem is Frobenius's, from 1910, and the clean proof uses the rational canonical form of Volume~2: a companion matrix is visibly a product of two symmetric matrices, and the property passes to direct sums and to similar matrices (if $A=S_1S_2$ then $P^{-1}AP=(P^{-1}S_1P^{-\mathsf T})\cdot(P^{\mathsf T}S_2P)$, both symmetric). A.~J.~Bosch's note in the \emph{Monthly} gives a two-page account.
 
