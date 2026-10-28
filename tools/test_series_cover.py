@@ -8,9 +8,9 @@ from unittest.mock import patch
 from PIL import ImageFont
 
 from check_cover_template import check_subtitle, check_font_sizes
-from cover_surfaces import binomial, height_mesh, symmetry_mesh
-from cover_surface_renderer import render
-from series_cover import ROOT, settings, check_sync, check_titles
+from cover_surfaces import binomial, height_mesh, symmetry_mesh, galton_lattice, projection_saddle, Scene
+from cover_surface_renderer import render, visible_edges
+from series_cover import ROOT, settings, check_sync, check_titles, subtitle_baseline
 from check_cover_pdf import check_cover_log, check_back_copy
 
 
@@ -48,12 +48,18 @@ class SharedMasterTest(unittest.TestCase):
         self.assertEqual(data['subtitle_baseline_source_px'],632.36)
         check_sync()
 
-    def test_moved_subtitle_is_rejected(self):
+    def test_subtitle_follows_last_title_line_and_rejects_an_empty_line_gap(self):
         def xml(top):
             return ('<html><word yMin="'+str(top*720)+'">A</word>'
                     '<word>Foundations</word><word>Prelude</word></html>').encode()
         with patch('check_cover_template.subprocess.check_output',return_value=xml(.3928264)):
             check_subtitle('front.pdf','0',720)
+        wrong=b'<html><word yMin="282.835008">The</word><word>Language</word><word>of</word><word>Symmetry</word></html>'
+        with patch('check_cover_template.subprocess.check_output',return_value=wrong):
+            with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','2',720)
+        expected=.3928264+(subtitle_baseline('2')-subtitle_baseline('0'))/1500
+        with patch('check_cover_template.subprocess.check_output',return_value=b'<html><word yMin="'+str(expected*720).encode()+b'">The</word><word>Language</word><word>of</word><word>Symmetry</word></html>'):
+            check_subtitle('front.pdf','2',720)
         with patch('check_cover_template.subprocess.check_output',return_value=xml(.412)):
             with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','0',720)
 
@@ -86,9 +92,27 @@ class WireframeModelTest(unittest.TestCase):
         self.assertEqual(info['space'],'3D')
         self.assertEqual(info['opaque_surface_cells'],36)
         self.assertEqual(info['shared_camera'],settings()['camera'])
-        self.assertIn('fill=ocBlack',text)
+        self.assertEqual(info['hidden_lines'],'depth-tested-before-glow')
+        self.assertEqual(info['glow'],'five-layer-vector-radiance')
         self.assertNotIn('includegraphics',text)
         self.assertNotIn('node[',text)
+
+    def test_glow_cannot_restore_occluded_rear_wire(self):
+        scene=Scene([[(-1,-1,1),(1,-1,1),(1,1,1),(-1,1,1),(-1,-1,1)],
+                     [(-.5,0,0),(.5,0,0)]],faces=[0])
+        segments,_=visible_edges(scene,lambda p:(10+10*p[0],10+10*p[1]),lambda p:p[2])
+        self.assertTrue(segments)
+        self.assertTrue(all(p[2]==1 for curve in segments for p in curve))
+
+    def test_chance_and_machinery_have_distinct_open_silhouettes(self):
+        galton=galton_lattice()
+        self.assertEqual(len(galton.faces),55)
+        # Galton's lattice is a branching triangle, not the former Gaussian-like hill.
+        self.assertGreater(max(p[2] for c in galton for p in c),1.3)
+        saddle=projection_saddle()
+        self.assertTrue(saddle.faces)
+        self.assertLess(min(p[2] for c in saddle for p in c),0)
+        self.assertGreater(max(p[2] for c in saddle for p in c),.6)
 
     def test_symmetry_illustration_is_one_closed_icosahedral_mesh(self):
         scene=symmetry_mesh()

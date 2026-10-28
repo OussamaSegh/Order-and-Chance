@@ -1,3 +1,38 @@
+# Approved glow and subtitles below the title
+
+The author approved the glowing Volume-2 proof and its subtitle directly below
+Structures, then asked for both refinements across all nineteen books. This
+supersedes the earlier fixed-subtitle-position rule below. The approved generated
+proof is a visual reference; production covers retain their real vector typography
+and geometry rather than substituting a newly generated full-cover bitmap.
+
+Subtitles now follow the last title line with the reference gap. Two-line titles
+keep Volume 0's original baseline (source y=632.36); one-line titles move up by one
+49.5 pt title leading. Font, size, tracking and alignment remain identical. The
+single master generates these baselines, and the PDF checker validates each one.
+
+All eighteen native illustrations use five layers of soft coral vector radiance,
+with bright warm cores on upper wires and restrained fading toward the lower
+mesh. Deduplicated edges are depth-tested before lighting, so hidden rear wires
+cannot reappear in the halo pass. The depth buffer is a geometry calculation only;
+no bitmap is included in the exported illustration. Volume 0's traced Gaussian
+stays unchanged. Complete silhouettes and halos fit inside the common art window.
+
+Chance replaces its Gaussian-like surface with a Galton branching lattice feeding
+exact binomial probability columns. Machinery replaces the repeated torus with a
+saddle patch in orthogonal principal coordinates of an indefinite quadratic form,
+inspired by the Hilbert-space chapter. Mathematical data and source evidence are
+recorded in the art manifest. The two new silhouettes distinguish them from
+Mathematical Maturity and Arithmetic respectively. The Research Workshop tree now shows seven generations in space-time, keeping its branching structure legible instead of projecting a tangled spatial bundle.
+
+Both cover formats, EPUB/eBook images, HTML readers and the public library render
+the same updated source. Back-copy layout, all body content and approved Version C
+interior typography remain unchanged. Premium-colour 7 by 10 inch trim, outside
+bleed, actual-manuscript spines and the native >=300 ppi paper preflight are retained.
+Review proofs are under build/glow-review; baseline pulled before editing: 3259d46. Local verification: all 60 publishing tests pass, all nineteen vector front proofs pass the shared font/subtitle/identity checks, and the Volume 2 and Machinery wraps pass 360 ppi paper, embedded-font, visible-frame, copy and actual-manuscript geometry checks (379 and 76 print pages). The contact sheet and full vector fronts were visually inspected; the final library build will repeat the complete checks before publication.
+
+---
+
 # One locked Volume-0 master
 
 The author requires every cover to have the same typography, positions, colours,

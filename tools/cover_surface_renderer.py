@@ -1,6 +1,62 @@
-"""Render every world-space model with the same camera and fine coral material."""
+"""Hidden-line 3D geometry with soft, layered coral vector radiance.
+
+The depth buffer only finds visible wires. Exported covers contain vector paths,
+never a depth-buffer bitmap or a raster glow effect.
+"""
 import math
+from collections import defaultdict
 from series_cover import settings
+
+
+def visible_edges(curves, screen, depth):
+    """Remove rear wires before lighting, so halos cannot reveal hidden faces."""
+    import numpy as np
+    faces=getattr(curves,'faces',set())
+    all_points=[screen(p) for curve in curves for p in curve]
+    x0=math.floor(min(p[0] for p in all_points))-3
+    y0=math.floor(min(p[1] for p in all_points))-3
+    width=math.ceil(max(p[0] for p in all_points))-x0+4
+    height=math.ceil(max(p[1] for p in all_points))-y0+4
+    buffer=np.full((height,width),-np.inf)
+    for index in faces:
+        world=curves[index][:-1]
+        if len(world)<3:continue
+        center=tuple(sum(p[d] for p in world)/len(world) for d in range(3))
+        for a,b in zip(world,world[1:]+world[:1]):
+            tri=[(*screen(p),depth(p)) for p in (center,a,b)]
+            (ax,ay,az),(bx,by,bz),(cx,cy,cz)=tri
+            denominator=(by-cy)*(ax-cx)+(cx-bx)*(ay-cy)
+            if abs(denominator)<1e-8:continue
+            left=max(0,math.floor(min(ax,bx,cx))-x0);right=min(width-1,math.ceil(max(ax,bx,cx))-x0)
+            top=max(0,math.floor(min(ay,by,cy))-y0);bottom=min(height-1,math.ceil(max(ay,by,cy))-y0)
+            if left>right or top>bottom:continue
+            xx,yy=np.meshgrid(np.arange(left,right+1)+x0,np.arange(top,bottom+1)+y0)
+            aa=((by-cy)*(xx-cx)+(cx-bx)*(yy-cy))/denominator
+            bb=((cy-ay)*(xx-cx)+(ax-cx)*(yy-cy))/denominator;cc=1-aa-bb
+            inside=(aa>=-1e-8)&(bb>=-1e-8)&(cc>=-1e-8)
+            tile=buffer[top:bottom+1,left:right+1]
+            np.maximum(tile,np.where(inside,aa*az+bb*bz+cc*cz,-np.inf),out=tile)
+    # Adjacent cells share wires. Emit each edge once, avoiding hot seams.
+    edges={}
+    for curve in curves:
+        for a,b in zip(curve,curve[1:]):
+            key=tuple(sorted(tuple(round(v,7) for v in p) for p in (a,b)))
+            if key[0]!=key[1]:edges[key]=(a,b)
+    visible=[]
+    for a,b in edges.values():
+        sa,sb=screen(a),screen(b)
+        count=max(1,math.ceil(math.dist(sa,sb)/2));run=[]
+        for k in range(count+1):
+            t=k/count;p=tuple((1-t)*a[d]+t*b[d] for d in range(3));x,y=screen(p)
+            ix=min(width-1,max(0,round(x)-x0));iy=min(height-1,max(0,round(y)-y0))
+            nearest=float(buffer[iy,ix])
+            shown=not math.isfinite(nearest) or depth(p)>=nearest-.025
+            if shown:run.append(p)
+            else:
+                if len(run)>1:visible.append(run)
+                run=[]
+        if len(run)>1:visible.append(run)
+    return visible,len(edges)
 
 
 def render(curves, data=None):
@@ -10,49 +66,52 @@ def render(curves, data=None):
     points=[p for curve in curves for p in curve]
     if not points or any(len(p)!=3 or not all(math.isfinite(v) for v in p) for p in points):
         raise ValueError('A cover illustration must be one finite world-space 3D model')
-    ys=[project(p)[1] for p in points];lo,hi=min(ys),max(ys)
-    scale=min(1.,data['art_height_px']/max(1.,hi-lo))
-    mid=(lo+hi)/2
+    projected=[project(p) for p in points]
+    ys=[p[1] for p in projected];lo,hi=min(ys),max(ys)
+    xs=[p[0] for p in projected];left,right=min(xs),max(xs)
+    clip=data['art_clip_px'];padding=10
+    scale=min(1.,(data['art_height_px']-2*padding)/max(1.,hi-lo),
+              (clip[2]-clip[0]-2*padding)/max(1.,right-left));mid=(lo+hi)/2
+    # Keep every complete silhouette inside the shared window, including the halo.
+    minx=origin[0]+scale*(left-origin[0]);maxx=origin[0]+scale*(right-origin[0])
+    shiftx=max(clip[0]+padding-minx,min(0.,clip[2]-padding-maxx))
     def screen(p):
         x,y=project(p)
-        return origin[0]+scale*(x-origin[0]),data['art_center_y_px']+scale*(y-mid)
+        return origin[0]+scale*(x-origin[0])+shiftx,data['art_center_y_px']+scale*(y-mid)
+    normal=(camera[0][1]*camera[1][2]-camera[0][2]*camera[1][1],
+            camera[0][2]*camera[1][0]-camera[0][0]*camera[1][2],
+            camera[0][0]*camera[1][1]-camera[0][1]*camera[1][0])
+    normal=tuple(v/max(abs(k) for k in normal) for v in normal)
+    depth=lambda p:sum(a*b for a,b in zip(p,normal))
+    edges,unique=visible_edges(curves,screen,depth)
     minz=min(p[2] for p in points);maxz=max(p[2] for p in points)
-    crown=[screen(p) for p in points if p[2]>=maxz-.03*(maxz-minz)]
-    focus=(sum(p[0] for p in crown)/len(crown),sum(p[1] for p in crown)/len(crown))
-    commands=[];glows=[];segments=0
-    # Fine contours and a local bloom at the crown, rather than uniform neon tubes.
-    ordered=sorted(enumerate(curves),key=lambda item:sum(p[0]+p[1]+.606*p[2] for p in item[1])/len(item[1]))
-    for index,curve in ordered:
-        face=index in getattr(curves,'faces',set())
-        pieces=[curve] if face else [curve[start:start+11] for start in range(0,len(curve)-1,10)]
-        for segment in pieces:
-            meanz=sum(p[2] for p in segment)/len(segment)
-            z=(meanz+max(p[2] for p in segment))/2
-            height=max(0.,min(1.,(z-minz)/(maxz-minz or 1)))
-            xy=[screen(p) for p in segment];x=sum(p[0] for p in xy)/len(xy);y=sum(p[1] for p in xy)/len(xy)
-            hot=max(0.,(height-.45)/.55)**1.8*math.exp(-((x-focus[0])/210)**2-((y-focus[1])/150)**2)
-            rgb=[round((1-hot)*a+hot*b) for a,b in zip(material['coral'],material['highlight'])]
-            color='{rgb,255:red,%d;green,%d;blue,%d}'%tuple(rgb)
-            depth=max(0.,min(1.,(sum(p[0]+p[1] for p in segment)/len(segment)+2)/4))
-            opacity=min(.99,(.55+.45*math.sqrt(height))*(.80+.20*depth)+.12*hot)
-            width=material['line_width_pt']+(material['highlight_line_width_pt']-material['line_width_pt'])*hot
-            options=f'draw={color},draw opacity={opacity:.3f},line width={width:.3f}pt,line cap=round,line join=round'
-            path='--'.join(f'({x*6/1050:.5f}in,{(1500-y)*6/1050:.5f}in)' for x,y in xy)
-            if face:
-                # Opaque surface cells hide rear grid lines, as in the reference.
-                commands.append('\\filldraw[fill=ocBlack,fill opacity=1,'+options+'] '+path+'--cycle;')
-            else:commands.append('\\draw['+options+'] '+path+';')
-            if hot>.15:
-                halo=(f'draw={color},line width={width:.3f}pt,draw opacity={hot:.3f},'
-                      f'preaction={{draw=ocCoverCoral,line width={material["glow_width_pt"]}pt,'
-                      f'draw opacity={.18*hot:.3f}}},preaction={{draw=ocCoverLight,'
-                      f'line width={material["glow_inner_width_pt"]}pt,draw opacity={.65*hot:.3f}}}')
-                # Bloom is a final vector pass, so adjacent dark cells cannot erase it.
-                glows.append('\\draw['+halo+'] '+path+';')
-            segments+=1
-    commands+=glows
+    groups=defaultdict(list)
+    for segment in edges:
+        z=sum(p[2] for p in segment)/len(segment)
+        height=max(0.,min(1.,(z-minz)/(maxz-minz or 1)))
+        band=round(height*20)
+        xy=[screen(segment[0]),screen(segment[-1])]
+        groups[band].append('--'.join(f'({x*6/1050:.5f}in,{(1500-y)*6/1050:.5f}in)' for x,y in xy))
+    commands=['% Visible wires only; soft halo layers stay vector paths.']
+    # Broad soft layers first, followed by narrower halos and sharp light cores.
+    for width_factor,alpha in ((1.65,.025),(1.,.055),(.56,.12)):
+        for band,paths in sorted(groups.items()):
+            h=band/20;strength=.26+.74*h**1.7
+            options=f'draw=ocCoverCoral,line width={material["glow_width_pt"]*width_factor:.3f}pt,draw opacity={alpha*strength:.4f}'
+            commands.append('\\draw['+options+',line cap=round,line join=round] '+' '.join(paths)+';')
+    for band,paths in sorted(groups.items()):
+        h=band/20;hot=h**3;strength=.26+.74*h**1.7
+        options=f'draw=ocCoverLight,line width={material["glow_inner_width_pt"]:.3f}pt,draw opacity={.33*strength:.4f}'
+        commands.append('\\draw['+options+',line cap=round,line join=round] '+' '.join(paths)+';')
+        rgb=[round((1-hot)*a+hot*b) for a,b in zip(material['coral'],material['highlight'])]
+        color='{rgb,255:red,%d;green,%d;blue,%d}'%tuple(rgb)
+        width=material['line_width_pt']+(material['highlight_line_width_pt']-material['line_width_pt'])*hot
+        options=f'draw={color},line width={width:.3f}pt,draw opacity={.68+.32*math.sqrt(h):.4f}'
+        commands.append('\\draw['+options+',line cap=round,line join=round] '+' '.join(paths)+';')
     metadata={'space':'3D','world_curves':len(curves),'world_points':len(points),
               'opaque_surface_cells':len(getattr(curves,'faces',())),
-              'rendered_segments':segments,'shared_camera':camera,'shared_material':material,
+              'unique_world_edges':unique,'visible_wire_segments':len(edges),
+              'rendered_segments':len(edges),'shared_camera':camera,'shared_material':material,
+              'glow':'five-layer-vector-radiance','hidden_lines':'depth-tested-before-glow',
               'model_z_range':[minz,maxz],'uniform_fit_scale':scale}
     return '\n'.join(commands)+'\n',metadata

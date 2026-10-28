@@ -90,7 +90,7 @@ three stages of the main sequence.
 
 The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
 matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
-frame, and one substantial mathematical illustration per book. All nineteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, fixed subtitle position and one 3D coral illustration per book. The slogan
+frame, and one substantial mathematical illustration per book. All nineteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
 charcoal Inter headings, coral accents and pale boxes with thin coral rules.

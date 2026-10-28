@@ -10,7 +10,7 @@ ROOT=Path(__file__).resolve().parent.parent
 PLATES = {'tome0-mathematical-maturity': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
  'tome1-integers': 'ch02-primes.tex',
  'tome2-structures': 'ch11-characters.tex; ch12-quaternions.tex',
- 'tome3-chance': 'ch02-discrete.tex; ch06-clt.tex',
+ 'tome3-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
  'tome4-calculation': 'ch06-fourier.tex',
  'tome5-meets': 'ch06-zeros.tex',
  'tome6-spaces': 'ch11-metricmeasures.tex',
@@ -31,7 +31,7 @@ def main():
     import hashlib,json
     from cover_surfaces import model
     from cover_surface_renderer import render
-    from series_cover import settings,tex_source,check_titles
+    from series_cover import settings,tex_source,check_titles,subtitle_cap_top
     from series_metadata import main as sync_metadata
     sync_metadata()
     (ROOT/'tools/cover-template.tex').write_text(tex_source())
@@ -42,7 +42,7 @@ def main():
       '0':'Approved Gaussian wireframe surface',
       '1':'Ulam prime lattice as raised wire pyramids',
       '2':'Icosahedral symmetry as a triangulated 3D wireframe',
-      '3':'Joint binomial probability surface',
+      '3':'Galton branching lattice feeding exact binomial probability columns',
       '4':'Fourier partial-sum surface and Gibbs ridges',
       '5':'Riemann zeta modulus landscape',
       '6':'Extruded Sierpinski carpet',
@@ -54,9 +54,9 @@ def main():
       '12':'Elliptic-curve complex torus',
       '13':'Normalised prime-counting error surface',
       '14':'Phase projections of a Steinhaus multiplicative walk',
-      '15':'Spatial branching random walk',
+      '15':'Space-time genealogy of a branching random walk',
       'P1':'Gaussian prime lattice as raised wire pyramids',
-      'P2':'Irrational winding on a torus',
+      'P2':'Orthogonal-coordinate saddle: a symmetric quadratic-form projection',
       'P3':'Scaled binomial probability surfaces approaching the Gaussian'
     }
     for book,evidence in PLATES.items():
@@ -83,5 +83,7 @@ def main():
     hashes={name:hashlib.sha256((ROOT/name).read_bytes()).hexdigest() for name in files}
     (ROOT/'tools/assets/series/manifest.json').write_text(json.dumps({'schema':1,
         'master':'Volume 0','variable_fields':['title','subtitle','volume number','illustration'],
-        'files':hashes,'subtitle_top_source_px':600,'artwork':manifest},indent=2)+'\n')
+        'files':hashes,'subtitle_placement':'below-last-title-line',
+        'subtitle_cap_top_source_px':{n:subtitle_cap_top(n) for n in check_titles()},
+        'artwork':manifest},indent=2)+'\n')
 if __name__=='__main__':main()

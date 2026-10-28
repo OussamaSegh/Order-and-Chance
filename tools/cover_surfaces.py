@@ -111,6 +111,43 @@ def binomial(n, x, p=.5):
     return math.exp(math.lgamma(n+1)-math.lgamma(x+1)-math.lgamma(n-x+1)+x*math.log(p)+(n-x)*math.log1p(-p))
 
 
+def galton_lattice(n=10):
+    """A shallow 3D Pascal lattice feeding exact binomial probability columns."""
+    curves=Scene()
+    def point(row,k,back=0):
+        u=.92*(2*k-row)/n
+        return u/math.sqrt(2)+back,-u/math.sqrt(2)+back,1.35-1.15*row/n
+    for row in range(n):
+        for k in range(row+1):
+            for child in (k,k+1):
+                curves.append([point(row,k),point(row+1,child)])
+                curves.append([point(row,k,.14),point(row+1,child,.14)])
+    for row in range(n+1):
+        for k in range(row+1):curves.append([point(row,k),point(row,k,.14)])
+    peak=binomial(n,n//2)
+    for k in range(n+1):
+        u=.92*(2*k-n)/n;h=.52*binomial(n,k)/peak
+        def p(du,d,z):return ((u+du)/math.sqrt(2)+d,-(u+du)/math.sqrt(2)+d,z)
+        base=[p(-.065,0,-.55),p(.065,0,-.55),p(.065,.14,-.55),p(-.065,.14,-.55)]
+        top=[(x,y,z+h) for x,y,z in base]
+        for i in range(4):
+            j=(i+1)%4
+            curves.faces.add(len(curves));curves.append([base[i],base[j],top[j],top[i],base[i]])
+        curves.faces.add(len(curves));curves.append(top+[top[0]])
+        curves.append([point(n,k),p(0,0,-.55+h)])
+    return curves
+
+
+def projection_saddle():
+    """An indefinite quadratic-form patch in orthogonal principal coordinates."""
+    # Orthogonal principal axes of the indefinite quadratic form u^2-v^2.
+    def point(a,b):
+        u,v=2*a-1,2*b-1
+        x,y=(u+v)/math.sqrt(2),(v-u)/math.sqrt(2)
+        return .65*x,.65*y,.46*(u*u-v*v)+.18
+    return parametric_mesh(point,n=35)
+
+
 def zeta(s):
     n=40
     value=sum(k**-s for k in range(1,n+1))+n**(1-s)/(s-1)-n**-s/2
@@ -227,22 +264,24 @@ def steinhaus_surface():
 
 
 def branching_tree():
-    rng=random.Random(202615);level=[(0.,-1.,0.)];edges=[]
-    for generation in range(1,10):
+    # Show genealogy in space-time, rather than flattening 1,022 spatial edges
+    # into a tangled bundle. All siblings and the random increments remain.
+    rng=random.Random(202615);level=[(0.,0.,1.2)];edges=[]
+    for generation in range(1,8):
         following=[]
         for x,y,z in level:
-            for _ in range(2):
-                q=(x+rng.gauss(0,.13),-1+2*generation/9,z+rng.gauss(0,.10))
+            for direction in (-1,1):
+                q=(x+direction*.16+rng.gauss(0,.055),y+rng.gauss(0,.12),1.2-1.3*generation/7)
                 edges.append([(x,y,z),q]);following.append(q)
         level=following
-    return [[(x,y,z+.2) for x,y,z in edge] for edge in edges]
+    return edges
 
 
 def model(number):
     number=str(number)
     if number=='1':return prime_lattice()
     if number=='2':return symmetry_mesh()
-    if number=='3':return height_mesh(lambda x,y:binomial(12,(x+1)*6,.55)*binomial(12,(y+1)*6,.45))
+    if number=='3':return galton_lattice()
     if number=='4':
         return height_mesh(lambda x,y:sum(math.sin((2*k+1)*math.pi*x)/(2*k+1) for k in range(1+int((y+1)*7))))
     if number=='5':return height_mesh(lambda x,y:math.log1p(abs(zeta(complex(.2+(x+1)*.5,10+(y+1)*12.5)))))
@@ -261,7 +300,7 @@ def model(number):
     if number=='14':return steinhaus_surface()
     if number=='15':return branching_tree()
     if number=='P1':return prime_lattice(gaussian=True)
-    if number=='P2':return torus(winding=True)
+    if number=='P2':return projection_saddle()
     if number=='P3':
         def clt(x,y):
             n=round(8*2**(2*(y+1)));sigma=math.sqrt(n)/2

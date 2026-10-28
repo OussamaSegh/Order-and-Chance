@@ -74,3 +74,13 @@ face lives in `tools/assets/fonts/Inter-Bold.ttf`, separately from version C's
 heading faces in `common/fonts/`. Shared build/cache files retain both validation
 sets. Original approval PNGs stay archived, and every current format renders the
 one common cover template. Fresh version-C manuscript pages determine spines.
+
+## Subsequent approved glow and subtitle refinement
+
+The author now requests subtitles directly below the last title line rather than
+at a fixed vertical position, and approves stronger soft coral glow across the
+series. Cover rendering now exports deduplicated visible wires with five layers of
+vector radiance. Chance and Machinery receive distinct mathematical silhouettes.
+Interior content, Version C typography, premium-colour settings and actual-page
+spine derivation are unchanged. Keep the title-relative PDF checks and existing
+print/font/layout/navigation gates together. Baseline main was 3259d46.

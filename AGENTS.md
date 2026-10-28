@@ -2,6 +2,30 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Latest refinement: glowing artwork and title-relative subtitles
+
+The author approved the luminous Volume-2 preview and then explicitly changed the
+subtitle rule: each subtitle belongs directly below its own title. This supersedes
+the earlier demand for a fixed y=600 subtitle in every volume. Keep the same fonts,
+sizes and left margin. A two-line title retains Volume 0's baseline; a one-line
+title moves its subtitle up exactly one title leading. The generated macro and PDF
+checker use the same title-relative rule, without per-book offsets or autosizing.
+
+Apply the approved soft coral halo, warm cream cores and fading body wires to all
+native 3D illustrations. Volume 0 retains its approved Gaussian reference. The
+shared renderer depth-tests and deduplicates wires before exporting five layers of
+vector radiance: broad faint halos through sharp warm cores. It must not restore
+hidden rear edges or rasterize artwork. Fit complete silhouettes and their halos
+inside the common illustration viewport.
+
+Chance now uses a shallow Galton/Pascal lattice feeding exact binomial columns,
+replacing its Gaussian-like hill. Machinery uses an orthogonal-coordinate saddle
+from a symmetric quadratic form, replacing its near-duplicate arithmetic torus.
+The rest of the cover typography, identity and all interior content stay intact.
+Research Workshop uses a legible seven-generation space-time branching tree instead
+of the earlier dense spatial bundle. Its mathematical subject is retained.
+
+
 ## Latest decision: one locked Volume-0 master for all 19 covers
 
 The author now requires **100% series coherence**, with only the title (including

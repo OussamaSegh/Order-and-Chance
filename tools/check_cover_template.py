@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 from pypdf import PdfReader
-from series_cover import ROOT, settings, check_sync, check_titles, sha
+from series_cover import ROOT, settings, check_sync, check_titles, sha, subtitle_baseline, subtitle_cap_top
 from series_metadata import subtitle
 
 
@@ -38,6 +38,9 @@ def check_assets(number):
     if art['space']!='3D':raise ValueError('Every cover needs one world-space 3D illustration')
     if str(number)!='0' and (art['shared_camera']!=data['camera'] or art['shared_material']!=data['material']):
         raise ValueError('A volume overrides the common camera or wireframe material')
+    if str(number)!='0' and (art.get('glow')!='five-layer-vector-radiance'
+                            or art.get('hidden_lines')!='depth-tested-before-glow'):
+        raise ValueError('A volume bypasses the approved luminous wireframe treatment')
     return data
 
 
@@ -58,9 +61,10 @@ def check_subtitle(path,number,height):
     for i in range(len(words)-len(expected)+1):
         if [''.join(e.itertext()) for e in words[i:i+len(expected)]]==expected:
             top=float(words[i].attrib['yMin'])/height
-            # Font ascent boxes begin just above the visible 40%-height cap line.
-            if abs(top-.3928264)>.0001:
-                raise ValueError(f'Volume {number}: subtitle moved from the Volume-0 anchor')
+            # Same font ascent and gap; a one-line title moves the subtitle up one leading.
+            expected_top=.3928264+(subtitle_baseline(number)-settings()['subtitle_baseline_source_px'])/1500
+            if abs(top-expected_top)>.0001:
+                raise ValueError(f'Volume {number}: subtitle moved from the shared title-relative anchor')
             return
     raise ValueError(f'Volume {number}: missing complete subtitle')
 
@@ -86,8 +90,8 @@ def check(path,number,cover_png=None,epub=None,reader=None):
                 item=next(e for e in tree.findall('.//{http://www.idpf.org/2007/opf}item') if 'cover-image' in e.attrib.get('properties','').split())
                 name=posixpath.normpath(posixpath.join(posixpath.dirname(opf),item.attrib['href']))
                 if z.read(name)!=pixels:raise ValueError('EPUB still uses a different cover master')
-    print(f'PASS shared cover master, Volume {number}: fixed bold type, fixed subtitle anchor, identical common identity.')
-    return {'fixed_template':True,'subtitle_anchor_source_px':600,'identity':'Volume 0','space':'3D'}
+    print(f'PASS shared cover master, Volume {number}: fixed bold type, subtitle below title, identical common identity.')
+    return {'fixed_template':True,'subtitle_cap_top_source_px':subtitle_cap_top(number),'identity':'Volume 0','space':'3D'}
 
 
 if __name__=='__main__':

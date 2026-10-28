@@ -29,7 +29,23 @@ def tex_source():
     for prefix,key in [('NUM','number'),('TITLE','title'),('SUB','subtitle')]:
         value=1-data[key+'_baseline_source_px']/1500
         text+='\\def\\COVER'+prefix+'BASE{'+str(value)+'}\n'
+    for number,lines in check_titles().items():
+        baseline=subtitle_baseline(number, len(lines))
+        text+='\\expandafter\\def\\csname ocSubBase@'+number+'\\endcsname{'+str(1-baseline/1500)+'}\n'
+    text+='\\def\\coversubtitlebase#1{\\csname ocSubBase@#1\\endcsname}\n'
     return text
+
+
+def subtitle_baseline(number, line_count=None):
+    """Keep the reference gap below the last title line, including one-line titles."""
+    data=settings()
+    if line_count is None:line_count=len(check_titles()[str(number)])
+    leading_px=data['title_leading_pt']*175/72.27
+    return data['subtitle_baseline_source_px']-(2-line_count)*leading_px
+
+
+def subtitle_cap_top(number):
+    return subtitle_baseline(number)-(settings()['subtitle_baseline_source_px']-600)
 
 
 def check_sync():
