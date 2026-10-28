@@ -14,8 +14,8 @@ All 205 original labels and all 97 original exercises/hints/solutions must survi
 | ch08-continued-fractions | Chapter 8, all retained; uniqueness demonstration becomes available before periodicity as well as in its exercise. |
 | ch09-diophantine | Chapter 9, all retained and grouped by methods. |
 | ch10-gaussian-eisenstein | Chapter 10, three original rings and cubic Fermat descent retained. |
-| ch11-algebraic, through units | Chapter 11 in original filename, plus original ringint/goldenunit/sqrt10 exercises and their complete triples. |
-| ch11-algebraic, from Kummer ideals onward | New ch12-ideals.tex, including all five other original exercises and complete triples, all ideal theorems and figures. |
+| ch11-algebraic, through units | Chapter 11 in original filename, plus original ringint/goldenunit exercises and their complete triples. |
+| ch11-algebraic, from Kummer ideals onward | New ch12-ideals.tex, including all six other original exercises (sqrt10 remains here because its conclusion uses the class number) and complete triples, all ideal theorems and figures. |
 | ch12-padic | Original filename, chapter 13; construction and foundational explanations strengthened. |
 | preface, field-guide | Updated in place; historical credits and valid references retained. |
 | all figures/photos | Retain paths and bytes unless a documented mathematical correction requires a specific change. |
