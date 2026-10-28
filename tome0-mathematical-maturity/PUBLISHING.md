@@ -40,6 +40,6 @@ the accurate AI-content disclosures required by KDP (see `../tools/PUBLISHING.md
 No KDP upload, release publication or Pages deployment is performed by local validation.
 The current reconstruction reports and numbering concordance are in
 `../review/volume0-reconstruction/`. Earlier review logs describe historical
-outputs and must not supply page counts for a new wrap. This reconstruction
-validates PDFs and source; EPUB/reader regeneration is a separate unexecuted
-check for this revised manuscript.
+outputs and must not supply page counts for a new wrap. The subsequent digital follow-up
+validated the complete EPUB with EPUBCheck and checked HTML resources, numbering,
+mathematics and browser controls; see DIGITAL-VALIDATION.md in that directory.

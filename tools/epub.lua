@@ -3,8 +3,9 @@
 local chapter = 0
 local chapter_label = 0
 local appendix = false
+local manual_chapters = false
 local appendix_chapter = 0
-local appendix_refs = {}
+local structural_refs = {}
 local sections = {}
 local exnum = {}      -- label -> "c.n"
 local count = 0
@@ -47,6 +48,10 @@ local function number_pass(doc)
   for i, b in ipairs(doc.blocks) do
     if b.t == "Div" and b.classes:includes("ocappendices") then
       appendix = true
+    elseif b.t == "Div" and b.classes:includes("occhaptercounter") then
+      chapter = assert(tonumber(pandoc.utils.stringify(b.content)), "Invalid chapter counter")
+      chapter_label = chapter
+      manual_chapters = true
     elseif b.t == "Header" and b.level == 1 and not b.classes:includes("unnumbered") then
       chapter = chapter + 1
       chapter_label = chapter
@@ -54,20 +59,25 @@ local function number_pass(doc)
         appendix_chapter = appendix_chapter + 1
         chapter_label = string.char(64 + appendix_chapter)
         sections = {}
-        appendix_refs[b.identifier] = chapter_label
+        structural_refs[b.identifier] = chapter_label
         b.classes:insert("unnumbered")
         b.content:insert(1, pandoc.Str("Appendix " .. chapter_label .. ": "))
+      elseif manual_chapters then
+        sections = {}
+        structural_refs[b.identifier] = tostring(chapter_label)
+        b.classes:insert("unnumbered")
+        b.content:insert(1, pandoc.Str(chapter_label .. " "))
       end
       count = 0
       figcount = 0
       eqcount = 0
-    elseif appendix and b.t == "Header" and b.level > 1 and not b.classes:includes("unnumbered") then
+    elseif (appendix or manual_chapters) and b.t == "Header" and b.level > 1 and not b.classes:includes("unnumbered") then
       local level = b.level
       sections[level] = (sections[level] or 0) + 1
       for deeper = level + 1, 6 do sections[deeper] = nil end
       local n = chapter_label
       for depth = 2, level do n = n .. "." .. (sections[depth] or 0) end
-      appendix_refs[b.identifier] = n
+      structural_refs[b.identifier] = n
       b.classes:insert("unnumbered")
       b.content:insert(1, pandoc.Str(n .. " "))
     elseif b.t == "Div" and b.classes:includes("exercise") then
@@ -77,7 +87,7 @@ local function number_pass(doc)
       b.attributes["number"] = n
       if l then exnum[l] = n end
     end
-    if appendix and b.t == "Div" then
+    if (appendix or manual_chapters) and b.t == "Div" then
       local numbered = {theorem=true, proposition=true, lemma=true, corollary=true, definition=true, example=true}
       for _, cls in ipairs(b.classes) do
         if numbered[cls] then
@@ -87,7 +97,7 @@ local function number_pass(doc)
             local n = value:match("(%d+%.%d+)$")
             if n then
               n = n:gsub("^%d+", chapter_label)
-              appendix_refs[b.identifier] = n
+              structural_refs[b.identifier] = n
               title.content = {pandoc.Str(value:gsub("%d+%.%d+$", n))}
             end
           end
@@ -101,6 +111,7 @@ local function number_pass(doc)
         if not l then return nil end
         eqcount = eqcount + 1
         eqnum[l] = chapter_label .. "." .. eqcount
+        if chapter_label == 0 then eqnum[l] = tostring(eqcount) end
         m.text = m.text:gsub("\\label{[^}]*}", "", 1)
         if FORMAT:match("html") then  -- the online reader (KaTeX)
           m.text = m.text .. "\\tag{" .. eqnum[l] .. "}"
@@ -115,6 +126,8 @@ local function number_pass(doc)
     if b.t == "Figure" then
       figcount = figcount + 1
       local n = chapter_label .. "." .. figcount
+      -- book.cls omits the chapter prefix for figures in Chapter 0.
+      if chapter_label == 0 then n = tostring(figcount) end
       b.attributes["number"] = n
       if b.identifier ~= "" then fignum[b.identifier] = n end
     end
@@ -127,7 +140,7 @@ local unnumbered = { remark = true, theoremx = true, propositionx = true, lemmax
 
 local function rewrite(b)
   if b.t ~= "Div" then return nil end
-  if b.classes:includes("ocappendices") then return {} end
+  if b.classes:includes("ocappendices") or b.classes:includes("occhaptercounter") then return {} end
   for _, cls in ipairs(b.classes) do
     if unnumbered[cls] then
       local para = b.content[1]
@@ -216,7 +229,7 @@ local function fix_ref(el)
     return el
   end
   if el.attributes["reference-type"] == "ref" then
-    local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]] or appendix_refs[el.attributes["reference"]]
+    local n = exnum[el.attributes["reference"]] or fignum[el.attributes["reference"]] or structural_refs[el.attributes["reference"]]
     if n then
       el.content = { pandoc.Str(n) }
       el.target = "#" .. el.attributes["reference"]

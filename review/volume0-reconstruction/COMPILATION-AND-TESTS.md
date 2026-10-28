@@ -71,3 +71,11 @@ See `final-pdf-measurements.json`, `preservation-check.json`,
 `independent-example-results.json`, and `../TOME0-FACT-CHECK-RESULTS.json` for
 machine-readable evidence. No remote release or KDP upload is represented by a
 successful local build.
+
+## Subsequent digital validation
+
+The user subsequently requested EPUB/HTML validation and a push. This follow-up
+is complete locally; DIGITAL-VALIDATION.md records EPUBCheck, all references
+against the PDF, resource checks and actual browser rendering. Earlier statements
+above that these formats had not been validated describe Batch J at its original
+checkpoint, not the current delivery.

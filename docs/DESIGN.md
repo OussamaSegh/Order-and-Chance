@@ -711,3 +711,24 @@ standard package compatibility and underfull warnings remain disclosed. Other-
 volume citation compatibility, historical retrieval limits, unexecuted EPUB/reader
 validation and physical-proof limits are explicit. No release/Pages or KDP upload
 was performed by the mathematical reconstruction.
+
+## Volume 0 digital validation and requested push (28 October 2026)
+
+Following the mathematical reconstruction, the author requested EPUB/HTML
+validation and a push. Current main's approved cover work through 47132c3 was
+merged before the complete production build. The digital converter now preserves
+the Chapter-0 counter and all corresponding chapter/section/result/exercise
+references; chapter-zero figure/equation numbering follows book.cls. Plain hbox
+text is normalised for native MathML, avoiding four raw-TeX fallback formulas.
+Normal-book and alphabetic-appendix regression coverage is retained.
+
+The complete EPUB passes EPUBCheck 5.3.0 with zero messages. Both formats retain
+299 semantic labels, 155 exercise/hint/solution triples and all 508 explicit
+PDF-matched references. The assembled reader's local links/resources pass, and
+all fifteen pages render in Chromium at desktop and 320 px without formula
+errors or broken images; theme/menu/reveal controls and light/dark screenshots
+are checked. There are 310 reveal controls and 11,817 rendered formula occurrences.
+All 67 integrated publishing tests pass. Exact evidence and remaining verification
+limits are in review/volume0-reconstruction/DIGITAL-VALIDATION.md. The user
+explicitly authorised pushing this revision; verify the exact main build and
+publication run before reporting a successful deployment.

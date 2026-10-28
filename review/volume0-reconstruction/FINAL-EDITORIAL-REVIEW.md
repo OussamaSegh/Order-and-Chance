@@ -47,6 +47,7 @@ now printed in the preface.
 This is a substantive, reviewed local revision, not a certification of perfection.
 The explicit follow-up limits are in OUTSTANDING-ISSUES.md: coordinated numeric
 citations in other volumes, comprehensive historical proofread, physical proof,
-and unexecuted EPUB/reader validation. None is silently counted as a completed
+and device-specific proofing. The subsequent EPUB/HTML validation is recorded
+in DIGITAL-VALIDATION.md. None is silently counted as a completed
 check. The final PDF/source deliverables, recoverable batch tags and test logs make
 the revision concrete and reviewable.

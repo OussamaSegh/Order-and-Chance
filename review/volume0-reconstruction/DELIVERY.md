@@ -8,6 +8,10 @@ numbered page 283 after 12 roman front-matter pages.
 
 ## Final files
 
+- [Validated EPUB](/workspace/Order-and-Chance/dist/tome0-mathematical-maturity.epub)
+- [Validated HTML reader preview](/workspace/Order-and-Chance/build/digital-review/site/read/tome0-mathematical-maturity/index.html)
+- [EPUB/HTML validation follow-up](DIGITAL-VALIDATION.md)
+
 - [Complete reading PDF](/workspace/Order-and-Chance/dist/tome0-mathematical-maturity.pdf)
 - [Print interior](/workspace/Order-and-Chance/dist/kdp/tome0-mathematical-maturity-print.pdf)
 - [Matching print wrap](/workspace/Order-and-Chance/dist/kdp/tome0-mathematical-maturity-cover-wrap.pdf)
@@ -77,5 +81,6 @@ standard production checks. Archive validation verifies CRCs and source file con
 
 The next coordinated series task is to reconcile hardcoded numeric citations in
 other volumes using the concordance. Historical retrieval was targeted, not
-exhaustive; revised EPUB/HTML and a physical proof were not validated. These limits
-are recorded explicitly and were not counted as successful tests.
+exhaustive; a physical proof was not validated. Revised EPUB/HTML were subsequently
+built and validated as recorded in DIGITAL-VALIDATION.md. Remaining limits are
+recorded explicitly and were not counted as successful tests.

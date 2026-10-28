@@ -27,9 +27,11 @@ not a claim that the manuscript is error-free or formally verified.
    underfull paragraph warnings remain in logs. They are not silently described
    as a zero-warning build. Overflow, missing-glyph, undefined-reference and
    automatic display-shrink checks must be clean in the final build.
-5. **Formats and release.** This revision's final deliverables are PDF, source
-   and QA/editorial artifacts. The revised EPUB/HTML reader was not regenerated
-   or validated. No remote push, release/Pages publication or KDP upload occurred.
+5. **Formats and release.** The subsequent EPUB/HTML follow-up is complete;
+   see DIGITAL-VALIDATION.md for EPUBCheck, PDF-number concordance and browser
+   results. The user authorised pushing this validated revision. Remote build/
+   publication status must be verified for the exact pushed commit. KDP upload
+   remains a separate publisher action.
 6. **Length.** The volume is kept below the suggested page range when the added
    mathematics is complete; no filler was added to meet a quota. Final page counts
    are measured in the compilation report, including the distinction between

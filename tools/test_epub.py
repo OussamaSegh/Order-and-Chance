@@ -99,6 +99,55 @@ Appendix~\ref{ch:support}, Section~\ref{sec:support}.
         self.assertRegex(result.stdout, r'href="#ch:support"[^>]*>A</a>')
         self.assertNotIn("ocappendices", result.stdout)
 
+    def test_zero_based_chapters_keep_pdf_references_and_exercise_links(self):
+        source = r"""\documentclass{book}
+\newtheorem{theorem}{Theorem}[chapter]
+\begin{document}\setcounter{chapter}{-1}
+\chapter{Language}\label{ch:zero}
+\section{Statements}\label{sec:zero}
+\begin{equation}x=x\label{eq:zero}\end{equation}
+\begin{theorem}\label{thm:zero}A claim.\end{theorem}
+\begin{exercise}\label{ex:zero}A problem.\end{exercise}
+\begin{hint}{ex:zero}An idea.\end{hint}
+\begin{solution}{ex:zero}An argument.\end{solution}
+\begin{figure}\includegraphics{diagram.svg}\caption{A diagram.}\label{fig:zero}\end{figure}
+See Chapter~\ref{ch:zero}, Section~\ref{sec:zero}, Theorem~\ref{thm:zero},
+Exercise~\ref{ex:zero}, Figure~\ref{fig:zero}.
+See Equation~\eqref{eq:zero}.
+\chapter{Sums}\label{ch:one}
+\begin{theorem}\label{thm:one}Another claim.\end{theorem}
+\begin{exercise}\label{ex:one}Another problem.\end{exercise}
+\end{document}"""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(source)
+            epub_prep.main(str(root / "main.tex"), str(root / "epub.tex"), directory)
+            result = subprocess.run(
+                ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
+                 "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
+                capture_output=True, text=True, check=True)
+        for expected in ["0 Language", "0.1 Statements", "Theorem 0.1",
+                         "Exercise 0.1", "Hint for Exercise", "Solution of Exercise",
+                         "Figure 1.", "1 Sums", "Theorem 1.1", "Exercise 1.1"]:
+            self.assertIn(expected, result.stdout)
+        for label, number in [("ch:zero", "0"), ("sec:zero", "0.1"),
+                              ("thm:zero", "0.1"), ("fig:zero", "1")]:
+            self.assertRegex(result.stdout, 'href="#' + label + '"[^>]*>' + number.replace('.', r'\.') + '</a>')
+        self.assertNotIn("occhaptercounter", result.stdout)
+        self.assertNotIn("Theorem 2.1", result.stdout)
+        self.assertRegex(result.stdout, r'href="#eq:zero"[^>]*>\(1\)</a>')
+
+    def test_text_in_math_has_native_mathml(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root=Path(directory)
+            (root/'main.tex').write_text(r'\documentclass{book}\begin{document}$P\quad\hbox{and}\quad Q$\end{document}')
+            epub_prep.main(str(root/'main.tex'),str(root/'epub.tex'),directory)
+            result=subprocess.run(['pandoc',str(root/'epub.tex'),'-f','latex','-t','html5','--mathml'],
+                                  text=True,capture_output=True,check=True)
+        self.assertNotIn('Could not convert',result.stderr)
+        root = ET.fromstring(result.stdout)
+        self.assertEqual(root.find('.//{http://www.w3.org/1998/Math/MathML}mtext').text,'and')
+
     def test_portrait_alternative(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "main.tex"

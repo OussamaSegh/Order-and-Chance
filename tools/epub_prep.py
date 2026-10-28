@@ -53,6 +53,10 @@ def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
     # Pandoc drops \appendix; preserve the transition for the numbering filter.
     text = text.replace(r"\appendix", r"\begin{ocappendices}Appendices\end{ocappendices}")
+    # Pandoc ignores the book's chapter-counter reset (Volume 0 starts at zero).
+    # Preserve it for the same numbering pass that handles appendices.
+    text = re.sub(r"\\setcounter\{chapter\}\{(-?\d+)\}",
+                  r"\\begin{occhaptercounter}\1\\end{occhaptercounter}", text)
     text = text.replace("\\maketitle\n", copyright_section(Path(src)), 1)
     # A book may rename its exercises ("% exercise-name: Problem" in main.tex); tools/epub.lua reads the marker.
     name = re.search(r"^% exercise-name: (\w+)", text, re.M)
@@ -108,6 +112,9 @@ def main(src: str, dst: str, figdir: str) -> None:
     text = re.sub(r"\\[Bb]ig(g?)r(?![a-z])", r"\\right", text)
     text = re.sub(r"\\[dt]binom(?![a-z])", r"\\binom", text)
     text = re.sub(r"\\cfrac(?![a-z])", r"\\dfrac", text)
+    # Plain text inside mathematics: texmath supports \text, but not TeX's
+    # lower-level \hbox (otherwise entire formulas silently fall back to source).
+    text = re.sub(r"\\hbox(?=\{)", r"\\text", text)
     text = re.sub(r"\\(begin|end)\{psmallmatrix\}", r"\\\1{pmatrix}", text)
     # enumitem labels -> enumerate-package style, which pandoc understands
     text = text.replace(r"[label=(\alph*)]", "[(a)]").replace(r"[label=(\roman*)]", "[(i)]")
