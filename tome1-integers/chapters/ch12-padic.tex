@@ -9,7 +9,7 @@ In 1897 Kurt Hensel had an idea that looked like a joke: a polynomial can be exp
 powers of a prime $p$, and allow the expansion to go on forever? The result, the $p$-adic numbers, turned out to be no joke at all: they are now as basic
 to number theory as the real numbers, and the rule ``think about each prime separately, then glue'' runs through all of modern arithmetic.
 
-Fix a prime $p$. Chapters~3 and~6 taught us to solve equations modulo $p$, then modulo $p^2,p^3,\dots$ by Hensel's lemma. The $p$-adic numbers are what you get when you never stop: a $5$-adic integer is a coherent list of residues modulo $5,25,125,\dots$, just as a real number is a coherent list of decimal approximations. In this chapter we build them, compute with them, and see why there are no other ways to measure size on $\Q$.
+Fix a prime $p$. Chapter~\ref{ch:congruences} taught us to solve equations modulo $p$, then modulo $p^2,p^3,\dots$ by Hensel's lemma. The $p$-adic numbers are what you get when you never stop: a $5$-adic integer is a coherent list of residues modulo $5,25,125,\dots$, just as a real number is a coherent list of decimal approximations. In this chapter we build them, compute with them, and see why there are no other ways to measure size on $\Q$.
 
 \begin{reminder}[How to read an infinite digit string]
 We list $p$-adic digits starting at $p^0$, then $p^1$, then $p^2$.
@@ -107,6 +107,17 @@ A \emph{$p$-adic integer} is a sequence $x=(x_n)_{n\ge1}$ with $x_n\in\Z/p^n\Z$ 
 
 For each $x\in\Z_p$, let $m_n\in\{0,\dots,p^n-1\}$ represent $x_n$. Compatibility says $m_{n+1}=m_n+a_np^n$ with a \emph{digit} $a_n\in\{0,\dots,p-1\}$, so $x$ is the same thing as an infinite sequence of digits $a_0,a_1,a_2,\dots$, with $m_n=a_0+a_1p+\dots+a_{n-1}p^{n-1}$. We will justify the notation $x=\sum_{i\ge0}a_ip^i$ in a moment. The \emph{valuation} $v(x)$ of $x\ne0$ is the index of its first non-zero digit, that is, the largest $v$ with $x_v=0$ (and $v=0$ if $x_1\ne0$); set $|x|_p=p^{-v(x)}$ and $|0|_p=0$. For $x\in\Z$ this is the old $v_p$, because $x_n=0$ means $p^n\mid x$.
 
+A sequence is \emph{Cauchy} if for every $\epsilon>0$ its sufficiently
+late terms have pairwise distance less than $\epsilon$; it converges to $x$
+if its distance from $x$ tends to zero. A space is \emph{complete} when
+every Cauchy sequence has a limit in the space. These are the same definitions
+as over $\R$, with the declared metric replacing ordinary distance.
+
+For clarity, \emph{compact} means that every cover by open sets has a finite
+subcover. A set is open when each of its points has a sufficiently small
+metric ball contained in it. We will prove both this covering property and
+the subsequence property directly, rather than assume a topology course.
+
 \begin{proposition}\label{prop:Zp}
 \begin{enumerate}[label=(\alph*)]
 \item $x\in\Z_p$ is a unit if and only if its first digit is non-zero. Every $x\ne0$ is $p^{v(x)}u$ for a unique unit $u$.
@@ -126,15 +137,88 @@ For each $x\in\Z_p$, let $m_n\in\{0,\dots,p^n-1\}$ represent $x_n$. Compatibilit
 (d) Let $(x^{(k)})$ be Cauchy. For each $n$ there is $K_n$ with $|x^{(k)}-x^{(l)}|_p<p^{-n}$ for $k,l\ge K_n$, in particular $x^{(k)}_n=x^{(l)}_n$; we may take $K_1\le K_2\le\cdots$. Put $x_n=x^{(K_n)}_n$. Then $x_{n+1}=x^{(K_{n+1})}_{n+1}\equiv x^{(K_{n+1})}_n=x^{(K_n)}_n=x_n\pmod{p^n}$, so $x\in\Z_p$, and for $k\ge K_n$, $x^{(k)}_n=x_n$, i.e.\ $|x^{(k)}-x|_p\le p^{-n}$.
 
 (e) Among the terms of a sequence, infinitely many have the same first digit; among those, infinitely many have the same second digit; and so on. Choosing the $j$-th term of the subsequence among those agreeing in the first $j$ digits (diagonal extraction) gives a subsequence that is Cauchy, hence convergent by (d).
+
+For the covering property, suppose an open cover of $\Z_p$ has no finite
+subcover. Of the $p$ first-digit classes, at least one has no finite subcover;
+inside it choose a second-digit class with the same property, and continue.
+The nested classes specify compatible residues, hence an element $x\in\Z_p$.
+An open set of the cover containing $x$ contains a small ball around $x$.
+For sufficiently large $n$, the selected class modulo $p^n$ lies in that
+ball, since any two of its elements have distance at most $p^{-n}$.
+One set then covers that class, contradicting its construction.
 \end{proof}
 
-A series $\sum c_n$ of $p$-adic integers converges if and only if $c_n\to0$. Indeed, the condition is necessary as for real series, and it is sufficient because, by the ultrametric inequality, $\left|\sum_{l<n\le m}c_n\right|_p\le\max_{l<n\le m}|c_n|_p$, so the partial sums are Cauchy. Thus no series whose terms tend to zero can diverge here. The ordinary harmonic series $\sum_{n\ge1}1/n$ still diverges in $\Q_p$: its terms do not tend to zero, since $|1/n|_p\ge1$ for every positive integer $n$.
+A series $\sum c_n$ of $p$-adic integers converges if and only if $c_n\to0$. Indeed, the condition is necessary as for real series, and it is sufficient because, by the ultrametric inequality, $\left|\sum_{l<n\le m}c_n\right|_p\le\max_{l<n\le m}|c_n|_p$, so the partial sums are Cauchy. Thus no series whose terms tend to zero can diverge here.
 
 \begin{example}
 In $\Z_p$, $(1-p)(1+p+\dots+p^{n-1})=1-p^n\to1$, so $\displaystyle\frac1{1-p}=\sum_{i\ge0}p^i$. Multiplying by $p-1$: $-1=\sum_{i\ge0}(p-1)p^i$, the number whose digits are all $p-1$. For $p=2$: $1+2+4+8+\cdots=-1$. Your computer agrees: in two's complement arithmetic, $-1$ is stored as $\dots11111111$.
 \end{example}
 
-Finally, $\Q_p$, the field of \emph{$p$-adic numbers}, is the field of fractions of the integral domain $\Z_p$, built from $\Z_p$ as $\Q$ is built from $\Z$. Since every non-zero element of $\Z_p$ is $p^v$ times a unit, every non-zero element of $\Q_p$ is uniquely $p^vu$ with $v\in\Z$ and $u\in\Z_p^\times$; we set $|p^vu|_p=p^{-v}$, which extends the absolute value of $\Z_p$ and that of $\Q\subset\Q_p$, and still satisfies Proposition~\ref{prop:ultra}(a)(b). Then $\Z_p=\{x\in\Q_p:|x|_p\le1\}$, every $p$-adic number is a series $\sum_{i\ge v}a_ip^i$ with finitely many negative powers, $\Q$ is dense in $\Q_p$, and $\Q_p$ is complete (a Cauchy sequence is bounded, so $p^k$ times it lies in $\Z_p$ for some $k$).
+\subsection*{From a domain to its fraction field}
+
+The ring $\Z_p$ has no zero divisors, but $p$ has no inverse in it.
+To obtain a field, consider pairs $(a,b)$ with $a,b\in\Z_p$, $b\ne0$,
+and declare
+\[
+(a,b)\sim(c,d)\quad\Longleftrightarrow\quad ad=bc.
+\]
+This is an equivalence relation. For transitivity, $ad=bc$ and $cf=de$
+give $d(af-be)=0$; since $d\ne0$ in a domain, $af=be$.
+The equivalence class is written $a/b$. Define
+\[
+\frac ab+\frac cd=\frac{ad+bc}{bd},\qquad
+\frac ab\frac cd=\frac{ac}{bd}.
+\]
+The denominators remain nonzero. Cross-multiplication shows that replacing
+either fraction by an equivalent pair leaves these answers equivalent;
+for instance $ab'=a'b$ implies
+$(ad+bc)b'd=(a'd+b'c)bd$.
+The ring laws follow by the same finite expansions as for ordinary fractions.
+The embedding $a\mapsto a/1$ is injective, and every nonzero $a/b$
+has inverse $b/a$. This constructs the field $\Q_p$ without assuming
+a field-of-fractions theorem.
+
+For $a,b\ne0$, write $a=p^ru$, $b=p^sv$ with units $u,v$.
+Then $a/b=p^{r-s}uv^{-1}$. Hence every nonzero $x\in\Q_p$ is uniquely
+$p^ku$ with $k\in\Z$ and $u\in\Z_p^\times$.
+The integer $k$ is independent of the representation: equality of fractions
+gives equality of the valuations of their cross-products.
+Set $v_p(x)=k$ and $|x|_p=p^{-k}$, with $v_p(0)=+\infty$.
+These extend the rational valuation and absolute value.
+Products add valuations, and taking a common denominator extends the
+ultrametric inequality. Its equality case for unequal sizes follows too:
+if $|x|>|y|$ but $|x+y|<|x|$, then
+$|x|=|(x+y)-y|\le\max(|x+y|,|y|)<|x|$, impossible.
+
+In particular
+\[
+\Z_p=\{x\in\Q_p:|x|_p\le1\}.
+\]
+Its digit expansions extend to $\Q_p$ with finitely many negative powers:
+multiply by a sufficiently large power of $p$ to enter $\Z_p$, expand,
+then shift back. For example $1/p$ is in $\Q_p$ and has valuation $-1$;
+its first residue modulo $p$ as a $p$-adic integer does not exist.
+
+\subsection*{Density and completeness of the field}
+
+For $x=p^{-k}z$ with $z\in\Z_p$, $k\ge0$, let $m_n$ be the first
+$n$ digits of $z$. Then $p^{-k}m_n\in\Q$ and
+$|x-p^{-k}m_n|_p\le p^{k-n}\to0$. Thus $\Q$ is dense in $\Q_p$.
+This also explains precisely why $\Z$ is dense in $\Z_p$.
+
+Let $(x_j)$ be Cauchy in $\Q_p$. It is bounded:
+after some index $J$, $|x_j-x_J|_p\le1$, so
+$|x_j|_p\le\max(1,|x_J|_p)$ there; the finitely many earlier sizes
+can be included in a common bound. Choose $k\ge0$ with
+$|p^kx_j|_p\le1$ for all $j$. This scaled Cauchy sequence lies in
+the complete ring $\Z_p$ and has a limit $y$ there.
+Therefore $x_j\to p^{-k}y$ in $\Q_p$.
+We have proved completeness, not just adjoined a name to formal digits.
+
+In this complete field, the same ultrametric tail estimate proves
+$\sum c_n$ converges if and only if $c_n\to0$.
+The ordinary harmonic series $\sum_{n\ge1}1/n$ still diverges:
+$|1/n|_p\ge1$ for every positive integer $n$, so its terms do not vanish.
 
 \subsection*{Arithmetic with a declared precision}
 Writing $x=\cdots+a_2p^2+a_1p+a_0$ is a compact way of storing compatible
@@ -158,9 +242,7 @@ not a unit. Integer congruences are exact; finite precision does not mean
 floating-point rounding.
 
 \subsection*{Why compactness is useful}
-The diagonal argument in Proposition~\ref{prop:Zp}(e) proves sequential
-compactness; for metric spaces this is equivalent to compactness. Here is a
-consequence we can prove directly, without using that general equivalence.
+Proposition~\ref{prop:Zp}(e) proves both compactness and the convergent-subsequence property directly. Here is a consequence of the latter.
 Suppose $f\in\Z_p[X]$ has a root modulo $p^n$ for every $n$, with no promise
 that the roots you picked are compatible. Choose a representative $b_n\in\Z$
 of each root. A convergent subsequence $b_{n_j}\to b\in\Z_p$ exists. Since
@@ -343,6 +425,11 @@ Show that $\sum_{n\ge0}n!$ converges in every $\Z_p$, and that $\sum_{n\ge0}n\cd
 Compute the last $8$ binary digits of the two square roots of $-7$ in $\Z_2$, with Newton's method started at $a=1$ and at $a=3$.
 \end{exercise}
 
+For the next exercise, a square class identifies nonzero $x,y\in\Q_p$
+when $x/y$ is a square. This is an equivalence relation, compatible with
+multiplication, since products and inverses of nonzero squares are squares.
+The notation $\Q_p^\times/(\Q_p^\times)^2$ means precisely these classes.
+
 \begin{exercise}[$\star\star$]\label{ex:sqclasses}
 Which of $-1,2,3,5,-7$ are squares in $\Q_2$, in $\Q_3$, in $\Q_5$? Show that $\Q_p^\times/(\Q_p^\times)^2$ has $4$ elements for $p$ odd and $8$ for $p=2$.
 \end{exercise}
@@ -411,7 +498,7 @@ For the lemma, write $x=y+tp^k$ and expand with the binomial theorem. Then $a^{p
 
 \begin{solution}{ex:padicexp}
 \idea Legendre's formula counts multiples of $p,p^2,\dots$; written in base $p$, each $\lfloor n/p^k\rfloor$ is $n$ with its last $k$ digits erased, and summing over $k$ telescopes into a formula with the digit sum. Then the exponential series converges if and only if its terms tend to $0$, which is a comparison of two linear rates.
-\writeup Write $n=\sum_{i=0}^rc_ip^i$. Then $\lfloor n/p^k\rfloor=\sum_{i\ge k}c_ip^{i-k}$ and
+\writeup For $x=0$ the exponential series equals $1$ and satisfies the stated radius condition. Assume $x\ne0$ for the valuation argument. Write $n=\sum_{i=0}^rc_ip^i$. Then $\lfloor n/p^k\rfloor=\sum_{i\ge k}c_ip^{i-k}$ and
 \[
 \begin{aligned}v_p(n!)&=\sum_{k\ge1}\sum_{i\ge k}c_ip^{i-k}=\sum_ic_i(p^{i-1}+\dots+1)\eqbr=\sum_ic_i\frac{p^i-1}{p-1}=\frac{n-s_p(n)}{p-1}.\end{aligned}
 \]
