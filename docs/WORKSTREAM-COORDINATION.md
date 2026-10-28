@@ -46,3 +46,12 @@ it preserves all typography work, premium-colour settings and body content.
 Approved Volumes 0–2 and the print-vector assets remain unchanged. Both print
 wraps and the affected digital cover assets use the corrected material. See the
 latest section of `docs/DESIGN.md`; keep this correction during future integration.
+
+## Version C approval
+
+The author selected version C for all 19 interiors after the font review. The
+implementation preserves cover commit `c839bba`. Headings now use the exact cover
+Inter faces; STIX Two provides body/math. The quieter box styling uses coral left
+rules and charcoal labels. Canonical premium-colour geometry remains unchanged,
+but new fonts require fresh interior page counts and wraps. Preserve schema 6 and
+the STIX/Inter/charcoal/coral gates together with the cover-material preflight.

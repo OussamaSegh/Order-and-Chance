@@ -2,6 +2,20 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Approved version C interiors
+
+The author approved **version C** and requested it for all 19 volumes. The selected
+proof is `build/typography-review/Volume-0-Cover-Matched-Proof.pdf`: the cover's
+exact Inter display faces for headings, STIX Two Text/Math for body/mathematics,
+11 pt with 1.065 line spacing, tracked chapter labels, 24/29 pt chapter titles,
+small Inter running heads and labels, and thin 1 pt coral box rules with pale
+fills. Charcoal headings and coral accents replace the earlier multicolour box
+roles. Scientific figure colours retain their meaning. This supersedes the older
+Libertinus/Inter Text interior policy below. Preserve the cover thread's `c839bba`
+artwork/material update. Both PDFs, EPUB and readers follow version C; cache schema
+6 forces regeneration. Keep all existing whole-box, font/glyph, PDF-pair and print
+cover checks. Do not alter the approved cover artwork or typography.
+
 ## Concurrent cover and typography work
 
 Read `docs/WORKSTREAM-COORDINATION.md` before further cover or publishing edits.
@@ -86,7 +100,7 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   wraps. Keep the wider left-aligned Inter blurb, generous leading and reserved
   barcode area; do not reinstate the old untracked heading or thin dim frame.
 - Covers, interiors and standalone figures compile with XeLaTeX. Interiors use bundled
-  Libertinus Serif/Math, Inter Text headings and DejaVu Sans Mono for code. The shared
+  STIX Two Text/Math, the cover’s Inter display headings and DejaVu Sans Mono for code. The shared
   template uses an image XObject to reuse the approved identity without re-encoding
   multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,
   actual embedded PDF pixels, and unchanged EPUB/reader/website PNGs when supplied.
@@ -98,8 +112,8 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   newly approved master, never a silently retyped replacement.
 - Interior/online light themes use neutral paper and accessible deep coral
   #A34232; dark themes use charcoal, ivory and bright coral. Keep semantic boxes
-  distinguishable and preserve scientific figure distinctions. Both PDFs use the same full-colour body: coral headings/reminders, blue exercises,
-  teal beauty notes and plum thinking prompts. Keep body text/maths dark on white.
+  distinguishable and preserve scientific figure distinctions. Both PDFs use the same version C body: charcoal headings, coral accents and
+  pale boxes with thin coral rules. Keep body text/maths dark on white.
   The author's colour-print instruction supersedes the old grayscale overrides.
 - Preserve ISBNs, identifiers, editions, author spelling, mathematical text,
   figure meanings, cross-volume references, library search and reader controls.
@@ -120,7 +134,7 @@ Production paperback setting: **Premium color ink, white paper**, 7 × 10 inches
 no bleed. Its spine coefficient is **0.002347 inch per even-rounded print page**.
 Premium colour accommodates the short problem books (24-page minimum); standard
 colour has a 72-page minimum. `common/print-layout.json` governs these settings.
-Body size remains 11 pt with 1.045 line spacing. Font files, licences and hashes
+Body size remains 11 pt with 1.065 line spacing. Font files, licences and hashes
 are in `common/fonts/`; do not substitute machine fonts. `build.sh` supplies extra
 XeTeX token memory for dense plots. Missing glyphs, incorrect font families and
 lost colour accents fail the build as well as the existing pagination checks.

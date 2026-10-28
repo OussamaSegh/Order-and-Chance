@@ -36,7 +36,7 @@ Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
 The reading download includes the approved front cover. The print PDF starts with
 the half-title and is the paperback manuscript; its cover wrap is uploaded
 separately. Both PDFs share the same full-colour interior and printed page labels. Typography uses
-bundled Libertinus Serif/Math with Inter headings. Paperback files target Premium
+bundled STIX Two Text/Math with Inter headings. Paperback files target Premium
 color ink on white paper; the wrap uses its actual page count and colour-paper spine.
 There are no A4, fixed-page Kindle or phone PDF editions.
 
@@ -94,9 +94,9 @@ frame, and one substantial mathematical illustration per book. Volumes 0, 1 and 
 its original frame/header/footer and retain their own vector mathematical art. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
-deep-coral headings, blue exercises, teal beauty notes and plum thinking prompts.
-Both PDFs share the full-colour interior, typeset in Libertinus Serif and Math
-with Inter Text headings. Paperbacks use premium colour on white paper. EPUB and
+charcoal Inter headings, coral accents and pale boxes with thin coral rules.
+Both PDFs share the full-colour interior, typeset in STIX Two Text and Math
+with the cover’s Inter headings. Paperbacks use premium colour on white paper. EPUB and
 web images preserve the approved 7:10 proportions.
 All three digital masters remain unchanged at 1049 × 1500 pixels. Paperback covers use author-approved traced vector lettering and artwork, with native paper grain at approximately 360 ppi and an enforced 300 ppi print preflight.
 Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
@@ -173,4 +173,4 @@ manual workflow, as described above.
 
 Selection/assembly logic lives in `tools/build_plan.py`; its regression tests run
 before planning. Publishing-toolchain changes should bump the output fingerprint
-version (`book-output-v5`) so previously compiled books are regenerated.
+version (`book-output-v6`) so previously compiled books are regenerated.

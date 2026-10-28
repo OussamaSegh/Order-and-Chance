@@ -1,3 +1,27 @@
+# Approved version C across all 19 volumes
+
+The author selected version C after reviewing the alternatives and asked for its
+implementation throughout the series. It uses the covers' exact Inter Light and
+SemiBold display faces, STIX Two Text/Math, the existing 11 pt body with 1.065 line
+spacing, tracked small chapter labels and 24/29 pt chapter titles. Running heads
+and box labels use the same Inter display family. Pale boxes have 1 pt coral left
+rules and dark labels, matching the charcoal/coral cover identity. Scientific
+figure colours remain unchanged. A real Inter semibold italic face completes the
+heading family so optional exercise ratings never trigger font substitution.
+
+The implementation preserves cover update `c839bba`, both 7 × 10 PDFs, EPUB,
+premium-colour paper, actual-page-derived spines, identifiers and references.
+Fonts/licences/hashes are in `common/fonts/`; EPUB embeds the 17 faces, and readers
+use their WOFF2 equivalents. Reader controls retain Inter Text. Web mathematical
+rendering retains KaTeX's own metric-compatible fonts; EPUB MathML and both PDFs
+use STIX Two Math. Cache schema 6 invalidates the superseded layout. PDF validation
+requires STIX text/math, Inter headings, charcoal/coral drawing commands, embedded
+fonts, correct geometry and complete navigation; missing glyphs, overflow and
+split/oversized boxes still stop publication. Source formulas are reflowed where
+new metrics require it. Review/build evidence is in `build/version-c/`.
+
+---
+
 # Cover vibrancy: Volumes 3 onward
 
 The author supplied the Volume 2 and Volume 3 wraps and correctly identified that
