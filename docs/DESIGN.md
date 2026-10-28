@@ -742,9 +742,11 @@ pages. The approved STIX/Inter typography, semantic boxes, original figures,
 native Ulam cover and premium-colour geometry are unchanged. Its regenerated
 wrap uses the actual 189-page interior, even-rounded to 190 for a 0.4459-inch spine.
 
-The complete PDF/EPUB/reader build and all 67 publishing tests pass. EPUBCheck
+The complete PDF/EPUB/reader build and all 68 publishing tests pass. EPUBCheck
 5.3.0 reports no issues; 17 HTML pages pass desktop and 320-pixel mobile browser
 checks, including formula rendering and reader controls. Source preservation,
 mathematical review, exact verification scope and remaining historical/external
 review limits are recorded in review/volume1-reconstruction/. No other volume
 is edited, and no KDP upload or physical proof is claimed.
+
+The actual GitHub artifact exposed a Pandoc-version difference in portrait alternatives. A description wrapper in the digital converter/filter now preserves those alternatives across versions, with a regression that simulates an ignored graphics alt option. It does not change visible captions, figure numbers, PDF content, cover artwork or mathematical sources in other volumes.

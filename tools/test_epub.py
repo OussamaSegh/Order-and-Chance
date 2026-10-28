@@ -6,6 +6,7 @@ Requires Pandoc. Set EPUBCHECK_JAR to also validate the generated miniature EPUB
 from collections import Counter
 from html.parser import HTMLParser
 import os
+import re
 from pathlib import Path
 import shutil
 import subprocess
@@ -174,6 +175,25 @@ See Equation~\eqref{eq:zero}.
             alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
             self.assertEqual(alternatives, ["Rocket rising above the launch pad."])
             self.assertIn("SpaceX Photos", result.stdout)
+
+    def test_portrait_alternative_survives_ignored_graphics_option(self):
+        with tempfile.TemporaryDirectory() as directory:
+            source = Path(directory) / "main.tex"
+            destination = Path(directory) / "epub.tex"
+            source.write_text(r"\portrait{fermat}{Pierre de Fermat (1601--1665). Historical portrait.}" + "\n")
+            epub_prep.main(str(source), str(destination), directory)
+            # Emulate the older LaTeX reader used by CI: no image alt option.
+            text = destination.read_text()
+            text = re.sub(r",alt=\{[^}]*\}", "", text)
+            result = subprocess.run(
+                ["pandoc", "-f", "latex", "-t", "html5", "--lua-filter", str(TOOLS / "epub.lua")],
+                input=text, capture_output=True, text=True, check=True)
+            tags = Tags()
+            tags.feed(result.stdout)
+            alternatives = [attrs.get("alt") for tag, attrs in tags.attributes if tag == "img"]
+            self.assertEqual(alternatives, ["Portrait of Pierre de Fermat (1601–1665)."])
+            self.assertNotIn("ocimagealt", result.stdout)
+            self.assertEqual(result.stdout.count("Portrait of Pierre"), 1)
 
     def test_reader_index_has_unique_contents_ids(self):
         with tempfile.TemporaryDirectory() as directory:

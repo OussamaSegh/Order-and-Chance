@@ -57,6 +57,8 @@ def validate(resources, documents, aux, expected_ids):
     for name,page in pages.items():
         for node in page.nodes:
             attr=node.attrs;classes=attr.get('class','').split()
+            if node.tag=='img' and attr.get('alt','').strip().lower() in {'','image','photo','picture'}:
+                errors.append(f'{name}: missing descriptive image alternative: {attr.get("src")}')
             if 'exercise' in classes:
                 label=attr.get('id');exercises.append(label)
                 wanted=aux.get(label)

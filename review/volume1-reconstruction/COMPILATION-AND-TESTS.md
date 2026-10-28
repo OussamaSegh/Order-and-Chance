@@ -18,7 +18,7 @@ Executed with the workspace toolchain activation and the committed shared publis
 | Numbered result apparatus | 83 results and 83 proofs; all 81 originals retained |
 | Assets | 36 nonchapter source/assets byte-identical to baseline |
 | Mathematical scripts | check_math.py 32,298 + check_new.py 2,965 = 35,263 assertions, all PASS |
-| Shared publishing regression suite | 67 tests PASS (25.826 s) |
+| Shared publishing regression suite | 68 tests PASS (26.755 s) |
 | EPUBCheck 5.3.0 | 0 fatals / 0 errors / 0 warnings / 0 infos |
 | EPUB structural check | 19 XHTML documents; 686 local links/resources; 224 source labels; 301 PDF-reference comparisons; no errors |
 | EPUB image alternatives | All 32 content images have nonempty descriptive alternatives |
@@ -33,3 +33,5 @@ The browser script's first final-heading assertion assumed one whitespace format
 Compilation is not mathematical verification; finite computations do not prove general theorems. Per-result/per-exercise source-reading evidence is in the separate ledgers. Kindle Previewer, KDP account upload/preview, a physical proof and external scholarly review were not executed.
 
 The final logs are retained under final-logs/, including the original compressed TeX and production logs and EPUBCheck JSON.
+
+The post-publication portability check and repair are documented in BATCH-L-PORTABLE.md. Local 68-test results are not confused with the CI setup job, where Pandoc-dependent tests are skipped; actual GitHub artifacts are checked separately.

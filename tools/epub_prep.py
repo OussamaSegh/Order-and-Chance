@@ -95,8 +95,12 @@ def main(src: str, dst: str, figdir: str) -> None:
                     subject = credit.split(".", 1)[0].strip().replace("--", "–")
                     entries.append((name, "Portrait of " + subject + ".", credit))
             for name, alternative, credit in entries:
-                out.append("\n\\includegraphics[width=0.45\\textwidth,alt={" + alternative + "}]{" + str(photodir / (name + ".jpg"))
-                           + "}\\\\ {\\small " + credit + "}\n\n")
+                # Older Pandoc releases ignore includegraphics' alt option.
+                # Carry the description separately for the shared Lua filter;
+                # newer readers also retain the ordinary alt option.
+                out.append("\n\\begin{ocimagealt}" + alternative + "\n\n"
+                           + "\\includegraphics[width=0.45\\textwidth,alt={" + alternative + "}]{" + str(photodir / (name + ".jpg"))
+                           + "}\\\\ {\\small " + credit + "}\n\\end{ocimagealt}\n\n")
             i = j
 
     text = portraits(text)

@@ -140,6 +140,15 @@ local unnumbered = { remark = true, theoremx = true, propositionx = true, lemmax
 
 local function rewrite(b)
   if b.t ~= "Div" then return nil end
+  if b.classes:includes("ocimagealt") then
+    local description = pandoc.utils.stringify(b.content[1])
+    b.content:remove(1)
+    b = b:walk({ Image = function(img)
+      img.caption = { pandoc.Str(description) }
+      return img
+    end })
+    return b.content
+  end
   if b.classes:includes("ocappendices") or b.classes:includes("occhaptercounter") then return {} end
   for _, cls in ipairs(b.classes) do
     if unnumbered[cls] then
