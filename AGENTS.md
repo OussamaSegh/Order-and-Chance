@@ -2,6 +2,16 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Concurrent cover and typography work
+
+Read `docs/WORKSTREAM-COORDINATION.md` before further cover or publishing edits.
+The typography work incorporates the cover thread's `788fb50` update unchanged;
+its final implementation is `895d25d`. Cover work owns the cover templates,
+artwork and `tools/assets/print/`. Interior fonts live separately in `common/fonts/`.
+Preserve the premium-colour paper setting, its 0.002347 spine coefficient and
+actual print-PDF page counts when updating wraps. Fetch and integrate current
+`main` before every push; retain both workstreams' checks in shared build files.
+
 ## Latest print-quality authorization
 
 The author subsequently approved **vector paths traced from the approved cover**
