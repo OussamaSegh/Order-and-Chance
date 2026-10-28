@@ -40,8 +40,8 @@ jobs:
         id: library
         with:
           path: .book-cache
-          key: library-v6-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v6-
+          key: library-v7-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v7-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: debs
-          key: tex-debs-ubuntu-24.04-v2-xetex
+          key: tex-debs-ubuntu-24.04-v3-xetex-gs
       - name: Download the packages
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -78,7 +78,7 @@ jobs:
             sudo timeout 300 apt-get -o Acquire::Retries=5 update &&
             sudo timeout 1500 apt-get -o Acquire::Retries=5 install -y --download-only --no-install-recommends \
               texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended tex-gyre \
-              texlive-pictures texlive-xetex python3-pil pandoc poppler-utils && break
+              texlive-pictures texlive-xetex python3-pil pandoc poppler-utils ghostscript && break
             echo "apt attempt $i failed, retrying"; sleep 10
           done
           mkdir -p debs && cp /var/cache/apt/archives/*.deb debs/ && ls debs | wc -l
@@ -97,17 +97,21 @@ jobs:
       - uses: actions/cache/restore@v4
         with:
           path: debs
-          key: tex-debs-ubuntu-24.04-v2-xetex
+          key: tex-debs-ubuntu-24.04-v3-xetex-gs
           fail-on-cache-miss: true
-      - name: Install LaTeX, pandoc and poppler
+      - name: Install LaTeX, Ghostscript, pandoc and poppler
         run: |
           sudo dpkg -i debs/*.deb > /dev/null
           rm -rf debs
-          command -v xelatex && command -v pandoc && command -v pdftoppm
+          command -v xelatex && command -v gs && command -v pandoc && command -v pdftoppm
       - name: Install PDF publishing helpers
         run: python3 -m pip install -r tools/requirements-build.txt
       - name: Test whole-box pagination and reference placement
         run: python3 -m unittest discover -s tools -p test_book_layout.py
+      - name: Test the KDP print export
+        run: |
+          python3 -m unittest discover -s tools -p test_kdp_pdf.py
+          python3 -m unittest discover -s tools -p test_kdp_cover.py
       - name: Build 7 x 10 reading PDF with cover, print PDF, EPUB and publishing assets
         run: ./build.sh ${{ matrix.tome }}
       - uses: actions/upload-artifact@v4
@@ -118,6 +122,7 @@ jobs:
             dist/
             build/${{ matrix.tome }}/cover.pdf
             build/${{ matrix.tome }}/cover-preflight.json
+            build/${{ matrix.tome }}/kdp-preflight.json
 
   # Gathers the books of every tome and builds the download page.
   site:
@@ -162,7 +167,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v6-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v7-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:

@@ -1,3 +1,23 @@
+# Required KDP export preparation
+
+Read [../docs/KDP-EXPORT.md](../docs/KDP-EXPORT.md) before publishing. Every book must
+use the author-approved working-file process: clean PDF 1.3 interiors and opaque
+PDF 1.5 covers. Reading PDFs retain the original typeset vectors, Unicode maps,
+links/bookmarks and page labels. Never attach a reading front to the cleaned
+Ghostscript print export. Only genuinely transparent interior pages or cover art
+regions are composited at 600 ppi; cover lettering/frames remain vector, and source
+artwork is preserved. Images must retain genuine >=300 physical ppi.
+
+The final files require structural/provenance checks and visual comparison against
+their raw source, with `kdp-preflight.json` and `cover-preflight.json` retained by
+CI and the schema-7 cache. The actual exported print count determines every spine.
+Ghostscript, Poppler and pinned PyMuPDF are required. This latest rule supersedes
+historical raw-TeX-copy, identical-print/read-stream and paper-only final-cover
+raster instructions below. It does not authorize changes to manuscript content,
+fonts, cover artwork or the 7×10 premium-colour production settings.
+
+---
+
 # Current cover master
 
 Every production front now uses the locked Volume-0 master in

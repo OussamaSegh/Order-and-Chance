@@ -10,11 +10,12 @@ from book_outputs import clean, check
 from check_cover_pdf import check_interior
 from check_interior_style import check as check_style
 from book_pdf import check_pair
+from kdp_pdf import check as check_kdp
 from check_print_cover import check as check_print_cover
 from check_cover_template import check as check_cover_template
 from print_layout import specification
 
-SCHEMA = 6
+SCHEMA = 7
 NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -29,7 +30,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v6\0')
+        h = hashlib.sha256(b'book-output-v7\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -41,7 +42,8 @@ def fingerprints(root):
 
 def complete(cache, book):
     required = [f'dist/{book}.pdf', f'dist/{book}.epub',
-                f'dist/html/{book}/index.html', f'build/{book}/cover.pdf']
+                f'dist/html/{book}/index.html', f'build/{book}/cover.pdf',
+                f'build/{book}/kdp-preflight.json', f'build/{book}/cover-preflight.json']
     required += [f'dist/kdp/{book}-{suffix}' for suffix in
                  ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]
     return all((cache / p).is_file() and (cache / p).stat().st_size for p in required)
@@ -94,15 +96,18 @@ def snapshot(root, cache, data):
         download = root / 'dist' / f'{book}.pdf'
         interior = root / 'dist/kdp' / f'{book}-print.pdf'
         pages = check_interior(interior)
+        report = root / 'build' / book / 'kdp-preflight.json'
+        check_kdp(interior, report)
         check_style(interior)
         check_interior(download)
-        if check_pair(download, interior) != pages:
+        if check_pair(download, interior, report=report) != pages:
             raise ValueError(f'PDF pair page counts disagree for {book}')
         metadata = json.loads((root / 'dist/kdp' / f'{book}-print-metadata.json').read_text())
         if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
         number = re.match(r'tome([A-Z]?\d+)-', book).group(1)
-        check_print_cover(root / 'dist/kdp' / f'{book}-cover-wrap.pdf', number)
+        check_print_cover(root / 'dist/kdp' / f'{book}-cover-wrap.pdf', number,
+                          press_report=root / 'build' / book / 'cover-preflight.json', spine=metadata['spine_in'])
         check_cover_template(root / 'dist' / f'{book}.pdf', number)
     shutil.rmtree(cache, ignore_errors=True)
     cache.mkdir(parents=True)
@@ -111,6 +116,8 @@ def snapshot(root, cache, data):
         target = cache / 'build' / book
         target.mkdir(parents=True)
         shutil.copy2(root / 'build' / book / 'cover.pdf', target / 'cover.pdf')
+        shutil.copy2(root / 'build' / book / 'kdp-preflight.json', target / 'kdp-preflight.json')
+        shutil.copy2(root / 'build' / book / 'cover-preflight.json', target / 'cover-preflight.json')
     (cache / 'manifest.json').write_text(json.dumps({'schema': SCHEMA, 'books': data['books']}, indent=2))
 
 

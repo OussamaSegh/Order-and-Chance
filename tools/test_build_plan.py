@@ -21,6 +21,9 @@ class PlanningTest(unittest.TestCase):
         checker = patch.object(bp, 'check_interior', return_value=233)
         self.pdf_check = checker.start()
         self.addCleanup(checker.stop)
+        kdp_checker = patch.object(bp, 'check_kdp')
+        kdp_checker.start()
+        self.addCleanup(kdp_checker.stop)
         style_checker = patch.object(bp, 'check_style')
         style_checker.start()
         self.addCleanup(style_checker.stop)
@@ -53,7 +56,8 @@ class PlanningTest(unittest.TestCase):
 
     def outputs(self, target, book):
         for path in [f'dist/{book}.pdf', f'dist/{book}.epub',
-                     f'dist/html/{book}/index.html', f'build/{book}/cover.pdf'] + [
+                     f'dist/html/{book}/index.html', f'build/{book}/cover.pdf',
+                     f'build/{book}/kdp-preflight.json', f'build/{book}/cover-preflight.json'] + [
                          f'dist/kdp/{book}-{suffix}' for suffix in
                          ['print.pdf', 'cover-wrap.pdf', 'ebook-cover.jpg', 'listing.md', 'print-metadata.json']]:
             p = target / path

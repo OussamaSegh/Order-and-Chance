@@ -1,3 +1,25 @@
+# Current KDP-compatible output contract
+
+The author's confirmed working print files are now the required pipeline format.
+The reading PDF is built from the original typeset manuscript and retains original
+vectors, Unicode maps and navigation. The print interior is independently exported
+to opaque, noninteractive PDF 1.3; print covers use opaque PDF 1.5 with vector
+lettering and verified 600 ppi illustration composites only where transparency
+requires them. Both PDFs preserve the same visible body and pagination, rather
+than identical PDF byte streams. Existing filenames, one EPUB and 7×10 remain.
+
+Both export reports, source/output hashes, complete visual comparisons and original
+reading navigation are checked before publication. Ghostscript and pinned PyMuPDF
+are build dependencies. Cache schema 7 / `library-v7-` supersede older schemas.
+Source fonts, semantic boxes, mathematical content and approved latest artwork
+remain unchanged. Wrap geometry follows the actual new exported print page count.
+
+See [KDP-EXPORT.md](KDP-EXPORT.md) for mandatory steps and future-agent rules.
+The earlier migration/verification records below are historical; their identical
+print/read stream requirements do not override this current contract.
+
+---
+
 # Standard book formats
 
 Latest decision: 27 October 2026. Applies to all sixteen main volumes and three problem books.

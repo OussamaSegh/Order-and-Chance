@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Build the 7 x 10 download PDF with cover, print interior and EPUB of each tome
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
-# Requires xelatex, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
+# Requires xelatex, Ghostscript, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
 set -euo pipefail
 export LC_ALL=C.UTF-8  # pandoc reads the copyright sign of the metadata as UTF-8
 # Unicode math plus dense PGFPlots surfaces needs more token memory than XeTeX's default.
@@ -71,8 +71,14 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/check_book_layout.py" "$out/main.log" "$out/main.oclayout"
   python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
   python3 "$root/tools/check_interior_style.py" "$out/main.pdf"
-  cp "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf"
-  python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$root/dist/kdp/$tome-print.pdf" "$root/dist/$tome.pdf"
+  # Reading keeps the original vectors, font mappings and navigation. The KDP
+  # upload is a separately validated, noninteractive PDF 1.3 press export.
+  python3 "$root/tools/book_pdf.py" "$out/cover.pdf" "$out/main.pdf" "$root/dist/$tome.pdf"
+  python3 "$root/tools/kdp_pdf.py" "$out/main.pdf" "$root/dist/kdp/$tome-print.pdf" \
+    --report "$out/kdp-preflight.json"
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$tome-print.pdf" --interior
+  python3 "$root/tools/check_interior_style.py" "$root/dist/kdp/$tome-print.pdf"
+  pages=$(pdfinfo "$root/dist/kdp/$tome-print.pdf" | sed -n 's/^Pages: *//p')
   python3 "$root/tools/check_cover_pdf.py" "$root/dist/$tome.pdf" --interior
   python3 "$root/tools/check_cover_template.py" "$root/dist/$tome.pdf" --number "$num"
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$tome-print-metadata.json"
@@ -88,9 +94,10 @@ for tome in "${tomes[@]}"; do
   fi
   compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
-  python3 "$root/tools/check_print_cover.py" "$out/cover-wrap.pdf" --number "$num" \
-    --report "$out/cover-preflight.json"
-  cp "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf"
+  python3 "$root/tools/kdp_cover.py" "$out/cover-wrap.pdf" "$root/dist/kdp/$tome-cover-wrap.pdf" \
+    --number "$num" --report "$out/cover-preflight.json"
+  python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$tome-cover-wrap.pdf" \
+    --spine "$spine" --title "${title#*: }" --number "$num" --print-export
   # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
   python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$tome-listing.md"
   # Separate eBook cover: 1792 x 2560 pixels, preserving the approved 7:10 design, also used for publishing.

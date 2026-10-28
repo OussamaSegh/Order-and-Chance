@@ -43,7 +43,7 @@ def make_download(front, interior, output):
     output.parent.mkdir(parents=True, exist_ok=True)
     with output.open('wb') as stream:
         writer.write(stream)
-    check_pair(output, interior)
+    check_download_source(output, interior)
 
 
 def _contents(page):
@@ -56,7 +56,7 @@ def _annotation_count(page):
     return len(annotations.get_object()) if annotations is not None else 0
 
 
-def check_pair(download, interior):
+def check_download_source(download, interior):
     """Reject missing covers, changed body pages, broken labels or destinations."""
     download, interior = PdfReader(download), PdfReader(interior)
     count = len(interior.pages)
@@ -81,6 +81,22 @@ def check_pair(download, interior):
                 interior.get_destination_page_number(target) + 1):
             raise ValueError(f'Download changed the reference destination: {name}')
     return count
+
+
+def check_pair(download, interior, report=None):
+    """Validate either an attached raw body or the cleaned KDP print export."""
+    body = PdfReader(interior)
+    if body.pdf_header != '%PDF-1.3' or body.metadata:
+        return check_download_source(download, interior)
+    from kdp_pdf import check, check_reading, compare_pages
+    pages = check(interior, report)
+    reading = PdfReader(download)
+    if len(reading.pages) != pages + 1:
+        raise ValueError('Download must contain one front cover plus the print interior')
+    if report is not None:
+        check_reading(download, report)
+    compare_pages(download, interior, offset=1)
+    return pages
 
 
 if __name__ == '__main__':

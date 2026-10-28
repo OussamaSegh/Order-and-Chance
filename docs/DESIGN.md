@@ -1,3 +1,38 @@
+# Approved KDP exports for every book
+
+The author confirmed the prepared Volume-0 interior and print wrap, then required
+that both pipeline outputs follow those working files for all nineteen books.
+Current main was pulled through `a65d685`, including the ten-chapter Volume-0
+reconstruction and newer cover art. The author explicitly retained the latest
+artwork and requested the working PDF export settings. No manuscript, illustration,
+font, shared cover template or mathematical content is changed by this task.
+
+Print interiors now use the approved PDF 1.3 process: terminate malformed ASCIIHex
+mesh streams, remove interaction/metadata, prune unused global PGF opacity and
+XObject resources, then normalize with Ghostscript. Only genuine transparent pages
+are flattened at 600 ppi; images are not downsampled. Reading PDFs are made first
+from the original typeset body so Unicode mathematics, vectors and navigation are
+retained. The two files share pagination/visible content rather than byte-identical
+PDF streams. Exact reading-source checks and final visual/provenance checks replace
+the obsolete print/read stream-equality contract.
+
+Print wraps follow the working cover's opaque PDF 1.5 settings. Their original
+vector source passes all master/font/art/paper gates. Only transparent illustration
+regions are composited losslessly at 600 ppi; title, subtitle, back copy, spine,
+barcode and frames retain vectors. Whole-cover rasterization is rejected. A print
+cover's generated art pixels are allowed only with matching source/provenance and
+full-page visual comparison. Source art remains vector, and digital fronts remain
+unchanged. This is the specific exception to the earlier paper-only print-raster
+policy; grain itself must still be native >=300 ppi.
+
+Both export reports are retained by CI and required by cache assembly. Ghostscript
+is an explicit build dependency, PyMuPDF is pinned for comparison, and cache schema
+7 forces regeneration of every book. Spines use each fresh print count; the old
+241-page specimen does not override Volume 0's revised manuscript. See
+[KDP-EXPORT.md](KDP-EXPORT.md) for the authoritative workflow and verification.
+
+---
+
 # Volumes 0 and 1 harmonised to the established series style
 
 The author rejected further attempts to match every book to the stronger glow in

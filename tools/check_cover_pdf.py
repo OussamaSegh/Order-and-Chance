@@ -17,7 +17,7 @@ def check_cover(path, width, height):
         raise ValueError(f'{path}: incorrect physical dimensions: {dimensions.groups()}')
     check_fonts(path)
 
-def check_cover_copy(path, title, number):
+def check_cover_copy(path, title, number, print_export=False):
     """Check the front region alone so back/spine text cannot mask clipping."""
     # Cover width minus front trim and outer bleed gives the actual front origin.
     info = subprocess.check_output(['pdfinfo', str(path)], text=True)
@@ -27,7 +27,13 @@ def check_cover_copy(path, title, number):
         '-W', str(round(LAYOUT['trim_width_in']*72)), '-H', str(round(LAYOUT['trim_height_in']*72)),
         str(path), '-'], text=True)
     text = ' '.join(text.split())
-    for expected in (title, subtitle(number), 'Discover the patterns. Understand the proofs.'):
+    expected_copy = [title, subtitle(number)]
+    # The press export removes invisible searchable duplicates of the traced
+    # identity. Its visible slogan is verified by source provenance and render
+    # comparison in check_print_cover, rather than requiring invisible text.
+    if not print_export:
+        expected_copy.append('Discover the patterns. Understand the proofs.')
+    for expected in expected_copy:
         if expected not in text:
             raise ValueError(f'{path}: incomplete front-panel text: {expected}')
 
@@ -76,6 +82,7 @@ if __name__=='__main__':
     parser.add_argument('--title', help='Verify complete paperback front title/subtitle/slogan')
     parser.add_argument('--number', help='Volume identifier for subtitle lookup')
     parser.add_argument('--interior',action='store_true',help='Check every interior page size and embedded vector fonts')
+    parser.add_argument('--print-export',action='store_true',help='Identity is validated by press-export provenance/visual comparison')
     args=parser.parse_args()
     if args.log:check_cover_log(args.log)
     if not args.pdf:
@@ -90,4 +97,4 @@ if __name__=='__main__':
     if args.title:
         if not args.number or args.spine is None:
             parser.error('--title requires --number and --spine')
-        check_cover_copy(args.pdf, args.title, args.number)
+        check_cover_copy(args.pdf, args.title, args.number, args.print_export)

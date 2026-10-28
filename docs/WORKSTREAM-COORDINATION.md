@@ -114,3 +114,17 @@ native renderer/material. Volume 1 retains its prime positions with lower, broad
 finer-meshed relief. Only motifs 0 and 1 change. No book content, interior styling,
 fonts or print settings change. Preserve the latest semantic box work and derive
 production wraps from current actual manuscript counts as usual.
+
+
+## Approved KDP export integration
+
+The author confirmed the working interior/cover files and requested the process
+for every book, explicitly keeping the latest pulled artwork. Integration starts
+at `a65d685`, retaining the revised ten-chapter Volume 0 and the newer cover
+harmonization. Interior/cover source and fonts remain unchanged. Print-only exports
+remove interactions and flatten genuine transparency: PDF 1.3 interiors at 600 ppi
+where needed, PDF 1.5 covers with 600 ppi artwork composites and vector lettering.
+The final-cover raster exception is limited to provenance-verified art composites;
+master artwork stays vector, paper stays native >=300 ppi and whole-cover
+rasterization is forbidden. Use fresh print counts and retain schema-7 reports,
+reading navigation and visual parity checks. See docs/KDP-EXPORT.md and AGENTS.md.

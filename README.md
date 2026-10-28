@@ -35,7 +35,9 @@ notebook for mathematical experiments.
 Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
 The reading download includes the approved front cover. The print PDF starts with
 the half-title and is the paperback manuscript; its cover wrap is uploaded
-separately. Both PDFs share the same full-colour interior and printed page labels. Typography uses
+separately. Both PDFs have matching full-colour content and visible pagination. The print PDF
+is normalized for KDP (PDF 1.3, no interactions/live transparency); the reading PDF
+retains original vector text, Unicode mathematics, links and bookmarks. Typography uses
 bundled STIX Two Text/Math with Inter headings. Paperback files target Premium
 color ink on white paper; the wrap uses its actual page count and colour-paper spine.
 There are no A4, fixed-page Kindle or phone PDF editions.
@@ -116,7 +118,7 @@ build.sh                builds dist/<tome>.pdf with cover, dist/kdp/<tome>-print
 
 ## Building
 
-Requires `xelatex` (TeX Live with `latex-extra` and `fonts-recommended`), `pandoc` 3, Python 3 and poppler-utils. Install the publishing helpers with `python3 -m pip install -r tools/requirements-build.txt`.
+Requires `xelatex` (TeX Live with `latex-extra` and `fonts-recommended`), Ghostscript, `pandoc` 3, Python 3 and poppler-utils. Install the publishing helpers with `python3 -m pip install -r tools/requirements-build.txt`.
 
 ```
 ./build.sh                       # every tome
@@ -174,4 +176,13 @@ manual workflow, as described above.
 
 Selection/assembly logic lives in `tools/build_plan.py`; its regression tests run
 before planning. Publishing-toolchain changes should bump the output fingerprint
-version (`book-output-v6`) so previously compiled books are regenerated.
+version (`book-output-v7`) so previously compiled books are regenerated.
+
+## KDP export rules
+
+The approved print preparation is mandatory for all nineteen books. Interiors use
+clean PDF 1.3; covers use opaque PDF 1.5 with vector lettering and 600 ppi composites
+only where artwork uses transparency. Cover source/artwork is retained. Reports,
+visual comparison, original reading navigation and actual-page-derived geometry
+are checked in the build and again in library assembly. See
+[the KDP export workflow](docs/KDP-EXPORT.md) and [AGENTS.md](AGENTS.md).

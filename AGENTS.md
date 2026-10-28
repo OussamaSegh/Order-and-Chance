@@ -2,6 +2,47 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## KDP export rule — approved working files, 28 October 2026
+
+The author confirmed the separately prepared Volume-0 KDP interior and print
+cover work, while raw pipeline PDFs did not. Apply the working export process to
+**all 19 books**. This supersedes the old identical-PDF-body-stream requirement
+and the paper-only raster restriction for the final press cover.
+
+- Pull current `main` first; preserve the latest manuscript and cover artwork.
+  The author explicitly chose the latest artwork, with the working PDF settings.
+- Typeset once. Build the reading PDF from the original `build/<book>/main.pdf`,
+  preserving vector text, correct Unicode maps, links, bookmarks and page labels.
+  Never build the reading PDF from a Ghostscript-processed print interior.
+- `tools/kdp_pdf.py` must create every canonical `dist/kdp/<book>-print.pdf`:
+  unencrypted PDF 1.3, no document metadata, links, annotations, bookmarks,
+  startup actions, live transparency or ASCIIHex streams. Repair missing ASCIIHex
+  terminators and prune unused PGF opacity/XObject resources before conversion.
+  Flatten only pages that actually use transparency at **600 ppi**, without
+  downsampling; retain vectors elsewhere. Images must be >=300 physical ppi.
+- `tools/kdp_cover.py` must create every canonical `*-cover-wrap.pdf`: the working
+  cover's opaque PDF 1.5 format, embedded vector lettering, frames and barcode,
+  native paper >=300 ppi. Preserve original font programs and Unicode maps; do
+  not run covers through Ghostscript font rewriting. Composite only transparent illustration regions at
+  **600 ppi**, with lossless pixels and provenance. Never rasterize the whole cover,
+  its title, subtitle, back text or spine, and do not redraw the artwork.
+- Both print artifacts must pass their structural/provenance checks and visual
+  comparison against the original typeset/vector source. Do not bypass a failing
+  check, lower resolution, globally flatten every page, or copy raw TeX PDFs to
+  the print download. Source/read navigation remains checked independently.
+- Keep exactly two standard 7×10 PDFs and one EPUB under the existing filenames.
+  No third public PDF edition. Internal raw sources/reports stay in `build/`.
+- Derive the wrap from the **current exported print page count**, never the old
+  241-page Volume-0 specimen. Keep premium colour / white paper / no interior
+  bleed, and 0.125-inch cover bleed. Geometry and count must survive conversion.
+- Build dependencies include Ghostscript and pinned PyMuPDF; output/cache schema
+  **7** invalidates prior raw PDFs. Cache assembly requires both export reports,
+  rechecks final hashes, reading provenance, visual parity and cover geometry.
+- Record successful tests and exact CI publication. A parser/visual pass is not
+  itself proof of acceptance by KDP; retain the author's actual upload feedback.
+
+See `docs/KDP-EXPORT.md` for the process, commands and future-agent checklist.
+
 ## Latest instruction: harmonise Volumes 0 and 1 to the rest
 
 The author explicitly chose to make Volume 0's illustration look like the other
