@@ -1,0 +1,15 @@
+# Final editorial review
+
+The revised manuscript preserves the original number-theoretic narrative and all its substantial proofs. It now has thirteen chapters: primitive roots and reciprocity precede arithmetic functions, and quadratic integers/units are separated from ideal arithmetic. The totient identity moves with its proof so the preferred order has no hidden inversion prerequisite.
+
+The largest improvement is conceptual precision in the advanced transition: the monic-divisor proof is explicit; prime and irreducible are distinguished; ideal multiplication and quotient arithmetic are concrete; ideal norm is proved to count remainders; and Qp is constructed with its valuation, density and completeness justified. The original elementary proof of ideal factorization remains the core. The d=13 unit example and discriminant -20 forms make abstract statements calculable.
+
+The skeptical pass checked all 83 current numbered results and all 101 exercise/solution sets individually. It found two genuine statement/answer defects (signed digit sums and inert norm 4), several implicit domains and boundary cases, and dependencies that required moving proofs. The suspect integrality criterion was valid; its scalar step needed explanation, not a claim that the theorem was false.
+
+The discovery-oriented material uses real mathematics: choosing a valuation prime, distinguishing a finite exhaustive search from an arbitrary cutoff, designing a descent and its measure, comparing two approximation metrics, and replacing a failed conjecture about n^2+1 by the correct theorem about its prime factors. Eight bridge problems connect arithmetic with counting, algebra, limits and finite probability. Existing strong problems supply much of that integration.
+
+Length is 177 numbered pages, compared with the baseline 163, with 189 interior/190 reading pages. This is below the suggested 220–280 numbered-page range. The audit found much of the proposed elementary coverage already present; expansion was restricted to actual proof and learning gaps. No filler, larger type or redundant exercise catalogue was added to meet a page quota.
+
+Limitations are explicit. The second reviewer is the same editor in a separate pass, not an external mathematician; no formal verification is claimed. Existing historical references are retained, but not every primary document was independently accessed. The specific unverified Lebesgue/1869 attribution was omitted from its theorem heading; its theorem and proof remain. A fetch of the cited AMS Pell article returned HTTP 403, and an accessible secondary Mordell page did not verify that date. No new historical source was invented. Other volumes retain older printed citations and need the supplied concordance during their own revision.
+
+Representative rendered pages from every chapter and the field guide, six critical mathematical locations and all 28 standalone figures were inspected. Layout gates and desktop/mobile digital checks pass. A physical print proof, vendor Kindle/KDP preview and an external scholarly review were not performed in this workspace.

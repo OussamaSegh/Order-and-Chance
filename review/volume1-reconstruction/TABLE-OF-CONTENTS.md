@@ -1,0 +1,110 @@
+# Final table of contents
+
+Generated from compiled PDF bookmarks; page column is the printed page label.
+
+- 1. Divisibility and the Euclidean Algorithm — p. 1
+  - Division and ideals of Z — p. 1
+  - The Euclidean algorithm — p. 4
+  - Exercises — p. 6
+  - Hints — p. 8
+  - Solutions — p. 9
+- 2. Primes — p. 15
+  - Infinitely many primes — p. 15
+  - Chebyshev's bounds — p. 17
+  - Bertrand's postulate — p. 19
+  - Exercises — p. 21
+  - Hints — p. 23
+  - Solutions — p. 23
+- 3. Congruences — p. 27
+  - The ring Z/nZ — p. 27
+  - The Chinese remainder theorem — p. 29
+  - Lifting modulo prime powers — p. 31
+  - Exercises — p. 32
+  - Hints — p. 34
+  - Solutions — p. 35
+- 4. Primitive Roots and the Multiplicative Group — p. 39
+  - Orders — p. 39
+  - (Z/pZ)* is cyclic — p. 40
+  - Which (Z/nZ)* are cyclic? — p. 42
+  - Discrete logarithms — p. 43
+  - Exercises — p. 44
+  - Hints — p. 45
+  - Solutions — p. 46
+- 5. Quadratic Residues and Reciprocity — p. 49
+  - Quadratic residues and Euler's criterion — p. 50
+  - Gauss' lemma — p. 51
+  - The law of quadratic reciprocity — p. 52
+  - The Jacobi symbol — p. 54
+  - Exercises — p. 55
+  - Hints — p. 57
+  - Solutions — p. 57
+- 6. Arithmetic Functions — p. 63
+  - Multiplicative functions — p. 63
+  - Dirichlet convolution and Möbius inversion — p. 64
+  - Perfect numbers — p. 66
+  - Average orders — p. 67
+  - Exercises — p. 69
+  - Hints — p. 70
+  - Solutions — p. 71
+- 7. Sums of Squares — p. 75
+  - Two squares — p. 75
+  - Four squares — p. 77
+  - Lattice points in a disc — p. 79
+  - Exercises — p. 80
+  - Hints — p. 82
+  - Solutions — p. 82
+- 8. Continued Fractions and Pell's Equation — p. 87
+  - Finite continued fractions — p. 87
+  - The expansion of a real number — p. 89
+  - Best approximations — p. 90
+  - Periodic expansions — p. 92
+  - Pell's equation — p. 93
+  - Exercises — p. 95
+  - Hints — p. 97
+  - Solutions — p. 98
+- 9. Diophantine Equations — p. 103
+  - Obstructions before constructions — p. 104
+  - Pythagorean triples — p. 105
+  - Infinite descent — p. 106
+  - Rational points on conics: the chord method — p. 107
+  - Factoring with a sum of squares — p. 108
+  - Vieta jumping — p. 109
+  - Workshop: build the descent before writing it — p. 110
+  - Exercises — p. 111
+  - Hints — p. 112
+  - Solutions — p. 112
+- 10. Gaussian and Eisenstein Integers — p. 117
+  - Three rings and their norms — p. 117
+  - Unique factorisation — p. 120
+  - Gaussian primes and sums of two squares — p. 121
+  - Eisenstein integers and Fermat for cubes — p. 123
+  - Exercises — p. 125
+  - Hints — p. 126
+  - Solutions — p. 127
+- 11. Quadratic Fields and Their Integers — p. 131
+  - The integers of a quadratic field — p. 131
+  - Units — p. 133
+  - Two coordinates, two embeddings — p. 134
+  - Exercises — p. 135
+  - Hints — p. 135
+  - Solutions — p. 136
+- 12. Ideals, Prime Splitting and Class Groups — p. 139
+  - Kummer's ideal numbers — p. 139
+  - Unique factorisation of ideals — p. 142
+  - How a prime number splits — p. 144
+  - Ideal arithmetic and the number of remainders — p. 146
+  - The class group — p. 147
+  - A brief bridge to binary quadratic forms — p. 149
+  - Exercises — p. 150
+  - Hints — p. 151
+  - Solutions — p. 152
+- 13. The p-adic Numbers — p. 157
+  - The p-adic absolute value — p. 157
+  - The p-adic integers — p. 159
+  - Hensel's lemma, Newton's way — p. 163
+  - Ostrowski's theorem — p. 166
+  - Local and global — p. 167
+  - Exercises — p. 168
+  - Hints — p. 169
+  - Solutions — p. 170
+- An Arithmetic Field Guide — p. 175

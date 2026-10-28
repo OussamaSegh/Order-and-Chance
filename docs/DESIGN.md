@@ -732,3 +732,19 @@ All 67 integrated publishing tests pass. Exact evidence and remaining verificati
 limits are in review/volume0-reconstruction/DIGITAL-VALIDATION.md. The user
 explicitly authorised pushing this revision; verify the exact main build and
 publication run before reporting a successful deployment.
+
+## Volume 1 editorial reconstruction and format verification (28 October 2026)
+
+Volume 1 now has thirteen chapters, with a separate quadratic-integer/unit
+chapter before ideals and a complete local-field construction. The current
+manuscript is 189 print-interior pages, 190 reading pages, with 177 numbered
+pages. The approved STIX/Inter typography, semantic boxes, original figures,
+native Ulam cover and premium-colour geometry are unchanged. Its regenerated
+wrap uses the actual 189-page interior, even-rounded to 190 for a 0.4459-inch spine.
+
+The complete PDF/EPUB/reader build and all 67 publishing tests pass. EPUBCheck
+5.3.0 reports no issues; 17 HTML pages pass desktop and 320-pixel mobile browser
+checks, including formula rendering and reader controls. Source preservation,
+mathematical review, exact verification scope and remaining historical/external
+review limits are recorded in review/volume1-reconstruction/. No other volume
+is edited, and no KDP upload or physical proof is claimed.
