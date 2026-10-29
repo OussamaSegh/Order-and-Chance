@@ -124,25 +124,25 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 7. Symmetry's extra linear algebra
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 6
 - **Books and files:** `volume3-symmetry` appendices, `volume8-analysis`, `volume10-abstraction`. Spectral theorem, SVD, graph spectra, matrix inequalities, linear dynamics, and the linear algebra that repeats Book 1 go to Analysis. Tensors go to Abstraction, Categories. Circulants, Perron roots of a symmetry, and the linear algebra method stay in Book 3.
 - **Acceptance:** Book 3's contents are Groups, Rings and Polynomials, and Fields and Galois Theory, plus the appendices that still count by symmetry. Analysis and Abstraction build with the new files. No part rename.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/33
-- **Merge sha:**
-- **Date:**
-- **Notes:**
+- **Merge sha:** b6e61fa17d66389b466c3fd6019cde5e5ef46e64
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not re-implement the move.
 
 ### 8. Still spectra, from Random Motion to Analysis
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 7
 - **Books and files:** `volume12-random-motion` (`ch09-expanders.tex`, `ch10-semicircle.tex`, `ch11-cue.tex`, the expander half of `chapters/spectral.tex`) and `volume8-analysis` Spectral Theory. Dyson Brownian motion stays in Stochastic Calculus. The zeta narrative in `moments.tex` stays until step 19.
 - **Acceptance:** The semicircle, the sine kernel, and the graph-theoretic Riemann hypothesis are theorems of Book 8. Book 12's third part is walks on graphs, resistance, and the matrix-tree theorem. Apply the proposed part rename: Book 12, Part III, **Networks**. Regenerate the series files. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/34
 - **Merge sha:**
 - **Date:**
-- **Notes:** This is the only PR that renames Book 12's part. Later books cite the sine kernel as Book 8.
+- **Notes:** This is the only PR that renames Book 12's part. Later books cite the sine kernel as Book 8. The branching random walk stays in Book 12, in Stochastic Calculus.
 
 ### 9. Jordan to Spaces, Riemann mapping to Shapes
 
