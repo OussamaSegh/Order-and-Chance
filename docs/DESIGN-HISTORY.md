@@ -1,5 +1,21 @@
 # Series design and session record
 
+## Approved Cormorant cover family — 29 October 2026
+
+The fifteen fronts drawn by the TikZ generator in `tools/covergen/` were
+approved and became the production covers. The series name is Cormorant
+Garamond SemiBold in spaced capitals; the volume title is Cormorant Garamond
+Regular at 42 pt; small lines are Fira Sans Light; the ground is charcoal with
+35% grain and the original double coral frame. Volume 1 carries the Collatz
+tree. The other motifs are those in `tools/covergen/arts.py`. Backs use the
+same family and each volume’s existing blurb, kept clear of the barcode. Spines
+share fixed positions for the series name, volume number, title and author.
+Each book has a one-line cover credit on the copyright page and an About the
+Cover colophon, both taken from `common/cover-notes.json`. The earlier
+black/gold, Inter, exact-PNG and 3D-wireframe sessions below are history.
+
+
+
 The slogan **Discover the patterns. Understand the proofs.** was retired on 2026-10-29 in favour of the series subtitle **The Hidden Architecture of Mathematics**. The sentences below that still name the slogan record earlier sessions.
 
 ## Latest refinement: a compromise between dense and minimal

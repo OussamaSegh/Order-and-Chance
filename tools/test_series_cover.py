@@ -1,16 +1,14 @@
-"""Regression guards for the one permitted cover master and its 3D material."""
+"""Regression guards for the shared cover family and the retired wireframe model."""
 import math
 import unittest
 import tempfile
 from pathlib import Path
 from unittest.mock import patch
 
-from PIL import ImageFont
-
-from check_cover_template import check_subtitle, check_font_sizes
+from check_cover_template import check_font_sizes
 from cover_surfaces import binomial, height_mesh, symmetry_mesh, galton_lattice, projection_saddle, Scene
 from cover_surface_renderer import render, visible_edges
-from series_cover import ROOT, settings, check_sync, check_titles, subtitle_baseline
+from series_cover import ROOT, settings, check_sync, cover_notes
 from check_cover_pdf import check_cover_log, check_back_copy
 
 
@@ -31,50 +29,23 @@ class SharedMasterTest(unittest.TestCase):
         with patch('check_cover_pdf.subprocess.check_output',return_value='Actual back blurb words. '*40):
             check_back_copy('wrap.pdf')
 
-    def test_every_title_fits_without_changing_font_size(self):
-        wrapped=check_titles()
-        self.assertEqual(len(wrapped),15)
-        self.assertTrue(all(len(lines)<=2 for lines in wrapped.values()))
-        self.assertEqual(wrapped['1'],['First Principles'])
-        self.assertEqual(wrapped['10'],['Abstraction'])
-        self.assertEqual(wrapped['15'],['Order and','Chance'])
-
-    def test_every_subtitle_uses_one_size_and_fits_the_frame(self):
-        from series_metadata import subtitles, cover_subtitle_lines
-        data=settings();scale=175/72.27
-        font=ImageFont.truetype(str(ROOT/data['subtitle_font']),data['subtitle_size_pt']*scale)
-        for number,text in subtitles().items():
-            def width(line):
-                return (font.getlength(line)+(len(line)-1)*data['subtitle_size_pt']*scale*data['subtitle_tracking']/100)*data['subtitle_stretch']
-            lines=cover_subtitle_lines(number)
-            self.assertEqual(' '.join(lines),text)
-            with self.subTest(volume=number):
-                self.assertLessEqual(len(lines),2)
-                self.assertTrue(all(width(line)<data['subtitle_width_in']*175 for line in lines))
-                self.assertEqual(len(lines),2 if number in ('1','15') else 1)
-        self.assertEqual(data['subtitle_top_ratio'],.6)
-        self.assertEqual(data['subtitle_baseline_source_px'],632.36)
+    def test_plates_notes_and_shared_rules_match_the_generator(self):
         check_sync()
+        notes=cover_notes()
+        self.assertEqual(set(notes), {str(n) for n in range(1,16)})
+        for number, row in notes.items():
+            words=len(row['about'].split())
+            self.assertGreaterEqual(words, 80)
+            self.assertLessEqual(words, 150)
+            self.assertIn('TikZ cover generator', row['about'])
+        lettering=(ROOT/'volume1-first-principles/cover-lettering.tex').read_text()
+        self.assertIn('lower-rule y=2.9500in', lettering)
+        self.assertIn('fontsize{42}{46}', lettering)
+        offsets=__import__('json').loads((ROOT/'tools/covergen/centring.json').read_text())['volumes']
+        series={round(row['SERIES'], 6) for row in offsets.values()}
+        self.assertEqual(len(series), 1)
 
-    def test_subtitle_follows_last_title_line_and_rejects_an_empty_line_gap(self):
-        def xml(top):
-            return ('<html><word yMin="'+str(top*720)+'">Proof,</word>'
-                    '<word>Problem</word><word>Solving</word><word>and</word>'
-                    '<word>Mathematical</word><word>Thinking</word></html>').encode()
-        def anchor(number):
-            return .3928264+(subtitle_baseline(number)-settings()['subtitle_baseline_source_px'])/1500
-        with patch('check_cover_template.subprocess.check_output',return_value=xml(anchor('1'))):
-            check_subtitle('front.pdf','1',720)
-        wrong=b'<html><word yMin="282.835008">Primes,</word><word>Patterns</word><word>and</word><word>Proofs</word></html>'
-        with patch('check_cover_template.subprocess.check_output',return_value=wrong):
-            with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','2',720)
-        primes=b'<html><word yMin="'+str(anchor('2')*720).encode()+b'">Primes,</word><word>Patterns</word><word>and</word><word>Proofs</word></html>'
-        with patch('check_cover_template.subprocess.check_output',return_value=primes):
-            check_subtitle('front.pdf','2',720)
-        with patch('check_cover_template.subprocess.check_output',return_value=xml(.412)):
-            with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','1',720)
-
-    def test_resized_or_different_title_font_is_rejected(self):
+    def test_title_must_be_cormorant_regular_at_42pt(self):
         class Font(dict):
             def get_object(self):return self
         class Contents:
@@ -82,12 +53,18 @@ class SharedMasterTest(unittest.TestCase):
             def get_data(self):return f'/F1 {self.size} Tf'.encode()
         class Page(dict):
             def __init__(self,size,font):
-                super().__init__({'/Resources':{'/Font':{'/F1':Font({'/BaseFont':font})}}});self.size=size
+                super().__init__({'/Resources':{'/Font':{
+                    '/F1':Font({'/BaseFont':font}),
+                    '/F2':Font({'/BaseFont':'/CormorantGaramond-SemiBold'}),
+                    '/F3':Font({'/BaseFont':'/CormorantGaramond-Medium'}),
+                    '/F4':Font({'/BaseFont':'/FiraSans-Light'})}}})
+                self.size=size
             def get_contents(self):return Contents(self.size)
-        size=settings()['title_size_pt']*72/72.27
-        check_font_sizes(Page(size,'/ABC+InterDisplay-Bold'),settings())
-        for font,size_ in [('/ABC+Inter-SemiBold',size),('/ABC+InterDisplay-Bold',size*.9)]:
-            with self.assertRaisesRegex(ValueError,'fixed bold'):check_font_sizes(Page(size_,font),settings())
+        size=42*72/72.27
+        check_font_sizes(Page(size,'/CormorantGaramond-Regular'))
+        for font,size_ in [('/InterDisplay-Bold',size),('/CormorantGaramond-Regular',size*.9)]:
+            with self.assertRaisesRegex(ValueError,'Cormorant Garamond Regular'):
+                check_font_sizes(Page(size_,font))
 
 
 class WireframeModelTest(unittest.TestCase):

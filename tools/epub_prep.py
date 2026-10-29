@@ -4,6 +4,7 @@ Inlines \\input files (swapping the PDF preamble for common/epub-preamble.tex)
 and turns the optional arguments of the exercise and
 reminder boxes (which pandoc drops) into markers that tools/epub.lua reads.
 """
+import json
 import re
 import sys
 from pathlib import Path
@@ -50,13 +51,22 @@ def book_settings(main_tex: Path) -> dict:
             for k, v in settings.items()}
 
 
+def cover_credit(main_tex: Path) -> str:
+    title = re.search(r"^% epub-title: (.*)$", main_tex.read_text(encoding="utf-8"), re.M)
+    number = re.search(r"Volume ([0-9A-Z]+):", title.group(1)).group(1) if title else ""
+    notes = json.loads((COMMON / "cover-notes.json").read_text(encoding="utf-8"))
+    return notes.get(number, {}).get("credit", "")
+
+
 def copyright_section(main_tex: Path) -> str:
     b = book_settings(main_tex)
     title = re.search(r"^% epub-title: (.*)$", main_tex.read_text(encoding="utf-8"), re.M)
     isbn = "ISBN (eBook): " + b["bookisbnebook"] + "\n\n" if b.get("bookisbnebook") else ""
+    credit = cover_credit(main_tex)
     return ("\\chapter*{Copyright}\n" + (r"\emph{" + title.group(1) + "}\n\n" if title else "")
             + b["bookcopyright"] + "\n\n" + b["booklicence"] + "\n\n"
-            + b["bookedition"] + ". " + b["bookpublisher"] + ".\n\n" + isbn)
+            + b["bookedition"] + ". " + b["bookpublisher"] + ".\n\n" + isbn
+            + (credit + "\n\n" if credit else ""))
 
 
 def main(src: str, dst: str, figdir: str) -> None:

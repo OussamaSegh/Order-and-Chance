@@ -40,12 +40,13 @@ for volume in "${volumes[@]}"; do
   python3 "$root/tools/check_edition_copy.py" "$volume"
   out="$root/build/$volume"
   mkdir -p "$out"
-  # Every volume uses the locked Volume-0 master; archived concepts never bypass it.
+  # Every volume uses the shared Cormorant front; the generator checks the plates above.
   title=$(sed -n 's/^% epub-title: //p' "$root/$volume/main.tex")
   num=$(sed -n 's/^.*Volume \([0-9A-Z]*\):.*/\1/p' <<<"$title")
   meta="\\def\\VOLUMENUM{$num}\\def\\VOLUMETITLE{${title#*: }}"
-  # The same master supplies the reading PDF, EPUB and separate print wrap.
-  compile_cover "$out" cover "$meta\\def\\MOTIF{$volume/cover-motif}\\input{tools/cover.tex}"
+  plate="\\def\\MOTIF{$volume/cover-motif}\\def\\COVERLETTER{$volume/cover-lettering}"
+  # The same plate supplies the reading PDF, EPUB and separate print wrap.
+  compile_cover "$out" cover "$meta$plate\\input{tools/cover.tex}"
   python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num"
   if ! $pdf_only; then
     pdftoppm -png -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
@@ -93,7 +94,7 @@ for volume in "${volumes[@]}"; do
     python3 "$root/tools/ean13.py" "$isbn" "$out/barcode.tex"
     barcode="\\def\\BARCODE{$out/barcode.tex}"
   fi
-  compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$volume/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
+  compile_cover "$out" cover-wrap "$meta$plate\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
   python3 "$root/tools/kdp_cover.py" "$out/cover-wrap.pdf" "$root/dist/kdp/$public - Paperback Cover.pdf" \
     --number "$num" --report "$out/cover-preflight.json"

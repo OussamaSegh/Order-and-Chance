@@ -176,7 +176,7 @@ def check(path, number, report=None, press_report=None, spine=None):
               'raster_content': 'native muted paper grain only', 'unique_images': count,
               'raster_placements': len(placements), 'vector_masters': masters,
               'embedded_fonts': True, 'visible_frame_alignment': True,
-              'shared_volume_0_template': True, 'subtitle_placement': 'below-last-title-line', 'status': 'pass'}
+              'cover_family': 'cormorant-fira', 'subtitle_placement': 'below-title', 'status': 'pass'}
     if report:
         Path(report).write_text(json.dumps(result, indent=2) + '\n')
     observed = result['minimum_observed_ppi']
