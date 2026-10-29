@@ -58,7 +58,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 4 Chance | Discrete Probability | Counting, discrete laws, generating functions, inequalities |
 | 4 | Limit Theorems | Continuous distributions, the central limit theorem |
 | 4 | Random Structures | Walks through the probabilistic method, then the combinatorics appendices. Martingales and Brownian motion stay here because they follow the walks. |
-| 5 Calculation | Series and Products | Finite differences, generating functions, series |
+| 5 Calculation | Series and Products | Finite differences, generating functions, series, the Hardy–Ramanujan formula, and Waring's problem for large s |
 | 5 | Integrals and Transforms | Integrals through complex analysis. The requested name was “Integrals and Asymptotics”; Fourier sits in this block, and the asymptotic chapter follows zeta. |
 | 5 | The Zeta Function | Zeta, asymptotics, the arithmetic-geometric mean |
 | 6 Crossroads | Counting Primes | Mertens through the prime-number theorem |
@@ -87,7 +87,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 13 | Adeles and Tate's Thesis | Tate’s thesis and class field theory |
 | 13 | Elliptic Curves and Modular Forms | Curves through modular forms |
 | 14 The Primes | Zeros and Sieves | Zeros through exponential sums. The requested name was “Sieves”; the book opens with zeros. |
-| 14 | Additive Problems and Bounded Gaps | Partitions, Waring’s problem, and bounded gaps. The requested name was “Gaps and Bounded Gaps”; partitions and Waring sit before the gap theorems. |
+| 14 | Additive Problems and Bounded Gaps | Three primes and bounded gaps. The part name stays Additive Problems and Bounded Gaps. Partitions and Waring's problem are in Volume 5. |
 | 14 | Structure in the Primes | Halász through the critical line |
 | 15 Order and Chance | The Question | Order in the integers, models of the primes, independent prime divisors |
 | 15 | Arithmetic Statistics | Multiplicative functions through ranks of elliptic curves |
