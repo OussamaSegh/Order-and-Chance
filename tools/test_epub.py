@@ -229,7 +229,8 @@ See Equation~\eqref{eq:zero}.
                 metadata = package.find(f"{{{epub_fix.OPF}}}metadata")
                 titles = metadata.findall(f"{{{dc}}}title")
                 self.assertEqual([t.text for t in titles],
-                                 ["Order and Chance. Volume 1: The Integers", "Primes, Patterns and Proofs"])
+                                 ["Order and Chance. Volume 1: The Integers",
+                                  "Proof, Problem Solving and Mathematical Thinking"])
                 marker = metadata.find(f"{{{epub_fix.OPF}}}meta[@property='title-type'][.='subtitle']")
                 self.assertEqual(marker.get("refines"), "#" + titles[1].get("id"))
                 items = package.findall(f"{{{epub_fix.OPF}}}manifest/{{{epub_fix.OPF}}}item")

@@ -1,0 +1,813 @@
+\chapter{Congruences}\label{ch:congruences}
+
+\begin{center}\itshape
+What are the last two digits of $3^{3^{3^3}}$, a number with more than $3\times10^{12}$ digits?\\
+Arithmetic modulo $n$ answers in four lines.
+\end{center}
+
+When it is $10$ o'clock and you wait $5$ hours, it is $3$ o'clock: a clock forgets everything but the remainder. In 1801 a twenty-four-year-old Gauss
+opened his \emph{Disquisitiones Arithmeticae} by turning that forgetfulness into a calculus, with a new sign, $\equiv$. It was one of the great
+notational inventions of mathematics, because it lets you compute with remainders exactly as with numbers, and throw away everything you do not need.
+The last two digits of a number with three trillion digits become a computation you can do on the back of an envelope.
+
+\section{The ring \texorpdfstring{$\Z/n\Z$}{Z/nZ}}
+
+% t1-pass2 motive b31b4a00
+A clock forgets multiples of $n$ and keeps a ring. The units are the residues coprime to $n$, and Euler's theorem is Lagrange's theorem for that finite group, proved here by a direct cancellation. Wilson's theorem is the same group, multiplied together. Both reappear whenever Volume~5 or Volume~12 sums a character over a complete set of residues.
+
+For $n\ge1$, $a\equiv b\pmod n$ means $n\mid a-b$. This is an equivalence relation whose classes are $\bar a=a+n\Z$, and there are exactly $n$ of them, $\bar0,\dots,\overline{n-1}$ (Euclidean division gives each $a$ a unique remainder).
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-clock}
+\caption{The clock $\Z/12\Z$. Adding $5$ is a step of five hours. Because $\gcd(5,12)=1$, repeated addition visits every residue exactly once before returning. Teal rings mark the residues coprime to $12$; coral dots mark the others. Adding $4$, which shares a factor with $12$, stays inside $\{0,4,8\}$.}
+\label{fig:clock}
+\end{figure}
+
+\subsection*{A class is a whole family, a representative is one member}
+Modulo $5$, the integers $-3$, $2$, $7$ and $12$ represent the same class. We may choose $2$ as a convenient representative, but the class is the entire set $2+5\Z$. For example,
+\[
+(\overline{-3})(\bar7)=\overline{-21}=\bar4
+ =\bar2\,\bar2\quad\text{in }\Z/5\Z.
+\]
+Choosing different representatives must never change the answer. The next proposition proves exactly this; without it, ``multiply the classes'' would be an ambiguous instruction.
+
+A \emph{commutative ring with identity} is a set with addition and multiplication obeying the familiar associative, commutative and distributive laws, with identity elements satisfying $x+0=x$ and $x\cdot1=x$, and with an additive inverse $-x$ satisfying $x+(-x)=0$ for every $x$. We do \emph{not} demand multiplicative inverses. An element $x$ is a \emph{unit} if some $u$ satisfies $xu=1$. A \emph{field} is a commutative ring with $0\ne1$ in which every non-zero element is a unit. These definitions distinguish the two algebraic worlds we need, without assuming an earlier algebra course.
+
+\begin{proposition}\label{prop:ringZn}
+If $a\equiv a'$ and $b\equiv b'\pmod n$, then $a+b\equiv a'+b'$ and $ab\equiv a'b'\pmod n$. Hence $\bar a+\bar b=\overline{a+b}$ and $\bar a\bar b=\overline{ab}$ are well defined and make $\Z/n\Z$ a commutative ring with $n$ elements.
+\end{proposition}
+\begin{proof}
+$(a+b)-(a'+b')=(a-a')+(b-b')$ and $ab-a'b'=a(b-b')+b'(a-a')$ are multiples of $n$. The ring axioms hold in $\Z/n\Z$ because they hold in $\Z$ and $a\mapsto\bar a$ respects both operations.
+\end{proof}
+
+\begin{proposition}\label{prop:units}
+$\bar a$ is invertible in $\Z/n\Z$ if and only if $\gcd(a,n)=1$. Hence $\Z/n\Z$ is a field if and only if $n$ is prime, and the group of units $(\Z/n\Z)^\times$ has $\varphi(n)$ elements.
+\end{proposition}
+\begin{proof}
+$\bar a\bar u=\bar1$ means $au+nv=1$ for some $v$, which is B\'ezout's characterisation of $\gcd(a,n)=1$. The inverse is computed by the extended Euclidean algorithm. So the units are the classes of the integers in $\{1,\dots,n\}$ prime to $n$, which is the definition of $\varphi(n)$. Finally $\Z/n\Z$ is a field iff every $a\in\{1,\dots,n-1\}$ is prime to $n$ (and $n\ge2$), iff $n$ is prime.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+Bézout's identity says $\bar a$ has an inverse if and only if $\gcd(a,n)=1$. The ring is a field precisely when every nonzero class is a unit, which happens exactly for prime $n$. Nothing about roots of unity has been used; this is division.
+
+The units form a \emph{group under multiplication}: their product is a unit, multiplication is associative, $1$ is a unit, and every unit has a multiplicative inverse among the units. For example $(xy)^{-1}=y^{-1}x^{-1}$, since multiplying the two expressions gives $1$. This group is finite here, and its size is $\varphi(n)$. Euler's proof below uses only the fact that multiplication by a unit permutes this finite set.
+
+\begin{theorem}[Euler, Fermat]\label{thm:eulerthm}
+If $\gcd(a,n)=1$ then $a^{\varphi(n)}\equiv1\pmod n$. In particular, for $p$ prime and $p\nmid a$, $a^{p-1}\equiv1\pmod p$.
+\end{theorem}
+\begin{proof}
+Multiplication by $\bar a$ is a bijection of the finite group $(\Z/n\Z)^\times$ (its inverse is multiplication by $\bar a^{-1}$). So the product of all units $x$ equals the product of all $\bar ax$, which is $\bar a^{\varphi(n)}$ times the same product. Cancel that unit.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+Multiplication by a unit permutes the group of units. The product of all units is therefore unchanged when each factor is multiplied by $a$, which multiplies the product by $a^{\varphi(n)}$. Cancelling the product leaves Euler's theorem. Fermat's little theorem is the case of a prime modulus.
+
+\subsection*{Division has an entrance requirement}
+Modulo $7$, division by $3$ is legal because $3\cdot5\equiv1$: dividing means multiplying by $5$. Modulo $6$, division by $3$ is not legal. In fact $3\cdot1\equiv3\cdot3\pmod6$, but $1\not\equiv3\pmod6$. A ring is not automatically a field; cancelling a non-unit can erase information.
+
+The same issue controls exponents. Euler's theorem allows us to reduce exponents modulo $\varphi(n)$ \emph{only if the base is coprime to $n$}. For instance $\varphi(8)=4$, but $2^4\equiv0\pmod8$ while $2^0\equiv1\pmod8$. Reducing the exponent from $4$ to $0$ here would turn a false equality into an impressively short calculation.
+
+\textbf{Repeated squaring.} Even without Euler's theorem, modular powers are quick. Since $13=8+4+1$, to compute $7^{13}\bmod23$ square repeatedly:
+\[
+\begin{aligned}
+7^2&\equiv3,\qquad 7^4\equiv9,\qquad 7^8\equiv12,\\
+7^{13}&\equiv12\cdot9\cdot7=756\equiv20\pmod{23}.
+\end{aligned}
+\]
+At every step we reduce the result modulo $23$, so no enormous integer is needed. An exponent with $s$ binary digits requires at most $s-1$ squarings and $s-1$ further multiplications. This elementary idea is one of the workhorses of public-key cryptography.
+
+\begin{think}
+Compute $(p-1)!\bmod p$ for $p=5,7,11$. What do you notice? In $\Z/7\Z$, pair each of $1,\dots,6$ with its inverse: which numbers are left alone, and why can there be no others?
+\end{think}
+
+\begin{theorem}[Wilson]\label{thm:wilson}
+For $p$ prime, $(p-1)!\equiv-1\pmod p$.
+\end{theorem}
+\begin{proof}
+If $p=2$, the product is $1!=1\equiv-1\pmod2$, so assume $p$ is odd. In the field $\Z/p\Z$, $x^2=1$ means $(x-1)(x+1)=0$, so $x=\pm1$: only $1$ and $-1$ are their own inverses. The other non-zero classes pair off with their inverses, each pair having product $1$. So $(p-1)!\equiv1\cdot(-1)=-1$.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+In the field $\Z/p\Z$ the numbers $1,\ldots,p-1$ pair as inverses. Only $1$ and $-1$ are their own inverses, because $x^2-1$ has at most two roots. The product of the pairs is $1$, and the two fixed points contribute $-1$.
+
+% t1-pass2 examples b31b4a00
+\begin{examplex}[arithmetic modulo $12$]
+One has $7+8=15\equiv 3$ and $7\cdot 8=56\equiv 8$ modulo $12$. The residue $5$ is a unit: $5\cdot 5=25\equiv 1$. The residue $4$ is not, because every multiple of $4$ is even and not $1$ modulo $12$. Figure~\ref{fig:clock} is this arithmetic drawn as hours.
+\end{examplex}
+
+\begin{examplex}[the last two digits of $7^4$]
+Modulo $100$, $7^2=49$ and $7^4=49^2=2401\equiv 1$. So the order of $7$ modulo $100$ divides $4$ on this evidence, but Euler's theorem only promised exponent $\varphi(100)=40$. A direct power can be much smaller than the group order, which is why the order is defined as the least positive exponent in the next chapter.
+\end{examplex}
+
+\section{The Chinese remainder theorem}
+
+% t1-pass2 motive 44b5e511
+Coprime moduli do not interfere. A system of congruences modulo $m$ and $n$ is a single congruence modulo $mn$, and the explicit formula is a Bézout identity. Volume~5 uses this to count integers that avoid several residue classes at once, which is the sieve; Volume~12 uses it to glue local solutions into an adelic one.
+
+\begin{think}
+Draw a grid with $3$ rows and $4$ columns, and write each $x=0,1,\dots,11$ in row $x\bmod3$ and column $x\bmod4$. Does every cell receive exactly one number? Now try $2$ rows and $4$ columns with $x=0,\dots,7$. What property of the pair of moduli makes the difference?
+\end{think}
+
+A \emph{ring morphism} is a map preserving addition, multiplication and
+$1$. A bijective ring morphism is an \emph{isomorphism}: it identifies two
+presentations of the same arithmetic. Its inverse also preserves operations,
+since the defining identities can be read backwards through a bijection.
+The product of two rings uses coordinatewise operations.
+
+\begin{theorem}[Chinese remainder theorem]\label{thm:crt}
+If $m,n\ge1$ are coprime, the map $\Z/mn\Z\to\Z/m\Z\times\Z/n\Z$, $x\mapsto(x\bmod m,\ x\bmod n)$ is a ring isomorphism. Explicitly, if $mu+nv=1$, the solution of $x\equiv a\pmod m$, $x\equiv b\pmod n$ is $x\equiv anv+bmu\pmod{mn}$.
+\end{theorem}
+\begin{proof}
+The map is a well-defined ring morphism. It is injective: if $m\mid x$ and $n\mid x$ with $m,n$ coprime then $mn\mid x$ (Gauss). Both sides have $mn$ elements, so it is bijective. For the formula: $nv\equiv1\pmod m$ and $nv\equiv0\pmod n$, and symmetrically for $mu$.
+\end{proof}
+
+Figure~\ref{fig:crt} shows the theorem as a walk: adding $1$ moves one step down and one step right, wrapping around the edges like on a torus. When the moduli are coprime, the walk visits every cell before coming back.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-crt}
+\caption{Left: $x\mapsto(x\bmod3,x\bmod4)$ for $x=0,\dots,11$. Each step $x\to x+1$ moves diagonally (the arrows show the steps that do not wrap around), and every cell is hit exactly once. Right: with the non-coprime moduli $2$ and $4$, the walk closes up after $\operatorname{lcm}(2,4)=4$ steps, so half the cells (grey) are never reached and the others are hit twice.}
+\label{fig:crt}
+\end{figure}
+
+Units correspond to pairs of units, so $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$. With $\varphi(p^k)=p^k-p^{k-1}$ (the non-multiples of $p$), this recovers $\varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right)$ from Volume~0.
+
+\begin{proposition}[linear congruences]\label{prop:lincong}
+$ax\equiv b\pmod n$ has a solution if and only if $d=\gcd(a,n)$ divides $b$, and then it has exactly $d$ solutions modulo $n$.
+\end{proposition}
+\begin{proof}
+Solvability means $b\in a\Z+n\Z=d\Z$. If $d\mid b$, divide through: $\frac adx\equiv\frac bd\pmod{\frac nd}$ has a unique solution $x_0$ modulo $\frac nd$, since $\frac ad$ is a unit there; it gives $d$ classes modulo $n$.
+\end{proof}
+
+\subsection*{Reassembling a number, and knowing when it is possible}
+Solve $x\equiv2\pmod5$ and $x\equiv3\pmod7$. Since $3\cdot5-2\cdot7=1$, the theorem gives
+\[
+x\equiv2(-14)+3(15)=17\pmod{35}.
+\]
+Check both remainders: $17=3\cdot5+2=2\cdot7+3$. The two ingredients $-14$ and $15$ act as switches: one is $1$ modulo $5$ and $0$ modulo $7$, the other reverses those roles. This is why adding the two prescribed remainders works.
+
+\textbf{When the moduli share a factor.} For arbitrary positive $m,n$, put $d=\gcd(m,n)$. The pair $x\equiv a\pmod m$, $x\equiv b\pmod n$ is solvable precisely when $d\mid b-a$, and then the answer is one class modulo $\operatorname{lcm}(m,n)=mn/d$. To prove this, write $x=a+mt$: the second condition becomes $mt\equiv b-a\pmod n$. The linear-congruence proposition gives exactly the compatibility condition and one class of $t$ modulo $n/d$, hence one class of $x$ modulo $mn/d$.
+
+Thus $x\equiv1\pmod6$, $x\equiv3\pmod8$ is compatible and gives $x\equiv19\pmod{24}$, whereas replacing the second remainder by $2$ makes it impossible: an integer cannot be both odd and even. The Chinese remainder theorem is powerful; it does not negotiate with parity.
+
+\subsection*{A counting identity for the next chapter}
+The following identity will let us count elements of each multiplicative order.
+It is a partition of a finite set, not an assumption about primitive roots.
+
+\begin{proposition}[Gauss]\label{prop:phisum}
+$\displaystyle\sum_{d\mid n}\varphi(d)=n$.
+\end{proposition}
+\begin{proof}
+Write each of the $n$ fractions $\frac kn$, $1\le k\le n$, in lowest terms $\frac ad$: then $d\mid n$, $1\le a\le d$ and $\gcd(a,d)=1$, and each such pair arises exactly once. So $n=\sum_{d\mid n}\varphi(d)$.
+\end{proof}
+
+% t1-pass2 examples 44b5e511
+\begin{examplex}[Sunzi's problem]
+Solve $x\equiv 2\pmod 3$, $x\equiv 3\pmod 5$, $x\equiv 2\pmod 7$. First $x\equiv 2\pmod 3$ and $x\equiv 2\pmod 7$ give $x\equiv 2\pmod{21}$, because $3$ and $7$ are coprime and the two remainders agree. Then $x=21k+2\equiv 3\pmod 5$, so $k\equiv 1\pmod 5$ and $k=5t+1$. Thus $x=105t+23$. The smallest positive solution is $23$.
+\end{examplex}
+
+\begin{examplex}[when the moduli are not coprime]
+The system $x\equiv 1\pmod 4$ and $x\equiv 2\pmod 6$ has no solution. A solution would give $1\equiv 2\pmod{\gcd(4,6)}$, that is $1\equiv 2\pmod 2$, which is false. The Chinese remainder theorem needs coprime moduli precisely so that this compatibility condition is automatic. When it holds, as for $x\equiv 1\pmod 4$ and $x\equiv 3\pmod 6$ (since $1\equiv 3\pmod 2$), solutions exist; $x=9$ is one.
+\end{examplex}
+
+\section{Lifting modulo prime powers}
+
+% t1-pass2 motive 65285a19
+A root modulo $p$ may lift to a root modulo every $p^k$, and if the derivative is nonzero modulo $p$ the lift is unique. This is Newton's method with a precision count in place of a limit. Chapter~\ref{ch:padic} removes the ceiling and calls the coherent sequence a $p$-adic integer. Volume~12 uses the same step in extensions of $\Q_p$.
+
+\begin{think}
+Modulo $5$, $x=2$ solves $x^2\equiv-1$. Look for a solution modulo $25$ of the form $2+5t$. Expand the square: why does the term $25t^2$ not matter, and why is there exactly one good $t$ in $\{0,\dots,4\}$?
+\end{think}
+
+For $f(X)=\sum_{j=0}^d c_jX^j$, its \emph{formal derivative} is $f'(X)=\sum_{j=1}^d jc_jX^{j-1}$. No analytic limit is needed: the binomial theorem gives
+\[
+f(a+h)=f(a)+hf'(a)+h^2g(a,h)
+\]
+for a polynomial $g$ with integer coefficients. The constant and linear terms are displayed; every remaining term contains at least $h^2$. This elementary expansion is the entire engine of the next theorem.
+
+\begin{theorem}[Hensel's lemma]\label{thm:hensel}
+Let $f\in\Z[X]$, $p$ prime, $k\ge1$, and $a\in\Z$ with $f(a)\equiv0\pmod{p^k}$ and $f'(a)\not\equiv0\pmod p$. Then there is a unique $t\in\{0,\dots,p-1\}$ such that $f(a+tp^k)\equiv0\pmod{p^{k+1}}$.
+\end{theorem}
+\begin{proof}
+Taylor's formula for polynomials gives $f(a+h)=f(a)+hf'(a)+h^2g(a,h)$ with $g$ having integer coefficients. With $h=tp^k$ and $2k\ge k+1$:
+$f(a+tp^k)\equiv f(a)+tp^kf'(a)\pmod{p^{k+1}}$. Writing $f(a)=cp^k$, the condition becomes $c+tf'(a)\equiv0\pmod p$, which has exactly one solution $t$ modulo $p$ since $f'(a)$ is invertible modulo $p$.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+The binomial expansion of a polynomial stops, after the linear term, in multiples of $h^2$. With $h=tp^k$ and $k\ge 1$, that error is invisible modulo $p^{k+1}$. The linear term is a multiplication by the unit $f'(a)$ modulo $p$, which can be solved for exactly one digit $t$.
+
+Iterating, a simple root modulo $p$ lifts to a unique root modulo every $p^k$. This is Newton's method in the $p$-adic world (Chapter~\ref{ch:padic}).
+
+\subsection*{A root has a family tree}
+The derivative condition in Hensel's lemma is a promise that each root has exactly one child at the next precision. For $f(X)=X^2+1$ and $p=5$, the roots modulo $5$ are $2$ and $3$. The first lifts to $7$ modulo $25$, then $57$ modulo $125$; the second lifts to $18$, then $68$. These branches are negatives of one another. The exercise below derives the first branch step by step.
+
+\begin{figure}[ht]
+\centering\fig{ch03-hensel-branches}
+\caption{Two simple roots of $X^2+1$ lifting through powers of $5$. The integers at each level are representatives, not increasing real approximations: $57$ and $68$ both square to $-1$ modulo $125$. Each arrow records reduction modulo the preceding power of $5$.}
+\label{fig:hensel-branches}
+\end{figure}
+
+If the derivative vanishes modulo $p$, uniqueness can fail in two opposite ways. For $X^2$ the root $0$ modulo $5$ has \emph{five} lifts modulo $25$, namely $0,5,10,15,20$. For $X^2-5$, the same root modulo $5$ has \emph{no} lift modulo $25$, since $(5t)^2-5\equiv-5\not\equiv0\pmod{25}$. So the derivative hypothesis is not decoration: remove it and a root may multiply or disappear.
+
+\subsection*{A compact strategy for congruence problems}
+First decide whether the task concerns an additive equation, a product, or an exponent. For an equation $ax\equiv b$, compute $\gcd(a,n)$ before dividing. For a composite modulus, split into coprime prime powers and reassemble by the Chinese remainder theorem. For exponents, check coprimality before using Euler, and use repeated squaring to perform the remaining computation. For polynomial roots modulo $p^k$, inspect the derivative before promising a unique lift. These are different tools with different hypotheses; choosing the tool is often most of the mathematics.
+
+% t1-pass2 examples 65285a19
+\begin{examplex}[lifting the root of $X^2+1$ modulo $5$]
+Modulo $5$ the roots are $2$ and $3$. From $2$, the next digit satisfies $2+5t$ with $(2+5t)^2\equiv -1\pmod{25}$, so $20t\equiv -5\pmod{25}$ and $t\equiv 1\pmod 5$. The lift is $7$, and $7^2=49\equiv -1\pmod{25}$. The other branch starts at $3$ and is $-7\equiv 18\pmod{25}$.
+\end{examplex}
+
+\begin{examplex}[a singular root that dies]
+Modulo $5$, $X^2-5$ vanishes at $0$. Modulo $25$ the same congruence asks for a square equal to $5$, and no square is $5$ modulo $25$. The derivative $2X$ also vanishes at $0$, so the unique-lift machine refuses to start. Both behaviours, a unique child and no child, are the reason the derivative is a hypothesis rather than a convenience.
+\end{examplex}
+
+\begin{beauty}
+Where this leads. The Chinese remainder theorem is the exact sieve identity of Chapter~\ref{ch:characters} once it is written with the M\"obius function, and it is the gluing of local solutions in Volume~12. Hensel's lemma is the construction of $\Z_p$ in Chapter~\ref{ch:padic}. Euler's theorem is the reason a character sum over a complete set of units can be evaluated in Volume~5.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:last2}
+Find the last two digits of $7^{2026}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sunzi}
+\emph{Sunzi's remainder problem.} Find the integers that leave remainders $2$, $3$, $2$ when divided by $3$, $5$, $7$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:digits}
+Show that a nonnegative integer is congruent modulo $9$ to the sum of its digits, and modulo $11$ to the alternating sum of its digits (starting from the units). State and prove the corresponding rule for negative integers.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sqrt1}
+\begin{enumerate}[label=(\alph*)]
+\item Let $p$ be an odd prime and $k\ge1$. Show that the solutions of $x^2\equiv1\pmod{p^k}$ are $x\equiv\pm1$.
+\item Let $n$ be odd with $r$ distinct prime factors. How many solutions does $x^2\equiv1\pmod n$ have?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:wilsonconv}
+Show that if $n>4$ is composite then $(n-1)!\equiv0\pmod n$. Deduce that $n>1$ is prime if and only if $(n-1)!\equiv-1\pmod n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hensel}
+Find $x\in\{0,\dots,124\}$ with $x^2\equiv-1\pmod{125}$, by lifting a solution modulo $5$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:tower}
+Show that the last two digits of $3^{3^{3^3}}$ are $87$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:korselt}
+\emph{Korselt's criterion, one direction.} Let $n$ be squarefree and composite, and suppose $p-1\mid n-1$ for every prime $p\mid n$. Show that $a^n\equiv a\pmod n$ for every integer $a$. Check that $561=3\cdot11\cdot17$ qualifies: it is a Carmichael number (Volume~0, the sums and induction chapter).
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:lucas}
+\emph{Lucas' theorem.} Let $p$ be prime, and write $n=\sum_in_ip^i$ and $k=\sum_ik_ip^i$ in base $p$. Show that
+\[
+\binom nk\equiv\prod_i\binom{n_i}{k_i}\pmod p,
+\]
+with $\binom{n_i}{k_i}=0$ when $k_i>n_i$. \emph{Hint: in $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$.} Deduce that $\binom nk$ is odd if and only if each binary digit of $k$ is at most the corresponding digit of $n$, which explains the Sierpi\'nski triangle of Volume~0.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-toy-rsa}
+A miniature RSA system uses $N=55=5\cdot11$, public exponent $e=3$ and private exponent $d=27$. Show that encrypting a residue $m$ by $c\equiv m^3\pmod{55}$ and then decrypting by $c^{27}$ returns $m$ for \emph{every} residue $m$, including non-units. Encrypt $m=12$ and decrypt the result. Explain why Euler's theorem alone, applied modulo $55$, does not prove the assertion for all messages.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:t1-two-power-roots}
+Find the solutions of $x^2\equiv1\pmod{2^k}$ for $k=1,2$. Prove that for every $k\ge3$ there are exactly four classes,
+\[
+1,\quad -1,\quad 1+2^{k-1},\quad -1+2^{k-1}\pmod{2^k}.
+\]
+Where does the argument for odd primes in Exercise~\ref{ex:sqrt1} break down?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:t1-sunzi23}
+Find the smallest positive integer $x$ with $x\equiv 2\pmod 3$, $x\equiv 3\pmod 5$ and $x\equiv 2\pmod 7$.
+\end{exercise}
+
+\begin{beauty}
+The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modulo each prime power of $n$, independently. It speeds up RSA decryption by working with smaller moduli (the gain is roughly a factor of four under a schoolbook arithmetic cost model), and in Volume~2 it becomes a statement about products of rings. Hensel's lemma is the door to the $p$-adic numbers of Chapter~\ref{ch:padic}, where $\sqrt{-1}$ exists as a genuine $5$-adic number, the limit of $2,7,57,\dots$ from Exercise~\ref{ex:hensel}.
+\end{beauty}
+
+\begin{exercise}[$\star\star$]\label{pb:primepoly}
+Let $P\in\Z[X]$ be non-constant.
+\begin{enumerate}[label=(\alph*)]
+\item Show that there are infinitely many integers $n\ge0$ for which $|P(n)|$ is not a prime number.
+\item Show that infinitely many primes divide at least one of the numbers $P(0),P(1),P(2),\dots$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:fpfunctions}
+Let $p$ be a prime.
+\begin{enumerate}[label=(\alph*)]
+\item Show that every map $f:\mathbb F_p\to\mathbb F_p$ is the map $x\mapsto P(x)$ of exactly one polynomial $P\in\mathbb F_p[X]$
+of degree at most $p-1$.
+\item Show that the coefficient of $X^{p-1}$ in this polynomial is $-\sum_{a\in\mathbb F_p}f(a)$.
+\item Suppose $p$ odd and $f$ a bijection. Show that $P$ has degree at most $p-2$, and that for each $t$ with $1\le t\le p-2$
+the polynomial of the map $x\mapsto f(x)^t$ has degree at most $p-2$ too. Check this for $f(x)=x^3$ on $\mathbb F_5$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:aks}
+Let $n\ge2$ and let $a$ be an integer prime to $n$. Show that $n$ is prime if and only if
+\[
+(X+a)^n\equiv X^n+a\pmod n
+\]
+in $\Z[X]$, that is, coefficient by coefficient.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:wolsten}
+\emph{Wolstenholme's theorem.} Let $p\ge5$ be prime.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\sum_{k=1}^{p-1}\frac1{k^2}\equiv0\pmod p$.
+\item Show that $1+\frac12+\dots+\frac1{p-1}\equiv0\pmod{p^2}$.
+\item Show that $\binom{2p-1}{p-1}\equiv1\pmod{p^3}$, that is, $\binom{2p}p\equiv2\pmod{p^3}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:jacobsthal}
+Let $p$ be prime and $a\ge b\ge0$. Show that $\binom{ap}{bp}\equiv\binom ab\pmod{p^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:morley}
+Let $p$ be an odd prime. Show that
+\[
+\binom{p-1}{(p-1)/2}\equiv(-1)^{(p-1)/2}\,4^{p-1}\pmod{p^2}.
+\]
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:glaisher}
+Let $p$ be an odd prime and $B_{p-1}$ the Bernoulli number. Show that $pB_{p-1}$ has no $p$ in its denominator and that
+\[
+(p-1)!\equiv pB_{p-1}-p\pmod{p^2}.
+\]
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:ramanujan5}
+\emph{Ramanujan's congruence.} We prove that $p(5n+4)\equiv0\pmod5$ for every $n\ge0$. Fix $q$ with $0<|q|<1$ and let, for
+$z\in\C^*$,
+\[
+H(z)=\prod_{n\ge1}(1+zq^{2n-1})(1+z^{-1}q^{2n-1})=\sum_{m\in\Z}c_mz^m
+\]
+(a Laurent series, the coefficients depending on $q$).
+\begin{enumerate}[label=(\alph*)]
+\item Show that $H(q^2z)=\frac{H(z)}{qz}$, and deduce that $c_m=q^{m^2}c_0$ for every $m\in\Z$.
+\item By evaluating at $z=i$, and at $z=-1$ with $q$ replaced by $q^4$, show that $c_0(q)E(q^2)=c_0(q^4)E(q^8)$, and deduce the
+\emph{Jacobi triple product}
+\[
+\prod_{n\ge1}(1-q^{2n})(1+zq^{2n-1})(1+z^{-1}q^{2n-1})=\sum_{m\in\Z}q^{m^2}z^m.
+\]
+\item Deduce \emph{Jacobi's identity} $E(x)^3=\sum_{k\ge0}(-1)^k(2k+1)x^{k(k+1)/2}$ for $|x|<1$.
+\item Show that in $xE(x)^4=xE(x)\cdot E(x)^3$, every coefficient of a power $x^{5m}$ is divisible by $5$.
+\item Using $E(x)^5\equiv E(x^5)\pmod5$, conclude.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:kloosterman}
+\emph{Kloosterman sums.} Let $p$ be an odd prime. For $a,b\in\mathbb F_p$ let
+\[
+K(a,b)=\sum_{x\in\mathbb F_p^\times}e\Bigl(\frac{ax+b\bar x}p\Bigr),
+\]
+where $\bar x$ is the inverse of $x$ modulo $p$, and $K(a)=K(a,1)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $K(a)$ is real, that $K(0)=-1$, and that $K(a,b)=K(ab)$ when $b\ne0$.
+\item Show that $\sum_{a\in\mathbb F_p}K(a)^2=p^2-p$.
+\item Show that $\sum_{a\in\mathbb F_p}K(a)^4=2p^3-3p^2-3p$.
+\item Deduce that $|K(a)|<1.19\,p^{3/4}$ for every $a$. How does this compare with the trivial bound, and with what (b) gives?
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:last2}
+Last two digits means modulo $100$. Compute $7^2$ and $7^4$ modulo $100$ before reaching for $\varphi(100)$.
+\end{hint}
+\begin{hint}{ex:sunzi}
+Solve the first two congruences together (list the numbers $\equiv3\pmod5$ below $15$), then add the third.
+\end{hint}
+\begin{hint}{ex:digits}
+What are $10\bmod9$ and $10\bmod11$? Then reduce $\sum_id_i10^i$.
+\end{hint}
+\begin{hint}{ex:sqrt1}
+(a) $p^k$ divides $(x-1)(x+1)$, and an odd prime cannot divide both factors: their difference is $2$. (b) By the Chinese remainder theorem, choose the sign independently modulo each prime power.
+\end{hint}
+\begin{hint}{ex:wilsonconv}
+Write $n=ab$ with $1<a\le b<n$. When do $a$ and $b$ both appear in $(n-1)!$ as different factors? If $a=b$, use $a$ and $2a$.
+\end{hint}
+\begin{hint}{ex:hensel}
+Start from $x\equiv2\pmod5$ and apply the lifting step of Theorem~\ref{thm:hensel} twice, exactly as in the last thinking prompt.
+\end{hint}
+\begin{hint}{ex:tower}
+Modulo $100$, a power of $3$ only depends on its exponent modulo $\varphi(100)=40$. So first find $3^{27}\bmod40$; note that $3^4=81$.
+\end{hint}
+\begin{hint}{ex:korselt}
+By the Chinese remainder theorem it is enough to prove $a^n\equiv a\pmod p$ for each prime $p\mid n$. Treat $p\mid a$ and $p\nmid a$ separately, and use Fermat with $n-1=(p-1)q$.
+\end{hint}
+\begin{hint}{ex:lucas}
+In $(\Z/p\Z)[X]$, write
+\[(1+X)^n=\prod_i\left((1+X)^{p^i}\right)^{n_i}=\prod_i\left(1+X^{p^i}\right)^{n_i},\]
+and find the coefficient of $X^k$ on both sides. Uniqueness of base-$p$ expansions does the rest.
+\end{hint}
+
+\begin{hint}{ex:t1-toy-rsa}
+The composed exponent is $81$. Work separately modulo $5$ and modulo $11$, distinguishing a zero residue from a non-zero one. For the numerical decryption, reduce the exponent modulo $20$ or use repeated squaring.
+\end{hint}
+\begin{hint}{ex:t1-two-power-roots}
+A root is odd. Of the two consecutive even integers $x-1,x+1$, one is divisible by $4$ and the other has exactly one factor $2$. Use this to force $x\equiv1$ or $-1\pmod{2^{k-1}}$, then list the two lifts of each class modulo $2^k$.
+\end{hint}
+
+\begin{hint}{ex:t1-sunzi23}
+The first and third congruences together say $x\equiv 2\pmod{21}$. Then solve one linear congruence modulo $5$.
+\end{hint}
+
+\begin{hint}{pb:primepoly}
+(a) If $P(a)=\pm p$, look at $P(a+kp)$ modulo $p$. (b) Evaluate $P$ at a multiple of $P(0)$ times the product of the primes
+you already have.
+\end{hint}
+
+\begin{hint}{pb:fpfunctions}
+$1-(x-a)^{p-1}$ is the indicator of $\{a\}$ on $\mathbb F_p$. For (c), use the power sums $\sum_xx^t$ modulo $p$.
+\end{hint}
+
+\begin{hint}{pb:aks}
+If $q^k$ is the exact power of a prime $q$ dividing $n$, look at the coefficient of $X^q$.
+\end{hint}
+
+\begin{hint}{pb:wolsten}
+(a) $k\mapsto\frac1k$ permutes the non-zero residues. (b) Pair $k$ with $p-k$. (c) $\binom{2p-1}{p-1}=\prod_{k=1}^{p-1}\bigl(1+\frac pk\bigr)$.
+\end{hint}
+
+\begin{hint}{pb:jacobsthal}
+Vandermonde with $ap=(a-1)p+p$, and induction on $a$.
+\end{hint}
+
+\begin{hint}{pb:morley}
+$\binom{p-1}k=\prod_{j\le k}\bigl(\frac pj-1\bigr)$, and relate $H_{(p-1)/2}$ to $q_p(2)$ through Problem~\ref{pb:fermatquot}(b).
+\end{hint}
+
+\begin{hint}{pb:glaisher}
+Faulhaber's formula for $\sum_{k<p}k^{p-1}$ modulo $p^2$, von Staudt--Clausen, and Problem~\ref{pb:fermatquot}(c).
+\end{hint}
+
+\begin{hint}{pb:ramanujan5}
+(b) At $z=i$ the odd powers cancel. (c) Put $q=x^{1/2}$, $z=-wx^{1/2}$, divide by $1-w^{-1}$ and let $w\to1$. (d) Multiply the
+exponent by $8$ and complete the squares modulo $5$.
+\end{hint}
+
+\begin{hint}{pb:kloosterman}
+(a) Substitute $x\mapsto-x$, and $x\mapsto bx$. (b) Sum over $a$ first. (c) Do not attack $K(a)^4$ directly: compute $\sum_{a,b}|K(a,b)|^4$ in two
+ways, once with (a) and once by summing over $a$ and $b$ first, which counts solutions of $x_1+x_2=x_3+x_4$, $\bar x_1+\bar x_2=\bar x_3+\bar x_4$.
+(d) One term of a sum of non-negative terms is at most the sum.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:last2}
+\idea Last two digits means modulo $100$. Rather than computing $\varphi(100)=40$, look for a small power of $7$ that is $\equiv1$: $7^2=49$ and $49^2=2401$ already give $7^4\equiv1$. Then only $2026\bmod4$ matters.
+\writeup $7^2=49$ and $7^4=2401\equiv1\pmod{100}$. As $2026=4\cdot506+2$, $7^{2026}=(7^4)^{506}\cdot7^2\equiv7^2=49\pmod{100}$.
+\end{solution}
+
+\begin{solution}{ex:sunzi}
+\idea The moduli $3,5,7$ are pairwise coprime, so the Chinese remainder theorem promises one class modulo $105$. With small moduli, solving two congruences at a time by trial is faster than computing B\'ezout coefficients.
+\writeup Modulo $15$: $x\equiv2\pmod3$ and $x\equiv3\pmod5$ give $x\equiv8\pmod{15}$ (the numbers $\equiv3\pmod5$ below $15$ are $3,8,13$, and only $8\equiv2\pmod3$). Then $x=8+15t\equiv2\pmod7$ means $1+t\equiv2$, so $t\equiv1$ and $x\equiv23\pmod{105}$. The answers are $23+105k$.
+\end{solution}
+
+\begin{solution}{ex:digits}
+\idea A number is a polynomial in $10$ with the digits as coefficients. Modulo $9$, $10\equiv1$; modulo $11$, $10\equiv-1$. Substitute.
+\writeup If $n=\sum d_i10^i$ then $10\equiv1\pmod9$ gives $n\equiv\sum d_i$, and $10\equiv-1\pmod{11}$ gives $n\equiv\sum(-1)^id_i$, since congruences are compatible with sums and products. For $n=-m<0$, apply these identities to $m=|n|$ and negate the sums. For example $-12\equiv-3\pmod9$; using the unsigned digit sum $3$ would be false.
+\end{solution}
+
+\begin{solution}{ex:sqrt1}
+\idea (a) Factor: $x^2-1=(x-1)(x+1)$. In a field that would end the story; modulo $p^k$ we need that $p$ cannot divide both factors, which holds because their difference is $2$ and $p$ is odd. (b) The Chinese remainder theorem turns one equation modulo $n$ into independent equations modulo each prime power, and the counts multiply.
+\writeup (a) $p^k\mid(x-1)(x+1)$, and $p$ cannot divide both factors (it would divide their difference $2$). So one factor is prime to $p$, hence to $p^k$, and by Gauss' lemma $p^k$ divides the other: $x\equiv\pm1$. These two classes are distinct since $p^k\nmid2$.
+
+(b) Write $n=p_1^{a_1}\cdots p_r^{a_r}$. By the Chinese remainder theorem (applied repeatedly), solving modulo $n$ amounts to solving modulo each $p_i^{a_i}$ independently, with $2$ solutions each by (a). So there are $2^r$ solutions.
+\end{solution}
+
+\begin{solution}{ex:wilsonconv}
+\idea For composite $n=ab$, the factors $a$ and $b$ usually both appear in $(n-1)!$. The only obstacle is $a=b$, a square: then use $a$ and $2a$ instead, which requires $2a<a^2$, i.e.\ $a>2$. That explains the exception $n=4$.
+\writeup Let $n=ab$ with $1<a\le b<n$. If $a<b$, both $a$ and $b$ appear among $1,\dots,n-1$, so $ab=n$ divides $(n-1)!$. If $a=b$, then $n=a^2$ with $a>2$ (as $n>4$), so $a<2a<a^2=n$ and $a\cdot2a=2n$ divides $(n-1)!$. For the equivalence: primes satisfy Wilson; $n=4$ gives $3!\equiv2$; composite $n>4$ gives $0\not\equiv-1$.
+\end{solution}
+
+\begin{solution}{ex:hensel}
+\idea Hensel's lemma is constructive: at each step, write the candidate $a+tp^k$, expand modulo $p^{k+1}$, and solve the resulting linear equation for $t$ modulo $p$. Start from $2^2\equiv-1\pmod5$.
+\writeup Modulo $5$, $2^2=4\equiv-1$; with $f=X^2+1$, $f'(2)=4\not\equiv0$. Lift to $25$: $(2+5t)^2+1\equiv5+20t\pmod{25}$, so $1+4t\equiv0\pmod5$, $t=1$, $x=7$ (and $7^2+1=50\equiv0$). Lift to $125$: $(7+25t)^2+1\equiv50+350t\pmod{125}$, so $2+14t\equiv0\pmod5$, that is $4t\equiv3$, $t=2$, $x=57$. Check: $57^2+1=3250=26\cdot125$.
+\end{solution}
+
+\begin{solution}{ex:tower}
+\idea Work from the top of the tower down: modulo $100$, a power of $3$ depends on its exponent modulo $40=\varphi(100)$ (Euler); and the exponent $3^{27}$ modulo $40$ depends on $27$ modulo the order of $3$ modulo $40$, which is $4$. Each level reduces the modulus.
+\writeup We need $3^E\bmod100$ with $E=3^{27}$. Since $\varphi(100)=40$ and $\gcd(3,100)=1$, Theorem~\ref{thm:eulerthm} shows that $3^E$ depends only on $E\bmod40$. Now $3^4=81\equiv1\pmod{40}$, so $E=3^{27}=(3^4)^6\cdot3^3\equiv27\pmod{40}$. Hence $3^E\equiv3^{27}\pmod{100}$. Finally $3^{10}=59049\equiv49$, $3^{20}\equiv49^2=2401\equiv1$, so $3^{27}\equiv3^7=2187\equiv87\pmod{100}$.
+\end{solution}
+
+\begin{solution}{ex:korselt}
+\idea To prove a congruence modulo a squarefree $n$, prove it modulo each prime factor $p$ (Chinese remainder theorem). Modulo $p$, Fermat says $a^{p-1}\equiv1$, so $a^{n-1}\equiv1$ as soon as $p-1$ divides $n-1$; that is exactly the hypothesis.
+\writeup Let $p\mid n$ and write $n-1=(p-1)m$. If $p\nmid a$, Fermat gives $a^{n-1}=(a^{p-1})^m\equiv1$, so $a^n\equiv a\pmod p$; if $p\mid a$, both sides are $0$ modulo $p$. So every prime factor of $n$ divides $a^n-a$, and since $n$ is squarefree, their product $n$ does (distinct primes are pairwise coprime, apply Gauss' lemma repeatedly). For $561$: $560$ is divisible by $2$, $10$ and $16$.
+\end{solution}
+
+\begin{solution}{ex:lucas}
+\idea Binomial coefficients are coefficients of $(1+X)^n$, so compute $(1+X)^n$ modulo $p$ cleverly. The ``freshman's dream'' $(1+X)^p=1+X^p$ in characteristic $p$ splits $(1+X)^n$ along the base-$p$ digits of $n$; then reading the coefficient of $X^k$ amounts to writing $k$ in base $p$.
+\writeup In $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$ because $p\mid\binom pj$ for $0<j<p$: the denominator $j!(p-j)!$ is coprime to $p$, while $p\mid p!$; by induction $(1+X)^{p^i}=1+X^{p^i}$. Hence
+\[
+(1+X)^n=\prod_i\left(1+X^{p^i}\right)^{n_i}=\prod_i\sum_{j=0}^{n_i}\binom{n_i}jX^{jp^i}.
+\]
+Expanding, each exponent $k$ arises from exactly one choice of digits $j=k_i\le n_i$ (uniqueness of base-$p$ expansion, since all $j\le n_i<p$), with coefficient $\prod_i\binom{n_i}{k_i}$; if some $k_i>n_i$, $X^k$ does not appear. Compare with the coefficient $\binom nk$ of $X^k$. For $p=2$, $\binom{n_i}{k_i}$ is $0$ exactly when $k_i=1$, $n_i=0$.
+\end{solution}
+
+\begin{solution}{ex:t1-toy-rsa}
+\idea Euler works for units, so split the modulus until every non-zero residue is a unit in a field. Fermat handles those residues, and zero handles itself; the Chinese remainder theorem reassembles the answer.
+\writeup We need $m^{81}\equiv m\pmod{55}$. Modulo $5$, if $5\mid m$ both sides vanish; otherwise $m^4\equiv1$ and $81=20\cdot4+1$ gives the claim. Modulo $11$, the same argument uses $m^{10}\equiv1$ and $81=8\cdot10+1$, with zero treated separately. Coprimality of $5$ and $11$ gives the desired congruence modulo $55$. Numerically, $12^3=1728\equiv23$. Since $23^2\equiv34$, $23^4\equiv1$, and $27\equiv3\pmod4$, decryption yields $23^{27}\equiv23^3\equiv34\cdot23=782\equiv12\pmod{55}$. Euler's theorem modulo $55$ requires $\gcd(m,55)=1$, which fails for messages such as $5$ or $11$. These tiny parameters illustrate correctness; their factorisation is visible, so they provide no secrecy.
+\end{solution}
+
+\begin{solution}{ex:t1-two-power-roots}
+\idea The factors $x-1,x+1$ differ by $2$, so they can share a factor $2$, but no higher power. Track which factor owns the remaining powers of $2$.
+\writeup For $k=1$ the only root is $1$; for $k=2$ the roots are $1,3$. Let $k\ge3$ and choose an integer representative $x$ of a root. It must be odd. If $x\equiv1\pmod4$, then $x+1=2u$ with $u$ odd. From $2^k\mid(x-1)(x+1)$, Gauss' lemma gives $2^{k-1}\mid x-1$. If $x\equiv3\pmod4$, the analogous argument gives $2^{k-1}\mid x+1$. Thus $x\equiv\pm1\pmod{2^{k-1}}$, giving at most the four listed lifts modulo $2^k$. Conversely for $x=\varepsilon+t2^{k-1}$ with $\varepsilon=\pm1$, $t=0,1$, expansion gives
+\[
+x^2-1=\varepsilon t2^k+t^22^{2k-2},
+\]
+which is divisible by $2^k$ because $2k-2\ge k$. The two parent classes are distinct modulo $2^{k-1}$ when $k\ge3$, and their two lifts are distinct, so there are exactly four roots. For an odd prime the prime cannot divide both $x-1$ and $x+1$; the prime $2$ can, which is the precise obstruction.
+\end{solution}
+
+\begin{solution}{ex:t1-sunzi23}
+\idea Coprime moduli may be combined one pair at a time.
+\writeup From $x\equiv 2\pmod 3$ and $x\equiv 2\pmod 7$ one gets $x=21k+2$. Then $21k+2\equiv 3\pmod 5$, so $k\equiv 1\pmod 5$ and $k=5t+1$. Thus $x=105t+23$, and the smallest positive solution is $23$.
+\end{solution}
+
+\begin{solution}{pb:primepoly}
+\idea A polynomial with integer coefficients respects congruences: $P(a+kp)\equiv P(a)\pmod p$. So once $P(a)=\pm p$, all the
+values $P(a+kp)$ are multiples of $p$; if they were all prime they would all be $\pm p$, too many times for a non-constant
+polynomial. For (b), Euclid's trick: build a value of $P$ that is $\equiv P(0)$ modulo a big product, then divide out
+$P(0)$.
+
+\writeup (a) Suppose that $|P(n)|$ is prime for every $n\ge N$. Let $a=N$ and $p=|P(a)|$. For $k\ge0$,
+$a+kp\equiv a\pmod p$, so $P(a+kp)\equiv P(a)\equiv0\pmod p$ (Volume~1, Chapter~3). Since $|P(a+kp)|$ is a prime divisible by
+$p$, it equals $p$. So one of the polynomials $P-p$, $P+p$ has infinitely many roots, hence is zero (Volume~0, Chapter~3), and
+$P$ is constant: a contradiction.
+
+(b) Let $c=P(0)$. If $c=0$, then $n\mid P(n)$ for every $n$, so every prime $p$ divides $P(p)$. Let $c\ne0$, and suppose that
+only the primes $p_1,\dots,p_r$ divide values of $P$. Put $m=cp_1\cdots p_r$ and write $P(X)=c+XR(X)$ with $R\in\Z[X]$. For
+every integer $t$,
+\[
+P(mt)=c+mtR(mt)=c\bigl(1+p_1\cdots p_r\,tR(mt)\bigr).
+\]
+The polynomial $t\mapsto1+p_1\cdots p_r\,tR(mt)$ is not constant ($P$ is not), so it takes the values $\pm1$ only finitely
+often, and for some $t$ the integer $1+p_1\cdots p_rtR(mt)$ has a prime factor $q$. It divides $P(mt)$, so $q$ is some $p_i$;
+but $1+p_1\cdots p_r\,tR(mt)\equiv1\pmod{p_i}$. This contradiction shows that infinitely many primes divide values of $P$.
+\tools Volume~1, Chapters~2--3 (primes, congruences); Volume~0, Chapter~3 (a non-zero polynomial has finitely many roots).
+\leads Part (b) is Schur's theorem (1912). Which primes divide values of $P$ is a deep question: for $P=X^2+1$ they are $2$
+and the primes $\equiv1\pmod4$, and in general the answer is governed by the Galois group of $P$ (Chebotarev's density
+theorem, Volume~12). No polynomial of degree $\ge2$ is known to take infinitely many prime values; for $X^2+1$ this is one of
+Landau's four problems (1912), still open.
+\end{solution}
+
+\begin{solution}{pb:fpfunctions}
+\idea The exponent $p-1$ is special in $\mathbb F_p$: by Fermat, $y^{p-1}$ is $1$ for $y\ne0$ and $0$ for $y=0$. So
+$1-(x-a)^{p-1}$ is the indicator of the point $a$, and any function is a combination of indicators: this is Lagrange
+interpolation in its most economical form. Its top coefficient is read off at once, and a bijection has the same multiset of
+values as the identity.
+
+\writeup (a) Let $\delta_a(X)=1-(X-a)^{p-1}$. For $x\in\mathbb F_p$, $(x-a)^{p-1}=1$ if $x\ne a$ (Fermat's little theorem,
+Volume~1, Chapter~3) and $0$ if $x=a$, so $\delta_a(x)=[x=a]$. Hence $P=\sum_af(a)\delta_a$, of degree at most $p-1$, satisfies
+$P(x)=f(x)$ for all $x$. If two polynomials of degree at most $p-1$ define the same map, their difference has $p$ roots and
+degree at most $p-1$, so it is zero (Volume~0, Chapter~3; the proof works over any field). So $P$ is unique. (As a check: there
+are $p^p$ maps and $p^p$ polynomials of degree at most $p-1$.)
+
+(b) The coefficient of $X^{p-1}$ in $\delta_a$ is $-1$, so that of $P$ is $-\sum_af(a)$.
+
+(c) If $f$ is a bijection, $\sum_af(a)=\sum_xx=\frac{p(p-1)}2$, which is $0$ in $\mathbb F_p$ for $p$ odd; by (b), $\deg P\le
+p-2$. For $1\le t\le p-2$, the map $x\mapsto f(x)^t$ has $\sum_af(a)^t=\sum_xx^t=0$ in $\mathbb F_p$, because the power sum
+$\sum_{x=1}^{p-1}x^t$ is $\equiv0\pmod p$ when $(p-1)\nmid t$ (Volume~1, Chapter~5). By (b) again its polynomial has degree at
+most $p-2$. For $f(x)=x^3$ on $\mathbb F_5$ ($f$ is a bijection since $\gcd(3,4)=1$): the polynomials of $f$, $f^2$, $f^3$ are
+obtained by reducing $X^3$, $X^6$, $X^9$ with $x^5=x$, which gives $X^3$, $X^2$ and $X$, all of degree at most $3$.
+\tools Volume~1, Chapters~3 and~5 (Fermat, power sums modulo $p$); Volume~0, Chapter~3 (Lagrange interpolation, roots).
+\leads A polynomial that permutes $\mathbb F_q$ is a \emph{permutation polynomial}. Hermite's criterion (1863) says that the
+conditions of (c), together with ``$f$ has exactly one root'', characterise them. They are used in cryptography and in the
+construction of codes (Lidl and Niederreiter, \emph{Finite Fields}, Chapter~7).
+\end{solution}
+
+\begin{solution}{pb:aks}
+\idea Expand with the binomial theorem: the identity holds if and only if $n$ divides all the binomial coefficients $\binom nk$,
+$0<k<n$, and $a^n-a$. For a prime this is Volume~1. For a composite, one coefficient escapes, and the natural candidate is
+$\binom nq$ for a prime factor $q$: its $q$-adic valuation is easy to compute.
+
+\writeup Expand:
+\[
+(X+a)^n-(X^n+a)=\sum_{0<k<n}\binom nka^{n-k}X^k+(a^n-a).
+\]
+If $n$ is prime, $n\mid\binom nk$ for $0<k<n$ and $n\mid a^n-a$
+(Volume~1, Chapter~3), so the congruence holds.
+
+Let $n$ be composite, $q$ a prime factor, $q^k$ the exact power of $q$ in $n$; then $q<n$. The coefficient of $X^q$ is
+$\binom nqa^{n-q}$. In $\binom nq=\frac{n(n-1)\cdots(n-q+1)}{q!}$, the numerator contains $q$ consecutive integers, exactly one of which,
+$n$, is divisible by $q$, so its $q$-adic valuation is $k$; and $v_q(q!)=1$. So $v_q\bigl(\binom nq\bigr)=k-1$. Since $q\nmid a$, $q^k$
+does not divide the coefficient of $X^q$, nor does $n$. The congruence fails.
+\tools Volume~1, Chapters~1 and~3 (valuations, Fermat's little theorem, binomial coefficients modulo $p$).
+\leads The criterion is useless as it stands: it has $n$ coefficients. Agrawal, Kayal and Saxena (2002) showed that it is
+enough to check it modulo $X^r-1$ for one small $r$ and for few values of $a$, with $r$ and the number of $a$'s polynomial in
+$\log n$. This gave the first deterministic polynomial-time primality test, ``PRIMES is in P''.
+\end{solution}
+
+\begin{solution}{pb:wolsten}
+\idea Write $\binom{2p-1}{p-1}=\prod_{k=1}^{p-1}\frac{p+k}k=\prod\bigl(1+\frac pk\bigr)$. Modulo $p^3$ only the first three elementary symmetric
+functions of the $\frac pk$ matter: $1+pH_{p-1}+p^2e_2$. So we need $H_{p-1}\equiv0\pmod{p^2}$ and $e_2\equiv0\pmod p$, and both come down
+to the sum of the $\frac1{k^2}$, which is a sum of squares in disguise.
+
+\writeup All fractions here have denominators prime to $p$. (a) As $k$ runs over $1,\dots,p-1$, so does the residue of $\frac1k$
+(inversion is a bijection of $(\Z/p\Z)^*$). So $\sum\frac1{k^2}\equiv\sum_{k=1}^{p-1}k^2=\frac{(p-1)p(2p-1)}6\equiv0\pmod p$, since $6$ is
+invertible modulo $p\ge5$.
+
+(b) Pairing $k$ with $p-k$, $2H_{p-1}=\sum_{k=1}^{p-1}\bigl(\frac1k+\frac1{p-k}\bigr)=p\sum_k\frac1{k(p-k)}$. Modulo $p$,
+$\frac1{k(p-k)}\equiv-\frac1{k^2}$, so the sum is $\equiv0\pmod p$ by (a). Hence $p^2\mid2H_{p-1}$, and $p^2\mid H_{p-1}$.
+
+(c) $\binom{2p-1}{p-1}=\frac{(p+1)(p+2)\cdots(2p-1)}{(p-1)!}=\prod_{k=1}^{p-1}\Bigl(1+\frac pk\Bigr)=1+pe_1+p^2e_2+p^3(\cdots)$, with
+$e_1=H_{p-1}$ and $e_2=\sum_{j<k}\frac1{jk}=\frac12\bigl(H_{p-1}^2-\sum\frac1{k^2}\bigr)$. By (b), $pe_1\equiv0\pmod{p^3}$; by (a) and (b),
+$e_2\equiv0\pmod p$, so $p^2e_2\equiv0\pmod{p^3}$. Hence $\binom{2p-1}{p-1}\equiv1\pmod{p^3}$, and $\binom{2p}p=2\binom{2p-1}{p-1}\equiv2$.
+\tools Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapters~1 and~3 (sums of squares, elementary symmetric functions).
+\leads Wolstenholme (1862). Primes for which the congruence holds modulo $p^4$ are \emph{Wolstenholme primes}; only $16843$ and $2124679$ are
+known. It is conjectured, and open, that the converse holds: if $\binom{2n-1}{n-1}\equiv1\pmod{n^3}$ then $n$ is prime.
+\end{solution}
+
+\begin{solution}{pb:jacobsthal}
+\idea Split $ap$ objects into $(a-1)p$ and $p$, and use Vandermonde. The terms where the split is a multiple of $p$ give the
+Pascal recursion for $\binom ab$; all other terms are products of two binomial coefficients each divisible by $p$.
+
+\writeup Induction on $a$. For $a=b$ or $b=0$, both sides are $1$. Let $a>b\ge1$ (so $a\ge2$). By Vandermonde,
+\[
+\binom{ap}{bp}=\sum_i\binom{(a-1)p}i\binom p{bp-i},
+\]
+over $i$ with $0\le bp-i\le p$. If $p\mid i$, then $i=bp$ or $i=(b-1)p$, and these two terms are $\binom{(a-1)p}{bp}+\binom{(a-1)p}{(b-1)p}$. If
+$p\nmid i$, then $0<bp-i<p$ and $p\mid\binom p{bp-i}$; also, with $N=(a-1)p$, $i\binom Ni=N\binom{N-1}{i-1}$ is divisible by $p$, and $p\nmid i$,
+so $p\mid\binom Ni$. These terms are divisible by $p^2$. By induction,
+$\binom{ap}{bp}\equiv\binom{a-1}b+\binom{a-1}{b-1}=\binom ab\pmod{p^2}$.
+\tools Volume~0, Chapter~8 (Vandermonde, Pascal); Volume~1, Chapter~3 (binomial coefficients modulo $p$).
+\leads Babbage (1819) proved $\binom{2p-1}{p-1}\equiv1\pmod{p^2}$, the case $a=2$, $b=1$; Wolstenholme then reached $p^3$. Jacobsthal showed that
+$\binom{ap}{bp}\equiv\binom ab$ modulo $p^3$ for $p\ge5$, and even modulo $p^{3+v_p(ab(a-b))}$ (a direct computation verifies the $p^3$ version). Such
+congruences are the $p$-adic continuity of the binomial coefficients, the beginning of $p$-adic analysis (Volume~12).
+\end{solution}
+
+\begin{solution}{pb:morley}
+\idea $\binom{p-1}k=\prod_{j=1}^k\frac{p-j}j=(-1)^k\prod_j\bigl(1-\frac pj\bigr)\equiv(-1)^k(1-pH_k)\pmod{p^2}$. So the question is about the half
+harmonic sum $H_{(p-1)/2}$ modulo $p$, and Problem~\ref{pb:fermatquot}(b) is exactly an alternating harmonic sum, which is
+$H_{p-1}$ minus twice the even terms, that is minus $H_{(p-1)/2}$.
+
+\writeup Let $k=\frac{p-1}2$. Expanding the product, $\binom{p-1}k\equiv(-1)^k(1-pH_k)\pmod{p^2}$. Next,
+\[
+\sum_{j=1}^{p-1}\frac{(-1)^{j-1}}j=H_{p-1}-2\sum_{i=1}^{k}\frac1{2i}=H_{p-1}-H_k\equiv-H_k\pmod p,
+\]
+because $H_{p-1}\equiv0\pmod p$ (pair $j$ and $p-j$ as in Problem~\ref{pb:wolsten}(b); this works for every odd $p$). By
+Problem~\ref{pb:fermatquot}(b), $H_k\equiv-2q_p(2)\pmod p$. So $\binom{p-1}k\equiv(-1)^k(1+2pq_p(2))\pmod{p^2}$. On the other side,
+$4^{p-1}=(1+pq_p(2))^2\equiv1+2pq_p(2)\pmod{p^2}$.
+\tools Volume~1, Chapter~3; Problems~\ref{pb:wolsten} and~\ref{pb:fermatquot}.
+\leads Morley (1895) proved the congruence modulo $p^3$ for $p\ge5$, which a direct computation verifies. Its sharpening is related to the
+Bernoulli number $B_{p-3}$, and the numbers $\binom{p-1}{(p-1)/2}$ modulo $p^2$ appear in supercongruences for hypergeometric series
+(``Ramanujan-type'' congruences), a lively research area.
+\end{solution}
+
+\begin{solution}{pb:glaisher}
+\idea Sum the identity $k^{p-1}=1+pq_p(k)$ over $k=1,\dots,p-1$. Lerch's formula turns the right side into $p-1+pW_p$, that is
+$(p-1)!+p$. The left side is a sum of powers, which Faulhaber's formula writes with Bernoulli numbers; modulo $p^2$ only the
+term with $B_{p-1}$ survives, and von Staudt--Clausen controls the denominators.
+
+\writeup By von Staudt--Clausen (Volume~4, Chapter~1), the denominator of $B_j$ ($j\ge2$ even) is the product of the primes $\ell$ with
+$\ell-1\mid j$; so $B_j$ has no $p$ in its denominator for $j<p-1$, and $pB_{p-1}$ has none either. Faulhaber's formula with $n=p$
+and exponent $p-1$ (Volume~4, Chapter~1) gives
+\[
+\sum_{k=0}^{p-1}k^{p-1}=\frac1p\sum_{j=0}^{p-1}\binom pjB_jp^{p-j}=\sum_{j=0}^{p-1}\binom pjB_jp^{p-1-j}.
+\]
+The term $j=p-1$ is $pB_{p-1}$. The term $j=0$ is $p^{p-1}\equiv0\pmod{p^2}$ ($p\ge3$). For $1\le j\le p-2$, $p\mid\binom pj$ and
+$p\mid p^{p-1-j}$, and $B_j$ is $p$-integral, so these terms are $\equiv0\pmod{p^2}$. Hence $\sum_{k=1}^{p-1}k^{p-1}\equiv pB_{p-1}\pmod{p^2}$.
+
+On the other hand, $\sum_{k=1}^{p-1}k^{p-1}=\sum_k(1+pq_p(k))=p-1+p\sum_kq_p(k)\equiv p-1+pW_p\pmod{p^2}$ by Lerch's formula
+(Problem~\ref{pb:fermatquot}(c)). And $pW_p=(p-1)!+1$. So $(p-1)!+p\equiv pB_{p-1}\pmod{p^2}$.
+\tools Volume~4, Chapter~1 (Faulhaber, von Staudt--Clausen); Volume~1, Chapter~3 (Wilson); Problem~\ref{pb:fermatquot}.
+\leads Glaisher (1900). Reducing modulo $p$ gives back Wilson's theorem with $pB_{p-1}\equiv-1$, the $p$-part of von Staudt--Clausen. So
+$p$ is a Wilson prime exactly when $pB_{p-1}\equiv p-1\pmod{p^2}$. The Bernoulli numbers modulo $p$ also decide whether $p$ is a
+regular prime, Kummer's criterion for Fermat's last theorem (Volume~12).
+\end{solution}
+
+\begin{solution}{pb:ramanujan5}
+\idea Two infinite products have explicit expansions: $E(x)$ (Euler) and $E(x)^3$ (Jacobi). Their product $E(x)^4$ has
+coefficients we can control modulo $5$, and $E(x)^4=E(x)^5/E(x)\equiv E(x^5)P(x)$ links them to partitions.
+
+\writeup (a) The product converges absolutely and locally uniformly on $\C^*$ since $\sum|q|^{2n-1}<\infty$, so $H$ is holomorphic on
+$\C^*$ and has a Laurent expansion. Replacing $z$ by $q^2z$ shifts the factors:
+\[
+H(q^2z)=\prod_{n\ge1}(1+zq^{2n+1})(1+z^{-1}q^{2n-3})=H(z)\,\frac{1+z^{-1}q^{-1}}{1+zq}=\frac{H(z)}{zq}.
+\]
+In coefficients, $c_mq^{2m}=q^{-1}c_{m+1}$, that is $c_{m+1}=q^{2m+1}c_m$ for all $m\in\Z$. Since $(m+1)^2-m^2=2m+1$, induction upwards
+and downwards from $m=0$ gives $c_m=q^{m^2}c_0$. So $H(z)=c_0(q)\theta(z,q)$ with $\theta(z,q)=\sum_mq^{m^2}z^m$.
+
+(b) At $z=i$, $(1+iq^{2n-1})(1-iq^{2n-1})=1+q^{4n-2}$, while in $\theta(i,q)$ the terms $m$ and $-m$ cancel for odd $m$ (as
+$i^m+i^{-m}=0$) and $m=2k$ gives $(-1)^kq^{4k^2}$. So
+\[
+\prod_{n\ge1}(1+q^{4n-2})=c_0(q)\sum_k(-1)^kq^{4k^2}.
+\]
+At $z=-1$ with $q^4$ in place of $q$, $\prod_n(1-q^{8n-4})^2=c_0(q^4)\sum_k(-1)^kq^{4k^2}$. The series $\sum(-1)^kq^{4k^2}=1-2q^4+\dots$ does
+not vanish for small $|q|$; dividing, and using $1-q^{8n-4}=(1-q^{4n-2})(1+q^{4n-2})$,
+\[
+\frac{c_0(q)}{c_0(q^4)}=\frac1{\prod_n(1-q^{4n-2})\prod_n(1-q^{8n-4})}.
+\]
+Splitting $E(q^2)=\prod(1-q^{2n})$ according to the parity of $n$, and then $\prod(1-q^{4n})$ in the same way,
+$E(q^2)=E(q^8)\prod(1-q^{8n-4})\prod(1-q^{4n-2})$. Hence $d(q)=c_0(q)E(q^2)$ satisfies $d(q)=d(q^4)$ for small $|q|$. Now
+$c_0(q)=\frac1{2\pi}\int_0^{2\pi}H(e^{it})\,dt$ is holomorphic in $q$ on the unit disc and tends to $1$ as $q\to0$ (the product tends to
+$1$ uniformly on $|z|=1$). So $d(q)=d(q^{4^k})\to1$ as $k\to\infty$, $d=1$ near $0$, and by analytic continuation $c_0(q)=\frac1{E(q^2)}$
+on the whole disc. Multiplying $H(z)=c_0(q)\theta(z,q)$ by $E(q^2)$ gives the triple product.
+
+(c) Take $0<x<1$, $q=x^{1/2}$ and $z=-wx^{1/2}$ with $w>0$. Then $1+zq^{2n-1}=1-wx^n$, $1+z^{-1}q^{2n-1}=1-w^{-1}x^{n-1}$ and
+$q^{m^2}z^m=(-1)^mw^mx^{m(m+1)/2}$, so
+\[
+E(x)\prod_{n\ge1}(1-wx^n)\prod_{n\ge1}(1-w^{-1}x^{n-1})=\sum_{m\in\Z}(-1)^mw^mx^{m(m+1)/2}.
+\]
+The factor $n=1$ of the last product is $1-w^{-1}$. On the right, the terms $m$ and $-1-m$ have the same exponent of $x$ and
+opposite signs, so the right side is $\sum_{m\ge0}(-1)^mx^{m(m+1)/2}(w^m-w^{-m-1})$. Divide both sides by $1-w^{-1}$ and let $w\to1$:
+$\frac{w^m-w^{-m-1}}{1-w^{-1}}\to2m+1$ (both numerator and denominator vanish at $w=1$, with derivatives $2m+1$ and $1$), and the left
+side tends to $E(x)\cdot E(x)\cdot E(x)$. The exchange of limit and sum is justified by uniform convergence for $w\in[\frac12,2]$.
+Both sides of Jacobi's identity are power series in $x$ that agree on $]0,1[$, so they agree for $|x|<1$.
+
+(d) By (c) and the pentagonal theorem,
+\[
+xE(x)^4=\sum_{j\in\Z}\sum_{k\ge0}(-1)^{j+k}(2k+1)x^{e(j,k)},\qquad e(j,k)=1+\frac{j(3j-1)}2+\frac{k(k+1)}2.
+\]
+Now
+\[
+8e(j,k)=(2k+1)^2+12j^2-4j+7\equiv(2k+1)^2+2(j+4)^2\pmod5,
+\]
+since $2(j+4)^2=2j^2+16j+32\equiv2j^2+j+2\equiv12j^2-4j+7$. The squares modulo $5$ are $0,1,4$, and twice them are $0,2,3$; a
+square plus twice a square is $\equiv0$ only if both are $0$. So $5\mid e(j,k)$ forces $5\mid2k+1$, and every term contributing to a
+power $x^{5m}$ has a coefficient divisible by $5$.
+
+(e) In $\Z[[x]]$, $(1-x^k)^5\equiv1-x^{5k}\pmod5$ (the middle binomial coefficients are divisible by $5$), so $E(x)^5\equiv E(x^5)$ and
+\[
+xE(x)^4=\frac{xE(x)^5}{E(x)}\equiv E(x^5)\sum_{n\ge0}p(n)x^{n+1}\pmod5.
+\]
+Split $\sum p(n)x^{n+1}=\sum_{r=0}^4x^rA_r(x^5)$ by the residue of the exponent modulo $5$. Multiplying by $E(x^5)$ does not mix the
+residues, so the part of $xE(x)^4$ with exponents divisible by $5$ is $E(x^5)A_0(x^5)$, which is $\equiv0\pmod5$ by (d). Since
+$E(x^5)$ is invertible in $\Z[[x]]$, $A_0\equiv0\pmod5$. The coefficients of $A_0(x^5)$ are the $p(n)$ with $n+1\equiv0\pmod5$, that
+is, the $p(5m+4)$.
+
+\tools Volume~4, Theorem~2.12 (pentagonal number theorem); Volume~4, Chapters~2 and~9 (formal and holomorphic power series,
+Laurent series); Volume~1, Chapter~3 (squares modulo $5$).
+\leads This is Ramanujan's proof from 1919. The same idea with $E(x)^6=E(x)^3E(x)^3$ gives $p(7n+5)\equiv0\pmod7$, and the
+congruence modulo $11$ needs more (Ramanujan's unpublished manuscript, edited by Hardy in 1921). Ramanujan also proved the
+beautiful identity $\sum_np(5n+4)x^n=5\frac{E(x^5)^5}{E(x)^6}$. In 2000 Ken Ono showed that there are congruences of the form
+$p(An+B)\equiv0\pmod M$ for every $M$ prime to $6$, through the theory of modular forms (Volume~5, Chapter~12, and Part~III).
+\end{solution}
+
+\begin{solution}{pb:kloosterman}
+\idea Second and fourth moments of a family of exponential sums are counts of solutions of equations, which are easy. Since a
+single term is at most the whole fourth moment, a bound for the moment is a bound for each sum.
+
+\writeup (a) The substitution $x\mapsto-x$ permutes $\mathbb F_p^\times$ and changes $\bar x$ into $-\bar x$, so it turns $K(a)$ into $\overline{K(a)}$: hence $K(a)$
+is real. $K(0)=\sum_{x\ne0}e(\frac{\bar x}p)=\sum_{y\ne0}e(\frac yp)=-1$. For $b\ne0$, substitute $x=by$: then $b\bar x=\bar y$ and $ax=aby$, so $K(a,b)=K(ab,1)$.
+
+(b) Expanding, and summing over $a$ first,
+\[
+\sum_aK(a)\overline{K(a)}=\sum_{x,y\ne0}e\Bigl(\frac{\bar x-\bar y}p\Bigr)\sum_ae\Bigl(\frac{a(x-y)}p\Bigr)=p\sum_{x\ne0}1=p(p-1).
+\]
+
+(c) Let $M=\sum_aK(a)^4$. Compute $\Sigma=\sum_{a,b\in\mathbb F_p}|K(a,b)|^4$ in two ways. First, for $b\ne0$, (a) and the bijection $a\mapsto ab$ give
+$\sum_a|K(a,b)|^4=M$; for $b=0$, $K(a,0)=\sum_{x\ne0}e(\frac{ax}p)$ is $p-1$ for $a=0$ and $-1$ otherwise. So
+$\Sigma=(p-1)M+(p-1)^4+(p-1)$. Second, $|K(a,b)|^4=K(a,b)^2\,\overline{K(a,b)}^2$ expands into
+$\sum_{x_1,\dots,x_4}e\bigl(\frac{a(x_1+x_2-x_3-x_4)+b(\bar x_1+\bar x_2-\bar x_3-\bar x_4)}p\bigr)$, and summing over $a$ and $b$ gives $\Sigma=p^2N$, where $N$ counts the
+$(x_1,\dots,x_4)\in(\mathbb F_p^\times)^4$ with
+\[
+x_1+x_2=x_3+x_4,\qquad\bar x_1+\bar x_2=\bar x_3+\bar x_4.
+\]
+Let $s=x_1+x_2$. If $s\ne0$, then $\bar x_1+\bar x_2=\frac s{x_1x_2}$, so the equations say $x_3+x_4=s$ and $x_3x_4=x_1x_2$: $x_3$ and $x_4$ are the
+roots of $X^2-sX+x_1x_2$, that is $\{x_3,x_4\}=\{x_1,x_2\}$, which gives $2$ solutions if $x_1\ne x_2$ and $1$ if $x_1=x_2$. There are $(p-1)(p-2)$
+pairs $(x_1,x_2)$ with $s\ne0$, of which $p-1$ have $x_1=x_2$. If $s=0$, then $\bar x_1+\bar x_2=0$ too, and $(x_3,x_4)$ is any pair with
+$x_4=-x_3$: $(p-1)^2$ solutions in all. So
+\[
+N=2(p-1)(p-2)-(p-1)+(p-1)^2=3(p-1)(p-2).
+\]
+Comparing, $(p-1)M=3p^2(p-1)(p-2)-(p-1)^4-(p-1)$, and dividing by $p-1$,
+\[
+M=3p^2(p-2)-(p-1)^3-1=2p^3-3p^2-3p.
+\]
+
+(d) Every term of $M$ is non-negative, so $K(a)^4\le M<2p^3$ and $|K(a)|<2^{1/4}p^{3/4}<1.19\,p^{3/4}$. The trivial bound is $p-1$, and (b) gives
+only $|K(a)|<p$, no better. The fourth moment wins as soon as $1.19\,p^{3/4}<p-1$, that is for every $p\ge5$, and by a growing factor.
+
+\tools{Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapter~3 (a quadratic has at most two roots in a field).}
+\leads Kloosterman introduced these sums in 1926 to count representations of integers by quaternary quadratic forms, and his
+exponent $\frac34$ was enough for that purpose. In 1948 André Weil deduced from his proof of the Riemann hypothesis for curves over
+finite fields that $|K(a)|\le2\sqrt p$ for $a\ne0$, the optimal exponent. Writing $K(a)=2\sqrt p\cos\theta_a$, Katz
+(1988) showed that the angles $\theta_a$ are distributed, as $p\to\infty$, with density $\frac2\pi\sin^2\theta$ on $[0,\pi]$: the Sato--Tate law,
+which can be observed numerically.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer, 1990, Chapter~3. Congruences, the Chinese remainder theorem and the structure of $\Z/n\Z$.
+\item I.~Niven, H.~S.~Zuckerman and H.~L.~Montgomery, \emph{An Introduction to the Theory of Numbers}, 5th ed., Wiley, 1991, Chapter~2. A wealth of exercises on congruences, including Hensel lifting.
+\item V.~Shoup, \emph{A Computational Introduction to Number Theory and Algebra}, 2nd ed., Cambridge University Press, 2009, Chapters~2 and~4. Modular arithmetic as algorithms: inverses, the Chinese remainder theorem, fast exponentiation.
+\item A.~Granville, Arithmetic properties of binomial coefficients~I: binomial coefficients modulo prime powers, \emph{Canadian Mathematical Society Conference Proceedings} 20 (1997), 253--275. Lucas' theorem (Exercise~\ref{ex:lucas}) and its far-reaching generalisations.
+\item W.~R.~Alford, A.~Granville and C.~Pomerance, There are infinitely many Carmichael numbers, \emph{Annals of Mathematics} 139 (1994), 703--722. The research paper that settled the question behind Exercise~\ref{ex:korselt}.
+\item C.~F.~Gauss, \emph{Disquisitiones Arithmeticae}, Leipzig, 1801, Article~2, where the sign $\equiv$ is introduced; English translation by A.~A.~Clarke, Springer, 1986.
+\end{itemize}

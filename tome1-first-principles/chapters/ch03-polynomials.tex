@@ -1,0 +1,1025 @@
+\chapter{Polynomials}\label{ch:polynomials}
+
+\begin{center}\itshape
+Among all monic polynomials of degree $n$, which one stays closest to $0$ on $[-1,1]$?\\
+And how can the roots of a polynomial compute $1+\frac14+\frac19+\frac1{16}+\cdots$?
+\end{center}
+
+In 1650 Pietro Mengoli, a priest and professor in Bologna, published a little book on the summation of series, \emph{Novae quadraturae
+arithmeticae}. He could sum $\frac1{1\cdot2}+\frac1{2\cdot3}+\frac1{3\cdot4}+\cdots$ (it telescopes to $1$, as in Chapter~\ref{ch:sums}), and he asked for the
+exact value of
+\[
+1+\frac14+\frac19+\frac1{16}+\cdots,
+\]
+which he could not find. Nor could Leibniz. Nor could Jacob Bernoulli, who in his 1689 treatise on infinite series proved that the sum is less than
+$2$ and then wrote, in Dunham's translation, ``If anyone finds and communicates to us that which thus far has eluded our efforts, great will be our
+gratitude.'' The Bernoullis lived in Basel, and the question became the \emph{Basel problem}.
+
+The person who found it was a former student of Jacob's brother Johann, working in St Petersburg:
+Leonhard Euler. His paper was read to the Academy there on 5 December 1735, and his idea was outrageous. A polynomial with roots $a_1,\dots,a_n$
+and constant term $1$ is $\prod_k(1-\frac x{a_k})$, and the sum of the $\frac1{a_k}$ can be read off its coefficient of $x$. Euler treated
+$\frac{\sin x}x$, whose roots are $\pm\pi,\pm2\pi,\dots$, as a polynomial of infinite degree,
+\[
+\frac{\sin x}x=\Bigl(1-\frac{x^2}{\pi^2}\Bigr)\Bigl(1-\frac{x^2}{4\pi^2}\Bigr)\Bigl(1-\frac{x^2}{9\pi^2}\Bigr)\cdots,
+\]
+compared the coefficients of $x^2$ on both sides, and found $\frac{\pi^2}6$. The formal infinite-polynomial step still needed justification; Euler later developed other arguments, but the answer was right to every decimal he could check, and he could check many. Figure~\ref{fig:sineprod} shows
+his product converging. This chapter builds the tools that make the idea honest, and Exercise~\ref{ex:basel} carries it out with a genuine
+polynomial of finite degree, whose roots $\cot^2\frac{k\pi}N$ we know exactly and whose coefficients squeeze the Basel sum.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-sineprod}
+\caption{Euler's product. The partial products $\prod_{k\le N}\bigl(1-\frac{x^2}{k^2\pi^2}\bigr)$ for $N=1,2,5$ against $\frac{\sin x}x$ (dashed).
+Each new factor pins down one more pair of roots $\pm N\pi$, and near $0$ the agreement is already excellent for $N=5$. Volume~4 proves that the product converges to $\frac{\sin x}x$ for every $x$.}
+\label{fig:sineprod}
+\end{figure}
+
+On the way we meet the polynomials of Pafnuty Chebyshev, the best-behaved polynomials there are. Chebyshev (1821--1894) found them in 1854 in a
+paper on the linkages of steam engines, \emph{Th\'eorie des m\'ecanismes connus sous le nom de parall\'elogrammes}: Watt's parallelogram was
+supposed to turn the rocking of a beam into a straight line, and the question of how straight a given linkage could possibly be led him to ask
+which polynomial of given degree deviates least from zero. Two years later he told his students that ``the closer mutual approximation of the
+points of view of theory and practice brings most beneficial results''. We will see what he meant.
+
+The tools arrive in the order the Basel idea needs them. Polynomials are formal expressions, not yet functions. Division explains roots and multiplicities. Interpolation builds a polynomial with prescribed values, and the three-point picture below is why enough values leave no choice. Chebyshev's polynomials answer the opening question about staying close to zero. Integer coefficients, symmetric functions and real-root tests are the arithmetic of those same polynomials.
+
+\portraits{descartes}{Ren\'e Descartes (1596--1650). After Frans Hals, 1649, Louvre. Public domain, via Wikimedia Commons.}{alembert}{Jean le Rond d'Alembert (1717--1783). Pastel by Maurice Quentin de La Tour, 1753, Louvre. Photograph by Didier Descouens, CC BY-SA 4.0, via Wikimedia Commons.}
+
+\section{Polynomials from scratch}
+
+A field is a number system in which addition, subtraction, multiplication and division by a nonzero element obey the familiar arithmetic laws. In this chapter the coefficient field is $\Q$, $\R$ or $\C$, unless a finite field is named explicitly.
+
+\begin{definitionx}
+A \emph{polynomial} over a field $\mathbb K$ (for us $\Q$, $\R$ or $\C$) is a formal expression $P=a_0+a_1X+\dots+a_nX^n$ with coefficients
+$a_k\in\mathbb K$; two polynomials are equal when all their coefficients are. If $a_n\ne0$, $n$ is the \emph{degree} $\deg P$ and $a_n$ the
+\emph{leading coefficient}; $P$ is \emph{monic} if $a_n=1$. The zero polynomial has every coefficient $0$ and, by convention, degree $-\infty$.
+Polynomials are added coefficient by coefficient and multiplied by expanding: the coefficient of $X^k$ in $AB$ is $\sum_{i+j=k}a_ib_j$.
+The set of all of them is written $\mathbb K[X]$.
+\end{definitionx}
+
+The convention $\deg0=-\infty$ makes two rules true without exceptions: $\deg(A+B)\le\max(\deg A,\deg B)$, and $\deg(AB)=\deg A+\deg B$. The second
+holds because the top coefficient of $AB$ is the product of the two leading coefficients, and a product of two non-zero numbers is non-zero. It has a
+consequence we will use constantly: if $AB=0$ then $A=0$ or $B=0$, and if $AB=AC$ with $A\ne0$ then $B=C$.
+
+Why ``formal''? Because a polynomial and the function $x\mapsto P(x)$ it defines are different things, and keeping them apart avoids a trap. Over
+$\R$ or $\C$ no harm is done: Proposition~\ref{prop:rootsfactor} will show that a non-zero polynomial has finitely many roots, so two polynomials
+that agree as functions on an infinite set are equal as polynomials. Over a finite field the two notions really differ: over $\Z/2\Z$, the polynomial
+$X^2+X$ is not zero, yet $x^2+x=0$ for both values $x=0$ and $x=1$. Volume~1 lives in that world; in this volume, $\mathbb K$ is infinite unless explicitly specified otherwise, as in the secret-sharing example.
+
+\begin{examplex}[Horner's scheme]
+To evaluate $P=2X^4-3X^3+X-5$ at $x=3$, do not compute the powers of $3$. Write $P=(((2X-3)X+0)X+1)X-5$ and work from the inside:
+\[
+2,\qquad 2\cdot3-3=3,\qquad 3\cdot3+0=9,\qquad 9\cdot3+1=28,\qquad 28\cdot3-5=79.
+\]
+So $P(3)=79$, with four multiplications and no powers. The scheme is named after William Horner, who published it in 1819, but Paolo Ruffini had
+it in 1804 and the Chinese mathematician Qin Jiushao in 1247. The intermediate numbers $2,3,9,28$ are not waste: they are the coefficients of the
+quotient of $P$ by $X-3$, as we will see in a moment.
+\end{examplex}
+
+\begin{definitionx}[formal derivative]
+The derivative of $P=\sum_ka_kX^k$ is $P'=\sum_kka_kX^{k-1}$. It is defined by this formula, with no limits involved, and it obeys the usual rules:
+$(A+B)'=A'+B'$, $(AB)'=A'B+AB'$ and $(A^m)'=mA^{m-1}A'$.
+\end{definitionx}
+\begin{proof}[Why the product rule holds]
+Both sides of $(AB)'=A'B+AB'$ are linear in $A$ and in $B$, so it is enough to check it when $A=X^i$ and $B=X^j$: then $(X^{i+j})'=(i+j)X^{i+j-1}$
+and $A'B+AB'=iX^{i-1}X^j+jX^iX^{j-1}$ agree. The power rule follows by induction on $m$.
+\end{proof}
+
+A field is a number system in which addition, subtraction, multiplication and division by a nonzero element obey the familiar arithmetic laws, as already used above; $\Q$, $\R$ and $\C$ are our principal examples. A nonconstant polynomial is \emph{irreducible over} $\mathbb K$ if it cannot be written as a product of two positive-degree polynomials in $\mathbb K[X]$. The coefficient field matters: $X^2+1$ is irreducible over $\R$, but equals $(X-i)(X+i)$ over $\C$.
+
+\section{Division, roots and multiplicities}
+
+Throughout, $\mathbb K$ is a field and $\mathbb K[X]$ the ring of polynomials over it.
+
+\begin{proposition}[Euclidean division]\label{prop:polydiv}
+For $A,B\in\mathbb K[X]$ with $B\ne0$ there is a unique pair $(Q,R)$ with $A=BQ+R$ and $\deg R<\deg B$ (with $\deg0=-\infty$).
+\end{proposition}
+\begin{proof}
+\emph{Existence}, by strong induction on $\deg A$. If $\deg A<\deg B$, take $Q=0$, $R=A$. Otherwise let $a,b$ be the leading coefficients and $d=\deg A-\deg B$; then $A_1=A-\frac abX^dB$ has degree $<\deg A$, so $A_1=BQ_1+R$, and $A=B\left(Q_1+\frac abX^d\right)+R$.
+\emph{Uniqueness}: if $BQ+R=BQ'+R'$, then $B(Q-Q')=R'-R$ has degree $<\deg B$, which forces $Q=Q'$, hence $R=R'$.
+\end{proof}
+
+\begin{examplex}[long division]
+The proof is an algorithm, the one taught at school. Divide $A=X^4+2X^3-X+1$ by $B=X^2+1$. The leading terms give $X^2$; subtract $X^2B$ to
+get $2X^3-X^2-X+1$. The leading terms give $2X$; subtract $2XB$ to get $-X^2-3X+1$. The leading terms give $-1$; subtract $-B$ to get $-3X+2$,
+of degree $<2$: stop. So $Q=X^2+2X-1$ and $R=-3X+2$, and indeed $(X^2+1)(X^2+2X-1)+(-3X+2)=X^4+2X^3-X+1$. Always check by multiplying back; it costs
+ten seconds and catches most mistakes.
+
+When $B=X-a$ the division is Horner's scheme. Dividing $2X^4-3X^3+X-5$ by $X-3$: the quotient is $2X^3+3X^2+9X+28$ and the remainder is $79$,
+exactly the numbers of the previous example. The reason is in the next proposition: the remainder is $P(a)$, and the recurrence
+$b_k=a_k+ab_{k+1}$ that computes the quotient's coefficients is the one Horner's scheme runs.
+\end{examplex}
+
+\begin{proposition}[roots]\label{prop:rootsfactor}
+Let $P\in\mathbb K[X]$ be non-zero of degree $n$.
+\begin{enumerate}[label=(\alph*)]
+\item $a$ is a root of $P$ if and only if $(X-a)\mid P$.
+\item If $x_1,\dots,x_r$ are distinct roots of $P$, then $\prod_{i=1}^r(X-x_i)$ divides $P$. In particular $P$ has at most $n$ roots.
+\item (Characteristic $0$.) Let the \emph{multiplicity} of $a$ be the largest $m$ with $(X-a)^m\mid P$. The hypothesis makes every $k!$ invertible in $\mathbb K$, so the Taylor coefficient $P^{(k)}(a)/k!$ is defined. Then $a$ has multiplicity at least $m$ if and only if $P(a)=P'(a)=\dots=P^{(m-1)}(a)=0$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Divide: $P=(X-a)Q+c$ with $c$ constant, and evaluate at $a$: $c=P(a)$.
+
+(b) Induction on $r$. By (a), $P=(X-x_r)Q$. For $i<r$, $0=P(x_i)=(x_i-x_r)Q(x_i)$ and $x_i-x_r\ne0$, so $Q(x_i)=0$ ($\mathbb K$ has no zero divisors). By induction $\prod_{i<r}(X-x_i)\mid Q$. Comparing degrees, $r\le n$.
+
+(c) \emph{Taylor's formula for polynomials}: $P=\sum_{k=0}^n\frac{P^{(k)}(a)}{k!}(X-a)^k$. Both sides are linear in $P$, so it suffices to check it on the basis $(X-a)^j$, $0\le j\le n$, for which the $k$-th derivative at $a$ is $j!$ if $k=j$ and $0$ otherwise. Hence $(X-a)^m\mid P$ iff the first $m$ Taylor coefficients vanish (the remaining sum is divisible by $(X-a)^m$; conversely, if some $P^{(k)}(a)\ne0$ with $k<m$, take the least such $k$: $P=(X-a)^kU$ with $U(a)\ne0$. Part (a) says $X-a$ does not divide $U$. If $(X-a)^m$ divided $P$ with $m>k$, cancellation in $\mathbb K[X]$ would give $U=(X-a)^{m-k}Q$, a contradiction).
+\end{proof}
+
+Part (b) is the fact behind every ``two polynomials that agree at enough points are equal'' argument in this book, and there will be many: if
+$P$ and $Q$ have degree at most $n$ and agree at $n+1$ points, $P-Q$ has $n+1$ roots and degree at most $n$, so $P-Q=0$. Figure~\ref{fig:threepoints} is the case $n=2$: three nodes determine at most one polynomial of degree at most $2$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-threepoints}
+\caption{Three values fix a polynomial of degree at most $2$. Any two such polynomials would have difference with three roots and degree at most $2$, hence would be equal. A fourth prescribed value is a new problem, not a prediction.}
+\label{fig:threepoints}
+\end{figure}
+
+\subsection*{The Euclidean algorithm and B\'ezout's identity}
+An integer gcd measures common divisibility. For polynomials the same algorithm works, with degree replacing size. We take $\mathbb K$ to be a field throughout this discussion.
+
+\begin{proposition}[polynomial gcd and B\'ezout]\label{prop:polynomial-bezout}
+For $A,B\in\mathbb K[X]$ not both zero, there is a unique monic polynomial $D$ which divides both and is divisible by every common divisor. Moreover there are $U,V\in\mathbb K[X]$ with $D=UA+VB$. We write $D=\gcd(A,B)$ and call $A,B$ \emph{coprime} when $D=1$.
+\end{proposition}
+\begin{proof}
+Repeatedly divide the preceding remainder by the current nonzero one. The nonnegative degrees strictly decrease, so the algorithm stops. Its last nonzero remainder $R$ divides the preceding remainder, and backwards through the division identities it divides $A$ and $B$. Conversely every common divisor of $A,B$ divides each remainder, hence $R$. Back-substitution expresses $R$ as $UA+VB$; dividing by its nonzero leading coefficient makes $D$ monic and preserves such an expression. The same argument starts with the nonzero polynomial if one input is zero. Two monic polynomials with the stated divisibility properties divide one another, so have the same degree and differ by a constant factor; monicity makes that factor $1$.
+\end{proof}
+
+For example, $(X^3-1)-X(X^2-1)=X-1$ and $X^2-1=(X+1)(X-1)$. Thus the gcd is $X-1$, and the first identity is already a B\'ezout identity. If $\gcd(A,B)=1$ and $A\mid BC$, multiply $1=UA+VB$ by $C$: both terms on the right are divisible by $A$, so $A\mid C$. This is polynomial coprime cancellation, the counterpart of the arithmetic bridge in Chapter~\ref{ch:sums}. After the d'Alembert--Gauss theorem below establishes factorisation over $\C$, it also follows that two nonzero complex polynomials are coprime exactly when they share no root.
+
+\begin{examplex}[multiple roots]
+For which real $a$ does $X^3-3X+a$ have a multiple root? By Proposition~\ref{prop:rootsfactor}(c), such a root is a common root of $P$ and $P'=3X^2-3$, so it is $\pm1$, and
+$P(1)=a-2$, $P(-1)=a+2$: exactly for $a=\pm2$. Indeed $X^3-3X+2=(X-1)^2(X+2)$ and $X^3-3X-2=(X+1)^2(X-2)$.
+A multiple root is a rare accident: it needs a coincidence between $P$ and $P'$. Volume~2 measures this coincidence with a single number, the
+discriminant, which Exercise~\ref{ex:disc} computes for the cubic.
+\end{examplex}
+
+\begin{think}
+Why must a real polynomial of odd degree have a real root? For a complex polynomial there is no ``sign change'' to use. Instead, picture $|P(z)|$ as a landscape over the plane: it is huge far away, so it has a lowest point. Why should the lowest point be at height $0$?
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-landscape}
+\caption{The landscape $|P(z)|$ for $P=z^2-1$. It rises like $|z|^2$ far away, dips to $0$ at the two roots $\pm1$, and has a saddle above $0$. The proof of Theorem~\ref{thm:dalembert} shows that this landscape can never have a lowest point at positive height: from any point where $P\ne0$ there is a direction in which $|P|$ decreases.}
+\label{fig:landscape}
+\end{figure}
+
+\begin{theorem}[d'Alembert--Gauss]\label{thm:dalembert}
+Every non-constant $P\in\C[X]$ has a root. Consequently $P$ splits as $c\prod(X-x_i)$ in $\C[X]$, and the irreducible polynomials of $\R[X]$ are those of degree $1$ and those of degree $2$ with negative discriminant.
+\end{theorem}
+\begin{proof}
+Here is the compactness fact we need, derived from Chapter~\ref{ch:sequences} rather than assumed: a continuous real function on a closed disc attains its minimum. A sequence in the disc has a subsequence whose real coordinates converge by Bolzano--Weierstrass, and a further subsequence whose imaginary coordinates converge. The limit remains in the disc because the modulus is continuous. A continuous function there is bounded below: otherwise choose points with values below $-n$, take a convergent subsequence and contradict continuity. A sequence of values approaching its infimum now has a convergent subsequence of points, whose limit attains that infimum. Apply this to $|P|$.
+Write $P=\sum_{j=0}^nc_jX^j$ with $n\ge1$ and $c_n\ne0$.
+Since $|P(z)|\ge|z|^n\left(|c_n|-\sum_{j<n}|c_j||z|^{j-n}\right)\to\infty$ as $|z|\to\infty$, there is $R>0$ with $|P(z)|>|P(0)|$ for $|z|>R$; the minimum of $|P|$ on the disc $|z|\le R$ is therefore a global minimum, attained at some $z_0$.
+
+Suppose $P(z_0)\ne0$. Expand around $z_0$: $P(z_0+h)=P(z_0)+ch^k+h^{k+1}S(h)$ with $c\ne0$, $k\ge1$, $S$ a polynomial. By Proposition~\ref{prop:expform} there is $u\in\C$ with $u^k=-P(z_0)/c$ (write $-P(z_0)/c=\rho e^{i\theta}$ and take $u=\rho^{1/k}e^{i\theta/k}$). For real $t\in]0,1[$,
+\[
+\begin{aligned}|P(z_0+tu)|&=\left|P(z_0)(1-t^k)+t^{k+1}u^{k+1}S(tu)\right|\eqbr\le|P(z_0)|(1-t^k)+Mt^{k+1},\end{aligned}
+\]
+with $M=\sup_{0\le t\le1}|u^{k+1}S(tu)|$. For $0<t<1$ with $Mt<|P(z_0)|$ (any $t$ if $M=0$) this is $<|P(z_0)|$: contradiction. So $P(z_0)=0$.
+
+Splitting follows by induction on the degree with Proposition~\ref{prop:rootsfactor}(a). Over $\R$: a real polynomial of degree $\ge3$ has a complex root $z$; if $z\in\R$, $X-z$ is a factor; if not, $\bar z$ is also a root, because real coefficients give $\overline{P(z)}=P(\bar z)$, and $(X-z)(X-\bar z)=X^2-2\operatorname{Re}z\,X+|z|^2\in\R[X]$ is a factor by (b); the quotient is real too, since dividing $P$ by this real monic polynomial in $\R[X]$ gives a real quotient, which is also the quotient in $\C[X]$ by uniqueness of Euclidean division. So it is reducible. A real quadratic is irreducible iff it has no real root, iff its discriminant is negative.
+\end{proof}
+
+The theorem has a long and quarrelsome history. Albert Girard stated in 1629 that an equation of degree $n$ has $n$ roots, without saying
+what kind of numbers they were. Jean le Rond d'Alembert gave the first serious attempt at a proof in 1746, built on exactly the idea above, a
+minimum of $|P|$, but without the compactness fact we borrowed and with a lemma he never proved. Euler, Lagrange and Laplace followed, all of them
+assuming at some point that the roots exist somewhere and then showing they are complex. Gauss's doctoral thesis of 1799 took the earlier proofs
+apart (of Euler's approach he wrote that he could ``only say that I thoroughly disapprove of this type of argument'') and gave a new one, which
+by modern standards has gaps of its own; he returned to the theorem in 1816, twice, and in 1849. The short proof we gave is essentially the one
+Jean-Robert Argand, the accountant of Chapter~\ref{ch:complex}, published in 1814. The French call the theorem d'Alembert's, the Germans Gauss's; we call it both.
+
+\begin{proposition}[Vi\`ete's relations]\label{prop:viete}
+If $P=a_nX^n+a_{n-1}X^{n-1}+\dots+a_0=a_n\prod_{i=1}^n(X-x_i)$ with $a_n\ne0$, the elementary symmetric functions
+$\sigma_k=\sum_{i_1<\dots<i_k}x_{i_1}\cdots x_{i_k}$ satisfy
+\[
+\sigma_k=(-1)^k\,\frac{a_{n-k}}{a_n}\qquad(1\le k\le n).
+\]
+\end{proposition}
+\begin{proof}
+Expand $\prod_i(X-x_i)$: the coefficient of $X^{n-k}$ is obtained by choosing $-x_i$ in exactly $k$ factors, so it equals $(-1)^k\sigma_k$.
+\end{proof}
+
+\begin{examplex}
+For a quadratic $X^2+bX+c$ with roots $x_1,x_2$: $x_1+x_2=-b$ and $x_1x_2=c$, which is how one checks a solution of a quadratic in one's head.
+For $X^3-X+1$, with roots $x_1,x_2,x_3$: $\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$. Nobody asks you to find the roots (they are ugly: one real,
+about $-1.3247$, and two complex), yet $x_1^2+x_2^2+x_3^2=\sigma_1^2-2\sigma_2=2$ is exact and took one line. This is the whole point of Vi\`ete:
+symmetric information about the roots is available without the roots. Section~\ref{sec:symmetric} makes the point into a theorem.
+\end{examplex}
+
+\section{Lagrange interpolation}
+
+\begin{think}
+Find the polynomial $P$ of degree at most $2$ with $P(0)=1$, $P(1)=3$, $P(2)=7$. Try to build it as $1\cdot L_0+3\cdot L_1+7\cdot L_2$, where each $L_i$ vanishes at two of the three points and equals $1$ at the third.
+\end{think}
+
+\begin{theorem}[Lagrange]\label{thm:lagrange}
+Let $x_0,\dots,x_n\in\mathbb K$ be distinct and $y_0,\dots,y_n\in\mathbb K$. There is a unique $P\in\mathbb K[X]$ of degree at most $n$ with $P(x_i)=y_i$ for all $i$, namely
+\[
+P=\sum_{i=0}^ny_i\,L_i,\qquad L_i=\prod_{j\ne i}\frac{X-x_j}{x_i-x_j}.
+\]
+\end{theorem}
+\begin{proof}
+$L_i(x_j)$ is $1$ if $j=i$ and $0$ otherwise, so $P$ fits. If $\tilde P$ also fits, $P-\tilde P$ has degree at most $n$ and $n+1$ roots, hence is zero.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-lagrange}
+\caption{Left: the Lagrange basis for the nodes $0,1,2$. Each $L_i$ is $1$ at its own node and $0$ at the two others. Right: the interpolant of the values $1,3,7$ is $L_0+3L_1+7L_2=X^2+X+1$.}
+\label{fig:lagrange}
+\end{figure}
+
+\begin{examplex}
+With nodes $0,1,2$: $L_0=\frac{(X-1)(X-2)}2$, $L_1=\frac{X(X-2)}{-1}$, $L_2=\frac{X(X-1)}2$, and
+\[
+P=L_0+3L_1+7L_2=\tfrac12(X^2-3X+2)-3(X^2-2X)+\tfrac72(X^2-X)=X^2+X+1,
+\]
+which Figure~\ref{fig:lagrange} shows. The name is not quite fair: Edward Waring published the formula in 1779 and Euler used it in 1783, before
+Lagrange taught it at the \'Ecole normale in 1795.
+\end{examplex}
+
+\begin{examplex}[sharing a secret]
+In 1979 Adi Shamir turned Theorem~\ref{thm:lagrange} into a security device. A bank wants its vault code $s$ to be recoverable by any three of its
+five directors, but by no two of them. Work in the finite field $\mathbb F_p=\Z/p\Z$ for a prime $p>5$, with $s\in\mathbb F_p$.
+Choose $a,b$ independently and uniformly from the entire field, including zero, and put $P=s+aX+bX^2$, of degree \emph{at most} $2$.
+Label the directors by $1,\ldots,5$ in $\mathbb F_p$. None of these labels is $0$, since $p>5$. Hand director $i$ the share $(i,P(i))$. Any three directors determine $P$ by interpolation, and recover $s=P(0)$. A share at $0$ would have been the secret itself.
+Fix the secret $s$ and two distinct directors $i,j$. The map $(a,b)\mapsto\bigl(P(i),P(j)\bigr)$ is a bijection of $\mathbb F_p^2$: the three nodes $(0,s)$, $(i,y_i)$ and $(j,y_j)$ determine exactly one polynomial of degree at most $2$, because the Vandermonde factor $ij(j-i)$ is nonzero. Thus every pair of share values occurs for exactly one $(a,b)$, hence with probability $1/p^2$, whatever $s$ was. The shares of two directors are uniformly distributed and independent of the secret. The sentence ``every candidate secret still fits these two shares'' is the same bijection read in the other order; it is not, by itself, the count of probabilities.
+The finite field and the uniform choice are essential to this secrecy statement. Exercise~\ref{ex:secret} recovers a secret from three shares.
+\end{examplex}
+
+\section{Chebyshev polynomials}
+
+\begin{think}
+Write $\cos2\theta$ and $\cos3\theta$ as polynomials in $\cos\theta$. Then add $\cos((n+1)\theta)$ and $\cos((n-1)\theta)$ with the sum-to-product formula: what recurrence appears?
+\end{think}
+
+\begin{proposition}\label{prop:cheb}
+For each $n\in\N$ there is a unique $T_n\in\R[X]$ with $T_n(\cos\theta)=\cos n\theta$ for all $\theta$. Moreover $T_0=1$, $T_1=X$,
+\[
+T_{n+1}=2X\,T_n-T_{n-1},
+\]
+$T_n$ has degree $n$ and leading coefficient $2^{n-1}$ for $n\ge1$; for these $n$ its roots are $\cos\frac{(2k+1)\pi}{2n}$, $0\le k\le n-1$.
+\end{proposition}
+\begin{proof}
+From $\cos((n+1)\theta)+\cos((n-1)\theta)=2\cos\theta\cos n\theta$, the polynomials defined by the recurrence satisfy
+$T_n(\cos\theta)=\cos n\theta$ by induction, and the degree and leading coefficient follow from the recurrence. Uniqueness: two such polynomials agree on $[-1,1]$, an infinite set.
+The $n$ numbers $\cos\frac{(2k+1)\pi}{2n}$ are distinct and are roots since $\cos\frac{(2k+1)\pi}2=0$; as $\deg T_n=n$ there are no others.
+\end{proof}
+
+The first few are $T_2=2X^2-1$, $T_3=4X^3-3X$, $T_4=8X^4-8X^2+1$, $T_5=16X^5-20X^3+5X$. Figure~\ref{fig:chebyshev} shows the $T_n$ oscillating between $-1$ and $1$, and why their roots matter in practice.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-chebyshev}
+\caption{Left: $T_2,\dots,T_5$ on $[-1,1]$. Each $T_n$ reaches $\pm1$ alternately $n+1$ times, which is the key to its minimax property (Exercise~\ref{ex:minimax}). Right: Runge's example. Interpolating $\frac1{1+25x^2}$ at $11$ equally spaced points (red) gives a polynomial that oscillates wildly near the ends, with error $1.9$. At the $11$ roots of $T_{11}$ (blue), the error drops to $0.11$.}
+\label{fig:chebyshev}
+\end{figure}
+
+Outside $[-1,1]$ there is no $\theta$ with $\cos\theta=x$, but the polynomial $T_n$ is still there, and it grows fast.
+
+\begin{propositionx}[closed form]
+For every $x\in\C$, with either choice of the square root,
+\[
+T_n(x)=\frac{\bigl(x+\sqrt{x^2-1}\bigr)^n+\bigl(x-\sqrt{x^2-1}\bigr)^n}2.
+\]
+In particular $T_n(\cosh t)=\cosh nt$ for real $t$, and, for each fixed $n\ge1$, $T_n(x)\sim\frac12(2x)^n$ as $x\to+\infty$.
+\end{propositionx}
+\begin{proof}
+Let $u=x+\sqrt{x^2-1}$ and $v=x-\sqrt{x^2-1}$. Then $u+v=2x$ and $uv=x^2-(x^2-1)=1$, so $u$ and $v$ are the roots of $t^2-2xt+1$, and
+$s_n=\frac{u^n+v^n}2$ satisfies $s_{n+1}=2xs_n-s_{n-1}$ (multiply $u^2=2xu-1$ by $u^{n-1}$, the same for $v$, add). Since $s_0=1=T_0(x)$ and
+$s_1=x=T_1(x)$, induction gives $s_n=T_n(x)$. For $x=\cosh t$ with $t\ge0$, $\sqrt{x^2-1}=\sinh t$ and $u,v=e^{\pm t}$; evenness extends the identity to $t<0$. For $x\to+\infty$, $u\sim2x$ and $v\to0$.
+\end{proof}
+
+Now to Chebyshev's question. Among monic polynomials of degree $n$, how small can $\sup_{[-1,1]}|P|$ be? The monic multiple of $T_n$ is
+$2^{1-n}T_n$, and it never leaves $[-2^{1-n},2^{1-n}]$. Figure~\ref{fig:equioscillation} compares it with two other monic quartics, and makes the
+decisive feature visible: $\frac18T_4$ touches its bounds $\pm\frac18$ five times, alternately. Exercise~\ref{ex:minimax} shows this
+\emph{equioscillation} forces every other monic polynomial to stick out further, a result Chebyshev published in 1854 and the beginning of the
+theory of best approximation. It is also the reason behind the right half of Figure~\ref{fig:chebyshev}: interpolating at the roots of $T_{n+1}$
+makes the factor $\prod(x-x_i)$ in the interpolation error as small as it can be.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-equioscillation}
+\caption{Three monic polynomials of degree $4$ on $[-1,1]$: $x^4$ reaches $1$, $(x^2-\frac12)^2$ reaches $\frac14$, and $\frac18T_4=x^4-x^2+\frac18$ stays within $\pm\frac18$, touching the bounds at the five points $\cos\frac{k\pi}4$ with alternating signs. No monic quartic does better.}
+\label{fig:equioscillation}
+\end{figure}
+
+\section{Integer polynomials}
+
+\begin{proposition}[rational roots]\label{prop:ratroot}
+If $p/q$ in lowest terms is a root of $a_nX^n+\dots+a_0\in\Z[X]$, then $p\mid a_0$ and $q\mid a_n$.
+\end{proposition}
+\begin{proof}
+Multiply by $q^n$: $a_np^n+a_{n-1}p^{n-1}q+\dots+a_0q^n=0$. Every term but the last is divisible by $p$, so $p\mid a_0q^n$, and $p\mid a_0$ by Gauss' lemma for integers since $\gcd(p,q)=1$. Symmetrically $q\mid a_np^n$, so $q\mid a_n$.
+\end{proof}
+
+\begin{examplex}
+$\sqrt[3]2$ is irrational: a rational root of $X^3-2$ would be an integer dividing $2$, and none of $\pm1,\pm2$ works. Likewise $X^3-X+1$ has no
+rational root (candidates $\pm1$, values $1$ and $1$), and since a cubic with a non-trivial factorisation over $\Q$ must have a factor of degree $1$,
+that is, a rational root, $X^3-X+1$ is irreducible over $\Q$. The same reasoning handles every polynomial of degree $2$ or $3$. From degree $4$ on a
+polynomial can split into two quadratics without having any root, and one needs the sharper tools that follow.
+\end{examplex}
+
+Call $P\in\Z[X]$ \emph{primitive} if its coefficients have no common prime factor.
+
+\begin{proposition}[Gauss' lemma]\label{prop:gausspoly}
+For polynomials with integer coefficients:
+\begin{enumerate}[label=(\alph*)]
+\item A product of primitive polynomials is primitive.
+\item If $P\in\Z[X]$ factors as $P=BC$ in $\Q[X]$, then $P=B_1C_1$, where $B_1$ and $C_1$ lie in $\Z[X]$ and have the same degrees as $B$ and~$C$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Let $B=\sum b_iX^i$, $C=\sum c_jX^j$ be primitive and $p$ a prime. Let $i_0$, $j_0$ be the least indices with $p\nmid b_{i_0}$, $p\nmid c_{j_0}$. The coefficient of $X^{i_0+j_0}$ in $BC$ is $b_{i_0}c_{j_0}$ plus terms $b_ic_j$ with $i<i_0$ or $j<j_0$, all divisible by $p$; and $p\nmid b_{i_0}c_{j_0}$. So $p$ does not divide all coefficients of $BC$.
+
+(b) Clearing denominators and contents, $B=\beta B_0$ and $C=\gamma C_0$ with $\beta,\gamma\in\Q$ and $B_0,C_0\in\Z[X]$ primitive. Write $\beta\gamma=\frac uv$ in lowest terms with $v\ge1$: $vP=uB_0C_0$. A prime $p\mid v$ does not divide $u$, so it would divide every coefficient of $B_0C_0$, contradicting (a). So $v=1$, and $P=(uB_0)\,C_0$.
+\end{proof}
+
+\begin{theorem}[Eisenstein's criterion]\label{thm:eisenstein}
+Let $P=a_nX^n+\dots+a_0\in\Z[X]$ with $n\ge1$, and $p$ a prime with $p\nmid a_n$, $p\mid a_i$ for $i<n$, and $p^2\nmid a_0$. Then $P$ is irreducible in $\Q[X]$.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:gausspoly}, suppose $P=BC$ with $B=\sum_{i\le r}b_iX^i$, $C=\sum_{j\le s}c_jX^j$ in $\Z[X]$, $r,s\ge1$, $r+s=n$. Since $p\mid a_0=b_0c_0$ and $p^2\nmid a_0$, $p$ divides exactly one of $b_0,c_0$, say $p\mid b_0$ and $p\nmid c_0$. Not every $b_i$ is divisible by $p$, since $p\nmid a_n=b_rc_s$. Let $k$ be the least index with $p\nmid b_k$; then $1\le k\le r<n$, and
+$a_k=b_kc_0+b_{k-1}c_1+\dots+b_0c_k\equiv b_kc_0\not\equiv0\pmod p$, contradicting $p\mid a_k$.
+\end{proof}
+
+The criterion is a splendid example of mathematical credit going astray. Theodor Sch\"onemann proved it in 1846, in a paper on polynomials modulo
+primes; Gotthold Eisenstein found it again in 1850, while studying the lemniscate, and his name stuck. Cox's article in the sources tells the story.
+Eisenstein's criterion is wonderful when it applies and useless when it does not; a second tool, also in Sch\"onemann's spirit, often fills the gap.
+
+\begin{propositionx}[reduction modulo $p$]
+Let $P\in\Z[X]$ have degree $n$ and leading coefficient not divisible by the prime $p$. Reduce every coefficient modulo $p$ to get a polynomial
+$\bar P$ with coefficients in $\Z/p\Z$. If $\bar P$ has no factorisation into two factors of degrees $r,s\ge1$ with $r+s=n$, then $P$ is
+irreducible over $\Q$.
+\end{propositionx}
+\begin{proof}
+The arithmetic bridge in Chapter~\ref{ch:sums} shows that $\Z/p\Z$ is a field: Euclid's lemma excludes zero divisors, and B\'ezout's identity gives an inverse to each nonzero class. Thus
+degrees add under multiplication in $(\Z/p\Z)[X]$. If $P=BC$ in $\Q[X]$ with $\deg B,\deg C\ge1$, Gauss' lemma gives such a factorisation in $\Z[X]$.
+Reducing modulo $p$ is compatible with sums and products, so $\bar P=\bar B\bar C$. Since $p$ does not divide the leading coefficient of $P$, which is
+the product of those of $B$ and $C$, it divides neither of them: $\deg\bar B=\deg B$ and $\deg\bar C=\deg C$. This is the factorisation that was
+assumed not to exist.
+\end{proof}
+
+\begin{examplex}
+$X^3+X+1$ modulo $2$ has no root in $\Z/2\Z$ ($0+0+1$ and $1+1+1$ are both $1$), so it has no factor of degree $1$, so no factorisation at all:
+$X^3+X+1$ is irreducible over $\Q$. More interesting: $X^4+X+1$ modulo $2$. No root; and a factorisation into two quadratics would involve a monic
+irreducible quadratic over $\Z/2\Z$, of which there is only one, $X^2+X+1$, whose square is $X^4+X^2+1\ne X^4+X+1$. So $X^4+X+1$ is irreducible over
+$\Q$, which no Eisenstein prime could tell us. The converse fails: $X^4+1$ is irreducible over $\Q$ (Eisenstein at $X+1$, as in
+Exercise~\ref{ex:eisen}) but factors modulo every prime, a fact Volume~1 explains.
+\end{examplex}
+
+\section{Symmetric functions of the roots}\label{sec:symmetric}
+
+Vi\`ete gives the elementary symmetric functions $\sigma_k$ of the roots. The sums of powers $p_k=x_1^k+\dots+x_n^k$ are often what one wants, as
+in Exercise~\ref{ex:viete}, and Newton found how to pass from one family to the other.
+
+\begin{proposition}[Newton's identities]\label{prop:newtonid}
+Let $x_1,\dots,x_n$ be numbers, $\sigma_k$ their elementary symmetric functions ($\sigma_0=1$, $\sigma_k=0$ for $k>n$) and $p_k=\sum_ix_i^k$.
+Then for every $k\ge1$,
+\[
+p_k-\sigma_1p_{k-1}+\sigma_2p_{k-2}-\dots+(-1)^{k-1}\sigma_{k-1}p_1+(-1)^kk\,\sigma_k=0.
+\]
+For $k>n$ the last term is $0$, and the identity reads $p_k=\sigma_1p_{k-1}-\sigma_2p_{k-2}+\dots+(-1)^{n-1}\sigma_np_{k-n}$.
+\end{proposition}
+\begin{proof}
+Let $P=\prod_i(X-x_i)=\sum_{j=0}^n(-1)^j\sigma_jX^{n-j}$.
+
+\emph{Case $k>n$.} Each $x_i$ is a root of $P$, so $x_i^{k-n}P(x_i)=0$, that is, $\sum_j(-1)^j\sigma_jx_i^{k-j}=0$. Summing over $i$ gives the identity.
+
+\emph{Case $k\le n$.} This is where Horner's scheme earns its keep. Write $P=(X-x_i)Q_i$. On the one hand, the product rule gives
+$P'=\sum_iQ_i$. On the other hand, the coefficients of $Q_i$ are computed by Horner's recurrence: writing $Q_i=\sum_{m=0}^{n-1}b_m^{(i)}X^{n-1-m}$,
+we have $b_0^{(i)}=1$ and $b_m^{(i)}=(-1)^m\sigma_m+x_ib_{m-1}^{(i)}$, whence by induction
+\[
+b_m^{(i)}=\sum_{j=0}^m(-1)^j\sigma_jx_i^{m-j}.
+\]
+Now compare the coefficients of $X^{n-1-m}$ in $P'=\sum_iQ_i$, for $0\le m\le n-1$. On the left it is $(n-m)(-1)^m\sigma_m$. On the right it is
+$\sum_ib_m^{(i)}=\sum_{j=0}^m(-1)^j\sigma_jp_{m-j}$, and the term $j=m$ is $(-1)^m\sigma_mp_0=(-1)^mn\sigma_m$. Hence
+\[
+\sum_{j=0}^{m-1}(-1)^j\sigma_jp_{m-j}+(-1)^mm\,\sigma_m=0,
+\]
+which is the identity for $k=m\le n-1$. For $k=n$, sum $P(x_i)=0$ over $i$: $\sum_{j=0}^{n-1}(-1)^j\sigma_jp_{n-j}+(-1)^nn\sigma_n=0$.
+\end{proof}
+
+The identities compute the $p_k$ recursively from the $\sigma_k$ ($p_1=\sigma_1$, $p_2=\sigma_1p_1-2\sigma_2$, $p_3=\sigma_1p_2-\sigma_2p_1+3\sigma_3$,
+and so on), and conversely the $\sigma_k$ from the $p_k$, dividing by $k$ at each step. Exercise~\ref{ex:newtonid} runs them on $X^3-X+1$. Newton
+published them in his \emph{Arithmetica universalis} of 1707, but Albert Girard already had the first four in 1629, in the same book that stated the
+fundamental theorem of algebra.
+
+Vi\`ete says that $\sigma_1,\dots,\sigma_n$ are polynomials in the coefficients of the monic normalisation of $P$; Newton says that $p_1,p_2,\dots$ are polynomials in the $\sigma_k$.
+The next theorem says that \emph{every} symmetric expression in the roots is. A polynomial $F(x_1,\dots,x_n)$ is \emph{symmetric} if it is unchanged by
+every permutation of the variables.
+
+\begin{theorem}[fundamental theorem of symmetric polynomials]\label{thm:symmetric}
+Every symmetric polynomial $F\in\mathbb K[x_1,\dots,x_n]$ is a polynomial in $\sigma_1,\dots,\sigma_n$ with coefficients in $\mathbb K$: there is
+$G\in\mathbb K[y_1,\dots,y_n]$ with $F=G(\sigma_1,\dots,\sigma_n)$. If $F$ has integer coefficients, so does $G$.
+\end{theorem}
+\begin{proof}
+Order the monomials $x_1^{a_1}\cdots x_n^{a_n}$ \emph{lexicographically}: compare the exponents $a_1$ first, then $a_2$ in case of a tie, and so on,
+as in a dictionary. Every non-zero polynomial has a \emph{leading monomial}, the largest one that occurs, and the leading monomial of a product is
+the product of the leading monomials (the exponent vectors add, and the largest sum comes from the two largest vectors). The leading monomial of
+$\sigma_k$ is $x_1x_2\cdots x_k$, so the leading monomial of $\sigma_1^{d_1}\sigma_2^{d_2}\cdots\sigma_n^{d_n}$ is
+$x_1^{d_1+\dots+d_n}x_2^{d_2+\dots+d_n}\cdots x_n^{d_n}$.
+
+Let $F\ne0$ be symmetric with leading monomial $c\,x_1^{a_1}\cdots x_n^{a_n}$. Since $F$ is symmetric it also contains every permuted monomial, and
+among these the largest in the dictionary is the one with decreasing exponents; so $a_1\ge a_2\ge\dots\ge a_n$. Put $d_k=a_k-a_{k+1}$ (with
+$a_{n+1}=0$); these are $\ge0$, and the product $\sigma_1^{d_1}\cdots\sigma_n^{d_n}$ has the same leading monomial as $F$, with coefficient $1$. Then
+$F_1=F-c\,\sigma_1^{d_1}\cdots\sigma_n^{d_n}$ is symmetric and either zero or with a strictly smaller leading monomial. Among the monomials of total
+degree $\le\deg F$ there are finitely many, so repeating the step must end at $0$ after finitely many rounds, and $F$ is the sum of the
+subtracted products. All coefficients that appear are the $c$'s, which are integers if those of $F$ are.
+\end{proof}
+
+\begin{examplex}
+The proof is an algorithm. Take $F=\sum_{i\ne j}x_i^2x_j$ in three variables. Leading monomial $x_1^2x_2$, so $(a_1,a_2,a_3)=(2,1,0)$,
+$(d_1,d_2,d_3)=(1,1,0)$, and we subtract $\sigma_1\sigma_2=\sum_{i\ne j}x_i^2x_j+3x_1x_2x_3$. What is left is $-3x_1x_2x_3=-3\sigma_3$, so
+$F=\sigma_1\sigma_2-3\sigma_3$. For the roots of $X^3-X+1$ this gives $\sum_{i\ne j}x_i^2x_j=0\cdot(-1)-3(-1)=3$.
+\end{examplex}
+
+The theorem is the engine of Volume~2: it is why every symmetric polynomial expression in the roots of an equation can be expressed inside the field of its
+coefficients, and it is the first thing Galois theory needs.
+
+\section{Real roots: counting and locating}
+
+Over $\C$ a polynomial of degree $n$ has exactly $n$ roots, multiplicities counted. Over $\R$ it has between $0$ and $n$, and the coefficients
+contain more information about this number than one might expect. Descartes noticed it in 1637, in the \emph{G\'eom\'etrie} appended to the
+\emph{Discours de la m\'ethode}; proofs appeared in the eighteenth century, before Gauss's algebraic proof of 1828. For a polynomial $P=\sum a_kX^k$ with real coefficients, let $V(P)$ be the
+number of \emph{sign changes} in the sequence $a_n,a_{n-1},\dots,a_0$ after the zeros are deleted, and let $Z^+(P)$ be the number of positive roots
+counted with multiplicity.
+
+\begin{theorem}[Descartes' rule of signs]\label{thm:descartes}
+For a non-zero $P\in\R[X]$, $Z^+(P)\le V(P)$, and $V(P)-Z^+(P)$ is even.
+\end{theorem}
+\begin{proof}
+Dividing $P$ by a power of $X$ changes neither $V$ nor $Z^+$, so we may assume $P(0)\ne0$. Note first that $V(P)$ is odd exactly when the leading
+coefficient and the constant term have opposite signs, since each sign change flips the sign and the sign changes must take the first sign to the last.
+
+\emph{Step 1: a polynomial with no positive root has $V$ even.} If $Q(0)\ne0$ and $Q$ has no root in $]0,\infty[$, then $Q$ keeps a constant sign on
+$[0,\infty[$ (intermediate value theorem, Chapter~\ref{ch:sequences}), which is the sign of its leading coefficient for large $x$ and the sign of $Q(0)$ at $0$. So the
+first and last coefficients agree in sign, and $V(Q)$ is even.
+
+\emph{Step 2: multiplying by $X-a$ with $a>0$ raises $V$ by an odd number.} Let $Q=\sum_{j=0}^mb_jX^j$ with $b_m\ne0$, $b_0\ne0$, and
+$(X-a)Q=\sum_jc_jX^j$, so that $c_{m+1}=b_m$, $c_0=-ab_0$ and $c_j=b_{j-1}-ab_j$ for $1\le j\le m$. Group the non-zero coefficients of $Q$, read from
+$b_m$ downwards, into maximal blocks of constant sign: there are $V(Q)+1$ blocks, with alternating signs $s_1,s_2,\dots,s_{V(Q)+1}$, and $s_1$ is the
+sign of $b_m$. Let $b_j$ be the first (highest-index) element of a block with sign $s$. Then $b_{j+1}$ is either $0$ or of sign $-s$ (it belongs to
+the previous block, or is a zero between blocks), unless $j=m$. In all cases $c_{j+1}=b_j-ab_{j+1}$ has the sign $s$ strictly. So the sequence of the $c_j$
+contains, in decreasing order of index, non-zero elements of signs $s_1,s_2,\dots,s_{V(Q)+1}$, and then $c_0$ of sign $-s_{V(Q)+1}$. Hence
+$V((X-a)Q)\ge V(Q)+1$. Parity: the first and last coefficients of $(X-a)Q$ have signs $s_1$ and $-s_{V(Q)+1}=-(-1)^{V(Q)}s_1$; they are opposite exactly
+when $V(Q)$ is even, that is, $V((X-a)Q)$ is odd exactly when $V(Q)$ is even. So $V((X-a)Q)-V(Q)$ is odd.
+
+\emph{Conclusion.} Write $P=(X-a_1)\cdots(X-a_r)Q$ with $a_1,\dots,a_r>0$ the positive roots with multiplicity, $r=Z^+(P)$, and $Q$ without positive
+roots. Then $V(P)\ge V(Q)+r\ge r$ by Step~2 applied $r$ times, and $V(P)\equiv V(Q)+r\equiv r\pmod2$ by Steps~2 and~1.
+\end{proof}
+
+To count negative roots, apply the rule to $P(-X)$.
+
+\begin{examplex}
+$P=X^3-X-1$ has signs $+,-,-$: one change, so exactly one positive root. $P(-X)=-X^3+X-1$ has signs $-,+,-$: two changes, so $0$ or $2$ negative
+roots. Here $P'=3X^2-1$ vanishes at $\pm\frac1{\sqrt3}$, and $P(-\frac1{\sqrt3})=\frac2{3\sqrt3}-1<0$ is the maximum of $P$ on $]-\infty,0]$, so
+there are no negative roots. The unique real root, $1.3247\ldots$, is the \emph{plastic number}, which the architect Hans van der Laan proposed in
+1928 as a three-dimensional cousin of the golden ratio. Exercise~\ref{ex:descartes} counts the real roots of $X^5-3X+1$ the same way.
+\end{examplex}
+
+Our last theorem locates the roots of $P'$ from those of $P$. Over $\R$ this is Rolle's theorem (Theorem~\ref{thm:mvt} in Chapter~\ref{ch:sequences}): between two real roots of $P$ there is
+a root of $P'$. Over $\C$ there is no ``between'', but there is a convex hull, and the statement is just as clean. The theorem bears the names of Gauss and
+F\'elix Lucas, whose papers of 1874 and 1879 developed the result.
+
+\begin{theorem}[Gauss--Lucas]\label{thm:gausslucas}
+Let $P\in\C[X]$ be non-constant. Every root of $P'$ lies in the convex hull of the roots of $P$, that is, it is a combination
+$\sum_i\lambda_ix_i$ of the roots $x_i$ of $P$ with $\lambda_i\ge0$ and $\sum_i\lambda_i=1$.
+\end{theorem}
+\begin{proof}
+Write $P=c\prod_{i=1}^n(X-x_i)$. If $z$ is a root of $P'$ and also of $P$, it is one of the $x_i$ and there is nothing to prove. Otherwise $P(z)\ne0$,
+and the product rule gives
+\[
+0=\frac{P'(z)}{P(z)}=\sum_{i=1}^n\frac1{z-x_i}=\sum_{i=1}^n\frac{\overline{z-x_i}}{|z-x_i|^2}.
+\]
+Taking conjugates, $\sum_iw_i(z-x_i)=0$ with $w_i=|z-x_i|^{-2}>0$. So $z\sum_iw_i=\sum_iw_ix_i$, and $z=\sum_i\lambda_ix_i$ with
+$\lambda_i=w_i/\sum_jw_j$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-gausslucas}
+\caption{Gauss--Lucas for a polynomial of degree $5$. The roots of $P$ (filled) span a convex quadrilateral (the fifth root lies inside); the four roots of $P'$ (circles) lie inside it. The proof shows more: each root of $P'$ is a weighted average of the roots of $P$, with weights $|z-x_i|^{-2}$ that favour the nearby roots.}
+\label{fig:gausslucas}
+\end{figure}
+
+\begin{think}
+A physicist's reading of the proof: put a unit positive charge at each root $x_i$, in a plane where charges repel with force $\frac1{\text{distance}}$ (the two-dimensional law). The force at $z$ is the conjugate of $\sum\frac1{z-x_i}$, up to a constant. Away from the charges, the roots of $P'$ are exactly the points of equilibrium of this electric field. A multiple root of $P$ is also a root of $P'$, but the field is singular there. Can a point outside the hull be in equilibrium? Every charge pushes it further out.
+\end{think}
+
+\begin{beauty}
+Exercise~\ref{ex:basel} computes an infinite sum with nothing but Vi\`ete's relations; Volume~4 gives five more proofs.
+Exercise~\ref{ex:eisen}(b) is the first step towards the constructible polygons of Volume~2, where the irreducibility of
+$\Phi_{17}$ explains Gauss' 17-gon. Chebyshev's minimax property is why numerical analysts interpolate at the roots of
+$T_n$ rather than at equally spaced points. And Exercise~\ref{ex:mason} proves Fermat's last theorem, for polynomials,
+in half a page: the same statement that took three and a half centuries for integers.
+\end{beauty}
+
+\portraits{lagrange}{Joseph-Louis Lagrange (1736--1813). Portrait, artist unknown. Public domain, via Wikimedia Commons.}{gauss-biermann}{Carl Friedrich Gauss. Portrait by Gottlieb Biermann, after Jensen's of 1840. Public domain, via Wikimedia Commons.}
+
+\section{Workshop: interpolation is not prophecy}
+Interpolation answers an exact question: which polynomial of degree at most $d$ has these $d+1$ values? It does not promise that the world is a polynomial of that degree. Nor does a small vertical error promise a small error in a root.
+
+\begin{examplex}[a root that splits under a whisper]
+Compare $P(x)=(x-1)^2$ and $P_\delta(x)=(x-1)^2-\delta$ with $\delta>0$. Their values differ everywhere by only $\delta$, but the double root $1$ splits into $1\pm\sqrt\delta$. For $\delta=10^{-6}$, the roots move by $10^{-3}$: a thousand times the coefficient perturbation. The graph is almost flat near a multiple root. By contrast, $L(x)=x-1$ and $L(x)-\delta$ have roots separated by only $\delta$. Multiplicity has numerical consequences.
+\end{examplex}
+
+\begin{figure}[ht]\centering\fig{review03-roots}
+\caption{Solid: $(x-1)^2$. Dashed: $(x-1)^2-0.04$, with roots $0.8$ and $1.2$. A vertical change of $0.04$ moves the roots horizontally by $0.2$. The tangency of the original graph explains the sensitivity.}\end{figure}
+
+\subsection*{Find the exact polynomial, then interrogate it}
+\textbf{Mission.} A machine returns $2,3,6$ at inputs $0,1,2$. Find the unique polynomial of degree at most two fitting these data. Does the next output have to be $11$?
+
+\textbf{Hint.} Subtract $X^2+2$. What polynomial vanishes at all three inputs?
+
+\textbf{Solution.} $P=X^2+2$ fits. If $Q$ is another polynomial of degree at most two fitting the data, $Q-P$ has three distinct roots, so is zero. The next value is $11$ \emph{within that model}. But every $P+cX(X-1)(X-2)$ also fits; its value at $3$ is $11+6c$. There is no model-free prediction.
+
+\begin{reminder}[where the root bound works]
+A nonzero degree-$d$ polynomial over a field has at most $d$ roots in that field. Distinctness and the field hypothesis matter: modulo $8$, $X^2-1$ vanishes at $1,3,5,7$. The proof fails because nonzero residues can multiply to zero: $2\cdot4=0$ modulo $8$. Even over a field, two polynomial \emph{functions} need not identify their polynomials if the field is finite: $X^2-X$ vanishes at both elements of the two-element field without being the zero polynomial.
+\end{reminder}
+
+\photograph{hubble-deep-field}{Hubble eXtreme Deep Field, showing many distant galaxies of varied sizes and shapes.}{Hubble eXtreme Deep Field. NASA; distributed as a public-domain image by scikit-image. A sky image is an array of measured intensities. Interpolation can estimate values between samples, but does not invent new observations; the distinction in this workshop applies to images too.}
+
+
+\section*{What this chapter establishes}
+A polynomial over a field is determined by its coefficients, and a nonzero polynomial of degree $d$ has at most $d$ roots. That one bound turns finite checks into identities. Division, interpolation, Chebyshev's minimax polynomials, integer factorisation and symmetric functions are all uses of it. The fundamental theorem of algebra puts the roots in $\C$. Over $\R$, nonreal roots arrive in conjugate pairs.
+
+Volume~1 does arithmetic with polynomials over $\Z$ and over finite fields, using the same division. Volume~2 asks when those polynomials split, which is Galois theory. Volume~5 and Volume~13 return to the Basel sum as a fact about primes. Volume~12 builds number fields by adjoining a root of one irreducible polynomial.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:rem}
+Find the remainder of the Euclidean division of $X^n$ by $(X-1)(X-2)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:viete}
+Let $x_1,x_2,x_3$ be the complex roots of $X^3-X+1$. Compute $x_1^2+x_2^2+x_3^2$ and $x_1^3+x_2^3+x_3^3$, without finding the roots.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:simple}
+Show that for $n\ge2$ the polynomial $X^n+X+1$ has only simple roots in $\C$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lagsum}
+Let $x_0,\dots,x_n$ be distinct complex numbers. Show that
+\[
+\sum_{i=0}^n\frac{x_i^k}{\prod_{j\ne i}(x_i-x_j)}=\begin{cases}0&\text{if }0\le k\le n-1,\\1&\text{if }k=n.\end{cases}
+\]
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:eisen}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $X^4+10X+5$ is irreducible over $\Q$.
+\item Let $p$ be prime. Show that $\Phi_p=1+X+\dots+X^{p-1}$ is irreducible over $\Q$. \emph{Hint: look at $\Phi_p(X+1)$.}
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:minimax}
+\emph{Chebyshev's minimax property.} Show that every monic $P\in\R[X]$ of degree $n\ge1$ satisfies
+$\sup_{[-1,1]}|P|\ge2^{1-n}$, with equality for $P=2^{1-n}T_n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:basel}
+\emph{The Basel problem through roots.} Let $m\ge1$ and $N=2m+1$.
+\begin{enumerate}[label=(\alph*)]
+\item Using $\sin N\theta=\operatorname{Im}\left((\cos\theta+i\sin\theta)^N\right)$, show that for $0<\theta<\frac\pi2$,
+\[
+\begin{aligned}\sin N\theta&=\sin^N\theta\eqbr\times\sum_{j=0}^m(-1)^j\binom N{2j+1}\cot^{2(m-j)}\theta.\end{aligned}
+\]
+\item Deduce that the numbers $\cot^2\frac{k\pi}N$, $1\le k\le m$, are the roots of $\sum_{j=0}^m(-1)^j\binom N{2j+1}X^{m-j}$, and that
+$\displaystyle\sum_{k=1}^m\cot^2\frac{k\pi}N=\frac{m(2m-1)}3$.
+\item Using $\cot^2x<\frac1{x^2}<1+\cot^2x$ on $\left]0,\frac\pi2\right[$, prove that $\displaystyle\sum_{k=1}^\infty\frac1{k^2}=\frac{\pi^2}6$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:sos}
+Let $P\in\R[X]$ with $P(x)\ge0$ for all $x\in\R$. Show that there are $A,B\in\R[X]$ with $P=A^2+B^2$.
+\end{exercise}
+
+\subsection*{Further exercises}
+
+\begin{exercise}[$\star$]\label{ex:horner}
+Use Horner's scheme to compute $P(-2)$ for $P=X^5-2X^3+X^2-7$, and to write $P=(X+2)Q+P(-2)$ explicitly. Then check the division by multiplying back.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:multroot}
+Let $n\ge3$. Show that $1$ is a root of $X^n-nX+n-1$ of multiplicity exactly $2$, and factor $X^4-4X+3$ completely over $\R$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lagrange2k}
+\emph{Bridge: interpolation and finite differences.} Let $P$ be the polynomial of degree at most $n$ with $P(k)=2^k$ for $k=0,1,\dots,n$. Compute $P(n+1)$. \emph{Hint: Chapter~\ref{ch:sums} has a formula made for this.}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:secret}
+Three directors hold the shares $(1,8)$, $(2,15)$ and $(3,24)$ of a secret $s=P(0)$, where $P$ has degree at most $2$. Recover $s$ with the
+Lagrange formula evaluated at $0$ only (do not compute $P$), then find $P$ and check. Explain why the two shares $(1,8)$ and $(2,15)$ alone are
+compatible with every value of $s$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:chebprod}
+Show that for all $m,n\in\N$:
+\begin{enumerate}[label=(\alph*)]
+\item $T_m(T_n(X))=T_{mn}(X)$;
+\item $T_mT_n=\frac12\bigl(T_{m+n}+T_{|m-n|}\bigr)$;
+\item (Return after Chapter~\ref{ch:calculus}.) $\displaystyle\int_{-1}^1\frac{T_m(x)T_n(x)}{\sqrt{1-x^2}}\,dx=0$ for $m\ne n$, and compute the integral for $m=n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:newtonid}
+Let $x_1,x_2,x_3$ be the roots of $X^3-X+1$. With Newton's identities compute $p_4=\sum x_i^4$ and $p_5$, and find the monic cubic whose roots are
+$x_1^2,x_2^2,x_3^2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:descartes}
+Show that $X^5-3X+1$ has exactly three real roots, and locate each of them between two consecutive integers or half-integers.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:disc}
+\emph{The discriminant of the cubic.} Let $x_1,x_2,x_3$ be the roots of $P=X^3+pX+q$ and $\Delta=(x_1-x_2)^2(x_2-x_3)^2(x_3-x_1)^2$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P'(x_i)=\prod_{j\ne i}(x_i-x_j)$ and deduce $\Delta=-P'(x_1)P'(x_2)P'(x_3)$.
+\item Find the monic cubic whose roots are $x_1^2,x_2^2,x_3^2$, and deduce $\Delta=-4p^3-27q^2$.
+\item Conclude: for real $p,q$, the cubic has three distinct real roots if $\Delta>0$, one real root if $\Delta<0$, and a multiple root if $\Delta=0$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:logconcave}
+Let $n\ge1$ and let $P=\sum_{k=0}^na_kX^k\in\R[X]$ have $a_n\ne0$ and $n$ real roots (with multiplicity).
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P'(x)^2\ge P(x)P''(x)$ for all real $x$.
+\item Show that $P'$ also has only real roots.
+\item Deduce that $a_k^2\ge a_{k-1}a_{k+1}$ for $1\le k\le n-1$: the coefficients are \emph{log-concave}.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:mason}
+\emph{The Mason--Stothers theorem.} For $F\in\C[X]$ non-zero let $n_0(F)$ be the number of distinct roots of $F$. Let $A,B,C\in\C[X]$ be
+pairwise coprime, not all constant, with $A+B=C$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $W=AB'-A'B$ is not zero, and that $W=AC'-A'C=B'C-BC'$.
+\item Show that if $a$ is a root of $A$ of multiplicity $m$, then $(X-a)^{m-1}$ divides $W$. Deduce that $\frac{ABC}{\prod(X-a)}$, the product over
+the distinct roots $a$ of $ABC$, divides $W$.
+\item Conclude that $\max(\deg A,\deg B,\deg C)\le n_0(ABC)-1$.
+\item \emph{Fermat for polynomials.} Show that for $n\ge3$ there are no pairwise coprime, non-constant $A,B,C\in\C[X]$ with $A^n+B^n=C^n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{challenge}
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{A cycle of integers.} Show that there is no $P\in\Z[X]$ and distinct integers $a,b,c$ with $P(a)=b$, $P(b)=c$ and $P(c)=a$.
+\item \emph{Uniqueness in Chebyshev's theorem.} Show that $2^{1-n}T_n$ is the \emph{only} monic polynomial of degree $n$ with $\sup_{[-1,1]}|P|=2^{1-n}$.
+\item \emph{All cyclotomic polynomials are irreducible.} Exercise~\ref{ex:eisen}(b) does $\Phi_p$. Try $\Phi_{p^k}$ with the same idea, then find out why $\Phi_n$ for general $n$ is a different kind of problem.
+\end{enumerate}
+Notes at the end of the chapter.
+\end{challenge}
+
+\begin{exercise}[$\star\star$]\label{pb:benford}
+\emph{Leading digits.} Let $A_d$ be the set of positive integers whose decimal expansion starts with the digit $d$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $A_1$ has no density: the proportion of $n\le N$ in $A_1$ oscillates between $\frac19$ and $\frac59$.
+\item Show that $A_d$ has \emph{logarithmic density} $\log_{10}(1+\frac1d)$:
+\[
+\frac1{\log N}\sum_{n\le N,\ n\in A_d}\frac1n\longrightarrow\log_{10}\Bigl(1+\frac1d\Bigr).
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:bellasym}
+\emph{The size of the Bell numbers.} Let $b_n$ be the number of partitions of an $n$-set, so that $b_n=\frac1e\sum_{k\ge0}\frac{k^n}{k!}$ (Dobi\'nski's
+formula, Volume~4, Chapter~2). For $n\ge3$ let $u=u_n$ be the positive root of $ue^u=n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $k^n\le\bigl(\frac n{eu}\bigr)^ne^{uk}$ for every integer $k\ge0$, and deduce that $\ln b_n\le n\bigl(u-1+\frac1u\bigr)-1$.
+\item Using the single term $k=\lceil e^u\rceil$ of Dobi\'nski's formula, show that $\ln b_n\ge n\bigl(u-1+\frac1u\bigr)-O(\ln n)$.
+\item With $L=\ln n$, show that $u=L-\ln L+\frac{\ln L}L+O\bigl((\frac{\ln L}L)^2\bigr)$, and deduce that
+\[
+\ln b_n=n\Bigl(\ln n-\ln\ln n-1+\frac{1+\ln\ln n}{\ln n}+O\Bigl(\Bigl(\frac{\ln\ln n}{\ln n}\Bigr)^2\Bigr)\Bigr).
+\]
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:rem}
+The remainder is $aX+b$. Evaluate $X^n=(X-1)(X-2)Q+aX+b$ at $1$ and at $2$.
+\end{hint}
+\begin{hint}{ex:viete}
+$\sum x_i^2=\sigma_1^2-2\sigma_2$. For cubes, each root satisfies $x_i^3=x_i-1$: sum these.
+\end{hint}
+\begin{hint}{ex:simple}
+A multiple root $a$ satisfies $a^n+a+1=0$ and $na^{n-1}+1=0$. Multiply the second by $a$ and eliminate $a^n$.
+\end{hint}
+\begin{hint}{ex:lagsum}
+Interpolate $X^k$ at the $n+1$ points with Theorem~\ref{thm:lagrange}, and compare the coefficients of $X^n$ on both sides.
+\end{hint}
+\begin{hint}{ex:eisen}
+(a) Eisenstein with $p=5$. (b) $\Phi_p(X+1)=\frac{(X+1)^p-1}X=\sum_{k=1}^p\binom pkX^{k-1}$, and Exercise~\ref{ex:fermat}.
+\end{hint}
+\begin{hint}{ex:minimax}
+If $\sup|P|<2^{1-n}$, then $Q=2^{1-n}T_n-P$ has degree at most $n-1$. Look at its sign at the $n+1$ points $\cos\frac{k\pi}n$ where $T_n=\pm1$.
+\end{hint}
+\begin{hint}{ex:basel}
+(a) Expand $(\cos\theta+i\sin\theta)^N$ and keep the odd powers of $i\sin\theta$; factor out $\sin^N\theta$. (b) $\sin N\theta=0$ at $\theta=\frac{k\pi}N$. Then Vi\`ete gives the sum of the roots. (c) Sum the inequalities over $x=\frac{k\pi}N$ and let $m\to\infty$.
+\end{hint}
+\begin{hint}{ex:sos}
+Factor $P$ over $\C$. Real roots have even multiplicity, and non-real roots come in conjugate pairs: $P=c\,Q\bar Q$ with $c>0$. Write $Q=A_0+iB_0$ with real polynomials.
+\end{hint}
+\begin{hint}{ex:horner}
+Write the coefficients in descending degree: $1$, $0$, $-2$, $1$, $0$, $-7$. Run the recurrence with $a=-2$. The last number is $P(-2)$, the others are the coefficients of $Q$.
+\end{hint}
+\begin{hint}{ex:multroot}
+Proposition~\ref{prop:rootsfactor}(c): compute $P(1)$, $P'(1)$, $P''(1)$. For $X^4-4X+3$, divide twice by $X-1$ and look at the quotient's discriminant.
+\end{hint}
+\begin{hint}{ex:lagrange2k}
+Newton's forward difference formula (Theorem~\ref{thm:newton}): all the differences $\Delta^jP(0)$ equal $1$. Then Chapter~\ref{ch:sums} sums the binomials.
+\end{hint}
+\begin{hint}{ex:secret}
+$P(0)=\sum_iy_iL_i(0)$, and $L_i(0)$ is a product of two fractions. For the last question, use Theorem~\ref{thm:lagrange} with the three points $(1,8)$, $(2,15)$, $(0,s')$.
+\end{hint}
+\begin{hint}{ex:chebprod}
+Everything is $\cos$: put $x=\cos\theta$. (c) Substitute $x=\cos\theta$ in the integral.
+\end{hint}
+\begin{hint}{ex:newtonid}
+$\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$; for $k>3$ use $p_k=\sigma_1p_{k-1}-\sigma_2p_{k-2}+\sigma_3p_{k-3}$. The elementary symmetric functions of the squares are $p_2$, $\sigma_2^2-2\sigma_1\sigma_3$ and $\sigma_3^2$.
+\end{hint}
+\begin{hint}{ex:descartes}
+Descartes for $P$ and for $P(-X)$, then evaluate $P$ at $0$, $\frac12$, $1$, $\frac32$, $-1$, $-\frac32$.
+\end{hint}
+\begin{hint}{ex:disc}
+(a) Differentiate $P=\prod(X-x_j)$ with the product rule. (b) $\prod_i(3x_i^2+p)=27\prod_i(x_i^2+\frac p3)$, which is $-27R(-\frac p3)$ for $R$ the cubic with roots $x_i^2$. (c) $\Delta$ is real; what is the sign of $(x-\bar x)^2$ for non-real $x$?
+\end{hint}
+\begin{hint}{ex:logconcave}
+(a) Differentiate $\frac{P'}P=\sum\frac1{x-x_i}$. (b) Rolle, with multiplicities counted carefully. (c) Apply (a) at $x=0$ to $P^{(k-1)}$.
+\end{hint}
+\begin{hint}{ex:mason}
+(a) If $AB'=A'B$ and $a$ is a root of $A$ of multiplicity $m$, compare the multiplicity of $a$ in $AB'$ and in $A'B$. (b) $(X-a)^{m-1}$ divides both $A$ and $A'$. (c) Compare degrees in (b): $\deg W\le\deg A+\deg B-1$. (d) Apply (c) to $A^n,B^n,C^n$.
+\end{hint}
+
+\begin{hint}{pb:benford}
+(b) The block $[d\cdot10^j,(d+1)10^j[$ contributes about $\log(1+\frac1d)$ to the sum.
+\end{hint}
+
+\begin{hint}{pb:bellasym}
+(a) Maximise $x^ne^{-ux}$ over $x\ge0$, then sum $\frac{e^{uk}}{k!}$. Remember $\ln n-\ln u=u$ and $e^u=\frac nu$. (b) Use $\ln m!\le(m+\frac12)\ln m-m+1$ (Volume~0), and note that $x\ln x-x$
+increases by at most $\ln(x+1)$ when $x$ increases by at most $1$. (c) $u=L-\ln u$ and $L-\ln L\le u\le L$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:rem}
+\idea We do not need the quotient, only the remainder, which has degree $<2$: two unknowns $a,b$. Evaluating the division identity at the roots $1$ and $2$ of the divisor kills the unknown quotient and gives two equations.
+\writeup Write $X^n=(X-1)(X-2)Q+aX+b$ (Proposition~\ref{prop:polydiv}). Evaluating at $1$ and $2$: $a+b=1$ and $2a+b=2^n$. So the remainder is $(2^n-1)X+2-2^n$.
+\end{solution}
+
+\begin{solution}{ex:viete}
+\idea Symmetric expressions in the roots are polynomials in the $\sigma_k$, which Vi\`ete reads off the coefficients. For $\sum x_i^2$ use $(\sum x_i)^2=\sum x_i^2+2\sigma_2$. For cubes there is a shortcut: each root satisfies the equation, so $x_i^3$ can be replaced by a lower-degree expression.
+\writeup Here $\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$. Then $\sum x_i^2=\sigma_1^2-2\sigma_2=2$. Each root satisfies $x_i^3=x_i-1$, so
+$\sum x_i^3=\sum x_i-3=\sigma_1-3=-3$.
+\end{solution}
+
+\begin{solution}{ex:simple}
+\idea By Proposition~\ref{prop:rootsfactor}(c), a multiple root is a common root of $P$ and $P'$. Two equations in one unknown $a$: eliminate the high power $a^n$ between them to get a linear equation, which pins $a$ down; then check that this value is impossible, here by comparing moduli.
+\writeup A multiple root $a$ satisfies $a^n+a+1=0$ and $na^{n-1}+1=0$. Multiplying the second by $a$, $na^n=-a$, and substituting $a^n=-a-1$ gives
+$-n(a+1)=-a$, so $a=-\frac n{n-1}$. Then $|a|=\frac n{n-1}>1$, so $|a|^{n-1}>1$; but $na^{n-1}=-1$ forces $|a|^{n-1}=\frac1n<1$. Contradiction.
+\end{solution}
+
+\begin{solution}{ex:lagsum}
+\idea The denominators $\prod_{j\ne i}(x_i-x_j)$ are exactly those of the Lagrange basis polynomials $L_i$; in fact $\frac1{\prod_{j\ne i}(x_i-x_j)}$ is the leading coefficient of $L_i$. So the sum is the leading coefficient of $\sum_ix_i^kL_i$, the interpolation polynomial of $X^k$, which is $X^k$ itself by uniqueness.
+\writeup For $k\le n$, the polynomial $X^k$ has degree at most $n$, so by uniqueness in Theorem~\ref{thm:lagrange}, $X^k=\sum_ix_i^kL_i$.
+The coefficient of $X^n$ in $L_i$ is $1/\prod_{j\ne i}(x_i-x_j)$, so the coefficient of $X^n$ on the right is exactly the sum in question.
+On the left it is $0$ for $k<n$ and $1$ for $k=n$.
+\end{solution}
+
+\begin{solution}{ex:eisen}
+\idea Irreducibility over $\Q$ of an integer polynomial: look for a prime that divides every coefficient but the leading one, with the constant term not divisible by its square. For (a) the coefficients $10,5$ point to $5$. For $\Phi_p$ no prime works directly (all coefficients are $1$), but a change of variable $X\mapsto X+1$ does not affect irreducibility and turns the coefficients into binomial coefficients $\binom pk$, all divisible by $p$.
+\writeup (a) Theorem~\ref{thm:eisenstein} with $p=5$: $5\nmid1$, $5$ divides $0,0,10,5$, and $25\nmid5$.
+
+(b) $\Phi_p=\frac{X^p-1}{X-1}$, so $\Phi_p(X+1)=\frac{(X+1)^p-1}X=\sum_{k=1}^p\binom pkX^{k-1}$. It is monic, its other coefficients
+$\binom pk$ ($1\le k\le p-1$) are divisible by $p$ (Exercise~\ref{ex:fermat}), and its constant term is $\binom p1=p$, not divisible by $p^2$.
+So $\Phi_p(X+1)$ is irreducible by Eisenstein, and so is $\Phi_p$, since a factorisation $\Phi_p=BC$ into non-constant factors would give one of $\Phi_p(X+1)=B(X+1)C(X+1)$.
+\end{solution}
+
+\begin{solution}{ex:minimax}
+\idea Equality is the easy part. For the inequality, argue by contradiction: if some monic $P$ did better than $2^{1-n}T_n$, the difference $Q$ would have degree $\le n-1$ (leading terms cancel). Now $2^{1-n}T_n$ reaches $\pm2^{1-n}$ alternately at $n+1$ points, and $P$ stays strictly inside, so $Q$ alternates in sign $n+1$ times: $n$ sign changes means $n$ roots, too many.
+\writeup For $P=2^{1-n}T_n$: it is monic by Proposition~\ref{prop:cheb}, and $|T_n(\cos\theta)|=|\cos n\theta|\le1$ with equality at $\theta=0$, so $\sup|P|=2^{1-n}$.
+
+Now suppose $P$ is monic of degree $n$ with $\sup_{[-1,1]}|P|<2^{1-n}$, and let $Q=2^{1-n}T_n-P$, of degree at most $n-1$.
+At $y_k=\cos\frac{k\pi}n$, $0\le k\le n$, we have $2^{1-n}T_n(y_k)=2^{1-n}(-1)^k$, so $Q(y_k)$ has the sign of $(-1)^k$, strictly.
+By the intermediate value theorem $Q$ vanishes in each of the $n$ disjoint intervals $]y_{k+1},y_k[$, so $Q$ has $n$ roots and degree at most $n-1$: $Q=0$ by Proposition~\ref{prop:rootsfactor},
+which contradicts $\sup|P|<2^{1-n}=\sup|2^{1-n}T_n|$.
+\end{solution}
+
+\begin{solution}{ex:basel}
+\idea The plan of attack is in the question, but it is worth seeing why it works. Vi\`ete computes \emph{sums of roots} exactly. So we want numbers related to $\frac1{k^2}$ that are the roots of an explicit polynomial: $\cot^2\frac{k\pi}N$ are such numbers, because $\sin N\theta=0$ at $\theta=\frac{k\pi}N$ and $\sin N\theta$ is a polynomial in $\cot\theta$ (times $\sin^N\theta$). Then $\cot x\approx\frac1x$ for small $x$ connects them to $\frac{N^2}{k^2\pi^2}$, and a squeeze finishes.
+\writeup (a) By de Moivre and the binomial theorem, the imaginary part of $(\cos\theta+i\sin\theta)^N$ collects the odd powers of $i\sin\theta$:
+\[
+\begin{aligned}\sin N\theta&=\sum_{j=0}^m\binom N{2j+1}(-1)^j\cos^{N-2j-1}\theta\,\sin^{2j+1}\theta\\
+&=\sin^N\theta\sum_{j=0}^m(-1)^j\binom N{2j+1}\cot^{N-2j-1}\theta,\end{aligned}
+\]
+and $N-2j-1=2(m-j)$.
+
+(b) For $\theta_k=\frac{k\pi}N$ with $1\le k\le m$ we have $0<\theta_k<\frac\pi2$, $\sin N\theta_k=0$ and $\sin\theta_k\ne0$, so $\cot^2\theta_k$ is a root of
+$R=\sum_j(-1)^j\binom N{2j+1}X^{m-j}$. These $m$ numbers are distinct since $\cot^2$ is injective on $\left]0,\frac\pi2\right[$, and $\deg R=m$, so they are all its roots.
+By Vi\`ete,
+\[
+\begin{aligned}\sum_{k=1}^m\cot^2\theta_k&=\frac{\binom N3}{\binom N1}=\frac{(2m+1)(2m)(2m-1)}{6(2m+1)}\eqbr=\frac{m(2m-1)}3.\end{aligned}
+\]
+(c) Proposition~\ref{prop:sincmp} gives $0<\sin x<x<\tan x$ on $\left]0,\frac\pi2\right[$. Squaring and inverting, and using $\frac1{\sin^2x}=1+\cot^2x$, produces $\cot^2x<\frac1{x^2}<1+\cot^2x$.
+Apply it at $x=\theta_k$ and sum over $1\le k\le m$:
+\[
+\frac{m(2m-1)}3<\frac{N^2}{\pi^2}\sum_{k=1}^m\frac1{k^2}<m+\frac{m(2m-1)}3.
+\]
+Multiply by $\frac{\pi^2}{N^2}=\frac{\pi^2}{(2m+1)^2}$. Both bounds tend to $\frac{\pi^2}6$ as $m\to\infty$ (they are equivalent to $\frac{\pi^2}{4m^2}\cdot\frac{2m^2}3$), so $\sum\frac1{k^2}=\frac{\pi^2}6$.
+\end{solution}
+
+\begin{solution}{ex:sos}
+\idea Factor $P$ over $\C$ (Theorem~\ref{thm:dalembert}) and see what positivity says about the factors: real roots must have even multiplicity, non-real roots come in conjugate pairs. A pair contributes $|x-z|^2$, which is a sum of two squares; and products of sums of two squares are sums of two squares, because $|uv|^2=|u|^2|v|^2$ (the same identity as Brahmagupta's). So group all the $X-z_j$ into one complex polynomial $U+iV$.
+\writeup If $P=0$ take $A=B=0$. Otherwise, a real root of odd multiplicity $m$ would make $P$ change sign there (near $a$, $P=(X-a)^mU$ with $U(a)\ne0$), so every real root has even multiplicity;
+and the leading coefficient $c$ is positive since $P(x)$ has the sign of $c$ for large $x$. Over $\C$, the non-real roots come in conjugate pairs, so
+\[
+\begin{gathered}P=c\,R^2\prod_{j=1}^s(X-z_j)(X-\bar z_j),\qq R=\prod_i(X-a_i)^{m_i/2}\in\R[X].\end{gathered}
+\]
+Write $\prod_j(X-z_j)=U+iV$ with $U,V\in\R[X]$. Then $\prod_j(X-\bar z_j)=U-iV$ and the product is $U^2+V^2$.
+So $P=(\sqrt c\,RU)^2+(\sqrt c\,RV)^2$.
+\end{solution}
+
+\begin{solution}{ex:horner}
+\idea Horner's scheme is division by $X-a$ in disguise: the running values are the coefficients of the quotient, and the final value is the remainder $P(a)$.
+\writeup Coefficients $1,0,-2,1,0,-7$ and $a=-2$: the running values are
+\[
+\begin{gathered}1,\quad 0+(-2)\cdot1=-2,\quad -2+(-2)(-2)=2,\\ 1+(-2)\cdot2=-3,\quad 0+(-2)(-3)=6,\quad -7+(-2)\cdot6=-19.\end{gathered}
+\]
+So $P(-2)=-19$ and $Q=X^4-2X^3+2X^2-3X+6$. Check: $(X+2)Q=X^5-2X^4+2X^3-3X^2+6X+2X^4-4X^3+4X^2-6X+12=X^5-2X^3+X^2+12$, and $12-19=-7$. Correct.
+\end{solution}
+
+\begin{solution}{ex:multroot}
+\idea Multiplicity is read off the derivatives at the point (Proposition~\ref{prop:rootsfactor}(c)): exactly $2$ means $P(1)=P'(1)=0\ne P''(1)$.
+\writeup $P=X^n-nX+n-1$: $P(1)=1-n+n-1=0$, $P'=nX^{n-1}-n$ so $P'(1)=0$, and $P''(1)=n(n-1)\ne0$ since $n\ge3$ (for $n=2$ too, in fact). So the multiplicity is exactly $2$.
+For $n=4$: $X^4-4X+3=(X-1)^2(X^2+2X+3)$ (divide twice by $X-1$ with Horner: $1,1,1,-3,0$ then $1,2,3,0$), and $X^2+2X+3$ has discriminant $4-12<0$, so this is the complete factorisation over $\R$. Over $\C$ the quadratic splits as $(X+1-i\sqrt2)(X+1+i\sqrt2)$.
+\end{solution}
+
+\begin{solution}{ex:lagrange2k}
+\idea The data $2^0,2^1,\dots,2^n$ have a very simple difference table, since $\Delta2^k=2^{k+1}-2^k=2^k$: every row is the same. Newton's forward difference formula then writes $P$ in the binomial basis with all coefficients $1$, and $P(n+1)$ is a sum of binomial coefficients that Chapter~\ref{ch:sums} knows.
+\writeup By Theorem~\ref{thm:newton}, a polynomial of degree at most $n$ is $P=\sum_{j=0}^n\Delta^jP(0)\binom Xj$. Here $\Delta^jP(k)=2^k$ for $k+j\le n$ (induction on $j$, using only the values $P(0),\dots,P(n)$, which is legitimate since $\Delta^jP(0)$ involves $P(0),\dots,P(j)$ only). So $\Delta^jP(0)=1$ for all $j\le n$, and
+\[
+P(n+1)=\sum_{j=0}^n\binom{n+1}j=2^{n+1}-\binom{n+1}{n+1}=2^{n+1}-1.
+\]
+For $n=1$: the line through $(0,1),(1,2)$ gives $P(2)=3$. For $n=2$: the parabola through $(0,1),(1,2),(2,4)$ gives $P(3)=7$. The polynomial always misses the next power of $2$ by exactly $1$. (Alternatively, Exercise~\ref{ex:lagsum} with the nodes $0,\dots,n+1$ and $k=n+1$ gives a linear relation between $P(0),\dots,P(n+1)$ for every polynomial of degree $\le n$; the reader may enjoy recovering the answer that way.)
+\end{solution}
+
+\begin{solution}{ex:secret}
+\idea Only $P(0)$ matters, and the Lagrange formula evaluates it as a weighted sum of the shares with weights $L_i(0)$ that depend only on the nodes $1,2,3$. The last question is the uniqueness half of Theorem~\ref{thm:lagrange} read backwards.
+\writeup With nodes $1,2,3$:
+$L_1(0)=\frac{(0-2)(0-3)}{(1-2)(1-3)}=3$, $L_2(0)=\frac{(0-1)(0-3)}{(2-1)(2-3)}=-3$, $L_3(0)=\frac{(0-1)(0-2)}{(3-1)(3-2)}=1$. So
+$s=8\cdot3-15\cdot3+24\cdot1=3$. Indeed $P=X^2+4X+3$ fits: $P(1)=8$, $P(2)=15$, $P(3)=24$, $P(0)=3$.
+
+For every $s'$, Theorem~\ref{thm:lagrange} gives exactly one polynomial of degree at most $2$ through $(0,s')$, $(1,8)$, $(2,15)$, and the
+directors $1$ and $2$ hold exactly the information ``$P(1)=8$, $P(2)=15$''. So each candidate secret is algebraically consistent with their shares. Statistical secrecy additionally requires the finite-field uniform sampling specified in the sharing example; algebraic consistency alone does not prove it.
+\end{solution}
+
+\begin{solution}{ex:chebprod}
+\idea Every identity about the $T_n$ on $[-1,1]$ is an identity about cosines in disguise; and an identity between polynomials that holds on $[-1,1]$ holds everywhere (Proposition~\ref{prop:rootsfactor}(b)).
+\writeup Put $x=\cos\theta$. (a) $T_m(T_n(\cos\theta))=T_m(\cos n\theta)=\cos mn\theta=T_{mn}(\cos\theta)$. (b) $\cos m\theta\cos n\theta=\frac12(\cos(m+n)\theta+\cos(m-n)\theta)$, and $\cos$ is even. In both cases the two polynomials agree on $[-1,1]$, hence everywhere.
+
+(c) First substitute on $[\varepsilon,\pi-\varepsilon]$ with $0<\varepsilon<\pi/2$, where $x=\cos\theta$ has nonzero derivative. Here $dx=-\sin\theta\,d\theta$ and $\sqrt{1-x^2}=\sin\theta$. The transformed integrand is continuous on $[0,\pi]$, so taking $\varepsilon\downarrow0$ proves existence of the improper integral and gives
+\[
+\int_{-1}^1\frac{T_mT_n}{\sqrt{1-x^2}}\,dx=\int_0^\pi\cos m\theta\cos n\theta\,d\theta=\frac12\int_0^\pi\bigl(\cos(m+n)\theta+\cos(m-n)\theta\bigr)d\theta.
+\]
+For $m\ne n$ both integrals vanish ($\int_0^\pi\cos k\theta\,d\theta=0$ for $k\ne0$). For $m=n\ge1$ the value is $\frac\pi2$, and for $m=n=0$ it is $\pi$.
+The $T_n$ are \emph{orthogonal} for this weight, which is why they are the right basis for approximation on $[-1,1]$ (Trefethen's book in the sources).
+\end{solution}
+
+\begin{solution}{ex:newtonid}
+\idea Newton's identities are a recurrence: once $p_1,p_2,p_3$ are known, each further $p_k$ is a combination of the three previous ones. For the squares, compute their elementary symmetric functions from those of the $x_i$.
+\writeup $\sigma_1=0$, $\sigma_2=-1$, $\sigma_3=-1$. Then $p_1=\sigma_1=0$, $p_2=\sigma_1p_1-2\sigma_2=2$, $p_3=\sigma_1p_2-\sigma_2p_1+3\sigma_3=-3$ (as in Exercise~\ref{ex:viete}), and for $k>3$, $p_k=\sigma_1p_{k-1}-\sigma_2p_{k-2}+\sigma_3p_{k-3}=p_{k-2}-p_{k-3}$:
+$p_4=p_2-p_1=2$, $p_5=p_3-p_2=-5$. (The recurrence $p_k=p_{k-2}-p_{k-3}$ is just $x_i^k=x_i^{k-2}-x_i^{k-3}$ summed.)
+
+The squares $y_i=x_i^2$ have $\sum y_i=p_2=2$, $\sum_{i<j}y_iy_j=\sum_{i<j}x_i^2x_j^2=\sigma_2^2-2\sigma_1\sigma_3=1$ (expand $\sigma_2^2$) and $y_1y_2y_3=\sigma_3^2=1$. So they are the roots of $Y^3-2Y^2+Y-1$. Check: $p_4=\sum y_i^2=2^2-2\cdot1=2$, as found.
+\end{solution}
+
+\begin{solution}{ex:descartes}
+\idea Descartes bounds the number of positive and of negative roots and fixes their parity; evaluations at a few points then show that the bounds are attained, and locate the roots by sign changes.
+\writeup $P=X^5-3X+1$ has signs $+,-,+$: two changes, so $0$ or $2$ positive roots. $P(-X)=-X^5+3X+1$ has signs $-,+,+$: one change, so exactly one negative root. Now $P(0)=1>0$, $P(\frac12)=\frac1{32}-\frac32+1<0$, $P(1)=-1<0$, $P(\frac32)=\frac{243}{32}-\frac92+1>0$: there are two positive roots, one in $]0,\frac12[$ and one in $]1,\frac32[$, hence exactly two. The negative root: $P(-1)=3>0$ and $P(-\frac32)=-\frac{243}{32}+\frac92+1<0$, so it lies in $]-\frac32,-1[$. In all, exactly three real roots (and two non-real, conjugate). A computer gives $-1.3888$, $0.3347$ and $1.2146$.
+\end{solution}
+
+\begin{solution}{ex:disc}
+\idea $\Delta$ is symmetric in the roots, so it is a polynomial in $p$ and $q$ by Theorem~\ref{thm:symmetric}; the problem is to find it without expanding $(x_1-x_2)^2(x_2-x_3)^2(x_3-x_1)^2$ by brute force. The derivative gives $\prod_{j\ne i}(x_i-x_j)$ for free, and the product $\prod P'(x_i)$ is a symmetric function that we can compute by passing through the polynomial with roots $x_i^2$, found in Exercise~\ref{ex:newtonid}'s way.
+\writeup (a) $P=\prod_j(X-x_j)$ and the product rule give $P'=\sum_k\prod_{j\ne k}(X-x_j)$; at $X=x_i$ every term with $k\ne i$ vanishes, leaving $\prod_{j\ne i}(x_i-x_j)$. Then $\prod_iP'(x_i)=\prod_{i\ne j}(x_i-x_j)$, where each pair $\{i,j\}$ contributes $(x_i-x_j)(x_j-x_i)=-(x_i-x_j)^2$: three pairs, so $\prod_iP'(x_i)=-\Delta$.
+
+(b) With $\sigma_1=0$, $\sigma_2=p$, $\sigma_3=-q$: the squares $y_i=x_i^2$ have $\sum y_i=\sigma_1^2-2\sigma_2=-2p$, $\sum_{i<j}y_iy_j=\sigma_2^2-2\sigma_1\sigma_3=p^2$, $\prod y_i=\sigma_3^2=q^2$, so they are the roots of $R=Y^3+2pY^2+p^2Y-q^2$. Now $P'(x_i)=3x_i^2+p=3(y_i+\frac p3)$ and
+\[
+\prod_i\bigl(y_i+\tfrac p3\bigr)=-\prod_i\bigl(-\tfrac p3-y_i\bigr)=-R\bigl(-\tfrac p3\bigr)=-\Bigl(-\frac{p^3}{27}+\frac{2p^3}9-\frac{p^3}3-q^2\Bigr)=\frac{4p^3}{27}+q^2.
+\]
+Hence $\prod_iP'(x_i)=27\bigl(\frac{4p^3}{27}+q^2\bigr)=4p^3+27q^2$, and $\Delta=-4p^3-27q^2$.
+
+(c) $\Delta=0$ iff two roots coincide. If the three roots are real and distinct, $\Delta$ is a product of positive squares, so $\Delta>0$. If there is one real root $x_1$ and a conjugate pair $x_2=z$, $x_3=\bar z$ with $z\notin\R$: $(x_2-x_3)^2=(z-\bar z)^2=(2i\operatorname{Im}z)^2<0$, while $(x_1-z)^2(x_1-\bar z)^2=|x_1-z|^4>0$; so $\Delta<0$. The three cases are exclusive and exhaustive (Theorem~\ref{thm:dalembert}), so the signs characterise them. For the $X^3-3X+a$ of the example on multiple roots: $\Delta=108-27a^2$, zero exactly for $a=\pm2$.
+\end{solution}
+
+\begin{solution}{ex:logconcave}
+\idea (a) is the sign of the derivative of $\frac{P'}P=\sum\frac1{x-x_i}$, a decreasing function between the roots. (b) is Rolle. (c) chains them: $P^{(k-1)}$ is real-rooted by (b), and (a) at $x=0$ for it is exactly the inequality between three consecutive coefficients.
+\writeup (a) Write $P=c\prod_{i=1}^n(X-x_i)$ with real $x_i$. For $x$ not a root, $\frac{P'(x)}{P(x)}=\sum_i\frac1{x-x_i}$ (product rule), and differentiating,
+\[
+\frac{P''P-P'^2}{P^2}(x)=-\sum_i\frac1{(x-x_i)^2}<0,
+\]
+so $P'^2>PP''$ there. At a root of $P$ the inequality reads $P'(x)^2\ge0$. By continuity (or directly) it holds everywhere.
+
+(b) Let $r_1<\dots<r_s$ be the distinct roots, with multiplicities $m_1,\dots,m_s$, $\sum m_j=n$. By Proposition~\ref{prop:rootsfactor}(c), $r_j$ is a root of $P'$ of multiplicity at least $m_j-1$ (and exactly that, by the same proposition applied to $P'$, but we do not need it). By Rolle's theorem (Theorem~\ref{thm:mvt} in Chapter~\ref{ch:sequences}), $P'$ has a root strictly between $r_j$ and $r_{j+1}$ for each $j<s$. These roots are all different, so $P'$ has at least $\sum_j(m_j-1)+(s-1)=n-1=\deg P'$ real roots with multiplicity: all of them.
+
+(c) By (b) applied repeatedly, $Q=P^{(k-1)}$ has only real roots. Its Taylor coefficients at $0$ are $Q(0)=(k-1)!\,a_{k-1}$, $Q'(0)=k!\,a_k$, $Q''(0)=(k+1)!\,a_{k+1}$. Inequality (a) at $x=0$ gives $(k!)^2a_k^2\ge(k-1)!\,(k+1)!\,a_{k-1}a_{k+1}$, that is,
+\[
+a_k^2\ge\frac{k+1}k\,a_{k-1}a_{k+1}.
+\]
+If $a_{k-1}a_{k+1}\le0$ the claim $a_k^2\ge a_{k-1}a_{k+1}$ is trivial; otherwise it follows from $\frac{k+1}k>1$. (The inequality with the factor $\frac{k+1}k$ is a consequence of Newton's sharper inequalities, and its cousin, Maclaurin's inequality between the $\sigma_k$, is an advanced outlook treated in Hardy, Littlewood and P\'olya's \emph{Inequalities}.)
+\end{solution}
+
+\begin{solution}{ex:mason}
+\idea The whole proof rests on one observation: a root of multiplicity $m$ of a polynomial is a root of multiplicity at least $m-1$ of its derivative. So the ``Wronskian'' $AB'-A'B$ inherits almost all the multiple roots of $A$, of $B$, and (by the relation $A+B=C$) of $C$, while its degree is small. Comparing degrees gives the bound. Part (d) then falls out, because raising to the $n$-th power multiplies degrees by $n$ but does not change the number of distinct roots.
+\writeup (a) First, $W=AB'-A'B=A(C'-A')-A'(C-A)=AC'-A'C$, and symmetrically $W=B'C-BC'$ (replace $A=C-B$). Suppose $W=0$. If $A$ were a non-zero constant then $AB'=0$ gives $B$ constant and then $C$ constant, excluded; so $A$ is non-constant (the same for $B$), and it has a root $a$ of some multiplicity $m\ge1$. Then $a$ is a root of $AB'$ of multiplicity at least $m$, while it has multiplicity exactly $m-1$ in $A'$ (Taylor's formula, Proposition~\ref{prop:rootsfactor}(c)); from $AB'=A'B$, $a$ must be a root of $B$, contradicting $\gcd(A,B)=1$. So $W\ne0$.
+
+(b) $(X-a)^{m-1}$ divides $A$ and $A'$, hence $W=AB'-A'B$. The same holds for roots of $B$ (using $W=AB'-A'B$) and of $C$ (using $W=AC'-A'C$). The polynomials $\prod_a(X-a)^{m_a-1}$ built from the roots of $A$, of $B$ and of $C$ respectively are pairwise coprime, since $A,B,C$ are; so their product, which is $\frac{ABC}{\prod_a(X-a)}$ over all distinct roots of $ABC$ (the roots of $A,B,C$ are distinct from each other), divides $W$.
+
+(c) Taking degrees in (b): $\deg A+\deg B+\deg C-n_0(ABC)\le\deg W\le\deg A+\deg B-1$, so $\deg C\le n_0(ABC)-1$. Writing $B=C-A$ and $A=C-B$ (which does not change $W$ up to sign), the same argument bounds $\deg A$ and $\deg B$.
+
+(d) Suppose $A^n+B^n=C^n$ with $A,B,C$ non-constant and pairwise coprime; then so are $A^n,B^n,C^n$, and (c) gives $n\deg C\le n_0(A^nB^nC^n)-1=n_0(ABC)-1\le\deg A+\deg B+\deg C-1$, and similarly for $n\deg A$ and $n\deg B$. Adding the three: $n(\deg A+\deg B+\deg C)\le3(\deg A+\deg B+\deg C)-3$, impossible for $n\ge3$. (For $n=2$ there are solutions, such as $(X^2-1)^2+(2X)^2=(X^2+1)^2$, the polynomial version of Pythagorean triples.)
+\end{solution}
+
+\subsection*{Notes on the challenges}
+
+(1) The key fact is that $a-b$ divides $P(a)-P(b)$ for $P\in\Z[X]$ and integers $a,b$ (each $a^k-b^k$ is divisible by $a-b$). So $a-b\mid b-c$, $b-c\mid c-a$ and $c-a\mid a-b$: the three differences have the same absolute value $d>0$. But they add up to $0$, and three numbers equal to $\pm d$ cannot: their sum is an odd multiple of $d$.
+
+(2) Let $P$ be monic with $\sup|P|=2^{1-n}$ and $Q=2^{1-n}T_n-P$, of degree $\le n-1$. At the distinct points $y_k=\cos(k\pi/n)$, in decreasing order for $0\le k\le n$, we have $(-1)^kQ(y_k)\ge0$. Lagrange interpolation gives
+\[
+0=\sum_{k=0}^n\frac{Q(y_k)}{\prod_{j\ne k}(y_k-y_j)},
+\]
+by comparing coefficients of $X^n$. Exactly $k$ factors in the denominator are negative, so every summand is nonnegative. Each is therefore zero. Thus $Q$ has $n+1$ distinct roots and degree at most $n-1$, so $Q=0$. This proves uniqueness without a delicate count of repeated roots.
+
+(3) For $\Phi_{p^k}(X)=\Phi_p(X^{p^{k-1}})$, substitute $X+1$ and apply Eisenstein again. For general $n$ this particular shifted Eisenstein argument need not apply, and the proof (Gauss 1801 for prime $n$, Kronecker and Dedekind in the 1850s for all $n$) uses the structure of the roots: one shows that if $\omega$ is a root of an irreducible factor then so is $\omega^p$ for every prime $p\nmid n$, by reducing modulo $p$. Volume~2 gives it in full.
+
+\begin{solution}{pb:benford}
+\idea The integers with leading digit $1$ come in blocks $[10^j,2\cdot10^j[$ whose length is a fixed fraction of their position,
+so the count never settles. Weighting by $\frac1n$ turns each block into the same contribution $\log2$.
+
+\writeup (a) The number of $n<10^k$ starting with $1$ is $1+10+\dots+10^{k-1}=\frac{10^k-1}9$. At $N=10^k-1$ the proportion is exactly
+$\frac19$. At $N=2\cdot10^k-1$ it is $\frac{(10^k-1)/9+10^k}{2\cdot10^k-1}\to\frac{10/9}2=\frac59$. So the proportion has $\liminf\le\frac19$
+and $\limsup\ge\frac59$ (in fact these are the extreme values, attained at these $N$ asymptotically), and there is no density.
+
+(b) The block $[d\cdot10^j,(d+1)10^j[$ contributes $\sum\frac1n=\log\frac{d+1}d+O(10^{-j})$ (compare with $\int\frac{dx}x$). For
+$10^k\le N<10^{k+1}$ the blocks with $j<k$ contribute $k\log(1+\frac1d)+O(1)$ and the partial block at most $\log10$. Divide by
+$\log N=k\log10+O(1)$.
+
+\tools Volume~0, Chapter~5 (comparison of sums and integrals).
+\leads Benford's law has been observed in tax records, physical constants and populations, and is used to detect fraud. For sequences
+like $2^n$ it holds with natural density, because $n\log_{10}2$ is equidistributed modulo $1$ (Weyl, Chapter~10).
+\end{solution}
+
+\begin{solution}{pb:bellasym}
+\idea Dobi\'nski's series $\sum\frac{k^n}{k!}$ has a largest term near $k=e^u$, and bounding every term by an exponential in $k$ gives an upper bound that matches the
+largest term up to a factor polynomial in $n$.
+
+\writeup (a) The function $x\mapsto x^ne^{-ux}$ on $[0,\infty[$ has derivative $x^{n-1}e^{-ux}(n-ux)$, so it is maximal at $x=\frac nu$, with value $(\frac n{eu})^n$. Hence
+$k^n\le(\frac n{eu})^ne^{uk}$ and
+\[
+b_n\le\frac1e\Bigl(\frac n{eu}\Bigr)^n\sum_k\frac{e^{uk}}{k!}=\Bigl(\frac n{eu}\Bigr)^ne^{e^u-1}.
+\]
+Since $ue^u=n$, we have $\ln n-\ln u=u$ and $e^u=\frac nu$, so $\ln b_n\le n(u-1)+\frac nu-1$.
+
+(b) Let $m=\lceil e^u\rceil$, so $m=e^u+\eta$ with $0\le\eta<1$, and $b_n\ge\frac{m^n}{e\,m!}$. First $n\ln m\ge n\ln e^u=nu$. Next, Volume~0 (Chapter~5) shows that
+$d_m=\ln m!-(m+\frac12)\ln m+m$ decreases from $d_1=1$, so $\ln m!\le m\ln m-m+\frac12\ln m+1$. The function $\psi(x)=x\ln x-x$ has derivative $\ln x$, so
+$\psi(m)\le\psi(e^u)+\eta\ln m\le ue^u-e^u+\ln m$. Since $ue^u=n$, $e^u=\frac nu$ and $\ln m\le u+1\le\ln n+1$,
+\[
+\ln b_n\ge nu-1-\Bigl(n-\frac nu+\frac32\ln m+1\Bigr)\ge n\Bigl(u-1+\frac1u\Bigr)-\frac32\ln n-4.
+\]
+
+(c) For $n\ge3$, $u\ge1$, so $u=L-\ln u\le L$, and then $\ln u\le\ln L$, so $u\ge L-\ln L$. Write $\ell=\ln L$. Then $\frac uL=1-\frac{\ln u}L\in\bigl[1-\frac\ell L,1\bigr]$, so
+$\ln u=\ell+\ln\frac uL=\ell-\frac{\ln u}L+O(\frac{\ell^2}{L^2})=\ell-\frac\ell L+O(\frac{\ell^2}{L^2})$, and $u=L-\ln u=L-\ell+\frac\ell L+O(\frac{\ell^2}{L^2})$. Also $\frac1u=\frac1L+O(\frac\ell{L^2})$. By (a) and (b),
+$\ln b_n=n(u-1+\frac1u)+O(\ln n)$, and
+\[
+u-1+\frac1u=L-\ell-1+\frac{1+\ell}L+O\Bigl(\frac{\ell^2}{L^2}\Bigr);
+\]
+the error $O(\ln n)$ is absorbed, since $\frac{\ln n}n=o(\frac{\ell^2}{L^2})$.
+
+\tools{Volume~4, Chapter~2 (Dobi\'nski's formula); Volume~0, Chapter~5 (Stirling's estimate); Volume~0, Chapter~6 (maxima).}
+\leads The expansion in (c) converges painfully slowly (for $n=1000$ its main terms give $4400$ against $\ln b_n=4438$), while $n(u-1+\frac1u)$ is off by only $1.92$.
+Moser and Wyman (1955) found the next term by the saddle point: $b_n\sim\frac{e^{n(u-1+1/u)-1}}{\sqrt{1+u}}$, and indeed $-1-\frac12\ln(1+u)=-1.916$ for $n=1000$. The
+lesson: an implicitly defined quantity like $u$ is often a better scale than its own expansion.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}\raggedright
+\item W.~Dunham, \emph{Euler: The Master of Us All}, MAA, 1999, Chapter~3. Mengoli's 1650 book, Jacob Bernoulli's 1689 plea (quoted above in Dunham's translation), and Euler's solution of 1734--35 with its later justifications.
+\item P.~L.~Chebyshev, \emph{Th\'eorie des m\'ecanismes connus sous le nom de parall\'elogrammes}, M\'emoires pr\'esent\'es \`a l'Acad\'emie imp\'eriale des sciences de St-P\'etersbourg 7 (1854). The birthplace of $T_n$. The quotation on theory and practice is from his 1856 lecture, as given in the MacTutor biography.
+\item E.~Meijering, ``A chronology of interpolation'', \emph{Proceedings of the IEEE} 90 (2002), 319--342. Waring 1779, Euler 1783, Lagrange 1795, and two thousand years of what came before.
+\item A.~Shamir, ``How to share a secret'', \emph{Communications of the ACM} 22 (1979), 612--613. Two pages, and Lagrange interpolation became cryptography.
+\item D.~A.~Cox, ``Why Eisenstein proved the Eisenstein criterion and why Sch\"onemann discovered it first'', \emph{American Mathematical Monthly} 118 (2011), 3--21.
+\item A.~Fontana, \emph{A Proof of Descartes' Rule of Signs}, Ratio Mathematica 35 (2018), 47--52, doi:10.23755/rm.v35i0.425. Earlier proofs and Gauss's contribution.
+\item D.~G.~Mead, ``Newton's identities'', \emph{American Mathematical Monthly} 99 (1992), 749--751. The one-page proof via Horner's scheme used above.
+\item N.~Snyder, ``An alternate proof of Mason's theorem'', \emph{Elemente der Mathematik} 55 (2000), 93--94. The Wronskian proof of Exercise~\ref{ex:mason}, found by the author while in high school.
+\item M.~Marden, \emph{Geometry of Polynomials}, 2nd ed., AMS, 1966. Gauss--Lucas and everything else about where roots live.
+\item V.~V.~Prasolov, \emph{Polynomials}, Springer, 2004. A treasure of results on roots, irreducibility and special polynomials, including Descartes' rule and its refinements.
+\item L.~N.~Trefethen, \emph{Approximation Theory and Approximation Practice}, extended ed., SIAM, 2019. Chebyshev polynomials, Runge's phenomenon (Figure~\ref{fig:chebyshev}) and why Chebyshev points are the right nodes; every chapter is a runnable program.
+\item B.~Fine and G.~Rosenberger, \emph{The Fundamental Theorem of Algebra}, Springer, 1997. Several proofs of Theorem~\ref{thm:dalembert}, analytic, topological and algebraic, and its history.
+\item M.~Aigner and G.~M.~Ziegler, \emph{Proofs from THE BOOK}, 6th ed., Springer, 2018, Chapter~9. Three proofs of $\sum\frac1{k^2}=\frac{\pi^2}6$, including the one of Exercise~\ref{ex:basel}.
+\item D.~A.~Cox, \emph{Galois Theory}, 2nd ed., Wiley, 2012, Chapters~1--4. Symmetric polynomials, Vi\`ete and irreducibility, the road to Volume~2.
+\end{itemize}

@@ -1,0 +1,937 @@
+\chapter{Complex Analysis for Computing}
+
+\begin{center}\itshape
+The shortest path between two truths in the real domain often passes through the complex domain.\\
+\upshape --- Paul Painlev\'e (1900), made famous by Jacques Hadamard
+\end{center}
+
+A function of a complex variable that has a derivative in the complex sense is astonishingly rigid. It is automatically
+infinitely differentiable, it is the sum of its Taylor series on every disc where it is defined, and its values inside a
+circle are determined by its values on the circle. Most important for us, its integral around a closed contour is
+computed by looking at a few special points inside, the residues. This chapter develops just enough of the theory to use
+it as a machine: real integrals, infinite sums, the extension of $\Gamma$ to the complex plane (which Chapter~10 needs for
+the zeta function), and the counting of zeros.
+
+On the way we keep several promises: the radius of convergence of a power series is the distance to the nearest
+singularity (announced in Chapters~1 and~3), the partial fractions of $\pi\cot\pi z$ and the sixth proof of
+$\zeta(2)=\frac{\pi^2}6$ come from residues (Chapter~3), and the transform of $\frac1{1+x^2}$ is recomputed (Chapter~8).
+
+\begin{think}
+The function $\frac1{1+x^2}$ is infinitely differentiable on the whole real line and has no visible problem anywhere. Yet its
+Taylor series at $0$, $1-x^2+x^4-\cdots$, converges only for $|x|<1$. What happens at distance $1$ from $0$?
+\end{think}
+
+\section{Holomorphic functions and power series}
+
+Throughout, $U$ denotes an open subset of $\C$, $D(a,r)=\{z:|z-a|<r\}$ the open disc and $\overline D(a,r)$ the closed disc. We
+identify $\C$ with $\R^2$, so continuity, open sets and compactness have their usual meaning.
+
+\begin{definition}
+A function $f:U\to\C$ is \emph{complex differentiable} at $z_0\in U$ if
+\[
+f'(z_0)=\lim_{h\to0}\frac{f(z_0+h)-f(z_0)}h
+\]
+exists, $h$ tending to $0$ in $\C$. It is \emph{holomorphic} on $U$ if it is complex differentiable at every point of $U$. A
+function holomorphic on all of $\C$ is \emph{entire}.
+\end{definition}
+
+The rules for sums, products, quotients and compositions have the same proofs as for real functions, so polynomials are
+entire and rational functions are holomorphic away from the zeros of their denominators. The novelty is that $h$ may approach
+$0$ from every direction, and the limit must not depend on the direction.
+
+\begin{proposition}[Cauchy--Riemann equations]\label{prop:cr}
+Write $f=u+iv$ with $u,v$ real, as functions of $(x,y)$ with $z=x+iy$. If $f$ is complex differentiable at $z_0$, then the partial
+derivatives of $u$ and $v$ exist at $z_0$ and
+\[
+u_x=v_y,\qquad u_y=-v_x,\qquad f'(z_0)=u_x+iv_x.
+\]
+\end{proposition}
+\begin{proof}
+Let $h$ tend to $0$ along the real axis: $\frac{f(z_0+h)-f(z_0)}h\to u_x+iv_x$. Along the imaginary axis, $h=ik$ with $k$ real:
+$\frac{f(z_0+ik)-f(z_0)}{ik}\to\frac{u_y+iv_y}i=v_y-iu_y$. Both limits equal $f'(z_0)$; compare real and imaginary parts.
+\end{proof}
+
+So $\overline z$ is nowhere complex differentiable ($u=x$, $v=-y$, $u_x=1\ne-1=v_y$), nor is $|z|^2$ except at $0$, although both are
+smooth as functions of two real variables. Conversely, a function whose $u$ and $v$ have continuous partial derivatives
+satisfying the Cauchy--Riemann equations is holomorphic; we will not need this.
+
+\subsection*{Power series}
+
+\begin{lemma}[Abel]\label{lem:abel}
+Let $(c_n)$ be complex numbers and set
+\[
+R=\sup\{r\ge0:(|c_n|r^n)_n\text{ is bounded}\}\in[0,\infty].
+\]
+Then $\sum c_nz^n$ converges
+absolutely for $|z|<R$, uniformly on every closed disc $\overline D(0,r)$ with $r<R$, and its terms are unbounded for $|z|>R$.
+\end{lemma}
+\begin{proof}
+If $|z|>R$, the terms are unbounded by definition of $R$. If $r<\rho<R$, there is $M$ with $|c_n|\rho^n\le M$, so for $|z|\le r$,
+$|c_nz^n|\le M(r/\rho)^n$, a convergent geometric series independent of $z$; apply the Weierstrass test (Lemma~\ref{lem:uniform}, whose
+proof works on any set).
+\end{proof}
+
+$R$ is the \emph{radius of convergence}. Inside $D(0,R)$ the series converges; outside, it diverges since its terms do not
+tend to $0$; on the circle anything can happen.
+
+\begin{theorem}\label{thm:powerseries}
+Let $f(z)=\sum_{n\ge0}c_n(z-a)^n$ have radius of convergence $R>0$. Then $f$ is holomorphic on $D(a,R)$ and
+\[
+f'(z)=\sum_{n\ge1}nc_n(z-a)^{n-1},
+\]
+a series with the same radius. Consequently $f$ has derivatives of all orders on $D(a,R)$, and $c_n=\frac{f^{(n)}(a)}{n!}$.
+\end{theorem}
+\begin{proof}
+Take $a=0$. If $r<\rho<R$ and $|c_n|\rho^n\le M$, then $n|c_n|r^{n-1}\le\frac M\rho\,n(r/\rho)^{n-1}$, which is summable; so the derived series
+converges absolutely on $\overline D(0,r)$ and its radius is at least $R$ (it is at most $R$ since $|c_nz^n|\le|z|\cdot|nc_nz^{n-1}|$ for
+$n\ge1$).
+
+Fix $z$ with $|z|<r<R$. For $|w|\le r$ let $q_n(w)=\sum_{k=0}^{n-1}w^kz^{n-1-k}$, so that $q_n(w)(w-z)=w^n-z^n$, $q_n(z)=nz^{n-1}$
+and $|q_n(w)|\le nr^{n-1}$. The series $Q(w)=\sum_nc_nq_n(w)$ converges uniformly on $\overline D(0,r)$ by the bound just proved, so
+$Q$ is continuous there. For $w\ne z$, $Q(w)=\frac{f(w)-f(z)}{w-z}$; letting $w\to z$ gives $f'(z)=Q(z)=\sum nc_nz^{n-1}$.
+
+Applying the result to $f'$, then to $f''$, and so on, $f^{(k)}(z)=\sum_{n\ge k}n(n-1)\cdots(n-k+1)c_nz^{n-k}$, and $z=0$ gives
+$f^{(k)}(0)=k!\,c_k$.
+\end{proof}
+
+\begin{example}[exponential and logarithm]
+The series $\exp z=\sum\frac{z^n}{n!}$ has infinite radius, so $\exp$ is entire and $\exp'=\exp$. From $e^{a+b}=e^ae^b$ and
+Proposition~2.1 of Volume~0, $e^{x+iy}=e^x(\cos y+i\sin y)$: $\exp$ never vanishes, and $e^z=1$ exactly when $z\in2\pi i\Z$.
+Likewise $\cos z=\frac{e^{iz}+e^{-iz}}2$ and $\sin z=\frac{e^{iz}-e^{-iz}}{2i}$ are entire, and $\sin z=0$ means $e^{2iz}=1$, that is
+$z\in\pi\Z$: the sine has no zeros off the real axis, so $\cot z=\frac{\cos z}{\sin z}$ is holomorphic on $\C\setminus\pi\Z$.
+
+On the \emph{slit plane} $\C\setminus\left]-\infty,0\right]$, every $z$ is $re^{i\theta}$ with $r>0$ and a unique $\theta\in\left]-\pi,\pi\right[$, and
+$\frac{\sin\theta}{1+\cos\theta}=\tan\frac\theta2$ gives the explicit continuous formula $\theta=2\arctan\frac{\operatorname{Im}z}{|z|+\operatorname{Re}z}$. The
+\emph{principal logarithm} $\operatorname{Log}z=\log r+i\theta$ is thus continuous and inverts $\exp$. It is holomorphic with derivative
+$\frac1z$: writing $\ell=\operatorname{Log}z$ and $\ell_w=\operatorname{Log}w$, $\frac{\ell_w-\ell}{w-z}=\frac{\ell_w-\ell}{e^{\ell_w}-e^\ell}\to\frac1{e^\ell}=\frac1z$ as $w\to z$,
+since $\ell_w\to\ell$. Powers are defined by $z^s=e^{s\operatorname{Log}z}$ on the slit plane.
+\end{example}
+
+\section{Path integrals and Cauchy's theorem}
+
+A \emph{path} is a continuous, piecewise $C^1$ map $\gamma:[\alpha,\beta]\to\C$; it is \emph{closed} if $\gamma(\alpha)=\gamma(\beta)$, and $\gamma^*$ denotes its
+image. For $f$ continuous on $\gamma^*$,
+\[
+\begin{gathered}\int_\gamma f(z)\dd z=\int_\alpha^\beta f(\gamma(t))\gamma'(t)\dd t,\qq L(\gamma)=\int_\alpha^\beta|\gamma'(t)|\dd t.\end{gathered}
+\]
+The integral does not change under an increasing piecewise $C^1$ change of parameter (substitution), changes sign when the
+path is reversed, and is additive under concatenation. We write $[z,w]$ for the segment from $z$ to $w$, $C(a,r)$ for the
+circle $t\mapsto a+re^{it}$, $t\in[0,2\pi]$, and $\partial T$ for the boundary of a triangle $T$ traversed along its three sides.
+
+\begin{proposition}\label{prop:pathint}
+\begin{enumerate}[label=(\alph*)]
+\item $\bigl|\int_\gamma f\bigr|\le L(\gamma)\max_{\gamma^*}|f|$. Hence if $f_n\to f$ uniformly on $\gamma^*$, then $\int_\gamma f_n\to\int_\gamma f$.
+\item If $F$ is holomorphic on an open set containing $\gamma^*$ and $F'=f$ is continuous, then $\int_\gamma f=F(\gamma(\beta))-F(\gamma(\alpha))$. In
+particular $\int_\gamma f=0$ for every closed path.
+\item For $n\in\Z$, $\displaystyle\int_{C(a,r)}(z-a)^n\dd z=0$ if $n\ne-1$, and $\displaystyle\int_{C(a,r)}\frac{\mathrm dz}{z-a}=2\pi i$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $|\int_\alpha^\beta g|\le\int_\alpha^\beta|g|$ for complex-valued $g$ (multiply by a unit complex number making the integral real). (b) On
+each interval where $\gamma$ is $C^1$, $\frac{\mathrm d}{\mathrm dt}F(\gamma(t))=F'(\gamma(t))\gamma'(t)$, by the same proof as the real chain rule; integrate
+and add. (c) For $n\ne-1$, $\frac{(z-a)^{n+1}}{n+1}$ is a primitive on $\C\setminus\{a\}$. For $n=-1$, $\int_0^{2\pi}\frac{ire^{it}}{re^{it}}\dd t=2\pi i$.
+\end{proof}
+
+So $\frac1z$ has no primitive on $\C\setminus\{0\}$, although it has one on the slit plane: going around the origin, the logarithm
+does not come back to its starting value. Everything below grows from this observation.
+
+\begin{theorem}[Goursat]\label{thm:goursat}
+Let $f$ be holomorphic on $U$ and $T\subseteq U$ a closed triangle. Then $\int_{\partial T}f=0$.
+\end{theorem}
+\begin{proof}
+Let $I=\int_{\partial T}f$, and let $d$ and $p$ be the diameter and perimeter of $T$. Joining the midpoints of the sides cuts $T$ into four
+triangles similar to $T$ with ratio $\frac12$; oriented like $T$, their four boundary integrals add up to $I$, because each inner side
+is traversed once in each direction. One of them, $T_1$, satisfies $|\int_{\partial T_1}f|\ge\frac{|I|}4$. Repeating, we get nested triangles
+$T\supseteq T_1\supseteq T_2\supseteq\cdots$ with diameter $\frac d{2^k}$, perimeter $\frac p{2^k}$ and $|I|\le4^k|\int_{\partial T_k}f|$ (Figure~\ref{fig:goursat}).
+
+The $T_k$ are nested non-empty compact sets, so they have a common point $z_0\in T\subseteq U$. As $f$ is complex differentiable at $z_0$,
+$f(z)=f(z_0)+f'(z_0)(z-z_0)+\varepsilon(z)(z-z_0)$ with $\varepsilon(z)\to0$ as $z\to z_0$. The polynomial part has a primitive, so its integral over
+$\partial T_k$ vanishes by Proposition~\ref{prop:pathint}(b). The rest is at most $\frac p{2^k}\cdot\frac d{2^k}\cdot\sup_{T_k}|\varepsilon|$ by (a). Hence
+$|I|\le pd\sup_{T_k}|\varepsilon|$, which tends to $0$ as $k\to\infty$. So $I=0$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-goursat}
+\caption{Goursat's proof. Of the four midpoint triangles, keep one carrying at least a quarter of the integral, and repeat. The
+triangles shrink to a point $z_0$ where $f$ is almost linear, and linear functions have integral $0$.}
+\label{fig:goursat}
+\end{figure}
+
+The point of Goursat's proof (1900) is that it assumes nothing about $f'$, not even its continuity, which Cauchy had needed.
+We also need a version with one exceptional point.
+
+\begin{corollary}\label{cor:goursatpoint}
+The conclusion of Theorem~\ref{thm:goursat} holds if $f$ is continuous on $U$ and holomorphic on $U\setminus\{p\}$ for one point $p$.
+\end{corollary}
+\begin{proof}
+If $p\notin T$, this is the theorem. If $p$ is a vertex of $T$, choose points $q,q'$ on the two sides from $p$, at distance at most
+$\varepsilon$ from $p$; $T$ is cut into the small triangle $pqq'$ and two triangles not containing $p$, whose integrals vanish. So $|\int_{\partial T}f|$ is
+at most the perimeter of $pqq'$, which is at most $4\varepsilon$, times $\max_T|f|$; let $\varepsilon\to0$. If $p$ is any other point of $T$, cut $T$ into
+two or three triangles having $p$ as a vertex.
+\end{proof}
+
+An open set $U$ is \emph{star-shaped} with respect to $c\in U$ if the segment $[c,z]$ lies in $U$ for every $z\in U$. Convex sets, such as
+discs and half-planes, are star-shaped with respect to each of their points; so is the slit plane, with respect to $c=1$.
+
+\begin{theorem}[Cauchy's theorem]\label{thm:cauchy}
+Let $U$ be star-shaped with respect to $c$, and $f$ continuous on $U$ and holomorphic on $U\setminus\{p\}$. Then $F(z)=\int_{[c,z]}f$ is
+holomorphic on $U$ with $F'=f$, and $\int_\gamma f=0$ for every closed path $\gamma$ in $U$.
+\end{theorem}
+\begin{proof}
+Let $z\in U$ and $D(z,r)\subseteq U$. For $|h|<r$, every segment from $c$ to a point of $[z,z+h]$ lies in $U$, so the triangle with vertices
+$c$, $z$, $z+h$ lies in $U$, and Corollary~\ref{cor:goursatpoint} gives $F(z+h)-F(z)=\int_{[z,z+h]}f$. Hence $\Delta=F(z+h)-F(z)-hf(z)$ is
+\[
+\Delta=\int_{[z,z+h]}(f(w)-f(z))\dd w,
+\]
+so by Proposition~\ref{prop:pathint}(a),
+\[
+\begin{aligned}{}&\Bigl|\frac{F(z+h)-F(z)}h-f(z)\Bigr|\eqbr\le\max_{w\in[z,z+h]}|f(w)-f(z)|,\end{aligned}
+\]
+which tends to $0$ with $h$ by continuity of $f$. Then apply Proposition~\ref{prop:pathint}(b).
+\end{proof}
+
+\begin{remark}
+Cauchy's theorem holds on much more general open sets: $\int_\gamma f=0$ whenever $\gamma$ does not wind around any point outside $U$. This
+\emph{homology form}, and the related Jordan curve theorem, are proved in Volume~7. The contours of this chapter are all
+boundaries of convex sets, for which the star-shaped version suffices.
+\end{remark}
+
+\section{Cauchy's formula and its consequences}
+
+\begin{theorem}[Cauchy's integral formula]\label{thm:cauchyformula}
+Let $f$ be holomorphic on $U$ and $\overline D(a,r)\subseteq U$. Then for $|z-a|<r$,
+\[
+f(z)=\frac1{2\pi i}\int_{C(a,r)}\frac{f(w)}{w-z}\dd w.
+\]
+\end{theorem}
+\begin{proof}
+First, $\int_{C(a,r)}\frac{\mathrm dw}{w-z}=2\pi i$. Indeed, for $w$ on the circle, $\frac1{w-z}=\frac1{(w-a)-(z-a)}=\sum_{n\ge0}\frac{(z-a)^n}{(w-a)^{n+1}}$, with
+terms bounded by $\frac1r\bigl(\frac{|z-a|}r\bigr)^n$; the convergence is uniform, and integrating term by term with Proposition~\ref{prop:pathint}(c)
+only $n=0$ survives.
+
+The closed disc is compact and $\C\setminus U$ is closed, so their distance is positive and $D(a,r')\subseteq U$ for some $r'>r$. Let
+$g(w)=\frac{f(w)-f(z)}{w-z}$ for $w\ne z$ and $g(z)=f'(z)$: $g$ is continuous on the disc $D(a,r')$ and holomorphic except at $z$. By
+Theorem~\ref{thm:cauchy}, $\int_{C(a,r)}g=0$, that is $\int_{C(a,r)}\frac{f(w)}{w-z}\dd w=f(z)\int_{C(a,r)}\frac{\mathrm dw}{w-z}=2\pi if(z)$.
+\end{proof}
+
+The values of $f$ inside the disc are averages of its values on the circle; at the centre, $f(a)=\frac1{2\pi}\int_0^{2\pi}f(a+re^{it})\dd t$
+(the \emph{mean value property}). The formula has a striking consequence: the kernel $\frac1{w-z}$ is a geometric series in $z$.
+
+\begin{theorem}[holomorphic means analytic]\label{thm:analytic}
+Let $f$ be holomorphic on $U$ and $D(a,R)\subseteq U$. Then $f$ is the sum of its Taylor series on $D(a,R)$:
+\[
+\begin{gathered}f(z)=\sum_{n\ge0}c_n(z-a)^n,\qq c_n=\frac{f^{(n)}(a)}{n!}=\frac1{2\pi i}\int_{C(a,r)}\frac{f(w)\dd w}{(w-a)^{n+1}}\end{gathered}
+\]
+for every $r\in\left]0,R\right[$.
+In particular $f$ has derivatives of all orders, all holomorphic on $U$.
+\end{theorem}
+\begin{proof}
+Fix $0<r<R$ and $|z-a|<r$. Expanding $\frac1{w-z}$ as in the previous proof, uniformly for $w\in C(a,r)$, and integrating term by term
+in Cauchy's formula gives $f(z)=\sum c_n(r)(z-a)^n$, with $c_n(r)$ the integral in the statement. So $f$ is a power series on $D(a,r)$, and
+Theorem~\ref{thm:powerseries} gives $c_n(r)=\frac{f^{(n)}(a)}{n!}$, independent of $r$. Every $z\in D(a,R)$ is in some $D(a,r)$ with $r<R$. Finally, $f'$ is
+holomorphic near each point of $U$, being there the sum of a power series.
+\end{proof}
+
+\begin{corollary}[Cauchy's estimates]\label{cor:radius}
+\begin{enumerate}[label=(\alph*)]
+\item With $M_r=\max_{C(a,r)}|f|$, $\ \bigl|f^{(n)}(a)\bigr|\le\frac{n!\,M_r}{r^n}$.
+\item The Taylor series of $f$ at $a$ has radius of convergence at least the radius of the largest open disc around $a$ contained in
+$U$. If $f$ is unbounded near a point $b$ of the boundary of that disc, the radius is exactly $|b-a|$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) Bound the integral for $c_n$ by Proposition~\ref{prop:pathint}(a): $|c_n|\le\frac1{2\pi}\cdot2\pi r\cdot\frac{M_r}{r^{n+1}}$. (b) The first part is
+Theorem~\ref{thm:analytic}. If the radius were larger than $|b-a|$, the sum of the series would be continuous, hence bounded, near $b$,
+and it equals $f$ on $D(a,|b-a|)$; so $f$ would be bounded near $b$ on that disc.
+\end{proof}
+
+\begin{example}
+This answers the think box: $\frac1{1+z^2}$ is holomorphic except at $\pm i$, where it is unbounded, so its Taylor series at $0$
+has radius $1$, the distance to $\pm i$. The real line simply cannot see the obstruction. Similarly $\frac z{e^z-1}=\frac1{h(z)}$ with
+$h(z)=\sum_{n\ge0}\frac{z^n}{(n+1)!}$ entire; $h$ vanishes exactly where $e^z=1$ and $z\ne0$, that is on $2\pi i\Z\setminus\{0\}$. So $\frac z{e^z-1}$ is holomorphic on $D(0,2\pi)$
+and unbounded near $\pm2\pi i$: the generating function of the Bernoulli numbers has radius exactly $2\pi$, as Chapters~1 and~3
+announced.
+\end{example}
+
+A continuous function with vanishing triangle integrals is holomorphic; this converse of Goursat makes holomorphy
+stable under limits and integrals.
+
+\begin{theorem}[Morera]\label{thm:morera}
+Let $f$ be continuous on $U$ with $\int_{\partial T}f=0$ for every closed triangle $T\subseteq U$. Then $f$ is holomorphic on $U$.
+\end{theorem}
+\begin{proof}
+On a disc $D\subseteq U$ centred at $c$, the proof of Theorem~\ref{thm:cauchy} (which used only the vanishing of triangle integrals)
+shows that $F(z)=\int_{[c,z]}f$ is holomorphic with $F'=f$. By Theorem~\ref{thm:analytic}, $F'$ is holomorphic on $D$.
+\end{proof}
+
+\begin{theorem}[limits and integrals]\label{thm:holoparam}
+\begin{enumerate}[label=(\alph*)]
+\item (Weierstrass) If $f_n$ are holomorphic on $U$ and converge to $f$ uniformly on every closed disc contained in $U$, then $f$ is
+holomorphic, and $f_n'\to f'$ uniformly on every closed disc contained in $U$. In particular a series of holomorphic functions converging
+uniformly on such discs may be differentiated term by term.
+\item Let $I$ be an interval and $f$ continuous on $I\times U$, holomorphic in $z$ for each $t\in I$. Suppose that for every closed disc
+$K\subseteq U$ there is a continuous integrable $g_K$ on $I$ with $|f(t,z)|\le g_K(t)$ for $z\in K$. Then $F(z)=\int_If(t,z)\dd t$ is holomorphic on $U$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) $f$ is continuous, as a locally uniform limit of continuous functions. For a triangle $T$ in a disc $D\subseteq U$, $\int_{\partial T}f=\lim\int_{\partial T}f_n=0$ by
+Proposition~\ref{prop:pathint}(a) and Goursat, so $f$ is holomorphic by Morera. If $\overline D(a,r)\subseteq U$, choose $\rho>0$ with $\overline D(a,r+2\rho)\subseteq U$. For
+$|z-a|\le r$, Theorem~\ref{thm:analytic} on the disc $D(z,\rho)$ gives $f_n'(z)-f'(z)=\frac1{2\pi i}\int_{C(z,\rho)}\frac{f_n(w)-f(w)}{(w-z)^2}\dd w$, whose modulus is at most
+$\frac1\rho\max_{\overline D(a,r+\rho)}|f_n-f|$, which tends to $0$ uniformly in $z$.
+
+(b) Continuity: if $z_n\to z$ inside a closed disc $K\subseteq U$, then $f(t,z_n)\to f(t,z)$ uniformly for $t$ in every closed bounded subinterval
+(uniform continuity on compact sets), with domination by $g_K$, so $F(z_n)\to F(z)$ by Corollary~\ref{cor:dct}. Next let $T$ be a triangle in a disc
+contained in $U$, with $\partial T$ made of three segments parametrised on $[0,1]$ and $K$ a closed disc containing $T$. For a closed bounded
+$[u,v]\subseteq I$, Fubini on the rectangle $[u,v]\times[0,1]$ (Theorem~\ref{thm:fubinirect}) gives $\int_{\partial T}\int_u^vf(t,z)\dd t\dd z=\int_u^v\int_{\partial T}f(t,z)\dd z\dd t=0$ by
+Goursat. As $[u,v]$ grows to $I$, the left side tends to $\int_{\partial T}F$, the difference being at most $L(\partial T)\int_{I\setminus[u,v]}g_K$. So $\int_{\partial T}F=0$,
+and Morera applies.
+\end{proof}
+
+\subsection*{Liouville, zeros and the maximum principle}
+
+\begin{theorem}[Liouville]\label{thm:liouville}
+A bounded entire function is constant.
+\end{theorem}
+\begin{proof}
+If $|f|\le M$ on $\C$, Theorem~\ref{thm:analytic} on $D(0,R)$ for every $R$ gives $f(z)=\sum c_nz^n$ on $\C$, and Corollary~\ref{cor:radius}(a) gives $|c_n|\le\frac M{r^n}$ for
+every $r>0$. Letting $r\to\infty$, $c_n=0$ for $n\ge1$.
+\end{proof}
+
+\begin{corollary}[fundamental theorem of algebra]\label{cor:fta}
+Every non-constant complex polynomial has a root in $\C$.
+\end{corollary}
+\begin{proof}
+Let $p(z)=a_nz^n+\dots+a_0$ with $n\ge1$ and $a_n\ne0$. Then $|p(z)|\ge|a_n||z|^n\bigl(1-\sum_{k<n}\frac{|a_k|}{|a_n||z|^{n-k}}\bigr)\to\infty$ as $|z|\to\infty$. If $p$
+had no root, $\frac1p$ would be entire, tend to $0$ at infinity, hence be bounded (it is continuous on a large closed disc and small outside),
+and so constant by Liouville: a contradiction.
+\end{proof}
+
+Volume~0 (Theorem~3.3) proved this by d'Alembert's argument on the minimum of $|p|$. Here it falls out of Liouville in two
+lines, and Section~\ref{sec:argument} gives a third proof that also counts the roots.
+
+An open set $U$ is \emph{connected} if any two of its points are joined by a path in $U$.
+
+\begin{theorem}[zeros and the identity theorem]\label{thm:identity}
+Let $f$ be holomorphic on a connected open set $U$, and not identically zero.
+\begin{enumerate}[label=(\alph*)]
+\item For every $a\in U$ there are $m\ge0$ and $g$ holomorphic on $U$ with $g(a)\ne0$ and $f(z)=(z-a)^mg(z)$. In particular the zeros of $f$ are isolated.
+\item Consequently, two holomorphic functions on $U$ that agree on a set having an accumulation point in $U$ are equal.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Let $A$ be the set of $z\in U$ where all derivatives $f^{(n)}(z)$, $n\ge0$, vanish. $A$ is open: near $z\in A$, $f$ is the sum of its Taylor series
+(Theorem~\ref{thm:analytic}), which is $0$, so $f$ and its derivatives vanish on a disc. $U\setminus A$ is open: if $f^{(n)}(z)\ne0$, then $f^{(n)}\ne0$ near $z$ by
+continuity. If both $A$ and $U\setminus A$ were non-empty, a path $\gamma:[0,1]\to U$ from a point of $A$ to a point of $U\setminus A$ would give a partition of $[0,1]$
+into the two non-empty disjoint open sets $\gamma^{-1}(A)$ and $\gamma^{-1}(U\setminus A)$, which is impossible since $[0,1]$ is connected (take the supremum of the
+first set that contains $0$). As $f\ne0$, $A$ is empty.
+
+(a) At $a$, let $m$ be the least $n$ with $f^{(n)}(a)\ne0$. Near $a$, $f(z)=\sum_{n\ge m}c_n(z-a)^n=(z-a)^m\sum_{k\ge0}c_{m+k}(z-a)^k$; set
+$g(z)=\frac{f(z)}{(z-a)^m}$ for $z\ne a$ and $g(a)=c_m\ne0$. Then $g$ is holomorphic (near $a$ it is a power series), and $g\ne0$ near $a$ by continuity,
+so $a$ is the only zero of $f$ in a small disc. (b) Apply (a) to the difference: an accumulation point of zeros is not an isolated zero.
+\end{proof}
+
+So identities between holomorphic functions proved on a real interval hold wherever both sides are holomorphic on a
+connected open set: $\sin^2z+\cos^2z=1$ on $\C$, for instance. Section~\ref{sec:gammac} uses this for $\Gamma$.
+
+\begin{theorem}[maximum principle]\label{thm:maxprinciple}
+If $f$ is holomorphic on a connected open set $U$ and $|f|$ has a local maximum at $a\in U$, then $f$ is constant.
+\end{theorem}
+\begin{proof}
+Let $|f|\le|f(a)|$ on $D(a,R)$, and write $f(a)=|f(a)|e^{i\alpha}$. For $0<r<R$, the mean value property gives
+$|f(a)|=\frac1{2\pi}\int_0^{2\pi}\operatorname{Re}\bigl(e^{-i\alpha}f(a+re^{it})\bigr)\dd t$, while the integrand is at most $|f(a+re^{it})|\le|f(a)|$. A continuous function
+bounded by a constant with average equal to that constant is the constant, so $\operatorname{Re}(e^{-i\alpha}f)=|f(a)|\ge|f|$ on the circle, which forces
+$e^{-i\alpha}f=|f(a)|$ there. So $f=f(a)$ on $D(a,R)$, and on $U$ by Theorem~\ref{thm:identity}.
+\end{proof}
+
+On a bounded open set, $|f|$ continuous on the closure therefore reaches its maximum on the boundary: the same averaging
+argument as the ``maximum principle in miniature'' of Chapter~3.
+
+\section{Singularities, Laurent series and residues}
+
+Let $f$ be holomorphic on a punctured disc $D(a,r)\setminus\{a\}$: $a$ is an \emph{isolated singularity}.
+
+\begin{theorem}[Riemann's removable singularity theorem]\label{thm:removable}
+If $f$ is bounded near $a$, it extends to a holomorphic function on $D(a,r)$.
+\end{theorem}
+\begin{proof}
+Let $h(z)=(z-a)^2f(z)$ for $z\ne a$ and $h(a)=0$. Then $\frac{h(z)-h(a)}{z-a}=(z-a)f(z)\to0$, so $h$ is holomorphic on $D(a,r)$ with $h(a)=h'(a)=0$. By
+Theorem~\ref{thm:analytic}, $h(z)=\sum_{n\ge2}c_n(z-a)^n$, and $\sum_{n\ge2}c_n(z-a)^{n-2}$ is the required extension of $f$.
+\end{proof}
+
+\begin{lemma}\label{lem:annulus}
+Let $g$ be holomorphic on the annulus $r<|z-a|<R$. Then $\int_{C(a,\rho)}g$ does not depend on $\rho\in\left]r,R\right[$.
+\end{lemma}
+\begin{proof}
+Let $\phi(\rho,t)=g(a+\rho e^{it})\,i\rho e^{it}$, so the integral is $J(\rho)=\int_0^{2\pi}\phi(\rho,t)\dd t$. Since $g'$ is continuous (Theorem~\ref{thm:analytic}), the chain
+rule gives
+\[
+\begin{aligned}\partial_\rho\phi&=g'(a+\rho e^{it})\,i\rho e^{2it}+g(a+\rho e^{it})\,ie^{it}\eqbr=\partial_t\bigl(g(a+\rho e^{it})e^{it}\bigr).\end{aligned}
+\]
+By Theorem~\ref{thm:paramcompact}, $J'(\rho)=\int_0^{2\pi}\partial_t\bigl(g(a+\rho e^{it})e^{it}\bigr)\dd t=0$, the function in brackets being $2\pi$-periodic in $t$.
+\end{proof}
+
+\begin{theorem}[Laurent]\label{thm:laurent}
+Let $f$ be holomorphic on the annulus $A=\{r<|z-a|<R\}$, with $0\le r<R\le\infty$. Then
+\[
+\begin{gathered}f(z)=\sum_{n\in\Z}c_n(z-a)^n,\qq c_n=\frac1{2\pi i}\int_{C(a,\rho)}\frac{f(w)\dd w}{(w-a)^{n+1}}\quad(r<\rho<R),\end{gathered}
+\]
+where the coefficients do not depend on $\rho$. The part $\sum_{n\ge0}$ converges on $D(a,R)$; the part $\sum_{n<0}$ converges for $|z-a|>r$ and is
+holomorphic there; both converge uniformly on every closed annulus $\rho_1\le|z-a|\le\rho_2$ inside $A$. The coefficients are unique.
+\end{theorem}
+\begin{proof}
+Independence of $\rho$ is Lemma~\ref{lem:annulus} applied to $\frac{f(w)}{(w-a)^{n+1}}$. Fix $z$ and $r<\rho_1<|z-a|<\rho_2<R$. The function
+$g(w)=\frac{f(w)-f(z)}{w-z}$ is bounded near $z$, hence holomorphic on $A$ by Theorem~\ref{thm:removable}, and Lemma~\ref{lem:annulus} gives
+$\int_{C(a,\rho_2)}g=\int_{C(a,\rho_1)}g$. Now $\int_{C(a,\rho_2)}\frac{\mathrm dw}{w-z}=2\pi i$ (proof of Theorem~\ref{thm:cauchyformula}), while $\int_{C(a,\rho_1)}\frac{\mathrm dw}{w-z}=0$
+because there $\frac1{w-z}=-\sum_{n\ge0}\frac{(w-a)^n}{(z-a)^{n+1}}$, uniformly, and each term has a primitive. Therefore
+\[
+\begin{aligned}f(z)&=\frac1{2\pi i}\int_{C(a,\rho_2)}\frac{f(w)\dd w}{w-z}\eqbr\quad-\frac1{2\pi i}\int_{C(a,\rho_1)}\frac{f(w)\dd w}{w-z}.\end{aligned}
+\]
+Expanding the kernels in the two geometric series just written and integrating term by term gives $\sum_{n\ge0}c_n(z-a)^n$ for the first
+integral and $\sum_{m\ge1}c_{-m}(z-a)^{-m}$ for the second. In the variable $u=\frac1{z-a}$, the second part is a power series converging for $|u|<\frac1{\rho_1}$ for
+every $\rho_1>r$, so Lemma~\ref{lem:abel} and Theorem~\ref{thm:powerseries} give its convergence and holomorphy; the first part is handled likewise.
+For uniqueness, if $f=\sum d_n(z-a)^n$ converges uniformly on $C(a,\rho)$, multiplying by $(z-a)^{-k-1}$ and integrating term by term
+gives $2\pi i\,d_k$ by Proposition~\ref{prop:pathint}(c), so $d_k=c_k$.
+\end{proof}
+
+At an isolated singularity ($r=0$), the \emph{principal part} $P(z)=\sum_{n<0}c_n(z-a)^n$ is holomorphic on $\C\setminus\{a\}$, and $f-P$ extends
+holomorphically to $a$. The singularity is \emph{removable} if $P=0$, a \emph{pole of order $m$} if $P$ ends at $c_{-m}\ne0$, and \emph{essential}
+if $P$ has infinitely many terms, as for $e^{1/z}=\sum_{n\ge0}\frac{z^{-n}}{n!}$ at $0$.
+
+\begin{definition}
+The \emph{residue} of $f$ at the isolated singularity $a$ is $\operatorname{Res}_af=c_{-1}=\frac1{2\pi i}\int_{C(a,\rho)}f$ for small $\rho$.
+\end{definition}
+
+\begin{proposition}[computing residues]\label{prop:rescalc}
+\begin{enumerate}[label=(\alph*)]
+\item If $a$ is a pole of order at most $m$, then $\operatorname{Res}_af=\frac1{(m-1)!}\lim_{z\to a}\frac{\mathrm d^{m-1}}{\mathrm dz^{m-1}}\bigl((z-a)^mf(z)\bigr)$; for a simple pole,
+$\operatorname{Res}_af=\lim_{z\to a}(z-a)f(z)$.
+\item If $g$, $h$ are holomorphic near $a$ with $h(a)=0\ne h'(a)$, then $\operatorname{Res}_a\frac gh=\frac{g(a)}{h'(a)}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $(z-a)^mf(z)=\sum_{n\ge-m}c_n(z-a)^{n+m}$ is a power series, whose coefficient of $(z-a)^{m-1}$ is $c_{-1}$; apply Theorem~\ref{thm:powerseries}. (b) The pole is
+at most simple, and $(z-a)\frac{g(z)}{h(z)}=g(z)\frac{z-a}{h(z)-h(a)}\to\frac{g(a)}{h'(a)}$.
+\end{proof}
+
+For instance $\pi\cot\pi z=\frac{\pi\cos\pi z}{\sin\pi z}$ has at each integer $n$ a simple pole with residue $\frac{\pi\cos\pi n}{\pi\cos\pi n}=1$. This is the reason it
+appears in Chapter~3 and again below: it is a machine with residue $1$ at every integer.
+
+\section{The residue theorem}
+
+For a closed path $\gamma$ and $a\notin\gamma^*$, the \emph{winding number} is $n(\gamma,a)=\frac1{2\pi i}\int_\gamma\frac{\mathrm dz}{z-a}$.
+
+\begin{proposition}\label{prop:winding}
+$n(\gamma,a)$ is an integer: the number of times $\gamma$ turns around $a$.
+\end{proposition}
+\begin{proof}
+Let $\gamma:[\alpha,\beta]\to\C$ and $\phi(t)=\int_\alpha^t\frac{\gamma'(s)}{\gamma(s)-a}\dd s$. Then $\frac{\mathrm d}{\mathrm dt}\bigl((\gamma(t)-a)e^{-\phi(t)}\bigr)=0$ wherever $\gamma$ is $C^1$, so this
+continuous function is constant, and $\gamma(\beta)=\gamma(\alpha)$ gives $e^{\phi(\beta)}=1$, so $\phi(\beta)\in2\pi i\Z$. As $e^{\phi(t)}=\frac{\gamma(t)-a}{\gamma(\alpha)-a}$, the imaginary part
+of $\phi$ is a continuous choice of the angle of $\gamma(t)-a$, and $\frac{\operatorname{Im}\phi(\beta)}{2\pi}$ counts its full turns.
+\end{proof}
+
+Our contours are boundaries of bounded convex open sets $D$: discs, half-discs, rectangles, squares, circular sectors of angle
+at most $\pi$. For each point $b\in D$, every ray from $b$ meets the boundary exactly once, at $b+\rho(\theta)e^{i\theta}$, where $\rho$ is given on each
+side or arc by an elementary piecewise $C^1$ formula. We say that a closed path $\gamma$ is the \emph{positive boundary} of $D$ if, for
+every $b\in D$, it is a change of parameter of $\theta\mapsto b+\rho(\theta)e^{i\theta}$, $\theta\in[\theta_0,\theta_0+2\pi]$; this is the usual counterclockwise contour. Then
+\[
+\begin{aligned}2\pi i\,n(\gamma,b)&=\int_{\theta_0}^{\theta_0+2\pi}\frac{\rho'(\theta)e^{i\theta}+i\rho(\theta)e^{i\theta}}{\rho(\theta)e^{i\theta}}\dd\theta\eqbr=\bigl[\log\rho\bigr]_{\theta_0}^{\theta_0+2\pi}+2\pi i=2\pi i,\end{aligned}
+\]
+so $n(\gamma,b)=1$ for every $b\in D$.
+
+\begin{theorem}[residue theorem]\label{thm:residue}
+Let $D$ be a bounded convex open set with positive boundary $\gamma$, and $U$ an open set containing $\overline D$. Let $f$ be holomorphic on
+$U\setminus\{a_1,\dots,a_k\}$, where $a_1,\dots,a_k\in D$. Then
+\[
+\int_\gamma f(z)\dd z=2\pi i\sum_{j=1}^k\operatorname{Res}_{a_j}f.
+\]
+\end{theorem}
+\begin{proof}
+Let $P_j$ be the principal part of $f$ at $a_j$, holomorphic on $\C\setminus\{a_j\}$ (Theorem~\ref{thm:laurent}). Near $a_j$, $f-\sum_iP_i$ is $(f-P_j)$, which extends
+holomorphically, minus the $P_i$ with $i\ne j$, which are holomorphic at $a_j$. So $g=f-\sum_iP_i$ extends to a holomorphic function on $U$.
+For small $\varepsilon>0$, the set $D_\varepsilon$ of points at distance less than $\varepsilon$ from $\overline D$ is open, convex (if $|z-d|<\varepsilon$ and $|z'-d'|<\varepsilon$ with
+$d,d'\in\overline D$, the same holds for convex combinations) and contained in $U$ (the compact $\overline D$ is at positive distance from $\C\setminus U$).
+By Cauchy's theorem on $D_\varepsilon$, $\int_\gamma g=0$.
+
+For each $j$, $\gamma^*$ stays at distance at least some $\delta>0$ from $a_j$, where the series $P_j(z)=\sum_{m\ge1}c_{-m}(z-a_j)^{-m}$ converges uniformly
+(Theorem~\ref{thm:laurent}). Integrating term by term, the terms with $m\ge2$ have primitives and give $0$, and the term $m=1$ gives
+$c_{-1}\cdot2\pi i\,n(\gamma,a_j)=2\pi i\operatorname{Res}_{a_j}f$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-contours}
+\caption{The three contours of this chapter, with the singularities they enclose. Left: a half-disc of radius $R$, for integrals of
+rational functions over $\R$. Middle: a rectangle of height $2\pi$, for integrands periodic under $t\mapsto t+2\pi i$ up to a factor. Right:
+the square $C_N$ with vertices $(N+\frac12)(\pm1\pm i)$, which avoids the integers, the poles of $\pi\cot\pi z$.}
+\label{fig:contours}
+\end{figure}
+
+\section{Real integrals by residues}
+
+The method: extend the integrand to the complex plane, close the real segment $[-R,R]$ by a path on which the integral is
+small or is a known multiple of the one wanted, and let $R\to\infty$.
+
+\begin{proposition}\label{prop:rationalint}
+Let $P$, $Q$ be polynomials with $\deg Q\ge\deg P+2$ and no real zero of $Q$. Then
+\[
+\int_{-\infty}^\infty\frac{P(x)}{Q(x)}\dd x=2\pi i\sum_{\operatorname{Im}a>0}\operatorname{Res}_a\frac PQ,
+\]
+the sum running over the zeros of $Q$ in the upper half-plane.
+\end{proposition}
+\begin{proof}
+There are $C$ and $R_0$ with $\bigl|\frac{P(z)}{Q(z)}\bigr|\le\frac C{|z|^2}$ for $|z|\ge R_0$, so the integral converges absolutely. For $R>R_0$ larger than the moduli of
+all zeros of $Q$, apply Theorem~\ref{thm:residue} to the half-disc of radius $R$ (Figure~\ref{fig:contours}, left): the integral over $[-R,R]$ plus the
+integral over the arc $\Gamma_R$ equals $2\pi i$ times the sum of residues. By Proposition~\ref{prop:pathint}(a), $\bigl|\int_{\Gamma_R}\frac PQ\bigr|\le\pi R\cdot\frac C{R^2}\to0$.
+\end{proof}
+
+\begin{example}
+$\int_{-\infty}^\infty\frac{\mathrm dx}{1+x^4}=\frac\pi{\sqrt2}$. The poles in the upper half-plane are $a=e^{i\pi/4}$ and $e^{3i\pi/4}$. By Proposition~\ref{prop:rescalc}(b) the
+residue at a root $a$ of $z^4=-1$ is $\frac1{4a^3}=\frac a{4a^4}=-\frac a4$, and $e^{i\pi/4}+e^{3i\pi/4}=i\sqrt2$. So the integral is $2\pi i\cdot\bigl(-\frac{i\sqrt2}4\bigr)=\frac{\pi\sqrt2}2$.
+\end{example}
+
+\begin{example}[the transform of $\frac1{1+x^2}$, promised in Chapter~8]
+For $\xi\le0$ and $\operatorname{Im}z\ge0$, $|e^{-2\pi iz\xi}|=e^{2\pi\xi\operatorname{Im}z}\le1$. So the proof of Proposition~\ref{prop:rationalint} works for $f(z)=\frac{e^{-2\pi iz\xi}}{1+z^2}$, the arc
+still contributing at most $\frac{\pi R}{R^2-1}$. The only pole in the upper half-plane is $i$, with residue $\frac{e^{2\pi\xi}}{2i}$, so the transform is $\pi e^{2\pi\xi}=\pi e^{-2\pi|\xi|}$.
+For $\xi\ge0$ the function is even in $\xi$ (substitute $x\mapsto-x$). This is Exercise~\ref{ex:lorentz}, without the inversion theorem.
+\end{example}
+
+\begin{example}[the reflection formula again]\label{ex:rectangle}
+For $0<a<1$, $\displaystyle\int_{-\infty}^\infty\frac{e^{at}}{1+e^t}\dd t=\frac\pi{\sin\pi a}$. The integrand $f$ satisfies $f(t+2\pi i)=e^{2\pi ia}f(t)$, which suggests the rectangle
+with vertices $\pm R$ and $\pm R+2\pi i$ (Figure~\ref{fig:contours}, middle). Inside, $1+e^t$ vanishes only at $i\pi$, with residue $\frac{e^{i\pi a}}{e^{i\pi}}=-e^{i\pi a}$ by
+Proposition~\ref{prop:rescalc}(b). On the right side $|f|\le\frac{e^{aR}}{e^R-1}$, on the left side $|f|\le\frac{e^{-aR}}{1-e^{-R}}$; both sides have length $2\pi$ and their
+integrals tend to $0$ because $0<a<1$. The top side, traversed from right to left, gives $-e^{2\pi ia}$ times the integral $I_R$ over $[-R,R]$. So
+\[
+\begin{aligned}(1-e^{2\pi ia})I&=-2\pi ie^{i\pi a},\eqbr I=\frac{2\pi i}{e^{i\pi a}-e^{-i\pi a}}=\frac\pi{\sin\pi a}.\end{aligned}
+\]
+The substitution $x=e^t$ turns $I$ into $\int_0^\infty\frac{x^{a-1}}{1+x}\dd x$, which is $B(a,1-a)=\Gamma(a)\Gamma(1-a)$ (substitute $x=\frac u{1-u}$ in the Beta integral of
+Theorem~\ref{thm:betagamma}): a second proof of Theorem~\ref{thm:reflection}, this time without the sine product.
+\end{example}
+
+\begin{example}[the Gaussian, a third time]
+For real $\xi$, $f(z)=e^{-\pi z^2}$ is entire, so its integral over the rectangle with vertices $\pm R$, $\pm R+i\xi$ is $0$. On the vertical sides,
+$|e^{-\pi(\pm R+iy)^2}|=e^{-\pi R^2+\pi y^2}\le e^{-\pi R^2+\pi\xi^2}$, so their integrals tend to $0$. Hence $\int_{\R}e^{-\pi(x+i\xi)^2}\dd x=\int_{\R}e^{-\pi x^2}\dd x=1$, and
+expanding $e^{-\pi(x+i\xi)^2}=e^{-\pi x^2}e^{-2\pi ix\xi}e^{\pi\xi^2}$ gives $\hat g(\xi)=e^{-\pi\xi^2}$: Theorem~\ref{thm:gaussianft} by shifting the line of integration.
+\end{example}
+
+\begin{beauty}
+In these three examples the real integral never sees $i$. Yet the answer is decided by a single point of the complex plane
+($e^{i\pi/4}$, then $i$, then $i\pi$), and the rest of the integrand is irrelevant. This is the answer to ``how can a real
+integral know about $i$?'': the function is rigid, so its values on the line determine it everywhere, and the residue is
+where that information is concentrated.
+\end{beauty}
+
+\section{Sums by residues}
+
+The function $\pi\cot\pi z$ has residue $1$ at every integer, so $\pi\cot(\pi z)f(z)$ has residue $f(n)$ at every integer $n$ where $f$ is
+holomorphic. Integrating over large squares turns a sum over the integers into a few residues of $f$.
+
+\begin{lemma}\label{lem:cotbound}
+On the square $C_N$ with vertices $(N+\frac12)(\pm1\pm i)$, $N\ge0$, we have $|\cot\pi z|\le\coth\frac\pi2<2$.
+\end{lemma}
+\begin{proof}
+$\cot\pi z=i\frac{e^{2\pi iz}+1}{e^{2\pi iz}-1}$. On the horizontal sides, $|\operatorname{Im}z|=N+\frac12$, so $q=|e^{2\pi iz}|=e^{-2\pi\operatorname{Im}z}$ is at most $e^{-\pi}$ or at least $e^\pi$; in both cases
+$\bigl|\frac{q'+1}{q'-1}\bigr|\le\frac{q+1}{|q-1|}\le\frac{1+e^{-\pi}}{1-e^{-\pi}}=\coth\frac\pi2$ for $|q'|=q$. On the vertical sides, $z=\pm(N+\frac12)+iy$ and $\cot\pi z=-\tan(i\pi y)=-i\tanh\pi y$,
+of modulus less than $1$. Finally $\coth\frac\pi2\approx1.09$.
+\end{proof}
+
+\begin{theorem}\label{thm:residuesum}
+Let $f$ be holomorphic on $\C$ except at a finite set $S$, with $|f(z)|\le\frac C{|z|^2}$ for $|z|\ge R_0$. Then
+\[
+\sum_{n\in\Z\setminus S}f(n)=-\sum_{a\in S}\operatorname{Res}_a\bigl(\pi\cot(\pi z)f(z)\bigr),
+\]
+the series converging absolutely.
+\end{theorem}
+\begin{proof}
+Absolute convergence follows from the bound. Let $N$ be large enough that $N+\frac12>R_0$ and $S$ lies inside $C_N$. The function
+$\pi\cot(\pi z)f(z)$ is holomorphic on a neighbourhood of the closed square except at the integers $n$ with $|n|\le N$ and at the points of
+$S$; at an integer $n\notin S$ it has a simple pole with residue $f(n)$ (Proposition~\ref{prop:rescalc}(a)). By Theorem~\ref{thm:residue}, with
+$g(z)=\pi\cot(\pi z)f(z)$,
+\[
+\frac1{2\pi i}\int_{C_N}g(z)\dd z=\sum_{|n|\le N,\ n\notin S}f(n)+\sum_{a\in S}\operatorname{Res}_ag.
+\]
+By Lemma~\ref{lem:cotbound}, the left side is at most $\frac1{2\pi}\cdot8\bigl(N+\frac12\bigr)\cdot2\pi\cdot\frac C{(N+1/2)^2}$, which tends to $0$.
+\end{proof}
+
+We need the start of the Laurent series of $\pi\cot\pi z$ at $0$. From $\sin w=w\bigl(1-\frac{w^2}6+O(w^4)\bigr)$ and $\cos w=1-\frac{w^2}2+O(w^4)$,
+$w\cot w=\bigl(1-\frac{w^2}2+\cdots\bigr)\bigl(1+\frac{w^2}6+\cdots\bigr)=1-\frac{w^2}3+O(w^4)$, an even power series; so
+\[
+\pi\cot\pi z=\frac1z-\frac{\pi^2}3z+O(z^3).
+\]
+
+\begin{corollary}[Basel, the sixth proof]\label{cor:baselres}
+$\displaystyle\sum_{n\ge1}\frac1{n^2}=\frac{\pi^2}6$.
+\end{corollary}
+\begin{proof}
+Take $f(z)=\frac1{z^2}$ and $S=\{0\}$. The Laurent series $\frac{\pi\cot\pi z}{z^2}=\frac1{z^3}-\frac{\pi^2}3\cdot\frac1z+O(z)$ has residue $-\frac{\pi^2}3$, so $\sum_{n\ne0}\frac1{n^2}=\frac{\pi^2}3$.
+\end{proof}
+
+\begin{corollary}[Euler's partial fractions, on $\C$]\label{cor:cotc}
+For every $z\in\C\setminus\Z$, $\displaystyle\pi\cot\pi z=\frac1z+\sum_{n\ge1}\frac{2z}{z^2-n^2}$.
+\end{corollary}
+\begin{proof}
+Fix $z\notin\Z$ and apply Theorem~\ref{thm:residuesum} to $f(w)=\frac1{w(w-z)}$, in the variable $w$, with $S=\{0,z\}$. At $w=z$ the residue of
+$\frac{\pi\cot\pi w}{w(w-z)}$ is $\frac{\pi\cot\pi z}z$. At $w=0$, multiply $\pi\cot\pi w=\frac1w+O(w)$ by $\frac1w\cdot\frac1{w-z}=\frac1w\bigl(-\frac1z-\frac w{z^2}+O(w^2)\bigr)$: the coefficient of $\frac1w$ is
+$-\frac1{z^2}$. So $\sum_{n\ne0}\frac1{n(n-z)}=\frac1{z^2}-\frac{\pi\cot\pi z}z$. Multiply by $-z$ and use $\frac{-z}{n(n-z)}=\frac1{z-n}+\frac1n$; grouping $n$ with $-n$,
+the terms $\frac1n$ cancel and $\frac1{z-n}+\frac1{z+n}=\frac{2z}{z^2-n^2}$.
+\end{proof}
+
+Chapter~3 proved this for real $x$ with Herglotz's trick; now both sides are holomorphic on $\C\setminus\Z$, and residues give
+the identity there directly. The same method with $f(z)=z^{-2k}$ gives $\zeta(2k)=-\frac12\operatorname{Res}_0\frac{\pi\cot\pi z}{z^{2k}}$, half the coefficient of $z^{2k-1}$ in
+$-\pi\cot\pi z$; with the Bernoulli expansion $\pi z\cot\pi z=\sum_{k\ge0}\frac{(-1)^kB_{2k}(2\pi z)^{2k}}{(2k)!}$ (from $\frac t{e^t-1}+\frac t2=\frac t2\coth\frac t2$ at $t=2\pi iz$), this is
+Euler's formula of Chapter~3 once more.
+
+\section{The Gamma function in the complex plane}\label{sec:gammac}
+
+\begin{theorem}\label{thm:gammac}
+\begin{enumerate}[label=(\alph*)]
+\item $\Gamma(z)=\int_0^\infty t^{z-1}e^{-t}\dd t$ is holomorphic on $\operatorname{Re}z>0$, with $|\Gamma(z)|\le\Gamma(\operatorname{Re}z)$, and $\Gamma(z+1)=z\Gamma(z)$.
+\item $\Gamma$ extends to a holomorphic function on the complement of $\{0,-1,-2,\dots\}$, with simple poles at $-n$ of residue $\frac{(-1)^n}{n!}$, satisfying
+$\Gamma(z+1)=z\Gamma(z)$ everywhere.
+\item $\Gamma(z)\Gamma(1-z)=\frac\pi{\sin\pi z}$ for $z\in\C\setminus\Z$. Hence $\Gamma$ has no zeros, and $\frac1\Gamma$ extends to an entire function vanishing exactly at
+$0,-1,-2,\dots$
+\item For real $y$, $|\Gamma(\frac12+iy)|^2=\frac\pi{\cosh\pi y}$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Here $t^{z-1}=e^{(z-1)\log t}$, so $|t^{z-1}e^{-t}|=t^{x-1}e^{-t}$ with $x=\operatorname{Re}z$; this gives the bound, and on a closed disc in $x_1\le\operatorname{Re}z\le x_2$ (with
+$x_1>0$) the integrand is dominated by $t^{x_1-1}e^{-t}+t^{x_2-1}e^{-t}$, integrable on $\left]0,\infty\right[$. Theorem~\ref{thm:holoparam}(b) gives holomorphy. Both sides of
+$\Gamma(z+1)=z\Gamma(z)$ are holomorphic on the connected half-plane and agree on $\left]0,\infty\right[$ (Proposition~\ref{prop:gammafe}), so they agree everywhere by
+Theorem~\ref{thm:identity}.
+
+(b) For $n\ge0$, $\Gamma_n(z)=\frac{\Gamma(z+n+1)}{z(z+1)\cdots(z+n)}$ is holomorphic on $\operatorname{Re}z>-n-1$ except at $0,-1,\dots,-n$, and equals $\Gamma$ on $\operatorname{Re}z>0$ by
+the functional equation; $\Gamma_{n+1}=\Gamma_n$ where both are defined, by the same identity. Together they define the extension, which
+satisfies the functional equation by the identity theorem (on the connected set $\C\setminus\{0,-1,\dots\}$). Near $-n$, $(z+n)\Gamma(z)=\frac{\Gamma(z+n+1)}{z(z+1)\cdots(z+n-1)}$
+tends to $\frac{\Gamma(1)}{(-n)(-n+1)\cdots(-1)}=\frac{(-1)^n}{n!}$, so the pole is simple with that residue.
+
+(c) Both sides are holomorphic on $\C\setminus\Z$, which is connected, and agree on $\left]0,1\right[$ by Theorem~\ref{thm:reflection}. If $\Gamma(z_0)=0$, then $z_0\notin\Z$
+(at the positive integers $\Gamma=(n-1)!$), and the left side would vanish at $z_0$ while the right side never does. So $\frac1\Gamma$ is holomorphic
+except at the poles of $\Gamma$, where it tends to $0$; by Theorem~\ref{thm:removable}, it is entire.
+
+(d) $\overline{\Gamma(z)}=\Gamma(\overline z)$ (conjugate the integral), so $|\Gamma(\frac12+iy)|^2=\Gamma(\frac12+iy)\Gamma(\frac12-iy)=\frac\pi{\sin(\frac\pi2+i\pi y)}=\frac\pi{\cos(i\pi y)}=\frac\pi{\cosh\pi y}$.
+\end{proof}
+
+So $\Gamma$ decays like $e^{-\pi|y|/2}$ along vertical lines: on the line $\operatorname{Re}z=\frac12$, exactly so. This decay is what makes
+$\Gamma$ a useful factor in Chapter~10, where the zeta function is multiplied by $\pi^{-s/2}\Gamma(\frac s2)$. Every identity of Chapter~5 between functions
+that extend holomorphically, the duplication formula for instance, extends to the complex plane by the same argument.
+Exercise~\ref{ex:wielandt} gives the complex analogue of Bohr--Mollerup: $\Gamma$ is the only solution of $F(z+1)=zF(z)$, $F(1)=1$, that is
+bounded on a vertical strip.
+
+\section{Counting zeros}\label{sec:argument}
+
+A function is \emph{meromorphic} on $U$ if it is holomorphic except at isolated points, all poles.
+
+\begin{theorem}[argument principle]\label{thm:argument}
+Let $D$ be a bounded convex open set with positive boundary $\gamma$, and $f$ meromorphic on an open set $U\supseteq\overline D$, with finitely many poles,
+not identically zero on any disc, and with no zeros or poles on $\gamma^*$. Then
+\[
+\frac1{2\pi i}\int_\gamma\frac{f'(z)}{f(z)}\dd z=Z-P,
+\]
+where $Z$ and $P$ are the numbers of zeros and poles of $f$ in $D$, counted with multiplicity. The left side is also $n(f\circ\gamma,0)$.
+\end{theorem}
+\begin{proof}
+We may shrink $U$ to the convex, hence connected, set $D_\varepsilon$ of the proof of Theorem~\ref{thm:residue}. The zeros of $f$ in the compact set $\overline D$ are
+finitely many, since they are isolated (Theorem~\ref{thm:identity}, applied off the poles). At a zero of order $m$, $f=(z-a)^mg$ with $g(a)\ne0$, so
+$\frac{f'}f=\frac m{z-a}+\frac{g'}g$ has residue $m$. At a pole of order $m$, $f=(z-a)^{-m}g$ with $g$ holomorphic and $g(a)\ne0$, and the residue is $-m$.
+Elsewhere $\frac{f'}f$ is holomorphic. Apply Theorem~\ref{thm:residue}. Finally $\int_{f\circ\gamma}\frac{\mathrm dw}w=\int_\alpha^\beta\frac{f'(\gamma(t))\gamma'(t)}{f(\gamma(t))}\dd t$.
+\end{proof}
+
+So the number of zeros inside a contour is the number of times the image of the contour winds around $0$ (Figure~\ref{fig:winding}).
+For a polynomial of degree $n$ and a huge circle, $f(z)\approx z^n$ and the image winds $n$ times: the fundamental theorem of
+algebra again, now with the count. The next theorem makes ``$\approx$'' precise.
+
+\begin{theorem}[Rouch\'e]\label{thm:rouche}
+Let $D$, $\gamma$ be as above, $f$, $g$ holomorphic on an open set containing $\overline D$, and $|g|<|f|$ on $\gamma^*$. Then $f$ and $f+g$ have the same
+number of zeros in $D$.
+\end{theorem}
+\begin{proof}
+For $s\in[0,1]$, $f_s=f+sg$ satisfies $|f_s|\ge|f|-|g|>0$ on $\gamma^*$, so it is not identically zero, and the argument principle applies: its number of
+zeros in $D$ is $N(s)=\frac1{2\pi i}\int_\gamma\frac{f'+sg'}{f+sg}$. The integrand is continuous in $(s,t)$ on the compact $[0,1]\times[\alpha,\beta]$ (piece by piece), and its
+denominator is bounded below by $\min_{\gamma^*}(|f|-|g|)>0$; so $N$ is continuous by Theorem~\ref{thm:paramcompact}. An integer-valued continuous function on
+$[0,1]$ is constant, and $N(0)=N(1)$.
+\end{proof}
+
+\begin{example}
+How many roots of $z^5+3z+1$ lie in the unit disc? On $|z|=1$, $|z^5+1|\le2<3=|3z|$, so by Rouch\'e with $f=3z$ and $g=z^5+1$ there is exactly
+one, like $3z$. On $|z|=\frac32$, $|3z+1|\le\frac{11}2<\frac{243}{32}=|z^5|$, so all five roots have modulus less than $\frac32$.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch09-winding}
+\caption{Left: the five zeros of $z^5+3z+1$ (red) and the circles $|z|=1$ (blue) and $|z|=\frac32$ (orange). Middle: the image of the unit circle
+under $z\mapsto z^5+3z+1$, rescaled, winds once around $0$ (the black dot), despite its four loops. Right: the image of the larger circle winds
+five times. Only one zero is inside the unit circle, and all five are inside the larger one.}
+\label{fig:winding}
+\end{figure}
+
+\begin{think}
+The argument principle turns a question about where the zeros are into an integral. Is this a practical algorithm for finding
+roots? What would you do if the integral came out as $2.9999$? (A numerical calculation builds a root finder on this idea.)
+\end{think}
+
+\section{Exercises}
+
+\begin{exercise}[$\star\star$]\label{ex:xn}
+For $n\ge2$, show that $\displaystyle\int_0^\infty\frac{\mathrm dx}{1+x^n}=\frac{\pi/n}{\sin(\pi/n)}$, using the sector $0\le\arg z\le\frac{2\pi}n$, $|z|\le R$. Check the result against the
+Beta function.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fresnelsector}
+Integrating $e^{iz^2}$ over the sector $0\le\arg z\le\frac\pi4$, $|z|\le R$, show that $\displaystyle\int_0^\infty\cos(x^2)\dd x=\int_0^\infty\sin(x^2)\dd x=\frac12\sqrt{\frac\pi2}$. Compare with
+Lemma~\ref{lem:fresnel}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cothres}
+Using Theorem~\ref{thm:residuesum}, show that $\displaystyle\sum_{n\ge1}\frac1{n^2+a^2}=\frac\pi{2a}\coth\pi a-\frac1{2a^2}$ for $a>0$. Compare with Exercise~\ref{ex:coth}. What is $\sum_{n\in\Z}\frac{(-1)^n}{n^2+a^2}$?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:rouche}
+Show that $z^4-6z+3$ has exactly one zero in the unit disc and three in the annulus $1<|z|<2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:polygrowth}
+Let $f$ be entire with $|f(z)|\le C(1+|z|)^k$ for all $z$. Show that $f$ is a polynomial of degree at most $k$. Deduce that an entire function $f$
+with $|f(z)|\le C|e^z|$ for all $z$ is $ce^z$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:wielandt}
+(Wielandt's theorem, 1939.) Let $F$ be holomorphic on $\operatorname{Re}z>0$ with $F(z+1)=zF(z)$, $F(1)=1$, and $F$ bounded on the strip $1\le\operatorname{Re}z\le2$. Show
+that $F=\Gamma$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\Gamma$ is bounded on the strip, and let $G=F-\Gamma$. Show that $G$ extends to an entire function satisfying $G(z+1)=zG(z)$.
+\item Show that $H(z)=G(z)G(1-z)$ is bounded on $0\le\operatorname{Re}z\le1$ and satisfies $H(z+1)=-H(z)$. Conclude.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:rankdist}
+\emph{The rank of a random matrix.}
+\begin{enumerate}[label=(\alph*)]
+\item Show that the number of matrices of rank $r$ in $M_n(\mathbb F_q)$ is
+\[
+\prod_{i=0}^{r-1}\frac{(q^n-q^i)^2}{q^r-q^i}.
+\]
+\item Let $A$ be uniform in $M_n(\mathbb F_q)$. Show that for each $k\ge0$, as $n\to\infty$,
+\[
+P(\operatorname{corank}A=k)\longrightarrow q^{-k^2}\,\frac{\prod_{j>k}(1-q^{-j})}{\prod_{j=1}^k(1-q^{-j})}.
+\]
+\item Deduce Durfee's identity: for $|x|<1$, writing $(x)_k=(1-x)(1-x^2)\cdots(1-x^k)$,
+\[
+\sum_{k\ge0}\frac{x^{k^2}}{(x)_k^{\,2}}=\prod_{j\ge1}\frac1{1-x^j},
+\]
+first for $x=\frac1q$, then for all $x$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:dedekind}
+\emph{Dedekind sums.} Let $((t))=t-\lfloor t\rfloor-\frac12$ for $t\notin\Z$ and $((t))=0$ for $t\in\Z$. For coprime integers $h$ and $k\ge1$, the \emph{Dedekind sum} is
+$s(h,k)=\sum_{r=0}^{k-1}\bigl(\bigl(\frac rk\bigr)\bigr)\bigl(\bigl(\frac{hr}k\bigr)\bigr)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\bigl(\bigl(\frac rk\bigr)\bigr)=-\frac1{2k}\sum_{j=1}^{k-1}\cot\frac{\pi j}k\,\sin\frac{2\pi jr}k$ for every integer $r$, and deduce that
+\[
+s(h,k)=\frac1{4k}\sum_{j=1}^{k-1}\cot\frac{\pi j}k\cot\frac{\pi hj}k.
+\]
+\item Let $h,k\ge1$ be coprime. By integrating $\cot(\pi z)\cot(\pi hz)\cot(\pi kz)$ around the rectangle with vertices $\varepsilon\pm iY$, $1+\varepsilon\pm iY$, and letting
+$Y\to\infty$, prove \emph{Dedekind's reciprocity law}
+\[
+s(h,k)+s(k,h)=-\frac14+\frac1{12}\Bigl(\frac hk+\frac kh+\frac1{hk}\Bigr).
+\]
+\item Show that $s(1,k)=\frac{(k-1)(k-2)}{12k}$, that $6k\,s(h,k)$ is an integer, and that $|s(h,k)|\le s(1,k)$.
+\item Let $\frac hk=[0;a_1,\dots,a_n]$ with $0<h<k$. Show that $|s(h,k)|\le\frac1{12}(a_1+\dots+a_n)+n$, and that $s(h,k)$ can be computed in $O(\log k)$ arithmetic
+operations on fractions.
+\item For $k=101$, $1009$, $10\,007$, $100\,003$ one finds numerically that the average of $|s(h,k)|$ over $1\le h<k$ is $0.951$, $2.037$, $3.691$, $5.802$, while $\log^2k$ is
+$21.3$, $47.8$, $84.8$, $132.5$, and that the maximum is $s(1,k)$. Vardi proved in 1993 that $\frac{s(h,k)}{\log k}$ has a Cauchy limiting distribution as $h$ and $k$
+vary. Explain why a law with no mean is consistent with averages growing like $\log^2k$ rather than $\log k$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:xn}
+The only pole in the sector is $e^{i\pi/n}$. On the second ray $z=re^{2\pi i/n}$, $z^n=r^n$. For the check, substitute $u=x^n$ and use reflection.
+\end{hint}
+\begin{hint}{ex:fresnelsector}
+On the arc, $|e^{iz^2}|=e^{-R^2\sin2\theta}$ and $\sin2\theta\ge\frac{4\theta}\pi$ on $[0,\frac\pi4]$ (concavity). On the ray $z=re^{i\pi/4}$, $iz^2=-r^2$.
+\end{hint}
+\begin{hint}{ex:cothres}
+The residues of $\frac{\pi\cot\pi z}{z^2+a^2}$ at $\pm ia$; $\cot(iy)=-i\coth y$. For the alternating sum, $\frac\pi{\sin\pi z}$ has residue $(-1)^n$ at $n$.
+\end{hint}
+\begin{hint}{ex:rouche}
+Compare with $-6z$ on $|z|=1$ and with $z^4$ on $|z|=2$. Check that there is no zero on $|z|=1$.
+\end{hint}
+\begin{hint}{ex:polygrowth}
+Cauchy's estimates on $C(0,r)$, then $r\to\infty$. For the second part, look at $f(z)e^{-z}$.
+\end{hint}
+\begin{hint}{ex:wielandt}
+(a) Log-convexity and $\Gamma(1)=\Gamma(2)=1$; near $-n$, write $G(z)=\frac{G(z+n+1)}{z(z+1)\cdots(z+n)}$ and use $G(1)=0$. (b) For $|\operatorname{Im}z|\ge1$ in the strip, $G(z)=\frac{G(z+1)}z$.
+Then Liouville, and Theorem~\ref{thm:identity}.
+\end{hint}
+
+\begin{hint}{pb:rankdist}
+(a) Choose the image first. (b) Pull $q^{n}$ out of every factor. (c) The probabilities add up to $1$; justify the limit with a
+uniform bound.
+\end{hint}
+
+\begin{hint}{pb:dedekind}
+(a) The sawtooth on $\Z/k\Z$ has discrete Fourier coefficients $\frac i{2k}\cot\frac{\pi j}k$; Parseval. (b) Inside the rectangle the poles are at $z=1$ (triple) and at the
+points $\frac jh$, $\frac jk$ with $0<j<h$, $0<j<k$; as $Y\to\infty$, the cotangents tend to $\mp i$ on the horizontal sides. (c) For $|s|\le s(1,k)$, Cauchy--Schwarz. (d) Reciprocity
+along Euclid's algorithm.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:xn}
+\idea The integrand is invariant under rotation by $\omega=e^{2\pi i/n}$, since $(\omega z)^n=z^n$: the integral along the rotated ray is $\omega$ times the
+one we want, which is the same trick as the rectangle of Example~\ref{ex:rectangle}.
+\writeup The sector is convex since its angle $\frac{2\pi}n$ is at most $\pi$. The zeros of $1+z^n$ are $e^{i\pi(2k+1)/n}$, and only $a=e^{i\pi/n}$ has argument in
+$\left]0,\frac{2\pi}n\right[$; the residue there is $\frac1{na^{n-1}}=\frac a{na^n}=-\frac an$. On the arc, $\bigl|\frac1{1+z^n}\bigr|\le\frac1{R^n-1}$, and the arc has length $\frac{2\pi R}n$, so its integral
+tends to $0$ as $n\ge2$. On the ray $z=r\omega$, traversed inwards, the integral is $-\omega\int_0^R\frac{\mathrm dr}{1+r^n}$. Letting $R\to\infty$, with $\omega=a^2$,
+$(1-a^2)I=-\frac{2\pi ia}n$, so
+\[
+\begin{aligned}I&=\frac{2\pi i}{n(a-a^{-1})}\eqbr=\frac{2\pi i}{n\cdot2i\sin\frac\pi n}=\frac{\pi/n}{\sin(\pi/n)}.\end{aligned}
+\]
+Check: with $u=x^n$, $I=\frac1n\int_0^\infty\frac{u^{1/n-1}}{1+u}\dd u=\frac1n\Gamma(\frac1n)\Gamma(1-\frac1n)$ by Example~\ref{ex:rectangle}, and reflection gives the same value. For $n=2$, $\frac\pi2$.
+\end{solution}
+
+\begin{solution}{ex:fresnelsector}
+\idea $e^{iz^2}$ oscillates on the real axis but, on the diagonal $z=re^{i\pi/4}$, it becomes the Gaussian $e^{-r^2}$. Cauchy's theorem lets us move from
+one to the other, provided the arc between them contributes nothing.
+\writeup $e^{iz^2}$ is entire, so its integral over the boundary of the sector (convex) is $0$. On the arc $z=Re^{i\theta}$, $iz^2=iR^2(\cos2\theta+i\sin2\theta)$, so
+$|e^{iz^2}|=e^{-R^2\sin2\theta}\le e^{-4R^2\theta/\pi}$, using that the concave function $\sin2\theta$ lies above its chord on $[0,\frac\pi4]$. The arc integral is therefore at
+most $\int_0^{\pi/4}e^{-4R^2\theta/\pi}R\dd\theta\le\frac{\pi R}{4R^2}=\frac\pi{4R}\to0$. On the ray, $z=re^{i\pi/4}$ and $iz^2=-r^2$, contributing $-e^{i\pi/4}\int_0^Re^{-r^2}\dd r$. So
+\[
+\int_0^Re^{ix^2}\dd x\longrightarrow e^{i\pi/4}\int_0^\infty e^{-r^2}\dd r=\frac{\sqrt\pi}2\cdot\frac{1+i}{\sqrt2},
+\]
+which proves that the improper integral converges, and taking real and imaginary parts gives $\frac{\sqrt\pi}{2\sqrt2}=\frac12\sqrt{\frac\pi2}$ for both. With $u=x^2$,
+$\int_0^\infty e^{ix^2}\dd x=\frac12\int_0^\infty u^{-1/2}e^{iu}\dd u$, which is $\frac12\sqrt\pi e^{i\pi/4}$ by Lemma~\ref{lem:fresnel}: the same value, by a different road.
+\end{solution}
+
+\begin{solution}{ex:cothres}
+\idea Apply the theorem with the two poles $\pm ia$ of $f$; the cotangent of an imaginary number is a hyperbolic cotangent.
+\writeup $f(z)=\frac1{z^2+a^2}$ satisfies the bound and has simple poles at $\pm ia$, not integers. By Proposition~\ref{prop:rescalc}(b), the residue of
+$\frac{\pi\cot\pi z}{z^2+a^2}$ at $\pm ia$ is $\frac{\pi\cot(\pm i\pi a)}{\pm2ia}$. Since $\cot(iy)=\frac{\cos iy}{\sin iy}=\frac{\cosh y}{i\sinh y}=-i\coth y$ and $\cot$ is odd, both residues equal
+$\frac{-i\pi\coth\pi a}{2ia}=-\frac{\pi\coth\pi a}{2a}$. So $\sum_{n\in\Z}\frac1{n^2+a^2}=\frac\pi a\coth\pi a$, as in Exercise~\ref{ex:coth} by Poisson summation; removing $n=0$ and halving gives
+the formula. For the alternating sum, $\frac\pi{\sin\pi z}$ also satisfies Lemma~\ref{lem:cotbound}'s kind of bound on $C_N$ (on the horizontal sides
+$\bigl|\frac{2i}{e^{i\pi z}-e^{-i\pi z}}\bigr|\le\frac2{e^{\pi/2}-e^{-\pi/2}}$, on the vertical sides $|\sin\pi z|=\cosh\pi y\ge1$), and has residue $(-1)^n$ at $n$. The same proof gives
+$\sum_n\frac{(-1)^n}{n^2+a^2}=-2\cdot\frac{\pi}{2ia\sin(i\pi a)}=\frac\pi{a\sinh\pi a}$, using $\sin(iy)=i\sinh y$.
+\end{solution}
+
+\begin{solution}{ex:rouche}
+\idea Find on each circle the term that dominates the others.
+\writeup On $|z|=1$, $|z^4+3|\le4<6=|-6z|$, so $z^4-6z+3$ has as many zeros in the unit disc as $-6z$, namely one; the strict inequality also shows
+there is no zero on the circle. On $|z|=2$, $|-6z+3|\le15<16=|z^4|$, so there are four zeros in $|z|<2$, as for $z^4$. Hence three zeros in $1<|z|<2$.
+\end{solution}
+
+\begin{solution}{ex:polygrowth}
+\idea Liouville's proof works with polynomial growth: Cauchy's estimates kill every coefficient beyond the degree.
+\writeup $f(z)=\sum c_nz^n$ on $\C$ by Theorem~\ref{thm:analytic}, and Corollary~\ref{cor:radius}(a) gives $|c_n|\le\frac{C(1+r)^k}{r^n}$ for every $r>0$. For $n>k$ this tends to $0$ as
+$r\to\infty$, so $c_n=0$. For the second part, $g(z)=f(z)e^{-z}$ is entire and bounded by $C$, hence constant by Liouville.
+\end{solution}
+
+\begin{solution}{ex:wielandt}
+\idea On the real axis Bohr--Mollerup used log-convexity; in the complex plane boundedness on a strip takes its place, and
+Liouville does the rest. The product $G(z)G(1-z)$ is built to be periodic, exactly as $\Gamma(z)\Gamma(1-z)$ is.
+\writeup (a) $\Gamma$ is log-convex on $\left]0,\infty\right[$ (Corollary~\ref{cor:gammalogconvex}) with $\Gamma(1)=\Gamma(2)=1$, so $\Gamma\le1$ on $[1,2]$, and $|\Gamma(z)|\le\Gamma(\operatorname{Re}z)\le1$ on the
+strip by Theorem~\ref{thm:gammac}(a). So $G$ is bounded on the strip, $G(z+1)=zG(z)$ and $G(1)=0$. As in Theorem~\ref{thm:gammac}(b), $G$ extends to
+$\C\setminus\{0,-1,\dots\}$ by $G(z)=\frac{G(z+n+1)}{z(z+1)\cdots(z+n)}$. Near $-n$, the numerator tends to $G(1)=0$, so $(z+n)G(z)\to0$, and $G$ is bounded near $-n$ (the numerator is
+holomorphic and vanishes at $-n$, so it is $(z+n)$ times a holomorphic function, by Theorem~\ref{thm:identity}(a)). By Theorem~\ref{thm:removable}, $G$ is entire.
+
+(b) On the strip $S_0=\{0\le\operatorname{Re}z\le1\}$, $G(z)=\frac{G(z+1)}z$ is bounded for $|\operatorname{Im}z|\ge1$, and $G$ is bounded on the compact part $|\operatorname{Im}z|\le1$ by continuity.
+As $z\mapsto1-z$ maps $S_0$ to itself, $H$ is bounded on $S_0$. Next, $G(1-z)=G(-z+1)=-zG(-z)$, so for $z\ne0$,
+\[
+\begin{aligned}H(z+1)&=G(z+1)G(-z)=zG(z)\cdot\frac{G(1-z)}{-z}\eqbr=-H(z),\end{aligned}
+\]
+and by continuity also at $z=0$. So $|H|$ is $1$-periodic, hence bounded on $\C$, and $H$ is constant by Liouville: $H=H(1)=G(1)G(0)=0$. If $G$ were not
+identically zero, its zeros would be isolated, so $G\ne0$ on some disc $D$; then $G(1-z)=0$ for $z\in D$, and Theorem~\ref{thm:identity} gives $G=0$, a
+contradiction. Hence $F=\Gamma$.
+\end{solution}
+
+\begin{solution}{pb:rankdist}
+\idea A matrix of rank $r$ is a choice of an $r$-dimensional image and of a surjection onto it. In the limit only the corank
+matters, and summing the limit law to $1$ is a partition identity.
+
+\writeup (a) A matrix $A$ of rank $r$ is a linear map $\mathbb F_q^n\to\mathbb F_q^n$ with image $W$ of dimension $r$. Given $W$, with a
+basis, the maps onto $W$ correspond to $r\times n$ matrices of rank $r$, whose rows are independent: $\prod_{i<r}(q^n-q^i)$ of them.
+The number of $W$ is the Gaussian binomial $\prod_{i<r}\frac{q^n-q^i}{q^r-q^i}$ (count ordered independent vectors, then divide by the number of bases of an $r$-space). Multiply.
+
+(b) Let $r=n-k$. Factor $q^n$ out of each $q^n-q^i$ and $q^r$ out of each $q^r-q^i$:
+\[
+\frac{\#\{\text{rank }r\}}{q^{n^2}}=q^{2nr-r^2-n^2}\,\frac{\prod_{i<r}(1-q^{i-n})^2}{\prod_{i<r}(1-q^{i-r})}
+=q^{-k^2}\,\frac{\prod_{j=k+1}^{n}(1-q^{-j})^2}{\prod_{j=1}^{n-k}(1-q^{-j})}.
+\]
+As $n\to\infty$ the products converge (since $\sum q^{-j}<\infty$), to $\prod_{j>k}(1-q^{-j})^2/\prod_{j\ge1}(1-q^{-j})$, which is the
+stated limit.
+
+(c) Let $c_q=\prod_{j\ge1}(1-q^{-j})>0$. The $n$-th probabilities are at most $q^{-k^2}/c_q$, a summable bound, and they add up to
+$1$ for each $n$; by dominated convergence the limits add up to $1$:
+\[
+\sum_{k\ge0}q^{-k^2}\frac{\prod_{j>k}(1-q^{-j})}{\prod_{j\le k}(1-q^{-j})}=1,\quad\text{that is}\quad
+\sum_k\frac{x^{k^2}}{(x)_k^2}=\frac1{\prod_j(1-x^j)}\ \text{ at }x=\tfrac1q,
+\]
+after dividing by $c_q$ and writing $\prod_{j>k}(1-x^j)=c_q/(x)_k$. Both sides are power series in $x$ with non-negative integer
+coefficients, convergent for $|x|<1$, and they agree at $x=\frac1q$ for every prime power $q$, a sequence tending to $0$. By the
+identity theorem for power series (Volume~4, Chapter~9) they are equal.
+
+\tools counting bases over a finite field, as in the preceding problem; Volume~3, Chapter~5 (dominated convergence);
+Volume~4, Chapter~9 (power series).
+\leads A partition has a largest square $k\times k$ in its Young diagram (its Durfee square), and the two pieces outside the square
+are partitions into parts at most $k$: this is the combinatorial proof, $\frac{x^{k^2}}{(x)_k^2}$ counting partitions with
+Durfee square $k$. For $q=2$ the limit law is $0.2888$, $0.5776$, $0.1284$, $0.0052$ for coranks $0,1,2,3$, the Cohen--Lenstra
+type law that also governs, conjecturally, the class groups of number fields.
+\end{solution}
+
+\begin{solution}{pb:dedekind}
+\idea A Dedekind sum is the correlation of the sawtooth with a permuted copy of itself. In the Fourier basis of $\Z/k\Z$ the sawtooth becomes cotangents, so $s(h,k)$ is a cotangent
+sum; and cotangent sums are residues. The function $\cot(\pi z)\cot(\pi hz)\cot(\pi kz)$ has residues giving $s(h,k)$, $s(k,h)$ and an explicit term at $z=1$, and its integral around a
+period rectangle is computable. That is the reciprocity law, which makes $s(h,k)$ computable along Euclid's algorithm.
+
+\writeup (a) Let $w=e(\frac jk)$, $1\le j\le k-1$, and $0<r<k$. Then $\cot\frac{\pi j}k\sin\frac{2\pi jr}k=\frac{(w+1)(w^r-w^{-r})}{2(w-1)}=\frac12(w+1)\sum_{m=-r}^{r-1}w^m=\frac12\bigl(w^{-r}+w^r+2\sum_{|m|<r}w^m\bigr)$.
+Summing over $j$ with $\sum_{j=1}^{k-1}w^m=k[k\mid m]-1$ gives $\frac12\bigl(-2+2(k-1)-2(2r-2)\bigr)=k-2r$, and $-\frac{k-2r}{2k}=\frac rk-\frac12=((\frac rk))$. For $r=0$ both sides vanish.
+Then, using $\sum_{r\bmod k}\sin\frac{2\pi jr}k\sin\frac{2\pi j'r}k=\frac k2([j\equiv j']-[j\equiv-j'])$ and the substitution $j'\mapsto hj'$,
+\[
+s(h,k)=\frac1{4k^2}\sum_{j,j'}\cot\frac{\pi j}k\cot\frac{\pi j'}k\sum_r\sin\frac{2\pi jr}k\sin\frac{2\pi hj'r}k=\frac1{4k}\sum_{j=1}^{k-1}\cot\frac{\pi j}k\cot\frac{\pi hj}k,
+\]
+the two Kronecker terms giving equal contributions since $\cot$ is odd.
+
+(b) $\Phi(z)=\cot(\pi z)\cot(\pi hz)\cot(\pi kz)$ has period $1$, so the vertical sides cancel. As $Y\to\infty$, $\cot(\pi(x\pm iY))\to\mp i$ uniformly, so the top side (traversed
+leftwards) tends to $-(-i)^3=-i$ and the bottom side to $i^3=-i$: the integral tends to $-2i$, and the residues add up to $-\frac1\pi$. At $z=\frac jh$, $0<j<h$, only $\cot(\pi hz)$ has
+a pole, with residue $\frac1{\pi h}$; the residues there add up to $\frac1{\pi h}\sum_j\cot\frac{\pi j}h\cot\frac{\pi kj}h=\frac4\pi s(k,h)$, and those at $\frac jk$ to $\frac4\pi s(h,k)$. At $z=1$,
+with $\cot(\pi u)=\frac1{\pi u}-\frac{\pi u}3+O(u^3)$, $\Phi(1+u)=\frac1{\pi^3hku^3}(1-\frac{\pi^2u^2}3)(1-\frac{\pi^2h^2u^2}3)(1-\frac{\pi^2k^2u^2}3)+\dots$, with residue
+$-\frac{1+h^2+k^2}{3\pi hk}$. So $\frac4\pi(s(h,k)+s(k,h))-\frac{1+h^2+k^2}{3\pi hk}=-\frac1\pi$, which is the law.
+
+(c) $s(1,k)=\sum_{r=1}^{k-1}(\frac rk-\frac12)^2=\frac{(k-1)(2k-1)}{6k}-\frac{k-1}2+\frac{k-1}4=\frac{(k-1)(k-2)}{12k}$. Writing $\{\frac{hr}k\}=\frac{hr\bmod k}k$ and using
+$\sum_{r=1}^{k-1}\{\frac{hr}k\}=\frac{k-1}2$, one finds $s(h,k)=\frac1{k^2}\sum_rr\,(hr\bmod k)-\frac{k-1}4$. Since $r(hr\bmod k)\equiv hr^2\pmod k$, $6\sum_rr(hr\bmod k)\equiv h(k-1)k(2k-1)\equiv0\pmod k$,
+so $6k\,s(h,k)=\frac6k\sum_rr(hr\bmod k)-\frac{3k(k-1)}2$ is an integer. Finally, by Cauchy--Schwarz and because $r\mapsto hr$ permutes the residues,
+$|s(h,k)|\le\sum_r((\frac rk))^2=s(1,k)$.
+
+(d) $s(h,k)$ depends on $h$ modulo $k$. Let $0<h<k$ and $k=a_1h+r_1$, so that $\frac{r_1}h=[0;a_2,\dots,a_n]$. By (b),
+$|s(h,k)|\le|s(r_1,h)|+\frac1{12}(\frac kh+\frac hk+\frac1{hk})+\frac14\le|s(r_1,h)|+\frac{a_1}{12}+1$, as $\frac kh<a_1+1$, $\frac hk<1$ and $\frac1{hk}\le\frac12$. Iterating down to $s(0,1)=0$ gives
+$|s(h,k)|\le\frac1{12}\sum a_i+n$. The same recursion, with signs, computes $s(h,k)$ exactly, and Euclid's algorithm has $n=O(\log k)$ steps.
+
+(e) If $\frac{s(h,k)}{\log k}$ were exactly Cauchy, $P(|s|>t\log k)\approx\frac c t$, and the mean of $|s|/\log k$ would diverge logarithmically. Since $|s(h,k)|\le s(1,k)<\frac k{12}$, the tail is cut
+at $t\approx\frac k{\log k}$, and $\mathbb E\frac{|s|}{\log k}\approx\int_1^{k/\log k}\frac c t\dd t\approx c\log k$. So the average of $|s|$ grows like $\log^2k$, as the data show: the ratios to
+$\log^2k$ are $0.045$, $0.043$, $0.044$, $0.044$. The large values come from $h$ with one large partial quotient, as (d) suggests: $h=1$, $h=2$, or $h$ close to $\frac ka$.
+
+\tools{Discrete Fourier analysis on $\Z/k\Z$ (Volume~4); residues (Volume~4, Chapter~9); continued fractions and Euclid's algorithm (Volume~1).}
+
+\leads Dedekind found the sums in 1892 in the transformation law of $\log\eta(\tau)$ under $\tau\mapsto\frac{a\tau+b}{c\tau+d}$, which involves $s(d,c)$; Volume~5, Theorem~12.7 is the case
+$s(0,1)=0$. The proof of reciprocity given here is one of several in Rademacher and Grosswald's monograph.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item E.~Stein and R.~Shakarchi, \emph{Complex Analysis}, Princeton University Press, 2003, Chapters~1 to~3 (Goursat,
+Cauchy, residues, Rouch\'e) and~6 (the Gamma function).
+\item L.~Ahlfors, \emph{Complex Analysis}, 3rd ed., McGraw-Hill, 1979. The classic, with the homology form of Cauchy's theorem.
+\item T.~Needham, \emph{Visual Complex Analysis}, Oxford University Press, 1997. Pictures for everything in this chapter,
+including winding numbers and Rouch\'e's ``dog on a leash''.
+\item E.~Goursat, \emph{Sur la d\'efinition g\'en\'erale des fonctions analytiques, d'apr\`es Cauchy}, Transactions of the AMS 1
+(1900), 14--16. Theorem~\ref{thm:goursat} without continuity of $f'$.
+\item A.-L.~Cauchy, \emph{M\'emoire sur les int\'egrales d\'efinies prises entre des limites imaginaires}, Paris, 1825. The birth
+of contour integration.
+\item R.~Remmert, \emph{Wielandt's theorem about the $\Gamma$-function}, American Mathematical Monthly 103 (1996), 214--220.
+Exercise~\ref{ex:wielandt}.
+\item D.~S.~Mitrinovi\'c and J.~D.~Ke\v cki\'c, \emph{The Cauchy Method of Residues}, Reidel, 1984. Hundreds of integrals and
+sums computed by the methods of this chapter.
+\end{itemize}

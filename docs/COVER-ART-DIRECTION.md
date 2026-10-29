@@ -17,7 +17,7 @@ identity. An identical camera does not require every object to have the same pos
 | 6 — Spaces | Retain the Sierpiński carpet explicitly referenced inside the book; give it shallow, solid hole walls instead of hanging wires. | Self-similarity and Hausdorff dimension log(8)/log(3), Chapter 11. |
 | 7 — Analysis in Depth | Replace the generic sine sheet with a logarithm helicoid, opening the spiral for a clear silhouette. | Analytic continuation, logarithms and conformal maps, Chapter 9. |
 | 8 — Shapes | Retain the pseudosphere, increase its presence and turn its rims into view. | A surface of constant negative Gaussian curvature; hyperbolic geometry, Chapter 9. |
-| 9 — Higher Structures | Replace the generic stacked partition with the actual 600-box Plancherel Young diagram as a solid Ferrers wall. | RSK, Plancherel measure and symmetric-group representations, Chapter 9. |
+| 10 — Abstraction | Replace the generic stacked partition with the actual 600-box Plancherel Young diagram as a solid Ferrers wall. | RSK, Plancherel measure and symmetric-group representations, Chapter 9. |
 | 10 — Chance II | Replace arbitrary-looking stick-breaking terraces with a smooth entropy bowl and luminous rim. | The Bernoulli large-deviation rate function, Chapter 7. |
 | 11 — Random Motion | Separate the flat eigenvalue sheet into seven flowing ribbons, making motion and empty space legible. | Spline-smoothed eigenvalues of a Hermitian Brownian matrix with separated initial levels; random matrices, Chapter 10. |
 | 12 — Arithmetic | Retain the only elliptic complex torus in the series; tilt it to show its inner rim and depth. | A complex elliptic curve as a torus, Chapters 12 and 14. |
@@ -33,7 +33,7 @@ coordinates may rotate or scale uniformly, while mathematical data remain intact
 Obsolete cover claims in the Structures linear-algebra appendix and Chance
 orders appendix referred to earlier lozenge/Boolean-lattice designs. They are
 removed or reworded without changing the mathematical statements or diagrams.
-The Spaces carpet and Higher Structures Plancherel references remain accurate.
+The Spaces carpet and Abstraction Plancherel references remain accurate.
 
 Review every final front separately at full size and again in the contact sheet.
 Check shape/meaning, mesh legibility, glow, negative space, title clearance, author

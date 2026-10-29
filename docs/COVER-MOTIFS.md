@@ -18,8 +18,8 @@ they are not proofs of open conjectures.
 | 6: Spaces | Sierpinski carpet and Cantor construction | ch11-metricmeasures.tex |
 | 7: Analysis in Depth | Image of an orthogonal grid under sin(z) | ch09-complex.tex |
 | 8: Shapes | Farey tessellation of the hyperbolic disk | ch09-hyperbolic.tex |
-| 9: Higher Structures | Young diagram and Plancherel limit shape | ch09-symmetric.tex |
-| 10: Chance II | GEM(1) proportional stick-breaking bands | ch12-permutations.tex |
+| 10: Abstraction | Young diagram and Plancherel limit shape | ch09-symmetric.tex |
+| 11: Randomness | GEM(1) proportional stick-breaking bands | ch12-permutations.tex |
 | 11: Random Motion | Hermitian Brownian eigenvalue trajectories | ch10-semicircle.tex |
 | 12: Arithmetic | Ford circles over reduced rationals | ch14-modular.tex; ch12-elliptic.tex |
 | 13: Primes in Depth | Prime residues, twins and constellations | Prime distribution and progressions |

@@ -1,0 +1,674 @@
+\chapter{The Discrete Fourier Transform and the FFT}
+
+\begin{center}\itshape
+The most important numerical algorithm of our lifetime.\\
+\upshape --- Gilbert Strang, on the fast Fourier transform, 1994
+\end{center}
+
+In 1963, at a meeting of President Kennedy's Science Advisory Committee about how to detect Soviet nuclear tests from seismometer readings, the
+statistician John Tukey sketched a faster way to compute Fourier transforms. The physicist Richard Garwin saw what it meant, and found a programmer at
+IBM, James Cooley, to make it run. The resulting paper became one of the most cited in all of applied mathematics.
+
+Chapter~6 decomposed a function on the circle into infinitely many frequencies. A computer only ever sees finitely many
+samples, and on $n$ samples there are exactly $n$ frequencies: the characters of the cyclic group $\Z/n\Z$, which Volume~2,
+Chapter~11, already studied. The transform is then a matrix, and computing it naively costs $n^2$ multiplications.
+
+In 1965 Cooley and Tukey published a way to do it in about $\frac n2\log_2n$ (Gauss had found the same idea in 1805, to
+interpolate the orbit of the asteroid Juno, and left it in an unpublished manuscript). For $n=2^{20}$, about a million,
+this is the difference between $10^{12}$ operations and $10^7$. The fast Fourier transform made digital audio, medical
+imaging, radar and modern cryptography practical, and it keeps a promise of Volume~0, Chapter~2: polynomials, and
+therefore large integers, can be multiplied in time $O(n\log n)$.
+
+\begin{think}
+To multiply two polynomials of degree $n-1$ the schoolbook method computes $n^2$ products of coefficients. But a polynomial of
+degree $2n-2$ is determined by its values at $2n-1$ points, and values multiply pointwise. What is the catch, and which points
+would you choose to evaluate at?
+\end{think}
+
+\section{The discrete Fourier transform}
+
+Fix $n\ge1$, let $\omega=e^{2\pi i/n}$, and index vectors of $\C^n$ by $\Z/n\Z$, so that $a_{k+n}=a_k$.
+
+\begin{definition}
+The \emph{discrete Fourier transform} (DFT) of $a=(a_0,\dots,a_{n-1})\in\C^n$ is $\hat a\in\C^n$ with
+\[
+\hat a_j=\sum_{k=0}^{n-1}a_k\omega^{-jk}\qquad(j\in\Z/n\Z).
+\]
+In matrix form $\hat a=F_na$, where $F_n=(\omega^{-jk})_{0\le j,k<n}$.
+\end{definition}
+
+This is the convention of most software; Volume~2, Theorem~11.14, divided by $n$. The DFT evaluates the polynomial
+$A(X)=\sum_ka_kX^k$ at the $n$-th roots of unity: $\hat a_j=A(\omega^{-j})$.
+
+\begin{lemma}\label{lem:rootsum}
+For every integer $m$, $\sum_{k=0}^{n-1}\omega^{mk}$ is $n$ if $n$ divides $m$, and $0$ otherwise.
+\end{lemma}
+\begin{proof}
+If $n\mid m$ every term is $1$. Otherwise $q=\omega^m\ne1$ and the geometric sum is $\frac{q^n-1}{q-1}=0$, since $q^n=1$.
+\end{proof}
+
+\begin{theorem}[inversion and Parseval]\label{thm:dftinversion}
+For $a\in\C^n$,
+\[
+\begin{gathered}a_k=\frac1n\sum_{j=0}^{n-1}\hat a_j\omega^{jk},\qq\sum_{k=0}^{n-1}|a_k|^2=\frac1n\sum_{j=0}^{n-1}|\hat a_j|^2.\end{gathered}
+\]
+Equivalently, $\frac1{\sqrt n}F_n$ is a unitary matrix, and $F_n^{-1}=\frac1n\overline{F_n}$.
+\end{theorem}
+\begin{proof}
+$(\overline{F_n}F_n)_{lk}=\sum_j\omega^{jl}\omega^{-jk}=\sum_j\omega^{j(l-k)}$, which is $n$ if $l=k$ and $0$ otherwise by Lemma~\ref{lem:rootsum}. So $\overline{F_n}F_n=nI$,
+which is the inversion formula. Since $F_n$ is symmetric, $\overline{F_n}=F_n^*$, so $\bigl(\frac1{\sqrt n}F_n\bigr)^*\frac1{\sqrt n}F_n=I$, and a unitary matrix preserves the
+Hermitian norm.
+\end{proof}
+
+The DFT is the Fourier series of Chapter~6 seen through samples. Sampling a function at $n$ equally spaced points cannot
+distinguish the frequencies $j$ and $j+n$, since $e^{i(j+n)t}=e^{ijt}$ at $t=\frac{2\pi k}n$; so they are added together.
+
+\begin{proposition}[aliasing]\label{prop:aliasing}
+Let $f$ be $2\pi$-periodic with $\sum_m|c_m(f)|<\infty$, so that $f=\sum_mc_m(f)e_m$ everywhere, and let $a_k=f\bigl(\frac{2\pi k}n\bigr)$. Then
+\[
+\frac1n\hat a_j=\sum_{l\in\Z}c_{j+ln}(f).
+\]
+\end{proposition}
+\begin{proof}
+$\hat a_j=\sum_k\sum_mc_m\omega^{mk}\omega^{-jk}$. The double sum is absolutely convergent, so we may sum over $k$ first, and
+Lemma~\ref{lem:rootsum} keeps exactly the $m\equiv j\pmod n$, each with weight $n$.
+\end{proof}
+
+So $\frac1n\hat a_j$ approximates $c_j(f)$ for $|j|<\frac n2$, with an error equal to the tail of the coefficients at the frequencies
+$j\pm n,j\pm2n,\dots$: small when $f$ is smooth, by Exercise~\ref{ex:abs}. A numerical calculation showed this error, of order
+$\frac1n$ for a function with a jump and $\frac1{n^2}$ for one with a kink.
+
+\section{Convolution}
+
+\begin{definition}
+The \emph{cyclic convolution} of $a,b\in\C^n$ is $(a*b)_k=\sum_{l=0}^{n-1}a_lb_{k-l}$, indices modulo $n$.
+\end{definition}
+
+\begin{theorem}[convolution theorem]\label{thm:convolution}
+$\widehat{a*b}_j=\hat a_j\hat b_j$ for every $j$. Hence $a*b=F_n^{-1}\bigl(F_na\cdot F_nb\bigr)$, with $\cdot$ the entrywise product.
+\end{theorem}
+\begin{proof}
+$\widehat{a*b}_j=\sum_k\sum_la_lb_{k-l}\omega^{-jl}\omega^{-j(k-l)}$; with $m=k-l$, which runs over $\Z/n\Z$ as $k$ does, this is
+$\sum_la_l\omega^{-jl}\sum_mb_m\omega^{-jm}$.
+\end{proof}
+
+In terms of polynomials, $\hat a_j\hat b_j$ is the value of $AB$ at $\omega^{-j}$, and $a*b$ is the coefficient vector of $AB$ reduced modulo $X^n-1$, since
+$X^n=1$ at every root of unity. If $\deg A+\deg B<n$, nothing is reduced, and the convolution is exactly the product.
+
+\begin{corollary}[multiplying polynomials]\label{cor:polymul}
+Let $A$, $B$ have degrees $d$ and $e$, and $n>d+e$. Pad their coefficient vectors with zeros to length $n$. Then the coefficients of $AB$
+are $F_n^{-1}(F_na\cdot F_nb)$.
+\end{corollary}
+\begin{proof}
+$(a*b)_k=\sum_la_lb_{k-l}$, and with the padding every index stays in $[0,n[$ without wrapping around: if $l\le d$ and $k-l\le e$
+then $k\le d+e<n$. So $(a*b)_k=\sum_{l}a_lb_{k-l}$ is the coefficient of $X^k$ in $AB$. Apply Theorem~\ref{thm:convolution}.
+\end{proof}
+
+This is the strategy of the think box: evaluate at the $n$-th roots of unity, multiply the values, interpolate back. The
+catch was the cost of evaluating and interpolating, $n^2$ each by the obvious method. The FFT removes it.
+
+\section{The fast Fourier transform}
+
+Let $n=2m$ be even. Then $\omega^2=e^{2\pi i/m}$ is the root of unity of order $m$. Split $a$ into its even and odd entries,
+$a^{\mathrm{even}}=(a_0,a_2,\dots,a_{n-2})$ and $a^{\mathrm{odd}}=(a_1,a_3,\dots,a_{n-1})$, vectors of length $m$, with transforms $E$ and $O$ of length $m$.
+
+\begin{lemma}[butterfly]\label{lem:butterfly}
+For $0\le j<m$,
+\[
+\begin{gathered}\hat a_j=E_j+\omega^{-j}O_j,\qq\hat a_{j+m}=E_j-\omega^{-j}O_j.\end{gathered}
+\]
+\end{lemma}
+\begin{proof}
+In polynomial terms, $A(X)=A^{\mathrm{even}}(X^2)+XA^{\mathrm{odd}}(X^2)$. At $X=\omega^{-j}$, $X^2=(\omega^2)^{-j}$ is an $m$-th root of unity, so
+$A^{\mathrm{even}}(X^2)=E_j$ and $A^{\mathrm{odd}}(X^2)=O_j$; and $E$, $O$ have period $m$. Replacing $j$ by $j+m$ changes $X$ into $-X$ (since $\omega^{-m}=-1$)
+and leaves $X^2$ unchanged.
+\end{proof}
+
+The halving works because squaring maps the $n$-th roots of unity two-to-one onto the $m$-th roots of unity: the $n$
+evaluations of $A$ need only $m$ evaluations of each half. The recursive algorithm is three lines.
+
+\begin{center}
+\begin{minipage}{0.9\linewidth}
+\textbf{FFT}$(a)$, for $a$ of length $n=2^r$:
+\begin{enumerate}
+\item if $n=1$, return $a$;
+\item $E\gets\mathrm{FFT}(a_0,a_2,\dots)$, $O\gets\mathrm{FFT}(a_1,a_3,\dots)$;
+\item for $0\le j<\frac n2$: $t\gets\omega^{-j}O_j$, $\hat a_j\gets E_j+t$, $\hat a_{j+n/2}\gets E_j-t$.
+\end{enumerate}
+\end{minipage}
+\end{center}
+
+\begin{theorem}[Cooley--Tukey]\label{thm:fft}
+For $n=2^r$, the FFT computes the DFT with at most $\frac n2\log_2n$ complex multiplications and $n\log_2n$ complex additions,
+the powers $\omega^{-j}$ being precomputed.
+\end{theorem}
+\begin{proof}
+Correctness is Lemma~\ref{lem:butterfly} and induction on $r$. Let $M(n)$ and $S(n)$ count the multiplications and additions.
+Step 3 uses $\frac n2$ multiplications and $n$ additions, so $M(n)=2M(\frac n2)+\frac n2$ and $S(n)=2S(\frac n2)+n$, with $M(1)=S(1)=0$. By
+induction, $M(2^r)=2\cdot\frac{2^{r-1}}2(r-1)+2^{r-1}=\frac{2^r}2r$ and $S(2^r)=2\cdot2^{r-1}(r-1)+2^r=2^rr$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-butterfly}
+\caption{The data flow of the FFT for $n=8$: three stages of butterflies. On the left the inputs, in bit-reversed order
+($a_k$ sits at the position whose binary digits are those of $k$ reversed); on the right the outputs $\hat a_j$ in natural
+order. Each butterfly combines two numbers $u$, $v$ into $u+wv$ and $u-wv$, with $w$ a root of unity.}
+\label{fig:butterfly}
+\end{figure}
+
+Unrolling the recursion gives an iterative algorithm that works in place (Figure~\ref{fig:butterfly}): the leaves of the
+recursion are the inputs in bit-reversed order, and $\log_2n$ passes of butterflies produce the transform. The inverse
+transform is the same algorithm with $\omega$ replaced by $\overline\omega$, followed by a division by $n$. For $n$ not a power of $2$,
+one can split along any factorisation $n=n_1n_2$, or use Bluestein's trick (Exercise~\ref{ex:bluestein}).
+
+\begin{corollary}\label{cor:fastmul}
+Two polynomials of degree less than $N$ can be multiplied with $O(N\log N)$ arithmetic operations on complex numbers.
+\end{corollary}
+\begin{proof}
+Take $n$ the least power of $2$ with $n\ge2N$, so $n<4N$. By Corollary~\ref{cor:polymul} the product costs three FFTs of length $n$ and $n$
+multiplications, that is $O(n\log n)=O(N\log N)$.
+\end{proof}
+
+\section{Exact transforms modulo a prime}
+
+Floating-point FFTs make rounding errors, which is acceptable for signals but not for the digits of an integer. Nothing in
+the algebra above used complex numbers: only an element $w$ of order exactly $n$, and the invertibility of $n$ and of $w^m-1$ for
+$n\nmid m$. A finite field provides both.
+
+\begin{theorem}[number-theoretic transform]\label{thm:ntt}
+Let $p$ be a prime with $p\equiv1\pmod n$. Then there is $w\in\Z/p\Z$ of order exactly $n$, and with $\hat a_j=\sum_ka_kw^{-jk}$ computed in $\Z/p\Z$,
+the inversion formula $a_k=n^{-1}\sum_j\hat a_jw^{jk}$, the convolution theorem and the FFT of Theorem~\ref{thm:fft} (for $n=2^r$) hold in $\Z/p\Z$.
+Consequently, if $a,b$ are vectors of $N$ integers in $[0,B[$, padded with zeros to length $n\ge2N-1$, and $p>N(B-1)^2$, the product of the
+corresponding polynomials is computed exactly by transforms modulo $p$.
+\end{theorem}
+\begin{proof}
+$(\Z/p\Z)^\times$ is cyclic of order $p-1$ (Volume~1, Theorem~5.3), and $n$ divides $p-1$, so if $g$ is a generator, $w=g^{(p-1)/n}$ has order
+$n$. Lemma~\ref{lem:rootsum} holds in $\Z/p\Z$: if $n\nmid m$, then $w^m\ne1$, $w^m-1$ is invertible, and the geometric sum vanishes. The
+proofs of inversion, of the convolution theorem and of the butterfly lemma used nothing else ($w^{n/2}=-1$ since it is a square
+root of $1$ different from $1$, and $\pm1$ are the only square roots of $1$ in a field). Finally, each coefficient of the product
+is a sum of at most $N$ products of integers in $[0,B-1]$, so it lies in $[0,N(B-1)^2]$; knowing it modulo $p>N(B-1)^2$ determines it.
+\end{proof}
+
+To multiply two $1000$-digit numbers in base $10$, take $N=1000$, $B=10$, so the coefficients of the product are at most
+$81\,000$, and $n=2048$. The smallest prime $p>81\,000$ with $p\equiv1\pmod{2048}$ is $83\,969=41\cdot2^{11}+1$. Practical libraries use
+primes such as $998\,244\,353=119\cdot2^{23}+1$, which allows $n$ up to $2^{23}$ and has primitive root $3$, together with larger digits $B$
+and several primes combined by the Chinese remainder theorem. After the transform, the carries are propagated in linear time.
+
+\begin{remark}
+Iterating this idea, Sch\"onhage and Strassen (1971) multiplied $N$-bit integers in $O(N\log N\log\log N)$ bit operations, and
+Harvey and van der Hoeven (2019) reached $O(N\log N)$, which is believed to be optimal. Every computation of $\pi$ to billions of
+digits, and of the Mersenne primes of Volume~1, runs on FFT multiplication.
+\end{remark}
+
+\section{The discrete cosine transform}
+
+A signal on $\{0,\dots,N-1\}$ that is not periodic acquires a jump when it is wrapped around a circle, and by
+Chapter~6 a jump means slowly decaying coefficients. The cure is to reflect the signal before transforming it.
+
+\begin{proposition}\label{prop:dct}
+Let $x\in\C^N$ and let $y\in\C^{2N}$ be its even extension
+\[
+y=(x_0,\dots,x_{N-1},x_{N-1},\dots,x_0).
+\]
+Then, for $0\le j<2N$,
+\[
+\begin{gathered}\hat y_j=2e^{i\pi j/(2N)}X_j,\qq X_j=\sum_{k=0}^{N-1}x_k\cos\frac{\pi j(2k+1)}{2N}.\end{gathered}
+\]
+The vector $(X_0,\dots,X_{N-1})$ is the \emph{discrete cosine transform} (DCT-II) of $x$.
+\end{proposition}
+\begin{proof}
+With $\omega=e^{2\pi i/(2N)}=e^{i\pi/N}$, the entry $y_{2N-1-k}=x_k$ contributes $x_k\omega^{-j(2N-1-k)}=x_k\omega^{j(k+1)}$, so
+$\hat y_j=\sum_kx_k\bigl(\omega^{-jk}+\omega^{j(k+1)}\bigr)$. Factor out $\omega^{j/2}=e^{i\pi j/(2N)}$ and let $\theta_k=\frac{\pi j(2k+1)}{2N}$:
+\[
+\begin{aligned}\omega^{-jk}+\omega^{j(k+1)}&=e^{i\pi j/(2N)}\bigl(e^{-i\theta_k}+e^{i\theta_k}\bigr)\eqbr=2e^{i\pi j/(2N)}\cos\theta_k.\end{aligned}
+\]
+\end{proof}
+
+So the DCT costs one FFT of length $2N$, and inverting the FFT inverts it. The even extension $y$ has no jump at the seam,
+so for samples of a smooth function its coefficients decay much faster than those of $x$ itself, and a few of them carry most
+of the energy. This is why the JPEG image format cuts images into $8\times8$ blocks, applies a two-dimensional DCT to each, and
+keeps only the large coefficients.
+
+\section{Gauss sums as Fourier coefficients}
+
+Let $p$ be an odd prime, $\omega=e^{2\pi i/p}$, and $\chi(k)=\bigl(\frac kp\bigr)$ the Legendre symbol, extended by $\chi(0)=0$: a function on $\Z/p\Z$. Let
+\[
+g=\sum_{k=0}^{p-1}\chi(k)\omega^k
+\]
+be its Gauss sum (Volume~1, Exercise~6.7).
+
+\begin{proposition}\label{prop:gaussfourier}
+The DFT of $\chi$ is $\hat\chi_j=\chi(-j)\,g$ for every $j$. Consequently $|g|^2=p$, and $g=\sum_{a=0}^{p-1}\omega^{a^2}$.
+\end{proposition}
+\begin{proof}
+For $j=0$, $\hat\chi_0=\sum_k\chi(k)=0$, since there are as many residues as non-residues, and $\chi(0)=0$. For $j\ne0$, substitute $k=-j^{-1}m$:
+as $m$ runs over $\Z/p\Z$ so does $k$, and $\omega^{-jk}=\omega^m$, while $\chi(k)=\chi(-j^{-1})\chi(m)=\chi(-j)\chi(m)$, since $\chi$ is multiplicative with
+values $\pm1$ on non-zero residues. So $\hat\chi_j=\chi(-j)g$. Parseval (Theorem~\ref{thm:dftinversion}) now gives
+\[
+p-1=\sum_k|\chi(k)|^2=\frac1p\sum_j|\hat\chi_j|^2=\frac1p(p-1)|g|^2,
+\]
+so $|g|^2=p$. Finally, the number of $a$ with $a^2\equiv m$ is $1+\chi(m)$, so $\sum_a\omega^{a^2}=\sum_m(1+\chi(m))\omega^m=0+g$.
+\end{proof}
+
+This recovers Volume~0, Exercise~2.8: the quadratic Gauss sum has modulus $\sqrt p$, because the Legendre symbol, like any
+character, has a flat spectrum. Its exact value, $\sqrt p$ for $p\equiv1\pmod4$ and $i\sqrt p$ for $p\equiv3\pmod4$, is Gauss's theorem, and
+Chapter~8 proves it with Poisson summation.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-denoise}
+\caption{Top: $256$ samples of $\sin(2\pi\cdot5t)+\frac12\sin(2\pi\cdot12t)$ plus Gaussian noise. Middle: the moduli $|\hat a_j|$ for
+$0\le j\le128$; the two tones stand far above the noise floor. Bottom: the signal rebuilt from the coefficients above a
+threshold (blue), against the clean signal (gray).}
+\label{fig:denoise}
+\end{figure}
+
+\begin{beauty}
+The FFT is the Chinese remainder theorem for polynomials: $X^n-1=(X^m-1)(X^m+1)$, and reducing modulo the two factors is the
+butterfly. Repeated $\log_2n$ times, it splits $X^n-1$ into its $n$ linear factors $X-\omega^j$, and evaluating at all roots of unity
+becomes as cheap as reading a number's digits.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:dftorder}
+Show that $F_n^2=nR$, where $R$ is the permutation matrix of $k\mapsto-k$ on $\Z/n\Z$, and deduce that $F_n^4=n^2I$. What are the possible
+eigenvalues of the unitary matrix $\frac1{\sqrt n}F_n$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:circulantfft}
+A \emph{circulant} matrix has entries $C_{kl}=c_{k-l}$ for some $c\in\C^n$. Show that $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Deduce $\det C=\prod_j\hat c_j$ (Volume~0,
+Exercise~2.7), and explain how to solve $Cx=y$ in $O(n\log n)$ operations when $n$ is a power of $2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:karatsuba}
+(Karatsuba, 1960.) Show that $(a_0+a_1X)(b_0+b_1X)$ can be computed with three multiplications instead of four. Deduce a recursive
+method multiplying polynomials of degree less than $n=2^r$ with exactly $3^r=n^{\log_23}$ multiplications of coefficients. Compare
+with $3\cdot2^r(r+1)+2^{r+1}$, the number of complex multiplications in the proof of Corollary~\ref{cor:fastmul} (three FFTs of length
+$2^{r+1}$ and the pointwise products).
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bluestein}
+(Bluestein's trick.) Let $n\ge1$ be arbitrary and $\zeta=e^{i\pi/n}$, so $\zeta^2=\omega$. Using $2jk=j^2+k^2-(j-k)^2$, write $\hat a_j$ as $\zeta^{-j^2}$ times a
+convolution of $(a_k\zeta^{-k^2})$ with $(\zeta^{m^2})$. Deduce that the DFT of any length $n$ costs $O(n\log n)$ operations.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nttsmall}
+Find $w$ of order $8$ in $\Z/17\Z$. Compute the product $(1+2X+3X^2)(4+5X)$ by transforms of length $8$ modulo $17$, and check it.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:midpoint}
+Let $n\ge3$ and $z=(z_0,\dots,z_{n-1})\in\C^n$ be the vertices of a polygon with centroid $0$. Its \emph{midpoint
+polygon} is $Mz$, with $(Mz)_k=\frac12(z_k+z_{k+1})$, indices modulo $n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that there are complex numbers $a$ and $b$, depending on $z$, such that, with $\omega=e^{2i\pi/n}$,
+\[
+\frac{(M^tz)_k}{\cos^t(\pi/n)}-\bigl(a\,e^{i\pi t/n}\omega^k+b\,e^{-i\pi t/n}\omega^{-k}\bigr)\xrightarrow[t\to\infty]{}0
+\quad\text{for each }k.
+\]
+\item Show that $k\mapsto a\omega^k+b\omega^{-k}$ is the image of the regular polygon $k\mapsto\omega^k$ by a real-linear
+map of the plane, invertible when $|a|\ne|b|$. So the iterated midpoint polygons, rescaled, become \emph{affinely regular}
+(Figure~\ref{fig:midpoint}).
+\item What happens for $n=4$ after a single step?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:napoleon}
+\emph{Napoleon's theorem.} Let $ABC$ be a triangle, labelled counterclockwise. Erect equilateral triangles outwards on its
+three sides, and let $P$, $Q$, $R$ be their centres.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $PQR$ is equilateral, with the same centroid as $ABC$.
+\item Do the same with equilateral triangles erected inwards, with centres $P'$, $Q'$, $R'$. Show that $P'Q'R'$ is
+equilateral, and that the area of $PQR$ minus the area of $P'Q'R'$ equals the area of $ABC$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:pdn}
+\emph{The Petr--Douglas--Neumann theorem.} Let $n\ge3$, $z\in\C^n$ a polygon, and $\theta\in\left]0,2\pi\right[$. Let
+$A_\theta z$ be the polygon whose $k$-th vertex is the point $p$ with $z_k-p=e^{i\theta}(z_{k+1}-p)$: the apex of the
+isosceles triangle with apex angle $\theta$ erected on the side $z_kz_{k+1}$.
+\begin{enumerate}[label=(\alph*)]
+\item Find the eigenvalues of the linear map $A_\theta$ on the Fourier modes $k\mapsto\omega^{jk}$.
+\item Show that applying $A_{2\pi k/n}$ for $k=1,2,\dots,n-2$, in any order, gives a regular $n$-gon (possibly reduced to a
+point) whose centre is the centroid of $z$ (Figure~\ref{fig:pdn}).
+\item What do $n=3$ and $n=4$ say?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:cdg}
+\emph{A fast random walk modulo $p$ (Chung, Diaconis and Graham, 1987).} Let $p$ be an odd prime, $X_0=0$ and
+$X_{n+1}=2X_n+\varepsilon_n\bmod p$, where the $\varepsilon_n$ are independent and uniform in $\{-1,0,1\}$. Let $d_n$ be the total
+variation distance between the law of $X_n$ and the uniform law.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $d_n\ge1-3^n/p$, so that $\log_3p$ steps are necessary.
+\item Show that $\mathbb E\bigl[e^{2i\pi tX_n/p}\bigr]=\prod_{j<n}\frac{1+2\cos(2\pi2^jt/p)}3$.
+\item Let $L=\lceil\log_2p\rceil+1$. Show that among any $L$ consecutive $j$, at least one has $\cos(2\pi2^jt/p)\le0$ (for
+$t\not\equiv0$).
+\item Deduce that $d_n\le\frac12\sqrt p\,3^{-\lfloor n/L\rfloor}$, so that $O(\log^2p)$ steps suffice.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:newman}
+\emph{Newman's phenomenon.} Let $s(n)$ be the sum of the binary digits of $n$, and $\omega=e(\frac13)$.
+\begin{enumerate}[label=(\alph*)]
+\item For $k\ge1$ and $j\in\{0,1,2\}$, show that the number of $n<2^k$ with $s(n)\equiv j\pmod3$ is $\frac13\bigl(2^k+2\cos\frac{\pi(k-2j)}3\bigr)$.
+\item Show that
+\[
+\sum_{\substack{0\le n<4^k\\3\mid n}}(-1)^{s(n)}=2\cdot3^{k-1}\qquad\text{and}\qquad\sum_{\substack{0\le n<2\cdot4^k\\3\mid n}}(-1)^{s(n)}=3^k.
+\]
+So among the multiples of $3$, those with an even digit sum win, by a margin of order $N^{\log3/\log4}$ below $N$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:bent}
+\emph{Bent functions.} Identify $\{-1,1\}^n$ with $\mathbb F_2^n$, so that the characters are $x\mapsto(-1)^{a\cdot x}$, $a\in\mathbb F_2^n$, and write
+$\hat f(a)=2^{-n}\sum_x f(x)(-1)^{a\cdot x}$ for $f:\mathbb F_2^n\to\{-1,1\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\max_a|\hat f(a)|\ge2^{-n/2}$. Call $f$ \emph{bent} if $|\hat f(a)|=2^{-n/2}$ for every $a$; show that bent functions can
+exist only for $n$ even.
+\item Show that $f(x,y)=(-1)^{x\cdot y}$ on $\mathbb F_2^m\times\mathbb F_2^m$ is bent.
+\item The \emph{nonlinearity} of $f$ is its Hamming distance to the nearest function $\pm(-1)^{a\cdot x}$. Show that it equals
+$2^{n-1}\bigl(1-\max_a|\hat f(a)|\bigr)$, hence is at most $2^{n-1}-2^{n/2-1}$, with equality exactly for bent functions.
+\item Show that a bent function takes the value $-1$ exactly $2^{n-1}\pm2^{n/2-1}$ times.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-midpoint}
+\caption{A random heptagon and its iterated midpoint polygons, each rescaled to the same size. The modes of
+Problem~\ref{pb:midpoint} die at different speeds, and what survives is an affine image of the regular heptagon: an ellipse
+with seven equally spaced points (in the sense of the parametrisation) on it.}
+\label{fig:midpoint}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-pdn}
+\caption{The Petr--Douglas--Neumann theorem for a pentagon. On each side erect isosceles triangles with apex angle $72^\circ$
+(dashed), keep the apexes, repeat with $144^\circ$ and then $216^\circ$ (the last triangles point inwards). Each step kills
+one Fourier mode, and after three steps only a regular pentagon is left.}
+\label{fig:pdn}
+\end{figure}
+
+\section{Hints}
+
+\begin{hint}{ex:dftorder}
+$(F_n^2)_{jl}=\sum_k\omega^{-k(j+l)}$. A unitary $U$ with $U^4=I$ has eigenvalues $\lambda$ with $\lambda^4=1$.
+\end{hint}
+\begin{hint}{ex:circulantfft}
+$Cx=c*x$. Use Theorem~\ref{thm:convolution}.
+\end{hint}
+\begin{hint}{ex:karatsuba}
+$a_0b_1+a_1b_0=(a_0+a_1)(b_0+b_1)-a_0b_0-a_1b_1$. Write $A=A_0+X^{n/2}A_1$.
+\end{hint}
+\begin{hint}{ex:bluestein}
+$\omega^{-jk}=\zeta^{-2jk}=\zeta^{-j^2}\zeta^{-k^2}\zeta^{(j-k)^2}$. The convolution is not cyclic of length $n$; pad both vectors with zeros to a power of $2$ large enough to avoid wrap-around.
+\end{hint}
+\begin{hint}{ex:nttsmall}
+$3$ is a primitive root modulo $17$, so $w=3^2=9$ has order $8$. The inverse of $8$ modulo $17$ is $15$.
+\end{hint}
+
+\begin{hint}{pb:midpoint}
+Expand $z$ in the discrete Fourier basis: $M$ multiplies the mode $\omega^{jk}$ by $\frac{1+\omega^j}2$.
+\end{hint}
+
+\begin{hint}{pb:napoleon}
+The centre of an equilateral triangle on a side is the apex of an isosceles triangle with apex angle $120^\circ$. Use the
+modes of $\Z/3\Z$ and the area formula $\frac12\operatorname{Im}\sum_k\bar z_kz_{k+1}$.
+\end{hint}
+
+\begin{hint}{pb:pdn}
+Solve for $p$, and apply $A_\theta$ to $z_k=\omega^{jk}$. Which mode does $A_{2\pi k/n}$ kill?
+\end{hint}
+
+\begin{hint}{pb:cdg}
+(c) If $|\theta|<\frac14$ then doubling $\theta$ modulo $1$ is just doubling. (d) Plancherel on $\Z/p\Z$.
+\end{hint}
+
+\begin{hint}{pb:newman}
+(a) $\frac13\sum_{t=0}^2\omega^{t(s(n)-j)}$ is the indicator of $s(n)\equiv j$; the sum of $\omega^{ts(n)}$ over $n<2^k$ factorises over the $k$ bits.
+(b) Now filter $3\mid n$ with $\frac13\sum_t\omega^{tn}$, and note that $2^i\bmod3$ alternates between $1$ and $2$.
+\end{hint}
+
+\begin{hint}{pb:bent}
+(a) Parseval, and integrality of $2^n\hat f(a)$. (b) Sum over $y$ first. (c) The distance from $f$ to $g=\pm(-1)^{a\cdot x}$ is
+$2^{n-1}(1-\mathbb E[fg])$. (d) Look at $\hat f(0)$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:dftorder}
+\idea Transforming twice sums the characters twice; by orthogonality only the frequency $-j$ survives.
+\writeup $(F_n^2)_{jl}=\sum_k\omega^{-jk}\omega^{-kl}=\sum_k\omega^{-k(j+l)}$, which is $n$ if $l\equiv-j$ and $0$ otherwise, by Lemma~\ref{lem:rootsum}. So $F_n^2=nR$, and
+$R^2=I$ gives $F_n^4=n^2I$. For $U=\frac1{\sqrt n}F_n$, $U^4=I$, so every eigenvalue satisfies $\lambda^4=1$: $\lambda\in\{1,-1,i,-i\}$. (All four occur once
+$n\ge4$, with multiplicities close to $\frac n4$; Chapter~8 meets the eigenvectors of the continuous transform, the Hermite
+functions, of which the Gaussian is the first.)
+\end{solution}
+
+\begin{solution}{ex:circulantfft}
+\idea A circulant matrix commutes with cyclic shifts, so it is a convolution, and convolutions are diagonal in the Fourier
+basis.
+\writeup $(Cx)_k=\sum_lc_{k-l}x_l=(c*x)_k$, so $F_nCx=\hat c\cdot\hat x=\operatorname{diag}(\hat c)F_nx$ for all $x$, that is $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Taking
+determinants, $\det C=\prod_j\hat c_j$, and $\hat c_j=P(\omega^{-j})$ with $P(X)=\sum_kc_kX^k$, which is Volume~0, Exercise~2.7. To solve $Cx=y$, compute $\hat y$ by
+FFT, divide entrywise, $\hat x_j=\frac{\hat y_j}{\hat c_j}$ (possible iff no $\hat c_j$ vanishes, iff $C$ is invertible), and invert the FFT: three FFTs and $n$
+divisions, against $O(n^3)$ for Gaussian elimination.
+\end{solution}
+
+\begin{solution}{ex:karatsuba}
+\idea Trade one multiplication for a few additions, then apply the same trade at every level of a recursion.
+\writeup Compute $a_0b_0$, $a_1b_1$ and $(a_0+a_1)(b_0+b_1)$; then the middle coefficient is $(a_0+a_1)(b_0+b_1)-a_0b_0-a_1b_1$. For $A=A_0+X^{n/2}A_1$
+and $B=B_0+X^{n/2}B_1$ with halves of degree less than $\frac n2$, the same identity gives $AB$ from the three products $A_0B_0$,
+$A_1B_1$ and $(A_0+A_1)(B_0+B_1)$, of polynomials of degree less than $\frac n2$, plus additions. So the number of coefficient
+multiplications satisfies $K(n)=3K(\frac n2)$, $K(1)=1$, and $K(2^r)=3^r=n^{\log_23}\approx n^{1.585}$. Comparing $3^r$ with $3\cdot2^r(r+1)+2^{r+1}$: for $r=1,\dots,9$
+the values are $3,9,27,81,243,729,2187,6561,19\,683$ against $16,44,112,272,640,1472,3328,7424,16\,384$. Karatsuba needs fewer
+multiplications up to $n=256$, and the FFT from $n=512$ on (the ratio then grows like $\frac{n^{0.585}}{3\log_2n}$). In
+practice, with additions and memory traffic, libraries such as GMP switch from the schoolbook method to Karatsuba around a few
+dozen machine words, and to FFT methods only at thousands of words.
+\end{solution}
+
+\begin{solution}{ex:bluestein}
+\idea The product $jk$ couples input and output indices; writing it with squares turns the coupling into a function of
+$j-k$, which is a convolution.
+\writeup $\omega^{-jk}=\zeta^{-2jk}=\zeta^{-j^2}\zeta^{-k^2}\zeta^{(j-k)^2}$, so $\hat a_j=\zeta^{-j^2}\sum_{k=0}^{n-1}u_kv_{j-k}$ with $u_k=a_k\zeta^{-k^2}$ and $v_m=\zeta^{m^2}$, for
+$-(n-1)\le m\le n-1$. This is an ordinary (non-cyclic) convolution of a vector of length $n$ with one of length $2n-1$; padded to a power
+of $2$ at least $3n-2$ it becomes cyclic without wrap-around, and Theorem~\ref{thm:convolution} with three FFTs of that length computes
+it in $O(n\log n)$. The extra multiplications by powers of $\zeta$ cost $O(n)$.
+\end{solution}
+
+\begin{solution}{ex:nttsmall}
+\idea Run the same three steps as with complex numbers, with $9$ in the role of $e^{2\pi i/8}$.
+\writeup The powers of $3$ modulo $17$ are $3$, $9$, $10$, $13$, $5$, $15$, $11$, $16$, $\dots$, so $3$ has order $16$ and $w=9$ has order $8$; we use $w^{-1}=2$, since
+$9\cdot2=18\equiv1$. The transform $\hat a_j=\sum_ka_k2^{jk}$ evaluates at the powers of $2$: $1$, $2$, $4$, $8$, $16$, $15$, $13$, $9$. For $a=(1,2,3)$ the values
+$A(2^j)$ are $6$, $0$, $6$, $5$, $2$, $9$, $7$, $7$, and for $b=(4,5)$, the values $B(2^j)$ are $9$, $14$, $7$, $10$, $16$, $11$, $1$, $15$. The products modulo $17$ are $3$, $0$, $8$, $16$, $15$, $14$, $7$, $3$.
+Inverting, $c_k=15\sum_j\hat c_j9^{jk}$ modulo $17$, gives $c_0=4$, $c_1=13$, $c_2=5$, $c_3=15$ and $c_k=0$ for $k\ge4$. The true product has the coefficient $22$ where we
+found $5$: $22\equiv5\pmod{17}$. Indeed $(1+2X+3X^2)(4+5X)=4+13X+22X^2+15X^3$. The coefficient $22$ exceeds $p=17$, so this
+small prime is too small for exact multiplication: Theorem~\ref{thm:ntt} asks for $p>N(B-1)^2$.
+\end{solution}
+
+\begin{solution}{pb:midpoint}
+\idea Taking midpoints treats all vertices alike, so it is diagonal in the Fourier basis of $\C^n$: the mode
+$k\mapsto\omega^{jk}$ is multiplied by $\frac{1+\omega^j}2=\cos\frac{\pi j}n\,e^{i\pi j/n}$. The centroid is mode $0$. The
+largest remaining moduli are those of $j=1$ and $j=n-1$, both $\cos\frac\pi n$, so after many steps only these two modes are
+visible, and two opposite modes make an affine image of a regular polygon.
+
+\writeup (a) By discrete Fourier inversion (Volume~4, Chapter~7), $z_k=\sum_{j=0}^{n-1}\hat z_j\omega^{jk}$ with
+$\hat z_j=\frac1n\sum_kz_k\omega^{-jk}$, and $\hat z_0=0$ is the centroid. For the mode $u_k=\omega^{jk}$,
+$(Mu)_k=\frac12(1+\omega^j)\omega^{jk}$, and
+$\lambda_j=\frac{1+\omega^j}2=e^{i\pi j/n}\frac{e^{-i\pi j/n}+e^{i\pi j/n}}2=\cos\frac{\pi j}n\,e^{i\pi j/n}$. So
+$(M^tz)_k=\sum_j\lambda_j^t\hat z_j\omega^{jk}$. Now $\lambda_1=\cos\frac\pi n\,e^{i\pi/n}$ and
+$\lambda_{n-1}=\cos\frac{\pi(n-1)}n\,e^{i\pi(n-1)/n}=\cos\frac\pi n\,e^{-i\pi/n}$ (both signs change). For $2\le j\le n-2$,
+$|\lambda_j|=|\cos\frac{\pi j}n|<\cos\frac\pi n$. Dividing by $\cos^t\frac\pi n$, those modes tend to $0$, and what remains is
+$a e^{i\pi t/n}\omega^k+be^{-i\pi t/n}\omega^{-k}$ with $a=\hat z_1$, $b=\hat z_{n-1}$.
+
+(b) $L(u)=au+b\bar u$ is $\R$-linear on $\C=\R^2$, and $L(\omega^k)=a\omega^k+b\omega^{-k}$. On the basis $1,i$, writing
+$a=a_1+ia_2$, $b=b_1+ib_2$, $L(1)=(a_1+b_1,a_2+b_2)$ and $L(i)=(b_2-a_2,a_1-b_1)$, so $\det L=(a_1+b_1)(a_1-b_1)-(a_2+b_2)(b_2-a_2)
+=|a|^2-|b|^2$. The rescaled polygons approach images of the regular polygon (rotated by $\frac{\pi t}n$, which does not change
+its shape) by an invertible linear map when $|a|\ne|b|$: polygons inscribed in an ellipse, at equally spaced parameters.
+
+(c) For $n=4$, $\lambda_2=\frac{1+\omega^2}2=0$: after one step only the modes $1$ and $3$ remain, and $Mz$ is an affine image of
+a square, a parallelogram. This is Varignon's theorem: the midpoints of any quadrilateral form a parallelogram.
+\tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (roots of unity, determinants).
+\leads Darboux (1878) studied this iteration, and Berlekamp, Gilbert and Sinden (1965) used it for random polygons. The same
+eigenvalue computation shows that ``averaging with neighbours'' on a cycle mixes like $\cos^t\frac\pi n$, a first example of
+the spectral gap of a graph, and of diffusion on the circle (Volume~3, Chapter~8).
+\end{solution}
+
+\begin{solution}{pb:napoleon}
+\idea This is the case $n=3$ of Problem~\ref{pb:pdn}, and it is worth doing by hand. The centres are apexes of isosceles
+triangles with apex angle $120^\circ$, a circulant operation on the triangle. It kills one of the two non-trivial Fourier
+modes of $\Z/3\Z$, and one mode alone is an equilateral triangle. For areas, the signed area of a polygon is a sum of
+contributions $\pm|\hat z_j|^2$ of its modes.
+
+\writeup Let $\omega=e^{2i\pi/3}$ and $z_0,z_1,z_2$ be $A,B,C$, counterclockwise. The point $p$ with
+$z_k-p=\omega(z_{k+1}-p)$ is the centre of rotation by $120^\circ$ mapping $z_{k+1}$ to $z_k$, so it is the centre of the
+equilateral triangle on $z_kz_{k+1}$; for $z_k=0$, $z_{k+1}=1$ it is $p=\frac{-\omega}{1-\omega}=\frac12-\frac i{2\sqrt3}$, below
+the side, that is outside the counterclockwise triangle. So $p_k=\frac{z_k-\omega z_{k+1}}{1-\omega}$. Write
+$z_k=\hat z_0+\hat z_1\omega^k+\hat z_2\omega^{2k}$. The mode $\omega^{jk}$ is multiplied by $\frac{1-\omega^{j+1}}{1-\omega}$:
+$1$ for $j=0$, $\frac{1-\omega^2}{1-\omega}=1+\omega$ for $j=1$, and $0$ for $j=2$. So
+\[
+p_k=\hat z_0+(1+\omega)\hat z_1\,\omega^k,
+\]
+an equilateral triangle centred at $\hat z_0$, the centroid of $ABC$. Inwards, $\omega$ becomes $\omega^2$:
+$p'_k=\frac{z_k-\omega^2z_{k+1}}{1-\omega^2}$ kills the mode $j=1$, and $p'_k=\hat z_0+c\,\hat z_2\omega^{2k}$ with
+$c=\frac{1-\omega^4}{1-\omega^2}=1+\omega^2$, again equilateral with the same centre. This proves (a) and the first half of (b).
+
+Areas. The signed area of a polygon is $\frac12\operatorname{Im}\sum_k\bar z_kz_{k+1}$ (the shoelace formula). With
+$z_k=\sum_j\hat z_j\omega^{jk}$ and $\sum_k\omega^{(l-j)k}=3\cdot\mathbf 1_{j=l}$, we get $\sum_k\bar z_kz_{k+1}=3\sum_j|\hat z_j|^2\omega^j$,
+so the signed area is $\frac{3\sqrt3}4\bigl(|\hat z_1|^2-|\hat z_2|^2\bigr)$. For $ABC$ this is its (positive) area. The outer
+triangle has only the mode $1$, with $|1+\omega|=1$: area $\frac{3\sqrt3}4|\hat z_1|^2$. The inner one has only the mode $2$,
+with $|1+\omega^2|=1$: signed area $-\frac{3\sqrt3}4|\hat z_2|^2$, so it is clockwise, of area $\frac{3\sqrt3}4|\hat z_2|^2$. The
+difference of the areas is $\frac{3\sqrt3}4(|\hat z_1|^2-|\hat z_2|^2)$, the area of $ABC$.
+\tools Volume~0, Chapter~2 (complex numbers and rotations); Volume~4, Chapter~7 (discrete Fourier transform).
+\leads The theorem is attributed to Napoleon Bonaparte, who was a good amateur geometer, though there is no evidence that he
+found it; it was printed by W.~Rutherford in 1825. The inner Napoleon triangle reduces to a point exactly when
+$\hat z_2=0$, that is when $ABC$ is itself equilateral and counterclockwise.
+\end{solution}
+
+\begin{solution}{pb:pdn}
+\idea Erecting the same triangle on every side is a circulant map, diagonal on Fourier modes. The apex angle $\frac{2\pi k}n$
+is tuned to kill exactly one mode. Since all these maps are diagonal in the same basis, they commute, and $n-2$ of them kill
+$n-2$ modes, leaving the centroid (mode $0$) and a single regular polygon.
+
+\writeup (a) Solving $z_k-p=e^{i\theta}(z_{k+1}-p)$: $p=\frac{z_k-e^{i\theta}z_{k+1}}{1-e^{i\theta}}$, so $A_\theta$ is linear. For
+$z_k=\omega^{jk}$, $(A_\theta z)_k=\omega^{jk}\frac{1-e^{i\theta}\omega^j}{1-e^{i\theta}}$: the eigenvalue is
+$\mu_j(\theta)=\frac{1-e^{i\theta}\omega^j}{1-e^{i\theta}}$. It is $1$ for $j=0$, and it is $0$ if and only if
+$e^{i\theta}=\omega^{-j}$, that is $\theta=\frac{2\pi(n-j)}n$.
+
+(b) $A_{2\pi k/n}$ kills the mode $j=n-k$. All the $A_\theta$ are diagonal in the Fourier basis, so they commute, and the
+product of $A_{2\pi k/n}$ over $k=1,\dots,n-2$, in any order, multiplies the mode $j$ by $\prod_k\mu_j(\frac{2\pi k}n)$, which is
+$0$ for $j=n-1,n-2,\dots,2$, $1$ for $j=0$, and some constant $c$ for $j=1$. The result is
+$w_k=\hat z_0+c\,\hat z_1\omega^k$: a regular $n$-gon (a point if $c\hat z_1=0$) centred at the centroid $\hat z_0$ of $z$.
+
+(c) $n=3$: one step, $\theta=120^\circ$, and this is Napoleon's theorem (Problem~\ref{pb:napoleon}). $n=4$: $\theta=90^\circ$ erects
+squares on the sides and takes their centres; $\theta=180^\circ$ takes midpoints (the apex of a flat isosceles triangle is the
+midpoint of its base). So: \emph{the centres of the squares erected on the sides of a quadrilateral form a quadrilateral whose
+midpoint polygon is a square}, and by Varignon (Problem~\ref{pb:midpoint}) the order can be reversed: the centres of the
+squares erected on the sides of the Varignon parallelogram form a square.
+\tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (rotations, diagonalisation).
+\leads Petr (1908), Douglas (1940) and Neumann (1941) found this independently. For $n=4$ the statement contains van Aubel's
+theorem: the segments joining the centres of opposite squares are equal and perpendicular.
+\end{solution}
+
+\begin{solution}{pb:cdg}
+\idea The walk is a random binary-like expansion $X_n=\sum2^{n-1-j}\varepsilon_j$, so its Fourier transform is a product. A factor is
+small as soon as the doubling orbit of $t/p$ visits the far half of the circle, and an orbit cannot stay near $0$ for more than
+$\log_2p$ steps, because doubling pushes it away.
+
+\writeup (a) $X_n$ takes at most $3^n$ values, so the law of $X_n$ puts mass $1$ on a set $A$ with $|A|\le3^n$, which has uniform measure
+$|A|/p$. The total variation distance is at least $1-\frac{3^n}p$.
+
+(b) By induction, $X_n\equiv\sum_{j<n}2^{n-1-j}\varepsilon_j$. The $\varepsilon_j$ are independent and
+$\mathbb E[e^{2i\pi s\varepsilon/p}]=\frac{1+2\cos(2\pi s/p)}3$, so the transform is $\prod_{j<n}\frac{1+2\cos(2\pi2^{n-1-j}t/p)}3$, which is the
+stated product after $j\mapsto n-1-j$.
+
+(c) Let $\theta_j\in\,]-\frac12,\frac12]$ be the representative of $2^jt/p$ modulo $1$; $\theta_j\ne0$ is a multiple of $\frac1p$, so
+$|\theta_j|\ge\frac1p$. If $|\theta_j|<\frac14$, then $2\theta_j\in\,]-\frac12,\frac12[$ and $\theta_{j+1}=2\theta_j$. If
+$|\theta_j|<\frac14$ for all $j_0\le j<j_0+L$, then $|\theta_{j_0+L-1}|=2^{L-1}|\theta_{j_0}|\ge\frac{2^{L-1}}p\ge1$, a contradiction. So some
+$j$ in the window has $|\theta_j|\ge\frac14$, that is $\cos(2\pi\theta_j)\le0$.
+
+(d) When $\cos\le0$, $\bigl|\frac{1+2\cos}3\bigr|\le\frac13$; every factor has modulus at most $1$. Among $j<n$ there are
+$\lfloor n/L\rfloor$ disjoint windows of length $L$, so $|\hat P(t)|\le3^{-\lfloor n/L\rfloor}$ for $t\ne0$, where $\hat P$ is the transform of
+(b). By Cauchy--Schwarz and Plancherel on $\Z/p\Z$ (Volume~4, Chapter~7),
+\[
+\begin{aligned}d_n=\frac12\sum_x\Bigl|P(X_n=x)-\frac1p\Bigr|&\le\frac12\sqrt p\Bigl(\sum_x\Bigl|P(X_n=x)-\frac1p\Bigr|^2\Bigr)^{1/2}\\&=\frac12\Bigl(\sum_{t\ne0}|\hat P(t)|^2\Bigr)^{1/2}\le\frac12\sqrt p\,3^{-\lfloor n/L\rfloor}.\end{aligned}
+\]
+So $d_n\le\varepsilon$ once $\lfloor n/L\rfloor\ge\log_3\frac{\sqrt p}{2\varepsilon}$, which is $n=O(\log^2p)$ for fixed $\varepsilon$.
+
+\tools Volume~3, Chapter~6 (characteristic functions); Volume~4, Chapter~7 (Fourier analysis on $\Z/p\Z$); Volume~3, Chapter~8 (total
+variation).
+\leads Chung, Diaconis and Graham proved that $O(\log p\log\log p)$ steps always suffice and that about $1.02\log_2p$ steps suffice for almost all
+$p$, and that for some $p$ (of the form $2^k-1$) the order $\log p\log\log p$ is needed. Compare with the walk $X_{n+1}=X_n+\varepsilon_n$,
+which needs about $p^2$ steps (Chapter~11): multiplying by $2$ spreads the walk out exponentially fast. Hildebrand and Eberhard
+and Varjú have since sharpened the picture.
+\end{solution}
+
+\begin{solution}{pb:newman}
+\idea To pick out a residue class modulo $3$, average over the three characters of $\Z/3\Z$. Digit sums then factorise over the
+bits, and everything reduces to powers of $1+\omega$ and $1-\omega$.
+
+\writeup (a) Let $N_j$ be the count. Since $\frac13\sum_{t=0}^2\omega^{tm}$ is $1$ if $3\mid m$ and $0$ otherwise,
+\[
+N_j=\frac13\sum_{t=0}^2\omega^{-tj}\sum_{n<2^k}\omega^{ts(n)}=\frac13\sum_{t=0}^2\omega^{-tj}(1+\omega^t)^k,
+\]
+because $n\mapsto$ its $k$ bits is a bijection onto $\{0,1\}^k$ and $\omega^{ts(n)}$ is the product over the bits of $\omega^{t\cdot\text{bit}}$. The term $t=0$ is
+$2^k$; $1+\omega=\frac12+\frac{\sqrt3}2i=e^{i\pi/3}$, so the term $t=1$ is $e^{i\pi(k-2j)/3}$, and the term $t=2$ is its conjugate. Hence
+$N_j=\frac13\bigl(2^k+2\cos\frac{\pi(k-2j)}3\bigr)$.
+
+(b) Filtering the multiples of $3$ in the same way, for $K\ge1$,
+\[
+\sum_{\substack{n<2^K\\3\mid n}}(-1)^{s(n)}=\frac13\sum_{t=0}^2\sum_{n<2^K}\omega^{tn}(-1)^{s(n)}=\frac13\sum_{t=0}^2\prod_{i=0}^{K-1}\bigl(1-\omega^{t2^i}\bigr),
+\]
+since $n=\sum b_i2^i$ gives $\omega^{tn}(-1)^{s(n)}=\prod_i(-\omega^{t2^i})^{b_i}$. The term $t=0$ vanishes. As $2^i\equiv1$ or $2\pmod3$ according to the parity of $i$,
+the factors for $t=1$ alternate between $1-\omega$ and $1-\omega^2$, and $(1-\omega)(1-\omega^2)=2-\omega-\omega^2=3$. For $K=2k$ the terms $t=1,2$ are
+both $3^k$, and the sum is $\frac23\cdot3^k=2\cdot3^{k-1}$. For $K=2k+1$ they are $3^k(1-\omega)$ and $3^k(1-\omega^2)$, and the sum is $\frac13\cdot3^k\cdot3=3^k$.
+With $N=4^k$ the margin is $3^k=N^{\log3/\log4}=N^{0.79\ldots}$.
+
+\tools{Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~7 (characters of $\Z/n\Z$).}
+\leads D.~J.~Newman (1969) proved that the sum $\sum_{n<N,\,3\mid n}(-1)^{s(n)}$ is positive for \emph{every} $N\ge1$, and of exact order
+$N^{\log3/\log4}$. J.~Coquet (1983) found the exact formula: the sum is $N^{\log3/\log4}F(\log_4N)$ plus a bounded error, with $F$ continuous,
+periodic and nowhere differentiable. Similar biases hold for other moduli and bases, and Mauduit and Rivat (2010) proved that
+$s(p)$ is equidistributed modulo $2$ along the primes (Problem~\ref{pb:digitsclt}).
+\end{solution}
+
+\begin{solution}{pb:bent}
+\idea Parseval forces the $2^n$ squared coefficients to average $2^{-n}$, so the largest is at least that; and $2^n\hat f(a)$ is an integer,
+which decides when they can all be equal. Distance to linear functions is correlation in disguise.
+
+\writeup (a) $\sum_a\hat f(a)^2=\mathbb E[f^2]=1$ over $2^n$ values of $a$, so some $\hat f(a)^2\ge2^{-n}$. If $f$ is bent, $2^n\hat f(a)$, a sum of $2^n$ signs, is an
+integer equal to $\pm2^{n/2}$, and $2^{n/2}$ is an integer only for $n$ even.
+
+(b) $\hat f(a,b)=2^{-2m}\sum_x(-1)^{a\cdot x}\sum_y(-1)^{(x+b)\cdot y}$. The inner sum is $2^m$ if $x=b$ and $0$ otherwise, so $\hat f(a,b)=2^{-m}(-1)^{a\cdot b}$, of modulus
+$2^{-m}=2^{-n/2}$ with $n=2m$.
+
+(c) For $g=\pm(-1)^{a\cdot x}$, the number of disagreements is $\frac12\sum_x(1-f(x)g(x))=2^{n-1}(1\mp\hat f(a))$. Minimising over $a$ and the sign gives
+$2^{n-1}(1-\max_a|\hat f(a)|)$, which is at most $2^{n-1}(1-2^{-n/2})$ by (a). Equality means $\max_a|\hat f(a)|=2^{-n/2}$; as the squares average $2^{-n}$,
+they are then all equal to $2^{-n}$, and $f$ is bent.
+
+(d) $\hat f(0)=2^{-n}\sum_xf(x)=\pm2^{-n/2}$, so $\sum_xf(x)=\pm2^{n/2}$, and the number of $x$ with $f(x)=-1$ is $\frac12(2^n\mp2^{n/2})=2^{n-1}\mp2^{n/2-1}$.
+
+\tools{Volume~2, Chapter~11 (characters of finite abelian groups); Volume~4, Chapter~7 (Parseval).}
+\leads Bent functions were defined and named by Oscar Rothaus in the 1960s, in research that was published only in 1976. A cipher whose
+components are close to linear functions is vulnerable to linear cryptanalysis (Matsui, 1993), so high nonlinearity is a design
+goal; but by (d) bent functions are unbalanced, and cryptographers trade a little nonlinearity for balance. The set
+$\{x:f(x)=-1\}$ of a bent function is a \emph{Hadamard difference set}, and its $\pm1$ matrix $(f(x+y))_{x,y}$ is a Hadamard matrix
+(Problem~\ref{pb:hadamard}).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~W.~Cooley and J.~W.~Tukey, \emph{An algorithm for the machine calculation of complex Fourier series},
+Mathematics of Computation 19 (1965), 297--301.
+\item M.~T.~Heideman, D.~H.~Johnson and C.~S.~Burrus, \emph{Gauss and the history of the fast Fourier transform}, IEEE ASSP
+Magazine 1 (1984), 14--21.
+\item T.~H.~Cormen, C.~E.~Leiserson, R.~L.~Rivest and C.~Stein, \emph{Introduction to Algorithms}, 4th ed., MIT Press, 2022,
+Chapter~30.
+\item D.~E.~Knuth, \emph{The Art of Computer Programming}, vol.~2, \emph{Seminumerical Algorithms}, 3rd ed., Addison-Wesley,
+1997, Section~4.3.3 (fast multiplication).
+\item D.~Harvey and J.~van der Hoeven, \emph{Integer multiplication in time $O(n\log n)$}, Annals of Mathematics 193 (2021),
+563--617.
+\item G.~K.~Wallace, \emph{The JPEG still picture compression standard}, Communications of the ACM 34 (1991), 30--44.
+\item J.~W.~Cooley, \emph{How the FFT gained acceptance}, in \emph{A History of Scientific Computing}, ACM Press, 1990, 133--140. Tukey, Garwin and the test-ban motivation.
+\end{itemize}

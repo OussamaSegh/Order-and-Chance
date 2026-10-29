@@ -70,7 +70,7 @@ def build(book, size, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('book', nargs='?', default='tome0-mathematical-maturity')
+    parser.add_argument('book', nargs='?', default='tome1-first-principles')
     parser.add_argument('--out', type=Path, default=ROOT / 'build/volume0-print-review')
     args = parser.parse_args()
     book = (ROOT / args.book).resolve()

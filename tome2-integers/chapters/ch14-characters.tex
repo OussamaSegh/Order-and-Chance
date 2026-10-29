@@ -1,0 +1,1034 @@
+\chapter{Characters, Euler Products and the Sieve}\label{ch:characters}
+
+\begin{center}\itshape
+Euler factored the harmonic series into a product over primes.\\
+The same idea, with a sign that remembers a residue class, is the door to Dirichlet's theorem.
+\end{center}
+
+Two threads of the book are ready to be joined. The Legendre symbol $\bigl(\frac{\cdot}{p}\bigr)$ is a completely multiplicative function of period $p$, and M\"obius inversion detects whether an integer is divisible by a small prime. A \emph{Dirichlet character} is the general object of which the Legendre symbol is the famous example. Its Euler product is the model for the $L$-functions of Volume~5. The same M\"obius function that inverted divisor sums now removes the multiples of the small primes: that exact cancellation is Legendre's sieve, the ancestor of the sieves in Volumes~5 and~13.
+
+The chapter uses the structure of $(\Z/n\Z)^\times$ from Chapter~\ref{ch:orders}, including the description of units modulo a power of two, and the convolution algebra of Chapter~\ref{ch:functions}. Roots of unity are those of Volume~0. Real logarithms and the comparison of a decreasing function with an integral are the same tools already used for $\sum 1/p$.
+
+\section{Dirichlet characters}
+
+% t1-pass2 motive 81f967b9
+The Legendre symbol is one character. The general character modulo $m$ is any homomorphism from the unit group to the complex roots of unity, extended by zero off the units. Orthogonality turns a sum over characters into a detector of a single residue class. That detector is the first line of the proof of Dirichlet's theorem in Volume~5.
+
+\begin{definition}\label{def:t1-character}
+Let $m\ge1$. A \emph{Dirichlet character modulo $m$} is a function $\chi:\Z\to\C$ such that
+\begin{enumerate}[label=(\roman*)]
+\item $\chi(n)=0$ whenever $\gcd(n,m)>1$, and $\chi(n)\ne0$ otherwise;
+\item $\chi(n+m)=\chi(n)$ for every $n$;
+\item $\chi(ab)=\chi(a)\chi(b)$ for all integers $a,b$.
+\end{enumerate}
+The \emph{principal character} $\chi_0$ is defined by $\chi_0(n)=1$ if $\gcd(n,m)=1$ and $\chi_0(n)=0$ otherwise.
+\end{definition}
+
+Condition~(iii) on the units is a homomorphism $(\Z/m\Z)^\times\to\C^\times$, and condition~(i) is the only way to extend it by zero while keeping complete multiplicativity. Conversely, every homomorphism of the unit group extends in this way: if a prime dividing $m$ divides $ab$, it divides $a$ or $b$, so both sides of~(iii) vanish off the units. Thus Dirichlet characters modulo $m$ are precisely the homomorphisms $(\Z/m\Z)^\times\to\C^\times$, extended by zero. There is nothing further to choose.
+
+\begin{examplex}[three characters one already knows]
+The principal character modulo $m$ is one. The function $\chi_4$ of Theorem~\ref{thm:r2},
+\[
+\chi_4(n)=\begin{cases}
+0&n\text{ even},\\
+1&n\equiv1\pmod4,\\
+-1&n\equiv3\pmod4,
+\end{cases}
+\]
+is the non-principal character modulo $4$. The Legendre symbol $n\mapsto\bigl(\frac np\bigr)$, for an odd prime $p$, is a character modulo $p$: it is periodic, vanishes at multiples of $p$, and is completely multiplicative. For the prime $2$, the supplementary law is itself a character of modulus $8$. Define
+\[
+\chi_8(n)=\begin{cases}
+0&n\text{ even},\\
+1&n\equiv\pm1\pmod8,\\
+-1&n\equiv\pm3\pmod8.
+\end{cases}
+\]
+On the units $\{1,3,5,7\}$ one has $\chi_8(1)=1$, $\chi_8(3)=\chi_8(5)=-1$ and $\chi_8(7)=1$. Each non-identity unit has order $2$, and the products $3\cdot5\equiv7$, $3\cdot7\equiv5$ and $5\cdot7\equiv3$ match the products of the values. So $\chi_8$ is a character modulo $8$. Corollary~\ref{cor:two} says $\bigl(\frac2p\bigr)=\chi_8(p)$ for every odd prime $p$.
+\end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-chi8}
+\caption{The eight values of $\chi_8$. Even residues contribute $0$. The two classes $\pm1$ receive $+1$, and the two classes $\pm3$ receive $-1$. Reading the clock is the supplementary law for the symbol $\bigl(\frac2{\cdot}\bigr)$.}
+\label{fig:t1-chi8}
+\end{figure}
+
+\begin{proposition}\label{prop:t1-charsum}
+Let $\chi$ be a character modulo $m$. Then
+\[
+\sum_{n=1}^m\chi(n)=\begin{cases}\varphi(m)&\text{if }\chi=\chi_0,\\0&\text{otherwise.}\end{cases}
+\]
+\end{proposition}
+\begin{proof}
+The sum is the sum of $\chi$ over the units. If $\chi=\chi_0$, there are $\varphi(m)$ of them, each contributing $1$. If not, some unit $b$ has $\chi(b)\ne1$. Multiplying the sum by $\chi(b)$ permutes the units, so $\chi(b)\sum\chi(n)=\sum\chi(n)$, and $(\chi(b)-1)$ kills the sum.
+\end{proof}
+
+The count of all such $\chi$ needs the shape of the unit group, which is now complete.
+
+\begin{proposition}\label{prop:t1-unitproduct}
+Let $m=2^k\prod_ip_i^{a_i}$ with odd primes $p_i$. The Chinese remainder theorem identifies
+\[
+(\Z/m\Z)^\times
+\]
+with the product of $(\Z/2^k\Z)^\times$ and the groups $(\Z/p_i^{a_i}\Z)^\times$. Each odd factor is cyclic, by Theorem~\ref{thm:cyclicn}. The factor of $2$ is cyclic for $k\le2$, and for $k\ge3$ it is the product described by Theorem~\ref{thm:twopower}. In particular $(\Z/m\Z)^\times$ is a product of cyclic groups, and it has $\varphi(m)$ elements.
+\end{proposition}
+\begin{proof}
+Iterating Theorem~\ref{thm:crt} gives a ring isomorphism $\Z/m\Z\cong\prod\Z/p^{a}\Z$, the product running over the prime powers in $m$, and a ring isomorphism identifies units with tuples of units. The cyclicity statements are Theorem~\ref{thm:cyclicn} for the odd prime powers and for $2$ and $4$, and Theorem~\ref{thm:twopower} for higher powers of $2$.
+\end{proof}
+
+\begin{theorem}\label{thm:t1-charcount}
+There are exactly $\varphi(m)$ Dirichlet characters modulo $m$. If $a$ is a unit and $a\not\equiv1\pmod m$, some character satisfies $\chi(a)\ne1$.
+\end{theorem}
+\begin{proof}
+A cyclic group of order $N$, generated by $g$, has exactly $N$ homomorphisms to $\C^\times$: the image of $g$ may be any $N$th root of unity $e^{2\pi i j/N}$, $0\le j<N$, and each choice extends uniquely by $\chi(g^k)=e^{2\pi i jk/N}$. A homomorphism from a direct product of groups to $\C^\times$ is a tuple of homomorphisms, one from each factor, because $\chi(g,h)=\chi(g,1)\chi(1,h)$. Proposition~\ref{prop:t1-unitproduct} therefore supplies exactly $\varphi(m)$ characters.
+
+For the second claim, write the unit group as a product of cyclic groups and let $a$ have a non-trivial component $g^k$ in a cyclic factor of order $N$, with $N\nmid k$. The character of that factor sending $g$ to $e^{2\pi i/N}$ does not fix $g^k$, and the trivial character on every other factor extends it to the whole unit group.
+\end{proof}
+
+\begin{think}
+Modulo $5$, a primitive root is $2$, and the units are $2^0,2^1,2^2,2^3\equiv1,2,4,3$. How many characters should there be, and which of them is the Legendre symbol? Compute $\bigl(\frac2 5\bigr)$ from the supplementary law before looking at the example.
+\end{think}
+
+\begin{examplex}[the character table modulo $5$]
+Since $\varphi(5)=4$, there are four characters. With generator $2$ they are $\chi_j(2^k)=e^{2\pi i jk/4}=i^{jk}$ for $j=0,1,2,3$. On the units $1,2,3,4$ one finds
+\[
+\begin{array}{c|cccc}
+n&1&2&3&4\\\hline
+\chi_0&1&1&1&1\\
+\chi_1&1&i&-i&-1\\
+\chi_2&1&-1&-1&1\\
+\chi_3&1&-i&i&-1.
+\end{array}
+\]
+The symbol $\bigl(\frac n5\bigr)$ equals $1, -1, -1, 1$ on these four units, because $\bigl(\frac25\bigr)=-1$ by the rule for $p\equiv\pm3\pmod8$ and $\bigl(\frac35\bigr)=\bigl(\frac53\bigr)=\bigl(\frac23\bigr)=-1$. It is exactly $\chi_2$, the unique non-principal character with values in $\{\pm1\}$. A cyclic group of even order has exactly one element of order $2$ in its dual, so there is no other candidate.
+\end{examplex}
+
+\begin{theorem}[orthogonality]\label{thm:t1-ortho}
+Let $\chi,\psi$ be characters modulo $m$, and let $a$ be an integer.
+\begin{enumerate}[label=(\roman*)]
+\item $\displaystyle\sum_{n=1}^m\chi(n)\overline{\psi(n)}=\begin{cases}\varphi(m)&\text{if }\chi=\psi,\\0&\text{otherwise.}\end{cases}$
+\item If $\gcd(a,m)=1$, then $\displaystyle\sum_{\chi}\chi(a)=\begin{cases}\varphi(m)&\text{if }a\equiv1\pmod m,\\0&\text{otherwise,}\end{cases}$ the sum running over all $\varphi(m)$ characters.
+\item Consequently, for any integer $n$,
+\[
+\frac1{\varphi(m)}\sum_{\chi}\chi(n)\overline{\chi(a)}
+\]
+equals $1$ if $n\equiv a\pmod m$ and $\gcd(a,m)=1$, and equals $0$ otherwise.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Values of $\chi$ on units are roots of unity, so $\overline{\chi(n)}=\chi(n)^{-1}$ whenever $\chi(n)\ne0$, and the function $\chi\overline{\psi}$ is the character $\chi\psi^{-1}$. It is principal if and only if $\chi=\psi$. Part~(i) is therefore Proposition~\ref{prop:t1-charsum}.
+
+For~(ii), the characters form a group under multiplication: the product of two homomorphisms is a homomorphism, and Theorem~\ref{thm:t1-charcount} says there are $\varphi(m)$ of them, so every homomorphism appears. If $a\equiv1$, every term is $1$. If not, some $\psi$ has $\psi(a)\ne1$, and multiplication by $\psi$ permutes the characters, so the sum $S$ satisfies $\psi(a)S=S$.
+
+For~(iii), if $\gcd(a,m)>1$ then $\overline{\chi(a)}=0$ for every $\chi$. If $\gcd(a,m)=1$, then $\overline{\chi(a)}=\chi(a)^{-1}=\chi(a^{-1})$, so the sum equals $\sum_{\chi}\chi(na^{-1})$. This vanishes when $\gcd(n,m)>1$. When $n$ is also a unit, part~(ii) returns $\varphi(m)$ if $na^{-1}\equiv1\pmod m$ and returns $0$ otherwise. Dividing by $\varphi(m)$ is the claim.
+\end{proof}
+
+Part~(iii) is the device that isolates a single residue class. Volume~5 writes the indicator of the primes $p\equiv a\pmod m$ by inserting this average into a sum over primes. The identity itself is finite and exact; no analysis has entered yet.
+
+% t1-pass2 examples 81f967b9
+\begin{examplex}[the non-principal character modulo $4$]
+On odd $n$, $\chi_4(n)=(-1)^{(n-1)/2}$. Thus $\chi_4(1)=1$, $\chi_4(3)=-1$, $\chi_4(5)=1$, $\chi_4(7)=-1$, and $\chi_4$ vanishes on evens. The sum over a complete set of residues modulo $4$ is $0$, as Proposition~\ref{prop:t1-charsum} requires for a non-principal character. This is the character in Jacobi's formula for $r_2(n)$.
+\end{examplex}
+
+\begin{examplex}[two rows modulo $5$]
+With primitive root $2$, the character $\chi_2(2^k)=(-1)^k$ takes the values $1,-1,1,-1$ on $1,2,4,3$. On the ordered units $1,2,3,4$ the values are $1,-1,-1,1$, which is the Legendre symbol. The sum of this row against the principal row $1,1,1,1$ is $1-1-1+1=0$.
+\end{examplex}
+
+\section{Euler products}
+
+% t1-pass2 motive 78236f4c
+Complete multiplicativity turns a sum over integers into a product over primes, once $s>1$ gives absolute convergence. The identity $\sum\mu(n)n^{-s}=1/\zeta(s)$ is M\"obius inversion written as Dirichlet series. Volume~5 spends its first chapters extending these products to $s=1$ and to the complex line, where absolute convergence has failed and the zeros appear.
+
+A completely multiplicative function turns a sum over the integers into a product over the primes, because unique factorisation says that every $n$ is built from primes in exactly one way. The cost is a little convergence, which Volume~0's integral comparison supplies as soon as the exponent exceeds $1$.
+
+\begin{lemma}\label{lem:t1-pseries}
+Let $s>1$. The series $\sum_{n\ge1}n^{-s}$ converges, and for every real $X\ge1$,
+\[
+\sum_{n>X}n^{-s}\le\int_{\lfloor X\rfloor}^{\infty}t^{-s}\,\mathrm dt=\frac{\lfloor X\rfloor^{1-s}}{s-1}.
+\]
+\end{lemma}
+\begin{proof}
+The function $t^{-s}$ decreases. For $n\ge2$, $n^{-s}\le\int_{n-1}^n t^{-s}\,\mathrm dt$, so the tail from $n=\lfloor X\rfloor+1$ onwards is at most the integral from $\lfloor X\rfloor$ to infinity.
+\end{proof}
+
+\begin{lemma}\label{lem:t1-dseries}
+Let $s>1$, and let $\sum a_nn^{-s}$ and $\sum b_nn^{-s}$ converge absolutely. Then
+\[
+\Bigl(\sum_{n\ge1}a_nn^{-s}\Bigr)\Bigl(\sum_{m\ge1}b_mm^{-s}\Bigr)
+=\sum_{N\ge1}(a*b)(N)\,N^{-s}.
+\]
+\end{lemma}
+\begin{proof}
+The double sum $\sum_{n,m}|a_nb_m|(nm)^{-s}$ is the product of the two absolute series, hence finite. Absolute convergence lets one group the pairs $(n,m)$ by the product $N=nm$. The inner sum at $N$ is $(a*b)(N)N^{-s}$.
+\end{proof}
+
+\begin{theorem}[Euler product]\label{thm:t1-eulerprod}
+Let $s>1$ and let $f$ be completely multiplicative, with $f(1)=1$ and $|f(n)|\le1$ for every $n$. Then
+\[
+\sum_{n\ge1}f(n)\,n^{-s}=\prod_p\bigl(1-f(p)\,p^{-s}\bigr)^{-1},
+\]
+and the product converges to a non-zero complex number.
+\end{theorem}
+\begin{proof}
+Expanding a finite product of geometric series gives
+\[
+P_X:=\prod_{p\le X}\bigl(1-f(p)p^{-s}\bigr)^{-1}
+=\sum_{n\in S_X}f(n)\,n^{-s},
+\]
+where $S_X$ is the set of positive integers whose prime factors are all $\le X$. Every $n\le X$ lies in $S_X$. The full series converges absolutely by comparison with Lemma~\ref{lem:t1-pseries}. An integer outside $S_X$ has a prime factor $>X$, hence exceeds $X$, so
+\[
+\Bigl|\sum_{n\ge1}f(n)n^{-s}-P_X\Bigr|
+\le\sum_{n>X}n^{-s}\longrightarrow0.
+\]
+Thus the partial products converge to the series. The limit is not zero. The inequality $1+t\le e^t$ gives $\prod_p(1+p^{-s})\le\exp(\sum_pp^{-s})<\infty$, since $\sum_pp^{-s}$ converges by comparison with Lemma~\ref{lem:t1-pseries}. Each factor satisfies $|1-f(p)p^{-s}|\le1+p^{-s}$, and a finite product of non-zero terms is non-zero, so
+\[
+|P_X|=\Bigl|\prod_{p\le X}\bigl(1-f(p)p^{-s}\bigr)\Bigr|^{-1}
+\ge\Bigl(\prod_p(1+p^{-s})\Bigr)^{-1}>0.
+\]
+The lower bound does not depend on $X$. An infinite product of non-zero terms may still vanish: $\prod_p(1-1/p)=0$ is the reason $\sum 1/n$ diverges. For $s>1$ the comparison forbids that vanishing.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+Absolute convergence lets one group the Euler product by the fundamental theorem: every $n$ appears once. The tail past $X$ is dominated by the tail of $\sum n^{-s}$, which tends to $0$. The product of $(1+p^{-s})$ converges, so the reciprocal Euler factors stay bounded away from zero. At $s=1$ that comparison fails, which is why the harmonic series diverges.
+
+Two special cases carry the names used later. For $f=1$,
+\[
+\zeta(s):=\sum_{n\ge1}n^{-s}=\prod_p(1-p^{-s})^{-1}\qquad(s>1).
+\]
+For a character $\chi$,
+\[
+L(s,\chi):=\sum_{n\ge1}\chi(n)\,n^{-s}=\prod_p\bigl(1-\chi(p)p^{-s}\bigr)^{-1}\qquad(s>1).
+\]
+Both are non-zero for real $s>1$. The product for $\zeta$ is an equality of positive real numbers. The product for $L$ is an equality in $\C$.
+
+\begin{corollary}\label{cor:t1-mu-zeta}
+For $s>1$, $\displaystyle\sum_{n\ge1}\mu(n)\,n^{-s}=\frac1{\zeta(s)}=\prod_p(1-p^{-s})$.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:t1-dseries} and Theorem~\ref{thm:mobius} give $\zeta(s)\sum\mu(n)n^{-s}=\sum\varepsilon(n)n^{-s}=1$. The Euler product for $\zeta$ then inverts term by term.
+\end{proof}
+
+\begin{examplex}[a product one can compare with $\pi^2/6$]
+At $s=2$, the series is $1+\frac14+\frac19+\cdots=\pi^2/6$, the Basel sum from Volume~0. The partial sum through $n=30$ equals $1.61215\ldots$. The product over the primes $p\le30$ equals $1.63307\ldots$, and $\pi^2/6=1.64493\ldots$. The product is ahead of the partial sum because it already includes every integer whose prime factors are at most $30$, including those larger than $30$, such as $32$, $49$ and $77$. Both approximations approach the same limit from below; they are not two competing guesses.
+\end{examplex}
+
+\begin{think}
+Corollary~\ref{cor:t1-mu-zeta} says that $\sum\mu(n)/n^s$ tends to zero as $s\downarrow1$, because $\zeta(s)$ grows like the harmonic series. Does the single series $\sum\mu(n)/n$ converge? The Euler product at $s=1$ would be $\prod(1-1/p)=0$, which is a hint and not yet a proof: the identity was stated for $s>1$. Volume~5 returns to this series. What, in the argument above, used $s>1$ in an essential way?
+\end{think}
+
+The answer to the last question is absolute convergence. At $s=1$ the harmonic series diverges, the comparison that identified the sum with the product stops, and a conditionally convergent series cannot be rearranged with the same freedom. That is a precise description of the boundary, not a vague warning.
+
+% t1-pass2 examples 78236f4c
+\begin{examplex}[the product for $\zeta(2)$ up to $30$]
+The partial sum $\sum_{n\le 30}n^{-2}$ is about $1.612$. The product $\prod_{p\le 30}(1-p^{-2})^{-1}$ is about $1.633$. Both lie below $\pi^2/6\approx 1.645$. The product is larger because it already includes every integer whose prime factors are at most $30$, including those greater than $30$.
+\end{examplex}
+
+\begin{examplex}[the series for $\mu$ at $s=2$]
+Since $\sum\mu(n)n^{-2}=1/\zeta(2)=6/\pi^2\approx 0.608$. The partial sum through $n=10$ is $1-1/4-1/9+0-1/25-1/36+0+0+0+1/100$, which is already near $0.64$. The omitted tail is small because of $n^{-2}$, which is why $s=2$ is a kinder teacher than $s=1$.
+\end{examplex}
+
+\section{Legendre's formula for the sifted count}
+
+% t1-pass2 motive fca497a3
+The M\"obius function deletes the integers that are divisible by a small prime, with the usual inclusion--exclusion signs. The resulting formula for $\Phi(x,z)$ is exact and, once $z$ is large, too long to expand. Volume~5 and Volume~13 exist in order to estimate this sum without opening every term.
+
+Let $z\ge2$ and let $P(z)=\prod_{p\le z}p$. Write $\Phi(x,z)$ for the number of integers $n$ with $1\le n\le x$ and $\gcd\bigl(n,P(z)\bigr)=1$. These are $1$ and the integers up to $x$ that have no prime factor $\le z$.
+
+\begin{theorem}[Legendre]\label{thm:t1-sieve}
+For $x\ge0$ and $z\ge2$,
+\[
+\Phi(x,z)=\sum_{d\mid P(z)}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
+\]
+If $x\ge1$ and $z\ge\sqrt x$, then $\Phi(x,z)=1+\pi(x)-\pi(z)$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:mobius} says that $\sum_{d\mid\gcd(n,P)}\mu(d)$ equals $1$ if $\gcd(n,P)=1$ and equals $0$ otherwise. Summing over $1\le n\le x$,
+\[
+\Phi(x,z)=\sum_{n\le x}\sum_{d\mid\gcd(n,P)}\mu(d)
+=\sum_{d\mid P}\mu(d)\,\#\{n\le x:d\mid n\}
+=\sum_{d\mid P}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
+\]
+For the second claim, an integer $n$ with $1<n\le x$ and no prime factor $\le z$ cannot be composite: a composite number has a prime factor at most $\sqrt n\le\sqrt x\le z$. The surviving integers are therefore $1$ and the primes in the interval $(z,x]$.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+The sum $\sum_{d\mid\gcd(n,P)}\mu(d)$ is the indicator that $n$ shares no prime factor with $P$. Summing over $n\le x$ and changing the order produces one floor for each divisor of $P$. If $z\ge\sqrt x$, every composite up to $x$ has a prime factor at most $z$, so the survivors are $1$ and the primes between $z$ and $x$.
+
+The identity is exact. It is also, for large $z$, an impractical way to compute $\pi(x)$, because $P(z)$ has $2^{\pi(z)}$ positive divisors and every one of them contributes a term. At $x=100$ and $z=10$ there are $2^4=16$ terms and the arithmetic is pleasant. At $x=10^4$ and $z=100$ there are $2^{25}$ terms. The sieves of Volumes~5 and~13 exist in order to estimate this sum without expanding it.
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-sieve}
+\caption{The integers from $1$ to $30$, sifted by the primes $2$, $3$ and $5$. Eight numbers remain, in agreement with $\Phi(30,5)=8$. The olive dots mark the multiples of $5$; many of them were already excluded by $2$ or $3$, which is why an inclusion--exclusion must put them back before removing them again.}
+\label{fig:t1-sieve30}
+\end{figure}
+
+\begin{examplex}[from thirty, and then to one hundred]
+The divisors of $P(5)=30$ and the terms $\mu(d)\lfloor30/d\rfloor$ are
+\[
+\begin{aligned}
+&30,-15,-10,-6,+5,+3,+2,-1.
+\end{aligned}
+\]
+Their sum is $8$. The survivors are $1,7,11,13,17,19,23,29$.
+
+For $\pi(100)$, take $z=10$, so $P=210$. Sixteen terms give $\Phi(100,10)=22$. Theorem~\ref{thm:t1-sieve} converts the count into primes: $\pi(10)=4$, hence $\pi(100)=22-1+4=25$. The same arithmetic with a larger primorial is legitimate and rapidly becomes the wrong tool. The identity's job is structural: every sifted count is a M\"obius average of floors.
+\end{examplex}
+
+% t1-pass2 examples fca497a3
+\begin{examplex}[sifting $30$ by the primes up to $5$]
+The divisors of $30$ contribute $30-15-10-6+5+3+2-1=8$. The survivors are $1,7,11,13,17,19,23,29$. Since $\sqrt{30}>5$, the count is not yet $1+\pi(30)-\pi(5)$ by the sufficient condition of the theorem, although for this particular bound the two numbers happen to agree. The mismatch appears as soon as $49$ enters, as the text computes for $\Phi(50,5)$.
+\end{examplex}
+
+\begin{examplex}[the floor identity at $x=10$]
+One has $\sum_{n\le 10}\mu(n)\lfloor 10/n\rfloor=10-5-3-2+1-1+1=1$. Every integer $m\le 10$ contributes $\sum_{d\mid m}\mu(d)$, which is $1$ only for $m=1$. This is the sieve with $z$ large enough that $P(z)$ is divisible by every integer up to $x$, written without naming the primes.
+\end{examplex}
+
+\section{One series at the boundary}
+
+% t1-pass2 motive 1b6f2fb9
+The series $\sum\chi_4(n)/n$ still converges, by grouping or by the bounded partial sums of a non-principal character, and its sum is positive. The Euler product at $s=1$ is a different series, over primes rather than over all integers. Passing from one to the other is Dirichlet's theorem for the modulus $4$, and it is the step this volume does not take.
+
+The character $\chi_4$ separates the two odd classes. Its series at the edge $s=1$ can be summed by hand, and the sum is visibly positive. That positivity is the model, in the smallest modulus, of the non-vanishing which Dirichlet's theorem requires.
+
+\begin{proposition}\label{prop:t1-chi4series}
+The series $\sum_{n\ge1}\chi_4(n)/n$ converges, and its sum lies in the interval $\bigl(\frac23,1\bigr)$.
+\end{proposition}
+\begin{proof}
+The even terms vanish, and the series is the grouped sum
+\[
+\sum_{k\ge0}\Bigl(\frac1{4k+1}-\frac1{4k+3}\Bigr)
+=\sum_{k\ge0}\frac2{(4k+1)(4k+3)}.
+\]
+Every grouped term is positive, so the partial sums $S_N$ of the first $N$ groups increase. Writing them out,
+\[
+S_N=1-\Bigl(\frac13-\frac15\Bigr)-\cdots-\frac1{4N-1}
+\]
+when $N\ge2$, and $S_1=1-\frac13$. In every case $S_N<1$. Also $S_N\ge S_1=\frac23$, and the inequality is strict for the limit because the second grouped term is positive. An increasing sequence bounded above converges, and the sum lies in $\bigl(\frac23,1\bigr)$.
+\end{proof}
+
+\begin{proposition}\label{prop:t1-charbound}
+Let $\chi$ be a non-principal character modulo $m$. For every real $x\ge0$,
+\[
+\Bigl|\sum_{1\le n\le x}\chi(n)\Bigr|\le\varphi(m).
+\]
+\end{proposition}
+\begin{proof}
+Let $N=\lfloor x\rfloor$ and write $N=qm+r$ with $0\le r<m$. Each complete block of $m$ consecutive integers contributes $\sum_{n=1}^m\chi(n)=0$, by Proposition~\ref{prop:t1-charsum}. The remainder is a sum of at most $r$ terms of absolute value at most $1$, and at most $\varphi(m)$ of those terms are non-zero. Hence the absolute value is at most $\varphi(m)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-race}
+\caption{The number of primes $\le x$ in the two odd classes modulo $4$, for $x$ from $10$ to $100$ in steps of $10$. Squares and the solid path count the class $3$; circles and the dashed path count the class $1$. Up to $100$ the class $3$ stays ahead, $13$ primes against $11$. Figure~\ref{fig:mod4-line} shows the same primes one at a time.}
+\label{fig:t1-race}
+\end{figure}
+
+\begin{think}
+Proposition~\ref{prop:t1-chi4series} shows that a signed sum over all integers converges to a positive number. The Euler product expresses the same function for exponents greater than $1$. What extra fact would turn the positivity into $\sum_{p\equiv3\pmod4}1/p=\infty$ and $\sum_{p\equiv1\pmod4}1/p=\infty$? Try to say which step is missing, before reading on.
+\end{think}
+
+The missing step is a passage to the limit. For $s>1$,
+\[
+\log L(s,\chi_4)=\sum_p-\log\bigl(1-\chi_4(p)p^{-s}\bigr)
+=\sum_p\frac{\chi_4(p)}{p^s}+O\Bigl(\sum_p\frac1{p^2}\Bigr),
+\]
+and the error series converges. If $L(s,\chi_4)$ stayed bounded away from $0$ and infinity as $s\downarrow1$, the prime sum $\sum\chi_4(p)/p^s$ would stay bounded, and an elementary argument would promote that bound into the convergence of $\sum\chi_4(p)/p$. Combined with Euler's divergence $\sum_p1/p=\infty$ from Theorem~\ref{thm:euler}, both residue classes would then diverge. Proposition~\ref{prop:t1-chi4series} computes the series of $\chi_4(n)/n$ over all $n$, not the Euler product at $s=1$. The composites and the tail are still in the sum. Removing them is real work. Volume~5 does it for every character, and the non-vanishing of $L(1,\chi)$ is the step that carries the proof.
+
+Exercise~\ref{ex:mod4} already gives infinitely many primes $\equiv3\pmod4$, by a Euclidean construction, and Exercise~\ref{ex:cyclotomic} gives infinitely many primes $\equiv1\pmod4$. Infinitely many is weaker than a divergent reciprocal sum, and both are weaker than Dirichlet's theorem for a general progression. The character makes the gap visible: one can see exactly which identity is still missing.
+
+\begin{beauty}
+Where this leads. Quadratic reciprocity says that the Legendre symbol, a character modulo $p$, is essentially a character modulo the numerator. Dirichlet's theorem says that every character except the principal one leaves $L(1,\chi)$ finite and non-zero, and that this single fact forces primes into every eligible residue class. Class field theory, in Volume~12, is the statement that the characters which govern prime splitting in an abelian extension are characters of this same kind. The sieve identity of Theorem~\ref{thm:t1-sieve} is the inclusion--exclusion which Volumes~5 and~13 approximate when the exact sum has too many terms to open. Three later volumes begin where this product, this sign and this floor-sum leave off.
+\end{beauty}
+
+% t1-pass2 examples 1b6f2fb9
+\begin{examplex}[three grouped terms]
+The grouped series begins
+\[
+\Bigl(1-\frac13\Bigr)+\Bigl(\frac15-\frac17\Bigr)+\Bigl(\frac19-\frac1{11}\Bigr)
+=\frac23+\frac2{35}+\frac2{99}.
+\]
+Numerically this is about $0.6667+0.0571+0.0202=0.744$. The sum is increasing and still less than $1$, and it has already moved well above $2/3$.
+\end{examplex}
+
+\begin{examplex}[a partial character sum]
+For $\chi_4$, the partial sums of $\chi_4(1)+\cdots+\chi_4(N)$ are $1,1,0,0,1,1,0,0,\ldots$ and never exceed $1$ in absolute value. Proposition~\ref{prop:t1-charbound} only promised the coarser bound $\varphi(4)=2$. The sharper oscillation is special to modulus $4$; the proof for a general modulus stops at $\varphi(m)$.
+\end{examplex}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:t1-char5}
+Make the character table of the units modulo $5$, taking $2$ as primitive root, and identify the Legendre symbol in the table. Check the row orthogonality $\sum_{n=1}^5\chi(n)\overline{\psi(n)}$ for two distinct rows.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:t1-chi8check}
+Compute $\bigl(\frac2p\bigr)$ and $\chi_8(p)$ for the odd primes $p\le19$. Then prove $\bigl(\frac2p\bigr)=\chi_8(p)$ for every odd prime, using Corollary~\ref{cor:two} and checking the four classes modulo $8$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-sieve30}
+Compute $\Phi(30,5)$ from Theorem~\ref{thm:t1-sieve}, list the eight survivors, and explain why $\Phi(30,5)$ is not equal to $1+\pi(30)-\pi(5)$. Which hypothesis of the second claim fails?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-phi-ratio}
+Prove that $\displaystyle\sum_{d\mid n}\frac{\mu(d)}d=\frac{\varphi(n)}n$ for every $n\ge1$. Deduce $\varphi(n)=n\prod_{p\mid n}\bigl(1-\frac1p\bigr)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-mu-floor}
+Prove that $\displaystyle\sum_{n\le x}\mu(n)\Bigl\lfloor\frac xn\Bigr\rfloor=1$ for every real $x\ge1$. Check the identity at $x=10$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-squarefree}
+Show that $\sum_{d^2\mid n}\mu(d)$ equals $1$ if $n$ is squarefree and equals $0$ otherwise. Use it to write the number of squarefree integers up to $x$ as $\sum_{d\le\sqrt x}\mu(d)\bigl\lfloor x/d^2\bigr\rfloor$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:t1-char-series}
+Let $\chi$ be a non-principal character modulo $m$, and let $A(N)=\sum_{n=1}^N\chi(n)$.
+\begin{enumerate}[label=(\alph*)]
+\item Prove Proposition~\ref{prop:t1-charbound}: $|A(N)|\le\varphi(m)$.
+\item Prove the summation identity
+\[
+\sum_{n=1}^N\chi(n)\,b_n=A(N)b_N-\sum_{n=1}^{N-1}A(n)\,(b_{n+1}-b_n)
+\]
+for any numbers $b_n$.
+\item Take $b_n=1/n$ and deduce that $\sum_{n\ge1}\chi(n)/n$ converges.
+\end{enumerate}
+The series of Proposition~\ref{prop:t1-chi4series} is the case $\chi=\chi_4$. The argument here gives convergence for every non-principal character, and it does not by itself evaluate the sum.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:t1-group3}
+Compute the sum of the first three grouped terms of $\sum\chi_4(n)/n$, and check that it lies strictly between $2/3$ and $1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:pseudo}
+An odd composite $n$ with $2^{n-1}\equiv1\pmod n$ is a \emph{pseudoprime} (to base $2$).
+\begin{enumerate}[label=(\alph*)]
+\item Show that $341=11\cdot31$ is a pseudoprime.
+\item Show that if $n$ is a pseudoprime, so is $2^n-1$. Deduce that there are infinitely many pseudoprimes.
+\item Show that $\frac{4^p-1}3$ is a pseudoprime for every prime $p\ge5$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:pocklington}
+\begin{enumerate}[label=(\alph*)]
+\item Let $n>1$, and let $F\mid n-1$. Suppose that $a^{n-1}\equiv1\pmod n$ and that $\gcd(a^{(n-1)/q}-1,n)=1$ for every prime
+$q\mid F$. Show that every prime factor of $n$ is $\equiv1\pmod F$. Deduce that $n$ is prime if $F>\sqrt n$.
+\item (Proth) Let $N=k2^m+1$ with $k$ odd and $k<2^m$. Show that if $a^{(N-1)/2}\equiv-1\pmod N$ for some $a$, then $N$ is
+prime. Check that $3329=13\cdot2^8+1$ is prime with $a=3$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:fermatquot}
+For a prime $p$ and $p\nmid a$, the \emph{Fermat quotient} is $q_p(a)=\frac{a^{p-1}-1}p$, an integer.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $q_p(ab)\equiv q_p(a)+q_p(b)\pmod p$, and $q_p(a+pt)\equiv q_p(a)-\frac ta\pmod p$.
+\item Show that $2q_p(2)\equiv\sum_{k=1}^{p-1}\frac{(-1)^{k-1}}k\pmod p$ for odd $p$.
+\item (Lerch) Let $W_p=\frac{(p-1)!+1}p$. Show that $\sum_{a=1}^{p-1}q_p(a)\equiv W_p\pmod p$.
+\item Show that $2^{p-1}\equiv1\pmod{p^2}$ if and only if $2$ has the same order modulo $p$ and modulo $p^2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:mullin}
+\begin{enumerate}[label=(\alph*)]
+\item Let $a_1=2$ and let $a_{n+1}$ be the smallest prime factor of $a_1a_2\cdots a_n+1$. Show that the $a_n$ are distinct, and
+compute $a_1,\dots,a_7$.
+\item Let $b_1=2$ and let $b_{n+1}$ be the \emph{largest} prime factor of $b_1\cdots b_n+1$. Show that $5$ never appears.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:artin}
+Let $q$ be a prime such that $p=2q+1$ is also prime, with $p>7$. Show that $2$ is a primitive root modulo $p$ if
+$q\equiv1\pmod4$, and that $-2$ is one if $q\equiv3\pmod4$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:fermatcubic}
+\emph{Gauss's cubic.} Let $p\equiv1\pmod3$ be prime and $N$ the number of $(x,y)\in\mathbb F_p^2$ with $x^3+y^3=1$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $\chi$ be a character of order $3$ of $\mathbb F_p^*$, extended by $\chi(0)=0$, and for characters $\alpha,\beta$
+let $J(\alpha,\beta)=\sum_{u+v=1}\alpha(u)\beta(v)$ (with the convention that the trivial character takes the value $1$ at $0$).
+Show that $N=p-2+2\operatorname{Re}J(\chi,\chi)$.
+\item Let $g(\alpha)=\sum_{t\in\mathbb F_p}\alpha(t)e(t)$. Show that $g(\alpha)g(\beta)=J(\alpha,\beta)g(\alpha\beta)$ when
+$\alpha\beta$ is not trivial, that $|g(\chi)|^2=p$, and that $g(\chi)^3=p\,J(\chi,\chi)$.
+\item Write $\omega=e^{2i\pi/3}$, so that $J(\chi,\chi)=a'+b'\omega$ with $a',b'\in\Z$. Show that $a'\equiv-1$ and
+$b'\equiv0\pmod 3$.
+\item Conclude: $N=p-2+a$, where $a$ is the integer with $a\equiv1\pmod3$ and $4p=a^2+27b^2$ for some integer $b$. Check $p=7$
+and $p=13$, and show that $|N-(p-2)|\le2\sqrt p$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:euclidgame}
+\emph{Euclid's game (Cole and Davie, 1969).} Two players start from a pair $(a,b)$ of positive integers. A move replaces the larger
+number by itself minus a positive multiple of the smaller, as long as the result is $\ge0$. The player who produces a $0$ wins.
+\begin{enumerate}[label=(\alph*)]
+\item Let $\varphi=\frac{1+\sqrt5}2$. Show that, for $a<b$, the player to move wins if and only if $\frac ba>\varphi$.
+\item Deduce that, for random $a<b$, the first player wins with probability tending to $\frac1\varphi=0.618\ldots$
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:pascalthree}
+\emph{Pascal's triangle modulo $3$.}
+\begin{enumerate}[label=(\alph*)]
+\item Let $p$ be prime and $n=\sum_in_ip^i$ in base $p$. Show that exactly $\prod_i(n_i+1)$ entries of row $n$ of Pascal's triangle
+are not divisible by $p$.
+\item For $p=3$, let $a_j$ be the number of digits of $n$ equal to $j$. Show that row $n$ has $2^{a_1}$ more entries $\equiv1$ than
+entries $\equiv2\pmod3$.
+\item In the first $3^k$ rows, find the numbers of entries $\equiv0$, $\equiv1$ and $\equiv2\pmod3$, and their proportions as
+$k\to\infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:powerful}
+\emph{Powerful numbers.} An integer $n\ge1$ is \emph{powerful} if $p^2\mid n$ for every prime $p\mid n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that every powerful $n$ can be written uniquely as $a^2b^3$ with $b$ squarefree.
+\item Show that the number of powerful $n\le x$ is $\frac{\zeta(3/2)}{\zeta(3)}\sqrt x+O(x^{1/3})$, and that their Dirichlet series is
+$\frac{\zeta(2s)\zeta(3s)}{\zeta(6s)}$.
+\item Show that there are infinitely many pairs of consecutive powerful numbers, such as $(8,9)$ and $(288,289)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:jacobi}
+\emph{Jacobi's four-square theorem.} For $|x|<1$ let $\Theta(x)=\sum_{m\in\Z}x^{m^2}$, so that $\Theta(x)^4=\sum_{n\ge0}r_4(n)x^n$, where $r_4(n)$ is the number of
+$(a,b,c,d)\in\Z^4$ with $a^2+b^2+c^2+d^2=n$. Write $E(x)=\prod_{n\ge1}(1-x^n)$, and $D=x\frac{\mathrm d}{\mathrm dx}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\Theta(-x)=\prod_{n\ge1}\frac{1-x^n}{1+x^n}$.
+\item Show that $E(x)^6=\frac12\sum_{r,s\in\Z}\bigl((2r+1)^2-4s^2\bigr)x^{r^2+r+s^2}$.
+\item Let $B(x)=\sum_{r\in\Z}x^{r^2+r}$. Show that $2E^6=\Theta\,(B+4DB)-4B\,D\Theta$, and that
+\[
+\Theta(x)=\prod_{n\ge1}(1-x^{2n})(1+x^{2n-1})^2,\qq B(x)=2\prod_{n\ge1}(1-x^{2n})(1+x^{2n})^2.
+\]
+\item Deduce that
+\[
+\Theta(-x)^4=1-8\sum_{n\ge1}\Bigl(\frac{(2n-1)x^{2n-1}}{1+x^{2n-1}}-\frac{2nx^{2n}}{1+x^{2n}}\Bigr),
+\]
+and then that $r_4(n)=8\sum_{d\mid n,\,4\nmid d}d$ for every $n\ge1$.
+\item Deduce Lagrange's theorem that every positive integer is a sum of four squares, and compute $r_4(p)$ for an odd prime $p$ and $r_4(2^k)$.
+\item By counting lattice points in a ball of $\R^4$, show that $\sum_{n\le x}r_4(n)=\frac{\pi^2}2x^2+O(x^{3/2})$. Show also, from (d), that
+$\sum_{n\le x}r_4(n)=3\zeta(2)x^2+O(x\log x)$, and conclude that $\zeta(2)=\frac{\pi^2}6$. (Numerically, one finds $\sum_{n\le10^7}r_4(n)=493\,480\,252\,693\,888$, which is
+$1.00000007\cdot\frac{\pi^2}2\,10^{14}$.)
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:densities}
+\emph{Four squares, one prime at a time.} For a prime $p$, $k\ge0$ and $n\ge1$, let $N_{p^k}(n)$ be the number of $x\in(\Z/p^k\Z)^4$ with
+$x_1^2+x_2^2+x_3^2+x_4^2\equiv n\pmod{p^k}$ (so $N_1(n)=1$). Call such an $x$ \emph{primitive} if some $x_i$ is not divisible by $p$, and let $N^*_{p^k}(n)$ count the
+primitive ones.
+\begin{enumerate}[label=(\alph*)]
+\item Let $p$ be odd. Show that $N^*_{p^{k+1}}(n)=p^3N^*_{p^k}(n)$ for $k\ge1$, and that for $k\ge2$, $N_{p^k}(n)-N^*_{p^k}(n)$ is $p^4N_{p^{k-2}}(\frac n{p^2})$ if
+$p^2\mid n$, and $0$ otherwise.
+\item Deduce that the \emph{local density} $\delta_p(n)=\lim_{k\to\infty}p^{-3k}N_{p^k}(n)$ exists, and, using Problem~\ref{pb:sumsquares}, that
+$\delta_p(n)=\bigl(1-\frac1{p^2}\bigr)\bigl(1+\frac1p+\dots+\frac1{p^a}\bigr)$ when $p^a$ is the exact power of $p$ dividing $n$.
+\item Let $p=2$. Show that $N^*_{2^{k+1}}(n)=8N^*_{2^k}(n)$ for $k\ge3$. (Every lift of a solution modulo $2^k$ has the same sum of squares modulo $2^{k+1}$; pair the
+solutions.) Deduce from a count modulo $8$ that $\delta_2(n)=1$ for odd $n$, and $\delta_2(n)=3\cdot2^{-a}$ when $2^a$ exactly divides $n$ and $a\ge1$.
+\item Show that for every $n\ge1$,
+\[
+r_4(n)=\pi^2n\prod_p\delta_p(n),
+\]
+the product converging absolutely. Interpret the factor $\pi^2n$ as a density at infinity: the derivative of the volume of the ball $x_1^2+\dots+x_4^2\le n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-cubic}
+\caption{For every prime $p\equiv1\pmod3$ below $3000$, the error $a=N-(p-2)$ in the number of points of $x^3+y^3=1$, divided by
+$2\sqrt p$ (Problem~\ref{pb:fermatcubic}). It never leaves $[-1,1]$, and it does not settle anywhere: the points fill the band
+with a density that peaks near the edges.}
+\label{fig:cubic}
+\end{figure}
+
+\section{Hints}
+
+\begin{hint}{ex:t1-char5}
+The powers of $2$ modulo $5$ are $1,2,4,3$. A character is determined by $\chi(2)$, a fourth root of unity. The Legendre symbol is the unique non-principal character with real values.
+\end{hint}
+\begin{hint}{ex:t1-chi8check}
+The four odd classes modulo $8$ are $1,3,5,7$, and $(p^2-1)/8$ is even precisely for $p\equiv\pm1\pmod8$.
+\end{hint}
+\begin{hint}{ex:t1-sieve30}
+The divisors of $30$ are $1,2,3,5,6,10,15,30$. For the comparison with $\pi$, ask whether every composite number up to $30$ has a prime factor at most $5$.
+\end{hint}
+\begin{hint}{ex:t1-phi-ratio}
+Proposition~\ref{prop:phisum} says $\sum_{d\mid n}\varphi(d)=n$. Invert it.
+\end{hint}
+\begin{hint}{ex:t1-mu-floor}
+Write $\lfloor x/n\rfloor$ as the number of multiples of $n$ up to $x$, exchange the sums, and apply $\mu*\mathbf1=\varepsilon$.
+\end{hint}
+\begin{hint}{ex:t1-squarefree}
+The sum is multiplicative. At a prime power $p^k$, the divisors $d$ with $d^2\mid p^k$ and $\mu(d)\ne0$ are few enough to list.
+\end{hint}
+\begin{hint}{ex:t1-char-series}
+Complete residue blocks sum to zero. For the identity, compare $A(n)-A(n-1)$ with $\chi(n)$, and telescope $A(n)b_n-A(n-1)b_n$. The differences $1/n-1/(n+1)$ are $1/(n(n+1))$.
+\end{hint}
+
+\begin{hint}{ex:t1-group3}
+Each group is $1/(4k+1)-1/(4k+3)$ for $k=0,1,2$.
+\end{hint}
+
+\begin{hint}{pb:pseudo}
+(b) $2^n-1$ is composite when $n$ is, and $2^n\equiv1$ modulo $2^n-1$; how does $n$ divide $2^n-2$? (c) $3N=2^{2p}-1$.
+\end{hint}
+
+\begin{hint}{pb:pocklington}
+(a) For a prime $p\mid n$, the order of $a$ modulo $p$ divides $n-1$ but not $(n-1)/q$. (b) $F=2^m$.
+\end{hint}
+
+\begin{hint}{pb:fermatquot}
+(b) Expand $2^p=(1+1)^p$; $\frac1p\binom pk\equiv\frac{(-1)^{k-1}}k\pmod p$. (c) Apply (a) to $(p-1)!$.
+\end{hint}
+
+\begin{hint}{pb:mullin}
+(b) What would $b_1\cdots b_n+1$ be, if its largest prime factor were $5$? Look at it modulo $4$.
+\end{hint}
+
+\begin{hint}{pb:artin}
+The order of $2$ divides $2q$; Euler's criterion and the value of $\bigl(\frac2p\bigr)$ decide whether it is $q$.
+\end{hint}
+
+\begin{hint}{pb:fermatcubic}
+(a) The number of cube roots of $u$ is $1+\chi(u)+\chi^2(u)$. (c) Raise $g(\chi)$ to the cube modulo $3$: in characteristic $3$,
+cubing is additive.
+\end{hint}
+
+\begin{hint}{pb:euclidgame}
+(a) Induction on $a+b$. When $b>2a$ the mover can choose between two positions, and exactly one of them has ratio below
+$\varphi$.
+\end{hint}
+
+\begin{hint}{pb:pascalthree}
+(b) Lucas, and the sign $\varepsilon(1)=1$, $\varepsilon(2)=-1$, which is multiplicative on $(\Z/3\Z)^*$.
+\end{hint}
+
+\begin{hint}{pb:powerful}
+(a) Even exponents go into $a^2$. (c) Pell's equation $x^2-8y^2=1$.
+\end{hint}
+
+\begin{hint}{pb:jacobi}
+(a) Put $z=-1$ in the triple product and use $\prod(1+x^n)\prod(1-x^{2n-1})=1$. (b) Multiply Jacobi's identity for $E^3$ by itself and pair $k$ with $l$ through $r=\frac{k+l}2$
+or $\frac{k+l-1}2$. (c) Write $E^6$ as a product of a theta series in $x^2$ and a series in $x$, using the triple product with $x\mapsto x^2$ twice; or verify the identity
+by differentiating the logarithms. (d) Logarithmic derivatives of the products in (a) and (c). (f) Each point of $\Z^4$ in the ball owns the unit cube in front of it.
+\end{hint}
+
+\begin{hint}{pb:densities}
+(a) Hensel: a primitive solution has some $x_i$ prime to $p$, and $x_i\mapsto x_i+p^kt$ changes the sum by $2x_ip^kt$. A non-primitive solution is $px'$. (b) Use $N_p(n)$
+from Problem~\ref{pb:sumsquares}, and induct on $a$. (c) Odd squares are $1$ modulo $8$. (d) Compare the product with $8\sum_{d\mid n,4\nmid d}d$ prime by prime.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:t1-char5}
+\idea A cyclic group of order $4$ has four characters, one for each fourth root of unity. Computing the Legendre symbol on $2$ and $3$ selects the row.
+\writeup The powers $2^0,2^1,2^2,2^3$ are $1,2,4,3$. Set $\chi_j(2^k)=i^{jk}$. On the ordered units $1,2,3,4$ the four rows are $(1,1,1,1)$, $(1,i,-i,-1)$, $(1,-1,-1,1)$ and $(1,-i,i,-1)$. Since $5\equiv5\pmod8$, $\bigl(\frac25\bigr)=-1$, and reciprocity gives $\bigl(\frac35\bigr)=\bigl(\frac53\bigr)=\bigl(\frac23\bigr)=-1$. Thus $\bigl(\frac n5\bigr)$ agrees with the real row $\chi_2$. The sum of $\chi_0\overline{\chi_2}$ on the units is $1-1-1+1=0$. For $\chi_1$ and $\chi_2$, using that $\chi_2$ is real,
+\[
+1\cdot1+i\cdot(-1)+(-i)\cdot(-1)+(-1)\cdot1=1-i+i-1=0.
+\]
+The third term uses $\chi_1(3)=-i$. Theorem~\ref{thm:t1-ortho} predicts the cancellation; the four-term sum is the check.
+\end{solution}
+
+\begin{solution}{ex:t1-chi8check}
+\idea Both sides depend on $p$ only through its class modulo $8$, so four primes, one in each class, are already the general proof once the supplementary law is quoted.
+\writeup For $p=3,5,7,11,13,17,19$ the classes modulo $8$ are $3,5,7,3,5,1,3$. Corollary~\ref{cor:two} gives $\bigl(\frac2p\bigr)=-1,-1,+1,-1,-1,+1,-1$, and $\chi_8$ produces the same list because it equals $-1$ on the classes $3$ and $5$ and equals $+1$ on the classes $1$ and $7$. In general $(p^2-1)/8$ is even for $p\equiv1,7\pmod8$ and odd for $p\equiv3,5\pmod8$, which is the definition of $\chi_8(p)$.
+\end{solution}
+
+\begin{solution}{ex:t1-sieve30}
+\idea Open the sum over the eight divisors, then test the hypothesis $z\ge\sqrt x$ on the numbers $30$ and $5$.
+\writeup The terms $\mu(d)\lfloor30/d\rfloor$ are $30,-15,-10,-6,5,3,2,-1$, and they add to $8$. The survivors are $1,7,11,13,17,19,23,29$. The second claim of the theorem asks for $z\ge\sqrt x$. Here $\sqrt{30}>5$, so that hypothesis fails, and the proof given for the translation into $\pi(x)$ does not apply. The two counts nevertheless agree: $1+\pi(30)-\pi(5)=1+10-3=8$. Every composite $n\le30$ still has a prime factor at most $5$, because the next prime is $7$ and $7^2=49>30$. The convenient sufficient condition $z\ge\sqrt x$ is slightly stronger than the condition actually used, namely that every composite up to $x$ has a prime factor $\le z$. A genuine mismatch appears as soon as a square of a larger prime fits under $x$. For example $\Phi(50,5)=14$, counting $1$ and the integers up to $50$ free of the primes $2,3,5$, including the composite $49$. On the other side $1+\pi(50)-\pi(5)=1+15-3=13$.
+\end{solution}
+
+\begin{solution}{ex:t1-phi-ratio}
+\idea The relation $\sum_{d\mid n}\varphi(d)=n$ is an instance of $g=\mathbf1*f$. M\"obius inversion returns $f=\mu*g$.
+\writeup Proposition~\ref{prop:phisum} says $\sum_{d\mid n}\varphi(d)=n$, that is $\varphi*\mathbf1=\operatorname{id}$. Convolution with $\mu$ and Theorem~\ref{thm:mobius} give $\varphi=\mu*\operatorname{id}$, so
+\[
+\varphi(n)=\sum_{d\mid n}\mu(d)\,\frac nd=n\sum_{d\mid n}\frac{\mu(d)}d.
+\]
+Dividing by $n$ is the first claim. The sum is multiplicative in $n$. At $n=\prod p^a$ it equals $\prod(1-1/p)$, because on a prime power the only non-zero terms are $d=1$ and $d=p$.
+\end{solution}
+
+\begin{solution}{ex:t1-mu-floor}
+\idea A floor counts multiples. After exchanging the order of summation, the inner sum is the M\"obius relation $\sum_{d\mid m}\mu(d)=\varepsilon(m)$.
+\writeup For $x\ge1$,
+\[
+\sum_{n\le x}\mu(n)\Bigl\lfloor\frac xn\Bigr\rfloor
+=\sum_{n\le x}\mu(n)\sum_{m\le x/n}1
+=\sum_{nm\le x}\mu(n)
+=\sum_{N\le x}\sum_{n\mid N}\mu(n)
+=\sum_{N\le x}\varepsilon(N)=1.
+\]
+At $x=10$ the non-zero contributions are
+\[
+10-5-3-2+1-1+1=1.
+\]
+\end{solution}
+
+\begin{solution}{ex:t1-squarefree}
+\idea The condition ``$n$ is squarefree'' is a condition at each prime. A multiplicative sum that vanishes on $p^2$ and equals $1$ on $p$ is the right detector.
+\writeup Let $f(n)=\sum_{d^2\mid n}\mu(d)$. If $\gcd(a,b)=1$, the square divisors of $ab$ are products of square divisors, so $f$ is multiplicative. At $p^k$, the integers $d$ with $d^2\mid p^k$ and $\mu(d)\ne0$ are $d=1$, and also $d=p$ when $k\ge2$. Thus $f(p^k)=1$ for $k=0,1$ and $f(p^k)=1+\mu(p)=0$ for $k\ge2$. Therefore $f(n)=1$ if every exponent in $n$ is $0$ or $1$, and $f(n)=0$ otherwise. Counting,
+\begin{align*}
+\sum_{n\le x}f(n)
+&=\sum_{n\le x}\sum_{d^2\mid n}\mu(d)\\
+&=\sum_{d\le\sqrt x}\mu(d)\Bigl\lfloor\frac x{d^2}\Bigr\rfloor,
+\end{align*}
+which is the number of squarefree positive integers up to $x$.
+\end{solution}
+
+\begin{solution}{ex:t1-char-series}
+\idea Complete periods cancel. Summation by parts then trades the oscillating coefficients $\chi(n)$ for the bounded sums $A(n)$, at the price of a difference of the sequence $b_n$.
+\writeup (a) This is the proof of Proposition~\ref{prop:t1-charbound}.
+
+(b) Since $\chi(n)=A(n)-A(n-1)$ with $A(0)=0$,
+\begin{align*}
+\sum_{n=1}^N\chi(n)b_n
+&=\sum_{n=1}^N\bigl(A(n)-A(n-1)\bigr)b_n\\
+&=\sum_{n=1}^N A(n)b_n-\sum_{n=1}^{N-1}A(n)b_{n+1}\\
+&=A(N)b_N-\sum_{n=1}^{N-1}A(n)(b_{n+1}-b_n).
+\end{align*}
+
+(c) With $b_n=1/n$, one has $b_{n+1}-b_n=-1/(n(n+1))$, so
+\[
+\sum_{n=1}^N\frac{\chi(n)}n=\frac{A(N)}N+\sum_{n=1}^{N-1}\frac{A(n)}{n(n+1)}.
+\]
+The first term tends to $0$ because $A(N)$ is bounded. The series $\sum A(n)/(n(n+1))$ converges absolutely, by comparison with $\varphi(m)\sum n^{-2}$. Therefore the partial sums on the left converge.
+\end{solution}
+
+\begin{solution}{ex:t1-group3}
+\idea The grouped terms are positive, the first is $2/3$, and the partial sum of an increasing sequence bounded by $1$ stays in between once a second positive term is added.
+\writeup The three terms are $1-1/3=2/3$, $1/5-1/7=2/35$ and $1/9-1/11=2/99$. Their sum is $2/3+2/35+2/99$. The common denominator is $3465$, and the sum is $(2310+198+70)/3465=2578/3465$. Since $2578/3465-2/3=(7734-6930)/10395>0$ and $1-2578/3465>0$, the sum lies strictly between $2/3$ and $1$.
+\end{solution}
+
+\begin{solution}{pb:pseudo}
+\idea For (b), the number $m=2^n-1$ satisfies $2^n\equiv1\pmod m$, so $2^{m-1}\equiv1$ as soon as $n\mid m-1$. And
+$m-1=2(2^{n-1}-1)$, which $n$ divides exactly because $n$ is a pseudoprime. For (c), the same mechanism with $2^{2p}$.
+
+\writeup (a) $2^{10}=1024=93\cdot11+1$ and $2^5=32=31+1$, so $2^{10}\equiv1\pmod{11}$ and $2^5\equiv1\pmod{31}$. Since $10\mid340$ and
+$5\mid340$, $2^{340}\equiv1$ modulo $11$ and $31$, hence modulo $341$.
+
+(b) Let $n$ be a pseudoprime and $m=2^n-1$, which is odd. If $n=ab$ with $1<a<n$, then $2^a-1$ divides $2^n-1$ and lies strictly
+between $1$ and $m$, so $m$ is composite. Now $m-1=2(2^{n-1}-1)$ and $n\mid2^{n-1}-1$, so $m-1=nk$ for an integer $k$. As
+$2^n\equiv1\pmod m$, $2^{m-1}=(2^n)^k\equiv1\pmod m$. So $m$ is a pseudoprime, larger than $n$. Starting from $341$, this gives
+infinitely many.
+
+(c) Let $N=\frac{4^p-1}3=(2^p-1)\cdot\frac{2^p+1}3$. Both factors are integers
+larger than $1$ ($3\mid2^p+1$ as $p$ is odd, and $\frac{2^p+1}3>1$ for $p\ge3$). So $N$ is composite, and odd. Next,
+$N-1=\frac{4^p-4}3=4\cdot\frac{4^{p-1}-1}3$. By Fermat, $p\mid4^{p-1}-1$, and as $p\ne3$, $p$ divides $\frac{4^{p-1}-1}3$. So $2p\mid N-1$.
+Finally $3N=2^{2p}-1$, so $2^{2p}\equiv1\pmod N$ and $2^{N-1}\equiv1\pmod N$.
+\tools Volume~1, Chapters~1 and~3 (divisibility, Fermat's little theorem).
+\leads (b) is due to Malo (1903) and (c) to Cipolla (1904). Pseudoprimes are rare: Pomerance proved that their number up to $x$
+is at most $x\,e^{-\frac12\log x\log\log\log x/\log\log x}$ for large $x$, so that a random odd number that passes the base $2$
+test is almost surely prime, which is what software relied on for decades.
+\end{solution}
+
+\begin{solution}{pb:pocklington}
+\idea Lucas's criterion asks to factor all of $n-1$. Pocklington noticed that a partial factorisation is enough: every prime
+factor of $n$ is then $\equiv1$ modulo the factored part $F$, hence larger than $F$, and a composite $n$ has a prime factor at
+most $\sqrt n$. For Proth numbers $N-1=k2^m$, the power of $2$ is the factored part.
+
+\writeup (a) Let $p$ be a prime factor of $n$ and $e$ the order of $a$ modulo $p$ ($p\nmid a$ since $a^{n-1}\equiv1$). Then
+$e\mid n-1$. Let $q^f$ be the exact power of a prime $q\mid F$ in $F$, and $q^g$ its power in $n-1$, $g\ge f$. If $q^g\nmid e$, then
+$e\mid\frac{n-1}q$ and $p\mid a^{(n-1)/q}-1$, contradicting $\gcd(a^{(n-1)/q}-1,n)=1$. So $q^g\mid e\mid p-1$. Hence $F\mid p-1$ and
+$p>F$. If $F>\sqrt n$, every prime factor of $n$ exceeds $\sqrt n$, so $n$ is prime.
+
+(b) Take $F=2^m$, with only $q=2$. From $a^{(N-1)/2}\equiv-1$: $a^{N-1}\equiv1$, and $\gcd(a^{(N-1)/2}-1,N)=\gcd(-2,N)=1$ as $N$ is odd. And
+$N=k2^m+1\le(2^m-1)2^m+1<2^{2m}$, so $F>\sqrt N$. By (a), $N$ is prime. For $3329$: $m=8$, $k=13<256$, and repeated squaring
+gives $3^{1664}\equiv3328\equiv-1\pmod{3329}$, so $3329$ is prime.
+\tools Volume~1, Chapters~3 and~5 (orders and fast exponentiation).
+\leads Pocklington (1914) and Proth (1878). The largest known primes that are not Mersenne primes are Proth primes, found by the
+PrimeGrid project with exactly this test. Note the asymmetry: (b) proves primality in one exponentiation, but a failure says
+nothing unless $\bigl(\frac aN\bigr)=-1$.
+\end{solution}
+
+\begin{solution}{pb:fermatquot}
+\idea $a^{p-1}=1+pq_p(a)$: the Fermat quotient is the first digit of $a^{p-1}$ in base $p$ beyond the units digit, and
+multiplying numbers of the form $1+px$ adds the $x$'s modulo $p$. So $q_p$ behaves like a logarithm. For (b), expand $2^p$ by the
+binomial theorem; for (c), take the logarithm of Wilson's theorem.
+
+\writeup All congruences are modulo $p$ unless stated. (a) $(ab)^{p-1}=(1+pq_p(a))(1+pq_p(b))\equiv1+p(q_p(a)+q_p(b))\pmod{p^2}$. Next,
+$(a+pt)^{p-1}\equiv a^{p-1}+(p-1)pta^{p-2}\pmod{p^2}$, so $q_p(a+pt)\equiv q_p(a)-ta^{p-2}\equiv q_p(a)-\frac ta$, since $a^{p-1}\equiv1$.
+
+(b) $2^p=\sum_k\binom pk=2+\sum_{k=1}^{p-1}\binom pk$, and $\frac1p\binom pk=\frac{(p-1)(p-2)\cdots(p-k+1)}{k!}\equiv\frac{(-1)^{k-1}(k-1)!}{k!}=\frac{(-1)^{k-1}}k$.
+So $\frac{2^p-2}p\equiv\sum_{k=1}^{p-1}\frac{(-1)^{k-1}}k$, and $\frac{2^p-2}p=2q_p(2)$.
+
+(c) Extend $q_p(N)=\frac{N^{p-1}-1}p$ to all $N$ prime to $p$; (a) still holds. Then
+$\sum_{a=1}^{p-1}q_p(a)\equiv q_p\bigl((p-1)!\bigr)$. Write $(p-1)!=-1+pW_p$ (Wilson). As $p-1$ is even,
+$(-1+pW_p)^{p-1}\equiv1-(p-1)pW_p\equiv1+pW_p\pmod{p^2}$, so $q_p((p-1)!)\equiv W_p$.
+
+(d) Let $e$ and $E$ be the orders of $2$ modulo $p$ and $p^2$. Then $e\mid E$, and $2^{pe}=(1+cp)^p\equiv1\pmod{p^2}$ if $2^e=1+cp$, so
+$E\mid pe$: $E\in\{e,pe\}$. If $2^{p-1}\equiv1\pmod{p^2}$, then $E\mid p-1$ is prime to $p$, so $E=e$. Conversely if $E=e$, then
+$E\mid p-1$ and $2^{p-1}\equiv1\pmod{p^2}$.
+\tools Volume~1, Chapters~3 and~5 (Wilson, Fermat, orders); Volume~0, Chapter~8 (binomial theorem).
+\leads A prime with $q_p(2)\equiv0$ is a \emph{Wieferich prime}. Wieferich proved in 1909 that if $x^p+y^p=z^p$ has a solution with
+$p\nmid xyz$, then $p$ is one. Only $1093$ (Meissner, 1913) and $3511$ (Beeger, 1922) are known; heuristically there should be about
+$\log\log x$ of them below $x$, infinitely many but very few. Lerch's formula (c) connects them with Wilson primes ($W_p\equiv0$):
+$5$, $13$ and $563$.
+\end{solution}
+
+\begin{solution}{pb:mullin}
+\idea Euclid's argument guarantees that each new term is a new prime. For (b), the number $P+1$ with $P=b_1\cdots b_n$ is prime to
+$2$ and $3$ as soon as $3$ has appeared; if its largest prime factor were $5$, it would be a power of $5$, and $5^c-1$ is
+divisible by $4$, whereas $P$ contains the prime $2$ only once.
+
+\writeup (a) $a_{n+1}$ divides $a_1\cdots a_n+1$, which is prime to each $a_i$, so $a_{n+1}\ne a_i$. The products give:
+$2+1=3$; $6+1=7$; $42+1=43$; $1806+1=13\cdot139$, so $a_5=13$; $23478+1=23479=53\cdot443$, so $a_6=53$;
+$23478\cdot53+1=1244335=5\cdot248867$, so $a_7=5$.
+
+(b) The terms are distinct for the same reason, so for $n\ge1$, $P_n=b_1\cdots b_n$ contains the factor $2$ exactly once. $b_2=3$. For
+$n\ge2$, $6\mid P_n$, so $P_n+1$ is prime to $2$ and $3$. If its largest prime factor were $5$, then $P_n+1=5^c$ with $c\ge1$, and
+$P_n=5^c-1\equiv0\pmod4$, contradicting $v_2(P_n)=1$. And $b_2=3\ne5$. So $5$ never appears.
+\tools Volume~1, Chapters~1 and~2 (Euclid's argument, factorisation).
+\leads Mullin asked in 1963 whether every prime appears in the first sequence; Shanks conjectured yes, and it is open, the
+sequence being known for only about fifty terms because each one needs a hard factorisation. For the second sequence, Cox and
+van der Poorten (1968) showed that $5,11,13,17,19,23,29,31,37,41,47,53$ never appear, by arguments like (b) with more
+congruences, and Booker (2012) proved that it misses infinitely many primes.
+\end{solution}
+
+\begin{solution}{pb:artin}
+\idea The group $(\Z/p\Z)^*$ has order $2q$, so the order of $2$ is $1$, $2$, $q$ or $2q$. Orders $1$ and $2$ are excluded by size. Order
+$q$ means $2^q=2^{(p-1)/2}\equiv1$, which by Euler's criterion means that $2$ is a square; and whether $2$ is a square depends on $p$
+modulo $8$, which is fixed by $q$ modulo $4$.
+
+\writeup The order $e$ of $2$ divides $p-1=2q$. $e=1$ or $2$ would need $p\mid1$ or $p\mid3$, excluded. If $q\equiv1\pmod4$, $p=2q+1\equiv3\pmod8$,
+so $\bigl(\frac2p\bigr)=-1$ and $2^q\equiv-1$ by Euler's criterion: $e\ne q$, so $e=2q$ and $2$ is a primitive root. If $q\equiv3\pmod4$, then
+$p\equiv7\pmod8$ and $\bigl(\frac2p\bigr)=1$, $\bigl(\frac{-1}p\bigr)=-1$, so $\bigl(\frac{-2}p\bigr)=-1$; the same argument applies to $-2$, whose order is
+not $1$ or $2$ since $p>3$.
+\tools Volume~1, Chapters~5 and~6.
+\leads Artin conjectured (1927) that $2$ is a primitive root modulo infinitely many primes, in fact for a proportion $\prod_p\bigl(1-\frac1{p(p-1)}\bigr)
+=0.3739\ldots$ of them. Hooley (1967) proved it under the generalised Riemann hypothesis. Unconditionally, Heath-Brown (1986) showed that at most two
+primes fail to be primitive roots for infinitely many $p$: so one of $2$, $3$, $5$ works, but nobody knows which. This problem would
+give a proof if there were infinitely many such ``safe primes'', which is also open.
+\end{solution}
+
+\begin{solution}{pb:fermatcubic}
+\idea Counting solutions of $u+v=1$ with $u,v$ cubes is a sum of Jacobi sums. The only non-trivial one is $J(\chi,\chi)$, an
+integer of $\Z[\omega]$ of norm $p$, and a congruence modulo $3$ picks it out among the six associates.
+
+\writeup (a) Since $p\equiv1\pmod 3$, $\mathbb F_p^*$ is cyclic of order divisible by $3$; it has two characters $\chi,\chi^2=\bar\chi$
+of order $3$. For $u\ne0$, the number of $x$ with $x^3=u$ is $3$ if $u$ is a cube and $0$ otherwise, which is $1+\chi(u)+\chi^2(u)$;
+for $u=0$ it is $1$, which is also $1+\chi(0)+\chi^2(0)$ with our conventions. Writing $\varepsilon$ for the trivial character,
+\[
+N=\sum_{u+v=1}\Bigl(\sum_{i=0}^2\chi^i(u)\Bigr)\Bigl(\sum_{j=0}^2\chi^j(v)\Bigr)=\sum_{i,j}J(\chi^i,\chi^j).
+\]
+Now $J(\varepsilon,\varepsilon)=p$ and $J(\varepsilon,\psi)=\sum_v\psi(v)=0$ for $\psi$ non-trivial. Next
+$J(\chi,\bar\chi)=\sum_{u\ne0,1}\chi\bigl(\frac u{1-u}\bigr)$, and $u\mapsto\frac u{1-u}$ is a bijection from
+$\mathbb F_p\setminus\{0,1\}$ to $\mathbb F_p\setminus\{0,-1\}$; so $J(\chi,\bar\chi)=-\chi(-1)=-1$, because
+$\chi(-1)^2=\chi(1)=1$ and $\chi(-1)^3=1$ force $\chi(-1)=1$. The same holds for $J(\bar\chi,\chi)$. Finally
+$J(\bar\chi,\bar\chi)=\overline{J(\chi,\chi)}$. So $N=p-2+2\operatorname{Re}J(\chi,\chi)$.
+
+(b) Expanding,
+\[
+g(\alpha)g(\beta)=\sum_s e(s)\sum_{x+y=s}\alpha(x)\beta(y).
+\]
+For $s\ne0$, put $x=su$, $y=sv$: the inner sum is $\alpha\beta(s)J(\alpha,\beta)$. For $s=0$ it is
+\[
+\sum_x\alpha(x)\beta(-x)=\beta(-1)\sum_x\alpha\beta(x)=0,
+\]
+since $\alpha\beta$ is non-trivial. So
+\[
+g(\alpha)g(\beta)=J(\alpha,\beta)\sum_s\alpha\beta(s)e(s)=J(\alpha,\beta)g(\alpha\beta).
+\]
+
+Next, $|g(\chi)|^2=\sum_{x,y\ne0}\chi(x)\bar\chi(y)e(x-y)$. Put $x=ty$: this is
+$\sum_{t\ne0}\chi(t)\sum_{y\ne0}e(y(t-1))$. The inner sum is $p-1$ for $t=1$ and $-1$ otherwise, so
+$|g|^2=(p-1)-\sum_{t\ne0,1}\chi(t)=(p-1)+1=p$. Also $\overline{g(\chi)}=\sum\bar\chi(t)e(-t)=\chi(-1)g(\bar\chi)=g(\bar\chi)$.
+Apply the first identity twice: $g(\chi)^2=J(\chi,\chi)g(\chi^2)=J(\chi,\chi)g(\bar\chi)$, so
+$g(\chi)^3=J(\chi,\chi)g(\bar\chi)g(\chi)=J(\chi,\chi)|g(\chi)|^2=pJ(\chi,\chi)$.
+
+(c) Work in the ring $R=\Z[\omega,\zeta]$ with $\zeta=e^{2i\pi/p}$. Modulo $3R$, $(a+b)^3\equiv a^3+b^3$ (the middle binomial
+coefficients are $3$), so
+\[
+g(\chi)^3\equiv\sum_t\chi(t)^3\zeta^{3t}=\sum_{t\ne0}\zeta^{3t}=-1\pmod{3R},
+\]
+because $\chi(t)^3=1$ for $t\ne0$ and $3t$ runs over $\mathbb F_p^*$. Since $p\equiv1\pmod3$, (b) gives $J(\chi,\chi)\equiv-1$,
+that is $\frac{J+1}3\in R$. But $\frac{J+1}3=\frac{a'+1}3+\frac{b'}3\omega$ is in $\Q(\omega)$ and is an algebraic integer, so it lies
+in $\Z[\omega]$; as $1,\omega$ is a basis of $\Z[\omega]$ and of $\Q(\omega)$, $3\mid a'+1$ and $3\mid b'$.
+
+(d) Let $a=2\operatorname{Re}J=2a'-b'$ (because $\operatorname{Re}\omega=-\frac12$). Then $a\equiv-2\equiv1\pmod 3$. By (b),
+$|J|^2=\frac{|g|^6}{p^2}=p$, and $|a'+b'\omega|^2=a'^2-a'b'+b'^2$, so $4p=(2a'-b')^2+3b'^2=a^2+27b^2$ with $b=\frac{b'}3$. And
+$N=p-2+a$. Since $27b^2\ge0$, $|a|\le2\sqrt p$.
+
+For $p=7$: $28=1+27$, $a=1$, $N=6$. Directly: the cubes mod $7$ are $0,1,6$, and $u+v=1$ with $u,v$ cubes forces $\{u,v\}=\{0,1\}$,
+giving $1\cdot3+3\cdot1=6$ solutions. For $p=13$: $52=25+27$, $a\equiv1\pmod3$ picks $a=-5$, so $N=6$. (Why is $a$ determined?
+If $4p=a^2+27b^2=c^2+27d^2$, the numbers $\frac{a\pm3b\sqrt{-3}}2$ and $\frac{c\pm3d\sqrt{-3}}2$ have norm $p$ in the unique
+factorisation ring $\Z[\omega]$, so they are associates, and the congruence modulo $3$ leaves only $c=a$.)
+
+\tools Volume~1, Chapters~5 and~6 (characters, Gauss sums); Volume~1, Chapters~10 and~11 ($\Z[\omega]$, algebraic integers); Volume~2, Chapter~9 (Frobenius).
+\leads This is Gauss's result in article~358 of the \emph{Disquisitiones} (1801), and André Weil's 1949 paper on equations over
+finite fields starts from it: the projective curve $x^3+y^3=z^3$ has $p+1-a$ points, and $|a|\le2\sqrt p$ is the Hasse bound for
+this elliptic curve. Figure~\ref{fig:cubic} shows $\frac a{2\sqrt p}$; because the curve has complex multiplication by $\Z[\omega]$,
+its distribution is not the Sato--Tate semicircle but the arcsine-like law of $\cos\theta$ for uniform $\theta$, which piles up at
+$\pm1$.
+\end{solution}
+
+\begin{solution}{pb:euclidgame}
+\idea When $b<2a$ there is only one move, so nothing is decided by the mover. When $b>2a$ the mover can stop at
+$(a,a+r)$ or go on to $(r,a)$, and $\varphi$ is exactly the ratio that separates the winning choice from the losing one,
+because $\varphi-1=\frac1\varphi$.
+
+\writeup (a) Call a position $(a,b)$ with $a\le b$ \emph{winning} if the player to move can force a win. If $a=b$ the mover wins at once.
+We show by induction on $a+b$ that for $a<b$, $(a,b)$ is winning if and only if $b/a>\varphi$ (equality is impossible, $\varphi$ being
+irrational). Write $b=qa+r$ with $0\le r<a$, $q\ge1$.
+
+\emph{Case $b/a<\varphi$.} Then $q=1$ (as $\varphi<2$) and $r=b-a>0$, the only move gives $(r,a)$, and $\frac ar>\varphi$ because
+$\frac ra=\frac ba-1<\varphi-1=\frac1\varphi$. By induction the opponent, now to move from $(r,a)$, wins.
+
+\emph{Case $b/a>\varphi$.} If $r=0$ the mover wins at once by producing a $0$. Otherwise, if $q=1$, the only move
+gives $(r,a)$ with $\frac ar<\varphi$ (since $\frac ra>\frac1\varphi$), a losing position for the opponent. If $q\ge2$, the mover may
+leave either $(r,a)$ or $(a,a+r)$. Now $\frac{a+r}a<\varphi$ if and only if $\frac ra<\frac1\varphi$, if and only if $\frac ar>\varphi$; so
+exactly one of the two positions has ratio below $\varphi$, and the mover picks it. By induction the opponent loses.
+
+(b) The number of pairs $1\le a<b\le N$ with $b>\varphi a$ is $\sum_{a<N/\varphi}(N-\lfloor\varphi a\rfloor)=\frac{N^2}{2\varphi}+O(N)$,
+out of $\binom N2$ pairs; the ratio tends to $\frac1\varphi$.
+
+\tools Volume~1, Chapters~1 and~8 (Euclid's algorithm, continued fractions); Volume~0, Chapter~5 (the golden ratio).
+\leads The game follows Euclid's algorithm, and the only real decisions are at partial quotients $\ge2$: the winner is decided by
+the first partial quotient of $b/a$ that is at least $2$, by its parity. Cole and Davie's paper appeared in the \emph{Mathematical
+Gazette} 53 (1969).
+\end{solution}
+
+\begin{solution}{pb:pascalthree}
+\idea Lucas's theorem makes $\binom nk\bmod p$ a product of digit-by-digit factors, so any multiplicative statistic of the row
+factors over the digits.
+
+\writeup (a) By Lucas, $\binom nk\not\equiv0$ if and only if $k_i\le n_i$ for every digit, and there are $\prod_i(n_i+1)$ such $k$.
+
+(b) Let $\varepsilon(1)=1$, $\varepsilon(2)=-1$; it is a homomorphism $(\Z/3\Z)^*\to\{\pm1\}$. Summing over the $k$ of (a),
+\[
+\#\{k:\tbinom nk\equiv1\}-\#\{k:\tbinom nk\equiv2\}=\sum_{k_i\le n_i}\varepsilon\Bigl(\prod_i\tbinom{n_i}{k_i}\Bigr)=\prod_i\sum_{k_i=0}^{n_i}\varepsilon\tbinom{n_i}{k_i}.
+\]
+The inner sum is $1$ for $n_i=0$, $1+1=2$ for $n_i=1$, and $1-1+1=1$ for $n_i=2$ (as $\binom21=2$). So the difference is $2^{a_1}$.
+
+(c) Rows $0,\dots,3^k-1$ are the $n$ with $k$ digits $n_i\in\{0,1,2\}$. Summing the products over all choices,
+the number of non-zero entries is $(1+2+3)^k=6^k$ and the difference between the $1$'s and the $2$'s is $(1+2+1)^k=4^k$. So there
+are $\frac{6^k+4^k}2$ entries $\equiv1$, $\frac{6^k-4^k}2$ entries $\equiv2$, and $\frac{3^k(3^k+1)}2-6^k$ multiples of $3$. The proportion of
+multiples of $3$ tends to $1$, while among the others the $1$'s and $2$'s become equally frequent, since $\frac{4^k}{6^k}\to0$.
+
+\tools Volume~1, Exercise~3.9 (Lucas's theorem).
+\leads For a general prime $p$, the multiplicative characters of $(\Z/p\Z)^*$ play the role of $\varepsilon$, and their sums over a
+row give the number of entries in each residue class. This was worked out by Garfield and Wilf (1992); Granville's survey
+listed below tells the story and does the same modulo prime powers.
+\end{solution}
+
+\begin{solution}{pb:powerful}
+\idea A powerful number has every exponent $\ge2$, and every such exponent is $2u+3v$ with $v\in\{0,1\}$. So powerful numbers are
+squares times cubes of squarefree numbers, and counting them is counting lattice points under a curve.
+
+\writeup (a) Let $n=\prod p^{e_p}$ with all $e_p\ge2$. Put $v_p=1$ if $e_p$ is odd and $v_p=0$ otherwise, and $u_p=\frac{e_p-3v_p}2\ge0$. Then
+$n=a^2b^3$ with $a=\prod p^{u_p}$ and $b=\prod p^{v_p}$ squarefree. Conversely $n=a^2b^3$ with $b$ squarefree forces $v_p\equiv e_p\pmod2$,
+so the decomposition is unique, and every $a^2b^3$ is powerful.
+
+(b) By (a) the count is
+\[
+\sum_{b\le x^{1/3}}\mu^2(b)\Bigl\lfloor\sqrt{x/b^3}\Bigr\rfloor=\sqrt x\sum_{b\le x^{1/3}}\frac{\mu^2(b)}{b^{3/2}}+O(x^{1/3}).
+\]
+Since $\sum_{b>y}b^{-3/2}=O(y^{-1/2})$, completing the sum costs $O(\sqrt x\,x^{-1/6})=O(x^{1/3})$, and
+$\sum_b\mu^2(b)b^{-3/2}=\frac{\zeta(3/2)}{\zeta(3)}$ because $\sum\mu^2(b)b^{-s}=\prod_p(1+p^{-s})=\frac{\zeta(s)}{\zeta(2s)}$. For the Dirichlet series,
+the factor at $p$ is, with $y=p^{-s}$,
+\[
+1+\sum_{e\ge2}y^e=\frac{1-y+y^2}{1-y},\qquad\text{and}\qquad\frac{1-y^6}{(1-y^2)(1-y^3)}=\frac{1+y^3}{1-y^2}=\frac{(1+y)(1-y+y^2)}{(1-y)(1+y)},
+\]
+the same.
+
+(c) Pell's equation $X^2-8Y^2=1$ has infinitely many solutions (Volume~1, Theorem~8.7), for instance $(3,1)$ and $(17,6)$, the
+others coming from powers of $3+\sqrt8$. For each, $8Y^2=2^3Y^2$ is powerful (every prime of $Y$ appears at least squared, and $2$ at
+least cubed) and $8Y^2+1=X^2$ is a square. This gives $(8,9)$ and $(288,289)$.
+
+\tools Volume~1, Theorem~8.7 (Pell's equation); Volume~5, Chapter~2 (counting with Dirichlet series).
+\leads Erdős conjectured that there are no three consecutive powerful numbers; this is still open (and would follow from the
+$abc$ conjecture). The next term of the asymptotic expansion is $\frac{\zeta(2/3)}{\zeta(2)}x^{1/3}$, negative since $\zeta(2/3)<0$, which is why
+the numerical counts lie below $2.173\sqrt x$.
+\end{solution}
+
+\begin{solution}{pb:jacobi}
+\idea Jacobi's identity squares to a double sum, and a change of variables turns that double sum into a combination of two theta series and their derivatives. Dividing
+by the theta series turns the derivatives into logarithmic derivatives of products, which are Lambert series: divisor sums appear by themselves.
+
+\writeup (a) Put $z=-1$ in the triple product: $\Theta(-x)=\sum(-1)^mx^{m^2}=\prod(1-x^{2n})(1-x^{2n-1})^2$. Since $\prod(1-x^{2n-1})=\frac{\prod(1-x^n)}{\prod(1-x^{2n})}=\frac1{\prod(1+x^n)}$
+and $1-x^{2n}=(1-x^n)(1+x^n)$, the product is $\prod(1-x^n)(1+x^n)\cdot\prod(1+x^n)^{-2}=\prod\frac{1-x^n}{1+x^n}$.
+
+(b) Replacing $k$ by $-1-k$ leaves $(-1)^k(2k+1)$ and $\frac{k(k+1)}2$ unchanged, so $E^3=\frac12\sum_{k\in\Z}(-1)^k(2k+1)x^{k(k+1)/2}$ and
+\[
+E^6=\frac14\sum_{k,l\in\Z}(-1)^{k+l}(2k+1)(2l+1)x^{(k^2+k+l^2+l)/2}.
+\]
+If $k+l$ is even, put $k=r+s$, $l=r-s$: then $(2k+1)(2l+1)=(2r+1)^2-4s^2$ and $\frac{k^2+k+l^2+l}2=r^2+r+s^2$. If $k+l$ is odd, put $k=s+r$, $l=s-r-1$: then the sign is $-1$,
+$(2k+1)(2l+1)=4s^2-(2r+1)^2$ and the exponent is again $r^2+r+s^2$. Both substitutions are bijections onto $\Z^2$, so each $(r,s)$ receives $2\bigl((2r+1)^2-4s^2\bigr)$, and
+$E^6=\frac12\sum_{r,s}\bigl((2r+1)^2-4s^2\bigr)x^{r^2+r+s^2}$.
+
+(c) Since $(2r+1)^2=4(r^2+r)+1$, the double sum of (b) is $\sum_r\bigl(4(r^2+r)+1\bigr)x^{r^2+r}\cdot\sum_sx^{s^2}-4\sum_rx^{r^2+r}\cdot\sum_ss^2x^{s^2}=(4DB+B)\Theta-4B\,D\Theta$.
+The triple product with $z=1$ gives the product for $\Theta$. With $z=x$ it gives $\sum_mx^{m^2+m}=\prod(1-x^{2n})(1+x^{2n})(1+x^{2n-2})$, and the factor $n=1$ of the last product is
+$2$, so $B=2\prod(1-x^{2n})(1+x^{2n})^2$.
+
+(d) Divide (c) by $\Theta B$: $\frac{2E^6}{\Theta B}=1+4\frac{DB}B-4\frac{D\Theta}\Theta$. By the products,
+$\Theta B=2\prod(1-x^{2n})^2(1+x^n)^2$, so $\frac{2E^6}{\Theta B}=\prod\frac{(1-x^n)^6}{(1-x^n)^2(1+x^n)^4}=\Theta(-x)^4$ by (a). Logarithmic derivatives of the products give
+\[
+\frac{DB}B-\frac{D\Theta}\Theta=\sum_{n\ge1}\Bigl(\frac{4nx^{2n}}{1+x^{2n}}-\frac{2(2n-1)x^{2n-1}}{1+x^{2n-1}}\Bigr),
+\]
+the terms $-\frac{2nx^{2n}}{1-x^{2n}}$ cancelling. This is the formula for $\Theta(-x)^4$. Now replace $x$ by $-x$:
+\[
+\Theta(x)^4=1+8\sum_{m\text{ odd}}\frac{mx^m}{1-x^m}+8\sum_{m\text{ even}}\frac{mx^m}{1+x^m}.
+\]
+Expanding, $r_4(N)=8\sum_{m\mid N}m\,\varepsilon(m)$ with $\varepsilon=1$ for odd $m$ and $\varepsilon=(-1)^{N/m-1}$ for even $m$. For odd $N$ this is $8\sigma(N)$. For
+$N=2^au$, $a\ge1$, $u$ odd, the even divisors $2^bv$ ($v\mid u$) have sign $-1$ for $b<a$ and $+1$ for $b=a$, so the total is
+$8\sigma(u)\bigl(1+2^a-(2+4+\dots+2^{a-1})\bigr)=8\cdot3\sigma(u)$, which is $8\sum_{d\mid N,4\nmid d}d$ again.
+
+(e) $r_4(n)\ge8>0$, so every $n\ge1$ is a sum of four squares. $r_4(p)=8(p+1)$, and $r_4(2^k)=8(1+2)=24$ for $k\ge1$.
+
+(f) Let $R=\sqrt x$. The points $v\in\Z^4$ with $|v|\le R$ number $1+\sum_{n\le x}r_4(n)$, and the unit cubes $v+[0,1[^4$ cover the ball of radius $R-2$ and lie in the
+ball of radius $R+2$. The volumes are $\frac{\pi^2}2(R\pm2)^4=\frac{\pi^2}2x^2+O(x^{3/2})$. On the other hand, by (d),
+$\sum_{n\le x}r_4(n)=8\sum_{m\le x}\sum_{d\le x/m,\,4\nmid d}d$, and $\sum_{d\le y,\,4\nmid d}d=\frac{y^2}2-4\cdot\frac12\bigl(\frac y4\bigr)^2+O(y)=\frac38y^2+O(y)$. Hence
+\[
+\sum_{n\le x}r_4(n)=3x^2\sum_{m\le x}\frac1{m^2}+O\Bigl(x\sum_{m\le x}\frac1m\Bigr)=3\zeta(2)x^2+O(x\log x).
+\]
+Comparing the two leading terms, $3\zeta(2)=\frac{\pi^2}2$.
+
+\tools{Jacobi's triple product and identity (Problem~\ref{pb:ramanujan5}); Lambert series; lattice points and volumes (Volume~0); $\sum_{m\le x}\frac1{m^2}=\zeta(2)+O(\frac1x)$.}
+
+\leads Jacobi found the formula in the \emph{Fundamenta Nova} of 1829 with elliptic functions; the elementary route through $E^6$ is Hirschhorn's (1987). The two counts in (f)
+give a proof of $\zeta(2)=\frac{\pi^2}6$ by counting points in a four-dimensional ball, with the volume $\frac{\pi^2}2R^4$ carrying the $\pi$. In modular language, $\Theta(\tau)^4$ is a modular form of weight $2$ for $\Gamma_0(4)$, a two-dimensional space spanned by Eisenstein
+series, which is why a pure divisor sum comes out.
+\end{solution}
+
+\begin{solution}{pb:densities}
+\idea Modulo a high power of $p$ a solution can be lifted coordinate by coordinate, as in Newton's method, provided one coordinate is a unit. So the number of solutions
+modulo $p^k$ grows exactly like $p^{3k}$, and the constant of proportionality is read off modulo $p$ (or modulo $8$ when $p=2$).
+
+\writeup Write $Q(x)=x_1^2+x_2^2+x_3^2+x_4^2$. (a) Let $x$ be a primitive solution modulo $p^k$, $k\ge1$, say $p\nmid x_1$, and $Q(x)=n+p^kc$. Its $p^4$ lifts
+$x+p^kt$ modulo $p^{k+1}$ satisfy $Q(x+p^kt)\equiv n+p^k(c+2\sum x_it_i)\pmod{p^{k+1}}$, since $2k\ge k+1$. The condition $c+2\sum x_it_i\equiv0\pmod p$ is a linear equation in $t$
+with the unit coefficient $2x_1$, so exactly $p^3$ lifts are solutions; every primitive solution modulo $p^{k+1}$ arises once in this way. A non-primitive solution is $x=py$,
+with $y$ determined modulo $p^{k-1}$, and $Q(x)=p^2Q(y)$. If $p^2\nmid n$ there is none ($k\ge2$). If $p^2\mid n$, the condition is $Q(y)\equiv\frac n{p^2}\pmod{p^{k-2}}$, which
+depends on $y$ modulo $p^{k-2}$; each such class has $p^4$ lifts modulo $p^{k-1}$, so there are $p^4N_{p^{k-2}}(\frac n{p^2})$ of them.
+
+(b) By (a), $p^{-3k}N^*_{p^k}(n)=p^{-3}N^*_p(n)=:D^*$ for all $k\ge1$. By Problem~\ref{pb:sumsquares}, $N_p(n)=p^3-p$ if $p\nmid n$, and $N_p(n)=p^3+p^2-p$ if $p\mid n$; removing the
+zero vector in the second case, $D^*=1-p^{-2}$ if $a=0$, and $D^*=p^{-3}(p^3+p^2-p-1)=(1-p^{-2})(1+p^{-1})$ if $a\ge1$. For $a\le1$ all solutions modulo $p^k$, $k\ge2$, are
+primitive, so $\delta_p(n)=D^*$. For $a\ge2$, (a) gives $p^{-3k}N_{p^k}(n)=D^*+p^{-2}\,p^{-3(k-2)}N_{p^{k-2}}(\frac n{p^2})$, so by induction on $a$ the limit exists and
+$\delta_p(n)=(1-p^{-2})(1+p^{-1})+p^{-2}(1-p^{-2})(1+\dots+p^{-(a-2)})=(1-p^{-2})(1+p^{-1}+\dots+p^{-a})$.
+
+(c) Let $x$ be primitive modulo $2^k$, $k\ge3$, with $x_i$ odd. All $16$ lifts $x+2^kt$ have $Q\equiv Q(x)+2^{k+1}\sum x_it_i\equiv Q(x)\pmod{2^{k+1}}$, so either all or none are
+solutions modulo $2^{k+1}$. Let $x'=x+2^{k-1}e_i$, where $i$ is the first odd coordinate: $Q(x')=Q(x)+2^kx_i+2^{2k-2}\equiv Q(x)+2^k\pmod{2^{k+1}}$ as $2k-2\ge k+1$. So
+$x\mapsto x'$ is an involution without fixed points on the primitive solutions modulo $2^k$, and in each pair exactly one element has its $16$ lifts solutions. Hence
+$N^*_{2^{k+1}}=\frac{16}2N^*_{2^k}$. Modulo $8$, odd squares are $1$ and even squares are $0$ (for $0,4$) or $4$ (for $2,6$). If $j$ coordinates are odd and $m$ of the even ones are
+$\equiv2\pmod4$, then $Q\equiv j+4m\pmod8$. Counting, $N^*_8(n)=4\cdot4\cdot32=512$ for odd $n$ ($j\equiv n\pmod4$), $6\cdot16\cdot8=768$ for $n\equiv2\pmod4$ ($j=2$), $256$ for
+$n\equiv4\pmod8$ ($j=4$), and $0$ for $8\mid n$. So $D^*=2^{-9}N^*_8(n)=1,\frac32,\frac12,0$ in these cases, and as in (b), $\delta_2(n)=D^*+\frac14\delta_2(\frac n4)$ when $4\mid n$. This
+gives $\delta_2=1$ for $a=0$, $\frac32$ for $a=1$, $\frac12+\frac14=\frac34$ for $a=2$, and $\delta_2(n)=\frac14\delta_2(\frac n4)$ for $a\ge3$; by induction $\delta_2(n)=3\cdot2^{-a}$ for $a\ge1$.
+
+(d) For odd $p\nmid n$, $\delta_p=1-p^{-2}$, and $\prod_{p>2}(1-p^{-2})=\frac{6/\pi^2}{3/4}=\frac8{\pi^2}$. Let $n=2^au$ with $u$ odd. Since $(1+p^{-1}+\dots+p^{-a_p})=\frac{\sigma(p^{a_p})}{p^{a_p}}$,
+\[
+\pi^2n\prod_p\delta_p(n)=\pi^2\cdot2^au\cdot\delta_2(n)\cdot\frac8{\pi^2}\cdot\frac{\sigma(u)}u=8\cdot2^a\delta_2(n)\,\sigma(u),
+\]
+which is $8\sigma(u)$ for $a=0$ and $24\sigma(u)$ for $a\ge1$: exactly $r_4(n)$ by Problem~\ref{pb:jacobi}(d). The product converges absolutely because all but finitely many factors are
+$1-p^{-2}$. The ball $Q(x)\le t$ has volume $\frac{\pi^2}2t^2$, whose derivative at $t=n$ is $\pi^2n$: the real solutions of $Q(x)=n$ have ``density'' $\pi^2n$, just as
+$p^{-3k}N_{p^k}(n)$ is the density of solutions modulo $p^k$.
+
+\tools{Hensel's lifting (Volume~1); $N_p(n)$ from Problem~\ref{pb:sumsquares}; $\zeta(2)=\frac{\pi^2}6$; Problem~\ref{pb:jacobi}.}
+
+\leads ``Number of solutions $=$ density at infinity $\times$ product of local densities'' is the Hardy--Littlewood circle method in its simplest form. For four squares the
+formula is exact; for a positive definite form $Q$ in general, Siegel's mass formula (1935) says that it holds for a weighted average over the forms of the same genus, and
+the circle method proves it asymptotically for five or more variables. Problem~\ref{pb:jacobi} computed the left side and this problem the right side, independently.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item T.~M.~Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976. The construction of Dirichlet characters, the Euler product, and Dirichlet's theorem on primes in arithmetic progressions.
+\item H.~Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H.~L.~Montgomery, Springer, 2000. The analytic theory built on the products of this chapter.
+\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., American Mathematical Society, 2015. Sieves beginning from Legendre's formula, and the reasons an exact formula is not yet an asymptotic one.
+\item Volume~5 of this series proves Dirichlet's theorem, the prime number theorem and the first modern sieves. Volume~12 identifies the characters that describe prime splitting. Volume~13 returns to multiplicative functions and to the limitations of sieve weights.
+\end{itemize}

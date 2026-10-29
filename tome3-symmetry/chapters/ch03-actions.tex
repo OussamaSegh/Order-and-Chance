@@ -1,0 +1,582 @@
+\chapter{Group Actions and Counting}
+
+\begin{center}\itshape
+How many necklaces can be made with $6$ beads in $3$ colours, if two necklaces that differ by a rotation are the same?\\
+Not $3^6/6$, which is not even an integer. The right answer, $130$, comes from averaging over the group.
+\end{center}
+
+The counting formula at the heart of this chapter is called ``Burnside's lemma'', and it is not Burnside's: he stated it in his 1897 book,
+attributing it to Frobenius (1887), and Cauchy had used it in 1845. A 1979 paper by Peter Neumann was titled \emph{A lemma that is not Burnside's}.
+Whoever owns it, it turns hard counting problems, such as necklaces, colourings of a cube or chemical isomers, into an average that can be done by hand.
+
+Groups were born as groups of transformations, and they are most useful when they act on something: the rotations of a cube act on its faces, $\mathfrak S_n$ acts on $n$ objects, a group acts on itself by conjugation. An action splits the set into orbits, and the size of an orbit is linked to the group by a simple formula. From it come three things: a counting method for objects up to symmetry (Burnside, P\'olya), the first structure theorems for finite groups (the class equation, Cauchy's theorem), and the main tool of Chapter~5.
+
+\section{Actions, orbits and stabilisers}
+
+\begin{definition}
+An \emph{action} of a group $G$ on a set $X$ is a map $G\times X\to X$, $(g,x)\mapsto g\cdot x$, such that $e\cdot x=x$ and $g\cdot(h\cdot x)=(gh)\cdot x$ for all $g,h\in G$, $x\in X$.
+\end{definition}
+
+Equivalently, each $g$ gives a map $\rho_g:x\mapsto g\cdot x$, and the axioms say $\rho_e=\mathrm{id}$ and $\rho_g\circ\rho_h=\rho_{gh}$. So $\rho_g$ is a bijection with inverse $\rho_{g^{-1}}$, and an action is the same thing as a homomorphism $\rho:G\to\mathfrak S(X)$.
+
+\begin{example}\label{ex:actions}
+\begin{enumerate}[label=(\arabic*)]
+\item $\mathfrak S_n$ acts on $\{1,\dots,n\}$, $D_n$ on the vertices of the $n$-gon, the rotations of the cube on its faces, edges, vertices or long diagonals, $GL_n(K)$ on $K^n$.
+\item $G$ acts on itself by left multiplication, $g\cdot x=gx$, and by \emph{conjugation}, $g\cdot x=gxg^{-1}$.
+\item For $H\le G$, $G$ acts on the set $G/H$ of left cosets by $g\cdot xH=gxH$.
+\item If $G$ acts on $X$, it acts on the colourings $f:X\to C$ by $(g\cdot f)(x)=f(g^{-1}\cdot x)$ (the inverse is needed for the second axiom).
+\end{enumerate}
+\end{example}
+
+\begin{theorem}[Cayley]\label{thm:cayley}
+Every group $G$ is isomorphic to a subgroup of $\mathfrak S(G)$. In particular every group of order $n$ is isomorphic to a subgroup of $\mathfrak S_n$.
+\end{theorem}
+\begin{proof}
+The action by left multiplication gives a homomorphism $\rho:G\to\mathfrak S(G)$, and $\rho_g=\mathrm{id}$ forces $g=ge=e$, so $\rho$ is injective. By the first isomorphism theorem, $G\cong\rho(G)$. Numbering the elements of $G$ identifies $\mathfrak S(G)$ with $\mathfrak S_n$.
+\end{proof}
+
+\begin{definition}
+Let $G$ act on $X$. The \emph{orbit} of $x$ is $G\cdot x=\{g\cdot x:g\in G\}$, its \emph{stabiliser} is $G_x=\{g:g\cdot x=x\}$, and the \emph{fixed points} of $g$ form $X^g=\{x:g\cdot x=x\}$. The action is \emph{transitive} if there is only one orbit.
+\end{definition}
+
+\begin{theorem}[orbit--stabiliser]\label{thm:orbstab}
+Let $G$ act on $X$ and $x\in X$.
+\begin{enumerate}[label=(\alph*)]
+\item The orbits partition $X$.
+\item $G_x$ is a subgroup of $G$, and $gG_x\mapsto g\cdot x$ is a well-defined bijection $G/G_x\to G\cdot x$. Hence, for $G$ finite,
+\[
+|G\cdot x|=[G:G_x]=\frac{|G|}{|G_x|}.
+\]
+\item $G_{g\cdot x}=gG_xg^{-1}$: points in the same orbit have conjugate stabilisers.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Write $x\sim y$ if $y=g\cdot x$ for some $g$. This is an equivalence relation: $x=e\cdot x$; $y=g\cdot x$ gives $x=g^{-1}\cdot y$; $y=g\cdot x$ and $z=h\cdot y$ give $z=(hg)\cdot x$. Its classes are the orbits.
+(b) $e\in G_x$, and if $g,h\in G_x$ then $gh^{-1}\cdot x=g\cdot(h^{-1}\cdot(h\cdot x))=g\cdot x=x$. Next, $g\cdot x=h\cdot x$ iff $h^{-1}g\cdot x=x$ iff $h^{-1}g\in G_x$ iff $gG_x=hG_x$: read in one direction the map is well defined, in the other it is injective; it is onto the orbit by definition. Then use Lagrange.
+(c) $k\cdot(g\cdot x)=g\cdot x$ iff $g^{-1}kg\cdot x=x$ iff $g^{-1}kg\in G_x$ iff $k\in gG_xg^{-1}$.
+\end{proof}
+
+This gives a second proof that the cube has $24$ rotations: they act transitively on the $6$ faces, and the stabiliser of the top face is the group of $4$ rotations about the vertical axis, so there are $6\times4=24$ of them.
+
+\section{Counting orbits}
+
+\begin{think}
+Colour each of the $6$ beads of a necklace black or white: $2^6=64$ colourings. Two colourings give the same necklace if a rotation takes one to the other. Most necklaces come from $6$ colourings, but not all. Can you find the ones that come from fewer? Then guess the number of necklaces.
+\end{think}
+
+\begin{theorem}[Burnside's lemma]\label{thm:burnside}
+Let a finite group $G$ act on a finite set $X$. The number of orbits is the average number of fixed points:
+\[
+|X/G|=\frac1{|G|}\sum_{g\in G}|X^g|.
+\]
+\end{theorem}
+\begin{proof}
+Count the pairs $(g,x)$ with $g\cdot x=x$ in two ways. Grouping by $g$ gives $\sum_g|X^g|$; grouping by $x$ gives $\sum_x|G_x|$. By orbit--stabiliser, $|G_x|=\frac{|G|}{|G\cdot x|}$, so the points of a single orbit $O$ contribute $|O|\cdot\frac{|G|}{|O|}=|G|$. Hence $\sum_g|X^g|=|G|\cdot|X/G|$.
+\end{proof}
+
+For the necklaces of the opening with $2$ colours, the rotation by $k$ steps of a $6$-bead necklace fixes a colouring iff the colouring is constant on the cycles of the rotation, which has $\gcd(k,6)$ cycles. The numbers of fixed colourings for $k=0,\dots,5$ are $64,2,4,8,4,2$, whose average is $\frac{84}6=14$. The $14$ necklaces are drawn in Figure~\ref{fig:necklaces}.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-necklaces}
+\caption{The $14$ necklaces with $6$ beads in $2$ colours, up to rotation, sorted by the number of dark beads. Under each, the size of its orbit, i.e.\ the number of the $64$ colourings that give this necklace: $2\cdot1+1\cdot2+2\cdot3+9\cdot6=64$. Orbits of size less than $6$ come from colourings with extra symmetry, which is why $64/6$ is not the answer.}
+\label{fig:necklaces}
+\end{figure}
+
+The general formula takes one more idea: a colouring fixed by $g$ is the same thing as a colouring constant on the cycles of $g$.
+
+\begin{theorem}[P\'olya's counting theorem]\label{thm:polya}
+Let a finite group $G$ act on a finite set $X$, and for $g\in G$ let $c(g)$ be the number of cycles of the permutation $\rho_g$ of $X$. The number of colourings of $X$ with $k$ colours, up to the action of $G$, is
+\[
+\frac1{|G|}\sum_{g\in G}k^{c(g)}.
+\]
+More precisely, give each colour $c$ a weight $w_c$ (a variable), and a colouring $f$ the weight $w(f)=\prod_{x\in X}w_{f(x)}$. If $g$ has $c_j(g)$ cycles of length $j$, the sum of the weights of one colouring per orbit is
+\[
+\frac1{|G|}\sum_{g\in G}\ \prod_{j\ge1}\Big(\sum_{c}w_c^{\,j}\Big)^{c_j(g)}.
+\]
+\end{theorem}
+\begin{proof}
+A colouring $f$ is fixed by $g$ iff $f(g^{-1}\cdot x)=f(x)$ for all $x$, iff $f$ is constant on each cycle of $\rho_g$. Choosing one colour per cycle gives the $k^{c(g)}$ fixed colourings, and Burnside's lemma gives the first formula.
+For the weighted version, $w(g\cdot f)=w(f)$ (the same colours are used, permuted), so all colourings in an orbit have the same weight $w(O)$. Burnside's double count, with each pair $(g,f)$, $g\cdot f=f$, counted with weight $w(f)$, gives $\sum_g\sum_{f\in X^g}w(f)=|G|\sum_Ow(O)$ in the same way. For a fixed $g$, choosing a colour $c$ on a cycle of length $j$ contributes $w_c^{\,j}$, and the cycles are chosen independently: $\sum_{f\in X^g}w(f)=\prod_j\left(\sum_cw_c^{\,j}\right)^{c_j(g)}$.
+\end{proof}
+
+The polynomial $Z_G=\frac1{|G|}\sum_g\prod_jt_j^{c_j(g)}$ is the \emph{cycle index} of the action; P\'olya's theorem says to substitute $t_j=\sum_cw_c^{\,j}$.
+
+\begin{example}\label{ex:necklaceformula}
+For the cyclic group of rotations of an $n$-bead necklace, the rotation by $k$ steps has $\gcd(k,n)$ cycles, all of length $\frac n{\gcd(k,n)}$. Grouping the $k$ by $d=\frac n{\gcd(k,n)}$ (there are $\varphi(d)$ of them, Theorem~\ref{thm:cyclic}), the number of necklaces with $k$ colours is
+\[
+N(n,k)=\frac1n\sum_{d\mid n}\varphi(d)\,k^{n/d}.
+\]
+For $n=6$, $k=3$: $\frac16(729+27+2\cdot9+2\cdot3)=130$.
+\end{example}
+
+\section{Conjugacy classes and \texorpdfstring{$p$}{p}-groups}
+
+When $G$ acts on itself by conjugation, the orbits are the \emph{conjugacy classes} $\{gxg^{-1}:g\in G\}$, and the stabiliser of $x$ is its \emph{centraliser} $C(x)=\{g:gx=xg\}$. An element is alone in its class iff it lies in the centre $Z(G)$.
+
+\begin{theorem}[class equation]\label{thm:classeq}
+Let $G$ be finite, and let $x_1,\dots,x_r$ be representatives of the conjugacy classes with more than one element. Then
+\[
+|G|=|Z(G)|+\sum_{i=1}^r[G:C(x_i)],
+\]
+and each $[G:C(x_i)]$ is a divisor of $|G|$ greater than $1$.
+\end{theorem}
+\begin{proof}
+The classes partition $G$ (Theorem~\ref{thm:orbstab}(a)); the one-element classes make up $Z(G)$, and the class of $x_i$ has $[G:C(x_i)]$ elements by orbit--stabiliser, which divides $|G|$ by Lagrange.
+\end{proof}
+
+A \emph{$p$-group} is a group of order $p^k$, $k\ge1$, for a prime $p$.
+
+\begin{corollary}\label{cor:pgroup}
+The centre of a $p$-group is not trivial.
+\end{corollary}
+\begin{proof}
+In the class equation, $|G|$ and each $[G:C(x_i)]$ (a divisor of $p^k$ greater than $1$) are divisible by $p$. So $p$ divides $|Z(G)|$, which is at least $1$, hence at least $p$.
+\end{proof}
+
+\begin{theorem}[Cauchy]\label{thm:cauchy}
+If a prime $p$ divides the order of a finite group $G$, then $G$ has an element of order $p$.
+\end{theorem}
+\begin{proof}
+(J.~McKay's proof.) Let $X$ be the set of $p$-tuples $(g_1,\dots,g_p)$ of elements of $G$ with $g_1g_2\cdots g_p=e$. The first $p-1$ entries can be chosen freely and determine $g_p$, so $|X|=|G|^{p-1}$, a multiple of $p$. The cyclic group $\Z/p\Z$ acts on $X$ by rotating the tuples: if $g_1\cdots g_p=e$ then $g_2\cdots g_pg_1=g_1^{-1}(g_1\cdots g_p)g_1=e$. Orbits have size $1$ or $p$ (divisors of $p$). The orbits of size $1$ are the constant tuples $(g,\dots,g)$ with $g^p=e$; there is at least one, $(e,\dots,e)$. Since $|X|$ and the sizes of the large orbits are multiples of $p$, so is the number of fixed tuples. So there are at least $p$ of them, and some $g\ne e$ has $g^p=e$: its order is $p$.
+\end{proof}
+
+\begin{beauty}
+Burnside's lemma turns a question about counting objects up to symmetry, which looks hopeless, into a sum over the group, which is usually short: $24$ terms for the cube, grouped into $5$ kinds of rotations. P\'olya used it in 1937 to count chemical compounds (isomers), and it counts graphs, crystals and musical scales as well. The same double counting, in Cauchy's theorem, proves that a group must contain elements of every prime order dividing its size. In Chapter~5 a cleverer action, on subsets, will produce whole subgroups of prime power order: the Sylow subgroups.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:cubefaces}
+In how many ways can the $6$ faces of a cube be painted with $3$ colours, two colourings being the same if a rotation takes one to the other? (Use the list of rotations of Proposition~\ref{prop:cube}.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:fermatnecklace}
+Using Example~\ref{ex:necklaceformula} for a prime number $p$ of beads, prove Fermat's little theorem $k^p\equiv k\pmod p$. Can you also see it directly on the necklaces?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:classesD}
+Find the conjugacy classes of $D_4$ and of $Q_8$, and check the class equation for both.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:p2}
+Show that every group of order $p^2$ ($p$ prime) is abelian, hence isomorphic to $\Z/p^2\Z$ or $\Z/p\Z\times\Z/p\Z$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:smallestprime}
+Let $H\le G$ with $[G:H]=p$, where $p$ is the smallest prime dividing $|G|$. Show that $H$ is normal. (For $p=2$ this is Proposition~\ref{prop:normal}.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bracelets}
+A \emph{bracelet} is a necklace that may also be turned over: the dihedral group $D_n$ acts. Count the bracelets with $6$ beads in $2$ colours, and find in Figure~\ref{fig:necklaces} the two necklaces that become the same bracelet.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:graphs4}
+Show, with P\'olya's theorem for $\mathfrak S_4$ acting on the $6$ pairs of vertices, that there are $11$ graphs on $4$ vertices up to isomorphism, and use the weighted version to find how many have $3$ edges.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:commuting}
+Let $G$ be finite with $k(G)$ conjugacy classes. Show that the probability that two elements of $G$, chosen independently and uniformly, commute is $\frac{k(G)}{|G|}$. Show that it is at most $\frac58$ when $G$ is not abelian, and that $D_4$ attains $\frac58$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:sieving}
+\emph{Cyclic sieving.} Let $[m]_q=1+q+\dots+q^{m-1}$, $[m]_q!=[1]_q[2]_q\cdots[m]_q$, and for $0\le k\le n$
+\[
+\qbinom nk=\frac{[n]_q!}{[k]_q!\,[n-k]_q!}.
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\qbinom nk=\qbinom{n-1}{k-1}+q^k\qbinom{n-1}k$, and deduce that $\qbinom nk$ is a polynomial in $q$ with
+non-negative integer coefficients.
+\item Let $m\mid n$ and let $\zeta$ be a primitive $m$-th root of unity. Show that the value of this polynomial at $\zeta$
+is $\binom{n/m}{k/m}$ if $m\mid k$, and $0$ otherwise.
+\item The rotation $g:x\mapsto x+1$ of $\Z/n\Z$ acts on the $k$-element subsets of $\Z/n\Z$. Show that for every $j$, the
+number of subsets fixed by $g^j$ is the value of $\qbinom nk$ at $q=e^{2i\pi j/n}$.
+\item Deduce the number of necklaces with $n$ beads, $k$ of them black, up to rotation, and check that there are $4$ for
+$n=6$, $k=3$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:patterns}
+Let $G$ act on a finite set $X$, and let $K$ be a set of $k$ colours. Two colourings $f:X\to K$ are \emph{equivalent} if
+$f'=s\circ f\circ g^{-1}$ for some $g\in G$ and some permutation $s$ of $K$: the symmetry moves the points and the colours may
+be renamed.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for $g\in G$ and $s\in\mathfrak S(K)$, the number of colourings $f$ with $s\circ f\circ g^{-1}=f$ is
+\[
+\prod_{\text{cycles of }g}\ \Bigl(\sum_{j\mid\ell}j\,c_j(s)\Bigr),
+\]
+where the product is over the cycles of $g$ on $X$, $\ell$ is the length of the cycle, and $c_j(s)$ is the number of $j$-cycles
+of $s$.
+\item Count the necklaces of $n$ beads in two colours, up to rotation and up to exchanging the two colours. Check that there
+are $8$ for $n=6$.
+\item In how many essentially different ways can one paint the faces of a cube with at most three colours, if the colours
+themselves do not matter (only which faces share a colour)?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:landau}
+Let $G$ be a finite group with exactly $k$ conjugacy classes.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $|G|\le k^{2^{k-1}}$. So, for each $k$, only finitely many groups have $k$ classes.
+\item Find all groups with at most $3$ conjugacy classes.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:nilpotent}
+\emph{Counting nilpotent matrices.} Let $N_n$ be the number of nilpotent matrices in $M_n(\mathbb F_q)$, with $N_0=1$.
+\begin{enumerate}[label=(\alph*)]
+\item (Fitting.) For $A\in M_n(\mathbb F_q)$ acting on $V=\mathbb F_q^n$, show that $V=\ker A^n\oplus\operatorname{im}A^n$,
+that both are $A$-stable, that $A$ is nilpotent on the first and invertible on the second, and that this is the only
+decomposition of $V$ into two $A$-stable subspaces with these properties.
+\item Deduce that $\displaystyle\sum_{k=0}^n\frac{N_k}{|GL_k(\mathbb F_q)|}=\frac{q^{n^2}}{|GL_n(\mathbb F_q)|}$ for every $n\ge0$.
+\item (Fine and Herstein, 1958.) Prove that $N_n=q^{n^2-n}$. So a random matrix is nilpotent with probability exactly $q^{-n}$.
+\item (Steinberg.) How many unipotent matrices ($A-I$ nilpotent) does $GL_n(\mathbb F_q)$ contain?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:flags}
+\emph{Flags and the field with one element.} Let $V=\mathbb F_q^n$ and $[m]_q=1+q+\dots+q^{m-1}$, $[n]_q!=[1]_q[2]_q\cdots[n]_q$.
+A \emph{complete flag} is a chain $0=V_0\subset V_1\subset\dots\subset V_n=V$ with $\dim V_i=i$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $V$ has $[n]_q!$ complete flags.
+\item Let $U$ be a subspace of dimension $k$. Show that $U$ has exactly $q^{k(n-k)}$ complements $W$ (subspaces with $U\oplus W=V$).
+\item Show that $|GL_n(\mathbb F_q)|=q^{\binom n2}(q-1)^n\,[n]_q!$, by letting $GL_n$ act on flags.
+\item Set $q=1$ in the formulas of (a) and (b). What do flags and complements become, and what does (c) say about the
+symmetric group?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:touchard}
+\emph{Touchard's congruence.} The Bell number $B_n$ is the number of partitions of the set $\{1,\dots,n\}$ into non-empty blocks.
+Let $p$ be prime. By letting the cyclic group of order $p$ rotate the last $p$ elements of $\{1,\dots,n+p\}$, show that
+\[
+B_{n+p}\equiv B_n+B_{n+1}\pmod p.
+\]
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:cubefaces}
+For each kind of rotation, count its cycles on the faces: a quarter turn about a face axis fixes $2$ faces and moves the other $4$ in one cycle.
+\end{hint}
+\begin{hint}{ex:fermatnecklace}
+For $n=p$, the divisors are $1$ and $p$, and $N(p,k)$ is an integer. Directly: rotation acts on the non-constant colourings with orbits of size $p$.
+\end{hint}
+\begin{hint}{ex:classesD}
+In $D_4$ the centre is $\{e,r^2\}$; conjugate $r$ and $s$ by the generators. In $Q_8$, $jij^{-1}=-i$.
+\end{hint}
+\begin{hint}{ex:p2}
+By Corollary~\ref{cor:pgroup}, $|Z(G)|\in\{p,p^2\}$. If $|Z(G)|=p$, look at $G/Z(G)$ and Exercise~\ref{ex:centre}.
+\end{hint}
+\begin{hint}{ex:smallestprime}
+Let $G$ act on the $p$ cosets of $H$. The kernel $K$ of $G\to\mathfrak S_p$ lies in $H$, and $|G/K|$ divides $p!$. Which primes can divide $[G:K]$?
+\end{hint}
+\begin{hint}{ex:bracelets}
+$D_6$ adds $6$ reflections: $3$ through two opposite beads (cycle type $1,1,2,2$) and $3$ between beads (cycle type $2,2,2$).
+\end{hint}
+\begin{hint}{ex:graphs4}
+Count cycles on the $6$ pairs for each cycle type of $\mathfrak S_4$: identity, transposition, double transposition, $3$-cycle, $4$-cycle. For the weighted version use the weights $1$ (no edge) and $y$ (edge).
+\end{hint}
+\begin{hint}{ex:commuting}
+The number of commuting pairs is $\sum_x|C(x)|$: use Burnside for conjugation. For the bound, $[G:Z(G)]\ge4$ (Exercise~\ref{ex:centre}), and every class outside the centre has at least $2$ elements.
+\end{hint}
+
+\begin{hint}{pb:sieving}
+(b) Use $\qbinom nk=\prod_{i=1}^k\frac{1-q^{n-k+i}}{1-q^i}$ and compute the limit as $q\to\zeta$: count the factors that
+vanish at $\zeta$ above and below. (c) A subset fixed by $g^j$ is a union of orbits of $\langle g^j\rangle$. (d) Burnside.
+\end{hint}
+
+\begin{hint}{pb:patterns}
+(a) On a cycle of $g$, the colouring is determined by one colour, and that colour must come back after $\ell$ steps of $s$.
+Then apply Burnside's lemma to the group $G\times\mathfrak S(K)$.
+\end{hint}
+
+\begin{hint}{pb:landau}
+Divide the class equation by $|G|$: $1=\sum_i\frac1{|C_G(x_i)|}$, an Egyptian fraction. Order the denominators and bound
+them one by one.
+\end{hint}
+
+\begin{hint}{pb:nilpotent}
+(b) A matrix is the same thing as a decomposition $V=U\oplus W$, a nilpotent map on $U$ and an invertible map on $W$. (c) Show
+by induction that $\sum_{k\le n}q^{\binom k2}/D_k=q^{\binom{n+1}2}/D_n$, where $D_k=\prod_{i=1}^k(q^i-1)$.
+\end{hint}
+
+\begin{hint}{pb:flags}
+(b) A complement is the graph of a linear map from a fixed complement to $U$.
+\end{hint}
+
+\begin{hint}{pb:touchard}
+In a partition fixed by the rotation, the $p$ rotated elements are either all in one block or all singletons.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:cubefaces}
+\idea Burnside (or P\'olya with $k=3$): sum $3^{c(g)}$ over the $24$ rotations. Rotations of the same kind have the same cycle structure on the faces, so only five computations are needed.
+\writeup The cycles on the $6$ faces are: identity, $6$ cycles; quarter turn about a face axis ($6$ rotations), $2$ fixed faces and a $4$-cycle, so $3$ cycles; half turn about a face axis ($3$ rotations), $2$ fixed faces and two $2$-cycles, $4$ cycles; third turn about a diagonal ($8$ rotations), two $3$-cycles; half turn about an edge axis ($6$ rotations), three $2$-cycles. By Theorem~\ref{thm:polya} the number of colourings is
+\[
+\begin{aligned}
+N&=\frac1{24}\left(3^6+6\cdot3^3+3\cdot3^4+8\cdot3^2+6\cdot3^3\right)\\
+&=\frac{729+162+243+72+162}{24}=\frac{1368}{24}=57.
+\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:fermatnecklace}
+\idea The necklace formula is a fraction that must be an integer, since it counts something. For a prime $p$, that integrality is Fermat's theorem.
+\writeup For $n=p$ prime, Example~\ref{ex:necklaceformula} gives $N(p,k)=\frac1p\left(k^p+(p-1)k\right)$. This is an integer, so $p\mid k^p+(p-1)k=k^p-k+pk$, i.e.\ $k^p\equiv k\pmod p$.
+Directly: the $k$ constant colourings are fixed by every rotation. A non-constant colouring has an orbit whose size divides $p$ and is not $1$ (a colouring fixed by a non-trivial rotation of order $p$ is constant on its single cycle), so the orbit has $p$ elements. The $k^p-k$ non-constant colourings thus split into orbits of size $p$.
+\end{solution}
+
+\begin{solution}{ex:classesD}
+\idea Central elements are alone in their class; for the others, conjugating by the generators is enough, and the class equation checks the bookkeeping.
+\writeup In $D_4$: $Z(D_4)=\{e,r^2\}$ (Exercise~\ref{ex:dihedralcentre}). $srs^{-1}=r^{-1}=r^3$, so $\{r,r^3\}$ is a class. $rsr^{-1}=sr^{-2}=sr^2$, so $s$ and $sr^2$ are conjugate, and likewise $sr$ and $sr^3$; the reflections through vertices are never conjugate to those through edge midpoints (conjugation by $r^k$ or $sr^k$ changes the exponent of $r$ by an even number). Classes: $\{e\},\{r^2\},\{r,r^3\},\{s,sr^2\},\{sr,sr^3\}$, and $8=2+2+2+2$.
+In $Q_8$: $Z(Q_8)=\{\pm1\}$; $jij^{-1}=ji(-j)=-jij=-i$ (as $ij=k$ and $jk=i$), so $\{\pm i\}$ is a class, and likewise $\{\pm j\},\{\pm k\}$. Classes: $\{1\},\{-1\},\{\pm i\},\{\pm j\},\{\pm k\}$, and $8=2+2+2+2$.
+\end{solution}
+
+\begin{solution}{ex:p2}
+\idea The centre is non-trivial (Corollary~\ref{cor:pgroup}). If it were of order $p$, the quotient by it would have order $p$, hence be cyclic, and a group with cyclic quotient by its centre is abelian, so its centre would be everything: a contradiction.
+\writeup $|Z(G)|$ divides $p^2$ and is not $1$. If $|Z(G)|=p$, then $G/Z(G)$ has order $p$, so it is cyclic (Corollary~\ref{cor:lagrange}), and $G$ is abelian by Exercise~\ref{ex:centre}; but then $Z(G)=G$ has order $p^2$, a contradiction. So $Z(G)=G$ and $G$ is abelian. If $G$ has an element of order $p^2$, $G\cong\Z/p^2\Z$. Otherwise every $g\ne e$ has order $p$; take $a\ne e$ and $b\notin\langle a\rangle$. Then $\langle a\rangle\cap\langle b\rangle=\{e\}$ (it is a subgroup of $\langle a\rangle$ of order dividing $p$, not containing $b$), both are normal since $G$ is abelian, and $\langle a\rangle\langle b\rangle$ has $p^2$ elements (the products $a^ib^j$ are distinct), so $G\cong\Z/p\Z\times\Z/p\Z$ by Proposition~\ref{prop:internal}.
+\end{solution}
+
+\begin{solution}{ex:smallestprime}
+\idea Turn $H$ into a kernel: the action of $G$ on the cosets of $H$ is a homomorphism to $\mathfrak S_p$ whose kernel sits inside $H$. The image has order dividing both $|G|$ and $p!$; since $p$ is the smallest prime factor of $|G|$, the only prime both can share is $p$, and only once.
+\writeup Let $G$ act on $G/H$ ($p$ cosets), giving $\rho:G\to\mathfrak S_p$ with kernel $K$. If $g\in K$, then $gH=H$, so $K\subseteq H$. By the first isomorphism theorem $[G:K]=|\rho(G)|$ divides $p!$. Also $[G:K]$ divides $|G|$, whose prime factors are all $\ge p$; the only such prime dividing $p!$ is $p$, and $p^2\nmid p!$. So $[G:K]\in\{1,p\}$. As $K\subseteq H$, $[G:K]=[G:H][H:K]\ge p$; so $[G:K]=p=[G:H]$, hence $K=H$, which is normal as a kernel.
+\end{solution}
+
+\begin{solution}{ex:bracelets}
+\idea Add the six reflections of $D_6$ to the six rotations in Burnside's average; a reflection's fixed colourings are counted by its cycles on the beads.
+\writeup Rotations contribute $64+2+4+8+4+2=84$ fixed colourings. The $3$ reflections through two opposite beads have cycle type $(1,1,2,2)$, so $4$ cycles and $2^4=16$ fixed colourings each; the $3$ reflections through midpoints of opposite sides have type $(2,2,2)$, $3$ cycles, $8$ fixed colourings each. So the number of bracelets is $\frac{84+48+24}{12}=\frac{156}{12}=13$. One fewer than the $14$ necklaces: the two necklaces with $3$ dark beads in the pattern $\bullet\bullet\circ\bullet\circ\circ$ and its mirror image $\bullet\circ\bullet\bullet\circ\circ$ become one bracelet (in Figure~\ref{fig:necklaces}, the two chiral necklaces with three dark beads, one in each row).
+\end{solution}
+
+\begin{solution}{ex:graphs4}
+\idea A graph on $\{1,2,3,4\}$ is a $2$-colouring (edge or no edge) of the $6$ pairs, and two graphs are isomorphic iff a permutation of the vertices maps one to the other. So we need the cycle structure, on pairs, of each kind of permutation of $\mathfrak S_4$; the weighted version then sorts graphs by number of edges.
+\writeup For $\sigma\in\mathfrak S_4$, the cycles on the pairs are:
+\begin{itemize}
+\item identity: $6$ fixed pairs, $t_1^6$;
+\item transposition $(a\,b)$ ($6$ of them): $\{a,b\}$ and $\{c,d\}$ fixed, and $\{a,c\}\leftrightarrow\{b,c\}$, $\{a,d\}\leftrightarrow\{b,d\}$: $t_1^2t_2^2$;
+\item double transposition $(a\,b)(c\,d)$ ($3$): $\{a,b\},\{c,d\}$ fixed, $\{a,c\}\leftrightarrow\{b,d\}$, $\{a,d\}\leftrightarrow\{b,c\}$: $t_1^2t_2^2$;
+\item $3$-cycle ($8$): two $3$-cycles of pairs: $t_3^2$;
+\item $4$-cycle $(a\,b\,c\,d)$ ($6$): the four ``sides'' form a $4$-cycle and the two ``diagonals'' $\{a,c\},\{b,d\}$ are swapped: $t_2t_4$.
+\end{itemize}
+So $Z=\frac1{24}\left(t_1^6+9t_1^2t_2^2+8t_3^2+6t_2t_4\right)$. With $t_j=2$: $\frac{64+144+32+24}{24}=\frac{264}{24}=11$ graphs.
+With weights $1$ and $y$, $t_j=1+y^j$:
+\[
+\begin{aligned}Z&=\frac1{24}\big((1+y)^6+9(1+y)^2(1+y^2)^2\eqbr+8(1+y^3)^2+6(1+y^2)(1+y^4)\big).\end{aligned}
+\]
+The coefficient of $y^3$ is $\frac1{24}\left(20+9\cdot4+8\cdot2+0\right)=\frac{72}{24}=3$ (in $(1+y)^2(1+y^2)^2$, the $y^3$ terms are $2y\cdot2y^2$; in $(1+y^3)^2$ it is $2y^3$). The three graphs with $3$ edges are the triangle, the path and the star.
+\end{solution}
+
+\begin{solution}{ex:commuting}
+\idea A commuting pair is a pair $(x,g)$ with $gxg^{-1}=x$: a fixed point of the conjugation action. Burnside counts these as $|G|$ times the number of orbits, i.e.\ of classes. For the bound, a non-abelian group has a centre of index at least $4$, and the other classes have at least $2$ elements each, which limits the number of classes.
+\writeup The number of pairs $(g,x)$ with $gx=xg$ is $\sum_g|X^g|$ for the conjugation action, which equals $|G|\,k(G)$ by Theorem~\ref{thm:burnside}. Dividing by $|G|^2$ pairs gives the probability $\frac{k(G)}{|G|}$.
+Suppose $G$ is not abelian and let $z=|Z(G)|$, $n=|G|$. Then $G/Z(G)$ is not cyclic (Exercise~\ref{ex:centre}), so $[G:Z(G)]\ge4$, i.e.\ $z\le\frac n4$. The $n-z$ non-central elements fall in classes of size at least $2$, so
+\[
+k(G)\le z+\frac{n-z}2=\frac{n+z}2\le\frac{n+n/4}2=\frac{5n}8.
+\]
+For $D_4$, $k=5$ classes (Exercise~\ref{ex:classesD}) and $n=8$: equality.
+\end{solution}
+
+\begin{solution}{pb:sieving}
+\idea At $q=1$ the $q$-binomial is the ordinary binomial, which counts all subsets. At a root of unity of order $m$, the
+factors $1-q^i$ with $m\mid i$ vanish, and only they matter: they behave like $i$, divided by $m$. So the value at $\zeta$
+looks like a binomial coefficient ``with everything divided by $m$''. On the other side, a subset fixed by a rotation of
+order $m$ is a union of whole orbits of size $m$, and choosing $k/m$ orbits out of $n/m$ is the same binomial.
+
+\writeup (a) $[n]_q=[k]_q+q^k[n-k]_q$. Divide by $[k]_q![n-k]_q!$ and multiply by $[n-1]_q!$:
+\[
+\qbinom nk=\frac{[n-1]_q!\,[k]_q}{[k]_q![n-k]_q!}+q^k\frac{[n-1]_q!\,[n-k]_q}{[k]_q![n-k]_q!}=\qbinom{n-1}{k-1}+q^k\qbinom{n-1}k.
+\]
+With $\qbinom n0=\qbinom nn=1$, induction on $n$ shows that $\qbinom nk$ is a polynomial with non-negative integer
+coefficients.
+
+(b) Cancel $[n-k]_q!$ and multiply each $[i]_q$ by $1-q$:
+$\qbinom nk=\prod_{i=1}^k\frac{1-q^{n-k+i}}{1-q^i}$. The value of the polynomial at $\zeta$ is the limit of this product as
+$q\to\zeta$. A factor $1-q^e$ vanishes at $\zeta$ if and only if $m\mid e$.
+
+Suppose $m\mid k$. Then $m\mid n-k$, so $\zeta^{n-k+i}=\zeta^i$: the factors with $m\nmid i$ have the same non-zero limit above
+and below, and cancel. The others are $i=mb$, $1\le b\le\frac km$; with $u=q^m\to1$,
+\[
+\frac{1-q^{n-k+mb}}{1-q^{mb}}=\frac{1-u^{(n-k)/m+b}}{1-u^b}\longrightarrow\frac{(n-k)/m+b}b,
+\]
+and $\prod_{b=1}^{k/m}\frac{(n-k)/m+b}b=\binom{n/m}{k/m}$.
+
+Suppose $m\nmid k$. In the denominator, $m\mid i$ for $\lfloor k/m\rfloor$ values of $i\in\{1,\dots,k\}$. In the numerator,
+$n-k+i$ runs over $\{n-k+1,\dots,n\}$, which contains $\lfloor\frac{k-1}m\rfloor+1$ multiples of $m$ (since $m\mid n$, they are
+$n,n-m,\dots$ down to $n-k+1$). As $m\nmid k$, $\lfloor\frac{k-1}m\rfloor=\lfloor\frac km\rfloor$, so the numerator has one
+more vanishing factor, of order one each. The limit is $0$.
+
+(c) Let $d=\gcd(j,n)$. The subgroup generated by $g^j$ is generated by $g^d$, the rotation by $d$, whose orbits on
+$\Z/n\Z$ are the $d$ classes modulo $d$, each of size $m=n/d$. A subset is fixed by $g^j$ if and only if it is fixed by
+$g^d$, that is, it is a union of orbits. There are $\binom d{k/m}$ such subsets if $m\mid k$, and none otherwise. Since
+$e^{2i\pi j/n}$ is a primitive $m$-th root of unity, this is the value given by (b).
+
+(d) By Burnside's lemma (Volume~2, Chapter~3), the number of orbits is the average number of fixed points. With $F$ the polynomial $\qbinom nk$, it is
+$\frac1n\sum_{j=0}^{n-1}F(e^{2i\pi j/n})=\frac1n\sum_{m\mid\gcd(n,k)}\varphi(m)\binom{n/m}{k/m}$. For $n=6$, $k=3$:
+$\frac16\bigl(20+2\binom21\bigr)=4$.
+\tools Volume~2, Chapter~3 (Burnside's lemma); Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~1 (finite sums).
+\leads Reiner, Stanton and White (2004) named this the \emph{cyclic sieving phenomenon}: a polynomial that counts a set at
+$q=1$ and counts fixed points of a cyclic action at roots of unity. Dozens of instances are known, for triangulations of
+polygons, plane partitions and Young tableaux, and each one comes from representation theory.
+\end{solution}
+
+\begin{solution}{pb:patterns}
+\idea Renaming colours and moving points are two commuting actions, so the group is $G\times\mathfrak S(K)$, and Burnside
+applies once we can count fixed colourings. Along a cycle of $g$, the condition $f(gx)=s(f(x))$ propagates one colour around,
+and it closes up exactly when the colour has come back.
+
+\writeup (a) The pair $(g,s)$ acts by $f\mapsto s\circ f\circ g^{-1}$, an action of $G\times\mathfrak S(K)$. The condition
+$s\circ f\circ g^{-1}=f$ means $f(gx)=s(f(x))$ for all $x$. Let $(x,gx,\dots,g^{\ell-1}x)$ be a cycle of $g$. Then
+$f(g^ix)=s^i(f(x))$, so $f$ on the cycle is determined by $c=f(x)$, and since $g^\ell x=x$, we need $s^\ell(c)=c$. Conversely
+any $c$ with $s^\ell(c)=c$ gives a consistent $f$ on the cycle. Now $s^\ell(c)=c$ means that the cycle of $s$ through $c$ has
+a length $j$ dividing $\ell$, and there are $\sum_{j\mid\ell}jc_j(s)$ such colours. The cycles of $g$ are independent, so the
+count is the product.
+
+(b) Here $G=\Z/n\Z$ and $K=\{0,1\}$. The rotation by $m$ has $\gcd(m,n)$ cycles of length $\ell=\frac n{\gcd(m,n)}$. For $s$
+the identity, each cycle allows $2$ colours: $2^{\gcd(m,n)}$. For $s$ the exchange, $c_1(s)=0$ and $c_2(s)=1$, so a cycle allows
+$2$ colours if $\ell$ is even and none otherwise. By Burnside the number of classes is
+\[
+\frac1{2n}\Bigl(\sum_{m=0}^{n-1}2^{\gcd(m,n)}+\sum_{\substack{0\le m<n\\ n/\gcd(m,n)\text{ even}}}2^{\gcd(m,n)}\Bigr).
+\]
+For $n=6$: the gcds for $m=0,\dots,5$ are $6,1,2,3,2,1$, giving $64+2+4+8+4+2=84$; the cycle length $\frac6{\gcd}$ is even for
+$m=1,3,5$ (lengths $6,2,6$), giving $2+8+2=12$. So $\frac{84+12}{12}=8$.
+
+(c) The $24$ rotations of the cube have these cycle types on the faces: the identity, $1^6$; six quarter turns about face axes,
+$1^24^1$; three half turns about face axes, $1^22^2$; eight rotations about vertex axes, $3^2$; six half turns about edge axes,
+$2^3$. Take $k=3$. For $s=e$, each cycle allows $3$ colours, and the sum over $G$ of $3^{c(g)}$ is
+$3^6+6\cdot3^3+3\cdot3^4+8\cdot3^2+6\cdot3^3=1368$. For each of the $3$ transpositions $s$, a cycle allows $1$ colour if $\ell$ is
+odd and $1+2=3$ if $\ell$ is even: the sum over $G$ is $1+6\cdot3+3\cdot9+8\cdot1+6\cdot27=216$. For each of the $2$ three-cycles
+$s$, a cycle allows $3$ colours if $3\mid\ell$ and none otherwise: only the vertex rotations contribute, $8\cdot9=72$. Burnside
+for the group of order $24\cdot6$:
+\[
+\frac{1368+3\cdot216+2\cdot72}{144}=\frac{2160}{144}=15.
+\]
+\tools Volume~2, Chapter~3 (Burnside's lemma, the rotations of the cube).
+\leads This is de Bruijn's extension of Pólya's theorem (1959). It counts, for instance, Boolean functions up to permutation
+and negation of the variables and of the value, a question of the 1950s on switching circuits.
+\end{solution}
+
+\begin{solution}{pb:landau}
+\idea The class equation divided by $|G|$ is an Egyptian fraction: $1=\sum_{i=1}^k\frac1{c_i}$, $c_i$ the order of a
+centraliser. The largest $c_i$ is $|G|$ itself (the centraliser of $e$). With $k$ terms one cannot reach far: the smallest
+denominator is at most $k$, and each next one is bounded by the previous ones.
+
+\writeup (a) Let $x_1,\dots,x_k$ represent the classes. The class of $x_i$ has $\frac{|G|}{c_i}$ elements with
+$c_i=|C_G(x_i)|$ (orbit--stabiliser for conjugation), so $1=\sum_i\frac1{c_i}$, and $c_i=|G|$ for the class of $e$. Order
+$c_1\le c_2\le\dots\le c_k$; then $c_k=|G|$. Let $r_i=1-\sum_{j\le i}\frac1{c_j}$. For $0\le i<k$, $r_i=\sum_{j>i}\frac1{c_j}\le\frac{k-i}{c_{i+1}}$,
+and $r_i>0$ is a fraction with denominator dividing $c_1\cdots c_i$, so $r_i\ge\frac1{c_1\cdots c_i}$. Hence
+$c_{i+1}\le(k-i)c_1\cdots c_i\le k\,c_1\cdots c_i$. By induction $c_i\le k^{2^{i-1}}$: true for $i=1$ ($c_1\le k$), and then
+$c_{i+1}\le k\cdot k^{1+2+\dots+2^{i-1}}=k^{2^i}$. So $|G|=c_k\le k^{2^{k-1}}$. There are finitely many groups of each order,
+hence finitely many with $k$ classes.
+
+(b) $k=1$: $G=\{e\}$. $k=2$: $1=\frac1{c_1}+\frac1{c_2}$ with $c_1\le c_2$ forces $c_1=c_2=2$, so $|G|=2$ and $G=\Z/2\Z$. $k=3$: the
+solutions of $1=\frac1{c_1}+\frac1{c_2}+\frac1{c_3}$, $c_1\le c_2\le c_3$, are $(3,3,3)$, $(2,4,4)$, $(2,3,6)$, so $|G|\in\{3,4,6\}$.
+Order $3$: $\Z/3\Z$, which has $3$ classes. Order $4$: abelian, so $4$ classes, impossible. Order $6$: $\Z/6\Z$ has $6$ classes,
+and $\mathfrak S_3$ has $3$. So the answer is $\{e\}$, $\Z/2\Z$, $\Z/3\Z$ and $\mathfrak S_3$.
+\tools Volume~2, Chapter~3 (class equation); Volume~1, Chapter~1 (fractions).
+\leads This is Landau's theorem (1903). The sharp bound for the largest denominator of an Egyptian fraction with $k$ terms is
+$s_{k-1}-1$, where $s_0=2$, $s_1=3$, $7$, $43$, \dots{} is Sylvester's sequence of Problem~\ref{pb:sylvester} (Curtiss, 1922); it gives
+$|G|\le s_{k-1}-1$, which is doubly exponential too. The groups with few classes have been classified, with the help of computers, up
+to about a dozen classes.
+\end{solution}
+
+\begin{solution}{pb:nilpotent}
+\idea Every matrix splits uniquely into a nilpotent part and an invertible part on complementary subspaces. Counting matrices
+this way gives one identity per $n$, and these identities determine all the $N_k$, so it is enough to check that $q^{k^2-k}$
+satisfies them.
+
+\writeup (a) The kernels $\ker A^k$ increase and the images $\operatorname{im}A^k$ decrease, and both stabilise by $k=n$ (the
+dimension cannot change more than $n$ times). If $x\in\ker A^n\cap\operatorname{im}A^n$, write $x=A^ny$; then $A^{2n}y=0$, so
+$y\in\ker A^{2n}=\ker A^n$ and $x=0$. By rank--nullity the dimensions add up to $n$, so $V=\ker A^n\oplus\operatorname{im}A^n$.
+Both are $A$-stable. $A$ is nilpotent on $\ker A^n$, and on $\operatorname{im}A^n$ it is onto
+($A(\operatorname{im}A^n)=\operatorname{im}A^{n+1}=\operatorname{im}A^n$), hence invertible. If $V=U\oplus W$ is another such
+decomposition, then $A^n=0$ on $U$, so $U\subset\ker A^n$, and $W=A^nW\subset\operatorname{im}A^n$; the dimensions force equality.
+
+(b) By (a), $A\mapsto(U,W,A|_U,A|_W)$ is a bijection from $M_n(\mathbb F_q)$ to the set of quadruples where $V=U\oplus W$, $A|_U$
+is nilpotent on $U$ and $A|_W$ is invertible on $W$. $GL_n$ acts transitively on the ordered pairs $(U,W)$ with
+$\dim U=k$, $V=U\oplus W$ (send a basis adapted to one pair to a basis adapted to another), with stabiliser $GL(U)\times GL(W)$.
+So there are $\frac{|GL_n|}{|GL_k||GL_{n-k}|}$ such pairs, and
+\[
+q^{n^2}=\sum_{k=0}^n\frac{|GL_n|}{|GL_k|\,|GL_{n-k}|}\,N_k\,|GL_{n-k}|=|GL_n|\sum_{k=0}^n\frac{N_k}{|GL_k|}.
+\]
+
+(c) The identity of (b) for $n$ determines $N_n$ from $N_0,\dots,N_{n-1}$, so it suffices to show that $N_k=q^{k^2-k}$ satisfies
+it. Write $|GL_k|=\prod_{i=0}^{k-1}(q^k-q^i)=q^{\binom k2}D_k$ with $D_k=\prod_{i=1}^k(q^i-1)$. Then
+$\frac{q^{k^2-k}}{|GL_k|}=\frac{q^{\binom k2}}{D_k}$ and $\frac{q^{n^2}}{|GL_n|}=\frac{q^{\binom{n+1}2}}{D_n}$, so we need
+\[
+\sum_{k=0}^n\frac{q^{\binom k2}}{D_k}=\frac{q^{\binom{n+1}2}}{D_n}.
+\]
+For $n=0$ both sides are $1$. If it holds for $n$, adding the term $k=n+1$ gives
+$\frac{q^{\binom{n+1}2}}{D_n}+\frac{q^{\binom{n+1}2}}{D_{n+1}}=\frac{q^{\binom{n+1}2}(q^{n+1}-1+1)}{D_{n+1}}=\frac{q^{\binom{n+2}2}}{D_{n+1}}$.
+
+(d) $A\mapsto I+A$ is a bijection from nilpotent to unipotent matrices, so there are $q^{n^2-n}$ unipotent matrices.
+
+\tools Volume~0, Chapter~7 (rank--nullity, invariant subspaces); Volume~2, Chapter~3 (orbit--stabiliser); counting independent vectors for the
+order of $GL_n(\mathbb F_q)$.
+\leads $q^{n^2-n}=q^{2\binom n2}$ is the square of the order of a Sylow $p$-subgroup of $GL_n$ (the unitriangular matrices).
+Steinberg proved that in every finite group of Lie type the number of unipotent elements is the square of the order of a Sylow
+$p$-subgroup. Over a general field the nilpotent matrices form the \emph{nilpotent cone}, of dimension $n^2-n$.
+\end{solution}
+
+\begin{solution}{pb:flags}
+\idea Build a flag one step at a time, and count complements as graphs of linear maps.
+
+\writeup (a) $V$ has $\frac{q^n-1}{q-1}=[n]_q$ lines. A complete flag is a line $V_1$ followed by a complete flag of $V/V_1$, a space
+of dimension $n-1$ (subspaces of $V/V_1$ are subspaces of $V$ containing $V_1$). By induction there are $[n]_q[n-1]_q\cdots[1]_q$.
+
+(b) Fix one complement $W_0$ and let $\pi:V\to W_0$ be the projection along $U$. A complement $W$ meets $U$ trivially and has
+dimension $n-k$, so $\pi|_W$ is an isomorphism $W\to W_0$, and $W=\{w+f(w):w\in W_0\}$ where $f=(\mathrm{id}-\pi)\circ(\pi|_W)^{-1}$ maps
+$W_0$ to $U$. Conversely, every linear $f:W_0\to U$ gives such a complement, the graph of $f$. So the complements correspond to
+$\operatorname{Hom}(W_0,U)$, which has $q^{k(n-k)}$ elements.
+
+(c) $GL_n$ acts transitively on complete flags (choose a basis $e_1,\dots,e_n$ with $V_i=\langle e_1,\dots,e_i\rangle$), and the
+stabiliser of the standard flag is the group $B$ of invertible upper triangular matrices: $q-1$ choices for each diagonal entry
+and $q$ for each of the $\binom n2$ entries above it. So $|GL_n|=[n]_q!\,(q-1)^nq^{\binom n2}$.
+
+(d) At $q=1$, $[n]_q!$ becomes $n!$, the number of orderings of an $n$-element set, which is what a ``complete flag of a set''
+$\emptyset\subset S_1\subset\dots\subset S_n$ is. And $q^{k(n-k)}$ becomes $1$: a subset has exactly one complement. In (c),
+$|GL_n|/(q-1)^n=q^{\binom n2}[n]_q!$ becomes $n!=|\mathfrak S_n|$: the symmetric group behaves like $GL_n$ over a ``field with
+one element''.
+
+\tools Volume~0, Chapter~7; Volume~2, Chapter~3; the Gaussian binomial product formula.
+\leads Tits suggested in 1957 that $\mathfrak S_n$ should be $GL_n(\mathbb F_1)$, and the dream of a geometry over $\mathbb F_1$ that
+would explain the Riemann hypothesis by imitating Weil's proof over $\mathbb F_q$ is still alive. Summing over the cells of the
+Bruhat decomposition also gives $[n]_q!=\sum_{\sigma\in\mathfrak S_n}q^{\operatorname{inv}\sigma}$.
+\end{solution}
+
+\begin{solution}{pb:touchard}
+\idea A group of prime order acting on a finite set has orbits of size $1$ or $p$, so the size of the set is congruent to the
+number of fixed points modulo $p$. Here the fixed partitions are easy to list.
+
+\writeup Let $X$ be the set of partitions of $\{1,\dots,n+p\}$ and $\sigma$ the permutation that fixes $1,\dots,n$ and cycles
+$n+1\to n+2\to\dots\to n+p\to n+1$. The group $\langle\sigma\rangle$ of order $p$ acts on $X$, every orbit has size $1$ or $p$, and so
+$B_{n+p}=|X|\equiv\#\{\text{fixed points}\}\pmod p$.
+
+Let $\pi$ be fixed by $\sigma$; then $\sigma$ permutes the blocks of $\pi$. Suppose some block $S$ contains some of the new elements
+$n+1,\dots,n+p$ but not all. Its images $S,\sigma S,\dots,\sigma^{p-1}S$ are blocks, and they are distinct: the orbit of $S$ has size
+dividing $p$, and size $1$ would mean $\sigma S=S$, so $S$ would contain the whole $\sigma$-orbit of any new element it contains,
+that is, all of them. So these $p$ blocks are disjoint and all have the same intersection with $\{1,\dots,n\}$ (which $\sigma$ fixes
+pointwise); being disjoint, this intersection is empty. As each $\sigma^jS$ contains a new element and there are $p$ of them,
+each block $\sigma^jS$ is a single new element. So in a fixed partition, either all the new elements lie in one block, or each
+new element is a singleton block.
+
+Fixed partitions of the first kind correspond to partitions of $\{1,\dots,n,\star\}$, where $\star$ stands for the block of new
+elements: $B_{n+1}$ of them. Those of the second kind correspond to partitions of $\{1,\dots,n\}$: $B_n$ of them. Both kinds are
+indeed fixed. Hence $B_{n+p}\equiv B_{n+1}+B_n\pmod p$.
+
+\tools Volume~2, Chapter~3 (orbits of a group action, orbit sizes divide the order); Volume~4, Exercise~2.3 (Bell numbers).
+\leads Iterating, $B_{n+p^m}\equiv mB_n+B_{n+1}\pmod p$, and the sequence $(B_n\bmod p)$ is periodic with period dividing
+$\frac{p^p-1}{p-1}$; it is conjectured that this is the exact minimal period for every prime $p$ (checked for small $p$). The same
+fixed-point trick proves Fermat's little theorem with necklaces (Volume~2, Exercise~3.2).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item G.~P\'olya, \emph{Kombinatorische Anzahlbestimmungen f\"ur Gruppen, Graphen und chemische Verbindungen}, Acta Math.\ 68 (1937), 145--254. The original paper; English translation in G.~P\'olya and R.~C.~Read, \emph{Combinatorial Enumeration of Groups, Graphs, and Chemical Compounds}, Springer, 1987.
+\item J.~H.~McKay, \emph{Another proof of Cauchy's group theorem}, Amer.\ Math.\ Monthly 66 (1959), 119. The one-paragraph proof of Theorem~\ref{thm:cauchy}.
+\item W.~H.~Gustafson, \emph{What is the probability that two group elements commute?}, Amer.\ Math.\ Monthly 80 (1973), 1031--1034. The $\frac58$ bound of Exercise~\ref{ex:commuting}.
+\item F.~Harary and E.~M.~Palmer, \emph{Graphical Enumeration}, Academic Press, 1973. P\'olya's method applied to graphs, trees and much more.
+\item M.~Artin, \emph{Algebra}, 2nd ed., Pearson, 2011, Chapter~6. Group actions, with the rotation groups of the Platonic solids.
+\item P.~M.~Neumann, \emph{A lemma that is not Burnside's}, Math.\ Scientist 4 (1979), 133--141.
+\end{itemize}

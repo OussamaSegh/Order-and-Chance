@@ -1023,22 +1023,21 @@ def conjugate_gradient_plate():
 
 # Historical selections; the active series mapping lives in cover_plates.PLATES.
 LEGACY_MOTIFS = {
-    "tome0-mathematical-maturity": times_table,
-    "tome1-integers": sacks_spiral,
-    "tome2-structures": buckyball,
-    "tome3-chance": galton_board,
-    "tome4-calculation": fourier_square,
-    "tome5-meets": zeta_critical_line,
-    "tome6-spaces": sierpinski_carpet,
-    "tome7-analysis": confocal_grid,
-    "tome8-shapes": farey_tessellation,
-    "tome9-higher-structures": plancherel_young,
-    "tome10-chance2": stick_breaking,
-    "tome11-motion": dyson_fan,
-    "tome12-arithmetic": ford_circles,
-    "tome13-primes": prime_constellations,
-    "tome14-order-and-chance": multiplicative_walks,
-    "tomeP1-crossroads": gaussian_primes,
+    "tome1-first-principles": times_table,
+    "tome2-integers": sacks_spiral,
+    "tome3-symmetry": buckyball,
+    "tome4-chance": galton_board,
+    "tome5-calculation": fourier_square,
+    "tome6-crossroads": zeta_critical_line,
+    "tome7-spaces": sierpinski_carpet,
+    "tome8-analysis": confocal_grid,
+    "tome9-shapes": farey_tessellation,
+    "tome10-abstraction": plancherel_young,
+    "tome11-randomness": stick_breaking,
+    "tome12-random-motion": dyson_fan,
+    "tome13-arithmetic": ford_circles,
+    "tome14-primes": prime_constellations,
+    "tome15-order-and-chance": multiplicative_walks,
 }
 
 if __name__ == "__main__":

@@ -1,6 +1,6 @@
 """Render every series front at production sizes without rebuilding the books.
 
-Usage: python3 tools/preview_covers.py [tome0-mathematical-maturity tome1-integers] [--jobs 4]
+Usage: python3 tools/preview_covers.py [tome1-first-principles tome2-integers] [--jobs 4]
 Requires the same xelatex/poppler setup as build.sh. Writes preview PDFs and PNGs,
 not release assets or production paperback wraps. Mathematical motifs are read as-is.
 """

@@ -28,9 +28,9 @@ class LibraryTest(unittest.TestCase):
             root = Path(directory)
             dist, out = root / "dist", root / "site"
             dist.mkdir()
-            books = [("0", "tome0-mathematical-maturity", "Mathematical Maturity"),
-                     ("1", "tome1-integers", "The Integers"),
-                     ("2", "tome2-structures", "Structures")]
+            books = [("1", "tome1-first-principles", "First Principles"),
+                     ("2", "tome2-integers", "The Integers"),
+                     ("3", "tome3-symmetry", "Symmetry")]
             for number, book, title in books:
                 (root / book).mkdir()
                 (root / book / "main.tex").write_text(
@@ -52,7 +52,7 @@ class LibraryTest(unittest.TestCase):
             root = Path(directory)
             dist, out = root / "dist", root / "site"
             dist.mkdir()
-            for name in ["tome10-chance2", "tome2-structures", "tomeC1-discrete", "tomeS1-linear", "tomeP1-crossroads"]:
+            for name in ["tome10-chance2", "tome2-structures", "tomeC1-discrete", "tomeS1-linear"]:
 
                 if not name.startswith(("tomeC", "tomeS")):
                     (root / name).mkdir()
@@ -76,7 +76,7 @@ class LibraryTest(unittest.TestCase):
             tags = Tags()
             tags.feed(text)
             cards = [a for t, a in tags.tags if t == "article"]
-            self.assertEqual([a["data-collection"] for a in cards], ["main", "main", "problems"])
+            self.assertEqual([a["data-collection"] for a in cards], ["main", "main"])
             self.assertLess(text.index('data-search="tome2-'), text.index('data-search="tome10-'))
             self.assertEqual(text.count('>EPUB</a>'), 1)
             self.assertNotIn('-phone.pdf', text)

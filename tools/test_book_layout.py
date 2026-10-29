@@ -67,7 +67,7 @@ class DiagnosticsTest(unittest.TestCase):
 class TypesetPaginationTest(unittest.TestCase):
     def compile(self, directory, body, problem_book=False, passes=1):
         source = Path(directory) / 'sample.tex'
-        problem_path = 'tomeP1-crossroads' if problem_book is True else problem_book
+        problem_path = problem_book if problem_book not in (True, False) else None
         source.write_text(r'\documentclass[11pt]{book}' + '\n' +
                           r'\input{../common/preamble}' + '\n' +
                           (f'\\input{{../{problem_path}/pbook}}\n' if problem_path else '') +
@@ -75,7 +75,7 @@ class TypesetPaginationTest(unittest.TestCase):
         for _ in range(passes):
             result = subprocess.run(['xelatex', '-interaction=nonstopmode', '-halt-on-error',
                                      '-output-directory=' + directory, str(source)],
-                                    cwd=ROOT / 'tome0-mathematical-maturity',
+                                    cwd=ROOT / 'tome1-first-principles',
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                     text=True, errors='replace')
             if result.returncode:
@@ -93,51 +93,50 @@ class TypesetPaginationTest(unittest.TestCase):
 \begin{think}Try a small example.\end{think}
 \begin{challenge}Find another proof.\end{challenge}
 '''
-        for problem_book in [False, 'tomeP1-crossroads']:
-            with self.subTest(problem_book=problem_book), tempfile.TemporaryDirectory() as directory:
-                result = self.compile(directory, body, problem_book=problem_book)
-                self.assertEqual(result.returncode, 0, result.stdout[-3000:])
-                reader = PdfReader(Path(directory) / 'sample.pdf')
-                self.assertEqual(len(reader.pages), 1)
-                state = {'fill': (0, 0, 0), 'stroke': (0, 0, 0), 'width': 1}
-                stack, path, strokes = [], [], []
-                for args, op in ContentStream(reader.pages[0].get_contents(), reader).operations:
-                    if op == b'q':
-                        stack.append(state.copy())
-                    elif op == b'Q':
-                        state = stack.pop()
-                    elif op in (b'rg', b'RG', b'g', b'G'):
-                        state['fill' if op in (b'rg', b'g') else 'stroke'] = (
-                            tuple(float(v) for v in args) if len(args) == 3 else (float(args[0]),) * 3)
-                    elif op == b'w':
-                        state['width'] = float(args[0])
-                    elif op == b'm':
-                        path = [tuple(float(v) for v in args)]
-                    elif op in (b'l', b'c', b're'):
-                        path.append(tuple(float(v) for v in args))
-                    elif op in (b'f', b'f*', b'B', b'B*', b'b', b'b*'):
-                        self.assertGreater(min(state['fill']), .9,
-                                           'Saturated frame underpainting can expose horizontal seams')
-                        path = []
-                    elif op == b'S':
-                        self.assertEqual(len(path), 2, 'Only one straight rule is permitted per box')
-                        self.assertAlmostEqual(path[0][0], path[1][0], places=3,
-                                               msg='Unexpected horizontal or diagonal rule')
-                        self.assertAlmostEqual(state['width'], 72 / 72.27, places=3)
-                        strokes.append(state['stroke'])
-                        path = []
-                    elif op == b'n':
-                        path = []
-                expected = ['235E82', 'A34232', '22675B', '704B80', 'A34232']
-                self.assertEqual(len(strokes), len(expected))
-                for actual, colour in zip(strokes, expected):
-                    for value, offset in zip(actual, (0, 2, 4)):
-                        self.assertAlmostEqual(value, int(colour[offset:offset + 2], 16) / 255,
-                                               delta=.003)
-                check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, body)
+            self.assertEqual(result.returncode, 0, result.stdout[-3000:])
+            reader = PdfReader(Path(directory) / 'sample.pdf')
+            self.assertEqual(len(reader.pages), 1)
+            state = {'fill': (0, 0, 0), 'stroke': (0, 0, 0), 'width': 1}
+            stack, path, strokes = [], [], []
+            for args, op in ContentStream(reader.pages[0].get_contents(), reader).operations:
+                if op == b'q':
+                    stack.append(state.copy())
+                elif op == b'Q':
+                    state = stack.pop()
+                elif op in (b'rg', b'RG', b'g', b'G'):
+                    state['fill' if op in (b'rg', b'g') else 'stroke'] = (
+                        tuple(float(v) for v in args) if len(args) == 3 else (float(args[0]),) * 3)
+                elif op == b'w':
+                    state['width'] = float(args[0])
+                elif op == b'm':
+                    path = [tuple(float(v) for v in args)]
+                elif op in (b'l', b'c', b're'):
+                    path.append(tuple(float(v) for v in args))
+                elif op in (b'f', b'f*', b'B', b'B*', b'b', b'b*'):
+                    self.assertGreater(min(state['fill']), .9,
+                                       'Saturated frame underpainting can expose horizontal seams')
+                    path = []
+                elif op == b'S':
+                    self.assertEqual(len(path), 2, 'Only one straight rule is permitted per box')
+                    self.assertAlmostEqual(path[0][0], path[1][0], places=3,
+                                           msg='Unexpected horizontal or diagonal rule')
+                    self.assertAlmostEqual(state['width'], 72 / 72.27, places=3)
+                    strokes.append(state['stroke'])
+                    path = []
+                elif op == b'n':
+                    path = []
+            expected = ['235E82', 'A34232', '22675B', '704B80', 'A34232']
+            self.assertEqual(len(strokes), len(expected))
+            for actual, colour in zip(strokes, expected):
+                for value, offset in zip(actual, (0, 2, 4)):
+                    self.assertAlmostEqual(value, int(colour[offset:offset + 2], 16) / 255,
+                                           delta=.003)
+            check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
 
     def test_whole_exercise_moves_and_reference_follows(self):
-        for problem in [False, True]:
+        for problem in [False]:
             with self.subTest(problem_book=problem), tempfile.TemporaryDirectory() as directory:
                 result = self.compile(directory, r'''
 \setcounter{chapter}{1}\pagestyle{plain}
