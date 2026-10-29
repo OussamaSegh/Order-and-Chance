@@ -95,7 +95,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 3
 - **Books and files:** `volume4-chance/chapters/orders.tex` moves into `volume1-first-principles`, inside Algebra, Limits and Functions. Appendix B of Chance stays.
 - **Acceptance:** Dilworth, Sperner, and partial orders are in Book 1. Book 4's Random Structures no longer contains that appendix. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/30
 - **Merge sha:**
 - **Date:**
 - **Notes:**
