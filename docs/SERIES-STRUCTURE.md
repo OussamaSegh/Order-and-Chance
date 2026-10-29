@@ -75,10 +75,10 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 9 | Groups and Geometry | Lie groups through the hyperbolic plane, the Riemann mapping theorem and integral geometry, then the geometry appendices. Ceva and the Euler line are exercises on transformations. The curvature appendix is the curvature of curves and polyhedra. |
 | 10 Abstraction | Categories | Categories, tensors |
 | 10 | Commutative Algebra | Noetherian rings through homological algebra |
-| 10 | Representations | Group cohomology through compact groups. Shuffling closes the part. |
+| 10 | Representations | Group cohomology through compact groups. The Fourier analysis of the symmetric group stays here. The transposition cutoff is in Volume 11. |
 | 11 Randomness | Invariance Principles | Zero–one law through the central limit theorem |
 | 11 | Stable Laws | Stable laws, Stein’s method, large deviations, concentration. The requested phrase “Stable Laws and Ergodic Theory” is split because the martingale chapter lies between them. |
-| 11 | Martingales and Ergodic Theory | Martingales through the harder problems |
+| 11 | Martingales and Ergodic Theory | Martingales through sums of random pieces, then the transposition cutoff. |
 | 12 Random Motion | Brownian Motion | The Gaussian measure, paths |
 | 12 | Stochastic Calculus | Martingales through Lévy processes, then the branching random walk and the largest values of a characteristic polynomial. |
 | 12 | Networks | Walks on graphs, resistance, and the matrix-tree theorem, then the Laplacian appendix. Expanders, the semicircle and the sine kernel are in Volume 8. |
