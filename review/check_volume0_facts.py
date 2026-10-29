@@ -19,7 +19,7 @@ from scipy.interpolate import BarycentricInterpolator
 
 mp.mp.dps = 240
 ROOT = Path(__file__).resolve().parents[1]
-CHAPTERS = ROOT / 'tome0-mathematical-maturity/chapters'
+CHAPTERS = ROOT / 'volume0-mathematical-maturity/chapters'
 checks = 0
 results = {}
 

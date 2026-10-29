@@ -7,9 +7,9 @@ no separate workshop volume and no second or third problem book. Sentences
 below that say the README still lists another title describe this plan’s
 starting point, not the present tree.
 
-*Where Number Meets Randomness.* This plan replaces the draft outline in the attached note and the unfinished book now on disk as `tome14-random` (*Random Arithmetic*, thirteen chapters, preface still “Preface to come”). It absorbs Volume 15, *The Research Workshop*, as Part V, and it assumes P2 and P3 will be folded into the main volumes by the restructuring already under way. It does not edit those sources.
+*Where Number Meets Randomness.* This plan replaces the draft outline in the attached note and the unfinished book now on disk as `volume14-random` (*Random Arithmetic*, thirteen chapters, preface still “Preface to come”). It absorbs Volume 15, *The Research Workshop*, as Part V, and it assumes P2 and P3 will be folded into the main volumes by the restructuring already under way. It does not edit those sources.
 
-The printed book follows the series rule: one mathematical story, exercises with hints and complete solutions, no promise of a notebook inside the text. The notebooks listed below are author-facing companions, one per chapter, in `python/tome14/`. They are experiments, not citations.
+The printed book follows the series rule: one mathematical story, exercises with hints and complete solutions, no promise of a notebook inside the text. The notebooks listed below are author-facing companions, one per chapter, in `python/volume14/`. They are experiments, not citations.
 
 `common/series.tex` and the README still call this volume *Random Arithmetic* and still list Volume 15 as a separate book. `common/volume-subtitles.json` already has the subtitle *Where Number Meets Randomness*. The catalog has to be brought into line when the book is written. Until then, citations of “Volume 14” in Volumes 10 and 15 mean the draft, not this plan.
 
@@ -100,7 +100,7 @@ Standard references for the whole volume: Tenenbaum, *Introduction to Analytic a
 
 **State.** Granville’s prediction \(\limsup(p_{n+1}-p_n)/(\log p_n)^2\ge 2e^{-\gamma}\). The Ford–Green–Konyagin–Maynard–Tao bound. The Hardy–Littlewood conjecture. Gallagher’s Poisson law, as a conditional theorem whose hypothesis is the uniform Hardy–Littlewood conjecture already written in Volume 5, Chapter 10. Do not drop the hypothesis.
 
-**Draws on.** Volume 5, Chapters 5 and 10 (the prime-number theorem, Cramér’s model, Gallagher’s average of the singular series, and the sketch of Maier at lines 269–276, which this chapter replaces). Volume 13, Chapters 2 (Siegel–Walfisz), 3 (the fundamental lemma, as the large-\(u\) companion of Buchstab, not as a substitute), 4 (Bombieri–Vinogradov, if that is the form adopted), and 9 (bounded gaps). Volume 3, Chapter 4 (Borel–Cantelli). The draft file `tome14-random/chapters/ch11-gaps.tex`.
+**Draws on.** Volume 5, Chapters 5 and 10 (the prime-number theorem, Cramér’s model, Gallagher’s average of the singular series, and the sketch of Maier at lines 269–276, which this chapter replaces). Volume 13, Chapters 2 (Siegel–Walfisz), 3 (the fundamental lemma, as the large-\(u\) companion of Buchstab, not as a substitute), 4 (Bombieri–Vinogradov, if that is the form adopted), and 9 (bounded gaps). Volume 3, Chapter 4 (Borel–Cantelli). The draft file `volume14-random/chapters/ch11-gaps.tex`.
 
 **Missing from Volumes 0–13.** Buchstab’s theorem, and a complete proof of Maier’s theorem. Do not cite Volume 5’s sketch, or its phrase “met in sieve theory,” as a theorem.
 
@@ -598,7 +598,7 @@ Nothing in Parts I–IV requires Volume 0 or Volume 1 beyond the elementary numb
 5. Write Chapters 9 and 10 as citations with a short proved spine, after deciding whether the approximate functional equation is proved or quoted.
 6. Write Chapters 4, 5, 6, 12, and 13, which are mostly reorganisation of Volumes 5 and 13.
 7. Condense Part V last, after Chapters 7 and 11 have absorbed the workshop arguments they need, so those arguments are not left in two places.
-8. Only then delete `tome14-random` and `tome15-workshop` from the catalog, and point `common/series.tex`, the README, and the subtitle file at one book.
+8. Only then delete `volume14-random` and `volume15-workshop` from the catalog, and point `common/series.tex`, the README, and the subtitle file at one book.
 
 ## What this book is not
 

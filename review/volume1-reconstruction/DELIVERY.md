@@ -1,6 +1,6 @@
 # Delivery and recovery
 
-The revised canonical source is tome1-integers/main.tex.
+The revised canonical source is volume1-integers/main.tex.
 Checkpoints volume1-batch-A through volume1-batch-L preserve each verified stage.
 The original source commit is a65d685d941b8cef2c1d41f51bff65a71f885e11.
 Baseline and cumulative PDFs/source snapshots/logs are also in
@@ -8,11 +8,11 @@ Baseline and cumulative PDFs/source snapshots/logs are also in
 
 Final generated deliverables:
 
-- dist/tome1-integers.pdf — complete reading PDF.
-- dist/kdp/tome1-integers-print.pdf — matching paperback interior.
-- dist/tome1-integers.epub — validated reflowable EPUB.
-- dist/html/tome1-integers/ — validated chapter reader.
-- dist/kdp/tome1-integers-cover-wrap.pdf — actual-page-derived premium-colour wrap.
+- dist/volume1-integers.pdf — complete reading PDF.
+- dist/kdp/volume1-integers-print.pdf — matching paperback interior.
+- dist/volume1-integers.epub — validated reflowable EPUB.
+- dist/html/volume1-integers/ — validated chapter reader.
+- dist/kdp/volume1-integers-cover-wrap.pdf — actual-page-derived premium-colour wrap.
 - dist/volume1-revision/Order-and-Chance-Volume1-source.zip — complete source project.
 - dist/volume1-revision/Order-and-Chance-original-source.tar.gz — immutable baseline source backup.
 - dist/volume1-revision/Volume1-reports.zip — all editorial/QA records.
@@ -21,7 +21,7 @@ Final generated deliverables:
 - dist/volume1-revision/publication.json — exact remote publication evidence after push.
 
 Reproduce the book with the documented workspace activation and ./build.sh
-tome1-integers. Reproduce source/asset ledgers with make_review_ledgers.py,
+volume1-integers. Reproduce source/asset ledgers with make_review_ledgers.py,
 mathematical calculations with check_math.py and check_new.py, and digital
 checks with validate_digital.py and check_html_browser.py after assembling
 tools/site.py output under build/volume1-digital-review/site. The browser

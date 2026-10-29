@@ -1,9 +1,9 @@
 # Final mathematical and technical QA
 
 Date: 28 October 2026. Canonical entry:
-`tome0-mathematical-maturity/main.tex`. Build command:
+`volume0-mathematical-maturity/main.tex`. Build command:
 `source /workspace/order-chance-system/activate.sh` then
-`./build.sh --pdf-only tome0-mathematical-maturity`.
+`./build.sh --pdf-only volume0-mathematical-maturity`.
 The production build ran locally, with the existing XeLaTeX infrastructure and
 bundled approved fonts. Its exact stdout is `/workspace/volume0-checkpoints/J-build.txt`.
 
@@ -68,7 +68,7 @@ earlier-format validation recorded in historical review files is not claimed her
 
 See `final-pdf-measurements.json`, `preservation-check.json`,
 `structure-results.json`, `probability-check-results.json`,
-`independent-example-results.json`, and `../TOME0-FACT-CHECK-RESULTS.json` for
+`independent-example-results.json`, and `../VOLUME0-FACT-CHECK-RESULTS.json` for
 machine-readable evidence. No remote release or KDP upload is represented by a
 successful local build.
 

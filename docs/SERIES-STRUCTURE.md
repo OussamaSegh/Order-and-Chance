@@ -19,24 +19,24 @@ Chapter text that says “Volume 4” still means the old number. Use this table
 
 | Old number and title | New number and title | Directory |
 | --- | --- | --- |
-| 0 Mathematical Maturity | 1 First Principles | `tome1-first-principles` |
-| 1 The Integers | 2 The Integers | `tome2-integers` |
-| 2 Structures | 3 Symmetry | `tome3-symmetry` |
-| 3 Chance | 4 Chance | `tome4-chance` |
-| 4 The Art of Calculation | 5 Calculation | `tome5-calculation` |
-| 5 Where It All Meets | 6 Crossroads | `tome6-crossroads` |
-| 6 Spaces | 7 Spaces | `tome7-spaces` |
-| 7 Analysis in Depth | 8 Analysis | `tome8-analysis` |
-| 8 Shapes | 9 Shapes | `tome9-shapes` |
-| 9 Higher Structures | 10 Abstraction | `tome10-abstraction` |
-| 10 Chance II | 11 Randomness | `tome11-randomness` |
-| 11 Random Motion | 12 Random Motion | `tome12-random-motion` |
-| 12 Arithmetic | 13 Arithmetic | `tome13-arithmetic` |
-| 13 Primes in Depth | 14 The Primes | `tome14-primes` |
-| 14 Order and Chance | 15 Order and Chance | `tome15-order-and-chance` |
+| 0 Mathematical Maturity | 1 First Principles | `volume1-first-principles` |
+| 1 The Integers | 2 The Integers | `volume2-integers` |
+| 2 Structures | 3 Symmetry | `volume3-symmetry` |
+| 3 Chance | 4 Chance | `volume4-chance` |
+| 4 The Art of Calculation | 5 Calculation | `volume5-calculation` |
+| 5 Where It All Meets | 6 Crossroads | `volume6-crossroads` |
+| 6 Spaces | 7 Spaces | `volume7-spaces` |
+| 7 Analysis in Depth | 8 Analysis | `volume8-analysis` |
+| 8 Shapes | 9 Shapes | `volume9-shapes` |
+| 9 Higher Structures | 10 Abstraction | `volume10-abstraction` |
+| 10 Chance II | 11 Randomness | `volume11-randomness` |
+| 11 Random Motion | 12 Random Motion | `volume12-random-motion` |
+| 12 Arithmetic | 13 Arithmetic | `volume13-arithmetic` |
+| 13 Primes in Depth | 14 The Primes | `volume14-primes` |
+| 14 Order and Chance | 15 Order and Chance | `volume15-order-and-chance` |
 | Problem book Crossroads | exercises in Volumes 1–6 | removed |
 
-Notebook folders follow the new numbers: `python/tome1` through `python/tome15`.
+Notebook folders follow the new numbers: `python/volume1` through `python/volume15`.
 
 ## Parts inside each volume
 
@@ -101,7 +101,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 
 # Crossroads placement
 
-## Volume 1, First Principles (tome1-first-principles), formerly Volume 0: 22 problems
+## Volume 1, First Principles (volume1-first-principles), formerly Volume 0: 22 problems
 
 - `ch01-sums.tex` (4): pb:millin, pb:erdosheil, pb:sauer, pb:bilinear
 - `ch06-integrals-taylor.tex` (3): pb:lightsout, pb:hyperplanes, pb:kakeya
@@ -111,7 +111,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 - `ch04-inequalities.tex` (1): pb:stanley
 - `ch07-linear-algebra.tex` (1): pb:tanroots
 
-## Volume 2, The Integers (tome2-integers), formerly Volume 1: 41 problems
+## Volume 2, The Integers (volume2-integers), formerly Volume 1: 41 problems
 
 - `ch03-congruences.tex` (9): pb:primepoly, pb:fpfunctions, pb:aks, pb:wolsten, pb:jacobsthal, pb:morley, pb:glaisher, pb:ramanujan5, pb:kloosterman
 - `ch05-primitive-roots.tex` (5): pb:smith, pb:lambert, pb:ramsum, pb:phipm1, pb:gcdmean
@@ -120,7 +120,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 - `ch14-characters.tex` (11): pb:pseudo, pb:pocklington, pb:fermatquot, pb:mullin, pb:artin, pb:fermatcubic, pb:euclidgame, pb:pascalthree, pb:powerful, pb:jacobi, pb:densities
 - `ch01-divisibility.tex` (4): pb:valuation, pb:parity, pb:fibcoprime, pb:orchard
 
-## Volume 3, Symmetry (tome3-symmetry), formerly Volume 2: 31 problems
+## Volume 3, Symmetry (volume3-symmetry), formerly Volume 2: 31 problems
 
 - `ch09-finite-fields.tex` (5): pb:fibmodp, pb:pascal2, pb:lucaslehmer, pb:moore, pb:mseq
 - `ch12-quaternions.tex` (8): pb:sylvester, pb:jensen, pb:mersennediv, pb:dice, pb:ksubsets, pb:egz, pb:abelian, pb:dodecaturns
@@ -131,7 +131,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 - `ch10-galois.tex` (2): pb:rattan, pb:ramacube
 - `ch04-symmetric.tex` (2): pb:discphi, pb:conjugate
 
-## Volume 4, Chance (tome4-chance), formerly Volume 3: 68 problems
+## Volume 4, Chance (volume4-chance), formerly Volume 3: 68 problems
 
 - `ch03-generating.tex` (3): pb:sicherman, pb:loaded, pb:subsetsum
 - `ch01-counting.tex` (4): pb:whichroot, pb:nouniform, pb:bollobas, pb:granularity
@@ -144,7 +144,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 - `ch09-poisson.tex` (2): pb:spacings, pb:dixie
 - `ch06-clt.tex` (1): pb:sincsum
 
-## Volume 5, Calculation (tome5-calculation), formerly Volume 4: 82 problems
+## Volume 5, Calculation (volume5-calculation), formerly Volume 4: 82 problems
 
 - `ch03-series.tex` (2): pb:coprime52, pb:levy
 - `ch12-agm.tex` (36): pb:cyclewalk, pb:detsquare, pb:hadamard, pb:rank, pb:derangements, pb:noroots, pb:gaussmeasure, pb:digitsclt, pb:kolberg, pb:kummer, pb:pascalfour, pb:centralp, pb:sternfib, pb:thuemorse, pb:hermite, pb:centralsum, pb:lehmer, pb:catalanmoments, pb:apcount, pb:dftspectrum, pb:erdosturan, pb:circlewalk, pb:fejer, pb:bernstein, pb:bernsteinabs, pb:fantaussky, pb:involasym, pb:distinctcycles, pb:ramanujan, pb:mappings, pb:xplusinv, pb:hyperfactorial, pb:banach, pb:primezeta, pb:dickmanint, pb:polymertens
@@ -158,7 +158,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 - `ch09-complex.tex` (2): pb:rankdist, pb:dedekind
 - `ch10-zeta.tex` (2): pb:gausskuzmin, pb:sqrtsum
 
-## Volume 6, Crossroads (tome6-crossroads), formerly Volume 5: 56 problems
+## Volume 6, Crossroads (volume6-crossroads), formerly Volume 5: 56 problems
 
 - `ch05-pnt.tex` (4): pb:gaussprimes, pb:findprime, pb:sidon, pb:nsq1sqfree
 - `ch01-mertens.tex` (1): pb:poissoncycles

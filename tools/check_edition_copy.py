@@ -32,7 +32,7 @@ def check(book):
 
 def main():
     books = [ROOT / name for name in sys.argv[1:]] if sys.argv[1:] else sorted(
-        p.parent for p in ROOT.glob('tome*/main.tex'))
+        p.parent for p in ROOT.glob('volume*/main.tex'))
     for book in books:
         check(book)
     print(f'First-edition copy checked: {len(books)} books')

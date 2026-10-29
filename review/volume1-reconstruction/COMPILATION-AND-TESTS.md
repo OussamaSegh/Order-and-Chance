@@ -6,7 +6,7 @@ Executed with the workspace toolchain activation and the committed shared publis
 |---|---|
 | Baseline full PDF build | PASS; 173 interior / 174 reading pages, 163 numbered |
 | Cumulative B–K complete-book builds | PASS; PDFs, source snapshots and logs in /workspace/volume1-checkpoints/<batch>/ |
-| Final production command | ./build.sh tome1-integers; PASS |
+| Final production command | ./build.sh volume1-integers; PASS |
 | Final PDF geometry | 504 × 720 pt (7 × 10 in); 189 interior / 190 reading pages; final label 177 |
 | Paperback | Premium colour, white paper, no bleed; even-rounded 190 pages; 0.4459 in spine |
 | Shared production gates | Layout, STIX/Inter style, PDF body identity, cover master and print preflight PASS |

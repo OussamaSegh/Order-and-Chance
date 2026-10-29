@@ -75,7 +75,7 @@ class TypesetPaginationTest(unittest.TestCase):
         for _ in range(passes):
             result = subprocess.run(['xelatex', '-interaction=nonstopmode', '-halt-on-error',
                                      '-output-directory=' + directory, str(source)],
-                                    cwd=ROOT / 'tome1-first-principles',
+                                    cwd=ROOT / 'volume1-first-principles',
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
                                     text=True, errors='replace')
             if result.returncode:

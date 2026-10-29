@@ -1,8 +1,8 @@
-"""Write a tome's Amazon KDP listing: the text to paste into KDP's book details page.
+"""Write a volume's Amazon KDP listing: the text to paste into KDP's book details page.
 
-Usage: python3 tools/listing.py <tome dir> <output .md>
+Usage: python3 tools/listing.py <volume dir> <output .md>
 
-The description and keywords come from <tome>/kdp.md, written by hand:
+The description and keywords come from <volume>/kdp.md, written by hand:
 
     # Description
     One or more paragraphs (plain text; KDP allows at most 4000 characters).
@@ -11,7 +11,7 @@ The description and keywords come from <tome>/kdp.md, written by hand:
     seven lines, one keyword phrase each (at most 50 characters each),
     avoiding words already in the title and series name, which KDP indexes anyway
 
-Without kdp.md, the description falls back to the back-cover text (<tome>/blurb.tex) and the
+Without kdp.md, the description falls back to the back-cover text (<volume>/blurb.tex) and the
 keywords are left to be written. The title, series and author fields come from main.tex.
 Exits with an error if kdp.md breaks KDP's limits.
 """
@@ -52,13 +52,13 @@ def sections(md: str) -> dict:
     return {parts[i].strip().lower(): parts[i + 1].strip() for i in range(1, len(parts) - 1, 2)}
 
 
-def main(tome_dir: str, out: str) -> None:
-    tome = Path(tome_dir)
-    title_line = re.search(r"^% epub-title: (.*)$", (tome / "main.tex").read_text(encoding="utf-8"), re.M).group(1)
+def main(volume_dir: str, out: str) -> None:
+    volume = Path(volume_dir)
+    title_line = re.search(r"^% epub-title: (.*)$", (volume / "main.tex").read_text(encoding="utf-8"), re.M).group(1)
     series, _, book = title_line.partition(". ")
     number, _, title = book.partition(": ")
     number = number.replace("Volume ", "")
-    kdp = tome / "kdp.md"
+    kdp = volume / "kdp.md"
     problems = []
     if kdp.exists():
         s = sections(kdp.read_text(encoding="utf-8"))
@@ -74,10 +74,8 @@ def main(tome_dir: str, out: str) -> None:
             sys.exit(f"{kdp}: " + "; ".join(problems))
         source = "kdp.md"
     else:
-        blurb = tome / "blurb.tex"
+        blurb = volume / "blurb.tex"
         description = latex_to_text(blurb.read_text(encoding="utf-8")) if blurb.exists() else ""
-        # Listings use the English series term without editing protected back covers.
-        description = re.sub(r'\btome(s?)\b', lambda m: 'volume' + m[1], description)
         keywords = []
         source = "blurb.tex (no kdp.md yet)"
     lines = [f"# KDP listing: {series}, Volume {number}: {title}", "",
@@ -98,7 +96,7 @@ def main(tome_dir: str, out: str) -> None:
              "",
              f"## Description ({len(description)} of 4000 characters)", "", description or "(to be written)", "",
              "## Keywords (one per KDP box, at most 50 characters each)", ""]
-    lines += [f"{i}. {k}" for i, k in enumerate(keywords, 1)] or ["(to be written in <tome>/kdp.md)"]
+    lines += [f"{i}. {k}" for i, k in enumerate(keywords, 1)] or ["(to be written in <volume>/kdp.md)"]
     Path(out).write_text("\n".join(lines) + "\n", encoding="utf-8")
 
 

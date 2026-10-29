@@ -8,7 +8,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[2]
 OUT = Path(__file__).resolve().parent
 BASE = '3259d462860e13150fc6cb15ecb0e3109f95b5ed'
-BOOK = 'tome0-mathematical-maturity'
+BOOK = 'volume0-mathematical-maturity'
 
 def inventory(files):
     records = []

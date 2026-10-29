@@ -56,7 +56,7 @@ def series_tex():
         lines.append(r'\seriespart{Part '+part['roman']+'. '+part['name']+'}')
         for number in part['volumes']:
             item=volumes[number]
-            lines.append(r'\seriestome{'+number+'}{'+item['title']+'}{'+item['subtitle']+'}')
+            lines.append(r'\seriesvolume{'+number+'}{'+item['title']+'}{'+item['subtitle']+'}')
     return '\n'.join(lines)+'\n'
 
 def flat_subtitles():

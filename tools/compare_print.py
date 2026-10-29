@@ -25,7 +25,7 @@ def build(book, size, output):
     number, title = metadata.groups()
     work = output / size
     work.mkdir(parents=True, exist_ok=True)
-    command = (rf'\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}'
+    command = (rf'\def\VOLUMENUM{{{number}}}\def\VOLUMETITLE{{{title}}}'
                r'\def\FORMAT{print}\def\PRINTINNER{0.75in}')
     if size in {'6x9', '7x10'}:
         # Override geometry at the end of the existing preamble. This preserves
@@ -70,7 +70,7 @@ def build(book, size, output):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('book', nargs='?', default='tome1-first-principles')
+    parser.add_argument('book', nargs='?', default='volume1-first-principles')
     parser.add_argument('--out', type=Path, default=ROOT / 'build/volume0-print-review')
     args = parser.parse_args()
     book = (ROOT / args.book).resolve()

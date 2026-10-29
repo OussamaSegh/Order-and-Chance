@@ -11,7 +11,7 @@ into the common preamble; mathematical chapter sources were unchanged.
 
 ## Evidence and scope
 
-Canonical entry: `tome0-mathematical-maturity/main.tex`; shared infrastructure:
+Canonical entry: `volume0-mathematical-maturity/main.tex`; shared infrastructure:
 `common/preamble.tex`, `common/frontmatter.tex`, `build.sh`. Chapter sources total
 6,137 lines, including preface and back matter. The initial source contains 250
 explicit labels and 130 exercise/hint/solution triples. `baseline-inventory.json`

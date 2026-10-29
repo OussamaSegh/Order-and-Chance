@@ -1,7 +1,7 @@
-"""Generate the central picture of each tome's cover.
+"""Generate the central picture of each volume's cover.
 
 Usage: python3 tools/cover_motifs.py
-Writes <tome>/cover-motif.tex, a TikZ fragment centred at the origin that fits in a
+Writes <volume>/cover-motif.tex, a TikZ fragment centred at the origin that fits in a
 disc of radius 2.3in. tools/cover.tex draws it in the cover's accent colour.
 """
 import itertools
@@ -149,7 +149,7 @@ def fourier_square(levels=(1, 3, 9, 41)):
 
 def sierpinski_carpet(level=4):
     """Sierpinski carpet: keep the 8 outer squares of a 3x3 grid, recursively. Its Hausdorff
-    dimension is log 8 / log 3 = 1.89..., between a curve and a surface (Tome 6, Chapter 11)."""
+    dimension is log 8 / log 3 = 1.89..., between a curve and a surface (Volume 6, Chapter 11)."""
     side = 2 * R / 2 ** 0.5 * 0.92  # inscribed in the disc of radius R, with a margin
     lines = [f"% Sierpinski carpet at level {level}: 8^{level} squares, dimension log 8 / log 3."]
     squares = [(-side / 2, -side / 2, side)]
@@ -166,8 +166,8 @@ def sierpinski_carpet(level=4):
 
 def zeta_critical_line(t_max=42.0, steps=2400):
     """The curve t -> zeta(1/2 + it) for 0 <= t <= t_max: it loops around and passes through the
-    origin at each zero on the critical line (Tome 5, Chapters 6-7). Computed by Euler-Maclaurin
-    (Tome 4, Proposition 11.7) with N = 40 terms and six Bernoulli corrections."""
+    origin at each zero on the critical line (Volume 5, Chapters 6-7). Computed by Euler-Maclaurin
+    (Volume 4, Proposition 11.7) with N = 40 terms and six Bernoulli corrections."""
     B = [1 / 6, -1 / 30, 1 / 42, -1 / 30, 5 / 66, -691 / 2730]
     N = 40
 
@@ -197,7 +197,7 @@ def zeta_critical_line(t_max=42.0, steps=2400):
 def ford_circles(qmax=80):
     """Ford circles: above each fraction p/q (lowest terms), the circle of radius 1/(2q^2)
     tangent to the line at p/q. Two of them touch exactly when the fractions are Farey neighbours,
-    and SL2(Z) permutes them (Tome 12, Chapter 14). Drawn for p/q in [0, 1], clipped to the disc."""
+    and SL2(Z) permutes them (Volume 12, Chapter 14). Drawn for p/q in [0, 1], clipped to the disc."""
     s = 2.7 * R                       # length of the unit interval on the cover
     y0 = -0.42 * R                    # the line on which the circles stand
     lines = ["%% Ford circles for p/q in [0,1], q <= %d: radius 1/(2q^2), tangent at p/q." % qmax,
@@ -220,7 +220,7 @@ def ford_circles(qmax=80):
 
 def boolean_lattice(n=5):
     """Hasse diagram of the subsets of {1,...,n}, ranks as rows, with a symmetric chain
-    decomposition (de Bruijn, Tengbergen and Kruyswijk, 1951; Tome C1, Chapter 2) drawn as
+    decomposition (de Bruijn, Tengbergen and Kruyswijk, 1951; Volume C1, Chapter 2) drawn as
     vertical gold chains and the other covering edges faint."""
     chains = [[frozenset(), frozenset([1])]]          # the subsets of {1}, then induction on n
     for k in range(2, n + 1):
@@ -263,7 +263,7 @@ def boolean_lattice(n=5):
 
 def lozenge_tiling(a=28, sweeps=8000, seed=7):
     """A uniformly random lozenge tiling of the hexagon of side a, seen as a random plane
-    partition in an a x a x a box (Tome 2, Appendix B: Lindstrom-Gessel-Viennot). The heights
+    partition in an a x a x a box (Volume 2, Appendix B: Lindstrom-Gessel-Viennot). The heights
     are sampled by heat-bath Glauber dynamics on a checkerboard: given its four neighbours, the
     height of a column is uniform on the allowed interval. The corners freeze and the centre
     stays disordered, inside the 'arctic circle'. Three shades for the three orientations make
@@ -309,8 +309,8 @@ def lozenge_tiling(a=28, sweeps=8000, seed=7):
 
 
 def gaussian_primes(N=26):
-    """Problem Book P1: the Gaussian primes a+bi with a^2+b^2 <= N^2, a picture where Tome 1
-    (which primes split), Tome 2 (the ring Z[i]) and geometry meet. It has the eight symmetries
+    """Problem Book P1: the Gaussian primes a+bi with a^2+b^2 <= N^2, a picture where Volume 1
+    (which primes split), Volume 2 (the ring Z[i]) and geometry meet. It has the eight symmetries
     of the square."""
     s = R / (N + 0.5)
     pr = set(primes_upto(2 * N * N + 2))
@@ -332,7 +332,7 @@ def gaussian_primes(N=26):
 def confocal_grid(Y=1.45, n_ell=9, n_hyp=8):
     """The image of a rectangular grid under the conformal map z -> sin z: the horizontal lines
     become confocal ellipses, the vertical lines confocal hyperbolas, and they still cross at right
-    angles (Tome 7, Chapter 9). The foci are +-1, where the map stops being conformal."""
+    angles (Volume 7, Chapter 9). The foci are +-1, where the map stops being conformal."""
     scale = 0.97 * R / math.cosh(Y)
     lines = ["% Image of a rectangular grid under sin z: confocal ellipses and hyperbolas."]
     pt = lambda w: "(%.4fin,%.4fin)" % (w.real * scale, w.imag * scale)
@@ -427,7 +427,7 @@ def stick_breaking(rings=13, seed=10):
     """Poisson-Dirichlet stick-breaking: each ring is one sample of the GEM(1) law, the circle
     broken at a uniform point, the rest broken again, and so on. The arc lengths are the cycle
     proportions of a large random permutation, and of the prime factors of a large random
-    integer (Tome 10, Chapter 12). Drawn with a fixed seed so the cover is reproducible."""
+    integer (Volume 10, Chapter 12). Drawn with a fixed seed so the cover is reproducible."""
     import random
     rng = random.Random(seed)
     lines = ["%% Stick-breaking (GEM(1)) samples, one per ring, seed %d." % seed, r"\begin{scope}"]
@@ -453,7 +453,7 @@ def farey_tessellation(depth=8, nmax=40):
     """The Farey tessellation of the hyperbolic disc: the geodesics joining p/q and r/s whenever
     ps - qr = +-1, carried from the upper half-plane by the Cayley map z -> (z-i)/(z+i). They cut
     the disc into ideal triangles, all images of one triangle under the modular group SL2(Z)
-    (Tome 8, Chapter 9)."""
+    (Volume 8, Chapter 9)."""
     from fractions import Fraction
 
     def to_angle(x):                   # boundary point of the half-plane -> angle on the circle
@@ -574,7 +574,7 @@ def mod3_automaton():
 def plancherel_young(n=1500, seed=9):
     """A random Young diagram with n cells, the RSK shape of a uniform random permutation (Plancherel
     measure), drawn in Russian convention and scaled by 1/sqrt(n). Its boundary hugs the Logan-Shepp and
-    Vershik-Kerov limit curve Omega(u) = (2/pi)(u arcsin(u/2) + sqrt(4-u^2)), drawn thicker (Tome 9, Chapter 9)."""
+    Vershik-Kerov limit curve Omega(u) = (2/pi)(u arcsin(u/2) + sqrt(4-u^2)), drawn thicker (Volume 9, Chapter 9)."""
     import bisect
     import random
     rnd = random.Random(seed)
@@ -611,7 +611,7 @@ def plancherel_young(n=1500, seed=9):
 
 
 def prime_constellations(rings=56, r0=0.55):
-    """Tome 13: the integers 30k+a on rings, k on the radius and a on the angle. Primes above 5
+    """Volume 13: the integers 30k+a on rings, k on the radius and a on the angle. Primes above 5
     lie on the eight spokes a = 1, 7, 11, 13, 17, 19, 23, 29; twin primes are joined by arcs,
     and the prime quadruplets p, p+2, p+6, p+8 are ringed."""
     ps = set(primes_upto(30 * rings + 40))
@@ -646,7 +646,7 @@ def prime_constellations(rings=56, r0=0.55):
 def dyson_fan(n=16, steps=700, seed=11):
     """Dyson Brownian motion: the eigenvalues of a Hermitian matrix Brownian motion started at 0, plotted
     against time. The n paths are born together, repel, never cross, and spread inside the curves
-    +-2 sqrt(t), the edges of the semicircle law (Tome 11, Chapters 6 and 10). Time runs left to right."""
+    +-2 sqrt(t), the edges of the semicircle law (Volume 11, Chapters 6 and 10). Time runs left to right."""
     import random
     rnd = random.Random(seed)
     dt = 1.0 / steps
@@ -737,7 +737,7 @@ def hilbert_curve(order=6):
 def multiplicative_walks(N=3000, walks=3, seed=14):
     """Partial sums S(n) = f(1)+...+f(n) of Steinhaus random multiplicative functions, drawn as
     planar walks: f(p) = e^{i theta_p} with independent uniform angles, f multiplicative
-    (Tome 14, Chapter 5). They wander like random walks, but not quite."""
+    (Volume 14, Chapter 5). They wander like random walks, but not quite."""
     import random
     rng = random.Random(seed)
     spf = list(range(N + 1))
@@ -773,11 +773,11 @@ def multiplicative_walks(N=3000, walks=3, seed=14):
 
 
 def brw_barrier(depth=11, seed=15):
-    """Tome 15: a binary branching random walk (each particle splits in two, each child moves by an
+    """Volume 15: a binary branching random walk (each particle splits in two, each child moves by an
     independent Gaussian step), drawn with time running left to right, and the critical line
     k*sqrt(2 log 2) above which almost no path ever goes. Paths that stay just below this barrier carry
     the critical multiplicative chaos behind Harper's theorem on random multiplicative functions
-    (Tome 15, Chapter 6). The path of the highest particle is drawn thicker."""
+    (Volume 15, Chapter 6). The path of the highest particle is drawn thicker."""
     import random
     rnd = random.Random(seed)
     pos = [[0.0]]
@@ -1023,21 +1023,21 @@ def conjugate_gradient_plate():
 
 # Historical selections; the active series mapping lives in cover_plates.PLATES.
 LEGACY_MOTIFS = {
-    "tome1-first-principles": times_table,
-    "tome2-integers": sacks_spiral,
-    "tome3-symmetry": buckyball,
-    "tome4-chance": galton_board,
-    "tome5-calculation": fourier_square,
-    "tome6-crossroads": zeta_critical_line,
-    "tome7-spaces": sierpinski_carpet,
-    "tome8-analysis": confocal_grid,
-    "tome9-shapes": farey_tessellation,
-    "tome10-abstraction": plancherel_young,
-    "tome11-randomness": stick_breaking,
-    "tome12-random-motion": dyson_fan,
-    "tome13-arithmetic": ford_circles,
-    "tome14-primes": prime_constellations,
-    "tome15-order-and-chance": multiplicative_walks,
+    "volume1-first-principles": times_table,
+    "volume2-integers": sacks_spiral,
+    "volume3-symmetry": buckyball,
+    "volume4-chance": galton_board,
+    "volume5-calculation": fourier_square,
+    "volume6-crossroads": zeta_critical_line,
+    "volume7-spaces": sierpinski_carpet,
+    "volume8-analysis": confocal_grid,
+    "volume9-shapes": farey_tessellation,
+    "volume10-abstraction": plancherel_young,
+    "volume11-randomness": stick_breaking,
+    "volume12-random-motion": dyson_fan,
+    "volume13-arithmetic": ford_circles,
+    "volume14-primes": prime_constellations,
+    "volume15-order-and-chance": multiplicative_walks,
 }
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ from pathlib import Path
 import json, re
 
 ROOT=Path(__file__).resolve().parents[2]
-DRAFT=ROOT/'tome0-mathematical-maturity/chapters'
+DRAFT=ROOT/'volume0-mathematical-maturity/chapters'
 s=(DRAFT/'ch09-probability.tex').read_text()
 old_ids=['ex:birthday','ex:fixedvar','ex:cycles','ex:coupon','ex:monty','ex:multinomial','ex:bonferroni','ex:records','ex:poll','ex:ballot','ex:ramsey']
 baseline=''.join('\\begin{exercise}\\label{'+l+'}' for l in old_ids)

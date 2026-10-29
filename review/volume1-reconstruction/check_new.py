@@ -5,7 +5,7 @@ import json,math,re
 import sympy as S
 import mpmath as mp
 OUT=Path(__file__).resolve().parent
-FIG=OUT.parents[1]/'tome1-integers/figures'
+FIG=OUT.parents[1]/'volume1-integers/figures'
 counts={}
 def check(group,value):
     assert value,group

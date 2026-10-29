@@ -28,9 +28,9 @@ class LibraryTest(unittest.TestCase):
             root = Path(directory)
             dist, out = root / "dist", root / "site"
             dist.mkdir()
-            books = [("1", "tome1-first-principles", "First Principles"),
-                     ("2", "tome2-integers", "The Integers"),
-                     ("3", "tome3-symmetry", "Symmetry")]
+            books = [("1", "volume1-first-principles", "First Principles"),
+                     ("2", "volume2-integers", "The Integers"),
+                     ("3", "volume3-symmetry", "Symmetry")]
             for number, book, title in books:
                 (root / book).mkdir()
                 (root / book / "main.tex").write_text(
@@ -52,24 +52,24 @@ class LibraryTest(unittest.TestCase):
             root = Path(directory)
             dist, out = root / "dist", root / "site"
             dist.mkdir()
-            for name in ["tome10-chance2", "tome2-structures", "tomeC1-discrete", "tomeS1-linear"]:
+            for name in ["volume10-chance2", "volume2-structures", "volumeC1-discrete", "volumeS1-linear"]:
 
-                if not name.startswith(("tomeC", "tomeS")):
+                if not name.startswith(("volumeC", "volumeS")):
                     (root / name).mkdir()
                     (root / name / "main.tex").write_text("fixture")
                     (dist / filename(name, "pdf", root)).write_bytes(b"fixture")
-            (dist / "tome2-structures-phone.pdf").write_bytes(b"retired")
-            (dist / "tome2-structures-kindle.pdf").write_bytes(b"fixture")
-            (dist / "tome2-structures-a4.pdf").write_bytes(b"retired")
+            (dist / "volume2-structures-phone.pdf").write_bytes(b"retired")
+            (dist / "volume2-structures-kindle.pdf").write_bytes(b"fixture")
+            (dist / "volume2-structures-a4.pdf").write_bytes(b"retired")
             (dist / "kdp").mkdir()
             (dist / "kdp/Volume 2 - Structures - Print.pdf").write_bytes(b"print interior")
             (dist / "Volume 2 - Structures.epub").write_bytes(b"fixture")
             out.mkdir()
-            (out / "tomeC1-discrete.pdf").write_bytes(b"stale download")
+            (out / "volumeC1-discrete.pdf").write_bytes(b"stale download")
             for suffix in ['a4', 'kindle', 'phone', 'print']:
-                (out / f'tome2-structures-{suffix}.pdf').write_bytes(b'stale download')
-            (out / "read/tomeS1-linear").mkdir(parents=True)
-            (out / "read/tomeS1-linear/index.html").write_text("stale reader")
+                (out / f'volume2-structures-{suffix}.pdf').write_bytes(b'stale download')
+            (out / "read/volumeS1-linear").mkdir(parents=True)
+            (out / "read/volumeS1-linear/index.html").write_text("stale reader")
             with patch.object(site, "ROOT", root):
                 site.main(str(dist), str(out))
             text = (out / "index.html").read_text()
@@ -77,7 +77,7 @@ class LibraryTest(unittest.TestCase):
             tags.feed(text)
             cards = [a for t, a in tags.tags if t == "article"]
             self.assertEqual([a["data-collection"] for a in cards], ["main", "main"])
-            self.assertLess(text.index('data-search="tome2-'), text.index('data-search="tome10-'))
+            self.assertLess(text.index('data-search="volume2-'), text.index('data-search="volume10-'))
             self.assertEqual(text.count('>EPUB</a>'), 1)
             self.assertNotIn('-phone.pdf', text)
             self.assertNotIn('-kindle.pdf', text)
@@ -87,24 +87,48 @@ class LibraryTest(unittest.TestCase):
             self.assertIn('7 × 10 in PDF with cover', text)
             self.assertIn('>PDF with cover</a>', text)
             for suffix in ['a4', 'kindle', 'phone']:
-                self.assertFalse((out / f'tome2-structures-{suffix}.pdf').exists())
+                self.assertFalse((out / f'volume2-structures-{suffix}.pdf').exists())
             self.assertEqual((out / 'Volume 2 - Structures - Print.pdf').read_bytes(), b'print interior')
-            self.assertNotIn('tomeC1-discrete', text)
-            self.assertNotIn('tomeS1-linear', text)
-            self.assertFalse((out / 'tomeC1-discrete.pdf').exists())
-            self.assertFalse((out / 'read/tomeS1-linear').exists())
-            self.assertFalse((out / "tome2-structures-phone.pdf").exists())
+            self.assertNotIn('volumeC1-discrete', text)
+            self.assertNotIn('volumeS1-linear', text)
+            self.assertFalse((out / 'volumeC1-discrete.pdf').exists())
+            self.assertFalse((out / 'read/volumeS1-linear').exists())
+            self.assertFalse((out / "volume2-structures-phone.pdf").exists())
             for tag, attrs in tags.tags:
                 if tag == 'a' and attrs.get('href', '').endswith(('.pdf', '.epub')):
                     self.assertTrue((out / unquote(attrs['href'])).exists())
+
+    def test_published_reader_urls_redirect(self):
+        from legacy_urls import OLD_STEMS
+        old, new = next(pair for pair in OLD_STEMS.items() if pair[1] == "volume1-first-principles")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            dist, out = root / "dist", root / "site"
+            dist.mkdir()
+            (root / new).mkdir()
+            (root / new / "main.tex").write_text(
+                "% epub-title: Order and Chance. Volume 1: First Principles\n")
+            (dist / filename(new, "pdf", root)).write_bytes(b"fixture")
+            reader = dist / "html" / new
+            reader.mkdir(parents=True)
+            (reader / "index.html").write_text("current index")
+            (reader / "preface.html").write_text("current preface")
+            with patch.object(site, "ROOT", root):
+                site.main(str(dist), str(out))
+            index = (out / "read" / old / "index.html").read_text()
+            preface = (out / "read" / old / "preface.html").read_text()
+            self.assertIn(f"../{new}/index.html", index)
+            self.assertIn(f"../{new}/preface.html", preface)
+            self.assertIn("http-equiv=\"refresh\"", index)
+            self.assertIn(f"read/{new}/", (out / "index.html").read_text())
 
     def test_titles_are_escaped_in_text_and_search_attributes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "dist").mkdir()
-            (root / "tome0-test").mkdir()
+            (root / "volume0-test").mkdir()
             (root / "dist/Volume 0 - Safe Title.pdf").write_bytes(b"fixture")
-            (root / "tome0-test/main.tex").write_text('% epub-title: A < B & "C". Volume 0: Safe Title\n')
+            (root / "volume0-test/main.tex").write_text('% epub-title: A < B & "C". Volume 0: Safe Title\n')
             with patch.object(site, "ROOT", root):
                 site.main(str(root / "dist"), str(root / "out"))
             text = (root / "out/index.html").read_text()

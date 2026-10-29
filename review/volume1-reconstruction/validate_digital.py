@@ -10,7 +10,7 @@ import xml.etree.ElementTree as ET
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[2]
-BOOK = 'tome1-integers'
+BOOK = 'volume1-integers'
 
 class Node:
     def __init__(self, tag, attrs):

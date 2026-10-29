@@ -24,9 +24,9 @@ def main():
             if p.is_file() and '__pycache__' not in p.parts:z.write(p,p.relative_to(ROOT/'review'))
     staging=ROOT/'build/volume1-delivery-dist'
     (staging/'kdp').mkdir(parents=True,exist_ok=True)
-    for suffix in ('pdf','epub'):shutil.copy2(ROOT/f'dist/tome1-integers.{suffix}',staging/f'tome1-integers.{suffix}')
-    for p in (ROOT/'dist/kdp').glob('tome1-integers-*'):shutil.copy2(p,staging/'kdp'/p.name)
-    shutil.copytree(ROOT/'dist/html/tome1-integers',staging/'html/tome1-integers',dirs_exist_ok=True)
+    for suffix in ('pdf','epub'):shutil.copy2(ROOT/f'dist/volume1-integers.{suffix}',staging/f'volume1-integers.{suffix}')
+    for p in (ROOT/'dist/kdp').glob('volume1-integers-*'):shutil.copy2(p,staging/'kdp'/p.name)
+    shutil.copytree(ROOT/'dist/html/volume1-integers',staging/'html/volume1-integers',dirs_exist_ok=True)
     site=ROOT/'build/volume1-delivery-site'
     subprocess.run(['python3',str(ROOT/'tools/site.py'),str(staging),str(site)],cwd=ROOT,check=True)
     with zipfile.ZipFile(BUNDLE/'Volume1-HTML-reader.zip','w',compression=zipfile.ZIP_DEFLATED) as z:

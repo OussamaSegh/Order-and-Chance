@@ -1,327 +1,327 @@
 # Existing citations in other volumes
 
 The current series is Volumes 0–14 plus Crossroads. Workshop chapters live in
-`tome14-order-and-chance/`. Almost Every Number is
-`tome6-spaces/chapters/ch12-harder.tex`. Hilbert Spaces at Work is
-`tome7-analysis/chapters/ch11-harder.tex`. Sums of Random Pieces is
-`tome10-chance2/chapters/ch13-harder.tex`. The operators draft is not in the tree.
+`volume14-order-and-chance/`. Almost Every Number is
+`volume6-spaces/chapters/ch12-harder.tex`. Hilbert Spaces at Work is
+`volume7-analysis/chapters/ch11-harder.tex`. Sums of Random Pieces is
+`volume10-chance2/chapters/ch13-harder.tex`. The operators draft is not in the tree.
 Paths below are the locations at the time of the audit; line numbers were not remapped.
 
 Read-only inventory; these manuscripts were not edited. Hardcoded old numbers
 must be checked against NUMBERING-CONCORDANCE.md before a coordinated series release.
 Some entries name only the volume and need no correction. No automatic rewrite is implied.
 
-- `tome1-integers/chapters/ch01-divisibility.tex:320`: \writeup Suppose $n\mid2^n-1$; then $n$ is odd, so its smallest prime factor $p$ is odd and $p\mid2^n-1$. By Fermat (Volume~0, Exercise~1.6), $p\mid2^{p-1}-1$. By Exercise~\ref{ex:mersgcd}, $p$ divides $\gcd(2^n-1,2^{p-1}-1)=2^{\gcd(n,p-1)}-1$. But every prime factor of $n$ is $\ge p>p-1$, so $\gcd(n,p-1)=1$, and $p\mid2^1-1=1$: contradiction.
-- `tome1-integers/chapters/ch03-congruences.tex:97`: Units correspond to pairs of units, so $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$. With $\varphi(p^k)=p^k-p^{k-1}$ (the non-multiples of $p$), this recovers $\varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right)$ from Volume~0.
-- `tome1-integers/chapters/ch03-congruences.tex:187`: \emph{Korselt's criterion, one direction.} Let $n$ be squarefree and composite, and suppose $p-1\mid n-1$ for every prime $p\mid n$. Show that $a^n\equiv a\pmod n$ for every integer $a$. Check that $561=3\cdot11\cdot17$ qualifies: it is a Carmichael number (Volume~0, Chapter~1).
-- `tome1-integers/chapters/ch03-congruences.tex:195`: with $\binom{n_i}{k_i}=0$ when $k_i>n_i$. \emph{Hint: in $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$.} Deduce that $\binom nk$ is odd if and only if each binary digit of $k$ is at most the corresponding digit of $n$, which explains the Sierpi\'nski triangle of Volume~0.
-- `tome1-integers/chapters/ch03-congruences.tex:299`: \writeup In $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$ because $p\mid\binom pj$ for $0<j<p$ (Volume~0, Exercise~1.6); by induction $(1+X)^{p^i}=1+X^{p^i}$. Hence
-- `tome1-integers/chapters/ch04-arithmetic-functions.tex:229`: Replacing $\lfloor\frac xa\rfloor$ by $\frac xa$ costs $O(y)$ in total, and $\lfloor y\rfloor^2=x+O(y)$. From Volume~0, $\sum_{a\le y}\frac1a=\ln y+\gamma+O\left(\frac1y\right)$ (the adjacent sequences there give an error at most $\ln(1+\frac1n)\le\frac1n$). So the sum is $2x\left(\frac12\ln x+\gamma\right)-x+O(\sqrt x)$.
-- `tome1-integers/chapters/ch04-arithmetic-functions.tex:370`: (b) Both series converge absolutely, so their product can be expanded and regrouped by $n=dm$ (as in the Cauchy product, Volume~0, Chapter~5): $\sum_n\frac1{n^2}\sum_{d\mid n}\mu(d)=\sum_n\frac{\varepsilon(n)}{n^2}=1$.
-- `tome1-integers/chapters/ch04-arithmetic-functions.tex:376`: which tends to $\sum_d\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}=\frac6{\pi^2}$ by (b) and the Basel problem (Volume~0, Exercise~3.7).
-- `tome1-integers/chapters/ch06-quadratic-reciprocity.tex:282`: \item Show that $q\Z[\zeta]\cap\Z=q\Z$, using that $\Phi_p$ is irreducible over $\Q$ (Volume~0, Exercise~3.5). Deduce $\left(\frac{p^*}q\right)=\left(\frac qp\right)$, and then Theorem~\ref{thm:qr}.
-- `tome1-integers/chapters/ch06-quadratic-reciprocity.tex:283`: \item Show that $g=\sum_{x=0}^{p-1}\zeta^{x^2}$, the sum $G$ of Volume~0, Exercise~2.8. What does (a) say about $G$?
-- `tome1-integers/chapters/ch06-quadratic-reciprocity.tex:355`: The inner sum is $p-1$ if $c\equiv-1$ and $-1$ otherwise (Volume~0, Proposition~2.4). Hence
-- `tome1-integers/chapters/ch06-quadratic-reciprocity.tex:361`: (c) First, $q\Z[\zeta]\cap\Z=q\Z$. The numbers $1,\zeta,\dots,\zeta^{p-2}$ are linearly independent over $\Q$: a relation would give a non-zero $R\in\Q[X]$ of degree $\le p-2$ with $R(\zeta)=0$; then $\gcd(R,\Phi_p)$, which is a $\Q[X]$-combination of $R$ and $\Phi_p$ (B\'ezout in $\Q[X]$), also vanishes at $\zeta$, so it is a non-constant proper divisor of $\Phi_p$, contradicting the irreducibility of $\Phi_p$ (Volume~0, Exercise~3.5). Every element of $\Z[\zeta]$ is $\sum_{i\le p-2}c_i\zeta^i$ with $c_i\in\Z$ (reduce higher powers with $\zeta^{p-1}=-1-\zeta-\dots-\zeta^{p-2}$). If an integer $n$ equals $q\sum c_i\zeta^i$, uniqueness of coordinates gives $n=qc_0$.
-- `tome1-integers/chapters/ch11-algebraic.tex:42`: If $\operatorname{Tr}\alpha$, $N\alpha$ are integers, $\alpha$ is a root of the monic $X^2-(\operatorname{Tr}\alpha)X+N\alpha\in\Z[X]$. Conversely let $P\in\Z[X]$ be monic with $P(\alpha)=0$. If $\alpha\in\Q$, the rational root theorem (Volume~0, Proposition~3.7, with leading coefficient $1$) gives $\alpha\in\Z$, so $\operatorname{Tr}\alpha=2\alpha$ and $N\alpha=\alpha^2$ are integers. If $\alpha\notin\Q$, let $\mu=X^2-(\operatorname{Tr}\alpha)X+N\alpha\in\Q[X]$. Divide in $\Q[X]$: $P=\mu C+R$ with $\deg R\le1$; then $R(\alpha)=0$, and since $\alpha\notin\Q$ this forces $R=0$. So $P=\mu C$ in $\Q[X]$, and Gauss' lemma (Volume~0, Proposition~3.8(b), whose proof produces $B_1$ as a rational multiple of $B$) gives $P=(\lambda\mu)C_1$ with $\lambda\in\Q$, $\lambda\mu\in\Z[X]$ and $C_1\in\Z[X]$. Comparing leading coefficients, $\lambda\cdot\mathrm{lc}(C_1)=1$ with both factors integers, so $\lambda=\pm1$ and $\mu\in\Z[X]$.
-- `tome1-integers/chapters/ch12-padic.tex:257`: For $f=X^{p-1}-1$ and $a\in\{1,\dots,p-1\}$: $f(a)\equiv0\pmod p$ by Fermat, and $f'(a)=(p-1)a^{p-2}$ is a unit, so Theorem~\ref{thm:henselnewton} gives a root $\omega(a)\equiv a\pmod p$, the unique one in $B(a,p^{-1})$. Roots in different classes are different, and a polynomial of degree $p-1$ over the integral domain $\Z_p$ has at most $p-1$ roots (the argument of Volume~0, Proposition~3.2, works in any integral domain).
-- `tome1-integers/chapters/preface.tex:29`: Volume~0 supplies these foundations, including the polynomial root bound and Gauss' lemma for polynomials.
-- `tome11-motion/chapters/spectral.tex:50`: explains the name. By the spectral theorem (Volume~0, Theorem~7.7), $L$ has real eigenvalues
-- `tome12-arithmetic/chapters/ch01-number-fields.tex:35`: for some $\theta$. \emph{Rational roots} (Volume~0, Proposition~3.7). A rational root of a monic polynomial with
-- `tome14-order-and-chance/chapters/ch02-reading.tex:22`: \begin{reminder}[from Chapter~1, Volume~0 and Volume~10]
-- `tome14-order-and-chance/chapters/ch02-reading.tex:24`: $c\in\{-1,0,1\}^n$ (Chapter~\ref{ch:research}). \emph{Stirling's formula} (Volume~0, Chapter~5) gives $\binom n{\lfloor n/2\rfloor}\sim\sqrt{\frac2{\pi n}}\,2^n$. \emph{Esseen's smoothing inequality}
-- `tome14-order-and-chance/chapters/ch03-shuffling.tex:396`: total variation as a sum of positive parts, Volume~3, Chapter~8; Tanny's lemma, this chapter; Lindeberg's theorem, Volume~3, Theorem~6.10; the expansion of $\ln(1+x)$, Volume~0;
-- `tome14-order-and-chance/chapters/conjectures-ch04-riemann.tex:188`: by definition (Volume~0, Chapter~5), and a strictly decreasing sequence stays above its limit.
-- `tome2-structures/chapters/ch01-groups.tex:50`: \item $\Z/n\Z$ under addition, and $(\Z/n\Z)^*$, the invertible classes, under multiplication (Volume~1, Chapter~3). The group of $n$-th roots of unity $\mathbb U_n=\{z\in\C:z^n=1\}$ (Volume~0, Chapter~2).
-- `tome2-structures/chapters/ch01-groups.tex:52`: \item The \emph{general linear group} $GL_n(K)$ of invertible $n\times n$ matrices over a field $K$, and its subgroup $SL_n(K)$ of matrices of determinant $1$ (Volume~0, Chapter~7).
-- `tome2-structures/chapters/ch01-groups.tex:319`: \idea We want an element of order $n$. Count elements by their order: $\psi(d)$ elements of order $d$, with $\sum_{d\mid n}\psi(d)=n$ (Lagrange). A field enters only through ``a polynomial of degree $d$ has at most $d$ roots'' (Volume~0, Chapter~3), which caps $\psi(d)$ by $\varphi(d)$. Since the $\varphi(d)$ also sum to $n$, every cap is reached, in particular $\psi(n)=\varphi(n)\ge1$.
-- `tome2-structures/chapters/ch02-quotients.tex:27`: \item The determinant $\det:GL_n(K)\to K^*$, with kernel $SL_n(K)$ (Volume~0, Theorem~7.2: $\det(AB)=\det A\det B$).
-- `tome2-structures/chapters/ch02-quotients.tex:28`: \item The sign $\varepsilon:\mathfrak S_n\to\{\pm1\}$ (Volume~0, Lemma~7.1), with kernel the \emph{alternating group} $A_n$ of even permutations.
-- `tome2-structures/chapters/ch04-symmetric.tex:10`: We compose permutations like functions: $\sigma\tau$ means ``first $\tau$, then $\sigma$''. The sign $\varepsilon:\mathfrak S_n\to\{\pm1\}$ and its properties come from Volume~0, Chapter~7: $\varepsilon$ is a homomorphism, every transposition has sign $-1$, and every permutation is a product of transpositions. The \emph{alternating group} is its kernel $A_n=\ker\varepsilon$, a normal subgroup of index $2$ for $n\ge2$.
-- `tome2-structures/chapters/ch06-rings.tex:12`: Volume~1 met many rings: $\Z/n\Z$, the Gaussian integers $\Z[i]$, the Eisenstein integers $\Z[\omega]$, the integers of quadratic fields, and in its Chapter~11 the ideals that Kummer and Dedekind invented to repair factorisation. Volume~0 met the polynomial rings $K[X]$ and $\Z[X]$. This chapter puts these examples in one framework. A ring is a set where one can add, subtract and multiply; an ideal is what a kernel of a ring homomorphism looks like; the quotient by an ideal is a new ring, and whether it is a domain or a field is read off from the ideal. Then we answer the opening question: unique factorisation holds in every \emph{principal ideal domain}, and Euclidean division is the usual way to prove that a ring is one.
-- `tome2-structures/chapters/ch06-rings.tex:114`: For $R=\Z$ this is the theorem of Volume~1. For $R=K[X]$ and $I_k=(X-x_k)$ with distinct $x_k$, it says that a polynomial is determined modulo $\prod(X-x_k)$ by its values at the $x_k$, and that any values can be prescribed: this is Lagrange interpolation (Volume~0, Chapter~3), and the element $b$ of the proof is a Lagrange basis polynomial.
-- `tome2-structures/chapters/ch06-rings.tex:208`: Volume~0, Chapter~3, proved Gauss' lemma and Eisenstein's criterion for $\Z[X]$; they now hold over any UFD, with the same proofs. Another tool is reduction: if $f\in\Z[X]$ is monic and its reduction mod $p$ is irreducible over $\Z/p\Z$, then $f$ is irreducible over $\Q$ (a factorisation into monic polynomials of lower degree would reduce to one mod $p$). The converse fails badly, see Exercise~\ref{ex:x4p1}.
-- `tome2-structures/chapters/ch06-rings.tex:332`: \writeup Over $\Q$: $(X+1)^4+1=X^4+4X^3+6X^2+4X+2$ is Eisenstein at $2$, so it is irreducible (Volume~0, Chapter~3), and so is $X^4+1$ (a factorisation of $X^4+1$ would give one of $(X+1)^4+1$).
-- `tome2-structures/chapters/ch07-modules.tex:13`: A vector space is a set where one can add and multiply by scalars from a field. Replace the field by a ring and you get a \emph{module}. Two examples make the notion worth having. An abelian group is a module over $\Z$ ($n\cdot x=x+\dots+x$). A vector space $V$ with a linear map $A$ is a module over $K[X]$ ($P\cdot v=P(A)v$). Both $\Z$ and $K[X]$ are principal ideal domains, and over such rings finitely generated modules are classified by a list of divisors $d_1\mid d_2\mid\dots\mid d_r$, computed by row and column operations on a matrix (the \emph{Smith normal form}). For $\Z$ this classifies finite abelian groups; for $K[X]$ it gives the rational canonical form, the Jordan form, and Cayley--Hamilton, which Volume~0 left for this chapter.
-- `tome2-structures/chapters/ch07-modules.tex:183`: The same theorem classifies abelian groups and matrices, because $\Z$ and $K[X]$ are both PIDs: this is the kind of unification that made abstract algebra worth inventing. It reappears often: the structure of $(\Z/q\Z)^*$ (Exercise~\ref{ex:unitsmodn}) is what Dirichlet characters are built on (Chapter~11, then Volume~5); Jordan forms solve linear recurrences and differential equations (Volume~0) and describe the long-run behaviour of Markov chains (Volume~3); and the Smith form of boundary matrices computes the \emph{homology} of a space, its holes and twists, which a numerical calculation uses to see that the projective plane has a hole of ``order $2$''.
-- `tome2-structures/chapters/ch08-extensions.tex:240`: A rational root of this monic integer polynomial would be an integer dividing $1$ (Volume~0, Chapter~3), and $\pm1$ are not roots, so the cubic has no root in $\Q$; a reducible cubic has a factor of degree $1$, so it is irreducible, and $u$ has degree $3$. So $\cos20^\circ=u/2$ is not constructible, and neither is $e^{i\pi/9}$ (its real part would be, by Proposition~\ref{prop:constrfield}).
-- `tome2-structures/chapters/ch08-extensions.tex:242`: (c) Let $\zeta=e^{2i\pi/5}$. Dividing $\zeta^4+\zeta^3+\zeta^2+\zeta+1=0$ by $\zeta^2$, $t=\zeta+\zeta^{-1}=2\cos72^\circ$ satisfies $t^2+t-1=0$, so $t=\frac{\sqrt5-1}2$, which is constructible, and so is $\zeta=\frac t2+i\sqrt{1-t^2/4}$ (Figure~\ref{fig:pentagon}). For a prime $p$, $\zeta=e^{2i\pi/p}$ is a root of $\Phi_p=1+X+\dots+X^{p-1}$, irreducible over $\Q$ (Volume~0, Chapter~3, an exercise on Eisenstein's criterion); so $\zeta$ has degree $p-1$, which must be a power of $2$ if $\zeta$ is constructible. For $p=7$, $p-1=6$.
-- `tome2-structures/chapters/ch08-extensions.tex:361`: (b) Let $\zeta=e^{2i\pi/17}$ and $c=\cos\frac{2\pi}{17}$. By Volume~0, $\Phi_{17}$ is irreducible, so $[\Q(\zeta):\Q]=16$. Now $\Q(c)\subseteq\Q(\zeta)$ ($2c=\zeta+\zeta^{-1}$), and $\zeta$ is a root of $X^2-2cX+1\in\Q(c)[X]$ but not in the real field $\Q(c)$, so $[\Q(\zeta):\Q(c)]=2$ and $[\Q(c):\Q]=8$.
-- `tome2-structures/chapters/ch09-finite-fields.tex:64`: For $x\ne0$, $x^{q-1}=1$ by Lagrange's theorem in the group $K^*$ of order $q-1$; multiply by $x$. So the $q$ elements of $K$ are roots of the monic polynomial $X^q-X$ of degree $q$, which is therefore their product $\prod(X-a)$ (each root splits off a factor, Volume~0).
-- `tome2-structures/chapters/ch10-galois.tex:112`: $\sigma(\zeta_n)$ is a root of $X^n-1$, so it is $\zeta_n^a$ for some $a$ defined modulo $n$; as $\sigma$ is injective, $\zeta_n^a$ has order $n$ like $\zeta_n$, so $\gcd(a,n)=1$. Then $\sigma\tau(\zeta_n)=\sigma(\zeta_n^{a_\tau})=\zeta_n^{a_\sigma a_\tau}$, so $a_{\sigma\tau}=a_\sigma a_\tau$. Since $\sigma$ is determined by $\sigma(\zeta_n)$, the map is injective. For $n=p$, $\Phi_p$ is irreducible (Volume~0, Chapter~3), so $[\Q(\zeta_p):\Q]=p-1=|(\Z/p\Z)^*|$, and the injective map is onto; $(\Z/p\Z)^*$ is cyclic (Volume~1, Chapter~5).
-- `tome2-structures/chapters/ch10-galois.tex:318`: \writeup A permutation $\pi$ of the roots changes $\delta$ into $\operatorname{sgn}(\pi)\,\delta$ (Volume~0: each transposition reverses an odd number of factors; directly, check $(1\,2)$, $(1\,3)$, $(2\,3)$). So $\delta^2$ is fixed by $G$, hence in $L^G=K$. As $\delta\ne0$ (distinct roots), $\sigma(\delta)=\delta$ iff $\sigma$ is even. So $\delta\in K=L^G$ iff $G\subseteq A_3$. For $X^3-2$: $\delta^2=-27\cdot4=-108<0$, so $\delta\notin\Q$ (not even real), $G\not\subseteq A_3$, and since $|G|$ is divisible by $3$ (Lemma~\ref{lem:permroots}, degree $3$ of a root), $G=\mathfrak S_3$, as in Example~\ref{ex:cuberoot}. For $X^3-3X+1$ (irreducible: no rational root): $\delta^2=-4(-27)-27=81=9^2$, so $\delta=\pm9\in\Q$, and $G$, of order divisible by $3$, is $A_3\cong\Z/3\Z$. Its splitting field is $\Q(\cos\frac{2\pi}9)$, of degree $3$: all three roots are in $\Q(u)$, as in the discussion after the Pause and think box.
-- `tome2-structures/chapters/ch11-characters.tex:42`: So each $\rho(g)$ is unitary for $\langle\cdot,\cdot\rangle$. Since $g^n=e$ for $n=|G|$, $\rho(g)$ is a unitary matrix with $\rho(g)^n=I$: it is diagonalisable in an orthonormal basis (spectral theorem, Volume~0), with eigenvalues that are $n$-th roots of unity.
-- `tome2-structures/chapters/ch11-characters.tex:374`: \writeup (a) If $x^n+a_{n-1}x^{n-1}+\dots+a_0=0$ with $a_i\in\Z$, then $M=\Z+\Z x+\dots+\Z x^{n-1}$ satisfies $xM\subseteq M$ and $1\in M$. Conversely, if $M=\Z m_1+\dots+\Z m_k\ne0$ and $xm_i=\sum_ja_{ij}m_j$ with $a_{ij}\in\Z$, then $(xI-A)m=0$ for the non-zero vector $m=(m_i)$, so $\det(xI-A)=0$: $x$ is a root of the monic integer polynomial $\det(XI-A)$. If $x,y$ are algebraic integers, of degrees $n,n'$ as above, $M=\sum_{i<n,j<n'}\Z x^iy^j$ is finitely generated, contains $1$, and is stable under multiplication by $x$, $y$, hence by $x+y$ and $xy$. A rational root $a/b$ (in lowest terms) of a monic integer polynomial has $b\mid1$ (Volume~0, rational roots).
-- `tome2-structures/chapters/ch12-quaternions.tex:64`: $\det(A-I)=\det(A-AA^{\mathsf T})=\det A\,\det(I-A^{\mathsf T})=\det(I-A)=-\det(A-I)$ (a $3\times3$ determinant changes sign with its matrix). So $\det(A-I)=0$ and $A$ has a unit vector $u$ with $Au=u$. Being orthogonal, $A$ preserves $u^\perp$; on this plane it is orthogonal with determinant $\det A=1$, hence a rotation by some $\theta$ (Volume~0).
-- `tome2-structures/chapters/linear-ch02-volume.tex:55`: parallelepiped with a zero edge is flat). By the uniqueness theorem of Volume~0 (Theorem~7.2), the only such function with
-- `tome2-structures/chapters/linear-ch03-eigen.tex:27`: Eigenvectors are the one-dimensional ones; when there are enough of them, $A$ is diagonalisable, as in Volume~0. When
-- `tome2-structures/chapters/linear-ch03-eigen.tex:72`: polynomial splits (the fundamental theorem of algebra, Volume~0, Chapter~3).
-- `tome3-chance/chapters/ch01-counting.tex:21`: Volume~0 (Chapter~8) defined a probability on a finite set. To speak of infinitely many coin tosses, or of a point
-- `tome3-chance/chapters/ch01-counting.tex:568`: $\log\frac{n-1}{r-2}$ for $r\ge3$ (compare with $\int\frac{\mathrm dt}t$, Volume~0, Chapter~5), and the two bounds differ by at most $\log\frac{r-1}{r-2}\le\frac1{r-2}$; so $p_r=x\log\frac1x+o(1)$
-- `tome3-chance/chapters/ch02-discrete.tex:15`: permutation, the convergence of fixed points to the Poisson law promised in Volume~0, and the coupon collector.
-- `tome3-chance/chapters/ch02-discrete.tex:45`: product of the sums (sum by packets, Volume~0, Chapter~5). For the second claim, let $U=(X_1,\dots,X_k)$ and
-- `tome3-chance/chapters/ch02-discrete.tex:54`: Expectation is a weighted sum, and Volume~0 (Chapter~5) showed that infinite sums behave like finite ones exactly
-- `tome3-chance/chapters/ch02-discrete.tex:103`: Linearity needs no independence at all, and this is what makes it powerful. Volume~0 used it to show that a random
-- `tome3-chance/chapters/ch02-discrete.tex:255`: $\sqrt{H_{52}-\sum1/j^2}\approx1.71$. Since $H_n=\ln n+\gamma+o(1)$ (Volume~0, Chapter~5), a random permutation of a
-- `tome3-chance/chapters/ch02-discrete.tex:267`: $\frac{D_m}{m!}=\sum_{i=0}^m\frac{(-1)^i}{i!}$ of Volume~0 (Proposition~8.3),
-- `tome3-chance/chapters/ch02-discrete.tex:306`: n^2\sum_{j\ge1}\frac1{j^2}=\frac{\pi^2}6n^2$ (Volume~0, Exercise~3.7).
-- `tome3-chance/chapters/ch02-discrete.tex:379`: $\mathbb E[W_N]\sim\sqrt{\pi N/2}$ as $N\to\infty$, using the Gaussian integral $\int_0^\infty e^{-x^2/2}\dd x=\sqrt{\pi/2}$ (Volume~0,
-- `tome3-chance/chapters/ch03-generating.tex:33`: We need two facts about power series. Volume~0 did not prove that a power series can be differentiated term by term,
-- `tome3-chance/chapters/ch03-generating.tex:51`: remainder (Volume~0, Chapter~6) applied to $x\mapsto x^k$, whose second derivative is bounded by $k(k-1)\rho^{k-2}$ between $s$
-- `tome3-chance/chapters/ch03-generating.tex:203`: lengths $2k$ and $2(n-k)$, which gives the recursion. By Stirling's formula (Volume~0, Theorem~5.6),
-- `tome3-chance/chapters/ch04-inequalities.tex:22`: almost all the probability sits on about $2^{nH}$ ``typical'' sequences. Jensen's inequality, promised in Volume~0,
-- `tome3-chance/chapters/ch04-inequalities.tex:83`: The two expressions agree by the transfer formula. We need one fact about continuous functions that Volume~0 used
-- `tome3-chance/chapters/ch04-inequalities.tex:92`: Bolzano--Weierstrass (Volume~0, Proposition~5.1(c)) some subsequence $x_{n_k}$ converges to some $x\in[0,1]$, and then
-- `tome3-chance/chapters/ch04-inequalities.tex:222`: $u(\lambda)=\frac{pe^\lambda}{1-p+pe^\lambda}\in[0,1]$ we get $L'=u-p$, so $L'(0)=0$, and $L''=u(1-u)\le\frac14$. Taylor's formula with integral remainder (Volume~0,
-- `tome3-chance/chapters/ch04-inequalities.tex:331`: \emph{At most $1$.} Fix $\varepsilon>0$. Then $P(\ell_n\ge(1+\varepsilon)\log_2n)\le2^{-(1+\varepsilon)\log_2n}=n^{-1-\varepsilon}$, and $\sum_nn^{-1-\varepsilon}<\infty$ (Volume~0,
-- `tome3-chance/chapters/ch04-inequalities.tex:349`: Volume~0 proved Jensen's inequality for finitely many points. Here is the form promised there, for random variables.
-- `tome3-chance/chapters/ch04-inequalities.tex:361`: in which case $c$ is a value of $X$ and lies in $I$; the same holds for $\sup I$. So $m\in I$. By Volume~0, Proposition~4.1(b), $f(x)\ge f(m)+f'(m)(x-m)$ for every
-- `tome3-chance/chapters/ch04-inequalities.tex:396`: tangent to the concave $\ln$ taken at $1$, which also handles infinite sums and the equality case. By Volume~0,
-- `tome3-chance/chapters/ch04-inequalities.tex:655`: (Volume~0, Proposition~4.1(b)); by continuity this extends to $a\in\{0,1\}$. Hence $e^{-nI_p(a)}\le e^{-2n(a-p)^2}$, and the latter is also Hoeffding's
-- `tome3-chance/chapters/ch05-continuous.tex:277`: We write $\int_Bf(x)\dd x$ for $\int f\mathbf 1_B\dd\lambda$. The first task is to check that this is the integral of Volume~0 when both make sense.
-- `tome3-chance/chapters/ch05-continuous.tex:281`: \item If $f\ge0$ is continuous on $[a,b]$, then $\int_{[a,b]}f\dd\lambda=\int_a^bf$, the integral of Volume~0.
-- `tome3-chance/chapters/ch05-continuous.tex:283`: $b_n\uparrow b$; in particular the improper integral of Volume~0 is a Lebesgue integral.
-- `tome3-chance/chapters/ch05-continuous.tex:292`: integral of Volume~0 give $L_n\le\int_a^bf\le L_n+\varepsilon(b-a)$ for such $n$. So both are equal to $\lim L_n$.
-- `tome3-chance/chapters/ch05-continuous.tex:297`: With Volume~0, Exercise~6.7 and the change $x=\frac u{\sqrt2}$,
-- `tome3-chance/chapters/ch05-continuous.tex:512`: proof of the Gaussian integral, which Volume~0 avoided, is now complete.
-- `tome3-chance/chapters/ch06-clt.tex:26`: Gaussian vectors, the multivariate bell curves promised in Volume~0.
-- `tome3-chance/chapters/ch06-clt.tex:341`: Write $m!=\sqrt{2\pi m}\,(\frac me)^me^{\varepsilon_m}$, with $\varepsilon_m\to0$ (Volume~0, Theorems~5.6 and~6.4). Let $a=\frac kn$; then $|a-p|\le\frac{A\sqrt{pq}}{\sqrt n}$, so $k$ and
-- `tome3-chance/chapters/ch06-clt.tex:361`: Volume~0 proved Stirling's formula in two steps: $n!\sim C\sqrt n(\frac ne)^n$ for some constant $C$, then $C=\sqrt{2\pi}$ by Wallis' integrals.
-- `tome3-chance/chapters/ch06-clt.tex:407`: (b) By the spectral theorem (Volume~0, Theorem~7.7), $\Sigma=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal with entries $\lambda_j\ge0$. Let $A=PD^{1/2}$ and
-- `tome3-chance/chapters/ch06-clt.tex:418`: vector has the density $\frac1{(2\pi)^{d/2}\sqrt{\det\Sigma}}e^{-(x-m)^{\mathsf T}\Sigma^{-1}(x-m)/2}$, whose level sets are the ellipsoids of Volume~0's spectral theorem; this
-- `tome3-chance/chapters/ch07-walks.tex:43`: so that $u_0=1$, $u_2=\frac12$, $u_4=\frac38$. Stirling's formula (Volume~0, Theorems~5.6 and~6.4) gives $u_{2n}\sim\frac1{\sqrt{\pi n}}$, but the following
-- `tome3-chance/chapters/ch08-markov.tex:339`: self-adjoint: $\langle Pf,g\rangle_\pi=\sum_{x,y}\pi(x)P(x,y)f(y)g(x)=\langle f,Pg\rangle_\pi$. By the spectral theorem (Volume~0, Theorem~7.7, in this inner product)
-- `tome3-chance/chapters/ch10-martingales.tex:71`: expanding $\|X+Y\|^2$ with it gives the triangle inequality $\|X+Y\|\le\|X\|+\|Y\|$. So $L^2$ is a Euclidean space as in Volume~0, Chapter~7, except
-- `tome3-chance/chapters/ch10-martingales.tex:668`: The example after Theorem~\ref{thm:L2conv}. For the variance, $\sum\frac1{n^2}=\frac{\pi^2}6$ (Volume~0).
-- `tome4-calculation/chapters/ch01-finite.tex:177`: With $a_k=(-1)^{k+1}$ this is the alternating series test of Volume~0. The more interesting case is trigonometric.
-- `tome4-calculation/chapters/ch01-finite.tex:270`: (two polynomials that agree at infinitely many points are equal, Volume~0, Chapter~3). The left side $m^n$ counts the maps
-- `tome4-calculation/chapters/ch01-finite.tex:551`: $(k-|A|)^n$. By inclusion--exclusion (Volume~0, Chapter~8) the maps missing no point number
-- `tome4-calculation/chapters/ch02-generating.tex:55`: non-negative integers with sum $n$, which is $\binom{n+m-1}{m-1}$ by the stars-and-bars count (Volume~0, Chapter~8).
-- `tome4-calculation/chapters/ch02-generating.tex:100`: and again in this volume. Volume~0 used them only in special cases, so we prove them here.
-- `tome4-calculation/chapters/ch02-generating.tex:156`: absolutely for $|z|<r$, their Cauchy product converges to the product of the sums (Volume~0, Chapter~5). And a series
-- `tome4-calculation/chapters/ch02-generating.tex:233`: using $H_n=\ln n+\gamma+O(\frac1n)$ (Volume~0, Chapter~5, where $\gamma\approx0.5772$ is Euler's constant).
-- `tome4-calculation/chapters/ch03-series.tex:20`: Volume~0 proved $\zeta(2)=\frac{\pi^2}6$ with Vi\`ete's relations between the roots of a polynomial and promised five more
-- `tome4-calculation/chapters/ch04-integrals.tex:28`: Volume~0 integrated continuous functions on closed bounded intervals. With a parameter, the key is that continuity on a
-- `tome4-calculation/chapters/ch04-integrals.tex:37`: Bolzano--Weierstrass (Volume~0, Chapter~5) to the first coordinates, then to the second coordinates along the extracted
-- `tome4-calculation/chapters/ch04-integrals.tex:141`: $\bigl(\int_0^\infty e^{-x^2}\dd x\bigr)^2=\frac\pi4$, and $\int_0^\infty e^{-x^2}\dd x=\frac{\sqrt\pi}2$. Volume~0 found it by Wallis integrals, and Volume~3
-- `tome4-calculation/chapters/ch05-gamma.tex:95`: of $\ln$, Volume~0, Chapter~4) gives $A^\lambda B^{1-\lambda}\le\lambda A+(1-\lambda)B$. Apply it, for each $t$, to
-- `tome4-calculation/chapters/ch05-gamma.tex:161`: For every $x>0$, with $\gamma$ Euler's constant (Volume~0, Proposition~5.5),
-- `tome4-calculation/chapters/ch05-gamma.tex:178`: Volume~0 proved $n!\sim\sqrt{2\pi n}\bigl(\frac ne\bigr)^n$ (Theorems~5.6 and~6.4). Log-convexity fills in the gaps between
-- `tome4-calculation/chapters/ch05-gamma.tex:195`: and the left side is at least $\frac n{n+1}$. So $\Gamma(x)=\Gamma(n)n^t(1+o(1))$, uniformly in $t$. By Volume~0,
-- `tome4-calculation/chapters/ch05-gamma.tex:377`: and recover the Wallis integrals $W_n=\int_0^{\pi/2}\sin^n\theta\dd\theta$ of Volume~0, Chapter~6.
-- `tome4-calculation/chapters/ch05-gamma.tex:424`: the reflection formula and $\prod_{k=1}^{m-1}\sin\frac{k\pi}m=\frac m{2^{m-1}}$ (Volume~0, Exercise~2.5).
-- `tome4-calculation/chapters/ch06-fourier.tex:40`: $\langle f,f\rangle\ge0$, so Cauchy--Schwarz holds with the proof of Volume~0, Chapter~4: $|\langle f,g\rangle|\le\|f\|_2\|g\|_2$. (A piecewise continuous
-- `tome4-calculation/chapters/ch06-fourier.tex:81`: This completes the Riemann--Lebesgue lemma of Volume~0, Exercise~6.6, which assumed $f$ of class $C^1$: here $f$ is only
-- `tome4-calculation/chapters/ch07-fft.tex:19`: imaging, radar and modern cryptography practical, and it keeps a promise of Volume~0, Chapter~2: polynomials, and
-- `tome4-calculation/chapters/ch07-fft.tex:254`: This recovers Volume~0, Exercise~2.8: the quadratic Gauss sum has modulus $\sqrt p$, because the Legendre symbol, like any
-- `tome4-calculation/chapters/ch07-fft.tex:281`: A \emph{circulant} matrix has entries $C_{kl}=c_{k-l}$ for some $c\in\C^n$. Show that $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Deduce $\det C=\prod_j\hat c_j$ (Volume~0,
-- `tome4-calculation/chapters/ch07-fft.tex:333`: determinants, $\det C=\prod_j\hat c_j$, and $\hat c_j=P(\omega^{-j})$ with $P(X)=\sum_kc_kX^k$, which is Volume~0, Exercise~2.7. To solve $Cx=y$, compute $\hat y$ by
-- `tome4-calculation/chapters/ch08-transform.tex:15`: a question that tormented Gauss for four years: the sign of the quadratic Gauss sum, promised in Volume~0 and Volume~1. At the
-- `tome4-calculation/chapters/ch09-complex.tex:99`: Proposition~2.1 of Volume~0, $e^{x+iy}=e^x(\cos y+i\sin y)$: $\exp$ never vanishes, and $e^z=1$ exactly when $z\in2\pi i\Z$.
-- `tome4-calculation/chapters/ch09-complex.tex:310`: Volume~0 (Theorem~3.3) proved this by d'Alembert's argument on the minimum of $|p|$. Here it falls out of Liouville in two
-- `tome4-calculation/chapters/ch10-zeta.tex:140`: $\sum_{n\le N}\phi_n(1)=H_N-\log(N+1)$, which tends to $\gamma$ (Volume~0, Proposition~5.5).
-- `tome4-calculation/chapters/ch10-zeta.tex:391`: $\eta(1)=1-\frac12+\frac13-\cdots=\log2$ (Volume~0) and the continuity of $\eta$ at $1$.
-- `tome4-calculation/chapters/ch11-asymptotics.tex:33`: These are the notations of Volume~0, used freely since. An \emph{asymptotic expansion} goes one step further.
-- `tome4-calculation/chapters/ch11-asymptotics.tex:56`: (b) For every $K$, $x^Ke^{-x}\to0$ (Volume~0), so $e^{-x}=O(x^{-K})$.
-- `tome4-calculation/chapters/ch11-asymptotics.tex:176`: Since $\bar B_{2M}$ is bounded, the last integral converges as $n\to\infty$; letting $n\to\infty$ in $H_n-\ln n$ (which tends to $\gamma$, Volume~0,
-- `tome4-calculation/chapters/ch11-asymptotics.tex:253`: $(x+N+\frac12)\ln(x+N)=(x+N+\frac12)\ln N+x+o(1)$, because $\ln(x+N)-\ln N=\frac xN+O(N^{-2})$. Volume~0's Stirling formula says
-- `tome6-spaces/chapters/ch01-sets.tex:22`: integers and the rationals, then the reals, as limits of rational Cauchy sequences. The axiom that Volume~0 took for
-- `tome6-spaces/chapters/ch01-sets.tex:187`: of inequalities of Volume~0 hold in any ordered field, with the same proofs. $\Q$ lacks the least upper bound property:
-- `tome6-spaces/chapters/ch01-sets.tex:263`: From now on we identify $q$ with $\iota(q)$. The axiom of Volume~0 is now a theorem. It is the only one needed: every
-- `tome6-spaces/chapters/ch01-sets.tex:565`: \idea A least upper bound of $A$ would be a square root of $2$, and Volume~0 shows that $\sqrt2$ is irrational. To stay inside $\Q$, use an
-- `tome6-spaces/chapters/ch02-metric.tex:25`: $\sin$ and $\pi$, used since Volume~0, are finally defined, by power series, and $\pi$ appears not from a circle but as
-- `tome6-spaces/chapters/ch02-metric.tex:267`: A confession is in order. Since Volume~0 we have used $e^{i\theta}$, $\cos$, $\sin$ and $\pi$ as if their properties were
-- `tome6-spaces/chapters/ch02-metric.tex:274`: Volume~0 admitted the basic properties of $\exp$, $\ln$, $\cos$, $\sin$ and $\pi$. Here they are defined and proved, in the Banach space $\C$.
-- `tome6-spaces/chapters/ch02-metric.tex:317`: $\ln'(x)=\frac1{\exp'(\ln x)}=\frac1x$ (the derivative of an inverse function, Volume~0).
-- `tome6-spaces/chapters/ch03-topology.tex:201`: This is the theorem Volume~0 admitted, and Lemma~\ref{lem:monoivt} of Chapter~2 was a special case. The \emph{connected components} of $X$ are the
-- `tome6-spaces/chapters/ch03-topology.tex:316`: surface. The intermediate value theorem, admitted in Volume~0, turns out to be a statement about connectedness of
-- `tome6-spaces/chapters/ch04-compact.tex:10`: spot? On a segment, yes: that is the Bolzano--Weierstrass theorem, and the reason Volume~0 could find maxima of continuous
-- `tome6-spaces/chapters/ch04-compact.tex:22`: This chapter first keeps the last promises of Volume~0: extreme values, Heine's uniform continuity, Rolle and the mean value
-- `tome6-spaces/chapters/ch04-compact.tex:116`: Volume~0 admitted this for $K=[a,b]$; it is now proved. Here is a first use, promised in Chapter~2.
-- `tome6-spaces/chapters/ch04-compact.tex:202`: Volume~0 admitted the mean value theorem; it rests on extreme values. A function $f$ defined near $c$ is \emph{differentiable} at $c$ if
-- `tome6-spaces/chapters/ch04-compact.tex:203`: $\frac{f(x)-f(c)}{x-c}$ has a limit $f'(c)$ as $x\to c$, $x\ne c$ (as throughout Volume~0).
-- `tome6-spaces/chapters/ch04-compact.tex:224`: With Theorem~\ref{thm:mvt}, every result of Volume~0 that relied on the mean value theorem (Taylor's formula with remainder, the
-- `tome6-spaces/chapters/ch04-compact.tex:637`: fundamental theorem of calculus (Volume~0) $y$ is $C^1$ with $y'(t)=f(t,y(t))$ and $y(0)=y_0$.
-- `tome6-spaces/chapters/ch07-integral.tex:23`: This chapter keeps three promises. The integral of a continuous function on a segment exists, as Volume~0 admitted, and Lebesgue's
-- `tome6-spaces/chapters/ch07-integral.tex:144`: $\sup_PL(f,P)=\inf_PU(f,P)$, the common value being $\int_a^bf$. This is equivalent to the definition by Riemann sums or by step functions used in Volume~0.
-- `tome6-spaces/chapters/ch07-integral.tex:160`: This is the integral that Volume~0 admitted; everything there (the fundamental theorem of calculus, integration by parts, Taylor's formula) was
-- `tome6-spaces/chapters/ch07-integral.tex:337`: $\lambda$, Chapter~6.) Volume~0 proved it only for $C^1$ functions.
-- `tome6-spaces/chapters/ch07-integral.tex:368`: The $t$-derivative of $e^{-x^2}\cos tx$ is bounded by $xe^{-x^2}$. For the integration by parts, $-xe^{-x^2}$ is the derivative of $\frac12e^{-x^2}$. $I(0)=\frac{\sqrt\pi}2$ (Volume~0).
-- `tome6-spaces/chapters/ch08-products.tex:21`: Volume~0, Chapter~5, swapped double series; Volume~3 admitted Tonelli and Fubini as (A2); Volume~4 used Tonelli for Ritelli's
-- `tome6-spaces/chapters/ch08-products.tex:135`: With counting measure on $\N$, Tonelli and Fubini are statements about double series, as in Volume~0, Chapter~5: a double series of non-negative terms can be summed in either order, with the
-- `tome6-spaces/chapters/ch08-products.tex:250`: agree. And in dimension one, for $\varphi$ increasing, it is the substitution rule of Volume~0, now valid for all non-negative or integrable Borel functions.
-- `tome6-spaces/chapters/ch08-products.tex:327`: One formula, $\int_Vf=\int_U(f\circ\varphi)\,|J_\varphi|$, contains the substitution rule of Volume~0, polar coordinates, the volume of balls in every dimension, the Gaussian integral, the density of every
-- `tome6-spaces/chapters/ch09-lp.tex:18`: $1\le p\le\infty$, and three inequalities, Young's, H\"older's and Minkowski's, hold them together. Volume~0, Chapter~4, proved
-- `tome6-spaces/chapters/ch09-lp.tex:49`: For $p=q=2$ this is the Cauchy--Schwarz inequality, and with counting measure on $\{1,\dots,n\}$ it is the inequality of Volume~0.
-- `tome6-spaces/chapters/ch10-radon.tex:30`: its sum does not depend on the order (Volume~0). The difference of two finite measures is one; the Jordan decomposition below says that there are no others. A set $P$ is
-- `tome7-analysis/chapters/ch01-banach.tex:411`: limit (Volume~0), so $g=p$ on $c$, and Theorem~\ref{thm:hb} gives $L$. (b) For $y=x-Sx$, $\frac1n\sum_{k\le n}y_k=\frac{x_1-x_{n+1}}n\to0$, so $p(y)=p(-y)=0$, hence $L(y)\le0$ and $-L(y)=L(-y)\le0$: $L(y)=0$. If $x\ge0$,
-- `tome7-analysis/chapters/ch02-hilbert.tex:31`: $x\ne0$. It is conjugate-linear in the second variable. Put $\|x\|=\langle x,x\rangle^{1/2}$. Expanding $\|x+ty\|^2\ge0$ gives the \emph{Cauchy--Schwarz inequality} $|\langle x,y\rangle|\le\|x\|\|y\|$ (Volume~0), and with it
-- `tome7-analysis/chapters/ch03-operators.tex:205`: absolutely convergent series is the series of the convolution, by Fubini for series (Volume~0). So $W$ is a commutative Banach algebra with unit $1=e^{i0t}$.
-- `tome7-analysis/chapters/ch04-spectral.tex:60`: To see that $M\in\sigma(T)$, note that $B(x,y)=\langle(M-T)x,y\rangle$ is a positive Hermitian form, so it satisfies the Cauchy--Schwarz inequality $|B(x,y)|^2\le B(x,x)B(y,y)$ (Volume~0's proof applies word for word). With $y=(M-T)x$,
-- `tome8-shapes/chapters/geometry-ch01-euclid.tex:22`: This chapter proves all of these, and the tool is the one from Volume~0, Chapter~2: complex numbers. A point of the plane is a
-- `tome9-higher-structures/chapters/ch11-compact.tex:161`: (Volume~0, Theorem~3.11), and these are, up to sign, the coefficients of the characteristic polynomial; so $f(U)=s_\lambda(\text{eigenvalues of }U)$ is a continuous class function on $U(n)$. By Weyl's formula and
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:18`: it needs Volume~3 to set it up and Volume~0 to finish it. This chapter is made of such pairs. Each problem crosses from one volume
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:393`: factorisation (Volume~0, Chapter~3), $A=\lambda x^a(1+x)^b(1+x+x^2)^c(1-x+x^2)^d$ with $\lambda\in\Q^*$ and $0\le a,b,c,d\le2$,
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:403`: \tools Volume~3, Chapter~3 (generating functions of sums); Volume~0, Chapter~3 (unique factorisation in $\Q[X]$).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:430`: \tools Volume~3, Chapter~3 (generating functions); Volume~0, Chapter~4 (AM--GM) and Chapter~3 (roots of polynomials).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:441`: $p$, it equals $p$. So one of the polynomials $P-p$, $P+p$ has infinitely many roots, hence is zero (Volume~0, Chapter~3), and
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:453`: \tools Volume~1, Chapters~2--3 (primes, congruences); Volume~0, Chapter~3 (a non-zero polynomial has finitely many roots).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:469`: degree at most $p-1$, so it is zero (Volume~0, Chapter~3; the proof works over any field). So $P$ is unique. (As a check: there
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:479`: \tools Volume~1, Chapters~3 and~5 (Fermat, power sums modulo $p$); Volume~0, Chapter~3 (Lagrange interpolation, roots).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:513`: \tools Volume~2, Chapter~9 (finite fields, Frobenius); Volume~1, Chapter~6 (quadratic reciprocity); Volume~0, Chapter~7 (linear
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:538`: apply Volume~0, Chapter~3 in each variable). With $\alpha=\beta=\frac12$: $\sum_k\binom{1/2}k\binom{1/2}{n-k}=\binom1n$, which is
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:557`: \tools Volume~1, Chapter~12 (convergence in $\Q_p$); Volume~0, Chapters~1 and~3 (binomial identities, polynomials); Volume~3,
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:586`: \tools Volume~2, Chapter~9 (Frobenius in characteristic $p$); Volume~1, Chapter~3 (Lucas's theorem); Volume~0, Chapter~1.
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:597`: \writeup (a) The addition formula $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$ (Volume~0, Chapter~1) with $n=m$ gives
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:605`: by Cassini's identity (Volume~0, Chapter~7). With $m=2^N$, $N\ge1$, this says $\bigl(3-\frac{F_{2^{N+1}-1}}{F_{2^{N+1}}}\bigr)-
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:609`: \tools Volume~0, Chapters~1 and~7 (Fibonacci identities, Cassini); Volume~4, Chapter~2 (Binet's formula).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:648`: \tools Volume~1, Chapters~1--2 (coprimality, infinitely many primes); Volume~0, Chapter~5 (monotone sequences, series);
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:665`: ($d\mid i$ implies $d\le i$) with $A_{ii}=1$, so $\det A=1$ and $\det\bigl(g(\gcd(i,j))\bigr)=\det D=f(1)\cdots f(n)$ (Volume~0,
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:673`: \tools Volume~1, Chapter~4 (Dirichlet convolution, Möbius inversion); Volume~0, Chapter~7 (determinants of triangular matrices).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:692`: order (Volume~0, Chapter~5): summing over $k$ first gives the Lambert series, and grouping the terms with $kn=m$ gives
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:705`: \tools Volume~1, Chapter~4 (convolution identities); Volume~0, Chapter~5 and Volume~4, Chapter~2 (summable families, power series).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:734`: otherwise (Volume~0, Chapter~2). So
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:747`: \tools Volume~0, Chapter~2 (roots of unity filter); Volume~3, Chapter~2 (independence) and Chapter~8 (periodic chains).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:806`: polynomials); Volume~0, Chapter~7 (diagonalisation).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:864`: \tools Volume~3, Chapter~1 (Buffon's needle) and Chapter~5 (uniform laws, independence); Volume~0, Chapter~6 (integrals).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:888`: $r_i^*=r_i-\sum_{j<i}c_{ij}r_j^*$ with $r_1^*,\dots,r_n^*$ orthogonal (Volume~0, Chapter~7). Subtracting from a row a combination
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:893`: \tools Volume~3, Chapter~2 (expectation, independence); Volume~0, Chapter~7 (determinants, Gram--Schmidt) and Chapters~5--6 (Stirling's formula).
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:938`: \tools Volume~1, Chapter~6 (Legendre symbol, $\chi(-1)$, residue counts); Volume~0, Chapter~7 (block matrices); Volume~2,
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:975`: \tools Volume~3, Chapter~4 (Hoeffding's inequality, union bound); Volume~4, Chapter~6 (Parseval); Volume~0, Chapter~2.
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:1004`: \tools Volume~0, Chapter~2 (modulus of complex numbers); Volume~4, Chapter~6 (Parseval, through Problem~\ref{pb:flat});
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:1023`: diagonalisable over $\C$ (Volume~0, Chapter~7), with eigenvalues $\lambda_1,\lambda_2$ that are roots of unity, and the order of
-- `tomeP1-crossroads/chapters/ch01-two-tomes.tex:1055`: algebraic integers, congruences, binomial coefficients modulo $p$); Volume~0, Chapter~7 (diagonalisation, scalar products).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:449`: if $\sum A=0$ and $0$ otherwise (Volume~0, Chapter~2). So
-- `tomeP1-crossroads/chapters/ch02-roots.tex:470`: \tools Volume~0, Chapter~2 (roots of unity); Volume~3, Chapter~3 (generating functions).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:498`: \tools Volume~3, Chapters~2 and~3 (independence, generating functions); Volume~0, Chapter~2 (roots of unity).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:537`: \tools Volume~1, Chapter~4 (Möbius inversion, multiplicative functions); Volume~0, Chapter~2 (roots of unity).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:568`: \tools Volume~0, Chapter~2 (geometric sums of roots of unity); Volume~4, Chapter~4 (multiple integrals).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:595`: \tools Volume~3, Chapter~3 and Volume~4, Chapter~2 (generating functions); Volume~0, Chapter~3 (multiplicity of roots).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:625`: dimension count, Volume~0, Chapter~7, which holds over $\mathbb F_2$ as well). So a configuration $c$ can be switched off if
-- `tomeP1-crossroads/chapters/ch02-roots.tex:628`: \tools Volume~2, Chapters~6 and~9 (polynomial rings, finite fields); Volume~0, Chapter~7 (rank and orthogonality).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:671`: \tools Volume~2, Chapter~3 (Burnside's lemma); Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~1 (finite sums).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:702`: \tools Volume~1, Chapters~4 and~5 (Möbius inversion, cyclotomic polynomials); Volume~0, Chapter~3 (polynomials and their roots).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:749`: (irreducible, Volume~0, Chapter~3) divides $A$; by degrees $A=c\Phi_p$, so all $a_k=c$. Conversely
-- `tomeP1-crossroads/chapters/ch02-roots.tex:765`: \tools Volume~0, Chapter~3 (irreducibility of $\Phi_p$); Volume~2, Chapters~8 and~10 (tower law, cyclotomic fields).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:783`: $d$. Its coefficients are, up to sign, the elementary symmetric functions of the $\alpha_i^k$ (Volume~0, Chapter~3), and since
-- `tomeP1-crossroads/chapters/ch02-roots.tex:799`: lemma (Volume~0, Chapter~3) a primitive divisor of a monic integer polynomial is monic up to sign, and $5X^2-6X+5$ is
-- `tomeP1-crossroads/chapters/ch02-roots.tex:802`: \tools Volume~0, Chapters~3 and~7 (Viète, Gauss's lemma, characteristic polynomials); Volume~2, Chapters~7 and~10 (Jordan form,
-- `tomeP1-crossroads/chapters/ch02-roots.tex:915`: \tools Volume~0, Chapter~3 (Viète, cubic equations); Volume~2, Chapter~10 (the period polynomial of the heptagon).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:955`: \tools Volume~0, Chapter~3 (roots and derivatives); Volume~2, Chapters~4 and~10 (signs of permutations, Galois group of
-- `tomeP1-crossroads/chapters/ch02-roots.tex:999`: \tools Volume~0, Chapters~2 and~3 (de Moivre, polynomials and roots); Volume~1, Chapter~6 (Euler's criterion, Gauss's lemma).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:1016`: Riemann sums converge (Volume~0, Chapter~6). By (a) with $\theta=0$,
-- `tomeP1-crossroads/chapters/ch02-roots.tex:1031`: \tools Volume~0, Chapters~2 and~6 (roots of unity, Riemann sums); Volume~4, Chapter~4 (integrals); Problem~\ref{pb:kronecker}.
-- `tomeP1-crossroads/chapters/ch02-roots.tex:1059`: \tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (roots of unity, determinants).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:1090`: \tools Volume~0, Chapter~2 (complex numbers and rotations); Volume~4, Chapter~7 (discrete Fourier transform).
-- `tomeP1-crossroads/chapters/ch02-roots.tex:1116`: \tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (rotations, diagonalisation).
-- `tomeP1-crossroads/chapters/ch03-primes.tex:630`: \tools Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapters~1 and~3 (sums of squares, elementary symmetric functions).
-- `tomeP1-crossroads/chapters/ch03-primes.tex:647`: \tools Volume~0, Chapter~8 (Vandermonde, Pascal); Volume~1, Chapter~3 (binomial coefficients modulo $p$).
-- `tomeP1-crossroads/chapters/ch03-primes.tex:671`: \tools Volume~1, Chapters~3 and~5 (Wilson, Fermat, orders); Volume~0, Chapter~8 (binomial theorem).
-- `tomeP1-crossroads/chapters/ch03-primes.tex:768`: \writeup Let $Q=\prod_{n\le x}(n^2+1)$. Then $\log Q\ge\sum_{n\le x}2\log n=2\log\lfloor x\rfloor!=2x\log x+O(x)$ (Volume~0, Chapter~5 or
-- `tomeP1-crossroads/chapters/ch03-primes.tex:812`: \tools Volume~4, Chapter~5 (Beta function); Volume~1, Chapters~1 and~2 (lcm, Chebyshev bounds); Volume~0, Chapter~8 (binomial coefficients).
-- `tomeP1-crossroads/chapters/ch04-symmetry.tex:713`: \tools Volume~0, Chapter~7 (linear algebra); Volume~2, Chapter~3 (Burnside); Volume~3, Chapter~2 (Cauchy--Schwarz).
-- `tomeP1-crossroads/chapters/ch04-symmetry.tex:743`: \tools Volume~2, Chapters~3 and~11 (Burnside, orthogonality of characters); Volume~0, Chapter~1 (binomial coefficients).
-- `tomeP1-crossroads/chapters/ch04-symmetry.tex:763`: \tools Volume~3, Chapters~1 and~2 (conditioning); Volume~0, Chapter~1 (the hockey-stick identity).
-- `tomeP1-crossroads/chapters/ch04-symmetry.tex:1014`: \tools Volume~2, Chapter~11 (characters, orthogonality); Volume~0, Chapter~7 (bilinear forms, eigenvalues).
-- `tomeP1-crossroads/chapters/ch04-symmetry.tex:1053`: \tools Volume~2, Chapter~11 (characters, Schur's lemma, orthogonality); Volume~4, Chapter~5 (Beta function); Volume~0, Chapter~7 (eigenvalues).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:639`: \tools Volume~0, Chapter~7 (rank--nullity, invariant subspaces); Volume~2, Chapter~3 (orbit--stabiliser); counting independent vectors for the
-- `tomeP1-crossroads/chapters/ch05-fields.tex:700`: \tools Volume~0, Chapter~7; Volume~2, Chapter~3; the Gaussian binomial product formula.
-- `tomeP1-crossroads/chapters/ch05-fields.tex:725`: \tools Volume~0, Chapter~3 (roots of polynomials); Volume~0, Chapter~7 (determinants).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:755`: \tools Volume~0, Chapter~3 (division, roots).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:804`: \tools Problems~\ref{pb:nullstellensatz} and~\ref{pb:cauchydav}; Volume~0, Chapter~1 (binomial and Catalan numbers).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:860`: \tools Problem~\ref{pb:nullstellensatz}; Volume~0, Chapter~7 (hyperplanes).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:884`: \tools Volume~0, Chapter~7 (dimension counting); Problem~\ref{pb:nullstellensatz}(a). Part~(a) is also Volume~2, Exercise~M.10; the construction of (b) is new here.
-- `tomeP1-crossroads/chapters/ch05-fields.tex:917`: \tools Volume~2, Chapter~9 (Frobenius); Volume~0, Chapter~7 (determinants).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:959`: \tools Volume~0, Chapter~7 (rank, dimension); Volume~3, Chapter~4 (the exponential moment trick of Chernoff in (e)).
-- `tomeP1-crossroads/chapters/ch05-fields.tex:1030`: \tools Volume~2, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Volume~0, Chapter~7.
-- `tomeP1-crossroads/chapters/ch05-fields.tex:1066`: \tools Volume~2, Chapter~9 (subfields of $\mathbb F_{q^3}$, cyclicity of $\mathbb F_q^*$); Volume~0, Chapter~7 (dimension of an
-- `tomeP1-crossroads/chapters/ch05-fields.tex:1160`: \tools Volume~0, Chapter~3 (Lagrange interpolation); Volume~3, Chapter~1 (inclusion--exclusion, binomial law); Chapter~4 of this book
-- `tomeP1-crossroads/chapters/ch06-random.tex:358`: $\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~0, Exercise~1.7).
-- `tomeP1-crossroads/chapters/ch06-random.tex:677`: \writeup (a) By Volume~0, Exercise~1.7, $\gcd(F_a,F_b)=F_{\gcd(a,b)}$. Since $F_1=F_2=1$ and $F_g\ge2$ for $g\ge3$, the gcd is $1$ exactly
-- `tomeP1-crossroads/chapters/ch06-random.tex:684`: \tools Volume~0, Chapter~1 (Fibonacci gcd, Binet's formula); Problem~\ref{pb:gcdmean}.
-- `tomeP1-crossroads/chapters/ch06-random.tex:738`: \tools Volume~0, Chapters~4 and~7 (convexity; determinants as areas); Volume~1, Chapter~1.
-- `tomeP1-crossroads/chapters/ch06-random.tex:795`: \tools Volume~1, Chapters~1 and~8 (Euclid's algorithm, continued fractions); Volume~0, Chapter~5 (the golden ratio).
-- `tomeP1-crossroads/chapters/ch06-random.tex:862`: \tools Volume~0, Chapter~5 (uniform convergence, term-by-term differentiation); Volume~4, Chapter~10 (values of $\zeta$); Problem~\ref{pb:gaussmeasure}.
-- `tomeP1-crossroads/chapters/ch06-random.tex:911`: \tools Volume~0, Chapter~5 (comparison of sums and integrals).
-- `tomeP1-crossroads/chapters/ch06-random.tex:977`: \tools Volume~0, Chapter~7 (linear maps); Volume~3, Chapters~2 and~4 (linearity of expectation, Markov's inequality).
-- `tomeP1-crossroads/chapters/ch07-genfun.tex:520`: \tools Volume~0, Chapter~8 (double counting).
-- `tomeP1-crossroads/chapters/ch07-genfun.tex:839`: \tools Volume~1, Exercise~3.9 (Lucas); Volume~0, Chapter~1 (Fibonacci numbers).
-- `tomeP1-crossroads/chapters/ch07-genfun.tex:879`: (b) Let $z\ge1$ be the least index with $m\mid F_z$. Since $\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~0, Exercise~1.7), if $m\mid F_n$ then
-- `tomeP1-crossroads/chapters/ch07-genfun.tex:887`: \tools Volume~0, Exercise~1.7 ($\gcd$ of Fibonacci numbers); Volume~2, Chapter~1 (finite order of a permutation).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:41`: Cauchy--Schwarz inequality does the rest (Volume~0, Theorem~4.4; compare the Kővári--Sós--Turán theorem, Volume~3, Theorem~B.6).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:419`: By convexity (Jensen, Volume~0, Theorem~4.2), $\sum_x\binom{d_x}2\ge n\binom{2u/n}2$, so $\frac{2u}n\bigl(\frac{2u}n-1\bigr)\le2(n-1)$. Solving the
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:422`: \tools Volume~0, Theorems~4.2 and~4.4 (Jensen, Cauchy--Schwarz); Volume~3, Theorem~B.6 (the same argument for $K_{s,t}$).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:440`: \tools Volume~0, Theorem~4.4 (Cauchy--Schwarz).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:523`: \tools Volume~0, Theorem~4.4 (Cauchy--Schwarz); Volume~5, Theorem~2.6 (the mean of $\varphi$); Volume~1, Chapter~1 (gcd).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:541`: \tools Volume~11, Appendix~A (adjacency eigenvalues); Volume~0, Chapter~7 (spectral theorem).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:563`: \tools Volume~0, Chapter~8 (double counting); Volume~3, Chapter~2 (linearity of expectation).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:588`: \tools Volume~0, Chapter~7 (spectral theorem), Theorem~4.2 (Jensen); Volume~11, Lemma~A.1; Problem~\ref{pb:paley}.
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:600`: (Volume~11, Corollary~A.5), $\tau(G)=\frac1n\mu_2\cdots\mu_n$, and $\sum_i\mu_i=\operatorname{tr}L=\sum_vd_v=2m$. By AM--GM (Volume~0,
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:609`: \tools Volume~11, Corollary~A.5 (matrix-tree theorem); Volume~0, Theorem~4.3 (AM--GM).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:649`: \tools Volume~3, Theorem~A.16 (LYM and Sperner); Volume~0, Exercise~5.7 (Stirling's formula).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:679`: \tools Volume~0, Chapter~8 (counting); Problem~\ref{pb:chebyshevsum} (the two-term case).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:698`: \tools Volume~0, Chapter~1 (Pascal's rule).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:717`: \tools Volume~0, Chapter~4 (convexity).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:740`: \tools Volume~3, Theorem~12.2 (the probabilistic method, whose ``derandomisation'' this is); Volume~0, Chapter~8.
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:817`: \tools Volume~0, Chapter~3 (polynomials, Rolle's theorem), Chapter~8 (permutations and cycles).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:836`: \tools Volume~0, Chapter~8 (inclusion--exclusion, derangements).
-- `tomeP1-crossroads/chapters/ch08-inequalities.tex:879`: \tools Volume~2, Chapter~1 (abelian groups); Volume~0, Chapter~8 (injections).
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:466`: \tools{Volume~1, Theorem~2.4 (Chebyshev's bound); Volume~0, Chapter~6 (integration by parts); Volume~4, Chapter~4.}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:496`: \tools{Volume~4, Theorem~3.8 (the same method for $\pi^2$); Volume~0, Exercise~6.4 ($e$ is irrational).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:562`: \tools{Problems~\ref{pb:logtwo} and~\ref{pb:doubleint}; Volume~0, Theorem~4.3 (AM--GM); Volume~5, Theorem~5.5 (prime number theorem).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:655`: \tools{Volume~4, Chapter~5 (Beta integral); Volume~0, Chapter~3 (division of polynomials).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:680`: \tools{Volume~4, Theorem~5.11 (Beta and Gamma); Volume~0, Chapter~6 (integrals of rational functions).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:701`: \tools{Volume~4, Chapter~2 (power series) and Proposition~11.12 ($\binom{2n}n\sim\frac{4^n}{\sqrt{\pi n}}$); Volume~0, Chapter~6 (derivatives).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:725`: \tools{Volume~0, Chapter~6 (Taylor series); Volume~4, Proposition~11.12 (central binomial coefficient).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:819`: \tools{Volume~3, Chapter~5 (densities); Volume~4, Chapter~2 (term-by-term differentiation); Volume~0, Chapter~5 (alternating harmonic series).}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:869`: \tools{Volume~3, Chapter~5 (uniform variables, $\mathbb E[X]=\sum P(X>n)$); Volume~0, Chapter~8.}
-- `tomeP1-crossroads/chapters/ch09-integrals.tex:898`: \tools{Problem~\ref{pb:passone}; Volume~0, Chapter~8 (inclusion--exclusion); Volume~3, Chapter~5.}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:580`: \tools{Volume~4, Theorem~7.3 (orthogonality and Parseval for the DFT); Volume~0, Chapter~1 (Cauchy--Schwarz).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:621`: \tools{Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapter~3 (a quadratic has at most two roots in a field).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:684`: \tools{Volume~4, Theorem~7.3 (DFT inversion) and Theorem~8.14 (Gauss's evaluation); Volume~0, Chapter~7 (diagonalisation).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:712`: \tools{Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~7 (characters of $\Z/n\Z$).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:844`: \tools{Volume~0, Chapter~2 (Euler's formula); Volume~1, Chapter~1 (binary expansions); Volume~3, Chapter~4 (moments).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:882`: \tools{Volume~3, Exercise~5.7 and Theorem~6.8 (the Cantor law, characteristic functions); Volume~0, Chapter~2 (trigonometry).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:943`: \tools{Volume~3, Chapter~2 (binomial law) and Volume~0, Chapter~5 (Stirling's formula); Volume~0, Chapter~1 (Cauchy--Schwarz).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:972`: \tools{Volume~3, Chapter~1 (inclusion--exclusion, Möbius inversion on subsets); Volume~0, Chapter~3 (polynomials).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:1161`: \tools{Volume~0, Chapter~3 (roots of polynomials) and Chapter~7 (symmetric matrices); Volume~4, Lemma~6.8 (the Fejér kernel).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:1189`: \tools{Volume~0, Chapter~2 (trigonometric polynomials) and Chapter~3 (counting roots); Volume~4, Corollary~6.10 (Chebyshev polynomials).}
-- `tomeP1-crossroads/chapters/ch10-fourier.tex:1257`: \tools{Volume~4, Theorem~7.3 (DFT inversion and Parseval); Volume~0, Chapter~2 (roots of unity).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:585`: \tools{Volume~2, Chapter~1 (groups) and Theorem~11.14 (Fourier analysis on $\Z/n\Z$); Volume~3, Chapter~8; Cauchy--Schwarz (Volume~0).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:731`: \tools{Volume~3, Proposition~8.16 (eigenvalues of reversible chains); spectral theorem for symmetric matrices (Volume~0); Cauchy--Schwarz.}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:766`: \tools{Volume~3, Corollary~7.10 (gambler's ruin against an infinite bank) and Theorem~7.3; Catalan numbers (Volume~0).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:829`: \tools{Volume~3, Exercise~7.8; Problem~\ref{pb:commute}; Volume~0 (symmetric matrices, trace); Volume~2, Chapter~3 (group actions).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1058`: \tools{Problem~\ref{pb:period}; Volume~1, Chapters~1--2 (Chinese remainder theorem, $\pi(t)=o(t)$, the Euler product for $\zeta(2)$); Volume~0 (Gaussian integral).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1080`: (c) $u_{2m}\sim\frac1{\sqrt{\pi m}}$ by Stirling's formula (Volume~0, Theorem~5.6), so
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1092`: \tools{Volume~3, Theorem~7.3 and Theorem~7.12; Stirling's formula (Volume~0, Theorem~5.6).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1166`: \tools{Volume~3, Theorems~7.9 and 10.12, Lemma~7.8; harmonic sums (Volume~0).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1190`: \tools{Volume~3, Proposition~8.14 (detailed balance); polynomial interpolation (Volume~0).}
-- `tomeP1-crossroads/chapters/ch11-walks.tex:1256`: \tools{Volume~2, Chapter~4 (permutations); Volume~0 (counting, induction); Volume~3, Chapter~8 (riffle shuffles).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:28`: large. The tools come from Volume~0 (Stirling's formula, iterated sequences), Volume~3 (birthdays, coupons, local limit theorems) and
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:221`: \emph{The sine iteration, second term.} Volume~0, Exercise~5.4 showed that $u_{n+1}=\sin u_n$, with $0<u_0\le\frac\pi2$, satisfies $u_n\sim\sqrt{3/n}$.
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:357`: (a) Maximise $x^ne^{-ux}$ over $x\ge0$, then sum $\frac{e^{uk}}{k!}$. Remember $\ln n-\ln u=u$ and $e^u=\frac nu$. (b) Use $\ln m!\le(m+\frac12)\ln m-m+1$ (Volume~0), and note that $x\ln x-x$
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:471`: \tools{Volume~0, Chapter~5 (series, $\ln(1-x)$); Volume~4, Chapter~11 (the spirit of Laplace's method).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:507`: \tools{Volume~4, Theorem~9.10 (Cauchy's formula), Theorem~11.9 (Laplace's method) and the example of the central binomial coefficient in Chapter~11; Volume~0, Theorem~5.6 (Stirling).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:524`: (b) Let $m=\lceil e^u\rceil$, so $m=e^u+\eta$ with $0\le\eta<1$, and $b_n\ge\frac{m^n}{e\,m!}$. First $n\ln m\ge n\ln e^u=nu$. Next, Volume~0 (Chapter~5) shows that
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:539`: \tools{Volume~4, Chapter~2 (Dobi\'nski's formula); Volume~0, Chapter~5 (Stirling's estimate); Volume~0, Chapter~6 (maxima).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:567`: \tools{Volume~4, Theorem~2.9 (exponential formula) and Corollary~11.6 ($H_N-\ln N\to\gamma$); Volume~0, Chapter~5 (absolute convergence, products).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:684`: \tools{Volume~3, Exercise~6.5 (the limit $\frac12$); Volume~4, Theorem~11.8 (Stirling's series) and Theorem~11.9 (Laplace's method); Volume~0, Chapter~6 (inverse functions).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:708`: \tools{Volume~3, Theorem~2.14 (coupon collector) and Chapter~2 (Poisson law); Volume~0, Chapter~6 (integrals).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:762`: \tools{the tree-function identity $T=ze^T$; Volume~0, Theorem~5.6 (Stirling).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:785`: \tools{Volume~0, Chapter~5 (sequences, comparison with integrals); Volume~4, Corollary~11.6 (harmonic numbers).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:797`: (b) Let $e_k=\frac1{u_{k+1}^2}-\frac1{u_k^2}-\frac13$. The function $\frac1{\sin^2u}-\frac1{u^2}-\frac13$ is continuous on $\left]0,\frac\pi2\right]$ and $O(u^2)$ at $0$, so $|e_k|\le c\,u_k^2$. By Volume~0,
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:805`: \tools{Volume~0, Exercise~5.4 (the first term) and Chapter~6 (Taylor expansions).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:823`: \tools{Volume~0, Chapter~6 (derivatives, Taylor expansions of $\tan$ and $\arctan$).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:843`: \tools{Volume~0, Chapter~5 (sequences, recurrences); Volume~3, Chapter~4 (runs of heads).}
-- `tomeP1-crossroads/chapters/ch12-asymptotics.tex:977`: \tools{Volume~0, Chapter~7 (eigenvalues of $2\times2$ matrices); Volume~0, Chapter~5 (lim sup and lim inf).}
-- `tomeP1-crossroads/chapters/ch13-average.tex:564`: \tools{Legendre's formula (Volume~1); Volume~5, Theorem~5.5 and Proposition~1.2; dominated convergence for series (Volume~0).}
-- `tomeP1-crossroads/chapters/ch13-average.tex:954`: \tools{Conditional expectation and Jensen's inequality (Volume~3, Theorem~4.14); the harmonic numbers (Volume~0).}
-- `tomeP1-crossroads/chapters/ch13-average.tex:1036`: \tools{Geometric series (Volume~0); Volume~5, Chapter~10 (Cram\'er's model and the Hardy--Littlewood constants).}
-- `tomeP1-crossroads/chapters/ch14-meets.tex:553`: \tools{Jacobi's triple product and identity (Problem~\ref{pb:ramanujan5}); Lambert series; lattice points and volumes (Volume~0); $\sum_{m\le x}\frac1{m^2}=\zeta(2)+O(\frac1x)$.}
-- `tome7-analysis/chapters/ch11-harder.tex:520`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~4 (Gram matrices, spectral theorem for Hermitian matrices).}
-- `tome7-analysis/chapters/ch11-harder.tex:539`: \tools{Volume~0, Chapter~7 (dimension, Gram matrices); Volume~2, Chapter~4.}
+- `volume1-integers/chapters/ch01-divisibility.tex:320`: \writeup Suppose $n\mid2^n-1$; then $n$ is odd, so its smallest prime factor $p$ is odd and $p\mid2^n-1$. By Fermat (Volume~0, Exercise~1.6), $p\mid2^{p-1}-1$. By Exercise~\ref{ex:mersgcd}, $p$ divides $\gcd(2^n-1,2^{p-1}-1)=2^{\gcd(n,p-1)}-1$. But every prime factor of $n$ is $\ge p>p-1$, so $\gcd(n,p-1)=1$, and $p\mid2^1-1=1$: contradiction.
+- `volume1-integers/chapters/ch03-congruences.tex:97`: Units correspond to pairs of units, so $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$. With $\varphi(p^k)=p^k-p^{k-1}$ (the non-multiples of $p$), this recovers $\varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right)$ from Volume~0.
+- `volume1-integers/chapters/ch03-congruences.tex:187`: \emph{Korselt's criterion, one direction.} Let $n$ be squarefree and composite, and suppose $p-1\mid n-1$ for every prime $p\mid n$. Show that $a^n\equiv a\pmod n$ for every integer $a$. Check that $561=3\cdot11\cdot17$ qualifies: it is a Carmichael number (Volume~0, Chapter~1).
+- `volume1-integers/chapters/ch03-congruences.tex:195`: with $\binom{n_i}{k_i}=0$ when $k_i>n_i$. \emph{Hint: in $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$.} Deduce that $\binom nk$ is odd if and only if each binary digit of $k$ is at most the corresponding digit of $n$, which explains the Sierpi\'nski triangle of Volume~0.
+- `volume1-integers/chapters/ch03-congruences.tex:299`: \writeup In $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$ because $p\mid\binom pj$ for $0<j<p$ (Volume~0, Exercise~1.6); by induction $(1+X)^{p^i}=1+X^{p^i}$. Hence
+- `volume1-integers/chapters/ch04-arithmetic-functions.tex:229`: Replacing $\lfloor\frac xa\rfloor$ by $\frac xa$ costs $O(y)$ in total, and $\lfloor y\rfloor^2=x+O(y)$. From Volume~0, $\sum_{a\le y}\frac1a=\ln y+\gamma+O\left(\frac1y\right)$ (the adjacent sequences there give an error at most $\ln(1+\frac1n)\le\frac1n$). So the sum is $2x\left(\frac12\ln x+\gamma\right)-x+O(\sqrt x)$.
+- `volume1-integers/chapters/ch04-arithmetic-functions.tex:370`: (b) Both series converge absolutely, so their product can be expanded and regrouped by $n=dm$ (as in the Cauchy product, Volume~0, Chapter~5): $\sum_n\frac1{n^2}\sum_{d\mid n}\mu(d)=\sum_n\frac{\varepsilon(n)}{n^2}=1$.
+- `volume1-integers/chapters/ch04-arithmetic-functions.tex:376`: which tends to $\sum_d\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}=\frac6{\pi^2}$ by (b) and the Basel problem (Volume~0, Exercise~3.7).
+- `volume1-integers/chapters/ch06-quadratic-reciprocity.tex:282`: \item Show that $q\Z[\zeta]\cap\Z=q\Z$, using that $\Phi_p$ is irreducible over $\Q$ (Volume~0, Exercise~3.5). Deduce $\left(\frac{p^*}q\right)=\left(\frac qp\right)$, and then Theorem~\ref{thm:qr}.
+- `volume1-integers/chapters/ch06-quadratic-reciprocity.tex:283`: \item Show that $g=\sum_{x=0}^{p-1}\zeta^{x^2}$, the sum $G$ of Volume~0, Exercise~2.8. What does (a) say about $G$?
+- `volume1-integers/chapters/ch06-quadratic-reciprocity.tex:355`: The inner sum is $p-1$ if $c\equiv-1$ and $-1$ otherwise (Volume~0, Proposition~2.4). Hence
+- `volume1-integers/chapters/ch06-quadratic-reciprocity.tex:361`: (c) First, $q\Z[\zeta]\cap\Z=q\Z$. The numbers $1,\zeta,\dots,\zeta^{p-2}$ are linearly independent over $\Q$: a relation would give a non-zero $R\in\Q[X]$ of degree $\le p-2$ with $R(\zeta)=0$; then $\gcd(R,\Phi_p)$, which is a $\Q[X]$-combination of $R$ and $\Phi_p$ (B\'ezout in $\Q[X]$), also vanishes at $\zeta$, so it is a non-constant proper divisor of $\Phi_p$, contradicting the irreducibility of $\Phi_p$ (Volume~0, Exercise~3.5). Every element of $\Z[\zeta]$ is $\sum_{i\le p-2}c_i\zeta^i$ with $c_i\in\Z$ (reduce higher powers with $\zeta^{p-1}=-1-\zeta-\dots-\zeta^{p-2}$). If an integer $n$ equals $q\sum c_i\zeta^i$, uniqueness of coordinates gives $n=qc_0$.
+- `volume1-integers/chapters/ch11-algebraic.tex:42`: If $\operatorname{Tr}\alpha$, $N\alpha$ are integers, $\alpha$ is a root of the monic $X^2-(\operatorname{Tr}\alpha)X+N\alpha\in\Z[X]$. Conversely let $P\in\Z[X]$ be monic with $P(\alpha)=0$. If $\alpha\in\Q$, the rational root theorem (Volume~0, Proposition~3.7, with leading coefficient $1$) gives $\alpha\in\Z$, so $\operatorname{Tr}\alpha=2\alpha$ and $N\alpha=\alpha^2$ are integers. If $\alpha\notin\Q$, let $\mu=X^2-(\operatorname{Tr}\alpha)X+N\alpha\in\Q[X]$. Divide in $\Q[X]$: $P=\mu C+R$ with $\deg R\le1$; then $R(\alpha)=0$, and since $\alpha\notin\Q$ this forces $R=0$. So $P=\mu C$ in $\Q[X]$, and Gauss' lemma (Volume~0, Proposition~3.8(b), whose proof produces $B_1$ as a rational multiple of $B$) gives $P=(\lambda\mu)C_1$ with $\lambda\in\Q$, $\lambda\mu\in\Z[X]$ and $C_1\in\Z[X]$. Comparing leading coefficients, $\lambda\cdot\mathrm{lc}(C_1)=1$ with both factors integers, so $\lambda=\pm1$ and $\mu\in\Z[X]$.
+- `volume1-integers/chapters/ch12-padic.tex:257`: For $f=X^{p-1}-1$ and $a\in\{1,\dots,p-1\}$: $f(a)\equiv0\pmod p$ by Fermat, and $f'(a)=(p-1)a^{p-2}$ is a unit, so Theorem~\ref{thm:henselnewton} gives a root $\omega(a)\equiv a\pmod p$, the unique one in $B(a,p^{-1})$. Roots in different classes are different, and a polynomial of degree $p-1$ over the integral domain $\Z_p$ has at most $p-1$ roots (the argument of Volume~0, Proposition~3.2, works in any integral domain).
+- `volume1-integers/chapters/preface.tex:29`: Volume~0 supplies these foundations, including the polynomial root bound and Gauss' lemma for polynomials.
+- `volume11-motion/chapters/spectral.tex:50`: explains the name. By the spectral theorem (Volume~0, Theorem~7.7), $L$ has real eigenvalues
+- `volume12-arithmetic/chapters/ch01-number-fields.tex:35`: for some $\theta$. \emph{Rational roots} (Volume~0, Proposition~3.7). A rational root of a monic polynomial with
+- `volume14-order-and-chance/chapters/ch02-reading.tex:22`: \begin{reminder}[from Chapter~1, Volume~0 and Volume~10]
+- `volume14-order-and-chance/chapters/ch02-reading.tex:24`: $c\in\{-1,0,1\}^n$ (Chapter~\ref{ch:research}). \emph{Stirling's formula} (Volume~0, Chapter~5) gives $\binom n{\lfloor n/2\rfloor}\sim\sqrt{\frac2{\pi n}}\,2^n$. \emph{Esseen's smoothing inequality}
+- `volume14-order-and-chance/chapters/ch03-shuffling.tex:396`: total variation as a sum of positive parts, Volume~3, Chapter~8; Tanny's lemma, this chapter; Lindeberg's theorem, Volume~3, Theorem~6.10; the expansion of $\ln(1+x)$, Volume~0;
+- `volume14-order-and-chance/chapters/conjectures-ch04-riemann.tex:188`: by definition (Volume~0, Chapter~5), and a strictly decreasing sequence stays above its limit.
+- `volume2-structures/chapters/ch01-groups.tex:50`: \item $\Z/n\Z$ under addition, and $(\Z/n\Z)^*$, the invertible classes, under multiplication (Volume~1, Chapter~3). The group of $n$-th roots of unity $\mathbb U_n=\{z\in\C:z^n=1\}$ (Volume~0, Chapter~2).
+- `volume2-structures/chapters/ch01-groups.tex:52`: \item The \emph{general linear group} $GL_n(K)$ of invertible $n\times n$ matrices over a field $K$, and its subgroup $SL_n(K)$ of matrices of determinant $1$ (Volume~0, Chapter~7).
+- `volume2-structures/chapters/ch01-groups.tex:319`: \idea We want an element of order $n$. Count elements by their order: $\psi(d)$ elements of order $d$, with $\sum_{d\mid n}\psi(d)=n$ (Lagrange). A field enters only through ``a polynomial of degree $d$ has at most $d$ roots'' (Volume~0, Chapter~3), which caps $\psi(d)$ by $\varphi(d)$. Since the $\varphi(d)$ also sum to $n$, every cap is reached, in particular $\psi(n)=\varphi(n)\ge1$.
+- `volume2-structures/chapters/ch02-quotients.tex:27`: \item The determinant $\det:GL_n(K)\to K^*$, with kernel $SL_n(K)$ (Volume~0, Theorem~7.2: $\det(AB)=\det A\det B$).
+- `volume2-structures/chapters/ch02-quotients.tex:28`: \item The sign $\varepsilon:\mathfrak S_n\to\{\pm1\}$ (Volume~0, Lemma~7.1), with kernel the \emph{alternating group} $A_n$ of even permutations.
+- `volume2-structures/chapters/ch04-symmetric.tex:10`: We compose permutations like functions: $\sigma\tau$ means ``first $\tau$, then $\sigma$''. The sign $\varepsilon:\mathfrak S_n\to\{\pm1\}$ and its properties come from Volume~0, Chapter~7: $\varepsilon$ is a homomorphism, every transposition has sign $-1$, and every permutation is a product of transpositions. The \emph{alternating group} is its kernel $A_n=\ker\varepsilon$, a normal subgroup of index $2$ for $n\ge2$.
+- `volume2-structures/chapters/ch06-rings.tex:12`: Volume~1 met many rings: $\Z/n\Z$, the Gaussian integers $\Z[i]$, the Eisenstein integers $\Z[\omega]$, the integers of quadratic fields, and in its Chapter~11 the ideals that Kummer and Dedekind invented to repair factorisation. Volume~0 met the polynomial rings $K[X]$ and $\Z[X]$. This chapter puts these examples in one framework. A ring is a set where one can add, subtract and multiply; an ideal is what a kernel of a ring homomorphism looks like; the quotient by an ideal is a new ring, and whether it is a domain or a field is read off from the ideal. Then we answer the opening question: unique factorisation holds in every \emph{principal ideal domain}, and Euclidean division is the usual way to prove that a ring is one.
+- `volume2-structures/chapters/ch06-rings.tex:114`: For $R=\Z$ this is the theorem of Volume~1. For $R=K[X]$ and $I_k=(X-x_k)$ with distinct $x_k$, it says that a polynomial is determined modulo $\prod(X-x_k)$ by its values at the $x_k$, and that any values can be prescribed: this is Lagrange interpolation (Volume~0, Chapter~3), and the element $b$ of the proof is a Lagrange basis polynomial.
+- `volume2-structures/chapters/ch06-rings.tex:208`: Volume~0, Chapter~3, proved Gauss' lemma and Eisenstein's criterion for $\Z[X]$; they now hold over any UFD, with the same proofs. Another tool is reduction: if $f\in\Z[X]$ is monic and its reduction mod $p$ is irreducible over $\Z/p\Z$, then $f$ is irreducible over $\Q$ (a factorisation into monic polynomials of lower degree would reduce to one mod $p$). The converse fails badly, see Exercise~\ref{ex:x4p1}.
+- `volume2-structures/chapters/ch06-rings.tex:332`: \writeup Over $\Q$: $(X+1)^4+1=X^4+4X^3+6X^2+4X+2$ is Eisenstein at $2$, so it is irreducible (Volume~0, Chapter~3), and so is $X^4+1$ (a factorisation of $X^4+1$ would give one of $(X+1)^4+1$).
+- `volume2-structures/chapters/ch07-modules.tex:13`: A vector space is a set where one can add and multiply by scalars from a field. Replace the field by a ring and you get a \emph{module}. Two examples make the notion worth having. An abelian group is a module over $\Z$ ($n\cdot x=x+\dots+x$). A vector space $V$ with a linear map $A$ is a module over $K[X]$ ($P\cdot v=P(A)v$). Both $\Z$ and $K[X]$ are principal ideal domains, and over such rings finitely generated modules are classified by a list of divisors $d_1\mid d_2\mid\dots\mid d_r$, computed by row and column operations on a matrix (the \emph{Smith normal form}). For $\Z$ this classifies finite abelian groups; for $K[X]$ it gives the rational canonical form, the Jordan form, and Cayley--Hamilton, which Volume~0 left for this chapter.
+- `volume2-structures/chapters/ch07-modules.tex:183`: The same theorem classifies abelian groups and matrices, because $\Z$ and $K[X]$ are both PIDs: this is the kind of unification that made abstract algebra worth inventing. It reappears often: the structure of $(\Z/q\Z)^*$ (Exercise~\ref{ex:unitsmodn}) is what Dirichlet characters are built on (Chapter~11, then Volume~5); Jordan forms solve linear recurrences and differential equations (Volume~0) and describe the long-run behaviour of Markov chains (Volume~3); and the Smith form of boundary matrices computes the \emph{homology} of a space, its holes and twists, which a numerical calculation uses to see that the projective plane has a hole of ``order $2$''.
+- `volume2-structures/chapters/ch08-extensions.tex:240`: A rational root of this monic integer polynomial would be an integer dividing $1$ (Volume~0, Chapter~3), and $\pm1$ are not roots, so the cubic has no root in $\Q$; a reducible cubic has a factor of degree $1$, so it is irreducible, and $u$ has degree $3$. So $\cos20^\circ=u/2$ is not constructible, and neither is $e^{i\pi/9}$ (its real part would be, by Proposition~\ref{prop:constrfield}).
+- `volume2-structures/chapters/ch08-extensions.tex:242`: (c) Let $\zeta=e^{2i\pi/5}$. Dividing $\zeta^4+\zeta^3+\zeta^2+\zeta+1=0$ by $\zeta^2$, $t=\zeta+\zeta^{-1}=2\cos72^\circ$ satisfies $t^2+t-1=0$, so $t=\frac{\sqrt5-1}2$, which is constructible, and so is $\zeta=\frac t2+i\sqrt{1-t^2/4}$ (Figure~\ref{fig:pentagon}). For a prime $p$, $\zeta=e^{2i\pi/p}$ is a root of $\Phi_p=1+X+\dots+X^{p-1}$, irreducible over $\Q$ (Volume~0, Chapter~3, an exercise on Eisenstein's criterion); so $\zeta$ has degree $p-1$, which must be a power of $2$ if $\zeta$ is constructible. For $p=7$, $p-1=6$.
+- `volume2-structures/chapters/ch08-extensions.tex:361`: (b) Let $\zeta=e^{2i\pi/17}$ and $c=\cos\frac{2\pi}{17}$. By Volume~0, $\Phi_{17}$ is irreducible, so $[\Q(\zeta):\Q]=16$. Now $\Q(c)\subseteq\Q(\zeta)$ ($2c=\zeta+\zeta^{-1}$), and $\zeta$ is a root of $X^2-2cX+1\in\Q(c)[X]$ but not in the real field $\Q(c)$, so $[\Q(\zeta):\Q(c)]=2$ and $[\Q(c):\Q]=8$.
+- `volume2-structures/chapters/ch09-finite-fields.tex:64`: For $x\ne0$, $x^{q-1}=1$ by Lagrange's theorem in the group $K^*$ of order $q-1$; multiply by $x$. So the $q$ elements of $K$ are roots of the monic polynomial $X^q-X$ of degree $q$, which is therefore their product $\prod(X-a)$ (each root splits off a factor, Volume~0).
+- `volume2-structures/chapters/ch10-galois.tex:112`: $\sigma(\zeta_n)$ is a root of $X^n-1$, so it is $\zeta_n^a$ for some $a$ defined modulo $n$; as $\sigma$ is injective, $\zeta_n^a$ has order $n$ like $\zeta_n$, so $\gcd(a,n)=1$. Then $\sigma\tau(\zeta_n)=\sigma(\zeta_n^{a_\tau})=\zeta_n^{a_\sigma a_\tau}$, so $a_{\sigma\tau}=a_\sigma a_\tau$. Since $\sigma$ is determined by $\sigma(\zeta_n)$, the map is injective. For $n=p$, $\Phi_p$ is irreducible (Volume~0, Chapter~3), so $[\Q(\zeta_p):\Q]=p-1=|(\Z/p\Z)^*|$, and the injective map is onto; $(\Z/p\Z)^*$ is cyclic (Volume~1, Chapter~5).
+- `volume2-structures/chapters/ch10-galois.tex:318`: \writeup A permutation $\pi$ of the roots changes $\delta$ into $\operatorname{sgn}(\pi)\,\delta$ (Volume~0: each transposition reverses an odd number of factors; directly, check $(1\,2)$, $(1\,3)$, $(2\,3)$). So $\delta^2$ is fixed by $G$, hence in $L^G=K$. As $\delta\ne0$ (distinct roots), $\sigma(\delta)=\delta$ iff $\sigma$ is even. So $\delta\in K=L^G$ iff $G\subseteq A_3$. For $X^3-2$: $\delta^2=-27\cdot4=-108<0$, so $\delta\notin\Q$ (not even real), $G\not\subseteq A_3$, and since $|G|$ is divisible by $3$ (Lemma~\ref{lem:permroots}, degree $3$ of a root), $G=\mathfrak S_3$, as in Example~\ref{ex:cuberoot}. For $X^3-3X+1$ (irreducible: no rational root): $\delta^2=-4(-27)-27=81=9^2$, so $\delta=\pm9\in\Q$, and $G$, of order divisible by $3$, is $A_3\cong\Z/3\Z$. Its splitting field is $\Q(\cos\frac{2\pi}9)$, of degree $3$: all three roots are in $\Q(u)$, as in the discussion after the Pause and think box.
+- `volume2-structures/chapters/ch11-characters.tex:42`: So each $\rho(g)$ is unitary for $\langle\cdot,\cdot\rangle$. Since $g^n=e$ for $n=|G|$, $\rho(g)$ is a unitary matrix with $\rho(g)^n=I$: it is diagonalisable in an orthonormal basis (spectral theorem, Volume~0), with eigenvalues that are $n$-th roots of unity.
+- `volume2-structures/chapters/ch11-characters.tex:374`: \writeup (a) If $x^n+a_{n-1}x^{n-1}+\dots+a_0=0$ with $a_i\in\Z$, then $M=\Z+\Z x+\dots+\Z x^{n-1}$ satisfies $xM\subseteq M$ and $1\in M$. Conversely, if $M=\Z m_1+\dots+\Z m_k\ne0$ and $xm_i=\sum_ja_{ij}m_j$ with $a_{ij}\in\Z$, then $(xI-A)m=0$ for the non-zero vector $m=(m_i)$, so $\det(xI-A)=0$: $x$ is a root of the monic integer polynomial $\det(XI-A)$. If $x,y$ are algebraic integers, of degrees $n,n'$ as above, $M=\sum_{i<n,j<n'}\Z x^iy^j$ is finitely generated, contains $1$, and is stable under multiplication by $x$, $y$, hence by $x+y$ and $xy$. A rational root $a/b$ (in lowest terms) of a monic integer polynomial has $b\mid1$ (Volume~0, rational roots).
+- `volume2-structures/chapters/ch12-quaternions.tex:64`: $\det(A-I)=\det(A-AA^{\mathsf T})=\det A\,\det(I-A^{\mathsf T})=\det(I-A)=-\det(A-I)$ (a $3\times3$ determinant changes sign with its matrix). So $\det(A-I)=0$ and $A$ has a unit vector $u$ with $Au=u$. Being orthogonal, $A$ preserves $u^\perp$; on this plane it is orthogonal with determinant $\det A=1$, hence a rotation by some $\theta$ (Volume~0).
+- `volume2-structures/chapters/linear-ch02-volume.tex:55`: parallelepiped with a zero edge is flat). By the uniqueness theorem of Volume~0 (Theorem~7.2), the only such function with
+- `volume2-structures/chapters/linear-ch03-eigen.tex:27`: Eigenvectors are the one-dimensional ones; when there are enough of them, $A$ is diagonalisable, as in Volume~0. When
+- `volume2-structures/chapters/linear-ch03-eigen.tex:72`: polynomial splits (the fundamental theorem of algebra, Volume~0, Chapter~3).
+- `volume3-chance/chapters/ch01-counting.tex:21`: Volume~0 (Chapter~8) defined a probability on a finite set. To speak of infinitely many coin tosses, or of a point
+- `volume3-chance/chapters/ch01-counting.tex:568`: $\log\frac{n-1}{r-2}$ for $r\ge3$ (compare with $\int\frac{\mathrm dt}t$, Volume~0, Chapter~5), and the two bounds differ by at most $\log\frac{r-1}{r-2}\le\frac1{r-2}$; so $p_r=x\log\frac1x+o(1)$
+- `volume3-chance/chapters/ch02-discrete.tex:15`: permutation, the convergence of fixed points to the Poisson law promised in Volume~0, and the coupon collector.
+- `volume3-chance/chapters/ch02-discrete.tex:45`: product of the sums (sum by packets, Volume~0, Chapter~5). For the second claim, let $U=(X_1,\dots,X_k)$ and
+- `volume3-chance/chapters/ch02-discrete.tex:54`: Expectation is a weighted sum, and Volume~0 (Chapter~5) showed that infinite sums behave like finite ones exactly
+- `volume3-chance/chapters/ch02-discrete.tex:103`: Linearity needs no independence at all, and this is what makes it powerful. Volume~0 used it to show that a random
+- `volume3-chance/chapters/ch02-discrete.tex:255`: $\sqrt{H_{52}-\sum1/j^2}\approx1.71$. Since $H_n=\ln n+\gamma+o(1)$ (Volume~0, Chapter~5), a random permutation of a
+- `volume3-chance/chapters/ch02-discrete.tex:267`: $\frac{D_m}{m!}=\sum_{i=0}^m\frac{(-1)^i}{i!}$ of Volume~0 (Proposition~8.3),
+- `volume3-chance/chapters/ch02-discrete.tex:306`: n^2\sum_{j\ge1}\frac1{j^2}=\frac{\pi^2}6n^2$ (Volume~0, Exercise~3.7).
+- `volume3-chance/chapters/ch02-discrete.tex:379`: $\mathbb E[W_N]\sim\sqrt{\pi N/2}$ as $N\to\infty$, using the Gaussian integral $\int_0^\infty e^{-x^2/2}\dd x=\sqrt{\pi/2}$ (Volume~0,
+- `volume3-chance/chapters/ch03-generating.tex:33`: We need two facts about power series. Volume~0 did not prove that a power series can be differentiated term by term,
+- `volume3-chance/chapters/ch03-generating.tex:51`: remainder (Volume~0, Chapter~6) applied to $x\mapsto x^k$, whose second derivative is bounded by $k(k-1)\rho^{k-2}$ between $s$
+- `volume3-chance/chapters/ch03-generating.tex:203`: lengths $2k$ and $2(n-k)$, which gives the recursion. By Stirling's formula (Volume~0, Theorem~5.6),
+- `volume3-chance/chapters/ch04-inequalities.tex:22`: almost all the probability sits on about $2^{nH}$ ``typical'' sequences. Jensen's inequality, promised in Volume~0,
+- `volume3-chance/chapters/ch04-inequalities.tex:83`: The two expressions agree by the transfer formula. We need one fact about continuous functions that Volume~0 used
+- `volume3-chance/chapters/ch04-inequalities.tex:92`: Bolzano--Weierstrass (Volume~0, Proposition~5.1(c)) some subsequence $x_{n_k}$ converges to some $x\in[0,1]$, and then
+- `volume3-chance/chapters/ch04-inequalities.tex:222`: $u(\lambda)=\frac{pe^\lambda}{1-p+pe^\lambda}\in[0,1]$ we get $L'=u-p$, so $L'(0)=0$, and $L''=u(1-u)\le\frac14$. Taylor's formula with integral remainder (Volume~0,
+- `volume3-chance/chapters/ch04-inequalities.tex:331`: \emph{At most $1$.} Fix $\varepsilon>0$. Then $P(\ell_n\ge(1+\varepsilon)\log_2n)\le2^{-(1+\varepsilon)\log_2n}=n^{-1-\varepsilon}$, and $\sum_nn^{-1-\varepsilon}<\infty$ (Volume~0,
+- `volume3-chance/chapters/ch04-inequalities.tex:349`: Volume~0 proved Jensen's inequality for finitely many points. Here is the form promised there, for random variables.
+- `volume3-chance/chapters/ch04-inequalities.tex:361`: in which case $c$ is a value of $X$ and lies in $I$; the same holds for $\sup I$. So $m\in I$. By Volume~0, Proposition~4.1(b), $f(x)\ge f(m)+f'(m)(x-m)$ for every
+- `volume3-chance/chapters/ch04-inequalities.tex:396`: tangent to the concave $\ln$ taken at $1$, which also handles infinite sums and the equality case. By Volume~0,
+- `volume3-chance/chapters/ch04-inequalities.tex:655`: (Volume~0, Proposition~4.1(b)); by continuity this extends to $a\in\{0,1\}$. Hence $e^{-nI_p(a)}\le e^{-2n(a-p)^2}$, and the latter is also Hoeffding's
+- `volume3-chance/chapters/ch05-continuous.tex:277`: We write $\int_Bf(x)\dd x$ for $\int f\mathbf 1_B\dd\lambda$. The first task is to check that this is the integral of Volume~0 when both make sense.
+- `volume3-chance/chapters/ch05-continuous.tex:281`: \item If $f\ge0$ is continuous on $[a,b]$, then $\int_{[a,b]}f\dd\lambda=\int_a^bf$, the integral of Volume~0.
+- `volume3-chance/chapters/ch05-continuous.tex:283`: $b_n\uparrow b$; in particular the improper integral of Volume~0 is a Lebesgue integral.
+- `volume3-chance/chapters/ch05-continuous.tex:292`: integral of Volume~0 give $L_n\le\int_a^bf\le L_n+\varepsilon(b-a)$ for such $n$. So both are equal to $\lim L_n$.
+- `volume3-chance/chapters/ch05-continuous.tex:297`: With Volume~0, Exercise~6.7 and the change $x=\frac u{\sqrt2}$,
+- `volume3-chance/chapters/ch05-continuous.tex:512`: proof of the Gaussian integral, which Volume~0 avoided, is now complete.
+- `volume3-chance/chapters/ch06-clt.tex:26`: Gaussian vectors, the multivariate bell curves promised in Volume~0.
+- `volume3-chance/chapters/ch06-clt.tex:341`: Write $m!=\sqrt{2\pi m}\,(\frac me)^me^{\varepsilon_m}$, with $\varepsilon_m\to0$ (Volume~0, Theorems~5.6 and~6.4). Let $a=\frac kn$; then $|a-p|\le\frac{A\sqrt{pq}}{\sqrt n}$, so $k$ and
+- `volume3-chance/chapters/ch06-clt.tex:361`: Volume~0 proved Stirling's formula in two steps: $n!\sim C\sqrt n(\frac ne)^n$ for some constant $C$, then $C=\sqrt{2\pi}$ by Wallis' integrals.
+- `volume3-chance/chapters/ch06-clt.tex:407`: (b) By the spectral theorem (Volume~0, Theorem~7.7), $\Sigma=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal with entries $\lambda_j\ge0$. Let $A=PD^{1/2}$ and
+- `volume3-chance/chapters/ch06-clt.tex:418`: vector has the density $\frac1{(2\pi)^{d/2}\sqrt{\det\Sigma}}e^{-(x-m)^{\mathsf T}\Sigma^{-1}(x-m)/2}$, whose level sets are the ellipsoids of Volume~0's spectral theorem; this
+- `volume3-chance/chapters/ch07-walks.tex:43`: so that $u_0=1$, $u_2=\frac12$, $u_4=\frac38$. Stirling's formula (Volume~0, Theorems~5.6 and~6.4) gives $u_{2n}\sim\frac1{\sqrt{\pi n}}$, but the following
+- `volume3-chance/chapters/ch08-markov.tex:339`: self-adjoint: $\langle Pf,g\rangle_\pi=\sum_{x,y}\pi(x)P(x,y)f(y)g(x)=\langle f,Pg\rangle_\pi$. By the spectral theorem (Volume~0, Theorem~7.7, in this inner product)
+- `volume3-chance/chapters/ch10-martingales.tex:71`: expanding $\|X+Y\|^2$ with it gives the triangle inequality $\|X+Y\|\le\|X\|+\|Y\|$. So $L^2$ is a Euclidean space as in Volume~0, Chapter~7, except
+- `volume3-chance/chapters/ch10-martingales.tex:668`: The example after Theorem~\ref{thm:L2conv}. For the variance, $\sum\frac1{n^2}=\frac{\pi^2}6$ (Volume~0).
+- `volume4-calculation/chapters/ch01-finite.tex:177`: With $a_k=(-1)^{k+1}$ this is the alternating series test of Volume~0. The more interesting case is trigonometric.
+- `volume4-calculation/chapters/ch01-finite.tex:270`: (two polynomials that agree at infinitely many points are equal, Volume~0, Chapter~3). The left side $m^n$ counts the maps
+- `volume4-calculation/chapters/ch01-finite.tex:551`: $(k-|A|)^n$. By inclusion--exclusion (Volume~0, Chapter~8) the maps missing no point number
+- `volume4-calculation/chapters/ch02-generating.tex:55`: non-negative integers with sum $n$, which is $\binom{n+m-1}{m-1}$ by the stars-and-bars count (Volume~0, Chapter~8).
+- `volume4-calculation/chapters/ch02-generating.tex:100`: and again in this volume. Volume~0 used them only in special cases, so we prove them here.
+- `volume4-calculation/chapters/ch02-generating.tex:156`: absolutely for $|z|<r$, their Cauchy product converges to the product of the sums (Volume~0, Chapter~5). And a series
+- `volume4-calculation/chapters/ch02-generating.tex:233`: using $H_n=\ln n+\gamma+O(\frac1n)$ (Volume~0, Chapter~5, where $\gamma\approx0.5772$ is Euler's constant).
+- `volume4-calculation/chapters/ch03-series.tex:20`: Volume~0 proved $\zeta(2)=\frac{\pi^2}6$ with Vi\`ete's relations between the roots of a polynomial and promised five more
+- `volume4-calculation/chapters/ch04-integrals.tex:28`: Volume~0 integrated continuous functions on closed bounded intervals. With a parameter, the key is that continuity on a
+- `volume4-calculation/chapters/ch04-integrals.tex:37`: Bolzano--Weierstrass (Volume~0, Chapter~5) to the first coordinates, then to the second coordinates along the extracted
+- `volume4-calculation/chapters/ch04-integrals.tex:141`: $\bigl(\int_0^\infty e^{-x^2}\dd x\bigr)^2=\frac\pi4$, and $\int_0^\infty e^{-x^2}\dd x=\frac{\sqrt\pi}2$. Volume~0 found it by Wallis integrals, and Volume~3
+- `volume4-calculation/chapters/ch05-gamma.tex:95`: of $\ln$, Volume~0, Chapter~4) gives $A^\lambda B^{1-\lambda}\le\lambda A+(1-\lambda)B$. Apply it, for each $t$, to
+- `volume4-calculation/chapters/ch05-gamma.tex:161`: For every $x>0$, with $\gamma$ Euler's constant (Volume~0, Proposition~5.5),
+- `volume4-calculation/chapters/ch05-gamma.tex:178`: Volume~0 proved $n!\sim\sqrt{2\pi n}\bigl(\frac ne\bigr)^n$ (Theorems~5.6 and~6.4). Log-convexity fills in the gaps between
+- `volume4-calculation/chapters/ch05-gamma.tex:195`: and the left side is at least $\frac n{n+1}$. So $\Gamma(x)=\Gamma(n)n^t(1+o(1))$, uniformly in $t$. By Volume~0,
+- `volume4-calculation/chapters/ch05-gamma.tex:377`: and recover the Wallis integrals $W_n=\int_0^{\pi/2}\sin^n\theta\dd\theta$ of Volume~0, Chapter~6.
+- `volume4-calculation/chapters/ch05-gamma.tex:424`: the reflection formula and $\prod_{k=1}^{m-1}\sin\frac{k\pi}m=\frac m{2^{m-1}}$ (Volume~0, Exercise~2.5).
+- `volume4-calculation/chapters/ch06-fourier.tex:40`: $\langle f,f\rangle\ge0$, so Cauchy--Schwarz holds with the proof of Volume~0, Chapter~4: $|\langle f,g\rangle|\le\|f\|_2\|g\|_2$. (A piecewise continuous
+- `volume4-calculation/chapters/ch06-fourier.tex:81`: This completes the Riemann--Lebesgue lemma of Volume~0, Exercise~6.6, which assumed $f$ of class $C^1$: here $f$ is only
+- `volume4-calculation/chapters/ch07-fft.tex:19`: imaging, radar and modern cryptography practical, and it keeps a promise of Volume~0, Chapter~2: polynomials, and
+- `volume4-calculation/chapters/ch07-fft.tex:254`: This recovers Volume~0, Exercise~2.8: the quadratic Gauss sum has modulus $\sqrt p$, because the Legendre symbol, like any
+- `volume4-calculation/chapters/ch07-fft.tex:281`: A \emph{circulant} matrix has entries $C_{kl}=c_{k-l}$ for some $c\in\C^n$. Show that $C=F_n^{-1}\operatorname{diag}(\hat c)F_n$. Deduce $\det C=\prod_j\hat c_j$ (Volume~0,
+- `volume4-calculation/chapters/ch07-fft.tex:333`: determinants, $\det C=\prod_j\hat c_j$, and $\hat c_j=P(\omega^{-j})$ with $P(X)=\sum_kc_kX^k$, which is Volume~0, Exercise~2.7. To solve $Cx=y$, compute $\hat y$ by
+- `volume4-calculation/chapters/ch08-transform.tex:15`: a question that tormented Gauss for four years: the sign of the quadratic Gauss sum, promised in Volume~0 and Volume~1. At the
+- `volume4-calculation/chapters/ch09-complex.tex:99`: Proposition~2.1 of Volume~0, $e^{x+iy}=e^x(\cos y+i\sin y)$: $\exp$ never vanishes, and $e^z=1$ exactly when $z\in2\pi i\Z$.
+- `volume4-calculation/chapters/ch09-complex.tex:310`: Volume~0 (Theorem~3.3) proved this by d'Alembert's argument on the minimum of $|p|$. Here it falls out of Liouville in two
+- `volume4-calculation/chapters/ch10-zeta.tex:140`: $\sum_{n\le N}\phi_n(1)=H_N-\log(N+1)$, which tends to $\gamma$ (Volume~0, Proposition~5.5).
+- `volume4-calculation/chapters/ch10-zeta.tex:391`: $\eta(1)=1-\frac12+\frac13-\cdots=\log2$ (Volume~0) and the continuity of $\eta$ at $1$.
+- `volume4-calculation/chapters/ch11-asymptotics.tex:33`: These are the notations of Volume~0, used freely since. An \emph{asymptotic expansion} goes one step further.
+- `volume4-calculation/chapters/ch11-asymptotics.tex:56`: (b) For every $K$, $x^Ke^{-x}\to0$ (Volume~0), so $e^{-x}=O(x^{-K})$.
+- `volume4-calculation/chapters/ch11-asymptotics.tex:176`: Since $\bar B_{2M}$ is bounded, the last integral converges as $n\to\infty$; letting $n\to\infty$ in $H_n-\ln n$ (which tends to $\gamma$, Volume~0,
+- `volume4-calculation/chapters/ch11-asymptotics.tex:253`: $(x+N+\frac12)\ln(x+N)=(x+N+\frac12)\ln N+x+o(1)$, because $\ln(x+N)-\ln N=\frac xN+O(N^{-2})$. Volume~0's Stirling formula says
+- `volume6-spaces/chapters/ch01-sets.tex:22`: integers and the rationals, then the reals, as limits of rational Cauchy sequences. The axiom that Volume~0 took for
+- `volume6-spaces/chapters/ch01-sets.tex:187`: of inequalities of Volume~0 hold in any ordered field, with the same proofs. $\Q$ lacks the least upper bound property:
+- `volume6-spaces/chapters/ch01-sets.tex:263`: From now on we identify $q$ with $\iota(q)$. The axiom of Volume~0 is now a theorem. It is the only one needed: every
+- `volume6-spaces/chapters/ch01-sets.tex:565`: \idea A least upper bound of $A$ would be a square root of $2$, and Volume~0 shows that $\sqrt2$ is irrational. To stay inside $\Q$, use an
+- `volume6-spaces/chapters/ch02-metric.tex:25`: $\sin$ and $\pi$, used since Volume~0, are finally defined, by power series, and $\pi$ appears not from a circle but as
+- `volume6-spaces/chapters/ch02-metric.tex:267`: A confession is in order. Since Volume~0 we have used $e^{i\theta}$, $\cos$, $\sin$ and $\pi$ as if their properties were
+- `volume6-spaces/chapters/ch02-metric.tex:274`: Volume~0 admitted the basic properties of $\exp$, $\ln$, $\cos$, $\sin$ and $\pi$. Here they are defined and proved, in the Banach space $\C$.
+- `volume6-spaces/chapters/ch02-metric.tex:317`: $\ln'(x)=\frac1{\exp'(\ln x)}=\frac1x$ (the derivative of an inverse function, Volume~0).
+- `volume6-spaces/chapters/ch03-topology.tex:201`: This is the theorem Volume~0 admitted, and Lemma~\ref{lem:monoivt} of Chapter~2 was a special case. The \emph{connected components} of $X$ are the
+- `volume6-spaces/chapters/ch03-topology.tex:316`: surface. The intermediate value theorem, admitted in Volume~0, turns out to be a statement about connectedness of
+- `volume6-spaces/chapters/ch04-compact.tex:10`: spot? On a segment, yes: that is the Bolzano--Weierstrass theorem, and the reason Volume~0 could find maxima of continuous
+- `volume6-spaces/chapters/ch04-compact.tex:22`: This chapter first keeps the last promises of Volume~0: extreme values, Heine's uniform continuity, Rolle and the mean value
+- `volume6-spaces/chapters/ch04-compact.tex:116`: Volume~0 admitted this for $K=[a,b]$; it is now proved. Here is a first use, promised in Chapter~2.
+- `volume6-spaces/chapters/ch04-compact.tex:202`: Volume~0 admitted the mean value theorem; it rests on extreme values. A function $f$ defined near $c$ is \emph{differentiable} at $c$ if
+- `volume6-spaces/chapters/ch04-compact.tex:203`: $\frac{f(x)-f(c)}{x-c}$ has a limit $f'(c)$ as $x\to c$, $x\ne c$ (as throughout Volume~0).
+- `volume6-spaces/chapters/ch04-compact.tex:224`: With Theorem~\ref{thm:mvt}, every result of Volume~0 that relied on the mean value theorem (Taylor's formula with remainder, the
+- `volume6-spaces/chapters/ch04-compact.tex:637`: fundamental theorem of calculus (Volume~0) $y$ is $C^1$ with $y'(t)=f(t,y(t))$ and $y(0)=y_0$.
+- `volume6-spaces/chapters/ch07-integral.tex:23`: This chapter keeps three promises. The integral of a continuous function on a segment exists, as Volume~0 admitted, and Lebesgue's
+- `volume6-spaces/chapters/ch07-integral.tex:144`: $\sup_PL(f,P)=\inf_PU(f,P)$, the common value being $\int_a^bf$. This is equivalent to the definition by Riemann sums or by step functions used in Volume~0.
+- `volume6-spaces/chapters/ch07-integral.tex:160`: This is the integral that Volume~0 admitted; everything there (the fundamental theorem of calculus, integration by parts, Taylor's formula) was
+- `volume6-spaces/chapters/ch07-integral.tex:337`: $\lambda$, Chapter~6.) Volume~0 proved it only for $C^1$ functions.
+- `volume6-spaces/chapters/ch07-integral.tex:368`: The $t$-derivative of $e^{-x^2}\cos tx$ is bounded by $xe^{-x^2}$. For the integration by parts, $-xe^{-x^2}$ is the derivative of $\frac12e^{-x^2}$. $I(0)=\frac{\sqrt\pi}2$ (Volume~0).
+- `volume6-spaces/chapters/ch08-products.tex:21`: Volume~0, Chapter~5, swapped double series; Volume~3 admitted Tonelli and Fubini as (A2); Volume~4 used Tonelli for Ritelli's
+- `volume6-spaces/chapters/ch08-products.tex:135`: With counting measure on $\N$, Tonelli and Fubini are statements about double series, as in Volume~0, Chapter~5: a double series of non-negative terms can be summed in either order, with the
+- `volume6-spaces/chapters/ch08-products.tex:250`: agree. And in dimension one, for $\varphi$ increasing, it is the substitution rule of Volume~0, now valid for all non-negative or integrable Borel functions.
+- `volume6-spaces/chapters/ch08-products.tex:327`: One formula, $\int_Vf=\int_U(f\circ\varphi)\,|J_\varphi|$, contains the substitution rule of Volume~0, polar coordinates, the volume of balls in every dimension, the Gaussian integral, the density of every
+- `volume6-spaces/chapters/ch09-lp.tex:18`: $1\le p\le\infty$, and three inequalities, Young's, H\"older's and Minkowski's, hold them together. Volume~0, Chapter~4, proved
+- `volume6-spaces/chapters/ch09-lp.tex:49`: For $p=q=2$ this is the Cauchy--Schwarz inequality, and with counting measure on $\{1,\dots,n\}$ it is the inequality of Volume~0.
+- `volume6-spaces/chapters/ch10-radon.tex:30`: its sum does not depend on the order (Volume~0). The difference of two finite measures is one; the Jordan decomposition below says that there are no others. A set $P$ is
+- `volume7-analysis/chapters/ch01-banach.tex:411`: limit (Volume~0), so $g=p$ on $c$, and Theorem~\ref{thm:hb} gives $L$. (b) For $y=x-Sx$, $\frac1n\sum_{k\le n}y_k=\frac{x_1-x_{n+1}}n\to0$, so $p(y)=p(-y)=0$, hence $L(y)\le0$ and $-L(y)=L(-y)\le0$: $L(y)=0$. If $x\ge0$,
+- `volume7-analysis/chapters/ch02-hilbert.tex:31`: $x\ne0$. It is conjugate-linear in the second variable. Put $\|x\|=\langle x,x\rangle^{1/2}$. Expanding $\|x+ty\|^2\ge0$ gives the \emph{Cauchy--Schwarz inequality} $|\langle x,y\rangle|\le\|x\|\|y\|$ (Volume~0), and with it
+- `volume7-analysis/chapters/ch03-operators.tex:205`: absolutely convergent series is the series of the convolution, by Fubini for series (Volume~0). So $W$ is a commutative Banach algebra with unit $1=e^{i0t}$.
+- `volume7-analysis/chapters/ch04-spectral.tex:60`: To see that $M\in\sigma(T)$, note that $B(x,y)=\langle(M-T)x,y\rangle$ is a positive Hermitian form, so it satisfies the Cauchy--Schwarz inequality $|B(x,y)|^2\le B(x,x)B(y,y)$ (Volume~0's proof applies word for word). With $y=(M-T)x$,
+- `volume8-shapes/chapters/geometry-ch01-euclid.tex:22`: This chapter proves all of these, and the tool is the one from Volume~0, Chapter~2: complex numbers. A point of the plane is a
+- `volume9-higher-structures/chapters/ch11-compact.tex:161`: (Volume~0, Theorem~3.11), and these are, up to sign, the coefficients of the characteristic polynomial; so $f(U)=s_\lambda(\text{eigenvalues of }U)$ is a continuous class function on $U(n)$. By Weyl's formula and
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:18`: it needs Volume~3 to set it up and Volume~0 to finish it. This chapter is made of such pairs. Each problem crosses from one volume
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:393`: factorisation (Volume~0, Chapter~3), $A=\lambda x^a(1+x)^b(1+x+x^2)^c(1-x+x^2)^d$ with $\lambda\in\Q^*$ and $0\le a,b,c,d\le2$,
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:403`: \tools Volume~3, Chapter~3 (generating functions of sums); Volume~0, Chapter~3 (unique factorisation in $\Q[X]$).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:430`: \tools Volume~3, Chapter~3 (generating functions); Volume~0, Chapter~4 (AM--GM) and Chapter~3 (roots of polynomials).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:441`: $p$, it equals $p$. So one of the polynomials $P-p$, $P+p$ has infinitely many roots, hence is zero (Volume~0, Chapter~3), and
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:453`: \tools Volume~1, Chapters~2--3 (primes, congruences); Volume~0, Chapter~3 (a non-zero polynomial has finitely many roots).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:469`: degree at most $p-1$, so it is zero (Volume~0, Chapter~3; the proof works over any field). So $P$ is unique. (As a check: there
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:479`: \tools Volume~1, Chapters~3 and~5 (Fermat, power sums modulo $p$); Volume~0, Chapter~3 (Lagrange interpolation, roots).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:513`: \tools Volume~2, Chapter~9 (finite fields, Frobenius); Volume~1, Chapter~6 (quadratic reciprocity); Volume~0, Chapter~7 (linear
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:538`: apply Volume~0, Chapter~3 in each variable). With $\alpha=\beta=\frac12$: $\sum_k\binom{1/2}k\binom{1/2}{n-k}=\binom1n$, which is
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:557`: \tools Volume~1, Chapter~12 (convergence in $\Q_p$); Volume~0, Chapters~1 and~3 (binomial identities, polynomials); Volume~3,
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:586`: \tools Volume~2, Chapter~9 (Frobenius in characteristic $p$); Volume~1, Chapter~3 (Lucas's theorem); Volume~0, Chapter~1.
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:597`: \writeup (a) The addition formula $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$ (Volume~0, Chapter~1) with $n=m$ gives
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:605`: by Cassini's identity (Volume~0, Chapter~7). With $m=2^N$, $N\ge1$, this says $\bigl(3-\frac{F_{2^{N+1}-1}}{F_{2^{N+1}}}\bigr)-
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:609`: \tools Volume~0, Chapters~1 and~7 (Fibonacci identities, Cassini); Volume~4, Chapter~2 (Binet's formula).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:648`: \tools Volume~1, Chapters~1--2 (coprimality, infinitely many primes); Volume~0, Chapter~5 (monotone sequences, series);
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:665`: ($d\mid i$ implies $d\le i$) with $A_{ii}=1$, so $\det A=1$ and $\det\bigl(g(\gcd(i,j))\bigr)=\det D=f(1)\cdots f(n)$ (Volume~0,
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:673`: \tools Volume~1, Chapter~4 (Dirichlet convolution, Möbius inversion); Volume~0, Chapter~7 (determinants of triangular matrices).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:692`: order (Volume~0, Chapter~5): summing over $k$ first gives the Lambert series, and grouping the terms with $kn=m$ gives
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:705`: \tools Volume~1, Chapter~4 (convolution identities); Volume~0, Chapter~5 and Volume~4, Chapter~2 (summable families, power series).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:734`: otherwise (Volume~0, Chapter~2). So
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:747`: \tools Volume~0, Chapter~2 (roots of unity filter); Volume~3, Chapter~2 (independence) and Chapter~8 (periodic chains).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:806`: polynomials); Volume~0, Chapter~7 (diagonalisation).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:864`: \tools Volume~3, Chapter~1 (Buffon's needle) and Chapter~5 (uniform laws, independence); Volume~0, Chapter~6 (integrals).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:888`: $r_i^*=r_i-\sum_{j<i}c_{ij}r_j^*$ with $r_1^*,\dots,r_n^*$ orthogonal (Volume~0, Chapter~7). Subtracting from a row a combination
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:893`: \tools Volume~3, Chapter~2 (expectation, independence); Volume~0, Chapter~7 (determinants, Gram--Schmidt) and Chapters~5--6 (Stirling's formula).
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:938`: \tools Volume~1, Chapter~6 (Legendre symbol, $\chi(-1)$, residue counts); Volume~0, Chapter~7 (block matrices); Volume~2,
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:975`: \tools Volume~3, Chapter~4 (Hoeffding's inequality, union bound); Volume~4, Chapter~6 (Parseval); Volume~0, Chapter~2.
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:1004`: \tools Volume~0, Chapter~2 (modulus of complex numbers); Volume~4, Chapter~6 (Parseval, through Problem~\ref{pb:flat});
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:1023`: diagonalisable over $\C$ (Volume~0, Chapter~7), with eigenvalues $\lambda_1,\lambda_2$ that are roots of unity, and the order of
+- `volumeP1-crossroads/chapters/ch01-two-volumes.tex:1055`: algebraic integers, congruences, binomial coefficients modulo $p$); Volume~0, Chapter~7 (diagonalisation, scalar products).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:449`: if $\sum A=0$ and $0$ otherwise (Volume~0, Chapter~2). So
+- `volumeP1-crossroads/chapters/ch02-roots.tex:470`: \tools Volume~0, Chapter~2 (roots of unity); Volume~3, Chapter~3 (generating functions).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:498`: \tools Volume~3, Chapters~2 and~3 (independence, generating functions); Volume~0, Chapter~2 (roots of unity).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:537`: \tools Volume~1, Chapter~4 (Möbius inversion, multiplicative functions); Volume~0, Chapter~2 (roots of unity).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:568`: \tools Volume~0, Chapter~2 (geometric sums of roots of unity); Volume~4, Chapter~4 (multiple integrals).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:595`: \tools Volume~3, Chapter~3 and Volume~4, Chapter~2 (generating functions); Volume~0, Chapter~3 (multiplicity of roots).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:625`: dimension count, Volume~0, Chapter~7, which holds over $\mathbb F_2$ as well). So a configuration $c$ can be switched off if
+- `volumeP1-crossroads/chapters/ch02-roots.tex:628`: \tools Volume~2, Chapters~6 and~9 (polynomial rings, finite fields); Volume~0, Chapter~7 (rank and orthogonality).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:671`: \tools Volume~2, Chapter~3 (Burnside's lemma); Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~1 (finite sums).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:702`: \tools Volume~1, Chapters~4 and~5 (Möbius inversion, cyclotomic polynomials); Volume~0, Chapter~3 (polynomials and their roots).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:749`: (irreducible, Volume~0, Chapter~3) divides $A$; by degrees $A=c\Phi_p$, so all $a_k=c$. Conversely
+- `volumeP1-crossroads/chapters/ch02-roots.tex:765`: \tools Volume~0, Chapter~3 (irreducibility of $\Phi_p$); Volume~2, Chapters~8 and~10 (tower law, cyclotomic fields).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:783`: $d$. Its coefficients are, up to sign, the elementary symmetric functions of the $\alpha_i^k$ (Volume~0, Chapter~3), and since
+- `volumeP1-crossroads/chapters/ch02-roots.tex:799`: lemma (Volume~0, Chapter~3) a primitive divisor of a monic integer polynomial is monic up to sign, and $5X^2-6X+5$ is
+- `volumeP1-crossroads/chapters/ch02-roots.tex:802`: \tools Volume~0, Chapters~3 and~7 (Viète, Gauss's lemma, characteristic polynomials); Volume~2, Chapters~7 and~10 (Jordan form,
+- `volumeP1-crossroads/chapters/ch02-roots.tex:915`: \tools Volume~0, Chapter~3 (Viète, cubic equations); Volume~2, Chapter~10 (the period polynomial of the heptagon).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:955`: \tools Volume~0, Chapter~3 (roots and derivatives); Volume~2, Chapters~4 and~10 (signs of permutations, Galois group of
+- `volumeP1-crossroads/chapters/ch02-roots.tex:999`: \tools Volume~0, Chapters~2 and~3 (de Moivre, polynomials and roots); Volume~1, Chapter~6 (Euler's criterion, Gauss's lemma).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:1016`: Riemann sums converge (Volume~0, Chapter~6). By (a) with $\theta=0$,
+- `volumeP1-crossroads/chapters/ch02-roots.tex:1031`: \tools Volume~0, Chapters~2 and~6 (roots of unity, Riemann sums); Volume~4, Chapter~4 (integrals); Problem~\ref{pb:kronecker}.
+- `volumeP1-crossroads/chapters/ch02-roots.tex:1059`: \tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (roots of unity, determinants).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:1090`: \tools Volume~0, Chapter~2 (complex numbers and rotations); Volume~4, Chapter~7 (discrete Fourier transform).
+- `volumeP1-crossroads/chapters/ch02-roots.tex:1116`: \tools Volume~4, Chapter~7 (discrete Fourier transform); Volume~0, Chapters~2 and~7 (rotations, diagonalisation).
+- `volumeP1-crossroads/chapters/ch03-primes.tex:630`: \tools Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapters~1 and~3 (sums of squares, elementary symmetric functions).
+- `volumeP1-crossroads/chapters/ch03-primes.tex:647`: \tools Volume~0, Chapter~8 (Vandermonde, Pascal); Volume~1, Chapter~3 (binomial coefficients modulo $p$).
+- `volumeP1-crossroads/chapters/ch03-primes.tex:671`: \tools Volume~1, Chapters~3 and~5 (Wilson, Fermat, orders); Volume~0, Chapter~8 (binomial theorem).
+- `volumeP1-crossroads/chapters/ch03-primes.tex:768`: \writeup Let $Q=\prod_{n\le x}(n^2+1)$. Then $\log Q\ge\sum_{n\le x}2\log n=2\log\lfloor x\rfloor!=2x\log x+O(x)$ (Volume~0, Chapter~5 or
+- `volumeP1-crossroads/chapters/ch03-primes.tex:812`: \tools Volume~4, Chapter~5 (Beta function); Volume~1, Chapters~1 and~2 (lcm, Chebyshev bounds); Volume~0, Chapter~8 (binomial coefficients).
+- `volumeP1-crossroads/chapters/ch04-symmetry.tex:713`: \tools Volume~0, Chapter~7 (linear algebra); Volume~2, Chapter~3 (Burnside); Volume~3, Chapter~2 (Cauchy--Schwarz).
+- `volumeP1-crossroads/chapters/ch04-symmetry.tex:743`: \tools Volume~2, Chapters~3 and~11 (Burnside, orthogonality of characters); Volume~0, Chapter~1 (binomial coefficients).
+- `volumeP1-crossroads/chapters/ch04-symmetry.tex:763`: \tools Volume~3, Chapters~1 and~2 (conditioning); Volume~0, Chapter~1 (the hockey-stick identity).
+- `volumeP1-crossroads/chapters/ch04-symmetry.tex:1014`: \tools Volume~2, Chapter~11 (characters, orthogonality); Volume~0, Chapter~7 (bilinear forms, eigenvalues).
+- `volumeP1-crossroads/chapters/ch04-symmetry.tex:1053`: \tools Volume~2, Chapter~11 (characters, Schur's lemma, orthogonality); Volume~4, Chapter~5 (Beta function); Volume~0, Chapter~7 (eigenvalues).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:639`: \tools Volume~0, Chapter~7 (rank--nullity, invariant subspaces); Volume~2, Chapter~3 (orbit--stabiliser); counting independent vectors for the
+- `volumeP1-crossroads/chapters/ch05-fields.tex:700`: \tools Volume~0, Chapter~7; Volume~2, Chapter~3; the Gaussian binomial product formula.
+- `volumeP1-crossroads/chapters/ch05-fields.tex:725`: \tools Volume~0, Chapter~3 (roots of polynomials); Volume~0, Chapter~7 (determinants).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:755`: \tools Volume~0, Chapter~3 (division, roots).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:804`: \tools Problems~\ref{pb:nullstellensatz} and~\ref{pb:cauchydav}; Volume~0, Chapter~1 (binomial and Catalan numbers).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:860`: \tools Problem~\ref{pb:nullstellensatz}; Volume~0, Chapter~7 (hyperplanes).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:884`: \tools Volume~0, Chapter~7 (dimension counting); Problem~\ref{pb:nullstellensatz}(a). Part~(a) is also Volume~2, Exercise~M.10; the construction of (b) is new here.
+- `volumeP1-crossroads/chapters/ch05-fields.tex:917`: \tools Volume~2, Chapter~9 (Frobenius); Volume~0, Chapter~7 (determinants).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:959`: \tools Volume~0, Chapter~7 (rank, dimension); Volume~3, Chapter~4 (the exponential moment trick of Chernoff in (e)).
+- `volumeP1-crossroads/chapters/ch05-fields.tex:1030`: \tools Volume~2, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Volume~0, Chapter~7.
+- `volumeP1-crossroads/chapters/ch05-fields.tex:1066`: \tools Volume~2, Chapter~9 (subfields of $\mathbb F_{q^3}$, cyclicity of $\mathbb F_q^*$); Volume~0, Chapter~7 (dimension of an
+- `volumeP1-crossroads/chapters/ch05-fields.tex:1160`: \tools Volume~0, Chapter~3 (Lagrange interpolation); Volume~3, Chapter~1 (inclusion--exclusion, binomial law); Chapter~4 of this book
+- `volumeP1-crossroads/chapters/ch06-random.tex:358`: $\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~0, Exercise~1.7).
+- `volumeP1-crossroads/chapters/ch06-random.tex:677`: \writeup (a) By Volume~0, Exercise~1.7, $\gcd(F_a,F_b)=F_{\gcd(a,b)}$. Since $F_1=F_2=1$ and $F_g\ge2$ for $g\ge3$, the gcd is $1$ exactly
+- `volumeP1-crossroads/chapters/ch06-random.tex:684`: \tools Volume~0, Chapter~1 (Fibonacci gcd, Binet's formula); Problem~\ref{pb:gcdmean}.
+- `volumeP1-crossroads/chapters/ch06-random.tex:738`: \tools Volume~0, Chapters~4 and~7 (convexity; determinants as areas); Volume~1, Chapter~1.
+- `volumeP1-crossroads/chapters/ch06-random.tex:795`: \tools Volume~1, Chapters~1 and~8 (Euclid's algorithm, continued fractions); Volume~0, Chapter~5 (the golden ratio).
+- `volumeP1-crossroads/chapters/ch06-random.tex:862`: \tools Volume~0, Chapter~5 (uniform convergence, term-by-term differentiation); Volume~4, Chapter~10 (values of $\zeta$); Problem~\ref{pb:gaussmeasure}.
+- `volumeP1-crossroads/chapters/ch06-random.tex:911`: \tools Volume~0, Chapter~5 (comparison of sums and integrals).
+- `volumeP1-crossroads/chapters/ch06-random.tex:977`: \tools Volume~0, Chapter~7 (linear maps); Volume~3, Chapters~2 and~4 (linearity of expectation, Markov's inequality).
+- `volumeP1-crossroads/chapters/ch07-genfun.tex:520`: \tools Volume~0, Chapter~8 (double counting).
+- `volumeP1-crossroads/chapters/ch07-genfun.tex:839`: \tools Volume~1, Exercise~3.9 (Lucas); Volume~0, Chapter~1 (Fibonacci numbers).
+- `volumeP1-crossroads/chapters/ch07-genfun.tex:879`: (b) Let $z\ge1$ be the least index with $m\mid F_z$. Since $\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~0, Exercise~1.7), if $m\mid F_n$ then
+- `volumeP1-crossroads/chapters/ch07-genfun.tex:887`: \tools Volume~0, Exercise~1.7 ($\gcd$ of Fibonacci numbers); Volume~2, Chapter~1 (finite order of a permutation).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:41`: Cauchy--Schwarz inequality does the rest (Volume~0, Theorem~4.4; compare the Kővári--Sós--Turán theorem, Volume~3, Theorem~B.6).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:419`: By convexity (Jensen, Volume~0, Theorem~4.2), $\sum_x\binom{d_x}2\ge n\binom{2u/n}2$, so $\frac{2u}n\bigl(\frac{2u}n-1\bigr)\le2(n-1)$. Solving the
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:422`: \tools Volume~0, Theorems~4.2 and~4.4 (Jensen, Cauchy--Schwarz); Volume~3, Theorem~B.6 (the same argument for $K_{s,t}$).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:440`: \tools Volume~0, Theorem~4.4 (Cauchy--Schwarz).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:523`: \tools Volume~0, Theorem~4.4 (Cauchy--Schwarz); Volume~5, Theorem~2.6 (the mean of $\varphi$); Volume~1, Chapter~1 (gcd).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:541`: \tools Volume~11, Appendix~A (adjacency eigenvalues); Volume~0, Chapter~7 (spectral theorem).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:563`: \tools Volume~0, Chapter~8 (double counting); Volume~3, Chapter~2 (linearity of expectation).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:588`: \tools Volume~0, Chapter~7 (spectral theorem), Theorem~4.2 (Jensen); Volume~11, Lemma~A.1; Problem~\ref{pb:paley}.
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:600`: (Volume~11, Corollary~A.5), $\tau(G)=\frac1n\mu_2\cdots\mu_n$, and $\sum_i\mu_i=\operatorname{tr}L=\sum_vd_v=2m$. By AM--GM (Volume~0,
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:609`: \tools Volume~11, Corollary~A.5 (matrix-tree theorem); Volume~0, Theorem~4.3 (AM--GM).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:649`: \tools Volume~3, Theorem~A.16 (LYM and Sperner); Volume~0, Exercise~5.7 (Stirling's formula).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:679`: \tools Volume~0, Chapter~8 (counting); Problem~\ref{pb:chebyshevsum} (the two-term case).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:698`: \tools Volume~0, Chapter~1 (Pascal's rule).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:717`: \tools Volume~0, Chapter~4 (convexity).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:740`: \tools Volume~3, Theorem~12.2 (the probabilistic method, whose ``derandomisation'' this is); Volume~0, Chapter~8.
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:817`: \tools Volume~0, Chapter~3 (polynomials, Rolle's theorem), Chapter~8 (permutations and cycles).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:836`: \tools Volume~0, Chapter~8 (inclusion--exclusion, derangements).
+- `volumeP1-crossroads/chapters/ch08-inequalities.tex:879`: \tools Volume~2, Chapter~1 (abelian groups); Volume~0, Chapter~8 (injections).
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:466`: \tools{Volume~1, Theorem~2.4 (Chebyshev's bound); Volume~0, Chapter~6 (integration by parts); Volume~4, Chapter~4.}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:496`: \tools{Volume~4, Theorem~3.8 (the same method for $\pi^2$); Volume~0, Exercise~6.4 ($e$ is irrational).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:562`: \tools{Problems~\ref{pb:logtwo} and~\ref{pb:doubleint}; Volume~0, Theorem~4.3 (AM--GM); Volume~5, Theorem~5.5 (prime number theorem).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:655`: \tools{Volume~4, Chapter~5 (Beta integral); Volume~0, Chapter~3 (division of polynomials).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:680`: \tools{Volume~4, Theorem~5.11 (Beta and Gamma); Volume~0, Chapter~6 (integrals of rational functions).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:701`: \tools{Volume~4, Chapter~2 (power series) and Proposition~11.12 ($\binom{2n}n\sim\frac{4^n}{\sqrt{\pi n}}$); Volume~0, Chapter~6 (derivatives).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:725`: \tools{Volume~0, Chapter~6 (Taylor series); Volume~4, Proposition~11.12 (central binomial coefficient).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:819`: \tools{Volume~3, Chapter~5 (densities); Volume~4, Chapter~2 (term-by-term differentiation); Volume~0, Chapter~5 (alternating harmonic series).}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:869`: \tools{Volume~3, Chapter~5 (uniform variables, $\mathbb E[X]=\sum P(X>n)$); Volume~0, Chapter~8.}
+- `volumeP1-crossroads/chapters/ch09-integrals.tex:898`: \tools{Problem~\ref{pb:passone}; Volume~0, Chapter~8 (inclusion--exclusion); Volume~3, Chapter~5.}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:580`: \tools{Volume~4, Theorem~7.3 (orthogonality and Parseval for the DFT); Volume~0, Chapter~1 (Cauchy--Schwarz).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:621`: \tools{Volume~1, Chapter~3 (inverses modulo $p$); Volume~0, Chapter~3 (a quadratic has at most two roots in a field).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:684`: \tools{Volume~4, Theorem~7.3 (DFT inversion) and Theorem~8.14 (Gauss's evaluation); Volume~0, Chapter~7 (diagonalisation).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:712`: \tools{Volume~0, Chapter~2 (roots of unity); Volume~4, Chapter~7 (characters of $\Z/n\Z$).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:844`: \tools{Volume~0, Chapter~2 (Euler's formula); Volume~1, Chapter~1 (binary expansions); Volume~3, Chapter~4 (moments).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:882`: \tools{Volume~3, Exercise~5.7 and Theorem~6.8 (the Cantor law, characteristic functions); Volume~0, Chapter~2 (trigonometry).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:943`: \tools{Volume~3, Chapter~2 (binomial law) and Volume~0, Chapter~5 (Stirling's formula); Volume~0, Chapter~1 (Cauchy--Schwarz).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:972`: \tools{Volume~3, Chapter~1 (inclusion--exclusion, Möbius inversion on subsets); Volume~0, Chapter~3 (polynomials).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:1161`: \tools{Volume~0, Chapter~3 (roots of polynomials) and Chapter~7 (symmetric matrices); Volume~4, Lemma~6.8 (the Fejér kernel).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:1189`: \tools{Volume~0, Chapter~2 (trigonometric polynomials) and Chapter~3 (counting roots); Volume~4, Corollary~6.10 (Chebyshev polynomials).}
+- `volumeP1-crossroads/chapters/ch10-fourier.tex:1257`: \tools{Volume~4, Theorem~7.3 (DFT inversion and Parseval); Volume~0, Chapter~2 (roots of unity).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:585`: \tools{Volume~2, Chapter~1 (groups) and Theorem~11.14 (Fourier analysis on $\Z/n\Z$); Volume~3, Chapter~8; Cauchy--Schwarz (Volume~0).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:731`: \tools{Volume~3, Proposition~8.16 (eigenvalues of reversible chains); spectral theorem for symmetric matrices (Volume~0); Cauchy--Schwarz.}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:766`: \tools{Volume~3, Corollary~7.10 (gambler's ruin against an infinite bank) and Theorem~7.3; Catalan numbers (Volume~0).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:829`: \tools{Volume~3, Exercise~7.8; Problem~\ref{pb:commute}; Volume~0 (symmetric matrices, trace); Volume~2, Chapter~3 (group actions).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1058`: \tools{Problem~\ref{pb:period}; Volume~1, Chapters~1--2 (Chinese remainder theorem, $\pi(t)=o(t)$, the Euler product for $\zeta(2)$); Volume~0 (Gaussian integral).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1080`: (c) $u_{2m}\sim\frac1{\sqrt{\pi m}}$ by Stirling's formula (Volume~0, Theorem~5.6), so
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1092`: \tools{Volume~3, Theorem~7.3 and Theorem~7.12; Stirling's formula (Volume~0, Theorem~5.6).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1166`: \tools{Volume~3, Theorems~7.9 and 10.12, Lemma~7.8; harmonic sums (Volume~0).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1190`: \tools{Volume~3, Proposition~8.14 (detailed balance); polynomial interpolation (Volume~0).}
+- `volumeP1-crossroads/chapters/ch11-walks.tex:1256`: \tools{Volume~2, Chapter~4 (permutations); Volume~0 (counting, induction); Volume~3, Chapter~8 (riffle shuffles).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:28`: large. The tools come from Volume~0 (Stirling's formula, iterated sequences), Volume~3 (birthdays, coupons, local limit theorems) and
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:221`: \emph{The sine iteration, second term.} Volume~0, Exercise~5.4 showed that $u_{n+1}=\sin u_n$, with $0<u_0\le\frac\pi2$, satisfies $u_n\sim\sqrt{3/n}$.
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:357`: (a) Maximise $x^ne^{-ux}$ over $x\ge0$, then sum $\frac{e^{uk}}{k!}$. Remember $\ln n-\ln u=u$ and $e^u=\frac nu$. (b) Use $\ln m!\le(m+\frac12)\ln m-m+1$ (Volume~0), and note that $x\ln x-x$
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:471`: \tools{Volume~0, Chapter~5 (series, $\ln(1-x)$); Volume~4, Chapter~11 (the spirit of Laplace's method).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:507`: \tools{Volume~4, Theorem~9.10 (Cauchy's formula), Theorem~11.9 (Laplace's method) and the example of the central binomial coefficient in Chapter~11; Volume~0, Theorem~5.6 (Stirling).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:524`: (b) Let $m=\lceil e^u\rceil$, so $m=e^u+\eta$ with $0\le\eta<1$, and $b_n\ge\frac{m^n}{e\,m!}$. First $n\ln m\ge n\ln e^u=nu$. Next, Volume~0 (Chapter~5) shows that
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:539`: \tools{Volume~4, Chapter~2 (Dobi\'nski's formula); Volume~0, Chapter~5 (Stirling's estimate); Volume~0, Chapter~6 (maxima).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:567`: \tools{Volume~4, Theorem~2.9 (exponential formula) and Corollary~11.6 ($H_N-\ln N\to\gamma$); Volume~0, Chapter~5 (absolute convergence, products).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:684`: \tools{Volume~3, Exercise~6.5 (the limit $\frac12$); Volume~4, Theorem~11.8 (Stirling's series) and Theorem~11.9 (Laplace's method); Volume~0, Chapter~6 (inverse functions).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:708`: \tools{Volume~3, Theorem~2.14 (coupon collector) and Chapter~2 (Poisson law); Volume~0, Chapter~6 (integrals).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:762`: \tools{the tree-function identity $T=ze^T$; Volume~0, Theorem~5.6 (Stirling).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:785`: \tools{Volume~0, Chapter~5 (sequences, comparison with integrals); Volume~4, Corollary~11.6 (harmonic numbers).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:797`: (b) Let $e_k=\frac1{u_{k+1}^2}-\frac1{u_k^2}-\frac13$. The function $\frac1{\sin^2u}-\frac1{u^2}-\frac13$ is continuous on $\left]0,\frac\pi2\right]$ and $O(u^2)$ at $0$, so $|e_k|\le c\,u_k^2$. By Volume~0,
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:805`: \tools{Volume~0, Exercise~5.4 (the first term) and Chapter~6 (Taylor expansions).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:823`: \tools{Volume~0, Chapter~6 (derivatives, Taylor expansions of $\tan$ and $\arctan$).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:843`: \tools{Volume~0, Chapter~5 (sequences, recurrences); Volume~3, Chapter~4 (runs of heads).}
+- `volumeP1-crossroads/chapters/ch12-asymptotics.tex:977`: \tools{Volume~0, Chapter~7 (eigenvalues of $2\times2$ matrices); Volume~0, Chapter~5 (lim sup and lim inf).}
+- `volumeP1-crossroads/chapters/ch13-average.tex:564`: \tools{Legendre's formula (Volume~1); Volume~5, Theorem~5.5 and Proposition~1.2; dominated convergence for series (Volume~0).}
+- `volumeP1-crossroads/chapters/ch13-average.tex:954`: \tools{Conditional expectation and Jensen's inequality (Volume~3, Theorem~4.14); the harmonic numbers (Volume~0).}
+- `volumeP1-crossroads/chapters/ch13-average.tex:1036`: \tools{Geometric series (Volume~0); Volume~5, Chapter~10 (Cram\'er's model and the Hardy--Littlewood constants).}
+- `volumeP1-crossroads/chapters/ch14-meets.tex:553`: \tools{Jacobi's triple product and identity (Problem~\ref{pb:ramanujan5}); Lambert series; lattice points and volumes (Volume~0); $\sum_{m\le x}\frac1{m^2}=\zeta(2)+O(\frac1x)$.}
+- `volume7-analysis/chapters/ch11-harder.tex:520`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~4 (Gram matrices, spectral theorem for Hermitian matrices).}
+- `volume7-analysis/chapters/ch11-harder.tex:539`: \tools{Volume~0, Chapter~7 (dimension, Gram matrices); Volume~2, Chapter~4.}
 - `not-in-tree/ch03-operators.tex:434`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~3 (eigenvalues of symmetric matrices).}
 - `not-in-tree/ch03-operators.tex:510`: \tools{Problems~\ref{pb:szego} and~\ref{pb:szegodet}; Volume~0, Chapter~7 (determinants).}
 - `not-in-tree/ch03-operators.tex:534`: \tools{Volume~1, Chapter~4 (Dirichlet convolution, Möbius inversion); Volume~0, Chapter~7 (determinants).}
 - `not-in-tree/ch03-operators.tex:554`: \tools{Volume~0, Chapter~7 (inverse matrices); Volume~6, Theorem~7.9 (dominated convergence).}
-- `tome10-chance2/chapters/ch13-harder.tex:593`: \tools{Volume~0, Theorem~5.10 (Rolle); Volume~4, Exercise~2.3 (Dobiński's formula); Volume~3, Theorem~6.10 (Lindeberg).}
+- `volume10-chance2/chapters/ch13-harder.tex:593`: \tools{Volume~0, Theorem~5.10 (Rolle); Volume~4, Exercise~2.3 (Dobiński's formula); Volume~3, Theorem~6.10 (Lindeberg).}

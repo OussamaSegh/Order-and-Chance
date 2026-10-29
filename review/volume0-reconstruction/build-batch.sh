@@ -5,16 +5,16 @@ batch=${1:?batch identifier required}
 root=$(cd "$(dirname "$0")/../.." && pwd)
 source /workspace/order-chance-system/activate.sh
 export extra_mem_top=12000000
-out="$root/build/tome0-mathematical-maturity"
+out="$root/build/volume0-mathematical-maturity"
 record="/workspace/volume0-checkpoints/$batch"
 mkdir -p "$out" "$record"
 cd "$root"
 # A full source snapshot before each batch compilation preserves the implemented state.
-tar --exclude=.git --exclude=build --exclude=dist -cf "$record/source-before-build.tar" tome0-mathematical-maturity review/volume0-reconstruction common
+tar --exclude=.git --exclude=build --exclude=dist -cf "$record/source-before-build.tar" volume0-mathematical-maturity review/volume0-reconstruction common
 for pass in 1 2 3; do
-  (cd tome0-mathematical-maturity && xelatex -interaction=nonstopmode -halt-on-error \
+  (cd volume0-mathematical-maturity && xelatex -interaction=nonstopmode -halt-on-error \
     -output-directory="$out" -jobname=main \
-    '\def\TOMENUM{0}\def\TOMETITLE{Mathematical Maturity}\def\PRINTINNER{0.75in}\input{main.tex}') \
+    '\def\VOLUMENUM{0}\def\VOLUMETITLE{Mathematical Maturity}\def\PRINTINNER{0.75in}\input{main.tex}') \
     > "$record/pass-$pass.txt" 2>&1
 done
 python3 tools/check_book_layout.py "$out/main.log" "$out/main.oclayout"

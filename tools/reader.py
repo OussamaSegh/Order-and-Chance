@@ -1,6 +1,6 @@
-"""Build the online reader of a tome: one HTML page per chapter, for the GitHub Pages site.
+"""Build the online reader of a volume: one HTML page per chapter, for the GitHub Pages site.
 
-Usage: python3 tools/reader.py <tome> <build dir of the tome> <output dir>
+Usage: python3 tools/reader.py <volume> <build dir of the volume> <output dir>
 Reuses what build.sh made for the EPUB (the flattened LaTeX epub.tex, the SVG figures and the
 cover) and the EPUB's pandoc filter, so the numbering and cross-references match the EPUB.
 """
@@ -17,10 +17,10 @@ TOOLS = Path(__file__).resolve().parent
 ROOT = TOOLS.parent
 
 
-def main(tome: str, build: str, out: str) -> None:
+def main(volume: str, build: str, out: str) -> None:
     build_dir, out_dir = Path(build).resolve(), Path(out).resolve()
-    title = re.search(r"^% epub-title: (.*)$", (ROOT / tome / "main.tex").read_text(encoding="utf-8"), re.M)
-    title = title.group(1) if title else tome
+    title = re.search(r"^% epub-title: (.*)$", (ROOT / volume / "main.tex").read_text(encoding="utf-8"), re.M)
+    title = title.group(1) if title else volume
     book = title.partition(". ")[2] or title
     shutil.rmtree(out_dir, ignore_errors=True)
     out_dir.parent.mkdir(parents=True, exist_ok=True)
@@ -30,10 +30,10 @@ def main(tome: str, build: str, out: str) -> None:
          "--lua-filter", str(TOOLS / "epub.lua"), "--template", str(TOOLS / "reader-template.html"),
          "--metadata", "title=" + title, "--metadata", "lang=en",
          "-V", "booktitle=" + book,
-         "-V", "downloadpdf=" + quote(filename(tome, "pdf", ROOT)),
-         "-V", "downloadepub=" + quote(filename(tome, "epub", ROOT)),
-         "-V", "volumesubtitle=" + subtitle(re.search(r"Volume ([0-9A-Z]+):", title).group(1)), "-V", "tome=" + tome, "-o", str(out_dir)],
-        cwd=ROOT / tome, check=True)
+         "-V", "downloadpdf=" + quote(filename(volume, "pdf", ROOT)),
+         "-V", "downloadepub=" + quote(filename(volume, "epub", ROOT)),
+         "-V", "volumesubtitle=" + subtitle(re.search(r"Volume ([0-9A-Z]+):", title).group(1)), "-V", "volume=" + volume, "-o", str(out_dir)],
+        cwd=ROOT / volume, check=True)
     # Pandoc names the pages of unnumbered chapters "-preface.html", and of chapters with a
     # \label "3-ch:eigen.html"; make plain file names.
     renames = {p.name: p.name.lstrip("-").replace(":", "-") for p in out_dir.glob("*.html")

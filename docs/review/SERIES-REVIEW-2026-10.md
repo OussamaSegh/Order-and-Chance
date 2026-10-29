@@ -8,7 +8,7 @@ problem books are not in the catalog.
 
 
 
-Review of *Order and Chance* at commit `0419e16`, covering Volumes 2–13, Volume 15, and problem books P1–P3. Volumes 0 and 1 are excluded: other work is rewriting them. The new Volume 14, *Order and Chance: Where Number Meets Randomness*, is not reviewed as a book. A draft under the old title *Random Arithmetic* is on disk at `tome14-random/` (thirteen chapters, preface still the sentence “Preface to come”); the capstone plan treats that draft as a quarry. This review edits no book source.
+Review of *Order and Chance* at commit `0419e16`, covering Volumes 2–13, Volume 15, and problem books P1–P3. Volumes 0 and 1 are excluded: other work is rewriting them. The new Volume 14, *Order and Chance: Where Number Meets Randomness*, is not reviewed as a book. A draft under the old title *Random Arithmetic* is on disk at `volume14-random/` (thirteen chapters, preface still the sentence “Preface to come”); the capstone plan treats that draft as a quarry. This review edits no book source.
 
 The audit read the flagship proofs, the statements of the named theorems, and a sample of solutions (the first and the last in each chapter, the short write-ups, and the solutions attached to any suspicious argument). It is a mathematician’s reading, not a line-by-line certification of every exercise in a corpus of this size. Findings below are ones that can be defended from the text. Each is marked **error** (the written argument asserts something false), **gap** (a correct theorem whose written proof misses a step), or **slip** (a wrong pointer, a mismatched name, or a sentence that overclaims).
 
@@ -39,7 +39,7 @@ Scores are readiness for publication as a mathematical book, from 1 to 10. They 
 
 ### Mathematical correctness
 
-**Gap.** `tome2-structures/chapters/ch10-galois.tex:170`, proof that the Galois group of \(X^5-4X+2\) is \(S_5\).
+**Gap.** `volume2-structures/chapters/ch10-galois.tex:170`, proof that the Galois group of \(X^5-4X+2\) is \(S_5\).
 
 > It has exactly three real roots: \(f(-2)=-22\), \(f(0)=2\), \(f(1)=-1\), \(f(2)=26\) give three sign changes, and by Rolle’s theorem \(f\) has at most one more real root than \(f'=5X^4-4\), which has two.
 
@@ -87,7 +87,7 @@ The path from Lagrange to the fundamental theorem and the character table is pro
 
 No false theorem turned up in the arguments that were recomputed: Bertrand’s three chord models \(\frac13,\frac12,\frac14\); Buffon \(\frac{2\ell}{\pi d}\) for \(\ell\le d\); the ballot theorem \(\frac{a-b}{a+b}\); Lindeberg’s swapping argument for the test functions of the chapter; Stirling’s constant from the Poisson(\(n\)) central limit theorem; optional stopping with the three standard sufficient conditions and the counter-example of the first hit of \(+1\); Lévy’s midpoint construction; the Black–Scholes limits \(d_\pm\) on the numerical example \(S_0=K=100\), \(r=0.05\), \(\sigma=0.2\), \(T=1\); Pólya’s theorem; Katona’s proof of the Erdős–Ko–Rado theorem; Dilworth in the Perles form; and the small Ramsey numbers, including the Clebsch colouring and \(R_3(3)=17\).
 
-**Slip.** `tome3-chance/chapters/extremal.tex:185–186`.
+**Slip.** `volume3-chance/chapters/extremal.tex:185–186`.
 
 > Volume 3, Proposition 12.1 proved the recursion… Theorem L.2 there proved \(R(k,k)>2^{k/2}\).
 
@@ -133,7 +133,7 @@ Dynkin, monotone and dominated convergence, conditional expectation, Lindeberg, 
 
 ### Mathematical correctness
 
-**Error in the written evaluation; the identity is the classical one.** `tome4-calculation/chapters/ch10-zeta.tex:186–188`, Theorem (Riemann, 1859).
+**Error in the written evaluation; the identity is the classical one.** `volume4-calculation/chapters/ch10-zeta.tex:186–188`, Theorem (Riemann, 1859).
 
 The display splits the integral over \((0,1]\) as
 \[
@@ -181,7 +181,7 @@ The theorems a later volume quotes are the right ones. The functional-equation w
 
 ### Mathematical correctness
 
-**Error in the proof; the statement is correct.** `tome5-meets/chapters/ch01-mertens.tex:131–132`, Corollary (Chebyshev, 1852).
+**Error in the proof; the statement is correct.** `volume5-meets/chapters/ch01-mertens.tex:131–132`, Corollary (Chebyshev, 1852).
 
 The corollary states
 \[
@@ -199,7 +199,7 @@ is proved, and the Selberg-sieve argument checks. The following paragraph says t
 
 **Slip, against the preface’s own rule.** `ch10-random.tex:269–276` displays Maier’s theorem as a pair of inequalities and sketches the mechanism. It is not a theorem environment and it is not proved. The preface says that results quoted only for their interest appear as remarks. The inequalities are displayed as facts. Granville’s refinement is in the same register.
 
-**Slip.** `ch10-random.tex:275` says the oscillating factor “is given by Buchstab’s function, met in sieve theory.” Chapter 8 does not define Buchstab’s function. Volume 13, Chapter 3, draws it and proves the fundamental lemma for large \(u\), which is a different statement. The theorem \(\Phi(x,z)=\omega(u)x/\log z+O(x/\log^2 z)\) for \(u\) in a fixed range is proved in the Volume 14 draft, `tome14-random/chapters/ch11-gaps.tex`, and nowhere in Volumes 0–13.
+**Slip.** `ch10-random.tex:275` says the oscillating factor “is given by Buchstab’s function, met in sieve theory.” Chapter 8 does not define Buchstab’s function. Volume 13, Chapter 3, draws it and proves the fundamental lemma for large \(u\), which is a different statement. The theorem \(\Phi(x,z)=\omega(u)x/\log z+O(x/\log^2 z)\) for \(u\) in a fixed range is proved in the Volume 14 draft, `volume14-random/chapters/ch11-gaps.tex`, and nowhere in Volumes 0–13.
 
 **Slip.** `ch06-zeros.tex:388`. A positive proportion of zeros, “more than \(41\%\)”, is said to lie on the critical line. That sentence records a moving numerical bound. It is not a derivation, and Volume 13 correctly marks a positive proportion as quoted.
 
@@ -239,7 +239,7 @@ The prime-number theorem, Dirichlet’s theorem, the explicit formula, and Erdő
 
 ### Mathematical correctness
 
-**Gap.** `tome6-spaces/chapters/ch06-measures.tex:194–196`, in the characterisation of Lebesgue measure by translation invariance.
+**Gap.** `volume6-spaces/chapters/ch06-measures.tex:194–196`, in the characterisation of Lebesgue measure by translation invariance.
 
 > A general box \(]a,b]\) is the increasing union of boxes \(]a^n,b^n]\) with dyadic corners, \(a^n\) decreasing to \(a\) and \(b^n\) increasing to \(b\) (strictly above \(a\), below \(b\)), so \(\mu\) and \(\lambda_d\) agree on it by continuity from below.
 
@@ -287,7 +287,7 @@ The book can carry Volumes 8–13 in measure, integration, weak convergence, and
 
 ### Mathematical correctness
 
-**Error in the proof; the lemma is true.** `tome7-analysis/chapters/ch10-tauberian.tex:270–273`, Lemma (local inverse), used for Wiener’s lemma.
+**Error in the proof; the lemma is true.** `volume7-analysis/chapters/ch10-tauberian.tex:270–273`, Lemma (local inverse), used for Wiener’s lemma.
 
 The book’s convention is \(\hat g(\xi)=\int g(x)e^{-2\pi ix\xi}\,\mathrm dx\). The reduction
 \[
@@ -299,7 +299,7 @@ matches that convention. The same exponential on the inverse does not: if \(h(x)
 \]
 The right-hand side is \(\hat h_1(\xi-\xi_0)\hat f(\xi)/\hat f(\xi_0)\). The two sides differ by the sign of the shift. If \(h_1\) inverts \(\hat f_1\) on \([-\delta,\delta]\), this \(h\) does not invert \(\hat f\) on \([\xi_0-\delta,\xi_0+\delta]\). The opposite modulation \(e^{+2\pi i\xi_0 x}\) makes the identity true. The construction under the reduction \(\hat f(0)=1\), and the partition of unity that glues local inverses, were checked separately. Ikehara’s theorem does not use this lemma; its Fejér-kernel proof (the Laplace-transform identity, the bound on \(\psi\), de-smoothing by monotonicity) is in order, and so is the passage to \(\psi(x)\sim x\) from the zero-free line imported from Volume 5.
 
-**Slip, public text.** `tome7-analysis/blurb.tex:5–6` says the book proves “the spectral theorem for compact, bounded and unbounded operators” and that “Every theorem is proved in full.” Chapter 4 proves the compact self-adjoint theorem and the continuous functional calculus for bounded self-adjoint operators, then sends the projection-valued measure and the unbounded case to Reed–Simon (`ch04-spectral.tex:381–384`).
+**Slip, public text.** `volume7-analysis/blurb.tex:5–6` says the book proves “the spectral theorem for compact, bounded and unbounded operators” and that “Every theorem is proved in full.” Chapter 4 proves the compact self-adjoint theorem and the continuous functional calculus for bounded self-adjoint operators, then sends the projection-valued measure and the unbounded case to Reed–Simon (`ch04-spectral.tex:381–384`).
 
 **Slip.** `preface.tex:19` lists “Perron’s formula”. That name does not occur again. What is proved is Mellin inversion and one rectangular shift.
 
@@ -345,7 +345,7 @@ Hahn–Banach, the Baire theorems, compact spectral theory, Plancherel, global C
 
 ### Mathematical correctness
 
-**Gap.** `tome8-shapes/chapters/geometry-ch08-cubics.tex:75–108`. Associativity \((P+Q)+R=P+(Q+R)\) is proved when the nine points are distinct, from Cayley–Bacharach. The text says the remaining cases are handled in Volume 12, that a numerical calculation checks associativity, and that “from now on we use that \((E(K),+)\) is an abelian group.” Theorem `geometry:thm:nineflexes` then treats the flexes as the subgroup \(E[3]\cong(\mathbb Z/3)^2\). That step needs the group law for every triple. Volume 12, Chapter 12, does prove the group law from Riemann–Roch. Until a reader has that chapter, the flex theorem is ahead of its proof. The Weierstrass addition formulas a few lines later are explicit enough to support an algebraic verification; it is not given.
+**Gap.** `volume8-shapes/chapters/geometry-ch08-cubics.tex:75–108`. Associativity \((P+Q)+R=P+(Q+R)\) is proved when the nine points are distinct, from Cayley–Bacharach. The text says the remaining cases are handled in Volume 12, that a numerical calculation checks associativity, and that “from now on we use that \((E(K),+)\) is an abelian group.” Theorem `geometry:thm:nineflexes` then treats the flexes as the subgroup \(E[3]\cong(\mathbb Z/3)^2\). That step needs the group law for every triple. Volume 12, Chapter 12, does prove the group law from Riemann–Roch. Until a reader has that chapter, the flex theorem is ahead of its proof. The Weierstrass addition formulas a few lines later are explicit enough to support an algebraic verification; it is not given.
 
 **Gap.** `ch08-haar.tex:281–290`, Andreief’s identity. The lemma has \(1/n!\) on the left. The proof expands the determinants, sums over permutations, and ends with “the \(n!\) choices of \(\pi\) give \(n!\det M\).” That is the integral without the \(1/n!\). The last sentence never divides. Heine’s identity, which calls the lemma, is nevertheless the correct Toeplitz determinant.
 
@@ -473,7 +473,7 @@ The series pattern holds. The hardest exercises (Talagrand certificates, the Gau
 
 ### Coherence
 
-The preface assumes Volumes 3, 6, and 7, and the reminders match. Brownian motion and the direct half of Lindeberg come from Volume 3; Prokhorov from Volume 6; compact operators from Volume 7, used for the weakly mixing lemma. Erdős–Kac is quoted from Volume 5 (`ch11-modphi.tex:8–9`). The mod-Poisson residue for a uniform integer is assigned to Volume 14. The existing draft `tome14-random/chapters/ch02-selbergdelange.tex` does contain that theorem; Volumes 0–13 do not.
+The preface assumes Volumes 3, 6, and 7, and the reminders match. Brownian motion and the direct half of Lindeberg come from Volume 3; Prokhorov from Volume 6; compact operators from Volume 7, used for the weakly mixing lemma. Erdős–Kac is quoted from Volume 5 (`ch11-modphi.tex:8–9`). The mod-Poisson residue for a uniform integer is assigned to Volume 14. The existing draft `volume14-random/chapters/ch02-selbergdelange.tex` does contain that theorem; Volumes 0–13 do not.
 
 ### Readiness: 8
 
@@ -537,7 +537,7 @@ The stochastic-calculus half and the global random-matrix theorems can be taught
 
 ### Mathematical correctness
 
-**Error in the proof; the statement is the classical theorem.** `tome12-arithmetic/chapters/ch07-hasse.tex:417–423`, three squares.
+**Error in the proof; the statement is the classical theorem.** `volume12-arithmetic/chapters/ch07-hasse.tex:417–423`, three squares.
 
 > Let \(n=4^am\) with \(m\not\equiv 7\pmod 8\) (and \(4\nmid m\) or not, it does not matter). … \(-n=4^a(-m)\) is a square in \(\mathbb Q_2\) iff \(-m\equiv 1\pmod 8\), i.e. iff \(m\equiv 7\pmod 8\).
 
@@ -795,7 +795,7 @@ One chapter of a fourteen-chapter book is in the document, and it is a real chap
 
 The same theorem is often proved twice, on purpose, and the second copy does not say so.
 
-- **Erdős–Kac** is proved in Volume 5, Chapter 9, quoted in Volume 10, Chapter 11, drafted again in `tome14-random`, Chapter 3, and touched by P1 and by Volume 15, Appendix K.
+- **Erdős–Kac** is proved in Volume 5, Chapter 9, quoted in Volume 10, Chapter 11, drafted again in `volume14-random`, Chapter 3, and touched by P1 and by Volume 15, Appendix K.
 - **Roth’s theorem** is proved in Volume 10 by ergodic theory and in Volume 13, Chapter 12, by Fourier analysis. Neither proof cites the other.
 - **Pair correlation** is proved for the finite unitary group in Volume 8, passed to the sine kernel in Volume 11, Chapter 11, told again in Volume 11, Appendix B, proved for the zeros under the Riemann hypothesis in Volume 13, Chapter 14, and reduced to a pointer in Volume 15, Appendix E.
 - **Sieves** run from Volume 5 (Selberg, Brun, the large sieve) through Volume 13 (parity, Bombieri–Vinogradov, Goldston–Pintz–Yıldırım, Maynard) into Volume 15, Appendix B (elementary small and large gaps).
@@ -803,7 +803,7 @@ The same theorem is often proved twice, on purpose, and the second copy does not
 - **Dedekind domains** are axiomatised in Volume 9 and proved for rings of integers in Volume 12. That split is clean.
 - **Card shuffling** is mentioned in Volume 3, proved as a cutoff in Volume 9, Chapter 10, and read as a paper in Volume 15, Chapter 3. The Bayer–Diaconis profile is the piece that is only in Volume 15.
 - **Brownian motion** is constructed in Volume 3, embedded by Donsker in Volume 10, and given its stochastic calculus in Volume 11. The dependence is in the right order.
-- **Chebyshev’s bias** is developed in Volume 5, Chapters 4 and 7, illustrated numerically in P1, Chapter 13, and drafted again in `tome14-random`, Chapter 9.
+- **Chebyshev’s bias** is developed in Volume 5, Chapters 4 and 7, illustrated numerically in P1, Chapter 13, and drafted again in `volume14-random`, Chapter 9.
 
 The duplication is a choice of method when both proofs are real (Roth, the prime-number theorem, Dedekind). It is a defect when the second text does not know the first exists, and when a remark in one volume is typeset as a theorem in the next.
 
@@ -854,7 +854,7 @@ Other agents own the rewrites of Volumes 0 and 1 and the restructuring of Volume
 2. **Repair the gaps that a citation already stands on.** The primitive element theorem in Volume 2, before the Galois correspondence uses it. The three simple real roots in the same chapter. The face of the box in Volume 6. The division by \(n!\) in Andreief’s identity. The word “isomorphism” at Volume 9, `ch05-dedekind.tex:328`. The discriminant pointer in Volume 13, Chapter 3.
 3. **Make the prefaces and the blurb match the chapters.** Volume 7’s blurb (the unbounded spectral theorem, “every theorem is proved in full”). Volume 10’s “one exception”. Volume 12’s “every result is proved, apart from the two admitted theorems”. Volume 5’s Maier display, which should become a remark until it is proved. Volume 13’s preface should stop calling its list of quotations short. Volume 15’s preface should mention the appendices, and Appendix E should be written or removed.
 4. **Leave P2 and P3 unpublished as 300-problem books** until the missing chapters exist. P3’s draft of Chapter 2 should not be added while the discrepancy and blow-up solutions fail to prove the stated bounds. P1 is ready, apart from the five fixes above.
-5. **Write the capstone after steps 1 and 2**, mining `tome14-random` for Selberg–Delange, Bohr–Jessen, Selberg’s central limit theorem, and the Cohen–Lenstra moment calculations, and condensing Volume 15 as in the plan. Do not restart Erdős–Kac, Bombieri–Vinogradov, Montgomery’s theorem under the Riemann hypothesis, or the sine kernel.
+5. **Write the capstone after steps 1 and 2**, mining `volume14-random` for Selberg–Delange, Bohr–Jessen, Selberg’s central limit theorem, and the Cohen–Lenstra moment calculations, and condensing Volume 15 as in the plan. Do not restart Erdős–Kac, Bombieri–Vinogradov, Montgomery’s theorem under the Riemann hypothesis, or the sine kernel.
 6. **A notation pass** on \(\Lambda\), \(\theta\), \(\omega\), \(\Delta\), and the Fourier factor \(1/|G|\) can ride with the capstone. It should not block the local repairs.
 7. **Re-check every capstone citation into Volumes 0 and 1** when those rewrites land. The citations this review relies on from Volume 2 onward were checked against the counters at `0419e16`.
 

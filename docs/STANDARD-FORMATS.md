@@ -33,7 +33,7 @@ Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF d
 | `dist/<Book>.pdf` | Reading download: approved front cover followed by the complete interior, 7 × 10 inches |
 | `dist/kdp/<Book> - Print.pdf` | Print interior without the front cover, starting with the half-title; paperback manuscript |
 | `dist/<Book>.epub` | Reflowable eBook with cover, MathML and diagrams |
-| `dist/html/<tome>/` | Online chapter reader |
+| `dist/html/<volume>/` | Online chapter reader |
 | `dist/kdp/<Book> - Paperback Cover.pdf` | Separate paperback cover with bleed and actual-print-page-derived spine |
 | `dist/kdp/<Book> - eBook Cover.jpg` | Separate eBook front cover |
 | `dist/kdp/<Book> - Print Metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
@@ -59,8 +59,8 @@ use the same filenames. Pages flattens the publishing files into its download ro
 ## Build and cache migration
 
 - Install Python publishing helpers with `python3 -m pip install -r tools/requirements-build.txt`.
-- `./build.sh [tome...]` builds both PDFs, EPUB, reader and publishing assets.
-- `./build.sh --pdf-only [tome...]` refreshes both PDFs and publishing assets
+- `./build.sh [volume...]` builds both PDFs, EPUB, reader and publishing assets.
+- `./build.sh --pdf-only [volume...]` refreshes both PDFs and publishing assets
   without rebuilding EPUB or HTML.
 - Three TeX passes resolve references. If the print interior exceeds 700 pages,
   the larger-gutter rule is applied and the same interior is rebuilt.
