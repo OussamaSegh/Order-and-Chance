@@ -117,7 +117,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 5
 - **Books and files:** `volume8-analysis/chapters/ch08-haar.tex` and `volume13-arithmetic` (local fields and Tate). Haar measure and Pontryagin duality stay in Fourier and Tauberian Methods.
 - **Acceptance:** The construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure, is in Book 13. Book 8 still states the duality it uses. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/32
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do not move Jordan or the Riemann mapping theorem in this PR.
