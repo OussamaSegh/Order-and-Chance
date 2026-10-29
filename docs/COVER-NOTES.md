@@ -1,0 +1,94 @@
+# About the covers
+
+Generated from [`common/cover-notes.json`](../common/cover-notes.json).
+The same sentences are the copyright-page credit, the colophon and the library gallery.
+
+## Volume 1 — First Principles
+
+Cover illustration: the Collatz tree, computed from the first 8,000 integers; see About the Cover.
+
+The cover draws the Collatz tree. Each integer from 2 up to 8,000 is joined to the next step of the map that sends an even number to its half and an odd number to one more than its triple, and the branches are those steps gathered back to 1. A pale curve marks the orbit of 27. Lothar Collatz posed the problem in 1937: does every positive integer reach 1? It is still open. The question is elementary and the proof is missing, which is the situation the opening chapter, The Language of Mathematics, asks the reader to recognise. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 2 — The Integers
+
+Cover illustration: the Ulam spiral of the primes up to the square of 71; see About the Cover.
+
+The integers from 1 to the square of 71 are written in a square spiral, and the primes that fall inside a disc are the dots. Stanislaw Ulam drew the first such spiral in 1963, doodling during a dull talk, and saw the primes gather along diagonals. Martin Gardner published the figure in Scientific American in 1964. Nothing on the cover explains those diagonals. That is why the spiral stands on this volume, facing the chapter Primes, where the primes stop being a list and become the subject. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 3 — Symmetry
+
+Cover illustration: the icosahedron and its axes of symmetry; see About the Cover.
+
+A regular icosahedron, drawn with one axis through a vertex, one through a face and one through an edge, and with the circles in which its mirror planes meet the view. Euclid constructs the solid in Book XIII of the Elements. Felix Klein's Lectures on the Icosahedron (1884) identified its rotations with the alternating group on five letters, the geometric reason a general quintic has no solution by radicals. The closing chapter of this volume, A Glimpse Beyond: Quaternions and Rotations, is that classification. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 4 — Chance
+
+Cover illustration: Galton's quincunx and the binomial bell; see About the Cover.
+
+Twelve rows of pins, the bins under them filled in proportion to the binomial counts, and the normal curve those bins approach. This is Francis Galton's quincunx. He had the machine built in 1873, showed it at the Royal Institution in 1874, and described it in Natural Inheritance (1889): pellets fall through the pins and pile into a bell. The same limit is the theorem of the chapter Convergence and the Central Limit Theorem. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 5 — Calculation
+
+Cover illustration: the Euler spiral, also called the Cornu spiral, with its osculating circles; see About the Cover.
+
+A curve that bends more sharply the farther it has travelled, with the circle that fits it best at each of several points. Leonhard Euler found the curve in 1744, as the shape of a thin elastic spring. The integrals that define it are the Fresnel integrals, and Alfred Cornu drew the curve in 1874 to study diffraction, which is why it is also called the Cornu spiral. It is a calculation one cannot finish in elementary functions. It belongs with the chapter Integration Techniques, and with the Fourier transform later in the volume. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 6 — Crossroads
+
+Cover illustration: Ford circles and the Farey tessellation; see About the Cover.
+
+Reduced fractions of denominator up to eighty each carry a circle whose radius is one over twice the square of the denominator, standing on the axis and tangent to its neighbours. The pale arcs join Farey neighbours of denominator at most twenty-four. Lester Ford published the circles in the American Mathematical Monthly in 1938, in a note called Fractions. Their tangencies are the geometry behind the Farey sequence studied in the chapter Arithmetic Functions on Average, where the spacing of those fractions is tied to the Riemann hypothesis. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 7 — Spaces
+
+Cover illustration: the Cantor function over the Cantor set; see About the Cover.
+
+The Cantor function approached through its iterates, the last of them rising from zero to one and flat on the removed intervals, with eight stages of the Cantor set in rows underneath. Georg Cantor introduced the set in 1883, and described the staircase associated with it in 1884. The function is constant on a set of full length and increases only on a set of length zero. Making sense of that is the work of this volume, from the chapter Sets, Choice and the Real Numbers to the chapter Measures. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 8 — Analysis
+
+Cover illustration: Fourier sums of the square wave, and its spectrum; see About the Cover.
+
+Partial sums of the Fourier series of a square wave, the wave itself in a paler line, and beneath them the odd harmonics of its spectrum. Joseph Fourier published the series in The Analytical Theory of Heat in 1822. The overshoot at each jump, which refuses to shrink as further terms are added, was noticed by Henry Wilbraham in 1848 and brought back to attention by J. Willard Gibbs in 1899. The chapter The Fourier Transform is where this volume takes up that analysis. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 9 — Shapes
+
+Cover illustration: the hyperbolic tiling by heptagons, three at a vertex; see About the Cover.
+
+The tiling of the hyperbolic plane by regular heptagons, three at each vertex, drawn in the disk. No such tiling fits in the Euclidean plane. Henri Poincaré introduced this model of the disk in 1882, in his theory of Fuchsian groups. Felix Klein's quartic curve of 1878 is the quotient of the same tiling by a finite group of its symmetries. The chapter The Hyperbolic Plane and the Modular Group tells this story for the volume. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 10 — Abstraction
+
+Cover illustration: the snake lemma and its connecting homomorphism; see About the Cover.
+
+Two exact rows, three vertical maps, kernels along the top and cokernels along the bottom, and one long diagonal from the last kernel to the first cokernel. That diagonal is the connecting homomorphism of the snake lemma. Henri Cartan and Samuel Eilenberg set the lemma down in this form in Homological Algebra (1956), and it has been the first diagram chase of the subject ever since. This volume proves it in the chapter Tensors and Exactness, and uses it again when homological algebra begins in earnest. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 11 — Randomness
+
+Cover illustration: simple random walks and their diffusive envelope; see About the Cover.
+
+Two hundred simple random walks of two hundred and forty steps, two of them drawn in a stronger line, the curves at height twice the square root of the number of steps, and a Gaussian profile standing at the right-hand end. George Pólya proved in 1921 that a walk on the line or the plane returns to its starting point with probability one, while a walk in space may leave forever. The envelope is the scale of the central limit theorem, which this volume sharpens, and the returns are taken up again in that chapter's account of recurrence. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 12 — Random Motion
+
+Cover illustration: a Brownian path stopped on the unit circle; see About the Cover.
+
+A single planar Brownian path, begun at the origin and stopped at the first moment it leaves the unit circle. In 1827 Robert Brown watched particles that had come out of pollen grains, suspended in water. The mathematical path, a continuous random function, was constructed by Norbert Wiener in 1923. This volume opens on that construction: the chapter Gaussian Processes and the Birth of Brownian Motion, followed by the chapter on the fine structure of a path. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 13 — Arithmetic
+
+Cover illustration: an elliptic curve and the chord-and-tangent law; see About the Cover.
+
+The curve on which y squared equals x cubed minus x plus one, a pencil of nearby level curves, and the straight chord through two points of the curve, meeting it a third time and reflected to the sum. That chord-and-tangent rule is the group law. Niels Abel and Carl Jacobi built the analytic theory of elliptic functions in the 1820s. Louis Mordell proved in 1922 that the rational points of such a curve form a finitely generated group. The part Elliptic Curves and Modular Forms is this volume's account of that arithmetic. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 14 — The Primes
+
+Cover illustration: the zeta function walking the critical line; see About the Cover.
+
+The path of the Riemann zeta function as one walks up the critical line, from height 10 to height 42, plotted as a curve in the plane. The curve passes through the origin at every zero. Bernhard Riemann's memoir of 1859, on the number of primes less than a given magnitude, placed those zeros at the centre of the theory of the primes. The chapter The Critical Line is where this volume studies them. The drawing was computed by the book's own TikZ cover generator.
+
+## Volume 15 — Order and Chance
+
+Cover illustration: pair correlation of the zeta zeros against the Gaussian unitary ensemble; see About the Cover.
+
+The pair correlation of the first 1,200 zeros of the zeta function, unfolded so that the mean spacing is one. Every difference between two distinct zeros that lies between minus three and three is collected, and set against Montgomery's function, one minus the square of the quotient of sin(pi x) by pi x, the two-point correlation of the Gaussian unitary ensemble, and against the flat line of a Poisson process. Above the graph, a barcode of ninety-one consecutive zeros and a barcode of ninety Poisson points. Hugh Montgomery obtained the correlation in work he discussed with Freeman Dyson in 1972; Dyson recognised the ensemble. The paper was published in 1973. The chapter Random matrices and the zeros of zeta is this volume's telling of that meeting. The drawing was computed by the book's own TikZ cover generator.

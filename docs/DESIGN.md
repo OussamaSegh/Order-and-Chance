@@ -1,3 +1,13 @@
+# Approved covers — 29 October 2026
+
+The author approved the fifteen Cormorant Garamond and Fira Sans fronts. The
+pipeline, the back, the spine and the cover notes are recorded in
+[COVER-DESIGN.md](COVER-DESIGN.md). `python3 tools/series_cover.py` regenerates
+the plates; optical centring is baked, not remeasured in CI. This supersedes
+the Inter Display master, the exact-image fronts and the shared 3D wireframe.
+
+---
+
 # Series structure — fifteen volumes in six parts
 
 The series is Volumes 1–15. There is no problem book. Volume 1 is **First

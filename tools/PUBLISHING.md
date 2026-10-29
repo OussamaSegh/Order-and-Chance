@@ -35,38 +35,16 @@ fonts, cover artwork or the 7×10 premium-colour production settings.
 
 ---
 
-# Current cover master
+# Current cover family
 
-Every production front now uses the locked Volume-0 master in
-`tools/assets/series-template.json` and `tools/cover-editorial-front.tex`. This
-supersedes the historical exact-PNG front substitution described below. The PNG
-approvals remain archived; even Volumes 0–2 render their title blocks through the
-same font and text anchors as every other book. The original common identity and
-Volume-0 Gaussian subject are retained. All sixteen books use one native 3D wireframe
-with the same camera/material and five-layer soft coral radiance. Visible wires
-are deduplicated and depth-tested before lighting, keeping all exported artwork
-vector. Subtitles sit directly below their own title: source y=600 capitals for
-two-line titles and one title-leading higher for one-line titles. Font, size and
-gap stay fixed; neither titles nor subtitles are autosized.
-
-Illustrations are individually selected against their chapters; see
-`docs/COVER-ART-DIRECTION.md`. Their rotations, uniform scale, placement and
-clearance are in `tools/assets/cover-art-direction.json`. These affect artwork
-only. Every title/subtitle and common identity retains the shared master, and all
-illustrations use the same luminous material. Mathematical models and exact data
-live in `tools/cover_surfaces.py` and `tools/cover_sculptures.py`.
-
-Volume 0 now uses the common native Gaussian mesh instead of its archived trace;
-Volume 1 uses lower, broader, finely triangulated prime relief. There are no
-per-volume renderer/material exemptions, and original approvals stay archival.
-
-Run `python3 tools/cover_plates.py` after deliberate template/geometry edits. It
-updates the shared TeX, 3D plates and hash manifest. `tools/check_cover_template.py`
-checks fronts and their EPUB/reader assets; cached releases are checked too. All
-library thumbnails render the current cover PDF. The title face is the bundled
-Inter Display Bold 700; original approval PNGs are never copied over current fronts.
-Back text uses a common fixed size and must fit its reserved area. Cover logs fail
-on missing glyphs, substituted fonts or overflow; back text is checked separately.
+Production fronts, backs and spines are the Cormorant Garamond / Fira Sans family
+described in `docs/COVER-DESIGN.md`. Regenerate plates with `python3 tools/series_cover.py`.
+`tools/check_cover_template.py` checks the shared frame, the 42pt Cormorant title,
+Fira for the small lines, and matching EPUB/reader images. Optical centring is baked
+in `tools/covergen/centring.json`. The older 3D plate driver `tools/cover_plates.py`
+is retired and must not be run. Back blurbs use one Cormorant measure and must stay
+above the barcode band. Cover logs still fail on missing glyphs, substituted fonts
+or overflow.
 
 The print files still use 7 × 10 trim, premium colour on white paper, 0.125 outside
 bleed and an actual-page-derived spine. All previous interior/navigation/colour/font

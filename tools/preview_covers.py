@@ -33,6 +33,7 @@ def render(main: Path, output: Path, print_mode=False) -> str:
     for fmt, (width, height) in formats.items():
         tex = (rf"\def\VOLUMENUM{{{number}}}\def\VOLUMETITLE{{{title}}}"
                rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{volume}/cover-motif}}"
+               rf"\def\COVERLETTER{{{volume}/cover-lettering}}"
                r"\input{tools/cover.tex}")
         if print_mode:
             tex = r"\def\PRINTQUALITY{}" + tex

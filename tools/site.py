@@ -8,6 +8,7 @@ cover, print interior and listing. The download PDF includes its front cover.
 """
 import datetime
 import html
+import json
 import os
 import re
 import shutil
@@ -32,7 +33,7 @@ for field in ("volumes", "count", "repo", "date", "commit", "trim"):
 
 CARD = """<article class="volume" data-collection="{collection}" data-part="{part}" data-search="{search}">{cover}
 <div class="info"><p class="eyebrow">{collection_label}</p><h3>{title}</h3><p class="volume-subtitle">{subtitle}</p><p class="meta">{size} · {trim} PDF with cover</p></div>
-<div class="links"><a class="primary" href="{pdf}" download>PDF with cover</a>{print_pdf}{read}{epub}</div>{kdp}</article>"""
+{note}<div class="links"><a class="primary" href="{pdf}" download>PDF with cover</a>{print_pdf}{read}{epub}</div>{kdp}</article>"""
 
 # Amazon KDP files made by build.sh in dist/kdp/: (suffix, label, tooltip).
 KDP = [("ebook", "Kindle cover", "Front cover, 1792 x 2560 JPEG, for a Kindle eBook"),
@@ -140,10 +141,14 @@ def main(dist: str, out: str) -> None:
         epub_link = f'<a href="{quote(epub.name)}" download>EPUB</a>' if epub.exists() else ""
         number = re.search(r"Volume ([0-9A-Z]+):", title)
         tagline = subtitle(number.group(1)) if number else ""
+        notes_path = ROOT / "common/cover-notes.json"
+        notes = json.loads(notes_path.read_text(encoding="utf-8")) if notes_path.is_file() else {}
+        about = notes.get(number.group(1), {}).get("about", "") if number else ""
+        note = f'<p class="cover-note">{html.escape(about)}</p>' if about else ""
         cards.append(CARD.format(subtitle=html.escape(tagline), title=html.escape(rest or series), size=size, trim=PRINT_TRIM, cover=cover, read=read,
-                                 pdf=quote(pdf.name), print_pdf=print_pdf, epub=epub_link, kdp=kdp,
+                                 pdf=quote(pdf.name), print_pdf=print_pdf, epub=epub_link, kdp=kdp, note=note,
                                  collection=collection, collection_label=label, part=html.escape(part["roman"]),
-                                 search=html.escape((volume + " " + title + " " + tagline + " " + label + " " + part["name"]).lower(), quote=True)))
+                                 search=html.escape((volume + " " + title + " " + tagline + " " + label + " " + part["name"] + " " + about).lower(), quote=True)))
     sha = os.environ.get("GITHUB_SHA", "")
     commit = f" (commit {sha[:7]})" if sha else ""
     repo = os.environ.get("GITHUB_REPOSITORY", "OussamaSegh/Order-and-Chance")

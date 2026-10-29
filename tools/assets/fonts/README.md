@@ -1,3 +1,13 @@
+# Cover and UI fonts
+
+Cormorant Garamond (static Regular, Medium, Medium Italic, SemiBold and Bold) is
+taken from the upstream OFL release at https://github.com/CatharsisFonts/Cormorant
+and is used for cover titles, subtitles and back-cover prose. The licence is
+`OFL-CormorantGaramond.txt`.
+
+Fira Sans Light (`FiraSans-Light.otf`) is the OFL face used for volume numbers
+and the author line. Its licence is `OFL-FiraSans.txt`.
+
 # Inter cover/UI weights
 
 Inter is distributed under the accompanying SIL Open Font License. These static

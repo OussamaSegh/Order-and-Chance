@@ -2,6 +2,17 @@
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## Approved cover family — 29 October 2026
+
+The author approved the fifteen Cormorant Garamond / Fira Sans fronts in
+`docs/COVER-DESIGN.md`, including the Collatz tree on Volume 1 and the motifs in
+`tools/covergen/arts.py`. This supersedes every earlier cover instruction in this
+file: the Inter Display master, the exact PNG fronts, the traced Gaussian, the
+shared 3D wireframe and `tools/cover_plates.py`. Regenerate with
+`tools/series_cover.py`. Backs and spines use the same ground, grain and double
+frame. Each book carries the cover credit and the About the Cover colophon from
+`common/cover-notes.json`. Do not edit chapter files to change those notes.
+
 ## Volume 0 subtitle update — 28 October 2026
 
 The author approved **Proof, Problem Solving and Mathematical Thinking** as
