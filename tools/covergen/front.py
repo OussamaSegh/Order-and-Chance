@@ -107,15 +107,23 @@ def artwork(number):
 
 
 def wrap_lines(text, limit=8000):
-    """TeX refuses a line longer than its input buffer. Break only at spaces."""
+    """TeX refuses a line longer than its input buffer.
+
+    Break at a space, or just after a TikZ ``--'', never inside a coordinate.
+    """
     out = []
     for line in text.split('\n'):
         while len(line) > limit:
             cut = line.rfind(' ', 0, limit)
+            skip = 1
             if cut <= 0:
-                cut = limit
+                cut = line.rfind('--', 0, limit)
+                skip = 0
+                if cut <= 0:
+                    raise ValueError('Cover line has no safe break')
+                cut += 2
             out.append(line[:cut])
-            line = line[cut + 1:]
+            line = line[cut + skip:]
         out.append(line)
     return '\n'.join(out)
 
