@@ -33,9 +33,11 @@ class SharedMasterTest(unittest.TestCase):
 
     def test_every_title_fits_without_changing_font_size(self):
         wrapped=check_titles()
-        self.assertEqual(len(wrapped),16)
+        self.assertEqual(len(wrapped),15)
         self.assertTrue(all(len(lines)<=2 for lines in wrapped.values()))
-        self.assertEqual(wrapped['0'],['Mathematical','Maturity'])
+        self.assertEqual(wrapped['1'],['First Principles'])
+        self.assertEqual(wrapped['10'],['Abstraction'])
+        self.assertEqual(wrapped['15'],['Order and','Chance'])
 
     def test_every_subtitle_uses_one_size_and_fits_the_frame(self):
         from series_metadata import subtitles, cover_subtitle_lines
@@ -49,7 +51,7 @@ class SharedMasterTest(unittest.TestCase):
             with self.subTest(volume=number):
                 self.assertLessEqual(len(lines),2)
                 self.assertTrue(all(width(line)<data['subtitle_width_in']*175 for line in lines))
-                self.assertEqual(len(lines),2 if number=='0' else 1)
+                self.assertEqual(len(lines),2 if number in ('1','15') else 1)
         self.assertEqual(data['subtitle_top_ratio'],.6)
         self.assertEqual(data['subtitle_baseline_source_px'],632.36)
         check_sync()
@@ -59,16 +61,18 @@ class SharedMasterTest(unittest.TestCase):
             return ('<html><word yMin="'+str(top*720)+'">Proof,</word>'
                     '<word>Problem</word><word>Solving</word><word>and</word>'
                     '<word>Mathematical</word><word>Thinking</word></html>').encode()
-        with patch('check_cover_template.subprocess.check_output',return_value=xml(.3928264)):
-            check_subtitle('front.pdf','0',720)
-        wrong=b'<html><word yMin="282.835008">The</word><word>Language</word><word>of</word><word>Symmetry</word></html>'
+        def anchor(number):
+            return .3928264+(subtitle_baseline(number)-settings()['subtitle_baseline_source_px'])/1500
+        with patch('check_cover_template.subprocess.check_output',return_value=xml(anchor('1'))):
+            check_subtitle('front.pdf','1',720)
+        wrong=b'<html><word yMin="282.835008">Primes,</word><word>Patterns</word><word>and</word><word>Proofs</word></html>'
         with patch('check_cover_template.subprocess.check_output',return_value=wrong):
             with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','2',720)
-        expected=.3928264+(subtitle_baseline('2')-subtitle_baseline('0'))/1500
-        with patch('check_cover_template.subprocess.check_output',return_value=b'<html><word yMin="'+str(expected*720).encode()+b'">The</word><word>Language</word><word>of</word><word>Symmetry</word></html>'):
+        primes=b'<html><word yMin="'+str(anchor('2')*720).encode()+b'">Primes,</word><word>Patterns</word><word>and</word><word>Proofs</word></html>'
+        with patch('check_cover_template.subprocess.check_output',return_value=primes):
             check_subtitle('front.pdf','2',720)
         with patch('check_cover_template.subprocess.check_output',return_value=xml(.412)):
-            with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','0',720)
+            with self.assertRaisesRegex(ValueError,'subtitle moved'):check_subtitle('front.pdf','1',720)
 
     def test_resized_or_different_title_font_is_rejected(self):
         class Font(dict):

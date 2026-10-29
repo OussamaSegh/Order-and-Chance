@@ -1,0 +1,1150 @@
+\chapter{Sequences, Series and Limits}\label{ch:sequences}
+
+\begin{center}\itshape
+$1-\frac12+\frac13-\frac14+\cdots=\ln2$. Rearrange the same terms as $1-\frac12-\frac14+\frac13-\frac16-\frac18+\cdots$\\
+and the sum becomes $\frac12\ln2$. Infinite sums are not as innocent as finite ones.
+\end{center}
+
+Around 450~BC, Zeno of Elea argued that motion is impossible. To cross a room you must first cross half of it, then half of what remains, then half
+of that, and so on: infinitely many tasks, which no one can finish. Aristotle, who reports the argument in his \emph{Physics} (Book~VI, Chapter~9), answered that
+the infinitely many half-rooms take infinitely many half-times that add up to a finite time; what he did not have was a definition of what it means
+for infinitely many lengths $\frac12+\frac14+\frac18+\cdots$ to ``add up'' to $1$. It took more than two thousand years to write one down. Nicole
+Oresme, a scholar at the University of Paris around 1350, showed in his lectures on Euclid that the harmonic series $1+\frac12+\frac13+\cdots$ grows
+beyond every bound, by the grouping argument of Exercise~\ref{ex:oresme}; he also knew that $\frac12+\frac24+\frac38+\frac4{16}+\cdots=2$. In 1703 Guido Grandi
+claimed that $1-1+1-1+\cdots=\frac12$, and Leibniz defended the value in a letter of 1713, on the grounds that the partial sums $1,0,1,0,\dots$ are
+$1$ or $0$ ``with equal probability''. Eighteenth-century mathematicians computed brilliantly with infinite series, before the modern framework of convergence became standard.
+
+The definitions came in the nineteenth. Bernard Bolzano, a priest in Prague, published in 1817 a proof of the intermediate value theorem that
+rests on exactly the argument we use below; Augustin-Louis Cauchy's \emph{Cours d'analyse} of 1821 defined limits and convergence for his students at
+the \'Ecole polytechnique, and gave the criterion that now bears his name; and in his Berlin lectures of the 1860s Karl Weierstrass fixed the
+$\varepsilon$ and the $N$ that every student since has met. Then, in 1854, Bernhard Riemann found the sting in the tail. In his
+\emph{Habilitationsschrift} on trigonometric series, published only in 1867 after his death, he observed that a series that converges thanks to
+cancellations between positive and negative terms can be rearranged to converge to any number whatsoever, or to diverge. The epigraph is the
+simplest instance, and Exercise~\ref{ex:riemannrearr} proves the general theorem.
+
+Imagine a bank account whose final balance depends on the order in which your deposits and withdrawals are recorded. That is what Riemann's theorem
+says about infinite series, and this chapter rebuilds the theory of sequences and series with that warning in mind: when are infinite sums safe to
+manipulate, and how do we tell how fast they converge? Along the way we prove the five theorems about continuous and differentiable functions that
+the rest of the volume uses (intermediate values, extreme values, uniform continuity, Rolle, mean value), all from one axiom about~$\R$. As a reward we
+meet Euler's constant, studied by Euler in the early 1730s, and Stirling's formula for $n!$, developed by Abraham de Moivre and James Stirling around 1730. Here we obtain its form up to a positive constant;
+Chapter~\ref{ch:calculus} identifies that constant as $\sqrt{2\pi}$.
+
+The route is completeness first, then its consequences. Limits and absolute values are the vocabulary. Monotone, adjacent, Bolzano--Weierstrass and Cauchy sequences are four ways to know a limit exists. Those criteria prove the five theorems on a segment: intermediate values, extreme values, uniform continuity, Rolle and the mean value. Series come last, because a series is a sequence of partial sums, and Riemann's warning is the reason the order of summation is now a hypothesis.
+
+\portraits{oresme}{Nicole Oresme (c.\,1320--1382), miniature from a manuscript of his \emph{Trait\'e de la sph\`ere}, c.\,1400--1420. Public domain, via Wikimedia Commons.}{bolzano}{Bernard Bolzano (1781--1848). Public domain, via Wikimedia Commons.}
+
+\section{Limits from scratch}
+
+For a real number $x$, define $|x|=\max\{x,-x\}$. Thus
+$-|x|\le x\le|x|$, and $|x|\le r$ means $-r\le x\le r$ when $r\ge0$.
+We will use two elementary estimates repeatedly.
+
+\begin{proposition}[real triangle inequalities]\label{prop:real-triangle}
+For real $a,b$,
+\[
+|a+b|\le|a|+|b|,\qquad \bigl||a|-|b|\bigr|\le|a-b|.
+\]
+\end{proposition}
+\begin{proof}
+Adding $-|a|\le a\le|a|$ and $-|b|\le b\le|b|$ gives
+$-(|a|+|b|)\le a+b\le|a|+|b|$, which is the first inequality.
+Apply it to $a=(a-b)+b$: $|a|-|b|\le|a-b|$.
+Swapping $a,b$ gives $|b|-|a|\le|a-b|$; together these give the second.
+\end{proof}
+
+Completeness also shows that the natural numbers are unbounded in $\R$.
+Otherwise $M=\sup\N$ would exist; choose $n\in\N$ with $n>M-1$.
+Then $n+1>M$ contradicts the upper bound. Thus a natural index can always
+be chosen larger than any prescribed real threshold.
+
+\begin{reminder}[what a limit is]
+A sequence $(u_n)_{n\ge0}$ of real numbers \emph{converges} to $\ell\in\R$ if
+\[
+\forall\varepsilon>0,\ \exists N\in\N,\ \forall n\ge N,\quad|u_n-\ell|\le\varepsilon.
+\]
+We write $u_n\to\ell$ or $\lim u_n=\ell$. Read it as a game between two players. Your opponent names a tolerance $\varepsilon$, as small as she
+likes; you must answer with a rank $N$ beyond which \emph{every} term is within $\varepsilon$ of $\ell$. You win if you can always answer. The
+sequence $\frac1n$ converges to $0$: whatever $\varepsilon$ she names, you answer with any $N>\frac1\varepsilon$. The sequence $(-1)^n$ converges to
+nothing: for $\varepsilon=\frac12$ no rank works, because consecutive terms are always $2$ apart.
+Figure~\ref{fig:epsilon} draws the game: the band of width $2\varepsilon$ around $\ell$ must eventually swallow the whole sequence.
+
+A sequence \emph{tends to $+\infty$} if for every $A$ there is $N$ with $u_n\ge A$ for all $n\ge N$; \emph{diverges} means ``does not converge to a real
+number'', which includes tending to $\pm\infty$ and oscillating.
+\end{reminder}
+
+Negating the definition is a useful test of the quantifiers. The assertion
+$u_n\not\to\ell$ means that \emph{some} $\varepsilon>0$ defeats \emph{every}
+proposed $N$: there is always an $n\ge N$ with $|u_n-\ell|>\varepsilon$.
+The bad index may depend on $N$; one exceptional early term cannot disprove convergence.
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-epsilon}
+\caption{Left: the game of $\varepsilon$ and $N$ for $u_n=1+\frac{(-1)^n}{n}$, which converges to $1$. For $\varepsilon=0.15$ the band around $1$ (grey) contains every term from $N=7$ on; the first six terms (red) are allowed to misbehave. A smaller $\varepsilon$ needs a larger $N$, and that is all convergence means. Right: Bolzano--Weierstrass by peaks. The red terms are \emph{peaks}, terms at least as large as everything after them; the peaks of a bounded sequence form a non-increasing subsequence, and when there are finitely many of them one can climb instead.}
+\label{fig:epsilon}
+\end{figure}
+
+\begin{propositionx}[first properties of limits]
+Let $u_n\to\ell$ and $v_n\to m$, with $\ell,m\in\R$.
+\begin{enumerate}[label=(\alph*)]
+\item The limit is unique, and a convergent sequence is bounded.
+\item If $u_n\le v_n$ for all $n$ (or for all large $n$), then $\ell\le m$. Strict inequalities do \emph{not} pass to the limit: $\frac1n>0$ but $\lim\frac1n=0$.
+\item \textbf{Squeeze}: if $u_n\le w_n\le v_n$ for all large $n$ and $\ell=m$, then $w_n\to\ell$.
+\item $u_n+v_n\to\ell+m$, $u_nv_n\to\ell m$, and if $m\ne0$ then $v_n\ne0$ for $n$ large and $\frac{u_n}{v_n}\to\frac\ell m$.
+\item \textbf{Subsequences}: if $n_0<n_1<n_2<\cdots$ are integers, then $u_{n_k}\to\ell$ as $k\to\infty$.
+\end{enumerate}
+\end{propositionx}
+\begin{proof}
+(a) If $u_n\to\ell$ and $u_n\to\ell'$ with $\ell\ne\ell'$, take $\varepsilon=\frac{|\ell-\ell'|}3$: for $n$ large, $u_n$ is within $\varepsilon$ of both,
+so $|\ell-\ell'|\le|\ell-u_n|+|u_n-\ell'|\le2\varepsilon<|\ell-\ell'|$, absurd. Boundedness: take $\varepsilon=1$; past some $N$ all terms lie in
+$[\ell-1,\ell+1]$, and there are only finitely many terms before $N$.
+
+(b) Suppose $\ell>m$ and take $\varepsilon=\frac{\ell-m}3$: for $n$ large, $u_n\ge\ell-\varepsilon>m+\varepsilon\ge v_n$, against $u_n\le v_n$.
+
+(c) Given $\varepsilon$, for $n$ large both $u_n$ and $v_n$ lie in $[\ell-\varepsilon,\ell+\varepsilon]$, and $w_n$ is between them.
+
+(d) For the sum, $|u_n+v_n-\ell-m|\le|u_n-\ell|+|v_n-m|$: given $\varepsilon$, make each term at most $\frac\varepsilon2$. For the product, write
+$u_nv_n-\ell m=(u_n-\ell)v_n+\ell(v_n-m)$; the sequence $(v_n)$ is bounded by some $B$ (by (a)), so $|u_nv_n-\ell m|\le B|u_n-\ell|+|\ell||v_n-m|$,
+and each term can be made small. For the quotient it suffices, by the product rule, to show $\frac1{v_n}\to\frac1m$: for $n$ large $|v_n|\ge\frac{|m|}2$
+(take $\varepsilon=\frac{|m|}2$ in the definition), so $\left|\frac1{v_n}-\frac1m\right|=\frac{|m-v_n|}{|v_n||m|}\le\frac{2|v_n-m|}{m^2}\to0$.
+
+(e) Since $n_k\ge k$ (induction), once $k\ge N$ every $n_k\ge N$.
+\end{proof}
+
+\begin{reminder}[the notations $o$, $O$ and $\sim$]
+For sequences $(u_n)$ and $(v_n)$ with $v_n\ne0$ for $n$ large:
+\begin{itemize}
+\item $u_n=o(v_n)$ (``little o'') means $\frac{u_n}{v_n}\to0$: $u_n$ is negligible next to $v_n$. Thus $o(1)$ is any sequence tending to $0$, and $n=o(n^2)$.
+\item $u_n=O(v_n)$ (``big O'') means $\left|\frac{u_n}{v_n}\right|\le C$ for some constant $C$ and all $n$ large: $u_n$ is at most a bounded multiple of $v_n$. Thus $O(1)$ is any bounded sequence, and $\sin n=O(1)$.
+\item $u_n\sim v_n$ means $\frac{u_n}{v_n}\to1$, that is $u_n=v_n+o(v_n)$: $u_n$ and $v_n$ are equivalent. Thus $n^2+n\sim n^2$ and $\sin\frac1n\sim\frac1n$.
+\end{itemize}
+Equivalents may be multiplied and divided, but \emph{cannot in general be added}: $n+1\sim n$ and $-n\sim-n+\sqrt n$, yet the sums $1$ and $\sqrt n$ are not equivalent. The
+same notations are used for functions near a point, with $x\to a$ in place of $n\to\infty$: $\sin x\sim x$ as $x\to0$, by the admitted derivative $\sin\prime(0)=1$.
+The symbols $o$ and $O$ are read from left to right only: $u_n=O(v_n)$ is a statement about $u_n$, not an equation.
+\end{reminder}
+
+\begin{examplex}[Zeno, and the geometric series]
+A \emph{series} $\sum u_n$ is the sequence of its partial sums $S_n=u_0+u_1+\dots+u_n$; it \emph{converges} if $(S_n)$ does, and the limit is called
+the sum, written $\sum_{n=0}^\infty u_n$. For $|q|<1$, the geometric series converges:
+\[
+\sum_{n=0}^\infty q^n=\lim_{N\to\infty}\frac{1-q^{N+1}}{1-q}=\frac1{1-q},
+\]
+because $|q|^{N+1}\to0$ (for $0<|q|<1$, write $\frac1{|q|}=1+h$ with $h>0$; by Bernoulli's inequality (Proposition~\ref{prop:bernoulli}), $(1+h)^{N}\ge1+Nh\to\infty$). Zeno's half-rooms add up to $\sum_{n\ge1}2^{-n}=1$:
+the crossing takes infinitely many steps and a finite distance, and there is no contradiction, because ``the sum of infinitely many lengths'' is a
+limit of finite sums, not a task to be completed. For $|q|\ge1$ the terms $q^n$ do not tend to $0$, and a series whose terms do not tend to $0$ cannot
+converge: $u_n=S_n-S_{n-1}\to S-S=0$ whenever $S_n\to S$. This is why Grandi's $1-1+1-\cdots$ has no sum: nothing in the definition allows one.
+\end{examplex}
+
+\begin{think}
+Must a sequence whose consecutive terms get closer and closer, $u_{n+1}-u_n\to0$, converge? Try $u_n=\sqrt n$, then $u_n=\ln n$. What stronger condition on the gaps between terms would force convergence? Cauchy's answer is (d) of the next proposition.
+\end{think}
+
+\section{Sequences}
+
+Everything in this chapter rests on one axiom about $\R$.
+
+\begin{reminder}[completeness of $\R$]
+Every non-empty subset of $\R$ that is bounded above has a least upper bound (a \emph{supremum}).
+\end{reminder}
+
+The axiom is what distinguishes $\R$ from $\Q$: the set of rationals $q$ with $q^2<2$ is bounded above in $\Q$ but has no least upper bound there, because
+$\sqrt2$ is missing. The completeness-dependent conclusions below need not hold in $\Q$; the ordinary algebraic rules for limits still do. The distinction is between doing arithmetic with a limit and ensuring that a limit exists.
+
+\begin{proposition}[convergence criteria]\label{prop:seqcrit}
+\begin{enumerate}[label=(\alph*)]
+\item A non-decreasing sequence converges if and only if it is bounded above, and then to its supremum. A non-increasing sequence converges if and only if it is bounded below, and then to its infimum.
+\item \textbf{Adjacent sequences}: if $(u_n)$ is non-decreasing, $(v_n)$ non-increasing and $v_n-u_n\to0$, both converge to the same limit $\ell$, and $u_n\le\ell\le v_n$.
+\item \textbf{Bolzano--Weierstrass}: every bounded sequence has a convergent subsequence.
+\item \textbf{Cauchy}: $(u_n)$ converges if and only if, for every $\varepsilon>0$, there is $N$ such that $|u_p-u_q|\le\varepsilon$ whenever $p,q\ge N$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) A convergent sequence is bounded. Conversely let $\ell=\sup_nu_n$, which exists by completeness, and $\varepsilon>0$: $\ell-\varepsilon$ is not an upper bound, so $u_N>\ell-\varepsilon$ for some $N$, and then $\ell-\varepsilon<u_N\le u_n\le\ell$ for all $n\ge N$ by monotonicity. This is the definition of $u_n\to\ell$. If instead $(u_n)$ is non-increasing, apply this case to $(-u_n)$: its supremum is $-\inf_nu_n$.
+
+(b) $v_n-u_n$ is non-increasing with limit $0$, so $v_n\ge u_n$ for all $n$; hence $u_0\le u_n\le v_n\le v_0$. By (a), $u_n\to\ell$ and $v_n\to\ell'$, and $\ell'-\ell=\lim(v_n-u_n)=0$. Monotonicity gives $u_n\le\ell\le v_n$.
+
+(c) Call $n$ a \emph{peak} if $u_n\ge u_m$ for all $m>n$ (Figure~\ref{fig:epsilon}, right). If there are infinitely many peaks $n_1<n_2<\cdots$, then $(u_{n_k})$ is non-increasing. Otherwise, past the last peak each index $n$ has some $m>n$ with $u_m>u_n$; starting after the last peak and repeating this builds an increasing subsequence. Either way we get a bounded monotone subsequence, which converges by (a).
+
+(d) If $u_n\to\ell$, then $|u_p-u_q|\le|u_p-\ell|+|\ell-u_q|$ is small for $p,q$ large. Conversely, a Cauchy sequence is bounded (take $\varepsilon=1$: all terms past some $N$ are within $1$ of $u_N$), so by (c) a subsequence $u_{n_k}$ tends to some $\ell$. Given $\varepsilon$, choose $N$ with $|u_p-u_q|\le\varepsilon$ for $p,q\ge N$ and $k$ with $n_k\ge N$, $|u_{n_k}-\ell|\le\varepsilon$: then $|u_p-\ell|\le|u_p-u_{n_k}|+|u_{n_k}-\ell|\le2\varepsilon$ for $p\ge N$.
+\end{proof}
+
+Figure~\ref{fig:squeeze} is the picture for adjacent sequences: the two graphs cannot stay apart once their difference tends to $0$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-squeeze}
+\caption{Adjacent sequences. The lower sequence is non-decreasing, the upper one is non-increasing, and the gap tends to $0$. Completeness supplies the common limit $\ell$, which then lies between them.}
+\label{fig:squeeze}
+\end{figure}
+
+Cauchy's criterion is the practical face of completeness: it lets you prove that a sequence converges \emph{without knowing its limit}, which is how
+most limits in analysis are produced. The sequences $\sqrt n$ and $\ln n$ of the box have $u_{n+1}-u_n\to0$ but $u_{2n}-u_n\not\to0$; they are not Cauchy.
+
+\begin{examplex}[a recursive sequence, and the cobweb]
+Let $u_0=1$ and $u_{n+1}=\frac{u_n}2+\frac1{u_n}$, Newton's recipe for $\sqrt2$ (Exercise~\ref{ex:newton}). All terms are positive, and
+$u_{n+1}-\sqrt2=\frac{(u_n-\sqrt2)^2}{2u_n}\ge0$, so $u_n\ge\sqrt2$ for $n\ge1$; then $u_{n+1}-u_n=\frac{2-u_n^2}{2u_n}\le0$. The sequence is
+non-increasing from index $1$ onward and bounded below, so it converges to some $\ell\ge\sqrt2$, and passing to the limit in the recurrence (using the operations on limits)
+gives $\ell=\frac\ell2+\frac1\ell$, so $\ell=\sqrt2$. The general pattern: a sequence $u_{n+1}=f(u_n)$ with $f$ continuous, if it converges at all,
+converges to a \emph{fixed point} of $f$; monotonicity and bounds, found by studying $f(x)-x$, decide whether it converges. Figure~\ref{fig:cobweb}
+shows the ``cobweb'' picture that makes this visible, for $u_{n+1}=\sin u_n$, the sequence of Exercise~\ref{ex:sin}.
+\end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-cobweb}
+\caption{Left: the cobweb of $u_{n+1}=\sin u_n$ from $u_0=1.5$. Each vertical segment goes from $(u_n,u_n)$ on the diagonal to the curve $y=\sin x$, each horizontal one brings $u_{n+1}$ back to the diagonal. The steps crawl towards the fixed point $0$, and slowly: $u_{100}\approx0.170$, close to $\sqrt{3/100}=0.173$, as Exercise~\ref{ex:sin} predicts. Right: Oresme's blocks. Keep the first bar, of height $1$, and then group the later bars into blocks of $1,2,4,8,\dots$ terms. Each of those blocks has area at least $\frac12$, so $H_{2^m}\ge1+\frac m2$ and the harmonic series diverges (Exercise~\ref{ex:oresme}).}
+\label{fig:cobweb}
+\end{figure}
+
+\begin{think}
+If $u_n\to\ell$, the averages $\frac{u_1+\dots+u_n}n$ should tend to $\ell$ too: the first terms are drowned out. Is the converse true? Try $u_n=(-1)^n$.
+\end{think}
+
+\begin{theorem}[Ces\`aro]\label{thm:cesaro}
+If $u_n\to\ell\in\R$, then $\dfrac{u_1+\dots+u_n}n\to\ell$.
+\end{theorem}
+\begin{proof}
+Replacing $u_n$ by $u_n-\ell$ we may assume $\ell=0$. Let $\varepsilon>0$ and $N$ with $|u_n|\le\varepsilon$ for $n>N$. Then for $n>N$,
+\[
+\left|\frac{u_1+\dots+u_n}n\right|\le\frac{|u_1|+\dots+|u_N|}n+\frac{n-N}n\,\varepsilon,
+\]
+and the first term tends to $0$ (its numerator is a fixed number), so the average is at most $2\varepsilon$ in absolute value for $n$ large.
+\end{proof}
+
+A useful corollary: if $u_{n+1}-u_n\to\ell$ then $\frac{u_n}n\to\ell$ (apply Ces\`aro to the differences: $\frac{u_n-u_0}n$ is their average).
+Exercise~\ref{ex:stolz} extends this to the Stolz--Ces\`aro theorem, a discrete version of L'H\^opital's rule.
+
+\section{Continuity and derivatives, from completeness}
+
+The foundational contract in the preface left a short list of exceptions. This section shortens that list. Five theorems about functions on a segment are used throughout the series, often without a word: a continuous function that changes sign
+vanishes somewhere, it is bounded and attains its bounds, it is uniformly continuous, and a differentiable function that takes the same value twice
+has a horizontal tangent in between, which gives the mean value theorem. All five come out of Proposition~\ref{prop:seqcrit}, that is, out of the
+completeness of~$\R$.
+
+\begin{reminder}[continuity and derivatives]
+Let $f$ be defined on an interval $I$, and let $a$ be an accumulation point of
+$I$: every neighbourhood of $a$ contains a point of $I$ different from $a$.
+We say $f(x)\to L$ as $x\to a$ if for every $\varepsilon>0$ there is $\delta>0$ such that
+$|f(x)-L|\le\varepsilon$ whenever $x\in I$ and $0<|x-a|\le\delta$. When $a\in I$, the function $f$ is \emph{continuous at $a$} if
+$f(x)\to f(a)$ as $x\to a$, and
+\emph{continuous on $I$} if it is continuous at every point of $I$. At an interior point $a$ of $I$, it is \emph{differentiable at $a$} if $\frac{f(x)-f(a)}{x-a}$ has a limit as
+$x\to a$, called $f'(a)$. At endpoints we use a one-sided derivative only when explicitly
+stated. On a singleton interval every function is continuous by convention,
+but no derivative is defined there. A differentiable function is continuous ($f(x)-f(a)=\frac{f(x)-f(a)}{x-a}(x-a)\to f'(a)\cdot0$).
+
+\emph{Sequences see everything.} $f$ is continuous at $a$ if and only if $f(x_n)\to f(a)$ for every sequence $x_n\to a$ in $I$. Indeed, if $f$ is continuous
+at $a$ and $x_n\to a$, then given $\varepsilon$ take the $\delta$ of continuity and then $N$ with $|x_n-a|\le\delta$ for $n\ge N$: for such $n$,
+$|f(x_n)-f(a)|\le\varepsilon$. Conversely, if $f$ is not continuous at $a$, some $\varepsilon$ defeats every $\delta$: for $\delta=\frac1n$ there is $x_n$
+with $|x_n-a|\le\frac1n$ and $|f(x_n)-f(a)|>\varepsilon$, so $x_n\to a$ but $f(x_n)\not\to f(a)$. The same argument works for every limit statement, and
+it is the bridge between the theorems about sequences above and the theorems about functions below.
+
+Sums, products and quotients (where the denominator does not vanish) of continuous functions are continuous, and so are composites: this is the
+proposition on operations on limits, read through sequences. Polynomials are continuous; so are $\exp$, $\ln$, $\cos$ and $\sin$, whose basic
+properties the volume admits.
+\end{reminder}
+
+\begin{proposition}[elementary differentiation rules]\label{prop:early-differentiation}
+Let $f,g$ be differentiable at an interior point $a$ of their intervals of
+definition, and let $\lambda,\mu\in\R$.
+\begin{enumerate}[label=(\alph*)]
+\item $(\lambda f+\mu g)'(a)=\lambda f'(a)+\mu g'(a)$ and
+$(fg)'(a)=f'(a)g(a)+f(a)g'(a)$. If $g(a)\ne0$, then
+\[
+\left(\frac fg\right)'(a)=\frac{f'(a)g(a)-f(a)g'(a)}{g(a)^2}.
+\]
+\item If $h$ is differentiable at $f(a)$ and $h\circ f$ is defined near $a$,
+then $(h\circ f)'(a)=h'(f(a))f'(a)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Linearity follows by taking limits of the difference quotients. For the product, add and subtract $f(a)g(x)$:
+\[
+\frac{f(x)g(x)-f(a)g(a)}{x-a}=\frac{f(x)-f(a)}{x-a}\,g(x)+f(a)\,\frac{g(x)-g(a)}{x-a}.
+\]
+Here $g(x)\to g(a)$ since $g$ is continuous at $a$. For the quotient it suffices to differentiate $\frac1g$:
+\[
+\frac1{x-a}\left(\frac1{g(x)}-\frac1{g(a)}\right)=-\frac{g(x)-g(a)}{x-a}\cdot\frac1{g(x)g(a)}\to-\frac{g'(a)}{g(a)^2}.
+\]
+Then apply the product rule to $f\cdot\frac1g$.
+
+(b) Write $h(y)-h(b)=(y-b)\bigl(h'(b)+\eta(y)\bigr)$ with $b=f(a)$ and $\eta(y)\to0$ as $y\to b$, $\eta(b)=0$; this is just the definition of $h'(b)$, rewritten so that it also makes sense when $y=b$. Put $y=f(x)$:
+$\frac{h(f(x))-h(f(a))}{x-a}=\frac{f(x)-f(a)}{x-a}\bigl(h'(b)+\eta(f(x))\bigr)$, and as $x\to a$, $f(x)\to b$ by continuity, so $\eta(f(x))\to0$ and the right side tends to $f'(a)h'(b)$. (The rewriting avoids dividing by $f(x)-f(a)$, which may vanish for $x$ near $a$.)
+\end{proof}
+
+For example, define $x^\alpha=\exp(\alpha\ln x)$ for $x>0$ and real $\alpha$.
+Using the named elementary-function derivatives $(\exp)'=\exp$ and
+$\ln'(x)=1/x$, the chain rule gives
+\[
+\frac{\mathrm d}{\mathrm dx}x^\alpha
+=\exp(\alpha\ln x)\frac\alpha x=\alpha x^{\alpha-1}.
+\]
+Thus the differentiation used in the series comparisons below follows from
+proved rules and the stated elementary-function assumptions.
+
+\begin{think}
+A continuous function on $[0,1]$ takes the value $-1$ at $0$ and $+1$ at $1$. ``Obviously'' its graph crosses the axis. Now take the function
+$f(x)=x^2-2$ on the rational numbers in $[0,2]$: it is continuous, negative at $0$, positive at $2$, and never zero. What does $\R$ have that $\Q$ lacks? Find the exact step of the proof below that fails over $\Q$.
+\end{think}
+
+\begin{theorem}[intermediate values]\label{thm:ivt}
+Let $f$ be continuous on $[a,b]$ with $f(a)<0<f(b)$. Then $f(c)=0$ for some $c\in\,]a,b[$. Consequently the image of an interval by a continuous function
+is an interval: $f$ takes every value between any two of its values.
+\end{theorem}
+\begin{proof}
+Bisection (Figure~\ref{fig:bisection}). Set $a_0=a$, $b_0=b$. Given $[a_n,b_n]$ with $f(a_n)\le0\le f(b_n)$, let $m$ be its midpoint: if $f(m)\le0$ put $a_{n+1}=m$, $b_{n+1}=b_n$; otherwise
+put $a_{n+1}=a_n$, $b_{n+1}=m$. Then $f(a_n)\le0\le f(b_n)$ for all $n$, $(a_n)$ is non-decreasing, $(b_n)$ non-increasing, and $b_n-a_n=\frac{b-a}{2^n}\to0$.
+By Proposition~\ref{prop:seqcrit}(b) both converge to a common $c\in[a,b]$. By continuity, $f(a_n)\to f(c)$ and $f(b_n)\to f(c)$; limits preserve weak
+inequalities, so $f(c)\le0\le f(c)$, that is $f(c)=0$. Since $f(a)\ne0\ne f(b)$, $c$ is interior. For the consequence, suppose $f(u)<v<f(w)$. On the segment joining $u$ and $w$, one endpoint value lies below $v$ and the other above it. Apply the theorem to $f-v$ when the left endpoint is the smaller value, and to $v-f$ when the left endpoint is the larger one.
+
+The step that fails over $\Q$ is the convergence of the adjacent sequences $(a_n)$ and $(b_n)$: it is completeness, and nothing else.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-bisection}
+\caption{Left: bisection for $f(x)=x^3-2x-1$ on $[1,2.2]$. At each step the half on which $f$ changes sign is kept (shaded); after six steps the root $\frac{1+\sqrt5}2\approx1.618$ is pinned inside an interval of length $1.2/2^6<0.02$. Right: the proof of Rolle's theorem for $f(x)=x^3-3x$ on $[0,\sqrt3]$. The function takes the same value $0$ at the two black points; it attains its minimum on the segment at an interior point (red), and there the tangent is horizontal.}
+\label{fig:bisection}
+\end{figure}
+
+\begin{examplex}
+For every integer $n\ge1$, every positive real $y$ has a positive $n$th root: $x\mapsto x^n-y$ is continuous, negative at $0$ and positive at $1+y$ (since $(1+y)^n\ge1+ny>y$).
+Every polynomial of odd degree with real coefficients has a real root. If $P$ is monic of odd degree $d$, then $P(x)=x^d\bigl(1+a_{d-1}x^{-1}+\cdots+a_0x^{-d}\bigr)$. For all sufficiently large $|x|$ the parenthesis exceeds $\frac12$, so $P(x)$ has the sign of $x^d$, hence of $x$. Thus $P$ is negative at some large negative point and positive at some large positive point, and the intermediate value theorem applies on that segment.
+A continuous $f:[0,1]\to[0,1]$ has a fixed point. Let $g(x)=f(x)-x$. If $g(0)=0$ or $g(1)=0$, that endpoint is a fixed point. If $g(0)>0>g(1)$, apply the theorem to $-g$.
+\end{examplex}
+
+\begin{theorem}[extreme values]\label{thm:evt}
+A continuous function on a segment $[a,b]$ is bounded and attains its supremum and its infimum: there are $c,d\in[a,b]$ with $f(c)\le f(x)\le f(d)$ for all $x$.
+\end{theorem}
+\begin{proof}
+If $f$ were unbounded above, there would be $x_n\in[a,b]$ with $f(x_n)\ge n$. By Bolzano--Weierstrass a subsequence $x_{n_k}$ converges to some $d\in[a,b]$
+(the limit stays in $[a,b]$, as limits preserve inequalities), and by continuity $f(x_{n_k})\to f(d)$, a finite number, while $f(x_{n_k})\ge n_k\to\infty$: contradiction.
+So $M=\sup_{[a,b]}f$ exists. For each $n$ pick $x_n$ with $f(x_n)>M-\frac1n$; again a subsequence converges to some $d$, and $f(d)=\lim f(x_{n_k})=M$ by the squeeze
+$M-\frac1{n_k}<f(x_{n_k})\le M$. Apply this to $-f$ for the infimum.
+\end{proof}
+
+Both hypotheses matter: $x\mapsto\frac1x$ on $]0,1]$ is continuous and unbounded; $x\mapsto x$ on $]0,1[$ is bounded and attains neither bound; the
+function equal to $x$ on $[0,1[$ and to $0$ at $1$ attains no maximum on $[0,1]$. Segments, continuity: both.
+
+\begin{think}
+The function $x\mapsto x^2$ is continuous on $\R$, but the $\delta$ that works for a given $\varepsilon$ at the point $a$ must shrink as $a$ grows (the graph gets steeper). On a segment $[0,10]$, can one $\delta$ serve every point at once? And for $x\mapsto\frac1x$ on $]0,1]$?
+\end{think}
+
+\begin{theorem}[Heine: uniform continuity]\label{thm:heine}
+A continuous function on a segment $[a,b]$ is \emph{uniformly continuous}: for every $\varepsilon>0$ there is $\delta>0$ such that $|f(x)-f(y)|\le\varepsilon$
+for all $x,y\in[a,b]$ with $|x-y|\le\delta$.
+\end{theorem}
+\begin{proof}
+Suppose not. Then some $\varepsilon>0$ defeats every $\delta$: for $\delta=\frac1n$ there are $x_n,y_n\in[a,b]$ with $|x_n-y_n|\le\frac1n$ and $|f(x_n)-f(y_n)|>\varepsilon$.
+By Bolzano--Weierstrass, $x_{n_k}\to c\in[a,b]$ for some subsequence, and then $y_{n_k}\to c$ too, since $|y_{n_k}-x_{n_k}|\le\frac1{n_k}\to0$. By continuity at $c$,
+$f(x_{n_k})-f(y_{n_k})\to f(c)-f(c)=0$, which contradicts $|f(x_{n_k})-f(y_{n_k})|>\varepsilon$.
+\end{proof}
+
+The difference with plain continuity is the order of the quantifiers: continuity gives a $\delta$ for each $\varepsilon$ \emph{and each point}; uniform continuity
+gives one $\delta$ for each $\varepsilon$, good everywhere. On $]0,1]$ the function $\frac1x$ is continuous but not uniformly: the points $\frac1n$ and $\frac1{n+1}$ get
+closer and closer while their images stay $1$ apart. Heine's theorem is what makes Riemann sums converge for every continuous function (Chapter~\ref{ch:calculus}), and it
+is named after Eduard Heine, who proved it in 1872; the idea is already in Dirichlet's lectures of 1854.
+
+\begin{theorem}[Rolle, and the mean value theorem]\label{thm:mvt}
+Let $f$ be continuous on $[a,b]$ and differentiable on $]a,b[$, with $a<b$.
+\begin{enumerate}[label=(\alph*)]
+\item \textbf{Fermat}: if $f$ has a maximum or a minimum on $]a,b[$ at the point $c$, then $f'(c)=0$.
+\item \textbf{Rolle}: if $f(a)=f(b)$, then $f'(c)=0$ for some $c\in\,]a,b[$.
+\item \textbf{Mean value}: $f(b)-f(a)=f'(c)(b-a)$ for some $c\in\,]a,b[$. Hence if $|f'|\le M$ on $]a,b[$ then $|f(x)-f(y)|\le M|x-y|$ on $[a,b]$; if $f'\ge0$ then $f$ is non-decreasing; and if $f'=0$ then $f$ is constant.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Say $c$ is a maximum. For $x>c$ close to $c$, $\frac{f(x)-f(c)}{x-c}\le0$ (numerator $\le0$, denominator $>0$); letting $x\to c^+$ gives $f'(c)\le0$.
+For $x<c$ the quotient is $\ge0$, so $f'(c)\ge0$. Hence $f'(c)=0$.
+
+(b) By Theorem~\ref{thm:evt}, $f$ attains its maximum $M$ and its minimum $m$ on $[a,b]$. If $M=m$, $f$ is constant and every $c$ works. Otherwise one of them, say $M$,
+differs from the common value $f(a)=f(b)$, so it is attained at an interior point $c$, and (a) gives $f'(c)=0$ (Figure~\ref{fig:bisection}, right).
+
+(c) Apply Rolle to $g(x)=f(x)-f(a)-\frac{f(b)-f(a)}{b-a}(x-a)$, which is continuous on $[a,b]$, differentiable inside, with $g(a)=g(b)=0$: at some $c$,
+$0=g'(c)=f'(c)-\frac{f(b)-f(a)}{b-a}$. The three consequences follow by applying the equality to any two points $x<y$ of $[a,b]$.
+\end{proof}
+
+Michel Rolle published his theorem in 1691, for polynomials only, in a book on equations; the modern form, for any differentiable function, had to
+wait for Cauchy's definitions. The mean value theorem says that somewhere on the way the instantaneous speed equals the average speed, and a car that
+covers $100$ kilometres in an hour has, at some instant, been going at exactly $100$ km/h; if the average speed exceeds a limit, the speed must exceed that limit somewhere along the journey.
+
+\begin{proposition}[sine and tangent compared with the identity]\label{prop:sincmp}
+On $[0,\pi]$, $\sin x\ge0$. For $0<x\le\frac\pi2$, one has $0<\sin x<x$. For $0<x<\frac\pi2$, one also has $x<\tan x$.
+\end{proposition}
+\begin{proof}
+The unit-circle normalisation supplies $\sin0=\sin\pi=0$, $\sin\frac\pi2=1$, $\cos0=1$, $\cos\frac\pi2=0$ and $\cos\pi=-1$. It takes $\frac\pi2$ to be the least positive zero of the cosine, and $\pi$ to be the least positive angle at which the cosine equals $-1$. Thus $\cos>0$ on $\bigl[0,\frac\pi2\bigr)$. There $\sin'=\cos>0$. If $0\le x<y\le\frac\pi2$, the mean value theorem gives $\sin y-\sin x=\cos c\cdot(y-x)>0$, so sine is strictly increasing from $0$ to $1$, and $\sin x>0$ on $\bigl(0,\frac\pi2\bigr]$.
+
+Suppose sine took a negative value somewhere in $\bigl(\frac\pi2,\pi\bigr)$, and let $d$ be the infimum of such points. Then $d\in\bigl[\frac\pi2,\pi\bigr)$, $\sin d=0$ and $\sin\ge0$ on $[0,d]$. Hence $\cos'=-\sin\le0$ on $(0,d)$, so cosine is non-increasing there and $\cos d\le\cos\frac\pi2=0$. Together with $\sin d=0$ this forces $\cos d=-1$. The leastness of $\pi$ then gives $d\ge\pi$, a contradiction. Therefore $\sin x\ge0$ on $[0,\pi]$.
+
+On $\bigl(0,\frac\pi2\bigr]$, the same sign gives $\cos'=-\sin<0$, so cosine is strictly decreasing from $1$. The mean value theorem gives $\sin x=x\cos c$ for some $c\in(0,x)$, and $0<\cos c<1$, hence $0<\sin x<x$. If also $x<\frac\pi2$, then $\cos c>\cos x>0$, so $\sin x>x\cos x$, and dividing by $\cos x$ produces $x<\tan x$.
+\end{proof}
+
+These results justify the elementary derivative arguments needed before the systematic
+calculus chapter. Chapter~\ref{ch:calculus} develops differentiation rules,
+Taylor approximation and integration techniques. The elementary functions retain
+the named assumptions stated in the preface; no Taylor expansion is assumed here.
+
+\subsection*{The integration contract used below}
+We admit that a continuous real function on a closed bounded interval has an
+integral. Its admitted properties are linearity, additivity over adjacent
+intervals, monotonicity, and $\int_a^b c\,\dd t=c(b-a)$. Reversed limits change
+the sign. These assumptions let us compare sums with areas; the useful rule for
+computing those areas follows from continuity and the mean value theorem.
+
+\begin{proposition}[a first fundamental theorem]\label{prop:early-ftc}
+If $f$ is continuous on an interval $I$ and $a\in I$, then
+$F(x)=\int_a^x f(t)\,\dd t$ has derivative $F'(x)=f(x)$ at every interior point.
+Consequently, if $G$ is continuously differentiable on $[a,b]$, then
+$\int_a^b G'(t)\,\dd t=G(b)-G(a)$.
+\end{proposition}
+\begin{proof}
+For small nonzero $h$, additivity gives
+\[
+\frac{F(x+h)-F(x)}h-f(x)
+=\frac1h\int_x^{x+h}(f(t)-f(x))\,\dd t.
+\]
+Its absolute value is at most the largest $|f(t)-f(x)|$ between $x$ and $x+h$,
+by monotonicity of the integral; continuity makes this bound tend to zero.
+For the consequence, $x\mapsto\int_a^x G'-G(x)$ has derivative zero and hence
+is constant by Theorem~\ref{thm:mvt}; evaluate it at $a$ and $b$.
+\end{proof}
+
+\section{Series}
+
+A series is not a new kind of limit. It is the sequence of its partial sums, and every criterion above applies to that sequence. The new danger is that rearranging terms can change the sum.
+
+\begin{proposition}[series of non-negative terms]\label{prop:posseries}
+Let $u_n,v_n\ge0$.
+\begin{enumerate}[label=(\alph*)]
+\item $\sum u_n$ converges if and only if its partial sums are bounded.
+\item \textbf{Comparison}: if $u_n\le v_n$ and $\sum v_n$ converges, so does $\sum u_n$. If $u_n\sim v_n$, the two series have the same nature.
+\item \textbf{Series and integrals}: if $f\ge0$ is continuous and non-increasing on $[1,\infty[$, then $\sum f(n)$ converges if and only if $\int_1^Nf$ is bounded.
+\item \textbf{Riemann}: $\sum\frac1{n^\alpha}$ converges if and only if $\alpha>1$.
+\item \textbf{Ratio test}: if $u_n>0$ and $\frac{u_{n+1}}{u_n}\to\ell$, the series converges if $\ell<1$ and diverges if $\ell>1$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) The partial sums are non-decreasing: apply Proposition~\ref{prop:seqcrit}(a).
+(b) The partial sums of $\sum u_n$ are bounded by $\sum v_n$. If $u_n\sim v_n$, then $\frac12v_n\le u_n\le2v_n$ for $n$ large; compare both ways (finitely many terms do not matter).
+(c) For $k\le t\le k+1$, $f(k+1)\le f(t)\le f(k)$; integrating, $f(k+1)\le\int_k^{k+1}f\le f(k)$. Summing, $\sum_{k=2}^{N}f(k)\le\int_1^Nf\le\sum_{k=1}^{N-1}f(k)$, so the partial sums and the integrals are bounded together.
+(d) Apply (c) to $t^{-\alpha}$ (for $\alpha\le0$ the terms do not tend to $0$): $\int_1^Nt^{-\alpha}\dd t$ is $\ln N$ for $\alpha=1$ and $\frac{N^{1-\alpha}-1}{1-\alpha}$ otherwise, bounded iff $\alpha>1$.
+(e) If $\ell<1$, pick $r\in]\ell,1[$: for $n\ge N$, $u_{n+1}\le ru_n$, so $u_n\le u_Nr^{n-N}$, and compare with a geometric series. If $\ell>1$, $u_n$ eventually increases, so it does not tend to $0$ and the partial sums are unbounded.
+\end{proof}
+
+When the ratio tends to $1$ the test says nothing: $\sum\frac1n$ diverges and $\sum\frac1{n^2}$ converges, and both have ratios tending to $1$. The
+remedy is to compare with the Riemann series directly: if $n^\alpha u_n$ is bounded for some $\alpha>1$, the series converges; if $nu_n\ge c>0$ for $n$
+large, it diverges. Exercise~\ref{ex:condensation} gives a sharper tool, Cauchy's condensation test, which handles the series between $\frac1n$ and $\frac1{n^{1+\delta}}$.
+
+\begin{examplex}
+$\sum\frac{n^3}{3^n}$ converges: the ratio $\frac{(n+1)^3}{3n^3}\to\frac13$. $\sum\frac{\ln n}{n^2}$ converges: for $u\ge1$ the mean value theorem gives $\ln u=(u-1)/c\le u-1$ for some $c\in(1,u)$ if $u>1$, and both sides vanish at $u=1$. Thus $\ln n=4\ln(n^{1/4})\le4n^{1/4}$ for $n\ge1$, so $0\le\ln n/\sqrt n\le4n^{-1/4}\to0$ and the terms are $O(n^{-3/2})$. $\sum\sin\frac1n$ diverges: $\sin\frac1n\sim\frac1n$. And $\sum\frac1{\sqrt{n(n+1)}}$ diverges for the same reason, although its terms are smaller than $\frac1n$.
+\end{examplex}
+
+\begin{think}
+In a finite sum the order of the terms does not matter. Before reading on, decide whether this should still hold for $1-\frac12+\frac13-\frac14+\cdots$. What could go wrong if the positive terms alone add up to $+\infty$ and the negative terms alone to $-\infty$?
+\end{think}
+
+\begin{proposition}[signed series]\label{prop:signedseries}
+\begin{enumerate}[label=(\alph*)]
+\item If $\sum|u_n|$ converges, so does $\sum u_n$ (for real $u_n$).
+\item \textbf{Alternating series}: if $(a_n)$ is non-increasing and tends to $0$, $\sum(-1)^na_n$ converges, and the remainder $R_n=\sum_{k>n}(-1)^ka_k$ lies between zero and its first omitted term, and satisfies $|R_n|\le a_{n+1}$.
+\item \textbf{Cauchy product}: if $\sum a_n$ and $\sum b_n$ converge absolutely, then with $c_n=\sum_{k=0}^na_kb_{n-k}$, $\sum c_n$ converges absolutely and $\sum c_n=\left(\sum a_n\right)\left(\sum b_n\right)$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) $|S_p-S_q|\le\sum_{q<k\le p}|u_k|$, which is small for $p>q$ large since the partial sums of $\sum|u_k|$ converge; apply Cauchy's criterion.
+
+(b) Let $S_n=\sum_{k\le n}(-1)^ka_k$. Then $S_{2n+2}-S_{2n}=a_{2n+2}-a_{2n+1}\le0$ and $S_{2n+3}-S_{2n+1}=a_{2n+2}-a_{2n+3}\ge0$, and $S_{2n}-S_{2n+1}=a_{2n+1}\to0$. So $(S_{2n})$ and $(S_{2n+1})$ are adjacent with limit $S$, and $S_{2n+1}\le S\le S_{2n}$. Hence $S_n\to S$, and $S$ lies between any two consecutive partial sums: $|R_n|=|S-S_n|\le|S_{n+1}-S_n|=a_{n+1}$, and $R_n$ lies between $0$ and $S_{n+1}-S_n=(-1)^{n+1}a_{n+1}$.
+
+(c) Let $A_N=\sum_{n\le N}|a_n|$, $B_N=\sum_{n\le N}|b_n|$. The square $\{0\le k,l\le N\}$ contains the triangle $\{k+l\le N\}$ and is contained in the triangle $\{k+l\le2N\}$ (Figure~\ref{fig:cauchyprod}). So $\sum_{n\le N}|c_n|\le\sum_{k+l\le N}|a_k||b_l|\le A_NB_N$: absolute convergence. And
+\[
+\begin{aligned}&\Bigl|\sum_{n\le2N}c_n-\Bigl(\sum_{k\le N}a_k\Bigr)\Bigl(\sum_{l\le N}b_l\Bigr)\Bigr|\le\sum_{\substack{k+l\le2N\\ \max(k,l)>N}}|a_k||b_l|\\&\qquad\le\sum_{k>N}|a_k|\cdot B+A\cdot\sum_{l>N}|b_l|\to0,\end{aligned}
+\]
+with $A=\sum|a_k|$, $B=\sum|b_l|$: the pairs in the big triangle but not in the square have $k>N$ or $l>N$. Absolute convergence of $\sum c_n$ was already proved, so the series converges. Its even partial sums tend to $\bigl(\sum a_k\bigr)\bigl(\sum b_l\bigr)$, and every partial-sum subsequence of a convergent series has the same limit. Therefore $\sum c_n$ equals that product.
+\end{proof}
+
+The complex versions of these statements follow after complex numbers are
+defined, in Chapter~\ref{ch:complex}; the real proofs above are the foundations
+for that extension.
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-cauchyprod}
+\caption{The Cauchy product for $N=6$. Each dot $(k,l)$ carries the product $a_kb_l$. The partial sum $\sum_{n\le N}c_n$ adds the dots of the small triangle $k+l\le N$ (blue); the product of the two partial sums adds the dots of the square (grey); the dots of the big triangle $k+l\le2N$ not in the square (red) all have $k>N$ or $l>N$, and their total is small when the series converge absolutely.}
+\label{fig:cauchyprod}
+\end{figure}
+
+\begin{proposition}[when changing the order is safe]\label{prop:safe-sums}
+For $a_{ij}\ge0$, the two iterated sums $\sum_i\sum_j a_{ij}$ and
+$\sum_j\sum_i a_{ij}$ are equal, allowing $+\infty$.
+An absolutely convergent real series retains its sum under any permutation
+of its terms.
+\end{proposition}
+\begin{proof}
+Let $M$ be the supremum of all finite rectangle sums
+$\sum_{i=0}^m\sum_{j=0}^n a_{ij}$, with $M=+\infty$ when they are unbounded.
+For fixed $m$, letting $n$ increase gives $\sum_{i=0}^m\sum_j a_{ij}\le M$;
+letting $m$ increase gives the first iterated sum at most $M$.
+Every finite rectangle sum is also at most that iterated sum, so equality holds.
+The same argument in the other order gives the second equality.
+
+For absolute rearrangement, write $S=\sum_{k\ge0}u_k$. Given $\varepsilon>0$,
+choose $K$ with $\sum_{k>K}|u_k|<\varepsilon$. For a permutation $\sigma$,
+choose $N$ so that $\sigma(0),\dots,\sigma(N)$ include $0,\dots,K$.
+Any later rearranged partial sum contains these first $K+1$ terms; its difference
+from $S$ is a sum of omitted terms with original indices greater than $K$,
+and has absolute value at most $\varepsilon$. Hence it tends to $S$.
+\end{proof}
+
+\begin{think}
+$H_n=1+\frac12+\dots+\frac1n$ and $\ln n=\int_1^n\frac{\mathrm dt}t$ are a sum and an integral of the same function. Draw the bars of height $\frac1k$ over $[k,k+1]$ and the curve $\frac1t$. Is the difference $H_n-\ln n$ bounded? Does it increase or decrease?
+\end{think}
+
+\begin{proposition}[Euler's constant]\label{prop:gamma}
+Let $H_n=\sum_{k=1}^n\frac1k$. There is a constant $\gamma\approx0.5772$ such that $H_n=\ln n+\gamma+o(1)$.
+\end{proposition}
+\begin{proof}
+Let $u_n=H_n-\ln n$ and $v_n=H_n-\ln(n+1)$. From $\frac1{n+1}\le\int_n^{n+1}\frac{\mathrm dt}t\le\frac1n$ (the integrand lies between $\frac1{n+1}$ and $\frac1n$ on $[n,n+1]$):
+\[
+\begin{gathered}u_{n+1}-u_n=\frac1{n+1}-\ln\frac{n+1}n\le0,\qq v_{n+1}-v_n=\frac1{n+1}-\ln\frac{n+2}{n+1}\ge0,\end{gathered}
+\]
+and $u_n-v_n=\ln\left(1+\frac1n\right)\to0$. The sequences are adjacent and converge to a common limit $\gamma$.
+\end{proof}
+
+Euler studied the constant in a paper on harmonic progressions written in 1731, read in 1734 and published in 1740. He printed six decimal places, $0.577218$ (the last digit is wrong; the
+true value begins $0.5772156649$). Geometrically, $v_n=H_n-\ln(n+1)$ is the area between the bars and the curve in Figure~\ref{fig:gamma} (left), so $\gamma$ is the total area of these
+infinitely many curved triangles. The right panel previews Exercise~\ref{ex:rearr}.
+
+\begin{figure}[ht]
+\centering
+\fig{ch05-gamma}
+\caption{Left: the yellow regions between the bars of height $\frac1k$ and the curve $\frac1t$ have total area $H_8-\ln9\approx0.521$. As more bars are added this increases to $\gamma\approx0.5772$. Right: the first $60$ partial sums of the alternating harmonic series (blue) and of two rearrangements of it (Exercise~\ref{ex:rearr}): one positive term then two negative ones (red), and two positive terms then one negative (green). Same terms, three different sums.}
+\label{fig:gamma}
+\end{figure}
+
+\begin{theorem}[Stirling]\label{thm:stirling}
+$n!\sim\sqrt{2\pi n}\left(\dfrac ne\right)^n$.
+\end{theorem}
+\begin{proof}
+Exercise~\ref{ex:stirling} proves that $n!\sim C\sqrt n\left(\frac ne\right)^n$ for some constant $C>0$; Theorem~\ref{thm:stirlingC} in Chapter~\ref{ch:calculus} shows $C=\sqrt{2\pi}$ with Wallis' integrals.
+\end{proof}
+
+The history records an exchange between two mathematicians. In 1730 Abraham de Moivre, a Huguenot refugee in London who made his living by solving gamblers'
+problems in coffee houses, proved that $n!\sim C\sqrt n\,(n/e)^n$ with a constant $C$ he could only compute numerically, $2.5074$. James Stirling, a
+Scot who lost his Oxford scholarships after refusing the required oaths, identified $C=\sqrt{2\pi}$ in his \emph{Methodus Differentialis} the same year, and de Moivre,
+published the improved form in a supplement with full credit to Stirling, after which the whole formula took Stirling's name.
+
+\section{Summation by parts}
+
+The alternating series test handles signs that strictly alternate. For $\sum\frac{\sin n}n$ or $\sum\frac{\cos(n\theta)}{\sqrt n}$ the signs follow a
+subtler pattern, and the right tool is a discrete version of integration by parts, found by Niels Henrik Abel in 1826, in his great paper on the binomial series.
+
+\begin{proposition}[Abel's summation by parts]\label{prop:abelsum}
+Let $(a_k)$ and $(b_k)$ be sequences and $A_k=a_0+\dots+a_k$ (with $A_{-1}=0$). Then for $0\le m\le n$,
+\[
+\sum_{k=m}^na_kb_k=A_nb_n-A_{m-1}b_m+\sum_{k=m}^{n-1}A_k(b_k-b_{k+1}).
+\]
+\end{proposition}
+\begin{proof}
+Write $a_k=A_k-A_{k-1}$: $\sum_{k=m}^na_kb_k=\sum_{k=m}^nA_kb_k-\sum_{k=m}^nA_{k-1}b_k$. In the second sum put $j=k-1$: it is $\sum_{j=m-1}^{n-1}A_jb_{j+1}$.
+Subtracting, the terms with index $m\le k\le n-1$ combine into $A_k(b_k-b_{k+1})$, and what is left over is $A_nb_n$ from the first sum and $-A_{m-1}b_m$ from the second.
+\end{proof}
+
+The formula moves the ``derivative'' from the $a_k$ (whose sums $A_k$ are hopefully bounded) to the $b_k$ (whose differences $b_k-b_{k+1}$ are hopefully small), exactly as
+$\int u'v=[uv]-\int uv'$ does.
+
+\begin{theorem}[Dirichlet's test]\label{thm:dirichlettest}
+Let $(a_k)$ be a real sequence whose partial sums $A_n$ are bounded, $|A_n|\le M$, and $(b_k)$ a real sequence that is non-increasing and tends to $0$. Then
+$\sum a_kb_k$ converges, and $\left|\sum_{k>n}a_kb_k\right|\le2Mb_{n+1}$.
+
+\textbf{Abel's test}: if $\sum a_k$ converges and $(b_k)$ is monotone and bounded, then $\sum a_kb_k$ converges.
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:abelsum}, for $m\le n$,
+\[
+\left|\sum_{k=m}^na_kb_k\right|\le Mb_n+Mb_m+M\sum_{k=m}^{n-1}(b_k-b_{k+1})=Mb_n+Mb_m+M(b_m-b_n)=2Mb_m,
+\]
+using $b_k-b_{k+1}\ge0$ and the telescoping of the sum. Since $b_m\to0$, the partial sums form a Cauchy sequence (Proposition~\ref{prop:seqcrit}(d)), so the series converges;
+hold $m$ fixed and let the upper index tend to infinity, obtaining $|\sum_{k=m}^\infty a_kb_k|\le2Mb_m$. Now set $m=n+1$ to obtain the stated tail bound. For Abel's test, let $b_k\to b$ (monotone and bounded); write $a_kb_k=a_k(b_k-b)+a_kb$: the first series converges
+by Dirichlet's test applied to $\pm(b_k-b)$, which decreases to $0$, and the second is $b\sum a_k$.
+\end{proof}
+
+\begin{examplex}[the series $\sum\frac{\sin n\theta}n$]
+For $\theta\notin2\pi\Z$, the partial sums of $\sum\sin k\theta$ are bounded: multiplying by $2\sin\frac\theta2$ and using $2\sin\frac\theta2\sin k\theta=\cos\left(k-\frac12\right)\theta-\cos\left(k+\frac12\right)\theta$,
+the sum $\sum_{k=1}^n\sin k\theta$ telescopes to $\frac{\cos\frac\theta2-\cos\left(n+\frac12\right)\theta}{2\sin\frac\theta2}$, of absolute value at most $\frac1{|\sin\frac\theta2|}$. Dirichlet's test with $b_k=\frac1k$
+shows that $\sum_{k\ge1}\frac{\sin k\theta}k$ converges for every real $\theta$ (trivially for $\theta\in2\pi\Z$). The sum is $\frac{\pi-\theta}2$ for $0<\theta<2\pi$, a sawtooth: this is the
+first Fourier series, and Volume~4 proves it. Exercise~\ref{ex:sinn} shows that for $\theta=1$ the convergence is not absolute: the series is a cousin of the alternating harmonic
+series, and Riemann's warning applies to it.
+\end{examplex}
+
+\portraits{weierstrass}{Karl Weierstrass (1815--1897). Portrait by Conrad Fehr, 1895. Public domain, via Wikimedia Commons.}{abel}{Niels Henrik Abel (1802--1829). Portrait by Johan G\o rbitz, 1826. Public domain, via Wikimedia Commons.}
+
+\section{Workshop: a limit with a delivery date}
+``It converges'' is good news. ``Here is how many terms buy the accuracy you want'' is better news. Without an error bound, a displayed decimal is merely a persuasive-looking guess wearing a tie.
+
+\begin{examplex}[a certified decimal for $\ln2$]
+Integrate the finite geometric identity
+\[
+\frac1{1+t}=\sum_{k=0}^{n-1}(-t)^k+\frac{(-t)^n}{1+t}
+\]
+over $[0,1]$. Since $\int_0^1(1+t)^{-1}\dd t=\ln2$, this proves both convergence and the exact remainder
+\[
+\ln2-\sum_{k=1}^n\frac{(-1)^{k-1}}k
+=(-1)^n\int_0^1\frac{t^n}{1+t}\dd t.
+\]
+Its absolute value is between $1/(2(n+1))$ and $1/(n+1)$. So the alternating-series bound is honest, but slow: $n=1000$ guarantees error at most $1/1001$, not six decimals. ``A thousand terms'' sounds enormous only until the denominator reads the contract.
+\end{examplex}
+
+\begin{figure}[ht]\centering\fig{review05-slow}
+\caption{The first twelve alternating harmonic partial sums approach $\ln2$ from alternating sides. The dotted horizontal line is $\ln2$; the gap shrinks only on the order of $1/n$.}\end{figure}
+
+\subsection*{A faster route to the same number}
+\textbf{Mission.} Obtain an approximation to $\ln2$ with error less than $10^{-6}$ using only six positive terms.
+
+\textbf{Hint 1.} Integrate $2/(1-t^2)$ from $0$ to $1/3$. \textbf{Hint 2.} Use a finite geometric identity before taking any limit.
+
+\textbf{Solution.} Since the antiderivative is $\ln((1+t)/(1-t))$,
+\[
+\ln2=2\sum_{k=0}^{m-1}\frac{3^{-(2k+1)}}{2k+1}+R_m,
+\qquad
+R_m=2\int_0^{1/3}\frac{t^{2m}}{1-t^2}\dd t.
+\]
+For $0\le t\le1/3$, $(1-t^2)^{-1}\le9/8$. Consequently
+\[
+0<R_m\le\frac{9}{4(2m+1)3^{2m+1}}.
+\]
+At $m=6$ this is less than $1.1\times10^{-7}$. The six-term sum equals $\frac{15757912}{22733865}$. It is larger than $0.693147$, and adding the remainder bound keeps it smaller than $0.693148$. Thus $0.693147<\ln2<0.693148$. No unjustified exchange of an integral and an infinite sum was needed. The problem was not insufficient computing power; it was a slow representation.
+
+\begin{reminder}[equivalents are not subtraction licences]
+From $a_n\sim b_n$ and $c_n\sim d_n$ one cannot infer $a_n-c_n\sim b_n-d_n$. For instance $n+1\sim n$ and $n\sim n$, while subtracting leaves $1$ on one side and $0$ on the other. Preserve the first non-cancelling term, or keep an explicit remainder. A limit identifies a destination; an error bound tells you where you are now.
+\end{reminder}
+
+\section*{What this chapter establishes}
+Completeness is the one new axiom. From it, a bounded monotone sequence converges, a continuous function on a segment attains its bounds and its intermediate values, and a derivative that vanishes forces constancy. A series converges when its partial sums do. Absolute convergence makes rearrangement safe. Conditional convergence does not. The comparison $0<\sin x<x<\tan x$ on $(0,\pi/2)$ is now a theorem, not a picture.
+
+Volume~4 computes with the series and the Taylor errors prepared here. Volume~5 and Volume~13 send those series after the primes. Volume~6 rebuilds the limit language as topology, and the integral as measure. Volume~7 is the analysis that treats the linear maps of the next chapters as infinite-dimensional. Volume~10 uses the same Cauchy criterion for random variables.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nature}
+Find the nature of $\sum\frac{n!}{n^n}$, and compute $\sum_{n\ge1}\frac{n^2}{2^n}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bertrand}
+Show that $\sum_{n\ge2}\frac1{n\ln n}$ diverges and that $\sum_{n\ge2}\frac1{n\ln^2n}$ converges.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ln2}
+Show that $\displaystyle\sum_{n=1}^\infty\frac{(-1)^{n+1}}n=\ln2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sin}
+Let $u_0\in\left]0,\frac\pi2\right]$ and $u_{n+1}=\sin u_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $u_n\to0$.
+\item \emph{Return after Taylor's theorem (Theorem~\ref{thm:taylor}).}
+Show that $\frac1{u_{n+1}^2}-\frac1{u_n^2}\to\frac13$, and deduce that $u_n\sim\sqrt{\frac3n}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:kempner}
+\emph{Kempner's series.} Show that the sum of $\frac1n$ over the integers $n\ge1$ whose decimal expansion contains no digit $9$ converges, and is less than $80$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:rearr}
+\emph{Rearranging the alternating harmonic series.} Let $p,q\ge1$. Rearrange $\sum\frac{(-1)^{n+1}}n$ by taking, in turn, the next $p$ positive terms
+$\frac11,\frac13,\frac15,\dots$, then the next $q$ negative terms $-\frac12,-\frac14,\dots$, and so on. Show that the new series converges to
+\[
+\ln2+\frac12\ln\frac pq.
+\]
+For $p=1$, $q=2$ this is the $\frac12\ln2$ of the opening.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:stirling}
+\emph{Stirling, up to a constant.} Let $d_n=\ln n!-\left(n+\frac12\right)\ln n+n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $d_n-d_{n+1}=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1=\frac1{12n^2}+O\left(\frac1{n^3}\right)$.
+\item Deduce that $(d_n)$ converges, and that $n!\sim C\sqrt n\left(\frac ne\right)^n$ for some $C>0$.
+\end{enumerate}
+\end{exercise}
+
+\subsection*{Further exercises}
+
+\begin{exercise}[$\star$]\label{ex:oresme}
+\emph{Oresme, around 1350.}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $H_{2^m}\ge1+\frac m2$ by grouping the terms $\frac1k$ for $2^{j-1}<k\le2^j$, and conclude again that $\sum\frac1n$ diverges, this time without integrals.
+\item Show without integrals that $\sum\frac1{n^2}$ converges, with sum at most $2$: compare $\frac1{n^2}$ with $\frac1{n(n-1)}$ and telescope.
+\item How many terms of the harmonic series are needed before the partial sum exceeds $10$? Estimate with Proposition~\ref{prop:gamma}.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:nested}
+\emph{Nested radicals.} Let $c>0$, $u_0=0$ and $u_{n+1}=\sqrt{c+u_n}$. Show that $(u_n)$ converges and find its limit. What is $\sqrt{2+\sqrt{2+\sqrt{2+\cdots}}}$? Show that for $c=2$, $u_n=2\cos\frac\pi{2^{n+1}}$, and deduce Vi\`ete's formula of 1593,
+\[
+\frac2\pi=\frac{\sqrt2}2\cdot\frac{\sqrt{2+\sqrt2}}2\cdot\frac{\sqrt{2+\sqrt{2+\sqrt2}}}2\cdots
+\]
+\emph{(For the last step, use $\sin x=2^n\sin\frac x{2^n}\prod_{k=1}^n\cos\frac x{2^k}$ and $\frac{\sin t}t\to1$.)}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:newton}
+\emph{Newton's method for $\sqrt2$.} Let $x_0=1$ and $x_{n+1}=\frac12\left(x_n+\frac2{x_n}\right)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $x_{n+1}-\sqrt2=\frac{(x_n-\sqrt2)^2}{2x_n}$, hence $0\le x_{n+1}-\sqrt2\le\frac{(x_n-\sqrt2)^2}{2\sqrt2}$ for $n\ge1$.
+\item Deduce that $0\le x_n-\sqrt2\le2\sqrt2\left(\frac{x_1-\sqrt2}{2\sqrt2}\right)^{2^{n-1}}$ for $n\ge1$: the number of correct decimals roughly doubles at each step. How many steps give $100$ decimals?
+\item Explain the recipe: $x_{n+1}$ is the point where the tangent to $y=x^2-2$ at $x_n$ meets the axis.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:stolz}
+\emph{Stolz--Ces\`aro.} Let $(b_n)$ be strictly increasing with $b_n\to+\infty$, and suppose $\frac{a_{n+1}-a_n}{b_{n+1}-b_n}\to\ell\in\R$. Show that $\frac{a_n}{b_n}\to\ell$.
+Deduce that $\frac{1^k+2^k+\dots+n^k}{n^{k+1}}\to\frac1{k+1}$ for every integer $k\ge0$, and that $\frac{\ln n!}{n\ln n}\to1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:condensation}
+\emph{Cauchy's condensation test.} Let $(u_n)$ be non-increasing with $u_n\ge0$. Show that $\sum u_n$ converges if and only if $\sum_k2^ku_{2^k}$ does. Recover
+the nature of $\sum\frac1{n^\alpha}$, and show that $\sum_{n\ge3}\frac1{n\ln n\,(\ln\ln n)^\beta}$ converges if and only if $\beta>1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sinn}
+Show that $\sum_{n\ge1}\frac{\sin n}n$ converges but $\sum_{n\ge1}\frac{|\sin n|}n$ diverges. \emph{(Use $|\sin n|\ge\sin^2n=\frac{1-\cos2n}2$.)}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:riemannrearr}
+\emph{Riemann's rearrangement theorem (1854).} Let $\sum u_n$ be a real series that converges but not absolutely.
+\begin{enumerate}[label=(\alph*)]
+\item Let $p_n=\max(u_n,0)$ and $q_n=\max(-u_n,0)$, so that $u_n=p_n-q_n$ and $|u_n|=p_n+q_n$. Show that $\sum p_n$ and $\sum q_n$ both diverge to $+\infty$.
+\item Let $S\in\R$. Build a rearrangement of the $u_n$ that converges to $S$: take positive terms, in order, until the partial sum first exceeds $S$; then negative terms until it first drops below $S$; then positive terms again, and so on. Insert the zero terms, in their original order, one after each phase while any remain. Show that every term is used exactly once and that the partial sums converge to $S$.
+\item Show that there are also rearrangements that diverge to $+\infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:eulerbasel}
+\emph{Euler's shortcut to $\zeta(2)$ (1731).} Let $\zeta(2)=\sum_{n\ge1}\frac1{n^2}$; this exercise does not use the value $\frac{\pi^2}6$. For $0\le x<1$ let
+$L(x)=\displaystyle\int_0^x\frac{-\ln(1-t)}t\dd t$ (the integrand extends continuously by $1$ at $t=0$).
+\begin{enumerate}[label=(\alph*)]
+\item From $\frac1{1-u}=\sum_{k=0}^{n-1}u^k+\frac{u^n}{1-u}$, show that $L(x)=\sum_{k=1}^\infty\frac{x^k}{k^2}$ for $0\le x<1$, and that $L(x)\to\zeta(2)$ as $x\to1^-$.
+\item Show that $L(x)+L(1-x)+\ln x\ln(1-x)$ is constant on $]0,1[$, equal to $\zeta(2)$.
+\item Deduce Euler's formula $\zeta(2)=(\ln2)^2+2\sum_{n\ge1}\frac1{n^22^n}$, and show that twenty terms of the last series give $\zeta(2)$ to eight decimals, whereas twenty terms of $\sum\frac1{n^2}$ give one.
+\end{enumerate}
+\end{exercise}
+
+\begin{challenge}
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{Is $\gamma$ irrational?} Nobody knows. Assume a certified computation has established at least $1000$ positive partial quotients after the integer part of $\gamma$. Show that if $\gamma=p/q$ in lowest terms then $q\ge F_{1001}>10^{208}$. Use the recurrence $q_j=a_jq_{j-1}+q_{j-2}$ for convergent denominators, with $q_{-1}=0$, $q_0=1$ and $a_j\ge1$. Much stronger published bounds use the actual partial quotients, not merely their number.
+\item \emph{The Erd\H{o}s--Borwein constant.} Show that $E=\sum_{n\ge1}\frac1{2^n-1}$ converges and equals $\sum_{n\ge1}\frac{d(n)}{2^n}$, where $d(n)$ is the number of divisors of $n$. Erd\H{o}s proved in 1948 that $E$ is irrational; his proof is three pages of elementary mathematics, and a good first research paper to read.
+\item \emph{Kempner with other digits.} Show that for every digit $d$ the series of $\frac1n$ over the integers whose decimal expansion avoids $d$ converges, and that the same holds for integers avoiding any fixed block of digits, such as $42$. Why does the sum over integers avoiding the block $42$ (about $228.4$) dwarf the sum over integers avoiding the digit $9$ (about $22.9$)?
+\end{enumerate}
+Notes at the end of the chapter.
+\end{challenge}
+
+\begin{beauty}
+Exercise~\ref{ex:riemannrearr} is Riemann's theorem itself: a series that converges but not absolutely can be rearranged to converge to
+\emph{any} real number. Absolute convergence is exactly what makes infinite sums behave like finite ones, a theme that returns in Volume~3
+(expectations) and Volume~6 (Fubini). The five theorems of the section on continuity are the whole reason analysis works over $\R$ and not over $\Q$: one
+axiom, the existence of suprema, and everything that ``obviously'' should be true becomes true. Euler's $\gamma$ is still mysterious: nobody knows
+whether it is irrational, and Challenge~(1) shows how far people have gone to find out.
+\end{beauty}
+
+\begin{exercise}[$\star$]\label{pb:schwartz}
+\emph{Schwartz--Zippel.} Let $F$ be a field and $S\subset F$ finite.
+\begin{enumerate}[label=(\alph*)]
+\item Let $f\in F[x_1,\dots,x_n]$ be non-zero of total degree $d$, and $r$ uniform in $S^n$. Show that $P(f(r)=0)\le\frac d{|S|}$,
+and that the bound is reached.
+\item (Edmonds, 1967.) Let $G$ be a bipartite graph on $\{u_1,\dots,u_n\}\cup\{v_1,\dots,v_n\}$, and $X$ the $n\times n$ matrix with
+$X_{ij}=x_{ij}$ (a variable) if $u_iv_j$ is an edge and $0$ otherwise. Show that $\det X\ne0$ in $\Q[x_{ij}]$ if and only if $G$ has
+a perfect matching.
+\item Deduce a randomised test for perfect matchings that uses one determinant over $\mathbb F_p$ and errs with probability at
+most $\frac np$, and only in one direction. Which one?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:nullstellensatz}
+\emph{Alon's Combinatorial Nullstellensatz.} Let $F$ be a field and $f\in F[x_1,\dots,x_n]$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $S_1,\dots,S_n\subset F$ be finite. Show that if $\deg_{x_i}f<|S_i|$ for every $i$ and $f$ vanishes on
+$S_1\times\dots\times S_n$, then $f=0$.
+\item (Alon, 1999.) Suppose that $\deg f=t_1+\dots+t_n$ and that the coefficient of $x_1^{t_1}\cdots x_n^{t_n}$ in $f$ is non-zero.
+Show that if $|S_i|>t_i$ for every $i$, then $f(s)\ne0$ for some $s\in S_1\times\dots\times S_n$.
+\item (Alon's permanent lemma.) Let $A\in M_n(F)$ have non-zero permanent $\operatorname{per}A=\sum_\sigma\prod_iA_{i\sigma(i)}$,
+let $b\in F^n$, and let $S_1,\dots,S_n\subset F$ have two elements each. Show that there is $x\in S_1\times\dots\times S_n$ such
+that $(Ax)_i\ne b_i$ for every $i$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:newton}
+\emph{Newton's inequalities.} Let $P(x)=\sum_{k=0}^na_kx^k$ be a real polynomial of degree $n$ all of whose roots are real.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for $1\le k\le n-1$,
+\[
+a_k^2\ge a_{k-1}a_{k+1}\Bigl(1+\frac1k\Bigr)\Bigl(1+\frac1{n-k}\Bigr).
+\]
+\item Deduce that the numbers $c(n,k)$ of permutations of $[n]$ with $k$ cycles form a log-concave, hence unimodal, sequence in $k$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nature}
+Ratio test for the first series. For the second, call the sum $B$ and write $n=m+1$: you get $B$ back, plus a multiple of the easier sum $\sum\frac n{2^n}$, which yields to the same trick.
+\end{hint}
+\begin{hint}{ex:bertrand}
+Compare with integrals: what are the derivatives of $\ln\ln t$ and of $\frac1{\ln t}$?
+\end{hint}
+\begin{hint}{ex:ln2}
+$S_{2n}=H_{2n}-2\cdot\frac12H_n$: all terms minus twice the even ones. Then use $H_n=\ln n+\gamma+o(1)$.
+\end{hint}
+\begin{hint}{ex:sin}
+(a) $\sin x<x$ for $x>0$. (b) After Theorem~\ref{thm:taylor}, expand $\frac1{\sin^2x}-\frac1{x^2}$ as $x\to0$, then use the corollary of Ces\`aro.
+\end{hint}
+\begin{hint}{ex:kempner}
+Count the admissible numbers with $k$ digits, and bound each of their reciprocals by $10^{-(k-1)}$.
+\end{hint}
+\begin{hint}{ex:rearr}
+After $n$ blocks the partial sum is $\sum_{j\le pn}\frac1{2j-1}-\sum_{j\le qn}\frac1{2j}$. Write both with harmonic numbers. Then check the partial sums inside a block.
+\end{hint}
+\begin{hint}{ex:stirling}
+(a) $d_n-d_{n+1}$ simplifies because $\ln(n+1)!-\ln n!=\ln(n+1)$.
+Integrate $1/(1+t)=1-t+t^2-t^3/(1+t)$ from $0$ to $1/n$ and bound the remainder. (b) A series whose terms are $O\left(\frac1{n^2}\right)$ converges absolutely.
+\end{hint}
+\begin{hint}{ex:oresme}
+(a) The block $2^{j-1}<k\le2^j$ has $2^{j-1}$ terms, each at least $\frac1{2^j}$. (b) $\frac1{n^2}<\frac1{n-1}-\frac1n$ for $n\ge2$. (c) Solve $\ln n+\gamma\approx10$.
+\end{hint}
+\begin{hint}{ex:nested}
+The limit $\ell$ satisfies $\ell=\sqrt{c+\ell}$. For monotonicity, show by induction that $u_n<u_{n+1}<\ell$. For $c=2$, use $2+2\cos x=4\cos^2\frac x2$.
+\end{hint}
+\begin{hint}{ex:newton}
+(a) Compute $x_{n+1}-\sqrt2$ with a common denominator and recognise a square. (b) Put $e_n=\frac{x_n-\sqrt2}{2\sqrt2}$ and show $e_{n+1}\le e_n^2$.
+\end{hint}
+\begin{hint}{ex:stolz}
+For $n>N$ write $a_n-a_N$ as a telescoping sum of the differences $a_{k+1}-a_k$, each close to $\ell(b_{k+1}-b_k)$; then divide by $b_n$ and let $n\to\infty$ with $N$ fixed, as in the proof of Ces\`aro.
+\end{hint}
+\begin{hint}{ex:condensation}
+Group the terms $u_n$ for $2^k\le n<2^{k+1}$: there are $2^k$ of them, between $u_{2^{k+1}}$ and $u_{2^k}$. Apply the test twice for the last series.
+\end{hint}
+\begin{hint}{ex:sinn}
+Convergence: the example of the section with $\theta=1$. Divergence: $\sum\frac{\cos2n}n$ converges by Dirichlet's test, and $\sum\frac1{2n}$ does not.
+\end{hint}
+\begin{hint}{ex:riemannrearr}
+(a) If $\sum p_n$ converged, so would $\sum q_n=\sum(p_n-u_n)$, and then $\sum|u_n|$. (b) Each phase ends because the positive (or negative) terms alone have infinite sum; after each change of direction the partial sum is within one term of $S$, and the terms tend to $0$. (c) Aim at $1$, then $2$, then $3$, and so on.
+\end{hint}
+\begin{hint}{ex:eulerbasel}
+(a) Integrate the identity in $u$ from $0$ to $t$, divide by $t$, integrate from $0$ to $x$; bound the remainder using $\frac1{1-u}\le\frac1{1-x}$ for $u\le t\le x$; the limit $x\to1$ is a sandwich between partial sums. (b) Differentiate, with the fundamental theorem of calculus (Proposition~\ref{prop:inttools}(a)); then let $x\to0$. (c) Put $x=\frac12$; the tail of $\sum\frac1{n^22^n}$ after $20$ terms is at most $\frac1{21^2}\cdot\frac1{2^{20}}$.
+\end{hint}
+
+\begin{hint}{pb:schwartz}
+(a) Induction on $n$. Write $f$ as a polynomial in $x_1$ whose coefficients are polynomials in the other variables:
+\[
+f=\sum_{i\le k}x_1^i\,g_i(x_2,\dots,x_n),\qquad g_k\ne0.
+\]
+\end{hint}
+
+\begin{hint}{pb:nullstellensatz}
+(b) Shrink the $S_i$ to size $t_i+1$, and divide $f$ by the polynomials $\prod_{s\in S_i}(x_i-s)$. If $f$ vanished on the grid, the
+remainder would vanish by (a).
+\end{hint}
+
+\begin{hint}{pb:newton}
+Derivatives and reversals of polynomials with real roots have real roots. Reduce to a quadratic.
+\end{hint}
+
+\section{Solutions}
+\begin{solution}{ex:nature}
+\idea Factorials and powers $n^n$ are made for the ratio test, because the ratio $\frac{u_{n+1}}{u_n}$ simplifies dramatically. For $\sum\frac{n^2}{2^n}$, once convergence is known (ratio test again), the sum can be found without any calculus: shifting the index by one turns $n^2$ into $(n+1)^2=n^2+2n+1$, which brings back the sum itself plus simpler sums. So first compute the simpler sum $\sum\frac n{2^n}$ by the same trick.
+\writeup With $u_n=\frac{n!}{n^n}$, $\frac{u_{n+1}}{u_n}=\frac{(n+1)\,n^n}{(n+1)^{n+1}}=\left(1+\frac1n\right)^{-n}\to\frac1e<1$: the series converges by the ratio test.
+The series $A=\sum_{n\ge1}\frac n{2^n}$ and $B=\sum_{n\ge1}\frac{n^2}{2^n}$ converge by the ratio test (the ratios tend to $\frac12$). Shifting the index ($n=m+1$),
+\[A=\sum_{m\ge0}\frac{m+1}{2^{m+1}}=\frac12\Big(A+\sum_{m\ge0}\frac1{2^m}\Big)=\frac12(A+2),\]
+so $A=2$. In the same way, with $(m+1)^2=m^2+2m+1$,
+\[B=\sum_{m\ge0}\frac{(m+1)^2}{2^{m+1}}=\frac12\,(B+2A+2),\]
+so $B=2A+2=6$. (If you remember that power series can be differentiated termwise inside their disc of convergence, a fact this volume does not prove, you could instead apply $x\frac{\mathrm d}{\mathrm dx}$ twice to $\frac1{1-x}$ and get $\sum n^2x^n=\frac{x(1+x)}{(1-x)^3}$, which is $6$ at $x=\frac12$.)
+\end{solution}
+
+\begin{solution}{ex:bertrand}
+\idea These terms decrease too slowly for the ratio test (the ratio tends to $1$) and are not comparable to a Riemann series. But they have explicit antiderivatives ($\ln\ln t$ and $-\frac1{\ln t}$), so compare with integrals.
+\writeup Both $t\mapsto\frac1{t\ln t}$ and $t\mapsto\frac1{t\ln^2t}$ are positive and decreasing on $[2,\infty[$, with antiderivatives $\ln\ln t\to\infty$ and
+$-\frac1{\ln t}\to0$. By Proposition~\ref{prop:posseries}(c), the first series diverges and the second converges.
+\end{solution}
+
+\begin{solution}{ex:ln2}
+\idea We know the asymptotics of $H_n$ precisely (Proposition~\ref{prop:gamma}), so express the alternating partial sum through harmonic numbers: all terms minus twice the even terms. Then handle odd-index partial sums separately.
+\writeup Separating even and odd terms,
+\[
+\begin{aligned}S_{2n}&=\sum_{k=1}^{2n}\frac1k-2\sum_{k=1}^n\frac1{2k}=H_{2n}-H_n\eqbr=\ln(2n)+\gamma-\ln n-\gamma+o(1)\to\ln2.\end{aligned}
+\]
+Since $S_{2n+1}-S_{2n}=\frac1{2n+1}\to0$, $S_n\to\ln2$.
+\end{solution}
+
+\begin{solution}{ex:sin}
+\idea (a) A recurrence $u_{n+1}=f(u_n)$ with $f(x)<x$: the sequence decreases, and its limit is a fixed point. (b) To find an equivalent of a sequence tending to $0$, look for a power $u_n^\beta$ whose increments converge to a non-zero constant; Ces\`aro then gives $u_n^\beta\sim cn$. Since $\sin x=x-\frac{x^3}6+\cdots$, the natural choice is $\beta=-2$: the cubic correction becomes a constant increment of $\frac1{u^2}$.
+\writeup (a) Since $0<\sin x<x$ for $0<x\le\frac\pi2$ (Proposition~\ref{prop:sincmp}), $(u_n)$ is positive and decreasing, so it converges to some $\ell\in\left[0,\frac\pi2\right]$ with $\sin\ell=\ell$ (continuity of $\sin$). The same inequality forbids a positive fixed point, so $\ell=0$.
+
+(b) Taylor's theorem (Theorem~\ref{thm:taylor}) gives $\sin x=x-x^3/6+O(x^5)$; hence $\sin^2x=x^2-\frac{x^4}3+O(x^6)$ as $x\to0$, so
+\[
+\frac1{\sin^2x}-\frac1{x^2}=\frac{x^2-\sin^2x}{x^2\sin^2x}=\frac{\frac{x^4}3+O(x^6)}{x^4+O(x^6)}\to\frac13.
+\]
+With $x=u_n\to0$ this gives the first claim. By the corollary of Ces\`aro, $\frac1{nu_n^2}\to\frac13$, that is $u_n\sim\sqrt{\frac3n}$.
+\end{solution}
+
+\begin{solution}{ex:kempner}
+\idea Positive terms: it suffices to bound the partial sums. Group the integers by number of digits: there are few admissible $k$-digit numbers ($\approx9^k$ instead of $10^k$), and each term is at most $10^{-(k-1)}$. The ratio $\frac9{10}$ makes the grouped series geometric.
+\writeup There are $8\cdot9^{k-1}$ integers with $k$ digits and no digit $9$ (the first digit has $8$ choices, the others $9$), and each is at least $10^{k-1}$.
+The terms are positive, so the partial sums are bounded by
+\[
+\sum_{k=1}^\infty\frac{8\cdot9^{k-1}}{10^{k-1}}=\frac8{1-\frac9{10}}=80.
+\]
+The bound is strict because already in the one-digit block, $1+1/2+\dots+1/8<8$.
+(The true value is about $22.92$.)
+\end{solution}
+
+\begin{solution}{ex:rearr}
+\idea As in Exercise~\ref{ex:ln2}, everything reduces to harmonic numbers. After $n$ blocks we have used $pn$ odd terms and $qn$ even terms, so the partial sum is (sum of the first $pn$ odd reciprocals) $-$ (sum of the first $qn$ even reciprocals). The $\ln$ terms do not cancel completely because $pn\ne qn$: that leftover $\frac12\ln\frac pq$ is the whole phenomenon.
+\writeup Write $O_m=\sum_{k=1}^m\frac1{2k-1}=H_{2m}-\frac12H_m$ and $E_m=\sum_{k=1}^m\frac1{2k}=\frac12H_m$. By Proposition~\ref{prop:gamma},
+\[
+\begin{gathered}O_m=\ln2+\frac12\ln m+\frac\gamma2+o(1),\qq E_m=\frac12\ln m+\frac\gamma2+o(1).\end{gathered}
+\]
+After $n$ complete blocks, the partial sum is
+$O_{pn}-E_{qn}=\ln2+\frac12\ln\frac{pn}{qn}+o(1)\to\ln2+\frac12\ln\frac pq$.
+A partial sum that stops inside a block differs from one taken at the end of the previous block by at most $p+q$ terms, each tending to $0$, so the whole sequence of
+partial sums has the same limit.
+\end{solution}
+
+\begin{solution}{ex:stirling}
+\idea To show a sequence $d_n$ converges, show that $\sum(d_n-d_{n+1})$ converges absolutely. The differences are computable in closed form because $\ln(n+1)!-\ln n!=\ln(n+1)$; then integrating a finite geometric identity gives an expansion of $\ln(1+\frac1n)$ with an explicit error of order $1/n^4$, showing the differences are $O(\frac1{n^2})$. The term $\frac12\ln n$ in $d_n$ was chosen precisely to kill the $\frac1n$ term.
+\writeup (a)
+\[\begin{aligned}d_n-d_{n+1}&=-\ln(n+1)-\left(n+\frac12\right)\ln n\eqbr\quad+\left(n+\frac32\right)\ln(n+1)-1\\&=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1.\end{aligned}\]
+By Proposition~\ref{prop:early-ftc}, integrating the finite identity
+$1/(1+t)=1-t+t^2-t^3/(1+t)$ yields
+\[
+\ln(1+x)=x-\frac{x^2}2+\frac{x^3}3+r(x),
+\qquad |r(x)|\le\frac{x^4}4\quad(0\le x\le1).
+\]
+Use this at $x=\frac1n$:
+\[
+\begin{aligned}&\left(n+\frac12\right)\left(\frac1n-\frac1{2n^2}+\frac1{3n^3}+O\left(\frac1{n^4}\right)\right)-1\\
+&\quad=\left(\frac13-\frac14\right)\frac1{n^2}+O\left(\frac1{n^3}\right)\eqbr\quad=\frac1{12n^2}+O\left(\frac1{n^3}\right).\end{aligned}
+\]
+(b) So $\sum(d_n-d_{n+1})$ converges absolutely by comparison with $\sum\frac1{n^2}$, and $d_n=d_1-\sum_{k<n}(d_k-d_{k+1})\to d\in\R$. Exponentiating,
+$\frac{n!}{\sqrt n\,(n/e)^n}=e^{d_n}\to e^d=C>0$.
+\end{solution}
+
+
+\begin{solution}{ex:oresme}
+\idea (a) The terms $\frac1k$ decrease, so the cheapest lower bound for a block of terms is (number of terms) $\times$ (last term). Oresme's blocks double in length while their last term halves: each block weighs at least $\frac12$. (b) A term $\frac1{n^2}$ is just below a telescoping difference. (c) $H_n\approx\ln n+0.577$ is an excellent approximation, and $e^{9.42}$ is a big number.
+\writeup (a) For $j\ge1$ the block $2^{j-1}<k\le2^j$ has $2^{j-1}$ terms, each at least $\frac1{2^j}$, so its sum is at least $\frac12$. Hence
+$H_{2^m}=1+\sum_{j=1}^m\sum_{2^{j-1}<k\le2^j}\frac1k\ge1+\frac m2$. The partial sums are unbounded, so the series diverges (its terms are positive, Proposition~\ref{prop:posseries}(a)).
+
+(b) For $n\ge2$, $\frac1{n^2}<\frac1{n(n-1)}=\frac1{n-1}-\frac1n$, so $\sum_{n=2}^N\frac1{n^2}<1-\frac1N<1$ and $\sum_{n\le N}\frac1{n^2}<2$: bounded partial sums, convergence, sum at most $2$. (The sum is $\frac{\pi^2}6\approx1.645$, as the polynomial chapter recalls; Exercise~\ref{ex:eulerbasel} computes it without knowing that.)
+
+(c) $H_n>10$ first happens when $\ln n+\gamma+o(1)>10$, so near $n=e^{10-\gamma}\approx e^{9.4228}\approx12367$. The exact answer is $n=12367$: $H_{12366}\approx9.99996$ and $H_{12367}\approx10.00004$. By comparison, $H_n>100$ needs about $e^{99.42}\approx1.5\times10^{43}$ terms. The harmonic series diverges, but it is in no hurry.
+\end{solution}
+
+\begin{solution}{ex:nested}
+\idea A recursive sequence $u_{n+1}=f(u_n)$ with $f$ increasing is monotone, in the direction of its first step; it is bounded by the fixed point if it starts below it, because $f$ maps $[0,\ell]$ into itself. For $c=2$, the half-angle formula for cosine turns $\sqrt{2+2\cos x}$ into $2\cos\frac x2$, and the product of cosines is a telescoping product of sines in disguise.
+\writeup The equation $\ell=\sqrt{c+\ell}$, with $\ell\ge0$, means $\ell^2-\ell-c=0$, so $\ell=\frac{1+\sqrt{1+4c}}2$. The map $f(x)=\sqrt{c+x}$ is increasing on $[0,\infty[$ with $f(\ell)=\ell$.
+Induction: $0=u_0<u_1=\sqrt c<\ell$ (as $c<\ell^2$); and if $u_n<u_{n+1}<\ell$ then applying $f$ gives $u_{n+1}<u_{n+2}<\ell$. So $(u_n)$ is increasing and bounded above by $\ell$; it converges to some $m\le\ell$, and passing to the limit in $u_{n+1}^2=c+u_n$ gives $m^2=c+m$, so $m=\ell$.
+For $c=2$: $\ell=2$, so $\sqrt{2+\sqrt{2+\cdots}}=2$.
+
+Next, $u_0=0=2\cos\frac\pi2$, and if $u_n=2\cos\frac\pi{2^{n+1}}$ then $u_{n+1}=\sqrt{2+2\cos\frac\pi{2^{n+1}}}=\sqrt{4\cos^2\frac\pi{2^{n+2}}}=2\cos\frac\pi{2^{n+2}}$ (the cosine is positive). So $\frac{u_n}2=\cos\frac\pi{2^{n+1}}$.
+Finally, from $\sin x=2\sin\frac x2\cos\frac x2$ repeated $n$ times, $\sin x=2^n\sin\frac x{2^n}\prod_{k=1}^n\cos\frac x{2^k}$. At $x=\frac\pi2$:
+$1=2^n\sin\frac\pi{2^{n+1}}\prod_{k=1}^n\cos\frac\pi{2^{k+1}}$, and $2^n\sin\frac\pi{2^{n+1}}=\frac\pi2\cdot\frac{\sin t}t$ with $t=\frac\pi{2^{n+1}}\to0$. Hence
+$\prod_{k=1}^n\frac{u_k}2\to\frac2\pi$, which is Vi\`ete's formula: the first infinite product in the history of mathematics.
+\end{solution}
+
+\begin{solution}{ex:newton}
+\idea Newton's method replaces a curve by its tangent, so the error after a step should be governed by the curvature, that is, by the \emph{square} of the previous error: that is (a). Then (b) is just iterating $e_{n+1}\le e_n^2$, which gives $e_n\le e_1^{2^{n-1}}$, a double exponential. This is why calculators compute square roots this way.
+\writeup (a) $x_{n+1}-\sqrt2=\frac{x_n^2+2-2\sqrt2x_n}{2x_n}=\frac{(x_n-\sqrt2)^2}{2x_n}$. Hence $x_{n+1}\ge\sqrt2$ for all $n\ge0$, so for $n\ge1$ the denominator $2x_n\ge2\sqrt2$ and the stated bound follows.
+
+(b) Put $e_n=\frac{x_n-\sqrt2}{2\sqrt2}\ge0$ for $n\ge1$. Then (a) says $e_{n+1}\le e_n^2$, so $e_n\le e_1^{2^{n-1}}$ by induction.
+Since $e_1<0.03034$ and $2\sqrt2<2.83$, a genuine upper bound is
+$x_n-\sqrt2<2.83(0.03034)^{2^{n-1}}$.
+The actual errors at $x_3\approx1.414215686$ and $x_4\approx1.41421356237469$ are about $2.12\times10^{-6}$ and $1.59\times10^{-12}$; at $x_5$ the error is below $9\times10^{-25}$.
+For $100$ decimal places, $n=8$ suffices: $2.83(0.03034)^{128}<10^{-100}$.
+
+(c) The tangent to $y=x^2-2$ at $x_n$ is $y=(x_n^2-2)+2x_n(x-x_n)$; it meets $y=0$ at $x=x_n-\frac{x_n^2-2}{2x_n}=\frac12\left(x_n+\frac2{x_n}\right)$. Newton's method is ``follow the tangent to the axis, repeat''; square-root iterations of this kind have ancient antecedents. The Old Babylonian tablet YBC~7289 (c.\,1800--1600~BC) records $\sqrt2\approx1.41421296$, but does not record the algorithm used to obtain it.
+\end{solution}
+
+\begin{solution}{ex:stolz}
+\idea Ces\`aro's proof is a model: split the sum into the first $N$ terms (fixed, hence negligible after dividing by $b_n\to\infty$) and the rest (where the ratio is close to $\ell$). The theorem then computes limits of quotients ``$\frac\infty\infty$'' by looking at increments, exactly as L'H\^opital's rule (Chapter~\ref{ch:calculus}) does with derivatives.
+\writeup Fix $\varepsilon>0$ and choose $N$ large enough that $b_N>0$ and $\left|\frac{a_{k+1}-a_k}{b_{k+1}-b_k}-\ell\right|\le\varepsilon$ for $k\ge N$. For $n>N$, summing the inequalities $|a_{k+1}-a_k-\ell(b_{k+1}-b_k)|\le\varepsilon(b_{k+1}-b_k)$ for $N\le k<n$ (the differences $b_{k+1}-b_k$ are positive) gives
+$|a_n-a_N-\ell(b_n-b_N)|\le\varepsilon(b_n-b_N)\le\varepsilon b_n$. Dividing by $b_n>0$,
+\[
+\left|\frac{a_n}{b_n}-\ell\right|\le\frac{|a_N-\ell b_N|}{b_n}+\varepsilon,
+\]
+and the first term tends to $0$ as $n\to\infty$ because $b_n\to\infty$. So $\left|\frac{a_n}{b_n}-\ell\right|\le2\varepsilon$ for $n$ large.
+
+For $a_n=1^k+\dots+n^k$ and $b_n=n^{k+1}$: $\frac{a_{n+1}-a_n}{b_{n+1}-b_n}=\frac{(n+1)^k}{(n+1)^{k+1}-n^{k+1}}$, and the denominator is $(k+1)n^k+\dots$ by the binomial formula, so the ratio tends to $\frac1{k+1}$.
+For $a_n=\ln n!$ and $b_n=n\ln n$: $\frac{\ln(n+1)}{(n+1)\ln(n+1)-n\ln n}=\frac{\ln(n+1)}{\ln(n+1)+n\ln(1+\frac1n)}$, and $n\ln(1+\frac1n)\to1$ while $\ln(n+1)\to\infty$, so the ratio tends to $1$. (Stirling's formula says more: $\ln n!=n\ln n-n+O(\ln n)$.)
+\end{solution}
+
+\begin{solution}{ex:condensation}
+\idea Oresme's grouping, made into a theorem: for a non-increasing sequence, the block of $2^k$ terms from index $2^k$ is squeezed between $2^ku_{2^{k+1}}$ and $2^ku_{2^k}$. So the series and its ``condensed'' version have bounded partial sums together. The condensed series is often geometric, which is why the test is so effective for logarithms: $\ln2^k=k\ln2$ turns a log into a linear factor.
+\writeup For $k\ge0$, the $2^k$ terms with $2^k\le n<2^{k+1}$ satisfy $u_{2^{k+1}}\le u_n\le u_{2^k}$, so
+\[
+2^ku_{2^{k+1}}\le\sum_{n=2^k}^{2^{k+1}-1}u_n\le2^ku_{2^k}.
+\]
+Summing over $k<K$: $\frac12\sum_{k=1}^{K}2^ku_{2^k}\le\sum_{n<2^K}u_n\le\sum_{k<K}2^ku_{2^k}$. Both series have non-negative terms, so each has bounded partial sums if and only if the other does (Proposition~\ref{prop:posseries}(a)).
+
+For $u_n=n^{-\alpha}$ ($\alpha>0$): $2^ku_{2^k}=2^{k(1-\alpha)}$, a geometric series, convergent iff $\alpha>1$.
+For $u_n=\frac1{n\ln n(\ln\ln n)^\beta}$ ($n\ge3$), which is eventually non-increasing for every fixed real $\beta$: $2^ku_{2^k}=\frac1{k\ln2\,(\ln(k\ln2))^\beta}$. The resulting sequence is also eventually non-increasing. Condense again: with $v_k=\frac1{k\ln2(\ln k+\ln\ln2)^\beta}$, $2^jv_{2^j}=\frac1{\ln2\,(j\ln2+\ln\ln2)^\beta}\sim\frac{1}{(\ln2)^{1+\beta}j^\beta}$, a Riemann series, convergent iff $\beta>1$. (The intermediate $\ln\ln2<0$ changes nothing for $k$ large, and finitely many terms never matter.)
+\end{solution}
+
+\begin{solution}{ex:sinn}
+\idea Convergence is Dirichlet's test, already done in the text. For divergence, one cannot say $|\sin n|\ge c>0$ (the integers $n$ come arbitrarily close to multiples of $\pi$), but $\sin^2n$ is on average $\frac12$, and the identity $\sin^2n=\frac{1-\cos2n}2$ makes this exact: a divergent harmonic piece plus a convergent oscillating piece.
+\writeup The example of the section with $\theta=1$ gives the convergence of $\sum\frac{\sin n}n$ (the partial sums of $\sin n$ are bounded by $\frac1{\sin\frac12}\approx2.09$).
+For the absolute values: $|\sin n|\ge\sin^2n=\frac12-\frac{\cos2n}2$, so $\sum_{n\le N}\frac{|\sin n|}n\ge\frac12H_N-\frac12\sum_{n\le N}\frac{\cos2n}n$. The last sum converges as $N\to\infty$, by Dirichlet's test: the partial sums of $\cos2n$ are bounded (multiply by $2\sin1$ and telescope, as for the sines), and $\frac1n$ decreases to $0$. Since $H_N\to\infty$, the partial sums of $\sum\frac{|\sin n|}n$ are unbounded.
+\end{solution}
+
+\begin{solution}{ex:riemannrearr}
+\idea (a) is bookkeeping: $\sum u_n$ converges and $\sum|u_n|$ does not, and $p_n,q_n$ are half-sums of these. (b) is a greedy algorithm: overshoot $S$ with positive terms, undershoot with negative ones, repeat. It never gets stuck because each pile is inexhaustible, and the overshoots shrink because $u_n\to0$. The picture to keep is a drunk walking towards a lamppost, taking shorter and shorter steps.
+\writeup (a) $p_n=\frac{|u_n|+u_n}2$ and $q_n=\frac{|u_n|-u_n}2$. If $\sum p_n$ converged, then $\sum q_n=\sum(p_n-u_n)$ would converge too (difference of two convergent series), and so would $\sum|u_n|=\sum(p_n+q_n)$, contrary to the hypothesis. Same for $\sum q_n$. Both have non-negative terms and unbounded partial sums, so they diverge to $+\infty$.
+
+(b) Let $P_1,P_2,\dots$ be the positive terms of the series in their original order and $N_1,N_2,\dots$ the negative ones (if there were finitely many of either kind, the series would be absolutely convergent). Phase~1: add $P_1,P_2,\dots$ until the running total first exceeds $S$ (use no positive terms if the initial total $0$ already exceeds $S$); this happens after finitely many terms, since $\sum P_j=+\infty$. Phase~2: add $N_1,N_2,\dots$ until the total first drops below $S$; again finitely many terms, since $\sum N_j=-\infty$. Phase~3: continue with the next unused positive terms, and so on. Every $P_j$ and every $N_j$ is used exactly once, because, after the possible empty initial phase, each phase consumes at least one term of its kind and the phases alternate forever. Insert the next unused zero term after each phase while any remain: this uses all zero terms too, and does not change any sum.
+
+Convergence: apart from a possible empty initial phase, a positive phase ends at $T$ with $S<T\le S+P$, where $P$ is its last term; a negative phase ends at $U$ with $S+N\le U<S$, where $N<0$ is its last term. As phases advance, these last terms are original terms $u_n$ with $n\to\infty$, hence tend to zero. Both sequences of phase endpoints therefore tend to $S$. Within a phase the partial sums move monotonically between its two endpoints, so they tend to $S$ too. Inserting zeros changes none of these estimates.
+
+(c) Aim at a moving target: positive terms until the total exceeds $1$, then one negative term, then positive terms until the total exceeds $2$, then one negative term, and so on. Because $u_n\to0$, there is an index $J$ such that $|N_j|<1$ for every $j\ge J$. Choose a stage whose following negative term has index at least $J$. Every later negative term then lowers the sum by less than $1$, and it is inserted only after the running sum has been pushed above the next integer. From that stage on, the partial sums stay above $k-1$ once the target has passed $k$, and they tend to $+\infty$. An empty positive phase consumes nothing; the construction still uses every positive term, because a finite stock of them could not push the total past every integer against the remaining negative terms. Insert one unused zero after each stage, as in (b). Thus every term is used.
+\end{solution}
+
+\begin{solution}{ex:eulerbasel}
+\idea Euler wanted the number, not the formula. He noticed that $\sum\frac{x^k}{k^2}$ converges very fast at $x=\frac12$ and that a functional equation links $x$ and $1-x$; at $x=\frac12$ the equation closes on itself and the slowly convergent $\zeta(2)$ is expressed through a fast series and $\ln2$. Everything rests on two tools: integrating a finite geometric sum with an explicit remainder, and the fundamental theorem of calculus.
+\writeup (a) Fix $0\le x<1$ and $n\ge1$. For $0\le u\le t\le x$, integrate $\frac1{1-u}=\sum_{k=0}^{n-1}u^k+\frac{u^n}{1-u}$ from $0$ to $t$:
+$-\ln(1-t)=\sum_{k=1}^n\frac{t^k}k+r_n(t)$ with $0\le r_n(t)=\int_0^t\frac{u^n}{1-u}\dd u\le\frac1{1-x}\cdot\frac{t^{n+1}}{n+1}$.
+Divide by $t$ and integrate from $0$ to $x$ (the integrands are continuous on $]0,x]$ and bounded, so the integrals are ordinary limits as the lower bound tends to $0$):
+\[
+L(x)=\sum_{k=1}^n\frac{x^k}{k^2}+R_n(x),\qquad0\le R_n(x)\le\frac1{1-x}\cdot\frac{x^{n+1}}{(n+1)^2}.
+\]
+As $n\to\infty$, $R_n(x)\to0$, so $L(x)=\sum_{k\ge1}\frac{x^k}{k^2}$. For the limit at $1$: on one hand $L(x)\le\sum_{k\ge1}\frac1{k^2}=\zeta(2)$ for every $x<1$; on the other hand, for each fixed $K$, $L(x)\ge\sum_{k\le K}\frac{x^k}{k^2}\to\sum_{k\le K}\frac1{k^2}$ as $x\to1^-$. So every limit point of $L(x)$ as $x\to1^-$ lies between $\sum_{k\le K}\frac1{k^2}$ and $\zeta(2)$ for every $K$, hence equals $\zeta(2)$; and $L$ is increasing on $[0,1[$, so the limit exists and is $\zeta(2)$.
+
+(b) By the fundamental theorem of calculus (Proposition~\ref{prop:early-ftc}), $L'(x)=\frac{-\ln(1-x)}x$ on $]0,1[$. Let $F(x)=L(x)+L(1-x)+\ln x\ln(1-x)$. Then, with the chain rule,
+\[
+F'(x)=\frac{-\ln(1-x)}x-\frac{-\ln x}{1-x}+\frac{\ln(1-x)}x-\frac{\ln x}{1-x}=0,
+\]
+so $F$ is constant on $]0,1[$ by Theorem~\ref{thm:mvt}(c). As $x\to0^+$: $L(x)\to0$ (from (a), $0\le L(x)\le x\,\zeta(2)$ for $x<1$), $L(1-x)\to\zeta(2)$ by (a), and $\ln x\ln(1-x)\sim-x\ln x\to0$. So $F\equiv\zeta(2)$.
+
+(c) At $x=\frac12$: $2L\left(\frac12\right)+(\ln2)^2=\zeta(2)$, that is $\zeta(2)=(\ln2)^2+2\sum_{n\ge1}\frac1{n^22^n}$. The tail of the last series after $n=20$ is at most $\sum_{n>20}\frac1{21^2\,2^n}=\frac1{21^2\,2^{20}}\approx2.2\times10^{-9}$, so twenty terms give $\zeta(2)$ to about $4\times10^{-9}$: $(\ln2)^2\approx0.480453$, $2\sum_{n\le20}\frac1{n^22^n}\approx1.164481$, total $1.644934$, which is Euler's value of 1731. Twenty terms of $\sum\frac1{n^2}$ give $1.596$, wrong in the second decimal, since the tail is about $\frac1{20}$. Euler found the exact value $\frac{\pi^2}6$ four years later; the polynomial chapter tells that story.
+\end{solution}
+
+\subsection*{Notes on the challenges}
+
+(1) The denominator recurrence and $a_j\ge1$ give $q_j\ge F_{j+1}$ by induction, starting with $q_{-1}=0$, $q_0=1$.
+If $\gamma=p/q$ in lowest terms, its finite continued fraction must have at least the certified prefix, so $q\ge q_{1000}\ge F_{1001}$.
+Binet's formula (Chapter~\ref{ch:sums}) gives $F_{1001}>10^{208}$.
+This is a bound from the number of quotients alone. Stronger numerical bounds require their actual values: they do not follow from the length of a prefix.
+Lagarias's survey in the sources gives the wider context of the still-open irrationality problem.
+
+(2) Convergence: $\frac1{2^n-1}\le\frac2{2^n}$. For the identity, expand $\frac1{2^n-1}=\sum_{m\ge1}2^{-nm}$ and collect, for each $N$, the pairs $(n,m)$ with $nm=N$:
+there are $d(N)$ of them. (The interchange of the two sums follows from Proposition~\ref{prop:safe-sums}, since all terms are nonnegative.) Erd\H{o}s's 1948
+proof of irrationality uses nothing but this expansion and a careful count of the binary digits of the partial sums; it is in \emph{J.\ Indian Math.\ Soc.}\ 12 (1948), 63--66.
+
+(3) The count of Exercise~\ref{ex:kempner} works for any digit $d$: there are at most $9^k$ admissible $k$-digit numbers (fewer if $d\ne0$ because the first
+digit has only $8$ choices), each at least $10^{k-1}$, so the series is bounded by $\sum_k9^k10^{1-k}=90$. For a block of $b$ digits, cut each $k$-digit number
+into $\lfloor k/b\rfloor$ blocks: at most $(10^b-1)^{k/b}\cdot10^{b}$ numbers avoid the block, and $\left(\frac{10^b-1}{10^b}\right)^{k/b}$ still decays
+geometrically. The decay is slow: avoiding $42$ removes only about one number in a hundred at each pair of digits, so the series behaves like the
+harmonic series until the numbers have hundreds of digits, which is why the sum (about $228.4463$, computed by Schmelzer and Baillie in 2008) is so large, and why
+no computer could find it by adding terms. Baillie's 1979 value for the digit $9$ is $22.920676619\ldots$
+
+\begin{solution}{pb:schwartz}
+\idea A polynomial in $x_1$ with coefficients in the other variables can only vanish if either its top coefficient vanishes
+(probability by induction) or $x_1$ hits one of its few roots.
+
+\writeup (a) Induction on $n$. For $n=1$, $f$ has at most $d$ roots. For $n\ge2$, write $f=\sum_{i=0}^kx_1^ig_i(x_2,\dots,x_n)$ with
+$g_k\ne0$; then $\deg g_k\le d-k$. Let $r=(r_1,r')$. By induction $P(g_k(r')=0)\le\frac{d-k}{|S|}$. When $g_k(r')\ne0$, the polynomial
+$f(x_1,r')$ is non-zero of degree $k$, so for each such $r'$, at most $k$ values of $r_1$ (independent of $r'$) make it vanish.
+So $P(f(r)=0)\le\frac{d-k}{|S|}+\frac k{|S|}$. For $f=\prod_{i=1}^d(x_1-s_i)$ with distinct $s_i\in S$ the probability is exactly
+$\frac d{|S|}$.
+
+(b) $\det X=\sum_\sigma\operatorname{sgn}\sigma\prod_iX_{i\sigma(i)}$. The term of $\sigma$ is non-zero exactly when every
+$u_iv_{\sigma(i)}$ is an edge, that is when $\sigma$ is a perfect matching, and it is then the monomial $\pm\prod_ix_{i\sigma(i)}$.
+Different $\sigma$ give different monomials, so nothing cancels: $\det X\ne0$ if and only if a perfect matching exists.
+
+(c) Substitute independent uniform values of $\mathbb F_p$ for the $x_{ij}$ and compute the determinant modulo $p$. If there is no
+perfect matching, $\det X$ is the zero polynomial and the answer is always $0$. If there is one, $\det X$ reduced mod $p$ is still
+non-zero (its coefficients are $\pm1$) of degree $n$, and by (a) it vanishes with probability at most $\frac np$. So the test
+says ``matching'' only when there is one: it can only miss matchings.
+
+\tools Volume~0, Chapter~3 (roots of polynomials); Volume~0, Chapter~7 (determinants).
+\leads Lovász (1979) extended the test to general graphs with the Tutte matrix, and Mulmuley, Vazirani and Vazirani (1987) used
+the same determinant, with an isolation lemma, to find matchings in parallel. Polynomial identity testing is the most famous
+problem that is easy with randomness and not known to be easy without it.
+\end{solution}
+
+\begin{solution}{pb:nullstellensatz}
+\idea Dividing $f$ by the polynomials $g_i=\prod_{s\in S_i}(x_i-s)$ leaves a remainder of low degree in each variable that agrees
+with $f$ on the grid. If $f$ vanished on the grid, the remainder would be $0$, and every top-degree monomial of $f$ would be
+divisible by some $x_i^{t_i+1}$.
+
+\writeup (a) Induction on $n$. For $n=1$ a polynomial of degree $<|S_1|$ with $|S_1|$ roots is $0$. For $n\ge2$ write
+$f=\sum_{i<|S_n|}f_i(x_1,\dots,x_{n-1})x_n^i$. For fixed $s'\in S_1\times\dots\times S_{n-1}$, the polynomial $f(s',x_n)$ has degree
+$<|S_n|$ and $|S_n|$ roots, so all $f_i(s')=0$. By induction each $f_i$ is $0$.
+
+(b) Replacing $S_i$ by a subset, we may assume $|S_i|=t_i+1$. Suppose $f$ vanishes on the grid. Let
+$g_i=\prod_{s\in S_i}(x_i-s)=x_i^{t_i+1}-h_i(x_i)$ with $\deg h_i\le t_i$. As long as some monomial of $f$ contains $x_i^{t_i+1}$,
+replace that factor by $h_i(x_i)$. Each replacement subtracts $g_i\cdot m$ for a monomial $m$, does not raise the total degree, and
+lowers the degree in $x_i$; the process stops at $\bar f$ with $\deg_{x_i}\bar f\le t_i$ and
+\[
+f=\bar f+\sum_ig_iu_i,\qquad\deg(g_iu_i)\le\deg f.
+\]
+Since $g_i=0$ on the grid, $\bar f=f=0$ there, so $\bar f=0$ by (a). Now look at the part of degree $d=\deg f$: on the right it is
+$\sum_ix_i^{t_i+1}\cdot(\text{the part of degree }d-t_i-1\text{ of }u_i)$, a sum of monomials each divisible by some
+$x_i^{t_i+1}$. But $x_1^{t_1}\cdots x_n^{t_n}$ has degree $d$, is divisible by no $x_i^{t_i+1}$, and has a non-zero coefficient in $f$.
+Contradiction.
+
+(c) Let $f(x)=\prod_{i=1}^n\bigl((Ax)_i-b_i\bigr)$, of degree $n$. Its part of degree $n$ is $\prod_i\sum_jA_{ij}x_j$, in which the
+coefficient of $x_1x_2\cdots x_n$ is $\sum_\sigma\prod_iA_{i\sigma(i)}=\operatorname{per}A\ne0$. Apply (b) with all $t_i=1$.
+
+\tools Volume~0, Chapter~3 (division, roots).
+\leads Alon's paper (1999) derives a dozen classical theorems from (b), several of which follow here. The permanent lemma gives,
+for instance, that for every $n\times n$ matrix with non-zero permanent over $\mathbb F_p$ and every $b$ there is a $0$--$1$ vector
+$x$ with $Ax$ differing from $b$ in every coordinate (Alon and Tarsi's conjecture on nowhere-zero points for $p$ odd builds on it).
+\end{solution}
+
+\begin{solution}{pb:newton}
+\idea Differentiating and reversing a real-rooted polynomial keeps it real-rooted (Rolle). Doing this cleverly reduces any three
+consecutive coefficients to a quadratic, whose discriminant must be non-negative.
+
+\writeup (a) Say a polynomial \emph{splits} if it is a product of real linear factors (constants included). If $Q$ splits, so does $Q'$:
+between consecutive distinct roots there is a root of $Q'$ by Rolle, a root of multiplicity $r$ is a root of $Q'$ of multiplicity
+$r-1$, and this accounts for $\deg Q-1$ roots. If $Q$ splits and has degree at most $N$, so does $x^NQ(1/x)$, whose non-zero roots are the
+inverses of those of $Q$.
+
+Let $Q=P^{(k-1)}=\sum_{j\ge k-1}a_j\frac{j!}{(j-k+1)!}x^{j-k+1}$, of degree $n-k+1$, and $R(x)=x^{n-k+1}Q(1/x)=\sum_{i=0}^{n-k+1}a_{i+k-1}\frac{(i+k-1)!}{i!}x^{n-k+1-i}$.
+Differentiating $R$ $(n-k-1)$ times kills all terms with $i\ge3$ and leaves the split polynomial
+\[
+a_{k-1}(k-1)!\frac{(n-k+1)!}2x^2+a_kk!\,(n-k)!\,x+a_{k+1}\frac{(k+1)!}2(n-k-1)!.
+\]
+If its leading coefficient is $0$ the inequality reads $a_k^2\ge0$. Otherwise a split quadratic has a non-negative discriminant:
+\[
+a_k^2k!^2(n-k)!^2\ge a_{k-1}a_{k+1}(k-1)!(k+1)!(n-k+1)!(n-k-1)!,
+\]
+which is $a_k^2\ge a_{k-1}a_{k+1}\frac{k+1}k\cdot\frac{n-k+1}{n-k}$.
+
+(b) $\sum_kc(n,k)x^k=x(x+1)\cdots(x+n-1)$ (the cycle decomposition, built by inserting $1,2,\dots,n$ one at a time: element $j$ starts a new
+cycle or follows one of the $j-1$ previous elements), which splits. By (a), $c(n,k)^2\ge c(n,k-1)c(n,k+1)$. A positive log-concave
+sequence is unimodal: the ratios $c(n,k+1)/c(n,k)$ are non-increasing, so they are $\ge1$ up to some $k$ and $\le1$ after.
+
+\tools Volume~0, Chapter~3 (polynomials, Rolle's theorem), Chapter~8 (permutations and cycles).
+\leads Newton stated (a) in 1707 without proof; the proof above is in Hardy, Littlewood and Pólya's \emph{Inequalities}. Log-concavity of
+combinatorial sequences is a large subject: Heilmann and Lieb proved that matching numbers are real-rooted, and Huh and
+collaborators proved Rota's and Mason's log-concavity conjectures with Hodge theory (2012--2020).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}\raggedright
+\item K.~Knopp, \emph{Theory and Application of Infinite Series}, Dover, 1990 (translation of the 1947 German edition). The encyclopaedia of series: convergence tests, rearrangements, Cauchy products, Abel summation and much more.
+\item E.~Hairer and G.~Wanner, \emph{Analysis by Its History}, Springer, 1996. Zeno, Oresme, Grandi, Bolzano, Cauchy, Weierstrass, Riemann: the whole story of this chapter, with the original texts quoted and the original pictures.
+\item Aristotle, \emph{Physics}, Book~VI, Chapter~9 (239b), and Book~VIII, Chapter~8; Zeno's dichotomy and Aristotle's answer.
+\item N.~Oresme, \emph{Quaestiones super geometriam Euclidis} (c.~1350), ed.\ H.~L.~L.~Busard, Brill, 1961; Question~2 contains the grouping proof of the divergence of the harmonic series.
+\item B.~Bolzano, \emph{Rein analytischer Beweis des Lehrsatzes\dots}, Prague, 1817; English translation in S.~Russ, \emph{The Mathematical Works of Bernard Bolzano}, Oxford University Press, 2004. The intermediate value theorem proved from the least upper bound property.
+\item A.-L.~Cauchy, \emph{Cours d'analyse de l'\'Ecole royale polytechnique}, Paris, 1821; English translation by R.~Bradley and C.~E.~Sandifer, Springer, 2009. Chapter~VI: the definition of convergence, the criterion, the alternating series test.
+\item B.~Riemann, \emph{\"Uber die Darstellbarkeit einer Function durch eine trigonometrische Reihe}, Habilitationsschrift, 1854, published in Abh.\ K\"onigl.\ Ges.\ Wiss.\ G\"ottingen 13 (1867). Section~3 contains the rearrangement theorem.
+\item N.~H.~Abel, \emph{Untersuchungen \"uber die Reihe $1+\frac m1x+\dots$}, J.\ reine angew.\ Math.\ 1 (1826), 311--339. Summation by parts (Lehrsatz~III) and the first rigorous treatment of a power series on its circle of convergence.
+\item J.~Havil, \emph{Gamma: Exploring Euler's Constant}, Princeton University Press, 2003. Everything about $\gamma$ and the harmonic numbers, for pleasure, including Euler's 1734 paper \emph{De progressionibus harmonicis observationes} (Eneström index E43).
+\item J.~C.~Lagarias, \emph{Euler's constant: Euler's work and modern developments}, Bull.\ Amer.\ Math.\ Soc.\ 50 (2013), 527--628. A long survey, including the open question of the irrationality of $\gamma$ and the continued fraction computations of Challenge~(1).
+\item C.~E.~Sandifer, \emph{How Euler Did It: Estimating the Basel problem}, MAA Online, December 2003, reprinted in \emph{How Euler Did It}, MAA, 2007. Euler's 1731 paper \emph{De summatione innumerabilium progressionum} (E20) and the formula of Exercise~\ref{ex:eulerbasel}.
+\item A.~J.~Kempner, \emph{A curious convergent series}, Amer.\ Math.\ Monthly 21 (1914), 48--50; R.~Baillie, \emph{Sums of reciprocals of integers missing a given digit}, Amer.\ Math.\ Monthly 86 (1979), 372--374; T.~Schmelzer and R.~Baillie, \emph{Summing a curious, slowly convergent series}, Amer.\ Math.\ Monthly 115 (2008), 525--540. Exercise~\ref{ex:kempner} and Challenge~(3).
+\item P.~Erd\H{o}s, \emph{On arithmetical properties of Lambert series}, J.\ Indian Math.\ Soc.\ 12 (1948), 63--66. The irrationality of the constant of Challenge~(2).
+\item J.~Stirling, \emph{Methodus Differentialis}, London, 1730 (English translation by I.~Tweddle, Springer, 2003); A.~de Moivre, \emph{Miscellanea Analytica}, London, 1730, with its Supplement. The two halves of Stirling's formula; Tweddle's introduction sorts out who found what.
+\item C.~Tweedie, \emph{James Stirling: A Sketch of His Life and Works}, Clarendon Press, 1922. His Oxford scholarships and the history of the factorial approximation.
+\item D.~H.~Fowler and E.~Robson, \emph{Square root approximations in Old Babylonian mathematics: YBC~7289 in context}, Historia Mathematica 25 (1998), 366--378.
+\item W.~Rudin, \emph{Principles of Mathematical Analysis}, 3rd ed., McGraw-Hill, 1976, Chapters~3 and~4. Sequences, series, continuity and Riemann's rearrangement theorem, proved in full.
+\item M.~Spivak, \emph{Calculus}, 4th ed., Publish or Perish, 2008, Chapters~7, 8 and~11. The intermediate and extreme value theorems from the least upper bound axiom, Rolle and the mean value theorem, with the counterexamples of this chapter.
+\end{itemize}

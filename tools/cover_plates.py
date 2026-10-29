@@ -7,22 +7,21 @@ using the same camera, wire material and glow, including Volumes 0 and 1.
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 
-PLATES = {'tome0-mathematical-maturity': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
- 'tome1-integers': 'ch02-primes.tex',
- 'tome2-structures': 'ch11-characters.tex; ch12-quaternions.tex',
- 'tome3-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
- 'tome4-calculation': 'ch06-fourier.tex; ch08-transform.tex',
- 'tome5-meets': 'ch06-zeros.tex',
- 'tome6-spaces': 'ch11-metricmeasures.tex',
- 'tome7-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
- 'tome8-shapes': 'ch09-hyperbolic.tex',
- 'tome9-higher-structures': 'ch09-symmetric.tex',
- 'tome10-chance2': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
- 'tome11-motion': 'ch10-semicircle.tex',
- 'tome12-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
- 'tome13-primes': 'Prime distribution and progressions',
- 'tome14-order-and-chance': 'ch04-multiplicative.tex',
- 'tomeP1-crossroads': 'ch02-roots.tex; ch04-symmetry.tex: cyclic roots-of-unity symmetry'}
+PLATES = {'tome1-first-principles': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
+ 'tome2-integers': 'ch02-primes.tex',
+ 'tome3-symmetry': 'ch11-characters.tex; ch12-quaternions.tex',
+ 'tome4-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
+ 'tome5-calculation': 'ch06-fourier.tex; ch08-transform.tex',
+ 'tome6-crossroads': 'ch06-zeros.tex',
+ 'tome7-spaces': 'ch11-metricmeasures.tex',
+ 'tome8-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
+ 'tome9-shapes': 'ch09-hyperbolic.tex',
+ 'tome10-abstraction': 'ch09-symmetric.tex',
+ 'tome11-randomness': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
+ 'tome12-random-motion': 'ch10-semicircle.tex',
+ 'tome13-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
+ 'tome14-primes': 'Prime distribution and progressions',
+ 'tome15-order-and-chance': 'ch04-multiplicative.tex'}
 
 def main():
     import hashlib,json
@@ -37,22 +36,21 @@ def main():
     directions=json.loads((ROOT/'tools/assets/cover-art-direction.json').read_text())
     manifest=[]
     subjects={
-      '0':'Gaussian dome in the shared native wireframe material',
-      '1':'Ulam prime lattice with lower, broader triangulated relief',
-      '2':'Icosahedral symmetry as a triangulated 3D wireframe',
-      '3':'Galton branching lattice feeding exact binomial probability columns',
-      '4':'Smooth interference of five Fourier harmonics',
-      '5':'Riemann zeta modulus landscape',
-      '6':'Sierpinski carpet as a shallow solid with exposed hole walls',
-      '7':'Helicoid of the multivalued complex logarithm',
-      '8':'Pseudosphere and hyperbolic geometry',
-      '9':'A 600-box Plancherel Young diagram as a solid Ferrers wall',
-      '10':'Bernoulli large-deviation entropy bowl',
-      '11':'Seven Hermitian Brownian eigenvalue ribbons',
-      '12':'Elliptic-curve complex torus',
-      '13':'Locally averaged normalised prime-counting error surface',
-      '14':'Phase projections of a Steinhaus multiplicative walk',
-      'P1':'Seventh-roots-of-unity star prism with cyclic symmetry'
+      '1':'Gaussian dome in the shared native wireframe material',
+      '2':'Ulam prime lattice with lower, broader triangulated relief',
+      '3':'Icosahedral symmetry as a triangulated 3D wireframe',
+      '4':'Galton branching lattice feeding exact binomial probability columns',
+      '5':'Smooth interference of five Fourier harmonics',
+      '6':'Riemann zeta modulus landscape',
+      '7':'Sierpinski carpet as a shallow solid with exposed hole walls',
+      '8':'Helicoid of the multivalued complex logarithm',
+      '9':'Pseudosphere and hyperbolic geometry',
+      '10':'A 600-box Plancherel Young diagram as a solid Ferrers wall',
+      '11':'Bernoulli large-deviation entropy bowl',
+      '12':'Seven Hermitian Brownian eigenvalue ribbons',
+      '13':'Elliptic-curve complex torus',
+      '14':'Locally averaged normalised prime-counting error surface',
+      '15':'Phase projections of a Steinhaus multiplicative walk',
     }
     for book,evidence in PLATES.items():
         number=book.split('-',1)[0].removeprefix('tome')
@@ -63,7 +61,7 @@ def main():
         manifest.append(dict(book=book,number=number,subject=subjects[number],evidence=evidence,
             sha256=hashlib.sha256(content.encode()).hexdigest(),**info))
         print('generated shared-master illustration',book,flush=True)
-    assert len(manifest)==16
+    assert len(manifest)==15
     (ROOT/'docs/cover-art-manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
     files=[config['identity'],config['reference_illustration'],config['title_font'],
            config['subtitle_font'],'tools/assets/print/paper-muted.png','tools/assets/series-template.json',

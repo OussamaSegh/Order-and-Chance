@@ -1,0 +1,1048 @@
+\chapter{Inequalities, Large Numbers and Entropy}
+
+\begin{center}\itshape
+Jacob Bernoulli wrote that he had pondered it for twenty years: draw often enough from an urn, and the\\
+proportion of white balls drawn will, with near certainty, be close to the true proportion. The theorem\\
+appeared in 1713, eight years after his death. How often is ``often enough''?
+\end{center}
+
+An average of many independent random quantities is almost never far from its expectation. This chapter makes
+the words ``almost never'' and ``far'' precise, with three tools of increasing strength. Markov's inequality uses only the
+mean; Chebyshev's uses the variance and gives Bernoulli's theorem, the \emph{weak law of large numbers}; and
+Chernoff's method, which applies Markov's inequality to an exponential, shows that the probability of a deviation
+decays \emph{exponentially} with the number of trials, at a rate that we compute exactly for coin flips.
+
+Two applications show that these crude-looking inequalities have teeth. Bernstein used the weak law to prove
+Weierstrass's theorem, that every continuous function on $[0,1]$ is a uniform limit of polynomials, with explicit
+polynomials. And the Borel--Cantelli lemmas turn exponential bounds into statements about one infinite sequence of
+trials, such as the strong law of large numbers for bounded variables, or the length of the longest run of heads.
+
+The last two sections are about information. The \emph{entropy} of a random variable is the number of bits needed
+to describe it, in two precise senses: no prefix code can do better on average, and among $n$ independent copies
+almost all the probability sits on about $2^{nH}$ ``typical'' sequences. Jensen's inequality, promised in Volume~0,
+is the engine.
+
+All random variables in this chapter are discrete, as in Chapter~2.
+
+\section{Markov and Chebyshev}
+
+\begin{think}
+In a town, the mean income is $30\,000$ a year and nobody has a negative income. What fraction of the inhabitants
+can earn at least $300\,000$? What if you also know that the standard deviation is $10\,000$?
+\end{think}
+
+\begin{proposition}\label{prop:markov}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Markov's inequality}: if $X\ge0$ and $a>0$, then $P(X\ge a)\le\dfrac{\mathbb E[X]}a$.
+\item \emph{Chebyshev's inequality}: if $\mathbb E[X^2]<\infty$ and $a>0$, then $P\bigl(|X-\mathbb EX|\ge a\bigr)\le\dfrac{\operatorname{Var}X}{a^2}$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Pointwise, $a\mathbf 1_{X\ge a}\le X$: if $X\ge a$ the left side is $a\le X$, otherwise it is $0\le X$. Take expectations
+(Theorem~\ref{thm:linearity}(b)): $aP(X\ge a)\le\mathbb E[X]$.
+
+(b) Apply (a) to $(X-\mathbb EX)^2$ and $a^2$: the events $\{|X-\mathbb EX|\ge a\}$ and $\{(X-\mathbb EX)^2\ge a^2\}$ are the same.
+\end{proof}
+
+So at most a tenth of the town earns ten times the mean income, and if the standard deviation is $10\,000$ then
+at most $(10\,000/270\,000)^2\approx0.14\%$ does. Both inequalities are sharp (Exercise~\ref{ex:sharp}): the
+first is an equality when $X$ takes only the values $0$ and $a$. They are weak in typical situations only because
+they use so little information, and the rest of the chapter feeds them more.
+
+\section{The weak law and Bernstein polynomials}
+
+\begin{theorem}[weak law of large numbers]\label{thm:weaklaw}
+Let $X_1,X_2,\ldots$ have finite second moments, the same mean $\mu$, variances at most $\sigma^2$, and be
+\emph{uncorrelated}: $\operatorname{Cov}(X_i,X_j)=0$ for $i\ne j$ (for instance, pairwise independent). Let $S_n=X_1+\dots+X_n$. Then for every $\varepsilon>0$,
+\[
+P\Bigl(\Bigl|\frac{S_n}n-\mu\Bigr|\ge\varepsilon\Bigr)\le\frac{\sigma^2}{n\varepsilon^2}\xrightarrow[n\to\infty]{}0.
+\]
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:varsum}, $\operatorname{Var}S_n=\sum_i\operatorname{Var}X_i\le n\sigma^2$, so $\operatorname{Var}\frac{S_n}n\le\frac{\sigma^2}n$, while $\mathbb E\frac{S_n}n=\mu$ by
+linearity. Apply Chebyshev's inequality.
+\end{proof}
+
+This is Bernoulli's theorem: for independent trials with success probability $p$, the frequency of success
+$\frac{S_n}n$ is within $\varepsilon$ of $p$ with probability at least $1-\frac{p(1-p)}{n\varepsilon^2}\ge1-\frac1{4n\varepsilon^2}$. We say that $\frac{S_n}n$ converges
+to $p$ \emph{in probability}. The bound is honest but pessimistic: to guarantee $99\%$ confidence of being within
+$0.01$ of $p$, it asks for $n=250\,000$ trials, while Section~\ref{sec:chernoff} will show that $n=26\,500$ are enough.
+
+Bernstein noticed in 1912 that this theorem, read backwards, approximates functions. If $S_n$ is binomial$(n,x)$, the
+frequency $\frac{S_n}n$ is close to $x$, so $f(\frac{S_n}n)$ is close to $f(x)$ for a continuous $f$, and its expectation is a
+polynomial in $x$.
+
+\begin{definition}
+The \emph{Bernstein polynomials} of a function $f:[0,1]\to\R$ are
+\[
+\begin{aligned}B_nf(x)&=\sum_{k=0}^nf\Bigl(\frac kn\Bigr)\binom nkx^k(1-x)^{n-k}\eqbr=\mathbb E\Bigl[f\Bigl(\frac{S_n}n\Bigr)\Bigr],\end{aligned}
+\]
+where $S_n$ is binomial$(n,x)$.
+\end{definition}
+
+The two expressions agree by the transfer formula. We need one fact about continuous functions that Volume~0 used
+without proof.
+
+\begin{lemma}[Heine]\label{lem:heine}
+A continuous function $f:[0,1]\to\R$ is \emph{uniformly continuous}: for every $\varepsilon>0$ there is $\delta>0$ such that
+$|x-y|<\delta$ implies $|f(x)-f(y)|<\varepsilon$. In particular $f$ is bounded.
+\end{lemma}
+\begin{proof}
+Suppose not: for some $\varepsilon>0$ and every $n$ there are $x_n,y_n\in[0,1]$ with $|x_n-y_n|<\frac1n$ and $|f(x_n)-f(y_n)|\ge\varepsilon$. By
+Bolzano--Weierstrass (Volume~0, Proposition~5.1(c)) some subsequence $x_{n_k}$ converges to some $x\in[0,1]$, and then
+$y_{n_k}\to x$ as well. By continuity at $x$, $f(x_{n_k})-f(y_{n_k})\to f(x)-f(x)=0$, a contradiction. For boundedness, take
+$\varepsilon=1$ and the corresponding $\delta$: any $x\in[0,1]$ is reached from $0$ in $N=\lceil2/\delta\rceil$ equal steps of length $\frac xN<\delta$, and $f$
+changes by less than $1$ at each step, so $|f(x)|\le|f(0)|+N$.
+\end{proof}
+
+\begin{theorem}[Weierstrass, Bernstein's proof]\label{thm:weierstrass}
+If $f:[0,1]\to\R$ is continuous, then $B_nf\to f$ uniformly on $[0,1]$. In particular, every continuous function on
+$[0,1]$ is a uniform limit of polynomials.
+\end{theorem}
+\begin{proof}
+Let $M=\sup|f|$, finite by Lemma~\ref{lem:heine}. Fix $\varepsilon>0$ and take $\delta$ as in the lemma. For $x\in[0,1]$, let $A$ be the event
+$\bigl\{|\frac{S_n}n-x|\ge\delta\bigr\}$. On $A^c$, $|f(\frac{S_n}n)-f(x)|<\varepsilon$; on $A$, it is at most $2M$. So
+\[
+\begin{aligned}
+|B_nf(x)-f(x)|&\le\mathbb E\Bigl|f\Bigl(\frac{S_n}n\Bigr)-f(x)\Bigr|\eqbr\le\varepsilon+2M\,P(A)\\
+&\le\varepsilon+2M\,\frac{x(1-x)}{n\delta^2}\le\varepsilon+\frac M{2n\delta^2},
+\end{aligned}
+\]
+by Chebyshev, since $\operatorname{Var}\frac{S_n}n=\frac{x(1-x)}n\le\frac1{4n}$. The bound does not depend on $x$, and it is less than $2\varepsilon$ once
+$n>\frac M{2\varepsilon\delta^2}$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-bernstein}
+\caption{The Bernstein polynomials $B_nf$ of $f(x)=|x-\frac12|$ (black) for $n=4$, $16$ and $64$. They lie above $f$, since $f$ is
+convex (this is Jensen's inequality, Section~\ref{sec:entropy}), and the worst error, at the kink, is of order $\frac1{\sqrt n}$: here
+$0.19$, $0.10$ and $0.05$.}
+\label{fig:bernstein}
+\end{figure}
+
+\begin{beauty}
+Weierstrass's 1885 proof used integrals against Gaussian kernels; Bernstein's proof uses a coin. The polynomial
+$B_nf$ is the answer to a betting question: toss a coin of bias $x$ a total of $n$ times, and receive $f$ of the
+observed frequency. Its expected payoff is a polynomial in $x$, and the law of large numbers says that it is close
+to $f(x)$. Pierre B\'ezier rediscovered the same polynomials in the 1960s to design car bodies at Renault, and every
+smooth curve on a computer screen is drawn with them today.
+\end{beauty}
+
+\section{Chernoff bounds}\label{sec:chernoff}
+
+\begin{think}
+Toss a fair coin $1000$ times. Chebyshev says that the probability of at least $600$ heads is at most
+$\frac{250}{100^2}=0.025$. Is the truth closer to $10^{-2}$, $10^{-5}$ or $10^{-10}$?
+\end{think}
+
+Chebyshev applies Markov to $(X-\mu)^2$. Chernoff's idea is to apply it to $e^{\lambda X}$ and then choose the best $\lambda$: for
+every $\lambda>0$,
+\[
+P(X\ge a)=P\bigl(e^{\lambda X}\ge e^{\lambda a}\bigr)\le e^{-\lambda a}\,\mathbb E\bigl[e^{\lambda X}\bigr],
+\]
+and for a sum of independent variables, the \emph{moment generating function} $\mathbb E[e^{\lambda S}]$ is a product.
+
+\begin{theorem}[Chernoff bounds]\label{thm:chernoff}
+Let $X_1,\dots,X_n$ be independent, $X_i$ Bernoulli$(p_i)$, $S=\sum X_i$ and $\mu=\mathbb E[S]=\sum p_i>0$. For $\delta>0$ and $0<\delta'<1$,
+\[
+\begin{gathered}
+P\bigl(S\ge(1+\delta)\mu\bigr)\le\Bigl(\frac{e^\delta}{(1+\delta)^{1+\delta}}\Bigr)^{\mu},\qq P\bigl(S\le(1-\delta')\mu\bigr)\le\Bigl(\frac{e^{-\delta'}}{(1-\delta')^{1-\delta'}}\Bigr)^{\mu}.
+\end{gathered}
+\]
+Consequently, for $0<\delta\le1$, $P(S\ge(1+\delta)\mu)\le e^{-\delta^2\mu/3}$, $P(S\le(1-\delta)\mu)\le e^{-\delta^2\mu/2}$, and
+$P(|S-\mu|\ge\delta\mu)\le2e^{-\delta^2\mu/3}$.
+\end{theorem}
+\begin{proof}
+For real $\lambda$, the variables $e^{\lambda X_i}$ are independent (Proposition~\ref{prop:indepfun}), so by Theorem~\ref{thm:linearity}(c) and induction,
+\[
+\begin{aligned}\mathbb E[e^{\lambda S}]&=\prod_{i=1}^n\bigl(1+p_i(e^\lambda-1)\bigr)\eqbr\le\prod_{i=1}^ne^{p_i(e^\lambda-1)}=e^{\mu(e^\lambda-1)},\end{aligned}
+\]
+using $1+u\le e^u$. Upper tail: with $\lambda=\ln(1+\delta)>0$, Markov gives
+$P(S\ge(1+\delta)\mu)\le e^{-\lambda(1+\delta)\mu}e^{\mu\delta}=\bigl(e^\delta(1+\delta)^{-(1+\delta)}\bigr)^\mu$. Lower tail: with $\lambda=\ln(1-\delta')<0$,
+\[
+\begin{aligned}
+P\bigl(S\le(1-\delta')\mu\bigr)&=P\bigl(e^{\lambda S}\ge e^{\lambda(1-\delta')\mu}\bigr)\\
+&\le e^{-\lambda(1-\delta')\mu}\,e^{\mu(e^\lambda-1)}\eqbr=\bigl(e^{-\delta'}(1-\delta')^{-(1-\delta')}\bigr)^\mu.
+\end{aligned}
+\]
+For the simplified forms, take logarithms. The function $f(\delta)=\delta-(1+\delta)\ln(1+\delta)+\frac{\delta^2}3$ has $f(0)=0$,
+$f'(\delta)=-\ln(1+\delta)+\frac{2\delta}3$, $f'(0)=0$ and $f''(\delta)=\frac23-\frac1{1+\delta}$, negative on $[0,\frac12[$ and positive after. So $f'$
+decreases and then increases on $[0,1]$, and $f'\le\max(f'(0),f'(1))=\max(0,\frac23-\ln2)=0$; hence $f\le0$ on $[0,1]$, which is
+the first bound. Likewise $g(\delta)=-\delta-(1-\delta)\ln(1-\delta)+\frac{\delta^2}2$ has $g(0)=0$ and $g'(\delta)=\ln(1-\delta)+\delta\le0$, so $g\le0$; this
+gives the second bound for $\delta<1$, and for $\delta=1$ the bound $P(S\le0)=\prod(1-p_i)\le e^{-\mu}\le e^{-\mu/2}$ is direct. The third bound is
+the union of the first two, since $e^{-\delta^2\mu/2}\le e^{-\delta^2\mu/3}$.
+\end{proof}
+
+For $1000$ fair coins, $\mu=500$ and $\delta=\frac15$ give $P(S\ge600)\le e^{-500/75}\approx1.3\times10^{-3}$, already twenty times better than
+Chebyshev. The simplified bounds are convenient but lossy; for identically distributed trials the method gives the
+exact exponential rate, as we now show. Write, for $0<p<1$ and $0\le a\le1$,
+\[
+I_p(a)=a\ln\frac ap+(1-a)\ln\frac{1-a}{1-p}\qquad(0\ln0=0).
+\]
+
+\begin{theorem}[large deviations for coin flips]\label{thm:cramer}
+Let $X_1,X_2,\ldots$ be independent Bernoulli$(p)$, $S_n=X_1+\dots+X_n$ and $p<a<1$. Then for every $n\ge1$
+\[
+\frac1{n+1}e^{-nI_p(\lceil na\rceil/n)}\le P(S_n\ge na)\le e^{-nI_p(a)},
+\]
+and consequently $\frac1n\ln P(S_n\ge na)\to-I_p(a)$. By symmetry ($S_n\mapsto n-S_n$, $p\mapsto 1-p$),
+$P(S_n\le na)\le e^{-nI_p(a)}$ for $0<a<p$.
+\end{theorem}
+\begin{proof}
+\emph{Upper bound.} Here $\mathbb E[e^{\lambda S_n}]=(1-p+pe^\lambda)^n$, so for $\lambda>0$, $P(S_n\ge na)\le\exp\bigl(-n(\lambda a-\ln(1-p+pe^\lambda))\bigr)$.
+Write $q=1-p$, $b=1-a$, and choose $e^\lambda=\frac{aq}{pb}$, which is $>1$ since $a>p$ and $b<q$. Then $1-p+pe^\lambda=q+\frac{aq}b=\frac qb$ and
+\[
+\begin{aligned}\lambda a-\ln\frac qb&=a\ln\frac ap+a\ln\frac qb-\ln\frac qb\eqbr=a\ln\frac ap+b\ln\frac bq=I_p(a).\end{aligned}
+\]
+\emph{Lower bound.} Let $k=\lceil na\rceil$ and $\alpha=\frac kn$, so $a\le\alpha$. If $k=n$, $P(S_n\ge na)=p^n=e^{-nI_p(1)}$ and we are done; so let
+$k<n$, i.e.\ $0<\alpha<1$. The binomial$(n,\alpha)$ probabilities $t_j=\binom nj\alpha^j(1-\alpha)^{n-j}$, $0\le j\le n$, add up to $1$, and the largest is $t_k$:
+indeed $\frac{t_{j+1}}{t_j}=\frac{(n-j)\alpha}{(j+1)(1-\alpha)}$, which is $\ge1$ iff $j+1\le(n+1)\alpha=k+\alpha$, i.e.\ iff $j<k$. So $t_k\ge\frac1{n+1}$. Now
+\[
+\begin{aligned}P(S_n\ge na)&\ge P(S_n=k)\eqbr=t_k\Bigl(\frac p\alpha\Bigr)^k\Bigl(\frac q{1-\alpha}\Bigr)^{n-k}=t_k\,e^{-nI_p(\alpha)}.\end{aligned}
+\]
+\emph{Limit.} $\frac1n\ln(n+1)\to0$, and $\frac{\lceil na\rceil}n\to a$, so $I_p(\lceil na\rceil/n)\to I_p(a)$ by continuity of $I_p$ on $]0,1[$.
+\end{proof}
+
+So the probability of a deviation is neither ``small'' nor ``polynomially small'': it is $e^{-nI_p(a)+o(n)}$, with an explicit
+exponent. For $1000$ fair coins and $a=0.6$, $I_{1/2}(0.6)\approx0.0201$ and the upper bound is $1.8\times10^{-9}$; the exact value is
+$1.36\times10^{-10}$, and the factor of $13$ between them is the polynomial correction that the theorem does not see. The
+truth was $10^{-10}$: Chebyshev was off by a factor of a hundred million.
+
+The quantity $I_p(a)$ is a \emph{relative entropy}, measured in nats rather than bits (Section~\ref{sec:entropy}). It is not
+symmetric around $p$, and it is at least $2(a-p)^2$ (Exercise~\ref{ex:pinsker}), which gives the cruder but universal bound
+of the next theorem.
+
+\begin{lemma}[Hoeffding]\label{lem:hoeffding}
+Let $X$ take values in $[0,1]$, with mean $p$. For every real $\lambda$, $\mathbb E\bigl[e^{\lambda(X-p)}\bigr]\le e^{\lambda^2/8}$.
+\end{lemma}
+\begin{proof}
+The function $x\mapsto e^{\lambda x}$ is convex, so on $[0,1]$ it lies below its chord: $e^{\lambda x}\le(1-x)+xe^\lambda$. Taking expectations,
+$\mathbb E[e^{\lambda X}]\le1-p+pe^\lambda$. Let $L(\lambda)=\ln(1-p+pe^\lambda)-\lambda p$; we show $L(\lambda)\le\frac{\lambda^2}8$. Now $L(0)=0$, and with
+$u(\lambda)=\frac{pe^\lambda}{1-p+pe^\lambda}\in[0,1]$ we get $L'=u-p$, so $L'(0)=0$, and $L''=u(1-u)\le\frac14$. Taylor's formula with integral remainder (Volume~0,
+Chapter~6) gives $L(\lambda)=\int_0^\lambda(\lambda-t)L''(t)\dd t\le\frac14\cdot\frac{\lambda^2}2$ (for $\lambda<0$ as well, since $(\lambda-t)\dd t$ is then also of
+constant sign along the path and the integral equals $\int_\lambda^0(t-\lambda)L''(t)\dd t$).
+\end{proof}
+
+\begin{theorem}[Hoeffding's inequality]\label{thm:hoeffding}
+Let $X_1,\dots,X_n$ be independent with values in $[a_i,b_i]$, $S=\sum X_i$, and $t>0$. Then
+\[
+P(S-\mathbb ES\ge t)\le\exp\Bigl(-\frac{2t^2}{\sum_i(b_i-a_i)^2}\Bigr),
+\]
+and the same bound holds for $P(S-\mathbb ES\le-t)$. For $X_i$ in $[0,1]$, the bound is $e^{-2t^2/n}$.
+\end{theorem}
+\begin{proof}
+Let $c_i=b_i-a_i$ (we may assume $c_i>0$, a constant $X_i$ contributing nothing), and $Y_i=\frac{X_i-a_i}{c_i}\in[0,1]$. By the lemma applied to
+$Y_i$ with $\lambda c_i$ in place of $\lambda$, $\mathbb E[e^{\lambda(X_i-\mathbb EX_i)}]=\mathbb E[e^{\lambda c_i(Y_i-\mathbb EY_i)}]\le e^{\lambda^2c_i^2/8}$. By independence,
+$\mathbb E[e^{\lambda(S-\mathbb ES)}]\le e^{\lambda^2C/8}$ with $C=\sum c_i^2$, and by Markov, for $\lambda>0$,
+\[
+P(S-\mathbb ES\ge t)\le e^{-\lambda t+\lambda^2C/8}.
+\]
+The exponent is smallest for $\lambda=\frac{4t}C$, where it equals $-\frac{2t^2}C$. For the lower tail, apply this to $-X_i\in[-b_i,-a_i]$.
+\end{proof}
+
+With $t=\varepsilon n$ and $X_i\in[0,1]$: $P(|\frac{S_n}n-\mu|\ge\varepsilon)\le2e^{-2n\varepsilon^2}$. For $99\%$ confidence of being within $0.01$, $26\,500$ trials suffice
+(since $2e^{-2n\cdot10^{-4}}\le0.01$ iff $n\ge5000\ln200\approx26\,492$), against $250\,000$ for Chebyshev. Behind every
+``margin of error'' and every Monte Carlo error bar that comes with a guarantee, there is an inequality of this kind. Chapter~10 extends it to martingales
+(Azuma's inequality), and Volume~10 studies large deviations in general (Cram\'er's theorem).
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-chernoff}
+\caption{The probability that $n$ trials with success probability $p=0.1$ give a success frequency of at least $0.2$ (black dots,
+computed exactly), against Chebyshev's bound $\frac{9}{n}$ (orange), Hoeffding's bound $e^{-2n(0.1)^2}$ (green) and the optimal
+Chernoff bound $e^{-nI_{0.1}(0.2)}$ (blue), on a logarithmic scale. Chebyshev decays like a power of $n$; the others are straight
+lines, and the blue one has the true slope $-I_{0.1}(0.2)\approx-0.044$, more than twice Hoeffding's $-0.02$.}
+\label{fig:chernoff}
+\end{figure}
+
+\section{Borel--Cantelli}\label{sec:bc}
+
+The weak law speaks about one $n$ at a time. To say something about a whole infinite sequence of trials (whose
+existence is admitted, as in Chapter~1) we need events such as ``$A_n$ happens for infinitely many $n$''.
+
+\begin{definition}
+For events $A_1,A_2,\ldots$, the event \emph{$A_n$ infinitely often} is
+\[
+\{A_n\text{ i.o.}\}=\bigcap_{N\ge1}\bigcup_{n\ge N}A_n,
+\]
+the set of $\omega$ that belong to infinitely many $A_n$. Its complement, $\bigcup_N\bigcap_{n\ge N}A_n^c$, is ``eventually $A_n^c$''. A property holds
+\emph{almost surely} (a.s.) if the event where it holds has probability $1$.
+\end{definition}
+
+\begin{think}
+A monkey hits the keys of a typewriter at random, forever. Will it type the word \texttt{banana}? Infinitely
+often? What about the complete works of Shakespeare?
+\end{think}
+
+\begin{theorem}[Borel--Cantelli lemmas]\label{thm:bc}
+Let $A_1,A_2,\ldots$ be events.
+\begin{enumerate}[label=(\alph*)]
+\item If $\sum_nP(A_n)<\infty$, then $P(A_n\text{ i.o.})=0$.
+\item If the $A_n$ are independent and $\sum_nP(A_n)=\infty$, then $P(A_n\text{ i.o.})=1$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) For every $N$, $\{A_n\text{ i.o.}\}\subseteq\bigcup_{n\ge N}A_n$, so by the union bound $P(A_n\text{ i.o.})\le\sum_{n\ge N}P(A_n)$, the tail of a
+convergent series, which tends to $0$.
+
+(b) We show $P\bigl(\bigcap_{n\ge N}A_n^c\bigr)=0$ for every $N$; the complement of $\{A_n\text{ i.o.}\}$ is the countable union of these events. The
+$A_n^c$ are independent (Proposition~\ref{prop:indepcomp}), so for $M\ge N$, using $1-u\le e^{-u}$,
+\[
+\begin{aligned}P\Bigl(\bigcap_{n=N}^MA_n^c\Bigr)&=\prod_{n=N}^M\bigl(1-P(A_n)\bigr)\eqbr\le\exp\Bigl(-\sum_{n=N}^MP(A_n)\Bigr)\xrightarrow[M\to\infty]{}0.\end{aligned}
+\]
+These events decrease in $M$ to $\bigcap_{n\ge N}A_n^c$, which therefore has probability $0$ by continuity (Proposition~\ref{prop:rules}(e)).
+\end{proof}
+
+The monkey types \texttt{banana} infinitely often: cut its output into consecutive blocks of six keys; the events
+``block $j$ spells \texttt{banana}'' are independent with the same positive probability, so their probabilities sum to $\infty$.
+The same holds for Shakespeare, although the waiting time is beyond astronomical. Without independence, (b) fails:
+take all $A_n$ equal to one event of probability $\frac12$.
+
+The first lemma, fed with Hoeffding's inequality, gives a law of large numbers for a single infinite sequence.
+
+\begin{corollary}[strong law for bounded variables]\label{cor:slln}
+Let $X_1,X_2,\ldots$ be independent discrete random variables with values in $[a,b]$ and the same mean $\mu$. Then
+$\frac{S_n}n\to\mu$ almost surely.
+\end{corollary}
+\begin{proof}
+Fix $\varepsilon>0$. By Hoeffding, $P(|\frac{S_n}n-\mu|\ge\varepsilon)\le2e^{-2n\varepsilon^2/(b-a)^2}$ (for $b>a$; if $a=b$ there is nothing to prove), the
+general term of a convergent geometric series. By Borel--Cantelli (a), the event $E_\varepsilon$ ``eventually $|\frac{S_n}n-\mu|<\varepsilon$'' has
+probability $1$. Then $E=\bigcap_{k\ge1}E_{1/k}$ has probability $1$ (its complement is a countable union of null events), and on $E$,
+$\frac{S_n}n\to\mu$.
+\end{proof}
+
+Chapter~6 proves the strong law under a fourth-moment assumption by the same route, with Chebyshev applied to
+the fourth power; the strong law for all integrable i.i.d.\ variables (Kolmogorov, Etemadi) needs a truncation
+argument and comes later in the series. With the binary digits of a uniform random number, which Chapter~5 shows to
+be independent fair bits, Corollary~\ref{cor:slln} becomes Borel's theorem of 1909: almost every number in $[0,1]$
+has, in the limit, as many $0$s as $1$s in its binary expansion.
+
+The two lemmas together locate the longest runs of heads, a test that human-made ``random'' sequences
+regularly fail (a numerical calculation has an experiment).
+
+\begin{proposition}\label{prop:runs}
+Toss a fair coin infinitely often, and let $\ell_n$ be the length of the run of heads starting at toss $n$ ($\ell_n=0$ if
+toss $n$ is tails). Then, almost surely, $\displaystyle\limsup_{n\to\infty}\frac{\ell_n}{\log_2n}=1$.
+\end{proposition}
+\begin{proof}
+For $k\ge0$, $\ell_n\ge k$ iff tosses $n,\dots,n+k-1$ are heads, so $P(\ell_n\ge k)=2^{-k}$.
+
+\emph{At most $1$.} Fix $\varepsilon>0$. Then $P(\ell_n\ge(1+\varepsilon)\log_2n)\le2^{-(1+\varepsilon)\log_2n}=n^{-1-\varepsilon}$, and $\sum_nn^{-1-\varepsilon}<\infty$ (Volume~0,
+Chapter~5). By Borel--Cantelli (a), almost surely $\ell_n<(1+\varepsilon)\log_2n$ for all large $n$, hence $\limsup\frac{\ell_n}{\log_2n}\le1+\varepsilon$.
+Intersecting over $\varepsilon=\frac1k$, the $\limsup$ is at most $1$ almost surely.
+
+\emph{At least $1$.} We need disjoint windows, to have independence. Let $r_j=\lfloor\log_2j\rfloor$ for $j\ge1$, let $n_1=1$ and
+$n_{j+1}=n_j+r_j+1$, and let $B_j$ be the event that tosses $n_j,\dots,n_j+r_j-1$ are all heads. The windows are disjoint, so for
+distinct $j_1,\dots,j_m$ the event $B_{j_1}\cap\dots\cap B_{j_m}$ prescribes $r_{j_1}+\dots+r_{j_m}$ distinct tosses and has probability
+$2^{-r_{j_1}}\cdots2^{-r_{j_m}}$: the $B_j$ are independent. Since $P(B_j)=2^{-r_j}\ge\frac1j$, Borel--Cantelli (b) says that almost surely
+$\ell_{n_j}\ge r_j$ for infinitely many $j$. Finally $n_j\le1+(j-1)(\log_2j+1)\le j(\log_2j+2)$, so $\log_2n_j\le\log_2j+\log_2(\log_2j+2)$, while $r_j\ge\log_2j-1$, and
+$\frac{r_j}{\log_2n_j}\to1$. Hence $\limsup\frac{\ell_n}{\log_2n}\ge1$ almost surely.
+\end{proof}
+
+So runs of length close to $\log_2n$ keep appearing (Exercise~\ref{ex:longestrun} shows that the longest run among the first $n$ tosses is
+$\sim\log_2n$). In $200$ tosses the longest run of heads has mean about $7$, and with probability $97\%$ some run of $6$ identical
+outcomes appears. When people are asked to write down $200$ ``random'' tosses, they rarely write a run longer than $5$.
+
+\section{Jensen and entropy}\label{sec:entropy}
+
+Volume~0 proved Jensen's inequality for finitely many points. Here is the form promised there, for random variables.
+
+\begin{theorem}[Jensen]\label{thm:jensenprob}
+Let $f$ be twice differentiable and convex on an interval $I$, and $X$ an integrable random variable with values in $I$
+such that $f(X)$ is integrable. Then $\mathbb E[X]\in I$ and
+\[
+f\bigl(\mathbb E[X]\bigr)\le\mathbb E\bigl[f(X)\bigr].
+\]
+If $f''>0$ on $I$, equality holds only if $X$ is almost surely constant.
+\end{theorem}
+\begin{proof}
+Let $m=\mathbb E[X]$. If $c=\inf I$ is finite, then $X\ge c$ gives $m\ge c$, with equality only if $X=c$ almost surely,
+in which case $c$ is a value of $X$ and lies in $I$; the same holds for $\sup I$. So $m\in I$. By Volume~0, Proposition~4.1(b), $f(x)\ge f(m)+f'(m)(x-m)$ for every
+$x\in I$. Put $x=X$ and take expectations: $\mathbb E[f(X)]\ge f(m)+f'(m)(\mathbb E[X]-m)=f(m)$. If $f''>0$, the tangent inequality is strict for
+$x\ne m$, so $\mathbb E[f(X)]-f(m)$ is the expectation of a non-negative variable that is positive on $\{X\ne m\}$; it vanishes only if
+$P(X\ne m)=0$.
+\end{proof}
+
+For instance $(\mathbb EX)^2\le\mathbb E[X^2]$, $e^{\mathbb E X}\le\mathbb E[e^X]$, and $\mathbb E[\ln X]\le\ln\mathbb E[X]$ for $X>0$: this last one, with the concave $\ln$, is the
+engine of information theory.
+
+\begin{think}
+I think of an integer between $1$ and $1000$, and you may ask yes-or-no questions. How many questions do you need?
+Now suppose that I choose $1$ half of the time, $2$ a quarter of the time, and so on. How many questions do you
+need on average?
+\end{think}
+
+\begin{definition}
+Let $X$ take values in a countable set $A$, with $p(x)=P(X=x)$. Its \emph{entropy} is
+\[
+\begin{aligned}H(X)&=\sum_{x\in A}p(x)\log_2\frac1{p(x)}\eqbr=\mathbb E\Bigl[\log_2\frac1{p(X)}\Bigr]\in[0,+\infty],\end{aligned}
+\]
+with the convention $0\log_2\frac10=0$. For two laws $p$, $q$ on $A$, the \emph{relative entropy} (or Kullback--Leibler divergence)
+is $D(p\,\|\,q)=\sum_{x:\,p(x)>0}p(x)\log_2\frac{p(x)}{q(x)}$, which may be $+\infty$.
+\end{definition}
+
+The quantity $\log_2\frac1{p(x)}$ measures the surprise of seeing $x$: one bit for a fair coin's outcome, ten bits for
+an outcome of probability $2^{-10}$. Entropy is the average surprise. A fair coin has $H=1$; Bernoulli$(p)$ has
+$h(p)=p\log_2\frac1p+(1-p)\log_2\frac1{1-p}$, for instance $h(0.1)\approx0.469$; the uniform law on $m$ points has $\log_2m$. The exponent $I_p(a)$ of
+Section~\ref{sec:chernoff} is $(\ln2)\,D(\mathrm{B}(a)\,\|\,\mathrm{B}(p))$, where $\mathrm{B}(p)$ denotes the Bernoulli$(p)$ law.
+
+\begin{proposition}[Gibbs' inequality]\label{prop:gibbs}
+$D(p\,\|\,q)\ge0$, with equality if and only if $p=q$. Consequently, if $X$ takes at most $m$ values, $H(X)\le\log_2m$, with
+equality if and only if $X$ is uniform on $m$ values.
+\end{proposition}
+\begin{proof}
+Let $S=\{x:p(x)>0\}$. Gibbs' inequality is Jensen's inequality $\mathbb E[\ln Y]\le\ln\mathbb E[Y]$ for $Y=\frac{q(X)}{p(X)}$; we run its proof directly, with the
+tangent to the concave $\ln$ taken at $1$, which also handles infinite sums and the equality case. By Volume~0,
+Proposition~4.1(b), $\ln y\le y-1$ for $y>0$, with equality only at $y=1$. So for $x\in S$ with $q(x)>0$,
+\[
+p(x)\ln\frac{q(x)}{p(x)}\le q(x)-p(x).
+\]
+In particular the negative terms of the series defining $D(p\,\|\,q)$ add up to at most $\frac1{\ln2}\sum_xq(x)$, so $D(p\,\|\,q)$ is well defined in
+$]-\infty,+\infty]$, and we may assume it finite, so that $q>0$ on $S$. Summing over $S$,
+$-(\ln2)\,D(p\,\|\,q)\le\sum_Sq-\sum_Sp=\sum_Sq-1\le0$. Equality forces $\frac{q(x)}{p(x)}=1$ for all $x\in S$, so $q=p$ on $S$, hence everywhere since
+both sum to $1$. For the entropy, let $u$ be uniform on a set of $m$ points containing the values of
+$X$: $D(p\,\|\,u)=\sum_xp(x)\log_2(m\,p(x))=\log_2m-H(X)\ge0$, with equality iff $p=u$.
+\end{proof}
+
+\begin{proposition}\label{prop:entropyadd}
+If $X$ and $Y$ are independent with finite entropy, $H(X,Y)=H(X)+H(Y)$. If $X_1,\dots,X_n$ are independent with the law
+of $X$, then $H(X_1,\dots,X_n)=nH(X)$.
+\end{proposition}
+\begin{proof}
+$P(X=x,Y=y)=p(x)q(y)$, so $\log_2\frac1{p(x)q(y)}=\log_2\frac1{p(x)}+\log_2\frac1{q(y)}$; multiply by $p(x)q(y)$ and sum over $(x,y)$, a sum of
+non-negative terms that may be summed in either order. For $n$ variables, $(X_1,\dots,X_{n-1})$ is independent of $X_n$
+(Proposition~\ref{prop:indepfun}); induct.
+\end{proof}
+
+\paragraph{Codes.} A \emph{binary code} for a finite or countable alphabet $A$ assigns to each $x\in A$ a word $c(x)\in\{0,1\}^*$ of
+length $\ell(x)\ge1$. It is a \emph{prefix code} if no codeword is a prefix of another; then a concatenation of codewords can be
+decoded on the fly, left to right, without separators. Morse code is not a prefix code (it needs pauses), while the
+codes that compress files are.
+
+\begin{proposition}[Kraft's inequality]\label{prop:kraft}
+A prefix code satisfies $\sum_{x\in A}2^{-\ell(x)}\le1$. Conversely, if positive integers $\ell(x)$ satisfy this inequality, there is a
+prefix code with these lengths.
+\end{proposition}
+\begin{proof}
+To a word $w=w_1\cdots w_\ell$ associate the \emph{dyadic interval}
+\[
+I_w=[0.w_1\cdots w_\ell,\;0.w_1\cdots w_\ell+2^{-\ell}[
+\]
+(binary expansions), of length $2^{-\ell}$: it is the set of $t\in[0,1[$ whose binary expansion (the one not ending with infinitely many $1$s) begins with $w$.
+So $I_{w'}\subseteq I_w$ if $w$ is a prefix of $w'$, and $I_w\cap I_{w'}=\varnothing$ if neither word is a prefix of the other, since the
+expansions of their points differ at the first place where $w$ and $w'$ differ. For a prefix code the intervals $I_{c(x)}$ are
+therefore pairwise disjoint subsets of $[0,1[$, and their total length is at most $1$ (for every finite subset of $A$, then in
+the limit).
+
+Conversely, list the letters as $x_1,x_2,\ldots$ with non-decreasing lengths $\ell_i=\ell(x_i)$ (possible even for an infinite alphabet, since the
+inequality allows at most $2^\ell$ letters of each length $\ell$), and let $s_i=\sum_{j<i}2^{-\ell_j}$, which is at most $1-2^{-\ell_i}$ by hypothesis. Each $2^{-\ell_j}$ with $j<i$ is a multiple of $2^{-\ell_i}$, so $s_i=k_i2^{-\ell_i}$ for an integer
+$0\le k_i<2^{\ell_i}$. Let $c_i$ be the binary expansion of $k_i$ on $\ell_i$ digits; then $I_{c_i}=[s_i,s_{i+1}[$. These intervals are pairwise disjoint,
+so no $c_i$ is a prefix of another.
+\end{proof}
+
+\begin{theorem}[Shannon's source coding theorem]\label{thm:sourcecoding}
+Let $X$ take values in a finite alphabet $A$.
+\begin{enumerate}[label=(\alph*)]
+\item Every prefix code for $A$ has expected length $\mathbb E[\ell(X)]\ge H(X)$, with equality iff $p(x)=2^{-\ell(x)}$ for all $x$.
+\item There is a prefix code with $\mathbb E[\ell(X)]<H(X)+1$, unless $X$ is almost surely constant (then $H(X)=0$ and one bit is
+needed).
+\item Let $L_n$ be the infimum of the expected lengths of prefix codes for $A^n$, applied to $(X_1,\dots,X_n)$ with $X_i$ independent
+copies of $X$. Then $nH(X)\le L_n\le nH(X)+1$, so the optimal number of bits per symbol $\frac{L_n}n$ tends to $H(X)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) We may drop the letters with $p(x)=0$, which only decreases $\sum2^{-\ell}$. Let $K=\sum_x2^{-\ell(x)}\le1$ (Kraft) and $q(x)=2^{-\ell(x)}/K$, a law on $A$.
+Then
+\[
+\begin{aligned}\mathbb E[\ell(X)]-H(X)&=\sum_xp(x)\log_2\frac{p(x)}{2^{-\ell(x)}}\eqbr=D(p\,\|\,q)-\log_2K\ge0,\end{aligned}
+\]
+by Gibbs' inequality and $K\le1$. Equality forces $K=1$ and $p=q$.
+
+(b) If $X$ is constant, one bit is needed and suffices. Otherwise drop the letters of probability $0$, so that $0<p(x)<1$ for every
+remaining letter, and let $\ell(x)=\lceil\log_2\frac1{p(x)}\rceil\ge1$. Then $2^{-\ell(x)}\le p(x)$, so $\sum2^{-\ell(x)}\le1$ and Kraft gives a prefix code
+with these lengths, and $\ell(x)<\log_2\frac1{p(x)}+1$; multiply by $p(x)$ and sum.
+
+(c) Apply (a) and (b) to the variable $(X_1,\dots,X_n)$ with alphabet $A^n$, whose entropy is $nH(X)$ by Proposition~\ref{prop:entropyadd}.
+\end{proof}
+
+In the second question of the last think box, the law $p(k)=2^{-k}$ has entropy $\sum_kk2^{-k}=2$ bits, and the questions
+``is it $1$?'', ``is it $2$?'', \ldots\ achieve it: they form the prefix code $1,01,001,\ldots$ with $\ell(k)=k=\log_2\frac1{p(k)}$. For $1000$ equally likely
+numbers, ten questions suffice and $\log_21000\approx9.97$ shows that no strategy does better on average than $9.97$.
+
+\begin{remark}
+In 1952 David Huffman, then a student of Robert Fano, found an algorithm that produces an \emph{optimal} prefix code:
+repeatedly merge the two least likely symbols into one. Its optimality proof is a short exchange argument (Cover and
+Thomas, Section~5.8), and a numerical calculation implements it and compares it with $H$. Arithmetic coding, used in modern
+compressors, reaches $H$ per symbol without forming blocks.
+\end{remark}
+
+\section{Typical sequences}
+
+Theorem~\ref{thm:sourcecoding} measures entropy by codes of variable length. The asymptotic equipartition property gives
+a more striking picture: among the $|A|^n$ possible sequences, almost all the probability is carried by about $2^{nH}$ of
+them, which are all roughly equally likely.
+
+Fix a finite alphabet $A$ and a law $p$ with $p(x)>0$ for all $x\in A$ (drop the other letters), let $X_1,X_2,\ldots$ be
+independent with law $p$ and $H=H(X_1)$. For a sequence $x=(x_1,\dots,x_n)\in A^n$, write $p(x)=p(x_1)\cdots p(x_n)$, the probability
+that $(X_1,\dots,X_n)=x$.
+
+\begin{definition}
+For $\varepsilon>0$, the \emph{typical set} $T_\varepsilon^{(n)}$ is the set of $x\in A^n$ with $2^{-n(H+\varepsilon)}\le p(x)\le2^{-n(H-\varepsilon)}$.
+\end{definition}
+
+\begin{theorem}[asymptotic equipartition property]\label{thm:aep}
+Let $\varepsilon>0$.
+\begin{enumerate}[label=(\alph*)]
+\item The average surprise $-\frac1n\log_2p(X_1,\dots,X_n)$ tends to $H$ in probability; that is, the probability that
+$(X_1,\dots,X_n)\in T_\varepsilon^{(n)}$ tends to $1$.
+\item $|T_\varepsilon^{(n)}|\le2^{n(H+\varepsilon)}$ for all $n$, and $|T_\varepsilon^{(n)}|\ge(1-\varepsilon)2^{n(H-\varepsilon)}$ for all large $n$.
+\item If $B_n\subseteq A^n$ has at most $2^{n(H-2\varepsilon)}$ elements, then $P\bigl((X_1,\dots,X_n)\in B_n\bigr)\to0$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) Let $Y_i=\log_2\frac1{p(X_i)}$. The $Y_i$ are independent (Proposition~\ref{prop:indepfun}), bounded, with mean $H$, and
+$-\frac1n\log_2p(X_1,\dots,X_n)=\frac1n(Y_1+\dots+Y_n)$. By the weak law, it lies within $\varepsilon$ of $H$ with probability tending to $1$, and
+this is exactly the event $(X_1,\dots,X_n)\in T_\varepsilon^{(n)}$.
+
+(b) Every element of $T=T_\varepsilon^{(n)}$ has probability at least $2^{-n(H+\varepsilon)}$, so $1\ge P(T)\ge|T|2^{-n(H+\varepsilon)}$. Every element has
+probability at most $2^{-n(H-\varepsilon)}$, so $P(T)\le|T|2^{-n(H-\varepsilon)}$, and $P(T)\ge1-\varepsilon$ for large $n$ by (a).
+
+(c) Split $B_n$ into its typical and atypical elements:
+$P(B_n)\le|B_n|\,2^{-n(H-\varepsilon)}+P\bigl((X_1,\dots,X_n)\notin T_\varepsilon^{(n)}\bigr)\le2^{-n\varepsilon}+o(1)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-aep}
+\caption{The law of $-\frac1n\log_2p(X_1,\dots,X_n)$ for independent Bernoulli$(0.2)$ bits, for $n=20$, $100$ and $500$ (computed exactly:
+the value only depends on the number of $1$s). It concentrates at $H=h(0.2)\approx0.722$ (dashed). The most likely sequence, all
+zeros, has $-\frac1n\log_2p=0.32$ and is not typical: there is only one such sequence, while there are about $2^{0.722n}$ typical ones.}
+\label{fig:aep}
+\end{figure}
+
+\begin{corollary}[fixed-length compression]\label{cor:fixedlength}
+Let $R>0$ and $\mathbf X_n=(X_1,\dots,X_n)$. If $R>H$, there are maps $e_n:A^n\to\{0,1\}^{\lceil nR\rceil}$ and $d_n:\{0,1\}^{\lceil nR\rceil}\to A^n$
+with $P\bigl(d_n(e_n(\mathbf X_n))\ne\mathbf X_n\bigr)\to0$. If $R<H$, every such pair has $P\bigl(d_n(e_n(\mathbf X_n))=\mathbf X_n\bigr)\to0$.
+\end{corollary}
+\begin{proof}
+If $R>H$, let $\varepsilon=R-H$. By the theorem, $T_\varepsilon^{(n)}$ has at most $2^{nR}$ elements, so it can be mapped injectively into
+$\{0,1\}^{\lceil nR\rceil}$; let $e_n$ be such a map on $T_\varepsilon^{(n)}$, arbitrary elsewhere, and $d_n$ invert it on the image. Decoding fails only
+outside $T_\varepsilon^{(n)}$, with probability tending to $0$. If $R<H$, let $\varepsilon=\frac{H-R}3$. The set $B_n$ of sequences that are
+decoded correctly satisfies $d_n(e_n(x))=x$, so $e_n$ is injective on $B_n$ and $|B_n|\le2^{\lceil nR\rceil}\le2^{nR+1}\le2^{n(H-2\varepsilon)}$ as soon as
+$n\varepsilon\ge1$. By (c), $P(B_n)\to0$.
+\end{proof}
+
+So $H$ is a sharp threshold: compress below the entropy and you fail almost surely, above it and you succeed
+almost surely. A text with $H$ bits of entropy per letter is, for the purpose of storage, a uniformly random
+string of $2^{nH}$ possibilities, and the rest of the $|A|^n$ sequences may as well not exist.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:sharp}
+(a) For $a>0$, find a random variable $X\ge0$, not constant, with $P(X\ge a)=\frac{\mathbb E[X]}a$. (b) For $a>0$ and $0<\sigma\le a$, find $X$ with mean
+$0$, variance $\sigma^2$ and $P(|X|\ge a)=\frac{\sigma^2}{a^2}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:lipschitz}
+Let $f:[0,1]\to\R$ satisfy $|f(x)-f(y)|\le L|x-y|$. Show that $|B_nf(x)-f(x)|\le\frac L{2\sqrt n}$ for all $x$ and $n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pinsker}
+Show that $I_p(a)\ge2(a-p)^2$ for $0<p<1$ and $0\le a\le1$, and deduce the upper bound of Theorem~\ref{thm:cramer} from Hoeffding's
+inequality in the weaker form $e^{-2n(a-p)^2}$. When are the two exponents close?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropybinom}
+For $0<\alpha\le\frac12$, show that $\sum_{0\le k\le\alpha n}\binom nk\le2^{nh(\alpha)}$, and that $\binom nk\ge\frac1{n+1}2^{nh(k/n)}$ for $0\le k\le n$. So the number of
+binary words of length $n$ with $\alpha n$ ones is $2^{nh(\alpha)+o(n)}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:ballsbins}
+Throw $n$ balls independently and uniformly into $n$ bins. (a) Show that a given bin receives at least $k$ balls with
+probability at most $\binom nkn^{-k}\le\frac1{k!}\le(\frac ek)^k$. (b) Deduce that, for $n\ge3$, the fullest bin has fewer than
+$k_n=\lceil3\ln n/\ln\ln n\rceil$ balls with probability at least $1-\frac1n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:bloom}
+A \emph{Bloom filter} stores a set of $n$ keys in an array of $m$ bits, initially $0$: each key sets to $1$ the bits at $k$
+positions chosen by hash functions, modelled as independent and uniform. A key is reported present if its $k$ bits
+are all $1$. (a) Show that a given bit is still $0$ after the $n$ insertions with probability $(1-\frac1m)^{kn}\le e^{-kn/m}$. (b) Assume that,
+given the filter, a key not in the set has its $k$ positions independent and uniform, and that the fraction of zero bits is
+close to its mean $e^{-kn/m}$. Its probability of being reported present (a \emph{false positive}) is then about
+$(1-e^{-kn/m})^k$. Show that, for fixed $m/n$, this is smallest for $k=\frac mn\ln2$, where it equals $2^{-k}\approx0.6185^{m/n}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:median}
+\emph{The median trick.} A randomised algorithm returns, with probability at least $\frac34$, a number within $\varepsilon$ of an unknown
+$\theta$. Run it $2k+1$ times independently and output the median of the answers. Show that the median is within $\varepsilon$ of $\theta$ with
+probability at least $1-e^{-(2k+1)/8}$. How many runs give a failure probability below $10^{-6}$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:mcmillan}
+A code is \emph{uniquely decodable} if any finite concatenation of codewords determines the sequence of symbols. (a) Show
+that a prefix code is uniquely decodable, and that $\{0,01\}$ is uniquely decodable but not prefix. (b) Prove McMillan's
+theorem: a uniquely decodable code for a finite alphabet satisfies Kraft's inequality, so Theorem~\ref{thm:sourcecoding}(a) holds for
+it. (Expand $(\sum_x2^{-\ell(x)})^N$.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:subadd}
+For random variables $X$, $Y$ with finitely many values, show that $H(X,Y)\le H(X)+H(Y)$, with equality iff $X$ and $Y$ are
+independent. Interpret: describing a pair costs at most the cost of describing each.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:longestrun}
+Let $L_n$ be the length of the longest run of heads among the first $n$ tosses of a fair coin. Show that $\frac{L_n}{\log_2n}\to1$
+almost surely. (For the lower bound, cut the first $n$ tosses into blocks of length $r=\lceil(1-\varepsilon)\log_2n\rceil$.)
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:capset}
+\emph{The cap set theorem.} Let $A\subset\mathbb F_3^n$ contain no three distinct points $x,y,z$ with $x+y+z=0$. We prove
+$|A|\le3\cdot2.756^n$, following Ellenberg--Gijswijt and Tao.
+
+For a finite set $A$ and a field $F$, a function $T:A^3\to F$ is a \emph{slice} if it has one of the forms $f(x)g(y,z)$,
+$f(y)g(x,z)$, $f(z)g(x,y)$. The \emph{slice rank} of $T$ is the least number of slices whose sum is $T$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that every subspace of $F^A$ of dimension $m$ contains a vector with at least $m$ non-zero coordinates.
+\item Let $T(x,y,z)=\sum_{a\in A}c_a\,[x=y=z=a]$ with every $c_a\ne0$. Show that the slice rank of $T$ is $|A|$.
+\item Show that for $x,y,z\in A$, $x+y+z=0$ if and only if $x=y=z$. Deduce that $T(x,y,z)=[x+y+z=0]$ has slice rank $|A|$.
+\item Write $[x+y+z=0]=\prod_{i=1}^n\bigl(1-(x_i+y_i+z_i)^2\bigr)$ in $\mathbb F_3$, and deduce that the slice rank is at most $3M_n$,
+where $M_n$ is the number of $\alpha\in\{0,1,2\}^n$ with $\alpha_1+\dots+\alpha_n\le\frac{2n}3$.
+\item Show that $M_n\le\theta^n$ with $\theta=\min_{0<t\le1}\frac{1+t+t^2}{t^{2/3}}$, compute $\theta=2.7551\ldots$, and
+conclude.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:kac}
+\emph{Lacunary sums look Gaussian.} Let $t$ be uniform on $[0,2\pi]$ and, for $N\ge1$,
+\[
+S_N=\sum_{k=1}^N\cos(2^kt),\qquad T_N=\sum_{k=1}^N\cos(kt).
+\]
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathbb E[S_N]=\mathbb E[T_N]=0$ and $\mathbb E[S_N^2]=\mathbb E[T_N^2]=\frac N2$.
+\item Show that for $N\ge2$,
+\[
+\mathbb E[S_N^4]=\frac34N^2+\frac98N-3,
+\]
+so that $\mathbb E[S_N^4]/\mathbb E[S_N^2]^2\to3$, the fourth moment of a standard Gaussian.
+\item Show that $\mathbb E[T_N^4]\sim\frac{N^3}3$, so that $\mathbb E[T_N^4]/\mathbb E[T_N^2]^2\to\infty$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:bonami}
+\emph{The Bonami lemma.} Let $f:\{-1,1\}^n\to\R$ be a multilinear polynomial of degree at most $d$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathbb E[f^4]\le9^d\,\mathbb E[f^2]^2$.
+\item Deduce that if $f\ne0$, then $P\bigl(|f(x)|\ge\frac12\|f\|_2\bigr)\ge\frac9{16}\,9^{-d}$, where $\|f\|_2=\mathbb E[f^2]^{1/2}$.
+\item Show that $9$ cannot be replaced by any constant $C<3$: for every $d$ and every $C<3$ there is $f$ of degree $d$ with
+$\mathbb E[f^4]>C^d\,\mathbb E[f^2]^2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:kacring}
+\emph{Kac's ring.} Label the sites of a circle by $\Z/n\Z$, and the edge from $j$ to $j+1$ by $j$. Each edge is marked independently with
+probability $\mu\in\left]0,1\right[$; put $\varepsilon_j=-1$ if edge $j$ is marked and $\varepsilon_j=1$ otherwise, and let $M$ be the number of marked edges. Each site carries a
+ball of colour $c_i=\pm1$ ($+1$ for black). At each tick every ball moves from its site $j$ to $j+1$, and changes colour if edge $j$ is
+marked. Let $\Delta_t$ be the sum of the colours (the number of black balls minus the number of white ones) after $t$ ticks.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the dynamics can be run backwards, that $\Delta_n=(-1)^M\Delta_0$, and that after $2n$ ticks every ball is back on its site with
+its initial colour.
+\item Show that the ball that starts at $i$ has colour $c_i\varepsilon_i\varepsilon_{i+1}\cdots\varepsilon_{i+t-1}$ after $t$ ticks, and that $\mathbb E[\Delta_t]=(1-2\mu)^t\Delta_0$ for $0\le t\le n$.
+\item Show that $\operatorname{Var}(\Delta_t)\le n(2t-1)$ for $1\le t\le\frac{n+1}2$. Deduce that, for fixed $t$ and initial proportion $\beta$ of black balls, the
+proportion of black balls at time $t$ tends in probability to $\frac12+(1-2\mu)^t(\beta-\frac12)$ as $n\to\infty$.
+\item Starting with all balls black, the proportion of black balls is close to $\frac12$ after a few dozen ticks, yet it is $0$ or $1$ at
+tick $n$, and $1$ at tick $2n$. Explain why there is no contradiction, and answer the questions of the think box.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:nbonacci}
+\emph{Fibonacci with $n$ terms.} For $n\ge2$ let $P_n(x)=x^n-x^{n-1}-\dots-x-1$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P_n$ has exactly one positive root $r_n$, that $1<r_n<2$, and that $r_n<r_{n+1}$. What is $r_2$?
+\item Show that $r_n=2-2^{-n}-n\,2^{-2n-1}+O(n^22^{-3n})$. (Use $(x-1)P_n(x)=x^{n+1}-2x^n+1$.)
+\item The number of coin-toss sequences of length $\ell$ without $n$ consecutive heads satisfies $a_\ell=a_{\ell-1}+\dots+a_{\ell-n}$. Explain why it grows like
+$r_n^\ell$, and why $r_n$ is so close to $2$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:sharp}
+(a) Two values. (b) Three values, symmetric around $0$.
+\end{hint}
+\begin{hint}{ex:lipschitz}
+$|B_nf(x)-f(x)|\le L\,\mathbb E|\frac{S_n}n-x|$, and use Cauchy--Schwarz.
+\end{hint}
+\begin{hint}{ex:pinsker}
+Fix $p$ and study $\varphi(a)=I_p(a)-2(a-p)^2$: compute $\varphi(p)$, $\varphi'(p)$ and $\varphi''$.
+\end{hint}
+\begin{hint}{ex:entropybinom}
+Upper bound: $1\ge P(S\le\alpha n)$ for $S$ binomial$(n,\alpha)$, and $\alpha^k(1-\alpha)^{n-k}\ge\alpha^{\alpha n}(1-\alpha)^{(1-\alpha)n}$ for $k\le\alpha n$. Lower bound: look at the
+proof of Theorem~\ref{thm:cramer}.
+\end{hint}
+\begin{hint}{ex:ballsbins}
+(a) Union bound over the sets of $k$ balls. Compare $k!$ with $k^ke^{-k}$ using the exponential series. (b) Show that $(\frac ek)^k\le n^{-2}$
+for $k=k_n$, and use a union bound over the bins.
+\end{hint}
+\begin{hint}{ex:bloom}
+(b) Write $\rho=e^{-kn/m}$, so $k=-\frac mn\ln\rho$, and minimise $\ln\bigl((1-\rho)^k\bigr)=-\frac mn\ln\rho\ln(1-\rho)$ over $\rho\in]0,1[$.
+\end{hint}
+\begin{hint}{ex:median}
+If the median is bad, at least $k+1$ runs are bad. Use Hoeffding.
+\end{hint}
+\begin{hint}{ex:mcmillan}
+(b) Each term of the expansion corresponds to a word of $N$ symbols; group them by the length of their encoding.
+\end{hint}
+\begin{hint}{ex:subadd}
+$H(X)+H(Y)-H(X,Y)$ is a relative entropy.
+\end{hint}
+\begin{hint}{ex:longestrun}
+Upper bound: Proposition~\ref{prop:runs}. Lower bound: at least $\lfloor n/r\rfloor$ disjoint blocks, each all heads with probability $2^{-r}$; bound the
+probability that none is, and use Borel--Cantelli (a).
+\end{hint}
+
+\begin{hint}{pb:capset}
+(b) Contract $T$ against a function $h(z)$ that is orthogonal to the $f$'s of the third kind of slices and has large support.
+(d) In each monomial one of the three variables has degree at most $\frac{2n}3$.
+\end{hint}
+
+\begin{hint}{pb:kac}
+(a) Products of cosines are sums of cosines. (b) $\mathbb E[S_N^4]$ is $\frac1{16}$ of the number of $(k_1,\dots,k_4,\varepsilon_1,\dots,\varepsilon_4)$ with
+$\sum\varepsilon_i2^{k_i}=0$. By uniqueness of binary expansions, such a relation either cancels in pairs or reads $2^{m+2}=2^{m+1}+2^m+2^m$.
+(c) The same count for $\sum\varepsilon_ik_i=0$ is a volume.
+\end{hint}
+
+\begin{hint}{pb:bonami}
+(a) Induction on $n$: $f=x_ng+h$ with $g$, $h$ not involving $x_n$, $\deg g\le d-1$. Expand the fourth power and use Cauchy--Schwarz on the
+middle term. (b) Paley--Zygmund: Cauchy--Schwarz on $\mathbb E[f^21_{f^2\ge s/4}]$. (c) Products of normalised sums over disjoint blocks.
+\end{hint}
+
+\begin{hint}{pb:kacring}
+(b) The edges $i,\dots,i+t-1$ are distinct when $t\le n$. (c) Two balls whose windows of edges are disjoint have independent colours. (d) For which
+$t$ does (c) say something?
+\end{hint}
+
+\begin{hint}{pb:nbonacci}
+(a) $P_{n+1}(x)=xP_n(x)-1$. (b) With $x=2-\varepsilon$, the equation becomes $\varepsilon=(2-\varepsilon)^{-n}$. Get $\varepsilon\le(2-\varepsilon_2)^{-n}$ with $\varepsilon_2=2-r_2$, then iterate.
+(c) The characteristic polynomial of the recurrence is $P_n$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:sharp}
+\idea Markov's proof loses only where $X\ne a\mathbf 1_{X\ge a}$, so put all the mass at $0$ and $a$.
+\writeup (a) Let $P(X=a)=t$ and $P(X=0)=1-t$ with $0<t<1$. Then $\mathbb E[X]=at$ and $P(X\ge a)=t=\frac{\mathbb EX}a$. (b) Apply (a) to $X^2$: let
+$P(X=\pm a)=\frac{\sigma^2}{2a^2}$ each and $P(X=0)=1-\frac{\sigma^2}{a^2}$. Then $\mathbb EX=0$, $\operatorname{Var}X=\mathbb E[X^2]=\sigma^2$ and $P(|X|\ge a)=\frac{\sigma^2}{a^2}$.
+\end{solution}
+
+\begin{solution}{ex:lipschitz}
+\idea The error is controlled by the average distance between the frequency and $x$, which is about one standard
+deviation.
+\writeup $|B_nf(x)-f(x)|=\bigl|\mathbb E[f(\frac{S_n}n)-f(x)]\bigr|\le L\,\mathbb E|\frac{S_n}n-x|$. By Cauchy--Schwarz (Proposition~\ref{prop:cs}),
+$\mathbb E|\frac{S_n}n-x|\le\bigl(\mathbb E[(\frac{S_n}n-x)^2]\bigr)^{1/2}=\sqrt{\frac{x(1-x)}n}\le\frac1{2\sqrt n}$. For $f(x)=|x-\frac12|$ ($L=1$) at $x=\frac12$ the error is $\mathbb E|\frac{S_n}n-\frac12|$,
+which is of order $\frac1{\sqrt n}$ by the central limit theorem of Chapter~6, so the rate cannot be improved in general.
+\end{solution}
+
+\begin{solution}{ex:pinsker}
+\idea Both sides vanish to second order at $a=p$, and the second derivative of $I_p$ is at least $4$.
+\writeup Let $\varphi(a)=I_p(a)-2(a-p)^2$ on $]0,1[$. Then $\varphi(p)=0$, $\varphi'(a)=\ln\frac ap-\ln\frac{1-a}{1-p}-4(a-p)$, so $\varphi'(p)=0$, and
+$\varphi''(a)=\frac1a+\frac1{1-a}-4=\frac1{a(1-a)}-4\ge0$ since $a(1-a)\le\frac14$. So $\varphi$ is convex with a critical point at $p$, hence $\varphi\ge\varphi(p)=0$
+(Volume~0, Proposition~4.1(b)); by continuity this extends to $a\in\{0,1\}$. Hence $e^{-nI_p(a)}\le e^{-2n(a-p)^2}$, and the latter is also Hoeffding's
+bound with $t=n(a-p)$. The exponents are close when $\varphi''$ is close to $0$ between $p$ and $a$, that is, when $a$ and $p$ are both near $\frac12$:
+for $p=\frac12$, $a=0.6$ they are $0.0201$ and $0.0200$, while for $p=0.1$, $a=0.2$ they are $0.044$ and $0.020$ (Figure~\ref{fig:chernoff}).
+\end{solution}
+
+\begin{solution}{ex:entropybinom}
+\idea A binomial$(n,\alpha)$ law gives each word with $k$ ones the same weight, and the weights add up to at most $1$.
+\writeup Let $S$ be binomial$(n,\alpha)$. For $k\le\alpha n$, since $\frac\alpha{1-\alpha}\le1$, $\alpha^k(1-\alpha)^{n-k}=(1-\alpha)^n(\frac\alpha{1-\alpha})^k\ge(1-\alpha)^n(\frac\alpha{1-\alpha})^{\alpha n}=2^{-nh(\alpha)}$. So
+\[
+\begin{aligned}1\ge P(S\le\alpha n)&=\sum_{k\le\alpha n}\binom nk\alpha^k(1-\alpha)^{n-k}\eqbr\ge2^{-nh(\alpha)}\sum_{k\le\alpha n}\binom nk.\end{aligned}
+\]
+For the lower bound, with $\beta=\frac kn$, the proof of Theorem~\ref{thm:cramer} showed that $\binom nk\beta^k(1-\beta)^{n-k}\ge\frac1{n+1}$ (the largest of
+$n+1$ probabilities adding up to $1$), and $\beta^k(1-\beta)^{n-k}=2^{-nh(\beta)}$. (For $k\in\{0,n\}$, both sides are trivial.)
+\end{solution}
+
+\begin{solution}{ex:ballsbins}
+\idea A bin is full only if some set of $k$ balls all land in it; Stirling-type bounds on $k!$ do the rest.
+\writeup (a) If bin $1$ receives at least $k$ balls, some set of $k$ balls all land in it. There are $\binom nk$ such sets, each landing
+entirely in bin $1$ with probability $n^{-k}$; the union bound gives $\binom nkn^{-k}\le\frac{n^k}{k!}n^{-k}=\frac1{k!}$. Finally $e^k=\sum_j\frac{k^j}{j!}\ge\frac{k^k}{k!}$, so
+$\frac1{k!}\le(\frac ek)^k$.
+(b) Let $L=\ln n$ and $k=k_n\ge\frac{3L}{\ln L}$. Then $\ln k\ge\ln3+\ln L-\ln\ln L$, and since $k(\ln k-1)$ increases with $k$ (for $k\ge1$),
+\[
+\begin{aligned}k(\ln k-1)&\ge\frac{3L}{\ln L}\bigl(\ln L-\ln\ln L+\ln3-1\bigr)\eqbr=3L\Bigl(1-\frac{\ln\ln L+1-\ln3}{\ln L}\Bigr).\end{aligned}
+\]
+With $u=\ln L>0$ (that is, $n\ge3$), the fraction is $\psi(u)=\frac{\ln u+1-\ln3}u$, and $\psi'(u)=\frac{\ln3-\ln u}{u^2}$, so its maximum is $\psi(3)=\frac13$. Hence
+$k(\ln k-1)\ge2L$, i.e.\ $(\frac ek)^k\le n^{-2}$. By the union bound over the $n$ bins, some bin has at least $k_n$ balls with
+probability at most $n\cdot n^{-2}=\frac1n$. (A matching lower bound of order $\frac{\ln n}{\ln\ln n}$ also holds, see Gonnet (1981); numerical evaluation shows the slow growth.)
+\end{solution}
+
+\begin{solution}{ex:bloom}
+\idea Each of the $kn$ hash values misses a given bit with probability $1-\frac1m$; then optimise a function of one
+variable after the right change of variable.
+\writeup (a) The bit stays $0$ iff all $kn$ independent uniform positions avoid it: probability $(1-\frac1m)^{kn}\le e^{-kn/m}$ by $1-u\le e^{-u}$.
+(b) If a fraction $\rho$ of the bits are $0$, each of the $k$ independent positions of a new key hits a $1$ with probability $1-\rho$, so
+the false positive probability is $(1-\rho)^k$. With $\rho=e^{-kn/m}$, $k=-\frac mn\ln\rho$ and
+\[
+\ln\bigl((1-\rho)^k\bigr)=-\frac mn\ln\rho\,\ln(1-\rho).
+\]
+We must maximise $g(\rho)=\ln\rho\,\ln(1-\rho)>0$ on $]0,1[$. Its derivative is
+\[
+\begin{aligned}g'(\rho)&=\frac{\ln(1-\rho)}\rho-\frac{\ln\rho}{1-\rho}\eqbr=-\frac{\varphi(\rho)}{\rho(1-\rho)},\end{aligned}
+\]
+where $\varphi(\rho)=\rho\ln\rho-(1-\rho)\ln(1-\rho)$.
+Now $\varphi(1-\rho)=-\varphi(\rho)$, $\varphi(\frac12)=0$, $\varphi(\rho)\to0$ as $\rho\to0$, and $\varphi'(\rho)=\ln\bigl(\rho(1-\rho)\bigr)+2$ increases on $]0,\frac12]$. So $\varphi'$ changes sign
+at most once on $]0,\frac12]$, from negative to positive: $\varphi$ first decreases, then increases up to $\varphi(\frac12)=0$. Starting from the limit $0$
+and ending at $0$, it is negative on $]0,\frac12[$, and by antisymmetry positive on $]\frac12,1[$. So $g'>0$ before $\frac12$ and $g'<0$ after:
+the optimum is $\rho=\frac12$. Half the bits are $0$, $k=\frac mn\ln2$, and the
+false positive rate is $2^{-k}=(2^{-\ln2})^{m/n}\approx0.6185^{m/n}$. With $10$ bits per key, $k\approx7$ and about $0.8\%$ false positives.
+\end{solution}
+
+\begin{solution}{ex:median}
+\idea The median is wrong only if at least half the runs are wrong, which is a large deviation for a sum of
+independent indicators of mean at most $\frac14$.
+\writeup Let $Z_i$ be the indicator that run $i$ is bad (outside $[\theta-\varepsilon,\theta+\varepsilon]$), so $P(Z_i=1)\le\frac14$, and $Z=\sum Z_i$. If at most $k$
+runs are bad, at least $k+1$ of the $2k+1$ answers lie in $[\theta-\varepsilon,\theta+\varepsilon]$, and so does the median (the $(k+1)$-th smallest
+answer has at most $k$ answers below it, so it cannot lie below the interval, and symmetrically). So a bad median
+forces $Z\ge k+1$, and $\mathbb EZ\le\frac{2k+1}4$, so $Z-\mathbb EZ\ge k+1-\frac{2k+1}4\ge\frac{2k+1}4$. Hoeffding with $n=2k+1$ and $t=\frac n4$ gives
+$P(\text{bad median})\le e^{-2(n/4)^2/n}=e^{-n/8}$. For $10^{-6}$ we need $n\ge8\ln10^6\approx110.5$, so $111$ runs: the cost of a reliable
+answer is only logarithmic in the confidence.
+\end{solution}
+
+\begin{solution}{ex:mcmillan}
+\idea If a code is uniquely decodable, there are at most $2^L$ words of $N$ symbols whose encoding has length $L$; raising
+Kraft's sum to a large power turns this count into the inequality.
+\writeup (a) Decode a prefix code left to right: the first codeword is the unique codeword that is a prefix of the
+string, remove it and repeat. The code $\{0,01\}$ is not prefix, but it is uniquely decodable: every $1$ is preceded by a $0$
+that belongs to it, so reading right to left decodes. (b) Let $K=\sum_x2^{-\ell(x)}$ and $\ell_{\max}=\max\ell$. Then
+\[
+K^N=\sum_{x_1,\dots,x_N}2^{-(\ell(x_1)+\dots+\ell(x_N))}=\sum_{L=1}^{N\ell_{\max}}a_L2^{-L},
+\]
+where $a_L$ is the number of words $x_1\cdots x_N$ whose encoding has length $L$. These encodings are distinct binary strings of length
+$L$ by unique decodability, so $a_L\le2^L$ and $K^N\le N\ell_{\max}$. If $K>1$, $K^N$ grows exponentially, a contradiction for large $N$. So
+$K\le1$, and the proof of Theorem~\ref{thm:sourcecoding}(a) only used Kraft's inequality.
+\end{solution}
+
+\begin{solution}{ex:subadd}
+\idea The defect of additivity compares the joint law with the product of its marginals.
+\writeup Let $r(x,y)=P(X=x,Y=y)$, $p$ and $q$ the marginal laws. On the set where $r>0$ (where also $p,q>0$),
+$\log_2\frac1{p(x)}+\log_2\frac1{q(y)}-\log_2\frac1{r(x,y)}=\log_2\frac{r(x,y)}{p(x)q(y)}$. Multiply by $r(x,y)$ and sum; since $\sum_yr(x,y)=p(x)$ and $\sum_xr(x,y)=q(y)$,
+\[
+H(X)+H(Y)-H(X,Y)=D(r\,\|\,p\otimes q)\ge0,
+\]
+where $p\otimes q(x,y)=p(x)q(y)$. By Gibbs, equality holds iff $r=p\otimes q$, i.e.\ iff $X$ and $Y$ are independent. This difference is the
+\emph{mutual information} of $X$ and $Y$: the number of bits that one variable tells about the other.
+\end{solution}
+
+\begin{solution}{ex:longestrun}
+\idea The longest run up to $n$ is at least the run at a single place and at most the longest of the runs starting
+before $n$; Borel--Cantelli handles both sides, the lower one with disjoint blocks.
+\writeup \emph{Upper bound.} $L_n\le\max_{m\le n}\ell_m$. By Proposition~\ref{prop:runs}, almost surely there is $m_0$ (random) with $\ell_m\le(1+\varepsilon)\log_2m$
+for $m\ge m_0$. So for $n\ge m_0$, $L_n\le\max\bigl(\max_{m<m_0}\ell_m,(1+\varepsilon)\log_2n\bigr)$, and the first term is a finite random number (each $\ell_m$ is
+finite almost surely, since $P(\ell_m\ge k)=2^{-k}\to0$). Hence $\limsup\frac{L_n}{\log_2n}\le1+\varepsilon$.
+\emph{Lower bound.} Let $r=r_n=\lceil(1-\varepsilon)\log_2n\rceil$. The first $n$ tosses contain $\lfloor n/r\rfloor$ disjoint blocks of length $r$, and $L_n<r$ forces every
+block to contain a tail. By independence of the blocks,
+\[
+\begin{aligned}P(L_n<r)&\le(1-2^{-r})^{\lfloor n/r\rfloor}\eqbr\le\exp\Bigl(-2^{-r}\Bigl(\frac nr-1\Bigr)\Bigr).\end{aligned}
+\]
+Now $2^{-r}\ge\frac12n^{-(1-\varepsilon)}$, so the exponent is at least $\frac{n^\varepsilon}{2r}-1$, with $r\le\log_2n+1$, and $\exp\bigl(-\frac{n^\varepsilon}{2(\log_2n+1)}\bigr)$ is summable (it is
+eventually below $n^{-2}$). By Borel--Cantelli (a), almost surely $L_n\ge r_n\ge(1-\varepsilon)\log_2n$ for all large $n$. Intersecting over
+$\varepsilon=\frac1k$ gives $\frac{L_n}{\log_2n}\to1$ almost surely.
+\end{solution}
+
+\begin{solution}{pb:capset}
+\idea A diagonal tensor with $|A|$ non-zero entries has slice rank $|A|$, just as a diagonal matrix has rank $|A|$. A cap makes
+$[x+y+z=0]$ diagonal on $A^3$. But the same function is a polynomial of degree $2n$, and in every monomial one variable has degree
+at most $\frac{2n}3$: that writes it with few slices.
+
+\writeup (a) Let $W$ have dimension $m$, and let $h\in W$ have the largest support $S$. If $|S|<m$, the subspace of $W$ of vectors
+vanishing on $S$ is cut out by $|S|$ linear conditions, so it has dimension at least $m-|S|>0$ and contains some $w\ne0$. Since $w$
+vanishes on $S$ and $h$ vanishes outside $S$, the support of $h+w$ is $S\cup\operatorname{supp}w\supsetneq S$, a contradiction.
+
+(b) $T$ is the sum of the $|A|$ slices $c_a[x=a]\cdot[y=z=a]$, so its slice rank is at most $|A|$. Suppose
+\[
+T=\sum_{i=1}^{r_1}f_i(x)g_i(y,z)+\sum_{i=1}^{r_2}f'_i(y)g'_i(x,z)+\sum_{i=1}^{r_3}f''_i(z)g''_i(x,y).
+\]
+The functions $h:A\to F$ with $\sum_zf''_i(z)h(z)=0$ for all $i$ form a subspace of dimension at least $|A|-r_3$; by (a) one of
+them has at least $|A|-r_3$ non-zero values. Multiply by $h(z)$ and sum over $z$. The left side becomes the diagonal matrix
+$(x,y)\mapsto c_xh(x)[x=y]$, of rank at least $|A|-r_3$. The third sum disappears, and the first two become
+$\sum_if_i(x)\tilde g_i(y)+\sum_i\tilde g'_i(x)f'_i(y)$, of rank at most $r_1+r_2$. So $r_1+r_2+r_3\ge|A|$.
+
+(c) If $x+y+z=0$ and $x=y$, then $z=-2x=x$. If $x,y,z$ are pairwise distinct the cap condition forbids $x+y+z=0$. And if exactly
+two coincide, say $x=y\ne z$, the first remark shows $x+y+z\ne0$. So on $A^3$, $[x+y+z=0]=[x=y=z]$, which is the $T$ of (b) with
+$c_a=1$ (here $F=\mathbb F_3$).
+
+(d) For $t\in\mathbb F_3$, $1-t^2$ is $1$ if $t=0$ and $0$ otherwise. Expanding the product gives a combination of monomials
+$x^\alpha y^\beta z^\gamma$ with $\alpha,\beta,\gamma\in\{0,1,2\}^n$ and $|\alpha|+|\beta|+|\gamma|\le2n$, where
+$|\alpha|=\sum\alpha_i$. In each monomial, one of $|\alpha|,|\beta|,|\gamma|$ is at most $\frac{2n}3$. Gather the monomials with
+$|\alpha|\le\frac{2n}3$ by the value of $\alpha$: they form $\sum_\alpha x^\alpha G_\alpha(y,z)$, at most $M_n$ slices. Then those
+remaining with $|\beta|\le\frac{2n}3$, then the rest, with $|\gamma|\le\frac{2n}3$. So the slice rank is at most $3M_n$, and by (c),
+$|A|\le3M_n$.
+
+(e) For $0<t\le1$, each $\alpha$ with $|\alpha|\le\frac{2n}3$ satisfies $t^{|\alpha|-2n/3}\ge1$, so
+\[
+M_n\le\sum_{\alpha\in\{0,1,2\}^n}t^{|\alpha|-2n/3}=\Bigl(\frac{1+t+t^2}{t^{2/3}}\Bigr)^n.
+\]
+The logarithmic derivative of $\frac{1+t+t^2}{t^{2/3}}$ vanishes when $\frac{1+2t}{1+t+t^2}=\frac2{3t}$, that is $4t^2+t-2=0$,
+$t=\frac{\sqrt{33}-1}8=0.5931$, where the value is $\theta=2.7551$. So $|A|\le3\theta^n<3\cdot2.756^n$.
+
+\tools Volume~0, Chapter~7 (rank, dimension); Volume~3, Chapter~4 (the exponential moment trick of Chernoff in (e)).
+\leads The bound $\theta$ is optimal for this method, and the true growth rate is unknown: the best constructions give caps of size
+about $2.22^n$ (Edel 2004; in 2023 a computer search guided by a language model, FunSearch, found a cap of $512$ points in $\mathbb F_3^8$).
+The known maximum caps for $n=1,\dots,6$ are $2,4,9,20,45,112$, against $3M_n=3,9,30,45,153,504$. The slice rank method has since
+proved the sunflower-free conjecture of Erdős and Szemerédi and bounded many other configurations.
+\end{solution}
+
+\begin{solution}{pb:kac}
+\idea Moments of trigonometric sums count solutions of linear equations in the frequencies. With frequencies $2^k$, binary
+expansions are unique and almost every solution cancels in pairs, exactly as for independent variables; that is why lacunary sums
+behave like sums of independent terms. With frequencies $1,2,\dots,N$ there are far too many additive coincidences.
+
+\writeup (a) Since $\cos A\cos B=\frac12(\cos(A-B)+\cos(A+B))$ and $\mathbb E[\cos mt]$ is $1$ for $m=0$ and $0$ for every other integer $m$, we get
+$\mathbb E[\cos(at)\cos(bt)]=\frac12\cdot1_{a=b}$ for positive integers $a$, $b$. So both means vanish and both second moments are $\frac N2$.
+
+(b) Expanding $\cos A_i=\frac12(e^{iA_i}+e^{-iA_i})$,
+\[
+\mathbb E\prod_{i=1}^4\cos(n_it)=\frac1{16}\#\Bigl\{\varepsilon\in\{\pm1\}^4:\sum_i\varepsilon_in_i=0\Bigr\},
+\]
+so $\mathbb E[S_N^4]=\frac M{16}$, where $M$ counts the $(k,\varepsilon)\in\{1,\dots,N\}^4\times\{\pm1\}^4$ with $\sum\varepsilon_i2^{k_i}=0$. In such a relation the terms with sign
+$+$ and those with sign $-$ have equal sums; neither group is empty.
+
+\emph{Two against two}, $2^a+2^b=2^c+2^d$. If $a\ne b$ the left side has exactly two binary digits $1$, at $a$ and $b$; the right side
+then cannot be $2^{c+1}$, so $c\ne d$ and $\{c,d\}=\{a,b\}$. If $a=b$ the left side is $2^{a+1}$, which forces $c=d=a$. Either way the terms
+cancel in pairs.
+
+\emph{One against three}, $2^a=2^b+2^c+2^d$ with $b\le c\le d$. If $b,c,d$ are distinct the right side has three digits $1$; if they are
+equal it is $3\cdot2^b$; if $b<c=d$ it is $2^b+2^{c+1}$ with two digits. So $b=c<d$, and $2^{b+1}+2^d$ is a power of $2$ only if $d=b+1$: the
+relation is $2^{m+2}=2^{m+1}+2^m+2^m$, with $1\le m\le N-2$.
+
+Counting. Pairings: choose one of the $3$ ways of splitting the four positions into two pairs, an exponent for each pair ($N^2$
+ways) and the sign of the first element of each pair ($4$ ways): $12N^2$. A tuple is counted more than once only if it fits two
+splittings, which happens exactly when the four exponents are equal (two signs $+$, two signs $-$: $6N$ tuples, each fitting $2$
+splittings); so there are $12N^2-6N$ pairing tuples. The other relations: $N-2$ values of $m$, $\frac{4!}{2!}=12$ arrangements of the exponents
+$m+2,m+1,m,m$, and $2$ sign choices: $24(N-2)$ tuples, none of which cancels in pairs. So
+\[
+M=12N^2-6N+24(N-2)=12N^2+18N-48,\qquad\mathbb E[S_N^4]=\frac34N^2+\frac98N-3,
+\]
+and $\mathbb E[S_N^4]/\mathbb E[S_N^2]^2=3+\frac9{2N}-\frac{12}{N^2}\to3$.
+
+(c) Now count the solutions of $\sum\varepsilon_ik_i=0$ with $1\le k_i\le N$. For each of the $6$ sign patterns with two $+$ and two $-$, the number of
+solutions of $k_1+k_2=k_3+k_4$ is $\sum_{s=2}^{2N}r(s)^2$ with $r(s)=\min(s-1,2N+1-s)$, that is $2\sum_{j=1}^{N-1}j^2+N^2=\frac{2N^3+N}3$. For each of the $8$
+patterns with three signs alike, the number of solutions of $k_1+k_2+k_3=k_4$ is $\sum_{s\le N}\binom{s-1}2=\binom N3$. So
+\[
+\mathbb E[T_N^4]=\frac1{16}\Bigl(2(2N^3+N)+8\binom N3\Bigr)\sim\frac1{16}\Bigl(4+\frac43\Bigr)N^3=\frac{N^3}3,
+\]
+and $\mathbb E[T_N^4]/\mathbb E[T_N^2]^2\sim\frac{4N}3\to\infty$.
+
+\tools{Volume~0, Chapter~2 (Euler's formula); Volume~1, Chapter~1 (binary expansions); Volume~3, Chapter~4 (moments).}
+\leads The same counting shows that every moment of $S_N/\sqrt{N/2}$ tends to the corresponding Gaussian moment, and the method of
+moments then gives Kac's theorem (1946): $S_N/\sqrt{N/2}$ converges in law to $N(0,1)$, although the terms $\cos(2^kt)$ are not
+independent. Salem and Zygmund (1947) extended it to $\sum\cos(n_kt)$ whenever $n_{k+1}/n_k\ge q>1$. Lacunarity alone is not enough for
+other functions: Erdős and Fortet observed that for $f(t)=\cos t+\cos2t$ and $n_k=2^k-1$, the limit law of $\sum_kf(n_kt)/\sqrt N$ is a mixture of
+Gaussians, because of the relations $2n_k+1=n_{k+1}$.
+\end{solution}
+
+\begin{solution}{pb:bonami}
+\idea Peel off one variable: $f=x_ng+h$. The fourth moment splits into three terms, and the cross term is controlled by Cauchy--Schwarz
+and induction; the constants are exactly what makes $9^d$ reproduce itself.
+
+\writeup (a) Induction on $n$; for $n=0$, $f$ is a constant $c$ and $\mathbb E[f^4]=c^4=\mathbb E[f^2]^2$. Write $f=x_ng+h$ with $g$, $h$ multilinear in $x_1,\dots,x_{n-1}$,
+$\deg g\le d-1$ and $\deg h\le d$ (if $d=0$, $g=0$). As $x_n$ is independent of $g$, $h$ with $\mathbb E[x_n]=\mathbb E[x_n^3]=0$ and $x_n^2=1$,
+\[
+\mathbb E[f^2]=\mathbb E[g^2]+\mathbb E[h^2],\qquad\mathbb E[f^4]=\mathbb E[h^4]+6\,\mathbb E[g^2h^2]+\mathbb E[g^4].
+\]
+By induction $\mathbb E[h^4]\le9^d\mathbb E[h^2]^2$ and $\mathbb E[g^4]\le9^{d-1}\mathbb E[g^2]^2$, and by Cauchy--Schwarz $\mathbb E[g^2h^2]\le\sqrt{\mathbb E[g^4]\mathbb E[h^4]}\le3^{2d-1}\mathbb E[g^2]\mathbb E[h^2]$.
+Since $6\cdot3^{2d-1}=2\cdot9^d$,
+\[
+\mathbb E[f^4]\le9^d\bigl(\mathbb E[h^2]^2+2\mathbb E[g^2]\mathbb E[h^2]+\mathbb E[g^2]^2\bigr)=9^d\,\mathbb E[f^2]^2.
+\]
+
+(b) Let $s=\mathbb E[f^2]>0$ and $q=P(f^2\ge\frac s4)$. Then $s\le\frac s4+\mathbb E[f^21_{f^2\ge s/4}]\le\frac s4+\sqrt{\mathbb E[f^4]}\sqrt q$, so
+$q\ge\frac{9s^2}{16\,\mathbb E[f^4]}\ge\frac9{16}9^{-d}$ by (a).
+
+(c) Split $md$ variables into $d$ blocks $B_1,\dots,B_d$ of size $m$, let $L_j=m^{-1/2}\sum_{i\in B_j}x_i$, and $f=L_1\cdots L_d$, multilinear of degree $d$. The
+$L_j$ are independent, $\mathbb E[L_j^2]=1$ and $\mathbb E[L_j^4]=\frac1{m^2}\bigl(m+3m(m-1)\bigr)=3-\frac2m$. So $\mathbb E[f^2]=1$ and $\mathbb E[f^4]=(3-\frac2m)^d>C^d$ once $\frac2m<3-C$.
+
+\tools{Volume~3, Chapter~4 (Cauchy--Schwarz for expectations, moments of sums of signs).}
+\leads Bonami proved this in 1970, in a study of Fourier coefficients on groups; Beckner and Gross (1975) found the sharp form,
+\emph{hypercontractivity}: $\|T_\rho f\|_4\le\|f\|_2$ for $\rho\le\frac1{\sqrt3}$, where $T_\rho$ multiplies $\hat f(S)$ by $\rho^{|S|}$. Applied to the derivatives
+$D_if$, it is the key to the theorem of Kahn, Kalai and Linial quoted in Problem~\ref{pb:influence}, to Friedgut's theorem that functions
+of small total influence depend essentially on few variables, and to much of the analysis of Boolean functions in complexity
+theory. Part~(c) only shows that the base is at least $3$, but $9$ is in fact the right base: by the central limit theorem, polynomials on
+the cube approximate polynomials in Gaussian variables, and for the Hermite polynomials $H_d$ the $d$-th root of
+$\mathbb E[H_d^4]/\mathbb E[H_d^2]^2$ tends to $9$ (slowly: one finds numerically $7.8$ at $d=30$).
+\end{solution}
+
+\begin{solution}{pb:kacring}
+\idea Each ball's colour is a product of independent signs along the window of edges it has crossed. Products over overlapping windows
+are correlated, over disjoint windows independent, and there are only $O(t)$ overlapping windows per ball: the law of large numbers wins
+for every fixed $t$, while the recurrence at time $2n$ moves away as $n$ grows.
+
+\writeup (a) Backwards, every ball moves from $j+1$ to $j$ and changes colour if edge $j$ is marked; this undoes a tick. After $n$ ticks every ball has
+crossed each edge once, so it has changed colour $M$ times and $\Delta_n=(-1)^M\Delta_0$; after $2n$ ticks it is on its site again, having changed colour $2M$ times.
+
+(b) The ball starting at $i$ crosses edges $i,i+1,\dots,i+t-1$ during the first $t$ ticks, hence its colour. For $t\le n$ these edges are distinct, so
+$\mathbb E[\varepsilon_i\cdots\varepsilon_{i+t-1}]=(1-2\mu)^t$, and $\mathbb E[\Delta_t]=(1-2\mu)^t\sum_ic_i$.
+
+(c) Let $W_i=\{i,\dots,i+t-1\}$ and $\Pi_i=\prod_{j\in W_i}\varepsilon_j$. If $W_i\cap W_{i'}=\emptyset$, $\Pi_i$ and $\Pi_{i'}$ are independent and uncorrelated. For $t\le\frac{n+1}2$, $W_{i'}$ meets $W_i$ only when
+the cyclic distance from $i$ to $i'$ is less than $t$, which happens for $2t-1$ values of $i'$. As $|\Pi_i|=1$, every covariance is at most $1$ in absolute value. So
+$\operatorname{Var}(\Delta_t)=\sum_{i,i'}c_ic_{i'}\operatorname{Cov}(\Pi_i,\Pi_{i'})\le n(2t-1)$. By Chebyshev, $\frac{\Delta_t}n-(1-2\mu)^t\frac{\Delta_0}n\to0$ in probability; with $\frac{\Delta_0}n=2\beta-1$, the proportion of black
+balls $\frac12(1+\frac{\Delta_t}n)$ tends to $\frac12+(1-2\mu)^t(\beta-\frac12)$.
+
+(d) Part (c) is a statement for each fixed $t$ as $n\to\infty$ (and remains useful for $t$ small compared with $n$), while the returns of (a) happen at
+times $n$ and $2n$, which run away to infinity. The variance bound $n(2t-1)$ is useless for $t$ of order $n$; at $t=n$ all windows are the whole
+circle, all products equal $(-1)^M$, and the fluctuations are as large as possible. This is Boltzmann's answer to Zermelo: the
+recurrence time of a gas is astronomically long. Loschmidt's reversal is answered by (c) as well: running the ring backwards from a
+typical state at time $t$ is the dynamics of the ring with mirrored marks, but from a very special state, the only one that leads
+back to all black. In the think box: with $3$ marked edges out of $6$, after $6$ ticks every ball has changed colour $3$ times, so all balls are
+white; after $12$ ticks they are all black again. With $1000$ sites and $\mu=\frac1{10}$, after $10$ ticks the proportion of black balls is close to
+$\frac12(1+0.8^{10})\approx0.554$, and after $1000$ ticks it is exactly $0$ or $1$, according to the parity of $M$.
+
+\tools{Volume~3, Chapter~4 (variance, Chebyshev's inequality); Volume~2, Chapter~1 (the rotation group of the ring).}
+\leads Gottwald and Oliver's article \emph{Boltzmann's dilemma} (2009) works out the Kac ring in detail and uses it as an introduction to
+statistical mechanics. Kac's own account is in his \emph{Probability and Related Topics in Physical Sciences} (1959).
+\end{solution}
+
+\begin{solution}{pb:nbonacci}
+\idea Multiplying by $x-1$ makes the equation $x^n(2-x)=1$: the root is $2$ minus something exponentially small, and the equation for that small thing can be iterated.
+
+\writeup (a) $P_n(x)=x^n\bigl(1-\sum_{j=1}^nx^{-j}\bigr)$, and the bracket increases strictly on $\left]0,\infty\right[$ from $-\infty$ to $1$: exactly one positive root $r_n$. $P_n(1)=1-n<0$ and $P_n(2)=2^n-(2^n-1)=1>0$, so
+$1<r_n<2$. Since $P_{n+1}(x)=xP_n(x)-1$, $P_{n+1}(r_n)=-1<0$, so $r_{n+1}>r_n$. And $r_2=\frac{1+\sqrt5}2$.
+
+(b) Since $(x-1)P_n(x)=x^{n+1}-2x^n+1$, $r=r_n$ satisfies $r^n(2-r)=1$. Let $\varepsilon=2-r\in\left]0,2-r_2\right]$. Then $\varepsilon=(2-\varepsilon)^{-n}\le r_2^{-n}$, so $n\varepsilon\to0$. Now
+$(2-\varepsilon)^{-n}=2^{-n}\exp\bigl(-n\ln(1-\frac\varepsilon2)\bigr)=2^{-n}\bigl(1+\frac{n\varepsilon}2+O(n^2\varepsilon^2)\bigr)$. This first gives $\varepsilon=2^{-n}(1+O(n\varepsilon))=O(2^{-n})$, then
+$\varepsilon=2^{-n}+n2^{-n-1}\varepsilon+O(n^22^{-3n})=2^{-n}+n2^{-2n-1}+O(n^22^{-3n})$.
+
+(c) A sequence without $n$ consecutive heads ends with a tail preceded by $0,\dots,n-1$ heads, or is shorter than $n$; this gives the recurrence, whose characteristic polynomial is
+$P_n$. With $r=r_n$, $\sum_{i=1}^nr^{-i}=1$. If $a_j\ge r^{j-n}$ for $n$ consecutive $j$, then $a_\ell\ge\sum_{i=1}^nr^{\ell-i-n}=r^{\ell-n}$; the initial values $a_j=2^j$ ($j<n$) satisfy this, so by
+induction $a_\ell\ge r^{\ell-n}$ for all $\ell$. In the same way $a_\ell\le c\,r^\ell$ with $c=\max_{j<n}2^jr^{-j}$. So $a_\ell^{1/\ell}\to r_n$. And $r_n$ is close to $2$ because forbidding a run of $n$
+heads costs little: among the $2^\ell$ sequences, a fraction about $e^{-\ell2^{-n-1}}$ avoids such runs, consistent with $(\frac{r_n}2)^\ell\approx(1-2^{-n-1})^\ell$.
+
+\tools{Volume~0, Chapter~5 (sequences, recurrences); Volume~3, Chapter~4 (runs of heads).}
+\leads For $n=3$, $r_3=1.8393$ is the tribonacci constant. The estimate $(1-2^{-n-1})^\ell$ is the heart of the Erd\H os--R\'enyi law of the longest run (Volume~3): runs of length $n$ appear once
+$\ell2^{-n}$ is large, that is $n\approx\log_2\ell$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item J.~Bernoulli, \emph{Ars Conjectandi}, Basel, 1713; English translation by E.~D.~Sylla, \emph{The Art of
+Conjecturing}, Johns Hopkins, 2006. Part~IV contains the first law of large numbers.
+\item S.~Bernstein, \emph{D\'emonstration du th\'eor\`eme de Weierstrass fond\'ee sur le calcul des probabilit\'es},
+Comm.\ Soc.\ Math.\ Kharkov 13 (1912), 1--2.
+\item H.~Chernoff, \emph{A measure of asymptotic efficiency for tests of a hypothesis based on the sum of
+observations}, Annals of Mathematical Statistics 23 (1952), 493--507; W.~Hoeffding, \emph{Probability inequalities for
+sums of bounded random variables}, Journal of the American Statistical Association 58 (1963), 13--30.
+\item C.~E.~Shannon, \emph{A mathematical theory of communication}, Bell System Technical Journal 27 (1948), 379--423
+and 623--656. The birth of information theory, still very readable.
+\item T.~M.~Cover and J.~A.~Thomas, \emph{Elements of Information Theory}, 2nd ed., Wiley, 2006, Chapters~2, 3 and 5:
+entropy, the AEP, Kraft, McMillan and Huffman.
+\item M.~Mitzenmacher and E.~Upfal, \emph{Probability and Computing}, 2nd ed., Cambridge University Press, 2017,
+Chapters~3--5: Chernoff bounds, balls into bins and Bloom filters.
+\item P.~Erd\H{o}s and A.~R\'enyi, \emph{On a new law of large numbers}, Journal d'Analyse Math\'ematique 23 (1970),
+103--111. Longest runs and their generalisations; M.~F.~Schilling, \emph{The longest run of heads}, College
+Mathematics Journal 21 (1990), 196--207, is a delightful account.
+\item G.~H.~Gonnet, \emph{Expected length of the longest probe sequence in hash code searching}, Journal of the ACM
+28 (1981), 289--304. The maximum load of balls in bins, to first order.
+\item B.~H.~Bloom, \emph{Space/time trade-offs in hash coding with allowable errors}, Communications of the ACM 13
+(1970), 422--426.
+\end{itemize}

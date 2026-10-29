@@ -1,0 +1,748 @@
+\chapter{Inequalities, Convexity and Estimates}\label{ch:inequalities}
+
+\begin{center}\itshape
+The number $e$ appears in an inequality about averages of an arbitrary positive sequence.\\
+Why there, and why is it the best possible constant?
+\end{center}
+
+An equality tells you what something is; an inequality tells you what it cannot be, and that is often more useful. Most of analysis runs on
+inequalities, and most of the useful ones come from a single idea: a convex function lies below its chords. From that one picture we will derive the
+inequality between arithmetic and geometric means, Jensen's, Cauchy--Schwarz's and H\"older's inequalities, and finally an inequality found by Torsten Carleman in
+1923, in which the number $e$ appears, uninvited, as the best possible constant.
+
+The names record a long argument about credit. Cauchy wrote the sum form in 1821, in a note at the end of his \emph{Cours d'analyse}. Bunyakovsky, who had been Cauchy's student, published the integral form in 1859. Schwarz found it again in 1885, with the quadratic-polynomial proof given below. In Russia the inequality is Bunyakovsky's. Elsewhere Schwarz is named, twenty-five years later. Jensen was not a professor. He ran the technical department of the Copenhagen Telephone Company from 1890 to 1924 and did mathematics in the evenings. His 1906 paper made convexity a subject. The proofs below follow those ideas.
+
+One picture organises the chapter. A convex graph lies under its chords and, when it is smooth, above its tangents. The two-term AM--GM is the square $(a-b)^2\ge0$. Jensen's inequality is the chord. Cauchy--Schwarz and Hölder are the tangent, or a square, written for vectors. Carleman's inequality is the place where these estimates produce the constant $e$, and where equality cases show that no smaller constant works. Figure~\ref{fig:convex} is the picture to keep in mind. The semicircle in Figure~\ref{fig:semicircle} is the same idea for two numbers.
+
+\portraits{cauchy}{Augustin-Louis Cauchy (1789--1857). Illustration from \emph{Das neunzehnte Jahrhundert in Bildnissen}, Berlin, 1901. Public domain, via Wikimedia Commons.}{minkowski}{Hermann Minkowski (1864--1909). Photograph from \emph{Raum und Zeit}, 1909. Public domain, via Wikimedia Commons.}
+
+\section{Inequalities from scratch}
+
+\begin{reminder}[the rules of the game]
+Inequalities between real numbers can be added freely: $a\le b$ and $c\le d$ give $a+c\le b+d$. They can be multiplied by a positive number,
+and multiplying by a negative number reverses them. Two inequalities between \emph{positive} numbers can be multiplied: $0<a\le b$ and $0<c\le d$
+give $ac\le bd$. Squaring preserves an inequality between non-negative numbers and so does taking square roots; taking reciprocals reverses an
+inequality between positive numbers. Subtraction needs opposite bounds: $a\le b$ and $c\le d$ give
+$a-d\le b-c$, not in general $a-c\le b-d$. Dividing two bounds needs its own sign analysis. The basic way to prove $A\le B$ is to write $B-A$ as something
+visibly non-negative: a square, a sum of squares, a product of positive numbers.
+\end{reminder}
+
+The single most useful fact is that a square is never negative. From $(a-b)^2\ge0$,
+\[
+2ab\le a^2+b^2\qquad\text{for all real }a,b,
+\]
+with equality only for $a=b$. Apply it to $\sqrt a,\sqrt b$ with $a,b\ge0$: $\sqrt{ab}\le\frac{a+b}2$, the inequality between the geometric and
+arithmetic means of two numbers, which Figure~\ref{fig:semicircle} shows as a picture. Add the three instances for the pairs of $a,b,c$:
+$ab+bc+ca\le a^2+b^2+c^2$. We will see the same trick, dressed up, many times.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-semicircle}
+\caption{Three means in one semicircle of diameter $a+b$. The radius is $\frac{a+b}2$. The triangle on the diameter with its third vertex on the circle has a right angle there (Thales), so the altitude $h$ from that vertex splits it into two similar triangles and $\frac ah=\frac hb$: the altitude is $\sqrt{ab}$. Projecting the altitude onto the radius joining the centre to the right-angle vertex gives a segment of length $\frac{2ab}{a+b}$, the harmonic mean, by the same similar-triangles argument. The altitude is at most the radius, and the projection is at most the altitude: $\frac{2ab}{a+b}\le\sqrt{ab}\le\frac{a+b}2$. Here $a=1$, $b=4$: the three means are $1.6$, $2$ and $2.5$.}
+\label{fig:semicircle}
+\end{figure}
+
+\begin{examplex}
+For $x>0$, $x+\frac1x\ge2$: multiply by $x>0$, and the claim becomes $x^2-2x+1=(x-1)^2\ge0$. More generally, for positive $a,b,c$,
+\[
+(a+b+c)\Bigl(\frac1a+\frac1b+\frac1c\Bigr)\ge9,
+\]
+because expanding gives $3+\bigl(\frac ab+\frac ba\bigr)+\bigl(\frac bc+\frac cb\bigr)+\bigl(\frac ca+\frac ac\bigr)\ge3+2+2+2$. Equality only when $a=b=c$.
+\end{examplex}
+
+The real triangle and reverse triangle inequalities were established in
+Proposition~\ref{prop:real-triangle}:
+$|a+b|\le|a|+|b|$ and $\bigl||a|-|b|\bigr|\le|a-b|$.
+They control errors by separating a difficult difference into simpler pieces.
+
+Bernoulli's inequality, proved by induction in
+Proposition~\ref{prop:bernoulli}, says that $(1+x)^n\ge1+nx$ for $x\ge-1$
+and integers $n\ge0$.
+
+Jacob Bernoulli proved it in 1689, in the same treatise that pleaded for the Basel problem; it is the simplest way to see that $(1+x)^n$ grows at least
+linearly, and Exercise~\ref{ex:bernoulli} squeezes more out of it.
+
+\section{Convexity and Jensen}
+
+A function $f:I\to\R$ on an interval is \emph{convex} if $f(\lambda x+(1-\lambda)y)\le\lambda f(x)+(1-\lambda)f(y)$ for $x,y\in I$, $\lambda\in[0,1]$:
+chords lie above the graph. \emph{Concave} means $-f$ convex.
+
+\begin{proposition}[convexity tests]\label{prop:convex}
+Let $f:I\to\R$ be twice differentiable.
+\begin{enumerate}[label=(\alph*)]
+\item $f$ is convex if and only if $f''\ge0$ on $I$.
+\item If $f$ is convex, it lies above its tangents: $f(x)\ge f(m)+f'(m)(x-m)$ for $x,m\in I$. If $f''>0$, the inequality is strict for $x\ne m$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Suppose $f''\ge0$, so $f'$ is non-decreasing. Let $x<y$, $\lambda\in]0,1[$ and $z=\lambda x+(1-\lambda)y$. By the mean value theorem, $\frac{f(z)-f(x)}{z-x}=f'(\xi_1)\le f'(\xi_2)=\frac{f(y)-f(z)}{y-z}$ with $\xi_1<z<\xi_2$. Since $z-x=(1-\lambda)(y-x)$ and $y-z=\lambda(y-x)$, this reads $\lambda(f(z)-f(x))\le(1-\lambda)(f(y)-f(z))$, i.e.\ $f(z)\le\lambda f(x)+(1-\lambda)f(y)$.
+Conversely, if $f$ is convex and $x<z<y$, the same computation read backwards gives $\frac{f(z)-f(x)}{z-x}\le\frac{f(y)-f(z)}{y-z}$; letting $z\to x$ and then $z\to y$ gives $f'(x)\le\frac{f(y)-f(x)}{y-x}\le f'(y)$. So $f'$ is non-decreasing and $f''\ge0$.
+
+(b) Let $g(x)=f(x)-f(m)-f'(m)(x-m)$. Then $g(m)=0$ and $g'=f'-f'(m)$, which is $\le0$ before $m$ and $\ge0$ after since $f'$ is non-decreasing (by (a)). So $g\ge g(m)=0$. If $f''>0$, $f'$ is increasing, $g$ is strictly monotone on each side of $m$, and $g(x)>0$ for $x\ne m$.
+\end{proof}
+
+\begin{examplex}
+Test (a) gives a stock of convex functions at once: $x^2$, $e^x$, $x^p$ on $]0,\infty[$ for $p\ge1$ or $p\le0$, $-\ln x$, $x\ln x$ on
+$]0,\infty[$ (second derivative $\frac1x$), $\frac1x$ on $]0,\infty[$. Concave: $\ln x$, $\sqrt x$, $x^p$ for $0<p<1$, $\sin$ on $[0,\pi]$. A convex
+function need not be differentiable, $|x|$ for instance; the chord definition still applies, and every inequality below that uses only the chord
+definition holds for it.
+\end{examplex}
+
+\begin{think}
+Draw a convex function and pick three points $x_1,x_2,x_3$ on the axis. Where is the point $\left(\frac{x_1+x_2+x_3}3,\frac{f(x_1)+f(x_2)+f(x_3)}3\right)$: above or below the graph? (It is the centre of gravity of the triangle with vertices on the graph.)
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-jensen}
+\caption{Jensen's inequality for three points. The triangle with vertices $(x_i,f(x_i))$ lies above the convex graph, since each of its sides is a chord. Its centre of gravity has abscissa $\bar x=\frac{x_1+x_2+x_3}3$ and ordinate $\frac{f(x_1)+f(x_2)+f(x_3)}3$; it lies inside the triangle, hence above the point $(\bar x,f(\bar x))$ of the graph.}
+\label{fig:jensen}
+\end{figure}
+
+\begin{theorem}[Jensen]\label{thm:jensen}
+Let $f$ be convex on $I$, $x_1,\dots,x_n\in I$ and $\lambda_1,\dots,\lambda_n\ge0$ with $\sum\lambda_i=1$. Then
+\[
+f\left(\sum_{i=1}^n\lambda_ix_i\right)\le\sum_{i=1}^n\lambda_if(x_i).
+\]
+\end{theorem}
+\begin{proof}
+Induction on $n$, the case $n=1$ being trivial and $n=2$ the definition. If $\lambda_n=1$ there is nothing to prove. Otherwise put
+$\mu=1-\lambda_n$ and $y=\sum_{i<n}\frac{\lambda_i}\mu x_i$, which lies in $I$ (between the least and largest $x_i$). Then $f\left(\mu y+\lambda_nx_n\right)\le\mu f(y)+\lambda_nf(x_n)$, and
+$f(y)\le\sum_{i<n}\frac{\lambda_i}\mu f(x_i)$ by the induction hypothesis.
+\end{proof}
+
+When $f''>0$ and the weights are all positive, equality in Jensen forces all the $x_i$ to be equal: with the tangent at $m=\sum\lambda_ix_i$,
+Proposition~\ref{prop:convex}(b) gives $f(x_i)\ge f(m)+f'(m)(x_i-m)$ with equality only for $x_i=m$, and summing with the weights gives Jensen
+again, with equality only if every $x_i$ equals $m$. This second proof, by the tangent rather than by chords, is the one we now use for the most
+famous inequality of all.
+
+\begin{theorem}[AM--GM]\label{thm:amgm}
+For $x_1,\dots,x_n>0$ and weights $\lambda_i>0$ with $\sum\lambda_i=1$,
+\[
+\begin{gathered}\prod_{i=1}^nx_i^{\lambda_i}\le\sum_{i=1}^n\lambda_ix_i,\qq\text{in particular}\qq\sqrt[n]{x_1\cdots x_n}\le\frac{x_1+\dots+x_n}n,\end{gathered}
+\]
+with equality if and only if all the $x_i$ are equal.
+\end{theorem}
+\begin{proof}
+Let $m=\sum\lambda_ix_i$. The function $\ln$ has $\ln''=-\frac1{x^2}<0$, so by Proposition~\ref{prop:convex}(b) applied to $-\ln$, $\ln x\le\ln m+\frac{x-m}m$, with equality only at $x=m$. Apply this to each $x_i$, multiply by $\lambda_i$ and add: $\sum\lambda_i\ln x_i\le\ln m+\frac{\sum\lambda_ix_i-m}m=\ln m$. Exponentiate. Equality forces equality in each line, i.e.\ $x_i=m$ for all $i$.
+\end{proof}
+
+The unweighted form also holds for $x_i\ge0$: if one input is zero, the
+geometric mean is zero and the arithmetic mean is nonnegative; otherwise the
+theorem applies. This extension will matter in Carleman's inequality.
+
+Figure~\ref{fig:convex} shows both proofs at a glance: a chord lies above a convex graph, and the concave graph of $\ln$ lies below its tangent at the mean.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-convex}
+\caption{Left: for a convex $f$, the chord from $(x,f(x))$ to $(y,f(y))$ lies above the graph, and the graph lies above each tangent. Right: the proof of AM--GM. The points $(x_i,\ln x_i)$ lie below the tangent to $\ln$ at the mean $m$ (green circles). Averaging, the mean of the $\ln x_i$ is below the mean of the tangent values, which is $\ln m$. Here $x=(0.5,1.2,3.1)$: the arithmetic mean is $1.6$ and the geometric mean $1.23$.}
+\label{fig:convex}
+\end{figure}
+
+Cauchy proved AM--GM in 1821 by a proof so odd that it deserves to be known: an induction that goes \emph{forward} from $n$ to $2n$ and
+\emph{backward} from $n$ to $n-1$. Exercise~\ref{ex:cauchyinduction} reconstructs it.
+
+\begin{examplex}[the biggest box]
+A rectangular box has total edge length $12L$ (four edges of each length $x,y,z$, so $x+y+z=3L$). AM--GM gives $xyz\le\bigl(\frac{x+y+z}3\bigr)^3=L^3$,
+with equality for the cube. Nothing about derivatives, no Lagrange multipliers: the inequality already contains the optimisation. Most ``find the
+maximum'' problems with a product and a sum go this way, and Exercise~\ref{ex:heron} does one with a triangle.
+\end{examplex}
+
+\section{Cauchy--Schwarz and H\"older}
+
+\begin{think}
+In the plane, $|\vec a\cdot\vec b|=\|\vec a\|\,\|\vec b\|\,|\cos\theta|\le\|\vec a\|\,\|\vec b\|$. In $\R^n$ there is no angle yet. Can you prove the inequality without one, using only the fact that a sum of squares is non-negative?
+\end{think}
+
+\begin{theorem}[Cauchy--Schwarz]\label{thm:cs}
+For real numbers $a_i,b_i$,
+\[
+\left(\sum_{i=1}^na_ib_i\right)^2\le\left(\sum_{i=1}^na_i^2\right)\left(\sum_{i=1}^nb_i^2\right),
+\]
+with equality if and only if the vectors $a$ and $b$ are linearly dependent (including either being zero).
+\end{theorem}
+\begin{proof}
+If $b=0$ both sides vanish. Otherwise the polynomial $t\mapsto\sum_i(a_i+tb_i)^2=\sum a_i^2+2t\sum a_ib_i+t^2\sum b_i^2$ is non-negative, so its discriminant is $\le0$, which is the inequality.
+Equality means a double root $t$, that is $a+tb=0$.
+\end{proof}
+
+The same proof works in any real inner product space: $\langle a,b\rangle^2\le\langle a,a\rangle\langle b,b\rangle$. For instance, for continuous $f,g$ on $[a,b]$ with $a<b$, $\left(\int fg\right)^2\le\int f^2\int g^2$, with equality iff $f,g$ are linearly dependent, including the case where either is zero. If $g\ne0$, equality makes the minimum of $\int(f+tg)^2$ zero, hence $f+tg=0$ everywhere by continuity.
+Exercise~\ref{ex:lagrangeid} gives a second proof, by an identity of Lagrange that says exactly how much is missing on the smaller side.
+
+A frequently used form (``Engel'' or ``Titu''): for $x_i\in\R$ and $y_i>0$,
+\[
+\sum_{i=1}^n\frac{x_i^2}{y_i}\ge\frac{\left(\sum x_i\right)^2}{\sum y_i},
+\]
+obtained from Cauchy--Schwarz with $a_i=x_i/\sqrt{y_i}$ and $b_i=\sqrt{y_i}$.
+
+\begin{examplex}
+How large can $x+2y+3z$ be when $x^2+y^2+z^2=1$? Cauchy--Schwarz with $(1,2,3)$: $(x+2y+3z)^2\le(1+4+9)(x^2+y^2+z^2)=14$, so at most $\sqrt{14}$,
+and equality when $(x,y,z)$ is proportional to $(1,2,3)$, that is, $(x,y,z)=\frac1{\sqrt{14}}(1,2,3)$. The inequality found the maximum and the
+maximiser in one line; in Chapter~\ref{ch:linear} the same statement reads ``the dot product is largest when the vectors are aligned''.
+\end{examplex}
+
+Cauchy--Schwarz is the case $p=q=2$ of H\"older's inequality, which Exercise~\ref{ex:holder} proves from a small lemma of William Henry Young,
+$ab\le\frac{a^p}p+\frac{b^q}q$ when $\frac1p+\frac1q=1$. The exercise proves it with AM--GM; Figure~\ref{fig:young} proves it with no words.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-young}
+\caption{Young's inequality as areas. The curve is $y=x^{p-1}$, which is the same as $x=y^{q-1}$ because $(p-1)(q-1)=1$. The area under it from $0$ to $a$ is $\int_0^ax^{p-1}dx=\frac{a^p}p$; the area to its left from $0$ to $b$ is $\int_0^by^{q-1}dy=\frac{b^q}q$. Together the two regions cover the rectangle of area $ab$, with something to spare unless $b=a^{p-1}$. Here $p=3$, $q=\frac32$.}
+\label{fig:young}
+\end{figure}
+
+\begin{think}
+You are paid for $a_1\le a_2\le a_3$ hours of work at three hourly rates $b_1\le b_2\le b_3$, and you choose which rate goes with which job. Which matching earns the most, and which the least? Can you prove it by swapping two jobs?
+\end{think}
+
+\begin{proposition}[rearrangement]\label{prop:rearr}
+If $a_1\le\dots\le a_n$ and $b_1\le\dots\le b_n$, then for every permutation $\sigma$,
+$\sum a_ib_{n+1-i}\le\sum a_ib_{\sigma(i)}\le\sum a_ib_i$: a sum of products is largest when both lists are sorted the same way.
+\end{proposition}
+\begin{proof}
+Upper bound, by induction on $n$ ($n=1$ is clear). Let $k$ be the position with $\sigma(k)=n$. If $k\ne n$, exchange the values of $\sigma$ at $k$ and $n$: the sum changes by
+$a_kb_{\sigma(n)}+a_nb_n-a_kb_n-a_nb_{\sigma(n)}=(a_n-a_k)(b_n-b_{\sigma(n)})\ge0$. The new permutation fixes $n$, and on $\{1,\dots,n-1\}$ it is a permutation, to which the induction hypothesis applies: $\sum_{i<n}a_ib_{\sigma'(i)}\le\sum_{i<n}a_ib_i$.
+Lower bound: apply the upper bound to the lists $a_i$ and $-b_{n+1-i}$, which are both sorted increasingly.
+\end{proof}
+
+\begin{examplex}
+Rearrangement proves AM--GM for three numbers in one line, a trick worth knowing. Let $x,y,z>0$ with $xyz=1$, and put $a=(x,y,z)$ sorted and
+$b=(\frac1x,\frac1y,\frac1z)$, which is sorted the opposite way. The reversed pairing gives $x\cdot\frac1x+y\cdot\frac1y+z\cdot\frac1z=3$, the smallest
+possible sum of products; any other pairing is at least $3$, for instance $\frac xy+\frac yz+\frac zx\ge3$. The additional condition $xyz=1$ was unnecessary for this cyclic-ratio inequality. Replacing $(x,y,z)$ by
+$(a^2b,b^2c,c^2a)$ gives $\frac{a^2}{bc}+\frac{b^2}{ca}+\frac{c^2}{ab}\ge3$. To obtain AM--GM itself, choose positive $x,y,z$ with $x/y=a/g$, $y/z=b/g$, $z/x=c/g$, where $g=(abc)^{1/3}$. Such a choice exists: take $z=1$, $y=b/g$, $x=ab/g^2$; the third ratio holds because $g^3=abc$. Then $(a+b+c)/g\ge3$. The substitution, rather than the slogan, is the proof.
+\end{examplex}
+
+\section{More means, more norms}
+
+The arithmetic, geometric and harmonic means are three members of one family.
+
+\begin{theorem}[power means]\label{thm:powermeans}
+Let $x_1,\dots,x_n>0$ and $\lambda_i>0$ with $\sum\lambda_i=1$. For real $p\ne0$ put
+\[
+M_p=\Bigl(\sum_{i=1}^n\lambda_ix_i^p\Bigr)^{1/p},\qquad M_0=\prod_{i=1}^nx_i^{\lambda_i}.
+\]
+Then $p\mapsto M_p$ is non-decreasing on $\R$, and strictly increasing unless all the $x_i$ are equal. Moreover $M_p\to M_0$ as $p\to0$,
+$M_p\to\max_ix_i$ as $p\to+\infty$ and $M_p\to\min_ix_i$ as $p\to-\infty$.
+\end{theorem}
+\begin{proof}
+\emph{Positive exponents.} Let $0<p<q$. The function $t\mapsto t^{q/p}$ is convex on $]0,\infty[$ since $q/p>1$, so Jensen applied to the points
+$x_i^p$ gives $\bigl(\sum\lambda_ix_i^p\bigr)^{q/p}\le\sum\lambda_i(x_i^p)^{q/p}=\sum\lambda_ix_i^q$, that is, $M_p^q\le M_q^q$ and $M_p\le M_q$.
+Equality in Jensen for a strictly convex function with positive weights forces all the $x_i^p$ equal.
+
+\emph{Across zero.} Let $q>0$. AM--GM applied to the numbers $x_i^q$ gives $\prod(x_i^q)^{\lambda_i}\le\sum\lambda_ix_i^q$, that is, $M_0^q\le M_q^q$:
+so $M_0\le M_q$, with equality only if all $x_i$ are equal. Negative exponents reduce to positive ones through $M_p(x)=1/M_{-p}(1/x)$, valid for all
+$p$ including $0$: if $p<q<0$ then $0<-q<-p$, so $M_{-q}(1/x)\le M_{-p}(1/x)$ and, taking reciprocals, $M_p(x)\le M_q(x)$; and $M_p(x)\le M_0(x)$ for
+$p<0$ follows from $M_0(1/x)\le M_{-p}(1/x)$.
+
+\emph{Limits.} Let $\bar x=\max x_i$, attained at $i_0$. For $p>0$, $\lambda_{i_0}\bar x^p\le\sum\lambda_ix_i^p\le\bar x^p$, so
+$\lambda_{i_0}^{1/p}\bar x\le M_p\le\bar x$ and $\lambda_{i_0}^{1/p}\to1$. The limit at $-\infty$ follows by the reciprocal trick. For $p\to0$, write
+$t_i=\ln x_i$ and $\varphi(p)=\ln\sum\lambda_ie^{pt_i}$, so that $\ln M_p=\varphi(p)/p$. Now $\varphi(0)=\ln1=0$ and $\varphi$ is differentiable with
+$\varphi'(0)=\sum\lambda_it_i$, so $\frac{\varphi(p)}p=\frac{\varphi(p)-\varphi(0)}{p-0}\to\varphi'(0)=\sum\lambda_i\ln x_i=\ln M_0$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-powermeans}
+\caption{The power means of $(1,2,4,8)$ with equal weights, as a function of $p$. The curve rises from $\min=1$ to $\max=8$ through the harmonic mean $H=M_{-1}$, the geometric mean $G=M_0$, the arithmetic mean $A=M_1$ and the quadratic mean $Q=M_2$. The chain $H\le G\le A\le Q$ is the part of the theorem that is used every day.}
+\label{fig:powermeans}
+\end{figure}
+
+\begin{proposition}[Chebyshev's sum inequality]\label{prop:chebsum}
+If $a_1\le\dots\le a_n$ and $b_1\le\dots\le b_n$, then
+\[
+\frac1n\sum_{i=1}^na_ib_i\ge\Bigl(\frac1n\sum_{i=1}^na_i\Bigr)\Bigl(\frac1n\sum_{i=1}^nb_i\Bigr),
+\]
+and the inequality is reversed if one list is increasing and the other decreasing.
+\end{proposition}
+\begin{proof}
+For every pair $i,j$, the numbers $a_i-a_j$ and $b_i-b_j$ have the same sign, so $(a_i-a_j)(b_i-b_j)\ge0$. Sum over all $i,j$:
+$\sum_{i,j}(a_ib_i-a_ib_j-a_jb_i+a_jb_j)=2n\sum_ia_ib_i-2\sum_ia_i\sum_jb_j\ge0$. Divide by $2n^2$. If the lists are sorted oppositely, every
+product $(a_i-a_j)(b_i-b_j)$ is $\le0$ and the inequality reverses.
+\end{proof}
+
+The mean of the products exceeds the product of the means when the lists are sorted the same way; Volume~3 will say ``two increasing functions of
+the same random variable are positively correlated'', and it is the same proof. Exercise~\ref{ex:chebsumapp} shows the proposition eating power means
+for breakfast.
+
+The last inequality of the chapter is the triangle inequality for the $p$-norms, $\|a\|_p=\bigl(\sum|a_i|^p\bigr)^{1/p}$; for $p=2$ it is the
+ordinary Euclidean distance of Chapter~\ref{ch:linear}, and Hermann Minkowski proved the general case in 1896.
+
+\begin{theorem}[Minkowski]\label{thm:minkowski}
+For $p\ge1$ and $a_i,b_i\ge0$,
+\[
+\Bigl(\sum_{i=1}^n(a_i+b_i)^p\Bigr)^{1/p}\le\Bigl(\sum_{i=1}^na_i^p\Bigr)^{1/p}+\Bigl(\sum_{i=1}^nb_i^p\Bigr)^{1/p}.
+\]
+\end{theorem}
+\begin{proof}
+For $p=1$ it is an equality. Let $p>1$, $q=\frac p{p-1}$ so that $\frac1p+\frac1q=1$, and $S=\sum(a_i+b_i)^p$; if $S=0$ there is nothing to prove. Write
+$(a_i+b_i)^p=a_i(a_i+b_i)^{p-1}+b_i(a_i+b_i)^{p-1}$ and apply H\"older's inequality (Exercise~\ref{ex:holder}, proved in the solutions) to each sum:
+\[
+S\le\Bigl(\sum a_i^p\Bigr)^{1/p}\Bigl(\sum(a_i+b_i)^{(p-1)q}\Bigr)^{1/q}+\Bigl(\sum b_i^p\Bigr)^{1/p}\Bigl(\sum(a_i+b_i)^{(p-1)q}\Bigr)^{1/q}.
+\]
+Since $(p-1)q=p$, both second factors equal $S^{1/q}$. Divide by $S^{1/q}>0$ and use $1-\frac1q=\frac1p$.
+\end{proof}
+
+For arbitrary real vectors $u,v$, apply the theorem to $|u_i|,|v_i|$ and use
+$|u_i+v_i|\le|u_i|+|v_i|$ term by term; this proves
+$\|u+v\|_p\le\|u\|_p+\|v\|_p$. With $p=2$ this is the statement that the straight line is the shortest path between two points of $\R^n$: $\|u+v\|\le\|u\|+\|v\|$. With $p\to\infty$
+the $p$-norm becomes $\max_i|a_i|$ (Theorem~\ref{thm:powermeans} in disguise), and the inequality becomes obvious. Volume~6 builds the spaces $L^p$
+on exactly these two theorems, H\"older and Minkowski.
+
+\section{Bridge: convexity selects the factorial interpolation}\label{sec:gamma-convexity}
+Chapter~\ref{ch:calculus} defined $\Gamma(x)=\int_0^\infty t^{x-1}e^{-t}\,\dd t$
+for $x>0$ and proved $\Gamma(x+1)=x\Gamma(x)$. Many functions satisfy that
+recurrence; an inequality supplies an additional distinguishing property.
+
+\begin{proposition}[log-convexity of Gamma]\label{prop:gamma-convexity}
+For $x,y>0$ and $0\le\lambda\le1$,
+\[
+\Gamma(\lambda x+(1-\lambda)y)
+\le\Gamma(x)^\lambda\Gamma(y)^{1-\lambda}.
+\]
+Equivalently, $\ln\Gamma$ is convex on $]0,\infty[$.
+\end{proposition}
+\begin{proof}
+The endpoint cases $\lambda=0,1$ are equalities. For $0<\lambda<1$ set
+$p=1/\lambda$ and $q=1/(1-\lambda)$.
+We first establish the needed integral H\"older inequality on $[\varepsilon,A]$.
+For continuous $f,g$ let $U=(\int|f|^p)^{1/p}$ and
+$V=(\int|g|^q)^{1/q}$. If one is zero, its continuous integrand is zero
+and the claim is immediate. Otherwise, Young's inequality from
+Exercise~\ref{ex:holder}, applied pointwise and integrated, gives
+\[
+\frac{\int|fg|}{UV}
+\le\frac1p\frac{\int|f|^p}{U^p}
++\frac1q\frac{\int|g|^q}{V^q}=1.
+\]
+Apply this with $f(t)=(t^{x-1}e^{-t})^\lambda$ and
+$g(t)=(t^{y-1}e^{-t})^{1-\lambda}$. Let $\varepsilon\to0^+$ and
+$A\to\infty$. All three integrals converge by Proposition~\ref{prop:gammafn},
+and their limits give the asserted inequality. Taking logarithms proves the
+equivalent convexity statement.
+\end{proof}
+
+\emph{How to find it.} An average in the argument becomes a product in the
+integrand: $t^{\lambda x+(1-\lambda)y-1}e^{-t}$ factors as the two functions
+above. H\"older is designed to separate such products. Bohr and Mollerup's
+uniqueness theorem, stated as an outlook in Chapter~\ref{ch:calculus}, explains
+why this convexity property is a natural condition on factorial interpolation.
+
+\section{Workshop: measure the slack}
+An inequality becomes more useful when we know where equality occurs, and more useful still when we know the \emph{cost} of moving away from equality. The question is not merely ``who wins?'' but ``by how much?''
+
+\begin{examplex}[the bill for imbalance]
+Two nonnegative side lengths $x,y$ have fixed sum $s$. Their rectangle has area
+\[
+xy=\frac{s^2}{4}-\frac{(x-y)^2}{4}.
+\]
+This is AM--GM with a receipt: the square is best, and an imbalance of $d$ costs exactly $d^2/4$ units of area. If $s=10$ and the area is at least $24$, then $(x-y)^2\le4$, so the sides differ by at most $2$. Near-optimal area forces near-equal sides. Check the units: areas on both sides are lengths squared.
+\end{examplex}
+
+\begin{figure}[ht]\centering\fig{review04-slack}
+\caption{For perimeter $20$, the area is $x(10-x)$ on $0\le x\le10$. The maximum $25$ occurs at $x=5$. The dashed horizontal line at $24$ meets the curve at $x=4$ and $x=6$; between them the area is at least $24$.}\end{figure}
+
+\subsection*{Optimisation without a differentiation subscription}
+\textbf{Mission.} For positive $x,y$, prove $(x+y)(1/x+1/y)\ge4$ and decide when the left side is at most $4+\eta$, where $\eta\ge0$.
+
+\textbf{Hint.} Subtract $4$, put everything over the positive denominator $xy$, and refuse to throw away the remainder.
+
+\textbf{Solution.} Expansion gives
+\[
+(x+y)(1/x+1/y)-4=\frac{(x-y)^2}{xy}\ge0.
+\]
+Equality means $x=y$. The strengthened statement is exact: the expression is at most $4+\eta$ if and only if $|x-y|\le\sqrt{\eta xy}$. This controls relative imbalance; it does not bound $|x-y|$ by a fixed length unless a scale is supplied.
+
+\begin{reminder}[the zero-vector trap]
+In Cauchy--Schwarz, equality means the two vectors are linearly dependent; this includes either vector being zero. If the second vector is known nonzero, write the first as a scalar multiple of it. For the maximum of $a\cdot b$ with $\|a\|=1$ and $b\ne0$, only the \emph{positive} multiple $a=b/\|b\|$ maximises: the negative multiple attains the minimum. Squaring an inequality can hide the distinction.
+\end{reminder}
+
+\section*{What this chapter establishes}
+An inequality is a proof that a quantity cannot cross a line, together with the case where it touches. Squares give the first estimates. Convexity turns those squares into a calculus: chords for averages, tangents for local comparisons. Equality cases are part of the theorem. They are how one knows a constant is sharp, as with the $e$ in Carleman's inequality.
+
+Volume~3 uses Jensen and Cauchy--Schwarz as soon as expectations appear. Volume~4 estimates series and integrals by the same tangents. Volume~5 and Volume~13 need those estimates on arithmetic functions. Volume~10 turns them into concentration. Volume~14 uses them to say what a typical integer sum can do.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:8abc}
+Show that $(a+b)(b+c)(c+a)\ge8abc$ for $a,b,c>0$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:sqrtk}
+Show that $\displaystyle\sum_{k=1}^n\sqrt k\le n\sqrt{\frac{n+1}2}$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:intcs}
+Let $f$ be continuous and positive on $[0,1]$. Show that $\displaystyle\int_0^1f\cdot\int_0^1\frac1f\ge1$. When is there equality?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:euler}
+Show that the sequence $\left(1+\frac1n\right)^n$ is strictly increasing.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:nesbitt}
+\emph{Nesbitt's inequality.} Show that $\dfrac a{b+c}+\dfrac b{c+a}+\dfrac c{a+b}\ge\dfrac32$ for $a,b,c>0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:triangle}
+Show that in every triangle with angles $A,B,C$, $\sin A+\sin B+\sin C\le\dfrac{3\sqrt3}2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:aabbcc}
+Show that $a^ab^bc^c\ge(abc)^{(a+b+c)/3}$ for $a,b,c>0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:holder}
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Young.} Let $p,q>1$ with $\frac1p+\frac1q=1$. Show that $ab\le\frac{a^p}p+\frac{b^q}q$ for $a,b\ge0$.
+\item \emph{H\"older.} Deduce that $\sum a_ib_i\le\left(\sum a_i^p\right)^{1/p}\left(\sum b_i^q\right)^{1/q}$ for $a_i,b_i\ge0$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:carleman}
+\emph{Carleman's inequality.} Let $(a_n)_{n\ge1}$ be non-negative with $\sum a_n<\infty$. Show that
+\[
+\sum_{n=1}^\infty\left(a_1a_2\cdots a_n\right)^{1/n}\le e\sum_{n=1}^\infty a_n.
+\]
+\end{exercise}
+
+\begin{beauty}
+The answer to the opening question is in Exercise~\ref{ex:carleman}: $e$ enters through $\left(1+\frac1k\right)^k<e$, the sequence of
+Exercise~\ref{ex:euler}. Numerical evaluation suggests that no smaller constant works, and the first challenge below proves it. In Volume~3, Jensen becomes
+$f(\mathbb E[X])\le\mathbb E[f(X)]$, and Cauchy--Schwarz bounds covariances; in Volume~6, H\"older is the key to $L^p$ spaces.
+\end{beauty}
+
+\subsection*{Further exercises}
+
+\begin{exercise}[$\star$]\label{ex:means3}
+For $a,b,c>0$ show directly, without Theorem~\ref{thm:powermeans}, that
+\[
+\frac3{\frac1a+\frac1b+\frac1c}\le\sqrt[3]{abc}\le\frac{a+b+c}3\le\sqrt{\frac{a^2+b^2+c^2}3}.
+\]
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:bernoulli}
+\begin{enumerate}[label=(\alph*)]
+\item Use Bernoulli's inequality to show that $\bigl(1+\frac1n\bigr)^n\ge2$ and $\bigl(1-\frac1{n^2}\bigr)^n\ge1-\frac1n$ for $n\ge1$.
+\item Show that $\sqrt[n]n\to1$. \emph{Hint: write $\sqrt[n]n=1+x_n$ and keep two terms of the binomial expansion of $(1+x_n)^n$.}
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:lagrangeid}
+\emph{Lagrange's identity.} Show that for real $a_i,b_i$,
+\[
+\Bigl(\sum_{i=1}^na_i^2\Bigr)\Bigl(\sum_{i=1}^nb_i^2\Bigr)-\Bigl(\sum_{i=1}^na_ib_i\Bigr)^2=\sum_{1\le i<j\le n}(a_ib_j-a_jb_i)^2,
+\]
+and deduce Cauchy--Schwarz with its equality case. What does the identity say for $n=2$ about complex numbers?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cauchyinduction}
+\emph{Cauchy's proof of AM--GM (1821).} Let $G_n\le A_n$ denote the inequality $\sqrt[n]{x_1\cdots x_n}\le\frac{x_1+\dots+x_n}n$ for positive numbers.
+\begin{enumerate}[label=(\alph*)]
+\item Prove $G_2\le A_2$, and show that $G_n\le A_n$ implies $G_{2n}\le A_{2n}$.
+\item Show that $G_n\le A_n$ implies $G_{n-1}\le A_{n-1}$, by applying it to $x_1,\dots,x_{n-1}$ and $x_n=\frac{x_1+\dots+x_{n-1}}{n-1}$.
+\item Conclude that $G_n\le A_n$ holds for every $n$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:heron}
+Heron's formula gives the area of a triangle with sides $a,b,c$ and half-perimeter $s=\frac{a+b+c}2$ as $\sqrt{s(s-a)(s-b)(s-c)}$. Show that among all
+triangles of perimeter $2s$, the equilateral one has the largest area, and compute that area.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:entropy}
+\emph{Bridge: Convexity and finite probability weights.}
+Let $p_1,\dots,p_n>0$ with $\sum p_i=1$. Show that
+\[
+H=\sum_{i=1}^np_i\ln\frac1{p_i}\le\ln n,
+\]
+with equality only for $p_i=\frac1n$. (In Volume~3, $H$ is the entropy of a probability distribution: the uniform one is the most unpredictable.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:chebsumapp}
+Use Chebyshev's sum inequality to show that for $a,b,c>0$,
+\[
+\frac{a^3+b^3+c^3}3\ge\frac{a^2+b^2+c^2}3\cdot\frac{a+b+c}3\ge\Bigl(\frac{a+b+c}3\Bigr)^3,
+\]
+and more generally that $M_{k+1}^{k+1}\ge M_k^kM_1$ for the power means with equal weights and integer $k\ge1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:schur}
+\emph{Schur's inequality.} Show that for $a,b,c\ge0$,
+\[
+a(a-b)(a-c)+b(b-a)(b-c)+c(c-a)(c-b)\ge0,
+\]
+with equality iff $a=b=c$ or two of them are equal and the third is $0$. Deduce that $a^3+b^3+c^3+3abc\ge a^2(b+c)+b^2(c+a)+c^2(a+b)$.
+\end{exercise}
+
+\begin{challenge}
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{The constant $e$ is best possible in Carleman's inequality.} Take $a_n=\frac1n$ for $n\le N$ and $a_n=0$ after, and compare both sides as $N\to\infty$. You will need Stirling's formula (Theorem~\ref{thm:stirlingC}) or the weaker asymptotic $\frac1n\ln(n!)=\ln n-1+o(1)$, obtained by integral comparison.
+\item \emph{Hardy's inequality.} For non-negative $a_n$ with $\sum a_n^2<\infty$ and $A_n=a_1+\dots+a_n$, show that $\sum_{n\ge1}\bigl(\frac{A_n}n\bigr)^2\le4\sum_{n\ge1}a_n^2$.
+\item \emph{The regular polygon wins.} Among all $n$-gons with $n\ge3$ distinct vertices on a given circle, listed in cyclic order, the regular one has the largest area.
+\end{enumerate}
+Notes at the end of the chapter.
+\end{challenge}
+
+\begin{exercise}[$\star\star$]\label{pb:stanley}
+\emph{Counting ones.}
+\begin{enumerate}[label=(\alph*)]
+\item (Stanley.) Show that the total number of parts equal to $1$, over all partitions of $n$, equals the total number of
+\emph{distinct} part sizes, over all partitions of $n$. Check it for $n=4$.
+\item (Elder.) More generally, for $k\ge1$, show that the total number of parts equal to $k$ over all partitions of $n$ equals the
+total number of part sizes that appear at least $k$ times, over all partitions of $n$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:8abc}
+Bound each factor $a+b$ below by a product.
+\end{hint}
+\begin{hint}{ex:sqrtk}
+You know $\sum(\sqrt k)^2$ exactly. Cauchy--Schwarz against the vector $(1,\dots,1)$.
+\end{hint}
+\begin{hint}{ex:intcs}
+Write $1=\sqrt f\cdot\frac1{\sqrt f}$ and integrate.
+\end{hint}
+\begin{hint}{ex:euler}
+AM--GM on $n+1$ well-chosen numbers: $n$ of them equal to $1+\frac1n$. What should the last one be so that the arithmetic mean is $1+\frac1{n+1}$?
+\end{hint}
+\begin{hint}{ex:nesbitt}
+With $S=a+b+c$, $\frac a{b+c}=\frac S{S-a}-1$. Then use the Engel form.
+\end{hint}
+\begin{hint}{ex:triangle}
+$A+B+C=\pi$ and $\sin$ is concave on $[0,\pi]$.
+\end{hint}
+\begin{hint}{ex:aabbcc}
+Take logarithms, and use $(x-y)(\ln x-\ln y)\ge0$ for each pair.
+\end{hint}
+\begin{hint}{ex:holder}
+(a) Weighted AM--GM with weights $\frac1p,\frac1q$. (b) Both sides are homogeneous: reduce to $\sum a_i^p=\sum b_i^q=1$.
+\end{hint}
+\begin{hint}{ex:carleman}
+With $c_k=\frac{(k+1)^k}{k^{k-1}}$, compute $c_1c_2\cdots c_n$ and apply AM--GM to $c_1a_1,\dots,c_na_n$. Then swap the order of summation.
+\end{hint}
+\begin{hint}{ex:means3}
+The middle inequality is AM--GM. For the left one, apply it to $\frac1a,\frac1b,\frac1c$. For the right one, square both sides and use $ab+bc+ca\le a^2+b^2+c^2$.
+\end{hint}
+\begin{hint}{ex:bernoulli}
+(a) $x=\frac1n$, then $x=-\frac1{n^2}$. (b) $n=(1+x_n)^n\ge1+\binom n2x_n^2$ with $x_n\ge0$.
+\end{hint}
+\begin{hint}{ex:lagrangeid}
+Expand $\sum_{i,j}a_i^2b_j^2-\sum_{i,j}a_ib_ia_jb_j$ and pair the terms $(i,j)$ and $(j,i)$. For $n=2$, write $a_1+ia_2$ and $b_1+ib_2$.
+\end{hint}
+\begin{hint}{ex:cauchyinduction}
+(a) Split $2n$ numbers into two groups of $n$, apply $G_n\le A_n$ to each, then $G_2\le A_2$ to the two means. (b) With the extra number equal to the mean $m$ of the others, the arithmetic mean of all $n$ is still $m$. (c) Every $n$ is at most a power of $2$.
+\end{hint}
+\begin{hint}{ex:heron}
+The three numbers $s-a,s-b,s-c$ are positive and have a fixed sum.
+\end{hint}
+\begin{hint}{ex:entropy}
+Jensen for the concave function $\ln$ with weights $p_i$ at the points $\frac1{p_i}$.
+\end{hint}
+\begin{hint}{ex:chebsumapp}
+Sort $a,b,c$; the lists $(a^2,b^2,c^2)$ and $(a,b,c)$ are sorted the same way. In general, apply the proposition to $(x_i^k)$ and $(x_i)$.
+\end{hint}
+\begin{hint}{ex:schur}
+By symmetry assume $a\ge b\ge c$. Group the first two terms: $(a-b)\bigl[a(a-c)-b(b-c)\bigr]$, and check the sign of each piece.
+\end{hint}
+
+\begin{hint}{pb:stanley}
+Count the partitions of $n$ that contain at least $j$ copies of the part $m$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:8abc}
+\idea The right side is a product, the left a product of sums: each sum $a+b$ should be bounded below by a product, and AM--GM for two numbers, $a+b\ge2\sqrt{ab}$, does exactly that. Check that the three bounds multiply to $8abc$.
+\writeup By AM--GM, $a+b\ge2\sqrt{ab}$, $b+c\ge2\sqrt{bc}$, $c+a\ge2\sqrt{ca}$. All are positive, so we may multiply: the product is at least $8\sqrt{a^2b^2c^2}=8abc$.
+\end{solution}
+
+\begin{solution}{ex:sqrtk}
+\idea We need an upper bound for a sum, in terms of something whose square we know: $\sum(\sqrt k)^2=\sum k$ is explicit. Cauchy--Schwarz against the constant vector $(1,\dots,1)$ bounds a sum by $\sqrt n$ times the root of the sum of squares.
+\writeup Cauchy--Schwarz with $a_k=1$, $b_k=\sqrt k$: $\left(\sum\sqrt k\right)^2\le n\sum k=\frac{n^2(n+1)}2$. Take square roots.
+\end{solution}
+
+\begin{solution}{ex:intcs}
+\idea A product of two integrals bounded below by a squared integral is Cauchy--Schwarz read backwards. Choose the two functions so that their product is $1$ and their squares are $f$ and $\frac1f$: they are $\sqrt f$ and $\frac1{\sqrt f}$.
+\writeup Cauchy--Schwarz for integrals with $\sqrt f$ and $1/\sqrt f$: $1=\left(\int\sqrt f\cdot\frac1{\sqrt f}\right)^2\le\int f\int\frac1f$.
+Equality holds if and only if $\sqrt f$ and $1/\sqrt f$ are proportional, $\sqrt f=\frac c{\sqrt f}$, that is, $f$ is constant.
+\end{solution}
+
+\begin{solution}{ex:euler}
+\idea We want
+\[
+\left(1+\frac1n\right)^n<\left(1+\frac1{n+1}\right)^{n+1},
+\]
+that is, a geometric mean of $n+1$ numbers below their arithmetic mean $1+\frac1{n+1}$. A product $\left(1+\frac1n\right)^n$ of $n$ factors becomes a product of $n+1$ factors by adding a factor $1$. Check the arithmetic mean: it is the right one.
+\writeup Apply AM--GM to the $n+1$ numbers $1,1+\frac1n,\dots,1+\frac1n$ ($n$ copies). Their mean is $\frac{1+(n+1)}{n+1}=1+\frac1{n+1}$, so
+\[
+\left(1+\frac1n\right)^{n/(n+1)}<1+\frac1{n+1},
+\]
+strictly since the numbers are not all equal. Raising to the power $n+1$ gives $\left(1+\frac1n\right)^n<\left(1+\frac1{n+1}\right)^{n+1}$.
+\end{solution}
+
+\begin{solution}{ex:nesbitt}
+\idea The denominators $b+c$ differ from term to term, which is awkward. Writing $b+c=S-a$ with $S=a+b+c$ gives $\frac a{S-a}=\frac S{S-a}-1$, so we need a lower bound for $\sum\frac1{S-a}$: a sum of reciprocals with known total denominator, the textbook case of the Engel form.
+\writeup Let $S=a+b+c$. Then $\frac a{b+c}=\frac S{S-a}-1$, so the left-hand side is $S\sum\frac1{S-a}-3$. By the Engel form of Cauchy--Schwarz
+with $x_i=1$,
+\[
+\sum\frac1{S-a}\ge\frac9{(S-a)+(S-b)+(S-c)}=\frac9{2S}.
+\]
+Hence the sum is at least $\frac92-3=\frac32$, with equality if and only if $S-a=S-b=S-c$, i.e.\ $a=b=c$.
+\end{solution}
+
+\begin{solution}{ex:triangle}
+\idea The constraint $A+B+C=\pi$ is linear and the quantity is a sum of values of one function: this is Jensen's setting, if $\sin$ has the right convexity on the range of angles. It is concave on $[0,\pi]$, which gives an upper bound at the mean angle $\frac\pi3$.
+\writeup $\sin$ is concave on $[0,\pi]$ since $\sin''=-\sin\le0$ there (Proposition~\ref{prop:convex}). By Jensen with weights $\frac13$,
+$\frac{\sin A+\sin B+\sin C}3\le\sin\frac{A+B+C}3=\sin\frac\pi3=\frac{\sqrt3}2$. Equality for the equilateral triangle.
+\end{solution}
+
+\begin{solution}{ex:aabbcc}
+\idea Take logarithms: we want $3\sum a\ln a\ge(a+b+c)(\ln a+\ln b+\ln c)$. The left pairs each $x$ with its own $\ln x$, the right pairs all $x$ with all $\ln y$: ``matching'' beats ``mixing'', which is the rearrangement idea, and the hint is its two-term form.
+\writeup $\ln$ is increasing, so $(x-y)(\ln x-\ln y)\ge0$, i.e.\ $x\ln x+y\ln y\ge x\ln y+y\ln x$. Sum over the three pairs $\{a,b\},\{b,c\},\{c,a\}$:
+\[
+2(a\ln a+b\ln b+c\ln c)\ge\sum_{x\ne y}x\ln y,
+\]
+where $(x,y)$ ranges over ordered pairs of distinct positions in the list $(a,b,c)$. Adding $a\ln a+b\ln b+c\ln c$ to both sides gives $3\sum a\ln a\ge\sum_{x,y}x\ln y=(a+b+c)(\ln a+\ln b+\ln c)$;
+divide by $3$ and exponentiate. (This is also Chebyshev's sum inequality, Proposition~\ref{prop:chebsum}, for the lists $(a,b,c)$ and $(\ln a,\ln b,\ln c)$, which are sorted the same way.)
+\end{solution}
+
+\begin{solution}{ex:holder}
+\idea (a) The right side is a weighted arithmetic mean of $a^p$ and $b^q$ with weights $\frac1p+\frac1q=1$, and the left side is the matching weighted geometric mean: weighted AM--GM. (b) H\"older is homogeneous (scaling $a$ scales both sides), so we may normalise to $\sum a_i^p=\sum b_i^q=1$, and then Young applied termwise sums to exactly $1$.
+\writeup (a) If $a$ or $b$ is $0$ it is clear. Otherwise, by weighted AM--GM with weights $\frac1p,\frac1q$ applied to $a^p$ and $b^q$:
+$ab=(a^p)^{1/p}(b^q)^{1/q}\le\frac{a^p}p+\frac{b^q}q$.
+
+(b) Let $A=\left(\sum a_i^p\right)^{1/p}$ and $B=\left(\sum b_i^q\right)^{1/q}$; if $A$ or $B$ is $0$ all terms vanish. Apply (a) to $a_i/A$ and $b_i/B$ and sum:
+\[
+\frac{\sum a_ib_i}{AB}\le\frac1p\frac{\sum a_i^p}{A^p}+\frac1q\frac{\sum b_i^q}{B^q}=\frac1p+\frac1q=1.
+\]
+\end{solution}
+
+\begin{solution}{ex:carleman}
+\idea The geometric mean $(a_1\cdots a_n)^{1/n}$ is bounded by AM--GM, but the naive bound $\frac1n\sum_{k\le n}a_k$ gives, after summing over $n$, $\sum_ka_k\sum_{n\ge k}\frac1n=\infty$. The fix is to put weights $c_k$ inside before applying AM--GM and to divide by $(c_1\cdots c_n)^{1/n}$ outside: if this product is about $n^n$, the outer factor becomes $\frac1{n^2}$-like and the double sum converges. The choice $c_k=\frac{(k+1)^k}{k^{k-1}}$ makes the product telescope to $(n+1)^n$; then $\frac{c_k}k=\left(1+\frac1k\right)^k<e$ produces the constant.
+\writeup The product telescopes:
+\[\prod_{k=1}^nc_k=\frac{2^1\,3^2\cdots(n+1)^n}{1^0\,2^1\cdots n^{n-1}}=(n+1)^n.\]
+So, by AM--GM,
+\[
+\begin{aligned}\left(a_1\cdots a_n\right)^{1/n}&=\frac{\left(c_1a_1\cdots c_na_n\right)^{1/n}}{n+1}\eqbr\le\frac1{n(n+1)}\sum_{k=1}^nc_ka_k.\end{aligned}
+\]
+Sum over $n\ge1$ and swap the sums by Proposition~\ref{prop:safe-sums} (all terms are nonnegative), using $\sum_{n\ge k}\frac1{n(n+1)}=\frac1k$ (telescoping):
+\[
+\begin{aligned}\sum_{n=1}^\infty\left(a_1\cdots a_n\right)^{1/n}&\le\sum_{k=1}^\infty\frac{c_k}ka_k\eqbr=\sum_{k=1}^\infty\left(1+\frac1k\right)^ka_k\eqbr\le e\sum_{k=1}^\infty a_k,\end{aligned}
+\]
+Integral comparison gives $\frac{k}{k+1}\le k\ln(1+1/k)<1$, so $\bigl(1+\frac1k\bigr)^k<e$, and the two bounds prove that the limit is $e$. Exercise~\ref{ex:euler} proves monotonicity.
+\end{solution}
+
+\begin{solution}{ex:means3}
+\idea Each step is AM--GM in a costume: for the harmonic mean apply AM--GM to the reciprocals; for the quadratic mean, square and reduce to $ab+bc+ca\le a^2+b^2+c^2$, which is the opening remark of the chapter.
+\writeup Middle: AM--GM for three numbers. Left: AM--GM for $\frac1a,\frac1b,\frac1c$ gives $\frac1{\sqrt[3]{abc}}\le\frac13\bigl(\frac1a+\frac1b+\frac1c\bigr)$; invert. Right: both sides are positive, so it is equivalent to $(a+b+c)^2\le3(a^2+b^2+c^2)$, i.e.\ $2(ab+bc+ca)\le2(a^2+b^2+c^2)$, which is the sum of $2ab\le a^2+b^2$ over the three pairs.
+\end{solution}
+
+\begin{solution}{ex:bernoulli}
+\idea Bernoulli with the two obvious choices of $x$; then for $\sqrt[n]n$, the binomial theorem keeps a quadratic term that Bernoulli threw away, and that term is what forces $x_n\to0$.
+\writeup (a) $x=\frac1n$: $(1+\frac1n)^n\ge1+n\cdot\frac1n=2$. $x=-\frac1{n^2}\ge-1$: $(1-\frac1{n^2})^n\ge1-\frac n{n^2}=1-\frac1n$.
+
+(b) For $n\ge2$, $\sqrt[n]n>1$, so $x_n=\sqrt[n]n-1>0$ and, by the binomial theorem with all terms non-negative, $n=(1+x_n)^n\ge1+nx_n+\binom n2x_n^2\ge\frac{n(n-1)}2x_n^2$. Hence $x_n\le\sqrt{\frac2{n-1}}\to0$. (A derivative-free proof that $\ln n/n\to0$, in effect.)
+\end{solution}
+
+\begin{solution}{ex:lagrangeid}
+\idea Both sides are sums over pairs of indices; expand the left side as a double sum, note that the diagonal $i=j$ cancels, and symmetrise the rest. The identity shows that the defect in Cauchy--Schwarz is a sum of squares, which is non-negative and vanishes exactly when all $2\times2$ determinants $a_ib_j-a_jb_i$ do, that is, when $a$ and $b$ are linearly dependent.
+\writeup Expand the left side as
+\[
+\sum_{i,j}a_i^2b_j^2-\sum_{i,j}a_ib_ia_jb_j
+=\sum_{i,j}\bigl(a_i^2b_j^2-a_ib_ja_jb_i\bigr).
+\] The terms with $i=j$ vanish. Pair $(i,j)$ with $(j,i)$ for $i<j$: their contribution is $a_i^2b_j^2+a_j^2b_i^2-2a_ib_ja_jb_i=(a_ib_j-a_jb_i)^2$. So the left side is $\sum_{i<j}(a_ib_j-a_jb_i)^2\ge0$, which is Cauchy--Schwarz; it is $0$ iff $a_ib_j=a_jb_i$ for all $i,j$, iff $a$ and $b$ are linearly dependent (if $b\ne0$, say $b_j\ne0$, then $a_i=\frac{a_j}{b_j}b_i$ for all $i$).
+
+For $n=2$: $(a_1^2+a_2^2)(b_1^2+b_2^2)=(a_1b_1+a_2b_2)^2+(a_1b_2-a_2b_1)^2$, which is $|z|^2|w|^2=|z\bar w|^2$ for $z=a_1+ia_2$, $w=b_1+ib_2$: the identity of Brahmagupta from Chapter~\ref{ch:complex}, and the reason a product of two sums of two squares is a sum of two squares.
+\end{solution}
+
+\begin{solution}{ex:cauchyinduction}
+\idea Doubling is natural: $2n$ numbers split into two halves, each half has a geometric mean below its arithmetic mean, and the two-number case combines them. Going down is the clever step: adding the mean of the others as an extra number does not change the arithmetic mean, so $G_n\le A_n$ for this special list compares $G_{n-1}$ with $A_{n-1}$. Together, the two steps reach every $n$ from the powers of $2$.
+\writeup (a) $G_2\le A_2$ is $\sqrt{xy}\le\frac{x+y}2$, from $(\sqrt x-\sqrt y)^2\ge0$. Given $x_1,\dots,x_{2n}$, let $g,g'$ and $m,m'$ be the geometric and arithmetic means of the first $n$ and of the last $n$. Then $G_{2n}=\sqrt{gg'}\le\frac{g+g'}2\le\frac{m+m'}2=A_{2n}$, using $G_2\le A_2$ and then $g\le m$, $g'\le m'$.
+
+(b) Let $m=\frac{x_1+\dots+x_{n-1}}{n-1}$ and apply $G_n\le A_n$ to $x_1,\dots,x_{n-1},m$: the arithmetic mean of these $n$ numbers is $\frac{(n-1)m+m}n=m$, so $(x_1\cdots x_{n-1}m)^{1/n}\le m$, i.e.\ $x_1\cdots x_{n-1}\le m^{n-1}$, which is $G_{n-1}\le A_{n-1}$.
+
+(c) By (a) and induction, $G_{2^k}\le A_{2^k}$ for all $k$. Given $n$, choose $k$ with $2^k\ge n$ and go down from $2^k$ to $n$ by (b).
+\end{solution}
+
+\begin{solution}{ex:heron}
+\idea The area is a product of three factors with a fixed sum, $(s-a)+(s-b)+(s-c)=s$: AM--GM bounds the product by the cube of the mean, with equality when the three factors are equal, that is, $a=b=c$. (The factors are positive by the triangle inequality: $s-a=\frac{b+c-a}2>0$.)
+\writeup By AM--GM, $(s-a)(s-b)(s-c)\le\Bigl(\frac{(s-a)+(s-b)+(s-c)}3\Bigr)^3=\frac{s^3}{27}$, with equality iff $s-a=s-b=s-c$, i.e.\ $a=b=c=\frac{2s}3$. So the area is at most $\sqrt{s\cdot\frac{s^3}{27}}=\frac{s^2}{3\sqrt3}$, the area of the equilateral triangle of side $\frac{2s}3$ (check: $\frac{\sqrt3}4\bigl(\frac{2s}3\bigr)^2=\frac{s^2}{3\sqrt3}$).
+\end{solution}
+
+\begin{solution}{ex:entropy}
+\idea $H$ is a weighted average of the values $\ln\frac1{p_i}$ with weights $p_i$: Jensen for the concave $\ln$ moves the average inside, where it becomes $\ln\sum p_i\cdot\frac1{p_i}=\ln n$.
+\writeup Jensen for the concave function $\ln$ (Theorem~\ref{thm:jensen} applied to $-\ln$) with weights $p_i$ at the points $\frac1{p_i}$:
+\[
+H=\sum_ip_i\ln\frac1{p_i}\le\ln\Bigl(\sum_ip_i\cdot\frac1{p_i}\Bigr)=\ln n.
+\]
+Since $\ln''<0$, equality forces all the points $\frac1{p_i}$ equal, so $p_i=\frac1n$.
+\end{solution}
+
+\begin{solution}{ex:chebsumapp}
+\idea Chebyshev's inequality compares the mean of products with the product of means, for similarly sorted lists. Powers of the same positive numbers are always sorted the same way, so $(x_i^k)$ and $(x_i)$ qualify, and the product $x_i^k\cdot x_i=x_i^{k+1}$ is the next power.
+\writeup Sort so that $a\le b\le c$; then $a^2\le b^2\le c^2$ and Proposition~\ref{prop:chebsum} gives $\frac{a^3+b^3+c^3}3\ge\frac{a^2+b^2+c^2}3\cdot\frac{a+b+c}3$. Apply it again to $(a,b,c)$ and $(a,b,c)$: $\frac{a^2+b^2+c^2}3\ge\bigl(\frac{a+b+c}3\bigr)^2$, which gives the second inequality. In general, with $x_1\le\dots\le x_n$, the lists $(x_i^k)$ and $(x_i)$ are sorted the same way, so $\frac1n\sum x_i^{k+1}\ge\frac1n\sum x_i^k\cdot\frac1n\sum x_i$, which is $M_{k+1}^{k+1}\ge M_k^kM_1$. (Iterating, $M_k^k\ge M_1^k$: the power mean inequality $M_1\le M_k$ for integers $k$, without Jensen.)
+\end{solution}
+
+\begin{solution}{ex:schur}
+\idea The expression is symmetric, so we may order the variables, and then the trick is to pair the two largest terms: their sum factors through $a-b\ge0$ and a bracket that is $\ge0$ because $a\ge b$ and $a-c\ge b-c\ge0$; the third term is non-negative on its own. The second inequality is just the first one expanded.
+\writeup By symmetry assume $a\ge b\ge c\ge0$. Then
+\[
+a(a-b)(a-c)+b(b-a)(b-c)=(a-b)\bigl[a(a-c)-b(b-c)\bigr]\ge0,
+\]
+because $a-b\ge0$, $a\ge b\ge0$ and $a-c\ge b-c\ge0$ give $a(a-c)\ge b(b-c)$. And $c(c-a)(c-b)=c(a-c)(b-c)\ge0$. Adding proves the inequality. Equality needs both pieces to vanish. If $a>b$, the bracket is $>0$: indeed $a(a-c)>b(a-c)\ge b(b-c)$ since $a-c>0$. So the first piece vanishes iff $a=b$. The second vanishes iff $c=0$ or $c=b$ (then $a=b=c$) or $c=a$ (then $a=b=c$ again). Combining: $a=b=c$, or $a=b$ and $c=0$; by symmetry, equality holds iff all three are equal, or two are equal and the third is $0$.
+
+Expanding, $\sum a(a-b)(a-c)=\sum a^3-\sum a^2(b+c)+3abc$ (each term $a(a-b)(a-c)=a^3-a^2b-a^2c+abc$), so the inequality reads $a^3+b^3+c^3+3abc\ge a^2(b+c)+b^2(c+a)+c^2(a+b)$.
+\end{solution}
+
+\subsection*{Notes on the challenges}
+
+(1) With $a_n=\frac1n$ for $n\le N$: the right side is $e\sum_{n\le N}\frac1n=e\ln N+O(1)$ (Chapter~\ref{ch:sequences}). On the left, $(a_1\cdots a_n)^{1/n}=(n!)^{-1/n}$, and Stirling's formula gives $(n!)^{1/n}\sim\frac ne$, so the left side is $\sum_{n\le N}\frac en(1+o(1))=e\ln N+o(\ln N)$. The ratio of the two sides tends to $1$: no constant smaller than $e$ works. Numerical evaluation shows the ratio of the left side to $\sum_{n\le N}a_n$ creeping up: $1.52$ for $N=10$, $1.94$ for $N=100$, $2.29$ for $N=10^4$; the convergence is logarithmically slow, which is why the numerical evidence alone is unconvincing.
+
+(2) Hardy's inequality (1920, constant $4=\bigl(\frac p{p-1}\bigr)^p$ for $p=2$) can be proved with Cauchy--Schwarz and a summation by parts; Steele's book, Chapter~11, has a guided proof, and the constant is again best possible, but the test sequence is different: take $a_n=n^{-1/2}$ for $1\le n\le N$ and $a_n=0$ afterwards. For $n\le N$, integral comparison gives $A_n=2\sqrt n+O(1)$, so
+\[
+\sum_{n=1}^N\left(\frac{A_n}{n}\right)^2=4\ln N+O(1),
+\qquad
+\sum_{n=1}^N a_n^2=\ln N+O(1).
+\]
+The terms with $n>N$ on the left are non-negative, so no constant below $4$ can work for all $N$.
+
+(3) An $n$-gon inscribed in a circle of radius $R$ whose centre lies inside it has area $\frac{R^2}2\sum_{i=1}^n\sin\theta_i$, where $\theta_i\in\,]0,\pi[$ are the central angles, with $\sum\theta_i=2\pi$. Jensen for the concave $\sin$ gives $\sum\sin\theta_i\le n\sin\frac{2\pi}n$, with equality for the regular polygon. If the centre is outside (or on a side), the same formula holds with signed angles: one central angle $\theta_1$ is now in $[\pi,2\pi[$ and contributes $\sin\theta_1\le0$, while the others sum to $2\pi-\theta_1\le\pi$, so Jensen gives $\sum\sin\theta_i\le(n-1)\sin\frac{\pi}{n-1}<n\sin\frac{2\pi}n$ (for $n=3$, compare $2$ with $3\sqrt3/2$; for $n\ge4$, use $(n-1)\sin\frac\pi{n-1}\le\pi<4\le n\sin\frac{2\pi}n$, the last inequality following from the decrease of $\sin x/x$ on $]0,\pi/2]$): the area is smaller than in the first case.
+
+\begin{solution}{pb:stanley}
+\idea Count the same pairs in two ways: a partition together with ``a $j$-th copy of the part $m$''.
+
+\writeup (b) contains (a) as the case $k=1$, so we prove (b). Fix $m\ge1$ and $j\ge1$. Removing $j$ copies of $m$ is a bijection
+from the partitions of $n$ with at least $j$ copies of $m$ onto the partitions of $n-jm$, so there are $p(n-jm)$ of them (with
+$p$ of a negative number equal to $0$).
+
+The total number of parts equal to $k$ over all partitions of $n$ is $\sum_\lambda m_k(\lambda)$, where $m_k$ is the multiplicity of $k$.
+Since $m_k(\lambda)=\#\{j\ge1:m_k(\lambda)\ge j\}$, this total is $\sum_{j\ge1}\#\{\lambda:m_k(\lambda)\ge j\}=\sum_{j\ge1}p(n-jk)$.
+
+The total number of part sizes appearing at least $k$ times is $\sum_{m\ge1}\#\{\lambda:m_m(\lambda)\ge k\}=\sum_{m\ge1}p(n-km)$. The two
+sums are the same sum, with the summation variable renamed.
+
+For $n=4$ the partitions are $4$, $3+1$, $2+2$, $2+1+1$, $1+1+1+1$. They contain $0+1+0+2+4=7$ ones and $1+2+1+2+1=7$
+distinct part sizes.
+
+\tools Volume~0, Chapter~8 (double counting).
+\leads (a) was found by Richard Stanley, and (b) by Paul Elder in 1984; Honsberger's \emph{Mathematical Gems~III} tells the
+story. The common value in (a) is $\sum_{j\ge1}p(n-j)$, so the average number of $1$'s in a partition of $n$ is
+$\frac{p(0)+\dots+p(n-1)}{p(n)}$, which grows like $\frac{\sqrt{6n}}\pi$ by the Hardy--Ramanujan asymptotics.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}\raggedright
+\item J.~M.~Steele, \emph{The Cauchy--Schwarz Master Class}, Cambridge University Press, 2004. The best book to learn inequalities by doing; Chapters~1 and~2 treat Cauchy--Schwarz and AM--GM, and its historical notes are the source for Cauchy 1821, Bunyakovsky 1859 and Schwarz 1885.
+\item G.~H.~Hardy, J.~E.~Littlewood and G.~P\'olya, \emph{Inequalities}, 2nd ed., Cambridge University Press, 1952. The classic reference: convexity, AM--GM, H\"older, power means, Chebyshev's sum inequality, rearrangement (Chapter~10) and Carleman.
+\item J.~L.~W.~V.~Jensen, ``Sur les fonctions convexes et les in\'egalit\'es entre les valeurs moyennes'', \emph{Acta Mathematica} 30 (1906), 175--193. The paper of the telephone engineer; the biographical facts above are from the MacTutor biography.
+\item A.-L.~Cauchy, \emph{Cours d'analyse de l'\'Ecole royale polytechnique}, Paris, 1821, Note~II. The forward--backward induction of Exercise~\ref{ex:cauchyinduction} and the inequality of Theorem~\ref{thm:cs}.
+\item G.~P\'olya, \emph{Proof of an inequality}, Proc.\ London Math.\ Soc.\ (2) 24 (1926), p.~lvii. The weighted AM--GM proof of Carleman's inequality used in Exercise~\ref{ex:carleman}.
+\item J.~Duncan and C.~M.~McGregor, \emph{Carleman's inequality}, Amer.\ Math.\ Monthly 110 (2003), 424--431. A survey of proofs and of why $e$ is optimal.
+\item A.~Engel, \emph{Problem-Solving Strategies}, Springer, 1998, Chapter~7. Many olympiad inequalities in the style of Exercises~\ref{ex:8abc}--\ref{ex:aabbcc} and~\ref{ex:schur}.
+\item T.~Carleman, \emph{Sur les fonctions quasi-analytiques}, Conf\'erences faites au cinqui\`eme congr\`es des math\'ematiciens scandinaves, Helsinki, 1923, 181--196.
+\item H.~Minkowski, \emph{Geometrie der Zahlen}, Teubner, Leipzig, 1896. Where the $p$-norms and their triangle inequality were born, in the service of number theory.
+\end{itemize}

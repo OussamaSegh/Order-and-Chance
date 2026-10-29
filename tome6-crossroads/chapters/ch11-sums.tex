@@ -1,0 +1,485 @@
+\chapter{Exponential Sums}
+
+\begin{center}\itshape
+Mathematics is the art of giving the same name to different things.\\
+\upshape --- Henri Poincaré, \emph{Science et méthode} (1908)
+\end{center}
+
+Take a unit vector, turn it by an angle, add another unit vector, turn again, and keep going. Where do you end up after $N$ steps? If the angles are random, you have taken a random walk,
+and you end up at distance about $\sqrt N$ from the start. If every angle is a whole number of turns, you have walked in a straight line, to distance $N$. Almost every deep question
+of this book can be reduced to asking which of the two happens for a well-chosen sequence of angles. The sum
+\[
+\sum_{n\le N}e(f(n)),\qq e(x)=e^{2\pi ix},
+\]
+is an \emph{exponential sum}, and showing that it is $o(N)$, or better, $O(N^\theta)$ with $\theta<1$, is the art of this chapter.
+
+The story begins with the planets. Lagrange had reduced the long-term motion of the perihelion of a planet to the question of whether certain angles $n\alpha_1,\dots,n\alpha_k$ spread out evenly
+around the circle. In 1909 and 1910 Bohl, Sierpiński and Weyl proved the case of one angle (Volume~4, Corollary~6.14), and in 1916 Hermann Weyl published \emph{Über die Gleichverteilung von Zahlen mod.\ Eins},
+the paper that created the subject. He proved that $n^2\alpha$, $n^3\alpha$, and every polynomial with an irrational coefficient spread out evenly, with a trick of disarming simplicity: square the sum. Twenty years later
+Vinogradov sharpened the method into a tool strong enough to prove that every large odd number is a sum of three primes. In 1918 Pólya and Vinogradov, independently, showed that character sums cancel, and Vinogradov
+used it at once to bound the least quadratic non-residue.
+
+\begin{think}
+Figure~\ref{fig:curlicue} draws the walks $\sum_{n\le N}e(\alpha n^2)$ for two values of $\alpha$. The left one is made of spirals strung along a line, and the right one wanders like a random walk. Why does
+$\alpha=\frac1\pi=0.3183\ldots$ produce spirals? (Compare $\alpha$ with $\frac13$, and look at the steps $n\equiv0,1,2\pmod3$.)
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch11-curlicue}
+\caption{The partial sums $\sum_{n\le N}e(\alpha n^2)$, $N\le2000$, joined into a path starting at the red dot. Left, $\alpha=\frac1\pi$: since $\alpha$ is close to $\frac13$, the walk is a chain of spirals
+around a slowly turning line. Right, $\alpha=\frac{\sqrt2}2$: a walk of $2000$ steps that ends at distance $36$ from its start, close to $\sqrt{2000}=45$.}
+\label{fig:curlicue}
+\end{figure}
+
+\section{Geometric sums}
+
+Write $\|x\|$ for the distance from $x$ to the nearest integer. The only exponential sums we can compute exactly are geometric, and they are the building block of everything else.
+
+\begin{lemma}\label{lem:geom}
+For real $\beta$ and integers $M\ge0$, $N\ge1$,
+\[
+\Bigl|\sum_{n=M+1}^{M+N}e(\beta n)\Bigr|\le\min\Bigl(N,\frac1{2\|\beta\|}\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+The bound $N$ is the triangle inequality. If $\beta\notin\Z$, the sum is $e(\beta(M+1))\frac{e(\beta N)-1}{e(\beta)-1}$, of modulus $\frac{|\sin\pi N\beta|}{|\sin\pi\beta|}\le\frac1{|\sin\pi\beta|}$. Now $|\sin\pi\beta|=\sin\pi\|\beta\|$,
+and $\sin\pi t\ge2t$ for $0\le t\le\frac12$ by concavity of the sine on $[0,\frac\pi2]$.
+\end{proof}
+
+So $\sum e(\beta n)$ is bounded when $\beta$ is far from an integer, and large only when $\beta$ is close to one. All the methods below reduce a hard sum to many geometric ones.
+
+\section{Weyl differencing}
+
+Weyl's trick is to square. If $S=\sum_{n\le N}e(f(n))$, then $|S|^2=\sum_{m,n}e(f(n)-f(m))$, and grouping the terms by $h=n-m$ replaces $f$ by its differences $f(n+h)-f(n)$, which for a polynomial
+have lower degree. Van der Corput found the most flexible form of the idea in the 1920s.
+
+\begin{lemma}[van der Corput's inequality]\label{lem:vdc}
+Let $z_1,\dots,z_N$ be complex numbers, extended by $z_n=0$ for $n\notin[1,N]$, and let $1\le H\le N$ be an integer. Then
+\[
+\Bigl|\sum_{n=1}^Nz_n\Bigr|^2\le\frac{N+H-1}{H^2}\sum_{|h|<H}(H-|h|)\sum_nz_{n+h}\overline{z_n}.
+\]
+\end{lemma}
+
+\begin{proof}
+Each $z_n$ appears exactly $H$ times in the double sum $\sum_m\sum_{k=0}^{H-1}z_{m+k}$, where $m$ runs over the $N+H-1$ integers from $1-H$ to $N-1$. So by the Cauchy--Schwarz inequality,
+\[
+\begin{aligned}H^2\Bigl|\sum_nz_n\Bigr|^2&=\Bigl|\sum_m\sum_{k=0}^{H-1}z_{m+k}\Bigr|^2\eqbr\le(N+H-1)\sum_m\Bigl|\sum_{k=0}^{H-1}z_{m+k}\Bigr|^2.\end{aligned}
+\]
+Expanding the square, $\sum_m\bigl|\sum_kz_{m+k}\bigr|^2=\sum_{k,k'}\sum_mz_{m+k}\overline{z_{m+k'}}$, and here $m$ may run over all integers, since the other terms vanish. Put $h=k-k'$ and $n=m+k'$: each
+$h$ with $|h|<H$ comes from $H-|h|$ pairs $(k,k')$, and the inner sum is $\sum_nz_{n+h}\overline{z_n}$.
+\end{proof}
+
+\begin{theorem}[van der Corput's difference theorem]\label{thm:vdcdiff}
+Let $(u_n)_{n\ge1}$ be real. If, for every integer $h\ge1$, the sequence $(u_{n+h}-u_n)_{n\ge1}$ is equidistributed modulo $1$, then so is $(u_n)$.
+\end{theorem}
+
+\begin{proof}
+We use Weyl's criterion (Volume~4, Theorem~6.13). Fix an integer $j\ne0$, let $z_n=e(ju_n)$ for $1\le n\le N$, and $S_N=\sum_{n\le N}z_n$. For $h\ge1$, $\sum_nz_{n+h}\overline{z_n}=A_h(N)=\sum_{n=1}^{N-h}e\bigl(j(u_{n+h}-u_n)\bigr)$, which is
+$o(N)$ by the hypothesis and Weyl's criterion; the term $-h$ is $\overline{A_h(N)}$, and the term $h=0$ is $N$. Fix $H\ge1$. Lemma~\ref{lem:vdc} gives, for $N\ge H$,
+\[
+\begin{aligned}\Bigl|\frac{S_N}N\Bigr|^2&\le\frac{N+H-1}{H^2N^2}\eqbr\cdot\Bigl(HN+2\sum_{h=1}^{H-1}(H-h)|A_h(N)|\Bigr).\end{aligned}
+\]
+As $N\to\infty$ with $H$ fixed, the right side tends to $\frac1H$. So $\limsup_N|\frac{S_N}N|^2\le\frac1H$ for every $H$, and $\frac{S_N}N\to0$.
+\end{proof}
+
+\begin{theorem}[Weyl, 1916]\label{thm:weylpoly}
+Let $f$ be a real polynomial such that at least one coefficient of $f$, other than the constant term, is irrational. Then $(f(n))_{n\ge1}$ is equidistributed modulo $1$.
+\end{theorem}
+
+\begin{proof}
+\emph{Step 1: the leading coefficient is irrational.} We argue by induction on the degree $d\ge1$. If $f(n)=\alpha n+\beta$ with $\alpha$ irrational, then for $j\ne0$, $j\alpha\notin\Z$ and $|\sum_{n\le N}e(jf(n))|\le\frac1{2\|j\alpha\|}$
+by Lemma~\ref{lem:geom}; Weyl's criterion concludes. If $d\ge2$ and $f(n)=\alpha n^d+\cdots$, then for every $h\ge1$, $f(n+h)-f(n)=d h\alpha n^{d-1}+\cdots$ is a polynomial of degree $d-1$ whose leading coefficient
+$dh\alpha$ is irrational. By induction its values are equidistributed, and Theorem~\ref{thm:vdcdiff} concludes.
+
+\emph{Step 2: the general case.} Write $f(x)=\sum_{i=0}^da_ix^i$ and let $k\ge1$ be the largest index with $a_k$ irrational. The coefficients $a_i$, $i>k$, are rational; let $q\ge1$ be a common denominator, so $a_i=\frac{b_i}q$
+with $b_i\in\Z$. Put $r(x)=\sum_{i>k}a_ix^i$. For integers $m,s$ and $i\ge1$, $(qm+s)^i-s^i$ is divisible by $q$, so $r(qm+s)-r(s)\in\Z$. Hence for $0\le s<q$,
+\[
+\begin{gathered}f(qm+s)\equiv g_s(m)\pmod1,\qq\text{where}\\g_s(m)=\sum_{i\le k}a_i(qm+s)^i+r(s),\end{gathered}
+\]
+and $g_s$ is a polynomial in $m$ of degree $k$ with irrational leading coefficient $a_kq^k$. By Step 1 and Weyl's criterion, $\sum_{0\le m<M}e(jg_s(m))=o(M)$ for each $j\ne0$ and each $s$. Splitting $n\le N$ according to
+$n\bmod q$, $\sum_{n\le N}e(jf(n))$ is a sum of $q$ such sums with $M\le\frac Nq+1$, up to $O(q)$ terms, hence $o(N)$. Weyl's criterion concludes.
+\end{proof}
+
+\begin{corollary}\label{cor:nsquared}
+If $\alpha$ is irrational, $(n^2\alpha)$ is equidistributed modulo $1$, and so is $(n^k\alpha)$ for every $k\ge1$.
+\end{corollary}
+
+This is the result promised in Volume~4. If $\alpha$ is rational, $n^2\alpha$ takes finitely many values modulo $1$, and the theorem says nothing; Exercise~\ref{ex:rationalsq} shows what happens.
+
+\section{How much cancellation?}
+
+Theorem~\ref{thm:weylpoly} says that $\sum_{n\le N}e(\alpha n^2)=o(N)$, but not how small it is. The answer depends on how well $\alpha$ is approximated by rationals, and the random walk of
+Figure~\ref{fig:curlicue} suggests that the truth is often near $\sqrt N$. The next lemma is the workhorse.
+
+\begin{lemma}\label{lem:summin}
+Let $\alpha$ be real, and $\frac aq$ a fraction with $q\ge1$, $\gcd(a,q)=1$ and $\bigl|\alpha-\frac aq\bigr|\le\frac1{q^2}$. For all real $X,N\ge1$,
+\[
+\begin{aligned}\sum_{1\le x\le X}\min\Bigl(N,\frac1{\|\alpha x\|}\Bigr)&\le\Bigl(\frac Xq+1\Bigr)\eqbr\cdot\bigl(4N+2q+2q\log q\bigr).\end{aligned}
+\]
+\end{lemma}
+
+\begin{proof}
+Cut $[1,X]$ into at most $\frac Xq+1$ blocks of $q$ consecutive integers (the last one possibly incomplete); it suffices to bound the sum over one block $x=x_0+r$, $0\le r<q$, by $4N+2q+2q\log q$. Write
+$\alpha=\frac aq+\frac\theta{q^2}$ with $|\theta|\le1$. Then
+\[
+\alpha x=\alpha x_0+\frac{ar}q+\frac{\theta r}{q^2},\qq\Bigl|\frac{\theta r}{q^2}\Bigr|<\frac1q.
+\]
+As $r$ runs over $0,\dots,q-1$, so does $ar\bmod q$, because $\gcd(a,q)=1$. So the points $y_r=\alpha x_0+\frac{ar}q$ are, modulo $1$, the $q$ points $\alpha x_0+\frac sq$, equally spaced at distance $\frac1q$. For each
+integer $j\ge0$, the set of $t$ with $\frac jq\le\|t\|<\frac{j+1}q$ is, modulo $1$, a union of two intervals of length $\frac1q$, so it contains at most two of the $y_r$. Since $\|\alpha x\|\ge\|y_r\|-\frac1q$: the at most
+four $r$ with $\|y_r\|<\frac2q$ contribute at most $4N$; and the at most two $r$ with $\frac jq\le\|y_r\|<\frac{j+1}q$, for $2\le j\le\frac q2$, have $\|\alpha x\|\ge\frac{j-1}q$, so they contribute at most $\frac{2q}{j-1}$
+each. In total the block gives at most $4N+2q\sum_{1\le i<q/2}\frac1i\le4N+2q(1+\log q)$.
+\end{proof}
+
+\begin{theorem}[Weyl's inequality for squares]\label{thm:weylineq}
+Let $\alpha,\beta$ be real, and $\frac aq$ as in Lemma~\ref{lem:summin}. Then $S=\sum_{n=1}^Ne(\alpha n^2+\beta n)$ satisfies
+\[
+|S|^2\le N+2\Bigl(\frac{2N}q+1\Bigr)\bigl(4N+2q+2q\log q\bigr).
+\]
+In particular $|S|^2=O\bigl(\frac{N^2}q+N\log q+q\log q\bigr)$.
+\end{theorem}
+
+\begin{proof}
+Let $f(n)=\alpha n^2+\beta n$. Grouping the terms of $|S|^2=\sum_{m,n\le N}e(f(n)-f(m))$ by $h=n-m$, and pairing $h$ with $-h$,
+\[
+|S|^2=N+2\operatorname{Re}\sum_{h=1}^{N-1}\sum_{m=1}^{N-h}e\bigl(f(m+h)-f(m)\bigr).
+\]
+Now $f(m+h)-f(m)=2\alpha hm+\alpha h^2+\beta h$ is linear in $m$, so by Lemma~\ref{lem:geom} the inner sum has modulus at most $\min\bigl(N,\frac1{2\|2\alpha h\|}\bigr)$, which is at most $\min\bigl(N,\frac1{\|\alpha x\|}\bigr)$ with $x=2h\le2N$. Hence
+$|S|^2\le N+2\sum_{x\le2N}\min\bigl(N,\frac1{\|\alpha x\|}\bigr)$, and Lemma~\ref{lem:summin} with $X=2N$ concludes.
+\end{proof}
+
+If $q$ is about $N$, the bound is $O(N\log N)$, and $|S|=O(\sqrt{N\log N})$: square-root cancellation, as for a random walk, up to the logarithm. For $\alpha=\sqrt2$ this holds for every $N$ (Exercise~\ref{ex:weylsqrt2}).
+For $\alpha=\frac aq$ exactly and $N=q$, the sum is a quadratic Gauss sum, of modulus $\sqrt q$ for odd prime $q$ (Volume~4, Proposition~7.13): the bound is then sharp up to the logarithm. If $q$ is small, $S$ really
+is large: near $\frac aq$, $e(\alpha n^2)$ repeats with period $q$ for a long time, and the walk goes nearly straight. These are the spirals of Figure~\ref{fig:curlicue}.
+
+\begin{remark}[higher degrees, and Vinogradov]
+For $f$ of degree $k$, differencing $k-1$ times gives Weyl's inequality $|S|^{2^{k-1}}=O\bigl(N^{2^{k-1}+\varepsilon}(\frac1q+\frac1N+\frac q{N^k})\bigr)$. The exponent $2^{k-1}$ wastes a lot. Vinogradov found in 1935 a way
+to lose only a power of order $k^2\log k$, through a mean value theorem counting solutions of the system $x_1^j+\cdots+x_s^j=y_1^j+\cdots+y_s^j$, $1\le j\le k$. The optimal form of his mean value theorem,
+conjectured for eighty years, was proved in 2016 by Wooley for $k=3$ and by Bourgain, Demeter and Guth for all $k$, with a method from harmonic analysis called decoupling.
+\end{remark}
+
+\section{Smooth phases: van der Corput}
+
+For $f(n)=n^{3/2}$ or $f(n)=t\log n$, there are no differences of lower degree. Van der Corput's idea is to treat $f$ as a smooth function and use its derivatives. If $f'$ stays away from the integers, the
+sum behaves like a geometric sum with slowly varying ratio.
+
+\begin{lemma}[Kusmin--Landau]\label{lem:kl}
+Let $f$ be continuously differentiable on $[a,b]$ with $f'$ monotone, and suppose there are an integer $k$ and $0<\delta\le\frac12$ with $k+\delta\le f'(x)\le k+1-\delta$ on $[a,b]$. Then
+\[
+\Bigl|\sum_{a\le n\le b}e(f(n))\Bigr|\le1+\frac1\delta.
+\]
+\end{lemma}
+
+\begin{proof}
+Replacing $f(x)$ by $f(x)-kx$ does not change $e(f(n))$, so we may take $k=0$. Let $n_0<n_1$ be the least and largest integers in $[a,b]$ (if there are fewer than two, the bound is trivial). For
+$n_0\le n<n_1$, put $\Delta_n=f(n+1)-f(n)=\int_n^{n+1}f'$; then $\delta\le\Delta_n\le1-\delta$, and $\Delta_n$ is monotone in $n$. Let
+\[
+c_n=\frac1{e(\Delta_n)-1}=-\frac12-\frac i2\cot\pi\Delta_n,
+\]
+as one checks from $e(\Delta)-1=2ie(\frac\Delta2)\sin\pi\Delta$. Then $e(f(n))=c_n\bigl(e(f(n+1))-e(f(n))\bigr)$, and summation by parts gives
+\[
+\begin{aligned}\sum_{n=n_0}^{n_1-1}e(f(n))&=c_{n_1-1}e(f(n_1))-c_{n_0}e(f(n_0))\eqbr+\sum_{n=n_0+1}^{n_1-1}(c_{n-1}-c_n)e(f(n)).\end{aligned}
+\]
+Here $|c_n|=\frac1{2\sin\pi\Delta_n}\le\frac1{2\sin\pi\delta}$. Since $\cot$ is monotone on $]0,\pi[$ and $\Delta_n$ is monotone, the differences $c_{n-1}-c_n=\frac i2(\cot\pi\Delta_n-\cot\pi\Delta_{n-1})$ are purely imaginary, all with the same sign, and
+$\sum|c_{n-1}-c_n|=\frac12|\cot\pi\Delta_{n_0}-\cot\pi\Delta_{n_1-1}|\le\cot\pi\delta$, as $|\cot\pi\Delta|\le\cot\pi\delta$. So the sum is at most $\frac1{\sin\pi\delta}+\cot\pi\delta=\cot\frac{\pi\delta}2\le\frac2{\pi\delta}<\frac1\delta$,
+and the term $n=n_1$ adds $1$.
+\end{proof}
+
+\begin{theorem}[van der Corput's second derivative test]\label{thm:secondderiv}
+Let $f$ be twice continuously differentiable on $[a,b]$, with $N=b-a\ge1$, and suppose that $\lambda\le f''(x)\le A\lambda$ on $[a,b]$, for some $\lambda>0$ and $A\ge1$, or the same for $-f''$. Then
+\[
+\Bigl|\sum_{a\le n\le b}e(f(n))\Bigr|\le4AN\sqrt\lambda+\frac{12}{\sqrt\lambda}.
+\]
+\end{theorem}
+
+\begin{proof}
+Replacing $f$ by $-f$ conjugates the sum, so we may assume $f''\ge\lambda$. If $\lambda>\frac14$, the sum has at most $N+1\le2N\le4AN\sqrt\lambda$ terms. Let $\lambda\le\frac14$ and $\delta=\sqrt\lambda\le\frac12$. The
+function $f'$ increases, by at most $A\lambda N$ over $[a,b]$. Call \emph{bad} an integer $k$ such that $|f'(x)-k|<\delta$ for some $x\in[a,b]$; there are at most $A\lambda N+2$ of them. For a bad $k$, the set
+$I_k=\{x\in[a,b]:|f'(x)-k|<\delta\}$ is an interval, of length at most $\frac{2\delta}\lambda$ since $f'(y)-f'(x)\ge\lambda(y-x)$ for $y\ge x$; so it contains at most $\frac{2\delta}\lambda+1$ integers. The rest of $[a,b]$ is a union of at most
+$A\lambda N+3$ intervals, on each of which $k+\delta\le f'\le k+1-\delta$ for some integer $k$; Lemma~\ref{lem:kl} bounds each of these sums by $1+\frac1\delta$. Altogether, with $\delta=\sqrt\lambda$,
+\[
+\begin{aligned}\Bigl|\sum e(f(n))\Bigr|&\le(A\lambda N+3)\Bigl(\frac2{\sqrt\lambda}+2+\frac1{\sqrt\lambda}\Bigr)\eqbr\le(A\lambda N+3)\frac4{\sqrt\lambda},\end{aligned}
+\]
+using $2\le\frac1{\sqrt\lambda}$.
+\end{proof}
+
+The bound is best when $\lambda$ is about $\frac1N$: then it is $O(\sqrt N)$, square-root cancellation again. It is useless when $\lambda$ is very small (the phase is nearly linear and Lemma~\ref{lem:kl}
+is the right tool) or when $\lambda\ge1$ (the phase oscillates faster than the integers can sample it).
+
+\begin{theorem}[Fejér, van der Corput]\label{thm:nc}
+For every real $c$ with $0<c<2$ and $c\ne1$, the sequence $(n^c)$ is equidistributed modulo $1$.
+\end{theorem}
+
+\begin{proof}
+Fix an integer $j\ne0$; by conjugation we may take $j\ge1$. Let $f(x)=jx^c$, so $|f''(x)|=Bx^{c-2}$ with $B=j|c(c-1)|>0$, and $f''$ has constant sign. On a block $[M,2M]$ with $M\ge1$, since $c-2<0$,
+$\lambda\le|f''|\le4\lambda$ with $\lambda=B(2M)^{c-2}$. Theorem~\ref{thm:secondderiv} gives
+\[
+\begin{aligned}\Bigl|\sum_{M\le n\le2M}e(f(n))\Bigr|&\le16M\sqrt\lambda+\frac{12}{\sqrt\lambda}\eqbr\le C\bigl(M^{c/2}+M^{1-c/2}\bigr),\end{aligned}
+\]
+with $C$ depending only on $j$ and $c$. Cover $[1,N]$ by the blocks $[\frac N{2^{i+1}},\frac N{2^i}]$ for $0\le i<\log_2N$, plus $O(1)$ integers, and correct the integers counted twice at the junctions ($O(\log N)$ of them). Both exponents
+$\frac c2$ and $1-\frac c2$ are positive, so the sum over blocks of $(\frac N{2^i})^{c/2}$ is at most $\frac{N^{c/2}}{1-2^{-c/2}}$, and similarly for the other term. Hence $\sum_{n\le N}e(jn^c)=O(N^{c/2}+N^{1-c/2}+\log N)=o(N)$, because
+$\frac c2<1$ and $1-\frac c2<1$. Weyl's criterion concludes.
+\end{proof}
+
+For $c>2$ not an integer, one differences first with Theorem~\ref{thm:vdcdiff}, which lowers the exponent by one (Exercise~\ref{ex:nc23}); so $(n^c)$ is equidistributed for every non-integer $c>0$. On the other hand
+$(\log n)$ is not, and this is the reason why the integers do not obey Benford's law (Exercise~\ref{ex:logn}).
+
+\section{Character sums}
+
+A Dirichlet character is a periodic sequence of roots of unity, and its sums over a full period vanish (Chapter~3). What about a short interval? The trivial bound for $\sum_{M<n\le M+N}\chi(n)$ is $N$, and since the sum over
+a period is $0$, also $q$. Pólya and Vinogradov did much better, by expanding $\chi$ in exponentials with the Gauss sum.
+
+\begin{theorem}[Pólya, Vinogradov, 1918]\label{thm:pv}
+Let $\chi$ be a primitive character modulo $q>1$. For all integers $M\ge0$ and $N\ge1$,
+\[
+\Bigl|\sum_{n=M+1}^{M+N}\chi(n)\Bigr|\le\sqrt q\,(1+\log q).
+\]
+\end{theorem}
+
+\begin{proof}
+The character $\overline\chi$ is primitive too, since it is trivial on exactly the same subgroups $U_d$ as $\chi$ (Proposition~\ref{prop:conductor}). By Theorem~\ref{thm:gauss} applied to $\overline\chi$, for every integer $n$,
+$\sum_{a=1}^q\overline\chi(a)e(\frac{an}q)=\chi(n)\tau(\overline\chi)$, and $|\tau(\overline\chi)|=\sqrt q$. The term $a=q$ vanishes since $q>1$. So
+\[
+\sum_{n=M+1}^{M+N}\chi(n)=\frac1{\tau(\overline\chi)}\sum_{a=1}^{q-1}\overline\chi(a)\sum_{n=M+1}^{M+N}e\Bigl(\frac{an}q\Bigr).
+\]
+By Lemma~\ref{lem:geom} the inner sum is at most $\frac1{2\|a/q\|}=\frac q{2\min(a,q-a)}$. Each value $m=\min(a,q-a)\le\frac q2$ comes from at most two $a$, so the modulus is at most
+\[
+\begin{aligned}\frac1{\sqrt q}\cdot2\sum_{1\le m\le q/2}\frac q{2m}&\le\sqrt q\Bigl(1+\log\frac q2\Bigr)\eqbr\le\sqrt q\,(1+\log q).\end{aligned}
+\]
+\end{proof}
+
+For the Legendre symbol modulo a prime $p$, which is primitive, the theorem says that every interval contains as many residues as non-residues, up to $\sqrt p\log p$. Numerically, one finds that the largest interval sum
+for $p=1\,000\,003$ is $1205$, which is $1.2\sqrt p$, and Exercise~\ref{ex:pvsharp} shows that $\sqrt p$ is the truth up to the logarithm.
+
+How large is the least quadratic non-residue $n(p)$ modulo a prime $p$? It is prime, and it is less than $\sqrt p+1$ (Exercise~\ref{ex:nonres}). Theorem~\ref{thm:pv} gives $O(\sqrt p\log p)$ at once, since an interval of
+residues $[1,n(p)-1]$ has character sum $n(p)-1$; this is no better. Vinogradov's idea is to use multiplicativity: if all the primes below $y$ are residues, so are all the integers built from them.
+
+\begin{theorem}[Vinogradov, 1918]\label{thm:vinogradov}
+For every $\varepsilon>0$, the least quadratic non-residue modulo a prime $p$ is $O\bigl(p^{\frac1{2\sqrt e}+\varepsilon}\bigr)$, where $\frac1{2\sqrt e}=0.3032\ldots$
+\end{theorem}
+
+\begin{proof}
+Fix $u$ with $1<u<\sqrt e$, so that $c_u=1-2\log u>0$. Let $\chi$ be the Legendre symbol modulo $p$, $x=\frac4{c_u}\sqrt p\log p$ and $y=x^{1/u}$. We show that $n(p)\le y$ for large $p$; since $y=O(p^{\frac1{2u}+\varepsilon})$
+and $u$ can be taken as close to $\sqrt e$ as we like, this proves the theorem.
+
+Suppose $n(p)>y$. Then every prime $\ell\le y$ has $\chi(\ell)=1$, so every $n\le x$ whose prime factors are all at most $y$ has $\chi(n)=1$ (note $x<p$ for $p$ large, so $p\nmid n$). The other $n\le x$ have
+$\chi(n)\ge-1$, and they have a prime factor $\ell\in\left]y,x\right]$; by Mertens's theorem (Theorem~\ref{thm:mertens2}), their number is at most
+\[
+\begin{aligned}\sum_{y<\ell\le x}\frac x\ell&=x\Bigl(\log\frac{\log x}{\log y}+O\Bigl(\frac1{\log y}\Bigr)\Bigr)\eqbr=x\log u+O\Bigl(\frac x{\log x}\Bigr).\end{aligned}
+\]
+Hence
+\[
+\begin{aligned}\sum_{n\le x}\chi(n)&\ge\lfloor x\rfloor-2\Bigl(x\log u+O\Bigl(\frac x{\log x}\Bigr)\Bigr)\eqbr=c_ux+O\Bigl(\frac x{\log x}\Bigr),\end{aligned}
+\]
+which exceeds $\frac{c_u}2x=2\sqrt p\log p$ for $p$ large. But Theorem~\ref{thm:pv} bounds the sum by $\sqrt p(1+\log p)<2\sqrt p\log p$. This contradiction proves $n(p)\le y$.
+\end{proof}
+
+\begin{remark}[the truth about $n(p)$]
+Numerically, one finds the records of $n(p)$ for $p<10^6$: $n(p)=43$ for $p=366\,791$, which is $p^{0.29}$, and the exponent keeps falling. Burgess (1962) improved the exponent to $\frac1{4\sqrt e}+\varepsilon$, by bounding character
+sums over intervals much shorter than $\sqrt p$; nothing better is known. Under the generalised Riemann hypothesis, Ankeny proved $n(p)=O(\log^2p)$, and Bach made it explicit in 1990: $n(p)<2\log^2p$. This is
+what makes the Miller--Rabin primality test deterministic under that hypothesis: if $n$ is composite, a witness exists below $2\log^2n$. Conversely, Graham and Ringrose showed that $n(p)$ is as large as a constant
+times $\log p\log\log\log p$ for infinitely many $p$, so a bound $O(\log p)$ is false.
+\end{remark}
+
+\begin{beauty}
+Three ideas carry this chapter, and all three are elementary: square the sum (Weyl), sum by parts against a slowly turning phase (van der Corput), and expand in a basis where the sum becomes
+geometric (Pólya and Vinogradov, through the Gauss sum). With them, the circle is filled evenly by $n^2\alpha$ and by $n^{3/2}$, and an interval of residues cannot hide in a corner of $\Z/p\Z$. In each case
+the result is the same: a sum of $N$ unit vectors cancels down to about $\sqrt N$, as if the vectors pointed at random.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:nonres}
+Let $p$ be an odd prime and $n(p)$ its least quadratic non-residue. (a) Show that $n(p)$ is prime. (b) Show that $n(p)<\sqrt p+1$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:rationalsq}
+(a) Find the proportion of $n\le N$ with $\{\frac{n^2}5\}=0$, $\frac15$, $\frac45$, as $N\to\infty$. (b) Is $(\frac{n^2}5+n\sqrt2)$ equidistributed modulo $1$? And $(n^2\sqrt2+\frac n5)$?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:weylsqrt2}
+Show that $\sum_{n\le N}e(\sqrt2\,n^2)=O\bigl(\sqrt{N\log N}\bigr)$. (Use the convergents of $\sqrt2=[1;2,2,2,\dots]$, Volume~1, Theorem~8.2.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pvsharp}
+Let $\chi$ be a non-principal character modulo a prime $p$, and $S_M=\sum_{n=M+1}^{M+N}\chi(n)$. Show that $\sum_{M=0}^{p-1}|S_M|^2=N(p-N)$ for $1\le N\le p$. Deduce that some interval of length $\frac{p-1}2$ has
+$|S_M|\ge\frac{\sqrt p}2\cdot\sqrt{1-\frac1{p^2}}$. So Theorem~\ref{thm:pv} is sharp up to the factor $\log p$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pvnonprim}
+Let $\chi$ be a non-principal character modulo $q$, induced by the primitive $\chi^*$ modulo $q^*$. Show that $|\sum_{n=M+1}^{M+N}\chi(n)|\le2^{\omega(q)}\sqrt{q^*}(1+\log q^*)$, with $2^{\omega(q)}$ the number of squarefree divisors of $q$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$, the signature exercise]\label{ex:logn}
+Let $P(N)$ be the proportion of $n\le N$ whose decimal expansion begins with the digit $1$. Show that $P(N)$ has no limit: $\liminf P(N)=\frac19$ and $\limsup P(N)=\frac59$. Deduce that $(\log_{10}n)$ is not equidistributed modulo
+$1$, although the powers of $2$ do obey Benford's law (Volume~4, Exercise~6.5).
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:nc23}
+Show that $(n^c)$ is equidistributed modulo $1$ for $2<c<3$. Explain how induction gives every non-integer $c>0$.
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:erdosnp}
+\emph{The least quadratic non-residue, on average.} For an odd prime $p$ let $n(p)$ be the least quadratic non-residue modulo $p$; it is a prime. Let
+$p_1=2,p_2=3,p_3=5,\dots$ be the primes in order.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for fixed $k$, the proportion of primes $p\le x$ with $n(p)=p_k$ tends to $2^{-k}$. (By quadratic reciprocity, the condition is a condition on $p$ modulo
+$M_k=8p_2\cdots p_k$.)
+\item Let $y\ge2$ with $8\prod_{3\le q\le y}q\le\sqrt x$. Using the Brun--Titchmarsh inequality in progressions (Volume~5, Exercise~8.4), show that
+$\#\{p\le x:n(p)>y\}\le c\,\frac{\pi(x)}{2^{\pi(y)}}$ for an absolute constant $c$.
+\item Deduce that
+\[
+\frac1{\pi(x)}\sum_{p\le x}\min\Bigl(n(p),\frac{\log x}3\Bigr)\longrightarrow E=\sum_{k\ge1}\frac{p_k}{2^k}=3.67464\ldots
+\]
+\item Numerically, one finds that the untruncated mean $\frac1{\pi(x)}\sum_{3\le p\le x}n(p)$ is $3.4943$, $3.6004$, $3.6461$, $3.6631$, $3.6706$ for $x=10^4,\dots,10^8$, that
+the proportions of $n(p)=2,3,5,7,11,13,17$ below $10^8$ are $0.500061$, $0.250012$, $0.125011$, $0.062525$, $0.031265$, $0.015576$, $0.007857$, and that the largest value is
+$n(48\,473\,881)=67$. Below $10^8$, $719\,697$ primes have $n(p)>\frac{\log x}3=6.14$, and the truncated mean of (c) is only $3.1422$. Explain this last number, and
+explain what more would be needed to prove that the untruncated mean tends to $E$.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:nonres}
+(a) $\chi$ is multiplicative. (b) With $m=n(p)$ and $k=\lceil\frac pm\rceil$, look at $km-p$.
+\end{hint}
+\begin{hint}{ex:rationalsq}
+(a) Squares modulo $5$. (b) Theorem~\ref{thm:weylpoly} needs one irrational coefficient besides the constant.
+\end{hint}
+\begin{hint}{ex:weylsqrt2}
+The denominators satisfy $q_{k+1}=2q_k+q_{k-1}\le3q_k$. Choose $k$ with $q_k\le N<q_{k+1}$ in Theorem~\ref{thm:weylineq}.
+\end{hint}
+\begin{hint}{ex:pvsharp}
+Expand $|S_M|^2$. For $h\not\equiv0$, show that the correlation
+\[
+\sum_{n\bmod p}\chi(n)\overline{\chi(n+h)}
+\]
+is $-1$, writing each term as $\chi\bigl(n(n+h)^{-1}\bigr)$ when $n\ne0,-h$.
+\end{hint}
+\begin{hint}{ex:pvnonprim}
+Write
+\[
+\chi(n)=\chi^*(n)\sum_{d\mid\gcd(n,q)}\mu(d),
+\]
+swap the sums, and apply Theorem~\ref{thm:pv} to $\chi^*$ on the multiples of $d$.
+\end{hint}
+\begin{hint}{ex:logn}
+Look at $N=2\cdot10^k-1$ and $N=10^k-1$. For the second part, the first digit of $n$ is $1$ exactly when $\{\log_{10}n\}<\log_{10}2$.
+\end{hint}
+\begin{hint}{ex:nc23}
+For fixed $h\ge1$, apply Theorem~\ref{thm:secondderiv} to $g(x)=j\bigl((x+h)^c-x^c\bigr)$, whose second derivative is about $jc(c-1)(c-2)hx^{c-3}$. Then Theorem~\ref{thm:vdcdiff}.
+\end{hint}
+
+\begin{hint}{pb:erdosnp}
+(a) The vector $\bigl((\frac{p_i}p)\bigr)_{i\le k}$ is determined by $p$ modulo $M_k$, and each sign pattern takes the same number of classes. (b) Sum the Brun--Titchmarsh
+bound over the classes with all signs $+1$. (c) Split at a fixed $k_0$, and bound the rest with (b).
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:nonres}
+\idea Non-residues multiply to residues, and residues to residues, so the least non-residue cannot factor. For the size, multiply $n(p)$ up just past $p$ and fall back into $[1,n(p)[$, where everything is a residue.
+\writeup Let $\chi$ be the Legendre symbol and $m=n(p)\ge2$. (a) If $m=ab$ with $1<a,b<m$, then $\chi(a)=\chi(b)=1$ by minimality, so $\chi(m)=1$, a contradiction. (b) Let $k=\lceil\frac pm\rceil$, so $0\le km-p<m$, and
+$km\ne p$ since $1<m<p$. Then $1\le km-p<m$, so $\chi(km)=\chi(km-p)=1$. As $\chi(m)=-1$, $\chi(k)=-1$, so $k\ge m$. Hence $m\le k<\frac pm+1$, so $m^2-m<p$ and $m<\frac12+\sqrt{p+\frac14}\le\sqrt p+1$.
+\end{solution}
+
+\begin{solution}{ex:rationalsq}
+\idea With a rational coefficient, $n^2\alpha$ modulo $1$ only sees $n$ modulo the denominator, so the answer is a count of squares in $\Z/5\Z$.
+\writeup (a) $\frac{n^2}5$ modulo $1$ depends on $n\bmod5$: $n\equiv0$ gives $0$, $n\equiv\pm1$ gives $\frac15$, $n\equiv\pm2$ gives $\frac45$. The proportions are $\frac15$, $\frac25$, $\frac25$, and the values $\frac25,\frac35$ never occur.
+(b) Both are equidistributed by Theorem~\ref{thm:weylpoly}: the first has the irrational coefficient $\sqrt2$ of $n$, the second the irrational coefficient $\sqrt2$ of $n^2$. In the proof, the first case is Step~2 with $k=1$ and $q=5$.
+\end{solution}
+
+\begin{solution}{ex:weylsqrt2}
+\idea Theorem~\ref{thm:weylineq} wants a denominator $q$ comparable to $N$; the convergents of $\sqrt2$ have every size, since they grow by a factor at most $3$.
+\writeup Let $\frac{p_k}{q_k}$ be the convergents of $\sqrt2$. By Volume~1, Theorem~8.2, $|\sqrt2-\frac{p_k}{q_k}|<\frac1{q_k^2}$, with $\gcd(p_k,q_k)=1$. The partial quotients are $a_k=2$ for $k\ge1$, so $q_{k+1}=2q_k+q_{k-1}\le3q_k$. Given $N\ge1$,
+choose $k$ with $q_k\le N<q_{k+1}$; then $q=q_k$ satisfies $\frac N3<q\le N$. Theorem~\ref{thm:weylineq} gives $|S|^2\le N+2\cdot7\cdot(4N+2N+2N\log N)=O(N\log N)$. Numerically, one finds $|S|=16.5$, $98.6$ and $132.6$ for $N=10^3$, $10^4$ and $10^5$, well below $\sqrt{N\log N}$.
+\end{solution}
+
+\begin{solution}{ex:pvsharp}
+\idea A mean square over all shifts is computed by orthogonality: it only involves the correlations $\sum_n\chi(n)\overline{\chi(n+h)}$, and for a prime modulus these are all $-1$.
+\writeup Extend $\chi$ periodically. Then
+\[
+\begin{aligned}\sum_{M=0}^{p-1}|S_M|^2&=\sum_{M}\sum_{1\le i,j\le N}\chi(M+i)\overline{\chi(M+j)}\eqbr=\sum_{1\le i,j\le N}c(j-i),\end{aligned}
+\]
+where $c(h)=\sum_{n\bmod p}\chi(n)\overline{\chi(n+h)}$. For $h\equiv0$, $c(0)=p-1$. For $h\not\equiv0$, the terms $n=0$ and $n=-h$ vanish, and for the others $\chi(n)\overline{\chi(n+h)}=\chi(t)$ with $t=n(n+h)^{-1}$. As $n$ runs over
+the residues other than $0,-h$, $t=1-h(n+h)^{-1}$ runs over all residues except $0$ and $1$, so $c(h)=\sum_{t\ne0}\chi(t)-\chi(1)=-1$. Since $N\le p$, $j-i\equiv0$ only for $i=j$, so the total is $N(p-1)-(N^2-N)=N(p-N)$.
+With $N=\frac{p-1}2$, the mean of $|S_M|^2$ over the $p$ shifts is $\frac{p^2-1}{4p}$, so some $|S_M|^2$ is at least that: $|S_M|\ge\frac{\sqrt p}2\sqrt{1-\frac1{p^2}}$.
+\end{solution}
+
+\begin{solution}{ex:pvnonprim}
+\idea A non-primitive character is a primitive one with the integers sharing a factor with $q$ removed; remove them by Möbius inversion, and each piece is a primitive character sum over an arithmetic progression of multiples of $d$.
+\writeup For every $n$, $\chi(n)=\chi^*(n)$ if $\gcd(n,q)=1$, and $\chi(n)=0$ otherwise; and $\sum_{d\mid\gcd(n,q)}\mu(d)$ is $1$ or $0$ accordingly (Volume~1). So
+\[
+\begin{aligned}\sum_{n=M+1}^{M+N}\chi(n)&=\sum_{d\mid q}\mu(d)\sum_{\substack{M<n\le M+N\\d\mid n}}\chi^*(n)\\&=\sum_{d\mid q}\mu(d)\chi^*(d)\eqbr\cdot\sum_{M/d<m\le(M+N)/d}\chi^*(m).\end{aligned}
+\]
+Each inner sum is over an interval of integers, so by Theorem~\ref{thm:pv} (if $q^*>1$, which holds as $\chi$ is non-principal) it is at most $\sqrt{q^*}(1+\log q^*)$. Only squarefree $d$ contribute, and there are $2^{\omega(q)}$ of them.
+\end{solution}
+
+\begin{solution}{ex:logn}
+\idea The integers with first digit $1$ come in blocks $[10^k,2\cdot10^k[$ that are a ninth of $[1,10^{k+1}[$ but more than half of $[1,2\cdot10^k[$. The proportion swings between the two, so $\{\log_{10}n\}$ cannot settle down.
+\writeup Let $D(N)$ be the number of $n\le N$ with first digit $1$. The blocks $[10^i,2\cdot10^i[$ for $i<k$ contain $\sum_{i<k}10^i=\frac{10^k-1}9$ integers. So $D(10^k-1)=\frac{10^k-1}9$ and $P(10^k-1)\to\frac19$, while
+$D(2\cdot10^k-1)=\frac{10^k-1}9+10^k$ and $P(2\cdot10^k-1)\to\frac{1/9+1}2=\frac59$. Between these points, $P$ decreases on $[2\cdot10^k,10^{k+1}[$ (no new $1$s) and increases on $[10^k,2\cdot10^k[$ (only $1$s), so these
+are the extreme values, and $\liminf P=\frac19$, $\limsup P=\frac59$.
+
+The first digit of $n$ is $1$ exactly when $10^k\le n<2\cdot10^k$ for some $k$, that is $\{\log_{10}n\}\in[0,\log_{10}2[$. If $(\log_{10}n)$ were equidistributed, $P(N)$ would tend to $\log_{10}2=0.301$. It does not. For $2^n$,
+$\log_{10}2^n=n\log_{10}2$ with $\log_{10}2$ irrational, and Volume~4 (Exercise~6.5) proved equidistribution: the proportion of powers of $2$ beginning with $1$ is $\log_{10}2$.
+\end{solution}
+
+\begin{solution}{ex:nc23}
+\idea One differencing step lowers the exponent by one, turning $n^c$ into something like $hcn^{c-1}$, whose second derivative is small enough for van der Corput's test.
+\writeup By Theorem~\ref{thm:vdcdiff} it suffices to show that $u_n=(n+h)^c-n^c$ is equidistributed for each $h\ge1$. Fix $j\ge1$ (the case $j<0$ follows by conjugation) and put $g(x)=j((x+h)^c-x^c)$. Then
+$g''(x)=jc(c-1)\bigl((x+h)^{c-2}-x^{c-2}\bigr)=jc(c-1)(c-2)\int_x^{x+h}t^{c-3}\dd t$, which is positive, between $jc(c-1)(c-2)h(x+h)^{c-3}$ and $jc(c-1)(c-2)hx^{c-3}$. On a block $[M,2M]$ with $M\ge h$, this gives
+$\lambda\le g''\le A\lambda$ with $\lambda=jc(c-1)(c-2)h(3M)^{c-3}$ and $A=3^{3-c}$. Theorem~\ref{thm:secondderiv} bounds the block sum by $O(M\cdot M^{(c-3)/2}+M^{(3-c)/2})=O(M^{(c-1)/2}+M^{(3-c)/2})$. Both exponents are less than $1$
+because $1<c<3$, and both are positive, so summing over dyadic blocks as in Theorem~\ref{thm:nc} gives $\sum_{n\le N}e(ju_n)=o(N)$.
+
+For $k<c<k+1$ with $k\ge2$, differencing $k-1$ times leads to sequences whose $(k-1)$-th differences behave like $x^{c-k+1}$ with $1<c-k+1<2$; the same argument, with $g''$ of size $x^{c-k-1}$, applies.
+Induction on $k$ with Theorem~\ref{thm:vdcdiff} gives every non-integer $c>0$.
+\end{solution}
+
+\begin{solution}{pb:erdosnp}
+\idea The least non-residue is $p_k$ when $p$ is a residue modulo $p_1,\dots,p_{k-1}$ and a non-residue modulo $p_k$, which by reciprocity is a condition on $p$ modulo $M_k$: half of the
+classes at each step, so probability $2^{-k}$, exactly like a coin tossed until it shows tails. The difficulty is uniformity: (a) is for fixed $k$, and to average $n(p)$ one must control
+large $k$, where Brun--Titchmarsh gives an upper bound good enough to sum.
+
+\writeup (a) For $p>p_k$, $n(p)=p_k$ means $\bigl(\frac{p_i}p\bigr)=1$ for $i<k$ and $\bigl(\frac{p_k}p\bigr)=-1$. By quadratic reciprocity, $(\frac2p)$ depends on $p$ modulo $8$ and $(\frac qp)$
+on $p$ modulo $4q$, so $p\mapsto\bigl((\frac{p_i}p)\bigr)_{i\le k}$ factors through a homomorphism $(\Z/M_k\Z)^*\to\{\pm1\}^k$. It is onto: for a non-empty set $I$, the product
+$\prod_{i\in I}(\frac{p_i}p)$ is the Kronecker symbol of the non-square $\prod_{i\in I}p_i$, a non-principal character. So each sign pattern is taken on $\frac{\varphi(M_k)}{2^k}$ classes,
+and by the prime number theorem in progressions (Volume~5, Theorem~5.8) its proportion of primes tends to $2^{-k}$.
+
+(b) $n(p)>y$ means that all primes $q\le y$ are residues: a condition on $p$ modulo $M=8\prod_{3\le q\le y}q$, met by $\frac{\varphi(M)}{2^{\pi(y)}}$ classes. By Brun--Titchmarsh, each class
+contains at most $(2+o(1))\frac x{\varphi(M)\log(x/M)}\le(4+o(1))\frac x{\varphi(M)\log x}$ primes $p\le x$, since $M\le\sqrt x$. Summing over the classes, and adding the $O(y)$ primes
+dividing $M$, gives $O\bigl(\frac{\pi(x)}{2^{\pi(y)}}\bigr)$; note $y\le\log M\le\frac12\log x$ and $2^{\pi(y)}\le\sqrt x$, so $y=O(\frac{\pi(x)}{2^{\pi(y)}})$.
+
+(c) Let $Y=\frac{\log x}3$ and fix $k_0$. The primes with $n(p)=p_k$, $k\le k_0$, contribute $\pi(x)\bigl(\sum_{k\le k_0}\frac{p_k}{2^k}+o(1)\bigr)$ by (a). If $n(p)=p_j$ with $j>k_0$, let $j'\le j$
+be the least index with $p_{j'}\ge\min(p_j,Y)$; then $\min(n(p),Y)\le p_{j'}$ and $n(p)>p_{j'-1}$, with $p_{j'-1}<Y$. So these primes contribute at most
+$\sum_{j>k_0,\,p_{j-1}<Y}p_j\,\#\{p\le x:n(p)>p_{j-1}\}$. For $y<Y$, $8\prod_{q\le y}q\le8e^{1.01Y}\le\sqrt x$ for large $x$ (Chebyshev), so (b) applies and the contribution is at most
+$c\,\pi(x)\sum_{j>k_0}\frac{p_j}{2^{j-1}}$. This tail of a convergent series tends to $0$ as $k_0\to\infty$, which proves the limit $E$.
+
+(d) For $x=10^8$, $Y=6.14$, so $\min(n(p),Y)$ is $2,3,5$ or $6.14$, and the limit of (c) at this $x$ is nearly $2\cdot\frac12+3\cdot\frac14+5\cdot\frac18+6.14\cdot\frac18=3.1425$: the
+truncation, not a failure of the law. To reach the untruncated mean, one must show $\sum_{n(p)>\log x/3}n(p)=o(\pi(x))$. Each term is at most $p^{0.16}$ by Burgess, but this needs the
+number of primes with $n(p)>y$ to be very small for $\log x\ll y\le x^{0.16}$, where (b) no longer applies. Linnik's large sieve (Volume~5, Theorem~8.10) shows that
+$\#\{p\le x:n(p)>x^\varepsilon\}$ is bounded in terms of $\varepsilon$ alone, and the range in between needs a further argument.
+
+\tools{Quadratic reciprocity (Volume~1); Volume~5, Theorem~5.8, Exercise~8.4, Theorem~8.10.}
+
+\leads Erd\H os proved in 1961 that the untruncated mean tends to $E=\sum\frac{p_k}{2^k}$, and Martin and Pollack (2013) computed the analogous average for all non-principal characters
+modulo $p$. The record value $n(p)=67$ below $10^8$ is tiny compared with $p^{0.16}$, and well below the bound $2\log^2p$ that holds under the generalised Riemann hypothesis
+(Volume~5, Chapter~11).
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Weyl, \emph{Über die Gleichverteilung von Zahlen mod.\ Eins}, Mathematische Annalen 77 (1916), 313--352. The founding paper.
+\item J.~G.~van der Corput, \emph{Diophantische Ungleichungen I: zur Gleichverteilung modulo Eins}, Acta Mathematica 56 (1931), 373--456. The difference theorem.
+\item L.~Kuipers and H.~Niederreiter, \emph{Uniform Distribution of Sequences}, Wiley, 1974 (Dover reprint, 2006), Chapter~1.
+\item S.~W.~Graham and G.~Kolesnik, \emph{Van der Corput's Method of Exponential Sums}, LMS Lecture Notes 126, Cambridge University Press, 1991. Kusmin--Landau and the derivative tests.
+\item R.~C.~Vaughan, \emph{The Hardy--Littlewood Method}, 2nd ed., Cambridge University Press, 1997, Chapter~2. Weyl's inequality and Lemma~\ref{lem:summin}.
+\item H.~L.~Montgomery and R.~C.~Vaughan, \emph{Multiplicative Number Theory I: Classical Theory}, Cambridge University Press, 2007, Chapter~9. Character sums and Pólya--Vinogradov.
+\item I.~M.~Vinogradov, \emph{The Method of Trigonometrical Sums in the Theory of Numbers}, 1947 (Dover reprint, 2004).
+\item D.~A.~Burgess, \emph{On character sums and primitive roots}, Proceedings of the London Mathematical Society 12 (1962), 179--192.
+\item E.~Bach, \emph{Explicit bounds for primality testing and related problems}, Mathematics of Computation 55 (1990), 355--380.
+\item J.~Bourgain, C.~Demeter and L.~Guth, \emph{Proof of the main conjecture in Vinogradov's mean value theorem for degrees higher than three}, Annals of Mathematics 184 (2016), 633--682.
+\item H.~Iwaniec and E.~Kowalski, \emph{Analytic Number Theory}, AMS Colloquium Publications 53, 2004, Chapter~8.
+\end{itemize}

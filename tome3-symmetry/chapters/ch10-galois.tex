@@ -1,0 +1,452 @@
+\chapter{Galois Theory}
+
+\begin{center}\itshape
+The quadratic formula is four thousand years old; formulas for degrees $3$ and $4$ were found in the 1540s.\\
+Why was there never a formula for degree $5$?
+\end{center}
+
+Cardano published the solution of the cubic in 1545, and his student Ferrari that of the quartic: their roots can be written with $+,-,\times,\div$ and $n$-th roots. For the quintic, nearly three centuries of attempts failed, until Ruffini (1799, with gaps) and Abel (1824) proved that no such formula exists. Galois (1830, published in 1846) explained \emph{why}, and turned the question into one about groups: an equation is solvable by radicals exactly when its group of symmetries, the permutations of its roots that respect all algebraic relations, is solvable in the sense of Chapter~5. For $X^5-4X+2$ this group is $\mathfrak S_5$, which is not solvable because $A_5$ is simple.
+
+The heart of the theory is a dictionary between the intermediate fields of an extension and the subgroups of its Galois group (Figure~\ref{fig:galoislattice}). Chapter~8 provided the counting tools (the tower law and Theorem~\ref{thm:splitunique}); we now add a fixed-field argument due to Artin, and harvest: the fundamental theorem, the regular polygons that can be constructed, and the impossibility of solving the quintic.
+
+\emph{Convention.} Throughout, fields are subfields of $\C$, so they contain $\Q$, every irreducible polynomial has distinct roots (Lemma~\ref{lem:sep}), and every finite extension has a primitive element (Theorem~\ref{thm:primitiveelement}). Everything extends to fields of characteristic $0$, and, with ``separable'' added, to all fields; Chapter~9 treated finite fields directly.
+
+\section{The Galois group}
+
+\begin{definition}\label{def:galois}
+Let $L/K$ be a finite extension. The \emph{Galois group} $\operatorname{Gal}(L/K)$ is the group of field automorphisms of $L$ that fix every element of $K$. For a subgroup $H$ of $\operatorname{Gal}(L/K)$, the \emph{fixed field} is $L^H=\{x\in L:\sigma(x)=x\text{ for all }\sigma\in H\}$, an intermediate field. The extension is \emph{Galois} if $|\operatorname{Gal}(L/K)|=[L:K]$. The \emph{Galois group of a polynomial} $P\in K[X]$ is $\operatorname{Gal}(L/K)$, where $L$ is the splitting field of $P$ in $\C$.
+\end{definition}
+
+\begin{lemma}\label{lem:permroots}
+Let $\sigma\in\operatorname{Gal}(L/K)$ and $P\in K[X]$. If $\alpha\in L$ is a root of $P$, so is $\sigma(\alpha)$. Consequently, if $L=K(\alpha_1,\dots,\alpha_n)$ where $\alpha_1,\dots,\alpha_n$ are the roots of $P$, then $\sigma\mapsto(\sigma\text{ restricted to the roots})$ is an injective homomorphism $\operatorname{Gal}(L/K)\to\mathfrak S_n$.
+\end{lemma}
+\begin{proof}
+$P(\sigma(\alpha))=\sigma(P(\alpha))=\sigma(0)=0$, because $\sigma$ respects sums and products and fixes the coefficients. So $\sigma$ maps the finite set of roots to itself, injectively, hence bijectively. An automorphism fixing $K$ and the $\alpha_i$ fixes every element of $K(\alpha_1,\dots,\alpha_n)$ (these are rational expressions in the $\alpha_i$), so the map is injective.
+\end{proof}
+
+\begin{proposition}\label{prop:autbound}
+For every finite extension, $|\operatorname{Gal}(L/K)|\le[L:K]$.
+\end{proposition}
+\begin{proof}
+Write $L=K(\gamma)$ (primitive element). An automorphism fixing $K$ is determined by $\sigma(\gamma)$, which is a root in $L$ of the minimal polynomial $m_\gamma$ (Lemma~\ref{lem:permroots}). There are at most $\deg m_\gamma=[L:K]$ such roots.
+\end{proof}
+
+\begin{think}
+The roots of $X^3-2$ are $\sqrt[3]2$, $\omega\sqrt[3]2$, $\omega^2\sqrt[3]2$. Which permutations of them should extend to automorphisms of the splitting field? What about $X^3-3X+1$, whose roots are $2\cos\frac{2\pi}9$, $2\cos\frac{4\pi}9$, $2\cos\frac{8\pi}9$? (Hint: $(2\cos\theta)^2-2=2\cos2\theta$.)
+\end{think}
+
+Example~\ref{ex:cuberoot} answered the first question: all six permutations do, and the group is $\mathfrak S_3$. For the second, if $u=2\cos\frac{2\pi}9$, the other roots are $u^2-2$ and $(u^2-2)^2-2$, so an automorphism is determined by the image of $u$, and only the three cyclic permutations can occur: the relation ``$r_2=r_1^2-2$'' must be respected. Exercise~\ref{ex:discr} shows the group is $A_3$.
+
+\section{Galois extensions}
+
+\begin{theorem}\label{thm:galoischar}
+For a finite extension $L/K$, the following are equivalent:
+\begin{enumerate}[label=(\roman*)]
+\item $L$ is the splitting field over $K$ of some polynomial of $K[X]$;
+\item $L/K$ is Galois;
+\item $L^{\operatorname{Gal}(L/K)}=K$;
+\item ($L/K$ is \emph{normal}) every irreducible polynomial of $K[X]$ with a root in $L$ splits in $L$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(i)$\Rightarrow$(ii). Let $L$ be the splitting field of $P$, and let $P_0$ be the product of the distinct monic irreducible factors of $P$. It has the same roots, hence the same splitting field, and distinct roots (Lemma~\ref{lem:sep}; two distinct monic irreducibles have no common root, both being its minimal polynomial). By Theorem~\ref{thm:splitunique}, $L$ has exactly $[L:K]$ automorphisms fixing $K$.
+
+(ii)$\Rightarrow$(iii). Let $G=\operatorname{Gal}(L/K)$ and $F=L^G\supseteq K$. Every element of $G$ fixes $F$, so $G\subseteq\operatorname{Gal}(L/F)$, and by Proposition~\ref{prop:autbound}, $[L:K]=|G|\le[L:F]\le[L:K]$. So $[L:F]=[L:K]$ and $F=K$ by the tower law.
+
+(iii)$\Rightarrow$(iv). Let $P$ be irreducible with a root $\alpha\in L$, and let $\alpha_1=\alpha,\dots,\alpha_r$ be the distinct elements of the orbit $\{\sigma(\alpha):\sigma\in G\}$. Put $Q=\prod_{j}(X-\alpha_j)$. Each $\tau\in G$ permutes the orbit, so $\tau Q=Q$: the coefficients of $Q$ lie in $L^G=K$. As $Q(\alpha)=0$, the minimal polynomial of $\alpha$, which is $P$ up to a constant, divides $Q$, which splits in $L$. So $P$ splits in $L$.
+
+(iv)$\Rightarrow$(i). Write $L=K(\gamma)$. The minimal polynomial of $\gamma$ splits in $L$ by (iv), and its roots generate $L$ over $K$ since $\gamma$ already does. So $L$ is its splitting field.
+\end{proof}
+
+\begin{lemma}[Artin]\label{lem:artin}
+Let $L/K$ be finite and $H$ a subgroup of $\operatorname{Gal}(L/K)$. Then $[L:L^H]=|H|$ and $\operatorname{Gal}(L/L^H)=H$.
+\end{lemma}
+\begin{proof}
+Let $F=L^H$. For $\alpha\in L$, the polynomial $\prod(X-\beta)$ over the distinct elements $\beta$ of the orbit $H\alpha$ has coefficients fixed by $H$ (as in (iii)$\Rightarrow$(iv) above), hence in $F$, and degree at most $|H|$. So every element of $L$ has degree at most $|H|$ over $F$; taking a primitive element, $L=F(\gamma)$, gives $[L:F]\le|H|$. On the other hand $H\subseteq\operatorname{Gal}(L/F)$, so $|H|\le|\operatorname{Gal}(L/F)|\le[L:F]$ by Proposition~\ref{prop:autbound}. Hence $|H|=|\operatorname{Gal}(L/F)|=[L:F]$, and $H=\operatorname{Gal}(L/F)$.
+\end{proof}
+
+\section{The fundamental theorem}
+
+\begin{theorem}[fundamental theorem of Galois theory]\label{thm:ftgt}
+Let $L/K$ be a Galois extension with group $G$.
+\begin{enumerate}[label=(\alph*)]
+\item The maps $H\mapsto L^H$ and $M\mapsto\operatorname{Gal}(L/M)$ are inverse bijections between the subgroups of $G$ and the intermediate fields $K\subseteq M\subseteq L$. They reverse inclusions, and
+\[
+[L:L^H]=|H|,\qquad[L^H:K]=[G:H].
+\]
+\item For $\sigma\in G$, $\sigma(L^H)=L^{\sigma H\sigma^{-1}}$.
+\item $M/K$ is Galois iff $\operatorname{Gal}(L/M)$ is normal in $G$. Then restriction $\sigma\mapsto\sigma|_M$ induces an isomorphism $G/\operatorname{Gal}(L/M)\cong\operatorname{Gal}(M/K)$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+(a) By Lemma~\ref{lem:artin}, $\operatorname{Gal}(L/L^H)=H$. Conversely, for an intermediate field $M$, $L$ is a splitting field over $K$ (Theorem~\ref{thm:galoischar}), hence over $M$ (the same polynomial, the same roots), so $L/M$ is Galois and $L^{\operatorname{Gal}(L/M)}=M$ by Theorem~\ref{thm:galoischar}(iii). So the two maps are inverse to each other. Clearly $H\subseteq H'$ implies $L^H\supseteq L^{H'}$. The degrees: $[L:L^H]=|H|$ by Lemma~\ref{lem:artin}, and $[L^H:K]=[L:K]/[L:L^H]=|G|/|H|$ by the tower law.
+
+(b) For $x\in L$: $\tau(\sigma x)=\sigma x$ for all $\tau\in\sigma H\sigma^{-1}$ iff $\sigma h\sigma^{-1}(\sigma x)=\sigma x$ for all $h\in H$ iff $\sigma(hx)=\sigma(x)$ for all $h\in H$ iff $x\in L^H$. So $L^{\sigma H\sigma^{-1}}=\sigma(L^H)$.
+
+(c) Let $M$ be intermediate and $H=\operatorname{Gal}(L/M)$. If $H\trianglelefteq G$, then by (b) $\sigma(M)=M$ for all $\sigma\in G$, so restriction is a homomorphism $G\to\operatorname{Gal}(M/K)$; its kernel is the set of $\sigma$ fixing $M$, i.e.\ $H$. So $\operatorname{Gal}(M/K)$ contains a copy of $G/H$, of order $[M:K]$ by (a); with Proposition~\ref{prop:autbound}, $|\operatorname{Gal}(M/K)|=[M:K]$, $M/K$ is Galois, and the map is onto. Conversely, if $M/K$ is Galois, $M$ is the splitting field of some $P\in K[X]$ (Theorem~\ref{thm:galoischar}). Each $\sigma\in G$ maps roots of $P$ to roots of $P$ (Lemma~\ref{lem:permroots}), which lie in $M$ and generate it; so $\sigma(M)=M$, and by (b) and (a), $\sigma H\sigma^{-1}=H$.
+\end{proof}
+
+\begin{example}\label{ex:galv4}
+$L=\Q(\sqrt2,\sqrt3)$ is the splitting field of $(X^2-2)(X^2-3)$, of degree $4$ (Example~\ref{ex:sqrt2sqrt3}). Its automorphisms send $\sqrt2\mapsto\pm\sqrt2$ and $\sqrt3\mapsto\pm\sqrt3$ (Lemma~\ref{lem:permroots}); there are at most $4$ sign choices and exactly $4$ automorphisms, so all occur, and $G\cong(\Z/2\Z)^2$. This group has exactly three subgroups of order $2$, so $L$ has exactly three subfields of degree $2$, $\Q(\sqrt2)$, $\Q(\sqrt3)$, $\Q(\sqrt6)$ (each fixed by one sign change), as Chapter~8 announced.
+\end{example}
+
+\begin{example}\label{ex:galx42}
+Let $\alpha=\sqrt[4]2$ and $L=\Q(\alpha,i)$, the splitting field of $X^4-2$, of degree $8$ (Exercise~\ref{ex:splitdeg}). An automorphism sends $\alpha$ to one of $\pm\alpha,\pm i\alpha$ and $i$ to $\pm i$; that gives at most $8$ choices, and there are $8$ automorphisms, so each choice occurs. Let $r$ be $\alpha\mapsto i\alpha$, $i\mapsto i$, and $s$ complex conjugation ($\alpha\mapsto\alpha$, $i\mapsto-i$). Then $r$ has order $4$ ($r^k(\alpha)=i^k\alpha$), $s$ has order $2$, and $srs^{-1}=r^{-1}$: both fix $i$ and send $\alpha$ to $-i\alpha$, since $srs(\alpha)=sr(\alpha)=s(i\alpha)=-i\alpha$. So $G=\langle r,s\rangle$ is the dihedral group $D_4$, the symmetries of the square formed by the four roots. Figure~\ref{fig:galoislattice} shows its ten subgroups and the ten corresponding fields; Exercise~\ref{ex:x42check} checks them.
+\end{example}
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-lattice}
+\caption{The Galois correspondence for $X^4-2$ over $\Q$, with $\alpha=\sqrt[4]2$, $r:\alpha\mapsto i\alpha$ fixing $i$, and $s$ complex conjugation. Each subgroup $H$ (blue) sits at the same place in its diagram as its fixed field $L^H$ (red); the subgroup diagram is drawn upside down, because larger groups fix smaller fields.}
+\label{fig:galoislattice}
+\end{figure}
+
+\section{Cyclotomic fields and regular polygons}
+
+For $n\ge1$ let $\zeta_n=e^{2i\pi/n}$. The roots of $X^n-1$ are its powers, so $\Q(\zeta_n)$ is the splitting field of $X^n-1$: it is Galois over $\Q$.
+
+\begin{proposition}\label{prop:cyclo}
+For every field $K$, $K(\zeta_n)/K$ is Galois, and $\sigma\mapsto a_\sigma$, where $\sigma(\zeta_n)=\zeta_n^{a_\sigma}$, is an injective homomorphism $\operatorname{Gal}(K(\zeta_n)/K)\to(\Z/n\Z)^*$. In particular this Galois group is abelian. For $K=\Q$ and $n=p$ prime, it is an isomorphism, and $\operatorname{Gal}(\Q(\zeta_p)/\Q)$ is cyclic of order $p-1$.
+\end{proposition}
+\begin{proof}
+$\sigma(\zeta_n)$ is a root of $X^n-1$, so it is $\zeta_n^a$ for some $a$ defined modulo $n$; as $\sigma$ is injective, $\zeta_n^a$ has order $n$ like $\zeta_n$, so $\gcd(a,n)=1$. Then $\sigma\tau(\zeta_n)=\sigma(\zeta_n^{a_\tau})=\zeta_n^{a_\sigma a_\tau}$, so $a_{\sigma\tau}=a_\sigma a_\tau$. Since $\sigma$ is determined by $\sigma(\zeta_n)$, the map is injective. For $n=p$, $\Phi_p$ is irreducible (Volume~0, Chapter~3), so $[\Q(\zeta_p):\Q]=p-1=|(\Z/p\Z)^*|$, and the injective map is onto; $(\Z/p\Z)^*$ is cyclic (Volume~1, Chapter~5).
+\end{proof}
+
+In fact $\operatorname{Gal}(\Q(\zeta_n)/\Q)\cong(\Z/n\Z)^*$ for every $n$, because the cyclotomic polynomial $\Phi_n$ is irreducible (Exercise~\ref{ex:phin}). For constructions, the injectivity is enough.
+
+\begin{theorem}[Gauss, Wantzel]\label{thm:gw}
+If $\varphi(n)$ is a power of $2$, the regular $n$-gon is constructible with ruler and compass. In particular the $p$-gon is constructible for every Fermat prime $p=2^{2^k}+1$: $3$, $5$, $17$, $257$, $65537$.
+\end{theorem}
+\begin{proof}
+Let $L=\Q(\zeta_n)$ and $G=\operatorname{Gal}(L/\Q)$. By Proposition~\ref{prop:cyclo}, $|G|$ divides $\varphi(n)$ (Lagrange), so $|G|=2^m$. A group of order $2^m$ has a subgroup of index $2$ (Corollary~\ref{cor:pk}: a subgroup of order $2^{m-1}$), which has one of index $2$ in turn, and so on: there is a chain $G=G_0\supset G_1\supset\dots\supset G_m=\{1\}$ with $[G_{j}:G_{j+1}]=2$. The fixed fields $K_j=L^{G_j}$ form a chain $\Q=K_0\subset K_1\subset\dots\subset K_m=L$ (Theorem~\ref{thm:ftgt}), with
+\[
+[K_{j+1}:K_j]=\frac{[L:K_j]}{[L:K_{j+1}]}=\frac{|G_j|}{|G_{j+1}|}=2.
+\]
+As $\zeta_n\in K_m$, Wantzel's theorem (Theorem~\ref{thm:wantzel}) shows that $\zeta_n$ is constructible. For $p=2^{2^k}+1$ prime, $\varphi(p)=2^{2^k}$.
+\end{proof}
+
+Together with Corollary~\ref{cor:classical}(c) and Exercise~\ref{ex:phin}, the regular $n$-gon is constructible if and only if $\varphi(n)$ is a power of $2$. Here is which $n$ those are. By the Chinese remainder theorem for rings (Theorem~\ref{thm:crtring}), if $n=\prod p^{a}$ then $\Z/n\Z\cong\prod\Z/p^{a}\Z$, and the unit groups correspond, so $\varphi(n)=\prod\varphi(p^{a})$. The group $(\Z/p^{a}\Z)^*$ is the residues not divisible by $p$, and there are $\varphi(p^{a})=p^{a}-p^{a-1}=p^{a-1}(p-1)$ of them. For the prime $2$ and $k\ge1$, the odd residues give $\varphi(2^{k})=2^{k-1}$, a power of $2$. For an odd prime $p$, $\varphi(p^{a})$ is a power of $2$ only if $a=1$, since otherwise $p$ divides it, and only if $p-1$ is a power of $2$. A prime of the form $2^{m}+1$ has $m$ itself a power of $2$: if an odd integer $r$ divides $m$, then $2^{m/r}+1$ divides $2^{m}+1$, and both factors exceed $1$ when $r>1$ and $m/r>0$. Such primes are the Fermat primes. Conversely, if $n=2^{k}p_1\cdots p_s$ with distinct Fermat primes $p_i$, then each $p_i-1$ is a power of $2$, and so is $\varphi(n)$. Nobody knows whether there are Fermat primes beyond $65537$. Exercise~\ref{ex:gauss17} computes the first step of Gauss' tower for the $17$-gon.
+
+\begin{remark}[Frobenius and reduction modulo $p$]
+Chapter~6 observed that $X^4+1$ is irreducible over $\Q$ but factors modulo every prime. Here is the mechanism. Let $f\in\Z[X]$ be monic, and $p$ a prime such that $f$ mod $p$ has distinct roots. In a splitting field of $f$ mod $p$, the Frobenius $x\mapsto x^p$ permutes the roots, and the orbit of a root $\beta$ is $\beta,\beta^p,\dots,\beta^{p^{d-1}}$ with $d$ the degree of its minimal polynomial over $\mathbb F_p$ (Theorem~\ref{thm:galfq} applied to $\mathbb F_p(\beta)$): the degrees of the irreducible factors of $f$ mod $p$ are the cycle lengths of Frobenius. Dedekind proved that this permutation, once the roots modulo $p$ are matched with the complex roots, belongs to the Galois group of $f$ over $\Q$ (Volume~12). For $X^4+1$, the roots are the primitive $8$-th roots of unity, and the Galois group $(\Z/8\Z)^*\cong(\Z/2\Z)^2$ has no $4$-cycle; so no prime can make $X^4+1$ irreducible. (Without Dedekind: for odd $p$, $8\mid p^2-1$, so the roots lie in $\mathbb F_{p^2}$, and the factors have degree $\le2$.) A numerical calculation uses the theorem the other way round, guessing Galois groups from factorisations modulo many primes.
+\end{remark}
+
+\section{Solvability by radicals}\label{sec:radicals}
+
+\begin{definition}
+A polynomial $P\in K[X]$ is \emph{solvable by radicals} if its roots lie in a field $K_r$ obtained by a chain
+\[
+\begin{gathered}K=K_0\subseteq K_1\subseteq\dots\subseteq K_r,\qq K_j=K_{j-1}(a_j),\quad a_j^{n_j}\in K_{j-1},\end{gathered}
+\]
+for some $a_j\in\C$ and $n_j\ge1$: each step adjoins an $n_j$-th root of an element already obtained. Such a chain is a \emph{radical tower}.
+\end{definition}
+
+The quadratic formula and the formulas of Cardano and Ferrari say that every polynomial of degree $\le4$ is solvable by radicals over $\Q$ (Exercise~\ref{ex:cardano} does the cubic). We first describe the steps of a radical tower.
+
+\begin{lemma}\label{lem:kummerstep}
+Let $F$ be a field containing $\zeta_m$, and $b\in\C$ with $b^m=c\in F$. Then $F(b)/F$ is Galois with abelian Galois group.
+\end{lemma}
+\begin{proof}
+The roots of $X^m-c$ are the $\zeta_m^jb$, all in $F(b)$, so $F(b)$ is the splitting field of $X^m-c$ and is Galois. If $b=0$ there is nothing to prove. Otherwise, for $\sigma$ in the group, $\sigma(b)$ is a root of $X^m-c$, so $\sigma(b)=\zeta_m^{k_\sigma}b$. As $\sigma$ fixes $\zeta_m\in F$, $\sigma\tau(b)=\sigma(\zeta_m^{k_\tau}b)=\zeta_m^{k_\tau+k_\sigma}b$, so $\sigma\mapsto k_\sigma\bmod m$ is a homomorphism to $\Z/m\Z$, injective since $\sigma$ is determined by $\sigma(b)$. A subgroup of $\Z/m\Z$ is abelian.
+\end{proof}
+
+\begin{theorem}[Galois]\label{thm:radsolv}
+If $P\in K[X]$ is solvable by radicals, its Galois group is solvable.
+\end{theorem}
+\begin{proof}
+Let $K=K_0\subseteq\dots\subseteq K_r$ be a radical tower containing the roots of $P$, with $a_j^{n_j}\in K_{j-1}$, and let $N=n_1\cdots n_r$.
+
+\emph{A Galois radical tower.} Let $E$ be the splitting field over $K$ of $(X^N-1)\prod_jm_{a_j}$, the $m_{a_j}$ being the minimal polynomials over $K$, and $G=\operatorname{Gal}(E/K)$. The roots of $m_{a_j}$ in $E$ are the $\sigma(a_j)$, $\sigma\in G$: by Lemma~\ref{lem:extend1} there is an isomorphism $K(a_j)\to K(\beta)$ with $a_j\mapsto\beta$ for every root $\beta$, and by Theorem~\ref{thm:splitunique} it extends to an automorphism of $E$ (a splitting field over both). So $E$ is generated over $K$ by $\zeta_N$ and the elements $\sigma(a_j)$. List them as $b_1,\dots,b_s$: first the $\sigma(a_1)$ for all $\sigma$, then the $\sigma(a_2)$, and so on, and put $E_0=K(\zeta_N)$, $E_i=E_{i-1}(b_i)$. If $b_i=\sigma(a_j)$, then $b_i^{n_j}=\sigma(a_j^{n_j})$ lies in $\sigma(K_{j-1})=K(\sigma(a_1),\dots,\sigma(a_{j-1}))\subseteq E_{i-1}$, and $\zeta_{n_j}=\zeta_N^{N/n_j}\in E_{i-1}$. So by Lemma~\ref{lem:kummerstep}, each $E_i/E_{i-1}$ is Galois with abelian group, and so is $E_0/K$ (Proposition~\ref{prop:cyclo}).
+
+\emph{The group.} Let $H_i=\operatorname{Gal}(E/E_i)$ for $0\le i\le s$, and $H_{-1}=G$. Then $H_s=\{1\}$. Apply Theorem~\ref{thm:ftgt}(c) to the Galois extension $E/E_{i-1}$, whose group is $H_{i-1}$, and its intermediate field $E_i$, Galois over $E_{i-1}$: $H_i\trianglelefteq H_{i-1}$ and $H_{i-1}/H_i\cong\operatorname{Gal}(E_i/E_{i-1})$ is abelian. So $G$ is solvable.
+
+\emph{Conclusion.} The splitting field $L$ of $P$ lies in $E$ (the roots of $P$ are in $K_r\subseteq E$) and is Galois over $K$, so $\operatorname{Gal}(L/K)\cong G/\operatorname{Gal}(E/L)$ (Theorem~\ref{thm:ftgt}(c)), a quotient of a solvable group, hence solvable (Proposition~\ref{prop:solv}).
+\end{proof}
+
+\begin{theorem}[Abel, Ruffini]\label{thm:abelruffini}
+The Galois group of $X^5-4X+2$ over $\Q$ is $\mathfrak S_5$. Consequently its roots cannot be expressed by radicals, and there is no formula in radicals for the roots of the general quintic.
+\end{theorem}
+\begin{proof}
+Let $f=X^5-4X+2$. It is irreducible by Eisenstein's criterion at $2$. The values $f(-2)=-22$, $f(0)=2$, $f(1)=-1$, $f(2)=26$ change sign three times, so the intermediate-value theorem gives at least three distinct real roots. The derivative $f'=5X^4-4$ has exactly two real roots, $\pm(4/5)^{1/4}$. Between $k$ distinct real roots of $f$ lie at least $k-1$ distinct roots of $f'$, so $f$ has at most three distinct real roots, and therefore exactly three. They are simple. A multiple root of $f$ is a root of $f'$. The second derivative $f''=20X^3$ shares no root with $f'$, so each root of $f'$ is simple, and a common root of $f$ and $f'$ would be a root of $f$ of multiplicity exactly two. Neither root of $f'$ is a root of $f$: if $\rho=(4/5)^{1/4}$, then $\rho^4=4/5$ and $f(\rho)=\rho\cdot\rho^4-4\rho+2=2-\frac{16}5\rho$, which vanishes only for $\rho=5/8$, but $(5/8)^4=625/4096\ne4/5$; and $f(-\rho)=2+\frac{16}5\rho>0$. Complex conjugation therefore fixes the three real roots and swaps the other two: it is a transposition of the five roots.
+
+Let $L$ be the splitting field, $G$ its Galois group, viewed as a group of permutations of the five roots (Lemma~\ref{lem:permroots}). For a root $\alpha$, $[\Q(\alpha):\Q]=5$ divides $[L:\Q]=|G|$, so by Cauchy's theorem (Theorem~\ref{thm:cauchy}) $G$ contains an element of order $5$, which in $\mathfrak S_5$ is a $5$-cycle $c$ (Corollary~\ref{cor:ordersign}). Complex conjugation maps $L$ to itself (it permutes the roots, which generate $L$), so its restriction $\tau$ is in $G$; it fixes the three real roots and swaps the two others: $\tau$ is a transposition $(a\,b)$.
+
+Some power $c^k$ sends $a$ to $b$, and it is again a $5$-cycle, since $5$ is prime. Number the roots so that $c^k=(1\,2\,3\,4\,5)$ with $a=1$, $b=2$. Conjugating $(1\,2)$ by powers of $c^k$ gives $(2\,3)$, $(3\,4)$, $(4\,5)$ (Proposition~\ref{prop:conjSn}), and the adjacent transpositions generate $\mathfrak S_5$ (Proposition~\ref{prop:gens}). So $G=\mathfrak S_5$, which is not solvable (Proposition~\ref{prop:solv}(d)), and Theorem~\ref{thm:radsolv} concludes. A general formula in radicals, valid for all quintics, would in particular express the roots of $f$.
+\end{proof}
+
+The converse of Theorem~\ref{thm:radsolv} is also true, and completes Galois' criterion. It rests on a converse of Lemma~\ref{lem:kummerstep}, due to Lagrange and Kummer.
+
+\begin{lemma}[Dedekind]\label{lem:dedekind}
+Distinct automorphisms $\sigma_1,\dots,\sigma_n$ of a field $L$ are linearly independent over $L$: if $c_1\sigma_1(x)+\dots+c_n\sigma_n(x)=0$ for all $x\in L$, with $c_i\in L$, then all $c_i=0$.
+\end{lemma}
+\begin{proof}
+Suppose not, and take a relation with the fewest non-zero coefficients, say $\sum_{i\le k}c_i\sigma_i=0$ with all $c_i\ne0$. Then $k\ge2$ (as $\sigma_1(1)=1\ne0$). Choose $y$ with $\sigma_1(y)\ne\sigma_2(y)$. Applying the relation to $yx$ gives $\sum c_i\sigma_i(y)\sigma_i(x)=0$; subtracting $\sigma_1(y)$ times the original relation gives $\sum_{i=2}^kc_i(\sigma_i(y)-\sigma_1(y))\sigma_i(x)=0$ for all $x$, a shorter relation whose coefficient of $\sigma_2$ is non-zero. Contradiction.
+\end{proof}
+
+\begin{proposition}[Kummer]\label{prop:kummer}
+Let $F$ contain $\zeta_m$, and $E/F$ be Galois with cyclic group of order $m$. Then $E=F(\theta)$ for some $\theta$ with $\theta^m\in F$.
+\end{proposition}
+\begin{proof}
+Let $\sigma$ generate the group, and for $x\in E$ consider the \emph{Lagrange resolvent}
+\[
+\theta=\sum_{j=0}^{m-1}\zeta_m^{-j}\sigma^j(x).
+\]
+By Lemma~\ref{lem:dedekind} (applied to the $m$ distinct automorphisms $\mathrm{id},\sigma,\dots,\sigma^{m-1}$), $\theta\ne0$ for some $x$; fix such an $x$. Since $\sigma$ fixes $\zeta_m$, re-indexing with $\sigma^m=\mathrm{id}$ gives
+\[
+\sigma(\theta)=\sum_j\zeta_m^{-j}\sigma^{j+1}(x)=\zeta_m\theta.
+\] Hence $\sigma(\theta^m)=\theta^m$, so $\theta^m\in E^{\langle\sigma\rangle}=F$. And $\sigma^j(\theta)=\zeta_m^j\theta\ne\theta$ for $0<j<m$, so only the identity fixes $\theta$: $\operatorname{Gal}(E/F(\theta))=\{1\}$ and $F(\theta)=E$ (Theorem~\ref{thm:ftgt}).
+\end{proof}
+
+\begin{theorem}[Galois' criterion]\label{thm:galoiscrit}
+$P\in K[X]$ is solvable by radicals iff its Galois group is solvable.
+\end{theorem}
+\begin{proof}
+One direction is Theorem~\ref{thm:radsolv}. Conversely, let $L$ be the splitting field of $P$, $G=\operatorname{Gal}(L/K)$ solvable, $N=|G|$, $K'=K(\zeta_N)$ and $L'=L(\zeta_N)$, the splitting field of $P\cdot(X^N-1)$ over $K'$. Restriction to $L$ maps $\operatorname{Gal}(L'/K')$ injectively into $G$ (an automorphism fixing $\zeta_N$ and the roots of $P$ is the identity), so $G'=\operatorname{Gal}(L'/K')$ is solvable (Proposition~\ref{prop:solv}(a)) and $|G'|$ divides $N$.
+
+Refine a chain $\{1\}=G'_0\trianglelefteq\dots\trianglelefteq G'_r=G'$ with abelian quotients so that every quotient is cyclic of prime order: if $A=G'_i/G'_{i-1}$ is abelian and not of prime order, it has a proper non-trivial subgroup $B$ (Cauchy's theorem gives one of prime order $q$ unless $|A|=q$), normal since $A$ is abelian; its preimage sits strictly between $G'_{i-1}$ and $G'_i$, normal in $G'_i$, with abelian quotients (Theorem~\ref{thm:iso23}); repeat, which ends as orders decrease. Now take fixed fields: $K'=F_r\subseteq F_{r-1}\subseteq\dots\subseteq F_0=L'$ with $F_{i-1}=L'^{G'_{i-1}}$, and $F_{i-1}/F_i$ Galois with group $G'_i/G'_{i-1}$ cyclic of prime order $q\mid N$ (Theorem~\ref{thm:ftgt}(c) applied to $L'/F_i$). As $\zeta_q=\zeta_N^{N/q}\in F_i$, Proposition~\ref{prop:kummer} gives $F_{i-1}=F_i(\theta_i)$ with $\theta_i^q\in F_i$. Together with $K\subseteq K(\zeta_N)$, a step with $\zeta_N^N=1\in K$, this is a radical tower from $K$ to $L'$, which contains the roots of $P$.
+\end{proof}
+
+\begin{beauty}
+Galois' theory converts a question about numbers (can these roots be written with radicals?) into a question about a finite group (is it solvable?), which can be settled by counting. The same dictionary between fields and groups governs the constructible polygons, the arithmetic of cyclotomic fields that Volume~1 met through Gauss sums, and, through the Frobenius elements of the last remark, the way primes split in number fields (Volume~12). Its modern descendants are the Langlands programme, which predicts how Galois groups are encoded in analysis, and the inverse Galois problem: is every finite group the Galois group of some polynomial over $\Q$? For solvable groups, Shafarevich proved it in 1954; in general, nobody knows.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:q235}
+Show that $\operatorname{Gal}(\Q(\sqrt2,\sqrt3,\sqrt5)/\Q)\cong(\Z/2\Z)^3$, and count the intermediate fields of degree $2$ and of degree $4$ over $\Q$. List the quadratic ones.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:x42check}
+In Example~\ref{ex:galx42}, check that each field of Figure~\ref{fig:galoislattice} is fixed by the subgroup drawn at the same place. Which of these fields are Galois over $\Q$? Show directly that $\Q(\sqrt[4]2)/\Q$ is not normal.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:zeta7}
+Let $\zeta=\zeta_7$. Show that $\Q(\zeta)$ has exactly two subfields other than $\Q$ and $\Q(\zeta)$: $\Q(\cos\frac{2\pi}7)$, of degree $3$, and a quadratic field. Show that $\eta=\zeta+\zeta^2+\zeta^4$ satisfies $\eta^2+\eta+2=0$, and identify the quadratic field.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:gauss17}
+Let $\zeta=\zeta_{17}$; $3$ generates $(\Z/17\Z)^*$. Put $\eta_0=\sum_{k\text{ even}}\zeta^{3^k}$ and $\eta_1=\sum_{k\text{ odd}}\zeta^{3^k}$ ($0\le k\le15$). Show that $\eta_0+\eta_1=-1$ and $\eta_0\eta_1=-4$, so that $\eta_{0,1}=\frac{-1\pm\sqrt{17}}2$: the first floor of Gauss' tower.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sp}
+Let $p$ be prime and $f\in\Q[X]$ irreducible of degree $p$, with exactly two non-real roots. Show that its Galois group is $\mathfrak S_p$. Deduce that $X^5-6X+3$ is not solvable by radicals.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:discr}
+Let $f\in K[X]$ be a cubic with distinct roots $r_1,r_2,r_3$ and $\delta=(r_1-r_2)(r_1-r_3)(r_2-r_3)$. Show that $\delta^2\in K$, and that the Galois group, viewed in $\mathfrak S_3$, is contained in $A_3$ iff $\delta\in K$. For $f=X^3+pX+q$, $\delta^2=-4p^3-27q^2$ (you may use this identity or prove it by expansion). Deduce the Galois groups of $X^3-2$ and of $X^3-3X+1$ over $\Q$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cardano}
+Let $X^3+pX+q$ have roots $r_1,r_2,r_3$ (so $r_1+r_2+r_3=0$), let $\omega=\zeta_3$, and $u=r_1+\omega r_2+\omega^2r_3$, $v=r_1+\omega^2r_2+\omega r_3$ (Lagrange resolvents). Show that $uv=-3p$ and $u^3+v^3=-27q$. Deduce Cardano's formula
+\[
+\begin{aligned}r_1&=\sqrt[3]{-\frac q2+\sqrt{\frac{q^2}4+\frac{p^3}{27}}}\eqbr+\sqrt[3]{-\frac q2-\sqrt{\frac{q^2}4+\frac{p^3}{27}}},\end{aligned}
+\]
+where the two cube roots are chosen with product $-p/3$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:phin}
+Let $n\ge1$ and $\Phi_n=\prod_{\gcd(a,n)=1}(X-\zeta_n^a)$, the $n$-th cyclotomic polynomial.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\Phi_n\in\Z[X]$ (use $X^n-1=\prod_{d\mid n}\Phi_d$ and induction).
+\item Let $f$ be the minimal polynomial of $\zeta_n$, and $p$ a prime not dividing $n$. Show that $f(\zeta^p)=0$ for every root $\zeta$ of $f$.
+\item Deduce that $\Phi_n$ is irreducible, and that $\operatorname{Gal}(\Q(\zeta_n)/\Q)\cong(\Z/n\Z)^*$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:rattan}
+\begin{enumerate}[label=(\alph*)]
+\item Let $\zeta_n=e^{2i\pi/n}$. Show that the roots of unity in $\Q(\zeta_n)$ are the $n$-th roots of unity if $n$ is
+even, and the $2n$-th roots of unity if $n$ is odd.
+\item Let $\theta$ be a rational multiple of $\pi$ with $\tan\theta\in\Q$. Show that $\tan\theta\in\{-1,0,1\}$.
+\item Show that the only regular polygon whose vertices all lie in $\Z^2$ is the square.
+\item (Niven) Let $\theta$ be a rational multiple of $\pi$ with $\cos\theta\in\Q$. Show that
+$\cos\theta\in\{0,\pm\frac12,\pm1\}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:ramacube}
+\emph{Ramanujan's cube roots.} With real cube roots, show that
+\[
+\sqrt[3]{\cos\tfrac{2\pi}7}+\sqrt[3]{\cos\tfrac{4\pi}7}+\sqrt[3]{\cos\tfrac{8\pi}7}=\sqrt[3]{\frac{5-3\sqrt[3]7}2}.
+\]
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:q235}
+Show $\sqrt5\notin\Q(\sqrt2,\sqrt3)$ by looking at which elements of this field have rational square. Subgroups of index $2$ of $(\Z/2\Z)^3$ are kernels of non-zero linear forms.
+\end{hint}
+\begin{hint}{ex:x42check}
+Compute the action of $r^2$, $s$, $r^2s$, $rs$, $r^3s$ on $\alpha$ and $i$. Galois over $\Q$ means: the subgroup is normal.
+\end{hint}
+\begin{hint}{ex:zeta7}
+The group is cyclic of order $6$. The subgroup of order $3$ is $\{1,\sigma_2,\sigma_4\}$ with $\sigma_a(\zeta)=\zeta^a$.
+\end{hint}
+\begin{hint}{ex:gauss17}
+$-1=3^8$ is an even power, so $-a$ is in the same half as $a$. $\eta_0\eta_1$ is a sum of $64$ powers $\zeta^c$, $c\ne0$; it is invariant under $\sigma_3$, which swaps $\eta_0$ and $\eta_1$.
+\end{hint}
+\begin{hint}{ex:sp}
+Follow the proof of Theorem~\ref{thm:abelruffini}. For $X^5-6X+3$: Eisenstein, and the values at $-2,0,1,2$.
+\end{hint}
+\begin{hint}{ex:discr}
+A transposition changes the sign of $\delta$, a $3$-cycle does not.
+\end{hint}
+\begin{hint}{ex:cardano}
+Expand, using $1+\omega+\omega^2=0$ and $r_1+r_2+r_3=0$; $p=r_1r_2+r_1r_3+r_2r_3$, $q=-r_1r_2r_3$. Then $3r_1=u+v$.
+\end{hint}
+\begin{hint}{ex:phin}
+(b) If not, $\zeta^p$ is a root of another irreducible factor $g$ of $X^n-1$; then $f$ divides $g(X^p)$. Reduce modulo $p$: $\bar g(X^p)=\bar g(X)^p$. Why is that impossible?
+\end{hint}
+
+\begin{hint}{pb:rattan}
+(a) If $\zeta_m\in\Q(\zeta_n)$, then $\zeta_{\operatorname{lcm}(m,n)}\in\Q(\zeta_n)$; compare $\varphi$. (b)
+$\frac{1+it}{1-it}=e^{2i\theta}$. (d) $2\cos\theta$ is an algebraic integer.
+\end{hint}
+
+\begin{hint}{pb:ramacube}
+Let $a,b,c$ be the three cube roots, $s=a+b+c$, $t=ab+bc+ca$, and use that the cosines are the roots of
+$8x^3+4x^2-4x-1$. Express $s^3$ and $t^3$ in terms of $m=st$, and find a cubic equation for $m$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:q235}
+\idea Square roots of independent primes can be flipped independently; then count subgroups of $(\Z/2\Z)^3$ as subspaces of $\mathbb F_2^3$.
+\writeup Let $M=\Q(\sqrt2,\sqrt3)$, Galois with group $\{\pm1\}^2$ acting by signs (Example~\ref{ex:galv4}). If $\sqrt5\in M$, then $\Q(\sqrt5)$ would be one of the three quadratic subfields $\Q(\sqrt2),\Q(\sqrt3),\Q(\sqrt6)$, and $\sqrt5=a+b\sqrt d$ ($d=2,3,6$) would give, on squaring, $ab=0$, then $5=a^2$ or $5=db^2$, impossible for rational $a,b$ ($5$, $5/2$, $5/3$, $5/6$ are not squares of rationals). So $L=M(\sqrt5)$ has degree $8$; it is the splitting field of $(X^2-2)(X^2-3)(X^2-5)$, and its $8$ automorphisms are the $8$ sign changes of $(\sqrt2,\sqrt3,\sqrt5)$, a group $(\Z/2\Z)^3$.
+
+Subgroups of $(\Z/2\Z)^3=\mathbb F_2^3$ are its subspaces. Fields of degree $4$ correspond to subgroups of order $2$, i.e.\ to the $7$ non-zero vectors; fields of degree $2$ to subgroups of order $4$, i.e.\ planes, kernels of the $7$ non-zero linear forms. The $7$ quadratic fields are $\Q(\sqrt d)$ for $d=2,3,5,6,10,15,30$: each $\sqrt d$ is multiplied by $\pm1$ under every sign change, so it is fixed by a subgroup of index $2$, and these $7$ fields are distinct.
+\end{solution}
+
+\begin{solution}{ex:x42check}
+\idea A field is fixed by a subgroup iff its generators are; normal subgroups correspond to Galois subextensions.
+\writeup With $r(\alpha)=i\alpha$, $r(i)=i$, $s(\alpha)=\alpha$, $s(i)=-i$, the elements of order $2$ act as follows: $r^2$: $\alpha\mapsto-\alpha$, $i\mapsto i$; $r^2s$: $\alpha\mapsto-\alpha$, $i\mapsto-i$; $rs$: $\alpha\mapsto i\alpha$, $i\mapsto-i$; $r^3s$: $\alpha\mapsto-i\alpha$, $i\mapsto-i$. Hence $s$ fixes $\alpha$, $r^2s$ fixes $i\alpha$, $r^2$ fixes $\alpha^2=\sqrt2$ and $i$, $rs$ fixes $(1+i)\alpha$ (its image is $(1-i)i\alpha=(1+i)\alpha$), and $r^3s$ fixes $(1-i)\alpha$ (its image is $(1+i)(-i\alpha)=(1-i)\alpha$). Similarly $\langle r^2,s\rangle$ fixes $\sqrt2$, $\langle r\rangle$ fixes $i$, and $\langle r^2,rs\rangle$ fixes $i\sqrt2$ ($rs(i\alpha^2)=(-i)(i\alpha)^2=i\alpha^2$).
+
+By Theorem~\ref{thm:ftgt}(a), the fixed field of a subgroup of order $2$ has degree $4$ over $\Q$, and that of a subgroup of order $4$ has degree $2$. So it suffices to check that the fields drawn have these degrees. $\sqrt2$, $i$, $i\sqrt2$ have degree $2$, and $\Q(\sqrt2,i)$ has degree $4$ (it is not real, so $i\notin\Q(\sqrt2)$). $\alpha$ and $i\alpha$ are roots of $X^4-2$, irreducible; $(1\pm i)\alpha$ are roots of $X^4+8$ (as $(1\pm i)^4=-4$), which is irreducible: it has no rational root, and a factorisation $(X^2+aX+b)(X^2-aX+c)$ in $\Z[X]$ (Gauss' lemma) would need $a(c-b)=0$, $b+c=a^2$, $bc=8$; $a=0$ gives $c=-b$ and $-b^2=8$, while $b=c$ gives $b^2=8$, both impossible. So each listed field is the whole fixed field.
+
+The normal subgroups of $D_4$ are $\{1\}$, $\langle r^2\rangle$ (the centre), the three subgroups of order $4$ (index $2$) and $D_4$; the subgroups $\langle s\rangle,\langle r^2s\rangle,\langle rs\rangle,\langle r^3s\rangle$ are not normal ($rsr^{-1}=r^2s$). So the Galois subextensions are $\Q$, $\Q(\sqrt2)$, $\Q(i)$, $\Q(i\sqrt2)$, $\Q(\sqrt2,i)$ and $L$. Directly: $X^4-2$ is irreducible with a root $\alpha$ in $\Q(\alpha)\subseteq\R$, but its root $i\alpha$ is not real, so it does not split in $\Q(\alpha)$.
+\end{solution}
+
+\begin{solution}{ex:zeta7}
+\idea Cyclic group of order $6$: one subgroup for each divisor; identify fixed fields by symmetric sums over cosets.
+\writeup By Proposition~\ref{prop:cyclo}, $G\cong(\Z/7\Z)^*$, cyclic of order $6$ (generated by $\sigma_3$). Its subgroups are $\{1\}$, $\{1,\sigma_6\}$ (order $2$), $\{1,\sigma_2,\sigma_4\}$ (order $3$) and $G$, so there are exactly two proper intermediate fields, of degrees $6/2=3$ and $6/3=2$. The first is fixed by $\sigma_6=\sigma_{-1}$, which is complex conjugation on $\Q(\zeta)$; it contains $\zeta+\zeta^{-1}=2\cos\frac{2\pi}7$, of degree $3$ (Exercise~\ref{ex:polygons}), so it is $\Q(\cos\frac{2\pi}7)$. The second is fixed by $\sigma_2$, which permutes $\zeta,\zeta^2,\zeta^4$ cyclically, so it contains $\eta=\zeta+\zeta^2+\zeta^4$; let $\eta'=\zeta^3+\zeta^5+\zeta^6=\sigma_3(\eta)$. Then $\eta+\eta'=-1$ (sum of all $\zeta^k$, $k\ne0$), and $\eta\eta'$ is a sum of $9$ powers $\zeta^{a+b}$: computing, $a+b$ runs over $4,6,7,5,7,8,7,9,10$, i.e.\ $\zeta^4+\zeta^6+1+\zeta^5+1+\zeta+1+\zeta^2+\zeta^3=3-1=2$. So $\eta,\eta'$ are the roots of $Z^2+Z+2$, $\eta=\frac{-1\pm\sqrt{-7}}2$, and the quadratic subfield is $\Q(\sqrt{-7})$. (In fact $\eta=\frac{-1+i\sqrt7}2$, since $\operatorname{Im}\eta=\sin\frac{2\pi}7+\sin\frac{4\pi}7-\sin\frac{6\pi}7>0$: a Gauss sum, Volume~1.)
+\end{solution}
+
+\begin{solution}{ex:gauss17}
+\idea Symmetric functions of the two periods are fixed by the whole group, hence rational; the product is computed by counting, and symmetry makes the count easy.
+\writeup The $3^k$, $0\le k\le15$, run over $(\Z/17\Z)^*$, so $\eta_0+\eta_1=\sum_{c=1}^{16}\zeta^c=-1$. Let $S$ be the set of even powers of $3$ (the squares mod $17$) and $T$ the odd powers; $-1=3^8\in S$. The product $\eta_0\eta_1=\sum_{a\in S,b\in T}\zeta^{a+b}$ has $64$ terms, and $a+b\ne0$ since $-a\in S$. Let $N_c$ be the number of pairs with $a+b=c$. Multiplying a pair by $s\in S$ gives a pair, so $N_{sc}=N_c$: $N$ is constant on $S$ and on $T$, say $N_S$ and $N_T$, and $\eta_0\eta_1=N_S\eta_0+N_T\eta_1$. Multiplying by $3$ swaps $S$ and $T$, so $(a,b)\mapsto(3b,3a)$ is a bijection from pairs summing to $c$ to pairs summing to $3c$: $N_S=N_T$. As $8N_S+8N_T=64$, $N_S=N_T=4$ and $\eta_0\eta_1=4(\eta_0+\eta_1)=-4$. So $\eta_0,\eta_1$ are the roots of $Z^2+Z-4$, i.e.\ $\frac{-1\pm\sqrt{17}}2$. (Numerically $\eta_0=\sum_{a\in S}\cos\frac{2\pi a}{17}\approx1.56$, the $+$ sign.) Splitting each period again into two gives degree-$4$ and then degree-$8$ steps; the last one reaches $2\cos\frac{2\pi}{17}$, as Gauss did in 1796.
+\end{solution}
+
+\begin{solution}{ex:sp}
+\idea Exactly the proof of Theorem~\ref{thm:abelruffini}: a $p$-cycle from Cauchy, a transposition from complex conjugation.
+\writeup The degree $p$ of a root divides $|G|$, so $G\le\mathfrak S_p$ contains an element of order $p$, a $p$-cycle. Complex conjugation restricts to a transposition. As in the proof of Theorem~\ref{thm:abelruffini}, a $p$-cycle and a transposition generate $\mathfrak S_p$ when $p$ is prime. For $X^5-6X+3$: Eisenstein at $3$ gives irreducibility; the values $-17,3,-2,23$ at $-2,0,1,2$ give three real roots, and Rolle with $f'=5X^4-6$ at most three. So its group is $\mathfrak S_5$, not solvable.
+\end{solution}
+
+\begin{solution}{ex:discr}
+\idea $\delta$ is the Vandermonde product: it detects the sign of a permutation.
+\writeup A permutation $\pi$ of the roots changes $\delta$ into $\operatorname{sgn}(\pi)\,\delta$ (Volume~0: each transposition reverses an odd number of factors; directly, check $(1\,2)$, $(1\,3)$, $(2\,3)$). So $\delta^2$ is fixed by $G$, hence in $L^G=K$. As $\delta\ne0$ (distinct roots), $\sigma(\delta)=\delta$ iff $\sigma$ is even. So $\delta\in K=L^G$ iff $G\subseteq A_3$. For $X^3-2$: $\delta^2=-27\cdot4=-108<0$, so $\delta\notin\Q$ (not even real), $G\not\subseteq A_3$, and since $|G|$ is divisible by $3$ (Lemma~\ref{lem:permroots}, degree $3$ of a root), $G=\mathfrak S_3$, as in Example~\ref{ex:cuberoot}. For $X^3-3X+1$ (irreducible: no rational root): $\delta^2=-4(-27)-27=81=9^2$, so $\delta=\pm9\in\Q$, and $G$, of order divisible by $3$, is $A_3\cong\Z/3\Z$. Its splitting field is $\Q(\cos\frac{2\pi}9)$, of degree $3$: all three roots are in $\Q(u)$, as in the discussion after the Pause and think box.
+\end{solution}
+
+\begin{solution}{ex:cardano}
+\idea The resolvents $u,v$ are multiplied by powers of $\omega$ under cyclic permutations, so $u^3$, $v^3$ and $uv$ have only two values each under all permutations: they satisfy a quadratic equation. This is Lagrange's 1770 explanation of Cardano's formula, and the germ of Galois' ideas.
+\writeup Using $\omega^3=1$ and $1+\omega+\omega^2=0$:
+\[
+\begin{aligned}
+uv&=r_1^2+r_2^2+r_3^2\eqbr+(\omega+\omega^2)(r_1r_2+r_1r_3+r_2r_3)\\
+&=(r_1+r_2+r_3)^2-3(r_1r_2+r_1r_3+r_2r_3)\eqbr=-3p.
+\end{aligned}
+\]
+For $u^3+v^3$, factor $u^3+v^3=(u+v)(u+\omega v)(u+\omega^2v)$ and use $r_1+r_2+r_3=0$:
+\[
+\begin{aligned}
+u+v&=2r_1+(\omega+\omega^2)(r_2+r_3)\eqbr=2r_1-r_2-r_3=3r_1,\\
+u+\omega v&=(1+\omega)(r_1+r_2)+2\omega^2r_3\eqbr=\omega^2(-r_1-r_2+2r_3)=3\omega^2r_3,\\
+u+\omega^2v&=(1+\omega^2)(r_1+r_3)+2\omega r_2\eqbr=\omega(-r_1+2r_2-r_3)=3\omega r_2,
+\end{aligned}
+\]
+using $1+\omega=-\omega^2$ and $1+\omega^2=-\omega$. So $u^3+v^3=27\omega^3r_1r_2r_3=-27q$.
+
+Hence $U=u^3$ and $V=v^3$ are the roots of $Z^2+27qZ-27p^3$ (product $(uv)^3=-27p^3$), so $\frac U{27},\frac V{27}=-\frac q2\pm\sqrt{\frac{q^2}4+\frac{p^3}{27}}$, and $r_1=\frac{u+v}3=\sqrt[3]{U/27}+\sqrt[3]{V/27}$, with cube roots $u/3,v/3$ of product $uv/9=-p/3$.
+\end{solution}
+
+\begin{solution}{ex:phin}
+\idea A minimal polynomial over $\Q$ that is ``stable under $\zeta\mapsto\zeta^p$'' for every $p\nmid n$ must contain all primitive roots; the stability comes from Frobenius modulo $p$.
+\writeup (a) The roots of $X^n-1$ are the $\zeta_n^k$, each of exact order some $d\mid n$, and the elements of exact order $d$ are the primitive $d$-th roots of unity, roots of $\Phi_d$. So $X^n-1=\prod_{d\mid n}\Phi_d$. By induction $\prod_{d\mid n,d<n}\Phi_d$ is monic in $\Z[X]$, and dividing $X^n-1$ by a monic integer polynomial gives an integer quotient (Euclidean division by a monic polynomial stays in $\Z[X]$); so $\Phi_n\in\Z[X]$.
+
+(b) $f$ divides $X^n-1$ in $\Q[X]$; by Gauss' lemma (Proposition~\ref{prop:gaussirr}) we can write $X^n-1=f\,h$ with $f,h$ monic in $\Z[X]$. Let $\zeta$ be a root of $f$; then $\zeta^n=1$, so $\zeta^p$ is a root of $X^n-1=fh$. Suppose $f(\zeta^p)\ne0$. Then $h(\zeta^p)=0$, so $\zeta$ is a root of $h(X^p)$ and $f\mid h(X^p)$ in $\Z[X]$ (Gauss again). Reduce modulo $p$: by Frobenius, $\bar h(X^p)=\bar h(X)^p$ in $\mathbb F_p[X]$ (the coefficients satisfy $c^p=c$). So $\bar f$ divides $\bar h^p$, and an irreducible factor $\pi$ of $\bar f$ divides $\bar h$. Then $\pi^2$ divides $\bar f\bar h=X^n-1$ in $\mathbb F_p[X]$. But the derivative $nX^{n-1}$ is non-zero ($p\nmid n$) and its only root is $0$, which is not a root of $X^n-1$: $X^n-1$ has distinct roots modulo $p$, a contradiction. So $f(\zeta^p)=0$.
+
+(c) Every primitive $n$-th root of unity is $\zeta_n^a$ with $\gcd(a,n)=1$; write $a=p_1\cdots p_k$ as a product of primes not dividing $n$. Applying (b) $k$ times, $\zeta_n^{p_1}$, $\zeta_n^{p_1p_2}$, \dots, $\zeta_n^a$ are roots of $f$. So $\Phi_n\mid f$, and $f=\Phi_n$: $\Phi_n$ is irreducible, $[\Q(\zeta_n):\Q]=\varphi(n)$, and the injective map of Proposition~\ref{prop:cyclo} is a bijection.
+\end{solution}
+
+\begin{solution}{pb:rattan}
+\idea A root of unity in a field drags the full cyclotomic field of the lcm into it, and degrees ($\varphi$) cannot grow. The
+field $\Q(i)=\Q(\zeta_4)$ thus contains only the four fourth roots of unity, and a rational tangent or a lattice polygon
+produces a root of unity in $\Q(i)$. For cosines, use integrality instead of fields.
+
+\writeup (a) Let $\zeta_m\in K=\Q(\zeta_n)$ and $L=\operatorname{lcm}(m,n)$, $g=\gcd(m,n)$. Bézout gives $um+vn=g$, and
+$\zeta_m^v\zeta_n^u=e^{2i\pi(vn+um)/mn}=e^{2i\pi g/mn}=\zeta_L$. So $\Q(\zeta_L)\subseteq K$, and comparing degrees (Volume~2,
+Chapter~10) $\varphi(L)\le\varphi(n)$. Write $L=nt$. The formula $\varphi(N)=N\prod_{p\mid N}(1-\frac1p)$ gives
+\[
+\varphi(nt)=\varphi(n)\,t\prod_{p\mid t,\ p\nmid n}\Bigl(1-\frac1p\Bigr)\ge\varphi(n)\,\varphi(t).
+\]
+So $\varphi(t)\le1$, $t\in\{1,2\}$, and $t=2$ needs $2\cdot(1-\frac12)=1$, that is $n$ odd. Hence $m\mid L$, with $L=n$ or ($L=2n$
+and $n$ odd). Conversely, $-1\in K$, so $K$ contains the $2n$-th roots of unity $\pm\zeta_n^j$.
+
+(b) Let $t=\tan\theta$ ($\cos\theta\ne0$). Then $\frac{1+it}{1-it}=\frac{\cos\theta+i\sin\theta}{\cos\theta-i\sin\theta}=e^{2i\theta}$,
+a root of unity (as $\theta/\pi\in\Q$) in $\Q(i)=\Q(\zeta_4)$. By (a) it is a fourth root of unity, so
+$2\theta\in\frac\pi2\Z$, $\theta\in\frac\pi4\Z$, and $\tan\theta\in\{0,\pm1\}$.
+
+(c) Let $A,B,C$ be consecutive vertices of a regular $n$-gon, as Gaussian integers. Then $C-B$ is $B-A$ rotated by
+$\pm\frac{2\pi}n$, so $\frac{C-B}{B-A}=e^{\pm2i\pi/n}\in\Q(i)$, a root of unity of order $n$. By (a), $n\mid4$, so $n=4$. The
+square with vertices $0,1,1+i,i$ exists.
+
+(d) $2\cos\theta=\zeta+\zeta^{-1}$ with $\zeta=e^{i\theta}$ a root of unity. Roots of unity are algebraic integers, and so are
+their sums (Volume~2, Chapter~11). A rational algebraic integer is an integer, so $2\cos\theta\in\{-2,-1,0,1,2\}$.
+\tools Volume~2, Chapters~10 and~11 (cyclotomic fields, algebraic integers); Volume~1, Chapters~1 and~4 (Bézout, $\varphi$).
+\leads (d) is Niven's theorem (1956). In $\Z^3$, there are regular triangles and hexagons (in the plane $x+y+z=0$) as well as
+squares, but still no regular pentagon: the angle $\frac{2\pi}5$ would need $\cos\frac{2\pi}5\in\Q$. The same reasoning is
+the crystallographic restriction of Chapter~1.
+\end{solution}
+
+\begin{solution}{pb:ramacube}
+\idea Call the cube roots $a,b,c$. We know their cubes through the symmetric functions of the cosines. The identity
+$s^3=a^3+b^3+c^3+3st-3abc$, with $s=a+b+c$ and $t=ab+bc+ca$, gives $s^3$ in terms of $st$; the same identity for $ab,bc,ca$
+gives $t^3$. Multiplying, $m=st$ satisfies a cubic, which turns out to be a pure cube after a shift.
+
+\writeup By Volume~2, Chapter~10 (or directly from $1+\zeta+\dots+\zeta^6=0$), $2\cos\frac{2\pi}7$, $2\cos\frac{4\pi}7$,
+$2\cos\frac{8\pi}7$ are the roots of $u^3+u^2-2u-1$; so the three cosines $x_1,x_2,x_3$ are the roots of $8x^3+4x^2-4x-1$:
+\[
+x_1+x_2+x_3=-\tfrac12,\qquad x_1x_2+x_2x_3+x_3x_1=-\tfrac12,\qquad x_1x_2x_3=\tfrac18.
+\]
+Let $a,b,c$ be the real cube roots of $x_1,x_2,x_3$, so $abc=\frac12$; let $s=a+b+c$, $t=ab+bc+ca$, real. For any $a,b,c$,
+$(a+b+c)^3=a^3+b^3+c^3+3(a+b+c)(ab+bc+ca)-3abc$. Hence
+\[
+s^3=-\tfrac12+3st-\tfrac32=3st-2.
+\]
+The same identity for $ab,bc,ca$, whose sum is $t$, whose pairwise products sum to $abc\cdot s$, and whose product is
+$(abc)^2$, gives
+\[
+t^3=(x_1x_2+x_2x_3+x_3x_1)+3t\cdot\tfrac12s-3\cdot\tfrac14=\tfrac32st-\tfrac54.
+\]
+Let $m=st$. Multiplying, $m^3=(3m-2)(\frac32m-\frac54)$, that is $4m^3-18m^2+27m-10=0$. Put $m=y+\frac32$: the terms in $y^2$
+and $y$ cancel, and the equation becomes $4y^3+\frac72=0$, $y^3=-\frac78$. As $m$ is real, $y=-\frac{\sqrt[3]7}2$ and
+$m=\frac{3-\sqrt[3]7}2$. Then $s^3=3m-2=\frac{5-3\sqrt[3]7}2$, and since $s$ is real, $s=\sqrt[3]{\frac{5-3\sqrt[3]7}2}$.
+Numerically both sides are $-0.71751\ldots$
+\tools Volume~0, Chapter~3 (Viète, cubic equations); Volume~2, Chapter~10 (the period polynomial of the heptagon).
+\leads Ramanujan wrote this identity, and the companion
+$\sqrt[3]{\cos\frac{2\pi}9}+\sqrt[3]{\cos\frac{4\pi}9}+\sqrt[3]{\cos\frac{8\pi}9}=\sqrt[3]{\frac{3\sqrt[3]9-6}2}$, in his notebooks
+(Berndt, \emph{Ramanujan's Notebooks}, Part~IV). The method works for the periods of any cyclic cubic field, and explains
+why such ``denesting'' miracles exist: the cubic for $m$ has a cyclic Galois group, so its roots are expressible by real
+radicals of a special shape.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \'E.~Galois, \emph{Mémoire sur les conditions de résolubilité des équations par radicaux} (1830), published by Liouville in J.\ Math.\ Pures Appl.\ 11 (1846), 417--433. The founding text; P.~M.~Neumann, \emph{The Mathematical Writings of Évariste Galois}, EMS, 2011, gives it with a translation and commentary.
+\item N.~H.~Abel, \emph{Démonstration de l'impossibilité de la résolution algébrique des équations générales qui passent le quatrième degré}, J.\ reine angew.\ Math.\ 1 (1826), 65--84. The impossibility proof, before Galois.
+\item J.-L.~Lagrange, \emph{Réflexions sur la résolution algébrique des équations}, Nouv.\ Mém.\ Acad.\ Berlin (1770--1771). Resolvents and permutations of roots: the idea behind Exercise~\ref{ex:cardano}.
+\item E.~Artin, \emph{Galois Theory}, Notre Dame, 1942 (Dover reprint). The approach through fixed fields and Lemma~\ref{lem:artin}.
+\item I.~Stewart, \emph{Galois Theory}, 4th ed., CRC Press, 2015. History, the quintic, and the $17$-gon in detail.
+\item D.~S.~Dummit and R.~M.~Foote, \emph{Abstract Algebra}, 3rd ed., Wiley, 2004, Chapter~14. The example of $X^4-2$ and many Galois groups computed.
+\item H.~Völklein, \emph{Groups as Galois Groups: An Introduction}, Cambridge University Press, 1996. The inverse Galois problem.
+\end{itemize}

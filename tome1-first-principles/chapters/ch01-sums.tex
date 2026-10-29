@@ -1,0 +1,925 @@
+\chapter{Sums, Binomials and Induction}\label{ch:sums}
+
+\begin{center}\itshape
+Is it a coincidence that $1^3+2^3+\dots+n^3=(1+2+\dots+n)^2$?\\
+By the end of this chapter you will have four reasons why it is not.
+\end{center}
+
+The story goes that a schoolteacher in Brunswick, wanting a quiet hour, told his class to add up the numbers from $1$ to $100$, and that a
+boy called Carl Friedrich Gauss put his slate down almost at once with the answer $5050$. The earliest printed version of the story is in the
+memorial volume that Wolfgang Sartorius von Waltershausen, a friend of the old Gauss, published in 1856, the year after his death; it says only that
+the task was an arithmetic progression and that the slate landed on the teacher's desk with a single number on it. The particular numbers $1$ to $100$ and the motive of keeping the class busy belong to later retellings
+(Hayes 2006 collected more than a hundred versions). Bartels, the teacher's young assistant and later a mathematician,
+was a real early supporter of Gauss; he should not be dismissed as an invented character. But the trick is real, and it is the oldest trick in this book: write the sum forwards and
+backwards,
+\[
+\begin{aligned}
+S&=1+2+\dots+99+100,\\
+S&=100+99+\dots+2+1,
+\end{aligned}
+\]
+and each of the hundred columns adds up to $101$. So $2S=100\cdot101$ and $S=5050$. Figure~\ref{fig:gauss} shows the same thing without words.
+
+Mathematics is full of such tricks, and full of patterns that look like tricks waiting to be found. Around the year $100$, Nicomachus of Gerasa, in his
+\emph{Introduction to Arithmetic}, pointed out that the odd numbers, grouped as $1$, then $3+5$, then $7+9+11$, then $13+15+17+19$, give $1,8,27,64$: the
+cubes. Add the first few cubes and you get $1,9,36,100$: perfect squares, and not just any squares, the squares of $1,3,6,10$, the sums $1$, $1+2$,
+$1+2+3$, $1+2+3+4$. Nicomachus did not explain why; we will, four times over.
+
+A pattern, however pretty, is not a proof. One method that turns a lucky guess about all natural numbers into a certainty is \emph{induction}. The method is older than a single origin story. Medieval examples occur in the work of al-Karaji and al-Samaw'al, and in the \emph{Maasei Hoshev} (``The Art of Calculation'') of Levi ben Gershon, finished in 1321 in Provence, where it proves formulas for sums and for the number of permutations. An explicit formulation of the general principle appears in Pascal's \emph{Trait\'e du triangle arithm\'etique}, written in 1654 and printed in 1665. That treatise also contains the triangle that carries his name. The triangle itself had been drawn in China by Jia Xian around 1050, in Persia by al-Karaji around 1000, and by Omar Khayyam a century later.
+
+The chapter follows the story of the opening sum. First, notation for finite sums, including the empty sum. Then three equivalent forms of induction, and the small stock of divisibility facts the exercises need. Telescoping turns a sum into a difference. Binomial coefficients count subsets and also form a basis in which every polynomial can be summed in closed form. The workshop asks you to distrust a pattern until one of these tools explains it.
+
+\portraits{pascal}{Blaise Pascal (1623--1662). Anonymous copy of a portrait by Fran\c cois Quesnel, c.\,1690, Palace of Versailles. Public domain, via Wikimedia Commons.}{pascal-triangle}{Pascal's arithmetical triangle, as printed in his \emph{Trait\'e du triangle arithm\'etique} (written 1654, published 1665). Public domain, via Wikimedia Commons.}
+
+\section{Sums, and how to write them}
+
+\begin{reminder}[sigma notation]
+For integers $m\le n$ and numbers $a_m,\dots,a_n$, we write $\sum_{k=m}^na_k=a_m+a_{m+1}+\dots+a_n$. The letter $k$ is a \emph{dummy} index: it has
+no meaning outside the sum, and $\sum_{k=m}^na_k=\sum_{j=m}^na_j$. An empty sum (when $m>n$) is $0$. Three rules cover almost all manipulations:
+\begin{enumerate}[label=(\roman*)]
+\item \emph{Linearity}: $\sum(\lambda a_k+\mu b_k)=\lambda\sum a_k+\mu\sum b_k$.
+\item \emph{Index shift}: $\sum_{k=m}^na_k=\sum_{j=m+1}^{n+1}a_{j-1}$ (put $j=k+1$); more generally the index can be renamed by any bijection.
+\item \emph{Splitting}: $\sum_{k=m}^na_k=\sum_{k=m}^pa_k+\sum_{k=p+1}^na_k$ for $m\le p<n$.
+\end{enumerate}
+A \emph{double sum} $\sum_{i=1}^m\sum_{j=1}^na_{ij}$ adds up the $mn$ numbers of a rectangular array; it can be done row by row or column by column,
+so the two $\sum$ signs may be swapped. When the range of $j$ depends on $i$, as in $\sum_{i=1}^n\sum_{j=1}^ia_{ij}$, swapping means re-describing the
+same triangle of pairs: $\sum_{j=1}^n\sum_{i=j}^na_{ij}$. Draw the region of pairs $(i,j)$ before you swap; this is the single most common source of
+errors in the chapter.
+\end{reminder}
+
+\begin{propositionx}[finite progressions]
+\begin{enumerate}[label=(\alph*)]
+\item For $n\ge0$, $\sum_{k=0}^nk=n(n+1)/2$. More generally,
+\[
+\sum_{k=0}^n(a+kd)=(n+1)a+d\,\frac{n(n+1)}2.
+\]
+\item For $q\ne1$, $\displaystyle\sum_{k=0}^nq^k=\frac{q^{n+1}-1}{q-1}$; for $q=1$ the sum is $n+1$.
+\end{enumerate}
+\end{propositionx}
+\begin{proof}
+(a) Gauss's trick, written with the index shift $j=n-k$: $S=\sum_{k=0}^nk=\sum_{j=0}^n(n-j)$. Adding the two expressions term by term,
+$2S=\sum_{k=0}^n\bigl(k+(n-k)\bigr)=\sum_{k=0}^nn=(n+1)n$. The general case follows by linearity: $\sum(a+kd)=a\sum1+d\sum k$.
+
+(b) Let $G=\sum_{k=0}^nq^k$. Then $qG=\sum_{k=0}^nq^{k+1}=\sum_{j=1}^{n+1}q^j$ (index shift), so $qG-G=q^{n+1}-1$: every term of $qG$ is also a term of
+$G$ except $q^{n+1}$, and every term of $G$ is in $qG$ except $q^0=1$. Divide by $q-1\ne0$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-gauss}
+\caption{Left: Gauss's trick as a picture. Two staircases of $1+2+\dots+6$ squares fit together into a $6\times7$ rectangle. Right: Nicomachus's observation. The square of side $1+2+3+4=10$ is cut into L-shaped \emph{gnomons} of areas $1,3,5,\dots,19$, the odd numbers; grouped $1$, $3+5$, $7+9+11$, $13+15+17+19$, they have areas $1^3,2^3,3^3,4^3$. So $1^3+2^3+3^3+4^3=10^2$. Exercise~\ref{ex:odds} turns the picture into a proof.}
+\label{fig:gauss}
+\end{figure}
+
+\begin{examplex}
+What is $\sum_{k=1}^n(2k-1)$, the sum of the first $n$ odd numbers? By linearity, $2\sum k-\sum1=n(n+1)-n=n^2$. The first $n$ odd numbers add up to
+$n^2$: $1+3+5+7=16$. (The gnomons of Figure~\ref{fig:gauss} say the same thing.)
+
+What is $\sum_{i=1}^n\sum_{j=1}^nij$? The inner sum is $i\sum_jj=i\,\frac{n(n+1)}2$, and the outer sum then gives
+$\left(\frac{n(n+1)}2\right)^2$: a double sum over a square \emph{factors} when the summand is a product $f(i)g(j)$. Keep this in mind for Exercise~\ref{ex:cubesgeo}.
+\end{examplex}
+
+\begin{think}
+Compute $1+2+4+\dots+2^{10}$ by the formula, then check it against this one-line argument: the binary number $11111111111$ (eleven ones) is one
+less than $2^{11}$. Which proof do you prefer? The formula is more general; the argument explains.
+\end{think}
+
+\section{Induction, in three flavours}
+
+Let $P(n)$ be a statement depending on $n\in\N$. We take as the basic property of $\N$ the following axiom.
+
+\begin{reminder}[well ordering]
+Every non-empty subset of $\N$ has a least element.
+\end{reminder}
+
+\begin{proposition}[induction principles]\label{prop:induction}
+\begin{enumerate}[label=(\roman*)]
+\item \textbf{Weak induction.} If $P(0)$ holds and $P(n)\Rightarrow P(n+1)$ for all $n$, then $P(n)$ holds for all $n$.
+\item \textbf{Strong induction.} If, for every $n$, $\bigl(P(k)\text{ for all }k<n\bigr)\Rightarrow P(n)$, then $P(n)$ holds for all $n$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(ii) Suppose the set $E=\{n\in\N:P(n)\text{ is false}\}$ is non-empty, and let $n$ be its least element. Then $P(k)$ holds for every $k<n$ (such $k$ are not in $E$), so by hypothesis $P(n)$ holds: contradiction. So $E=\varnothing$.
+
+(i) Assume the hypotheses of (i). We check those of (ii). Let $n\in\N$ with $P(k)$ for all $k<n$. If $n=0$, $P(0)$ holds by assumption. If $n\ge1$, then $P(n-1)$ holds, hence $P(n)$. So (ii) applies.
+\end{proof}
+
+Note what strong induction does \emph{not} require: a separate base case. For $n=0$ the hypothesis ``$P(k)$ for all $k<0$'' is empty, hence true, so
+the inductive step must prove $P(0)$ from nothing; that is where the base case hides.
+
+Conversely, weak induction implies well ordering. Suppose $A\subseteq\N$ has no least element, and let $Q(n)$ say that $0,1,\dots,n$ all lie outside $A$. Then $Q(0)$ holds, because $0$ would otherwise be the least element of $A$. If $Q(n)$ holds, then $n+1\notin A$ for the same reason, so $Q(n+1)$ holds. Weak induction gives $Q(n)$ for every $n$, hence $A=\varnothing$. The three principles are equivalent. The well-ordering form is the engine of proofs \emph{by minimal counterexample} and of Fermat's \emph{infinite descent}.
+
+An integer $p>1$ is \emph{prime} if its only positive divisors are $1$ and $p$; a positive integer $d$ divides $a$ when $a=dc$ for some integer $c$.
+
+\begin{example}
+Every integer $n\ge 2$ is a product of primes. Suppose not, and let $n$ be the least counterexample.
+Then $n$ is not prime, so $n=ab$ with $1<a,b<n$. By minimality $a$ and $b$ are products of primes, hence
+so is $n$: contradiction.
+\end{example}
+
+\subsection*{The arithmetic needed in the exercises}
+For integers $a,b$ we write $a\mid b$ when $b=ac$ for an integer $c$. Integers are \emph{coprime} when their greatest positive common divisor, written $\gcd(a,b)$, is $1$. We define $\gcd(a,0)=|a|$ for $a\ne0$; $\gcd(0,0)$ is left undefined. The \emph{least common multiple} of positive integers is their least positive common multiple. It exists: their product is a common multiple, so well ordering supplies a least one. Congruence $a\equiv b\pmod m$, for $m\ge1$, means $m\mid(a-b)$. These are definitions; the cancellation properties need proof.
+
+We use integer division with remainder: if $b>0$ then $a=qb+r$, where $q,r$ are integers and $0\le r<b$. To see existence without assuming a floor function, choose the least nonnegative integer of the form $a-qb$. This set is nonempty: the choice $q=-|a|$ gives $a+|a|b$, and $b\ge1$ forces $|a|b\ge|a|$, so $a+|a|b\ge a+|a|\ge0$. Its least value $r$ cannot be at least $b$, because then $r-b$ would be a smaller nonnegative value of the same form. For uniqueness, another such pair satisfies $r-r'=(q'-q)b$ with $|r-r'|<b$. The only multiple of $b$ strictly between $-b$ and $b$ is $0$, so $q=q'$ and $r=r'$. We write this quotient as $\lfloor a/b\rfloor$. The floor of a general real number waits for the Archimedean property, in the sequences chapter. Figure~\ref{fig:division} is the picture behind the two sentences: $a$ falls in some interval $[qb,(q+1)b)$, and the distance to the left endpoint is the remainder.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-division}
+\caption{Division of a positive $a$ by $b>0$. The multiples of $b$ cut the line into steps of length $b$. The remainder is the distance from $a$ back to the last multiple that does not pass it, so $0\le r<b$.}
+\label{fig:division}
+\end{figure}
+
+For integers $a,b$ not both zero, the positive integers of the form $au+bv$, $u,v\in\Z$, form a nonempty set (use $|a|$ if $a\ne0$, otherwise $|b|$). Let $d$ be its least member. Dividing $a$ by $d$ gives $a=qd+r$ with $0\le r<d$. The remainder is another integer combination of $a,b$, so minimality gives $r=0$. Likewise $d\mid b$. Every common divisor divides each combination and hence $d$. Thus $d=\gcd(a,b)$, and $d=au+bv$ is \emph{B\'ezout's identity}.
+
+If $\gcd(a,b)=1$ and $a\mid bc$, multiply $au+bv=1$ by $c$: both $auc$ and $bvc$ are divisible by $a$, so $a\mid c$. For a prime $p$, either $p\mid b$ or $\gcd(p,b)=1$; therefore $p\mid bc$ implies $p\mid b$ or $p\mid c$ (\emph{Euclid's lemma}). Repeated use gives the assertion for any finite product. Existence of prime factorisation was just proved by a minimal counterexample. For uniqueness, a prime in one factorisation divides the product in the other, hence equals one of its prime factors; cancel this factor and repeat. If one list ended first, the remaining product of primes would equal $1$, which is impossible. Thus the lists agree up to order. In particular the least common multiple of positive integers contains each prime to the largest exponent with which it occurs in any of them. These facts justify the cancellation and parity arguments below; Volume~1 develops them systematically.
+
+\begin{reminder}[how to write an induction, and how not to]
+A proof by induction has three visible parts: the statement $P(n)$, written out in full (``for all $n\ge1$, $\sum_{k\le n}k^2=\dots$''); the base
+case, checked, not waved at; and the inductive step, which begins ``assume $P(n)$'' and ends with $P(n+1)$, using the assumption at least once. If
+the assumption is never used, you did not need induction. If the step only works for $n\ge2$, say so and check $n=1$ separately: that is where the
+famous proof that all horses have the same colour breaks down. (Any $n$ horses have the same colour: true for $n=1$; given $n+1$ horses, the first $n$
+share a colour, the last $n$ share a colour, so all $n+1$ do. The step from $1$ to $2$ fails, since the two groups of one horse do not overlap, and
+the argument never recovers.) Finally, the statement must be chosen with care: often a \emph{stronger} statement is easier to prove, because it gives a
+stronger hypothesis. Exercise~\ref{ex:sumsq} shows this in action.
+\end{reminder}
+
+\begin{examplex}[Golomb's trominoes]
+An L-tromino is three squares in an L shape. Remove any one square from a $2^m\times2^m$ chessboard: the rest can be tiled by L-trominoes
+(Figure~\ref{fig:tromino}). The proof is an induction on $m$ in which the inductive step is a picture. For $m=1$ the board minus a square \emph{is}
+a tromino. For a $2^{m+1}\times2^{m+1}$ board, cut it into four $2^m\times2^m$ quadrants; the missing square lies in one of them. Place one tromino
+at the centre of the board so that it covers one square in each of the other three quadrants. Now each quadrant is a $2^m\times2^m$ board with one
+square missing, and the induction hypothesis tiles all four. As a bonus, the tiling uses $(4^m-1)/3$ trominoes. This quotient is an integer by a second induction: it equals $1$ when $m=1$, and
+\[
+\frac{4^{m+1}-1}3=4\cdot\frac{4^m-1}3+1.
+\]
+The count of tiles and the divisibility $3\mid(4^m-1)$ are the same fact.
+\end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-tromino}
+\caption{The inductive tiling of an $8\times8$ board with one square removed (black). The dashed lines cut the board into four $4\times4$ quadrants; the central tromino covers one square of each quadrant that does not contain the hole, and each quadrant is then tiled recursively. There are $(4^3-1)/3=21$ trominoes.}
+\label{fig:tromino}
+\end{figure}
+
+\begin{proposition}[Bernoulli's inequality]\label{prop:bernoulli}
+For $x\ge-1$ and $n\in\N$, $(1+x)^n\ge1+nx$. The zeroth power is $1$, including when $x=-1$ and $n=0$.
+\end{proposition}
+\begin{proof}
+For $n=0$ both sides are $1$. If the inequality holds for $n$, multiplication by $1+x\ge0$ preserves its direction, and
+\[
+(1+x)^{n+1}\ge(1+nx)(1+x)=1+(n+1)x+nx^2\ge1+(n+1)x.
+\]
+Induction proves the claim. The restriction $x\ge-1$ matters: it is what permits the multiplication without reversing the inequality.
+\end{proof}
+
+\section{Telescoping}
+
+Induction proves a guess. Telescoping often finds the guess. The idea is to write the general term as a difference $F(k+1)-F(k)$, so that the sum collapses to its two ends.
+
+We write $\prod_{k=m}^n a_k$ for the product $a_m\cdots a_n$; an empty product is $1$, the number that leaves multiplication unchanged. The \emph{factorial} $n!=1\cdot2\cdots n$ for $n\ge1$ has the convention $0!=1$. Thus $(n+1)!=(n+1)n!$ also holds at $n=0$.
+
+
+\begin{think}
+Compute $\frac1{1\cdot2}+\frac1{2\cdot3}+\dots+\frac1{5\cdot6}$ by hand. The answer is surprisingly simple: guess the value of the sum up to $\frac1{n(n+1)}$. Can you write $\frac1{k(k+1)}$ as a difference of two simpler fractions?
+\end{think}
+
+\begin{proposition}[telescoping sums]\label{prop:telescope}
+If $u_k=v_{k+1}-v_k$ for all $k$, then $\displaystyle\sum_{k=0}^{n-1}u_k=v_n-v_0$.
+\end{proposition}
+\begin{proof}
+Induction on $n$: for $n=0$ both sides are $0$, and $\sum_{k=0}^{n}u_k=(v_n-v_0)+(v_{n+1}-v_n)=v_{n+1}-v_0$.
+\end{proof}
+
+The name says it all: like a telescope, the sum $(v_1-v_0)+(v_2-v_1)+\dots+(v_n-v_{n-1})$ collapses, each $v_k$ with $0<k<n$ appearing once with a plus
+and once with a minus. The whole art is to \emph{find} $v$: partial fractions, trigonometric identities, or a lucky guess checked by induction. Here is
+the standard way to hunt. If $u_k$ is a rational function of $k$, try to split it into simpler fractions whose denominators are shifts of one
+another. If $u_k$ contains $k!$ or $k\cdot k!$, try $v_k=(k+1)!$ or $k!$. If $u_k$ is a product like $k(k+1)$, remember that $k(k+1)(k+2)-(k-1)k(k+1)=3k(k+1)$:
+a product of consecutive integers is the difference of two longer such products, divided by their length.
+
+\begin{example}
+Since $\dfrac{1}{k(k+1)}=\dfrac1k-\dfrac1{k+1}$, we get $\displaystyle\sum_{k=1}^n\frac1{k(k+1)}=1-\frac1{n+1}$.
+\end{example}
+
+\begin{examplex}
+$\sum_{k=1}^nk\cdot k!=(n+1)!-1$, because $k\cdot k!=(k+1)!-k!$: write $k\cdot k!=(k+1-1)\,k!$.
+
+$\sum_{k=1}^nk(k+1)=\frac{n(n+1)(n+2)}3$, because $k(k+1)=\frac13\bigl(k(k+1)(k+2)-(k-1)k(k+1)\bigr)$, and the sum telescopes to
+$\frac13\,n(n+1)(n+2)$. Expanding $k(k+1)=k^2+k$ then gives, with (a) of the first proposition, a formula for $\sum k^2$ for free:
+$\sum_{k=1}^nk^2=\frac{n(n+1)(n+2)}3-\frac{n(n+1)}2=\frac{n(n+1)(2n+1)}6$.
+
+Products telescope too: $\prod_{k=2}^n\left(1-\frac1k\right)=\prod_{k=2}^n\frac{k-1}k=\frac{1\cdot2\cdots(n-1)}{2\cdot3\cdots n}=\frac1n$.
+\end{examplex}
+
+\section{Binomial coefficients}
+
+Sums count when the summand itself counts. The binomial coefficient is the first summand for which that remark is the whole theory.
+
+\begin{think}
+Write the first $16$ rows of Pascal's triangle, and shade the odd entries. What shape appears? Look at Figure~\ref{fig:pascal} only after you have drawn yours. Can you explain why row $2^m-1$ is entirely odd and row $2^m$ is odd only at its two ends?
+\end{think}
+
+The binomial coefficient $\binom nk$ counts the $k$-element subsets of an $n$-element set. We take $\binom nk=0$ when $k>n$ or $k<0$. It is read ``$n$ choose $k$''.
+A set with $n$ elements has one empty subset and one subset with everything, so $\binom n0=\binom nn=1$; it has $n$ one-element subsets, so
+$\binom n1=n$; and choosing which $k$ elements to take is the same as choosing which $n-k$ to leave, so $\binom nk=\binom n{n-k}$.
+
+\begin{proposition}\label{prop:binom}
+For $n\ge1$ and $k\in\Z$:
+\[
+\begin{aligned}
+&\text{(a)}\ \binom nk=\binom{n-1}{k-1}+\binom{n-1}{k}\ \text{(Pascal)},\eqbr
+\text{(b)}\ \binom nk=\frac{n!}{k!\,(n-k)!}\ (0\le k\le n),\\
+&\text{(c)}\ (x+y)^n=\sum_{k=0}^n\binom nk x^ky^{n-k}
+\end{aligned}
+\]
+for real numbers $x,y$. The proof uses only associativity, commutativity and distributivity, so it also applies to complex numbers when they are introduced, and to commuting algebraic quantities in Volume~2.
+\end{proposition}
+\begin{proof}
+(a) Fix an element $a$ of the $n$-element set $E$. A $k$-subset either contains $a$ (it is then $\{a\}$ plus a $(k-1)$-subset of $E\setminus\{a\}$) or does not (it is a $k$-subset of $E\setminus\{a\}$). These two kinds of subsets are counted by the two terms, and every $k$-subset is of exactly one kind.
+
+(b) Count the sequences of $k$ distinct elements of $E$. Choosing them in order gives $n(n-1)\cdots(n-k+1)=\frac{n!}{(n-k)!}$ (there are $n$ choices for the first, then $n-1$, and so on). Choosing first the underlying set ($\binom nk$ ways) and then an order on it ($k!$ ways) gives $k!\binom nk$. Two counts of the same thing are equal.
+
+(c) Expand the product $(x+y)(x+y)\cdots(x+y)$ of $n$ factors: it is the sum, over all ways of choosing $x$ or $y$ in each factor, of the products obtained. The ways that pick $x$ in exactly $k$ factors correspond to the $k$-subsets of the $n$ factors, and give $x^ky^{n-k}$ (commutativity is used here, to collect the $x$'s together). So the coefficient is $\binom nk$.
+\end{proof}
+
+Pascal's rule (a) is the recipe for the triangle: each entry is the sum of the two above it. Formula (b) is the one to compute with; for instance
+$\binom{10}3=\frac{10\cdot9\cdot8}{3\cdot2\cdot1}=120$, where we cancelled $7!$ before multiplying anything. Formula (c), the \emph{binomial theorem},
+is the reason the $\binom nk$ are called binomial coefficients, and two special cases are worth knowing by heart: with $x=y=1$,
+$\sum_k\binom nk=2^n$ (a set with $n$ elements has $2^n$ subsets); with $x=-1$, $y=1$, $\sum_k(-1)^k\binom nk=0$ for $n\ge1$ (as many subsets of
+even size as of odd size).
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-pascal}
+\caption{Left: Pascal's triangle modulo $2$. The odd entries draw Sierpi\'nski's triangle, a pattern explained by Lucas' theorem (Volume~1, Exercise~3.9) and, for the rows $2^m-1$ and $2^m$, by Exercise~\ref{ex:pascalmod2}. Right: the $5\times5$ multiplication table cut into L-shapes $L_k=\{(i,j):\max(i,j)=k\}$. Each L-shape sums to a cube, and the whole table to $(1+\dots+5)^2$; Exercise~\ref{ex:cubesgeo} explains why.}
+\label{fig:pascal}
+\end{figure}
+
+Two proof strategies cover almost every identity: \emph{double counting} (count one set in two ways, as in (b))
+and \emph{generating functions} (compare coefficients in a polynomial identity, as in (c)). The next proposition shows both at work on the same identity.
+
+\begin{think}
+In how many ways can you choose a committee of $2$ people from $3$ women and $2$ men? Count directly, then count by splitting according to the number of women. Which identity between binomial coefficients have you just proved?
+\end{think}
+
+\begin{proposition}[Vandermonde]\label{prop:vandermonde}
+For $m,n,r\in\N$, $\displaystyle\sum_{k=0}^{r}\binom mk\binom n{r-k}=\binom{m+n}r$.
+\end{proposition}
+\begin{proof}
+A committee of $r$ people chosen from $m$ women and $n$ men contains some number $k$ of women;
+there are $\binom mk\binom n{r-k}$ committees with exactly $k$ women. Summing over $k$ counts all
+$\binom{m+n}r$ committees. (Algebraically: compare the coefficient of $x^r$ in $(1+x)^m(1+x)^n=(1+x)^{m+n}$.)
+\end{proof}
+
+The identity is named after Alexandre-Th\'eophile Vandermonde, who published it in 1772; it appears, in the form of a table, in the \emph{Jade Mirror of
+the Four Unknowns} of Zhu Shijie, printed in 1303.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-hockey}
+\caption{The hockey stick identity of Exercise~\ref{ex:hockey} in Pascal's triangle: the entries $\binom k2$ for $k=2,\dots,6$ (the handle, in blue) add up to the entry $\binom73$ just below and to the right of the last one (the blade, in red). Pascal's rule, applied from the bottom up, explains why.}
+\label{fig:hockey}
+\end{figure}
+
+\section{Polynomials in the binomial basis}
+
+Binomial coefficients began as counts. The same formulas, read as polynomials in the upper index, are a coordinate system for every polynomial. That is why a sum of polynomial values has a closed form.
+
+The hockey stick identity of Exercise~\ref{ex:hockey} sums $\binom kr$ over $k$ in closed form. If we could write \emph{any} polynomial in $k$ as a
+combination of the $\binom k0,\binom k1,\binom k2,\dots$, we could sum any polynomial in closed form. We can, and the recipe is Newton's, from the
+\emph{Principia} of 1687 (Book III, Lemma V), where he needed it to interpolate the positions of comets.
+
+A \emph{polynomial} is a finite sum $a_0+a_1X+\cdots+a_dX^d$; the numbers $a_j$ are its coefficients, and its degree is the largest index with nonzero coefficient. Two polynomials are equal when their corresponding coefficients agree. The zero polynomial has no largest nonzero index, so its degree is left undefined here. We work with real coefficients; the same arguments apply to rational coefficients and later to complex coefficients. For a polynomial $P$ define the \emph{difference} $\Delta P(X)=P(X+1)-P(X)$, and $\Delta^kP=\Delta(\Delta^{k-1}P)$.
+Note that $\deg\Delta P<\deg P$ when $\deg P\ge1$, because the leading terms $aX^d$ cancel in $a(X+1)^d-aX^d$; and $\Delta$ of a constant is $0$.
+For the binomial coefficients we use the polynomials
+\[
+\binom Xk=\frac{X(X-1)\cdots(X-k+1)}{k!}\qquad(k\ge0),
+\]
+of degree $k$, which take the value $\binom nk$ at every integer $n\ge0$ (and $0$ at $n=0,\dots,k-1$, since a factor vanishes).
+
+\begin{proposition}\label{prop:deltabinom}
+$\Delta\binom Xk=\binom X{k-1}$ for $k\ge1$, and $\Delta\binom X0=0$.
+\end{proposition}
+\begin{proof}
+For $k=1$, $(X+1)-X=1$. For $k\ge2$, factor the common product:
+\[
+\begin{aligned}
+\binom{X+1}k-\binom Xk
+&=\frac{X(X-1)\cdots(X-k+2)}{k!}\bigl((X+1)-(X-k+1)\bigr)\\
+&=\frac{X(X-1)\cdots(X-k+2)}{k!}\cdot k
+=\frac{X(X-1)\cdots(X-k+2)}{(k-1)!}=\binom X{k-1}.
+\end{aligned}
+\]
+Finally $\binom X0=1$, whose difference is zero. This is Pascal's identity directly at the coefficient level; no theorem about polynomial roots is needed.
+\end{proof}
+
+\begin{theorem}[Newton's forward difference formula]\label{thm:newton}
+Every nonzero polynomial $P$ of degree $d$ can be written in exactly one way as
+\[
+P(X)=\sum_{k=0}^dc_k\binom Xk,\qquad\text{and then}\qquad c_k=(\Delta^kP)(0).
+\]
+\end{theorem}
+\begin{proof}
+\emph{Existence and uniqueness of the $c_k$.} The polynomials $\binom X0,\dots,\binom Xd$ have degrees $0,1,\dots,d$, so every polynomial of degree at most $d$ is a unique linear combination of them (a \emph{basis}, in the terminology of linear algebra): given $P$, match the coefficient of $X^d$ (which fixes $c_d$, since only $\binom Xd$ has degree $d$), subtract
+$c_d\binom Xd$, and continue with a polynomial of lower degree; uniqueness follows the same way, by comparing leading coefficients.
+
+\emph{The formula for $c_k$.} Apply $\Delta^j$ to both sides, using Proposition~\ref{prop:deltabinom} $j$ times: $\Delta^jP=\sum_{k\ge j}c_k\binom X{k-j}$.
+At $X=0$ every term with $k>j$ vanishes, and $\binom00=1$, so $(\Delta^jP)(0)=c_j$.
+\end{proof}
+
+In practice one does not compute $\Delta^kP$ as a polynomial: one writes the values $P(0),P(1),P(2),\dots$ in a row, the differences of consecutive
+values in the row below, and so on (Figure~\ref{fig:differences}). The first entry of each row is $(\Delta^kP)(0)$. For $P=X^3$ the rows begin
+$0,1,6,6,0$: hence
+\[
+X^3=\binom X1+6\binom X2+6\binom X3.
+\]
+This is the identity used in Exercise~\ref{ex:hockey}, found with no algebra at all.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-differences}
+\caption{The difference table of $P(k)=k^3$. Each row holds the differences of consecutive entries of the row above. The first entries (boxed) are the coefficients of $k^3$ in the binomial basis; the row $\Delta^3P$ is constant and $\Delta^4P$ is zero, as it must be for a cubic.}
+\label{fig:differences}
+\end{figure}
+
+\begin{corollary}[sums of polynomials]\label{cor:sumpoly}
+If $P=\sum_{k=0}^dc_k\binom Xk$ with $c_d\ne0$, then $\displaystyle\sum_{j=0}^{n-1}P(j)=\sum_{k=0}^dc_k\binom n{k+1}$ for every $n\ge0$.
+In particular, $\sum_{j=0}^{n-1}P(j)$ is a polynomial in $n$ of degree $d+1$ with leading coefficient $\frac{c_d}{(d+1)!}$.
+\end{corollary}
+\begin{proof}
+The identity $\sum_{j=0}^{n-1}\binom jk=\binom n{k+1}$ is proved here; Exercise~\ref{ex:hockey} asks for another proof and then uses it on cubes. For $n=0$ both sides are $0$. Passing from $n$ to $n+1$ adds the term $\binom nk$ on the left, and Pascal's rule says that $\binom{n+1}{k+1}-\binom n{k+1}=\binom nk$. Induction on $n$ gives the identity. Weighting by $c_k$ and summing over $k$ gives the formula for $\sum P(j)$. The leading coefficient of $\binom n{k+1}$ is $\frac1{(k+1)!}$, and $c_d\ne0$.
+\end{proof}
+
+\begin{examplex}
+From the table, $\sum_{j=0}^{n-1}j^3=\binom n2+6\binom n3+6\binom n4$; with $n$ replaced by $n+1$ this is the computation of Exercise~\ref{ex:hockey}.
+For $k^2$ the table begins $0,1,2,0$, so $k^2=\binom k1+2\binom k2$ and $\sum_{j=0}^{n}j^2=\binom{n+1}2+2\binom{n+1}3=\frac{n(n+1)(2n+1)}6$, in agreement
+with the telescoping computation above. The reader can now sum $k^4$, $k^5$, or $k^3-2k+7$ in a few lines. (Faulhaber, in 1631, went as far as $k^{17}$ by hand; see the challenges.)
+\end{examplex}
+
+\portrait{gauss}{Carl Friedrich Gauss (1777--1855). Portrait by Christian Albrecht Jensen, 1840. Public domain, via Wikimedia Commons.}
+
+\section{Workshop: a pattern is a suspect, not a verdict}
+The sequence $1,2,4,8,16$ looks like powers of two. It could instead be the first five values of a polynomial of degree four. A finite list cannot tell us which rule comes next. Mathematics is a detective story in which the suspect is allowed to own infinitely many disguises.
+
+\begin{examplex}[a convincing liar]
+Let $Q(X)=\sum_{j=0}^4\binom Xj$, with the binomial polynomials of this chapter. For integers $0\le n\le4$, terms with $j>n$ vanish, so the binomial theorem gives $Q(n)=2^n$. But $Q(5)=1+5+10+10+5=31$, not $32$. Worse, for any constant $c$,
+\[
+R_c(X)=Q(X)+c\,X(X-1)(X-2)(X-3)(X-4)
+\]
+has those same five values and $R_c(5)=31+120c$. Every proposed sixth value is possible. The conclusion is not ``patterns are useless'': they propose the theorem. Induction, a bijection or an algebraic identity must finish the job.
+\end{examplex}
+
+\begin{figure}[ht]\centering\fig{review01-pattern}
+\caption{Five exact agreements do not determine a rule. Squares show $2^n$; circles show $Q(n)$. The first disagreement is $31$ versus $32$ at $n=5$, followed by $57$ versus $64$. Lines only guide the eye between the integer inputs.}\end{figure}
+
+\subsection*{Try it, then take a hint}
+\textbf{Mission.} Find the sum $\sum_{k=1}^n k(k+1)$ without expanding a cubic. Can you then explain why your answer is an integer?
+
+\textbf{Hint 1.} A product of consecutive integers wants a factorial denominator. \textbf{Hint 2.} $k(k+1)=2\binom{k+1}2$. Now telescope with Pascal's identity.
+
+\textbf{Solution.} Since $\binom{k+1}2=\binom{k+2}3-\binom{k+1}3$,
+\[
+\sum_{k=1}^n k(k+1)=2\binom{n+2}3=\frac{n(n+1)(n+2)}3.
+\]
+The binomial count proves integrality; alternatively one of three consecutive integers is divisible by $3$. For $n=0$ the empty sum and the formula both give $0$.
+
+\begin{reminder}[a proof-writing checklist]
+Name the domain of the index; check the first admissible value; state precisely what the induction hypothesis allows; perform the step for an arbitrary index; check that every denominator is nonzero. A hundred correct examples establish a hundred examples. One correct inductive step establishes all the rest.
+\end{reminder}
+
+\section*{What this chapter establishes}
+Gauss's pairing, Nicomachus's gnomons, induction, telescoping and the binomial basis are five ways to turn a finite pattern into a theorem. The arithmetic bridge, Bézout's identity, Euclid's lemma and unique factorisation, is the part Volume~1 will not ask you to take on trust. Forward differences explain why a polynomial sum is again given by a polynomial.
+
+Volume~1 lives on induction and this divisibility. Volume~4 sums the same binomial series as functions, with a remainder attached. Volume~5 and Volume~13 meet the primes through sums that no longer have closed forms, so the estimates of later chapters take over. Volume~14 counts integers with these same binomial weights, and then asks what a typical integer does.
+
+\section{Exercises}
+The finite identities below use only this chapter. The limits in Exercises~\ref{ex:tel3} and~\ref{ex:telprod} are first examples to revisit after the definitions and limit rules in Chapter~\ref{ch:sequences}; their displayed finite remainder formulas already show the size of the error.
+
+
+\begin{exercise}[$\star$]\label{ex:cubes}
+For $n\ge0$, prove by induction that $\displaystyle\sum_{k=1}^n k^3=\left(\frac{n(n+1)}2\right)^2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:tel3}
+For $n\ge0$, compute $\displaystyle S_n=\sum_{k=1}^n\frac1{k(k+1)(k+2)}$ and its limit.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:kbinom}
+For $n\ge1$, show that $\displaystyle\sum_{k=0}^n k\binom nk=n\,2^{n-1}$ by double counting, then using $k\binom nk=n\binom{n-1}{k-1}$. Check separately that the sum is $0$ for $n=0$. After the calculus chapter, recover the identity by differentiating $(1+x)^n$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:hockey}
+\emph{Hockey stick.} Show that $\displaystyle\sum_{k=r}^n\binom kr=\binom{n+1}{r+1}$ for $0\le r\le n$.
+Deduce a second proof of the formula for $\sum k^3$, using $k^3=6\binom k3+6\binom k2+\binom k1$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:squares}
+Show that $\displaystyle\sum_{k=0}^n\binom nk^2=\binom{2n}n$, and deduce that $\binom{2n}n\ge\dfrac{4^n}{n+1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fermat}
+Let $p$ be prime.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $p$ divides $\binom pk$ for $0<k<p$.
+\item Deduce Fermat's little theorem: $a^p\equiv a\pmod p$ for every $a\in\N$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fibgcd}
+Let $(F_n)$ be the Fibonacci sequence, $F_0=0$, $F_1=1$, $F_{n+2}=F_{n+1}+F_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $F_{m+n}=F_{m}F_{n+1}+F_{m-1}F_n$ for $m\ge1$, $n\ge0$.
+\item Show that $\gcd(F_n,F_{n+1})=1$ for $n\ge0$.
+\item Show that $\gcd(F_m,F_n)=F_{\gcd(m,n)}$ for $m,n\ge0$ not both zero.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:cubesgeo}
+\emph{A proof without words, in words.} Consider the $n\times n$ multiplication table, whose entries
+$ij$ sum to $\bigl(\sum i\bigr)^2$. Cut it into the ``L-shaped'' regions
+$L_k=\{(i,j):\max(i,j)=k\}$. Show that the entries of $L_k$ sum to $k^3$, and conclude.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:harmonic}
+Let $H_n=\sum_{k=1}^n\frac1k$. Show that $H_n$ is not an integer for $n\ge2$.
+\emph{Hint: look at the largest power of $2$ not exceeding $n$.}
+\end{exercise}
+
+\subsection*{Further exercises}
+
+\begin{exercise}[$\star$]\label{ex:sumsq}
+\emph{Choosing the statement.} Try to prove by induction that $\sum_{k=1}^n\frac1{k^2}<2$ for all $n\ge1$, and watch the inductive step fail. Then prove the
+stronger statement $\sum_{k=1}^n\frac1{k^2}\le2-\frac1n$, and explain why a stronger statement was \emph{easier}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:odds}
+\emph{Nicomachus, proved.} Show that for $k\ge1$ the $k$ consecutive odd numbers $k^2-k+1,\ k^2-k+3,\ \dots,\ k^2+k-1$ add up to $k^3$, and that these
+blocks for $k=1,2,\dots,n$ are exactly the first $\frac{n(n+1)}2$ odd numbers. Deduce a third proof that $\sum_{k=1}^nk^3=\bigl(\frac{n(n+1)}2\bigr)^2$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:telprod}
+For $n\ge2$, compute $\displaystyle\prod_{k=2}^n\left(1-\frac1{k^2}\right)$ and its limit, and $\displaystyle\sum_{k=1}^n\frac{k}{(k+1)!}$ and its limit.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:pascalmod2}
+\emph{Pascal's triangle modulo $2$.}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $(1+x)^{2^m}\equiv1+x^{2^m}$ modulo $2$, meaning that all coefficients of the difference are even. (Use Exercise~\ref{ex:fermat}(a) and induction on $m$.)
+\item Deduce that row $2^m$ of Pascal's triangle is odd only at its two ends, and that row $2^m-1$ is entirely odd.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:fibsums}
+With the Fibonacci numbers of Exercise~\ref{ex:fibgcd}, show that $\sum_{k=1}^nF_k=F_{n+2}-1$ and $\sum_{k=1}^nF_k^2=F_nF_{n+1}$. Draw the second
+identity: squares of sides $F_1,F_2,\dots,F_n$ tile an $F_n\times F_{n+1}$ rectangle.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:binomfrac}
+Show that $\displaystyle\sum_{k=0}^n\frac{\binom nk}{k+1}=\frac{2^{n+1}-1}{n+1}$ and $\displaystyle\sum_{k=0}^n\frac{(-1)^k\binom nk}{k+1}=\frac1{n+1}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:intpoly}
+\emph{Integer-valued polynomials.} Let $P$ be a polynomial with complex coefficients such that $P(n)\in\Z$ for every $n\in\N$. Show that
+$P=\sum_kc_k\binom Xk$ with all $c_k\in\Z$. Deduce that $P(n)\in\Z$ for every $n\in\Z$, and that $d!\,P$ has integer coefficients if $\deg P=d$. Is
+$\frac{X^3-X}6$ integer-valued?
+\end{exercise}
+
+
+
+\begin{challenge}
+\begin{enumerate}[label=(\arabic*)]
+\item \emph{Faulhaber.} Compute $\sum_{k=1}^nk^5$ by the method of Theorem~\ref{thm:newton}, and check that it is a polynomial in $N=\frac{n(n+1)}2$: it is $\frac{4N^3-N^2}3$.
+Faulhaber observed in 1631 that every sum of odd powers $\sum k^{2m+1}$ is a polynomial in $N$. Can you see why the sums of odd powers are polynomials in $N$, starting from the symmetry $S(-1-n)=S(n)$ of the sum polynomial $S(n)=\sum_{k=1}^n k^{2m+1}$?
+\item \emph{Odd entries.} Count the odd entries in row $n$ of Pascal's triangle for $n\le16$ and guess the rule (it involves the binary expansion of $n$). Lucas' theorem (Volume~1) proves it.
+\item \emph{Squarefree binomials.} For $n\ge1$, $\binom{2n}n$ begins $2,6,20,70,252,\dots$ Which of these are squarefree (divisible by no square $>1$)? Erd\H{o}s conjectured that $\binom{2n}n$ is never squarefree for $n>4$; Granville and Ramar\'e proved it in 1996. Prove the easy part: if $n\ge1$ is not a power of $2$, then $4$ divides $\binom{2n}n$. (Compare the number of factors $2$ in $(2n)!$ and in $(n!)^2$. The case $n=0$ is excluded: $\binom00=1$, and $0$ is not a power of $2$.)
+\end{enumerate}
+Notes on the challenges are at the end of the chapter.
+\end{challenge}
+
+\begin{beauty}
+Exercise~\ref{ex:fermat} is the first meeting of two worlds: a counting fact (binomial coefficients)
+proves an arithmetic one (Fermat). Volume~1 builds on it all the way to RSA, and Exercise~\ref{ex:fibgcd}
+shows that the Fibonacci numbers form a \emph{divisibility sequence}, a theme that returns with
+Lucas sequences and primality tests. The four proofs of $\sum k^3=(\sum k)^2$ (induction, hockey stick, Nicomachus's gnomons, the multiplication table) are
+four ways of thinking that will serve all through the series: compute, change basis, draw, count twice. The Catalan numbers of Exercise~\ref{ex:catalan}, in the next chapter,
+found by Euler in 1751 while counting the triangulations of a polygon, are the first of the sequences that Volume~4 handles with generating functions.
+\end{beauty}
+
+\begin{exercise}[$\star\star$]\label{pb:millin}
+\begin{enumerate}[label=(\alph*)]
+\item Show that $F_{2m}=F_m(F_{m-1}+F_{m+1})$ and $F_{2m-1}=F_m^2+F_{m-1}^2$ for $m\ge1$.
+\item Show that $\sum_{n=0}^N\frac1{F_{2^n}}=3-\frac{F_{2^N-1}}{F_{2^N}}$ for $N\ge1$, and deduce that
+\[
+\sum_{n\ge0}\frac1{F_{2^n}}=1+1+\frac13+\frac1{21}+\frac1{987}+\cdots=\frac{7-\sqrt5}2.
+\]
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:erdosheil}
+\emph{Sums of distinct elements.} For $A\subset\Z/p\Z$ let $A\dotplus A=\{a+a':a,a'\in A,\ a\ne a'\}$.
+\begin{enumerate}[label=(\alph*)]
+\item (Dias da Silva and Hamidoune 1994; the proof is due to Alon, Nathanson and Ruzsa, 1995.) Prove the Erdős--Heilbronn
+conjecture: $|A\dotplus A|\ge\min(p,2|A|-3)$.
+\item Show that the bound is reached for every size $|A|\le\frac{p+3}2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:sauer}
+\emph{The Sauer--Shelah lemma.} A family $\mathcal F$ of subsets of $[n]$ \emph{shatters} $T\subseteq[n]$ if $\{F\cap T:F\in\mathcal F\}$ is the set of
+all subsets of $T$. The \emph{VC-dimension} of $\mathcal F$ is the largest size of a shattered set.
+\begin{enumerate}[label=(\alph*)]
+\item Show that if $\mathcal F$ has VC-dimension at most $d$, then $|\mathcal F|\le\sum_{i=0}^d\binom ni$.
+\item Show that the subsets of $n$ points of the real line cut out by intervals form a family of VC-dimension $2$ that attains the
+bound.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:bilinear}
+\emph{Sums over boxes.} Let $p$ be an odd prime.
+\begin{enumerate}[label=(\alph*)]
+\item Let $A,B\subseteq\mathbb F_p$ and $r\ne0$. Show that
+\[
+\Bigl|\sum_{a\in A}\sum_{b\in B}e\Bigl(\frac{rab}p\Bigr)\Bigr|\le\sqrt{p|A||B|}.
+\]
+\item Let $U,V\subseteq\mathbb F_p^2$, let $x\ne0$, and let $N(x)$ be the number of pairs $(u,v)\in U\times V$ with $u\cdot v=x$ (the dot
+product $u_1v_1+u_2v_2$). Show that
+\[
+\Bigl|N(x)-\frac{|U||V|}p\Bigr|\le\sqrt{p|U||V|}.
+\]
+\item Let $A,B,C,D\subseteq\mathbb F_p$ with $|A||B||C||D|>p^3$. Show that every $x\ne0$ can be written $ab+cd$ with $a\in A$, $b\in B$,
+$c\in C$, $d\in D$. In particular, if $|A|>p^{3/4}$, every non-zero residue is of the form $ab+cd$ with $a,b,c,d\in A$.
+\item Let $A=B=\{1,\dots,m\}$ with $m\le\frac{\sqrt p}3$. Show that the sum in (a) with $r=1$ has real part at least $\frac{m^2}2$. Taking
+$m=\lfloor\frac{\sqrt p}3\rfloor$, conclude that (a) cannot be improved by more than a constant factor.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:cubes}
+In the inductive step, factor $(n+1)^2$ out of $\left(\frac{n(n+1)}2\right)^2+(n+1)^3$.
+\end{hint}
+\begin{hint}{ex:tel3}
+Compute $\frac1{k(k+1)}-\frac1{(k+1)(k+2)}$ and compare it with $\frac1{k(k+1)(k+2)}$.
+\end{hint}
+\begin{hint}{ex:kbinom}
+A term $k\binom nk$ counts committees of size $k$ with a chosen chair. Try choosing the chair first. For the algebraic method, cancel factorials before summing.
+\end{hint}
+\begin{hint}{ex:hockey}
+Induction on $n$ with Pascal's rule. Or: sort the $(r+1)$-subsets of $\{1,\dots,n+1\}$ by their largest element.
+\end{hint}
+\begin{hint}{ex:squares}
+Write $\binom nk^2=\binom nk\binom n{n-k}$ and use Vandermonde. To compare a sum of squares with the square of a sum, expand $\sum_{0\le i<j\le n}(b_i-b_j)^2$ and use its nonnegativity.
+\end{hint}
+\begin{hint}{ex:fermat}
+(a) $k!\,(p-k)!\binom pk=p!$, and $p$ divides the right side but no factor of $k!\,(p-k)!$. (b) Induction on $a$, expanding $(a+1)^p$.
+\end{hint}
+\begin{hint}{ex:fibgcd}
+(a) Induction on $n$ with two base cases. (b) A common divisor of $F_n$ and $F_{n+1}$ divides $F_{n-1}$. (c) By (a), $\gcd(F_{m+n},F_n)=\gcd(F_m,F_n)$: this is Euclid's algorithm on the indices.
+\end{hint}
+\begin{hint}{ex:cubesgeo}
+$L_k$ is a row segment $k\cdot1,k\cdot2,\dots,k\cdot k$ plus a column segment $1\cdot k,\dots,(k-1)\cdot k$. See Figure~\ref{fig:pascal}.
+\end{hint}
+\begin{hint}{ex:harmonic}
+Let $2^s$ be the largest power of $2$ with $2^s\le n$. Multiply $H_n$ by $2^{s-1}L$, where $L$ is the odd part of $\operatorname{lcm}(1,\dots,n)$: exactly one term is not an integer.
+\end{hint}
+\begin{hint}{ex:sumsq}
+In the step for the weaker statement, from $S_n<2$ you only get $S_{n+1}<2+\frac1{(n+1)^2}$. For the stronger one, you need $\frac1n-\frac1{(n+1)^2}\ge\frac1{n+1}$.
+\end{hint}
+\begin{hint}{ex:odds}
+The $k$ numbers form an arithmetic progression with middle term $k^2$ (for $k$ odd) or average $k^2$. For the second claim, count the odd numbers used up to block $k$.
+\end{hint}
+\begin{hint}{ex:telprod}
+$1-\frac1{k^2}=\frac{(k-1)(k+1)}{k^2}$: two telescoping products at once. $\frac k{(k+1)!}=\frac{(k+1)-1}{(k+1)!}$.
+\end{hint}
+\begin{hint}{ex:pascalmod2}
+(a) $(1+x)^{2^{m+1}}=\bigl((1+x)^{2^m}\bigr)^2$, and if $A\equiv B$ then $A^2\equiv B^2$. (b) Row $2^m-1$: $\binom{2^m}k=\binom{2^m-1}{k-1}+\binom{2^m-1}k$ is even for $0<k<2^m$; walk along the row from $k=0$.
+\end{hint}
+\begin{hint}{ex:fibsums}
+Both telescope: $F_k=F_{k+2}-F_{k+1}$, and $F_k^2=F_k(F_{k+1}-F_{k-1})=F_kF_{k+1}-F_{k-1}F_k$.
+\end{hint}
+\begin{hint}{ex:binomfrac}
+$\frac{\binom nk}{k+1}=\frac{\binom{n+1}{k+1}}{n+1}$ (check it with formula (b)). Then $\sum_k\binom{n+1}{k+1}$ and $\sum_k(-1)^k\binom{n+1}{k+1}$ are known.
+\end{hint}
+\begin{hint}{ex:intpoly}
+Theorem~\ref{thm:newton}: $c_k=(\Delta^kP)(0)$ is an integer combination of $P(0),\dots,P(k)$. For negative integers, $\binom{-n}k=(-1)^k\binom{n+k-1}k$.
+\end{hint}
+
+
+\begin{hint}{pb:millin}
+Use $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$ and Cassini's identity $F_{m-1}F_{m+1}-F_m^2=(-1)^m$.
+\end{hint}
+
+\begin{hint}{pb:erdosheil}
+Use $(x-y)\prod_{c\in C}(x+y-c)$ and the monomial $x^{k-1}y^{k-2}$. Its coefficient is a Catalan number.
+\end{hint}
+
+\begin{hint}{pb:sauer}
+(a) Induction on $n$: compare $\mathcal F$ with $\{F\setminus\{n\}\}$ and with the sets $F$ for which both $F$ and $F\cup\{n\}$ are in $\mathcal F$.
+\end{hint}
+
+\begin{hint}{pb:bilinear}
+(a) Cauchy--Schwarz over $a$, then let $a$ run over all of $\mathbb F_p$ and expand the square. (b) Write $N(x)$ with the orthogonality
+relation, isolate $r=0$, apply Cauchy--Schwarz over $v\in V$ and extend the sum to all $v\in\mathbb F_p^2$. In the expanded square, the
+pairs $(r,r')$ with $r\ne r'$ contribute sums $\sum_{r'}e(\frac{-r'(t-1)x}p)$ with $t=\frac r{r'}\ne1$. (c) $U=A\times C$, $V=B\times D$. (d) Look at the
+real parts.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:cubes}
+\idea The proposed formula suggests comparing its values at $n$ and $n+1$. If their difference is $(n+1)^3$, induction will fit the added term. In the algebra of the inductive step, factor out the common part $(n+1)^2$ \emph{before} expanding, so that the target $\bigl((n+1)(n+2)/2\bigr)^2$ appears.
+\writeup For $n=0$ both sides are $0$; for $n=1$ both sides equal $1$. Assume the formula for $n$. Then
+\[
+\begin{aligned}\sum_{k=1}^{n+1}k^3&=\frac{n^2(n+1)^2}4+(n+1)^3\eqbr=\frac{(n+1)^2\,(n^2+4n+4)}4\eqbr=\left(\frac{(n+1)(n+2)}2\right)^2.\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:tel3}
+\idea A sum of rational fractions in $k$ asks for telescoping (Proposition~\ref{prop:telescope}). The example $\frac1{k(k+1)}=\frac1k-\frac1{k+1}$ suggests trying the same shape one level up: compute the difference of consecutive terms of $v_k=\frac1{k(k+1)}$ and see whether it is a multiple of $\frac1{k(k+1)(k+2)}$.
+\writeup We have $\dfrac1{k(k+1)}-\dfrac1{(k+1)(k+2)}=\dfrac{(k+2)-k}{k(k+1)(k+2)}=\dfrac2{k(k+1)(k+2)}$, so the sum telescopes:
+\[
+\begin{aligned}S_n&=\frac12\left(\frac1{1\cdot2}-\frac1{(n+1)(n+2)}\right)\eqbr=\frac14-\frac1{2(n+1)(n+2)}\xrightarrow[n\to\infty]{}\frac14.\end{aligned}
+\]
+\end{solution}
+
+\begin{solution}{ex:kbinom}
+\idea The factor $k$ asks for a distinguished element of a $k$-subset: a committee with a chair. Choosing the chair first leaves a completely free choice for every other person. The algebraic proof encodes the same two decisions in a factorial identity.
+\writeup For $n\ge1$, count pairs (committee, chair) among $n$ people. Choosing a committee of size $k$ and one of its members gives $\sum_{k=0}^n k\binom nk$. Choosing the chair first gives $n$ choices, followed by any subset of the remaining $n-1$ people, giving $n2^{n-1}$. Equivalently, factorial cancellation gives $k\binom nk=n\binom{n-1}{k-1}$ for $1\le k\le n$, and summing uses the binomial theorem. For $n=0$ the sum is $0$ since there is no chair. Once differentiation is established, differentiating $(1+x)^n=\sum_k\binom nkx^k$ and evaluating at $x=1$ gives the same identity for $n\ge1$.
+\end{solution}
+
+\begin{solution}{ex:hockey}
+\idea The sum on the left grows by one term when $n$ grows by one, and the right side should then grow by exactly that term: this is Pascal's rule, so try induction. For a combinatorial view, sort the $(r+1)$-subsets by their largest element. For the cubes, the formula expresses $k^3$ in the basis $\binom k3,\binom k2,\binom k1$, which the hockey stick sums at once.
+\writeup Induction on $n\ge r$: for $n=r$ both sides are $1$, and by Pascal
+$\binom{n+1}{r+1}+\binom{n+1}{r}=\binom{n+2}{r+1}$, which is the step from $n$ to $n+1$.
+(Combinatorially: a $(r+1)$-subset of $\{1,\dots,n+1\}$ with largest element $k+1$ is determined by an
+$r$-subset of $\{1,\dots,k\}$, and $k$ ranges from $r$ to $n$.)
+For the cubes, the identity $k^3=6\binom k3+6\binom k2+\binom k1$ is checked by expanding:
+$k(k-1)(k-2)+3k(k-1)+k=k^3$. Summing with the hockey stick,
+\[
+\begin{aligned}
+\sum_{k=1}^nk^3&=6\binom{n+1}4+6\binom{n+1}3\eqbr+\binom{n+1}2\\
+&=\frac{(n+1)n}{4}\Bigl[(n-1)(n-2)\Bigr.\eqbr\Bigl.\quad+4(n-1)+2\Bigr]\eqbr=\frac{n(n+1)}4\cdot n(n+1),
+\end{aligned}
+\]
+which is $\bigl(n(n+1)/2\bigr)^2$.
+\end{solution}
+
+\begin{solution}{ex:squares}
+\idea Vandermonde requires indices adding to a constant; the symmetry $\binom nk=\binom n{n-k}$ provides them. For the bound, all we know about the entries is their sum $2^n$. Squared differences measure their departure from being equal and give the needed inequality without a later theorem.
+\writeup Vandermonde with $m=n=r$ gives $\binom{2n}n=\sum_{k=0}^n\binom nk\binom n{n-k}=\sum_{k=0}^n\binom nk^2$. For any real $b_0,\dots,b_n$, direct expansion gives
+\[
+(n+1)\sum_{k=0}^n b_k^2-\left(\sum_{k=0}^n b_k\right)^2
+=\sum_{0\le i<j\le n}(b_i-b_j)^2\ge0.
+\]
+Apply this to $b_k=\binom nk$: since $\sum b_k=2^n$, we obtain $4^n\le(n+1)\binom{2n}n$. For $n=0$ both sides are $1$. The inequalities chapter generalises this comparison as Cauchy--Schwarz.
+\end{solution}
+
+\begin{solution}{ex:fermat}
+\idea (a) The formula $\binom pk=\frac{p!}{k!(p-k)!}$ has a $p$ upstairs and only numbers smaller than $p$ downstairs, so the $p$ cannot cancel. Making ``cannot cancel'' rigorous is exactly Euclid's lemma from the arithmetic bridge. (b) We want a statement about all $a$, and (a) says that $(a+1)^p$ is $a^p+1$ modulo $p$: this is an inductive step waiting to be used.
+\writeup (a) By Proposition~\ref{prop:binom}, $k!\,(p-k)!\binom pk=p!$, which is divisible by $p$. The integer $k!\,(p-k)!$ is a product of integers between $1$ and $p-1$, none divisible by $p$, so it is coprime to $p$ (a prime dividing a product divides a factor). By Euclid's lemma (if $p\mid ab$ and $\gcd(p,a)=1$ then $p\mid b$; proved in this chapter's arithmetic bridge), $p\mid\binom pk$.
+
+(b) Induction on $a$: true for $a=0$. By the binomial formula and (a), all middle terms vanish modulo $p$:
+$(a+1)^p=\sum_k\binom pka^k\equiv a^p+1\equiv a+1\pmod p$.
+\end{solution}
+
+\begin{solution}{ex:fibgcd}
+\idea (a) The recurrence links three consecutive terms, so an induction on $n$ needs two base cases and two hypotheses. (b) A common divisor of two consecutive terms divides their difference, which is the previous term: walk down. (c) The rule $\gcd(F_m,F_n)=\gcd(F_{m-n},F_n)$ would make $\gcd(F_m,F_n)$ follow Euclid's algorithm exactly as $\gcd(m,n)$ does. Formula (a) expresses $F_m$ in terms of $F_n$ and $F_{m-n}$, which is what we need.
+\writeup (a) Fix $m\ge1$ and use induction on $n$. For $n=0$: $F_m=F_mF_1+F_{m-1}F_0$.
+For $n=1$: $F_{m+1}=F_mF_2+F_{m-1}F_1=F_m+F_{m-1}$. If it holds for $n$ and $n+1$, adding the two
+equalities and using the recurrence on each column gives it for $n+2$.
+
+(b) For $n=0$, $\gcd(F_0,F_1)=\gcd(0,1)=1$. For $n\ge1$, a common divisor of $F_n$ and $F_{n+1}$ divides $F_{n+1}-F_n=F_{n-1}$; descending, it divides $F_1=1$.
+
+(c) The cases in which one index vanishes, or the two indices are equal, are immediate, and the identity is symmetric in $m$ and $n$. If $m>0$ and $n=0$, then $\gcd(F_m,F_0)=\gcd(F_m,0)=F_m=F_{\gcd(m,0)}$. If $m=n>0$, then $\gcd(F_m,F_m)=F_m=F_{\gcd(m,m)}$. If $0<m<n$, swap the two indices. Now suppose $m>n\ge1$. Part (a), with the roles of $m$ and $n$ exchanged in the sense $F_m=F_nF_{m-n+1}+F_{n-1}F_{m-n}$, gives
+$\gcd(F_m,F_n)=\gcd(F_{n-1}F_{m-n},F_n)$. Since $\gcd(F_{n-1},F_n)=1$ by (b), Euclid's lemma yields $\gcd(F_{n-1}F_{m-n},F_n)=\gcd(F_{m-n},F_n)$: a prime dividing $F_n$ and the product divides $F_{m-n}$. Thus $\gcd(F_m,F_n)=\gcd(F_{m-n},F_n)$. The pair of indices obeys the same subtraction rule as $\gcd(m,n)$. Repeating it reaches $\gcd(F_d,F_0)=F_d$ with $d=\gcd(m,n)$ and $d>0$.
+\end{solution}
+
+\begin{solution}{ex:cubesgeo}
+\idea The table total is known, so it suffices to compute the sum over each piece. An L-shape is a row segment plus a column segment, both of the form $k\times(1+2+\dots)$, so each piece is a sum of two arithmetic progressions.
+\writeup The region $L_k$ consists of the row segment $(k,j)$, $j\le k$, and the column segment $(i,k)$, $i<k$. Its sum is
+\[
+k\sum_{j=1}^kj+k\sum_{i=1}^{k-1}i=k\cdot\frac{k(k+1)}2+k\cdot\frac{(k-1)k}2=k^3.
+\]
+The $L_k$ for $k=1,\dots,n$ partition the table, whose total is $\sum_{i,j}ij=\bigl(\sum_i i\bigr)^2$. Hence
+$\sum_k k^3=\bigl(\sum_k k\bigr)^2$.
+\end{solution}
+
+\begin{solution}{ex:harmonic}
+\idea To show a fraction is not an integer, look at one prime and show the denominator keeps a factor of it. Which prime? $2$ is the most frequent, and the hint suggests that the term $\frac1{2^s}$ is special: it is the only term whose denominator contains $2^s$. Multiply everything by a common denominator and look at parity.
+\writeup Let $2^s$ be the largest power of $2$ with $2^s\le n$; $s\ge1$ since $n\ge2$. Among $1,\dots,n$, only $k=2^s$
+is divisible by $2^s$: any other multiple of $2^s$ is at least $2\cdot2^s=2^{s+1}>n$. Let $L=\operatorname{lcm}(1,\dots,n)$,
+so the exponent of $2$ in $L$ is exactly $s$. Then $L\,H_n=\sum_k L/k$, and $L/k$ is even for every $k\ne2^s$ (as $k$ contains at most $2^{s-1}$), while $L/2^s$ is odd.
+So $L\,H_n$ is odd. If $H_n$ were an integer, $L\,H_n$ would be even since $L$ is. Contradiction.
+\end{solution}
+
+\begin{solution}{ex:sumsq}
+\idea The inductive hypothesis $S_n<2$ gives $S_{n+1}<2+\frac1{(n+1)^2}$, which is useless: the bound $2$ leaves no room to absorb the new term. A statement of the form $S_n\le2-\varepsilon_n$ has room, provided $\varepsilon_n-\varepsilon_{n+1}\ge\frac1{(n+1)^2}$; the choice $\varepsilon_n=\frac1n$ works because $\frac1n-\frac1{n+1}=\frac1{n(n+1)}>\frac1{(n+1)^2}$. The stronger statement is easier because it is also a stronger hypothesis.
+\writeup Let $P(n)$: $S_n\le2-\frac1n$. $P(1)$: $S_1=1\le1$. If $P(n)$ holds, $S_{n+1}\le2-\frac1n+\frac1{(n+1)^2}\le2-\frac1{n+1}$, because
+$\frac1n-\frac1{n+1}=\frac1{n(n+1)}\ge\frac1{(n+1)^2}$. So $S_n\le2-\frac1n<2$ for all $n$. (The calculus chapter will show that the limit is $\frac{\pi^2}6\approx1.645$.)
+\end{solution}
+
+\begin{solution}{ex:odds}
+\idea A block of $k$ consecutive odd numbers is an arithmetic progression with common difference $2$, so its sum is $k$ times its average; design the block so that the average is $k^2$. Then check that the blocks fit together without gaps by counting: block $k$ ends with the $(1+2+\dots+k)$-th odd number.
+\writeup The $k$ numbers $k^2-k+1,k^2-k+3,\dots,k^2+k-1$ are odd (as $k^2-k=k(k-1)$ is even), consecutive odd numbers, with first and last adding to $2k^2$, so their sum is $k\cdot k^2=k^3$ (pair them from the outside in, as in Gauss's trick). The last number of block $k$ is $k^2+k-1=2\cdot\frac{k(k+1)}2-1$, the $\frac{k(k+1)}2$-th odd number, and the first number of block $k+1$ is $(k+1)^2-(k+1)+1=k^2+k+1$, the next odd number. So the blocks $1,\dots,n$ are, end to end, the first $N=\frac{n(n+1)}2$ odd numbers, whose sum is $N^2$ (first example of the chapter). Hence $\sum_{k\le n}k^3=N^2$.
+\end{solution}
+
+\begin{solution}{ex:telprod}
+\idea Factor $1-\frac1{k^2}$ as $\frac{k-1}k\cdot\frac{k+1}k$: each factor telescopes on its own. For the sum, split the numerator so that each term is a difference of consecutive $\frac1{k!}$'s.
+\writeup $\prod_{k=2}^n\frac{k-1}k\cdot\prod_{k=2}^n\frac{k+1}k=\frac1n\cdot\frac{n+1}2=\frac{n+1}{2n}\to\frac12$.
+Next, $\frac k{(k+1)!}=\frac{k+1}{(k+1)!}-\frac1{(k+1)!}=\frac1{k!}-\frac1{(k+1)!}$, so the sum is $1-\frac1{(n+1)!}\to1$.
+\end{solution}
+
+\begin{solution}{ex:pascalmod2}
+\idea The binomial theorem modulo $2$, where ``$(a+b)^2\equiv a^2+b^2$'' holds because the cross term $2ab$ is even: this is Exercise~\ref{ex:fermat}(a) for $p=2$, and squaring repeatedly gives the powers $2^m$. Then read off rows of the triangle as coefficients.
+\writeup (a) For $m=0$ there is nothing to prove. If $(1+x)^{2^m}=1+x^{2^m}+2R(x)$ with $R$ an integer polynomial, then squaring,
+$(1+x)^{2^{m+1}}=(1+x^{2^m})^2+4(1+x^{2^m})R+4R^2=1+2x^{2^m}+x^{2^{m+1}}+4(\dots)$, which is $1+x^{2^{m+1}}$ plus an even polynomial.
+
+(b) The coefficients of $(1+x)^{2^m}$ are row $2^m$: by (a), $\binom{2^m}k$ is even for $0<k<2^m$. For row $2^m-1$, Pascal's rule gives $\binom{2^m}k=\binom{2^m-1}{k-1}+\binom{2^m-1}k$, so for $0<k<2^m$ the two entries $\binom{2^m-1}{k-1}$ and $\binom{2^m-1}k$ have the same parity. Starting from $\binom{2^m-1}0=1$, all entries of row $2^m-1$ are odd.
+\end{solution}
+
+\begin{solution}{ex:fibsums}
+\idea Both are telescoping sums in disguise, because the recurrence expresses $F_k$ as a difference, $F_{k+2}-F_{k+1}$; for the squares, write one factor $F_k$ as $F_{k+1}-F_{k-1}$ and the product becomes a difference of consecutive products.
+\writeup $\sum_{k=1}^nF_k=\sum_{k=1}^n(F_{k+2}-F_{k+1})=F_{n+2}-F_2=F_{n+2}-1$.
+For the squares, $F_k^2=F_k(F_{k+1}-F_{k-1})=F_kF_{k+1}-F_{k-1}F_k$ for $k\ge1$, so $\sum_{k=1}^nF_k^2=F_nF_{n+1}-F_0F_1=F_nF_{n+1}$.
+The picture: start with a $1\times1$ square, add a $1\times1$ square beside it ($1\times2$ rectangle), a $2\times2$ square below ($3\times2$), a $3\times3$ square beside ($3\times5$), and so on; after $n$ squares the rectangle is $F_n\times F_{n+1}$, and its area $F_nF_{n+1}$ is the sum of the squares.
+\end{solution}
+
+\begin{solution}{ex:binomfrac}
+\idea A $k+1$ in the denominator next to $\binom nk$ is a signal to absorb it into a binomial coefficient one level up: $\frac1{k+1}\binom nk=\frac1{n+1}\binom{n+1}{k+1}$, an identity that formula (b) checks at once. Then the sums become $\sum_j\binom{n+1}j$ over $j\ge1$, with or without signs, which the binomial theorem evaluates. (Readers who know integrals can instead integrate $(1+x)^n$ over $[0,1]$ and $[-1,0]$.)
+\writeup By formula (b), $\frac{\binom nk}{k+1}=\frac{n!}{(k+1)!\,(n-k)!}=\frac1{n+1}\binom{n+1}{k+1}$. So
+\[
+\sum_{k=0}^n\frac{\binom nk}{k+1}=\frac1{n+1}\sum_{j=1}^{n+1}\binom{n+1}j=\frac{2^{n+1}-1}{n+1},
+\]
+and with the signs, $\sum_{k=0}^n(-1)^k\binom{n+1}{k+1}=-\sum_{j=1}^{n+1}(-1)^j\binom{n+1}j=-(0-1)=1$, so the second sum is $\frac1{n+1}$.
+\end{solution}
+
+\begin{solution}{ex:intpoly}
+\idea Newton's formula gives the coefficients in the binomial basis as $(\Delta^kP)(0)$, and $\Delta$ of a sequence of integers is a sequence of integers: so the $c_k$ are integers whenever the values $P(0),P(1),\dots$ are. Once $P=\sum c_k\binom Xk$ with integer $c_k$, every value at an integer is an integer because $\binom nk\in\Z$ for all $n\in\Z$ (negative $n$ included, by the formula in the hint).
+\writeup If $P=0$, take every $c_k=0$; all integrality assertions are immediate, and the degree-dependent assertion concerns nonzero $P$. Otherwise let $d=\deg P$ and $P=\sum_{k\le d}c_k\binom Xk$ (Theorem~\ref{thm:newton}). The number $c_k=(\Delta^kP)(0)$ is obtained from the integers $P(0),\dots,P(k)$ by $k$ rounds of subtraction, so $c_k\in\Z$. (Explicitly, $(\Delta^kP)(0)=\sum_{j=0}^k(-1)^{k-j}\binom kjP(j)$, by induction on $k$.) For $n\in\Z$, $\binom nk=\frac{n(n-1)\cdots(n-k+1)}{k!}$ is an integer: for $n\ge0$ it counts subsets, and for $n=-m<0$ it equals $(-1)^k\frac{m(m+1)\cdots(m+k-1)}{k!}=(-1)^k\binom{m+k-1}k$. So $P(n)\in\Z$. Finally $d!\binom Xk$ has integer coefficients for $k\le d$ (as $k!\mid d!$), so $d!\,P\in\Z[X]$. The polynomial $\frac{X^3-X}6=\binom X3+\binom X2$ (its difference table at $0,1,2,3$ reads $0,0,1,4$, then $0,1,3$, then $1,2$, then $1$); directly, $X^3-X=(X-1)X(X+1)=6\binom{X+1}3$, so $\frac{X^3-X}6=\binom{X+1}3$ is integer-valued: among three consecutive integers one is divisible by $2$ and one by $3$.
+\end{solution}
+
+
+
+\subsection*{Notes on the challenges}
+
+(1) Theorem~\ref{thm:newton} gives
+\[
+\begin{aligned}
+k^5&=\binom k1+30\binom k2+150\binom k3\eqbr+240\binom k4+120\binom k5.
+\end{aligned}
+\]
+Use the difference table of $0$, $1$, $32$, $243$, $1024$, $3125$. Summing in the binomial basis gives
+\[
+\begin{aligned}
+\sum_{k=1}^n k^5&=\binom{n+1}2+30\binom{n+1}3+150\binom{n+1}4\eqbr+240\binom{n+1}5+120\binom{n+1}6.
+\end{aligned}
+\]
+Expanding and setting $N=n(n+1)/2$ yields
+\[
+\sum_{k=1}^n k^5=\frac{n^2(n+1)^2(2n^2+2n-1)}{12}=\frac{4N^3-N^2}3.
+\]
+Here is an elementary proof of the general fact. By the binomial-basis summation formula, $S$ is a polynomial with $S(0)=0$ and
+$S(n+1)-S(n)=(n+1)^{2m+1}$, an identity of polynomials. In particular $S(-1)=0$.
+The polynomial $T(n)=S(-n-1)$ has the same forward difference:
+$T(n+1)-T(n)=-(-n-1)^{2m+1}=(n+1)^{2m+1}$.
+Thus $T-S$ is constant, and its value at $0$ is $0$: $S(-n-1)=S(n)$.
+In the variable $z=n+\frac12$ this says that $S$ is even, hence a polynomial in
+$z^2=n(n+1)+\frac14$, and therefore in $N=n(n+1)/2$.
+Faulhaber's published formulas do not supply their derivation; Knuth's article examines the evidence and possible methods.
+
+(2) The number of odd entries in row $n$ is $2^{s(n)}$, where $s(n)$ is the number of ones in the binary expansion of $n$ (Glaisher, 1899): row $7=111_2$ has $8$ odd entries, row $8=1000_2$ has $2$. Lucas' theorem (Volume~1) says that $\binom nk$ is odd exactly when the binary digits of $k$ are dominated by those of $n$.
+
+(3) For $n\ge1$, $\binom{2n}n=2\binom{2n-1}{n-1}$ is even. The exponent of $2$ in $\binom{2n}n$ is $s(n)$, the number of ones of $n$ in binary (this follows from Kummer's theorem, Volume~1, or from Legendre's formula for the exponent of a prime in $n!$), so for $n\ge1$ one has $4\mid\binom{2n}n$ unless $n$ is a power of $2$. For $n=2^m$ one needs an odd square to divide $\binom{2n}n$, and that is the hard part of Granville and Ramar\'e's theorem; the squarefree values are exactly $\binom21=2$, $\binom42=6$, $\binom84=70$.
+
+\begin{solution}{pb:millin}
+\idea A sum with denominators $F_{2^n}$, growing doubly exponentially, smells of telescoping: one looks for a quantity $T_N$
+with $T_N-T_{N+1}=\frac1{F_{2^{N+1}}}$. Computing the first partial sums $2$, $\frac73$, $\frac{50}{21}$ and comparing them
+with $3$ suggests $T_N=\frac{F_{2^N-1}}{F_{2^N}}$, and the doubling formulas prove it.
+
+\writeup (a) The addition formula $F_{m+n}=F_mF_{n+1}+F_{m-1}F_n$ (Volume~0, Chapter~1) with $n=m$ gives
+$F_{2m}=F_mF_{m+1}+F_{m-1}F_m$, and with $n=m-1$ gives $F_{2m-1}=F_m^2+F_{m-1}^2$.
+
+(b) Let $m\ge2$ be even. Then
+\[
+\frac{F_{m-1}}{F_m}-\frac{F_{2m-1}}{F_{2m}}=\frac{F_{m-1}F_m(F_{m-1}+F_{m+1})-F_m(F_m^2+F_{m-1}^2)}{F_mF_{2m}}
+=\frac{F_{m-1}F_{m+1}-F_m^2}{F_{2m}}=\frac{(-1)^m}{F_{2m}}=\frac1{F_{2m}},
+\]
+by Cassini's identity (Volume~0, Chapter~7). With $m=2^N$, $N\ge1$, this says $\bigl(3-\frac{F_{2^{N+1}-1}}{F_{2^{N+1}}}\bigr)-
+\bigl(3-\frac{F_{2^N-1}}{F_{2^N}}\bigr)=\frac1{F_{2^{N+1}}}$, and the formula for $N=1$ is
+$\frac1{F_1}+\frac1{F_2}=2=3-\frac{F_1}{F_2}$; induction gives the claim. Finally $\frac{F_{n-1}}{F_n}\to\frac1\varphi=
+\frac{\sqrt5-1}2$ (Volume~4, Chapter~2), so the sum is $3-\frac{\sqrt5-1}2=\frac{7-\sqrt5}2=2.3819660\ldots$
+\tools Volume~0, Chapters~1 and~7 (Fibonacci identities, Cassini); Volume~4, Chapter~2 (Binet's formula).
+\leads This is Millin's series (1974). The sum $\sum_{n\ge1}\frac1{F_n}=3.3598856\ldots$ has no known closed form; André-Jeannin
+proved in 1989 that it is irrational.
+\end{solution}
+
+\begin{solution}{pb:erdosheil}
+\idea Multiply the Cauchy--Davenport polynomial by $x-y$ to kill the diagonal $a=a'$, which is exactly what ``distinct'' removes.
+The price is that the key coefficient is now a difference of two binomial coefficients, which is a Catalan number.
+
+\writeup (a) Let $k=|A|$. For $k\le2$ the bound is trivial. If $2k-3\ge p$, then $p$ is odd (for $p=2$, $k\le2$) and $A$ contains a
+subset $A'$ with $|A'|=\frac{p+3}2$, so it suffices to prove $|A'\dotplus A'|\ge p$; so we may assume $2k-3\le p$, hence
+$2k-4<p$. Suppose $|A\dotplus A|\le2k-4$ and take $C\supset A\dotplus A$ with $|C|=2k-4$. Let
+\[
+f(x,y)=(x-y)\prod_{c\in C}(x+y-c).
+\]
+It vanishes on $A\times A$: on the diagonal because of $x-y$, off it because $x+y\in C$. Its degree is $2k-3=(k-1)+(k-2)$, and the
+coefficient of $x^{k-1}y^{k-2}$ in $(x-y)(x+y)^{2k-4}$ is
+\[
+\binom{2k-4}{k-2}-\binom{2k-4}{k-1}=\binom{2k-4}{k-2}\Bigl(1-\frac{k-2}{k-1}\Bigr)=\frac1{k-1}\binom{2k-4}{k-2},
+\]
+the Catalan number $C_{k-2}$. Since $2k-4<p$, $p\nmid\binom{2k-4}{k-2}$, so $p\nmid C_{k-2}$. Problem~\ref{pb:nullstellensatz}(b) with
+$S_1=S_2=A$, $t_1=k-1$, $t_2=k-2$, gives a point of $A\times A$ where $f\ne0$: a contradiction.
+
+(b) For $A=\{0,1,\dots,k-1\}$ the sums of distinct elements are $1,2,\dots,2k-3$, which are $2k-3$ distinct residues when
+$2k-3\le p$, that is $k\le\frac{p+3}2$.
+
+\tools Problems~\ref{pb:nullstellensatz} and~\ref{pb:cauchydav}; Volume~0, Chapter~1 (binomial and Catalan numbers).
+\leads Erdős and Heilbronn conjectured (a) in the 1960s; Dias da Silva and Hamidoune proved it in 1994 with exterior algebra, and
+the polynomial proof above appeared a year later. The same polynomial with $\prod_{i<j}(x_i-x_j)$ bounds sums of $h$ distinct
+elements: $|h^\wedge A|\ge\min(p,h|A|-h^2+1)$. A direct computation verifies (a) for all subsets when $p\le11$.
+\end{solution}
+
+\begin{solution}{pb:sauer}
+\idea Delete the last point. The family shrinks only where two sets differ just by that point, and those pairs form a family of
+smaller VC-dimension.
+
+\writeup (a) Let $\Phi(n,d)=\sum_{i\le d}\binom ni$, with $\Phi(n,d)=2^n$ for $d\ge n$ and $\Phi(n,-1)=0$; Pascal's rule gives $\Phi(n,d)=\Phi(n-1,d)+\Phi(n-1,d-1)$.
+Induction on $n$, the case $n=0$ being clear. Let $\mathcal F'=\{F\setminus\{n\}:F\in\mathcal F\}$ and $\mathcal F''=\{F\subseteq[n-1]:F\in\mathcal F\text{ and }F\cup\{n\}\in\mathcal F\}$. The
+map $F\mapsto F\setminus\{n\}$ from $\mathcal F$ to $\mathcal F'$ is two-to-one exactly above $\mathcal F''$, so $|\mathcal F|=|\mathcal F'|+|\mathcal F''|$. A set shattered by $\mathcal F'$ is shattered by $\mathcal F$,
+so $\mathcal F'$ has VC-dimension $\le d$. If $\mathcal F''$ shatters $T\subseteq[n-1]$, then $\mathcal F$ shatters $T\cup\{n\}$, so $\mathcal F''$ has VC-dimension $\le d-1$. By
+induction $|\mathcal F|\le\Phi(n-1,d)+\Phi(n-1,d-1)=\Phi(n,d)$.
+
+(b) Let the points be $x_1<\dots<x_n$. An interval cuts out $\varnothing$ or a block $\{x_i,\dots,x_j\}$, $i\le j$: $1+n+\binom n2=\Phi(n,2)$ sets. Two points are
+shattered, but among three points $x_i<x_j<x_k$ no interval cuts out $\{x_i,x_k\}$, so the VC-dimension is $2$.
+
+\tools Volume~0, Chapter~1 (Pascal's rule).
+\leads The lemma was found independently by Sauer, by Shelah, and by Vapnik and Chervonenkis around 1971--72. In learning
+theory it is the reason why finite VC-dimension implies that empirical averages converge uniformly, and in discrete geometry
+it gives the $\varepsilon$-net theorem of Haussler and Welzl.
+\end{solution}
+
+\begin{solution}{pb:bilinear}
+\idea A bilinear sum is small because one of the two variables can be freed: Cauchy--Schwarz lets it run over all of $\mathbb F_p$,
+and then orthogonality kills every off-diagonal term. In two dimensions the same trick counts points on lines.
+
+\writeup (a) Let $\sigma(a)=\sum_{b\in B}e(\frac{rab}p)$. By Cauchy--Schwarz and then by enlarging the range of $a$,
+\[
+\Bigl|\sum_{a\in A}\sigma(a)\Bigr|^2\le|A|\sum_{a\in A}|\sigma(a)|^2\le|A|\sum_{a\in\mathbb F_p}|\sigma(a)|^2=|A|\sum_{b,b'\in B}\sum_{a\in\mathbb F_p}e\Bigl(\frac{ra(b-b')}p\Bigr).
+\]
+As $r\ne0$, the inner sum is $p$ if $b=b'$ and $0$ otherwise, so the right side is $p|A||B|$.
+
+(b) By orthogonality,
+\[
+N(x)=\frac1p\sum_{r\in\mathbb F_p}\sum_{u\in U,v\in V}e\Bigl(\frac{r(u\cdot v-x)}p\Bigr).
+\]
+The term $r=0$ is $\frac{|U||V|}p$. With $\hat U(w)=\sum_{u\in U}e(\frac{u\cdot w}p)$ for $w\in\mathbb F_p^2$, the rest is
+\[
+E=\frac1p\sum_{v\in V}\Sigma(v),\qquad\Sigma(v)=\sum_{r\ne0}e\Bigl(-\frac{rx}p\Bigr)\hat U(rv).
+\]
+By Cauchy--Schwarz, $|E|^2\le\frac{|V|}{p^2}\sum_{v\in V}|\Sigma(v)|^2\le\frac{|V|}{p^2}\sum_{v\in\mathbb F_p^2}|\Sigma(v)|^2$. Expanding the square and summing over $v$ first,
+\[
+\sum_{v\in\mathbb F_p^2}|\Sigma(v)|^2=\sum_{r,r'\ne0}e\Bigl(-\frac{(r-r')x}p\Bigr)\sum_{u,u'\in U}\sum_ve\Bigl(\frac{v\cdot(ru-r'u')}p\Bigr)=p^2\sum_{r,r'\ne0}e\Bigl(-\frac{(r-r')x}p\Bigr)\nu(r,r'),
+\]
+where $\nu(r,r')$ is the number of $(u,u')\in U^2$ with $ru=r'u'$. The diagonal $r=r'$ gives $(p-1)|U|$. Off the diagonal, put $t=\frac r{r'}$,
+so $t\ne0,1$ and $\nu(r,r')=\#\{u\in U:tu\in U\}=:\mu(t)$ depends only on $t$; for fixed $t$ the sum over $r'\ne0$ of $e(-\frac{r'(t-1)x}p)$
+is $-1$, since $(t-1)x\ne0$. So the off-diagonal part is $-\sum_{t\ne0,1}\mu(t)\le0$, and
+\[
+|E|^2\le\frac{|V|}{p^2}\cdot p^2(p-1)|U|<p|U||V|.
+\]
+
+(c) Take $U=A\times C$ and $V=B\times D$: then $N(x)$ counts the $(a,c,b,d)$ with $ab+cd=x$, and by (b)
+$N(x)\ge\frac{|A||B||C||D|}p-\sqrt{p|A||B||C||D|}$, which is positive exactly when $|A||B||C||D|>p^3$. With $A=B=C=D$ the condition is $|A|^4>p^3$.
+
+(d) For $1\le a,b\le m$, $0<\frac{ab}p\le\frac{m^2}p\le\frac19$, so $\cos\frac{2\pi ab}p\ge\cos\frac{2\pi}9=0.766\ldots>\frac12$ and the real part of the sum is at
+least $\frac{m^2}2$. With $m=\lfloor\frac{\sqrt p}3\rfloor$ we have $\sqrt{p|A||B|}=\sqrt p\,m\le(3m+3)m$, so the sum is at least
+$\frac{m}{6(m+1)}\sqrt{p|A||B|}$, which is at least $\frac1{12}\sqrt{p|A||B|}$ once $p\ge9$.
+
+\tools{Volume~4, Theorem~7.3 (orthogonality and Parseval for the DFT); Volume~0, Chapter~1 (Cauchy--Schwarz).}
+\leads Bound (a) is the starting point of \emph{sum--product} theory over $\mathbb F_p$: Bourgain, Katz and Tao (2004) proved that a set
+$A\subseteq\mathbb F_p$ with $p^\varepsilon<|A|<p^{1-\varepsilon}$ has $|A+A|+|A\cdot A|\ge|A|^{1+\delta}$, the finite-field analogue of Problem~\ref{pb:sumproduct}. Part~(b) is an
+incidence bound between points and lines of the plane $\mathbb F_p^2$, a finite-field counterpart of Problem~\ref{pb:incidences}.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}\raggedright
+\item R.~L.~Graham, D.~E.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994, Chapters~2 and~5. Sums and binomial coefficients, the definitive treatment, written for computer scientists; finite differences and Newton's formula are in Section~2.6.
+\item A.~Engel, \emph{Problem-Solving Strategies}, Springer, 1998, Chapters~8 and~13. Induction and many beautiful problems on sums.
+\item A.~T.~Benjamin and J.~J.~Quinn, \emph{Proofs that Really Count: The Art of Combinatorial Proof}, Mathematical Association of America, 2003. Hundreds of identities proved by double counting, including the Fibonacci identities of Exercises~\ref{ex:fibgcd} and~\ref{ex:fibsums}.
+\item R.~B.~Nelsen, \emph{Proofs Without Words}, Mathematical Association of America, 1993. The pictures behind Figure~\ref{fig:gauss} and Exercise~\ref{ex:cubesgeo}, and many others.
+\item R.~P.~Stanley, \emph{Catalan Numbers}, Cambridge University Press, 2015. Two hundred and fourteen families of objects counted by the Catalan numbers, with the history (Euler's letter to Goldbach of 4 September 1751, Catalan 1838).
+\item M.~Renault, \emph{Lost (and found) in translation: Andr\'e's actual method and its application to the generalized ballot problem}, Amer.\ Math.\ Monthly 115 (2008), 358--363. The reflection argument of Exercise~\ref{ex:catalan} is usually credited to D.~Andr\'e (1887); Renault shows that Andr\'e's own argument was a different bijection.
+\item A.~W.~F.~Edwards, \emph{Pascal's Arithmetical Triangle: The Story of a Mathematical Idea}, Johns Hopkins University Press, 2002. The triangle from Pingala, Jia Xian, al-Karaji and Khayyam to Pascal's \emph{Trait\'e} (written 1654, printed 1665), with an explicit statement of the induction principle.
+\item R.~Rashed, \emph{The Development of Arabic Mathematics: Between Arithmetic and Algebra}, Kluwer, 1994. Medieval inductive arguments in al-Karaji and al-Samaw'al.
+\item N.~L.~Rabinovitch, \emph{Rabbi Levi ben Gershon and the origins of mathematical induction}, Archive for History of Exact Sciences 6 (1970), 237--248. The \emph{Maasei Hoshev} of 1321 and its inductive proofs.
+\item Nicomachus of Gerasa, \emph{Introduction to Arithmetic}, translated by M.~L.~D'Ooge, Macmillan, 1926. Book~II, Chapter~20 states that the cubes are the sums of consecutive odd numbers, $1$, $3+5$, $7+9+11$, \dots
+\item A.~Granville, Zaphod Beeblebrox's brain and the fifty-ninth row of Pascal's triangle, \emph{American Mathematical Monthly} 99 (1992), 318--331. Pascal's triangle modulo primes and prime powers, the story behind Figure~\ref{fig:pascal}.
+\item J.~W.~L.~Glaisher, \emph{On the residue of a binomial-theorem coefficient with respect to a prime modulus}, Quarterly Journal of Mathematics 30 (1899), 150--156. The count $2^{s(n)}$ of odd entries in row $n$.
+\item A.~Granville and O.~Ramar\'e, \emph{Explicit bounds on exponential sums and the scarcity of squarefree binomial coefficients}, Mathematika 43 (1996), 73--107. The proof that $\binom{2n}n$ is never squarefree for $n>4$.
+\item D.~E.~Knuth, \emph{Johann Faulhaber and sums of powers}, Mathematics of Computation 61 (1993), 277--294. What Faulhaber's \emph{Academia Algebrae} of 1631 contains, and the proofs.
+\item S.~W.~Golomb, \emph{Checker boards and polyominoes}, Amer.\ Math.\ Monthly 61 (1954), 675--682. The tromino tiling of the deleted chessboard.
+\item L.~Theisinger, \emph{Bemerkung \"uber die harmonische Reihe}, Monatshefte f\"ur Mathematik und Physik 26 (1915), 132--134. The first proof that $H_n$ is not an integer, essentially the one of Exercise~\ref{ex:harmonic}.
+\item L.~E.~Sigler, \emph{Fibonacci's Liber Abaci}, Springer, 2002. The English translation of the 1202 book; the rabbit problem is in Chapter~12. The name ``Fibonacci numbers'' was given by \'E.~Lucas in 1877.
+\item B.~Hayes, \emph{Gauss's day of reckoning}, American Scientist 94 (2006), 200--205. The many versions of the classroom story, from Sartorius von Waltershausen's \emph{Gauss zum Ged\"achtniss} (1856) onwards, and how little of it is documented.
+\end{itemize}

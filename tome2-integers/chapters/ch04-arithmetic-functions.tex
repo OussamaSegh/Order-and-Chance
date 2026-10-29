@@ -1,0 +1,699 @@
+\chapter{Arithmetic Functions}\label{ch:functions}
+
+\begin{center}\itshape
+Pick two integers at random. The limiting probability that they have no common factor is $\dfrac6{\pi^2}\approx0.608$.\\
+The proof is a single inversion formula, plus Euler's $\zeta(2)=\frac{\pi^2}6$.
+\end{center}
+
+Stand at a tree in an infinite orchard, with trees planted at every point of the integer lattice. Which trees can you see? The tree at $(a,b)$ is hidden
+exactly when some tree $(\frac ad,\frac bd)$ stands in front of it, that is, when $a$ and $b$ have a common factor $d>1$. So the fraction of trees in view
+is the probability that two random integers are coprime, and the epigraph says it is $\frac6{\pi^2}$: you see about $61\%$ of the orchard. Behind this
+number is a whole algebra of functions on the integers, with its own multiplication, Dirichlet's convolution, and an inversion formula found by
+M\"obius in 1832. This chapter builds that algebra.
+
+There is no uniform probability distribution on all positive integers: if each
+integer had the same positive mass the total would be infinite, and if each had
+mass zero it would be zero. The precise experiment is to choose $a$ and $b$
+independently and uniformly from $\{1,\dots,N\}$, then let $N$ grow.
+Exercise~\ref{ex:coprimeprob} proves that the resulting probabilities converge.
+The orchard is a picture of this limit, not a licence to choose a mythical
+``random integer from infinity''.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-orchard}
+\caption{An orchard in the square $1\le a,b\le12$. Filled circles are the
+$91$ visible trees, those with $\gcd(a,b)=1$; crosses are hidden trees. On the
+dashed ray through $(2,3)$, the trees $(4,6)$, $(6,9)$ and $(8,12)$ stand behind
+it. Visibility is decided by the first lattice point on each ray. The finite
+fraction $91/144$ is about $0.632$, not yet the limiting $6/\pi^2$.}
+\label{fig:orchard}
+\end{figure}
+
+\begin{reminder}[The route through this chapter]
+Factorisation lets us work one prime at a time. Convolution collects information
+from divisors; M\"obius inversion uncollects it. We will use the same dictionary
+twice: first to classify even perfect numbers, then to count divisor pairs and
+visible trees. Keep the distinction between an exact identity and an asymptotic
+estimate in view: they answer different questions.
+\end{reminder}
+
+\section{Multiplicative functions}
+
+% t1-pass2 motive c73c0835
+Unique factorisation says that a function on the positive integers is known once its values at prime powers are known, but only if the function respects coprime multiplication. That hypothesis is the difference between a theorem and the counter-example $\tau(4)\ne\tau(2)^2$. Volume~5 studies these functions on average, and Volume~13 studies how large a multiplicative function can be.
+
+An \emph{arithmetic function} is a map $f:\N^*\to\C$. It is \emph{multiplicative} if $f(1)=1$ and $f(mn)=f(m)f(n)$ whenever $\gcd(m,n)=1$, and \emph{completely multiplicative} if this holds for all $m,n$. A multiplicative function is determined by its values on prime powers:
+if $n=\prod_{i=1}^r p_i^{a_i}$, then $f(n)=\prod_{i=1}^r f(p_i^{a_i})$,
+because those prime powers are pairwise coprime. The empty product at $n=1$
+is $1$.
+
+\paragraph{The coprimality clause earns its keep.}
+For example, $\tau(2)=2$ and $\tau(3)=2$, so $\tau(6)=4$. But
+$\tau(4)=3\ne\tau(2)^2$. A multiplicative function behaves independently at
+different primes; it need not behave independently at repeated copies of the
+same prime. It is tempting to erase ``coprime'' from the definition, and the
+number $4$ is waiting patiently to catch us.
+
+\begin{example}
+The following are multiplicative:
+$\mathbf 1(n)=1$; $\operatorname{id}(n)=n$; $\varepsilon(n)=1$ if $n=1$ and $0$ otherwise;
+$\tau(n)$, the number of divisors; $\sigma(n)$, their sum; Euler's $\varphi$ (Chapter~\ref{ch:congruences});
+and the \emph{M\"obius function} $\mu(n)=(-1)^k$ if $n$ is a product of $k$ distinct primes, $\mu(n)=0$ if $n$ has a square factor.
+\end{example}
+For $\mathbf 1$, $\operatorname{id}$, $\varepsilon$ this is clear. For $\mu$: if $\gcd(m,n)=1$, $mn$ has a square factor iff $m$ or $n$ does, and otherwise the primes of $mn$ are those of $m$ together with those of $n$. For $\varphi$: by the Chinese remainder theorem, the units of $\Z/mn\Z$ correspond to pairs of units (Chapter~\ref{ch:congruences}). For $\tau$ and $\sigma$, see below.
+
+% t1-pass2 examples c73c0835
+\begin{examplex}[reading $\tau$ and $\sigma$ off the primes]
+For $n=12=2^2\cdot 3$, the positive divisors are $1,2,4,3,6,12$, so $\tau(12)=6$ and $\sigma(12)=28$.
+The formulas $\tau(2^2\cdot 3)=(2+1)(1+1)$ and $\sigma(2^2)\sigma(3)=(1+2+4)(1+3)$ give the same numbers, and they use coprimeness of $4$ and $3$.
+The same formulas at $4=2^2$ give $\tau(4)=3$, which is not $\tau(2)^2=4$.
+\end{examplex}
+
+\begin{examplex}[the M\"obius function on $12$ and on $30$]
+Since $12$ is divisible by $4$, one has $\mu(12)=0$.
+Since $30=2\cdot 3\cdot 5$ is a product of three distinct primes, $\mu(30)=-1$.
+And $\mu(1)=1$, the empty product. These three values are the whole definition.
+\end{examplex}
+
+\section{Dirichlet convolution and M\"obius inversion}
+
+% t1-pass2 motive 1d32d82d
+Convolution is the multiplication that turns ``sum over divisors'' into an algebra. Its identity is $\varepsilon$, supported only at $1$, and M\"obius inversion is division by the constant function $1$. Volume~5 writes every sieve, including the one in Chapter~\ref{ch:characters}, as a convolution against $\mu$.
+
+\begin{definition}
+The \emph{Dirichlet convolution} of $f$ and $g$ is $(f*g)(n)=\displaystyle\sum_{d\mid n}f(d)\,g\!\left(\frac nd\right)=\sum_{ab=n}f(a)g(b)$.
+\end{definition}
+
+\begin{proposition}\label{prop:conv}
+Convolution is commutative and associative, with unit $\varepsilon$. If $f$ and $g$ are multiplicative, so is $f*g$.
+\end{proposition}
+\begin{proof}
+Commutativity is clear from the symmetric form, and
+\[\begin{aligned}(f*g)*h(n)&=\sum_{abc=n}f(a)g(b)h(c)\eqbr=f*(g*h)(n).\end{aligned}\] For multiplicativity, if $\gcd(m,n)=1$ then every divisor of $mn$ is uniquely $d_1d_2$ with $d_1\mid m$, $d_2\mid n$, and these are coprime, so
+\[\begin{aligned}(f*g)(mn)&=\sum_{d_1\mid m,\,d_2\mid n}f(d_1)f(d_2)\eqbr\qquad\times g\left(\frac m{d_1}\right)g\left(\frac n{d_2}\right)\\&=(f*g)(m)\,(f*g)(n).\end{aligned}\]
+\end{proof}
+
+\paragraph{A convolution you can do by hand.}
+For $n=12$, the ordered factor pairs are
+\[
+\begin{gathered}
+(1,12),(2,6),(3,4),\\
+(4,3),(6,2),(12,1).
+\end{gathered}
+\]
+Consequently
+\[
+\begin{aligned}
+ (f*g)(12)&=f(1)g(12)+f(2)g(6)\\
+ &\quad+f(3)g(4)+f(4)g(3)\\
+ &\quad+f(6)g(2)+f(12)g(1).
+\end{aligned}
+\]
+The word ``ordered'' matters: $(3,4)$ and $(4,3)$ are different terms.
+The convolution $\mathbf1*\mathbf1$ counts these pairs and gives
+$\tau(12)=6$. In contrast, ordinary pointwise multiplication would give
+$\mathbf1(12)\mathbf1(12)=1$. There are two multiplications on our desk;
+only the star means convolution.
+
+Why is $\varepsilon$ the identity? In $(f*\varepsilon)(n)$ every summand
+vanishes except the one with $n/d=1$, leaving $f(n)$. Why is associativity
+legitimate? For a fixed $n$ there are only finitely many triples $abc=n$,
+so changing the order of summation involves no convergence question.
+
+\begin{think}
+Compute $\sum_{d\mid n}\mu(d)$ for $n=1,2,\dots,12$. Make a guess, then explain it for $n=p^a$, and for $n=pq$ with two distinct primes. Why should multiplicativity then finish the job?
+\end{think}
+
+\begin{theorem}[M\"obius inversion]\label{thm:mobius}
+$\mu*\mathbf 1=\varepsilon$. Consequently, for arithmetic functions $f,g$:
+\[
+\begin{gathered}g(n)=\sum_{d\mid n}f(d)\ \text{ for all }n\quad\Longleftrightarrow\qq f(n)=\sum_{d\mid n}\mu(d)\,g\!\left(\frac nd\right)\ \text{ for all }n.\end{gathered}
+\]
+\end{theorem}
+\begin{proof}
+$\mu*\mathbf 1$ is multiplicative, and at a prime power $p^a$ with $a\ge1$ it equals $\mu(1)+\mu(p)=1-1=0$; so it is $\varepsilon$. Then $g=f*\mathbf 1$ implies $g*\mu=f*(\mathbf 1*\mu)=f$, and conversely.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+On a prime power the only nonzero values of $\mu$ are $\mu(1)=1$ and $\mu(p)=-1$, and they cancel. A multiplicative function that vanishes at every prime power vanishes everywhere except at $1$, so $\mu*\mathbf 1=\varepsilon$. Convolution is then a group law on the nose: multiplying by $\mu$ undoes multiplication by $\mathbf 1$.
+
+\paragraph{Inversion is inclusion--exclusion in disguise.}
+If $n$ has distinct prime divisors $p_1,\dots,p_r$, only squarefree divisors
+contribute to $\sum_{d\mid n}\mu(d)$. Choosing such a divisor means choosing
+a subset of these primes, with sign $(-1)^{\text{size}}$. Thus the sum is
+$(1-1)^r$, which is $0$ for $n>1$ and $1$ for $n=1$.
+The cancellation is not mysterious: every collection of forbidden prime factors
+is being alternately added and removed.
+
+For a numerical inversion, suppose $g(n)=\sum_{d\mid n}f(d)$. At $n=12$,
+M\"obius inversion reads
+\[
+ f(12)=g(12)-g(6)-g(4)+g(2).
+\]
+Expand each $g$ as a divisor sum: $f(12)$ appears once, while every other
+$f(d)$ cancels. Notice that the divisors $4$ and $12$ do not appear as
+coefficients $\mu(d)$: their square factors make those coefficients zero.
+This small calculation is often the quickest way to remember the direction of
+the formula.
+
+The counting identity $\sum_{d\mid n}\varphi(d)=n$ was proved in
+Proposition~\ref{prop:phisum}. Now inversion gives a new description:
+\[
+\varphi=\mu*\operatorname{id},\qquad
+\varphi(n)=n\sum_{d\mid n}\frac{\mu(d)}d
+=n\prod_{p\mid n}\left(1-\frac1p\right).
+\]
+For the product, only squarefree divisors contribute; choose independently
+whether to include each prime divisor of $n$. Equivalently evaluate the
+multiplicative function $\mu*\operatorname{id}$ at $p^a$ to obtain
+$p^a-p^{a-1}$.
+
+
+Similarly $\tau=\mathbf 1*\mathbf 1$ and $\sigma=\operatorname{id}*\mathbf 1$ are multiplicative by Proposition~\ref{prop:conv}, and since the divisors of $p^a$ are $1,p,\dots,p^a$, we get $\tau(p^a)=a+1$ and $\sigma(p^a)=\frac{p^{a+1}-1}{p-1}$, whence
+\[
+\begin{gathered}\tau\left(p_1^{a_1}\cdots p_r^{a_r}\right)=\prod_i(a_i+1),\qq\sigma\left(p_1^{a_1}\cdots p_r^{a_r}\right)=\prod_i\frac{p_i^{a_i+1}-1}{p_i-1}.\end{gathered}
+\]
+
+\paragraph{A local computation, then a global answer.}
+Take $n=72=2^3\cdot3^2$. Its divisors are exactly $2^i3^j$ with
+$0\le i\le3$ and $0\le j\le2$, so
+\[
+\begin{gathered}
+ \tau(72)=4\cdot3=12,\qquad
+ \sigma(72)=(1+2+4+8)(1+3+9)=195,\\
+ \varphi(72)=72(1-1/2)(1-1/3)=24.
+\end{gathered}
+\]
+The divisor formulas come from independent choices of exponents, not independent
+choices of divisors. For $\varphi$, inclusion--exclusion removes the $36$
+multiples of $2$ and the $24$ multiples of $3$, then restores the $12$
+multiples of $6$: $72-36-24+12=24$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-divisor-grid}
+\caption{Every divisor of $72$ occupies exactly one cell, labelled $2^i3^j$.
+There are $4\cdot3$ cells. Summing the rows factors the total as
+$(1+2+4+8)(1+3+9)=195$. A product over primes is a compressed record of
+independent exponent choices.}
+\label{fig:divisorgrid}
+\end{figure}
+
+% t1-pass2 examples 1d32d82d
+\begin{examplex}[convolution at $n=12$]
+The ordered pairs $(d,12/d)$ give
+\[
+(\mu*\mathbf 1)(12)=\mu(1)+\mu(2)+\mu(3)+\mu(4)+\mu(6)+\mu(12).
+\]
+Only the squarefree terms survive: $1+(-1)+(-1)+0+1+0=0$.
+The same sum at $n=1$ is $\mu(1)=1$. This is $\mu*\mathbf 1=\varepsilon$ at two arguments, which is the whole content of the prime-power computation in the proof.
+\end{examplex}
+
+\begin{examplex}[what inversion returns for $\tau$]
+Since $\tau=\mathbf 1*\mathbf 1$, convolving with $\mu$ gives $\mu*\tau=\mathbf 1$, the constant function $1$, not the identity $\varepsilon$.
+At $n=12$ the nonzero terms are
+\[
+\tau(12)-\tau(6)-\tau(4)+\tau(2)=6-4-3+2=1.
+\]
+The same sum at a prime power $p^a$ is $(a+1)-a=1$. Multiplicativity then gives the value $1$ at every $n$, which is the check that the direction of inversion has been read correctly.
+\end{examplex}
+
+\section{Perfect numbers}
+
+% t1-pass2 motive 368feb2b
+A number equal to the sum of its proper divisors is an ancient curiosity with one complete theorem: the even ones are exactly the numbers Euclid built from Mersenne primes. The odd case is still open. The argument is multiplicative bookkeeping, and it is the model for the divisor-closed questions Volume~5 averages rather than classifies.
+
+A number $n$ is \emph{perfect} if $\sigma(n)=2n$: it is the sum of its proper divisors, like $6=1+2+3$ and $28=1+2+4+7+14$.
+
+\begin{think}
+Factor the first three perfect numbers $6$, $28$ and $496$. What shape do they share, and which special primes appear? Can you check $\sigma(496)=992$ from the formula for $\sigma$?
+\end{think}
+
+\begin{theorem}[Euclid--Euler]\label{thm:perfect}
+An even number $n$ is perfect if and only if $n=2^{p-1}(2^p-1)$ with $2^p-1$ prime.
+\end{theorem}
+\begin{proof}
+If $q=2^p-1$ is prime, $\sigma(n)=\sigma(2^{p-1})\sigma(q)=(2^p-1)\cdot2^p=2n$.
+Conversely, write $n=2^km$ with $k\ge1$, $m$ odd. Then $2^{k+1}m=\sigma(n)=(2^{k+1}-1)\sigma(m)$. So $2^{k+1}-1$ divides $m$: $m=(2^{k+1}-1)s$ and $\sigma(m)=2^{k+1}s=m+s$. But $m$ and $s$ are distinct divisors of $m$ if $s\ne m$, i.e.\ always (as $2^{k+1}-1>1$), so $\sigma(m)\ge m+s$ with equality only if $m$ has no other divisors: $s=1$ and $m$ is prime. So $m=2^{k+1}-1$ is prime, and $p=k+1$.
+This exponent $p$ must itself be prime: if $p=uv$ with $u,v>1$, then
+$2^u-1$ is a proper divisor of $(2^u)^v-1=2^p-1$, by the geometric-sum
+factorisation. This also justifies the prime exponents used in
+Exercise~\ref{ex:even}.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+Multiplicativity splits $\sigma(2^km)$ into a factor $2^{k+1}-1$ and an odd factor. The equation $\sigma(n)=2n$ forces that odd factor to be a Mersenne prime and the power of $2$ to be exactly one less than that prime. Euclid's construction is the converse, a direct multiplication. The last decimal digit is left to an exercise because it is arithmetic modulo $10$, not part of the classification.
+
+\paragraph{Where the converse proof turns.}
+The equation $\sigma(m)=m+s$ leaves no room for a third positive divisor.
+If $s>1$, then $1,s,m$ would already be three distinct divisors and their sum
+would exceed $m+s$. Thus $s=1$; if $m$ were composite, a proper divisor other
+than $1$ would again make the sum too large. This tiny inequality is the
+engine of Euler's converse. Do not assume that a number of the displayed shape
+is perfect without checking the Mersenne factor: $2^{10}(2^{11}-1)$ fails,
+since $2^{11}-1=23\cdot89$ is composite. A promising shape is not a certificate.
+
+Whether an odd perfect number exists is one of the oldest open problems in mathematics.
+
+% t1-pass2 examples 368feb2b
+\begin{examplex}[the perfect number $28$]
+Take $p=3$, so $q=2^3-1=7$ is prime. Euclid's number is $n=2^{2}\cdot 7=28$.
+The proper divisors are $1,2,4,7,14$, and they add to $28$.
+Equivalently $\sigma(28)=\sigma(4)\sigma(7)=7\cdot 8=56=2n$.
+\end{examplex}
+
+\begin{examplex}[why $90$ is not perfect]
+Here $90=2\cdot 3^2\cdot 5$ and $\sigma(90)=(1+2)(1+3+9)(1+5)=3\cdot 13\cdot 6=234$, so $\sigma(90)/90=2.6$, not $2$.
+The odd part $45$ is not a Mersenne prime of the shape $2^{k+1}-1$ with the power of $2$ exactly one less than that prime. The classification rejects it at once.
+\end{examplex}
+
+\section{Average orders}
+
+% t1-pass2 motive 837f86b7
+A single value of $\tau(n)$ jumps around, but the sum up to $x$ is essentially the area under a hyperbola. That passage from the individual to the average is the method of Volume~5, and the error term one meets here is the first place an elementary count stops and a deeper one begins.
+
+Arithmetic functions fluctuate wildly ($\tau(p)=2$ but $\tau(720720)=240$), yet their averages are smooth.
+
+\begin{think}
+$\sum_{n\le x}\tau(n)$ counts the pairs $(a,b)$ of positive integers with $ab\le x$: the lattice points under a hyperbola (Figure~\ref{fig:hyperbola}). Counting column by column gives $\sum_{a\le x}\left\lfloor\frac xa\right\rfloor$, which is $x\ln x+O(x)$. Why is the error only $O(x)$, and where is it lost? How could the symmetry $(a,b)\leftrightarrow(b,a)$ of the picture help you do better?
+\end{think}
+
+\begin{figure}[ht]
+\centering
+\fig{ch04-hyperbola}
+\caption{The $111$ lattice points with $ab\le30$, so $\sum_{n\le30}\tau(n)=111$. Dirichlet counts the points with $a\le\sqrt{30}$ (blue and green) and, by symmetry, those with $b\le\sqrt{30}$ (blue and orange). The blue square is then counted twice, so it is subtracted once: $2\sum_{a\le5}\lfloor30/a\rfloor-5^2=2\cdot68-25=111$. Only $\sqrt x$ columns are summed, which shrinks the error from $O(x)$ to $O(\sqrt x)$.}
+\label{fig:hyperbola}
+\end{figure}
+
+\begin{theorem}[Dirichlet]\label{thm:hyperbola}
+$\displaystyle\sum_{n\le x}\tau(n)=x\ln x+(2\gamma-1)x+O(\sqrt x)$. So the average number of divisors among $1,\dots,\lfloor x\rfloor$ is asymptotic to $\ln x$ as $x\to\infty$.
+\end{theorem}
+\begin{proof}
+$\sum_{n\le x}\tau(n)$ counts the lattice points $(a,b)$ with $a,b\ge1$, $ab\le x$, under a hyperbola. By symmetry about the diagonal, with $y=\sqrt x$,
+\[
+\sum_{n\le x}\tau(n)=2\sum_{a\le y}\left\lfloor\frac xa\right\rfloor-\lfloor y\rfloor^2.
+\]
+Replacing $\lfloor\frac xa\rfloor$ by $\frac xa$ costs $O(y)$ in total, and $\lfloor y\rfloor^2=x+O(y)$. From Volume~0, $\sum_{a\le y}\frac1a=\ln y+\gamma+O\left(\frac1y\right)$ (the adjacent sequences there give an error at most $\ln(1+\frac1n)\le\frac1n$). So the sum is $2x\left(\frac12\ln x+\gamma\right)-x+O(\sqrt x)$.
+\end{proof}
+
+% t1-pass2 why
+\paragraph{Why this works.}
+Each $n\le x$ contributes $\tau(n)$ lattice points $(a,b)$ on the hyperbola $ab=n$. Symmetry across $a=b$ counts the region $a\le\sqrt x$ twice and subtracts the square that was counted twice. Replacing each floor by $x/a$ costs at most $1$, and there are only about $\sqrt x$ such terms, which is the error.
+
+\paragraph{What the error term promises.}
+Here $R(x)=O(\sqrt x)$ means that there are constants $C,x_0>0$ with
+$|R(x)|\le C\sqrt x$ for every $x\ge x_0$. It does not specify the sign
+of $R(x)$ and does not say that $\tau(n)$ itself is close to $\ln n$.
+Dividing the theorem by $\lfloor x\rfloor$ gives a statement about a
+long average. It gives no comparable estimate for every short interval near
+$x$, and certainly not for individual primes, whose divisor count remains $2$.
+
+The floor replacement is now cheap for a visible reason: with
+$m=\lfloor\sqrt x\rfloor$, each of the $m$ discarded fractional parts lies
+in $[0,1)$. Thus the error in the doubled sum is less than $2m$.
+Also $m^2\le x<(m+1)^2$, so $|m^2-x|<2m+1$. The entire geometric
+saving consists of replacing $\lfloor x\rfloor$ potentially troublesome
+columns by only $m$ of them. Symmetry has done the bookkeeping for us.
+
+\begin{think}
+For $x=10$, the exact sum is $27$ and
+$2(10+5+3)-3^2=27$. Locate the $3\times3$ square in the hyperbola picture.
+Then explain why a point with both coordinates greater than $\sqrt x$ cannot
+be counted at all. This is the one-sentence reason the two short sums cover
+every point.
+\end{think}
+
+% t1-pass2 examples 837f86b7
+\begin{examplex}[the divisor sum at $x=10$]
+The values $\tau(1),\ldots,\tau(10)$ are $1,2,2,3,2,4,2,4,3,4$, and they add to $27$.
+The hyperbola formula with $y=\sqrt{10}$ uses $a\le 3$: $\lfloor 10/1\rfloor+\lfloor 10/2\rfloor+\lfloor 10/3\rfloor=10+5+3=18$, then $2\cdot 18-9=27$.
+The picture and the sum agree.
+\end{examplex}
+
+\begin{examplex}[a short average]
+Up to $10$, the average of $\tau$ is $2.7$. The approximation $\ln 10+2\gamma-1$ is about $2.46$, already close, and the theorem says the agreement improves after the $\sqrt x$ error is divided by $x$. Volume~5 replaces that error by a smaller one; the main term is already visible.
+\end{examplex}
+
+\begin{beauty}
+Where this leads. Dirichlet convolution and the hyperbola method are the language of Volume~5 from Mertens's theorems through the Bombieri--Vinogradov theorem's averages. The identity $\mu*\mathbf 1=\varepsilon$ is the exact sieve of Chapter~\ref{ch:characters} and of Volume~13. The constant $6/\pi^2$ is the probability that opens the probabilistic side of the series.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:360}
+Compute $\tau(360)$, $\sigma(360)$ and $\varphi(360)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:muid}
+Let $\omega(n)$ be the number of distinct prime factors of $n$. Show that $\sum_{d\mid n}|\mu(d)|=2^{\omega(n)}$ and $\sum_{d\mid n}\mu(d)\tau(d)=(-1)^{\omega(n)}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:sigmaodd}
+Show that $\sigma(n)$ is odd if and only if $n$ is a square or twice a square.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:coprimesum}
+Show that the sum of the integers $1\le k\le n$ coprime to $n$ is $\frac{n\varphi(n)}2$ for $n\ge2$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:even}
+Show that every even perfect number ends in $6$ or $8$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:oddperfect}
+Show that an odd perfect number has at least three distinct prime factors. \emph{Hint: $\frac{\sigma(p^a)}{p^a}<\frac p{p-1}$.}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:primitive}
+Let $q,n\ge1$ be integers. A word over a $q$-letter alphabet is \emph{primitive} if it is not a power $w^k$ ($k\ge2$) of a shorter word. Show that the number of primitive words of length $n$ is $\sum_{d\mid n}\mu(d)\,q^{n/d}$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:coprimeprob}
+\emph{The probability that two integers are coprime.} Let $C(N)$ be the number of pairs $(a,b)\in\{1,\dots,N\}^2$ with $\gcd(a,b)=1$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $C(N)=\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2$. \emph{Hint: $\mathbf 1_{\gcd(a,b)=1}=\sum_{d\mid\gcd(a,b)}\mu(d)$.}
+\item Show that $\left(\sum_{d\ge1}\frac{\mu(d)}{d^2}\right)\left(\sum_{m\ge1}\frac1{m^2}\right)=1$.
+\item Deduce that $\dfrac{C(N)}{N^2}\to\dfrac6{\pi^2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:t1-mu12}
+Compute $(\mu*\mathbf 1)(n)$ for $n=1,6,12,30$. Which of these values are zero, and why does the pattern match Theorem~\ref{thm:mobius}?
+\end{exercise}
+
+\begin{beauty}
+Convolution turns the divisor structure of the integers into an algebra: $\mathbf 1$, $\mu$, $\operatorname{id}$, $\varphi$, $\tau$, $\sigma$ are linked by $\mu*\mathbf 1=\varepsilon$, $\varphi*\mathbf 1=\operatorname{id}$, $\tau=\mathbf 1*\mathbf 1$. In Volume~4 and Volume~5, the generating series $\sum\frac{f(n)}{n^s}$ turn convolution into multiplication: $\sum\frac{\mu(n)}{n^s}=\frac1{\zeta(s)}$, which is the analytic heart of Exercise~\ref{ex:coprimeprob} and of the prime number theorem. The same M\"obius formula as Exercise~\ref{ex:primitive} counts irreducible polynomials over finite fields in Volume~2.
+\end{beauty}
+
+\begin{exercise}[Journey]\label{pb:eisensine}
+\emph{Eisenstein's trigonometric proof of quadratic reciprocity.}
+\begin{enumerate}[label=(\alph*)]
+\item Let $q$ be odd. Show that for every real $x$ that is not a multiple of $\pi$,
+\[
+\frac{\sin qx}{\sin x}=(-4)^{(q-1)/2}\prod_{k=1}^{(q-1)/2}\Bigl(\sin^2x-\sin^2\frac{2\pi k}q\Bigr).
+\]
+\item Let $p$ be an odd prime and $q$ an integer prime to $p$. Show that
+\[
+\Bigl(\frac qp\Bigr)=\prod_{j=1}^{(p-1)/2}\frac{\sin(2\pi qj/p)}{\sin(2\pi j/p)}.
+\]
+\item Deduce the law of quadratic reciprocity: for distinct odd primes $p$ and $q$,
+$\bigl(\frac qp\bigr)\bigl(\frac pq\bigr)=(-1)^{\frac{p-1}2\frac{q-1}2}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:euler}
+Let $n$ be odd. Call $a$ an \emph{Euler liar} for $n$ if $\gcd(a,n)=1$ and $a^{(n-1)/2}\equiv\bigl(\frac an\bigr)\pmod n$, where
+$\bigl(\frac an\bigr)$ is the Jacobi symbol.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the Euler liars form a subgroup of $(\Z/n\Z)^*$.
+\item Show that if $n$ is composite, this subgroup is proper, so that at most half of the units are Euler liars. In
+particular, no odd composite number fools this test for all bases, unlike Problem~\ref{pb:carmichael}.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:nsq1}
+Let $P(x)$ be the largest prime factor of $\prod_{1\le n\le x}(n^2+1)$. Show that $P(x)>x$ for all large $x$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:sumsquares}
+\emph{Sums of squares over $\mathbb F_p$.} Let $p$ be an odd prime, $n\ge1$, and $N_n(c)$ the number of $x\in\mathbb F_p^n$ with
+$x_1^2+\dots+x_n^2=c$. Write $\eta=\chi$ for short.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for $c\ne0$,
+\[
+N_n(c)=\begin{cases}p^{n-1}-p^{n/2-1}\,\eta\bigl((-1)^{n/2}\bigr)&n\text{ even},\\[2pt]
+p^{n-1}+p^{(n-1)/2}\,\eta\bigl((-1)^{(n-1)/2}c\bigr)&n\text{ odd},\end{cases}
+\]
+and find $N_n(0)$.
+\item Draw $x$ uniformly in $\mathbb F_p^n$. Show that the total variation distance between the law of $x_1^2+\dots+x_n^2$ and
+the uniform law on $\mathbb F_p$ is
+\[
+\Bigl(1-\frac1p\Bigr)p^{-n/2}\quad(n\text{ even}),\qquad\frac{p-1}2\,p^{-(n+1)/2}\quad(n\text{ odd}).
+\]
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:360}
+$360=2^3\cdot3^2\cdot5$. Use the prime power formulas and multiply.
+\end{hint}
+\begin{hint}{ex:muid}
+Both sides are multiplicative in $n$. At $n=p^a$, only the divisors $1$ and $p$ have $\mu\ne0$.
+\end{hint}
+\begin{hint}{ex:sigmaodd}
+$\sigma(2^a)$ is always odd. For odd $p$, $\sigma(p^a)$ is a sum of $a+1$ odd numbers: when is it odd?
+\end{hint}
+\begin{hint}{ex:coprimesum}
+$k$ is coprime to $n$ if and only if $n-k$ is. Pair them up, as Gauss did for $1+2+\cdots+n$.
+\end{hint}
+\begin{hint}{ex:even}
+Work modulo $10$ with $n=2^{p-1}(2^p-1)$. The powers of $2$ modulo $10$ run through $2,4,8,6$, so look at $p\bmod4$.
+\end{hint}
+\begin{hint}{ex:oddperfect}
+$\frac{\sigma(n)}n$ is multiplicative and must equal $2$. With two odd primes $p<q$, how large can $\frac p{p-1}\cdot\frac q{q-1}$ be?
+\end{hint}
+\begin{hint}{ex:primitive}
+Every word of length $n$ is a power of exactly one primitive word, whose length $d$ divides $n$. So $q^n=\sum_{d\mid n}P(d)$, where $P(d)$ counts primitive words of length $d$.
+\end{hint}
+\begin{hint}{ex:coprimeprob}
+(a) Swap the sums: the pairs with $d\mid a$ and $d\mid b$ number $\lfloor N/d\rfloor^2$. (b) Multiply the series and group the terms by $n=dm$. (c) Compare $C(N)/N^2$ with $\sum_{d\le N}\mu(d)/d^2$ and control the difference.
+\end{hint}
+
+\begin{hint}{ex:t1-mu12}
+Only squarefree divisors contribute. For a product of $r$ distinct primes the sum is $(1-1)^r$.
+\end{hint}
+
+\begin{hint}{pb:eisensine}
+(a) $\frac{\sin qx}{\sin x}$ is a polynomial in $\sin^2x$ of degree $\frac{q-1}2$; find its leading coefficient and its
+roots. (b) Gauss's lemma: write $qj\equiv\pm r_j$ with $1\le r_j\le\frac{p-1}2$. (c) Plug (a) into (b) and exchange $p$
+and $q$.
+\end{hint}
+
+\begin{hint}{pb:euler}
+(b) If $p^2\mid n$, use an element of order $p(p-1)$ modulo $p^2$. If $n=pm$ with $p\nmid m$, take $a$ a non-residue modulo $p$
+and $a\equiv1\pmod m$.
+\end{hint}
+
+\begin{hint}{pb:nsq1}
+Compare $\log\prod(n^2+1)\ge2\log\lfloor x\rfloor!$ with what primes $p\le x$, $p\equiv1\pmod4$, can contribute: at most two
+solutions of $n^2\equiv-1\pmod{p^k}$.
+\end{hint}
+
+\begin{hint}{pb:sumsquares}
+Detect the equation with $\frac1p\sum_te(t(\sum x_i^2-c))$, and evaluate $\sum_xe(tx^2)$ with Volume~1, Exercise~6.7.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:360}
+\idea All three functions are multiplicative with explicit values on prime powers, so factor $360$ and multiply the local factors.
+\writeup $360=2^3\cdot3^2\cdot5$. So $\tau=4\cdot3\cdot2=24$, $\sigma=15\cdot13\cdot6=1170$, $\varphi=360\cdot\frac12\cdot\frac23\cdot\frac45=96$.
+\end{solution}
+
+\begin{solution}{ex:muid}
+\idea A sum over divisors of a product of multiplicative functions is a convolution with $\mathbf 1$, hence multiplicative. So it is enough to compute at prime powers, where $\mu$ kills every divisor except $1$ and $p$.
+\writeup $|\mu|$ and $\mu\tau$ are multiplicative (products of multiplicative functions), so both sides are multiplicative in $n$ (Proposition~\ref{prop:conv}), as are $2^{\omega(n)}$ and $(-1)^{\omega(n)}$. Check prime powers $p^a$, $a\ge1$: $|\mu(1)|+|\mu(p)|=2$, and $\mu(1)\tau(1)+\mu(p)\tau(p)=1-2=-1$; the higher powers contribute $0$.
+\end{solution}
+
+\begin{solution}{ex:sigmaodd}
+\idea Parity of a product is decided factor by factor, and $\sigma$ is multiplicative. So study the parity of $\sigma(p^a)=1+p+\dots+p^a$: for odd $p$ it is a sum of $a+1$ odd terms.
+\writeup $\sigma$ is multiplicative, so $\sigma(n)$ is odd if and only if every $\sigma(p^a)=1+p+\dots+p^a$ is odd. For $p=2$ it always is. For $p$ odd it is a sum of $a+1$ odd numbers, odd if and only if $a$ is even. So $\sigma(n)$ is odd exactly when every odd prime has an even exponent: $n=2^bm^2$, which is a square ($b$ even) or twice a square ($b$ odd).
+\end{solution}
+
+\begin{solution}{ex:coprimesum}
+\idea Gauss' trick for $1+2+\dots+n$: pair $k$ with $n-k$. It works here because $k$ is coprime to $n$ iff $n-k$ is.
+\writeup $k\mapsto n-k$ permutes the integers in $[1,n-1]$ coprime to $n$, since $\gcd(n-k,n)=\gcd(k,n)$ (and $k=n$ is not coprime to $n\ge2$). So twice the sum is $\sum(k+(n-k))=n\varphi(n)$.
+\end{solution}
+
+\begin{solution}{ex:even}
+\idea Use the Euclid--Euler form $n=2^{p-1}(2^p-1)$ and compute the last digit, i.e.\ work modulo $10$. Powers of $2$ modulo $10$ cycle with period $4$ ($2,4,8,6$), so split according to $p\bmod4$; an odd prime is $1$ or $3$ modulo $4$.
+\writeup $n=2^{p-1}(2^p-1)$ with $p$ prime. For $p=2$, $n=6$. Otherwise $p$ is odd. Note that $16^k\equiv6\pmod{10}$ for $k\ge1$ (since $6\cdot6=36$).
+If $p=4k+1$ with $k\ge1$: $2^{p-1}=16^k\equiv6$ and $2^p-1=2\cdot16^k-1\equiv12-1\equiv1$, so $n\equiv6\pmod{10}$.
+If $p=4k+3$: $2^{p-1}=4\cdot16^k\equiv4$ and $2^p=8\cdot16^k\equiv8$ (also for $k=0$, where $16^0=1$), so $n\equiv4\cdot7=28\equiv8\pmod{10}$.
+\end{solution}
+
+\begin{solution}{ex:oddperfect}
+\idea Perfect means $\frac{\sigma(n)}n=2$, and $\frac{\sigma(n)}n$ is multiplicative. Each prime contributes a factor less than $\frac p{p-1}$, which is small for odd primes; with only two odd primes the largest possible product is $\frac32\cdot\frac54<2$.
+\writeup The integer $1$ is not perfect, since $\sigma(1)=1\ne2$. For a prime power, $\frac{\sigma(p^a)}{p^a}=1+\frac1p+\dots+\frac1{p^a}<\frac1{1-1/p}=\frac p{p-1}$. If $n$ is odd with at most two prime factors $p<q$, then $\frac{\sigma(n)}n<\frac p{p-1}\cdot\frac q{q-1}\le\frac32\cdot\frac54=\frac{15}8<2$ (the function $t\mapsto\frac t{t-1}$ decreases, and $p\ge3$, $q\ge5$). With one prime factor the bound is $\frac32$. So $\sigma(n)\ne2n$.
+\end{solution}
+
+\begin{solution}{ex:primitive}
+\idea M\"obius inversion needs a relation of the form $g(n)=\sum_{d\mid n}f(d)$. Here $g(n)=q^n$ counts all words, and the claim is that every word is uniquely a power of a primitive word whose length divides $n$. The cleanest way to see uniqueness is through the symmetry group of the word under cyclic rotation, a subgroup of $\Z/n\Z$.
+\writeup For a word $u$ of length $n$, the shifts $s\in\Z/n\Z$ such that rotating $u$ cyclically by $s$ leaves it unchanged form a subgroup of $\Z/n\Z$, generated by some $g\mid n$ (the subgroups of $\Z/n\Z$ are the images of the subgroups $d\Z\supset n\Z$, by Proposition~\ref{prop:subgroups}). Then $u=w^{n/g}$ where $w$ is the prefix of length $g$, and $w$ is primitive: if $w=v^k$ with $k\ge2$, the shift by $|v|<g$ would fix $u$.
+Conversely, if $u=w'^{n/d}$ with $w'$ primitive, the shift by $d$ fixes $u$, so $g\mid d$, and then $w'$ is a power of the prefix of length $g$; primitivity forces $d=g$, $w'=w$. So every word of length $n$ is $w^{n/d}$ for a unique primitive $w$ of length $d\mid n$, and $q^n=\sum_{d\mid n}P(d)$, where $P(d)$ counts primitive words of length $d$. M\"obius inversion gives $P(n)=\sum_{d\mid n}\mu(d)q^{n/d}$.
+\end{solution}
+
+\begin{solution}{ex:coprimeprob}
+\idea The condition $\gcd(a,b)=1$ is awkward to count directly, but $\mu*\mathbf 1=\varepsilon$ expresses its indicator as a sum over common divisors, and pairs with a \emph{given} common divisor $d$ are trivial to count. Then the main term $N^2\sum\frac{\mu(d)}{d^2}$ appears, and (b) identifies that series as $\frac1{\zeta(2)}$ by the same convolution identity, now in the form of a product of series.
+\writeup (a) By Theorem~\ref{thm:mobius}, $\sum_{d\mid m}\mu(d)$ is $1$ if $m=1$ and $0$ otherwise. So
+$C(N)=\sum_{a,b\le N}\sum_{d\mid a,\,d\mid b}\mu(d)=\sum_{d\le N}\mu(d)\cdot\#\{(a,b):d\mid a,d\mid b\}=\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2$.
+
+(b) Both series converge absolutely, so their product can be expanded and regrouped by $n=dm$ (as in the Cauchy product, Volume~0, the sequences and series chapter): $\sum_n\frac1{n^2}\sum_{d\mid n}\mu(d)=\sum_n\frac{\varepsilon(n)}{n^2}=1$.
+
+(c) For $t\ge1$, $0\le t^2-\lfloor t\rfloor^2<2t$, so the
+constant in the following estimate is independent of $d$ and $N$.
+Write $\left\lfloor\frac Nd\right\rfloor^2=\frac{N^2}{d^2}+O\left(\frac Nd\right)$. Then
+$\frac{C(N)}{N^2}=\sum_{d\le N}\frac{\mu(d)}{d^2}+O\left(\frac1N\sum_{d\le N}\frac1d\right)=\sum_{d\le N}\frac{\mu(d)}{d^2}+O\left(\frac{\ln N}N\right)$,
+which tends to $\sum_d\frac{\mu(d)}{d^2}=\frac1{\zeta(2)}=\frac6{\pi^2}$ by (b) and the Basel problem (Volume~0, the polynomial exercise on the Basel problem).
+More quantitatively, the floor errors total at most $2H_N/N$, where
+$H_N=\sum_{d\le N}1/d$, and the omitted tail has absolute value at most
+$\sum_{d>N}d^{-2}\le1/N$. Hence
+\[
+\left|\frac{C(N)}{N^2}-\frac6{\pi^2}\right|
+\le\frac{2H_N+1}{N}.
+\]
+This bound is deliberately elementary. It controls the finite sampling error,
+not the fluctuation of an unspecified random integer.
+
+\end{solution}
+
+\begin{solution}{ex:t1-mu12}
+\idea The sum $\sum_{d\mid n}\mu(d)$ is $\varepsilon(n)$.
+\writeup At $n=1$ the sum is $\mu(1)=1$. At $n=6=2\cdot 3$ it is $1-1-1+1=0$. At $n=12$ the terms in $\mu$ are $1,-1,-1,0,1,0$, which add to $0$. At $n=30=2\cdot 3\cdot 5$ the sum is $(1-1)^3=0$. Theorem~\ref{thm:mobius} says the sum is $1$ only at $n=1$.
+\end{solution}
+
+\begin{solution}{pb:eisensine}
+\idea Gauss's lemma counts the sign changes in $j\mapsto qj\bmod p$; the odd function $\sin\frac{2\pi x}p$ records the
+signs as a product of sines. The polynomial identity (a) then turns each ratio $\frac{\sin qx}{\sin x}$ into a product of
+differences $\sin^2\frac{2\pi j}p-\sin^2\frac{2\pi k}q$. The double product is symmetric in $p$ and $q$ except for the sign
+of each factor, and counting the factors gives reciprocity.
+
+\writeup (a) By de Moivre,
+\[
+\sin qx=\operatorname{Im}(\cos x+i\sin x)^q=\sum_{j\text{ odd}}\binom qj(-1)^{(j-1)/2}\cos^{q-j}x\sin^jx.
+\]
+For odd $j$, $q-j$ is even and $\cos^{q-j}x=(1-\sin^2x)^{(q-j)/2}$. So $\frac{\sin qx}{\sin x}=F(\sin^2x)$ for a polynomial $F$
+of degree $\frac{q-1}2$, with leading coefficient
+$\sum_{j\text{ odd}}\binom qj(-1)^{(j-1)/2}(-1)^{(q-j)/2}=(-1)^{(q-1)/2}\sum_{j\text{ odd}}\binom qj=(-1)^{(q-1)/2}2^{q-1}$,
+which is $(-4)^{(q-1)/2}$. For $1\le k\le\frac{q-1}2$, $x_k=\frac{2\pi k}q\in\left]0,\pi\right[$ satisfies $\sin qx_k=0\ne\sin x_k$, so
+$\sin^2x_k$ is a root of $F$. These $\frac{q-1}2$ values are distinct: $\sin^2x_k=\sin^2x_l$ with $x_k,x_l\in\left]0,\pi\right[$ means
+$x_l=x_k$ or $x_l=\pi-x_k$, and the second gives $2(k+l)=q$, impossible. So $F(y)=(-4)^{(q-1)/2}\prod_k(y-\sin^2x_k)$.
+
+(b) Let $H=\{1,\dots,\frac{p-1}2\}$. For $j\in H$, write $qj\equiv\varepsilon_jr_j\pmod p$ with $r_j\in H$ and $\varepsilon_j=\pm1$.
+The map $j\mapsto r_j$ is injective, since $r_j=r_{j'}$ gives $qj\equiv\pm qj'$, $j\equiv\pm j'$, and $0<j+j'<p$ leaves
+only $j=j'$; so it is a bijection of $H$. Multiplying the congruences, $q^{(p-1)/2}\bigl(\frac{p-1}2\bigr)!\equiv
+\prod_j\varepsilon_j\bigl(\frac{p-1}2\bigr)!$, so $q^{(p-1)/2}\equiv\prod_j\varepsilon_j$, and by Euler's criterion (Volume~1, Chapter~6)
+$\bigl(\frac qp\bigr)=\prod_j\varepsilon_j$. On the other side, $x\mapsto\sin\frac{2\pi x}p$ is odd and $p$-periodic, so
+$\sin\frac{2\pi qj}p=\varepsilon_j\sin\frac{2\pi r_j}p$, and
+$\prod_j\frac{\sin(2\pi qj/p)}{\sin(2\pi j/p)}=\prod_j\varepsilon_j\cdot\frac{\prod_j\sin(2\pi r_j/p)}{\prod_j\sin(2\pi j/p)}
+=\prod_j\varepsilon_j$, the sines being non-zero.
+
+(c) Let $u_j=\sin^2\frac{2\pi j}p$ and $v_k=\sin^2\frac{2\pi k}q$, for $j\le\frac{p-1}2$, $k\le\frac{q-1}2$. By (b), then (a) with
+$x=\frac{2\pi j}p$,
+\[
+\Bigl(\frac qp\Bigr)=\prod_j\frac{\sin q\frac{2\pi j}p}{\sin\frac{2\pi j}p}=(-4)^{\frac{p-1}2\frac{q-1}2}\prod_{j,k}(u_j-v_k).
+\]
+Exchanging the roles, $\bigl(\frac pq\bigr)=(-4)^{\frac{p-1}2\frac{q-1}2}\prod_{j,k}(v_k-u_j)$. The products differ by the sign
+$(-1)^{\frac{p-1}2\frac{q-1}2}$, one for each factor, and are non-zero: $u_j=v_k$ would give $\frac{2\pi j}p=\frac{2\pi k}q$ or
+$\frac{2\pi j}p=\pi-\frac{2\pi k}q$, that is $qj=pk$ (impossible, $p\nmid j$) or $2(qj+pk)=pq$ (impossible, $pq$ is odd).
+Dividing the two equalities, $\bigl(\frac qp\bigr)\big/\bigl(\frac pq\bigr)=(-1)^{\frac{p-1}2\frac{q-1}2}$, and as both symbols
+are $\pm1$, this is the law of reciprocity.
+\tools Volume~0, Chapters~2 and~3 (de Moivre, polynomials and roots); Volume~1, Chapter~6 (Euler's criterion, Gauss's lemma).
+\leads Eisenstein published this in 1845. The same pattern, with $\sin$ replaced by elliptic functions with complex
+multiplication by $\Z[i]$ or $\Z[\omega]$, gave him the biquadratic and cubic reciprocity laws: the special functions do the
+counting, and their factorisation does the rest. In modern language, (a) is a statement about the cyclotomic units of
+Problem~\ref{pb:phipm1}.
+\end{solution}
+
+\begin{solution}{pb:euler}
+\idea Both sides of the congruence are multiplicative in $a$, so the liars form a subgroup; a proper subgroup has index at
+least $2$. To show it is proper, we need one unit that is not a liar, and as for Carmichael numbers we build it with the
+Chinese remainder theorem. The Jacobi symbol sees each prime factor separately, so one can make it $-1$ while $a^{(n-1)/2}$
+stays $1$ modulo a part of $n$.
+
+\writeup (a) If $a,b$ are liars, $(ab)^{(n-1)/2}\equiv\bigl(\frac an\bigr)\bigl(\frac bn\bigr)=\bigl(\frac{ab}n\bigr)$ by
+multiplicativity of the Jacobi symbol in $a$ (Volume~1, Chapter~6). The set contains $1$ and is finite, so it is a subgroup.
+
+(b) Let $n$ be odd and composite. If $p^2\mid n$ for some $p$, choose $a$ of order $p(p-1)$ modulo $p^2$ and $\equiv1$ modulo the rest
+of $n$, as in Problem~\ref{pb:carmichael}. A liar satisfies $a^{n-1}\equiv\bigl(\frac an\bigr)^2=1\pmod n$, so $p(p-1)\mid n-1$,
+impossible. Otherwise $n=pm$ with $m>1$ odd and $p\nmid m$. Let $b$ be a non-residue modulo $p$, and choose $a\equiv b\pmod p$,
+$a\equiv1\pmod m$. Then $\bigl(\frac an\bigr)=\bigl(\frac ap\bigr)\bigl(\frac am\bigr)=\bigl(\frac bp\bigr)\bigl(\frac1m\bigr)=-1$. If $a$
+were a liar, $a^{(n-1)/2}\equiv-1\pmod n$, hence modulo $m$; but $a\equiv1\pmod m$, so $1\equiv-1\pmod m$ and $m\mid2$: absurd.
+
+A proper subgroup of a finite group has index at least $2$ (Lagrange, Volume~2, Chapter~1), so at most half of the units are
+liars.
+\tools Volume~1, Chapters~3, 5 and~6 (Chinese remainder theorem, primitive roots, Jacobi symbol); Volume~2, Chapter~1 (Lagrange).
+\leads This is the Solovay--Strassen test (1977), the first randomised primality test: with $k$ random bases, a composite
+passes with probability at most $2^{-k}$. Its proof of correctness is what made ``probably prime'' a mathematical statement.
+The Miller--Rabin test of Problem~\ref{pb:rabin} is faster and lies less.
+\end{solution}
+
+\begin{solution}{pb:nsq1}
+\idea This is Chebyshev's idea: compare the size of a product with the largest possible contribution of small primes. The
+product $\prod(n^2+1)$ has logarithm about $2x\log x$. A prime $p\le x$ can divide $n^2+1$ only if $p=2$ or $p\equiv1\pmod4$, and
+then for at most two residues $n$ modulo each $p^k$. So the primes $p\le x$ contribute about $2x\sum_{p\equiv1(4)}\frac{\log p}p\approx x\log x$:
+half of what is needed. The missing half must come from primes larger than $x$.
+
+\writeup Let $Q=\prod_{n\le x}(n^2+1)$. Then $\log Q\ge\sum_{n\le x}2\log n=2\log\lfloor x\rfloor!=2x\log x+O(x)$ (Volume~0, Chapter~5 or
+Stirling). Suppose that every prime factor of $Q$ is at most $x$. If $p\mid n^2+1$, then $p=2$ or $p\equiv1\pmod4$ (Volume~1, Chapter~6).
+For $p=2$, $v_2(n^2+1)\le1$ (squares are $0$ or $1$ modulo $4$), so $v_2(Q)\le x$. For odd $p$ and $k\ge1$, $n^2\equiv-1\pmod{p^k}$
+has at most $2$ solutions modulo $p^k$ (the group $(\Z/p^k\Z)^*$ is cyclic, and $y^2=c$ has at most two solutions in a cyclic
+group), so at most $2\bigl(\frac x{p^k}+1\bigr)$ solutions with $n\le x$, and none if $p^k>x^2+1$. So
+\[
+v_p(Q)=\sum_{k\ge1}\#\{n\le x:p^k\mid n^2+1\}\le\frac{2x}{p-1}+\frac{2\log(x^2+1)}{\log p}.
+\]
+Summing $v_p(Q)\log p$ over the primes $p\le x$ with $p\equiv1\pmod4$, and adding $x\log2$ for $p=2$:
+\[
+\log Q\le x\log2+2x\sum_{\substack{p\le x\\p\equiv1(4)}}\frac{\log p}{p-1}+2\pi(x)\log(x^2+1).
+\]
+By Dirichlet's theorem (Volume~5, Chapter~4),
+\[
+\sum_{p\le x,\ p\equiv1\ (4)}\frac{\log p}p=\frac12\log x+O(1),
+\]
+and
+$\frac{\log p}{p-1}-\frac{\log p}p=\frac{\log p}{p(p-1)}$ has a convergent sum. By Chebyshev (Volume~1, Chapter~2), $\pi(x)\log x=O(x)$. So
+$\log Q\le x\log x+O(x)$, which contradicts $\log Q\ge2x\log x+O(x)$ for large $x$. Hence $P(x)>x$ for all large $x$.
+\tools Volume~1, Chapters~2, 5 and~6 (Chebyshev, cyclic groups, $-1$ as a square); Volume~5, Chapter~4 (Dirichlet's theorem).
+\leads Chebyshev stated, and Markov proved (1895), that $P(x)/x\to\infty$. Deshouillers and Iwaniec (1982) showed that $n^2+1$ has a
+prime factor larger than $n^{1.2}$ infinitely often. Whether $n^2+1$ is itself prime infinitely often is one of Landau's four
+problems (1912), all still open.
+\end{solution}
+
+\begin{solution}{pb:sumsquares}
+\idea Additive characters detect the equation, and the sum over each coordinate is a quadratic Gauss sum, whose square is
+$\pm p$. All the answer needs is the sign.
+
+\writeup Let $G=\sum_t\chi(t)e(t)$. By Volume~1, Exercise~6.7, $G^2=\chi(-1)p$. For $t\ne0$,
+\[
+S(t)=\sum_xe(tx^2)=\sum_u(1+\chi(u))e(tu)=\sum_u\chi(u)e(tu)=\chi(t)G,
+\]
+using $\sum_ue(tu)=0$ and the substitution $u\mapsto u/t$. Since $\frac1p\sum_te(tm)$ is $1$ if $m=0$ and $0$ otherwise,
+\[
+N_n(c)=\frac1p\sum_{t}e(-tc)S(t)^n=p^{n-1}+\frac{G^n}p\sum_{t\ne0}\chi(t)^ne(-tc).
+\]
+(a) If $n$ is even, $\chi(t)^n=1$, $G^n=(\chi(-1)p)^{n/2}=\eta\bigl((-1)^{n/2}\bigr)p^{n/2}$, and $\sum_{t\ne0}e(-tc)$ is $p-1$ if
+$c=0$ and $-1$ otherwise. So
+\[
+N_n(c)=p^{n-1}+p^{n/2-1}\eta\bigl((-1)^{n/2}\bigr)\cdot\begin{cases}p-1&c=0,\\-1&c\ne0.\end{cases}
+\]
+If $n$ is odd, $\chi(t)^n=\chi(t)$. For $c=0$ the sum $\sum_{t\ne0}\chi(t)$ vanishes and $N_n(0)=p^{n-1}$. For $c\ne0$,
+$\sum_t\chi(t)e(-tc)=\chi(-c)G$ (substitute $t\mapsto-t/c$), so
+\[
+N_n(c)=p^{n-1}+\frac{\chi(-c)G^{n+1}}p=p^{n-1}+\chi(-c)\chi(-1)^{\frac{n+1}2}p^{\frac{n-1}2}=p^{n-1}+\eta\bigl((-1)^{\frac{n-1}2}c\bigr)p^{\frac{n-1}2},
+\]
+since $\chi(-1)^{\frac{n+1}2+1}=\chi(-1)^{\frac{n-1}2}$.
+
+(b) Let $P(c)=N_n(c)/p^n$. The distance is $\frac12\sum_c|P(c)-\frac1p|$. For $n$ even, $|P(0)-\frac1p|=(p-1)p^{-n/2-1}$ and
+$|P(c)-\frac1p|=p^{-n/2-1}$ for the $p-1$ others, so the distance is $(p-1)p^{-n/2-1}=(1-\frac1p)p^{-n/2}$. For $n$ odd,
+$P(0)=\frac1p$ and $|P(c)-\frac1p|=p^{-(n+1)/2}$ for $c\ne0$, giving $\frac{p-1}2p^{-(n+1)/2}$.
+
+\tools Volume~1, Chapter~6 (Exercise~6.7, the quadratic Gauss sum); Volume~3, Chapter~8 (total variation).
+\leads So the sum of $n$ random squares is uniform up to an error $p^{-n/2}$, exactly the size that the square root
+cancellation of Gauss sums predicts. For $n=4$ and $c=m\bmod p$ the formula $p^3-p$ is the local factor in Jacobi's count of
+representations of $m$ as a sum of four squares, which Part~II will meet with modular forms.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item T.~M.~Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976, Chapters~2--3. Dirichlet convolution, M\"obius inversion and average orders, done with care.
+\item G.~H.~Hardy and E.~M.~Wright, \emph{An Introduction to the Theory of Numbers}, 6th ed., Oxford University Press, 2008, Chapters~16--18. Arithmetic functions, perfect numbers and the order of magnitude of $\tau$, $\sigma$, $\varphi$.
+\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., American Mathematical Society, 2015, Part~I, Chapters~2--3. The road from this chapter to probabilistic number theory, one of the series' destinations.
+\item M.~Lothaire, \emph{Combinatorics on Words}, Cambridge University Press, 1997, Chapter~1. Primitive words (Exercise~\ref{ex:primitive}) and their place in combinatorics and computer science.
+\item P.~P.~Nielsen, Odd perfect numbers, Diophantine equations, and upper bounds, \emph{Mathematics of Computation} 84 (2015), 2549--2567. A research paper on the open problem behind Exercise~\ref{ex:oddperfect}: an odd perfect number would need at least ten distinct prime factors.
+\item A.~F.~M\"obius, \emph{\"Uber eine besondere Art von Umkehrung der Reihen}, J.\ reine angew.\ Math.\ 9 (1832), 105--123. On the orchard of visible points: G.~P\'olya, \emph{Zahlentheoretisches und Wahrscheinlichkeitstheoretisches \"uber die Sichtweite im Walde}, Arch.\ Math.\ Phys.\ 27 (1918), 135--142.
+\end{itemize}

@@ -1,0 +1,732 @@
+\chapter{Finite Calculus}
+
+\begin{center}\itshape
+Everyone knows $1+2+\dots+n=\frac{n(n+1)}2$. What is $1^5+2^5+\dots+n^5$,\\
+and is there a method that would have found it, rather than a formula to remember?
+\end{center}
+
+In his \emph{Ars Conjectandi}, published in 1713, Jacob Bernoulli could not resist a boast. With his new method, he wrote, it had taken him
+``less than half of a quarter of an hour'' to find that the tenth powers of the first thousand integers add up to
+\[
+91\,409\,924\,241\,424\,243\,424\,241\,924\,242\,500.
+\]
+(A computer confirms every digit.) His secret was not speed with arithmetic but a calculus for sums, as complete as Newton's calculus for areas.
+This chapter builds it.
+
+Calculus computes $\int_a^bf$ by finding a function $F$ with $F'=f$. Sums have the same theory, with the
+\emph{difference} $\Delta F(x)=F(x+1)-F(x)$ in place of the derivative: to compute $\sum_{k=a}^{b-1}f(k)$, find $F$
+with $\Delta F=f$, and the sum is $F(b)-F(a)$. Everything else follows the continuous model, with small twists.
+Powers $x^m$ are replaced by \emph{falling powers} $x(x-1)\cdots(x-m+1)$, which behave perfectly under $\Delta$;
+integration by parts becomes \emph{summation by parts}; the exponential $e^x$ becomes $2^x$ and the logarithm
+becomes the harmonic number $H_x$.
+
+The chapter develops this \emph{finite calculus}, then uses it on the oldest problem of its kind, the sums of
+powers $\sum k^p$. Two families of numbers do the translation between ordinary and falling powers: the
+\emph{Stirling numbers}, which count partitions of sets and cycles of permutations, and the \emph{Bernoulli
+numbers}, which give Faulhaber's formula for $\sum k^p$ and will return in Chapter~3 with $\zeta(2k)$ and in
+Chapter~11 with the Euler--Maclaurin formula. The chapter ends with Newton's interpolation formula, the principle
+of Babbage's difference engine.
+
+\begin{think}
+The exponential is the function equal to its own derivative. Which function $f$ on the integers satisfies
+$\Delta f=f$, with $f(0)=1$?
+\end{think}
+
+\section{The difference operator}
+
+\begin{definition}
+For a function $f$ defined on $\R$ (or on $\Z$), its \emph{difference} is $\Delta f(x)=f(x+1)-f(x)$. For integers
+$a\le b$ we write $\sum_a^bf=\sum_{k=a}^{b-1}f(k)$, a sum over the half-open range $a\le k<b$ (it is $0$ when $a=b$).
+\end{definition}
+
+The half-open convention makes ranges add up, $\sum_a^bf+\sum_b^cf=\sum_a^cf$, exactly as for integrals, and it
+makes the next theorem exact.
+
+\begin{theorem}[fundamental theorem of finite calculus]\label{thm:ftfc}
+If $\Delta F=f$ on the integers, then $\sum_a^bf=F(b)-F(a)$ for all integers $a\le b$. Conversely, if
+$\Delta F=\Delta G$ on $\Z$, then $F-G$ is constant on $\Z$.
+\end{theorem}
+\begin{proof}
+$\sum_{k=a}^{b-1}\bigl(F(k+1)-F(k)\bigr)$ telescopes to $F(b)-F(a)$. If $\Delta(F-G)=0$ then $(F-G)(k+1)=(F-G)(k)$ for
+every integer $k$, so $F-G$ takes the same value at all integers.
+\end{proof}
+
+So every sum is a problem of finding an \emph{antidifference}. The first family to try is the powers, and they
+fail: $\Delta x^2=2x+1$, $\Delta x^3=3x^2+3x+1$, not as clean as $(x^m)'=mx^{m-1}$. The remedy is to change the powers.
+
+\begin{definition}
+The \emph{falling powers} are $x^{\underline 0}=1$ and $x^{\underline m}=x(x-1)\cdots(x-m+1)$ for $m\ge1$ ($m$ factors).
+The \emph{negative falling powers} are $x^{\underline{-m}}=\dfrac1{(x+1)(x+2)\cdots(x+m)}$ for $m\ge1$.
+\end{definition}
+
+For an integer $n\ge0$, $n^{\underline m}=\frac{n!}{(n-m)!}$ counts the ordered choices of $m$ objects among $n$ when
+$m\le n$, and $\binom xm=\frac{x^{\underline m}}{m!}$ is a polynomial in $x$ of degree $m$. The negative powers are
+designed so that $x^{\underline{m+n}}=x^{\underline m}(x-m)^{\underline n}$ holds for all integers $m$, $n$, as one
+checks by cancelling factors.
+
+\begin{proposition}\label{prop:falling}
+For every integer $m$ (positive, zero or negative), $\Delta x^{\underline m}=m\,x^{\underline{m-1}}$. In particular,
+for $m\ge0$ and integers $n\ge0$,
+\[
+\sum_{k=0}^{n-1}k^{\underline m}=\frac{n^{\underline{m+1}}}{m+1},\qq\sum_{k=0}^{n-1}\binom km=\binom n{m+1}.
+\]
+\end{proposition}
+\begin{proof}
+For $m\ge1$, $x^{\underline m}=x^{\underline{m-1}}(x-m+1)$ and $(x+1)^{\underline m}=(x+1)x^{\underline{m-1}}$, so
+$\Delta x^{\underline m}=x^{\underline{m-1}}\bigl((x+1)-(x-m+1)\bigr)=m\,x^{\underline{m-1}}$. For $m=0$ both sides are
+$0$. For $m=-r$ with $r\ge1$, put $P(x)=(x+2)\cdots(x+r)$, so that $x^{\underline{-r}}=\frac1{(x+1)P(x)}$ and
+$(x+1)^{\underline{-r}}=\frac1{P(x)(x+r+1)}$. Then
+\[
+\begin{aligned}\Delta x^{\underline{-r}}&=\frac{(x+1)-(x+r+1)}{(x+1)P(x)(x+r+1)}\eqbr=\frac{-r}{(x+1)\cdots(x+r+1)}=-r\,x^{\underline{-r-1}}.\end{aligned}
+\]
+The sums follow from Theorem~\ref{thm:ftfc} with $F(x)=\frac{x^{\underline{m+1}}}{m+1}$, which vanishes at $0$; the
+second is the first divided by $m!$.
+\end{proof}
+
+The second sum is the \emph{hockey-stick identity} of Pascal's triangle. Negative powers telescope the sums of
+reciprocals of products: with $m=-2$, $\Delta x^{\underline{-1}}=-x^{\underline{-2}}$, so
+\[
+\sum_{k=0}^{n-1}\frac1{(k+1)(k+2)}=\Bigl[-x^{\underline{-1}}\Bigr]_0^n=1-\frac1{n+1}.
+\]
+To reach $x^{\underline{-1}}$ one would need $m=0$, and the rule then gives $\Delta x^{\underline 0}=0$, which is true but useless: $x^{\underline{-1}}=\frac1{x+1}$
+is the one power that is not a difference of a power, just as $\frac1x$ is the one power that is not a derivative of a
+power. Its antidifference is the \emph{harmonic number} $H_x$: for integers, $H_n=1+\frac12+\dots+\frac1n$ satisfies
+$\Delta H_n=\frac1{n+1}=n^{\underline{-1}}$, so $H$ plays the part of the logarithm. And $\Delta2^x=2^x$: the function
+$2^x$ is the discrete exponential that answers the question opening the chapter, and more generally
+$\Delta c^x=(c-1)c^x$. Table~\ref{tab:dictionary} collects the dictionary.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{ll}
+\hline
+continuous & discrete\\
+\hline
+$f'(x)$ & $\Delta f(x)=f(x+1)-f(x)$\\
+$\int_a^bf(x)\dd x$ & $\sum_a^bf=\sum_{a\le k<b}f(k)$\\
+$(x^m)'=mx^{m-1}$ & $\Delta x^{\underline m}=mx^{\underline{m-1}}$\\
+$(\ln x)'=x^{-1}$ & $\Delta H_x=x^{\underline{-1}}$\\
+$(e^x)'=e^x$ & $\Delta2^x=2^x$\\
+$(uv)'=u'v+uv'$ & $\Delta(uv)=u\,\Delta v+(\Delta u)\,Ev$\\
+\hline
+\end{tabular}
+\caption{Calculus and finite calculus. $Ev(x)=v(x+1)$ is the shift.}
+\label{tab:dictionary}
+\end{table}
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-staircase}
+\caption{The sum $\sum_{k=0}^{n-1}k^2$ (the bars, here $n=8$) against the integral $\int_0^nx^2\dd x=\frac{n^3}3$ (the area
+under the curve). The sum is $\frac{n^{\underline3}}3+\frac{n^{\underline2}}2=\frac{n^3}3-\frac{n^2}2+\frac n6$: the falling powers
+give it exactly, and the integral only gives its leading term.}
+\label{fig:staircase}
+\end{figure}
+
+\section{Summation by parts}
+
+The product rule has a discrete form with a shift in it: if $Ev(x)=v(x+1)$, then
+\[
+\begin{aligned}\Delta(uv)(x)&=u(x+1)v(x+1)-u(x)v(x)\eqbr=u(x)\,\Delta v(x)+\Delta u(x)\,v(x+1),\end{aligned}
+\]
+since the right-hand side is $u(x)v(x+1)-u(x)v(x)+u(x+1)v(x+1)-u(x)v(x+1)$. Summing over $a\le k<b$ with
+Theorem~\ref{thm:ftfc} gives the discrete integration by parts.
+
+\begin{proposition}[summation by parts]\label{prop:byparts}
+For functions $u$, $v$ on the integers and integers $a\le b$,
+\[
+\sum_a^bu\,\Delta v=\bigl[uv\bigr]_a^b-\sum_a^b(\Delta u)\,Ev,
+\]
+where $[uv]_a^b=u(b)v(b)-u(a)v(a)$.
+\end{proposition}
+
+\begin{example}\label{ex:k2k}
+To sum $\sum_{k=0}^{n-1}k2^k$, take $u(k)=k$ and $\Delta v=2^k$, so $v(k)=2^k$, $\Delta u=1$ and $Ev(k)=2^{k+1}$:
+\[
+\begin{aligned}\sum_{k=0}^{n-1}k2^k&=n2^n-\sum_{k=0}^{n-1}2^{k+1}\eqbr=n2^n-2(2^n-1)\eqbr=(n-2)2^n+2.\end{aligned}
+\]
+For $n=3$: $0+2+8=10=1\cdot8+2$. With $u=H_k$ and $\Delta v=1$, so $v(k)=k$, the same rule gives
+\[
+\sum_{k=0}^{n-1}H_k=nH_n-\sum_{k=0}^{n-1}\frac{k+1}{k+1}=nH_n-n.
+\]
+\end{example}
+
+Abel's form of summation by parts is the one used for series. Write $A_k=a_1+\dots+a_k$ and $A_0=0$, so that
+$a_k=\Delta A_{k-1}$.
+
+\begin{proposition}[Abel summation]\label{prop:abel}
+For numbers $a_k$, $b_k$ and $n\ge1$,
+\[
+\sum_{k=1}^na_kb_k=A_nb_n-\sum_{k=1}^{n-1}A_k(b_{k+1}-b_k).
+\]
+\end{proposition}
+\begin{proof}
+$\sum_{k=1}^na_kb_k=\sum_{k=1}^n(A_k-A_{k-1})b_k=\sum_{k=1}^nA_kb_k-\sum_{k=0}^{n-1}A_kb_{k+1}$. Since $A_0=0$, this
+is $A_nb_n+\sum_{k=1}^{n-1}A_k(b_k-b_{k+1})$.
+\end{proof}
+
+\begin{theorem}[Dirichlet's test]\label{thm:dirichlet}
+Let $(a_k)$ be complex numbers whose partial sums $A_n$ are bounded, $|A_n|\le M$, and let $(b_k)$ be real numbers
+that decrease to $0$. Then $\sum a_kb_k$ converges, and $\bigl|\sum_{k\ge1}a_kb_k\bigr|\le Mb_1$.
+\end{theorem}
+\begin{proof}
+In Proposition~\ref{prop:abel}, $|A_nb_n|\le Mb_n\to0$. The series $\sum_kA_k(b_{k+1}-b_k)$ converges absolutely,
+since $|A_k(b_{k+1}-b_k)|\le M(b_k-b_{k+1})$ and $\sum_{k=1}^{n-1}(b_k-b_{k+1})=b_1-b_n\le b_1$. So the partial sums
+$\sum_{k=1}^na_kb_k$ converge, and the same bounds give $\bigl|\sum_{k=1}^na_kb_k\bigr|\le Mb_n+M(b_1-b_n)=Mb_1$.
+\end{proof}
+
+With $a_k=(-1)^{k+1}$ this is the alternating series test of Volume~0. The more interesting case is trigonometric.
+
+\begin{proposition}\label{prop:sinsum}
+For $x\notin2\pi\Z$ and $n\ge1$,
+\[
+\sum_{k=1}^n\sin kx=\frac{\sin\frac{nx}2\,\sin\frac{(n+1)x}2}{\sin\frac x2}.
+\]
+In particular $\bigl|\sum_{k=1}^n\sin kx\bigr|\le\frac1{|\sin(x/2)|}$, and $\sum_{k\ge1}\frac{\sin kx}k$ converges for every real $x$.
+\end{proposition}
+\begin{proof}
+The identity $2\sin\frac x2\sin kx=\cos\bigl(k-\frac12\bigr)x-\cos\bigl(k+\frac12\bigr)x$ makes the sum telescope:
+\[
+\begin{aligned}2\sin\frac x2\sum_{k=1}^n\sin kx&=\cos\frac x2-\cos\Bigl(n+\frac12\Bigr)x\eqbr=2\sin\frac{nx}2\sin\frac{(n+1)x}2,\end{aligned}
+\]
+the last step by $\cos p-\cos q=2\sin\frac{q+p}2\sin\frac{q-p}2$. For $x\notin2\pi\Z$, Theorem~\ref{thm:dirichlet} with
+$a_k=\sin kx$ and $b_k=\frac1k$ gives the convergence; for $x\in2\pi\Z$ every term is $0$.
+\end{proof}
+
+Chapter~6 shows that the sum of this series is $\frac{\pi-x}2$ for $0<x<2\pi$. The convergence is not absolute: the
+terms are not summable in absolute value, and only the cancellations that summation by parts exposes make the series
+converge.
+
+\section{Stirling numbers}
+
+Falling powers sum easily and ordinary powers do not, so we need to convert between the two. The coefficients are
+classical combinatorial numbers.
+
+\begin{definition}
+For integers $n,k\ge0$, the \emph{Stirling number of the second kind} $\stirlingii nk$ is the number of partitions of an
+$n$-element set into $k$ non-empty blocks. The \emph{(unsigned) Stirling number of the first kind} $\stirlingi nk$ is the
+number of permutations of an $n$-element set with exactly $k$ cycles. By convention $\stirlingii00=\stirlingi00=1$, and
+$\stirlingii n0=\stirlingi n0=0$ for $n\ge1$.
+\end{definition}
+
+For example $\stirlingii42=7$: the four partitions $\{a\}\{bcd\}$, $\{b\}\{acd\}$, $\{c\}\{abd\}$, $\{d\}\{abc\}$ and
+the three $\{ab\}\{cd\}$, $\{ac\}\{bd\}$, $\{ad\}\{bc\}$. And $\stirlingi42=11$: eight permutations of type
+$3+1$ and three of type $2+2$. Volume~3, Chapter~2, computed the expected number of cycles of a random permutation,
+which is $\frac1{n!}\sum_kk\stirlingi nk=H_n$.
+
+\begin{proposition}\label{prop:stirlingrec}
+For $n\ge0$ and $k\ge1$,
+\[
+\begin{gathered}\stirlingii{n+1}k=k\stirlingii nk+\stirlingii n{k-1},\qq\stirlingi{n+1}k=n\stirlingi nk+\stirlingi n{k-1}.\end{gathered}
+\]
+\end{proposition}
+\begin{proof}
+Look at the element $n+1$. In a partition of $\{1,\dots,n+1\}$ into $k$ blocks, either $\{n+1\}$ is a block, and the
+rest is a partition of $\{1,\dots,n\}$ into $k-1$ blocks, or $n+1$ was added to one of the $k$ blocks of a partition
+of $\{1,\dots,n\}$ into $k$ blocks. In a permutation of $\{1,\dots,n+1\}$ with $k$ cycles, either $n+1$ is a fixed
+point, and the rest is a permutation of $\{1,\dots,n\}$ with $k-1$ cycles, or deleting $n+1$ from its cycle (sending its
+predecessor to its successor) gives a permutation of $\{1,\dots,n\}$ with $k$ cycles; conversely $n+1$ can be inserted
+after any of the $n$ elements, in $n$ ways.
+\end{proof}
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{c|rrrrrr}
+$\stirlingii nk$ & $k=1$ & $2$ & $3$ & $4$ & $5$ & $6$\\
+\hline
+$n=1$ & 1 &&&&&\\
+$2$ & 1 & 1 &&&&\\
+$3$ & 1 & 3 & 1 &&&\\
+$4$ & 1 & 7 & 6 & 1 &&\\
+$5$ & 1 & 15 & 25 & 10 & 1 &\\
+$6$ & 1 & 31 & 90 & 65 & 15 & 1\\
+\end{tabular}
+
+\medskip
+\begin{tabular}{c|rrrrrr}
+$\stirlingi nk$ & $k=1$ & $2$ & $3$ & $4$ & $5$ & $6$\\
+\hline
+$n=1$ & 1 &&&&&\\
+$2$ & 1 & 1 &&&&\\
+$3$ & 2 & 3 & 1 &&&\\
+$4$ & 6 & 11 & 6 & 1 &&\\
+$5$ & 24 & 50 & 35 & 10 & 1 &\\
+$6$ & 120 & 274 & 225 & 85 & 15 & 1\\
+\end{tabular}
+\caption{Stirling numbers of the second kind (left) and of the first kind (right).}
+\label{tab:stirling}
+\end{table}
+
+Write $x^{\overline n}=x(x+1)\cdots(x+n-1)$ for the \emph{rising powers}, with $x^{\overline0}=1$. Note
+$x^{\underline n}=(-1)^n(-x)^{\overline n}$.
+
+\begin{theorem}\label{thm:stirling}
+For every $n\ge0$, as polynomials in $x$,
+\[
+\begin{gathered}x^n=\sum_{k=0}^n\stirlingii nk x^{\underline k},\qq x^{\overline n}=\sum_{k=0}^n\stirlingi nk x^k,\\ x^{\underline n}=\sum_{k=0}^n(-1)^{n-k}\stirlingi nk x^k.\end{gathered}
+\]
+\end{theorem}
+\begin{proof}
+First identity. Both sides are polynomials, so it is enough to check it at the infinitely many integers $x=m\ge1$
+(two polynomials that agree at infinitely many points are equal, Volume~0, Chapter~3). The left side $m^n$ counts the maps
+from $\{1,\dots,n\}$ to $\{1,\dots,m\}$. Sort them by the partition of $\{1,\dots,n\}$ into the non-empty fibres of the
+map: for a partition into $k$ blocks there are $m^{\underline k}$ maps with exactly these fibres, one for each injective
+assignment of distinct values to the blocks. Summing over $k$ gives $\sum_k\stirlingii nk m^{\underline k}$.
+
+Second identity, by induction on $n$; it holds for $n=0$. If it holds for $n$, then
+\[
+\begin{aligned}x^{\overline{n+1}}&=(x+n)x^{\overline n}=\sum_k\stirlingi nk x^{k+1}+n\sum_k\stirlingi nk x^k\eqbr=\sum_k\Bigl(\stirlingi n{k-1}+n\stirlingi nk\Bigr)x^k,\end{aligned}
+\]
+which is $\sum_k\stirlingi{n+1}k x^k$ by Proposition~\ref{prop:stirlingrec}. The third identity is the second at $-x$,
+multiplied by $(-1)^n$.
+\end{proof}
+
+Combined with Proposition~\ref{prop:falling}, the first identity sums any power:
+\[
+\sum_{k=0}^{n-1}k^p=\sum_{j=0}^p\stirlingii pj\frac{n^{\underline{j+1}}}{j+1}.
+\]
+For $p=2$ this is $\frac{n^{\underline2}}2+\frac{n^{\underline3}}3=\frac{(n-1)n(2n-1)}6$, and for $p=3$ it is
+$\frac{n^{\underline2}}2+n^{\underline3}+\frac{n^{\underline4}}4=\Bigl(\frac{n(n-1)}2\Bigr)^2$.
+
+\begin{think}
+$1+2+\dots+(n-1)=\frac{n(n-1)}2$ and $1^3+2^3+\dots+(n-1)^3=\bigl(\frac{n(n-1)}2\bigr)^2$. Is the sum of the fifth powers
+also a polynomial in $\frac{n(n-1)}2$?
+\end{think}
+
+\section{Bernoulli numbers and sums of powers}
+
+The Stirling route gives each sum of powers, but not a single formula for all of them. Jacob Bernoulli found one in
+1713, through the numbers now named after him. Their natural home is a generating function, and we use the language
+of formal power series, which Chapter~2 develops further: a formal power series $\sum_{n\ge0}c_nt^n$ is just its
+sequence of coefficients, added termwise and multiplied by the Cauchy product
+$\bigl(\sum a_nt^n\bigr)\bigl(\sum b_nt^n\bigr)=\sum_n\bigl(\sum_{k=0}^na_kb_{n-k}\bigr)t^n$, without any question of
+convergence. A series with $c_0\ne0$ has an inverse: the equations $\sum_{k=0}^nc_kd_{n-k}=[n=0]$ determine $d_0=\frac1{c_0}$,
+then $d_1$, $d_2$, \dots one after the other. We write $e^{at}=\sum_n\frac{a^nt^n}{n!}$; the binomial theorem gives
+$e^{at}e^{bt}=e^{(a+b)t}$, since the coefficient of $\frac{t^n}{n!}$ on the left is $\sum_k\binom nka^kb^{n-k}$.
+
+\begin{definition}
+The \emph{Bernoulli numbers} $B_n$ are defined by the formal identity
+\[
+\frac t{e^t-1}=\sum_{n\ge0}B_n\frac{t^n}{n!},
+\]
+where $\frac t{e^t-1}$ is the inverse of the series $\frac{e^t-1}t=\sum_{n\ge0}\frac{t^n}{(n+1)!}$, whose constant term is $1$.
+The \emph{Bernoulli polynomials} are defined by $\dfrac{te^{xt}}{e^t-1}=\sum_{n\ge0}B_n(x)\dfrac{t^n}{n!}$, that is,
+$B_n(x)=\sum_{k=0}^n\binom nkB_kx^{n-k}$.
+\end{definition}
+
+\begin{proposition}\label{prop:bernoulli}
+\begin{enumerate}[label=(\alph*)]
+\item $B_0=1$, and for $n\ge1$
+\[
+\sum_{k=0}^{n}\binom{n+1}kB_k=0.
+\]
+Hence $B_1=-\frac12$, $B_2=\frac16$, $B_4=-\frac1{30}$,
+$B_6=\frac1{42}$, $B_8=-\frac1{30}$, $B_{10}=\frac5{66}$, $B_{12}=-\frac{691}{2730}$.
+\item $B_n=0$ for every odd $n\ge3$.
+\item $B_n(x+1)-B_n(x)=nx^{n-1}$ for $n\ge1$, and $B_n(0)=B_n$.
+\end{enumerate}
+\end{proposition}
+\begin{proof}
+(a) Multiply $\sum_kB_k\frac{t^k}{k!}$ by $e^t-1=\sum_{j\ge1}\frac{t^j}{j!}$; the product is $t$. The coefficient of $t^{n+1}$ on the
+left is $\sum_{k=0}^n\frac{B_k}{k!\,(n+1-k)!}$, so multiplying by $(n+1)!$ gives $\sum_{k=0}^n\binom{n+1}kB_k=[n=0]$. For $n=0$
+this says $B_0=1$; for $n=1$, $1+2B_1=0$; for $n=2$, $1+3B_1+3B_2=0$, so $B_2=\frac16$; and so on.
+
+(b) Let $f(t)=\frac t{e^t-1}+\frac t2=\sum_{n\ne1}B_n\frac{t^n}{n!}$. Its coefficients are those of an even series exactly
+when $f(-t)=f(t)$, which is a formal identity to be checked. Multiply both sides by the (non-invertible but harmless)
+series $e^t-1$ and use $e^te^{-t}=1$: $(e^t-1)f(t)=t+\frac t2(e^t-1)=\frac t2(e^t+1)$, and
+$(e^t-1)f(-t)=(e^t-1)\bigl(\frac{-t}{e^{-t}-1}-\frac t2\bigr)=te^t-\frac t2(e^t-1)=\frac t2(e^t+1)$, using
+$\frac{-t}{e^{-t}-1}=\frac{te^t}{e^t-1}$ (multiply numerator and denominator by $-e^t$). So $(e^t-1)\bigl(f(t)-f(-t)\bigr)=0$.
+If $g=f(t)-f(-t)$ were non-zero, with lowest term $g_mt^m$, the product $(e^t-1)g$ would have lowest term $g_mt^{m+1}\ne0$.
+So $g=0$, and the odd coefficients of $f$, which are the $B_n$ with odd $n\ge3$, vanish.
+
+(c) The difference of the generating functions at $x+1$ and $x$ is $\frac{te^{xt}(e^t-1)}{e^t-1}=te^{xt}=\sum_{n\ge1}nx^{n-1}\frac{t^n}{n!}$.
+At $x=0$ the generating function is that of the $B_n$.
+\end{proof}
+
+\begin{theorem}[Faulhaber's formula]\label{thm:faulhaber}
+For integers $p\ge0$ and $n\ge1$,
+\[
+\begin{aligned}\sum_{k=0}^{n-1}k^p&=\frac{B_{p+1}(n)-B_{p+1}}{p+1}\eqbr=\frac1{p+1}\sum_{j=0}^p\binom{p+1}jB_jn^{p+1-j}.\end{aligned}
+\]
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:bernoulli}(c), $F(x)=\frac{B_{p+1}(x)}{p+1}$ satisfies $\Delta F=x^p$, so Theorem~\ref{thm:ftfc}
+gives the first form. Expanding $B_{p+1}(n)=\sum_{j=0}^{p+1}\binom{p+1}jB_jn^{p+1-j}$ and removing the last term
+$j=p+1$, which is $B_{p+1}$, gives the second.
+\end{proof}
+
+For $p=1$ this is $\frac12(n^2+2B_1n)=\frac{n(n-1)}2$. For $p=5$, with $B_3=B_5=0$,
+\[
+\sum_{k=0}^{n-1}k^5=\frac{n^6}6-\frac{n^5}2+\frac{5n^4}{12}-\frac{n^2}{12}.
+\]
+So
+\[
+\begin{aligned}\sum_{k<1000}k^5&=\frac{10^{18}}6-\frac{10^{15}}2+\frac{5\cdot10^{12}}{12}-\frac{10^6}{12}\eqbr=166\,167\,083\,333\,250\,000\end{aligned}
+\]
+. Bernoulli was proud of exactly this: he wrote that he had summed the tenth powers of the
+first thousand integers ``in half of a quarter of an hour''. The coefficients of Faulhaber's formula are very regular
+at the top, $\frac{n^{p+1}}{p+1}-\frac{n^p}2+\frac p{12}n^{p-1}-\cdots$, because $\frac{n^{p+1}}{p+1}$ is the integral and the
+correction $-\frac{n^p}2$ is the trapezoid rule; Chapter~11 turns this observation into the Euler--Maclaurin formula.
+
+\begin{remark}
+The Bernoulli numbers look tame up to $B_{10}=\frac5{66}$ and then the numerator $691$ appears. Their size is governed
+by Euler's formula $\zeta(2k)=\frac{(-1)^{k+1}B_{2k}(2\pi)^{2k}}{2(2k)!}$, proved in Chapter~3: since $\zeta(2k)\to1$,
+$|B_{2k}|$ grows like $\frac{2(2k)!}{(2\pi)^{2k}}$, faster than any exponential, so the series $\frac t{e^t-1}$ has radius of
+convergence $2\pi$ (its nearest singularities are the poles $\pm2\pi i$, as Chapter~9 explains). Their denominators are
+given by the theorem of von Staudt and Clausen (Exercise~\ref{ex:staudt}), and their numerators are linked to Kummer's
+work on Fermat's last theorem: the prime $691$ divides the numerator of $B_{12}$, so it is an \emph{irregular} prime.
+\end{remark}
+
+\section{Newton's formula and the method of differences}
+
+Iterating $\Delta$ gives $\Delta^nf$. Since $\Delta=E-1$, where $E$ is the shift and $1$ the identity, and $E$ commutes
+with itself, the binomial theorem gives
+\[
+\Delta^nf(x)=\sum_{k=0}^n(-1)^{n-k}\binom nkf(x+k).
+\]
+(For a careful reader: the operators $E^k$ act on functions and commute, so the expansion of $(E-1)^n$ is the
+ordinary algebraic one; or check it by induction on $n$, using Pascal's rule.)
+
+\begin{theorem}[Newton's interpolation formula]\label{thm:newton}
+If $f$ is a polynomial of degree at most $d$, then $\Delta^{d+1}f=0$ and, for all $x$,
+\[
+f(x)=\sum_{k=0}^d\Delta^kf(0)\binom xk.
+\]
+\end{theorem}
+\begin{proof}
+By Proposition~\ref{prop:falling}, $\Delta\binom xk=\binom x{k-1}$ for $k\ge1$ and $\Delta\binom x0=0$. The polynomials
+$\binom x0,\dots,\binom xd$ have degrees $0,\dots,d$, so they form a basis of the polynomials of degree at most $d$:
+write $f=\sum_{k=0}^dc_k\binom xk$. Then $\Delta^jf=\sum_kc_k\binom x{k-j}$ (terms with $k<j$ vanish), whose value at
+$0$ is $c_j$, because $\binom0{k-j}=[k=j]$. Also $\Delta^{d+1}f=0$, since each $\Delta$ lowers the degree.
+\end{proof}
+
+Newton's formula recovers a polynomial from its values at $0,1,\dots,d$, using only subtractions: the numbers
+$\Delta^kf(0)$ are the left edge of the \emph{difference table} (Figure~\ref{fig:difftable}). Read backwards, it computes
+a polynomial at $0,1,2,\dots$ using only additions: once the left edge is known, each new row entry is the sum of
+two neighbours. Charles Babbage's difference engine, designed in the 1820s to print tables of logarithms and
+trigonometric functions free of human error, was a machine for exactly this: it held the differences of a polynomial
+approximating the function and added them, column after column.
+
+\begin{figure}[ht]
+\centering
+\fig{ch01-difftable}
+\caption{The difference table of $f(x)=x^3+x+1$. Each entry is the difference of the two above it; the third
+differences are constant, equal to $3!=6$. The left edge $1,2,6,6$ gives Newton's formula
+$f(x)=1+2\binom x1+6\binom x2+6\binom x3$. The last diagonal is computed from the previous one by additions alone,
+from the bottom up: $6$, then $18+6=24$, $38+24=62$, and $f(5)=69+62=131$.}
+\label{fig:difftable}
+\end{figure}
+
+Applied to $f(x)=x^n$, Newton's formula gives an explicit formula for the Stirling numbers. Comparing
+$x^n=\sum_kk!\stirlingii nk\binom xk$ (Theorem~\ref{thm:stirling}) with Theorem~\ref{thm:newton}, by uniqueness of the
+coefficients in a basis,
+\[
+\stirlingii nk=\frac1{k!}\Delta^k\bigl[x^n\bigr]_{x=0}=\frac1{k!}\sum_{j=0}^k(-1)^{k-j}\binom kjj^n.
+\]
+This is also inclusion--exclusion: $k!\stirlingii nk$ is the number of surjections from an $n$-set onto a $k$-set
+(Exercise~\ref{ex:surjections}).
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:k22k}
+Show that $\displaystyle\sum_{k=0}^nk^22^k=(n^2-2n+3)2^{n+1}-6$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:triple}
+Compute $\displaystyle\sum_{k=1}^n\frac1{k(k+1)(k+2)}$, and deduce $\displaystyle\sum_{k\ge1}\frac1{k(k+1)(k+2)}=\frac14$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:kHk}
+Show that $\displaystyle\sum_{k=0}^{n-1}kH_k=\frac{n(n-1)}2\Bigl(H_n-\frac12\Bigr)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:surjections}
+(a) Show that the number of surjections from an $n$-set onto a $k$-set is $k!\stirlingii nk$, and, by inclusion--exclusion,
+that it is $\sum_{j=0}^k(-1)^{k-j}\binom kjj^n$.
+(b) Deduce that $\sum_{j=0}^n(-1)^{n-j}\binom njj^n=n!$ and that $\sum_{j=0}^n(-1)^j\binom njj^m=0$ for $0\le m<n$. Prove the
+second fact again with Theorem~\ref{thm:newton}.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:engine}
+A polynomial of degree $3$ takes the values $1,3,11,31,69$ at $x=0,1,2,3,4$. Find it from the difference table, then
+check it is $x^3+x+1$ (Figure~\ref{fig:difftable}). Why do four values suffice, and what does the fifth one check?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:powersmodp}
+Let $p$ be a prime and $m\ge1$. Show that
+\[
+\sum_{k=1}^{p-1}k^m\equiv\begin{cases}-1\pmod p&\text{if }(p-1)\mid m,\\0\pmod p&\text{otherwise.}\end{cases}
+\]
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:staudt}
+\emph{The theorem of von Staudt and Clausen (1840).} Let $m\ge2$ be even. This exercise proves that
+\[
+B_m+\sum_{p\text{ prime},\ (p-1)\mid m}\frac1p\ \in\ \Z.
+\]
+For example $B_2+\frac12+\frac13=1$ and $B_{12}+\frac12+\frac13+\frac15+\frac17+\frac1{13}=1$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $B_m=\sum_{k=0}^m\frac{(-1)^kk!}{k+1}\stirlingii mk$ for $m\ge1$. (Start from
+$\frac t{e^t-1}=\frac{\ln(1+u)}u$ with $u=e^t-1$, the formal series $\frac{\ln(1+u)}u=\sum_k\frac{(-1)^ku^k}{k+1}$, and
+$\frac{(e^t-1)^k}{k!}=\sum_n\stirlingii nk\frac{t^n}{n!}$.)
+\item Show that if $k+1$ is composite and $k+1\ne4$, then $\frac{k!}{k+1}$ is an integer.
+\item Show that $\stirlingii m3$ is even for even $m\ge2$, so the term $k=3$ is an integer.
+\item For $k+1=p$ prime, show that $(p-1)!\stirlingii m{p-1}\equiv\sum_{j=1}^{p-1}j^m\pmod p$, and conclude with
+Exercise~\ref{ex:powersmodp}.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:fixmoments}
+Let $F$ be the number of fixed points of a uniformly random permutation $\sigma$ of $\{1,\dots,n\}$, and let $\mathfrak S_n$
+act on $\{1,\dots,n\}^k$ by $\sigma\cdot(x_1,\dots,x_k)=(\sigma(x_1),\dots,\sigma(x_k))$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathbb E[F^k]$ is the number of orbits of this action.
+\item Deduce that $\mathbb E[F^k]=\sum_{j=0}^n\stirlingii kj$, and that $\mathbb E[F^k]$ is the Bell number $B_k$ when $k\le n$.
+\item Deduce that the first $n$ moments of $F$ are exactly those of a Poisson variable of parameter $1$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:necklacering}
+For an integer $a\ge1$, let $M(n,a)$ be the number of primitive necklaces of length $n$ over an alphabet of $a$ letters:
+necklaces whose $n$ rotations are pairwise distinct.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\sum_{d\mid n}d\,M(d,a)=a^n$. Deduce that $M(n,a)=\frac1n\sum_{d\mid n}\mu(d)a^{n/d}$, and that
+$\sum_{d\mid n}\mu(d)a^{n/d}\equiv0\pmod n$ for \emph{every} integer $a$, negative ones included.
+\item Prove the \emph{cyclotomic identity}, in $\Z[[x]]$:
+\[
+\frac1{1-ax}=\prod_{n\ge1}\Bigl(\frac1{1-x^n}\Bigr)^{M(n,a)}.
+\]
+\item (Metropolis and Rota.) Show that for all $a,b\ge1$,
+\[
+M(n,ab)=\sum_{\operatorname{lcm}(i,j)=n}\gcd(i,j)\,M(i,a)\,M(j,b),
+\]
+and explain the identity with necklaces over the alphabet of pairs of letters.
+\end{enumerate}
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:k22k}
+Sum by parts with $u=k^2$, $\Delta v=2^k$, then use Example~\ref{ex:k2k}. Mind the range: the exercise sums up to $n$
+included.
+\end{hint}
+\begin{hint}{ex:triple}
+The summand is $(k-1)^{\underline{-3}}$. Apply Proposition~\ref{prop:falling} with $m=-2$.
+\end{hint}
+\begin{hint}{ex:kHk}
+$k=k^{\underline1}=\Delta\frac{k^{\underline2}}2$. Sum by parts with $u=H_k$, and use $\frac{(k+1)^{\underline2}}{k+1}=k$.
+\end{hint}
+\begin{hint}{ex:surjections}
+(a) A surjection is a partition of the source into $k$ fibres plus a bijection from the fibres to the target. For the
+second count, subtract the maps that miss a given set of $j$ points of the target.
+(b) There is no surjection from an $m$-set onto an $n$-set when $m<n$.
+\end{hint}
+\begin{hint}{ex:engine}
+The first column of differences is $2,8,20,38$. A cubic has constant third differences.
+\end{hint}
+\begin{hint}{ex:powersmodp}
+Take a primitive root $g$ modulo $p$ (Volume~1, Chapter~5): the $k^m$ are the $g^{jm}$, a geometric sum.
+\end{hint}
+\begin{hint}{ex:staudt}
+(a) Substitute and compare the coefficients of $\frac{t^m}{m!}$. (b) Write $k+1=ab$ and find $a$ and $b$, or $a$ and $2a$,
+among $1,\dots,k$. (c) $6\stirlingii m3=3^m-3\cdot2^m+3$, from the explicit formula of the last section. (d) Expand with the
+explicit formula and use $\binom{p-1}j\equiv(-1)^j\pmod p$.
+\end{hint}
+
+\begin{hint}{pb:fixmoments}
+Burnside's lemma. An orbit of $k$-tuples is determined by which coordinates are equal.
+\end{hint}
+
+\begin{hint}{pb:necklacering}
+(a) A word of length $n$ has a primitive period $d\mid n$. (b) Take logarithms. (c) Use (a) for $ab$, and $\gcd\cdot\operatorname{lcm}=ij$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:k22k}
+\idea One power of $k$ is removed at each summation by parts, and $2^k$ survives every time, since it is its own
+difference. Two summations by parts bring $k^2$ down to a constant.
+\writeup Let $S=\sum_{k=0}^nk^22^k=\sum_0^{n+1}u\,\Delta v$ with $u(k)=k^2$ and $v(k)=2^k$. Then $\Delta u=2k+1$ and
+$Ev(k)=2^{k+1}$, so by Proposition~\ref{prop:byparts}
+\[
+\begin{aligned}S&=(n+1)^22^{n+1}-\sum_{k=0}^n(2k+1)2^{k+1}\\&=(n+1)^22^{n+1}-4\sum_{k=0}^nk2^k-2\sum_{k=0}^n2^k.\end{aligned}
+\]
+By Example~\ref{ex:k2k} with $n+1$ in place of $n$, $\sum_{k=0}^nk2^k=(n-1)2^{n+1}+2$, and $\sum_{k=0}^n2^k=2^{n+1}-1$.
+Hence
+\[
+\begin{aligned}S&=2^{n+1}\bigl((n+1)^2-4(n-1)-2\bigr)-8+2\eqbr=(n^2-2n+3)2^{n+1}-6.\end{aligned}
+\]
+Check: $n=2$ gives $0+2+16=18=3\cdot8-6$.
+\end{solution}
+
+\begin{solution}{ex:triple}
+\idea The product of three consecutive integers in the denominator is a negative falling power, whose antidifference is
+the next one up.
+\writeup $\frac1{k(k+1)(k+2)}=(k-1)^{\underline{-3}}$. By Proposition~\ref{prop:falling}, $\Delta x^{\underline{-2}}=-2x^{\underline{-3}}$, so
+$x^{\underline{-3}}=\Delta\bigl(-\frac12x^{\underline{-2}}\bigr)$ and
+\[
+\begin{aligned}\sum_{k=1}^n(k-1)^{\underline{-3}}&=-\frac12\Bigl(n^{\underline{-2}}-0^{\underline{-2}}\Bigr)\eqbr=\frac14-\frac1{2(n+1)(n+2)}.\end{aligned}
+\]
+As $n\to\infty$ the sum tends to $\frac14$. Check: $n=1$ gives $\frac16=\frac14-\frac1{12}$.
+\end{solution}
+
+\begin{solution}{ex:kHk}
+\idea $H_k$ is the discrete logarithm and $k$ a power, so this is $\int x\ln x\dd x$ in disguise, done by parts with the
+power integrated.
+\writeup Take $u(k)=H_k$ and $v(k)=\frac{k^{\underline2}}2$, so $\Delta v=k$, $\Delta u=\frac1{k+1}$ and $Ev(k)=\frac{(k+1)k}2$. Then
+\[
+\begin{aligned}\sum_{k=0}^{n-1}kH_k&=\frac{n(n-1)}2H_n-\sum_{k=0}^{n-1}\frac k2\eqbr=\frac{n(n-1)}2H_n-\frac{n(n-1)}4,\end{aligned}
+\]
+which is the formula. Check: for $n=3$, $0+1\cdot1+2\cdot\frac32=4$ and $3\bigl(\frac{11}6-\frac12\bigr)=4$.
+\end{solution}
+
+\begin{solution}{ex:surjections}
+\idea Count the same set twice; for (b), a polynomial identity checked by counting needs the counting to be empty.
+\writeup (a) A surjection $f:N\to K$ with $|N|=n$, $|K|=k$ determines the partition of $N$ into its $k$ non-empty fibres,
+and a bijection between the set of fibres and $K$; conversely each such pair gives one surjection. So there are
+$k!\stirlingii nk$. For the second count, for $A\subseteq K$ let $M_A$ be the set of maps $N\to K\setminus A$, of size
+$(k-|A|)^n$. By inclusion--exclusion (Volume~0, Chapter~8) the maps missing no point number
+$\sum_{A}(-1)^{|A|}(k-|A|)^n=\sum_{i=0}^k(-1)^i\binom ki(k-i)^n$; put $j=k-i$.
+(b) With $k=n$, the surjections from an $n$-set onto an $n$-set are the $n!$ bijections. With $n$ in place of $k$ and $m$
+in place of $n$, the number of surjections from an $m$-set onto an $n$-set is $0$ when $m<n$, so
+$\sum_j(-1)^{n-j}\binom njj^m=0$, and multiplying by $(-1)^n$ gives the claim. With Theorem~\ref{thm:newton}: the sum
+is $(-1)^n\Delta^n[x^m]_{x=0}$, and $\Delta^n$ kills polynomials of degree $m<n$.
+\end{solution}
+
+\begin{solution}{ex:engine}
+\idea Differences of a cubic reach a constant at the third step; the left edge of the table is the list of Newton
+coefficients.
+\writeup The table is $1,3,11,31,69$; then $2,8,20,38$; then $6,12,18$; then $6,6$. The left edge $1,2,6,6$ gives
+$f(x)=1+2x+6\binom x2+6\binom x3=1+2x+3x(x-1)+x(x-1)(x-2)=x^3+x+1$. Four values determine a polynomial of degree at most
+$3$ (Theorem~\ref{thm:newton} uses only $f(0),\dots,f(3)$), and the fifth checks that the degree is indeed at most~$3$:
+it is what makes the two third differences equal.
+\end{solution}
+
+\begin{solution}{ex:powersmodp}
+\idea Modulo $p$, the non-zero residues are the powers of a primitive root, so the sum is geometric.
+\writeup Let $g$ be a primitive root modulo $p$, so that $k=g^j$ for $j=0,\dots,p-2$ runs over the non-zero residues.
+Then $\sum_{k=1}^{p-1}k^m\equiv\sum_{j=0}^{p-2}(g^m)^j$. If $(p-1)\mid m$ then $g^m\equiv1$ and the sum is $p-1\equiv-1$.
+Otherwise $g^m\not\equiv1$, and $(g^m-1)\sum_{j=0}^{p-2}g^{mj}=g^{m(p-1)}-1\equiv0$ by Fermat's little theorem; since
+$g^m-1$ is invertible modulo $p$, the sum is $\equiv0$.
+\end{solution}
+
+\begin{solution}{ex:staudt}
+\idea Express $B_m$ as a sum of terms $\frac{k!}{k+1}\times$ integer: such a term is an integer unless $k+1$ is prime (or
+$4$), and in the prime case its fractional part is decided by sums of powers modulo $p$, which the previous exercise
+knows.
+\writeup (a) In formal power series, $u=e^t-1$ has zero constant term, so substituting it into
+$\frac{\ln(1+u)}u=\sum_{k\ge0}\frac{(-1)^ku^k}{k+1}$ is legitimate (only finitely many $k$ contribute to each power of $t$), and
+gives the series of $\frac t{e^t-1}$ since $\ln(1+u)=\ln e^t=t$ (Chapter~2 justifies substitution into formal series
+and this identity). By Theorem~\ref{thm:stirling} and the explicit formula,
+\[
+\begin{aligned}\frac{u^k}{k!}&=\frac1{k!}\sum_{j=0}^k\binom kj(-1)^{k-j}e^{jt}\\&=\sum_n\Bigl(\frac1{k!}\sum_j(-1)^{k-j}\binom kjj^n\Bigr)\frac{t^n}{n!}\\&=\sum_n\stirlingii nk\frac{t^n}{n!}.\end{aligned}
+\]
+So $\frac t{e^t-1}=\sum_k\frac{(-1)^kk!}{k+1}\sum_n\stirlingii nk\frac{t^n}{n!}$, and the coefficient of $\frac{t^m}{m!}$ is the
+formula (terms with $k>m$ vanish).
+
+(b) Let $k+1=ab$ with $2\le a\le b\le k$. If $a<b$, the distinct factors $a$ and $b$ of $k!$ give $ab\mid k!$. If $a=b$,
+then $a\ge3$ since $k+1\ne4$, and $a<2a<a^2=k+1$, so $a$ and $2a$ are distinct factors of $k!$, and $a^2\mid2a^2\mid k!$.
+
+(c) The explicit formula gives $6\stirlingii m3=3^m-3\cdot2^m+3$. For even $m\ge2$, $3^m=9^{m/2}\equiv1\pmod 4$ and
+$3\cdot2^m\equiv0\pmod 4$, so $6\stirlingii m3\equiv4\equiv0\pmod 4$, hence $\stirlingii m3$ is even. The term $k=3$ is
+$-\frac64\stirlingii m3=-3\cdot\frac{\stirlingii m3}2\in\Z$.
+
+(d) For $k+1=p$ prime,
+\[
+(p-1)!\stirlingii m{p-1}=\sum_{j=0}^{p-1}(-1)^{p-1-j}\binom{p-1}jj^m.
+\]
+In $\binom{p-1}j=\prod_{i=1}^j\frac{p-i}i$
+each factor is $\equiv-1$ modulo $p$, so $\binom{p-1}j\equiv(-1)^j$, and $(-1)^{p-1-j}(-1)^j=(-1)^{p-1}\equiv1\pmod p$
+(for $p=2$, $-1\equiv1$). The term $j=0$ vanishes since $m\ge1$. So $(p-1)!\stirlingii m{p-1}\equiv\sum_{j=1}^{p-1}j^m$,
+which by Exercise~\ref{ex:powersmodp} is $\equiv-1$ if $(p-1)\mid m$ and $\equiv0$ otherwise. Hence the term of (a)
+with $k=p-1$, namely $\frac{(-1)^{p-1}(p-1)!\stirlingii m{p-1}}p$, is an integer plus $-\frac1p$ when $(p-1)\mid m$
+(for odd $p$ the sign $(-1)^{p-1}$ is $1$; for $p=2$ it does not matter, since $\frac12\equiv-\frac12$ modulo $\Z$), and an
+integer otherwise.
+
+Putting (a)--(d) together: the terms with $k+1$ composite, including $k+1=4$, and the term $k=0$ (which is $0$ for
+$m\ge1$) are integers, and each prime $p$ with $(p-1)\mid m$ contributes $-\frac1p$ modulo an integer. So
+$B_m+\sum_{(p-1)\mid m}\frac1p\in\Z$. (A prime $p$ with $p-1>m$ gives no term in (a), since $k\le m$ there, and it is
+not in the sum either, since $(p-1)\nmid m$.)
+\end{solution}
+
+\begin{solution}{pb:fixmoments}
+\idea $F(\sigma)^k$ counts the $k$-tuples of fixed points of $\sigma$, that is the $k$-tuples fixed by $\sigma$ acting on
+$\{1,\dots,n\}^k$. Averaging a number of fixed points over a group is exactly what Burnside's lemma turns into a number of
+orbits. The orbits are equality patterns, that is set partitions, and the Bell numbers are the moments of the Poisson law.
+
+\writeup (a) A tuple $x$ is fixed by $\sigma$ iff $\sigma(x_i)=x_i$ for every $i$, iff every $x_i$ is a fixed point of
+$\sigma$; there are $F(\sigma)^k$ such tuples. By Burnside's lemma (Volume~2, Chapter~3), the number of orbits is
+$\frac1{n!}\sum_\sigma F(\sigma)^k=\mathbb E[F^k]$.
+
+(b) To a tuple $x$ attach the partition $\pi(x)$ of $\{1,\dots,k\}$ whose blocks are the sets $\{i:x_i=v\}$, $v$ a value taken
+by $x$. A permutation does not change it, since $\sigma(x_i)=\sigma(x_j)$ iff $x_i=x_j$. Conversely, if $\pi(x)=\pi(y)$, the map
+$x_i\mapsto y_i$ is a well-defined bijection from the set of values of $x$ onto that of $y$, and extends to a permutation
+$\sigma$ of $\{1,\dots,n\}$ (both complements have the same size), with $\sigma\cdot x=y$. So the orbits correspond to the
+partitions of $\{1,\dots,k\}$ into at most $n$ blocks (a tuple takes at most $n$ values, and every such partition occurs).
+There are $\stirlingii kj$ partitions into $j$ blocks (Volume~4, Chapter~1), so $\mathbb E[F^k]=\sum_{j\le n}\stirlingii kj$,
+which is $\sum_j\stirlingii kj=B_k$ when $k\le n$, since then no partition has more than $n$ blocks.
+
+(c) If $N$ is Poisson of parameter $1$, $\mathbb E[N^k]=e^{-1}\sum_{m\ge0}\frac{m^k}{m!}=B_k$ by Dobiński's formula (Volume~4,
+Chapter~2). So $\mathbb E[F^k]=\mathbb E[N^k]$ for $1\le k\le n$; for $k=n+1$ they differ, since $\mathbb E[F^{n+1}]=B_{n+1}-1$
+(the partition into $n+1$ singletons is missing).
+\tools Volume~2, Chapter~3 (Burnside's lemma); Volume~4, Chapters~1--2 (Stirling and Bell numbers, Dobiński); Volume~3, Chapter~2.
+\leads Moments that agree up to order $n$ imply a total variation distance between $F$ and Poisson(1) of order
+$\frac{2^n}{n!}$, super-exponentially small (Diaconis and Pitman; Arratia and Tavaré, 1992). A numerical calculation compares the two laws.
+\end{solution}
+
+\begin{solution}{pb:necklacering}
+\idea Every word of length $n$ is a primitive word of some length $d\mid n$ repeated $\frac nd$ times, and a primitive necklace
+of length $d$ contains exactly $d$ words. That gives (a), and everything else is (a) in disguise: the logarithm of the product
+in (b), and the factorisation $(ab)^n=a^nb^n$ in (c).
+
+\writeup (a) A word $w$ of length $n$ has a smallest period $d$, the least $d\ge1$ such that rotating by $d$ fixes $w$. The
+rotations that fix $w$ form a subgroup of $\Z/n\Z$, generated by $d$, so $d\mid n$, and $w$ is $u^{n/d}$ with $u$ a word of length
+$d$ whose $d$ rotations are distinct. Conversely each such $u$ gives a word of smallest period $d$. The words $u$ of length $d$
+with distinct rotations fall into primitive necklaces of exactly $d$ words. So $a^n=\sum_{d\mid n}d\,M(d,a)$, and Möbius
+inversion (Volume~1, Chapter~4) gives $nM(n,a)=\sum_{d\mid n}\mu(d)a^{n/d}$.
+
+The polynomial $P(t)=\frac1n\sum_{d\mid n}\mu(d)t^{n/d}$ has rational coefficients and takes integer values at all $t\ge1$, and also $P(0)=0$.
+A polynomial with this property is an integer combination of the binomial polynomials $\binom tj$ (Newton's interpolation
+formula, Volume~4, Chapter~1), and these take integer values at negative integers too. So $\sum_{d\mid n}\mu(d)a^{n/d}\equiv0\pmod n$
+for every $a\in\Z$.
+
+(b) Both sides have constant term $1$, so it is enough to compare logarithms (Volume~4, Chapter~2):
+\[
+\log\prod_{n\ge1}(1-x^n)^{-M(n,a)}=\sum_{n\ge1}M(n,a)\sum_{m\ge1}\frac{x^{nm}}m=\sum_{N\ge1}\frac{x^N}N\sum_{n\mid N}n\,M(n,a)
+=\sum_{N\ge1}\frac{(ax)^N}N,
+\]
+which is $-\log(1-ax)$, by (a) with $N=nm$.
+
+(c) Write $R(n)$ for the right-hand side. For $n\ge1$,
+\[
+\sum_{d\mid n}d\,R(d)=\sum_{d\mid n}\ \sum_{\operatorname{lcm}(i,j)=d}\operatorname{lcm}(i,j)\gcd(i,j)M(i,a)M(j,b)=\sum_{i\mid n,\ j\mid n}ij\,M(i,a)M(j,b),
+\]
+because $\operatorname{lcm}(i,j)\mid n$ if and only if $i\mid n$ and $j\mid n$, and $\operatorname{lcm}\cdot\gcd=ij$. By (a) this is
+$a^nb^n=(ab)^n=\sum_{d\mid n}d\,M(d,ab)$. Möbius inversion of $d\,R(d)$ and $d\,M(d,ab)$ gives $R(n)=M(n,ab)$.
+
+The meaning: a word over the alphabet of pairs is a pair of words, one over each alphabet. If the first has smallest period $i$
+and the second $j$, the pair has smallest period $\operatorname{lcm}(i,j)$. A pair of primitive necklaces of lengths $i$ and $j$
+gives $ij$ pairs of words, hence $\frac{ij}{\operatorname{lcm}(i,j)}=\gcd(i,j)$ primitive necklaces of length $\operatorname{lcm}(i,j)$.
+\tools Volume~1, Chapter~4 (Möbius inversion); Volume~4, Chapters~1 and~2 (Newton series, logarithms of power series).
+\leads $M(n,q)$ is also the number of monic irreducible polynomials of degree $n$ over $\mathbb F_q$ (Volume~2, Chapter~9), and then
+(b) is unique factorisation in $\mathbb F_q[X]$. Identity (c) makes the sequences $(M(n,a))_n$ into a ring, the \emph{necklace
+ring} of Metropolis and Rota, isomorphic to the ring of Witt vectors that controls $p$-adic arithmetic.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item R.~Graham, D.~Knuth and O.~Patashnik, \emph{Concrete Mathematics}, 2nd ed., Addison-Wesley, 1994. Chapter~2
+(finite calculus, summation by parts) and Chapter~6 (Stirling and Bernoulli numbers). The notation
+$\stirlingii nk$, $\stirlingi nk$ and $x^{\underline m}$ is theirs.
+\item D.~Knuth, \emph{Johann Faulhaber and sums of powers}, Mathematics of Computation 61 (1993), 277--294.
+\item J.~Bernoulli, \emph{Ars Conjectandi}, 1713; English translation by E.~D.~Sylla, \emph{The Art of Conjecturing},
+Johns Hopkins University Press, 2006. The ``half of a quarter of an hour'' is in Part~II, Chapter~3.
+\item G.~Boole, \emph{A Treatise on the Calculus of Finite Differences}, Macmillan, 1860; C.~Jordan, \emph{Calculus of
+Finite Differences}, 1939, reprinted by Chelsea, 1965.
+\item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Springer, 1990,
+Chapter~15 (Bernoulli numbers, von Staudt--Clausen, Kummer and irregular primes).
+\item J.~H.~Conway and R.~K.~Guy, \emph{The Book of Numbers}, Copernicus, 1996, Chapter~4 (Bernoulli numbers and
+figurate numbers).
+\item D.~Swade, \emph{The Difference Engine: Charles Babbage and the Quest to Build the First Computer}, Viking, 2001.
+\item J.~Bernoulli, \emph{Ars Conjectandi}, Basel, 1713, Part~2, Chapter~3; English translation by E.~D.~Sylla, \emph{The Art of Conjecturing}, Johns Hopkins University Press, 2006, for the quotation.
+\end{itemize}

@@ -1,0 +1,563 @@
+\chapter{Random Models of the Primes}
+
+\begin{center}\itshape
+God may not play dice with the universe, but something strange is going on with the prime numbers.\\
+\upshape --- attributed to Paul Erd\H{o}s
+\end{center}
+
+At fifteen, Gauss was given a book of logarithms with a table of primes at the back, and he began to count. He noticed that near $x$ about one number in $\log x$ is prime, and late in life
+he wrote that he had often spent an idle quarter of an hour counting another thousand. Read with fresh eyes, his rule is a statement about chance: \emph{a number near $x$ is prime with probability
+$\frac1{\log x}$}. Of course this is nonsense, since $1001=7\cdot11\cdot13$ is composite with probability one. But in 1936 the Swedish statistician Harald Cramér took the nonsense
+seriously. He built a random set of integers that contains each $n$ with probability $\frac1{\log n}$, independently, and asked what such a set looks like. He then guessed that the primes look the same.
+
+The guess is astonishingly good. Cramér's random set satisfies the Riemann hypothesis, with probability one. Its largest gaps have size about $\log^2x$, and this is still the best guess
+for the gaps between primes, which the largest computations support (Figure~\ref{fig:gaps}). And yet the model is wrong. It knows nothing about the prime $2$: it predicts as many pairs $n$, $n+1$
+of primes as pairs $n$, $n+2$. Repaired by Hardy and Littlewood's singular series, it gives conjectures for twin primes and prime constellations that match every computation ever made. And in 1985 Helmut Maier found that even the repaired
+model fails, in a place nobody expected: in intervals of length $(\log x)^2$.
+
+\begin{think}
+In Cramér's model, $n$ is ``prime'' with probability $\frac1{\log n}$, independently of everything else. What is the probability that the hundred integers following $10^{9}$ contain no ``prime''? For the actual primes, cut the integers after $10^9$ into blocks of length $21\approx\log10^9$. Do you expect the proportion of
+blocks without a prime to be larger or smaller than the model predicts? Figure~\ref{fig:poisson} will tell.
+\end{think}
+
+This chapter studies Cramér's model and proves its main theorems, then measures where it fails. The repair of its first failure leads to the singular series, and to a theorem of
+Gallagher: the twin prime constant is $1$ on average. The second failure, Maier's, shows that the primes remember the small primes for longer than any simple model can.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-gaps}
+\caption{Record gaps between consecutive primes: each dot is a gap $g$ after a prime $p$ larger than all gaps before it. Blue: all records below $10^{10}$, computed by a numerical calculation; the last one is
+$354$ after $p=4\,302\,407\,359$. Red: the records $1132$ after $1\,693\,182\,318\,746\,371$ (Nyman, 1999), and $1476$ after $1\,425\,172\,824\,437\,699\,411$, the largest gap below $4\cdot10^{18}$. Green: Cramér's
+prediction $\log^2p$. Orange, dashed: Granville's $2e^{-\gamma}\log^2p$.}
+\label{fig:gaps}
+\end{figure}
+
+\section{Cramér's coin}
+
+\begin{definition}\label{def:cramer}
+\emph{Cramér's model} is a sequence of independent random variables $(X_n)_{n\ge1}$ with $X_1=X_2=0$ and
+\[
+\begin{gathered}P(X_n=1)=\frac1{\log n},\\P(X_n=0)=1-\frac1{\log n}\qq(n\ge3).\end{gathered}
+\]
+The random set $\mathcal C=\{n:X_n=1\}$ is the set of \emph{Cramér primes}, and $\pi_{\mathcal C}(x)=\sum_{n\le x}X_n$ is their counting function.
+\end{definition}
+
+Volume~3 builds such sequences. The expected number of Cramér primes up to $x$ is $\sum_{3\le n\le x}\frac1{\log n}$. Since $t\mapsto\frac1{\log t}$ decreases, the sum differs from the
+integral $\operatorname{Li}(x)=\int_2^x\frac{\mathrm dt}{\log t}$ of Chapter~5 by at most $\frac2{\log2}$: each term $\frac1{\log n}$ lies between $\int_n^{n+1}$ and $\int_{n-1}^n$ of the integrand.
+So the model is built to satisfy the prime number theorem on average. The surprise is how \emph{well} it satisfies it.
+
+\begin{theorem}[Cramér]\label{thm:cramerpnt}
+With probability $1$, $\pi_{\mathcal C}(x)=\operatorname{Li}(x)+O\bigl(\sqrt{x\log x}\bigr)$.
+\end{theorem}
+
+\begin{proof}
+For an integer $N\ge3$, the variables $X_3,\dots,X_N$ are independent with values in $[0,1]$, and $\pi_{\mathcal C}(N)$ is their sum. Hoeffding's inequality (Volume~3, Theorem~4.9), applied on both sides with
+$t=\sqrt{N\log N}$, gives
+\[
+\begin{aligned}P\bigl(|\pi_{\mathcal C}(N)-\mathbb E\pi_{\mathcal C}(N)|\ge\sqrt{N\log N}\bigr)&\le2e^{-2t^2/N}\eqbr=\frac2{N^2}.\end{aligned}
+\]
+The series $\sum_N\frac2{N^2}$ converges, so by the first Borel--Cantelli lemma (Volume~3, Theorem~4.11), with probability $1$ only finitely many of these events occur. On that event there is
+$N_0$ (depending on the outcome) with $|\pi_{\mathcal C}(N)-\mathbb E\pi_{\mathcal C}(N)|<\sqrt{N\log N}$ for all $N\ge N_0$. For real $x\ge3$ put $N=\lfloor x\rfloor$: then $\pi_{\mathcal C}(x)=\pi_{\mathcal C}(N)$,
+$\mathbb E\pi_{\mathcal C}(N)=\operatorname{Li}(N)+O(1)$ as shown above, and $0\le\operatorname{Li}(x)-\operatorname{Li}(N)\le\frac1{\log2}$.
+\end{proof}
+
+Compare with the truth. Exercise~\ref{ex:vonkoch} showed that the Riemann hypothesis implies $\pi(x)=\operatorname{Li}(x)+O(\sqrt x\log x)$, and Theorem~\ref{thm:rhequiv} that an error
+$O(x^{\frac12+\varepsilon})$ in $\psi$, for every $\varepsilon$, implies the Riemann hypothesis. Cramér's model says that a random set of the right density satisfies the Riemann hypothesis with probability one. The primes would be a very unusual set if
+they did not.
+
+\begin{remark}[the right size of the error]
+Hoeffding's inequality uses only that the $X_n$ lie in $[0,1]$. Their variance is smaller, $\frac1{\log n}(1-\frac1{\log n})$, so $\pi_{\mathcal C}(x)$ has variance about $\frac x{\log x}$, and Kolmogorov's
+law of the iterated logarithm (1929), which holds for such bounded independent variables, gives the exact size of the fluctuations: almost surely
+\[
+\limsup_{x\to\infty}\frac{\pi_{\mathcal C}(x)-\operatorname{Li}(x)}{\sqrt{2x\log\log x/\log x}}=1.
+\]
+For the primes, Littlewood proved in 1914 that $\pi(x)-\operatorname{Li}(x)$ is positive for some arbitrarily large $x$, and exceeds $\frac{\sqrt x\log\log\log x}{\log x}$ times a constant infinitely often.
+His bound is smaller than the model's by a factor of about $\sqrt{\log x}$, up to slowly growing factors. Nobody knows which is the truth.
+\end{remark}
+
+\section{Gaps}
+
+The average gap between consecutive primes near $x$ is $\log x$, by the prime number theorem. How large can a gap be? In Cramér's model the answer is clean.
+
+\begin{lemma}\label{lem:oneminus}
+For $0\le u\le\frac12$, $e^{-u-u^2}\le1-u\le e^{-u}$.
+\end{lemma}
+
+\begin{proof}
+The right inequality is the convexity of $e^{-u}$. For the left one, $-\log(1-u)=\sum_{m\ge1}\frac{u^m}m=u+u^2\sum_{m\ge2}\frac{u^{m-2}}m$, and for $u\le\frac12$ the last sum is at most
+$\sum_{m\ge2}\frac{2^{2-m}}m=4\bigl(\log2-\frac12\bigr)=0.77\ldots\le1$.
+\end{proof}
+
+Write $q_1<q_2<\cdots$ for the Cramér primes. There are infinitely many of them, almost surely, by the second Borel--Cantelli lemma: the events $X_n=1$ are independent and
+$\sum_n\frac1{\log n}=\infty$.
+
+\begin{theorem}[Cramér, 1936]\label{thm:cramergaps}
+With probability $1$,
+\[
+\limsup_{i\to\infty}\frac{q_{i+1}-q_i}{\log^2q_i}=1.
+\]
+\end{theorem}
+
+\begin{proof}
+\emph{Upper bound.} Fix $\varepsilon\in\left]0,1\right[$, let $h_n=\lceil(1+\varepsilon)\log^2n\rceil$, and let $B_n$ be the event that $X_{n+1}=\cdots=X_{n+h_n}=0$. By independence and
+Lemma~\ref{lem:oneminus},
+\[
+\begin{aligned}P(B_n)&=\prod_{m=n+1}^{n+h_n}\Bigl(1-\frac1{\log m}\Bigr)\eqbr\le\exp\Bigl(-\frac{h_n}{\log(n+h_n)}\Bigr).\end{aligned}
+\]
+For $n$ large, $\log(n+h_n)\le\log n+1$, and $\frac{(1+\varepsilon)\log^2n}{\log n+1}\ge(1+\frac\varepsilon2)\log n$, so $P(B_n)\le n^{-1-\varepsilon/2}$. This is summable, so by the first Borel--Cantelli lemma,
+almost surely $B_n$ happens for only finitely many $n$. When $B_{q_i}$ fails, the next Cramér prime comes within $h_{q_i}$ of $q_i$. So almost surely $q_{i+1}-q_i\le h_{q_i}$ for all large $i$, and the
+$\limsup$ is at most $1+\varepsilon$.
+
+\emph{Lower bound.} Fix $\varepsilon\in\left]0,\frac12\right[$. For $k\ge1$ let $N=2^k$, $h=\lfloor(1-\varepsilon)\log^2N\rfloor$ and $J=\lfloor\frac Nh\rfloor$, and cut $]N,2N]$ into the $J$ disjoint intervals
+$I_j=]N+jh,N+(j+1)h]$, $0\le j<J$. Let $E_j$ be the event that $X_m=0$ for all $m\in I_j$. The $E_j$ depend on disjoint sets of variables, so they are independent. For $m>N\ge e^2$ we have
+$\frac1{\log m}\le\frac12$, and Lemma~\ref{lem:oneminus} gives
+\[
+\begin{aligned}P(E_j)&\ge\exp\Bigl(-h\Bigl(\frac1{\log N}+\frac1{\log^2N}\Bigr)\Bigr)\eqbr\ge e^{-(1-\varepsilon)(\log N+1)}=e^{-(1-\varepsilon)}N^{-(1-\varepsilon)}.\end{aligned}
+\]
+Let $F_k$ be the event that no $E_j$ happens. Then, by Lemma~\ref{lem:oneminus} again,
+\[
+P(F_k)=\prod_{j<J}\bigl(1-P(E_j)\bigr)\le\exp\bigl(-Je^{-1}N^{-(1-\varepsilon)}\bigr),
+\]
+and $Je^{-1}N^{-(1-\varepsilon)}\ge\frac{N^\varepsilon}{2e\log^2N}=\frac{2^{k\varepsilon}}{2ek^2\log^22}$ for $k$ large. So $\sum_kP(F_k)<\infty$, and almost surely, for all large $k$, some interval $I_j\subseteq\left]2^k,2^{k+1}\right]$
+contains no Cramér prime. Take such $k$ so large that some Cramér prime is at most $2^k$. The gap of $\mathcal C$ that covers $I_j$ starts at some $q_i\le2^{k+1}$ and has length at least $h+1\ge(1-\varepsilon)\log^2N$.
+As $\log q_i\le\log N+\log2$, this length is at least $(1-2\varepsilon)\log^2q_i$ when $k$ is large. Different $k$ give different $i$ when $k$ is large (the gaps lie in disjoint intervals and are $o(2^k)$ long, by the upper bound),
+so the $\limsup$ is at least $1-2\varepsilon$.
+\end{proof}
+
+In 1936 Cramér conjectured that the same is true for the primes: $\limsup\frac{p_{n+1}-p_n}{\log^2p_n}=1$, or at least that the gaps are $O(\log^2p_n)$. Figure~\ref{fig:gaps} is the evidence. The ratio
+$\frac g{\log^2p}$ creeps up slowly: it is $0.72$ for the record $354$ below $10^{10}$, $0.92$ for Nyman's gap $1132$, and $0.84$ for the gap $1476$. No record has ever exceeded the curve $\log^2p$.
+
+What is proved is far weaker, in both directions. Under the Riemann hypothesis the gaps are $O(\sqrt p\log p)$ (Exercise~\ref{ex:shortprime}, Cramér 1920); unconditionally, Baker, Harman and Pintz showed in 2001
+that $[x,x+x^{0.525}]$ contains a prime for all large $x$. From below, the prime number theorem gives gaps of size $\log p$ infinitely often, Westzynthius (1931) showed that $\frac{p_{n+1}-p_n}{\log p_n}$ is
+unbounded, and the best result, by Ford, Green, Konyagin, Maynard and Tao (2018), is
+\[
+p_{n+1}-p_n\ge c\frac{\log p_n\log\log p_n\log\log\log\log p_n}{\log\log\log p_n}
+\]
+for infinitely many $n$. Between $\log p\log\log p$ and $\log^2p$ lies a whole world of ignorance.
+
+\section{What the coin does not know}
+
+Cramér's model makes a prediction that is plainly false. The pairs $\{2m,2m+1\}$ for $m\ge2$ are disjoint, so the events ``both are Cramér primes'' are independent, with probabilities about $\frac1{\log^2(2m)}$, whose sum
+diverges. By the second Borel--Cantelli lemma, $\mathcal C$ almost surely contains infinitely many pairs of consecutive integers, while the primes contain exactly one, $\{2,3\}$. The model
+gives the right density, but puts it in the wrong places: half its primes are even.
+
+The fix is to tell the model about small primes. Let $H=\{h_1,\dots,h_k\}$ be a set of $k$ distinct integers, and ask how often $n+h_1,\dots,n+h_k$ are all prime. For each prime $p$, let $\nu_H(p)$ be
+the number of distinct residues of $h_1,\dots,h_k$ modulo $p$. For all the $n+h_i$ to avoid the factor $p$, $n$ must avoid $\nu_H(p)$ residue classes modulo $p$, which happens with probability
+$1-\frac{\nu_H(p)}p$. If the $k$ numbers were independent, the probability would be $(1-\frac1p)^k$ instead. The correction factors for all primes multiply to the \emph{singular series}
+\[
+\mathfrak S(H)=\prod_p\Bigl(1-\frac{\nu_H(p)}p\Bigr)\Bigl(1-\frac1p\Bigr)^{-k}.
+\]
+We say that $H$ is \emph{admissible} if $\nu_H(p)<p$ for every prime $p$, that is, if $H$ does not cover all residues modulo any prime. The set $\{0,1\}$ covers both residues modulo $2$, and so does
+$\{0,2,4\}$ modulo $3$; neither is admissible. The set $\{0,2\}$ is admissible.
+
+\begin{proposition}\label{prop:ssconv}
+For every finite set $H$ of $k\ge1$ distinct integers, the product $\mathfrak S(H)$ converges, and $\mathfrak S(H)>0$ if and only if $H$ is admissible. Moreover, $H$ is admissible if and only if $\nu_H(p)<p$
+for every prime $p\le k$.
+\end{proposition}
+
+\begin{proof}
+If $p>k$, then $\nu_H(p)\le k<p$; this proves the last statement. Let $D=\max_{i,j}|h_i-h_j|$. For $p>\max(D,2k)$ the $h_i$ are distinct modulo $p$, so $\nu_H(p)=k$, and the factor at $p$ is
+$(1-\frac kp)(1-\frac1p)^{-k}$. Its logarithm is
+\[
+\log\Bigl(1-\frac kp\Bigr)-k\log\Bigl(1-\frac1p\Bigr)=\sum_{m\ge2}\frac{k-k^m}{mp^m},
+\]
+since the terms with $m=1$ cancel. As $\frac kp\le\frac12$, its absolute value is at most $\sum_{m\ge2}(\frac kp)^m\le\frac{2k^2}{p^2}$, the sum of a convergent series over $p$. So the product over
+$p>\max(D,2k)$ converges to a positive number. The finitely many remaining factors are positive, except the factor at $p$ that vanishes exactly when $\nu_H(p)=p$.
+\end{proof}
+
+For twins, $H=\{0,2\}$: $\nu(2)=1$ and $\nu(p)=2$ for $p>2$, so the factor at $2$ is $\frac{1/2}{1/4}=2$, and $\mathfrak S(\{0,2\})=2\prod_{p>2}\frac{p(p-2)}{(p-1)^2}=2C_2=1.3203\ldots$, the constant of
+Chapter~8 (Exercise~\ref{ex:twinheuristic}). More generally, for an even $d\ge2$, the same computation gives
+\[
+\mathfrak S(\{0,d\})=2C_2\prod_{p\mid d,\;p>2}\frac{p-1}{p-2},
+\]
+because $\nu(p)=1$ instead of $2$ for the odd $p$ dividing $d$, which multiplies the factor at $p$ by $\frac{(1-1/p)}{(1-2/p)}=\frac{p-1}{p-2}$. For odd $d$, $\mathfrak S(\{0,d\})=0$.
+
+The Hardy--Littlewood conjecture (1923) states that \emph{for every admissible $H$ with $k$ elements, the number of $n\le x$ such that $n+h_1,\dots,n+h_k$ are all prime is
+$\bigl(\mathfrak S(H)+o(1)\bigr)\frac x{\log^kx}$}. It is open for every $k\ge2$; for $k=1$ it is the prime number theorem. It is exactly what a model that knows the small primes predicts.
+
+\begin{proposition}[a model that knows the small primes]\label{prop:smallprimes}
+Fix $A\ge2$, let $P=\prod_{p\le A}p$, $\theta=\frac P{\varphi(P)}$ and $n_0=\lceil e^\theta\rceil$. Let $(Y_n)$ be independent, with $P(Y_n=1)=\frac\theta{\log n}$ if $n\ge n_0$ and $\gcd(n,P)=1$, and $Y_n=0$ otherwise.
+For every set $H=\{h_1,\dots,h_k\}$ of distinct non-negative integers, the expected number $\mathbb EN_H(x)$ of $n\le x$ with $Y_{n+h_1}=\cdots=Y_{n+h_k}=1$ satisfies
+\[
+\begin{gathered}\mathbb EN_H(x)\sim\mathfrak S_A(H)\frac x{\log^kx},\qquad\text{where}\\\mathfrak S_A(H)=\prod_{p\le A}\Bigl(1-\frac{\nu_H(p)}p\Bigr)\Bigl(1-\frac1p\Bigr)^{-k},\end{gathered}
+\]
+provided $\mathfrak S_A(H)>0$. As $A\to\infty$, $\mathfrak S_A(H)\to\mathfrak S(H)$.
+\end{proposition}
+
+The model throws away the multiples of small primes and raises the probability of the survivors to compensate: a fraction $\frac{\varphi(P)}P=\frac1\theta$ of the integers survive, each with probability
+$\frac\theta{\log n}$, so the density is still $\frac1{\log n}$. For $H=\{0\}$, $\mathfrak S_A=1$, and the model satisfies the prime number theorem on average.
+
+\begin{proof}
+Let $G$ be the set of $n$ such that $\gcd(n+h_i,P)=1$ for all $i$. Modulo each $p\le A$, the condition excludes exactly $\nu_H(p)$ residue classes, so by the Chinese remainder theorem (Volume~1) $G$ is a union of
+$R=\prod_{p\le A}(p-\nu_H(p))$ residue classes modulo $P$. Each block of $P$ consecutive integers contains exactly $R$ elements of $G$, so $|G\cap[1,y]|=\frac RPy+E(y)$ with $|E(y)|\le R\le P$.
+
+For $n\ge n_0$ the numbers $n+h_i$ are distinct and at least $n_0$, so by independence the event $Y_{n+h_1}=\cdots=Y_{n+h_k}=1$ has probability $w(n)=\prod_i\frac\theta{\log(n+h_i)}$ if $n\in G$, and $0$ otherwise.
+Hence $\mathbb EN_H(x)=\sum_{n_0\le n\le x}\mathbf 1_G(n)w(n)+O(1)$. Put $a_n=\mathbf 1_G(n)-\frac RP$. The partial sums $\sum_{n_0\le n\le m}a_n=E(m)-E(n_0-1)$ are bounded by $2P$, and $w$ is positive and decreasing, so Abel's
+inequality (summation by parts, as in Chapter~1) gives $\bigl|\sum_{n_0\le n\le x}a_nw(n)\bigr|\le2Pw(n_0)$. Therefore
+\[
+\mathbb EN_H(x)=\frac RP\sum_{n_0\le n\le x}w(n)+O(1).
+\]
+Now $\frac RP\theta^k=\prod_{p\le A}\bigl(1-\frac{\nu_H(p)}p\bigr)\bigl(1-\frac1p\bigr)^{-k}=\mathfrak S_A(H)$, and $w(n)\sim\frac{\theta^k}{\log^kn}$. Finally $\sum_{n\le x}\frac1{\log^kn}\sim\frac x{\log^kx}$: the
+$n\le x/\log^{k+1}x$ contribute $O(\frac x{\log^{k+1}x})$, and for the others $\log n=\log x+O(\log\log x)\sim\log x$. Since the main term tends to infinity, the $O(1)$ terms do not matter.
+
+The convergence $\mathfrak S_A(H)\to\mathfrak S(H)$ is the convergence of the product in Proposition~\ref{prop:ssconv}.
+\end{proof}
+
+So the Hardy--Littlewood conjecture is Cramér's model, corrected prime by prime, with the correction pushed to infinity. Figure~\ref{fig:twins} of Chapter~8 shows how well it does for twins:
+$58\,754$ predicted against $58\,980$ true pairs below $10^7$. Cramér's uncorrected model would predict about $44\,500$.
+
+\section{The twin constant on average}
+
+The singular series varies wildly. $\mathfrak S(\{0,d\})$ is $0$ for odd $d$; it is $1.32$ for $d=2$, $2.64$ for $d=6$ (``sexy primes'' are twice as common as twins), and $3.52$ for $d=30$. Yet Cramér's model, which
+ignores all of this, predicts $\mathfrak S=1$ for every pair. In 1976 Patrick Gallagher noticed that the model is right \emph{on average}.
+
+\begin{theorem}[Gallagher, 1976]\label{thm:gallagher}
+As $h\to\infty$,
+\[
+\sum_{d=1}^h\mathfrak S(\{0,d\})=h+O(\sqrt h).
+\]
+\end{theorem}
+
+\begin{proof}
+For odd $m$, let $g(m)=\prod_{p\mid m}\frac1{p-2}$ if $m$ is squarefree, and $g(m)=0$ otherwise. For even $d$, expanding the product,
+\[
+\begin{aligned}\prod_{p\mid d,\;p>2}\frac{p-1}{p-2}&=\prod_{p\mid d,\;p>2}\Bigl(1+\frac1{p-2}\Bigr)\eqbr=\sum_{m\mid d,\;m\text{ odd}}g(m).\end{aligned}
+\]
+Odd $d$ contribute nothing. So, with $m$ running over odd integers,
+\[
+\begin{aligned}\sum_{d\le h}\mathfrak S(\{0,d\})&=2C_2\sum_{\substack{d\le h\\2\mid d}}\sum_{m\mid d}g(m)\eqbr=2C_2\sum_{m\le h}g(m)\Bigl\lfloor\frac h{2m}\Bigr\rfloor\\&=C_2h\sum_{m\le h}\frac{g(m)}m\eqbr+O\Bigl(\sum_{m\le h}g(m)\Bigr),\end{aligned}
+\]
+since the even $d\le h$ divisible by the odd $m$ are the multiples of $2m$. We need three facts about $g$. First, $g\ge0$ is multiplicative and supported on odd squarefree $m$, so expanding finite products and letting
+them grow (all terms are non-negative),
+\[
+\begin{aligned}\sum_m\frac{g(m)}m&=\prod_{p>2}\Bigl(1+\frac1{p(p-2)}\Bigr)\eqbr=\prod_{p>2}\frac{(p-1)^2}{p(p-2)}=\frac1{C_2}.\end{aligned}
+\]
+Second, in the same way, $K=\sum_m\frac{g(m)}{\sqrt m}=\prod_{p>2}\bigl(1+\frac1{(p-2)\sqrt p}\bigr)$ is finite, since $\sum_p\frac1{(p-2)\sqrt p}$ converges. Third, multiplying each term by a factor at least $1$ (Rankin's trick),
+\[
+\begin{gathered}\sum_{m>h}\frac{g(m)}m\le\sum_m\frac{g(m)}m\sqrt{\frac mh}=\frac K{\sqrt h},\\\sum_{m\le h}g(m)\le\sum_mg(m)\sqrt{\frac hm}=K\sqrt h.\end{gathered}
+\]
+Putting these together, $\sum_{d\le h}\mathfrak S(\{0,d\})=C_2h\bigl(\frac1{C_2}+O(\frac K{\sqrt h})\bigr)+O(K\sqrt h)=h+O(\sqrt h)$.
+\end{proof}
+
+Numerically, one finds $\sum_{d\le h}\mathfrak S(\{0,d\})-h=-2.8$, $-3.9$, $-4.9$, $-6.2$ for $h=10^2,10^3,10^4,10^5$: the true error is much smaller than $\sqrt h$, and grows like $-\frac12\log h$. This
+tiny negative term will matter in a moment.
+
+Gallagher proved the same for $k$-tuples: the average of $\mathfrak S(H)$ over all $k$-element sets $H\subseteq[1,h]$ tends to $1$. From this he drew a striking consequence. Assume the Hardy--Littlewood conjecture,
+uniformly for $H\subseteq[1,\lambda\log x]$. Then the number of primes in $]n,n+\lambda\log n]$, for $n$ chosen at random up to $x$, follows asymptotically the Poisson law of mean $\lambda$: the
+same law as in Cramér's model (Exercise~\ref{ex:modelpoisson}). The idea is the method of moments of Chapter~9: the $k$-th moment of the count is a sum over $k$-tuples, which the conjecture evaluates
+with singular series, and Gallagher's average replaces every $\mathfrak S(H)$ by $1$. Exercise~\ref{ex:pairsvariance} carries this out for the second moment.
+
+\begin{figure}[ht]
+\centering
+\fig{ch10-poisson}
+\caption{Cut $]10^9,10^9+21\cdot10^6]$ into a million intervals of length $21\approx\log10^9$. Bars: the proportion of intervals containing $k$ primes. Dots: the Poisson law with the same mean $1.013$. The data have
+variance $0.79$ instead of $1.01$: too few empty intervals, and too few crowded ones.}
+\label{fig:poisson}
+\end{figure}
+
+Figure~\ref{fig:poisson} tests the prediction near $10^9$. The shape is right, but the spread is too small: primes repel each other a little at short range, because each prime $p$ forbids the
+numbers $p+d$ for odd $d$, and more generally for $d$ with a small singular series. Montgomery and Soundararajan (2004) traced the defect to the $-\frac12\log h$ in Gallagher's average:
+under a uniform Hardy--Littlewood conjecture, the variance is not $\lambda$ but about $\lambda\bigl(1-\frac{\log h+1.415}{\log x}\bigr)$, with $1.415=\gamma+\log2\pi-1$. With $h=21$ and $\log x=20.7$ this is $0.79$,
+exactly what the figure shows. The Poisson law is the limit, but the primes approach it with a correction that the simple model cannot see.
+
+\section{Maier's surprise}
+
+The models agree on one more prediction. Take $\lambda>1$ and look at the interval $]x,x+(\log x)^\lambda]$. Its length is many times the average gap, so the number of primes in it should be about its
+expected value $(\log x)^{\lambda-1}$. In Cramér's model this holds with probability $1$ (Exercise~\ref{ex:shortmodel} proves it for $\lambda>2$). For the primes, Selberg had shown in 1943 that it holds for
+\emph{almost all} $x$ when $\lambda>2$, assuming the Riemann hypothesis. Everyone expected it for all large $x$.
+
+\begin{remark}[Maier, 1985; quoted]
+In 1985 Helmut Maier proved the opposite. The inequalities are not proved in this volume. For every $\lambda>1$,
+\[
+\begin{gathered}\limsup_{x\to\infty}\frac{\pi(x+(\log x)^\lambda)-\pi(x)}{(\log x)^{\lambda-1}}>1,\\\liminf_{x\to\infty}\frac{\pi(x+(\log x)^\lambda)-\pi(x)}{(\log x)^{\lambda-1}}<1.\end{gathered}
+\]
+His idea is short to state. Let $P(z)$ be the product of the primes up to $z$, and let $x$ run over multiples of $P(z)$. Then $x+k$ has a prime factor $p\le z$ exactly when $k$ has. So the interval
+$]x,x+y]$ is, as far as the small primes are concerned, a copy of $[1,y]$, and the proportion of its elements free of prime factors up to $z$ is that of $[1,y]$. A simple model replaces this proportion by
+$\prod_{p\le z}(1-\frac1p)$; but when $y$ is a fixed power of $z$, the true proportion differs from this by a factor that oscillates around $1$ as the exponent varies. That factor is described by Buchstab's function, which is not defined in this volume. Volume~13, Chapter~3, draws the function and proves a fundamental lemma for large $u$, a different statement; the asymptotic $\Phi(x,z)=\omega(u)\,x/\log z$ for $u$ in a fixed range is not proved in this series.
+Choosing $z$ and $y$ well, and counting the primes among the survivors on average over $x$ with a theorem on primes in progressions, Maier found intervals with too many primes, and others with too few.
+\end{remark}
+
+The lesson is that the primes in an interval of length $(\log x)^\lambda$ remember all the primes up to a power of $\log x$, and those small primes are not independent of the position of the interval. A model with $A$ fixed, like
+Proposition~\ref{prop:smallprimes}, cannot see this. Granville (1995) let $A$ grow with $x$. His model, which is not analysed in this volume, reproduces Maier's theorem and predicts larger gaps than Cramér's: infinitely often at least
+$2e^{-\gamma}\log^2x=1.1229\log^2x$, the orange curve of Figure~\ref{fig:gaps}. In 2023 Banks, Ford and Tao built a model that sieves by a random residue class for every prime up to a bound, and analysed its largest gaps rigorously.
+They conjecture that the primes behave like it; their analysis still puts the largest gaps at a constant times $\log^2x$.
+
+\begin{beauty}
+A model of the primes is a lens. Cramér's coin gets the density right and, astonishingly, the Riemann hypothesis. It fails on the prime $2$, and the repair produces the singular series, whose average is the
+coin again. That repaired model fails at Maier's scale, and the next repair changes the predicted size of the largest gaps. At each stage the failures are as instructive as the successes. Each one shows
+how much of their past the primes remember.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:modeltwins}
+(a) Show that in Cramér's model the expected number of $n\le x$ with $n$ and $n+2$ both in $\mathcal C$ is $\sim\frac x{\log^2x}$.
+(b) The truth is $\pi_2(x)\sim2C_2\frac x{\log^2x}$, conjecturally. Split the factor $2C_2=1.32$ into the contribution of the prime $2$ and that of the odd primes, and explain each in one sentence.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:admissible}
+(a) Which of $\{0,2,4\}$, $\{0,2,6\}$, $\{0,4,6\}$, $\{0,2,6,8\}$, $\{0,2,6,8,12\}$ are admissible? Deduce that $3,5,7$ is the only triple of primes of the form $p,p+2,p+4$.
+(b) Show that $\mathfrak S(\{0,6\})=2\mathfrak S(\{0,2\})$, and check numerically that the pairs of primes at distance $6$ below $10^7$ are about twice as many as the twin pairs.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:modelgoldbach}
+For $N\ge6$, let $r(N)$ be the number of $a\le\frac N2$ with $a$ and $N-a$ both in $\mathcal C$. Show that, almost surely, $r(N)\ge1$ for all large $N$, \emph{odd or even}. Why is this a defect of the model, and which
+of the two answers for odd $N$ is the truth for the primes?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:shortmodel}
+Let $\lambda>2$. Show that, almost surely, the number of Cramér primes in $]x,x+(\log x)^\lambda]$ is $\sim(\log x)^{\lambda-1}$ as $x\to\infty$. Compare with Maier's theorem.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:modelpoisson}
+Let $\lambda>0$, $h_N=\lfloor\lambda\log N\rfloor$, and $S_N=\sum_{N<n\le N+h_N}X_n$ in Cramér's model. Show that $P(S_N=k)\to e^{-\lambda}\frac{\lambda^k}{k!}$ for every $k\ge0$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$, the signature exercise]\label{ex:pairsvariance}
+Let $\lambda>0$ and $h=h(x)=\lfloor\lambda\log x\rfloor$. Assume the Hardy--Littlewood conjecture for pairs in the uniform form: the number of primes $p\le x$ with $p+d$ prime is
+$\bigl(\mathfrak S(\{0,d\})+o(1)\bigr)\frac x{\log^2x}$, uniformly for $1\le d\le h$. Show that
+\[
+\begin{gathered}\sum_{n\le x}\bigl(\pi(n+h)-\pi(n)\bigr)=(\lambda+o(1))x,\\\sum_{n\le x}\bigl(\pi(n+h)-\pi(n)\bigr)^2=(\lambda+\lambda^2+o(1))x.\end{gathered}
+\]
+So the number of primes in a random interval of length $\lambda\log x$ has mean $\lambda$ and variance $\lambda$, like the Poisson law.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:modeltuples}
+Let $H=\{h_1,\dots,h_k\}$ be distinct non-negative integers, and $T(x)$ the number of $n\le x$ with $n+h_1,\dots,n+h_k$ all in $\mathcal C$. Show that, almost surely, $T(x)\sim\frac x{\log^kx}$. So in Cramér's
+model every pattern, admissible or not, occurs with the same frequency.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:hawkins}
+\emph{Hawkins's random primes.} In 1958 David Hawkins proposed a random sieve. Start with the integers $2,3,4,\dots$ and let $X_1=2$. Strike out each integer larger than $X_1$
+independently with probability $\frac1{X_1}$; let $X_2$ be the least surviving integer larger than $X_1$; strike out each surviving integer larger than $X_2$ with
+probability $\frac1{X_2}$, independently; and so on. The survivors $X_1<X_2<\dots$ are the \emph{Hawkins primes}. Let $Q_n=\prod_{X_k<n}(1-\frac1{X_k})$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that, given everything that happened to the integers below $n$, the integer $n$ is a Hawkins prime with probability $Q_n$, and that
+$\mathbb E[Q_{n+1}\mid\text{the past}]=Q_n(1-\frac{Q_n}n)$.
+\item Let $q_2=1$ and $q_{n+1}=q_n-\frac{q_n^2}n$. Show that $\mathbb E[Q_n]\le q_n$ for all $n\ge2$.
+\item Show that $\frac1{q_{n+1}}=\frac1{q_n}+\frac1{n-q_n}$, deduce that $\frac1{q_n}=\log n+O(1)$, and conclude that the expected number of Hawkins primes up to $x$ is at most
+$(1+o(1))\frac x{\log x}$.
+\item For the Hawkins primes, the probability of survival \emph{is} the sieve product $Q_n\approx\frac1{\log n}$. For the true primes, a sieve by the primes up to $\sqrt n$
+decides primality, and $\prod_{p\le\sqrt n}(1-\frac1p)\sim\frac{2e^{-\gamma}}{\log n}$, which is not $\frac1{\log n}$. What makes the difference?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:digitpairs}
+\emph{The last digit of the next prime.} Among the primes $7\le p<10^8$, a prime ending in $1$ is followed by a prime ending in $1$, $3$, $7$, $9$ with frequencies
+$17.7\%$, $30.4\%$, $31.0\%$, $20.9\%$ (Figure~\ref{fig:digits}). Here is a model. Walk through the integers prime to $10$, whose last digits cycle as
+$1\to3\to7\to9\to1$, and declare each of them ``prime'' independently with probability $q$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that after a ``prime'' ending in $1$, the next ``prime'' ends in $3$, $7$, $9$, $1$ with probabilities $\pi_j=\frac{q(1-q)^{j-1}}{1-(1-q)^4}$, $j=1,2,3,4$.
+\item Show that $\pi_j=\frac14+\frac{(5-2j)q}8+O(q^2)$. Which transition does the model make rarest?
+\item Explain why $q$ should be about $\frac{2.5}{\log x}$ near $x$. With this $q$, averaged over the primes ending in $1$ below $10^8$, the model gives $31.1\%$, $26.6\%$, $22.8\%$, $19.5\%$
+for the endings $3$, $7$, $9$, $1$. Which part of the bias does it explain?
+\item The model badly underestimates the transition $1\to7$. The shortest gap that makes it is $6$. Using the Hardy--Littlewood prediction that pairs $p$, $p+h$ (both prime) have
+density proportional to $\prod_{p\mid h,\,p>2}\frac{p-1}{p-2}$ (Volume~5, Chapter~10), explain what the model has forgotten.
+\end{enumerate}
+\end{exercise}
+
+\begin{figure}[ht]
+\centering
+\fig{ch13-digits}
+\caption{After a prime ending in $1$, the last digit of the next prime: the frequencies among the primes $7\le p<10^8$ (blue) and the predictions of the coin model of
+Problem~\ref{pb:digitpairs} with $q=\frac{2.5}{\log p}$ (orange). Both make a repeated $1$ the rarest transition; only the primes favour $7$ as much as $3$.}
+\label{fig:digits}
+\end{figure}
+
+\section{Hints}
+
+\begin{hint}{ex:modeltwins}
+(a) Linearity of expectation; $X_n$ and $X_{n+2}$ are independent. (b) Look at the factor at $p=2$ in $\mathfrak S(\{0,2\})$, and at the sign of $1-\frac2p-(1-\frac1p)^2$.
+\end{hint}
+\begin{hint}{ex:admissible}
+(a) Proposition~\ref{prop:ssconv}: check the primes $p\le k$ only. (b) Only the factor at $p=3$ changes.
+\end{hint}
+\begin{hint}{ex:modelgoldbach}
+The pairs $\{a,N-a\}$ with $a<\frac N2$ are disjoint. Bound $P(r(N)=0)$ and use Borel--Cantelli.
+\end{hint}
+\begin{hint}{ex:shortmodel}
+Chernoff bounds (Volume~3, Theorem~4.6) for integer $x$, and Borel--Cantelli. Where is $\lambda>2$ used?
+\end{hint}
+\begin{hint}{ex:modelpoisson}
+Write $P(S_N=k)$ as $\prod_n(1-p_n)$ times a sum over $k$-element sets of products of $\frac{p_n}{1-p_n}$, and compare that sum with $\frac1{k!}\bigl(\sum\frac{p_n}{1-p_n}\bigr)^k$.
+\end{hint}
+\begin{hint}{ex:pairsvariance}
+Expand the square as a sum over pairs of primes $p\le q$ in $]n,n+h]$. A pair with $q-p=d<h$ lies in $h-d$ such intervals. Then use Theorem~\ref{thm:gallagher} with summation by parts.
+\end{hint}
+\begin{hint}{ex:modeltuples}
+Compute $\mathbb ET(x)$, and show $\operatorname{Var}T(x)\le(2D+1)\,\mathbb ET(x)$, where $D=\max h_i$. Chebyshev's inequality and Borel--Cantelli along $x_j=\lfloor(1+\varepsilon)^j\rfloor$, then monotonicity of $T$.
+\end{hint}
+
+\begin{hint}{pb:hawkins}
+(a) $Q_{n+1}=Q_n(1-\frac1n)$ if $n$ is a Hawkins prime, $Q_{n+1}=Q_n$ otherwise. (b) Jensen, and $t\mapsto t-\frac{t^2}n$ increases on $[0,1]$. (c) $0<q_n\le1$.
+\end{hint}
+
+\begin{hint}{pb:digitpairs}
+(a) Sum over the number of complete turns of the cycle. (c) Among the integers near $x$, a proportion $\frac4{10}$ is prime to $10$. (d) Compare the weights of $h=2$, $4$ and $6$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:modeltwins}
+\idea In the model, $n$ and $n+2$ are independent events of probability about $\frac1{\log x}$ each. The primes know two more things: both are odd together, and modulo an odd $p$ they compete for the same space.
+\writeup (a) For $n\ge3$, $P(X_n=X_{n+2}=1)=\frac1{\log n\log(n+2)}$, so the expectation is $\sum_{3\le n\le x}\frac1{\log n\log(n+2)}\sim\frac x{\log^2x}$, by the argument at the end of the proof of
+Proposition~\ref{prop:smallprimes}.
+
+(b) The factor at $p=2$ is $2$: if $n$ is odd, so is $n+2$, so the two events ``odd'' are perfectly correlated, and the chance that both are odd is $\frac12$ instead of $\frac14$. The odd primes contribute
+$C_2=0.66$: for $p>2$, avoiding $p$ for both numbers excludes $2$ classes out of $p$, and $1-\frac2p<(1-\frac1p)^2$, so each odd prime makes twins slightly rarer than independence predicts. The product is $1.32$.
+\end{solution}
+
+\begin{solution}{ex:admissible}
+\idea A set of $k$ elements can only cover all residues modulo a prime $p\le k$, so admissibility is a finite check.
+\writeup (a) $\{0,2,4\}$ covers $0,2,1$ modulo $3$: not admissible. $\{0,2,6\}$ is $\{0,2,0\}$ modulo $3$, and $\{0,4,6\}$ is $\{0,1,0\}$; both miss a class modulo $2$ and $3$, so both are admissible.
+$\{0,2,6,8\}$ is $\{0,2,0,2\}$ modulo $3$, admissible. $\{0,2,6,8,12\}$ is $\{0,2,1,3,2\}$ modulo $5$, missing $4$, and $\{0,2,0,2,0\}$ modulo $3$: admissible. For the triple: one of $p,p+2,p+4$ is divisible by $3$,
+so it equals $3$, and only $p=3$ works.
+
+(b) For $d=6$ and $d=2$, $\nu(p)$ differs only at $p=3$, where it is $1$ for $d=6$ and $2$ for $d=2$. By the formula for $\mathfrak S(\{0,d\})$, the ratio is $\frac{3-1}{3-2}=2$. A numerical calculation counts $117\,207$
+pairs $(p,p+6)$ with $p\le10^7$, against $58\,980$ twin pairs: the ratio is $1.99$.
+\end{solution}
+
+\begin{solution}{ex:modelgoldbach}
+\idea Disjoint pairs are independent, and there are $\frac N2$ of them, each succeeding with probability about $\frac1{\log^2N}$. Failure of all of them is exponentially unlikely.
+\writeup For $3\le a<\frac N2$, the events ``$a$ and $N-a$ in $\mathcal C$'' involve disjoint pairs of variables, so they are independent, each of probability $\frac1{\log a\log(N-a)}\ge\frac1{\log^2N}$. There are at least
+$\frac N2-4$ of them, so by Lemma~\ref{lem:oneminus}
+\[
+\begin{aligned}P(r(N)=0)&\le\Bigl(1-\frac1{\log^2N}\Bigr)^{N/2-4}\eqbr\le\exp\Bigl(-\frac{N/2-4}{\log^2N}\Bigr),\end{aligned}
+\]
+which is summable over $N$. By the first Borel--Cantelli lemma, almost surely $r(N)=0$ for only finitely many $N$.
+
+For the primes the answer depends on the parity of $N$. An odd $N=a+b$ has $a$ or $b$ even, so $N$ is a sum of two primes only if $N-2$ is prime. Since $N-2$ is prime for only a proportion $0$ of odd $N$, most odd numbers are \emph{not}
+sums of two primes. The model is wrong because it ignores parity. For even $N$, Goldbach's conjecture is the model's answer.
+\end{solution}
+
+\begin{solution}{ex:shortmodel}
+\idea The expected count $\mu$ tends to infinity faster than $\log x$, so Chernoff's exponential bound $e^{-\delta^2\mu/3}$ beats any power of $x$, and Borel--Cantelli applies over all integers $x$.
+\writeup Fix $\delta\in\left]0,1\right]$. For an integer $N\ge3$ let $h_N=\lfloor(\log N)^\lambda\rfloor$, $S_N=\sum_{N<n\le N+h_N}X_n$ and $\mu_N=\mathbb ES_N=\sum_{N<n\le N+h_N}\frac1{\log n}$. Since
+$\log(N+h_N)=\log N+o(1)$, $\mu_N\sim(\log N)^{\lambda-1}$. By Chernoff's bounds (Volume~3, Theorem~4.6), $P(|S_N-\mu_N|\ge\delta\mu_N)\le2e^{-\delta^2\mu_N/3}$. As $\lambda-1>1$, $\mu_N\ge\frac{6}{\delta^2}\log N$
+for $N$ large, so this is at most $\frac2{N^2}$, summable. By Borel--Cantelli, almost surely $|S_N-\mu_N|<\delta\mu_N$ for all large $N$. Taking $\delta=\frac1j$ for every $j$, almost surely $S_N\sim\mu_N$.
+
+For real $x$, with $N=\lfloor x\rfloor$, the intervals $]x,x+(\log x)^\lambda]$ and $]N,N+h_N]$ differ in at most $3$ integers at each end, since $(\log x)^\lambda-(\log N)^\lambda\to0$. So the two counts differ by at most
+$6$, which is $o(\mu_N)$.
+
+This contradicts Maier's theorem, quoted in the remark of this chapter and not proved here: the primes do not behave like Cramér's model at this scale, for any $\lambda>1$. (For $1<\lambda\le2$ the model's statement is still true, but needs the method of
+Theorem~\ref{thm:cramergaps} in place of a union over all $N$.)
+\end{solution}
+
+\begin{solution}{ex:modelpoisson}
+\idea A sum of many independent rare events is Poisson: Volume~3 proved it for equal probabilities (Theorem~2.11); here the probabilities differ slightly, and we redo the computation with symmetric functions.
+\writeup Let $p_n=\frac1{\log n}$ for $N<n\le N+h_N$, and $q_n=\frac{p_n}{1-p_n}$. Then
+\[
+P(S_N=k)=\prod_n(1-p_n)\cdot e_k,\qq e_k=\sum_{|I|=k}\prod_{n\in I}q_n,
+\]
+the sum running over the $k$-element sets $I$ of indices. All $p_n$ and $q_n$ are $\frac1{\log N}+O(\frac1{\log^2N})$, and there are $h_N$ of them, so $\sigma=\sum q_n\to\lambda$, $\sum p_n\to\lambda$, and $\sum p_n^2\to0$. By
+Lemma~\ref{lem:oneminus}, $\prod(1-p_n)$ lies between $e^{-\sum p_n-\sum p_n^2}$ and $e^{-\sum p_n}$, so it tends to $e^{-\lambda}$. Expanding $\sigma^k$ gives every product of $k$ distinct factors $k!$ times, plus products
+with a repeated index, so
+\[
+0\le\sigma^k-k!e_k\le\binom k2\Bigl(\sum_nq_n^2\Bigr)\sigma^{k-2},
+\]
+since each term with a repetition contains some $q_n^2$. The right side tends to $0$, so $e_k\to\frac{\lambda^k}{k!}$, and $P(S_N=k)\to e^{-\lambda}\frac{\lambda^k}{k!}$.
+\end{solution}
+
+\begin{solution}{ex:pairsvariance}
+\idea A sum of squares counts pairs. The diagonal pairs give the mean $\lambda$. The off-diagonal pairs are counted by the Hardy--Littlewood conjecture with weights $\mathfrak S(\{0,d\})$, and Gallagher's theorem
+says these weights average to $1$, exactly as if the primes were independent.
+\writeup Write $c(n)=\pi(n+h)-\pi(n)$, the number of primes in $]n,n+h]$. A prime $p$ lies in $]n,n+h]$ for exactly the $h$ integers $n\in[p-h,p-1]$, so
+$\sum_{n\le x}c(n)=h\pi(x)+O(h^2)$, since only the primes in $]x,x+h]$ and the $n<1$ are miscounted. With $\pi(x)\sim\frac x{\log x}$ and $h\sim\lambda\log x$, this is $(\lambda+o(1))x$.
+
+Next, $c(n)^2=c(n)+2\#\{(p,q):p<q\text{ primes in }]n,n+h]\}$. A pair with $q-p=d$ lies in $]n,n+h]$ for the $h-d$ integers $n\in[q-h,p-1]$ when $d<h$, and for none when $d\ge h$. So, up to an error $O(h^3)$ from the edges,
+\[
+\sum_{n\le x}c(n)^2=\sum_{n\le x}c(n)+2\sum_{d=1}^{h-1}(h-d)\pi_d(x),
+\]
+where $\pi_d(x)$ counts the primes $p\le x$ with $p+d$ prime. By the hypothesis, $\pi_d(x)=(\mathfrak S(\{0,d\})+o(1))\frac x{\log^2x}$ uniformly, and since $\sum_{d<h}(h-d)\le h^2$ the $o(1)$ terms contribute
+$o(\frac{h^2x}{\log^2x})=o(x)$. Let $\Sigma(t)=\sum_{d\le t}\mathfrak S(\{0,d\})$. By summation by parts and Theorem~\ref{thm:gallagher},
+\[
+\begin{aligned}\sum_{d=1}^{h-1}(h-d)\mathfrak S(\{0,d\})&=\sum_{t=1}^{h-1}\Sigma(t)\eqbr=\sum_{t=1}^{h-1}\bigl(t+O(\sqrt t)\bigr)\eqbr=\frac{h^2}2+O(h^{3/2}).\end{aligned}
+\]
+So the off-diagonal part is $2\cdot\frac{h^2}2\cdot\frac x{\log^2x}(1+o(1))=(\lambda^2+o(1))x$, and the total is $(\lambda+\lambda^2+o(1))x$. The variance is the second moment minus the square of the mean,
+$\lambda+\lambda^2-\lambda^2=\lambda$: the Poisson value.
+\end{solution}
+
+\begin{solution}{ex:modeltuples}
+\idea The indicator variables $Z_n$ of the pattern at $n$ are independent as soon as their windows do not overlap, so $T(x)$ is almost a sum of independent variables, and its variance is of the order of its mean.
+Then Chebyshev's inequality along a geometric sequence gives the strong law.
+\writeup Let $D=\max_ih_i$ and $Z_n=\prod_iX_{n+h_i}$, so $T(x)=\sum_{3\le n\le x}Z_n+O(1)$. Since the $n+h_i$ are distinct, $\mathbb EZ_n=\prod_i\frac1{\log(n+h_i)}$, and
+$\mathbb ET(x)\sim\frac x{\log^kx}$ as in Exercise~\ref{ex:modeltwins}. If $|n-m|>D$, then $Z_n$ and $Z_m$ are functions of disjoint sets of $X$'s, hence independent, and $\operatorname{Cov}(Z_n,Z_m)=0$.
+If $|n-m|\le D$, then $\operatorname{Cov}(Z_n,Z_m)\le\mathbb E[Z_nZ_m]\le\mathbb EZ_n$, as $Z_m\le1$. So
+\[
+\begin{aligned}\operatorname{Var}T(x)&=\sum_{n,m}\operatorname{Cov}(Z_n,Z_m)\le(2D+1)\sum_n\mathbb EZ_n\eqbr=(2D+1)\,\mathbb ET(x).\end{aligned}
+\]
+Fix $\varepsilon\in\left]0,1\right[$ and let $x_j=\lfloor(1+\varepsilon)^j\rfloor$. By Chebyshev's inequality,
+\[
+P\bigl(|T(x_j)-\mathbb ET(x_j)|\ge\varepsilon\,\mathbb ET(x_j)\bigr)\le\frac{2D+1}{\varepsilon^2\,\mathbb ET(x_j)},
+\]
+and $\mathbb ET(x_j)\ge(1+\varepsilon)^{j/2}$ for large $j$, so these probabilities are summable. By Borel--Cantelli, almost surely $|T(x_j)-\mathbb ET(x_j)|<\varepsilon\,\mathbb ET(x_j)$ for all large $j$.
+For $x_j\le x<x_{j+1}$, since $T$ is non-decreasing, $T(x_j)\le T(x)\le T(x_{j+1})$, while $\frac{\mathbb ET(x_{j+1})}{\mathbb ET(x_j)}\to1+\varepsilon$. So almost surely
+\[
+\begin{gathered}\liminf_{x\to\infty}\frac{T(x)}{\mathbb ET(x)}\ge\frac{1-\varepsilon}{1+\varepsilon},\qq\limsup_{x\to\infty}\frac{T(x)}{\mathbb ET(x)}\le(1+\varepsilon)^2.\end{gathered}
+\]
+Let $\varepsilon\to0$ along $\frac1j$: almost surely $T(x)\sim\mathbb ET(x)\sim\frac x{\log^kx}$. Even $H=\{0,1\}$ gets this frequency, though the primes realise it only once.
+\end{solution}
+
+\begin{solution}{pb:hawkins}
+\idea Hawkins's sieve is Eratosthenes's sieve with the arithmetic replaced by coin tosses: the strikes on different integers are independent. Then the survival probability of $n$ is
+literally the sieve product, and a one-line recurrence shows that it behaves like $\frac1{\log n}$.
+
+\writeup (a) The past determines which $X_k$ are below $n$. The strikes aimed at $n$, one for each $X_k<n$, are independent of the past and of each other, and each spares $n$ with probability
+$1-\frac1{X_k}$. If $n$ survives them all, it is the least survivor above the previous $X_k$, so it is a Hawkins prime. Hence the conditional probability is $Q_n$. Then $Q_{n+1}=Q_n(1-\frac1n)$
+if $n$ is a Hawkins prime and $Q_{n+1}=Q_n$ otherwise, so $\mathbb E[Q_{n+1}\mid\text{past}]=Q_n-\frac{Q_n}n\cdot Q_n$.
+
+(b) Taking expectations and using $\mathbb E[Q_n^2]\ge\mathbb E[Q_n]^2$, $e_n=\mathbb E[Q_n]$ satisfies $e_{n+1}\le e_n-\frac{e_n^2}n=f_n(e_n)$, with $f_n(t)=t-\frac{t^2}n$ increasing on
+$[0,1]$ for $n\ge2$. Since $e_2=1=q_2$ (there is no $X_k<2$), induction gives $e_{n+1}\le f_n(e_n)\le f_n(q_n)=q_{n+1}$, provided $0\le q_n\le1$, which also follows by induction.
+
+(c) $\frac1{q_n(1-q_n/n)}=\frac n{q_n(n-q_n)}=\frac1{q_n}+\frac1{n-q_n}$. As $0<q_k\le1$, $\frac1k\le\frac1{k-q_k}\le\frac1{k-1}$, so $\frac1{q_n}=1+\sum_{k=2}^{n-1}\frac1{k-q_k}$ lies
+between $H_{n-1}$ and $1+H_{n-2}$: $\frac1{q_n}=\log n+O(1)$. The expected number of Hawkins primes up to $x$ is $\sum_{n\le x}e_n\le\sum_{n\le x}q_n=\sum_{n\le x}\frac1{\log n+O(1)}\sim\frac x{\log x}$.
+(Numerically, one finds $\frac1{q_n}-\log n\to1.2400$.)
+
+(d) The strikes of Eratosthenes's sieve are not independent: $n$ is struck by $p$ exactly when $p\mid n$, and the events $p\mid n$ for different $p$ are independent only on average over
+intervals much longer than $\prod p$, by the Chinese remainder theorem. For $p\le\sqrt x$ that product is $e^{(1+o(1))\sqrt x}$, astronomically longer than $[1,x]$. Over such a short
+interval the sieve leaves fewer survivors than the product predicts, by the factor $2e^{-\gamma}$ of Problem~\ref{pb:buchstab}. Hawkins's coins know nothing of the Chinese remainder
+theorem, so for them the product is the truth.
+
+\tools{Conditional expectation and Jensen's inequality (Volume~3, Theorem~4.14); the harmonic numbers (Volume~0).}
+\leads With probability $1$, the Hawkins primes satisfy analogues of the prime number theorem and of Mertens's theorem (Wunderlich, 1974 and 1976), and even of the Riemann
+hypothesis (Neudecker and Williams, 1974; Heyde, 1976, with martingales). Random models
+like this one and Cram\'er's (Volume~5, Chapter~10) are good at the large-scale count of primes and wrong about arithmetic: Hawkins primes are as often even as odd.
+\end{solution}
+
+\begin{solution}{pb:digitpairs}
+\idea In the model the next ``prime'' arrives after a geometric number of steps along the cycle $1\to3\to7\to9$, so the nearest endings are favoured and a repeat, needing a full turn,
+is the least likely. This explains the deficit of repeats. It cannot explain the excess of $1\to7$, which comes from divisibility by $3$, invisible to a model that only knows
+about $2$ and $5$.
+
+\writeup (a) The next ``prime'' is at step $j+4t$ along the cycle with probability $q(1-q)^{j+4t-1}$, for $t\ge0$ and $j\in\{1,2,3,4\}$, and its ending is determined by $j$.
+Summing over $t$, $\pi_j=q(1-q)^{j-1}\sum_t(1-q)^{4t}=\frac{q(1-q)^{j-1}}{1-(1-q)^4}$.
+
+(b) $1-(1-q)^4=4q-6q^2+O(q^3)=4q(1-\frac32q+O(q^2))$ and $q(1-q)^{j-1}=q(1-(j-1)q+O(q^2))$, so
+$\pi_j=\frac14\bigl(1-(j-1)q+\frac32q+O(q^2)\bigr)=\frac14+\frac{(5-2j)q}8+O(q^2)$. The rarest is $j=4$, the repeat: $\pi_4=\frac14-\frac{3q}8+O(q^2)$.
+
+(c) Near $x$ the density of primes is $\frac1{\log x}$ and the integers prime to $10$ have density $\frac4{10}$, so among them the primes have density $\frac{10}{4\log x}$. With $q=\frac{2.5}{\log p}$ the
+model predicts a repeat probability $19.5\%$ instead of $25\%$; the primes show $17.7\%$. So the cyclic order alone accounts for $5.5$ of the $7.3$ percentage points of deficit, about three quarters.
+
+(d) The transitions $1\to3$, $1\to7$, $1\to9$ need gaps $\equiv2,6,8\pmod{10}$, the smallest being $2$, $6$, $8$. By Hardy and Littlewood, prime pairs at distance $h$ have density
+proportional to $\prod_{p\mid h,\,p>2}\frac{p-1}{p-2}$, which is $1$ for $h=2,4,8$ and $2$ for $h=6$: since $p$ and $p+6$ are automatically in the same class modulo~$3$, the condition
+``neither is divisible by $3$'' costs a factor $\frac23$ instead of $\frac13$. The coin model, blind to the prime $3$, misses the doubled weight of gaps divisible by $6$, and so undercounts $1\to7$.
+
+\tools{Geometric series (Volume~0); Volume~5, Chapter~10 (Cram\'er's model and the Hardy--Littlewood constants).}
+\leads Lemke Oliver and Soundararajan (2016) derived from the Hardy--Littlewood conjectures a precise prediction: each transition frequency is $\frac14$ plus a term of size
+$\frac{\log\log x}{\log x}$ plus a term of size $\frac1{\log x}$, so the bias does disappear, but only at the speed of $\frac1{\log x}$, which is why it is so visible at $10^8$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Cramér, \emph{On the order of magnitude of the difference between consecutive prime numbers}, Acta Arithmetica 2 (1936), 23--46. The model and the $\log^2p$ conjecture.
+\item A.~Granville, \emph{Harald Cramér and the distribution of prime numbers}, Scandinavian Actuarial Journal 1995, 12--28. The best introduction to the subject, with the refined model and the constant $2e^{-\gamma}$.
+\item G.~H.~Hardy and J.~E.~Littlewood, \emph{Some problems of ``Partitio numerorum'' III: on the expression of a number as a sum of primes}, Acta Mathematica 44 (1923), 1--70. The singular series.
+\item P.~X.~Gallagher, \emph{On the distribution of primes in short intervals}, Mathematika 23 (1976), 4--9. Theorem~\ref{thm:gallagher} and the Poisson law.
+\item H.~L.~Montgomery and K.~Soundararajan, \emph{Primes in short intervals}, Communications in Mathematical Physics 252 (2004), 589--617. The correction to the Poisson variance.
+\item H.~Maier, \emph{Primes in short intervals}, Michigan Mathematical Journal 32 (1985), 221--225. Four pages that broke the model.
+\item W.~Banks, K.~Ford and T.~Tao, \emph{Large prime gaps and probabilistic models}, Inventiones Mathematicae 233 (2023), 1471--1518.
+\item K.~Ford, B.~Green, S.~Konyagin, J.~Maynard and T.~Tao, \emph{Long gaps between primes}, Journal of the AMS 31 (2018), 65--105.
+\item T.~Oliveira e Silva, S.~Herzog and S.~Pardi, \emph{Empirical verification of the even Goldbach conjecture and computation of prime gaps up to $4\cdot10^{18}$}, Mathematics of Computation 83 (2014), 2033--2060.
+\item K.~Soundararajan, \emph{The distribution of prime numbers}, in \emph{Equidistribution in Number Theory, an Introduction}, Springer, 2007, 59--83. Cramér's model, Gallagher and Maier in twenty pages.
+\end{itemize}
