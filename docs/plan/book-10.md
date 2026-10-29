@@ -8,7 +8,7 @@
 
 ## Promise
 
-Book 3 met groups, rings, and fields one at a time. Abstraction looks at the maps between them. Yoneda's lemma is the thesis: an object is known by the way other objects map to it. The floor then builds the frame the upper storeys hang on. Commutative algebra, under the subtitle's name Algebra. Homology, named in the subtitle and missing from a three-part split that jumps to representations. Representations themselves, because the manuscript's last four chapters are the return of Book 3's character table: Wedderburn, the symmetric group, the shuffle cutoff Book 4 announced, and Peter–Weyl.
+Book 3 met groups, rings, and fields one at a time. Abstraction looks at the maps between them. Yoneda's lemma is the thesis: an object is known by the way other objects map to it. The floor then builds the frame the upper storeys hang on. Commutative Algebra carries the rings and the homology of modules. Representations carries the character theory and the homology of groups, and it is where the shuffle proof now leaves for Book 11.
 
 ## Prerequisites
 
@@ -16,27 +16,23 @@ Book 3 entire, including characters. Book 8's Hilbert spaces and compact operato
 
 ## How the subtitle is delivered
 
-The subtitle names three parts, and the contents page has those three names. Representations are algebra: Wedderburn, Specht modules, and Weyl's character formula are the algebra of symmetry. They do not form a fourth part the subtitle did not name.
+The parts keep their catalog names. *Categories, Algebra and Homology* is what they do, and homology is not given a part of its own.
 
-| Subtitle word | Chapters |
-| --- | --- |
-| Categories | 1–2. Yoneda's lemma is the frame: an object is its incoming maps. |
-| Algebra | 3–5 (Noetherian rings, dimension, Dedekind domains) and 8–9 and 11 (semisimple algebras, the symmetric group, compact groups). Tensors from Book 3's Appendix J arrive here. |
-| Homology | 6–7. Ext, and group cohomology \(H^n(G,M)\), which is not Book 9's \(H_n\). |
+Categories delivers the first word: an object known by the maps into it, and the tensor product as a universal map. Commutative Algebra delivers the algebra, from Noetherian rings through Dedekind domains, and the homology of modules: Tor, Ext, and the long exact sequence sit in this part, which the catalog already runs through homological algebra. Representations delivers the algebra of symmetry, Wedderburn through Weyl's character formula, and the homology of groups: group cohomology opens the part. \(H^n(G,M)\) is not Book 9's \(H_n\). Tensors from Book 3's Appendix J arrive in Categories. No part is renamed.
 
-**Move.** Chapter 10, Shuffling cards (`ch10-shuffling.tex`), is a cutoff, a limit theorem about a deck. It does not deliver categories, algebra, or homology. MOVE it to Book 11, Limits. The upper-bound lemma may be cited from the symmetric-group chapter, where the Fourier analysis of \(S_n\) remains algebra. The probabilistic conclusion is Book 11's.
+**Move.** Chapter 10, Shuffling cards (`ch10-shuffling.tex`), is a cutoff, a limit theorem about a deck. It does not deliver categories, algebra, or homology. MOVE it to Book 11, into Martingales and Ergodic Theory, beside the other mixing theorems. The upper-bound lemma may be cited from the symmetric-group chapter, where the Fourier analysis of \(S_n\) remains algebra. Representations stays the part name. Shuffling no longer closes it.
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Categories | 1–2 |
-| II | Algebra | 3–5, 8–9, 11, and the tensor appendix from Book 3 |
-| III | Homology | 6–7 |
+| I | Categories | 1–2, and the tensor appendix from Book 3 |
+| II | Commutative Algebra | 3–6 |
+| III | Representations | 7–9 and 11. Chapter 10 moves. |
 
 ---
 
-The chapter notes follow the manuscript's file order. On the contents page there are three parts: Categories, Algebra, and Homology. The shuffle chapter is under Book 11.
+The chapter notes follow the manuscript's file order. The part names are the table above. The shuffle chapter is under Book 11.
 
 ### Part I. Categories
 

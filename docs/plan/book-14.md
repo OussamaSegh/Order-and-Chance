@@ -18,14 +18,17 @@ Book 6, entire, and the cut named in that book's preface. Book 5's tauberian and
 
 ## How the subtitle is delivered
 
-The subtitle is one promise: the hidden rhythm of the primes. A chapter stays only if the primes are what is heard. The circle method stays because it proves that every large odd number is three primes. Partitions and Waring are not that rhythm.
+The parts keep their catalog names. *Their Hidden Rhythm* is what they hear.
 
-| The rhythm | Chapters |
-| --- | --- |
-| Zeros, short intervals, sieves, averages | 1–4. Bombieri–Vinogradov is the Riemann hypothesis on average. |
-| Exponential sums over primes, and three primes | 5 and 7, after Waring is removed from Chapter 7 |
-| Gaps | 8–9 |
-| Structure inside the primes | 10–14. Halász, the additive lemmas Roth needs, Roth, the \(W\)-trick, and the critical line |
+Zeros and Sieves is the rhythm of zeros, short intervals, sieves, and exponential sums over primes. Bombieri–Vinogradov, the Riemann hypothesis on average, is the climax of that part. Additive Problems and Bounded Gaps is the rhythm of additive structure and of gaps. Partitions and Waring leave, because they are not primes. Three primes stays, so the part name remains true: an additive problem, then the bounded-gap theorems. No rename is proposed. Structure in the Primes is Halász, the additive lemmas Roth needs, Roth, the \(W\)-trick, and the critical line.
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Zeros and Sieves | 1–5 |
+| II | Additive Problems and Bounded Gaps | 7–9, after Waring leaves Chapter 7. Chapter 6 moves. |
+| III | Structure in the Primes | 10–14 |
 
 **Moves.**
 

@@ -16,27 +16,22 @@ Secondary-school algebra. No prior course in proof, calculus, linear algebra, or
 
 ## How the subtitle is delivered
 
-The subtitle is three promises: proof, problem solving, and mathematical thinking. The contents page uses those three names. Chapter order still follows the dependencies.
+The parts keep their catalog names. *Proof, Problem Solving and Mathematical Thinking* is what those parts do.
 
-| Subtitle word | Where it is visible |
-| --- | --- |
-| Proof | Part I. What a sentence promises, induction, and counting arguments that are proofs. |
-| Mathematical thinking | Part II. Limits, complex numbers, polynomials, linear algebra, calculus, inequalities, and first probability, each rebuilt as a way of thinking rather than a list of formulas. |
-| Problem solving | The workshop section of every chapter, named in the contents under Part III, and the field guide. The workshops stay inside their chapters so the tool and the problem are not torn apart. |
-
-No teaching chapter fails the title. Image credits stay back matter. They are not a chapter.
+The Language of Proof is the proof: what a mathematical sentence promises. Counting and Sums is the first problem-solving, induction and counting, with a workshop in each chapter. Algebra, Limits and Functions is mathematical thinking in several modes: limits, complex numbers, polynomials, linear algebra, and the calculus. Chance and Inequality closes that thinking with estimates and a first probability. The workshops stay inside the chapters, and the field guide gathers the problem-solving habit. They are not a separate part. No teaching chapter fails the title. Image credits stay back matter.
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Proof | 0–2 |
-| II | Mathematical Thinking | 3–9 |
-| III | Problem Solving | The workshop in every chapter, and the field guide |
+| I | The Language of Proof | 0 |
+| II | Counting and Sums | 1–2 |
+| III | Algebra, Limits and Functions | 3–7 |
+| IV | Chance and Inequality | 8–9 |
 
 ---
 
-The chapter notes follow the manuscript's file order. The contents page uses the three part names in the table above.
+The chapter notes follow the manuscript's file order. The part names are the table above.
 
 ### Part I. The Language of Proof
 
@@ -192,17 +187,9 @@ The chapter notes follow the manuscript's file order. The contents page uses the
 
 **Image credits.** KEEP — `chapters/image-credits.tex`.
 
-## Crossroads problems that belong here
+## The old problem book
 
-From `tomeP1-crossroads`. Journeys and a short set only.
-
-| Source | What moves | Home |
-| --- | --- | --- |
-| `chapters/ch02-roots.tex` | Problems that use only the roots-of-unity filter and cyclotomic factorisations | End of Part III, after Chapter 4 |
-| `chapters/ch08-inequalities.tex` | The Journey "Shearer's lemma and the Loomis–Whitney inequality", if its tools are Book 1's inequalities and counting; otherwise it waits for Book 4's entropy | End of Part IV |
-| `chapters/ch01-two-tomes.tex` | The problems whose tools are only this book | Scattered as extra exercises, not a new chapter |
-
-The Journey "Eisenstein's trigonometric proof of quadratic reciprocity" is Book 2's, not this book's. It uses the roots of unity and then leaves.
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

@@ -34,7 +34,15 @@ The subtitle is one meeting: arithmetic meets analysis. A chapter stays only if 
 | 11 Exponential sums | Primes and characters | Weyl and van der Corput |
 | 12 A taste of modular forms | \(\tau(n)\) and Eisenstein series | Complex analysis on the upper half-plane |
 
-Chapter 12 stays a meeting, not a second Book 13. The valence formula, Hecke's general theory, and modularity stay in Book 13. What stays here is the exhibit: \(E_4^2=E_8\) and \(\tau(n)\equiv\sigma_{11}(n)\pmod{691}\). No chapter fails the subtitle.
+Chapter 12 stays a meeting, not a second Book 13. It closes Sieves and Randomness. It is not a fourth part. The valence formula, Hecke's general theory, and modularity stay in Book 13. What stays here is the exhibit: \(E_4^2=E_8\) and \(\tau(n)\equiv\sigma_{11}(n)\pmod{691}\). No chapter fails the subtitle. No part is renamed.
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Counting Primes | 1–5 |
+| II | Zeros and Explicit Formulas | 6–7 |
+| III | Sieves and Randomness | 8–12 |
 
 The cut with Book 14, already in the preface, stays: this book ends at the classical explicit formula, Selberg's sieve, Erdős–Kac, and the shape of Cramér's model. Bombieri–Vinogradov, the circle method, and a positive proportion of zeros on the critical line are Book 14.
 
@@ -218,13 +226,9 @@ The cut with Book 14, already in the preface, stays: this book ends at the class
 
 **Figures.** Two.
 
-## Crossroads problems that belong here
+## The old problem book
 
-| Source | Home |
-| --- | --- |
-| `tomeP1-crossroads/chapters/ch14-meets.tex` | The sixteen Journeys. Jacobi and the four-square theorem sit with Book 2's sums of squares if the proof is elementary, and here if it uses modular forms or theta functions. "The zeros hear the primes" and "The primes hear the zeros" belong with Chapter 7. "The coin and the sign of \(\pi(x)-\mathrm{li}(x)\)" belongs with the bias section. Ramanujan's differential equations belong with Chapter 12. Dedekind sums and the Gauss-sum sign belong with Chapter 11 or Book 5. |
-| `tomeP1-crossroads/chapters/ch13-average.tex` | End of Part I. The Lemke Oliver–Soundararajan count, \(17.7\%\) after a prime ending in 1, is stated here as a phenomenon and proved nowhere. Book 15 states the theorem and does not sketch a false proof. The figure moves with a precise citation. |
-| `tomeP1-crossroads/chapters/ch13-average.tex`, the one-star problem whose part (d) asks for a zero-free error | Re-levelled. Part (d) is not a one-star exercise. It can live as a three-star problem on Chapter 5. |
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

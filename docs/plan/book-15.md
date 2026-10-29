@@ -16,33 +16,25 @@ The floors that now hold the theorems this book cites. In particular: Book 6 for
 
 ## How the subtitle is delivered
 
-Every chapter that stays is a meeting of structure and randomness. A chapter that only teaches a research skill, or only tours a conjecture this series has already placed, does not stay.
+The parts keep their catalog names. *The Meeting of Structure and Randomness* is what they do.
 
-| The meeting | Chapters |
-| --- | --- |
-| A structured set compared with a random model | 1–4. The integers, Cramér's coins, the Kubilius model, a random multiplicative function. |
-| The model, and where it breaks | 2, 5, 6, and 13. Maier, short intervals, sieves, Chebyshev's bias. |
-| A structure modelled as random | 7–8. Class groups and ranks. The measure is a theorem. The arithmetic identification is a heuristic, labelled. |
-| A spectrum meeting a zero | 9–11. The form factor, the moments, Bohr–Jessen, and Selberg's central limit theorem. |
-| The dictionary | 12 and 14. Pseudorandomness, and two projects that stop at the line between a theorem and a guess. |
+The Question asks what "random-like" will mean, sets Cramér's model against the primes, and proves Maier's theorem: matching a mean and a variance is not the same as being the model. Arithmetic Statistics is the meeting one statistic at a time: a random multiplicative function, short intervals, a sieve read as an expectation, a class group, and a rank. Spectra is the meeting of a zero and an eigenvalue: the form factor, the moments, and Selberg's theorem that \(\log|\zeta|\) is Gaussian at a random height. Structure versus Randomness is the dictionary, Roth's dichotomy told once, and Chebyshev's bias, where the structure wins. The Research Workshop is the same meeting practised as a skill: how to read a paper about it, and two projects that stop on the line between a theorem and a guess. The twelve-chapter tour and the appendices that are not this meeting leave the part. The part name stays. No rename is proposed.
 
-The climax is two theorems this book owns: Maier's, and Selberg's. Matching a mean and a variance is not the same as being the model. A function built by the primes can still be Gaussian. That is the meeting.
+The climax is two theorems this book owns: Maier's, in The Question, and Selberg's, in Spectra.
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Matching a model | 1–4 |
-| II | Where the model breaks | 5–6 and 13 |
-| III | Random structure | 7–8 |
-| IV | Spectra | 9–11 |
-| V | Telling them apart | 12 and 14 |
-
-Part II is not in file order. Chapter 13 stays at the end of the argument, after the dictionary has a name for the bias. The contents page may list it in Part II and print it after Chapter 12. The dependency, not the subtitle, chooses the print order. The subtitle chooses the part name.
+| I | The Question | 1–3 |
+| II | Arithmetic Statistics | 4–8 |
+| III | Spectra | 9–11 |
+| IV | Structure versus Randomness | 12–13 |
+| V | The Research Workshop | 14, and the reading method kept from the old workshop |
 
 ---
 
-### Part I. Matching a model
+### Part I. The Question
 
 #### Chapter 1. Order and chance in the integers
 
@@ -86,6 +78,8 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 
 **Figures.** The Kubilius space as a product of local factors at the small primes. The distribution of \((\omega(n)-\log\log n)/\sqrt{\log\log n}\) against the Gaussian.
 
+### Part II. Arithmetic Statistics
+
 #### Chapter 4. Random multiplicative functions
 
 **Status.** REVISE — `ch04-multiplicative.tex` includes `ra-randommult.tex` (292 lines) and `ra-polynomials.tex` (253 lines). The Steinhaus and Rademacher models are the meeting: structure (a multiplicative function) against randomness (independent values at the primes). Möbius is the point one would like to prove behaves like the model. Chowla and Sarnak stay conjectures. Orthogonality of \(\mu\) against a periodic sequence is proved. Shrink the polynomial file to a section. A random polynomial's Galois group is a meeting, and it is not a second chapter.
@@ -99,8 +93,6 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 **Examples.** The variance of a partial sum. Orthogonality against the indicator of a residue class.
 
 **Figures.** A Steinhaus walk in the plane against a Rademacher sum on the line. The partial sums of \(\mu(n)\) up to \(10^6\), on the scale \(\sqrt x\).
-
-### Part II. Where the model breaks
 
 #### Chapter 5. Primes in short intervals
 
@@ -130,8 +122,6 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 
 **Figures.** The partial inclusion–exclusion for \(\pi(10^4)\), leaving the true count when the parity wall is hit.
 
-### Part III. Random structure
-
 #### Chapter 7. Random groups in arithmetic
 
 **Status.** REVISE — `ch07-classgroups.tex` includes `ra-cohenlenstra.tex` (285 lines). MERGE the cokernel theorem from `ch05-sandpiles.tex` into this chapter, then that workshop chapter is not a second home for the same proof. The heuristic is labelled as a heuristic. Genus theory is not in the series. The 2-part is stated as a different measure, not as a theorem of Book 13.
@@ -160,7 +150,7 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 
 **Figures.** Rank frequencies against \(\tfrac12\) and against the Poonen–Rains prediction, the prediction labelled as a model. The congruent-number curve and its 2-isogeny.
 
-### Part IV. Spectra
+### Part III. Spectra
 
 #### Chapter 9. Random matrices and the zeros of zeta
 
@@ -204,7 +194,7 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 
 **Figures.** The histogram of \(\log|\zeta(\tfrac12+it)|/\sqrt{\tfrac12\log\log T}\) against the Gaussian. The partial Euler products at \(\sigma=0.8\) and at \(\sigma=\tfrac12\).
 
-### Part V. Telling them apart
+### Part IV. Structure versus Randomness
 
 #### Chapter 12. Pseudorandomness
 
@@ -233,6 +223,8 @@ Part II is not in file order. Chapter 13 stays at the end of the argument, after
 **Examples.** The bias modulo 3. The torus integral for a single zero.
 
 **Figures.** The race up to \(10^6\), the first crossing near \(26861\). The matrix of consecutive residues modulo 10, the diagonal light.
+
+### Part V. The Research Workshop
 
 #### Chapter 14. Two projects
 

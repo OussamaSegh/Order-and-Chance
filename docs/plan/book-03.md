@@ -16,15 +16,13 @@ Book 1, especially polynomials, complex numbers, and the spectral theorem for sy
 
 ## How the subtitle is delivered
 
-The subtitle names the three parts. Nothing else appears as a part.
+The parts keep their catalog names. *Groups, Rings and Fields* is what they contain.
 
-| Subtitle word | Chapters |
-| --- | --- |
-| Groups | 1–5, and Chapter 11. Characters are the group's shadow. They deliver Symmetry and Groups. They are not a fourth part. |
-| Rings | 6–7, and Chapter 12. Quaternions are a division ring, and the rotations are the title's symmetry. |
-| Fields | 8–10, through the quintic. |
+Groups is the symmetries of a set, through Sylow. Rings and Polynomials is the symmetries of addition and multiplication, through extensions. Fields and Galois Theory is the subtitle's third word, and it is also where the catalog places the character table and the quaternions: the character table is the group's shadow, reached after Galois, and the quaternions are the division ring that realises rotations. Both deliver the title, Symmetry, from inside that part. The linear-algebra appendices that count by symmetry stay at the end of it. The ones that are spectra, operators, or a reprint of Book 1's linear algebra do not, and they move.
 
-**Moves.** The linear-algebra appendices are not groups, rings, or fields. Book 1 already teaches the first course. What later books cite as spectra and operators belongs in Book 8, *Operators, Spectra and Transforms*.
+No part is renamed. Characters and quaternions were already in Fields and Galois Theory in the catalog.
+
+**Moves.** Book 1 already teaches the first course. What later books cite as spectra and operators belongs in Book 8.
 
 | Appendix | File | Verdict |
 | --- | --- | --- |
@@ -37,13 +35,13 @@ The subtitle names the three parts. Nothing else appears as a part.
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Groups | 1–5 and 11, with Appendices G, I, and M |
-| II | Rings | 6–7 and 12 |
-| III | Fields | 8–10 |
+| I | Groups | 1–5 |
+| II | Rings and Polynomials | 6–8 |
+| III | Fields and Galois Theory | 9–12, and the appendices that stay |
 
 ---
 
-The chapter notes follow the manuscript's file order. On the contents page, representations sit under Groups and quaternions sit under Rings. The appendices marked MOVE are not parts of this book.
+The chapter notes follow the manuscript's file order. The part names are the table above. Appendices marked MOVE leave Fields and Galois Theory.
 
 ### Part I. Groups
 
@@ -407,13 +405,9 @@ These are KEEP as the specialist linear algebra. Book 1 owns the first course. A
 
 **Figures.** Two.
 
-## Crossroads problems that belong here
+## The old problem book
 
-| Source | Home |
-| --- | --- |
-| `tomeP1-crossroads/chapters/ch04-symmetry.tex`, Journey "The longest cycle" | Chapter 4 or 11 |
-| `tomeP1-crossroads/chapters/ch05-fields.tex`, Journey "The cap set theorem" | Appendix M or Book 8, Chapter 7, according to the tools the write-up uses |
-| A set of problems from those two Crossroads chapters | End of Parts I and III |
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

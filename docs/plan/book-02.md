@@ -16,33 +16,28 @@ Book 1 entire: proof, induction, binomial coefficients, complex numbers, Eisenst
 
 ## How the subtitle is delivered
 
-The subtitle is three promises: primes, patterns, and proofs.
+The parts keep their catalog names. *Primes, Patterns and Proofs* is what they do.
 
-| Subtitle word | Where it is visible |
-| --- | --- |
-| Primes | Euclid, Chebyshev, Bertrand, congruences, primitive roots, reciprocity, and the closing chapter on characters and Legendre's sieve. |
-| Patterns | Arithmetic functions, sums of squares, continued fractions, Diophantine equations, and the Gaussian and Eisenstein integers, which exist here because they prove a pattern about ordinary integers. |
-| Proofs | Every numbered theorem is proved. Reciprocity is proved twice, descent is a method, and the Euclidean algorithm is a proof that produces the answer. The word is the standard of the book, stated in the preface and kept in every chapter that remains. |
+Divisibility and The Primes are the primes: Euclid, Chebyshev, and Bertrand, proved. Congruences is the modular pattern and its proofs, through primitive roots, reciprocity proved twice, and arithmetic functions. Equations, Ideals and Characters runs from sums of squares through the characters chapter. Those chapters deliver the patterns: which integers are sums of squares, which rationals come from continued fractions, which equations die by descent, and the characters that close the book. The proofs are the standard of every part.
 
-**Moves.** Three chapters are about hidden worlds or local fields. That is Book 13's subtitle, *From Equations to Hidden Worlds*, not this one.
+Three chapters now filed in that last block do not deliver this subtitle. Quadratic fields, the class group, and the \(p\)-adic field move to Book 13. Book 2 keeps Pell's equation, the Gaussian and Eisenstein integers, and one section on \(6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5})\). Hensel's lemma for a congruence stays in Congruences.
 
-| Chapter | File | Verdict |
-| --- | --- | --- |
-| 11 Quadratic fields | `ch11-algebraic.tex` | MOVE to Book 13, Chapter 1, which already treats \(\mathcal O_K\). Pell's equation stays in Chapter 8. |
-| 12 Ideals and class groups | `ch12-ideals.tex` | MOVE to Book 13, Chapters 2–3. Book 2 keeps one section: \(6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5})\), the pattern that unique factorisation can fail, and names Book 13 as the repair. |
-| 13 The \(p\)-adic numbers | `ch12-padic.tex` | MOVE to Book 13, Chapter 6. Hensel's lemma for lifting a root modulo \(p\) stays in Chapter 3, where the congruences chapter already uses it. |
+## Proposed part-name change
+
+**Equations, Ideals and Characters** becomes **Equations and Characters**. After the move, "Ideals" would name a chapter that is no longer in the part.
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Primes | 1–5 and 14 |
-| II | Patterns | 6–10 |
-| III | Proofs | The standard of every chapter, and the two proofs of reciprocity, the descents, and Euclid's algorithm as the models |
+| I | Divisibility | 1 |
+| II | The Primes | 2 |
+| III | Congruences | 3–6 |
+| IV | Equations, Ideals and Characters | 7–10 and 14. Chapters 11–13 move. See the proposed rename above. |
 
 ---
 
-The chapter notes follow the manuscript's file order, including the three chapters that move. The contents page uses Primes, Patterns, and Proofs.
+The chapter notes follow the manuscript's file order, including the three chapters that move. The part names are the table above.
 
 ### Part I. Divisibility
 
@@ -258,14 +253,9 @@ These four chapters are the first time the masonry opens. A page at the head of 
 
 **An arithmetic field guide.** KEEP — `chapters/field-guide.tex` (112 lines). It collects notation and proof strategies. REVISE the notation paragraphs to match the series sheet in `SERIES-CONTENT-PLAN.md` at the letters this book introduces: \(\varphi\), \(\left(\frac{\cdot}{p}\right)\), \(\mu\), and the first \(\theta\).
 
-## Crossroads problems that belong here
+## The old problem book
 
-| Source | Journey or set | Home |
-| --- | --- | --- |
-| `tomeP1-crossroads/chapters/ch02-roots.tex` | Journey: Eisenstein's trigonometric proof of quadratic reciprocity | Chapter 5, as an alternate proof-problem |
-| `tomeP1-crossroads/chapters/ch03-primes.tex` | Journey: the Miller–Rabin test lies at most one time in four | Chapter 4 or 14 |
-| `tomeP1-crossroads/chapters/ch06-random.tex` | Journey: the Gauss–Kuzmin theorem | Chapter 8, if it stays elementary; the metric form is Book 7's problem chapter and Book 11's Gauss map. The elementary version stays here. The ergodic proof does not. |
-| `tomeP1-crossroads/chapters/ch03-primes.tex`, `ch06-random.tex` | A set of six to ten problems on primes seen from congruences and on random integers | End of Parts II and IV |
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

@@ -16,14 +16,19 @@ Book 1: counting, series, Stirling, the Gaussian integral, inequalities. Book 3:
 
 ## How the subtitle is delivered
 
-The subtitle is one promise: the logic of uncertainty. Every chapter that stays is either the logic (what the words mean, and which inferences are legal) or the uncertainty (what can still be known).
+The parts keep their catalog names. *The Logic of Uncertainty* is what they do.
 
-| Promise | Chapters |
-| --- | --- |
-| The logic | 1 (paradoxes and axioms), 2–3 (what a random variable and a generating function allow one to conclude), 4 (the inequalities that turn "likely" into a proof) |
-| The uncertainty | 5–6 (the bell curve as a theorem), 7–11 (walks, Markov chains, Poisson processes, martingales, Brownian motion), 12 (existence proved by a random straw) |
+Discrete Probability is the logic: paradoxes, axioms, random variables, generating functions, and the inequalities that turn "likely" into a proof. Limit Theorems is the uncertainty made precise, through the central limit theorem. Random Structures carries the same logic forward in time. Walks, Markov chains, Poisson processes, martingales, and Brownian motion stay in this part, because they follow the walks. The probabilistic method, and the extremal appendix, are uncertainty used as a proof. No part is renamed.
 
-**Move.** Appendix A, Orders (`chapters/orders.tex`), is Dilworth, Sperner, and partial orders. It does not deliver the logic of uncertainty. MOVE it to Book 1, Mathematical Thinking, as the order chapter's companion to the monotone-subsequence theorem. Appendix B stays: Ramsey, Turán, and the sunflower lemma are used as uncertainty or sit next to the probabilistic method. The broken "Theorem L.2" pointer is still repaired. The non-probabilistic extremal theorems that never use a probability space are exercises of Appendix B, not a second book.
+**Move.** Appendix A, Orders (`chapters/orders.tex`), is Dilworth, Sperner, and partial orders. It does not serve this title. MOVE it to Book 1, inside Algebra, Limits and Functions, beside the monotone-subsequence ideas already there. Appendix B stays in Random Structures. The broken "Theorem L.2" pointer is still repaired.
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Discrete Probability | 1–4 |
+| II | Limit Theorems | 5–6 |
+| III | Random Structures | 7–12 and Appendix B. Appendix A moves. |
 
 ---
 
@@ -231,15 +236,9 @@ The subtitle is one promise: the logic of uncertainty. Every chapter that stays 
 
 **Figures.** Three.
 
-## Crossroads problems that belong here
+## The old problem book
 
-| Source | Home |
-| --- | --- |
-| `tomeP1-crossroads/chapters/ch11-walks.tex`, Journeys: every subgraph of the plane grid is recurrent; a random walk draws a uniform spanning tree; a drunkard among the visible points | Chapter 7, or Book 12 if the write-up uses electrical networks. The grid recurrence is this chapter's if it uses Pólya. The spanning tree that needs the matrix-tree theorem waits for Book 12's spectral appendix. |
-| `tomeP1-crossroads/chapters/ch10-fourier.tex`, Journey "Cutoff on the hypercube" | Chapter 8 if it is elementary Fourier on \((\mathbb Z/2\mathbb Z)^n\); Book 8 if it needs the full finite abelian theory. One home. |
-| `tomeP1-crossroads/chapters/ch06-random.tex` and `ch08-inequalities.tex` | End of Parts I and IV, the problems whose tools are this book |
-
-The three spectral arguments in Crossroads Chapter 8 that cite Book 12 are not folded here.
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

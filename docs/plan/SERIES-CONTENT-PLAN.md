@@ -1,6 +1,6 @@
 # Series content plan
 
-Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering below is the approved fifteen-book order. On disk, after commit `9ba2905`, the same books are still Volumes 0–14, and Crossroads is still a separate problem book. Old Volume \(N\) is Book \(N+1\).
+Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering is the Edition 1 order, Books 1–15. Part names are the ones adjusted in the series catalog (`common/series-catalog.json` on the renumbering branch). Old Volume \(N\) is Book \(N+1\). Book 6 is Crossroads, the analytic number theory volume. The old P1 problem book is not a volume of the edition.
 
 The series subtitle that frames this plan is **Order and Chance: The Hidden Architecture of Mathematics**. Per-volume subtitles in `common/volume-subtitles.json` stay as they are. This document does not put the new subtitle on a cover or a title page.
 
@@ -35,7 +35,7 @@ The series subtitle is the frame of the story: **Order and Chance: The Hidden Ar
 | Part VI. Synthesis | |
 | 15 | Order and Chance: The Meeting of Structure and Randomness |
 
-**Design rule.** Each book's parts and chapters must visibly deliver its title and its subtitle. A contents page that does not contain the subtitle's words has not kept the promise. A chapter that does not serve those words moves to the book whose title it does serve, or it leaves the edition. The directories on disk still use the old catalog names (`tome6-spaces`, `tome9-higher-structures`, `tome14-order-and-chance`, and the rest). This plan does not edit that catalog.
+**Design rule.** Each book's chapters must visibly deliver its title and its subtitle. The part names stay the catalog's. How a part delivers the subtitle is said in prose, under "How the subtitle is delivered" in the book file. A chapter that does not serve the title moves. A part name is renamed only when a move makes the existing name false, and only in the marked section below. The directories in this working tree still use the pre-renumbering stems. The catalog edit itself is the renumbering branch, not this plan.
 
 Statuses were read off the files, not off the catalog blurb. Every chapter entry in `book-01.md`–`book-15.md` names the current path. The sources for the judgments are the nineteen `main.tex` files (sixteen remain), the chapter openings and section lists, `docs/review/SERIES-REVIEW-2026-10.md`, `docs/review/CAPSTONE-PLAN.md`, `docs/SERIES-STRUCTURE.md`, `docs/DESIGN.md`, and the 7×10 page table in `review/7X10-PAGINATION.md`. Several defects in the October review are already repaired in the sources; the rework order does not send anyone back to fix them. They are listed under "Already repaired".
 
@@ -169,7 +169,7 @@ The chapter-by-chapter plan, with hooks, synopses, theorems, examples, figures, 
 | 14 The Primes | [book-14.md](book-14.md) | `tome13-primes` |
 | 15 Order and Chance: The Meeting of Structure and Randomness | [book-15.md](book-15.md) | `tome14-order-and-chance` |
 
-Crossroads is `tomeP1-crossroads`. Its problems are assigned to Books 1–6 in those files. The written chapters of the retired problem books already sit at the end of Books 7, 8, and 11.
+Book 6, Crossroads, is the volume *Arithmetic Meets Analysis*. The old P1 problem book is removed by the renumbering branch. Its problems are appended there to the exercise lists of Books 1–6. This plan does not place them again. The harder-problem chapters that were Machinery and Frontiers already sit at the end of Books 7, 8, and 11.
 
 ---
 
@@ -308,8 +308,7 @@ Things a later chapter needs, or pretends to have, and does not have as a proof.
 | Bohr–Jessen and Selberg's central limit theorem | Proved in `ra-bohrjessen.tex` and `ra-selberg.tex`, included from `ch11-values.tex` | KEEP. This is the analytic climax of Book 15. |
 | Approximate functional equation | Quoted in Book 14, Chapter 14 | Prove it in Book 15's moments chapter, or mark every use inside the CFKRS recipe as quoted. |
 | Five chapters of Book 15 with no proof under them | `ch05-short.tex`, `ch06-sieves.tex`, `ch08-ranks.tex`, `ch09-gue.tex`, `ch12-pseudorandom.tex`, each about fifteen lines | NEW, from the capstone plan. They organise theorems Books 6, 12, 13, and 14 already proved. They do not reprove them. |
-| The workshop, uncondensed | Twelve chapters and twelve appendices inside Book 15. Appendix E is a pointer | MERGE and CUT as in [book-15.md](book-15.md) and `docs/review/CAPSTONE-PLAN.md`. |
-| Crossroads still a sixteenth book | `tomeP1-crossroads`, 300 problems, about 460 pages in the 7×10 table | MOVE the Journeys and the owning problems into Books 1–6. CUT the separate catalog entry after that move. |
+| The workshop, uncondensed | Twelve chapters and twelve appendices inside Book 15. Appendix E is a pointer | MERGE and CUT as in [book-15.md](book-15.md). The Research Workshop remains the part name. What stays in it is the reading method and two projects. |
 | Two proofs of Roth that do not know each other | Book 11, Chapter 10, and Book 14, Chapter 12 | REVISE each introduction so it names the other proof. |
 | Green–Tao, Artin reciprocity, modularity, genus theory, the general \(n\)-Selmer group, the unbounded spectral theorem, GUE for \(\alpha>1\), moments of \(\zeta\) past the second | Stated, and in the careful books labelled | Stay stated. Book 15 does not schedule the proofs. |
 
@@ -317,20 +316,19 @@ Things a later chapter needs, or pretends to have, and does not have as a proof.
 
 | Material | Decision |
 | --- | --- |
-| A separate problem book | CUT from the published series once the Crossroads problems have homes. The writing of the Journeys is kept, inside those homes. |
+| The old P1 problem book | Already leaving the catalog on the renumbering branch. Its problems are appended to Books 1–6. This plan does not treat that book, or the name Crossroads, as an open gap. |
 | Unpublished drafts that never entered a book | CUT. The operators draft and the rare-events draft were removed in `9ba2905` and are not restored. The rare-events solutions did not prove the bounds they stated. |
 | Reprinting the prime number theorem, Bombieri–Vinogradov, the sine kernel, Erdős–Kac, or Roth inside Book 15 | CUT. Compare, cite, or translate into the section's language. |
 | Workshop tours that Books 5, 11, 12, and 14 already own | CUT: twin-prime appendix, Goldbach appendix, Riemann-hypothesis appendix, empty zeta-pointer appendix, Hadamard appendix, Birch–Swinnerton-Dyer appendix, the randomness-in-the-integers tour, the open-doors-in-algebra tour. The pieces that are real theorems and live nowhere else are kept: Borwein integrals, Collatz cycles, Gilmer's inequality, Mason–Stothers. |
 | A third public PDF, a notebook promise inside a book, a computing volume | Already cut. This plan does not bring them back. |
 
-## Crossroads, and the harder-problem chapters
+## The old problem book, and the harder-problem chapters
 
-Crossroads is good writing: 300 problems, hints, and complete solutions, score 8 in the October review. Pasting all 460 pages into the main chapters would bury the span. The fold is this.
+Book 6 is Crossroads. The P1 problem book is a different manuscript, and the renumbering branch deletes it after appending each problem to an exercise list in Books 1–6. This plan does not choose those homes again.
 
-- Every Journey moves into the book that owns its theorem, as a worked problem with its existing write-up. There are 28 of them. Their homes are listed in `book-01.md` through `book-06.md`.
-- Each of Books 1–6 gains one problem set at the end of the part the problems serve, six to twelve problems, statements still not naming the tool. The spectral problems in Crossroads Chapter 8 that cite the graph appendix move with that appendix: the spectral gap and Ramanujan problems to Book 8, the matrix-tree problems to Book 12. They do not stay in Books 1–6.
-- The remaining problems stay available as an editorial archive. They are not a published book, and they are not a second run of exercises the chapters already contain.
-- The three harder-problem chapters already on disk are KEEP as mathematics and REVISE as titles. "Harder problems" is not a structural element. They become "Almost every number" (Book 7), "Zeta off the line, as problems" (Book 8), and "Sums of random pieces" (Book 11).
+One set of those problems cites the graph appendix. When that appendix splits, the spectral-gap and Ramanujan problems go with it to Book 8, and the matrix-tree problems stay with Book 12. That is a citation fix, not a second placement of the problem book.
+
+The three harder-problem chapters already on disk stay as mathematics. Their titles become "Almost every number" (Book 7, inside Measures on Spaces), "Zeta off the line, as problems" (Book 8, inside Fourier and Tauberian Methods), and "Sums of random pieces" (Book 11, inside Martingales and Ergodic Theory).
 
 ## What does not serve its title
 
@@ -353,7 +351,42 @@ Titles are frozen, so these chapters move. The receiving book is the one whose s
 | 14 The Primes | Partitions, and Waring's problem | 5 Calculation | Formulas and their insight. Three primes stays. |
 | 15, the workshop chapters that are not the meeting | Collatz, Hadamard, Jordan polygons, Curry–Howard, BBP, Borwein, Gilmer, Mason–Stothers, the conjecture tours | The book each theorem serves, or out of the edition | Listed in `book-15.md`. |
 
-Part names inside a book are the subtitle's words, so the contents page delivers the promise. They are not a second set of titles. Book 9 is the exception that has a phrase rather than a list: its parts are the kinds of connection, and the subtitle is named in each part's first sentence.
+## Approved part names
+
+These are the catalog's names. The book files use them. Subtitle words are not part names.
+
+| Book | Parts |
+| --- | --- |
+| 1 | The Language of Proof; Counting and Sums; Algebra, Limits and Functions; Chance and Inequality |
+| 2 | Divisibility; The Primes; Congruences; Equations, Ideals and Characters |
+| 3 | Groups; Rings and Polynomials; Fields and Galois Theory |
+| 4 | Discrete Probability; Limit Theorems; Random Structures |
+| 5 | Series and Products; Integrals and Transforms; The Zeta Function |
+| 6 | Counting Primes; Zeros and Explicit Formulas; Sieves and Randomness |
+| 7 | Metric and Topological Spaces; Measure and Integration; Measures on Spaces |
+| 8 | Banach and Hilbert Spaces; Spectral Theory; Fourier and Tauberian Methods |
+| 9 | Manifolds and Surfaces; Forms and Homology; Groups and Geometry |
+| 10 | Categories; Commutative Algebra; Representations |
+| 11 | Invariance Principles; Stable Laws; Martingales and Ergodic Theory |
+| 12 | Brownian Motion; Stochastic Calculus; Networks and Random Matrices |
+| 13 | Number Fields; Local and Global; Adèles and Tate's Thesis; Elliptic Curves and Modular Forms |
+| 14 | Zeros and Sieves; Additive Problems and Bounded Gaps; Structure in the Primes |
+| 15 | The Question; Arithmetic Statistics; Spectra; Structure versus Randomness; The Research Workshop |
+
+## Proposed part-name changes
+
+Only where an approved chapter move makes the catalog name false. Every other name stays, including where a move removes a chapter the name can still cover.
+
+| Book | Catalog name | Proposed name | Why the catalog name would be false |
+| --- | --- | --- | --- |
+| 2, Part IV | Equations, Ideals and Characters | Equations and Characters | The ideals chapter, the quadratic-field chapter, and the \(p\)-adic chapter move to Book 13. What remains is sums of squares, continued fractions, Diophantine equations, the Gaussian and Eisenstein integers, one section on the failure of unique factorisation, and the characters chapter. "Ideals" would name a chapter that is no longer in the part. |
+| 12, Part III | Networks and Random Matrices | Networks | Expanders, the semicircle, and the sine kernel move to Book 8. Dyson Brownian motion stays in Stochastic Calculus. The part that remains is walks on graphs, resistance, and the matrix-tree theorem. |
+
+Names that were checked and kept:
+
+- Book 10, Representations. The shuffle cutoff moves to Book 11. The part is still representations, through compact groups. Shuffling no longer closes it.
+- Book 14, Additive Problems and Bounded Gaps. Partitions and Waring move to Book 5. Three primes stays, so the part is still an additive problem and the bounded-gap theorems.
+- Book 15, The Research Workshop. The twelve chapters and twelve appendices shrink to a reading method and two projects. The part is still that workshop. The tours that are not the meeting of structure and randomness leave it. The name does not.
 
 ## Pages and effort
 
@@ -361,7 +394,7 @@ Page numbers are the 7×10 interiors in `review/7X10-PAGINATION.md`, except wher
 
 | Book | Baseline | After this plan | Effort |
 | --- | --- | --- | --- |
-| 1 | 295 print pages (`docs/DESIGN.md`) | 310–340, with a short Crossroads set | Light. The ten chapters stay. Thread the series question through the preface and the field guide. |
+| 1 | 295 print pages (`docs/DESIGN.md`) | 300–330 | Light. The ten chapters stay. Thread the series question through the preface and the field guide. |
 | 2 | 189 in the October reconstruction, through the field guide; `ch14-characters.tex` is in `main.tex` and is about 520 lines | 230–270 | Moderate. Part titles, forward pointers from the quadratic chapters, no deletion of the reconstruction. |
 | 3 | 372 | 370–400 | Moderate. The Galois repairs are in. Representations become a part. Appendix cross-references. |
 | 4 | 251 | 260–290 | Light to moderate. Part split. Lindeberg's limsup written out if it is still compressed. One cross-reference. |
@@ -377,7 +410,7 @@ Page numbers are the 7×10 interiors in `review/7X10-PAGINATION.md`, except wher
 | 14 | 211 | 210–230 | Light. The certificate sentence is honest. Cross-references. |
 | 15 | The wrapped proofs plus a full workshop. The old separate volumes were 194 and 313 pages | 280–340 after condensation. The five stub chapters are the growth; the twelve appendices are the cut | Heavy. This is the section drawing. It is mined from `ra-*.tex` and from the workshop, not written from a blank page. |
 
-The series after the plan is on the order of 4,000–4,500 print pages of main text. Crossroads' 460 pages are not added on top.
+The series after the plan is on the order of 4,000–4,500 print pages of main text. The P1 problems are already being absorbed into Books 1–6 by the renumbering branch. They are not a further 460 pages on top of this plan.
 
 ## Rework order
 
@@ -389,9 +422,9 @@ The order protects the joints. Story threading is real work and it is not the fi
 4. **Book 15, the three chapters the rest of the series already quotes.** Value distribution (`ch11-values.tex`, from `ra-bohrjessen.tex` and `ra-selberg.tex`). Independent prime divisors (`ch03-divisors.tex`). Models of the primes (`ch02-cramer.tex`). Shrink the second Erdős–Kac write-up to a comparison. Keep Gallagher's hypothesis in the heading of Maier's theorem.
 5. **Book 15, the five openings.** Short intervals, sieves as probability, ranks, the form-factor page, pseudorandomness. Each one cites a theorem and proves only the sentence Books 6–14 did not prove. The capstone plan is the section list.
 6. **Book 15, class groups and moments, then the bias chapter.** Merge the cokernel argument from the workshop into the Cohen–Lenstra chapter. Decide whether the approximate functional equation is proved or quoted, and use one choice in every line of the recipe.
-7. **Condense the workshop** after steps 4 and 6, so a proof does not live in two places. Four chapters, four appendices, as in `book-15.md`. Appendix E is removed rather than left as a pointer.
-8. **The early floors' story pass, Books 1–6.** Part titles, one paragraph in each preface that states the series question and names the structural element, forward pointers from Book 2's quadratic chapters and from Book 6's Maier remark. Then fold the Crossroads Journeys. This pass is light because the chapters are already the right ones.
-9. **Books 8–14, the remaining local revisions** in the book files: primary decomposition, the de Rham sentence, the semicircle's placement, the two curvature titles, the retitling of the three problem chapters. None of these reprints a flagship proof.
-10. **Catalog numbering.** Renaming Volume 0 to Book 1, and retiring the Crossroads catalog entry, is a metadata change. This plan uses those names and does not make that change. It should happen once, after the homes of the Crossroads problems are real files, so the public library does not lose a problem and gain a broken link in the same step.
+7. **Condense the workshop** after steps 4 and 6, so a proof does not live in two places. The Research Workshop keeps its name. What stays is the reading method and the two projects in `book-15.md`. Appendix E is removed rather than left as a pointer. The tours move or leave, as that file lists.
+8. **The early floors' story pass, Books 1–6.** One paragraph in each preface that states the series question and names the structural element, and the forward pointers from Book 2's remaining pattern chapters and from Book 6's Maier remark. Part names stay the catalog's, except the two proposed renames above. This pass is light because the chapters are already the right ones. The P1 problems are not placed again.
+9. **Books 8–14, the remaining local revisions** in the book files: primary decomposition, the de Rham sentence, the semicircle's move into Spectral Theory, the two curvature titles, the retitling of the three problem chapters. None of these reprints a flagship proof.
+10. **Catalog numbering** is the renumbering branch, not a step of this plan. This plan already uses Books 1–15 and the catalog's part names.
 
 The section is Book 15. The floors under it are already standing. The rework builds the section from the members that are already proved, and it writes a new member only where the building does not yet contain one: Maier's theorem is already drafted, Selberg's central limit theorem is already drafted, and the five openings are the rooms those theorems have not yet been set into.

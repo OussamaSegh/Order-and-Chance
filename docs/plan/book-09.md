@@ -30,13 +30,13 @@ The title is Shapes. The subtitle says which geometry: connection. A chapter sta
 
 ## Parts
 
+The catalog names stay. Manifolds and Surfaces is the opening geometry. Forms and Homology joins Stokes, curvature, coverings, and homology: that is the connection of a shape to its holes. Groups and Geometry joins the double cover, Weyl's formula, the modular surface, integral geometry, the Riemann mapping theorem from Book 8, and the appendices that still connect one shape to another. No part is renamed.
+
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Curves and surfaces | 1, 2, 4 |
-| II | Forms and homology | 3, 5, 6 |
-| III | Groups, motion, and the connections to the series | 7–10, the Riemann mapping theorem, and Appendices B–L except the fold of A |
-
-Chapter 3 (forms) sits with homology because Stokes is the joint between calculus and topology. Chapter 4 (curvature) sits with surfaces. The appendices follow, lettered A–L, and stay appendices.
+| I | Manifolds and Surfaces | 1–2 |
+| II | Forms and Homology | 3–6 |
+| III | Groups and Geometry | 7–10, the Riemann mapping theorem, and Appendices B–L. Appendix A folds as described above. |
 
 ---
 

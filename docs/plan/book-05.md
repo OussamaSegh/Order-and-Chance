@@ -30,7 +30,15 @@ The subtitle is a motion: from formula to insight. Every chapter that stays star
 | 11 Asymptotics | A divergent series | An approximation with a remainder is still an equality |
 | 12 The AGM | The iteration | Digits double, and an elliptic integral is the reason |
 
-**Receives.** The Hardy–Ramanujan formula for \(p(n)\), moved from Book 14: it is the insight the partition generating function was built for, and partitions are not primes. Waring's problem for large \(s\), moved from Book 14 for the same reason: it is a formula about powers, proved by the circle method, and Book 14 keeps only the three-prime theorem. The BBP series, moved from the old workshop: a formula that extracts a digit. No chapter of this book fails the subtitle.
+**Receives.** The Hardy–Ramanujan formula for \(p(n)\), moved from Book 14, joins Series and Products: it is the insight the partition generating function was built for. Waring's problem for large \(s\) joins the same part. Book 14 keeps only the three-prime theorem. The BBP series, moved from the old workshop, joins Series and Products as a formula that extracts a digit. No chapter of this book fails the subtitle. No part is renamed.
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Series and Products | 1–3, plus the partition asymptotic, Waring for large \(s\), and the BBP series |
+| II | Integrals and Transforms | 4–9 |
+| III | The Zeta Function | 10–12 |
 
 ---
 
@@ -208,14 +216,9 @@ The subtitle is a motion: from formula to insight. Every chapter that stays star
 
 **Figures.** Three.
 
-## Crossroads problems that belong here
+## The old problem book
 
-| Source | Home |
-| --- | --- |
-| `tomeP1-crossroads/chapters/ch09-integrals.tex`, Journey "Beukers's proof that \(\zeta(3)\) is irrational" | Chapter 4 or 10 |
-| `tomeP1-crossroads/chapters/ch07-genfun.tex`, Journey "Ramanujan's congruence" | Chapter 2, as a congruence, with the circle method not required |
-| `tomeP1-crossroads/chapters/ch12-asymptotics.tex` | End of Chapter 11 |
-| `tomeP1-crossroads/chapters/ch10-fourier.tex` | End of Chapters 6–8, except the hypercube cutoff if it was placed in Book 4 or Book 8 |
+Book 6 is Crossroads, the analytic volume. The old P1 problem book is removed by the renumbering branch, which appends its problems to Books 1–6. This plan does not place them again. A problem that cites a chapter moved here follows that chapter.
 
 ## Owns, defers, hands forward
 

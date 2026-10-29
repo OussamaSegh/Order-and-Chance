@@ -16,13 +16,13 @@ Book 4's Brownian motion and Book 11's Donsker theorem, Gaussian concentration, 
 
 ## How the subtitle is delivered
 
-The subtitle is the geometry of random paths. A spectrum that sits still is not a path. A path of eigenvalues is.
+The parts keep their catalog names. *The Geometry of Random Paths* is what the chapters that stay actually study.
 
-| What stays, because it is a path | Chapters |
-| --- | --- |
-| The Brownian path and its geometry | 1, 2, and 5 |
-| Calculus along a path | 3, 4, 6, and 7. Dyson Brownian motion stays in Chapter 6: the eigenvalues move. |
-| A walk as a path on a graph | Chapter 8, and the resistance and matrix-tree half of Appendix A |
+Brownian Motion is the path: its construction, its fine structure, and the analysis it performs. Stochastic Calculus is the calculus along that path, including Dyson Brownian motion, because those eigenvalues move. Networks and Random Matrices, in the catalog, holds the walks on graphs and then the random-matrix chapters. The walks deliver the subtitle. The still spectra do not.
+
+## Proposed part-name change
+
+**Networks and Random Matrices** becomes **Networks**. Expanders, the semicircle, and the sine kernel move to Book 8, Spectral Theory. What remains is Chapter 8 and the resistance and matrix-tree half of the spectral appendix.
 
 **Moves.** These deliver *Operators, Spectra and Transforms*, or the meeting in Book 15. They do not deliver the geometry of a random path.
 
@@ -32,6 +32,14 @@ The subtitle is the geometry of random paths. A spectrum that sits still is not 
 | The semicircle, Marchenko–Pastur, the sine kernel, Keating–Snaith's moments | `ch10-semicircle.tex`, `ch11-cue.tex` | Book 8, Spectra. Book 14 and Book 15 cite them there. |
 | The zeta narrative and the off-line mean square as a story about zeros | `moments.tex` | Book 15, the meeting of the spectrum and the zeros. The moment-method semicircle goes to Book 8 with the semicircle theorem. |
 | The conjecture for the maximum of \(\log\|\zeta\|\) | the last section of `ch12-logcorrelated.tex` | Book 15. The branching random walk, which is a path, stays here. |
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Brownian Motion | 1, 2, and 5 |
+| II | Stochastic Calculus | 3, 4, 6, 7, and the branching-random-walk chapter |
+| III | Networks and Random Matrices | Chapter 8 and the path half of Appendix A. The matrix chapters move. The proposed name is Networks. |
 
 ---
 
@@ -241,11 +249,9 @@ The chapter notes follow the manuscript's file order. Chapters marked MOVE leave
 
 **Figures.** Two, if they still illustrate a theorem that remains.
 
-## Crossroads and Frontiers
+## The old problem book
 
-The Journey "a random walk draws a uniform spanning tree" lands in Appendix A, with the matrix-tree theorem. The electrical Journeys that use only Book 4 stay in Book 4. The three spectral arguments in Crossroads Chapter 8 that cite this appendix move here.
-
-The unpublished Frontiers draft on rare events is not a chapter of this book.
+Book 6 is Crossroads. The old P1 problem book is removed by the renumbering branch. This plan does not place it again. Problems that cited the graph appendix follow the split: spectral gap and Ramanujan graphs to Book 8, the matrix-tree theorem stays with Networks.
 
 ## Owns, defers, hands forward
 

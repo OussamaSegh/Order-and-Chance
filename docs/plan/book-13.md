@@ -27,7 +27,11 @@ The subtitle is a motion: from equations to hidden worlds. Every chapter starts 
 | 8–10 | A zeta function, an \(L\)-function | Densities, the adèles, and class field theory |
 | 11–14 | A cubic, a modular form | Curves, ranks, and the form that counts their points |
 
+The four catalog parts are that motion. Number Fields opens the polynomial. Local and Global opens the places. Adèles and Tate's Thesis opens the functional equation a third time. Elliptic Curves and Modular Forms opens the curve and the form that counts its points. No part is renamed.
+
 **Receives.** Book 2's chapters on quadratic fields, ideals, and the \(p\)-adic numbers. Book 8's construction of the adèles, beyond the Haar measure Book 8 keeps. No chapter of this book fails the subtitle. Artin reciprocity stays admitted inside class field theory. It is part of the hidden world, and the heading says it is not proved.
+
+## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |

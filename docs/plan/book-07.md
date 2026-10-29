@@ -16,29 +16,21 @@ The calculus and completeness of Book 1. The probability of Book 4, as motivatio
 
 ## How the subtitle is delivered
 
-The subtitle names three subjects. The contents page uses those names. A chapter that only prepares one of them is placed under the word it reaches.
+The parts keep their catalog names. *Topology, Measure and Limits* is what they do.
 
-| Subtitle word | Chapters |
-| --- | --- |
-| Topology | 2 (open sets and continuity), 3 (topological spaces), 4 (compactness). Jordan's theorem, moved from Book 8, joins this part: an inside and an outside are topology. |
-| Measure | 6 through 12. Khinchin's theorem in the retitled problem chapter is measure, almost everywhere. |
-| Limits | 1 (the reals as limits of rationals), 2 (convergence and completeness), 5 (Baire: a limit of open dense sets), and the weak-convergence sections of Chapter 11 (a limit of measures). |
-
-No chapter of this book fails the subtitle. Sets and choice, in Chapter 1, are there because they build \(\mathbb R\). They are not a separate part.
+Metric and Topological Spaces delivers the topology, and the limits that make it: the construction of \(\mathbb R\), convergence, completeness, compactness, and Baire's theorem. Jordan's theorem, moved from Book 8, joins this part. An inside and an outside are topology. Measure and Integration delivers the measure, through the integral and \(L^p\). Measures on Spaces delivers measure on a metric space, including weak convergence, which is a limit of measures, and the retitled problem chapter on almost every number. No chapter fails the subtitle. No part is renamed.
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Topology | 2–4, and Jordan's theorem from Book 8 |
-| II | Measure | 6–12 |
-| III | Limits | 1, 5, and weak convergence in Chapter 11 |
-
-Chapter 1, the construction of \(\mathbb R\), sits in Part I. It is the room's foundation, not a separate wing. Chapter 12 is the retitled problem chapter.
+| I | Metric and Topological Spaces | 1–5, and Jordan's theorem from Book 8 |
+| II | Measure and Integration | 6–9 |
+| III | Measures on Spaces | 10–12 |
 
 ---
 
-The chapter notes follow the manuscript's file order. On the contents page the parts are Topology, Measure, and Limits.
+The chapter notes follow the manuscript's file order. The part names are Metric and Topological Spaces, Measure and Integration, and Measures on Spaces.
 
 ### Part I. Metric and Topological Spaces
 

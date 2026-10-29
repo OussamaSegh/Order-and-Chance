@@ -16,19 +16,23 @@ Book 4. Book 7, including Prokhorov and, once it is promoted, the tower property
 
 ## How the subtitle is delivered
 
-The subtitle names three subjects, in this order: martingales, limits, and ergodicity. The contents page uses those words. The manuscript currently hides martingales in Chapter 9 and ergodicity in Chapter 10. The edition puts them in the part the subtitle names. Reading order may still take the limit theorems before the martingale convergence that uses them; the contents page does not.
+The parts keep their catalog names. *Martingales, Limits and Ergodicity* is what they do.
 
-| Subtitle word | Chapters |
-| --- | --- |
-| Martingales | Chapter 9, the whole of it: uniform integrability, de Finetti, Kakutani, Ville. Book 4 built the first martingales. This part is where the subtitle's word is proved at full strength. |
-| Limits | Chapters 1–8, 11–13, and the shuffle cutoff moved from Book 10. Zero–one laws, the strong law, Donsker, Berry–Esseen, stable laws, Stein, large deviations, concentration, mod-\(\varphi\) convergence, and the Poisson–Dirichlet law are limits. |
-| Ergodicity | Chapter 10. Birkhoff, the Gauss map, and Furstenberg's proof of Roth. |
+Invariance Principles delivers the limits: zero–one laws, the strong law, Donsker's theorem, and the sharpened central limit theorem. Stable Laws delivers the limits that are not Gaussian, and the rates and tails around them: Stein, large deviations, and concentration. Martingales and Ergodic Theory delivers the other two words of the subtitle. Chapter 9 is the martingale theory at full strength. Chapter 10 is the ergodic theorem, the Gauss map, and Furstenberg's proof of Roth. The mod-\(\varphi\) chapter, the Poisson–Dirichlet law, the harder problems, and the shuffle cutoff moved from Book 10 close this part. They are limits of mixing. The part name already covers them. No part is renamed.
+
+## Parts
+
+| Part | Name | Chapters |
+| --- | --- | --- |
+| I | Invariance Principles | 1–4 |
+| II | Stable Laws | 5–8 |
+| III | Martingales and Ergodic Theory | 9–13, and the shuffle cutoff from Book 10 |
 
 No chapter that stays fails the subtitle. The arithmetic in Chapters 11 and 12 is a limit law. Selberg–Delange remains quoted from Book 15.
 
 ---
 
-The chapter notes follow the manuscript's file order. On the contents page the parts are Martingales, Limits, and Ergodicity, in that order.
+The chapter notes follow the manuscript's file order. The part names are Invariance Principles, Stable Laws, and Martingales and Ergodic Theory.
 
 ### Part I. Laws and Invariance
 

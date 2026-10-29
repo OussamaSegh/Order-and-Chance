@@ -16,36 +16,30 @@ Book 7 entire. Book 5's Fourier series and complex analysis. Book 3's groups, fo
 
 ## How the subtitle is delivered
 
-The subtitle names three subjects. Haar measure on a group is kept only as the measure that makes a Fourier transform. The field \(\mathbb Q_p\) and the adèles are not operators, spectra, or transforms.
+The parts keep their catalog names. *Operators, Spectra and Transforms* is what they do.
 
-| Subtitle word | What stays |
-| --- | --- |
-| Operators | Chapters 1–3: Banach and Hilbert spaces, bounded and compact operators, the Fredholm alternative. |
-| Spectra | Chapter 4, the compact spectral theorem. Plus, moved in: the matrix spectral theorem, SVD, graph spectra, and the Wigner semicircle and sine kernel from Book 12. Those are spectra. They are not the geometry of a path. |
-| Transforms | Chapters 5–7, Mellin inversion, Pontryagin duality, and Chapter 10 (a tauberian theorem recovers a sequence from a transform). Ikehara's second proof of the prime number theorem is a transform theorem. It stays. |
+Banach and Hilbert Spaces delivers the operators: Hahn–Banach, the duals, and the geometry of a Hilbert space. Spectral Theory delivers the spectra. It holds the compact spectral theorem, and it receives the matrix spectral theorem, the singular-value decomposition, the graph spectra, the semicircle, and the sine kernel. Those are spectra. They are not the geometry of a path. Fourier and Tauberian Methods delivers the transforms: Fourier analysis on the line and on finite abelian groups, Haar measure and Pontryagin duality as the measure that makes a group Fourier transform, Mellin inversion, and Ikehara's theorem. The problem chapter on zeta off the line stays here. It does not prove Bohr–Jessen. No part is renamed.
 
 **Moves out.**
 
 | Material | File | Where it goes |
 | --- | --- | --- |
-| Construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure and the dual | `ch08-haar.tex` | Book 13, Chapters 6 and 9, which already use them. Book 8 keeps Haar measure and Pontryagin duality under Transforms. |
-| Jordan's curve theorem | `ch09-complex.tex` | Book 7, Topology. |
-| The Riemann mapping theorem | `ch09-complex.tex` | Book 9. A conformal map is a connection of shapes. |
-| Phragmén–Lindelöf, Hadamard factorisation, Dixon | the same file | KEEP under Transforms. They are the analytic engine of Dirichlet series and Mellin inversion. |
-
-The problem chapter on zeta off the line stays under Transforms: Bohr's question is the value distribution of a Dirichlet series. It does not prove Bohr–Jessen. Book 15 does.
+| Construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure and the dual | `ch08-haar.tex` | Book 13, Chapters 6 and 9. Haar measure and Pontryagin duality stay in Fourier and Tauberian Methods. |
+| Jordan's curve theorem | `ch09-complex.tex` | Book 7, Metric and Topological Spaces. |
+| The Riemann mapping theorem | `ch09-complex.tex` | Book 9, Groups and Geometry. A conformal map is a connection of shapes. |
+| Phragmén–Lindelöf, Hadamard factorisation, Dixon | the same file | KEEP in Fourier and Tauberian Methods. They are the engine of Dirichlet series and Mellin inversion. |
 
 ## Parts
 
 | Part | Name | Chapters |
 | --- | --- | --- |
-| I | Operators | 1–3, and the operator appendices moved from Book 3 |
-| II | Spectra | 4, the spectral appendices from Book 3, and the random-matrix and graph spectra moved from Book 12 |
-| III | Transforms | 5–7, Haar and Pontryagin from Chapter 8, Mellin and tauberian theorems from Chapters 9–10, and the zeta problems |
+| I | Banach and Hilbert Spaces | 1–2 |
+| II | Spectral Theory | 3–4, the spectral appendices from Book 3, and the random-matrix and graph spectra from Book 12 |
+| III | Fourier and Tauberian Methods | 5–7, Haar and Pontryagin from Chapter 8, Mellin and the tauberian theorems from Chapters 9–10, and the zeta problems |
 
 ---
 
-The chapter notes follow the manuscript's file order. On the contents page the parts are Operators, Spectra, and Transforms. Material marked MOVE is not one of those three.
+The chapter notes follow the manuscript's file order. The part names are the table above. Material marked MOVE leaves Fourier and Tauberian Methods.
 
 ### Part I. Banach and Hilbert Spaces
 
