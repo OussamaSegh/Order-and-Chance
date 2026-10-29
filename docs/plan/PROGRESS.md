@@ -168,22 +168,22 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 11. Formulas that are not primes
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 10
 - **Books and files:** `volume14-primes` (`ch06-partitions.tex`, the Waring half of `ch07-waring.tex`) and `volume5-calculation`, Series and Products. Three primes stays in Additive Problems and Bounded Gaps.
 - **Acceptance:** The Hardy–Ramanujan asymptotic and Waring for large \(s\) are in Book 5. Book 14's part name stays Additive Problems and Bounded Gaps. Both books build.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/38
-- **Merge sha:**
-- **Date:**
-- **Notes:** Do not rename Book 14's part.
+- **Merge sha:** afd199cf1a46b91de37bc6a7cf62119442ce4acd
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not rename Book 14's part. Do not re-implement the move.
 
 ### 12. The shuffle cutoff, from Abstraction to Randomness
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 11
 - **Books and files:** `volume10-abstraction/chapters/ch10-shuffling.tex` and `volume11-randomness`, Martingales and Ergodic Theory. Retitle `volume11-randomness/chapters/ch13-harder.tex` to Sums of random pieces. The Fourier analysis of \(S_n\) stays in Representations.
 - **Acceptance:** The cutoff is a theorem of Book 11. Book 10's part is still named Representations. Both books build. The tower property cited here is the theorem from step 3.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/39
 - **Merge sha:**
 - **Date:**
 - **Notes:**
