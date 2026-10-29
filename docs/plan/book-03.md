@@ -4,7 +4,7 @@
 
 **Element.** The symmetries of the plan. What one may do to the building without changing it, and which openings cannot be cut with the tools one has.
 
-**On disk.** Volume 2, `tome2-structures`. Twelve main chapters and thirteen linear-algebra appendices in `main.tex`. About 372 pages in the 7×10 table. The October review scored it 8. The primitive-element theorem and the three simple real roots of \(X^5-4X+2\) are now in the source.
+**Source.** `tome3-symmetry`. Twelve main chapters and thirteen linear-algebra appendices in `main.tex`. About 372 pages in the 7×10 table. The October review scored it 8. The primitive-element theorem and the three simple real roots of \(X^5-4X+2\) are now in the source.
 
 ## Promise
 
@@ -47,7 +47,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 #### Chapter 1. Groups as Symmetries
 
-**Status.** KEEP — `tome2-structures/chapters/ch01-groups.tex` (344 lines). The voice of this opening ("these two facts, and nothing else, are what a group records") is the voice the series should keep.
+**Status.** KEEP — `tome3-symmetry/chapters/ch01-groups.tex` (344 lines). The voice of this opening ("these two facts, and nothing else, are what a group records") is the voice the series should keep.
 
 **Hook.** A cube can be put back in its box in 24 ways, and four cards can be shuffled in 24 ways. They are the same 24.
 

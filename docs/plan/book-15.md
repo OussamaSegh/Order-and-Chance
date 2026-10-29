@@ -4,7 +4,7 @@
 
 **Element.** The section through the building. The series subtitle is the hidden architecture. This floor is where the section is drawn, and the drawing's title is the meeting: structure on one side, randomness on the other, and the members that only look like one of them.
 
-**On disk.** Volume 14, `tome14-order-and-chance`. The catalog subtitle is still *Where Number Meets Randomness*. This plan uses the frozen subtitle. Parts I–IV are wrappers around `chapters/ra-*.tex`, five of them only a page long. Part V is the old workshop, twelve chapters, and appendices A–L are the conjecture tours. `chapters/preface.tex` still describes that longer book.
+**Source.** `tome15-order-and-chance`. The catalog subtitle is *The Meeting of Structure and Randomness*. Parts I–IV are wrappers around `chapters/ra-*.tex`, five of them only a page long. Part V is the old workshop, twelve chapters, and appendices A–L are the conjecture tours. `chapters/preface.tex` still describes that longer book.
 
 ## Promise
 
@@ -38,7 +38,7 @@ The climax is two theorems this book owns: Maier's, in The Question, and Selberg
 
 #### Chapter 1. Order and chance in the integers
 
-**Status.** EXPAND — `tome14-order-and-chance/chapters/ch01-integers.tex` includes only `ra-anatomy.tex` (382 lines). The anatomy is the right quarry for friable integers and Dickman. The chapter still needs the glossary: which statistic is a theorem, which is a model, and which later chapter owns it. Normal order of \(\omega(n)\) is cited to Book 6, not reproved.
+**Status.** EXPAND — `tome15-order-and-chance/chapters/ch01-integers.tex` includes only `ra-anatomy.tex` (382 lines). The anatomy is the right quarry for friable integers and Dickman. The chapter still needs the glossary: which statistic is a theorem, which is a model, and which later chapter owns it. Normal order of \(\omega(n)\) is cited to Book 6, not reproved.
 
 **Hook.** Three deterministic sequences that look random: the square-free integers, the integers with a prime factor in a short range, and the primes. One of them will fail a short-interval test in the next chapter.
 

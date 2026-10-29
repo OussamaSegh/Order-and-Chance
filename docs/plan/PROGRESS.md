@@ -2,7 +2,7 @@
 
 This is the execution list for Edition 1. The reasoning lives in [SERIES-CONTENT-PLAN.md](SERIES-CONTENT-PLAN.md) and the chapter plans beside it. Titles and subtitles are frozen. Part names stay the catalog's, except the two renames in steps 4 and 7.
 
-Paths below are the directory names after step 0. Do not use `tome0-mathematical-maturity`, `tome9-higher-structures`, or `tome14-order-and-chance`.
+Paths below are the directories on `main` after step 0. The retired names (`tome0-mathematical-maturity`, `tome9-higher-structures`, `tome14-order-and-chance`, and the other pre-renumbering stems) are gone.
 
 | Book | Directory |
 | --- | --- |
@@ -39,14 +39,14 @@ A step is one PR. It is one book, or one move between books. Acceptance always i
 
 ### 0. Merge PR #26 renumbering + final titles
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** none
 - **Books and files:** the whole catalog. New stems `tome1-first-principles` through `tome15-order-and-chance`. `common/series-catalog.json`, `docs/SERIES-STRUCTURE.md`.
 - **Acceptance:** Books 1–15 use the frozen titles. There is no P1 volume. Book 6 is Crossroads, *Arithmetic Meets Analysis*. The old problem book's problems are appended to Books 1–6.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/26
-- **Merge sha:**
-- **Date:**
-- **Notes:** Open. Not merged. Do not re-implement the renumbering.
+- **Merge sha:** 68aff65f87b4e37a5c0e45d4d866842897749c5c
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not re-implement the renumbering.
 
 ### 1. Merge this plan
 

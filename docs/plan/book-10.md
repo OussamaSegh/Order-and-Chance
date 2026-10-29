@@ -4,7 +4,7 @@
 
 **Element.** The hidden frame. The rooms are standing. This floor is the framework one cannot see from inside a single room: an object known by the maps into it, a module known by its presentations, a hole known by a homology group.
 
-**On disk.** Volume 9, `tome9-higher-structures`. The catalog title is still Higher Structures. This plan uses Abstraction. Eleven chapters, about 152 pages. The October review scored it 8. The cubic class-group sentence in `ch05-dedekind.tex` no longer claims an isomorphism. The shuffle chapter's Fourier comparison now states both the factor \(|G|\) and the conjugation.
+**Source.** `tome10-abstraction`. The catalog title is Abstraction. Eleven chapters, about 152 pages. The October review scored it 8. The cubic class-group sentence in `ch05-dedekind.tex` no longer claims an isomorphism. The shuffle chapter's Fourier comparison now states both the factor \(|G|\) and the conjugation.
 
 ## Promise
 
@@ -38,7 +38,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 #### Chapter 1. Categories
 
-**Status.** KEEP — `tome9-higher-structures/chapters/ch01-categories.tex` (483 lines).
+**Status.** KEEP — `tome10-abstraction/chapters/ch01-categories.tex` (483 lines).
 
 **Hook.** A free group, an abelianisation, a double dual, and the currying of a function of two variables. What do they have in common?
 

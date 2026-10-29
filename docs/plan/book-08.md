@@ -4,7 +4,7 @@
 
 **Element.** The beams. A function is a point. A beam of infinite dimension has a spectrum, and the spectrum is not always a list of eigenvalues.
 
-**On disk.** Volume 7, `tome7-analysis`. Ten chapters plus `chapters/ch11-harder.tex`, the former Machinery chapter on Hilbert space, input from `main.tex`. About 178 pages before that chapter. The October review scored the ten chapters 7. Wiener's local inverse now uses \(e^{+2\pi i\xi_0 x}\) in `ch10-tauberian.tex`. The blurb still has to be checked against the compact spectral theorem: the review found it claiming the unbounded case.
+**Source.** `tome8-analysis`. Ten chapters plus `chapters/ch11-harder.tex`, the former Machinery chapter on Hilbert space, input from `main.tex`. About 178 pages before that chapter. The October review scored the ten chapters 7. Wiener's local inverse now uses \(e^{+2\pi i\xi_0 x}\) in `ch10-tauberian.tex`. The blurb still has to be checked against the compact spectral theorem: the review found it claiming the unbounded case.
 
 ## Promise
 
@@ -45,7 +45,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 #### Chapter 1. Banach Spaces
 
-**Status.** REVISE — `tome7-analysis/chapters/ch01-banach.tex` (476 lines). Write the complex \(L^p\) dual with the real-part reconstruction already used for Hahn–Banach. The real proof is complete. The sentence "apply the real case to the real and imaginary parts" is not that reconstruction.
+**Status.** REVISE — `tome8-analysis/chapters/ch01-banach.tex` (476 lines). Write the complex \(L^p\) dual with the real-part reconstruction already used for Hahn–Banach. The real proof is complete. The sentence "apply the real case to the real and imaginary parts" is not that reconstruction.
 
 **Hook.** In infinite dimension the unit ball is not compact, a linear map can be discontinuous, and a sequence of unit vectors can converge weakly to zero.
 

@@ -4,7 +4,7 @@
 
 **Element.** The circulation. Paths with no tangent, and spectra that move and refuse to collide.
 
-**On disk.** Volume 11, `tome11-motion`. Twelve chapters, then `chapters/spectral.tex` and `chapters/moments.tex`. About 228 pages. The October review scored it 8.
+**Source.** `tome12-random-motion`. Twelve chapters, then `chapters/spectral.tex` and `chapters/moments.tex`. About 228 pages. The October review scored it 8.
 
 ## Promise
 
@@ -49,7 +49,7 @@ The chapter notes follow the manuscript's file order. Chapters marked MOVE leave
 
 #### Chapter 1. Gaussian Processes and the Birth of Brownian Motion
 
-**Status.** KEEP — `tome11-motion/chapters/ch01-gaussian.tex` (571 lines).
+**Status.** KEEP — `tome12-random-motion/chapters/ch01-gaussian.tex` (571 lines).
 
 **Hook.** A random function is a family of random numbers, one for each time. Kolmogorov showed that a consistent choice of the finite collections, with a moment bound, has a continuous version.
 

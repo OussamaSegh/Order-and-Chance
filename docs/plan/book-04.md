@@ -4,7 +4,7 @@
 
 **Element.** The load of uncertainty. Chance looks like weather. It has a building code.
 
-**On disk.** Volume 3, `tome3-chance`. Twelve chapters and two appendices. About 251 pages in the 7×10 table. The October review scored it 8. The admitted facts are labelled: Lebesgue measure on \(\mathbb R^d\), infinite products, and Fubini–Tonelli, proved in Book 7.
+**Source.** `tome4-chance`. Twelve chapters and two appendices. About 251 pages in the 7×10 table. The October review scored it 8. The admitted facts are labelled: Lebesgue measure on \(\mathbb R^d\), infinite products, and Fubini–Tonelli, proved in Book 7.
 
 ## Promise
 
@@ -36,7 +36,7 @@ Discrete Probability is the logic: paradoxes, axioms, random variables, generati
 
 #### Chapter 1. Counting and Paradoxes
 
-**Status.** KEEP — `tome3-chance/chapters/ch01-counting.tex` (616 lines).
+**Status.** KEEP — `tome4-chance/chapters/ch01-counting.tex` (616 lines).
 
 **Hook.** Three doors, one car. The host opens a door with a goat. Should you switch? The host's rule is part of the problem. A different rule gives \(\tfrac12\).
 

@@ -4,7 +4,7 @@
 
 **Element.** The masonry. The bricks look irregular. The courses lock.
 
-**On disk.** Volume 1, `tome1-integers`. Fourteen chapters in `main.tex`, in this order: divisibility, primes, congruences, primitive roots, quadratic reciprocity, arithmetic functions, sums of squares, continued fractions, Diophantine equations, Gaussian and Eisenstein integers, quadratic fields, ideals, \(p\)-adic numbers, characters. The October reconstruction measured 189 print pages through the field guide; `ch14-characters.tex` (520 lines) is in the book now, so the live source is longer. `chapters/preface.tex` already describes the fourteen-chapter route.
+**Source.** `tome2-integers`. Fourteen chapters in `main.tex`, in this order: divisibility, primes, congruences, primitive roots, quadratic reciprocity, arithmetic functions, sums of squares, continued fractions, Diophantine equations, Gaussian and Eisenstein integers, quadratic fields, ideals, \(p\)-adic numbers, characters. The October reconstruction measured 189 print pages through the field guide; `ch14-characters.tex` (520 lines) is in the book now, so the live source is longer. `chapters/preface.tex` already describes the fourteen-chapter route.
 
 ## Promise
 
@@ -43,7 +43,7 @@ The chapter notes follow the manuscript's file order, including the three chapte
 
 #### Chapter 1. Divisibility and the Euclidean Algorithm
 
-**Status.** KEEP — `tome1-integers/chapters/ch01-divisibility.tex` (418 lines).
+**Status.** KEEP — `tome2-integers/chapters/ch01-divisibility.tex` (418 lines).
 
 **Hook.** Euclid's algorithm is still in daily use. Its worst case is a pair of consecutive Fibonacci numbers.
 

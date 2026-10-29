@@ -4,7 +4,7 @@
 
 **Element.** Settlement. The building under a long load: what remains when the bell curve is not the whole story, and when the variables are one deterministic system watched for a long time.
 
-**On disk.** Volume 10, `tome10-chance2`. Twelve chapters plus `chapters/ch13-harder.tex`, the former Frontiers chapter "Sums of Random Pieces". About 192 pages before that chapter. The October review scored the twelve chapters 8. The preface now names three exceptions, not one: Selberg–Delange, the triangular-array converse, and non-symmetric stable laws.
+**Source.** `tome11-randomness`. Twelve chapters plus `chapters/ch13-harder.tex`, the former Frontiers chapter "Sums of Random Pieces". About 192 pages before that chapter. The October review scored the twelve chapters 8. The preface now names three exceptions, not one: Selberg–Delange, the triangular-array converse, and non-symmetric stable laws.
 
 ## Promise
 
@@ -38,7 +38,7 @@ The chapter notes follow the manuscript's file order. The part names are Invaria
 
 #### Chapter 1. Independence and Zero–One Laws
 
-**Status.** KEEP — `tome10-chance2/chapters/ch01-zero-one.tex` (553 lines).
+**Status.** KEEP — `tome11-randomness/chapters/ch01-zero-one.tex` (553 lines).
 
 **Hook.** The harmonic series diverges, and the alternating harmonic series converges. Choose every sign by a fair coin. With probability one the random series converges.
 

@@ -4,7 +4,7 @@
 
 **Element.** The great span. The first arch that asks the primes to be both a law and a game of chance. The arch holds in bulk. A crack is marked.
 
-**On disk.** Volume 5, `tome5-meets`. Twelve chapters. About 176 pages in the 7×10 table. The October review scored it 7, and the two errors it named are repaired: the names \(\liminf\) and \(\limsup\) in `ch01-mertens.tex`, and the Brun–Titchmarsh paragraph in `ch08-sieves.tex`. Maier's theorem is a remark in `ch10-random.tex`.
+**Source.** `tome6-crossroads`. Twelve chapters. About 176 pages in the 7×10 table. The October review scored it 7, and the two errors it named are repaired: the names \(\liminf\) and \(\limsup\) in `ch01-mertens.tex`, and the Brun–Titchmarsh paragraph in `ch08-sieves.tex`. Maier's theorem is a remark in `ch10-random.tex`.
 
 ## Promise
 
@@ -52,7 +52,7 @@ The cut with Book 14, already in the preface, stays: this book ends at the class
 
 #### Chapter 1. Mertens's Theorems
 
-**Status.** KEEP — `tome5-meets/chapters/ch01-mertens.tex` (356 lines). The liminf and limsup are now named correctly.
+**Status.** KEEP — `tome6-crossroads/chapters/ch01-mertens.tex` (356 lines). The liminf and limsup are now named correctly.
 
 **Hook.** Euler, on the primes: mathematicians have tried in vain to find some order in them, and we have reason to believe it is a mystery the mind will never penetrate. The chapter then proves three theorems about their averages.
 

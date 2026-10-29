@@ -1,8 +1,8 @@
 # Series content plan
 
-Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering is the Edition 1 order, Books 1–15. Part names are the ones adjusted in the series catalog (`common/series-catalog.json` on the renumbering branch). Old Volume \(N\) is Book \(N+1\). Book 6 is Crossroads, the analytic number theory volume. The old P1 problem book is not a volume of the edition.
+Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering is the Edition 1 order, Books 1–15. Part names are the ones in `common/series-catalog.json`. A citation that still says Volume \(N\) inside a manuscript means the old number; the title-page number is \(N+1\). Book 6 is Crossroads, the analytic number theory volume. The old P1 problem book is not a volume of the edition.
 
-The series subtitle that frames this plan is **Order and Chance: The Hidden Architecture of Mathematics**. Per-volume subtitles in `common/volume-subtitles.json` stay as they are. This document does not put the new subtitle on a cover or a title page.
+The series subtitle that frames this plan is **Order and Chance: The Hidden Architecture of Mathematics**. The same frozen subtitles are already in `common/volume-subtitles.json`. This document does not put them on a cover or a title page.
 
 ## Frozen Edition 1 titles
 
@@ -35,7 +35,7 @@ The series subtitle is the frame of the story: **Order and Chance: The Hidden Ar
 | Part VI. Synthesis | |
 | 15 | Order and Chance: The Meeting of Structure and Randomness |
 
-**Design rule.** Each book's chapters must visibly deliver its title and its subtitle. The part names stay the catalog's. How a part delivers the subtitle is said in prose, under "How the subtitle is delivered" in the book file. A chapter that does not serve the title moves. A part name is renamed only when a move makes the existing name false, and only in the marked section below. The directories in this working tree still use the pre-renumbering stems. The catalog edit itself is the renumbering branch, not this plan.
+**Design rule.** Each book's chapters must visibly deliver its title and its subtitle. The part names stay the catalog's. How a part delivers the subtitle is said in prose, under "How the subtitle is delivered" in the book file. A chapter that does not serve the title moves. A part name is renamed only when a move makes the existing name false, and only in the marked section below. The directories are the Edition 1 stems, `tome1-first-principles` through `tome15-order-and-chance`.
 
 Statuses were read off the files, not off the catalog blurb. Every chapter entry in `book-01.md`–`book-15.md` names the current path. The sources for the judgments are the nineteen `main.tex` files (sixteen remain), the chapter openings and section lists, `docs/review/SERIES-REVIEW-2026-10.md`, `docs/review/CAPSTONE-PLAN.md`, `docs/SERIES-STRUCTURE.md`, `docs/DESIGN.md`, and the 7×10 page table in `review/7X10-PAGINATION.md`. Several defects in the October review are already repaired in the sources; the rework order does not send anyone back to fix them. They are listed under "Already repaired".
 
@@ -153,21 +153,21 @@ The chapter-by-chapter plan, with hooks, synopses, theorems, examples, figures, 
 
 | Book | File | On disk |
 | --- | --- | --- |
-| 1 First Principles | [book-01.md](book-01.md) | `tome0-mathematical-maturity` |
-| 2 The Integers | [book-02.md](book-02.md) | `tome1-integers` |
-| 3 Symmetry | [book-03.md](book-03.md) | `tome2-structures` |
-| 4 Chance | [book-04.md](book-04.md) | `tome3-chance` |
-| 5 Calculation | [book-05.md](book-05.md) | `tome4-calculation` |
-| 6 Crossroads | [book-06.md](book-06.md) | `tome5-meets` |
-| 7 Spaces: Topology, Measure and Limits | [book-07.md](book-07.md) | `tome6-spaces` |
-| 8 Analysis | [book-08.md](book-08.md) | `tome7-analysis` |
-| 9 Shapes | [book-09.md](book-09.md) | `tome8-shapes` |
-| 10 Abstraction: Categories, Algebra and Homology | [book-10.md](book-10.md) | `tome9-higher-structures` |
-| 11 Randomness | [book-11.md](book-11.md) | `tome10-chance2` |
-| 12 Random Motion | [book-12.md](book-12.md) | `tome11-motion` |
-| 13 Arithmetic | [book-13.md](book-13.md) | `tome12-arithmetic` |
-| 14 The Primes | [book-14.md](book-14.md) | `tome13-primes` |
-| 15 Order and Chance: The Meeting of Structure and Randomness | [book-15.md](book-15.md) | `tome14-order-and-chance` |
+| 1 First Principles | [book-01.md](book-01.md) | `tome1-first-principles` |
+| 2 The Integers | [book-02.md](book-02.md) | `tome2-integers` |
+| 3 Symmetry | [book-03.md](book-03.md) | `tome3-symmetry` |
+| 4 Chance | [book-04.md](book-04.md) | `tome4-chance` |
+| 5 Calculation | [book-05.md](book-05.md) | `tome5-calculation` |
+| 6 Crossroads | [book-06.md](book-06.md) | `tome6-crossroads` |
+| 7 Spaces: Topology, Measure and Limits | [book-07.md](book-07.md) | `tome7-spaces` |
+| 8 Analysis | [book-08.md](book-08.md) | `tome8-analysis` |
+| 9 Shapes | [book-09.md](book-09.md) | `tome9-shapes` |
+| 10 Abstraction: Categories, Algebra and Homology | [book-10.md](book-10.md) | `tome10-abstraction` |
+| 11 Randomness | [book-11.md](book-11.md) | `tome11-randomness` |
+| 12 Random Motion | [book-12.md](book-12.md) | `tome12-random-motion` |
+| 13 Arithmetic | [book-13.md](book-13.md) | `tome13-arithmetic` |
+| 14 The Primes | [book-14.md](book-14.md) | `tome14-primes` |
+| 15 Order and Chance: The Meeting of Structure and Randomness | [book-15.md](book-15.md) | `tome15-order-and-chance` |
 
 Book 6, Crossroads, is the volume *Arithmetic Meets Analysis*. The old P1 problem book is removed by the renumbering branch. Its problems are appended there to the exercise lists of Books 1–6. This plan does not place them again. The harder-problem chapters that were Machinery and Frontiers already sit at the end of Books 7, 8, and 11.
 
@@ -185,8 +185,8 @@ One convention sheet, adopted when a book is next touched. It does not block the
 | \(\theta\) | Chebyshev's function, from Book 6 on | Jacobi theta in Book 5 | Jacobi theta is \(\vartheta\). |
 | \(\omega\) | Number of distinct prime factors, from Book 6 on | Theta remainder in Book 5 | The remainder gets another letter. \(\Omega\) stays the total number of prime factors. |
 | \(\psi\) | Chebyshev's second function, from Book 6 on | Digamma | Digamma is \(\psi_\Gamma\), as Book 6 already writes, and the sentence moves to the first use. |
-| \(\Delta\) | Discriminant, or the modular discriminant, and the two are not used for each other in one chapter | Modular function of Haar measure and the Vandermonde product, twenty lines apart, in `tome8-shapes/chapters/ch08-haar.tex` | Vandermonde is written as a product or called \(V\). The modular function of a group is \(\delta\). |
-| Fourier | \(\hat f(\xi)=\int f(x)e^{-2\pi i x\xi}\,\mathrm dx\), inversion without a constant, as in Book 8 | Book 3 puts \(1/|G|\) in the analysis. Abstraction's shuffle chapter used to invert with the constant and a conjugation; the comparison sentence at `tome9-higher-structures/chapters/ch10-shuffling.tex` now states both differences | Finite abelian groups: \(1/|G|\) in the analysis, inversion without it, no extra conjugation. One sentence at the joint. |
+| \(\Delta\) | Discriminant, or the modular discriminant, and the two are not used for each other in one chapter | Modular function of Haar measure and the Vandermonde product, twenty lines apart, in `tome9-shapes/chapters/ch08-haar.tex` | Vandermonde is written as a product or called \(V\). The modular function of a group is \(\delta\). |
+| Fourier | \(\hat f(\xi)=\int f(x)e^{-2\pi i x\xi}\,\mathrm dx\), inversion without a constant, as in Book 8 | Book 3 puts \(1/|G|\) in the analysis. Abstraction's shuffle chapter used to invert with the constant and a conjugation; the comparison sentence at `tome10-abstraction/chapters/ch10-shuffling.tex` now states both differences | Finite abelian groups: \(1/|G|\) in the analysis, inversion without it, no extra conjugation. One sentence at the joint. |
 | \(\log\) | The natural logarithm, in analysis and in probability | | The series does not switch to \(\ln\) in displays. |
 | \(\mathrm{Li}(x)\) | \(\int_2^x \mathrm dt/\log t\), as in Book 6 | | The lower limit is stated at the first use in each later book. |
 | \(\chi\) | A character. Dirichlet or group, by the sentence | Also the factor in the functional equation in Book 14 | That factor is named at first use as the root-number factor \(\chi(s)\). |
@@ -278,19 +278,19 @@ These were errors or gaps in `docs/review/SERIES-REVIEW-2026-10.md`. The sources
 
 | Item | Where it now stands |
 | --- | --- |
-| Factor \(\tfrac12\) in Riemann's functional equation | `tome4-calculation/chapters/ch10-zeta.tex`, the sentence after the polar integral |
-| \(\liminf\) and \(\limsup\) named backwards | `tome5-meets/chapters/ch01-mertens.tex` |
-| Short-interval Brun–Titchmarsh tied to Siegel zeros | `tome5-meets/chapters/ch08-sieves.tex`, the paragraph that states the ratio \(2k\) |
-| Maier's display typeset as a theorem | `tome5-meets/chapters/ch10-random.tex`, a remark headed "quoted" |
-| Sign in Wiener's local inverse | `tome7-analysis/chapters/ch10-tauberian.tex`, the return map uses \(e^{+2\pi i\xi_0 x}\) |
-| Three squares, the test when \(4\mid m\) | `tome12-arithmetic/chapters/ch07-hasse.tex`, \(n=4^am\) with \(4\nmid m\) |
-| Primitive element theorem living only in an exercise | `tome2-structures/chapters/ch08-extensions.tex`, a numbered theorem |
-| Three real roots of \(X^5-4X+2\) not shown simple | `tome2-structures/chapters/ch10-galois.tex` |
-| Face of a box in the characterisation of Lebesgue measure | `tome6-spaces/chapters/ch06-measures.tex`, a sandwich |
-| Division by \(n!\) in Andreief's identity | `tome8-shapes/chapters/ch08-haar.tex` |
-| "Isomorphism" \(E(\mathbb C)\to\mathrm{Cl}(A)\) | `tome9-higher-structures/chapters/ch05-dedekind.tex`, the sentence now refuses the word |
-| Fourier comparison for the shuffle | `tome9-higher-structures/chapters/ch10-shuffling.tex`, both the factor and the conjugation |
-| The bound \(600\) presented as if the certificate were on the page | `tome13-primes/chapters/ch09-maynard.tex`, the witness is named as unprinted |
+| Factor \(\tfrac12\) in Riemann's functional equation | `tome5-calculation/chapters/ch10-zeta.tex`, the sentence after the polar integral |
+| \(\liminf\) and \(\limsup\) named backwards | `tome6-crossroads/chapters/ch01-mertens.tex` |
+| Short-interval Brun–Titchmarsh tied to Siegel zeros | `tome6-crossroads/chapters/ch08-sieves.tex`, the paragraph that states the ratio \(2k\) |
+| Maier's display typeset as a theorem | `tome6-crossroads/chapters/ch10-random.tex`, a remark headed "quoted" |
+| Sign in Wiener's local inverse | `tome8-analysis/chapters/ch10-tauberian.tex`, the return map uses \(e^{+2\pi i\xi_0 x}\) |
+| Three squares, the test when \(4\mid m\) | `tome13-arithmetic/chapters/ch07-hasse.tex`, \(n=4^am\) with \(4\nmid m\) |
+| Primitive element theorem living only in an exercise | `tome3-symmetry/chapters/ch08-extensions.tex`, a numbered theorem |
+| Three real roots of \(X^5-4X+2\) not shown simple | `tome3-symmetry/chapters/ch10-galois.tex` |
+| Face of a box in the characterisation of Lebesgue measure | `tome7-spaces/chapters/ch06-measures.tex`, a sandwich |
+| Division by \(n!\) in Andreief's identity | `tome9-shapes/chapters/ch08-haar.tex` |
+| "Isomorphism" \(E(\mathbb C)\to\mathrm{Cl}(A)\) | `tome10-abstraction/chapters/ch05-dedekind.tex`, the sentence now refuses the word |
+| Fourier comparison for the shuffle | `tome10-abstraction/chapters/ch10-shuffling.tex`, both the factor and the conjugation |
+| The bound \(600\) presented as if the certificate were on the page | `tome14-primes/chapters/ch09-maynard.tex`, the witness is named as unprinted |
 
 A second reader can still walk the new three-squares paragraph and the Galois root count. They are repairs, not open gaps.
 
@@ -300,10 +300,10 @@ Things a later chapter needs, or pretends to have, and does not have as a proof.
 
 | Gap | Status in the sources | Decision |
 | --- | --- | --- |
-| Conditional expectation, including the tower property | Exercise in `tome6-spaces/chapters/ch10-radon.tex` | EXPAND to a numbered theorem in Book 7, before Books 11 and 12 quote the tower. |
+| Conditional expectation, including the tower property | Exercise in `tome7-spaces/chapters/ch10-radon.tex` | EXPAND to a numbered theorem in Book 7, before Books 11 and 12 quote the tower. |
 | Primary decomposition and associated primes | Absent from Abstraction | EXPAND, one chapter-section before Dedekind domains. Book 13 does not depend on it; the gap is internal honesty. |
-| de Rham's theorem in general | The cohomology is defined in `tome8-shapes/chapters/ch03-forms.tex`; the proof on the page is the punctured plane | REVISE the sentence so the general statement is marked as one proved case. Later chapters do not use the general statement. |
-| Buchstab, Maier, Erdős–Rankin | Proved in `tome14-order-and-chance/chapters/ra-gaps.tex` and `ra-largemoduli.tex`, included from `ch02-cramer.tex`. Book 6 has a remark, not a proof | KEEP the proofs in Book 15. The zero-free hypothesis stays in the heading. Siegel–Walfisz and Bombieri–Vinogradov do not replace Gallagher's weighted theorem, and the wrapper already says so. |
+| de Rham's theorem in general | The cohomology is defined in `tome9-shapes/chapters/ch03-forms.tex`; the proof on the page is the punctured plane | REVISE the sentence so the general statement is marked as one proved case. Later chapters do not use the general statement. |
+| Buchstab, Maier, Erdős–Rankin | Proved in `tome15-order-and-chance/chapters/ra-gaps.tex` and `ra-largemoduli.tex`, included from `ch02-cramer.tex`. Book 6 has a remark, not a proof | KEEP the proofs in Book 15. The zero-free hypothesis stays in the heading. Siegel–Walfisz and Bombieri–Vinogradov do not replace Gallagher's weighted theorem, and the wrapper already says so. |
 | Selberg–Delange, the Kubilius model | Proved in `ra-selbergdelange.tex` and `ra-additive.tex`, included from `ch03-divisors.tex`. Book 11 quotes them | KEEP, and point Book 11 at this chapter by path. REVISE the included Erdős–Kac file so it compares proofs and does not found the theorem a second time. |
 | Bohr–Jessen and Selberg's central limit theorem | Proved in `ra-bohrjessen.tex` and `ra-selberg.tex`, included from `ch11-values.tex` | KEEP. This is the analytic climax of Book 15. |
 | Approximate functional equation | Quoted in Book 14, Chapter 14 | Prove it in Book 15's moments chapter, or mark every use inside the CFKRS recipe as quoted. |
