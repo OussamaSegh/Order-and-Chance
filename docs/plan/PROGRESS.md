@@ -139,7 +139,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 7
 - **Books and files:** `volume12-random-motion` (`ch09-expanders.tex`, `ch10-semicircle.tex`, `ch11-cue.tex`, the expander half of `chapters/spectral.tex`) and `volume8-analysis` Spectral Theory. Dyson Brownian motion stays in Stochastic Calculus. The zeta narrative in `moments.tex` stays until step 19.
 - **Acceptance:** The semicircle, the sine kernel, and the graph-theoretic Riemann hypothesis are theorems of Book 8. Book 12's third part is walks on graphs, resistance, and the matrix-tree theorem. Apply the proposed part rename: Book 12, Part III, **Networks**. Regenerate the series files. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/34
 - **Merge sha:**
 - **Date:**
 - **Notes:** This is the only PR that renames Book 12's part. Later books cite the sine kernel as Book 8. The branching random walk stays in Book 12, in Stochastic Calculus.
