@@ -102,22 +102,22 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 5. Hidden worlds, from The Integers to Arithmetic
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 4
 - **Books and files:** `volume2-integers` (`ch11-algebraic.tex`, `ch12-ideals.tex`, `ch12-padic.tex`) and `volume13-arithmetic`. Hensel's lemma for a congruence stays in Book 2. One section keeps \(6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5})\). While Arithmetic is open, read the repaired three-squares test in `ch07-hasse.tex` once.
 - **Acceptance:** Those three chapters are in Book 13's Number Fields and Local and Global parts. Book 2 still proves Pell, the Gaussian integers, and reciprocity. Apply the proposed part rename in `common/series-catalog.json`: Book 2, Part IV, **Equations and Characters**. Regenerate the series files from that catalog. Both books build.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/31
-- **Merge sha:**
-- **Date:**
-- **Notes:** This is the only PR that renames Book 2's part.
+- **Merge sha:** 57ec8496f3afa57b505c1604f12ff1f7d18af141
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. This is the only PR that renames Book 2's part.
 
 ### 6. The adèles, from Analysis to Arithmetic
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 5
 - **Books and files:** `volume8-analysis/chapters/ch08-haar.tex` and `volume13-arithmetic` (local fields and Tate). Haar measure and Pontryagin duality stay in Fourier and Tauberian Methods.
 - **Acceptance:** The construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure, is in Book 13. Book 8 still states the duality it uses. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/32
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do not move Jordan or the Riemann mapping theorem in this PR.
