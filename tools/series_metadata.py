@@ -4,6 +4,7 @@ common/series-catalog.json is the source. This module writes the flat subtitle
 file, its TeX lookup, and the series page used on title pages and back covers.
 """
 import json
+import re
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 CATALOG=ROOT/'common/series-catalog.json'
@@ -62,10 +63,21 @@ def series_tex():
 def flat_subtitles():
     return json.dumps(subtitles(), indent=2)+'\n'
 
+def check_book_parts():
+    for number,item in catalog()['volumes'].items():
+        names=[part['name'] for part in item.get('parts',[])]
+        if not names:
+            continue
+        text=(ROOT/item['stem']/'main.tex').read_text()
+        found=re.findall(r'\\part\{([^}]+)\}', text)
+        if found!=names:
+            raise SystemExit(f"{item['stem']} parts {found} != catalog {names}")
+
 def main():
     data=subtitles()
     assert len(data)==15 and len(set(data.values()))==15
     assert [number for part in parts() for number in part['volumes']]==[str(n) for n in range(1,16)]
+    check_book_parts()
     (ROOT/'common/volume-subtitles.json').write_text(flat_subtitles())
     (ROOT/'common/volume-subtitles.tex').write_text(tex_source())
     (ROOT/'common/series.tex').write_text(series_tex())
@@ -76,6 +88,7 @@ def check_sync():
         raise SystemExit('Subtitle JSON is stale; run python3 tools/series_metadata.py')
     if (ROOT/'common/series.tex').read_text()!=series_tex():
         raise SystemExit('Series page is stale; run python3 tools/series_metadata.py')
+    check_book_parts()
 
 if __name__=='__main__':
     import sys

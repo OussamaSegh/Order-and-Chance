@@ -6,7 +6,10 @@ Volume 15 is **Order and Chance**, subtitle *The Meeting of Structure and Random
 The series subtitle, under the name Order and Chance, is *The Hidden Architecture of Mathematics*.
 Titles, subtitles and the six series parts live in `common/series-catalog.json`.
 Each book also has parts of its own; the chapter boundaries are in
-[SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). The Crossroads problems are exercises
+[SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). Volume 2 stores those four names
+in the catalog, and Part IV is **Equations and Characters**.
+`tools/series_metadata.py` checks a volume's catalog parts, when the volume
+has them, against the `\part` lines in its `main.tex`. The Crossroads problems are exercises
 in Volumes 1–6. Chapter-body citations still use the old volume numbers; the
 old-to-new table is in that same note.
 

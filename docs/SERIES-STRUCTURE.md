@@ -51,7 +51,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 2 The Integers | Divisibility | Divisibility |
 | 2 | The Primes | Primes |
 | 2 | Congruences | Congruences, primitive roots, quadratic reciprocity, arithmetic functions |
-| 2 | Equations, Ideals and Characters | Sums of squares through the characters chapter. The requested name was “Characters and Sieves”; that chapter closes this block. |
+| 2 | Equations and Characters | Sums of squares, continued fractions, Diophantine equations, the Gaussian and Eisenstein integers, one section on the failure of unique factorisation, and the characters chapter. |
 | 3 Symmetry | Groups | Groups through Sylow |
 | 3 | Rings and Polynomials | Rings, modules, extensions |
 | 3 | Fields and Galois Theory | Finite fields, Galois theory, characters, quaternions, then the linear-algebra and combinatorics appendices |
