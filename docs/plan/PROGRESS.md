@@ -113,18 +113,18 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 6. The adèles, from Analysis to Arithmetic
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 5
 - **Books and files:** `volume8-analysis/chapters/ch08-haar.tex` and `volume13-arithmetic` (local fields and Tate). Haar measure and Pontryagin duality stay in Fourier and Tauberian Methods.
 - **Acceptance:** The construction of \(\mathbb Q_p\) and the adèles, beyond Haar measure, is in Book 13. Book 8 still states the duality it uses. Both books build.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/32
-- **Merge sha:**
-- **Date:**
-- **Notes:** Do not move Jordan or the Riemann mapping theorem in this PR.
+- **Merge sha:** 921c260b7829a1bbd8947fe8e6d86423eb53c2a7
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not move Jordan or the Riemann mapping theorem in this PR.
 
 ### 7. Symmetry's extra linear algebra
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 6
 - **Books and files:** `volume3-symmetry` appendices, `volume8-analysis`, `volume10-abstraction`. Spectral theorem, SVD, graph spectra, matrix inequalities, linear dynamics, and the linear algebra that repeats Book 1 go to Analysis. Tensors go to Abstraction, Categories. Circulants, Perron roots of a symmetry, and the linear algebra method stay in Book 3.
 - **Acceptance:** Book 3's contents are Groups, Rings and Polynomials, and Fields and Galois Theory, plus the appendices that still count by symmetry. Analysis and Abstraction build with the new files. No part rename.
