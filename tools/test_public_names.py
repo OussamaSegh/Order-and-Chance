@@ -8,14 +8,14 @@ from public_names import ROOT, SUFFIXES, filename, stem
 class PublicNamesTest(unittest.TestCase):
     def test_complete_series_has_unique_readable_names(self):
         books = [p.parent.name for p in ROOT.glob('tome*/main.tex')]
-        self.assertEqual(len(books), 19)
+        self.assertEqual(len(books), 16)
         names = [filename(book, kind) for book in books for kind in SUFFIXES]
         self.assertEqual(len(names), len(set(names)))
         self.assertTrue(all(' ' in name and not name.startswith('tome') for name in names))
         self.assertEqual(filename('tome0-mathematical-maturity', 'pdf'),
                          'Volume 0 - Mathematical Maturity.pdf')
-        for n, title in [(1, 'Crossroads'), (2, 'Machinery'), (3, 'Frontiers')]:
-            self.assertEqual(stem(f'tomeP{n}-{title.lower()}'), f'Problem Book {n} - {title}')
+        self.assertEqual(stem('tomeP1-crossroads'), 'Problem Book 1 - Crossroads')
+        self.assertEqual(stem('tome14-order-and-chance'), 'Volume 14 - Order and Chance')
 
     def test_unsafe_title_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:

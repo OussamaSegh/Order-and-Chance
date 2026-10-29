@@ -1,0 +1,1215 @@
+\begin{exname}Problem\end{exname}
+% begin pdf problem style
+\renewtcolorbox{exercise}[1][]{%
+    oc exercise,colback=ocExercise!6,colframe=ocExercise,left=6pt,right=6pt,
+    title={\textbf{Problem \theexo}\ifx\relax#1\relax\else\ \textit{(#1)}\fi}}
+\renewenvironment{solution}[1]{%
+  \par\ocOpeningSpace\medskip\noindent\textbf{\color{ocReminder}Solution of Problem~\ref{#1}.}\quad}%
+  {\hfill$\blacksquare$\par\medskip}
+\renewenvironment{hint}[1]{%
+    \par\ocOpeningSpace\smallskip\noindent\textbf{\color{ocThink}Hint for Problem~\ref{#1}.}\quad}%
+  {\par\smallskip}
+% end pdf problem style
+\chapter{Harder problems}\label{ch:harder}
+
+\begin{center}\itshape
+Add up many small random pieces and a bell curve appears.\\
+How soon? Point by point, or only on intervals? What if the pieces depend on each other,\\
+or if there are infinitely many of them? Each question has an answer, and each answer has a price.
+\end{center}
+
+Harald Cram\'er met Jarl Waldemar Lindeberg in 1922, the year Lindeberg published the condition that carries his name and the short proof of the
+central limit theorem that every probabilist still learns. Lindeberg owned a beautiful farm in Finland. In his recollections of 1976 Cram\'er tells
+that when colleagues reproached Lindeberg for not being active enough in research, he answered ``Well, I am really a farmer'', and that when someone
+remarked that his farm was not properly cultivated, he answered that his real job was to be a professor.
+
+The proof he found that year is a farmer's proof: it replaces the random pieces one at a time by Gaussian pieces of the same mean and variance, and
+counts the damage of each swap with a Taylor expansion. Nothing in it is specific to coin tosses or to sums of identical terms, which is why it keeps
+coming back. Volume~10 sharpened the theorem in every direction: Lindeberg's condition is necessary (Feller), the error is of order $n^{-1/2}$ (Berry and
+Esseen), the probability of each single value is Gaussian too (the local limit theorem), Stein's identity measures the distance even for dependent
+pieces, and Kolmogorov's three series decide when an infinite sum converges at all.
+
+This chapter takes those tools to places where nobody says they apply. The first section finds independence hidden in permutations, tilings, set
+partitions and the binary digits of a random number. The second asks how fast the limit is reached, for fixed points, prime factors, arithmetic
+progressions, ranks and planar walks. The third counts exactly, with the local limit theorem: lucky tickets, cancelling signs, two samples
+compared by Smirnov. The last adds infinitely many pieces and asks what the sum looks like: smooth, singular or a fractal dust, with a famous answer of
+Erd\H os for the golden ratio and Kac's count of the real roots of a random polynomial.
+
+\begin{think}
+Choose signs at random in $\pm1\pm2\pm3\cdots\pm n$. The sum is $0$ only if $\frac{n(n+1)}2$ is even. When it is, roughly how many of the $2^n$ choices
+give $0$: about $\frac{2^n}n$, about $\frac{2^n}{n^{3/2}}$, or about $\frac{2^n}{n^2}$? Guess before Problem~\ref{pb:signedsums}.
+\end{think}
+
+Throughout, $Z$ is a standard Gaussian variable, $\phi(x)=\frac1{\sqrt{2\pi}}e^{-x^2/2}$ and $\Phi$ its density and distribution function, and
+$\varepsilon_1,\varepsilon_2,\dots$ are independent fair signs ($\pm1$ with probability $\frac12$ each). For two laws, $d_K$ is the Kolmogorov distance
+(the largest gap between distribution functions), $d_W$ the Wasserstein distance and $\|\cdot\|$ the total variation distance, as in Volume~10, Chapter~6.
+
+\section{Independence in disguise}
+
+Lindeberg's theorem wants independent pieces. Very often the pieces are not independent as given, but become independent, or nearly so, after a change of
+point of view: a uniform number in $[0,1]$ is a sequence of independent digits, a random permutation is a sequence of independent uniform numbers, a
+real-rooted polynomial is a product of independent coins.
+
+\begin{exercise}[$\star$]\label{pb:pairwisebits}
+\emph{Pairwise is not enough.} For a finite non-empty set $S$ of positive integers let $\chi_S=\prod_{i\in S}\varepsilon_i$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that the $\chi_S$ are fair signs and pairwise independent, and that $\chi_{\{1,2\}}$, $\chi_{\{1\}}$, $\chi_{\{2\}}$ are not independent.
+\item List the non-empty finite sets $S$ in the order of $\sum_{i\in S}2^{i-1}$, as $Y_1,Y_2,Y_3,\dots$, and let $T_N=Y_1+\dots+Y_N$. Show that $T_N\in\{-1,2^k-1\}$ for
+$N=2^k-1$, and that $\frac{T_N}N\to0$ almost surely along all $N$.
+\item Show that $\frac{T_N}{\sqrt N}$ does not converge in law to $N(0,1)$ along $N=2^k-1$, although each $Y_n$ has mean $0$ and variance $1$.
+\item A Monte Carlo method estimates $\mathbb Ef(U)$ by averaging $f$ at $N$ random points. Explain why $k$ random bits can replace $N=2^k-1$ independent
+samples in Chebyshev's error bound, but not in a Gaussian confidence interval.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:sawtooth}
+\emph{The variance that is not $\frac1{12}$.} Let $B(x)=\{x\}-\frac12$ be the sawtooth, and $x$ uniform in $[0,1]$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\int_0^1B(x)B(mx)\dd x=\frac1{12m}$ for every integer $m\ge1$.
+\item Show that $\frac1{\sqrt n}\sum_{k=0}^{n-1}B(2^kx)$ converges in law to $N(0,\sigma^2)$, and compute $\sigma^2$. Compare with $\int_0^1B^2=\frac1{12}$, the variance one
+would guess if the terms were independent.
+\item Do the same for $\frac1{\sqrt n}\sum_{k<n}B(3^kx)$.
+\item Show that $\sigma^2=\int_0^1B^2+2\sum_{k\ge1}\int_0^1B(x)B(2^kx)\dd x$ in (b), and find a non-zero trigonometric polynomial $f$ of mean $0$ for which
+$\frac1{\sqrt n}\sum_{k<n}f(2^kx)\to0$ in probability.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:peaks}
+\emph{Peaks.} A \emph{peak} of a permutation $\pi$ of $\{1,\dots,n\}$ is a position $1<i<n$ with $\pi(i-1)<\pi(i)>\pi(i+1)$. Let $P_n$ be the number of peaks of a
+uniformly random permutation.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathbb EP_n=\frac{n-2}3$ and $\operatorname{Var}P_n=\frac{2(n+1)}{45}$ for $n\ge4$.
+\item Let $X_1,X_2,\dots$ be centred, bounded by $c$, and \emph{$m$-dependent}: $(X_i)_{i\le j}$ is independent of $(X_i)_{i>j+m}$ for every $j$. Let
+$S_n=X_1+\dots+X_n$, and suppose $\operatorname{Var}S_n\ge\delta n$ for some $\delta>0$ and all large $n$. Show that $\frac{S_n}{\sqrt{\operatorname{Var}S_n}}\Rightarrow N(0,1)$.
+\item Deduce that $\bigl(P_n-\frac{n-2}3\bigr)\big/\sqrt{\frac{2n}{45}}\Rightarrow N(0,1)$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:tilings}
+\emph{Random tilings.} A strip of length $n$ is tiled with squares of length $1$ and dominoes of length $2$; there are $F_{n+1}$ tilings, where $F$ is the
+Fibonacci sequence. Choose one uniformly, and let $D_n$ be its number of dominoes.
+\begin{enumerate}[label=(\alph*)]
+\item Let $T_1,T_2,\dots$ be independent tiles, a domino with probability $q=\varphi^{-2}$ and a square with probability $1-q=\varphi^{-1}$, where
+$\varphi=\frac{1+\sqrt5}2$, laid end to end from $0$. Show that, conditioned on the event $H_n$ that some tile ends exactly at $n$, the tiling of $[0,n]$ is uniform.
+\item Show that $P(H_n)=\frac{1-(-q)^{n+1}}{1+q}$.
+\item Show that $\frac{D_n-an}{\sqrt n}\Rightarrow N(0,s^2)$, with $a=\frac{5-\sqrt5}{10}$ and $s^2=\frac1{5\sqrt5}$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:harper}
+\emph{Harper's trick.} Let $K_n$ be the number of blocks of a uniformly random partition of $\{1,\dots,n\}$, so that $P(K_n=k)=\frac{S(n,k)}{B_n}$, with the
+Stirling numbers of the second kind $S(n,k)$ and the Bell number $B_n=\sum_kS(n,k)$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $X$ take values in $\{0,\dots,n\}$, and suppose that $G(x)=\sum_kP(X=k)x^k$ has only real roots. Show that $X$ has the law of a sum of
+$n$ independent Bernoulli variables.
+\item Show that $A_n(x)=\sum_kS(n,k)x^k$ satisfies $A_{n+1}(x)=x\bigl(A_n(x)+A_n'(x)\bigr)$, and deduce that $A_n$ has $n$ distinct real roots, all in $]-\infty,0]$.
+\item Let $M$ be an integer variable with $P(M=m)=\frac{m^n}{e\,m!\,B_n}$ (Dobi\'nski's formula, Volume~4, Exercise~2.3, says this is a law). Show that
+$\mathbb EK_n=\mathbb EM-1$ and $\operatorname{Var}K_n=\operatorname{Var}M-1$.
+\item Show that $\operatorname{Var}M\to\infty$, and deduce that $\frac{K_n-\mathbb EK_n}{\sqrt{\operatorname{Var}K_n}}\Rightarrow N(0,1)$.
+\end{enumerate}
+\end{exercise}
+
+\section{How fast?}
+
+A limit theorem says that an error tends to $0$; a rate says how large it is now. The rates of Volume~10 come in three flavours: Berry--Esseen for
+Kolmogorov's distance, Stein's method for Wasserstein's distance and for dependent pieces, Chen--Stein for Poisson limits. Each problem below needs one
+of them, and sometimes an exact formula does better than all three.
+
+\begin{exercise}[$\star$]\label{pb:fixedtv}
+\emph{Fixed points, superexponentially.} Let $F_n$ be the number of fixed points of a uniformly random permutation of $\{1,\dots,n\}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\bigl\|\mathcal L(F_n)-\text{Poisson}(1)\bigr\|\le\frac{2^n}{(n+1)!}$.
+\item Compare with what the Chen--Stein method gives when $F_n$ is written as a sum of $n$ indicators.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:kubslow}
+\emph{A very slow Gaussian.} Let $B_p$, for primes $p\le x$, be independent Bernoulli variables with $P(B_p=1)=\frac1p$, and $W_x=\frac{\sum_p(B_p-1/p)}{\sigma_x}$ with
+$\sigma_x^2=\sum_{p\le x}\frac1p(1-\frac1p)$. This is the model of the number of prime factors of a random integer used in Volume~5, Chapter~9.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $d_W(W_x,Z)\le\frac3{\sigma_x}$, and deduce that $d_K(W_x,Z)\le\frac{2}{(\log\log x)^{1/4}}$ for $x$ large.
+\item How large must $x$ be for this bound on $d_K$ to fall below $1\%$?
+\item Show that in fact $d_K(W_x,Z)\ge\frac c{\sqrt{\log\log x}}$ for some $c>0$ and all large $x$. (For $x=10^6$ one finds numerically $d_K(W_x,Z)=0.15$, while the bound of (a) is useless there.)
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:twelve}
+\emph{Twelve uniforms.} A cheap way to produce roughly Gaussian numbers is $W=U_1+\dots+U_{12}-6$, with $U_i$ independent and uniform on $[0,1]$.
+\begin{enumerate}[label=(\alph*)]
+\item Let $X_1,\dots,X_n$ be independent, symmetric, with $\mathbb EX_i^2=1$ and $\mathbb EX_i^4=m_4$, and $W=\frac{X_1+\dots+X_n}{\sqrt n}$. Show that for every $h$ with four
+bounded continuous derivatives,
+\[
+\bigl|\mathbb Eh(W)-\mathbb Eh(Z)\bigr|\le\frac{(m_4+3)\,\|h^{(4)}\|_\infty}{24\,n}.
+\]
+\item Apply it to $W=U_1+\dots+U_{12}-6$: show that $|\mathbb E\cos W-e^{-1/2}|\le\frac1{60}$, and compute $\mathbb E\cos W$ exactly.
+\item Show that $P(|W|>6)=0$ and $P(|W|>4)=\frac{2(2^{12}-12)}{12!}\approx1.7\times10^{-5}$, while $P(|Z|>4)\approx6.3\times10^{-5}$. What does (a) say, and not say, about tails?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:threeap}
+\emph{Random sets without progressions.} Let $N$ be an odd prime and $A$ a random subset of $\Z/N\Z$ containing each residue independently with probability
+$p=cN^{-2/3}$. A \emph{progression} is a set $\{a,a+d,a+2d\}$ with $d\ne0$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that there are $\frac{N(N-1)}2$ progressions, and that two different progressions share at most two elements.
+\item Show that the number $W$ of progressions contained in $A$ satisfies $\|\mathcal L(W)-\text{Poisson}(\lambda)\|=O(N^{-1/3})$, with $\lambda=p^3\frac{N(N-1)}2$.
+\item Deduce that $P(A\text{ contains no progression})\to e^{-c^3/2}$, and that $|A|\sim cN^{1/3}$ with high probability.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:spearman}
+\emph{Spearman's rank correlation, with a rate.} Let $b_1,\dots,b_n$ and $c_1,\dots,c_n$ be real with $\sum_ib_i=\sum_jc_j=0$ and $\bigl(\sum_ib_i^2\bigr)\bigl(\sum_jc_j^2\bigr)=n-1$,
+let $\pi$ be a uniformly random permutation and $W=\sum_ib_ic_{\pi(i)}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mathbb EW=0$ and $\operatorname{Var}W=1$. More generally, compute $\operatorname{Var}\sum_ix_iy_{\pi(i)}$ for arbitrary reals $x_i,y_j$.
+\item Let $I\ne J$ be a uniformly random ordered pair of positions, independent of $\pi$, and $\pi'=\pi\circ(I\,J)$. Show that $(W,W')$, with
+$W'=\sum_ib_ic_{\pi'(i)}$, is exchangeable and that $\mathbb E[W'-W\mid\pi]=-\frac2{n-1}W$.
+\item Show that
+\[
+d_W(W,Z)\le\sqrt{\frac{\sum_ib_i^4\sum_jc_j^4}{n-1}}+\frac4n+\frac{16}{n-1}\sum_i|b_i|^3\sum_j|c_j|^3.
+\]
+\item \emph{Spearman's $\rho$} of a permutation is the correlation between $i$ and $\pi(i)$. Show that $\sqrt{n-1}\,\rho$ is a statistic $W$ as above, and that
+$d_W(\sqrt{n-1}\,\rho,Z)=O(n^{-1/2})$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:erdostaylor}
+\emph{The returns of a planar walk.} Let $S$ be the simple random walk on $\Z^2$ started at $0$, $N_n$ the number of $t\in\{1,\dots,n\}$ with $S_{2t}=0$, and
+$G_n=\mathbb EN_n$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P(S_{2t}=0)=\bigl(\binom{2t}t4^{-t}\bigr)^2$, and that $G_n\sim\frac1\pi\log n$.
+\item Show that $k!\,G_{\lfloor n/k\rfloor}^k\le\mathbb E[N_n(N_n-1)\cdots(N_n-k+1)]\le k!\,G_n^k$ for every $k\ge1$.
+\item Deduce that $\frac{N_n}{G_n}$ converges in law to the exponential law of mean $1$. In particular $\frac{N_n}{\mathbb EN_n}$ does not tend to $1$: the walk comes home
+about $\frac1\pi\log n$ times on average, but the actual number is as random as a waiting time.
+\end{enumerate}
+\end{exercise}
+
+\section{Counting with the local limit theorem}
+
+The local limit theorem (Volume~10, Theorem~4.12) turns a probability into a count: the number of objects with a given sum is the total number times
+$\frac{1}{\sigma\sqrt{2\pi n}}$, up to $1+o(1)$. Its proof is a Fourier integral, and that integral is often an exact formula in disguise.
+
+\begin{exercise}[$\star$]\label{pb:dice}
+\emph{Dice modulo seven.} Let $S_n$ be the total of $n$ fair dice.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P(7\mid S_n)=\frac17+\frac67\bigl(-\frac16\bigr)^n$, and find $P(S_n\equiv r\pmod7)$ for every $r$.
+\item Find $P(S_n\equiv r\pmod5)$ exactly. Show that modulo $4$ the distance to the uniform law decays like $\bigl(\frac{\sqrt2}6\bigr)^n$, and modulo $2$ it is $0$ for
+every $n\ge1$.
+\item A die has faces $1,4,7,10,13,16$. Show that its total $S_n$ satisfies $\sup_{k\equiv n\,(3)}\bigl|\sigma\sqrt n\,P(S_n=k)-3\phi\bigl(\frac{k-n\mu}{\sigma\sqrt n}\bigr)\bigr|\to0$,
+with $\mu,\sigma$ to be found, and explain the factor $3$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:squaresmodp}
+\emph{Two squares make a uniform residue.} Let $p$ be an odd prime and $a_1,a_2,\dots$ independent and uniform in $\Z/p\Z$. Let $Q_k$ be the law of
+$a_1^2+\dots+a_k^2$ modulo $p$ and $U$ the uniform law.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\|Q_k-U\|\le\frac12\sqrt{p-1}\,p^{-k/2}$ for every $k\ge1$.
+\item Compute $\|Q_2-U\|$ exactly, and compare.
+\item For the walk with steps $\pm1$ instead of squares, show that $\|Q_k-U\|$ stays above $\frac1{20}$ as long as $k\le p^2/10$, for $p$ large. Why are squares so
+much better mixers?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:lucky}
+\emph{Lucky tickets.} Call a ticket with a six-digit number \emph{lucky} when the sum of the first three digits
+equals the sum of the last three. More generally, let $L_m$ be the number of strings of $2m$ decimal digits whose first half and second half have the same digit sum.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $L_m=\frac1{2\pi}\int_{-\pi}^\pi\Bigl(\frac{\sin5t}{\sin\frac t2}\Bigr)^{2m}\dd t$.
+\item Show that $L_m\sim\frac{10^{2m}}{\sqrt{33\pi m}}$.
+\item There are $55\,252$ lucky six-digit tickets. Show that the next term of the expansion is
+\[
+L_m=\frac{10^{2m}}{\sqrt{33\pi m}}\Bigl(1-\frac{101}{1320\,m}+O\bigl(m^{-2}\bigr)\Bigr),
+\]
+and check that it brings the estimate for $m=3$ to within $0.02\%$ of the truth.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:signedsums}
+\emph{Signs that cancel.} Let $Z(n)$ be the number of choices of signs with $\pm1\pm2\pm\dots\pm n=0$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $Z(n)=0$ unless $n\equiv0$ or $3\pmod4$, and that $Z(n)=\frac{2^n}{2\pi}\int_{-\pi}^\pi\prod_{k=1}^n\cos(kt)\dd t$.
+\item Show that $Z(n)\sim\sqrt{\frac6\pi}\,\frac{2^n}{n^{3/2}}$ for $n\equiv0,3\pmod4$.
+\item Deduce the number of subsets of $\{1,\dots,n\}$ whose sum is $\frac{n(n+1)}4$, and of ways to split $\{1,\dots,n\}$ into two parts of equal sum.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:smirnov}
+\emph{Smirnov's two samples.} Two samples of $n$ real numbers each, drawn independently from the same continuous law, are merged and sorted. Read the merged
+list from left to right and step up for a number of the first sample, down for one of the second: this gives a path $S_0=0,S_1,\dots,S_{2n}=0$, uniformly
+distributed among the $\binom{2n}n$ such paths. Smirnov's statistic is $D_n=\frac1n\max_k|S_k|$, the largest gap between the two empirical distribution functions.
+\begin{enumerate}[label=(\alph*)]
+\item Let $h\ge1$. Show that the number of paths with $2n$ steps $\pm1$, from $0$ to $0$, that never reach $h$ or $-h$, is
+\[
+\sum_{k\in\Z}(-1)^k\binom{2n}{n+kh}.
+\]
+\item Show that for each $k$, $\binom{2n}{n+k}\big/\binom{2n}n=e^{-k^2/n}\bigl(1+O(\frac{k^4}{n^3}+\frac{k^2}{n^2})\bigr)$ when $|k|\le n^{2/3}$, and bound it by $e^{-k^2/(2n)}$ for all $|k|\le n$.
+\item Deduce that for every $x>0$,
+\[
+P\Bigl(\sqrt{\tfrac n2}\,D_n<x\Bigr)\longrightarrow K(x)=1-2\sum_{k\ge1}(-1)^{k-1}e^{-2k^2x^2}.
+\]
+\item Show that $K(x)=\frac{\sqrt{2\pi}}x\sum_{k\ge1}e^{-(2k-1)^2\pi^2/(8x^2)}$, and that one term of the left series, or two terms of the right one, give $K(1.36)=0.951$ to three digits. Which series would you use for $x=0.3$?
+\item The same limit governs one sample compared with the uniform law (Kolmogorov, 1933; see Volume~10, Remark in Chapter~3). Direct computation gives
+$\sqrt N\sup_t|F_N(t)-t|$ for the $N$ points $\{k\sqrt2\}$, $k\le N$: it is $0.03$ for $N=10^4$, far below the $0.5$ to $1.4$ that random points give. Would a goodness-of-fit
+test accept the sequence $(\{k\sqrt2\})$ as random?
+\end{enumerate}
+\end{exercise}
+
+\section{Infinitely many pieces}
+
+Now the sum never stops. Kolmogorov's three series say whether it converges; once it does, its law can be smooth, or a dust, or something in between,
+and the characteristic function, a product of infinitely many cosines, tells which. Two questions run through the section: is the law continuous, and is it
+absolutely continuous?
+
+\begin{exercise}[$\star$]\label{pb:primeseries}
+\emph{Random signs on the primes.} Let $(\varepsilon_p)$ be independent fair signs indexed by the primes, and $a\in\R$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\sum_p\frac{\varepsilon_p}{\sqrt p\,(\log p)^a}$ converges almost surely if $a>0$, and diverges almost surely if $a\le0$.
+\item Show that $\sum_{n\ge2}\frac{\varepsilon_n}{\sqrt n\,(\log n)^a}$, over all integers, converges almost surely if and only if $a>\frac12$.
+\item When $a\le0$ in (a), show that the partial sums satisfy $\limsup=+\infty$ and $\liminf=-\infty$ almost surely.
+\item Deduce that the random Dirichlet series $\sum_p\varepsilon_pp^{-\sigma}$ converges almost surely for every $\sigma>\frac12$, and diverges almost surely for $\sigma=\frac12$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{pb:factorialseries}
+\emph{A dust of dimension zero.} Let $X=\sum_{n\ge1}\frac{\varepsilon_n}{n!}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that two different sequences of signs give two different values of $X$.
+\item Show that the law of $X$ has no atom.
+\item Show that $X$ takes its values in a compact set $C$ that can be covered, for each $n$, by $2^n$ intervals of length at most $\frac2{n\cdot n!}$.
+\item Deduce that $C$ has Hausdorff dimension $0$, and that the law of $X$ is continuous and singular.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:smooth}
+\emph{A smooth sum.} Let $X=\sum_{n\ge1}\frac{\varepsilon_n}{n^2}$ and $\varphi(t)=\mathbb Ee^{itX}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\varphi(t)=\prod_{n\ge1}\cos\frac t{n^2}$.
+\item Show that $|\varphi(t)|\le e^{-\sqrt{|t|}/48}$ for $|t|\ge1$.
+\item Deduce that $X$ has a density which is infinitely differentiable.
+\item More generally, show that $\sum_n\varepsilon_nn^{-\alpha}$ converges almost surely and has an infinitely differentiable density for every $\alpha>\frac12$.
+Compare with $\sum_n\varepsilon_n2^{-n}$, which is uniform on $[-1,1]$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:purity}
+\emph{All or nothing.} Let $X_1,X_2,\dots$ be independent random variables, each taking countably many values, such that $X=\sum_nX_n$ converges almost surely.
+Let $\mu$ be the law of $X$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $\mu$ is \emph{pure}: either it is carried by a countable set, or it is continuous and singular, or it is absolutely continuous.
+\item Let $0<\lambda<1$ and $X_\lambda=\sum_{n\ge1}\varepsilon_n\lambda^n$. Show that the law of $X_\lambda$ has no atom. (Look at the atoms of largest mass.)
+\item Deduce that the law of $X_\lambda$ is either absolutely continuous or singular, and decide which for $\lambda=\frac12$ and $\lambda=\frac13$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{pb:golden}
+\emph{The golden ratio refuses a density.} Let $\varphi=\frac{1+\sqrt5}2$ be the golden ratio and $\mu$ the law of $Y=\sum_{n\ge1}\varepsilon_n\varphi^{-n}$, with
+characteristic function $\hat\mu(t)=\mathbb Ee^{itY}$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $L_m=\varphi^m+\bigl(-\frac1\varphi\bigr)^m$ is an integer for every $m\ge0$.
+\item Show that $|\hat\mu(\pi\varphi^k)|\to c^2$ as $k\to\infty$, where $c=\prod_{j\ge1}\bigl|\cos\frac\pi{\varphi^j}\bigr|>0$.
+\item Deduce that $\mu$ is continuous and singular, although $\frac1\varphi>\frac12$ and the $2^n$ partial sums are spread over an interval of length about $2\varphi$.
+\item Let $\theta>1$ be an algebraic integer which is not an integer, whose other conjugates all have modulus $<1$ (a \emph{Pisot number}). Show that the law of
+$\sum_n\varepsilon_n\theta^{-n}$ is singular too.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:kaczeros}
+\emph{How many real roots?} Let $a_0,\dots,a_n$ be independent standard Gaussian variables, $f(t)=\sum_{j=0}^na_jt^j$, and $N_n$ the number of real roots of $f$.
+\begin{enumerate}[label=(\alph*)]
+\item \emph{Kac's counting formula.} Let $g$ be continuously differentiable on $[a,b]$, with $g(a)g(b)\ne0$ and $g'(t)\ne0$ whenever $g(t)=0$. Show that the number
+of zeros of $g$ in $[a,b]$ is $\lim_{\varepsilon\to0}\frac1{2\varepsilon}\int_a^b\mathbf 1_{|g(t)|<\varepsilon}|g'(t)|\dd t$.
+\item Show that, almost surely, $f$ has no multiple root, and that $\frac1{2\varepsilon}\int_a^b\mathbf 1_{|f(t)|<\varepsilon}|f'(t)|\dd t\le n$ for every $\varepsilon>0$.
+\item Let $A(t)=\sum_jt^{2j}$, $B(t)=\sum_jjt^{2j-1}$, $C(t)=\sum_jj^2t^{2j-2}$. Show that the number of real roots in $[a,b]$ has mean
+\[
+\int_a^b\rho_n(t)\dd t,\qquad \rho_n=\frac{\sqrt{AC-B^2}}{\pi A}.
+\]
+\item Show that $\pi^2\rho_n(t)^2=\frac1{4t}\frac{\dd}{\dd t}\Bigl(t\frac{A'(t)}{A(t)}\Bigr)$, and deduce \emph{Kac's density}
+\[
+\rho_n(t)=\frac1\pi\sqrt{\frac1{(1-t^2)^2}-\frac{(n+1)^2t^{2n}}{(1-t^{2n+2})^2}}.
+\]
+\item Show that the numbers of roots in $]-\infty,-1[$, $]-1,0[$, $]0,1[$, $]1,\infty[$ have the same law, and that $\mathbb EN_n\sim\frac2\pi\log n$.
+\item A random polynomial of degree $100$ thus has about three real roots, while a polynomial of degree $100$ can have all its roots real. Where are the
+other roots?
+\end{enumerate}
+\end{exercise}
+
+\section*{Hints}
+
+\begin{hint}{pb:pairwisebits}
+For (b), the sets whose index lies in a block $[a,a+2^m[$ with $2^m\mid a$ are $S'\cup U$ with $S'$ fixed and $U\subseteq\{1,\dots,m\}$ free. Factor the block sum.
+\end{hint}
+
+\begin{hint}{pb:sawtooth}
+For (a), expand $B$ in Fourier series. For (b), $B(2^kx)$ depends on all the binary digits of $x$ after the $k$-th, but only slightly on the far ones:
+replace it by a function of the next $L$ digits and control the error in $L^2$.
+\end{hint}
+
+\begin{hint}{pb:peaks}
+The peak indicators at $i$ and $i+1$ are never both $1$; those at $i$ and $i+2$ are both $1$ for $16$ of the $120$ orders of five numbers. For (b), cut
+$\{1,\dots,n\}$ into long blocks separated by short gaps.
+\end{hint}
+
+\begin{hint}{pb:tilings}
+For (a), a tiling with $s$ squares and $d$ dominoes has probability $\varphi^{-s-2d}$. For (b), $u_n=P(H_n)$ satisfies a linear recurrence. For (c), first prove
+the central limit theorem for the number of dominoes among the tiles ending before $n$, without conditioning.
+\end{hint}
+
+\begin{hint}{pb:harper}
+For (a), factor $G$. For (b), $x(A+A')=xe^{-x}(e^xA)'$ and Rolle's theorem. For (c), differentiate the recurrence once and twice at $x=1$.
+For (d), the ratio $P(M=m+1)/P(M=m)$ is decreasing and close to $1$ for $m$ near the mode.
+\end{hint}
+
+\begin{hint}{pb:fixedtv}
+Write both laws with the alternating series of $e^{-1}$, and note the sign of each difference.
+\end{hint}
+
+\begin{hint}{pb:kubslow}
+For (c), the law of $W_x$ sits on a lattice of step $\frac1{\sigma_x}$, and some atom is large.
+\end{hint}
+
+\begin{hint}{pb:twelve}
+For (a), replace the $X_i$ by Gaussian variables one at a time and expand $h$ to order four. For (c), $P(U_1+\dots+U_{12}<2)$ is the volume of a corner of the cube.
+\end{hint}
+
+\begin{hint}{pb:threeap}
+Apply the Chen--Stein theorem with the progressions meeting a given one as its neighbourhood. How many progressions contain a given pair?
+\end{hint}
+
+\begin{hint}{pb:spearman}
+For (c), compute $\mathbb E[D^2\mid\pi]$ exactly: it is $\frac{2\lambda}4\bigl(2\sum_ib_i^2c_{\pi(i)}^2+\dots\bigr)$, and its fluctuations are those of another statistic of the
+same kind as $W$.
+\end{hint}
+
+\begin{hint}{pb:erdostaylor}
+For (a), rotate the lattice by $45^\circ$. For (b), expand $\mathbb E\binom{N_n}k$ with the Markov property. For (c), use the factorial moments to compute
+$\mathbb E(1-\frac s{G_n})^{N_n}$.
+\end{hint}
+
+\begin{hint}{pb:dice}
+Use the characters of $\Z/7\Z$: what is $\sum_{f=1}^6\omega^{f}$ for a seventh root of unity $\omega\ne1$?
+\end{hint}
+
+\begin{hint}{pb:squaresmodp}
+Use the upper bound lemma. For $|\sum_a e(ha^2/p)|^2$, expand the square and substitute $a=b+c$.
+\end{hint}
+
+\begin{hint}{pb:lucky}
+$L_m$ is the number of pairs of $m$-digit strings with the same digit sum. For (c), expand $\log\mathbb Ee^{itD}$ to order $t^4$.
+\end{hint}
+
+\begin{hint}{pb:signedsums}
+The integrand has two peaks, at $t=0$ and $t=\pm\pi$.
+\end{hint}
+
+\begin{hint}{pb:smirnov}
+For (a), reflect a path at its successive visits to $h$, $-h$, $h$, \dots, and use inclusion and exclusion. For (d), Poisson summation.
+\end{hint}
+
+\begin{hint}{pb:primeseries}
+Kolmogorov's three series, and Mertens's theorem on dyadic blocks $e^{2^j}<p\le e^{2^{j+1}}$.
+\end{hint}
+
+\begin{hint}{pb:factorialseries}
+$\sum_{k>n}\frac1{k!}<\frac1{n\cdot n!}$.
+\end{hint}
+
+\begin{hint}{pb:smooth}
+$\log\cos u\le-\frac{u^2}2$ for $|u|<\frac\pi2$. Only the factors with $n\ge\sqrt{|t|}$ are needed.
+\end{hint}
+
+\begin{hint}{pb:purity}
+Let $H$ be the group generated by all the values of all the $X_n$. Is the event $\{X\in E+H\}$ a tail event?
+\end{hint}
+
+\begin{hint}{pb:golden}
+Split $\hat\mu(\pi\varphi^k)$ as $\prod_{m=0}^{k-1}\cos(\pi\varphi^m)$ times $\prod_{j\ge1}\cos(\pi\varphi^{-j})$, and note that $\pi\varphi^m$ is close to a multiple of $\pi$.
+\end{hint}
+
+\begin{hint}{pb:kaczeros}
+For (b), between two zeros of $f'$ the function $f$ is monotone. For (c), condition on $f(t)$. For (e), reverse the coefficients.
+\end{hint}
+
+\section*{Solutions}
+
+\begin{solution}{pb:pairwisebits}
+\idea Products of signs are pairwise independent but very far from independent: the sum of all of them over $k$ signs is a product, $\prod(1+\varepsilon_i)-1$,
+which is either huge or $-1$. Variance bounds survive pairwise independence; the Gaussian shape does not.
+
+\writeup (a) If $i\in S$, changing the sign of $\varepsilon_i$ is a bijection of the outcomes that preserves probabilities and changes the sign of $\chi_S$, so
+$P(\chi_S=1)=\frac12$. For $S\ne T$, $\chi_S\chi_T=\chi_{S\triangle T}$ because $\varepsilon_i^2=1$, and $S\triangle T\ne\emptyset$, so $\mathbb E\chi_S\chi_T=0$. Two signs of
+mean $0$ that are uncorrelated are independent: $P(\chi_S=1,\chi_T=1)=\frac14\mathbb E(1+\chi_S)(1+\chi_T)=\frac14$, and similarly for the other three cases. But
+$\chi_{\{1,2\}}=\chi_{\{1\}}\chi_{\{2\}}$ is a function of the other two, so the three are not independent.
+
+(b) Write $\operatorname{ind}(S)=\sum_{i\in S}2^{i-1}$, so that $\operatorname{ind}$ is a bijection from finite sets to $\N$, with $\operatorname{ind}(\emptyset)=0$, and
+$T_N+1=\sum_{\operatorname{ind}(S)\le N}\chi_S$ (the empty set contributes $\chi_\emptyset=1$). For $N=2^k-1$ the sets of index $\le N$ are the subsets of $\{1,\dots,k\}$, and
+$\sum_{S\subseteq\{1,\dots,k\}}\chi_S=\prod_{i\le k}(1+\varepsilon_i)$, which is $2^k$ if $\varepsilon_1=\dots=\varepsilon_k=1$ and $0$ otherwise. So $T_N\in\{2^k-1,-1\}$.
+
+For general $N$, write $N+1=2^{m_1}+\dots+2^{m_r}$ with $m_1>\dots>m_r$. Then $\{0,\dots,N\}$ is the union of the blocks $[a_j,a_j+2^{m_j}[$ with
+$a_j=2^{m_1}+\dots+2^{m_{j-1}}$. Since $2^{m_j}$ divides $a_j$, the sets with index in the $j$-th block are $S_j\cup U$, where $S_j$ is the set of index $a_j$ (contained in
+$\{m_j+1,m_j+2,\dots\}$) and $U$ runs over the subsets of $\{1,\dots,m_j\}$. So the block contributes $\chi_{S_j}\prod_{i\le m_j}(1+\varepsilon_i)$. Let $i_0$ be the first $i$
+with $\varepsilon_i=-1$; it is finite almost surely. A block with $m_j\ge i_0$ contributes $0$; the other blocks have distinct $m_j<i_0$, so there are at most $i_0$ of them,
+each contributing at most $2^{i_0}$ in absolute value. Hence $|T_N+1|\le i_0\,2^{i_0}$ for every $N$: almost surely $(T_N)$ is bounded, and $\frac{T_N}N\to0$.
+
+(c) Along $N=2^k-1$, $P\bigl(T_N=2^k-1\bigr)=2^{-k}\to0$ and otherwise $\frac{T_N}{\sqrt N}=-\frac1{\sqrt N}\to0$. So $\frac{T_N}{\sqrt N}\to0$ in probability: the limit is the
+point mass at $0$, not $N(0,1)$. (By (b) this even holds almost surely along all $N$.)
+
+(d) Take $U_1,\dots,U_k$ independent and uniform on $[0,1[$, and for $\emptyset\ne S\subseteq\{1,\dots,k\}$ put $V_S=\bigl\{\sum_{i\in S}U_i\bigr\}$. Each $V_S$ is uniform.
+If $S\ne T$, pick $i$ in one of them and not in the other, say $i\in S\setminus T$: given all $U_j$, $j\ne i$, the variable $V_S$ is a rotation of the uniform variable
+$U_i$, hence uniform, while $V_T$ is fixed. So $V_S$ is uniform and independent of $V_T$: the $N=2^k-1$ points $V_S$ are pairwise independent and uniform. For the average
+$A_N$ of the $f(V_S)$, pairwise independence is all that the variance needs: $\operatorname{Var}A_N=\frac1N\operatorname{Var}f(U)$, and Chebyshev's inequality gives the
+same guarantee as $N$ independent samples, from $k=\log_2(N+1)$ random numbers. A Gaussian confidence interval, on the other hand, rests on the central limit theorem
+for $A_N$, and (c) is the same construction in the group $\{\pm1\}$ instead of the circle: there the error is $-\frac1N$ with probability $1-2^{-k}$ and huge otherwise,
+nothing like a bell curve.
+
+\tools{Volume~3, Chapter~5 (independence and variance of sums), Chebyshev's inequality.}
+\leads Pairwise independent hash functions built this way are a basic tool of randomised algorithms: they save randomness wherever only second moments
+matter.
+\end{solution}
+
+\begin{solution}{pb:sawtooth}
+\idea The doubling map $x\mapsto2x$ shifts the binary digits, so $B(2^kx)$ depends on the digits after the $k$-th, mostly on the next few. The terms are
+\emph{almost} independent, the central limit theorem holds, but the correlations do not vanish and they change the variance: $\frac14$ instead of $\frac1{12}$.
+
+\writeup (a) $B(x)=-\sum_{h\ge1}\frac{\sin2\pi hx}{\pi h}$ in $L^2(0,1)$, and $B(mx)=-\sum_{h'\ge1}\frac{\sin2\pi mh'x}{\pi h'}$. By Parseval's formula (Volume~4, Theorem~6.11), only the
+frequencies $h=mh'$ survive, each contributing $\frac12\cdot\frac1{\pi h}\cdot\frac1{\pi h'}$:
+\[
+\int_0^1B(x)B(mx)\dd x=\sum_{h'\ge1}\frac1{2\pi^2mh'^2}=\frac1{2\pi^2m}\cdot\frac{\pi^2}6=\frac1{12m}.
+\]
+
+(b) \emph{Variance.} Since $x\mapsto\{2^jx\}$ preserves Lebesgue measure and $B$ has period $1$, $\int B(2^jx)B(2^kx)\dd x=\int B(y)B(2^{k-j}y)\dd y=\frac{2^{-(k-j)}}{12}$ for
+$k\ge j$. With $S_n=\sum_{k<n}B(2^kx)$,
+\[
+\frac{\operatorname{Var}S_n}n=\frac1{12}+\frac2n\sum_{d=1}^{n-1}(n-d)\frac{2^{-d}}{12}\longrightarrow\frac1{12}+\frac2{12}\sum_{d\ge1}2^{-d}=\frac14=\sigma^2.
+\]
+
+\emph{Truncation.} Let $d_1,d_2,\dots$ be the binary digits of $x$, independent fair bits. Then $\{2^kx\}=\sum_{i\ge1}d_{k+i}2^{-i}$. Put
+$B_L(2^kx)=\sum_{i=1}^Ld_{k+i}2^{-i}+2^{-L-1}-\frac12$, a centred function of $d_{k+1},\dots,d_{k+L}$. The remainder is
+$B(2^kx)-B_L(2^kx)=2^{-L}\bigl(\{2^{k+L}x\}-\frac12\bigr)=2^{-L}B(2^{k+L}x)$, so with $W_n=\frac{S_n}{\sqrt n}$ and $W_n^L=\frac1{\sqrt n}\sum_{k<n}B_L(2^kx)$, the variance
+computation (shifted by $L$) gives $\|W_n-W_n^L\|_2=2^{-L}\sigma_n$, where $\sigma_n^2=\frac{\operatorname{Var}S_n}n\to\frac14$; and $v_{n,L}=\operatorname{Var}W_n^L$ satisfies
+$|\sqrt{v_{n,L}}-\sigma_n|\le2^{-L}\sigma_n$.
+
+\emph{The limit.} The variables $B_L(2^kx)$ are bounded and $(L-1)$-dependent, and $v_{n,L}\ge\frac1{16}$ for $L\ge2$ and $n$ large, so by Problem~\ref{pb:peaks}(b),
+$W_n^L/\sqrt{v_{n,L}}\Rightarrow N(0,1)$. Characteristic functions then converge uniformly on compact sets, so $\mathbb Ee^{itW_n^L}-e^{-t^2v_{n,L}/2}\to0$ for each $t$. Hence
+\[
+\bigl|\mathbb Ee^{itW_n}-e^{-t^2/8}\bigr|\le|t|\,\|W_n-W_n^L\|_2+\bigl|\mathbb Ee^{itW_n^L}-e^{-t^2v_{n,L}/2}\bigr|+\frac{t^2}2\bigl|v_{n,L}-\tfrac14\bigr|,
+\]
+whose $\limsup$ as $n\to\infty$ is at most $(|t|+3t^2)2^{-L}$. As $L$ is arbitrary, $\mathbb Ee^{itW_n}\to e^{-t^2/8}$, and $W_n\Rightarrow N(0,\frac14)$ by Lévy's continuity
+theorem (Volume~10, Theorem~3.3).
+
+(c) The same proof in base $3$ ($B(3^kx)$ depends on the ternary digits after the $k$-th) gives the limit $N(0,\sigma^2)$ with
+$\sigma^2=\frac1{12}+\frac2{12}\sum_{d\ge1}3^{-d}=\frac1{12}+\frac1{12}=\frac16$.
+
+(d) The variance computation of (b) is exactly $\sigma^2=\int B^2+2\sum_{d\ge1}\int B(x)B(2^dx)\dd x$. Take $f(x)=g(x)-g(2x)$ with $g(x)=\cos2\pi x$, a trigonometric
+polynomial of mean $0$. Then $\sum_{k<n}f(2^kx)=g(x)-g(2^nx)$ telescopes, is bounded by $2$, and $\frac1{\sqrt n}\sum_{k<n}f(2^kx)\to0$ surely. Here the correlations
+cancel the variance completely.
+
+\tools{Volume~4, Theorem~6.11 (Parseval); Volume~10, Theorem~3.3 (Lévy's continuity theorem); Problem~\ref{pb:peaks}(b).}
+\leads This is Kac's theorem of 1946 for lacunary sums $\sum f(2^kx)$: the limit is Gaussian with variance $\int f^2+2\sum_d\int f(x)f(2^dx)\dd x$, and the variance is $0$
+exactly for coboundaries $g(x)-g(2x)$, as in (d). For a non-lacunary sequence such as $f(kx)$ nothing of the sort holds.
+\end{solution}
+
+\begin{solution}{pb:peaks}
+\idea Peaks are local events: the indicator of a peak at $i$ depends on three consecutive values, so peaks two apart or more are independent. Count the
+correlations of neighbours, then cut the line into long blocks separated by short gaps, so that the blocks are independent.
+
+\writeup (a) Realise the permutation by independent uniform $U_1,\dots,U_n$ (the ranks of the $U_i$ form a uniform permutation), and let $X_i=\mathbf 1\{U_{i-1}<U_i>U_{i+1}\}$
+for $1<i<n$. Each $X_i$ has mean $\frac13$ (the middle one of three is the largest with probability $\frac13$), so $\mathbb EP_n=\frac{n-2}3$. Adjacent peaks are
+impossible, so $\operatorname{Cov}(X_i,X_{i+1})=-\frac19$; peaks at $i$ and $i+2$ mean $U_{i-1}<U_i>U_{i+1}<U_{i+2}>U_{i+3}$, which holds for $16$ of the $5!$ orders. (The largest of the five values sits in position $2$ or $4$. If it is in position $2$, the first value is any of
+the other four, and of the last three the middle one must be the largest: $4\cdot2=8$ orders; position $4$ gives $8$ more by symmetry.) so $\operatorname{Cov}(X_i,X_{i+2})=\frac{16}{120}-\frac19=\frac1{45}$; and $X_i,X_j$ are independent for $|i-j|\ge3$. Hence, for $n\ge4$,
+\[
+\operatorname{Var}P_n=(n-2)\frac29-2(n-3)\frac19+2(n-4)\frac1{45}=\frac{10+2n-8}{45}=\frac{2(n+1)}{45}.
+\]
+
+(b) Let $r=\lfloor n^{1/4}\rfloor$ and cut $\{1,\dots,n\}$ into consecutive pieces: a \emph{big} block of length $r$, a \emph{small} block of length $m$, a big block, and so
+on, plus a final piece of length less than $r+m$. Let $U_1,U_2,\dots$ be the sums over the big blocks and $V$ the sum of everything else. Two big blocks are separated by
+at least $m$ positions, so the $U_j$ are independent; the same holds for the small blocks. There are at most $\frac n r+1$ small blocks, each of sum bounded by $mc$,
+so $\operatorname{Var}V\le2\bigl(\frac nr+1\bigr)(mc)^2+2(r+m)^2c^2=o(n)$, using independence of the small block sums and treating the final piece separately. Hence
+$\|S_n-\sum_jU_j\|_2=o(\sqrt n)=o(\sqrt{\operatorname{Var}S_n})$, and $\operatorname{Var}\sum_jU_j=\operatorname{Var}S_n\,(1+o(1))$. Each $|U_j|\le rc=o(\sqrt{\operatorname{Var}S_n})$,
+so for every $\varepsilon>0$ the Lindeberg sum $\sum_j\mathbb E[U_j^2;|U_j|>\varepsilon\sqrt{\operatorname{Var}S_n}]$ is $0$ for $n$ large: by Lindeberg's theorem (Volume~3,
+Theorem~6.10), $\sum_jU_j/\sqrt{\operatorname{Var}S_n}\Rightarrow N(0,1)$, and so does $S_n/\sqrt{\operatorname{Var}S_n}$, since the difference tends to $0$ in $L^2$.
+
+(c) The $X_i-\frac13$ are centred, bounded and $2$-dependent, with $\operatorname{Var}P_n=\frac{2(n+1)}{45}\ge\frac{2n}{45}$. By (b), $\bigl(P_n-\frac{n-2}3\bigr)/\sqrt{\operatorname{Var}P_n}\Rightarrow N(0,1)$,
+and $\operatorname{Var}P_n\sim\frac{2n}{45}$.
+
+\tools{Volume~3, Theorem~6.10 (Lindeberg); Volume~3, Chapter~5 (variance of sums).}
+\leads The same $m$-dependent central limit theorem gives Gaussian laws for the number of descents, of runs, and of occurrences of a pattern in a random word. Rates come from Stein's method (Volume~10, Chapter~6), which handles local dependence directly.
+\end{solution}
+
+\begin{solution}{pb:tilings}
+\idea A uniform tiling is a sequence of independent tiles conditioned to stop exactly at $n$, and the conditioning costs almost nothing: the event has probability
+close to $\frac1{1+q}$ whatever happened long before. So the dominoes behave like a renewal--reward process, whose fluctuations are Gaussian.
+
+\writeup (a) A tiling of $[0,n]$ with $s$ squares and $d$ dominoes ($s+2d=n$) is produced by the first $s+d$ tiles with probability
+$(1-q)^sq^d=\varphi^{-s}\varphi^{-2d}=\varphi^{-n}$ (note $1-q=1-\varphi^{-2}=\varphi^{-1}$, since $\varphi^2=\varphi+1$). This does not depend on the tiling, and the
+events for different tilings are disjoint with union $H_n$. So given $H_n$ the tiling is uniform, and $P(H_n)=F_{n+1}\varphi^{-n}$.
+
+(b) $u_n=P(H_n)$ satisfies $u_0=1$, $u_1=1-q$, and $u_n=(1-q)u_{n-1}+qu_{n-2}$ by conditioning on the last tile ending at $n$. The characteristic equation
+$x^2=(1-q)x+q$ has roots $1$ and $-q$, so $u_n=\alpha+\beta(-q)^n$, and the initial values give $\alpha=\frac1{1+q}$, $\beta=\frac q{1+q}$: $u_n=\frac{1-(-q)^{n+1}}{1+q}$.
+
+(c) \emph{Without conditioning.} Let $\tau_j=T_1+\dots+T_j$, $\nu(m)=\max\{j:\tau_j\le m\}$, and $D'_m$ the number of dominoes among $T_1,\dots,T_{\nu(m)}$. With
+$a=\frac q{1+q}$ and $Y_j=\mathbf 1\{T_j=2\}-aT_j$, we have $\mathbb EY_j=q-a(1+q)=0$ and
+\[
+D'_m-am=\sum_{j\le\nu(m)}Y_j+a\bigl(\tau_{\nu(m)}-m\bigr),\qquad\bigl|a(\tau_{\nu(m)}-m)\bigr|\le a.
+\]
+Let $\mu=\mathbb ET=1+q$ and $k_m=\lfloor m/\mu\rfloor$. By the strong law of renewal (Volume~10, Theorem~2.7), $\nu(m)/m\to\frac1\mu$, so $P(|\nu(m)-k_m|>\varepsilon m)\to0$
+for every $\varepsilon>0$. On the complement, $\bigl|\sum_{j\le\nu(m)}Y_j-\sum_{j\le k_m}Y_j\bigr|$ is at most the maximum of the partial sums of $Y_{k_m+1},Y_{k_m+2},\dots$
+(or of $Y_{k_m},Y_{k_m-1},\dots$) over $\varepsilon m$ terms, and Kolmogorov's inequality (Volume~3, Corollary~10.16) bounds the probability that it exceeds $\eta\sqrt m$ by
+$2\varepsilon\operatorname{Var}Y/\eta^2$. With the central limit theorem for $\sum_{j\le k_m}Y_j$, this gives $\frac{D'_m-am}{\sqrt m}\Rightarrow N(0,s^2)$ with
+$s^2=\frac{\operatorname{Var}Y}\mu$. Now $Y=(1-a)\mathbf 1\{T=2\}-a$, so $\operatorname{Var}Y=(1-a)^2q(1-q)$ and $s^2=\frac{q(1-q)}{(1+q)^3}$. Since
+$1+q=\frac{\varphi^2+1}{\varphi^2}=\frac{\sqrt5\,\varphi}{\varphi^2}=\frac{\sqrt5}\varphi$ (because $\varphi^2+1=\varphi+2=\sqrt5\,\varphi$), we get
+$s^2=\frac{\varphi^{-3}}{5\sqrt5\,\varphi^{-3}}=\frac1{5\sqrt5}$ and $a=\frac{\varphi^{-2}\varphi}{\sqrt5}=\frac1{\sqrt5\,\varphi}=\frac{5-\sqrt5}{10}$.
+
+\emph{With conditioning.} Let $L=\lfloor n^{1/4}\rfloor$ and $J$ the first $j$ with $\tau_j\ge n-L$, so $\tau_J\in\{n-L,n-L+1\}$. The variable $D'_{n-L}$ is a function of
+$T_1,\dots,T_J$, the tiles after $J$ are independent of them, and so $P(H_n\mid T_1,\dots,T_J)=u_{n-\tau_J}=\frac1{1+q}+O(q^{L-1})$. Hence
+$P(D'_{n-L}\le y\mid H_n)=P(D'_{n-L}\le y)+O(q^{L-1})$ uniformly in $y$, because $u_n=\frac1{1+q}+O(q^{n+1})$ too. On $H_n$, $D_n$ is $D'_n$, which differs from $D'_{n-L}$ by
+at most $L=o(\sqrt n)$. So $\frac{D_n-an}{\sqrt n}\Rightarrow N(0,s^2)$.
+
+\tools{Volume~10, Theorem~2.7 (renewal); Volume~3, Corollary~10.16 (Kolmogorov's inequality) and Theorem~6.10 (central limit theorem).}
+\leads In combinatorial language, $P(D_n=k)=\binom{n-k}k/F_{n+1}$, and the result says that the coefficients of the rows of Pascal's triangle read along the
+diagonals that give the Fibonacci numbers are Gaussian. The probabilistic proof gives the same answer for tilings with any finite set of tile lengths.
+\end{solution}
+
+\begin{solution}{pb:harper}
+\idea A probability generating function with real roots factors into linear factors, and each factor is a coin. So a law with real-rooted generating function is a sum
+of independent coins, and the central limit theorem applies as soon as its variance tends to infinity. Dobiński's representation computes the variance.
+
+\writeup (a) $G$ has non-negative coefficients, so it has no positive root, and $G(0)=P(X=0)$. Its roots are $-r_1,\dots,-r_d$ with $r_i\ge0$, $d\le n$, and
+$G(x)=c\prod_i(x+r_i)$. Since $G(1)=1$, $G(x)=\prod_i\frac{x+r_i}{1+r_i}=\prod_i(1-p_i+p_ix)$ with $p_i=\frac1{1+r_i}\in\left]0,1\right]$, the generating function of a sum of
+independent Bernoulli$(p_i)$ variables; add $n-d$ Bernoulli variables equal to $0$.
+
+(b) $S(n+1,k)=kS(n,k)+S(n,k-1)$ (the element $n+1$ joins one of the $k$ blocks of a partition of $\{1,\dots,n\}$, or forms its own block), which is
+$A_{n+1}=xA_n'+xA_n$. Now $A_n+A_n'=e^{-x}(e^xA_n)'$. Suppose $A_n$ has $n$ distinct real roots $r_n<\dots<r_1=0$ ($A_n(0)=S(n,0)=0$ for $n\ge1$). Then $e^xA_n$ vanishes at the
+$r_i$ and tends to $0$ at $-\infty$; by Rolle's theorem $(e^xA_n)'$ has a root in each $]r_{i+1},r_i[$ and one in $]-\infty,r_n[$: $n$ distinct roots, all negative, and these are
+all the roots of $A_n+A_n'$, which has degree $n$. Multiplying by $x$, $A_{n+1}$ has the $n+1$ distinct roots $0$ and these. Start from $A_1=x$.
+
+(c) At $x=1$ the recurrence gives $B_{n+1}=B_n+A_n'(1)$, so $\mathbb EK_n=\frac{A_n'(1)}{B_n}=\frac{B_{n+1}}{B_n}-1$. Differentiating, $A_{n+1}'=A_n+A_n'+x(A_n'+A_n'')$, so
+$A_{n+1}'(1)=B_n+2A_n'(1)+A_n''(1)$, and $A_{n+1}'(1)=B_{n+2}-B_{n+1}$; hence $A_n''(1)=B_{n+2}-3B_{n+1}+B_n$ and
+$\mathbb EK_n^2=\frac{A_n''(1)+A_n'(1)}{B_n}=\frac{B_{n+2}-2B_{n+1}}{B_n}$. On the other side, Dobiński's formula $B_k=\frac1e\sum_m\frac{m^k}{m!}$ gives
+$\mathbb EM^j=\frac{B_{n+j}}{B_n}$. So $\mathbb EK_n=\mathbb EM-1$, and
+\[
+\operatorname{Var}K_n=\frac{B_{n+2}-2B_{n+1}}{B_n}-\Bigl(\frac{B_{n+1}}{B_n}-1\Bigr)^2=\frac{B_{n+2}}{B_n}-\Bigl(\frac{B_{n+1}}{B_n}\Bigr)^2-1=\operatorname{Var}M-1.
+\]
+
+(d) Let $\pi_m=P(M=m)$ and $r(m)=\frac{\pi_{m+1}}{\pi_m}=\frac{(1+1/m)^n}{m+1}$, which decreases in $m$. Let $m_0$ be a mode: $r(m_0-1)\ge1\ge r(m_0)$. From
+$e^{n/(m_0+1)}\le(1+\frac1{m_0})^n\le m_0+1$ and $(1+\frac1{m_0-1})^n\ge m_0$ we get $(m_0-1)\log m_0\le n\le(m_0+1)\log(m_0+1)$, so $m_0\sim\frac n{\log n}$.
+For $m\ge2$, $\log r(m-1)-\log r(m)=n\log\bigl(1+\frac1{m^2-1}\bigr)+\log\frac{m+1}m\le\frac{2n}{m^2}+\frac1m$. Let $\varepsilon=\frac{8n}{m_0^2}+\frac2{m_0}$, which tends to $0$,
+and $J=\lfloor\varepsilon^{-1/2}\rfloor\le\frac{m_0}2$ for $n$ large. For $|i|\le J$ the steps between $m_0$ and $m_0+i$ have $|\log r|\le(J+1)\varepsilon$ (start from
+$\log r(m_0)\le0\le\log r(m_0-1)$, with consecutive differences at most $\varepsilon$), so $\pi_{m_0+i}\ge\pi_{m_0}e^{-J(J+1)\varepsilon}\ge e^{-2}\pi_{m_0}$, while $\pi_m\le\pi_{m_0}$ for
+all $m$. Now fix any real $c$. At most $\frac J2+1$ integers lie in $]c-\frac J4,c+\frac J4[$, each of probability at most $\pi_{m_0}$, while at least $J$ integers of $[m_0-J,m_0+J]$ lie
+outside, each of probability at least $e^{-2}\pi_{m_0}$. So $P(|M-c|\ge\frac J4)\ge e^{-2}P(|M-c|<\frac J4)$ for $J\ge2$, hence $P(|M-c|\ge\frac J4)\ge\frac{e^{-2}}{1+e^{-2}}$, and
+$\mathbb E(M-c)^2\ge\frac{J^2}{16}\cdot\frac{e^{-2}}{1+e^{-2}}$. Taking $c=\mathbb EM$: $\operatorname{Var}M\to\infty$, since $J\to\infty$.
+
+So $\operatorname{Var}K_n=\sum_ip_i(1-p_i)\to\infty$ for the Bernoulli decomposition of (a), (b). The summands are bounded by $1$, so Lindeberg's condition holds trivially
+(Volume~3, Theorem~6.10), and $\frac{K_n-\mathbb EK_n}{\sqrt{\operatorname{Var}K_n}}\Rightarrow N(0,1)$.
+
+\tools{Volume~0, Theorem~5.10 (Rolle); Volume~4, Exercise~2.3 (Dobiński's formula); Volume~3, Theorem~6.10 (Lindeberg).}
+\leads Harper proved this in 1967, and the method is now a standard trick: matching polynomials of graphs, independence polynomials of claw-free graphs, Eulerian
+polynomials all have real roots, and all give Gaussian laws for free. Real roots give more: Darroch's theorem says that the mode of a sum of independent coins is within
+$1$ of the mean (a direct computation verifies it for $K_n$).
+\end{solution}
+
+\begin{solution}{pb:fixedtv}
+\idea Inclusion and exclusion gives the law of $F_n$ as a truncated Poisson series: the two laws differ only by the tails of the series for $e^{-1}$, which are tiny. A
+general-purpose method cannot compete with an exact formula.
+
+\writeup (a) By inclusion and exclusion (Volume~3, Theorem~2.13), $P(F_n=k)=\frac1{k!}\sum_{j=0}^{n-k}\frac{(-1)^j}{j!}$ for $0\le k\le n$, while $e^{-1}/k!=\frac1{k!}\sum_{j\ge0}\frac{(-1)^j}{j!}$.
+So $d_k=P(F_n=k)-\frac{e^{-1}}{k!}=-\frac1{k!}\sum_{j>n-k}\frac{(-1)^j}{j!}$, an alternating tail with decreasing terms: $d_k$ has the sign of $(-1)^{n-k}$ and
+$|d_k|\le\frac1{k!\,(n-k+1)!}$. As both laws have total mass $1$, the distance is the sum of the positive parts of the differences, and the Poisson masses above $n$ only
+count negatively. So
+\[
+\begin{aligned}
+\|\mathcal L(F_n)-\text{Poisson}(1)\|&=\sum_{\substack{k\le n\\ n-k\text{ even}}}d_k\le\sum_{\substack{k\le n\\ n-k\text{ even}}}\frac1{k!\,(n+1-k)!}\\
+&=\frac1{(n+1)!}\sum_{\substack{1\le j\le n+1\\ j\text{ odd}}}\binom{n+1}j=\frac{2^n}{(n+1)!}.
+\end{aligned}
+\]
+
+(b) The indicator $I_i$ of $\{\pi(i)=i\}$ is not independent of $(I_j)_{j\ne i}$ (if all other points are fixed, so is $i$), so the neighbourhood of each $i$ in Volume~10,
+Theorem~6.8, must be everything. Then $b_1=\bigl(\sum_ip_i\bigr)^2=1$, $b_2=\sum_{i\ne j}P(I_iI_j=1)=n(n-1)\frac1{n(n-1)}=1$, and the bound is $2(1-e^{-1})\approx1.26$:
+useless. Local dependence is the wrong picture here: all the indicators are weakly dependent, none independent.
+
+\tools{Volume~3, Theorem~2.13 (fixed points and inclusion--exclusion); Volume~10, Theorem~6.8 (Chen--Stein).}
+\leads Coupling versions of the Chen--Stein method handle weak global dependence and give a bound of order $\frac1n$ for fixed points (Barbour, Holst and
+Janson, Chapter~4), still far from the truth, which is superexponentially small.
+\end{solution}
+
+\begin{solution}{pb:kubslow}
+\idea Stein's bound for the Wasserstein distance is of order $\frac1{\sigma_x}$, which is $(\log\log x)^{-1/2}$: correct, but $\log\log x$ grows so slowly that the
+bound says nothing in practice. Lattice effects show that nothing better than $(\log\log x)^{-1/2}$ is possible in Kolmogorov's distance either.
+
+\writeup (a) Let $X_p=(B_p-\frac1p)/\sigma_x$, independent and centred, with $\sum_p\mathbb EX_p^2=1$. Then
+$\mathbb E|B_p-\frac1p|^3=\frac1p(1-\frac1p)\bigl((1-\frac1p)^2+\frac1{p^2}\bigr)\le\frac1p(1-\frac1p)$, so $\sum_p\mathbb E|X_p|^3\le\frac{\sigma_x^2}{\sigma_x^3}=\frac1{\sigma_x}$ and
+Volume~10, Theorem~6.4 gives $d_W\le\frac3{\sigma_x}$. Proposition~6.3 there gives $d_K\le(2/\pi)^{1/4}\sqrt3\,\sigma_x^{-1/2}$, and $(2/\pi)^{1/4}\sqrt3=1.547\ldots$, while
+$\sigma_x^2=\log\log x+O(1)$ by Mertens's theorem (Volume~5, Theorem~1.5). So $d_K\le2(\log\log x)^{-1/4}$ for $x$ large.
+
+(b) $2(\log\log x)^{-1/4}\le0.01$ requires $\log\log x\ge200^4=1.6\times10^9$, that is $x\ge\exp(\exp(1.6\times10^9))$, a number with more than $10^{690\,000\,000}$ digits.
+
+(c) $K=\sum_pB_p$ is integer-valued, so $W_x$ lives on a lattice of step $\frac1{\sigma_x}$. If $w$ is an atom of mass $m$, the distribution function jumps by $m$ at $w$
+while $\Phi$ is continuous, so $|F(w)-\Phi(w)|+|F(w^-)-\Phi(w)|\ge m$ and $d_K\ge\frac m2$. By Chebyshev's inequality $P(|K-\mathbb EK|<2\sigma_x)\ge\frac34$, and at most
+$4\sigma_x+1$ integers lie in that interval, so some atom has mass at least $\frac3{4(4\sigma_x+1)}\ge\frac1{8\sigma_x}$ for $\sigma_x\ge1$. Hence $d_K\ge\frac1{16\sigma_x}\ge\frac c{\sqrt{\log\log x}}$.
+For $x=10^6$, $\sigma_x^2=2.435$, the largest atom gives $d_K\ge0.123$, and the exact distance computed numerically is $0.150$.
+
+\tools{Volume~10, Proposition~6.3 and Theorem~6.4 (Stein); Volume~5, Theorem~1.5 (Mertens).}
+\leads The same lower bound holds for $\omega(n)$ itself: Rényi and Turán (1958) proved that the error in the Erdős--Kac theorem is exactly of order
+$(\log\log x)^{-1/2}$. Better approximations use the Poisson law, or the mod-Poisson convergence of Volume~10, Chapter~11, instead of the Gaussian.
+\end{solution}
+
+\begin{solution}{pb:twelve}
+\idea Lindeberg's swapping argument with a fourth-order Taylor expansion: for symmetric pieces the first three moments of $X_i$ and of a Gaussian agree, so each swap
+costs $O(n^{-2})$ and the total error is $O(\frac1n)$, better than the $n^{-1/2}$ of Berry--Esseen. But this is for smooth test functions; the tails tell another story.
+
+\writeup (a) Let $Z_1,\dots,Z_n$ be standard Gaussian, independent of the $X_i$, so that $Z=\frac{Z_1+\dots+Z_n}{\sqrt n}$ is standard Gaussian. Put
+$R_i=\frac1{\sqrt n}(X_1+\dots+X_{i-1}+Z_{i+1}+\dots+Z_n)$; then $\mathbb Eh(W)-\mathbb Eh(Z)=\sum_i\bigl(\mathbb Eh(R_i+\frac{X_i}{\sqrt n})-\mathbb Eh(R_i+\frac{Z_i}{\sqrt n})\bigr)$. Taylor's formula gives
+$h(R+y)=h(R)+h'(R)y+\frac12h''(R)y^2+\frac16h'''(R)y^3+\rho$ with $|\rho|\le\frac{\|h^{(4)}\|}{24}y^4$. Since $R_i$ is independent of $X_i$ and $Z_i$, and $X_i$, $Z_i$
+have the same moments of order $1$, $2$ and $3$ ($0$, $1$, $0$, by symmetry), the terms of order up to $3$ cancel and
+$\bigl|\mathbb Eh(R_i+\frac{X_i}{\sqrt n})-\mathbb Eh(R_i+\frac{Z_i}{\sqrt n})\bigr|\le\frac{\|h^{(4)}\|}{24n^2}(m_4+3)$. Sum over $i$.
+
+(b) $W=\frac1{\sqrt{12}}\sum_{i\le12}X_i$ with $X_i=\sqrt{12}(U_i-\frac12)$, symmetric, $\mathbb EX_i^2=1$, $m_4=144\,\mathbb E(U-\frac12)^4=\frac{144}{80}=\frac95$. With $h=\cos$,
+$\|h^{(4)}\|=1$ and $n=12$: $|\mathbb E\cos W-\mathbb E\cos Z|\le\frac{9/5+3}{24\cdot12}=\frac1{60}$, and $\mathbb E\cos Z=e^{-1/2}$. Exactly,
+$\mathbb E\cos W=\operatorname{Re}\prod_i\mathbb Ee^{i(U_i-1/2)}=\bigl(\int_{-1/2}^{1/2}\cos u\dd u\bigr)^{12}=(2\sin\tfrac12)^{12}=0.603968$, against $e^{-1/2}=0.606531$: the error
+$0.0026$ is six times smaller than the bound.
+
+(c) $|W|\le6$ always. $P(W>4)=P(\sum U_i>10)=P(\sum U_i<2)$ by $U_i\mapsto1-U_i$. The simplex $\{u\ge0,\sum u_i<2\}$ has volume $\frac{2^{12}}{12!}$; the part outside
+the cube is where some $u_i>1$, and two coordinates cannot both exceed $1$; translating $u_i$ by $1$, each such part has volume $\frac1{12!}$. So
+$P(W>4)=\frac{2^{12}-12}{12!}$ and $P(|W|>4)=\frac{2(2^{12}-12)}{12!}=1.705\times10^{-5}$, against $P(|Z|>4)=6.33\times10^{-5}$. Bound (a) controls smooth averages, not
+probabilities of rare events: an indicator has no fourth derivative, and smoothing it on a scale $\delta$ costs a factor $\delta^{-4}$. A simulation that needs
+events beyond $4\sigma$ is four times too optimistic with this generator, and events beyond $6\sigma$ never happen at all.
+
+\tools{Volume~3, Theorem~6.10 (Lindeberg's swapping argument); Volume~3, Chapter~5 (uniform sums).}
+\leads The rate $\frac1n$ for smooth functions and symmetric summands is the first case of the Edgeworth expansion. Exact methods cost little more: the Box--Muller transform
+(1958) turns two uniform numbers into two independent Gaussian ones.
+\end{solution}
+
+\begin{solution}{pb:threeap}
+\idea Progressions in a sparse random set are rare and almost independent events: two of them can only interact if they overlap, and overlapping pairs are few.
+This is the situation of the Chen--Stein theorem, with the triangles of a random graph as the model (Volume~10, Example~6.10).
+
+\writeup (a) A progression is determined by its first term and its difference, and $(a,d)$ and $(a+2d,-d)$ give the same set; for $N\ge5$ prime nothing else
+does (the middle term $b$ of $\{x,b,y\}$ satisfies $2b=x+y$, and two different middles would force $3d=0$). So there are $\frac{N(N-1)}2$ progressions. Two different
+sets of three elements share at most two.
+
+(b) Index by progressions $\alpha$, $I_\alpha=\mathbf 1\{\alpha\subseteq A\}$, $p_\alpha=p^3$, and let $B_\alpha$ be the progressions meeting $\alpha$; $I_\alpha$ is independent of
+the progressions disjoint from $\alpha$. A given residue $x$ lies in $(N-1)$ progressions as an end and $\frac{N-1}2$ as the middle, so $|B_\alpha|\le\frac{9(N-1)}2$. A given pair
+$\{x,y\}$ lies in exactly $3$ progressions ($x$, $y$ as the ends, or one of them in the middle), so at most $6$ progressions share two elements with $\alpha$. With
+$M=\frac{N(N-1)}2$ and $\lambda=Mp^3$,
+\[
+b_1\le M\frac{9(N-1)}2p^6,\qquad b_2\le M\Bigl(6p^4+\frac{9(N-1)}2p^5\Bigr),
+\]
+since two progressions sharing two elements involve four residues, and sharing one, five. By Volume~10, Theorem~6.8,
+$\|\mathcal L(W)-\text{Poisson}(\lambda)\|\le\frac{b_1+b_2}\lambda\le\frac{9(N-1)}2(p^3+p^2)+6p$. With $p=cN^{-2/3}$: $Np^3=\frac{c^3}N$, $Np^2=c^2N^{-1/3}$, $p=cN^{-2/3}$, so the
+distance is $O(N^{-1/3})$.
+
+(c) $P(W=0)=e^{-\lambda}+O(N^{-1/3})$ and $\lambda=c^3\frac{N(N-1)}{2N^2}\to\frac{c^3}2$. And $|A|$ is binomial with mean $Np=cN^{1/3}\to\infty$ and variance at most the mean,
+so $|A|/(cN^{1/3})\to1$ in probability by Chebyshev's inequality. For $N=10^4$ the bound is $0.09$; the simulation in one finds numerically $0.65$ against $e^{-1/2}=0.61$ for $c=1$.
+
+\tools{Volume~10, Theorem~6.8 (Chen--Stein).}
+\leads The threshold $N^{-2/3}$ is where a random set starts to contain progressions; Roth's theorem says that a set of density $\delta>0$ always contains one, and the
+modern random versions of Roth's and Szemerédi's theorems (Conlon and Gowers, Schacht, 2016) find the threshold for ``every dense subset of a random set contains a
+progression'': it is $N^{-1/2}$.
+\end{solution}
+
+\begin{solution}{pb:spearman}
+\idea A random transposition changes $W$ a little and pulls it back towards $0$ on average, with $\lambda=\frac2{n-1}$. The exchangeable pair theorem then needs the
+fluctuations of $\mathbb E[D^2\mid\pi]$, which is again a linear rank statistic, and of $|D|^3$.
+
+\writeup (a) For $i\ne j$, $(\pi(i),\pi(j))$ is uniform over ordered pairs of distinct positions. Let $\bar y$ be the mean and $S_y=\sum_k(y_k-\bar y)^2$. Then
+$\operatorname{Var}y_{\pi(i)}=\frac{S_y}n$ and $\operatorname{Cov}(y_{\pi(i)},y_{\pi(j)})=-\frac{S_y}{n(n-1)}$ (the sum of all $y_{\pi(i)}$ is constant). Hence
+\[
+\operatorname{Var}\sum_ix_iy_{\pi(i)}=\frac{S_y}n\sum_ix_i^2-\frac{S_y}{n(n-1)}\sum_{i\ne j}x_ix_j=\frac{S_y}{n(n-1)}\Bigl(n\sum_ix_i^2-\bigl(\sum_ix_i\bigr)^2\Bigr)=\frac{S_xS_y}{n-1}.
+\]
+For $W$, $\mathbb EW=\sum_ib_i\bar c=0$ and $\operatorname{Var}W=\frac{\sum b_i^2\sum c_j^2}{n-1}=1$.
+
+(b) $\pi'$ is again uniform and $\pi=\pi'\circ(I\,J)$, so $(\pi,\pi')$ and $(\pi',\pi)$ have the same law, and so do $(W,W')$ and $(W',W)$. Given $\pi$, write $c'_i=c_{\pi(i)}$;
+then $D=W'-W=b_Ic'_J+b_Jc'_I-b_Ic'_I-b_Jc'_J=-(b_I-b_J)(c'_I-c'_J)$. Averaging over the $n(n-1)$ ordered pairs, and using $\sum_{i\ne j}b_ic'_j=\bigl(\sum b\bigr)\bigl(\sum c'\bigr)-W=-W$:
+\[
+\mathbb E[D\mid\pi]=\frac{2(-W)-2(n-1)W}{n(n-1)}=-\frac2{n-1}W.
+\]
+
+(c) Apply Volume~10, Theorem~6.5 with $\mathcal G=\sigma(\pi)$ and $\lambda=\frac2{n-1}$. First,
+$\mathbb E[D^2\mid\pi]=\frac1{n(n-1)}\sum_{i,j}(b_i-b_j)^2(c'_i-c'_j)^2$. Expanding both squares, the terms with a single factor $b_ib_j$ or $c'_ic'_j$ vanish because $\sum b=\sum c'=0$, and
+\[
+\sum_{i,j}(b_i-b_j)^2(c'_i-c'_j)^2=2n\sum_ib_i^2c'^2_i+2\sum_ib_i^2\sum_jc_j^2+4W^2.
+\]
+So $T=\frac{\mathbb E[D^2\mid\pi]}{2\lambda}=\frac12V+\frac{n-1}{2n}+\frac{W^2}n$ with $V=\sum_ib_i^2c_{\pi(i)}^2$, and $\mathbb ET=1$ because $\mathbb EV=\frac{n-1}n$. Thus
+$\mathbb E|1-T|\le\frac12\sqrt{\operatorname{Var}V}+\frac{\mathbb E|W^2-1|}n\le\frac12\sqrt{\operatorname{Var}V}+\frac2n$. By (a) with $x_i=b_i^2$, $y_j=c_j^2$,
+$\operatorname{Var}V\le\frac1{n-1}\sum b_i^4\sum c_j^4$ (centring decreases sums of squares). Second, $|b_i-b_j|^3\le4(|b_i|^3+|b_j|^3)$, so
+$\sum_{i\ne j}|b_i-b_j|^3\le8n\sum|b|^3$, and since $I,J$ and $\pi$ are independent,
+\[
+\mathbb E|D|^3=\frac{\sum_{i\ne j}|b_i-b_j|^3}{n(n-1)}\cdot\frac{\sum_{k\ne l}|c_k-c_l|^3}{n(n-1)}\le\frac{64\sum|b|^3\sum|c|^3}{(n-1)^2},
+\qquad\frac{\mathbb E|D|^3}{2\lambda}\le\frac{16}{n-1}\sum|b|^3\sum|c|^3.
+\]
+Theorem~6.5 gives $d_W\le2\mathbb E|1-T|+\frac{\mathbb E|D|^3}{2\lambda}$, which is the bound.
+
+(d) Let $m=\frac{n+1}2$ and $Q=\sum_i(i-m)^2=\frac{n(n^2-1)}{12}$. Then $\rho=\frac1Q\sum_i(i-m)(\pi(i)-m)$, and with $b_i=c_i=(i-m)\,(n-1)^{1/4}Q^{-1/2}$ we get $\sum b^2\sum c^2=\sqrt{n-1}^2=n-1$ and
+$W=\sqrt{n-1}\,\rho$. Now $|b_i|\le\frac n2(n-1)^{1/4}Q^{-1/2}=O(n^{-1/4})$, so $\sum b^4=O(n\cdot n^{-1})=O(1)$ and $\sum|b|^3=O(n\cdot n^{-3/4})=O(n^{1/4})$. All three
+terms of the bound are $O(n^{-1/2})$; one finds numerically the bound equal to $28.8/\sqrt n$.
+
+\tools{Volume~10, Theorem~6.5 (exchangeable pairs); Volume~3, Chapter~5.}
+\leads Hoeffding proved the central limit theorem for these \emph{combinatorial} statistics $\sum_ia_{i\pi(i)}$ in 1951, and Bolthausen (1984) found the Berry--Esseen rate
+by Stein's method. The constant in (c) is poor: the true distance for $n=20$ is already below $0.01$.
+\end{solution}
+
+\begin{solution}{pb:erdostaylor}
+\idea Returns of the planar walk are rare, about $\frac1{\pi t}$ at time $t$, and the expected number up to $n$ grows like $\log n$. But the returns come in clusters:
+once at home, the walk has the same chance as at the start to come back. The factorial moments of $N_n$ are those of an exponential variable, the law of a variable with
+no memory.
+
+\writeup (a) Rotate by $45^\circ$: $U_t=X_t+Y_t$ and $V_t=X_t-Y_t$ each move by $\pm1$ at every step, and the four steps of the planar walk correspond to the four pairs of
+signs, so $U$ and $V$ are independent simple walks on $\Z$. Hence $P(S_{2t}=0)=P(U_{2t}=0)^2=\bigl(\binom{2t}t4^{-t}\bigr)^2=u(t)$. Since $\binom{2t}t4^{-t}\sim\frac1{\sqrt{\pi t}}$
+(Volume~4, Corollary~3.6), $u(t)\sim\frac1{\pi t}$ and $G_n=\sum_{t\le n}u(t)\sim\frac1\pi\log n$.
+
+(b) $N_n(N_n-1)\cdots(N_n-k+1)$ counts ordered $k$-tuples of distinct return times, so it equals $k!$ times the number of increasing ones. By the Markov property,
+$P(S_{2t_1}=\dots=S_{2t_k}=0)=u(t_1)u(t_2-t_1)\cdots u(t_k-t_{k-1})$ for $t_1<\dots<t_k$. Hence
+\[
+\mathbb E[(N_n)_k]=k!\sum_{0<t_1<\dots<t_k\le n}\prod_{i}u(t_i-t_{i-1}).
+\]
+Writing $s_i=t_i-t_{i-1}\ge1$ (with $t_0=0$): dropping the constraint $\sum s_i\le n$ to $s_i\le n$ gives the upper bound $k!\,G_n^k$; requiring $s_i\le\lfloor n/k\rfloor$ for every $i$
+implies $\sum s_i\le n$ and gives the lower bound $k!\,G_{\lfloor n/k\rfloor}^k$.
+
+(c) Since $G_{\lfloor n/k\rfloor}/G_n\to1$, $\mathbb E[(N_n)_k]/G_n^k\to k!$ for every $k$. For a variable with values in $\N$ and $z\in[-1,0]$, the partial sums of
+$(1+z)^N=\sum_k\binom Nkz^k$ alternately overestimate and underestimate it (Bonferroni's inequalities). With $z=-\frac s{G_n}$, $0<s<1$, and $n$ large:
+\[
+\sum_{k\le2K+1}\frac{(-s)^k}{k!}\frac{\mathbb E[(N_n)_k]}{G_n^k}\le\mathbb E\Bigl(1-\frac s{G_n}\Bigr)^{N_n}\le\sum_{k\le2K}\frac{(-s)^k}{k!}\frac{\mathbb E[(N_n)_k]}{G_n^k}.
+\]
+As $n\to\infty$ both sides tend to $\sum_{k\le2K+1}(-s)^k$ and $\sum_{k\le2K}(-s)^k$, then as $K\to\infty$ to $\frac1{1+s}$. Moreover $|(1-\frac s{G_n})^{N}-e^{-sN/G_n}|\to0$
+uniformly in $N$, so $\mathbb Ee^{-sN_n/G_n}\to\frac1{1+s}$ for $0<s<1$. The sequence $N_n/G_n$ is tight (its mean is $1$); if $Y$ is the limit in law of a subsequence (Volume~6,
+Theorem~11.7), then $\mathbb Ee^{-sY}=\frac1{1+s}$ for $0<s<1$. Both sides are holomorphic in $\operatorname{Re}s>0$, so they agree for all $s>0$ (Volume~4, Theorem~9.18). The
+functions $y\mapsto e^{-ky}$, $k\in\N$, generate an algebra dense in the continuous functions on $[0,\infty]$ (Stone--Weierstrass), so the law of $Y$ is determined:
+it is the exponential law, whose Laplace transform is $\frac1{1+s}$. Every subsequence has the same limit, so $N_n/G_n$ converges in law to it.
+
+\tools{Volume~4, Corollary~3.6 (Wallis) and Theorem~9.18 (identity theorem); Volume~3, Chapter~7 (the Markov property, Pólya's theorem); Volume~6, Theorem~11.7 (Prokhorov).}
+\leads Erdős and Taylor proved this in 1960. In dimension $1$ the number of returns up to $2n$, divided by $\sqrt n$, tends to a multiple of the absolute value of a Gaussian; in dimension
+$3$ and more it stays bounded, with a geometric law. Dimension $2$ sits on the border, and the exponential law is the mark of a variable that keeps forgetting its past.
+Numerically, the convergence is slow: for $n=10^4$, $\mathbb EN_n^2/(2G_n^2)=1.13$ instead of $1$.
+\end{solution}
+
+\begin{solution}{pb:dice}
+\idea Modulo $q$, the total of $n$ dice is a random walk on $\Z/q\Z$, and its law is read off from the Fourier coefficients of one die. Modulo $7$ the six faces are all
+the non-zero residues, which makes every coefficient equal to $-\frac16$.
+
+\writeup (a) Let $\omega=e^{2\pi i/7}$ and $\phi(h)=\mathbb E\omega^{hX}=\frac16\sum_{f=1}^6\omega^{hf}$ for one die $X$. For $h\not\equiv0$, $\sum_{f=0}^6\omega^{hf}=0$, so
+$\phi(h)=-\frac16$. By Fourier inversion on $\Z/7\Z$,
+\[
+P(S_n\equiv r)=\frac17\sum_{h=0}^6\omega^{-hr}\phi(h)^n=\frac17+\frac17\Bigl(-\frac16\Bigr)^n\sum_{h=1}^6\omega^{-hr}
+=\begin{cases}\frac17+\frac67\bigl(-\frac16\bigr)^n,& r\equiv0,\\[2pt] \frac17-\frac17\bigl(-\frac16\bigr)^n,& r\not\equiv0.\end{cases}
+\]
+(b) Modulo $5$ the faces are $1,2,3,4,0,1$, so $\phi(h)=\frac16\bigl(\sum_{f=0}^4\omega^{hf}+\omega^h\bigr)=\frac{\omega^h}6$ for $h\not\equiv0$, with $\omega=e^{2\pi i/5}$. Then
+$P(S_n\equiv r)=\frac15+\frac1{5\cdot6^n}\sum_{h=1}^4\omega^{h(n-r)}=\frac15+\frac{5\cdot\mathbf 1\{r\equiv n\}-1}{5\cdot6^n}$. Modulo $4$ the faces are $1,2,3,0,1,2$ and with
+$\omega=i$: $\phi(1)=\frac{i-1}6$, $\phi(2)=\frac{-1+1-1+1-1+1}6=0$, $\phi(3)=\overline{\phi(1)}$. So
+$P(S_n\equiv r)-\frac14=\frac12\operatorname{Re}\bigl(i^{-r}\phi(1)^n\bigr)$, and with $\theta_n=\frac{3\pi n}4$ the argument of $\phi(1)^n$,
+$\|\mathcal L(S_n\bmod4)-U\|=\frac14\bigl(\frac{\sqrt2}6\bigr)^n\sum_{r=0}^3\bigl|\cos(\theta_n-\frac{\pi r}2)\bigr|=\frac12\bigl(\frac{\sqrt2}6\bigr)^n\bigl(|\cos\theta_n|+|\sin\theta_n|\bigr)$,
+which is between $\frac12(\frac{\sqrt2}6)^n$ and $\frac1{\sqrt2}(\frac{\sqrt2}6)^n$. Modulo $2$, $\phi(1)=\frac16\sum_f(-1)^f=0$: three odd faces and three even ones, so a single die is
+already uniform modulo $2$, and so is every total.
+
+(c) The faces are $1+3J$ with $J$ uniform on $\{0,\dots,5\}$, so $\mu=1+3\cdot\frac52=\frac{17}2$ and $\sigma^2=9\cdot\frac{35}{12}=\frac{105}4$. The total $S_n=n+3\sum_iJ_i$ lives on
+$n+3\Z$. The $J_i$ have span $1$, so the local limit theorem (Volume~10, Theorem~4.12) gives
+$\sup_j\bigl|\frac\sigma3\sqrt n\,P(\sum J_i=j)-\phi\bigl(\frac{j-\frac52n}{\frac\sigma3\sqrt n}\bigr)\bigr|\to0$. With $k=n+3j$, $P(S_n=k)=P(\sum J_i=j)$ and
+$\frac{j-\frac52n}{\sigma\sqrt n/3}=\frac{k-n\mu}{\sigma\sqrt n}$; multiplying by $3$ gives the claim. The factor $3$ is the span: the whole mass sits on one class modulo $3$,
+so each possible value carries three times the Gaussian density.
+
+\tools{Volume~10, Theorem~4.12 and Lemma~4.11 (local limit theorem, span); Volume~2, Chapter~11 (characters).}
+\leads The rule ``the law modulo $q$ is uniform up to $\max_{h\ne0}|\phi(h)|^n$'' is the simplest case of the upper bound lemma used in the next problem.
+\end{solution}
+
+\begin{solution}{pb:squaresmodp}
+\idea The upper bound lemma turns mixing into a statement about Fourier coefficients, and the Fourier coefficients of the law of a square are Gauss sums, all of
+modulus $p^{-1/2}$. A $\pm1$ step has a coefficient $\cos\frac{2\pi}p$, very close to $1$: it mixes in $p^2$ steps, the squares in two.
+
+\writeup (a) For $h\in\Z/p\Z$ let $\hat Q(h)=\mathbb Ee(ha^2/p)=\frac1p\sum_ae(ha^2/p)$, with $e(x)=e^{2\pi ix}$. For $h\ne0$, substituting $a=b+c$,
+\[
+\Bigl|\sum_ae\Bigl(\frac{ha^2}p\Bigr)\Bigr|^2=\sum_{a,b}e\Bigl(\frac{h(a^2-b^2)}p\Bigr)=\sum_c e\Bigl(\frac{hc^2}p\Bigr)\sum_be\Bigl(\frac{2hcb}p\Bigr)=p,
+\]
+because the inner sum is $p$ for $c=0$ and $0$ otherwise. So $|\hat Q(h)|=p^{-1/2}$, and the law $Q_k$ has coefficients $\hat Q(h)^k$. The upper bound lemma (Volume~9,
+Lemma~10.4, for the abelian group $\Z/p\Z$) gives $\|Q_k-U\|^2\le\frac14\sum_{h\ne0}|\hat Q(h)|^{2k}=\frac{p-1}{4p^k}$.
+
+(b) Let $N(r)$ be the number of $(a,b)$ with $a^2+b^2=r$. The number of $a$ with $a^2=x$ is $1+\left(\frac xp\right)$, so
+$N(r)=\sum_{x+y=r}\bigl(1+(\frac xp)\bigr)\bigl(1+(\frac yp)\bigr)=p+\sum_x\left(\frac{x(r-x)}p\right)$, the linear terms summing to $0$. For $r=0$ the last sum is
+$\sum_x\left(\frac{-x^2}p\right)=(p-1)\left(\frac{-1}p\right)$; for $r\ne0$, writing $x(r-x)=x^2(rx^{-1}-1)$ for $x\ne0$, it is $\sum_{y\ne-1}\left(\frac yp\right)=-\left(\frac{-1}p\right)$.
+With $\eta=\left(\frac{-1}p\right)$: $Q_2(0)-\frac1p=\frac{(p-1)\eta}{p^2}$ and $Q_2(r)-\frac1p=-\frac\eta{p^2}$ for $r\ne0$, so
+$\|Q_2-U\|=\frac12\bigl(\frac{p-1}{p^2}+\frac{p-1}{p^2}\bigr)=\frac{p-1}{p^2}$. The bound of (a) is $\frac{\sqrt{p-1}}{2p}$, about $\frac1{2\sqrt p}$ instead of $\frac1p$: right in spirit, off
+by $\sqrt p$.
+
+(c) For any law $Q$ and $h\ne0$, $|\hat Q(h)|=\bigl|\sum_x(Q(x)-\frac1p)e(hx/p)\bigr|\le2\|Q-U\|$. For the $\pm1$ walk, $\hat Q_k(1)=\cos^k\frac{2\pi}p$, so
+$\|Q_k-U\|\ge\frac12\cos^k\frac{2\pi}p$. Since $\log\cos u\ge-\frac{u^2}2-\frac{u^4}6$ for $|u|\le1$, for $k\le p^2/10$,
+\[
+\|Q_k-U\|\ge\frac12\exp\Bigl(-\frac{p^2}{10}\Bigl(\frac{2\pi^2}{p^2}+\frac{8\pi^4}{3p^4}\Bigr)\Bigr)\longrightarrow\frac12e^{-\pi^2/5}=0.069>\frac1{20}.
+\]
+The truth is worse: one finds numerically $\|Q_k-U\|=0.40$ for $k=p^2/10$, because the frequency $h=\frac{p-1}2$, with $\cos\frac{2\pi h}p$ close to $-1$, also sees that the
+walk remembers its parity.
+Squares mix fast because the law of $a^2$ is spread evenly over all frequencies: no character sees it as concentrated. The $\pm1$ steps are concentrated near $0$, and
+the low frequencies see that for a long time.
+
+\tools{Volume~9, Lemma~10.4 (upper bound lemma); Volume~1, Chapter~6 (Legendre symbol); Volume~1, Exercise~6.7 (Gauss sums).}
+\leads The same computation with $a^d$ instead of $a^2$ needs the bound $|\sum_ae(ha^d/p)|\le(d-1)\sqrt p$, which follows from Gauss sums of multiplicative
+characters: then $d$-th powers mix in a bounded
+number of steps when $p$ is large, a probabilistic shadow of Waring's problem modulo $p$.
+\end{solution}
+
+\begin{solution}{pb:lucky}
+\idea Counting lucky tickets is computing $P(D_1+\dots+D_m=0)$ for the differences $D_i$ of two digits, a symmetric walk on $\Z$. The local limit theorem gives the main
+term, and one more term of the expansion of $\log\mathbb Ee^{itD}$ gives the correction.
+
+\writeup (a) Let $N_m(s)$ be the number of strings of $m$ digits with sum $s$, so that $L_m=\sum_sN_m(s)^2$ and $\sum_sN_m(s)z^s=P(z)^m$ with $P(z)=1+z+\dots+z^9$. By
+Parseval's formula for trigonometric polynomials, $L_m=\frac1{2\pi}\int_{-\pi}^\pi|P(e^{it})|^{2m}\dd t$, and $|P(e^{it})|=\bigl|\frac{e^{10it}-1}{e^{it}-1}\bigr|=\bigl|\frac{\sin5t}{\sin\frac t2}\bigr|$.
+
+(b) Equivalently $L_m=10^{2m}P(D_1+\dots+D_m=0)$ where $D_i=X_i-Y_i$ is the difference of two independent uniform digits: symmetric, with values in $\{-9,\dots,9\}$,
+span $1$, and variance $\sigma^2=2\cdot\frac{99}{12}=\frac{33}2$. The local limit theorem (Volume~10, Theorem~4.12) gives
+$P(\sum D_i=0)\sim\frac1{\sqrt{2\pi m\sigma^2}}=\frac1{\sqrt{33\pi m}}$.
+
+(c) Let $\psi(t)=\mathbb Ee^{itD}=\frac{|P(e^{it})|^2}{100}$, real and even, with $|\psi(t)|<1$ for $0<|t|\le\pi$, so that $|\psi|\le1-c$ on $\delta\le|t|\le\pi$: that part of
+$\frac1{2\pi}\int\psi^m$ is exponentially small. Near $0$, $\log\psi(t)=-\frac{\sigma^2t^2}2+\frac{\kappa_4t^4}{24}+O(t^6)$, where $\kappa_4=2\kappa_4(X)$ is the fourth cumulant
+of $D$ ($X$ and $-Y$ contribute equally). For $X$ uniform on $\{0,\dots,9\}$, $\sigma_X^2=\frac{33}4$ and $\mathbb E(X-\frac92)^4=\frac15\sum_{j=0}^4(j+\frac12)^4=\frac{9669}{80}$, so
+$\kappa_4(X)=\frac{9669}{80}-3\cdot\frac{1089}{16}=-\frac{3333}{40}$ and $\kappa_4=-\frac{3333}{20}=-\frac{9999}{60}$. Substituting
+$t=u/\sqrt m$,
+\[
+\frac1{2\pi}\int_{|t|<\delta}\psi^m\dd t=\frac1{2\pi\sqrt m}\int e^{-\sigma^2u^2/2}\Bigl(1+\frac{\kappa_4u^4}{24m}+O\Bigl(\frac{u^6+u^8}{m^2}\Bigr)\Bigr)\dd u+(\text{exponentially small}),
+\]
+and $\int u^4e^{-\sigma^2u^2/2}\dd u=\frac{3\sqrt{2\pi}}{\sigma^5}$. So $P(\sum D_i=0)=\frac1{\sigma\sqrt{2\pi m}}\bigl(1+\frac{\kappa_4}{8\sigma^4m}+O(m^{-2})\bigr)$, and
+$\frac{\kappa_4}{8\sigma^4}=-\frac{9999/60}{8\cdot1089/4}=-\frac{9999}{130\,680}=-\frac{101}{1320}$. For $m=3$: $\frac{10^6}{\sqrt{99\pi}}=56\,703$ and the corrected value $55\,257$,
+against $55\,252$ lucky tickets.
+
+\tools{Volume~10, Theorem~4.12 (local limit theorem); Volume~4, Theorem~6.11 (Parseval); Volume~3, Chapter~6 (characteristic functions).}
+\leads The expansion continues into an asymptotic series in powers of $\frac1m$, the Edgeworth expansion of the local limit theorem; the same
+computation counts the strings of $2m$ digits in any base whose two halves have equal sums.
+\end{solution}
+
+\begin{solution}{pb:signedsums}
+\idea The same Fourier integral as in the local limit theorem, but for non-identical summands $\pm k$. The integrand $\prod\cos(kt)$ has modulus $1$ at $t=0$ and
+also at $t=\pm\pi$, and the second peak doubles the answer.
+
+\writeup (a) The sum $\pm1\pm\dots\pm n$ has the parity of $\frac{n(n+1)}2$, which is even if and only if $n\equiv0,3\pmod4$. And
+$P(\sum_k\varepsilon_kk=0)=\frac1{2\pi}\int_{-\pi}^\pi\mathbb Ee^{it\sum\varepsilon_kk}\dd t=\frac1{2\pi}\int_{-\pi}^\pi\prod_k\cos(kt)\dd t$.
+
+(b) Let $s_n^2=\sum_kk^2=\frac{n(n+1)(2n+1)}6\sim\frac{n^3}3$ and $g(t)=\prod_{k\le n}\cos(kt)$. Since $|\cos x|\le e^{-\sin^2x/2}$ and $\sum_{k\le n}\sin^2(kt)=\frac n2-\frac12\sum_{k\le n}\cos(2kt)\ge\frac n2-\frac1{2|\sin t|}$,
+we get $|g(t)|\le e^{-3n/16}$ whenever $|\sin t|\ge\frac4n$. The remaining $t$ are near $0$ or $\pm\pi$, and $g(t\pm\pi)=(-1)^{n(n+1)/2}g(t)=g(t)$, so it suffices to study $|t|\le\frac7n$ (if $|t|\le\frac\pi2$ and $|\sin t|<\frac4n$, then $|t|<\frac{2\pi}n$). For $\frac1{n}\le|t|\le\frac7n$, the factors with $k\le\frac1{|t|}$ satisfy $|kt|\le1$ and $\cos(kt)\le e^{-k^2t^2/2}$, so
+$|g(t)|\le e^{-t^2\sum_{k\le1/|t|}k^2/2}\le e^{-1/(48|t|)}\le e^{-n/336}$. For $|t|\le\frac1n$, all $|kt|\le1$ and $\log\cos x=-\frac{x^2}2+O(x^4)$, so
+$g(t)=e^{-s_n^2t^2/2+O(t^4n^5)}$ and $|g(t)|\le e^{-s_n^2t^2/2}$. Split at $|t|=n^{-3/2}\log n$: inside, $t^4n^5=O(n^{-1}\log^4n)$ and $\int e^{-s_n^2t^2/2}\dd t=\frac{\sqrt{2\pi}}{s_n}(1+o(1))$;
+outside, $|g|\le e^{-c\log^2n}$. Hence $\int_{-\pi}^\pi g=2\frac{\sqrt{2\pi}}{s_n}(1+o(1))$, the factor $2$ coming from the two peaks, and
+\[
+Z(n)=\frac{2^n}{2\pi}\cdot\frac{2\sqrt{2\pi}}{s_n}(1+o(1))\sim2^n\sqrt{\frac2\pi}\cdot\frac{\sqrt3}{n^{3/2}}=\sqrt{\frac6\pi}\,\frac{2^n}{n^{3/2}}.
+\]
+
+(c) A choice of signs with sum $0$ is the same as the set $S$ of plus signs, with $\sum_{k\in S}k=\frac{n(n+1)}4$: there are $Z(n)$ such subsets, and $\frac{Z(n)}2$ unordered
+splittings of $\{1,\dots,n\}$ into two parts of equal sum.
+
+\tools{Volume~10, Chapter~4 (the Fourier proof of the local limit theorem); Volume~4, Chapter~6 (Dirichlet kernel).}
+\leads The answer to the opening question is the middle one: $2^n/n^{3/2}$. The sequence $Z(n)$ is $0,0,2,2,0,0,8,14,0,0,70,124,\dots$; van Lint (1967) and Entringer (1968)
+studied it, and the same method counts the subsets of $\{1,\dots,n\}$ with a given sum modulo $q$.
+\end{solution}
+
+\begin{solution}{pb:smirnov}
+\idea The event ``the path stays in the strip'' is the complement of a union of events ``the path visits $h$, then $-h$, then $h$\dots'', and each of those is counted by
+reflecting the path several times. The result is an alternating sum of binomial coefficients, which converges term by term to an alternating sum of Gaussians.
+
+\writeup (a) For a path $S$ from $0$ to $0$ of length $2n$ that reaches $\{h,-h\}$, write down the sequence of barriers it visits, keeping only the changes (visits to $h$
+followed by a visit to $-h$ followed by $h$\dots): this \emph{reduced sequence} alternates, starts with $h$ or $-h$, and has some length $\ell\ge1$. Let $A_j$ be the set of
+paths whose reduced sequence contains $h,-h,h,\dots$ ($j$ terms) as an initial alternation, that is, which visit $h$ at some time $t_1$, then $-h$ at some $t_2>t_1$, and
+so on $j$ times; define $B_j$ in the same way starting with $-h$. A path with reduced sequence of length $\ell$ starting with $h$ lies in $A_j$ exactly for $j\le\ell$
+and in $B_j$ exactly for $j\le\ell-1$, so $\sum_{j\ge1}(-1)^{j-1}\bigl(\mathbf 1_{A_j}+\mathbf 1_{B_j}\bigr)=\mathbf 1\{\ell\text{ odd}\}+\mathbf 1\{\ell-1\text{ odd}\}=1$. Hence the number of
+paths that reach the barriers is $\sum_{j\ge1}(-1)^{j-1}(|A_j|+|B_j|)$.
+
+To count $A_j$, reflect the part of the path after its first visit to $h$ about $h$ (Figure~\ref{fig:strip}): the end point $0$ goes to $2h$, and a later visit to $-h$
+becomes a visit to $3h$. Reflect again after the first visit to $3h$ about $3h$, and so on. After $j$ reflections the path ends at $2jh$, and the construction is a bijection
+between $A_j$ and all paths from $0$ to $2jh$ (any such path reaches $h,3h,\dots,(2j-1)h$ in this order, and the reflections can be undone). So
+$|A_j|=\binom{2n}{n+jh}$, and $|B_j|$ is the same by symmetry. The number of paths in the strip is
+\[
+\binom{2n}n-2\sum_{j\ge1}(-1)^{j-1}\binom{2n}{n+jh}=\sum_{k\in\Z}(-1)^k\binom{2n}{n+kh}.
+\]
+
+\begin{figure}[ht]
+\centering\fig{ch01-strip}
+\caption{A path of length $40$ from $0$ to $0$ that visits $h=4$ (blue). Reflecting it about $h$ after its first visit (dotted red) gives a path from $0$ to $2h$:
+the first step of the inclusion--exclusion count of Problem~\ref{pb:smirnov}.}
+\label{fig:strip}
+\end{figure}
+
+(b) $\binom{2n}{n+k}\big/\binom{2n}n=\prod_{i=1}^k\frac{n-i+1}{n+i}$ for $k\ge0$. Each factor is $1-\frac{2i-1}{n+i}\le e^{-(2i-1)/(2n)}$, so the ratio is at most $e^{-k^2/(2n)}$. And
+$\log\frac{n-i+1}{n+i}=\log\bigl(1-\frac{i-1}n\bigr)-\log\bigl(1+\frac in\bigr)=-\frac{2i-1}n+\frac{2i-1}{2n^2}+O\bigl(\frac{i^3}{n^3}\bigr)$, whose sum over $i\le k$ is
+$-\frac{k^2}n+O\bigl(\frac{k^2}{n^2}+\frac{k^4}{n^3}\bigr)$.
+
+(c) $D_n=\frac1n\max_k|S_k|$, so $\sqrt{n/2}\,D_n<x$ means $\max_k|S_k|<x\sqrt{2n}$, that is, the path stays strictly inside the strip of half-width $h_n=\lceil x\sqrt{2n}\rceil$.
+By (a), $P(\sqrt{n/2}\,D_n<x)=\sum_k(-1)^k\binom{2n}{n+kh_n}\big/\binom{2n}n$. By (b), the $k$-th term tends to $(-1)^ke^{-2k^2x^2}$, since $h_n^2/n\to2x^2$, and it is bounded by
+$e^{-k^2h_n^2/(2n)}\le e^{-k^2x^2}$, which is summable. By dominated convergence the sum tends to $\sum_k(-1)^ke^{-2k^2x^2}=K(x)$.
+
+(d) Apply Poisson summation (Volume~4, Theorem~8.9) to $f(u)=e^{-2x^2u^2+i\pi u}$, whose values at integers are $(-1)^ke^{-2k^2x^2}$ and whose Fourier transform is
+$\hat f(m)=\int f(u)e^{-2\pi imu}\dd u=\sqrt{\frac\pi{2x^2}}\,e^{-\pi^2(2m-1)^2/(8x^2)}$. Each odd number $2m-1$, positive or negative, occurs once, so
+$K(x)=\sum_m\hat f(m)=\frac{\sqrt{2\pi}}x\sum_{k\ge1}e^{-(2k-1)^2\pi^2/(8x^2)}$. At $x=1.36$: $1-2e^{-2x^2}=1-2(0.02474)=0.9505$, with a next term of $3.7\times10^{-7}$; on the
+right, the first term is $0.9459$ and the second $0.0046$. For $x=0.3$ the left series starts with $1-2e^{-0.18}=-0.67$ and converges slowly, while one term on the right gives
+$K(0.3)=9.3\times10^{-6}$: the left series is for large $x$, the right one for small $x$.
+
+(e) Numerically, one finds $\sqrt N\sup_t|F_N(t)-t|=0.0265$ for $N=10^4$. The usual test rejects for \emph{large} values ($1.36$ at level $5\%$), so it accepts. But the probability
+that $N$ random points do as well is about $K(0.0265)$, which by the right-hand series is $10^{-761}$: the sequence is far too regular to be random. A good test looks at both
+tails, and an irrational rotation fails it spectacularly.
+
+\tools{Volume~3, Lemma~1.11 (reflection principle); Volume~4, Theorem~8.9 (Poisson summation); Volume~10, Chapter~3 (Kolmogorov's statistic).}
+\leads Smirnov proved (c) in 1939, Kolmogorov the one-sample version in 1933; Gnedenko and Korolyuk (1951) found the reflection proof above. The identity of (d) is a
+case of Jacobi's transformation of theta functions, and it says that the maximum of a Brownian bridge has the same law whether one looks at it through its
+paths or through heat diffusion in a strip.
+\end{solution}
+
+\begin{solution}{pb:primeseries}
+\idea For independent bounded symmetric terms, the three series reduce to one: the sum of the variances. Over the primes, Mertens's theorem says that $\sum\frac1p$ grows like
+$\log\log$, so a single power of $\log p$ is already too much.
+
+\writeup (a) The terms $X_p=\frac{\varepsilon_p}{\sqrt p(\log p)^a}$ are independent, symmetric and bounded (they tend to $0$). With $c$ larger than all of them, the three
+series of Volume~10, Theorem~2.5 are $0$, $0$ and $\sum_p\frac1{p(\log p)^{2a}}$, so the series converges almost surely if and only if this sum is finite, and
+diverges almost surely otherwise. Group the primes in blocks $e^{2^j}<p\le e^{2^{j+1}}$. By Mertens's theorem (Volume~5, Theorem~1.5),
+$\sum_{\text{block}}\frac1p=\log2^{j+1}-\log2^j+o(1)\to\log2$, and $(\log p)^{2a}$ is between $2^{2aj}$ and $2^{2a(j+1)}$ on the block. So the sum converges if and only if
+$\sum_j2^{-2aj}<\infty$, that is, $a>0$.
+
+(b) The same theorem over the integers: $\sum_n\frac1{n(\log n)^{2a}}<\infty$ if and only if $2a>1$, by comparison with $\int\frac{\dd t}{t(\log t)^{2a}}$.
+
+(c) Let $S_N$ be the partial sums and $s_N^2=\operatorname{Var}S_N\to\infty$. The summands are bounded, so Lindeberg's condition holds and $S_N/s_N\Rightarrow N(0,1)$; for fixed $M$,
+$P(S_N>M)\to\frac12$. Hence $P(S_N>M\text{ for infinitely many }N)\ge\limsup_NP(S_N>M)=\frac12$. The event $\{\limsup S_N=+\infty\}$ is a tail event (changing finitely many terms
+changes all $S_N$ by a bounded amount), it contains the decreasing limit of the events above as $M\to\infty$, so it has probability at least $\frac12$, hence $1$ by
+Kolmogorov's $0$--$1$ law (Volume~10, Theorem~1.4). By symmetry $\liminf S_N=-\infty$ too.
+
+(d) $\sum_pp^{-2\sigma}<\infty$ for $\sigma>\frac12$, and at $\sigma=\frac12$ we are in case $a=0$ of (a).
+
+\tools{Volume~10, Theorems~1.4 and~2.5 (zero-one law, three series); Volume~5, Theorem~1.5 (Mertens); Volume~3, Theorem~6.10.}
+\leads The random Euler product $\prod_p(1-\varepsilon_pp^{-s})^{-1}$ is a model of $\zeta(s)$ near the critical line, used by Bohr and Jessen (1930) to describe the values of
+$\log\zeta(\sigma+it)$ for fixed $\sigma>\frac12$. At $\sigma=\frac12$ the random model diverges, as (c) shows, and so does the analogy.
+\end{solution}
+
+\begin{solution}{pb:factorialseries}
+\idea The terms decrease so fast that each one dominates the sum of all the later ones: the first sign that differs decides which sum is larger. So $X$ codes its signs
+injectively, as binary digits do, but with gaps that shrink superexponentially.
+
+\writeup Let $r_n=\sum_{k>n}\frac1{k!}$. Then $r_n=\frac1{(n+1)!}\bigl(1+\frac1{n+2}+\frac1{(n+2)(n+3)}+\dots\bigr)<\frac1{(n+1)!}\cdot\frac{n+1}n=\frac1{n\cdot n!}$, which is at most $\frac1{n!}$.
+
+(a) If two sign sequences first differ at $n$, the two sums differ by $\frac2{n!}$ plus a quantity of absolute value at most $2r_n<\frac2{n!}$: they are different.
+
+(b) By (a), $X=x$ for at most one sign sequence, and every single sequence has probability $\lim_n2^{-n}=0$. So $P(X=x)=0$ for all $x$.
+
+(c) $X$ is a continuous function of the sequence of signs, so its range $C$ is compact (the image of $\{\pm1\}^{\N}$). Given the first $n$ signs, with partial sum $s$,
+$X\in[s-r_n,s+r_n]$: the $2^n$ choices of the first $n$ signs give $2^n$ intervals of length $2r_n\le\frac2{n\cdot n!}$ covering $C$.
+
+(d) For $s>0$, $\mathcal H^s(C)\le\liminf_n2^n\bigl(\frac2{n\cdot n!}\bigr)^s=0$, because $n!$ grows faster than any $c^n$. So $\dim_HC=0$ (Volume~6, Chapter~11). In particular $C$ is
+Lebesgue-null: the law of $X$ has no atom by (b) and is carried by a null set, so it is continuous and singular.
+
+\tools{Volume~6, Chapter~11 (Hausdorff measures and dimension) and Corollary~10.6.}
+\leads Compare $\sum\varepsilon_n2^{-n}$, uniform, and $\sum\varepsilon_n3^{-n}$, carried by a Cantor set of dimension $\frac{\log2}{\log3}$: the dimension of the law of
+$\sum\varepsilon_na_n$ is governed by how fast $a_n$ decreases, and superexponential decay gives dimension $0$.
+\end{solution}
+
+\begin{solution}{pb:smooth}
+\idea A density is smooth when its characteristic function decays faster than any power. A product of cosines decays when many factors are visibly less than $1$:
+for $\frac t{n^2}$, the factors with $n\approx\sqrt t$ are the useful ones, and there are enough of them to give $e^{-c\sqrt t}$.
+
+\writeup (a) The partial sums $X_N$ converge almost surely (three series, $\sum n^{-4}<\infty$), hence in law, so $\varphi(t)=\lim_N\mathbb Ee^{itX_N}=\lim_N\prod_{n\le N}\cos\frac t{n^2}$
+by independence (Volume~10, Theorem~3.3).
+
+(b) $\log\cos u=-\frac{u^2}2-\frac{u^4}{12}-\dots\le-\frac{u^2}2$ for $|u|<\frac\pi2$ (all the coefficients of the series are negative). Let $|t|\ge1$ and $N=\lceil\sqrt{|t|}\rceil\le2\sqrt{|t|}$. For
+$n\ge N$, $\frac{|t|}{n^2}\le1$, and the other factors have modulus at most $1$, so
+\[
+|\varphi(t)|\le\exp\Bigl(-\frac{t^2}2\sum_{n\ge N}\frac1{n^4}\Bigr)\le\exp\Bigl(-\frac{t^2}2\cdot\frac1{3N^3}\Bigr)\le\exp\Bigl(-\frac{t^2}{48|t|^{3/2}}\Bigr)=e^{-\sqrt{|t|}/48},
+\]
+using $\sum_{n\ge N}n^{-4}\ge\int_N^\infty x^{-4}\dd x$.
+
+(c) For every $k$, $|t|^k|\varphi(t)|$ is integrable. By the inversion theorem (Volume~7, Theorem~5.2, or Volume~3, Theorem~6.8), $X$ has the continuous density
+$f(x)=\frac1{2\pi}\int e^{-itx}\varphi(t)\dd t$, and differentiation under the integral sign, dominated by $|t|^k|\varphi(t)|$, shows that $f$ is $C^k$ for every $k$.
+
+(d) The series converges almost surely because $\sum n^{-2\alpha}<\infty$. With $N=\lceil|t|^{1/\alpha}\rceil\le2|t|^{1/\alpha}$, the same computation gives
+$\sum_{n\ge N}n^{-2\alpha}\ge\frac{N^{1-2\alpha}}{2\alpha-1}\ge\frac{2^{1-2\alpha}|t|^{1/\alpha-2}}{2\alpha-1}$ and
+$|\varphi(t)|\le\exp\bigl(-\frac{2^{-2\alpha}}{2\alpha-1}|t|^{1/\alpha}\bigr)$, so the density is again $C^\infty$. For $\sum\varepsilon_n2^{-n}$ the characteristic function is
+$\frac{\sin t}t$, which decays only like $\frac1{|t|}$: the uniform density is not even continuous. Geometric decay of the pieces is too fast for smoothness, polynomial decay is
+slow enough.
+
+\tools{Volume~10, Theorems~2.5 and~3.3; Volume~7, Theorem~5.2 (Fourier inversion).}
+\leads Direct computation gives $-\log|\varphi(t)|/\sqrt t$: it is $1.06$ at $t=10^3$ and $1.01$ at $t=10^4$, so the true decay is about $e^{-\sqrt t}$ and the constant $\frac1{48}$ is
+generous. For $\alpha\le\frac12$ the series diverges almost surely (three series again).
+\end{solution}
+
+\begin{solution}{pb:purity}
+\idea Changing finitely many of the $X_n$ moves $X$ by an element of a countable group $H$. So for any set $E$, ``$X\in E+H$'' is a tail event, of probability $0$ or $1$.
+Taking for $E$ an atom, or a null set charged by $\mu$, forces $\mu$ to choose one type.
+
+\writeup (a) Let $V_n$ be the countable set of values of $X_n$ and $H$ the additive group generated by $\bigcup_nV_n$, which is countable. Almost surely every $X_n$ lies
+in $V_n$; on that event, $\sum_{n\le m}X_n\in H$ for every $m$, so for a Borel set $E$ the set $E+H=\bigcup_{h\in H}(E+h)$ is Borel and
+$\{X\in E+H\}=\bigl\{\sum_{n>m}X_n\in E+H\bigr\}$ for every $m$. So $\{X\in E+H\}$ coincides almost surely with a tail event, and $\mu(E+H)\in\{0,1\}$ by Kolmogorov's $0$--$1$
+law (Volume~10, Theorem~1.4).
+
+If $\mu$ has an atom $a$, then $\mu(a+H)\ge\mu(\{a\})>0$, so $\mu(a+H)=1$: $\mu$ is carried by the countable set $a+H$. Otherwise $\mu$ is continuous. If it is not absolutely
+continuous, there is a Lebesgue-null Borel set $E$ with $\mu(E)>0$; then $E+H$ is null (a countable union of translates of $E$) and $\mu(E+H)=1$, so $\mu$ is carried by a
+null set: it is singular. By the Lebesgue decomposition into three parts (Volume~6, Corollary~10.6), these are the three pure types, and we have shown that only one part can
+be non-zero.
+
+(b) The atoms of $\mu_\lambda$, the law of $X_\lambda$, have total mass at most $1$, so if there is one, the largest mass $M>0$ is attained, by a finite non-empty set $A$
+of atoms. Write $X_\lambda=\lambda\varepsilon_1+\lambda X'$, where $X'=\sum_{n\ge1}\varepsilon_{n+1}\lambda^n$ has the same law as $X_\lambda$ and is independent of $\varepsilon_1$. For
+$a\in A$,
+\[
+M=P(X_\lambda=a)=\tfrac12P\bigl(X'=\tfrac a\lambda-1\bigr)+\tfrac12P\bigl(X'=\tfrac a\lambda+1\bigr),
+\]
+and both probabilities are at most $M$, so both equal $M$: $\frac a\lambda\pm1\in A$. Apply this to $a=\max A$: $\frac a\lambda+1\le a$, so $a(\frac1\lambda-1)\le-1$ and $a<0$. Apply it to
+$b=\min A$: $\frac b\lambda-1\ge b$, so $b>0$. But $b\le a$: contradiction. So $\mu_\lambda$ has no atom.
+
+(c) By (a) and (b), $\mu_\lambda$ is either absolutely continuous or singular. For $\lambda=\frac12$, $X_\lambda=\sum\varepsilon_n2^{-n}$ is uniform on $[-1,1]$ (binary digits),
+absolutely continuous. For $\lambda=\frac13$, $X_\lambda$ lies, given its first $n$ signs, in an interval of length $2\sum_{k>n}3^{-k}=3^{-n}$: the $2^n$ intervals have total length
+$(\frac23)^n\to0$, so $\mu_{1/3}$ is carried by a null set (a Cantor set) and is singular. The same argument works for all $\lambda<\frac12$.
+
+\tools{Volume~10, Theorem~1.4 (zero-one law); Volume~6, Theorem~10.5 and Corollary~10.6 (Lebesgue decomposition).}
+\leads This is the Jessen--Wintner purity theorem (1935). Lévy had shown that such a law is continuous if and only if $\prod_n\max_xP(X_n=x)=0$. For $\frac12<\lambda<1$
+the type of $\mu_\lambda$ is the Bernoulli convolution problem of the next problem.
+\end{solution}
+
+\begin{solution}{pb:golden}
+\idea If $\mu$ had a density, its Fourier transform would tend to $0$ (Riemann--Lebesgue). At the frequencies $\pi\varphi^k$ it does not: the cosines $\cos(\pi\varphi^m)$
+are all close to $\pm1$, because $\varphi^m$ is extraordinarily close to an integer, the Lucas number $L_m$.
+
+\writeup (a) $\varphi$ and $\psi=-\frac1\varphi$ are the roots of $x^2=x+1$, so $L_m=\varphi^m+\psi^m$ satisfies $L_{m+2}=L_{m+1}+L_m$, with $L_0=2$, $L_1=1$: all integers.
+
+(b) As in Problem~\ref{pb:smooth}, $\hat\mu(t)=\prod_{n\ge1}\cos(t\varphi^{-n})$. At $t=\pi\varphi^k$ the exponents $k-n$ run over $k-1,k-2,\dots,0,-1,-2,\dots$:
+\[
+\hat\mu(\pi\varphi^k)=\prod_{m=0}^{k-1}\cos(\pi\varphi^m)\cdot\prod_{j\ge1}\cos(\pi\varphi^{-j}).
+\]
+Since $\pi\varphi^m=\pi L_m-\pi\psi^m$, $|\cos(\pi\varphi^m)|=|\cos(\pi\psi^m)|=|\cos(\pi\varphi^{-m})|$. So
+$|\hat\mu(\pi\varphi^k)|=\prod_{m=1}^{k-1}|\cos(\pi\varphi^{-m})|\cdot c\to c^2$ (the factor $m=0$ is $|\cos\pi|=1$). Finally $c>0$: no factor vanishes, because $\varphi^{-j}$ is
+irrational and so never in $\frac12+\Z$, and $\sum_j\bigl(1-|\cos(\pi\varphi^{-j})|\bigr)\le\sum_j\frac{\pi^2}2\varphi^{-2j}<\infty$, so the infinite product converges to a non-zero limit.
+Numerically $c=0.0813$ and $c^2=0.00661$.
+
+(c) If $\mu$ had a density $g\in L^1$, then $\hat\mu(t)=\int e^{itx}g(x)\dd x\to0$ as $|t|\to\infty$ by the Riemann--Lebesgue lemma (Volume~7, Proposition~5.1(b)); by (b) it does not.
+By Problem~\ref{pb:purity}(b) and (a), $\mu$ has no atom and is pure, so it is continuous and singular. All the $2^n$ partial sums lie in $[-\varphi,\varphi]$, since
+$\sum_{n\ge1}\varphi^{-n}=\frac1{\varphi-1}=\varphi$, and they overlap heavily (Figure~\ref{fig:golden}): the law looks smooth, and it is not.
+
+\begin{figure}[ht]
+\centering\fig{ch01-golden}
+\caption{Histograms of $2\times10^6$ samples of $\sum_{n\le44}\varepsilon_n\lambda^n$, with $200$ bins. For $\lambda=\frac1\varphi$ (top) the law is singular (Problem~\ref{pb:golden}),
+and the histogram is visibly rough; for $\lambda=0.7$ (bottom) Solomyak's theorem says that a density exists for almost every $\lambda$, and the picture agrees.}
+\label{fig:golden}
+\end{figure}
+
+(d) Let $\theta_2,\dots,\theta_d$ be the other conjugates of $\theta$, $|\theta_i|<1$, and $\operatorname{tr}(\theta^m)=\theta^m+\sum_i\theta_i^m\in\Z$ (a symmetric function of the
+roots of a monic integer polynomial). Then $|\cos(\pi\theta^m)|=|\cos(\pi\sum_i\theta_i^m)|$, and $\bigl|\sum_i\theta_i^m\bigr|\le(d-1)r^m$ with $r=\max|\theta_i|<1$, so
+$\sum_m\bigl(1-|\cos(\pi\theta^m)|\bigr)<\infty$. No factor vanishes: $\theta^m\in\frac12+\Z$ is impossible for an algebraic integer, and $\theta^{-j}\in\frac12+\Z$ would make $\theta^j$
+rational, hence an integer $N$; then each conjugate $\theta_i$ satisfies $\theta_i^j=N$ too and $|\theta_i|=N^{1/j}=\theta>1$, a contradiction as $d\ge2$. So
+$|\hat\mu(\pi\theta^k)|=\prod_{m=0}^{k-1}|\cos(\pi\theta^m)|\cdot\prod_{j\ge1}|\cos(\pi\theta^{-j})|$ tends to a non-zero limit, and the law is singular as in (c).
+
+\tools{Volume~7, Proposition~5.1(b) (Riemann--Lebesgue); Problem~\ref{pb:purity}; Volume~12, Chapter~1 (algebraic integers).}
+\leads Erdős found this in 1939. Salem (1944) proved the converse for the Fourier side: $\hat\mu_\lambda(t)\not\to0$ only when $\frac1\lambda$ is a Pisot number. Whether
+$\mu_\lambda$ has a density for every other $\lambda\in\left]\frac12,1\right[$ is still open: Solomyak (1995) proved it for almost every $\lambda$, Shmerkin (2014) showed that
+the exceptional set has Hausdorff dimension $0$, and Varjú (2019) proved it for many algebraic $\lambda$ close to $1$.
+\end{solution}
+
+\begin{solution}{pb:kaczeros}
+\idea Count the zeros of $f$ by the time it spends near $0$, weighted by its speed. Taking expectations turns the count into an integral of the density of $f(t)$ at $0$
+times the mean speed given $f(t)=0$: Gaussian computations. The answer has a beautiful closed form, and almost all the real roots live near $\pm1$.
+
+\writeup (a) The zeros of $g$ are simple, hence isolated, hence finitely many in $[a,b]$; call them $x_1<\dots<x_N$, all interior. Around each $x_i$ choose an interval
+$I_i$ where $g'\ne0$, so that $g$ is strictly monotone on $I_i$ and $g$ has no zero outside $\bigcup I_i$. Let $\eta>0$ be the minimum of $|g|$ on $[a,b]\setminus\bigcup I_i$ and
+of $|g|$ at the endpoints of the $I_i$. For $\varepsilon<\eta$, $\{|g|<\varepsilon\}\subseteq\bigcup I_i$ and on each $I_i$ the change of variables $y=g(t)$ gives
+$\int_{I_i}\mathbf 1_{|g|<\varepsilon}|g'|=2\varepsilon$. So the integral is $2\varepsilon N$.
+
+(b) $f$ has a multiple root if and only if the discriminant of $f$ vanishes (or $a_n=0$), a non-zero polynomial equation in $(a_0,\dots,a_n)$; its zero set is Lebesgue-null, so it
+has probability $0$. Almost surely $f'$ is a non-zero polynomial of degree at most $n-1$, so $[a,b]$ splits into at most $n$ intervals on which $f$ is monotone, and on each,
+$\int\mathbf 1_{|f|<\varepsilon}|f'|$ is the length of $f(I)\cap\left]-\varepsilon,\varepsilon\right[$, at most $2\varepsilon$.
+
+(c) Almost surely $f(a)f(b)\ne0$, so by (a) the number $N[a,b]$ of roots in $[a,b]$ is the limit of $\frac1{2\varepsilon}\int_a^b\mathbf 1_{|f|<\varepsilon}|f'|$, which is bounded by $n$ by
+(b). By dominated convergence and Fubini,
+$\mathbb EN[a,b]=\lim_{\varepsilon\to0}\int_a^b\frac1{2\varepsilon}\mathbb E\bigl[\mathbf 1_{|f(t)|<\varepsilon}|f'(t)|\bigr]\dd t$. Fix $t$. $(f(t),f'(t))$ is a centred Gaussian vector with
+$\operatorname{Var}f(t)=A$, $\operatorname{Cov}(f(t),f'(t))=B$, $\operatorname{Var}f'(t)=C$; given $f(t)=y$, $f'(t)$ is Gaussian with mean $\frac{By}A$ and variance $C-\frac{B^2}A$. So
+\[
+\begin{aligned}
+\frac1{2\varepsilon}\mathbb E\bigl[\mathbf 1_{|f(t)|<\varepsilon}|f'(t)|\bigr]&=\frac1{2\varepsilon}\int_{-\varepsilon}^\varepsilon\frac{e^{-y^2/2A}}{\sqrt{2\pi A}}\,\mathbb E\Bigl|\frac{By}A+\sqrt{C-\tfrac{B^2}A}\,Z\Bigr|\dd y\\
+&\longrightarrow\frac1{\sqrt{2\pi A}}\sqrt{\frac2\pi}\sqrt{C-\frac{B^2}A}=\frac{\sqrt{AC-B^2}}{\pi A},
+\end{aligned}
+\]
+and the left side is bounded by $\frac{|B|+\sqrt C}{\sqrt{2\pi}}$ for $\varepsilon\le1$ (as $A\ge1$), which is bounded on $[a,b]$; dominated convergence in $t$ gives the formula.
+
+(d) $A'=2B$ and $(tA')'=\sum_j4j^2t^{2j-1}=4tC$. Hence
+$\frac1{4t}\bigl(\frac{tA'}A\bigr)'=\frac1{4t}\bigl(\frac{(tA')'}A-\frac{tA'^2}{A^2}\bigr)=\frac CA-\frac{B^2}{A^2}=\pi^2\rho_n^2$. With $A=\frac{1-t^{2n+2}}{1-t^2}$,
+$\frac{tA'}A=\frac{2t^2}{1-t^2}-\frac{(2n+2)t^{2n+2}}{1-t^{2n+2}}$; differentiating and dividing by $4t$ gives $\frac1{(1-t^2)^2}-\frac{(n+1)^2t^{2n}}{(1-t^{2n+2})^2}$.
+
+(e) $t^nf(\frac1t)=\sum_ja_{n-j}t^j$ has the same law as $f$ and its roots are the inverses of those of $f$; and $f(-t)=\sum_j(-1)^ja_jt^j$ has the same law as $f$. So the
+four counts have the same law, and since $0$, $1$ and $-1$ are almost surely not roots, $\mathbb EN_n=4\int_0^1\rho_n$.
+
+\emph{Upper bound.} $\rho_n(t)\le\frac1{\pi(1-t^2)}$, and $\int_0^{1-1/n}\frac{\dd t}{\pi(1-t^2)}=\frac1{2\pi}\log(2n-1)$. On $[1-\frac1n,1]$, $\rho_n\le\frac1\pi\sqrt{C/A}$ with
+$C\le n^3$ and $A\ge(n+1)t^{2n}\ge\frac{n+1}{16}$ (as $(1-\frac1n)^n\ge\frac14$ for $n\ge2$), so $\rho_n\le\frac{4n}\pi$ there and the integral is at most $\frac4\pi$. So
+$\mathbb EN_n\le\frac2\pi\log(2n)+\frac{16}\pi$.
+
+\emph{Lower bound.} Let $\delta=\frac{\log n}n$ and $0\le t\le1-\delta$, $s=1-t$. Then $t^{2n}\le e^{-2ns}$ and $(1-t^2)^2\le4s^2$, and $s^2e^{-2ns}$ decreases for $s\ge\frac1n$, so
+$(n+1)^2t^{2n}(1-t^2)^2\le4(n+1)^2\delta^2n^{-2}\le\frac{16\log^2n}{n^2}=\eta_n$, while $(1-t^{2n+2})^2\ge\frac12$. So the second term in Kac's density is at most $2\eta_n$ times the first,
+$\rho_n(t)\ge\frac{\sqrt{1-2\eta_n}}{\pi(1-t^2)}$, and $\int_0^{1-\delta}\rho_n\ge\frac{\sqrt{1-2\eta_n}}{2\pi}\log\frac1\delta$. Hence $\mathbb EN_n\ge\frac2\pi\sqrt{1-2\eta_n}(\log n-\log\log n)$, and
+$\mathbb EN_n\sim\frac2\pi\log n$.
+
+\begin{figure}[ht]
+\centering\fig{ch01-kac}
+\caption{Kac's density $\rho_n$ on $[0,1]$ for $n=10$ and $n=100$, with the envelope $\frac1{\pi(1-t^2)}$ (dashed). The density follows the envelope until $1-t$ is of order
+$\frac1n$, and then climbs to $\rho_n(1)=\frac1\pi\sqrt{\frac{n(n+2)}{12}}$, which is $9.3$ for $n=100$ (off the picture, arrow): the real roots crowd near $\pm1$.}
+\label{fig:kac}
+\end{figure}
+
+(f) Numerically, one finds $\mathbb EN_{100}=3.56$. The other roots are complex, and numerical evaluation shows where: almost all of them lie close to the unit circle, $81\%$ within
+$0.1$ of it for $n=50$, spread almost uniformly in angle. Real roots are rare because the real axis meets that crowded annulus only near $\pm1$.
+
+\tools{Volume~3, Chapter~6 (Gaussian vectors); Volume~6, Chapters~7 and~8 (dominated convergence, Fubini).}
+\leads Kac found the formula in 1943 and the asymptotics $\frac2\pi\log n$; numerical evaluation shows $\mathbb EN_n-\frac2\pi\log n\to0.6257\ldots$. The same counting formula is the
+\emph{Kac--Rice formula}, a basic tool for the zeros of random functions and the level crossings of Gaussian processes. For random polynomials, Ibragimov and Maslova (1971)
+showed that the answer $\frac2\pi\log n$ holds for all centred coefficients in the domain of attraction of the normal law, and Tao and Vu (2015) studied the universality of
+local statistics of the roots.
+\end{solution}
+
+\section*{Map of the chapter}
+
+\begin{center}
+\small
+\adjustbox{max width=\linewidth}{\begin{tabular}{lll}
+Problem & Topic & Volumes used\\\hline
+\ref{pb:pairwisebits} & pairwise independent signs: Chebyshev yes, Gauss no & 3\\
+\ref{pb:sawtooth} & Kac's lacunary sums $\sum B(2^kx)$ & 4, 10\\
+\ref{pb:peaks} & peaks of permutations, $m$-dependent central limit theorem & 3\\
+\ref{pb:tilings} & dominoes in a random tiling, renewal--reward & 3, 10\\
+\ref{pb:harper} & Harper's theorem on the blocks of a random partition & 0, 3, 4\\
+\ref{pb:fixedtv} & fixed points: exact distance to Poisson & 3, 10\\
+\ref{pb:kubslow} & Stein's bound for the Kubilius model, and a lower bound & 5, 10\\
+\ref{pb:twelve} & a fourth-order Lindeberg swap; twelve uniforms & 3\\
+\ref{pb:threeap} & three-term progressions in a random set (Chen--Stein) & 10\\
+\ref{pb:spearman} & Spearman's $\rho$ by exchangeable pairs & 3, 10\\
+\ref{pb:erdostaylor} & the Erdős--Taylor theorem on planar returns & 3, 4, 6\\
+\ref{pb:dice} & dice modulo $q$; a local limit theorem with span $3$ & 2, 10\\
+\ref{pb:squaresmodp} & sums of squares modulo $p$ mix in two steps & 1, 9\\
+\ref{pb:lucky} & lucky tickets and the Edgeworth correction & 3, 4, 10\\
+\ref{pb:signedsums} & $\pm1\pm2\cdots\pm n=0$ & 4, 10\\
+\ref{pb:smirnov} & Smirnov's two-sample theorem; theta identity & 3, 4, 10\\
+\ref{pb:primeseries} & random series over the primes & 3, 5, 10\\
+\ref{pb:factorialseries} & $\sum\varepsilon_n/n!$, a law of dimension $0$ & 6\\
+\ref{pb:smooth} & $\sum\varepsilon_n/n^2$ has a smooth density & 7, 10\\
+\ref{pb:purity} & the Jessen--Wintner purity theorem & 6, 10\\
+\ref{pb:golden} & Erdős's theorem on the golden Bernoulli convolution & 7, 12\\
+\ref{pb:kaczeros} & Kac's formula for the real roots of a random polynomial & 3, 6\\
+\end{tabular}}
+\end{center}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item H.~Cramér, Half a century with probability theory: some personal recollections, \emph{Annals of Probability} 4 (1976), 509--546 (the opening story);
+J.~W.~Lindeberg, Eine neue Herleitung des Exponentialgesetzes in der Wahrscheinlichkeitsrechnung, \emph{Mathematische Zeitschrift} 15 (1922), 211--225.
+\item M.~Kac, On the distribution of values of sums of the type $\sum f(2^kt)$, \emph{Annals of Mathematics} 47 (1946), 33--49.
+\item L.~H.~Harper, Stirling behavior is asymptotically normal, \emph{Annals of Mathematical Statistics} 38 (1967), 410--414; J.~N.~Darroch, On the distribution of the number of
+successes in independent trials, \emph{Annals of Mathematical Statistics} 35 (1964), 1317--1321; J.~Pitman, Probabilistic bounds on the coefficients of polynomials with only real
+zeros, \emph{Journal of Combinatorial Theory, Series A} 77 (1997), 279--303.
+\item A.~D.~Barbour, L.~Holst and S.~Janson, \emph{Poisson Approximation}, Oxford University Press, 1992; L.~H.~Y.~Chen, L.~Goldstein and Q.-M.~Shao, \emph{Normal Approximation by
+Stein's Method}, Springer, 2011; C.~Stein, \emph{Approximate Computation of Expectations}, IMS Lecture Notes 7, 1986.
+\item W.~Hoeffding, A combinatorial central limit theorem, \emph{Annals of Mathematical Statistics} 22 (1951), 558--566; E.~Bolthausen, An estimate of the remainder in a combinatorial
+central limit theorem, \emph{Zeitschrift für Wahrscheinlichkeitstheorie und verwandte Gebiete} 66 (1984), 379--386.
+\item A.~Rényi and P.~Turán, On a theorem of Erdős--Kac, \emph{Acta Arithmetica} 4 (1958), 71--84.
+\item G.~E.~P.~Box and M.~E.~Muller, A note on the generation of random normal deviates, \emph{Annals of Mathematical Statistics} 29 (1958), 610--611.
+\item D.~Conlon and W.~T.~Gowers, Combinatorial theorems in sparse random sets, \emph{Annals of Mathematics} 184 (2016), 367--454; M.~Schacht, Extremal results for random discrete
+structures, \emph{Annals of Mathematics} 184 (2016), 333--365.
+\item P.~Erdős and S.~J.~Taylor, Some problems concerning the structure of random walk paths, \emph{Acta Mathematica Academiae Scientiarum Hungaricae} 11 (1960), 137--162.
+\item P.~Diaconis, \emph{Group Representations in Probability and Statistics}, IMS Lecture Notes 11, 1988 (the upper bound lemma and random walks modulo $p$).
+\item J.~H.~van Lint, Representation of $0$ as $\sum_{k=-N}^N\varepsilon_kk$, \emph{Proceedings of the American Mathematical Society} 18 (1967), 182--184; R.~C.~Entringer, Representation
+of $m$ as $\sum_{k=-n}^n\varepsilon_kk$, \emph{Canadian Mathematical Bulletin} 11 (1968), 289--293.
+\item A.~N.~Kolmogorov, Sulla determinazione empirica di una legge di distribuzione, \emph{Giornale dell'Istituto Italiano degli Attuari} 4 (1933), 83--91; N.~V.~Smirnov, On the
+estimation of the discrepancy between empirical curves of distribution for two independent samples, \emph{Bulletin Mathématique de l'Université de Moscou} 2 (1939), 3--14;
+B.~V.~Gnedenko and V.~S.~Korolyuk, On the maximum discrepancy between two empirical distributions, \emph{Doklady Akademii Nauk SSSR} 80 (1951), 525--528.
+\item H.~Bohr and B.~Jessen, Über die Werteverteilung der Riemannschen Zetafunktion, \emph{Acta Mathematica} 54 (1930), 1--35; B.~Jessen and A.~Wintner, Distribution functions
+and the Riemann zeta function, \emph{Transactions of the American Mathematical Society} 38 (1935), 48--88.
+\item P.~Erdős, On a family of symmetric Bernoulli convolutions, \emph{American Journal of Mathematics} 61 (1939), 974--976; R.~Salem, A remarkable class of algebraic integers,
+\emph{Duke Mathematical Journal} 11 (1944), 103--108; B.~Solomyak, On the random series $\sum\pm\lambda^n$ (an Erdős problem), \emph{Annals of Mathematics} 142 (1995), 611--625;
+P.~Shmerkin, On the exceptional set for absolute continuity of Bernoulli convolutions, \emph{Geometric and Functional Analysis} 24 (2014), 946--958; P.~P.~Varjú, Absolute continuity
+of Bernoulli convolutions for algebraic parameters, \emph{Journal of the American Mathematical Society} 32 (2019), 351--397.
+\item M.~Kac, On the average number of real roots of a random algebraic equation, \emph{Bulletin of the American Mathematical Society} 49 (1943), 314--320; A.~Edelman and E.~Kostlan,
+How many zeros of a random polynomial are real?, \emph{Bulletin of the American Mathematical Society} 32 (1995), 1--37; I.~A.~Ibragimov and N.~B.~Maslova, The mean number of real
+zeros of random polynomials I, \emph{Theory of Probability and its Applications} 16 (1971), 228--248; T.~Tao and V.~Vu, Local universality of zeroes of random polynomials,
+\emph{International Mathematics Research Notices} 2015, 5053--5139.
+\end{itemize}

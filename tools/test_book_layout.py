@@ -93,7 +93,7 @@ class TypesetPaginationTest(unittest.TestCase):
 \begin{think}Try a small example.\end{think}
 \begin{challenge}Find another proof.\end{challenge}
 '''
-        for problem_book in [False, 'tomeP1-crossroads', 'tomeP2-machinery', 'tomeP3-frontiers']:
+        for problem_book in [False, 'tomeP1-crossroads']:
             with self.subTest(problem_book=problem_book), tempfile.TemporaryDirectory() as directory:
                 result = self.compile(directory, body, problem_book=problem_book)
                 self.assertEqual(result.returncode, 0, result.stdout[-3000:])

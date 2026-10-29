@@ -1,5 +1,8 @@
 # Charcoal/coral design rollout — 27 October 2026
 
+The current series is sixteen books, Volumes 0–14 plus Crossroads. Counts below
+that say nineteen describe this rollout, not the present catalog.
+
 The latest author selection is the **left-aligned** cover in
 [the approved reference](../docs/reference/approved-charcoal-coral-volume-0.png).
 The earlier centered choice is superseded. The clean workspace was updated with

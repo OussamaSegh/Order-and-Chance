@@ -1,0 +1,344 @@
+\begin{center}\itshape
+How far must one walk along an arithmetic progression to meet a prime?\\
+Not very far, said Linnik in 1944: a fixed power of the modulus.\\
+Nobody knows that fixed power is $2$, and the best exponent proved so far is $5$.
+\end{center}
+
+Dirichlet's theorem says that every progression $a,a+q,a+2q,\dots$ with $\gcd(a,q)=1$ contains infinitely many primes, and the prime number theorem for progressions says that, in the long run, the $\varphi(q)$ admissible classes share the primes equally. ``In the long run'' hides a question. Fix a large modulus $q$: how large must $x$ be before every class has received its share, or at least one prime? The theorems of Volume~13 answer only for $q$ tiny compared with $x$. The Siegel--Walfisz theorem (Volume~13, Corollary~2.12) needs $q\le(\log x)^A$: its range of $x$ is $x\ge e^{q^{1/A}}$, exponential in $q$. The generalized Riemann hypothesis would give the expected share as soon as $x\ge q^{2+\varepsilon}$, a power of $q$.
+
+In 1944 Yuri Linnik proved, unconditionally, that the least prime $p(q,a)$ in the class $a\bmod q$ satisfies
+\[
+p(q,a)\le Cq^L
+\]
+for absolute constants $C$ and $L$. His two papers in \emph{Matematicheskii Sbornik} were long and hard, and the constant $L$ was not computed. When Pan Chengdong first computed one, in 1957, he found $L=10\,000$. A long line of improvements followed; the best value known today is $L=5$, due to Triantafyllos Xylouris (2011), building on Roger Heath-Brown's $L=5.5$ of 1992. Under the generalized Riemann hypothesis any $L>2$ works, and Sarvadaman Chowla conjectured that $L=1+\varepsilon$ suffices, which is what a random model of the primes predicts. Numerically, $p(q,a)<q^2$ for every $q$ that has been checked.
+
+Linnik's proof rested on three properties of the zeros of the $L$-functions modulo $q$, which have since become standard tools of the subject. First, the classical zero-free region of Volume~13, with at most one exceptional zero. Second, a \emph{log-free zero density estimate}: the number of zeros $\beta+i\gamma$ of all the $L(s,\chi)$, $\chi\bmod q$, with $\beta\ge\alpha$ and $|\gamma|\le T$ is at most $(qT)^{C(1-\alpha)}$, with no factor $\log(qT)$ in front. Third, the \emph{Deuring--Heilbronn phenomenon}: if an exceptional zero exists, it repels all the other zeros away from the line $\sigma=1$. In 1970 Patrick Gallagher showed how the first two combine into a clean ``prime number theorem for large moduli'', valid as soon as $x$ is a large power of $q$.
+
+This chapter proves the log-free density estimate, following the sieve-theoretic route of Iwaniec and Kowalski's book and Terence Tao's lecture notes, then Gallagher's prime number theorem, and finally Linnik's theorem when there is no exceptional zero. The chapter belongs in a book about randomness for a simple reason: the log-free estimate is exactly what makes the primes in progressions to modulus $q$ look random from the scale $x=q^{C}$ on, and the obstruction to proving more, the exceptional zero, is the single most stubborn conspiracy in the subject.
+
+\begin{reminder}[from Volumes~4, 5, 12 and~13]
+\emph{Characters and $L$-functions} (Volume~13, Lemmas~2.1 and~2.2, Theorems~2.3 and~2.4). For $\chi$ non-principal modulo $q$, $|\sum_{n\le x}\chi(n)|\le q$ and $|L(s,\chi)|\le\frac{q|s|}\sigma$ for $\sigma>0$. With $\mathcal L=\log(q(|t|+2))$, there is an absolute $A_0$ such that for $\frac78\le\sigma\le\frac{11}8$, $\frac{L'}L(s,\chi)=\sum_{|\rho-s_0|\le1/2}\frac1{s-\rho}+O(A_0\mathcal L)$, where $s_0=\frac98+it$, the sum having at most $A_0\mathcal L$ terms. There is $c_1>0$ such that $L(s,\chi)\ne0$ for $\sigma\ge1-\frac{c_1}{\mathcal L}$, except possibly for one real simple zero when $\chi$ is real; and (Landau, Page) there is $c_2>0$ such that two distinct real primitive characters of moduli $q_1$, $q_2$ cannot both have a real zero above $1-\frac{c_2}{\log(q_1q_2)}$.
+\emph{The functional equation} (Volume~12, Corollary~9.21). For $\chi$ primitive modulo $q>1$ with $\chi(-1)=(-1)^{\mathfrak a}$, $\mathfrak a\in\{0,1\}$, the function $\Lambda(s,\chi)=(\frac q\pi)^{s/2}\Gamma(\frac{s+\mathfrak a}2)L(s,\chi)$ is entire and $\Lambda(s,\chi)=\varepsilon(\chi)\Lambda(1-s,\overline\chi)$ with $|\varepsilon(\chi)|=1$.
+\emph{Mertens} (Volume~5, Theorems~1.3 and~1.5). $\sum_{p\le y}\frac{\log p}p=\log y+O(1)$ and $\sum_{p\le y}\frac1p=\log\log y+M+O(\frac1{\log y})$.
+\emph{The prime number theorem} (Volume~5, Theorem~7.8). $\psi(x)=x+O(xe^{-c\sqrt{\log x}})$.
+\emph{Fourier inversion} (Volume~4, Theorem~8.6). A smooth compactly supported $f$ on $\R$ has a Fourier transform decaying faster than any power, and $f(u)=\int_\R F(t)e^{-itu}\dd t$ with $F(t)=\frac1{2\pi}\int_\R f(u)e^{itu}\dd u$.
+\end{reminder}
+
+Throughout, $\mathcal L=\mathcal L(q,t)=\log(q(|t|+2))$, and $\rho=\beta+i\gamma$ denotes a zero of an $L$-function with $0<\beta<1$ (a \emph{non-trivial} zero). If $\chi\bmod q$ is induced by the primitive $\chi^*\bmod q^*$, then $L(s,\chi)=L(s,\chi^*)\prod_{p\mid q}(1-\chi^*(p)p^{-s})$, so the two functions have the same non-trivial zeros.
+
+\section{The zeros of one \texorpdfstring{$L$}{L}-function, uniformly in \texorpdfstring{$q$}{q}}
+
+\begin{lemma}\label{lem:localL}
+Let $\chi$ be primitive modulo $q\ge3$. Then:
+\begin{enumerate}[label=(\alph*)]
+\item for every real $t$, the number of zeros with $|\gamma-t|\le1$ is $O(\mathcal L(q,t))$; hence the number with $|\gamma|\le T$ is $O(T\log(qT))$ for $T\ge2$;
+\item for $|t|\ge2$ and $-1\le\sigma\le2$, $\frac{L'}L(s,\chi)=\sum_{|\gamma-t|\le1}\frac1{s-\rho}+O(\mathcal L)$;
+\item on the line $\sigma=-\frac12$, $|\frac{L'}L(s,\chi)|=O(\mathcal L)$.
+\end{enumerate}
+The implied constants are absolute.
+\end{lemma}
+\begin{proof}
+(a) and (b) are proved exactly as Theorem~\ref{thm:explicitchi}(a) and~(b), with three changes. The growth bound becomes $|L(s,\chi)|\le(q(|t|+2))^{13}$ for $-11\le\sigma\le15$: for $\sigma\ge\frac12$ this is $|L|\le2q|s|$, and for $\sigma<\frac12$ the functional equation gives
+\[
+L(s,\chi)=\varepsilon(\chi)\Bigl(\frac q\pi\Bigr)^{\frac12-s}\frac{\Gamma(\frac{1-s+\mathfrak a}2)}{\Gamma(\frac{s+\mathfrak a}2)}L(1-s,\overline\chi),
+\]
+where the ratio of Gamma functions is $O((|t|+2)^{\frac12-\sigma})$ by Stirling's formula, and bounded for $|t|\le1$. Next, $|L(2+it,\chi)|\ge\frac{\zeta(4)}{\zeta(2)}$ still holds, so Volume~5, Lemma~6.6 applies with $\log M=O(\mathcal L)$. Finally, the trivial zeros are now at $-\mathfrak a,-\mathfrak a-2,\dots$; those within $6$ of $2+it$ contribute $O(1)$ to (b) since $|t|\ge2$. Summing (a) over unit windows gives the total count.
+
+(c) The logarithmic derivative of the functional equation is
+\[
+\frac{L'}L(s,\chi)=-\log\frac q\pi-\frac12\frac{\Gamma'}\Gamma\Bigl(\frac{s+\mathfrak a}2\Bigr)-\frac12\frac{\Gamma'}\Gamma\Bigl(\frac{1-s+\mathfrak a}2\Bigr)-\frac{L'}L(1-s,\overline\chi).
+\]
+On $\sigma=-\frac12$: $|\frac{L'}L(\frac32-it,\overline\chi)|\le-\frac{\zeta'}\zeta(\frac32)$; the second Gamma term has argument with real part at least $\frac34$, so it is $O(\log(|t|+2))$; and for $w=\frac{s+\mathfrak a}2$, whose real part is $\pm\frac14$, the reflection formula $\frac{\Gamma'}\Gamma(w)=\frac{\Gamma'}\Gamma(1-w)-\pi\cot\pi w$ applies with $\operatorname{Re}(1-w)\ge\frac34$, and $|\cot\pi w|=1$ when $\operatorname{Re}w=\pm\frac14$ (since $|\cot(x+iy)|^2=\frac{\cos^2x+\sinh^2y}{\sin^2x+\sinh^2y}$).
+\end{proof}
+
+For counting primes we use a smooth weight, which spares us all questions of convergence. Fix once and for all a smooth $w:\R\to[0,1]$ supported in $[1,2]$, not identically $0$, and put
+\[
+\hat w(s)=\int_0^\infty w(u)u^{s-1}\dd u,\qquad\psi_w(x,\chi)=\sum_n\chi(n)\Lambda(n)w\Bigl(\frac nx\Bigr).
+\]
+Then $\hat w$ is entire; $|\hat w(s)|\le1$ for $\sigma\le1$, because $0\le w\le1$ and $u^{\sigma-1}\le1$ on $[1,2]$; and two integrations by parts, $\hat w(s)=\frac1{s(s+1)}\int_1^2w''(u)u^{s+1}\dd u$, give $|\hat w(s)|\le\frac{C_w}{(1+|s|)^2}$ for $-1\le\sigma\le2$. All constants below may depend on $w$.
+
+\begin{proposition}[the smoothed explicit formula]\label{prop:smoothexplicit}
+Let $\chi$ be primitive modulo $q\ge3$ and $x\ge2$. Then
+\[
+\psi_w(x,\chi)=-\sum_\rho\hat w(\rho)x^\rho+O(\log q),
+\]
+the sum running over all non-trivial zeros of $L(s,\chi)$ and converging absolutely.
+\end{proposition}
+\begin{proof}
+By Mellin inversion,
+\[
+w\Bigl(\frac nx\Bigr)=\frac1{2\pi i}\int_{(2)}\hat w(s)\Bigl(\frac xn\Bigr)^s\dd s,\qquad\text{so}\qquad\psi_w(x,\chi)=\frac1{2\pi i}\int_{(2)}-\frac{L'}L(s,\chi)\hat w(s)x^s\dd s.
+\]
+Move the line of integration to $\sigma=-\frac12$, through horizontal segments at heights $\pm T_k$, $T_k\to\infty$, chosen as in the proof of Theorem~\ref{thm:explicitchi} so that $|\frac{L'}L|=O(\mathcal L(q,T_k)^2)$ on them (Lemma~\ref{lem:localL}(a),(b)). On these segments the integrand is $O(\frac{\log^2(qT_k)}{T_k^2}x^2)$, which tends to $0$. The poles crossed are the non-trivial zeros, with residues $-m\hat w(\rho)x^\rho$, and, when $\chi$ is even, the trivial zero $s=0$, with residue $-\hat w(0)$, which is $O(1)$. The remaining integral is at most $\frac{x^{-1/2}}{2\pi}\int|\frac{L'}L(-\frac12+it)|\frac{C_w}{(1+|t|)^2}\dd t=O(\log q)$ by Lemma~\ref{lem:localL}(c). Absolute convergence follows from $|\hat w(\rho)|\le\frac{C_w}{(1+|\gamma|)^2}$ and Lemma~\ref{lem:localL}(a).
+\end{proof}
+
+\section{Sieve weights that kill logarithms}
+
+The log-free density estimate is about zeros very close to the line $\sigma=1$: $\beta\ge1-\frac A{\log T}$ with $A$ of moderate size. Such a zero is detected by a Dirichlet polynomial that is unusually large at it, and counting zeros reduces to counting the points where a Dirichlet polynomial is large. The usual tools for this (Volume~13, Chapters~1 and~4) lose a power of $\log T$, which is harmless away from $\sigma=1$ and fatal near it. The cure is to weight the integers by a smoothed Selberg sieve, which concentrates the Dirichlet polynomial on integers without small prime factors, where the sums that cost a logarithm become sums that cost nothing.
+
+Fix a smooth $f:\R\to[0,1]$, equal to $1$ on $[-1,1]$ and supported in $[-2,2]$. For $R\ge2$ let
+\[
+\beta_R(n)=\sum_{d\mid n}\mu(d)f\Bigl(\frac{\log d}{\log R}\Bigr).
+\]
+If $1<n\le R$, every divisor $d$ of $n$ has $f(\frac{\log d}{\log R})=1$, so $\beta_R(n)=\sum_{d\mid n}\mu(d)=0$; and $\beta_R(1)=1$. For $R_1,R_2\ge2$, expanding the product,
+\[
+\beta_{R_1}(n)\beta_{R_2}(n)=\sum_{d\mid n}\rho_{R_1,R_2}(d),\qquad\rho_{R_1,R_2}(d)=\sum_{[d_1,d_2]=d}\mu(d_1)f\Bigl(\frac{\log d_1}{\log R_1}\Bigr)\mu(d_2)f\Bigl(\frac{\log d_2}{\log R_2}\Bigr).
+\]
+So $\rho_{R_1,R_2}(1)=1$, $\rho_{R_1,R_2}$ is supported on squarefree $d\le R_1^2R_2^2$, and $|\rho_{R_1,R_2}(d)|\le\tau(d)^2$, the number of pairs $(d_1,d_2)$ with $[d_1,d_2]=d$ being at most $\tau(d)^2$. We shall also use the crude bound
+\[
+\sum_{d\le y}\frac{\tau(d)^2}d\le\prod_{p\le y}\Bigl(1+\frac4p+\frac9{p^2}+\cdots\Bigr)\le C\log^4(y+2),
+\]
+which follows from Mertens's theorem, and hence $\sum_{d\le y}\tau(d)^2\le Cy\log^4(y+2)$.
+
+\begin{lemma}[the sieve bound]\label{lem:sievebound}
+Let $K\ge1$, $2\le R_1\le R_2\le R_1^K$, and let $g$ be a function on squarefree integers with $g(d)=\prod_{p\mid d}g(p)$ and $0\le g(p)\le1$. Then
+\[
+\Bigl|\sum_d\frac{g(d)}d\rho_{R_1,R_2}(d)\Bigr|\le C_K\exp\Bigl(-\sum_{p\le R_1}\frac{g(p)}p\Bigr).
+\]
+\end{lemma}
+\begin{proof}
+Let $P=R_2^2$. Only $d_1,d_2$ dividing $\Pi=\prod_{p\le P}p$ contribute, since $f$ vanishes beyond $2$. Write $f(u)=\int F(t)e^{-itu}\dd t$ with $F$ rapidly decreasing. Then, with $u_i=\frac{t_i}{\log R_i}$, the sum equals
+\[
+\iint F(t_1)F(t_2)\sum_{d_1,d_2\mid\Pi}\mu(d_1)\mu(d_2)\frac{g([d_1,d_2])}{[d_1,d_2]}d_1^{-iu_1}d_2^{-iu_2}\dd t_1\dd t_2,
+\]
+the inner sum being finite. It factors over $p\le P$: the $p$-parts of $(d_1,d_2)$ are $(1,1)$, $(p,1)$, $(1,p)$ or $(p,p)$, so with $e_i=p^{-iu_i}$ the factor at $p$ is
+\[
+1-\frac{g(p)}p(e_1+e_2-e_1e_2)=1-\frac{g(p)}p+\frac{g(p)}p(1-e_1)(1-e_2).
+\]
+Its modulus is at most $1-\frac{g(p)}p+\frac{2g(p)}p|1-e_1|\le\exp\bigl(-\frac{g(p)}p+\frac2p|1-e_1|\bigr)$. Now $|1-e_1|\le\min(2,|u_1|\log p)$. Let $y=R_1^{1/(1+|t_1|)}$. If $y\ge2$, Mertens gives $\sum_{p\le y}\frac{|u_1|\log p}p\le\frac{|t_1|}{\log R_1}(\log y+C)\le1+C'$, since then $|t_1|\le\frac{\log R_1}{\log2}$. In all cases $\sum_{y<p\le P}\frac2p\le2\log\frac{\log P}{\max(\log y,\log 2)}+C\le2\log(2K(1+|t_1|))+C''$. Hence the inner sum is at most $C_K(2+|t_1|)^4\exp(-\sum_{p\le P}\frac{g(p)}p)$, and $\sum_{p\le P}\frac{g(p)}p\ge\sum_{p\le R_1}\frac{g(p)}p$ because $g\ge0$. Integrating against $|F(t_1)F(t_2)|$ gives the lemma.
+\end{proof}
+
+\begin{corollary}\label{cor:sievesums}
+Let $R\ge2$.
+\begin{enumerate}[label=(\alph*)]
+\item $\sum_n\beta_R(n)^2n^{-1-1/\log R}\le C$; hence $\sum_{n\le R^K}\frac{\beta_R(n)^2}n\le Ce^K$ for every $K\ge1$.
+\item For $q\ge1$, $\bigl|\sum_{(d,q)=1}\frac{\rho_{R,R}(d)}d\bigr|\le C\frac q{\varphi(q)}\frac1{\log R}$.
+\end{enumerate}
+\end{corollary}
+\begin{proof}
+(a) Since $\beta_R^2=1*\rho_{R,R}$ and $\rho_{R,R}$ has finite support, with $\sigma=1+\frac1{\log R}$ the sum is $\zeta(\sigma)\sum_d\rho_{R,R}(d)d^{-\sigma}$. Apply Lemma~\ref{lem:sievebound} with $K=1$ and $g(d)=d^{-1/\log R}$. For $p\le R$, $1-p^{-1/\log R}\le\frac{\log p}{\log R}$, so by Mertens $\sum_{p\le R}\frac{g(p)}p\ge\sum_{p\le R}\frac1p-\frac1{\log R}\sum_{p\le R}\frac{\log p}p\ge\log\log R-C$. So the sum is at most $\zeta(\sigma)\cdot\frac C{\log R}\le C'$, as $\zeta(\sigma)\le1+\log R$. For $n\le R^K$, $\frac1n\le\frac{e^K}{n^\sigma}$.
+(b) Take $g(p)=1$ for $p\nmid q$ and $g(p)=0$ for $p\mid q$. Then $\exp(-\sum_{p\le R,\,p\nmid q}\frac1p)\le\exp(-\sum_{p\le R}\frac1p)\prod_{p\mid q}e^{1/p}\le\frac C{\log R}\prod_{p\mid q}(1-\frac1p)^{-1}$.
+\end{proof}
+
+The point of (a) is that the sum $\sum_{n\le N}\frac1n=\log N$ costs a logarithm, while the same sum restricted (with weights) to integers free of prime factors below $R$ costs a constant when $N$ is a power of $R$: there are only about $\frac N{\log R}$ such integers. This is the source of the word ``log-free''.
+
+\begin{lemma}[duality]\label{lem:duality}
+Let $f,g_1,\dots,g_J$ be finitely supported functions on the positive integers, and $\nu>0$ on the support of $f$. Then
+\[
+\sum_{j=1}^J\Bigl|\sum_nf(n)\overline{g_j(n)}\Bigr|^2\le\Bigl(\sum_n\frac{|f(n)|^2}{\nu(n)}\Bigr)\max_j\sum_{j'=1}^J\Bigl|\sum_n\nu(n)g_j(n)\overline{g_{j'}(n)}\Bigr|.
+\]
+\end{lemma}
+\begin{proof}
+Let $c_j=\sum_n\overline{f(n)}g_j(n)$ and $S=\sum_j|c_j|^2$, the left side. Then $S=\sum_nf(n)\overline{\sum_j\overline{c_j}g_j(n)}$; restrict $n$ to the support of $f$ and apply Cauchy--Schwarz with the weight $\nu$: $S^2\le(\sum_n\frac{|f|^2}\nu)\sum_n\nu|\sum_j\overline{c_j}g_j|^2$. Expanding, the last sum is $\sum_{j,j'}\overline{c_j}c_{j'}M_{jj'}$ with $M_{jj'}=\sum_n\nu g_j\overline{g_{j'}}$, and $|M_{jj'}|=|M_{j'j}|$, so it is at most $\sum_{j,j'}\frac{|c_j|^2+|c_{j'}|^2}2|M_{jj'}|\le S\max_j\sum_{j'}|M_{jj'}|$. Divide by $S$.
+\end{proof}
+
+\begin{lemma}[smooth character sums]\label{lem:smoothchar}
+Let $\xi$ be a character modulo $q$ and $h$ a $C^1$ function with compact support in $(0,\infty)$. If $\xi$ is non-principal, $|\sum_m\xi(m)h(m)|\le q\int|h'|$. If $\xi$ is principal, $\sum_m\xi(m)h(m)=\frac{\varphi(q)}q\int h+\theta q\int|h'|$ with $|\theta|\le1$.
+\end{lemma}
+\begin{proof}
+Partial summation gives
+\[
+\sum_m\xi(m)h(m)=-\int_0^\infty S(y)h'(y)\dd y,\qquad S(y)=\sum_{m\le y}\xi(m).
+\]
+ If $\xi$ is non-principal, $|S|\le q$. If $\xi$ is principal, $S(y)=\sum_{d\mid q}\mu(d)\lfloor\frac yd\rfloor=\frac{\varphi(q)}qy+E(y)$ with $|E(y)|\le2^{\omega(q)}\le q$, and $-\int yh'(y)\dd y=\int h$.
+\end{proof}
+
+\section{The log-free zero density estimate}
+
+For $q\ge2$, $T\ge2$ and $\frac12\le\alpha\le1$, let $N^*(\alpha,q,T)$ be the number of zeros $\rho=\beta+i\gamma$, with multiplicity, of all the functions $L(s,\chi)$, $\chi$ non-principal modulo $q$, with $\beta\ge\alpha$ and $|\gamma|\le T$.
+
+\begin{lemma}[a zero detector]\label{lem:detector}
+There are absolute constants $T_0$ and $\varepsilon_0=10^{-5}$ with the following property. Let $q\ge2$, $T\ge\max(q^{10},T_0)$, $1\le A\le\varepsilon_0\log T$, $R_1=T^{10}$, $R_2=T^{100}$. If $\chi$ is non-principal modulo $q$ and $L(s,\chi)=0$ with $s=\sigma+it$, $\sigma\ge1-\frac A{\log T}$, $|t|\le T$, then
+\[
+\Bigl|\sum_{T^{100}<n\le T^{1100}}\beta_{R_1}(n)\beta_{R_2}(n)\chi(n)n^{-s}\Bigr|\ge\frac12.
+\]
+\end{lemma}
+\begin{proof}
+For $y\ge1$, partial summation gives $|\sum_{n>y}\chi(n)n^{-s}|\le qy^{-\sigma}+\frac{q|s|}\sigma y^{-\sigma}\le6qTy^{-1/2}$, since $\sigma\ge\frac12$ and $|s|\le2T$. As $L(s,\chi)=0$, $|\sum_{n\le y}\chi(n)n^{-s}|\le6T^{1.1}y^{-1/2}\le T^{-400}$ for $y\ge T^{880}$. Let $\rho=\rho_{R_1,R_2}$, supported on $m\le T^{220}$. Then
+\[
+\sum_{n\le T^{1100}}(1*\rho)(n)\chi(n)n^{-s}=\sum_{m\le T^{220}}\rho(m)\chi(m)m^{-s}\sum_{k\le T^{1100}/m}\chi(k)k^{-s},
+\]
+and $T^{1100}/m\ge T^{880}$, so the modulus is at most $T^{-400}\sum_{m\le T^{220}}\tau(m)^2m^{-\sigma}$. Since $m^{1-\sigma}\le T^{220A/\log T}=e^{220A}\le T^{0.01}$, this is at most $T^{-399}C\log^4T\le\frac12$ for $T\ge T_0$. Finally $1*\rho=\beta_{R_1}\beta_{R_2}$ equals $1$ at $n=1$ and vanishes for $1<n\le T^{100}$, because $\beta_{R_2}(n)=0$ there.
+\end{proof}
+
+\begin{theorem}[log-free zero density; Linnik, 1944; Gallagher, 1970]\label{thm:logfree}
+There is an absolute constant $C$ such that for $q\ge2$, $T\ge2$ and $\frac12\le\alpha\le1$,
+\[
+N^*(\alpha,q,T)\le C(qT)^{C(1-\alpha)}.
+\]
+\end{theorem}
+\begin{proof}
+\emph{Reductions.} Replacing $T$ by $T'=\max(T,q^{10},T_0)$ only increases the count, and $qT'\le T_0(qT)^{11}$, so we may assume $T\ge\max(q^{10},T_0)$. Write $\alpha=1-\frac A{\log T}$. If $A<1$ we replace $\alpha$ by $1-\frac1{\log T}$. If $A>\varepsilon_0\log T$, we count all zeros: by Lemma~\ref{lem:localL}(a) applied to the primitive characters inducing the $\chi\bmod q$, there are at most $q\cdot CT\log(qT)\le T^3$ of them, and $T^3\le T^{(3/\varepsilon_0)(1-\alpha)}$. So let $1\le A\le\varepsilon_0\log T$; we show $N^*(\alpha,q,T)\le Ce^{C'A}$, which is $CT^{C'(1-\alpha)}$.
+
+\emph{Clusters.} For each $\chi$, choose greedily a maximal set of the zeros counted whose ordinates are pairwise at least $\frac A{\log T}$ apart. Every zero counted has its ordinate within $\frac A{\log T}$ of a chosen one, $\rho_j=\sigma_j+it_j$, and then lies in the disc of radius $r=\frac{2A}{\log T}$ about $1+it_j$. Let $s^*=1+r+it_j$. By Volume~13, Lemma~2.2, $\operatorname{Re}\frac{L'}L(s^*,\chi)=\sum_{|\rho-s_0|\le1/2}\operatorname{Re}\frac1{s^*-\rho}+O(\mathcal L)$, where every term is non-negative (as $\beta\le1$), and the zeros of the disc are among them (as $|\rho-s_0|\le r+\frac18<\frac12$), each contributing $\frac{1+r-\beta}{|s^*-\rho|^2}\ge\frac r{4r^2}$. Since $\operatorname{Re}\frac{L'}L(s^*,\chi)\le-\frac{\zeta'}\zeta(1+r)\le\frac1r+C$, the disc contains at most $4r(\frac1r+C\mathcal L)\le4+C'A$ zeros, using $\mathcal L\le\log(3qT)\le2\log T$. It is therefore enough to show that the number $J$ of chosen zeros, over all $\chi$, is at most $Ce^{C'A}$.
+
+\emph{Detection and duality.} Let $\psi$ be a smooth function on $\R$ with values in $[0,1]$, supported in $[50,2200]$ and equal to $1$ on $[100,1100]$. Put
+\[
+f(n)=\frac{\beta_{R_1}(n)\beta_{R_2}(n)}n\mathbf 1_{T^{100}<n\le T^{1100}},\quad g_j(n)=n^{1-\sigma_j+it_j}\overline{\chi_j(n)}\psi\Bigl(\frac{\log n}{\log T}\Bigr),\quad\nu(n)=\frac{\beta_{R_1}(n)^2}n,
+\]
+where $\chi_j$ is the character of $\rho_j$. Then $\sum_nf(n)\overline{g_j(n)}$ is the sum of Lemma~\ref{lem:detector} at $\rho_j$, of modulus at least $\frac12$. The function $\nu$ is positive on the support of $f$, and by Corollary~\ref{cor:sievesums}(a) with $R=R_2$ and $K=11$,
+\[
+\sum_n\frac{|f(n)|^2}{\nu(n)}=\sum_{T^{100}<n\le T^{1100}}\frac{\beta_{R_2}(n)^2}n\le C.
+\]
+Notice what has happened: the factor $\beta_{R_1}^2$ cancelled, and the sum of $\frac1n$ over a range of length $T^{1000}$, which would have cost $1000\log T$, costs a constant. By Lemma~\ref{lem:duality},
+\[
+\frac J4\le C\max_j\sum_{j'}|M_{jj'}|,\qquad M_{jj'}=\sum_n\nu(n)g_j(n)\overline{g_{j'}(n)}.
+\]
+
+\emph{The inner products.} Let $\xi=\overline{\chi_j}\chi_{j'}$, $a=2-\sigma_j-\sigma_{j'}\in[0,\frac{2A}{\log T}]$, $\tau=t_j-t_{j'}$ and $\rho'=\rho_{R_1,R_1}$, supported on $d\le T^{40}$. Writing $\nu(n)=\frac1n\sum_{d\mid n}\rho'(d)$ and $n=dm$,
+\[
+M_{jj'}=\sum_d\frac{\rho'(d)\xi(d)}d\sum_m\xi(m)h_d(m),\qquad h_d(y)=\frac{(dy)^{a+i\tau}}y\psi\Bigl(\frac{\log dy}{\log T}\Bigr)^2.
+\]
+The function $h_d$ is supported on $y\ge T^{50}/d\ge T^{10}$, and $(dy)^a\le T^{2200a}\le e^{4400A}\le T^{0.05}$ on its support, so $|h_d'(y)|\le T^{0.05}(3+|\tau|)y^{-2}$ and $\int|h_d'|\le dT^{-48}$. By Lemma~\ref{lem:smoothchar}, the inner sum is $\mathbf 1_{\chi_j=\chi_{j'}}\frac{\varphi(q)}q\int h_d+O(qdT^{-48})$. The error terms contribute at most $qT^{-48}\sum_{d\le T^{40}}\tau(d)^2\le T^{-7}$ to $M_{jj'}$. In the main term, the substitution $z=dy$, then $z=T^u$, gives $\int h_d=I_{jj'}\log T$ with
+\[
+I_{jj'}=\int_\R e^{(a+i\tau)u\log T}\psi(u)^2\dd u,
+\]
+independent of $d$; and $\xi(d)=\mathbf 1_{(d,q)=1}$ when $\chi_j=\chi_{j'}$. By Corollary~\ref{cor:sievesums}(b) with $R=R_1=T^{10}$, the main term is at most $\frac{\varphi(q)}q\log T\cdot\frac{Cq}{\varphi(q)\cdot10\log T}|I_{jj'}|\le C|I_{jj'}|$: the logarithm cancels a second time. Finally $|I_{jj'}|\le2200e^{4400A}$, and two integrations by parts, the second derivative of $e^{au\log T}\psi(u)^2$ being $O(e^{4400A}(1+A^2))$, give $|I_{jj'}|\le Ce^{4401A}(|\tau|\log T)^{-2}$.
+
+\emph{Conclusion.} For fixed $j$, the $t_{j'}$ with $\chi_{j'}=\chi_j$ are $\frac1{\log T}$-separated, so $\sum_{j'}\min(1,(|t_j-t_{j'}|\log T)^{-2})\le1+2\sum_{k\ge1}k^{-2}\le5$. Hence $\sum_{j'}|M_{jj'}|\le Ce^{4401A}+JT^{-7}$, and $\frac J4\le C(Ce^{4401A}+JT^{-7})$. For $T\ge T_0$ this gives $J\le C'e^{4401A}$.
+\end{proof}
+
+The exponent $C$ produced by the proof is enormous, and no attempt was made to keep it small; the record values are near $C=\frac{12}5$ (Heath-Brown). What matters is its shape. A zero density estimate with an extra factor $\log^B(qT)$ was classical long before Linnik, and it is just as good away from $\sigma=1$; near $\sigma=1$, where $(qT)^{C(1-\alpha)}$ is bounded, it is worse by exactly that factor.
+
+\begin{think}
+Suppose you only had $N^*(\alpha,q,T)\le C(qT)^{C(1-\alpha)}\log^B(qT)$. Run the proof of Theorem~\ref{thm:gallagher} below with this bound. For which $x$ does it still show that every class modulo $q$ contains a prime up to $x$?
+\end{think}
+
+\section{Gallagher's prime number theorem}
+
+\begin{lemma}[one exceptional zero]\label{lem:onezero}
+There is an absolute constant $c_4>0$ such that, for every $q\ge3$, the region $\sigma\ge1-\frac{c_4}{\mathcal L(q,t)}$ contains no zero of any $L(s,\chi)$, $\chi\bmod q$, with the possible exception of one simple real zero $\beta_1$ of $L(s,\chi_1)$ for a single real non-principal character $\chi_1$.
+\end{lemma}
+\begin{proof}
+Take $c_4=\min(c_1,\frac{c_2}4)$. By Volume~13, Theorem~2.3, the only zeros in the region are real zeros of real characters, one at most for each. Two distinct real characters modulo $q$ are induced by distinct real primitive characters, of moduli at most $q$, and by Volume~13, Theorem~2.4, they cannot both have a real zero above $1-\frac{c_2}{2\log q}\le1-\frac{c_4}{\log 2q}$.
+\end{proof}
+
+\begin{theorem}[Gallagher, 1970]\label{thm:gallagher}
+There are absolute constants $C_0$ and $c>0$ such that for $q\ge3$, $(a,q)=1$ and $x\ge q^{C_0}$,
+\[
+\sum_{n\equiv a\,(q)}\Lambda(n)w\Bigl(\frac nx\Bigr)=\frac x{\varphi(q)}\Bigl(\hat w(1)-\chi_1(a)\hat w(\beta_1)x^{\beta_1-1}+O\bigl(e^{-c\log x/\log q}+q^{-c}\bigr)\Bigr),
+\]
+where the term with $\beta_1$ is present only if the exceptional zero of Lemma~\ref{lem:onezero} exists. The implied constant depends only on $w$.
+\end{theorem}
+\begin{proof}
+By orthogonality the left side is $\frac1{\varphi(q)}\sum_\chi\overline{\chi(a)}\psi_w(x,\chi)$. Replacing each $\chi$ by its primitive $\chi^*$ changes $\psi_w$ by at most $\sum_{p\mid q}\sum_{k\ge1}\log p\,w(\frac{p^k}x)\le\log q\log(2x)$; after division by $\varphi(q)$ and summation, by $O(\log q\log x)$, which is $O(\frac x{\varphi(q)}q^{-1})$ for $x\ge q^3$. Let $L=\frac{\log x}{\log q}$.
+
+\emph{The principal character.} $\psi_w(x,\chi_0^*)=\sum_n\Lambda(n)w(\frac nx)=-\int_0^\infty\psi(t)w'(\frac tx)\frac{\dd t}x=x\hat w(1)+O(xe^{-c\sqrt{\log x}})$ by the prime number theorem, since $-\int tw'(\frac tx)\frac{\dd t}x=x\int w$. Now $\sqrt{\log x}=\sqrt{L}\sqrt{\log q}$ is at least $L$ if $L\le\log q$ and at least $\log q$ otherwise; so $e^{-c\sqrt{\log x}}\le e^{-cL}+q^{-c}$.
+
+\emph{The other characters.} Let $T=q^3$. By Proposition~\ref{prop:smoothexplicit}, $\psi_w(x,\chi^*)=-\sum_\rho\hat w(\rho)x^\rho+O(\log q)$ for $\chi\ne\chi_0$. We sort the zeros of all these functions into four sets.
+\begin{itemize}
+\item The exceptional zero $\beta_1$, if it exists: it contributes $-\frac{\overline{\chi_1(a)}}{\varphi(q)}\hat w(\beta_1)x^{\beta_1}$, and $\chi_1(a)$ is real.
+\item Zeros with $|\gamma|>T$. Since $|\hat w(\rho)|\le\frac{C}{\gamma^2}$ and there are $O(\log(q(t+2)))$ zeros per unit window, their total contribution, over the $\varphi(q)$ characters, is at most $\varphi(q)\cdot Cx\frac{\log(qT)}T\le\frac x{\varphi(q)}\cdot\frac{4C\log q}q$.
+\item Zeros with $|\gamma|\le T$ and $\beta<\frac12$. There are at most $\varphi(q)CT\log(qT)\le q^5$ of them, each contributing at most $x^{1/2}$ (recall $|\hat w|\le1$ on $\sigma\le1$). In total $q^5x^{1/2}\le\frac x{\varphi(q)}q^{-1}$ if $x\ge q^{14}$.
+\item Zeros with $|\gamma|\le T$, $\beta\ge\frac12$, other than $\beta_1$. By Lemma~\ref{lem:onezero}, they have $\beta\le1-\eta$ with $\eta=\frac{c_4}{\log(q(T+2))}\ge\frac{c_4}{5\log q}$. Let $N(\alpha)$ be their number with $\beta\ge\alpha$; by Theorem~\ref{thm:logfree}, $N(\alpha)\le C(qT)^{C(1-\alpha)}=Cq^{4C(1-\alpha)}$. Their contribution is at most
+\[
+\sum x^\beta=x\Bigl(x^{-1/2}N(\tfrac12)+\int_{1/2}^{1-\eta}x^{\alpha-1}\log x\,N(\alpha)\dd\alpha\Bigr),
+\]
+by Stieltjes integration by parts. If $x\ge q^{8C}$, then $x^{\alpha-1}q^{4C(1-\alpha)}\le x^{-(1-\alpha)/2}$, so the integral is at most $C\log x\int_\eta^\infty x^{-v/2}\dd v=2Cx^{-\eta/2}\le2Ce^{-c_4L/10}$, and $x^{-1/2}N(\frac12)\le Cq^{2C}x^{-1/2}\le Cx^{-1/4}$.
+\end{itemize}
+The terms $O(\log q)$ of Proposition~\ref{prop:smoothexplicit} add up to $O(\log q)$ after division by $\varphi(q)$. Collecting everything, with $C_0=\max(14,8C)$ and $c$ small enough, gives the theorem.
+\end{proof}
+
+Compare the range with that of the Siegel--Walfisz theorem. There, $q\le(\log x)^A$, that is, $x\ge\exp(q^{1/A})$. Here $x\ge q^{C_0}$, and the main term is correct as soon as $\log x$ is a large multiple of $\log q$. The price is the possible exceptional zero, which is still there, now with its full strength: if $\beta_1$ is very close to $1$, the term $\chi_1(a)x^{\beta_1-1}$ is close to $\chi_1(a)$, and the primes avoid the classes with $\chi_1(a)=1$ in a range of $x$. Siegel's theorem would remove it, at the cost of ineffective constants and of the range.
+
+\begin{corollary}[Linnik's theorem without exceptional zero]\label{cor:linnik}
+There are absolute constants $L$ and $q_0$ with the following property. If $q\ge q_0$ and no $L(s,\chi)$, $\chi\bmod q$, has a zero in the region $\sigma\ge1-\frac{c_4}{\mathcal L(q,t)}$, then every class $a\bmod q$ with $(a,q)=1$ contains a prime $p\le2q^L$.
+\end{corollary}
+\begin{proof}
+Let $x=q^L$ with $L\ge C_0$ to be chosen. Without the exceptional term, Theorem~\ref{thm:gallagher} gives
+\[
+\sum_{n\equiv a\,(q)}\Lambda(n)w\Bigl(\frac nx\Bigr)\ge\frac x{\varphi(q)}\bigl(\hat w(1)-C(e^{-cL}+q^{-c})\bigr)\ge\frac{x\hat w(1)}{2q}
+\]
+if $L$ and $q_0$ are large enough. The prime powers $p^k$ with $k\ge2$ in $[x,2x]$ contribute at most $\sqrt{2x}\log(2x)$, which is less than $\frac{x\hat w(1)}{2q}$ when $L\ge3$ and $q\ge q_0$. So some prime $p\equiv a\pmod q$ lies in $[x,2x]$.
+\end{proof}
+
+\begin{remark}
+These are quoted for culture; see the Sources. (a) \emph{The exceptional case.} If the exceptional zero exists, the Deuring--Heilbronn phenomenon says that the other zeros satisfy $\beta\le1-c\frac{\log(1/\varepsilon)}{\mathcal L}$, where $\beta_1=1-\frac\varepsilon{\log q}$: the closer $\beta_1$ is to $1$, the wider the zero-free region for the others. With it, the proof of Theorem~\ref{thm:gallagher} gives a lower bound in which the term $1-x^{\beta_1-1}\approx(1-\beta_1)\log x$ dominates the error, and Linnik's theorem holds in all cases. (b) \emph{The constant.} Pan Chengdong (1957) obtained $L=10\,000$, Heath-Brown (1992) $L=5.5$, Xylouris (2011) $L=5$. Under GRH, Theorem~\ref{thm:gallagher}'s method gives every $L>2$ (Exercise~\ref{ex:grhlinnik}). (c) \emph{Without zeros.} In their book on sieves, John Friedlander and Henryk Iwaniec give a proof of Linnik's theorem in which sieve methods do most of the work usually done by the zeros.
+\end{remark}
+
+\begin{beauty}
+The proof of the log-free estimate makes two logarithms cancel, and both cancellations come from the same fact: the integers without prime factors below $R$ have density $\frac1{\log R}$. Weighted by $\beta_R^2$, a sum over $n\le R^{11}$ of $\frac1n$ costs $\log R$ times $\frac1{\log R}$; a sum over $d$ of $\frac{\rho(d)}d$ costs $\frac1{\log R}$, which kills the $\log T$ of an integral. A sieve, the crudest tool of prime number theory, is what makes the finest estimate on zeros possible.
+\end{beauty}
+
+\begin{figure}[ht]
+\centering\fig{ch10-leastprime}
+\caption{The least prime in the worst class: $P(q)=\max_{(a,q)=1}p(q,a)$ for primes $q\le3000$, plotted as $\frac{\log P(q)}{\log q}$ (dots). Every value is below $2$; the dashed curve is $1+2\frac{\log\log q}{\log q}$, the size $\varphi(q)\log^2q$ suggested by a random model. Linnik's theorem says the dots stay below a constant $L$; the best proven value is $L=5$. The largest dot is $q=5$, whose class $4$ waits until $19$; and the mean of $\frac{P(q)}{q\log^2q}$ over these $q$ is $1.03$.}
+\label{fig:leastprime}
+\end{figure}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:sieveupper}
+Using $\beta_R^2=1*\rho_{R,R}$ and Lemma~\ref{lem:sievebound} with $g=1$, show that $\sum_{n\le x}\beta_R(n)^2\le C\frac x{\log R}$ for $x\ge R^5$. Deduce that the number of primes in $(R^2,x]$ is $O(\frac x{\log x})$ for $x=R^5$, and hence Chebyshev's upper bound $\pi(x)=O(\frac x{\log x})$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:linnikdetail}
+In the proof of Corollary~\ref{cor:linnik}, make explicit how large $L$ and $q_0$ must be in terms of the constants $C$, $c$ of Theorem~\ref{thm:gallagher} and of $\hat w(1)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:grhlinnik}
+Assume GRH for all characters modulo $q$. Using Proposition~\ref{prop:smoothexplicit} and Lemma~\ref{lem:localL}(a), show that $\sum_{n\equiv a\,(q)}\Lambda(n)w(\frac nx)=\frac x{\varphi(q)}\hat w(1)+O(\sqrt x\log q)$ for $x\ge q$, and deduce that $p(q,a)\le C\varphi(q)^2\log^2q$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:siegelwalfisz}
+Show that Theorem~\ref{thm:gallagher}, together with Siegel's bound $1-\beta_1\ge c(\varepsilon)q^{-\varepsilon}$ (Volume~13, Corollary~2.9), gives $\sum_{n\equiv a\,(q)}\Lambda(n)w(\frac nx)\sim\frac{x\hat w(1)}{\varphi(q)}$ uniformly for $q^{C_0}\le x$ and $q\le(\log x)^A$. Why does it say nothing new for $q=x^{1/C_0}$?
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:density}
+Show that the proof of Theorem~\ref{thm:logfree} also counts zeros of $L$-functions to all moduli $q\le Q$ at once: the number of zeros with $\beta\ge\alpha$ and $|\gamma|\le T$ of all $L(s,\chi)$ with $\chi$ primitive of modulus at most $Q$ is $O((QT)^{C(1-\alpha)})$. (Replace Lemma~\ref{lem:smoothchar} by an estimate for $\sum_m\xi(m)h(m)$ with $\xi$ a product of two primitive characters of different moduli.)
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:sieveupper}
+$\sum_{n\le x}\beta_R(n)^2=\sum_d\rho_{R,R}(d)(\frac xd+O(1))$, and $\beta_R(p)=1-f(\frac{\log p}{\log R})$ for a prime $p$, since its only divisors are $1$ and $p$; this is $1$ as soon as $p>R^2$.
+\end{hint}
+\begin{hint}{ex:linnikdetail}
+Choose $L$ with $Ce^{-cL}\le\frac{\hat w(1)}4$ first, then $q_0$.
+\end{hint}
+\begin{hint}{ex:grhlinnik}
+Under GRH, $|\hat w(\rho)x^\rho|\le\frac{C\sqrt x}{(1+|\gamma|)^2}$, and $\sum_\rho\frac1{(1+|\gamma|)^2}=O(\log q)$.
+\end{hint}
+\begin{hint}{ex:siegelwalfisz}
+$\hat w(\beta_1)x^{\beta_1-1}\le x^{-c(\varepsilon)q^{-\varepsilon}}$. For $q=x^{1/C_0}$, $\frac{\log x}{\log q}$ is a constant.
+\end{hint}
+\begin{hint}{ex:density}
+For primitive $\chi\ne\chi'$ of moduli $q,q'\le Q$, the product $\overline\chi\chi'$ is a non-principal character modulo $[q,q']\le Q^2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:sieveupper}
+\idea An upper bound sieve is a weight that is $1$ on the primes and small on average.
+\writeup Since $\rho_{R,R}$ is supported on $d\le R^4$ and bounded by $\tau(d)^2$, the error terms add up to $\sum_{d\le R^4}\tau(d)^2\le CR^4\log^4R\le C\frac x{\log R}$ for $x\ge R^5$. The main term is $x\sum_d\frac{\rho_{R,R}(d)}d$, which is at most $Cx\exp(-\sum_{p\le R}\frac1p)\le\frac{C'x}{\log R}$ by Lemma~\ref{lem:sievebound} and Mertens. For a prime $p>R$, the only divisors are $1$ and $p$, and $\beta_R(p)=1-f(\frac{\log p}{\log R})\ge0$; it equals $1$ for $p>R^2$. So $\pi(x)-\pi(R^2)\le\sum_{n\le x}\beta_R(n)^2\le C\frac x{\log R}$. With $R=x^{1/5}$, $\pi(x)\le x^{2/5}+5C\frac x{\log x}$.
+\end{solution}
+
+\begin{solution}{ex:linnikdetail}
+\idea Constants are chosen in order: first the exponent, then the modulus.
+\writeup Let $L\ge\max(C_0,3)$ with $Ce^{-cL}\le\frac{\hat w(1)}8$. Then choose $q_0$ with $Cq_0^{-c}\le\frac{\hat w(1)}8$, so that the sum is at least $\frac{3x\hat w(1)}{4\varphi(q)}\ge\frac{x\hat w(1)}{2q}$. Prime powers $p^k\le2x$ with $k\ge2$ number at most $\sqrt{2x}+\sqrt[3]{2x}\log_2(2x)\le2\sqrt{2x}$, each with weight at most $\log(2x)$, so they contribute at most $2\sqrt{2x}\log(2x)$; for $x=q^L$ with $L\ge3$, this is at most $\frac{x\hat w(1)}{4q}$ once $q\ge q_0$ (enlarging $q_0$). Hence the primes $p\equiv a$ in $[x,2x]$ contribute at least $\frac{x\hat w(1)}{4q}>0$.
+\end{solution}
+
+\begin{solution}{ex:grhlinnik}
+\idea Under GRH every zero contributes $O(\sqrt x)$, and the decay of $\hat w$ makes the sum over zeros converge.
+\writeup For non-principal $\chi$, Proposition~\ref{prop:smoothexplicit} and GRH give $|\psi_w(x,\chi^*)|\le C\sqrt x\sum_\rho(1+|\gamma|)^{-2}+C\log q$, and grouping zeros in unit windows with Lemma~\ref{lem:localL}(a), $\sum_\rho(1+|\gamma|)^{-2}\le C\sum_n\frac{\log(q(n+2))}{(n+1)^2}\le C'\log q$. For $\chi_0$, GRH includes the Riemann hypothesis, and the same argument for $\zeta$ gives $x\hat w(1)+O(\sqrt x)$. Averaging over $\chi$ with the factor $\frac1{\varphi(q)}$, and adding the $O(\log q\log x)$ for imprimitive characters, the error is $O(\sqrt x\log q+\log q\log x)=O(\sqrt x\log q)$. The main term $\frac{x\hat w(1)}{\varphi(q)}$ exceeds it, and the prime powers $O(\sqrt x\log x)$, when $\sqrt x\ge C\varphi(q)\log q\log x$, which holds for $x=C'\varphi(q)^2\log^2q$ with $C'$ large (note $\log x\asymp\log q$). So $p(q,a)\le2x$.
+\end{solution}
+
+\begin{solution}{ex:siegelwalfisz}
+\idea Siegel's theorem pushes the exceptional zero far enough from $1$ when $x$ is huge compared with $q$.
+\writeup Since $\hat w(\beta_1)\le1$ and $x^{\beta_1-1}=\exp(-(1-\beta_1)\log x)\le\exp(-c(\varepsilon)q^{-\varepsilon}\log x)$, with $q\le(\log x)^A$ and $\varepsilon=\frac1{2A}$ this is at most $\exp(-c(\varepsilon)\sqrt{\log x})\to0$. Also $e^{-c\log x/\log q}\to0$ since $\frac{\log x}{\log q}\ge\frac{\log x}{A\log\log x}\to\infty$, while the error $q^{-c}$ tends to $0$ only when $q\to\infty$. For bounded $q$ the claim is the prime number theorem for progressions, and for $q\to\infty$ all three error terms tend to $0$. When $q=x^{1/C_0}$, the error $e^{-c\log x/\log q}=e^{-cC_0}$ is a fixed constant: Theorem~\ref{thm:gallagher} then gives the right order of magnitude (a lower bound of the right size, enough for Linnik), but not an asymptotic formula.
+\end{solution}
+
+\begin{solution}{ex:density}
+\idea Different moduli are handled by the same orthogonality, with a larger conductor.
+\writeup Run the proof with all primitive characters of moduli at most $Q$ and $T\ge Q^{20}$. The detector and the clusters are unchanged (each $\chi$ separately). In $M_{jj'}$, $\xi=\overline{\chi_j}\chi_{j'}$ is a character modulo $[q_j,q_{j'}]\le Q^2$; it is principal only if $\chi_j=\chi_{j'}$, because two distinct primitive characters never induce the same character. Lemma~\ref{lem:smoothchar} with modulus $Q^2\le T^{1/10}$ gives the same bounds, and the rest is identical; the trivial range now counts at most $Q^2\cdot CT\log(QT)$ zeros.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{Linnik.} U.~V.~Linnik, ``On the least prime in an arithmetic progression. I. The basic theorem'', \emph{Rec.\ Math.\ [Mat.\ Sbornik] N.S.}\ 15(57) (1944), 139--178; ``II. The Deuring--Heilbronn phenomenon'', ibid., 347--368.
+\item \emph{Gallagher.} P.~X.~Gallagher, ``A large sieve density estimate near $\sigma=1$'', \emph{Invent.\ Math.}\ 11 (1970), 329--339.
+\item \emph{Expositions.} H.~Iwaniec and E.~Kowalski, \emph{Analytic Number Theory}, American Mathematical Society Colloquium Publications 53, 2004, Chapter~18, whose sieve-weighted proof of the log-free estimate we follow, as presented in T.~Tao's lecture notes ``254A, Notes 7: Linnik's theorem on primes in arithmetic progressions'' (2015). H.~L.~Montgomery, \emph{Topics in Multiplicative Number Theory}, Lecture Notes in Mathematics 227, Springer, 1971, gives the earlier approach by Turán's power sums.
+\item \emph{The constant $L$.} D.~R.~Heath-Brown, ``Zero-free regions for Dirichlet $L$-functions, and the least prime in an arithmetic progression'', \emph{Proc.\ London Math.\ Soc.}\ (3) 64 (1992), 265--338. T.~Xylouris, \emph{Über die Nullstellen der Dirichletschen L-Funktionen und die kleinste Primzahl in einer arithmetischen Progression}, Dissertation, Universität Bonn, 2011.
+\item \emph{Sieves instead of zeros.} J.~B.~Friedlander and H.~Iwaniec, \emph{Opera de Cribro}, American Mathematical Society Colloquium Publications 57, 2010, Chapter~24.
+\end{itemize}

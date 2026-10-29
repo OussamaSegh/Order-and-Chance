@@ -307,8 +307,7 @@ def branching_tree():
 def model(number):
     number=str(number)
     from cover_sculptures import (fourier_interference, logarithm_helicoid, entropy_bowl,
-        dyson_ribbons, young_ferrers_wall, collatz_sculpture, cyclotomic_crown,
-        sobolev_kernel, bernoulli_convolutions)
+        dyson_ribbons, young_ferrers_wall, cyclotomic_crown)
     if number=='0':return gaussian_dome()
     if number=='1':return prime_lattice()
     if number=='2':return symmetry_mesh()
@@ -328,8 +327,5 @@ def model(number):
     if number=='12':return torus()
     if number=='13':return prime_error_surface()
     if number=='14':return steinhaus_surface()
-    if number=='15':return collatz_sculpture()
     if number=='P1':return cyclotomic_crown()
-    if number=='P2':return sobolev_kernel()
-    if number=='P3':return bernoulli_convolutions()
     raise ValueError(f'No 3D cover model for Volume {number}')

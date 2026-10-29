@@ -26,11 +26,8 @@ notebook for mathematical experiments.
   | 11.  Random Motion | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion.epub) |
   | 12.  Arithmetic | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic.epub) |
   | 13.  Primes in Depth | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth.epub) |
-  | 14.  Random Arithmetic | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Random%20Arithmetic.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Random%20Arithmetic%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Random%20Arithmetic.epub) |
-  | 15.  The Research Workshop | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20The%20Research%20Workshop.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20The%20Research%20Workshop%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20The%20Research%20Workshop.epub) |
+  | 14.  Order and Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance.epub) |
   | P1.  Crossroads | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads.epub) |
-  | P2.  Machinery | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%202%20-%20Machinery.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%202%20-%20Machinery%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%202%20-%20Machinery.epub) |
-  | P3.  Frontiers | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%203%20-%20Frontiers.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%203%20-%20Frontiers%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%203%20-%20Frontiers.epub) |
 
 Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
 The reading download includes the approved front cover. The print PDF starts with
@@ -54,45 +51,53 @@ on the download page and the [`books` release](https://github.com/OussamaSegh/Or
 | Volume | Title | Theme | Status |
 | --- | --- | --- | --- |
 | 0 | Mathematical Maturity | The core toolkit, relearned through problems | Complete draft (8 chapters) |
-| 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
+| 1 | The Integers | Elementary and algebraic number theory, through Dirichlet characters | Complete (14 chapters) |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters + 13 appendices) |
 | 3 | Chance | Probability and combinatorial foundations | Complete draft (12 chapters + 2 appendices) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
-| 6 | Spaces | Sets, topology, measure and integration | Complete (11 chapters) |
-| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (10 chapters) |
+| 6 | Spaces | Sets, topology, measure and integration | Complete (12 chapters, ending with harder problems) |
+| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (11 chapters, ending with harder problems) |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups and geometry | Complete (10 chapters + 12 appendices) |
 | 9 | Higher Structures | Categories, commutative and homological algebra, representations | Complete (11 chapters) |
-| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (12 chapters) |
+| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (13 chapters, ending with harder problems) |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Complete (12 chapters + 2 appendices) |
 | 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | Complete (14 chapters) |
-| 14 | Random Arithmetic | Probabilistic number theory and arithmetic statistics | Planned |
-| 15 | The Research Workshop | Reading papers, experimenting, conjecturing, writing | Complete (12 chapters + 12 appendices) |
+| 14 | Order and Chance: Where Number Meets Randomness | Arithmetic statistics, then a research workshop | Parts I–IV (eight chapters proved in full, five openings), Part V (12 chapters), appendices A–L |
 | P1 | Crossroads | 300 harder problems across Volumes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
-| P2 | Machinery | 300 harder problems across Volumes 6–9 | In progress (2 of 14 chapters) |
-| P3 | Frontiers | 300 harder problems across Volumes 10–15 | In progress (1 of 14 chapters) |
 
-Volumes 0–15 tell one mathematical story:
+Volumes 0–14 tell one mathematical story:
 
 **Mathematical Maturity** → **Integers · Structures · Chance · Calculation** →
 **Where It All Meets** → **Spaces · Analysis · Shapes · Higher Structures** →
-**Advanced Probability · Random Motion** → **Arithmetic · Primes · Random Arithmetic** →
-**The Research Workshop**.
+**Advanced Probability · Random Motion** → **Arithmetic · Primes · Order and Chance**.
 
 The roadmap uses short subject names; the table above gives each book's full title.
 Linear algebra is part of Structures (appendices A–M), geometry is part of Shapes
-(appendices A–L), and open problems are case studies in The Research Workshop
+(appendices A–L), and open problems are case studies in Order and Chance
 (appendices A–L). Chance includes the combinatorial foundations in appendices A–B;
 Random Motion contains its spectral graph and random-matrix prerequisites in
-appendices A–B. The three problem books P1–P3 provide additional exercises for the
-three stages of the main sequence.
+appendices A–B. Spaces, Analysis in Depth and Chance II each end with a chapter of
+harder problems. Crossroads is the only problem book, for Volumes 0–5.
+There is no Volume 15 and no second or third problem book.
+
+Volume 1’s last chapter is Dirichlet characters, Euler products and Legendre’s sieve,
+with the figures and arguments of that upgrade in the earlier chapters.
+Volume 0, and Volumes 2–13, include the corrected arguments and the sentences
+that say what is proved. Volume 14 keeps those proofs under its own chapter titles:
+Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and
+Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments,
+Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias.
+The five openings are primes in short intervals, sieves, ranks of elliptic curves,
+random matrices and the zeros, and pseudorandomness. Public download names are
+`Volume N - Title` and `Problem Book 1 - Crossroads`.
 
 ## Design and future sessions
 
 The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
 matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
-frame, and one substantial mathematical illustration per book. All nineteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
+frame, and one substantial mathematical illustration per book. All sixteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
 charcoal Inter headings, coral chapter accents and pale teaching boxes with one
@@ -180,7 +185,7 @@ version (`book-output-v8`) so previously compiled books are regenerated.
 
 ## KDP export rules
 
-The approved print preparation is mandatory for all nineteen books. Interiors use
+The approved print preparation is mandatory for all sixteen books. Interiors use
 clean PDF 1.3; covers use opaque PDF 1.5 with vector lettering and 600 ppi composites
 only where artwork uses transparency. Cover source/artwork is retained. Reports,
 visual comparison, original reading navigation and actual-page-derived geometry

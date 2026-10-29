@@ -21,11 +21,8 @@ PLATES = {'tome0-mathematical-maturity': 'ch06-integrals-taylor.tex; ch08-counti
  'tome11-motion': 'ch10-semicircle.tex',
  'tome12-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
  'tome13-primes': 'Prime distribution and progressions',
- 'tome14-random': 'ch05-randommult.tex',
- 'tome15-workshop': 'conjectures-ch06-collatz.tex: inverse tree of 1 to depth 13',
- 'tomeP1-crossroads': 'ch02-roots.tex; ch04-symmetry.tex: cyclic roots-of-unity symmetry',
- 'tomeP2-machinery': 'ch02-hilbert.tex: Problem pb:sobolev, exact H1 reproducing kernel',
- 'tomeP3-frontiers': 'ch01-pieces.tex: random signs weighted by geometric powers'}
+ 'tome14-order-and-chance': 'ch04-multiplicative.tex',
+ 'tomeP1-crossroads': 'ch02-roots.tex; ch04-symmetry.tex: cyclic roots-of-unity symmetry'}
 
 def main():
     import hashlib,json
@@ -55,10 +52,7 @@ def main():
       '12':'Elliptic-curve complex torus',
       '13':'Locally averaged normalised prime-counting error surface',
       '14':'Phase projections of a Steinhaus multiplicative walk',
-      '15':'Exact depth-13 inverse Collatz tree as a branching sculpture',
-      'P1':'Seventh-roots-of-unity star prism with cyclic symmetry',
-      'P2':'Sobolev H1 reproducing-kernel surface, L=2',
-      'P3':'Kernel-smoothed finite Bernoulli-convolution laws'
+      'P1':'Seventh-roots-of-unity star prism with cyclic symmetry'
     }
     for book,evidence in PLATES.items():
         number=book.split('-',1)[0].removeprefix('tome')
@@ -69,7 +63,7 @@ def main():
         manifest.append(dict(book=book,number=number,subject=subjects[number],evidence=evidence,
             sha256=hashlib.sha256(content.encode()).hexdigest(),**info))
         print('generated shared-master illustration',book,flush=True)
-    assert len(manifest)==19
+    assert len(manifest)==16
     (ROOT/'docs/cover-art-manifest.json').write_text(json.dumps(manifest,indent=2,ensure_ascii=False)+'\n')
     files=[config['identity'],config['reference_illustration'],config['title_font'],
            config['subtitle_font'],'tools/assets/print/paper-muted.png','tools/assets/series-template.json',

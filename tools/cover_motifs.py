@@ -705,9 +705,9 @@ def dyson_fan(n=16, steps=700, seed=11):
 
 
 def hilbert_curve(order=6):
-    """Problem Book P2: Hilbert's space-filling curve (1891) at stage 6. In the limit it is a continuous
+    """Unused. Hilbert's space-filling curve (1891) at stage 6. In the limit it is a continuous
     surjection of [0,1] onto the square that carries Lebesgue measure on the line to Lebesgue measure
-    on the square, a meeting of topology and measure (Tome 6)."""
+    on the square, a meeting of topology and measure (Volume 6). Not a current cover."""
     n = 2 ** order
     def d2xy(d):
         x = y = 0
@@ -904,12 +904,12 @@ def gd_nesterov(kappa=16.0, angle=24.0, n_levels=12):
     lines.append(r"\fill[accent] (%.4fin,%.4fin) circle (0.06in);" % P(0, 0))
 
 def cue_and_zeta(n=48, first=1000, seed=3):
-    """Problem Book P3: three rings of n points. Outside, the eigenvalues of a random n x n unitary
+    """Unused. Three rings of n points. Outside, the eigenvalues of a random n x n unitary
     matrix (Haar measure, via QR of a complex Gaussian matrix); in the middle, n consecutive zeros
     1/2+i*gamma of the Riemann zeta function from the first-th on, unfolded by the smooth counting
     function N(T) = T/(2 pi) log(T/(2 pi e)) + 7/8 so that their mean spacing is one; inside, n
     independent uniform points. The two outer rings repel alike (Montgomery, Dyson, Odlyzko); the
-    inner one clumps and leaves gaps."""
+    inner one clumps and leaves gaps. Not a current cover."""
     import random
     import mpmath as mp
     mp.mp.dps = 20
@@ -1037,12 +1037,8 @@ LEGACY_MOTIFS = {
     "tome11-motion": dyson_fan,
     "tome12-arithmetic": ford_circles,
     "tome13-primes": prime_constellations,
-    "tome15-workshop": brw_barrier,
+    "tome14-order-and-chance": multiplicative_walks,
     "tomeP1-crossroads": gaussian_primes,
-    "tomeP2-machinery": irrational_rotation,
-    "tome14-random": multiplicative_walks,
-
-    "tomeP3-frontiers": binomial_limits,
 }
 
 if __name__ == "__main__":

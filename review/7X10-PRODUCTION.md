@@ -1,6 +1,10 @@
 # Production paperback migration: 7 × 10 inches
 
-All sixteen main volumes and three problem books now use 7 × 10 inch paperback
+This note records the 7×10 migration. The current series is Volumes 0–14 plus
+Crossroads. The page-count table below measures the catalog as it stood then,
+including titles that are not books now.
+
+All volumes in that catalog use 7 × 10 inch paperback
 trim. This implements the author's approval following the local Volume 0 comparison.
 The 11 pt Palatino body, mirrored margins, recto chapter openings, first-edition copy
 policy, ISBNs and approved black/gold cover illustrations are preserved.
@@ -71,11 +75,11 @@ wrap widths below include both outside bleeds.
 | 11 | Random Motion | 228 | 228 | 0.5135 | 14.7635 |
 | 12 | Arithmetic | 250 | 250 | 0.5630 | 14.8130 |
 | 13 | Primes in Depth | 211 | 212 | 0.4774 | 14.7274 |
-| 14 | Random Arithmetic | 192 | 192 | 0.4324 | 14.6824 |
-| 15 | The Research Workshop | 309 | 310 | 0.6981 | 14.9481 |
+| 14 | Order and Chance (count below is the earlier manuscript) | 192 | 192 | 0.4324 | 14.6824 |
+| — | workshop, then not a separate book | 309 | 310 | 0.6981 | 14.9481 |
 | P1 | Crossroads | 442 | 442 | 0.9954 | 15.2454 |
-| P2 | Machinery | 72 | 72 | 0.1621 | 14.4121 |
-| P3 | Frontiers | 43 | 44 | 0.0991 | 14.3491 |
+| — | harder problems, then in Volumes 6 and 7 | 72 | 72 | 0.1621 | 14.4121 |
+| — | harder problems, then in Volume 10 | 43 | 44 | 0.0991 | 14.3491 |
 
 All wraps are 10.25 inches high. Production PDFs and print metadata are in
 `dist/kdp/`. Local visual proofs: `build/7x10-series-fronts.pdf`,

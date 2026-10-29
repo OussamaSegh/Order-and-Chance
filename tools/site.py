@@ -40,7 +40,7 @@ KDP = [("ebook", "Kindle cover", "Front cover, 1792 x 2560 JPEG, for a Kindle eB
 
 
 def tome_order(pdf: Path):
-    """Main sequence by number, followed by the three problem books."""
+    """Main sequence by number, followed by the problem book."""
     m = re.match(r"tome([A-Z]?)(\d+)", pdf.stem)
     return (1 if m and m.group(1) == "P" else 0, int(m.group(2)) if m else 0)
 
@@ -108,7 +108,7 @@ def main(dist: str, out: str) -> None:
             cover = f'<img class="cover" width="336" height="480" loading="lazy" src="{quote(filename(tome, "thumbnail", ROOT))}" alt="Cover of {html.escape(rest or series)}">'
         match = re.match(r"tome([A-Z]?)", tome)
         prefix = match.group(1) if match else ""
-        collection, label = {"P": ("problems", "Problem books")}.get(prefix, ("main", "Main series"))
+        collection, label = {"P": ("problems", "Problem book")}.get(prefix, ("main", "Main series"))
         epub_link = f'<a href="{quote(epub.name)}" download>EPUB</a>' if epub.exists() else ""
         number = re.search(r"Volume ([0-9A-Z]+):", title)
         tagline = subtitle(number.group(1)) if number else ""

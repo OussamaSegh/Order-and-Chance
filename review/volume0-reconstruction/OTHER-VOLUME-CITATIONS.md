@@ -1,5 +1,12 @@
 # Existing citations in other volumes
 
+The current series is Volumes 0–14 plus Crossroads. Workshop chapters live in
+`tome14-order-and-chance/`. Almost Every Number is
+`tome6-spaces/chapters/ch12-harder.tex`. Hilbert Spaces at Work is
+`tome7-analysis/chapters/ch11-harder.tex`. Sums of Random Pieces is
+`tome10-chance2/chapters/ch13-harder.tex`. The operators draft is not in the tree.
+Paths below are the locations at the time of the audit; line numbers were not remapped.
+
 Read-only inventory; these manuscripts were not edited. Hardcoded old numbers
 must be checked against NUMBERING-CONCORDANCE.md before a coordinated series release.
 Some entries name only the volume and need no correction. No automatic rewrite is implied.
@@ -21,10 +28,10 @@ Some entries name only the volume and need no correction. No automatic rewrite i
 - `tome1-integers/chapters/preface.tex:29`: Volume~0 supplies these foundations, including the polynomial root bound and Gauss' lemma for polynomials.
 - `tome11-motion/chapters/spectral.tex:50`: explains the name. By the spectral theorem (Volume~0, Theorem~7.7), $L$ has real eigenvalues
 - `tome12-arithmetic/chapters/ch01-number-fields.tex:35`: for some $\theta$. \emph{Rational roots} (Volume~0, Proposition~3.7). A rational root of a monic polynomial with
-- `tome15-workshop/chapters/ch02-reading.tex:22`: \begin{reminder}[from Chapter~1, Volume~0 and Volume~10]
-- `tome15-workshop/chapters/ch02-reading.tex:24`: $c\in\{-1,0,1\}^n$ (Chapter~\ref{ch:research}). \emph{Stirling's formula} (Volume~0, Chapter~5) gives $\binom n{\lfloor n/2\rfloor}\sim\sqrt{\frac2{\pi n}}\,2^n$. \emph{Esseen's smoothing inequality}
-- `tome15-workshop/chapters/ch03-shuffling.tex:396`: total variation as a sum of positive parts, Volume~3, Chapter~8; Tanny's lemma, this chapter; Lindeberg's theorem, Volume~3, Theorem~6.10; the expansion of $\ln(1+x)$, Volume~0;
-- `tome15-workshop/chapters/conjectures-ch04-riemann.tex:188`: by definition (Volume~0, Chapter~5), and a strictly decreasing sequence stays above its limit.
+- `tome14-order-and-chance/chapters/ch02-reading.tex:22`: \begin{reminder}[from Chapter~1, Volume~0 and Volume~10]
+- `tome14-order-and-chance/chapters/ch02-reading.tex:24`: $c\in\{-1,0,1\}^n$ (Chapter~\ref{ch:research}). \emph{Stirling's formula} (Volume~0, Chapter~5) gives $\binom n{\lfloor n/2\rfloor}\sim\sqrt{\frac2{\pi n}}\,2^n$. \emph{Esseen's smoothing inequality}
+- `tome14-order-and-chance/chapters/ch03-shuffling.tex:396`: total variation as a sum of positive parts, Volume~3, Chapter~8; Tanny's lemma, this chapter; Lindeberg's theorem, Volume~3, Theorem~6.10; the expansion of $\ln(1+x)$, Volume~0;
+- `tome14-order-and-chance/chapters/conjectures-ch04-riemann.tex:188`: by definition (Volume~0, Chapter~5), and a strictly decreasing sequence stays above its limit.
 - `tome2-structures/chapters/ch01-groups.tex:50`: \item $\Z/n\Z$ under addition, and $(\Z/n\Z)^*$, the invertible classes, under multiplication (Volume~1, Chapter~3). The group of $n$-th roots of unity $\mathbb U_n=\{z\in\C:z^n=1\}$ (Volume~0, Chapter~2).
 - `tome2-structures/chapters/ch01-groups.tex:52`: \item The \emph{general linear group} $GL_n(K)$ of invertible $n\times n$ matrices over a field $K$, and its subgroup $SL_n(K)$ of matrices of determinant $1$ (Volume~0, Chapter~7).
 - `tome2-structures/chapters/ch01-groups.tex:319`: \idea We want an element of order $n$. Count elements by their order: $\psi(d)$ elements of order $d$, with $\sum_{d\mid n}\psi(d)=n$ (Lagrange). A field enters only through ``a polynomial of degree $d$ has at most $d$ roots'' (Volume~0, Chapter~3), which caps $\psi(d)$ by $\varphi(d)$. Since the $\varphi(d)$ also sum to $n$, every cap is reached, in particular $\psi(n)=\varphi(n)\ge1$.
@@ -311,10 +318,10 @@ Some entries name only the volume and need no correction. No automatic rewrite i
 - `tomeP1-crossroads/chapters/ch13-average.tex:954`: \tools{Conditional expectation and Jensen's inequality (Volume~3, Theorem~4.14); the harmonic numbers (Volume~0).}
 - `tomeP1-crossroads/chapters/ch13-average.tex:1036`: \tools{Geometric series (Volume~0); Volume~5, Chapter~10 (Cram\'er's model and the Hardy--Littlewood constants).}
 - `tomeP1-crossroads/chapters/ch14-meets.tex:553`: \tools{Jacobi's triple product and identity (Problem~\ref{pb:ramanujan5}); Lambert series; lattice points and volumes (Volume~0); $\sum_{m\le x}\frac1{m^2}=\zeta(2)+O(\frac1x)$.}
-- `tomeP2-machinery/chapters/ch02-hilbert.tex:520`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~4 (Gram matrices, spectral theorem for Hermitian matrices).}
-- `tomeP2-machinery/chapters/ch02-hilbert.tex:539`: \tools{Volume~0, Chapter~7 (dimension, Gram matrices); Volume~2, Chapter~4.}
-- `tomeP2-machinery/drafts/ch03-operators.tex:434`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~3 (eigenvalues of symmetric matrices).}
-- `tomeP2-machinery/drafts/ch03-operators.tex:510`: \tools{Problems~\ref{pb:szego} and~\ref{pb:szegodet}; Volume~0, Chapter~7 (determinants).}
-- `tomeP2-machinery/drafts/ch03-operators.tex:534`: \tools{Volume~1, Chapter~4 (Dirichlet convolution, Möbius inversion); Volume~0, Chapter~7 (determinants).}
-- `tomeP2-machinery/drafts/ch03-operators.tex:554`: \tools{Volume~0, Chapter~7 (inverse matrices); Volume~6, Theorem~7.9 (dominated convergence).}
-- `tomeP3-frontiers/chapters/ch01-pieces.tex:593`: \tools{Volume~0, Theorem~5.10 (Rolle); Volume~4, Exercise~2.3 (Dobiński's formula); Volume~3, Theorem~6.10 (Lindeberg).}
+- `tome7-analysis/chapters/ch11-harder.tex:520`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~4 (Gram matrices, spectral theorem for Hermitian matrices).}
+- `tome7-analysis/chapters/ch11-harder.tex:539`: \tools{Volume~0, Chapter~7 (dimension, Gram matrices); Volume~2, Chapter~4.}
+- `not-in-tree/ch03-operators.tex:434`: \tools{Volume~0, Chapter~7 and Volume~2, Chapter~3 (eigenvalues of symmetric matrices).}
+- `not-in-tree/ch03-operators.tex:510`: \tools{Problems~\ref{pb:szego} and~\ref{pb:szegodet}; Volume~0, Chapter~7 (determinants).}
+- `not-in-tree/ch03-operators.tex:534`: \tools{Volume~1, Chapter~4 (Dirichlet convolution, Möbius inversion); Volume~0, Chapter~7 (determinants).}
+- `not-in-tree/ch03-operators.tex:554`: \tools{Volume~0, Chapter~7 (inverse matrices); Volume~6, Theorem~7.9 (dominated convergence).}
+- `tome10-chance2/chapters/ch13-harder.tex:593`: \tools{Volume~0, Theorem~5.10 (Rolle); Volume~4, Exercise~2.3 (Dobiński's formula); Volume~3, Theorem~6.10 (Lindeberg).}

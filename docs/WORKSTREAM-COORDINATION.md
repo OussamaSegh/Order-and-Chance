@@ -80,7 +80,7 @@ one common cover template. Fresh version-C manuscript pages determine spines.
 The author now requests subtitles directly below the last title line rather than
 at a fixed vertical position, and approves stronger soft coral glow across the
 series. Cover rendering now exports deduplicated visible wires with five layers of
-vector radiance. Chance and Machinery receive distinct mathematical silhouettes.
+vector radiance. Chance receives a distinct mathematical silhouette.
 Interior content, Version C typography, premium-colour settings and actual-page
 spine derivation are unchanged. Keep the title-relative PDF checks and existing
 print/font/layout/navigation gates together. Baseline main was 3259d46.
@@ -98,7 +98,7 @@ headings and coral chapter accents remain version C. Cover work through
 ## Independent artwork review after the author's further direction
 
 The author now authorises new illustration subjects and individual geometry poses,
-scale and placement for all nineteen covers. The chapter-based review and decisions
+scale and placement for all sixteen covers. The chapter-based review and decisions
 are in docs/COVER-ART-DIRECTION.md. Cover typography, title-relative subtitles and
 the shared luminous material remain intact. Current main 8135b0b was pulled first,
 retaining the semantic box-colour/frame fix and its real-PDF regression. Only obsolete cover references in the Structures/Chance appendices are corrected;
@@ -109,7 +109,7 @@ manuscript counts must determine every final wrap; no old proof count is authori
 
 After f4d797f the author explicitly asked for Volume 0 to use the other books'
 illustration treatment, and for Volume 1 to be harmonised too. The special Gaussian
-trace is now archival only; all nineteen production illustrations use the same
+trace is now archival only; all sixteen production illustrations use the same
 native renderer/material. Volume 1 retains its prime positions with lower, broader,
 finer-meshed relief. Only motifs 0 and 1 change. No book content, interior styling,
 fonts or print settings change. Preserve the latest semantic box work and derive

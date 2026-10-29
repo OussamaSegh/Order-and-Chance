@@ -3,8 +3,8 @@
 The author requested on 27 October 2026 that the books make no mention of their
 accompanying Python notebooks for the first edition.
 
-The policy covers all nineteen books, including the integrated appendices and
-problem-book drafts, prefaces, captions, exercises, hints, solutions, paperback
+The policy covers all sixteen books, including the integrated appendices and
+the problem book, prefaces, captions, exercises, hints, solutions, paperback
 blurbs, the default back-cover template, and KDP descriptions and keywords.
 References to calculations are written as independent mathematical examples,
 finite checks or numerical experiments. No theorem, proof, exercise, hint,

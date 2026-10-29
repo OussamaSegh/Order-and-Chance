@@ -1,3 +1,29 @@
+# Series structure — fifteen volumes and one problem book
+
+The series is fifteen numbered volumes, 0 through 14, plus Crossroads as the
+only problem book. Volume 14 is **Order and Chance**, subtitle
+*Where Number Meets Randomness*, stem `tome14-order-and-chance`, in the existing
+Volume 14 slot. Eight of its first thirteen chapters keep complete proofs under
+the capstone titles. Five chapters that had no earlier manuscript remain openings:
+short intervals, sieves, ranks, random matrices and the zeros, and
+pseudorandomness. Part V and appendices A–L are the workshop, inside this volume.
+Harder-problem chapters close Volumes 6, 7 and 10. Public filenames are
+`Volume N - Title` and `Problem Book 1 - Crossroads`.
+
+Volume 1 includes Dirichlet characters, Euler products and Legendre’s sieve.
+Volumes 0 and 2–13 include the corrected arguments from the October 2026 errata.
+The cover of Volume 14 keeps its existing Steinhaus plate.
+Shared generators count sixteen books. Output fingerprints already include
+`common/` and `tools/`, so a shared source change rebuilds the library without a
+schema bump. See [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md).
+
+Older sections of this file name plates and filenames from earlier sessions,
+including a separate workshop volume and two further problem books. Those
+sections are the record of those sessions. The catalog in this section is the
+one to follow.
+
+---
+
 # Verified GitHub filename normalization — 28 October 2026
 
 Live run 40703902773 built all nineteen books and validated the complete library,
@@ -18,10 +44,9 @@ changed main. The final combined publication must be verified at its exact SHA.
 # Readable public filenames — 28 October 2026
 
 The author requested “Volume” and readable filenames with spaces. Public main-book
-assets now use basenames such as `Volume 0 - Mathematical Maturity`; the problem
-books use `Problem Book 1 - Crossroads`, `Problem Book 2 - Machinery` and
-`Problem Book 3 - Frontiers`. `tools/public_names.py` derives these from current
-book title metadata. This supersedes earlier instructions to retain machine-style
+assets now use basenames such as `Volume 0 - Mathematical Maturity`. The only
+problem-book filename is `Problem Book 1 - Crossroads`. `tools/public_names.py`
+derives these from current book title metadata. This supersedes earlier instructions to retain machine-style
 public filenames; internal source directories, TeX identifiers and reader routes
 remain stable. No manuscript, typography, cover, export setting or pagination changes.
 
@@ -229,17 +254,16 @@ no bitmap is included in the exported illustration. Volume 0's traced Gaussian
 stays unchanged. Complete silhouettes and halos fit inside the common art window.
 
 Chance replaces its Gaussian-like surface with a Galton branching lattice feeding
-exact binomial probability columns. Machinery replaces the repeated torus with a
-saddle patch in orthogonal principal coordinates of an indefinite quadratic form,
-inspired by the Hilbert-space chapter. Mathematical data and source evidence are
-recorded in the art manifest. The two new silhouettes distinguish them from
-Mathematical Maturity and Arithmetic respectively. The Research Workshop tree now shows seven generations in space-time, keeping its branching structure legible instead of projecting a tangled spatial bundle.
+exact binomial probability columns. Volume 14 keeps the Steinhaus plate.
+Mathematical data and source evidence are
+recorded in the art manifest. The silhouette distinguishes Chance from
+Mathematical Maturity.
 
 Both cover formats, EPUB/eBook images, HTML readers and the public library render
 the same updated source. Back-copy layout, all body content and approved Version C
 interior typography remain unchanged. Premium-colour 7 by 10 inch trim, outside
 bleed, actual-manuscript spines and the native >=300 ppi paper preflight are retained.
-Review proofs are under build/glow-review; baseline pulled before editing: 3259d46. Local verification: all 60 publishing tests pass, all nineteen vector front proofs pass the shared font/subtitle/identity checks, and the Volume 2 and Machinery wraps pass 360 ppi paper, embedded-font, visible-frame, copy and actual-manuscript geometry checks (379 and 76 print pages). The contact sheet and full vector fronts were visually inspected; the final library build will repeat the complete checks before publication.
+Review proofs are under build/glow-review; baseline pulled before editing: 3259d46. Local verification: all 60 publishing tests pass, all sixteen vector front proofs pass the shared font/subtitle/identity checks, and the Volume 2 wrap passes 360 ppi paper, embedded-font, visible-frame, copy and actual-manuscript geometry checks (379 and 76 print pages). The contact sheet and full vector fronts were visually inspected; the final library build will repeat the complete checks before publication.
 
 ---
 
@@ -426,7 +450,7 @@ from bounding-box calculation. Inspect the visible frame/author as well as the
 searchable copy and physical dimensions when changing these templates.
 
 Verification: all 46 publishing tests pass. Corrected front proofs for Volumes
-0, 1, 2 and the long-title Volume 15 were inspected. Volume 2’s complete wrap
+0, 1 and 2 were inspected. Volume 2’s complete wrap
 passes the raster whitelist, 360 ppi, visible frame, embedded fonts and geometry
 checks against its 372-page print interior (0.8377-inch spine). The previously
 shifted proof fails the new visible-frame guard. Digital master hashes are unchanged.

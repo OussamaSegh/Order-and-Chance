@@ -1,7 +1,7 @@
 # Mathematical cover illustrations
 
-Volumes 0, 1 and 2 use their exact approved images unchanged. The other sixteen illustrations
-use the coordinated charcoal/coral vector style. Each cover has
+Volumes 0, 1 and 2 use their exact approved images unchanged. The other thirteen illustrations
+use the coordinated charcoal/coral vector style. The series has sixteen fronts. Each cover has
 one substantial main plate tied to its own mathematics, without a top supporting mark.
 The table identifies the main subject and manuscript evidence; the generator
 records exact parameters and seeds. Finite simulations illustrate mathematics;
@@ -23,11 +23,8 @@ they are not proofs of open conjectures.
 | 11: Random Motion | Hermitian Brownian eigenvalue trajectories | ch10-semicircle.tex |
 | 12: Arithmetic | Ford circles over reduced rationals | ch14-modular.tex; ch12-elliptic.tex |
 | 13: Primes in Depth | Prime residues, twins and constellations | Prime distribution and progressions |
-| 14: Random Arithmetic | Steinhaus multiplicative partial-sum walks | ch05-randommult.tex |
-| 15: The Research Workshop | Branching random walk and critical barrier | ch06-chaos.tex |
+| 14: Order and Chance | Steinhaus multiplicative partial-sum walks | ch04-multiplicative.tex |
 | P1: Crossroads | Gaussian primes in a bounded integer lattice | Gaussian integers and number theory |
-| P2: Machinery | Golden-ratio rotation and equidistribution | ch01-almost.tex; ch02-hilbert.tex |
-| P3: Frontiers | Exact scaled binomial masses and Gaussian limit | ch01-pieces.tex |
 
 Generate the sixteen vector plates and record all three unchanged approved masters with `python3 tools/cover_plates.py`. The machine-readable
 manifest is [cover-art-manifest.json](cover-art-manifest.json).

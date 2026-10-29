@@ -113,7 +113,7 @@ def cyclotomic_crown():
 
 
 def sobolev_kernel():
-    # Exact H^1 reproducing kernel in Machinery, Problem pb:sobolev, with L=2.
+    # Exact H^1 reproducing kernel, L=2. Not used by a current cover.
     def kernel(x,y):
         x+=1;y+=1
         return math.cosh(min(x,y))*math.cosh(2-max(x,y))/math.sinh(2)

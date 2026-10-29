@@ -13,7 +13,7 @@ local fignum = {}     -- label -> "c.n"
 local figcount = 0
 local eqnum = {}      -- label -> "c.n", numbered equations (all of them carry a \label)
 local eqcount = 0
-local exname = "Exercise"  -- what the book calls its exercises
+local exname_of = {}  -- exercise label -> "Exercise" or "Problem"
 
 local function optarg(blocks)
   -- Remove a leading OPTARG marker (from tools/epub_prep.py) and return its content.
@@ -85,7 +85,10 @@ local function number_pass(doc)
       local l = label_of(b.content)
       local n = chapter_label .. "." .. count
       b.attributes["number"] = n
-      if l then exnum[l] = n end
+      if l then
+        exnum[l] = n
+        exname_of[l] = b.attributes["exname"] or "Exercise"
+      end
     end
     if (appendix or manual_chapters) and b.t == "Div" then
       local numbered = {theorem=true, proposition=true, lemma=true, corollary=true, definition=true, example=true}
@@ -163,7 +166,8 @@ local function rewrite(b)
   end
   if b.classes:includes("exercise") then
     local level = optarg(b.content)
-    local t = pandoc.Inlines({ pandoc.Strong({ pandoc.Str(exname .. " " .. b.attributes["number"]) }) })
+    local name = b.attributes["exname"] or "Exercise"
+    local t = pandoc.Inlines({ pandoc.Strong({ pandoc.Str(name .. " " .. b.attributes["number"]) }) })
     local l = label_of(b.content)
     if level then
       t:insert(pandoc.Space())
@@ -202,7 +206,8 @@ local function rewrite(b)
     if first and first.t == "Span" and first.content[1] then
       local l = pandoc.utils.stringify(first.content)
       local n = exnum[l] or l
-      local what = b.classes:includes("hint") and ("Hint for " .. exname .. " ") or ("Solution of " .. exname .. " ")
+      local name = exname_of[l] or "Exercise"
+      local what = b.classes:includes("hint") and ("Hint for " .. name .. " ") or ("Solution of " .. name .. " ")
       para.content[1] = pandoc.Link({ pandoc.Strong({ pandoc.Str(what .. n .. ".") }) }, "#" .. l)
     end
     return b
@@ -248,12 +253,17 @@ local function fix_ref(el)
 end
 
 function Pandoc(doc)
-  -- A book may call its exercises otherwise (marker made by tools/epub_prep.py).
+  -- A book may call its exercises otherwise. The marker may change mid-book,
+  -- so each exercise keeps the name in force where it appears.
+  local current = "Exercise"
   local kept = pandoc.Blocks({})
   for _, b in ipairs(doc.blocks) do
     if b.t == "Div" and b.classes:includes("exname") then
-      exname = pandoc.utils.stringify(b.content)
+      current = pandoc.utils.stringify(b.content)
     else
+      if b.t == "Div" and b.classes:includes("exercise") then
+        b.attributes["exname"] = current
+      end
       kept:insert(b)
     end
   end

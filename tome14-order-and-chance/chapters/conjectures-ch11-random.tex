@@ -1,0 +1,531 @@
+\chapter{Randomness in the Integers}\label{conjectures:ch:random}
+
+\begin{center}\itshape
+The primes play a game of chance, but they never show their dice.\\
+\upshape(a common view among number theorists, in our words)
+\end{center}
+
+Flip a fair coin for every integer: heads if $n$ has an even number of prime factors (counted with multiplicity), tails if odd. This is the
+\emph{Liouville function} $\lambda(n)=(-1)^{\Omega(n)}$, which Chapter~\ref{conjectures:ch:born} met through P\'olya's conjecture. Nothing about it is random:
+$\lambda(12)=\lambda(2\cdot2\cdot3)=-1$ for ever. Yet every statistical test that anybody has run on it says that it behaves like a sequence of fair coin
+tosses, and the prime number theorem is equivalent to the simplest such test, $\frac1x\sum_{n\le x}\lambda(n)\to0$.
+
+How far does the resemblance go? In 1965 Sarvadaman Chowla conjectured that $\lambda$ passes every test of independence between shifts: the patterns of
+signs of $\lambda(n),\lambda(n+1),\dots,\lambda(n+k-1)$ should all occur with frequency $2^{-k}$. In 2010 Peter Sarnak turned the question around: $\lambda$ and
+the M\"obius function $\mu$ should be \emph{uncorrelated with every sequence of low complexity}. Paul Erd\H os asked in the 1930s an older question about all
+$\pm1$ sequences at once, with no primes in sight: must the sums along arithmetic progressions $d,2d,3d,\dots$ be unbounded? Terence Tao answered him in
+2015, using a recent breakthrough on exactly the Chowla-type questions. Further from $\lambda$, two other conjectures treat arithmetic objects as random:
+Artin's conjecture of 1927 on primitive roots, and the Cohen--Lenstra heuristics of 1984 on class groups.
+
+This chapter tests the coin model on all of them. It proves what is accessible: that Chowla's conjecture would give every sign pattern its fair share,
+that $\mu$ is uncorrelated with every periodic sequence, the first case of the Erd\H os discrepancy problem by hand and its exact answer for a character-like
+function, and the theorem that Artin's constant is the average density of primitive roots.
+
+\begin{think}
+Write down $\lambda(n)$ for $n=1,\dots,20$. How many times does the sign change from one $n$ to the next? For a fair coin you would expect about $9.5$
+changes. Can $\lambda(n)$ and $\lambda(n+1)$ be equal for only finitely many $n$?
+\end{think}
+
+\section{Chowla's conjecture}
+
+\begin{center}
+\emph{Chowla's conjecture.} For every $k\ge1$ and distinct non-negative integers $h_1,\dots,h_k$,
+\[
+\sum_{n\le x}\lambda(n+h_1)\lambda(n+h_2)\cdots\lambda(n+h_k)=o(x).
+\]
+\end{center}
+
+For $k=1$ this is the prime number theorem (Volume~5, Chapter~5); for every $k\ge2$ it is open. Figure~\ref{conjectures:fig:chowla} shows four of these sums up to $10^8$,
+divided by $\sqrt x$: if $\lambda$ were a sequence of independent fair coins, each sum would be a random walk, of size about $\sqrt x$, and the curves
+would wander at heights of order $1$. That is exactly what they do. At $x=10^8$ the four sums are $-3884$, $-3916$, $4632$ and $-3116$, so the averages
+$\frac1x\sum$ are below $5\cdot10^{-5}$.
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch11-chowla}
+\caption{The sums $\sum_{n\le x}\lambda(n)$, $\sum\lambda(n)\lambda(n+1)$, $\sum\lambda(n)\lambda(n+2)$ and $\sum\lambda(n)\lambda(n+1)\lambda(n+2)$,
+divided by $\sqrt x$, at $x=10^{k/10}$ for $2\le\frac k{10}\le8$. All four stay of the size of a random walk. The sum $L(x)$ (red) has the negative bias of
+Chapter~\ref{conjectures:ch:born}. Computed for this book.}
+\label{conjectures:fig:chowla}
+\end{figure}
+
+Why is the conjecture natural? Because it is exactly what one needs for the sign patterns to be fair.
+
+\begin{proposition}\label{conjectures:prop:patterns}
+Assume Chowla's conjecture. Then for every $k\ge1$ and every $\varepsilon\in\{\pm1\}^k$,
+\[
+\frac1x\#\bigl\{n\le x:\ \lambda(n+i-1)=\varepsilon_i\text{ for }i=1,\dots,k\bigr\}\longrightarrow2^{-k}.
+\]
+\end{proposition}
+\begin{proof}
+For $n\ge1$, $\frac{1+\varepsilon_i\lambda(n+i-1)}2$ is $1$ if $\lambda(n+i-1)=\varepsilon_i$ and $0$ otherwise, so the indicator of the pattern at $n$ is
+\[
+\prod_{i=1}^k\frac{1+\varepsilon_i\lambda(n+i-1)}2=2^{-k}\sum_{S\subseteq\{1,\dots,k\}}\Bigl(\prod_{i\in S}\varepsilon_i\Bigr)\prod_{i\in S}\lambda(n+i-1).
+\]
+Sum over $n\le x$ and divide by $x$. The term $S=\varnothing$ gives $2^{-k}\frac{\lfloor x\rfloor}x\to2^{-k}$, and each other term is $\pm2^{-k}\frac1x\sum_{n\le x}\prod_{i\in S}\lambda(n+i-1)$,
+which tends to $0$ by the conjecture with the distinct shifts $h=i-1$, $i\in S$.
+\end{proof}
+
+Unconditionally, almost nothing of this was known until 2015. Exercise~\ref{conjectures:ex:signflip} shows by an elementary trick that both patterns $\lambda(n)=\lambda(n+1)$
+and $\lambda(n)\ne\lambda(n+1)$ occur infinitely often. Hildebrand (1986) showed that all eight patterns of length $3$ occur infinitely often.
+
+\begin{remark}[the recent progress]\label{conjectures:rem:chowlaprogress}
+Matom\"aki and Radziwi\l\l\ (2016) proved that $\lambda$ has mean $o(1)$ in almost all \emph{short} intervals $[x,x+h]$, as soon as $h\to\infty$, however
+slowly. From it Tao (2016) deduced the two-point Chowla conjecture with \emph{logarithmic} weights: $\sum_{n\le x}\frac{\lambda(n)\lambda(n+h)}n=o(\log x)$
+for every $h\ge1$. Tao and Ter\"av\"ainen (2019) extended the logarithmic version to all odd $k$. With Tao, Matom\"aki and Radziwi\l\l\ (2016) showed that each
+of the eight sign patterns of length $3$ has positive lower density. The unweighted conjecture is open for $k=2$.
+\end{remark}
+
+\section{Sarnak's conjecture and periodic sequences}
+
+Sarnak's 2010 lectures proposed a sharper form of the coin model. A sequence $a(n)$ is \emph{deterministic} if it is produced by a dynamical system of
+zero topological entropy, the way the digits of a rotation $n\alpha$ or a periodic pattern are; these sequences are predictable in a precise sense, so a
+genuinely random sequence should not correlate with them.
+
+\begin{center}
+\emph{Sarnak's conjecture.} For every deterministic sequence $a(n)$, $\frac1x\sum_{n\le x}\mu(n)a(n)\to0$.
+\end{center}
+
+Sarnak showed that it follows from Chowla's conjecture for $\mu$. The simplest deterministic sequences are the periodic ones, and for them the conjecture is
+a theorem, as old as the prime number theorem in progressions. We first need the analogue for $\mu\chi$ of von Mangoldt's $\sum\frac{\mu(n)}n=0$.
+
+\begin{lemma}\label{conjectures:lem:mobchi}
+\begin{enumerate}[label=(\alph*)]
+\item For every $q\ge1$, the sum of $\mu(n)$ over the $n\le x$ prime to $q$ is $o(x)$.
+\item For every non-principal Dirichlet character $\chi$, the series
+\[
+\sum_{n\ge1}\frac{\mu(n)\chi(n)}n
+\]
+converges, and $\sum_{n\le x}\mu(n)\chi(n)=o(x)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+\emph{Partial summation.} If $a_n$ are numbers with $A(x)=\sum_{n\le x}\frac{a_n}n\to c$, then $\sum_{n\le x}a_n=xA(x)-\int_1^xA(t)\dd t$, and both $A(x)$ and
+$\frac1x\int_1^xA(t)\dd t$ tend to $c$, so $\frac1x\sum_{n\le x}a_n\to0$. With $a_n=\mu(n)$ and Volume~5, Theorem~5.7, this gives $M(x)=\sum_{n\le x}\mu(n)=o(x)$.
+
+(a) For a finite set $Q$ of primes let $g_Q(x)=\sum_{n\le x}\mu(n)$ over the $n$ prime to all $q\in Q$, so $g_\varnothing=M$. Let $p\notin Q$. An $n$ prime to $Q$ is
+either prime to $p$ or $pm$ with $m$ prime to $Q\cup\{p\}$ (if $p^2\mid n$, $\mu(n)=0$), and then $\mu(pm)=-\mu(m)$; so $g_Q(x)=g_{Q\cup\{p\}}(x)-g_{Q\cup\{p\}}(x/p)$.
+Iterating, and since $g_{Q\cup\{p\}}(y)=0$ for $y<1$,
+\[
+g_{Q\cup\{p\}}(x)=\sum_{k\ge0}g_Q\Bigl(\frac x{p^k}\Bigr).
+\]
+Suppose $g_Q(y)=o(y)$: given $\varepsilon>0$ there is $Y$ with $|g_Q(y)|\le\varepsilon y$ for $y\ge Y$, and $|g_Q(y)|\le y<Y$ otherwise. The terms with
+$x/p^k\ge Y$ add up to at most $\varepsilon x\frac p{p-1}\le2\varepsilon x$, and at most $\log_pY+1$ terms have $1\le x/p^k<Y$, each at most $Y$. So
+$g_{Q\cup\{p\}}(x)=o(x)$, and (a) follows by induction on the number of primes dividing $q$.
+
+(b) Let $A(x)=\sum_{n\le x}\frac{\mu(n)\chi(n)}n$. \emph{It is bounded.} Since $\chi$ is completely multiplicative, $\sum_{nm=k}\mu(n)\chi(n)\chi(m)=\chi(k)\sum_{n\mid k}\mu(n)$
+is $1$ for $k=1$ and $0$ otherwise. Summing $\frac1k$ times this over $k\le x$ and using Volume~5, Lemma~4.3,
+\[
+1=\sum_{n\le x}\frac{\mu(n)\chi(n)}n\sum_{m\le x/n}\frac{\chi(m)}m=L(1,\chi)A(x)+O\Bigl(\sum_{n\le x}\frac1n\cdot\frac nx\Bigr)=L(1,\chi)A(x)+O(1),
+\]
+and $L(1,\chi)\ne0$ (Volume~5, Theorem~3.8), so $A$ is bounded. \emph{It converges.} Let $c=\frac1{L(1,\chi)}$ and $F(t)=A(e^t)-c$, a bounded step function. As in the proof
+of Volume~5, Theorem~5.7, for $\operatorname{Re}z>0$ its Laplace transform is
+\[
+G(z)=\int_0^\infty F(t)e^{-zt}\dd t=\frac1z\Bigl(\frac1{L(z+1,\chi)}-\frac1{L(1,\chi)}\Bigr).
+\]
+The function $L(s,\chi)$ is holomorphic on $\operatorname{Re}s>0$ (Volume~5, Theorem~3.6) and does not vanish on $\operatorname{Re}s\ge1$ (Volume~5, Theorem~5.2, and
+$\operatorname{Re}s>1$ by the Euler product), so $G$ extends holomorphically to a neighbourhood of $\operatorname{Re}z\ge0$; at $z=0$ the bracket vanishes, so the
+quotient by $z$ has no pole. By Newman's theorem (Volume~5, Theorem~5.3), $\int_0^\infty F$ converges. Since $|\mu(n)\chi(n)|\le1$, the bound
+$|F(u)-F(t)|\le2(u-t)+e^{-t}$ for $t\le u\le t+1$ is proved word for word as in Volume~5, Theorem~5.7, and Lemma~5.6 there gives $F(t)\to0$: $A(x)\to c$. Partial
+summation gives the second statement.
+\end{proof}
+
+\begin{proposition}\label{conjectures:prop:mobperiodic}
+Let $a$ be a periodic sequence. Then $\frac1x\sum_{n\le x}\mu(n)a(n)\to0$.
+\end{proposition}
+\begin{proof}
+Let $q$ be a period. Since $a$ is a combination of the indicators of the residue classes modulo $q$, it suffices to show that
+$\sum_{n\le x,\,n\equiv r\,(q)}\mu(n)=o(x)$ for each $r$. If $\gcd(r,q)=1$, the orthogonality of characters (Volume~5, Proposition~3.1) gives
+$\mathbf1_{n\equiv r\,(q)}=\frac1{\varphi(q)}\sum_\chi\overline{\chi(r)}\chi(n)$; the principal character contributes $\frac1{\varphi(q)}\sum_{n\le x,\,\gcd(n,q)=1}\mu(n)$,
+which is $o(x)$ by Lemma~\ref{conjectures:lem:mobchi}(a), and each other character contributes $o(x)$ by Lemma~\ref{conjectures:lem:mobchi}(b).
+
+In general let $g=\gcd(r,q)$, $q'=\frac qg$, $r'=\frac rg$, so that $\gcd(r',q')=1$. Then $n\equiv r\pmod q$ if and only if $n=gm$ with $m\equiv r'\pmod{q'}$.
+Now $\mu(gm)=\mu(g)\mu(m)$ if $\gcd(g,m)=1$ and $\mu(gm)=0$ otherwise. So
+\[
+\sum_{\substack{n\le x\\n\equiv r\,(q)}}\mu(n)=\mu(g)\sum_{\substack{m\le x/g,\ m\equiv r'\,(q')\\\gcd(m,g)=1}}\mu(m).
+\]
+An $m\equiv r'\pmod{q'}$ is prime to $q'$, so the conditions on $m$ say that $m$ is prime to $gq'=q$ and lies in certain classes modulo $q$, all prime to $q$:
+the first case, applied to each of these classes, shows that the sum is $o(x)$.
+\end{proof}
+
+\begin{remark}[beyond periodic sequences]\label{conjectures:rem:sarnakknown}
+Davenport proved in 1937 that
+\[
+\sum_{n\le x}\mu(n)e(n\alpha)=o(x)
+\]
+uniformly in $\alpha$, which settles the rotations. Green and Tao (2012) settled the
+nilsequences, the next level of structure, and Sarnak's conjecture has since been proved for many other families of zero-entropy systems. In general it is open,
+and so is Chowla.
+\end{remark}
+
+\section{The Erd\H os discrepancy problem}
+
+Let $x_1,x_2,\dots$ be any sequence of signs $\pm1$. Its \emph{discrepancy} up to $N$ is the largest sum along a homogeneous arithmetic progression:
+\[
+\operatorname{disc}_N(x)=\max_{d,k\,:\,kd\le N}\Bigl|\sum_{i=1}^kx_{id}\Bigr|.
+\]
+Erd\H os asked whether $\operatorname{disc}_N(x)$ must tend to infinity for every sequence. A random sequence has discrepancy about $\sqrt N$, a periodic one
+is unbounded (along the multiples of its period, every term is $x_q$), and the sequence $+,-,+,-,\dots$ fails along the even numbers. The first case can be
+done by hand.
+
+\begin{theorem}\label{conjectures:thm:edp11}
+Every sequence of $12$ signs has discrepancy at least $2$. Exactly four sequences of length $11$ have discrepancy $1$: $\pm(+,-,-,+,-,+,+,-,-,+,\pm)$.
+\end{theorem}
+\begin{proof}
+Suppose $x_1,\dots,x_N$ has discrepancy at most $1$. For each $d$ the partial sums $s_k=\sum_{i\le k}x_{id}$ are odd for odd $k$ and even for even $k$, so
+$s_{2j}=0$ whenever $2jd\le N$, and $x_{2jd}=-x_{(2j-1)d}$. Take $N=12$ and, by symmetry, $x_1=1$. Then $d=1$ gives $x_2=-1$; $d=2$ gives $x_4=-x_2=1$; $d=1$ gives
+$x_3=-x_4=-1$; $d=3$ gives $x_6=-x_3=1$; $d=1$ gives $x_5=-x_6=-1$; $d=5$ gives $x_{10}=-x_5=1$; $d=1$ gives $x_9=-x_{10}=-1$; $d=4$ gives $x_8=-x_4=-1$; $d=1$ gives
+$x_7=-x_8=1$. Finally $d=6$ gives $x_{12}=-x_6=-1$, while $d=3$ gives $x_{12}=-x_9=1$: a contradiction.
+
+For $N=11$ the same chain, which never used $x_{11}$ or $x_{12}$ before the last line, forces $x_1,\dots,x_{10}$ up to a global sign, and leaves $x_{11}$ free.
+It remains to check these sequences: along $d=1$ the partial sums are $1,0,-1,0,-1,0,1,0,-1,0,\pm1$; along $d=2$ the terms $-,+,+,-,+$ give $-1,0,1,0,1$;
+along $d=3$, $-,+,-$; along $d=4$, $+,-$; along $d=5$, $-,+$; for $d\ge6$ there is one term.
+\end{proof}
+
+For a \emph{completely multiplicative} sequence $f$ (with $f(mn)=f(m)f(n)$) the problem collapses: $\sum_{i\le k}f(id)=f(d)\sum_{i\le k}f(i)$, so the
+discrepancy is just $\max_{k\le N}|f(1)+\dots+f(k)|$. Polymath5, the online collaboration on the problem led by Gowers in 2010, observed that the longest
+sequences of small discrepancy found by computer looked multiplicative, and studied this case first.
+
+\begin{proposition}\label{conjectures:prop:bcc}
+Let $f$ be the completely multiplicative function with $f(3)=1$, $f(p)=1$ for primes $p\equiv1\pmod3$ and $f(p)=-1$ for primes $p\equiv2\pmod3$. Then
+$f(1)+\dots+f(N)$ is the number of digits $1$ in the base-$3$ expansion of $N$, and
+\[
+\operatorname{disc}_N(f)=\bigl\lfloor\log_3(2N+1)\bigr\rfloor.
+\]
+\end{proposition}
+\begin{proof}
+For $3\nmid n$, $f(n)=1$ if $n\equiv1\pmod3$ and $-1$ if $n\equiv2\pmod3$ (both statements are multiplicative in $n$, and agree on primes), and
+$f(3m)=f(m)$. Let $S(N)=\sum_{n\le N}f(n)$. Splitting $n\le N$ by divisibility by $3$,
+\[
+S(N)=\sum_{\substack{n\le N\\3\nmid n}}f(n)+S\Bigl(\Bigl\lfloor\frac N3\Bigr\rfloor\Bigr).
+\]
+In the first sum the values come in blocks $1,-1$ for $n=3j+1,3j+2$, so it is $1$ if $N\equiv1\pmod3$ and $0$ otherwise: it is $1$ exactly when the last
+base-$3$ digit of $N$ is $1$. Since $\lfloor N/3\rfloor$ is $N$ with its last digit erased, induction gives $S(N)=$ the number of digits $1$ of $N$, and in
+particular $S\ge0$. As noted above, $\operatorname{disc}_N(f)=\max_{k\le N}S(k)$. The smallest integer with $j$ digits $1$ is $11\dots1_3=\frac{3^j-1}2$, so the
+maximum is the largest $j$ with $\frac{3^j-1}2\le N$, that is, with $3^j\le2N+1$.
+\end{proof}
+
+So discrepancy can grow as slowly as $\log N$. Figure~\ref{conjectures:fig:mult} shows the other end: a completely multiplicative sequence whose partial sums stay in
+$[-2,2]$ for as long as possible. An exhaustive search over the values at primes (a numerical calculation does it in a fraction of a second, by backtracking) finds that
+the longest such sequences have length exactly $246$, and that there are $500$ of them; for discrepancy $1$ the longest has length $9$
+(Exercise~\ref{conjectures:ex:multone}). For general sequences the search is much harder: Konev and Lisitsa (2014) showed with a SAT solver that the longest sequence of
+discrepancy $2$ has length $1160$, a computer proof far too long for anyone to read.
+
+\begin{figure}[ht]
+\centering
+\fig{conjectures-ch11-mult}
+\caption{One of the $500$ completely multiplicative $\pm1$ sequences of length $246$ with all partial sums in $[-2,2]$ (dark: $+1$, light: $-1$, in rows of
+$41$), and its partial sums. No such sequence has length $247$. Computed for this book by exhaustive search.}
+\label{conjectures:fig:mult}
+\end{figure}
+
+\begin{remark}[Tao's theorem]\label{conjectures:rem:taoedp}
+Tao proved in 2015 that every $\pm1$ sequence has unbounded discrepancy. The proof has two halves. Polymath5 had reduced the problem, by Fourier analysis, to
+showing that no completely multiplicative function $f$ with values on the unit circle has bounded partial sums, even on average over a suitable weighting.
+Tao then proved this with a logarithmically averaged Elliott-type estimate for correlations $\sum\frac{f(n)\overline{f(n+h)}}n$, the same tool as for
+Remark~\ref{conjectures:rem:chowlaprogress}, which rests on Matom\"aki and Radziwi\l\l's short interval theorem. The proof gives no explicit rate of growth.
+\end{remark}
+
+\section{Artin's conjecture}
+
+An integer $a$ is a \emph{primitive root} modulo a prime $p$ if its powers fill $(\Z/p\Z)^\times$, which is cyclic of order $p-1$ (Volume~1, Chapter~5). Then the
+decimal (for $a=10$) or binary (for $a=2$) expansion of $\frac1p$ has the longest possible period $p-1$. Gauss's tables of decimal periods in the
+\emph{Disquisitiones} already raise the question whether $10$ is a primitive root for infinitely many primes. On 27~September~1927, in conversation with Helmut Hasse, Emil Artin conjectured that every integer $a\ne-1$ that is
+not a square is a primitive root modulo infinitely many primes, with a predicted density; for $a=2$ the density is \emph{Artin's constant}
+\[
+A=\prod_q\Bigl(1-\frac1{q(q-1)}\Bigr)=0.3739558\ldots,
+\]
+the product over all primes $q$. The heuristic (Volume~13, Chapter~3): $2$ fails to be a primitive root modulo $p$ exactly when for some prime $q$, $q\mid p-1$ and $2$
+is a $q$-th power modulo $p$; these two events have probabilities $\frac1{q-1}$ and $\frac1q$, and treating them as independent for different $q$ gives $A$.
+
+\begin{center}\small
+\begin{tabular}{rrrc}
+$x$&odd $p\le x$&$2$ prim.\ root&proportion\\\hline
+$10^4$&$1228$&$470$&$0.38274$\\
+$10^5$&$9591$&$3603$&$0.37566$\\
+$10^6$&$78\,497$&$29\,341$&$0.37378$\\
+$10^7$&$664\,578$&$248\,491$&$0.37391$\\
+$10^8$&$5\,761\,454$&$2\,154\,733$&$0.37399$
+\end{tabular}
+\end{center}
+
+The numbers agree with $A$ to four digits (computed for this book). Volume~13, Chapter~3 proves the conjecture for $a=2$ under the generalised Riemann
+hypothesis (Hooley, 1967), and its Exercise~C.4 shows without any hypothesis that the density, if it exists, is at most $A$. Here is a different unconditional
+statement: Artin's constant is the density of primitive roots \emph{on average over the primes}. A prime $p$ has exactly $\varphi(p-1)$ primitive roots among
+$1,\dots,p-1$ (the generators of a cyclic group of order $p-1$), so a random base is a primitive root modulo $p$ with probability $\frac{\varphi(p-1)}{p-1}$.
+
+\begin{theorem}\label{conjectures:thm:artinavg}
+As $x\to\infty$,
+\[
+\frac1{\pi(x)}\sum_{p\le x}\frac{\varphi(p-1)}{p-1}\longrightarrow A.
+\]
+\end{theorem}
+\begin{proof}
+Since $\frac{\varphi(n)}n=\sum_{d\mid n}\frac{\mu(d)}d$,
+\[
+\sum_{p\le x}\frac{\varphi(p-1)}{p-1}=\sum_{d<x}\frac{\mu(d)}d\,\pi(x;d,1),
+\]
+where $\pi(x;d,1)$ counts the primes $p\le x$ with $p\equiv1\pmod d$. Fix $D$ and split the sum at $D$ and at $x^{3/4}$.
+
+For $d\le D$, $\pi(x;d,1)\sim\frac{\pi(x)}{\varphi(d)}$ (Volume~5, Theorem~5.8), so this part is $\pi(x)\bigl(\sum_{d\le D}\frac{\mu(d)}{d\varphi(d)}+o(1)\bigr)$.
+
+For $D<d\le x^{3/4}$, Brun--Titchmarsh (Volume~13, Corollary~3.7) gives $\pi(x;d,1)\le C\frac x{\varphi(d)\log x}\le C'\frac{\pi(x)}{\varphi(d)}$, so this part is at
+most $C'\pi(x)\sum_{d>D}\frac1{d\varphi(d)}$.
+
+For $d>x^{3/4}$, $\pi(x;d,1)\le\frac xd$ (the candidates are $1+d,1+2d,\dots$), so this part is at most $x\sum_{d>x^{3/4}}\frac1{d^2}\le2x^{1/4}=o(\pi(x))$.
+
+The series $\sum_d\frac1{d\varphi(d)}$ converges, because $\varphi(d)\ge\sqrt{d/2}$ (for a prime power, $\varphi(p^k)=p^{k-1}(p-1)\ge p^{k/2}$ except $\varphi(2)=1$), so its tail tends to $0$ as $D\to\infty$. So
+\[
+\frac1{\pi(x)}\sum_{p\le x}\frac{\varphi(p-1)}{p-1}\longrightarrow\sum_{d\ge1}\frac{\mu(d)}{d\varphi(d)}=\prod_q\Bigl(1-\frac1{q\,\varphi(q)}\Bigr)=\prod_q\Bigl(1-\frac1{q(q-1)}\Bigr)=A,
+\]
+by the Euler product of the multiplicative function $\frac{\mu(d)}{d\varphi(d)}$, which is absolutely summable (Volume~4, Theorem~10.3).
+\end{proof}
+
+The averages for the odd primes below $10^4$, $10^6$ and $10^7$ are $0.37447$, $0.37403$ and $0.37400$. So Artin's conjecture says that the base $2$ behaves like a
+random base. It does not for $a=5$: the density of primes with primitive root $5$ is conjecturally $\frac{20}{19}A$ (Volume~13, Chapter~3), because $5$ is a square modulo $p$ for
+the primes $p\equiv\pm1\pmod5$, a bias that the average does not see.
+
+\begin{remark}[what is known]\label{conjectures:rem:artinknown}
+Without any hypothesis, Heath-Brown (1986), building on Gupta and Murty (1984), proved that at least one of $2$, $3$, $5$ is a primitive root modulo infinitely many
+primes. Nobody knows which one, and no single integer $a$ is known to be a primitive root modulo infinitely many primes.
+\end{remark}
+
+\section{Cohen--Lenstra}
+
+The class group of an imaginary quadratic field $\Q(\sqrt d)$ is a finite abelian group whose order $h(d)$ is the number of reduced binary quadratic
+forms of discriminant $d$ (Volume~12). Its odd part looks random, and in 1984 Henri Cohen and Hendrik Lenstra proposed the rule: an abelian $p$-group $G$ (for odd $p$)
+should occur as the $p$-part of the class group with probability proportional to $\frac1{|\operatorname{Aut}G|}$. Groups with many symmetries are rarer.
+Summing over $G$, the predicted probability that $p\nmid h(d)$ is
+\[
+\eta(p)=\prod_{k\ge1}\Bigl(1-\frac1{p^k}\Bigr),\qquad1-\eta(3)=0.43987,\quad1-\eta(5)=0.23967,\quad1-\eta(7)=0.16320,
+\]
+much larger than the $\frac1p$ that a ``random integer'' $h$ would give. The same law appears as the limit of the corank of a random square matrix over
+$\mathbb F_p$ (P1, Problem~5.5). The data, from the class numbers of all $607\,931$ fundamental discriminants $-2\cdot10^6<d<0$ (computed for this book by
+counting reduced forms):
+
+\begin{center}
+\begin{tabular}{rcccc}
+$|d|\le$&fields&$3\mid h$&$5\mid h$&$7\mid h$\\\hline
+$10^4$&$3043$&$0.3421$&$0.2028$&$0.1351$\\
+$10^5$&$30\,392$&$0.3784$&$0.2213$&$0.1482$\\
+$10^6$&$303\,968$&$0.4002$&$0.2295$&$0.1569$\\
+$2\cdot10^6$&$607\,931$&$0.4050$&$0.2317$&$0.1581$\\\hline
+prediction&&$0.4399$&$0.2397$&$0.1632$
+\end{tabular}
+\end{center}
+
+The proportions climb towards the predictions, slowly. For $p=3$ the slowness is understood: the count of cubic fields, to which $3$-torsion in class
+groups is tied, has a secondary term of relative size $|d|^{-1/6}$, conjectured by Roberts and proved in 2013 by Bhargava, Shankar and Tsimerman and by
+Taniguchi and Thorne.
+
+\begin{remark}[what is proved]\label{conjectures:rem:clknown}
+Davenport and Heilbronn (1971), counting cubic fields, proved that the average number of elements of order $3$ in the class groups of imaginary quadratic
+fields is $1$ (so $|\operatorname{Cl}(d)[3]|$ has average $2$), as Cohen--Lenstra predicts. It follows that at least half of these fields have class number prime to $3$. For
+$p\ge5$ nothing comparable is known: it is not even known that a positive proportion of the class numbers are prime to $5$. The $2$-part is not random but governed by Gauss's genus
+theory, which is why the heuristics are stated for odd $p$. Chapter~\ref{ch:oc-classgroups} returns to this average and to the moments of random finite abelian groups that underlie the heuristics.
+\end{remark}
+
+\section{Why it is hard}
+
+Every conjecture in this chapter asks a multiplicative object to be independent of an additive one: $\lambda(n)$ of $\lambda(n+1)$, the primes of the
+progressions $n,2n,3n$ of the signs, the order of $2$ of the residue class of $p$. Chapter~\ref{conjectures:ch:twins} met the obstruction under the name of the parity
+problem: sieve methods cannot distinguish the integers with an even number of prime factors from those with an odd number, and $\lambda$ is precisely that
+distinction. Chowla's conjecture for $\lambda(n)\lambda(n+2)$ is a close cousin of the twin prime problem, and sieves are blind to both for the same reason. The recent progress came from
+outside the sieve: Matom\"aki and Radziwi\l\l's theorem uses the multiplicativity of $\lambda$ to transfer information from long intervals to short ones, and
+logarithmic averaging lets Tao exploit the dilation symmetry $n\mapsto pn$, which a plain average does not have.
+
+\section{Reading a paper: Tao on the Erd\H os discrepancy problem}
+
+Terence Tao's \emph{The Erd\H os discrepancy problem} (Discrete Analysis, 2016) is fifteen pages long and unusually readable. Read Section~A for the history and
+the statement of the two main ingredients. Section~B contains the Fourier reduction to completely multiplicative functions, an elementary argument from the
+Polymath5 discussions that you can follow line by line; compare it with Proposition~\ref{conjectures:prop:bcc}, which is the multiplicative example that shows why the
+reduction must allow functions that \emph{pretend} to be characters. Section~C treats exactly that case, and the remaining sections use the logarithmic
+Elliott estimate as a black box. The idea worth stealing is the use of logarithmic averaging: $\sum\frac{a(n)}n$ is unchanged, up to small errors, when $n$ is
+replaced by $pn$, and this symmetry is what makes multiplicative functions tractable.
+
+\section{Open doors}
+
+\begin{itemize}
+\item Extend Figure~\ref{conjectures:fig:chowla} to $10^{10}$ with a segmented sieve, and to the correlations $\sum\lambda(n)\lambda(n+h)$ for $h\le100$. Does any $h$
+look biased?
+\item Search for long completely multiplicative sequences of discrepancy $3$. How long can you get, and how does the search time grow?
+\item Compute the proportion of primes $p\le10^8$ with primitive root $a$ for each $a\le30$, and compare with Artin's corrected densities (Volume~13, Chapter~3).
+\item For the real quadratic fields $\Q(\sqrt d)$, $d<10^6$, compute the class numbers (with the continued fraction of $\sqrt d$) and compare the proportion
+of $h(d)=1$ with the Cohen--Lenstra prediction $0.7544$ for prime $d$.
+\end{itemize}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:signflip}
+Show that $\lambda(n)=\lambda(n+1)$ for infinitely many $n$, and $\lambda(n)\ne\lambda(n+1)$ for infinitely many $n$. (Use $\lambda(2n)=-\lambda(n)$.)
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:oddmobius}
+Show that $\sum_{n\le x,\ n\text{ odd}}\mu(n)=\sum_{k\ge0}M(x/2^k)$, and check it for $x=20$. Show similarly that $\sum_{n\le x,\ n\text{ even}}\mu(n)=-\sum_{k\ge1}M(x/2^k)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:liouvilleperiodic}
+Deduce from Proposition~\ref{conjectures:prop:mobperiodic} that $\frac1x\sum_{n\le x}\lambda(n)a(n)\to0$ for every periodic $a$, using $\lambda(n)=\sum_{d^2\mid n}\mu(n/d^2)$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:edpcheck}
+Check Proposition~\ref{conjectures:prop:bcc} by computing $f(1),\dots,f(27)$ and the partial sums, and find the first $N$ with $\operatorname{disc}_N(f)=4$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:multone}
+Show by hand that a completely multiplicative $\pm1$ sequence with all partial sums in $[-1,1]$ has length at most $9$, and find all those of length $9$.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:artinmod8}
+Show that $2$ is never a primitive root modulo a prime $p\equiv\pm1\pmod8$. Deduce that if Artin's conjecture holds for $2$, then $2$ is a primitive root for a
+proportion $2A=0.7479$ of the primes $p\equiv\pm3\pmod8$, and check this against a numerical calculation.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{conjectures:ex:artinsg}
+Let $p=2q+1$ with $p$ and $q$ odd primes. Show that $\frac{\varphi(p-1)}{p-1}=\frac{q-1}{2q}$, and that every non-square modulo $p$ other than $-1$ is a primitive root.
+Why does this not contradict Theorem~\ref{conjectures:thm:artinavg}?
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{conjectures:ex:etapent}
+Show that $\eta(p)=\sum_{n\in\Z}(-1)^np^{-n(3n-1)/2}$ (Euler's pentagonal theorem, Volume~4, Theorem~2.12), and compute $\eta(3)$ to six digits from a few terms.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{conjectures:ex:signflip}
+If $\lambda(n)=\lambda(n+1)$ for all $n\ge N$, then $\lambda$ is eventually constant. If $\lambda(n)\ne\lambda(n+1)$ for all $n\ge N$, then $\lambda(n)=c(-1)^n$.
+\end{hint}
+\begin{hint}{conjectures:ex:oddmobius}
+This is the identity in the proof of Lemma~\ref{conjectures:lem:mobchi}(a) with $Q=\varnothing$ and $p=2$.
+\end{hint}
+\begin{hint}{conjectures:ex:liouvilleperiodic}
+Swap the sums and cut at $d\le D$; the terms with $d>D$ contribute at most $\sum_{d>D}\frac x{d^2}$.
+\end{hint}
+\begin{hint}{conjectures:ex:edpcheck}
+The first $N$ with four digits $1$ in base $3$.
+\end{hint}
+\begin{hint}{conjectures:ex:multone}
+$f(1)=1$ forces $f(2)=-1$, then $f(4)=1$ forces $f(3)=-1$.
+\end{hint}
+\begin{hint}{conjectures:ex:artinmod8}
+$\bigl(\frac2p\bigr)=1$ for $p\equiv\pm1\pmod8$, and a square has order dividing $\frac{p-1}2$.
+\end{hint}
+\begin{hint}{conjectures:ex:artinsg}
+The elements of order $2q$ in a cyclic group of order $2q$.
+\end{hint}
+\begin{hint}{conjectures:ex:etapent}
+Put $x=\frac1p$ in
+\[
+\prod_{k\ge1}(1-x^k)=\sum_n(-1)^nx^{n(3n-1)/2}.
+\]
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{conjectures:ex:signflip}
+\idea A doubling flips the sign, which neither a constant nor an alternating tail can survive.
+\writeup If $\lambda(n)=\lambda(n+1)$ for all $n\ge N$, then $\lambda(n)=c$ for all $n\ge N$, but $\lambda(2N)=-\lambda(N)$, a contradiction. If
+$\lambda(n)=-\lambda(n+1)$ for all $n\ge N$, then $\lambda(n)=c(-1)^n$ for $n\ge N$; then for $n\ge N$, $\lambda(2n)=c$ is constant, while $\lambda(2n)=-\lambda(n)=-c(-1)^n$
+alternates, a contradiction. So each of the two alternatives fails infinitely often.
+\end{solution}
+
+
+\begin{solution}{conjectures:ex:oddmobius}
+\idea Pull out the power of $2$.
+\writeup By the identity in the proof of Lemma~\ref{conjectures:lem:mobchi}(a) with $Q=\varnothing$, $p=2$: $M(x)=g(x)-g(x/2)$ with $g$ the sum over odd $n$, so
+$g(x)=M(x)+g(x/2)=\sum_{k\ge0}M(x/2^k)$. For $x=20$: $M(20)=-3$, $M(10)=-1$, $M(5)=-2$, $M(2)=0$, $M(1)=1$, total $-5$; directly, the odd $n\le20$ with
+$\mu(n)\ne0$ give $1-1-1-1-1-1+1-1-1=-5$ ($n=1,3,5,7,11,13,15,17,19$). The even sum is $M(x)-g(x)=-\sum_{k\ge1}M(x/2^k)$, here $2$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:liouvilleperiodic}
+\idea Write $\lambda$ through $\mu$ and use the proposition once for each square.
+\writeup Both sides of $\lambda(n)=\sum_{d^2\mid n}\mu(n/d^2)$ are multiplicative, and at $p^k$ the right side is $\sum_{0\le j\le k/2}\mu(p^{k-2j})$, which is
+$\mu(1)=1$ for $k$ even and $\mu(p)=-1$ for $k$ odd, since only $k-2j\in\{0,1\}$ contributes. So
+\[
+\sum_{n\le x}\lambda(n)a(n)=\sum_{d\le\sqrt x}\ \sum_{m\le x/d^2}\mu(m)\,a(md^2).
+\]
+For fixed $d$, $m\mapsto a(md^2)$ is periodic, so the inner sum is $o(x/d^2)$ by Proposition~\ref{conjectures:prop:mobperiodic}; for every $d$ it is at most $x/d^2$ in absolute value.
+Given $D$, the terms $d\le D$ give $o(x)$ and the terms $d>D$ at most $\sum_{d>D}\frac x{d^2}\le\frac xD$. So $\limsup\frac1x|\sum_{n\le x}\lambda(n)a(n)|\le\frac1D$ for every
+$D$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:edpcheck}
+\idea Read the partial sums off the ternary digits.
+\writeup The signs $f(1),\dots,f(27)$ are
+\begin{center}
+$+\,-\,+\,+\,-\,-\,+\,-\,+\quad+\,-\,+\,+\,-\,-\,+\,-\,-\quad+\,-\,+\,+\,-\,-\,+\,-\,+$
+\end{center}
+with partial sums
+\begin{center}
+$1,0,1,2,1,0,1,0,1,$\\
+$2,1,2,3,2,1,2,1,0,$\\
+$1,0,1,2,1,0,1,0,1.$
+\end{center} For instance $13=111_3$ gives $3$ and $27=1000_3$ gives $1$. The first $N$ with discrepancy $4$ is the first
+with four ternary digits $1$, namely $1111_3=40$, in agreement with $\lfloor\log_3 81\rfloor=4$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:multone}
+\idea Each square $f(n^2)=1$ and each product of known values forces the next prime.
+\writeup $S(1)=1$, so $f(2)=-1$ and $S(2)=0$. Then $f(4)=f(2)^2=1$, and $S(4)=f(3)+1\le1$ forces $f(3)=-1$; $S(3)=-1$, $S(4)=0$. Next $f(6)=f(2)f(3)=1$, and
+$S(6)=f(5)+1\le1$ forces $f(5)=-1$; $S(5)=-1$, $S(6)=0$. Next $f(8)=-1$, and $S(8)=f(7)-1\ge-1$ forces $f(7)=1$; $S(7)=1$, $S(8)=0$. Then $f(9)=1$, $S(9)=1$, and
+$f(10)=f(2)f(5)=1$ gives $S(10)=2$. So the length is at most $9$, and the only sequence of length $9$ is $+,-,-,+,-,+,+,-,+$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:artinmod8}
+\idea A square cannot generate a cyclic group of even order.
+\writeup For $p\equiv\pm1\pmod8$, $\bigl(\frac2p\bigr)=1$ (Volume~1, Chapter~6), so $2\equiv y^2$ and $2^{(p-1)/2}\equiv y^{p-1}\equiv1$: the order of $2$ is at most
+$\frac{p-1}2$. So all the primes with primitive root $2$ lie in the classes $\pm3\pmod8$, which contain half of all primes (Volume~5, Theorem~5.8). If the
+primes with primitive root $2$ have density $A$ among all primes, they have density $2A=0.7479$ among the primes $p\equiv\pm3\pmod8$. Numerically, one finds
+$0.7476$ below $10^7$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:artinsg}
+\idea In a cyclic group of order $2q$ the orders are $1$, $2$, $q$, $2q$.
+\writeup $\varphi(2q)=q-1$, so the ratio is $\frac{q-1}{2q}$. The squares form the subgroup of order $q$, so a non-square has order $2$ or $2q$, and the only
+element of order $2$ is $-1$: every non-square other than $-1$ is a primitive root. No contradiction: these primes are so rare (conjecturally about
+$x/\log^2x$ of them up to $x$) that their ratios close to $\frac12$ do not affect the average, which is pulled down by the primes with $p-1$ divisible by many
+small primes; for $p=31$, $\frac{\varphi(30)}{30}=\frac8{30}=0.27$.
+\end{solution}
+
+\begin{solution}{conjectures:ex:etapent}
+\idea Evaluate the pentagonal series at $x=\frac1p$.
+\writeup Euler's pentagonal theorem (Volume~4, Theorem~2.12),
+\[
+\prod_{k\ge1}(1-x^k)=\sum_{n\in\Z}(-1)^nx^{n(3n-1)/2},
+\]
+at $x=\frac1p$ gives the formula. The exponents for
+$n=0,1,-1,2,-2,3$ are $0,1,2,5,7,12$, so
+\[
+\eta(3)=1-\frac13-\frac19+\frac1{243}+\frac1{2187}-\frac1{531441}+\dots=0.560126\ldots,
+\]
+and the next term, $-3^{-15}$, does not change the sixth digit. So $1-\eta(3)=0.43987$.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item S.~Chowla, \emph{The Riemann Hypothesis and Hilbert's Tenth Problem}, Gordon and Breach, 1965. P.~Sarnak, \emph{Three lectures on the M\"obius
+function, randomness and dynamics}, lecture notes, Institute for Advanced Study, 2010. A.~Hildebrand, \emph{On consecutive values of the Liouville function},
+L'Enseignement Math\'ematique 32 (1986), 219--226.
+\item K.~Matom\"aki and M.~Radziwi\l\l, \emph{Multiplicative functions in short intervals}, Annals of Mathematics 183 (2016), 1015--1056. K.~Matom\"aki,
+M.~Radziwi\l\l\ and T.~Tao, \emph{Sign patterns of the Liouville and M\"obius functions}, Forum of Mathematics, Sigma 4 (2016), e14. T.~Tao, \emph{The
+logarithmically averaged Chowla and Elliott conjectures for two-point correlations}, Forum of Mathematics, Pi 4 (2016), e8. T.~Tao and J.~Ter\"av\"ainen,
+\emph{The structure of logarithmically averaged correlations of multiplicative functions, with applications to the Chowla and Elliott conjectures}, Duke
+Mathematical Journal 168 (2019), 1977--2027.
+\item H.~Davenport, \emph{On some infinite series involving arithmetical functions II}, Quarterly Journal of Mathematics 8 (1937), 313--320. B.~Green and
+T.~Tao, \emph{The M\"obius function is strongly orthogonal to nilsequences}, Annals of Mathematics 175 (2012), 541--566.
+\item On the Erd\H os discrepancy problem: T.~Tao, \emph{The Erd\H os discrepancy problem}, Discrete Analysis 2016:1, whose introduction gives the history;
+B.~Konev and A.~Lisitsa, \emph{A SAT attack on the Erd\H os discrepancy conjecture}, in \emph{Theory and Applications of Satisfiability Testing (SAT 2014)},
+Lecture Notes in Computer Science 8561, 219--226; the Polymath5 wiki and T.~Gowers's blog (2010). The function of Proposition~\ref{conjectures:prop:bcc} is from
+P.~Borwein, S.~K.~K.~Choi and M.~Coons, \emph{Completely multiplicative functions taking values in $\{-1,1\}$}, Transactions of the AMS 362 (2010),
+6279--6291. The counts $246$ and $500$, and all the data of this chapter, were computed for this book.
+\item P.~Moree, \emph{Artin's primitive root conjecture -- a survey}, Integers 12A (2012), for the history, including the conversation of 27 September 1927
+recorded in Hasse's diary. C.~Hooley, \emph{On Artin's conjecture}, Journal f\"ur die reine und angewandte Mathematik 225 (1967), 209--220. R.~Gupta and
+M.~R.~Murty, \emph{A remark on Artin's conjecture}, Inventiones Mathematicae 78 (1984), 127--130. D.~R.~Heath-Brown, \emph{Artin's conjecture for primitive
+roots}, Quarterly Journal of Mathematics 37 (1986), 27--38.
+\item H.~Cohen and H.~W.~Lenstra, Jr., \emph{Heuristics on class groups of number fields}, in \emph{Number Theory, Noordwijkerhout 1983}, Lecture Notes in
+Mathematics 1068, Springer, 1984, 33--62. H.~Davenport and H.~Heilbronn, \emph{On the density of discriminants of cubic fields II}, Proceedings of the Royal
+Society A 322 (1971), 405--420. M.~Bhargava, A.~Shankar and J.~Tsimerman, \emph{On the Davenport--Heilbronn theorems and second order terms}, Inventiones
+Mathematicae 193 (2013), 439--499; T.~Taniguchi and F.~Thorne, \emph{Secondary terms in counting functions for cubic fields}, Duke Mathematical Journal 162
+(2013), 2451--2508.
+\end{itemize}
