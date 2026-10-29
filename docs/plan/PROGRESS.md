@@ -205,7 +205,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 13
 - **Books and files:** `volume10-abstraction`, in Commutative Algebra, before Dedekind domains.
 - **Acceptance:** Primary decomposition and associated primes are a numbered section. Dedekind domains cite them. Book 13 is not rewritten to depend on them. `./build.sh volume10-abstraction`.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/41
 - **Merge sha:**
 - **Date:**
 - **Notes:**
