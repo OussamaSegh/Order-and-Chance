@@ -327,6 +327,35 @@ Let $H=\{h_1,\dots,h_k\}$ be distinct non-negative integers, and $T(x)$ the numb
 model every pattern, admissible or not, occurs with the same frequency.
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{pb:hawkins}
+\emph{Hawkins's random primes.} In 1958 David Hawkins proposed a random sieve. Start with the integers $2,3,4,\dots$ and let $X_1=2$. Strike out each integer larger than $X_1$
+independently with probability $\frac1{X_1}$; let $X_2$ be the least surviving integer larger than $X_1$; strike out each surviving integer larger than $X_2$ with
+probability $\frac1{X_2}$, independently; and so on. The survivors $X_1<X_2<\dots$ are the \emph{Hawkins primes}. Let $Q_n=\prod_{X_k<n}(1-\frac1{X_k})$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that, given everything that happened to the integers below $n$, the integer $n$ is a Hawkins prime with probability $Q_n$, and that
+$\mathbb E[Q_{n+1}\mid\text{the past}]=Q_n(1-\frac{Q_n}n)$.
+\item Let $q_2=1$ and $q_{n+1}=q_n-\frac{q_n^2}n$. Show that $\mathbb E[Q_n]\le q_n$ for all $n\ge2$.
+\item Show that $\frac1{q_{n+1}}=\frac1{q_n}+\frac1{n-q_n}$, deduce that $\frac1{q_n}=\log n+O(1)$, and conclude that the expected number of Hawkins primes up to $x$ is at most
+$(1+o(1))\frac x{\log x}$.
+\item For the Hawkins primes, the probability of survival \emph{is} the sieve product $Q_n\approx\frac1{\log n}$. For the true primes, a sieve by the primes up to $\sqrt n$
+decides primality, and $\prod_{p\le\sqrt n}(1-\frac1p)\sim\frac{2e^{-\gamma}}{\log n}$, which is not $\frac1{\log n}$. What makes the difference?
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{pb:digitpairs}
+\emph{The last digit of the next prime.} Among the primes $7\le p<10^8$, a prime ending in $1$ is followed by a prime ending in $1$, $3$, $7$, $9$ with frequencies
+$17.7\%$, $30.4\%$, $31.0\%$, $20.9\%$ (Figure~\ref{fig:digits}). Here is a model. Walk through the integers prime to $10$, whose last digits cycle as
+$1\to3\to7\to9\to1$, and declare each of them ``prime'' independently with probability $q$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that after a ``prime'' ending in $1$, the next ``prime'' ends in $3$, $7$, $9$, $1$ with probabilities $\pi_j=\frac{q(1-q)^{j-1}}{1-(1-q)^4}$, $j=1,2,3,4$.
+\item Show that $\pi_j=\frac14+\frac{(5-2j)q}8+O(q^2)$. Which transition does the model make rarest?
+\item Explain why $q$ should be about $\frac{2.5}{\log x}$ near $x$. With this $q$, averaged over the primes ending in $1$ below $10^8$, the model gives $31.1\%$, $26.6\%$, $22.8\%$, $19.5\%$
+for the endings $3$, $7$, $9$, $1$. Which part of the bias does it explain?
+\item The model badly underestimates the transition $1\to7$. The shortest gap that makes it is $6$. Using the Hardy--Littlewood prediction that pairs $p$, $p+h$ (both prime) have
+density proportional to $\prod_{p\mid h,\,p>2}\frac{p-1}{p-2}$ (Volume~5, Chapter~10), explain what the model has forgotten.
+\end{enumerate}
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:modeltwins}
@@ -349,6 +378,14 @@ Expand the square as a sum over pairs of primes $p\le q$ in $]n,n+h]$. A pair wi
 \end{hint}
 \begin{hint}{ex:modeltuples}
 Compute $\mathbb ET(x)$, and show $\operatorname{Var}T(x)\le(2D+1)\,\mathbb ET(x)$, where $D=\max h_i$. Chebyshev's inequality and Borel--Cantelli along $x_j=\lfloor(1+\varepsilon)^j\rfloor$, then monotonicity of $T$.
+\end{hint}
+
+\begin{hint}{pb:hawkins}
+(a) $Q_{n+1}=Q_n(1-\frac1n)$ if $n$ is a Hawkins prime, $Q_{n+1}=Q_n$ otherwise. (b) Jensen, and $t\mapsto t-\frac{t^2}n$ increases on $[0,1]$. (c) $0<q_n\le1$.
+\end{hint}
+
+\begin{hint}{pb:digitpairs}
+(a) Sum over the number of complete turns of the cycle. (c) Among the integers near $x$, a proportion $\frac4{10}$ is prime to $10$. (d) Compare the weights of $h=2$, $4$ and $6$.
 \end{hint}
 
 \section{Solutions}
@@ -451,6 +488,55 @@ For $x_j\le x<x_{j+1}$, since $T$ is non-decreasing, $T(x_j)\le T(x)\le T(x_{j+1
 \begin{gathered}\liminf_{x\to\infty}\frac{T(x)}{\mathbb ET(x)}\ge\frac{1-\varepsilon}{1+\varepsilon},\qq\limsup_{x\to\infty}\frac{T(x)}{\mathbb ET(x)}\le(1+\varepsilon)^2.\end{gathered}
 \]
 Let $\varepsilon\to0$ along $\frac1j$: almost surely $T(x)\sim\mathbb ET(x)\sim\frac x{\log^kx}$. Even $H=\{0,1\}$ gets this frequency, though the primes realise it only once.
+\end{solution}
+
+\begin{solution}{pb:hawkins}
+\idea Hawkins's sieve is Eratosthenes's sieve with the arithmetic replaced by coin tosses: the strikes on different integers are independent. Then the survival probability of $n$ is
+literally the sieve product, and a one-line recurrence shows that it behaves like $\frac1{\log n}$.
+
+\writeup (a) The past determines which $X_k$ are below $n$. The strikes aimed at $n$, one for each $X_k<n$, are independent of the past and of each other, and each spares $n$ with probability
+$1-\frac1{X_k}$. If $n$ survives them all, it is the least survivor above the previous $X_k$, so it is a Hawkins prime. Hence the conditional probability is $Q_n$. Then $Q_{n+1}=Q_n(1-\frac1n)$
+if $n$ is a Hawkins prime and $Q_{n+1}=Q_n$ otherwise, so $\mathbb E[Q_{n+1}\mid\text{past}]=Q_n-\frac{Q_n}n\cdot Q_n$.
+
+(b) Taking expectations and using $\mathbb E[Q_n^2]\ge\mathbb E[Q_n]^2$, $e_n=\mathbb E[Q_n]$ satisfies $e_{n+1}\le e_n-\frac{e_n^2}n=f_n(e_n)$, with $f_n(t)=t-\frac{t^2}n$ increasing on
+$[0,1]$ for $n\ge2$. Since $e_2=1=q_2$ (there is no $X_k<2$), induction gives $e_{n+1}\le f_n(e_n)\le f_n(q_n)=q_{n+1}$, provided $0\le q_n\le1$, which also follows by induction.
+
+(c) $\frac1{q_n(1-q_n/n)}=\frac n{q_n(n-q_n)}=\frac1{q_n}+\frac1{n-q_n}$. As $0<q_k\le1$, $\frac1k\le\frac1{k-q_k}\le\frac1{k-1}$, so $\frac1{q_n}=1+\sum_{k=2}^{n-1}\frac1{k-q_k}$ lies
+between $H_{n-1}$ and $1+H_{n-2}$: $\frac1{q_n}=\log n+O(1)$. The expected number of Hawkins primes up to $x$ is $\sum_{n\le x}e_n\le\sum_{n\le x}q_n=\sum_{n\le x}\frac1{\log n+O(1)}\sim\frac x{\log x}$.
+(Numerically, one finds $\frac1{q_n}-\log n\to1.2400$.)
+
+(d) The strikes of Eratosthenes's sieve are not independent: $n$ is struck by $p$ exactly when $p\mid n$, and the events $p\mid n$ for different $p$ are independent only on average over
+intervals much longer than $\prod p$, by the Chinese remainder theorem. For $p\le\sqrt x$ that product is $e^{(1+o(1))\sqrt x}$, astronomically longer than $[1,x]$. Over such a short
+interval the sieve leaves fewer survivors than the product predicts, by the factor $2e^{-\gamma}$ of Problem~\ref{pb:buchstab}. Hawkins's coins know nothing of the Chinese remainder
+theorem, so for them the product is the truth.
+
+\tools{Conditional expectation and Jensen's inequality (Volume~3, Theorem~4.14); the harmonic numbers (Volume~0).}
+\leads With probability $1$, the Hawkins primes satisfy analogues of the prime number theorem and of Mertens's theorem (Wunderlich, 1974 and 1976), and even of the Riemann
+hypothesis (Neudecker and Williams, 1974; Heyde, 1976, with martingales). Random models
+like this one and Cram\'er's (Volume~5, Chapter~10) are good at the large-scale count of primes and wrong about arithmetic: Hawkins primes are as often even as odd.
+\end{solution}
+
+\begin{solution}{pb:digitpairs}
+\idea In the model the next ``prime'' arrives after a geometric number of steps along the cycle $1\to3\to7\to9$, so the nearest endings are favoured and a repeat, needing a full turn,
+is the least likely. This explains the deficit of repeats. It cannot explain the excess of $1\to7$, which comes from divisibility by $3$, invisible to a model that only knows
+about $2$ and $5$.
+
+\writeup (a) The next ``prime'' is at step $j+4t$ along the cycle with probability $q(1-q)^{j+4t-1}$, for $t\ge0$ and $j\in\{1,2,3,4\}$, and its ending is determined by $j$.
+Summing over $t$, $\pi_j=q(1-q)^{j-1}\sum_t(1-q)^{4t}=\frac{q(1-q)^{j-1}}{1-(1-q)^4}$.
+
+(b) $1-(1-q)^4=4q-6q^2+O(q^3)=4q(1-\frac32q+O(q^2))$ and $q(1-q)^{j-1}=q(1-(j-1)q+O(q^2))$, so
+$\pi_j=\frac14\bigl(1-(j-1)q+\frac32q+O(q^2)\bigr)=\frac14+\frac{(5-2j)q}8+O(q^2)$. The rarest is $j=4$, the repeat: $\pi_4=\frac14-\frac{3q}8+O(q^2)$.
+
+(c) Near $x$ the density of primes is $\frac1{\log x}$ and the integers prime to $10$ have density $\frac4{10}$, so among them the primes have density $\frac{10}{4\log x}$. With $q=\frac{2.5}{\log p}$ the
+model predicts a repeat probability $19.5\%$ instead of $25\%$; the primes show $17.7\%$. So the cyclic order alone accounts for $5.5$ of the $7.3$ percentage points of deficit, about three quarters.
+
+(d) The transitions $1\to3$, $1\to7$, $1\to9$ need gaps $\equiv2,6,8\pmod{10}$, the smallest being $2$, $6$, $8$. By Hardy and Littlewood, prime pairs at distance $h$ have density
+proportional to $\prod_{p\mid h,\,p>2}\frac{p-1}{p-2}$, which is $1$ for $h=2,4,8$ and $2$ for $h=6$: since $p$ and $p+6$ are automatically in the same class modulo~$3$, the condition
+``neither is divisible by $3$'' costs a factor $\frac23$ instead of $\frac13$. The coin model, blind to the prime $3$, misses the doubled weight of gaps divisible by $6$, and so undercounts $1\to7$.
+
+\tools{Geometric series (Volume~0); Volume~5, Chapter~10 (Cram\'er's model and the Hardy--Littlewood constants).}
+\leads Lemke Oliver and Soundararajan (2016) derived from the Hardy--Littlewood conjectures a precise prediction: each transition frequency is $\frac14$ plus a term of size
+$\frac{\log\log x}{\log x}$ plus a term of size $\frac1{\log x}$, so the bias does disappear, but only at the speed of $\frac1{\log x}$, which is why it is so visible at $10^8$.
 \end{solution}
 
 \section*{Sources and further reading}

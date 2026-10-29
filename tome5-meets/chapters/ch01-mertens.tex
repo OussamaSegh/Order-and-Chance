@@ -266,6 +266,21 @@ Show that $\prod_{p\le x}\bigl(1+\frac1p\bigr)\sim\frac{6e^\gamma}{\pi^2}\log x$
 Show that $\sum_{n\le x}\mu(n)\lfloor\frac xn\rfloor=1$ for $x\ge1$, and deduce that $\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le1$.
 \end{exercise}
 
+\begin{exercise}[$\star\star$]\label{pb:poissoncycles}
+Let $C_j$ be the number of $j$-cycles of a uniformly random permutation of $\{1,\dots,n\}$, and $(c)_m=c(c-1)\cdots(c-m+1)$.
+\begin{enumerate}[label=(\alph*)]
+\item Show that for all $m_1,\dots,m_k\ge0$,
+\[
+\mathbb E\Bigl[\prod_{j=1}^k(C_j)_{m_j}\Bigr]=\begin{cases}\prod_jj^{-m_j}&\text{if }\sum_jjm_j\le n,\\0&\text{otherwise.}\end{cases}
+\]
+\item Deduce that for fixed $k$, $(C_1,\dots,C_k)$ converges in law to independent Poisson variables of parameters
+$1,\frac12,\dots,\frac1k$.
+\item Show that the probability that a random permutation has no cycle shorter than $m$ tends to
+$e^{-H_{m-1}}\approx\frac{e^{-\gamma}}m$ as $n\to\infty$, where $H_{m-1}=1+\frac12+\dots+\frac1{m-1}$. Compare with the
+density of the integers that have no prime factor smaller than $m$.
+\end{enumerate}
+\end{exercise}
+
 \section{Hints}
 
 \begin{hint}{ex:sieveprob}
@@ -285,6 +300,11 @@ $1+\frac1p=\frac{1-1/p^2}{1-1/p}$.
 \end{hint}
 \begin{hint}{ex:mobiusmean}
 $\sum_{n\le x}\mu(n)\lfloor\frac xn\rfloor=\sum_{m\le x}\sum_{n\mid m}\mu(n)$.
+\end{hint}
+
+\begin{hint}{pb:poissoncycles}
+(a) $\prod(C_j)_{m_j}$ counts ordered lists of distinct cycles of $\sigma$. (b) Inclusion--exclusion writes $P(C=c)$ with
+factorial moments, exactly.
 \end{hint}
 
 \section{Solutions}
@@ -338,6 +358,41 @@ The identity then pins $\sum\frac{\mu(n)}n$ down up to the fractional parts.
 $\lfloor\frac xn\rfloor=\frac xn-\{\frac xn\}$: then $x\sum_{n\le x}\frac{\mu(n)}n=1+\sum_{n\le x}\mu(n)\{\frac xn\}$. The last sum has $\lfloor x\rfloor$ terms of modulus less than $1$, and the term
 $n=1$ is $\{x\}$, so its modulus is at most $\{x\}+\lfloor x\rfloor-1=x-1$. Hence $x\bigl|\sum_{n\le x}\frac{\mu(n)}n\bigr|\le x$. Chapter~5 shows that this sum actually tends to $0$, by the method that proves the prime number theorem, to which this
 fact is equivalent.
+\end{solution}
+
+\begin{solution}{pb:poissoncycles}
+\idea A falling factorial $(C_j)_m$ counts ordered lists of $m$ distinct $j$-cycles of $\sigma$. So the mixed factorial moment
+counts ordered lists of disjoint cycles that are all present in $\sigma$, and each list is present with probability
+$\frac{(n-M)!}{n!}$, $M$ the number of points it uses. Since the factorial moments are exact, inclusion--exclusion gives the law
+exactly, as a truncated Poisson series.
+
+\writeup (a) Let $M=\sum jm_j$. The product $\prod_j(C_j)_{m_j}$ is the number of ways to choose, for each $j$, an ordered list of
+$m_j$ distinct $j$-cycles of $\sigma$; all these cycles are disjoint. If $M>n$ there are none. Otherwise, the expectation is the
+number of such lists of disjoint cycles in $\{1,\dots,n\}$ times the probability that a given list consists of cycles of $\sigma$.
+A list is given by an ordered sequence of $M$ distinct points, cut into consecutive blocks of the prescribed lengths, each block
+read as a cycle; a $j$-cycle can be written in $j$ ways, so there are $\frac{n!}{(n-M)!\prod_jj^{m_j}}$ lists. A given list of
+disjoint cycles is in $\sigma$ for $(n-M)!$ permutations. The product is $\prod_jj^{-m_j}$.
+
+(b) For a vector $C=(C_1,\dots,C_k)$ of bounded non-negative integers and $c\in\N^k$, inclusion--exclusion gives
+\[
+P(C=c)=\sum_{m\ge c}\ \prod_j(-1)^{m_j-c_j}\binom{m_j}{c_j}\ \mathbb E\Bigl[\prod_j\frac{(C_j)_{m_j}}{m_j!}\Bigr],
+\]
+a finite sum: expand $\mathbf 1_{C_j=c_j}=\binom{C_j}{c_j}(1-1)^{C_j-c_j}$ and use $\binom{C_j}{c_j}\binom{C_j-c_j}{i}=\binom{c_j+i}{c_j}\binom{C_j}{c_j+i}$.
+By (a), the terms are those of
+\[
+\prod_j\sum_{m_j\ge c_j}(-1)^{m_j-c_j}\binom{m_j}{c_j}\frac{j^{-m_j}}{m_j!}=\prod_je^{-1/j}\frac{j^{-c_j}}{c_j!},
+\]
+restricted to $\sum jm_j\le n$. The full series converges absolutely (its absolute values sum to $\prod_j\frac{e^{1/j}j^{-c_j}}{c_j!}$), so
+the omitted tail tends to $0$ as $n\to\infty$, and $P(C=c)$ tends to the product of the Poisson probabilities.
+
+(c) By (b), $P(C_1=\dots=C_{m-1}=0)\to\prod_{j<m}e^{-1/j}=e^{-H_{m-1}}$. As $H_{m-1}=\log m+\gamma+O(\frac1m)$, this is
+$\sim\frac{e^{-\gamma}}m$. For integers, the density of those with no prime factor below $m$ is $\prod_{p<m}(1-\frac1p)\sim\frac{e^{-\gamma}}{\log m}$
+(Mertens, Volume~5). The same constant $e^{-\gamma}$ appears, with $m$ in place of $\log m$: cycles of length $j$ play the role of primes
+of size about $e^j$, and $\frac1j$ the role of $\frac1p$.
+\tools Volume~3, Chapters~2 and~6 (factorial moments, convergence in law); Volume~5, Chapter~1 (Mertens).
+\leads The convergence is extremely fast: Arratia and Tavaré (1992) showed that the total variation distance is
+superexponentially small in $\frac nk$. The analogy between cycles and prime factors is the theme of the book by Arratia, Barbour
+and Tavaré, and it returns in Chapter~13 with Dickman's function.
 \end{solution}
 
 \section*{Sources and further reading}
