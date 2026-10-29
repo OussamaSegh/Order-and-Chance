@@ -315,10 +315,12 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 ## Revised series structure (29 October 2026)
 
 The latest structural decision is recorded in `docs/SERIES-STRUCTURE.md`. There
-are fifteen main volumes, numbered 0 through 14, and one problem book, Crossroads.
-Volume 14 is **Order and Chance**. Do not recreate Volume 15, Machinery, Frontiers,
-or the computing and companion shelves. Volume 0 is Mathematical Maturity; Volume 9
-is Higher Structures. Supporting mathematics stays in the appendices of the owning volumes.
+are fifteen volumes, numbered 1 through 15, in six parts, and no problem book.
+Volume 1 is **First Principles**. Volume 15 is **Order and Chance**. The old
+numbers, and the citations of them inside chapter bodies, are recorded in
+`docs/SERIES-STRUCTURE.md`. Do not recreate a problem book, Machinery, Frontiers,
+or the computing and companion shelves. Supporting mathematics stays in the
+appendices of the owning volumes.
 
 ## First-edition copy policy
 

@@ -1,8 +1,8 @@
 # Public download filenames
 
 `tools/public_names.py` derives each public basename from the book's canonical
-`% epub-title` metadata. Main volumes use `Volume 0 - Mathematical Maturity`;
-problem books use `Problem Book 1 - Crossroads`. `<Book>` below means this readable basename.
+`% epub-title` metadata. Volumes use `Volume 1 - First Principles` through
+`Volume 15 - Order and Chance`. `<Book>` below means this readable basename.
 Reading PDFs and EPUBs use `.pdf` and `.epub`. KDP assets add ` - Print.pdf`,
 ` - Paperback Cover.pdf`, ` - eBook Cover.jpg`, ` - Publishing Listing.md`
 and ` - Print Metadata.json`. Site thumbnails use ` - Cover.png`; listings are

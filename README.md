@@ -12,22 +12,27 @@ notebook for mathematical experiments.
 
   | Volume | PDF with cover (7 × 10 in) | Print PDF (7 × 10 in) | EPUB |
   |---|---|---|---|
-  | 0.  Mathematical Maturity | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%200%20-%20Mathematical%20Maturity.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%200%20-%20Mathematical%20Maturity%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%200%20-%20Mathematical%20Maturity.epub) |
-  | 1.  The Integers | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20The%20Integers.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20The%20Integers%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20The%20Integers.epub) |
-  | 2.  Structures | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20Structures.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20Structures%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20Structures.epub) |
-  | 3.  Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Chance.epub) |
-  | 4.  The Art of Calculation | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20The%20Art%20of%20Calculation.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20The%20Art%20of%20Calculation%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20The%20Art%20of%20Calculation.epub) |
-  | 5.  Where It All Meets | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Where%20It%20All%20Meets.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Where%20It%20All%20Meets%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Where%20It%20All%20Meets.epub) |
-  | 6.  Spaces | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Spaces.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Spaces%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Spaces.epub) |
-  | 7.  Analysis in Depth | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Analysis%20in%20Depth.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Analysis%20in%20Depth%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Analysis%20in%20Depth.epub) |
-  | 8.  Shapes | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Shapes.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Shapes%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Shapes.epub) |
-  | 9.  Higher Structures | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Higher%20Structures.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Higher%20Structures%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Higher%20Structures.epub) |
-  | 10.  Chance II | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Chance%20II.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Chance%20II%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Chance%20II.epub) |
-  | 11.  Random Motion | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Random%20Motion.epub) |
-  | 12.  Arithmetic | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Arithmetic.epub) |
-  | 13.  Primes in Depth | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Primes%20in%20Depth.epub) |
-  | 14.  Order and Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20Order%20and%20Chance.epub) |
-  | P1.  Crossroads | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Problem%20Book%201%20-%20Crossroads.epub) |
+  | **Part I. Foundations** | | | |
+  | 1. First Principles | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles.epub) |
+  | 2. The Integers | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20The%20Integers.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20The%20Integers%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%202%20-%20The%20Integers.epub) |
+  | 3. Symmetry | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Symmetry.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Symmetry%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%203%20-%20Symmetry.epub) |
+  | 4. Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%204%20-%20Chance.epub) |
+  | **Part II. Bridges** | | | |
+  | 5. Calculation | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Calculation.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Calculation%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%205%20-%20Calculation.epub) |
+  | 6. Crossroads | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Crossroads.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Crossroads%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%206%20-%20Crossroads.epub) |
+  | **Part III. Analysis and Geometry** | | | |
+  | 7. Spaces | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces.epub) |
+  | 8. Analysis | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis.epub) |
+  | 9. Shapes | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes.epub) |
+  | 10. Higher Structures | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures.epub) |
+  | **Part IV. Randomness** | | | |
+  | 11. Randomness | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness.epub) |
+  | 12. Random Motion | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion.epub) |
+  | **Part V. Number** | | | |
+  | 13. Arithmetic | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Arithmetic.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Arithmetic%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2013%20-%20Arithmetic.epub) |
+  | 14. The Primes | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20The%20Primes.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20The%20Primes%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2014%20-%20The%20Primes.epub) |
+  | **Part VI. Synthesis** | | | |
+  | 15. Order and Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.epub) |
 
 Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
 The reading download includes the approved front cover. The print PDF starts with
@@ -48,56 +53,45 @@ on the download page and the [`books` release](https://github.com/OussamaSegh/Or
 
 ## The series
 
-| Volume | Title | Theme | Status |
-| --- | --- | --- | --- |
-| 0 | Mathematical Maturity | The core toolkit, relearned through problems | Complete draft (8 chapters) |
-| 1 | The Integers | Elementary and algebraic number theory, through Dirichlet characters | Complete (14 chapters) |
-| 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters + 13 appendices) |
-| 3 | Chance | Probability and combinatorial foundations | Complete draft (12 chapters + 2 appendices) |
-| 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
-| 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
-| 6 | Spaces | Sets, topology, measure and integration | Complete (12 chapters, ending with harder problems) |
-| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (11 chapters, ending with harder problems) |
-| 8 | Shapes | Manifolds, algebraic topology, Lie groups and geometry | Complete (10 chapters + 12 appendices) |
-| 9 | Higher Structures | Categories, commutative and homological algebra, representations | Complete (11 chapters) |
-| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (13 chapters, ending with harder problems) |
-| 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Complete (12 chapters + 2 appendices) |
-| 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
-| 13 | Primes in Depth | Analytic and additive number theory | Complete (14 chapters) |
-| 14 | Order and Chance: Where Number Meets Randomness | Arithmetic statistics, then a research workshop | Parts I–IV (eight chapters proved in full, five openings), Part V (12 chapters), appendices A–L |
-| P1 | Crossroads | 300 harder problems across Volumes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
+Fifteen volumes, in six parts. There is no separate problem book. The problems that used to form a problem book are exercises in Volumes 1–6.
 
-Volumes 0–14 tell one mathematical story:
+| Volume | Title | Subtitle |
+| --- | --- | --- |
+| **Part I. Foundations** | | |
+| 1 | First Principles | Proof, Problem Solving and Mathematical Thinking |
+| 2 | The Integers | Primes, Patterns and Proofs |
+| 3 | Symmetry | Groups, Rings and Fields |
+| 4 | Chance | The Logic of Uncertainty |
+| **Part II. Bridges** | | |
+| 5 | Calculation | From Formula to Insight |
+| 6 | Crossroads | Arithmetic Meets Analysis |
+| **Part III. Analysis and Geometry** | | |
+| 7 | Spaces | A Landscape of Limits |
+| 8 | Analysis | Operators, Spectra and Transforms |
+| 9 | Shapes | The Geometry of Connection |
+| 10 | Higher Structures | Categories, Modules and Homology |
+| **Part IV. Randomness** | | |
+| 11 | Randomness | Martingales, Limits and Ergodicity |
+| 12 | Random Motion | The Geometry of Random Paths |
+| **Part V. Number** | | |
+| 13 | Arithmetic | From Equations to Hidden Worlds |
+| 14 | The Primes | Their Hidden Rhythm |
+| **Part VI. Synthesis** | | |
+| 15 | Order and Chance | Where Number Meets Randomness |
 
-**Mathematical Maturity** → **Integers · Structures · Chance · Calculation** →
-**Where It All Meets** → **Spaces · Analysis · Shapes · Higher Structures** →
-**Advanced Probability · Random Motion** → **Arithmetic · Primes · Order and Chance**.
+**First Principles** → **The Integers · Symmetry · Chance** →
+**Calculation · Crossroads** → **Spaces · Analysis · Shapes · Higher Structures** →
+**Randomness · Random Motion** → **Arithmetic · The Primes** → **Order and Chance**.
 
-The roadmap uses short subject names; the table above gives each book's full title.
-Linear algebra is part of Structures (appendices A–M), geometry is part of Shapes
-(appendices A–L), and open problems are case studies in Order and Chance
-(appendices A–L). Chance includes the combinatorial foundations in appendices A–B;
-Random Motion contains its spectral graph and random-matrix prerequisites in
-appendices A–B. Spaces, Analysis in Depth and Chance II each end with a chapter of
-harder problems. Crossroads is the only problem book, for Volumes 0–5.
-There is no Volume 15 and no second or third problem book.
+Linear algebra is part of Symmetry, geometry is part of Shapes, and open problems are case studies in Order and Chance. Chance includes its combinatorial appendices. Random Motion contains its spectral graph and random-matrix appendices. Spaces, Analysis and Randomness each end with a chapter of harder problems.
 
-Volume 1’s last chapter is Dirichlet characters, Euler products and Legendre’s sieve,
-with the figures and arguments of that upgrade in the earlier chapters.
-Volume 0, and Volumes 2–13, include the corrected arguments and the sentences
-that say what is proved. Volume 14 keeps those proofs under its own chapter titles:
-Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and
-Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments,
-Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias.
-The five openings are primes in short intervals, sieves, ranks of elliptic curves,
-random matrices and the zeros, and pseudorandomness. Public download names are
-`Volume N - Title` and `Problem Book 1 - Crossroads`.
+Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve. Volumes 1 and 3–14 include the corrected arguments from the 2026 errata. Volume 15, *Order and Chance: Where Number Meets Randomness*, proves Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments, Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias. Five chapters remain openings: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness. Downloads are named `Volume N - Title`.
 
 ## Design and future sessions
 
 The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
 matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
-frame, and one substantial mathematical illustration per book. All sixteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
+frame, and one substantial mathematical illustration per book. All fifteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
 is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
 charcoal Inter headings, coral chapter accents and pale teaching boxes with one
@@ -185,7 +179,7 @@ version (`book-output-v8`) so previously compiled books are regenerated.
 
 ## KDP export rules
 
-The approved print preparation is mandatory for all sixteen books. Interiors use
+The approved print preparation is mandatory for all fifteen books. Interiors use
 clean PDF 1.3; covers use opaque PDF 1.5 with vector lettering and 600 ppi composites
 only where artwork uses transparency. Cover source/artwork is retained. Reports,
 visual comparison, original reading navigation and actual-page-derived geometry

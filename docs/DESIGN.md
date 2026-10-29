@@ -1,26 +1,20 @@
-# Series structure — fifteen volumes and one problem book
+# Series structure — fifteen volumes in six parts
 
-The series is fifteen numbered volumes, 0 through 14, plus Crossroads as the
-only problem book. Volume 14 is **Order and Chance**, subtitle
-*Where Number Meets Randomness*, stem `tome14-order-and-chance`, in the existing
-Volume 14 slot. Eight of its first thirteen chapters keep complete proofs under
-the capstone titles. Five chapters that had no earlier manuscript remain openings:
-short intervals, sieves, ranks, random matrices and the zeros, and
-pseudorandomness. Part V and appendices A–L are the workshop, inside this volume.
-Harder-problem chapters close Volumes 6, 7 and 10. Public filenames are
-`Volume N - Title` and `Problem Book 1 - Crossroads`.
+The series is Volumes 1–15. There is no problem book. Volume 1 is **First
+Principles**, subtitle *Proof, Problem Solving and Mathematical Thinking*.
+Volume 15 is **Order and Chance**, subtitle *Where Number Meets Randomness*.
+Titles, subtitles and the six series parts live in `common/series-catalog.json`.
+Each book also has parts of its own; the chapter boundaries are in
+[SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). The Crossroads problems are exercises
+in Volumes 1–6. Chapter-body citations still use the old volume numbers; the
+old-to-new table is in that same note.
 
-Volume 1 includes Dirichlet characters, Euler products and Legendre’s sieve.
-Volumes 0 and 2–13 include the corrected arguments from the October 2026 errata.
-The cover of Volume 14 keeps its existing Steinhaus plate.
-Shared generators count sixteen books. Output fingerprints already include
-`common/` and `tools/`, so a shared source change rebuilds the library without a
-schema bump. See [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md).
+The cover of Volume 15 keeps its existing Steinhaus plate. Shared generators
+count fifteen books. Output fingerprints already include `common/` and `tools/`.
 
-Older sections of this file name plates and filenames from earlier sessions,
-including a separate workshop volume and two further problem books. Those
-sections are the record of those sessions. The catalog in this section is the
-one to follow.
+Older sections of this file name plates, filenames and a numbering that started
+at Volume 0, including a separate problem book. Those sections are the record of
+those sessions. The catalog in this section is the one to follow.
 
 ---
 
