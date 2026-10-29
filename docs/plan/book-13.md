@@ -4,7 +4,7 @@
 
 **Element.** The concealed storeys. When unique factorisation fails, the rooms that were already inside the integers.
 
-**Source.** `tome13-arithmetic`. Fourteen chapters, about 248 pages. The October review scored it 8. The three-squares test now requires \(n=4^am\) with \(4\nmid m\), in `ch07-hasse.tex`. The preface already narrows "every result is proved" to exclude the remarks: Mazur, modularity, Sato–Tate, Weil for a general curve, and the second case of regular Fermat. The functional equation of \(\zeta_K\) for a general field is a sketch. Artin reciprocity and the existence theorem are admitted in their headings.
+**Source.** `volume13-arithmetic` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Fourteen chapters, about 248 pages. The October review scored it 8. The three-squares test now requires \(n=4^am\) with \(4\nmid m\), in `ch07-hasse.tex`. The preface already narrows "every result is proved" to exclude the remarks: Mazur, modularity, Sato–Tate, Weil for a general curve, and the second case of regular Fermat. The functional equation of \(\zeta_K\) for a general field is a sketch. Artin reciprocity and the existence theorem are admitted in their headings.
 
 ## Promise
 
@@ -46,7 +46,7 @@ The four catalog parts are that motion. Number Fields opens the polynomial. Loca
 
 #### Chapter 1. Number Fields and Their Integers
 
-**Status.** KEEP — `tome13-arithmetic/chapters/ch01-number-fields.tex` (793 lines). The discriminant of \(\mathbb Q(\sqrt 2)\) is a figure in this chapter, not Theorem 2.15. Book 14's citation, if it still says Theorem 2.15 for the value 8, points here.
+**Status.** KEEP — `volume13-arithmetic/chapters/ch01-number-fields.tex` (793 lines). The discriminant of \(\mathbb Q(\sqrt 2)\) is a figure in this chapter, not Theorem 2.15. Book 14's citation, if it still says Theorem 2.15 for the value 8, points here.
 
 **Hook.** Is \(\mathbb Z[\sqrt 2]\) the full ring of integers of \(\mathbb Q(\sqrt 2)\)? Is \(\mathbb Z[\sqrt{10}]\) the full ring of \(\mathbb Q(\sqrt{10})\)? One answer is yes and the other is no.
 

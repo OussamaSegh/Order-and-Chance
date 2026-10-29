@@ -4,7 +4,7 @@
 
 **Element.** The scaffolding. The instruments by which a later floor can measure a span: series, products, integrals, the Fourier transform, and the zeta function.
 
-**Source.** `tome5-calculation`. Twelve chapters. About 178 pages in the 7×10 table. The October review scored it 8. The factor \(\tfrac12\) in the functional equation is now the correct sentence in `ch10-zeta.tex`.
+**Source.** `volume5-calculation` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Twelve chapters. About 178 pages in the 7×10 table. The October review scored it 8. The factor \(\tfrac12\) in the functional equation is now the correct sentence in `ch10-zeta.tex`.
 
 ## Promise
 
@@ -46,7 +46,7 @@ The subtitle is a motion: from formula to insight. Every chapter that stays star
 
 #### Chapter 1. Finite Calculus
 
-**Status.** KEEP — `tome5-calculation/chapters/ch01-finite.tex` (632 lines). The double mention of Bernoulli's *Ars Conjectandi* can be cut in a sentence-level pass. It is not a mathematical repair.
+**Status.** KEEP — `volume5-calculation/chapters/ch01-finite.tex` (632 lines). The double mention of Bernoulli's *Ars Conjectandi* can be cut in a sentence-level pass. It is not a mathematical repair.
 
 **Hook.** Everyone knows \(1+\cdots+n=n(n+1)/2\). What is \(1^5+\cdots+n^5\), and is there a method that finds it?
 

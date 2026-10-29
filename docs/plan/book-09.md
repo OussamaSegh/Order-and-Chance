@@ -4,7 +4,7 @@
 
 **Element.** The joints. How rooms connect, and what curvature can be read from inside a room.
 
-**Source.** `tome9-shapes`. Ten main chapters and twelve geometry appendices. About 343 pages. The October review scored it 7. Andreief's identity now divides by \(n!\) in `ch08-haar.tex`. The letter \(\Delta\) is still asked to be both a modular function and a Vandermonde product in that chapter; the notation sheet gives \(V\) and \(\delta\).
+**Source.** `volume9-shapes` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Ten main chapters and twelve geometry appendices. About 343 pages. The October review scored it 7. Andreief's identity now divides by \(n!\) in `ch08-haar.tex`. The letter \(\Delta\) is still asked to be both a modular function and a Vandermonde product in that chapter; the notation sheet gives \(V\) and \(\delta\).
 
 ## Promise
 
@@ -44,7 +44,7 @@ The catalog names stay. Manifolds and Surfaces is the opening geometry. Forms an
 
 #### Chapter 1. Smooth Manifolds
 
-**Status.** KEEP — `tome9-shapes/chapters/ch01-manifolds.tex` (854 lines).
+**Status.** KEEP — `volume9-shapes/chapters/ch01-manifolds.tex` (854 lines).
 
 **Hook.** A sphere is round, and a small piece of it looks flat. A manifold is a space in which every small piece looks like a piece of \(\mathbb R^n\).
 

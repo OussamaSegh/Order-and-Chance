@@ -4,7 +4,7 @@
 
 **Element.** The survey. Before any course of masonry can be read, the lines on the drawing have to mean one thing.
 
-**Source.** `tome1-first-principles`. Ten chapters in `main.tex`, numbered from 0, plus a field guide and image credits. `docs/DESIGN.md` records a 295-page 7×10 print interior after the October reconstruction. The README's "8 chapters" is stale.
+**Source.** `volume1-first-principles` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Ten chapters in `main.tex`, numbered from 0, plus a field guide and image credits. `docs/DESIGN.md` records a 295-page 7×10 print interior after the October reconstruction. The README's "8 chapters" is stale.
 
 ## Promise
 
@@ -37,7 +37,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 #### Chapter 0. The Language of Mathematics
 
-**Status.** KEEP — `tome1-first-principles/chapters/ch00-language.tex` (1138 lines). REVISE the closing page so the series question is one sentence: a proof is how a pattern becomes a member of the building, and the primes are where that will be hard.
+**Status.** KEEP — `volume1-first-principles/chapters/ch00-language.tex` (1138 lines). REVISE the closing page so the series question is one sentence: a proof is how a pattern becomes a member of the building, and the primes are where that will be hard.
 
 **Hook.** "The equation \(x^2=1\) has a solution. It has a unique solution. Every real number solves it." Three sentences, one equation, three different promises.
 

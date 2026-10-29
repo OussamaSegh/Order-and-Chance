@@ -4,7 +4,7 @@
 
 **Element.** The rhythm in the courses. The bricks were laid in Book 2. The span was thrown in Book 6. This floor asks how regular the courses are up close, and where the method stops hearing them.
 
-**Source.** `tome14-primes`. Fourteen chapters, about 211 pages. The October review scored it 8, and called its register the most careful in the series. The bound \(600\) is now labelled as depending on a rational witness and Engelsma's tuple, neither printed. The preface no longer calls its list of quotations short.
+**Source.** `volume14-primes` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Fourteen chapters, about 211 pages. The October review scored it 8, and called its register the most careful in the series. The bound \(600\) is now labelled as depending on a rational witness and Engelsma's tuple, neither printed. The preface no longer calls its list of quotations short.
 
 ## Promise
 
@@ -45,7 +45,7 @@ Additive combinatorics in Chapter 11 stays, because the next two chapters use it
 
 #### Chapter 1. Zeros and Primes in Short Intervals
 
-**Status.** KEEP — `tome14-primes/chapters/ch01-zeros.tex` (425 lines). Huxley, Baker–Harman–Pintz, and Guth–Maynard stay labelled "quoted, not proved".
+**Status.** KEEP — `volume14-primes/chapters/ch01-zeros.tex` (425 lines). Huxley, Baker–Harman–Pintz, and Guth–Maynard stay labelled "quoted, not proved".
 
 **Hook.** Is there always a prime between \(x\) and \(x+\sqrt x\)? The Riemann hypothesis would only just fail to say so. A weaker zero-density theorem already finds primes in shorter intervals than the classical zero-free region, and longer than \(\sqrt x\).
 

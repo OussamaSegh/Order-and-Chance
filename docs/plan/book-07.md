@@ -4,7 +4,7 @@
 
 **Element.** The rooms. A limit, a length, and an interior, defined so the lower floors can say what they used.
 
-**Source.** `tome7-spaces`. Eleven chapters plus `chapters/ch12-harder.tex`, the former Machinery chapter "Almost Every Number", now input from `main.tex`. About 179 pages before that chapter. The October review scored the eleven chapters 8. The face of the box in the characterisation of Lebesgue measure is now a sandwich argument in `ch06-measures.tex`.
+**Source.** `volume7-spaces` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Eleven chapters plus `chapters/ch12-harder.tex`, the former Machinery chapter "Almost Every Number", now input from `main.tex`. About 179 pages before that chapter. The October review scored the eleven chapters 8. The face of the box in the characterisation of Lebesgue measure is now a sandwich argument in `ch06-measures.tex`.
 
 ## Promise
 
@@ -36,7 +36,7 @@ The chapter notes follow the manuscript's file order. The part names are Metric 
 
 #### Chapter 1. Sets, Choice and the Real Numbers
 
-**Status.** KEEP — `tome7-spaces/chapters/ch01-sets.tex` (682 lines).
+**Status.** KEEP — `volume7-spaces/chapters/ch01-sets.tex` (682 lines).
 
 **Hook.** Are there more rationals than integers? More reals than rationals? More points in a square than on a side?
 
