@@ -128,7 +128,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 6
 - **Books and files:** `volume3-symmetry` appendices, `volume8-analysis`, `volume10-abstraction`. Spectral theorem, SVD, graph spectra, matrix inequalities, linear dynamics, and the linear algebra that repeats Book 1 go to Analysis. Tensors go to Abstraction, Categories. Circulants, Perron roots of a symmetry, and the linear algebra method stay in Book 3.
 - **Acceptance:** Book 3's contents are Groups, Rings and Polynomials, and Fields and Galois Theory, plus the appendices that still count by symmetry. Analysis and Abstraction build with the new files. No part rename.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/33
 - **Merge sha:**
 - **Date:**
 - **Notes:**
