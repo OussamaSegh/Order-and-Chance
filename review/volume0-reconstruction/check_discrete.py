@@ -7,7 +7,7 @@ import re
 import subprocess
 
 ROOT = Path(__file__).resolve().parents[2]
-DRAFT = ROOT/'tome0-mathematical-maturity/chapters'
+DRAFT = ROOT/'volume0-mathematical-maturity/chapters'
 SOURCE = DRAFT
 files = ['ch01-sums.tex', 'ch02-counting.tex', 'ch09-probability.tex']
 new = '\n'.join((DRAFT / f).read_text() for f in files)

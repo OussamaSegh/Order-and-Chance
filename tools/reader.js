@@ -1,4 +1,4 @@
-// Online reader of a tome (tools/reader.py): mathematics, menu, theme, hidden hints and solutions.
+// Online reader of a volume (tools/reader.py): mathematics, menu, theme, hidden hints and solutions.
 (function () {
   var root = document.documentElement, body = document.body;
 

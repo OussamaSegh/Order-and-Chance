@@ -16,7 +16,7 @@ def stem(book, root=ROOT):
     if match:
         number, title = match.groups()
     else:
-        match = re.fullmatch(r'tome(P?\d+)-(.+)', book)
+        match = re.fullmatch(r'volume(P?\d+)-(.+)', book)
         if not match:
             raise ValueError(f'Invalid book identifier: {book}')
         number, title = match.groups()

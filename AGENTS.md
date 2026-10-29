@@ -206,7 +206,7 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 
 - Series: **Order and Chance**. Author: **SEGHAIER Oussama**.
 - Use **Volume/Volumes** in English book text, titles, cross-references, metadata
-  and public pages. Existing `tome…` directory/file identifiers and TeX macro names
+  and public pages. Existing `volume…` directory/file identifiers and TeX macro names
   remain stable. The author explicitly excluded the already approved covers from
   this terminology change; do not edit their artwork, templates or back-cover text.
 - Slogan: **Discover the patterns. Understand the proofs.**
@@ -265,8 +265,8 @@ The author approved **7 × 10 inches for all 19 paperbacks** after the Volume 0
 comparison. `common/print-layout.json` is canonical; regenerate its TeX with
 `python3 tools/print_layout.py`. Rebuild each wrap from its actual new interior
 page count. The latest author decision requires two distinct PDFs per volume:
-`dist/<tome>.pdf` for downloading/reading, with the approved front cover first;
-`dist/kdp/<tome>-print.pdf` for paperback manuscript upload, without that cover.
+`dist/<volume>.pdf` for downloading/reading, with the approved front cover first;
+`dist/kdp/<volume>-print.pdf` for paperback manuscript upload, without that cover.
 Both use the final 7 × 10 layout, plus one reflowable EPUB. Typeset the interior
 once and attach the front without changing its body, links, bookmarks or printed
 page labels. Derive wraps and metadata from the print PDF's page count only.
@@ -298,7 +298,7 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 - `python3 tools/cover_plates.py` regenerates sixteen plates and records all three unchanged approved masters.
 - `python3 tools/preview_covers.py` checks fronts in standard-book and EPUB proportions. Inspect
   the contact sheet, long titles, full wraps and representative interior pages.
-- `./build.sh [tome...]` builds the 7×10 reading PDF with cover, print PDF, EPUB, eBook cover,
+- `./build.sh [volume...]` builds the 7×10 reading PDF with cover, print PDF, EPUB, eBook cover,
   page-count-derived paperback wrap, listing, metadata and HTML reader. Phone PDFs are retired and
   notebook execution is manual; preserve both decisions.
 - Never invent a page count for a production wrap. Preserve 0.125-inch outside

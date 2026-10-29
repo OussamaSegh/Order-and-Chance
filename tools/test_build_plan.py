@@ -36,12 +36,12 @@ class PlanningTest(unittest.TestCase):
         template_checker = patch.object(bp, 'check_cover_template', return_value={'fixed_template': True})
         template_checker.start()
         self.addCleanup(template_checker.stop)
-        self.books = ['tome0-basics', 'tome1-integers', 'tome9-higher-structures']
+        self.books = ['volume0-basics', 'volume1-integers', 'volume9-higher-structures']
         subprocess.run(['git', 'init', '-q', str(self.root)], check=True)
         for name in self.books:
             self.write(name + '/main.tex', name)
         for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh',
-                     'tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb',
+                     'tools/site.py', 'tools/site-template.html', 'python/volume0/example.ipynb',
                      'tools/assets/paper.jpg', 'tools/requirements-build.txt']:
             self.write(path, 'original')
         subprocess.run(['git', 'add', '.'], cwd=self.root, check=True)
@@ -73,13 +73,13 @@ class PlanningTest(unittest.TestCase):
         self.assertFalse(bp.complete(self.cache, self.books[0]))
 
     def test_unchanged_site_and_notebooks_do_not_rebuild_books(self):
-        for path in ['tools/site.py', 'tools/site-template.html', 'python/tome0/example.ipynb']:
+        for path in ['tools/site.py', 'tools/site-template.html', 'python/volume0/example.ipynb']:
             self.write(path, 'updated')
         self.assertEqual(bp.plan(self.root, self.cache)['changed'], [])
 
     def test_one_book_invalidates_only_itself(self):
-        self.write('tome0-basics/main.tex', 'new theorem')
-        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome0-basics'])
+        self.write('volume0-basics/main.tex', 'new theorem')
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['volume0-basics'])
 
     def test_shared_sources_and_converter_rebuild_all(self):
         for path in ['common/preamble.tex', 'common/print-layout.json', 'tools/epub_prep.py', 'build.sh', 'tools/assets/paper.jpg', 'tools/requirements-build.txt']:
@@ -92,7 +92,7 @@ class PlanningTest(unittest.TestCase):
         self.assertEqual(bp.plan(self.root, self.root / 'missing')['changed'], self.books)
         self.assertEqual(bp.plan(self.root, self.cache, force=True)['changed'], self.books)
         (self.cache / 'dist/Volume 1 - Integers.epub').unlink()
-        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['volume1-integers'])
 
     def test_old_trim_cache_and_missing_print_spec_force_rebuild(self):
         manifest = self.cache / 'manifest.json'
@@ -103,20 +103,20 @@ class PlanningTest(unittest.TestCase):
         data['schema'] = bp.SCHEMA
         manifest.write_text(json.dumps(data))
         (self.cache / 'dist/kdp/Volume 1 - Integers - Print Metadata.json').unlink()
-        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['tome1-integers'])
+        self.assertEqual(bp.plan(self.root, self.cache)['changed'], ['volume1-integers'])
 
     def test_overlay_preserves_unchanged_and_drops_stale_chapters(self):
-        self.write('tome0-basics/main.tex', 'changed')
-        stale = self.cache / 'dist/html/tome0-basics/deleted-chapter.html'
+        self.write('volume0-basics/main.tex', 'changed')
+        stale = self.cache / 'dist/html/volume0-basics/deleted-chapter.html'
         stale.write_text('stale')
-        retired = ['dist/tome1-integers-kindle.pdf', 'dist/tome1-integers-a4.pdf',
-                   'dist/tome1-integers-phone.pdf']
+        retired = ['dist/volume1-integers-kindle.pdf', 'dist/volume1-integers-a4.pdf',
+                   'dist/volume1-integers-phone.pdf']
         for path in retired:
             (self.cache / path).write_bytes(b'old variant')
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
         self.assertTrue((self.root / 'dist/Volume 1 - Integers.pdf').exists())
-        self.assertFalse((self.root / 'dist/html/tome0-basics').exists())
+        self.assertFalse((self.root / 'dist/html/volume0-basics').exists())
         for path in retired:
             self.assertFalse((self.root / path).exists())
         for book in data['changed']:
@@ -130,7 +130,7 @@ class PlanningTest(unittest.TestCase):
     def test_retired_pdf_cannot_enter_snapshot(self):
         data = bp.plan(self.root, self.cache)
         bp.prepare(self.root, self.cache, data)
-        self.write('dist/tome0-basics-kindle.pdf', 'stale')
+        self.write('dist/volume0-basics-kindle.pdf', 'stale')
         with self.assertRaisesRegex(ValueError, 'Retired PDF'):
             bp.snapshot(self.root, self.cache, data)
 
@@ -163,14 +163,14 @@ class PlanningTest(unittest.TestCase):
             bp.snapshot(self.root, self.cache, data)
 
     def test_schema_migration_also_removes_deleted_books(self):
-        subprocess.run(['git', 'rm', '-qrf', 'tome1-integers'], cwd=self.root, check=True)
+        subprocess.run(['git', 'rm', '-qrf', 'volume1-integers'], cwd=self.root, check=True)
         manifest = self.cache / 'manifest.json'
         old = json.loads(manifest.read_text())
         old['schema'] = bp.SCHEMA - 1
         manifest.write_text(json.dumps(old))
         data = bp.plan(self.root, self.cache)
-        self.assertEqual(data['removed'], ['tome1-integers'])
-        self.assertEqual(data['changed'], ['tome0-basics', 'tome9-higher-structures'])
+        self.assertEqual(data['removed'], ['volume1-integers'])
+        self.assertEqual(data['changed'], ['volume0-basics', 'volume9-higher-structures'])
         bp.prepare(self.root, self.cache, data)
         self.assertFalse((self.root / 'dist/Volume 1 - Integers.pdf').exists())
 
@@ -179,9 +179,9 @@ class PlanningTest(unittest.TestCase):
             bp.snapshot(self.root, self.cache, bp.plan(self.root, self.cache))
 
     def test_removed_book_is_not_republished(self):
-        subprocess.run(['git', 'rm', '-qrf', 'tome1-integers'], cwd=self.root, check=True)
+        subprocess.run(['git', 'rm', '-qrf', 'volume1-integers'], cwd=self.root, check=True)
         data = bp.plan(self.root, self.cache)
-        self.assertEqual(data['removed'], ['tome1-integers'])
+        self.assertEqual(data['removed'], ['volume1-integers'])
         bp.prepare(self.root, self.cache, data)
         self.assertFalse((self.root / 'dist/Volume 1 - Integers.pdf').exists())
         self.assertTrue((self.root / 'dist/Volume 0 - Basics.pdf').exists())

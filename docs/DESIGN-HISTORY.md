@@ -81,7 +81,7 @@ validation, including front covers and KDP paperback wraps. Nothing is published
   preparing later builds for consistency. No other volume outputs were rebuilt.
 - Wraps retain 6 x 9-inch trim, 0.125-inch outer bleed, existing blurbs and ISBN handling.
   Spine widths come from freshly compiled print interiors, not sample page counts.
-- `tools/preview_covers.py tome0-back-in-shape tome1-integers --out build/validation-covers`
+- `tools/preview_covers.py volume0-back-in-shape volume1-integers --out build/validation-covers`
   renders only these volumes in native-reference, ebook, A4, Kindle and print-front
   proportions. Volume 0's raster lettering is inspected visually; Volume 1 is also
   checked through PDF text extraction. Historical all-vector claims below do not
@@ -119,7 +119,7 @@ The earlier prohibition on navy/gold is superseded by the latest author request.
 - Large dark serif book title. Short titles use 60-point type; long titles use
   readable 36-point type on multiple lines with word hyphenation disabled.
 - Cream author line and rule; matching paper, rules and typography on paperback
-  backs and spines. Internal Tome identifiers and bibliographic titles stay unchanged.
+  backs and spines. Internal Volume identifiers and bibliographic titles stay unchanged.
 - Fonts are TeX Gyre Pagella; type, diagrams, border and ornaments are vector.
   Only the paper texture is raster.
 
@@ -179,7 +179,7 @@ This path is environment-specific. Elsewhere install the dependencies documented
 README and `tools/PUBLISHING.md`. To build one volume, then all volumes:
 
 ```sh
-./build.sh tomeC5-learning
+./build.sh volumeC5-learning
 ./build.sh
 python3 tools/site.py dist build/site
 # Fast all-volume cover preview and text verification:
@@ -345,7 +345,7 @@ archived sequence of proposals; it does not override this document.
 ## Current book formats (27 October 2026)
 
 The author now requires **one standard 7 × 10 inch PDF and one EPUB per volume**.
-`dist/<tome>.pdf` is the canonical PDF for reading and paperback manuscript upload.
+`dist/<volume>.pdf` is the canonical PDF for reading and paperback manuscript upload.
 A4, Kindle PDF, phone PDF and duplicate `-print.pdf` downloads are retired. Separate
 paperback wraps, eBook covers, listings and print metadata remain production assets.
 The PDF starts with its half-title; the EPUB has its own front cover. Earlier
@@ -507,7 +507,7 @@ A final clean release run validates this correction across all volumes.
 
 The author requested a detailed print review and a local 7 × 10 proof. The results,
 mathematical corrections and outstanding monochrome-figure refinements are in
-[the Volume 0 print review](../review/TOME0-PRINT-COMPARISON.md). The proofs contain
+[the Volume 0 print review](../review/VOLUME0-PRINT-COMPARISON.md). The proofs contain
 291 pages at 6 × 9 and 233 at 7 × 10 with the same 11 pt text. This is a local
 comparison at the time of that review; the author has since approved 7 × 10
 for every production paperback (see below).
@@ -545,7 +545,7 @@ All eight chapters, 130 exercise/hint/solution sets, workshops and challenge not
 were reviewed against the mathematics and selected primary/historical sources.
 Corrected proof gaps, algebraic signs, sampling assumptions, numerical error bounds,
 figure captions, historical overclaims and outdated open-problem status. The full
-record and reproducible calculations are in [TOME0-FACT-REVIEW.md](../review/TOME0-FACT-REVIEW.md).
+record and reproducible calculations are in [VOLUME0-FACT-REVIEW.md](../review/VOLUME0-FACT-REVIEW.md).
 The 7 × 10 trim and approved cover identity are preserved. Every Volume 0 output
 and its actual-page-derived paperback wrap are rebuilt from the corrected source.
 

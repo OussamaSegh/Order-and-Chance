@@ -5,7 +5,7 @@ import re
 
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(__file__).resolve().parent
-BUILD=ROOT/'build/tome0-mathematical-maturity'
+BUILD=ROOT/'build/volume0-mathematical-maturity'
 
 def numbers(text):
     return {m[1]:dict(number=m[2],page=m[3]) for m in re.finditer(r'\\newlabel\{([^}]+)\}\{\{([^}]+)\}\{([^}]+)\}',text)}
@@ -36,8 +36,8 @@ def main():
     (OUT/'TABLE-OF-CONTENTS.md').write_text('\n'.join(toc)+'\n')
     citations=[]
     pattern=re.compile(r'Volume\s*~?\s*0\b|Volume~0\b')
-    for book in sorted(ROOT.glob('tome*')):
-        if not book.is_dir() or book.name=='tome0-mathematical-maturity':continue
+    for book in sorted(ROOT.glob('volume*')):
+        if not book.is_dir() or book.name=='volume0-mathematical-maturity':continue
         for p in sorted(book.rglob('*.tex')):
             for i,line in enumerate(p.read_text().splitlines(),1):
                 if pattern.search(line):citations.append(dict(file=str(p.relative_to(ROOT)),line=i,text=line))

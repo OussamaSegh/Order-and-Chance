@@ -24,7 +24,7 @@ jobs:
   list:
     runs-on: ubuntu-24.04
     outputs:
-      tomes: ${{ steps.plan.outputs.tomes }}
+      volumes: ${{ steps.plan.outputs.volumes }}
       has_changes: ${{ steps.plan.outputs.has_changes }}
       snapshot_changed: ${{ steps.plan.outputs.snapshot_changed }}
       baseline: ${{ steps.library.outputs.cache-matched-key }}
@@ -49,7 +49,7 @@ jobs:
           args=()
           if [ "$FORCE_ALL" = true ]; then args+=(--force); fi
           python3 tools/build_plan.py plan "${args[@]}"
-          echo "tomes=$(jq -c .changed build-plan.json)" >> "$GITHUB_OUTPUT"
+          echo "volumes=$(jq -c .changed build-plan.json)" >> "$GITHUB_OUTPUT"
           echo "has_changes=$(jq '.changed | length > 0' build-plan.json)" >> "$GITHUB_OUTPUT"
           echo "snapshot_changed=$(jq '(.changed | length) + (.removed | length) > 0' build-plan.json)" >> "$GITHUB_OUTPUT"
           jq '{rebuilt: .changed, removed: .removed}' build-plan.json >> "$GITHUB_STEP_SUMMARY"
@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        tome: ${{ fromJson(needs.list.outputs.tomes) }}
+        volume: ${{ fromJson(needs.list.outputs.volumes) }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/cache/restore@v4
@@ -113,18 +113,18 @@ jobs:
           python3 -m unittest discover -s tools -p test_kdp_pdf.py
           python3 -m unittest discover -s tools -p test_kdp_cover.py
       - name: Build 7 x 10 reading PDF with cover, print PDF, EPUB and publishing assets
-        run: ./build.sh ${{ matrix.tome }}
+        run: ./build.sh ${{ matrix.volume }}
       - uses: actions/upload-artifact@v4
         with:
-          name: books-${{ matrix.tome }}
+          name: books-${{ matrix.volume }}
           # dist/ holds the reading PDF, EPUB and dist/kdp/ print PDF/assets; the cover page is for the site's thumbnails.
           path: |
             dist/
-            build/${{ matrix.tome }}/cover.pdf
-            build/${{ matrix.tome }}/cover-preflight.json
-            build/${{ matrix.tome }}/kdp-preflight.json
+            build/${{ matrix.volume }}/cover.pdf
+            build/${{ matrix.volume }}/cover-preflight.json
+            build/${{ matrix.volume }}/kdp-preflight.json
 
-  # Gathers the books of every tome and builds the download page.
+  # Gathers the books of every volume and builds the download page.
   site:
     needs: [list, build]
     if: ${{ always() && needs.list.result == 'success' && (needs.build.result == 'success' || (needs.build.result == 'skipped' && needs.list.outputs.has_changes == 'false')) }}

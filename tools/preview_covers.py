@@ -1,6 +1,6 @@
 """Render every series front at production sizes without rebuilding the books.
 
-Usage: python3 tools/preview_covers.py [tome1-first-principles tome2-integers] [--jobs 4]
+Usage: python3 tools/preview_covers.py [volume1-first-principles volume2-integers] [--jobs 4]
 Requires the same xelatex/poppler setup as build.sh. Writes preview PDFs and PNGs,
 not release assets or production paperback wraps. Mathematical motifs are read as-is.
 """
@@ -24,15 +24,15 @@ def render(main: Path, output: Path, print_mode=False) -> str:
     metadata = re.search(r"^% epub-title: (.+)$", main.read_text(), re.M).group(1)
     number = re.search(r"Volume ([0-9A-Z]+):", metadata).group(1)
     title = metadata.split(": ", 1)[1]
-    tome = main.parent.name
-    out = output / tome
+    volume = main.parent.name
+    out = output / volume
     out.mkdir(parents=True, exist_ok=True)
     environment=os.environ.copy()
     environment.setdefault('extra_mem_top','12000000')  # Match production's dense-vector allowance.
     formats = {"reference": PRINT} if print_mode else FORMATS
     for fmt, (width, height) in formats.items():
-        tex = (rf"\def\TOMENUM{{{number}}}\def\TOMETITLE{{{title}}}"
-               rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{tome}/cover-motif}}"
+        tex = (rf"\def\VOLUMENUM{{{number}}}\def\VOLUMETITLE{{{title}}}"
+               rf"\def\CW{{{width}}}\def\CH{{{6*height/width}}}\def\MOTIF{{{volume}/cover-motif}}"
                r"\input{tools/cover.tex}")
         if print_mode:
             tex = r"\def\PRINTQUALITY{}" + tex
@@ -50,23 +50,23 @@ def render(main: Path, output: Path, print_mode=False) -> str:
         expected_text = (title, subtitle(number), "Discover the patterns. Understand the proofs.")
         for expected in expected_text:
             if expected not in text:
-                raise ValueError(f"{tome}/{fmt}: missing or clipped text: {expected}")
+                raise ValueError(f"{volume}/{fmt}: missing or clipped text: {expected}")
     subprocess.run(["pdftoppm", "-singlefile", "-scale-to", "900", "-png",
                     str(out / "reference.pdf"), str(out / "cover")], check=True)
-    return tome
+    return volume
 
 
 def main():
     check_sync()
     check_print_sync()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("tomes", nargs="*", help="Only render these volume directories; default: all")
+    parser.add_argument("volumes", nargs="*", help="Only render these volume directories; default: all")
     parser.add_argument("--jobs", type=int, default=4)
     parser.add_argument("--out", type=Path, default=ROOT / "build/cover-previews")
     parser.add_argument("--print", action="store_true", dest="print_mode",
                         help="Render the print vector master at 7x10, instead of digital fronts")
     args = parser.parse_args()
-    books = [ROOT / tome / "main.tex" for tome in args.tomes] if args.tomes else sorted(ROOT.glob("tome*/main.tex"))
+    books = [ROOT / volume / "main.tex" for volume in args.volumes] if args.volumes else sorted(ROOT.glob("volume*/main.tex"))
     with ThreadPoolExecutor(max_workers=args.jobs) as pool:
         futures = [pool.submit(render, book, args.out.resolve(), args.print_mode) for book in books]
         for future in as_completed(futures):

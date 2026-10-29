@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Build the 7 x 10 download PDF with cover, print interior and EPUB of each tome
+# Build the 7 x 10 download PDF with cover, print interior and EPUB of each volume
 # into dist/, and the files for an Amazon KDP edition into dist/kdp/.
 # Requires xelatex, Ghostscript, pandoc >= 3, poppler-utils and tools/requirements-build.txt.
 set -euo pipefail
@@ -27,25 +27,25 @@ python3 "$root/tools/print_layout.py" --check
 pdf_only=false
 case "${1:-}" in
   --pdf-only) pdf_only=true; shift ;;
-  --help) echo "Usage: ./build.sh [--pdf-only] [tome...]"; exit 0 ;;
+  --help) echo "Usage: ./build.sh [--pdf-only] [volume...]"; exit 0 ;;
   --*) echo "Unknown option: $1" >&2; exit 2 ;;
 esac
 python3 "$root/tools/book_outputs.py" clean "$root/dist"
-tomes=("$@")
-[ ${#tomes[@]} -eq 0 ] && tomes=($(cd "$root" && ls -d tome*/ | tr -d /))
+volumes=("$@")
+[ ${#volumes[@]} -eq 0 ] && volumes=($(cd "$root" && ls -d volume*/ | tr -d /))
 
-for tome in "${tomes[@]}"; do
-  public=$(python3 "$root/tools/public_names.py" "$tome" stem)
+for volume in "${volumes[@]}"; do
+  public=$(python3 "$root/tools/public_names.py" "$volume" stem)
   echo "== $public"
-  python3 "$root/tools/check_edition_copy.py" "$tome"
-  out="$root/build/$tome"
+  python3 "$root/tools/check_edition_copy.py" "$volume"
+  out="$root/build/$volume"
   mkdir -p "$out"
   # Every volume uses the locked Volume-0 master; archived concepts never bypass it.
-  title=$(sed -n 's/^% epub-title: //p' "$root/$tome/main.tex")
+  title=$(sed -n 's/^% epub-title: //p' "$root/$volume/main.tex")
   num=$(sed -n 's/^.*Volume \([0-9A-Z]*\):.*/\1/p' <<<"$title")
-  meta="\\def\\TOMENUM{$num}\\def\\TOMETITLE{${title#*: }}"
+  meta="\\def\\VOLUMENUM{$num}\\def\\VOLUMETITLE{${title#*: }}"
   # The same master supplies the reading PDF, EPUB and separate print wrap.
-  compile_cover "$out" cover "$meta\\def\\MOTIF{$tome/cover-motif}\\input{tools/cover.tex}"
+  compile_cover "$out" cover "$meta\\def\\MOTIF{$volume/cover-motif}\\input{tools/cover.tex}"
   python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num"
   if ! $pdf_only; then
     pdftoppm -png -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" "$out/cover"
@@ -59,7 +59,7 @@ for tome in "${tomes[@]}"; do
   # tokens in an old TOC). Three clean passes rebuild all reference state.
   rm -f "$out/main.aux" "$out/main.toc" "$out/main.out" "$out/main.lof" "$out/main.lot"
   for pass in 1 2; do
-    (cd "$root/$tome" &&
+    (cd "$root/$volume" &&
       for _ in 1 2 3; do
         xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
           "$meta\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main.stdout" ||
@@ -85,22 +85,22 @@ for tome in "${tomes[@]}"; do
   python3 "$root/tools/print_layout.py" --pages "$pages" --inner "$inner" > "$root/dist/kdp/$public - Print Metadata.json"
   spine=$(python3 -c 'import json,sys; print(json.load(open(sys.argv[1]))["spine_in"])' "$root/dist/kdp/$public - Print Metadata.json")
   spinetext=""; [ "$pages" -ge 80 ] && spinetext="\\def\\SPINETEXT{}"
-  blurb="$tome/blurb"; [ -e "$root/$blurb.tex" ] || blurb=tools/blurb-default
-  # The ISBN barcode on the back cover, once the tome has its paperback ISBN (\bookisbnprint in main.tex).
+  blurb="$volume/blurb"; [ -e "$root/$blurb.tex" ] || blurb=tools/blurb-default
+  # The ISBN barcode on the back cover, once the volume has its paperback ISBN (\bookisbnprint in main.tex).
   barcode=""
-  isbn=$(sed -n 's/^\\renewcommand{\\bookisbnprint}{\([0-9-]*\)}.*/\1/p' "$root/$tome/main.tex")
+  isbn=$(sed -n 's/^\\renewcommand{\\bookisbnprint}{\([0-9-]*\)}.*/\1/p' "$root/$volume/main.tex")
   if [ -n "$isbn" ]; then
     python3 "$root/tools/ean13.py" "$isbn" "$out/barcode.tex"
     barcode="\\def\\BARCODE{$out/barcode.tex}"
   fi
-  compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$tome/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
+  compile_cover "$out" cover-wrap "$meta\\def\\MOTIF{$volume/cover-motif}\\def\\SPINE{$spine}$spinetext\\def\\BLURB{$blurb}$barcode\\input{tools/cover-wrap.tex}"
   python3 "$root/tools/check_cover_pdf.py" "$out/cover-wrap.pdf" --spine "$spine" --title "${title#*: }" --number "$num"
   python3 "$root/tools/kdp_cover.py" "$out/cover-wrap.pdf" "$root/dist/kdp/$public - Paperback Cover.pdf" \
     --number "$num" --report "$out/cover-preflight.json"
   python3 "$root/tools/check_cover_pdf.py" "$root/dist/kdp/$public - Paperback Cover.pdf" \
     --spine "$spine" --title "${title#*: }" --number "$num" --print-export
-  # The KDP listing (title fields, description, keywords) from <tome>/kdp.md, see tools/listing.py.
-  python3 "$root/tools/listing.py" "$root/$tome" "$root/dist/kdp/$public - Publishing Listing.md"
+  # The KDP listing (title fields, description, keywords) from <volume>/kdp.md, see tools/listing.py.
+  python3 "$root/tools/listing.py" "$root/$volume" "$root/dist/kdp/$public - Publishing Listing.md"
   # Separate eBook cover: 1792 x 2560 pixels, preserving the approved 7:10 design, also used for publishing.
   pdftoppm -jpeg -jpegopt quality=95 -singlefile -scale-to-x 1792 -scale-to-y 2560 "$out/cover.pdf" \
     "$root/dist/kdp/$public - eBook Cover"
@@ -111,30 +111,30 @@ for tome in "${tomes[@]}"; do
 
   # Each figure also becomes an SVG for the EPUB (needs pdftocairo, from poppler-utils).
   mkdir -p "$out/figures"
-  for fig in "$root/$tome"/figures/*.tex; do
+  for fig in "$root/$volume"/figures/*.tex; do
     [ -e "$fig" ] || continue
     name=$(basename "$fig" .tex)
     (cd "$root" &&
       xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out/figures" -jobname="$name" \
-        "\\def\\FIG{$tome/figures/$name}\\input{tools/figure.tex}" >"$out/figures/$name.log" ||
+        "\\def\\FIG{$volume/figures/$name}\\input{tools/figure.tex}" >"$out/figures/$name.log" ||
         { tail -30 "$out/figures/$name.log"; exit 1; })
     pdftocairo -svg "$out/figures/$name.pdf" "$out/figures/$name.svg"
   done
 
-  python3 "$root/tools/epub_prep.py" "$root/$tome/main.tex" "$out/epub.tex" "$out/figures"
-  (cd "$root/$tome" &&
+  python3 "$root/tools/epub_prep.py" "$root/$volume/main.tex" "$out/epub.tex" "$out/figures"
+  (cd "$root/$volume" &&
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
       --split-level=1 --number-sections --epub-cover-image="$out/cover.png" \
       --lua-filter="$root/tools/epub.lua" --css="$root/tools/epub.css" \
       --epub-embed-font="$root/common/fonts/*.otf" --epub-embed-font="$root/common/fonts/*.ttf" \
-      --metadata title="${title:-$tome}" --metadata subtitle="$(python3 -c 'import json,sys; from pathlib import Path; print(json.loads(Path(sys.argv[1]).read_text()).get(sys.argv[2], ""))' "$root/common/volume-subtitles.json" "$num")" --metadata author="SEGHAIER Oussama" --metadata lang=en \
-      --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$tome/main.tex")" \
+      --metadata title="${title:-$volume}" --metadata subtitle="$(python3 -c 'import json,sys; from pathlib import Path; print(json.loads(Path(sys.argv[1]).read_text()).get(sys.argv[2], ""))' "$root/common/volume-subtitles.json" "$num")" --metadata author="SEGHAIER Oussama" --metadata lang=en \
+      --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$volume/main.tex")" \
       --metadata subject=Mathematics \
       -o "$root/dist/$public.epub")
   python3 "$root/tools/epub_fix.py" "$root/dist/$public.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
-  python3 "$root/tools/reader.py" "$tome" "$out" "$root/dist/html/$tome"
-  python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num" --cover-png "$out/cover.png" --epub "$root/dist/$public.epub" --reader "$root/dist/html/$tome"
-  echo "   dist/$public.pdf (7 x 10 in)  dist/$public.epub  dist/html/$tome/"
+  python3 "$root/tools/reader.py" "$volume" "$out" "$root/dist/html/$volume"
+  python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num" --cover-png "$out/cover.png" --epub "$root/dist/$public.epub" --reader "$root/dist/html/$volume"
+  echo "   dist/$public.pdf (7 x 10 in)  dist/$public.epub  dist/html/$volume/"
   echo "   KDP: dist/kdp/$public - Print.pdf ($pages interior pages); dist/kdp/$public - Paperback Cover.pdf (spine ${spine}in)"
 done

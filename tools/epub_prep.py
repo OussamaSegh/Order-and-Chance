@@ -1,4 +1,4 @@
-"""Flatten a tome's LaTeX for pandoc's EPUB conversion.
+"""Flatten a volume's LaTeX for pandoc's EPUB conversion.
 
 Inlines \\input files (swapping the PDF preamble for common/epub-preamble.tex)
 and turns the optional arguments of the exercise and
@@ -42,7 +42,7 @@ COMMON = Path(__file__).resolve().parent.parent / "common"
 
 
 def book_settings(main_tex: Path) -> dict:
-    """The \\book... settings of common/frontmatter.tex, with a tome's \\renewcommand overrides."""
+    """The \\book... settings of common/frontmatter.tex, with a volume's \\renewcommand overrides."""
     pattern = r"\\(?:re)?newcommand\{\\(book\w+|seriesname)\}\{((?:[^{}]|\{[^{}]*\})*)\}"
     settings = dict(re.findall(pattern, (COMMON / "frontmatter.tex").read_text(encoding="utf-8")))
     settings.update(re.findall(pattern, main_tex.read_text(encoding="utf-8")))
@@ -78,7 +78,7 @@ def main(src: str, dst: str, figdir: str) -> None:
     # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
-    # Portraits (\\portrait{file}{credit}, \\portraits{f1}{c1}{f2}{c2} of tome0's main.tex): the EPUB
+    # Portraits (\\portrait{file}{credit}, \\portraits{f1}{c1}{f2}{c2} of volume0's main.tex): the EPUB
     # shows the JPEG with its credit below, as a plain paragraph so that the figures keep their numbers.
     photodir = Path(src).resolve().parent / "photos"
 

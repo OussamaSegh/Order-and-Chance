@@ -11,8 +11,8 @@ Quote complete shell paths. `tools/release_assets.py` uploads each asset with it
 readable label and verifies its stored name, byte count and supplied SHA-256 digest.
 GitHub replaces spaces with dots even on asset rename; its release labels retain
 the readable names. GitHub Pages downloads preserve literal spaces and are the
-canonical direct download links in the README. Source directories and reader routes keep their
-existing identifiers. Cache schema 8 forces a full rebuild; stale old downloads
+canonical direct download links in the README. Source directories and reader routes use the
+`volumeN-` stems. A reader URL published under the previous stem redirects to that route. Cache schema 8 forces a full rebuild; stale old downloads
 are removed during assembly. There are still exactly two PDFs and one EPUB per book.
 
 # Required KDP export preparation
@@ -127,7 +127,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   `common/frontmatter.tex` only. Per-volume settings go in `main.tex` after
   `\input{../common/preamble}`: `\renewcommand{\bookedition}{...}`,
   `\renewcommand{\bookisbnprint}{...}`, `\renewcommand{\bookisbnebook}{...}`.
-- KDP listing: `<tome>/kdp.md`, with a `# Description` section (plain text, at most 4000
+- KDP listing: `<volume>/kdp.md`, with a `# Description` section (plain text, at most 4000
   characters, in the voice of the series: what the volume is about, its summits, why it is
   beautiful, what comes with it) and a `# Keywords` section (seven lines, each at most
   50 characters, not repeating words of the title or series, no claims such as "bestseller").
@@ -138,7 +138,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
   takes the paperback wrap as a separate file. The reading PDF has one more page
   than the print PDF. Never use that extra page in a spine calculation.
 - A new volume is added to `common/series.tex` (it is already listed if it is in the series plan).
-- Back-cover text: `<tome>/blurb.tex`, about 120–180 words of plain LaTeX (no maths displays),
+- Back-cover text: `<volume>/blurb.tex`, about 120–180 words of plain LaTeX (no maths displays),
   saying what the volume is about and why it is beautiful. Without it, the series text in
   `tools/blurb-default.tex` is used.
 - The preface talks only about the content, the goal and the beauty of the mathematics:
@@ -156,7 +156,7 @@ its tracked TeX counterpart. The normal build and CI reject an unsynchronised pa
 EPUB remains reflowable. A4, fixed-page Kindle and phone PDF editions are retired;
 the build removes their old output files. The separate `-print.pdf` is now required.
 
-`./build.sh --pdf-only [tome...]` rebuilds both PDFs, covers,
+`./build.sh --pdf-only [volume...]` rebuilds both PDFs, covers,
 listings and `dist/kdp/<Book> - Print Metadata.json` without rebuilding EPUB or HTML.
 The metadata records the actual interior page count, even-rounded KDP page count,
 spine, gutter and exact cover sheet size. Never reuse a wrap from the former trim.
@@ -228,7 +228,7 @@ The charcoal grain is tiled at native resolution, approximately 360 physical ppi
 and approximately 420 ppi on the outer wrap. No low-resolution cover bitmap is
 permitted in the print PDF. Fonts are embedded; original cover lettering is paths.
 
-`build.sh` writes `build/<tome>/cover-preflight.json`. The checker validates vector
+`build.sh` writes `build/<volume>/cover-preflight.json`. The checker validates vector
 asset/source hashes, rejects every raster except the two native paper tiles, and
 uses `pdfimages -list` placement matrices to require >=300 ppi. It runs again on
 cached release assembly. CI retains each report as a build artifact.
@@ -240,7 +240,7 @@ regenerate deliberately, install Inkscape, libpotrace0 and
 ```sh
 python3 tools/print_cover_vectors.py
 python3 tools/preview_covers.py --print --out build/print-vector-proof
-python3 tools/check_print_cover.py build/<tome>/cover-wrap.pdf --number 2
+python3 tools/check_print_cover.py build/<volume>/cover-wrap.pdf --number 2
 ```
 
 Inspect source comparison, fine lettering, mesh, full back and barcode area before

@@ -458,7 +458,7 @@ The author chose **Volume/Volumes** for the English series and explicitly asked
 to leave the covers alone. Book half-title/title/copyright pages, PDF and EPUB
 metadata, chapter prose, cross-volume references, the series catalogue, publishing
 listings, website labels and reader metadata now use that term. Numbering and
-reference identifiers are preserved. Existing `tome…` paths, TeX macros and
+reference identifiers are preserved. Existing `volume…` paths, TeX macros and
 technical identifiers remain stable so download URLs and build inputs keep working.
 
 Title parsers and the approved-image validator now read the `Volume N:` metadata
@@ -562,7 +562,7 @@ reading PDF includes the approved front cover, while the separate print PDF star
 with the half-title. EPUB remains available. This supersedes all older one-PDF
 statements below; the exact approved-image cover policy remains in force.
 
-`dist/<tome>.pdf` is the reading download; `dist/kdp/<tome>-print.pdf` is the
+`dist/<volume>.pdf` is the reading download; `dist/kdp/<volume>-print.pdf` is the
 paperback manuscript. The body is compiled once. `tools/book_pdf.py` clones the
 complete print PDF and inserts its cover without flattening annotations or
 recreating page content. Printed page labels, named destinations, bookmarks and
@@ -757,7 +757,7 @@ workspace to **18cab2c**, incorporating the latest mathematical corrections and
 single-standard-PDF migration before any edits. Verification and publication results
 are recorded below as they complete. Earlier trim and content reviews remain linked
 in [STANDARD-FORMATS.md](STANDARD-FORMATS.md), [the production trim audit](../review/7X10-PRODUCTION.md)
-and [the Volume 0 factual review](../review/TOME0-FACT-REVIEW.md).
+and [the Volume 0 factual review](../review/VOLUME0-FACT-REVIEW.md).
 
 ### Completed local checks
 

@@ -7,21 +7,21 @@ using the same camera, wire material and glow, including Volumes 0 and 1.
 from pathlib import Path
 ROOT=Path(__file__).resolve().parent.parent
 
-PLATES = {'tome1-first-principles': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
- 'tome2-integers': 'ch02-primes.tex',
- 'tome3-symmetry': 'ch11-characters.tex; ch12-quaternions.tex',
- 'tome4-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
- 'tome5-calculation': 'ch06-fourier.tex; ch08-transform.tex',
- 'tome6-crossroads': 'ch06-zeros.tex',
- 'tome7-spaces': 'ch11-metricmeasures.tex',
- 'tome8-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
- 'tome9-shapes': 'ch09-hyperbolic.tex',
- 'tome10-abstraction': 'ch09-symmetric.tex',
- 'tome11-randomness': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
- 'tome12-random-motion': 'ch10-semicircle.tex',
- 'tome13-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
- 'tome14-primes': 'Prime distribution and progressions',
- 'tome15-order-and-chance': 'ch04-multiplicative.tex'}
+PLATES = {'volume1-first-principles': 'ch06-integrals-taylor.tex; ch08-counting-probability.tex',
+ 'volume2-integers': 'ch02-primes.tex',
+ 'volume3-symmetry': 'ch11-characters.tex; ch12-quaternions.tex',
+ 'volume4-chance': 'ch01-counting.tex; ch02-discrete.tex; ch07-walks.tex',
+ 'volume5-calculation': 'ch06-fourier.tex; ch08-transform.tex',
+ 'volume6-crossroads': 'ch06-zeros.tex',
+ 'volume7-spaces': 'ch11-metricmeasures.tex',
+ 'volume8-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
+ 'volume9-shapes': 'ch09-hyperbolic.tex',
+ 'volume10-abstraction': 'ch09-symmetric.tex',
+ 'volume11-randomness': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
+ 'volume12-random-motion': 'ch10-semicircle.tex',
+ 'volume13-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',
+ 'volume14-primes': 'Prime distribution and progressions',
+ 'volume15-order-and-chance': 'ch04-multiplicative.tex'}
 
 def main():
     import hashlib,json
@@ -53,7 +53,7 @@ def main():
       '15':'Phase projections of a Steinhaus multiplicative walk',
     }
     for book,evidence in PLATES.items():
-        number=book.split('-',1)[0].removeprefix('tome')
+        number=book.split('-',1)[0].removeprefix('volume')
         geometry,info=render(model(number),config,directions[number])
         content='% Shared-master 3D wireframe: '+subjects[number]+'\n'+geometry
         info['renderer']='shared-camera-vector'

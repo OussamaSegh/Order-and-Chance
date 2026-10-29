@@ -8,13 +8,13 @@ numbered page 283 after 12 roman front-matter pages.
 
 ## Final files
 
-- [Validated EPUB](/workspace/Order-and-Chance/dist/tome0-mathematical-maturity.epub)
-- [Validated HTML reader preview](/workspace/Order-and-Chance/build/digital-review/site/read/tome0-mathematical-maturity/index.html)
+- [Validated EPUB](/workspace/Order-and-Chance/dist/volume0-mathematical-maturity.epub)
+- [Validated HTML reader preview](/workspace/Order-and-Chance/build/digital-review/site/read/volume0-mathematical-maturity/index.html)
 - [EPUB/HTML validation follow-up](DIGITAL-VALIDATION.md)
 
-- [Complete reading PDF](/workspace/Order-and-Chance/dist/tome0-mathematical-maturity.pdf)
-- [Print interior](/workspace/Order-and-Chance/dist/kdp/tome0-mathematical-maturity-print.pdf)
-- [Matching print wrap](/workspace/Order-and-Chance/dist/kdp/tome0-mathematical-maturity-cover-wrap.pdf)
+- [Complete reading PDF](/workspace/Order-and-Chance/dist/volume0-mathematical-maturity.pdf)
+- [Print interior](/workspace/Order-and-Chance/dist/kdp/volume0-mathematical-maturity-print.pdf)
+- [Matching print wrap](/workspace/Order-and-Chance/dist/kdp/volume0-mathematical-maturity-cover-wrap.pdf)
 - [Complete revised source archive](/workspace/Order-and-Chance/dist/volume0-revision/Order-and-Chance-Volume0-source.zip)
 - [Original source archive](/workspace/Order-and-Chance/dist/volume0-revision/Order-and-Chance-original-source.zip)
 - [Editorial and QA report archive](/workspace/Order-and-Chance/dist/volume0-revision/Volume0-reports.zip)
@@ -72,7 +72,7 @@ verification/issues/next-work structure.
 
 In the current environment, activate
 `/workspace/order-chance-system/activate.sh`, then run
-`./build.sh --pdf-only tome0-mathematical-maturity` from the repository root.
+`./build.sh --pdf-only volume0-mathematical-maturity` from the repository root.
 Elsewhere, supply XeLaTeX and the repository's documented TeX packages, Poppler,
 Python and `tools/requirements-build.txt`; the approved font files are bundled.
 Mathematical verification additionally uses numpy, scipy, sympy and mpmath.

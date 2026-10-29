@@ -2,7 +2,7 @@ from pathlib import Path
 import json,os
 from playwright.sync_api import sync_playwright
 root=Path(__file__).resolve().parents[2];site=root/'build/volume1-digital-review/site';out=root/'build/volume1-digital-review'
-base='http://127.0.0.1:8766/read/tome1-integers/'
+base='http://127.0.0.1:8766/read/volume1-integers/'
 errors=[];rows=[]
 with sync_playwright() as p:
  proxy=os.environ.get('HTTPS_PROXY') or os.environ.get('HTTP_PROXY')
@@ -12,7 +12,7 @@ with sync_playwright() as p:
  context=browser.new_context(viewport={'width':1360,'height':900},color_scheme='light')
  page=context.new_page()
  page.on('pageerror',lambda e:errors.append(str(e)))
- for path in sorted((site/'read/tome1-integers').glob('*.html')):
+ for path in sorted((site/'read/volume1-integers').glob('*.html')):
   page.goto(base+path.name,wait_until='networkidle',timeout=60000)
   page.evaluate('document.fonts.ready')
   row=page.evaluate('''() => ({math:document.querySelectorAll('span.math').length,rendered:document.querySelectorAll('span.math .katex').length,errors:[...document.querySelectorAll('.katex-error,.math-error')].map(n=>n.textContent),brokenImages:[...document.images].filter(i=>!i.complete||i.naturalWidth===0).map(i=>i.src),reveals:document.querySelectorAll('details.reveal').length})''')
@@ -20,7 +20,7 @@ with sync_playwright() as p:
   assert row['rendered']==row['math'],row
   assert not row['errors'] and not row['brokenImages'],row
  page.set_viewport_size({'width':320,'height':900})
- for path in sorted((site/'read/tome1-integers').glob('*.html')):
+ for path in sorted((site/'read/volume1-integers').glob('*.html')):
   page.goto(base+path.name,wait_until='networkidle',timeout=60000)
   page.evaluate('document.fonts.ready')
   dimensions=page.evaluate('({width:innerWidth,scroll:document.documentElement.scrollWidth})')

@@ -63,7 +63,7 @@ def sha(path):
 
 def books():
     result=[]
-    for main in sorted(ROOT.glob('tome*/main.tex')):
+    for main in sorted(ROOT.glob('volume*/main.tex')):
         heading=re.search(r'^% epub-title: (.+)$',main.read_text(),re.M)[1]
         number=re.search(r'Volume ([A-Z0-9]+):',heading)[1]
         result.append((number,heading.split(': ',1)[1],main.parent.name))

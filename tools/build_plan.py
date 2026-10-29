@@ -7,6 +7,7 @@ import shutil
 import subprocess
 from pathlib import Path
 from book_outputs import clean, check
+from legacy_urls import OLD_PREFIX, OLD_STEMS
 from public_names import filename
 from check_cover_pdf import check_interior
 from check_interior_style import check as check_style
@@ -17,12 +18,12 @@ from check_cover_template import check as check_cover_template
 from print_layout import specification
 
 SCHEMA = 8
-NAME = re.compile(r"tome[A-Z]?\d+-[A-Za-z0-9-]+\Z")
+NAME = re.compile(r"volume[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
 def fingerprints(root):
     files = subprocess.check_output(['git', 'ls-files', '-z'], cwd=root).decode().split('\0')
-    books = sorted(p.name for p in root.glob('tome*') if (p / 'main.tex').is_file())
+    books = sorted(p.name for p in root.glob('volume*') if (p / 'main.tex').is_file())
     if not all(NAME.fullmatch(book) for book in books):
         raise ValueError('Unsupported book directory name')
     shared = [f for f in files if f in {'build.sh', 'tools/requirements-build.txt'} or f.startswith('common/') or f.startswith('tools/assets/') or (
@@ -67,7 +68,7 @@ def plan(root, cache, force=False):
 
 
 def remove_book(root, book):
-    if not NAME.fullmatch(book):
+    if not (NAME.fullmatch(book) or book in OLD_STEMS):
         raise ValueError('Invalid cached book name')
     for p in (root / 'dist').glob(book + '.*'):
         if p.is_file():
@@ -97,7 +98,7 @@ def prepare(root, cache, data):
                for kind in ['pdf', 'epub', 'print', 'wrap', 'ebook', 'listing', 'metadata']}
     for folder in [root / 'dist', root / 'dist/kdp']:
         for path in folder.glob('*'):
-            if path.is_file() and (path.name.startswith(('tome', 'Volume ', 'Problem Book '))) and path.name not in allowed:
+            if path.is_file() and path.name.startswith((OLD_PREFIX, 'volume', 'Volume ', 'Problem Book ')) and path.name not in allowed:
                 path.unlink()
 
 
@@ -125,7 +126,7 @@ def snapshot(root, cache, data):
         metadata = json.loads((root / 'dist/kdp' / filename(book, 'metadata', root)).read_text())
         if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
-        number = re.match(r'tome([A-Z]?\d+)-', book).group(1)
+        number = re.match(r'volume([A-Z]?\d+)-', book).group(1)
         check_print_cover(root / 'dist/kdp' / filename(book, 'wrap', root), number,
                           press_report=root / 'build' / book / 'cover-preflight.json', spine=metadata['spine_in'])
         check_cover_template(root / 'dist' / filename(book, 'pdf', root), number)

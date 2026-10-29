@@ -35,7 +35,7 @@ The series subtitle is the frame of the story: **Order and Chance: The Hidden Ar
 | Part VI. Synthesis | |
 | 15 | Order and Chance: The Meeting of Structure and Randomness |
 
-**Design rule.** Each book's chapters must visibly deliver its title and its subtitle. The part names stay the catalog's. How a part delivers the subtitle is said in prose, under "How the subtitle is delivered" in the book file. A chapter that does not serve the title moves. A part name is renamed only when a move makes the existing name false, and only in the marked section below. Every directory in this plan is written as `volume1-first-principles` through `volume15-order-and-chance`. Those names become valid once step 2 in [PROGRESS.md](PROGRESS.md), Harmonize Tome to Volume, merges. Until then the files are in the same stems with `tome` where this plan writes `volume`.
+**Design rule.** Each book's chapters must visibly deliver its title and its subtitle. The part names stay the catalog's. How a part delivers the subtitle is said in prose, under "How the subtitle is delivered" in the book file. A chapter that does not serve the title moves. A part name is renamed only when a move makes the existing name false, and only in the marked section below. Every directory in this plan is `volume1-first-principles` through `volume15-order-and-chance`.
 
 Statuses were read off the files, not off the catalog blurb. Every chapter entry in `book-01.md`–`book-15.md` names the `volumeN-` path. The sources for the judgments are the nineteen `main.tex` files (sixteen remain), the chapter openings and section lists, `docs/review/SERIES-REVIEW-2026-10.md`, `docs/review/CAPSTONE-PLAN.md`, `docs/SERIES-STRUCTURE.md`, `docs/DESIGN.md`, and the 7×10 page table in `review/7X10-PAGINATION.md`. Several defects in the October review are already repaired in the sources; the rework order does not send anyone back to fix them. They are listed under "Already repaired".
 
@@ -416,7 +416,7 @@ The series after the plan is on the order of 4,000–4,500 print pages of main t
 
 ## Rework order
 
-The executable checklist, with status and PR links, is [PROGRESS.md](PROGRESS.md). Before any item below, step 2 of that tracker renames every `tome` identifier to `volume`. The paths in this plan already use the new names, and they become valid when that step merges. The order below is the reasoning for the mathematics. Story threading is real work and it is not the first work: a paragraph that points at a theorem should point at the theorem that will be there.
+The executable checklist, with status and PR links, is [PROGRESS.md](PROGRESS.md). The paths in this plan are the directory names. The order below is the reasoning for the mathematics. Story threading is real work and it is not the first work: a paragraph that points at a theorem should point at the theorem that will be there.
 
 1. **Leave the repaired proofs alone**, except for a second reading of three squares and of the five real roots. They are listed above so a later session does not "fix" them back.
 2. **Book 7, conditional expectation.** Promote the exercise, including the tower property, before Books 11 and 12 are touched. This is the one gap a citation already stands on.
@@ -427,6 +427,6 @@ The executable checklist, with status and PR links, is [PROGRESS.md](PROGRESS.md
 7. **Condense the workshop** after items 4 and 6 above, so a proof does not live in two places. The Research Workshop keeps its name. What stays is the reading method and the two projects in `book-15.md`. Appendix E is removed rather than left as a pointer. The tours move or leave, as that file lists.
 8. **The early floors' story pass, Books 1–6.** One paragraph in each preface that states the series question and names the structural element, and the forward pointers from Book 2's remaining pattern chapters and from Book 6's Maier remark. Part names stay the catalog's, except the two proposed renames above. This pass is light because the chapters are already the right ones. The P1 problems are not placed again.
 9. **Books 8–14, the remaining local revisions** in the book files: primary decomposition, the de Rham sentence, the semicircle's move into Spectral Theory, the two curvature titles, the retitling of the three problem chapters. None of these reprints a flagship proof.
-10. **Catalog numbering** is the renumbering branch, already merged. This plan already uses Books 1–15 and the catalog's part names. The Tome-to-Volume rename is tracker step 2, not this item.
+10. **Catalog numbering** is the renumbering branch, already merged. This plan already uses Books 1–15 and the catalog's part names. Directory names are tracker step 2, not this item.
 
 The section is Book 15. The floors under it are already standing. The rework builds the section from the members that are already proved, and it writes a new member only where the building does not yet contain one: Maier's theorem is already drafted, Selberg's central limit theorem is already drafted, and the five openings are the rooms those theorems have not yet been set into.

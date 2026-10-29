@@ -2,7 +2,7 @@
 
 This is the execution list for Edition 1. The reasoning lives in [SERIES-CONTENT-PLAN.md](SERIES-CONTENT-PLAN.md) and the chapter plans beside it. Titles and subtitles are frozen. Part names stay the catalog's, except the two renames in steps 5 and 8.
 
-Paths below, and the paths in the other files under `docs/plan/`, use the `volumeN-` directory names. Those names become valid once step 2 merges. Until then the directories on `main` are the step 0 stems, `tome1-first-principles` through `tome15-order-and-chance`: the same suffix, with `tome` where this plan writes `volume`. The retired names (`tome0-mathematical-maturity`, `tome9-higher-structures`, `tome14-order-and-chance`, and the other pre-renumbering stems) are gone. Step 2 does not revive them.
+Paths below, and the paths in the other files under `docs/plan/`, are the directory names `volume1-first-principles` through `volume15-order-and-chance`. The retired names (`tome0-mathematical-maturity`, `tome9-higher-structures`, `tome14-order-and-chance`, and the other pre-renumbering stems) are gone. Step 2 does not revive them.
 
 | Book | Directory |
 | --- | --- |
@@ -50,18 +50,18 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 1. Merge this plan
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 0
 - **Books and files:** `docs/plan/` only. No manuscript.
 - **Acceptance:** `SERIES-CONTENT-PLAN.md`, `book-01.md` through `book-15.md`, and this file are on `main`. Part names in the plan are the catalog's. The two proposed renames are marked as proposals.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/27
-- **Merge sha:**
-- **Date:**
-- **Notes:** This PR. The editor marks it DONE after merge.
+- **Merge sha:** 2c5c7811f0d884dec5430b8facd7fc8a6e8b862c
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not re-implement the plan files.
 
 ### 2. Harmonize Tome to Volume
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 1
 - **Books and files:** the whole repository. Names only. No mathematical text, no title, no subtitle, and no part name.
   - Reader-visible text, covers, and spines: Tome becomes Volume, and tome becomes volume. Do not redraw artwork, frames, or any lettering that does not spell that word.
@@ -73,7 +73,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
   - The README and the docs.
   - Old download and reader URLs that used a `tome` stem keep working. There is no redirect table today; add one where a published URL used the old stem.
 - **Acceptance:** `git diff --check`. A search for `tome` or `Tome` is empty except where the old spelling has to remain: step 0's record of the names PR #26 created, the retired-name list at the top of this file, this step's statement of those old names, and a redirect that names an old URL. The temporary sentences in `docs/plan/` that tell a reader to swap the prefix are removed once the directories exist. The catalog stems match the directories. `./build.sh` succeeds for every `volumeN-` stem. An old reader or download URL that used a `tome` stem still resolves. Cover artwork is the same picture.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/28
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do this before any content step. It supersedes the earlier rule that directory names and TeX macro names stayed `tome` while the English word was already Volume. Do not revive `tome0-mathematical-maturity`, `tome9-higher-structures`, `tome14-order-and-chance`, or the other pre-renumbering stems. The `volumeN-` paths in `docs/plan/` become directories when this step merges.

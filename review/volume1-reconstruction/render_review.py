@@ -18,7 +18,7 @@ for first in range(0,len(samples),4):
         im.thumbnail((600,860));x=10+(j%2)*620;y=35+(j//2)*910
         sheet.paste(im,(x,y));draw.text((x,y-22),title[:66]+' / '+label,fill='black')
     sheet.save(OUT/('chapters-'+str(first//4+1)+'.png'))
-aux=(ROOT/'build/tome1-integers/main.aux').read_text()
+aux=(ROOT/'build/volume1-integers/main.aux').read_text()
 keylabels=['prop:intcrit','prop:t1-norm-index','lem:cfexistence','prop:Zp','thm:henselnewton','thm:ostrowski']
 for label in keylabels:
     m=re.search(r'\\newlabel\{'+re.escape(label)+r'\}\{\{[^}]+\}\{([^}]+)\}',aux);assert m,label

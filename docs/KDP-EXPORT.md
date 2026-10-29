@@ -100,11 +100,11 @@ Ghostscript; its package cache is separate from older TeX-only caches.
 ```sh
 source /workspace/order-chance-system/activate.sh
 python3 -m unittest discover -s tools -p 'test_*.py'
-./build.sh tome0-mathematical-maturity
-python3 tools/kdp_pdf.py dist/kdp/tome0-mathematical-maturity-print.pdf \
-  --report build/tome0-mathematical-maturity/kdp-preflight.json
-python3 tools/check_print_cover.py dist/kdp/tome0-mathematical-maturity-cover-wrap.pdf \
-  --number 0 --press-report build/tome0-mathematical-maturity/cover-preflight.json
+./build.sh volume1-first-principles
+python3 tools/kdp_pdf.py "dist/kdp/Volume 1 - First Principles - Print.pdf" \
+  --report build/volume1-first-principles/kdp-preflight.json
+python3 tools/check_print_cover.py "dist/kdp/Volume 1 - First Principles - Paperback Cover.pdf" \
+  --number 1 --press-report build/volume1-first-principles/cover-preflight.json
 ```
 
 Schema/fingerprint **7** and `library-v7-` force every book to regenerate. Both

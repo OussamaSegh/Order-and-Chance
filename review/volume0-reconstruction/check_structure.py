@@ -5,7 +5,7 @@ from pathlib import Path
 import re
 
 ROOT = Path(__file__).resolve().parents[2]
-BOOK = ROOT/'tome0-mathematical-maturity'
+BOOK = ROOT/'volume0-mathematical-maturity'
 OUT = Path(__file__).resolve().parent
 
 def main():

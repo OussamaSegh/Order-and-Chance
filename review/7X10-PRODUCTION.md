@@ -20,7 +20,7 @@ policy, ISBNs and approved black/gold cover illustrations are preserved.
 - Spines use the actual rebuilt interior, rounded up to an even KDP page count,
   multiplied by 0.002252 inch/page for black ink on white paper. Spines under
   80 pages have no text. Volume 0's existing ISBN barcode retains its physical size.
-- `./build.sh --print-only [tome...]` produces paperback interiors, wraps, listings
+- `./build.sh --print-only [volume...]` produces paperback interiors, wraps, listings
   and per-book print metadata. Full builds continue to produce all reading formats.
 - CI validates the configuration and runs publishing tests. Cache schema 2 and
   `library-v2` force complete regeneration; missing print metadata invalidates caches.

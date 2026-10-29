@@ -35,7 +35,7 @@ class PaperbackTest(unittest.TestCase):
         with patch('check_cover_pdf.subprocess.check_output', side_effect=[
                 'Pages: 1\n', 'Page 1 size: 595.276 x 841.89 pts\n']):
             with self.assertRaisesRegex(ValueError, 'page 1'):
-                check_interior('tome0.pdf')
+                check_interior('volume0.pdf')
 
     def test_missing_page_dimensions_are_rejected(self):
         with patch('check_cover_pdf.subprocess.check_output', side_effect=[

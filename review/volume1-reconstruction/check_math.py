@@ -162,7 +162,7 @@ def run():
         check('newton_root',a.numerator*pow(a.denominator,-1,256)%256==expected)
     check('teich_precision',pow(2,125,125)==57 and pow(57,4,125)==1)
     # Original numerical data in generated figures, parsed independently.
-    root=OUT.parents[1]/'tome1-integers/figures'
+    root=OUT.parents[1]/'volume1-integers/figures'
     ruler=(root/'ch12-ruler.tex').read_text()
     for n,v in re.findall(r'\((\d+),([0-9.]+)\)',ruler):
         n=int(n)

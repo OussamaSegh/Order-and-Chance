@@ -3,7 +3,7 @@ import hashlib,json,re,subprocess
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[2]
 OUT=Path(__file__).resolve().parent
-BOOK='tome1-integers'
+BOOK='volume1-integers'
 BASE='a65d685d941b8cef2c1d41f51bff65a71f885e11'
 def inventory(files):
     units=[]
