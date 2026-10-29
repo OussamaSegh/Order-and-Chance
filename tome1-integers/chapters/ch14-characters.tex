@@ -1,0 +1,446 @@
+\chapter{Characters, Euler Products and the Sieve}\label{ch:characters}
+
+\begin{center}\itshape
+Euler factored the harmonic series into a product over primes.\\
+The same idea, with a sign that remembers a residue class, is the door to Dirichlet's theorem.
+\end{center}
+
+Two threads of the book are ready to be joined. The Legendre symbol $\bigl(\frac{\cdot}{p}\bigr)$ is a completely multiplicative function of period $p$, and M\"obius inversion detects whether an integer is divisible by a small prime. A \emph{Dirichlet character} is the general object of which the Legendre symbol is the famous example. Its Euler product is the model for the $L$-functions of Volume~5. The same M\"obius function that inverted divisor sums now removes the multiples of the small primes: that exact cancellation is Legendre's sieve, the ancestor of the sieves in Volumes~5 and~13.
+
+The chapter uses the structure of $(\Z/n\Z)^\times$ from Chapter~\ref{ch:orders}, including the description of units modulo a power of two, and the convolution algebra of Chapter~\ref{ch:functions}. Roots of unity are those of Volume~0. Real logarithms and the comparison of a decreasing function with an integral are the same tools already used for $\sum 1/p$.
+
+\section{Dirichlet characters}
+
+\begin{definition}\label{def:t1-character}
+Let $m\ge1$. A \emph{Dirichlet character modulo $m$} is a function $\chi:\Z\to\C$ such that
+\begin{enumerate}[label=(\roman*)]
+\item $\chi(n)=0$ whenever $\gcd(n,m)>1$, and $\chi(n)\ne0$ otherwise;
+\item $\chi(n+m)=\chi(n)$ for every $n$;
+\item $\chi(ab)=\chi(a)\chi(b)$ for all integers $a,b$.
+\end{enumerate}
+The \emph{principal character} $\chi_0$ is defined by $\chi_0(n)=1$ if $\gcd(n,m)=1$ and $\chi_0(n)=0$ otherwise.
+\end{definition}
+
+Condition~(iii) on the units is a homomorphism $(\Z/m\Z)^\times\to\C^\times$, and condition~(i) is the only way to extend it by zero while keeping complete multiplicativity. Conversely, every homomorphism of the unit group extends in this way: if a prime dividing $m$ divides $ab$, it divides $a$ or $b$, so both sides of~(iii) vanish off the units. Thus Dirichlet characters modulo $m$ are precisely the homomorphisms $(\Z/m\Z)^\times\to\C^\times$, extended by zero. There is nothing further to choose.
+
+\begin{examplex}[three characters one already knows]
+The principal character modulo $m$ is one. The function $\chi_4$ of Theorem~\ref{thm:r2},
+\[
+\chi_4(n)=\begin{cases}
+0&n\text{ even},\\
+1&n\equiv1\pmod4,\\
+-1&n\equiv3\pmod4,
+\end{cases}
+\]
+is the non-principal character modulo $4$. The Legendre symbol $n\mapsto\bigl(\frac np\bigr)$, for an odd prime $p$, is a character modulo $p$: it is periodic, vanishes at multiples of $p$, and is completely multiplicative. For the prime $2$, the supplementary law is itself a character of modulus $8$. Define
+\[
+\chi_8(n)=\begin{cases}
+0&n\text{ even},\\
+1&n\equiv\pm1\pmod8,\\
+-1&n\equiv\pm3\pmod8.
+\end{cases}
+\]
+On the units $\{1,3,5,7\}$ one has $\chi_8(1)=1$, $\chi_8(3)=\chi_8(5)=-1$ and $\chi_8(7)=1$. Each non-identity unit has order $2$, and the products $3\cdot5\equiv7$, $3\cdot7\equiv5$ and $5\cdot7\equiv3$ match the products of the values. So $\chi_8$ is a character modulo $8$. Corollary~\ref{cor:two} says $\bigl(\frac2p\bigr)=\chi_8(p)$ for every odd prime $p$.
+\end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-chi8}
+\caption{The eight values of $\chi_8$. Even residues contribute $0$. The two classes $\pm1$ receive $+1$, and the two classes $\pm3$ receive $-1$. Reading the clock is the supplementary law for the symbol $\bigl(\frac2{\cdot}\bigr)$.}
+\label{fig:t1-chi8}
+\end{figure}
+
+\begin{proposition}\label{prop:t1-charsum}
+Let $\chi$ be a character modulo $m$. Then
+\[
+\sum_{n=1}^m\chi(n)=\begin{cases}\varphi(m)&\text{if }\chi=\chi_0,\\0&\text{otherwise.}\end{cases}
+\]
+\end{proposition}
+\begin{proof}
+The sum is the sum of $\chi$ over the units. If $\chi=\chi_0$, there are $\varphi(m)$ of them, each contributing $1$. If not, some unit $b$ has $\chi(b)\ne1$. Multiplying the sum by $\chi(b)$ permutes the units, so $\chi(b)\sum\chi(n)=\sum\chi(n)$, and $(\chi(b)-1)$ kills the sum.
+\end{proof}
+
+The count of all such $\chi$ needs the shape of the unit group, which is now complete.
+
+\begin{proposition}\label{prop:t1-unitproduct}
+Let $m=2^k\prod_ip_i^{a_i}$ with odd primes $p_i$. The Chinese remainder theorem identifies
+\[
+(\Z/m\Z)^\times
+\]
+with the product of $(\Z/2^k\Z)^\times$ and the groups $(\Z/p_i^{a_i}\Z)^\times$. Each odd factor is cyclic, by Theorem~\ref{thm:cyclicn}. The factor of $2$ is cyclic for $k\le2$, and for $k\ge3$ it is the product described by Theorem~\ref{thm:twopower}. In particular $(\Z/m\Z)^\times$ is a product of cyclic groups, and it has $\varphi(m)$ elements.
+\end{proposition}
+\begin{proof}
+Iterating Theorem~\ref{thm:crt} gives a ring isomorphism $\Z/m\Z\cong\prod\Z/p^{a}\Z$, the product running over the prime powers in $m$, and a ring isomorphism identifies units with tuples of units. The cyclicity statements are Theorem~\ref{thm:cyclicn} for the odd prime powers and for $2$ and $4$, and Theorem~\ref{thm:twopower} for higher powers of $2$.
+\end{proof}
+
+\begin{theorem}\label{thm:t1-charcount}
+There are exactly $\varphi(m)$ Dirichlet characters modulo $m$. If $a$ is a unit and $a\not\equiv1\pmod m$, some character satisfies $\chi(a)\ne1$.
+\end{theorem}
+\begin{proof}
+A cyclic group of order $N$, generated by $g$, has exactly $N$ homomorphisms to $\C^\times$: the image of $g$ may be any $N$th root of unity $e^{2\pi i j/N}$, $0\le j<N$, and each choice extends uniquely by $\chi(g^k)=e^{2\pi i jk/N}$. A homomorphism from a direct product of groups to $\C^\times$ is a tuple of homomorphisms, one from each factor, because $\chi(g,h)=\chi(g,1)\chi(1,h)$. Proposition~\ref{prop:t1-unitproduct} therefore supplies exactly $\varphi(m)$ characters.
+
+For the second claim, write the unit group as a product of cyclic groups and let $a$ have a non-trivial component $g^k$ in a cyclic factor of order $N$, with $N\nmid k$. The character of that factor sending $g$ to $e^{2\pi i/N}$ does not fix $g^k$, and the trivial character on every other factor extends it to the whole unit group.
+\end{proof}
+
+\begin{think}
+Modulo $5$, a primitive root is $2$, and the units are $2^0,2^1,2^2,2^3\equiv1,2,4,3$. How many characters should there be, and which of them is the Legendre symbol? Compute $\bigl(\frac2 5\bigr)$ from the supplementary law before looking at the example.
+\end{think}
+
+\begin{examplex}[the character table modulo $5$]
+Since $\varphi(5)=4$, there are four characters. With generator $2$ they are $\chi_j(2^k)=e^{2\pi i jk/4}=i^{jk}$ for $j=0,1,2,3$. On the units $1,2,3,4$ one finds
+\[
+\begin{array}{c|cccc}
+n&1&2&3&4\\\hline
+\chi_0&1&1&1&1\\
+\chi_1&1&i&-i&-1\\
+\chi_2&1&-1&-1&1\\
+\chi_3&1&-i&i&-1.
+\end{array}
+\]
+The symbol $\bigl(\frac n5\bigr)$ equals $1, -1, -1, 1$ on these four units, because $\bigl(\frac25\bigr)=-1$ by the rule for $p\equiv\pm3\pmod8$ and $\bigl(\frac35\bigr)=\bigl(\frac53\bigr)=\bigl(\frac23\bigr)=-1$. It is exactly $\chi_2$, the unique non-principal character with values in $\{\pm1\}$. A cyclic group of even order has exactly one element of order $2$ in its dual, so there is no other candidate.
+\end{examplex}
+
+\begin{theorem}[orthogonality]\label{thm:t1-ortho}
+Let $\chi,\psi$ be characters modulo $m$, and let $a$ be an integer.
+\begin{enumerate}[label=(\roman*)]
+\item $\displaystyle\sum_{n=1}^m\chi(n)\overline{\psi(n)}=\begin{cases}\varphi(m)&\text{if }\chi=\psi,\\0&\text{otherwise.}\end{cases}$
+\item If $\gcd(a,m)=1$, then $\displaystyle\sum_{\chi}\chi(a)=\begin{cases}\varphi(m)&\text{if }a\equiv1\pmod m,\\0&\text{otherwise,}\end{cases}$ the sum running over all $\varphi(m)$ characters.
+\item Consequently, for any integer $n$,
+\[
+\frac1{\varphi(m)}\sum_{\chi}\chi(n)\overline{\chi(a)}
+\]
+equals $1$ if $n\equiv a\pmod m$ and $\gcd(a,m)=1$, and equals $0$ otherwise.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Values of $\chi$ on units are roots of unity, so $\overline{\chi(n)}=\chi(n)^{-1}$ whenever $\chi(n)\ne0$, and the function $\chi\overline{\psi}$ is the character $\chi\psi^{-1}$. It is principal if and only if $\chi=\psi$. Part~(i) is therefore Proposition~\ref{prop:t1-charsum}.
+
+For~(ii), the characters form a group under multiplication: the product of two homomorphisms is a homomorphism, and Theorem~\ref{thm:t1-charcount} says there are $\varphi(m)$ of them, so every homomorphism appears. If $a\equiv1$, every term is $1$. If not, some $\psi$ has $\psi(a)\ne1$, and multiplication by $\psi$ permutes the characters, so the sum $S$ satisfies $\psi(a)S=S$.
+
+For~(iii), if $\gcd(a,m)>1$ then $\overline{\chi(a)}=0$ for every $\chi$. If $\gcd(a,m)=1$, then $\overline{\chi(a)}=\chi(a)^{-1}=\chi(a^{-1})$, so the sum equals $\sum_{\chi}\chi(na^{-1})$. This vanishes when $\gcd(n,m)>1$. When $n$ is also a unit, part~(ii) returns $\varphi(m)$ if $na^{-1}\equiv1\pmod m$ and returns $0$ otherwise. Dividing by $\varphi(m)$ is the claim.
+\end{proof}
+
+Part~(iii) is the device that isolates a single residue class. Volume~5 writes the indicator of the primes $p\equiv a\pmod m$ by inserting this average into a sum over primes. The identity itself is finite and exact; no analysis has entered yet.
+
+\section{Euler products}
+
+A completely multiplicative function turns a sum over the integers into a product over the primes, because unique factorisation says that every $n$ is built from primes in exactly one way. The cost is a little convergence, which Volume~0's integral comparison supplies as soon as the exponent exceeds $1$.
+
+\begin{lemma}\label{lem:t1-pseries}
+Let $s>1$. The series $\sum_{n\ge1}n^{-s}$ converges, and for every real $X\ge1$,
+\[
+\sum_{n>X}n^{-s}\le\int_{\lfloor X\rfloor}^{\infty}t^{-s}\,\mathrm dt=\frac{\lfloor X\rfloor^{1-s}}{s-1}.
+\]
+\end{lemma}
+\begin{proof}
+The function $t^{-s}$ decreases. For $n\ge2$, $n^{-s}\le\int_{n-1}^n t^{-s}\,\mathrm dt$, so the tail from $n=\lfloor X\rfloor+1$ onwards is at most the integral from $\lfloor X\rfloor$ to infinity.
+\end{proof}
+
+\begin{lemma}\label{lem:t1-dseries}
+Let $s>1$, and let $\sum a_nn^{-s}$ and $\sum b_nn^{-s}$ converge absolutely. Then
+\[
+\Bigl(\sum_{n\ge1}a_nn^{-s}\Bigr)\Bigl(\sum_{m\ge1}b_mm^{-s}\Bigr)
+=\sum_{N\ge1}(a*b)(N)\,N^{-s}.
+\]
+\end{lemma}
+\begin{proof}
+The double sum $\sum_{n,m}|a_nb_m|(nm)^{-s}$ is the product of the two absolute series, hence finite. Absolute convergence lets one group the pairs $(n,m)$ by the product $N=nm$. The inner sum at $N$ is $(a*b)(N)N^{-s}$.
+\end{proof}
+
+\begin{theorem}[Euler product]\label{thm:t1-eulerprod}
+Let $s>1$ and let $f$ be completely multiplicative, with $f(1)=1$ and $|f(n)|\le1$ for every $n$. Then
+\[
+\sum_{n\ge1}f(n)\,n^{-s}=\prod_p\bigl(1-f(p)\,p^{-s}\bigr)^{-1},
+\]
+and the product converges to a non-zero complex number.
+\end{theorem}
+\begin{proof}
+Expanding a finite product of geometric series gives
+\[
+P_X:=\prod_{p\le X}\bigl(1-f(p)p^{-s}\bigr)^{-1}
+=\sum_{n\in S_X}f(n)\,n^{-s},
+\]
+where $S_X$ is the set of positive integers whose prime factors are all $\le X$. Every $n\le X$ lies in $S_X$. The full series converges absolutely by comparison with Lemma~\ref{lem:t1-pseries}. An integer outside $S_X$ has a prime factor $>X$, hence exceeds $X$, so
+\[
+\Bigl|\sum_{n\ge1}f(n)n^{-s}-P_X\Bigr|
+\le\sum_{n>X}n^{-s}\longrightarrow0.
+\]
+Thus the partial products converge to the series. The limit is not zero. The inequality $1+t\le e^t$ gives $\prod_p(1+p^{-s})\le\exp(\sum_pp^{-s})<\infty$, since $\sum_pp^{-s}$ converges by comparison with Lemma~\ref{lem:t1-pseries}. Each factor satisfies $|1-f(p)p^{-s}|\le1+p^{-s}$, and a finite product of non-zero terms is non-zero, so
+\[
+|P_X|=\Bigl|\prod_{p\le X}\bigl(1-f(p)p^{-s}\bigr)\Bigr|^{-1}
+\ge\Bigl(\prod_p(1+p^{-s})\Bigr)^{-1}>0.
+\]
+The lower bound does not depend on $X$. An infinite product of non-zero terms may still vanish: $\prod_p(1-1/p)=0$ is the reason $\sum 1/n$ diverges. For $s>1$ the comparison forbids that vanishing.
+\end{proof}
+
+Two special cases carry the names used later. For $f=1$,
+\[
+\zeta(s):=\sum_{n\ge1}n^{-s}=\prod_p(1-p^{-s})^{-1}\qquad(s>1).
+\]
+For a character $\chi$,
+\[
+L(s,\chi):=\sum_{n\ge1}\chi(n)\,n^{-s}=\prod_p\bigl(1-\chi(p)p^{-s}\bigr)^{-1}\qquad(s>1).
+\]
+Both are non-zero for real $s>1$. The product for $\zeta$ is an equality of positive real numbers. The product for $L$ is an equality in $\C$.
+
+\begin{corollary}\label{cor:t1-mu-zeta}
+For $s>1$, $\displaystyle\sum_{n\ge1}\mu(n)\,n^{-s}=\frac1{\zeta(s)}=\prod_p(1-p^{-s})$.
+\end{corollary}
+\begin{proof}
+Lemma~\ref{lem:t1-dseries} and Theorem~\ref{thm:mobius} give $\zeta(s)\sum\mu(n)n^{-s}=\sum\varepsilon(n)n^{-s}=1$. The Euler product for $\zeta$ then inverts term by term.
+\end{proof}
+
+\begin{examplex}[a product one can compare with $\pi^2/6$]
+At $s=2$, the series is $1+\frac14+\frac19+\cdots=\pi^2/6$, the Basel sum from Volume~0. The partial sum through $n=30$ equals $1.61215\ldots$. The product over the primes $p\le30$ equals $1.63307\ldots$, and $\pi^2/6=1.64493\ldots$. The product is ahead of the partial sum because it already includes every integer whose prime factors are at most $30$, including those larger than $30$, such as $32$, $49$ and $77$. Both approximations approach the same limit from below; they are not two competing guesses.
+\end{examplex}
+
+\begin{think}
+Corollary~\ref{cor:t1-mu-zeta} says that $\sum\mu(n)/n^s$ tends to zero as $s\downarrow1$, because $\zeta(s)$ grows like the harmonic series. Does the single series $\sum\mu(n)/n$ converge? The Euler product at $s=1$ would be $\prod(1-1/p)=0$, which is a hint and not yet a proof: the identity was stated for $s>1$. Volume~5 returns to this series. What, in the argument above, used $s>1$ in an essential way?
+\end{think}
+
+The answer to the last question is absolute convergence. At $s=1$ the harmonic series diverges, the comparison that identified the sum with the product stops, and a conditionally convergent series cannot be rearranged with the same freedom. That is a precise description of the boundary, not a vague warning.
+
+\section{Legendre's formula for the sifted count}
+
+Let $z\ge2$ and let $P(z)=\prod_{p\le z}p$. Write $\Phi(x,z)$ for the number of integers $n$ with $1\le n\le x$ and $\gcd\bigl(n,P(z)\bigr)=1$. These are $1$ and the integers up to $x$ that have no prime factor $\le z$.
+
+\begin{theorem}[Legendre]\label{thm:t1-sieve}
+For $x\ge0$ and $z\ge2$,
+\[
+\Phi(x,z)=\sum_{d\mid P(z)}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
+\]
+If $x\ge1$ and $z\ge\sqrt x$, then $\Phi(x,z)=1+\pi(x)-\pi(z)$.
+\end{theorem}
+\begin{proof}
+Theorem~\ref{thm:mobius} says that $\sum_{d\mid\gcd(n,P)}\mu(d)$ equals $1$ if $\gcd(n,P)=1$ and equals $0$ otherwise. Summing over $1\le n\le x$,
+\[
+\Phi(x,z)=\sum_{n\le x}\sum_{d\mid\gcd(n,P)}\mu(d)
+=\sum_{d\mid P}\mu(d)\,\#\{n\le x:d\mid n\}
+=\sum_{d\mid P}\mu(d)\Bigl\lfloor\frac xd\Bigr\rfloor.
+\]
+For the second claim, an integer $n$ with $1<n\le x$ and no prime factor $\le z$ cannot be composite: a composite number has a prime factor at most $\sqrt n\le\sqrt x\le z$. The surviving integers are therefore $1$ and the primes in the interval $(z,x]$.
+\end{proof}
+
+The identity is exact. It is also, for large $z$, an impractical way to compute $\pi(x)$, because $P(z)$ has $2^{\pi(z)}$ positive divisors and every one of them contributes a term. At $x=100$ and $z=10$ there are $2^4=16$ terms and the arithmetic is pleasant. At $x=10^4$ and $z=100$ there are $2^{25}$ terms. The sieves of Volumes~5 and~13 exist in order to estimate this sum without expanding it.
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-sieve}
+\caption{The integers from $1$ to $30$, sifted by the primes $2$, $3$ and $5$. Eight numbers remain, in agreement with $\Phi(30,5)=8$. The olive dots mark the multiples of $5$; many of them were already excluded by $2$ or $3$, which is why an inclusion--exclusion must put them back before removing them again.}
+\label{fig:t1-sieve30}
+\end{figure}
+
+\begin{examplex}[from thirty, and then to one hundred]
+The divisors of $P(5)=30$ and the terms $\mu(d)\lfloor30/d\rfloor$ are
+\[
+\begin{aligned}
+&30,-15,-10,-6,+5,+3,+2,-1.
+\end{aligned}
+\]
+Their sum is $8$. The survivors are $1,7,11,13,17,19,23,29$.
+
+For $\pi(100)$, take $z=10$, so $P=210$. Sixteen terms give $\Phi(100,10)=22$. Theorem~\ref{thm:t1-sieve} converts the count into primes: $\pi(10)=4$, hence $\pi(100)=22-1+4=25$. The same arithmetic with a larger primorial is legitimate and rapidly becomes the wrong tool. The identity's job is structural: every sifted count is a M\"obius average of floors.
+\end{examplex}
+
+\section{One series at the boundary}
+
+The character $\chi_4$ separates the two odd classes. Its series at the edge $s=1$ can be summed by hand, and the sum is visibly positive. That positivity is the model, in the smallest modulus, of the non-vanishing which Dirichlet's theorem requires.
+
+\begin{proposition}\label{prop:t1-chi4series}
+The series $\sum_{n\ge1}\chi_4(n)/n$ converges, and its sum lies in the interval $\bigl(\frac23,1\bigr)$.
+\end{proposition}
+\begin{proof}
+The even terms vanish, and the series is the grouped sum
+\[
+\sum_{k\ge0}\Bigl(\frac1{4k+1}-\frac1{4k+3}\Bigr)
+=\sum_{k\ge0}\frac2{(4k+1)(4k+3)}.
+\]
+Every grouped term is positive, so the partial sums $S_N$ of the first $N$ groups increase. Writing them out,
+\[
+S_N=1-\Bigl(\frac13-\frac15\Bigr)-\cdots-\frac1{4N-1}
+\]
+when $N\ge2$, and $S_1=1-\frac13$. In every case $S_N<1$. Also $S_N\ge S_1=\frac23$, and the inequality is strict for the limit because the second grouped term is positive. An increasing sequence bounded above converges, and the sum lies in $\bigl(\frac23,1\bigr)$.
+\end{proof}
+
+\begin{proposition}\label{prop:t1-charbound}
+Let $\chi$ be a non-principal character modulo $m$. For every real $x\ge0$,
+\[
+\Bigl|\sum_{1\le n\le x}\chi(n)\Bigr|\le\varphi(m).
+\]
+\end{proposition}
+\begin{proof}
+Let $N=\lfloor x\rfloor$ and write $N=qm+r$ with $0\le r<m$. Each complete block of $m$ consecutive integers contributes $\sum_{n=1}^m\chi(n)=0$, by Proposition~\ref{prop:t1-charsum}. The remainder is a sum of at most $r$ terms of absolute value at most $1$, and at most $\varphi(m)$ of those terms are non-zero. Hence the absolute value is at most $\varphi(m)$.
+\end{proof}
+
+\begin{figure}[ht]
+\centering
+\fig{ch14-race}
+\caption{The number of primes $\le x$ in the two odd classes modulo $4$, for $x$ from $10$ to $100$ in steps of $10$. Squares and the solid path count the class $3$; circles and the dashed path count the class $1$. Up to $100$ the class $3$ stays ahead, $13$ primes against $11$. Figure~\ref{fig:mod4-line} shows the same primes one at a time.}
+\label{fig:t1-race}
+\end{figure}
+
+\begin{think}
+Proposition~\ref{prop:t1-chi4series} shows that a signed sum over all integers converges to a positive number. The Euler product expresses the same function for exponents greater than $1$. What extra fact would turn the positivity into $\sum_{p\equiv3\pmod4}1/p=\infty$ and $\sum_{p\equiv1\pmod4}1/p=\infty$? Try to say which step is missing, before reading on.
+\end{think}
+
+The missing step is a passage to the limit. For $s>1$,
+\[
+\log L(s,\chi_4)=\sum_p-\log\bigl(1-\chi_4(p)p^{-s}\bigr)
+=\sum_p\frac{\chi_4(p)}{p^s}+O\Bigl(\sum_p\frac1{p^2}\Bigr),
+\]
+and the error series converges. If $L(s,\chi_4)$ stayed bounded away from $0$ and infinity as $s\downarrow1$, the prime sum $\sum\chi_4(p)/p^s$ would stay bounded, and an elementary argument would promote that bound into the convergence of $\sum\chi_4(p)/p$. Combined with Euler's divergence $\sum_p1/p=\infty$ from Theorem~\ref{thm:euler}, both residue classes would then diverge. Proposition~\ref{prop:t1-chi4series} computes the series of $\chi_4(n)/n$ over all $n$, not the Euler product at $s=1$. The composites and the tail are still in the sum. Removing them is real work. Volume~5 does it for every character, and the non-vanishing of $L(1,\chi)$ is the step that carries the proof.
+
+Exercise~\ref{ex:mod4} already gives infinitely many primes $\equiv3\pmod4$, by a Euclidean construction, and Exercise~\ref{ex:cyclotomic} gives infinitely many primes $\equiv1\pmod4$. Infinitely many is weaker than a divergent reciprocal sum, and both are weaker than Dirichlet's theorem for a general progression. The character makes the gap visible: one can see exactly which identity is still missing.
+
+\begin{beauty}
+Quadratic reciprocity says that the Legendre symbol, a character modulo $p$, is essentially a character modulo the numerator. Dirichlet's theorem says that every character except the principal one leaves $L(1,\chi)$ finite and non-zero, and that this single fact forces primes into every eligible residue class. Class field theory, in Volume~12, is the statement that the characters which govern prime splitting in an abelian extension are characters of this same kind. The sieve identity of Theorem~\ref{thm:t1-sieve} is the inclusion--exclusion which Volumes~5 and~13 approximate when the exact sum has too many terms to open. Three later volumes begin where this product, this sign and this floor-sum leave off.
+\end{beauty}
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:t1-char5}
+Make the character table of the units modulo $5$, taking $2$ as primitive root, and identify the Legendre symbol in the table. Check the row orthogonality $\sum_{n=1}^5\chi(n)\overline{\psi(n)}$ for two distinct rows.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:t1-chi8check}
+Compute $\bigl(\frac2p\bigr)$ and $\chi_8(p)$ for the odd primes $p\le19$. Then prove $\bigl(\frac2p\bigr)=\chi_8(p)$ for every odd prime, using Corollary~\ref{cor:two} and checking the four classes modulo $8$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-sieve30}
+Compute $\Phi(30,5)$ from Theorem~\ref{thm:t1-sieve}, list the eight survivors, and explain why $\Phi(30,5)$ is not equal to $1+\pi(30)-\pi(5)$. Which hypothesis of the second claim fails?
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-phi-ratio}
+Prove that $\displaystyle\sum_{d\mid n}\frac{\mu(d)}d=\frac{\varphi(n)}n$ for every $n\ge1$. Deduce $\varphi(n)=n\prod_{p\mid n}\bigl(1-\frac1p\bigr)$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-mu-floor}
+Prove that $\displaystyle\sum_{n\le x}\mu(n)\Bigl\lfloor\frac xn\Bigr\rfloor=1$ for every real $x\ge1$. Check the identity at $x=10$.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:t1-squarefree}
+Show that $\sum_{d^2\mid n}\mu(d)$ equals $1$ if $n$ is squarefree and equals $0$ otherwise. Use it to write the number of squarefree integers up to $x$ as $\sum_{d\le\sqrt x}\mu(d)\bigl\lfloor x/d^2\bigr\rfloor$.
+\end{exercise}
+
+\begin{exercise}[$\star\star\star$]\label{ex:t1-char-series}
+Let $\chi$ be a non-principal character modulo $m$, and let $A(N)=\sum_{n=1}^N\chi(n)$.
+\begin{enumerate}[label=(\alph*)]
+\item Prove Proposition~\ref{prop:t1-charbound}: $|A(N)|\le\varphi(m)$.
+\item Prove the summation identity
+\[
+\sum_{n=1}^N\chi(n)\,b_n=A(N)b_N-\sum_{n=1}^{N-1}A(n)\,(b_{n+1}-b_n)
+\]
+for any numbers $b_n$.
+\item Take $b_n=1/n$ and deduce that $\sum_{n\ge1}\chi(n)/n$ converges.
+\end{enumerate}
+The series of Proposition~\ref{prop:t1-chi4series} is the case $\chi=\chi_4$. The argument here gives convergence for every non-principal character, and it does not by itself evaluate the sum.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:t1-char5}
+The powers of $2$ modulo $5$ are $1,2,4,3$. A character is determined by $\chi(2)$, a fourth root of unity. The Legendre symbol is the unique non-principal character with real values.
+\end{hint}
+\begin{hint}{ex:t1-chi8check}
+The four odd classes modulo $8$ are $1,3,5,7$, and $(p^2-1)/8$ is even precisely for $p\equiv\pm1\pmod8$.
+\end{hint}
+\begin{hint}{ex:t1-sieve30}
+The divisors of $30$ are $1,2,3,5,6,10,15,30$. For the comparison with $\pi$, ask whether every composite number up to $30$ has a prime factor at most $5$.
+\end{hint}
+\begin{hint}{ex:t1-phi-ratio}
+Proposition~\ref{prop:phisum} says $\sum_{d\mid n}\varphi(d)=n$. Invert it.
+\end{hint}
+\begin{hint}{ex:t1-mu-floor}
+Write $\lfloor x/n\rfloor$ as the number of multiples of $n$ up to $x$, exchange the sums, and apply $\mu*\mathbf1=\varepsilon$.
+\end{hint}
+\begin{hint}{ex:t1-squarefree}
+The sum is multiplicative. At a prime power $p^k$, the divisors $d$ with $d^2\mid p^k$ and $\mu(d)\ne0$ are few enough to list.
+\end{hint}
+\begin{hint}{ex:t1-char-series}
+Complete residue blocks sum to zero. For the identity, compare $A(n)-A(n-1)$ with $\chi(n)$, and telescope $A(n)b_n-A(n-1)b_n$. The differences $1/n-1/(n+1)$ are $1/(n(n+1))$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:t1-char5}
+\idea A cyclic group of order $4$ has four characters, one for each fourth root of unity. Computing the Legendre symbol on $2$ and $3$ selects the row.
+\writeup The powers $2^0,2^1,2^2,2^3$ are $1,2,4,3$. Set $\chi_j(2^k)=i^{jk}$. On the ordered units $1,2,3,4$ the four rows are $(1,1,1,1)$, $(1,i,-i,-1)$, $(1,-1,-1,1)$ and $(1,-i,i,-1)$. Since $5\equiv5\pmod8$, $\bigl(\frac25\bigr)=-1$, and reciprocity gives $\bigl(\frac35\bigr)=\bigl(\frac53\bigr)=\bigl(\frac23\bigr)=-1$. Thus $\bigl(\frac n5\bigr)$ agrees with the real row $\chi_2$. The sum of $\chi_0\overline{\chi_2}$ on the units is $1-1-1+1=0$. For $\chi_1$ and $\chi_2$, using that $\chi_2$ is real,
+\[
+1\cdot1+i\cdot(-1)+(-i)\cdot(-1)+(-1)\cdot1=1-i+i-1=0.
+\]
+The third term uses $\chi_1(3)=-i$. Theorem~\ref{thm:t1-ortho} predicts the cancellation; the four-term sum is the check.
+\end{solution}
+
+\begin{solution}{ex:t1-chi8check}
+\idea Both sides depend on $p$ only through its class modulo $8$, so four primes, one in each class, are already the general proof once the supplementary law is quoted.
+\writeup For $p=3,5,7,11,13,17,19$ the classes modulo $8$ are $3,5,7,3,5,1,3$. Corollary~\ref{cor:two} gives $\bigl(\frac2p\bigr)=-1,-1,+1,-1,-1,+1,-1$, and $\chi_8$ produces the same list because it equals $-1$ on the classes $3$ and $5$ and equals $+1$ on the classes $1$ and $7$. In general $(p^2-1)/8$ is even for $p\equiv1,7\pmod8$ and odd for $p\equiv3,5\pmod8$, which is the definition of $\chi_8(p)$.
+\end{solution}
+
+\begin{solution}{ex:t1-sieve30}
+\idea Open the sum over the eight divisors, then test the hypothesis $z\ge\sqrt x$ on the numbers $30$ and $5$.
+\writeup The terms $\mu(d)\lfloor30/d\rfloor$ are $30,-15,-10,-6,5,3,2,-1$, and they add to $8$. The survivors are $1,7,11,13,17,19,23,29$. The second claim of the theorem asks for $z\ge\sqrt x$. Here $\sqrt{30}>5$, so that hypothesis fails, and the proof given for the translation into $\pi(x)$ does not apply. The two counts nevertheless agree: $1+\pi(30)-\pi(5)=1+10-3=8$. Every composite $n\le30$ still has a prime factor at most $5$, because the next prime is $7$ and $7^2=49>30$. The convenient sufficient condition $z\ge\sqrt x$ is slightly stronger than the condition actually used, namely that every composite up to $x$ has a prime factor $\le z$. A genuine mismatch appears as soon as a square of a larger prime fits under $x$. For example $\Phi(50,5)=14$, counting $1$ and the integers up to $50$ free of the primes $2,3,5$, including the composite $49$. On the other side $1+\pi(50)-\pi(5)=1+15-3=13$.
+\end{solution}
+
+\begin{solution}{ex:t1-phi-ratio}
+\idea The relation $\sum_{d\mid n}\varphi(d)=n$ is an instance of $g=\mathbf1*f$. M\"obius inversion returns $f=\mu*g$.
+\writeup Proposition~\ref{prop:phisum} says $\sum_{d\mid n}\varphi(d)=n$, that is $\varphi*\mathbf1=\operatorname{id}$. Convolution with $\mu$ and Theorem~\ref{thm:mobius} give $\varphi=\mu*\operatorname{id}$, so
+\[
+\varphi(n)=\sum_{d\mid n}\mu(d)\,\frac nd=n\sum_{d\mid n}\frac{\mu(d)}d.
+\]
+Dividing by $n$ is the first claim. The sum is multiplicative in $n$. At $n=\prod p^a$ it equals $\prod(1-1/p)$, because on a prime power the only non-zero terms are $d=1$ and $d=p$.
+\end{solution}
+
+\begin{solution}{ex:t1-mu-floor}
+\idea A floor counts multiples. After exchanging the order of summation, the inner sum is the M\"obius relation $\sum_{d\mid m}\mu(d)=\varepsilon(m)$.
+\writeup For $x\ge1$,
+\[
+\sum_{n\le x}\mu(n)\Bigl\lfloor\frac xn\Bigr\rfloor
+=\sum_{n\le x}\mu(n)\sum_{m\le x/n}1
+=\sum_{nm\le x}\mu(n)
+=\sum_{N\le x}\sum_{n\mid N}\mu(n)
+=\sum_{N\le x}\varepsilon(N)=1.
+\]
+At $x=10$ the non-zero contributions are
+\[
+10-5-3-2+1-1+1=1.
+\]
+\end{solution}
+
+\begin{solution}{ex:t1-squarefree}
+\idea The condition ``$n$ is squarefree'' is a condition at each prime. A multiplicative sum that vanishes on $p^2$ and equals $1$ on $p$ is the right detector.
+\writeup Let $f(n)=\sum_{d^2\mid n}\mu(d)$. If $\gcd(a,b)=1$, the square divisors of $ab$ are products of square divisors, so $f$ is multiplicative. At $p^k$, the integers $d$ with $d^2\mid p^k$ and $\mu(d)\ne0$ are $d=1$, and also $d=p$ when $k\ge2$. Thus $f(p^k)=1$ for $k=0,1$ and $f(p^k)=1+\mu(p)=0$ for $k\ge2$. Therefore $f(n)=1$ if every exponent in $n$ is $0$ or $1$, and $f(n)=0$ otherwise. Counting,
+\begin{align*}
+\sum_{n\le x}f(n)
+&=\sum_{n\le x}\sum_{d^2\mid n}\mu(d)\\
+&=\sum_{d\le\sqrt x}\mu(d)\Bigl\lfloor\frac x{d^2}\Bigr\rfloor,
+\end{align*}
+which is the number of squarefree positive integers up to $x$.
+\end{solution}
+
+\begin{solution}{ex:t1-char-series}
+\idea Complete periods cancel. Summation by parts then trades the oscillating coefficients $\chi(n)$ for the bounded sums $A(n)$, at the price of a difference of the sequence $b_n$.
+\writeup (a) This is the proof of Proposition~\ref{prop:t1-charbound}.
+
+(b) Since $\chi(n)=A(n)-A(n-1)$ with $A(0)=0$,
+\begin{align*}
+\sum_{n=1}^N\chi(n)b_n
+&=\sum_{n=1}^N\bigl(A(n)-A(n-1)\bigr)b_n\\
+&=\sum_{n=1}^N A(n)b_n-\sum_{n=1}^{N-1}A(n)b_{n+1}\\
+&=A(N)b_N-\sum_{n=1}^{N-1}A(n)(b_{n+1}-b_n).
+\end{align*}
+
+(c) With $b_n=1/n$, one has $b_{n+1}-b_n=-1/(n(n+1))$, so
+\[
+\sum_{n=1}^N\frac{\chi(n)}n=\frac{A(N)}N+\sum_{n=1}^{N-1}\frac{A(n)}{n(n+1)}.
+\]
+The first term tends to $0$ because $A(N)$ is bounded. The series $\sum A(n)/(n(n+1))$ converges absolutely, by comparison with $\varphi(m)\sum n^{-2}$. Therefore the partial sums on the left converge.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item T.~M.~Apostol, \emph{Introduction to Analytic Number Theory}, Springer, 1976. The construction of Dirichlet characters, the Euler product, and Dirichlet's theorem on primes in arithmetic progressions.
+\item H.~Davenport, \emph{Multiplicative Number Theory}, 3rd ed., revised by H.~L.~Montgomery, Springer, 2000. The analytic theory built on the products of this chapter.
+\item G.~Tenenbaum, \emph{Introduction to Analytic and Probabilistic Number Theory}, 3rd ed., American Mathematical Society, 2015. Sieves beginning from Legendre's formula, and the reasons an exact formula is not yet an asymptotic one.
+\item Volume~5 of this series proves Dirichlet's theorem, the prime number theorem and the first modern sieves. Volume~12 identifies the characters that describe prime splitting. Volume~13 returns to multiplicative functions and to the limitations of sieve weights.
+\end{itemize}
