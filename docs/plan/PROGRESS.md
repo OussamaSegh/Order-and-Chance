@@ -157,22 +157,22 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 10. Shapes: the connection pass
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 9
 - **Books and files:** `volume9-shapes`. Fold the Euclid appendix: Ceva and the Euler line into the transformations appendix; the rest of that appendix leaves the main text. Mark the general de Rham sentence as the punctured-plane case. Rename the second curvature chapter so it is not a second "Curvature". Point the cubic group law at Book 13.
 - **Acceptance:** A reader of *The Geometry of Connection* does not meet a second chapter with the same title, or a Euclidean gallery that does not connect. `./build.sh volume9-shapes`.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/36
-- **Merge sha:**
-- **Date:**
-- **Notes:**
+- **Merge sha:** 5586cb822895f37682f988c513fd4e80e3c356e5
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. The unused Euclid chapter file is removed in Step 11. Do not re-implement the pass.
 
 ### 11. Formulas that are not primes
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 10
 - **Books and files:** `volume14-primes` (`ch06-partitions.tex`, the Waring half of `ch07-waring.tex`) and `volume5-calculation`, Series and Products. Three primes stays in Additive Problems and Bounded Gaps.
 - **Acceptance:** The Hardy–Ramanujan asymptotic and Waring for large \(s\) are in Book 5. Book 14's part name stays Additive Problems and Bounded Gaps. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/38
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do not rename Book 14's part.
