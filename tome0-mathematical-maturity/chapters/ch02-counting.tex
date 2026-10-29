@@ -7,12 +7,16 @@ The difficulty is to count overlapping restrictions exactly once.
 
 In his \emph{Essay d'analyse sur les jeux de hazard} (1708; expanded in 1713), Pierre R\'emond de Montmort studied a shuffled pack whose cards were numbered by their original positions. How many arrangements leave no card in its original position? His correspondence with Nicolaus Bernoulli, printed in the second edition, develops this \emph{probl\`eme des rencontres}. The same problem describes returning hats to guests. We will count the arrangements before asking, in Chapter~\ref{ch:probability}, what the count says about chance. Montmort's book and Euler's later treatment are listed among the sources.
 
-A useful counting argument must specify its objects and explain why each is counted once. The main decisions are often made before any factorial is written: should we count the complement, partition the objects into cases, or describe the same object in a different language?
+A useful counting argument must specify its objects and explain why each is counted once. The main decisions are often made before any factorial is written. Should we count the complement, partition the objects into cases, or describe the same object in a different language?
+
+Four tools do almost all of the work. The sum, product and bijection rules are the whole of the first section. Inclusion--exclusion corrects an overlapping union. Lattice paths turn binomial identities into pictures. Generating functions keep every count in one polynomial, with no question of convergence, because each coefficient is a finite sum. The workshop removes a restriction by changing the objects, which is the move Volume~3 will repeat when the same counts become probabilities.
 
 \section{Counting, from scratch}
 
 \begin{reminder}[the three rules of counting]
-For finite sets, $|A\cup B|=|A|+|B|$ when $A\cap B=\emptyset$ (\emph{sum rule}), $|A\times B|=|A|\,|B|$ (\emph{product rule}, which extends to ``a choice made in $k$ stages with $n_1,\dots,n_k$ options at each stage can be made in $n_1\cdots n_k$ ways'', even when the options at a stage depend on the earlier choices, as long as their \emph{number} does not), and $|A|=|B|$ whenever there is a bijection $A\to B$ (\emph{bijection rule}). Almost every count in this chapter is one of these three, applied with care; the most common mistake is to count something twice, and the cure is to check that the stages of a product-rule count really determine the object and are determined by it.
+For finite sets, $|A\cup B|=|A|+|B|$ when $A\cap B=\emptyset$. This is the \emph{sum rule}.
+$|A\times B|=|A|\,|B|$. This is the \emph{product rule}. It extends to a choice made in $k$ stages with $n_1,\dots,n_k$ options at each stage, even when the options depend on earlier choices, provided the \emph{number} of options does not. Finally $|A|=|B|$ whenever there is a bijection $A\to B$. This is the \emph{bijection rule}.
+Almost every count in this chapter is one of these three. The usual mistake is to count an object twice. The cure is to check that the stages of a product-rule count determine the object, and are determined by it.
 \end{reminder}
 
 For the sum rule, list the elements of the disjoint sets one list after the other; no element is repeated or omitted. For the product rule, partition $A\times B$ by its first coordinate: there are $|A|$ disjoint groups of $|B|$ pairs, giving $|A|\,|B|$. Repeated use proves the stage-by-stage form. A bijection transports a list of one set into a list of the other, so the lengths agree. These arguments also explain why disjointness, fixed numbers of choices and invertibility are the hypotheses to check.
@@ -64,6 +68,7 @@ and this also holds (both sides $0$) outside the union. Sum over $x$.
 
 The proof is worth a second look: it proves an identity between \emph{functions}, $\mathbf 1_{\bigcup A_i}=\sum(-1)^{|I|+1}\mathbf 1_{A_I}$, and then sums it. In Chapter~\ref{ch:probability}, weighting this identity by probabilities will give the same formula for the probability of a union. Keeping only its first few terms also gives inequalities (Exercise~\ref{ex:bonferroni}).
 
+The same binomial numbers count walks. A path is an ordered way of choosing when to step east, so the subset count becomes a picture.
 
 \section{Lattice paths}
 
@@ -118,6 +123,8 @@ A permutation $\sigma$ of a finite set is a bijection from the set to itself. St
 
 
 \section{Generating functions: keeping every count at once}
+A recurrence explains the next term from the previous ones. A generating function explains every term at once, by storing the list as the coefficients of one polynomial. Nothing here converges or diverges: each coefficient is a finite sum.
+
 Suppose a counting problem gives numbers $a_0,a_1,a_2,\dots$, one for each size. A \emph{generating function} records the entire list as
 \[
 A(t)=a_0+a_1t+a_2t^2+\cdots=\sum_{n\ge0}a_nt^n.
@@ -185,7 +192,14 @@ Find a bijection from admissible selections to ordinary $k$-subsets of a shorter
 \textbf{Hint 1.} The second selected element has one compulsory gap before it, the third has two. \textbf{Hint 2.} Subtract $i-1$ from the $i$th selected element. Check that this map is invertible before counting its target.
 
 \subsection*{How to find it}
-We want to replace a gap of at least two by a gap of at least one. If $b_i=a_i-c_i$, then $b_{i+1}-b_i=(a_{i+1}-a_i)-(c_{i+1}-c_i)$. Choosing $c_{i+1}-c_i=1$ removes the extra required gap. The simplest choice is $c_i=i-1$. The upper endpoint then decreases from $n$ to $n-k+1$.
+We want to replace a gap of at least two by a gap of at least one. If $b_i=a_i-c_i$, then $b_{i+1}-b_i=(a_{i+1}-a_i)-(c_{i+1}-c_i)$. Choosing $c_{i+1}-c_i=1$ removes the extra required gap. The simplest choice is $c_i=i-1$. The upper endpoint then decreases from $n$ to $n-k+1$. Figure~\ref{fig:gaps} shows the map on one example: the selected positions $1,3,5$ in $\{1,\dots,7\}$ become the ordinary triple $1,2,3$ in a shorter interval.
+
+\begin{figure}[ht]
+\centering
+\fig{ch02-gaps}
+\caption{Removing compulsory gaps. The red positions $1,3,5$ have a forced unused place before each selection after the first. Subtracting $0,1,2$ sends them to the blue positions $1,2,3$, an ordinary $3$-subset of a set of size $7-3+1=5$.}
+\label{fig:gaps}
+\end{figure}
 
 \subsection*{Write-up}
 For $k\ge1$, an admissible set has $a_k\ge2k-1$. Therefore none exists when $n<2k-1$. If $n\ge2k-1$, define $b_i=a_i-(i-1)$. The gap condition implies
@@ -207,6 +221,11 @@ The bijection, recurrence and sum describe the same objects in three languages. 
 \begin{reminder}[choosing a counting method]
 A local construction suggests a recurrence; a global restriction may suggest its complement; several overlapping restrictions suggest inclusion--exclusion. If a constraint demands compulsory gaps, try removing those gaps by a bijection. In every method, check an empty object, the first nonempty object and a case where no object is possible. A formula that misses one of these cases usually hides a wrong interpretation.
 \end{reminder}
+
+\section*{What this chapter establishes}
+Counting is a choice of language. The sum, product and bijection rules are the grammar. Inclusion--exclusion repairs an overlap. Paths and gap-removal are bijections in disguise. A generating function is a list, not an infinite process.
+
+Volume~1 uses these counts inside arithmetic, from binomial coefficients modulo a prime to the shape of a factorisation. Volume~3 turns the same counts into probabilities and then lets the sample space become infinite. Volume~4 is where the generating functions of this chapter are allowed to be series. Volume~14 uses the counting again, on the integers themselves, and asks which behaviours are typical.
 
 \section{Exercises}
 \begin{exercise}[$\star$]\label{ex:stars}
