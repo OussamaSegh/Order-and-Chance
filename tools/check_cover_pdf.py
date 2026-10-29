@@ -32,7 +32,7 @@ def check_cover_copy(path, title, number, print_export=False):
     # identity. Its visible slogan is verified by source provenance and render
     # comparison in check_print_cover, rather than requiring invisible text.
     if not print_export:
-        expected_copy.append('Discover the patterns. Understand the proofs.')
+        expected_copy.append('The Hidden Architecture of Mathematics')
     for expected in expected_copy:
         if expected not in text:
             raise ValueError(f'{path}: incomplete front-panel text: {expected}')

@@ -47,7 +47,7 @@ def render(main: Path, output: Path, print_mode=False) -> str:
         check_template(out / f"{fmt}.pdf", number)
         text = subprocess.check_output(["pdftotext", str(out / f"{fmt}.pdf"), "-"]).decode()
         text = " ".join(text.split())
-        expected_text = (title, subtitle(number), "Discover the patterns. Understand the proofs.")
+        expected_text = (title, subtitle(number), "The Hidden Architecture of Mathematics")
         for expected in expected_text:
             if expected not in text:
                 raise ValueError(f"{volume}/{fmt}: missing or clipped text: {expected}")

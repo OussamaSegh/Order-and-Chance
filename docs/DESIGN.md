@@ -661,10 +661,10 @@ and validation records are preserved in [DESIGN-HISTORY.md](DESIGN-HISTORY.md).
 ## Visual identity
 
 - Series **Order and Chance**, author **SEGHAIER Oussama**.
-- Slogan **Discover the patterns. Understand the proofs.**
+- Series subtitle **The Hidden Architecture of Mathematics**. The series is Order and Chance: The Hidden Architecture of Mathematics.
 - Matte charcoal **#191919**, warm coral **#F28B79**, ivory **#F5F1E9**.
 - A fine double rectangular coral border, without decorative corners.
-- Minimal sans-serif cover type: left-aligned series heading, slogan, volume label,
+- Minimal sans-serif cover type: left-aligned series heading, series subtitle, volume label,
   prominent bold book title, italic explanatory subtitle and author. Book titles
   wrap at word boundaries without hyphenation, fitting the shared title region.
 - Exactly **one substantial lower-right illustration** per book. No small top

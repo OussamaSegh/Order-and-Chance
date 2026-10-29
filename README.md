@@ -91,8 +91,8 @@ Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve
 
 The author-approved visual identity follows the [charcoal/coral editorial reference](docs/reference/approved-charcoal-coral-volume-0.png):
 matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double coral
-frame, and one substantial mathematical illustration per book. All fifteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The slogan
-is **Discover the patterns. Understand the proofs.** Paperback wraps, EPUB covers,
+frame, and one substantial mathematical illustration per book. All fifteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The series subtitle
+is **The Hidden Architecture of Mathematics**. Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
 charcoal Inter headings, coral chapter accents and pale teaching boxes with one
 thin left rule: blue exercises/problems, coral reminders/challenges, teal beauty

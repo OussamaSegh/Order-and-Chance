@@ -209,7 +209,7 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   and public pages. Existing `volume…` directory/file identifiers and TeX macro names
   remain stable. The author explicitly excluded the already approved covers from
   this terminology change; do not edit their artwork, templates or back-cover text.
-- Slogan: **Discover the patterns. Understand the proofs.**
+- Series subtitle: **The Hidden Architecture of Mathematics**. The series is Order and Chance: The Hidden Architecture of Mathematics.
 - The author rejected the vector recreation and explicitly requested **exactly the
   same image**. `tools/assets/approved-volume-0.png` is an immutable byte-for-byte
   copy of the approved reference; use it unchanged as Volume 0's visible front.

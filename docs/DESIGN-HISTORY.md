@@ -1,5 +1,7 @@
 # Series design and session record
 
+The slogan **Discover the patterns. Understand the proofs.** was retired on 2026-10-29 in favour of the series subtitle **The Hidden Architecture of Mathematics**. The sentences below that still name the slogan record earlier sessions.
+
 ## Latest refinement: a compromise between dense and minimal
 
 After finding the dense edge illustrations too busy, the author also rejected the
