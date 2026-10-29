@@ -3,8 +3,10 @@
 Optical centring is baked in tools/covergen/centring.json. CI checks that the
 committed plates match the generator; it does not remeasure the renders.
 """
+import difflib
 import hashlib
 import json
+import platform
 import sys
 from pathlib import Path
 
@@ -161,7 +163,14 @@ def check_sync():
                            ('about-the-cover.tex', plate['about'])):
             path = book / name
             if not path.exists() or path.read_text() != text:
-                raise ValueError(f'Volume {number}: {name} is stale; run tools/series_cover.py')
+                got = path.read_text() if path.exists() else ''
+                diff = ''.join(difflib.unified_diff(
+                    got.splitlines(True), text.splitlines(True),
+                    fromfile='committed', tofile='regenerated', n=1))
+                import numpy
+                raise ValueError(
+                    f'Volume {number}: {name} is stale on {platform.platform()} '
+                    f'CPython {platform.python_version()} NumPy {numpy.__version__}.\n{diff[:2500]}')
     if not CREDITS.exists() or CREDITS.read_text() != credits:
         raise ValueError('Cover credits are stale; run tools/series_cover.py')
     if not NOTES_MD.exists() or NOTES_MD.read_text() != markdown:
