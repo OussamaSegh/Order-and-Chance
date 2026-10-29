@@ -2,7 +2,8 @@
 
 The series is Volumes 1–15. There is no problem book. Volume 1 is **First
 Principles**, subtitle *Proof, Problem Solving and Mathematical Thinking*.
-Volume 15 is **Order and Chance**, subtitle *Where Number Meets Randomness*.
+Volume 15 is **Order and Chance**, subtitle *The Meeting of Structure and Randomness*.
+The series subtitle, under the name Order and Chance, is *The Hidden Architecture of Mathematics*.
 Titles, subtitles and the six series parts live in `common/series-catalog.json`.
 Each book also has parts of its own; the chapter boundaries are in
 [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md). The Crossroads problems are exercises

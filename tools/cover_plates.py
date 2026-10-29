@@ -16,7 +16,7 @@ PLATES = {'tome1-first-principles': 'ch06-integrals-taylor.tex; ch08-counting-pr
  'tome7-spaces': 'ch11-metricmeasures.tex',
  'tome8-analysis': 'ch09-complex.tex: holomorphic logarithms and continuation',
  'tome9-shapes': 'ch09-hyperbolic.tex',
- 'tome10-higher-structures': 'ch09-symmetric.tex',
+ 'tome10-abstraction': 'ch09-symmetric.tex',
  'tome11-randomness': 'ch07-ldp.tex: Bernoulli relative-entropy rate function',
  'tome12-random-motion': 'ch10-semicircle.tex',
  'tome13-arithmetic': 'ch14-modular.tex; ch12-elliptic.tex',

@@ -36,7 +36,7 @@ class SharedMasterTest(unittest.TestCase):
         self.assertEqual(len(wrapped),15)
         self.assertTrue(all(len(lines)<=2 for lines in wrapped.values()))
         self.assertEqual(wrapped['1'],['First Principles'])
-        self.assertEqual(wrapped['10'],['Higher','Structures'])
+        self.assertEqual(wrapped['10'],['Abstraction'])
         self.assertEqual(wrapped['15'],['Order and','Chance'])
 
     def test_every_subtitle_uses_one_size_and_fits_the_frame(self):
@@ -51,7 +51,7 @@ class SharedMasterTest(unittest.TestCase):
             with self.subTest(volume=number):
                 self.assertLessEqual(len(lines),2)
                 self.assertTrue(all(width(line)<data['subtitle_width_in']*175 for line in lines))
-                self.assertEqual(len(lines),2 if number=='1' else 1)
+                self.assertEqual(len(lines),2 if number in ('1','15') else 1)
         self.assertEqual(data['subtitle_top_ratio'],.6)
         self.assertEqual(data['subtitle_baseline_source_px'],632.36)
         check_sync()

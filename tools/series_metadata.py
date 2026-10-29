@@ -28,6 +28,8 @@ def cover_subtitle_lines(number):
     if str(number)=='1' and text=='Proof, Problem Solving and Mathematical Thinking':
         first,second=text.split(' and ',1)
         return [first,'and '+second]
+    if str(number)=='15' and text=='The Meeting of Structure and Randomness':
+        return ['The Meeting of Structure','and Randomness']
     return [text]
 
 def tex_source():
@@ -37,6 +39,10 @@ def tex_source():
     for number,value in subtitles().items():
         assert not any(c in value for c in '\\{}%&_$#'),value
         definitions.append(r'\volumesubtitledef{'+number+'}{'+value+'}')
+    series=catalog().get('subtitle','')
+    assert series and not any(c in series for c in '\\{}%&_$#')
+    definitions.append(r'\providecommand{\seriessubtitle}{}')
+    definitions.append(r'\renewcommand{\seriessubtitle}{'+series+'}')
     definitions.append(r'\newcommand{\volumecoversubtitle}[1]{\csname occoversubtitle@#1\endcsname}')
     for number in subtitles():
         definitions.append(r'\expandafter\def\csname occoversubtitle@'+number+r'\endcsname{'+r'\\'.join(cover_subtitle_lines(number))+'}')

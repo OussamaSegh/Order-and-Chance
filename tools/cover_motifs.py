@@ -1032,7 +1032,7 @@ LEGACY_MOTIFS = {
     "tome7-spaces": sierpinski_carpet,
     "tome8-analysis": confocal_grid,
     "tome9-shapes": farey_tessellation,
-    "tome10-higher-structures": plancherel_young,
+    "tome10-abstraction": plancherel_young,
     "tome11-randomness": stick_breaking,
     "tome12-random-motion": dyson_fan,
     "tome13-arithmetic": ford_circles,

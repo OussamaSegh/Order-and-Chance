@@ -1,6 +1,6 @@
 # Series structure
 
-The series is fifteen volumes, numbered 1 through 15, in six parts. There is no separate problem book. The source of the titles, subtitles and part grouping is `common/series-catalog.json`. `tools/series_metadata.py` writes `common/volume-subtitles.json`, `common/volume-subtitles.tex` and `common/series.tex` from it.
+The series is fifteen volumes, numbered 1 through 15, in six parts. There is no separate problem book. Under the name Order and Chance, the series subtitle is *The Hidden Architecture of Mathematics*. The source of the titles, subtitles and part grouping is `common/series-catalog.json`. `tools/series_metadata.py` writes `common/volume-subtitles.json`, `common/volume-subtitles.tex` and `common/series.tex` from it.
 
 ## Series parts
 
@@ -8,7 +8,7 @@ The series is fifteen volumes, numbered 1 through 15, in six parts. There is no 
 | --- | --- |
 | I. Foundations | 1 First Principles; 2 The Integers; 3 Symmetry; 4 Chance |
 | II. Bridges | 5 Calculation; 6 Crossroads |
-| III. Analysis and Geometry | 7 Spaces; 8 Analysis; 9 Shapes; 10 Higher Structures |
+| III. Analysis and Geometry | 7 Spaces; 8 Analysis; 9 Shapes; 10 Abstraction |
 | IV. Randomness | 11 Randomness; 12 Random Motion |
 | V. Number | 13 Arithmetic; 14 The Primes |
 | VI. Synthesis | 15 Order and Chance |
@@ -28,7 +28,7 @@ Chapter text that says “Volume 4” still means the old number. Use this table
 | 6 Spaces | 7 Spaces | `tome7-spaces` |
 | 7 Analysis in Depth | 8 Analysis | `tome8-analysis` |
 | 8 Shapes | 9 Shapes | `tome9-shapes` |
-| 9 Higher Structures | 10 Higher Structures | `tome10-higher-structures` |
+| 9 Higher Structures | 10 Abstraction | `tome10-abstraction` |
 | 10 Chance II | 11 Randomness | `tome11-randomness` |
 | 11 Random Motion | 12 Random Motion | `tome12-random-motion` |
 | 12 Arithmetic | 13 Arithmetic | `tome13-arithmetic` |
@@ -73,7 +73,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 9 Shapes | Manifolds and Surfaces | Manifolds, flows. The requested name was “Curves and Surfaces”; the book opens with manifolds. |
 | 9 | Forms and Homology | Forms, curvature, coverings, homology |
 | 9 | Groups and Geometry | Lie groups through integral geometry, then the geometry appendices |
-| 10 Higher Structures | Categories | Categories, tensors |
+| 10 Abstraction | Categories | Categories, tensors |
 | 10 | Commutative Algebra | Noetherian rings through homological algebra |
 | 10 | Representations | Group cohomology through compact groups. Shuffling closes the part. |
 | 11 Randomness | Invariance Principles | Zero–one law through the central limit theorem |

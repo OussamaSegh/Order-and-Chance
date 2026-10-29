@@ -1,6 +1,6 @@
 # Order and Chance
 
-*Discover the patterns. Understand the proofs.* By SEGHAIER Oussama.
+*The Hidden Architecture of Mathematics.* By SEGHAIER Oussama.
 
 A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
 notebook for mathematical experiments.
@@ -24,7 +24,7 @@ notebook for mathematical experiments.
   | 7. Spaces | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%207%20-%20Spaces.epub) |
   | 8. Analysis | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%208%20-%20Analysis.epub) |
   | 9. Shapes | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%209%20-%20Shapes.epub) |
-  | 10. Higher Structures | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Higher%20Structures.epub) |
+  | 10. Abstraction | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Abstraction.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Abstraction%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2010%20-%20Abstraction.epub) |
   | **Part IV. Randomness** | | | |
   | 11. Randomness | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2011%20-%20Randomness.epub) |
   | 12. Random Motion | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2012%20-%20Random%20Motion.epub) |
@@ -66,10 +66,10 @@ Fifteen volumes, in six parts. There is no separate problem book. The problems t
 | 5 | Calculation | From Formula to Insight |
 | 6 | Crossroads | Arithmetic Meets Analysis |
 | **Part III. Analysis and Geometry** | | |
-| 7 | Spaces | A Landscape of Limits |
+| 7 | Spaces | Topology, Measure and Limits |
 | 8 | Analysis | Operators, Spectra and Transforms |
 | 9 | Shapes | The Geometry of Connection |
-| 10 | Higher Structures | Categories, Modules and Homology |
+| 10 | Abstraction | Categories, Algebra and Homology |
 | **Part IV. Randomness** | | |
 | 11 | Randomness | Martingales, Limits and Ergodicity |
 | 12 | Random Motion | The Geometry of Random Paths |
@@ -77,15 +77,15 @@ Fifteen volumes, in six parts. There is no separate problem book. The problems t
 | 13 | Arithmetic | From Equations to Hidden Worlds |
 | 14 | The Primes | Their Hidden Rhythm |
 | **Part VI. Synthesis** | | |
-| 15 | Order and Chance | Where Number Meets Randomness |
+| 15 | Order and Chance | The Meeting of Structure and Randomness |
 
 **First Principles** → **The Integers · Symmetry · Chance** →
-**Calculation · Crossroads** → **Spaces · Analysis · Shapes · Higher Structures** →
+**Calculation · Crossroads** → **Spaces · Analysis · Shapes · Abstraction** →
 **Randomness · Random Motion** → **Arithmetic · The Primes** → **Order and Chance**.
 
 Linear algebra is part of Symmetry, geometry is part of Shapes, and open problems are case studies in Order and Chance. Chance includes its combinatorial appendices. Random Motion contains its spectral graph and random-matrix appendices. Spaces, Analysis and Randomness each end with a chapter of harder problems.
 
-Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve. Volumes 1 and 3–14 include the corrected arguments from the 2026 errata. Volume 15, *Order and Chance: Where Number Meets Randomness*, proves Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments, Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias. Five chapters remain openings: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness. Downloads are named `Volume N - Title`.
+Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve. Volumes 1 and 3–14 include the corrected arguments from the 2026 errata. Volume 15, *Order and Chance: The Meeting of Structure and Randomness*, proves Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments, Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias. Five chapters remain openings: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness. Downloads are named `Volume N - Title`.
 
 ## Design and future sessions
 
