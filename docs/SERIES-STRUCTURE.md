@@ -72,7 +72,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 8 | Fourier and Tauberian Methods | Fourier through Tauberian theorems and the harder problems. Haar measure and complex analysis sit in this part. |
 | 9 Shapes | Manifolds and Surfaces | Manifolds, flows. The requested name was “Curves and Surfaces”; the book opens with manifolds. |
 | 9 | Forms and Homology | Forms, curvature, coverings, homology |
-| 9 | Groups and Geometry | Lie groups through the hyperbolic plane, the Riemann mapping theorem and integral geometry, then the geometry appendices |
+| 9 | Groups and Geometry | Lie groups through the hyperbolic plane, the Riemann mapping theorem and integral geometry, then the geometry appendices. Ceva and the Euler line are exercises on transformations. The curvature appendix is the curvature of curves and polyhedra. |
 | 10 Abstraction | Categories | Categories, tensors |
 | 10 | Commutative Algebra | Noetherian rings through homological algebra |
 | 10 | Representations | Group cohomology through compact groups. Shuffling closes the part. |
