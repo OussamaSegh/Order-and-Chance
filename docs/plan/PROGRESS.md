@@ -183,7 +183,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 11
 - **Books and files:** `volume10-abstraction/chapters/ch10-shuffling.tex` and `volume11-randomness`, Martingales and Ergodic Theory. Retitle `volume11-randomness/chapters/ch13-harder.tex` to Sums of random pieces. The Fourier analysis of \(S_n\) stays in Representations.
 - **Acceptance:** The cutoff is a theorem of Book 11. Book 10's part is still named Representations. Both books build. The tower property cited here is the theorem from step 3.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/39
 - **Merge sha:**
 - **Date:**
 - **Notes:**
