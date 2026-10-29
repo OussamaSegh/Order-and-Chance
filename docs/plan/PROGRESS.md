@@ -194,7 +194,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 12
 - **Books and files:** `volume11-randomness` (Roth in the ergodic chapter; the mod-\(\varphi\) chapter) and `volume14-primes` (Roth). Each Roth introduction names the other proof. The mod-\(\varphi\) chapter labels Selberg–Delange as quoted from Book 15 until step 15, then the next edit of that sentence may name the chapter.
 - **Acceptance:** A reader of either Roth proof is told the other exists. The uniform-integer mod-\(\varphi\) statement is not presented as proved in Book 11. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/40
 - **Merge sha:**
 - **Date:**
 - **Notes:**
