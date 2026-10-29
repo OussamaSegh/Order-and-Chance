@@ -414,7 +414,7 @@ The series after the plan is on the order of 4,000–4,500 print pages of main t
 
 ## Rework order
 
-The order protects the joints. Story threading is real work and it is not the first work: a paragraph that points at a theorem should point at the theorem that will be there.
+The executable checklist, with status and PR links, is [PROGRESS.md](PROGRESS.md). The order below is the reasoning. Story threading is real work and it is not the first work: a paragraph that points at a theorem should point at the theorem that will be there.
 
 1. **Leave the repaired proofs alone**, except for a second reading of three squares and of the five real roots. They are listed above so a later session does not "fix" them back.
 2. **Book 7, conditional expectation.** Promote the exercise, including the tower property, before Books 11 and 12 are touched. This is the one gap a citation already stands on.
