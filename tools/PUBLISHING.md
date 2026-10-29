@@ -2,8 +2,7 @@
 
 `tools/public_names.py` derives each public basename from the book's canonical
 `% epub-title` metadata. Main volumes use `Volume 0 - Mathematical Maturity`;
-problem books use `Problem Book 1 - Crossroads`, `Problem Book 2 - Machinery`
-and `Problem Book 3 - Frontiers`. `<Book>` below means this readable basename.
+problem books use `Problem Book 1 - Crossroads`. `<Book>` below means this readable basename.
 Reading PDFs and EPUBs use `.pdf` and `.epub`. KDP assets add ` - Print.pdf`,
 ` - Paperback Cover.pdf`, ` - eBook Cover.jpg`, ` - Publishing Listing.md`
 and ` - Print Metadata.json`. Site thumbnails use ` - Cover.png`; listings are
@@ -43,7 +42,7 @@ Every production front now uses the locked Volume-0 master in
 supersedes the historical exact-PNG front substitution described below. The PNG
 approvals remain archived; even Volumes 0–2 render their title blocks through the
 same font and text anchors as every other book. The original common identity and
-Volume-0 Gaussian subject are retained. All nineteen books use one native 3D wireframe
+Volume-0 Gaussian subject are retained. All sixteen books use one native 3D wireframe
 with the same camera/material and five-layer soft coral radiance. Visible wires
 are deduplicated and depth-tested before lighting, keeping all exported artwork
 vector. Subtitles sit directly below their own title: source y=600 capitals for
@@ -119,7 +118,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 ## Conventions for every volume
 
 - `main.tex` keeps its first line `% epub-title: Order and Chance. Volume N: Title`; the build
-  reads the volume number and title from it (numbers may be `0`–`15` or `P1`–`P3`).
+  reads the volume number and title from it (numbers may be `0`–`14` or `P1`).
 - `\maketitle` builds the front matter of a published book automatically: half-title, series
   page (from `common/series.tex`), title page and copyright page (`common/frontmatter.tex`).
   The order in `main.tex` stays `\frontmatter \makecover \maketitle` then the preface, then
@@ -150,7 +149,7 @@ KDP rules followed by the build (checked against the KDP help pages in October 2
 
 ## Shared print layout and local paperback builds
 
-The production trim for all sixteen main volumes and three problem books is
+The production trim for all fifteen main volumes and the problem book is
 **7 × 10 inches**. `common/print-layout.json` defines trim, bleed and the white-paper
 premium-colour spine coefficient. After editing it, run `python3 tools/print_layout.py` to regenerate
 its tracked TeX counterpart. The normal build and CI reject an unsynchronised pair.

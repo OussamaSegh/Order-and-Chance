@@ -1037,12 +1037,8 @@ LEGACY_MOTIFS = {
     "tome11-motion": dyson_fan,
     "tome12-arithmetic": ford_circles,
     "tome13-primes": prime_constellations,
-    "tome15-workshop": brw_barrier,
+    "tome14-order-and-chance": multiplicative_walks,
     "tomeP1-crossroads": gaussian_primes,
-    "tomeP2-machinery": irrational_rotation,
-    "tome14-random": multiplicative_walks,
-
-    "tomeP3-frontiers": binomial_limits,
 }
 
 if __name__ == "__main__":

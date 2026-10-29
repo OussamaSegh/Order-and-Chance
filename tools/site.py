@@ -40,7 +40,7 @@ KDP = [("ebook", "Kindle cover", "Front cover, 1792 x 2560 JPEG, for a Kindle eB
 
 
 def tome_order(pdf: Path):
-    """Main sequence by number, followed by the three problem books."""
+    """Main sequence by number, followed by the problem book."""
     m = re.match(r"tome([A-Z]?)(\d+)", pdf.stem)
     return (1 if m and m.group(1) == "P" else 0, int(m.group(2)) if m else 0)
 

@@ -33,7 +33,7 @@ class SharedMasterTest(unittest.TestCase):
 
     def test_every_title_fits_without_changing_font_size(self):
         wrapped=check_titles()
-        self.assertEqual(len(wrapped),19)
+        self.assertEqual(len(wrapped),16)
         self.assertTrue(all(len(lines)<=2 for lines in wrapped.values()))
         self.assertEqual(wrapped['0'],['Mathematical','Maturity'])
 

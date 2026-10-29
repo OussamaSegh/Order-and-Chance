@@ -316,12 +316,13 @@ final TeX pass. Keep exercise labels and hyperlink anchors inside the moved box.
 - Record implementation, verification and any actual limitations in docs/DESIGN.md.
   Superseded conversations/designs are in docs/DESIGN-HISTORY.md.
 
-## Revised series structure (27 October 2026)
+## Revised series structure (29 October 2026)
 
 The latest structural decision is recorded in `docs/SERIES-STRUCTURE.md`. There
-are sixteen main volumes and three problem books. Do not recreate computing or
-companion shelves. Volume 0 is Mathematical Maturity; Volume 9 is Higher Structures.
-Supporting mathematics has been integrated as appendices of the main volumes.
+are fifteen main volumes, numbered 0 through 14, and one problem book, Crossroads.
+Volume 14 is **Order and Chance**. Do not recreate Volume 15, Machinery, Frontiers,
+or the computing and companion shelves. Volume 0 is Mathematical Maturity; Volume 9
+is Higher Structures. Supporting mathematics stays in the appendices of the owning volumes.
 
 ## First-edition copy policy
 

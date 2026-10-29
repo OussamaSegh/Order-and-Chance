@@ -1,3 +1,18 @@
+# Series structure — fifteen volumes and one problem book
+
+The author approved a fifteen-volume narrative, numbered 0 through 14, with
+Crossroads as the only problem book. Volume 14 is **Order and Chance**, subtitle
+*Where Number Meets Randomness*, stem `tome14-order-and-chance`, in the existing
+Volume 14 slot. Its first thirteen chapters are openings for the approved outline.
+Part V and appendices A–L are the former Research Workshop, moved intact.
+Machinery's two written chapters close Volumes 6 and 7; Frontiers' written chapter
+closes Volume 10. The cover of Volume 14 keeps its existing Steinhaus plate.
+Shared generators now count sixteen books. Output fingerprints already include
+`common/` and `tools/`, so this source change rebuilds the library without a
+schema bump. See [SERIES-STRUCTURE.md](SERIES-STRUCTURE.md).
+
+---
+
 # Verified GitHub filename normalization — 28 October 2026
 
 Live run 40703902773 built all nineteen books and validated the complete library,

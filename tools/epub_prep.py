@@ -51,6 +51,9 @@ def copyright_section(main_tex: Path) -> str:
 
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
+    # PDF-only problem styling (\renewtcolorbox) is not for pandoc. The exname
+    # marker outside this block still switches the EPUB label from that point.
+    text = re.sub(r"(?s)\n?% begin pdf problem style\n.*?% end pdf problem style\n", "\n", text)
     # Pandoc drops \appendix; preserve the transition for the numbering filter.
     text = text.replace(r"\appendix", r"\begin{ocappendices}Appendices\end{ocappendices}")
     # Pandoc ignores the book's chapter-counter reset (Volume 0 starts at zero).
