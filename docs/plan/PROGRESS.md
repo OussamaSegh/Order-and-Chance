@@ -84,7 +84,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 2
 - **Books and files:** `volume7-spaces`. Promote conditional expectation, including the tower property, from the exercise in `chapters/ch10-radon.tex` to a numbered theorem. Retitle `chapters/ch12-harder.tex` to Almost every number, still inside Measures on Spaces.
 - **Acceptance:** Books 11 and 12 can cite the tower as a theorem of Book 7. The problem chapter's title is no longer "Harder problems". `./build.sh volume7-spaces`.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/29
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do this before any edit to Randomness or Random Motion.
