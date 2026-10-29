@@ -135,22 +135,22 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 8. Still spectra, from Random Motion to Analysis
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 7
 - **Books and files:** `volume12-random-motion` (`ch09-expanders.tex`, `ch10-semicircle.tex`, `ch11-cue.tex`, the expander half of `chapters/spectral.tex`) and `volume8-analysis` Spectral Theory. Dyson Brownian motion stays in Stochastic Calculus. The zeta narrative in `moments.tex` stays until step 19.
 - **Acceptance:** The semicircle, the sine kernel, and the graph-theoretic Riemann hypothesis are theorems of Book 8. Book 12's third part is walks on graphs, resistance, and the matrix-tree theorem. Apply the proposed part rename: Book 12, Part III, **Networks**. Regenerate the series files. Both books build.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/34
-- **Merge sha:**
-- **Date:**
-- **Notes:** This is the only PR that renames Book 12's part. Later books cite the sine kernel as Book 8. The branching random walk stays in Book 12, in Stochastic Calculus.
+- **Merge sha:** a4934a3358d481119923201228beeca6ccc6200f
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. This is the only PR that renames Book 12's part. Later books cite the sine kernel as Book 8. The branching random walk stays in Book 12, in Stochastic Calculus.
 
 ### 9. Jordan to Spaces, Riemann mapping to Shapes
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 8
 - **Books and files:** `volume8-analysis/chapters/ch09-complex.tex`, `volume7-spaces`, `volume9-shapes`. Phragmén–Lindelöf, Hadamard factorisation, and Dixon stay in Analysis.
 - **Acceptance:** Jordan's theorem is in Metric and Topological Spaces. The Riemann mapping theorem is in Groups and Geometry. All three books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/35
 - **Merge sha:**
 - **Date:**
 - **Notes:**

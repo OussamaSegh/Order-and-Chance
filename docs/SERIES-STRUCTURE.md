@@ -64,7 +64,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 6 Crossroads | Counting Primes | Mertens through the prime-number theorem |
 | 6 | Zeros and Explicit Formulas | Zeros, explicit formulae |
 | 6 | Sieves and Randomness | Sieves through modular forms. The modular-forms chapter closes the part. |
-| 7 Spaces | Metric and Topological Spaces | Sets through the Baire category theorem |
+| 7 Spaces | Metric and Topological Spaces | Sets through the Baire category theorem, then the Jordan curve theorem. |
 | 7 | Measure and Integration | Measures through L^p |
 | 7 | Measures on Spaces | Radon measures, metric measure spaces, harder problems |
 | 8 Analysis | Banach and Hilbert Spaces | Banach spaces, Hilbert spaces |
@@ -72,7 +72,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 8 | Fourier and Tauberian Methods | Fourier through Tauberian theorems and the harder problems. Haar measure and complex analysis sit in this part. |
 | 9 Shapes | Manifolds and Surfaces | Manifolds, flows. The requested name was “Curves and Surfaces”; the book opens with manifolds. |
 | 9 | Forms and Homology | Forms, curvature, coverings, homology |
-| 9 | Groups and Geometry | Lie groups through integral geometry, then the geometry appendices |
+| 9 | Groups and Geometry | Lie groups through the hyperbolic plane, the Riemann mapping theorem and integral geometry, then the geometry appendices |
 | 10 Abstraction | Categories | Categories, tensors |
 | 10 | Commutative Algebra | Noetherian rings through homological algebra |
 | 10 | Representations | Group cohomology through compact groups. Shuffling closes the part. |

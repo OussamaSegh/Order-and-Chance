@@ -1,187 +1,12 @@
-\chapter{Curves, Growth and Conformal Maps}
+\chapter{Cauchy's Theorem, Growth and Mellin Inversion}
 
 \begin{center}\itshape
-A closed curve in the plane that does not cross itself has an inside and an outside. Everyone knows it, and it took eighteen years
-and a century of doubt to prove. This chapter proves it, and then uses the plane's topology to free Cauchy's theorem from convex sets, to control how fast
-holomorphic functions can grow, and to map every simply connected domain onto a disc.
+A contour integral vanishes when the contour winds around nothing outside the domain.\\
+Growth on the boundary controls growth inside, even on an infinite strip,\\
+and a sum of copies at every scale is a Dirichlet series in disguise.
 \end{center}
 
-Camille Jordan stated the theorem in his \emph{Cours d'analyse} of 1887: a closed curve without self-intersections divides the plane into two
-regions, one inside and one outside. His proof was long, and for a century it was said to be wrong; Thomas Hales, who checked a
-formal proof of the theorem by computer in 2005, read it again and found it essentially correct, if incomplete for polygons, which
-Jordan thought obvious. Oswald Veblen gave the first proof accepted as complete in 1905. The difficulty is that a ``curve'' may be
-very wild: a continuous injective image of a circle can have positive area, as William Osgood showed in 1903, and it can have no tangent anywhere, like the boundary of Helge von Koch's
-snowflake (1904).
-Any proof must work with continuity alone.
-
-Complex analysis needs the theorem, or at least its spirit. Volume~4 (Chapter~9) proved Cauchy's theorem on star-shaped sets and promised the
-general version: $\int_\gamma f=0$ whenever $\gamma$ does not wind around any point outside the domain of $f$. In 1971 John Dixon found a proof of this
-general version that fits on one page and uses nothing but Liouville's theorem. Then come growth and size: the Phragm\'en--Lindel\"of principle
-(1908) extends the maximum principle to unbounded regions and gives the first non-trivial bound for $\zeta(\frac12+it)$; Hadamard's
-factorisation theorem writes an entire function of finite order from its zeros; and Riemann's mapping theorem, stated by Riemann in his 1851
-thesis with a proof that relied on a principle Weierstrass then refuted, was proved by William Osgood in 1900, and then by Carath\'eodory and Koebe
-around 1912 with the idea we use: compactness in spaces of holomorphic functions. We end with the Mellin transform, Fourier analysis on the multiplicative group, which turns sums into
-products of Dirichlet series and is the tool of choice for the asymptotic analysis of algorithms.
-
-\section{Winding numbers of continuous curves}
-
-Volume~4 defined the winding number $n(\gamma,a)=\frac1{2\pi i}\int_\gamma\frac{\dd z}{z-a}$ of a piecewise $C^1$ closed path. For the Jordan curve theorem we need it for
-continuous curves, where there is no integral. A \emph{curve} is a continuous map $\gamma:[\alpha,\beta]\to\C$, closed if $\gamma(\alpha)=\gamma(\beta)$, with image $\gamma^*$.
-
-\begin{lemma}[continuous argument]\label{lem:lift}
-If $\gamma:[\alpha,\beta]\to\C^*$ is continuous, there is a continuous $\theta:[\alpha,\beta]\to\R$ with $\gamma(t)=|\gamma(t)|e^{i\theta(t)}$, and any two such functions differ by
-a constant in $2\pi\Z$.
-\end{lemma}
-\begin{proof}
-Let $m=\min|\gamma|>0$. By uniform continuity there is $\delta>0$ with $|\gamma(s)-\gamma(t)|<m$ when $|s-t|<\delta$, so that $\bigl|\frac{\gamma(s)}{\gamma(t)}-1\bigr|<1$: the quotient lies
-in the right half-plane, where the principal logarithm $\operatorname{Log}$ is continuous. Take a subdivision $\alpha=t_0<\dots<t_N=\beta$ of mesh less than $\delta$, choose $\theta(t_0)$ with
-$\gamma(t_0)=|\gamma(t_0)|e^{i\theta(t_0)}$, and define successively $\theta(t)=\theta(t_j)+\operatorname{Im}\operatorname{Log}\frac{\gamma(t)}{\gamma(t_j)}$ for $t\in[t_j,t_{j+1}]$. This is continuous and has the required
-property. Two such functions differ by a continuous function with values in $2\pi\Z$, which is constant by the intermediate value theorem.
-\end{proof}
-
-\begin{definition}
-For a closed curve $\gamma$ and $a\notin\gamma^*$, the \emph{winding number} is $n(\gamma,a)=\frac{\theta(\beta)-\theta(\alpha)}{2\pi}\in\Z$, where $\theta$ is a continuous argument of $\gamma-a$.
-\end{definition}
-
-For a piecewise $C^1$ path this is Volume~4's winding number: on each piece of the subdivision, $L(t)=\log|\gamma(t)-a|+i\theta(t)$ is
-$\operatorname{Log}\frac{\gamma(t)-a}{\gamma(t_j)-a}$ plus a constant, so $L'=\frac{\gamma'}{\gamma-a}$, and $\int_\gamma\frac{\dd z}{z-a}=L(\beta)-L(\alpha)=i(\theta(\beta)-\theta(\alpha))$. Arguments add under
-multiplication, so $n(\gamma_1\gamma_2,0)=n(\gamma_1,0)+n(\gamma_2,0)$ for closed curves in $\C^*$.
-
-\begin{proposition}\label{prop:windingprops}
-Let $\gamma$ and $\gamma_0,\gamma_1$ be closed curves on $[\alpha,\beta]$, and $a\in\C$.
-\begin{enumerate}
-\item[(a)] (\emph{Dog on a leash.}) If $|\gamma_1(t)-\gamma_0(t)|<|\gamma_0(t)-a|$ for all $t$, then $n(\gamma_1,a)=n(\gamma_0,a)$.
-\item[(b)] (\emph{Homotopy.}) If $H:[0,1]\times[\alpha,\beta]\to\C\setminus\{a\}$ is continuous and each $H(s,\cdot)$ is closed, then $n(H(s,\cdot),a)$ does not depend on $s$.
-\item[(c)] $a\mapsto n(\gamma,a)$ is constant on each component of $\C\setminus\gamma^*$, and $0$ on the unbounded one.
-\end{enumerate}
-\end{proposition}
-\begin{proof}
-(a) The quotient $q=\frac{\gamma_1-a}{\gamma_0-a}=1+\frac{\gamma_1-\gamma_0}{\gamma_0-a}$ lies in the disc $D(1,1)$, so $\operatorname{Im}\operatorname{Log}q$ is a continuous argument of $q$, and it takes the same
-value at $\alpha$ and $\beta$. So $n(q,0)=0$, and $n(\gamma_1,a)=n(q,0)+n(\gamma_0,a)$.
-
-(b) $H$ is uniformly continuous on the compact square and $m=\min|H-a|>0$, so there is $\delta$ with $|H(s,t)-H(s',t)|<m$ for $|s-s'|<\delta$; by (a), $s\mapsto n(H(s,\cdot),a)$ is
-locally constant on $[0,1]$, hence constant.
-
-(c) If $|a'-a|<d(a,\gamma^*)$, then $|(\gamma-a')-(\gamma-a)|<|\gamma-a|$, and (a) gives $n(\gamma,a')=n(\gamma,a)$. A locally constant function is constant on connected sets. If
-$|a|>\max|\gamma|$, then $\operatorname{Re}\bigl((\gamma(t)-a)\overline a\bigr)\le|\gamma(t)||a|-|a|^2<0$: the curve $-\frac{\overline a}{|a|}(\gamma-a)$ stays in the right half-plane, where
-$\operatorname{Im}\operatorname{Log}$ is a continuous argument taking the same value at both ends. So $n(\gamma,a)=0$, and $n(\gamma,\cdot)$ vanishes on the unbounded component, which contains such points.
-\end{proof}
-
-\begin{theorem}[no retraction; Brouwer]\label{thm:brouwer}
-\begin{enumerate}
-\item[(a)] There is no continuous map $r:\overline D\to\partial D$ of the closed unit disc onto its boundary with $r(z)=z$ on $\partial D$.
-\item[(b)] Every continuous map of a closed disc, or of a closed square, into itself has a fixed point.
-\end{enumerate}
-\end{theorem}
-\begin{proof}
-(a) $H(s,t)=r(se^{it})$, $0\le s\le1$, $0\le t\le2\pi$, is a homotopy in $\C\setminus\{0\}$ from the constant curve $r(0)$, of winding number $0$, to $e^{it}$, of winding number $1$.
-
-(b) Suppose $f:\overline D\to\overline D$ has no fixed point. For $z\in\overline D$ let $u=z-f(z)\ne0$ and let $r(z)=z+\tau u$, where $\tau\ge0$ is the larger root of $|z+\tau u|^2=1$:
-\[\tau(z)=\frac{-\operatorname{Re}(\overline zu)+\sqrt{(\operatorname{Re}\overline zu)^2+|u|^2(1-|z|^2)}}{|u|^2}.\]
-This is continuous, and $r(z)$ is where the ray from $f(z)$ through $z$ leaves the disc. If $|z|=1$, then $\operatorname{Re}(\overline zu)=1-\operatorname{Re}(\overline zf(z))\ge0$, so $\tau=0$ and $r(z)=z$. This
-contradicts (a). A square is mapped onto a disc by the homeomorphism $z\mapsto\frac{\|z\|_\infty}{|z|}z$ (and $0\mapsto0$), which carries the problem over.
-\end{proof}
-
-The next lemma, due to Ryuji Maehara (1984), is the bridge between Brouwer and Jordan. It says that a path crossing a rectangle from left to right
-and a path crossing it from top to bottom must meet, the topological content of the game of Hex, which can never end in a draw.
-
-\begin{lemma}[crossing paths]\label{lem:crossing}
-Let $R=[x_0,x_1]\times[y_0,y_1]$, and let $h,v:[-1,1]\to R$ be continuous with $h_1(-1)=x_0$, $h_1(1)=x_1$, $v_2(-1)=y_0$, $v_2(1)=y_1$ (indices denote coordinates).
-In words: a path $h$ from the left side of $R$ to the right side and a path $v$ from the bottom to the top must meet. Then $h$ and $v$ meet: $h(s)=v(t)$ for some $s,t$.
-\end{lemma}
-\begin{proof}
-If not, the function $N(s,t)=\|h(s)-v(t)\|_\infty$ is positive everywhere, and
-\[F(s,t)=\Bigl(\frac{v_1(t)-h_1(s)}{N(s,t)},\frac{h_2(s)-v_2(t)}{N(s,t)}\Bigr)\]
-is a continuous map of the square $[-1,1]^2$ into its boundary. By Theorem~\ref{thm:brouwer}(b) it has a fixed point $(s,t)$, and $|s|=1$ or $|t|=1$. If $s=-1$, then
-$F_1=\frac{v_1(t)-x_0}N\ge0$, while $F_1=s=-1$; if $s=1$, then $F_1=\frac{v_1(t)-x_1}N\le0\ne1$; the cases $t=\pm1$ are the same with the second coordinate. Contradiction.
-\end{proof}
-
-\section{The Jordan curve theorem}
-
-A \emph{Jordan curve} is the image $J$ of a closed curve $\gamma:[\alpha,\beta]\to\C$ that is injective on $[\alpha,\beta[$; equivalently, a subset of the plane homeomorphic to a circle. An
-\emph{arc} is a subset homeomorphic to $[0,1]$. Since $J$ is compact, $\C\setminus J$ is open; its connected components are open and path-connected, exactly one of them is
-unbounded (it contains the complement of a large disc, which is connected), and the boundary of each component lies in $J$.
-
-\begin{lemma}[arcs do not separate]\label{lem:arc}
-The complement of an arc is connected.
-\end{lemma}
-\begin{proof}
-Let $A$ be an arc and $\phi:A\to[0,1]$ a homeomorphism. Suppose that $\C\setminus A$ is not connected. One of its components is unbounded, so another one, $W$, is bounded. The boundary of
-$W$ lies in $A$: a point $z\in\partial W$ outside $A$ would lie in some component $W'$ of $\C\setminus A$; this open set meets $W$, so $W'=W$ and $z\in W$, impossible for a boundary point of an open
-set.
-
-By Tietze's extension theorem (Volume~6, Exercise~3.8, applied to $2\phi-1$), $\phi$ extends to a continuous $\Phi:\C\to[0,1]$, and $\rho=\phi^{-1}\circ\Phi$ is a continuous map $\C\to A$ that is
-the identity on $A$. Choose $z_1\in W$ and a closed disc $\Delta=\overline D(z_1,R)$ whose interior contains the compact set $A\cup\overline W$. Define $g:\Delta\to\C$ by
-\[
-g(z)=\rho(z)\ \text{ for }z\in\overline W,\qquad g(z)=z\ \text{ for }z\in\Delta\setminus W.
-\]
-The two closed sets $\overline W$ and $\Delta\setminus W$ cover $\Delta$ and meet in $\partial W\subset A$, where $\rho(z)=z$; so $g$ is well defined and continuous. It never takes the value $z_1$:
-on $\overline W$ its values lie in $A$, which does not meet $W$, and on $\Delta\setminus W$ it is the identity. Let $\pi(z)=z_1+R\frac{z-z_1}{|z-z_1|}$ be the radial projection onto the circle
-$\partial\Delta$. Then $\pi\circ g$ is a continuous map of $\Delta$ onto $\partial\Delta$, equal to the identity on $\partial\Delta$ (which lies in $\Delta\setminus W$). After the similarity
-$z\mapsto\frac{z-z_1}R$, this contradicts Theorem~\ref{thm:brouwer}(a).
-\end{proof}
-
-\begin{theorem}[Jordan curve theorem]\label{thm:jordan}
-Let $J$ be a Jordan curve. Then $\C\setminus J$ has exactly two components, one bounded and one unbounded, and $J$ is the boundary of each of them.
-\end{theorem}
-
-The bounded component is the \emph{inside} of $J$, the unbounded one the \emph{outside}. The proof is Maehara's. It builds, out of $J$ and three vertical segments, a path that cuts a
-rectangle from top to bottom, and then uses Lemma~\ref{lem:crossing} three times: any path from the left to the right of the rectangle that avoids it must be impossible. Figure~\ref{fig:jordan}
-shows the construction.
-
-\begin{figure}[ht]
-\centering
-\fig{ch09-jordan}
-\caption{Maehara's construction. The arc $J_n$ (blue) contains the highest point $l$ of $J$ on the segment $[n,s]$; $m$ is its lowest point there. The arc $J_s$ (green) first meets $[m,s]$ at
-$p$, and $q$ is its lowest point on $[n,s]$. The top-to-bottom path $\Gamma$ (orange) runs down from $n$ to $l$, along $J_n$ to $m$, across to $p$, along $J_s$ to $q$ and down to $s$. The
-midpoint $z_0$ of $[m,p]$ is inside.}
-\label{fig:jordan}
-\end{figure}
-
-\begin{proof}
-\emph{Setting up.} Since $J$ is compact, there are $a,b\in J$ at maximal distance. A similarity of the plane maps Jordan curves to Jordan curves and preserves everything in the statement, so
-we may assume $a=-1$ and $b=1$. Every $z\in J$ then satisfies $|z-a|\le2$ and $|z-b|\le2$. So $J$ lies in the rectangle $R=[-1,1]\times[-2,2]$; it meets the boundary of $R$ only at $a$ and $b$, because
-$|\operatorname{Im}z|\le\sqrt3<2$ on the lens $\{|z-a|\le2,\ |z-b|\le2\}$, and a point of the lens with $\operatorname{Re}z=-1$ satisfies $|z-b|\ge2$, with equality only at $a$ (likewise for $b$). The points $a$, $b$
-cut $J$ into two arcs from $a$ to $b$ that meet only at $a$ and $b$. Let $n=2i$ and $s=-2i$ be the midpoints of the top and bottom sides of $R$. Each arc goes from the left side of $R$ to the right
-side, and $[n,s]$ from the top to the bottom, so by Lemma~\ref{lem:crossing} each arc meets $[n,s]$. ``Higher'' means a larger imaginary part.
-
-\emph{Step 1: a point $z_0$.} Let $l$ be the highest point of the compact set $J\cap[n,s]$; let $J_n$ be the arc containing $l$, and $J_s$ the other one ($l\ne a,b$, so $l$ lies on only one arc). Let $m$
-be the lowest point of $J_n\cap[n,s]$. The segment $[m,s]$ meets $J_s$: otherwise the path that goes down $[n,l]$, along $J_n$ from $l$ to $m$, and down $[m,s]$ would cross $R$ from top to bottom
-without meeting $J_s$. (The segment $[n,l]$ meets $J$ only at $l$, which is not on $J_s$; the part of $J_n$ between $l$ and $m$ does not contain $a$ or $b$.) This contradicts Lemma~\ref{lem:crossing}
-for $J_s$. So let $p$ be the highest point of $J_s\cap[m,s]$ and $q$ the lowest point of $J_s\cap[n,s]$. The open segment $]m,p[$ misses $J_n$ (by the choice of $m$) and $J_s$ (by the choice of
-$p$). Let $z_0$ be its midpoint, and $U$ the component of $\C\setminus J$ containing $z_0$.
-
-\emph{Step 2: $U$ is bounded.} If not, there is a path in $U$ from $z_0$, an interior point of $R$, to a point outside $R$. Let $w$ be the first point of $\partial R$ on it, and $\delta$ the part of
-the path from $z_0$ to $w$: it lies in $R$ and misses $J$, and $w\ne a,b$. The set $\partial R\setminus\{a,b\}$ has two pieces, the upper one $\partial^+$ through $n$ and the lower one $\partial^-$
-through $s$, both disjoint from $J$. If $w\in\partial^-$, go down $[n,l]$, along $J_n$ to $m$, along $[m,z_0]$, along $\delta$ to $w$, and along $\partial^-$ to $s$: a top-to-bottom path in $R$ that
-misses $J_s$, which contradicts Lemma~\ref{lem:crossing}. If $w\in\partial^+$, go along $\partial^+$ from $n$ to $w$, back along $\delta$ to $z_0$, along $[z_0,p]$, along $J_s$ from $p$ to $q$, and down
-$[q,s]$: a top-to-bottom path that misses $J_n$ (note that $[q,s]$ lies below $m$), again a contradiction. So $U$ is bounded, and $\C\setminus J$ has at least two components.
-
-\emph{Step 3: $J$ is the boundary of every component.} Let $W$ be a component; as in the proof of Lemma~\ref{lem:arc}, $\partial W\subset J$. If $\partial W\ne J$, choose $x\in J\setminus\partial W$.
-Since $\partial W$ is closed, a small open subarc of $J$ around $x$ misses it, so $\partial W$ lies in the arc $A$ obtained by removing that subarc from $J$. By Lemma~\ref{lem:arc}, the open set
-$\C\setminus A$ is connected, hence path-connected (Volume~6, Proposition~3.14). Take $w\in W$ and $w'$ in another component (Step 2), and a path $c:[0,1]\to\C\setminus A$ from $w$ to $w'$. Let
-$t^*=\sup\{t:c([0,t])\subset W\}$. Then $c(t^*)\in\overline W$, and $c(t^*)\notin W$, since otherwise the path would stay in the open set $W$ a little longer (and $t^*<1$ because $w'\notin W$). So
-$c(t^*)\in\partial W\subset A$, a contradiction.
-
-\emph{Step 4: $U$ is the only bounded component.} Let $\Gamma$ be the path that goes down $[n,l]$, along $J_n$ to $m$, along $[m,p]$, along $J_s$ to $q$, and down $[q,s]$. Its points outside $J$
-lie on $[n,l[$, on $]m,p[$ and on $]q,s]$. The middle segment lies in $U$. The first one is connected, misses $J$ and contains $n$, which is joined to infinity by the upward vertical ray, which misses
-$J$; so it lies in the unbounded component, and so does $]q,s]$. Now let $W$ be a bounded component other than $U$. Then $\Gamma$ does not meet $W$. Neither $a$ nor $b$ lies on the compact
-set $\Gamma$, so some discs $D(a,\varepsilon)$ and $D(b,\varepsilon)$ miss $\Gamma$; by Step 3, $a,b\in\partial W$, so there are $a'\in W\cap D(a,\varepsilon)$ and $b'\in W\cap D(b,\varepsilon)$. The set $\C\setminus R$ is
-connected, unbounded and disjoint from $J$, so it lies in the unbounded component, and $W\subset R$. The path $[a,a']$, then a path in $W$ from $a'$ to $b'$, then $[b',b]$, goes from the left of
-$R$ to the right inside $R$ and misses $\Gamma$, which crosses $R$ from top to bottom. This contradicts Lemma~\ref{lem:crossing} once more.
-\end{proof}
-
-\begin{think}
-Where did the proof use that $J$ has no self-intersections? Draw a figure eight and follow the four steps: which one breaks down? And why could we not simply say ``the winding number is $1$
-inside and $0$ outside''?
-\end{think}
-
-\begin{remark}
-The inside $U$ of a Jordan curve can be strange. Osgood's curves of positive area have insides whose boundary carries area, and in 1910 Brouwer found three disjoint open sets in the plane
-with the same boundary, the ``Lakes of Wada'', so the Jordan curve theorem really does use that $J$ is a curve. Schoenflies proved in 1906 that $U$ is nevertheless homeomorphic to a disc,
-by a homeomorphism of the whole plane carrying $J$ to the unit circle. The conformal version of this, Carath\'eodory's theorem, is a consequence of the Riemann mapping theorem below
-(which we prove) and a boundary analysis (which we do not).
-\end{remark}
+Volume~5 proved Cauchy's theorem on star-shaped sets, and left the general statement: the integral of a holomorphic function over a cycle is zero whenever the cycle winds around no point outside the domain. Volume~7 proves that a simple closed curve has an inside and an outside, and with it the winding number of a continuous curve. This chapter proves Dixon's form of Cauchy's theorem, which uses that winding number and Liouville's theorem. Then come growth and size. The Phragm\'en--Lindel\"of principle extends the maximum principle to unbounded regions and gives the first non-trivial bound for $\zeta(\frac12+it)$; Hadamard's factorisation writes an entire function of finite order from its zeros. The Riemann mapping theorem, which sends every simply connected domain onto a disc, is proved in Volume~9. We end with the Mellin transform, Fourier analysis on the multiplicative group, which turns sums into products of Dirichlet series and is the tool of choice for the asymptotic analysis of algorithms.
 
 \section{Cauchy's theorem in its final form}
 
@@ -207,11 +32,11 @@ $\Omega\setminus\{w\}$ and continuous at $w$, hence holomorphic on $\Omega$ (Vol
 \[
 h(z)=\frac1{2\pi i}\int_\gamma g(z,w)\dd w
 \]
-is holomorphic on $\Omega$. Let $\Omega_1=\{z\notin\gamma^*:n(\gamma,z)=0\}$, an open set by Proposition~\ref{prop:windingprops}(c). The hypothesis says exactly that $\Omega\cup\Omega_1=\C$. On $\Omega_1$ let
+is holomorphic on $\Omega$. Let $\Omega_1=\{z\notin\gamma^*:n(\gamma,z)=0\}$, an open set, since Volume~7 proves that the winding number is constant on each component of the complement. The hypothesis says exactly that $\Omega\cup\Omega_1=\C$. On $\Omega_1$ let
 \[
 h_1(z)=\frac1{2\pi i}\int_\gamma\frac{f(w)}{w-z}\dd w,
 \]
-again holomorphic. For $z\in\Omega\cap\Omega_1$, $h(z)=h_1(z)-f(z)n(\gamma,z)=h_1(z)$. So $h$ and $h_1$ together define an entire function $H$. By Proposition~\ref{prop:windingprops}(c), $\Omega_1$
+again holomorphic. For $z\in\Omega\cap\Omega_1$, $h(z)=h_1(z)-f(z)n(\gamma,z)=h_1(z)$. So $h$ and $h_1$ together define an entire function $H$. Volume~7 also proves that the winding number vanishes outside a large disc, so $\Omega_1$
 contains $\{|z|>r\}$ for $r=\max_{\gamma^*}|w|$, and there $|H(z)|=|h_1(z)|\le\frac{L(\gamma)\max_{\gamma^*}|f|}{2\pi(|z|-r)}$, where $L(\gamma)$ is the length. So $H$ is bounded and tends to $0$ at infinity; by
 Liouville's theorem (Volume~4, Theorem~9.16) it is $0$. For $z\in\Omega\setminus\gamma^*$, $h(z)=0$ is statement (a).
 
@@ -254,10 +79,10 @@ the slit plane $\C\setminus\left]-\infty,0\right]$, and the inside of every Jord
 \end{proposition}
 \begin{proof}
 Let $\gamma$ be a closed path in $\Omega$, $a\notin\Omega$, and $E\ni a$ a connected unbounded subset of $\C\setminus\Omega\subset\C\setminus\gamma^*$. The integer-valued continuous function $n(\gamma,\cdot)$ is constant
-on $E$, and $E$ contains points of modulus larger than $\max_{\gamma^*}|z|$, where it vanishes (Proposition~\ref{prop:windingprops}(c)). So $n(\gamma,a)=0$.
+on $E$, and $E$ contains points of modulus larger than $\max_{\gamma^*}|z|$, where it vanishes (Volume~7). So $n(\gamma,a)=0$.
 
 If $\Omega$ is star-shaped with respect to $c$ and $a\notin\Omega$, the ray $\{a+t(a-c):t\ge0\}$ misses $\Omega$ (if $a+t(a-c)\in\Omega$, the segment from $c$ to it, which contains $a$, would lie in $\Omega$). For the
-slit plane, $\C\setminus\Omega$ is itself a connected unbounded set. If $U$ is the inside of a Jordan curve $J$ and $V$ the outside, then $\C\setminus U=J\cup V=\overline V$ by Theorem~\ref{thm:jordan}, the
+slit plane, $\C\setminus\Omega$ is itself a connected unbounded set. If $U$ is the inside of a Jordan curve $J$ and $V$ the outside, then $\C\setminus U=J\cup V=\overline V$ by the Jordan curve theorem of Volume~7, the
 closure of a connected unbounded set, which is connected and unbounded.
 \end{proof}
 
@@ -412,97 +237,6 @@ Jensen's formula says a slowly growing function has few zeros; Borel--Carath\'eo
 of the two: the zeros are few enough for a product with corrections of degree $p$ to converge, and what is left over, the polynomial $Q$, is pinned down by a bound on its real part alone.
 \end{beauty}
 
-\section{The Riemann mapping theorem}
-
-In his 1851 thesis Riemann claimed that every simply connected region of the plane, other than the plane itself, can be mapped onto the disc by a bijective holomorphic map. The disc, a
-square, the inside of a snowflake, the slit plane: to complex analysis they are all the same. His argument minimised an energy, the ``Dirichlet principle'', and in 1870 Weierstrass showed that
-such minima need not exist. The first complete proof was Osgood's, in 1900; the one below combines Koebe's square-root trick (1912) with an extremal argument of Fej\'er and Frigyes Riesz, published by
-Tibor Rad\'o in 1923. It needs three tools: compactness, the Schwarz lemma, and a supply of disc automorphisms.
-
-\begin{theorem}[Montel, 1907]\label{thm:montel}
-Let $\Omega$ be open and $(f_n)$ holomorphic functions on $\Omega$, uniformly bounded on each compact subset of $\Omega$. Then a subsequence converges uniformly on every compact subset of $\Omega$, to a holomorphic
-function.
-\end{theorem}
-\begin{proof}
-Let $K_j=\{z:|z|\le j,\ d(z,\C\setminus\Omega)\ge\frac1j\}$ (with $d(z,\emptyset)=\infty$). These are compact, increase to $\Omega$, and every compact $K\subset\Omega$, which is bounded and at positive distance from
-$\C\setminus\Omega$, lies in some $K_j$. For $z\in K_j$, $\overline D(z,\frac1{2j})\subset K_{2j}$. Let $M_j$ bound all $|f_n|$ on $K_{2j}$. If $z,z'\in K_j$ and $|z-z'|<\frac1{4j}$, then every $\zeta\in[z,z']$ has
-$\overline D(\zeta,\frac1{4j})\subset\overline D(z,\frac1{2j})\subset K_{2j}$, so $|f_n'(\zeta)|\le4jM_j$ by Cauchy's estimates (Volume~4, Corollary~9.12), and $|f_n(z)-f_n(z')|\le4jM_j|z-z'|$. So $(f_n)$ is bounded and
-equicontinuous on $K_j$, and by Arzel\`a--Ascoli (Volume~6, Theorem~4.15) has a subsequence converging uniformly on $K_j$. Extract successively for $K_1,K_2,\dots$ and take the diagonal subsequence: it
-converges uniformly on every $K_j$, hence on every compact set. The limit is holomorphic by Volume~4, Theorem~9.15(a).
-\end{proof}
-
-\begin{lemma}[injective holomorphic maps]\label{lem:injective}
-Let $f$ be holomorphic and injective on an open set $\Omega$. Then $f'$ has no zeros, $f(\Omega)$ is open, and $f^{-1}:f(\Omega)\to\Omega$ is holomorphic. If $\Omega$ is connected and $f_n$ are injective
-holomorphic functions on $\Omega$ converging to $f$ uniformly on compact sets, then $f$ is injective or constant.
-\end{lemma}
-\begin{proof}
-Let $z_0\in\Omega$, $w_0=f(z_0)$, and let $k\ge1$ be the order of the zero of $f-w_0$ at $z_0$ ($f$ is not constant near $z_0$, being injective). Choose $r>0$ with $\overline D(z_0,r)\subset\Omega$, such that $f-w_0$
-has no other zero, and $f'$ no zero except possibly $z_0$, in this closed disc (zeros are isolated, Volume~4, Theorem~9.18). Let $\mu=\min_{|z-z_0|=r}|f(z)-w_0|>0$. For $|w-w_0|<\mu$, Rouch\'e's theorem
-(Volume~4, Theorem~9.38, with $f-w_0$ and the constant $w_0-w$) says that $f-w$ has $k$ zeros in $D(z_0,r)$, with multiplicity. For $w\ne w_0$ they are simple ($f'\ne0$ there), so they are $k$
-distinct points, and injectivity forces $k=1$: $f'(z_0)\ne0$. With $k=1$, every $w$ with $|w-w_0|<\mu$ is a value of $f$ on $D(z_0,r)$. This proves that $f(\Omega)$ is open, and also that
-$f^{-1}$ is continuous at $w_0$ (as $r$ can be taken arbitrarily small). Then $\frac{f^{-1}(w)-f^{-1}(w_0)}{w-w_0}=\frac{z-z_0}{f(z)-f(z_0)}\to\frac1{f'(z_0)}$ as $w\to w_0$, with $z=f^{-1}(w)\to z_0$.
-
-For the limit statement, suppose $f(z_1)=f(z_2)=w$ with $z_1\ne z_2$ and $f$ not constant. Choose disjoint closed discs around $z_1$ and $z_2$ in $\Omega$ on whose boundary circles $f-w$ has no zero
-(identity theorem), and let $\mu>0$ be the minimum of $|f-w|$ on the two circles. For large $n$, $|f_n-f|<\mu$ on both circles, and by Rouch\'e $f_n-w=(f-w)+(f_n-f)$ has a zero in each disc: $f_n$ is not
-injective.
-\end{proof}
-
-\begin{lemma}[Schwarz; disc automorphisms]\label{lem:schwarz}
-Let $D$ be the open unit disc.
-\begin{enumerate}
-\item[(a)] If $f:D\to D$ is holomorphic with $f(0)=0$, then $|f(z)|\le|z|$ and $|f'(0)|\le1$. If $|f'(0)|=1$, or $|f(z)|=|z|$ for some $z\ne0$, then $f(z)=cz$ with $|c|=1$.
-\item[(b)] For $|a|<1$, $\varphi_a(z)=\frac{z-a}{1-\overline az}$ is a holomorphic bijection of $D$ onto $D$, with inverse $\varphi_{-a}$ and $\varphi_a(a)=0$.
-\end{enumerate}
-\end{lemma}
-\begin{proof}
-(a) $g(z)=\frac{f(z)}z$ extends holomorphically to $D$ with $g(0)=f'(0)$. On $|z|=r<1$, $|g|\le\frac1r$, so $|g|\le\frac1r$ on $|z|\le r$; let $r\to1$: $|g|\le1$. If $|g|=1$ somewhere in $D$, the maximum principle
-makes $g$ constant. (b) $|1-\overline az|^2-|z-a|^2=(1-|a|^2)(1-|z|^2)>0$ for $|z|<1$, so $\varphi_a$ maps $D$ into $D$; and $\varphi_{-a}(\varphi_a(z))=\frac{(z-a)+a(1-\overline az)}{(1-\overline az)+\overline a(z-a)}=\frac{(1-|a|^2)z}{1-|a|^2}=z$, and
-symmetrically.
-\end{proof}
-
-\begin{theorem}[Riemann mapping theorem]\label{thm:riemannmap}
-Let $\Omega\ne\C$ be a connected open set on which every holomorphic function without zeros has a holomorphic square root; by Corollary~\ref{cor:hsc}, this holds if $\Omega$ is homologically simply
-connected. Let $z_0\in\Omega$. Then there is exactly one holomorphic bijection $F:\Omega\to D$ with $F(z_0)=0$ and $F'(z_0)>0$, and $F^{-1}$ is holomorphic.
-\end{theorem}
-\begin{proof}
-Let $\mathcal F$ be the set of injective holomorphic $f:\Omega\to D$ with $f(z_0)=0$.
-
-\emph{$\mathcal F$ is not empty.} Take $a\notin\Omega$ and a holomorphic $q$ with $q(z)^2=z-a$. Then $q$ is injective, and $q(z)\ne-q(w)$ for all $z,w$: equal squares give $z=w$, then $q(z)=0$ and $z=a$. The open
-set $q(\Omega)$ (Lemma~\ref{lem:injective}) contains a disc $D(c,r)$, so $q(\Omega)$ misses $D(-c,r)$ and $f_0=\frac r{q+c}$ is injective with $|f_0|\le1$, hence $|f_0|<1$ as $f_0(\Omega)$ is open. Then $\varphi_{f_0(z_0)}\circ f_0\in\mathcal F$.
-
-\emph{An extremal map.} If $\overline D(z_0,\delta)\subset\Omega$, Cauchy's estimate gives $|f'(z_0)|\le\frac1\delta$ for $f\in\mathcal F$. Let $s=\sup_{\mathcal F}|f'(z_0)|$, which is positive by Lemma~\ref{lem:injective}, and $f_n\in\mathcal F$ with
-$|f_n'(z_0)|\to s$. By Montel, a subsequence converges uniformly on compact sets to a holomorphic $F$, with $|F'(z_0)|=s$ (Volume~4, Theorem~9.15(a)). So $F$ is not constant, hence injective by
-Lemma~\ref{lem:injective}; $|F|\le1$ and $F(\Omega)$ is open, so $F(\Omega)\subset D$; and $F(z_0)=0$. So $F\in\mathcal F$ and $|F'(z_0)|$ is maximal.
-
-\emph{$F$ is onto.} Suppose $w\in D\setminus F(\Omega)$. Then $\varphi_w\circ F$ has no zeros, so it has a holomorphic square root $g$, injective with values in $D$. Let $b=g(z_0)$ and $h=\varphi_b\circ g\in\mathcal F$.
-Unwinding, $F=\Psi\circ h$ with $\Psi(\zeta)=\varphi_{-w}\bigl(\varphi_{-b}(\zeta)^2\bigr)$, a holomorphic map $D\to D$ with $\Psi(0)=F(z_0)=0$. $\Psi$ is not injective, because squaring is not, so it is not a rotation,
-and the Schwarz lemma gives $|\Psi'(0)|<1$. Then $|F'(z_0)|=|\Psi'(0)||h'(z_0)|<|h'(z_0)|$, contradicting maximality.
-
-\emph{Normalisation and uniqueness.} Multiplying $F$ by $e^{-i\arg F'(z_0)}$ makes $F'(z_0)>0$, and $F^{-1}$ is holomorphic by Lemma~\ref{lem:injective}. If $G$ is another such map, $\psi=F\circ G^{-1}$ maps $D$
-onto $D$ with $\psi(0)=0$; the Schwarz lemma applied to $\psi$ and $\psi^{-1}$ gives $|\psi'(0)|=1$, so $\psi(z)=cz$, and $c=\psi'(0)=\frac{F'(z_0)}{G'(z_0)}>0$ forces $c=1$.
-\end{proof}
-
-\begin{corollary}\label{cor:jordanconformal}
-The inside of every Jordan curve is mapped onto the unit disc by a holomorphic bijection with holomorphic inverse.
-\end{corollary}
-\begin{proof}
-The inside is connected, open, not $\C$, and homologically simply connected by Proposition~\ref{prop:hsccriterion}.
-\end{proof}
-
-\begin{figure}[ht]
-\centering
-\fig{ch09-square}
-\caption{A Riemann map made explicit: $f(z)=\int_0^z\frac{\dd w}{\sqrt{1+w^4}}$ maps the unit disc onto a square (a Schwarz--Christoffel integral). The images of the circles $|z|=0.2,0.4,\dots,0.99$ and of
-sixteen radii, computed from the power series $f(z)=\sum_k\binom{-1/2}k\frac{z^{4k+1}}{4k+1}$. Angles are preserved everywhere inside; at the four corners, images of the points where $w^4=-1$, the right
-angles of the square are created from the straight angle of the circle.}
-\label{fig:squaremap}
-\end{figure}
-
-\begin{think}
-The proof of Theorem~\ref{thm:riemannmap} is an existence proof: it finds $F$ by maximising $|f'(z_0)|$, with no formula. Why does maximising the derivative at one point force the map to be onto?
-(Picture what $|f'(z_0)|$ measures, and what happens to it when the image of $f$ is a disc with a hole.)
-\end{think}
-
 \section{The Mellin transform and harmonic sums}\label{sec:mellin}
 
 The Mellin transform is the Fourier transform of the multiplicative group $]0,\infty[$, whose Haar measure is $\frac{\dd x}x$ (Chapter~21). Robert Hjalmar Mellin, a Finnish student of Mittag-Leffler,
@@ -598,11 +332,6 @@ and approximate counting all have them, and Flajolet, Gourdon and Dumas's survey
 
 \section{Exercises}
 
-\begin{exercise}[$\star$]\label{ex:ftawind}
-\emph{The fundamental theorem of algebra, by winding.} Let $p(z)=z^n+c_{n-1}z^{n-1}+\dots+c_0$ with $n\ge1$, and $\gamma_R(t)=Re^{it}$, $0\le t\le2\pi$. (a) Show that $n(p\circ\gamma_R,0)=n$ when $R>1+\sum_j|c_j|$.
-(b) If $p$ had no zero, what would $H(s,t)=p(sRe^{it})$ say? Conclude.
-\end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:annuluscauchy}
 \emph{Laurent series from the homology form.} Let $f$ be holomorphic on the annulus $\Omega=\{r<|z|<R\}$, and $r<r_1<r_2<R$. Let $C(\rho)$ be the circle $|z|=\rho$, counterclockwise. (a) Show that the cycle
 $C(r_2)-C(r_1)$ is homologous to zero in $\Omega$, and that for $r_1<|z|<r_2$,
@@ -627,11 +356,6 @@ coefficients of $z^3$ and recover $\zeta(2)=\frac{\pi^2}6$, as Euler did in 1735
 many zeros, without finding them.
 \end{exercise}
 
-\begin{exercise}[$\star$]\label{ex:riemannmaps}
-\emph{Explicit Riemann maps.} Find holomorphic bijections onto the unit disc $D$ from: (a) the upper half-plane (try $z\mapsto\frac{z-i}{z+i}$); (b) the strip $|\operatorname{Im}z|<\frac\pi2$; (c) the slit plane
-$\C\setminus\left]-\infty,0\right]$. Check that your maps are bijective.
-\end{exercise}
-
 \begin{exercise}[$\star\star$]\label{ex:lambert}
 \emph{Divisors and a Lambert series.} Show that, as $x\to0^+$,
 \[
@@ -642,9 +366,6 @@ where $d(n)$ is the number of divisors of $n$.
 
 \section{Hints}
 
-\begin{hint}{ex:ftawind}
-On a big circle, $p$ is a dog on a short leash held by $z^n$. Then shrink the circle to its centre.
-\end{hint}
 \begin{hint}{ex:annuluscauchy}
 Compute the winding number of the cycle around points with $|a|\le r$, with $|a|\ge R$, and around $z$.
 \end{hint}
@@ -657,21 +378,11 @@ Look at $\sin\pi z$ on the imaginary axis. With $p=1$, pair the factors for $n$ 
 \begin{hint}{ex:nonintorder}
 By Hadamard, such a function is a polynomial times $e^{Q}$. Choose a direction in which the leading term of $Q$ is real and positive.
 \end{hint}
-\begin{hint}{ex:riemannmaps}
-(a) Compare the distances from $z$ to $i$ and to $-i$. (b) The exponential straightens the strip into a half-plane. (c) A square root opens the slit plane into a half-plane.
-\end{hint}
 \begin{hint}{ex:lambert}
 The Mellin transform is $\Gamma(s)\zeta(s)^2$. Move the line from $\sigma=3$ to $\sigma=-\frac32$ and collect the poles at $1$, $0$ and $-1$.
 \end{hint}
 
 \section{Solutions}
-
-\begin{solution}{ex:ftawind}
-\idea Winding numbers are robust: a curve close to $z^n$ winds $n$ times, and a curve that can be shrunk to a point without passing through $0$ winds $0$ times.
-\writeup (a) On $|z|=R$ with $R>1$, $|p(z)-z^n|\le\sum_j|c_j|R^j\le R^{n-1}\sum_j|c_j|<R^n=|z^n|$. By Proposition~\ref{prop:windingprops}(a), $n(p\circ\gamma_R,0)=n(\gamma_R^n,0)=n$, since $nt$ is a
-continuous argument of $R^ne^{int}$. (b) If $p$ never vanishes, $H$ is a continuous map $[0,1]\times[0,2\pi]\to\C\setminus\{0\}$ through closed curves, from the constant curve $p(0)$, of winding number $0$, to
-$p\circ\gamma_R$. By Proposition~\ref{prop:windingprops}(b), $0=n$, which is false. So $p$ has a zero.
-\end{solution}
 
 \begin{solution}{ex:annuluscauchy}
 \idea The two circles together do not wind around the hole, nor around anything outside, so Theorem~\ref{thm:globalcauchy} applies to the annulus even though it is not star-shaped.
@@ -705,14 +416,6 @@ at least $d$; it is at most $d$ since $|Pe^Q|\le\exp(C|z|^d)$ for large $|z|$. S
 square root), and $\cos\sqrt{-r}=\cosh\sqrt r\ge\frac12e^{\sqrt r}$, so the order is $\frac12$, not an integer. By (a), the zeros are infinitely many: they are $\bigl((k+\frac12)\pi\bigr)^2$, $k\ge0$.
 \end{solution}
 
-\begin{solution}{ex:riemannmaps}
-\idea Build the map from simple pieces that each straighten one feature: exponentials straighten strips, roots open angles, and a M\"obius map bends a half-plane into a disc.
-\writeup (a) $|z-i|<|z+i|$ exactly when $z$ is closer to $i$ than to $-i$, that is, $\operatorname{Im}z>0$; so $z\mapsto\frac{z-i}{z+i}$ maps the upper half-plane $\mathbb H$ into $D$. Its inverse $w\mapsto i\frac{1+w}{1-w}$
-maps $D$ into $\mathbb H$, since $\operatorname{Im}\bigl(i\frac{1+w}{1-w}\bigr)=\operatorname{Re}\frac{1+w}{1-w}=\frac{1-|w|^2}{|1-w|^2}>0$. (b) $e^z$ maps the strip bijectively onto the right half-plane ($e^{x+iy}$ has modulus $e^x$ and argument
-$y\in\left]-\frac\pi2,\frac\pi2\right[$); multiplying by $i$ gives $\mathbb H$, and (a) gives $\frac{ie^z-i}{ie^z+i}=\frac{e^z-1}{e^z+1}=\tanh\frac z2$. (c) The principal square root maps the slit plane bijectively onto the right
-half-plane, and $w\mapsto\frac{w-1}{w+1}$ maps the right half-plane onto $D$ (as in (a), after a rotation); so $z\mapsto\frac{\sqrt z-1}{\sqrt z+1}$.
-\end{solution}
-
 \begin{solution}{ex:lambert}
 \idea A harmonic sum with base function $e^{-x}$ and frequencies $n$ weighted by $d(n)$: its Mellin transform is $\Gamma(s)$ times the Dirichlet series of $d$, which is $\zeta(s)^2$. Each pole gives one term.
 \writeup Expanding $\frac1{e^{kx}-1}=\sum_{m\ge1}e^{-kmx}$ and grouping $n=km$ gives the first equality. For $\sigma>1$, $\sum_nd(n)n^{-s}=\zeta(s)^2$ (Volume~4, Proposition~10.2), so $\mathcal MG(s)=\Gamma(s)\zeta(s)^2$. As
@@ -725,27 +428,11 @@ $\operatorname{Res}\Gamma=-1$ and $\zeta(-1)^2=\frac1{144}$ (Volume~4, Theorem~1
 \section*{Sources and further reading}
 \addcontentsline{toc}{section}{Sources and further reading}
 
-C.~Jordan, \emph{Cours d'analyse de l'\'Ecole polytechnique}, vol.~3 (Gauthier-Villars, 1887); O.~Veblen, ``Theory of plane curves in non-metrical analysis situs'', \emph{Trans.\ Amer.\ Math.\ Soc.}
-6 (1905), 83--98; W.~F.~Osgood, ``A Jordan curve of positive area'', \emph{Trans.\ Amer.\ Math.\ Soc.} 4 (1903), 107--112. T.~C.~Hales, ``The Jordan curve theorem, formally and informally'', \emph{Amer.\ Math.\
-Monthly} 114 (2007), 882--894, tells the history and the computer verification, and his ``Jordan's proof of the Jordan curve theorem'', \emph{Studies in Logic, Grammar and Rhetoric}
-10(23) (2007), 45--60, rehabilitates Jordan. H.~von Koch's snowflake is in \emph{Arkiv f\"or Mat., Astron.\ och Fys.} 1 (1904), 681--702. The Lakes of Wada are in L.~E.~J.~Brouwer, ``Zur Analysis
-Situs'', \emph{Math.\ Ann.} 68 (1910), 422--434; for Schoenflies's theorem see C.~Thomassen, ``The Jordan--Sch\"onflies theorem and the classification of surfaces'', \emph{Amer.\ Math.\ Monthly} 99
-(1992), 116--130. The proof given here is R.~Maehara, ``The Jordan curve theorem via the Brouwer fixed point theorem'', \emph{Amer.\
-Math.\ Monthly} 91 (1984), 641--643.
-
 J.~D.~Dixon, ``A brief proof of Cauchy's integral theorem'', \emph{Proc.\ Amer.\ Math.\ Soc.} 29 (1971), 625--626. E.~Phragm\'en and E.~Lindel\"of, ``Sur une extension d'un principe classique de
 l'analyse'', \emph{Acta Math.} 31 (1908), 381--406. Phragm\'en's discovery of the error in Poincar\'e's prize memoir is told in J.~Barrow-Green, \emph{Poincar\'e and the Three
 Body Problem} (AMS and LMS, 1997). J.~Hadamard, ``\'Etude sur les propri\'et\'es des fonctions enti\`eres et en particulier d'une fonction consid\'er\'ee par Riemann'', \emph{J.\ Math.\
 Pures Appl.} (4) 9 (1893), 171--215. For the Lindel\"of hypothesis and the subconvexity record: J.~Bourgain, ``Decoupling, exponential sums and the Riemann zeta function'', \emph{J.\ Amer.\ Math.\
 Soc.} 30 (2017), 205--224; and E.~C.~Titchmarsh, \emph{The Theory of the Riemann Zeta-Function}, 2nd ed. (Oxford, 1986), Chapter~5.
-
-B.~Riemann, \emph{Grundlagen f\"ur eine allgemeine Theorie der Functionen einer ver\"anderlichen complexen Gr\"osse} (G\"ottingen, 1851); W.~F.~Osgood, ``On the existence of the Green's
-function for the most general simply connected plane region'', \emph{Trans.\ Amer.\ Math.\ Soc.} 1 (1900), 310--314; C.~Carath\'eodory, ``Untersuchungen \"uber die konformen Abbildungen von
-festen und ver\"anderlichen Gebieten'', \emph{Math.\ Ann.} 72 (1912), 107--144; P.~Montel, ``Sur les suites infinies de fonctions'', \emph{Ann.\
-Sci.\ \'Ec.\ Norm.\ Sup.} 24 (1907), 233--334; T.~Rad\'o, ``\"Uber die Fundamentalabbildung schlichter Gebiete'', \emph{Acta Sci.\ Math.\ (Szeged)} 1 (1923), 240--251. The standard textbooks are
-L.~V.~Ahlfors, \emph{Complex Analysis}, 3rd ed. (McGraw-Hill, 1979), which uses Dixon's proof, and W.~Rudin, \emph{Real and Complex Analysis}, 3rd ed. (McGraw-Hill, 1987); E.~M.~Stein and
-R.~Shakarchi, \emph{Complex Analysis} (Princeton, 2003), is the liveliest. The history of the mapping theorem, with Koebe's and Fej\'er--Riesz's contributions, is in R.~Remmert,
-\emph{Classical Topics in Complex Function Theory} (Springer, 1998), Chapter~8.
 
 P.~Flajolet, X.~Gourdon and P.~Dumas, ``Mellin transforms and asymptotics: harmonic sums'', \emph{Theoret.\ Comput.\ Sci.} 144 (1995), 3--58, is the reference for Section~\ref{sec:mellin}; P.~Flajolet
 and G.~N.~Martin, ``Probabilistic counting algorithms for data base applications'', \emph{J.\ Comput.\ System Sci.} 31 (1985), 182--209; P.~Flajolet, \'E.~Fusy, O.~Gandouet and F.~Meunier,
