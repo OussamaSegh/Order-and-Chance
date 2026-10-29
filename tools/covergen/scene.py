@@ -74,7 +74,13 @@ class Scene:
         for it in s.items:
             kind=it[0]
             if kind=='line':
-                _,P,w,op,col,glow=it; Q=T(P); Q=Q[rdp(Q,0.0012)]
+                _,P,w,op,col,glow=it
+                # Round before simplification so the kept points do not depend on
+                # ulps from NumPy's SIMD trig, which differ across CI runners.
+                Q=np.round(T(P),4)
+                if len(Q)>2:
+                    keep=np.ones(len(Q),bool); keep[1:]=np.any(np.diff(Q,axis=0)!=0,axis=1); Q=Q[keep]
+                Q=Q[rdp(Q,0.0012)]
                 groups.setdefault((col,round(w,3),round(op,3)),[]).append(fmt(Q))
                 if glow>0: halos.setdefault(('ocCoverCoral' if col!='ocCoverTitle' else 'ocCoverTitle',round(w,3),round(glow,2)),[]).append(fmt(Q))
             elif kind=='circle':

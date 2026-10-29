@@ -31,7 +31,9 @@ def flatten_art(source, output, directory):
             live = ((drawing.get('fill') is not None and 0 < drawing.get('fill_opacity', 1) < 1)
                     or (drawing.get('color') is not None and 0 < drawing.get('stroke_opacity', 1) < 1))
             if live:
-                margin = (drawing.get('width') or 0) / 2 + 2
+                # Stroke caps and MuPDF's redaction can leave a sliver just outside a
+                # tight path box. Pad enough to remove the whole transparent stroke.
+                margin = (drawing.get('width') or 0) + 12
                 rect = drawing['rect'] + (-margin, -margin, margin, margin)
                 bounds = rect if bounds is None else bounds | rect
         if bounds is not None:
