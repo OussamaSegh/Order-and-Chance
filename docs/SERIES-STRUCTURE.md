@@ -80,8 +80,8 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 11 | Stable Laws | Stable laws, Stein’s method, large deviations, concentration. The requested phrase “Stable Laws and Ergodic Theory” is split because the martingale chapter lies between them. |
 | 11 | Martingales and Ergodic Theory | Martingales through the harder problems |
 | 12 Random Motion | Brownian Motion | The Gaussian measure, paths |
-| 12 | Stochastic Calculus | Martingales through Lévy processes |
-| 12 | Networks and Random Matrices | Networks, expanders, and the random-matrix chapters, then the spectral appendices. The requested name was “Random Matrices”; the network chapters precede them. |
+| 12 | Stochastic Calculus | Martingales through Lévy processes, then the branching random walk and the largest values of a characteristic polynomial. |
+| 12 | Networks | Walks on graphs, resistance, and the matrix-tree theorem, then the Laplacian appendix. Expanders, the semicircle and the sine kernel are in Volume 8. |
 | 13 Arithmetic | Number Fields | Number fields through cyclotomic fields |
 | 13 | Local and Global | Local fields, the Hasse principle, zeta functions of number fields |
 | 13 | Adeles and Tate's Thesis | Tate’s thesis and class field theory |
