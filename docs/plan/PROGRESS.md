@@ -80,18 +80,18 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 3. Spaces: conditional expectation, and the almost-every chapter
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 2
 - **Books and files:** `volume7-spaces`. Promote conditional expectation, including the tower property, from the exercise in `chapters/ch10-radon.tex` to a numbered theorem. Retitle `chapters/ch12-harder.tex` to Almost every number, still inside Measures on Spaces.
 - **Acceptance:** Books 11 and 12 can cite the tower as a theorem of Book 7. The problem chapter's title is no longer "Harder problems". `./build.sh volume7-spaces`.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/29
-- **Merge sha:**
-- **Date:**
-- **Notes:** Do this before any edit to Randomness or Random Motion.
+- **Merge sha:** 832e24bed70693dba9b3aa48fbdc9406062a1eb1
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do this before any edit to Randomness or Random Motion.
 
 ### 4. Orders, from Chance to First Principles
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 3
 - **Books and files:** `volume4-chance/chapters/orders.tex` moves into `volume1-first-principles`, inside Algebra, Limits and Functions. Appendix B of Chance stays.
 - **Acceptance:** Dilworth, Sperner, and partial orders are in Book 1. Book 4's Random Structures no longer contains that appendix. Both books build.
