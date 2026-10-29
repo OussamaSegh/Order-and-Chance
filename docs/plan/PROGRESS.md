@@ -161,7 +161,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 9
 - **Books and files:** `volume9-shapes`. Fold the Euclid appendix: Ceva and the Euler line into the transformations appendix; the rest of that appendix leaves the main text. Mark the general de Rham sentence as the punctured-plane case. Rename the second curvature chapter so it is not a second "Curvature". Point the cubic group law at Book 13.
 - **Acceptance:** A reader of *The Geometry of Connection* does not meet a second chapter with the same title, or a Euclidean gallery that does not connect. `./build.sh volume9-shapes`.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/36
 - **Merge sha:**
 - **Date:**
 - **Notes:**
