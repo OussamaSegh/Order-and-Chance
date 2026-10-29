@@ -9,13 +9,23 @@ import sys
 from pathlib import Path
 
 
-def inline(path: Path) -> str:
+def inline(path: Path, root: Path | None = None) -> str:
+    # XeTeX resolves \\input from the book directory. A chapter that inputs a
+    # sibling via that book-relative path is resolved from the book root when
+    # the path is not next to the file that contains the command.
+    root = path.parent if root is None else root
     text = path.read_text(encoding="utf-8")
 
     def repl(m):
         target = path.parent / m.group(1)
         if target.suffix != ".tex":
             target = target.with_suffix(".tex")
+        if not target.exists():
+            alt = root / m.group(1)
+            if alt.suffix != ".tex":
+                alt = alt.with_suffix(".tex")
+            if alt.exists():
+                target = alt
         if target.name == "preamble.tex":
             target = target.with_name("epub-preamble.tex")
         if target.name == "figure-packages.tex":
@@ -23,7 +33,7 @@ def inline(path: Path) -> str:
         # A file whose first line is "% pdf-only" (PDF layout tweaks) is left out of the EPUB.
         if target.read_text(encoding="utf-8").startswith("% pdf-only"):
             return ""
-        return inline(target)
+        return inline(target, root)
 
     return re.sub(r"\\input\{([^}]*)\}", repl, text)
 
