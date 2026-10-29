@@ -91,22 +91,22 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 4. Orders, from Chance to First Principles
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 3
 - **Books and files:** `volume4-chance/chapters/orders.tex` moves into `volume1-first-principles`, inside Algebra, Limits and Functions. Appendix B of Chance stays.
 - **Acceptance:** Dilworth, Sperner, and partial orders are in Book 1. Book 4's Random Structures no longer contains that appendix. Both books build.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/30
-- **Merge sha:**
-- **Date:**
-- **Notes:**
+- **Merge sha:** 3335f6f01eea9a77ea9774c7f93aac3e91d16825
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. Do not re-implement the move.
 
 ### 5. Hidden worlds, from The Integers to Arithmetic
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 4
 - **Books and files:** `volume2-integers` (`ch11-algebraic.tex`, `ch12-ideals.tex`, `ch12-padic.tex`) and `volume13-arithmetic`. Hensel's lemma for a congruence stays in Book 2. One section keeps \(6=2\cdot 3=(1+\sqrt{-5})(1-\sqrt{-5})\). While Arithmetic is open, read the repaired three-squares test in `ch07-hasse.tex` once.
 - **Acceptance:** Those three chapters are in Book 13's Number Fields and Local and Global parts. Book 2 still proves Pell, the Gaussian integers, and reciprocity. Apply the proposed part rename in `common/series-catalog.json`: Book 2, Part IV, **Equations and Characters**. Regenerate the series files from that catalog. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/31
 - **Merge sha:**
 - **Date:**
 - **Notes:** This is the only PR that renames Book 2's part.
