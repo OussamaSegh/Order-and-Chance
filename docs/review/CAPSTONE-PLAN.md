@@ -1,5 +1,12 @@
 # Capstone plan: Volume 14, *Order and Chance*
 
+This plan was written before the series was closed. The current catalog is
+Volumes 0–14 plus Crossroads. Volume 14 is *Order and Chance: Where Number
+Meets Randomness*. Part V and appendices A–L are inside that volume. There is
+no separate workshop volume and no second or third problem book. Sentences
+below that say the README still lists another title describe this plan’s
+starting point, not the present tree.
+
 *Where Number Meets Randomness.* This plan replaces the draft outline in the attached note and the unfinished book now on disk as `tome14-random` (*Random Arithmetic*, thirteen chapters, preface still “Preface to come”). It absorbs Volume 15, *The Research Workshop*, as Part V, and it assumes P2 and P3 will be folded into the main volumes by the restructuring already under way. It does not edit those sources.
 
 The printed book follows the series rule: one mathematical story, exercises with hints and complete solutions, no promise of a notebook inside the text. The notebooks listed below are author-facing companions, one per chapter, in `python/tome14/`. They are experiments, not citations.

@@ -1,5 +1,13 @@
 # Series review, October 2026
 
+This review scores the tree at commit `0419e16`. The current series is Volumes
+0–14 plus Crossroads. Volume 14 is *Order and Chance: Where Number Meets
+Randomness*. The workshop is Part V of that volume. Crossroads is the only
+problem book. The titles scored below as a fifteenth volume and as two further
+problem books are not in the catalog.
+
+
+
 Review of *Order and Chance* at commit `0419e16`, covering Volumes 2–13, Volume 15, and problem books P1–P3. Volumes 0 and 1 are excluded: other work is rewriting them. The new Volume 14, *Order and Chance: Where Number Meets Randomness*, is not reviewed as a book. A draft under the old title *Random Arithmetic* is on disk at `tome14-random/` (thirteen chapters, preface still the sentence “Preface to come”); the capstone plan treats that draft as a quarry. This review edits no book source.
 
 The audit read the flagship proofs, the statements of the named theorems, and a sample of solutions (the first and the last in each chapter, the short write-ups, and the solutions attached to any suspicious argument). It is a mathematician’s reading, not a line-by-line certification of every exercise in a corpus of this size. Findings below are ones that can be defended from the text. Each is marked **error** (the written argument asserts something false), **gap** (a correct theorem whose written proof misses a step), or **slip** (a wrong pointer, a mismatched name, or a sentence that overclaims).

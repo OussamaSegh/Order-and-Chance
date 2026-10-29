@@ -9,19 +9,24 @@ Volume 0 is **Mathematical Maturity**; its source stem is
 `tome0-mathematical-maturity`. Volume 9 is **Higher Structures**; its stem is
 `tome9-higher-structures`. Volume 14 is **Order and Chance**, subtitle
 *Where Number Meets Randomness*, stem `tome14-order-and-chance`. It keeps the
-Volume 14 slot. Its first thirteen chapters state the questions of arithmetic
-statistics; Part V and appendices A–L are the research workshop. Volume
+Volume 14 slot. Parts I–IV are the arithmetic. Eight chapters keep complete
+proofs; five openings cover short intervals, sieves, ranks, random matrices and
+the zeros, and pseudorandomness. Part V is the research workshop, twelve
+chapters, and appendices A–L are the conjecture case studies. Volume
 identifiers, ISBNs and editions of the surviving books are preserved.
 
-Crossroads (P1) is the only problem book. Machinery and Frontiers are not
-standalone books. Their written chapters sit at the end of the volumes whose
+Volume 1 closes with Dirichlet characters, Euler products and Legendre’s sieve.
+Volumes 0 and 2–13 include the corrected arguments from the October 2026 errata.
+
+Crossroads (P1) is the only problem book. The two further problem books are not
+in the series. Their written chapters sit at the end of the volumes whose
 tools they use:
 
 | Former chapter | New home |
 | --- | --- |
-| Machinery, Almost Every Number | Volume 6, Harder problems |
-| Machinery, Hilbert Spaces at Work | Volume 7, Harder problems |
-| Frontiers, Sums of Random Pieces | Volume 10, Harder problems |
+| Almost Every Number | Volume 6, Harder problems |
+| Hilbert Spaces at Work | Volume 7, Harder problems |
+| Sums of Random Pieces | Volume 10, Harder problems |
 
 Unpublished drafts that were never in those books were not added to a volume.
 

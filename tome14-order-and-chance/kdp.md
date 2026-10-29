@@ -10,7 +10,7 @@ The spectral part states Montgomery's pair correlation, the Keating–Snaith mom
 
 The volume ends with a workshop. One problem is followed through its whole life. Papers are read with their proofs: card shuffling, Selberg's theorem at many points, random groups, and Harper's theorem on random multiplicative functions. Experiments, heuristics, proof assistants and the writing of a proof each get a chapter, followed by open problems and projects. Twelve appendices are case studies of conjectures, from twin primes and the Riemann hypothesis to Collatz, the abc conjecture and Birch–Swinnerton-Dyer.
 
-Every workshop chapter proves what it uses and says where an earlier volume has already proved the rest. The thirteen opening chapters state the classical theorems that frame the questions.
+Where Volumes 0–13 do not contain the argument, this volume proves it: Buchstab, Maier, the Erdős–Rankin gap bound, the Kubilius model, Selberg–Delange, Bohr–Jessen and Selberg's central limit theorem. Five chapters organise a question whose full argument is not proved here: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness. The workshop is Part V of this volume, not a separate book. Every workshop chapter proves what it uses and says where an earlier volume has already proved the rest.
 
 Written for curious minds with a taste for rigour, who read mathematics for the pleasure of understanding it.
 

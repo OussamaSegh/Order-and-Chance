@@ -51,20 +51,20 @@ on the download page and the [`books` release](https://github.com/OussamaSegh/Or
 | Volume | Title | Theme | Status |
 | --- | --- | --- | --- |
 | 0 | Mathematical Maturity | The core toolkit, relearned through problems | Complete draft (8 chapters) |
-| 1 | The Integers | Elementary and algebraic number theory | Complete draft (12 chapters) |
+| 1 | The Integers | Elementary and algebraic number theory, through Dirichlet characters | Complete (14 chapters) |
 | 2 | Structures | Groups, rings, fields, Galois, representations | Complete draft (12 chapters + 13 appendices) |
 | 3 | Chance | Probability and combinatorial foundations | Complete draft (12 chapters + 2 appendices) |
 | 4 | The Art of Calculation | Series, integrals, special functions, asymptotics | Complete draft (12 chapters) |
 | 5 | Where It All Meets | Analytic and probabilistic number theory | Complete draft (12 chapters) |
-| 6 | Spaces | Sets, topology, measure and integration | Complete (12 chapters) |
-| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (11 chapters) |
+| 6 | Spaces | Sets, topology, measure and integration | Complete (12 chapters, ending with harder problems) |
+| 7 | Analysis in Depth | Functional, harmonic and complex analysis | Complete (11 chapters, ending with harder problems) |
 | 8 | Shapes | Manifolds, algebraic topology, Lie groups and geometry | Complete (10 chapters + 12 appendices) |
 | 9 | Higher Structures | Categories, commutative and homological algebra, representations | Complete (11 chapters) |
-| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (13 chapters) |
+| 10 | Chance II | Graduate probability: limit theorems, large deviations, concentration, ergodic theory | Complete (13 chapters, ending with harder problems) |
 | 11 | Random Motion | Brownian motion, stochastic calculus, random walks, random matrices | Complete (12 chapters + 2 appendices) |
 | 12 | Arithmetic | Algebraic number theory, elliptic curves, modular forms | Complete (14 chapters) |
 | 13 | Primes in Depth | Analytic and additive number theory | Complete (14 chapters) |
-| 14 | Order and Chance | Where number meets randomness: arithmetic statistics and a research workshop | In progress (13 opening chapters, 12 workshop chapters, 12 appendices) |
+| 14 | Order and Chance: Where Number Meets Randomness | Arithmetic statistics, then a research workshop | Parts I–IV (eight chapters proved in full, five openings), Part V (12 chapters), appendices A–L |
 | P1 | Crossroads | 300 harder problems across Volumes 0–5, by meeting points, with full solutions | Complete (14 chapters, 300 problems) |
 
 Volumes 0–14 tell one mathematical story:
@@ -79,7 +79,19 @@ Linear algebra is part of Structures (appendices A–M), geometry is part of Sha
 (appendices A–L). Chance includes the combinatorial foundations in appendices A–B;
 Random Motion contains its spectral graph and random-matrix prerequisites in
 appendices A–B. Spaces, Analysis in Depth and Chance II each end with a chapter of
-harder problems. Crossroads is the problem book for Volumes 0–5.
+harder problems. Crossroads is the only problem book, for Volumes 0–5.
+There is no Volume 15 and no second or third problem book.
+
+Volume 1’s last chapter is Dirichlet characters, Euler products and Legendre’s sieve,
+with the figures and arguments of that upgrade in the earlier chapters.
+Volume 0, and Volumes 2–13, include the corrected arguments and the sentences
+that say what is proved. Volume 14 keeps those proofs under its own chapter titles:
+Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and
+Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments,
+Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias.
+The five openings are primes in short intervals, sieves, ranks of elliptic curves,
+random matrices and the zeros, and pseudorandomness. Public download names are
+`Volume N - Title` and `Problem Book 1 - Crossroads`.
 
 ## Design and future sessions
 

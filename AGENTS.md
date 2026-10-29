@@ -78,14 +78,13 @@ This supersedes the earlier assumption that all geometry must keep one pose.
 Fonts, title/subtitle rules, identity, palette and luminous vector material remain
 shared. `tools/assets/cover-art-direction.json` records the separate rotations,
 centres, scale and clearance; the shared renderer still supplies one material and
-camera. See `docs/COVER-ART-DIRECTION.md` for all nineteen decisions and chapter
+camera. See `docs/COVER-ART-DIRECTION.md` for all sixteen decisions and chapter
 connections. Volume 0 and the approved Volume-2 composition remain references.
 
 Keep the Sierpiński carpet and actual Plancherel Young diagram consistent with
-references inside the books. Chance's Galton sculpture differs from Volume 0;
-Machinery uses the exact Sobolev reproducing kernel from its Hilbert-space chapter;
-Crossroads uses a roots-of-unity star instead of repeated prime pyramids; Workshop
-uses the exact inverse Collatz tree. Incidental obsolete cover references may be
+references inside the books. Chance's Galton sculpture differs from Volume 0.
+Crossroads uses a roots-of-unity star instead of repeated prime pyramids.
+Volume 14 keeps the Steinhaus plate. Incidental obsolete cover references may be
 corrected without changing mathematical content. Preserve the concurrent semantic
 box-colour/frame correction from `8135b0b` and its tests.
 
@@ -106,14 +105,11 @@ hidden rear edges or rasterize artwork. Fit complete silhouettes and their halos
 inside the common illustration viewport.
 
 Chance now uses a shallow Galton/Pascal lattice feeding exact binomial columns,
-replacing its Gaussian-like hill. Machinery uses an orthogonal-coordinate saddle
-from a symmetric quadratic form, replacing its near-duplicate arithmetic torus.
+replacing its Gaussian-like hill. Volume 14 keeps the Steinhaus plate.
 The rest of the cover typography, identity and all interior content stay intact.
-Research Workshop uses a legible seven-generation space-time branching tree instead
-of the earlier dense spatial bundle. Its mathematical subject is retained.
 
 
-## Latest decision: one locked Volume-0 master for all 19 covers
+## Latest decision: one locked Volume-0 master for all sixteen covers
 
 The author now requires **100% series coherence**, with only the title (including
 its own subtitle), volume number and illustration varying. The subtitle must stay

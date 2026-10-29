@@ -1,7 +1,7 @@
 # Mathematical cover illustrations
 
-Volumes 0, 1 and 2 use their exact approved images unchanged. The other sixteen illustrations
-use the coordinated charcoal/coral vector style. Each cover has
+Volumes 0, 1 and 2 use their exact approved images unchanged. The other thirteen illustrations
+use the coordinated charcoal/coral vector style. The series has sixteen fronts. Each cover has
 one substantial main plate tied to its own mathematics, without a top supporting mark.
 The table identifies the main subject and manuscript evidence; the generator
 records exact parameters and seeds. Finite simulations illustrate mathematics;

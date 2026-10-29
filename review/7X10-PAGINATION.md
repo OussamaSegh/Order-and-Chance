@@ -58,8 +58,8 @@ proofs after installing TeX; all **34 publishing tests pass** locally.
   following text, avoiding false positives from extraction order.
 - Every Volume 0 page was inspected in contact sheets; its revised first two
   chapters and front matter were checked again in the final 239-page proof.
-  Representative exercise/hint/solution pages across all nineteen books, enlarged
-  reformatted Machinery displays and the final Volume 0 paperback wrap were inspected.
+  Representative exercise/hint/solution pages across the series, enlarged
+  displays, and the final Volume 0 paperback wrap were inspected.
 - Shell syntax, layout/metadata synchronization and `git diff --check` pass.
 
 These automated checks cover all pages; the visual review is exhaustive at contact
