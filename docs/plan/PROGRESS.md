@@ -172,7 +172,7 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 - **Depends on:** 10
 - **Books and files:** `volume14-primes` (`ch06-partitions.tex`, the Waring half of `ch07-waring.tex`) and `volume5-calculation`, Series and Products. Three primes stays in Additive Problems and Bounded Gaps.
 - **Acceptance:** The Hardy–Ramanujan asymptotic and Waring for large \(s\) are in Book 5. Book 14's part name stays Additive Problems and Bounded Gaps. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/38
 - **Merge sha:**
 - **Date:**
 - **Notes:** Do not rename Book 14's part.
