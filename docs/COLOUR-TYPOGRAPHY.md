@@ -19,8 +19,8 @@ families, figure palette, inline fractions) is described in
 [design/interior.md](design/interior.md). Font files, licences, provenance
 and SHA-256 hashes are bundled in `common/fonts/`; builds use these files rather
 than system-installed substitutes. PDF/figure typesetting uses XeLaTeX. EPUB
-embeds the original faces; the online reader serves the same OTF/TTF files (WOFF2
-versions of the new faces are still to be made). Reading devices
+embeds the original faces; the online reader and the site serve WOFF2 companions
+of the same files (Garamond-Math has none). Reading devices
 can override EPUB typography.
 
 ## Colour roles

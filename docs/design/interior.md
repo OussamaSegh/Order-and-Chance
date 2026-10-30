@@ -195,21 +195,24 @@ the stacked form inline.
 
 `tools/epub.css` and `tools/reader.css` follow the same system:
 
-- EB Garamond body, Cormorant headings, Fira labels and Garamond-Math for MathML;
-- formal boxes with the tint and a coral top rule; teaching boxes with a 2 pt charcoal
-  left bar;
-- coral only on rules and numbers;
-- the chapter opener becomes a charcoal band: each chapter heading (`h1`) starts a new
-  page (EPUB) on a charcoal block with an ivory Cormorant title and its number in light
-  coral (`#FF8A78`, the on-charcoal coral). The online reader uses the same band at the
-  top of each chapter page. The cover illustration motif stays print-only.
+- EB Garamond body, Cormorant headings and numerals, Fira capitals for labels, and
+  Garamond-Math for MathML in the EPUB (the reader sets mathematics with KaTeX);
+- part pages and chapter openers are charcoal panels with the masthead, the coral
+  numeral, the ivory title, the coral rule and the epigraph; chapter openers also show
+  the volume's cover illustration, rendered by `tools/opener_motif.py`
+  (`tools/opener-motif.tex`, called by `build.sh`) and placed by `tools/epub.lua`;
+  `tools/epub_prep.py` turns `\part` into a marker so chapters stay chapters;
+- formal boxes with the 8% charcoal tint under a coral rule; teaching boxes with a 2 pt
+  charcoal bar; Fira labels with coral numbers; the coral end-of-proof diamond;
+- coral only on rules, numerals, numbers and diamonds. The reader keeps its dark theme.
 
 The project site (`tools/site-template.html`, built by `tools/site.py`) uses the same
-faces: EB Garamond text, Cormorant headings, Fira for the brand, labels and buttons,
-charcoal ink `#151516` and ocCoralDeep `#A34232` for the accent.
+faces: EB Garamond text, Cormorant headings and card titles, Fira for the brand, meta
+lines and buttons, charcoal ink `#151516` and ocCoralDeep `#A34232` for the accent.
 
-The EPUB embeds the OTF/TTF files from `common/fonts/`. `tools/reader.py` copies them
-for the reader. WOFF2 versions of the new faces have not been made yet.
+The EPUB embeds the OTF/TTF files from `common/fonts/`. The reader and the site serve
+the WOFF2 companions (fontTools conversions of the same files, see
+`common/fonts/README.md`); Garamond-Math has no WOFF2.
 
 ## Checks
 
