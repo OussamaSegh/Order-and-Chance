@@ -33,7 +33,7 @@ This pull request stacks the six remaining chapter rewrites, in this order, for 
 
 After this stack squash-merges, the next work is a global consistency review of the whole of Volume 1. Do not start that review before the merge. Do not start a new chapter rewrite.
 
-Author-approved preface replacement, left open for review. Oussama approved a new body for `volume1-first-principles/chapters/preface.tex`. That file is the only chapter change. Step 1 stays DONE. The pull request is on branch `cursor/volume1-preface-approved-8f79`. It does not reopen steps 0–12, does not start Volume 2, and does not start or edit the global consistency review. That review still follows the stack of steps 7–12. Archive step 13 is unchanged.
+Author-approved preface replacement, left open for review. Oussama approved a new body for `volume1-first-principles/chapters/preface.tex`. That file is the only chapter change. Step 1 stays DONE. The pull request is https://github.com/OussamaSegh/Order-and-Chance/pull/71, branch `cursor/volume1-preface-approved-8f79`. It does not reopen steps 0–12, does not start Volume 2, and does not start or edit the global consistency review. That review still follows the stack of steps 7–12. Archive step 13 is unchanged.
 
 ## Resume protocol
 
