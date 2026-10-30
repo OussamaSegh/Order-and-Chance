@@ -31,7 +31,7 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 - **#60, probability, step 11.** https://github.com/OussamaSegh/Order-and-Chance/pull/60. Branch `cursor/probability-chapter-ac3e`. Reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Author agent `bc-1faa35de`. Independent review: MERGE. Landed in #67, with the figure label `fig:pairsigns`.
 - **#61, field guide, step 12.** https://github.com/OussamaSegh/Order-and-Chance/pull/61. Branch `cursor/volume1-field-guide-4cf2`. Reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Author agent `bc-31e0beff`. Independent review: MERGE. Landed in #67.
 
-The open work is step 13, the global consistency review of the whole of Volume 1. Do not start a new chapter rewrite. Do not start Volume 2.
+The open work is step 13, the global consistency review of the whole of Volume 1: https://github.com/OussamaSegh/Order-and-Chance/pull/69. Do not start a new chapter rewrite. Do not start Volume 2.
 
 ## Resume protocol
 
@@ -196,7 +196,7 @@ The open work is step 13, the global consistency review of the whole of Volume 1
 - **Depends on:** 12
 - **Books and files:** the reader-facing text of `volume1-first-principles` (preface, chapters, field guide) and this progress file. No new chapter. No other volume.
 - **Acceptance:** Cross-references resolve, chapter closings hand to the next opening, the field guide names Volume 2 by its current title and subtitle, labels stay unique, and the prose that changed still matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/69
 - **Merge sha:**
 - **Date:**
 - **Notes:** The chapters are merged. This pull request is the global consistency pass: handoffs, findable pointers, and the Volume 2 door. It does not redraft a chapter that already returned MERGE. Do not start Volume 2 until this step is DONE.
