@@ -63,10 +63,10 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 - **Depends on:** 3
 - **Books and files:** `volume1-first-principles/chapters/ch05-sequences-series.tex`. Sequences, series, limits.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/55
 - **Merge sha:**
 - **Date:**
-- **Notes:** Sequences, series, and limits. Profound pass: concrete partial sums first, floor and $\sqrt2$ from completeness, new figures for Zeno, Grandi, the floor, the integral test and uniform continuity.
+- **Notes:** Sequences, series, and limits. Profound pass: concrete partial sums first, floor and the positive square root of 2 from completeness, new figures for Zeno, Grandi, the floor, the integral test and uniform continuity.
 
 ### 5. Orders
 
