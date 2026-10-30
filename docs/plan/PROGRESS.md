@@ -1,50 +1,79 @@
 # Volume 1 voice rewrite
 
-This file is the live execution tracker for the Volume 1 rewrite. The book is `volume1-first-principles`. One chapter, or the named pilot pair, is one pull request, written in the shared voice.
+This file is the live execution tracker for the Volume 1 rewrite in the human voice. The book is `volume1-first-principles`. The remake starts at the jacket.
 
-Each rewrite step is a profound pass, with liberty to reorder for clarity and to add figures, photos, history points, and math jokes that teach, not a thin copyedit.
+Resume order, one step at a time:
 
-The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md). The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each pull request independently. After it merges, the next chapter starts.
+0. Cover copy (blurb and About the Cover)
+1. Preface and language
+2. Sums, binomials, induction
+3. Counting and discrete reasoning
+4. Sequences, series, limits
+5. Orders
+6. Complex numbers and roots
+7. Polynomials
+8. Linear algebra
+9. Integrals and Taylor
+10. Inequalities
+11. Probability
+12. Field guide
+
+A first pass of steps 1 and 2 was merged. That pass is not the resume target. The human-voice remakes are already open: [#51](https://github.com/OussamaSegh/Order-and-Chance/pull/51) for the preface and the language chapter, and [#50](https://github.com/OussamaSegh/Order-and-Chance/pull/50) for sums. Continue those pull requests. Do not open a second one for the same step. Counting's first pass merged in [#47](https://github.com/OussamaSegh/Order-and-Chance/pull/47). Its human-voice pass is the open pull request [#53](https://github.com/OussamaSegh/Order-and-Chance/pull/53). Continue #53. Do not open another counting pull request.
+
+Each later step is a profound pass, with liberty to reorder for clarity and to add figures, photos, history points, and math jokes that teach, not a thin copyedit.
+
+The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md). The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each pull request independently. After it merges, the next step in the resume order starts.
 
 Edition 1 catalog and content moves, old steps 0–21, are finished. They are kept in [Archive: Edition 1 plan (complete)](#archive-edition-1-plan-complete) at the bottom of this file. That archive is not the resume target.
 
-Chapter order follows the `\input` order in `volume1-first-principles/main.tex`. Image credits and the cover note are not rewrite steps.
+Chapter order follows the `\input` order in `volume1-first-principles/main.tex`. Image credits are not a rewrite step. The cover note is step 0.
 
 ## Resume protocol
 
 1. Read this file. Find the first Volume 1 rewrite step whose status is not DONE.
 2. If that step is IN REVIEW or IN PROGRESS, continue its pull request. Do not open a second pull request for the same step.
 3. If that step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it.
-4. One step is one pull request and one chapter file. The exception is step 1, the pilot, which combined `chapters/preface.tex` and `chapters/ch00-language.tex`.
+4. One step is one pull request and one chapter file. Step 0 is the jacket: `blurb.tex`, `about-the-cover.tex`, and the Volume 1 entry in `common/cover-notes.json`. Step 1 is the preface and the language chapter, already open as #51.
 5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge.
 6. The editor marks the row DONE, with the merge sha and the date, after the pull request merges. If the editor has not done that when the next step starts, the next step's pull request fills the previous row from the merge commit.
-7. Do not start step \(n+1\) while step \(n\) is TODO, IN PROGRESS, or IN REVIEW.
-8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, fact-check notes in the pull request, `git diff --check`, and a Volume 1 typeset and layout check. Run `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did.
-9. Scope is the assigned chapter file or files under `volume1-first-principles/`, plus figures that chapter needs. Do not edit other volumes in that pull request.
+7. Do not start step \(n+1\) while step \(n\) is TODO, IN PROGRESS, or IN REVIEW. Steps 1, 2 and 3 are already open. Do not open replacements, and do not start step 4 while any earlier step is open.
+8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, fact-check notes in the pull request, and `git diff --check`. A chapter step also needs a Volume 1 typeset and layout check: `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did. Step 0 checks the cover note (80 to 150 words), `python3 tools/series_cover.py --check`, and the back-cover measure.
+9. Scope is the assigned file or files under `volume1-first-principles/`, plus the cover-note source when the step is the jacket, plus figures that a chapter needs. Do not edit other volumes in that pull request.
 
 ## Steps
 
+### 0. Cover copy
+
+- **Status:** IN REVIEW
+- **Depends on:** none
+- **Books and files:** `volume1-first-principles/blurb.tex`, `volume1-first-principles/about-the-cover.tex`, and the Volume 1 text in `common/cover-notes.json`. The TeX colophon is generated from that JSON. Jacket copy only. No chapter rewrite.
+- **Acceptance:** Both texts match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. The cover note is 80 to 150 words. `python3 tools/series_cover.py --check` passes. The back-cover blurb fits the shared measure.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Human-voice remake of the back cover and About the Cover. Left open for Nori.
+
 ### 1. Preface and language
 
-- **Status:** DONE
-- **Depends on:** none
-- **Books and files:** `volume1-first-principles/chapters/preface.tex` and `volume1-first-principles/chapters/ch00-language.tex`. Pilot; both files in one pull request.
+- **Status:** IN REVIEW
+- **Depends on:** 0
+- **Books and files:** `volume1-first-principles/chapters/preface.tex` and `volume1-first-principles/chapters/ch00-language.tex`. Both files in one pull request.
 - **Acceptance:** Both files match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
-- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/43
-- **Merge sha:** 0212bbee89ccb4e7fb291a2c20b18be724eb3949
-- **Date:** 2026-10-30
-- **Notes:** Pilot. Preface and the language chapter shipped together.
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/51
+- **Merge sha:**
+- **Date:**
+- **Notes:** Human-voice remake, already in flight. Continue #51. Do not open a second pull request. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. That merge is not the resume target.
 
 ### 2. Sums, binomials, induction
 
-- **Status:** DONE
+- **Status:** IN REVIEW
 - **Depends on:** 1
 - **Books and files:** `volume1-first-principles/chapters/ch01-sums.tex`. Sums, binomials, induction.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
-- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/46
-- **Merge sha:** 69d90ccedce7f02ac26b8737fd09a88bc8459215
-- **Date:** 2026-10-30
-- **Notes:** Sums, binomials, and induction.
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/50
+- **Merge sha:**
+- **Date:**
+- **Notes:** Human-voice remake, already in flight. Continue #50. Do not open a second pull request. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/46 at `69d90ccedce7f02ac26b8737fd09a88bc8459215` on 2026-10-30. That merge is not the resume target.
 
 ### 3. Counting and discrete reasoning
 
@@ -52,10 +81,10 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 - **Depends on:** 2
 - **Books and files:** `volume1-first-principles/chapters/ch02-counting.tex`. Counting and discrete reasoning.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
-- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/47
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/53
 - **Merge sha:**
 - **Date:**
-- **Notes:** Continue this pull request. Do not open a second one for this chapter.
+- **Notes:** Human-voice pass, already in flight. Continue #53. Do not open a second pull request. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/47 at `83dff2be79404b68ee6c45d620ee574432302c4e` on 2026-10-30. That merge is not the resume target.
 
 ### 4. Sequences, series, limits
 
