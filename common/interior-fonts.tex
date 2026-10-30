@@ -1,28 +1,48 @@
-% Shared, bundled text and mathematical faces for XeLaTeX interiors and figures.
+% Interior typefaces (design 5e; see docs/design/interior.md). All files are bundled in
+% common/fonts/ with their OFL licences; builds never fall back to system fonts.
+%   EB Garamond      body text, italic notes          (11 pt class x 1.05 = 11.5 pt)
+%   Garamond-Math    mathematics                      (same scale as the text)
+%   Cormorant Garamond  chapter/section titles, opener numerals and masthead
+%   Fira Sans        small labels, running heads, captions (Book and Medium)
+%   DejaVu Sans Mono code and Lean's Unicode symbols
 \usepackage{fontspec}
 \usepackage[math-style=TeX,bold-style=TeX]{unicode-math}
-\IfFileExists{../common/fonts/STIXTwoText-Regular.otf}
+\IfFileExists{../common/fonts/EBGaramond-Regular.otf}
   {\def\ocFontPath{../common/fonts/}}
   {\def\ocFontPath{common/fonts/}}
-\setmainfont{STIXTwoText-Regular.otf}[
-  Path=\ocFontPath,BoldFont=STIXTwoText-Bold.otf,
-  ItalicFont=STIXTwoText-Italic.otf,BoldItalicFont=STIXTwoText-BoldItalic.otf,
-  Ligatures=TeX]
-\setsansfont{InterText-Regular.ttf}[
-  Path=\ocFontPath,BoldFont=InterText-SemiBold.ttf,
-  ItalicFont=InterText-Italic.ttf,BoldItalicFont=InterText-SemiBoldItalic.ttf,
+\def\ocScale{1.05}
+\setmainfont{EBGaramond-Regular.otf}[
+  Path=\ocFontPath,BoldFont=EBGaramond-SemiBold.otf,
+  ItalicFont=EBGaramond-Italic.otf,BoldItalicFont=EBGaramond-SemiBoldItalic.otf,
+  Ligatures={TeX,Common},Numbers=Lining,Scale=\ocScale]
+\setsansfont{FiraSans-Book.otf}[
+  Path=\ocFontPath,BoldFont=FiraSans-Medium.otf,
+  ItalicFont=FiraSans-BookItalic.otf,BoldItalicFont=FiraSans-MediumItalic.otf,
   Ligatures=TeX]
 \setmonofont{DejaVuSansMono.ttf}[
   Path=\ocFontPath,BoldFont=DejaVuSansMono-Bold.ttf,
   ItalicFont=DejaVuSansMono-Oblique.ttf,BoldItalicFont=DejaVuSansMono-BoldOblique.ttf,
   Scale=MatchLowercase]
-\setmathfont{STIXTwoMath-Regular.otf}[Path=\ocFontPath]
-% Use the font's Unicode bold alphabet for legacy vector notation, rather than
-% requesting a nonexistent separate bold font through amsmath's boldsymbol.
+% Stylistic sets 1 and 2: the upright partial and the roman-style integral of Garamond-Math.
+\setmathfont{Garamond-Math.otf}[Path=\ocFontPath,StylisticSet={1,2},Scale=\ocScale]
+% Legacy vector notation uses the Unicode bold alphabet rather than a separate bold math font.
 \renewcommand{\boldsymbol}[1]{\symbf{#1}}
 \def\blacksquare{\mdlgblksquare}
+% Garamond-Math has no music signs; take them from the bundled DejaVu Sans Mono.
+\newfontfamily\ocMusicFont{DejaVuSansMono.ttf}[Path=\ocFontPath]
+\AtBeginDocument{%
+  \renewcommand{\flat}{{\text{\ocMusicFont\symbol{"266D}}}}%
+  \renewcommand{\natural}{{\text{\ocMusicFont\symbol{"266E}}}}%
+  \renewcommand{\sharp}{{\text{\ocMusicFont\symbol{"266F}}}}}
 
-% Exact display faces already used by the approved covers.
-\newfontfamily\ocCoverDisplay{Inter-Light.ttf}[
- Path=\ocFontPath,BoldFont=Inter-SemiBold.ttf,ItalicFont=Inter-LightItalic.ttf,
- BoldItalicFont=InterDisplay-SemiBoldItalic.ttf]
+% Display and label faces.
+\newfontfamily\ocDisplay{CormorantGaramond-SemiBold.ttf}[
+  Path=\ocFontPath,ItalicFont=CormorantGaramond-SemiBoldItalic.ttf,
+  BoldFont=CormorantGaramond-SemiBold.ttf,BoldItalicFont=CormorantGaramond-SemiBoldItalic.ttf,
+  Numbers=Lining,WordSpace=1.3]
+\newfontfamily\ocNumeral{CormorantGaramond-Light.ttf}[Path=\ocFontPath,Numbers=Lining]
+\newfontfamily\ocBook{FiraSans-Book.otf}[Path=\ocFontPath,ItalicFont=FiraSans-BookItalic.otf]
+\newfontfamily\ocMed{FiraSans-Medium.otf}[Path=\ocFontPath,ItalicFont=FiraSans-MediumItalic.otf]
+\newfontfamily\ocItal{EBGaramond-Italic.otf}[Path=\ocFontPath,Numbers=Lining,Scale=\ocScale]
+% Former name of the heading face; figures and older macros that ask for it get Cormorant.
+\let\ocCoverDisplay\ocDisplay
