@@ -18,7 +18,7 @@ class CoverExportTest(unittest.TestCase):
         path = Path(directory) / 'cover.pdf'
         doc = pymupdf.open()
         page = doc.new_page(width=504, height=720)
-        page.insert_font(fontname='inter', fontfile=str(ROOT / 'common/fonts/Inter-SemiBold.ttf'))
+        page.insert_font(fontname='inter', fontfile=str(ROOT / 'tools/assets/fonts/Inter-SemiBold.ttf'))
         page.insert_text((54, 80), 'Cover typography', fontname='inter', fontsize=24)
         page.draw_rect(rectangle, color=(.9, .3, .2), fill=(.9, .3, .2), fill_opacity=.4, stroke_opacity=.4)
         doc.save(path)

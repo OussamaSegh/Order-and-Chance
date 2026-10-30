@@ -11,13 +11,13 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def check(path):
     fonts = subprocess.check_output(['pdffonts', str(path)], text=True)
-    for family in ('STIXTwoText', 'STIXTwoMath', 'Inter-'):
+    for family in ('EBGaramond-', 'Garamond-Math', 'CormorantGaramond-', 'FiraSans-'):
         if family not in fonts:
             raise ValueError(f'{path}: missing interior font family {family}')
     palette = dict(re.findall(r'\\definecolor\{([^}]+)\}\{HTML\}\{([0-9A-Fa-f]{6})\}',
                               (ROOT / 'common/design-colors.tex').read_text()))
     wanted = {name: tuple(int(palette[name][i:i + 2], 16) / 255 for i in (0, 2, 4))
-              for name in ('ocCoralDeep', 'ocInk', 'ocBlue')}
+              for name in ('ocCoral', 'ocCoralDeep', 'ocBlack')}
     pattern = rb'([0-9.]+)\s+([0-9.]+)\s+([0-9.]+)\s+(?:rg|RG)\b'
     found = set()
     for page in PdfReader(path).pages:
@@ -38,4 +38,4 @@ if __name__ == '__main__':
     parser.add_argument('pdf', type=Path)
     args = parser.parse_args()
     check(args.pdf)
-    print('Interior style checked: STIX Two text/math, cover Inter headings, charcoal, coral and blue accents')
+    print('Interior style checked: EB Garamond text, Garamond-Math, Cormorant headings, Fira Sans labels; charcoal and coral accents')

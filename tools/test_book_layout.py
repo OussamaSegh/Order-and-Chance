@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 class DiagnosticsTest(unittest.TestCase):
     def test_display_faces_match_the_approved_covers_and_font_manifest(self):
         fonts = ROOT / 'common/fonts'
-        for name in ('Inter-Light.ttf', 'Inter-SemiBold.ttf', 'Inter-LightItalic.ttf'):
+        for name in ('CormorantGaramond-SemiBold.ttf',):
             self.assertEqual((fonts / name).read_bytes(),
                              (ROOT / 'tools/assets/fonts' / name).read_bytes())
         manifest = json.loads((fonts / 'manifest.json').read_text())
@@ -122,12 +122,13 @@ class TypesetPaginationTest(unittest.TestCase):
                     self.assertEqual(len(path), 2, 'Only one straight rule is permitted per box')
                     self.assertAlmostEqual(path[0][0], path[1][0], places=3,
                                            msg='Unexpected horizontal or diagonal rule')
-                    self.assertAlmostEqual(state['width'], 72 / 72.27, places=3)
+                    self.assertAlmostEqual(state['width'], 2 * 72 / 72.27, places=3)
                     strokes.append(state['stroke'])
                     path = []
                 elif op == b'n':
                     path = []
-            expected = ['235E82', 'A34232', '22675B', '704B80', 'A34232']
+            # Teaching boxes: one 2pt charcoal bar on the left, no fill (docs/design/interior.md).
+            expected = ['151516'] * 5
             self.assertEqual(len(strokes), len(expected))
             for actual, colour in zip(strokes, expected):
                 for value, offset in zip(actual, (0, 2, 4)):
@@ -135,36 +136,52 @@ class TypesetPaginationTest(unittest.TestCase):
                                            delta=.003)
             check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
 
-    def test_whole_exercise_moves_and_reference_follows(self):
-        for problem in [False]:
-            with self.subTest(problem_book=problem), tempfile.TemporaryDirectory() as directory:
-                result = self.compile(directory, r'''
+    def test_whole_formal_box_moves_and_reference_follows(self):
+        # Formal boxes (theorem family) never split; teaching boxes may break.
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
 \setcounter{chapter}{1}\pagestyle{plain}
 Some preceding text.\par
 \vspace{0.7\textheight}
-\begin{exercise}[$\star$]\label{ex:moved}
+\begin{theorem}\label{thm:moved}
 Opening sentence.\par
 \rule{0pt}{0.25\textheight}Closing sentence.
+\end{theorem}
+\begin{theorem}\label{thm:next}The next statement.\end{theorem}
+See Theorem~\ref{thm:moved}.
+''', passes=2)
+            self.assertEqual(result.returncode, 0, result.stdout[-3000:])
+            aux = (Path(directory) / 'sample.aux').read_text()
+            self.assertIn(r'\newlabel{thm:moved}{{1.1}{2}', aux)
+            self.assertIn(r'\newlabel{thm:next}{{1.2}{2}', aux)
+            pdf = str(Path(directory) / 'sample.pdf')
+            second = subprocess.check_output(['pdftotext', '-f', '2', '-l', '2', pdf, '-'], text=True)
+            self.assertIn('Opening sentence.', second)
+            self.assertIn('Closing sentence.', second)
+            self.assertIn('THEOREM 1.1', second)
+            self.assertEqual(check(Path(directory) / 'sample.log',
+                                   Path(directory) / 'sample.oclayout')[0], 2)
+
+    def test_teaching_box_breaks_across_pages(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result = self.compile(directory, r'''
+\setcounter{chapter}{1}\pagestyle{plain}
+Some preceding text.\par
+\vspace{0.7\textheight}
+\begin{exercise}[$\star$]\label{ex:broken}
+''' + 'A long question that runs on for several lines of the measure. ' * 60 + r'''
 \end{exercise}
-\begin{exercise}\label{ex:next}The next question.\end{exercise}
-See Exercise~\ref{ex:moved}.
-''', problem_book=problem, passes=2)
-                self.assertEqual(result.returncode, 0, result.stdout[-3000:])
-                aux = (Path(directory) / 'sample.aux').read_text()
-                self.assertIn(r'\newlabel{ex:moved}{{1.1}{2}', aux)
-                self.assertIn(r'\newlabel{ex:next}{{1.2}{2}', aux)
-                pdf = str(Path(directory) / 'sample.pdf')
-                second = subprocess.check_output(['pdftotext', '-f', '2', '-l', '2', pdf, '-'], text=True)
-                self.assertIn('Opening sentence.', second)
-                self.assertIn('Closing sentence.', second)
-                self.assertIn(('Problem' if problem else 'Exercise') + ' 1.1', second)
-                self.assertEqual(check(Path(directory) / 'sample.log',
-                                       Path(directory) / 'sample.oclayout')[0], 2)
+''', passes=2)
+            self.assertEqual(result.returncode, 0, result.stdout[-3000:])
+            log = (Path(directory) / 'sample.log').read_text(errors='replace')
+            self.assertNotIn('Overfull', log)
+            pdf = str(Path(directory) / 'sample.pdf')
+            self.assertGreaterEqual(len(PdfReader(pdf).pages), 2)
 
     def test_box_taller_than_the_page_stops_typesetting(self):
         with tempfile.TemporaryDirectory() as directory:
             result = self.compile(directory,
-                                  r'\begin{reminder}\rule{0pt}{1.1\textheight}Too tall.\end{reminder}')
+                                  r'\begin{theorem}\rule{0pt}{1.1\textheight}Too tall.\end{theorem}')
             self.assertNotEqual(result.returncode, 0)
             self.assertIn('Box exceeds the 7x10 text height', result.stdout)
 
@@ -186,7 +203,7 @@ must stay with the solution heading above it.
             self.assertEqual(result.returncode, 0, result.stdout[-3000:])
             text = subprocess.check_output(['pdftotext', str(Path(directory) / 'sample.pdf'), '-'], text=True)
             pages = text.split('\f')
-            opening = next(p for p in pages if 'Solution of Exercise 1.1.' in p)
+            opening = next(p for p in pages if 'SOLUTION OF EXERCISE 1.1' in p)
             self.assertIn('This opening explanation', opening)
             check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
 
@@ -208,7 +225,7 @@ fill enough of the final measure to occupy more than one line.
             self.assertEqual(result.returncode, 0, result.stdout[-3000:])
             text = subprocess.check_output(['pdftotext', str(Path(directory) / 'sample.pdf'), '-'], text=True)
             page = next(p for p in text.split('\f') if 'Collected solutions' in p)
-            self.assertIn('Solution of Exercise 1.1.', page)
+            self.assertIn('SOLUTION OF EXERCISE 1.1', page)
             self.assertIn('The first explanation', page)
             check(Path(directory) / 'sample.log', Path(directory) / 'sample.oclayout')
 
@@ -243,7 +260,7 @@ The letter-pattern frieze $\textsf{VΛVΛ}$ keeps its upright Greek lambdas.
     def test_grayscale_override_is_rejected(self):
         with tempfile.TemporaryDirectory() as directory:
             result = self.compile(directory, r'''
-\colorlet{ocExercise}{black}\colorlet{ocReminder}{black}\colorlet{ocAccent}{black}
+\colorlet{ocCoral}{black}\colorlet{ocCoralDeep}{black}\colorlet{ocAccent}{black}
 \section*{Grayscale regression}
 \begin{exercise}Calculate $\int_0^1x^2\,\mathrm{d}x$.\end{exercise}
 \begin{reminder}A useful identity.\end{reminder}

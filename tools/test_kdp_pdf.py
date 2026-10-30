@@ -32,8 +32,8 @@ class PrintPreparationTest(unittest.TestCase):
         doc = pymupdf.open()
         for text in ['First page: x = 1.', 'Second page: y = 2.']:
             page = doc.new_page(width=504, height=720)
-            page.insert_font(fontname='stix', fontfile=str(ROOT / 'common/fonts/STIXTwoText-Regular.otf'))
-            page.insert_text((54, 80), text, fontname='stix', fontsize=11)
+            page.insert_font(fontname='ebgaramond', fontfile=str(ROOT / 'common/fonts/EBGaramond-Regular.otf'))
+            page.insert_text((54, 80), text, fontname='ebgaramond', fontsize=11)
             page.draw_rect((54, 100, 200, 150), color=(.1, .3, .5), fill=(.9, .95, 1))
         doc.save(native)
         doc.close()

@@ -153,7 +153,7 @@ def navigation(reader):
 def compare_pages(source, output, offset=0, ignore_rectangles=None):
     """Check visible content with two-sided ink coverage and colour comparison.
 
-    A one-pixel allowance at 72 dpi accommodates the different font antialiasing
+    A one-pixel allowance (72 dpi, or 200 dpi for a flattened raster page) accommodates the different font antialiasing
     of the two renderers. Raster pages require 600 dpi separately in preflight.
     """
     flattened, worst_mean, worst_ink = [], 0.0, 0.0
@@ -164,15 +164,18 @@ def compare_pages(source, output, offset=0, ignore_rectangles=None):
             before = original[index + offset]
             if before.rect != page.rect or before.rotation != page.rotation:
                 raise ValueError(f'PDF body differs in geometry on page {index + 1}')
-            a, b = before.get_pixmap(alpha=False), page.get_pixmap(alpha=False)
+            is_flat = bool(before.get_text().strip()) and not page.get_text().strip()
+            # A flattened page is a 600 ppi raster: compare it at 200 dpi, where the thin
+            # strokes of a Garamond text face are resolved by both renderers.
+            dpi = 200 if is_flat else 72
+            a, b = before.get_pixmap(alpha=False, dpi=dpi), page.get_pixmap(alpha=False, dpi=dpi)
             aa = np.frombuffer(a.samples, dtype=np.uint8).reshape(a.height, a.width, 3).astype(np.int16)
             bb = np.frombuffer(b.samples, dtype=np.uint8).reshape(b.height, b.width, 3).astype(np.int16)
-            is_flat = bool(before.get_text().strip()) and not page.get_text().strip()
             if is_flat:
                 flattened.append(index + 1)
             valid = np.ones(aa.shape[:2], dtype=bool)
             for rectangle in (ignore_rectangles or {}).get(index, []):
-                rect = pymupdf.Rect(rectangle).irect
+                rect = (pymupdf.Rect(rectangle) * (dpi / 72)).irect
                 valid[max(0, rect.y0 - 2):rect.y1 + 2, max(0, rect.x0 - 2):rect.x1 + 2] = False
             mean = float(np.abs(aa - bb)[valid].mean())
             masks = [(pixels.mean(axis=2) < 160) & (np.ptp(pixels, axis=2) < 40)
