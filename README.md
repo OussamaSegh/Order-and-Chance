@@ -2,7 +2,7 @@
 
 *The Hidden Architecture of Mathematics.* By SEGHAIER Oussama.
 
-Order and Chance is fifteen volumes on how structure and chance meet. Read them for the pleasure of finishing a proof, and for the work of becoming strong: the problems are graded, and the solutions are written out. You begin with foundations, then the bridges, where calculation meets the primes. After that come analysis and geometry, randomness, number, and the synthesis that gives the series its name.
+Order and Chance is fifteen volumes on how structure and chance meet. Read them for the pleasure of finishing a proof, and for the work of becoming strong: the problems are graded, and the solutions are written out. You begin with foundations, then the bridges, where calculation turns a formula into an estimate and arithmetic meets analysis. After that come analysis and geometry, randomness, number, and the synthesis that gives the series its name.
 
 ## Download the books
 
