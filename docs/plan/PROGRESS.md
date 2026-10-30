@@ -48,7 +48,7 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 - **Depends on:** none
 - **Books and files:** `volume1-first-principles/blurb.tex`, `volume1-first-principles/about-the-cover.tex`, and the Volume 1 text in `common/cover-notes.json`. The TeX colophon is generated from that JSON. Jacket copy only. No chapter rewrite.
 - **Acceptance:** Both texts match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. The cover note is 80 to 150 words. `python3 tools/series_cover.py --check` passes. The back-cover blurb fits the shared measure.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/54
 - **Merge sha:**
 - **Date:**
 - **Notes:** Human-voice remake of the back cover and About the Cover. Left open for Nori.
