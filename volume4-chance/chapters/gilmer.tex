@@ -1,0 +1,106 @@
+\section{Union-closed families}
+
+In 2022 Justin Gilmer proved a uniform positive lower bound on the largest frequency in a finite union-closed family, by comparing two entropies. In this section logarithms are natural. The entropy $H$ of the rest of the chapter is in bits, so the quantity used here is $(\ln 2)$ times that entropy; every comparison below is homogeneous of degree one and the base cancels in the frequency bound. For a random variable $X$ with finitely many values write $H(X)=\sum_xP(X=x)\ln\frac1{P(X=x)}$, and $h(p)=p\ln\frac1p+(1-p)\ln\frac1{1-p}$. By Proposition~\ref{prop:gibbs}, scaled by $\ln 2$, one has $H(X)\le\ln m$ if $X$ takes at most $m$ values, with equality for the uniform law.
+
+For random variables $X,Y$ with finitely many values, let $H(X\mid Y=y)$ be the entropy of the law of $X$ given $Y=y$, and
+$H(X\mid Y)=\sum_yP(Y=y)H(X\mid Y=y)$.
+
+\begin{lemma}\label{conjectures:lem:condent}
+\begin{enumerate}[label=(\alph*)]
+\item (Chain rule.) $H(X,Y)=H(Y)+H(X\mid Y)$, and $H(X_1,\dots,X_n)=\sum_{i=1}^nH(X_i\mid X_1,\dots,X_{i-1})$.
+\item (Conditioning reduces entropy.) $H(X\mid Y,W)\le H(X\mid Y)$. If $Y$ is a function of $W$, then $H(X\mid W)\le H(X\mid Y)$.
+\end{enumerate}
+\end{lemma}
+\begin{proof}
+(a) Write $P(X=x,Y=y)=P(Y=y)P(X=x\mid Y=y)$, take $\ln\frac1{\,\cdot\,}$, which turns the product into a sum, multiply by $P(X=x,Y=y)$ and add over
+$(x,y)$. The second formula follows by induction, applied to $(X_1,\dots,X_{n-1})$ and $X_n$.
+
+(b) Fix $y$, and let $\lambda_w=P(W=w\mid Y=y)$ and $q_w(x)=P(X=x\mid Y=y,W=w)$. Then $P(X=x\mid Y=y)=\sum_w\lambda_wq_w(x)$, and since
+$\eta(t)=t\ln\frac1t$ is concave on $[0,1]$ (its second derivative is $-\frac1t$), Jensen's inequality gives
+$\eta\bigl(\sum_w\lambda_wq_w(x)\bigr)\ge\sum_w\lambda_w\eta(q_w(x))$. Adding over $x$: $H(X\mid Y=y)\ge\sum_w\lambda_wH(X\mid Y=y,W=w)$. Multiply by
+$P(Y=y)$ and add over $y$. If $Y$ is a function of $W$, then conditioning on $(Y,W)$ is conditioning on $W$.
+\end{proof}
+
+Gilmer's idea is to take two independent uniform random sets $A,B$ in $\mathcal F$. Their union is again in $\mathcal F$, so it cannot have more entropy
+than $A$. But if all elements are rare, a union of two independent sets is more random than one set, because each element gets two chances. The whole
+proof is the comparison of these two entropies, coordinate by coordinate.
+
+\begin{theorem}[Gilmer's method]\label{conjectures:thm:gilmer}
+Suppose that $c>1$ is such that $\mathbb E\,h(UV)\ge c\,\mathbb E[U]\,\mathbb E\,h(U)$ for every pair of independent, identically distributed random
+variables $U,V$ with finitely many values in $[0,1]$. Then in every finite union-closed family $\mathcal F$ with at least two sets, some element has
+frequency at least $1-\frac1c$.
+\end{theorem}
+\begin{proof}
+Let the ground set be $\{1,\dots,n\}$ and identify a set with its indicator vector in $\{0,1\}^n$. Let $A,B$ be independent and uniform on $\mathcal F$,
+and $C=A\cup B$, with coordinates $C_i=\max(A_i,B_i)$. Write $A_{<i}=(A_1,\dots,A_{i-1})$, and similarly for $B$ and $C$. Suppose that every element has
+frequency at most $p$, and let us show that $c(1-p)\le1$.
+
+For a vector $a\in\{0,1\}^{i-1}$ with $P(A_{<i}=a)>0$, let $u_i(a)=P(A_i=0\mid A_{<i}=a)$, and put $U_i=u_i(A_{<i})$ and $V_i=u_i(B_{<i})$. These are
+independent with the same law, and $\mathbb E[U_i]=P(A_i=0)\ge1-p$. By the chain rule,
+\[
+\ln|\mathcal F|=H(A)=\sum_{i=1}^nH(A_i\mid A_{<i})=\sum_{i=1}^n\mathbb E\,h(U_i).
+\]
+For $C$, the vector $C_{<i}$ is a function of $(A_{<i},B_{<i})$, so by Lemma~\ref{conjectures:lem:condent}(b),
+$H(C_i\mid C_{<i})\ge H(C_i\mid A_{<i},B_{<i})$. Given $A_{<i}=a$ and $B_{<i}=b$, the bits $A_i$ and $B_i$ are independent (because $A$ and $B$ are), and
+$C_i=0$ if and only if both are $0$, which has probability $u_i(a)u_i(b)$. So $H(C_i\mid A_{<i},B_{<i})=\mathbb E\,h(U_iV_i)$, and by the hypothesis,
+\[
+H(C)=\sum_{i=1}^nH(C_i\mid C_{<i})\ge\sum_{i=1}^n\mathbb E\,h(U_iV_i)\ge c\sum_{i=1}^n\mathbb E[U_i]\,\mathbb E\,h(U_i)\ge c(1-p)\ln|\mathcal F|.
+\]
+But $C$ takes values in $\mathcal F$ because $\mathcal F$ is union-closed, so $H(C)\le\ln|\mathcal F|$ by Gibbs' inequality. As $|\mathcal F|\ge2$,
+$\ln|\mathcal F|>0$, and $c(1-p)\le1$, that is $p\ge1-\frac1c$. Taking for $p$ the largest frequency proves the theorem.
+\end{proof}
+
+Everything now rests on an inequality between numbers. The weak form $h(xy)\ge x\,h(y)$ is just concavity: $h(xy)=h\bigl(x\cdot y+(1-x)\cdot0\bigr)\ge
+x\,h(y)+(1-x)h(0)$. It gives the hypothesis with $c=1$ only, which proves nothing. We need to gain a constant factor over it, and here is a version with a
+short proof.
+
+\begin{lemma}\label{conjectures:lem:hxy}
+For $x,y\in[0,1]$,
+\[
+h(xy)\ge\frac1{1+\ln2}\bigl(x\,h(y)+y\,h(x)\bigr).
+\]
+\end{lemma}
+\begin{proof}
+If $x$ or $y$ is $0$, both sides are $0$. For $0<t\le1$ put $t=e^{-a}$ with $a\ge0$; then
+\[
+\frac{h(t)}t=\ln\frac1t+\frac{1-t}t\ln\frac1{1-t}=a+K(a),\qquad K(a)=(e^a-1)\ln\frac1{1-e^{-a}}\quad(K(0)=0).
+\]
+\emph{A series for $K$.} With $\ln\frac1{1-z}=\sum_{m\ge1}\frac{z^m}m$ for $z=e^{-a}<1$,
+\[
+K(a)=\sum_{m\ge1}\frac{e^{-(m-1)a}-e^{-ma}}m=1-\sum_{m\ge1}\frac{e^{-ma}}{m(m+1)},
+\]
+by regrouping the terms of each power of $e^{-a}$ (the series converge absolutely), and this also holds at $a=0$, as $\sum\frac1{m(m+1)}=1$. In
+particular $K\ge0$, and for $a,b\ge0$ the \emph{defect} is
+\[
+D(a,b)=K(a)+K(b)-K(a+b)=\sum_{m\ge1}\frac{(1-e^{-ma})(1-e^{-mb})}{m(m+1)}.
+\]
+\emph{The defect is at most $(a+b)\ln2$.} The function $\ell(z)=\ln(1-e^{-z})$ is concave on $]0,\infty[$, since $\ell'(z)=\frac1{e^z-1}$ decreases. So
+$(1-e^{-ma})(1-e^{-mb})\le(1-e^{-ms})^2$ with $s=\frac{a+b}2$, and $D(a,b)\le\sum_m\frac{(1-e^{-ms})^2}{m(m+1)}=:F(s)$. We show $F(s)\le2s\ln2$. Both sides
+vanish at $s=0$; differentiating term by term (legitimate for $s>0$, where the differentiated series converges uniformly near $s$), with $t=e^{-s}$,
+\[
+F'(s)=2\sum_{m\ge1}\frac{t^m-t^{2m}}{m+1}=2\Bigl(\frac1t\ln\frac1{1-t}-\frac1{t^2}\ln\frac1{1-t^2}\Bigr)=\frac2{t^2}\Bigl(\ln(1+t)+(1-t)\ln(1-t)\Bigr),
+\]
+using $\sum_{m\ge1}\frac{z^m}{m+1}=\frac1z\ln\frac1{1-z}-1$. Let $Q(t)=t^2\ln2-\ln(1+t)-(1-t)\ln(1-t)$ on $[0,1]$. Then $Q(0)=Q(1)=0$,
+$Q'(t)=2t\ln2+\frac t{1+t}+\ln(1-t)$, $Q'(0)=0$, $Q''(t)=2\ln2+\frac1{(1+t)^2}-\frac1{1-t}$, and $Q'''(t)=-\frac2{(1+t)^3}-\frac1{(1-t)^2}<0$. So $Q''$
+decreases from $Q''(0)=2\ln2>0$ to $-\infty$: $Q'$ first increases from $0$, then decreases to $-\infty$, so it is positive and then negative; $Q$
+increases and then decreases, and since $Q(0)=Q(1)=0$, $Q\ge0$ on $[0,1]$. Hence $F'(s)\le2\ln2$, and $F(s)\le2s\ln2$.
+
+\emph{Conclusion.} Let $x=e^{-a}$, $y=e^{-b}$, and $c'=\frac1{1+\ln2}$, so that $1-c'=c'\ln2$. Dividing the claim by $xy$, we must show
+$a+b+K(a+b)\ge c'\bigl(a+K(a)+b+K(b)\bigr)$. The difference of the two sides is
+\[
+(1-c')(a+b)+(1-c')K(a+b)-c'D(a,b)\ge(1-c')(a+b)-c'(a+b)\ln2=0,
+\]
+because $K\ge0$ and $D(a,b)\le(a+b)\ln2$.
+\end{proof}
+
+\begin{corollary}\label{conjectures:cor:ucconst}
+In every finite union-closed family with at least two sets, some element has frequency at least $\frac{1-\ln2}2=0.1534\ldots$
+\end{corollary}
+\begin{proof}
+For $U,V$ independent with the same law, Lemma~\ref{conjectures:lem:hxy} and independence give
+\[
+\begin{aligned}\mathbb E\,h(UV)&\ge\frac1{1+\ln2}\bigl(\mathbb E[U]\,\mathbb E\,h(V)+\mathbb E[V]\,\mathbb E\,h(U)\bigr)\\&=\frac2{1+\ln2}\,\mathbb E[U]\,\mathbb E\,h(U).\end{aligned}
+\]
+Apply
+Theorem~\ref{conjectures:thm:gilmer} with $c=\frac2{1+\ln2}$: $1-\frac1c=1-\frac{1+\ln2}2=\frac{1-\ln2}2$.
+\end{proof}

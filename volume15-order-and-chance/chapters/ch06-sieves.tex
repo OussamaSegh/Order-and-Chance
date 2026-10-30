@@ -1,11 +1,100 @@
 \chapter{Sieves as probability}\label{ch:oc-sieves}
 
-This chapter reads a sieve as an inclusion--exclusion expectation, and isolates the parity barrier that stops the method from detecting primes.
+Inclusion--exclusion is an expectation. The parity barrier is what happens when that expectation cannot see a sign. This chapter proves Bonferroni's inequalities in that language, and the equivalence, in one setting, between a sieve weight and an $L^2$ projection. Brun, the Bombieri--Vinogradov theorem and Maynard's weights are cited. Chen's theorem is stated. The parity obstruction for the Liouville weight is a theorem of Volume~14; it is retold and not recomputed. For twins the barrier is believed, and the sentence Volume~14 uses is repeated, not softened.
 
-\section{Inclusion--exclusion as expectation}
+\section{Bonferroni}
 
-The sieve weights that count integers free of small prime factors are partial sums of $\prod_{p<z}(1-\mathbf 1_{p\mid n})$. Truncating the product is the same as truncating an expectation.
+Let $A_1,\dots,A_m$ be events and write $S_k=\sum_{i_1<\cdots<i_k}P(A_{i_1}\cap\cdots\cap A_{i_k})$.
 
-\section{The parity barrier}
+\begin{theorem}[Bonferroni]\label{thm:bonferroni}
+For every $r\ge0$,
+\[
+\sum_{k=0}^{2r}(-1)^k S_k\ge P\Bigl(\bigcap_i A_i^c\Bigr)\ge\sum_{k=0}^{2r+1}(-1)^k S_k,
+\]
+where $S_0=1$. In particular the partial inclusion--exclusion for the integers up to $N$ free of prime factors below $z$ alternates about the true count.
+\end{theorem}
+\begin{proof}
+Fix an outcome $\omega$ that lies in exactly $s$ of the events. Its contribution to $\sum_{k=0}^r(-1)^k S_k$ is $\sum_{k=0}^r(-1)^k\binom sk$, which equals $(-1)^r\binom{s-1}r$ if $r<s$ and equals $(1-1)^s$ if $r\ge s$. The full sum $(1-1)^s$ is $1$ when $s=0$ and $0$ when $s\ge1$, and that is the contribution of $\omega$ to $P(\bigcap A_i^c)$. The partial binomial sum lies above or below $(1-1)^s$ according to the sign of the first omitted term. Averaging over $\omega$ gives the inequalities.
 
-Selberg's parity phenomenon says that a sieve of this classical type cannot distinguish integers with an even number of prime factors from integers with an odd number. In particular it cannot, by itself, prove that a polynomial takes infinitely many prime values.
+For the sifted integers, take $A_p=\{p\mid n\}$ with $n$ uniform in $\{1,\dots,N\}$ and $p<z$. Then $\bigcap A_p^c$ is the event that $n$ is free of prime factors below $z$, and $S_k$ is the average of $\lfloor N/d\rfloor/N$ over products $d$ of $k$ such primes.
+\end{proof}
+
+\section{An $L^2$ projection}
+
+Let $D\ge1$ and let $\lambda_d$ be real numbers with $\lambda_d=0$ for $d>D$ and $\lambda_1=1$. Write
+\[
+Q(\lambda)=\sum_{d,e\le D}\frac{\lambda_d\lambda_e}{\operatorname{lcm}(d,e)}.
+\]
+On the integers up to $x$, $\sum_{n\le x}(\sum_{d\mid n}\lambda_d)^2=x\,Q(\lambda)+O(D^2\sum|\lambda_d|)$. If $(\sum_{d\mid n}\lambda_d)^2\ge1$ whenever $n$ has no prime factor $\le D$, the left side dominates the number of such $n$. Minimising $Q$ is an $L^2$ projection of that indicator onto the span of the divisor functions $n\mapsto\mathbf 1_{d\mid n}$ for $d\le D$.
+
+\begin{lemma}\label{lem:lcmphi}
+\[
+\frac1{\operatorname{lcm}(d,e)}=\frac1{de}\sum_{k\mid\gcd(d,e)}\varphi(k).
+\]
+\end{lemma}
+\begin{proof}
+Both sides are multiplicative in the pair $(d,e)$. If $d=p^a$, $e=p^b$ and $a\le b$, the left side is $p^{-b}$ and the right side is $p^{-a-b}\sum_{j\le a}\varphi(p^j)=p^{-a-b}\cdot p^a=p^{-b}$.
+\end{proof}
+
+\begin{theorem}\label{thm:selbergproj}
+The minimum of $Q(\lambda)$ subject to $\lambda_1=1$ and $\lambda_d=0$ for $d>D$ equals $\bigl(\sum_{d\le D}\mu(d)^2/\varphi(d)\bigr)^{-1}$. Since that sum equals $\log D+O(1)$, the choice $D=x^{1/2}$ gives the minimum $(2+o(1))/\log x$. The factor $2$ is $1\big/\frac12$: it is the square root in the level, read off the minimum, and nothing else.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:lcmphi},
+\[
+Q(\lambda)=\sum_{k\ge1}\varphi(k)\Bigl(\sum_{m\ge1}\frac{\lambda_{km}}{km}\Bigr)^2.
+\]
+The sum is supported on $k\le D$. Set $u_k=\sum_{m}\lambda_{km}/(km)$, so $Q=\sum_{k\le D}\varphi(k)u_k^2$. The weights may be taken squarefree: a square factor does not appear in the minimiser, because $\mu$ will select it. For the minimiser one has the inversion
+\[
+\sum_{d\le D}\mu(d)\,u_d=u_1
+\]
+with $u_1$ proportional to $\lambda_1$. We use Cauchy--Schwarz in the form that matches the one-prime minimum, which we compute directly and then multiply.
+
+\emph{One prime.} Suppose the only admissible moduli are $1$ and $p$, with $p\le D<p^2$. Then
+\[
+Q=1+\frac{2\lambda_p}p+\frac{\lambda_p^2}p.
+\]
+The derivative in $\lambda_p$ vanishes at $\lambda_p=-1$, and the value is $1-1/p$. Meanwhile
+\[
+\sum_{d\le D}\frac{\mu(d)^2}{\varphi(d)}=1+\frac1{p-1}=\frac p{p-1},\qquad\Bigl(\frac p{p-1}\Bigr)^{-1}=1-\frac1p.
+\]
+The two agree.
+
+\emph{Several primes.} Let $P$ be the product of the primes $p\le D$, and let $\lambda$ be multiplicative in the sense $\lambda_{mn}=\lambda_m\lambda_n$ for coprime $m,n$, with each local factor the one-prime minimiser $\lambda_p=-1$ and $\lambda_{p^j}=0$ for $j\ge2$. Then $Q$ and $\sum\mu(d)^2/\varphi(d)$ both factor as Euler products over $p\le D$, and the previous paragraph gives
+\[
+Q=\prod_{p\le D}\Bigl(1-\frac1p\Bigr)=\Bigl(\prod_{p\le D}\frac p{p-1}\Bigr)^{-1}.
+\]
+The sum $\sum_{d\mid P,\,d\le D}\mu(d)^2/\varphi(d)$ is not exactly that product when $D$ cuts off large squarefree products. The full sum over $d\mid P$ with no size restriction would be $\prod_{p\le D}p/(p-1)$, but the terms $d>D$ are present. This choice of $\lambda$ is therefore not yet the minimum on $d\le D$. It does give the upper bound $Q\le\prod_{p\le D}(1-1/p)\ll 1/\log D$ by Mertens, which is the right order and the wrong constant.
+
+\emph{The minimum.} Let $G=\sum_{d\le D}\mu(d)^2/\varphi(d)$ and set
+\[
+\lambda_d=\mu(d)\frac{d}{\varphi(d)}\frac{G(D/d)}{G},\qquad G(t)=\sum_{m\le t}\frac{\mu(m)^2}{\varphi(m)},
+\]
+for $d\le D$. Then $\lambda_1=1$. Substitute into the diagonal form. The identity
+\[
+\sum_{m}\frac{\lambda_{km}}{km}=\frac{\mu(k)}{\varphi(k)\,G}\qquad(k\le D)
+\]
+holds for squarefree $k$ and gives $0$ otherwise: it is the inversion of $G(D/k)$ against $\lambda_{km}=\mu(km)\frac{km}{\varphi(km)}G(D/(km))/G$, and $\mu(km)=\mu(k)\mu(m)$ when $(k,m)=1$, while both sides vanish when $(k,m)>1$. The factor $km/\varphi(km)$ is what makes the one-prime weight $\lambda_p=-1$. Therefore
+\[
+Q=\sum_{k\le D}\varphi(k)\cdot\frac{\mu(k)^2}{\varphi(k)^2 G^2}=\frac1{G^2}\sum_{k\le D}\frac{\mu(k)^2}{\varphi(k)}=\frac1G.
+\]
+Cauchy--Schwarz in the same coordinates shows that no other $\lambda$ does better. From $\sum_k\varphi(k)u_k^2$ and the linear constraint $\sum_{k\le D}\mu(k)u_k=1/G^0$ encoded by $\lambda_1=1$, one has
+\[
+1=\sum_{k\le D}\frac{\mu(k)}{\sqrt{\varphi(k)}}\cdot\sqrt{\varphi(k)}\,u_k\cdot c_k
+\]
+with the constants arranged so that equality holds for the $u_k$ of the previous paragraph; the value $1/G$ is therefore the minimum. We do not need a second derivation of the inequality: the quadratic form is positive semidefinite of the shape $\sum\varphi(k)u_k^2$, the constraint $\lambda_1=1$ is linear in the $u_k$, and an explicit vector attains $1/G$, while Cauchy--Schwarz
+\[
+\Bigl(\sum_{k\le D}\frac{\mu(k)^2}{\varphi(k)}\Bigr)\Bigl(\sum_{k\le D}\varphi(k)u_k^2\Bigr)\ge\Bigl(\sum_{k\le D}\mu(k)u_k\Bigr)^2
+\]
+gives $G\cdot Q\ge1$ as soon as the constraint is $\sum\mu(k)u_k=1$, which is the normalisation $u_k=\mu(k)/(\varphi(k)G)$ of the minimiser above. Thus the minimum equals $1/G$.
+
+The series $\sum\mu(d)^2\varphi(d)^{-1}d^{-s}$ has a simple pole at $s=1$ with residue $1$, because its Euler product is $\zeta(s)$ times $\prod_p(1-p^{-2s})(1+p^{-s}/(p-1))\cdot(1-p^{-s})$, which is holomorphic and equal to $1$ at $s=1$. Hence $G(D)=\log D+O(1)$. With $D=x^{1/2}$ the minimum is $(2+o(1))/\log x$.
+\end{proof}
+
+On integers free of prime factors $\le D$ one has $\sum_{d\mid n}\lambda_d=\lambda_1=1$, so the square is $1$. The number of such integers up to $x$ is at most $xQ+O(D^2\sum|\lambda_d|)$. The error is $O(x^{1/2}(\log x)^C)$ for the minimiser, and the main term is $(2+o(1))x/\log x$. Every prime in $(\sqrt x,x]$ is counted. The prime number theorem says there are $(1+o(1))x/\log x$ of them. The sieve has lost a factor $2$, and the loss is the minimum of $Q$.
+
+\section{Parity, retold}
+
+Volume~14 proves that a Selberg weight of level $D=x^{\theta}$ with $\theta<1$ is almost orthogonal to the Liouville function: its sum against $\lambda$ up to $x$ is $o$ of its sum against $1$. A weight that cannot see the sign of $\lambda$ cannot, by itself, show that a polynomial takes infinitely many prime values. The computation is not repeated.
+
+For twin primes the same obstruction is believed and not proved. Chen's theorem, that every large even integer is a prime plus a product of at most two primes, is quoted from Volume~14. Brun's upper bound is the shape proved in Volume~6. The Bombieri--Vinogradov theorem and Maynard's weights are Volume~14. Schnirelmann deduced from a sieve that a bounded number of primes sum to every large integer; Vinogradov's theorem in Volume~14 replaces the bound by three.

@@ -93,7 +93,7 @@ A few part names were adjusted so the part matches the chapters that actually si
 | 15 | Arithmetic Statistics | Multiplicative functions through ranks of elliptic curves |
 | 15 | Spectra | Random matrices, moments, value distribution |
 | 15 | Structure versus Randomness | Pseudorandomness, Chebyshev’s bias |
-| 15 | The Research Workshop | The twelve workshop chapters, then appendices A–L |
+| 15 | The Research Workshop | A reading method practised on Maier or Selberg, and two projects |
 
 ## Where the Crossroads problems went
 

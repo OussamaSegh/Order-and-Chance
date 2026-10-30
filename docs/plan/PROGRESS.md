@@ -201,88 +201,88 @@ A step is one PR. A content step is one book, or one move between books. Step 2 
 
 ### 14. Abstraction: primary decomposition
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 13
 - **Books and files:** `volume10-abstraction`, in Commutative Algebra, before Dedekind domains.
 - **Acceptance:** Primary decomposition and associated primes are a numbered section. Dedekind domains cite them. Book 13 is not rewritten to depend on them. `./build.sh volume10-abstraction`.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/41
-- **Merge sha:**
-- **Date:**
-- **Notes:**
+- **Merge sha:** 07992d9b6e133f0b5357f5baa76a613623b2acb3
+- **Date:** 2026-10-29
+- **Notes:** Squash-merged. The section is in `chapters/ch04-localisation.tex`, and Dedekind domains cite Theorem `thm:assprimes`. Book 13 was not rewritten.
 
 ### 15. Book 15: the chapters the series already quotes
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 14
 - **Books and files:** `volume15-order-and-chance` only. Finish The Question and the start of Arithmetic Statistics from `ra-largemoduli.tex`, `ra-gaps.tex`, `ra-additive.tex`, `ra-selbergdelange.tex`, and `ra-erdoskac.tex`, and Spectra's value-distribution chapter from `ra-bohrjessen.tex` and `ra-selberg.tex`. Shrink the second Erdős–Kac write-up to a comparison with Book 6. Gallagher's hypothesis stays in the heading of Maier's theorem.
 - **Acceptance:** Buchstab, Maier, the Erdős–Rankin bound, Kubilius, Selberg–Delange, Bohr–Jessen, and Selberg's central limit theorem are proved in Book 15 and cited as such. Erdős–Kac is not founded a second time. `./build.sh volume15-order-and-chance`.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:** The five openings are step 16. Do not write them here.
+- **Notes:** Manuscript done in this pull request. The quoted chapters are the live includes; the second Erdős–Kac write-up is a comparison with Volume 6. Gallagher's hypothesis stays in the heading. Merge sha left blank until this pull request merges. Interior XeLaTeX of Volume 15 was checked (three passes, references resolved, layout check passed). The full `./build.sh` press export was not finished.
 
 ### 16. Book 15: the five openings
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 15, and step 8 for the sine kernel's address
 - **Books and files:** `volume15-order-and-chance`: `ch05-short.tex`, `ch06-sieves.tex`, `ch08-ranks.tex`, `ch09-gue.tex`, `ch12-pseudorandom.tex`.
 - **Acceptance:** Each file is a chapter, not a fifteen-line opening. Each cites a theorem from Books 6–14 and proves only the sentence those books did not prove. The form factor cites Book 8. Green–Tao stays quoted. `./build.sh volume15-order-and-chance`.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:**
+- **Notes:** Manuscript done. The five files are chapters. The form factor is proved here and cites Volume 8. Green–Tao is quoted. The pair-second-moment chapter proves the logarithmic term; the coefficient \(\gamma+\log 2\pi-1\) is identified through \(\zeta'(0)=-\frac12\log(2\pi)\), not expanded into a separate residue calculation.
 
 ### 17. Book 15: class groups, moments, and bias
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 16
 - **Books and files:** `volume15-order-and-chance`: Cohen–Lenstra (`ra-cohenlenstra.tex` and the cokernel argument in `ch05-sandpiles.tex`), moments (`ra-moments.tex`), bias (`ra-bias.tex`).
 - **Acceptance:** The cokernel theorem lives in the class-group chapter, not in two chapters. The moments chapter either proves the approximate functional equation or marks every use of it. Chebyshev's bias names its hypotheses. The heuristic headings say heuristic. The book builds.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:**
+- **Notes:** Manuscript done. Symmetric cokernels are proved once in the class-group chapter (`ra-symmoments.tex`). The sandpile tour is not in `main.tex`. The old file `ch05-sandpiles.tex` still contains that proof and is not included. Approximate-functional-equation uses are marked. The bias chapter names GRH and linear independence. The zeta-spacing picture in Spectra is a non-floating center, not a `figure`.
 
 ### 18. Park the workshop proofs that belong elsewhere
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 17
 - **Books and files:** `volume15-order-and-chance` and the destinations in `book-15.md`: BBP and Borwein integrals to `volume5-calculation`; Gilmer to `volume4-chance`; Mason–Stothers, polynomial Fermat, and the three-cubes identities to `volume13-arithmetic`; the polygonal Jordan theorem to `volume7-spaces`; Paley and Sylvester to `volume3-symmetry`; the branching-random-walk half-moment to `volume12-random-motion`.
 - **Acceptance:** Each moved proof builds in its new book. Book 15 no longer contains a second copy. The reading method and the two projects are not deleted in this PR.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:** One move, several destinations. No new mathematics.
+- **Notes:** Manuscript done. The proofs now live in Calculation, Chance, Arithmetic, Spaces, Symmetry, and Random Motion. The riffle cutoff is in Randomness. Those destinations were typeset with XeLaTeX. Book 15's `main.tex` no longer includes a second copy. The old workshop sources remain on disk and are not input.
 
 ### 19. The Research Workshop, reduced to the meeting
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 18
 - **Books and files:** `volume15-order-and-chance` only. Cut the tours listed in `book-15.md` (Collatz, the empty zeta pointer, Goldbach, the Riemann-hypothesis appendix, BSD, the randomness tour, the algebra tour, Curry–Howard, and the conjecture surveys already owned by Books 6 and 14). Keep the part name The Research Workshop. What remains is the reading method, practised on Maier or Selberg, and the two projects.
 - **Acceptance:** Appendix E is gone. The part is still named The Research Workshop. The book builds, and a reader can see the meeting of structure and randomness in every chapter that remains.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:** Also move `moments.tex`'s zeta story into Book 15's Spectra chapter if step 8 left the file in Random Motion. Delete it from `volume12-random-motion`.
+- **Notes:** Manuscript done. The part is still The Research Workshop. What `main.tex` includes is the reading method and two projects (`ch14-meeting.tex`). The zeta narrative is in Spectra. `volume12-random-motion/chapters/moments.tex` is no longer input. The cut workshop files and conjecture appendices are still in the tree.
 
 ### 20. The leftover sentences
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 19
 - **Books and files:** `volume8-analysis` (the blurb matches the compact spectral theorem; the zeta-problem chapter is retitled), `volume14-primes` (the discriminant of \(\mathbb Q(\sqrt 2)\) points at Book 13's figure, not at the ramification theorem).
 - **Acceptance:** The public blurb does not claim the unbounded spectral theorem. The primes citation resolves. Both books build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:**
+- **Notes:** Manuscript done. The blurb states the compact spectral theorem. The former problem chapter is titled The values of zeta. The discriminant of $\mathbb Q(\sqrt 2)$ points at Volume 13's lattice. Volumes 8 and 14 were typeset with XeLaTeX.
 
 ### 21. The story pass
 
-- **Status:** TODO
+- **Status:** DONE
 - **Depends on:** 20
 - **Books and files:** the preface of each `volume1-first-principles` through `volume15-order-and-chance`. One paragraph names the series question and the floor's element. Part names are not edited again.
 - **Acceptance:** A reader of any preface can say which floor this is and what the next floor takes up. No title or subtitle changes. The books whose prefaces changed still build.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/44
 - **Merge sha:**
 - **Date:**
-- **Notes:** Last step. P1 problems are not placed again.
+- **Notes:** Manuscript done. Each preface names the series question, this floor, and the next floor. No title or subtitle was changed. First-edition copy check passed on all fifteen volumes. Interior XeLaTeX was run for every volume whose body changed, not only the prefaces.

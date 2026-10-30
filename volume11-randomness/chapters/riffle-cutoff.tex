@@ -1,0 +1,155 @@
+\section{The question we answer: riffle shuffles}
+
+Nobody shuffles by random transpositions. People riffle: cut the deck in two and interleave the halves. Volume~4 (Definition~8.22 and
+Theorem~8.23) describes the Gilbert--Shannon--Reeds model of the riffle and its generalisation, the $a$-shuffle, and proves a
+remarkable exact formula: an $a$-shuffle of the ordered deck produces an arrangement $\sigma$ with probability
+\[
+Q_a(\sigma)=\frac1{a^n}\binom{a+n-r}n,\qquad r=r(\sigma)\text{ the number of rising sequences of }\sigma,
+\]
+and $k$ riffle shuffles are a $2^k$-shuffle (Volume~4, Proposition~8.24). Volume~4 then computes the distance to uniform for $52$ cards ($0.614$ after six
+shuffles, $0.334$ after seven), and \emph{states} that for large $n$ the cutoff is at $\frac32\log_2n$ shuffles. It does not prove it. Here is the
+theorem, as Dave Bayer and Persi Diaconis proved it in 1992 in a paper with the best title in probability, \emph{Trailing the dovetail shuffle
+to its lair}.
+
+\begin{theorem}[Bayer and Diaconis, 1992]\label{thm:bd}
+Let $a_n$ be positive integers with $a_n/n^{3/2}\to\gamma\in(0,\infty)$. Then the total variation distance between an $a_n$-shuffle of $n$ cards and the
+uniform law satisfies
+\[
+d_n\longrightarrow1-2\,\Phi\Bigl(-\frac1{4\sqrt3\,\gamma}\Bigr),
+\]
+where $\Phi$ is the standard normal distribution function.
+\end{theorem}
+
+For $k$ riffle shuffles, $a=2^k$, and $\gamma=2^\theta$ when $k=\frac32\log_2n+\theta$. Figure~\ref{fig:riffle15} compares the limit with the exact distances; already for $52$
+cards the agreement is within $0.02$. The proof needs three facts: the distance depends only on the number of rising sequences; under the
+uniform law that number is a sum of independent uniforms, rounded down; and the formula for $Q_a$ is, after taking logarithms, nearly linear in $r$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-riffle}
+\caption{Distance to uniform after an $a$-shuffle with $a=2^\theta n^{3/2}$ (rounded to an integer), computed exactly from the Bayer--Diaconis formula for $n=52$,
+$1000$ and $10000$ cards, against the limit $1-2\Phi(-2^{-\theta}/(4\sqrt3))$ of Theorem~\ref{thm:bd}. For $k$ riffle shuffles, $\theta=k-\frac32\log_2n$; for $52$ cards,
+seven shuffles is $\theta\approx-1.55$.}
+\label{fig:riffle15}
+\end{figure}
+
+\subsection*{Step 1: a single statistic}
+
+Write $\mathbb U$ for the uniform law on arrangements and $R_a(r)=n!\,Q_a(\sigma)$ when $\sigma$ has $r$ rising sequences. Then
+\[
+d=\sum_\sigma\Bigl(\frac1{n!}-Q_a(\sigma)\Bigr)^+=\mathbb E_{\mathbb U}\bigl[(1-R_a(r))^+\bigr],
+\]
+since the total variation distance is the sum of the positive parts of the differences (both laws have mass $1$). So everything depends on the law of $r$
+under the uniform law, and on the function $R_a$. Reading lesson: \emph{when the law you study is a function of one statistic, the whole problem
+is about that statistic}.
+
+\subsection*{Step 2: rising sequences and sums of uniforms}
+
+The number of rising sequences is $r(\sigma)=1+D$, where $D$ is the number of $i<n$ such that card $i+1$ lies above card $i$. If $\pi(i)$ is the position of card $i$,
+then $D$ is the number of \emph{descents} $\pi(i+1)<\pi(i)$ of the sequence $\pi(1),\dots,\pi(n)$, and under the uniform law $\pi$ is a uniform permutation.
+
+\begin{lemma}[Tanny, 1973]\label{lem:tanny}
+Let $U_1,\dots,U_n$ be independent and uniform on $[0,1]$, and $S_n=U_1+\dots+U_n$. Then the number of descents of a uniform permutation of $n$ elements
+has the law of $\lfloor S_n\rfloor$.
+\end{lemma}
+
+\begin{proof}
+Let $V_k$ be the fractional part of $S_k$. Then $V_1=U_1$, and $V_{k+1}$ is the fractional part of $V_k+U_{k+1}$, which is uniform on $[0,1)$ and independent of $V_1,\dots,V_k$, whatever their values
+(adding an independent uniform modulo $1$ gives a uniform). So $V_1,\dots,V_n$ are independent and uniform; almost surely they are distinct, and the permutation
+recording their relative order is uniform, by symmetry. Its descents are the $k$ with $V_{k+1}<V_k$. Now if $V_k+U_{k+1}<1$, then $V_{k+1}=V_k+U_{k+1}>V_k$ (almost surely) and
+$\lfloor S_{k+1}\rfloor=\lfloor S_k\rfloor$; if $V_k+U_{k+1}\ge1$, then $V_{k+1}=V_k+U_{k+1}-1<V_k$ and $\lfloor S_{k+1}\rfloor=\lfloor S_k\rfloor+1$. So each descent is a carry, and the number of descents is
+$\lfloor S_n\rfloor-\lfloor S_1\rfloor=\lfloor S_n\rfloor$.
+\end{proof}
+
+So $r-1$ has the law of $\lfloor S_n\rfloor$, which has mean about $\frac n2$ and standard deviation about $\sqrt{n/12}$, and is approximately normal by the central limit
+theorem. Let
+\[
+h=r-\frac{n+1}2,\qquad Z_n=\frac h{\sqrt{n/12}}.
+\]
+
+\begin{lemma}\label{lem:risingclt}
+Under the uniform law, $Z_n$ converges in law to $N(0,1)$, $\mathbb E[Z_n^2]\le3$ for $n\ge6$, and $P(|h|>n^{3/5})\to0$.
+\end{lemma}
+
+\begin{proof}
+By Lemma~\ref{lem:tanny}, $h$ has the law of $(S_n-\frac n2)+\delta_n$ with $\delta_n=\lfloor S_n\rfloor-S_n+\frac12\in(-\frac12,\frac12]$. The $U_i-\frac12$ are independent, centred, bounded, with variance
+$\frac1{12}$, so $W_n=(S_n-\frac n2)/\sqrt{n/12}$ converges in law to $N(0,1)$ by Lindeberg's theorem (Volume~4, Theorem~6.10; the Lindeberg condition holds trivially for
+bounded summands). Since $|Z_n-W_n|\le\varepsilon_n=\frac12\sqrt{12/n}\to0$, for every $t$ and $\varepsilon>0$ and $n$ large, $P(W_n\le t-\varepsilon)\le P(Z_n\le t)\le P(W_n\le t+\varepsilon)$, and letting
+$n\to\infty$ then $\varepsilon\to0$ gives $P(Z_n\le t)\to\Phi(t)$. Next, $\mathbb E[Z_n^2]\le2\mathbb E[W_n^2]+2\varepsilon_n^2=2+\frac6n\le3$ for $n\ge6$. (The sharper $\mathbb E[h^2]=\frac{n+1}{12}$ is Volume~4, Exercise~8.8.) Finally, by Chebyshev's inequality,
+\[
+P(|h|>n^{3/5})\le P\bigl(|S_n-\tfrac n2|>n^{3/5}-\tfrac12\bigr)\le\frac{n/12}{(n^{3/5}-\frac12)^2}\longrightarrow0.
+\]
+\end{proof}
+
+\subsection*{Step 3: the formula, linearised}
+
+Expanding the binomial coefficient,
+\[
+R_a(r)=\frac{n!}{a^n}\binom{a+n-r}n=\prod_{j=1}^n\frac{a-r+j}a=\prod_{j=1}^n\Bigl(1+\frac{\ell_j-h}a\Bigr),\qquad\ell_j=j-\frac{n+1}2,
+\]
+with the convention that $R_a(r)=0$ if some factor vanishes. The numbers $\ell_j$ are symmetric about $0$, so $\sum_j\ell_j=0$, and $\sum_j\ell_j^2=\frac{n^3-n}{12}$.
+
+\begin{lemma}\label{lem:linearise}
+Let $s=\frac{n}{a}\sqrt{\frac n{12}}$, and suppose that $n^{3/5}\le\frac n2$ and $\frac na\le\frac12$. Then for $|h|\le n^{3/5}$,
+\[
+\Bigl|\ln R_a(r)+sZ_n+\frac{s^2}2\Bigr|\le\frac{n^4}{a^3}+\frac{n^{11/5}}{2a^2}+\frac{s^2}{2n^2}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $x_j=(\ell_j-h)/a$. Then $|x_j|\le(\frac n2+n^{3/5})/a\le\frac na\le\frac12$, so every factor is positive and $\ln(1+x_j)=x_j-\frac{x_j^2}2+\rho_j$ with
+$|\rho_j|\le\sum_{m\ge3}\frac{|x_j|^m}m\le\frac{|x_j|^3}{3(1-|x_j|)}\le|x_j|^3$. Now
+\[
+\sum_jx_j=-\frac{nh}a=-sZ_n,\qquad\sum_jx_j^2=\frac{n^3-n}{12a^2}+\frac{nh^2}{a^2}=s^2\Bigl(1-\frac1{n^2}\Bigr)+\frac{nh^2}{a^2},
+\]
+(the cross term vanishes because $\sum\ell_j=0$), and $\sum_j|x_j|^3\le n(\frac na)^3$. With $h^2\le n^{6/5}$ this gives the bound.
+\end{proof}
+
+\subsection*{Step 4: the limit}
+
+\begin{proof}[Proof of Theorem~\ref{thm:bd}]
+Let $s_n=\frac n{a_n}\sqrt{\frac n{12}}$; then $s_n\to s=\frac1{\gamma\sqrt{12}}=\frac1{2\sqrt3\gamma}$. Let $g(u)=(1-e^u)^+$; it takes values in $[0,1]$ and is $1$-Lipschitz (its derivative is $-e^u\in[-1,0]$ for $u<0$,
+and $0$ for $u>0$). By Step~1, $d_n=\mathbb E[g(\ln R_{a_n}(r))]$, with $g(\ln0)=1$. Compare, in three steps, with $D_n=\mathbb E[g(-s_nZ_n-\frac{s_n^2}2)]$, $D'_n=\mathbb E[g(-sZ_n-\frac{s^2}2)]$ and the
+limit.
+
+\emph{From $d_n$ to $D_n$.} The right side of Lemma~\ref{lem:linearise} is $O(n^{-1/2})$, since $a_n\asymp n^{3/2}$. On $\{|h|\le n^{3/5}\}$ the two integrands differ by at most this, and
+elsewhere by at most $1$. So $|d_n-D_n|\le O(n^{-1/2})+P(|h|>n^{3/5})\to0$ by Lemma~\ref{lem:risingclt}.
+
+\emph{From $D_n$ to $D'_n$.} By the Lipschitz property, $|D_n-D'_n|\le|s_n-s|\,\mathbb E|Z_n|+\frac12|s_n^2-s^2|\to0$, as $\mathbb E|Z_n|\le\sqrt{\mathbb E[Z_n^2]}\le\sqrt3$.
+
+\emph{From $D'_n$ to the limit.} The function $G(z)=g(-sz-\frac{s^2}2)$ is continuous and nondecreasing in $z$, with values in $[0,1)$, and strictly increasing where it is positive.
+For $u\in(0,1)$ let $z_u$ be the point where $G(z_u)=u$. Then $\{G(Z_n)>u\}=\{Z_n>z_u\}$, so
+\[
+D'_n=\int_0^1P(G(Z_n)>u)\dd u=\int_0^1P(Z_n>z_u)\dd u\longrightarrow\int_0^1\bigl(1-\Phi(z_u)\bigr)\dd u=\mathbb E[G(Z)],
+\]
+with $Z\sim N(0,1)$, by Lemma~\ref{lem:risingclt} and dominated convergence (the integrands are bounded by $1$).
+
+\emph{Computing the limit.} With $\varphi$ the normal density, $e^{-sz-s^2/2}\varphi(z)=\varphi(z+s)$, so
+\[
+\mathbb E[G(Z)]=\int_\R\bigl(\varphi(z)-\varphi(z+s)\bigr)^+\dd z.
+\]
+The integrand is positive exactly when $|z|<|z+s|$, that is $z>-\frac s2$. So the integral is $(1-\Phi(-\frac s2))-(1-\Phi(\frac s2))=1-2\Phi(-\frac s2)$, and $\frac s2=\frac1{4\sqrt3\gamma}$.
+\end{proof}
+
+The last line has a meaning worth stating: $1-2\Phi(-\frac s2)$ is the total variation distance between $N(0,1)$ and $N(-s,1)$. In the limit, \emph{the shuffled
+deck is indistinguishable from a uniform one except through its number of rising sequences, which is normal and shifted by $s$ standard
+deviations}. A shuffled deck has slightly too few rising sequences, and that deficit is all there is to see.
+
+\begin{corollary}[cutoff at $\frac32\log_2n$]\label{cor:riffle}
+Let $d_n(k)$ be the distance to uniform after $k$ riffle shuffles of $n$ cards. If $k_n-\frac32\log_2n\to+\infty$ then $d_n(k_n)\to0$, and if $k_n-\frac32\log_2n\to-\infty$ then $d_n(k_n)\to1$.
+\end{corollary}
+
+\begin{proof}
+Write $L(\gamma)=1-2\Phi(-\frac1{4\sqrt3\gamma})$, which decreases from $1$ to $0$ as $\gamma$ goes from $0$ to $\infty$. Riffle shuffling is a Markov chain on arrangements for
+which the uniform law is stationary (it is a random walk on the group $\mathfrak S_n$, and $\sum_\sigma Q_2(\sigma^{-1}\tau)=1$ for every $\tau$), so $d_n(k)$ is
+nonincreasing in $k$ (Volume~4, Lemma~8.10).
+
+Let $\varepsilon>0$, and choose $\theta$ with $L(2^\theta)<\varepsilon$. Let $k'_n=\lceil\frac32\log_2n+\theta\rceil$, so that $\gamma_n=2^{k'_n}/n^{3/2}\in[2^\theta,2^{\theta+1})$. Every subsequence of $(\gamma_n)$ has a further
+subsequence converging to some $\gamma\in[2^\theta,2^{\theta+1}]$, along which $d_n(k'_n)\to L(\gamma)\le L(2^\theta)<\varepsilon$ by Theorem~\ref{thm:bd}; hence $\limsup d_n(k'_n)\le\varepsilon$. If $k_n-\frac32\log_2n\to\infty$,
+then $k_n\ge k'_n$ for large $n$, and $d_n(k_n)\le d_n(k'_n)$. So $\limsup d_n(k_n)\le\varepsilon$ for every $\varepsilon$. The other half is the same with $L(2^\theta)>1-\varepsilon$, $\theta$ very negative, and $k'_n=\lfloor\frac32\log_2n+\theta\rfloor$.
+\end{proof}
+
+\emph{Why $\frac32$?} The proof shows where the exponent comes from, and it is worth saying in one line. The likelihood ratio is $e^{-nh/a}$ to first order, and $h$ fluctuates
+on the scale $\sqrt n$ under the uniform law; so the shuffle is detectable as long as $n\sqrt n/a$ is not small. The $n$ comes from the product of $n$ factors, the $\sqrt n$ from
+the central limit theorem, and together they give $a\approx n^{3/2}$, that is, $\frac32\log_2n$ riffles. Compare with random transpositions, where the time
+$\frac12n\ln n$ comes from the coupon collector: different shuffles, different statistics, different reasons.
