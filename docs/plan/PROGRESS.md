@@ -48,25 +48,25 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 
 ### 3. Counting and discrete reasoning
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 2
 - **Books and files:** `volume1-first-principles/chapters/ch02-counting.tex`. Counting and discrete reasoning.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/47
-- **Merge sha:**
-- **Date:**
-- **Notes:** Continue this pull request. Do not open a second one for this chapter.
+- **Merge sha:** 83dff2be79404b68ee6c45d620ee574432302c4e
+- **Date:** 2026-10-30
+- **Notes:** Counting and discrete reasoning.
 
 ### 4. Sequences, series, limits
 
-- **Status:** TODO
+- **Status:** IN REVIEW
 - **Depends on:** 3
 - **Books and files:** `volume1-first-principles/chapters/ch05-sequences-series.tex`. Sequences, series, limits.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:**
 - **Merge sha:**
 - **Date:**
-- **Notes:** Sequences, series, and limits.
+- **Notes:** Sequences, series, and limits. Profound pass: concrete partial sums first, floor and $\sqrt2$ from completeness, new figures for Zeno, Grandi, the floor, the integral test and uniform continuity.
 
 ### 5. Orders
 
