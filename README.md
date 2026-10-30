@@ -2,8 +2,7 @@
 
 *The Hidden Architecture of Mathematics.* By SEGHAIER Oussama.
 
-A series of books of beautiful mathematics, written for pleasure. Every chapter has graded exercises with complete solutions and a Python
-notebook for mathematical experiments.
+Order and Chance is fifteen volumes on how structure and chance meet. Read them for the pleasure of finishing a proof, and for the work of becoming strong: the problems are graded, and the solutions are written out. You begin with foundations, then the bridges, where calculation turns a formula into an estimate and arithmetic meets analysis. After that come analysis and geometry, randomness, number, and the synthesis that gives the series its name.
 
 ## Download the books
 
@@ -35,6 +34,7 @@ notebook for mathematical experiments.
   | 15. Order and Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.epub) |
 
 Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
+The files are named `Volume N - Title`.
 The reading download includes the approved front cover. The print PDF starts with
 the half-title and is the paperback manuscript; its cover wrap is uploaded
 separately. Both PDFs have matching full-colour content and visible pagination. The print PDF
@@ -54,7 +54,7 @@ on the download page and the [`books` release](https://github.com/OussamaSegh/Or
 
 ## The series
 
-Fifteen volumes, in six parts. There is no separate problem book. The problems that used to form a problem book are exercises in Volumes 1–6.
+A theorem says what the structure forces. A chance model says what you would see if the object were random. These fifteen volumes, in six parts, are about the difference, and about the places where the two descriptions meet.
 
 | Volume | Title | Subtitle |
 | --- | --- | --- |
@@ -80,13 +80,25 @@ Fifteen volumes, in six parts. There is no separate problem book. The problems t
 | **Part VI. Synthesis** | | |
 | 15 | Order and Chance | The Meeting of Structure and Randomness |
 
+**I. Foundations.** You learn to prove a claim from the definition, then you use that on the integers, on symmetry, and on chance.
+
+**II. Bridges.** Formulas turn into estimates, and those estimates are brought to the primes.
+
+**III. Analysis and Geometry.** The four books are spaces and measure, operators and spectra, shapes, and categories with homology.
+
+**IV. Randomness.** Chance returns through martingales and limit theorems, and then through Brownian paths and stochastic calculus.
+
+**V. Number.** The integers return as number fields and their equations, and as the primes, through zeros, sieves, and gaps.
+
+**VI. Synthesis.** The last book asks when a probabilistic description of the integers is a theorem, and when it is only a model.
+
 **First Principles** → **The Integers · Symmetry · Chance** →
 **Calculation · Crossroads** → **Spaces · Analysis · Shapes · Abstraction** →
 **Randomness · Random Motion** → **Arithmetic · The Primes** → **Order and Chance**.
 
-Linear algebra is part of Symmetry, geometry is part of Shapes, and open problems are case studies in Order and Chance. Chance includes its combinatorial appendices. Random Motion contains its spectral graph and random-matrix appendices. Spaces, Analysis and Randomness each end with a chapter of harder problems.
+### Notes on the proofs
 
-Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve. Volumes 1 and 3–14 include the corrected arguments from the 2026 errata. Volume 15, *Order and Chance: The Meeting of Structure and Randomness*, proves Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments, Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias. Five chapters remain openings: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness. Downloads are named `Volume N - Title`.
+Volume 2 closes with Dirichlet characters, Euler products and Legendre’s sieve. Volume 15, *Order and Chance: The Meeting of Structure and Randomness*, proves Buchstab, Maier and the Erdős–Rankin gap bound, the Kubilius model and Selberg–Delange, random multiplicative functions, Cohen–Lenstra, moments, Bohr–Jessen, Selberg’s central limit theorem, and Chebyshev’s bias. Five chapters remain openings: primes in short intervals, sieves, ranks of elliptic curves, random matrices and the zeros, and pseudorandomness.
 
 ## Design and future sessions
 
