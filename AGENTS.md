@@ -363,3 +363,14 @@ their own and must not direct readers to unpublished companion files. Historical
 handwritten notebooks and personal research journals are distinct mathematical
 content and may retain their proper names. This policy applies to all first-edition
 formats and future writing sessions.
+
+## Mathematician writer (shared across tools)
+
+Cursor, Claude Code, Codex, and other agents use the **same** role and voice:
+
+- Voice: `docs/WRITING-STYLE.md`
+- Role: `docs/agents/mathematician-writer.md`
+- Cursor custom mode: `.cursor/skills/mathematician-writer/SKILL.md` (pointer only)
+- Claude Code: `CLAUDE.md` and `.claude/agents/mathematician-writer.md` (pointers only)
+
+Do not create tool-specific forks of the writing style or the mathematician-writer rules. Edit the files under `docs/` only.
