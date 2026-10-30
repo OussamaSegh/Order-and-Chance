@@ -18,6 +18,13 @@ match scikit-image's versioned `_registry.py`. Astronaut was converted from PNG 
 JPEG at quality 95; no scene edits or AI generation. The other two are unmodified.
 No endorsement is implied.
 
+Two further public-domain portraits were added for the counting chapter on 30 October 2026, from Wikimedia Commons, with no scene edits:
+
+- `montmort.jpg`, 499×579. Alexis-Simon Belle, portrait of Pierre Rémond de Montmort, about 1715. File:Remond de Montmort.jpg. The Commons page marks the painting public domain (the painter died in 1734). https://commons.wikimedia.org/wiki/File:Remond_de_Montmort.jpg
+- `dirichlet.jpg`, 493×545. Anonymous portrait of Peter Gustav Lejeune Dirichlet, before 1859. File:Peter Gustav Lejeune Dirichlet.jpg. The Commons page marks it public domain. https://commons.wikimedia.org/wiki/File:Peter_Gustav_Lejeune_Dirichlet.jpg
+
+At the 1.65-inch cap the effective resolutions are about 351 and 330 pixels per inch. Captions in the chapter carry the credit.
+
 Existing historical images retain their original chapter captions. Most captions
 identify public-domain reproductions. Two require separate attribution:
 
