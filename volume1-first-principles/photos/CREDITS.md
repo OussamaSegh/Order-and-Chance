@@ -35,3 +35,13 @@ Print height is capped per source at pixel height / 300 inches (and at 1.65 inch
 with aspect ratio retained. Actual effective resolutions must be checked in the
 final PDF with `pdfimages -list`. All mathematical figures added in this revision
 are original vector drawings, with line styles, markers and text suitable for grayscale.
+
+## Portraits added with the language chapter
+
+Both are public domain and are credited again in the chapter caption.
+Print height is capped at 1.65 in. Neither file is a generated illustration.
+
+| Local file | Source | Pixels | Notes |
+|---|---|---|---|
+| `boole.jpg` | Engraving of George Boole, *The Illustrated London News*, 21 January 1865. Wikimedia Commons file `Portrait of George Boole.png`. | 960 × 1288 | Scaled from the Commons original and saved as JPEG quality 90. At 1.65 in the short side is above 300 ppi. |
+| `cantor.jpg` | Photograph of Georg Cantor, early twentieth century, author unknown. Wikimedia Commons file `Georg Cantor2.jpg`, public-domain mark. | 534 × 700 | Unmodified scene. At the 1.65 in cap the height is about 424 ppi. |
