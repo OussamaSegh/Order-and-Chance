@@ -39,6 +39,11 @@ See Exercise~\ref{ex:sample}.
 """
 
 
+def visible_text(html):
+    """The text a reader sees: design 5e wraps labels and numbers in spans."""
+    return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", "", html))
+
+
 class Tags(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -93,9 +98,10 @@ Appendix~\ref{ch:support}, Section~\ref{sec:support}.
                 ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
                  "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
                 capture_output=True, text=True, check=True)
+        text = visible_text(result.stdout)
         for expected in ["Appendix A: Support", "Appendix B: More support",
                          "Theorem A.1", "Exercise A.1", "Exercise B.1", "A.1 A section"]:
-            self.assertIn(expected, result.stdout)
+            self.assertIn(expected, text)
         self.assertRegex(result.stdout, r'href="#thm:support"[^>]*>A\.1</a>')
         self.assertRegex(result.stdout, r'href="#ch:support"[^>]*>A</a>')
         self.assertNotIn("ocappendices", result.stdout)
@@ -129,14 +135,55 @@ See Equation~\eqref{eq:zero}.
                 capture_output=True, text=True, check=True)
         for expected in ["0 Language", "0.1 Statements", "Theorem 0.1",
                          "Exercise 0.1", "Hint for Exercise", "Solution of Exercise",
-                         "Figure 1.", "1 Sums", "Theorem 1.1", "Exercise 1.1"]:
-            self.assertIn(expected, result.stdout)
+                         "Figure 1 A diagram.", "1 Sums", "Theorem 1.1", "Exercise 1.1"]:
+            self.assertIn(expected, visible_text(result.stdout))
         for label, number in [("ch:zero", "0"), ("sec:zero", "0.1"),
                               ("thm:zero", "0.1"), ("fig:zero", "1")]:
             self.assertRegex(result.stdout, 'href="#' + label + '"[^>]*>' + number.replace('.', r'\.') + '</a>')
         self.assertNotIn("occhaptercounter", result.stdout)
         self.assertNotIn("Theorem 2.1", result.stdout)
         self.assertRegex(result.stdout, r'href="#eq:zero"[^>]*>\(1\)</a>')
+
+    def test_design_5e_parts_openers_and_boxes(self):
+        source = r"""\documentclass{book}
+% epub-title: Order and Chance. Volume 7: Spaces
+\newtheorem{theorem}{Theorem}[chapter]
+\begin{document}
+\part{Foundations}
+\chapter{Main}\label{ch:main}
+\begin{center}\itshape An epigraph.\end{center}
+\begin{theorem}[Fermat]\label{thm:main}Every \emph{prime} $p$ divides $a^p-a$.\end{theorem}
+\begin{proof}Induction.\end{proof}
+\begin{reminder}[groups]A group.\end{reminder}
+\part{Further}
+\chapter{Next}
+Text.
+\end{document}"""
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(source)
+            (root / "opener-motif.png").write_bytes(b"")
+            epub_prep.main(str(root / "main.tex"), str(root / "epub.tex"), directory)
+            result = subprocess.run(
+                ["pandoc", str(root / "epub.tex"), "-f", "latex", "-t", "html5",
+                 "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
+                capture_output=True, text=True, check=True).stdout
+        # Parts are their own pages; chapters stay chapters (not sections of a part).
+        self.assertRegex(result, r'<h1 class="oc-part unnumbered"[^>]*id="foundations"')
+        self.assertIn('<span class="header-section-number">II</span> Further', result.replace("\n", " "))
+        self.assertRegex(result, r'<h1 class="oc-chapter"[^>]*data-masthead="Volume 7 · Spaces"')
+        self.assertNotIn("<h2", result)
+        self.assertIn("2 Next", visible_text(result))
+        # The epigraph and the motif join the opener panel.
+        self.assertRegex(result, r'(?s)<div class="oc-opener">\s*<div class="oc-epigraph">.*An epigraph.*'
+                                 r'<div class="oc-motif">\s*<img src="[^"]*opener-motif.png"')
+        # Formal boxes: label, coral number, note; the statement upright with its own emphasis.
+        self.assertRegex(result, r'<span class="oc-label">Theorem</span> <span\s+class="oc-num">1.1</span>')
+        self.assertRegex(result, r'<span\s+class="oc-note">Fermat</span>')
+        self.assertRegex(result, r'</span></span>\s+Every <em>prime</em>')
+        self.assertIn('<span class="oc-qed"></span>', result)
+        self.assertNotIn("\u25fb", result)
+        self.assertRegex(result, r'<span class="oc-label">Reminder</span> <span\s+class="oc-note">groups</span>')
 
     def test_text_in_math_has_native_mathml(self):
         with tempfile.TemporaryDirectory() as directory:

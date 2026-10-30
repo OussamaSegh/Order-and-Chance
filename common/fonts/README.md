@@ -12,7 +12,9 @@ bundled here so PDF, EPUB and web builds never depend on system fonts.
 | `FiraSans-Book/BookItalic/Medium/MediumItalic.otf` | labels, running heads, captions | CTAN `fira` (v4.301) | `OFL-Fira.txt` |
 | `DejaVuSansMono*.ttf` | code and Lean Unicode symbols | https://dejavu-fonts.github.io/ | `LICENSE-DejaVu.txt` |
 
-All files are unmodified originals. The DejaVu WOFF2 companions are unchanged; the
-online reader serves the other faces as their original OTF/TTF files (no WOFF2 is
-generated for them yet). EPUB embeds the OTF/TTF faces. `manifest.json` records the
+All OTF/TTF files are unmodified originals. Each EB Garamond, Cormorant Garamond and Fira Sans
+face also has a WOFF2 companion for the website and online reader, converted with fontTools
+(`TTFont(...).flavor = 'woff2'`, same glyphs and tables, only recompressed). The DejaVu WOFF2
+companions are unchanged. Garamond-Math has no WOFF2: the online reader sets mathematics with
+KaTeX, the EPUB embeds the OTF. EPUB embeds the OTF/TTF faces. `manifest.json` records the
 SHA-256 hash of every font file. Cover fonts in `tools/assets/fonts/` are unchanged.

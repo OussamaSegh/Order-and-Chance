@@ -40,7 +40,8 @@ def main(volume: str, build: str, out: str) -> None:
                if p.name.startswith("-") or ":" in p.name}
     for old, new in renames.items():
         (out_dir / old).rename(out_dir / new)
-    # Figures: build.sh made one SVG per figure; copy them, and the portrait JPEGs, next to the pages.
+    # Figures: build.sh made one SVG per figure; copy them, the portrait JPEGs and the
+    # chapter openers' motif PNG next to the pages.
     figdir = out_dir / "figures"
     figdir.mkdir()
     for page in out_dir.glob("*.html"):
@@ -53,10 +54,12 @@ def main(volume: str, build: str, out: str) -> None:
             shutil.copy(src, figdir / src.name)
             return f'src="figures/{src.name}"'
 
-        text = re.sub(r'src="(/[^"]*\.(?:svg|jpg))"', figure, text)
+        text = re.sub(r'src="(/[^"]*\.(?:svg|jpg|png))"', figure, text)
         page.write_text(text, encoding="utf-8")
     (out_dir / "sitemap.json").unlink(missing_ok=True)
     shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
+    # The interior faces of design 5e (EB Garamond, Cormorant Garamond, Fira Sans) and the code
+    # face, as WOFF2; mathematics is KaTeX's.
     for font in (ROOT / "common/fonts").glob("*.woff2"):
         shutil.copy2(font, out_dir / "fonts" / font.name)
     shutil.copy(TOOLS / "reader.css", out_dir / "reader.css")
