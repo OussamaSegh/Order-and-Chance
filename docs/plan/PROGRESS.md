@@ -2,6 +2,8 @@
 
 This file is the live execution tracker for the Volume 1 rewrite. The book is `volume1-first-principles`. One chapter, or the named pilot pair, is one pull request, written in the shared voice.
 
+Each rewrite step is a profound pass, with liberty to reorder for clarity and to add figures, photos, history points, and math jokes that teach, not a thin copyedit.
+
 The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md). The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each pull request independently. After it merges, the next chapter starts.
 
 Edition 1 catalog and content moves, old steps 0–21, are finished. They are kept in [Archive: Edition 1 plan (complete)](#archive-edition-1-plan-complete) at the bottom of this file. That archive is not the resume target.
