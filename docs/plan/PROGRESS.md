@@ -6,7 +6,7 @@ Cold-start snapshot: 2026-10-30, about 20:30 Europe/Paris. Orders (#65) and comp
 
 Standing series goal. When Volume 1 is done, the series continues with Volumes 2 through 15 in order, one volume after another, under the same house voice and the same bar: one chapter per pull request, and an independent review before every merge. That handoff is for another bot. Nori owns Volume 1 only. Volume 2 waits until every Volume 1 step in this file is DONE, including the global consistency review of the whole of Volume 1.
 
-Nori owns the Volume 1 end-state: free to launch, review, and merge Volume 1. One chapter is one pull request. An independent review comes before every merge. Oussama asked Nori to finish Volume 1 quickly with many agents. Steps 0 through 12 are DONE on main. Steps 7 through 12 are the reviewed chapters from #58, #59, #64, #62, #60, and #61, squash-merged together as #67 at `78f27d33c7e605282d8ca1673f73e19f57206adf`. Independent review of each of those six returned MERGE before the stack. The stack did not rewrite chapter prose. The only chapter-file edit in the stack was in probability: the figure label `fig:signs` is `fig:pairsigns`, because polynomials already uses `fig:signs`. The layout check rejects a multiply-defined label. Step 13 is the global consistency review of the whole of Volume 1. Do not open another chapter rewrite. Do not merge #58, #59, #64, #62, #60, or #61 as a second copy. Do not start Volume 2 until step 13 is DONE.
+Nori owns the Volume 1 end-state: free to launch, review, and merge Volume 1. One chapter is one pull request. An independent review comes before every merge. Oussama asked Nori to finish Volume 1 quickly with many agents. Steps 0 through 12 are DONE on main. Steps 7 through 12 are the reviewed chapters from #58, #59, #64, #62, #60, and #61, squash-merged together as #67 at `78f27d33c7e605282d8ca1673f73e19f57206adf`. Independent review of each of those six returned MERGE before the stack. The stack did not rewrite chapter prose. The only chapter-file edit in the stack was in probability: the figure label `fig:signs` is `fig:pairsigns`, because polynomials already uses `fig:signs`. The layout check rejects a multiply-defined label. Step 13, the global consistency review, is DONE on main at `fbeecfd611b68271476ee5a37e94e6362c91ae85` (#69). Do not merge #58, #59, #64, #62, #60, or #61 as a second copy. The open work is the preface deepen, #71. Do not start Volume 2 until that pull request merges.
 
 The remake runs from the start, in this order: cover, preface and language, sums, counting, sequences, orders, complex numbers, polynomials, linear algebra, calculus, inequalities, probability, field guide.
 
@@ -31,17 +31,19 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 - **#60, probability, step 11.** https://github.com/OussamaSegh/Order-and-Chance/pull/60. Branch `cursor/probability-chapter-ac3e`. Reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Author agent `bc-1faa35de`. Independent review: MERGE. Landed in #67, with the figure label `fig:pairsigns`.
 - **#61, field guide, step 12.** https://github.com/OussamaSegh/Order-and-Chance/pull/61. Branch `cursor/volume1-field-guide-4cf2`. Reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Author agent `bc-31e0beff`. Independent review: MERGE. Landed in #67.
 
-The open work is step 13, the global consistency review of the whole of Volume 1: https://github.com/OussamaSegh/Order-and-Chance/pull/69. Do not start a new chapter rewrite. Do not start Volume 2.
+Step 13 is DONE. #69 squash-merged the global consistency review at `fbeecfd611b68271476ee5a37e94e6362c91ae85`.
+
+The open work is the preface deepen: https://github.com/OussamaSegh/Order-and-Chance/pull/71, branch `cursor/volume1-preface-approved-8f79`. Oussama approved the new body of `volume1-first-principles/chapters/preface.tex`. Independent review of that text returned MERGE. This pull request stays open until it merges. It does not reopen steps 0–13 and it does not start Volume 2. Do not open a second preface pull request.
 
 ## Resume protocol
 
-1. Read this file, including the open-pull-request list. Steps 0 through 12 are DONE on main. Step 13 is the global consistency review. There is no chapter rewrite left to open.
+1. Read this file, including the open-pull-request list. Steps 0 through 13 are DONE on main. The open work is the preface deepen, #71. Do not open another preface pull request. Do not start Volume 2.
 2. Do not open a second pull request for any Volume 1 chapter. Do not merge #58, #59, #64, #62, #60, or #61 separately. Their texts landed in #67.
-3. If a later step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it. No Volume 1 chapter step is TODO. Step 13 is the consistency pass, not a new chapter.
+3. If a later step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it. No Volume 1 chapter step is TODO. Step 13 is DONE. The open preface deepen is #71.
 4. One step is one pull request and one chapter file. Step 0 is the jacket: `blurb.tex`, `about-the-cover.tex`, `kdp.md`, and the Volume 1 entry in `common/cover-notes.json`. Step 1 is the preface and the language chapter together. Step 13 may touch several chapter files, but only where a cross-reference, handoff, label, or voice bug breaks the book as one volume.
 5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge. Steps 7 through 12 are DONE. Do not set them back to IN REVIEW.
 6. Steps 7 through 12 record the squash sha of #67. A blank merge sha on those rows is not a reason to redraft the chapter.
-7. Step 13 is the global consistency review of the whole of Volume 1. Volume 2 waits until that review is DONE. Step 0 is DONE.
+7. Step 13 is DONE at `fbeecfd611b68271476ee5a37e94e6362c91ae85`. Volume 2 waits until the preface deepen, #71, merges. Step 0 is DONE.
 8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, including the Sound human pass, fact-check notes in the pull request, and `git diff --check`. A chapter step also needs a Volume 1 typeset and layout check. Run `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did. Step 0 checks the cover note (80 to 150 words), `python3 tools/series_cover.py --check`, and the back-cover measure.
 9. Scope is the assigned file or files under `volume1-first-principles/`, plus the cover-note source when the step is the jacket, plus figures that a chapter needs. Do not edit other volumes in that pull request.
 
@@ -67,7 +69,7 @@ The open work is step 13, the global consistency review of the whole of Volume 1
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/51
 - **Merge sha:** 1d97799a0e12a6b91f562dc7e88ad0ec4c788a3a
 - **Date:** 2026-10-30
-- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. Do not open another preface pull request.
+- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. The open preface deepen is https://github.com/OussamaSegh/Order-and-Chance/pull/71. Step 1 stays DONE. Do not open a second preface pull request.
 
 ### 2. Sums, binomials, induction
 
@@ -188,18 +190,18 @@ The open work is step 13, the global consistency review of the whole of Volume 1
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/61
 - **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Squash-merged in #67, not redrafted. Source pull request #61, branch `cursor/volume1-field-guide-4cf2`, reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Independent review returned MERGE. Author agent `bc-31e0beff-efcb-5e76-9580-a38f144d4cf2`. The chapter file and its two new figures on main match that tip byte for byte. Do not open another field-guide pull request. Do not merge #61 separately. The next step is the global consistency review, step 13.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #61, branch `cursor/volume1-field-guide-4cf2`, reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Independent review returned MERGE. Author agent `bc-31e0beff-efcb-5e76-9580-a38f144d4cf2`. The chapter file and its two new figures on main match that tip byte for byte. Do not open another field-guide pull request. Do not merge #61 separately. Step 13 is DONE at `fbeecfd611b68271476ee5a37e94e6362c91ae85`. The open work is the preface deepen, #71.
 
 ### 13. Global consistency and transitions
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 12
 - **Books and files:** the reader-facing text of `volume1-first-principles` (preface, chapters, field guide) and this progress file. No new chapter. No other volume.
 - **Acceptance:** Cross-references resolve, chapter closings hand to the next opening, the field guide names Volume 2 by its current title and subtitle, labels stay unique, and the prose that changed still matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/69
-- **Merge sha:**
-- **Date:**
-- **Notes:** The chapters are merged. This pull request is the global consistency pass: handoffs, findable pointers, and the Volume 2 door. It does not redraft a chapter that already returned MERGE. Do not start Volume 2 until this step is DONE.
+- **Merge sha:** fbeecfd611b68271476ee5a37e94e6362c91ae85
+- **Date:** 2026-10-30
+- **Notes:** Squash-merged as #69 at `fbeecfd611b68271476ee5a37e94e6362c91ae85`. Handoffs, findable pointers, and the Volume 2 door. It does not redraft a chapter that already returned MERGE. The #69 preface closing is superseded by the open preface deepen, #71, which keeps the approved preface body. Do not start Volume 2 until #71 merges.
 
 ## Archive: Edition 1 plan (complete)
 
