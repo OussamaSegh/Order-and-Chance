@@ -77,17 +77,45 @@
   \xdef\oc@op@numeral{#1}%
   \AddToHookNext{shipout/background}{\put(0,0){\oc@op@art}}%
   \thispagestyle{empty}\null\clearpage}
-% Part pages (design 5e): the same charcoal page on a recto, with the coral part
-% numeral, PART n, the ivory title and the coral rule, and no motif. The opener of the
-% part's first chapter is printed on its back, facing that chapter's first text page.
-% Called by \part (common/interior-style.tex) on the recto it has already cleared to.
+% Part pages (design 5e, option B): a recto with a charcoal band over the top 3.4 in
+% (to the bleed at the top and sides) holding the masthead, the volume line and the light
+% coral Roman part numeral; below it, on the paper, PART n (Fira, numeral in deep coral),
+% the charcoal Cormorant title and a deep-coral rule-diamond-rule. No motif or epigraph.
+% The opener of the part's first chapter is printed on its back, facing that chapter's
+% first text page. Called by \part (common/interior-style.tex) on the recto it has
+% already cleared to. \ocPartPaper is the page below the band: white, as the paper is
+% (set it to ocCream for an ivory page).
+\colorlet{ocPartPaper}{white}
+\newsavebox{\oc@pt@text}
 \newcommand{\oc@part@page}[2]{% #1 numeral (empty for \part*), #2 title
   \global\oc@op@rectotrue
-  \oc@op@textbox{\partname}{#1}{#2}{}%
-  \global\setbox\oc@op@motif\hbox{}%
+  \global\setbox\oc@pt@text\hbox{\parbox[t]{4.3in}{%
+    \if\relax\detokenize{#1}\relax\else
+    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocBlack}\ocLab{\partname}\enspace\textcolor{ocCoralDeep}{#1}}\par
+    \vspace{10pt}\fi
+    {\ocDisplay\linespread{1}\fontsize{38}{42}\selectfont\color{ocBlack}\raggedright\hyphenpenalty10000\exhyphenpenalty10000 \ocBreakDashes{#2}\par}%
+    \vspace{16pt}\oc@op@diarule{ocCoralDeep}\par}}%
   \xdef\oc@op@numeral{#1}%
-  \AddToHookNext{shipout/background}{\put(0,0){\oc@op@art}}%
+  \AddToHookNext{shipout/background}{\put(0,0){\oc@part@art}}%
   \thispagestyle{empty}\null\clearpage}
+\newcommand{\oc@part@art}{%
+  \begin{tikzpicture}[baseline={(0,0)}]
+    \useasboundingbox (0,0) rectangle (\paperwidth,-\paperheight);
+    \fill[ocPartPaper] (0,0) rectangle (\paperwidth,-\paperheight);
+    \fill[ocBlack] (0,0) rectangle (\paperwidth,{-\ocBleed-3.4in});
+    \begin{scope}[shift={(\ocBleed,-\ocBleed)}]
+      \node[anchor=north west,inner sep=0pt] at (\ocInner,-0.75in)
+        {\ocDisplay\fontsize{10.5}{12}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}};
+      \node[anchor=north west,inner sep=0pt] at (\ocInner,-0.98in)
+        {\ocBook\fontsize{7}{9}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}};
+      \node[anchor=base west,inner sep=0pt,text=ocCoral,font=\ocNumeral\fontsize{150}{150}\selectfont]
+        at (\ocInner-0.03in,-3.05in) {\oc@op@numeral};
+      \node[anchor=north west,inner sep=0pt] at (\ocInner,-4.15in) {\usebox\oc@pt@text};
+    \end{scope}
+  \end{tikzpicture}}
+% The part page's short rule: rule, diamond, rule.
+\newcommand{\oc@op@diarule}[1]{\tikz[baseline=-0.6ex]{\draw[#1,line width=1.2pt](0,0)--(0.36in,0);
+  \fill[#1](0.45in,0.045in)--(0.495in,0)--(0.45in,-0.045in)--(0.405in,0)--cycle;\draw[#1,line width=1.2pt](0.54in,0)--(0.9in,0);}}
 % Text column: label, title, rule, epigraph (4.3 in wide).
 \newcommand{\oc@op@textbox}[4]{% #1 label, #2 number, #3 title, #4 epigraph
   \global\setbox\oc@op@text\hbox{\parbox[t]{4.3in}{%
