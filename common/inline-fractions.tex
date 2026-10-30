@@ -1,0 +1,351 @@
+% Slashed inline fractions (design 5e, presentation only). In running text \frac{a}{b}
+% is set as a/b, with parentheses where the slashed form would otherwise be ambiguous:
+%   numerator with a top-level + or - (or \pm, \mp, a nested fraction)   (n+1)/2
+%   denominator that is not a single atom (a letter, number, symbol or command applied
+%   to one argument, with scripts, primes and factorials)                1/(2n)
+%   fraction followed directly by a letter, digit, "(", "^" or an
+%   ordinary symbol or command                                           (1/2)n
+% Displays (equation, align, \[ ... \], ...), \displaystyle, \dfrac, \tfrac, \cfrac,
+% \binom and all figures (tikzpicture) keep stacked fractions. The mathematics, the
+% source and the EPUB (MathML) are unchanged.
+\NewCommandCopy\ocStackedFrac\frac
+\ExplSyntaxOn
+\bool_new:N \l_oc_frac_stack_bool
+\bool_new:N \l__oc_frac_paren_bool
+\bool_new:N \l__oc_frac_done_bool
+\int_new:N \l__oc_frac_depth_int
+\int_new:N \l__oc_frac_pos_int
+\int_new:N \l__oc_frac_last_int
+\tl_new:N \l__oc_frac_state_tl
+\tl_new:N \l__oc_frac_first_tl
+\tl_new:N \l__oc_frac_lastitem_tl
+\AtBeginDocument
+  {
+    \everydisplay \exp_after:wN { \the \everydisplay \bool_set_true:N \l_oc_frac_stack_bool }
+    \AddToHook { env / tikzpicture / begin } { \bool_set_true:N \l_oc_frac_stack_bool }
+  }
+\DeclareRobustCommand \frac [2] { \oc_frac:nn {#1} {#2} }
+% ---------------------------------------------------------------- token classes
+\cs_new:Npn \__oc_frac_meaning_class:N #1
+  % Math class of a \mathchardef / \Umathchardef token (0 ord ... 7 variable), else -1.
+  {
+    \token_if_mathchardef:NTF #1
+      {
+        \exp_last_unbraced:Nf \__oc_frac_class_aux:w { \token_to_meaning:N #1 } \q_stop
+      }
+      { -1 }
+  }
+\cs_new:Npn \__oc_frac_class_aux:w #1 " #2 #3 \q_stop { \__oc_frac_class_digit:n {#2} }
+\cs_new:Npn \__oc_frac_class_digit:n #1 { \str_case:nnF {#1} { {0}{0} {1}{1} {2}{2} {3}{3} {4}{4} {5}{5} {6}{6} {7}{7} } { -1 } }
+\clist_const:Nn \c__oc_frac_prefix_clist
+  { \sqrt, \mathrm, \mathbb, \mathbf, \mathcal, \mathsf, \mathit, \mathfrak, \symbf, \symrm, \boldsymbol,
+    \bar, \hat, \tilde, \widetilde, \widehat, \overline, \vec, \dot, \ddot, \operatorname, \mathscr }
+\clist_const:Nn \c__oc_frac_function_clist
+  { \log, \ln, \exp, \sin, \cos, \tan, \det, \sinh, \cosh, \tanh, \lg }
+\clist_const:Nn \c__oc_frac_separator_clist
+  { \quad, \qquad, \,, \;, \!, \:, \ , \right, \middle, \bigr, \Bigr, \biggr, \Biggr, \big, \Big, \bigg, \Bigg,
+    \dots, \ldots, \cdots, \dotsc, \dotsb, \text, \mbox, \textup, \end, \\, \nonumber, \notag, \tag, \label,
+    \qedhere, \hfill, \pmod, \bmod, \mod, \pod, \relax, \ocStackedFrac, \mid, \vert, \Vert, \|, \rangle, \rbrace, \}, \rfloor, \rceil,
+    \), \], \(, \[, \colon, \textrm, \textit, \textbf, \emph, \mathbin, \mathrel, \mathpunct, \mathclose,
+    \rvert, \rVert, \iff, \implies, \impliedby, \Longrightarrow, \longrightarrow, \Rightarrow, \mapsto, \longmapsto,
+    \hbox, \allowbreak, \penalty, \linebreak, \nobreak, \hskip, \kern, \mskip, \hspace, \enspace, \thinspace,
+    \displaystyle, \textstyle, \ne, \neq, \le, \ge, \leq, \geq, \to, \in, \notin,
+    \cdot, \times, \le, \leqslant, \geqslant, \subset, \subseteq, \sim, \approx, \simeq, \equiv, \cong, \ll, \gg,
+    \prec, \succ, \mid, \nmid, \circ, \setminus, \cup, \cap, \oplus, \otimes, \pm, \mp, \wedge, \vee, \land, \lor,
+    \to, \gets, \leftarrow, \rightarrow, \uparrow, \downarrow, \dots, \vdots, \ddots, \bullet, \star, \ast, \div }
+\prg_new_protected_conditional:Npnn \__oc_frac_in_clist:NN #1#2 { TF }
+  {
+    % No \clist_map_break: and no \cr in the lists: inside an alignment (a matrix in running
+    % text) TeX would end the cell while the rest of the list is being skipped.
+    % The \cr test sits in an align-safe group: TeX ends a cell at a scanned \cr otherwise.
+    \bool_set_false:N \l__oc_frac_done_bool
+    \group_align_safe_begin:
+    \token_if_eq_meaning:NNT #1 \cr { \bool_set_true:N \l__oc_frac_done_bool }
+    \group_align_safe_end:
+    \clist_map_inline:Nn #2
+      { \token_if_eq_meaning:NNT #1 ##1 { \bool_set_true:N \l__oc_frac_done_bool } }
+    \bool_if:NTF \l__oc_frac_done_bool { \prg_return_true: } { \prg_return_false: }
+  }
+\prg_new_protected_conditional:Npnn \__oc_frac_if_digit:N #1 { T, TF }
+  {
+    \bool_set_false:N \l__oc_frac_done_bool
+    \token_if_other:NT #1
+      {
+        \tl_map_inline:nn { 0123456789. }
+          { \token_if_eq_charcode:NNT #1 ##1 { \bool_set_true:N \l__oc_frac_done_bool \tl_map_break: } }
+      }
+    \bool_if:NTF \l__oc_frac_done_bool { \prg_return_true: } { \prg_return_false: }
+  }
+\prg_new_conditional:Npnn \__oc_frac_if_sign:N #1 { T }
+  {
+    \bool_lazy_any:nTF
+      {
+        { \bool_lazy_and_p:nn { \token_if_other_p:N #1 } { \token_if_eq_charcode_p:NN #1 + } }
+        { \bool_lazy_and_p:nn { \token_if_other_p:N #1 } { \token_if_eq_charcode_p:NN #1 - } }
+        { \token_if_eq_meaning_p:NN #1 \pm }
+        { \token_if_eq_meaning_p:NN #1 \mp }
+        { \token_if_eq_meaning_p:NN #1 \frac }
+        { \token_if_eq_meaning_p:NN #1 \ocStackedFrac }
+        { \bool_lazy_and_p:nn { \token_if_other_p:N #1 } { \token_if_eq_charcode_p:NN #1 / } }
+      }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+\cs_new_protected:Npn \__oc_frac_depth:N #1
+  {
+    \token_if_other:NT #1
+      {
+        \token_if_eq_charcode:NNT #1 ( { \int_incr:N \l__oc_frac_depth_int }
+        \token_if_eq_charcode:NNT #1 [ { \int_incr:N \l__oc_frac_depth_int }
+        \token_if_eq_charcode:NNT #1 ) { \int_decr:N \l__oc_frac_depth_int }
+        \token_if_eq_charcode:NNT #1 ] { \int_decr:N \l__oc_frac_depth_int }
+      }
+    \token_if_eq_meaning:NNT #1 \{ { \int_incr:N \l__oc_frac_depth_int }
+    \token_if_eq_meaning:NNT #1 \} { \int_decr:N \l__oc_frac_depth_int }
+    \token_if_eq_meaning:NNT #1 \langle { \int_incr:N \l__oc_frac_depth_int }
+    \token_if_eq_meaning:NNT #1 \rangle { \int_decr:N \l__oc_frac_depth_int }
+  }
+% Is the whole token list wrapped in one pair of parentheses (or bars)?
+\prg_new_protected_conditional:Npnn \__oc_frac_if_wrapped:n #1 { T }
+  {
+    \tl_set:Nx \l__oc_frac_first_tl { \tl_head:n {#1} }
+    \tl_set:Nx \l__oc_frac_lastitem_tl { \tl_item:nn {#1} { -1 } }
+    \bool_set_false:N \l__oc_frac_done_bool
+    \int_compare:nNnT { \tl_count:n {#1} } > 2
+      {
+        \tl_if_eq:NnT \l__oc_frac_lastitem_tl { ) }
+          {
+            \tl_if_eq:NnT \l__oc_frac_first_tl { ( } { \bool_set_true:N \l__oc_frac_done_bool }
+            \tl_if_eq:NnT \l__oc_frac_first_tl { \left } { \bool_set_true:N \l__oc_frac_done_bool }
+          }
+        \tl_if_eq:NnT \l__oc_frac_lastitem_tl { | }
+          { \tl_if_eq:NnT \l__oc_frac_first_tl { | } { \bool_set_true:N \l__oc_frac_done_bool } }
+      }
+    % A wrapped list must not close its first parenthesis before the end: (a)(b) is not wrapped.
+    \bool_if:NT \l__oc_frac_done_bool
+      {
+        \int_zero:N \l__oc_frac_depth_int
+        \int_zero:N \l__oc_frac_pos_int
+        \int_set:Nn \l__oc_frac_last_int { \tl_count:n {#1} }
+        \tl_map_inline:nn {#1}
+          {
+            \int_incr:N \l__oc_frac_pos_int
+            \tl_if_single_token:nT {##1} { \__oc_frac_depth:N ##1 }
+            \bool_lazy_and:nnT
+              { \int_compare_p:nNn \l__oc_frac_depth_int = 0 }
+              { \int_compare_p:nNn \l__oc_frac_pos_int < \l__oc_frac_last_int }
+              { \bool_set_false:N \l__oc_frac_done_bool \tl_map_break: }
+          }
+      }
+    \bool_if:NTF \l__oc_frac_done_bool { \prg_return_true: } { \prg_return_false: }
+  }
+% ---------------------------------------------------------------- numerator
+\cs_new_protected:Npn \__oc_frac_num:n #1
+  {
+    \bool_set_false:N \l__oc_frac_paren_bool
+    \int_zero:N \l__oc_frac_depth_int
+    \int_zero:N \l__oc_frac_pos_int
+    \tl_map_inline:nn {#1}
+      {
+        \int_incr:N \l__oc_frac_pos_int
+        \tl_if_single_token:nT {##1}
+          {
+            \__oc_frac_depth:N ##1
+            \int_compare:nNnT \l__oc_frac_depth_int = 0
+              {
+                \int_compare:nNnT \l__oc_frac_pos_int > 1
+                  { \__oc_frac_if_sign:NT ##1 { \bool_set_true:N \l__oc_frac_paren_bool } }
+              }
+          }
+      }
+    \__oc_frac_if_wrapped:nT {#1} { \bool_set_false:N \l__oc_frac_paren_bool }
+  }
+% ---------------------------------------------------------------- denominator
+% States: s start, d digits, a atom complete, p prefix awaiting its argument,
+% q two-argument prefix, f function awaiting its argument, x script awaiting its argument,
+% n not simple.
+\cs_new_protected:Npn \__oc_frac_den:n #1
+  {
+    \tl_set:Nn \l__oc_frac_state_tl { s }
+    \tl_set:Nx \l__oc_frac_first_tl { \tl_head:n {#1} }
+    \tl_if_eq:NnT \l__oc_frac_first_tl { \dd } { \tl_set:Nn \l__oc_frac_state_tl { ok } }
+    \tl_if_eq:NnT \l__oc_frac_first_tl { \mathrm }
+      {
+        \tl_set:Nx \l__oc_frac_lastitem_tl { \tl_item:nn {#1} { 2 } }
+        \tl_if_eq:NnT \l__oc_frac_lastitem_tl { d } { \tl_set:Nn \l__oc_frac_state_tl { ok } }
+      }
+    \tl_map_inline:nn {#1} { \__oc_frac_den_step:n {##1} }
+    \bool_set_true:N \l__oc_frac_paren_bool
+    \str_case:VnT \l__oc_frac_state_tl { {d}{} {a}{} {ok}{} } { \bool_set_false:N \l__oc_frac_paren_bool }
+    \__oc_frac_if_wrapped:nT {#1} { \bool_set_false:N \l__oc_frac_paren_bool }
+  }
+\cs_new_protected:Npn \__oc_frac_den_step:n #1
+  {
+    \str_case:Vn \l__oc_frac_state_tl
+      {
+        {s}  {
+               \bool_lazy_and:nnTF { \tl_if_single_token_p:n {#1} } { \__oc_frac_if_open_p:n {#1} }
+                 { \int_set:Nn \l__oc_frac_depth_int { 1 } \tl_set:Nn \l__oc_frac_state_tl { g } }
+                 { \__oc_frac_den_first:n {#1} }
+             }
+        {g}  {
+               \tl_if_single_token:nT {#1} { \__oc_frac_depth:N #1 }
+               \int_compare:nNnT \l__oc_frac_depth_int = 0 { \tl_set:Nn \l__oc_frac_state_tl { a } }
+             }
+        {d}  { \tl_if_single_token:nTF {#1} { \__oc_frac_den_digits:N #1 } { \tl_set:Nn \l__oc_frac_state_tl { n } } }
+        {a}  { \tl_if_single_token:nTF {#1} { \__oc_frac_den_after:N #1 } { \tl_set:Nn \l__oc_frac_state_tl { n } } }
+        {p}  { \tl_set:Nn \l__oc_frac_state_tl { a } }
+        {q}  { \tl_set:Nn \l__oc_frac_state_tl { p } }
+        {f}  { \__oc_frac_den_first:n {#1} }
+        {x}  { \tl_set:Nn \l__oc_frac_state_tl { a } }
+        {ok} { }
+        {n}  { \tl_map_break: }
+      }
+  }
+\prg_new_conditional:Npnn \__oc_frac_if_open:n #1 { p }
+  {
+    \bool_lazy_and:nnTF { \token_if_other_p:N #1 } { \token_if_eq_charcode_p:NN #1 ( }
+      { \prg_return_true: } { \prg_return_false: }
+  }
+\cs_new_protected:Npn \__oc_frac_den_first:n #1
+  {
+    \bool_lazy_and:nnT { \tl_if_single_token_p:n {#1} } { \str_if_eq_p:Vn \l__oc_frac_state_tl { s } }
+      { \token_if_eq_meaning:NNT #1 \partial { \tl_set:Nn \l__oc_frac_state_tl { ok } } }
+    \str_if_eq:VnF \l__oc_frac_state_tl { ok } { \__oc_frac_den_first_aux:n {#1} }
+  }
+\cs_new_protected:Npn \__oc_frac_den_first_aux:n #1
+  {
+    \tl_if_single_token:nTF {#1}
+      {
+        \bool_lazy_or:nnTF { \token_if_letter_p:N #1 }
+          { \bool_lazy_any_p:n { { \int_compare_p:nNn { \__oc_frac_meaning_class:N #1 } = 0 }
+                                 { \int_compare_p:nNn { \__oc_frac_meaning_class:N #1 } = 7 } } }
+          {
+            % A leading differential (d or \partial) makes d/dx, \partial f/\partial x simple.
+            \bool_lazy_and:nnTF { \str_if_eq_p:Vn \l__oc_frac_state_tl { s } }
+              { \bool_lazy_or_p:nn { \token_if_eq_charcode_p:NN #1 d } { \token_if_eq_meaning_p:NN #1 \partial } }
+              { \tl_set:Nn \l__oc_frac_state_tl { ok } }
+              { \tl_set:Nn \l__oc_frac_state_tl { a } }
+          }
+          {
+            \__oc_frac_if_digit:NTF #1 { \tl_set:Nn \l__oc_frac_state_tl { d } }
+              {
+                \__oc_frac_in_clist:NNTF #1 \c__oc_frac_prefix_clist { \tl_set:Nn \l__oc_frac_state_tl { p } }
+                  {
+                    \__oc_frac_in_clist:NNTF #1 \c__oc_frac_function_clist { \tl_set:Nn \l__oc_frac_state_tl { f } }
+                      {
+                        \bool_lazy_or:nnTF { \token_if_eq_meaning_p:NN #1 \binom } { \token_if_eq_meaning_p:NN #1 \tbinom }
+                          { \tl_set:Nn \l__oc_frac_state_tl { q } }
+                          {
+                            \bool_lazy_or:nnTF { \token_if_eq_meaning_p:NN #1 \dd } { \token_if_eq_meaning_p:NN #1 \mathrm }
+                              { \tl_set:Nn \l__oc_frac_state_tl { p } }
+                              { \tl_set:Nn \l__oc_frac_state_tl { n } }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+      { \tl_set:Nn \l__oc_frac_state_tl { a } }
+  }
+\cs_new_protected:Npn \__oc_frac_den_digits:N #1
+  {
+    \__oc_frac_if_digit:NTF #1 { }
+      { \__oc_frac_den_after:N #1 }
+  }
+\cs_new_protected:Npn \__oc_frac_den_after:N #1
+  {
+    \bool_lazy_any:nTF
+      {
+        { \token_if_math_superscript_p:N #1 }
+        { \token_if_math_subscript_p:N #1 }
+      }
+      { \tl_set:Nn \l__oc_frac_state_tl { x } }
+      {
+        \bool_lazy_and:nnTF { \token_if_other_p:N #1 }
+          { \bool_lazy_or_p:nn { \token_if_eq_charcode_p:NN #1 ! } { \token_if_eq_charcode_p:NN #1 ' } }
+          { \tl_set:Nn \l__oc_frac_state_tl { a } }
+          { \tl_set:Nn \l__oc_frac_state_tl { n } }
+      }
+  }
+% ---------------------------------------------------------------- what follows
+\cs_new_protected:Npn \__oc_frac_after:
+  {
+    \bool_set_false:N \l__oc_frac_paren_bool
+    \token_if_letter:NTF \l_peek_token
+      { \bool_set_true:N \l__oc_frac_paren_bool }
+      {
+        \token_if_math_superscript:NTF \l_peek_token
+          { \bool_set_true:N \l__oc_frac_paren_bool }
+          {
+            \token_if_other:NTF \l_peek_token
+              {
+                \__oc_frac_if_digit:NT \l_peek_token { \bool_set_true:N \l__oc_frac_paren_bool }
+                \token_if_eq_charcode:NNT \l_peek_token ( { \bool_set_true:N \l__oc_frac_paren_bool }
+              }
+              {
+                \token_if_mathchardef:NTF \l_peek_token
+                  {
+                    \int_case:nnT { \__oc_frac_meaning_class:N \l_peek_token }
+                      { {0}{} {1}{} {4}{} {7}{} } { \bool_set_true:N \l__oc_frac_paren_bool }
+                  }
+                  {
+                    \bool_lazy_or:nnT { \token_if_macro_p:N \l_peek_token } { \token_if_primitive_p:N \l_peek_token }
+                      {
+                        \__oc_frac_in_clist:NNTF \l_peek_token \c__oc_frac_separator_clist { }
+                          {
+                            \bool_lazy_or:nnF { \token_if_math_superscript_p:N \l_peek_token }
+                              { \token_if_eq_meaning_p:NN \l_peek_token \relax }
+                              { \bool_set_true:N \l__oc_frac_paren_bool }
+                          }
+                      }
+                  }
+              }
+          }
+      }
+  }
+% ---------------------------------------------------------------- assembly
+\cs_new_protected:Npn \oc_frac:nn #1#2
+  {
+    \bool_if:NTF \l_oc_frac_stack_bool
+      { \ocStackedFrac {#1} {#2} }
+      {
+        \__oc_frac_num:n {#1}
+        \bool_if:NTF \l__oc_frac_paren_bool
+          { \__oc_frac_b:nnn { ( #1 ) } }
+          { \__oc_frac_b:nnn { #1 } }
+        {#1} {#2}
+      }
+  }
+\cs_new_protected:Npn \__oc_frac_b:nnn #1#2#3
+  {
+    \__oc_frac_den:n {#3}
+    \bool_if:NTF \l__oc_frac_paren_bool
+      { \__oc_frac_c:nnnn {#1} { ( #3 ) } }
+      { \__oc_frac_c:nnnn {#1} { #3 } }
+    {#2} {#3}
+  }
+\cs_new_protected:Npn \__oc_frac_c:nnnn #1#2#3#4
+  {
+    % Align-safe: peeking at & or \\ in a matrix cell must not end the cell.
+    \cs_set_protected:Npn \__oc_frac_go: { \__oc_frac_d:nnnn {#1} {#2} {#3} {#4} }
+    \group_align_safe_begin:
+    \peek_remove_spaces:n { \peek_after:Nw \__oc_frac_go: }
+  }
+\cs_new_protected:Npn \__oc_frac_go: { }
+\cs_new_protected:Npn \__oc_frac_d:nnnn #1#2#3#4
+  {
+    \__oc_frac_after:
+    \group_align_safe_end:
+    \bool_if:NTF \l__oc_frac_paren_bool
+      { \__oc_frac_e:nnn { ( #1 / \__oc_frac_break: #2 ) } }
+      { \__oc_frac_e:nnn { #1 / \__oc_frac_break: #2 } }
+    {#3} {#4}
+  }
+\cs_new_protected:Npn \__oc_frac_e:nnn #1#2#3
+  {
+    \mathchoice { \ocStackedFrac {#2} {#3} } { #1 } { #1 } { #1 }
+  }
+% A last-resort line break after the slash of a long fraction in running text (the
+% pieces stay at the outer level of the formula, so TeX may use it).
+\cs_new_protected:Npn \__oc_frac_break: { \penalty 900 \scan_stop: }
+\ExplSyntaxOff
