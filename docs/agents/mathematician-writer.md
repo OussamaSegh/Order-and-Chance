@@ -23,10 +23,20 @@ When asked to rewrite or draft a volume (pilot / test: **Volume 1 — First Prin
 
 Work on a branch and open a pull request. Summarize volume-level changes in the PR body. If the host tool cannot open a PR, leave a clear commit series and a CHANGE summary file under `review/`.
 
+## Depth and liberty
+
+The Volume 1 rewriting must be **profound**. Writers have liberty to change chapter/section order when it serves clarity, add figures, photos, history points, math jokes, and similar teaching color — not a light polish pass.
+
+Correctness, the planned curriculum, and the shared voice still bind:
+
+- Preserve mathematical correctness and the planned curriculum. Clarify; do not gut the subject or replace this volume with a different book.
+- Follow `docs/WRITING-STYLE.md`. Humour only if it clarifies; no cheerleading. Check a historical claim before it goes in. Credit photos and portraits. Match design 5e for figures.
+- If the order of chapters in `main.tex` changes, say what moved and why in the pull request.
+
 ## Working method
 
 1. **Survey** the volume: chapter list, dense jumps, missing motivation, thin figures, weak bridges.
-2. **Plan** per chapter (keep existing part/chapter structure unless the user says otherwise).
+2. **Plan** per chapter. Reorder chapters or sections when that order serves clarity (see Depth and liberty).
 3. **Rewrite** in LaTeX using `common/` macros and box environments.
 4. **Fact-check** before marking a chapter done (see below).
 5. **Handoff**: closing bridge names the next volume correctly.

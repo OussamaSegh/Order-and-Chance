@@ -1,4 +1,166 @@
-# Implementation tracker
+# Volume 1 voice rewrite
+
+This file is the live execution tracker for the Volume 1 rewrite. The book is `volume1-first-principles`. One chapter, or the named pilot pair, is one pull request, written in the shared voice.
+
+Each rewrite step is a profound pass, with liberty to reorder for clarity and to add figures, photos, history points, and math jokes that teach, not a thin copyedit.
+
+The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md). The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each pull request independently. After it merges, the next chapter starts.
+
+Edition 1 catalog and content moves, old steps 0–21, are finished. They are kept in [Archive: Edition 1 plan (complete)](#archive-edition-1-plan-complete) at the bottom of this file. That archive is not the resume target.
+
+Chapter order follows the `\input` order in `volume1-first-principles/main.tex`. Image credits and the cover note are not rewrite steps.
+
+## Resume protocol
+
+1. Read this file. Find the first Volume 1 rewrite step whose status is not DONE.
+2. If that step is IN REVIEW or IN PROGRESS, continue its pull request. Do not open a second pull request for the same step.
+3. If that step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it.
+4. One step is one pull request and one chapter file. The exception is step 1, the pilot, which combined `chapters/preface.tex` and `chapters/ch00-language.tex`.
+5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge.
+6. The editor marks the row DONE, with the merge sha and the date, after the pull request merges. If the editor has not done that when the next step starts, the next step's pull request fills the previous row from the merge commit.
+7. Do not start step \(n+1\) while step \(n\) is TODO, IN PROGRESS, or IN REVIEW.
+8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, fact-check notes in the pull request, `git diff --check`, and a Volume 1 typeset and layout check. Run `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did.
+9. Scope is the assigned chapter file or files under `volume1-first-principles/`, plus figures that chapter needs. Do not edit other volumes in that pull request.
+
+## Steps
+
+### 1. Preface and language
+
+- **Status:** DONE
+- **Depends on:** none
+- **Books and files:** `volume1-first-principles/chapters/preface.tex` and `volume1-first-principles/chapters/ch00-language.tex`. Pilot; both files in one pull request.
+- **Acceptance:** Both files match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/43
+- **Merge sha:** 0212bbee89ccb4e7fb291a2c20b18be724eb3949
+- **Date:** 2026-10-30
+- **Notes:** Pilot. Preface and the language chapter shipped together.
+
+### 2. Sums, binomials, induction
+
+- **Status:** DONE
+- **Depends on:** 1
+- **Books and files:** `volume1-first-principles/chapters/ch01-sums.tex`. Sums, binomials, induction.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/46
+- **Merge sha:** 69d90ccedce7f02ac26b8737fd09a88bc8459215
+- **Date:** 2026-10-30
+- **Notes:** Sums, binomials, and induction.
+
+### 3. Counting and discrete reasoning
+
+- **Status:** IN REVIEW
+- **Depends on:** 2
+- **Books and files:** `volume1-first-principles/chapters/ch02-counting.tex`. Counting and discrete reasoning.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/47
+- **Merge sha:**
+- **Date:**
+- **Notes:** Continue this pull request. Do not open a second one for this chapter.
+
+### 4. Sequences, series, limits
+
+- **Status:** TODO
+- **Depends on:** 3
+- **Books and files:** `volume1-first-principles/chapters/ch05-sequences-series.tex`. Sequences, series, limits.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Sequences, series, and limits.
+
+### 5. Orders
+
+- **Status:** TODO
+- **Depends on:** 4
+- **Books and files:** `volume1-first-principles/chapters/orders.tex`. Orders.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Orders.
+
+### 6. Complex numbers and roots
+
+- **Status:** TODO
+- **Depends on:** 5
+- **Books and files:** `volume1-first-principles/chapters/ch02-complex-roots.tex`. Complex numbers and roots.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Complex numbers and roots.
+
+### 7. Polynomials
+
+- **Status:** TODO
+- **Depends on:** 6
+- **Books and files:** `volume1-first-principles/chapters/ch03-polynomials.tex`. Polynomials.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Polynomials.
+
+### 8. Linear algebra
+
+- **Status:** TODO
+- **Depends on:** 7
+- **Books and files:** `volume1-first-principles/chapters/ch07-linear-algebra.tex`. Linear algebra.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Linear algebra.
+
+### 9. Integrals and Taylor
+
+- **Status:** TODO
+- **Depends on:** 8
+- **Books and files:** `volume1-first-principles/chapters/ch06-integrals-taylor.tex`. Integrals and Taylor.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Integrals and Taylor.
+
+### 10. Inequalities
+
+- **Status:** TODO
+- **Depends on:** 9
+- **Books and files:** `volume1-first-principles/chapters/ch04-inequalities.tex`. Inequalities.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Inequalities.
+
+### 11. Probability
+
+- **Status:** TODO
+- **Depends on:** 10
+- **Books and files:** `volume1-first-principles/chapters/ch09-probability.tex`. Probability.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Probability.
+
+### 12. Field guide
+
+- **Status:** TODO
+- **Depends on:** 11
+- **Books and files:** `volume1-first-principles/chapters/field-guide.tex`. Field guide, and the handoff to Volume 2.
+- **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** Field guide and the handoff to Volume 2.
+
+## Archive: Edition 1 plan (complete)
+
+Complete. Not the resume target. Edition 1 steps 0–21 below are finished. Their statuses are the historical record. Resume from the Volume 1 voice rewrite at the top of this file.
+
+### Implementation tracker
 
 This is the execution list for Edition 1. The reasoning lives in [SERIES-CONTENT-PLAN.md](SERIES-CONTENT-PLAN.md) and the chapter plans beside it. Titles and subtitles are frozen. Part names stay the catalog's, except the two renames in steps 5 and 8.
 
@@ -22,7 +184,9 @@ Paths below, and the paths in the other files under `docs/plan/`, are the direct
 | 14 The Primes | `volume14-primes` |
 | 15 Order and Chance | `volume15-order-and-chance` |
 
-## Resume protocol
+### Retired resume protocol (Edition 1)
+
+This protocol applied while Edition 1 was open. Do not resume from it.
 
 1. Read this file. Find the first step whose status is not DONE.
 2. If that step is IN REVIEW or IN PROGRESS, open its PR link. Continue that branch. Do not open a second PR for the same step.
@@ -35,7 +199,7 @@ Paths below, and the paths in the other files under `docs/plan/`, are the direct
 
 A step is one PR. A content step is one book, or one move between books. Step 2 is the rename: it touches every book and does not change the mathematics. Acceptance always includes `git diff --check` and `./build.sh` on every stem the step touches.
 
-## Steps
+### Edition 1 steps
 
 ### 0. Merge PR #26 renumbering + final titles
 
