@@ -54,7 +54,21 @@ A short map is welcome when each stop names a mathematical job: “Quantifiers s
 
 Hollow intensifiers and buzzwords praise the subject and do not teach it. Do not use them as filler: *robust*, *comprehensive*, *seamless*, *leverage*, *delve*, and the same empty family (*landscape*, *tapestry*, *unlock*, *journey*, *pivotal*, *underscore*, *realm*). Prefer *use*, *show*, *mean*, *because*, *so*. Any sentence that sounds like a model summarizing the section, rather than a person teaching it, gets rewritten.
 
-**Voice pass.** This is the house rule for every volume. Before a chapter pull request, read the new prose aloud. Rewrite stock openers (“In this section we will…”, “Let’s delve into…”), the filler “It is important to note that…”, stock closers (“In conclusion…”), hollow intensifiers, stacked hedging, template summaries, buzzword salad, and transitions that announce structure. Repeat until the chapter sounds like a friend teaching. An independent review uses the same test.
+The same voice covers the jacket. The back-cover blurb is the volume’s `blurb.tex`. About the Cover, and the one-line cover credit that points to it, live in `common/cover-notes.json`. Both are reader-facing. Both take this test.
+
+A blurb tells a friend what the volume actually teaches. Name the objects. One picture or one theorem can carry a sentence.
+
+**Do.** You will meet the intermediate value theorem, Stirling’s formula, and the law of large numbers, each rebuilt from the definitions in this volume.
+
+**Don’t.** This comprehensive volume seamlessly unlocks the journey of mathematical thinking.
+
+About the Cover says what the picture is, one checked fact, and why that picture belongs on this volume. The credit line can stay a single sentence. Do not invent a biography, and do not sell the drawing.
+
+**Do.** The cover draws the Collatz tree on the integers from 2 to 8,000. The pale curve is the orbit of 27. The problem is still open, which is why it faces the chapter on language.
+
+**Don’t.** This stunning artwork leverages a robust visualization to underscore the pivotal landscape of the Collatz conjecture.
+
+**Voice pass.** This is the house rule for every volume, including the back cover. Before a chapter pull request, read the new prose aloud. Rewrite stock openers (“In this section we will…”, “Let’s delve into…”), the filler “It is important to note that…”, stock closers (“In conclusion…”), hollow intensifiers, stacked hedging, template summaries, buzzword salad, and transitions that announce structure. Repeat until the chapter sounds like a friend teaching. Run the same reading on `blurb.tex` and on the About the Cover copy when that text is in the assigned work. An independent review uses the same test.
 
 ## Explain everything, step by step
 
@@ -107,3 +121,4 @@ If a proof is long, break it into named stages (“Setup”, “Main estimate”
 - Not a problem book with thin commentary.
 - Not a change of mathematical depth: keep the content ambitious; make the *path* easy to walk.
 - Not a chatbot summary of the mathematics. The test is [Sound human](#sound-human).
+- Not a sales pitch on the jacket. The back-cover blurb and About the Cover use that same test.
