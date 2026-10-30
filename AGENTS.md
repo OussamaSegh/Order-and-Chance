@@ -149,7 +149,19 @@ Volumes 0, 1 and 2, use `tools/cover-editorial-front.tex` and one configuration,
 - Preserve print preflight (native muted grain >=300 ppi), premium-colour paper,
   actual-page-derived spines, interior fonts, semantic colours and all book content.
 
-## Approved version C interiors
+## Current interior: design 5e
+
+The author approved interior mock-up **5e** and asked for it in every volume. It
+supersedes the version C description below (kept for history): EB Garamond and
+Garamond-Math at 11.5/14.75 pt, Cormorant Garamond headings, Fira Sans labels, a
+7 × 10 in page with a 0.9 in gutter and 0.8 in outside margin, a full charcoal chapter
+opener on every verso (coral numeral, ivory title, epigraph, the volume's cover
+illustration or a `\chaptermotif{...}`), one coral accent, formal boxes (8% fill,
+1.2 pt coral top rule, never split) and teaching boxes (2 pt charcoal left bar,
+breakable), the figure palette and slashed inline fractions. Read
+`docs/design/interior.md` before changing any of it. Covers are unaffected.
+
+## Approved version C interiors (superseded by 5e)
 
 The author approved **version C** and requested it for all 19 volumes. The selected
 proof is `build/typography-review/Volume-0-Cover-Matched-Proof.pdf`: the cover's
@@ -251,7 +263,8 @@ wraps, content accents, HTML readers and the GitHub Pages library.
   wraps. Keep the wider left-aligned Inter blurb, generous leading and reserved
   barcode area; do not reinstate the old untracked heading or thin dim frame.
 - Covers, interiors and standalone figures compile with XeLaTeX. Interiors use bundled
-  STIX Two Text/Math, the cover’s Inter display headings and DejaVu Sans Mono for code. The shared
+  EB Garamond/Garamond-Math, Cormorant Garamond headings, Fira Sans labels and DejaVu
+  Sans Mono for code (design 5e, `docs/design/interior.md`). The shared
   template uses an image XObject to reuse the approved identity without re-encoding
   multiple copies. `tools/check_cover_reference.py` verifies exact master hashes,
   actual embedded PDF pixels, and unchanged EPUB/reader/website PNGs when supplied.

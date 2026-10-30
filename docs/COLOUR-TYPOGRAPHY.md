@@ -8,31 +8,38 @@ half-title. EPUB and the web readers use matching typography and semantic colour
 
 | Use | Typeface |
 | --- | --- |
-| Body, proofs and italic passages | STIX Two Text |
-| Mathematics, including bold Greek vectors | STIX Two Math |
-| Chapter/section headings and box labels | Inter Display, the bundled cover faces |
+| Body, proofs and italic passages | EB Garamond |
+| Mathematics, including bold Greek vectors | Garamond-Math |
+| Chapter/section headings, titles, opener numerals | Cormorant Garamond |
+| Labels, running heads, captions | Fira Sans |
 | Code and Lean Unicode symbols | DejaVu Sans Mono |
 
-The body remains 11 pt, with 1.065 line spacing. Font files, licences, provenance
+The body is 11.5 pt on 14.75 pt. The full system (geometry, chapter openers, box
+families, figure palette, inline fractions) is described in
+[design/interior.md](design/interior.md). Font files, licences, provenance
 and SHA-256 hashes are bundled in `common/fonts/`; builds use these files rather
 than system-installed substitutes. PDF/figure typesetting uses XeLaTeX. EPUB
-embeds the original faces; readers serve matching WOFF2 files. Reading devices
+embeds the original faces; the online reader serves the same OTF/TTF files (WOFF2
+versions of the new faces are still to be made). Reading devices
 can override EPUB typography.
 
 ## Colour roles
 
 | Role | Colour |
 | --- | --- |
-| Chapter accents, links, reminders and challenges | Coral `#A34232` |
-| Exercises and problems | Blue `#235E82` |
-| Beauty notes | Teal `#22675B` |
-| Thinking prompts | Plum `#704B80` |
+| Text, headings, labels, teaching-box bar, chapter-opener page | Charcoal `#151516` |
+| Rules, diamonds, opener numerals | Coral `#FF8A78` |
+| Text-sized coral: label numbers, folios' diamonds, links | Coral deep `#A34232` |
+| Formal-box fill | Charcoal at 8% |
+| Figures | charcoal, rust, coral, ochre, brown, greys (`common/figure-palette.tex`) |
 
 Text and mathematics remain dark on white. Chapter/section headings and box labels
-are charcoal. Every teaching box has a pale body fill and exactly one 1 pt left
-rule in its semantic colour. The full frame is hidden rather than painted behind
-the backgrounds, preventing stray top/bottom seams at some PDF zoom levels.
-Scientific figures retain their existing colour meanings. Web/EPUB dark themes use brighter accent variants.
+are charcoal. Formal boxes have an 8% charcoal fill under a 1.2 pt coral rule and
+never split; teaching boxes have no fill and exactly one 2 pt charcoal left bar, and
+may break. The full frame is hidden rather than painted behind the backgrounds,
+preventing stray top/bottom seams at some PDF zoom levels. Figures keep their
+sources; their colour names are redefined to the series palette, and captions name
+the new colours. Web/EPUB dark themes use brighter accent variants.
 
 The current version-C proof and teaching-box corrections supersede the earlier
 Libertinus comparison image in `docs/reviews/`.
@@ -62,7 +69,7 @@ Lean symbols are native Unicode, with complete code-font coverage. Download-PDF
 checks resolve XeLaTeX's indirect annotation arrays before comparing the body.
 
 The build rejects missing glyphs, unavailable font shapes, wrong font families,
-lost coral/blue accents, split/oversized boxes, horizontal/vertical overflow,
+lost coral/charcoal accents, split/oversized boxes, horizontal/vertical overflow,
 unresolved references, wrong page sizes and unembedded/bitmap fonts. Cache schema
 6 and shared-input fingerprints invalidate older interiors. Regression tests
 include real typesetting of colour/font output, Greek bookmarks, vector notation, Unicode code, whole-box
@@ -74,7 +81,7 @@ is retained in full, including its resolution preflight; this typography update 
 no cover-art or lettering changes. Production wrap width follows the new page count
 and paper coefficient.
 
-Browser checks cover loaded STIX/Inter fonts, charcoal headings, readable
+Browser checks cover loaded EB Garamond/Cormorant/Fira fonts, charcoal headings, readable
 dark-mode headings, no page overflow at 320 px and no JavaScript errors.
 
 The publishing suite includes actual-PDF tests for all five teaching-box types

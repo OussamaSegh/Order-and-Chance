@@ -1,3 +1,18 @@
+# Interior design 5e — 30 October 2026
+
+The author chose interior mock-up 5e (a full charcoal chapter opener) for all fifteen
+volumes. It is described in [design/interior.md](design/interior.md):
+- EB Garamond and Garamond-Math, Cormorant Garamond headings, Fira Sans labels;
+- a 0.9/0.8 in mirrored margin;
+- the opener with its `\chaptermotif` hook;
+- formal and teaching box families, one coral accent;
+- the figure palette and slashed inline fractions.
+
+It supersedes the STIX/Inter version C interior sections below. Covers are
+unchanged.
+
+---
+
 # Approved covers — 29 October 2026
 
 The author approved the fifteen Cormorant Garamond and Fira Sans fronts. The

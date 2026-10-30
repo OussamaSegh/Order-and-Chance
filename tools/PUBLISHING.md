@@ -76,8 +76,9 @@ supports the short volumes from 24 pages; standard colour requires at least 72. 
 
 KDP rules followed by the build (checked against the KDP help pages in October 2026):
 
-- Inside (gutter) margin 0.75 in, more than KDP's minimum up to 700 pages (0.375 in to 150 pages,
-  0.5 in to 300, 0.625 in to 500, 0.75 in to 700); 0.875 in is used above 700 pages.
+- Inside (gutter) margin 0.9 in at every page count, more than KDP's minimum up to the 828-page
+  limit (0.375 in to 150 pages, 0.5 in to 300, 0.625 in to 500, 0.75 in to 700, 0.875 in to 828);
+  outside margin 0.8 in (docs/design/interior.md).
   Outside margin 0.6 in (minimum 0.25 in). Chapters open on a right-hand page.
 - Page count 24 to 828; the build fails outside that range.
 - Cover: width = 0.125 + 7 + spine + 7 + 0.125 in, height = 10.25 in; spine text only from
@@ -185,7 +186,7 @@ Each source is 1049 × 1500 pixels
 preserve the approved proportions; thumbnails use contain/auto height, never crop.
 Cover/wrap builds require XeLaTeX and bundled Inter fonts, plus Pillow for the exact
 image check (`texlive-xetex` and `python3-pil` in Ubuntu CI). Interiors and standalone figures also use XeLaTeX, with the separate bundled
-STIX Two/cover Inter/DejaVu fonts in `common/fonts/`. The approved covers retain
+EB Garamond/Garamond-Math/Cormorant Garamond/Fira Sans/DejaVu fonts in `common/fonts/`. The approved covers retain
 their own fonts and image masters. The author explicitly preferred the exact image over the old recreation.
 
 Paperback backs reuse the front’s original frame, masthead, slogan and author
@@ -229,16 +230,21 @@ physical proof remain the final checks for the printer's rendering and ink color
 
 ## Colour typography
 
-Version C uses STIX Two Text and Math, the cover’s Inter display fonts for
-headings and box labels, and DejaVu Sans Mono for code. Files, licences and hashes are bundled in
-`common/fonts/`, independently of the cover assets. The PDF colophon names the new
-fonts. EPUB embeds the original OTF/TTF files, and readers use WOFF2 companions.
+Design 5e (`docs/design/interior.md`) uses EB Garamond and Garamond-Math for text and
+mathematics, Cormorant Garamond for headings and Fira Sans for labels, and DejaVu Sans
+Mono for code. Files, licences and hashes are bundled in `common/fonts/`, independently
+of the cover assets. The PDF colophon names the fonts. EPUB embeds the OTF/TTF files,
+and the online reader serves the same files.
 
-Charcoal and coral carry the cover identity onto white interior pages. Pale
-boxes use one 1 pt left rule and dark Inter labels: blue exercises/problems,
-coral reminders/challenges, teal beauty notes and plum thinking prompts. Hide
-the full frame; saturated underpainting can expose stray horizontal PDF seams.
-Body text/math stays dark; scientific figures keep their existing distinctions.
+Charcoal and one coral accent carry the cover identity onto white interior pages;
+every chapter opens on a full charcoal verso. Formal boxes (theorems, propositions, lemmas, corollaries, definitions, examples)
+have an 8% charcoal fill under a 1.2 pt coral rule and never split; teaching boxes
+(exercises/problems, reminders, prompts, beauty notes, challenges, remarks) have one
+2 pt charcoal left bar, no fill, and may break. Hide the full frame; saturated
+underpainting can expose stray horizontal PDF seams. Figures keep their sources; the
+palette in `common/figure-palette.tex` redefines their colour names, and captions
+name the new colours. See `docs/design/interior.md`.
+Body text/math stays dark.
 Do not reinstate grayscale box overrides or hidden black links for print.
 `check_interior_style.py` rejects missing font families or colour accents, and
 `check_book_layout.py` rejects missing glyphs in addition to layout errors.

@@ -39,8 +39,8 @@ Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF d
 | `dist/kdp/<Book> - Print Metadata.json` | Print interior pages, even-rounded KDP pages, gutter, spine and wrap size |
 | `dist/kdp/<Book> - Publishing Listing.md` | Title fields, description and keywords |
 
-Both PDFs share identical typeset body pages: 11 pt STIX Two Text/Math with Inter headings, mirrored margins,
-recto chapter openings, full-colour styling and whole framed boxes. The reading PDF
+Both PDFs share identical typeset body pages: 11.5 pt EB Garamond/Garamond-Math with Cormorant headings, mirrored margins,
+charcoal verso chapter openers, full-colour styling and whole framed boxes. The reading PDF
 has exactly one additional front-cover page; its interior labels and references
 are preserved. The print file excludes that page. Never calculate a paperback
 spine from the reading PDF's total count. Upload the print file as the paperback
@@ -110,17 +110,20 @@ adding the separate reading covers.
 ## Colour print and typefaces
 
 The latest author instruction requires colour printing. Both PDFs preserve the
-same full-colour interior, using 11 pt STIX Two Text and STIX Two Math with
-the cover’s Inter headings, 1.065 line spacing and DejaVu Sans Mono for Unicode code.
+same full-colour interior, using 11.5/14.75 pt EB Garamond and Garamond-Math with
+Cormorant Garamond headings, Fira Sans labels and DejaVu Sans Mono for Unicode code.
 The licensed font files are bundled in `common/fonts/`. EPUB embeds OTF/TTF faces;
-the online reader uses their WOFF2 companions. Reading systems may override EPUB
+the online reader serves the same files. Reading systems may override EPUB
 fonts, colours or MathML rendering.
 
-Headings and box labels use charcoal; chapter accents and links use coral.
-Teaching boxes have pale fills and one 1 pt left rule: blue exercises/problems,
-coral reminders/challenges, teal beauty notes and plum thinking prompts. The full
-frame is hidden to prevent stray top/bottom seams in PDF rendering.
-Existing scientific figure colours keep their meaning. Approved cover art and
+Headings and box labels use charcoal; rules, numbers and links use coral.
+Formal boxes (theorems, propositions, lemmas, corollaries, definitions, examples)
+have an 8% charcoal fill under a 1.2 pt coral rule and never split; teaching boxes
+(exercises/problems, reminders, prompts, beauty notes, challenges, remarks) have one
+2 pt charcoal left bar, no fill, and may break. Hide the full frame; saturated
+underpainting can expose stray horizontal PDF seams. Figures keep their sources; the
+palette in `common/figure-palette.tex` redefines their colour names, and captions
+name the new colours. See `docs/design/interior.md`. Approved cover art and
 cover fonts are preserved; each print wrap uses its actual new page count.
 
 The paperback is **Premium color ink on white paper**, 7 × 10 inches, no bleed.

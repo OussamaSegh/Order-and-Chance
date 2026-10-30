@@ -40,7 +40,8 @@ the half-title and is the paperback manuscript; its cover wrap is uploaded
 separately. Both PDFs have matching full-colour content and visible pagination. The print PDF
 is normalized for KDP (PDF 1.3, no interactions/live transparency); the reading PDF
 retains original vector text, Unicode mathematics, links and bookmarks. Typography uses
-bundled STIX Two Text/Math with Inter headings. Paperback files target Premium
+bundled EB Garamond and Garamond-Math with Cormorant Garamond headings and Fira Sans
+labels ([interior design](docs/design/interior.md)). Paperback files target Premium
 color ink on white paper; the wrap uses its actual page count and colour-paper spine.
 There are no A4, fixed-page Kindle or phone PDF editions.
 
@@ -94,11 +95,11 @@ matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double c
 frame, and one substantial mathematical illustration per book. All fifteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The series subtitle
 is **The Hidden Architecture of Mathematics**. Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
-charcoal Inter headings, coral chapter accents and pale teaching boxes with one
-thin left rule: blue exercises/problems, coral reminders/challenges, teal beauty
-notes and plum thinking prompts.
-Both PDFs share the full-colour interior, typeset in STIX Two Text and Math
-with the cover’s Inter headings. Paperbacks use premium colour on white paper. EPUB and
+a full charcoal chapter opener, charcoal Cormorant headings, one coral accent and
+two box families: tinted formal boxes (theorems, definitions, examples) under a
+coral rule, and teaching boxes (exercises, reminders, prompts) with a charcoal left bar.
+Both PDFs share the full-colour interior, typeset in EB Garamond and Garamond-Math
+(see [docs/design/interior.md](docs/design/interior.md)). Paperbacks use premium colour on white paper. EPUB and
 web images preserve the approved 7:10 proportions.
 The earlier approval PNGs remain unchanged as archival references. All live formats render the common master. Paperback covers use vector type/artwork, native paper grain at approximately 360 ppi, and an enforced 300 ppi print preflight.
 Read [the current design guide](docs/DESIGN.md) and [AGENTS.md](AGENTS.md) before
