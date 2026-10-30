@@ -23,7 +23,7 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 Two pull requests are open. They are the only Volume 1 rewrite work until both have squash-merged. Orders waits for both.
 
 - **#54, jacket, step 0.** https://github.com/OussamaSegh/Order-and-Chance/pull/54. Branch `cursor/volume1-cover-copy-678d`. Agent `bc-74380fd7`. Independent review: MERGE. Wait for the Volume 1 CI check, then squash. Continue this pull request. At 17:14 Europe/Paris the branch tip `6cbf9cc87cd127b4f8f8aa040b81e5c1e0e4f44d` already merged `main` through #51. Before squash, confirm the branch still contains current `main`. #50 and #51 landed while the jacket was open.
-- **#55, sequences, step 4.** https://github.com/OussamaSegh/Order-and-Chance/pull/55. Branch `cursor/sequences-series-limits-802d`, tip `2095d052aa25911e6a7fba1ea30710e4cb335b16`. Agent `bc-3a95942d`. Under independent review. Continue this pull request. Merge it when the independent review says merge. The branch is based on the counting rewrite `83dff2be79404b68ee6c45d620ee574432302c4e` and still needs #52, #53, #50, and #51 from `main`.
+- **#55, sequences, step 4.** https://github.com/OussamaSegh/Order-and-Chance/pull/55. Branch `cursor/sequences-series-limits-802d`. Author agent `bc-3a95942d`. Independent review returned FIX (COMMENT posted). Must-fix in `ch05-sequences-series.tex`: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` is pushing those commits onto this same branch and this same pull request. Do not open a new pull request. The branch is based on the counting rewrite `83dff2be79404b68ee6c45d620ee574432302c4e` and still needs #52, #53, #50, and #51 from `main`. Tip at the review: `2095d052aa25911e6a7fba1ea30710e4cb335b16`.
 
 Queue after #54 and #55 have both squash-merged: orders, complex numbers, polynomials, linear algebra, calculus (integrals and Taylor), inequalities, probability, field guide.
 
@@ -94,7 +94,7 @@ Queue after #54 and #55 have both squash-merged: orders, complex numbers, polyno
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/55
 - **Merge sha:**
 - **Date:**
-- **Notes:** Under independent review. Agent `bc-3a95942d`. Branch `cursor/sequences-series-limits-802d`. Profound pass: concrete partial sums first, the floor and the positive square root of 2 from completeness, new figures for Zeno, Grandi, the floor, the integral test, and uniform continuity. The branch still needs `main` through #51. Continue this pull request.
+- **Notes:** Independent review returned FIX (COMMENT posted). Author agent `bc-3a95942d`. Branch `cursor/sequences-series-limits-802d`. Must-fix in `ch05-sequences-series.tex`: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` is pushing onto this same branch and pull request #55. Do not open a new pull request. Profound pass: concrete partial sums first, the floor and the positive square root of 2 from completeness, new figures for Zeno, Grandi, the floor, the integral test, and uniform continuity. The branch still needs `main` through #51. Tip at the review: `2095d052aa25911e6a7fba1ea30710e4cb335b16`.
 
 ### 5. Orders
 
