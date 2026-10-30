@@ -20,22 +20,21 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 
 ## Open pull requests
 
-Two pull requests are open. They are the only Volume 1 rewrite work until both have squash-merged. Orders waits for both.
+One pull request is open. It is the only Volume 1 rewrite work until it has squash-merged. Orders waits for it.
 
-- **#54, jacket, step 0.** https://github.com/OussamaSegh/Order-and-Chance/pull/54. Branch `cursor/volume1-cover-copy-678d`. Agent `bc-74380fd7`. Independent review: MERGE. Wait for the Volume 1 CI check, then squash. Continue this pull request. At 17:14 Europe/Paris the branch tip `6cbf9cc87cd127b4f8f8aa040b81e5c1e0e4f44d` already merged `main` through #51. Before squash, confirm the branch still contains current `main`. #50 and #51 landed while the jacket was open.
-- **#55, sequences, step 4.** https://github.com/OussamaSegh/Order-and-Chance/pull/55. Branch `cursor/sequences-series-limits-802d`. Author agent `bc-3a95942d`. Independent review returned FIX (COMMENT posted). Must-fix in `ch05-sequences-series.tex`: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` is pushing those commits onto this same branch and this same pull request. Do not open a new pull request. The branch is based on the counting rewrite `83dff2be79404b68ee6c45d620ee574432302c4e` and still needs #52, #53, #50, and #51 from `main`. Tip at the review: `2095d052aa25911e6a7fba1ea30710e4cb335b16`.
+- **#55, sequences, step 4.** https://github.com/OussamaSegh/Order-and-Chance/pull/55. Branch `cursor/sequences-series-limits-802d`. Author agent `bc-3a95942d`. Independent review returned FIX (COMMENT posted). The FIX is applied. Head `638438ad450a05aa431ef7c31dc5e664a6d7387e`. Re-review is in flight. Must-fix in `ch05-sequences-series.tex`, now applied: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish, now applied: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` pushed onto this same branch and this same pull request. Do not open a new pull request. The branch is based on the counting rewrite `83dff2be79404b68ee6c45d620ee574432302c4e` and still needs #52, #53, #50, #51, and #54 (`0bbf558903e96149998a0d71c2e49b1a82a66544`) from `main`.
 
-Queue after #54 and #55 have both squash-merged: orders, complex numbers, polynomials, linear algebra, calculus (integrals and Taylor), inequalities, probability, field guide.
+Queue after #55 has squash-merged: orders, complex numbers, polynomials, linear algebra, calculus (integrals and Taylor), inequalities, probability, field guide.
 
 ## Resume protocol
 
 1. Read this file, including the open-pull-request list. Find the first Volume 1 rewrite step whose status is not DONE.
-2. If that step is IN REVIEW or IN PROGRESS, continue its pull request. Do not open a second pull request for the same step. Step 0 and step 4 are both open. Continue each on its own pull request.
+2. If that step is IN REVIEW or IN PROGRESS, continue its pull request. Do not open a second pull request for the same step. Step 4 is the open pull request. Continue it.
 3. If that step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it.
 4. One step is one pull request and one chapter file. Step 0 is the jacket: `blurb.tex`, `about-the-cover.tex`, `kdp.md`, and the Volume 1 entry in `common/cover-notes.json`. Step 1 is the preface and the language chapter together.
 5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge.
 6. The editor marks the row DONE, with the merge sha and the date, after the pull request merges. If the editor has not done that when the next step starts, the next step's pull request fills the previous row from the merge commit.
-7. Do not start step \(n+1\) while step \(n\) is TODO, IN PROGRESS, or IN REVIEW. The exception already in flight is step 4, open beside step 0. Orders (step 5) starts only after step 0 and step 4 have both merged.
+7. Do not start step \(n+1\) while step \(n\) is TODO, IN PROGRESS, or IN REVIEW. Orders (step 5) starts only after step 4 has merged. Step 0 is DONE.
 8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, including the Sound human pass, fact-check notes in the pull request, and `git diff --check`. A chapter step also needs a Volume 1 typeset and layout check. Run `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did. Step 0 checks the cover note (80 to 150 words), `python3 tools/series_cover.py --check`, and the back-cover measure.
 9. Scope is the assigned file or files under `volume1-first-principles/`, plus the cover-note source when the step is the jacket, plus figures that a chapter needs. Do not edit other volumes in that pull request.
 
@@ -43,14 +42,14 @@ Queue after #54 and #55 have both squash-merged: orders, complex numbers, polyno
 
 ### 0. Cover copy
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** none
 - **Books and files:** `volume1-first-principles/blurb.tex`, `volume1-first-principles/about-the-cover.tex`, `volume1-first-principles/kdp.md`, and the Volume 1 text in `common/cover-notes.json`. The TeX colophon is generated from that JSON. `docs/COVER-NOTES.md` and `tools/assets/series/manifest.json` follow the cover check. Jacket copy only. No chapter rewrite.
 - **Acceptance:** The jacket texts match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. The cover note is 80 to 150 words. `python3 tools/series_cover.py --check` passes. The back-cover blurb fits the shared measure.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/54
-- **Merge sha:**
-- **Date:**
-- **Notes:** Back cover and About the Cover. Independent review: MERGE. Waiting on the Volume 1 CI check, then squash. Agent `bc-74380fd7`. Branch `cursor/volume1-cover-copy-678d`, tip `6cbf9cc87cd127b4f8f8aa040b81e5c1e0e4f44d`, which already contains #50 and #51. Before squash, confirm the branch still contains current `main`.
+- **Merge sha:** 0bbf558903e96149998a0d71c2e49b1a82a66544
+- **Date:** 2026-10-30
+- **Notes:** Squash-merged. Back cover and About the Cover. Agent `bc-74380fd7`. Do not open another jacket pull request.
 
 ### 1. Preface and language
 
@@ -65,7 +64,7 @@ Queue after #54 and #55 have both squash-merged: orders, complex numbers, polyno
 
 ### 2. Sums, binomials, induction
 
-- **Status:** IN REVIEW
+- **Status:** DONE
 - **Depends on:** 1
 - **Books and files:** `volume1-first-principles/chapters/ch01-sums.tex`. Sums, binomials, induction.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
@@ -94,7 +93,7 @@ Queue after #54 and #55 have both squash-merged: orders, complex numbers, polyno
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/55
 - **Merge sha:**
 - **Date:**
-- **Notes:** Independent review returned FIX (COMMENT posted). Author agent `bc-3a95942d`. Branch `cursor/sequences-series-limits-802d`. Must-fix in `ch05-sequences-series.tex`: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` is pushing onto this same branch and pull request #55. Do not open a new pull request. Profound pass: concrete partial sums first, the floor and the positive square root of 2 from completeness, new figures for Zeno, Grandi, the floor, the integral test, and uniform continuity. The branch still needs `main` through #51. Tip at the review: `2095d052aa25911e6a7fba1ea30710e4cb335b16`.
+- **Notes:** Independent review returned FIX (COMMENT posted). The FIX is applied. Head `638438ad450a05aa431ef7c31dc5e664a6d7387e`. Re-review is in flight. Author agent `bc-3a95942d`. Branch `cursor/sequences-series-limits-802d`. Must-fix in `ch05-sequences-series.tex`, now applied: the mathematics at lines 186–190, the duplicate at lines 852–854, the syllabus menu at line 863, and absolute convergence at line 34. Polish, now applied: the Zeno caption, the de Moivre sentence, and the hint that should point at `prop:early-ftc`. Fix agent `bc-5e590679` pushed onto this same branch and pull request #55. Do not open a new pull request. Profound pass: concrete partial sums first, the floor and the positive square root of 2 from completeness, new figures for Zeno, Grandi, the floor, the integral test, and uniform continuity. The branch still needs #52, #53, #50, #51, and #54 (`0bbf558903e96149998a0d71c2e49b1a82a66544`) from `main`.
 
 ### 5. Orders
 
@@ -105,7 +104,7 @@ Queue after #54 and #55 have both squash-merged: orders, complex numbers, polyno
 - **PR:**
 - **Merge sha:**
 - **Date:**
-- **Notes:** Orders. Next chapter after #54 and #55 have both squash-merged.
+- **Notes:** Orders. Next chapter after #55 has squash-merged.
 
 ### 6. Complex numbers and roots
 
