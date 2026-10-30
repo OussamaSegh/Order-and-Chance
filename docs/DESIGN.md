@@ -1,10 +1,32 @@
+# Part and chapter openers — 30 October 2026
+
+Every volume shares one opener swap in `common/chapter-opener.tex`. A part page is a
+full charcoal recto: masthead, 190 pt coral part numeral, ivory part title and the
+part's rule-diamond-rule. The rest of the page is solid charcoal, with no cover
+illustration and no motif. A chapter opener is a verso with a charcoal band over the
+top 3.4 in, the 150 pt coral chapter numeral in that band, and the chapter label,
+title, rule and epigraph on the paper below. `\ocBandAir` adds 0.15 in under the band
+(the title block starts at 4.30 in instead of the old part page's 4.15 in). Chapter
+prose, mathematics and covers are unchanged.
+
+`oc-sample/` was not in this workspace. The air is the approved 0.15 in length.
+
+Verified with a XeLaTeX probe of the shared opener (part recto, chapter verso, a
+two-digit chapter numeral, Roman III and V) and with Volume 1. That interior
+typeset to 501 pages. `tools/check_book_layout.py` reported 454 whole boxes and
+no overflow or unresolved references; `tools/check_interior_style.py` passed.
+The Volume 1 part page is solid charcoal below the title.
+
+---
+
 # Interior design 5e — 30 October 2026
 
-The author chose interior mock-up 5e (a full charcoal chapter opener) for all fifteen
-volumes. It is described in [design/interior.md](design/interior.md):
+The author chose interior mock-up 5e for all fifteen volumes. The part and chapter
+opener roles in the section above replace the original full-charcoal chapter page.
+The rest of 5e is described in [design/interior.md](design/interior.md):
 - EB Garamond and Garamond-Math, Cormorant Garamond headings, Fira Sans labels;
 - a 0.9/0.8 in mirrored margin;
-- the opener with its `\chaptermotif` hook;
+- the shared opener file `common/chapter-opener.tex`;
 - formal and teaching box families, one coral accent;
 - the figure palette and slashed inline fractions.
 

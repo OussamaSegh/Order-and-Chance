@@ -27,7 +27,7 @@ can override EPUB typography.
 
 | Role | Colour |
 | --- | --- |
-| Text, headings, labels, teaching-box bar, chapter-opener page | Charcoal `#151516` |
+| Text, headings, labels, teaching-box bar, part page, chapter-opener band | Charcoal `#151516` |
 | Rules, diamonds, opener numerals | Coral `#FF8A78` |
 | Text-sized coral: label numbers, folios' diamonds, links | Coral deep `#A34232` |
 | Formal-box fill | Charcoal at 8% |
