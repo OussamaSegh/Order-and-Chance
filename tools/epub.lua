@@ -365,7 +365,7 @@ local function openers(doc)
       b:walk({ Image = function(img) motif = img.src end })
     elseif b.t == "Div" and (b.classes:includes("ocpart") or b.classes:includes("ocpartstar")) then
       local title = b.content[1] and b.content[1].content or pandoc.Inlines({})
-      local h = pandoc.Header(1, title, pandoc.Attr(slug(title), { "oc-part", "unnumbered" }))
+      local h = pandoc.Header(1, title, pandoc.Attr("part-" .. slug(title), { "oc-part", "unnumbered" }))
       if b.classes:includes("ocpart") then
         parts = parts + 1
         h.content:insert(1, pandoc.Space())

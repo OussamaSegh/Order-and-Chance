@@ -118,8 +118,10 @@ for volume in "${volumes[@]}"; do
     pdftocairo -svg "$out/figures/$name.pdf" "$out/figures/$name.svg"
   done
 
-  # Chapter openers of the EPUB and online reader show the volume's cover illustration (design 5e).
-  python3 "$root/tools/opener_motif.py" "$volume" "$out/figures"
+  # The EPUB and online reader open chapters with a compact charcoal strip and no illustration
+  # (design 5e: the full-black opener with the cover motif is print only). tools/opener_motif.py
+  # can render the motif PNG if it is wanted again; tools/epub.lua places it when present.
+  rm -f "$out/figures/opener-motif.png"
   python3 "$root/tools/epub_prep.py" "$root/$volume/main.tex" "$out/epub.tex" "$out/figures"
   (cd "$root/$volume" &&
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \

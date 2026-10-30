@@ -169,7 +169,7 @@ Text.
                  "--number-sections", "--lua-filter", str(TOOLS / "epub.lua")],
                 capture_output=True, text=True, check=True).stdout
         # Parts are their own pages; chapters stay chapters (not sections of a part).
-        self.assertRegex(result, r'<h1 class="oc-part unnumbered"[^>]*id="foundations"')
+        self.assertRegex(result, r'<h1 class="oc-part unnumbered"[^>]*id="part-foundations"')
         self.assertIn('<span class="header-section-number">II</span> Further', result.replace("\n", " "))
         self.assertRegex(result, r'<h1 class="oc-chapter"[^>]*data-masthead="Volume 7 · Spaces"')
         self.assertNotIn("<h2", result)
