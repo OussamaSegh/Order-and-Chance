@@ -67,7 +67,7 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/51
 - **Merge sha:** 1d97799a0e12a6b91f562dc7e88ad0ec4c788a3a
 - **Date:** 2026-10-30
-- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. Do not open another preface pull request.
+- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. Oussama approved a further preface deepen after independent review. That pull request replaces `volume1-first-principles/chapters/preface.tex` only and stays open for review. It does not reopen this step, and it is not a new step. Global consistency of the whole of Volume 1 remains the next series step.
 
 ### 2. Sums, binomials, induction
 
