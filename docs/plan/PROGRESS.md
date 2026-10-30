@@ -33,6 +33,8 @@ This pull request stacks the six remaining chapter rewrites, in this order, for 
 
 After this stack squash-merges, the next work is a global consistency review of the whole of Volume 1. Do not start that review before the merge. Do not start a new chapter rewrite.
 
+Author-approved preface replacement, left open for review. Oussama approved a new body for `volume1-first-principles/chapters/preface.tex`. That file is the only chapter change. Step 1 stays DONE. The pull request is on branch `cursor/volume1-preface-approved-8f79`. It does not reopen steps 0–12, does not start Volume 2, and does not start or edit the global consistency review. That review still follows the stack of steps 7–12. Archive step 13 is unchanged.
+
 ## Resume protocol
 
 1. Read this file, including the open-pull-request list. Steps 0 through 12 are DONE as chapter rewrites. Steps 7 through 12 land on main when this stack pull request squash-merges. There is no chapter rewrite left to open.
@@ -67,7 +69,7 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/51
 - **Merge sha:** 1d97799a0e12a6b91f562dc7e88ad0ec4c788a3a
 - **Date:** 2026-10-30
-- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. Do not open another preface pull request.
+- **Notes:** Deepen pass, squash-merged. The first pass merged in https://github.com/OussamaSegh/Order-and-Chance/pull/43 at `0212bbee89ccb4e7fb291a2c20b18be724eb3949` on 2026-10-30. An author-approved replacement of the preface body is listed under Open pull requests. Step 1 stays DONE. Do not open a second preface pull request.
 
 ### 2. Sums, binomials, induction
 
