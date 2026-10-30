@@ -2,17 +2,17 @@
 
 This file is the live execution tracker for the Volume 1 rewrite. The book is `volume1-first-principles`. One chapter, or the named pair, is one pull request, written in the shared voice.
 
-Cold-start snapshot: 2026-10-30, about 20:30 Europe/Paris. Orders (#65) and complex numbers (#63) are on main. The six remaining chapter rewrites are stacked in one pull request so CI runs once.
+Cold-start snapshot: 2026-10-30, about 20:30 Europe/Paris. Orders (#65) and complex numbers (#63) are on main. The six remaining chapter rewrites were stacked and squash-merged as #67.
 
-Standing series goal. When Volume 1 is done, the series continues with Volumes 2 through 15 in order, one volume after another, under the same house voice and the same bar: one chapter per pull request, and an independent review before every merge. That handoff is for another bot. Nori owns Volume 1 only. Volume 2 waits until every Volume 1 step in this file is DONE and the global consistency review of the whole of Volume 1 is finished.
+Standing series goal. When Volume 1 is done, the series continues with Volumes 2 through 15 in order, one volume after another, under the same house voice and the same bar: one chapter per pull request, and an independent review before every merge. That handoff is for another bot. Nori owns Volume 1 only. Volume 2 waits until every Volume 1 step in this file is DONE, including the global consistency review of the whole of Volume 1.
 
-Nori owns the Volume 1 end-state: free to launch, review, and merge Volume 1. One chapter is one pull request. An independent review comes before every merge. Oussama asked Nori to finish Volume 1 quickly with many agents. Steps 0 through 6 are DONE on main. Steps 7 through 12 are the reviewed chapters from #58, #59, #64, #62, #60, and #61, stacked so CI runs once. Independent review of each of those six returned MERGE. This stack did not rewrite chapter prose. The only chapter-file edit is in probability: the figure label `fig:signs` is `fig:pairsigns`, because polynomials already uses `fig:signs`. The layout check rejects a multiply-defined label. After this pull request squash-merges, the next step is a global consistency review of the whole of Volume 1. Do not open another chapter rewrite. Do not merge those six source pull requests as a second copy; close them after this stack merges.
+Nori owns the Volume 1 end-state: free to launch, review, and merge Volume 1. One chapter is one pull request. An independent review comes before every merge. Oussama asked Nori to finish Volume 1 quickly with many agents. Steps 0 through 12 are DONE on main. Steps 7 through 12 are the reviewed chapters from #58, #59, #64, #62, #60, and #61, squash-merged together as #67 at `78f27d33c7e605282d8ca1673f73e19f57206adf`. Independent review of each of those six returned MERGE before the stack. The stack did not rewrite chapter prose. The only chapter-file edit in the stack was in probability: the figure label `fig:signs` is `fig:pairsigns`, because polynomials already uses `fig:signs`. The layout check rejects a multiply-defined label. Step 13 is the global consistency review of the whole of Volume 1. Do not open another chapter rewrite. Do not merge #58, #59, #64, #62, #60, or #61 as a second copy. Do not start Volume 2 until step 13 is DONE.
 
 The remake runs from the start, in this order: cover, preface and language, sums, counting, sequences, orders, complex numbers, polynomials, linear algebra, calculus, inequalities, probability, field guide.
 
 Each rewrite step is a profound pass, with liberty to reorder for clarity and to add figures, photos, history points, and math jokes that teach, not a thin copyedit. The mathematics stays correct.
 
-The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md), including the [Sound human](../WRITING-STYLE.md#sound-human) pass: a friend who loves mathematics, never AI-sounding. Run that pass before each chapter pull request, and again on each independent review. The house-voice rule merged in [#52](https://github.com/OussamaSegh/Order-and-Chance/pull/52) at `bc67b65fad39f1ecdfbe0228f7362070bb75211c` on 2026-10-30. The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each Volume 1 pull request independently. Later chapters may be drafted in parallel. Steps 7 through 12 of Volume 1 are already stacked in one pull request. Do not merge them one by one.
+The voice is [docs/WRITING-STYLE.md](../WRITING-STYLE.md), including the [Sound human](../WRITING-STYLE.md#sound-human) pass: a friend who loves mathematics, never AI-sounding. Run that pass before each chapter pull request, and again on each independent review. The house-voice rule merged in [#52](https://github.com/OussamaSegh/Order-and-Chance/pull/52) at `bc67b65fad39f1ecdfbe0228f7362070bb75211c` on 2026-10-30. The role is [docs/agents/mathematician-writer.md](../agents/mathematician-writer.md). The editor (Nori) reviews each Volume 1 pull request independently. Later chapters may be drafted in parallel. Steps 7 through 12 landed together in #67. Do not merge their source pull requests one by one.
 
 Edition 1 catalog and content moves, old steps 0–21, are finished. They are kept in [Archive: Edition 1 plan (complete)](#archive-edition-1-plan-complete) at the bottom of this file. That archive is not the resume target.
 
@@ -22,26 +22,26 @@ Chapter order follows the `\input` order in `volume1-first-principles/main.tex`.
 
 #65 and #63 are squash-merged and gone from the manuscript queue. Orders (step 5) is DONE at `f4577dac0251078aa500c001114aa27cb8a2a782` on 2026-10-30 Europe/Paris. Independent review of #65 returned MERGE, and its CI was green. Complex numbers (step 6) is DONE at `1d307a186bad0f9d5d077e8d3a326bbb4ba99032` on 2026-10-30 Europe/Paris.
 
-This pull request stacks the six remaining chapter rewrites, in this order, for one CI run. Each source pull request already returned MERGE from independent review. The chapter files and their new figures are the reviewed tips. Probability's figure label `fig:signs` is the one exception, renamed `fig:pairsigns` so it does not collide with polynomials. No sentence was rewritten. The source pull requests stay open until Nori squash-merges this stack and then closes them.
+#67 squash-merged the six remaining chapter rewrites onto main at `78f27d33c7e605282d8ca1673f73e19f57206adf`. Each source pull request had already returned MERGE from independent review. The chapter files and their new figures on main are those reviewed tips, except probability's figure label `fig:signs`, renamed `fig:pairsigns` so it does not collide with polynomials. Do not merge #58, #59, #64, #62, #60, or #61 as a second copy.
 
-- **#58, polynomials, step 7.** https://github.com/OussamaSegh/Order-and-Chance/pull/58. Branch `cursor/polynomials-profound-d617`. Reviewed tip `16f05d21dd03a2ebe6dd3d98074153b23b48a04c`. Author agent `bc-c52d7dd1`. Independent review: MERGE.
-- **#59, linear algebra, step 8.** https://github.com/OussamaSegh/Order-and-Chance/pull/59. Branch `cursor/linear-algebra-chapter-9af6`. Reviewed tip `3b128dd2d127e3a30879f0526b2ce47172e097e8`. Author agent `bc-c15e0fbb`. Independent review: MERGE.
-- **#64, integrals and Taylor, step 9.** https://github.com/OussamaSegh/Order-and-Chance/pull/64. Branch `cursor/integrals-taylor-profound-2e8a`. Reviewed tip `3842c235e41e27ab5495635870ef436e04771680`. Author agent `bc-82f7cfae`. Independent review: MERGE.
-- **#62, inequalities, step 10.** https://github.com/OussamaSegh/Order-and-Chance/pull/62. Branch `cursor/inequalities-profound-756b`. Reviewed tip `997c747e6bd4d30ab6ecb1aa9e6de03847a52f7a`. Author agent `bc-12cf9ce1`. Independent review: MERGE.
-- **#60, probability, step 11.** https://github.com/OussamaSegh/Order-and-Chance/pull/60. Branch `cursor/probability-chapter-ac3e`. Reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Author agent `bc-1faa35de`. Independent review: MERGE.
-- **#61, field guide, step 12.** https://github.com/OussamaSegh/Order-and-Chance/pull/61. Branch `cursor/volume1-field-guide-4cf2`. Reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Author agent `bc-31e0beff`. Independent review: MERGE.
+- **#58, polynomials, step 7.** https://github.com/OussamaSegh/Order-and-Chance/pull/58. Branch `cursor/polynomials-profound-d617`. Reviewed tip `16f05d21dd03a2ebe6dd3d98074153b23b48a04c`. Author agent `bc-c52d7dd1`. Independent review: MERGE. Landed in #67.
+- **#59, linear algebra, step 8.** https://github.com/OussamaSegh/Order-and-Chance/pull/59. Branch `cursor/linear-algebra-chapter-9af6`. Reviewed tip `3b128dd2d127e3a30879f0526b2ce47172e097e8`. Author agent `bc-c15e0fbb`. Independent review: MERGE. Landed in #67.
+- **#64, integrals and Taylor, step 9.** https://github.com/OussamaSegh/Order-and-Chance/pull/64. Branch `cursor/integrals-taylor-profound-2e8a`. Reviewed tip `3842c235e41e27ab5495635870ef436e04771680`. Author agent `bc-82f7cfae`. Independent review: MERGE. Landed in #67.
+- **#62, inequalities, step 10.** https://github.com/OussamaSegh/Order-and-Chance/pull/62. Branch `cursor/inequalities-profound-756b`. Reviewed tip `997c747e6bd4d30ab6ecb1aa9e6de03847a52f7a`. Author agent `bc-12cf9ce1`. Independent review: MERGE. Landed in #67.
+- **#60, probability, step 11.** https://github.com/OussamaSegh/Order-and-Chance/pull/60. Branch `cursor/probability-chapter-ac3e`. Reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Author agent `bc-1faa35de`. Independent review: MERGE. Landed in #67, with the figure label `fig:pairsigns`.
+- **#61, field guide, step 12.** https://github.com/OussamaSegh/Order-and-Chance/pull/61. Branch `cursor/volume1-field-guide-4cf2`. Reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Author agent `bc-31e0beff`. Independent review: MERGE. Landed in #67.
 
-After this stack squash-merges, the next work is a global consistency review of the whole of Volume 1. Do not start that review before the merge. Do not start a new chapter rewrite.
+The open work is step 13, the global consistency review of the whole of Volume 1. Do not start a new chapter rewrite. Do not start Volume 2.
 
 ## Resume protocol
 
-1. Read this file, including the open-pull-request list. Steps 0 through 12 are DONE as chapter rewrites. Steps 7 through 12 land on main when this stack pull request squash-merges. There is no chapter rewrite left to open.
-2. Do not open a second pull request for any Volume 1 chapter. Do not merge #58, #59, #64, #62, #60, or #61 separately. Their texts are already in this stack. Close those six after this stack merges.
-3. If a later step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it. No Volume 1 chapter step is TODO.
-4. One step is one pull request and one chapter file. Step 0 is the jacket: `blurb.tex`, `about-the-cover.tex`, `kdp.md`, and the Volume 1 entry in `common/cover-notes.json`. Step 1 is the preface and the language chapter together.
-5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge. Steps 7 through 12 are already DONE in this stack. Do not set them back to IN REVIEW.
-6. The editor records the squash sha of this stack on steps 7 through 12 after Nori squash-merges. A blank merge sha on those rows is not a reason to redraft the chapter.
-7. After this stack has squash-merged, the next step is a global consistency review of the whole of Volume 1. Do not start that review before the merge. Volume 2 waits until that review is finished. Step 0 is DONE.
+1. Read this file, including the open-pull-request list. Steps 0 through 12 are DONE on main. Step 13 is the global consistency review. There is no chapter rewrite left to open.
+2. Do not open a second pull request for any Volume 1 chapter. Do not merge #58, #59, #64, #62, #60, or #61 separately. Their texts landed in #67.
+3. If a later step is TODO, search the open pull requests for that chapter before creating a branch. If a branch or pull request already exists, use it. No Volume 1 chapter step is TODO. Step 13 is the consistency pass, not a new chapter.
+4. One step is one pull request and one chapter file. Step 0 is the jacket: `blurb.tex`, `about-the-cover.tex`, `kdp.md`, and the Volume 1 entry in `common/cover-notes.json`. Step 1 is the preface and the language chapter together. Step 13 may touch several chapter files, but only where a cross-reference, handoff, label, or voice bug breaks the book as one volume.
+5. In the same pull request, set the row to IN REVIEW and fill the PR link. Leave the merge sha and the date blank until merge. Steps 7 through 12 are DONE. Do not set them back to IN REVIEW.
+6. Steps 7 through 12 record the squash sha of #67. A blank merge sha on those rows is not a reason to redraft the chapter.
+7. Step 13 is the global consistency review of the whole of Volume 1. Volume 2 waits until that review is DONE. Step 0 is DONE.
 8. Acceptance always includes a match to `docs/WRITING-STYLE.md`, including the Sound human pass, fact-check notes in the pull request, and `git diff --check`. A chapter step also needs a Volume 1 typeset and layout check. Run `./build.sh volume1-first-principles`, or the equivalent XeLaTeX pass plus `tools/check_book_layout.py`, as the earlier chapter pull requests did. Step 0 checks the cover note (80 to 150 words), `python3 tools/series_cover.py --check`, and the back-cover measure.
 9. Scope is the assigned file or files under `volume1-first-principles/`, plus the cover-note source when the step is the jacket, plus figures that a chapter needs. Do not edit other volumes in that pull request.
 
@@ -131,9 +131,9 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/ch03-polynomials.tex`. Polynomials. New figures: `figures/ch03-horner.tex`, `figures/ch03-values.tex`, `figures/ch03-signs.tex`, `figures/ch03-cotsqueeze.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/58
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #58, branch `cursor/polynomials-profound-d617`, reviewed tip `16f05d21dd03a2ebe6dd3d98074153b23b48a04c`. Independent review returned MERGE. Author agent `bc-c52d7dd1-180f-5218-a11a-bfbbebc4d617`. The chapter file and its four new figures in this stack match that tip byte for byte. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another polynomials pull request. Do not merge #58 separately.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #58, branch `cursor/polynomials-profound-d617`, reviewed tip `16f05d21dd03a2ebe6dd3d98074153b23b48a04c`. Independent review returned MERGE. Author agent `bc-c52d7dd1-180f-5218-a11a-bfbbebc4d617`. The chapter file and its four new figures on main match that tip byte for byte. Do not open another polynomials pull request. Do not merge #58 separately.
 
 ### 8. Linear algebra
 
@@ -142,9 +142,9 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/ch07-linear-algebra.tex`. Linear algebra. New figures: `figures/ch07-bases.tex`, `figures/ch07-orientation.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/59
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #59, branch `cursor/linear-algebra-chapter-9af6`, reviewed tip `3b128dd2d127e3a30879f0526b2ce47172e097e8`. Independent review returned MERGE. Author agent `bc-c15e0fbb-1991-5081-8f39-7fd016849af6`. The chapter file and its two new figures in this stack match that tip byte for byte. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another linear-algebra pull request. Do not merge #59 separately.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #59, branch `cursor/linear-algebra-chapter-9af6`, reviewed tip `3b128dd2d127e3a30879f0526b2ce47172e097e8`. Independent review returned MERGE. Author agent `bc-c15e0fbb-1991-5081-8f39-7fd016849af6`. The chapter file and its two new figures on main match that tip byte for byte. Do not open another linear-algebra pull request. Do not merge #59 separately.
 
 ### 9. Integrals and Taylor
 
@@ -153,9 +153,9 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/ch06-integrals-taylor.tex`. Integrals and Taylor. New figures: `figures/ch06-parts.tex`, `figures/ch06-quarter.tex`, `figures/ch06-zoom.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/64
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #64, branch `cursor/integrals-taylor-profound-2e8a`, reviewed tip `3842c235e41e27ab5495635870ef436e04771680`. Independent review returned MERGE. Author agent `bc-82f7cfae-e852-5f08-b758-b9624f422e8a`. The chapter file and its three new figures in this stack match that tip byte for byte. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another integrals pull request. Do not merge #64 separately. This is the calculus step.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #64, branch `cursor/integrals-taylor-profound-2e8a`, reviewed tip `3842c235e41e27ab5495635870ef436e04771680`. Independent review returned MERGE. Author agent `bc-82f7cfae-e852-5f08-b758-b9624f422e8a`. The chapter file and its three new figures on main match that tip byte for byte. Do not open another integrals pull request. Do not merge #64 separately. This is the calculus step.
 
 ### 10. Inequalities
 
@@ -164,9 +164,9 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/ch04-inequalities.tex`. Inequalities. New figures: `figures/ch04-align.tex`, `figures/ch04-frame.tex`, `figures/ch04-rearrange.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/62
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #62, branch `cursor/inequalities-profound-756b`, reviewed tip `997c747e6bd4d30ab6ecb1aa9e6de03847a52f7a`. Independent review returned MERGE. Author agent `bc-12cf9ce1-c1d3-59a2-b6c7-538fcb05756b`. The chapter file and its three new figures in this stack match that tip byte for byte. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another inequalities pull request. Do not merge #62 separately.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #62, branch `cursor/inequalities-profound-756b`, reviewed tip `997c747e6bd4d30ab6ecb1aa9e6de03847a52f7a`. Independent review returned MERGE. Author agent `bc-12cf9ce1-c1d3-59a2-b6c7-538fcb05756b`. The chapter file and its three new figures on main match that tip byte for byte. Do not open another inequalities pull request. Do not merge #62 separately.
 
 ### 11. Probability
 
@@ -175,9 +175,9 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/ch09-probability.tex`. Probability. New figures: `figures/ch09-dice.tex`, `figures/ch09-even.tex`, `figures/ch09-geometric.tex`, `figures/ch09-signs.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/60
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #60, branch `cursor/probability-chapter-ac3e`, reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Independent review returned MERGE. Author agent `bc-1faa35de-1adb-5586-9407-5b3740c7ac3e`. The chapter file and its four new figures match that tip except one label: `fig:signs` is `fig:pairsigns` here, because the polynomials chapter already uses `fig:signs`. The three occurrences are the two references and the label. No sentence was rewritten. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another probability pull request. Do not merge #60 separately.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #60, branch `cursor/probability-chapter-ac3e`, reviewed tip `9b46858a5da87e69f6963182593633737ee3633c`. Independent review returned MERGE. Author agent `bc-1faa35de-1adb-5586-9407-5b3740c7ac3e`. The chapter file and its four new figures match that tip except one label: `fig:signs` is `fig:pairsigns`, because the polynomials chapter already uses `fig:signs`. Do not open another probability pull request. Do not merge #60 separately.
 
 ### 12. Field guide
 
@@ -186,9 +186,20 @@ After this stack squash-merges, the next work is a global consistency review of 
 - **Books and files:** `volume1-first-principles/chapters/field-guide.tex`. Field guide, and the handoff to Volume 2. New figures: `figures/field-circle.tex`, `figures/field-euler.tex`.
 - **Acceptance:** The chapter matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
 - **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/61
-- **Merge sha:**
+- **Merge sha:** 78f27d33c7e605282d8ca1673f73e19f57206adf
 - **Date:** 2026-10-30
-- **Notes:** Stacked, not redrafted. Source pull request #61, branch `cursor/volume1-field-guide-4cf2`, reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Independent review returned MERGE. Author agent `bc-31e0beff-efcb-5e76-9580-a38f144d4cf2`. The chapter file and its two new figures in this stack match that tip byte for byte. Leave the merge sha blank until Nori squash-merges the stack, then record that squash sha. Do not open another field-guide pull request. Do not merge #61 separately. After the stack squash-merges, the next step is a global consistency review of the whole of Volume 1.
+- **Notes:** Squash-merged in #67, not redrafted. Source pull request #61, branch `cursor/volume1-field-guide-4cf2`, reviewed tip `b55dfd64f5e96943e8a89eed484d3bfe9f053265`. Independent review returned MERGE. Author agent `bc-31e0beff-efcb-5e76-9580-a38f144d4cf2`. The chapter file and its two new figures on main match that tip byte for byte. Do not open another field-guide pull request. Do not merge #61 separately. The next step is the global consistency review, step 13.
+
+### 13. Global consistency and transitions
+
+- **Status:** IN REVIEW
+- **Depends on:** 12
+- **Books and files:** the reader-facing text of `volume1-first-principles` (preface, chapters, field guide) and this progress file. No new chapter. No other volume.
+- **Acceptance:** Cross-references resolve, chapter closings hand to the next opening, the field guide names Volume 2 by its current title and subtitle, labels stay unique, and the prose that changed still matches `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Volume 1 typesets and the layout check passes.
+- **PR:**
+- **Merge sha:**
+- **Date:**
+- **Notes:** The chapters are merged. This pull request is the global consistency pass: handoffs, findable pointers, and the Volume 2 door. It does not redraft a chapter that already returned MERGE. Do not start Volume 2 until this step is DONE.
 
 ## Archive: Edition 1 plan (complete)
 
