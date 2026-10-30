@@ -56,6 +56,27 @@ def write_reader_redirects(read_root: Path, new_stem: str) -> None:
         dest.write_text(redirect_html(target), encoding="utf-8")
 
 
+def write_part_redirects(reader_dir: Path) -> None:
+    """Keep the former one-page-per-part reader URLs ("1-divisibility.html") working.
+
+    The reader used to put a whole part on one page, numbered in auto-numbered volumes;
+    it now has one page per chapter and a short page per part ("part-divisibility.html").
+    """
+    index = reader_dir / "index.html"
+    if not index.is_file():
+        return
+    parts = []
+    for name in re.findall(r'href="([^"#/]+\.html)', index.read_text(encoding="utf-8")):
+        page = reader_dir / name
+        if name not in parts and page.is_file() and 'class="oc-part' in page.read_text(encoding="utf-8"):
+            parts.append(name)
+    for number, name in enumerate(parts, 1):
+        bare = name.removeprefix("part-")
+        for old in (reader_dir / f"{number}-{bare}", reader_dir / bare):
+            if not old.exists():
+                old.write_text(redirect_html(name), encoding="utf-8")
+
+
 def volume_order(pdf: Path):
     """Main sequence by number, followed by the problem book."""
     m = re.match(r"volume([A-Z]?)(\d+)", pdf.stem)
@@ -117,6 +138,7 @@ def main(dist: str, out: str) -> None:
         reader = dist_dir / "html" / volume
         if (reader / "index.html").exists():
             shutil.copytree(reader, out_dir / "read" / volume, dirs_exist_ok=True)
+            write_part_redirects(out_dir / "read" / volume)
             write_reader_redirects(out_dir / "read", volume)
             read = f'<a class="read" href="read/{volume}/" title="Read in the browser, one page per chapter">Read online</a>'
         print_pdf = ""

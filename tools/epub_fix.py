@@ -95,11 +95,46 @@ def fix_manifest(data: bytes, package_path: str, resources: dict[str, bytes]) ->
     return ET.tostring(root, encoding="utf-8", xml_declaration=True)
 
 
+def fix_fragment_links(texts: dict[str, str]) -> dict[str, str]:
+    """Point a same-file link (href="#id") at the chapter file that defines the id.
+
+    Pandoc resolves cross-chapter references, but not those inside figure captions.
+    """
+    owner = {}
+    for name, text in texts.items():
+        for ident in re.findall(r'\bid="([^"]+)"', text):
+            owner.setdefault(ident, name)
+    fixed = {}
+    for name, text in texts.items():
+        # A label after two tabulars in one table gives pandoc two divs with the same id; keep the first.
+        seen = set()
+
+        def once(match, seen=seen):
+            if match.group(1) in seen:
+                return ""
+            seen.add(match.group(1))
+            return match.group(0)
+        text = re.sub(r' id="([^"]+)"', once, text)
+        local = set(re.findall(r'\bid="([^"]+)"', text))
+
+        def repoint(match, name=name, local=local):
+            ident = match.group(1)
+            if ident in local or ident not in owner:
+                return match.group(0)
+            return f'href="{Path(owner[ident]).name}#{ident}"'
+        fixed[name] = re.sub(r'href="#([^"]+)"', repoint, text)
+    return fixed
+
+
 def main(path: str) -> None:
     src = Path(path)
     tmp = src.with_suffix(".tmp")
     with zipfile.ZipFile(src) as zin, zipfile.ZipFile(tmp, "w") as zout:
         resources = {item.filename: zin.read(item.filename) for item in zin.infolist()}
+        pages = fix_fragment_links({name: data.decode("utf-8") for name, data in resources.items()
+                                    if name.endswith(".xhtml") and "/text/" in name})
+        for name, text in pages.items():
+            resources[name] = text.encode("utf-8")
         for item in zin.infolist():
             data = resources[item.filename]
             name = item.filename

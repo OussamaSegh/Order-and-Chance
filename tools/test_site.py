@@ -122,6 +122,22 @@ class LibraryTest(unittest.TestCase):
             self.assertIn("http-equiv=\"refresh\"", index)
             self.assertIn(f"read/{new}/", (out / "index.html").read_text())
 
+    def test_former_part_pages_redirect_to_the_part_page(self):
+        with tempfile.TemporaryDirectory() as directory:
+            reader = Path(directory)
+            (reader / "index.html").write_text('<a href="preface.html">P</a><a href="part-divisibility.html">I</a>'
+                                               '<a href="1-ch-divisibility.html">1</a><a href="part-the-primes.html">II</a>')
+            (reader / "preface.html").write_text("<h1>Preface</h1>")
+            for name in ("part-divisibility.html", "part-the-primes.html"):
+                (reader / name).write_text('<h1 class="oc-part">Part</h1>')
+            (reader / "1-ch-divisibility.html").write_text('<h1 class="oc-chapter">Divisibility</h1>')
+            site.write_part_redirects(reader)
+            self.assertIn('url=part-divisibility.html', (reader / "1-divisibility.html").read_text())
+            self.assertIn('url=part-divisibility.html', (reader / "divisibility.html").read_text())
+            self.assertIn('url=part-the-primes.html', (reader / "2-the-primes.html").read_text())
+            self.assertIn('oc-chapter', (reader / "1-ch-divisibility.html").read_text())
+            self.assertFalse((reader / "1-preface.html").exists())
+
     def test_titles_are_escaped_in_text_and_search_attributes(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

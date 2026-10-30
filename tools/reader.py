@@ -12,6 +12,7 @@ from pathlib import Path
 from series_metadata import subtitle
 from public_names import filename
 from urllib.parse import quote
+from epub_fix import fix_fragment_links
 
 TOOLS = Path(__file__).resolve().parent
 ROOT = TOOLS.parent
@@ -56,6 +57,12 @@ def main(volume: str, build: str, out: str) -> None:
 
         text = re.sub(r'src="(/[^"]*\.(?:svg|jpg|png))"', figure, text)
         page.write_text(text, encoding="utf-8")
+    # Same-page links to an id on another page (pandoc leaves references inside figure
+    # captions that way): point them at the page that defines the id.
+    pages = {page: page.read_text(encoding="utf-8") for page in out_dir.glob("*.html")}
+    for page, text in fix_fragment_links(pages).items():
+        if text != pages[page]:
+            page.write_text(text, encoding="utf-8")
     (out_dir / "sitemap.json").unlink(missing_ok=True)
     shutil.copytree(TOOLS / "assets/fonts", out_dir / "fonts", dirs_exist_ok=True)
     # The interior faces of design 5e (EB Garamond, Cormorant Garamond, Fira Sans) and the code
