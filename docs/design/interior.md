@@ -12,7 +12,7 @@ All of the system lives in `common/`:
 |---|---|
 | `interior-fonts.tex` | font families |
 | `preamble.tex` | geometry, packages, load order |
-| `interior-style.tex` | labels, headings, running heads, captions, contents, part pages |
+| `interior-style.tex` | labels, headings, running heads, captions, contents, `\part` (drawn in `chapter-opener.tex`) |
 | `chapter-opener.tex` | the charcoal chapter opener and the `\chaptermotif` hook |
 | `interior-boxes.tex` | the two box families, proofs, exercises, hints and solutions |
 | `figure-palette.tex` | the figure colours |
@@ -107,13 +107,16 @@ epigraph.
 
 ## Parts
 
-A part page is the chapter opener's charcoal page on a recto
-(`\oc@part@page` in `chapter-opener.tex`): the same masthead and volume line, the
-part numeral in 190 pt coral Cormorant, the `PART n` label in Fira, the ivory
-Cormorant title and the coral rule, and no motif. There is no blank verso after it:
-the opener of the part's first chapter is printed on its back, so that opener is a
-verso facing the chapter's first text recto, as everywhere else. `\part*` gives the
-page without a numeral or label.
+A part page is a recto (`\oc@part@page` and `\oc@part@art` in `chapter-opener.tex`,
+option B): a charcoal band over the top 3.4 in, to the bleed at the top and sides, holds
+the masthead (*ORDER AND CHANCE* in spaced Cormorant capitals, the volume line in Fira)
+and the part numeral in 150 pt light coral Cormorant Roman; below the band, on the paper,
+`PART I` in Fira Medium with 8% tracking (charcoal, numeral in deep coral), the charcoal
+Cormorant title and a short deep-coral rule-diamond-rule. No motif or epigraph. The page
+below the band is white like the paper (`\colorlet{ocPartPaper}{ocCream}` gives the ivory
+of the mock-up). There is no blank verso after it: the opener of the part's first chapter
+is printed on its back, so that opener is a verso facing the chapter's first text recto.
+`\part*` gives the page without a numeral or label.
 
 ## Boxes: two families
 
@@ -197,14 +200,18 @@ the stacked form inline.
 
 - EB Garamond body, Cormorant headings and numerals, Fira capitals for labels, and
   Garamond-Math for MathML in the EPUB (the reader sets mathematics with KaTeX);
-- part pages and chapter openers are charcoal panels with the masthead, the coral
-  numeral, the ivory title, the coral rule and the epigraph; chapter openers also show
-  the volume's cover illustration, rendered by `tools/opener_motif.py`
-  (`tools/opener-motif.tex`, called by `build.sh`) and placed by `tools/epub.lua`;
-  `tools/epub_prep.py` turns `\part` into a marker so chapters stay chapters;
+- chapters and parts open with a compact charcoal header strip: the masthead line, the
+  coral numeral beside the ivory Cormorant title and the coral rule; the epigraph follows
+  on the page background. The full-black opener page and the cover illustration are print
+  only. `tools/epub_prep.py` turns `\part` into a marker so chapters stay chapters, and
+  `tools/epub.lua` builds the strips (it would also place `opener-motif.png` from
+  `tools/opener_motif.py`, which `build.sh` no longer calls);
 - formal boxes with the 8% charcoal tint under a coral rule; teaching boxes with a 2 pt
   charcoal bar; Fira labels with coral numbers; the coral end-of-proof diamond;
 - coral only on rules, numerals, numbers and diamonds. The reader keeps its dark theme.
+
+The online reader has one page per chapter; the former one-page-per-part URLs redirect
+(`tools/site.py`).
 
 The project site (`tools/site-template.html`, built by `tools/site.py`) uses the same
 faces: EB Garamond text, Cormorant headings and card titles, Fira for the brand, meta

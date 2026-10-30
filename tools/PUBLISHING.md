@@ -233,11 +233,18 @@ physical proof remain the final checks for the printer's rendering and ink color
 Design 5e (`docs/design/interior.md`) uses EB Garamond and Garamond-Math for text and
 mathematics, Cormorant Garamond for headings and Fira Sans for labels, and DejaVu Sans
 Mono for code. Files, licences and hashes are bundled in `common/fonts/`, independently
-of the cover assets. The PDF colophon names the fonts. EPUB embeds the OTF/TTF files,
-and the online reader serves the same files.
+of the cover assets. The PDF colophon names the fonts. EPUB embeds the OTF/TTF files;
+the online reader and the site serve their WOFF2 companions.
 
 Charcoal and one coral accent carry the cover identity onto white interior pages;
-every chapter opens on a full charcoal verso. Formal boxes (theorems, propositions, lemmas, corollaries, definitions, examples)
+in print every chapter opens on a full charcoal verso, and every part on a recto with a
+charcoal band over the top 3.4 in (masthead and coral Roman numeral) above the PART label,
+the charcoal title and a deep-coral rule-diamond-rule. The EPUB and the online reader open
+chapters and parts with a compact charcoal header strip instead (no full-black page, no
+illustration): `tools/epub_prep.py` turns `\part` into a marker and `tools/epub.lua`
+builds the strips. `tools/opener_motif.py` can render the cover illustration for the
+digital openers but `build.sh` does not call it. Reader pages are one per chapter;
+`tools/site.py` writes redirect stubs at the former one-page-per-part URLs. Formal boxes (theorems, propositions, lemmas, corollaries, definitions, examples)
 have an 8% charcoal fill under a 1.2 pt coral rule and never split; teaching boxes
 (exercises/problems, reminders, prompts, beauty notes, challenges, remarks) have one
 2 pt charcoal left bar, no fill, and may break. Hide the full frame; saturated
