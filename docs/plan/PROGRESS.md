@@ -4,6 +4,8 @@ This file is the live execution tracker for the Volume 1 rewrite. The book is `v
 
 Cold-start snapshot: 2026-10-30, about 17:16 Europe/Paris, from Nori.
 
+Standing series goal. When Volume 1 is done, rewrite Volumes 2 through 15 in order, one volume after another, under the same house voice and the same bar: one chapter per pull request, and an independent review before every merge. Volume 2 waits until every Volume 1 step in this file is DONE.
+
 Nori owns the Volume 1 end-state: free to launch, review, and merge. One chapter is one pull request. An independent review comes before every merge.
 
 The remake runs from the start, in this order: cover, preface and language, sums, counting, sequences, orders, complex numbers, polynomials, linear algebra, calculus, inequalities, probability, field guide.
