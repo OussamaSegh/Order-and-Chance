@@ -69,6 +69,40 @@ def copyright_section(main_tex: Path) -> str:
             + (credit + "\n\n" if credit else ""))
 
 
+def parts(text: str) -> str:
+    """Turn \\part{...} into an ocpart block that tools/epub.lua makes a part page.
+
+    Pandoc would otherwise make each part the top level of the book: every chapter of a
+    volume with parts would land on its part's page, numbered as a section of it.
+    """
+    out, i = [], 0
+    for m in re.finditer(r"\\part(\*?)\s*(?:\[[^\]]*\])?\s*\{", text):
+        if m.start() < i:
+            continue
+        depth, k = 1, m.end()
+        while depth:
+            depth += {"{": 1, "}": -1}.get(text[k], 0)
+            k += 1
+        env = "ocpartstar" if m.group(1) else "ocpart"
+        out.append(text[i:m.start()] + "\\begin{" + env + "}" + text[m.end():k - 1] + "\\end{" + env + "}")
+        i = k
+    return "".join(out) + text[i:]
+
+
+def opener_markers(text: str, main_tex: Path, figdir: Path) -> str:
+    """Give tools/epub.lua the chapter openers' volume line and motif (design 5e)."""
+    title = re.search(r"^% epub-title: .*?Volume ([0-9A-Z]+): (.*)$", main_tex.read_text(encoding="utf-8"), re.M)
+    markers = ""
+    if title:
+        markers += "\\begin{ocvolume}Volume " + title.group(1) + " · " + title.group(2) + "\\end{ocvolume}\n"
+    motif = figdir.resolve() / "opener-motif.png"
+    if motif.is_file():
+        markers += "\\begin{ocmotif}\\includegraphics{" + str(motif) + "}\\end{ocmotif}\n"
+    if markers:
+        text = text.replace("\\begin{document}", "\\begin{document}\n" + markers, 1)
+    return parts(text)
+
+
 def main(src: str, dst: str, figdir: str) -> None:
     text = inline(Path(src))
     # PDF-only problem styling (\renewtcolorbox) is not for pandoc. The exname
@@ -81,6 +115,7 @@ def main(src: str, dst: str, figdir: str) -> None:
     text = re.sub(r"\\setcounter\{chapter\}\{(-?\d+)\}",
                   r"\\begin{occhaptercounter}\1\\end{occhaptercounter}", text)
     text = text.replace("\\maketitle\n", copyright_section(Path(src)), 1)
+    text = opener_markers(text, Path(src), Path(figdir))
     # A book may rename its exercises ("% exercise-name: Problem" in main.tex); tools/epub.lua reads the marker.
     name = re.search(r"^% exercise-name: (\w+)", text, re.M)
     if name:

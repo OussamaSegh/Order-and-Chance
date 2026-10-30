@@ -44,11 +44,11 @@
 
   // Hints and solutions stay folded until the reader asks: try the exercise first.
   document.querySelectorAll("div.hint, div.solution").forEach(function (div) {
-    var first = div.querySelector("p strong");
+    var first = div.querySelector(".oc-head") || div.querySelector("p strong");
     var details = document.createElement("details");
     details.className = "reveal";
     var summary = document.createElement("summary");
-    summary.textContent = first ? first.textContent.replace(/\.$/, "") : (div.classList.contains("hint") ? "Hint" : "Solution");
+    summary.textContent = first ? first.textContent.replace(/\s+/g, " ").trim().replace(/\.$/, "") : (div.classList.contains("hint") ? "Hint" : "Solution");
     details.appendChild(summary);
     div.parentNode.insertBefore(details, div);
     details.appendChild(div);

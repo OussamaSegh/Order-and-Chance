@@ -122,6 +122,8 @@ for volume in "${volumes[@]}"; do
     pdftocairo -svg "$out/figures/$name.pdf" "$out/figures/$name.svg"
   done
 
+  # Chapter openers of the EPUB and online reader show the volume's cover illustration (design 5e).
+  python3 "$root/tools/opener_motif.py" "$volume" "$out/figures"
   python3 "$root/tools/epub_prep.py" "$root/$volume/main.tex" "$out/epub.tex" "$out/figures"
   (cd "$root/$volume" &&
     pandoc "$out/epub.tex" -f latex -t epub3 --mathml --toc --toc-depth=2 \
