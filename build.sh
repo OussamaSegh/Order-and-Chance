@@ -54,22 +54,18 @@ for volume in "${volumes[@]}"; do
 
   # Typeset the print interior once: 7 x 10 in, no bleed. The full
   # cover (back, spine, front) with 0.125in bleed and the spine width of KDP's formula for white
-  # paper, 0.002347in per page for premium colour. The inside margin is the one KDP asks for at that page count.
-  inner=0.75in
+  # paper, 0.002347in per page for premium colour. The interior design (docs/design/interior.md)
+  # uses a 0.9in gutter at every page count, which meets KDP's inside-margin minimum up to 828 pages.
+  inner=0.9in
   # Discard generated state from earlier font engines (e.g. Palatino's PazoBB
   # tokens in an old TOC). Three clean passes rebuild all reference state.
   rm -f "$out/main.aux" "$out/main.toc" "$out/main.out" "$out/main.lof" "$out/main.lot"
-  for pass in 1 2; do
-    (cd "$root/$volume" &&
-      for _ in 1 2 3; do
-        xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
-          "$meta\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main.stdout" ||
-          { tail -40 "$out/main.stdout"; exit 1; }
-      done)
-    pages=$(pdfinfo "$out/main.pdf" | sed -n 's/^Pages: *//p')
-    [ "$pages" -le 700 ] || [ "$inner" = 0.875in ] && break
-    inner=0.875in
-  done
+  (cd "$root/$volume" &&
+    for _ in 1 2 3; do
+      xelatex -interaction=nonstopmode -halt-on-error -output-directory="$out" -jobname=main \
+        "$meta\\def\\PRINTINNER{$inner}\\input{main.tex}" >"$out/main.stdout" ||
+        { tail -40 "$out/main.stdout"; exit 1; }
+    done)
   python3 "$root/tools/check_book_layout.py" "$out/main.log" "$out/main.oclayout"
   python3 "$root/tools/check_cover_pdf.py" "$out/main.pdf" --interior
   python3 "$root/tools/check_interior_style.py" "$out/main.pdf"

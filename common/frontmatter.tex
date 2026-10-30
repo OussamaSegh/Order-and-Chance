@@ -29,41 +29,53 @@
 \providecommand{\VOLUMETITLE}{}
 
 \makeatletter
-% The series list, read from common/series.tex; the current volume is set in bold.
-\newcommand{\seriespart}[1]{\par\medskip\noindent{\small\textsc{#1}}\par\nobreak\smallskip}
+% The series list, read from common/series.tex; the current volume is set in semibold.
+\newcommand{\seriespart}[1]{\par\medskip\noindent{\ocLabelFont\ocLab{#1}}\par\nobreak\smallskip}
 \newcommand{\seriesvolume}[3]{%
   \def\oc@this{#1}%
-  \par\noindent\hangindent=2.2em\makebox[2.2em][l]{\small #1}%
+  \par\noindent\hangindent=2.2em\makebox[2.2em][l]{\small\ocNum{#1}}%
   \ifx\oc@this\VOLUMENUM{\small\textbf{#2}}\else{\small #2}\fi
   \if\relax\detokenize{#3}\relax\else{\footnotesize\itshape\ --- #3}\fi\par}
-
+% Front pages in the interior's system: Cormorant titles, Fira labels, EB Garamond text, a
+% coral rule. Text is set flush left on the text block, like the chapter openers.
+\newcommand{\oc@masthead}[1]{{\ocDisplay\fontsize{#1}{#1}\selectfont\color{ocBlack}\ocCaps[26]{\seriesname}}}
 \renewcommand{\maketitle}{%
   \cleardoublepage
   % Half-title
   \thispagestyle{empty}%
   \vspace*{0.22\textheight}%
-  \begin{center}
-    {\ocCoverDisplay\Large\seriesname}\par\bigskip
-    \ifx\VOLUMETITLE\@empty\else{\ocCoverDisplay\LARGE Volume \VOLUMENUM\par\medskip\VOLUMETITLE\par}\fi
-  \end{center}
+  {\raggedright
+   \oc@masthead{12}\par\vspace{22pt}%
+   \ifx\VOLUMETITLE\@empty\else
+     {\ocLabelFont\ocLab{Volume}\enspace\ocNum{\VOLUMENUM}}\par\vspace{8pt}%
+     {\ocDisplay\linespread{1}\fontsize{26}{30}\selectfont\color{ocBlack}\VOLUMETITLE\par}\vspace{12pt}%
+   \fi
+   {\color{ocCoral}\rule{0.9in}{1.2pt}}\par}%
   \clearpage
   % Series page
   \thispagestyle{empty}%
   {\raggedright\let\oc@this\relax
-   \noindent{\ocCoverDisplay\large\seriesname}\par
+   \noindent\oc@masthead{11}\par\vspace{4pt}%
    \noindent{\small\itshape\seriessubtitle}\par\medskip
    \input{../common/series}\par}%
   \clearpage
   % Title page
   \thispagestyle{empty}%
   \vspace*{0.12\textheight}%
-  \begin{center}
-    {\ocCoverDisplay\@title\par}\vskip 0.8em
-    {\large\itshape\volumesubtitle{\VOLUMENUM}\par}\vskip 0.8em
-    {\color{ocAccent}\rule{0.38\textwidth}{0.6pt}}\vskip 2em
-    {\large\bookauthors\par}\vfill
-    {\small\bookedition\par}
-  \end{center}
+  {\raggedright
+   \oc@masthead{12}\par\vspace{0.09\textheight}%
+   \ifx\VOLUMETITLE\@empty
+     {\ocDisplay\linespread{1}\fontsize{30}{36}\selectfont\color{ocBlack}\let\textbf\relax\let\Huge\relax
+      \let\LARGE\relax\let\Large\relax\@title\par}%
+   \else
+     {\ocLabelFont\ocLab{Volume}\enspace\ocNum{\VOLUMENUM}}\par\vspace{10pt}%
+     {\ocDisplay\linespread{1}\fontsize{38}{42}\selectfont\color{ocBlack}\hyphenpenalty10000 \VOLUMETITLE\par}%
+     \vspace{12pt}{\large\itshape\volumesubtitle{\VOLUMENUM}\par}%
+   \fi
+   \vspace{16pt}{\color{ocCoral}\rule{0.9in}{1.2pt}}\par\vspace{0.06\textheight}%
+   {\ocDisplay\fontsize{15}{18}\selectfont\color{ocBlack}\ocCaps[12]{\bookauthors}\par}%
+   \vfill
+   {\ocBook\fontsize{8.5}{11}\selectfont\color{ocBlack}\bookedition\par}}%
   \clearpage
   % Copyright page: the text sits at the foot of the page, as is the custom.
   \thispagestyle{empty}%
@@ -75,7 +87,8 @@
    \bookedition. \bookpublisher. This printing typeset on \today.\par
    ISBN (paperback): \bookisbnprint\ifx\bookisbnebook\oc@empty\else\\ISBN (eBook): \bookisbnebook\fi\par
    \covercredit
-   Typeset with XeLaTeX in STIX Two Text and STIX Two Math, with Inter headings.\par}%
+   Typeset with XeLaTeX in EB Garamond and Garamond-Math, with Cormorant Garamond headings
+   and Fira Sans labels.\par}%
   \clearpage
   \global\let\maketitle\relax}
 \makeatother

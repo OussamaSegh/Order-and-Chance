@@ -16,7 +16,7 @@ def check_sync():
     if (ROOT / 'common/print-layout.tex').read_text() != tex():
         raise ValueError('Run python3 tools/print_layout.py to sync paperback geometry')
 
-def specification(pages, inner='0.75in'):
+def specification(pages, inner='0.9in'):
     pages = int(pages)
     if not 24 <= pages <= 828:
         raise ValueError(f'{pages} pages: outside paperback limits (24–828)')
@@ -31,7 +31,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--check', action='store_true')
     parser.add_argument('--pages', type=int)
-    parser.add_argument('--inner', default='0.75in')
+    parser.add_argument('--inner', default='0.9in')
     args = parser.parse_args()
     if args.pages is not None:
         check_sync()

@@ -1,16 +1,32 @@
+% Shared preamble of every volume: interior design 5e. The system, its two box families and
+% the per-chapter motif hook are documented in docs/design/interior.md.
 \usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage{xfp}% \fpeval for older LaTeX kernels
 \input{../common/interior-fonts}
-\linespread{1.065}
+% 11 pt class x 1.05 (fonts) = 11.5 pt body; 13.6 pt x 1.085 = 14.75 pt leading.
+\linespread{1.085}
 % Every PDF uses the standard 7 x 10 inch book layout. Its identical file also
 % serves as the paperback interior; the full cover is a separate publishing asset.
 \input{../common/print-layout}
-\providecommand{\PRINTINNER}{0.75in}
+\providecommand{\PRINTINNER}{0.9in}
 % Keep these hooks for volume layouts and stacked mathematical figures.
 \newif\ifprintformat\printformattrue
 \newif\ifsmallformat\smallformattrue
 \makeatletter\@twosidetrue\@mparswitchtrue\@openrighttrue\makeatother
-\usepackage[paperwidth=\PRINTWIDTH in,paperheight=\PRINTHEIGHT in,twoside,inner=\PRINTINNER,outer=0.6in,
-  top=0.75in,bottom=0.8in,headsep=0.2in,footskip=0.4in]{geometry}
+% Mirrored margins: gutter 0.9 in (never less; KDP asks for 0.875 in up to 828 pages),
+% outside 0.8 in, giving a 5.3 in measure. Head baseline about 0.75 in below the trim.
+% A bleed build (\def\OCBLEED{} before \input{main.tex}) adds 0.125 in on every side of
+% the 7 x 10 page; the trim box is unchanged and the opener's charcoal runs to the bleed edge.
+\newlength{\ocInner}\setlength{\ocInner}{\PRINTINNER}
+\ifdim\ocInner<0.9in\setlength{\ocInner}{0.9in}\fi
+\newlength{\ocOuter}\setlength{\ocOuter}{0.8in}
+\newlength{\ocBleed}
+\ifdefined\OCBLEED\setlength{\ocBleed}{\PRINTBLEED in}\else\setlength{\ocBleed}{0pt}\fi
+\usepackage[paperwidth=\dimexpr\PRINTWIDTH in+2\ocBleed\relax,
+  paperheight=\dimexpr\PRINTHEIGHT in+2\ocBleed\relax,
+  layoutwidth=\PRINTWIDTH in,layoutheight=\PRINTHEIGHT in,layouthoffset=\ocBleed,layoutvoffset=\ocBleed,
+  twoside,inner=\ocInner,outer=\ocOuter,top=1in,bottom=0.85in,headheight=14pt,headsep=0.25in,
+  footskip=0.4in]{geometry}
 % Break long formula chains for the book's text measure and constrain displays.
 \newcommand{\qq}{\\}\newcommand{\eqbr}{\\&}
 \AtBeginDocument{%
@@ -18,7 +34,8 @@
     \ifdim\wd0>\linewidth\typeout{SHRINK \the\wd0\space > \the\linewidth\space at line \the\inputlineno}%
       \resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi\end{equation*}}}
 \usepackage[final]{microtype}
-\setlength{\emergencystretch}{3em}
+\tolerance=1500
+\setlength{\emergencystretch}{4em}
 \usepackage{enumitem}
 \usepackage[dvipsnames]{xcolor}
 \input{../common/design-colors}
@@ -26,8 +43,9 @@
 \usepackage[most]{tcolorbox}
 \usepackage{needspace}
 \usepackage{currfile}
-% Book pages keep framed material whole. Record natural heights for the print
-% audit; oversized material must be reorganised in the source, never clipped.
+% Formal boxes are kept whole. Record natural heights for the print audit; oversized
+% material must be reorganised in the source, never clipped. Only the teaching family
+% (style "oc teach") may continue on the next page; any other split box stops the build.
 \makeatletter
 \newwrite\ocLayoutFile
 \AtBeginDocument{\immediate\openout\ocLayoutFile=\jobname.oclayout\relax}
@@ -52,88 +70,24 @@
 \widowpenalty=10000
 \displaywidowpenalty=10000
 \raggedbottom
-\usepackage{titlesec}
-% Cover-derived hierarchy, adapted to white interior pages.
-\titleformat{\chapter}[display]
- {\normalfont\ocCoverDisplay\bfseries\raggedright\color{ocInk}}
- {\normalfont\ocCoverDisplay\mdseries\fontsize{9}{12}\selectfont\color{ocAccent}\addfontfeatures{LetterSpace=18}\MakeUppercase{\chaptertitlename}\ \thechapter}{13pt}
- {\fontsize{24}{29}\selectfont}
-\titlespacing*{\chapter}{0pt}{20pt}{27pt}
-\titleformat{\section}{\normalfont\ocCoverDisplay\bfseries\fontsize{12}{15}\selectfont\raggedright\color{ocInk}}{\color{ocAccent}\thesection}{0.7em}{}
-\titleformat{\subsection}{\normalfont\ocCoverDisplay\bfseries\fontsize{10.5}{14}\selectfont\raggedright\color{ocInk}}{\color{ocAccent}\thesubsection}{0.7em}{}
 \input{../common/figure-packages}
+\input{../common/figure-palette}
 \usepackage{pdfpages}
 \usepackage{adjustbox}
 % The print interior starts with its half-title. The build attaches the approved
 % front to a separate reading PDF; EPUB and paperback wraps have their own covers.
 % Retain the manuscript hook so every main.tex keeps the same front-matter order.
 \newcommand{\makecover}{}
-% Running heads in print: the chapter title on left pages, the section on right pages, in small
-% Inter lettering, cut short with an ellipsis when too long for the text measure.
-\ifprintformat
-  \usepackage{fancyhdr}
-  \usepackage[fit]{truncate}
-  \pagestyle{fancy}\fancyhf{}
-  \renewcommand{\headrulewidth}{0pt}
-  \renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
-  \renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
-  \fancyhead[LE]{\ocCoverDisplay\fontsize{8.5}{11}\selectfont\color{ocInk}\thepage\hfill\truncate{0.85\headwidth}{\leftmark}}
-  \fancyhead[RO]{\ocCoverDisplay\fontsize{8.5}{11}\selectfont\color{ocInk}\truncate{0.85\headwidth}{\rightmark}\hfill\thepage}
-  % The blank page before a chapter has no running head.
-  \makeatletter
-  \renewcommand{\cleardoublepage}{\clearpage\if@twoside\ifodd\c@page\else
-    \hbox{}\thispagestyle{empty}\newpage\fi\fi}
-  \makeatother
-\fi
-\usepackage[colorlinks=true,linkcolor=ocLink,citecolor=ocLink,urlcolor=ocAccent]{hyperref}
+% Labels, headings, running heads, captions, the table of contents, chapter openers and parts.
+\input{../common/interior-style}
+\usepackage[colorlinks=true,linkcolor=ocLink,citecolor=ocLink,urlcolor=ocBlack,linktoc=page]{hyperref}
 \input{../common/pdf-strings}
 % Half-title, series page, title page and copyright page (\maketitle builds all four).
 \input{../common/frontmatter}
-
-\newtheorem{theorem}{Theorem}[chapter]
-\newtheorem{proposition}[theorem]{Proposition}
-\newtheorem{lemma}[theorem]{Lemma}
-\newtheorem{corollary}[theorem]{Corollary}
-\theoremstyle{definition}
-\newtheorem{definition}[theorem]{Definition}
-\newtheorem{example}[theorem]{Example}
-\theoremstyle{remark}
-\newtheorem*{remark}{Remark}
-
-% Exercises and solutions
-\newcounter{exo}[chapter]
-\renewcommand{\theexo}{\thechapter.\arabic{exo}}
-% The counter anchor travels inside the box when it moves to the next page.
-% Hide the entire frame before drawing the one visible rule. A zero-width frame
-% still paints a full saturated rectangle behind the backgrounds; antialiasing
-% can expose its edges as stray top/bottom hairlines at some PDF zoom levels.
-\tcbset{oc framed/.style={enhanced,unbreakable,boxrule=0pt,leftrule=1pt,arc=0pt,
-    frame hidden,borderline west={1pt}{0pt}{tcbcolframe},
-    fonttitle=\ocCoverDisplay\fontsize{9.2}{12}\selectfont\bfseries,
-    coltitle=ocInk,colbacktitle=white,titlerule=0pt},
-  oc exercise/.style={oc framed,code={\stepcounter{exo}},
-  before upper={\addtocounter{exo}{-1}\refstepcounter{exo}}}}
-\newtcolorbox{exercise}[1][]{%
-    oc exercise,colback=ocExercise!6,colframe=ocExercise,left=6pt,right=6pt,
-    title={\textbf{Exercise \theexo}\ifx\relax#1\relax\else\ \textit{(#1)}\fi}}
-\newenvironment{solution}[1]{%
-  \par\ocOpeningSpace\medskip\noindent\textbf{\color{ocReminder}Solution of Exercise~\ref{#1}.}\quad}%
-  {\hfill$\blacksquare$\par\medskip}
-\newtcolorbox{reminder}[1][]{oc framed,colback=ocReminder!4,colframe=ocReminder,
-  title={\textbf{Reminder}\ifx\relax#1\relax\else: #1\fi}}
-\newtcolorbox{beauty}{oc framed,colback=ocBeauty!5,colframe=ocBeauty,
-  title={\textbf{Why this is beautiful}}}
-
-% Pause and think: a question to try before reading on.
-\newtcolorbox{think}{oc framed,colback=ocThink!5,colframe=ocThink,
-  title={\textbf{Pause and think}}}
-% Challenges share the same frame implementation as the other teaching boxes.
-\newtcolorbox{challenge}{oc framed,colback=ocReminder!4,colframe=ocReminder,
-  title={\textbf{Challenges}}}
-% Hints, printed between the exercises and the solutions.
-\newenvironment{hint}[1]{%
-  \par\ocOpeningSpace\smallskip\noindent\textbf{\color{ocThink}Hint for Exercise~\ref{#1}.}\quad}%
-  {\par\smallskip}
+% Theorem-like environments (formal family), teaching boxes, hints, solutions and proofs.
+\input{../common/interior-boxes}
+% Slashed inline fractions in running text (presentation only).
+\input{../common/inline-fractions}
 % Figures: \fig{name} draws figures/name.tex (a tikzpicture); the EPUB uses an SVG of it.
 \newcommand{\fig}[1]{\adjustbox{max width=\linewidth}{\input{figures/#1}}}
 
@@ -148,11 +102,4 @@
 \newcommand{\stirlingii}[2]{\genfrac{\{}{\}}{0pt}{}{#1}{#2}}
 \newcommand{\stirlingi}[2]{\genfrac{[}{]}{0pt}{}{#1}{#2}}
 \setlist{itemsep=2pt}
-% Solutions: \idea explains how to find the approach, \writeup gives the full argument.
-\newcommand{\idea}{\par\nobreak\noindent\textit{How to find it.}\quad}
-\newcommand{\writeup}{\par\smallskip\noindent\textit{Write-up.}\quad}
-\newcommand{\tools}[1]{\par\smallskip\noindent\textit{Tools used.}\quad #1}
-\newcommand{\leads}{\par\smallskip\noindent\textit{Where it leads.}\quad}
-% Discarded in the PDF. The EPUB reader uses the same environment as a name switch.
-\newbox\ocExNameBox
-\newenvironment{exname}{\setbox\ocExNameBox\vbox\bgroup}{\egroup}
+\setlist[itemize]{itemsep=1pt,parsep=0pt,topsep=4pt}

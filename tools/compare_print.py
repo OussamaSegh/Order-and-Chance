@@ -26,7 +26,7 @@ def build(book, size, output):
     work = output / size
     work.mkdir(parents=True, exist_ok=True)
     command = (rf'\def\VOLUMENUM{{{number}}}\def\VOLUMETITLE{{{title}}}'
-               r'\def\FORMAT{print}\def\PRINTINNER{0.75in}')
+               r'\def\FORMAT{print}\def\PRINTINNER{0.9in}')
     if size in {'6x9', '7x10'}:
         # Override geometry at the end of the existing preamble. This preserves
         # print boxes, mirrored margins, chapter openings and the original font.

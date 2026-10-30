@@ -124,7 +124,7 @@ def snapshot(root, cache, data):
         if check_pair(download, interior, report=report) != pages:
             raise ValueError(f'PDF pair page counts disagree for {book}')
         metadata = json.loads((root / 'dist/kdp' / filename(book, 'metadata', root)).read_text())
-        if metadata != specification(pages, metadata.get('inner_margin', '0.75in')):
+        if metadata != specification(pages, metadata.get('inner_margin', '0.9in')):
             raise ValueError(f'PDF and paperback metadata disagree for {book}')
         number = re.match(r'volume([A-Z]?\d+)-', book).group(1)
         check_print_cover(root / 'dist/kdp' / filename(book, 'wrap', root), number,

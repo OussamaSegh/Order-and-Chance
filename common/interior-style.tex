@@ -1,0 +1,90 @@
+% Interior design 5e: labels, headings, running heads, captions, contents, chapter openers
+% and part pages. See docs/design/interior.md. Loaded by common/preamble.tex.
+\makeatletter
+% ---------------------------------------------------------------- small helpers
+% Tracked capitals (tracking in thousandths of an em), the coral diamond, label face.
+\newcommand{\ocCaps}[2][14]{{\addfontfeatures{LetterSpace=#1}\MakeUppercase{#2}}}
+\newcommand{\ocDia}[2][0.032in]{\tikz[baseline=-0.6ex]\fill[#2](0,#1)--(#1,0)--(0,-#1)--(-#1,0)--cycle;}
+% Small labels: Fira Sans Medium 8.2 pt charcoal capitals, 8% tracking; numbers in coral.
+\newcommand{\ocLabelFont}{\ocMed\fontsize{8.2}{10}\selectfont\color{ocBlack}}
+\newcommand{\ocLab}[1]{\mbox{\ocCaps[8]{#1}}}
+\newcommand{\ocNum}[1]{\textcolor{ocCoralDeep}{#1}}
+\newcommand{\ocNote}[1]{{\ocItal\fontsize{10.5}{12}\selectfont\color{ocBlack}#1}}
+% Volume line of the running heads and the opener, from the build's \VOLUMENUM/\VOLUMETITLE.
+\newcommand{\ocVolume}{\ifx\VOLUMETITLE\@empty Order and Chance\else
+  Volume \VOLUMENUM\quad\textperiodcentered\quad\VOLUMETITLE\fi}
+% ---------------------------------------------------------------- headings
+\usepackage{titlesec}
+% Section: label and title in one unbreakable box, so nothing can come between them.
+\newcommand{\ocSecTitle}[1]{\vbox{\hsize\linewidth\noindent{\ocLabelFont\ocLab{Section}\enspace\ocNum{\thesection}}\par
+  \vspace{3pt}\noindent\parbox[t]{\linewidth}{\ocDisplay\linespread{1}\fontsize{18}{21}\selectfont
+  \color{ocBlack}\raggedright #1\par}\par}}
+\titleformat{\section}[block]{\normalfont\raggedright}{}{0pt}{\ocSecTitle}
+% Unnumbered sections set the recto running head too.
+\newcommand{\ocStarSec}[1]{\gdef\ocStarTitle{#1}{\ocDisplay\linespread{1}\fontsize{18}{21}\selectfont\color{ocBlack}#1}}
+\titleformat{name=\section,numberless}[block]{\normalfont\raggedright}{}{0pt}{\ocStarSec}[\markright{\ocStarTitle}]
+\titlespacing*{\section}{0pt}{22pt plus 4pt minus 2pt}{11pt}
+\titleformat{\subsection}{\ocDisplay\linespread{1}\fontsize{14}{17}\selectfont\raggedright\color{ocBlack}}{\ocNum{\thesubsection}}{0.6em}{}
+\titlespacing*{\subsection}{0pt}{16pt plus 3pt minus 2pt}{6pt}
+\titleformat{\subsubsection}[runin]{\normalfont\ocLabelFont}{}{0pt}{\ocLab}
+\titlespacing*{\subsubsection}{0pt}{8pt plus 2pt}{0.8em}
+\titleformat{\paragraph}[runin]{\normalfont\ocLabelFont}{}{0pt}{\ocLab}
+\titlespacing*{\paragraph}{0pt}{8pt plus 2pt}{0.8em}
+% Chapter heading on the recto that faces the charcoal opener: label, title, coral rule.
+% Unnumbered chapters (preface, field guide, About the Cover) use the same title and rule.
+\newcommand{\ocChapterRule}{{\color{ocCoral}\rule{0.9in}{1.2pt}}}
+\newcommand{\ocChapterHead}[1]{\thispagestyle{ocopener}%
+  {\ocLabelFont\ocLab{\chaptertitlename}\enspace\ocNum{\thechapter}}\par\vspace{7pt}%
+  {\ocDisplay\linespread{1}\fontsize{22}{26}\selectfont\color{ocBlack}\raggedright #1\par}\vspace{10pt}%
+  \ocChapterRule\par}
+\newcommand{\ocStarChapterHead}[1]{\thispagestyle{ocopener}%
+  {\ocDisplay\linespread{1}\fontsize{22}{26}\selectfont\color{ocBlack}\raggedright #1\par}\vspace{10pt}%
+  \ocChapterRule\par}
+\titleformat{\chapter}[block]{\normalfont}{}{0pt}{\ocChapterHead}
+\titleformat{name=\chapter,numberless}[block]{\normalfont}{}{0pt}{\ocStarChapterHead}
+\titlespacing*{\chapter}{0pt}{0pt}{22pt}
+% ---------------------------------------------------------------- captions
+\usepackage{caption}
+\DeclareCaptionLabelFormat{oc}{{\ocMed\ocLab{#1}\ \ocNum{#2}}}
+\captionsetup{font={sf,small},labelformat=oc,labelsep=quad,justification=justified,
+  singlelinecheck=false,margin=0pt,skip=8pt}
+% ---------------------------------------------------------------- running heads
+% Verso: folio, diamond, volume. Recto: current section, diamond, folio. Both outside.
+\usepackage{fancyhdr}
+\usepackage[fit]{truncate}
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\chaptermark}[1]{\markboth{#1}{#1}}
+\renewcommand{\sectionmark}[1]{\markright{\thesection\quad #1}}
+\newcommand{\ocHead}{\ocBook\fontsize{8}{10}\selectfont\color{ocBlack}}
+\newcommand{\ocFolio}{{\ocMed\fontsize{8.5}{10}\selectfont\color{ocBlack}\thepage}}
+\newcommand{\ocSep}{\hspace{0.75em}\ocDia[0.026in]{ocCoral}\hspace{0.75em}}
+\fancyhead[LE]{\ocFolio\ocSep{\ocHead\ocCaps[8]{\ocVolume}}}
+\fancyhead[RO]{{\ocHead\truncate{0.8\headwidth}{\ocCaps[8]{\rightmark}}}\ocSep\ocFolio}
+% Opening pages (chapter headings, parts): only the folio, at the foot on the outer side.
+\fancypagestyle{ocopener}{\fancyhf{}\fancyfoot[LE,RO]{\ocBook\fontsize{8.5}{10}\selectfont\color{ocBlack}\thepage}}
+\fancypagestyle{plain}{\fancyhf{}\fancyfoot[LE,RO]{\ocBook\fontsize{8.5}{10}\selectfont\color{ocBlack}\thepage}}
+% The blank page before a chapter or opener has no running head.
+\renewcommand{\cleardoublepage}{\clearpage\if@twoside\ifodd\c@page\else
+  \hbox{}\thispagestyle{empty}\newpage\fi\fi}
+% ---------------------------------------------------------------- contents
+\usepackage{titletoc}
+\titlecontents{part}[0pt]{\addvspace{14pt}\ocLabelFont}{\ocLab{\partname}\enspace\ocNum{\thecontentslabel}\quad}{}
+  {\hfill\ocNum{\contentspage}}[\addvspace{2pt}]
+% A volume may tighten the contents with \setlength{\ocTocChapterSkip}{..}.
+\newlength{\ocTocChapterSkip}\setlength{\ocTocChapterSkip}{7pt}
+\titlecontents{chapter}[2.1em]{\addvspace{\ocTocChapterSkip}\ocDisplay\fontsize{13.5}{16}\selectfont\color{ocBlack}}
+  {\contentslabel[\ocNum{\thecontentslabel}]{2.1em}}{\hspace*{-2.1em}}
+  {\hfill{\ocBook\fontsize{9}{11}\selectfont\ocNum{\contentspage}}}[\addvspace{1pt}]
+\titlecontents{section}[4.6em]{\small}{\contentslabel[{\ocBook\fontsize{8.5}{10}\selectfont\thecontentslabel}]{2.5em}}{}
+  {\titlerule*[0.7pc]{\hbox{\scriptsize.}}{\ocBook\fontsize{8.5}{10}\selectfont\ocNum{\contentspage}}}
+\setcounter{tocdepth}{1}
+% ---------------------------------------------------------------- parts
+% A part page is a charcoal recto (common/chapter-opener.tex); the next chapter's opener is its verso.
+\renewcommand{\part}{\cleardoublepage\thispagestyle{empty}\@ifstar{\oc@part{}}{\oc@dblarg\oc@part@n}}
+\newcommand{\oc@dblarg}[1]{\@ifnextchar[{#1}{\oc@dblarg@{#1}}}
+\def\oc@dblarg@#1#2{#1[{#2}]{#2}}
+\def\oc@part@n[#1]#2{\refstepcounter{part}\addcontentsline{toc}{part}{\protect\numberline{\thepart}#1}\markboth{}{}\oc@part{\thepart}{#2}}
+\newcommand{\oc@part}[2]{\oc@part@page{#1}{#2}}% the charcoal part page, common/chapter-opener.tex
+\makeatother
+\input{../common/chapter-opener}
