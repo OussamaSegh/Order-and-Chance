@@ -11,7 +11,7 @@ Audience: a serious beginner who wants to become strong — curious, willing to 
 - Prefer common words: *use*, *show*, *mean*, *because*, *so* over *employ*, *demonstrate*, *inasmuch as*.
 - Second person is fine when guiding (“Now check the case \(n=2\)”). Avoid “one must”.
 - No hype, no slang, no stacked exclamation marks. Wonder is allowed; cheerleading is not.
-- Humour only if it clarifies; never at the reader’s expense.
+- Humour only if it clarifies; never at the reader’s expense. A light mathematical joke belongs when it teaches the point.
 - First-edition copy: do not call this a revision, reconstruction, or reordering of an older edition. Do not mention companion notebooks in reader-facing text (see `AGENTS.md`).
 
 ## Explain everything, step by step
@@ -29,10 +29,10 @@ If a proof is long, break it into named stages (“Setup”, “Main estimate”
 
 ## Illustrations
 
-- Prefer **more figures** when a picture carries the idea faster than prose: number lines, Venn/counting diagrams, graphs of simple functions, trees for proofs by cases, geometric views of inequalities, schematic random experiments.
+- Prefer **more figures** when a picture carries the idea faster than prose: number lines, Venn/counting diagrams, graphs of simple functions, trees for proofs by cases, geometric views of inequalities, schematic random experiments. Add the figure in the rewrite when it teaches; do not leave the idea to a later polish pass.
 - Every figure needs a caption that states the takeaway, not only “Figure 3”.
 - Reuse the series figure palette and interior design (`docs/design/interior.md`, design 5e). New TikZ/pgfplots should match existing stroke weights and colours.
-- Portraits and historical photos stay credited; do not invent biography.
+- Portraits and historical photos stay credited; do not invent biography. A short historical aside belongs when the fact is checked and it helps the reader see why the idea matters.
 - Do not change approved cover art unless the author asks.
 
 ## Chapter architecture
@@ -40,7 +40,7 @@ If a proof is long, break it into named stages (“Setup”, “Main estimate”
 - Open with a short hook (problem, picture, or question) tied to the series thread: *order* vs *chance*.
 - End with a **bridge**: what this chapter prepared, and the single next question the following chapter answers.
 - Between sections: one or two bridging sentences; no abrupt topic jumps.
-- Keep the volume’s existing part/chapter skeleton unless the author asks to restructure. Rewrite *inside* that skeleton first.
+- Change chapter or section order when the new order serves clarity. Keep the planned curriculum. Reader-facing copy still must not describe the book as a rearrangement of an older edition.
 
 ## Volume-to-volume handoff
 
