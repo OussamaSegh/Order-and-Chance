@@ -5,27 +5,17 @@ Why is $F_{n+1}F_{n-1}-F_n^2$ always $\pm1$? Why is the determinant of $\left(\f
 Matrices answer questions that do not mention matrices.
 \end{center}
 
-A nineteenth-century puzzle, found among the papers of Lewis Carroll, cuts an $8\times8$ chessboard into four pieces and reassembles them into a
-$5\times13$ rectangle (Figure~\ref{fig:chessboard}). The chessboard has $64$ squares, the rectangle $65$. Where does the extra square come from? The
-pieces do not quite fit: along the diagonal of the rectangle runs a long, thin parallelogram of area exactly $1$, too thin to see at the scale of a
-drawing, since it is at most a fifth of a square wide. The numbers $5$, $8$, $13$ are consecutive Fibonacci numbers, and the area of the gap is
-$5\cdot13-8^2=1$, an instance of the identity of the epigraph, which Jean-Dominique Cassini, the astronomer who measured the solar system, published in
-1680, and which Robert Simson rediscovered in 1753. That identity is the determinant of a $2\times2$ matrix in disguise, and the gap is a determinant
-read as an area: the two themes of this chapter.
+Cut an $8\times8$ chessboard into four pieces and put the pieces back as a $5\times13$ rectangle. The square has $64$ cells. The rectangle has $65$. Where is the extra cell?
 
-The chapter answers the epigraph before it builds the general theory. Vector spaces and linear maps come first, and rank--nullity is the one dimension count. Determinants are the signed volume that explains Cassini's $\pm 1$. Reduction, inner products and the spectral theorem are three ways to choose coordinates so that a map looks simple. The adjugate explains invertibility without a guess. Least squares is the geometric payoff.
+The extra cell is a gap. Along the diagonal of the rectangle the pieces leave a long thin parallelogram of area exactly $1$ (Figure~\ref{fig:chessboard}). Its longer side has length $\sqrt{73}$, so the altitude on that side is $1/\sqrt{73}$, a little under an eighth of a cell. A small drawing hides it. The numbers $5$, $8$ and $13$ are consecutive Fibonacci numbers, and
+\[
+5\cdot13-8^2=1.
+\]
+That is one case of the identity in the epigraph. Jean-Dominique Cassini, then director of the Paris Observatory, stated it in 1680. Robert Simson published a proof in 1753. A version of the dissected board was found among the papers of Lewis Carroll. The identity is the determinant of a $2\times2$ matrix, and the gap is that determinant read as an area.
 
-Determinants were discovered twice, on opposite sides of the world and within ten years. In Japan, Seki Takakazu wrote in 1683 a manuscript on the
-elimination of unknowns from systems of equations in which the $3\times3$ determinant appears, with a rule for its signs; in Hanover, Leibniz
-described the same quantity, with a notation for the entries that is essentially our $a_{ij}$, in a letter to l'H\^opital of 1693, which was not
-printed until 1850. Gabriel Cramer gave his rule for solving linear systems in 1750; Cauchy, in a memoir of 1812, gave the general definition with the
-signs of permutations, proved that the determinant of a product is the product of the determinants, and fixed the name. The word \emph{matrix} is
-Sylvester's, from 1850, and the theory of matrices as objects that one adds and multiplies is Cayley's, from a memoir of 1858 in which he also stated,
-and checked for $2\times2$ and $3\times3$, the theorem that a matrix satisfies its own characteristic equation; we prove it in full below, as
-Theorem~\ref{thm:cayleyhamilton}. That a real symmetric matrix has real eigenvalues was proved by Cauchy in 1829, not for matrices, which did not yet
-exist, but for the axes of an ellipsoid; the Hilbert matrix of the epigraph is from a paper of 1894 on approximation by polynomials; and the most
-valuable eigenvector in history, the one that ranks the pages of the web, was computed in 1998 by two students at Stanford. This chapter revisits
-linear algebra with an eye for such disguises: determinants, eigenvalues and diagonalisation, used to answer questions that never mention a matrix.
+Vector spaces are where that picture lives, and linear maps are what move the pieces. Rank and nullity count what a map forgets and what it keeps. The determinant is the signed volume that makes Cassini's $\pm1$ an area. A change of basis then asks when a map is just a stretch along each axis. An inner product chooses those axes to be perpendicular: that is the spectral theorem. The adjugate turns the same determinant into a formula for the inverse. Least squares is that same perpendicular, used on three points that miss a single line.
+
+Determinants were found twice, about ten years apart. In 1683 Seki Takakazu wrote a manuscript on eliminating unknowns; the $3\times3$ determinant is there, with a rule for the signs. In 1693 Leibniz described the same quantity in a letter to l'H\^opital, and his notation for the entries is already close to our $a_{ij}$. The letter was not printed until 1850. Cramer gave his rule for linear systems in 1750. Cauchy, in a memoir of 1812, defined the general determinant by the signs of permutations, proved that the determinant of a product is the product of the determinants, and fixed the name. Sylvester supplied the word \emph{matrix} in 1850. Cayley, in a memoir of 1858, treated matrices as things one adds and multiplies. In Section~21 he multiplies out the proof that a $2\times2$ matrix satisfies its own characteristic equation. In Section~23 he writes that he has verified the same statement for a matrix of order $3$, and that he will not write a formal proof for every size. The proof for every $n$ is Frobenius's, from 1878, and it is Theorem~\ref{thm:cayleyhamilton} below. Hamilton had met a quaternion form of the same idea in 1853. Cauchy's theorem that a real symmetric form has real eigenvalues is from 1829, and it was a theorem about the axes of an ellipsoid: the matrix language was not there yet. The Hilbert matrix of the epigraph is from an 1894 paper on approximation by polynomials. An eigenvector can also rank pages on the web. Brin and Page computed one in 1998, as students at Stanford. Bryan and Leise later titled an article ``the twenty-five-billion-dollar eigenvector''. That title is theirs. A ranking can be a direction fixed by a matrix.
 
 \begin{figure}[ht]
 \centering
@@ -34,26 +24,34 @@ linear algebra with an eye for such disguises: determinants, eigenvalues and dia
 \label{fig:chessboard}
 \end{figure}
 
-\portraits{cayley}{Arthur Cayley (1821--1895). Photograph by Herbert Rose Barraud, before 1883. Public domain, via Wikimedia Commons.}{hamilton}{William Rowan Hamilton (1805--1865). Portrait, artist unknown. Public domain, via Wikimedia Commons.}
-
 \section{Vector spaces, from scratch}
+
+An arrow in the plane can be slid, stretched, and added to another arrow by the parallelogram rule. The same two operations, addition and scaling, make sense for triples of numbers, for polynomials, and for sequences. A vector space is the list of rules those operations obey. We write them once, and then every later argument may quote them.
 
 \begin{definitionx}[vector space]
 Let $\mathbb K$ be $\R$ or $\C$. A \emph{vector space} over $\mathbb K$ is a set $E$ with vector addition and scalar multiplication. Addition is associative and commutative, there is a zero vector $0$, and every vector has an additive inverse. For vectors $v,w$ and scalars $a,b$, the scalar rules are
 \[
 a(v+w)=av+aw,\quad (a+b)v=av+bv,\quad (ab)v=a(bv),\quad 1v=v.
 \]
-These rules imply $0v=0$ and $a0=0$ by adding the appropriate inverse on both sides of $0v=(0+0)v$ and $a0=a(0+0)$.
+These rules imply $0v=0$ and $a0=0$: from $0v=(0+0)v=0v+0v$ subtract $0v$, and from $a0=a(0+0)=a0+a0$ subtract $a0$.
 \end{definitionx}
 
-In $\mathbb K^n$ both operations act coordinate by coordinate. Polynomials, functions on a fixed set, and sequences form vector spaces with pointwise operations. A \emph{subspace} is a nonempty subset closed under addition and scalar multiplication; it inherits the axioms. For example $\{(x,y,z)\in\R^3:x+y+z=0\}$ is a subspace, because the equation is preserved under both operations. The set given by $x+y+z=1$ is not: it does not contain $0$.
+In $\mathbb K^n$ both operations act one coordinate at a time. Polynomials, functions on a fixed set, and sequences are vector spaces with the same pointwise operations. A \emph{subspace} is a nonempty subset closed under addition and scalar multiplication. It inherits the rules. The plane $x+y+z=0$ inside $\R^3$ is a subspace, because both operations preserve the equation. The plane $x+y+z=1$ is not: it does not contain $0$.
 
-A \emph{linear combination} of $v_1,\dots,v_p$ is $\sum_i a_iv_i$. Their \emph{span} is the set of all such combinations. They are \emph{linearly independent} when $\sum_i a_iv_i=0$ forces every $a_i=0$. They \emph{span} $E$ when every vector of $E$ is a combination. A \emph{basis} has both properties, so every vector has a unique expression in it; the coefficients are its \emph{coordinates}. A space is \emph{finite-dimensional} when some finite family spans it. The empty family is a basis of $\{0\}$, with dimension $0$.
+A \emph{linear combination} of $v_1,\dots,v_p$ is $\sum_i a_iv_i$. Their \emph{span} is the set of all such combinations. They are \emph{linearly independent} when $\sum_i a_iv_i=0$ forces every $a_i=0$. They \emph{span} $E$ when every vector of $E$ is a combination. A \emph{basis} has both properties, so every vector has exactly one expression in it. The coefficients are its \emph{coordinates}. A space is \emph{finite-dimensional} when some finite family spans it. The empty family is a basis of $\{0\}$, and that space has dimension $0$.
 
-For the subspace $x+y+z=0$, the vectors $(1,0,-1)$ and $(0,1,-1)$ are a basis: every vector is $x(1,0,-1)+y(0,1,-1)$, and its first two coordinates force uniqueness. For polynomials of degree at most $d$, the monomials $1,X,\dots,X^d$ are a basis by equality of coefficients.
+On the plane $x+y+z=0$, the vectors $(1,0,-1)$ and $(0,1,-1)$ are a basis. Every vector there is $x(1,0,-1)+y(0,1,-1)$, and the first two coordinates force the coefficients. For polynomials of degree at most $d$, the monomials $1,X,\dots,X^d$ are a basis, because two polynomials are equal only when their coefficients match.
 
-The word ``dimension'' is only meaningful because of the following theorem, which says that all bases of a finite-dimensional space have the same size.
-It is the first non-trivial theorem of linear algebra, and everything else leans on it.
+Figure~\ref{fig:bases} is the same fact in the plane. The arrow $v=(3,1)$ does not change. In the standard basis its coordinates are $3$ and $1$. In the basis $f_1=(1,1)$, $f_2=(1,0)$ they are $1$ and $2$, since $f_1+2f_2=(3,1)$. A basis is a choice of rulers along the arrow.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-bases}
+\caption{One vector, two bases. The charcoal arrow is $v=(3,1)$ in both panels. Left: $v=3e_1+e_2$ on the rust and ochre axes. Right: the same arrow is $f_1+2f_2$, with $f_1=(1,1)$ and $f_2=(1,0)$. The dashed sides are that sum. Coordinates belong to the basis; $v$ does not.}
+\label{fig:bases}
+\end{figure}
+
+The word ``dimension'' is safe only because of the next theorem. It says that every basis of a finite-dimensional space has the same number of vectors. Everything later leans on that count.
 
 \begin{theoremx}[exchange lemma, and dimension]
 Let $E$ be spanned by $v_1,\dots,v_n$.
@@ -64,21 +62,30 @@ Let $E$ be spanned by $v_1,\dots,v_n$.
 \end{enumerate}
 \end{theoremx}
 \begin{proof}
-(a) We show that the $u_i$ can replace the $v_j$ one at a time. Write $u_1=\sum_j\lambda_jv_j$; some $\lambda_j\ne0$ (since $u_1\ne0$), say $\lambda_1$ after renumbering, and then $v_1$ is a combination of $u_1,v_2,\dots,v_n$, so this family spans $E$. Suppose that after $k<p$ steps $u_1,\dots,u_k,v_{k+1},\dots,v_n$ spans $E$ (which requires $k\le n$). Write $u_{k+1}=\sum_{i\le k}\mu_iu_i+\sum_{j>k}\lambda_jv_j$. If all $\lambda_j$ were $0$, the $u_i$ would be dependent; so some $\lambda_j\ne0$, which forces $k<n$, and $v_j$ can be exchanged for $u_{k+1}$. After $p$ steps we have exchanged $p$ of the $v_j$, so $p\le n$.
+(a) The independent vectors $u_i$ can replace the spanning vectors $v_j$ one at a time. Write $u_1=\sum_j\lambda_jv_j$. Some $\lambda_j\ne0$, since $u_1\ne0$. After renumbering, $\lambda_1\ne0$, and then $v_1$ is a combination of $u_1,v_2,\dots,v_n$, so this new family still spans $E$. Suppose that after $k<p$ steps the family $u_1,\dots,u_k,v_{k+1},\dots,v_n$ spans $E$. This already forces $k\le n$. Write
+\[
+u_{k+1}=\sum_{i\le k}\mu_iu_i+\sum_{j>k}\lambda_jv_j.
+\]
+If every $\lambda_j$ were $0$, the vectors $u_i$ would be dependent. So some $\lambda_j\ne0$, which forces $k<n$, and that $v_j$ can be exchanged for $u_{k+1}$. After $p$ steps we have exchanged $p$ of the $v_j$, so $p\le n$.
 
-(b) Among the subfamilies of $v_1,\dots,v_n$ that span $E$, take one of minimal size; it is linearly independent (a dependence relation would let us drop one vector and still span), hence a basis. If $u_1,\dots,u_p$ are independent, add to them the $v_j$ that are not combinations of the vectors already chosen, one by one; the family stays independent and ends up spanning $E$. Finally, if $B$ and $B'$ are bases with $|B|=b$, $|B'|=b'$, then (a) applied both ways gives $b\le b'$ and $b'\le b$.
+(b) Among the subfamilies of $v_1,\dots,v_n$ that span $E$, take one of smallest size. It is linearly independent: a dependence would let us drop one vector and still span. So it is a basis. If $u_1,\dots,u_p$ are independent, add, one by one, those $v_j$ that are not combinations of the vectors already chosen. The family stays independent and ends by spanning $E$. Finally, if $B$ and $B'$ are bases with $|B|=b$ and $|B'|=b'$, then (a) applied both ways gives $b\le b'$ and $b'\le b$.
 
-(c) An independent family of $\dim E$ vectors extends to a basis, which has $\dim E$ elements, so nothing was added; a spanning family of $\dim E$ vectors contains a basis, again with nothing removed. For a subspace $F$, independent families in $F$ have at most $\dim E$ elements by (a), so a maximal one exists and is a basis of $F$ (a vector of $F$ outside its span could be added); if $\dim F=\dim E$ that basis is a basis of $E$ by the first claim, so $F=E$.
+(c) An independent family of $\dim E$ vectors extends to a basis, and a basis has $\dim E$ elements, so nothing was added. A spanning family of $\dim E$ vectors contains a basis, so nothing was removed. For a subspace $F$, independent families in $F$ have at most $\dim E$ elements by (a). A maximal one exists, and it is a basis of $F$: a vector of $F$ outside its span could be added. If $\dim F=\dim E$, that basis is a basis of $E$ by the first claim of (c), so $F=E$.
 \end{proof}
 
 \subsection*{Linear maps, kernel and image}
-A map $u:E\to F$ between vector spaces over the same field is \emph{linear} if $u(av+bw)=au(v)+bu(w)$ for all vectors and scalars. This implies $u(0)=0$. Define
+
+A map $u:E\to F$ between vector spaces over the same field is \emph{linear} when
+\[
+u(av+bw)=au(v)+bu(w)
+\]
+for all vectors and scalars. In particular $u(0)=0$, since $u(0)=u(0+0)=u(0)+u(0)$. Define
 \[
 \ker u=\{v\in E:u(v)=0\},\qquad \operatorname{Im}u=\{u(v):v\in E\}.
 \]
-Both are subspaces: the image of a combination is the combination of the images, and the same observation preserves an image equal to zero. Moreover $u$ is injective exactly when $\ker u=\{0\}$: $u(v)=u(w)$ is equivalent to $u(v-w)=0$. If $E$ is finite-dimensional, images of a finite spanning family span $\operatorname{Im}u$; its dimension is the \emph{rank} of $u$.
+Both are subspaces. The image of a combination is the combination of the images, and the same sentence with the image equal to $0$ shows that the kernel is a subspace. The map $u$ is injective exactly when $\ker u=\{0\}$: the equality $u(v)=u(w)$ is the equality $u(v-w)=0$. If $E$ is finite-dimensional, the images of a finite spanning family span $\operatorname{Im}u$. The dimension of the image is the \emph{rank} of $u$, written $\operatorname{rk}u$.
 
-For example differentiation $D:\R_2[X]\to\R_1[X]$ is linear, has kernel the constant polynomials, and is onto because $D(aX+bX^2/2)=a+bX$. Its kernel has dimension $1$ and its image dimension $2$, accounting for the domain dimension $3$. Figure~\ref{fig:rank} is the same count without coordinates: the kernel is what is collapsed, and the image is what remains.
+Differentiation on polynomials is the example to keep. Let $\R_d[X]$ be the polynomials of degree at most $d$, and let $D:\R_2[X]\to\R_1[X]$ be $D(P)=P'$. Then $D$ is linear, its kernel is the constant polynomials, and it is onto: $D\bigl(aX+\frac12 bX^2\bigr)=a+bX$. The kernel has dimension $1$ and the image has dimension $2$. Those add to $3$, the dimension of the domain. Figure~\ref{fig:rank} draws the count without coordinates. The kernel is what is collapsed. The image is what remains.
 
 \begin{figure}[ht]
 \centering
@@ -91,31 +98,68 @@ For example differentiation $D:\R_2[X]\to\R_1[X]$ is linear, has kernel the cons
 For $u:E\to F$ linear with $\dim E<\infty$, $\dim\ker u+\operatorname{rk}u=\dim E$.
 \end{proposition}
 \begin{proof}
-Take a basis $(k_1,\dots,k_p)$ of $\ker u$ and extend it to a basis $(k_1,\dots,k_p,e_1,\dots,e_r)$ of $E$ (possible by the exchange theorem). The vectors $u(e_i)$ span $\operatorname{Im}u$ (the $u(k_i)$ vanish), and they are independent: $\sum\lambda_iu(e_i)=0$ puts $\sum\lambda_ie_i$ in $\ker u$, so it is a combination of the $k_i$, and all coefficients vanish. So $\operatorname{rk}u=r=\dim E-p$.
+Take a basis $(k_1,\dots,k_p)$ of $\ker u$ and extend it to a basis $(k_1,\dots,k_p,e_1,\dots,e_r)$ of $E$, which the exchange theorem allows. The vectors $u(e_i)$ span $\operatorname{Im}u$, because the $u(k_i)$ are zero. They are independent: if $\sum\lambda_iu(e_i)=0$, then $\sum\lambda_ie_i$ lies in $\ker u$, so it is a combination of the $k_i$, and every coefficient is zero by independence of the basis. Thus $\operatorname{rk}u=r=\dim E-p$.
 \end{proof}
 
-A linear map between spaces of the same finite dimension is injective exactly when it is surjective, by rank--nullity. A bijective linear map has a linear inverse: apply $u$ to both proposed sides of $u^{-1}(ay+bz)=au^{-1}(y)+bu^{-1}(z)$ and use injectivity.
+If $E$ and $F$ have the same finite dimension, rank--nullity says that $u$ is injective exactly when it is surjective. A bijective linear map has a linear inverse. To see the inverse is linear, apply $u$ to both sides of the proposed rule $u^{-1}(ay+bz)=au^{-1}(y)+bu^{-1}(z)$. Both sides have the same image, and $u$ is injective, so the two sides agree.
 
 \subsection*{Matrices record a linear map}
-Given bases $(e_j)$ of $E$ and $(f_i)$ of $F$, put the coordinates of $u(e_j)$ in column $j$ of a matrix $A=(a_{ij})$. Linearity then gives $[u(v)]=A[v]$, since $u(\sum_jx_je_j)=\sum_{i,j}a_{ij}x_jf_i$. An $m\times n$ matrix therefore represents a map $\mathbb K^n\to\mathbb K^m$; we write $M_{m,n}(\mathbb K)$ for these matrices and $M_n(\mathbb K)$ when $m=n$.
 
-For composable maps, applying them to a coordinate vector gives $A(Bx)=(AB)x$, where $(AB)_{ik}=\sum_ja_{ij}b_{jk}$. Associativity follows from composition. Commutativity can fail: with $A=\left(\begin{smallmatrix}0&1\\0&0\end{smallmatrix}\right)$ and $B=\left(\begin{smallmatrix}0&0\\1&0\end{smallmatrix}\right)$, the products are $\operatorname{diag}(1,0)$ and $\operatorname{diag}(0,1)$. The identity matrix represents the identity map, and a square matrix is \emph{invertible} exactly when its map is bijective; its inverse represents the inverse map. Its columns are independent exactly when its kernel is zero, so rank--nullity makes this another criterion for invertibility.
+Choose a basis $(e_j)$ of $E$ and a basis $(f_i)$ of $F$. Put the coordinates of $u(e_j)$ into column $j$ of a matrix $A=(a_{ij})$. Linearity then says $[u(v)]=A[v]$: if $v=\sum_jx_je_j$, then
+\[
+u(v)=\sum_{i,j}a_{ij}x_jf_i.
+\]
+An $m\times n$ matrix is therefore a map $\mathbb K^n\to\mathbb K^m$. We write $M_{m,n}(\mathbb K)$ for these matrices, and $M_n(\mathbb K)$ when the matrix is square.
 
-If $P$ has the coordinates of a new basis $(e'_j)$ as columns in the old basis, then $[v]_{\mathrm{old}}=P[v]_{\mathrm{new}}$. The coordinate maps are bijections, so $P$ is invertible. For an endomorphism $u:E\to E$ with old matrix $A$, the relation $AP[v]_{\mathrm{new}}=P[u(v)]_{\mathrm{new}}$ proves that its new matrix is $P^{-1}AP$. Such matrices are called \emph{similar}.
+If two maps can be composed, their matrices multiply. On a coordinate vector, $A(Bx)=(AB)x$, where
+\[
+(AB)_{ik}=\sum_ja_{ij}b_{jk}.
+\]
+Associativity of the product is associativity of composition. Commutativity can fail. Take
+\[
+A=\begin{pmatrix}0&1\\0&0\end{pmatrix},\qquad B=\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+\]
+Then $AB=\operatorname{diag}(1,0)$ and $BA=\operatorname{diag}(0,1)$. Turn a book onto its face and then onto its side, or do the two turns in the other order: the corners do not finish in the same place. These two matrices are that fact.
 
-For example let $u(P)(X)=P(2X)$ on $\R_1[X]$. Its matrix in $(1,X)$ is $A=\operatorname{diag}(1,2)$. In the basis $(1,1+X)$, use
+The identity matrix is the identity map. A square matrix is \emph{invertible} exactly when its map is bijective, and the inverse matrix is the inverse map. Its columns are independent exactly when its kernel is $\{0\}$, so rank--nullity is another test for invertibility.
+
+A change of basis is also a matrix. If the columns of $P$ are the coordinates of a new basis $(e'_j)$ in the old basis, then $[v]_{\mathrm{old}}=P[v]_{\mathrm{new}}$. The coordinate maps are bijections, so $P$ is invertible. For a linear map $u:E\to E$ with old matrix $A$, the relation $AP[v]_{\mathrm{new}}=P[u(v)]_{\mathrm{new}}$ says that the new matrix is $P^{-1}AP$. Such matrices are called \emph{similar}. They describe one map in two languages.
+
+Here is a small check. Let $u(P)(X)=P(2X)$ on $\R_1[X]$. In the basis $(1,X)$ the matrix is $A=\operatorname{diag}(1,2)$. In the basis $(1,1+X)$,
 \[
 P=\begin{pmatrix}1&1\\0&1\end{pmatrix},\qquad P^{-1}AP=\begin{pmatrix}1&-1\\0&2\end{pmatrix}.
 \]
-Indeed $u(1)=1$ and $u(1+X)=1+2X=-1+2(1+X)$: the columns can be checked without matrix multiplication. Similarity changes the description, not the map.
+You can see the columns without multiplying: $u(1)=1$, and $u(1+X)=1+2X=-1+2(1+X)$. Similarity changes the description and leaves the map fixed.
 
 \begin{examplex}[the $2\times2$ case, worked]
-In the plane, the matrix $R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\ \sin\theta&\cos\theta\end{pmatrix}$ sends $e_1=(1,0)$ to $(\cos\theta,\sin\theta)$ and $e_2$ to $(-\sin\theta,\cos\theta)$: it is the rotation by $\theta$, and $R_\theta R_\varphi=R_{\theta+\varphi}$ by the addition formulas (Exercise~\ref{ex:twobytwo} makes this a statement about complex numbers). The matrix $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ fixes $e_1$ and sends $e_2$ to $e_1+e_2$: a \emph{shear}, which slides each horizontal line along itself by its height; it preserves areas, as Figure~\ref{fig:parallelogram} shows, and it is the key to the area formula below. The matrix $\begin{pmatrix}a&b\\c&d\end{pmatrix}$ is invertible iff $ad-bc\ne0$, with inverse $\frac1{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$ (multiply and see); its kernel is $\{0\}$ iff its columns are not proportional iff $ad-bc\ne0$: the determinant, before it is defined, already decides invertibility.
+In the plane, the matrix $R_\theta=\begin{pmatrix}\cos\theta&-\sin\theta\\ \sin\theta&\cos\theta\end{pmatrix}$ sends $e_1=(1,0)$ to $(\cos\theta,\sin\theta)$ and $e_2$ to $(-\sin\theta,\cos\theta)$. It is rotation by $\theta$, and $R_\theta R_\varphi=R_{\theta+\varphi}$ by the addition formulas. Exercise~\ref{ex:twobytwo} reads the same identity as multiplication of complex numbers. The matrix $\begin{pmatrix}1&1\\0&1\end{pmatrix}$ fixes $e_1$ and sends $e_2$ to $e_1+e_2$. It is a \emph{shear}: each horizontal line slides along itself by its own height. The area does not change. Figure~\ref{fig:parallelogram} is that slide, and Figure~\ref{fig:orientation} is the sign. The matrix $\begin{pmatrix}a&b\\c&d\end{pmatrix}$ is invertible if and only if $ad-bc\ne0$, with inverse
+\[
+\frac1{ad-bc}\begin{pmatrix}d&-b\\-c&a\end{pmatrix}.
+\]
+Multiply the two matrices and see. The kernel is $\{0\}$ if and only if the columns are not proportional, which is the same condition $ad-bc\ne0$. Before the determinant has a name, it already decides invertibility, and it already measures the parallelogram.
 \end{examplex}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-orientation}
+\caption{Signed area in the plane. Left: the rust edge $v$ then the ochre edge $w$, taken counterclockwise, give a positive determinant. Right: the same parallelogram with the edges swapped. The arc now runs clockwise, and the determinant changes sign. The absolute value is the area either way.}
+\label{fig:orientation}
+\end{figure}
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-parallelogram}
+\caption{Left: the parallelogram spanned by the columns $v_1=(a,c)$ and $v_2=(b,d)$ of a matrix; its area is $|ad-bc|$. Middle: a shear, adding a multiple of $v_1$ to $v_2$, slides the top side along itself and changes neither the area nor the determinant (Theorem~\ref{thm:det}(d)). Right: after shearing $v_2$ into $w_2\perp v_1$, the parallelogram is a rectangle of area $\|v_1\|\cdot\|w_2\|$, and $\|w_2\|$ is the distance from $v_2$ to the line $\R v_1$.}
+\label{fig:parallelogram}
+\end{figure}
+
+\portrait{sylvester}{James Joseph Sylvester (1814--1897). Photograph, nineteenth century. Public domain, via Wikimedia Commons.}
 
 \section{Determinants}
 
-This section rebuilds the determinant from scratch, in a page. Let $\mathfrak S_n$ be the group of permutations of $\{1,\dots,n\}$.
+The number $ad-bc$ has two jobs in the plane: it vanishes exactly on the singular matrices, and its absolute value is the area of the column parallelogram. The same number exists for every size. It is the unique function of the columns that is linear in each column, vanishes when two columns agree, and equals $1$ on the identity.
+
+Let $\mathfrak S_n$ be the group of permutations of $\{1,\dots,n\}$.
 
 \begin{lemma}[sign of a permutation]\label{lem:sign}
 $\varepsilon(\sigma)=\prod_{i<j}\frac{\sigma(j)-\sigma(i)}{j-i}$ is $\pm1$ and satisfies $\varepsilon(\sigma\tau)=\varepsilon(\sigma)\varepsilon(\tau)$. Every transposition has sign $-1$, and every permutation is a product of transpositions.
@@ -125,10 +169,10 @@ The quotient $\frac{\sigma(j)-\sigma(i)}{j-i}$ does not change when $i$ and $j$ 
 \[
 \begin{aligned}\varepsilon(\sigma\tau)&=\prod_{\text{pairs}}\frac{\sigma(\tau(j))-\sigma(\tau(i))}{\tau(j)-\tau(i)}\\&\quad\cdot\prod_{\text{pairs}}\frac{\tau(j)-\tau(i)}{j-i}=\varepsilon(\sigma)\varepsilon(\tau),\end{aligned}
 \]
-the first product being $\varepsilon(\sigma)$ written over the pairs $\{\tau(i),\tau(j)\}$. For the transposition $(1\,2)$, only the pair $\{1,2\}$ gives a negative factor, so $\varepsilon=-1$; any transposition $(a\,b)$ equals $\pi(1\,2)\pi^{-1}$ for some $\pi$, so it has sign $\varepsilon(\pi)(-1)\varepsilon(\pi)^{-1}=-1$. Finally, by induction on $n$: if $\sigma(n)=k\ne n$, then $(k\,n)\sigma$ fixes $n$ and is a product of transpositions of $\{1,\dots,n-1\}$.
+the first product being $\varepsilon(\sigma)$ written over the pairs $\{\tau(i),\tau(j)\}$. For the transposition $(1\,2)$, only the pair $\{1,2\}$ gives a negative factor, so $\varepsilon=-1$. Any transposition $(a\,b)$ equals $\pi(1\,2)\pi^{-1}$ for some $\pi$, so it has sign $\varepsilon(\pi)(-1)\varepsilon(\pi)^{-1}=-1$. Finally, by induction on $n$: if $\sigma(n)=k\ne n$, then $(k\,n)\sigma$ fixes $n$ and is a product of transpositions of $\{1,\dots,n-1\}$.
 \end{proof}
 
-Concretely, $\varepsilon(\sigma)=(-1)^{N}$ where $N$ is the number of \emph{inversions}, the pairs $i<j$ with $\sigma(i)>\sigma(j)$: each inversion contributes one negative factor. The permutation $(3,1,2)$ of $\{1,2,3\}$ (meaning $1\mapsto3$, $2\mapsto1$, $3\mapsto2$) has two inversions, so it is even; it is the $3$-cycle, a product of two transpositions.
+Concretely, $\varepsilon(\sigma)=(-1)^N$, where $N$ is the number of \emph{inversions}: pairs $i<j$ with $\sigma(i)>\sigma(j)$. Each inversion contributes one negative factor. The permutation $(3,1,2)$ of $\{1,2,3\}$, meaning $1\mapsto3$, $2\mapsto1$, $3\mapsto2$, has two inversions, so it is even. It is a $3$-cycle, a product of two transpositions. Swapping two columns of a matrix is a transposition. The sign is the reason that swap changes the determinant.
 
 \begin{theorem}[determinant]\label{thm:det}
 \begin{enumerate}[label=(\alph*)]
@@ -139,18 +183,38 @@ Concretely, $\varepsilon(\sigma)=(-1)^{N}$ where $N$ is the number of \emph{inve
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) Let $D$ be multilinear and alternating. Expanding $D(x+y,x+y)=0$ in two columns shows that $D$ changes sign when two columns are swapped. Write column $j$ of $A$ as $\sum_ia_{ij}e_i$ and expand by multilinearity: $D(A)=\sum_{f}\prod_ja_{f(j),j}\,D(e_{f(1)},\dots,e_{f(n)})$ over all maps $f:\{1,\dots,n\}\to\{1,\dots,n\}$. Terms with $f$ non-injective vanish (two equal columns); for $f=\sigma$ a permutation, writing $\sigma$ as a product of $t$ transpositions and undoing them one at a time gives $D(e_{\sigma(1)},\dots,e_{\sigma(n)})=(-1)^tD(I_n)=\varepsilon(\sigma)D(I_n)$. This proves uniqueness and the formula $D(A)=D(I_n)\det A$.
-Conversely, the formula is multilinear (each term contains exactly one entry of each column). If columns $k\ne l$ are equal, let $\tau=(k\,l)$; the map $\sigma\mapsto\sigma\tau$ pairs the permutations, and $\prod_ja_{\sigma\tau(j),j}=\prod_ja_{\sigma(j),j}$ (the columns $k,l$ are equal) while $\varepsilon(\sigma\tau)=-\varepsilon(\sigma)$: the terms cancel in pairs. And $\det I_n=1$ (only $\sigma=\mathrm{id}$ contributes).
+(a) Let $D$ be multilinear and alternating. Expanding $D(x+y,x+y)=0$ in two columns shows that $D$ changes sign when two columns are swapped. Write column $j$ of $A$ as $\sum_ia_{ij}e_i$ and expand by multilinearity:
+\[
+D(A)=\sum_{f}\prod_ja_{f(j),j}\,D(e_{f(1)},\dots,e_{f(n)}),
+\]
+the sum running over all maps $f:\{1,\dots,n\}\to\{1,\dots,n\}$. Terms with $f$ not injective vanish, because two columns agree. For $f=\sigma$ a permutation, write $\sigma$ as a product of $t$ transpositions and undo them one at a time: $D(e_{\sigma(1)},\dots,e_{\sigma(n)})=(-1)^tD(I_n)=\varepsilon(\sigma)D(I_n)$. This proves uniqueness, and the formula $D(A)=D(I_n)\det A$.
 
-(b) For fixed $A$, $X\mapsto\det(AX)$ is multilinear and alternating in the columns of $X$ (column $j$ of $AX$ is $A$ times column $j$ of $X$), so by (a) it equals $\det(A)\det X$. For the transpose, substitute $\sigma\to\sigma^{-1}$ in the formula, using $\varepsilon(\sigma^{-1})=\varepsilon(\sigma)$ and $\prod_ja_{\sigma(j),j}=\prod_ia_{i,\sigma^{-1}(i)}$.
+Conversely, the formula is multilinear: each term contains exactly one entry from each column. If columns $k\ne l$ are equal, let $\tau=(k\,l)$. The map $\sigma\mapsto\sigma\tau$ pairs the permutations. The products $\prod_ja_{\sigma\tau(j),j}$ and $\prod_ja_{\sigma(j),j}$ agree, because columns $k$ and $l$ agree, while $\varepsilon(\sigma\tau)=-\varepsilon(\sigma)$. The terms cancel in pairs. And $\det I_n=1$, because only $\sigma=\mathrm{id}$ contributes.
 
-(c) If $AA^{-1}=I_n$ then $\det A\det A^{-1}=1$. If $A$ is not invertible, its columns are dependent, say $C_k=\sum_{j\ne k}\lambda_jC_j$; by linearity in column $k$, $\det A$ is a sum of determinants with two equal columns, so $0$.
+(b) For fixed $A$, the map $X\mapsto\det(AX)$ is multilinear and alternating in the columns of $X$, since column $j$ of $AX$ is $A$ times column $j$ of $X$. By (a) it equals $\det(A)\det X$. For the transpose, substitute $\sigma\mapsto\sigma^{-1}$ in the formula. Use $\varepsilon(\sigma^{-1})=\varepsilon(\sigma)$ and $\prod_ja_{\sigma(j),j}=\prod_ia_{i,\sigma^{-1}(i)}$.
 
-(d) The first claim is linearity in that column plus alternation. For an upper triangular matrix, a non-zero term of the formula needs $\sigma(j)\le j$ for all $j$, which forces $\sigma=\mathrm{id}$ (by induction from $j=1$). Lower triangular: transpose.
+(c) If $AA^{-1}=I_n$, then $\det A\det A^{-1}=1$. If $A$ is not invertible, its columns are dependent: $C_k=\sum_{j\ne k}\lambda_jC_j$ for some $k$. By linearity in column $k$, $\det A$ is a sum of determinants with two equal columns, hence $0$.
+
+(d) The first claim is linearity in that column, together with alternation. For an upper triangular matrix, a nonzero term of the formula needs $\sigma(j)\le j$ for every $j$, which forces $\sigma=\mathrm{id}$ by induction from $j=1$. A lower triangular matrix is the transpose of an upper one.
 \end{proof}
 
-The formula has $n!$ terms, which makes it useless for computing beyond $n=3$; what one uses instead is (d), to reduce a matrix to triangular form by
-row operations in about $n^3$ operations, or the following expansion, which reduces an $n\times n$ determinant to $n$ determinants of size $n-1$.
+The sum has $n!$ terms. For $n=10$ that is $3{,}628{,}800$ terms, which is why nobody expands a large determinant that way. What one uses is (d): row operations bring the matrix to triangular form in about $n^3$ arithmetic operations. Laplace expansion, next, reduces one $n\times n$ determinant to $n$ determinants of size $n-1$. It is the right tool when a row is almost full of zeros. It is the wrong tool when nothing is zero.
+
+The chessboard is now a one-line case of (b). Let $F_0=0$, $F_1=1$, and $F_n=F_{n-1}+F_{n-2}$ for $n\ge2$. Set $M=\begin{pmatrix}1&1\\1&0\end{pmatrix}$, so $\det M=-1$.
+
+\begin{examplex}[Cassini, from a determinant]
+For every $n\ge1$,
+\[
+M^n=\begin{pmatrix}F_{n+1}&F_n\\F_n&F_{n-1}\end{pmatrix}.
+\]
+The case $n=1$ is $M$ itself, since $F_2=1$ and $F_0=0$. If the formula holds for $n$, then
+\[
+M^{n+1}=M^nM=\begin{pmatrix}F_{n+1}+F_n&F_{n+1}\\F_n+F_{n-1}&F_n\end{pmatrix},
+\]
+which is the same shape at $n+1$. Theorem~\ref{thm:det}(b) gives $\det(M^n)=(\det M)^n=(-1)^n$. The left side is $F_{n+1}F_{n-1}-F_n^2$. For $n=6$, this is $13\cdot5-8^2=1$, the area of the gap in Figure~\ref{fig:chessboard}.
+\end{examplex}
+
+Exercise~\ref{ex:fibmat} asks for this identity again, and then for Binet's formula. Binet needs the eigenvalues of $M$, which are the next tool. The area is already settled.
 
 \begin{propositionx}[Laplace expansion]
 Let $A_{ij}$ be the $(n-1)\times(n-1)$ matrix obtained from $A$ by deleting row $i$ and column $j$, and $c_{ij}=(-1)^{i+j}\det A_{ij}$ the \emph{cofactor}. Then for every row $i$ and every column $j$,
@@ -159,7 +223,7 @@ Let $A_{ij}$ be the $(n-1)\times(n-1)$ matrix obtained from $A$ by deleting row 
 \]
 \end{propositionx}
 \begin{proof}
-Expansion along column $j$: by linearity in that column, $\det A=\sum_ka_{kj}\det A^{(k)}$, where $A^{(k)}$ is $A$ with column $j$ replaced by $e_k$. Move column $j$ to the first position by $j-1$ swaps of adjacent columns, then row $k$ to the first position by $k-1$ swaps of adjacent rows: the sign changes $(-1)^{j-1+k-1}=(-1)^{k+j}$ times, and the matrix now has first column $e_1$ and, below and to the right of the corner, the matrix $A_{kj}$. In the formula of Theorem~\ref{thm:det}(a), the only non-zero terms have $\sigma(1)=1$, and they form the determinant of $A_{kj}$. So $\det A^{(k)}=(-1)^{k+j}\det A_{kj}$. Rows: transpose.
+Expand along column $j$. By linearity in that column, $\det A=\sum_ka_{kj}\det A^{(k)}$, where $A^{(k)}$ is $A$ with column $j$ replaced by $e_k$. Move column $j$ to the first position by $j-1$ swaps of adjacent columns, then move row $k$ to the first position by $k-1$ swaps of adjacent rows. The sign changes by $(-1)^{j-1+k-1}=(-1)^{k+j}$, and the matrix now has first column $e_1$ and, below and to the right of the corner, the matrix $A_{kj}$. In the formula of Theorem~\ref{thm:det}(a), the only nonzero terms have $\sigma(1)=1$, and they form the determinant of $A_{kj}$. So $\det A^{(k)}=(-1)^{k+j}\det A_{kj}$. The row expansion is the same argument applied to $A^{\mathsf T}$.
 \end{proof}
 
 \begin{examplex}
@@ -172,11 +236,11 @@ Along the first row,
 &=2\cdot18-(-1)+3\cdot(-4)=25.
 \end{aligned}
 \]
-Along the first column it is $2\cdot18-0+1\cdot(1-12)=25$ too, as it must be. The signs $(-1)^{i+j}$ form a chessboard pattern starting with $+$ in the corner; the row or column with the most zeros is the one to expand along.
+Along the first column the same determinant is $2\cdot18+1\cdot(1-12)=25$. The signs $(-1)^{i+j}$ form a chessboard, with $+$ in the corner. Expand along the row or column with the most zeros.
 \end{examplex}
 
 \begin{think}
-Compute $\det\begin{pmatrix}1&a\\1&b\end{pmatrix}$, then guess $\det\begin{pmatrix}1&a&a^2\\1&b&b^2\\1&c&c^2\end{pmatrix}$ without expanding: it is a polynomial in $a,b,c$ of total degree $3$ that vanishes when two of the variables are equal.
+Compute $\det\begin{pmatrix}1&a\\1&b\end{pmatrix}$, then guess $\det\begin{pmatrix}1&a&a^2\\1&b&b^2\\1&c&c^2\end{pmatrix}$ without expanding. It is a polynomial in $a,b,c$ of total degree $3$, and it vanishes when two of the variables are equal.
 \end{think}
 
 \begin{proposition}[Vandermonde]\label{prop:vdm}
@@ -186,71 +250,87 @@ For $x_1,\dots,x_n\in\mathbb K$,
 \]
 \end{proposition}
 \begin{proof}
-Induction on $n$; $n=1$ is clear. If two of the $x_i$ are equal both sides vanish. Otherwise, replacing $x_n$ by a variable $X$ and expanding along the last row (Laplace),
-$P(X)=V(x_1,\dots,x_{n-1},X)$ is a polynomial of degree at most $n-1$ whose coefficient of $X^{n-1}$ is the cofactor of the corner entry, $V(x_1,\dots,x_{n-1})$. It vanishes at $x_1,\dots,x_{n-1}$ (two equal rows),
-so $P=V(x_1,\dots,x_{n-1})\prod_{i<n}(X-x_i)$ by Proposition~\ref{prop:rootsfactor}. Evaluate at $X=x_n$ and apply the induction hypothesis.
+Proceed by induction on $n$. The case $n=1$ is $V(x_1)=1$. If two of the $x_i$ are equal, both sides vanish. Otherwise, replace $x_n$ by a variable $X$ and expand along the last row. Then $P(X)=V(x_1,\dots,x_{n-1},X)$ is a polynomial of degree at most $n-1$, and the coefficient of $X^{n-1}$ is the cofactor of the corner entry, which is $V(x_1,\dots,x_{n-1})$. The polynomial $P$ vanishes at $x_1,\dots,x_{n-1}$, because two rows agree. By Proposition~\ref{prop:rootsfactor},
+\[
+P=V(x_1,\dots,x_{n-1})\prod_{i<n}(X-x_i).
+\]
+Evaluate at $X=x_n$ and apply the induction hypothesis.
 \end{proof}
 
-The Vandermonde determinant is what makes Lagrange interpolation (Theorem~\ref{thm:lagrange}) a statement about an invertible matrix: the system ``find a polynomial of degree $<n$ with prescribed values at $n$ distinct points'' has the matrix $(x_i^{j-1})$, invertible exactly when the points are distinct. (The circulant determinant of Exercise~\ref{ex:circulant} is another closed form, obtained by diagonalising.)
+\portrait{vandermonde}{Alexandre-Th\'eophile Vandermonde (1735--1796). Portrait, eighteenth century. Public domain, via Wikimedia Commons.}
+
+The Vandermonde determinant is why Lagrange interpolation (Theorem~\ref{thm:lagrange}) is a statement about an invertible matrix. The system ``find a polynomial of degree less than $n$ with prescribed values at $n$ distinct points'' has matrix $(x_i^{j-1})$. That matrix is invertible exactly when the points are distinct. Exercise~\ref{ex:circulant}, in the chapter on complex numbers, computes a circulant determinant by the same diagonalisation.
 
 \section{Reduction}
 
-A matrix is a linear map written in a basis, and a good choice of basis can make it almost transparent: diagonal, if we are lucky. The numbers on the
-diagonal are then the \emph{eigenvalues}, the directions of the basis the \emph{eigenvectors}, and the map is a stretch by $\lambda_i$ along the
-$i$th direction. The programme of this section is to decide when such a basis exists, and to find it. Let $A\in M_n(\mathbb K)$ and $\chi_A(X)=\det(XI_n-A)$.
+A matrix is a linear map written in a basis. A good basis can make the matrix almost transparent: diagonal, when such a basis exists. The numbers on the diagonal are the \emph{eigenvalues}. The directions of the basis are the \emph{eigenvectors}. The map then stretches by $\lambda_i$ along the $i$th direction and does nothing else. The job of this section is to decide when that basis exists, and to find it.
+
+Let $A\in M_n(\mathbb K)$ and $\chi_A(X)=\det(XI_n-A)$.
 
 \begin{reminder}[eigenvalues, eigenvectors, similarity]
-A scalar $\lambda\in\mathbb K$ is an \emph{eigenvalue} of $A$ if $Av=\lambda v$ for some $v\ne0$, an \emph{eigenvector}; the \emph{eigenspace} $\ker(A-\lambda I_n)$ collects them, with $0$. Two matrices $A$ and $B=P^{-1}AP$ with $P$ invertible are \emph{similar}: they are the same linear map written in two bases, $P$ holding the coordinates of the new basis vectors. $A$ is \emph{diagonalisable} if it is similar to a diagonal matrix, that is, if $\mathbb K^n$ has a basis of eigenvectors of $A$. A \emph{polynomial in} $A$ is $P(A)=\sum p_kA^k$ for $P=\sum p_kX^k$, with $A^0=I_n$; $P\mapsto P(A)$ respects sums and products, since the powers of $A$ commute with each other.
+A scalar $\lambda\in\mathbb K$ is an \emph{eigenvalue} of $A$ if $Av=\lambda v$ for some $v\ne0$, an \emph{eigenvector}. The \emph{eigenspace} $\ker(A-\lambda I_n)$ collects them, together with $0$. Two matrices $A$ and $B=P^{-1}AP$, with $P$ invertible, are \emph{similar}: they are the same linear map written in two bases, and the columns of $P$ are the new basis vectors. The matrix $A$ is \emph{diagonalisable} if it is similar to a diagonal matrix, that is, if $\mathbb K^n$ has a basis of eigenvectors of $A$. A \emph{polynomial in} $A$ is $P(A)=\sum p_kA^k$ for $P=\sum p_kX^k$, with $A^0=I_n$. The map $P\mapsto P(A)$ respects sums and products, because the powers of $A$ commute with each other.
 \end{reminder}
 
 \begin{proposition}[characteristic polynomial]\label{prop:charpoly}
 With $\operatorname{tr}A=\sum_i a_{ii}$, the \emph{trace}, $\chi_A=X^n-\operatorname{tr}(A)X^{n-1}+\dots+(-1)^n\det A$, and the eigenvalues of $A$ are its roots in $\mathbb K$. Over $\C$, $\operatorname{tr}A$ and $\det A$ are the sum and the product of the eigenvalues, counted with multiplicity as roots of $\chi_A$. Similar matrices have the same $\chi$.
 \end{proposition}
 \begin{proof}
-In the formula for $\det(XI_n-A)$, a permutation $\sigma\ne\mathrm{id}$ moves at least two indices, so its term contains at most $n-2$ diagonal entries $X-a_{jj}$ and has degree $\le n-2$. So the coefficients of $X^n$ and $X^{n-1}$ come from $\prod_j(X-a_{jj})$: they are $1$ and $-\operatorname{tr}A$. The constant term is $\chi_A(0)=\det(-A)=(-1)^n\det A$. Next, $\lambda$ is an eigenvalue iff $\ker(\lambda I_n-A)\ne\{0\}$ iff $\det(\lambda I_n-A)=0$ (Theorem~\ref{thm:det}(c)). Over $\C$, $\chi_A$ splits (Theorem~\ref{thm:dalembert}), and Vi\`ete gives the sum and product of the roots. Finally $\det(XI-P^{-1}AP)=\det\left(P^{-1}(XI-A)P\right)=\chi_A$.
+In the formula for $\det(XI_n-A)$, a permutation $\sigma\ne\mathrm{id}$ moves at least two indices, so its term contains at most $n-2$ diagonal entries $X-a_{jj}$ and has degree at most $n-2$. The coefficients of $X^n$ and $X^{n-1}$ therefore come from $\prod_j(X-a_{jj})$: they are $1$ and $-\operatorname{tr}A$. The constant term is $\chi_A(0)=\det(-A)=(-1)^n\det A$. Next, $\lambda$ is an eigenvalue if and only if $\ker(\lambda I_n-A)\ne\{0\}$, which is $\det(\lambda I_n-A)=0$ by Theorem~\ref{thm:det}(c). Over $\C$, $\chi_A$ splits by Theorem~\ref{thm:dalembert}, and Vi\`ete's formulas (Proposition~\ref{prop:viete}) give the sum and the product of the roots. Finally
+\[
+\det(XI-P^{-1}AP)=\det\bigl(P^{-1}(XI-A)P\bigr)=\chi_A.
+\]
 \end{proof}
 
 \begin{examplex}[a $2\times2$ matrix, diagonalised by hand]
-For $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, $\chi_A=(X-2)^2-1=(X-1)(X-3)$. For $\lambda=1$, $A-I=\begin{pmatrix}1&1\\1&1\end{pmatrix}$ kills $u_1=(1,-1)$; for $\lambda=3$, $A-3I=\begin{pmatrix}-1&1\\1&-1\end{pmatrix}$ kills $u_2=(1,1)$. With $P=\begin{pmatrix}1&1\\-1&1\end{pmatrix}$ (the eigenvectors as columns), $AP=P\operatorname{diag}(1,3)$, so $A=PDP^{-1}$ and $A^n=PD^nP^{-1}=\frac12\begin{pmatrix}3^n+1&3^n-1\\3^n-1&3^n+1\end{pmatrix}$. Check $n=1$. The trace $4=1+3$ and the determinant $3=1\cdot3$ agree with Proposition~\ref{prop:charpoly}. On the other hand $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ has $\chi_N=X^2$, a single eigenvalue $0$ whose eigenspace $\ker N=\mathbb Ke_1$ is a line: no basis of eigenvectors, so $N$ is not diagonalisable. The failure is not a lack of eigenvalues but a lack of eigenvectors.
+For $A=\begin{pmatrix}2&1\\1&2\end{pmatrix}$, one has $\chi_A=(X-2)^2-1=(X-1)(X-3)$. For $\lambda=1$, the matrix $A-I=\begin{pmatrix}1&1\\1&1\end{pmatrix}$ kills $u_1=(1,-1)$. For $\lambda=3$, the matrix $A-3I=\begin{pmatrix}-1&1\\1&-1\end{pmatrix}$ kills $u_2=(1,1)$. Let $P$ have these eigenvectors as columns, $P=\begin{pmatrix}1&1\\-1&1\end{pmatrix}$. Then $AP=P\operatorname{diag}(1,3)$, so $A=PDP^{-1}$ and
+\[
+A^n=PD^nP^{-1}=\frac12\begin{pmatrix}3^n+1&3^n-1\\3^n-1&3^n+1\end{pmatrix}.
+\]
+Check the case $n=1$. The trace $4=1+3$ and the determinant $3=1\cdot3$ agree with Proposition~\ref{prop:charpoly}.
+
+The matrix $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ is the contrast. Its characteristic polynomial is $X^2$, so the only eigenvalue is $0$, and $\ker N=\mathbb Ke_1$ is only a line. There is no basis of eigenvectors, so $N$ is not diagonalisable. An eigenvalue is present. There are too few eigenvectors to span the plane.
 \end{examplex}
 
 \begin{think}
-A projection satisfies $A^2=A$, and a reflection satisfies $A^2=I$. Both are diagonalisable. Is every matrix with $A^2=0$ diagonalisable? What distinguishes $X^2-X$ and $X^2-1$ from $X^2$?
+A projection satisfies $A^2=A$, and a reflection satisfies $A^2=I$. Both are diagonalisable. Is every matrix with $A^2=0$ diagonalisable? What distinguishes the polynomials $X^2-X$ and $X^2-1$ from $X^2$?
 \end{think}
 
 \begin{theorem}[diagonalisability]\label{thm:diag}
 $A$ is diagonalisable if and only if $P(A)=0$ for some polynomial $P=\prod_{i=1}^r(X-\lambda_i)$ with distinct $\lambda_i\in\mathbb K$. In that case $\mathbb K^n=\bigoplus_i\ker(A-\lambda_iI_n)$: every vector is a unique sum of vectors from these eigenspaces. This is the meaning of a \emph{direct sum}.
 \end{theorem}
 \begin{proof}
-If $A=QDQ^{-1}$ with $D$ diagonal, let $\lambda_1,\dots,\lambda_r$ be the distinct diagonal entries: $\prod(D-\lambda_iI)=0$ (each diagonal entry is killed by one factor), hence $\prod(A-\lambda_iI)=Q\prod(D-\lambda_iI)Q^{-1}=0$.
-Conversely let $L_i$ be the Lagrange polynomials on the points $\lambda_1,\dots,\lambda_r$ (Theorem~\ref{thm:lagrange}). Interpolating the constant $1$ gives $\sum_iL_i=1$, so every $v\in\mathbb K^n$ is $v=\sum_iL_i(A)v$. And $(X-\lambda_i)L_i$ is a constant multiple of $P$, so $(A-\lambda_iI)L_i(A)v=0$: $L_i(A)v\in\ker(A-\lambda_iI)$. So the eigenspaces span $\mathbb K^n$. The sum is direct: if $\sum v_i=0$ with $Av_i=\lambda_iv_i$, apply $L_j(A)$, which acts on $v_i$ as multiplication by $L_j(\lambda_i)=\delta_{ij}$: $v_j=0$. A basis adapted to the decomposition diagonalises $A$.
+If $A=QDQ^{-1}$ with $D$ diagonal, let $\lambda_1,\dots,\lambda_r$ be the distinct diagonal entries. Then $\prod_i(D-\lambda_iI)=0$, because each diagonal entry is killed by one factor, and therefore
+\[
+\prod_i(A-\lambda_iI)=Q\Bigl(\prod_i(D-\lambda_iI)\Bigr)Q^{-1}=0.
+\]
+Conversely, let $L_i$ be the Lagrange polynomials on the points $\lambda_1,\dots,\lambda_r$ (Theorem~\ref{thm:lagrange}). Interpolating the constant $1$ gives $\sum_iL_i=1$, so every $v\in\mathbb K^n$ is $v=\sum_iL_i(A)v$. The product $(X-\lambda_i)L_i$ is a constant multiple of $P$, so $(A-\lambda_iI)L_i(A)v=0$. Thus $L_i(A)v$ lies in $\ker(A-\lambda_iI)$, and the eigenspaces span $\mathbb K^n$. The sum is direct. If $\sum_iv_i=0$ with $Av_i=\lambda_iv_i$, apply $L_j(A)$. On $v_i$ it acts as multiplication by $L_j(\lambda_i)=\delta_{ij}$, so $v_j=0$. A basis adapted to the decomposition diagonalises $A$.
 \end{proof}
 
-The theorem answers the question in the box: $A^2=0$ gives the annihilating polynomial $X^2$, with a double root, which proves nothing; and indeed $N$ above is a counterexample. But $A^2=A$ and $A^2=I$ give $X(X-1)$ and $(X-1)(X+1)$, split with simple roots, so projections and reflections are diagonalisable (over any field in which $1\ne-1$, for reflections). Two useful consequences: a matrix whose characteristic polynomial has $n$ distinct roots in $\mathbb K$ is diagonalisable, since $\chi_A$ then has the required form and $\chi_A(A)=0$ by Theorem~\ref{thm:cayleyhamilton} below (for this special case one can avoid Cayley--Hamilton: eigenvectors for distinct eigenvalues are independent, by the same $L_j(A)$ trick, and $n$ of them form a basis); and a diagonalisable matrix stays diagonalisable on every stable subspace, since the same polynomial kills the restriction (Exercise~\ref{ex:codiag} uses this).
+The box above asked about $A^2=0$. The polynomial $X^2$ has a double root, so the theorem does not apply, and $N$ is a counterexample. The relations $A^2=A$ and $A^2=I$ give $X(X-1)$ and $(X-1)(X+1)$, split with simple roots. Projections are therefore diagonalisable over any field. Reflections are diagonalisable over any field in which $1\ne-1$.
+
+Two consequences are used constantly. A matrix whose characteristic polynomial has $n$ distinct roots in $\mathbb K$ is diagonalisable: the polynomial has the shape the theorem asks for, and $\chi_A(A)=0$ by Theorem~\ref{thm:cayleyhamilton} below. For this special case one can avoid Cayley--Hamilton. Eigenvectors for distinct eigenvalues are independent, by the same $L_j(A)$ argument, and $n$ of them form a basis. A diagonalisable matrix also stays diagonalisable on every stable subspace, because the same polynomial kills the restriction. Exercise~\ref{ex:codiag} uses that fact.
 
 \begin{remark}
-Cayley--Hamilton, the statement that $\chi_A(A)=0$, is proved below as Theorem~\ref{thm:cayleyhamilton}, by a trick with the adjugate. Volume~2 proves it a second time, as a consequence of the structure of modules over $\mathbb K[X]$, and develops the minimal polynomial, which is not needed here.
+Cayley--Hamilton says that $\chi_A(A)=0$. The proof below, Theorem~\ref{thm:cayleyhamilton}, uses the adjugate. Volume~3 proves the same identity again, as a fact about modules over $\mathbb K[X]$. The minimal polynomial is the sharper tool there. This chapter does not need it.
 \end{remark}
 
 \begin{example}[linear recurrences]
-If $u_{n+2}=au_{n+1}+bu_n$, then $\binom{u_{n+1}}{u_n}=M^n\binom{u_1}{u_0}$ with $M=\begin{pmatrix}a&b\\1&0\end{pmatrix}$, whose characteristic polynomial is $X^2-aX-b$.
-When $b\ne0$ and it has two distinct roots $r_1,r_2$, $M$ is diagonalisable by Theorem~\ref{thm:diag}, and $u_n=\alpha r_1^n+\beta r_2^n$ for constants $\alpha,\beta$ fixed by $u_0,u_1$.
+If $u_{n+2}=au_{n+1}+bu_n$, then $\binom{u_{n+1}}{u_n}=M^n\binom{u_1}{u_0}$ with $M=\begin{pmatrix}a&b\\1&0\end{pmatrix}$. The characteristic polynomial is $X^2-aX-b$. When $b\ne0$ and the polynomial has two distinct roots $r_1,r_2$, Theorem~\ref{thm:diag} says that $M$ is diagonalisable, and $u_n=\alpha r_1^n+\beta r_2^n$ for constants $\alpha,\beta$ fixed by $u_0$ and $u_1$.
 \end{example}
 
-If $b=0$, handle the recurrence directly: $u_1$ is arbitrary and $u_n=a^{n-1}u_1$ for $n\ge2$, while $u_0$ is arbitrary; when $a=0$, all $u_n$ with $n\ge2$ are zero. This avoids treating $0^0$ as an unexplained initial condition. The double-root case is the other case the example leaves out: for $u_{n+2}=2u_{n+1}-u_n$ the matrix $\begin{pmatrix}2&-1\\1&0\end{pmatrix}$ has $\chi=(X-1)^2$ and is not diagonalisable (its only eigenspace is the line spanned by $(1,1)$), and the solutions are $u_n=\alpha+\beta n$: the factor $n$ is the trace that non-diagonalisability leaves behind. Volume~2 explains it with the Jordan form.
+If $b=0$, the recurrence is direct: $u_1$ is arbitrary and $u_n=a^{n-1}u_1$ for $n\ge2$, while $u_0$ is arbitrary. When $a=0$, every $u_n$ with $n\ge2$ is zero. This avoids treating $0^0$ as an initial condition. The double-root case is the other case the example leaves out. For $u_{n+2}=2u_{n+1}-u_n$, the matrix $\begin{pmatrix}2&-1\\1&0\end{pmatrix}$ has characteristic polynomial $(X-1)^2$ and is not diagonalisable: its only eigenspace is the line spanned by $(1,1)$. The solutions are $u_n=\alpha+\beta n$. The factor $n$ is what the missing eigenvector leaves behind. Volume~3 explains that factor by the Jordan form.
 
 \section{Inner products and orthogonal projection}
 
-An inner product measures angles and lengths. On a real vector space it is a symmetric bilinear function $\langle v,w\rangle$ with $\langle v,v\rangle>0$ for $v\ne0$. The usual example on $\R^n$ is $\sum_i v_iw_i$. Put $\|v\|=\sqrt{\langle v,v\rangle}$. We say $v\perp w$ when their inner product is zero, and a family is \emph{orthonormal} when $\langle e_i,e_j\rangle$ is $1$ for $i=j$ and $0$ otherwise. Expanding the square proves Pythagoras: orthogonal vectors satisfy $\|v+w\|^2=\|v\|^2+\|w\|^2$. Chapter~\ref{ch:inequalities} proves the triangle inequality and Cauchy--Schwarz in this language. For $z\in\C^n$ we also use the Euclidean length $\|z\|^2=\sum_i|z_i|^2$, a positive real number when $z\ne0$. A real square matrix is \emph{orthogonal} when $P^{\mathsf T}P=I$; its columns are an orthonormal basis, and it preserves inner products because $\langle Px,Py\rangle=x^{\mathsf T}P^{\mathsf T}Py$.
+An inner product measures lengths and right angles. On a real vector space it is a symmetric bilinear function $\langle v,w\rangle$ with $\langle v,v\rangle>0$ for $v\ne0$. The usual example on $\R^n$ is $\sum_iv_iw_i$. Put $\|v\|=\sqrt{\langle v,v\rangle}$. We say $v\perp w$ when their inner product is zero. A family is \emph{orthonormal} when $\langle e_i,e_j\rangle$ is $1$ for $i=j$ and $0$ otherwise. Expand the square: if $v\perp w$, then
+\[
+\|v+w\|^2=\|v\|^2+2\langle v,w\rangle+\|w\|^2=\|v\|^2+\|w\|^2.
+\]
+That is Pythagoras. Chapter~\ref{ch:inequalities} returns to the triangle inequality and to Cauchy--Schwarz as facts about averages. Here the expansion above is enough, and the case of two vectors in Theorem~\ref{thm:gram} will be Cauchy--Schwarz again, read as the area of a parallelogram.
 
-The same geometry works on other spaces. On real polynomials of degree at most $d$, write $f=\sum a_kX^k$, $g=\sum b_kX^k$ and set $\langle f,g\rangle=\sum a_kb_k$. Another inner product, defined by an integral, appears in Exercise~\ref{ex:hilbert}.
+For $z\in\C^n$ we also use the Euclidean length $\|z\|^2=\sum_i|z_i|^2$, a positive real number when $z\ne0$. A real square matrix is \emph{orthogonal} when $P^{\mathsf T}P=I$. Its columns are an orthonormal basis, and it preserves inner products because $\langle Px,Py\rangle=x^{\mathsf T}P^{\mathsf T}Py$.
 
-\begin{figure}[ht]
-\centering
-\fig{ch07-parallelogram}
-\caption{Left: the parallelogram spanned by the columns $v_1=(a,c)$ and $v_2=(b,d)$ of a matrix; its area is $|ad-bc|$. Middle: a shear, adding a multiple of $v_1$ to $v_2$, slides the top side along itself and changes neither the area nor the determinant (Theorem~\ref{thm:det}(d)). Right: after shearing $v_2$ into $w_2\perp v_1$, the parallelogram is a rectangle of area $\|v_1\|\cdot\|w_2\|$, and $\|w_2\|$ is the distance from $v_2$ to the line $\R v_1$.}
-\label{fig:parallelogram}
-\end{figure}
+The same geometry works on other spaces. On real polynomials of degree at most $d$, write $f=\sum a_kX^k$ and $g=\sum b_kX^k$, and set $\langle f,g\rangle=\sum a_kb_k$. Another inner product, given by an integral, appears in Exercise~\ref{ex:hilbert}.
 
 \begin{theorem}[Gram--Schmidt and orthogonal projection]\label{thm:gramschmidt}
 Let $F$ be a subspace of a finite-dimensional real inner product space $E$, with basis $v_1,\dots,v_p$.
@@ -264,24 +344,31 @@ We call $d(x,F)=\|x-p(x)\|$ the \emph{distance} from $x$ to $F$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) Induction on $k$. Suppose $e_1,\dots,e_{k-1}$ orthonormal with the same span as $v_1,\dots,v_{k-1}$. Then $w_k$ is $v_k$ minus a vector of that span, so $w_k\ne0$ ($v_k$ is not in the span of the earlier $v_i$, by independence), and for $j<k$,
+(a) Proceed by induction on $k$. Suppose $e_1,\dots,e_{k-1}$ are orthonormal and span the same subspace as $v_1,\dots,v_{k-1}$. Then $w_k$ is $v_k$ minus a vector of that span, so $w_k\ne0$: the vector $v_k$ is not in the span of the earlier $v_i$, by independence. For $j<k$,
 \[
 \langle w_k,e_j\rangle=\langle v_k,e_j\rangle-\sum_{i<k}\langle v_k,e_i\rangle\langle e_i,e_j\rangle=\langle v_k,e_j\rangle-\langle v_k,e_j\rangle=0.
 \]
-Thus $e_k=w_k/\|w_k\|$ extends the orthonormal family. Moreover,
-\[
-\operatorname{Span}(e_1,\dots,e_k)\subseteq\operatorname{Span}(v_1,\dots,v_k).
-\]
-Both spaces have dimension $k$, so they are equal.
+Thus $e_k=w_k/\|w_k\|$ extends the orthonormal family. Also $\operatorname{Span}(e_1,\dots,e_k)\subseteq\operatorname{Span}(v_1,\dots,v_k)$. Both spaces have dimension $k$, so they are equal.
 
-(b) Put $p(x)=\sum_{i\le p}\langle x,e_i\rangle e_i\in F$ and $r=x-p(x)$. For each $j$, $\langle r,e_j\rangle=\langle x,e_j\rangle-\langle x,e_j\rangle=0$, so $r\perp F$. Uniqueness: if $x=f+r=f'+r'$ with $f,f'\in F$ and $r,r'\perp F$, then $f-f'=r'-r$ lies in $F$ and is orthogonal to $F$, so it is orthogonal to itself: $f=f'$. Linearity and $p^2=p$ are read off the formula ($p(e_i)=e_i$). For $y\in F$, $x-y=(x-p(x))+(p(x)-y)$ with the two terms orthogonal, so by Pythagoras
+(b) Put $p(x)=\sum_{i\le p}\langle x,e_i\rangle e_i\in F$ and $r=x-p(x)$. For each $j$, one has $\langle r,e_j\rangle=\langle x,e_j\rangle-\langle x,e_j\rangle=0$, so $r\perp F$. For uniqueness, if $x=f+r=f'+r'$ with $f,f'\in F$ and $r,r'\perp F$, then $f-f'=r'-r$ lies in $F$ and is orthogonal to $F$, hence orthogonal to itself, so $f=f'$. Linearity and $p^2=p$ are read off the formula, since $p(e_i)=e_i$. For $y\in F$,
+\[
+x-y=(x-p(x))+(p(x)-y),
+\]
+and the two terms are orthogonal. Pythagoras gives
 \[
 \|x-y\|^2=\|x-p(x)\|^2+\|p(x)-y\|^2\ge\|x-p(x)\|^2,
 \]
 with equality only for $y=p(x)$.
 \end{proof}
 
-Gram--Schmidt proves that every subspace has an orthonormal basis, including the zero subspace with its empty basis. The projection formula is then $p(x)=0$. The proof uses only the inner product axioms, so it applies to every finite-dimensional real inner product space. The closest-point property is the foundation of least squares, explored in the workshop.
+Gram--Schmidt shows that every subspace has an orthonormal basis, including the zero subspace, whose basis is empty. The projection formula is then $p(x)=0$. The proof uses only the inner product rules, so it applies to every finite-dimensional real inner product space. The right panel of Figure~\ref{fig:parallelogram} was this construction for two vectors in the plane. Figure~\ref{fig:gramschmidt} writes the arithmetic for $v_1=(3,1)$ and $v_2=(1,2)$. The closest-point property is the reason least squares works. The workshop at the end of the chapter computes that closest point for the three measurements $(0,1)$, $(1,2)$ and $(2,2)$, and keeps those coordinates in the arithmetic.
+
+\begin{figure}[ht]
+\centering
+\fig{ch07-gramschmidt}
+\caption{Left: the nearest point of a line $F$ to a point $x$ is the foot of the perpendicular, and any other point $y$ of the line is farther. Right: Gram--Schmidt for $v_1=(3,1)$ and $v_2=(1,2)$. The projection of $v_2$ on the line $\R v_1$ is $\langle v_2,e_1\rangle e_1=\frac12v_1$; the remainder $w_2=v_2-\frac12v_1=\bigl(-\frac12,\frac32\bigr)$ is perpendicular to $v_1$, and $\|w_2\|=\sqrt{10}/2$ is the distance from $v_2$ to the line. The area of the parallelogram is $\|v_1\|\,\|w_2\|=\sqrt{10}\cdot\sqrt{10}/2=5=\det\begin{pmatrix}3&1\\1&2\end{pmatrix}$, and the Gram determinant is $\det\begin{pmatrix}10&5\\5&5\end{pmatrix}=25=5^2$.}
+\label{fig:gramschmidt}
+\end{figure}
 
 \section{The spectral theorem and quadratic forms}
 \begin{think}
@@ -292,8 +379,25 @@ An invertible $2\times2$ symmetric matrix maps the unit circle to an ellipse (Fi
 A real symmetric matrix $S$ has real eigenvalues and an orthonormal basis of eigenvectors: $S=PDP^{\mathsf T}$ with $P$ orthogonal and $D$ diagonal.
 \end{theorem}
 \begin{proof}
-Let $\lambda\in\C$ be a root of $\chi_S$ and $z\in\C^n\setminus\{0\}$ with $Sz=\lambda z$. Then $\bar z^{\mathsf T}Sz=\lambda\|z\|^2$, and this number is real: its conjugate is $z^{\mathsf T}S\bar z$, which is the same scalar transposed ($S^{\mathsf T}=S$). So $\lambda\in\R$. The real and imaginary parts of $z$ both satisfy the real eigenvalue equation; at least one is nonzero, and normalising it gives a real unit eigenvector $u$.
-Induction on $n$: the hyperplane $H=u^\perp$ is stable under $S$, since $x\perp u$ implies $\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0$. The restriction of $S$ to $H$ is symmetric for the induced inner product, so $H$ has an orthonormal basis of eigenvectors; add $u$.
+Let $\lambda\in\C$ be a root of $\chi_S$, and let $z\in\C^n\setminus\{0\}$ satisfy $Sz=\lambda z$. Set
+\[
+\alpha=\bar z^{\mathsf T}Sz.
+\]
+The scalar $\lambda$ factors out of the product, and $\|z\|^2=\sum_i|z_i|^2=\bar z^{\mathsf T}z$, so $\alpha=\lambda\|z\|^2$. The length $\|z\|^2$ is real and positive. It is enough to show that $\alpha$ equals its conjugate.
+
+The product $\alpha$ is the sum $\sum_{j,k}\bar z_j\,S_{jk}\,z_k$. Each entry $S_{jk}$ is real, so conjugating replaces $\bar z_j$ by $z_j$ and $z_k$ by $\bar z_k$:
+\[
+\bar\alpha=z^{\mathsf T}S\bar z.
+\]
+That product is a $1\times1$ matrix, and a $1\times1$ matrix equals its own transpose. Transposing reverses the three factors, and symmetry gives $S^{\mathsf T}=S$, so
+\[
+\bar\alpha=(\bar\alpha)^{\mathsf T}=\bigl(z^{\mathsf T}S\bar z\bigr)^{\mathsf T}=\bar z^{\mathsf T}S^{\mathsf T}z=\bar z^{\mathsf T}Sz=\alpha.
+\]
+A scalar equal to its conjugate is real. Dividing by $\|z\|^2$ gives $\lambda\in\R$.
+
+Write $z=x+iy$ with $x,y\in\R^n$. Then $Sx+iSy=\lambda x+i\lambda y$. The matrix $S$ and the eigenvalue $\lambda$ are both real, so the real and imaginary parts match separately: $Sx=\lambda x$ and $Sy=\lambda y$. At least one of $x$ and $y$ is nonzero. Normalising it gives a real unit eigenvector $u$.
+
+Proceed by induction on $n$. The hyperplane $H=u^\perp$ is stable under $S$: if $x\perp u$, then $\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0$. The restriction of $S$ to $H$ is symmetric for the induced inner product, so $H$ has an orthonormal basis of eigenvectors. Add $u$.
 \end{proof}
 
 \begin{figure}[ht]
@@ -303,25 +407,27 @@ Induction on $n$: the hyperplane $H=u^\perp$ is stable under $S$, since $x\perp 
 \label{fig:ellipse}
 \end{figure}
 
-The spectral theorem is the reason the ellipse of Figure~\ref{fig:ellipse} has perpendicular axes, and the reason the physicists' ``principal axes'' of a rotating body exist: Cauchy's 1829 proof was about exactly that, a quadratic form in three variables and its axes, and the matrix was not yet invented. In Volume~3 the same theorem diagonalises covariance matrices, which is what ``principal component analysis'' means.
+The ellipse in Figure~\ref{fig:ellipse} has perpendicular axes because of this theorem. Cauchy's 1829 argument was about the same picture: a quadratic form in three variables, and the axes of the ellipsoid it defines. Chapter~\ref{ch:probability} meets the same matrices again. A covariance matrix is positive semidefinite, because a variance is an average of squares, and the spectral theorem supplies an orthonormal basis of axes.
 
 \begin{definitionx}[quadratic forms and positivity]
 For a real symmetric matrix $S$, the function $q_S(x)=x^{\mathsf T}Sx$ is its \emph{quadratic form}. The matrix is \emph{positive semidefinite} if $q_S(x)\ge0$ for all $x$, and \emph{positive definite} if $q_S(x)>0$ for every $x\ne0$.
 \end{definitionx}
 
-The spectral theorem gives $q_S(Py)=\sum_i\lambda_i y_i^2$. Consequently $S$ is positive semidefinite exactly when all eigenvalues are nonnegative, and positive definite exactly when all are positive: one direction follows by summing, the other by evaluating at a unit eigenvector. For example $\left(\begin{smallmatrix}1&1\\1&1\end{smallmatrix}\right)$ has form $(x_1+x_2)^2$, so it is semidefinite but not definite; the nonzero vector $(1,-1)$ gives zero. Covariance matrices in Chapter~\ref{ch:probability} are semidefinite for the same reason: a variance is an average of squares.
+The spectral theorem gives $q_S(Py)=\sum_i\lambda_i y_i^2$. Consequently $S$ is positive semidefinite exactly when every eigenvalue is nonnegative, and positive definite exactly when every eigenvalue is positive. One direction is the sum. The other is evaluation at a unit eigenvector. For example $\begin{pmatrix}1&1\\1&1\end{pmatrix}$ has quadratic form $(x_1+x_2)^2$, so it is semidefinite and not definite: the nonzero vector $(1,-1)$ gives zero.
 
 \section{Determinants as volumes}
-Back to the chessboard: the gap is a parallelogram. We now define higher-dimensional volume by successive base times height, and prove that its square is a Gram determinant. The preceding projection theorem supplies the required heights.
+
+Back to the chessboard. The gap is a parallelogram, and its area was a $2\times2$ determinant. In higher dimension the volume is defined by repeating base times height. The projection theorem supplies the heights.
 
 \begin{definitionx}[volume]
 Let $v_1$, $\dots$, $v_p$ belong to $\R^n$. Define the successive heights by
 \[
-\begin{gathered}
+|\begin{gathered}
 d_1=\|v_1\|,\\
 d_k=d\left(v_k,\operatorname{Span}(v_1,\dots,v_{k-1})\right)\quad(k\ge2).
 \end{gathered}
-\] The \emph{$p$-dimensional volume} of the parallelepiped $\{\sum t_iv_i:0\le t_i\le1\}$ is $\operatorname{vol}(v_1,\dots,v_p)=d_1d_2\cdots d_p$: base times height, repeated.
+\]
+The \emph{$p$-dimensional volume} of the parallelepiped $\{\sum t_iv_i:0\le t_i\le1\}$ is $\operatorname{vol}(v_1,\dots,v_p)=d_1d_2\cdots d_p$: base times height, repeated.
 \end{definitionx}
 
 \begin{theorem}[Gram determinant]\label{thm:gram}
@@ -335,51 +441,54 @@ so $\det G\ge0$, with equality if and only if $v_1,\dots,v_p$ are linearly depen
 \]
 \end{theorem}
 \begin{proof}
-If the $v_i$ are dependent, say $\sum c_iv_i=0$ with $c\ne0$, then $Gc=0$ (its $i$th entry is $\langle v_i,\sum c_jv_j\rangle$), so $\det G=0$; and some $d_k=0$, since the first $v_k$ that is a combination of the earlier ones lies in their span, so the volume is $0$ too. Suppose the $v_i$ independent and run Gram--Schmidt: $w_k=v_k-\sum_{i<k}\langle v_k,e_i\rangle e_i$, where the subtracted vector is $p_k(v_k)$, the projection on $\operatorname{Span}(v_1,\dots,v_{k-1})$; so $\|w_k\|=d_k$ by definition of the distance. Replacing $v_k$ by $w_k$ replaces, in $G$, row $k$ by row $k$ minus a combination of the earlier rows, and column $k$ likewise; by Theorem~\ref{thm:det}(d), applied to rows and to columns, $\det G$ does not change. Do this for $k=2,\dots,p$ in order (each step only uses the $w_i$, $i<k$, whose span is that of the $v_i$, $i<k$). At the end $G$ has become the Gram matrix of $w_1,\dots,w_p$, which are pairwise orthogonal: it is $\operatorname{diag}(\|w_1\|^2,\dots,\|w_p\|^2)$, with determinant $\prod d_k^2=\operatorname{vol}^2$. For $p=n$, the $(i,j)$ entry of $A^{\mathsf T}A$ is $\langle v_i,v_j\rangle$, so $\det G=\det(A^{\mathsf T})\det A=(\det A)^2$ by Theorem~\ref{thm:det}(b).
+If the $v_i$ are dependent, say $\sum c_iv_i=0$ with $c\ne0$, then $Gc=0$: the $i$th entry of $Gc$ is $\langle v_i,\sum c_jv_j\rangle$. So $\det G=0$. Some height $d_k$ is also zero, because the first $v_k$ that lies in the span of the earlier vectors has distance zero to that span. The volume is zero too.
+
+Now suppose the $v_i$ are independent, and run Gram--Schmidt: $w_k=v_k-\sum_{i<k}\langle v_k,e_i\rangle e_i$. The subtracted vector is the projection of $v_k$ on $\operatorname{Span}(v_1,\dots,v_{k-1})$, so $\|w_k\|=d_k$. Replacing $v_k$ by $w_k$ replaces, in $G$, row $k$ by row $k$ minus a combination of the earlier rows, and column $k$ likewise. By Theorem~\ref{thm:det}(d), applied to rows and to columns, $\det G$ does not change. Do this for $k=2,\dots,p$ in order. Each step uses only the $w_i$ with $i<k$, and their span is the span of the $v_i$ with $i<k$. At the end, $G$ has become the Gram matrix of $w_1,\dots,w_p$, which are pairwise orthogonal. It is $\operatorname{diag}(\|w_1\|^2,\dots,\|w_p\|^2)$, with determinant $\prod d_k^2=\operatorname{vol}^2$.
+
+For $p=n$, the $(i,j)$ entry of $A^{\mathsf T}A$ is $\langle v_i,v_j\rangle$, so $\det G=\det(A^{\mathsf T})\det A=(\det A)^2$ by Theorem~\ref{thm:det}(b).
 \end{proof}
 
-\begin{figure}[ht]
-\centering
-\fig{ch07-gramschmidt}
-\caption{Gram--Schmidt in the plane, for $v_1=(3,1)$ and $v_2=(1,2)$. The projection of $v_2$ on the line $\R v_1$ is $\langle v_2,e_1\rangle e_1=\frac12v_1$; the remainder $w_2=v_2-\frac12v_1=(-\frac12,\frac32)$ is perpendicular to $v_1$, and $\|w_2\|=\sqrt{10}/2$ is the distance from $v_2$ to the line. The area of the parallelogram is $\|v_1\|\,\|w_2\|=\sqrt{10}\cdot\sqrt{10}/2=5=\det\begin{pmatrix}3&1\\1&2\end{pmatrix}$, and the Gram determinant is $\det\begin{pmatrix}10&5\\5&5\end{pmatrix}=25=5^2$.}
-\label{fig:gramschmidt}
-\end{figure}
+For $p=2$ the identity says $\|u\|^2\|v\|^2-\langle u,v\rangle^2\ge0$. That is Cauchy--Schwarz, with the equality case: a parallelogram has area zero exactly when its edges are parallel. For $p=n$ it says that the volume of the image of the unit cube under $A$ is $|\det A|$. Since $\det(AB)=\det A\det B$, the volume of the image of any parallelepiped is multiplied by $|\det A|$. Volume~7 proves the change-of-variables formula in which this factor, computed for the derivative, is called the Jacobian.
 
-Three things are hidden in this theorem. For $p=2$ it says $\|u\|^2\|v\|^2-\langle u,v\rangle^2\ge0$: the Cauchy--Schwarz inequality of Chapter~\ref{ch:inequalities}, with its equality case, now as the statement that a parallelogram has non-negative area. For $p=n$ it says that the volume of the image of the unit cube under $A$ is $|\det A|$, and since $\det(AB)=\det A\det B$, the volume of the image of \emph{any} parallelepiped is multiplied by $|\det A|$: this is the meaning of the Jacobian in the change-of-variables formula of Volume~4. And it explains the Hilbert matrix of the epigraph: $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for an inner product on polynomials (Exercise~\ref{ex:hilbert}), so $\det H_n$ is a squared volume, positive; it is tiny because the monomials become nearly linearly dependent in this inner product, so the parallelepiped is almost flat. Hadamard's inequality (Exercise~\ref{ex:hadamard}) is the same picture: a parallelepiped with given edge lengths has the largest volume when it is a box.
+The same identity explains the Hilbert matrix of the epigraph. The matrix $H_n$ is the Gram matrix of $1,x,\dots,x^{n-1}$ for an inner product on polynomials (Exercise~\ref{ex:hilbert}), so $\det H_n$ is a squared volume and is positive. It is tiny because those monomials are nearly dependent for this inner product: the parallelepiped is almost flat. The right panel of Figure~\ref{fig:ellipse} plots the fall. Hadamard's inequality (Exercise~\ref{ex:hadamard}) is the same picture. A parallelepiped with given edge lengths has the largest volume when it is a box.
 
 \section{The adjugate and Cayley--Hamilton}
 
-The Laplace expansion computes $\det A$ from the cofactors $c_{ij}$. Expanding along the wrong row, with the cofactors of one row and the entries of another, gives $0$, and this harmless remark produces the inverse of a matrix in closed form.
+Laplace expansion computes $\det A$ from the cofactors $c_{ij}$. If you expand along the wrong row, using the cofactors of one row and the entries of another, you get $0$. That remark is the inverse of a matrix, written in closed form.
 
 \begin{proposition}[adjugate, Cramer's rule]\label{prop:adjugate}
 Let $\operatorname{adj}A=(c_{ji})_{i,j}$ be the transpose of the matrix of cofactors. Then
 \[
 A\operatorname{adj}A=\operatorname{adj}A\;A=(\det A)\,I_n ,
 \]
-so if $\det A\ne0$, $A^{-1}=\frac1{\det A}\operatorname{adj}A$. In that case the solution of $Ax=b$ is given by \textbf{Cramer's rule}: $x_j=\det A_j/\det A$, where $A_j$ is $A$ with column $j$ replaced by $b$.
+so if $\det A\ne0$, then $A^{-1}=\frac1{\det A}\operatorname{adj}A$. In that case the solution of $Ax=b$ is given by \textbf{Cramer's rule}: $x_j=\det A_j/\det A$, where $A_j$ is $A$ with column $j$ replaced by $b$.
 \end{proposition}
 \begin{proof}
-The $(i,k)$ entry of $A\operatorname{adj}A$ is $\sum_ja_{ij}c_{kj}$. For $i=k$ this is the Laplace expansion of $\det A$ along row $i$. For $i\ne k$, it is the expansion along row $k$ of the matrix $A'$ obtained from $A$ by replacing row $k$ with a copy of row $i$: the cofactors of row $k$ do not involve row $k$, so they are the same for $A$ and $A'$, and the entries of row $k$ of $A'$ are the $a_{ij}$. But $A'$ has two equal rows, so $\det A'=0$. The same with columns gives $\operatorname{adj}A\;A=(\det A)I_n$. For Cramer, $x=A^{-1}b=\frac1{\det A}\operatorname{adj}A\,b$ has $j$th entry $\frac1{\det A}\sum_kc_{kj}b_k$, and $\sum_kc_{kj}b_k$ is the expansion of $\det A_j$ along its column $j$, whose entries are the $b_k$ and whose cofactors are those of $A$.
+The $(i,k)$ entry of $A\operatorname{adj}A$ is $\sum_ja_{ij}c_{kj}$. For $i=k$ this is the Laplace expansion of $\det A$ along row $i$. For $i\ne k$, it is the expansion along row $k$ of the matrix $A'$ obtained from $A$ by replacing row $k$ with a copy of row $i$. The cofactors of row $k$ do not use row $k$, so they are the same for $A$ and for $A'$, and the entries of row $k$ of $A'$ are the $a_{ij}$. But $A'$ has two equal rows, so $\det A'=0$. The same argument with columns gives $\operatorname{adj}A\;A=(\det A)I_n$.
+
+For Cramer, $x=A^{-1}b=\frac1{\det A}(\operatorname{adj}A)\,b$ has $j$th entry $\frac1{\det A}\sum_kc_{kj}b_k$, and $\sum_kc_{kj}b_k$ is the expansion of $\det A_j$ along its column $j$. The entries of that column are the $b_k$, and its cofactors are those of $A$.
 \end{proof}
 
-For $n=2$ this is the formula of the worked example: $\operatorname{adj}\begin{pmatrix}a&b\\c&d\end{pmatrix}=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$. For large $n$, Cramer's rule is a theoretical statement, not an algorithm: it costs $n+1$ determinants, where Gaussian elimination solves the system directly in about $n^3/3$ multiplications. What it is good for is \emph{structure}: it shows that the entries of $A^{-1}$ are polynomials in the entries of $A$ divided by $\det A$, which is how Exercise~\ref{ex:intinverse} decides which integer matrices have integer inverses, and it is the key to the following theorem, stated by Cayley in 1858 and proved in general by Frobenius in 1878.
+For $n=2$ this is the formula in the worked example: $\operatorname{adj}\begin{pmatrix}a&b\\c&d\end{pmatrix}=\begin{pmatrix}d&-b\\-c&a\end{pmatrix}$. For large $n$, Cramer's rule is a theorem, not an algorithm. It costs $n+1$ determinants, while Gaussian elimination solves the system in about $n^3/3$ multiplications. What the rule is good for is structure. The entries of $A^{-1}$ are polynomials in the entries of $A$, divided by $\det A$. Exercise~\ref{ex:intinverse} uses that shape to decide which integer matrices have integer inverses. The same shape is the key to the next theorem. Cayley, in 1858, multiplied out the $2\times2$ case and wrote that he had checked a matrix of order $3$. He declined a proof for every size. Frobenius proved the general case in 1878.
+
+\portraits{cayley}{Arthur Cayley (1821--1895). Photograph by Herbert Rose Barraud, before 1883. Public domain, via Wikimedia Commons.}{hamilton}{William Rowan Hamilton (1805--1865). Portrait, artist unknown. Public domain, via Wikimedia Commons.}
 
 \begin{theorem}[Cayley--Hamilton]\label{thm:cayleyhamilton}
 Every square matrix satisfies its own characteristic equation: $\chi_A(A)=0$.
 \end{theorem}
 
-Before the proof, a warning about a proof that is too good to be true. ``Since $\chi_A(X)=\det(XI-A)$, substitute $X=A$: $\chi_A(A)=\det(AI-A)=\det0=0$.'' This substitutes a matrix for $X$ in two different ways at once: inside $\det(XI-A)$, $X$ is a scalar placed on the diagonal, and $AI-A$ would have to mean ``$A$ on each diagonal entry'', which is a block matrix, not $0$. The correct proof uses the adjugate of $XI-A$, a matrix whose entries are polynomials in $X$, and compares coefficients.
+There is a one-line proof that is too good to be true. ``Since $\chi_A(X)=\det(XI-A)$, substitute $X=A$: then $\chi_A(A)=\det(AI-A)=\det0=0$.'' The symbol $X$ is being asked to be two things at once. Inside $\det(XI-A)$, it is a scalar on the diagonal. The expression $AI-A$ would have to mean ``the matrix $A$ in each diagonal slot'', which is a block matrix, not the zero matrix. The proof that works uses the adjugate of $XI-A$, a matrix whose entries are polynomials in $X$, and compares coefficients.
 
 \begin{proof}
-Write $\chi_A=X^n+c_{n-1}X^{n-1}+\dots+c_1X+c_0$. The cofactors of $XI_n-A$ are determinants of $(n-1)\times(n-1)$ matrices with entries in $\mathbb K[X]$ of degree $\le1$, so they are polynomials of degree at most $n-1$. Therefore
+Write $\chi_A=X^n+c_{n-1}X^{n-1}+\dots+c_1X+c_0$. The cofactors of $XI_n-A$ are determinants of $(n-1)\times(n-1)$ matrices with entries in $\mathbb K[X]$ of degree at most $1$, so they are polynomials of degree at most $n-1$. Therefore
 \[
 \operatorname{adj}(XI_n-A)=B_0+XB_1+\dots+X^{n-1}B_{n-1}
 \]
-for some matrices $B_k\in M_n(\mathbb K)$ (collect the coefficient of $X^k$ in each entry). Proposition~\ref{prop:adjugate}, which is a polynomial identity valid over any commutative ring, here $\mathbb K[X]$, gives
+for some matrices $B_k\in M_n(\mathbb K)$, obtained by collecting the coefficient of $X^k$ in each entry. Proposition~\ref{prop:adjugate} is a polynomial identity, valid over any commutative ring, and here the ring is $\mathbb K[X]$. It gives
 \[
-(XI_n-A)\left(B_0+XB_1+\dots+X^{n-1}B_{n-1}\right)=\chi_A(X)\,I_n.
+(XI_n-A)\bigl(B_0+XB_1+\dots+X^{n-1}B_{n-1}\bigr)=\chi_A(X)\,I_n.
 \]
-Compare the coefficients of each power of $X$ (two matrices of polynomials are equal iff all coefficients match):
+Two matrices of polynomials are equal when their coefficients match. Compare powers of $X$:
 \[
 \begin{aligned}
 X^n:&\quad B_{n-1}=I_n,\\
@@ -387,76 +496,77 @@ X^k\ (1\le k\le n-1):&\quad B_{k-1}-AB_k=c_kI_n,\\
 X^0:&\quad -AB_0=c_0I_n.
 \end{aligned}
 \]
-Multiply the equation of $X^k$ on the left by $A^k$ and add them all up: the left side is
+Multiply the equation of $X^k$ on the left by $A^k$, and add. The left side is
 \[
-A^nB_{n-1}+\sum_{k=1}^{n-1}\left(A^kB_{k-1}-A^{k+1}B_k\right)-AB_0 ,
+A^nB_{n-1}+\sum_{k=1}^{n-1}\bigl(A^kB_{k-1}-A^{k+1}B_k\bigr)-AB_0.
 \]
-a telescoping sum whose terms cancel in pairs ($A^kB_{k-1}$ cancels $-A^{k}B_{k-1}$ from the next equation down), leaving $0$. The right side is $A^n+\sum_{k<n}c_kA^k=\chi_A(A)$.
+This is a telescoping sum. The term $A^kB_{k-1}$ cancels $-A^kB_{k-1}$ from the next equation down, and nothing remains. The right side is $A^n+\sum_{k<n}c_kA^k=\chi_A(A)$.
 \end{proof}
 
-Note what the telescoping used: only that $A^k$ multiplied from the left commutes with nothing in particular. We never needed the $B_k$ to commute with $A$ (they do, in fact, but proving it would be an extra step).
+The telescoping used only left multiplication by powers of $A$. It did not need the matrices $B_k$ to commute with $A$. They do commute with $A$, but that is a separate fact, and the proof does not need it.
 
 \begin{examplex}[Cayley--Hamilton at work]
-For $n=2$: $A^2-(\operatorname{tr}A)A+(\det A)I_2=0$, which the reader should verify by hand once in their life. For the Fibonacci matrix $M=\begin{pmatrix}1&1\\1&0\end{pmatrix}$, $M^2=M+I$, so every power of $M$ is $aM+bI$, and Exercise~\ref{ex:fibch} turns this into identities about Fibonacci numbers. In general, $\chi_A(A)=0$ expresses $A^n$ as a combination of $I,A,\dots,A^{n-1}$, so \emph{every} power $A^m$, and every polynomial in $A$, lies in the span of $I,A,\dots,A^{n-1}$: the algebra generated by a matrix has dimension at most $n$. And when $c_0=(-1)^n\det A\ne0$, dividing $\chi_A(A)=0$ by $c_0$ and factoring $A$ out of the rest gives
+For $n=2$, the identity is $A^2-(\operatorname{tr}A)A+(\det A)I_2=0$. It is worth multiplying out once, by hand. For the Fibonacci matrix $M=\begin{pmatrix}1&1\\1&0\end{pmatrix}$, one has $M^2=M+I$, so every power of $M$ is $aM+bI$. Exercise~\ref{ex:fibch} turns that into identities for Fibonacci numbers. In general, $\chi_A(A)=0$ writes $A^n$ as a combination of $I,A,\dots,A^{n-1}$. Every higher power $A^m$, and every polynomial in $A$, therefore lies in the span of $I,A,\dots,A^{n-1}$. The algebra generated by one matrix has dimension at most $n$.
+
+When $c_0=(-1)^n\det A\ne0$, divide $\chi_A(A)=0$ by $c_0$ and factor $A$ out of the rest:
 \[
-A^{-1}=-\frac1{c_0}\left(A^{n-1}+c_{n-1}A^{n-2}+\dots+c_1I_n\right),
+A^{-1}=-\frac1{c_0}\bigl(A^{n-1}+c_{n-1}A^{n-2}+\dots+c_1I_n\bigr).
 \]
-the inverse as a polynomial in the matrix: Exercise~\ref{ex:annul} was a special case.
+The inverse is a polynomial in the matrix. Exercise~\ref{ex:annul} is a special case.
 \end{examplex}
 
 \begin{beauty}
-Cassini's identity comes from $\det(M^n)=(\det M)^n$: an arithmetic fact read off a determinant. The spectral theorem diagonalises the symmetric covariance matrices of
-Volume~3. General Markov chains and PageRank in Exercise~\ref{ex:stochastic} use eigenvectors of matrices that need not be symmetric. Simultaneous diagonalisation (Exercise~\ref{ex:codiag}) is the
-seed of the representation theory of Volume~2, where a finite abelian group of complex matrices is diagonalised at once by characters.
-The Hilbert matrix is positive definite, yet it is ill-conditioned in the monomial basis, so ordinary floating-point inversion can lose many digits (a small determinant alone does not diagnose ill-conditioning): see Exercise~\ref{ex:cauchydet} for its exact determinant.
+Cassini's identity is $\det(M^n)=(\det M)^n$: an arithmetic fact read off an area. A real symmetric matrix, and in particular a covariance matrix in Chapter~\ref{ch:probability}, is diagonal in an orthonormal basis. The Google matrix of Exercise~\ref{ex:stochastic} need not be symmetric, and its interesting eigenvector is still a probability. Simultaneous diagonalisation (Exercise~\ref{ex:codiag}) is the same idea for two maps: if they commute and each is diagonalisable, they share one basis. The Hilbert matrix is positive definite, and still badly behaved in the monomial basis, so ordinary floating-point inversion can lose many digits. A small determinant alone does not diagnose that. Exercise~\ref{ex:cauchydet} gives the exact determinant, and the solution compares the greatest stretch with the least.
 \end{beauty}
 
-\portraits{sylvester}{James Joseph Sylvester (1814--1897). Photograph, nineteenth century. Public domain, via Wikimedia Commons.}{vandermonde}{Alexandre-Th\'eophile Vandermonde (1735--1796). Portrait, eighteenth century. Public domain, via Wikimedia Commons.}
-
 \section{Workshop: least squares, with the geometry left in}
-Three measurements rarely lie on a perfect straight line. A matrix does not have to bully the data into agreeing: it can choose the closest line and report the discrepancy.
+
+Three measurements rarely lie on a perfect straight line. The question is which line is closest, and how large the miss is.
+
+Legendre printed the method in 1805, in an appendix on the orbits of comets. Gauss gave his own account in 1809, in the \emph{Theoria motus}, while treating the orbit of Ceres. The priority is disputed. The calculation below is the projection theorem, applied to a column space.
 
 \begin{examplex}[three points and an honest line]
-Fit $y=a+bx$ to $(0,1),(1,2),(2,2)$ by minimising the sum of squared vertical errors. Write
+Fit $y=a+bx$ to the points $(0,1)$, $(1,2)$ and $(2,2)$ by minimising the sum of squared vertical errors. Write
 \[
 A=\begin{pmatrix}1&0\\1&1\\1&2\end{pmatrix},\qquad
 Y=\begin{pmatrix}1\\2\\2\end{pmatrix}.
 \]
-The columns are independent. The closest vector $A\theta$ to $Y$ in their span satisfies $A^{\mathsf T}(Y-A\theta)=0$ by orthogonal projection, so
+The columns are independent. The closest vector $A\theta$ to $Y$ in their span satisfies $A^{\mathsf T}(Y-A\theta)=0$, because the residual of an orthogonal projection is orthogonal to the subspace. So
 \[
 \begin{pmatrix}3&3\\3&5\end{pmatrix}\binom ab=\binom56.
 \]
-The right side is $A^{\mathsf T}Y=(1+2+2,\,0\cdot1+1\cdot2+2\cdot2)^{\mathsf T}=(5,6)^{\mathsf T}$. Subtracting the first equation from the second gives $2b=1$. Hence $b=1/2$ and $a=7/6$. The residual vector is $(-1/6,1/3,-1/6)^{\mathsf T}$, orthogonal to both columns of $A$. Its squared length is $1/6$.
+The right side is $A^{\mathsf T}Y$. Its first entry is $1+2+2=5$, and its second is $0\cdot1+1\cdot2+2\cdot2=6$. Subtract the first equation from the second: $2b=1$. Hence $b=\frac12$ and $a=\frac76$. The residual vector is $\bigl(-\frac16,\frac13,-\frac16\bigr)^{\mathsf T}$, and it is orthogonal to both columns of $A$. Its squared length is $\frac16$.
 \end{examplex}
 
 \begin{figure}[ht]\centering\fig{review07-fit}
-\caption{The least-squares line $y=7/6+x/2$ and the three observations. Dashed vertical segments show the residuals. We minimise their squared lengths, not the perpendicular distances in this drawing.}\end{figure}
+\caption{The least-squares line $y=\frac76+\frac x2$ and the three observations. Dashed vertical segments show the residuals. The quantity minimised is the sum of the squares of those vertical lengths, not the perpendicular distances drawn in the plane of the page.}\end{figure}
 
 \subsection*{Why is this actually a minimum?}
 \textbf{Mission.} Prove uniqueness without differentiating a quadratic in two variables.
 
-\textbf{Hint.} Orthogonality turns a squared norm of a sum into a sum of squared norms.
+\textbf{Hint.} Orthogonality turns the squared norm of a sum into a sum of squared norms.
 
-\textbf{Solution.} Let $\widehat\theta=(7/6,1/2)^{\mathsf T}$ and $r=Y-A\widehat\theta$. For every $h\in\R^2$, $r\perp Ah$, so
+\textbf{Solution.} Let $\widehat\theta=\bigl(\frac76,\frac12\bigr)^{\mathsf T}$ and $r=Y-A\widehat\theta$. For every $h\in\R^2$, the residual $r$ is orthogonal to $Ah$, so
 \[
 \|Y-A(\widehat\theta+h)\|^2=\|r\|^2+\|Ah\|^2\ge\|r\|^2.
 \]
-Equality forces $Ah=0$, and column independence gives $h=0$. This proves both minimality and uniqueness. For dependent columns, the closest fitted \emph{vector} is still unique, but its coefficient vector need not be.
+Equality forces $Ah=0$, and independence of the columns gives $h=0$. This is both the minimum and the uniqueness. If the columns are dependent, the closest fitted vector is still unique, but more than one coefficient vector can produce it.
 
 \begin{reminder}[small determinant, different question]
-For $0<\varepsilon<1$, the matrix $\varepsilon I$ has tiny determinant $\varepsilon^n$ but condition number $1$ in the Euclidean norm: it scales every direction equally. The matrix $\operatorname{diag}(M,1/M)$ has determinant $1$ and condition number $M^2$ for $M\ge1$. Conditioning compares the greatest stretch with the least, rather than their product. An exact theorem about invertibility is not an accuracy guarantee for floating-point computation.
+For $0<\varepsilon<1$, the matrix $\varepsilon I$ has tiny determinant $\varepsilon^n$ and condition number $1$ in the Euclidean norm: it scales every direction by the same factor. The matrix $\operatorname{diag}(M,1/M)$ has determinant $1$ and condition number $M^2$ for $M\ge1$. Conditioning compares the greatest stretch with the least. Their product is the determinant, up to sign. Invertibility and floating-point accuracy answer different questions.
 \end{reminder}
 
-\photograph{astronaut}{NASA astronaut Eileen Collins in an orange flight suit beside a helmet.}{Astronaut Eileen Collins. NASA, public domain; via scikit-image. Coordinates and fitted models help connect observations to geometry. A photograph supplies context, not evidence for a numerical model or an endorsement by the person shown.}
-
+\photograph{astronaut}{NASA astronaut Eileen Collins in an orange flight suit beside a helmet.}{Astronaut Eileen Collins. NASA, public domain; via scikit-image. The workshop turns three measured points into a matrix and a vector. The photograph is context for that habit of reading observations as coordinates. It is not a data set, and it is not an endorsement by the person shown.}
 
 \section*{What this chapter establishes}
-A matrix is a linear map written in a basis. Changing basis changes the entries and not the map. Rank--nullity says that what is lost in the kernel is exactly what is missing from the image. The determinant is the signed volume of the image of the unit cube, which is why Cassini's identity is an area of $1$. An orthogonal projection is the nearest point. A real symmetric matrix is diagonal in an orthonormal basis.
 
-Volume~2 rebuilds this chapter as the linear algebra inside groups, rings and representations. Volume~7 lets the spaces become infinite-dimensional. Volume~8 uses the same maps as the local language of geometry. Volume~11 diagonalises the operators that move a random path. The Google matrix in the exercises is a first hint of Volume~3: an eigenvector can be a probability.
+A matrix is a linear map written in a basis. A change of basis changes the entries and leaves the map alone. Rank--nullity says that the dimensions collapsed in the kernel are exactly the dimensions missing from the image. The determinant is the signed volume of the image of the unit cube, which is why Cassini's identity is an area of $1$. The nearest point of a subspace is the orthogonal projection. A real symmetric matrix is diagonal in an orthonormal basis.
+
+The next chapter differentiates and integrates. Wallis's product for $\pi$, and the integral $\int_0^\infty e^{-x^2}\,\mathrm dx=\sqrt\pi/2$, come out of one family of integrals. When a change of variables multiplies volumes, the factor is a Jacobian, the absolute value of a determinant of derivatives. Volume~7 proves that formula.
+
+Volume~2 measures a Gaussian integer $a+bi$ by the norm $a^2+b^2$, the determinant of the matrix in Exercise~\ref{ex:twobytwo}. Volume~3 proves Cayley--Hamilton again, from the structure of modules over $\mathbb K[X]$. Its appendices continue the count by symmetry: the Perron root of a positive matrix, the circulants a symmetry diagonalises, and the linear algebra method in combinatorics. Singular values and the Cauchy--Binet formula wait in Volume~8, beside the spectral theorem for operators. The Google matrix in the exercises is the first hint of that Perron root. An eigenvector can be a probability.
 
 \section{Exercises}
-
 \begin{exercise}[$\star$]\label{ex:fibmat}
 Let $M=\begin{pmatrix}1&1\\1&0\end{pmatrix}$ and $(F_n)$ the Fibonacci numbers.
 \begin{enumerate}[label=(\alph*)]
@@ -584,7 +694,7 @@ Let $A,B\in M_n(\C)$ be diagonalisable with $AB=BA$. Show that there is a single
 \begin{challenge}
 \textbf{Three doors in the wall.} (1) \emph{Perron--Frobenius.} Exercise~\ref{ex:stochastic} assumed all entries positive. Show that for any matrix with positive entries (not necessarily stochastic) there is an eigenvalue $r>0$ which is a simple root of $\chi$, has an eigenvector with positive entries, and satisfies $|\lambda|<r$ for every other eigenvalue. Then ask what survives when some entries are $0$: the Google matrix adds $0.15J/n$ precisely to avoid this question.
 (2) \emph{Hadamard's bound is sharp when it is.} A matrix with entries $\pm1$ and $|\det|=n^{n/2}$ is a \emph{Hadamard matrix}; show that it exists only for $n=1,2$ or $n\equiv0\pmod 4$. Whether it exists for \emph{every} multiple of $4$ is open; as of October 2026 the smallest undecided order is $2396$ (see the notes and sources).
-(3) \emph{Every matrix is a product of two symmetric matrices} (Frobenius, 1910), over any field. Try $n=2$ by hand, then find why the general case is hard. Volume~2 gives the tools.
+(3) \emph{Every matrix is a product of two symmetric matrices} (Frobenius, 1910), over any field. Try $n=2$ by hand, then find why the general case is hard. Volume~3 gives the tools, through the rational canonical form.
 \end{challenge}
 
 \begin{exercise}[$\star$]\label{pb:tanroots}
@@ -790,7 +900,7 @@ and also $M^{m+n}=F_{m+n}M+F_{m+n-1}I$. Since $M$ is not a scalar matrix, $I$ an
 
 (b) For $w\in\Z^n$, $dw=A\operatorname{adj}(A)w$ and $\operatorname{adj}(A)w\in\Z^n$: so $dw$ is an integer combination of the columns of $A$.
 
-(c) If $(u,v)$ and $(u',v')$ are bases of $\Z^2$, write $u'=au+cv$, $v'=bu+dv$ with $P=\begin{pmatrix}a&b\\c&d\end{pmatrix}\in M_2(\Z)$; expressing $u,v$ in terms of $u',v'$ gives an integer matrix which is $P^{-1}$, so $\det P=\pm1$ by (a), and $|\det(u',v')|=|\det P|\,|\det(u,v)|=|\det(u,v)|$. Comparing with the basis $(e_1,e_2)$: every basis of $\Z^2$ spans a parallelogram of area exactly $1$. Conversely, if $u,v\in\Z^2$ span area $1$, the matrix $(u\ v)$ has determinant $\pm1$, so by (a) its inverse is integral, and $e_1,e_2$ are integer combinations of $u,v$: it is a basis. (Pick's theorem, in Volume~1, says the same thing in pictures: such a parallelogram contains no lattice point other than its corners.)
+(c) If $(u,v)$ and $(u',v')$ are bases of $\Z^2$, write $u'=au+cv$, $v'=bu+dv$ with $P=\begin{pmatrix}a&b\\c&d\end{pmatrix}\in M_2(\Z)$; expressing $u,v$ in terms of $u',v'$ gives an integer matrix which is $P^{-1}$, so $\det P=\pm1$ by (a), and $|\det(u',v')|=|\det P|\,|\det(u,v)|=|\det(u,v)|$. Comparing with the basis $(e_1,e_2)$: every basis of $\Z^2$ spans a parallelogram of area exactly $1$. Conversely, if $u,v\in\Z^2$ span area $1$, the matrix $(u\ v)$ has determinant $\pm1$, so by (a) its inverse is integral, and $e_1,e_2$ are integer combinations of $u,v$: it is a basis. The same inverse shows that the parallelogram contains no other lattice point. If $p=su+tv$ lies in $\Z^2$ with $0\le s,t\le 1$, then $\binom st=P^{-1}p$ has integer entries, so $s$ and $t$ are $0$ or $1$: the corners.
 \end{solution}
 
 \begin{solution}{ex:stochastic}
@@ -859,7 +969,7 @@ Thus the ratio of greatest to least stretch grows without bound. Inverting the l
 
 (2) Normalise a Hadamard matrix so that its first row is all ones (multiply columns by $\pm1$); orthogonality of rows $1$ and $2$ says row $2$ has $n/2$ entries $+1$, so $n$ is even; then counting the columns where rows $2$ and $3$ agree in sign, using orthogonality of the three pairs, gives $n\equiv0\pmod4$ for $n\ge3$. The conjecture that Hadamard matrices exist for every $n\equiv0\pmod4$ is from Paley's paper of 1933 and remains open; order $428$ was constructed in 2004 (the paper appeared in 2005). In August 2026, Alp\"oge, Voinov and Reynolds-Haertle announced the twelve previously unknown orders below $2000$, including $668$; Egan and coauthors verified them in their October 2026 survey, which lists $2396$ as the smallest still-open order.
 
-(3) For $n=2$, writing the nilpotent $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ as $S_1S_2$ is already a nice puzzle (try $S_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, and $S_2$ follows); the general theorem is Frobenius's, from 1910, and the clean proof uses the rational canonical form of Volume~2: a companion matrix is visibly a product of two symmetric matrices, and the property passes to direct sums and to similar matrices (if $A=S_1S_2$ then $P^{-1}AP=(P^{-1}S_1P^{-\mathsf T})\cdot(P^{\mathsf T}S_2P)$, both symmetric). A.~J.~Bosch's note in the \emph{Monthly} gives a two-page account.
+(3) For $n=2$, writing the nilpotent $N=\begin{pmatrix}0&1\\0&0\end{pmatrix}$ as $S_1S_2$ is already a nice puzzle (try $S_1=\begin{pmatrix}0&1\\1&0\end{pmatrix}$, and $S_2$ follows); the general theorem is Frobenius's, from 1910, and the clean proof uses the rational canonical form of Volume~3: a companion matrix is visibly a product of two symmetric matrices, and the property passes to direct sums and to similar matrices (if $A=S_1S_2$ then $P^{-1}AP=(P^{-1}S_1P^{-\mathsf T})\cdot(P^{\mathsf T}S_2P)$, both symmetric). A.~J.~Bosch's note in the \emph{Monthly} gives a two-page account.
 
 \begin{solution}{pb:tanroots}
 \idea Near $a=(k+\frac12)\pi$ the tangent is huge, so $\tan x=x$ forces $x$ just below $a$; writing $x=a-\varepsilon$ turns the equation into $\tan\varepsilon=\frac1{a-\varepsilon}$, which can be iterated.
@@ -874,7 +984,7 @@ $\varepsilon=\arctan y=y-\frac{y^3}3+O(y^5)$ with $y=\frac1a+\frac1{a^3}+O(a^{-5
 (c) The expansion is in powers of $\frac1a$, and $a=\frac{3\pi}2=4.71$ already for $k=1$; the next term, computed numerically, is $-\frac{13}{15a^5}$, about $-0.0004$, which is the
 observed error.
 
-\tools{Volume~0, Chapter~6 (derivatives, Taylor expansions of $\tan$ and $\arctan$).}
+\tools{Chapter~\ref{ch:calculus}: the derivative, and the Taylor expansion of $\arctan$.}
 \leads These roots are the zeros of $\frac{\sin x-x\cos x}{x^3}=\frac13-\frac{x^2}{30}+\cdots$. A product expansion like Euler's sine product then gives $\sum_k\frac1{x_k^2}=\frac{1/30}{1/3}=\frac1{10}$, which the
 numerical evaluation confirms. In practice such expansions are excellent starting points for Newton's method.
 \end{solution}
@@ -887,7 +997,7 @@ numerical evaluation confirms. In practice such expansions are excellent startin
 \item P.~D.~Lax, \emph{Linear Algebra and Its Applications}, 2nd ed., Wiley, 2007. Short, deep, and full of applications: Rayleigh quotients, positive definite and positive matrices.
 \item R.~A.~Horn and C.~R.~Johnson, \emph{Matrix Analysis}, 2nd ed., Cambridge University Press, 2013. The reference for everything in this chapter and much more (Chapter~4 for Rayleigh quotients, Chapter~8 for Perron--Frobenius).
 \item T.~Muir, \emph{The Theory of Determinants in the Historical Order of Development}, vol.~1, Macmillan, 1906. Seki's manuscript of 1683, Leibniz's letter to l'H\^opital of 1693, Cramer's rule (1750) and Cauchy's memoir of 1812 (printed in \emph{J.\ \'Ecole Polytechnique} 10, 1815), all quoted at length.
-\item A.~Cayley, \emph{A memoir on the theory of matrices}, Philos.\ Trans.\ R.\ Soc.\ London 148 (1858), 17--37. Matrices as objects, and the theorem of Theorem~\ref{thm:cayleyhamilton}, verified for $n\le3$; the general proof is G.~Frobenius, \emph{Ueber lineare Substitutionen und bilineare Formen}, J.\ reine angew.\ Math.\ 84 (1878), 1--63. The word ``matrix'' is from J.~J.~Sylvester, Philos.\ Mag.\ 37 (1850), 363--370.
+\item A.~Cayley, \emph{A memoir on the theory of matrices}, Philos.\ Trans.\ R.\ Soc.\ London 148 (1858), 17--37. Matrices as objects. Section~21 multiplies out Theorem~\ref{thm:cayleyhamilton} for $n=2$; Section~23 says the case $n=3$ has been verified, and declines a proof for every size. The general proof is G.~Frobenius, \emph{Ueber lineare Substitutionen und bilineare Formen}, J.\ reine angew.\ Math.\ 84 (1878), 1--63. The word ``matrix'' is from J.~J.~Sylvester, Philos.\ Mag.\ 37 (1850), 363--370.
 \item A.-L.~Cauchy, \emph{Sur l'\'equation \`a l'aide de laquelle on d\'etermine les in\'egalit\'es s\'eculaires des mouvements des plan\`etes}, Exercices de math\'ematiques 4 (1829). Real eigenvalues of a symmetric form, before matrices. The determinant of Exercise~\ref{ex:cauchydet} is in his \emph{M\'emoire sur les fonctions altern\'ees et sur les sommes altern\'ees}, Exercices d'analyse et de physique math\'ematique 2 (1841), 151--159.
 \item D.~Hilbert, \emph{Ein Beitrag zur Theorie des Legendre'schen Polynoms}, Acta Math.\ 18 (1894), 155--159. The matrix $H_n$; and M.-D.~Choi, \emph{Tricks or treats with the Hilbert matrix}, Amer.\ Math.\ Monthly 90 (1983), 301--312, for its exact inverse and why it is so badly conditioned.
 \item J.~Hadamard, \emph{R\'esolution d'une question relative aux d\'eterminants}, Bull.\ Sci.\ Math.\ 17 (1893), 240--246. The inequality of Exercise~\ref{ex:hadamard}; R.~E.~A.~C.~Paley, \emph{On orthogonal matrices}, J.\ Math.\ Phys.\ 12 (1933), 311--320, for the conjecture; H.~Kharaghani and B.~Tayfeh-Rezaie, \emph{A Hadamard matrix of order 428}, J.\ Combin.\ Des.\ 13 (2005), 435--440.
