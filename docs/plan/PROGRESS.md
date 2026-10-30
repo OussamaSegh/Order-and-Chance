@@ -2,7 +2,7 @@
 
 This file is the live execution tracker for the Volume 1 rewrite. The book is `volume1-first-principles`. One chapter, or the named pair, is one pull request, written in the shared voice.
 
-Cold-start snapshot: 2026-10-30, about 23:30 Europe/Paris. Steps 0 through 13 are DONE on main. Preface #71 is squash-merged at `4b67ea9` (`4b67ea9e80115c9dfaeb4cf5e30b74258bef3dd6`). The opener-page swap #72 is squash-merged at `7fae5a8` (`7fae5a8c6724c29dca4132fa7284525a3334f6dd`). Global consistency #69 is squash-merged at `fbeecfd` (`fbeecfd611b68271476ee5a37e94e6362c91ae85`). The final PDF review is #73 (Grok), still open on `cursor/volume1-final-grok-review-4bfb`, of the reading PDF at `7fae5a8`. Verdict: publish after fixes. The open work is step 14, which applies that review's must-fix and should-fix items. Do not start Volume 2.
+Cold-start snapshot: 2026-10-30, about 23:30 Europe/Paris. Steps 0 through 13 are DONE on main. Preface #71 is squash-merged at `4b67ea9` (`4b67ea9e80115c9dfaeb4cf5e30b74258bef3dd6`). The opener-page swap #72 is squash-merged at `7fae5a8` (`7fae5a8c6724c29dca4132fa7284525a3334f6dd`). Global consistency #69 is squash-merged at `fbeecfd` (`fbeecfd611b68271476ee5a37e94e6362c91ae85`). The final PDF review is #73 (Grok), still open on `cursor/volume1-final-grok-review-4bfb`, of the reading PDF at `7fae5a8`. Verdict: publish after fixes. The open work is step 14, which applies that review's must-fix and should-fix items: https://github.com/OussamaSegh/Order-and-Chance/pull/74. Do not merge it until an independent re-review. Do not start Volume 2.
 
 Standing series goal. When Volume 1 is done, the series continues with Volumes 2 through 15 in order, one volume after another, under the same house voice and the same bar: one chapter per pull request, and an independent review before every merge. That handoff is for another bot. Nori owns Volume 1 only. Volume 2 waits until Volume 1 is first-edition ready. That mark comes after step 14 merges and an independent re-review passes. Three items stay outside step 14: the PDF text-layer spacing, the image-credit licence check, and the nice-to-have voice polish.
 
@@ -35,7 +35,7 @@ Step 13 is DONE. #69 squash-merged the global consistency review at `fbeecfd611b
 
 Preface #71 is squash-merged at `4b67ea9e80115c9dfaeb4cf5e30b74258bef3dd6`. The opener-page swap #72 is squash-merged at `7fae5a8c6724c29dca4132fa7284525a3334f6dd`. Do not open a second preface pull request.
 
-The final PDF review is #73, https://github.com/OussamaSegh/Order-and-Chance/pull/73, branch `cursor/volume1-final-grok-review-4bfb`. Verdict: publish after fixes. That pull request is the review. It does not apply the fixes. The open manuscript work is step 14.
+The final PDF review is #73, https://github.com/OussamaSegh/Order-and-Chance/pull/73, branch `cursor/volume1-final-grok-review-4bfb`. Verdict: publish after fixes. That pull request is the review. It does not apply the fixes. The open manuscript work is step 14: https://github.com/OussamaSegh/Order-and-Chance/pull/74.
 
 ## Resume protocol
 
@@ -211,10 +211,10 @@ The final PDF review is #73, https://github.com/OussamaSegh/Order-and-Chance/pul
 - **Depends on:** 13, and on preface #71 and opener swap #72, both on main
 - **Books and files:** local repairs in Volume 1 only: `chapters/preface.tex`, `chapters/ch00-language.tex`, `chapters/ch01-sums.tex`, `chapters/ch07-linear-algebra.tex`, `chapters/field-guide.tex`, `chapters/ch09-probability.tex`, and the Volume 1 copyright credit in `common/cover-notes.json` (with the generated credit line and the manifest hash). No chapter rewrite. No other volume's prose.
 - **Acceptance:** Review #73's must-fix and should-fix items are in the source. The new sentences match `docs/WRITING-STYLE.md`. Fact-check notes are in the pull request. `git diff --check`. Out of scope, and still open after this step: the PDF text-layer spacing, the image-credit licence check, and the nice-to-have voice polish.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/74
 - **Merge sha:**
 - **Date:**
-- **Notes:** Review #73 (Grok), of the reading PDF at `7fae5a8`, verdict: publish after fixes. This step applies the must-fix and should-fix items. Nori owns Volume 1 only. Next, after this merges and an independent re-review passes: Volume 1 is first-edition ready, pending the three out-of-scope items. Do not start Volume 2 before that mark.
+- **Notes:** Review #73 (Grok), of the reading PDF at `7fae5a8`, verdict: publish after fixes. This step applies the must-fix and should-fix items. Pull request #74. Nori owns Volume 1 only. Next, after this merges and an independent re-review passes: Volume 1 is first-edition ready, pending the three out-of-scope items. Do not start Volume 2 before that mark. Do not merge #74 until that re-review.
 
 ## Archive: Edition 1 plan (complete)
 
