@@ -5,7 +5,7 @@ Writes <figure dir>/opener-motif.png: the illustration of <volume>/cover-motif.t
 opener's 4.76 x 3.46 in viewport (tools/opener-motif.tex), 960 px wide, transparent so the
 charcoal opener panel shows through, reduced to a 128-colour palette (about 100 KB).
 tools/epub_prep.py hands it to tools/epub.lua, which puts it under every chapter title.
-Design 5e (docs/design/interior.md); the PDF draws the same motif in common/chapter-opener.tex.
+Design 5e (docs/design/interior.md). Print openers do not draw this motif.
 A volume without cover-motif.tex gets no motif.
 """
 import subprocess

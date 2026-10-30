@@ -107,7 +107,7 @@ matte charcoal, ivory sans-serif lettering, left-aligned titles, a fine double c
 frame, and one substantial mathematical illustration per book. All fifteen fronts use one locked Volume-0 master: the same common frame/header/footer, fixed bold title type, subtitles directly below each title and one softly glowing 3D coral illustration per book. The series subtitle
 is **The Hidden Architecture of Mathematics**. Paperback wraps, EPUB covers,
 interior accents and online light/dark themes share this identity. Light pages use
-a full charcoal chapter opener, charcoal Cormorant headings, one coral accent and
+a full charcoal part page and a banded chapter opener, charcoal Cormorant headings, one coral accent and
 two box families: tinted formal boxes (theorems, definitions, examples) under a
 coral rule, and teaching boxes (exercises, reminders, prompts) with a charcoal left bar.
 Both PDFs share the full-colour interior, typeset in EB Garamond and Garamond-Math
