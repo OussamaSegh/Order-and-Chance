@@ -1,6 +1,6 @@
 # Series content plan
 
-Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering is the Edition 1 order, Books 1–15. Part names are the ones in `common/series-catalog.json`. A citation that still says Volume \(N\) inside a manuscript means the old number; the title-page number is \(N+1\). Book 6 is Crossroads, the analytic number theory volume. The old P1 problem book is not a volume of the edition.
+Planning document only. It does not change a manuscript, a catalog entry, a cover, or a build file. The reader's numbering is the Edition 1 order, Books 1–15. Part names are the ones in `common/series-catalog.json`. A citation in a manuscript uses the title-page number. The old number, one less than that, is only for reading commits from before the citation repair; the map is `docs/plan/volume-citation-map.md`. Book 6 is Crossroads, the analytic number theory volume. The old P1 problem book is not a volume of the edition.
 
 The series subtitle that frames this plan is **Order and Chance: The Hidden Architecture of Mathematics**. The same frozen subtitles are already in `common/volume-subtitles.json`. This document does not put them on a cover or a title page.
 
