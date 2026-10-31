@@ -1,21 +1,33 @@
 # Image provenance and reproduction
 
-New photographs are authentic images, not generated illustrations. Retrieved from
-scikit-image v0.22.0 on 2026-10-27. The data documentation identifies these assets
-as public domain:
+New photographs are authentic images, not generated illustrations. The Collins
+portrait and the Hubble image were retrieved from scikit-image v0.22.0 on
+2026-10-27. That version's data documentation records them as public-domain NASA
+images:
 https://github.com/scikit-image/scikit-image/blob/v0.22.0/skimage/data/_fetchers.py
-(functions `astronaut`, `hubble_deep_field`, `rocket`). Captions credit the original providers.
+(functions `astronaut`, `hubble_deep_field`). Captions credit NASA.
+
+The file that used to be `rocket.jpg` was scikit-image's copy of SpaceX Flickr
+image 16511594820 (DSCOVR on Falcon 9). Checked on 31 October 2026, the Flickr
+page https://www.flickr.com/photos/spacexphotos/16511594820/ marks that
+photograph **CC BY-NC 2.0** (`https://creativecommons.org/licenses/by-nc/2.0/`).
+scikit-image's docstring still says the image was released into the public
+domain. The Flickr page is the licence of record, and a non-commercial licence
+does not cover a book for sale. The file has been removed. It is replaced by a
+NASA photograph, below. No endorsement is implied.
 
 | Local file | Original credit and source | SHA256 of downloaded original |
 |---|---|---|
 | astronaut.jpg | NASA, Eileen Collins; https://flic.kr/p/r9qvLn | PNG: 88431cd9653ccd539741b555fb0a46b61558b301d4110412b5bc28b5e3ea6cb5 |
 | hubble-deep-field.jpg | NASA, Hubble eXtreme Deep Field; http://hubblesite.org/newscenter/archive/releases/2012/37/image/a/ | 3a19c5dd8a927a9334bb1229a6d63711b1c0c767fb27e2286e7c84a3e2c2f5f4 |
-| rocket.jpg | SpaceX Photos, DSCOVR launch; https://www.flickr.com/photos/spacexphotos/16511594820/ | c2dd0de7c538df8d111e479619b129464d0269d0ae5fd18ca91d33a7fdfea95c |
+| apollo11.jpg | NASA photograph 6900556, Apollo 11 Saturn V launch, 16 July 1969. https://images.nasa.gov/details-6900556 and the file `https://images-assets.nasa.gov/image/6900556/6900556~orig.jpg`. NASA's media guidelines (https://www.nasa.gov/nasa-brand-center/images-and-media/, read 31 October 2026) say NASA images are generally not subject to copyright in the United States, and that textbook authors may use them without separate permission when NASA is acknowledged and the use does not imply endorsement. The same page says NASA insignia and identifiers are not in the public domain; this credit therefore does not call the photograph public domain. The image metadata names Marshall Space Flight Center and gives no separate copyright holder. | 9046233c2c5b0dc88a8f69e016df4c03171d241d95e42de0b8238b58df0b8754 |
 
-Download URLs are `https://raw.githubusercontent.com/scikit-image/scikit-image/v0.22.0/skimage/data/`
-followed by `astronaut.png`, `hubble_deep_field.jpg`, `rocket.jpg`. All three hashes
+Download URLs for the first two are `https://raw.githubusercontent.com/scikit-image/scikit-image/v0.22.0/skimage/data/`
+followed by `astronaut.png` and `hubble_deep_field.jpg`. Those hashes
 match scikit-image's versioned `_registry.py`. Astronaut was converted from PNG to
-JPEG at quality 95; no scene edits or AI generation. The other two are unmodified.
+JPEG at quality 95; no scene edits or AI generation. The Hubble file is unmodified.
+`apollo11.jpg` is the NASA original JPEG, unmodified, 3000×2380. At the 1.65-inch
+print cap the short side is about 1440 pixels per inch.
 No endorsement is implied.
 
 Two further public-domain portraits were added for the counting chapter on 30 October 2026, from Wikimedia Commons, with no scene edits:
