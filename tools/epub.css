@@ -27,7 +27,13 @@ p { orphans: 2; widows: 2; margin: .5em 0; }
 code, pre { font-family: "OC Code", monospace; font-size: .88em; }
 math { font-family: "OC Math", "Garamond-Math", "STIX Two Math", serif; }
 math[display="block"] { margin: .6em 0; max-width: 100%; overflow-x: auto; }
-.eqno { display: block; text-align: right; margin-top: -.4em; }
+/* Kindle's Send-to-Kindle path rasterizes MathML and drops the baseline.
+   tools/epub_fix.py replaces each formula with a transparent PNG whose width
+   and vertical-align are the TeX width and depth in em, so the ink sits on
+   the text line and follows the reader's font size. */
+img.oc-math-inline { height: auto; max-width: 100%; }
+img.oc-math-display { display: block; margin: .6em auto; max-width: 100%; height: auto; }
+.eqno { display: block; text-align: right; margin: .15em 0 .2em; }
 
 /* Labels: Fira capitals, 8% tracking; numbers in deep coral; notes in EB Garamond italic. */
 .oc-label, .oc-num { font-family: "OC Label", "Fira Sans", sans-serif; font-weight: 500; font-style: normal;
@@ -94,9 +100,11 @@ h1.oc-chapter > .header-section-number::after, h1.oc-part > .header-section-numb
 .oc-qed { display: inline-block; width: .38em; height: .38em; background-color: #ff8a78; margin-left: .6em;
   vertical-align: .12em; -webkit-transform: rotate(45deg); transform: rotate(45deg); }
 
-/* Figures, tables, quotations */
+/* Figures fill the text column. A max-width rule does not enlarge a small SVG,
+   and Kindle reads an SVG viewBox as pixels, so plates are PNG and the img
+   style itself carries the width. tools/check_epub_media.py rejects anything else. */
 figure { text-align: center; margin: 1.2em 0; page-break-inside: avoid; break-inside: avoid; }
-figure img { max-width: 100%; height: auto; }
+figure img, img.oc-plate { width: 100%; max-width: 100%; height: auto; }
 figcaption { font-family: "OC Label", "Fira Sans", sans-serif; font-size: .78em; line-height: 1.4; text-align: left; color: #3a3636; margin-top: .5em; }
 figcaption .oc-label, figcaption .oc-num { font-size: .92em; }
 .center { text-align: center; font-style: italic; }

@@ -70,7 +70,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: debs
-          key: tex-debs-ubuntu-24.04-v3-xetex-gs
+          key: tex-debs-ubuntu-24.04-v4-pngquant
       - name: Download the packages
         if: steps.cache.outputs.cache-hit != 'true'
         run: |
@@ -78,7 +78,7 @@ jobs:
             sudo timeout 300 apt-get -o Acquire::Retries=5 update &&
             sudo timeout 1500 apt-get -o Acquire::Retries=5 install -y --download-only --no-install-recommends \
               texlive-latex-base texlive-latex-recommended texlive-latex-extra texlive-fonts-recommended tex-gyre \
-              texlive-pictures texlive-xetex python3-pil pandoc poppler-utils ghostscript && break
+              texlive-pictures texlive-xetex python3-pil pandoc poppler-utils ghostscript pngquant && break
             echo "apt attempt $i failed, retrying"; sleep 10
           done
           mkdir -p debs && cp /var/cache/apt/archives/*.deb debs/ && ls debs | wc -l
@@ -97,13 +97,20 @@ jobs:
       - uses: actions/cache/restore@v4
         with:
           path: debs
-          key: tex-debs-ubuntu-24.04-v3-xetex-gs
+          key: tex-debs-ubuntu-24.04-v4-pngquant
           fail-on-cache-miss: true
       - name: Install LaTeX, Ghostscript, pandoc and poppler
         run: |
           sudo dpkg -i debs/*.deb > /dev/null
           rm -rf debs
-          command -v xelatex && command -v gs && command -v pandoc && command -v pdftoppm
+          command -v xelatex && command -v gs && command -v pandoc && command -v pdftoppm && command -v pngquant
+      - name: Install oxipng
+        run: |
+          if ! command -v oxipng >/dev/null; then
+            curl -fsSL -o /tmp/oxipng.tar.gz -L https://github.com/shssoichiro/oxipng/releases/download/v9.1.5/oxipng-9.1.5-x86_64-unknown-linux-musl.tar.gz
+            sudo tar -C /usr/local/bin -xzf /tmp/oxipng.tar.gz --strip-components=1 oxipng-9.1.5-x86_64-unknown-linux-musl/oxipng
+          fi
+          oxipng --version
       - name: Install PDF publishing helpers
         run: python3 -m pip install -r tools/requirements-build.txt
       - name: Test whole-box pagination and reference placement

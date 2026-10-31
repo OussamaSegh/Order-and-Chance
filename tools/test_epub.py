@@ -267,7 +267,7 @@ Text.
             self.convert("epub3", "--toc", "--metadata", "title=Order and Chance. Volume 1: The Integers",
                          "--metadata", "subtitle=Primes, Patterns and Proofs",
                          "--metadata", "lang=en", "-o", str(book), cwd=directory)
-            epub_fix.main(str(book))
+            epub_fix.main(str(book), render_math=False)
             with zipfile.ZipFile(book) as archive:
                 contents = {name: archive.read(name) for name in archive.namelist()}
                 package_name = next(name for name in contents if name.endswith(".opf"))
@@ -301,7 +301,7 @@ Text.
                             styles.append(node.get("displaystyle"))
                 self.assertIn("true", styles)
                 self.assertIn("false", styles)
-            epub_fix.main(str(book))
+            epub_fix.main(str(book), render_math=False)
             with zipfile.ZipFile(book) as archive:
                 self.assertEqual(contents, {name: archive.read(name) for name in archive.namelist()})
             jar = os.environ.get("EPUBCHECK_JAR")
