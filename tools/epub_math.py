@@ -11,8 +11,11 @@ KF8 and KFX do honor ``width`` and ``vertical-align`` on a PNG, in em. Each
 formula is set with the book's Garamond-Math face, measured with TeX, and
 shipped as a transparent PNG whose width is the TeX width in em and whose
 ``vertical-align`` is the TeX depth (plus a hair of padding) below the
-baseline. The ink then sits on the same line as the surrounding words, and
-both the size and the shift follow the reader's font size.
+baseline. Empty columns on the right of that bitmap are cropped and the
+width shrinks with them, so a following period or comma is not stranded
+after a transparent margin. The ink then sits on the same line as the
+surrounding words, and both the size and the shift follow the reader's
+font size.
 
 SVG math would repeat the figure bug: Kindle treats an SVG viewBox as pixels
 and often drops ``vertical-align``. Exact alignment on the Paperwhite is the
@@ -29,7 +32,7 @@ import re
 import shutil
 import subprocess
 import tempfile
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import epub_png
@@ -364,6 +367,7 @@ def attach_punctuation(text: str) -> str:
                 + img + punct + "</div>" + ("" if punct else spaces)
             )
         if punct:
+            # No text node, newline or space between the image and its period.
             return f'<span class="oc-math-keep" style="white-space:nowrap">{img}{punct}</span>'
         return img + spaces
     return _FORMULA_IMG.sub(repl, text)
@@ -377,7 +381,9 @@ def replace_math(text: str, glyphs: dict[tuple[str, bool], Glyph], page: str, pa
 
     def src_for(tex: str, display: bool) -> tuple[str, Glyph]:
         glyph = glyphs[(tex, display)]
-        png = epub_png.fit_formula_png(glyph.png, glyph.height_em)
+        png, ratio = epub_png.fit_formula_png(glyph.png, glyph.height_em)
+        if ratio != 1.0:
+            glyph = replace(glyph, width_em=glyph.width_em * ratio)
         digest = hashlib.sha256(png).digest()
         zip_name = shared.get(digest)
         if zip_name is None:
