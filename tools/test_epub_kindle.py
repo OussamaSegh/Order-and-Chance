@@ -1,7 +1,7 @@
 """Kindle figure and math rendering on a miniature EPUB.
 
 Run: python3 -m unittest discover -s tools -p test_epub_kindle.py
-Needs xelatex, pdftocairo and pandoc. Skipped when they are absent.
+Needs xelatex, pdftocairo, pandoc, pngquant and oxipng. Skipped when they are absent.
 """
 import io
 import re
@@ -21,10 +21,12 @@ import epub_png
 
 ROOT = Path(__file__).resolve().parent.parent
 TOOLS = ROOT / "tools"
-HAVE = all(shutil.which(name) for name in ("xelatex", "pdftocairo", "pandoc"))
+HAVE = all(
+    shutil.which(name) for name in ("xelatex", "pdftocairo", "pandoc", "pngquant", "oxipng")
+)
 
 
-@unittest.skipUnless(HAVE, "xelatex, pdftocairo and pandoc are required")
+@unittest.skipUnless(HAVE, "xelatex, pdftocairo, pandoc, pngquant and oxipng are required")
 class KindleMath(unittest.TestCase):
     def test_descender_sits_below_the_baseline(self):
         glyphs = epub_math.render_formulas([("x=1", False), ("y=-x", False), ("0+y=0", False)])
@@ -79,7 +81,7 @@ class KindleMath(unittest.TestCase):
         self.assertLess(shown.width_em, glyph.width_em)
 
 
-@unittest.skipUnless(HAVE, "xelatex, pdftocairo and pandoc are required")
+@unittest.skipUnless(HAVE, "xelatex, pdftocairo, pandoc, pngquant and oxipng are required")
 class KindleEpub(unittest.TestCase):
     def test_plate_and_inline_math_pass_the_check(self):
         import tempfile
@@ -142,6 +144,7 @@ class KindleEpub(unittest.TestCase):
 
 
 class FormulaPadding(unittest.TestCase):
+    @unittest.skipUnless(HAVE, "xelatex, pdftocairo, pandoc, pngquant and oxipng are required")
     def test_transparent_right_columns_are_cropped(self):
         image = Image.new("RGBA", (40, 12), (0, 0, 0, 0))
         for x in range(4, 28):
