@@ -28,7 +28,7 @@ The manuscripts (`volume*/chapters`) need no markup for any of it.
 |---|---|---|
 | Body text, proofs, notes | EB Garamond (Regular, Italic, SemiBold, SemiBold Italic) | 11.5 pt on 14.75 pt (11 pt class size, `Scale=1.05`, `\linespread{1.085}`), lining figures |
 | Mathematics | Garamond-Math (stylistic sets 1, 2) | same scale as the text |
-| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter 22/26 pt (opener 38/42 pt), section 18/21, subsection 14/17 |
+| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter opener 30/34 pt (unnumbered chapters 22/26), section 18/21, subsection 14/17; opener numeral 78 pt Light |
 | Labels, running heads, captions, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
 | Code | DejaVu Sans Mono | |
 
@@ -48,29 +48,34 @@ capitals with a coral number; theorem notes are EB Garamond italic.
   - recto: current section (truncated) ◆ folio.
 
   The heads are Fira Book 8 pt tracked capitals, and the diamond is coral.
-- Opening pages (chapter recto, part page, unnumbered chapter) show only the folio, at
-  the foot. Blank pages are empty.
+- Opening pages (a chapter's first page, a part page, an unnumbered chapter) show only
+  the folio, at the foot. Blank pages are empty.
 
 ## Chapter opener
 
-Every numbered chapter in the main matter and the appendices opens on a **verso with a
-charcoal band** over the top 3.4 in (#151516), to the bleed at the top and sides. A blank
-page is inserted before it when needed. The band holds:
+Every numbered chapter in the main matter and the appendices starts on the next page,
+recto or verso, and the prose begins on that same page. Nothing is inserted to force
+the chapter onto one side: a part's first chapter is the back of the part page. The
+first page uses the plain style (folio at the foot, no running head). Later pages keep
+the running heads.
 
-- the masthead `ORDER AND CHANCE` and the volume line;
-- the 150 pt Cormorant Light numeral (or appendix letter) in coral.
+The opener is a compact block at the top of that page:
 
-Below the band, on the white paper, with an extra 0.15 in of air (`\ocBandAir`, so the
-block starts 4.30 in from the top of the trim rather than the old part page's 4.15 in):
+- a charcoal band, 1.48 in tall, held 0.30 in inside the trim on the top and the sides.
+  It carries the masthead `ORDER AND CHANCE`, the volume line, and the chapter numeral
+  (or appendix letter) in 78 pt coral Cormorant Light;
+- under the band, on the white paper: `CHAPTER n` (Fira Medium, charcoal, numeral in
+  deep coral), the charcoal Cormorant title at 30/34 pt, a 0.9 in coral rule, and the
+  epigraph in charcoal italic.
 
-- `CHAPTER n` (Fira Medium, charcoal, numeral in deep coral);
-- the charcoal title, with a 0.9 in coral rule;
-- the chapter's epigraph in charcoal italic.
+The body follows the epigraph. There is no second heading on the next page. Unnumbered
+chapters (preface, field guide, About the Cover, solutions, index, bibliography) have
+the short heading only. The opener does not draw a motif or the volume's cover
+illustration.
 
-The chapter text starts on the facing recto under a short heading: label, title and
-coral rule. Unnumbered chapters (preface, field guide, About the Cover, solutions,
-index, bibliography) have the short heading only. The opener does not draw a motif or
-the volume's cover illustration.
+Putting the prose on the opener page changes where later floats land. The gap under
+a float keeps its natural 20 pt; a tight page may shrink that gap by up to 14 pt
+(`\textfloatsep`) so the page stays inside the text block.
 
 **Epigraph.** The convention of the manuscripts is unchanged. A
 `\begin{center}\itshape … \end{center}` directly after `\chapter{…}` (and its
@@ -81,14 +86,16 @@ epigraph.
 
 **Bleed.**
 
+- The chapter band stays 0.30 in inside the trim on the top and the sides, in the
+  ordinary build and in a bleed build. That is inside KDP's 0.25 in no-bleed margin.
+  The band does not run to the trim or to the bleed.
 - In a bleed build (`\def\OCBLEED{}` before `\input{main.tex}`), the paper grows by
-  `\PRINTBLEED` (0.125 in) on every side and the layout stays 7 × 10 in. The chapter
-  band runs to the bleed at the top and sides. The part page's charcoal runs to every
-  bleed edge.
-- The default build (and therefore the KDP interior, which `kdp_pdf.py` checks as
-  "no bleed") is trim-size. There the charcoal meets the trim, and printing will
-  show the usual hairline tolerance at the edges.
-- Switching KDP to a bleed interior needs the KDP setting changed as well as
+  `\PRINTBLEED` (0.125 in) on every side and the layout stays 7 × 10 in. The part
+  page's charcoal still runs to every bleed edge.
+- The default build, which is the KDP interior (`kdp_pdf.py` checks it as "no bleed"),
+  is trim-size. The part page's charcoal still meets the trim. That is the earlier
+  full-page behaviour, unchanged here; a hairline of trim variance can show on a part
+  page. Switching KDP to a bleed interior needs the KDP setting changed as well as
   `\OCBLEED`; this has not been done.
 
 ## Parts
@@ -99,9 +106,9 @@ A part page is a **full charcoal recto** (`\oc@part@page` and `\oc@part@art` in
 numeral in 190 pt light coral Cormorant, then `PART I` in Fira Medium with 8% tracking
 (ivory, numeral in light coral), the ivory Cormorant title and a short light-coral
 rule-diamond-rule. The rest of the page is solid charcoal. There is no illustration,
-no motif and no epigraph. There is no blank verso after it: the opener of the part's
-first chapter is printed on its back, so that opener is a verso facing the chapter's
-first text recto. `\part*` gives the page without a numeral or label.
+no motif and no epigraph. There is no blank verso after it. The part's first chapter
+begins on the back of that page, band and opening prose together. `\part*` gives the
+page without a numeral or label.
 
 ## Boxes: two families
 
@@ -187,8 +194,10 @@ the stacked form inline.
   Garamond-Math for MathML in the EPUB (the reader sets mathematics with KaTeX);
 - chapters and parts open with a compact charcoal header strip: the masthead line, the
   coral numeral beside the ivory Cormorant title and the coral rule; the epigraph follows
-  on the page background. The full charcoal part page and the banded chapter opener are
-  print only, and neither draws the cover illustration. `tools/epub_prep.py` turns `\part`
+  on the page background and the chapter text follows the epigraph. There is one heading,
+  not a second copy under the strip. The full charcoal part page is print only. The print
+  chapter opener is the compact band described above, and neither draws the cover
+  illustration. `tools/epub_prep.py` turns `\part`
   into a marker so chapters stay chapters, and `tools/epub.lua` builds the strips (it
   would also place `opener-motif.png` from `tools/opener_motif.py`, which `build.sh` no
   longer calls);

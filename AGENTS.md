@@ -155,8 +155,9 @@ The author approved interior mock-up **5e** and asked for it in every volume. It
 supersedes the version C description below (kept for history): EB Garamond and
 Garamond-Math at 11.5/14.75 pt, Cormorant Garamond headings, Fira Sans labels, a
 7 × 10 in page with a 0.9 in gutter and 0.8 in outside margin, a full charcoal part
-page on every part recto (coral numeral, ivory title, no illustration) and a chapter
-opener on every verso with a charcoal band plus 0.15 in of air under the band, one coral accent, formal boxes (8% fill,
+page on every part recto (coral numeral, ivory title, no illustration) and a compact
+chapter opener (charcoal band, coral numeral, title, rule and epigraph) with the prose
+continuing on that same page, one coral accent, formal boxes (8% fill,
 1.2 pt coral top rule, never split) and teaching boxes (2 pt charcoal left bar,
 breakable), the figure palette and slashed inline fractions. Read
 `docs/design/interior.md` before changing any of it. Covers are unaffected.
