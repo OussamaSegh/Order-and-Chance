@@ -34,6 +34,30 @@
     \ifdim\wd0>\linewidth\typeout{SHRINK \the\wd0\space > \the\linewidth\space at line \the\inputlineno}%
       \resizebox{\linewidth}{!}{\usebox0}\else\usebox0\fi\end{equation*}}}
 \usepackage[final]{microtype}
+% XeTeX writes an interword space as a position shift, not as a space
+% character. Font expansion is not available on XeTeX, so it is not what
+% joins the words; character protrusion stays on. When justification
+% shrinks the glue, the shift falls below the threshold used by
+% pdftotext and by PyMuPDF: the ink still has a gap, and the extracted
+% text does not. On the Volume 1 preface, a shrink of one quarter of the
+% font's interword space still extracts as separate words, and one third
+% joins them. Cap the shrink at one fifth. Stretch and emergency stretch
+% are unchanged, so a tight line can still open instead of sticking out.
+% Only the body face. A letterspaced running head is built from Fira,
+% and it inherits fontdimens from the font current at \addfontfeatures.
+% Capping Fira's shrink makes that head report an overfull line. The
+% joined words were in EB Garamond. \fontname returns other-catcode
+% characters, so the test is a string comparison.
+\ExplSyntaxOn
+\AddToHook{selectfont}{
+  \tl_set:Ne \l_tmpa_tl {\fontname\font}
+  \exp_args:NV \str_if_in:nnT \l_tmpa_tl {EBGaramond} {
+    \dim_compare:nNnT {\fontdimen2\font} > {0pt} {
+      \fontdimen4\font = .2\fontdimen2\font
+    }
+  }
+}
+\ExplSyntaxOff
 \tolerance=1500
 \setlength{\emergencystretch}{4em}
 \usepackage{enumitem}

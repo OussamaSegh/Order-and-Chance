@@ -1,3 +1,23 @@
+# Chapter opener on the same page — 31 October 2026
+
+Numbered chapters no longer spend a page on the band alone. `common/chapter-opener.tex`
+draws a charcoal band 0.30 in inside the trim. The masthead and volume line are
+centred at the top. The coral numeral sits to the left of the cream title, and that pair is centred as one group.
+There is no chapter label and no rule; an appendix adds a small `APPENDIX` above
+the letter. The opening italic is 10.5 pt, centred on 75 percent of the measure,
+with no bar. The prose starts on that same page, and the next page does not repeat
+the heading. The first page is plain: folio at the foot, no running head.
+Chapters still start on a new page, on whichever side comes next, so a part page is
+not followed by a blank. Unnumbered chapters keep the short heading. Part pages are
+unchanged. The EPUB already opened with one strip and then the text; that is unchanged.
+
+The band used to meet the trim. It is now inset by 0.30 in, inside KDP's 0.25 in
+no-bleed margin. A part page still runs to the edge. The gap under an interior float
+keeps a natural 20 pt and may shrink by up to 14 pt, so a page that the reflow fills
+a few points too full stays inside the text block.
+
+---
+
 # EPUB figures and mathematics — 31 October 2026
 
 Kindle Paperwhite, through Send-to-Kindle, was drawing TikZ plates at about a third of the text column and sitting inline formulas above the line. The plates were SVG files whose viewBox is in PDF points; Kindle treats that number as pixels, and the stylesheet only set `max-width`, which does not enlarge a small image and which Enhanced Typesetting ignores. The formulas were MathML. Send-to-Kindle turns MathML into its own picture and drops the depth, so the ink sits high and looks smaller than the body.

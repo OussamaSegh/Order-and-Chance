@@ -15,7 +15,7 @@ The series is fifteen volumes, numbered 1 through 15, in six parts. There is no 
 
 ## Old number to new number
 
-Chapter text that says “Volume 4” still means the old number. Use this table when those citations are revised. Do not treat the old number as the number printed on the title page.
+Chapter text uses the title-page numbers in the table below. The old number is recorded here so a citation in an older commit can be read. Do not put the old number back into a book. The repair, including chapters that moved, is `docs/plan/volume-citation-map.md`.
 
 | Old number and title | New number and title | Directory |
 | --- | --- | --- |

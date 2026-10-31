@@ -119,9 +119,10 @@ for volume in "${volumes[@]}"; do
     pdftocairo -svg "$out/figures/$name.pdf" "$out/figures/$name.svg"
   done
 
-  # The EPUB and online reader open chapters with a compact charcoal strip and no illustration.
-  # Print part pages are full charcoal with no motif; print chapter openers are a charcoal band.
-  # tools/opener_motif.py can render a motif PNG if it is wanted again; tools/epub.lua places it when present.
+  # The EPUB and online reader open chapters with one compact strip, then the text.
+  # Print part pages are full charcoal with no motif; print chapter openers are a short band
+  # with the prose continuing underneath. tools/opener_motif.py can render a motif PNG if it
+  # is wanted again; tools/epub.lua places it when present.
   rm -f "$out/figures/opener-motif.png"
   python3 "$root/tools/epub_prep.py" "$root/$volume/main.tex" "$out/epub.tex" "$out/figures"
   (cd "$root/$volume" &&

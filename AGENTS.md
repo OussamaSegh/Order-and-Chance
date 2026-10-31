@@ -1,5 +1,12 @@
 # Order and Chance: current author instructions
 
+The series is fifteen volumes, numbered 1 through 15. There is no Volume 0 and
+there is no nineteenth book. Sections below that say “19 books”, “19 volumes”,
+“the other eighteen”, or “Volume 0” record an earlier instruction; the
+structure in `docs/SERIES-STRUCTURE.md` replaces them. Cross-volume citations
+in the books use the title-page numbers. The map is
+`docs/plan/volume-citation-map.md`.
+
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
 ## EPUB figures and mathematics — 31 October 2026
@@ -36,7 +43,7 @@ Volume 0 uses two lines. Earlier approval images remain historical references.
 
 The author confirmed the separately prepared Volume-0 KDP interior and print
 cover work, while raw pipeline PDFs did not. Apply the working export process to
-**all 19 books**. This supersedes the old identical-PDF-body-stream requirement
+**all 15 volumes**. This supersedes the old identical-PDF-body-stream requirement
 and the paper-only raster restriction for the final press cover.
 
 - Pull current `main` first; preserve the latest manuscript and cover artwork.
@@ -165,15 +172,16 @@ The author approved interior mock-up **5e** and asked for it in every volume. It
 supersedes the version C description below (kept for history): EB Garamond and
 Garamond-Math at 11.5/14.75 pt, Cormorant Garamond headings, Fira Sans labels, a
 7 × 10 in page with a 0.9 in gutter and 0.8 in outside margin, a full charcoal part
-page on every part recto (coral numeral, ivory title, no illustration) and a chapter
-opener on every verso with a charcoal band plus 0.15 in of air under the band, one coral accent, formal boxes (8% fill,
+page on every part recto (coral numeral, ivory title, no illustration) and a compact
+chapter opener (charcoal band, coral numeral, title, rule and epigraph) with the prose
+continuing on that same page, one coral accent, formal boxes (8% fill,
 1.2 pt coral top rule, never split) and teaching boxes (2 pt charcoal left bar,
 breakable), the figure palette and slashed inline fractions. Read
 `docs/design/interior.md` before changing any of it. Covers are unaffected.
 
 ## Approved version C interiors (superseded by 5e)
 
-The author approved **version C** and requested it for all 19 volumes. The selected
+The author approved **version C** and requested it for all 15 volumes. The selected
 proof is `build/typography-review/Volume-0-Cover-Matched-Proof.pdf`: the cover's
 exact Inter display faces for headings, STIX Two Text/Math for body/mathematics,
 11 pt with 1.065 line spacing, tracked chapter labels, 24/29 pt chapter titles,
@@ -295,7 +303,7 @@ wraps, content accents, HTML readers and the GitHub Pages library.
 
 ## Standard book formats
 
-The author approved **7 × 10 inches for all 19 paperbacks** after the Volume 0
+The author approved **7 × 10 inches for all 15 paperbacks** after the Volume 0
 comparison. `common/print-layout.json` is canonical; regenerate its TeX with
 `python3 tools/print_layout.py`. Rebuild each wrap from its actual new interior
 page count. The latest author decision requires two distinct PDFs per volume:

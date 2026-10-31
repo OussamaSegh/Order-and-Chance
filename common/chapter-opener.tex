@@ -1,29 +1,49 @@
-% Openers (design 5e, part/chapter swap). Part pages and chapter openers share this file.
+% Openers (design 5e). Part pages and chapter openers share this file.
 %
 % Part page: a full charcoal recto. Masthead, volume line, the coral part numeral,
 % PART n, the ivory title and the part rule. No epigraph, and no illustration: the
 % cover motif and \chaptermotif are not drawn here.
 %
-% Chapter opener: a verso with a charcoal band over the top 3.4 in (to the bleed at
-% the top and sides). The band holds the masthead, the volume line and the coral
-% chapter numeral. Below it, on the paper, CHAPTER n, the charcoal title, a coral
-% rule and the epigraph. \ocBandAir (0.15 in) is extra air under the band, so the
-% title sits slightly lower than the old part-page title. A blank page is inserted
-% when needed so the opener stays a verso. The chapter text starts on the facing recto.
+% Chapter opener: one compact band at the top of the chapter's first page. The band
+% holds the masthead, the volume line, the coral numeral and the cream chapter title.
+% The opening italic sits on the paper directly under the band, and the prose follows
+% on the same page. There is no second heading. The first page uses the
+% plain style (folio at the foot, no running head).
+% Numbered chapters start on the next page, recto or verso: the class option is
+% openany, and a blank is not inserted to force a side. A part's first chapter
+% therefore still sits on the back of the part page.
 %
 % Epigraph: the chapter's opening \begin{center}\itshape ... \end{center} (directly after
-% \chapter{...} and its optional \label) moves onto the opener; the source is unchanged.
+% \chapter{...} and its optional \label) is the centred italic under the band; the source
+% is unchanged.
 %
 % \chaptermotif is accepted and ignored. The print openers do not draw it, and they
 % do not input cover-motif.tex.
 \makeatletter
-% Extra white air under the chapter band. 4.15in below is the old part-page title
-% position (0.75in under the 3.4in band); this length lowers the chapter title further.
-\newlength{\ocBandAir}
-\setlength{\ocBandAir}{0.15in}
 \newlength{\oc@opL}
-\newsavebox{\oc@op@text}
 \newsavebox{\oc@pt@text}
+% Chapter band. The ink stays 0.30 in inside the trim on the top and the sides, so a
+% no-bleed KDP page does not carry the band to the cut. \oc@bandH is the band's height;
+% \oc@bandDrop is how far its top sits below the trim (the text block begins at 1 in).
+\newlength{\oc@bandInset}\setlength{\oc@bandInset}{0.30in}
+\newlength{\oc@bandH}\setlength{\oc@bandH}{1.70in}
+\newlength{\oc@bandDrop}\setlength{\oc@bandDrop}{0.30in}
+\newlength{\oc@numW}\setlength{\oc@numW}{1.18in}
+\newlength{\oc@titleW}
+\newlength{\oc@lower}
+\newlength{\oc@epiW}
+\newlength{\oc@lineW}
+\newsavebox{\oc@ch@lock}
+\newsavebox{\oc@ch@num}
+\newsavebox{\oc@ch@app}
+% How far titlesec's strut line and the 0 pt before-skip push the band down
+% past \oc@bandDrop. Measured on a 7 x 10 page (see the comment on \oc@flow@band).
+\newlength{\oc@bandRaise}\setlength{\oc@bandRaise}{2.05in}
+% The raise above was measured when every band was 1.48 in tall. The picture's
+% baseline is its top, so this length is subtracted back out of the skip.
+\newlength{\oc@bandFix}\setlength{\oc@bandFix}{1.485in}
+\newlength{\oc@bandW}
+\newlength{\oc@hang}
 % Long titles: allow a line break after an en or em dash ("Bombieri--Vinogradov").
 \ExplSyntaxOn
 \tl_new:N \l__oc_op_title_tl
@@ -37,16 +57,275 @@
 \ExplSyntaxOff
 % The print opener carries no motif and no volume illustration.
 \newcommand{\chaptermotif}[1]{}
-% ---------------------------------------------------------------- the chapter opener
 \newif\ifoc@op@recto
-\newcommand{\oc@op@page}[3]{% #1 numeral, #2 title, #3 epigraph
-  \clearpage
-  \ifodd\c@page\hbox{}\thispagestyle{empty}\newpage\fi
-  \global\oc@op@rectofalse
-  \oc@op@textbox{\chaptertitlename}{#1}{#2}{#3}%
-  \xdef\oc@op@numeral{#1}%
-  \AddToHookNext{shipout/background}{\put(0,0){\oc@op@art}}%
-  \thispagestyle{empty}\null\clearpage}
+\let\oc@ch@epi\@empty
+% Primary opener is A. \def\ocOpenerOption{B} or {C} selects a secondary
+% preview; {current} keeps the earlier side-by-side band.
+\ifdefined\ocOpenerOption\else\def\ocOpenerOption{A}\fi
+% ---------------------------------------------------------------- shared band placement
+\newcommand{\oc@band@prepare}{%
+  \setlength{\oc@bandW}{\dimexpr\PRINTWIDTH in-2\oc@bandInset\relax}%
+  \ifodd\c@page
+    \setlength{\oc@hang}{\dimexpr\ocInner-\oc@bandInset\relax}%
+  \else
+    \setlength{\oc@hang}{\dimexpr\ocOuter-\oc@bandInset\relax}%
+  \fi}
+% The picture's baseline is its top edge. \oc@bandFix/\oc@bandRaise keep that
+% edge \oc@bandDrop below the trim however tall the band grows.
+\newcommand{\oc@band@ship}{%
+  \vspace*{\dimexpr\oc@bandFix-(1in-\oc@bandDrop)+\topskip-\oc@bandRaise\relax}%
+  \nointerlineskip
+  \moveleft\oc@hang\hbox{%
+    \begin{tikzpicture}[baseline={(0,0)}]
+      \useasboundingbox (0,0) rectangle (\oc@bandW,\oc@bandH);
+      \fill[ocBlack] (0,0) rectangle (\oc@bandW,\oc@bandH);
+      \oc@band@draw
+    \end{tikzpicture}}}
+% Opening italic: 10.5 pt on 14.7 pt, centred on 75 percent of the measure.
+% Keep an author's \\ only when every piece fits on one line. Otherwise set the
+% whole paragraph as one centred block, so no line is wider than the measure.
+\newcommand{\oc@option@epi}{%
+  \ifx\oc@ch@epi\@empty\else
+    \par\vspace{26pt}%
+    \begingroup
+      \setlength{\oc@epiW}{0.75\linewidth}%
+      \parindent=0pt
+      \centering
+      \itshape\fontsize{10.5}{14.7}\selectfont\color{ocBlack}%
+      \expandafter\oc@epi@split\expandafter{\oc@ch@epi}%
+    \endgroup
+  \fi}
+\ExplSyntaxOn
+\seq_new:N \l__oc_epi_seq
+\bool_new:N \l__oc_epi_fit_bool
+\tl_new:N \l__oc_epi_tl
+\cs_new_protected:Npn \oc@epi@split #1
+  {
+    \seq_set_split:Nnn \l__oc_epi_seq { \\ } { #1 }
+    \bool_set_true:N \l__oc_epi_fit_bool
+    \seq_map_inline:Nn \l__oc_epi_seq
+      {
+        \tl_if_blank:nF { ##1 }
+          {
+            \settowidth {\dimen@} { \ignorespaces ##1 \unskip }
+            \dim_compare:nT { \dimen@ > \oc@epiW }
+              { \bool_set_false:N \l__oc_epi_fit_bool }
+          }
+      }
+    \bool_if:NTF \l__oc_epi_fit_bool
+      {
+        \seq_map_inline:Nn \l__oc_epi_seq
+          {
+            \tl_if_blank:nF { ##1 }
+              { \par \noindent \ignorespaces ##1 \unskip \par }
+          }
+      }
+      {
+        \tl_set:Nn \l__oc_epi_tl { #1 }
+        \tl_replace_all:Nnn \l__oc_epi_tl { \\ } { ~ }
+        \par \noindent
+        \begin{minipage}{\oc@epiW}
+          \centering \parindent=0pt \tolerance=9999 \emergencystretch=3em
+          \hyphenpenalty=200 \exhyphenpenalty=200
+          \l__oc_epi_tl \par
+        \end{minipage}
+        \par
+      }
+  }
+\ExplSyntaxOff
+\newcommand{\oc@title@set}[3]{% size, leading, text
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt\parskip=0pt\parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000\exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocDisplay\linespread{1}\fontsize{#1}{#2}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#3}\par}}}
+% A. Primary. A short band, about 1.6–2.0 in (at most about 2.4 in when the
+% title needs three lines). The series line is small and centred. The coral
+% numeral sits to the left of the cream title; that pair is centred as one
+% group. No chapter label and no rule. The italic is centred on the white page.
+\newcommand{\oc@opener@A}[1]{%
+  \oc@band@prepare
+  \sbox{\oc@ch@num}{{\color{ocCoral}\ocNumeral\fontsize{56}{56}\selectfont\thechapter}}%
+  \edef\oc@tmp{\chaptertitlename}\edef\oc@app{\appendixname}%
+  \ifx\oc@tmp\oc@app
+  \sbox{\oc@ch@app}{{\ocMed\fontsize{7.5}{9}\selectfont\color{ocCream}\ocLab{\appendixname}}}%
+  \setbox2=\vbox{%
+    \hsize=\wd\oc@ch@num
+    \ifdim\wd\oc@ch@app>\hsize \hsize=\wd\oc@ch@app\fi
+    \centering\parindent=0pt\topskip=0pt
+    \noindent\usebox{\oc@ch@app}\par
+    \vspace{2pt}%
+    \hbox to \hsize{\hfil\usebox\oc@ch@num\hfil}}%
+  \setbox\oc@ch@num=\box2
+\fi
+  \setlength{\oc@titleW}{\dimexpr\oc@bandW-0.50in-\wd\oc@ch@num-0.25in\relax}%
+  \oc@title@set{30}{34}{#1}%
+  \ifdim\ht\oc@ch@lock>78pt \oc@title@set{26}{30}{#1}\fi
+  \setbox\oc@ch@lock=\hbox{%
+    $\vcenter{\hbox{\usebox\oc@ch@num}}$%
+    \hspace{0.25in}%
+    $\vcenter{\hbox{\usebox\oc@ch@lock}}$}%
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt\parskip=0pt\parindent=0pt
+    \hsize=\dimexpr\oc@bandW-0.50in\relax
+    \centering
+    {\ocDisplay\fontsize{10.5}{13}\selectfont\color{ocCream}\ocCaps[28]{Order and Chance}\par}%
+    \vspace{3pt}%
+    {\ocBook\fontsize{7.5}{10}\selectfont\color{ocCream!85}\ocCaps[20]{\ocVolume}\par}%
+    \vspace{9pt}%
+    \noindent\usebox\oc@ch@lock\par
+    \vspace{0.30in}}%
+  \setlength{\oc@bandH}{\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock+0.30in\relax}%
+  \def\oc@band@draw{\node[anchor=north,inner sep=0pt] at (0.5\oc@bandW,\oc@bandH-0.30in) {\usebox\oc@ch@lock};}%
+  \oc@band@ship\oc@option@epi}
+% B. Split. The coral numeral occupies the left; the label and title sit to the
+% right, with air around both. The italic is centred under the band.
+\newcommand{\oc@opener@B}[1]{%
+  \oc@band@prepare
+  \sbox{\oc@ch@num}{{\color{ocCoral}\ocNumeral\fontsize{108}{108}\selectfont\thechapter}}%
+  \setlength{\oc@titleW}{\dimexpr\linewidth-2.25in\relax}%
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt\parskip=0pt\parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000\exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocDisplay\fontsize{11}{13}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}\par}%
+    \vspace{4pt}%
+    {\ocBook\fontsize{7.5}{10}\selectfont\color{ocCream!85}\ocCaps[18]{\ocVolume}\par}%
+    \vspace{14pt}%
+    {\ocMed\fontsize{8.4}{11}\selectfont\color{ocCream}%
+      \ocLab{\chaptertitlename}\enspace\textcolor{ocCoral}{\thechapter}\par}%
+    \vspace{8pt}%
+    {\ocDisplay\linespread{1}\fontsize{28}{33}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#1}\par}}%
+  \setlength{\oc@lower}{\ht\oc@ch@num}%
+  \ifdim\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock\relax>\oc@lower
+    \setlength{\oc@lower}{\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock\relax}\fi
+  \setlength{\oc@bandH}{\dimexpr\oc@lower+0.58in\relax}%
+  \ifdim\oc@bandH<2.70in \setlength{\oc@bandH}{2.70in}\fi
+  \def\oc@band@draw{%
+    \node[anchor=west,inner sep=0pt] at (\oc@hang,0.48\oc@bandH) {\usebox\oc@ch@num};
+    \node[anchor=west,inner sep=0pt] at (\oc@hang+2.25in,0.50\oc@bandH) {\usebox\oc@ch@lock};}%
+  \oc@band@ship\oc@option@epi}
+% C. Editorial. An oversized coral numeral is cropped by the band and printed
+% pale, and the cream title stands clear of it. The italic is centred below.
+\newcommand{\oc@opener@C}[1]{%
+  \oc@band@prepare
+  \setlength{\oc@titleW}{\dimexpr\linewidth-1.85in\relax}%
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt\parskip=0pt\parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000\exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocDisplay\fontsize{11}{13}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}\par}%
+    \vspace{3pt}%
+    {\ocBook\fontsize{7.5}{10}\selectfont\color{ocCream!85}\ocCaps[18]{\ocVolume}\par}%
+    \vspace{16pt}%
+    {\ocMed\fontsize{8.4}{11}\selectfont\color{ocCream}%
+      \ocLab{\chaptertitlename}\enspace\textcolor{ocCoral}{\thechapter}\par}%
+    \vspace{8pt}%
+    {\ocDisplay\linespread{1}\fontsize{32}{37}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#1}\par}}%
+  \setlength{\oc@bandH}{\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock+0.62in\relax}%
+  \ifdim\oc@bandH<2.85in \setlength{\oc@bandH}{2.85in}\fi
+  \def\oc@band@draw{%
+    \begin{scope}
+      \clip (0,0) rectangle (\oc@bandW,\oc@bandH);
+      \node[anchor=south west,inner sep=0pt,opacity=0.22,text=ocCoral,
+        font=\ocNumeral\fontsize{210}{210}\selectfont] at (-0.28in,0.02in) {\thechapter};
+    \end{scope}
+    \node[anchor=north west,inner sep=0pt] at (\oc@hang+1.85in,\oc@bandH-0.26in) {\usebox\oc@ch@lock};}%
+  \oc@band@ship\oc@option@epi}
+% ---------------------------------------------------------------- the chapter band
+% Numeral on the left, CHAPTER n and the cream title on the right, both inside
+% the charcoal. The band grows for a two-line title. Its top stays \oc@bandDrop
+% below the trim; the sides stay \oc@bandInset inside the trim.
+\newcommand{\oc@flow@band}[1]{%
+  \setlength{\oc@bandW}{\dimexpr\PRINTWIDTH in-2\oc@bandInset\relax}%
+  \ifodd\c@page
+    \setlength{\oc@hang}{\dimexpr\ocInner-\oc@bandInset\relax}%
+  \else
+    \setlength{\oc@hang}{\dimexpr\ocOuter-\oc@bandInset\relax}%
+  \fi
+  \setlength{\oc@titleW}{\dimexpr\linewidth-\oc@numW-0.20in\relax}%
+  % Colour goes inside the box. A colour set on the tikz node does not reach a saved box,
+  % and the numeral was coming out black on the charcoal.
+  \sbox{\oc@ch@num}{{\color{ocCoral}\ocNumeral\fontsize{64}{64}\selectfont\thechapter}}%
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt \parskip=0pt \parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000 \exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocCream}%
+      \ocLab{\chaptertitlename}\enspace\textcolor{ocCoral}{\thechapter}\par}%
+    \vspace{4pt}%
+    {\ocDisplay\linespread{1}\fontsize{26}{30}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#1}\par}}%
+  \setlength{\oc@lower}{\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock\relax}%
+  \ifdim\ht\oc@ch@num>\oc@lower \setlength{\oc@lower}{\ht\oc@ch@num}\fi
+  % Masthead and volume line, then the lockup, then a pad inside the charcoal.
+  \setlength{\oc@bandH}{\dimexpr0.64in+\oc@lower+0.18in\relax}%
+  % titlesec inserts \vspace*{0pt} and its block shape leaves a strut line above
+  % this point. The picture's baseline is its top edge, so a taller title must not
+  % push that edge down. \oc@bandRaise was measured for a 1.48 in band; \oc@bandFix
+  % takes that height back out and leaves the top at \oc@bandDrop.
+  \vspace*{\dimexpr\oc@bandFix-(1in-\oc@bandDrop)+\topskip-\oc@bandRaise\relax}%
+  \nointerlineskip
+  \moveleft\oc@hang\hbox{%
+    \begin{tikzpicture}[baseline={(0,0)}]
+      \useasboundingbox (0,0) rectangle (\oc@bandW,\oc@bandH);
+      \fill[ocBlack] (0,0) rectangle (\oc@bandW,\oc@bandH);
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang,\oc@bandH-0.13in)
+        {\ocDisplay\fontsize{10.5}{12}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}};
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang,\oc@bandH-0.34in)
+        {\ocBook\fontsize{7}{9}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}};
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang-0.02in,\oc@bandH-0.62in)
+        {\usebox\oc@ch@num};
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang+\oc@numW+0.16in,\oc@bandH-0.62in)
+        {\usebox\oc@ch@lock};
+    \end{tikzpicture}}}
+% Coral rule, then the opening italic on a narrower measure with a thin coral bar.
+% The bar and the text together are 78 percent of the text width, so a long line
+% wraps instead of running into the margin. The italic is a touch above body size.
+\newcommand{\oc@flow@after}{%
+  \nointerlineskip
+  \vskip 13pt
+  \vbox{%
+    \hsize=\linewidth
+    \parindent=0pt
+    \noindent\ocChapterRule\par
+    \ifx\oc@ch@epi\@empty\else
+      \vspace{15pt}%
+      \noindent\hbox{%
+        {\color{ocCoral}\vrule width 1.4pt}%
+        \hspace{11pt}%
+        \vbox{%
+          \hsize=\dimexpr0.78\linewidth-1.4pt-11pt\relax
+          \parindent=0pt
+          \itshape\fontsize{12.5}{17.5}\selectfont\color{ocBlack}%
+          \raggedright
+          \hyphenpenalty=4000
+          \exhyphenpenalty=4000
+          \emergencystretch=2em
+          \let\\\newline
+          \oc@ch@epi}}\par
+    \fi}}
+% Numbered chapter heading: plain page (no running head), band, then rule and epigraph.
+% \ocChapterHead is the titlesec before-code; #1 is the title that follows it.
+\renewcommand{\ocChapterHead}[1]{%
+  \thispagestyle{plain}%
+  \par
+  \def\oc@opt{A}\ifx\ocOpenerOption\oc@opt\oc@opener@A{#1}\else
+  \def\oc@opt{B}\ifx\ocOpenerOption\oc@opt\oc@opener@B{#1}\else
+  \def\oc@opt{C}\ifx\ocOpenerOption\oc@opt\oc@opener@C{#1}\else
+  \oc@opener@current{#1}\fi\fi\fi}
+\newcommand{\oc@opener@current}[1]{\oc@flow@band{#1}\oc@flow@after}
 % Part page: full charcoal, the part's own title lockup, nothing else.
 \newcommand{\oc@part@page}[2]{% #1 numeral (empty for \part*), #2 title
   \global\oc@op@rectotrue
@@ -77,36 +356,12 @@
 % The part page's short rule: rule, diamond, rule.
 \newcommand{\oc@op@diarule}[1]{\tikz[baseline=-0.6ex]{\draw[#1,line width=1.2pt](0,0)--(0.36in,0);
   \fill[#1](0.45in,0.045in)--(0.495in,0)--(0.45in,-0.045in)--(0.405in,0)--cycle;\draw[#1,line width=1.2pt](0.54in,0)--(0.9in,0);}}
-% Chapter title block, on the paper under the band: label, title, rule, epigraph (4.3 in wide).
-\newcommand{\oc@op@textbox}[4]{% #1 label, #2 number, #3 title, #4 epigraph
-  \global\setbox\oc@op@text\hbox{\parbox[t]{4.3in}{%
-    \if\relax\detokenize{#2}\relax\else
-    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocBlack}\ocLab{#1}\enspace\textcolor{ocCoralDeep}{#2}}\par
-    \vspace{10pt}\fi
-    {\ocDisplay\linespread{1}\fontsize{38}{42}\selectfont\color{ocBlack}\raggedright\hyphenpenalty10000\exhyphenpenalty10000 \ocBreakDashes{#3}\par}%
-    \vspace{14pt}{\color{ocCoral}\rule{0.9in}{1.2pt}}\par
-    \if\relax\detokenize{#4}\relax\else
-      \vspace{14pt}{\color{ocBlack}\itshape\small\raggedright\let\\\newline #4\par}\fi}}}
-% Chapter page: white paper, charcoal band, title block lowered by \ocBandAir.
-\newcommand{\oc@op@art}{%
-  \ifoc@op@recto\setlength{\oc@opL}{\ocInner}\else\setlength{\oc@opL}{\ocOuter}\fi
-  \begin{tikzpicture}[baseline={(0,0)}]
-    \useasboundingbox (0,0) rectangle (\paperwidth,-\paperheight);
-    \fill[white] (0,0) rectangle (\paperwidth,-\paperheight);
-    \fill[ocBlack] (0,0) rectangle (\paperwidth,{-\ocBleed-3.4in});
-    \begin{scope}[shift={(\ocBleed,-\ocBleed)}]
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,-0.75in)
-        {\ocDisplay\fontsize{10.5}{12}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}};
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,-0.98in)
-        {\ocBook\fontsize{7}{9}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}};
-      \node[anchor=base west,inner sep=0pt,text=ocCoral,font=\ocNumeral\fontsize{150}{150}\selectfont]
-        at (\oc@opL-0.03in,-3.05in) {\oc@op@numeral};
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,{-4.15in-\ocBandAir}) {\usebox\oc@op@text};
-    \end{scope}
-  \end{tikzpicture}}
 % ---------------------------------------------------------------- \chapter wrapper
-% Reads \chapter[short]{title}, an optional \label and an opening epigraph, typesets the
-% opener (numbered main-matter chapters only), then calls the original \chapter.
+% Reads \chapter[short]{title}, then any mix of \label and \chaptermark, then an
+% opening \begin{center}\itshape. \chaptermark is kept and replayed after the
+% real \chapter, so the short running head survives and the epigraph still
+% uses the shared centred italic. Two chapters put \chaptermark before the epigraph
+% (Volume 8, the unitary-matrices chapter, and Volume 12, log-correlated fields).
 \def\oc@centername{center}
 \def\oc@skip#1{\def\oc@skip@k{#1}\oc@skip@loop}
 \def\oc@skip@loop{\@ifnextchar\par{\oc@skip@par}{\oc@skip@k}}
@@ -115,9 +370,18 @@
 \long\def\oc@ch@noopt#1{\oc@ch@a{#1}{#1}}
 \long\def\oc@ch@opt[#1]#2{\oc@ch@a{#1}{#2}}
 \long\def\oc@ch@a#1#2{\def\oc@ch@short{#1}\def\oc@ch@title{#2}%
-  \let\oc@ch@label\@empty\let\oc@ch@epi\@empty\oc@skip\oc@ch@lab}
-\def\oc@ch@lab{\@ifnextchar\label{\oc@ch@getlab}{\oc@ch@afterlab}}
-\def\oc@ch@getlab\label#1{\def\oc@ch@label{\label{#1}}\oc@skip\oc@ch@afterlab}
+  \let\oc@ch@label\@empty\let\oc@ch@mark\@empty\let\oc@ch@epi\@empty\oc@skip\oc@ch@lab}
+\def\oc@ch@lab{%
+  \@ifnextchar\label{\oc@ch@getlab}{%
+    \@ifnextchar\chaptermark{\oc@ch@getmark}{\oc@ch@afterlab}}}
+\long\def\oc@ch@getlab\label#1{%
+  \begingroup\toks@=\expandafter{\oc@ch@label\label{#1}}%
+  \xdef\oc@ch@label{\the\toks@}\endgroup
+  \oc@skip\oc@ch@lab}
+\long\def\oc@ch@getmark\chaptermark#1{%
+  \begingroup\toks@=\expandafter{\oc@ch@mark\chaptermark{#1}}%
+  \xdef\oc@ch@mark{\the\toks@}\endgroup
+  \oc@skip\oc@ch@lab}
 \def\oc@ch@afterlab{\@ifnextchar\begin{\oc@ch@begin}{\oc@ch@finish{}}}
 \def\oc@ch@begin\begin#1{\def\oc@tmp{#1}%
   \ifx\oc@tmp\oc@centername\expandafter\@firstoftwo\else\expandafter\@secondoftwo\fi
@@ -129,12 +393,15 @@
   {\oc@ch@finish{\begin{center}\itshape#1\end{#2}}}}
 \long\def\oc@ch@finish#1{%
   \if@mainmatter
-    \begingroup\advance\c@chapter\@ne\xdef\oc@ch@num{\thechapter}\endgroup
-    \begingroup\edef\oc@tmp{\endgroup\noexpand\oc@op@page{\oc@ch@num}%
-      {\unexpanded\expandafter{\oc@ch@title}}{\noexpand\oc@ch@epi}}\oc@tmp
-    \expandafter\oc@chapter@orig\expandafter[\expandafter{\oc@ch@short}]{\oc@ch@title}\oc@ch@label#1%
+    % Next page, either side. \chapter would otherwise honour \@openright and
+    % insert a blank verso. Restore the flag before the body is read, so the
+    % heading's \everypar (no indent on the first paragraph) survives.
+    \@openrightfalse
+    \expandafter\oc@chapter@orig\expandafter[\expandafter{\oc@ch@short}]{\oc@ch@title}%
+    \@openrighttrue
+    \oc@ch@label\oc@ch@mark#1%
   \else
-    \expandafter\oc@chapter@orig\expandafter[\expandafter{\oc@ch@short}]{\oc@ch@title}\oc@ch@label
+    \expandafter\oc@chapter@orig\expandafter[\expandafter{\oc@ch@short}]{\oc@ch@title}\oc@ch@label\oc@ch@mark
     \ifx\oc@ch@epi\@empty\else\begin{center}\itshape\oc@ch@epi\end{center}\fi#1%
   \fi}
 \AtBeginDocument{\let\oc@chapter@orig\chapter
