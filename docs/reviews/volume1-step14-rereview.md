@@ -4,13 +4,15 @@ Independent reading of the repairs squash-merged as #74 at `3f264ba` (`3f264bab2
 
 ## Verdict on the #74 repairs
 
-**The repairs hold.** The two must-fix lines are no longer false, and the should-fix gaps are filled. Two local sentences in that repair were still loose. They are corrected in this pull request. Nothing in the repair asks for a chapter to be rewritten.
+**The repairs hold.** The two must-fix lines are no longer false, and the should-fix gaps are filled. Two local sentences in that repair were still loose, and two further local gaps showed up in the same reading: the real Cauchy–Schwarz theorem was being applied to a complex sum, and the Lucas nearest-integer sentence had lost the hypothesis \(n\ge 2\). They are corrected in this pull request. Nothing in the repair asks for a chapter to be rewritten.
 
 ### Must-fix
 
 **Exercise `pb:bilinear`, part (a) and (b).** The square root is taken. Part (a) ends at \(\bigl|\sum\sigma(a)\bigr|\le\sqrt{p\,|A|\,|B|}\), and the sentence calls that the claim. Part (b) ends at \(|E|\le\sqrt{p\,|U|\,|V|}\), after \(|E|^2\le|V|(p-1)|U|\le p|U||V|\). Part (c) may then subtract the square root. Part (d) uses that cosine is strictly decreasing on \([0,\pi/2]\), that \(2\pi/9<\pi/3\), and that \(\cos(\pi/3)=1/2\), so \(\cos(2\pi/9)>1/2\).
 
 One sentence in (a) still skipped a factor. The expanded sum equals \(p|B|\), and the \(|A|\) comes from Cauchy–Schwarz. The repair said “the right side is therefore \(p|A||B|\)” and then displayed the squared bound. The display was the right bound. The sentence now names both factors. Checked against the geometric sum: \(\sum_{a=0}^{p-1}\omega^a\) is \(p\) when \(\omega=1\) and \(0\) otherwise, and \(\omega=1\) exactly when \(b=b'\), since \(p\) does not divide \(r\).
+
+The cited Cauchy–Schwarz theorem is the real form. The sums \(\sigma(a)\) are complex. The write-up now multiplies by a complex number of modulus \(1\) so the sum is real and nonnegative, applies the real theorem to those real parts and a list of ones, and uses that a real part is at most the modulus. Part (b) uses the same rotation.
 
 **Determinant reminder, linear algebra.** The condition number is the ratio of the greatest stretch to the least. The absolute value of the determinant is the product of one stretch from each dimension. For \(\varepsilon I\) that product is \(\varepsilon^n\), and the condition number is \(1\). For \(\operatorname{diag}(M,1/M)\) the product is \(1\) and the condition number is \(M^2\). The old sentence, that the greatest and least stretches multiply to the determinant, is gone.
 
@@ -24,7 +26,9 @@ One sentence in (a) still skipped a factor. The expanded sum equals \(p|B|\), an
 
 **Chapter 1’s promise.** The Fibonacci limit names the language of the limit in the sequences chapter. The Erdős–Heilbronn exercise names Alon’s nullstellensatz in that same chapter. The bilinear sum names Cauchy–Schwarz in the inequalities chapter, and the complex exponential in the complex-numbers chapter.
 
-**Field guide.** The theorem still says “not prime”, which is what the proof earns. The sentence in front of it no longer says that a prime value on an arithmetic progression forces composite values in general. For \(f(n)=41-n\) that stronger word fails, at \(0\) and at \(-41\). The sentence now stays with \(f(0)=41\) and the two progressions where \(41\) divides \(f(n)\).
+**Field guide.** The theorem still says “not prime”, which is what the proof earns. The sentence in front of it no longer says that a prime value on an arithmetic progression forces composite values in general. For \(f(n)=41-n\) that stronger word fails, at \(0\) and at \(-41\). A later term on the progression of difference \(|f(a)|\) can also equal the prime itself, as with \(f(X)=X^2-6X+7\) and \(f(1)=f(5)=2\). The sentence now stays with \(f(0)=41\) and the two progressions where \(41\) divides \(f(n)\). On those progressions the later values are larger multiples of \(41\), so they are not prime, and none of them equals \(41\).
+
+The Lucas sentence in the beauty note said \(L_n\) is the integer closest to \(\varphi^n\). The proof gives that only for \(n\ge 2\). For \(n=1\), \(L_1=1\) and the nearest integer to \(\varphi\) is \(2\). The note now keeps the hypothesis \(n\ge 2\).
 
 **Copyright line.** The cover credit says “from \(2\) up to \(8{,}000\)”, matching About the Cover.
 
