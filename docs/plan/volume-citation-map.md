@@ -198,7 +198,7 @@ Old Volume 0's numbered citations (Proposition 3.7, Exercise 1.6, and the rest) 
 | 11 | 10 | Random Matrices I: The Semicircle | `chapters/ch10-semicircle.tex` | Volume 8, Chapter 12 |
 | 11 | 11 | Random Matrices II: Unitary Matrices and the Zeros of Zeta | `chapters/ch11-cue.tex` | Volume 8, Chapter 13 |
 | 11 | 12 | Log-Correlated Fields and the Largest Values | `chapters/ch12-logcorrelated.tex` | Volume 12, Chapter 8 |
-| 11 | A | Spectral Graph Theory | `chapters/spectral.tex` | split or dropped from the edition (see the note list) |
+| 11 | A | Spectral Graph Theory | `chapters/spectral.tex` | Volume 12, Appendix A |
 | 11 | B | Zeta and Random Matrices | `chapters/moments.tex` | Volume 15, Chapter 9 |
 | 12 | 1 | Number Fields and Their Integers | `chapters/ch01-number-fields.tex` | Volume 13, Chapter 3 |
 | 12 | 2 | Ideals and the Splitting of Primes | `chapters/ch02-ideals.tex` | Volume 13, Chapter 4 |
@@ -307,16 +307,18 @@ The pass left these because one phrase named two homes, or the appendix letter w
 | --- | --- |
 | `volume2-integers` reciprocity tools | Cyclic units and reciprocity stay in Volume 2, Chapters 4 and 5. The \(p\)-adic squares are Volume 13, Chapter 8. |
 | `volume2-integers` characters tools | \(\mathbb Z[\omega]\) stays in Volume 2, Chapter 10. The quadratic integers are Volume 13, Chapter 1. |
-| `volume4-chance` `ch12-method.tex` | Adjacency eigenvalues are Volume 8, Chapter 9. Ramanujan graphs are Volume 8, Chapter 11. The matrix-tree theorem is Volume 12, Chapter 10. Stirling's formula is Volume 1, Exercise 3.7. The Collatz appendix is not in the printed series; the sentence keeps the open question and drops the pointer. |
-| `volume8-analysis` `linear-ch08-graphs.tex` | Cheeger is Chapter 10 of that book, expanders and Ramanujan graphs are Chapter 11, and the matrix-tree theorem is Volume 12, Chapter 10. |
+| `volume4-chance` `ch12-method.tex` | Adjacency eigenvalues are Volume 8, Chapter 9. Ramanujan graphs are Volume 8, Chapter 11. The matrix-tree theorem is Volume 12, Appendix A. Stirling's formula is Volume 1, Exercise 3.7. Jensen's inequality is Volume 1, Theorem 9.2. The Collatz appendix is not in the printed series; the sentence keeps the open question and drops the pointer. |
+| `volume8-analysis` `linear-ch08-graphs.tex` | Cheeger is Chapter 10 of that book, expanders and Ramanujan graphs are Chapter 11, and the matrix-tree theorem is Volume 12, Appendix A. |
 | `volume8-analysis` `linear-ch11-inequalities.tex` | The order-\(668\) account is not a printed chapter. Volume 3, Chapter 13, builds the known Hadamard matrices. |
 | `volume9-shapes` forms, curvature, coverings | The continuous argument is Volume 7, Lemma 6.1, in the Jordan chapter. |
 | `volume9-shapes` `ch01-manifolds.tex` and the unused algebra conjectures file | The complex logarithm is Volume 8, Chapter 22. |
-| `volume9-shapes` `ch10-integral.tex` | Buffon–Barbier is Volume 9, Appendix J. |
+| `volume9-shapes` `ch10-integral.tex` | Buffon–Barbier is Volume 9, Appendix J, and Cauchy's formula for the perimeter is Theorem J.5 of that appendix. |
 | `volume9-shapes` `ch09-hyperbolic.tex` | The half-plane model is Volume 9, Appendix I, not the integral-geometry chapter that now carries the old number 10. |
 | `volume12-random-motion` `moments.tex` | The twin-prime appendix is not printed. The problem is taken up in Volume 6 and again in Volume 14. |
 
-Three further sentences were inconsistent inside a paragraph that a later edit had only partly renumbered. Conditional expectation in the Volume 11 martingale reminder is Volume 4, and the tower property is Volume 7, Theorem 10.17. The adjacency spectra in the Volume 12 spectral chapter are Volume 8, Chapter 9. Fourier analysis in the Volume 13 Tate reminder is Volume 5, Chapter 10, and Carathéodory's extension theorem is Volume 7, Theorem 7.10.
+Three further sentences were inconsistent inside a paragraph that a later edit had only partly renumbered. Conditional expectation in the Volume 11 martingale reminder is Volume 4, and the tower property is Volume 7, Theorem 11.17. The adjacency spectra in the Volume 12 spectral chapter are Volume 8, Chapter 9. Fourier analysis in the Volume 13 Tate reminder is Volume 5, Chapter 10, and Carathéodory's extension theorem is Volume 7, Theorem 7.10.
+
+Volume 4 has a single appendix, the extremal chapter, so Ramsey citations of the old Appendix B are Appendix A. Mordell's theorem is Volume 13, Chapter 15. A later pass checked every `Volume~N` followed by a chapter, theorem, proposition, lemma, corollary, exercise or appendix number. The number was kept only when that item exists in the named volume and its label or title is the statement the sentence describes. Parenthetical locators and the later numbers in a list had often kept the pre-insertion number after the volume was updated; those now point at the current home of the same label. Volume 12 has no Chapter 10: the matrix-tree theorem is Appendix A.
 
 No citation was left on an old volume number. `Volume~0` does not remain in Volumes 2–15.
 
