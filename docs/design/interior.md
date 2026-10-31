@@ -196,6 +196,14 @@ the stacked form inline.
   charcoal bar; Fira labels with coral numbers; the coral end-of-proof diamond;
 - coral only on rules, numerals, numbers and diamonds. The reader keeps its dark theme.
 
+### Figures and mathematics
+
+EPUB figures fill the text column. Each TikZ plate is a PNG at least 1600 pixels wide — the build writes 1800 — and the `img` carries `width: 100%`, `max-width: 100%` and `height: auto`. There is no fixed pixel width. A plate that is narrower than the measure in print is enlarged to the column, so a label set at script size stays readable on a 300 ppi screen. Kindle sizes an SVG from its viewBox in pixels and ignores `max-width`, which is why the plate is a PNG and the width sits on the image, not only in the stylesheet.
+
+Inline mathematics is a transparent PNG in Garamond-Math. The width is the TeX width in em, and `vertical-align` is the TeX depth in em, so the formula baseline meets the surrounding line and both follow the reader's font size. A display that is wider than about 22 em uses the full column instead. Send-to-Kindle does not lay MathML out: it substitutes its own picture and drops the depth, which is why those formulas sat above the line and looked small. The em shift is as close as that device gets. The match is the baseline, to the pixel grid. The glyphs stay the book's math face when the reader chooses another text face. Calibre and a browser would sit MathML on the baseline themselves; the Paperwhite does not get that far.
+
+`tools/check_epub_media.py` fails a book that breaks either rule. `./build.sh` runs it after `tools/epub_fix.py`. The print PDF and the reading PDF are untouched. The online reader still uses the SVG plates and KaTeX.
+
 The online reader has one page per chapter; the former one-page-per-part URLs redirect
 (`tools/site.py`).
 

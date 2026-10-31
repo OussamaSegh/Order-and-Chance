@@ -120,7 +120,9 @@ def main(src: str, dst: str, figdir: str) -> None:
     name = re.search(r"^% exercise-name: (\w+)", text, re.M)
     if name:
         text = text.replace("\\begin{document}", "\\begin{document}\n\\begin{exname}" + name.group(1) + "\\end{exname}", 1)
-    # Figures: the EPUB shows the SVG made by build.sh instead of the TikZ code.
+    # Figures: pandoc embeds this SVG. tools/epub_fix.py then replaces it with a
+    # full-width PNG, because Kindle sizes an SVG from its viewBox. The online
+    # reader still uses the SVG.
     text = re.sub(r"\\fig\{([^}]*)\}",
                   lambda m: r"\includegraphics{" + str(Path(figdir).resolve() / (m.group(1) + ".svg")) + "}", text)
     # Portraits (\\portrait{file}{credit}, \\portraits{f1}{c1}{f2}{c2} of volume0's main.tex): the EPUB

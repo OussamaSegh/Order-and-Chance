@@ -1,3 +1,15 @@
+# EPUB figures and mathematics — 31 October 2026
+
+Kindle Paperwhite, through Send-to-Kindle, was drawing TikZ plates at about a third of the text column and sitting inline formulas above the line. The plates were SVG files whose viewBox is in PDF points; Kindle treats that number as pixels, and the stylesheet only set `max-width`, which does not enlarge a small image and which Enhanced Typesetting ignores. The formulas were MathML. Send-to-Kindle turns MathML into its own picture and drops the depth, so the ink sits high and looks smaller than the body.
+
+The EPUB now writes each plate as a PNG 1800 pixels wide, with `width: 100%`, `max-width: 100%` and `height: auto` on the image. Both axes are scaled, so the picture keeps its shape. Inline mathematics is a transparent Garamond-Math PNG whose width and `vertical-align` are the TeX width and depth in em. That is the alignment Kindle will actually honor. It meets the text baseline to the pixel grid and follows the reader's font size. It does not change face when the reader picks another font. Native MathML still sits on the baseline in Calibre and a browser; the Paperwhite never lays that MathML out.
+
+`tools/check_epub_media.py` rejects a plate under 1600 pixels, a fixed pixel width, an SVG plate, or inline math without an em shift. The print PDF, the reading PDF and the online reader are unchanged.
+
+All fifteen EPUBs were built with this pipeline. Each passed `tools/check_epub_media.py` and EPUBCheck. `./build.sh` already supplies the publication date EPUBCheck requires.
+
+---
+
 # Part and chapter openers — 30 October 2026
 
 Every volume shares one opener swap in `common/chapter-opener.tex`. A part page is a

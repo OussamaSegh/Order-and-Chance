@@ -106,7 +106,8 @@ for volume in "${volumes[@]}"; do
     continue
   fi
 
-  # Each figure also becomes an SVG for the EPUB (needs pdftocairo, from poppler-utils).
+  # Each figure becomes a PDF and an SVG (needs pdftocairo). The online reader
+  # uses the SVG. The EPUB swaps it for a full-width PNG in tools/epub_fix.py.
   mkdir -p "$out/figures"
   for fig in "$root/$volume"/figures/*.tex; do
     [ -e "$fig" ] || continue
@@ -132,7 +133,8 @@ for volume in "${volumes[@]}"; do
       --metadata date=2026 --metadata rights="$(python3 "$root/tools/epub_prep.py" --rights "$root/$volume/main.tex")" \
       --metadata subject=Mathematics \
       -o "$root/dist/$public.epub")
-  python3 "$root/tools/epub_fix.py" "$root/dist/$public.epub"
+  python3 "$root/tools/epub_fix.py" "$root/dist/$public.epub" "$out/figures"
+  python3 "$root/tools/check_epub_media.py" "$root/dist/$public.epub"
   # The online reader for the website: one HTML page per chapter, from the same LaTeX as the EPUB.
   python3 "$root/tools/reader.py" "$volume" "$out" "$root/dist/html/$volume"
   python3 "$root/tools/check_cover_template.py" "$out/cover.pdf" --number "$num" --cover-png "$out/cover.png" --epub "$root/dist/$public.epub" --reader "$root/dist/html/$volume"
