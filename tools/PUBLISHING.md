@@ -238,8 +238,8 @@ the online reader and the site serve their WOFF2 companions.
 
 Charcoal and one coral accent carry the cover identity onto white interior pages;
 in print every part opens on a full charcoal recto (masthead, coral numeral, ivory title,
-no illustration) and every chapter on a verso with a charcoal band over the top 3.4 in
-plus 0.15 in of air under the band. The EPUB and the online reader open
+no illustration) and every numbered chapter opens with a compact charcoal band, the title
+and the epigraph, and the prose continues on that same page. The EPUB and the online reader open
 chapters and parts with a compact charcoal header strip instead (no full-charcoal page, no
 illustration): `tools/epub_prep.py` turns `\part` into a marker and `tools/epub.lua`
 builds the strips. `tools/opener_motif.py` can render the cover illustration for the

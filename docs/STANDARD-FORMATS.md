@@ -40,7 +40,7 @@ Both use the final 7 × 10 inch layout. This supersedes the earlier single-PDF d
 | `dist/kdp/<Book> - Publishing Listing.md` | Title fields, description and keywords |
 
 Both PDFs share identical typeset body pages: 11.5 pt EB Garamond/Garamond-Math with Cormorant headings, mirrored margins,
-full charcoal part pages and banded chapter openers, full-colour styling and whole framed boxes. The reading PDF
+full charcoal part pages and compact banded chapter openers (the prose continues under the band), full-colour styling and whole framed boxes. The reading PDF
 has exactly one additional front-cover page; its interior labels and references
 are preserved. The print file excludes that page. Never calculate a paperback
 spine from the reading PDF's total count. Upload the print file as the paperback
