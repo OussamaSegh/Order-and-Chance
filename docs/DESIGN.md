@@ -1,18 +1,16 @@
 # Chapter opener on the same page — 31 October 2026
 
-Numbered chapters no longer spend a page on the band alone. `common/chapter-opener.tex`
-draws a charcoal band 0.30 in inside the trim. The masthead and volume line are
-centred at the top. The coral numeral sits to the left of the cream title, and that pair is centred as one group.
-There is no chapter label and no rule; an appendix adds a small `APPENDIX` above
-the letter. The opening italic is 10.5 pt, centred on 75 percent of the measure,
-with no bar. The prose starts on that same page, and the next page does not repeat
-the heading. The first page is plain: folio at the foot, no running head.
-Chapters still start on a new page, on whichever side comes next, so a part page is
-not followed by a blank. Unnumbered chapters keep the short heading. Part pages are
-unchanged. The EPUB already opened with one strip and then the text; that is unchanged.
+Numbered chapters open on the white page. There is no charcoal band. A small coral
+label (`CHAPTER 0`, or `APPENDIX A`) sits above a left-aligned black title in the
+body serif, EB Garamond, at 26/32 pt. A short coral rule follows the title. The
+opening italic is 10.5 pt, centred on 75 percent of the measure, and the prose
+starts on that same page. The next page does not repeat the heading. The first
+page is plain: folio at the foot, no running head. Later running heads are unchanged.
+Chapters still start on a new page, on whichever side comes next.
 
-The band used to meet the trim. It is now inset by 0.30 in, inside KDP's 0.25 in
-no-bleed margin. A part page still runs to the edge. The gap under an interior float
+A part is one full charcoal page. The part numeral is coral, the title cream, and
+the lockup is centred. The part's first chapter begins on the following page in
+the plain style. A volume with no parts is unchanged. The gap under an interior float
 keeps a natural 20 pt and may shrink by up to 14 pt, so a page that the reflow fills
 a few points too full stays inside the text block.
 
