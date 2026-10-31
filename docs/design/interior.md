@@ -61,16 +61,12 @@ the running heads.
 
 The opener is a compact block at the top of that page:
 
-- a charcoal band, held 0.30 in inside the trim on the top and the sides. It grows to
-  fit the title. Inside it, from the top: the masthead `ORDER AND CHANCE` and the
-  volume line in cream; then the chapter numeral (or appendix letter) in 64 pt coral
-  Cormorant Light on the left, and on the right `CHAPTER n` (Fira, cream, numeral in
-  coral) with the cream Cormorant title at 26/30 pt. A two-line or three-line title
-  stays inside the charcoal;
-- under the band, on the white paper: a 0.9 in coral rule, then the epigraph.
-  The epigraph is italic at 12.5/17.5 pt, a touch above the body, on 78 percent of
-  the measure, with a 1.4 pt coral bar on its left. Inline mathematics stays at
-  that size. The bar and the text stay inside the text block.
+- a charcoal band, held 0.30 in inside the trim. The masthead and volume line are
+  small and centred at the top. The coral numeral is centred above the centred
+  cream Cormorant title. There is no `CHAPTER n` label. An appendix adds a small
+  `APPENDIX` above the letter. There is no rule;
+- under the band, on the white paper, the opening italic is 10.5 pt on 14.7 pt,
+  centred on 68 percent of the measure, with space above and below and no bar.
 
 The body follows the epigraph. There is no second heading on the next page. Unnumbered
 chapters (preface, field guide, About the Cover, solutions, index, bibliography) have
