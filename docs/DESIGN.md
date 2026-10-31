@@ -3,8 +3,9 @@
 Numbered chapters no longer spend a page on the band alone. `common/chapter-opener.tex`
 draws a compact charcoal band 0.30 in inside the trim. The band holds the masthead,
 the volume line, the 64 pt coral numeral and the cream Cormorant title (`CHAPTER n`
-beside the numeral). A two-line title stays inside the charcoal. The coral rule and
-the epigraph sit on the paper under the band. The prose starts on that same page, and
+beside the numeral). A two-line title stays inside the charcoal. The coral rule sits
+on the paper under the band. The epigraph is a larger italic, on 78 percent of the
+measure, with a thin coral bar at its left. The prose starts on that same page, and
 the next page does not repeat the heading. The first page is plain: folio at the foot, no running head.
 Chapters still start on a new page, on whichever side comes next, so a part page is
 not followed by a blank. Unnumbered chapters keep the short heading. Part pages are

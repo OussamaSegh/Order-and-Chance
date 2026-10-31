@@ -67,7 +67,9 @@
     \setlength{\oc@hang}{\dimexpr\ocOuter-\oc@bandInset\relax}%
   \fi
   \setlength{\oc@titleW}{\dimexpr\linewidth-\oc@numW-0.20in\relax}%
-  \sbox{\oc@ch@num}{\ocNumeral\fontsize{64}{64}\selectfont\thechapter}%
+  % Colour goes inside the box. A colour set on the tikz node does not reach a saved box,
+  % and the numeral was coming out black on the charcoal.
+  \sbox{\oc@ch@num}{{\color{ocCoral}\ocNumeral\fontsize{64}{64}\selectfont\thechapter}}%
   \setbox\oc@ch@lock=\vbox{%
     \topskip=0pt \parskip=0pt \parindent=0pt
     \hsize=\oc@titleW
@@ -102,19 +104,31 @@
       \node[anchor=north west,inner sep=0pt] at (\oc@hang+\oc@numW+0.16in,\oc@bandH-0.62in)
         {\usebox\oc@ch@lock};
     \end{tikzpicture}}}
-% Coral rule and epigraph on the paper directly under the band; the body follows.
+% Coral rule, then the opening italic on a narrower measure with a thin coral bar.
+% The bar and the text together are 78 percent of the text width, so a long line
+% wraps instead of running into the margin. The italic is a touch above body size.
 \newcommand{\oc@flow@after}{%
   \nointerlineskip
-  \vskip 12pt
+  \vskip 13pt
   \vbox{%
     \hsize=\linewidth
-    \everypar{}%
     \parindent=0pt
     \noindent\ocChapterRule\par
     \ifx\oc@ch@epi\@empty\else
-      \vspace{9pt}%
-      {\small\itshape\color{ocBlack}\raggedright\hyphenpenalty10000\exhyphenpenalty10000
-        \let\\\newline \oc@ch@epi\par}%
+      \vspace{15pt}%
+      \noindent\hbox{%
+        {\color{ocCoral}\vrule width 1.4pt}%
+        \hspace{11pt}%
+        \vbox{%
+          \hsize=\dimexpr0.78\linewidth-1.4pt-11pt\relax
+          \parindent=0pt
+          \itshape\fontsize{12.5}{17.5}\selectfont\color{ocBlack}%
+          \raggedright
+          \hyphenpenalty=4000
+          \exhyphenpenalty=4000
+          \emergencystretch=2em
+          \let\\\newline
+          \oc@ch@epi}}\par
     \fi}}
 % Numbered chapter heading: plain page (no running head), band, then rule and epigraph.
 % \ocChapterHead is the titlesec before-code; #1 is the title that follows it.

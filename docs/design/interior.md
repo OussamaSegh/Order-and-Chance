@@ -67,8 +67,10 @@ The opener is a compact block at the top of that page:
   Cormorant Light on the left, and on the right `CHAPTER n` (Fira, cream, numeral in
   coral) with the cream Cormorant title at 26/30 pt. A two-line or three-line title
   stays inside the charcoal;
-- under the band, on the white paper: a 0.9 in coral rule, then the epigraph in
-  charcoal italic.
+- under the band, on the white paper: a 0.9 in coral rule, then the epigraph.
+  The epigraph is italic at 12.5/17.5 pt, a touch above the body, on 78 percent of
+  the measure, with a 1.4 pt coral bar on its left. Inline mathematics stays at
+  that size. The bar and the text stay inside the text block.
 
 The body follows the epigraph. There is no second heading on the next page. Unnumbered
 chapters (preface, field guide, About the Cover, solutions, index, bibliography) have
