@@ -57,7 +57,9 @@ class KindleMath(unittest.TestCase):
         self.assertGreater(glyph.width_em, 1)
         tag = glyph.html("m.png", tex)
         self.assertIn("oc-math-display", tag)
-        self.assertIn("height:auto", tag)
+        self.assertIn('width="', tag)
+        self.assertIn('height="', tag)
+        self.assertNotIn("display:block", tag)
 
 
 @unittest.skipUnless(HAVE, "xelatex, pdftocairo and pandoc are required")
