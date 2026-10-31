@@ -1,6 +1,20 @@
 % epub-title: Order and Chance. Volume 1: First Principles
 \documentclass[11pt,openany]{book}
 \input{../common/preamble}
+% XeTeX otherwise draws many word spaces as position shifts only. The ink is
+% spaced, but the text layer has no U+0020, so copy and paste run the words
+% together. Full interword shaping emits the font's space glyph and maps it.
+\ifdefined\XeTeXinterwordspaceshaping
+  \XeTeXinterwordspaceshaping=2
+\fi
+% A comma or a period raises the space factor, and XeTeX then omits the
+% following space from the text layer. Keep every word space ordinary.
+\sfcode`\,=1000
+\sfcode`\:=1000
+\sfcode`\;=1000
+\sfcode`\.=1000
+\sfcode`\?=1000
+\sfcode`\!=1000
 \input{layout}
 % Paperback ISBN assigned by KDP (common/frontmatter.tex prints it on the copyright page).
 \renewcommand{\bookisbnprint}{9798165526770}
@@ -30,7 +44,15 @@
 \makecover
 \maketitle
 \input{chapters/preface}
+% Full interword shaping segfaults XeTeX 0.999995 on this contents list
+% (leaders). The body, including the preface above, keeps it.
+\ifdefined\XeTeXinterwordspaceshaping
+  \XeTeXinterwordspaceshaping=0
+\fi
 \tableofcontents
+\ifdefined\XeTeXinterwordspaceshaping
+  \XeTeXinterwordspaceshaping=2
+\fi
 
 \mainmatter
 \setcounter{chapter}{-1}

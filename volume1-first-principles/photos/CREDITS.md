@@ -1,21 +1,36 @@
 # Image provenance and reproduction
 
-New photographs are authentic images, not generated illustrations. Retrieved from
-scikit-image v0.22.0 on 2026-10-27. The data documentation identifies these assets
-as public domain:
+New photographs are authentic images, not generated illustrations. The Collins and
+Hubble files were retrieved from scikit-image v0.22.0 on 2026-10-27. That package's
+data documentation calls them public domain:
 https://github.com/scikit-image/scikit-image/blob/v0.22.0/skimage/data/_fetchers.py
-(functions `astronaut`, `hubble_deep_field`, `rocket`). Captions credit the original providers.
+(functions `astronaut` and `hubble_deep_field`). Captions credit the original providers.
 
 | Local file | Original credit and source | SHA256 of downloaded original |
 |---|---|---|
 | astronaut.jpg | NASA, Eileen Collins; https://flic.kr/p/r9qvLn | PNG: 88431cd9653ccd539741b555fb0a46b61558b301d4110412b5bc28b5e3ea6cb5 |
 | hubble-deep-field.jpg | NASA, Hubble eXtreme Deep Field; http://hubblesite.org/newscenter/archive/releases/2012/37/image/a/ | 3a19c5dd8a927a9334bb1229a6d63711b1c0c767fb27e2286e7c84a3e2c2f5f4 |
-| rocket.jpg | SpaceX Photos, DSCOVR launch; https://www.flickr.com/photos/spacexphotos/16511594820/ | c2dd0de7c538df8d111e479619b129464d0269d0ae5fd18ca91d33a7fdfea95c |
+| rocket.jpg | NASA/Aubrey Gemignani, Crew-8, 3 March 2024. NASA image NHQ202403030014. File is NASA's `~orig.jpg`, unmodified. https://images.nasa.gov/details/NHQ202403030014 | fe7da3137f0fbcc2d19972fe9879d3a1ca23932cbff47a37f3158b0fe5165e3b |
 
-Download URLs are `https://raw.githubusercontent.com/scikit-image/scikit-image/v0.22.0/skimage/data/`
-followed by `astronaut.png`, `hubble_deep_field.jpg`, `rocket.jpg`. All three hashes
-match scikit-image's versioned `_registry.py`. Astronaut was converted from PNG to
-JPEG at quality 95; no scene edits or AI generation. The other two are unmodified.
+Download URLs for the first two are `https://raw.githubusercontent.com/scikit-image/scikit-image/v0.22.0/skimage/data/`
+followed by `astronaut.png` and `hubble_deep_field.jpg`. Those hashes match
+scikit-image's versioned `_registry.py`. Astronaut was converted from PNG to JPEG
+at quality 95; no scene edits. The Hubble file is unmodified.
+
+The launch photograph is not the scikit-image `rocket` file. On 31 October 2026 the
+Flickr page for image 16511594820, which scikit-image 0.22.0 distributes as
+`rocket.jpg` and describes as public domain, showed the licence CC BY-NC 2.0
+(https://creativecommons.org/licenses/by-nc/2.0/, linked from
+https://www.flickr.com/photos/spacex/16511594820, the target of
+https://www.flickr.com/photos/spacexphotos/16511594820). That licence does not
+allow a book offered for sale. The embedded EXIF on the replacement says
+`Copyright: (NASA/Aubrey Gemignani)` and `Artist: NASA/Aubrey Gemignani`. NASA's
+media guidelines, read the same day at
+https://www.nasa.gov/nasa-brand-center/images-and-media/, state that NASA images
+are generally not subject to copyright in the United States and that textbook
+authors may use them without implying endorsement. The image metadata sidecar
+records `UsageTerms: Released to Public`. The old file's SHA256 was
+`c2dd0de7c538df8d111e479619b129464d0269d0ae5fd18ca91d33a7fdfea95c`.
 No endorsement is implied.
 
 Two further public-domain portraits were added for the counting chapter on 30 October 2026, from Wikimedia Commons, with no scene edits:
