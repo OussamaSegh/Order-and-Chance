@@ -73,6 +73,26 @@ def compress_plate(data: bytes) -> bytes:
         return out.read_bytes()
 
 
+def fit_formula_png(data: bytes, height_em: float) -> bytes:
+    """Keep the bitmap about 2.5 CSS pixels per displayed pixel, not 10.
+
+    Moon+ draws an image at its intrinsic pixel size when it ignores em
+    widths. A 480 ppi glyph is then several times the body. The HTML width
+    and height are the real constraint; this stops the fallback being huge.
+    """
+    import io
+    from PIL import Image
+    target_h = max(8, int(round(height_em * 16 * 2.5)))
+    im = Image.open(io.BytesIO(data))
+    if im.height <= int(target_h * 1.25):
+        return data
+    target_w = max(1, int(round(im.width * target_h / im.height)))
+    im = im.resize((target_w, target_h), Image.Resampling.LANCZOS)
+    buf = io.BytesIO()
+    im.save(buf, format="PNG", optimize=True)
+    return compress_math(buf.getvalue())
+
+
 def compress_math_many(images: list[bytes]) -> list[bytes]:
     if not images:
         return []

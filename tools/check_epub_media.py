@@ -99,16 +99,25 @@ def _plate_errors(where: str, attrs: dict[str, str], pngs: dict[str, bytes], pag
     return errors
 
 
-def _math_errors(where: str, attrs: dict[str, str], inline: bool) -> list[str]:
+def png_size(data: bytes) -> tuple[int, int]:
+    if data[:8] != b"\x89PNG\r\n\x1a\n":
+        raise ValueError("not a PNG")
+    return struct.unpack(">II", data[16:24])
+
+
+def _math_errors(where: str, attrs: dict[str, str], inline: bool, pngs: dict[str, bytes], page: str) -> list[str]:
     errors = []
     style = attrs.get("style", "").replace(" ", "")
-    fixed = _fixed_attr(attrs)
-    if fixed:
-        errors.append(f"{where} has a fixed {fixed}")
-    if LENGTH.search(style):
-        errors.append(f"{where} style sets a px/pt size ({style})")
-    if "height:auto" not in style or "max-width:100%" not in style:
-        errors.append(f"{where} is missing height:auto and max-width:100%")
+    if "display:block" in style:
+        errors.append(f"{where} is display:block, so the following punctuation starts a new line")
+    for key in ("width", "height"):
+        value = attrs.get(key, "")
+        if not re.fullmatch(r"\d+", value) or int(value) < 1:
+            errors.append(f"{where} needs an explicit HTML {key} in CSS pixels")
+    if "max-height:" not in style:
+        errors.append(f"{where} is missing max-height")
+    if not re.search(r"height:\d+(?:\.\d+)?em", style) and "height:auto" not in style:
+        errors.append(f"{where} needs an em height or height:auto")
     if inline:
         if not EM_WIDTH.search(style):
             errors.append(f"{where} width is not in em, so it will not follow the body font")
@@ -116,6 +125,21 @@ def _math_errors(where: str, attrs: dict[str, str], inline: bool) -> list[str]:
             errors.append(f"{where} has no em vertical-align, so the baseline will not meet the text")
     elif not (EM_WIDTH.search(style) or "width:100%" in style):
         errors.append(f"{where} has neither an em width nor width:100%")
+    src = attrs.get("src", "")
+    height_attr = attrs.get("height", "")
+    if src and re.fullmatch(r"\d+", height_attr):
+        target = resolve(page, src)
+        data = pngs.get(target)
+        if data:
+            try:
+                _, png_h = png_size(data)
+            except ValueError:
+                errors.append(f"{where} is not a PNG")
+            else:
+                if png_h > int(height_attr) * 3.5:
+                    errors.append(
+                        f"{where} bitmap is {png_h}px tall but displays at {height_attr}px; "
+                        "Moon+ will draw the intrinsic size")
     return errors
 
 
@@ -141,9 +165,11 @@ def check(path: Path) -> list[str]:
             if "oc-plate" in kind.split():
                 errors.extend(_plate_errors(f"{name} plate", attrs, pngs, name))
             elif "oc-math-inline" in kind.split():
-                errors.extend(_math_errors(f"{name} inline math", attrs, True))
+                errors.extend(_math_errors(f"{name} inline math", attrs, True, pngs, name))
             elif "oc-math-display" in kind.split():
-                errors.extend(_math_errors(f"{name} display math", attrs, False))
+                errors.extend(_math_errors(f"{name} display math", attrs, False, pngs, name))
+        if re.search(r"<p\b[^>]*>\s*[.,;:!?]", text):
+            errors.append(f"{name} has a paragraph that starts with punctuation torn off a formula")
         for figure in FIGURE_RE.finditer(text):
             for match in IMG_RE.finditer(figure.group(0)):
                 attrs = parse_attrs(match.group(0))

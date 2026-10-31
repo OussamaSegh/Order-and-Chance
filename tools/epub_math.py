@@ -45,6 +45,10 @@ BORDER_PT = 0.4
 DPI = 480
 WIDE_EM = 22.0
 CACHE_TAG = "v6"
+# HTML width/height are CSS pixels at the usual 16 px em. Moon+ uses those
+# attributes and ignores em widths, so a high-dpi PNG otherwise draws huge.
+CSS_PX_PER_EM = 16
+INTRINSIC_SCALE = 2.5
 
 MATH_RE = re.compile(r"<math\b([^>]*)>(.*?)</math>", re.S)
 RAW_RE = re.compile(r'<span class="math (inline|display)">\s*(.*?)\s*</span>', re.S)
@@ -95,25 +99,37 @@ class Glyph:
     height_em: float
     display: bool
 
+    def _px(self, em: float) -> int:
+        return max(1, int(round(em * CSS_PX_PER_EM)))
+
     def html(self, src: str, alt: str) -> str:
         alt_attr = html.escape(" ".join(alt.split()), quote=True)
         src_attr = html.escape(src, quote=True)
+        width_px = self._px(self.width_em)
+        height_px = self._px(self.height_em)
+        height = f"{self.height_em:.4f}"
         if self.display and self.width_em >= WIDE_EM:
-            style = "display:block;width:100%;max-width:100%;height:auto;margin:0.6em auto"
+            style = (
+                f"display:inline-block;width:100%;max-width:100%;height:auto;max-height:{height}em;"
+                f"vertical-align:middle"
+            )
             kind = "oc-math-display"
         elif self.display:
             style = (
-                f"display:block;width:{self.width_em:.4f}em;max-width:100%;"
-                f"height:auto;margin:0.6em auto"
+                f"display:inline-block;width:{self.width_em:.4f}em;height:{height}em;"
+                f"max-width:100%;max-height:{height}em;vertical-align:middle"
             )
             kind = "oc-math-display"
         else:
             style = (
-                f"width:{self.width_em:.4f}em;max-width:100%;height:auto;"
-                f"vertical-align:{-self.depth_em:.4f}em"
+                f"display:inline;width:{self.width_em:.4f}em;height:{height}em;"
+                f"max-width:100%;max-height:{height}em;vertical-align:{-self.depth_em:.4f}em"
             )
             kind = "oc-math-inline"
-        return f'<img class="{kind}" src="{src_attr}" alt="{alt_attr}" style="{style}"/>'
+        return (
+            f'<img class="{kind}" src="{src_attr}" alt="{alt_attr}" '
+            f'width="{width_px}" height="{height_px}" style="{style}"/>'
+        )
 
 
 def formula_id(tex: str, display: bool) -> str:
@@ -327,21 +343,48 @@ def render_formulas(formulas: list[tuple[str, bool]], cache: Path | None = None)
     return rendered
 
 
+_FORMULA_IMG = re.compile(
+    r'(<img\b[^>]*\bclass="oc-math-(inline|display)"[^>]*/>)(\s*)([.,;:!?]+(?:[\'"”’)\]])?)?'
+)
+
+
+def attach_punctuation(text: str) -> str:
+    """Keep a following period or comma with its formula.
+
+    A display image used to be ``display:block``, so Moon+ and other readers
+    closed the paragraph and the next ``. Now`` or ``, and`` started at the
+    left margin. Inline images stay inline inside a nowrap span. Display
+    images sit in a centred block with that punctuation inside the block.
+    """
+    def repl(match: re.Match) -> str:
+        img, kind, spaces, punct = match.group(1), match.group(2), match.group(3) or "", match.group(4) or ""
+        if kind == "display":
+            return (
+                '<div class="oc-math-block" style="display:block;text-align:center;margin:0.6em 0">'
+                + img + punct + "</div>" + ("" if punct else spaces)
+            )
+        if punct:
+            return f'<span class="oc-math-keep" style="white-space:nowrap">{img}{punct}</span>'
+        return img + spaces
+    return _FORMULA_IMG.sub(repl, text)
+
+
 def replace_math(text: str, glyphs: dict[tuple[str, bool], Glyph], page: str, package_root: str) -> tuple[str, dict[str, bytes]]:
     """Swap MathML and raw TeX spans for measured images. Returns new media files."""
     media: dict[str, bytes] = {}
     # Different TeX can paint the same pixels. One file, two vertical-aligns.
     shared: dict[bytes, str] = {}
 
-    def src_for(tex: str, display: bool) -> str:
+    def src_for(tex: str, display: bool) -> tuple[str, Glyph]:
         glyph = glyphs[(tex, display)]
-        digest = hashlib.sha256(glyph.png).digest()
+        png = epub_png.fit_formula_png(glyph.png, glyph.height_em)
+        digest = hashlib.sha256(png).digest()
         zip_name = shared.get(digest)
         if zip_name is None:
-            ident = hashlib.sha256(digest).hexdigest()[:20]
+            ident = digest.hex()[:20]
             zip_name = posixpath.join(package_root, "media", f"oc-math-{ident}.png")
             shared[digest] = zip_name
-            media[zip_name] = glyph.png
+            media[zip_name] = png
         return posix_rel(page, zip_name), glyph
 
     def math_sub(match: re.Match) -> str:
@@ -360,7 +403,7 @@ def replace_math(text: str, glyphs: dict[tuple[str, bool], Glyph], page: str, pa
 
     text = MATH_RE.sub(math_sub, text)
     text = RAW_RE.sub(raw_sub, text)
-    return text, media
+    return attach_punctuation(text), media
 
 
 def posix_rel(page: str, target: str) -> str:

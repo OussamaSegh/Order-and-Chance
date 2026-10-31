@@ -15,7 +15,7 @@ import check_epub_media
 TOOLS = Path(__file__).resolve().parent
 
 
-def png(width: int, height: int = 40) -> bytes:
+def png(width: int, height: int = 16) -> bytes:
     def chunk(tag: bytes, data: bytes) -> bytes:
         return struct.pack(">I", len(data)) + tag + data + struct.pack(">I", zlib.crc32(tag + data) & 0xFFFFFFFF)
     raw = b"".join(b"\x00" + b"\xff\xff\xff" * width for _ in range(height))
@@ -34,9 +34,9 @@ PAGE = """<?xml version="1.0" encoding="utf-8"?>
 <body>
 <figure>
 <img class="oc-plate" src="../media/plate.png" alt="Three number lines." style="width:100%;max-width:100%;height:auto"/>
-<figcaption>forces <img class="oc-math-inline" src="../media/inline.png" alt="x &lt; y" style="width:1.2500em;max-width:100%;height:auto;vertical-align:-0.2200em"/> here</figcaption>
+<figcaption>forces <span class="oc-math-keep" style="white-space:nowrap"><img class="oc-math-inline" src="../media/inline.png" alt="x &lt; y" width="20" height="14" style="display:inline;width:1.2500em;height:0.8500em;max-width:100%;max-height:0.8500em;vertical-align:-0.2200em"/></span> here</figcaption>
 </figure>
-<p><img class="oc-math-display" src="../media/display.png" alt="y=-x" style="display:block;width:2.6000em;max-width:100%;height:auto;margin:0.6em auto"/></p>
+<div class="oc-math-block"><img class="oc-math-display" src="../media/display.png" alt="y=-x" width="42" height="20" style="display:inline-block;width:2.6000em;height:1.2000em;max-width:100%;max-height:1.2000em;vertical-align:middle"/>.</div>
 </body>
 </html>
 """
@@ -47,8 +47,8 @@ def epub(path: Path, page: str = PAGE, styles: str = STYLES, plate: int = 1800) 
         archive.writestr("EPUB/styles/stylesheet1.css", styles)
         archive.writestr("EPUB/text/ch001.xhtml", page)
         archive.writestr("EPUB/media/plate.png", png(plate, 80))
-        archive.writestr("EPUB/media/inline.png", png(80, 30))
-        archive.writestr("EPUB/media/display.png", png(120, 40))
+        archive.writestr("EPUB/media/inline.png", png(40, 16))
+        archive.writestr("EPUB/media/display.png", png(60, 20))
 
 
 class CheckEpubMedia(unittest.TestCase):
@@ -87,12 +87,22 @@ class CheckEpubMedia(unittest.TestCase):
         self.assertTrue(any("full-width figure rule" in error for error in errors), errors)
 
     def test_inline_math_without_baseline_fails(self):
-        page = PAGE.replace(
-            "width:1.2500em;max-width:100%;height:auto;vertical-align:-0.2200em",
-            "width:1.2500em;max-width:100%;height:auto;vertical-align:middle",
-        )
+        page = PAGE.replace("vertical-align:-0.2200em", "vertical-align:middle")
         errors = self._run(page=page)
         self.assertTrue(any("vertical-align" in error for error in errors), errors)
+
+    def test_punctuation_led_paragraph_fails(self):
+        page = PAGE.replace(
+            "</figure>",
+            '</figure><p>. Now the sentence starts with a period.</p>',
+        )
+        errors = self._run(page=page)
+        self.assertTrue(any("punctuation" in error for error in errors), errors)
+
+    def test_formula_without_pixel_size_fails(self):
+        page = PAGE.replace(' width="20" height="14"', "")
+        errors = self._run(page=page)
+        self.assertTrue(any("CSS pixels" in error for error in errors), errors)
 
     def test_leftover_mathml_fails(self):
         page = PAGE + "<p><math xmlns='http://www.w3.org/1998/Math/MathML'><mi>x</mi></math></p>"
