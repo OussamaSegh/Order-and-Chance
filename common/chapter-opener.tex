@@ -6,15 +6,16 @@
 %
 % Chapter opener: one compact band at the top of the chapter's first page. The band
 % holds the masthead, the volume line, the coral numeral and the cream chapter title.
-% A coral rule and the epigraph sit on the paper directly under the band, and the
-% prose follows on the same page. There is no second heading. The first page uses the
+% The opening italic sits on the paper directly under the band, and the prose follows
+% on the same page. There is no second heading. The first page uses the
 % plain style (folio at the foot, no running head).
 % Numbered chapters start on the next page, recto or verso: the class option is
 % openany, and a blank is not inserted to force a side. A part's first chapter
 % therefore still sits on the back of the part page.
 %
 % Epigraph: the chapter's opening \begin{center}\itshape ... \end{center} (directly after
-% \chapter{...} and its optional \label) is set under the rule; the source is unchanged.
+% \chapter{...} and its optional \label) is the centred italic under the band; the source
+% is unchanged.
 %
 % \chaptermotif is accepted and ignored. The print openers do not draw it, and they
 % do not input cover-motif.tex.
@@ -34,6 +35,7 @@
 \newlength{\oc@lineW}
 \newsavebox{\oc@ch@lock}
 \newsavebox{\oc@ch@num}
+\newsavebox{\oc@ch@app}
 % How far titlesec's strut line and the 0 pt before-skip push the band down
 % past \oc@bandDrop. Measured on a 7 x 10 page (see the comment on \oc@flow@band).
 \newlength{\oc@bandRaise}\setlength{\oc@bandRaise}{2.05in}
@@ -79,14 +81,14 @@
       \fill[ocBlack] (0,0) rectangle (\oc@bandW,\oc@bandH);
       \oc@band@draw
     \end{tikzpicture}}}
-% Opening italic: 10.5 pt on 14.7 pt, centred on 80 percent of the measure.
-% An author's \\ is kept when that piece fits on one line. A piece that is
-% wider is broken into lines of about the same length, still centred.
+% Opening italic: 10.5 pt on 14.7 pt, centred on 75 percent of the measure.
+% Keep an author's \\ only when every piece fits on one line. Otherwise set the
+% whole paragraph as one centred block, so no line is wider than the measure.
 \newcommand{\oc@option@epi}{%
   \ifx\oc@ch@epi\@empty\else
     \par\vspace{26pt}%
     \begingroup
-      \setlength{\oc@epiW}{0.80\linewidth}%
+      \setlength{\oc@epiW}{0.75\linewidth}%
       \parindent=0pt
       \centering
       \itshape\fontsize{10.5}{14.7}\selectfont\color{ocBlack}%
@@ -95,32 +97,51 @@
   \fi}
 \ExplSyntaxOn
 \seq_new:N \l__oc_epi_seq
+\bool_new:N \l__oc_epi_fit_bool
+\tl_new:N \l__oc_epi_tl
 \cs_new_protected:Npn \oc@epi@split #1
   {
     \seq_set_split:Nnn \l__oc_epi_seq { \\ } { #1 }
+    \bool_set_true:N \l__oc_epi_fit_bool
     \seq_map_inline:Nn \l__oc_epi_seq
-      { \tl_if_blank:nF { ##1 } { \oc@epi@chunk { ##1 } } }
+      {
+        \tl_if_blank:nF { ##1 }
+          {
+            \settowidth {\dimen@} { \ignorespaces ##1 \unskip }
+            \dim_compare:nT { \dimen@ > \oc@epiW }
+              { \bool_set_false:N \l__oc_epi_fit_bool }
+          }
+      }
+    \bool_if:NTF \l__oc_epi_fit_bool
+      {
+        \seq_map_inline:Nn \l__oc_epi_seq
+          {
+            \tl_if_blank:nF { ##1 }
+              { \par \noindent \ignorespaces ##1 \unskip \par }
+          }
+      }
+      {
+        \tl_set:Nn \l__oc_epi_tl { #1 }
+        \tl_replace_all:Nnn \l__oc_epi_tl { \\ } { ~ }
+        \par \noindent
+        \begin{minipage}{\oc@epiW}
+          \centering \parindent=0pt \tolerance=9999 \emergencystretch=3em
+          \hyphenpenalty=200 \exhyphenpenalty=200
+          \l__oc_epi_tl \par
+        \end{minipage}
+        \par
+      }
   }
 \ExplSyntaxOff
-\newcommand{\oc@epi@chunk}[1]{%
-  \par\noindent
-  \settowidth{\dimen@}{\ignorespaces #1\unskip}%
-  \ifdim\dimen@>\oc@epiW
-    \@tempcnta=\@ne
-    \@tempdima=\dimen@
-    \loop\ifdim\@tempdima>\oc@epiW
-      \advance\@tempdima-\oc@epiW
-      \advance\@tempcnta\@ne
-    \repeat
-    \setlength{\oc@lineW}{\dimexpr(\dimen@+\@tempcnta em)/\@tempcnta\relax}%
-    \ifdim\oc@lineW>\oc@epiW\setlength{\oc@lineW}{\oc@epiW}\fi
-    \begin{minipage}{\oc@lineW}
-      \centering\parindent=0pt\emergencystretch=2em\hyphenpenalty=4000
-      \ignorespaces #1\unskip\par
-    \end{minipage}\par
-  \else
-    \ignorespaces #1\unskip\par
-  \fi}
+\newcommand{\oc@title@set}[3]{% size, leading, text
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt\parskip=0pt\parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000\exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocDisplay\linespread{1}\fontsize{#1}{#2}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#3}\par}}}
 % A. Primary. A short band, about 1.6–2.0 in (at most about 2.4 in when the
 % title needs three lines). The series line is small and centred. The coral
 % numeral sits to the left of the cream title; that pair is centred as one
@@ -130,32 +151,26 @@
   \sbox{\oc@ch@num}{{\color{ocCoral}\ocNumeral\fontsize{56}{56}\selectfont\thechapter}}%
   \edef\oc@tmp{\chaptertitlename}\edef\oc@app{\appendixname}%
   \ifx\oc@tmp\oc@app
-    \setbox\oc@ch@num=\vbox{%
-      \hsize=\wd\oc@ch@num
-      \centering\parindent=0pt\topskip=0pt
-      {\ocMed\fontsize{7.5}{9}\selectfont\color{ocCream}\ocLab{\appendixname}\par}%
-      \vspace{2pt}%
-      \usebox\oc@ch@num}%
-  \fi
-  \setlength{\oc@titleW}{\dimexpr\oc@bandW-0.55in-\wd\oc@ch@num-0.25in\relax}%
-  \settowidth{\dimen@}{{\ocDisplay\fontsize{30}{34}\selectfont\ocBreakDashes{#1}}}%
-  \ifdim\dimen@<\oc@titleW \setlength{\oc@titleW}{\dimexpr\dimen@+6pt\relax}\fi
-  \ifdim\oc@titleW<1.6in \setlength{\oc@titleW}{1.6in}\fi
-  \setbox\oc@ch@lock=\vbox{%
-    \topskip=0pt\parskip=0pt\parindent=0pt
-    \hsize=\oc@titleW
-    \hyphenpenalty=10000\exhyphenpenalty=10000
-    \raggedright\everypar{}%
-    {\ocDisplay\linespread{1}\fontsize{30}{34}\selectfont\color{ocCream}%
-      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
-      \ocBreakDashes{#1}\par}}%
+  \sbox{\oc@ch@app}{{\ocMed\fontsize{7.5}{9}\selectfont\color{ocCream}\ocLab{\appendixname}}}%
+  \setbox2=\vbox{%
+    \hsize=\wd\oc@ch@num
+    \ifdim\wd\oc@ch@app>\hsize \hsize=\wd\oc@ch@app\fi
+    \centering\parindent=0pt\topskip=0pt
+    \noindent\usebox{\oc@ch@app}\par
+    \vspace{2pt}%
+    \hbox to \hsize{\hfil\usebox\oc@ch@num\hfil}}%
+  \setbox\oc@ch@num=\box2
+\fi
+  \setlength{\oc@titleW}{\dimexpr\oc@bandW-0.50in-\wd\oc@ch@num-0.25in\relax}%
+  \oc@title@set{30}{34}{#1}%
+  \ifdim\ht\oc@ch@lock>78pt \oc@title@set{26}{30}{#1}\fi
   \setbox\oc@ch@lock=\hbox{%
     $\vcenter{\hbox{\usebox\oc@ch@num}}$%
     \hspace{0.25in}%
     $\vcenter{\hbox{\usebox\oc@ch@lock}}$}%
   \setbox\oc@ch@lock=\vbox{%
     \topskip=0pt\parskip=0pt\parindent=0pt
-    \hsize=\dimexpr\oc@bandW-0.60in\relax
+    \hsize=\dimexpr\oc@bandW-0.50in\relax
     \centering
     {\ocDisplay\fontsize{10.5}{13}\selectfont\color{ocCream}\ocCaps[28]{Order and Chance}\par}%
     \vspace{3pt}%
@@ -345,7 +360,7 @@
 % Reads \chapter[short]{title}, then any mix of \label and \chaptermark, then an
 % opening \begin{center}\itshape. \chaptermark is kept and replayed after the
 % real \chapter, so the short running head survives and the epigraph still
-% uses the shared bar. Two chapters put \chaptermark before the epigraph
+% uses the shared centred italic. Two chapters put \chaptermark before the epigraph
 % (Volume 8, the unitary-matrices chapter, and Volume 12, log-correlated fields).
 \def\oc@centername{center}
 \def\oc@skip#1{\def\oc@skip@k{#1}\oc@skip@loop}

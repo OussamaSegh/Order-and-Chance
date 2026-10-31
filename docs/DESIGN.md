@@ -2,9 +2,9 @@
 
 Numbered chapters no longer spend a page on the band alone. `common/chapter-opener.tex`
 draws a charcoal band 0.30 in inside the trim. The masthead and volume line are
-centred at the top. The coral numeral is centred above the centred cream title.
+centred at the top. The coral numeral sits to the left of the cream title, and that pair is centred as one group.
 There is no chapter label and no rule; an appendix adds a small `APPENDIX` above
-the letter. The opening italic is 10.5 pt, centred on 68 percent of the measure,
+the letter. The opening italic is 10.5 pt, centred on 75 percent of the measure,
 with no bar. The prose starts on that same page, and the next page does not repeat
 the heading. The first page is plain: folio at the foot, no running head.
 Chapters still start on a new page, on whichever side comes next, so a part page is

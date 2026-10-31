@@ -28,7 +28,7 @@ The manuscripts (`volume*/chapters`) need no markup for any of it.
 |---|---|---|
 | Body text, proofs, notes | EB Garamond (Regular, Italic, SemiBold, SemiBold Italic) | 11.5 pt on 14.75 pt (11 pt class size, `Scale=1.05`, `\linespread{1.085}`), lining figures |
 | Mathematics | Garamond-Math (stylistic sets 1, 2) | same scale as the text |
-| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter title in the band 26/30 pt cream (unnumbered chapters 22/26), section 18/21, subsection 14/17; opener numeral 64 pt Light |
+| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter title in the band 30/34 pt cream (26/30 pt when a title would run past two lines; unnumbered chapters 22/26), section 18/21, subsection 14/17; opener numeral 56 pt Light |
 | Labels, running heads, captions, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
 | Code | DejaVu Sans Mono | |
 
@@ -62,11 +62,11 @@ the running heads.
 The opener is a compact block at the top of that page:
 
 - a charcoal band, held 0.30 in inside the trim. The masthead and volume line are
-  small and centred at the top. The coral numeral is centred above the centred
-  cream Cormorant title. There is no `CHAPTER n` label. An appendix adds a small
-  `APPENDIX` above the letter. There is no rule;
+  small and centred at the top. The coral numeral sits to the left of the cream
+  Cormorant title, and that pair is centred as one group. There is no `CHAPTER n`
+  label. An appendix adds a small `APPENDIX` above the letter. There is no rule;
 - under the band, on the white paper, the opening italic is 10.5 pt on 14.7 pt,
-  centred on 68 percent of the measure, with space above and below and no bar.
+  centred on 75 percent of the measure, with space above and below and no bar.
 
 The body follows the epigraph. There is no second heading on the next page. Unnumbered
 chapters (preface, field guide, About the Cover, solutions, index, bibliography) have
