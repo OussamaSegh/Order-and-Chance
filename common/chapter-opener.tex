@@ -81,14 +81,14 @@
       \fill[ocBlack] (0,0) rectangle (\oc@bandW,\oc@bandH);
       \oc@band@draw
     \end{tikzpicture}}}
-% Opening italic: 10.5 pt on 14.7 pt, centred on 75 percent of the measure.
+% Opening italic: 10.5 pt on 14.7 pt, centred on 62 percent of the measure.
 % Keep an author's \\ only when every piece fits on one line. Otherwise set the
 % whole paragraph as one centred block, so no line is wider than the measure.
 \newcommand{\oc@option@epi}{%
   \ifx\oc@ch@epi\@empty\else
     \par\vspace{14pt}%
     \begingroup
-      \setlength{\oc@epiW}{0.75\linewidth}%
+      \setlength{\oc@epiW}{0.62\linewidth}%
       \parindent=0pt
       \centering
       \itshape\fontsize{10.5}{14.7}\selectfont\color{ocBlack}%
@@ -97,8 +97,95 @@
   \fi}
 \ExplSyntaxOn
 \seq_new:N \l__oc_epi_seq
+\seq_new:N \l__oc_epi_words_seq
+\seq_new:N \l__oc_epi_lines_seq
+\seq_new:N \l__oc_epi_prev_seq
 \bool_new:N \l__oc_epi_fit_bool
+\bool_new:N \l__oc_epi_move_bool
 \tl_new:N \l__oc_epi_tl
+\tl_new:N \l__oc_epi_line_tl
+\tl_new:N \l__oc_epi_word_tl
+\tl_new:N \l__oc_epi_last_tl
+% Pack the paragraph into lines no wider than the measure, then move words
+% onto a short last line until it is at least about half a line.
+\cs_new_protected:Npn \__oc_epi_join:N #1
+  {
+    \tl_clear:N \l__oc_epi_line_tl
+    \seq_map_inline:Nn #1
+      {
+        \tl_if_blank:nF { ##1 }
+          {
+            \tl_if_empty:NTF \l__oc_epi_line_tl
+              { \tl_set:Nn \l__oc_epi_line_tl { ##1 } }
+              { \tl_put_right:Nn \l__oc_epi_line_tl { ~ ##1 } }
+          }
+      }
+  }
+\cs_new_protected:Npn \__oc_epi_pack:
+  {
+    \seq_set_split:NnV \l__oc_epi_words_seq { ~ } \l__oc_epi_tl
+    \seq_clear:N \l__oc_epi_lines_seq
+    \tl_clear:N \l__oc_epi_line_tl
+    \seq_map_inline:Nn \l__oc_epi_words_seq
+      {
+        \tl_if_blank:nF { ##1 }
+          {
+            \tl_if_empty:NTF \l__oc_epi_line_tl
+              { \tl_set:Nn \l__oc_epi_line_tl { ##1 } }
+              {
+                \settowidth {\dimen@} { \l__oc_epi_line_tl \ ##1 }
+                \dim_compare:nNnTF { \dimen@ } > { \oc@epiW }
+                  {
+                    \seq_put_right:NV \l__oc_epi_lines_seq \l__oc_epi_line_tl
+                    \tl_set:Nn \l__oc_epi_line_tl { ##1 }
+                  }
+                  { \tl_put_right:Nn \l__oc_epi_line_tl { ~ ##1 } }
+              }
+          }
+      }
+    \tl_if_empty:NF \l__oc_epi_line_tl
+      { \seq_put_right:NV \l__oc_epi_lines_seq \l__oc_epi_line_tl }
+    \int_step_inline:nn { 6 }
+      {
+        \int_step_inline:nnn { 1 } { \seq_count:N \l__oc_epi_lines_seq - 1 }
+          {
+            \tl_set:Nx \l__oc_epi_line_tl { \seq_item:Nn \l__oc_epi_lines_seq { ####1 } }
+            \tl_set:Nx \l__oc_epi_last_tl { \seq_item:Nn \l__oc_epi_lines_seq { ####1 + 1 } }
+            \settowidth {\dimen@} { \l__oc_epi_line_tl }
+            \dim_set:Nn \l_tmpa_dim { \dimen@ }
+            \settowidth {\dimen@} { \l__oc_epi_last_tl }
+            \dim_compare:nNnT { \dimen@ } < { 0.82 \l_tmpa_dim }
+              {
+                \seq_set_split:NnV \l__oc_epi_prev_seq { ~ } \l__oc_epi_line_tl
+                \int_compare:nNnT { \seq_count:N \l__oc_epi_prev_seq } > { 1 }
+                  {
+                    \tl_set:Nx \l__oc_epi_word_tl { \seq_item:Nn \l__oc_epi_prev_seq { -1 } }
+                    \settowidth {\dimen@} { \l__oc_epi_word_tl \ \l__oc_epi_last_tl }
+                    \dim_compare:nNnT { \dimen@ } < { \oc@epiW }
+                      {
+                        \seq_set_eq:NN \l__oc_epi_words_seq \l__oc_epi_prev_seq
+                        \seq_pop_right:NN \l__oc_epi_words_seq \l_tmpa_tl
+                        \__oc_epi_join:N \l__oc_epi_words_seq
+                        \settowidth {\dimen@} { \l__oc_epi_line_tl }
+                        \dim_set:Nn \l_tmpb_dim { \dimen@ }
+                        \settowidth {\dimen@} { \l__oc_epi_word_tl \ \l__oc_epi_last_tl }
+                        \dim_compare:nNnT { \l_tmpb_dim } > { \dimen@ }
+                          {
+                            \exp_args:NnnV \seq_set_item:Nnn \l__oc_epi_lines_seq
+                              { ####1 } \l__oc_epi_line_tl
+                            \tl_put_left:Nn \l__oc_epi_last_tl { ~ }
+                            \tl_put_left:NV \l__oc_epi_last_tl \l__oc_epi_word_tl
+                            \exp_args:NnnV \seq_set_item:Nnn \l__oc_epi_lines_seq
+                              { ####1 + 1 } \l__oc_epi_last_tl
+                          }
+                      }
+                  }
+              }
+          }
+      }
+    \seq_map_inline:Nn \l__oc_epi_lines_seq
+      { \par \noindent ##1 \par }
+  }
 \cs_new_protected:Npn \oc@epi@split #1
   {
     \seq_set_split:Nnn \l__oc_epi_seq { \\ } { #1 }
@@ -123,13 +210,7 @@
       {
         \tl_set:Nn \l__oc_epi_tl { #1 }
         \tl_replace_all:Nnn \l__oc_epi_tl { \\ } { ~ }
-        \par \noindent
-        \begin{minipage}{\oc@epiW}
-          \centering \parindent=0pt \tolerance=9999 \emergencystretch=3em
-          \hyphenpenalty=200 \exhyphenpenalty=200
-          \l__oc_epi_tl \par
-        \end{minipage}
-        \par
+        \__oc_epi_pack:
       }
   }
 \ExplSyntaxOff
@@ -316,24 +397,39 @@
           \let\\\newline
           \oc@ch@epi}}\par
     \fi}}
-% Numbered chapter heading: plain page (no running head). Small coral label,
-% black body-serif title, short coral rule, then the opening italic.
+% Numbered chapter heading: plain page (no running head). The coral label, the
+% black body-serif title and the short coral rule are centred. A long title
+% is shared across even lines. The opening italic follows, on its own measure.
 % \ocChapterHead is the titlesec before-code; #1 is the title.
 \renewcommand{\ocChapterHead}[1]{%
   \thispagestyle{plain}%
   \par
-  \noindent
-  {\ocMed\fontsize{8.2}{11}\selectfont\color{ocCoralDeep}%
-    \ocCaps[12]{\chaptertitlename\ \thechapter}\par}%
-  \vspace{8pt}%
-  \noindent
-  {\normalfont\fontsize{26}{32}\selectfont\color{ocBlack}%
-    \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
-    \emergencystretch=3em\tolerance=2000
-    \everymath{\color{ocBlack}}\everydisplay{\color{ocBlack}}%
-    \ocBreakDashes{#1}\par}%
-  \vspace{10pt}%
-  \noindent\ocChapterRule\par
+  \begingroup
+    \centering
+    {\ocMed\fontsize{8.2}{11}\selectfont\color{ocCoralDeep}%
+      \ocCaps[12]{\chaptertitlename\ \thechapter}\par}%
+    \vspace{8pt}%
+    {\normalfont\fontsize{26}{32}\selectfont\color{ocBlack}%
+      \everymath{\color{ocBlack}}\everydisplay{\color{ocBlack}}%
+      \settowidth{\dimen@}{\ocBreakDashes{#1}}%
+      \setlength{\oc@titleW}{\dimen@}%
+      \@tempcnta=\@ne
+      \loop\ifdim\oc@titleW>\linewidth
+        \advance\@tempcnta\@ne
+        \setlength{\oc@titleW}{\dimen@}%
+        \divide\oc@titleW by \@tempcnta
+      \repeat
+      \ifnum\@tempcnta>\@ne
+        \addtolength{\oc@titleW}{0.8em}%
+        \ifdim\oc@titleW>\linewidth \setlength{\oc@titleW}{\linewidth}\fi
+      \fi
+      \parbox[t]{\oc@titleW}{%
+        \centering\hyphenpenalty=10000\exhyphenpenalty=10000
+        \emergencystretch=2em\tolerance=2000
+        \ocBreakDashes{#1}\par}\par}%
+    \vspace{10pt}%
+    \ocChapterRule\par
+  \endgroup
   \oc@option@epi}
 \newcommand{\oc@opener@current}[1]{\oc@flow@band{#1}\oc@flow@after}
 % Part page: full charcoal, the part's own title lockup, nothing else.
