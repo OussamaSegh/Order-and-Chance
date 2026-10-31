@@ -61,10 +61,10 @@ the running heads.
 
 The opener is the title block at the top of the text area. There is no band:
 
-- a small coral label, `CHAPTER 0` or `APPENDIX A`, in Fira capitals;
-- the title in EB Garamond, 26/32 pt, black, left aligned, wrapping on the measure;
-- a short coral rule, 0.9 in by 1.2 pt;
-- the opening italic, 10.5 pt on 14.7 pt, centred on 75 percent of the measure,
+- a small coral label, `CHAPTER 0` or `APPENDIX A`, in Fira capitals, centred;
+- the title in EB Garamond, 26/32 pt, black, centred, wrapping on even lines;
+- a short coral rule, 0.9 in by 1.2 pt, centred;
+- the opening italic, 10.5 pt on 14.7 pt, centred on 62 percent of the measure,
   with space above and below and no bar.
 
 The body follows the epigraph. There is no second heading on the next page. Unnumbered

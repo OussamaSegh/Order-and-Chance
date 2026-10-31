@@ -1,9 +1,9 @@
 # Chapter opener on the same page — 31 October 2026
 
 Numbered chapters open on the white page. There is no charcoal band. A small coral
-label (`CHAPTER 0`, or `APPENDIX A`) sits above a left-aligned black title in the
+label (`CHAPTER 0`, or `APPENDIX A`) sits above a centred black title in the
 body serif, EB Garamond, at 26/32 pt. A short coral rule follows the title. The
-opening italic is 10.5 pt, centred on 75 percent of the measure, and the prose
+opening italic is 10.5 pt, centred on 62 percent of the measure, and the prose
 starts on that same page. The next page does not repeat the heading. The first
 page is plain: folio at the foot, no running head. Later running heads are unchanged.
 Chapters still start on a new page, on whichever side comes next.
