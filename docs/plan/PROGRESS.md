@@ -222,7 +222,7 @@ The final PDF review #73 is squash-merged at `4aa4e3f3d42334f1c165e622ca8a67f6b3
 - **Depends on:** 14
 - **Books and files:** the re-review in `docs/reviews/volume1-step15-rereview.md`; `\XeTeXinterwordspaceshaping` in `volume1-first-principles/main.tex`; the launch photograph `photos/rocket.jpg`, its caption in `chapters/ch06-integrals-taylor.tex`, `chapters/image-credits.tex`, and `photos/CREDITS.md`. No other volume. No chapter rewrite.
 - **Acceptance:** The re-review checks the #74 fixes and Volume 1 against `docs/WRITING-STYLE.md` and the accuracy rules. New sentences match that voice. The reading PDF and the print PDF keep word spaces under `pdftotext`. The launch photograph's licence is taken from its source page, not invented. `git diff --check`. Volume 1 builds and the layout check passes. This file does not mark Volume 1 first-edition ready.
-- **PR:**
+- **PR:** https://github.com/OussamaSegh/Order-and-Chance/pull/76
 - **Merge sha:**
 - **Date:**
 - **Notes:** Independent re-review of #74, which had already merged. Also the text layer and the Flickr licence that step 14 left open. The nice-to-have voice lines from review #73 stay unwritten. Do not start Volume 2. The author decides whether Volume 1 is first-edition ready.
