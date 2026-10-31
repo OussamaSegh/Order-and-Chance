@@ -3,6 +3,7 @@
 Run: python3 -m unittest discover -s tools -p test_epub_kindle.py
 Needs xelatex, pdftocairo and pandoc. Skipped when they are absent.
 """
+import io
 import re
 import shutil
 import subprocess
@@ -10,9 +11,12 @@ import unittest
 import zipfile
 from pathlib import Path
 
+from PIL import Image
+
 import check_epub_media
 import epub_fix
 import epub_math
+import epub_png
 
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -60,6 +64,19 @@ class KindleMath(unittest.TestCase):
         self.assertIn('width="', tag)
         self.assertIn('height="', tag)
         self.assertNotIn("display:block", tag)
+
+    def test_right_padding_does_not_precede_punctuation(self):
+        glyph = epub_math.render_formulas([("100", False)])[("100", False)]
+        png, ratio = epub_png.fit_formula_png(glyph.png, glyph.height_em)
+        self.assertLess(ratio, 0.95)
+        image = Image.open(io.BytesIO(png)).convert("RGBA")
+        width, height = image.size
+        self.assertTrue(any(image.getpixel((width - 1, y))[3] > 0 for y in range(height)))
+        shown = epub_math.replace(glyph, width_em=glyph.width_em * ratio)
+        wrapped = epub_math.attach_punctuation(shown.html("m.png", "100") + " .")
+        self.assertIn('"/>.</span>', wrapped)
+        self.assertNotRegex(wrapped, r'"/>\s+[.,]')
+        self.assertLess(shown.width_em, glyph.width_em)
 
 
 @unittest.skipUnless(HAVE, "xelatex, pdftocairo and pandoc are required")
@@ -122,6 +139,34 @@ class KindleEpub(unittest.TestCase):
             self.assertNotIn("image/svg", manifest)
             epub_fix.main(str(book), str(figures))
             self.assertEqual(check_epub_media.check(book), [])
+
+
+class FormulaPadding(unittest.TestCase):
+    def test_transparent_right_columns_are_cropped(self):
+        image = Image.new("RGBA", (40, 12), (0, 0, 0, 0))
+        for x in range(4, 28):
+            for y in range(2, 10):
+                image.putpixel((x, y), (0, 0, 0, 255))
+        buf = io.BytesIO()
+        image.save(buf, format="PNG")
+        png, ratio = epub_png.fit_formula_png(buf.getvalue(), 0.4)
+        self.assertAlmostEqual(ratio, 28 / 40)
+        cropped = Image.open(io.BytesIO(png)).convert("RGBA")
+        self.assertEqual(cropped.size[0], 28)
+        self.assertTrue(any(cropped.getpixel((27, y))[3] > 0 for y in range(cropped.size[1])))
+
+    def test_punctuation_is_flush_with_the_image(self):
+        tag = (
+            '<img class="oc-math-inline" src="m.png" alt="100" width="28" height="12" '
+            'style="display:inline;width:1.7000em;height:0.7000em;max-width:100%;'
+            'max-height:0.7000em;vertical-align:-0.0500em"/>'
+        )
+        wrapped = epub_math.attach_punctuation(tag + " .\n")
+        self.assertIn('"/>.</span>', wrapped)
+        self.assertNotRegex(wrapped, r'"/>\s+[.,]')
+        display = epub_math.attach_punctuation(tag.replace("oc-math-inline", "oc-math-display") + ",")
+        self.assertIn('"/>,</div>', display)
+        self.assertNotIn(" ,", display)
 
 
 if __name__ == "__main__":
