@@ -28,7 +28,7 @@ The manuscripts (`volume*/chapters`) need no markup for any of it.
 |---|---|---|
 | Body text, proofs, notes | EB Garamond (Regular, Italic, SemiBold, SemiBold Italic) | 11.5 pt on 14.75 pt (11 pt class size, `Scale=1.05`, `\linespread{1.085}`), lining figures |
 | Mathematics | Garamond-Math (stylistic sets 1, 2) | same scale as the text |
-| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter opener 30/34 pt (unnumbered chapters 22/26), section 18/21, subsection 14/17; opener numeral 78 pt Light |
+| Headings, titles, the opener numeral | Cormorant Garamond SemiBold / SemiBold Italic / Light | chapter title in the band 26/30 pt cream (unnumbered chapters 22/26), section 18/21, subsection 14/17; opener numeral 64 pt Light |
 | Labels, running heads, captions, folios | Fira Sans Book / Medium (+ italics) | labels 8.2 pt capitals, 8% tracking |
 | Code | DejaVu Sans Mono | |
 
@@ -61,12 +61,14 @@ the running heads.
 
 The opener is a compact block at the top of that page:
 
-- a charcoal band, 1.48 in tall, held 0.30 in inside the trim on the top and the sides.
-  It carries the masthead `ORDER AND CHANCE`, the volume line, and the chapter numeral
-  (or appendix letter) in 78 pt coral Cormorant Light;
-- under the band, on the white paper: `CHAPTER n` (Fira Medium, charcoal, numeral in
-  deep coral), the charcoal Cormorant title at 30/34 pt, a 0.9 in coral rule, and the
-  epigraph in charcoal italic.
+- a charcoal band, held 0.30 in inside the trim on the top and the sides. It grows to
+  fit the title. Inside it, from the top: the masthead `ORDER AND CHANCE` and the
+  volume line in cream; then the chapter numeral (or appendix letter) in 64 pt coral
+  Cormorant Light on the left, and on the right `CHAPTER n` (Fira, cream, numeral in
+  coral) with the cream Cormorant title at 26/30 pt. A two-line or three-line title
+  stays inside the charcoal;
+- under the band, on the white paper: a 0.9 in coral rule, then the epigraph in
+  charcoal italic.
 
 The body follows the epigraph. There is no second heading on the next page. Unnumbered
 chapters (preface, field guide, About the Cover, solutions, index, bibliography) have

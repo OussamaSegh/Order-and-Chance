@@ -4,11 +4,11 @@
 % PART n, the ivory title and the part rule. No epigraph, and no illustration: the
 % cover motif and \chaptermotif are not drawn here.
 %
-% Chapter opener: the same lockup, compact, at the top of the chapter's first page.
-% A charcoal band (masthead, volume line, coral numeral) sits 0.30 in inside the trim,
-% then CHAPTER n, the Cormorant title, a coral rule and the epigraph. The chapter
-% prose starts immediately under that block, on the same page. There is no second
-% heading. The first page uses the plain style (folio at the foot, no running head).
+% Chapter opener: one compact band at the top of the chapter's first page. The band
+% holds the masthead, the volume line, the coral numeral and the cream chapter title.
+% A coral rule and the epigraph sit on the paper directly under the band, and the
+% prose follows on the same page. There is no second heading. The first page uses the
+% plain style (folio at the foot, no running head).
 % Numbered chapters start on the next page, recto or verso: the class option is
 % openany, and a blank is not inserted to force a side. A part's first chapter
 % therefore still sits on the back of the part page.
@@ -25,11 +25,19 @@
 % no-bleed KDP page does not carry the band to the cut. \oc@bandH is the band's height;
 % \oc@bandDrop is how far its top sits below the trim (the text block begins at 1 in).
 \newlength{\oc@bandInset}\setlength{\oc@bandInset}{0.30in}
-\newlength{\oc@bandH}\setlength{\oc@bandH}{1.48in}
+\newlength{\oc@bandH}\setlength{\oc@bandH}{1.70in}
 \newlength{\oc@bandDrop}\setlength{\oc@bandDrop}{0.30in}
+\newlength{\oc@numW}\setlength{\oc@numW}{1.18in}
+\newlength{\oc@titleW}
+\newlength{\oc@lower}
+\newsavebox{\oc@ch@lock}
+\newsavebox{\oc@ch@num}
 % How far titlesec's strut line and the 0 pt before-skip push the band down
 % past \oc@bandDrop. Measured on a 7 x 10 page (see the comment on \oc@flow@band).
 \newlength{\oc@bandRaise}\setlength{\oc@bandRaise}{2.05in}
+% The raise above was measured when every band was 1.48 in tall. The picture's
+% baseline is its top, so this length is subtracted back out of the skip.
+\newlength{\oc@bandFix}\setlength{\oc@bandFix}{1.485in}
 \newlength{\oc@bandW}
 \newlength{\oc@hang}
 % Long titles: allow a line break after an en or em dash ("Bombieri--Vinogradov").
@@ -48,20 +56,38 @@
 \newif\ifoc@op@recto
 \let\oc@ch@epi\@empty
 % ---------------------------------------------------------------- the chapter band
-% Drawn in the text flow and shifted into the top and side margins, stopping
-% \oc@bandDrop / \oc@bandInset short of the trim. The following title block, and
-% then the chapter prose, continue on this page.
-\newcommand{\oc@flow@band}{%
+% Numeral on the left, CHAPTER n and the cream title on the right, both inside
+% the charcoal. The band grows for a two-line title. Its top stays \oc@bandDrop
+% below the trim; the sides stay \oc@bandInset inside the trim.
+\newcommand{\oc@flow@band}[1]{%
   \setlength{\oc@bandW}{\dimexpr\PRINTWIDTH in-2\oc@bandInset\relax}%
   \ifodd\c@page
     \setlength{\oc@hang}{\dimexpr\ocInner-\oc@bandInset\relax}%
   \else
     \setlength{\oc@hang}{\dimexpr\ocOuter-\oc@bandInset\relax}%
   \fi
+  \setlength{\oc@titleW}{\dimexpr\linewidth-\oc@numW-0.20in\relax}%
+  \sbox{\oc@ch@num}{\ocNumeral\fontsize{64}{64}\selectfont\thechapter}%
+  \setbox\oc@ch@lock=\vbox{%
+    \topskip=0pt \parskip=0pt \parindent=0pt
+    \hsize=\oc@titleW
+    \hyphenpenalty=10000 \exhyphenpenalty=10000
+    \raggedright\everypar{}%
+    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocCream}%
+      \ocLab{\chaptertitlename}\enspace\textcolor{ocCoral}{\thechapter}\par}%
+    \vspace{4pt}%
+    {\ocDisplay\linespread{1}\fontsize{26}{30}\selectfont\color{ocCream}%
+      \everymath{\color{ocCream}}\everydisplay{\color{ocCream}}%
+      \ocBreakDashes{#1}\par}}%
+  \setlength{\oc@lower}{\dimexpr\ht\oc@ch@lock+\dp\oc@ch@lock\relax}%
+  \ifdim\ht\oc@ch@num>\oc@lower \setlength{\oc@lower}{\ht\oc@ch@num}\fi
+  % Masthead and volume line, then the lockup, then a pad inside the charcoal.
+  \setlength{\oc@bandH}{\dimexpr0.64in+\oc@lower+0.18in\relax}%
   % titlesec inserts \vspace*{0pt} and its block shape leaves a strut line above
-  % this point, so the natural top of the band is far down the page. \oc@bandRaise
-  % is the measured correction that puts the band's top at \oc@bandDrop.
-  \vspace*{\dimexpr\oc@bandH-(1in-\oc@bandDrop)+\topskip-\oc@bandRaise\relax}%
+  % this point. The picture's baseline is its top edge, so a taller title must not
+  % push that edge down. \oc@bandRaise was measured for a 1.48 in band; \oc@bandFix
+  % takes that height back out and leaves the top at \oc@bandDrop.
+  \vspace*{\dimexpr\oc@bandFix-(1in-\oc@bandDrop)+\topskip-\oc@bandRaise\relax}%
   \nointerlineskip
   \moveleft\oc@hang\hbox{%
     \begin{tikzpicture}[baseline={(0,0)}]
@@ -71,37 +97,34 @@
         {\ocDisplay\fontsize{10.5}{12}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}};
       \node[anchor=north west,inner sep=0pt] at (\oc@hang,\oc@bandH-0.34in)
         {\ocBook\fontsize{7}{9}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}};
-      \node[anchor=base west,inner sep=0pt,text=ocCoral,font=\ocNumeral\fontsize{78}{78}\selectfont]
-        at (\oc@hang-0.015in,0.09in) {\thechapter};
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang-0.02in,\oc@bandH-0.62in)
+        {\usebox\oc@ch@num};
+      \node[anchor=north west,inner sep=0pt] at (\oc@hang+\oc@numW+0.16in,\oc@bandH-0.62in)
+        {\usebox\oc@ch@lock};
     \end{tikzpicture}}}
-% Label, title, coral rule and the epigraph, on the paper directly under the band.
-\newcommand{\oc@flow@title}[1]{%
+% Coral rule and epigraph on the paper directly under the band; the body follows.
+\newcommand{\oc@flow@after}{%
   \nointerlineskip
-  \vskip 11pt
+  \vskip 12pt
   \vbox{%
     \hsize=\linewidth
     \everypar{}%
     \parindent=0pt
-    \noindent{\ocLabelFont\ocLab{\chaptertitlename}\enspace\ocNum{\thechapter}}\par
-    \vspace{6pt}%
-    {\ocDisplay\linespread{1}\fontsize{30}{34}\selectfont\color{ocBlack}%
-      \raggedright\hyphenpenalty10000\exhyphenpenalty10000 \ocBreakDashes{#1}\par}%
-    \vspace{8pt}%
-    \ocChapterRule\par
+    \noindent\ocChapterRule\par
     \ifx\oc@ch@epi\@empty\else
-      \vspace{8pt}%
+      \vspace{9pt}%
       {\small\itshape\color{ocBlack}\raggedright\hyphenpenalty10000\exhyphenpenalty10000
         \let\\\newline \oc@ch@epi\par}%
     \fi}}
-% Numbered chapter heading: plain page (no running head), then the band and title.
+% Numbered chapter heading: plain page (no running head), band, then rule and epigraph.
 % \ocChapterHead is the titlesec before-code; #1 is the title that follows it.
 \renewcommand{\ocChapterHead}[1]{%
   \thispagestyle{plain}%
   % titlesec's block shape has already \leavevmode'd, so the band has to return
   % to vertical mode. The paragraph it closes holds only the indent strut.
   \par
-  \oc@flow@band
-  \oc@flow@title{#1}}
+  \oc@flow@band{#1}%
+  \oc@flow@after}
 % Part page: full charcoal, the part's own title lockup, nothing else.
 \newcommand{\oc@part@page}[2]{% #1 numeral (empty for \part*), #2 title
   \global\oc@op@rectotrue

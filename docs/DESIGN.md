@@ -1,10 +1,11 @@
 # Chapter opener on the same page — 31 October 2026
 
 Numbered chapters no longer spend a page on the band alone. `common/chapter-opener.tex`
-draws a compact charcoal band (masthead, volume line, 78 pt coral numeral) 0.30 in
-inside the trim, then the chapter label, the Cormorant title, the coral rule and the
-epigraph. The prose starts under that block, on the same page, and the next page does
-not repeat the heading. The first page is plain: folio at the foot, no running head.
+draws a compact charcoal band 0.30 in inside the trim. The band holds the masthead,
+the volume line, the 64 pt coral numeral and the cream Cormorant title (`CHAPTER n`
+beside the numeral). A two-line title stays inside the charcoal. The coral rule and
+the epigraph sit on the paper under the band. The prose starts on that same page, and
+the next page does not repeat the heading. The first page is plain: folio at the foot, no running head.
 Chapters still start on a new page, on whichever side comes next, so a part page is
 not followed by a blank. Unnumbered chapters keep the short heading. Part pages are
 unchanged. The EPUB already opened with one strip and then the text; that is unchanged.
