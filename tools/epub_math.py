@@ -32,12 +32,19 @@ import tempfile
 from dataclasses import dataclass
 from pathlib import Path
 
+import epub_png
+
 
 REPO = Path(__file__).resolve().parent.parent
 BORDER_PT = 0.4
-DPI = 720
+# The book em is 11.5 pt, 48 device pixels on a 300 ppi screen. 600 ppi would
+# be two device pixels per em, and with full-colour 1800 px plates that still
+# put the largest volume over the 50 MB Send-to-Kindle mail limit. 480 ppi is
+# 77 px per em, about 1.6 device pixels on each body pixel, and leaves headroom
+# under 50 MB. The CSS size stays the TeX em either way.
+DPI = 480
 WIDE_EM = 22.0
-CACHE_TAG = "v3"
+CACHE_TAG = "v6"
 
 MATH_RE = re.compile(r"<math\b([^>]*)>(.*?)</math>", re.S)
 RAW_RE = re.compile(r'<span class="math (inline|display)">\s*(.*?)\s*</span>', re.S)
@@ -241,8 +248,12 @@ def _compile_batch(formulas: list[tuple[str, bool]]) -> dict[tuple[str, bool], G
         if len(pngs) != len(formulas):
             names = ", ".join(path.name for path in pngs[:12])
             raise MathRenderError(f"got {len(pngs)} PNGs for {len(formulas)} formulas ({names})")
+        raw = [path.read_bytes() for path in pngs]
+        if any(not blob.startswith(b"\x89PNG") for blob in raw):
+            raise MathRenderError("pdftocairo did not write a PNG for every formula")
+        packed = epub_png.compress_math_many(raw)
         rendered = {}
-        for line, png_path in zip(metrics, pngs):
+        for line, png in zip(metrics, packed):
             index_s, ht, dp, wd, em = line.split(",")
             index = int(index_s)
             tex, display = formulas[index]
@@ -250,9 +261,6 @@ def _compile_batch(formulas: list[tuple[str, bool]]) -> dict[tuple[str, bool], G
             width_em = max((_dim(wd) + 2 * BORDER_PT) / em_pt, 0.05)
             depth_em = (_dim(dp) + BORDER_PT) / em_pt
             height_em = (_dim(ht) + _dim(dp) + 2 * BORDER_PT) / em_pt
-            png = png_path.read_bytes()
-            if not png.startswith(b"\x89PNG"):
-                raise MathRenderError(f"missing PNG for formula {index}")
             rendered[(tex, display)] = Glyph(png, width_em, depth_em, height_em, display)
         return rendered
 
@@ -322,12 +330,18 @@ def render_formulas(formulas: list[tuple[str, bool]], cache: Path | None = None)
 def replace_math(text: str, glyphs: dict[tuple[str, bool], Glyph], page: str, package_root: str) -> tuple[str, dict[str, bytes]]:
     """Swap MathML and raw TeX spans for measured images. Returns new media files."""
     media: dict[str, bytes] = {}
+    # Different TeX can paint the same pixels. One file, two vertical-aligns.
+    shared: dict[bytes, str] = {}
 
     def src_for(tex: str, display: bool) -> str:
         glyph = glyphs[(tex, display)]
-        ident = formula_id(tex, display)
-        zip_name = posixpath.join(package_root, "media", f"oc-math-{ident}.png")
-        media[zip_name] = glyph.png
+        digest = hashlib.sha256(glyph.png).digest()
+        zip_name = shared.get(digest)
+        if zip_name is None:
+            ident = hashlib.sha256(digest).hexdigest()[:20]
+            zip_name = posixpath.join(package_root, "media", f"oc-math-{ident}.png")
+            shared[digest] = zip_name
+            media[zip_name] = glyph.png
         return posix_rel(page, zip_name), glyph
 
     def math_sub(match: re.Match) -> str:

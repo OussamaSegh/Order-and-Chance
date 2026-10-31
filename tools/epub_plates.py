@@ -15,6 +15,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+import epub_png
+
 
 PLATE_PX = 1800
 
@@ -73,4 +75,4 @@ def rasterize(pdf: Path, width: int = PLATE_PX) -> bytes:
         png = prefix.with_suffix(".png").read_bytes()
     if not png.startswith(b"\x89PNG"):
         raise RuntimeError(f"{pdf.name} did not rasterize to a PNG")
-    return png
+    return epub_png.compress_plate(png)

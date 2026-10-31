@@ -6,7 +6,7 @@ Read `docs/DESIGN.md` before changing design or publishing templates.
 
 The author reads the EPUB on a Kindle Paperwhite. Plates and formulas are fixed in the EPUB pipeline only. Do not change the print or reading PDF for this.
 
-- **EPUB figures: full text width, responsive, legible labels.** Every TikZ plate is a PNG at least 1600 pixels wide (the build writes 1800) with `width: 100%`, `max-width: 100%` and `height: auto` on the `img`. No fixed pixel width. Kindle reads an SVG viewBox as pixels and ignores `max-width`, so a stylesheet cap alone leaves the plate small.
+- **EPUB figures: full text width, responsive, legible labels.** Every TikZ plate is a full-colour PNG at least 1600 pixels wide (the build writes 1800) with `width: 100%`, `max-width: 100%` and `height: auto` on the `img`. No fixed pixel width. Kindle reads an SVG viewBox as pixels and ignores `max-width`, so a stylesheet cap alone leaves the plate small. Plates stay in colour (a palette only when it does not change the inks). Formula images are 16-level black-and-alpha at 480 ppi. Each EPUB must stay under 50 MB.
 - **Inline mathematics sits on the text baseline and scales with the body font.** Each formula is a transparent PNG. Its width is the TeX width in em, and its `vertical-align` is the TeX depth in em. Display mathematics uses the same em width, or the full column when the formula is wider than the measure.
 - `tools/check_epub_media.py` fails the build when a plate is a small fixed width, an SVG, or missing that CSS, or when inline math has no em baseline. `./build.sh` runs it. The online reader still uses the SVG plates and KaTeX.
 
