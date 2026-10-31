@@ -1,7 +1,15 @@
 # Errata and review log
 
-The entries below record earlier reviews and their reported checks. They are a
-historical log, not a certification that a volume is free of errors. For Volume 0,
+The reviews below were written under the pre-Edition-1 numbering. Volume 0 in
+this log is now Volume 1, First Principles, and each later old number is one
+less than the number on the title page. A chapter that later moved is not
+updated in the paragraphs below; the homes are in
+`docs/plan/volume-citation-map.md`. Do not copy a volume number from this log
+into a book without that map.
+
+The entries record earlier reviews and their reported checks. They are a
+historical log, not a certification that a volume is free of errors. For the
+book then called Volume 0,
 the independent review of 27 October 2026 supersedes the earlier blanket assurance
 of correctness: see [VOLUME0-FACT-REVIEW.md](VOLUME0-FACT-REVIEW.md) for the implemented
 mathematical, factual and print corrections and reproducible calculations.
