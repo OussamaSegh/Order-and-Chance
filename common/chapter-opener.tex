@@ -4,11 +4,11 @@
 % PART n, the ivory title and the part rule. No epigraph, and no illustration: the
 % cover motif and \chaptermotif are not drawn here.
 %
-% Chapter opener: one compact band at the top of the chapter's first page. The band
-% holds the masthead, the volume line, the coral numeral and the cream chapter title.
-% The opening italic sits on the paper directly under the band, and the prose follows
-% on the same page. There is no second heading. The first page uses the
-% plain style (folio at the foot, no running head).
+% Chapter opener: no band. On the white page, a small coral CHAPTER n (or
+% APPENDIX A) label, then the black title in the body serif, left aligned, then
+% a short coral rule. The opening italic and the prose follow on that same page.
+% The first page uses the plain style (folio at the foot, no running head).
+% Running heads on later pages are unchanged.
 % Numbered chapters start on the next page, recto or verso: the class option is
 % openany, and a blank is not inserted to force a side. A part's first chapter
 % therefore still sits on the back of the part page.
@@ -86,7 +86,7 @@
 % whole paragraph as one centred block, so no line is wider than the measure.
 \newcommand{\oc@option@epi}{%
   \ifx\oc@ch@epi\@empty\else
-    \par\vspace{26pt}%
+    \par\vspace{14pt}%
     \begingroup
       \setlength{\oc@epiW}{0.75\linewidth}%
       \parindent=0pt
@@ -316,41 +316,53 @@
           \let\\\newline
           \oc@ch@epi}}\par
     \fi}}
-% Numbered chapter heading: plain page (no running head), band, then rule and epigraph.
-% \ocChapterHead is the titlesec before-code; #1 is the title that follows it.
+% Numbered chapter heading: plain page (no running head). Small coral label,
+% black body-serif title, short coral rule, then the opening italic.
+% \ocChapterHead is the titlesec before-code; #1 is the title.
 \renewcommand{\ocChapterHead}[1]{%
   \thispagestyle{plain}%
   \par
-  \def\oc@opt{A}\ifx\ocOpenerOption\oc@opt\oc@opener@A{#1}\else
-  \def\oc@opt{B}\ifx\ocOpenerOption\oc@opt\oc@opener@B{#1}\else
-  \def\oc@opt{C}\ifx\ocOpenerOption\oc@opt\oc@opener@C{#1}\else
-  \oc@opener@current{#1}\fi\fi\fi}
+  \noindent
+  {\ocMed\fontsize{8.2}{11}\selectfont\color{ocCoralDeep}%
+    \ocCaps[12]{\chaptertitlename\ \thechapter}\par}%
+  \vspace{8pt}%
+  \noindent
+  {\normalfont\fontsize{26}{32}\selectfont\color{ocBlack}%
+    \raggedright\hyphenpenalty=10000\exhyphenpenalty=10000
+    \emergencystretch=3em\tolerance=2000
+    \everymath{\color{ocBlack}}\everydisplay{\color{ocBlack}}%
+    \ocBreakDashes{#1}\par}%
+  \vspace{10pt}%
+  \noindent\ocChapterRule\par
+  \oc@option@epi}
 \newcommand{\oc@opener@current}[1]{\oc@flow@band{#1}\oc@flow@after}
 % Part page: full charcoal, the part's own title lockup, nothing else.
 \newcommand{\oc@part@page}[2]{% #1 numeral (empty for \part*), #2 title
   \global\oc@op@rectotrue
-  \global\setbox\oc@pt@text\hbox{\parbox[t]{4.3in}{%
+  \global\setbox\oc@pt@text=\vbox{%
+    \hsize=5.1in
+    \parindent=0pt\topskip=0pt
+    \centering
     \if\relax\detokenize{#1}\relax\else
-    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocCream}\ocLab{\partname}\enspace\textcolor{ocCoral}{#1}}\par
+    {\ocMed\fontsize{8.2}{10}\selectfont\color{ocCream}\ocLab{\partname}\enspace\textcolor{ocCoral}{#1}\par}%
     \vspace{10pt}\fi
-    {\ocDisplay\linespread{1}\fontsize{38}{42}\selectfont\color{ocCream}\raggedright\hyphenpenalty10000\exhyphenpenalty10000 \ocBreakDashes{#2}\par}%
-    \vspace{16pt}\oc@op@diarule{ocCoral}\par}}%
+    {\ocDisplay\linespread{1}\fontsize{36}{42}\selectfont\color{ocCream}%
+      \hyphenpenalty=10000\exhyphenpenalty=10000 \ocBreakDashes{#2}\par}%
+    \vspace{16pt}\oc@op@diarule{ocCoral}\par}%
   \xdef\oc@op@numeral{#1}%
   \AddToHookNext{shipout/background}{\put(0,0){\oc@part@art}}%
   \thispagestyle{empty}\null\clearpage}
 \newcommand{\oc@part@art}{%
-  \ifoc@op@recto\setlength{\oc@opL}{\ocInner}\else\setlength{\oc@opL}{\ocOuter}\fi
   \begin{tikzpicture}[baseline={(0,0)}]
     \useasboundingbox (0,0) rectangle (\paperwidth,-\paperheight);
     \fill[ocBlack] (0,0) rectangle (\paperwidth,-\paperheight);
-    \begin{scope}[shift={(\ocBleed,-\ocBleed)}]
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,-0.75in)
-        {\ocDisplay\fontsize{10.5}{12}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}};
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,-0.98in)
-        {\ocBook\fontsize{7}{9}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}};
-      \node[anchor=base west,inner sep=0pt,text=ocCoral,font=\ocNumeral\fontsize{190}{190}\selectfont]
-        at (\oc@opL-0.08in,-3.35in) {\oc@op@numeral};
-      \node[anchor=north west,inner sep=0pt] at (\oc@opL,-3.75in) {\usebox\oc@pt@text};
+    \begin{scope}[shift={(0.5\paperwidth,-\ocBleed)}]
+      \node[anchor=north, align=center, inner sep=0pt] at (0,-0.85in)
+        {{\ocDisplay\fontsize{10.5}{13}\selectfont\color{ocCream}\ocCaps[26]{Order and Chance}}\\[3pt]
+         {\ocBook\fontsize{7.5}{10}\selectfont\color{ocCream!80}\ocCaps[20]{\ocVolume}}};
+      \node[anchor=center, inner sep=0pt, text=ocCoral, font=\ocNumeral\fontsize{150}{150}\selectfont]
+        at (0,-3.85in) {\oc@op@numeral};
+      \node[anchor=north, inner sep=0pt] at (0,-4.85in) {\usebox\oc@pt@text};
     \end{scope}
   \end{tikzpicture}}
 % The part page's short rule: rule, diamond, rule.
