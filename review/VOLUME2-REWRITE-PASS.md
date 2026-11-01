@@ -53,3 +53,21 @@ The following checks were performed against the evolving PR branch after the ini
 - GitHub Actions successfully built the manuscript, publication assets and site for commit **45643c4** (run 41354481110). Later manuscript commits supersede that run: **the final-head build must separately pass**.
 
 **Limits of this review:** a passing LaTeX build and the structural checks are not a line-by-line independent proof certification. Likewise, the new TikZ source was inspected, but its appearance in the actual PDF and EPUB has not been visually certified here. The PR should remain draft until the remaining independent review and final-head publishing checks are complete.
+
+
+## Full exercise-solution rewrite completed (subsequent pass)
+
+Every \`\\writeup\` text in every existing solution environment in the eleven chapters has now been reauthored in the mathematician-writer voice, **144 solutions in all**. This is more extensive than the earlier inventory of 55 \`\\idea\` discovery paragraphs. The latter remain rewritten too. The original exercise labels, hints, grading, and numerical requirements have been preserved.
+
+The writer pass also corrected the mathematically false comparison in exercise \`ex:t1-sieve30\`: the sieve and prime counts agree at \(x=30\) even though the theorem's sufficient hypothesis fails; the question now contrasts this with \(x=50\), where \(49\) survives the sieve.
+
+### QA for this pass
+
+- Compared all eleven current chapter sources against \`main\`. No original labels or solution/hint keys were lost or reordered. All original exercise, hint, and solution counts remain unchanged. Relevant LaTeX environment pairs remain balanced.
+- Independently evaluated numerical spot checks, including the Fermat cubic at \(p=7,13,19\), the sieve counts \(8,14\) at \(x=30,50\), 341 as a base-2 Fermat pseudoprime, the 641 factor test, the toy RSA example, and Jacobi's four-square formula for all \(1\le n\le12\).
+- Inspected rendered PDF pages from a successful intermediate CI build, including the new Euclidean-algorithm and unit-class figures. Corrected the modulo-12 legend overlap in source; this correction requires review in a newer build.
+- Preserve caution: a successful build is not a proof of every mathematical argument, and this rewrite has **not** received an independent specialist review of every theorem proof. Do not claim mathematical infallibility.
+
+### Scope after completion of solution pass
+
+All existing exercise **formal solutions** and selected guiding hints have been reauthored. Formal theorem statements, many long specialist theorem proofs, and some original exercise prompts are kept in their mathematically precise form. This is an intensive whole-volume editorial rewrite, but not a literal replacement of every pre-existing sentence. The PR should be labelled complete only relative to the clearly stated scope, not as an absolute perfection guarantee.
