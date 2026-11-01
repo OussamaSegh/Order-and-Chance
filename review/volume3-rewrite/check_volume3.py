@@ -246,6 +246,54 @@ def check_quaternion_norm() -> None:
     assert mul((0, 0, 1, 0), (0, 1, 0, 0)) == (0, 0, 0, -1)  # j*i=-k
 
 
+
+def check_fifteen_rectangle_generation() -> None:
+    """Independently check the concrete 15-puzzle loop table in Chapter 4.
+
+    This checks the nontrivial finite bookkeeping in the converse argument.
+    It relies on (rather than proves) the preceding abstract growth lemmas.
+    """
+    def cycle(mapping: tuple[int, ...]) -> dict[int, int]:
+        return dict(zip(mapping, mapping[1:] + mapping[:1]))
+
+    def image(h: dict[int, int], x: int) -> int:
+        return h.get(x, x)
+
+    s = {11, 12, 15}  # 2-by-2 loop generates A(s)
+    assert s == set(cycle((15, 12, 11)).keys())
+
+    h = cycle((14, 15, 12, 11, 10))
+    assert len({image(h, x) for x in s} & s) == 2
+    s.add(10)
+
+    # An application of growth fact (ii) needs two points staying in s
+    # and a third whose image leaves s. The latter is then added.
+    def grow(h: dict[int, int], stays: tuple[int, int], exits: tuple[int, ...]) -> None:
+        assert len(s) >= 4
+        x, y = stays
+        assert x in s and y in s and x != y
+        assert image(h, x) in s and image(h, y) in s
+        for z in exits:
+            assert z in s
+            new = image(h, z)
+            assert new not in s, (z, new, sorted(s))
+            s.add(new)
+
+    grow(h, (11, 12), (10,))
+    h = cycle((13, 14, 15, 12, 11, 10, 9))
+    grow(h, (11, 12), (10,))
+    grow(h, (10, 11), (9,))
+    h = cycle((11, 15, 12, 8, 7))
+    grow(h, (11, 15), (12, 8))
+    h = cycle((11, 15, 12, 8, 4, 3, 7))
+    grow(h, (11, 15), (8, 4))
+    h = cycle((13, 14, 15, 12, 8, 7, 6, 5, 9))
+    grow(h, (13, 14), (7, 6))
+    h = cycle((13, 14, 15, 12, 8, 4, 3, 2, 1, 5, 9))
+    grow(h, (13, 14), (3, 2))
+    assert s == set(range(1, 16))
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -258,9 +306,10 @@ def main() -> None:
     check_s4_character_table()
     check_f4()
     check_fifteen_parity()
+    check_fifteen_rectangle_generation()
     check_quaternion_norm()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
-    print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A5 classes; S4 characters; F4; fifteen-puzzle parity; quaternion norms")
+    print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 
 if __name__ == "__main__":
