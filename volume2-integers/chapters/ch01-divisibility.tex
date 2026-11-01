@@ -455,18 +455,18 @@ of sight; a lattice point $z$ with $|z|^2<R^2+1$ has $|z|\le R$. (c) Look toward
 \section{Solutions}
 
 \begin{solution}{ex:bez}
-\idea A linear equation $ax+by=c$ is solved in two steps: one particular solution from the extended Euclidean algorithm (scaled if $c$ is a multiple of the gcd), then all solutions by subtracting, which gives a homogeneous equation that Gauss' lemma solves after dividing by the gcd.
+\idea Start by finding a single solution. The extended Euclidean algorithm gives numbers $u,v$ with $au+bv=d=\gcd(a,b)$. If $d$ divides $c$, scaling the identity gives a solution of $ax+by=c$. To find \emph{all} solutions, subtract this one from an arbitrary one. The difference solves $aX+bY=0$, which is easier because coprimality tells us how the two coordinates must vary.
 \writeup Euclid: $91=2\cdot35+21$, $35=21+14$, $21=14+7$, $14=2\cdot7$, so $\gcd(91,35)=7$, and back-substituting,
 $7=21-14=2\cdot21-35=2\cdot91-5\cdot35$. So $(2,-5)$ is a solution. If $(x,y)$ is another, $91(x-2)=-35(y+5)$, so $13(x-2)=-5(y+5)$. Since $\gcd(5,13)=1$, Gauss' lemma gives $5\mid x-2$: $x=2+5k$, and then $y=-5-13k$. Conversely these all work: the solutions are $(2+5k,-5-13k)$, $k\in\Z$.
 \end{solution}
 
 \begin{solution}{ex:gcdn}
-\idea A common divisor of two expressions divides every integer combination of them. So combine them to kill the variable: subtracting removes $n^2$, and then a second combination removes $n$, leaving a constant. The gcd divides that constant; then test which divisors actually occur.
+\idea A gcd divides every integer combination of the two expressions. So look for combinations that cancel the largest power of $n$, then the remaining power, until only a constant is left. That gives a short list of possible gcd values. Do not stop there: for each divisor of the constant, check when it actually divides both original expressions.
 \writeup Let $d$ be the gcd. It divides $(n+1)^2+1-(n^2+1)=2n+1$. Hence $d$ also divides $4(n^2+1)-(2n+1)(2n-1)=5$. So $d\in\{1,5\}$. If $d=5$ then $5\mid2n+1$, so $n\equiv2\pmod5$. Conversely, if $n=5k+2$ then $n^2+1=25k^2+20k+5$ and $(n+1)^2+1=25k^2+30k+10$ are multiples of $5$. So the gcd is $5$ if $n\equiv2\pmod5$ and $1$ otherwise.
 \end{solution}
 
 \begin{solution}{ex:zeros}
-\idea The valuation of a product is the sum of the valuations, and $v_p(m)$ counts how many of $p,p^2,p^3,\dots$ divide $m$. Exchanging the two sums (``count by powers rather than by numbers'') turns the count into multiples of $p^k$ up to $n$, which is a floor. Trailing zeros count factors $10=2\cdot5$, and $5$ is the scarcer prime.
+\idea Count the factors of $p$ inside $n!$ rather than trying to write out the enormous factorial. Every multiple of $p$ contributes one factor; every multiple of $p^2$ contributes an extra factor; and so on. This turns a valuation into a sum of floors. For trailing decimal zeros, pair factors $2$ and $5$. There are always enough twos, so the limiting supply is the number of fives.
 \writeup
 \[\begin{aligned}v_p(n!)&=\sum_{m=1}^nv_p(m)=\sum_{m=1}^n\sum_{k\ge1}\mathbf 1_{p^k\mid m}\eqbr=\sum_{k\ge1}\#\{m\le n:p^k\mid m\}=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor,\end{aligned}\]
 because the multiples of $p^k$ up to $n$ are $p^k,2p^k,\dots,\lfloor n/p^k\rfloor p^k$.
@@ -474,12 +474,12 @@ The number of final zeros is $\min(v_2,v_5)=v_5(1000!)=200+40+8+1=249$ (clearly 
 \end{solution}
 
 \begin{solution}{ex:sqrt}
-\idea Two approaches. Valuations: in $nq^2=p^2$ every prime appears to an even power on the right. For the general statement, clear denominators in $P(p/q)=0$ and look for what $q$ must divide: everything except $p^d$ carries a factor $q$, and $q$ is coprime to $p$.
+\idea Try prime valuations first. A square has an even exponent at every prime, which makes many proposed square-root equalities impossible. For the polynomial part, put a rational root in lowest terms as $p/q$ and clear denominators. Look at the resulting integer equation modulo $q$. Every term but the leading one contains an extra factor of $q$; coprimality then tells you what $q$ must divide.
 \writeup For $n=0$ the claim is immediate. If $n>0$ and $\sqrt n=\frac pq$ then $nq^2=p^2$, so $v_\ell(n)=2v_\ell(p)-2v_\ell(q)$ is even for every prime $\ell$, and $n$ is a square. In general, let $x=\frac pq$ in lowest terms with $q\ge1$ be a root of $X^d+c_{d-1}X^{d-1}+\dots+c_0$. Multiplying by $q^d$: $p^d=-q\left(c_{d-1}p^{d-1}+\dots+c_0q^{d-1}\right)$, so $q\mid p^d$. As $\gcd(q,p)=1$, Gauss' lemma (iterated) gives $q\mid1$, so $x\in\Z$. The case $X^2-n$ recovers the first statement.
 \end{solution}
 
 \begin{solution}{ex:mersgcd}
-\idea The formula says that $a\mapsto2^a-1$ transports gcds. Euclid's algorithm computes $\gcd(a,b)$ by repeated subtraction, so it suffices to check that one subtraction step on $(a,b)$ corresponds to one step on $(2^a-1,2^b-1)$: divide $2^a-1$ by $2^b-1$ and look at the remainder.
+\idea Euclid's algorithm is a sequence of remainder replacements. Look for the same replacement in the numbers $2^a-1$ and $2^b-1$. The identity $2^{a+b}-1=2^a(2^b-1)+(2^a-1)$ shows how subtraction of exponents changes the gcd without changing its value. Once that step is proved, follow Euclid's algorithm for the exponents all the way to $\gcd(a,b)$.
 \writeup For $a\ge b$, $2^a-1=2^{a-b}\left(2^b-1\right)+\left(2^{a-b}-1\right)$, so $\gcd(2^a-1,2^b-1)=\gcd(2^{a-b}-1,2^b-1)$. The map $(a,b)\mapsto\gcd(2^a-1,2^b-1)$ thus follows the subtractive Euclidean algorithm on the exponents, which ends at $(\gcd(a,b),0)$ and gives
 \[\begin{aligned}\gcd\bigl(2^{\gcd(a,b)}-1,2^0-1\bigr)&=\gcd\bigl(2^{\gcd(a,b)}-1,0\bigr)\eqbr=2^{\gcd(a,b)}-1.\end{aligned}\]
 \end{solution}
