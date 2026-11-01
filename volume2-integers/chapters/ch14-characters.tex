@@ -723,16 +723,16 @@ The familiar product formula is therefore an inversion formula in disguise.
 
 \begin{solution}{ex:t1-mu-floor}
 \idea A floor $\lfloor x/d\rfloor$ counts multiples of $d$ at most $x$. Replace the floor by that count and exchange the two \emph{finite} sums. For each integer $m$ that remains, the inner sum runs over its divisors and equals $\sum_{d\mid m}\mu(d)$. That is $1$ only when $m=1$ and $0$ otherwise. Check the range of $x$ to see whether $1$ is included.
-\writeup The floor $\lfloor x/n\rfloor$ counts multiples of $n$ no greater than $x$. Replace each floor by that finite count, then reverse the order of summation:
+\writeup A floor is a count: $\lfloor x/n\rfloor$ is the number of positive multiples of $n$ at most $x$. Replace the floor by that count and switch the order of the two finite sums:
 \[
 \begin{aligned}
-\sum_{n\le x}\mu(n)\left\lfloor\frac xn\right\rfloor
-&=\sum_{n\le x}\mu(n)\sum_{m\le x/n}1\\
-&=\sum_{N\le x}\sum_{n\mid N}\mu(n)
-=\sum_{N\le x}\varepsilon(N)=1.
+\sum_{n\le x}\mu(n)\left\lfloor\frac{x}{n}\right\rfloor
+&=\sum_{n\le x}\mu(n)\sum_{k\le x/n}1\\
+&=\sum_{m\le x}\sum_{n\mid m}\mu(n)\\
+&=\sum_{m\le x}\varepsilon(m)=1.
 \end{aligned}
 \]
-The only integer surviving Möbius cancellation is $N=1$. For $x=10$, direct evaluation gives $10-5-3-2+1-1+1=1$. The general argument is not a numerical coincidence: it is the identity $\mu*\mathbf1=\varepsilon$.
+Only $m=1$ survives, because $\sum_{d\mid m}\mu(d)$ is $1$ when $m=1$ and $0$ otherwise. For $x=10$ the original sum evaluates to $10-5-3-2+1-1+1=1$, checking the formula. The key move was interpreting the floor as a divisor count, not manipulating it algebraically.
 \end{solution}
 
 \begin{solution}{ex:t1-squarefree}
@@ -741,49 +741,61 @@ The only integer surviving Möbius cancellation is $N=1$. For $x=10$, direct eva
 \[
 f(n)=\sum_{d^2\mid n}\mu(d).
 \]
-Because square divisors split across coprime products, $f$ is multiplicative. At a prime power $p^a$, the nonzero contributions are $d=1$, and also $d=p$ if $a\ge2$. Thus $f(p^a)=1$ for $a=0,1$, and $f(p^a)=1+\mu(p)=0$ for $a\ge2$.
+The condition $d^2\mid n$ splits across coprime factors, so $f$ is multiplicative. At a prime power $p^a$ the only possibly nonzero terms correspond to $d=1$ and $d=p$:
+\[
+f(p^a)=
+\begin{cases}
+1,&a=0\text{ or }1,\\
+1-1=0,&a\ge2.
+\end{cases}
+\]
+Multiplying these values over the distinct prime factors proves that $f(n)=1$ exactly when no prime square divides $n$; otherwise it is $0$.
 
-Multiplicativity now shows that $f(n)$ is exactly the indicator that $n$ is squarefree. Sum over all $n\le x$ and switch the two finite sums:
+Summing the indicator over $n\le x$ and exchanging finite sums now gives
 \[
 \#\{n\le x:n\text{ squarefree}\}
-=\sum_{d\le\sqrt x}\mu(d)\left\lfloor\frac x{d^2}\right\rfloor.
+=\sum_{d\le\sqrt{x}}\mu(d)
+  \left\lfloor\frac{x}{d^2}\right\rfloor.
 \]
-Möbius inversion has turned an exclusion condition into an exact count.
+The formula counts squarefree integers by subtracting multiples of prime squares and restoring their overlaps.
 \end{solution}
 
 \begin{solution}{ex:t1-char-series}
 \idea Complete periods cancel. Summation by parts then trades the oscillating coefficients $\chi(n)$ for the bounded sums $A(n)$, at the price of a difference of the sequence $b_n$.
-\writeup (a) A nonprincipal character sums to zero over one complete period, by orthogonality. Every partial sum therefore consists of whole periods contributing zero plus at most one incomplete period. Its absolute value stays bounded.
+\writeup (a) For a nonprincipal character $\chi$ modulo $m$, orthogonality gives
+$\sum_{a=1}^{m}\chi(a)=0$. Any initial segment consists of complete periods, contributing zero, followed by at most one incomplete period. Therefore its partial sums $A(N)=\sum_{n=1}^N\chi(n)$ are bounded independently of $N$.
 
-(b) Put $A(n)=\sum_{j=1}^n\chi(j)$ and $A(0)=0$. Then $\chi(n)=A(n)-A(n-1)$. Insert this in a finite weighted sum and shift the second index:
+(b) Set $A(0)=0$ and write $\chi(n)=A(n)-A(n-1)$. For any sequence $b_n$, rearranging the two finite sums gives
 \[
 \sum_{n=1}^N\chi(n)b_n
 =A(N)b_N-\sum_{n=1}^{N-1}A(n)(b_{n+1}-b_n).
 \]
-This is summation by parts; it is a finite identity, not an appeal to a limit.
+This is summation by parts: it moves the oscillation into $A(n)$ and the smooth change into the difference of the $b_n$.
 
-(c) With $b_n=1/n$, the formula becomes
+(c) Take $b_n=1/n$. Then
 \[
 \sum_{n=1}^N\frac{\chi(n)}n
-=\frac{A(N)}N+\sum_{n=1}^{N-1}\frac{A(n)}{n(n+1)}.
+=\frac{A(N)}N+
+\sum_{n=1}^{N-1}\frac{A(n)}{n(n+1)}.
 \]
-The first term tends to zero by boundedness. The second series converges absolutely because $\sum n^{-2}$ does. Thus the character series converges, although the ordinary harmonic series does not.
+The first term tends to zero, since $A(N)$ is bounded. The second converges absolutely because $\sum_{n\ge1}1/(n(n+1))$ does. Hence the original character series converges. The proof does not assert absolute convergence of $\sum\chi(n)/n$ itself.
 \end{solution}
 
 \begin{solution}{ex:t1-group3}
 \idea The grouped terms are positive, the first is $2/3$, and the partial sum of an increasing sequence bounded by $1$ stays in between once a second positive term is added.
-\writeup Group the first three positive-minus-negative pairs:
+\writeup Group the first three pairs of the alternating odd-reciprocal series:
 \[
-1-\frac13=\frac23,\quad
-\frac15-\frac17=\frac2{35},\quad
+1-\frac13=\frac23,\qquad
+\frac15-\frac17=\frac2{35},\qquad
 \frac19-\frac1{11}=\frac2{99}.
 \]
-Adding them gives
+Their sum is
 \[
-\frac23+\frac2{35}+\frac2{99}=\frac{2578}{3465}.
+S_3=\frac23+\frac2{35}+\frac2{99}
+=\frac{2578}{3465}.
 \]
-Both additional terms are positive, so the result exceeds $2/3$. And
-$1-2578/3465=887/3465>0$, so it is smaller than $1$. Pairing consecutive terms exposes positivity more clearly than manipulating the alternating sum as a whole.
+The final two pairs are positive, so $S_3>2/3$. Direct subtraction gives
+$1-S_3=887/3465>0$, so $S_3<1$. Grouping the terms exposes the strict inequalities without requiring the exact value of the infinite series.
 \end{solution}
 
 \begin{solution}{pb:pseudo}
