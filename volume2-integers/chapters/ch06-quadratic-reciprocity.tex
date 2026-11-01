@@ -5,10 +5,15 @@ Is $219$ a square modulo the prime $383$? A direct search might square $191$ num
 With it, the answer (yes) takes four lines. Gauss called it the \emph{golden theorem} and returned to it again and again.
 \end{center}
 
-Euler noticed it, Legendre half-proved it, and on 8 April 1796, a few weeks before his nineteenth birthday, Gauss proved it: whether a prime $p$ is a
-square modulo another prime $q$ is tied, by a simple rule, to whether $q$ is a square modulo $p$. There is no obvious reason why the two questions should
-have anything to do with each other, and that is exactly why the theorem is so loved. Gauss called it the \emph{golden theorem}, and returned to it all his
-life; many different proofs are now known. Here we give Eisenstein's, which counts lattice points in a rectangle, and an exercise gives a second one with Gauss sums.
+
+Square the nonzero residues modulo $7$. The results are $1,2,4$. Every other nonzero class fails to be a square. That short list is easy to check. The difficult question comes when the modulus is a large odd prime: must we try half its nonzero classes, or can we decide without finding the square root itself?
+
+A remarkable connection compares two different primes. Modulo $7$, the number $11$ is the class $4$, hence a square. Modulo $11$, the number $7$ is \emph{not} a square: the nonzero squares there are $1,3,4,5,9$. The two answers disagree. Both primes are $3$ modulo $4$, and quadratic reciprocity explains why their signs must be opposite. If at least one prime is $1$ modulo $4$, the signs instead agree.
+
+The theorem does not say that the primes are interchangeable. It gives a precise sign rule, with an exception controlled by their remainders modulo $4$. We will first encode the yes-or-no question using the Legendre symbol, then prove the rule by counting lattice points. After that we will calculate symbols without listing all possible squares.
+
+One distinction remains important throughout: deciding that a square root exists modulo $p$ is not the same task as producing the root. A symbol answers the first question. A separate algorithm may be needed for the second.
+
 
 \portrait{gauss}{Carl Friedrich Gauss (1777--1855). Portrait by Christian Albrecht Jensen, 1840. Public domain, via Wikimedia Commons.}
 
@@ -24,7 +29,7 @@ questions apart, then connect them in a worked example.
 \section{Quadratic residues and Euler's criterion}
 
 % t1-pass2 motive 40c9ee6d
-The first question is local and finite: inside a field with $p$ elements, which elements are squares? There are exactly $(p-1)/2$ nonzero squares, so a random nonzero class is a square about half the time, but a count is not a test. Euler's criterion is the test, and it is the character that Volume~6 and Volume~13 meet again as $\bigl(\frac{\cdot}{p}\bigr)$.
+Start with the squares modulo $11$. Squaring $1,2,3,4,5$ gives $1,4,9,5,3$; the negatives give no new squares. So exactly five nonzero classes are squares. Euler's criterion turns that short list into a test that works for any odd prime $p$: one modular exponent tells us whether a nonzero class is a square. Before using it, understand why the nonzero squares come in pairs $x$ and $-x$ and why each pair has the same square.
 
 Let $p$ be an odd prime. An integer $a$ with $p\nmid a$ is a \emph{quadratic residue} modulo $p$ if $x^2\equiv a\pmod p$ has a solution, and a \emph{non-residue} otherwise.
 
@@ -44,20 +49,60 @@ $\left(\dfrac ap\right)\equiv a^{(p-1)/2}\pmod p$. Consequently the symbol is co
 $-1$ is a square modulo $p$ if and only if $p\equiv1\pmod4$.
 \end{theorem}
 \begin{proof}
-For $p\nmid a$, let $g$ be a primitive root (Chapter~\ref{ch:orders}) and write $a\equiv g^i\pmod p$. Then $a$ is a square if and only if $i$ is even (if $a=g^{2j}$, $x=g^j$ works; if $x=g^j$ then $x^2=g^{2j}$ and $2j\equiv i\pmod{p-1}$ forces $i$ even). Also $a^{(p-1)/2}=g^{i(p-1)/2}$, which is $1$ if $i$ is even and $g^{(p-1)/2}=-1$ if $i$ is odd (it squares to $1$ and is not $1$). Half of the exponents $0,\dots,p-2$ are even.
-For $p\mid a$, both sides of the criterion are $0$, since $(p-1)/2\ge1$.
-For any $a,b$, applying the criterion to $ab$ gives
-$\left(\frac{ab}p\right)\equiv
-\left(\frac ap\right)\left(\frac bp\right)\pmod p$.
-If neither factor is zero these quantities belong to $\{1,-1\}$, whose
-classes modulo the odd prime $p$ are distinct; if a factor is zero both
-sides vanish. Thus the multiplicativity is an equality of integers, not just
-a congruence. Finally apply the criterion with $a=-1$ to get the supplementary law.
+Assume first that $p\nmid a$.
+Let $g$ be a primitive root modulo $p$,
+whose existence was proved in
+Chapter~\ref{ch:orders}. Since $g$ generates
+all nonzero classes, write
+$a\equiv g^i\pmod p$ with $0\le i<p-1$.
+
+A class $g^i$ is a square precisely when
+$i$ is even. If $i=2j$, then $g^j$
+is a square root. Conversely, if
+$g^i=(g^j)^2$, the exponents agree
+modulo the even integer $p-1$, so
+$i$ must be even. Exactly half of the
+exponents $0,\ldots,p-2$ are even,
+giving $(p-1)/2$ nonzero squares
+and the same number of non-squares.
+
+Now put $h=g^{(p-1)/2}$.
+Its square is $g^{p-1}=1$, but $h\ne1$
+because $g$ has order $p-1$.
+Over the field $\Z/p\Z$, the equation
+$X^2=1$ has only the roots $1$ and $-1$,
+so $h=-1$. Consequently
+\[
+a^{(p-1)/2}\equiv h^i=(-1)^i\pmod p.
+\]
+This is $1$ when $a$ is a square and
+$-1$ otherwise: Euler's criterion.
+If $p\mid a$, both sides are $0$,
+since $(p-1)/2$ is positive.
+
+For any integers $a,b$, apply the criterion
+to the product $ab$:
+\[
+\left(\frac{ab}{p}\right)
+\equiv
+\left(\frac ap\right)\left(\frac bp\right)
+\pmod p.
+\]
+When neither symbol vanishes,
+both sides are among $\{-1,1\}$.
+These have distinct residue classes
+because $p$ is odd, so the congruence
+is an equality of the displayed integers.
+If a symbol is zero, both sides are zero.
+Thus the Legendre symbol is completely
+multiplicative. Taking $a=-1$ in Euler's
+criterion gives the stated supplementary
+law and the condition $p\equiv1\pmod4$.
 \end{proof}
 
 % t1-pass2 why
 \paragraph{Why this works.}
-The multiplicative group modulo $p$ is cyclic of even order, so squaring has a kernel of index $2$, the nonzero squares. The power $a^{(p-1)/2}$ is the unique character of order dividing $2$: Fermat says its square is $1$, and it equals $1$ on every square. Those two facts force it to be the Legendre symbol. The supplementary law for $-1$ is the same test at $a=-1$, where the power is $(-1)^{(p-1)/2}$.
+Every nonzero class modulo $p$ is a power of a primitive root $g$. Squaring doubles the exponent, so the squares are exactly the even powers. The power $a^{(p-1)/2}$ is $1$ on those classes and $-1$ on the others. That is Euler's criterion. Setting $a=-1$ gives the extra sign test. You can see all the pieces from the cycle of powers; the proof makes the cycle argument work for every odd prime.
 
 \paragraph{Why exactly two roots?}
 If $x^2\equiv y^2\pmod p$, then $p\mid(x-y)(x+y)$, so $x\equiv y$ or
@@ -76,10 +121,7 @@ $4$ is too, while $1+1=2$ is a non-residue. The symbol is a multiplicative
 sign, not an arithmetic fortune-teller.
 
 \subsection*{A first character, and its cancellation}
-Write $\chi(a)=\left(\frac ap\right)$. The identities just proved say that
-$\chi$ is periodic modulo $p$, multiplicative, and zero precisely on multiples
-of $p$. Such a function is called a \emph{Dirichlet character modulo $p$}.
-Here we need only this particular real-valued example, not a general theory.
+The Legendre symbol already behaves like a little numerical signal: it is periodic modulo $p$, it is zero exactly on multiples of $p$, and it multiplies when its arguments multiply. These properties mean we can sum it over a complete residue system and expect cancellation. Try the sum for $p=7$: among the six nonzero classes there are three squares and three non-squares, so the signs add to zero. The characters chapter will turn this example into a general way to detect residue classes.
 
 Its sum over a full residue system is zero. One proof counts the equally
 numerous signs. Another exposes a useful mechanism: choose a non-residue $b$.
@@ -113,7 +155,7 @@ Here $(p-1)/2=6$. Modulo $13$, $3^2=9$, $3^6=729$. Since $13\cdot 56=728$, one h
 \section{Gauss' lemma}
 
 % t1-pass2 motive 92c448dd
-Euler's criterion is an exponent of size about $p/2$. Gauss's lemma replaces that power by a count of negative representatives, which is what one can actually see in a picture and what Eisenstein will sum. The same count, specialised to $a=2$, is the supplementary law Volume~13 uses for the prime above $2$.
+A large modular power can answer a yes-or-no question, but it does not explain the answer very well. Gauss replaces the power by a count. Multiply $1,2,\ldots,(p-1)/2$ by a chosen residue $a$ and reduce each product to a signed representative between $-(p-1)/2$ and $(p-1)/2$. The parity of the negative representatives is the Legendre symbol. The proof is a carefully organised product in which every unwanted factor cancels legally.
 
 \begin{theorem}[Gauss' lemma]\label{thm:gausslemma}
 Let $p\nmid a$, and for $1\le k\le\frac{p-1}2$ let $r_k$ be the residue of $ka$ in $\left]-\frac p2,\frac p2\right[$. If $\mu$ is the number of negative $r_k$, then $\left(\frac ap\right)=(-1)^\mu$.
@@ -125,7 +167,7 @@ $a^{(p-1)/2}\left(\frac{p-1}2\right)!\equiv\prod_kr_k=(-1)^\mu\left(\frac{p-1}2\
 
 % t1-pass2 why
 \paragraph{Why this works.}
-Multiplying $1,\ldots,(p-1)/2$ by $a$ permutes a complete set of nonzero classes once the representatives are folded into $(-p/2,p/2)$. Each negative fold contributes one minus sign. Euler's criterion only needs that sign, so the symbol equals $(-1)^\mu$. The factorial cancels because it is not zero in the field $\Z/p\Z$.
+Take the numbers $a,2a,\ldots,\frac{p-1}{2}a$ and reduce them to signed representatives of small absolute value. Ignoring signs, each absolute value occurs exactly once, so their product is the same as the original product $1\cdot2\cdots\frac{p-1}{2}$. Every negative representative contributes a minus sign. Because the factorial is invertible modulo $p$, we may cancel it. The remaining sign is the Legendre symbol.
 
 \paragraph{A signed permutation, seen explicitly.}
 Take $p=11$ and $a=3$. Reduce $3,6,9,12,15$ to the symmetric interval
@@ -155,7 +197,7 @@ For $a=2$, the numbers $2k$ with $1\le k\le\frac{p-1}2$ lie in $[2,p-1]$, and $r
 
 % t1-pass2 why
 \paragraph{Why this works.}
-For $a=2$ the representatives that fall past $p/2$ are an interval of even numbers, and counting them is arithmetic, not reciprocity. The four odd classes modulo $8$ produce two even counts and two odd counts, which is the parity of $(p^2-1)/8$.
+For the symbol of $2$, Gauss's lemma turns the problem into counting which of $2,4,\ldots,p-1$ are represented with a minus sign. Their location relative to $p/2$ makes the count elementary. The answer depends only on the odd prime's residue modulo $8$, producing the exponent $(p^2-1)/8$. This is a parity statement, so we need the count only modulo $2$, not its full numerical value.
 
 % t1-pass2 examples 92c448dd
 \begin{examplex}[Gauss's count for $a=3$, $p=13$]
@@ -172,7 +214,7 @@ For $p=13\equiv 5\pmod 8$, $(169-1)/8=21$ is odd, so the symbol is $-1$, in agre
 \section{The law of quadratic reciprocity}
 
 % t1-pass2 motive ae6152e8
-The golden theorem compares two primes. It is the model for every later reciprocity law: a symbol modulo $p$ is, up to an explicit sign, the same symbol modulo $q$. Volume~13's class field theory is the statement that abelian prime-splitting is organised by characters of this kind, and Volume~6 builds real Dirichlet characters out of these symbols.
+For distinct odd primes $p$ and $q$, compare the question whether $p$ is a square modulo $q$ with the question whether $q$ is a square modulo $p$. Their answers agree unless both primes are $3$ modulo $4$, in which case they disagree. This simple sentence hides the book's central surprise. The proof draws a rectangle of lattice points and counts it twice. Neither count alone gives reciprocity; matching them exposes the sign.
 
 \begin{think}
 Make a table: for the primes $p,q\in\{3,5,7,11,13\}$, $p\ne q$, record whether $p$ is a square modulo $q$. Now compare the entry for $(p,q)$ with the entry for $(q,p)$. When are they equal, and when do they differ? Look at $p$ and $q$ modulo $4$.
@@ -212,7 +254,7 @@ Subtracting, $(a-1)S=p\left(T(a,p)-\mu\right)+2B$. Modulo $2$, with $a$ and $p$ 
 
 % t1-pass2 why
 \paragraph{Why this works.}
-The floor sum $T(a,p)$ and Gauss's sign count $\mu$ differ by an even integer when $a$ is odd, because $(a-1)$ times the triangular number $(p^2-1)/8$ is even. Gauss's lemma already identifies the symbol with $(-1)^\mu$, hence with $(-1)^T$. The hypothesis that $a$ is odd is necessary: the same floors for $a=2$ can give the wrong sign.
+Eisenstein's floor-sum version of Gauss's lemma needs an odd multiplier $a$. Under that hypothesis, the number of minus signs and the floor sum differ by an even integer, so raising $-1$ to either count gives the same result. That is why the floor formula can replace the sign count without changing the Legendre symbol. Try $a=2$ before forgetting the hypothesis: the convenient formula can give the wrong sign there.
 
 \begin{figure}[ht]
 \centering
@@ -231,7 +273,7 @@ Count the points $(x,y)\in\Z^2$ with $1\le x\le\frac{p-1}2$ and $1\le y\le\frac{
 
 % t1-pass2 why
 \paragraph{Why this works.}
-The rectangle holds $(p-1)(q-1)/4$ lattice points and the diagonal misses every one of them, since a hit would be a multiple of both distinct primes. Points below the diagonal are $T(q,p)$ and points above are $T(p,q)$. Eisenstein's lemma turns those two integers into the two Legendre symbols, and their sum is the exponent of the reciprocity sign.
+The rectangle contains $(p-1)(q-1)/4$ lattice points with positive integer coordinates. A point cannot lie on the dividing diagonal, because that would force a nonzero multiple of one distinct prime to equal a suitable multiple of the other inside their allowed ranges. So every point lies on exactly one side. Count the two sides using the floor sums from Eisenstein's lemma. Their total is the rectangle's area in lattice-point units, and their parities give the reciprocity sign.
 
 \paragraph{Why Eisenstein assumes that $a$ is odd.}
 His proof ends by discarding $(a-1)S$ modulo $2$; this is even when $a$ is
@@ -286,7 +328,7 @@ Modulo $3$, $7\equiv 1=1^2$, so $\bigl(\frac{7}{3}\bigr)=1$. The product of the 
 \section{The Jacobi symbol}
 
 % t1-pass2 motive d5918262
-Reciprocity for primes is not yet an algorithm, because each step may demand a factorisation. The Jacobi symbol extends the same formulas to odd composite denominators, so the arithmetic becomes Euclid's algorithm. The extension is honest about its limitation: the value $1$ no longer means that a square root exists. Volume~6's real characters modulo $4$ and $8$ are the first cases of this symbol.
+Reciprocity is most useful when it becomes a calculation. The Jacobi symbol extends the Legendre symbol's multiplication rules to odd composite denominators. This lets us reduce arguments by Euclid's algorithm without first factoring every large numerator. But the price is a new warning: Jacobi symbol $1$ does \emph{not} guarantee that a square root exists. We will compute an example where the test gives $1$ and the original congruence still has no solution.
 
 For a positive odd integer $n=p_1\cdots p_r$ (primes with repetition), the \emph{Jacobi symbol} is $\left(\frac an\right)=\prod_i\left(\frac a{p_i}\right)$. It is multiplicative in $a$ (as each Legendre symbol is) and in $n$ (by definition). For $n=1$ the product is empty and the symbol is $1$, for every $a$.
 
@@ -303,7 +345,7 @@ $\left(\frac mn\right)\left(\frac nm\right)=\prod_{i,j}\left(\frac{q_i}{p_j}\rig
 
 % t1-pass2 why
 \paragraph{Why this works.}
-A Jacobi symbol is a product of Legendre symbols, so the prime law multiplies. The exponents $(n-1)/2$ and $(n^2-1)/8$ are additive modulo $2$ for odd factors, which is a one-line binomial check, and that is why the same closed formulas survive for composite denominators. What does not survive is the reading ``$1$ means a square exists''.
+The Jacobi symbol is built by multiplying Legendre symbols over the prime factors of an odd denominator. The reciprocity signs multiply too, and their exponents obey simple parity identities. That is why the familiar formulas continue to hold for composite denominators. But do not carry over a conclusion the formulas no longer support: Jacobi symbol $1$ can result from two minus signs and does not certify a square root.
 
 This gives a Euclid-like algorithm computing $\left(\frac an\right)$ \emph{without factoring}. Beware: $\left(\frac an\right)=1$ does not imply that $a$ is a square modulo a composite $n$ (e.g.\ $\left(\frac2{15}\right)=1$, but $2$ is not a square modulo $3$).
 
@@ -360,6 +402,27 @@ No prime factor of $35$ was required.
 \begin{beauty}
 Where this leads. The Legendre symbol is the Dirichlet character Volume~6 uses for the primes in an arithmetic progression, and the supplementary laws are the characters modulo $4$ and $8$. Quadratic reciprocity is the abelian reciprocity law in its smallest case; Volume~13 rebuilds it as the splitting law in cyclotomic fields and then as class field theory. The algorithm that computes a Jacobi symbol without factoring is also the algorithm that evaluates those characters at a prime.
 \end{beauty}
+
+\subsection*{Proof workshop: let the small primes test the sign}
+
+For $p=7$, the distinct nonzero squares are
+$1^2\equiv1$, $2^2\equiv4$ and $3^2\equiv2$.
+Thus $\left(\frac{11}{7}\right)=\left(\frac47\right)=1$.
+
+For $q=11$, the squares of $1,2,3,4,5$ are
+$1,4,9,5,3$ modulo $11$. The residue $7$ is absent,
+so $\left(\frac7{11}\right)=-1$. Their product is $-1$.
+
+The reciprocity sign is
+\[
+(-1)^{((7-1)/2)((11-1)/2)}=(-1)^{3\cdot5}=-1.
+\]
+The calculation agrees with the theorem. It does not
+prove the theorem: we tested a single pair of primes.
+The proof must explain that sign for \emph{every} pair
+of distinct odd primes. Lattice-point counting supplies
+the missing general argument.
+
 
 \section{Exercises}
 
@@ -514,19 +577,19 @@ $n=9$, at $\frac13$. Most composite numbers have almost no liars at all: the bou
 \section{Hints}
 
 \begin{hint}{ex:minus3}
-$\left(\frac{-3}p\right)=\left(\frac{-1}p\right)\left(\frac3p\right)$. Apply Euler's criterion to the first factor and reciprocity to the second: the signs cancel.
+Split the symbol for $-3$ into the symbols for $-1$ and $3$. Euler's criterion handles the first; reciprocity handles the second. Keep the sign exponents visible and simplify them only at the end. The remaining test uses the tiny modulus $3$.
 \end{hint}
 \begin{hint}{ex:onemod4}
-$p\mid n^2+1$ means that $-1$ is a square modulo $p$. For infinitude, take $n=2p_1\cdots p_k$.
+If an odd prime divides $n^2+1$, then $-1$ is a square modulo that prime. Which congruence class does Euler's criterion require? For infinitude, assume you have listed all primes in that class and take $n$ to be twice their product. Factor $n^2+1$ and ask where any of its odd prime factors could come from.
 \end{hint}
 \begin{hint}{ex:minus2}
-Multiply the two supplementary laws and tabulate $p\bmod8$. For the second part, if $p=x^2+2y^2$ then $p\nmid y$, and $(xy^{-1})^2\equiv-2$.
+Use multiplicativity to combine the two supplementary laws for $-1$ and $2$. A four-row table for odd primes modulo $8$ is enough. For the representation statement, reduce $p=x^2+2y^2$ modulo $p$ and explain why $y$ is invertible before dividing by $y^2$.
 \end{hint}
 \begin{hint}{ex:mersfactor}
-$q\mid2^p-1$ means $2^{(q-1)/2}\equiv1\pmod q$, that is, $2$ is a square modulo $q$. What is $q\bmod8$?
+The proposed prime $q=2p+1$ is $7$ modulo $8$ when $p$ is $3$ modulo $4$. What does the supplementary law say about $2$ modulo $q$? Euler's criterion then gives the needed power of $2$. The examples follow by checking the stated prime hypotheses.
 \end{hint}
 \begin{hint}{ex:consecutive}
-For $a\ne0$, $\left(\frac{a(a+1)}p\right)=\left(\frac{1+a^{-1}}p\right)$. Which values does $1+a^{-1}$ take as $a$ runs over the units? For the count, express the indicator of ``$a$ and $a+1$ are residues'' with $\frac{1+\chi(a)}2\cdot\frac{1+\chi(a+1)}2$.
+For a nonzero class $a$, multiplying the argument of the Legendre symbol by the square $a^{-2}$ changes nothing: $\chi(a(a+1))=\chi(1+a^{-1})$. Which classes does $1+a^{-1}$ visit? For counting consecutive residues, expand the two indicator factors and exclude $a=0,-1$ where necessary.
 \end{hint}
 \begin{hint}{ex:pepin}
 If $\mathcal F_n$ is prime, compute $\left(\frac3{\mathcal F_n}\right)$ by reciprocity, using $\mathcal F_n\bmod3$ and $\mathcal F_n\bmod4$. For the converse, the congruence gives the order of $3$ modulo any prime factor $p$, and it must divide $p-1$.
@@ -583,39 +646,86 @@ Write a non-zero square as $p^{2j}u$ with $u$ a unit; the units that are squares
 \section{Solutions}
 
 \begin{solution}{ex:minus3}
-\idea Split $-3=(-1)\cdot3$ by multiplicativity: $\left(\frac{-1}p\right)$ is given by Euler's criterion and $\left(\frac3p\right)$ by reciprocity. The two signs $(-1)^{(p-1)/2}$ cancel, leaving $\left(\frac p3\right)$, which only depends on $p\bmod3$.
-\writeup $\left(\frac{-3}p\right)=\left(\frac{-1}p\right)\left(\frac3p\right)=(-1)^{\frac{p-1}2}\cdot(-1)^{\frac{p-1}2}\left(\frac p3\right)=\left(\frac p3\right)$, by reciprocity with the exponent $\frac{p-1}2\cdot\frac{3-1}2=\frac{p-1}2$. And $\left(\frac p3\right)=1$ iff $p\equiv1\pmod3$ (the squares modulo $3$ are $0,1$).
+\idea Separate the number $-3$ into $(-1)\cdot3$. Multiplicativity turns its Legendre symbol into two simpler symbols. Euler's criterion handles $-1$; quadratic reciprocity handles $3$. Keep the signs written out instead of trying to memorise the answer. They cancel, leaving a symbol modulo $3$, where there are only two possible nonzero classes to examine.
+\writeup For an odd prime $p\ne3$, multiplicativity gives
+\[
+\left(\frac{-3}p\right)=\left(\frac{-1}p\right)\left(\frac3p\right).
+\]
+The supplementary law makes the first factor $(-1)^{(p-1)/2}$. Quadratic reciprocity with $3$ makes the second $(-1)^{(p-1)/2}\bigl(\frac p3\bigr)$. The two signs cancel, so
+$\bigl(\frac{-3}p\bigr)=\bigl(\frac p3\bigr)$. The only nonzero square modulo $3$ is $1$. Therefore $-3$ is a quadratic residue modulo $p$ precisely when $p\equiv1\pmod3$.
 \end{solution}
 
 \begin{solution}{ex:onemod4}
-\idea $p\mid n^2+1$ says exactly that $-1$ is a square modulo $p$, which Euler's criterion translates into $p\equiv1\pmod4$. For infinitude, imitate Euclid with $n^2+1$ in place of $n+1$, choosing $n$ divisible by all the known primes $\equiv1\pmod4$ (and by $2$, to make $n^2+1$ odd).
-\writeup If $p\mid n^2+1$ with $p$ odd, $-1\equiv n^2$ is a square modulo $p$, so $p\equiv1\pmod4$ by Euler's criterion. If $p_1,\dots,p_k$ were all the primes $\equiv1\pmod4$, then $N=(2p_1\cdots p_k)^2+1>1$ is odd, and its prime factors are $\equiv1\pmod4$ but differ from all the $p_i$ (which would divide $1$).
+\idea The statement $p\mid n^2+1$ says that $n^2\equiv-1\pmod p$. For an odd prime, Euler's criterion tells us when that is possible: $p$ must be $1$ modulo $4$. For infinitude, adapt Euclid's method. Suppose you have listed every prime in that class; choose an even multiple $n$ of their product and factor $n^2+1$. The number is odd, and every odd prime factor lies in the desired class. None can be on the list because every listed prime divides $n$ but not $n^2+1$.
+\writeup If an odd prime $p$ divides $n^2+1$, then $n^2\equiv-1\pmod p$, so $-1$ is a square modulo $p$. Euler's criterion forces $p\equiv1\pmod4$.
+
+Suppose only finitely many primes have this form, say $p_1,\ldots,p_k$. Put $m=2p_1\cdots p_k$ and $N=m^2+1$. This is an odd integer greater than $1$ and has an odd prime divisor $q$. The first paragraph gives $q\equiv1\pmod4$. But for every listed $p_i$, $N\equiv1\pmod{p_i}$, so none divides $N$. The new prime $q$ contradicts the supposedly complete list. Infinitely many primes are congruent to $1$ modulo $4$.
 \end{solution}
 
 \begin{solution}{ex:minus2}
-\idea Multiply the two supplementary laws, $\left(\frac{-1}p\right)$ and $\left(\frac2p\right)$, and tabulate modulo $8$. For the second part: $p=x^2+2y^2$ gives $x^2\equiv-2y^2$, so $-2$ is a square as soon as $y$ is invertible.
-\writeup $\left(\frac{-2}p\right)=(-1)^{\frac{p-1}2}(-1)^{\frac{p^2-1}8}$. For $p\equiv1,3,5,7\pmod8$ the two signs are $(+,+),(-,-),(+,-),(-,+)$, so the product is $1$ exactly for $p\equiv1,3$. If $p=x^2+2y^2$ is odd, then $p\nmid y$ (else $p\mid x$ and $p^2\mid p$), and $\left(xy^{-1}\right)^2\equiv-2$.
+\idea The supplementary laws already tell us the values of the symbols for $-1$ and $2$. Multiply them and make a table of the four odd residue classes modulo $8$. That table answers when $-2$ is a square modulo $p$. For the representation claim, start with $p=x^2+2y^2$. You must show $y$ is invertible modulo $p$ before dividing by $y^2$; otherwise the square-root conclusion has a gap.
+\writeup Use multiplicativity and the supplementary laws:
+\[
+\left(\frac{-2}p\right)
+=(-1)^{(p-1)/2}(-1)^{(p^2-1)/8}.
+\]
+For odd primes congruent to $1,3,5,7$ modulo $8$, the sign pairs are $(+,+),(-,-),(+,-),(-,+)$. Their products are positive only for $p\equiv1,3\pmod8$.
+
+If $p=x^2+2y^2$ is an odd prime, then $p\nmid y$. Otherwise the equation would force $p\mid x$ as well, giving $p^2\mid p$, impossible. So $y$ is invertible modulo $p$, and $(xy^{-1})^2\equiv-2\pmod p$. The first part gives the required congruence condition on $p$.
 \end{solution}
 
 \begin{solution}{ex:mersfactor}
-\idea $q\mid2^p-1$ means $2^{(q-1)/2}\equiv1\pmod q$, which by Euler's criterion means $2$ is a square modulo $q$. And $\left(\frac2q\right)$ only depends on $q\bmod8$: here $q=2p+1$ with $p\equiv3\pmod4$ gives $q\equiv7\pmod8$.
-\writeup $q=2p+1\equiv7\pmod8$, so $\left(\frac2q\right)=1$ (Corollary~\ref{cor:two}) and Euler's criterion gives $2^{(q-1)/2}=2^p\equiv1\pmod q$. For $p=11,23,251$ the numbers $q=23,47,503$ are prime, and $q<2^p-1$, so $q$ is a proper factor.
+\idea If $q\mid2^p-1$, the order of $2$ modulo $q$ divides $p$. When the exponent $p$ is prime and the order is not $1$, it equals $p$. Consequently $p$ divides $q-1$. For the particular candidate $q=2p+1$, Euler's criterion and the supplementary law for $2$ give a faster modular test. Keep separate what proves divisibility and what merely restricts possible factors.
+\writeup The hypotheses give $p\equiv3\pmod4$ and a prime $q=2p+1$. Therefore $q\equiv7\pmod8$. By the supplementary law for $2$, we have $\bigl(\frac2q\bigr)=1$. Euler's criterion turns this into
+\[
+2^{(q-1)/2}=2^p\equiv1\pmod q.
+\]
+Thus $q$ divides $2^p-1$. For $p=11,23,251$, the corresponding numbers $q=23,47,503$ are prime and strictly smaller than $2^p-1$. Each therefore supplies a genuine factor of its Mersenne number.
 \end{solution}
 
 \begin{solution}{ex:consecutive}
-\idea Sums of Legendre symbols of polynomials become tractable after a substitution that turns the polynomial into something linear. Factor out the square $a^2$: $\chi(a(a+1))=\chi(1+a^{-1})$, and $1+a^{-1}$ runs over almost all residues. For the count, the indicator of ``$a$ is a residue'' is $\frac{1+\chi(a)}2$, so the count of pairs is a sum of products of such indicators, which expands into sums we know.
-\writeup For $1\le a\le p-1$, $\left(\frac{a(a+1)}p\right)=\left(\frac{a^2(1+a^{-1})}p\right)=\left(\frac{1+a^{-1}}p\right)$. As $a$ runs over the non-zero residues, $1+a^{-1}$ runs over all residues except $1$. Since $\sum_{c=0}^{p-1}\left(\frac cp\right)=0$ (equally many residues and non-residues), the sum is $0-\left(\frac1p\right)=-1$.
-Let $N$ be the number of $a\in[1,p-2]$ with both $a$, $a+1$ residues. With $\chi=\left(\frac\cdot p\right)$, $\frac14(1+\chi(a))(1+\chi(a+1))$ is $1$ for such $a$ and $0$ for other $a\in[1,p-2]$. Summing over $a\in[1,p-2]$: $\sum\chi(a)=-\chi(p-1)=-\chi(-1)$, $\sum\chi(a+1)=-\chi(1)=-1$, and $\sum\chi(a)\chi(a+1)=-1-\chi(p-1)\chi(p)=-1$. So $N=\frac14\left(p-2-\chi(-1)-1-1\right)=\frac{p-4-\left(\frac{-1}p\right)}4$: $\frac{p-5}4$ if $p\equiv1\pmod4$ and $\frac{p-3}4$ if $p\equiv3\pmod4$.
+\idea Sums of Legendre symbols often simplify after you change variables. For a nonzero $a$, write $\chi(a(a+1))=\chi(1+a^{-1})$, since the factor $a^2$ is a square. The inversion map permutes the nonzero classes, so the sum becomes one you can count directly. For the pair count, use the indicator $(1+\chi(a))/2$ for a nonzero square and expand its product with the neighbouring indicator. Check boundary values where a factor vanishes.
+\writeup Write $\chi(a)=\bigl(\frac ap\bigr)$. For nonzero $a$, the square factor $a^2$ does not change the symbol:
+\[
+\chi(a(a+1))=\chi(a^2(1+a^{-1}))=\chi(1+a^{-1}).
+\]
+As $a$ runs through the nonzero classes, $1+a^{-1}$ runs through all classes except $1$. The complete sum of $\chi$ is zero, hence
+$\sum_{a=1}^{p-1}\chi(a(a+1))=-\chi(1)=-1$.
+
+Now count pairs of consecutive nonzero squares. For $1\le a\le p-2$, their indicator is
+$\frac14(1+\chi(a))(1+\chi(a+1))$. Expand and sum. The constant contribution is $p-2$, the two linear character sums contribute $-\chi(-1)$ and $-1$, and the quadratic product sum contributes $-1$. Thus
+\[
+N=\frac{p-4-\chi(-1)}4
+=\begin{cases}
+(p-5)/4,&p\equiv1\pmod4,\\
+(p-3)/4,&p\equiv3\pmod4.
+\end{cases}
+\]
+We restricted to nonzero pairs so the indicator formula has no exceptional endpoints.
 \end{solution}
 
 \begin{solution}{ex:pepin}
 \idea If $\mathcal F_n$ is prime, Euler's criterion says $3^{(\mathcal F_n-1)/2}\equiv\left(\frac3{\mathcal F_n}\right)$, and reciprocity computes this symbol from $\mathcal F_n\bmod3$. For the converse, the congruence gives the exact order of $3$ (a power of $2$ whose half fails), and an element of order $\mathcal F_n-1$ forces $\varphi(\mathcal F_n)=\mathcal F_n-1$, i.e.\ primality. This is the template of Lucas-type primality proofs.
-\writeup If $\mathcal F_n$ is prime: $\mathcal F_n\equiv1\pmod4$ and $\mathcal F_n\equiv2\pmod3$ (as $2^{2^n}\equiv1\pmod 3$, $2^n$ being even), so by reciprocity $\left(\frac3{\mathcal F_n}\right)=\left(\frac{\mathcal F_n}3\right)=\left(\frac23\right)=-1$, and Euler's criterion gives the congruence. Conversely, if $3^{(\mathcal F_n-1)/2}\equiv-1$, then $3^{\mathcal F_n-1}\equiv1$. This already forces $\gcd(3,\mathcal F_n)=1$, so $\operatorname{ord}(3)$ divides $\mathcal F_n-1=2^{2^n}$ but not its half: it equals $\mathcal F_n-1$. Since the order divides $\varphi(\mathcal F_n)\le\mathcal F_n-1$, we get $\varphi(\mathcal F_n)=\mathcal F_n-1$, so every $1\le k<\mathcal F_n$ is prime to $\mathcal F_n$, and $\mathcal F_n$ is prime.
+\writeup Assume $n\ge1$ and write $F_n=2^{2^n}+1$. If $F_n$ is prime, then $F_n\equiv1\pmod4$ and $F_n\equiv2\pmod3$. Reciprocity gives
+\[
+\left(\frac3{F_n}\right)=\left(\frac{F_n}3\right)=\left(\frac23\right)=-1.
+\]
+Euler's criterion therefore gives
+$3^{(F_n-1)/2}\equiv-1\pmod{F_n}$.
+
+Conversely suppose that congruence holds. Squaring gives $3^{F_n-1}\equiv1$, and the preceding power was not $1$. Since $F_n-1$ is a power of $2$, the order of $3$ modulo $F_n$ must be exactly $F_n-1$. But an element's order divides the number of units, so
+\[
+F_n-1\le\varphi(F_n)\le F_n-1.
+\]
+Equality holds. Every positive integer smaller than $F_n$ is therefore coprime to $F_n$, which means $F_n$ is prime. This is Pepin's exact primality criterion.
 \end{solution}
 
 \begin{solution}{ex:gausssum}
 \idea The Gauss sum $g$ is an algebraic number whose square is $\pm p$, so it ``is'' $\sqrt{p^*}$ inside $\Z[\zeta]$. Then $\left(\frac{p^*}q\right)$, which by Euler's criterion is $(p^*)^{(q-1)/2}=g^{q-1}$ modulo $q$, can be computed in a second way: raising to the power $q$ modulo $q$ is additive (the Frobenius), and it permutes the $\zeta^a$, producing $\left(\frac qp\right)$. Comparing the two computations gives reciprocity. The only subtle point is to come back from congruences in $\Z[\zeta]$ to congruences in $\Z$, which needs the linear independence of the powers of $\zeta$.
-\writeup (a) With $\chi=\left(\frac\cdot p\right)$,
+\writeup
+A Gauss sum turns a quadratic character into an exponential sum. The point of the calculation is not the expansion itself, but the one residue class that survives orthogonality. Once we know its square, the Frobenius congruence recovers the sign in quadratic reciprocity.
+
+ (a) With $\chi=\left(\frac\cdot p\right)$,
 \[
 g^2=\sum_{a,b\ne0}\chi(ab)\zeta^{a+b}.
 \] Put $b=ac$ ($c$ runs over non-zero residues for fixed $a$): $\chi(ab)=\chi(a^2c)=\chi(c)$, so
@@ -637,25 +747,28 @@ Now multiply (b) by $g$: $g^{q+1}\equiv\chi(q)g^2$, that is $(p^*)^{(q+1)/2}\equ
 \idea Uniform sampling converts an exact finite character sum into an
 expectation. Marginal balance does not imply independence: examine the
 product, rather than guessing from a picture of the signs.
-\writeup Each variable is $0$ with probability $1/p$, and each of $1,-1$
-with probability $(p-1)/(2p)$. Translation by $1$ permutes the sample space,
-so the distributions agree. Thus $\mathbb E X=\mathbb E Y=0$ and
-$\operatorname{Var}(X)=\operatorname{Var}(Y)=(p-1)/p$.
-Exercise~\ref{ex:consecutive} gives
+\writeup Let $\chi$ be the quadratic character. It vanishes only at the zero class, and takes each of the values $1$ and $-1$ at exactly $(p-1)/2$ nonzero classes. For uniform $a\in\mathbb F_p$, the random variables $X=\chi(a)$ and $Y=\chi(a+1)$ both have mean zero and variance $(p-1)/p$, because translating the input by $1$ permutes the sample space.
+
+Their product is $\chi(a(a+1))$, so the character-sum identity in Exercise~\ref{ex:consecutive} gives
 \[
-\mathbb E(XY)=\frac1p\sum_{a=0}^{p-1}\chi(a(a+1))=-\frac1p.
+\mathbb E[XY]=\frac1p\sum_{a\in\mathbb F_p}\chi(a(a+1))=-\frac1p.
 \]
-Consequently the covariance is $-1/p$. Independence would imply
-$\mathbb E(XY)=(\mathbb E X)(\mathbb E Y)=0$, contradicting this value. Even a balanced
-multiplicative sign pattern need not give independent neighbouring signs.
+Since both means are zero, this is the covariance. Independent random variables with these means would have $\mathbb E[XY]=0$. The nonzero covariance therefore proves that consecutive Legendre symbols are not independent, despite their individually balanced signs.
 \end{solution}
 
 \begin{solution}{ex:t1-res11}
 \idea The list is five squares. Each symbol factors, and only the factor $3$ can produce a reciprocity sign.
-\writeup The residues modulo $11$ are $0,1,3,4,5,9$, as in the example of this chapter.
-Since $13\equiv 5\pmod 8$, $\bigl(\frac{2}{13}\bigr)=-1$. Also $13\equiv 1\pmod 4$, so $\bigl(\frac{3}{13}\bigr)=\bigl(\frac{13}{3}\bigr)=\bigl(\frac{1}{3}\bigr)=1$. Hence $\bigl(\frac{6}{13}\bigr)=-1$.
-Since $17\equiv 1\pmod 8$, $\bigl(\frac{2}{17}\bigr)=1$, and again $\bigl(\frac{3}{17}\bigr)=\bigl(\frac{17}{3}\bigr)=\bigl(\frac{2}{3}\bigr)=-1$, so $\bigl(\frac{6}{17}\bigr)=-1$.
-Squares modulo $13$ are $0,1,3,4,9,10,12$, which do not include $6$.
+\writeup Squaring the nonzero classes $1,\ldots,5$ modulo $11$ gives the distinct residues $1,4,9,5,3$. With zero included, the quadratic residues modulo $11$ are $\{0,1,3,4,5,9\}$.
+
+For $p=13$, the supplementary law gives $\bigl(\frac2{13}\bigr)=-1$ because $13\equiv5\pmod8$. Reciprocity gives
+$\bigl(\frac3{13}\bigr)=\bigl(\frac{13}3\bigr)=1$, because $13\equiv1\pmod4$ and modulo $3$. Thus
+$\bigl(\frac6{13}\bigr)=-1$.
+
+For $p=17$, the supplementary law gives $\bigl(\frac2{17}\bigr)=1$, whereas reciprocity gives
+$\bigl(\frac3{17}\bigr)=\bigl(\frac{17}3\bigr)=-1$. Again $\bigl(\frac6{17}\bigr)=-1$.
+
+For a numerical check, the squares modulo $13$ are
+$\{0,1,3,4,9,10,12\}$; the residue $6$ is absent, agreeing with the Legendre-symbol calculation.
 \end{solution}
 
 \begin{solution}{pb:primsum}
@@ -664,21 +777,27 @@ powers are all of $\mathbb F_p^*$, and the primitive roots are the $\gamma^a$ wi
 $k$-th powers is a Ramanujan sum computed in $\mathbb F_p$, and the proof of Problem~\ref{pb:ramsum}(a) works word for word,
 because it only used the geometric sum.
 
-\writeup Let $q=p-1$ and let $\gamma$ be a primitive root (Volume~2, Chapter~4). The primitive roots modulo $p$ are the
-$\gamma^a$, $1\le a\le q$, $\gcd(a,q)=1$, so in $\mathbb F_p$ the sum of their $k$-th powers is
-$C_q(k)=\sum_{\gcd(a,q)=1}\gamma^{ak}$. For $e\mid q$ put $\gamma_e=\gamma^{q/e}$, an element of order $e$, and
-$C_e(k)=\sum_{1\le b\le e,\ \gcd(b,e)=1}\gamma_e^{bk}$. The geometric sum $\sum_{a=1}^e\gamma_e^{ak}$ is $e$ if $e\mid k$ (all
-terms are $1$) and $\frac{\gamma_e^{k}(\gamma_e^{ek}-1)}{\gamma_e^k-1}=0$ otherwise. Sorting $a$ by $\gcd(a,e)$ as in
-Problem~\ref{pb:ramsum}(a), and noting that $\gamma_e^{e/f}=\gamma_f$, gives $\sum_{f\mid e}C_f(k)=e\cdot\mathbf 1_{e\mid k}$ in
-$\mathbb F_p$, for all $e\mid q$. Möbius inversion over the divisors of $q$ (valid in any abelian group) gives
-$C_q(k)=\sum_{d\mid\gcd(q,k)}\mu(q/d)d=c_q(k)$, which is (c).
+\writeup
+A primitive root is a generator, not an arbitrary nonzero element. Label generators by exponents coprime to $p-1$, then replace the resulting restricted sum with a divisor sum by Möbius inversion. The same calculation gives the sum and every higher power sum.
 
-(a) is $k=1$: $c_q(1)=\mu(q)$. For (b), $g\mapsto g^{-1}$ permutes the primitive roots, and $g\ne g^{-1}$ because $g^2=1$
-would mean $q\le2$, that is $p=3$. So the primitive roots split into pairs $\{g,g^{-1}\}$ with product $1$.
-\tools Volume~2, Chapters~6 and~4 (Möbius inversion, primitive roots); Volume~3, Chapter~9 (cyclic multiplicative group).
-\leads Gauss stated (a) in the \emph{Disquisitiones} (article~81). Since $\mu(p-1)=0$ as soon as $4\mid p-1$, the sum of the
-primitive roots is then divisible by $p$. Counting primitive roots in short intervals, where these sums meet character sums,
-is still an active field (Volume~6).
+ Put $m=p-1$ and choose a primitive root $\gamma$. Every primitive root is $\gamma^a$ for one exponent class $a$ coprime to $m$. Thus the $k$th-power sum over primitive roots is
+\[
+C_m(k)=\sum_{\substack{1\le a\le m\\(a,m)=1}}\gamma^{ak}.
+\]
+For each divisor $d$ of $m$, put $\gamma_d=\gamma^{m/d}$, of order $d$, and define $C_d(k)$ by the same formula. The complete geometric sum of the powers of $\gamma_d^k$ is $d$ if $d\mid k$ and zero otherwise. Partitioning its exponents by their gcd with $d$ gives
+\[
+\sum_{e\mid d}C_e(k)=d\,\mathbf1_{d\mid k}.
+\]
+Möbius inversion on the divisor lattice now yields
+\[
+C_m(k)=\sum_{d\mid\gcd(m,k)}d\,\mu(m/d)=c_m(k),
+\]
+which proves part (c).
+
+Take $k=1$. Since $\gcd(m,1)=1$, the formula reduces to $\mu(m)$, proving part (a). For part (b), the inverse of a primitive root is again primitive. If $p>3$, every generator has order $m>2$, so no generator equals its own inverse. The primitive roots split into inverse pairs, each with product $1$. Their total product is therefore $1$.
+
+\tools Volume~2 (primitive roots, Möbius inversion and Ramanujan sums).
+\leads The first power sum is the Möbius function, while all higher powers recover the Ramanujan sums.
 \end{solution}
 
 \begin{solution}{pb:phimodp}
@@ -687,26 +806,34 @@ So the roots of $\Phi_n$ in a big enough finite field are exactly the elements o
 over $\mathbb F_p$ is the size of the smallest field $\mathbb F_{p^f}$ that contains it, and $\mathbb F_{p^f}^*$ is cyclic of order
 $p^f-1$. So everything is decided by when $n$ divides $p^f-1$.
 
-\writeup (a) Reduce $X^n-1=\prod_{d\mid n}\Phi_d$ modulo $p$. Since $p\nmid n$, the derivative $nX^{n-1}$ is prime to $X^n-1$, so
-$X^n-1$ has distinct roots in a splitting field $\mathbb F$ (Volume~3, Chapter~9). A root $\zeta$ of $\Phi_n$ has order dividing
-$n$; if its order were $d<n$, $\zeta$ would also be a root of $X^d-1=\prod_{e\mid d}\Phi_e$, hence of some $\Phi_e$ with $e\ne n$,
-and a double root of $X^n-1$. So the $\varphi(n)$ roots of $\Phi_n$ modulo $p$ are distinct and of order exactly $n$. For such
-a $\zeta$, the degree of its minimal polynomial over $\mathbb F_p$ is $[\mathbb F_p(\zeta):\mathbb F_p]$, the least $f$ with
-$\zeta\in\mathbb F_{p^f}$, that is with $\zeta^{p^f-1}=1$, that is $n\mid p^f-1$: $f=\operatorname{ord}_n(p)$. So every irreducible
-factor of $\Phi_n$ modulo $p$ has degree $f$, they are distinct (no repeated roots), and there are $\varphi(n)/f$ of them.
+\writeup
+Cyclotomic polynomials remember the order of roots of unity. Over a finite field, Frobenius remembers how far a root has to travel before returning to itself. Their combination determines both the degrees and the number of irreducible factors.
 
-(b) $X^4+1=\Phi_8$ is irreducible over $\Q$ (Volume~3, Chapter~10, or Eisenstein after $X\mapsto X+1$). Modulo $2$,
-$X^4+1=(X+1)^4$. For odd $p$, $p^2\equiv1\pmod8$, so $f=\operatorname{ord}_8(p)\le2$, and $\Phi_8$ splits into at least two factors.
+ (a) Reduce $X^n-1=\prod_{d\mid n}\Phi_d(X)$ modulo a prime $p$ not dividing $n$. Its derivative is $nX^{n-1}$, which has no common root with $X^n-1$, so the latter has only simple roots in a splitting field. A root $\zeta$ of $\Phi_n$ must have exact multiplicative order $n$. Otherwise it would be a root of $X^d-1$ for some proper divisor $d$ of $n$, hence of an earlier cyclotomic factor; it would become a repeated root of $X^n-1$.
 
-(c) First let $a=1$. Since $p\nmid m$, $\Phi_m(X^p)=\Phi_{pm}(X)\Phi_m(X)$: both sides are monic of degree $p\varphi(m)$, and
-the roots of the left side, the $z$ with $z^p$ of order $m$, have order $m$ or $pm$, all simple. Modulo $p$,
-$\Phi_m(X^p)\equiv\Phi_m(X)^p$ (Frobenius: $(\sum c_iX^i)^p\equiv\sum c_iX^{ip}$ for $c_i\in\mathbb F_p$). Cancelling $\Phi_m$ in the
-domain $\mathbb F_p[X]$, $\Phi_{pm}\equiv\Phi_m^{p-1}$. For $a\ge2$, rule (ii) of Problem~\ref{pb:phipm1} gives
-$\Phi_{p^am}(X)=\Phi_{pm}(X^{p^{a-1}})\equiv\Phi_{pm}(X)^{p^{a-1}}\equiv\Phi_m^{(p-1)p^{a-1}}$.
-\tools Volume~3, Chapters~9 and~10 (finite fields, cyclotomic polynomials); Volume~2, Chapter~4 (orders).
-\leads (a) is the simplest case of the decomposition of primes in number fields: $p$ splits in $\Q(\zeta_n)$ into
-$\varphi(n)/f$ primes of degree $f$ (Volume~13). $X^4+1$ shows that irreducibility over $\Q$ cannot always be detected modulo a
-single prime, a fact that every polynomial factoring algorithm must live with.
+Let $f$ be the degree of the minimal polynomial of $\zeta$ over $\mathbb F_p$. Equivalently, $f$ is the least positive integer for which $\zeta$ lies in $\mathbb F_{p^f}$. The multiplicative group of this field has order $p^f-1$, and $\zeta$ has order $n$. Thus
+\[
+f=\operatorname{ord}_n(p).
+\]
+All irreducible factors of $\Phi_n$ have this degree, are distinct, and number $\varphi(n)/f$.
+
+(b) The polynomial $\Phi_8(X)=X^4+1$ is irreducible over $\Q$, as follows from the standard cyclotomic theorem. Over $\mathbb F_2$ it equals $(X+1)^4$. For odd $p$, $p^2\equiv1\pmod8$, so $\operatorname{ord}_8(p)\le2$. By part (a), every irreducible factor modulo such a prime has degree at most $2$, and the polynomial is reducible. Thus irreducibility over $\Q$ is not certified by any single reduction modulo a prime in this example.
+
+(c) Suppose $p\nmid m$. The roots of $\Phi_m(X^p)$ have order either $m$ or $pm$. Comparing roots and degrees gives
+\[
+\Phi_m(X^p)=\Phi_m(X)\Phi_{pm}(X).
+\]
+Modulo $p$, Frobenius makes the left-hand side $\Phi_m(X)^p$. Cancel the nonzero polynomial $\Phi_m$ in the integral domain $\mathbb F_p[X]$:
+\[
+\Phi_{pm}(X)\equiv\Phi_m(X)^{p-1}\pmod p.
+\]
+For $a\ge2$, use the identity $\Phi_{p^am}(X)=\Phi_{pm}(X^{p^{a-1}})$ and repeated Frobenius to get
+\[
+\Phi_{p^am}(X)\equiv\Phi_m(X)^{(p-1)p^{a-1}}\pmod p.
+\]
+
+\tools Volume~3 (finite fields and cyclotomic polynomials); Volume~2 (multiplicative orders).
+\leads These factor degrees are the elementary shadow of how primes split in cyclotomic extensions.
 \end{solution}
 
 \begin{solution}{pb:fermatnum}
@@ -714,7 +841,10 @@ single prime, a fact that every polynomial factoring algorithm must live with.
 $2^{n+1}\mid p-1$; the extra factor $2$ comes from knowing that $2$ is a square. For $641$, the two expressions of $641$ say
 that $5\cdot2^7\equiv-1$ and $2^4\equiv-5^4$, and multiplying the right powers gives $2^{32}\equiv-1$.
 
-\writeup (a) Let $p\mid F_n$. Then $2^{2^n}\equiv-1$, so $2^{2^{n+1}}\equiv1$ and the order of $2$ modulo $p$ divides $2^{n+1}$ but
+\writeup
+The order of $2$ modulo a prime factor of a Fermat number is a power of $2$ that we can identify exactly. That order gives an arithmetic progression for possible factors. The next step strengthens the progression and explains Euler's factor of $F_5$.
+
+ (a) Let $p\mid F_n$. Then $2^{2^n}\equiv-1$, so $2^{2^{n+1}}\equiv1$ and the order of $2$ modulo $p$ divides $2^{n+1}$ but
 not $2^n$: it is $2^{n+1}$, and it divides $p-1$ (Volume~2, Chapter~4). For $n\ge2$ this gives $p\equiv1\pmod8$, so
 $\bigl(\frac2p\bigr)=1$ (Volume~2, Chapter~5) and, by Euler's criterion, $2^{(p-1)/2}\equiv1$. So $2^{n+1}\mid\frac{p-1}2$, and
 $p\equiv1\pmod{2^{n+2}}$.
@@ -738,7 +868,10 @@ primes (Volume~3, Chapter~10).
 $a$ freely modulo each prime power factor, so we can take it of maximal order there. Then $a^{n-1}\equiv1$ forces that order
 to divide $n-1$. With two prime factors, the divisibilities $p-1\mid n-1$ and $q-1\mid n-1$ cannot both hold.
 
-\writeup (a) $n$ is odd: otherwise $(-1)^{n-1}=-1\not\equiv1\pmod n$, as $n>2$. Let $p\mid n$ and write $n=p^vm$ with $p\nmid m$.
+\writeup
+Fermat's congruence is obeyed by all primes, but some composites fool every coprime base. Work modulo an unknown prime-power factor, use a primitive root to exclude repeated prime factors, and then recover Korselt's criterion from the divisibility of group orders.
+
+ (a) $n$ is odd: otherwise $(-1)^{n-1}=-1\not\equiv1\pmod n$, as $n>2$. Let $p\mid n$ and write $n=p^vm$ with $p\nmid m$.
 If $v\ge2$, let $g$ have order $p(p-1)$ modulo $p^2$ ($(\Z/p^2\Z)^*$ is cyclic, Volume~2, Chapter~4), and by the Chinese
 remainder theorem choose $a\equiv g\pmod{p^2}$, $a\equiv1\pmod m$, and $a$ prime to $p$; then $a$ is prime to $n$. From
 $a^{n-1}\equiv1\pmod{p^2}$, $p(p-1)\mid n-1$, so $p\mid n-1$, absurd since $p\mid n$. So $n$ is squarefree. Now take $a\equiv g$
@@ -760,7 +893,10 @@ in 1994 that there are infinitely many Carmichael numbers.
 for primes; and checking that the order is $n-1$ needs only the prime factors of $n-1$. (b) The tree branches at the prime
 factors of $p-1$, whose product is less than $p$: induction on $p$ with a logarithmic bound, because logarithms add.
 
-\writeup (a) If $n$ is prime, a primitive root works (Volume~2, Chapter~4). Conversely, the order $e$ of $a$ in $(\Z/n\Z)^*$ ($a$ is a
+\writeup
+A primality certificate needs a small list of equations that somebody else can check. Here the decisive information is the exact order of an element, obtained by checking one exponent for each distinct prime factor of $n-1$. After proving the criterion, we count how large a recursive certificate can become.
+
+ (a) If $n$ is prime, a primitive root works (Volume~2, Chapter~4). Conversely, the order $e$ of $a$ in $(\Z/n\Z)^*$ ($a$ is a
 unit since $a\cdot a^{n-2}\equiv1$) divides $n-1$. If $e<n-1$, some prime $q$ divides $\frac{n-1}e$, and then $e\mid\frac{n-1}q$ and
 $a^{(n-1)/q}\equiv1$, excluded. So $e=n-1$, hence $n-1\le\varphi(n)$, and $n$ is prime.
 
@@ -788,7 +924,10 @@ compared with $\varphi(n)$ factor by factor. The prime powers lose a factor $p^{
 $2^{r-1}$ from the powers of $2$; and the only delicate case, two primes with the same $2$-part, is saved by a
 divisibility argument.
 
-\writeup (a) Let $g$ generate $C$, of order $m$. $x=g^u$ satisfies $x^t=1$ iff $m\mid tu$, iff $\frac m{\gcd(t,m)}\mid u$: there are
+\writeup
+The strong probable-prime test tests several possible square roots of $1$. First count roots in one cyclic group. Then use the Chinese remainder theorem to count the bases that escape detection across all prime-power factors, and finally bound their proportion.
+
+ (a) Let $g$ generate $C$, of order $m$. $x=g^u$ satisfies $x^t=1$ iff $m\mid tu$, iff $\frac m{\gcd(t,m)}\mid u$: there are
 $\gcd(t,m)$ such $u$ modulo $m$. If $x^t=-1$, then $x^{2t}=1$ and $x^t\ne1$. Conversely if $x^{2t}=1\ne x^t$, then $x^t$ has order $2$,
 so it is $-1$, the unique element of order $2$ in a cyclic group of even order. So the count is $\gcd(2t,m)-\gcd(t,m)$.
 
@@ -835,7 +974,10 @@ used for numbers of thousands of digits.
 \idea The number of $k$-th roots of $u$ is a sum over the $k$ characters of order dividing $k$. Then $N(c)$ is $p$ plus a sum of
 $(k-1)^2$ Jacobi sums, of which $k-1$ have size $1$ and the others size $\sqrt p$.
 
-\writeup (a) $\mathbb F_p^*$ is cyclic and $k\mid p-1$, so the characters $\chi$ with $\chi^k=\varepsilon$ form a group of order $k$,
+\writeup
+To show that two $k$th powers cover a finite field, start by counting the solutions of $x^k+y^k=c$. The indicator of being a $k$th power is a short character sum. Its expansion produces one main term and Jacobi sums whose sizes we can control.
+
+ (a) $\mathbb F_p^*$ is cyclic and $k\mid p-1$, so the characters $\chi$ with $\chi^k=\varepsilon$ form a group of order $k$,
 and for $u\ne0$, $\sum_{\chi^k=\varepsilon}\chi(u)$ is $k$ if $u$ is a $k$-th power and $0$ otherwise: the number of $x$ with $x^k=u$.
 With $\varepsilon(0)=1$ and $\chi(0)=0$ for $\chi\ne\varepsilon$ it is also right for $u=0$. So
 \[
@@ -863,7 +1005,10 @@ exponent $4$ is far from sharp.
 \idea A non-zero square modulo $p^k$ has an even valuation $2j<k$ and a unit part that is a square modulo $p^{k-2j}$. Counting
 units that are squares is a matter of group theory: the squaring map on the cyclic unit group has kernel $\pm1$.
 
-\writeup (a) Let $p$ be odd. If $x=y^2\not\equiv0\pmod{p^k}$, then $v_p(x)=2v_p(y)=2j<k$ and $x=p^{2j}u$ with $u$ a unit modulo $p^{k-2j}$ which is a
+\writeup
+A square modulo a prime power has an even valuation, unless it is zero. Strip off that valuation and count square units at the smaller modulus. For powers of two, the unit classes behave differently; treating that case separately matters.
+
+ (a) Let $p$ be odd. If $x=y^2\not\equiv0\pmod{p^k}$, then $v_p(x)=2v_p(y)=2j<k$ and $x=p^{2j}u$ with $u$ a unit modulo $p^{k-2j}$ which is a
 square modulo $p^{k-2j}$. Conversely every such $p^{2j}u$ is a square. The residue $x$ modulo $p^k$ determines $j$ and $u$ modulo $p^{k-2j}$,
 and the units modulo $p^m$ form a cyclic group of even order $\varphi(p^m)$ (Volume~2, Chapter~4), in which the squares are a subgroup of
 index $2$. So there are $\frac12\varphi(p^{k-2j})=\frac{p-1}2p^{k-2j-1}$ non-zero squares of valuation $2j$, and adding $0$ gives the formula.
