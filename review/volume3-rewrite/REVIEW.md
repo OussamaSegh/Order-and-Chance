@@ -89,3 +89,20 @@ The list is targeted fact verification, not a comprehensive bibliography audit.
 4. **References and second reader.** Audit all bibliographic details and cross-volume claims; compare the compiled book against the canonical style and prerequisites; use an independent critical reader on the final version.
 
 **Conclusion:** The current branch materially improves the pedagogical arc and fixes substantive errors, but it is **not a finished, fully rewritten and multiply verified Volume 3**. That status must remain explicit until the remaining sign-off criteria have been met.
+
+
+## Second pass: volume continuity and full proof rewrites (2 November 2026)
+
+A further editorial pass made these changes in addition to the initial audit:
+
+- Read the actual main.tex chapter order of Volumes 1 and 2 instead of inferring it from filenames. The first volume currently contains The Language of Mathematics (1), Sums (2), Counting (3), Sequences (4), Orders (5), Complex Numbers (6), Polynomials (7), Linear Algebra (8), Calculus (9), Inequalities (10) and Probability (11). Corrected the old Volume 3 pointers to these subjects, including references to polynomials, roots of unity, linear algebra, calculus and Fibonacci proofs. Replaced two brittle numeric citations with topical references.
+- Re-read the end of Volume 2, including its Dirichlet-character chapter and field guide, and introduced an explicit conceptual bridge from its unit groups and characters to the homomorphisms of Volume 3.
+- Rewrote the complete proofs of Lagrange's theorem, the first isomorphism theorem, Burnside's lemma, Sylow I, Gauss's lemma, the tower law, Berlekamp--Welch decoding, the quintic Galois-group argument, Maschke's theorem, and the quaternion double-cover theorem. Each rewritten proof makes its assumptions, constructions and logical steps explicit.
+- Added 28 substantive proof explanations across twelve main chapters and four appendices. They have numerical examples and assumptions rather than stock summaries.
+- Verified that all **163 graded exercises** have a corresponding hint and a solution with both a discovery idea and a write-up. Added this requirement to the regression script. This checks the presence of solutions, NOT their mathematical correctness.
+- Expanded reproducible checks: enumerate the 60 elements of A5 and their conjugacy classes (sizes 1, 12, 12, 15, 20), verify all row and column orthogonality identities for the S4 character table, build F4 and test the Frobenius/inverses, check the fifteen-puzzle parity invariant under hundreds of legal moves, verify every specific rectangle-loop growth step in its converse, and test quaternion norm multiplicativity. Earlier checks for necklaces, cube rotations, Sylow arithmetic, the quintic's real roots, Reed--Solomon distance and the two-state walk remain.
+- Preserved all existing theorem and exercise labels. GitHub Actions executes the enlarged audit before the book builds.
+
+### Second-pass limitations
+
+These edits are substantial, but the entire inherited mathematical body has **not** been rewritten word for word. Most of the original remaining theorem proofs and all 163 complete exercise solutions were preserved unless a specific correction justified changing them. Numerical checks cannot certify all the logic in those proofs. An independent line-by-line mathematical sign-off, source and bibliography audit, complete editorial voice review, and final visual PDF/EPUB inspection are still outstanding. PR #91 must remain a draft until these criteria are actually fulfilled.
