@@ -479,53 +479,166 @@ The expansion begins $[1;1,2,\ldots]$. The convergent $2/1$ is worth testing bef
 
 \begin{solution}{ex:cf415}
 \idea Run Euclid's algorithm on $415$ and $93$, and keep the quotients in order. Those are exactly the partial quotients of $415/93$. Now compute the convergents using the two-term recurrence. The last two convergents have cross-products that differ by $1$, so their numerators and denominators produce a B\'ezout identity. Read the coefficients from that identity and check them by multiplication.
-\writeup Euclid: $415=4\cdot93+43$, $93=2\cdot43+7$, $43=6\cdot7+1$, $7=7\cdot1$. So $\frac{415}{93}=[4;2,6,7]$, with convergents $\frac41,\frac92,\frac{58}{13},\frac{415}{93}$ (from $p_k=a_kp_{k-1}+p_{k-2}$: $9=2\cdot4+1$, $58=6\cdot9+4$, $415=7\cdot58+9$, and $2,13=6\cdot2+1,93=7\cdot13+2$). By Proposition~\ref{prop:cfconv}(b) with $n=3$, $415\cdot13-58\cdot93=(-1)^2=1$. So $(x,y)=(13,58)$ is a solution, and all solutions are $(13+93k,58+415k)$, $k\in\Z$ (as in Exercise~\ref{ex:bez}).
+\writeup Euclid's divisions are
+\[
+\begin{aligned}
+415&=4\cdot93+43, &93&=2\cdot43+7,\\
+43&=6\cdot7+1, &7&=7\cdot1.
+\end{aligned}
+\]
+The quotients give $415/93=[4;2,6,7]$. Starting from the recurrence in Proposition~\ref{prop:cfconv}, the convergents are
+\[
+\frac41,\quad\frac92,\quad\frac{58}{13},\quad\frac{415}{93}.
+\]
+For example, $58=6\cdot9+4$ and $13=6\cdot2+1$; the final step gives $415=7\cdot58+9$ and $93=7\cdot13+2$.
+
+The determinant identity for the last two convergents is
+\[
+415\cdot13-58\cdot93=1.
+\]
+Thus $(x,y)=(13,58)$ solves $415x-93y=1$. Because $\gcd(415,93)=1$, subtracting this solution from any other yields the homogeneous equation and the complete family
+\[
+(x,y)=(13+93k,\ 58+415k),\qquad k\in\Z.
+\]
+The continued fraction has given us the B\'ezout coefficients without a separate back-substitution.
 \end{solution}
 
 \begin{solution}{ex:cfunique}
 \idea The even and odd convergents lie on opposite sides of the target. Each of those two subsequences moves in one direction, and the gap between them is $1/(q_nq_{n+1})$, which tends to zero. That pins down a common limit. To recover the original partial quotients from the limit, apply the floor-and-reciprocal algorithm one step at a time. For periodic quotients, call the repeating tail $t$; writing its continued fraction in terms of itself gives a polynomial equation.
-\writeup (a) Lemma~\ref{lem:cfexistence} gives the complete argument.
-Its key steps are the nested even/odd convergents, their vanishing gap,
-and the same limit construction for every tail. The tail after $a_0$
-is strictly greater than $1$, so taking the floor recovers $a_0$;
-iteration recovers every digit and prevents a finite rational expansion.
+\writeup (a) Let $p_n/q_n$ be the convergents. The determinant identity shows that successive differences have alternating signs, while their absolute values equal $1/(q_nq_{n-1})$. The even convergents therefore rise, the odd convergents fall, and each even one is below each later odd one. The denominators tend to infinity, so the gap between the two nested sequences tends to zero. They converge to the same real number $x$.
 
+Apply this argument again to each tail $[a_k;a_{k+1},\ldots]$. Since the tail after $a_k$ is greater than $1$, the floor of that tail is exactly $a_k$. Taking reciprocals of the fractional parts recovers the next tail, so the continued-fraction algorithm applied to $x$ gives the prescribed infinite sequence. This also proves uniqueness: a real number has a unique floor at each stage, and the procedure determines every following digit.
 
-(b) If $x=[1;1,1,\dots]$, the tail is $x$ again, so $x=1+\frac1x$, $x^2-x-1=0$, $x>1$: $x=\varphi$. The recurrences give $p_n=F_{n+2}$ and $q_n=F_{n+1}$. For $\sqrt3$: $\lfloor\sqrt3\rfloor=1$, $x_1=\frac1{\sqrt3-1}=\frac{\sqrt3+1}2$, so $a_1=1$; $x_2=\frac1{\frac{\sqrt3+1}2-1}=\frac2{\sqrt3-1}=\sqrt3+1$, so $a_2=2$ and $x_3=\frac1{\sqrt3-1}=x_1$. So $\sqrt3=[1;\overline{1,2}]$.
+(b) For $x=[1;1,1,\ldots]$, the tail is $x$ itself. Thus $x=1+1/x$, so $x^2-x-1=0$. The positive root is the golden ratio $\varphi=(1+\sqrt5)/2$. The recurrence gives $p_n=F_{n+2}$ and $q_n=F_{n+1}$.
+
+For $\sqrt3$, start with $a_0=1$. Rationalising gives $x_1=(\sqrt3+1)/2$, whose integer part is $1$. The next complete quotient is $x_2=\sqrt3+1$, whose integer part is $2$; the following quotient equals $x_1$. The cycle therefore repeats:
+\[
+\sqrt3=[1;\overline{1,2}].
+\]
 \end{solution}
 
 \begin{solution}{ex:calendar}
 \idea A leap-year rule with $k$ leap years every $m$ years gives an average fraction $k/m$. The target is about $0.24219$. Continued fractions identify especially good rational approximations with modest denominators. Compute a few convergents and compare their errors using exact fractions when possible. Check the actual calendar rule separately: a good approximation is a mathematical property, not a claim that some historical calendar adopted it.
-\writeup Running the algorithm,
-\[\begin{gathered}0.24219=[0;4,7,1,3,24,\dots],\qq\text{convergents }\frac14,\ \frac7{29},\ \frac8{33},\ \frac{31}{128},\ \frac{752}{3105},\ \dots\end{gathered}\]
-The Julian calendar uses $\frac14=0.25$: too many leap years, by about $0.0078$ day per year, a day every $128$ years. The idealised Persian cycle uses $\frac8{33}\approx0.24242$, off by $0.00023$ day per year. This is a useful arithmetic model, not a complete description of the modern Iranian calendar, whose year begins at the astronomical equinox. The Gregorian $\frac{97}{400}=0.2425$ is not a convergent and is slightly worse than $\frac8{33}$, but it is convenient with a decimal century rule; the convergent $\frac{31}{128}=0.2421875$ would be far better still (off by $0.0000025$ day per year, a day in $400\,000$ years; long before that, the slow change of the year's length itself, a few tenths of a second per century, dominates).
+\writeup Apply the continued-fraction algorithm to the fractional part $0.24219$ of the tropical year. It gives
+\[
+0.24219=[0;4,7,1,3,24,\ldots],
+\]
+with the first nonzero convergents
+\[
+\frac14,\quad\frac7{29},\quad\frac8{33},\quad
+\frac{31}{128},\quad\frac{752}{3105},\ldots.
+\]
+Each ratio $k/m$ models a leap-year rule with $k$ additional days every $m$ years.
+
+The Julian rule uses $1/4=0.25$, an excess of about $0.00781$ day per year—roughly a day in $128$ years. An idealised $8/33$ cycle gives about $0.242424$, with an error of about $0.000234$ day per year. The Gregorian rule is $97/400=0.2425$, not a convergent of this decimal, and its error relative to this model is $0.00031$ day per year.
+
+The convergent $31/128=0.2421875$ is still more accurate relative to the fixed target: its error is only $0.0000025$ day per year, or one day in about $400\,000$ years \emph{if the year length stayed constant}. It does not stay constant over such spans. Nor is an astronomical calendar, including the modern Iranian one, adequately described by one fixed rational cycle. These comparisons illustrate approximation, not a full historical calendar theory.
 \end{solution}
 
 \begin{solution}{ex:n21}
 \idea Run the continued-fraction algorithm on $\sqrt{n^2+1}$. Its integer part is $n$. Rationalising the remainder gives $1/(\sqrt{n^2+1}-n)=\sqrt{n^2+1}+n$, whose integer part is $2n$ and whose fractional part repeats the earlier one. That explains the one-term period. Next observe that $n^2-(n^2+1)=-1$. Square the corresponding expression $n+\sqrt{n^2+1}$ to obtain a Pell solution of norm $1$.
-\writeup Since $n<\sqrt{n^2+1}<n+1$, $a_0=n$ and $x_1=\frac1{\sqrt{n^2+1}-n}=\sqrt{n^2+1}+n$ (as $(\sqrt{n^2+1}-n)(\sqrt{n^2+1}+n)=1$). Its integer part is $2n$, and $x_1-2n=\sqrt{n^2+1}-n$, so $x_2=x_1$: $\sqrt{n^2+1}=[n;\overline{2n}]$. The number $u=n+\sqrt{n^2+1}$ has norm $n^2-(n^2+1)=-1$, so $u^2=(2n^2+1)+2n\sqrt{n^2+1}$ has norm $1$: $(2n^2+1)^2-(n^2+1)(2n)^2=1$.
+\writeup Since $n^2<n^2+1<(n+1)^2$, the integer part of $\sqrt{n^2+1}$ is $n$. Rationalise its fractional remainder:
+\[
+\frac1{\sqrt{n^2+1}-n}
+=\sqrt{n^2+1}+n.
+\]
+The right side has integer part $2n$ and fractional part $\sqrt{n^2+1}-n$, which is the original fractional remainder. Hence the same complete quotient repeats forever:
+\[
+\sqrt{n^2+1}=[n;\overline{2n}].
+\]
+
+Now set $d=n^2+1$ and $u=n+\sqrt d$. Its norm in $\Q(\sqrt d)$ is
+$N(u)=n^2-d=-1$. Norms multiply, so $N(u^2)=1$. Expanding directly gives
+\[
+u^2=(2n^2+1)+2n\sqrt{n^2+1}.
+\]
+Comparing the coefficients yields the integer solution
+\[
+(2n^2+1)^2-(n^2+1)(2n)^2=1.
+\]
+The repetition in the continued fraction and the Pell solution come from the same algebraic conjugate pair.
 \end{solution}
 
 \begin{solution}{ex:sqtri}
 \idea Equate a square and a triangular number, then remove the fractions by completing a square: $\frac{m(m+1)}2=k^2$ becomes $(2m+1)^2-2(2k)^2=1$. This is Pell's equation with the additional parity requirements that the first coordinate be odd and the second even. Use the powers of the fundamental solution $3+2\sqrt2$ and verify those parities, then translate back to $m$ and $k$.
-\writeup Multiply by $8$ and add $1$: $\frac{m(m+1)}2=k^2$ iff $(2m+1)^2-2(2k)^2=1$. By Theorem~\ref{thm:pell} (fundamental solution $3+2\sqrt2$, see the example), the solutions with $x,y\ge1$ are $x_j+y_j\sqrt2=(3+2\sqrt2)^j$, i.e.\ $x_{j+1}=3x_j+4y_j$, $y_{j+1}=2x_j+3y_j$. By induction $x_j$ is odd and $y_j$ is even, so every positive solution gives $m=\frac{x_j-1}2$, $k=\frac{y_j}2$. The trivial solution $(x,y)=(1,0)$ adds the square triangular number $T_0=0$. The first ones are $(x,y)=(3,2),(17,12),(99,70),(577,408)$, giving $k^2=1,36,1225,41616$, i.e.\ $T_1=1$, $T_8=36$, $T_{49}=1225$, $T_{288}=41616$, and infinitely many more.
+\writeup Start with $\frac{m(m+1)}2=k^2$. Multiply by $8$ and add $1$ to complete the square:
+\[
+(2m+1)^2-2(2k)^2=1.
+\]
+So we need Pell solutions $x^2-2y^2=1$ with $x$ odd and $y$ even, where $x=2m+1$, $y=2k$.
+
+The fundamental positive solution is $3+2\sqrt2$. By the Pell theorem, every solution with $x,y>0$ is obtained from
+\[
+x_j+y_j\sqrt2=(3+2\sqrt2)^j,\qquad j\ge1.
+\]
+Multiplication by $3+2\sqrt2$ gives
+$x_{j+1}=3x_j+4y_j$ and $y_{j+1}=2x_j+3y_j$. Starting from $(x_1,y_1)=(3,2)$, induction shows every $x_j$ is odd and every $y_j$ is even. Thus all these solutions correspond to
+\[
+m_j=\frac{x_j-1}{2},\qquad k_j=\frac{y_j}{2}.
+\]
+The trivial Pell solution $(1,0)$ also gives $T_0=0$. The first positive cases are
+\[
+T_1=1,\quad T_8=36,\quad T_{49}=1225,\quad
+T_{288}=41616.
+\]
+The powers produce infinitely many further square triangular numbers.
 \end{solution}
 
 \begin{solution}{ex:golden}
 \idea The error formula of Theorem~\ref{thm:cfapprox} is exact: $q_n^2\left|x-\frac{p_n}{q_n}\right|=\frac1{x_{n+1}+q_{n-1}/q_n}$. For $\varphi$ every complete quotient is $\varphi$ and $\frac{q_{n-1}}{q_n}=\frac{F_n}{F_{n+1}}\to\frac1\varphi$; and $\varphi+\frac1\varphi=\sqrt5$. For the second part, any very good approximation is a convergent by Legendre, and we just computed how good the convergents are.
-\writeup For $\varphi$, $x_{n+1}=\varphi$ and $q_n=F_{n+1}$, so $q_n^2\left|\varphi-\frac{p_n}{q_n}\right|=\frac1{\varphi+F_n/F_{n+1}}\to\frac1{\varphi+\varphi^{-1}}=\frac1{\sqrt5}$ (by (b) of Exercise~\ref{ex:cfunique}, $\frac{F_{n+1}}{F_n}\to\varphi$, and $\varphi-\varphi^{-1}=1$, $\varphi+\varphi^{-1}=\sqrt{(\varphi-\varphi^{-1})^2+4}=\sqrt5$). Let $c>\sqrt5$. If $\left|\varphi-\frac pq\right|<\frac1{cq^2}<\frac1{2q^2}$ with $\frac pq$ in lowest terms, then $\frac pq$ is a convergent (Theorem~\ref{thm:legendre}), $\frac{p_n}{q_n}$, with $q_n^2\left|\varphi-\frac{p_n}{q_n}\right|<\frac1c<\frac1{\sqrt5}$; by the limit, this happens for finitely many $n$ only.
+\writeup Every complete quotient after the first in the continued fraction of $\varphi$ equals $\varphi$. With $q_n=F_{n+1}$, the exact convergent error becomes
+\[
+q_n^2\left|\varphi-\frac{p_n}{q_n}\right|
+=\frac1{\varphi+F_n/F_{n+1}}.
+\]
+The Fibonacci ratios satisfy $F_n/F_{n+1}\to1/\varphi$. Since $\varphi-1/\varphi=1$, we have $\varphi+1/\varphi=\sqrt5$. Therefore
+\[
+q_n^2\left|\varphi-\frac{p_n}{q_n}\right|
+\longrightarrow\frac1{\sqrt5}.
+\]
+
+Now choose $c>\sqrt5$ and suppose a reduced fraction $p/q$ satisfies
+$|\varphi-p/q|<1/(cq^2)$. Since $1/c<1/2$, this error is below $1/(2q^2)$, so Legendre's theorem forces $p/q$ to be a convergent. But for all sufficiently large convergent denominators the scaled error is \emph{greater} than $1/c$, by the limit just proved. Thus only finitely many reduced fractions can satisfy the stronger inequality. This is the precise sense in which the golden ratio resists exceptionally good rational approximations.
 \end{solution}
 
 \begin{solution}{ex:liouville}
 \idea (a) A rational $\frac pq$ near $x$ makes $P(\frac pq)$ small, since $P(x)=0$ and $P$ is Lipschitz near $x$; but $P(\frac pq)$ is an integer divided by $q^d$, and non-zero because an irreducible $P$ of degree $\ge2$ has no rational root. So $|P(\frac pq)|\ge\frac1{q^d}$, which forces $\frac pq$ to stay at distance $\gtrsim\frac1{q^d}$. (b) $L$ is approximated by its partial sums with an error far smaller than any $\frac c{q^d}$.
-\writeup (a) Let $M=\sup_{[x-1,x+1]}|P'|$. If $\left|x-\frac pq\right|>1$ the bound holds with $c=1$. Otherwise, $q^dP(\frac pq)$ is an integer, non-zero since $P$ has no rational root (a rational root would give the factor $X-\frac pq$ in $\Q[X]$, and $P$ is irreducible of degree $\ge2$). So $\left|P(\frac pq)\right|\ge\frac1{q^d}$. By the mean value theorem, $\left|P(\frac pq)\right|=\left|P(\frac pq)-P(x)\right|\le M\left|x-\frac pq\right|$. Hence $\left|x-\frac pq\right|\ge\frac1{Mq^d}$, and $c=\min(1,\frac1M)$ works.
+\writeup (a) Let $x$ be an irrational root of an irreducible polynomial $P\in\Z[X]$ of degree $d\ge2$. Set
+\[
+M=\sup_{t\in[x-1,x+1]}|P'(t)|.
+\]
+This finite constant is positive because $P$ is not constant. If $|x-p/q|>1$, the desired lower bound holds after choosing a constant $c\le1$. Otherwise $p/q$ lies in $[x-1,x+1]$. The rational number $p/q$ cannot be a root of $P$, since an irreducible polynomial of degree at least $2$ over $\Q$ has no rational root. After clearing denominators, $q^dP(p/q)$ is a nonzero integer, so
+\[
+|P(p/q)|\ge q^{-d}.
+\]
+The mean value theorem and $P(x)=0$ give
+$|P(p/q)|\le M|x-p/q|$. Combining the inequalities yields
+$|x-p/q|\ge1/(Mq^d)$. Taking $c=\min(1,1/M)>0$ covers both cases.
 
-(b) Let $q_n=10^{n!}$ and $p_n=q_n\sum_{k\le n}10^{-k!}\in\Z$. Then $0<L-\frac{p_n}{q_n}=\sum_{k>n}10^{-k!}<2\cdot10^{-(n+1)!}=\frac2{q_n^{n+1}}$. $L$ is irrational: if $L=\frac ab$, then $L-\frac{p_n}{q_n}$ is a positive multiple of $\frac1{bq_n}$, so $\frac1{bq_n}<\frac2{q_n^{n+1}}$, false for large $n$. If $L$ were a root of a non-zero integer polynomial, it would be a root of one of its irreducible factors in $\Q[X]$, which can be taken in $\Z[X]$ (clear denominators), of some degree $d\ge2$ as $L$ is irrational; then (a) would give $\frac c{q_n^d}\le\frac2{q_n^{n+1}}$, i.e.\ $c\le2q_n^{d-n-1}\to0$: contradiction.
+(b) Define the Liouville number
+\[
+L=\sum_{k\ge1}10^{-k!}
+\]
+and let $q_n=10^{n!}$, $p_n=q_n\sum_{k=1}^n10^{-k!}$, an integer. The approximation error is positive and satisfies
+\[
+0<L-\frac{p_n}{q_n}
+=\sum_{k>n}10^{-k!}
+<2\cdot10^{-(n+1)!}
+=\frac2{q_n^{n+1}}.
+\]
+If $L=a/b$ were rational, the nonzero difference between it and $p_n/q_n$ would have absolute value at least $1/(bq_n)$, contradicting this upper bound for large $n$. Thus $L$ is irrational.
+
+Suppose now that $L$ were algebraic. It would satisfy an irreducible polynomial over $\Z$ of some degree $d\ge2$. Part (a) would give
+$c/q_n^d\le|L-p_n/q_n|<2/q_n^{n+1}$, or $c<2q_n^{d-n-1}$, for every large $n$. The right side tends to $0$, contradicting $c>0$. Hence $L$ is transcendental.
 \end{solution}
 
 \begin{solution}{ex:t1-pell3}
 \idea Rationalise the complete quotients, or simply form convergents from the partial quotients $1,1,2$ and test the norm at each step.
-\writeup One has $\sqrt 3=[1;\overline{1,2}]$. The convergents are $1/1$ and $2/1$, then $5/3$. Now $1-3\cdot 1=-2$ and $4-3\cdot 1=1$. The fundamental solution is $(x,y)=(2,1)$, and the previous convergent has norm $-2$.
+\writeup The continued fraction is $\sqrt3=[1;\overline{1,2}]$. Its first convergents are
+\[
+\frac11,\qquad\frac21,\qquad\frac53,\ldots.
+\]
+Test them in the exact expression $p^2-3q^2$, not a decimal approximation. For $1/1$ the value is $1-3=-2$. For the next convergent $2/1$ it is $4-3=1$. We have reached a Pell solution, and no earlier positive convergent has norm $1$. Thus the fundamental positive solution is $(x,y)=(2,1)$, and the preceding convergent has norm $-2$.
 \end{solution}
 
 \section*{Sources and further reading}
