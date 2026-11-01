@@ -456,76 +456,239 @@ of sight; a lattice point $z$ with $|z|^2<R^2+1$ has $|z|\le R$. (c) Look toward
 
 \begin{solution}{ex:bez}
 \idea Start by finding a single solution. The extended Euclidean algorithm gives numbers $u,v$ with $au+bv=d=\gcd(a,b)$. If $d$ divides $c$, scaling the identity gives a solution of $ax+by=c$. To find \emph{all} solutions, subtract this one from an arbitrary one. The difference solves $aX+bY=0$, which is easier because coprimality tells us how the two coordinates must vary.
-\writeup Euclid: $91=2\cdot35+21$, $35=21+14$, $21=14+7$, $14=2\cdot7$, so $\gcd(91,35)=7$, and back-substituting,
-$7=21-14=2\cdot21-35=2\cdot91-5\cdot35$. So $(2,-5)$ is a solution. If $(x,y)$ is another, $91(x-2)=-35(y+5)$, so $13(x-2)=-5(y+5)$. Since $\gcd(5,13)=1$, Gauss' lemma gives $5\mid x-2$: $x=2+5k$, and then $y=-5-13k$. Conversely these all work: the solutions are $(2+5k,-5-13k)$, $k\in\Z$.
+\writeup Run Euclid's algorithm:
+\[
+91=2\cdot35+21,\quad35=21+14,\quad
+21=14+7,\quad14=2\cdot7.
+\]
+The last nonzero remainder is $7$. Back-substitute to turn it into a combination of the original coefficients:
+\[
+7=21-14=2\cdot21-35=2\cdot91-5\cdot35.
+\]
+So $(x_0,y_0)=(2,-5)$ is one solution of $91x+35y=7$.
+
+To find every solution, subtract this particular one from an arbitrary solution. The difference satisfies
+$91(x-2)+35(y+5)=0$, or $13(x-2)=-5(y+5)$. Since $5$ and $13$ are coprime, Gauss's lemma gives $5\mid x-2$. Write $x=2+5k$ and solve for $y$ to obtain $y=-5-13k$. Conversely, substitution verifies every pair. Thus
+\[
+(x,y)=(2+5k,-5-13k),\qquad k\in\Z,
+\]
+is the complete family, not merely a collection of examples.
 \end{solution}
 
 \begin{solution}{ex:gcdn}
 \idea A gcd divides every integer combination of the two expressions. So look for combinations that cancel the largest power of $n$, then the remaining power, until only a constant is left. That gives a short list of possible gcd values. Do not stop there: for each divisor of the constant, check when it actually divides both original expressions.
-\writeup Let $d$ be the gcd. It divides $(n+1)^2+1-(n^2+1)=2n+1$. Hence $d$ also divides $4(n^2+1)-(2n+1)(2n-1)=5$. So $d\in\{1,5\}$. If $d=5$ then $5\mid2n+1$, so $n\equiv2\pmod5$. Conversely, if $n=5k+2$ then $n^2+1=25k^2+20k+5$ and $(n+1)^2+1=25k^2+30k+10$ are multiples of $5$. So the gcd is $5$ if $n\equiv2\pmod5$ and $1$ otherwise.
+\writeup Let
+$d=\gcd(n^2+1,(n+1)^2+1)$. A common divisor divides their difference, so
+\[
+d\mid (n+1)^2+1-(n^2+1)=2n+1.
+\]
+Use this linear expression to eliminate $n$ from the other entry:
+\[
+4(n^2+1)-(2n+1)(2n-1)=5.
+\]
+Hence $d\mid5$ and, because $d>0$, only $d=1$ or $d=5$ is possible.
+
+For $d=5$, the condition $5\mid2n+1$ forces $n\equiv2\pmod5$. This is also sufficient: if $n=5k+2$, the two starting integers are
+$25k^2+20k+5$ and $25k^2+30k+10$, both divisible by $5$. Therefore
+\[
+d=\begin{cases}
+5,&n\equiv2\pmod5,\\
+1,&\text{otherwise}.
+\end{cases}
+\]
+We first narrowed the answer to two possibilities, then checked exactly when the exceptional one occurs.
 \end{solution}
 
 \begin{solution}{ex:zeros}
 \idea Count the factors of $p$ inside $n!$ rather than trying to write out the enormous factorial. Every multiple of $p$ contributes one factor; every multiple of $p^2$ contributes an extra factor; and so on. This turns a valuation into a sum of floors. For trailing decimal zeros, pair factors $2$ and $5$. There are always enough twos, so the limiting supply is the number of fives.
-\writeup
-\[\begin{aligned}v_p(n!)&=\sum_{m=1}^nv_p(m)=\sum_{m=1}^n\sum_{k\ge1}\mathbf 1_{p^k\mid m}\eqbr=\sum_{k\ge1}\#\{m\le n:p^k\mid m\}=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor,\end{aligned}\]
-because the multiples of $p^k$ up to $n$ are $p^k,2p^k,\dots,\lfloor n/p^k\rfloor p^k$.
-The number of final zeros is $\min(v_2,v_5)=v_5(1000!)=200+40+8+1=249$ (clearly $v_2\ge v_5$ term by term).
+\writeup The $p$-adic valuation of a factorial is the sum of the valuations of all its factors:
+\[
+v_p(n!)=\sum_{m=1}^nv_p(m).
+\]
+Each factor divisible by $p$ contributes at least one, each factor divisible by $p^2$ contributes one more, and so on. Counting in those layers gives
+\[
+\begin{aligned}
+v_p(n!)
+&=\sum_{m=1}^n\sum_{k\ge1}\mathbf1_{p^k\mid m}
+=\sum_{k\ge1}\#\{m\le n:p^k\mid m\}\\
+&=\sum_{k\ge1}\left\lfloor\frac n{p^k}\right\rfloor.
+\end{aligned}
+\]
+All sums are finite because $p^k>n$ eventually.
+
+A trailing decimal zero requires one factor $2$ and one factor $5$. Factors of $2$ are more plentiful, so the number of zeros in $1000!$ is
+\[
+v_5(1000!)=\left\lfloor\frac{1000}5\right\rfloor
++\left\lfloor\frac{1000}{25}\right\rfloor
++\left\lfloor\frac{1000}{125}\right\rfloor
++\left\lfloor\frac{1000}{625}\right\rfloor
+=200+40+8+1=249.
+\]
 \end{solution}
 
 \begin{solution}{ex:sqrt}
 \idea Try prime valuations first. A square has an even exponent at every prime, which makes many proposed square-root equalities impossible. For the polynomial part, put a rational root in lowest terms as $p/q$ and clear denominators. Look at the resulting integer equation modulo $q$. Every term but the leading one contains an extra factor of $q$; coprimality then tells you what $q$ must divide.
-\writeup For $n=0$ the claim is immediate. If $n>0$ and $\sqrt n=\frac pq$ then $nq^2=p^2$, so $v_\ell(n)=2v_\ell(p)-2v_\ell(q)$ is even for every prime $\ell$, and $n$ is a square. In general, let $x=\frac pq$ in lowest terms with $q\ge1$ be a root of $X^d+c_{d-1}X^{d-1}+\dots+c_0$. Multiplying by $q^d$: $p^d=-q\left(c_{d-1}p^{d-1}+\dots+c_0q^{d-1}\right)$, so $q\mid p^d$. As $\gcd(q,p)=1$, Gauss' lemma (iterated) gives $q\mid1$, so $x\in\Z$. The case $X^2-n$ recovers the first statement.
+\writeup For $n=0$, the square root is the integer $0$. Now suppose $n>0$ and $\sqrt n=p/q$ for integers $p,q$ with $q\ne0$. Clearing denominators gives $nq^2=p^2$. For every prime $\ell$, compare valuations:
+\[
+v_\ell(n)=2v_\ell(p)-2v_\ell(q),
+\]
+which is even. Thus every prime exponent in $n$ is even, and $n$ is a perfect square. The converse is immediate.
+
+For the general claim, let $x=p/q$ be a rational root in lowest terms, with $q\ge1$, of a monic polynomial
+\[
+P(X)=X^d+c_{d-1}X^{d-1}+\cdots+c_0,\qquad c_j\in\Z.
+\]
+Multiply $P(p/q)=0$ by $q^d$:
+\[
+p^d=-q\bigl(c_{d-1}p^{d-1}
++c_{d-2}p^{d-2}q+\cdots+c_0q^{d-1}\bigr).
+\]
+Hence $q\mid p^d$. But $\gcd(p,q)=1$, so every prime factor of $q$ would contradict coprimality. Therefore $q=1$ and $x\in\Z$. Taking $P(X)=X^2-n$ gives another proof of the square-root statement.
 \end{solution}
 
 \begin{solution}{ex:mersgcd}
 \idea Euclid's algorithm is a sequence of remainder replacements. Look for the same replacement in the numbers $2^a-1$ and $2^b-1$. The identity $2^{a+b}-1=2^a(2^b-1)+(2^a-1)$ shows how subtraction of exponents changes the gcd without changing its value. Once that step is proved, follow Euclid's algorithm for the exponents all the way to $\gcd(a,b)$.
-\writeup For $a\ge b$, $2^a-1=2^{a-b}\left(2^b-1\right)+\left(2^{a-b}-1\right)$, so $\gcd(2^a-1,2^b-1)=\gcd(2^{a-b}-1,2^b-1)$. The map $(a,b)\mapsto\gcd(2^a-1,2^b-1)$ thus follows the subtractive Euclidean algorithm on the exponents, which ends at $(\gcd(a,b),0)$ and gives
-\[\begin{aligned}\gcd\bigl(2^{\gcd(a,b)}-1,2^0-1\bigr)&=\gcd\bigl(2^{\gcd(a,b)}-1,0\bigr)\eqbr=2^{\gcd(a,b)}-1.\end{aligned}\]
+\writeup Assume $a\ge b\ge1$. Factor a difference of powers:
+\[
+2^a-1=2^{a-b}(2^b-1)+(2^{a-b}-1).
+\]
+Replacing one gcd entry by a remainder therefore gives
+\[
+\gcd(2^a-1,2^b-1)
+=\gcd(2^{a-b}-1,2^b-1).
+\]
+The exponents have undergone exactly one step of the subtractive Euclidean algorithm. Repeat, interchanging the entries when necessary. Their gcd remains $\gcd(a,b)$, and the process eventually reaches $(d,0)$ with $d=\gcd(a,b)$. At that point
+\[
+\gcd(2^d-1,2^0-1)
+=\gcd(2^d-1,0)=2^d-1.
+\]
+Thus $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$. The algorithm on exponents has solved the gcd problem for exponential numbers.
 \end{solution}
 
 \begin{solution}{ex:lame5}
 \idea Lam\'e bounds $b$ below by a Fibonacci number; Fibonacci numbers grow like $\varphi^k$; and $d$ digits means $b<10^d$. Chain the inequalities and compare $\varphi^5$ with $10$.
-\writeup By induction, $F_{k+1}\ge\varphi^{k-1}$: true for $k=1,2$ ($F_2=1$, $F_3=2\ge\varphi$), and $F_{k+2}=F_{k+1}+F_k\ge\varphi^{k-1}+\varphi^{k-2}=\varphi^k$ since $\varphi^2=\varphi+1$. If $b$ has $d$ digits and the algorithm takes $n$ steps, then $10^d>b\ge F_{n+1}\ge\varphi^{n-1}$. As $\varphi^5\approx11.09>10$, we get $\varphi^{n-1}<10^d<\varphi^{5d}$, so $n-1<5d$, that is $n\le5d$.
+\writeup Write $\varphi=(1+\sqrt5)/2$. We first establish $F_{k+1}\ge\varphi^{k-1}$ for every $k\ge1$. The inequality holds at $k=1,2$. If it holds at the two preceding indices, the Fibonacci recurrence gives
+\[
+F_{k+2}=F_{k+1}+F_k
+\ge\varphi^{k-1}+\varphi^{k-2}
+=\varphi^k,
+\]
+because $\varphi^2=\varphi+1$. This completes the induction.
+
+If Euclid's algorithm on a pair with smaller positive input $b$ takes $n$ divisions, Lam\'e's bound gives
+$b\ge F_{n+1}\ge\varphi^{n-1}$. Suppose $b$ has $d$ decimal digits, so $b<10^d$. Since $\varphi^5>10$,
+\[
+\varphi^{n-1}\le b<10^d<\varphi^{5d}.
+\]
+Because $\varphi>1$, this implies $n-1<5d$, hence $n\le5d$. The result counts division steps, not the bit-level cost of each division.
 \end{solution}
 
 \begin{solution}{ex:frob}
 \idea First understand all integer representations of $m$: they form one family $(x-kb,y+ka)$ (Exercise~\ref{ex:bez}'s method). Among them pick the one with $0\le x<b$; the question ``is there one with $x,y\ge0$?'' is then decided by the sign of its $y$. Compute experimentally with $a=3$, $b=5$ to see that $7=3\cdot5-3-5$ is the last failure, then prove it.
-\writeup If $ax+by=ax'+by'$ then $a(x-x')=b(y'-y)$, so $b\mid x-x'$ by Gauss' lemma: all representations of $m$ in $\Z^2$ are $(x-kb,\,y+ka)$, $k\in\Z$. By B\'ezout there is one, so there is exactly one with $0\le x\le b-1$; call it canonical.
-If its $y$ is negative, then any representation with $y+ka\ge0$ has $k\ge1$, hence $x-kb<0$. So $m$ is a non-negative combination if and only if its canonical $y$ is $\ge0$.
-When $a=1$ or $b=1$, every non-negative integer is representable and the largest unrepresentable integer is $-1$, as the formula predicts. For $m=ab-a-b=a(b-1)+b\cdot(-1)$ the canonical $y$ is $-1$: not representable. For $m>ab-a-b$ with canonical $(x,y)$, $by=m-ax\ge m-a(b-1)>-b$, so $y>-1$, that is $y\ge0$: representable.
+\writeup Begin with a B\'ezout representation of an arbitrary integer $m$:
+$ax+by=m$, possible because $\gcd(a,b)=1$. If $(x',y')$ is another representation, subtraction gives
+$a(x-x')=b(y'-y)$. By Gauss's lemma, $b\mid x-x'$, and all integer representations are of the form
+\[
+(x-kb,\ y+ka),\qquad k\in\Z.
+\]
+Exactly one has $0\le x-kb\le b-1$. Call it the canonical representation of $m$.
+
+In that representation, if $y<0$, making it nonnegative would require increasing it by at least $a$, hence replacing $x$ by $x-b<0$. Thus $m$ is a nonnegative combination $ax+by$ precisely when the canonical $y$ is nonnegative.
+
+For $m=ab-a-b$, the canonical choice is
+$m=a(b-1)+b(-1)$; its $y=-1$, so $m$ is not representable. If $m>ab-a-b$ and $m=ax+by$ canonically, then
+\[
+by=m-ax\ge m-a(b-1)>-b.
+\]
+Therefore $y>-1$, and since $y$ is an integer it is nonnegative. Every larger integer is representable.
+
+When $a=1$ or $b=1$, every nonnegative integer is representable and the formula yields $-1$ for the largest nonrepresentable integer, interpreted in the usual convention. Otherwise the largest nonrepresentable nonnegative integer is exactly $ab-a-b$.
 \end{solution}
 
 \begin{solution}{ex:supercat}
 \idea (a) Floors of sums depend only on fractional parts, so reduce to $x,y\in[0,1[$, where each floor is $0$ or $1$ and only two cases remain. (b) To prove a fraction is an integer, show every $p$-adic valuation is $\ge0$; Legendre's formula writes it as a sum of exactly the expression of (a).
-\writeup (a) Write $x=a+\alpha$, $y=b+\beta$ with $a,b\in\Z$ and $\alpha,\beta\in[0,1[$. The integer parts contribute $2a+2b$ to both sides, and the inequality becomes $\lfloor2\alpha\rfloor+\lfloor2\beta\rfloor\ge\lfloor\alpha+\beta\rfloor$. If $\alpha+\beta<1$ the right side is $0$. Otherwise $\max(\alpha,\beta)\ge\frac12$, so the left side is at least $1=\lfloor\alpha+\beta\rfloor$.
+\writeup (a) Write $x=a+\alpha$ and $y=b+\beta$, where $a,b\in\Z$ and $0\le\alpha,\beta<1$. The integer parts contribute $2a+2b$ to both sides, so the proposed inequality reduces to
+\[
+\lfloor2\alpha\rfloor+\lfloor2\beta\rfloor
+\ge\lfloor\alpha+\beta\rfloor.
+\]
+If $\alpha+\beta<1$, the right side is $0$. Otherwise at least one of $\alpha,\beta$ is at least $1/2$, so the left side is at least $1$. Because $\alpha+\beta<2$, the right side is then exactly $1$. This proves the inequality in both cases.
 
-(b) By Legendre's formula, the $p$-adic valuation of the fraction is $\sum_ke_k$, where
-\[\begin{aligned}e_k&=\left\lfloor\frac{2m}{p^k}\right\rfloor+\left\lfloor\frac{2n}{p^k}\right\rfloor-\left\lfloor\frac m{p^k}\right\rfloor\eqbr-\left\lfloor\frac n{p^k}\right\rfloor-\left\lfloor\frac{m+n}{p^k}\right\rfloor,\end{aligned}\]
-and each $e_k$ is $\ge0$ by (a) with $x=\frac m{p^k}$, $y=\frac n{p^k}$. A positive rational with all valuations $\ge0$ is an integer.
+(b) Apply Legendre's formula to the factorials of the rational expression in the question. Its $p$-adic valuation is the sum, over $k\ge1$, of
+\[
+\begin{aligned}
+e_k={}&\left\lfloor\frac{2m}{p^k}\right\rfloor
++\left\lfloor\frac{2n}{p^k}\right\rfloor
+-\left\lfloor\frac m{p^k}\right\rfloor
+-\left\lfloor\frac n{p^k}\right\rfloor\\
+&-\left\lfloor\frac{m+n}{p^k}\right\rfloor.
+\end{aligned}
+\]
+Part (a), with $x=m/p^k$ and $y=n/p^k$, says every $e_k\ge0$. Thus every prime occurs with nonnegative valuation. A positive rational number with that property is an integer. This is an example of a floor inequality turning into divisibility.
 \end{solution}
 
 \begin{solution}{ex:n2n}
 \idea A short binomial argument supplies the prime-exponent congruence without borrowing a later theorem. Then suppose $n\mid2^n-1$ and look at one prime $p\mid n$: then $2^n\equiv1$ and also $2^{p-1}\equiv1\pmod p$ (Fermat), so $p$ divides $2^{\gcd(n,p-1)}-1$ by Exercise~\ref{ex:mersgcd}. To get a contradiction we want $\gcd(n,p-1)=1$, which is guaranteed if $p$ is the \emph{smallest} prime factor of $n$: all prime factors of $n$ then exceed $p-1$.
-\writeup Suppose $n\mid2^n-1$; then $n$ is odd, so its smallest prime factor $p$ is odd and $p\mid2^n-1$. For $0<j<p$, the integer $j!(p-j)!$ is coprime to $p$, so
-$p!=\binom pj j!(p-j)!$ and Gauss' lemma give $p\mid\binom pj$.
-Thus $2^p=(1+1)^p\equiv2\pmod p$; since $p$ is odd, cancellation
-of $2$ gives $p\mid2^{p-1}-1$. By Exercise~\ref{ex:mersgcd}, $p$ divides $\gcd(2^n-1,2^{p-1}-1)=2^{\gcd(n,p-1)}-1$. But every prime factor of $n$ is $\ge p>p-1$, so $\gcd(n,p-1)=1$, and $p\mid2^1-1=1$: contradiction.
+\writeup Suppose, toward a contradiction, that $n\mid2^n-1$ for some integer $n\ge2$. The right side is odd, so $n$ is odd. Let $p$ be its smallest prime factor; then $p$ is odd and $p\mid2^n-1$.
+
+We can obtain Fermat's little theorem from the binomial expansion. For $1\le j<p$, the prime $p$ divides $\binom pj$: in $p!=\binom pj j!(p-j)!$, neither factorial on the right contains $p$, so Gauss's lemma forces $p\mid\binom pj$. Consequently
+\[
+2^p=(1+1)^p\equiv2\pmod p.
+\]
+Since $p$ is odd, $2$ is invertible modulo $p$, giving $2^{p-1}\equiv1\pmod p$.
+
+The prime $p$ now divides both $2^n-1$ and $2^{p-1}-1$. By Exercise~\ref{ex:mersgcd},
+\[
+p\mid2^{\gcd(n,p-1)}-1.
+\]
+But every prime divisor of $n$ is at least $p$, whereas every prime divisor of $p-1$ is less than $p$. Hence $\gcd(n,p-1)=1$. The last divisibility becomes $p\mid2-1=1$, impossible. Thus $n\nmid2^n-1$ for all $n\ge2$.
 \end{solution}
 
 \begin{solution}{ex:t1-divisibility-lattice}
 \idea A sum records what linear combinations can make; an intersection records simultaneous divisibility. Divide out the gcd so that Gauss' lemma can do the cancellation.
-\writeup By definition and B\'ezout, the first equality holds. Write $a=da'$, $b=db'$ with $\gcd(a',b')=1$. If $c\in a\Z\cap b\Z$, then $c=da'k$ and $db'\mid da'k$, so $b'\mid a'k$. Gauss gives $b'\mid k$, hence $da'b'\mid c$. Conversely $da'b'$ is divisible by both $a$ and $b$. Thus the intersection is $da'b'\Z$; this proves $\ell=da'b'=ab/d$ without using valuations. For $12,18$ the sum is $6\Z$ and the intersection is $36\Z$. The union omits $30$, whereas $30=12+18$ belongs to the sum. A sum allows adding an element of one set to an element of the other, not merely choosing from either set.
+\writeup By the definition of the gcd and B\'ezout's identity, all integer combinations of $a,b$ form the subgroup
+\[
+a\Z+b\Z=d\Z,\qquad d=\gcd(a,b).
+\]
+For the intersection, write $a=da'$, $b=db'$ with $\gcd(a',b')=1$. If $c\in a\Z\cap b\Z$, then $c=da'k$ for some integer $k$, and $db'\mid da'k$. Hence $b'\mid a'k$. Gauss's lemma gives $b'\mid k$, so $da'b'\mid c$. Conversely $da'b'$ is divisible by both $a$ and $b$. Therefore
+\[
+a\Z\cap b\Z=da'b'\Z=\operatorname{lcm}(a,b)\Z.
+\]
+This also proves $\operatorname{lcm}(a,b)=ab/d$ without prime valuations.
+
+For $a=12$, $b=18$, the sum is $6\Z$ and the intersection is $36\Z$. Do not confuse the sum with the union: $30=12+18$ lies in $12\Z+18\Z$, but it belongs to neither $12\Z$ nor $18\Z$, so it is absent from their union.
 \end{solution}
 
 \begin{solution}{ex:t1-binomial-carry}
 \idea Legendre's floors measure how much divisibility survives after the denominator factorials cancel. A floor increases by one precisely when two remainders overflow their place value.
-\writeup The binomial coefficient is an integer because it counts $m$-element subsets of an $(m+n)$-element set. Taking valuations in $(m+n)!/(m!n!)$ and applying Legendre gives the formula. Write $m=Ap^j+r$, $n=Bp^j+s$ with $0\le r,s<p^j$. The $j$th summand equals $\lfloor(r+s)/p^j\rfloor$, so it is $0$ or $1$. The lower $j$ base-$p$ digits represent $r$ and $s$; their addition crosses into position $p^j$ exactly when $r+s\ge p^j$. This includes any carry arriving from earlier digits, since it uses the whole lower block. Thus the valuation counts all carries. In binary, $4=100_2$ and $6=110_2$ add to $1010_2$ with one carry, across $2^3$. Correspondingly $v_2(210)=1$.
+\writeup The binomial coefficient $\binom{m+n}{m}$ is an integer because it counts choices of $m$ objects from $m+n$. Its valuation, by Legendre's formula, is
+\[
+v_p\binom{m+n}{m}
+=\sum_{j\ge1}\left(
+\left\lfloor\frac{m+n}{p^j}\right\rfloor-
+\left\lfloor\frac m{p^j}\right\rfloor-
+\left\lfloor\frac n{p^j}\right\rfloor\right).
+\]
+To interpret one summand, write $m=Ap^j+r$, $n=Bp^j+s$ with $0\le r,s<p^j$. All large multiples cancel, leaving $\lfloor(r+s)/p^j\rfloor$. This is $1$ when the sum of the lower $j$ base-$p$ digits crosses the boundary at $p^j$, and $0$ otherwise. It includes any carry already made inside those lower digits. Each summand therefore records one carry, and their sum counts all carries.
+
+For a check in base $2$, $4=100_2$ and $6=110_2$ add to $1010_2$ with one carry into the $2^3$ position. Accordingly $\binom{10}4=210$ has $v_2(210)=1$.
 \end{solution}
 
 \begin{solution}{ex:t1-euclid1071}
 \idea Each remainder is an explicit combination of the previous two, hence of the original inputs.
-\writeup As in the example of this chapter, $1071=2\cdot 462+147$, $462=3\cdot 147+21$ and $147=7\cdot 21$. Thus the gcd is $21$, and $21=462-3(1071-2\cdot 462)=7\cdot 462-3\cdot 1071$.
+\writeup Divide until the remainder vanishes:
+\[
+1071=2\cdot462+147,\qquad
+462=3\cdot147+21,\qquad
+147=7\cdot21.
+\]
+The last nonzero remainder is $21$, so $\gcd(1071,462)=21$. Read the second equation backwards:
+\[
+21=462-3\cdot147
+=462-3(1071-2\cdot462)
+=7\cdot462-3\cdot1071.
+\]
+Thus one B\'ezout pair is $(u,v)=(-3,7)$. Substitution confirms $1071(-3)+462(7)=21$.
 \end{solution}
 
 \begin{solution}{pb:valuation}
