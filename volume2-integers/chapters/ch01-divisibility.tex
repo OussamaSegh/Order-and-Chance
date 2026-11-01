@@ -695,96 +695,146 @@ Thus one B\'ezout pair is $(u,v)=(-3,7)$. Substitution confirms $1071(-3)+462(7)
 \idea Divisibility by $p^k$ happens exactly once every $p^k$ integers, so the valuation is geometric in the limit. Distinct
 primes do not interact, by the Chinese remainder theorem.
 
-\writeup (a) The number of $n\le N$ with $p^k\mid n$ is $\lfloor N/p^k\rfloor=N/p^k+O(1)$, so
-$P(v_p(n)=k)=\frac1N(\lfloor N/p^k\rfloor-\lfloor N/p^{k+1}\rfloor)\to p^{-k}-p^{-k-1}$. For the mean,
-$\mathbb E[v_p(n)]=\sum_{k\ge1}P(v_p(n)\ge k)=\frac1N\sum_{k\ge1}\lfloor N/p^k\rfloor$, which lies between
-$\sum_{k\le\log_pN}(p^{-k}-\frac1N)$ and $\sum_kp^{-k}=\frac1{p-1}$, and tends to $\frac1{p-1}$.
-
-(b) For integers $k_i\ge0$, the condition $p_i^{k_i}\mid n$ for all $i$ is $m\mid n$ with $m=\prod p_i^{k_i}$, which has
-probability $\frac1N\lfloor N/m\rfloor\to\frac1m=\prod_ip_i^{-k_i}$. So the joint tail probabilities $P(v_{p_i}(n)\ge k_i\ \forall i)$
-converge to products, and by inclusion--exclusion so do the probabilities $P(v_{p_i}(n)=k_i\ \forall i)$.
-
-(c) $2^{v_2(n)}\le2$ means $4\nmid n$, of probability $\to\frac34$. For the mean, the number of $n\le N$ with $v_2(n)=k$ is
-$\frac N{2^{k+1}}+\theta_k$ with $|\theta_k|\le1$, and it is $0$ for $2^k>N$. So
+\writeup (a) For a fixed prime $p$, the condition $v_p(n)\ge k$ means exactly that $p^k$ divides $n$. Among the integers $1,\ldots,N$, there are $\lfloor N/p^k\rfloor$ such values. Therefore
 \[
-\sum_{n\le N}2^{v_2(n)}=\sum_{k\le\log_2N}2^k\Bigl(\frac N{2^{k+1}}+\theta_k\Bigr)=\frac N2\bigl(\lfloor\log_2N\rfloor+1\bigr)+O(N),
+\begin{aligned}
+P(v_p(n)=k)
+&=\frac1N\left(
+\left\lfloor\frac N{p^k}\right\rfloor-
+\left\lfloor\frac N{p^{k+1}}\right\rfloor\right)\\
+&\longrightarrow \frac1{p^k}-\frac1{p^{k+1}}
+=\left(1-\frac1p\right)p^{-k}.
+\end{aligned}
 \]
-since $\sum_{k\le\log_2N}2^k\le2N$. Divide by $N$. There is no paradox: the mean is carried by rare values. The $n$ with
-$v_2(n)=k$ have probability about $2^{-k-1}$ and contribute $2^k\cdot2^{-k-1}=\frac12$ each to the mean, and there are
-$\log_2N$ such levels.
+For the mean, use the tail-sum identity for nonnegative integer-valued variables:
+\[
+\mathbb E[v_p(n)]
+=\sum_{k\ge1}P(v_p(n)\ge k)
+=\frac1N\sum_{k\ge1}\left\lfloor\frac N{p^k}\right\rfloor.
+\]
+Each floor differs from $N/p^k$ by less than $1$, and only $O(\log_p N)$ terms are nonzero. Their total error after division by $N$ tends to zero. The limiting expectation is the geometric sum $\sum_{k\ge1}p^{-k}=1/(p-1)$.
+
+(b) Fix distinct primes $p_1,\ldots,p_r$ and nonnegative exponents $k_1,\ldots,k_r$. The simultaneous conditions $v_{p_i}(n)\ge k_i$ say that the single integer $m=\prod_i p_i^{k_i}$ divides $n$. Their joint probability therefore tends to
+\[
+\frac1m=\prod_i p_i^{-k_i},
+\]
+the product of the individual tail probabilities. Apply finite inclusion--exclusion to turn each equality $v_{p_i}=k_i$ into a difference of two tail events. The joint equality probabilities then converge to the product of their marginal limits. This proves asymptotic independence for any fixed finite set of primes.
+
+(c) The inequality $2^{v_2(n)}\le2$ is equivalent to $v_2(n)\le1$, or $4\nmid n$. Its limiting probability is $3/4$.
+
+For the mean of $2^{v_2(n)}$, count the integers in each valuation class:
+\[
+\#\{n\le N:v_2(n)=k\}
+=\frac{N}{2^{k+1}}+\theta_k,\qquad |\theta_k|\le1.
+\]
+Only $0\le k\le\lfloor\log_2N\rfloor$ occur. Multiplying each count by $2^k$ gives
+\[
+\sum_{n\le N}2^{v_2(n)}
+=\frac N2\bigl(\lfloor\log_2N\rfloor+1\bigr)+O(N),
+\]
+since $\sum_{k\le\log_2N}2^k\le2N$. Dividing by $N$ shows that the mean grows like $\frac12\log_2N$. The apparent paradox is instructive: each rare valuation level contributes roughly $1/2$ to the mean, and the number of available levels grows with $N$.
 
 \tools Volume~2, Chapter~1 (valuations); Volume~3, Chapter~2 (Chinese remainders).
-\leads In the language of Volume~13, Chapter~2, a random integer is a sample of Haar measure on $\Z_p$, simultaneously for all $p$:
-that is the meaning of (b). The quantity $2^{v_2(n)}$ is the ``largest power of $2$ dividing $n$'', whose average governs the
-cost of the binary gcd algorithm.
+\leads Part (b) is the finite-level shadow of Haar measure on $\Z_p$, developed in Volume~13. The variable $2^{v_2(n)}$ measures the largest power of $2$ dividing $n$; its average helps explain the behaviour of the binary gcd algorithm.
 \end{solution}
 
 \begin{solution}{pb:parity}
 \idea Reducing $\frac ab$ removes the common power of $p$, so $p$ stays in the denominator exactly when $b$ has more factors $p$
 than $a$. The valuations of $a$ and $b$ are independent geometric variables.
 
-\writeup (a) $p\mid b'$ if and only if $v_p(b)>v_p(a)$. By Problem~\ref{pb:valuation}(a) applied to $a$ and $b$ independently, for
-each $J$ the probability that $v_p(b)>v_p(a)$ and $v_p(a)<J$ tends to
+\writeup (a) Write $a/b$ in lowest terms as $a'/b'$. Cancelling common factors subtracts the smaller $p$-valuation from both numerator and denominator. Therefore
 \[
-\sum_{j<J}\Bigl(1-\frac1p\Bigr)p^{-j}\cdot p^{-j-1},
+p\mid b'\quad\Longleftrightarrow\quad v_p(b)>v_p(a).
 \]
-and the event $v_p(a)\ge J$ has probability at most $p^{-J}$. Letting $J\to\infty$, the probability tends to
-$\frac{p-1}{p^2}\cdot\frac1{1-p^{-2}}=\frac1{p+1}$.
+By the valuation distribution from Problem~\ref{pb:valuation}, the limiting probability of $v_p(a)=j$ is $(1-1/p)p^{-j}$, while the limiting probability of $v_p(b)\ge j+1$ is $p^{-j-1}$. Independence of the two independently chosen integers gives
+\[
+\begin{aligned}
+P(p\mid b')
+&\longrightarrow
+\sum_{j\ge0}\left(1-\frac1p\right)p^{-j}p^{-j-1}\\
+&=\frac{p-1}{p^2}\frac1{1-p^{-2}}
+=\frac1{p+1}.
+\end{aligned}
+\]
+To justify the infinite sum from finite experiments, truncate at $j<J$ and bound the omitted event by $P(v_p(a)\ge J)\le p^{-J}$, then let $J\to\infty$.
 
-(b) By (a) and symmetry, $2\mid b'$ and $2\mid a'$ each have probability $\frac13$, and they cannot both happen. So each of the
-three patterns odd/odd, odd/even, even/odd has probability $\frac13$.
+(b) At $p=2$, the reduced denominator is even with probability $1/3$. By symmetry the reduced numerator is even with the same probability. Both cannot be even because the fraction is reduced. The remaining parity class, odd/odd, therefore also has probability $1-1/3-1/3=1/3$. The three permitted patterns are equally likely in the limit.
 
-(c) For distinct primes $p_1,\dots,p_r$, the event ``$v_{p_i}(b)>v_{p_i}(a)$ and $v_{p_i}(a)<J$ for all $i$'' is a union of
-conditions on $(a,b)$ modulo $\prod p_i^{J+1}$, and by Problem~\ref{pb:valuation}(b) its probability tends to the product of the
-individual ones; letting $J\to\infty$ as in (a) gives $\prod_i\frac1{p_i+1}$.
+(c) For distinct primes $p_1,\ldots,p_r$, impose upper bounds $v_{p_i}(a)<J$ while testing $v_{p_i}(b)>v_{p_i}(a)$. These finite conditions are determined by divisibility modulo $\prod_i p_i^{J+1}$; the finite-prime independence from Problem~\ref{pb:valuation} makes their limiting probability a product. The probability that any truncated valuation exceeds $J$ is at most $\sum_i p_i^{-J}$. Letting $J\to\infty$ gives
+\[
+P(p_i\mid b'\text{ for every }i)\longrightarrow
+\prod_{i=1}^r\frac1{p_i+1}.
+\]
 
 \tools Problem~\ref{pb:valuation}; Volume~2, Chapter~1.
-\leads Among random fractions in lowest terms the parity classes are equidistributed, a fact that reappears in the action of the
-modular group $SL_2(\Z)$ on $\mathbb P^1(\mathbb F_2)$, a set of $3$ points permuted transitively. By (c), the reduced denominator
-of a random fraction is divisible by $m$ with probability $\prod_{p\mid m}\frac1{p+1}$ for squarefree $m$.
+\leads The three parity patterns correspond to the three points of $\mathbb P^1(\mathbb F_2)$, on which the modular group acts transitively. The product formula also tells us that the reduced denominator is divisible by a fixed squarefree integer $m$ with limiting probability $\prod_{p\mid m}1/(p+1)$.
 \end{solution}
 
 \begin{solution}{pb:fibcoprime}
 \idea Fibonacci numbers inherit their gcds from their indices, and $F_g=1$ only for $g=1,2$.
 
-\writeup (a) By Volume~1, Exercise~1.7, $\gcd(F_a,F_b)=F_{\gcd(a,b)}$. Since $F_1=F_2=1$ and $F_g\ge2$ for $g\ge3$, the gcd is $1$ exactly
-when $\gcd(a,b)\in\{1,2\}$, which by Problem~\ref{pb:gcdmean}(a) has probability tending to $\frac6{\pi^2}(1+\frac14)=\frac{15}{2\pi^2}$.
+\writeup (a) The Fibonacci gcd identity from Volume~1 gives
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)}.
+\]
+The only Fibonacci numbers equal to $1$ are $F_1$ and $F_2$. Therefore $F_a$ and $F_b$ are coprime exactly when $\gcd(a,b)$ equals $1$ or $2$. Problem~\ref{pb:gcdmean}(a) gives, for a fixed positive integer $g$, the limiting probability $6/(\pi^2g^2)$ that $\gcd(a,b)=g$. Adding the two disjoint cases yields
+\[
+\frac6{\pi^2}\left(1+\frac14\right)
+=\frac{15}{2\pi^2}.
+\]
 
-(b) Binet's formula gives $F_g=\frac{\varphi^g-(-1/\varphi)^g}{\sqrt5}$, so $|\log F_g-g\log\varphi+\log\sqrt5|\le C$ for all $g\ge1$,
-for some constant $C$. Hence $\mathbb E[\log F_{\gcd(a,b)}]=\log\varphi\cdot\mathbb E[\gcd(a,b)]+O(1)$, and Problem~\ref{pb:gcdmean}(b)
-finishes.
+(b) Put $g=\gcd(a,b)$. Binet's formula reads
+\[
+F_g=\frac{\varphi^g-(-\varphi^{-1})^g}{\sqrt5}.
+\]
+The second term is uniformly small relative to the first. Taking logarithms therefore gives
+\[
+\log F_g=g\log\varphi-\log\sqrt5+O(1),
+\]
+with an error bounded independently of $g\ge1$. Consequently
+\[
+\mathbb E[\log F_{\gcd(a,b)}]
+=(\log\varphi)\,\mathbb E[\gcd(a,b)]+O(1).
+\]
+Insert the asymptotic expectation from Problem~\ref{pb:gcdmean}(b) to obtain the stated result. The $O(1)$ error remains bounded after averaging.
 
-\tools Volume~1, Chapter~1 (Fibonacci gcd, Binet's formula); Problem~\ref{pb:gcdmean}.
-\leads The same holds for every strong divisibility sequence, for instance $2^n-1$ (Volume~2, Chapter~1), where
-$\gcd(2^a-1,2^b-1)=1$ with probability $\frac6{\pi^2}$. Two random Fibonacci numbers are coprime more often than two random integers.
+\tools Volume~1 (the Fibonacci gcd identity and Binet's formula); Problem~\ref{pb:gcdmean}.
+\leads Strong divisibility sequences behave similarly. For example, $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$, whereas two random Fibonacci numbers are coprime with limiting probability $15/(2\pi^2)$, larger than the corresponding probability $6/\pi^2$ for two random positive integers.
 \end{solution}
 
 \begin{solution}{pb:orchard}
 \idea If the trunks are thick, a thin rectangle around any line of sight has area at least $4$ and so contains a tree. If they are
 thin, a line of sight with an ``irrational-looking'' slope $\frac1R$ stays far from all lattice points.
 
-\writeup (a) Let $S$ be the rectangle and $K=\frac12S$, of area at least $1$. Suppose first that the area of $K$ is $>1$. The pieces
-$K\cap(z+[0,1[^2)$, $z\in\Z^2$, translated back by $-z$ into $[0,1[^2$, have total area $>1$, so two of them overlap: there are
-$x\ne y$ in $K$ with $x-y\in\Z^2\setminus\{0\}$. Then $x-y=\frac12(2x)+\frac12(-2y)$ is the midpoint of two points of $S$ ($S$ is
-symmetric), so it lies in $S$ (convex). If the area of $K$ is exactly $1$, apply this to $(1+\frac1m)S$ for each $m$: each contains
-a non-zero lattice point, and these lie in the bounded set $2S$, so one of them, $z$, lies in $(1+\frac1m)S$ for infinitely many $m$;
-since $S$ is closed, $z\in S$.
+\writeup (a) Let $S$ be the given closed, centrally symmetric rectangle of area at least $4$, and put $K=\frac12S$. The area of $K$ is at least $1$. First suppose it is strictly greater than $1$.
 
-(b) If $r\ge1$, every direction makes an angle at most $\frac\pi4$ with one of $(\pm1,0),(0,\pm1)$, and the tree there, at distance
-at most $\sin\frac\pi4<1$ from the line, blocks it. Let $\frac1R\le r<1$, and let $D$ be a ray from $0$. Take coordinates $(u,v)$ with
-$u$ along $D$, and the rectangle $|u|\le R$, $|v|\le r$, of area $4rR\ge4$. By (a) it contains a lattice point $z\ne0$; replacing $z$ by
-$-z$ we may take $u\ge0$, and $u>0$ because $|v|\le r<1\le|z|$. Then $|z|^2=u^2+v^2\le R^2+r^2<R^2+1$, and $|z|^2$ is an integer, so
-$|z|\le R$: there is a tree at $z$, and its distance $|v|$ to the ray is at most $r$. The trunk meets $D$.
+Partition $K$ into pieces according to the integer unit square $z+[0,1)^2$ containing each point. Translate the pieces back into the fundamental square $[0,1)^2$. Their total area is greater than $1$, the area of that square, so two translated pieces must overlap in positive area. Thus two distinct points $x,y\in K$ have the same fractional coordinates: $x-y$ is a nonzero lattice vector.
 
-(c) Let $D$ be the ray towards $(R,1)$. The distance from a lattice point $(a,b)$ to the line through $0$ and $(R,1)$ is
-$\frac{|a-bR|}{\sqrt{R^2+1}}$. If $a-bR\ne0$ it is at least $\frac1{\sqrt{R^2+1}}>r$, so that trunk misses the line. If $a=bR$, then
-$(a,b)=b(R,1)$ with $b\ne0$, and $|(a,b)|\ge\sqrt{R^2+1}>R$: no tree stands there. So no trunk meets $D$.
+Because $2x, -2y\in S$ and $S$ is convex and centrally symmetric, their midpoint
+\[
+x-y=\tfrac12(2x)+\tfrac12(-2y)
+\]
+also belongs to $S$. We have found the required lattice point.
 
-\tools Volume~1, Chapters~9 and~7 (convexity; determinants as areas); Volume~2, Chapter~1.
-\leads This is Problem~239 of Part~VIII in Pólya and Szegő's \emph{Problems and Theorems in Analysis}, after Pólya's 1918 paper.
-Part~(a) is the simplest case of Minkowski's theorem, the first theorem of the geometry of numbers, which Volume~13 develops. The
-a direct computation gives the exact critical radius for small $R$: it equals the lower bound $\frac1{\sqrt{R^2+1}}$ every time, so the sight
-line towards $(R,1)$ of Figure~\ref{fig:visible} is the best one.
+If $\operatorname{area}(K)=1$, enlarge $S$ slightly to $(1+1/m)S$. The strict-area argument supplies a nonzero lattice point in every enlarged rectangle. All such points lie in a fixed bounded region, say $2S$, so at least one lattice point $z\ne0$ occurs for infinitely many $m$. The enlarged rectangles converge to the original closed $S$, hence $z\in S$. This handles the boundary case.
+
+(b) If the trunk radius is $r\ge1$, one of the four nearest lattice trees in the coordinate directions blocks every ray: some axis makes an angle at most $\pi/4$ with the ray, so the perpendicular distance to the corresponding tree is at most $\sin(\pi/4)<1\le r$.
+
+Now assume $1/R\le r<1$. Fix a ray $D$ and introduce orthogonal coordinates $(u,v)$, with $u$ along that ray. Consider the centrally symmetric rectangle $|u|\le R$, $|v|\le r$, whose area is $4Rr\ge4$. Part (a) gives a nonzero lattice point $z$ in it. Replace $z$ by $-z$ if necessary to ensure $u\ge0$. In fact $u>0$: if $u=0$, then $|z|=|v|\le r<1$, impossible for a nonzero lattice point.
+
+Furthermore
+$|z|^2=u^2+v^2\le R^2+r^2<R^2+1$. Since $|z|^2$ is an integer, it follows that $|z|\le R$, so a tree stands at $z$. Its perpendicular distance to $D$ is $|v|\le r$, and its projection lies on the ray because $u>0$. The trunk therefore meets the ray.
+
+(c) For the lower bound, point the ray towards $(R,1)$. The distance from a lattice point $(a,b)$ to its supporting line is
+\[
+\frac{|a-bR|}{\sqrt{R^2+1}}.
+\]
+If $a-bR\ne0$, the numerator is a nonzero integer, so the distance is at least $1/\sqrt{R^2+1}$. A trunk with smaller radius cannot meet the line, hence cannot meet the ray. If $a-bR=0$, then $(a,b)=b(R,1)$ with integer $b\ne0$ and
+$|(a,b)|\ge\sqrt{R^2+1}>R$; no tree in the disc stands on that line. Thus the ray remains unobstructed whenever
+$r<1/\sqrt{R^2+1}$.
+
+\tools Volume~1 (convexity and determinants as areas); Volume~2, Chapter~1.
+\leads This is the planar case of Minkowski's geometry-of-numbers argument and is related to Pólya's orchard problem. The simple axis-aligned sight line through $(R,1)$ attains the natural lower obstruction scale; Volume~13 develops the lattice theorem in higher dimensions.
 \end{solution}
 
 \section*{Sources and further reading}
