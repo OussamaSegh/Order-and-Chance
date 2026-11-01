@@ -294,6 +294,36 @@ def check_fifteen_rectangle_generation() -> None:
     assert s == set(range(1, 16))
 
 
+
+def check_alternating_simple_commutators() -> None:
+    """Audit the three explicit commutators in the A_n simplicity proof."""
+    def cyc(n: int, *cycles: tuple[int, ...]) -> tuple[int, ...]:
+        p = list(range(n))
+        for c in cycles:
+            for j, x in enumerate(c):
+                p[x] = c[(j + 1) % len(c)]
+        return tuple(p)
+
+    def comm(a: tuple[int, ...], b: tuple[int, ...]) -> tuple[int, ...]:
+        return permutation_compose(a, permutation_compose(
+            b, permutation_compose(permutation_inverse(a), permutation_inverse(b))))
+
+    sigma = cyc(6, (0, 1, 2, 3))
+    tau = cyc(6, (0, 1, 2))
+    assert comm(tau, sigma) == cyc(6, (0, 1, 3))
+
+    sigma = cyc(6, (0, 1, 2), (3, 4, 5))
+    tau = cyc(6, (0, 1, 3))
+    assert comm(tau, sigma) == cyc(6, (0, 1, 4, 2, 3))
+
+    sigma = cyc(6, (0, 1), (2, 3))
+    tau = cyc(6, (0, 1, 2))
+    rho = comm(tau, sigma)
+    assert rho == cyc(6, (0, 2), (1, 3))
+    kappa = cyc(6, (0, 2, 4))
+    assert comm(kappa, rho) == cyc(6, (0, 4, 2))
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -303,13 +333,14 @@ def main() -> None:
     check_two_state_walk()
     check_sylow_order_30()
     check_a5_classes()
+    check_alternating_simple_commutators()
     check_s4_character_table()
     check_f4()
     check_fifteen_parity()
     check_fifteen_rectangle_generation()
     check_quaternion_norm()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
-    print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
+    print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 
 if __name__ == "__main__":
