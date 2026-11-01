@@ -671,21 +671,22 @@ For $f(x)=x^3$ over $\mathbb F_5$, the map is a bijection since $3$ is coprime t
 $0<k<n$, and $a^n-a$. For a prime this is Volume~2. For a composite, one coefficient escapes, and the natural candidate is
 $\binom nq$ for a prime factor $q$: its $q$-adic valuation is easy to compute.
 
-\writeup Expand:
+\writeup Expand the polynomial difference:
 \[
-(X+a)^n-(X^n+a)=\sum_{0<k<n}\binom nka^{n-k}X^k+(a^n-a).
+(X+a)^n-(X^n+a)
+=\sum_{0<j<n}\binom nj a^{n-j}X^j+(a^n-a).
 \]
-If $n$ is prime, $n\mid\binom nk$ for $0<k<n$ and $n\mid a^n-a$
-(Volume~2, Chapter~3), so the congruence holds.
+If $n$ is prime, every middle binomial coefficient is divisible by $n$. Fermat's little theorem also gives $a^n\equiv a\pmod n$. Thus all coefficients of the difference vanish modulo $n$.
 
-Let $n$ be composite, $q$ a prime factor, $q^k$ the exact power of $q$ in $n$; then $q<n$. The coefficient of $X^q$ is
-$\binom nqa^{n-q}$. In $\binom nq=\frac{n(n-1)\cdots(n-q+1)}{q!}$, the numerator contains $q$ consecutive integers, exactly one of which,
-$n$, is divisible by $q$, so its $q$-adic valuation is $k$; and $v_q(q!)=1$. So $v_q\bigl(\binom nq\bigr)=k-1$. Since $q\nmid a$, $q^k$
-does not divide the coefficient of $X^q$, nor does $n$. The congruence fails.
-\tools Volume~2, Chapters~1 and~3 (valuations, Fermat's little theorem, binomial coefficients modulo $p$).
-\leads The criterion is useless as it stands: it has $n$ coefficients. Agrawal, Kayal and Saxena (2002) showed that it is
-enough to check it modulo $X^r-1$ for one small $r$ and for few values of $a$, with $r$ and the number of $a$'s polynomial in
-$\log n$. This gave the first deterministic polynomial-time primality test, ``PRIMES is in P''.
+Now suppose $n$ is composite. Choose a prime divisor $q$ and let $q^k$ be the exact power of $q$ dividing $n$. Because $q<n$, the coefficient of $X^q$ is one of the middle coefficients and equals $\binom nq a^{n-q}$. In
+\[
+\binom nq=\frac{n(n-1)\cdots(n-q+1)}{q!},
+\]
+only the first of the $q$ consecutive numerator factors is divisible by $q$, and its valuation is $k$. The denominator has valuation $v_q(q!)=1$, so
+$v_q(\binom nq)=k-1$. Since $\gcd(a,n)=1$, multiplying by $a^{n-q}$ does not add a factor of $q$. The coefficient of $X^q$ is therefore not divisible by $q^k$, hence not by $n$. The congruence fails for every composite $n$.
+
+\tools Volume~2 (valuations, binomial coefficients and Fermat's theorem).
+\leads The direct polynomial criterion is exact but not efficient: it has too many coefficients. AKS introduced a way to test a related polynomial congruence in a much smaller quotient ring.
 \end{solution}
 
 \begin{solution}{pb:wolsten}
@@ -693,37 +694,79 @@ $\log n$. This gave the first deterministic polynomial-time primality test, ``PR
 functions of the $\frac pk$ matter: $1+pH_{p-1}+p^2e_2$. So we need $H_{p-1}\equiv0\pmod{p^2}$ and $e_2\equiv0\pmod p$, and both come down
 to the sum of the $\frac1{k^2}$, which is a sum of squares in disguise.
 
-\writeup All fractions here have denominators prime to $p$. (a) As $k$ runs over $1,\dots,p-1$, so does the residue of $\frac1k$
-(inversion is a bijection of $(\Z/p\Z)^*$). So $\sum\frac1{k^2}\equiv\sum_{k=1}^{p-1}k^2=\frac{(p-1)p(2p-1)}6\equiv0\pmod p$, since $6$ is
-invertible modulo $p\ge5$.
+\writeup All fractions below have denominators coprime to the prime $p\ge5$, so they can be interpreted modulo powers of $p$.
 
-(b) Pairing $k$ with $p-k$, $2H_{p-1}=\sum_{k=1}^{p-1}\bigl(\frac1k+\frac1{p-k}\bigr)=p\sum_k\frac1{k(p-k)}$. Modulo $p$,
-$\frac1{k(p-k)}\equiv-\frac1{k^2}$, so the sum is $\equiv0\pmod p$ by (a). Hence $p^2\mid2H_{p-1}$, and $p^2\mid H_{p-1}$.
+(a) Taking reciprocals permutes the nonzero residue classes modulo $p$. Therefore
+\[
+\sum_{k=1}^{p-1}\frac1{k^2}
+\equiv\sum_{k=1}^{p-1}k^2
+=\frac{(p-1)p(2p-1)}6
+\equiv0\pmod p,
+\]
+since $6$ is invertible modulo $p$.
 
-(c) $\binom{2p-1}{p-1}=\frac{(p+1)(p+2)\cdots(2p-1)}{(p-1)!}=\prod_{k=1}^{p-1}\Bigl(1+\frac pk\Bigr)=1+pe_1+p^2e_2+p^3(\cdots)$, with
-$e_1=H_{p-1}$ and $e_2=\sum_{j<k}\frac1{jk}=\frac12\bigl(H_{p-1}^2-\sum\frac1{k^2}\bigr)$. By (b), $pe_1\equiv0\pmod{p^3}$; by (a) and (b),
-$e_2\equiv0\pmod p$, so $p^2e_2\equiv0\pmod{p^3}$. Hence $\binom{2p-1}{p-1}\equiv1\pmod{p^3}$, and $\binom{2p}p=2\binom{2p-1}{p-1}\equiv2$.
-\tools Volume~2, Chapter~3 (inverses modulo $p$); Volume~1, Chapters~1 and~6 (sums of squares, elementary symmetric functions).
-\leads Wolstenholme (1862). Primes for which the congruence holds modulo $p^4$ are \emph{Wolstenholme primes}; only $16843$ and $2124679$ are
-known. It is conjectured, and open, that the converse holds: if $\binom{2n-1}{n-1}\equiv1\pmod{n^3}$ then $n$ is prime.
+(b) Pair the term $1/k$ with $1/(p-k)$:
+\[
+2H_{p-1}
+=\sum_{k=1}^{p-1}\left(\frac1k+\frac1{p-k}\right)
+=p\sum_{k=1}^{p-1}\frac1{k(p-k)}.
+\]
+Inside the sum, reduce modulo $p$: $1/[k(p-k)]\equiv-1/k^2$. Part (a) makes the sum zero modulo $p$, so $2H_{p-1}$ is divisible by $p^2$. As $p$ is odd, $H_{p-1}$ is also zero modulo $p^2$.
+
+(c) Use the product form of the binomial coefficient:
+\[
+\binom{2p-1}{p-1}
+=\prod_{k=1}^{p-1}\left(1+\frac pk\right)
+=1+pe_1+p^2e_2+O(p^3),
+\]
+where $e_1=H_{p-1}$ and
+\[
+e_2=\sum_{j<k}\frac1{jk}
+=\frac12\left(H_{p-1}^2-\sum_{k=1}^{p-1}\frac1{k^2}\right).
+\]
+Part (b) gives $pe_1\equiv0\pmod{p^3}$; parts (a) and (b) give $e_2\equiv0\pmod p$, so $p^2e_2\equiv0\pmod{p^3}$. All higher terms already contain $p^3$. Hence
+\[
+\binom{2p-1}{p-1}\equiv1\pmod{p^3},
+\qquad
+\binom{2p}{p}\equiv2\pmod{p^3}.
+\]
+
+\tools Volume~2 (modular inverses); Volume~1 (symmetric polynomials).
+\leads Wolstenholme's theorem is an early example of a binomial congruence whose modulus is much higher than the first power of a prime.
 \end{solution}
 
 \begin{solution}{pb:jacobsthal}
 \idea Split $ap$ objects into $(a-1)p$ and $p$, and use Vandermonde. The terms where the split is a multiple of $p$ give the
 Pascal recursion for $\binom ab$; all other terms are products of two binomial coefficients each divisible by $p$.
 
-\writeup Induction on $a$. For $a=b$ or $b=0$, both sides are $1$. Let $a>b\ge1$ (so $a\ge2$). By Vandermonde,
+\writeup Proceed by induction on $a$, allowing every $0\le b\le a$. If $b=0$ or $b=a$, both sides are $1$. For $a>b\ge1$, Vandermonde's identity gives
 \[
-\binom{ap}{bp}=\sum_i\binom{(a-1)p}i\binom p{bp-i},
+\binom{ap}{bp}
+=\sum_i\binom{(a-1)p}{i}\binom p{bp-i}.
 \]
-over $i$ with $0\le bp-i\le p$. If $p\mid i$, then $i=bp$ or $i=(b-1)p$, and these two terms are $\binom{(a-1)p}{bp}+\binom{(a-1)p}{(b-1)p}$. If
-$p\nmid i$, then $0<bp-i<p$ and $p\mid\binom p{bp-i}$; also, with $N=(a-1)p$, $i\binom Ni=N\binom{N-1}{i-1}$ is divisible by $p$, and $p\nmid i$,
-so $p\mid\binom Ni$. These terms are divisible by $p^2$. By induction,
-$\binom{ap}{bp}\equiv\binom{a-1}b+\binom{a-1}{b-1}=\binom ab\pmod{p^2}$.
-\tools Volume~1, Chapter~1 (Vandermonde, Pascal); Volume~2, Chapter~3 (binomial coefficients modulo $p$).
-\leads Babbage (1819) proved $\binom{2p-1}{p-1}\equiv1\pmod{p^2}$, the case $a=2$, $b=1$; Wolstenholme then reached $p^3$. Jacobsthal showed that
-$\binom{ap}{bp}\equiv\binom ab$ modulo $p^3$ for $p\ge5$, and even modulo $p^{3+v_p(ab(a-b))}$ (a direct computation verifies the $p^3$ version). Such
-congruences are the $p$-adic continuity of the binomial coefficients, the beginning of $p$-adic analysis (Volume~13).
+A term can survive modulo $p^2$ only if at least one factor is not divisible by $p$. The boundary indices $i=bp$ and $i=(b-1)p$ give respectively
+\[
+\binom{(a-1)p}{bp}
+\quad\text{and}\quad
+\binom{(a-1)p}{(b-1)p}.
+\]
+For every other admissible index, $0<bp-i<p$, so $p\mid\binom p{bp-i}$. Also, $p\nmid i$ and the identity
+\[
+i\binom{(a-1)p}{i}
+=(a-1)p\binom{(a-1)p-1}{i-1}
+\]
+imply $p\mid\binom{(a-1)p}{i}$. Such terms have two factors of $p$ and disappear modulo $p^2$.
+
+Apply the induction hypothesis to the two surviving terms. Pascal's identity then yields
+\[
+\binom{ap}{bp}
+\equiv\binom{a-1}{b}+\binom{a-1}{b-1}
+=\binom ab\pmod{p^2}.
+\]
+This completes the induction.
+
+\tools Volume~1 (Vandermonde and Pascal identities); Volume~2 (binomial divisibility).
+\leads The mod-$p^2$ congruence is an elementary entry point to stronger congruences of binomial coefficients in $p$-adic arithmetic.
 \end{solution}
 
 \begin{solution}{pb:morley}
