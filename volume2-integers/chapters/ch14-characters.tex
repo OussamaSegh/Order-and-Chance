@@ -802,22 +802,36 @@ $1-S_3=887/3465>0$, so $S_3<1$. Grouping the terms exposes the strict inequaliti
 \idea For (b), the number $m=2^n-1$ satisfies $2^n\equiv1\pmod m$, so $2^{m-1}\equiv1$ as soon as $n\mid m-1$. And
 $m-1=2(2^{n-1}-1)$, which $n$ divides exactly because $n$ is a pseudoprime. For (c), the same mechanism with $2^{2p}$.
 
-\writeup (a) $2^{10}=1024=93\cdot11+1$ and $2^5=32=31+1$, so $2^{10}\equiv1\pmod{11}$ and $2^5\equiv1\pmod{31}$. Since $10\mid340$ and
-$5\mid340$, $2^{340}\equiv1$ modulo $11$ and $31$, hence modulo $341$.
+\writeup (a) Start with $341=11\cdot31$. The exponent $340$ is divisible by both $10$ and $5$, and
+\[
+2^{10}=1024\equiv1\pmod{11},\qquad
+2^5=32\equiv1\pmod{31}.
+\]
+So $2^{340}\equiv1$ modulo each prime factor, hence modulo $341$ by the Chinese remainder theorem. Yet $341$ is composite. A successful Fermat test at one base is therefore not a proof of primality.
 
-(b) Let $n$ be a pseudoprime and $m=2^n-1$, which is odd. If $n=ab$ with $1<a<n$, then $2^a-1$ divides $2^n-1$ and lies strictly
-between $1$ and $m$, so $m$ is composite. Now $m-1=2(2^{n-1}-1)$ and $n\mid2^{n-1}-1$, so $m-1=nk$ for an integer $k$. As
-$2^n\equiv1\pmod m$, $2^{m-1}=(2^n)^k\equiv1\pmod m$. So $m$ is a pseudoprime, larger than $n$. Starting from $341$, this gives
-infinitely many.
+(b) Let $n$ be an odd composite base-$2$ pseudoprime, and put $m=2^n-1$. If $n=ab$ with $1<a<n$, then $2^a-1$ is a proper factor of $m$, so $m$ is composite. Moreover the pseudoprime assumption $2^{n-1}\equiv1\pmod n$ makes
+\[
+m-1=2(2^{n-1}-1)
+\]
+a multiple of $n$, say $m-1=nk$. Since $2^n\equiv1\pmod m$ by construction,
+\[
+2^{m-1}=(2^n)^k\equiv1\pmod m.
+\]
+Thus $m$ is another base-$2$ pseudoprime, strictly larger than $n$. Repeating the construction from $341$ produces infinitely many.
 
-(c) Let $N=\frac{4^p-1}3=(2^p-1)\cdot\frac{2^p+1}3$. Both factors are integers
-larger than $1$ ($3\mid2^p+1$ as $p$ is odd, and $\frac{2^p+1}3>1$ for $p\ge3$). So $N$ is composite, and odd. Next,
-$N-1=\frac{4^p-4}3=4\cdot\frac{4^{p-1}-1}3$. By Fermat, $p\mid4^{p-1}-1$, and as $p\ne3$, $p$ divides $\frac{4^{p-1}-1}3$. So $2p\mid N-1$.
-Finally $3N=2^{2p}-1$, so $2^{2p}\equiv1\pmod N$ and $2^{N-1}\equiv1\pmod N$.
-\tools Volume~2, Chapters~1 and~3 (divisibility, Fermat's little theorem).
-\leads (b) is due to Malo (1903) and (c) to Cipolla (1904). Pseudoprimes are rare: Pomerance proved that their number up to $x$
-is at most $x\,e^{-\frac12\log x\log\log\log x/\log\log x}$ for large $x$, so that a random odd number that passes the base $2$
-test is almost surely prime, which is what software relied on for decades.
+(c) Let $p\ge5$ be prime and define
+\[
+N=\frac{4^p-1}{3}
+=(2^p-1)\frac{2^p+1}{3}.
+\]
+Both factors are integers greater than $1$: because $p$ is odd, $3\mid2^p+1$. Hence $N$ is composite. Fermat's theorem gives $p\mid4^{p-1}-1$, and $p\ne3$ permits division by $3$ modulo $p$. Therefore
+\[
+N-1=4\,\frac{4^{p-1}-1}{3}
+\]
+is divisible by $2p$. Since $3N=2^{2p}-1$, we have $2^{2p}\equiv1\pmod N$. The divisibility $2p\mid N-1$ then gives $2^{N-1}\equiv1\pmod N$. The number $N$ is another composite passing the base-$2$ Fermat test.
+
+\tools Volume~2 (factorisation, modular orders and Fermat's theorem).
+\leads Parts (b) and (c) are classical constructions of pseudoprimes; they explain why reliable primality software never treats one Fermat congruence as a certificate.
 \end{solution}
 
 \begin{solution}{pb:pocklington}
@@ -825,18 +839,31 @@ test is almost surely prime, which is what software relied on for decades.
 factor of $n$ is then $\equiv1$ modulo the factored part $F$, hence larger than $F$, and a composite $n$ has a prime factor at
 most $\sqrt n$. For Proth numbers $N-1=k2^m$, the power of $2$ is the factored part.
 
-\writeup (a) Let $p$ be a prime factor of $n$ and $e$ the order of $a$ modulo $p$ ($p\nmid a$ since $a^{n-1}\equiv1$). Then
-$e\mid n-1$. Let $q^f$ be the exact power of a prime $q\mid F$ in $F$, and $q^g$ its power in $n-1$, $g\ge f$. If $q^g\nmid e$, then
-$e\mid\frac{n-1}q$ and $p\mid a^{(n-1)/q}-1$, contradicting $\gcd(a^{(n-1)/q}-1,n)=1$. So $q^g\mid e\mid p-1$. Hence $F\mid p-1$ and
-$p>F$. If $F>\sqrt n$, every prime factor of $n$ exceeds $\sqrt n$, so $n$ is prime.
+\writeup (a) Let $p$ be any prime divisor of $n$. The congruence $a^{n-1}\equiv1\pmod n$ implies $p\nmid a$, so the multiplicative order $e=\operatorname{ord}_p(a)$ exists and divides $n-1$.
 
-(b) Take $F=2^m$, with only $q=2$. From $a^{(N-1)/2}\equiv-1$: $a^{N-1}\equiv1$, and $\gcd(a^{(N-1)/2}-1,N)=\gcd(-2,N)=1$ as $N$ is odd. And
-$N=k2^m+1\le(2^m-1)2^m+1<2^{2m}$, so $F>\sqrt N$. By (a), $N$ is prime. For $3329$: $m=8$, $k=13<256$, and repeated squaring
-gives $3^{1664}\equiv3328\equiv-1\pmod{3329}$, so $3329$ is prime.
-\tools Volume~2, Chapters~3 and~4 (fast exponentiation and orders).
-\leads Pocklington (1914) and Proth (1878). The largest known primes that are not Mersenne primes are Proth primes, found by the
-PrimeGrid project with exactly this test. Note the asymmetry: (b) proves primality in one exponentiation, but a failure says
-nothing unless $\bigl(\frac aN\bigr)=-1$.
+Take a prime power $q^f$ occurring in the known factor $F$ of $n-1$, and write $q^g\parallel n-1$, where $g\ge f$. Suppose $q^g$ did not divide $e$. Because $e\mid n-1$, its exponent of $q$ would be at most $g-1$, and so $e\mid(n-1)/q$. This would imply
+$a^{(n-1)/q}\equiv1\pmod p$, contrary to
+\[
+\gcd\left(a^{(n-1)/q}-1,n\right)=1.
+\]
+Thus $q^g\mid e$, in particular $q^f\mid p-1$. Do this for each prime dividing $F$. We obtain $F\mid p-1$, hence $p>F$. If $F>\sqrt n$, every prime divisor of $n$ exceeds $\sqrt n$, which is impossible for a composite $n$. Therefore $n$ is prime.
+
+(b) For Proth's form $N=k2^m+1$, with odd $k<2^m$, suppose
+$a^{(N-1)/2}\equiv-1\pmod N$. Squaring proves $a^{N-1}\equiv1$, and
+\[
+\gcd\left(a^{(N-1)/2}-1,N\right)=\gcd(-2,N)=1
+\]
+because $N$ is odd. We can apply (a) with $F=2^m$. Indeed
+\[
+N=k2^m+1\le(2^m-1)2^m+1<2^{2m},
+\]
+so $F>\sqrt N$. Thus $N$ is prime.
+
+For $N=3329=13\cdot2^8+1$, repeated squaring yields
+$3^{1664}\equiv-1\pmod{3329}$. The criterion proves $3329$ prime. Unlike a Fermat pseudoprime test, this successful congruence is a genuine certificate because it forces large orders modulo every prime divisor.
+
+\tools Volume~2 (orders, modular exponentiation and gcd).
+\leads Pocklington and Proth tests exploit known factors of $N-1$. A failed test with a chosen base is not by itself a compositeness proof.
 \end{solution}
 
 \begin{solution}{pb:fermatquot}
@@ -844,24 +871,47 @@ nothing unless $\bigl(\frac aN\bigr)=-1$.
 multiplying numbers of the form $1+px$ adds the $x$'s modulo $p$. So $q_p$ behaves like a logarithm. For (b), expand $2^p$ by the
 binomial theorem; for (c), take the logarithm of Wilson's theorem.
 
-\writeup All congruences are modulo $p$ unless stated. (a) $(ab)^{p-1}=(1+pq_p(a))(1+pq_p(b))\equiv1+p(q_p(a)+q_p(b))\pmod{p^2}$. Next,
-$(a+pt)^{p-1}\equiv a^{p-1}+(p-1)pta^{p-2}\pmod{p^2}$, so $q_p(a+pt)\equiv q_p(a)-ta^{p-2}\equiv q_p(a)-\frac ta$, since $a^{p-1}\equiv1$.
+\writeup For a prime $p$ and $p\nmid a$, put
+$q_p(a)=(a^{p-1}-1)/p$. It is an integer by Fermat's theorem, and we compare these integers modulo $p$.
 
-(b) $2^p=\sum_k\binom pk=2+\sum_{k=1}^{p-1}\binom pk$, and $\frac1p\binom pk=\frac{(p-1)(p-2)\cdots(p-k+1)}{k!}\equiv\frac{(-1)^{k-1}(k-1)!}{k!}=\frac{(-1)^{k-1}}k$.
-So $\frac{2^p-2}p\equiv\sum_{k=1}^{p-1}\frac{(-1)^{k-1}}k$, and $\frac{2^p-2}p=2q_p(2)$.
+(a) Multiply the identities $a^{p-1}=1+pq_p(a)$ and $b^{p-1}=1+pq_p(b)$, ignoring multiples of $p^2$. This gives
+\[
+q_p(ab)\equiv q_p(a)+q_p(b)\pmod p.
+\]
+Likewise the binomial expansion of $(a+pt)^{p-1}$ modulo $p^2$ gives
+\[
+q_p(a+pt)\equiv q_p(a)-t\,a^{p-2}
+\equiv q_p(a)-t/a\pmod p,
+\]
+where division means multiplication by the modular inverse of $a$.
 
-(c) Extend $q_p(N)=\frac{N^{p-1}-1}p$ to all $N$ prime to $p$; (a) still holds. Then
-$\sum_{a=1}^{p-1}q_p(a)\equiv q_p\bigl((p-1)!\bigr)$. Write $(p-1)!=-1+pW_p$ (Wilson). As $p-1$ is even,
-$(-1+pW_p)^{p-1}\equiv1-(p-1)pW_p\equiv1+pW_p\pmod{p^2}$, so $q_p((p-1)!)\equiv W_p$.
+(b) The binomial theorem supplies
+\[
+2^p-2=\sum_{k=1}^{p-1}\binom pk.
+\]
+For $1\le k<p$, reduce the factorial expression for $\binom pk/p$ modulo $p$:
+\[
+\frac1p\binom pk
+=\frac{(p-1)(p-2)\cdots(p-k+1)}{k!}
+\equiv\frac{(-1)^{k-1}}k.
+\]
+Because $(2^p-2)/p=2q_p(2)$, summing gives the alternating harmonic identity from the question.
 
-(d) Let $e$ and $E$ be the orders of $2$ modulo $p$ and $p^2$. Then $e\mid E$, and $2^{pe}=(1+cp)^p\equiv1\pmod{p^2}$ if $2^e=1+cp$, so
-$E\mid pe$: $E\in\{e,pe\}$. If $2^{p-1}\equiv1\pmod{p^2}$, then $E\mid p-1$ is prime to $p$, so $E=e$. Conversely if $E=e$, then
-$E\mid p-1$ and $2^{p-1}\equiv1\pmod{p^2}$.
-\tools Volume~2, Chapters~3 and~4 (Wilson, Fermat, orders); Volume~1, Chapter~1 (binomial theorem).
-\leads A prime with $q_p(2)\equiv0$ is a \emph{Wieferich prime}. Wieferich proved in 1909 that if $x^p+y^p=z^p$ has a solution with
-$p\nmid xyz$, then $p$ is one. Only $1093$ (Meissner, 1913) and $3511$ (Beeger, 1922) are known; heuristically there should be about
-$\log\log x$ of them below $x$, infinitely many but very few. Lerch's formula (c) connects them with Wilson primes ($W_p\equiv0$):
-$5$, $13$ and $563$.
+(c) Part (a) applied to all nonzero residues gives
+$\sum_{a=1}^{p-1}q_p(a)\equiv q_p((p-1)!)$. Write the factorial as
+$(p-1)!=-1+pW_p$. The exponent $p-1$ is even, so
+\[
+(-1+pW_p)^{p-1}\equiv1-(p-1)pW_p
+\equiv1+pW_p\pmod{p^2}.
+\]
+Thus $q_p((p-1)!)\equiv W_p\pmod p$, proving Lerch's relation.
+
+(d) Let $e$ and $E$ be the orders of $2$ modulo $p$ and $p^2$. Reduction shows $e\mid E$. If $2^e=1+cp$, the binomial theorem yields
+$(2^e)^p\equiv1\pmod{p^2}$, hence $E\mid pe$. So $E=e$ or $pe$. The equality
+$2^{p-1}\equiv1\pmod{p^2}$ holds exactly when $E\mid p-1$. Because $e\mid p-1$ and $p\nmid p-1$, this is equivalent to $E=e$.
+
+\tools Volume~2 (Wilson, Fermat, modular orders); Volume~1 (binomial theorem).
+\leads Wieferich primes satisfy $q_p(2)\equiv0$. Their scarcity is precisely why lifting orders from $p$ to $p^2$ is an interesting arithmetic question.
 \end{solution}
 
 \begin{solution}{pb:mullin}
@@ -869,18 +919,23 @@ $5$, $13$ and $563$.
 $2$ and $3$ as soon as $3$ has appeared; if its largest prime factor were $5$, it would be a power of $5$, and $5^c-1$ is
 divisible by $4$, whereas $P$ contains the prime $2$ only once.
 
-\writeup (a) $a_{n+1}$ divides $a_1\cdots a_n+1$, which is prime to each $a_i$, so $a_{n+1}\ne a_i$. The products give:
-$2+1=3$; $6+1=7$; $42+1=43$; $1806+1=13\cdot139$, so $a_5=13$; $23478+1=23479=53\cdot443$, so $a_6=53$;
+\writeup (a) In the first recursive sequence, the next prime $a_{n+1}$ divides
+$a_1a_2\cdots a_n+1$. It cannot equal any earlier $a_i$: otherwise it would divide both the product and that product plus $1$. This proves all selected primes are distinct.
+
+Calculate the first steps carefully:
+\[
+2+1=3,\quad6+1=7,\quad42+1=43,\quad
+1806+1=13\cdot139.
+\]
+Choosing the least prime factor at the fourth step gives $a_5=13$. The next products give $23479=53\cdot443$, so $a_6=53$, and
 $23478\cdot53+1=1244335=5\cdot248867$, so $a_7=5$.
 
-(b) The terms are distinct for the same reason, so for $n\ge1$, $P_n=b_1\cdots b_n$ contains the factor $2$ exactly once. $b_2=3$. For
-$n\ge2$, $6\mid P_n$, so $P_n+1$ is prime to $2$ and $3$. If its largest prime factor were $5$, then $P_n+1=5^c$ with $c\ge1$, and
-$P_n=5^c-1\equiv0\pmod4$, contradicting $v_2(P_n)=1$. And $b_2=3\ne5$. So $5$ never appears.
-\tools Volume~2, Chapters~1 and~2 (Euclid's argument, factorisation).
-\leads Mullin asked in 1963 whether every prime appears in the first sequence; Shanks conjectured yes, and it is open, the
-sequence being known for only about fifty terms because each one needs a hard factorisation. For the second sequence, Cox and
-van der Poorten (1968) showed that $5,11,13,17,19,23,29,31,37,41,47,53$ never appear, by arguments like (b) with more
-congruences, and Booker (2012) proved that it misses infinitely many primes.
+(b) Consider the sequence formed by choosing the \emph{largest} prime factor each time, and put $P_n=b_1\cdots b_n$. The same coprimality argument makes the primes distinct. Thus $P_n$ contains the factor $2$ exactly once, while $b_2=3$.
+
+For $n\ge2$, $6\mid P_n$, so $P_n+1$ is coprime to both $2$ and $3$. If its largest prime factor were $5$, every prime factor would have to be $5$, and hence $P_n+1=5^c$ for some $c\ge1$. But $5^c-1$ is divisible by $4$, whereas $v_2(P_n)=1$. Contradiction. The prime $5$ never appears in this second sequence.
+
+\tools Volume~2 (Euclid's construction, valuations and unique factorisation).
+\leads A sequence can produce an unending supply of distinct primes without producing \emph{every} prime. The missing-primes problem is an example of that distinction.
 \end{solution}
 
 \begin{solution}{pb:artin}
@@ -888,15 +943,20 @@ congruences, and Booker (2012) proved that it misses infinitely many primes.
 $q$ means $2^q=2^{(p-1)/2}\equiv1$, which by Euler's criterion means that $2$ is a square; and whether $2$ is a square depends on $p$
 modulo $8$, which is fixed by $q$ modulo $4$.
 
-\writeup The order $e$ of $2$ divides $p-1=2q$. $e=1$ or $2$ would need $p\mid1$ or $p\mid3$, excluded. If $q\equiv1\pmod4$, $p=2q+1\equiv3\pmod8$,
-so $\bigl(\frac2p\bigr)=-1$ and $2^q\equiv-1$ by Euler's criterion: $e\ne q$, so $e=2q$ and $2$ is a primitive root. If $q\equiv3\pmod4$, then
-$p\equiv7\pmod8$ and $\bigl(\frac2p\bigr)=1$, $\bigl(\frac{-1}p\bigr)=-1$, so $\bigl(\frac{-2}p\bigr)=-1$; the same argument applies to $-2$, whose order is
-not $1$ or $2$ since $p>3$.
-\tools Volume~2, Chapters~4 and~5.
-\leads Artin conjectured (1927) that $2$ is a primitive root modulo infinitely many primes, in fact for a proportion $\prod_p\bigl(1-\frac1{p(p-1)}\bigr)
-=0.3739\ldots$ of them. Hooley (1967) proved it under the generalised Riemann hypothesis. Unconditionally, Heath-Brown (1986) showed that at most two
-primes fail to be primitive roots for infinitely many $p$: so one of $2$, $3$, $5$ works, but nobody knows which. This problem would
-give a proof if there were infinitely many such ``safe primes'', which is also open.
+\writeup Let $q$ and $p=2q+1$ be odd primes, with $p>5$. The order of $2$ modulo $p$ divides $p-1=2q$, so it is one of $1,2,q,2q$. The first two options are impossible: $2$ has order $1$ only modulo a divisor of $1$, and order $2$ only modulo a divisor of $3$.
+
+If $q\equiv1\pmod4$, then $p\equiv3\pmod8$. The supplementary law for $2$ gives
+$\bigl(\frac2p\bigr)=-1$, so Euler's criterion says
+$2^q\equiv-1\pmod p$. Its order is not $q$, and the only remaining possibility is $2q$. Therefore $2$ is a primitive root modulo $p$.
+
+If $q\equiv3\pmod4$, then $p\equiv7\pmod8$. Now
+$\bigl(\frac2p\bigr)=1$ while $\bigl(\frac{-1}p\bigr)=-1$, hence
+$\bigl(\frac{-2}p\bigr)=-1$. The element $-2$ cannot have order $1$ or $2$ for $p>5$. Euler's criterion excludes order $q$, so its order is $2q$ and it is primitive.
+
+These conclusions are conditional on both $q$ and $2q+1$ being prime. They do not prove that infinitely many such safe primes exist, and so do not settle Artin's primitive-root conjecture.
+
+\tools Volume~2 (order, primitive roots and supplementary quadratic laws).
+\leads Artin's conjecture asks for infinitely many primes at which a fixed nonsquare integer is a primitive root. Even this appealing safe-prime special case does not resolve it.
 \end{solution}
 
 \begin{solution}{pb:fermatcubic}
