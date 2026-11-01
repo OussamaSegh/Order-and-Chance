@@ -573,40 +573,49 @@ $f(x)\equiv50+350t$. Dividing by $25$ yields $2+14t\equiv0\pmod5$, hence $t\equi
 
 \begin{solution}{ex:tower}
 \idea Work from the top of the tower down: modulo $100$, a power of $3$ depends on its exponent modulo $40=\varphi(100)$ (Euler); and the exponent $3^{27}$ modulo $40$ depends on $27$ modulo the order of $3$ modulo $40$, which is $4$. Each level reduces the modulus.
-\writeup We need $3^E\bmod100$ with $E=3^{27}$. Since $\varphi(100)=40$ and $\gcd(3,100)=1$, Theorem~\ref{thm:eulerthm} shows that $3^E$ depends only on $E\bmod40$. Now $3^4=81\equiv1\pmod{40}$, so $E=3^{27}=(3^4)^6\cdot3^3\equiv27\pmod{40}$. Hence $3^E\equiv3^{27}\pmod{100}$. Finally $3^{10}=59049\equiv49$, $3^{20}\equiv49^2=2401\equiv1$, so $3^{27}\equiv3^7=2187\equiv87\pmod{100}$.
+\writeup Put $E=3^{27}$. We want $3^E$ modulo $100$. Since $\gcd(3,100)=1$ and $\varphi(100)=40$, Euler's theorem says it is enough to know $E$ modulo $40$. But $3^4=81\equiv1\pmod{40}$, so $E=3^{27}\equiv3^3=27\pmod{40}$. Hence $3^E\equiv3^{27}\pmod{100}$. Finally $3^{10}\equiv49$ and $3^{20}\equiv49^2=2401\equiv1\pmod{100}$, giving $3^{27}\equiv3^7=2187\equiv87\pmod{100}$. The tower's last two digits are $87$.
 \end{solution}
 
 \begin{solution}{ex:korselt}
 \idea To prove a congruence modulo a squarefree $n$, prove it modulo each prime factor $p$ (Chinese remainder theorem). Modulo $p$, Fermat says $a^{p-1}\equiv1$, so $a^{n-1}\equiv1$ as soon as $p-1$ divides $n-1$; that is exactly the hypothesis.
-\writeup Let $p\mid n$ and write $n-1=(p-1)m$. If $p\nmid a$, Fermat gives $a^{n-1}=(a^{p-1})^m\equiv1$, so $a^n\equiv a\pmod p$; if $p\mid a$, both sides are $0$ modulo $p$. So every prime factor of $n$ divides $a^n-a$, and since $n$ is squarefree, their product $n$ does (distinct primes are pairwise coprime, apply Gauss' lemma repeatedly). For $561$: $560$ is divisible by $2$, $10$ and $16$.
+\writeup Fix a prime factor $p$ of $n$. The hypothesis gives $p-1\mid n-1$. If $p\nmid a$, Fermat's little theorem implies $a^{n-1}\equiv1\pmod p$, so $a^n\equiv a\pmod p$. If $p\mid a$, both sides are $0$ modulo $p$, and the same conclusion holds. Thus every prime factor of $n$ divides $a^n-a$. Since $n$ is squarefree, their product $n$ divides $a^n-a$ as well. For $561=3\cdot11\cdot17$, the number $560$ is divisible by $2$, $10$ and $16$, so the criterion applies.
 \end{solution}
 
 \begin{solution}{ex:lucas}
 \idea Binomial coefficients are coefficients of $(1+X)^n$, so compute $(1+X)^n$ modulo $p$ cleverly. The ``freshman's dream'' $(1+X)^p=1+X^p$ in characteristic $p$ splits $(1+X)^n$ along the base-$p$ digits of $n$; then reading the coefficient of $X^k$ amounts to writing $k$ in base $p$.
-\writeup In $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$ because $p\mid\binom pj$ for $0<j<p$: the denominator $j!(p-j)!$ is coprime to $p$, while $p\mid p!$; by induction $(1+X)^{p^i}=1+X^{p^i}$. Hence
+\writeup Work in the polynomial ring over $\mathbb F_p$. Since the intermediate coefficients $\binom pj$ are divisible by $p$, we have $(1+X)^p=1+X^p$, and by iteration $(1+X)^{p^i}=1+X^{p^i}$. If $n=\sum_i n_ip^i$ then
 \[
-(1+X)^n=\prod_i\left(1+X^{p^i}\right)^{n_i}=\prod_i\sum_{j=0}^{n_i}\binom{n_i}jX^{jp^i}.
+(1+X)^n=\prod_i(1+X^{p^i})^{n_i}
+=\prod_i\sum_{j=0}^{n_i}\binom{n_i}{j}X^{jp^i}.
 \]
-Expanding, each exponent $k$ arises from exactly one choice of digits $j=k_i\le n_i$ (uniqueness of base-$p$ expansion, since all $j\le n_i<p$), with coefficient $\prod_i\binom{n_i}{k_i}$; if some $k_i>n_i$, $X^k$ does not appear. Compare with the coefficient $\binom nk$ of $X^k$. For $p=2$, $\binom{n_i}{k_i}$ is $0$ exactly when $k_i=1$, $n_i=0$.
+To obtain exponent $k=\sum_i k_ip^i$, uniqueness of base-$p$ notation forces $j=k_i$ in each factor. The coefficient is $\prod_i\binom{n_i}{k_i}$, with value zero when some $k_i>n_i$. Comparing with the coefficient $\binom nk$ on the left proves Lucas's theorem. In base $2$, this says the binomial coefficient is odd precisely when every $1$ digit of $k$ also occurs in $n$.
 \end{solution}
 
 \begin{solution}{ex:t1-toy-rsa}
 \idea Euler works for units, so split the modulus until every non-zero residue is a unit in a field. Fermat handles those residues, and zero handles itself; the Chinese remainder theorem reassembles the answer.
-\writeup We need $m^{81}\equiv m\pmod{55}$. Modulo $5$, if $5\mid m$ both sides vanish; otherwise $m^4\equiv1$ and $81=20\cdot4+1$ gives the claim. Modulo $11$, the same argument uses $m^{10}\equiv1$ and $81=8\cdot10+1$, with zero treated separately. Coprimality of $5$ and $11$ gives the desired congruence modulo $55$. Numerically, $12^3=1728\equiv23$. Since $23^2\equiv34$, $23^4\equiv1$, and $27\equiv3\pmod4$, decryption yields $23^{27}\equiv23^3\equiv34\cdot23=782\equiv12\pmod{55}$. Euler's theorem modulo $55$ requires $\gcd(m,55)=1$, which fails for messages such as $5$ or $11$. These tiny parameters illustrate correctness; their factorisation is visible, so they provide no secrecy.
+\writeup Encryption and decryption together raise the message $m$ to exponent $3\cdot27=81$. Modulo $5$, Fermat's theorem gives $m^4\equiv1$ for nonzero $m$ and $81=20\cdot4+1$; for $m=0$, the desired congruence is automatic. Thus $m^{81}\equiv m\pmod5$ for every residue. The same proof modulo $11$ uses exponent $10$ and $81=8\cdot10+1$. The Chinese remainder theorem combines the two claims modulo $55$.
+
+For $m=12$, encryption gives $12^3=1728\equiv23\pmod{55}$. Decryption uses $23^2\equiv34$ and $23^4\equiv1$, so $23^{27}\equiv23^3\equiv34\cdot23=782\equiv12\pmod{55}$. The toy parameters show correctness, not secrecy.
 \end{solution}
 
 \begin{solution}{ex:t1-two-power-roots}
 \idea The factors $x-1,x+1$ differ by $2$, so they can share a factor $2$, but no higher power. Track which factor owns the remaining powers of $2$.
-\writeup For $k=1$ the only root is $1$; for $k=2$ the roots are $1,3$. Let $k\ge3$ and choose an integer representative $x$ of a root. It must be odd. If $x\equiv1\pmod4$, then $x+1=2u$ with $u$ odd. From $2^k\mid(x-1)(x+1)$, Gauss' lemma gives $2^{k-1}\mid x-1$. If $x\equiv3\pmod4$, the analogous argument gives $2^{k-1}\mid x+1$. Thus $x\equiv\pm1\pmod{2^{k-1}}$, giving at most the four listed lifts modulo $2^k$. Conversely for $x=\varepsilon+t2^{k-1}$ with $\varepsilon=\pm1$, $t=0,1$, expansion gives
+\writeup For $k=1$ the only root is $1$; for $k=2$ the roots are $1$ and $3$. Suppose $k\ge3$ and $2^k\mid(x-1)(x+1)$. Then $x$ is odd. The two even factors differ by $2$, so exactly one contains just one factor of $2$, while the other must be divisible by $2^{k-1}$. Thus $x\equiv\pm1\pmod{2^{k-1}}$.
+
+Each parent class has two lifts modulo $2^k$, namely $x=\varepsilon+t2^{k-1}$ with $\varepsilon=\pm1$ and $t=0,1$. Direct expansion gives
 \[
 x^2-1=\varepsilon t2^k+t^22^{2k-2},
 \]
-which is divisible by $2^k$ because $2k-2\ge k$. The two parent classes are distinct modulo $2^{k-1}$ when $k\ge3$, and their two lifts are distinct, so there are exactly four roots. For an odd prime the prime cannot divide both $x-1$ and $x+1$; the prime $2$ can, which is the precise obstruction.
+divisible by $2^k$ when $k\ge2$. These four classes are distinct for $k\ge3$, so they are all the roots. The exceptional behaviour comes from the prime $2$ dividing both $x-1$ and $x+1$.
 \end{solution}
 
 \begin{solution}{ex:t1-sunzi23}
 \idea Coprime moduli may be combined one pair at a time.
-\writeup From $x\equiv 2\pmod 3$ and $x\equiv 2\pmod 7$ one gets $x=21k+2$. Then $21k+2\equiv 3\pmod 5$, so $k\equiv 1\pmod 5$ and $k=5t+1$. Thus $x=105t+23$, and the smallest positive solution is $23$.
+\writeup The two conditions modulo $3$ and $7$ both prescribe remainder $2$, so together they give $x\equiv2\pmod{21}$. Write $x=21k+2$. The remaining condition modulo $5$ becomes $k+2\equiv3$, hence $k\equiv1\pmod5$. Therefore
+\[
+x=105t+23,\qquad t\in\Z.
+\]
+The smallest positive solution is $23$. It has remainders $2$, $3$ and $2$ on division by $3$, $5$ and $7$, respectively.
 \end{solution}
 
 \begin{solution}{pb:primepoly}
