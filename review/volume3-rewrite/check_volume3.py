@@ -42,6 +42,22 @@ def check_labels_and_figures() -> tuple[int, int, int]:
             figure_count += 1
         assert source.count(r"\begin{proof}") == source.count(r"\end{proof}"), f"Unbalanced proof in {path}"
         assert source.count(r"\begin{exercise}") == source.count(r"\end{exercise}"), f"Unbalanced exercise in {path}"
+
+        # Every graded exercise has its own hint and an independently addressable
+        # full solution, including a How-to-find-it idea and a Write-up.
+        exercises = re.findall(
+            r"\\begin\{exercise\}(?:\[[^\]]*\])?\s*\\label\{([^}]+)\}", source)
+        hints = re.findall(r"\\begin\{hint\}\{([^}]+)\}", source)
+        solutions = re.findall(r"\\begin\{solution\}\{([^}]+)\}", source)
+        if exercises or hints or solutions:
+            assert len(exercises) == len(set(exercises)), f"Duplicate exercise ids in {path}"
+            assert sorted(exercises) == sorted(hints), f"Exercise/hint mismatch in {path}"
+            assert sorted(exercises) == sorted(solutions), f"Exercise/solution mismatch in {path}"
+            for solution in re.finditer(
+                    r"\\begin\{solution\}\{([^}]+)\}([\s\S]*?)\\end\{solution\}", source):
+                assert r"\idea" in solution[2] and r"\writeup" in solution[2], (
+                    f"Solution without finding idea and write-up: {solution[1]} in {path}")
+
     for ref, path in refs:
         assert ref in labels, f"Undefined reference {ref} in {path}"
     assert r"\input{chapters/afterword}" in main
