@@ -111,6 +111,125 @@ def check_sylow_order_30() -> None:
     assert 6 * (5 - 1) + 10 * (3 - 1) > 30 - 1
 
 
+
+def permutation_compose(a: tuple[int, ...], b: tuple[int, ...]) -> tuple[int, ...]:
+    """Apply b, then a. Both permutations use zero-based indexing."""
+    return tuple(a[b[i]] for i in range(len(a)))
+
+
+def permutation_inverse(a: tuple[int, ...]) -> tuple[int, ...]:
+    result = [0] * len(a)
+    for i, x in enumerate(a):
+        result[x] = i
+    return tuple(result)
+
+
+def permutation_even(a: tuple[int, ...]) -> bool:
+    return sum(a[i] > a[j] for i in range(len(a))
+               for j in range(i + 1, len(a))) % 2 == 0
+
+
+def check_a5_classes() -> None:
+    group = [p for p in itertools.permutations(range(5)) if permutation_even(p)]
+    assert len(group) == 60
+    remaining = set(group)
+    class_sizes = []
+    while remaining:
+        x = next(iter(remaining))
+        cls = {permutation_compose(permutation_compose(g, x), permutation_inverse(g))
+               for g in group}
+        assert cls <= remaining
+        remaining -= cls
+        class_sizes.append(len(cls))
+    assert sorted(class_sizes) == [1, 12, 12, 15, 20]
+
+    # Normal subgroups are unions of conjugacy classes, including the identity.
+    # No nontrivial proper class-union size can divide 60.
+    sizes = [12, 12, 15, 20]
+    candidates = {1 + sum(sizes[i] for i in range(4) if mask >> i & 1)
+                  for mask in range(16)}
+    assert sorted(n for n in candidates if 60 % n == 0) == [1, 60]
+
+
+def check_s4_character_table() -> None:
+    # Class order: (), (12), (12)(34), (123), (1234).
+    weights = [1, 6, 3, 8, 6]
+    rows = [
+        (1, 1, 1, 1, 1),       # trivial
+        (1, -1, 1, 1, -1),     # sign
+        (2, 0, 2, -1, 0),     # lifted 2-dimensional S3 representation
+        (3, 1, -1, 0, -1),    # standard
+        (3, -1, -1, 0, 1),    # sign twist of standard
+    ]
+    assert sum(row[0] ** 2 for row in rows) == 24
+    for i, row in enumerate(rows):
+        for j, other in enumerate(rows):
+            inner = sum(w * a * b for w, a, b in zip(weights, row, other))
+            assert inner == (24 if i == j else 0), (i, j, inner)
+    for i in range(5):
+        for j in range(5):
+            product = sum(row[i] * row[j] for row in rows)
+            assert product == (24 // weights[i] if i == j else 0)
+
+
+def check_f4() -> None:
+    """F4 = F2[X]/(X^2+X+1), encoded with two bits."""
+    def mul(a: int, b: int) -> int:
+        c = 0
+        for i in range(2):
+            for j in range(2):
+                if a >> i & 1 and b >> j & 1:
+                    c ^= 1 << (i + j)
+        if c & 4:       # x^2 = x+1
+            c ^= 0b111
+        return c
+    for a in range(4):
+        assert mul(mul(a, a), mul(a, a)) == a
+    for a in range(1, 4):
+        assert any(mul(a, b) == 1 for b in range(1, 4))
+
+
+def check_fifteen_parity() -> None:
+    tiles = list(range(1, 17))
+    blank = 15
+    for move in range(600):
+        # Deterministic legal walk through a 4x4 grid, with reversals allowed.
+        row, col = divmod(blank, 4)
+        neighbours = [(r * 4 + c) for r, c in
+                      ((row - 1, col), (row + 1, col),
+                       (row, col - 1), (row, col + 1))
+                      if 0 <= r < 4 and 0 <= c < 4]
+        target = neighbours[(move * 7 + 3) % len(neighbours)]
+        tiles[blank], tiles[target] = tiles[target], tiles[blank]
+        blank = target
+        inversions = sum(tiles[i] > tiles[j] for i in range(16) for j in range(i + 1, 16))
+        colour = (sum(divmod(blank, 4)) % 2)
+        assert (inversions + colour) % 2 == 0
+    unsolved = list(range(1, 17))
+    unsolved[13], unsolved[14] = unsolved[14], unsolved[13]  # 14 and 15 exchanged
+    assert sum(unsolved[i] > unsolved[j] for i in range(16)
+               for j in range(i + 1, 16)) % 2 == 1
+
+
+def check_quaternion_norm() -> None:
+    def mul(q: tuple[int, int, int, int],
+            r: tuple[int, int, int, int]) -> tuple[int, int, int, int]:
+        a, b, c, d = q
+        e, f, g, h = r
+        return (a*e-b*f-c*g-d*h, a*f+b*e+c*h-d*g,
+                a*g-b*h+c*e+d*f, a*h+b*g-c*f+d*e)
+
+    def norm(q: tuple[int, int, int, int]) -> int:
+        return sum(x * x for x in q)
+
+    values = list(itertools.product(range(-2, 3), repeat=4))
+    for q in values[::17]:
+        for p in values[::29]:
+            assert norm(mul(q, p)) == norm(q) * norm(p)
+    assert mul((0, 1, 0, 0), (0, 0, 1, 0)) == (0, 0, 0, 1)  # i*j=k
+    assert mul((0, 0, 1, 0), (0, 1, 0, 0)) == (0, 0, 0, -1)  # j*i=-k
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -119,8 +238,13 @@ def main() -> None:
     check_rs_distance()
     check_two_state_walk()
     check_sylow_order_30()
+    check_a5_classes()
+    check_s4_character_table()
+    check_f4()
+    check_fifteen_parity()
+    check_quaternion_norm()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
-    print("PASS: necklaces; cube rotations; quintic input; RS distance; two-state walk; Sylow counts")
+    print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A5 classes; S4 characters; F4; fifteen-puzzle parity; quaternion norms")
 
 
 if __name__ == "__main__":
