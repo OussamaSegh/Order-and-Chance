@@ -324,6 +324,115 @@ def check_alternating_simple_commutators() -> None:
     assert comm(kappa, rho) == cyc(6, (0, 4, 2))
 
 
+
+def check_maximum_permutation_orders() -> None:
+    """Exhaust integer partitions, not 7! or 10! permutations."""
+    def orders(n: int, smallest: int = 1):
+        if n == 0:
+            yield ()
+        for k in range(smallest, n + 1):
+            for rest in orders(n - k, k):
+                yield (k,) + rest
+    def max_order(n: int) -> int:
+        return max(math.lcm(*lengths) for lengths in orders(n))
+    assert max_order(7) == 12
+    assert max_order(10) == 30
+
+
+def check_cube_face_colourings() -> None:
+    # Face 2*i is +e_i; face 2*i+1 is -e_i. Signed permutations
+    # with determinant +1 are exactly the 24 cube rotations.
+    def sign(p):
+        return -1 if sum(p[i] > p[j] for i in range(3)
+                         for j in range(i+1, 3)) % 2 else 1
+    rotations = []
+    for p in itertools.permutations(range(3)):
+        for signs in itertools.product((-1, 1), repeat=3):
+            if sign(p) * math.prod(signs) != 1:
+                continue
+            face_image = tuple(2*p[i//2] + ((i%2) ^ (signs[i//2] == -1))
+                               for i in range(6))
+            assert sorted(face_image) == list(range(6))
+            rotations.append(face_image)
+    assert len(rotations) == 24
+    words = list(itertools.product(range(3), repeat=6))
+    # The canonical member of each orbit is invariant under rotation.
+    canonical = {min(tuple(w[g[i]] for i in range(6)) for g in rotations)
+                 for w in words}
+    assert len(canonical) == 57
+    fixed = [sum(all(w[i] == w[g[i]] for i in range(6)) for w in words)
+             for g in rotations]
+    assert sum(fixed) == 24 * 57
+    assert sorted(fixed) == sorted([3**6] + [3**3]*6 + [3**4]*3
+                                   + [3**2]*8 + [3**3]*6)
+
+
+def check_f2_irreducibles() -> None:
+    # Polynomials are bitsets; bit i represents coefficient of X^i.
+    def degree(a):
+        return a.bit_length()-1
+    def remainder(a, b):
+        while a and degree(a) >= degree(b):
+            a ^= b << (degree(a)-degree(b))
+        return a
+    def product(a, b):
+        out = 0
+        while b:
+            if b & 1:
+                out ^= a
+            a <<= 1
+            b >>= 1
+        return out
+    irr = []
+    for n in range(1, 5):
+        for a in range(1 << n, 1 << (n+1)):
+            if not any(remainder(a, d) == 0 for k in range(1, n//2+1)
+                       for d in range(1 << k, 1 << (k+1))):
+                irr.append(a)
+    by_degree = [sorted(a for a in irr if degree(a)==n) for n in range(1,5)]
+    assert by_degree == [[0b10, 0b11], [0b111],
+                         [0b1011, 0b1101],
+                         [0b10011, 0b11001, 0b11111]]
+    value = 1
+    for n in (1, 2, 4):
+        for a in by_degree[n-1]:
+            value = product(value, a)
+    assert value == (1 << 16) | 0b10  # X^16-X = X^16+X in F2
+
+
+def check_seven_cyclotomic_period() -> None:
+    # ζ^7=1, 1+ζ+...+ζ^6=0.
+    a, b = (1,2,4), (3,5,6)
+    exponents = [(x+y) % 7 for x in a for y in b]
+    assert exponents.count(0) == 3
+    assert [exponents.count(x) for x in range(1,7)] == [1]*6
+    # η+η'=-1 and ηη'=3+(-1)=2.
+    assert -(-1) == 1 and 1 - 8 == -7
+
+
+def check_quaternion_rotation_matrix() -> None:
+    def prod(q, r):
+        a,b,c,d = q
+        e,f,g,h = r
+        return (a*e-b*f-c*g-d*h, a*f+b*e+c*h-d*g,
+                a*g-b*h+c*e+d*f, a*h+b*g-c*f+d*e)
+    for a,b,c,d in [(1,0,0,0), (0,1,0,0), (1,2,3,4), (3,-2,1,-5)]:
+        q = (a,b,c,d)
+        qb = (a,-b,-c,-d)
+        norm = a*a+b*b+c*c+d*d
+        numerator_columns = [
+            prod(prod(q, v), qb)[1:]
+            for v in ((0,1,0,0),(0,0,1,0),(0,0,0,1))
+        ]
+        matrix_columns = [
+            (a*a+b*b-c*c-d*d, 2*(b*c+a*d), 2*(b*d-a*c)),
+            (2*(b*c-a*d), a*a-b*b+c*c-d*d, 2*(c*d+a*b)),
+            (2*(b*d+a*c), 2*(c*d-a*b), a*a-b*b-c*c+d*d),
+        ]
+        assert numerator_columns == matrix_columns
+        assert sum(matrix_columns[i][i] for i in range(3)) == 4*a*a-norm
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -339,6 +448,11 @@ def main() -> None:
     check_fifteen_parity()
     check_fifteen_rectangle_generation()
     check_quaternion_norm()
+    check_maximum_permutation_orders()
+    check_cube_face_colourings()
+    check_f2_irreducibles()
+    check_seven_cyclotomic_period()
+    check_quaternion_rotation_matrix()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
