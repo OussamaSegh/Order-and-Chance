@@ -629,29 +629,64 @@ at $q$, gives yet another proof of quadratic reciprocity, the one that generalis
 \end{solution}
 
 \begin{solution}{pb:conjugate}
-\idea Two permutations are conjugate when they have the same cycle type, so $P_n$ is a sum of squared class probabilities, and
-the class probabilities factorise over cycle lengths. For the lower bound, the types with one huge cycle of length $n-k$ and a
-small rest behave like a copy of the problem of size $k$, at the price $\frac1{(n-k)^2}$.
+\idea Two permutations are conjugate precisely when their cycle lengths agree, including repetitions. So the problem is not to choose two permutations: it is to list their possible cycle types and square the probability of each type. A single very long cycle then gives a useful lower bound.
 
-\writeup (a) The class of type $\lambda$ (with $m_j$ cycles of length $j$) has probability $\frac1{z_\lambda}$, $z_\lambda=\prod_jj^{m_j}m_j!$
-(Cauchy's formula). Conjugate means same type (Volume~3, Chapter~4), so $P_n=\sum_{\lambda\vdash n}z_\lambda^{-2}$, and
+\writeup \emph{(a) The sum of the probabilities.}
+A cycle type of size $n$ is a sequence of non-negative integers $(m_1,m_2,\ldots)$ with
 \[
-\sum_{n\ge0}P_nx^n=\prod_{j\ge1}\sum_{m\ge0}\frac{x^{jm}}{j^{2m}m!^2},
+\sum_{j\ge1}j\,m_j=n.
 \]
-since choosing a type is choosing $m_j$ for each $j$. All terms are positive, so at $x=1$ both sides are equal in $[0,\infty]$. The
-product converges: the $j$-th factor is $1+\frac1{j^2}+O(\frac1{j^4})$. Numerically it is $4.2634\ldots$ (each factor is
-$I_0(\frac2j)$, a Bessel function).
+Here $m_j$ counts the cycles of length $j$. The number of permutations with this type is
+\[
+\frac{n!}{\prod_{j\ge1}j^{m_j}m_j!}.
+\]
+To see the denominator, begin with a list of all $n$ letters. Each $j$-cycle can be read starting at any of its $j$ positions, and cycles of the same length may be permuted among themselves without changing the permutation. Thus, for a uniform random permutation, the probability of this type is
+\[
+\frac1{z_\lambda},\qquad
+z_\lambda=\prod_{j\ge1}j^{m_j}m_j!.
+\]
+Two independent permutations have that same type with probability $z_\lambda^{-2}$. Adding over all types of $n$ gives
+\[
+P_n=\sum_{\lambda\vdash n}\frac1{z_\lambda^2}.
+\]
+For a quick check, $P_0=P_1=1$; in $\mathfrak S_2$ the two possible types each have probability $1/2$, so $P_2=1/2$.
 
-(b) Let $k<\frac n2$ and $\mu\vdash k$. The type $\lambda=\mu\cup\{n-k\}$ has a unique cycle of length $n-k$, so
-$z_\lambda=(n-k)z_\mu$, and different pairs $(k,\mu)$ give different types. Keeping only these types,
+Introduce a formal variable $x$. Choosing a cycle multiplicity $m$ at each length $j$ contributes $x^{jm}/(j^{2m}(m!)^2)$. These choices are independent at the level of types, and only finitely many lengths can contribute to any fixed coefficient of $x$. Therefore
 \[
-P_n\ge\sum_{k<n/2}\frac1{(n-k)^2}\sum_{\mu\vdash k}z_\mu^{-2}\ge\frac1{n^2}\sum_{k<n/2}P_k,
+\sum_{n\ge0}P_nx^n
+=\prod_{j\ge1}\left(\sum_{m\ge0}
+                  \frac{x^{jm}}{j^{2m}(m!)^2}\right).
 \]
-and the last sum tends to $\sum_kP_k$.
-\tools Volume~3, Chapter~4 (conjugacy classes of $\mathfrak S_n$); Volume~5, Chapter~3 (infinite products).
-\leads In fact $P_n\sim\frac{4.2634\ldots}{n^2}$: Flajolet, Fusy, Gourdon, Panario and Pouyanne (2006) proved it with a ``hybrid'' of
-Darboux's method and singularity analysis, needed because the generating function has the whole unit circle as natural boundary.
-The lower bound is the main term: two random permutations are conjugate mostly when both have one giant cycle of the same length.
+All coefficients are non-negative. Letting $x$ increase to $1$ and using monotone convergence for these sums gives
+\[
+\boxed{\sum_{n\ge0}P_n=
+\prod_{j\ge1}\left(\sum_{m\ge0}\frac1{j^{2m}(m!)^2}\right).}
+\]
+The $j$-th factor equals $1+j^{-2}+O(j^{-4})$. Since $\sum j^{-2}$ converges, so does the infinite product to a finite positive constant. Evaluating sufficiently many factors with a tail bound gives $4.2634\ldots$.
+
+\emph{(b) A cycle longer than half the permutation.}
+Fix $n$ and a non-negative integer $k<n/2$. Choose any cycle type $\mu$ of size $k$. Adjoin a cycle of length $n-k$. Because $n-k>n/2$, none of the cycles of $\mu$ can have that length. The long cycle is therefore uniquely identifiable, and different pairs $(k,\mu)$ give different types of size $n$.
+
+If the original type has denominator $z_\mu$, the new denominator is $(n-k)z_\mu$. Its contribution to $P_n$ is consequently $1/((n-k)^2z_\mu^2)$. Retaining only these types in the sum for $P_n$ gives
+\[
+P_n\ge\sum_{0\le k<n/2}\frac{P_k}{(n-k)^2}.
+\]
+Multiply through by $n^2$. Because $n/(n-k)\ge1$,
+\[
+n^2P_n\ge\sum_{0\le k<n/2}
+       \left(\frac{n}{n-k}\right)^2P_k
+       \ge\sum_{0\le k<n/2}P_k.
+\]
+As $n\to\infty$, the last sum increases to the finite sum computed in part (a). Hence
+\[
+\boxed{\liminf_{n\to\infty}n^2P_n\ge
+       \sum_{k\ge0}P_k=4.2634\ldots.}
+\]
+This is a lower bound on a limit inferior; it does not, by itself, prove that $n^2P_n$ converges.
+
+\tools Conjugacy classes of $\mathfrak S_n$ (this chapter), counting cyclic arrangements (Volume~1), and non-negative series.
+
+\leads In fact $P_n\sim4.2634\ldots/n^2$, but proving the matching upper bound needs more delicate analysis. The long-cycle argument explains the lower-bound mechanism without assuming that harder result.
 \end{solution}
 
 \section*{Sources and further reading}
