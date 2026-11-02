@@ -782,11 +782,64 @@ def check_cap_set_constant() -> None:
         ) ** (3 * n)
 
 
+def check_positive_matrix_oscillation() -> None:
+    """Check the quantified contraction estimate over exact rational examples."""
+    for entries in itertools.product((1, 2, 3), repeat=4):
+        a, b, d, e = map(Fraction, entries)
+        matrix = ((a, b), (d, e))
+        c = min(
+            matrix[i][j] / matrix[k][j]
+            for i in range(2) for k in range(2) for j in range(2)
+        )
+        assert 0 < c <= 1
+
+        def apply(v):
+            return tuple(sum(matrix[i][j] * v[j] for j in range(2))
+                         for i in range(2))
+
+        for xv in itertools.product((1, 2, 3), repeat=2):
+            for yv in itertools.product((1, 2, 3), repeat=2):
+                x, y = tuple(map(Fraction, xv)), tuple(map(Fraction, yv))
+                original = [x[i] / y[i] for i in range(2)]
+                ax, ay = apply(x), apply(y)
+                after = [ax[i] / ay[i] for i in range(2)]
+                assert min(original) <= min(after) <= max(after) <= max(original)
+                assert max(after) - min(after) <= (
+                    1 - c * c
+                ) * (max(original) - min(original))
+
+
+def check_two_state_markov_limit() -> None:
+    """Exact aperiodic chain with stationary weights (2/5, 3/5)."""
+    q = Fraction
+    p = ((q(1, 2), q(1, 2)), (q(1, 3), q(2, 3)))
+    pi = (q(2, 5), q(3, 5))
+    assert all(sum(pi[i] * p[i][j] for i in range(2)) == pi[j]
+               for j in range(2))
+    previous = ((q(1), q(0)), (q(0), q(1)))
+    for k in range(1, 9):
+        current = tuple(
+            tuple(sum(previous[i][t] * p[t][j] for t in range(2))
+                  for j in range(2))
+            for i in range(2)
+        )
+        # The non-Perron eigenvalue is 1/6, so the discrepancy
+        # from each limiting row shrinks by exactly that factor.
+        for i in range(2):
+            for j in range(2):
+                assert current[i][j] - pi[j] == (
+                    previous[i][j] - pi[j]
+                ) / 6
+        previous = current
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     rewritten_count, pending_count = check_rewritten_exercise_ledger()
     theorem_rewrites, theorem_pending = check_theorem_rewrite_ledger()
     check_cap_set_constant()
+    check_positive_matrix_oscillation()
+    check_two_state_markov_limit()
     check_necklaces()
     check_cube()
     check_quintic()
