@@ -105,4 +105,28 @@ A further editorial pass made these changes in addition to the initial audit:
 
 ### Second-pass limitations
 
-These edits are substantial, but the entire inherited mathematical body has **not** been rewritten word for word. Most of the original remaining theorem proofs and all 163 complete exercise solutions were preserved unless a specific correction justified changing them. Numerical checks cannot certify all the logic in those proofs. An independent line-by-line mathematical sign-off, source and bibliography audit, complete editorial voice review, and final visual PDF/EPUB inspection are still outstanding. PR #91 must remain a draft until these criteria are actually fulfilled.
+These edits are substantial, but the entire inherited mathematical body has **not** yet been rewritten word for word. Most of the original remaining theorem proofs and 151 of the 163 exercise solutions remain inherited; 12 have been fully rewritten and checked in the third pass. Numerical checks cannot certify all the logic in those proofs. An independent line-by-line mathematical sign-off, source and bibliography audit, complete editorial voice review, and final visual PDF/EPUB inspection are still outstanding. PR #91 must remain a draft until these criteria are actually fulfilled.
+
+
+## Third pass: full worked solutions and structural proof audit (2 November 2026)
+
+This continuation includes **12 complete rewrites of graded exercise solutions**, one in each main chapter, with the original labels, discovery ideas and full write-ups retained. The selected worked examples cover:
+
+1. Order-four group classification: corrected the previous mismatch between a request for **two geometric examples** and a non-geometric unit-group answer. Now gives both rectangle symmetries and the coordinate-axis half-turn group.
+2. Automorphisms of a cyclic group: full proof that every endomorphism is multiplication by one residue, and that it is an automorphism precisely for a unit.
+3. Cube face colourings: full five-row rotation inventory and Burnside calculation giving 57.
+4. Landau maximum orders in S7 and S10: justified the prime-power budget reduction and enumerated the maximal choices, giving 12 and 30.
+5. Groups of orders 56, 200 and 36: separate Sylow counts, forced normal subgroups, and a nontrivial action kernel.
+6. The nonprincipal maximal ideal in Z[sqrt(-5)]: norm obstruction, explicit quotient map to F2, and an irreducible-but-not-prime element.
+7. All six abelian groups of order 360: elementary divisors, invariant factors and one full Chinese-remainder reconstruction.
+8. Constructible 7-, 9- and 17-gons: irreducible cubic obstructions and the exact degree-eight calculation, with the degree bound clearly described as necessary rather than sufficient.
+9. All irreducible polynomials of degree at most four over F2: explicit tests in the quadratic quotient and factorisation of X^16-X.
+10. The intermediate fields of Q(zeta7): exact subgroup listing and the nine-term Gauss-period product identifying Q(sqrt(-7)).
+11. The six-point permutation representation of S4: fixed-pair counts, character inner products and a dimensional check.
+12. The quaternion-to-rotation matrix: derived the vector formula and checked all three columns and the trace.
+
+**Further complete theorem-proof rewrites:** Smith normal form (including strict termination of the pivot algorithm and uniqueness from ideals of minors), Sylow II–III (all coset, normaliser, congruence steps), finite-field existence and uniqueness via X^q-X, and the fundamental theorem of Galois theory (including both directions of the normality criterion). In Artin's fixed-field lemma the previously implicit separability justification for using the primitive element theorem is now explicit.
+
+**New exact test coverage** in the integrated Python checker: exhaustive partition searches for maximum element order in S7 and S10, enumeration of all 729 three-colour cube-face assignments under the full rotation group, enumeration and irreducibility testing of all monic F2 polynomials through degree four and reconstruction of X^16-X, exact seven-th cyclotomic-period exponent counts, and exact quaternion-matrix products. These checks are **evidence for the audited examples**, not machine proofs of the general theorems.
+
+**Still outstanding:** 151 inherited graded solution write-ups, much of the remaining general exposition and theorem proof body, full independent formal scrutiny of all claims and bibliography, and final visual PDF/EPUB page-by-page QA. PR remains draft; no claim of a finished volume is justified at this stage.
