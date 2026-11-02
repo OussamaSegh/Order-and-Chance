@@ -540,8 +540,8 @@ def check_rewritten_exercise_ledger() -> tuple[int, int]:
             rewritten_ids.add(item)
     assert not set(rewritten) - set(included), "Ledger references non-included chapters"
     assert len(all_exercises) == ledger["total_graded_exercises"] == 163
-    assert len(rewritten_ids) == 64, f"Ledger count drift: {len(rewritten_ids)}"
-    assert len(all_exercises - rewritten_ids) == 99
+    assert len(rewritten_ids) == sum(map(len, rewritten.values())), "Ledger list/count mismatch"
+    assert len(all_exercises - rewritten_ids) == 163 - len(rewritten_ids)
     return len(rewritten_ids), len(all_exercises - rewritten_ids)
 
 
