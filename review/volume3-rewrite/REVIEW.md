@@ -9,7 +9,7 @@
 
 ## Current verification ledger (latest head, 2 November 2026)
 
-- **138 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **25 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
+- **139 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **24 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
 - **17 complete theorem-proof rewrites** in the main chapters and appendices. The remaining inherited proofs have not all been independently reconstructed.
 - In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
 - Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
@@ -194,3 +194,8 @@ Three more inherited graded solutions were independently reconstructed, bringing
 Removed an incorrect Chapter 5 pointer from the random-matrix exercise in Chapter 1: that chapter is about Sylow theory, not random-polynomial factorisation. The discussion now states the underlying fixed-degree / large-field limiting pattern without misdirecting the reader.
 
 **New independent small-case tests:** all row and column orthogonality identities for the full (Q_8) character table; and exact rational agreement of the conjugacy-probability cycle enumeration with the Euler-product coefficients for permutation degrees (0) through (6). A separate source-level scan of all sixteen included chapter files confirms **163 exercise openings, 163 hints, 163 correctly closed solutions**, and balanced proof, figure, list and theorem environments. These tests strengthen evidence but do not replace the remaining proof-by-proof audit or PDF/EPUB sign-off.
+
+
+## Eighth pass: splitting field of `X^4-2` (2 November 2026)
+
+Rewrote the complete `ex:x42check` solution rather than relying on the inherited fixed-field listing. Calculated explicit generators fixed by the five order-two subgroups of `D_4` and the three order-four subgroups; justified equality with each fixed field by extension degrees, including a complete integer-quadratic-factor check that `X^4+8` is irreducible. Identified exactly the six normal-subgroup fixed fields and exhibited the missing non-real root proving `Q(2^{1/4})/Q` is not normal. The exercise ledger is now **139 of 163 rewritten, 24 pending**. Final typesetting and full independent sign-off are still outstanding.
