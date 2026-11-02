@@ -41,6 +41,12 @@ def check_labels_and_figures() -> tuple[int, int, int]:
         for fig in re.findall(r"\\fig\{([^}]+)\}", source):
             assert (BOOK / "figures" / f"{fig}.tex").exists(), f"Missing figure {fig} in {path}"
             figure_count += 1
+        # A malformed terminator such as \end{solution> is not a LaTeX command.
+        # Check actual begin/end counts rather than only locating solution IDs.
+        assert not re.search(r"\\(?:begin|end)\{[A-Za-z*]+>", source), (
+            f"Malformed TeX environment terminator in {path}")
+        assert source.count(r"\begin{solution}") == source.count(r"\end{solution}"), (
+            f"Unbalanced solution environments in {path}")
         assert source.count(r"\begin{proof}") == source.count(r"\end{proof}"), f"Unbalanced proof in {path}"
         assert source.count(r"\begin{exercise}") == source.count(r"\end{exercise}"), f"Unbalanced exercise in {path}"
 
@@ -54,6 +60,8 @@ def check_labels_and_figures() -> tuple[int, int, int]:
             assert len(exercises) == len(set(exercises)), f"Duplicate exercise ids in {path}"
             assert sorted(exercises) == sorted(hints), f"Exercise/hint mismatch in {path}"
             assert sorted(exercises) == sorted(solutions), f"Exercise/solution mismatch in {path}"
+            assert len(solutions) == source.count(r"\end{solution}"), (
+                f"Some solutions are unclosed or malformed in {path}")
             for solution in re.finditer(
                     r"\\begin\{solution\}\{([^}]+)\}([\s\S]*?)\\end\{solution\}", source):
                 assert r"\idea" in solution[2] and r"\writeup" in solution[2], (
