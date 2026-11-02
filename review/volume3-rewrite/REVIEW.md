@@ -10,7 +10,7 @@
 ## Current verification ledger (latest head, 2 November 2026)
 
 - **163 of 163 graded exercise solutions have now received full editorial rewrites** with a finding strategy and complete mathematical write-up. **No graded exercise solution remains on the rewrite checklist.** These are authored and checked for structural completeness, but they have **not** all received independent, line-by-line mathematical sign-off. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
-- **20 of 155 labelled theorem/proposition/lemma/corollary proofs have documented full editorial rewrites**; **135 still need equivalent rewriting and independent audit**. See [THEOREM_REWRITES.json](THEOREM_REWRITES.json), checked against the included manuscript. The ledger does not confer mathematical certification.
+- **26 of 155 labelled theorem/proposition/lemma/corollary proofs have documented full editorial rewrites**; **129 still need equivalent rewriting and independent audit**. See [THEOREM_REWRITES.json](THEOREM_REWRITES.json), checked against the included manuscript. The ledger does not confer mathematical certification.
 - In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
 - Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
 - Corrected the Galois memoir's manuscript date from **1830 to 16 January 1831**. The first edition appeared in **1846**, pp. 417–433; this follows the [original dated text](https://www.numdam.org/item/JMPA_1846_1_11__381_0.pdf) and [historical analysis](https://www.numdam.org/articles/10.24033/rhm.162/). The separate finite-field article *Sur la théorie des nombres* really is from 1830, pp. 428–435.
@@ -228,3 +228,17 @@ The complete included manuscript currently contains **155 labelled theorems, pro
 A new [THEOREM_REWRITES.json](THEOREM_REWRITES.json) inventories every included labelled statement and records which proofs have undergone a complete editorial rewrite. At this checkpoint: **20/155 proof rewrites recorded; 135 outstanding**. The regression script checks the count, labels, included chapter membership and recorded rewrite count against current source. An independent proof-by-proof sign-off remains separate and undone for the majority of these statements.
 
 The GitHub Actions build and EPUB/PDF artifact QA must succeed on the final branch head; the CI history during frequent commits includes cancelled runs and a checker false-positive (since fixed). Neither source syntax checks nor an exploratory compilation prove every mathematical implication.
+
+
+## Eleventh pass: quotient groups, Jordan form, rotations and constructibility
+
+Six additional theorem-proof rewrites have been committed in small, named changes:
+
+- **Jordan normal form (`thm:jordan`)**: explicitly decomposes $K[X]$-modules by coprime linear factors, constructs the Jordan basis, and recovers uniquely the numbers of blocks of each size from the kernel dimensions $h_k(\lambda)=\dim\ker(A-\lambda I)^k$.
+- **Quotient group theorem (`thm:quotient`)**: checks independence of coset representatives and all group laws, then proves that well-defined multiplication forces normality.
+- **Internal direct product (`prop:internal`)**: places the commutator in both normal factors, proves commutativity, and checks the isomorphism's kernel and image.
+- **Semidirect products (`prop:semidirect`)**: verifies associativity and the explicit inverse; then reconstructs the map $N\rtimes H\to G$ from a normal subgroup and complement.
+- **Euler's rotation-axis lemma (`lem:euler`)**: shows $det(A-I)=0$ for $A\in SO(3)$ and derives planar rotation about a fixed unit vector.
+- **Wantzel's constructibility criterion (`thm:wantzel`)**: works in both directions, starting with a tower of quadratic field extensions and ending with the quadratic equations of line/circle intersections. Reiterates that a degree that is a power of two is necessary but not sufficient.
+
+The test suite also now checks uniqueness of Jordan partitions by their exact integer kernel-growth profiles for all partitions through size seven. The tracked theorem proof rewrite count is **26/155 (129 still pending)**. This is an editorial milestone, not independent formal mathematical certification.
