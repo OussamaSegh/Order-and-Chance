@@ -9,7 +9,7 @@
 
 ## Current verification ledger (latest head, 2 November 2026)
 
-- **135 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **28 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
+- **138 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **25 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
 - **17 complete theorem-proof rewrites** in the main chapters and appendices. The remaining inherited proofs have not all been independently reconstructed.
 - In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
 - Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
@@ -181,3 +181,16 @@ Two further complete worked solutions were independently rewritten and added to 
 - **Centre bound and quaternion characters** (\`ex:centralchar\`, Chapter 11): Schur's lemma, the centre bound \(d^2\le [G:Z(G)]\), five conjugacy classes of \(Q_8\), four linear characters, and a complete five-row character table computed from orthogonality.
 
 **Current ledger: 135 of 163 rewritten solutions; 28 still pending.** These numbers supersede every earlier checkpoint in this review and the historical PR description. The rest of the manuscript, especially long inherited theorem proofs and reference details, still needs independent verification. The PR stays draft until mathematical and production sign-off.
+
+
+## Seventh pass: irreducibility, character degrees and random permutations (2 November 2026)
+
+Three more inherited graded solutions were independently reconstructed, bringing the ledger to **138 rewritten and 25 pending**:
+
+- **Cyclotomic irreducibility** (`ex:phin`, Chapter 10): separate roots of `X^n-1` by their exact order; show cyclotomic polynomials have integer coefficients by monic division; use the square-free reduction of `X^n-1` modulo primes not dividing `n` to show every primitive root satisfies the same minimal polynomial; recover the automorphism group, including the case `n=1`.
+- **Character degrees divide group order** (`ex:divides`, Chapter 11): reconstruct the finite-module criterion for algebraic integrality, the conjugacy-class multiplication constants, and the proof that `|G|/d` is a rational algebraic integer and therefore an integer.
+- **Random conjugate permutations** (`pb:conjugate`, Chapter 4): derive the exact cycle-type probabilities and Euler product, then show the lower bound on the limit inferior by adjoining one unique long cycle. Explicitly distinguish the liminf bound from the stronger, unproved-here asymptotic equivalence.
+
+Removed an incorrect Chapter 5 pointer from the random-matrix exercise in Chapter 1: that chapter is about Sylow theory, not random-polynomial factorisation. The discussion now states the underlying fixed-degree / large-field limiting pattern without misdirecting the reader.
+
+**New independent small-case tests:** all row and column orthogonality identities for the full (Q_8) character table; and exact rational agreement of the conjugacy-probability cycle enumeration with the Euler-product coefficients for permutation degrees (0) through (6). A separate source-level scan of all sixteen included chapter files confirms **163 exercise openings, 163 hints, 163 correctly closed solutions**, and balanced proof, figure, list and theorem environments. These tests strengthen evidence but do not replace the remaining proof-by-proof audit or PDF/EPUB sign-off.
