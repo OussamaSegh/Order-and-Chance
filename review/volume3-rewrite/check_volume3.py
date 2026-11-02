@@ -672,8 +672,8 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
     for item in entries:
         name, ident, kind = item["file"], item["id"], item["type"]
         assert name in included, f"Proof ledger file no longer included: {name}"
-        assert (name, ident) not in seen, f"Duplicate proof ledger entry: {ident}"
-        seen.add((name, ident))
+        assert (name, ident, kind) not in seen, f"Duplicate proof ledger entry: {ident}"
+        seen.add((name, ident, kind))
         assert kind in ("theorem", "proposition", "lemma", "corollary")
         if item["editorial_rewrite_recorded"]:
             recorded += 1
@@ -683,11 +683,13 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
         for kind, ident in re.findall(
                 r"\\begin\{(theorem|proposition|lemma|corollary)\}"
                 r"(?:\[[^\]]*\])?\s*\\label\{([^}]+)\}", src):
-            actual.add((name, ident))
+            actual.add((name, ident, kind))
         assert src.count(r"\begin{proof}") == src.count(r"\end{proof}"), name
     assert seen == actual, f"Proof ledger mismatch: missing {actual-seen}, obsolete {seen-actual}"
     assert len(actual) == ledger["total_statements"] == 155
     assert recorded == ledger["rewrites_recorded"]
+    verified = ledger["independent_verified"]
+    assert isinstance(verified, int) and 0 <= verified <= recorded
     return recorded, len(actual) - recorded
 
 
@@ -869,7 +871,7 @@ def main() -> None:
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
-    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} requiring full rewrite/independent audit")
+    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} pending editorial rewrite; independent sign-off is tracked separately")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 
