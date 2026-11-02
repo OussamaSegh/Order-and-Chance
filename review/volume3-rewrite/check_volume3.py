@@ -540,9 +540,60 @@ def check_rewritten_exercise_ledger() -> tuple[int, int]:
             rewritten_ids.add(item)
     assert not set(rewritten) - set(included), "Ledger references non-included chapters"
     assert len(all_exercises) == ledger["total_graded_exercises"] == 163
-    assert len(rewritten_ids) == 43, f"Ledger count drift: {len(rewritten_ids)}"
-    assert len(all_exercises - rewritten_ids) == 120
+    assert len(rewritten_ids) == 44, f"Ledger count drift: {len(rewritten_ids)}"
+    assert len(all_exercises - rewritten_ids) == 119
     return len(rewritten_ids), len(all_exercises - rewritten_ids)
+
+
+
+def check_binary_tetrahedral_group() -> None:
+    """Exhaust the 24 Hurwitz units in integer-scaled coordinates.
+
+    A tuple is twice a unit quaternion, so the quaternion product of scaled
+    tuples has to be divided by two. Compare every one of the 576 products.
+    """
+    def mul(a, b):
+        w,x,y,z=a
+        p,q,r,t=b
+        raw = (w*p-x*q-y*r-z*t,
+               w*q+x*p+y*t-z*r,
+               w*r-x*t+y*p+z*q,
+               w*t+x*r-y*q+z*p)
+        assert all(v % 2 == 0 for v in raw)
+        return tuple(v//2 for v in raw)
+
+    integer_units = set()
+    for axis in range(4):
+        for sign in (-2, 2):
+            q = [0]*4
+            q[axis] = sign
+            integer_units.add(tuple(q))
+    half_units = set(itertools.product((-1,1), repeat=4))
+    units = integer_units | half_units
+    assert len(integer_units) == 8 and len(half_units) == 16
+    assert len(units) == 24
+    assert all(sum(v*v for v in q) == 4 for q in units)
+    assert all(mul(q,r) in units for q in units for r in units)
+    identity = (2,0,0,0)
+    minus_identity = (-2,0,0,0)
+
+    def opposite(q):
+        return tuple(-v for v in q)
+    def proj(q):
+        return min(q, opposite(q))
+
+    rotations = {proj(q) for q in units}
+    assert len(rotations) == 12
+
+    def order_rot(q):
+        power = identity
+        for n in range(1, 13):
+            power = mul(power, q)
+            if power in (identity, minus_identity):
+                return n
+        raise AssertionError("No finite rotation order")
+    orders = [order_rot(q) for q in rotations]
+    assert [orders.count(k) for k in (1,2,3)] == [1,3,8]
 
 
 def main() -> None:
@@ -561,6 +612,7 @@ def main() -> None:
     check_fifteen_parity()
     check_fifteen_rectangle_generation()
     check_quaternion_norm()
+    check_binary_tetrahedral_group()
     check_maximum_permutation_orders()
     check_cube_face_colourings()
     check_f2_irreducibles()
