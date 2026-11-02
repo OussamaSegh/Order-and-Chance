@@ -105,7 +105,7 @@ A further editorial pass made these changes in addition to the initial audit:
 
 ### Second-pass limitations
 
-These edits are substantial, but the entire inherited mathematical body has **not** yet been rewritten word for word. Most of the original remaining theorem proofs and 151 of the 163 exercise solutions remain inherited; 12 have been fully rewritten and checked in the third pass. Numerical checks cannot certify all the logic in those proofs. An independent line-by-line mathematical sign-off, source and bibliography audit, complete editorial voice review, and final visual PDF/EPUB inspection are still outstanding. PR #91 must remain a draft until these criteria are actually fulfilled.
+These edits are substantial, but the entire inherited mathematical body has **not** yet been rewritten word for word. Most of the original remaining theorem proofs and 147 of the 163 exercise solutions remain inherited; 16 have been fully rewritten and checked over the third and fourth passes. Numerical checks cannot certify all the logic in those proofs. An independent line-by-line mathematical sign-off, source and bibliography audit, complete editorial voice review, and final visual PDF/EPUB inspection are still outstanding. PR #91 must remain a draft until these criteria are actually fulfilled.
 
 
 ## Third pass: full worked solutions and structural proof audit (2 November 2026)
@@ -129,4 +129,18 @@ This continuation includes **12 complete rewrites of graded exercise solutions**
 
 **New exact test coverage** in the integrated Python checker: exhaustive partition searches for maximum element order in S7 and S10, enumeration of all 729 three-colour cube-face assignments under the full rotation group, enumeration and irreducibility testing of all monic F2 polynomials through degree four and reconstruction of X^16-X, exact seven-th cyclotomic-period exponent counts, and exact quaternion-matrix products. These checks are **evidence for the audited examples**, not machine proofs of the general theorems.
 
-**Still outstanding:** 151 inherited graded solution write-ups, much of the remaining general exposition and theorem proof body, full independent formal scrutiny of all claims and bibliography, and final visual PDF/EPUB page-by-page QA. PR remains draft; no claim of a finished volume is justified at this stage.
+**Still outstanding:** 147 inherited graded solution write-ups, much of the remaining general exposition and theorem proof body, full independent formal scrutiny of all claims and bibliography, and final visual PDF/EPUB page-by-page QA. PR remains draft; no claim of a finished volume is justified at this stage.
+
+
+## Fourth pass: appendix solution rewrites (2 November 2026)
+
+The third pass was followed by **four full appendix solution rewrites**:
+
+- **Positive matrices / Perron:** row-sum bounds for an irreducible non-negative matrix, including the non-trivial equality argument propagated through its strongly connected directed graph. The proof distinguishes the irreducible case from the strictly positive case.
+- **Circulant and Fourier matrices:** a full finite-geometric-sum derivation of F^2=R and F^4=I, followed by the eigenvalue implication. It expressly does not assert that all fourth roots of unity occur for small Fourier sizes.
+- **Combinatorial geometry:** Fisher's sharpness for the near-pencil and the Fano plane, with a concrete assignment of seven point labels to vectors in F2^3 so the seven triples and their intersections can be independently checked.
+- **Paley's construction:** the q=3 quadratic character, the full Jacobsthal matrix, the resulting order-four Hadamard matrix, and all six off-diagonal row-dot-products.
+
+Additional exact tests check the seven Fano triples, their unique intersections, their claimed vector coordinates, and the Gram matrix of the constructed Paley H4. The count is now **16 fully rewritten solutions of 163** across the whole included volume; the remaining **147** have a structural hint/solution check but not a full independent rewrite and proof audit.
+
+**Status:** the PR remains a draft. Neither the whole mathematical manuscript nor its sources, 147 remaining solutions, or final visual production outputs have been independently certified.
