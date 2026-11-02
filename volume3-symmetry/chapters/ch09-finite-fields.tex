@@ -833,55 +833,69 @@ For $p=7$, the period divides $2(7+1)=16$. Direct recurrence modulo $7$ gives $(
 \end{solution}
 
 \begin{solution}{pb:pascal2}
-\idea Read row $n$ of Pascal's triangle as the coefficient list of $(1+X)^n$. In characteristic $2$, raising a sum to a power of $2$ does not produce cross terms. This copies smaller triangles into larger ones, and the binary digits of $n$ tell us how many entries survive.
+\idea A row of Pascal's triangle records the coefficients of $(1+X)^n$. Over $\mathbb F_2$, squaring a sum erases its mixed term. Repeated squaring then makes the triangle reproduce itself in two disjoint copies.
 
-\writeup (a) In $\mathbb F_2[X]$ we have $(u+v)^2=u^2+v^2$. Repeated squaring gives
+\writeup \emph{(a) Two copies of a smaller row.} In characteristic two,
 \[
-(1+X)^{2^k}=1+X^{2^k}.
+(a+b)^2=a^2+b^2.
 \]
-For $0\le m<2^k$, multiply by $(1+X)^m$:
+Apply this identity $k$ times, starting from $1+X$:
 \[
-(1+X)^{2^k+m}=(1+X^{2^k})(1+X)^m
+(1+X)^{2^k}=1+X^{2^k}\quad\text{in }\mathbb F_2[X].
+\]
+Multiplying by $(1+X)^m$ for $0\le m<2^k$ gives
+\[
+(1+X)^{2^k+m}
 =(1+X)^m+X^{2^k}(1+X)^m.
 \]
-Compare coefficients of $X^j$:
+The coefficient of $X^j$ on the left is $\binom{2^k+m}{j}$; on the right it is the sum of the coefficients of $X^j$ and $X^{j-2^k}$ in $(1+X)^m$. Thus
 \[
-\boxed{\binom{2^k+m}j
-\equiv\binom mj+\binom m{j-2^k}\pmod2}.
+\boxed{\binom{2^k+m}j\equiv
+\binom mj+\binom m{j-2^k}\pmod2.}
 \]
-We interpret out-of-range binomial coefficients as zero. Since $\deg(1+X)^m=m<2^k$, the two copies have disjoint supports. This explains the self-similar empty triangular regions in Figure~\ref{fig:pascal}.
+As usual, a binomial coefficient with an index outside $0,\ldots,m$ is zero. The two copies cannot overlap, because one is supported on degrees $0,\ldots,m$ and the other on $2^k,\ldots,2^k+m$. This accounts for the triangular gaps in Figure~\ref{fig:pascal}.
 
-(b) Let $N(n)$ count the odd binomial coefficients in row $n$. The disjoint-copy identity says
+\emph{(b) Count the odd entries in one row.}
+Let $N(n)$ count the odd binomial coefficients in row $n$. The disjoint-copy argument gives
 \[
 N(2^k+m)=2N(m)\qquad(0\le m<2^k).
 \]
-Write the binary expansion as $n=\sum_{j=0}^r\varepsilon_j2^j$, with $\varepsilon_j\in\{0,1\}$. Removing the leading $1$ divides the count by $2$, and repeating removes each of the $s(n)=\sum_j\varepsilon_j$ one-bits. Since $N(0)=1$, induction gives
+Removing the leading $1$ from the binary representation of $n$ therefore halves the count. Repeating until no one-bits remain, and using $N(0)=1$, yields
 \[
 \boxed{N(n)=2^{s(n)}}.
 \]
-Equivalently, Lucas's theorem says $\binom nj$ is odd exactly when each one-bit of $j$ is among the one-bits of $n$. There are two independent choices for each of those $s(n)$ positions, giving the same count.
+For example, $13=1101_2$ has three one-bits; row $13$ contains $2^3=8$ odd entries.
 
-(c) Over $0\le n<2^k$, each of the $k$ binary digits is independently $0$ or $1$. Thus
+There is another way to see it. If $n=\sum_j\varepsilon_j2^j$, then
 \[
-\sum_{n=0}^{2^k-1}N(n)
+(1+X)^n=\prod_{\varepsilon_j=1}(1+X^{2^j})
+\quad\text{in }\mathbb F_2[X].
+\]
+Each factor offers a choice of either $1$ or $X^{2^j}$. Distinct choices give distinct sums of powers of two, so no coefficient can cancel. There are exactly $2^{s(n)}$ choices.
+
+\emph{(c) Count the odd entries in a whole triangle.}
+Among rows $0,\ldots,2^k-1$, each row corresponds to one binary word $(\varepsilon_0,\ldots,\varepsilon_{k-1})$. Hence the total number of odd entries is
+\[
+\sum_{n=0}^{2^k-1}2^{s(n)}
 =\sum_{\varepsilon_0,\ldots,\varepsilon_{k-1}\in\{0,1\}}
-\prod_{j=0}^{k-1}2^{\varepsilon_j}
+\prod_j2^{\varepsilon_j}
 =\prod_{j=0}^{k-1}(1+2)
 =\boxed{3^k}.
 \]
 The total number of entries in those rows is
 \[
-\sum_{n=0}^{2^k-1}(n+1)
-=\frac{2^k(2^k+1)}2.
+1+2+\cdots+2^k=\frac{2^k(2^k+1)}2.
 \]
-Hence the proportion that are odd is
+Thus the fraction of odd entries is
 \[
 \frac{3^k}{2^{k-1}(2^k+1)}
 \le 2\left(\frac34\right)^k\longrightarrow0.
 \]
-Even though the triangle contains infinitely many odd entries, they occupy an asymptotically vanishing proportion of the growing finite triangles.
+So odd entries persist at every scale, even though their proportion tends to zero.
 
-\tools Frobenius in characteristic $2$ and Lucas's theorem from Volume~2.
+\tools Binomial coefficients from Volume~1 and repeated squaring in characteristic two from Chapter~9.
+
+\leads Binary arithmetic turns Pascal's triangle into a self-repeating pattern. Its exact count, $3^k$, gives a rigorous measure of how sparse that pattern becomes.
 \end{solution}
 
 \begin{solution}{pb:lucaslehmer}
