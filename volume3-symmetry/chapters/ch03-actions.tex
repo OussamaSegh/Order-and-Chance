@@ -788,41 +788,96 @@ Every group of order $3$ is cyclic and has three classes. Every group of order $
 \end{solution}
 
 \begin{solution}{pb:nilpotent}
-\idea Every matrix splits uniquely into a nilpotent part and an invertible part on complementary subspaces. Counting matrices
-this way gives one identity per $n$, and these identities determine all the $N_k$, so it is enough to check that $q^{k^2-k}$
-satisfies them.
+\idea Every linear map on a finite-dimensional space breaks into two parts: one on which repeated application eventually gives zero, and one on which the map is invertible. Count maps by first choosing those two subspaces. The result is a recurrence that determines the number of nilpotent matrices.
 
-\writeup (a) The kernels $\ker A^k$ increase and the images $\operatorname{im}A^k$ decrease, and both stabilise by $k=n$ (the
-dimension cannot change more than $n$ times). If $x\in\ker A^n\cap\operatorname{im}A^n$, write $x=A^ny$; then $A^{2n}y=0$, so
-$y\in\ker A^{2n}=\ker A^n$ and $x=0$. By rank--nullity the dimensions add up to $n$, so $V=\ker A^n\oplus\operatorname{im}A^n$.
-Both are $A$-stable. $A$ is nilpotent on $\ker A^n$, and on $\operatorname{im}A^n$ it is onto
-($A(\operatorname{im}A^n)=\operatorname{im}A^{n+1}=\operatorname{im}A^n$), hence invertible. If $V=U\oplus W$ is another such
-decomposition, then $A^n=0$ on $U$, so $U\subset\ker A^n$, and $W=A^nW\subset\operatorname{im}A^n$; the dimensions force equality.
-
-(b) By (a), $A\mapsto(U,W,A|_U,A|_W)$ is a bijection from $M_n(\mathbb F_q)$ to the set of quadruples where $V=U\oplus W$, $A|_U$
-is nilpotent on $U$ and $A|_W$ is invertible on $W$. $GL_n$ acts transitively on the ordered pairs $(U,W)$ with
-$\dim U=k$, $V=U\oplus W$ (send a basis adapted to one pair to a basis adapted to another), with stabiliser $GL(U)\times GL(W)$.
-So there are $\frac{|GL_n|}{|GL_k||GL_{n-k}|}$ such pairs, and
+\writeup \emph{(a) The Fitting decomposition.}
+Write $V=\mathbb F_q^n$. The spaces
 \[
-q^{n^2}=\sum_{k=0}^n\frac{|GL_n|}{|GL_k|\,|GL_{n-k}|}\,N_k\,|GL_{n-k}|=|GL_n|\sum_{k=0}^n\frac{N_k}{|GL_k|}.
+\ker A\subseteq\ker A^2\subseteq\cdots,\qquad
+V\supseteq\operatorname{im}A\supseteq\operatorname{im}A^2\supseteq\cdots
 \]
+are nested. Since $\dim V=n$, both sequences have stabilised by exponent $n$: once two successive kernels have equal dimension, their equality forces all later kernels to be equal, and the corresponding image dimensions also stop changing.
 
-(c) The identity of (b) for $n$ determines $N_n$ from $N_0,\dots,N_{n-1}$, so it suffices to show that $N_k=q^{k^2-k}$ satisfies
-it. Write $|GL_k|=\prod_{i=0}^{k-1}(q^k-q^i)=q^{\binom k2}D_k$ with $D_k=\prod_{i=1}^k(q^i-1)$. Then
-$\frac{q^{k^2-k}}{|GL_k|}=\frac{q^{\binom k2}}{D_k}$ and $\frac{q^{n^2}}{|GL_n|}=\frac{q^{\binom{n+1}2}}{D_n}$, so we need
+Put $U=\ker A^n$ and $W=\operatorname{im}A^n$. If $x\in U\cap W$, write $x=A^ny$. Then $A^nx=0$ implies $A^{2n}y=0$. Stabilisation gives $\ker A^{2n}=\ker A^n$, so $A^ny=0$ and $x=0$. By rank--nullity,
 \[
-\sum_{k=0}^n\frac{q^{\binom k2}}{D_k}=\frac{q^{\binom{n+1}2}}{D_n}.
+\dim U+\dim W=n.
 \]
-For $n=0$ both sides are $1$. If it holds for $n$, adding the term $k=n+1$ gives
-$\frac{q^{\binom{n+1}2}}{D_n}+\frac{q^{\binom{n+1}2}}{D_{n+1}}=\frac{q^{\binom{n+1}2}(q^{n+1}-1+1)}{D_{n+1}}=\frac{q^{\binom{n+2}2}}{D_{n+1}}$.
+Thus $V=U\oplus W$. Both spaces are $A$-stable. We have $A^n|_U=0$, so $A|_U$ is nilpotent. Also $AW=\operatorname{im}A^{n+1}=W$, so $A|_W$ is surjective and therefore invertible.
 
-(d) $A\mapsto I+A$ is a bijection from nilpotent to unipotent matrices, so there are $q^{n^2-n}$ unipotent matrices.
+For uniqueness, suppose $V=U'\oplus W'$ is an $A$-stable decomposition on which $A|_{U'}$ is nilpotent and $A|_{W'}$ invertible. A nilpotent operator on a subspace of dimension at most $n$ has $n$-th power zero; hence $U'\subseteq\ker A^n=U$. Since $A^n$ is invertible on $W'$, every element of $W'$ lies in $\operatorname{im}A^n=W$. Dimensions then force $U'=U$ and $W'=W$.
 
-\tools Volume~1, Chapter~8 (rank--nullity, invariant subspaces); Volume~3, Chapter~3 (orbit--stabiliser); counting independent vectors for the
-order of $GL_n(\mathbb F_q)$.
-\leads $q^{n^2-n}=q^{2\binom n2}$ is the square of the order of a Sylow $p$-subgroup of $GL_n$ (the unitriangular matrices).
-Steinberg proved that in every finite group of Lie type the number of unipotent elements is the square of the order of a Sylow
-$p$-subgroup. Over a general field the nilpotent matrices form the \emph{nilpotent cone}, of dimension $n^2-n$.
+\emph{(b) Count all matrices from their two parts.}
+Fix $\dim U=k$ and $\dim W=n-k$. The group $GL_n(\mathbb F_q)$ acts transitively on ordered decompositions $V=U\oplus W$: map an adapted basis to another adapted basis. The stabiliser of one decomposition is $GL_k(\mathbb F_q)\times GL_{n-k}(\mathbb F_q)$. By orbit--stabiliser, there are
+\[
+\frac{|GL_n(\mathbb F_q)|}
+{|GL_k(\mathbb F_q)|\,|GL_{n-k}(\mathbb F_q)|}
+\]
+such ordered pairs. For any pair, there are $N_k$ nilpotent maps on $U$ and $|GL_{n-k}|$ invertible maps on $W$. The Fitting decomposition makes this correspondence bijective, so
+\[
+\begin{aligned}
+q^{n^2}
+&=\sum_{k=0}^n
+\frac{|GL_n|}{|GL_k|\,|GL_{n-k}|}\,
+N_k\,|GL_{n-k}|\\
+&=|GL_n|\sum_{k=0}^n\frac{N_k}{|GL_k|}.
+\end{aligned}
+\]
+Dividing by $|GL_n|$ gives the required identity, including $n=0$ if $N_0=|GL_0|=1$.
+
+\emph{(c) Solve the counting recurrence.}
+The identity in (b) isolates $N_n$ once the earlier numbers $N_0,\ldots,N_{n-1}$ are known. So it suffices to verify a proposed formula for all $n$, beginning at $0$.
+
+Write
+\[
+D_n=\prod_{j=1}^n(q^j-1),\qquad D_0=1.
+\]
+Counting independent columns in an invertible matrix gives
+\[
+|GL_n(\mathbb F_q)|=\prod_{j=0}^{n-1}(q^n-q^j)
+=q^{\binom n2}D_n.
+\]
+If $N_k=q^{k^2-k}$, then
+\[
+\frac{N_k}{|GL_k|}
+=\frac{q^{\binom k2}}{D_k},
+\qquad
+\frac{q^{n^2}}{|GL_n|}
+=\frac{q^{\binom{n+1}2}}{D_n}.
+\]
+Thus we must verify
+\[
+\sum_{k=0}^n\frac{q^{\binom k2}}{D_k}
+=\frac{q^{\binom{n+1}2}}{D_n}.
+\]
+At $n=0$ this says $1=1$. Suppose it holds for $n$. Add the next term on the left. Since $D_{n+1}=(q^{n+1}-1)D_n$,
+\[
+\begin{aligned}
+\frac{q^{\binom{n+1}2}}{D_n}
++\frac{q^{\binom{n+1}2}}{D_{n+1}}
+&=\frac{q^{\binom{n+1}2}(q^{n+1}-1+1)}{D_{n+1}}\\
+&=\frac{q^{\binom{n+2}2}}{D_{n+1}}.
+\end{aligned}
+\]
+Induction proves the identity. Uniqueness of the recurrence then proves
+\[
+\boxed{N_n=q^{n^2-n}}.
+\]
+There are $q^{n^2}$ matrices in total, so the probability that a uniformly selected matrix is nilpotent is exactly $q^{-n}$.
+
+\emph{(d) Count the unipotent matrices.}
+Translation by the identity matrix sends a nilpotent $A$ to $I+A$, which is invertible because
+\[
+(I+A)^{-1}=I-A+A^2-\cdots+(-A)^{n-1}
+\]
+when $A^n=0$. The translation is a bijection between nilpotent and unipotent matrices, and therefore there are
+\[
+\boxed{q^{n^2-n}}
+\]
+unipotent matrices in $GL_n(\mathbb F_q)$.
+
+\tools Rank--nullity, invariant subspaces, orbit--stabiliser, and the order of $GL_n(\mathbb F_q)$.
+
+\leads Counting every matrix was easier than counting the nilpotent ones directly. The canonical decomposition turned a difficult class into one term of a solvable recurrence.
 \end{solution}
 
 \begin{solution}{pb:flags}
