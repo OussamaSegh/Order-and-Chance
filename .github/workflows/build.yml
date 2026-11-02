@@ -123,6 +123,9 @@ jobs:
           python3 -m unittest discover -s tools -p test_kdp_cover.py
       - name: Build 7 x 10 reading PDF with cover, print PDF, EPUB and publishing assets
         run: ./build.sh ${{ matrix.volume }}
+      - name: QA the rendered Volume 3 PDF and EPUB outputs
+        if: matrix.volume == 'volume3-symmetry'
+        run: python3 review/volume3-rewrite/check_volume3_outputs.py
       - uses: actions/upload-artifact@v4
         with:
           name: books-${{ matrix.volume }}
@@ -132,6 +135,8 @@ jobs:
             build/${{ matrix.volume }}/cover.pdf
             build/${{ matrix.volume }}/cover-preflight.json
             build/${{ matrix.volume }}/kdp-preflight.json
+            build/${{ matrix.volume }}/edition-qa.json
+            build/${{ matrix.volume }}/qa-page-renders/
 
   # Gathers the books of every volume and builds the download page.
   site:
