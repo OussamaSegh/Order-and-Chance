@@ -835,12 +835,51 @@ def check_two_state_markov_limit() -> None:
         previous = current
 
 
+def check_wielandt_exponents() -> None:
+    """Exhaust two/three-vertex digraphs and a sharp four-vertex example."""
+    def mul(a, b):
+        n = len(a)
+        return tuple(
+            tuple(any(a[i][k] and b[k][j] for k in range(n))
+                  for j in range(n))
+            for i in range(n)
+        )
+
+    def first_positive_power(a, horizon):
+        n = len(a)
+        power = tuple(tuple(i == j for j in range(n)) for i in range(n))
+        for k in range(1, horizon + 1):
+            power = mul(power, a)
+            if all(all(row) for row in power):
+                return k
+        return None
+
+    for n in (2, 3):
+        limit = (n - 1) ** 2 + 1
+        for digits in itertools.product((False, True), repeat=n * n):
+            a = tuple(tuple(digits[i * n + j] for j in range(n))
+                      for i in range(n))
+            k = first_positive_power(a, 12)
+            assert k is None or k <= limit, (n, digits, k)
+
+    # The Wielandt digraph has edges i->i+1, and last->0, last->1.
+    # At n=4 its exponent is exactly (n-1)^2+1=10.
+    n = 4
+    sharp = tuple(
+        tuple((j == i + 1 if i < n - 1 else j in (0, 1))
+              for j in range(n))
+        for i in range(n)
+    )
+    assert first_positive_power(sharp, 12) == 10
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     rewritten_count, pending_count = check_rewritten_exercise_ledger()
     theorem_rewrites, theorem_pending = check_theorem_rewrite_ledger()
     check_cap_set_constant()
     check_positive_matrix_oscillation()
+    check_wielandt_exponents()
     check_two_state_markov_limit()
     check_necklaces()
     check_cube()
