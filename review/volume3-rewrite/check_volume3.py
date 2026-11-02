@@ -659,6 +659,38 @@ def check_quaternion_character_table() -> None:
             )
 
 
+def check_theorem_rewrite_ledger() -> tuple[int, int]:
+    """Check the 155 theorem/lemma/corollary inventory against included source."""
+    path = ROOT / "review/volume3-rewrite/THEOREM_REWRITES.json"
+    ledger = json.loads(path.read_text(encoding="utf-8"))
+    main = (BOOK / "main.tex").read_text(encoding="utf-8")
+    included = {p for p in re.findall(r"\\input\{chapters/([^}]+)\}", main)
+                if (BOOK / "chapters" / (p + ".tex")).is_file()}
+    entries = ledger["entries"]
+    seen = set()
+    recorded = 0
+    for item in entries:
+        name, ident, kind = item["file"], item["id"], item["type"]
+        assert name in included, f"Proof ledger file no longer included: {name}"
+        assert (name, ident) not in seen, f"Duplicate proof ledger entry: {ident}"
+        seen.add((name, ident))
+        assert kind in ("theorem", "proposition", "lemma", "corollary")
+        if item["editorial_rewrite_recorded"]:
+            recorded += 1
+    actual = set()
+    for name in included:
+        src = (BOOK / "chapters" / (name + ".tex")).read_text(encoding="utf-8")
+        for kind, ident in re.findall(
+                r"\\begin\{(theorem|proposition|lemma|corollary)\}"
+                r"(?:\[[^\]]*\])?\s*\\label\{([^}]+)\}", src):
+            actual.add((name, ident))
+        assert src.count(r"\begin{proof}") == src.count(r"\end{proof}"), name
+    assert seen == actual, f"Proof ledger mismatch: missing {actual-seen}, obsolete {seen-actual}"
+    assert len(actual) == ledger["total_statements"] == 155
+    assert recorded == ledger["rewrites_recorded"]
+    return recorded, len(actual) - recorded
+
+
 def check_binary_tetrahedral_group() -> None:
     """Exhaust the 24 Hurwitz units in integer-scaled coordinates.
 
@@ -712,6 +744,7 @@ def check_binary_tetrahedral_group() -> None:
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     rewritten_count, pending_count = check_rewritten_exercise_ledger()
+    theorem_rewrites, theorem_pending = check_theorem_rewrite_ledger()
     check_necklaces()
     check_cube()
     check_quintic()
@@ -740,6 +773,7 @@ def main() -> None:
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
+    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} requiring full rewrite/independent audit")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 
