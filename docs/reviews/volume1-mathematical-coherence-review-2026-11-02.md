@@ -14,7 +14,7 @@ The preface states the starting axioms and introduces the completeness of the re
 
 - Independently inspected chapter sequence, principal theorem statements, all **160 exercise statements**, definitions at selected first uses, and substantial proofs in counting, order theory, real/complex analysis, polynomials, linear algebra, integration and probability.
 - Traced forward references in the main chapter text: **42** point to later material. Examined their contexts; they are signposted as a preview, explicit deferred proof or later optional application, not an unannounced main-path dependency.
-- Re-ran repository-wide structural checks over the eleven chapter files on the review branch: **160 exercises, 160 matching hints, 160 matching solutions; 406 unique LaTeX labels; 767 cross-references; zero duplicate labels and zero unresolved references**. Counts exclude `main.tex` and ancillary front/back matter, so they are not claims about a full PDF build.
+- Re-ran repository-wide structural checks over the eleven chapter files on the review branch: **160 exercises, 160 matching hints, 160 matching solutions; 406 unique LaTeX labels; 768 cross-references; zero duplicate labels and zero unresolved references**. Counts exclude `main.tex` and ancillary front/back matter, so they are not claims about a full PDF build.
 - Checked for references to removed numbered specialist challenges. Only the **retained** challenges in the Language chapter remain; no dangling numbered references to removed challenges remain in the other ten chapter files.
 - Compared several non-trivial statements with their proofs/solutions, including alternating-series remainder, EKR double count, Dilworth's proof, the fundamental theorem of algebra, the real spectral theorem, Gaussian integral from Wallis, Cauchy product, a stochastic-matrix convergence exercise, Cauchy/Hilbert determinants, the Ramsey first-moment argument, and the records-variance exercise.
 - These checks are **not** a computer-verified or independent proof-by-proof certification of all 160 exercise solutions and every display, illustration or historical statement.
@@ -38,6 +38,10 @@ The text formerly asserted that `n >= 2k` is **necessary for the bound**. It is 
 ### 4. Dangling references after deletion of specialist challenges — editorial coherence
 
 The previous prerequisite reduction removed many specialist challenges, but prose and bibliography still referred to them, notably in Sums, Sequences, Complex Numbers, Linear Algebra, Inequalities and Probability. Replaced fourteen references in those six chapter files with self-contained explanations, accurate research/source descriptions, or explicit later-volume previews. In Inequalities, the sharpness of Carleman's constant is now explained with the previously established Stirling asymptotic instead of sending the reader to a deleted challenge.
+
+### 5. Modular arithmetic notation — high-school prerequisite clarity
+
+An optional Gauss-sum solution previously invoked `Z/pZ` and “the field” without describing how residue representatives were used. It now reindexes the sum explicitly with the high-school remainder classes `0,...,p-1`. The first finite-field application in Polynomials now defines addition and multiplication modulo a prime and derives inverses from the Bézout identity already proved in Sums. The circular-lamps exercise now spells out its labels `0,...,n-1` and wraparound instead of assuming familiarity with `Z/nZ`. These are instructional clarifications, not changes to the mathematical outcomes.
 
 ## Sequential chapter assessment
 
@@ -64,4 +68,4 @@ The previous prerequisite reduction removed many specialist challenges, but pros
 
 ## Verdict
 
-The **chapter order is coherent** for the foundations route, and the earlier high-school prerequisite cleanup has materially improved accessibility. **Three precise mathematical statements/qualifications and fourteen dangling references** were fixed on this branch. The chapter-wide exercise/hint/solution and cross-reference structure is consistent. The manuscript should **not yet receive an unconditional "all mathematics is correct" certification** without the remaining proof-by-proof review and clean production build.
+The **chapter order is coherent** for the foundations route, and the earlier high-school prerequisite cleanup has materially improved accessibility. **Three precise mathematical statements/qualifications, fourteen dangling references and three prerequisite-notation explanations** were fixed on this branch. The chapter-wide exercise/hint/solution and cross-reference structure is consistent. The manuscript should **not yet receive an unconditional "all mathematics is correct" certification** without the remaining proof-by-proof review and clean production build.
