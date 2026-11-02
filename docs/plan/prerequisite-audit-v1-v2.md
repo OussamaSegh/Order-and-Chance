@@ -41,9 +41,14 @@ This is a *prerequisite* audit, not an independent certificate that every mathem
 
 Volume 1's preface expressly takes ordinary arithmetic and real-number completeness as starting points, along with standard identities for elementary functions and four basic properties of integration of continuous functions. These are **declared starting assumptions**, not unannounced use of undergraduate theorems. The author can make the book more foundational by constructing $\R$, $\exp$ and the integral in later work, but doing so is not necessary to keep the declared high-school entrance level.
 
-Stirling's formula appears in Volume 1's sequences chapter with an explicit explanation that identifying its constant requires Wallis's integrals in the later calculus chapter. It is a visible deferred proof, not an assumed external result. The later chapter finishes the calculation.
+Stirling's asymptotic **shape** is proved in the main text of Volume 1's sequences chapter using logarithmic differences and comparison of convergent series. The exact coefficient is then established as a theorem only after the Wallis-integral argument in the later calculus chapter. The former three-star exercise now asks for the first error correction rather than supplying a missing premise for the main theorem.
 
 The advanced bridge exercises and outlook remarks have a different purpose from the first-reading path. Some deliberately point to later parts of this series. This is acceptable only because they are identified as optional and not relied upon in the main line of argument.
+
+## Further main-proof dependencies repaired
+
+- **Volume 1, Stirling:** a full Stirling theorem previously carried a "proof" that cited a future theorem and an optional exercise. The asymptotic up to a constant is now established with a complete argument in the sequences chapter, and the finished formula is placed only after its proof in the calculus chapter. The three-star exercise now derives the next term of the asymptotic.
+- **Volume 2, Eisenstein splitting:** the classification proof previously required a quadratic-residue result supplied only in an earlier exercise. It now constructs a square root of $-3$ modulo each prime $p\equiv1\pmod3$ directly using the primitive-root theorem from the main text.
 
 ## Review and future edit checklist
 
