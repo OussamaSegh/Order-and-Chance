@@ -6,6 +6,20 @@
 **Contents:** 12 main chapters and 4 appendices.  
 **Important status:** **This is a substantive editorial revision, not a certified complete rewrite or formal verification of all mathematics.** Many inherited proofs and exercise solutions remain intact and require a distinct line-by-line independent pass.
 
+
+## Current verification ledger (latest head, 2 November 2026)
+
+- **43 of 163 graded exercise solutions completely rewritten** with a finding strategy and full mathematical argument; **120 more still need that standard of independent rewrite and audit**. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
+- **17 complete theorem-proof rewrites** in the main chapters and appendices. The remaining inherited proofs have not all been independently reconstructed.
+- In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
+- Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
+- Corrected the Galois memoir's manuscript date from **1830 to 16 January 1831**. The first edition appeared in **1846**, pp. 417–433; this follows the [original dated text](https://www.numdam.org/item/JMPA_1846_1_11__381_0.pdf) and [historical analysis](https://www.numdam.org/articles/10.24033/rhm.162/). The separate finite-field article *Sur la théorie des nombres* really is from 1830, pp. 428–435.
+- Verified the existing 2026 Hadamard assertion against the [19 October 2026 primary paper](https://arxiv.org/abs/2610.27175), by Egan, Kotsireas, London and Ó Catháin. Removed duplicate Sylow and Reed–Solomon bibliography entries.
+- Added **generated-artifact QA**: [check_volume3_outputs.py](check_volume3_outputs.py) is called after building the PDF and EPUB. It checks the PDFs' searchable text, page counts, edition correspondence and basic unresolved-reference patterns, plus EPUB ZIP integrity, and renders seven representative print pages for human visual inspection. **It has not replaced a complete human visual pass.**
+- The latest CI head must complete its own build before the final PDF/EPUB QA can be called passed. Prior in-progress runs are frequently cancelled by new PR commits.
+
+The original chapter-by-chapter table and chronological passes below document earlier checkpoints. Earlier “remaining 147” or “remaining 151” counts are historical snapshots, superseded by the current ledger above.
+
 ## Overall evaluation
 
 The central arc is sound. Groups and actions (Chapters 1–5) build the machinery needed to explain parity, simple groups and solvability. Rings, modules and extensions (6–8) provide the algebraic language; finite fields (9) give an accessible application; Galois theory (10) answers a problem the reader has been preparing for. Character tables (11) and rotations (12) bring symmetry into matrices and geometry. The two summits are worth keeping: the obstruction to solving the quintic x^5−4x+2 by radicals and the identity 24=1²+1²+2²+3²+3² for irreducible representation degrees of the cube's rotation group.
