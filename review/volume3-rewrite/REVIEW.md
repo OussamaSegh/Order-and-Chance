@@ -9,7 +9,7 @@
 
 ## Current verification ledger (latest head, 2 November 2026)
 
-- **43 of 163 graded exercise solutions completely rewritten** with a finding strategy and full mathematical argument; **120 more still need that standard of independent rewrite and audit**. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
+- **135 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **28 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
 - **17 complete theorem-proof rewrites** in the main chapters and appendices. The remaining inherited proofs have not all been independently reconstructed.
 - In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
 - Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
@@ -18,7 +18,7 @@
 - Added **generated-artifact QA**: [check_volume3_outputs.py](check_volume3_outputs.py) is called after building the PDF and EPUB. It checks the PDFs' searchable text, page counts, edition correspondence and basic unresolved-reference patterns, plus EPUB ZIP integrity, and renders seven representative print pages for human visual inspection. **It has not replaced a complete human visual pass.**
 - The latest CI head must complete its own build before the final PDF/EPUB QA can be called passed. Prior in-progress runs are frequently cancelled by new PR commits.
 
-The original chapter-by-chapter table and chronological passes below document earlier checkpoints. Earlier “remaining 147” or “remaining 151” counts are historical snapshots, superseded by the current ledger above.
+The original chapter-by-chapter table and chronological passes below document earlier checkpoints. Earlier “remaining 147”, “remaining 151”, “43 rewritten”, and “16 rewritten” counts are historical snapshots, superseded by the current ledger above.
 
 ## Overall evaluation
 
@@ -169,3 +169,15 @@ Three more main-body appendix proofs have been **rewritten completely** rather t
 - Paley II: checked the bordered character matrix, its $S^2=qI$ identity, all $\pm1$ entries, and both diagonal/off-diagonal blocks of the Hadamard Gram matrix.
 
 The cumulative count is **17 complete theorem-proof rewrites** and **16 complete worked-solution rewrites**, alongside the initial chapter-level rewriting and proof explanations. A draft is still appropriate: most inherited proofs and 147 exercise solutions have not undergone the same treatment. The exact LaTeX proof delimiters in the new appendix edits were corrected before build verification.
+
+
+## Sixth pass: malformed LaTeX repair, solution rewrites and audit guard (2 November 2026)
+
+A source-wide scan of the included manuscripts uncovered **67 malformed closing commands** written as \`\\end{solution>\` instead of \`\\end{solution}\`. The former is not a valid LaTeX environment close. These occurred in all twelve main chapters and all four included appendices; a naive count of solution openings alone had missed them. Fixed all 67 using one narrowly scoped commit per chapter/appendix. The checker now rejects malformed \`\\begin{...>\` or \`\\end{...>\` patterns, demands equal solution begin/end counts, and ensures that the number of closed solutions agrees with the exercise labels. These are **source-level checks**, not a guarantee that all generated PDFs render correctly.
+
+Two further complete worked solutions were independently rewritten and added to the ledger:
+
+- **Order 12 classification** (\`ex:order12\`, Chapter 5): full proof of the two Sylow cases, faithful conjugation action, the uniqueness of the index-two subgroup of \(\mathfrak S_4\), classification of all semidirect actions, and invariants distinguishing the five groups.
+- **Centre bound and quaternion characters** (\`ex:centralchar\`, Chapter 11): Schur's lemma, the centre bound \(d^2\le [G:Z(G)]\), five conjugacy classes of \(Q_8\), four linear characters, and a complete five-row character table computed from orthogonality.
+
+**Current ledger: 135 of 163 rewritten solutions; 28 still pending.** These numbers supersede every earlier checkpoint in this review and the historical PR description. The rest of the manuscript, especially long inherited theorem proofs and reference details, still needs independent verification. The PR stays draft until mathematical and production sign-off.
