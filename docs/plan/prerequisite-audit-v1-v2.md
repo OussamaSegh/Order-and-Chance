@@ -2,8 +2,8 @@
 
 **Audit date:** 2 November 2026  
 **Audience:** readers beginning with high-school mathematics  
-**Reading order:** as specified by each volume's current \`main.tex\`, not alphabetical filenames  
-**Canonical voice:** \`docs/WRITING-STYLE.md\` and \`docs/agents/mathematician-writer.md\`
+**Reading order:** as specified by each volume's current `main.tex`, not alphabetical filenames  
+**Canonical voice:** `docs/WRITING-STYLE.md` and `docs/agents/mathematician-writer.md`
 
 ## The contract
 
@@ -49,7 +49,7 @@ The advanced bridge exercises and outlook remarks have a different purpose from 
 
 For every changed chapter, including its exercises, hints and solutions:
 
-- Check its position in \`main.tex\`.
+- Check its position in `main.tex`.
 - Find the first use of each non-high-school mathematical noun and operation. Define, motivate and test it before first *required* use.
 - Check every proof dependency against either an earlier chapter/section or a proof already supplied locally; do not use a theorem from a future volume as an unseen premise.
 - Audit exercises individually. If an advanced exercise needs unbuilt tools, either supply a self-contained toolkit, move the exercise to the book that develops them, or label it as a clearly optional advanced bridge with named dependencies.
