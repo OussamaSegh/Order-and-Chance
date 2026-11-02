@@ -749,14 +749,45 @@ Thus convolution is exactly the matrix operation behind translation invariance, 
 \end{solution>
 
 \begin{solution}{linear:ex:walsh}
-\idea The character table of a product is the Kronecker product of the tables, and a Kronecker product with a $2\times2$ matrix
-is a ``butterfly'' step.
-\writeup Order the words with the first coordinate most significant, and the sets $T$ likewise ($1\in T$ or not first). For
-$x=(x_1,x')$ and $T=T_1\sqcup T'$ with $T_1\subseteq\{1\}$, $\chi_T(x)=(-1)^{x_1[1\in T]}\chi_{T'}(x')$, so $H_n$ is the block matrix
-$\bigl(\begin{smallmatrix}H_{n-1}&H_{n-1}\\H_{n-1}&-H_{n-1}\end{smallmatrix}\bigr)$. To compute $H_n\binom uv$ (halves $u,v$ of length
-$2^{n-1}$), compute $H_{n-1}u$ and $H_{n-1}v$, then return $\binom{H_{n-1}u+H_{n-1}v}{H_{n-1}u-H_{n-1}v}$: $2^n$ additions and subtractions
-on top of two half-size transforms. The cost $c_n=2c_{n-1}+2^n$ with $c_0=0$ gives $c_n=n2^n$.
-\end{solution}
+\idea A Walsh character factors across coordinates, so splitting a binary word by its first bit yields a block matrix. Computing the two half-transforms and then taking their sum and difference gives the fast Walsh--Hadamard algorithm.
+
+\writeup Let $x=(x_1,x')\in\mathbb F_2\times\mathbb F_2^{n-1}$ and similarly write $T=(t_1,T')$. The character is
+\[
+\chi_T(x)=(-1)^{t_1x_1}\chi_{T'}(x').
+\]
+Order rows and columns first by their first bit and then by the remaining $(n-1)$ bits. If either first bit equals $0$, the extra factor is $1$; if both equal $1$, it is $-1$. Therefore
+\[
+\boxed{H_n=
+\begin{pmatrix}
+H_{n-1}&H_{n-1}\\
+H_{n-1}&-H_{n-1}
+\end{pmatrix}
+=H_1\otimes H_{n-1}},
+\quad
+H_1=\begin{pmatrix}1&1\\1&-1\end{pmatrix}.
+\]
+
+For a vector $f=\binom uv$ split into two halves of size $2^{n-1}$, the block formula gives
+\[
+H_nf=
+\begin{pmatrix}H_{n-1}(u+v)\\H_{n-1}(u-v)\end{pmatrix}.
+\]
+This is equivalent to first computing the two smaller transforms and then adding and subtracting their outputs. At each of the $2^{n-1}$ paired positions, forming the sum and difference requires two operations: $2^n$ additions or subtractions in all.
+
+If $T(n)$ counts these scalar operations, then
+\[
+T(n)=2T(n-1)+2^n,\qquad T(0)=0.
+\]
+Divide by $2^n$:
+\[
+\frac{T(n)}{2^n}=\frac{T(n-1)}{2^{n-1}}+1.
+\]
+Induction gives $T(n)/2^n=n$, and hence
+\[
+\boxed{T(n)=n2^n}.
+\]
+The direct matrix multiplication would require on the order of $4^n$ operations, so the recursive factorisation is exponentially faster.
+\end{solution>
 
 \begin{solution}{linear:ex:krawgen}
 \idea A word of weight $k$ chooses $j$ positions among $t$ and $k-j$ among $n-t$: that is a product of two binomial expansions.
