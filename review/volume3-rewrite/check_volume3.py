@@ -433,6 +433,24 @@ def check_quaternion_rotation_matrix() -> None:
         assert sum(matrix_columns[i][i] for i in range(3)) == 4*a*a-norm
 
 
+
+def check_fano_plane_and_paley_four() -> None:
+    lines = [{1,2,4}, {1,3,5}, {2,3,6},
+             {1,6,7}, {2,5,7}, {3,4,7}, {4,5,6}]
+    assert len(lines) == 7 and all(len(line) == 3 for line in lines)
+    assert all(len(a & b) == 1 for i, a in enumerate(lines)
+               for b in lines[i+1:])
+    point_vectors = {1:0b001,2:0b010,3:0b100,4:0b011,
+                     5:0b101,6:0b110,7:0b111}
+    assert all(point_vectors[a] ^ point_vectors[b] == point_vectors[c]
+               for line in lines for a,b,c in itertools.permutations(line,3))
+
+    # Paley I for F3 in the rewritten appendix worked solution.
+    h = [(1,1,1,1),(-1,1,-1,1),(-1,1,1,-1),(-1,-1,1,1)]
+    assert all(sum(a*b for a,b in zip(u,v)) == (4 if i==j else 0)
+               for i,u in enumerate(h) for j,v in enumerate(h))
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -453,6 +471,7 @@ def main() -> None:
     check_f2_irreducibles()
     check_seven_cyclotomic_period()
     check_quaternion_rotation_matrix()
+    check_fano_plane_and_paley_four()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
