@@ -1,18 +1,24 @@
 \chapter{Finite Fields}
 
 \begin{center}\itshape
-A QR code can lose almost a third of its squares under a coffee stain and still be read.\\
+At its highest error-correction level, a QR code can restore roughly $30\%$ of its codewords.\\
 How can a message repair itself?\\
 The answer is polynomial arithmetic in a field with $256$ elements.
 \end{center}
 
-In 1960 Irving Reed and Gustave Solomon, two researchers at MIT's Lincoln Laboratory, published a five-page paper on ``polynomial codes over certain
-finite fields''. Their codes now sit in every QR code, CD and DVD, and they carried the Voyager probes' pictures of Uranus and Neptune back across
-billions of kilometres of noise. The mathematics they needed was a century old: the finite fields that \'Evariste Galois described in 1830.
+In the field $\mathbb F_2=\{0,1\}$, adding $1$ to $1$ gives $0$. There are only two elements. Could there be a field with four elements, or eight, or nine?
 
-The fields $\Z/p\Z$ of Volume~2 are finite. Are there others? Chapter~8 gives a way to build them: if $P$ is irreducible of degree $n$ over $\mathbb F_p=\Z/p\Z$, Kronecker's construction $\mathbb F_p[X]/(P)$ is a field with $p^n$ elements. This chapter shows that every finite field arises this way, that there is exactly one field of each prime power size, and that its multiplicative group is cyclic, as Volume~2 proved for $\Z/p\Z$. Counting the irreducible polynomials of degree $n$ gives a ``prime number theorem'' for polynomials, with an error term as good as the Riemann hypothesis would give for primes. Finally, the field with $256$ elements carries the Reed--Solomon codes of QR codes, CDs and space probes, and the AES cipher.
+A first attempt with four elements is to take the classes of $0,1,X,1+X$ modulo $X^2+X+1$. In this ring,
+\[
+X^2=X+1
+\]
+because $-1=1$ in characteristic $2$. The polynomial $X^2+X+1$ has no root in $\mathbb F_2$, so it is irreducible; the quotient is a field. We have built $\mathbb F_4$ using nothing but polynomial arithmetic.
 
-All rings in this chapter are commutative.
+This example raises three questions. Why must the size of every finite field be a prime power? Why is there, up to isomorphism, exactly one field of each such size? And why do its non-zero elements always form a cyclic multiplicative group?
+
+The Frobenius map $x\mapsto x^p$ supplies a large part of the answer. It preserves addition because the intermediate binomial coefficients vanish in characteristic $p$. Its fixed points and iterates reveal the structure of all finite fields.
+
+There is a practical reason to care. Send the values of a low-degree polynomial at several field elements rather than sending only its coefficients. If a few values are damaged, enough others still determine the polynomial. That is the idea behind Reed--Solomon error correction. We will derive the distance bound, then see how a linear system recovers the message.
 
 \section{The characteristic and the Frobenius map}
 
@@ -34,6 +40,8 @@ By the binomial formula, $(a+b)^p=\sum_k\binom pka^kb^{p-k}$, and for $0<k<p$ th
 $X^2+X+1$ has no root in $\mathbb F_2$, so it is irreducible (degree $2$), and $\mathbb F_4=\mathbb F_2[X]/(X^2+X+1)$ is a field with $4$ elements $0,1,\alpha,\alpha+1$, where $\alpha^2=\alpha+1$. Then $\alpha^3=\alpha^2+\alpha=1$: the group $\mathbb F_4^*=\{1,\alpha,\alpha^2\}$ is cyclic of order $3$. The ring $\Z/4\Z$ also has four elements, but it is not a field ($2\cdot2=0$); a field with $p^n$ elements is \emph{not} $\Z/p^n\Z$ for $n\ge2$.
 \end{example}
 
+Every finite field has a multiplicative group of non-zero elements. Rather than examine its multiplication table, we can use the fact that a polynomial of degree $d$ has at most $d$ roots. That simple bound forces the whole group to be cyclic.
+
 \section{The multiplicative group is cyclic}
 
 \begin{theorem}\label{thm:cyclicmult}
@@ -52,6 +60,8 @@ A generator of $\mathbb F_q^*$ is a \emph{primitive element}. If $\gamma$ is one
 \label{fig:f16}
 \end{figure}
 
+We know the size of a finite field must be a prime power, and we know its non-zero elements form a cyclic group. Now we must show that a field of each prime-power size exists and that two fields of the same size cannot have different multiplication laws up to isomorphism.
+
 \section{Existence and uniqueness}
 
 \begin{lemma}\label{lem:xqx}
@@ -68,10 +78,52 @@ For $x\ne0$, $x^{q-1}=1$ by Lagrange's theorem in the group $K^*$ of order $q-1$
 For every prime $p$ and $n\ge1$ there is a field with $q=p^n$ elements, and any two such fields are isomorphic: it is the splitting field of $X^q-X$ over $\mathbb F_p$. We denote it by $\mathbb F_q$.
 \end{theorem}
 \begin{proof}
-\emph{Existence.} Let $L$ be a splitting field of $P=X^q-X$ over $\mathbb F_p$ (Proposition~\ref{prop:splitexists}). The derivative is $P'=qX^{q-1}-1=-1$ (as $q=0$ in $L$), so $P$ has no repeated root: at a double root $\alpha$ we would have $P'(\alpha)=0$, as in Lemma~\ref{lem:sep}. So $P$ has exactly $q$ roots in $L$. They are the fixed points of $\varphi^n:x\mapsto x^{p^n}$, a ring homomorphism (Lemma~\ref{lem:frob}), so they form a subfield of $L$: if $x^q=x$ and $y^q=y$, then $(x\pm y)^q=x\pm y$, $(xy)^q=xy$ and $(x^{-1})^q=x^{-1}$. This subfield contains $\mathbb F_p$ and all the roots of $P$, which generate $L$, so it is $L$, and $|L|=q$.
+We must show both that a field of each required size exists and that two fields of the same size cannot have different multiplication laws.
 
-\emph{Uniqueness.} Let $K$ have $q$ elements. Its prime field is isomorphic to $\mathbb F_p$, and by Lemma~\ref{lem:xqx}, $X^q-X$ splits in $K$ with the elements of $K$ as roots, which certainly generate $K$. So $K$ is a splitting field of $X^q-X$ over $\mathbb F_p$, and two splitting fields are isomorphic (Theorem~\ref{thm:splitunique}).
+\emph{Existence.} Fix $q=p^n$ and begin with the polynomial
+\[
+F(X)=X^q-X\in\mathbb F_p[X].
+\]
+Let $L$ be a splitting field of $F$ over $\mathbb F_p$, which exists by Proposition~\ref{prop:splitexists}. Thus $F$ splits completely into linear factors in $L$.
+
+How many different roots does it have? Its formal derivative is
+\[
+F'(X)=qX^{q-1}-1=-1
+\]
+because $q=p^n$ vanishes in characteristic $p$. A repeated root of $F$ would also be a root of $F'$, which is impossible. Therefore $F$ has exactly $q$ \emph{distinct} roots in $L$.
+
+Call their set $E$:
+\[
+E=\{x\in L:x^q=x\}.
+\]
+We claim that $E$ is a field. The Frobenius law in characteristic $p$ gives
+\[
+(x+y)^q=x^q+y^q,\qquad (xy)^q=x^qy^q.
+\]
+Hence the sum and product of two roots are roots again. The same argument with $-y$ gives closure under subtraction, and if $x\ne0$ satisfies $x^q=x$, then
+\[
+(x^{-1})^q=(x^q)^{-1}=x^{-1},
+\]
+so every non-zero root has its inverse in $E$. Finally $0,1\in E$. This proves all the field axioms by inheritance from $L$.
+
+Every element of $\mathbb F_p$ satisfies $x^p=x$, and therefore $x^q=x$, so $\mathbb F_p\subseteq E$. Moreover, $E$ contains every root of $F$. Since $L$ is \emph{generated over $\mathbb F_p$ by those roots}, we have $L\subseteq E$, while $E\subseteq L$ by construction. Thus $E=L$ and
+\[
+|L|=|E|=q.
+\]
+
+\emph{Uniqueness.} Suppose $K$ is any field with $q=p^n$ elements. By Proposition~\ref{prop:primefield}, its characteristic is $p$, and it contains a prime subfield identified with $\mathbb F_p$. Every non-zero element of the multiplicative group $K^*$ has order dividing $q-1$, by Lagrange. Hence
+\[
+x^{q-1}=1\quad(x\in K^*),\qquad x^q=x\quad(x\in K).
+\]
+This is also Lemma~\ref{lem:xqx}. In other words, all $q$ elements of $K$ are distinct roots of $X^q-X$, and the polynomial splits there. These roots generate all of $K$ over its prime subfield, because they \emph{are} all the elements of $K$. Therefore $K$ is a splitting field of the same polynomial over $\mathbb F_p$.
+
+By the uniqueness theorem for splitting fields (Theorem~\ref{thm:splitunique}), the two fields are isomorphic. We may consequently write $\mathbb F_q$ without ambiguity up to isomorphism.
 \end{proof}
+
+\paragraph{Why this works.}
+The familiar identity $x^p=x$ holds for the $p$ elements of $\mathbb F_p$. To build a field with $p^n$ elements, we ask for all solutions of $x^{p^n}=x$. Two facts make this work. Its derivative is $-1$, so the polynomial has exactly $p^n$ distinct roots in its splitting field. And in characteristic $p$ the map $x\mapsto x^{p^n}$ preserves addition as well as multiplication, so the roots are closed under the field operations. Thus the roots form a field with exactly the desired size. Uniqueness comes from the reverse observation: every element of an existing field of this size solves the same polynomial.
+
+The equation $x^{p^n}=x$ describes every element of $\mathbb F_{p^n}$. Applying the Frobenius map repeatedly reveals which elements lie in smaller fields, and which automorphisms can fix the prime field.
 
 \section{Subfields and the Galois group}
 
@@ -96,6 +148,8 @@ For $1\le k<n$, $\varphi^k\ne\mathrm{id}$: the polynomial $X^{p^k}-X$ has at mos
 \end{proof}
 
 This is the first complete example of the Galois correspondence of Chapter~10: the subgroups of $\Z/n\Z$ (one for each $d\mid n$) match the subfields (one for each $d\mid n$), the subgroup $\langle\varphi^d\rangle$ fixing exactly $\mathbb F_{p^d}$.
+
+Every element of $\mathbb F_{q^n}$ is a root of $X^{q^n}-X$. Factoring this polynomial over $\mathbb F_q$ lets us count irreducible polynomials by degree, just as the divisors of an integer help us count numbers with a given order.
 
 \section{Counting irreducible polynomials}
 
@@ -141,6 +195,8 @@ So there are $(q^2-q)/2$ irreducible monic quadratics over $\mathbb F_q$: one ov
 Think of $X^{q^n}$, the number of monic polynomials of degree $n$, as ``$x$''. Then $n=\log_qx$, and Theorem~\ref{thm:countirr} says that the number of irreducibles of degree $n$ is $\frac x{\log_qx}$ up to an error of size $\sqrt x$: a prime number theorem for $\mathbb F_q[X]$, with an error term as small as the one the Riemann hypothesis would give for the primes (up to a logarithm). For polynomials the proof took a page; for primes it is the most famous open problem in mathematics, met again later in the series. Weil's theorem on curves over finite fields is a deep extension of this ``Riemann hypothesis over finite fields''.
 \end{remark}
 
+A finite field is a place where we can add, multiply and divide without leaving a finite alphabet. Evaluating a polynomial at several distinct field elements turns those operations into a way of detecting and correcting errors.
+
 \section{Correcting errors: Reed--Solomon codes}
 
 To send $k$ symbols $m_0,\dots,m_{k-1}\in\mathbb F_q$ over a noisy channel, encode them as the polynomial $f=\sum m_jX^j$ of degree $<k$, choose $n$ distinct points $a_1,\dots,a_n\in\mathbb F_q$ ($k\le n\le q$), and send the \emph{codeword} $(f(a_1),\dots,f(a_n))$. The \emph{Hamming distance} between two words of $\mathbb F_q^n$ is the number of positions where they differ; it satisfies the triangle inequality, since if $u_i\ne w_i$ then $u_i\ne v_i$ or $v_i\ne w_i$.
@@ -162,10 +218,34 @@ Q(a_i)=y_i\,E(a_i)\qquad(1\le i\le n),
 in the unknowns $E$ monic of degree $t$ and $Q$ of degree $<k+t$, has a solution, and every solution satisfies $Q=fE$. So $f$ is the quotient of $Q$ by $E$.
 \end{theorem}
 \begin{proof}
-\emph{Existence.} Let $B$ be the set of the $e\le t$ positions where $y_i\ne f(a_i)$, and $E=X^{t-e}\prod_{i\in B}(X-a_i)$, $Q=fE$. Then $E$ is monic of degree $t$, $\deg Q<k+t$; for $i\in B$ both sides vanish, and for $i\notin B$, $Q(a_i)=f(a_i)E(a_i)=y_iE(a_i)$.
+We must prove two things: there really is a solution of the displayed linear system, and no solution can lead us to the wrong message.
 
-\emph{Every solution works.} Let $(E,Q)$ be any solution and $R=Q-fE$, of degree $<k+t$. For each of the at least $n-t$ indices $i\notin B$, $R(a_i)=y_iE(a_i)-f(a_i)E(a_i)=0$. As $n-t\ge k+t$ (because $2t\le n-k$), $R$ has more roots than its degree, so $R=0$.
+\emph{A solution exists.} Let $B$ be the set of corrupted positions, of size $e\le t$. Choose the monic polynomial
+\[
+E(X)=X^{t-e}\prod_{i\in B}(X-a_i).
+\]
+Its degree is exactly $t$. It vanishes at every corrupted evaluation point. Put $Q=fE$, whose degree is less than $k+t$. At a good position, $y_i=f(a_i)$, so $Q(a_i)=y_iE(a_i)$. At a bad position, $E(a_i)=0$, so both sides of the same equation are zero. Thus $(E,Q)$ solves all $n$ equations.
+
+\emph{Every solution gives the sent message.} Now let $(E,Q)$ be \emph{any} solution having the required degrees. We may not assume that its polynomial $E$ has the same roots as the one just constructed. Instead consider
+\[
+R=Q-fE.
+\]
+Its degree, unless it is zero, is less than $k+t$. At each of the at least $n-t$ good positions,
+\[
+R(a_i)=Q(a_i)-f(a_i)E(a_i)
+      =y_iE(a_i)-f(a_i)E(a_i)=0.
+\]
+The evaluation points are distinct, and
+\[
+n-t\ge k+t
+\]
+because $2t\le n-k$. So a non-zero polynomial of degree less than $k+t$ would have at least $k+t$ distinct roots, which is impossible. Hence $R=0$, that is, $Q=fE$.
+
+The polynomial $E$ is monic and therefore non-zero. Divide $Q$ by $E$ in $\mathbb F_q[X]$ to recover $f$. This is the unique message compatible with the stated error bound.
 \end{proof}
+
+\paragraph{Why this works.}
+The product $E(x)$ hides the corrupted positions by making them zeros. At a good position, $y_i=f(a_i)$, so the equation $Q(a_i)=y_iE(a_i)$ says $Q(a_i)=f(a_i)E(a_i)$. At a bad position, both sides vanish because $E(a_i)=0$. We solve for $Q$ and $E$ together using linear equations, even though the message polynomial $f$ is unknown. Why is the result trustworthy? For any candidate solution, $Q-fE$ vanishes at at least $n-t$ points and has degree less than $k+t$. The correction bound $2t\le n-k$ makes those points too numerous for a non-zero polynomial. Therefore every solution gives the same message $f=Q/E$.
 
 The system has $n$ equations and $k+2t\le n$ unknowns (the $t$ lower coefficients of $E$ and the $k+t$ coefficients of $Q$); Gaussian elimination solves it in $O(n^3)$ operations in $\mathbb F_q$, and faster algorithms (Berlekamp--Massey, Euclid's algorithm on polynomials) need $O(n^2)$. QR codes, CDs, DVDs, RAID~6 disk arrays and the Voyager probes all use Reed--Solomon codes over $\mathbb F_{256}$, whose elements are bytes; the highest QR level adds enough redundancy to recover about $30\%$ of the data. The same field, built as $\mathbb F_2[X]/(X^8+X^4+X^3+X+1)$, is the arithmetic of the AES cipher.
 
@@ -327,26 +407,150 @@ of $x_1,\dots,x_{n-1}$.
 \section{Solutions}
 
 \begin{solution}{ex:f4tables}
-\idea Compute with $\alpha^2=\alpha+1$ and $2=0$; compare the orders of elements in the two additive groups.
-\writeup Writing $\beta=\alpha+1=\alpha^2$: addition is $x+x=0$, $1+\alpha=\beta$, $1+\beta=\alpha$, $\alpha+\beta=1$ (and $0$ is neutral); multiplication is $\alpha\cdot\alpha=\beta$, $\alpha\beta=\alpha^3=1$, $\beta\beta=\alpha^4=\alpha$ (and $1$ is neutral, $0$ absorbing). In $(\mathbb F_4,+)$ every element satisfies $2x=0$, so it is $(\Z/2\Z)^2$; in $\Z/4\Z$, $1$ has order $4$. So they are not isomorphic groups, and in fact the additive group of any field of characteristic $p$ has exponent $p$. Finally $X^2+1=(X+1)^2$ in $\mathbb F_2[X]$, so the class of $X+1$ is a non-zero element of $\mathbb F_2[X]/(X^2+1)$ whose square is $0$: the ring is not a domain.
+\idea Construct $\mathbb F_4$ from an irreducible quadratic over $\mathbb F_2$, and use its defining relation to reduce every sum and product to one of four basis elements. Write the complete tables rather than listing only a few products.
+
+\writeup Let
+\[
+\mathbb F_4=\mathbb F_2[X]/(X^2+X+1)
+\]
+and write $\alpha=[X]$. The polynomial $X^2+X+1$ is irreducible over $\mathbb F_2$, since its values at $0$ and $1$ are both $1$. Therefore the quotient is a field. Its four elements are
+\[
+0,\quad1,\quad\alpha,\quad\beta=1+\alpha.
+\]
+Because the characteristic is $2$, the defining equation gives
+\[
+\alpha^2=\alpha+1=\beta,\qquad
+\alpha\beta=\alpha(\alpha+1)=\alpha^2+\alpha=1,\qquad
+\beta^2=(\alpha+1)^2=\alpha^2+1=\alpha.
+\]
+
+Now calculate \emph{every} entry by addition in characteristic $2$ and these three identities:
+\begin{center}
+\small
+\begin{tabular}{c|cccc}
+$+$&$0$&$1$&$\alpha$&$\beta$\\\hline
+$0$&$0$&$1$&$\alpha$&$\beta$\\
+$1$&$1$&$0$&$\beta$&$\alpha$\\
+$\alpha$&$\alpha$&$\beta$&$0$&$1$\\
+$\beta$&$\beta$&$\alpha$&$1$&$0$
+\end{tabular}
+\qquad
+\begin{tabular}{c|cccc}
+$\cdot$&$0$&$1$&$\alpha$&$\beta$\\\hline
+$0$&$0$&$0$&$0$&$0$\\
+$1$&$0$&$1$&$\alpha$&$\beta$\\
+$\alpha$&$0$&$\alpha$&$\beta$&$1$\\
+$\beta$&$0$&$\beta$&$1$&$\alpha$
+\end{tabular}
+\end{center}
+
+The multiplicative table confirms that all three non-zero elements are invertible: $1^{-1}=1$, $\alpha^{-1}=\beta$, and $\beta^{-1}=\alpha$. The addition table shows that every element is its own additive inverse, so
+\[
+(\mathbb F_4,+)\cong(\Z/2\Z)^2.
+\]
+But the additive group $(\Z/4\Z,+)$ has an element $1$ of order $4$. Group isomorphisms preserve element orders, so these two additive groups are not isomorphic. Consequently $\mathbb F_4$ cannot be the integers modulo $4$ with a different multiplication table.
+
+Finally, consider the ring
+\[
+A=\mathbb F_2[X]/(X^2+1).
+\]
+In characteristic $2$ the polynomial factors as
+\[
+X^2+1=(X+1)^2.
+\]
+The residue $u=[X+1]$ is non-zero because the degree-one polynomial $X+1$ is not a multiple of $(X+1)^2$. Yet $u^2=0$ in $A$. Thus $A$ has a non-zero zero divisor and cannot be a field. The irreducibility of the modulus, not merely its degree, was essential in constructing $\mathbb F_4$.
 \end{solution}
 
 \begin{solution}{ex:irrF2}
-\idea Low degree: irreducible means no factor of degree $\le$ half the degree; then check against Theorem~\ref{thm:xqnx}.
-\writeup A polynomial has the root $0$ iff its constant term is $0$, and the root $1$ iff it has an even number of terms. Degree $1$: $X$, $X+1$. Degree $2$: $X^2+X+1$ only. Degree $3$ (no root): $X^3+X+1$, $X^3+X^2+1$. Degree $4$: the candidates with no root are $X^4+X+1$, $X^4+X^3+1$, $X^4+X^3+X^2+X+1$ and $X^4+X^2+1=(X^2+X+1)^2$, so three irreducibles. The counts $2,1,2,3$ agree with $N_2(n)=\frac1n\sum_{d\mid n}\mu(d)2^{n/d}$: $2$, $\frac{4-2}2=1$, $\frac{8-2}3=2$, $\frac{16-4}4=3$. By Theorem~\ref{thm:xqnx}, $X^{16}-X$ is the product of the irreducibles of degree $1$, $2$, $4$:
+\idea For degrees $2$ and $3$, a polynomial is irreducible exactly when it has no root in $\mathbb F_2$. In degree $4$ we must also rule out a factor of degree $2$. There is only one monic irreducible quadratic to test. Check the resulting list against the counting formula before forming the degree-$16$ product.
+
+\writeup Over $\mathbb F_2$ a polynomial has a root at $0$ precisely when its constant coefficient vanishes, and a root at $1$ precisely when the number of non-zero coefficients is even.
+
+The irreducible polynomials of degree $1$ are
+\[
+X,\qquad X+1.
+\]
+The only monic quadratic with neither root is $X^2+X+1$, so this is the sole irreducible quadratic. A cubic is reducible if and only if it has a root, which gives exactly
+\[
+X^3+X+1,\qquad X^3+X^2+1
+\]
+as irreducible cubics.
+
+For degree $4$, the four monic polynomials with no root in $\mathbb F_2$ are
+\[
+\begin{gathered}
+F_1=X^4+X+1,\qquad F_2=X^4+X^3+1,\\
+F_3=X^4+X^3+X^2+X+1,\qquad
+F_4=X^4+X^2+1.
+\end{gathered}
+\]
+A root-free quartic is reducible only if it factors into irreducible quadratics; the only candidate factor is $P=X^2+X+1$. In the quotient by $P$, let $\alpha=X\bmod P$. Then $\alpha^2=\alpha+1$, $\alpha^3=1$, and $\alpha^4=\alpha$. We obtain
+\[
+F_1(\alpha)=1,\quad
+F_2(\alpha)=\alpha,\quad
+F_3(\alpha)=\alpha+1,\quad
+F_4(\alpha)=0.
+\]
+In fact $F_4=P^2$ in characteristic $2$. Thus the irreducible quartics are precisely $F_1,F_2,F_3$.
+
+The counts in degrees $1,2,3,4$ are consequently $2,1,2,3$. The formula
+\[
+N_2(d)=\frac1d\sum_{e\mid d}\mu(e)\,2^{d/e}
+\]
+gives, independently,
+\[
+N_2(1)=2,\quad N_2(2)=\frac{4-2}{2}=1,\quad
+N_2(3)=\frac{8-2}{3}=2,\quad
+N_2(4)=\frac{16-4}{4}=3.
+\]
+
+Finally, Theorem~\ref{thm:xqnx} says that $X^{16}-X$ is the product of \emph{all} monic irreducibles whose degrees divide $4$, each appearing once. Degree $3$ therefore does not occur. The factorisation is
 \[
 \begin{aligned}
-X^{16}-X&=X(X+1)(X^2+X+1)\eqbr{}\cdot(X^4+X+1)(X^4+X^3+1)\eqbr{}\cdot(X^4+X^3+X^2+X+1),
+X^{16}-X={}&X(X+1)(X^2+X+1)\\
+&{}\cdot(X^4+X+1)(X^4+X^3+1)\\
+&{}\cdot(X^4+X^3+X^2+X+1).
 \end{aligned}
 \]
-of degree $1+1+2+12=16$.
+It is square-free since its formal derivative is $-1=1$ in characteristic $2$. The total degree is $1+1+2+4+4+4=16$, as expected.
 \end{solution}
 
 \begin{solution}{ex:primpoly}
-\idea In a cyclic group of order $15$, an element is a generator iff its order is not $1$, $3$ or $5$.
-\writeup For $P=X^4+X+1$: it is irreducible (Exercise~\ref{ex:irrF2}), so $K=\mathbb F_2[X]/(P)$ is $\mathbb F_{16}$ and the order of $x$ divides $15$. Now $x^3\ne1$ (the classes $1,x,x^2,x^3$ are a basis) and $x^5=x\cdot x^4=x(x+1)=x^2+x\ne1$. So $x$ has order $15$ (this is Figure~\ref{fig:f16}). For $P=X^4+X^3+X^2+X+1$: $(X-1)P=X^5-1$, so $x^5=1$ and $x$ has order $5$; $P$ is irreducible but not primitive.
+\idea There are $16-1=15$ non-zero elements of $\mathbb F_{16}$. An element is primitive if its multiplicative order is $15$. Since the prime divisors of $15$ are $3$ and $5$, it is enough to rule out orders dividing $3$ or $5$.
 
-The cyclic group $\mathbb F_{16}^*$ of order $15$ has $\varphi(15)=8$ generators. A primitive polynomial of degree $4$ is the minimal polynomial of a primitive element; conversely the minimal polynomial of a primitive element $\gamma$ has degree $4$ ($\mathbb F_2(\gamma)=\mathbb F_{16}$), and its roots are $\gamma,\gamma^2,\gamma^4,\gamma^8$ (the images by Frobenius, all distinct and all primitive, since squaring is an automorphism of $\mathbb F_{16}^*$). So the $8$ primitive elements fall into $8/4=2$ groups: there are two primitive polynomials, $X^4+X+1$ and $X^4+X^3+1$.
+\writeup Let $P=X^4+X+1$. By Exercise~\ref{ex:irrF2}, $P$ is irreducible over $\mathbb F_2$. Thus
+\[
+K=\mathbb F_2[X]/(P)
+\]
+is a field with $16$ elements. Write $x$ for the class of $X$. Its minimal polynomial has degree $4$, so $1,x,x^2,x^3$ form an $\mathbb F_2$-basis. In particular $x^3\ne1$.
+
+The relation $P(x)=0$ gives $x^4=x+1$ in characteristic $2$, and hence
+\[
+x^5=x(x+1)=x^2+x\ne1
+\]
+by linear independence of $1,x,x^2$. By Lagrange, the order of $x$ divides $15$. Every proper divisor of $15$ is $1$, $3$, or $5$. The two inequalities $x^3\ne1$ and $x^5\ne1$ rule out all proper orders. Therefore $x$ has order $15$, and $P$ is primitive.
+
+Now take $Q=X^4+X^3+X^2+X+1$. It is irreducible by the same previous exercise. In characteristic $2$,
+\[
+(X+1)Q=X^5+1=X^5-1.
+\]
+The class $y$ of $X$ modulo $Q$ therefore satisfies $y^5=1$. Since $y\ne1$ (otherwise its degree-four minimal polynomial would have root $1$), its order is exactly $5$, not $15$. So $Q$ is irreducible but \emph{not} primitive.
+
+The group $\mathbb F_{16}^*$ is cyclic of order $15$, by Theorem~\ref{thm:cyclicmult}. The number of its generators is
+\[
+\varphi(15)=15(1-1/3)(1-1/5)=8.
+\]
+Every primitive element $\gamma$ has a minimal polynomial of degree $4$ over $\mathbb F_2$: it generates all of the multiplicative group and therefore all of the field. Its four Frobenius conjugates
+\[
+\gamma,\gamma^2,\gamma^4,\gamma^8
+\]
+are distinct and primitive; distinctness follows because the orbit under squaring has length $4$, and primitivity follows because each exponent $2^j$ is coprime to $15$.
+
+Those four conjugates have the same degree-four minimal polynomial, and no primitive element outside the orbit has that polynomial. The $8$ primitive elements therefore split into $8/4=2$ disjoint orbits. Hence there are
+\[
+\boxed{8\text{ primitive elements and }2\text{ primitive quartics}}
+\]
+over $\mathbb F_2$. They are $X^4+X+1$ and $X^4+X^3+1$.
 \end{solution}
 
 \begin{solution}{ex:minus1}
@@ -355,31 +559,144 @@ The cyclic group $\mathbb F_{16}^*$ of order $15$ has $\varphi(15)=8$ generators
 \end{solution}
 
 \begin{solution}{ex:twosq}
-\idea Pigeonhole: two sets with more than $q/2$ elements each must meet.
-\writeup If $q$ is even, Frobenius $x\mapsto x^2$ is a bijection, so every $a$ is a square, $a=x^2+0^2$. If $q$ is odd, $x\mapsto x^2$ on $\mathbb F_q^*$ is two-to-one ($x^2=y^2$ iff $y=\pm x$, and $x\ne-x$), so there are $\frac{q-1}2+1=\frac{q+1}2$ squares, including $0$. For $a\in\mathbb F_q$, the sets $\{x^2\}$ and $\{a-y^2\}$ both have $\frac{q+1}2$ elements; their sizes add up to $q+1>q$, so they meet: $x^2=a-y^2$.
+\idea The two sets of possible values $x^2$ and $a-y^2$ must overlap if their sizes add to more than the number $q$ of field elements. The size of the set of squares depends on whether the characteristic is $2$ or odd.
+
+\writeup Let $K=\mathbb F_q$ and fix $a\in K$. We seek $x,y\in K$ satisfying
+\[
+x^2+y^2=a.
+\]
+
+If $q$ is even, then $q=2^n$. The Frobenius map $x\mapsto x^2$ is injective because $x^2=y^2$ implies $(x-y)^2=0$, hence $x=y$ in a field. An injective self-map of a finite set is bijective. So there exists $x$ with $x^2=a$; simply choose $y=0$.
+
+Now suppose $q$ is odd. If $x^2=y^2$, then
+\[
+(x-y)(x+y)=0
+\]
+forces $x=y$ or $x=-y$. For $x\ne0$, these are two different elements because the characteristic is not $2$. The map $x\mapsto x^2$ is therefore two-to-one on $K^*$, so there are $(q-1)/2$ non-zero squares. Including $0$, the set
+\[
+S=\{x^2:x\in K\}
+\]
+has exactly $(q+1)/2$ elements.
+
+Consider also
+\[
+T=\{a-y^2:y\in K\}=a-S.
+\]
+Translation by $a$ and negation are bijections, so $|T|=|S|=(q+1)/2$. Both lie inside the $q$-element set $K$. Since
+\[
+|S|+|T|=q+1>q,
+\]
+the pigeonhole principle gives $S\cap T\ne\varnothing$. Pick $z\in S\cap T$. By definition, $z=x^2=a-y^2$ for suitable $x,y\in K$, and hence $a=x^2+y^2$.
+
+The argument works for \emph{every} $a$ and \emph{every} finite field, not just prime fields. It proves existence; it does not count the number of representations of each $a$.
 \end{solution}
 
 \begin{solution}{ex:powersums}
-\idea Sum over a cyclic group of a character-like power: either everything is $1$, or the sum is a geometric series that vanishes.
-\writeup (a) If $k=0$ the sum is $q\cdot1=0$. Let $k\ge1$; then $0^k=0$, and with $\gamma$ a primitive element, $\sum_{x}x^k=\sum_{j=0}^{q-2}(\gamma^k)^j$. If $(q-1)\mid k$, $\gamma^k=1$ and the sum is $q-1=-1$. Otherwise $\gamma^k\ne1$ and the geometric sum is $\frac{(\gamma^k)^{q-1}-1}{\gamma^k-1}=0$.
+\idea The non-zero elements form a cyclic group of order $q-1$. Sum their $k$-th powers as a geometric progression. For the product identity, either pair each element with its inverse or compare the constant term of the polynomial having all non-zero field elements as roots.
 
-(b) By Lemma~\ref{lem:xqx} divided by $X$, $X^{q-1}-1=\prod_{a\ne0}(X-a)$. Comparing constant terms, $-1=(-1)^{q-1}\prod_{a\ne0}a$. If $q$ is odd, $(-1)^{q-1}=1$; if $q$ is even, $-1=1$. Either way $\prod_{a\ne0}a=-1$. (For $q=p$ this is Wilson's theorem $(p-1)!\equiv-1\pmod p$.)
+\writeup Let $K=\mathbb F_q$ and choose a generator $\gamma$ of $K^*$, which has order $q-1$ by Theorem~\ref{thm:cyclicmult}.
+
+\emph{(a) Power sums.} First take $k=0$. With the convention $0^0=1$, every term in
+\[
+\sum_{x\in K}x^0
+\]
+equals $1$, so the sum is $q\cdot1=0$ \emph{as an element of $K$}, since the characteristic is $p$ and $q=p^n$ vanishes in $K$.
+
+Now let $k\ge1$. The term from $x=0$ equals $0$. Every non-zero field element is a unique power $\gamma^j$ with $0\le j\le q-2$, so
+\[
+\sum_{x\in K}x^k
+=\sum_{j=0}^{q-2}(\gamma^k)^j.
+\]
+If $(q-1)\mid k$, then $\gamma^k=1$, every term equals $1$, and the sum is $q-1=-1$ in $K$.
+
+If $(q-1)\nmid k$, then $\gamma^k\ne1$ and the finite geometric-series identity applies:
+\[
+\sum_{j=0}^{q-2}(\gamma^k)^j
+=\frac{(\gamma^k)^{q-1}-1}{\gamma^k-1}
+=\frac{1-1}{\gamma^k-1}=0.
+\]
+The denominator is non-zero precisely because $\gamma^k\ne1$. Hence
+\[
+\boxed{\sum_{x\in\mathbb F_q}x^k=
+\begin{cases}
+-1,&k\ge1\text{ and }(q-1)\mid k,\\
+0,&\text{otherwise},
+\end{cases}}
+\]
+where both values are interpreted inside the field.
+
+\emph{(b) Wilson's product identity.} By Lemma~\ref{lem:xqx}, the polynomial $X^q-X$ has every element of $K$ as a root, and all are distinct. Dividing out the root $0$ gives
+\[
+X^{q-1}-1=\prod_{a\in K^*}(X-a).
+\]
+Compare the constant coefficients:
+\[
+-1=(-1)^{q-1}\prod_{a\in K^*}a.
+\]
+If $q$ is odd, then $q-1$ is even, and the product equals $-1$. If $q$ is even, the field has characteristic $2$ and $-1=1$, so the product again equals $-1$. Therefore
+\[
+\boxed{\prod_{a\in\mathbb F_q^*}a=-1}.
+\]
+For a prime field, this reduces to Wilson's congruence $(p-1)!\equiv-1\pmod p$. It continues to hold in all finite extension fields, where the expression $(q-1)!$ would not be the right interpretation of the product.
 \end{solution}
 
 \begin{solution}{ex:rs7}
-\idea Write the six linear equations $Q(a_i)=y_iE(a_i)$ and solve; or guess the error positions and check, since Theorem~\ref{thm:bw} says that any solution gives the right answer.
-\writeup The unknowns are $e_0,e_1$ and $Q=q_0+q_1X+q_2X^2+q_3X^3$. Solving the $6\times6$ system modulo $7$ by elimination (the matrix is invertible) gives $E=X^2+3$ and $Q=2X^3+3X^2+6X+2$. Check, with $f=Q/E$: indeed $(2X+3)(X^2+3)=2X^3+3X^2+6X+9$, and $9=2$ in $\mathbb F_7$. The table of values at $a=1,\dots,6$ confirms the six equations:
+\idea A polynomial of degree less than $2$ can be written $f(X)=aX+b$. Berlekamp--Welch hides the two incorrect positions inside a monic degree-two polynomial $E$, and solves the linear equations for $E$ and $Q=fE$. Check the recovered pair at all six positions, including the errors.
+
+\writeup Everything is computed in $\mathbb F_7$. The code evaluates a message polynomial of degree less than $2$ at the six distinct points $1,2,\ldots,6$. Its minimum distance is $6-2+1=5$, so up to
+\[
+\left\lfloor\frac{5-1}{2}\right\rfloor=2
+\]
+errors can be corrected uniquely.
+
+We receive
+\[
+y=(5,3,2,4,0,1).
+\]
+Set
+\[
+E(X)=X^2+e_1X+e_0,\qquad
+Q(X)=q_3X^3+q_2X^2+q_1X+q_0.
+\]
+The six equations
+\[
+Q(j)=y_jE(j),\qquad j=1,\ldots,6,
+\]
+are linear in the six unknown coefficients $e_0,e_1,q_0,q_1,q_2,q_3$. Gaussian elimination modulo $7$ gives the candidate
+\[
+E(X)=X^2+3,\qquad
+Q(X)=2X^3+3X^2+6X+2.
+\]
+
+Rather than trusting the elimination without a check, divide:
+\[
+Q(X)=(2X+3)(X^2+3)
+\quad\text{in }\mathbb F_7[X],
+\]
+since the product is $2X^3+3X^2+6X+9$ and $9=2$ modulo $7$. Thus the recovered message is
+\[
+\boxed{f(X)=2X+3}.
+\]
+
+Check all six equations:
 \begin{center}
 \small
-\begin{tabular}{c|cccccc}
-$a$ & $1$ & $2$ & $3$ & $4$ & $5$ & $6$\\\hline
-$y$ & $5$ & $3$ & $2$ & $4$ & $0$ & $1$\\
-$E(a)$ & $4$ & $0$ & $5$ & $5$ & $0$ & $4$\\
-$yE(a)=Q(a)$ & $6$ & $0$ & $3$ & $6$ & $0$ & $4$\\
-$f(a)=2a+3$ & $5$ & $0$ & $2$ & $4$ & $6$ & $1$
+\begin{tabular}{c|rrrrrr}
+$j$&$1$&$2$&$3$&$4$&$5$&$6$\\\hline
+$y_j$&5&3&2&4&0&1\\
+$E(j)$&4&0&5&5&0&4\\
+$Q(j)=y_jE(j)$&6&0&3&6&0&4\\
+$f(j)$&5&0&2&4&6&1
 \end{tabular}
 \end{center}
-So the message is $f=3+2X$. The error locator $E=X^2+3=(X-2)(X-5)$ shows where the errors were: positions $2$ and $5$, where $3$ and $0$ were received instead of $0$ and $6$.
+In particular $E(2)=E(5)=0$, while
+\[
+E(X)=X^2+3=(X-2)(X-5)
+\quad\text{modulo }7.
+\]
+These are precisely the erroneous positions: the second received symbol $3$ should be $0$, and the fifth received symbol $0$ should be $6$. The other four received symbols agree with the decoded polynomial.
+
+Theorem~\ref{thm:bw} proves that any candidate satisfying these equations and the degree bound yields the \emph{unique} message compatible with at most two errors. The explicit table verifies that our candidate satisfies the required equations, so the decoding is complete.
 \end{solution}
 
 \begin{solution}{ex:chevalley}
@@ -423,7 +740,7 @@ squares modulo $5$ are $\pm1$; this gives the two cases as stated.
 
 (c) For $p=7\equiv2\pmod5$, the period divides $16$; the sequence modulo $7$ is $0$, $1$, $1$, $2$, $3$, $5$, $1$, $6$, $0$, $6$, $6$, $5$, $4$, $2$, $6$, $1$, $0$, $1$, \dots,
 of period $16$. For $p=11\equiv1\pmod5$ it divides $10$: $0$, $1$, $1$, $2$, $3$, $5$, $8$, $2$, $10$, $1$, $0$, $1$, \dots, of period $10$.
-\tools Volume~3, Chapter~9 (finite fields, Frobenius); Volume~2, Chapter~5 (quadratic reciprocity); Volume~1, Chapter~7 (linear
+\tools Volume~3, Chapter~9 (finite fields, Frobenius); Volume~2, Chapter~5 (quadratic reciprocity); Volume~1, Chapter~8 (linear
 recurrences, Binet).
 \leads The period $\pi(p)$ is called the Pisano period. Wall asked in 1960 whether $\pi(p^2)\ne\pi(p)$ for every prime $p$; a
 prime with $\pi(p^2)=\pi(p)$ would be a \emph{Wall--Sun--Sun prime}, and none is known (they are linked to the first case of
@@ -452,7 +769,7 @@ $n$, which gives $2^{s(n)}$ choices of $j$.)
 (c) Write $n<2^k$ with $k$ binary digits $n_0,\dots,n_{k-1}$. Then $2^{s(n)}=\prod_i2^{n_i}$, and summing over all digit
 choices gives $\sum_{n<2^k}2^{s(n)}=\prod_{i<k}(1+2)=3^k$. The rows $0$ to $2^k-1$ contain $\sum_{n<2^k}(n+1)=2^{k-1}(2^k+1)$
 entries, so the proportion of odd ones is $\frac{3^k}{2^{k-1}(2^k+1)}\le2\bigl(\frac34\bigr)^k\to0$.
-\tools Volume~3, Chapter~9 (Frobenius in characteristic $p$); Volume~2, Chapter~3 (Lucas's theorem); Volume~1, Chapter~1.
+\tools Volume~3, Chapter~9 (Frobenius in characteristic $p$); Volume~2, Chapter~3 (Lucas's theorem); Volume~1, Chapter~2.
 \leads The limit shape of Figure~\ref{fig:pascal}, rescaled, is the Sierpiński triangle, of dimension $\frac{\log3}{\log2}$
 (Volume~7 defines the dimension). Modulo a prime $p$ the same argument gives $\prod(n_i+1)$ non-zero entries in row $n$ (Fine,
 1947).
@@ -516,7 +833,7 @@ $c\in\mathbb F_q^{i-1}$, that is, if and only if the $\alpha_i$ are linearly dep
 and $\prod_{v\in V}(X+v)=\prod_{v\in V}(X-v)$ since $V=-V$. Expanding the determinant along its last row, $(X,X^q,\dots,X^{q^n})$,
 gives a combination of $X,X^q,\dots,X^{q^n}$. Divide by $\Delta(\alpha)\ne0$. Each $X^{q^k}$ is additive, so $P_V$ is too.
 
-\tools Volume~3, Chapter~9 (Frobenius); Volume~1, Chapter~7 (determinants).
+\tools Volume~3, Chapter~9 (Frobenius); Volume~1, Chapter~8 (determinants).
 \leads Moore's determinant is the $q$-analogue of the Vandermonde determinant. Linearised polynomials built this way give the
 Gabidulin codes used in network coding, and Dickson's invariants of $GL_n(\mathbb F_q)$, the coefficients of
 $\prod_{v\in\mathbb F_q^n}(X-v)$ written in the $x_i$.
@@ -546,7 +863,7 @@ non-zero elements, and
 \sum_{\beta\ne0}(-1)^{\operatorname{Tr}\beta}=\sum_\beta(-1)^{\operatorname{Tr}\beta}-1=0-1=-1.
 \]
 
-\tools Volume~3, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Volume~1, Chapter~7.
+\tools Volume~3, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Volume~1, Chapter~8.
 \leads These are Golomb's three randomness postulates (1967): balance, runs, two-valued autocorrelation. For $x^4+x+1$ the period is
 $000100110101111$. The sequence is useless for cryptography, since $2n$ bits reveal the recurrence (Berlekamp--Massey), but its
 flat correlation is what GPS satellites use: each one transmits a Gold code, the sum of two $m$-sequences of degree $10$.
@@ -563,5 +880,5 @@ flat correlation is what GPS satellites use: each one transmits a Gold code, the
 \item C.~Chevalley, \emph{Démonstration d'une hypothèse de M.~Artin}, Abh.\ Math.\ Sem.\ Hamburg 11 (1935), 73--75; E.~Warning, \emph{Bemerkung zur vorstehenden Arbeit von Herrn Chevalley}, same volume, 76--83. Exercise~\ref{ex:chevalley}.
 \item R.~Lidl and H.~Niederreiter, \emph{Introduction to Finite Fields and Their Applications}, revised ed., Cambridge University Press, 1994. Everything about finite fields, with codes and cryptography.
 \item J.~Daemen and V.~Rijmen, \emph{The Design of Rijndael: AES, the Advanced Encryption Standard}, Springer, 2002. Why AES computes in $\mathbb F_{256}$, an application of finite-field arithmetic.
-\item I.~S.~Reed and G.~Solomon, \emph{Polynomial codes over certain finite fields}, J.\ SIAM 8 (1960), 300--304; S.~B.~Wicker and V.~K.~Bhargava (eds.), \emph{Reed--Solomon Codes and Their Applications}, IEEE Press, 1994, on their use by the Voyager probes and in compact discs.
+\item S.~B.~Wicker and V.~K.~Bhargava (eds.), \emph{Reed--Solomon Codes and Their Applications}, IEEE Press, 1994. Applications to digital storage and communication; the 1960 Reed--Solomon paper is cited above.
 \end{itemize}

@@ -5,25 +5,13 @@ It is my experience that proofs involving matrices can be shortened by 50\% if o
 \upshape(Emil Artin, \emph{Geometric Algebra}, 1957)
 \end{center}
 
-Imagine a small town, Oddtown, with $n$ inhabitants and a passion for clubs. The town council, fearing that clubs breed
-factions, passes two rules: every club must have an odd number of members, and any two clubs must share an even number of
-members. How many clubs can Oddtown have? With $n=3$ you can try by hand: $\{1\}$, $\{2\}$, $\{3\}$ is three clubs, and no fourth one
-fits. In general the singletons give $n$ clubs, and you can spend an afternoon looking for a cleverer arrangement with more.
-You will not find one. The proof that there is none, due to Elwyn Berlekamp in 1969, takes three lines, and none of them
-is about clubs: it is about vectors over the field with two elements.
+A town has $n$ inhabitants and a collection of clubs. Every club contains an odd number of people, while any two different clubs overlap in an even number of people. How many clubs can there be?
 
-This chapter is about such proofs. A combinatorial object (a family of sets, a set of points, a colouring) is turned into a
-collection of vectors, or of polynomials, and some combinatorial condition is turned into linear independence. Then the
-objects cannot be more numerous than the dimension of the space they live in, and dimension is something we know how
-to compute. Artin's advice, to throw the matrices out, is excellent for linear algebra; this chapter throws them back
-\emph{in}, into combinatorics, and it works astonishingly well. The method gives Fisher's inequality for experimental designs,
-bounds on sets of points with few distances, the first explicit graphs with no large clique or independent set, an additive
-theorem of Cauchy, and, in 2016, the solution of a famous problem about the card game SET that had resisted every other method.
+Give each club a vector in $\mathbb F_2^n$: write $1$ for a member and $0$ for a non-member. The dot product of a club's vector with itself is $1$, because the club has odd size. The dot product of two different clubs is $0$, because they overlap in an even number of places.
 
-\begin{think}
-Eventown has the same council, but the rules are now: every club has an \emph{even} number of members, and any two clubs share an
-even number. Find many clubs for $n=4$. Does the answer look like $n$, or like something much larger?
-\end{think}
+Suppose a linear combination of these club vectors were zero. Taking the dot product with any one vector shows that its coefficient must be zero. Every coefficient is zero, so the vectors are linearly independent. There can be no more than $n$ clubs.
+
+This proof uses a dimension bound where a direct counting argument would struggle. The rest of the appendix develops that trick with polynomials, intersection patterns and finite fields. We will keep asking the same question: what vector space is too small to hold all the objects we want?
 
 \section{Oddtown, Eventown, and Fisher}
 
@@ -38,9 +26,34 @@ which we may read in $\R$ or, reducing modulo a prime $p$, in the field $\mathbb
 Let $A_1,\dots,A_m\subseteq[n]$ be such that every $|A_i|$ is odd and every $|A_i\cap A_j|$, $i\ne j$, is even. Then $m\le n$.
 \end{theorem}
 \begin{proof}
-Work in $\mathbb F_2^n$ and write $v_i=v_{A_i}$. The hypotheses say $v_i\cdot v_j=1$ if $i=j$ and $0$ otherwise. If $\sum_ic_iv_i=0$ with $c_i\in\mathbb F_2$, taking
-the dot product with $v_j$ gives $c_j=0$. So $v_1,\dots,v_m$ are linearly independent in a space of dimension $n$, and $m\le n$.
+Turn each subset into a vector of zeros and ones. For $A_i\subseteq[n]$, let $v_i\in\mathbb F_2^n$ have a $1$ exactly at the positions belonging to $A_i$.
+
+The ordinary dot product counts intersections:
+\[
+v_i\cdot v_j=\sum_{k=1}^n(v_i)_k(v_j)_k
+            =|A_i\cap A_j|\pmod2.
+\]
+When $i\ne j$, the intersection size is even, so this dot product is $0$. When $i=j$, it is $|A_i|$, which is odd, so the dot product is $1$. We have proved
+\[
+v_i\cdot v_j=
+\begin{cases}1,&i=j,\\0,&i\ne j.\end{cases}
+\]
+
+Now suppose there is a linear relation
+\[
+c_1v_1+\cdots+c_mv_m=0,\qquad c_i\in\mathbb F_2.
+\]
+Take its dot product with $v_j$. Distributivity gives
+\[
+0=\sum_{i=1}^m c_i(v_i\cdot v_j)=c_j.
+\]
+Since this is true for every $j$, all the coefficients are zero. Thus $v_1,\ldots,v_m$ are linearly independent in the $n$-dimensional vector space $\mathbb F_2^n$. It follows that $m\le n$.
+
+The bound is sharp: choose the $n$ one-element sets $\{1\},\ldots,\{n\}$. Each size is odd, distinct sets have empty (hence even) intersection, and there are exactly $n$ of them.
 \end{proof}
+
+\paragraph{Why this works.}
+The parity requirements become an identity matrix. In the field $\mathbb F_2$, the row of club $A_i$ has dot product $1$ with itself and $0$ with every other club row. A linear relation among the rows would therefore give, after taking the dot product with row $j$, precisely its $j$-th coefficient. Every coefficient must be zero. We cannot have more than $n$ independent rows in $\mathbb F_2^n$. And the bound is attained: the $n$ one-person clubs have odd sizes and empty pairwise intersections.
 
 Eventown is different. Split the inhabitants into couples, $\{1,2\},\{3,4\},\dots$, and let the clubs be all unions of couples: every club and every
 intersection of two clubs is a union of couples, of even size, and there are $2^{\lfloor n/2\rfloor}$ clubs. Changing one word in the rules has
@@ -54,7 +67,7 @@ Let $w_1,\dots,w_d$ be a basis of $W$ and $M$ the $d\times n$ matrix with rows $
 independent, and row rank equals column rank), so by the rank--nullity theorem its kernel has dimension $n-d$.
 \end{proof}
 
-Over $\mathbb F_2$ (or $\mathbb C$, or any field other than $\R$) a non-zero vector can be orthogonal to itself, so $W$ and $W^\perp$ may intersect, and even
+Over $\mathbb F_2$ or $\mathbb C$, a non-zero vector can be orthogonal to itself; this depends on the field, not simply on whether it is $\R$. For example, over $\Q$ the standard dot product has $v\cdot v=0$ only when $v=0$. In $\mathbb F_2^n$, $W$ and $W^\perp$ may intersect, and even
 $W\subseteq W^\perp$ is possible: $(1,1)\cdot(1,1)=0$ in $\mathbb F_2^2$. The lemma still bounds how large such a $W$ can be.
 
 \begin{theorem}[Eventown, Berlekamp, 1969; Graver, 1975]\label{combinatorial:thm:eventown}
@@ -67,8 +80,8 @@ $2^{\dim W}$ elements.
 \end{proof}
 
 Both bounds are attained, by singletons and by couples, but not only by them: for $n=8$, the $14$ affine planes of $\mathbb F_2^3$, with $\varnothing$ and the whole space, form an Eventown family of $16=2^4$ clubs
-that contains no couple at all (Exercise~\ref{combinatorial:ex:eventown}). It is a famous code in disguise, the extended Hamming code, and the self-orthogonal spaces of Theorem~\ref{combinatorial:thm:eventown} are the
-\emph{self-dual codes} of coding theory.
+that contains no couple at all (Exercise~\ref{combinatorial:ex:eventown}). It is a famous code in disguise, the extended Hamming code, and the spaces in Theorem~\ref{combinatorial:thm:eventown} are examples of
+\emph{self-orthogonal codes}. Only when a code also satisfies $W=W^\perp$ (which forces $n$ even and $\dim W=n/2$) is it called \emph{self-dual}.
 
 Over the reals, the method gives one of the founding results of the design of experiments. Ronald Fisher spent fourteen years, from 1919 to 1933, designing field trials at the Rothamsted
 agricultural station. In 1940 he studied plans of the following kind: $v$ varieties of a crop are compared on a field split into blocks, each block can hold only some of the varieties, and for a fair comparison any two varieties
@@ -478,16 +491,58 @@ members, while the couples family contains the couples themselves.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:nearpencil}
-\idea Count the common points pair by pair.
-\writeup $\{i,n\}\cap\{j,n\}=\{n\}$ for $i\ne j$, and $\{i,n\}\cap\{1,\dots,n-1\}=\{i\}$: every intersection has size $1$, and there are $n$ sets. In the Fano plane any two of the seven lines
-$124,135,236,167,257,347,456$ meet in exactly one point (two points determine their line, so two lines share at most one point, and the $21$ pairs can be checked one by one: $124\cap456=\{4\}$, $124\cap236=\{2\}$, $167\cap257=\{7\}$, and so on). So $m=n=7$. The incidence calculation shows
-that every projective plane attains the bound, and de Bruijn and Erd\H os (1948) proved that for $\lambda=1$ the near-pencils and the projective planes are the only families with $m=n$.
+\idea Fisher's inequality compares the number of sets with the size of their ground set. In each example, count both quantities and check that two distinct sets meet in exactly one point. For the Fano plane, using the line list also checks the intersections concretely.
+
+\writeup \emph{Near-pencil.} On the ground set $\{1,\ldots,n\}$, take
+\[
+B_i=\{i,n\}\quad(1\le i<n),\qquad
+B_n=\{1,\ldots,n-1\}.
+\]
+There are exactly $n$ blocks on $n$ points. If $i\ne j<n$, then $B_i\cap B_j=\{n\}$. Also, for each $i<n$, we have $B_i\cap B_n=\{i\}$. Thus every pair of distinct blocks meets in exactly one point, and the family attains Fisher's bound $m\le n$ with $m=n$.
+
+\emph{Fano plane.} One standard labelling of the seven lines on seven points is
+\[
+124,\quad135,\quad236,\quad167,\quad257,\quad347,\quad456,
+\]
+where $124$ means $\{1,2,4\}$, and similarly for the others. Each point occurs on exactly three of these lines. Every unordered pair of distinct points occurs on exactly one line: there are $7\binom32=21$ pairs listed by the seven lines, equal to the total $\binom72=21$, and inspection of the displayed triples shows that no pair repeats.
+
+This already implies that two lines meet in at most one point. In fact they always meet. One way to see this is through the vector-space model. Identify the labelled points with the non-zero vectors of $\mathbb F_2^3$ by $1=e_1$, $2=e_2$, $3=e_3$, $4=e_1+e_2$, $5=e_1+e_3$, $6=e_2+e_3$, $7=e_1+e_2+e_3$. The displayed triples are then exactly the sets $\{u,v,u+v\}$ for distinct non-zero $u,v$. Each line together with $0$ is a two-dimensional subspace. Two two-dimensional subspaces of a three-dimensional vector space have intersection of dimension at least $2+2-3=1$, and distinct such subspaces meet in dimension exactly $1$. Therefore their corresponding Fano lines share precisely one non-zero point.
+
+So this family also has $m=n=7$ with every two blocks meeting in $\lambda=1$ point. Fisher's inequality is attained in both examples, for quite different geometric reasons.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:simplexdist}
-\idea Points whose coordinates have a fixed sum live in a hyperplane; distances depend only on how many indices are shared.
-\writeup All the points satisfy $\sum_kx_k=2$, a hyperplane of dimension $n$, which is isometric to $\R^n$. For $\{i,j\}\ne\{k,l\}$, $|e_i+e_j-e_k-e_l|^2$ is $2$ if the pairs share an index and $4$ if not: two distances,
-$\binom{n+1}2$ points. For $n=3$ the six points $e_i+e_j$ of $\R^4$ form a regular octahedron: each point is at distance $\sqrt2$ from the four points sharing an index and at distance $2$ from the opposite one.
+\idea Every point $e_i+e_j$ has two coordinates equal to $1$, so all these points lie in the same affine hyperplane. To find the distances, observe that two distinct unordered pairs either share exactly one index or share none.
+
+\writeup In $\R^{n+1}$, let $e_1,\ldots,e_{n+1}$ be the standard orthonormal basis and put
+\[
+S=\{e_i+e_j:1\le i<j\le n+1\}.
+\]
+There are $\binom{n+1}{2}=\frac{n(n+1)}2$ elements in $S$, all distinct because their sets of non-zero coordinates are distinct.
+
+Every $x=e_i+e_j$ satisfies
+\[
+x_1+x_2+\cdots+x_{n+1}=2.
+\]
+Thus $S$ lies in the affine hyperplane
+\[
+H=\{x\in\R^{n+1}:\sum_{r=1}^{n+1}x_r=2\}.
+\]
+The hyperplane has dimension $n$; translation by a fixed point of $H$ identifies it with the $n$-dimensional linear subspace of vectors whose coordinate sum is $0$. With its inherited Euclidean metric, $H$ is isometric to $\R^n$.
+
+Take two distinct points $u=e_i+e_j$ and $v=e_k+e_l$. If the pairs $\{i,j\}$ and $\{k,l\}$ share exactly one index, say $i=k$, then
+\[
+u-v=e_j-e_l
+\quad\Longrightarrow\quad
+|u-v|^2=1+1=2.
+\]
+If the pairs are disjoint, the difference has four non-zero coordinates, two equal to $1$ and two equal to $-1$, so
+\[
+|u-v|^2=1+1+1+1=4.
+\]
+Therefore the only distances between distinct points are $\sqrt2$ and $2$, whenever both patterns of overlap occur. For $n\ge3$ both occur; for the small cases $n=1,2$ the construction degenerates to one or a few points and does not realise both distances. In any case it is a set with at most two distances and $\binom{n+1}{2}$ points in an $n$-dimensional Euclidean space.
+
+For $n=3$, we work in $\R^4$ and obtain six points, one for each pair of indices. Each point shares an index with four others, at distance $\sqrt2$, and has one complementary disjoint pair, at distance $2$. Those are exactly the vertex-distance relations of a regular octahedron: four adjacent vertices at the shorter distance and one opposite vertex at the longer distance. Hence the six points form a regular octahedron in the three-dimensional hyperplane $H$.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:sdistance}

@@ -1,10 +1,10 @@
 # Book 3 — Symmetry
 
-*Groups, Rings and Fields.* The on-disk subtitle is "The Language of Symmetry".
+*Groups, Rings and Fields* is the catalogue and title-page subtitle. **Current source:** `volume3-symmetry/main.tex`.
 
 **Element.** The symmetries of the plan. What one may do to the building without changing it, and which openings cannot be cut with the tools one has.
 
-**Source.** `volume3-symmetry` (this directory name becomes valid once step 2 in [PROGRESS.md](PROGRESS.md) merges). Twelve main chapters and thirteen linear-algebra appendices in `main.tex`. About 372 pages in the 7×10 table. The October review scored it 8. The primitive-element theorem and the three simple real roots of \(X^5-4X+2\) are now in the source.
+**Source.** `volume3-symmetry`. As of the November 2026 editorial branch the main file contains twelve main chapters and four appendices (A Positive Matrices, B Symmetry Diagonalises, C The Linear Algebra Method, D Hadamard Matrices from Finite Fields). The earlier page estimate and original appendices A–M below are historical planning notes; see `review/volume3-rewrite/REVIEW.md` for the current audit.
 
 ## Promise
 
@@ -189,7 +189,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 **Figures.** One.
 
-### Part IV. Representations and Rotations
+### Part III (continued). Representations and Rotations
 
 #### Chapter 11. Representations and Characters
 
@@ -219,7 +219,7 @@ The chapter notes follow the manuscript's file order. The part names are the tab
 
 **Figures.** Two.
 
-### Appendices A–M
+### Historical appendix notes (before relocation, originally A–M)
 
 These are KEEP as the specialist linear algebra. Book 1 owns the first course. A one-line preface to Appendix A says that. They are not renumbered into the main story. Each is a drawing of a member the later floors quote.
 

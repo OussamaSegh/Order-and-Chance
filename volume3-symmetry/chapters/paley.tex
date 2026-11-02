@@ -1,6 +1,32 @@
 \chapter{Hadamard matrices from finite fields}\label{ch:paley}
 
-A \emph{Hadamard matrix} of order $n$ is an $n\times n$ matrix with entries $\pm1$ whose rows are orthogonal, equivalently $HH^{\mathsf T}=nI$. Sylvester's doubling and Paley's two constructions produce one whenever the order is a power of $2$, one more than a prime power congruent to $3$ modulo $4$, or twice one more than a prime power congruent to $1$ modulo $4$. The conjecture that an order divisible by $4$ always exists is not proved here.
+
+A row of four signs can be orthogonal to another row of four signs, even though none of its entries is zero. For example, $(1,1,1,1)$ and $(1,-1,1,-1)$ have dot product $0$. Can we arrange $n$ rows of $n$ signs so that every pair is orthogonal?
+
+Such an arrangement is called a Hadamard matrix. Its defining equation, $HH^{\mathsf T}=nI$, says that every row has squared length $n$ and distinct rows meet at right angles. The first construction takes one small matrix and doubles it. The second builds signs from the squares and non-squares of a finite field.
+
+The finite-field construction brings three earlier ideas together: cyclic multiplicative groups, quadratic characters, and the sum of a character over a field. The formulas look technical until we notice that orthogonality is just a count of matching and mismatching signs.
+
+The constructions below give matrices of orders $2^m$, $q+1$ when a prime power $q$ satisfies $q\equiv3\pmod4$, and $2(q+1)$ when $q\equiv1\pmod4$. The conjecture that a Hadamard matrix exists in every positive order divisible by $4$ remains open. As of October 2026, constructions are known for every order divisible by $4$ below $2000$, including the formerly open case $668$. These particular constructions were announced in August and independently verified in October, but they do not prove the conjecture in general.\footnote{R.~Egan, I.~Kotsireas, S.~London and P.~\'O Cath\'ain, \emph{Recent progress in the construction of Hadamard matrices}, arXiv:2610.27175 (2026).}
+
+First let us see why the divisibility condition is necessary except for orders $1$ and $2$.
+
+\begin{proposition}[a necessary divisibility condition]\label{prop:hadamard-four}
+If a Hadamard matrix has order $n>2$, then $4$ divides $n$.
+\end{proposition}
+\begin{proof}
+Multiplying a column by $-1$ preserves all dot products of rows, so we may make the first row all $+1$. Write the second and third rows below it. Each has $n/2$ entries equal to $+1$ and $n/2$ equal to $-1$, because it is orthogonal to the first row.
+
+Among the $n$ columns, let $a,b,c,d$ count the four sign pairs $(+,+)$, $(+,-)$, $(-,+)$, $(-,-)$ in rows two and three. From the two row sums we get
+\[
+a+b=a+c=n/2,\qquad\text{so }b=c.
+\]
+Orthogonality of rows two and three gives $a+d=b+c=2b$. Therefore
+\[
+n=a+b+c+d=(a+d)+(b+c)=4b.
+\]
+Thus $4$ divides $n$. In particular a Hadamard matrix of order $6$ cannot exist.
+\end{proof}
 
 \section{Sylvester's doubling}
 
@@ -72,6 +98,13 @@ SS^{\mathsf T}=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\-\mathbf j&Q\end{pmatrix}
 So $HH^{\mathsf T}=(I+S)(I-S)=I-S^2=I+SS^{\mathsf T}=(q+1)I$.
 \end{proof}
 
+\paragraph{Why this works.}
+The matrix $S$ is skew-symmetric, so $S^{\mathsf T}=-S$. The character-sum lemma gives the exact identity $SS^{\mathsf T}=qI$. When we add the identity, the off-diagonal entries stay signs and the diagonal zeros become $+1$. Most importantly,
+\[
+(I+S)(I+S)^{\mathsf T}=(I+S)(I-S)=I-S^2=(q+1)I.
+\]
+Thus a character sum that originally counted quadratic residues becomes orthogonality of \emph{all} the rows at once. Try $q=3$ in Exercise~\ref{ex:paley-f3}: the construction makes four rows of signs, not just an abstract matrix identity.
+
 \begin{theorem}[Paley II, 1933]\label{conjectures:thm:paley2}
 Let $q\equiv1\pmod4$ be a prime power and
 \[
@@ -80,11 +113,140 @@ S=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\\mathbf j&Q\end{pmatrix},\qquad H=\beg
 Then $H$ is a Hadamard matrix of order $2(q+1)$.
 \end{theorem}
 \begin{proof}
-Now $Q$ and $S$ are symmetric, and the computation of the previous proof, with $+\mathbf j$ in place of $-\mathbf j$, gives $S^2=SS^{\mathsf T}=qI$. The
-entries of $S\pm I$ are $\pm1$, and $H$ is symmetric, so
+The quadratic character of $\mathbb F_q$ has $\chi(-1)=1$ when $q\equiv1\pmod4$, by Lemma~\ref{conjectures:lem:chi}. Consequently $Q^{\mathsf T}=Q$, and the bordered matrix
 \[
-\begin{aligned}HH^{\mathsf T}=H^2&=\begin{pmatrix}(S+I)^2+(S-I)^2&(S+I)(S-I)-(S-I)(S+I)\\(S-I)(S+I)-(S+I)(S-I)&(S-I)^2+(S+I)^2\end{pmatrix}\\
-&=\begin{pmatrix}2(q+1)I&0\\0&2(q+1)I\end{pmatrix},\end{aligned}
+S=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\\mathbf j&Q\end{pmatrix}
 \]
-since $S$ commutes with $I$ and $(S+I)^2+(S-I)^2=2S^2+2I$.
+is symmetric as well.
+
+The character-sum identity (Lemma~\ref{conjectures:lem:jacobsthal}) gives $Q\mathbf j=0$, $\mathbf j^{\mathsf T}Q=0$ and $QQ^{\mathsf T}=qI-J$. Multiply the blocks of $S$:
+\[
+\begin{aligned}
+S^2
+&=\begin{pmatrix}
+\mathbf j^{\mathsf T}\mathbf j&\mathbf j^{\mathsf T}Q\\
+Q\mathbf j&\mathbf j\mathbf j^{\mathsf T}+Q^2
+\end{pmatrix}\\
+&=\begin{pmatrix}
+q&0\\0&J+(qI-J)
+\end{pmatrix}
+=qI.
+\end{aligned}
+\]
+Here $S$ has size $(q+1)\times(q+1)$; the last $I$ is the identity of that size.
+
+Every diagonal entry of $S$ is $0$, and every off-diagonal entry is $\pm1$. Therefore both $S+I$ and $S-I$ contain only signs. It follows that
+\[
+H=\begin{pmatrix}S+I&S-I\\S-I&-S-I\end{pmatrix}
+\]
+is a sign matrix of order $2(q+1)$.
+
+We must check that its rows are pairwise orthogonal, not merely that their entries are signs. Since $S$ is symmetric, $H$ is symmetric. Multiply its blocks:
+\[
+HH^{\mathsf T}=H^2=
+\begin{pmatrix}
+(S+I)^2+(S-I)^2&(S+I)(S-I)-(S-I)(S+I)\\
+(S-I)(S+I)-(S+I)(S-I)&(S-I)^2+(S+I)^2
+\end{pmatrix}.
+\]
+The off-diagonal blocks vanish because $S+I$ and $S-I$ are polynomials in the same matrix $S$, hence commute. On the diagonal,
+\[
+(S+I)^2+(S-I)^2
+=(S^2+2S+I)+(S^2-2S+I)
+=2(q+1)I.
+\]
+Thus
+\[
+HH^{\mathsf T}=2(q+1)I,
+\]
+which is exactly the Hadamard condition. The first admissible case, $q=5$, produces a $12\times12$ Hadamard matrix; the proof works unchanged for every prime power $q\equiv1\pmod4$.
 \end{proof}
+
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:paley-h4}
+Start with $H_1=(1)$ and apply Sylvester's doubling twice. Write down $H_4$. Compute the dot product of its first and third rows, and explain why every distinct pair of rows is orthogonal.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:paley-f3}
+Take $q=3$ and list the values of the quadratic character $\chi$ on $\mathbb F_3$. Use the definition of $Q$ and the first Paley construction to write down the resulting $4\times4$ matrix $H$. Check directly that $HH^{\mathsf T}=4I$.
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:paley-h4}
+If $A$ is the current matrix, double it with the four blocks $A,A,A,-A$. Multiply the block matrix by its transpose before expanding individual entries.
+\end{hint}
+
+\begin{hint}{ex:paley-f3}
+The non-zero square is $1$, so $\chi(0)=0$, $\chi(1)=1$, $\chi(2)=-1$. Index rows and columns of $Q$ by $0,1,2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:paley-h4}
+\idea Begin with $H_2=\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ and double it.
+
+\writeup We obtain
+\[
+H_4=\begin{pmatrix}
+1&1&1&1\\
+1&-1&1&-1\\
+1&1&-1&-1\\
+1&-1&-1&1
+\end{pmatrix}.
+\]
+The dot product of the first and third rows is $1+1-1-1=0$. More generally, if $AA^{\mathsf T}=nI$, then for $B=\begin{pmatrix}A&A\\A&-A\end{pmatrix}$,
+\[
+BB^{\mathsf T}=
+\begin{pmatrix}2AA^{\mathsf T}&0\\0&2AA^{\mathsf T}\end{pmatrix}=2nI.
+\]
+Since $H_1H_1^{\mathsf T}=I$, both doublings preserve the desired property. This proves all the row dot products at once.
+
+\tools{Sylvester's doubling and block-matrix multiplication.}
+\end{solution}
+
+\begin{solution}{ex:paley-f3}
+\idea Only one non-zero residue modulo $3$ is a square, namely $1$. Calculate $\chi(x-y)$ for every row and column of the $3\times3$ Jacobsthal matrix. Then insert this matrix into Paley I and verify the four row lengths and six pairwise dot products.
+
+\writeup Over $\mathbb F_3$ the quadratic character is
+\[
+\chi(0)=0,\qquad \chi(1)=1,\qquad\chi(2)=-1.
+\]
+Index the rows and columns of $Q$ by $0,1,2$, and use $Q_{xy}=\chi(x-y)$, with subtraction modulo $3$. For instance $Q_{0,1}=\chi(-1)=\chi(2)=-1$, while $Q_{1,0}=\chi(1)=1$. Thus
+\[
+Q=\begin{pmatrix}
+0&-1&1\\
+1&0&-1\\
+-1&1&0
+\end{pmatrix}.
+\]
+Paley I sets
+\[
+S=\begin{pmatrix}0&\mathbf j^{\mathsf T}\\-\mathbf j&Q\end{pmatrix},
+\qquad H=I+S.
+\]
+In the order chosen above, this gives
+\[
+H=\begin{pmatrix}
+1&1&1&1\\
+-1&1&-1&1\\
+-1&1&1&-1\\
+-1&-1&1&1
+\end{pmatrix}.
+\]
+Every row contains four entries from $\{-1,1\}$, so its squared length is $4$. The first row has dot product $0$ with each of the last three rows, because each of those has two $+1$ and two $-1$ entries. The remaining three off-diagonal dot products are, in row order,
+\[
+\begin{aligned}
+r_2\cdot r_3&=1+1-1-1=0,\\
+r_2\cdot r_4&=1-1-1+1=0,\\
+r_3\cdot r_4&=1-1+1-1=0.
+\end{aligned}
+\]
+The Gram matrix therefore has $4$ on the diagonal and $0$ elsewhere:
+\[
+HH^{\mathsf T}=4I.
+\]
+The general character-sum proof of Paley I gives exactly these cancellations for every permissible prime power $q$, without needing to list the rows individually.
+\end{solution}

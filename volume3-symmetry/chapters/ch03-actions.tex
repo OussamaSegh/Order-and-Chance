@@ -5,11 +5,15 @@ How many necklaces can be made with $6$ beads in $3$ colours, if two necklaces t
 Not $3^6/6$, which is not even an integer. The right answer, $130$, comes from averaging over the group.
 \end{center}
 
-The counting formula at the heart of this chapter is called ``Burnside's lemma'', and it is not Burnside's: he stated it in his 1897 book,
-attributing it to Frobenius (1887), and Cauchy had used it in 1845. A 1979 paper by Peter Neumann was titled \emph{A lemma that is not Burnside's}.
-Whoever owns it, it turns hard counting problems, such as necklaces, colourings of a cube or chemical isomers, into an average that can be done by hand.
+String six beads together, each either dark or light, and fasten the ends. If the necklace can turn freely, rotating the beads does not make a new necklace. How many different necklaces are there?
 
-Groups were born as groups of transformations, and they are most useful when they act on something: the rotations of a cube act on its faces, $\mathfrak S_n$ acts on $n$ objects, a group acts on itself by conjugation. An action splits the set into orbits, and the size of an orbit is linked to the group by a simple formula. From it come three things: a counting method for objects up to symmetry (Burnside, P\'olya), the first structure theorems for finite groups (the class equation, Cauchy's theorem), and the main tool of Chapter~5.
+There are $2^6=64$ colour strings if we choose a starting bead and a direction. Dividing $64$ by $6$ seems tempting. It is wrong. The all-dark necklace remains unchanged under every rotation, while a necklace with just one dark bead has six distinct positions. We cannot pretend that every necklace comes in a group of six strings.
+
+A \emph{group action} is a way for a group to move objects. Here the group consists of six rotations, and the objects are the $64$ colour strings. Strings connected by rotations form an \emph{orbit}. To count necklaces, we must count orbits, not strings.
+
+There are two ideas to uncover. First, the number of moves that change a particular object is controlled by the number that leave it fixed: the orbit--stabiliser theorem. Second, if we count the fixed strings for each rotation and average those counts, we get the number of orbits. That is Burnside's lemma. For our necklace, the answer will be $14$.
+
+The same fixed-point count works on a group acting on itself by conjugation. It divides the group into conjugacy classes and begins to explain why groups of prime-power order have special subgroups. Counting necklaces and understanding finite groups turn out to use the same move.
 
 \section{Actions, orbits and stabilisers}
 
@@ -56,7 +60,12 @@ Let $G$ act on $X$ and $x\in X$.
 (c) $k\cdot(g\cdot x)=g\cdot x$ iff $g^{-1}kg\cdot x=x$ iff $g^{-1}kg\in G_x$ iff $k\in gG_xg^{-1}$.
 \end{proof}
 
+\paragraph{Why this works.}
+Some moves look different but take $x$ to the same place. Which ones? Exactly those that differ by a move fixing $x$. That is why the right objects to count are the cosets of $G_x$. For the six-bead necklace with one dark bead, only the identity rotation fixes the colouring, so the orbit contains $6/1=6$ strings. For the all-dark colouring every rotation fixes it, so the orbit contains $6/6=1$ string. Both results come from the same formula; no special exception is needed for symmetric objects.
+
 This gives a second proof that the cube has $24$ rotations: they act transitively on the $6$ faces, and the stabiliser of the top face is the group of $4$ rotations about the vertical axis, so there are $6\times4=24$ of them.
+
+Orbit--stabiliser counts how many positions one object can reach. To count all distinct objects up to symmetry, we need to add those orbit counts without listing the orbits first. Counting pairs of a symmetry and an object it fixes gives the needed average.
 
 \section{Counting orbits}
 
@@ -71,8 +80,38 @@ Let a finite group $G$ act on a finite set $X$. The number of orbits is the aver
 \]
 \end{theorem}
 \begin{proof}
-Count the pairs $(g,x)$ with $g\cdot x=x$ in two ways. Grouping by $g$ gives $\sum_g|X^g|$; grouping by $x$ gives $\sum_x|G_x|$. By orbit--stabiliser, $|G_x|=\frac{|G|}{|G\cdot x|}$, so the points of a single orbit $O$ contribute $|O|\cdot\frac{|G|}{|O|}=|G|$. Hence $\sum_g|X^g|=|G|\cdot|X/G|$.
+Consider the set
+\[
+\mathcal P=\{(g,x)\in G\times X:g\cdot x=x\}.
+\]
+An element of $\mathcal P$ consists of a group element together with a point that it fixes. There are two ways to count these pairs.
+
+First fix $g$. It appears in one pair for each element of $X^g$, the set of points fixed by $g$. Therefore
+\[
+|\mathcal P|=\sum_{g\in G}|X^g|.
+\]
+Now fix $x$. It appears once for each element of its stabiliser $G_x$, so also
+\[
+|\mathcal P|=\sum_{x\in X}|G_x|.
+\]
+
+To simplify the second sum, group the points into orbits. If $O$ is one orbit and $x\in O$, orbit--stabiliser gives $|G_x|=|G|/|O|$. Every point of $O$ has a stabiliser of the same size. Thus the entire orbit contributes
+\[
+\sum_{y\in O}|G_y|=|O|\frac{|G|}{|O|}=|G|.
+\]
+Each orbit contributes exactly one copy of $|G|$, however symmetric its points happen to be. We conclude that
+\[
+\sum_{g\in G}|X^g|=|\mathcal P|=|G|\cdot|X/G|.
+\]
+Divide by $|G|$ to obtain Burnside's formula.
 \end{proof}
+
+\paragraph{Why this works.}
+Try the six-bead example before memorising the average. The identity fixes all $64$ binary strings. Rotating one or five places fixes only the two constant strings. A rotation by two or four places has two bead cycles, so it fixes $2^2=4$ strings. The half-turn has three cycles, so it fixes $2^3=8$. The answer is
+\[
+\frac{64+2+4+8+4+2}{6}=14.
+\]
+Each colouring contributes as many pairs $(g,x)$ as the size of its stabiliser. Orbit--stabiliser makes the total contribution of \emph{every orbit} exactly $|G|$. That is the reason the average counts necklaces rather than simply estimating them.
 
 For the necklaces of the opening with $2$ colours, the rotation by $k$ steps of a $6$-bead necklace fixes a colouring iff the colouring is constant on the cycles of the rotation, which has $\gcd(k,6)$ cycles. The numbers of fixed colourings for $k=0,\dots,5$ are $64,2,4,8,4,2$, whose average is $\frac{84}6=14$. The $14$ necklaces are drawn in Figure~\ref{fig:necklaces}.
 
@@ -109,6 +148,8 @@ N(n,k)=\frac1n\sum_{d\mid n}\varphi(d)\,k^{n/d}.
 \]
 For $n=6$, $k=3$: $\frac16(729+27+2\cdot9+2\cdot3)=130$.
 \end{example}
+
+Rotations act on coloured necklaces. A group can also act on its own elements, by conjugation. The resulting orbits are conjugacy classes, and the same counting idea produces strong information about groups whose order is a power of a prime.
 
 \section{Conjugacy classes and \texorpdfstring{$p$}{p}-groups}
 
@@ -312,31 +353,124 @@ In a partition fixed by the rotation, the $p$ rotated elements are either all in
 \section{Solutions}
 
 \begin{solution}{ex:cubefaces}
-\idea Burnside (or P\'olya with $k=3$): sum $3^{c(g)}$ over the $24$ rotations. Rotations of the same kind have the same cycle structure on the faces, so only five computations are needed.
-\writeup The cycles on the $6$ faces are: identity, $6$ cycles; quarter turn about a face axis ($6$ rotations), $2$ fixed faces and a $4$-cycle, so $3$ cycles; half turn about a face axis ($3$ rotations), $2$ fixed faces and two $2$-cycles, $4$ cycles; third turn about a diagonal ($8$ rotations), two $3$-cycles; half turn about an edge axis ($6$ rotations), three $2$-cycles. By Theorem~\ref{thm:polya} the number of colourings is
+\idea A colouring is fixed by a rotation exactly when every face in the same cycle has the same colour. A rotation with $c$ cycles on the six faces fixes $3^c$ colourings. Sort the $24$ rotations by their cycle structure, then apply Burnside's lemma.
+
+\writeup We must count each rotation, not just each rotation axis. The five types are:
+\[
+\begin{array}{l|r|l|r}
+\text{rotation}&\text{number}&\text{cycles on the six faces}&\text{fixed colourings}\\\hline
+\text{identity}&1&1^6&3^6\\
+90^\circ,\ 270^\circ\text{ about opposite faces}&6&1^2\,4&3^3\\
+180^\circ\text{ about opposite faces}&3&1^2\,2^2&3^4\\
+120^\circ,\ 240^\circ\text{ about opposite vertices}&8&3^2&3^2\\
+180^\circ\text{ about opposite edges}&6&2^3&3^3
+\end{array}
+\]
+For example, a quarter-turn fixes the two faces on its axis and cycles the other four. Thus we freely choose one colour for each of the two fixed faces and one for the four moving faces: $3^3=27$ fixed colourings. A rotation about opposite vertices has two three-cycles, hence only $3^2=9$ fixed colourings.
+
+The counts of rotations sum to $1+6+3+8+6=24$, as required. Burnside's formula now gives
 \[
 \begin{aligned}
-N&=\frac1{24}\left(3^6+6\cdot3^3+3\cdot3^4+8\cdot3^2+6\cdot3^3\right)\\
-&=\frac{729+162+243+72+162}{24}=\frac{1368}{24}=57.
+|X/G|
+&=\frac{1}{24}\left(3^6+6\cdot3^3+3\cdot3^4+8\cdot3^2+6\cdot3^3\right)\\
+&=\frac{729+162+243+72+162}{24}
+=\frac{1368}{24}
+=\boxed{57}.
 \end{aligned}
 \]
+The division by $24$ comes \emph{after} counting fixed colourings. Dividing the total $3^6$ directly by $24$ would be wrong because some colourings have non-trivial rotational symmetries.
 \end{solution}
 
 \begin{solution}{ex:fermatnecklace}
-\idea The necklace formula is a fraction that must be an integer, since it counts something. For a prime $p$, that integrality is Fermat's theorem.
-\writeup For $n=p$ prime, Example~\ref{ex:necklaceformula} gives $N(p,k)=\frac1p\left(k^p+(p-1)k\right)$. This is an integer, so $p\mid k^p+(p-1)k=k^p-k+pk$, i.e.\ $k^p\equiv k\pmod p$.
-Directly: the $k$ constant colourings are fixed by every rotation. A non-constant colouring has an orbit whose size divides $p$ and is not $1$ (a colouring fixed by a non-trivial rotation of order $p$ is constant on its single cycle), so the orbit has $p$ elements. The $k^p-k$ non-constant colourings thus split into orbits of size $p$.
+\idea A necklace is a rotation orbit. When the number of beads is prime, an orbit can have only one bead-pattern or $p$ distinct rotations. The one-element orbits are precisely the constant colourings.
+
+\writeup Fix an integer $k\ge1$ of available colours and a prime $p$. A linear arrangement of $p$ beads has $k^p$ possible colourings. The cyclic group of $p$ rotations acts on these arrangements.
+
+By the necklace formula (Example~\ref{ex:necklaceformula}), the number of rotation orbits is
+\[
+N(p,k)=\frac1p\bigl(k^p+(p-1)k\bigr).
+\]
+This is an integer because it counts necklaces, so
+\[
+p\mid k^p+(p-1)k
+  =(k^p-k)+pk.
+\]
+Subtract the multiple $pk$ to obtain
+\[
+\boxed{k^p\equiv k\pmod p}.
+\]
+This also holds for $k=0$, for which there is no colouring when $p>0$; the congruence is immediate.
+
+Here is the direct argument, which explains the arithmetic cancellation. A colouring fixed by a rotation through a non-zero number of positions must be constant: when $p$ is prime, repeatedly applying such a rotation visits all $p$ bead positions. There are exactly $k$ constant colourings.
+
+Every other colouring has a rotation orbit larger than $1$. Orbit--stabiliser says its orbit size divides the prime $p$, so the size must be $p$. Thus the $k^p-k$ non-constant colourings split into disjoint sets of $p$, giving $p\mid(k^p-k)$.
+
+Finally, the case $p\mid k$ is included automatically; no assumption that the number of colours is invertible modulo $p$ was used. This is the full congruence $k^p\equiv k$, not merely the unit-group form $k^{p-1}\equiv1$.
 \end{solution}
 
 \begin{solution}{ex:classesD}
-\idea Central elements are alone in their class; for the others, conjugating by the generators is enough, and the class equation checks the bookkeeping.
-\writeup In $D_4$: $Z(D_4)=\{e,r^2\}$ (Exercise~\ref{ex:dihedralcentre}). $srs^{-1}=r^{-1}=r^3$, so $\{r,r^3\}$ is a class. $rsr^{-1}=sr^{-2}=sr^2$, so $s$ and $sr^2$ are conjugate, and likewise $sr$ and $sr^3$; the reflections through vertices are never conjugate to those through edge midpoints (conjugation by $r^k$ or $sr^k$ changes the exponent of $r$ by an even number). Classes: $\{e\},\{r^2\},\{r,r^3\},\{s,sr^2\},\{sr,sr^3\}$, and $8=2+2+2+2$.
-In $Q_8$: $Z(Q_8)=\{\pm1\}$; $jij^{-1}=ji(-j)=-jij=-i$ (as $ij=k$ and $jk=i$), so $\{\pm i\}$ is a class, and likewise $\{\pm j\},\{\pm k\}$. Classes: $\{1\},\{-1\},\{\pm i\},\{\pm j\},\{\pm k\}$, and $8=2+2+2+2$.
+\idea First identify central elements, which form singleton conjugacy classes. Then conjugate each remaining generator by $r$ and $s$, and count the resulting classes. The class equation must record the individual sizes $1,1,2,2,2$, not just sum conveniently to $8$.
+
+\writeup In $D_4=\langle r,s:r^4=s^2=e,\ srs=r^{-1}\rangle$, the centre is $\{e,r^2\}$ by Exercise~\ref{ex:dihedralcentre}. These give two singleton classes. Also
+\[
+srs^{-1}=r^{-1}=r^3,
+\]
+so $\{r,r^3\}$ is one conjugacy class. The reflections split into two classes. Indeed, using $rs=sr^{-1}$,
+\[
+rsr^{-1}=sr^{-2}=sr^2.
+\]
+Thus $s$ is conjugate to $sr^2$, and similarly $sr$ is conjugate to $sr^3$. Conjugating any reflection $sr^k$ by either generator changes $k$ by an even integer (or sends $k$ to its negative), so an even exponent cannot become an odd one. The five classes are exactly
+\[
+\boxed{\{e\},\quad\{r^2\},\quad\{r,r^3\},
+       \quad\{s,sr^2\},\quad\{sr,sr^3\}}.
+\]
+Their class equation is $8=1+1+2+2+2$.
+
+For $Q_8=\{\pm1,\pm i,\pm j,\pm k\}$, the elements $\pm1$ are central. Conjugation preserves order, and the multiplication rules give
+\[
+jij^{-1}=j\,i\,(-j)=-i.
+\]
+So $i$ and $-i$ are conjugate. The same calculation with the roles of $i,j,k$ rotated gives the three two-element classes $\{\pm i\}$, $\{\pm j\}$ and $\{\pm k\}$. No two of these classes can merge: the centraliser of $i$ is $\{\pm1,\pm i\}$, giving a class of size $8/4=2$, and similarly for $j,k$.
+
+Therefore
+\[
+\boxed{\{1\},\quad\{-1\},\quad\{\pm i\},
+       \quad\{\pm j\},\quad\{\pm k\}}
+\]
+is the complete class list for $Q_8$, and once again the class equation is $8=1+1+2+2+2$. The equality of class sizes does not mean that the two groups are isomorphic.
 \end{solution}
 
 \begin{solution}{ex:p2}
-\idea The centre is non-trivial (Corollary~\ref{cor:pgroup}). If it were of order $p$, the quotient by it would have order $p$, hence be cyclic, and a group with cyclic quotient by its centre is abelian, so its centre would be everything: a contradiction.
-\writeup $|Z(G)|$ divides $p^2$ and is not $1$. If $|Z(G)|=p$, then $G/Z(G)$ has order $p$, so it is cyclic (Corollary~\ref{cor:lagrange}), and $G$ is abelian by Exercise~\ref{ex:centre}; but then $Z(G)=G$ has order $p^2$, a contradiction. So $Z(G)=G$ and $G$ is abelian. If $G$ has an element of order $p^2$, $G\cong\Z/p^2\Z$. Otherwise every $g\ne e$ has order $p$; take $a\ne e$ and $b\notin\langle a\rangle$. Then $\langle a\rangle\cap\langle b\rangle=\{e\}$ (it is a subgroup of $\langle a\rangle$ of order dividing $p$, not containing $b$), both are normal since $G$ is abelian, and $\langle a\rangle\langle b\rangle$ has $p^2$ elements (the products $a^ib^j$ are distinct), so $G\cong\Z/p\Z\times\Z/p\Z$ by Proposition~\ref{prop:internal}.
+\idea A finite $p$-group has a non-trivial centre. In a group of order $p^2$, this almost determines the whole group: if the centre had only $p$ elements, the quotient by it would be cyclic and force the group itself to be abelian.
+
+\writeup Let $G$ have order $p^2$. By the class equation for finite $p$-groups (Corollary~\ref{cor:pgroup}), its centre $Z(G)$ has more than one element. Lagrange gives
+\[
+|Z(G)|\in\{p,p^2\}.
+\]
+
+Suppose $|Z(G)|=p$. Then the quotient $G/Z(G)$ has order $p$ and is cyclic, because every group of prime order is cyclic. But Exercise~\ref{ex:centre} proved that a group with cyclic quotient by its centre is abelian. Therefore $G$ would be abelian, making its centre all of $G$, of order $p^2$. This contradicts $|Z(G)|=p$.
+
+Thus $|Z(G)|=p^2$, so $Z(G)=G$: every group of order $p^2$ is abelian.
+
+It remains to classify it. If $G$ contains an element $g$ of order $p^2$, the subgroup $\langle g\rangle$ has all $p^2$ elements and $G\cong\Z/p^2\Z$.
+
+Otherwise every non-identity element has order $p$, by Lagrange. Choose $a\ne e$, so $\langle a\rangle$ has order $p$; then choose $b\notin\langle a\rangle$. The subgroup $\langle b\rangle$ also has order $p$. Their intersection cannot have order $p$, for then the two groups would coincide and $b$ would belong to $\langle a\rangle$. Thus
+\[
+\langle a\rangle\cap\langle b\rangle=\{e\}.
+\]
+Since $G$ is abelian, both subgroups are normal and commute. Their product contains
+\[
+\frac{|\langle a\rangle|\,|\langle b\rangle|}
+{|\langle a\rangle\cap\langle b\rangle|}
+=p^2
+\]
+elements, so it equals $G$. The internal direct product theorem gives
+\[
+G\cong\langle a\rangle\times\langle b\rangle
+\cong\Z/p\Z\times\Z/p\Z.
+\]
+
+The two possibilities are not isomorphic: one has an element of order $p^2$, the other does not. Hence they are exactly the two isomorphism types of groups of order $p^2$.
 \end{solution}
 
 \begin{solution}{ex:smallestprime}
@@ -414,7 +548,7 @@ $e^{2i\pi j/n}$ is a primitive $m$-th root of unity, this is the value given by 
 (d) By Burnside's lemma (Volume~3, Chapter~3), the number of orbits is the average number of fixed points. With $F$ the polynomial $\qbinom nk$, it is
 $\frac1n\sum_{j=0}^{n-1}F(e^{2i\pi j/n})=\frac1n\sum_{m\mid\gcd(n,k)}\varphi(m)\binom{n/m}{k/m}$. For $n=6$, $k=3$:
 $\frac16\bigl(20+2\binom21\bigr)=4$.
-\tools Volume~3, Chapter~3 (Burnside's lemma); Volume~1, Chapter~5 (roots of unity); Volume~5, Chapter~1 (finite sums).
+\tools Volume~3, Chapter~3 (Burnside's lemma); Volume~1, Chapter~6 (roots of unity); Volume~5, Chapter~1 (finite sums).
 \leads Reiner, Stanton and White (2004) named this the \emph{cyclic sieving phenomenon}: a polynomial that counts a set at
 $q=1$ and counts fixed points of a cyclic action at roots of unity. Dozens of instances are known, for triangulations of
 polygons, plane partitions and Young tableaux, and each one comes from representation theory.
@@ -511,7 +645,7 @@ $\frac{q^{\binom{n+1}2}}{D_n}+\frac{q^{\binom{n+1}2}}{D_{n+1}}=\frac{q^{\binom{n
 
 (d) $A\mapsto I+A$ is a bijection from nilpotent to unipotent matrices, so there are $q^{n^2-n}$ unipotent matrices.
 
-\tools Volume~1, Chapter~7 (rank--nullity, invariant subspaces); Volume~3, Chapter~3 (orbit--stabiliser); counting independent vectors for the
+\tools Volume~1, Chapter~8 (rank--nullity, invariant subspaces); Volume~3, Chapter~3 (orbit--stabiliser); counting independent vectors for the
 order of $GL_n(\mathbb F_q)$.
 \leads $q^{n^2-n}=q^{2\binom n2}$ is the square of the order of a Sylow $p$-subgroup of $GL_n$ (the unitriangular matrices).
 Steinberg proved that in every finite group of Lie type the number of unipotent elements is the square of the order of a Sylow
@@ -538,7 +672,7 @@ $\emptyset\subset S_1\subset\dots\subset S_n$ is. And $q^{k(n-k)}$ becomes $1$: 
 $|GL_n|/(q-1)^n=q^{\binom n2}[n]_q!$ becomes $n!=|\mathfrak S_n|$: the symmetric group behaves like $GL_n$ over a ``field with
 one element''.
 
-\tools Volume~1, Chapter~7; Volume~3, Chapter~3; the Gaussian binomial product formula.
+\tools Volume~1, Chapter~8; Volume~3, Chapter~3; the Gaussian binomial product formula.
 \leads Tits suggested in 1957 that $\mathfrak S_n$ should be $GL_n(\mathbb F_1)$, and the dream of a geometry over $\mathbb F_1$ that
 would explain the Riemann hypothesis by imitating Weil's proof over $\mathbb F_q$ is still alive. Summing over the cells of the
 Bruhat decomposition also gives $[n]_q!=\sum_{\sigma\in\mathfrak S_n}q^{\operatorname{inv}\sigma}$.

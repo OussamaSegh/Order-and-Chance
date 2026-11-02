@@ -6,13 +6,23 @@ And why does every square matrix satisfy its own characteristic polynomial?\\
 One theorem answers both: the structure of finitely generated modules over a principal ideal domain.
 \end{center}
 
-In 1858 Arthur Cayley stated that every square matrix satisfies its own characteristic polynomial. He checked it for $2\times2$ matrices, then for
-$3\times3$, and added that he had ``not thought it necessary to undertake the labour of a formal proof of the theorem in the general case''. We shall
-do the labour, and it will cost almost nothing: the theorem falls out of a structure theorem that also classifies all finite abelian groups.
+How many different abelian groups have $360$ elements? The number factors as
+\[
+360=2^3\cdot3^2\cdot5.
+\]
+There are three ways to split the $2^3$ part into cyclic prime-power factors, two ways for $3^2$, and one for $5$. That gives $3\cdot2=6$ groups up to isomorphism. Why should counting partitions of exponents classify groups?
 
-A vector space is a set where one can add and multiply by scalars from a field. Replace the field by a ring and you get a \emph{module}. Two examples make the notion worth having. An abelian group is a module over $\Z$ ($n\cdot x=x+\dots+x$). A vector space $V$ with a linear map $A$ is a module over $K[X]$ ($P\cdot v=P(A)v$). Both $\Z$ and $K[X]$ are principal ideal domains, and over such rings finitely generated modules are classified by a list of divisors $d_1\mid d_2\mid\dots\mid d_r$, computed by row and column operations on a matrix (the \emph{Smith normal form}). For $\Z$ this classifies finite abelian groups; for $K[X]$ it gives the rational canonical form, the Jordan form, and Cayley--Hamilton, which Volume~1 left for this chapter.
+There is another question that seems unrelated. Every square matrix $A$ satisfies its own characteristic polynomial:
+\[
+\det(XI-A)\big|_{X=A}=0.
+\]
+Why can an expression involving a determinant turn into the zero matrix when we substitute the matrix for $X$?
 
-Throughout, $R$ is a commutative ring; from Section~\ref{sec:smith} on, a principal ideal domain.
+Both questions become easier in the language of \emph{modules}. An abelian group is a module over $\Z$: multiplying by an integer means repeated addition. A vector space with a linear transformation $A$ is a module over $K[X]$: the polynomial $P$ acts as $P(A)$. The underlying idea is the same, even though one case starts with groups and the other with matrices.
+
+Over a principal ideal domain, finitely generated modules have a precise structure. The Smith normal form is the algorithmic side of that structure; the classification of finite abelian groups is one consequence, and rational and Jordan canonical forms are others.
+
+We will prove the structure statement rather than treat it as a black box. Watch how division with remainder turns a matrix problem into a list of invariant factors. Those factors will continue to matter when we study field extensions.
 
 \section{Modules}
 
@@ -51,6 +61,8 @@ For every non-zero ideal $I$ of $\mathcal O$, $[\mathcal O:I]=N(I)$.
 \emph{Conclusion.} Write $I=P_1\cdots P_r$ (Dedekind's theorem). By induction on $r$, using $[\mathcal O:IP]=[\mathcal O:I]\,[I:IP]$ and the multiplicativity of $N$, $[\mathcal O:I]=N(P_1)\cdots N(P_r)=N(I)$.
 \end{proof}
 
+A module can be described by generators and the relations among them. Writing those relations as a matrix lets us simplify the description using allowed row and column operations. The Smith normal form records what survives.
+
 \section{The Smith normal form}\label{sec:smith}
 
 From now on $R$ is a PID. A square matrix over $R$ is invertible over $R$ iff its determinant is a unit (the adjugate formula $B\operatorname{adj}B=(\det B)I$ holds over any commutative ring); these matrices form the group $GL_n(R)$. Row operations (swapping two rows, adding $r$ times one row to another, multiplying a row by a unit) are multiplications on the left by matrices of $GL_m(R)$, and column operations are multiplications on the right.
@@ -64,16 +76,55 @@ The number $r$ and the $d_i$ (up to units) are determined by $A$: if $\Delta_k(A
 \end{theorem}
 
 \begin{proof}
-\emph{Existence.} For $a\ne0$ let $\lambda(a)$ be the number of prime factors of $a$, with multiplicity ($R$ is a UFD by Theorem~\ref{thm:edpidufd}). If $A=0$ there is nothing to do. Otherwise move an entry with smallest $\lambda$ to position $(1,1)$.
+All operations below use invertible changes of rows or columns. Swapping two rows, adding a multiple of one row to another, or multiplying a row by a unit corresponds to multiplying on the left by a matrix in $GL_m(R)$; columns work the same way on the right. Thus every step preserves equivalence under $A\mapsto PAQ$.
 
-\emph{Gcd step.} Suppose $a=a_{11}$ does not divide some $b=a_{i1}$. Let $(a,b)=(d)$, $d=ua+vb$, $a=da'$, $b=db'$, so that $ua'+vb'=1$. The matrix $\begin{psmallmatrix}u&v\\-b'&a'\end{psmallmatrix}$ has determinant $1$ and sends $\binom ab$ to $\binom d0$; acting with it on rows $1$ and $i$ replaces $a_{11}$ by $d$, a proper divisor of $a$ (not an associate, since $a\nmid b$ and $d\mid b$), so $\lambda(d)<\lambda(a)$. The same works on columns if $a_{11}$ does not divide some $a_{1j}$.
+\emph{Find a pivot that divides all entries.}
+If $A=0$, its Smith form is already the zero matrix. Otherwise choose a non-zero entry, move it to position $(1,1)$, and call it $a$.
 
-\emph{Clearing.} If $a_{11}$ divides every entry of the first row and column, subtracting multiples of the first row and column makes them zero except $a_{11}$. If now $a_{11}$ does not divide some entry $a_{ij}$ ($i,j\ge2$), add row $i$ to row $1$ and do a gcd step.
+Suppose an entry $b$ below $a$ in the first column is not divisible by $a$. Because $R$ is a PID, the ideal $(a,b)$ is generated by a gcd $d$, so write
+\[
+d=ua+vb,\qquad a=da',\qquad b=db'
+\]
+for some $u,v,a',b'\in R$. Dividing the first identity by $d$ gives $ua'+vb'=1$. Therefore the row operation
+\[
+\begin{pmatrix}u&v\\-b'&a'\end{pmatrix}
+\binom ab=\binom d0
+\]
+uses a $2\times2$ matrix with determinant $ua'+vb'=1$, hence is invertible over $R$. It replaces the pivot $a$ by $d$. Since $a$ does not divide $b$, $d$ is a \emph{proper} divisor of $a$.
 
-Each gcd step lowers $\lambda(a_{11})$, so after finitely many steps $A$ becomes $\begin{psmallmatrix}d_1&0\\0&A'\end{psmallmatrix}$ with $d_1$ dividing every entry of $A'$. Apply the same procedure to $A'$; its operations do not touch the first row and column, and they replace entries by $R$-linear combinations of entries, so all later entries, in particular $d_2,d_3,\dots$, remain multiples of $d_1$. By induction we reach the form claimed, with $d_1\mid d_2\mid\cdots$.
+The same operation on columns handles an entry of the first row not divisible by $a$. Each time we replace the pivot by a proper divisor, the number $\lambda(a)$ of its irreducible factors, counted with multiplicity, decreases strictly. This number is a non-negative integer because a PID is a UFD (Theorem~\ref{thm:edpidufd}). Hence these reductions cannot continue indefinitely.
 
-\emph{Uniqueness.} The rows of $PA$ are $R$-linear combinations of the rows of $A$; since a determinant is multilinear and alternating in its rows, every $k\times k$ minor of $PA$ is an $R$-linear combination of $k\times k$ minors of $A$, so $\Delta_k(A)$ divides $\Delta_k(PA)$. The same holds for columns and $AQ$. As $P,Q$ are invertible, $\Delta_k(A)$ and $\Delta_k(PAQ)$ divide each other. For the diagonal matrix, a non-zero $k\times k$ minor is a product $d_{i_1}\cdots d_{i_k}$ with $i_1<\dots<i_k\le r$, which is a multiple of $d_1\cdots d_k$ because $d_j\mid d_{i_j}$; so $\Delta_k=d_1\cdots d_k$ for $k\le r$ and $\Delta_k=0$ for $k>r$. Hence $r$ and $d_k=\Delta_k/\Delta_{k-1}$ are determined up to units.
+Once $a$ divides every entry in its row and column, subtract suitable multiples of the first row and first column to clear those entries. We obtain a block matrix
+\[
+\begin{pmatrix}a&0\\0&B\end{pmatrix}.
+\]
+If $a$ divides every entry of $B$, the first pivot is ready. If some entry $b$ of $B$ is not divisible by $a$, add its row to the first row. The pivot stays $a$ because the first-column entry of that row is zero; the first row now contains $b$. Perform the column gcd operation just described. It replaces $a$ by a proper divisor. Thus we eventually reach a block decomposition in which the non-zero pivot $d_1$ divides \emph{every} entry of the remaining block.
+
+\emph{Repeat on the smaller block.}
+Apply the procedure recursively to the $(m-1)\times(n-1)$ block. Its row and column operations act only on that block, so they do not disturb the first row or column. Since every original entry of the block was divisible by $d_1$, and the operations replace entries by $R$-linear combinations of them, all subsequent pivots stay divisible by $d_1$. The next pivot $d_2$ therefore satisfies $d_1\mid d_2$. Continuing, we obtain
+\[
+PAQ=\operatorname{diag}(d_1,\ldots,d_r,0,\ldots,0),
+\qquad d_1\mid d_2\mid\cdots\mid d_r,
+\]
+with non-zero $d_i$. The product of all the invertible row and column operations gives the required $P,Q$.
+
+\emph{Why the diagonal entries are determined by $A$.}
+Let $I_k(A)$ be the ideal generated by all $k\times k$ minors of $A$. A row operation on $A$ makes each $k\times k$ minor of the new matrix an $R$-linear combination of old minors: expand the determinant using multilinearity in its rows. Thus $I_k(PA)\subseteq I_k(A)$. Apply the inverse row operation to obtain the reverse inclusion. The same argument holds for invertible column operations, so
+\[
+I_k(PAQ)=I_k(A).
+\]
+
+For the diagonal matrix, every non-zero $k\times k$ minor is a product of $k$ diagonal entries $d_{i_1}\cdots d_{i_k}$ with $i_1<\cdots<i_k$. Since $d_j\mid d_{i_j}$ for every $j\le k$, every such product is divisible by $d_1\cdots d_k$. The first $k$ diagonal entries give a minor \emph{equal} to that product. Hence
+\[
+I_k(A)=(d_1\cdots d_k)\quad(1\le k\le r),
+\]
+and $I_k(A)=(0)$ for $k>r$.
+
+An ideal of a PID has a generator unique up to multiplication by a unit. These determinantal ideals therefore determine $r$ and successively each $d_k$, up to a unit: $d_1$ generates $I_1$, and the relation $d_1\cdots d_k=\Delta_k(A)$ determines the later $d_k$. That proves uniqueness.
 \end{proof}
+
+\paragraph{Why this works.}
+Think of a presentation matrix as a list of relations. We may replace one relation by a sum of relations, or replace the generators by another basis, without changing the module being presented. The Smith algorithm repeatedly uses division with remainder to put the smallest non-zero relation into the top-left position and make it divide the others. The final diagonal entries are not just convenient numbers: they describe the cyclic pieces of the quotient module. This is why the same algorithm works for an abelian group presented over $\Z$ and for a linear operator presented over $K[X]$.
 
 Over a Euclidean ring such as $\Z$ or $K[X]$, gcd steps can be replaced by Euclidean divisions, and the proof is an algorithm, carried out in Figure~\ref{fig:smith} .
 
@@ -83,6 +134,8 @@ Over a Euclidean ring such as $\Z$ or $K[X]$, gcd steps can be replaced by Eucli
 \caption{The Smith normal form of an integer matrix, by row operations ($R_i$) and column operations ($C_j$). The invariants can be checked with minors: $\Delta_1=\gcd$ of the entries $=2$, $\Delta_3=|\det A|=144=2\cdot6\cdot12$.}
 \label{fig:smith}
 \end{figure}
+
+The diagonal entries of a Smith form do more than simplify a calculation. They tell us what pieces the whole module is made from. Over a principal ideal domain, those pieces are a free part and cyclic torsion factors.
 
 \section{The structure theorem}
 
@@ -115,6 +168,9 @@ Drop the $d_i$ that are units, since then $R/(d_i)=0$.
 These numbers, for all $k$, determine the non-zero exponents $v_p(d_i)$ as a multiset. Since $v_p(d_1)\le\dots\le v_p(d_r)$, they determine each $v_p(d_i)$ once $r$ is known; and $r$ is the largest of the numbers $\dim(T/pT)$, attained at any prime $p\mid d_1$ (which divides every $d_i$). So each $d_i$ is determined up to a unit.
 \end{proof}
 
+\paragraph{Why this works.}
+Existence and uniqueness require different ideas. Existence comes from a presentation $R^n\twoheadrightarrow M$ and the Smith form of its relation matrix. Uniqueness comes from quantities we can recover from $M$ itself: its free rank and, for each prime element $p$, the dimensions of the quotients $p^kT/p^{k+1}T$. Each such dimension counts the cyclic factors that still have at least one more power of $p$ left. For example, in $\Z/8\Z\oplus\Z/4\Z$, the dimensions over $\mathbb F_2$ for $k=0,1,2$ are $2,2,1$. We can read the exponents $3$ and $2$ back from that sequence.
+
 For $R=\Z$, $\Z/d\Z\cong\bigoplus_p\Z/p^{v_p(d)}\Z$ by the Chinese remainder theorem, which gives two equivalent forms of the classification.
 
 \begin{corollary}[finitely generated abelian groups]\label{cor:abelian}
@@ -132,6 +188,8 @@ If $A\in M_n(\Z)$ has $\det A\ne0$, the subgroup $A\Z^n$ has index $|\det A|$ in
 \begin{proof}
 With $PAQ=D$: $A\Z^n=AQ\Z^n$, and $P$ is an automorphism of $\Z^n$ mapping $AQ\Z^n$ onto $D\Z^n$. So $\Z^n/A\Z^n\cong\Z^n/D\Z^n=\bigoplus\Z/d_i\Z$, with $|d_1\cdots d_n|=|\det D|=|\det A|$ elements, since $\det P,\det Q=\pm1$.
 \end{proof}
+
+An abelian group is a module over $\Z$. Now let a polynomial act on a vector by evaluating it at a linear transformation. The same structure theorem that classified finite abelian groups can then describe matrices.
 
 \section{Linear algebra over \texorpdfstring{$K[X]$}{K[X]}}
 
@@ -268,8 +326,23 @@ $\alpha_i^k$. There are only finitely many monic integer polynomials of degree $
 \section{Solutions}
 
 \begin{solution}{ex:ab360}
-\idea Classify each Sylow subgroup separately (one partition per prime), then recombine.
-\writeup The $2$-part has order $8$: $\Z/8$, $\Z/4\oplus\Z/2$ or $(\Z/2)^3$; the $3$-part has order $9$: $\Z/9$ or $(\Z/3)^2$; the $5$-part is $\Z/5$. The six combinations, with their invariant factors (multiply the largest powers of each prime, then the next largest, \dots):
+\idea First factor the order. The classification theorem works prime by prime, and there is one independent choice of partition for each prime exponent. To convert to invariant factors, align the prime-power cyclic factors on the right, filling missing positions with $1$.
+
+\writeup We have
+\[
+360=2^3\cdot3^2\cdot5.
+\]
+An abelian group of order $8$ has three possible elementary-divisor descriptions:
+\[
+\Z/8,\qquad\Z/4\oplus\Z/2,\qquad(\Z/2)^3.
+\]
+An abelian group of order $9$ has two:
+\[
+\Z/9,\qquad(\Z/3)^2.
+\]
+The $5$-primary part must be $\Z/5$. There are therefore $3\cdot2\cdot1=6$ non-isomorphic abelian groups of order $360$. The uniqueness part of the structure theorem ensures that different choices really do give different groups.
+
+The table lists their elementary divisors on the left and their invariant factors on the right:
 \begin{center}
 \small
 \begin{tabular}{ll}
@@ -282,32 +355,188 @@ $2,2,2,9,5$ & $\Z/2\oplus\Z/2\oplus\Z/90$\\
 $2,2,2,3,3,5$ & $\Z/2\oplus\Z/6\oplus\Z/30$
 \end{tabular}
 \end{center}
+For example, consider $\Z/4\oplus\Z/2\oplus(\Z/3)^2\oplus\Z/5$. Align the prime powers into two columns:
+\[
+\begin{array}{c|cc}
+&\text{first}&\text{second}\\\hline
+2\text{-part}&2&4\\
+3\text{-part}&3&3\\
+5\text{-part}&1&5\\\hline
+\text{product}&6&60
+\end{array}.
+\]
+The Chinese remainder theorem combines factors in each column, giving $\Z/6\oplus\Z/60$. The divisibility $6\mid60$ confirms that this is invariant-factor form. Every row in the table similarly has product of invariant factors equal to $360$.
 \end{solution}
 
 \begin{solution}{ex:smithcalc}
-\idea The invariant factors can be read from gcds of minors, without performing the operations.
-\writeup $\Delta_1=\gcd(4,6,6,4)=2$ and $\Delta_2=|\det A|=|16-36|=20$. So $d_1=2$, $d_2=20/2=10$, and by Corollary~\ref{cor:index} the group is $\Z/2\oplus\Z/10$, of order $20$. Check with operations: $R_2\leftarrow R_2-R_1$ gives $\begin{psmallmatrix}4&6\\2&-2\end{psmallmatrix}$; swap the rows and clear: $\begin{psmallmatrix}2&-2\\4&6\end{psmallmatrix}\to\begin{psmallmatrix}2&-2\\0&10\end{psmallmatrix}\to\begin{psmallmatrix}2&0\\0&10\end{psmallmatrix}$.
+\idea The Smith normal form classifies the quotient $\Z^2/A\Z^2$. In a $2\times2$ example we can find its diagonal without guessing any row operations: take the gcd of the entries and then the absolute determinant.
+
+\writeup Let
+\[
+A=\begin{pmatrix}4&6\\6&4\end{pmatrix}.
+\]
+The first determinantal divisor is the gcd of the $1\times1$ minors, which are just the four entries:
+\[
+\Delta_1=\gcd(4,6,6,4)=2.
+\]
+The second determinantal divisor is the gcd of the full-size minors. There is only one:
+\[
+\Delta_2=|\det A|=|4\cdot4-6\cdot6|=|-20|=20.
+\]
+By Smith normal form, the invariant factors satisfy $d_1=\Delta_1$ and $d_1d_2=\Delta_2$. Hence
+\[
+d_1=2,\qquad d_2=10,
+\]
+and the quotient group is
+\[
+\boxed{\Z^2/A\Z^2\cong\Z/2\Z\oplus\Z/10\Z}.
+\]
+
+We can check the answer without the determinantal formula. Start with the defining matrix and perform invertible integer row and column operations:
+\[
+\begin{aligned}
+\begin{pmatrix}4&6\\6&4\end{pmatrix}
+&\xrightarrow{R_2\gets R_2-R_1}
+\begin{pmatrix}4&6\\2&-2\end{pmatrix}\\
+&\xrightarrow{R_1\leftrightarrow R_2}
+\begin{pmatrix}2&-2\\4&6\end{pmatrix}\\
+&\xrightarrow{R_2\gets R_2-2R_1}
+\begin{pmatrix}2&-2\\0&10\end{pmatrix}\\
+&\xrightarrow{C_2\gets C_2+C_1}
+\begin{pmatrix}2&0\\0&10\end{pmatrix}.
+\end{aligned}
+\]
+Every operation is invertible over $\Z$ and hence preserves the isomorphism type of the presented group. The resulting relations are simply $2u=0$ and $10v=0$.
+
+As a final check, the group has $2\cdot10=20$ elements, matching the index $|\det A|=20$. The divisibility $2\mid10$ confirms this is the invariant-factor form.
 \end{solution}
 
 \begin{solution}{ex:unitsmodn}
-\idea For odd prime powers the unit group is cyclic (Volume~2); for $2^k$, track the $2$-adic size of $5^{2^j}-1$, as in Volume~2's lemma for odd $p$.
-\writeup (a) $5=1+2^2\cdot1$, so $t_0=1$. If $5^{2^j}=1+2^{j+2}t_j$ with $t_j$ odd, then $5^{2^{j+1}}=1+2^{j+3}t_j+2^{2j+4}t_j^2=1+2^{j+3}(t_j+2^{j+1}t_j^2)$, and $t_{j+1}=t_j+2^{j+1}t_j^2$ is odd. So $5^{2^{k-3}}\not\equiv1$ and $5^{2^{k-2}}\equiv1\pmod{2^k}$: the order of $5$, a power of $2$ dividing $\varphi(2^k)=2^{k-1}$, is $2^{k-2}$. Powers of $5$ are $\equiv1\pmod4$, so $-1\notin\langle5\rangle$, and $\langle-1\rangle\cap\langle5\rangle=\{1\}$. The group is abelian, so $\langle-1\rangle\langle5\rangle$ is a subgroup isomorphic to $\Z/2\times\Z/2^{k-2}$ (Proposition~\ref{prop:internal}), of order $2^{k-1}=|(\Z/2^k\Z)^*|$: it is everything.
+\idea For powers of $2$, the element $5$ generates the unit classes congruent to $1$ modulo $4$. Track the precise power of $2$ dividing $5^{2^j}-1$; combine $5$ with $-1$ to get all odd residue classes. Then use the Chinese remainder theorem for the modulus $360$.
 
-(b) $360=8\cdot9\cdot5$, so $(\Z/360\Z)^*\cong(\Z/8)^*\times(\Z/9)^*\times(\Z/5)^*\cong(\Z/2)^2\times\Z/6\times\Z/4$ (Theorem~\ref{thm:crtring}, (a), and Volume~2, Chapter~4 for $9$ and $5$). Elementary divisors: $2,2,2,4,3$. Invariant factors: $d_4=4\cdot3=12$, $d_3=d_2=d_1=2$: $(\Z/360\Z)^*\cong\Z/2\oplus\Z/2\oplus\Z/2\oplus\Z/12$, of order $96=\varphi(360)$. In $\bigoplus\Z/d_i$ the smallest $e$ with $ex=0$ for all $x$ is $d_r$, so $e=12$: $a^{12}\equiv1\pmod{360}$ for every $a$ prime to $360$, while Euler's theorem only gives $a^{96}\equiv1$. (This $e$ is Carmichael's function $\lambda(360)$.)
+\writeup \emph{(a) Units modulo $2^k$.} Start with $5=1+4$, so
+\[
+5^{2^0}=1+2^2t_0,\qquad t_0=1\text{ odd}.
+\]
+Suppose inductively that
+\[
+5^{2^j}=1+2^{j+2}t_j,\qquad t_j\text{ odd}.
+\]
+Squaring gives
+\[
+\begin{aligned}
+5^{2^{j+1}}
+&=(1+2^{j+2}t_j)^2\\
+&=1+2^{j+3}t_j+2^{2j+4}t_j^2\\
+&=1+2^{j+3}(t_j+2^{j+1}t_j^2).
+\end{aligned}
+\]
+The parenthesis is odd, since the second summand is even. Thus the formula persists with $t_{j+1}$ odd for all $j\ge0$, and in particular
+\[
+v_2(5^{2^j}-1)=j+2.
+\]
+Consequently $5^{2^{k-2}}\equiv1\pmod{2^k}$, whereas $5^{2^{k-3}}\not\equiv1\pmod{2^k}$ for $k\ge3$. The order of $5$ modulo $2^k$ divides $2^{k-1}=|(\Z/2^k\Z)^*|$ and is therefore a power of $2$. The last two inequalities force that order to be exactly
+\[
+\operatorname{ord}_{2^k}(5)=2^{k-2}.
+\]
+
+Every power of $5$ is congruent to $1$ modulo $4$, while $-1$ is congruent to $3$ modulo $4$. Hence the cyclic subgroups $\langle5\rangle$ and $\langle-1\rangle$ intersect only at $1$. The unit group is abelian, so their product is a subgroup of order
+\[
+2^{k-2}\cdot2=2^{k-1},
+\]
+which equals the full number of odd classes modulo $2^k$. Therefore
+\[
+\boxed{(\Z/2^k\Z)^*
+\cong\Z/2^{k-2}\Z\times\Z/2\Z}
+\]
+for $k\ge3$, with generators $5$ and $-1$.
+
+\emph{(b) Units modulo $360$.} Factor $360=8\cdot9\cdot5$, with pairwise coprime factors. The Chinese remainder theorem for rings restricts to an isomorphism of unit groups:
+\[
+(\Z/360\Z)^*
+\cong(\Z/8\Z)^*\times(\Z/9\Z)^*\times(\Z/5\Z)^*.
+\]
+Part (a) gives $(\Z/8\Z)^*\cong(\Z/2\Z)^2$. The unit groups modulo the odd prime powers $9$ and $5$ are cyclic of orders $\varphi(9)=6$ and $\varphi(5)=4$. Hence
+\[
+(\Z/360\Z)^*
+\cong(\Z/2\Z)^2\times\Z/6\Z\times\Z/4\Z.
+\]
+Split the order-six factor as $\Z/2\Z\times\Z/3\Z$ and align the prime-power factors into invariant-factor columns:
+\[
+\boxed{(\Z/360\Z)^*
+\cong\Z/2\Z\times\Z/2\Z\times\Z/2\Z\times\Z/12\Z}.
+\]
+Indeed $2\mid2\mid2\mid12$, and the order is
+\[
+2\cdot2\cdot2\cdot12=96=\varphi(360).
+\]
+The exponent of a finite abelian group in invariant-factor form is its largest invariant factor. Therefore the least positive $e$ satisfying $a^e\equiv1\pmod{360}$ for \emph{every} unit $a$ is
+\[
+\boxed{e=12}.
+\]
+The congruence with exponent $12$ follows from the decomposition; its minimality follows because an element of the $\Z/12\Z$ factor has order $12$. This is Carmichael's function $\lambda(360)$, considerably smaller than Euler's universal exponent $\varphi(360)=96$.
 \end{solution}
 
 \begin{solution}{ex:similarQ}
-\idea Invariant factors are computed by operations inside $K[X]$, and are unique, so they cannot change when the field grows.
-\writeup Let
+\idea The rational canonical form records a matrix using invariant factors in the polynomial ring $K[X]$. Extending scalars to $L$ cannot change a Smith form already computed using operations over $K[X]$.
+
+\writeup Fix $A\in M_n(K)$. Form the polynomial matrix
 \[
-P(XI-A)Q=\operatorname{diag}(1,\dots,1,d_1,\dots,d_r)
+X I_n-A\in M_n(K[X]).
 \]
-with $P,Q\in GL_n(K[X])$ and $d_i\in K[X]$ monic, $d_1\mid\dots\mid d_r$. The same $P,Q$ lie in $GL_n(L[X])$ (their determinants are non-zero constants), and divisibility in $K[X]$ implies divisibility in $L[X]$; so this is also a Smith form of $XI-A$ over $L[X]$, and by uniqueness the invariant factors of $A$ over $L$ are the $d_i$. If $A$ and $B$ are similar over $L$, they have the same invariant factors over $L$ (Theorem~\ref{thm:frobenius}), hence over $K$, hence they are similar over $K$.
+Because $K[X]$ is a PID, Smith normal form gives invertible polynomial matrices
+\[
+P,Q\in GL_n(K[X])
+\]
+with
+\[
+P(XI_n-A)Q
+=\operatorname{diag}(1,\ldots,1,d_1,\ldots,d_r),
+\]
+where the non-unit invariant factors $d_i\in K[X]$ are monic and satisfy $d_1\mid\cdots\mid d_r$.
+
+Now regard all entries as polynomials over the larger field $L$. The same matrices $P,Q$ remain invertible over $L[X]$: their inverse matrices already have entries in $K[X]\subseteq L[X]$. The displayed diagonalisation is therefore a valid Smith form over $L[X]$ as well. The divisibility relations remain true, and a monic polynomial in $K[X]$ remains monic in $L[X]$.
+
+By uniqueness of Smith normal form, the invariant factors of $A$ over $L$ are \emph{the same polynomials} $d_i$ we computed over $K$, not new factors obtained by splitting the $d_i$ into irreducibles.
+
+Repeat this construction for $B\in M_n(K)$. Suppose that $A$ and $B$ are similar over $L$. The rational canonical form theorem (Theorem~\ref{thm:frobenius}) says that similar matrices have the same invariant factors. Thus their invariant factors agree over $L$. But those are exactly the invariant factors already computed over $K$, so they agree over $K$ too.
+
+Applying the rational canonical form theorem over $K$, we conclude that $A$ and $B$ are similar over $K$. In particular, if two rational matrices become similar after passing to complex coefficients, they were already similar by a rational change of basis.
+
+Notice the distinction from \emph{diagonalisation}: a polynomial irreducible over $K$ may split over $L$, so diagonalisation can become possible only after extending the field. The invariant factors themselves do not change.
 \end{solution}
 
 \begin{solution}{ex:nilpotent}
-\idea Nilpotent means all invariant factors are powers of $X$; the exponents form a partition.
-\writeup If $N^k=0$, $\mu_N$ divides $X^k$, so every invariant factor is $X^{a_i}$, with $a_1\le\dots\le a_r$ and $\sum a_i=\deg\chi_N=n$: a partition of $n$. By Theorem~\ref{thm:frobenius}, $N$ is determined up to similarity by this partition, and every partition occurs (take $\operatorname{diag}(C(X^{a_1}),\dots)$). On $K[X]/(X^a)$, $\ker x^k$ consists of the classes of multiples of $X^{\max(a-k,0)}$, of dimension $\min(a,k)$. So $\dim\ker N^k=\sum_i\min(a_i,k)$, and $\dim\ker N^k-\dim\ker N^{k-1}=\#\{i:a_i\ge k\}$: these numbers determine the partition. For $n=4$: the partitions $4$, $3+1$, $2+2$, $2+1+1$, $1+1+1+1$ give five classes, with $\dim\ker N=1,2,2,3,4$ and the zero matrix last.
+\idea A nilpotent linear map has only the eigenvalue $0$. Over $K[X]$, its invariant factors must therefore be powers of $X$. The sizes of their exponents are a partition, and the dimensions of successive kernels tell us the number of blocks of each size.
+
+\writeup Let $N:K^n\to K^n$ be nilpotent. Some power $N^m$ vanishes, so its minimal polynomial divides $X^m$. Under the structure theorem for the $K[X]$-module associated with $N$, every non-unit invariant factor divides a power of $X$ and must itself equal $X^{a_i}$, with
+\[
+1\le a_1\le\cdots\le a_r,\qquad a_1+\cdots+a_r=n.
+\]
+The positive integers $a_i$ form a partition of $n$. Conversely, for any such partition, the direct sum of nilpotent Jordan blocks of those sizes defines a nilpotent $n\times n$ matrix, and the structure theorem says that two such matrices are similar exactly when their partitions agree.
+
+How do we \emph{read} the partition from a matrix? A block of size $a$ has a basis $v_1,\ldots,v_a$ such that $Nv_1=0$ and $Nv_j=v_{j-1}$ for $j\ge2$. Its $k$-th power kills exactly the first $\min(k,a)$ basis vectors. Hence
+\[
+\dim\ker N^k=\sum_{i=1}^r\min(k,a_i).
+\]
+Subtract consecutive values and define $d_k=\dim\ker N^k-\dim\ker N^{k-1}$, with $\ker N^0=\{0\}$. For each block of size $a_i$, this difference contributes $1$ exactly when $a_i\ge k$. Thus
+\[
+d_k=\#\{i:a_i\ge k\}.
+\]
+The sequence $d_1,d_2,\ldots$ determines the number of blocks of size \emph{exactly} $k$ as $d_k-d_{k+1}$. It therefore recovers the whole partition, with no need to guess a basis.
+
+For $n=4$ there are five partitions and five similarity classes:
+\[
+\begin{array}{c|cccc}
+\text{block sizes}&\dim\ker N&\dim\ker N^2&\dim\ker N^3&\dim\ker N^4\\\hline
+4&1&2&3&4\\
+3+1&2&3&4&4\\
+2+2&2&4&4&4\\
+2+1+1&3&4&4&4\\
+1+1+1+1&4&4&4&4
+\end{array}
+\]
+The last partition gives $N=0$. The two middle partitions both have a two-dimensional kernel at the first step, but their second-kernel dimensions distinguish them. This illustrates why the entire sequence, not merely $\dim\ker N$, is needed.
 \end{solution}
 
 \begin{solution}{ex:diagonalisable}
@@ -339,7 +568,7 @@ coefficients without symmetric functions, take a matrix.
 matrix, whose characteristic polynomial is $P$. Over $\C$, $C$ is similar to an upper triangular matrix $T$ with diagonal
 $\alpha_1,\dots,\alpha_d$ (Jordan form, Volume~3, Chapter~7). Then $C^k$ is similar to $T^k$, upper triangular with diagonal
 $\alpha_i^k$, so $P_k=\prod_i(X-\alpha_i^k)$ is the characteristic polynomial of $C^k\in M_d(\Z)$: $P_k\in\Z[X]$, monic of degree
-$d$. Its coefficients are, up to sign, the elementary symmetric functions of the $\alpha_i^k$ (Volume~1, Chapter~6), and since
+$d$. Its coefficients are, up to sign, the elementary symmetric functions of the $\alpha_i^k$ (Volume~1, Chapter~7), and since
 $|\alpha_i^k|\le1$, the coefficient of $X^{d-j}$ has modulus at most $\binom dj$. There are finitely many monic integer
 polynomials of degree $d$ with these bounds, so the set $R$ of all their roots is finite. For each $i$, the numbers
 $\alpha_i,\alpha_i^2,\alpha_i^3,\dots$ all lie in $R$, so $\alpha_i^k=\alpha_i^l$ for some $k<l$; as $\alpha_i\ne0$ (because
@@ -355,10 +584,10 @@ roots of unity: $e^{i\theta}=e^{2i\pi r}$ with $r\in\Q$, and $\beta=2\cos2\pi r$
 
 (c) $z+\bar z=\frac65$ and $z\bar z=1$, so $z$ is a root of $5X^2-6X+5$, irreducible over $\Q$ (negative discriminant).
 If $z$ were a root of unity, it would be a root of some $\Phi_n$, so $5X^2-6X+5$ would divide $\Phi_n$ in $\Q[X]$; by Gauss's
-lemma (Volume~1, Chapter~6) a primitive divisor of a monic integer polynomial is monic up to sign, and $5X^2-6X+5$ is
+lemma (Volume~1, Chapter~7) a primitive divisor of a monic integer polynomial is monic up to sign, and $5X^2-6X+5$ is
 primitive and not monic. So $z$ is not a root of unity. What fails is integrality: the minimal polynomial is not in
 $\Z[X]$ once made monic, $X^2-\frac65X+1$.
-\tools Volume~1, Chapters~6 and~7 (Viète, Gauss's lemma, characteristic polynomials); Volume~3, Chapters~7 and~10 (Jordan form,
+\tools Volume~1, Chapters~7 and~8 (Viète, Gauss's lemma, characteristic polynomials); Volume~3, Chapters~7 and~10 (Jordan form,
 irreducibility of $\Phi_n$).
 \leads Kronecker proved this in 1857. Lehmer asked in 1933 whether the \emph{Mahler measure} $\prod\max(1,|\alpha_i|)$ of a
 non-cyclotomic irreducible integer polynomial (see Problem~\ref{pb:jensen}) is bounded away from $1$. The smallest known value,

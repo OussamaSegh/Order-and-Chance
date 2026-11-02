@@ -6,29 +6,13 @@ and create order, beauty, and perfection.
 \upshape(Hermann Weyl, \emph{Symmetry}, 1952)
 \end{center}
 
-In the spring of 1896 Richard Dedekind, then sixty-four and living quietly in Brunswick, sent Georg Frobenius in Berlin a problem
-he had carried around for ten years. Take a finite group $G$, attach a variable $x_g$ to each element, and form the $|G|\times|G|$
-determinant $\det(x_{gh^{-1}})_{g,h\in G}$, the \emph{group determinant}. For abelian groups Dedekind knew the answer: the
-determinant splits completely into linear factors, one for each ``character'' of the group. For non-abelian groups it does not,
-and Dedekind had found, for the quaternion group of order $8$, irreducible factors of degree $2$ that he could not explain. He
-offered the problem to Frobenius, who solved it within months. To do so he invented the character theory of finite groups, one
-of the most useful tools of twentieth-century algebra, in a series of papers that started appearing the same year.
+Take a row of numbers, move its last entry to the front, and use the shifted row as the next row of a matrix. Repeat until you have a square matrix. The result is \emph{circulant}. Because every row is a shifted copy of the first, this matrix has an exact symmetry.
 
-This chapter is the abelian half of that story, seen through linear algebra. The guiding principle fits in one line:
-\emph{a matrix that commutes with a symmetry can be diagonalised by the symmetry}. When the symmetry group is abelian, its
-characters give an eigenbasis that does not depend on the matrix at all. We start with circulant matrices, where the group is
-cyclic and the eigenbasis is the discrete Fourier basis, then move to general finite abelian groups and their Cayley graphs.
-Two examples carry the applications: the Paley graphs, whose eigenvalues are quadratic Gauss sums, and the Hamming cube, whose
-symmetric matrices are governed by Krawtchouk polynomials. The chapter ends with Delsarte's linear programming bound, a
-remarkable way of proving that codes cannot be too large by finding a positive semidefinite matrix in disguise.
+The eigenvectors of a circulant matrix can be written down before we know its entries. They are the Fourier vectors made from roots of unity. Changing the entries changes the eigenvalues, but not this eigenvector basis. That is what it means for symmetry to diagonalise a whole family of matrices at once.
 
-The general (non-abelian) theory is Volume~3, Chapter~11; the fast algorithm for the discrete Fourier transform is Volume~5,
-Chapter~7; Gauss sums appear in Volume~2, Chapter~5 and Volume~6, Chapter~11.
+The same idea reappears in Cayley graphs and in the Hamming cube, where the right basis turns distances into simple sums. Once we have those sums, linear algebra yields bounds for codes and explains the factorisation of the group determinant.
 
-\begin{think}
-Compute $\det\begin{pmatrix}a&b&c\\c&a&b\\b&c&a\end{pmatrix}$. Can you see, before expanding, that $a+b+c$ divides it? What
-other linear factors could it have, if you allow complex coefficients?
-\end{think}
+Keep the main example close: whenever you see a matrix built from translates of one pattern, try a Fourier vector before looking for a characteristic polynomial.
 
 \section{Circulant matrices}
 
@@ -49,11 +33,51 @@ $v_a/\sqrt n$ form an orthonormal basis of $\C^n$, so every circulant is normal,
 \]
 \end{theorem}
 \begin{proof}
-$(Sv_a)_j=\omega^{a(j+1)}=\omega^a(v_a)_j$, so $Sv_a=\omega^av_a$ and $S^kv_a=\omega^{ak}v_a$; summing, $p(S)v_a=p(\omega^a)v_a$.
-For $a\ne b$, $\langle v_a,v_b\rangle=\sum_j\omega^{(a-b)j}=0$, the sum of a geometric progression of ratio $\omega^{a-b}\ne1$
-with $\omega^{(a-b)n}=1$; and $\|v_a\|^2=n$. So the unitary matrix $F$ with columns $v_a/\sqrt n$ satisfies $F^*CF=\operatorname
-{diag}(p(\omega^a))_a$, and the determinant is the product of the diagonal.
+We begin with the simplest circulant: the cyclic shift $S$. Fix $a\in\{0,\ldots,n-1\}$ and write
+\[
+v_a=(1,\omega^a,\omega^{2a},\ldots,\omega^{(n-1)a})^{\mathsf T}.
+\]
+Shifting the coordinates once gives
+\[
+(Sv_a)_j=(v_a)_{j+1}=\omega^{a(j+1)}
+=\omega^a(v_a)_j
+\]
+with indices taken modulo $n$; the last coordinate is consistent because $\omega^{an}=1$. Hence $Sv_a=\omega^av_a$. Repeated application gives $S^kv_a=\omega^{ak}v_a$.
+
+Every circulant is a polynomial $C=p(S)$ in that shift, so
+\[
+Cv_a=\left(\sum_{k=0}^{n-1}c_kS^k\right)v_a
+=\left(\sum_{k=0}^{n-1}c_k\omega^{ak}\right)v_a
+=p(\omega^a)v_a.
+\]
+Thus the eigenvalue depends only on the representer polynomial evaluated at an $n$-th root of unity.
+
+To show that we have \emph{all} the eigenvectors, calculate their inner products using the standard Hermitian product on $\C^n$. For $a\ne b$ modulo $n$,
+\[
+\langle v_a,v_b\rangle
+=\sum_{j=0}^{n-1}\omega^{(b-a)j}
+=\frac{1-(\omega^{b-a})^n}{1-\omega^{b-a}}=0.
+\]
+For $a=b$, every entry has modulus $1$, so $\|v_a\|^2=n$. Therefore the $n$ vectors $v_a/\sqrt n$ form an orthonormal basis.
+
+Let $U$ be the unitary matrix with these vectors as columns. The eigenvector identities say
+\[
+U^*CU=\operatorname{diag}\bigl(p(1),p(\omega),\ldots,p(\omega^{n-1})\bigr).
+\]
+A matrix unitarily diagonalised in this way is normal, and its determinant is the product of its eigenvalues:
+\[
+\det C=\prod_{a=0}^{n-1}p(\omega^a).
+\]
+This also explains why \emph{the same} Fourier basis diagonalises every circulant: the basis belongs to the shift $S$, not to the particular coefficients $c_k$.
 \end{proof}
+
+\paragraph{Why this works.}
+A circulant matrix does not care which position we call the first. If $S$ shifts coordinates once, then a circulant $C$ is a polynomial in $S$; it therefore preserves every eigenspace of $S$. Roots of unity provide the eigenvectors of that shift. For example,
+\[
+C=\begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix}
+=I+J
+\]
+has eigenvalue $4$ on the constant vector $(1,1,1)$, and eigenvalue $1$ on the plane where coordinates sum to zero. The Fourier vectors choose a distinguished basis inside that plane. The general circulant theorem is this observation with all $n$ roots of unity written out.
 
 The matrix $F=\frac1{\sqrt n}(\omega^{jk})_{j,k}$ is the \emph{Fourier matrix}, and the theorem says that \emph{the discrete Fourier
 transform diagonalises every circulant at once}. Figure~\ref{linear:fig:circulant} shows the eigenvalues as the values of $p$ along the
@@ -550,19 +574,93 @@ $Q=(a+b+c)^2-3(ab+bc+ca)$ is also divisible by $3$, so $9\mid N=(a+b+c)Q$. Hence
 \end{solution}
 
 \begin{solution}{linear:ex:fourier}
-\idea Square the matrix and recognise a geometric sum.
-\writeup $(F^2)_{jk}=\frac1n\sum_l\omega^{jl}\omega^{lk}=\frac1n\sum_l\omega^{l(j+k)}$, which is $1$ if $j+k\equiv0$ and $0$ otherwise:
-$F^2=R$. Then $F^4=R^2=I$. If $Fv=\lambda v$ with $v\ne0$, then $\lambda^4v=F^4v=v$, so $\lambda^4=1$. (All four values occur as soon as
-$n\ge5$; their multiplicities, roughly $n/4$ each, follow from the trace $\operatorname{tr}F=\frac1{\sqrt n}\sum_j\omega^{j^2}$,
-a quadratic Gauss sum that Gauss evaluated in 1805; the exact multiplicities were worked out by McClellan and Parks in 1972.)
+\idea The Fourier matrix has entries made of roots of unity. Multiply it by itself and use the finite geometric sum: it vanishes unless the exponent is divisible by $n$.
+
+\writeup Number the rows and columns by residues $0,\ldots,n-1$, and write
+\[
+F_{jk}=\frac1{\sqrt n}\omega^{jk},
+\qquad \omega=e^{2\pi i/n}.
+\]
+The entry in row $j$, column $k$ of $F^2$ is
+\[
+\begin{aligned}
+(F^2)_{jk}
+&=\sum_{\ell=0}^{n-1}F_{j\ell}F_{\ell k}\\
+&=\frac1n\sum_{\ell=0}^{n-1}\omega^{j\ell}\omega^{\ell k}\\
+&=\frac1n\sum_{\ell=0}^{n-1}\omega^{\ell(j+k)}.
+\end{aligned}
+\]
+If $j+k\equiv0\pmod n$, every term is $1$, so the sum equals $n$. Otherwise the ratio $\omega^{j+k}$ is a non-trivial $n$-th root of unity, and the geometric sum is
+\[
+\frac{1-(\omega^{j+k})^n}{1-\omega^{j+k}}=0.
+\]
+Thus $(F^2)_{jk}$ is $1$ exactly when $k\equiv-j\pmod n$, and zero otherwise. This is the matrix $R$ that reverses indices:
+\[
+(Rx)_j=x_{-j},\qquad F^2=R.
+\]
+Reversing twice returns the original index, so $R^2=I$. Consequently
+\[
+F^4=(F^2)^2=R^2=I.
+\]
+If $v\ne0$ is an eigenvector of $F$ with eigenvalue $\lambda$, then
+\[
+v=F^4v=\lambda^4v.
+\]
+Hence $\lambda^4=1$, so every eigenvalue lies in
+\[
+\{1,-1,i,-i\}.
+\]
+The result says that these four values are \emph{possible}; it does not assert that all four occur for every $n$. The case $n=1$ already shows why that distinction matters.
 \end{solution}
 
 \begin{solution}{linear:ex:dualgroup}
-\idea A homomorphism out of a product is determined by its restrictions to the factors.
-\writeup Given $\chi\in\widehat G$ and $\psi\in\widehat H$, $(x,y)\mapsto\chi(x)\psi(y)$ is a character of $G\times H$, and the map is a
-homomorphism, injective because $\chi(x)\psi(0)=\chi(x)$ recovers $\chi$, and likewise $\psi$. Both sides have $|G||H|$ elements by
-Theorem~\ref{linear:thm:characters}, so it is an isomorphism. For $\Z/n$, $\chi\mapsto\chi(1)$ is an isomorphism onto the group of $n$-th roots of
-unity, which is cyclic of order $n$, generated by $\omega$.
+\idea A character of a product group can be restricted to each factor. Conversely, two characters can be multiplied to obtain a character on the product. Those two constructions should undo one another.
+
+\writeup Let $G,H$ be finite abelian groups, written additively, and let $\widehat G$ denote the group of complex characters of $G$ under pointwise multiplication. Given $\chi\in\widehat G$ and $\psi\in\widehat H$, define
+\[
+F_{\chi,\psi}:G\times H\to\C^*,
+\qquad
+F_{\chi,\psi}(x,y)=\chi(x)\psi(y).
+\]
+This is a character: for $(x,y),(x',y')\in G\times H$,
+\[
+\begin{aligned}
+F_{\chi,\psi}(x+x',y+y')
+&=\chi(x+x')\psi(y+y')\\
+&=\chi(x)\chi(x')\psi(y)\psi(y')\\
+&=F_{\chi,\psi}(x,y)F_{\chi,\psi}(x',y').
+\end{aligned}
+\]
+
+We obtain a homomorphism
+\[
+\Phi:\widehat G\times\widehat H\longrightarrow\widehat{G\times H},
+\quad(\chi,\psi)\mapsto F_{\chi,\psi}.
+\]
+It is injective: if $F_{\chi,\psi}=F_{\chi',\psi'}$, evaluate first at $(x,0)$, where every character takes the value $1$ at $0$. We get $\chi(x)=\chi'(x)$ for every $x$, so $\chi=\chi'$. Evaluation at $(0,y)$ similarly gives $\psi=\psi'$.
+
+It is also surjective, and we can prove this without counting. Let $F$ be \emph{any} character of $G\times H$. Define
+\[
+\chi(x)=F(x,0),\qquad \psi(y)=F(0,y).
+\]
+Both are characters of their respective groups. Since $(x,y)=(x,0)+(0,y)$,
+\[
+F(x,y)=F(x,0)F(0,y)=\chi(x)\psi(y)=F_{\chi,\psi}(x,y).
+\]
+Thus every character lies in the image, so
+\[
+\boxed{\widehat{G\times H}\cong\widehat G\times\widehat H}.
+\]
+
+For $G=\Z/n\Z$, a character is determined by $\chi([1])$, because $\chi([k])=\chi([1])^k$. The relation $n[1]=[0]$ requires
+\[
+\chi([1])^n=1.
+\]
+Conversely, every $n$-th root of unity $\omega^m=e^{2\pi im/n}$ defines a character $\chi_m([k])=\omega^{mk}$. Multiplication of characters corresponds to addition of exponents modulo $n$, hence
+\[
+\boxed{\widehat{\Z/n\Z}\cong\Z/n\Z}.
+\]
+This identifies the cyclic group with its dual abstractly; the particular identification depends on the chosen primitive root of unity.
 \end{solution}
 
 \begin{solution}{linear:ex:convolution}

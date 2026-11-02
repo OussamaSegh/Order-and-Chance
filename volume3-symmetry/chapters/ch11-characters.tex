@@ -6,11 +6,22 @@ The group $A_5$ has $60$ elements, and $60=1+9+9+16+25$.\\
 Why should the order of a group be a sum of squares?
 \end{center}
 
-A group is abstract; a group of matrices can be computed with. A \emph{representation} of a group $G$ is a way of letting $G$ act by linear maps on a vector space, as the rotations of the cube act on $\R^3$. Around 1896, answering a question of Dedekind, Frobenius discovered that the traces of these matrices, the \emph{characters}, carry a surprising amount of information, and that for each finite group there is a short list of ``irreducible'' representations, from which all others are built, whose dimensions $d_i$ satisfy $\sum d_i^2=|G|$. The proof is linear algebra, a lemma of Schur and an averaging trick.
+The symmetric group on three letters has six elements. Yet
+\[
+6=1^2+1^2+2^2.
+\]
+Those squares are not chosen to make the arithmetic work. They are the dimensions of three irreducible complex representations of $\mathfrak S_3$. For the cube's rotation group $\mathfrak S_4$, the same rule becomes
+\[
+24=1^2+1^2+2^2+3^2+3^2.
+\]
 
-For an abelian group the irreducible representations are one-dimensional: they are the characters of harmonic analysis. For $\Z/n\Z$ they give the discrete Fourier transform, the basis of signal processing and of the analysis of random walks (Volume~4); for $(\Z/q\Z)^*$ they are the Dirichlet characters, with which Dirichlet proved in 1837 that every progression $a,a+q,a+2q,\dots$ with $\gcd(a,q)=1$ contains infinitely many primes (Volume~6).
+A \emph{representation} lets a group act by invertible matrices. Matrices are easier to compute with than an abstract multiplication law: we can add them, take traces, and use linear algebra. A \emph{character} records the trace of each matrix. At first, throwing away almost every entry seems like a terrible loss of information. The surprise is that characters retain enough information to classify irreducible complex representations of a finite group.
 
-Throughout, $G$ is a finite group and vector spaces are finite-dimensional over $\C$.
+The reason is an averaging trick. Average a linear map over a finite group and it begins to respect the group action. That small move leads to Maschke's theorem, Schur's lemma, and the orthogonality relations for characters.
+
+In the abelian case the picture becomes especially simple. Every irreducible complex representation is one-dimensional, so a character is just a homomorphism into the unit circle. The corresponding change of basis is the finite Fourier transform. You have already seen its roots of unity in earlier volumes; now they appear as the coordinates naturally chosen by symmetry.
+
+We will compute tables for $\mathfrak S_4$ and $A_5$, then see how the abelian case reconnects with modular arithmetic and, eventually, the analysis of random walks.
 
 \section{Representations}
 
@@ -36,8 +47,31 @@ $\mathfrak S_3$ has order $6$, and the trivial and sign representations have dim
 Every representation $V$ of $G$ has a $G$-invariant Hermitian inner product: $\langle gv,gw\rangle=\langle v,w\rangle$. Consequently every stable subspace $W$ has a stable complement $W^\perp$, and $V$ is a direct sum of irreducible subrepresentations.
 \end{theorem}
 \begin{proof}
-Take any Hermitian inner product $(\cdot,\cdot)$ on $V$ and average it: $\langle v,w\rangle=\frac1{|G|}\sum_{h\in G}(hv,hw)$. It is Hermitian and positive definite (a sum of such), and $\langle gv,gw\rangle=\frac1{|G|}\sum_h(hgv,hgw)=\langle v,w\rangle$, because $h\mapsto hg$ is a bijection of $G$. If $W$ is stable and $v\in W^\perp$, then for $w\in W$, $\langle gv,w\rangle=\langle v,g^{-1}w\rangle=0$, so $gv\in W^\perp$. Finally, by induction on $\dim V$: if $V$ is not irreducible, $V=W\oplus W^\perp$ with both stable and of smaller dimension.
+Start with an arbitrary Hermitian inner product $(v,w)$ on the complex vector space $V$. It may not be preserved by the representation. We make an invariant one by averaging over the group:
+\[
+\langle v,w\rangle=\frac1{|G|}\sum_{h\in G}(hv,hw).
+\]
+This is again Hermitian. It is positive definite because, for $v\ne0$, every term $(hv,hv)$ is positive: $h$ acts invertibly, so $hv\ne0$. Thus it is an inner product.
+
+For any $g\in G$, replace $h$ by $hg$ in the sum. Right multiplication permutes the elements of $G$, so
+\[
+\langle gv,gw\rangle
+=\frac1{|G|}\sum_{h\in G}(hgv,hgw)
+=\langle v,w\rangle.
+\]
+The new inner product is invariant under $G$.
+
+Let $W\subseteq V$ be an invariant subspace. We claim its orthogonal complement is invariant too. Take $v\in W^\perp$ and $w\in W$. Using invariance of the inner product,
+\[
+\langle gv,w\rangle=\langle v,g^{-1}w\rangle.
+\]
+Because $W$ is invariant, $g^{-1}w\in W$, so the right side is $0$. This holds for every $w\in W$, hence $gv\in W^\perp$.
+
+We have obtained a direct sum $V=W\oplus W^\perp$ of invariant subspaces. If either is reducible, repeat the argument inside it. Their dimensions decrease, so the process ends with a direct sum of irreducible representations.
 \end{proof}
+
+\paragraph{Why this works.}
+The obstacle in decomposing a representation is that an arbitrary linear complement to an invariant subspace need not be invariant. Start with any projection onto the invariant subspace and average its conjugates by the finite group. The average is still a projection onto the same subspace, because every conjugate acts as the identity there, and now it commutes with every group element. Its kernel is consequently invariant. The division by $|G|$ is the essential hypothesis: it works over $\C$ but can fail in a field whose characteristic divides $|G|$.
 
 So each $\rho(g)$ is unitary for $\langle\cdot,\cdot\rangle$. Since $g^n=e$ for $n=|G|$, $\rho(g)$ is a unitary matrix with $\rho(g)^n=I$: it is diagonalisable in an orthonormal basis (spectral theorem, Volume~1), with eigenvalues that are $n$-th roots of unity.
 
@@ -54,6 +88,8 @@ If $G$ is abelian, every irreducible representation has dimension $1$.
 \begin{proof}
 For $h\in G$, $\rho(h)$ commutes with all $\rho(g)$, so it is an intertwiner $V\to V$, hence a scalar. Then every line is stable, and $V$, irreducible, is a line.
 \end{proof}
+
+A representation stores a matrix for each group element. Taking traces reduces each matrix to one number, and those numbers stay constant on conjugacy classes. Orthogonality will show why this surprisingly short record can distinguish irreducible representations.
 
 \section{Characters and orthogonality}
 
@@ -95,6 +131,9 @@ If $V\not\cong V'$, Schur gives $\tilde u=0$ for every $u$, so all these sums va
 If $V\cong V'$, the characters are equal, so we may take $V'=V$, $\rho'=\rho$. Schur gives $\tilde u=\lambda I$, and taking traces, $\operatorname{tr}\tilde u=\operatorname{tr}u$, so $\lambda=\operatorname{tr}(u)/d$. For $u=E_{jk}$, $\operatorname{tr}u=\delta_{jk}$, hence $\frac1{|G|}\sum_g\rho(g)_{ij}\rho(g^{-1})_{kl}=\delta_{il}\delta_{jk}/d$. Put $i=j$, $k=l$ and sum: $\frac1{|G|}\sum_g\chi(g)\chi(g^{-1})=\sum_{j,k}\delta_{jk}/d=d/d=1$.
 \end{proof}
 
+\paragraph{Why this works.}
+Trace is invariant under a change of basis, but that alone does not explain the strong orthogonality formula. The averaging operation takes an arbitrary linear map $V\to V'$ and turns it into one that respects the group action. Schur's lemma then says that the average is zero between different irreducible representations, and a scalar multiple of the identity when they are the same. Summing the diagonal matrix coefficients converts that statement into an inner product of character values. This is why a short list of traces can recognise a whole irreducible representation.
+
 \begin{corollary}\label{cor:mult}
 Let $V_1,\dots,V_r$ be pairwise non-isomorphic irreducible representations with characters $\chi_1,\dots,\chi_r$, and $V$ any representation.
 \begin{enumerate}[label=(\alph*)]
@@ -125,6 +164,8 @@ Let $\chi_1,\dots,\chi_r$ be the irreducible characters, and $g,h\in G$. Then $\
 Let $C_1,\dots,C_r$ be the classes (there are $r$ of them, Theorem~\ref{thm:classes}), and $M$ the $r\times r$ matrix $M_{ij}=\sqrt{|C_j|/|G|}\,\chi_i(C_j)$. Row orthogonality says $M\overline M^{\,T}=I$. A square matrix with a right inverse is invertible with the same inverse, so $\overline M^{\,T}M=I$: $\sum_i\frac{\sqrt{|C_j||C_k|}}{|G|}\overline{\chi_i(C_j)}\chi_i(C_k)=\delta_{jk}$. With $|G|/|C_j|=|C_G(g)|$ for $g\in C_j$ (orbit--stabiliser, Theorem~\ref{thm:orbstab}), this is the claim.
 \end{proof}
 
+The irreducible characters form an orthonormal basis for class functions. Putting their values on conjugacy classes into a table makes the orthogonality relations visible and lets us determine unknown entries from a few constraints.
+
 \section{Character tables}
 
 The \emph{character table} of $G$ lists the values of the irreducible characters on the conjugacy classes; it is square by Theorem~\ref{thm:classes}. Three tools fill it in: one-dimensional representations, permutation representations (whose characters count fixed points), and the orthogonality relations. Two more constructions help. If $\chi$ is a character and $\lambda$ a one-dimensional character, $\lambda\chi$ is a character (of $\rho'(g)=\lambda(g)\rho(g)$ on the same space), irreducible with $\chi$ since $\langle\lambda\chi,\lambda\chi\rangle=\langle\chi,\chi\rangle$ ($|\lambda(g)|=1$). And if $N\trianglelefteq G$, every representation of $G/N$ gives one of $G$ by composing with $G\to G/N$; it is irreducible iff the original is, since the two have the same matrices.
@@ -147,6 +188,8 @@ Five classes, of sizes $1,6,3,8,6$ for $e$, $(12)$, $(12)(34)$, $(123)$, $(1234)
 \begin{remark}
 Characters prove theorems about groups that have nothing to do with linear algebra. Burnside (1904) showed with them that a group of order $p^aq^b$ ($p,q$ primes) is solvable, and Frobenius that in a group acting transitively on a set where no non-identity element fixes two points, the identity together with the elements fixing no point form a normal subgroup. No proof of the latter avoiding characters is known. The dimensions of the irreducible representations always divide $|G|$ (Exercise~\ref{ex:divides}).
 \end{remark}
+
+For an abelian group, every conjugacy class has one element and every irreducible complex representation has dimension one. Its character table is therefore the Fourier matrix. The abstract theory becomes the familiar arithmetic of roots of unity.
 
 \section{Abelian groups: Fourier analysis}\label{sec:fourierab}
 
@@ -324,38 +367,126 @@ Compute $\langle N,\chi\rangle$ with Schur's lemma: $\sum_y\rho(y)M\rho(y)^{-1}$
 \section{Solutions}
 
 \begin{solution}{ex:pairs}
-\idea Characters of permutation representations are fixed-point counts; multiplicities are inner products.
-\writeup On the classes of $e$, $(12)$, $(12)(34)$, $(123)$, $(1234)$ (of sizes $1$, $6$, $3$, $8$, $6$), the numbers of fixed pairs are $6$; $2$ ($\{1,2\},\{3,4\}$); $2$ ($\{1,2\},\{3,4\}$); $0$; $0$. So $\chi=(6,2,2,0,0)$ and
+\idea A permutation representation has a particularly easy character: $\chi(g)$ is the number of basis vectors left fixed by $g$. Here the basis vectors are the six unordered pairs. Count fixed pairs in each conjugacy class, then take the inner products with the irreducible characters.
+
+\writeup Let $V$ be the six-dimensional complex vector space with basis $e_{\{i,j\}}$ for $1\le i<j\le4$. The action of $\mathfrak S_4$ sends $e_{\{i,j\}}$ to $e_{\{g(i),g(j)\}}$. The trace counts the pairs left unchanged as \emph{sets}.
+
+On the five conjugacy types $1,(12),(12)(34),(123),(1234)$, with class sizes $1,6,3,8,6$, the counts are:
 \[
-\begin{gathered}
-\langle\chi,\mathbf1\rangle=\tfrac{6+12+6}{24}=1,\qq\langle\chi,\varepsilon\rangle=\tfrac{6-12+6}{24}=0,\\
-\langle\chi,\chi_2\rangle=\tfrac{12+0+12}{24}=1,\qq\langle\chi,\chi_3\rangle=\tfrac{18+12-6}{24}=1,\\
-\langle\chi,\chi_3'\rangle=\tfrac{18-12-6}{24}=0.
-\end{gathered}
+\begin{array}{c|ccccc}
+\text{type}&1&(12)&(12)(34)&(123)&(1234)\\\hline
+\text{fixed pairs}&6&2&2&0&0
+\end{array}.
 \]
-So $\chi=\mathbf1+\chi_2+\chi_3$, and the dimensions add up: $1+2+3=6$.
+For either involution, the two fixed pairs are $\{1,2\}$ and $\{3,4\}$. A $3$-cycle leaves no two-element subset unchanged; neither does a $4$-cycle. Thus
+\[
+\chi=(6,2,2,0,0).
+\]
+
+Use the irreducible character rows $\mathbf1$, $\varepsilon$, $\chi_2$, $\chi_3$, and $\chi'_3$ of the table in this chapter. Their multiplicities in $V$ are the inner products with $\chi$:
+\[
+\begin{aligned}
+\langle\chi,\mathbf1\rangle&=\frac{6+6(2)+3(2)}{24}=1,\\
+\langle\chi,\varepsilon\rangle&=\frac{6-6(2)+3(2)}{24}=0,\\
+\langle\chi,\chi_2\rangle&=\frac{6(2)+3(2)(2)}{24}=1,\\
+\langle\chi,\chi_3\rangle&=\frac{6(3)+6(2)(1)+3(2)(-1)}{24}=1,\\
+\langle\chi,\chi_3'\rangle&=\frac{6(3)+6(2)(-1)+3(2)(-1)}{24}=0.
+\end{aligned}
+\]
+Therefore
+\[
+V\cong\mathbf1\oplus V_2\oplus V_3.
+\]
+The dimensions provide a final check: $1+2+3=6$. The single trivial summand is the constant vector $\sum_{i<j}e_{\{i,j\}}$, which is visibly fixed by every permutation.
 \end{solution}
 
 \begin{solution}{ex:onedim}
-\idea A homomorphism to an abelian group kills all commutators.
-\writeup A one-dimensional representation is a homomorphism $\lambda:G\to\C^*$. As $\C^*$ is abelian, $\lambda(xyx^{-1}y^{-1})=1$, so $\lambda$ is trivial on $G'$ and factors through $G/G'$; conversely a homomorphism $G/G'\to\C^*$ composed with $G\to G/G'$ is one. The group $G/G'$ is abelian, so it has $|G/G'|$ characters (Section~\ref{sec:fourierab}), and distinct ones give distinct $\lambda$. For $\mathfrak S_n$, $n\ge3$: $G'\subseteq A_n$ because $\mathfrak S_n/A_n$ is abelian; and $[(a\,b),(a\,c)]=\bigl((a\,b)(a\,c)\bigr)^2$ is the square of a $3$-cycle, hence a $3$-cycle, and every $3$-cycle arises this way (it is the square of its inverse). The $3$-cycles generate $A_n$ (Proposition~\ref{prop:gens}), so $G'=A_n$ and there are two one-dimensional representations, trivial and sign; the same holds for $n=2$, as $\mathfrak S_2$ is abelian of order $2$. For $A_4$: $G'\subseteq V_4$ since $A_4/V_4\cong\Z/3\Z$ is abelian, and $G'\ne\{e\}$ since $A_4$ is not abelian. A normal subgroup is a union of classes, of sizes $1,3,4,4$, so a normal subgroup of order $2$ or $4$ inside $V_4$ must have order $1+3=4$: $G'=V_4$, and there are three. For $A_5$, simple and not abelian, $G'$ is a non-trivial normal subgroup, so $G'=A_5$: only the trivial representation.
+\idea A one-dimensional representation is a multiplicative complex-valued homomorphism. Complex multiplication is commutative, so every commutator must act trivially. Therefore a one-dimensional representation only sees the abelianisation $G/G'$.
+
+\writeup Let $\lambda:G\to GL_1(\C)=\C^*$ be a one-dimensional representation. For any $x,y\in G$,
+\[
+\lambda(xyx^{-1}y^{-1})
+=\lambda(x)\lambda(y)\lambda(x)^{-1}\lambda(y)^{-1}=1.
+\]
+Thus every commutator is in $\ker\lambda$, and so is the subgroup $G'$ that they generate. The first isomorphism/correspondence properties of quotients show that $\lambda$ factors uniquely as
+\[
+G\longrightarrow G/G'\overset{\bar\lambda}{\longrightarrow}\C^*.
+\]
+Conversely, composing any homomorphism $\bar\lambda:G/G'\to\C^*$ with the quotient map gives a one-dimensional representation of $G$. These assignments are inverse.
+
+The finite group $G/G'$ is abelian. By the structure theorem for finite abelian groups, it is a product of cyclic groups, and a cyclic factor of order $d$ has exactly $d$ complex characters, one for each $d$-th root of unity. Taking products shows that a finite abelian group $A$ has exactly $|A|$ one-dimensional characters. Hence the number sought for $G$ is $|G/G'|=[G:G']$.
+
+\emph{Symmetric groups.} For $n\ge3$, the sign homomorphism shows $G'\subseteq A_n$. On the other hand, commutators of transpositions with a common point yield three-cycles. In fact, for distinct $a,b,c$,
+\[
+[(a\,b),(a\,c)]
+=((a\,b)(a\,c))^2,
+\]
+which is a three-cycle or its inverse. Every three-cycle is obtained by choosing the labels appropriately. Because three-cycles generate $A_n$, we have $G'=A_n$. Thus $G/G'\cong\Z/2\Z$, so $\mathfrak S_n$ has exactly two one-dimensional representations: the trivial one and sign. For $n=2$ the group itself is cyclic of order $2$, giving the same answer.
+
+\emph{Alternating group $A_4$.} Its normal subgroup
+\[
+V_4=\{e,(12)(34),(13)(24),(14)(23)\}
+\]
+has quotient $A_4/V_4\cong\Z/3\Z$, which is abelian; hence $A_4'\subseteq V_4$. The group $A_4$ is non-abelian, so its derived subgroup is not trivial. A non-trivial normal subgroup inside $V_4$ must contain one double transposition. All three double transpositions are conjugate in $A_4$, so normality forces it to contain all three. Thus $A_4'=V_4$, and there are $|A_4/V_4|=3$ one-dimensional representations.
+
+\emph{Alternating group $A_5$.} Its derived subgroup $A_5'$ is normal. It is non-trivial because $A_5$ is not abelian. Since $A_5$ is simple, $A_5'=A_5$. The abelianisation is trivial, so the only one-dimensional representation is the trivial one.
+
+The answers are therefore
+\[
+\boxed{\mathfrak S_n\ (n\ge2):2,\qquad A_4:3,\qquad A_5:1.}
+\]
 \end{solution}
 
 \begin{solution}{ex:a4}
-\idea Lift the characters of $\Z/3\Z$, then let orthogonality give the last row.
-\writeup Let $\omega=e^{2i\pi/3}$. The classes are $e$, the double transpositions ($V_4\setminus\{e\}$, $3$ elements), the class of $(1\,2\,3)$ and that of $(1\,3\,2)$ ($4$ each). The quotient $A_4\to A_4/V_4\cong\Z/3\Z$ sends $(1\,2\,3)$ to a generator; the three characters of $\Z/3\Z$ give $\lambda_k=(1,1,\omega^k,\omega^{2k})$, $k=0,1,2$. The remaining irreducible has $d^2=12-3=9$, $d=3$. It is the permutation character $(4,0,1,1)$ minus the trivial one, $\chi=(3,-1,0,0)$, of norm $\frac{9+3+0+0}{12}=1$:
+\idea The normal Klein subgroup $V_4$ makes the three linear characters easy: they come from the quotient $A_4/V_4\cong\Z/3\Z$. The last character comes from the permutation action of $A_4$ on four vertices after removing the constant direction.
+
+\writeup The group $A_4$ has order $12$. Its four conjugacy classes have sizes $1,3,4,4$: the identity; the three double transpositions forming $V_4\setminus\{e\}$; and two distinct classes of four $3$-cycles each.
+
+Let $\omega=e^{2\pi i/3}$, so $\omega^3=1$, $\omega\ne1$, and $1+\omega+\omega^2=0$. The quotient
+\[
+A_4/V_4\cong\Z/3\Z
+\]
+has exactly three linear characters, assigning to its generator the values $1,\omega,\omega^2$. Lift them along the quotient map. If we denote the two classes of $3$-cycles by representatives $(1\,2\,3)$ and $(1\,3\,2)$, the resulting characters are
+\[
+\lambda_k=(1,1,\omega^k,\omega^{2k}),
+\qquad k=0,1,2.
+\]
+The first is the trivial character.
+
+The number of irreducible characters equals the number of conjugacy classes, so there is exactly one more irreducible character, say $\chi$. The sum of squares of irreducible degrees equals $|A_4|$, hence if its degree is $d$,
+\[
+1^2+1^2+1^2+d^2=12
+\quad\Longrightarrow\quad d=3.
+\]
+
+We can construct this representation concretely. Let $A_4$ permute the standard basis vectors of $\C^4$. Its permutation character counts fixed letters. On the four classes above, the fixed-letter counts are respectively $4,0,1,1$. The line spanned by $(1,1,1,1)$ is invariant and affords the trivial character. Its three-dimensional complementary subspace
+\[
+W=\{(z_1,z_2,z_3,z_4):z_1+z_2+z_3+z_4=0\}
+\]
+therefore has character
+\[
+\chi=(4,0,1,1)-(1,1,1,1)=(3,-1,0,0).
+\]
+Its norm is
+\[
+\langle\chi,\chi\rangle
+=\frac{1\cdot9+3\cdot1+4\cdot0+4\cdot0}{12}=1,
+\]
+so it is irreducible.
+
+Putting the four rows together gives the complete character table:
 \begin{center}
 \small
 \begin{tabular}{c|cccc}
-& $e$ & $(12)(34)$ & $(123)$ & $(132)$\\
-size & $1$ & $3$ & $4$ & $4$\\\hline
+ & $e$ & $(12)(34)$ & $(123)$ & $(132)$\\
+class size & $1$ & $3$ & $4$ & $4$\\\hline
 $\lambda_0$ & $1$ & $1$ & $1$ & $1$\\
 $\lambda_1$ & $1$ & $1$ & $\omega$ & $\omega^2$\\
 $\lambda_2$ & $1$ & $1$ & $\omega^2$ & $\omega$\\
 $\chi$ & $3$ & $-1$ & $0$ & $0$
 \end{tabular}
 \end{center}
-The $3$-dimensional representation is the rotation group of the regular tetrahedron.
+The dimensions $1,1,1,3$ satisfy $1^2+1^2+1^2+3^2=12$, a final check. Geometrically, $W$ is the complexification of the familiar three-dimensional rotation representation of the regular tetrahedron.
 \end{solution}
 
 \begin{solution}{ex:centralchar}
@@ -372,35 +503,136 @@ For $Q_8=\{\pm1,\pm i,\pm j,\pm k\}$: $Z=\{\pm1\}$, so $d^2\le4$. The five class
 \end{solution}
 
 \begin{solution}{ex:circulant}
-\idea Characters are the common eigenvectors of all translations, so they diagonalise everything that commutes with translations.
-\writeup (a) $n\,\widehat{f*g}(\chi)=\sum_k\sum_jf(j)g(k-j)\overline{\chi(k)}$; with $k=j+l$ and $\overline{\chi(j+l)}=\overline{\chi(j)}\,\overline{\chi(l)}$, this is $\sum_jf(j)\overline{\chi(j)}\sum_lg(l)\overline{\chi(l)}=n\hat f(\chi)\cdot n\hat g(\chi)$.
+\idea Convolution is the algebraic rule for adding independent positions on a cyclic group. Fourier characters turn convolution into scalar multiplication, which makes repeated steps easy to compute. For the convergence rate, compare \emph{absolute values} of the Fourier eigenvalues: the most negative one can decay more slowly than the first positive one.
 
-(b) $(C\chi_m)(k)=\sum_jc(k-j)\chi_m(j)=\sum_lc(l)\chi_m(k-l)=\Bigl(\sum_lc(l)\overline{\chi_m(l)}\Bigr)\chi_m(k)$. So the eigenvalue is $\sum_lc(l)e^{-2i\pi ml/n}=n\hat c(\chi_m)$, and the $n$ characters, orthogonal, diagonalise $C$.
+\writeup Write $\chi_m(k)=e^{2\pi i mk/n}$ for $m,k\in\Z/n\Z$, and use the normalised Fourier transform
+\[
+\hat f(\chi)=\frac1n\sum_{k\in\Z/n\Z}f(k)\overline{\chi(k)}.
+\]
 
-(c) One step has distribution $s=\frac12(\delta_1+\delta_{-1})$, with $n\hat s(\chi_m)=\frac12(e^{-2i\pi m/n}+e^{2i\pi m/n})=\cos\frac{2\pi m}n$. After $t$ steps the distribution is $s^{*t}$, and by (a) $n\widehat{s^{*t}}(\chi_m)=\cos^t\frac{2\pi m}n$. For $m\ne0$ and $n$ odd, $|\cos\frac{2\pi m}n|<1$ ($\frac{2\pi m}n$ is not a multiple of $\pi$), so these tend to $0$, and by Fourier inversion $s^{*t}(k)=\sum_m\widehat{s^{*t}}(\chi_m)\chi_m(k)\to\frac1n$, the uniform distribution. The slowest term, $\cos^t\frac{2\pi}n\approx e^{-2\pi^2t/n^2}$, shows that about $n^2$ steps are needed (Volume~4). For even $n$, $m=n/2$ gives $(-1)^t$: the walk alternates between even and odd points and never converges.
-\end{solution}
+\emph{(a) Transform of a convolution.} Starting from the definitions and substituting $\ell=k-j$, we get
+\[
+\begin{aligned}
+n\,\widehat{f*g}(\chi)
+&=\sum_k\sum_j f(j)g(k-j)\overline{\chi(k)}\\
+&=\sum_j\sum_\ell f(j)g(\ell)\overline{\chi(j+\ell)}\\
+&=\left(\sum_j f(j)\overline{\chi(j)}\right)
+  \left(\sum_\ell g(\ell)\overline{\chi(\ell)}\right)\\
+&=n^2\hat f(\chi)\hat g(\chi).
+\end{aligned}
+\]
+We used the character law $\chi(j+\ell)=\chi(j)\chi(\ell)$ in the third line. Dividing by $n$ proves
+\[
+\boxed{\widehat{f*g}(\chi)=n\,\hat f(\chi)\hat g(\chi)}.
+\]
+
+\emph{(b) Circulant eigenvectors.} Let $C_{kj}=c(k-j)$. Then
+\[
+\begin{aligned}
+(C\chi_m)(k)
+&=\sum_jc(k-j)\chi_m(j)\\
+&=\sum_\ell c(\ell)\chi_m(k-\ell)\\
+&=\chi_m(k)\sum_\ell c(\ell)\overline{\chi_m(\ell)}.
+\end{aligned}
+\]
+Thus $\chi_m$ is an eigenvector with eigenvalue
+\[
+\boxed{\lambda_m=n\hat c(\chi_m)
+=\sum_{\ell=0}^{n-1}c(\ell)e^{-2\pi i m\ell/n}}.
+\]
+The $n$ characters form an orthogonal basis, so this lists all the eigenvalues, with multiplicity.
+
+\emph{(c) The random walk.} A single step has law
+\[
+s=\tfrac12(\delta_1+\delta_{-1}).
+\]
+Starting from $0$, after $t$ independent steps the position law is the $t$-fold convolution $s^{*t}$. The transform of one step is
+\[
+n\hat s(\chi_m)=\tfrac12(e^{-2\pi im/n}+e^{2\pi im/n})
+=\cos\frac{2\pi m}{n}.
+\]
+Applying (a) repeatedly, including $t=0$, gives
+\[
+\boxed{\widehat{s^{*t}}(\chi_m)
+=\frac1n\left(\cos\frac{2\pi m}{n}\right)^t}.
+\]
+Fourier inversion consequently yields the exact probability
+\[
+s^{*t}(k)=\frac1n\sum_{m=0}^{n-1}
+\left(\cos\frac{2\pi m}{n}\right)^t
+e^{2\pi i mk/n}.
+\]
+
+The mode $m=0$ equals $1/n$, the uniform distribution. For odd $n\ge3$, none of the other angles $2\pi m/n$ is a multiple of $\pi$, hence
+\[
+\left|\cos\frac{2\pi m}{n}\right|<1
+\quad (m\ne0).
+\]
+Every non-constant mode therefore tends to zero, proving $s^{*t}(k)\to1/n$ for every $k$.
+
+\emph{Which mode is slowest?} The negative eigenvalues matter as much as the positive ones. For odd $n$,
+\[
+\max_{1\le m<n}\left|\cos\frac{2\pi m}{n}\right|
+=\cos\frac{\pi}{n}.
+\]
+The maximum occurs at $m=(n-1)/2$ and $m=(n+1)/2$, whose eigenvalues are $-\cos(\pi/n)$. Thus the slowest non-constant contribution is of magnitude
+\[
+\cos^t\frac{\pi}{n}
+=\exp\!\left(-\frac{\pi^2t}{2n^2}
++O\!\left(\frac{t}{n^4}\right)\right)
+\]
+for large odd $n$. The negative sign makes that mode alternate with $t$, but its magnitude decays. This is why the natural relaxation scale is of order $n^2$.
+
+For even $n$, the character $m=n/2$ has eigenvalue $\cos\pi=-1$. That component never decays: the walk alternates between the two parity classes, so it does not converge to the uniform law without an aperiodic modification such as a holding probability.
+\end{solution>
 
 \begin{solution}{ex:dirichlet8}
-\idea Decompose the group into cyclic factors and choose independently the values on generators.
-\writeup Modulo $8$: $3^2\equiv5^2\equiv1$ and $15\equiv7$, so $(\Z/8\Z)^*=\{1,3,5,7\}\cong(\Z/2\Z)^2$, and a character is fixed by $\chi(3),\chi(5)\in\{\pm1\}$, with $\chi(7)=\chi(3)\chi(5)$. All values are $\pm1$: the characters are real. Modulo $12$: $5^2\equiv7^2\equiv1$, $5\cdot7\equiv11$, same structure:
+\idea A Dirichlet character modulo $q$ is a character of the unit group $(\Z/q\Z)^*$, extended by $0$ on non-units. For $q=8$ and $12$, every non-identity unit has order $2$. The character is therefore determined by assigning signs to two independent generators.
+
+\writeup Modulo $8$, the units are
+\[
+(\Z/8\Z)^*=\{1,3,5,7\}.
+\]
+They satisfy $3^2=5^2=7^2=1$ and $3\cdot5=7$ modulo $8$. Thus the group is $(\Z/2\Z)^2$, with independent generators $3$ and $5$. For a character $\chi$, multiplicativity forces
+\[
+\chi(3)^2=\chi(5)^2=1,
+\quad\text{so}\quad \chi(3),\chi(5)\in\{\pm1\},
+\qquad\chi(7)=\chi(3)\chi(5).
+\]
+Each independent pair of signs gives exactly one character. Here is the full table on the units:
 \begin{center}
 \small
-\begin{tabular}{c|cccc}
-$\bmod8$ & $1$ & $3$ & $5$ & $7$\\\hline
-$\chi_0$ & $1$ & $1$ & $1$ & $1$\\
-$\chi_1$ & $1$ & $-1$ & $1$ & $-1$\\
-$\chi_2$ & $1$ & $1$ & $-1$ & $-1$\\
-$\chi_3$ & $1$ & $-1$ & $-1$ & $1$
-\end{tabular}\qquad
-\begin{tabular}{c|cccc}
-$\bmod12$ & $1$ & $5$ & $7$ & $11$\\\hline
+\begin{tabular}{c|rrrr}
+modulo $8$ & $1$ & $3$ & $5$ & $7$\\\hline
 $\chi_0$ & $1$ & $1$ & $1$ & $1$\\
 $\chi_1$ & $1$ & $-1$ & $1$ & $-1$\\
 $\chi_2$ & $1$ & $1$ & $-1$ & $-1$\\
 $\chi_3$ & $1$ & $-1$ & $-1$ & $1$
 \end{tabular}
 \end{center}
-For $a=3$: $\frac14\sum_\chi\chi(3)\chi(n)$ (real characters) at $n=1,3,5,7$ is $\frac14(1-1+1-1)=0$, $\frac14(1+1+1+1)=1$, $\frac14(1-1-1+1)=0$, $\frac14(1+1-1-1)=0$; and $0$ for even $n$. It picks out $n\equiv3\pmod8$.
+On residues $0,2,4,6$, each of these Dirichlet characters has value $0$.
+
+Modulo $12$, the units are $\{1,5,7,11\}$, with $5^2=7^2=1$ and $5\cdot7=11$. We obtain the same abstract group and four characters:
+\begin{center}
+\small
+\begin{tabular}{c|rrrr}
+modulo $12$ & $1$ & $5$ & $7$ & $11$\\\hline
+$\psi_0$ & $1$ & $1$ & $1$ & $1$\\
+$\psi_1$ & $1$ & $-1$ & $1$ & $-1$\\
+$\psi_2$ & $1$ & $1$ & $-1$ & $-1$\\
+$\psi_3$ & $1$ & $-1$ & $-1$ & $1$
+\end{tabular}
+\end{center}
+The characters vanish at every residue not coprime to $12$.
+
+We can now check the orthogonality projector of Proposition~\ref{prop:dirichletorth} for $q=8$ and $a=3$. All values are real, so complex conjugation has no effect. Evaluate
+\[
+\frac1{\varphi(8)}\sum_{\chi\bmod8}\overline{\chi(3)}\chi(n)
+=\frac14\sum_{\chi\bmod8}\chi(3)\chi(n).
+\]
+The four products $\chi(3)\chi(n)$ sum to $0$ at $n=1,5,7$ and to $4$ at $n=3$; at even $n$ every character is zero. For instance at $n=3$ every product equals $\chi(3)^2=1$, while at $n=5$ the four products are $1,-1,-1,1$.
+
+The projector is therefore $1$ exactly when $n\equiv3\pmod8$, and $0$ otherwise. Finally, the tables prove that every character modulo $8$ is real: all its values belong to $\{0,\pm1\}$. This is a consequence of the exponent-$2$ unit group, not a general property of Dirichlet characters.
 \end{solution}
 
 \begin{solution}{ex:a5}
@@ -445,7 +677,7 @@ integer (Volume~3, Chapter~11). If it is rational, it is an integer (Volume~2, C
 \{0,\pm\frac12,\pm1\}$ and $m\in\{1,2,3,4,6\}$.
 
 Let $A\in GL_2(\Z)$ with $A^m=I$. Its minimal polynomial divides $X^m-1$, which has distinct roots in $\C$, so $A$ is
-diagonalisable over $\C$ (Volume~1, Chapter~7), with eigenvalues $\lambda_1,\lambda_2$ that are roots of unity, and the order of
+diagonalisable over $\C$ (Volume~1, Chapter~8), with eigenvalues $\lambda_1,\lambda_2$ that are roots of unity, and the order of
 $A$ is the lcm of their orders. The characteristic polynomial has integer coefficients. If $\lambda_1$ is real, so is
 $\lambda_2$, both are $\pm1$, and the order is $1$ or $2$. Otherwise $\lambda_2=\overline{\lambda_1}$, and
 $\operatorname{tr}A=2\operatorname{Re}\lambda_1=2\cos\frac{2\pi a}{d}$ with $d$ the order of $\lambda_1$ and $\gcd(a,d)=1$.
@@ -477,7 +709,7 @@ $r$, so $G$ is dihedral of order $2m$. Hence $|G|\le12$. The order $12$ is attai
 \end{psmallmatrix}$ (characteristic polynomial $X^2-X+1$, order $6$) and $B=\begin{psmallmatrix}0&1\\1&0\end{psmallmatrix}$
 satisfy $BAB^{-1}=A^{-1}$ and generate a dihedral group of order $12$, the symmetries of the hexagonal lattice.
 \tools Volume~3, Chapters~1 and~11 (finite subgroups of $\C^*$, algebraic integers); Volume~2, Chapters~1 and~3 (rational
-algebraic integers, congruences, binomial coefficients modulo $p$); Volume~1, Chapter~7 (diagonalisation, scalar products).
+algebraic integers, congruences, binomial coefficients modulo $p$); Volume~1, Chapter~8 (diagonalisation, scalar products).
 \leads This is the \emph{crystallographic restriction}: a lattice in the plane has no symmetry of order $5$ or $7$, which is
 why quasicrystals (Shechtman, Nobel prize 2011) were a shock. Minkowski (1887) used (b) for all primes at once to find the
 largest finite subgroups of $GL_n(\Q)$, and Bieberbach's theorems (1911) classify crystallographic groups in all dimensions.
@@ -531,7 +763,7 @@ $\nu=1$) and one of degree $2$. So $2=4\cdot1+2\nu$, and $\nu=-1$.
 (d) If $\rho$ is real, averaging any positive definite symmetric bilinear form over $G$ gives an invariant one, a non-zero vector
 of $\operatorname{Sym}^2V^*\cong\operatorname{Sym}^2V$ (as $\chi$ is real, $V\cong V^*$). So $s=1$ and $\nu=1$. For $\mathfrak S_n$ all
 $\nu$ are then $1$, and evaluating (b) at $e$: $\#\{\sigma:\sigma^2=e\}=r(e)=\sum_\chi\chi(1)$.
-\tools Volume~3, Chapter~11 (characters, orthogonality); Volume~1, Chapter~7 (bilinear forms, eigenvalues).
+\tools Volume~3, Chapter~11 (characters, orthogonality); Volume~1, Chapter~8 (bilinear forms, eigenvalues).
 \leads For $n=4$: degrees $1,1,2,3,3$, sum $10$, and $\mathfrak S_4$ has $1+6+3=10$ involutions with the identity. Since the degrees count
 standard Young tableaux, (d) says that there are as many standard Young tableaux with $n$ boxes as involutions; the
 Robinson--Schensted correspondence gives a bijection. The value $\nu=-1$ marks the \emph{quaternionic} representations.
