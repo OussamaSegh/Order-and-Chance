@@ -6,14 +6,15 @@ Lagrange says what subgroup orders are allowed; Sylow says which ones must occur
 Counting them answers the question in three lines.
 \end{center}
 
-Ludwig Sylow taught mathematics at a secondary school in Halden, Norway, for forty years. In 1872 he published, in a ten-page paper, the
-theorems that bear his name, and they became the first tools of a project that took a century: the classification of all finite simple groups,
-the ``atoms'' of finite group theory. The project ended with a list, and the list has a famous last entry, the \emph{Monster}, with about
-$8\cdot10^{53}$ elements. Everything there starts with the counting in this chapter.
+Can a group of order $30$ be simple? Lagrange's theorem says that a subgroup has an order dividing $30$. It does not tell us which subgroups must exist.
 
-Lagrange's theorem forbids: a group of order $12$ has no subgroup of order $5$. It promises nothing: $A_4$ has no subgroup of order $6$ (Proposition~\ref{prop:a4}). Cauchy's theorem (Theorem~\ref{thm:cauchy}) promises subgroups of prime order. The three theorems of Sylow (1872) go much further: if $p^a$ is the largest power of $p$ dividing $|G|$, there are subgroups of order $p^a$, they are all conjugate, and their number is $\equiv1\pmod p$. With these, one can classify the groups of small order, prove that many orders admit no simple group, and set up the notion of a \emph{solvable} group, which Galois theory needs (Chapter~10).
+The first improvement is Cauchy's theorem: because $2$, $3$ and $5$ divide $30$, the group contains an element of each of those orders. Sylow's theorems go further. They promise a subgroup whose order is the largest power of any chosen prime dividing the group, and they control how many such subgroups there can be.
 
-Throughout, $G$ is a finite group, $p$ a prime, and $|G|=p^am$ with $p\nmid m$.
+For order $30$, the number $n_5$ of subgroups of order $5$ must divide $6$ and be congruent to $1$ modulo $5$. Thus $n_5$ is $1$ or $6$. Similarly $n_3$ is $1$ or $10$. If either count is $1$, that subgroup is normal and the group is not simple. If both counts take their larger values, the six subgroups of order $5$ contribute $24$ different non-identity elements, and the ten subgroups of order $3$ contribute another $20$. That is too many for a group of order $30$. No simple group of that order exists.
+
+The counting argument is short once the Sylow theorems are available. The proofs of those theorems require a careful use of group actions, which is why we studied orbits first.
+
+At the end we meet \emph{solvable groups}, groups that can be reduced through normal subgroups to abelian pieces. Hold on to that definition. Galois theory will ask whether the group of a polynomial has exactly this property.
 
 \section{The three theorems}
 
@@ -24,27 +25,84 @@ A \emph{$p$-subgroup} of $G$ is a subgroup whose order is a power of $p$. A \emp
 $N_G(H)$ is the stabiliser of $H$ for the action of $G$ on its subgroups by conjugation, so it is a subgroup, and $H\trianglelefteq N_G(H)$; it is the largest subgroup of $G$ in which $H$ is normal. By the orbit--stabiliser theorem, $H$ has $[G:N_G(H)]$ conjugates.
 
 \begin{lemma}\label{lem:binom}
-$\binom{p^am}{p^a}\equiv m\pmod p$. In particular it is not divisible by $p$.
+Let $p$ be prime, $a\ge0$, and $m\ge1$. Then
+\[
+\binom{p^am}{p^a}\equiv m\pmod p.
+\]
+In particular, if $p\nmid m$ then this binomial coefficient is not divisible by $p$.
 \end{lemma}
 \begin{proof}
-In $(\Z/p\Z)[X]$, $(1+X)^p=1+X^p$, because $p$ divides $\binom pk$ for $0<k<p$ (Volume~2). Raising to the power $p$ repeatedly, $(1+X)^{p^a}=1+X^{p^a}$, so
+We compare coefficients in a polynomial identity over
+$\mathbb F_p$. This is where the characteristic of the
+field makes most binomial coefficients disappear.
+
+First, for a prime $p$,
 \[
-(1+X)^{p^am}=\bigl(1+X^{p^a}\bigr)^m=\sum_{j=0}^m\binom mjX^{jp^a}.
+(1+X)^p\equiv1+X^p\pmod p.
 \]
-Compare the coefficients of $X^{p^a}$: on the left $\binom{p^am}{p^a}$ reduced mod $p$, on the right $\binom m1=m$.
+Indeed the intermediate coefficient $\binom pj$
+is divisible by $p$ whenever $0<j<p$.
+Raise this identity to the $p$-th power
+repeatedly. At each stage we use
+$(U+V)^p=U^p+V^p$ in characteristic $p$,
+and obtain
+\[
+(1+X)^{p^a}=1+X^{p^a}
+\quad\text{in }\mathbb F_p[X].
+\]
+
+Now raise both sides to the power $m$:
+\[
+(1+X)^{p^am}
+=(1+X^{p^a})^m
+=\sum_{j=0}^m\binom mjX^{jp^a}
+\quad\text{in }\mathbb F_p[X].
+\]
+Compare the coefficients of $X^{p^a}$.
+On the left it is $\binom{p^am}{p^a}$;
+on the right only $j=1$ contributes, giving
+$\binom m1=m$. Therefore
+\[
+\boxed{\binom{p^am}{p^a}\equiv m\pmod p}.
+\]
+
+This congruence holds for every positive integer $m$.
+We can conclude that the coefficient is \emph{non-zero}
+modulo $p$ only when $p\nmid m$, which is
+the case needed in the Sylow argument.
+For a small check, with $p=2$, $a=1$, $m=3$,
+we have $\binom62=15\equiv1\equiv3\pmod2$.
 \end{proof}
 
 \begin{theorem}[Sylow I]\label{thm:sylow1}
 $G$ has a subgroup of order $p^a$.
 \end{theorem}
 \begin{proof}[Proof (Wielandt, 1959)]
-Let $\Omega$ be the set of subsets of $G$ with $p^a$ elements. $G$ acts on $\Omega$ by left multiplication, $g\cdot A=gA$. By Lemma~\ref{lem:binom}, $|\Omega|$ is not divisible by $p$, and $\Omega$ is the disjoint union of the orbits, so some orbit $O$ has size prime to $p$. Pick $A\in O$ and let $H=\{g:gA=A\}$ be its stabiliser.
-\begin{itemize}
-\item $|O|=|G|/|H|$ (Theorem~\ref{thm:orbstab}) is prime to $p$, so $p^a$ divides $|H|$.
-\item Fix $x\in A$. For $h\in H$, $hx\in hA=A$, and $h\mapsto hx$ is injective. So $|H|\le|A|=p^a$.
-\end{itemize}
-Hence $|H|=p^a$.
+Write $|G|=p^a m$, with $p\nmid m$. Let $\Omega$ be the collection of all subsets of $G$ containing exactly $p^a$ elements. The group acts on these subsets by left multiplication:
+\[
+g\cdot A=\{ga:a\in A\}.
+\]
+This really is an action: $eA=A$ and $(gh)A=g(hA)$.
+
+The number of such subsets is $\binom{p^am}{p^a}$, which is not divisible by $p$ by Lemma~\ref{lem:binom}. Split $\Omega$ into orbits. If every orbit had size divisible by $p$, then their sum $|\Omega|$ would be divisible by $p$ too. Hence some orbit $O$ has size prime to $p$.
+
+Choose a subset $A\in O$ and let $H=G_A$ be its stabiliser. Orbit--stabiliser now gives
+\[
+|G|=|O|\,|H|.
+\]
+Since $p$ does not divide $|O|$, the factor $p^a$ in $|G|$ must divide $|H|$. This is our lower bound.
+
+For the upper bound, fix any $x\in A$. Every $h\in H$ sends $A$ to itself, so $hx\in A$. The map
+\[
+H\longrightarrow A,\qquad h\longmapsto hx
+\]
+is injective: if $h_1x=h_2x$, multiplying on the right by $x^{-1}$ gives $h_1=h_2$. Thus $|H|\le|A|=p^a$.
+
+We have found a subgroup $H$ whose order is both a multiple of $p^a$ and at most $p^a$. Therefore $|H|=p^a$.
 \end{proof}
+
+\paragraph{Why this works.}
+A subgroup of the desired size appears as a stabiliser. We look at all subsets of $G$ having $p^a$ elements. Their number is not divisible by $p$, so at least one orbit under left translation also has size not divisible by $p$. The orbit--stabiliser formula forces the stabiliser of such a subset to have order divisible by $p^a$. But the stabiliser acts freely on each point of that subset: fixing one element of $G$ under left multiplication forces the group element to be the identity. The stabiliser can therefore have at most $p^a$ elements. The lower and upper bounds meet at exactly $p^a$.
 
 \begin{think}
 Why would all Sylow $p$-subgroups be conjugate? Try $\mathfrak S_3$ and $p=2$: list its subgroups of order $2$ and conjugate one of them. Then guess $n_2$ and $n_3$ for $\mathfrak S_4$.
@@ -59,28 +117,130 @@ Let $P$ be a Sylow $p$-subgroup of $G$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) Let $Q$ be a $p$-subgroup. $Q$ acts on the set $G/P$ of left cosets by left multiplication. There are $m$ cosets, prime to $p$, and each orbit has size $[Q:Q_x]$, a power of $p$; so some orbit has size $1$, i.e.\ some coset $gP$ satisfies $qgP=gP$ for all $q\in Q$. Then $g^{-1}qg\in P$ for all $q\in Q$, i.e.\ $Q\subseteq gPg^{-1}$.
+Write $|G|=p^a m$ with $p\nmid m$, so $|P|=p^a$.
 
-(b) Conjugates of $P$ have order $p^a$. Conversely, if $Q$ is a Sylow $p$-subgroup, by (a) $Q\subseteq gPg^{-1}$, and both have order $p^a$, so $Q=gPg^{-1}$.
+\emph{(a) Every $p$-subgroup fits inside a conjugate of $P$.}
+Let $Q\le G$ be any $p$-subgroup. It acts on the set of left cosets $G/P$ by
+\[
+q\cdot(gP)=(qg)P.
+\]
+This is well defined because a coset is a subset of $G$, and left multiplication sends it to another coset. The set has
+\[
+|G/P|=[G:P]=m
+\]
+elements. Orbit--stabiliser says that each orbit of the $p$-group $Q$ has a size dividing $|Q|$, hence a power of $p$. If every orbit had more than one point, then all orbit sizes would be divisible by $p$, and so would their sum $m$. This contradicts $p\nmid m$.
 
-(c) By (b), $G$ acts transitively on $\operatorname{Syl}_p(G)$ by conjugation, and the stabiliser of $P$ is $N_G(P)$; so $n_p=[G:N_G(P)]$. Since $P\le N_G(P)$, $n_p$ divides $[G:P]=m$.
+Consequently there is a coset $gP$ fixed by every element of $Q$. Being fixed means
+\[
+qgP=gP\quad(q\in Q).
+\]
+Multiplying the cosets on the left by $g^{-1}$ is equivalent to saying $g^{-1}qg\in P$ for every $q\in Q$. Thus
+\[
+g^{-1}Qg\subseteq P,\qquad\text{or}\qquad Q\subseteq gPg^{-1}.
+\]
 
-Now let $P$ itself act on $\operatorname{Syl}_p(G)$ by conjugation. Orbits have size a power of $p$. A fixed point is a Sylow subgroup $Q$ with $xQx^{-1}=Q$ for all $x\in P$, i.e.\ $P\subseteq N_G(Q)$. Then $P$ and $Q$ are both Sylow $p$-subgroups of the group $N_G(Q)$ (their order $p^a$ is the largest possible already in $G$), so by (b) applied to $N_G(Q)$ they are conjugate in $N_G(Q)$. But $Q$ is normal in $N_G(Q)$, so its only conjugate there is itself: $P=Q$. So $P$ is the only fixed point, every other orbit has size divisible by $p$, and $n_p\equiv1\pmod p$.
+\emph{(b) All Sylow subgroups are conjugate.}
+Every conjugate $gPg^{-1}$ has order $p^a$, so it is another Sylow $p$-subgroup. Conversely, let $Q$ itself be Sylow. Part (a) places it inside $gPg^{-1}$ for some $g$. Both groups have $p^a$ elements; an inclusion between two finite sets of the same size is equality. Hence $Q=gPg^{-1}$.
+
+\emph{(c) Count the conjugates.}
+The action of $G$ on its Sylow $p$-subgroups by conjugation is transitive by (b). The elements fixing $P$ form its normaliser
+\[
+N_G(P)=\{g\in G:gPg^{-1}=P\}.
+\]
+Orbit--stabiliser therefore gives
+\[
+n_p=[G:N_G(P)].
+\]
+Since $P\subseteq N_G(P)$, Lagrange gives
+\[
+[G:P]=[G:N_G(P)]\,[N_G(P):P],
+\]
+so $n_p$ divides $[G:P]=m$.
+
+It remains to prove the congruence. Let $P$ act by conjugation on the same set of Sylow subgroups. Each orbit under $P$ has size a power of $p$. Modulo $p$, only orbits of size $1$ matter, so we must count the Sylow subgroups fixed by \emph{all} elements of $P$.
+
+A Sylow subgroup $Q$ is fixed precisely when
+\[
+xQx^{-1}=Q\quad\text{for every }x\in P,
+\]
+that is, when $P\subseteq N_G(Q)$. In this situation both $P$ and $Q$ lie in $N_G(Q)$, and both have the largest possible $p$-power order $p^a$. They are therefore Sylow $p$-subgroups \emph{of the normaliser} too. Part (b), applied to the finite group $N_G(Q)$, says they are conjugate by some element of $N_G(Q)$. Yet $Q$ is normal in its normaliser, so all its conjugates there equal $Q$ itself. It follows that $P=Q$.
+
+Thus $P$ is the unique fixed Sylow subgroup. All the other $P$-orbits have sizes divisible by $p$, and the one fixed orbit has size $1$. Adding their sizes gives
+\[
+n_p\equiv1\pmod p.
+\]
 \end{proof}
+
+\paragraph{Why this works.}
+The last congruence is often the most useful part. We let one Sylow subgroup $P$ act by conjugation on \emph{all} Sylow subgroups. Every orbit has size a power of $p$, so only fixed points count modulo $p$. The proof shows that $P$ itself is the \emph{only} fixed point. Thus the number of Sylow subgroups leaves remainder $1$ when divided by $p$. Together with the divisor condition $n_p\mid |G|/|P|$, this produces a short list of possible counts, which can then be tested against the number of elements of the group.
 
 \begin{corollary}\label{cor:sylownormal}
 A Sylow $p$-subgroup $P$ is normal iff $n_p=1$. In that case $P$ contains every $p$-subgroup of $G$, and every element of order a power of $p$.
 \end{corollary}
 \begin{proof}
-$P$ is normal iff it equals all its conjugates, iff $n_p=1$ by (b). Then (a) puts every $p$-subgroup, in particular every $\langle g\rangle$ with $g$ of order $p^k$, inside $P$.
+Sylow's conjugacy theorem says that every Sylow
+$p$-subgroup is of the form $gPg^{-1}$ for some $g\in G$.
+
+If $P$ is normal, then $gPg^{-1}=P$ for all $g$.
+So all Sylow $p$-subgroups coincide and $n_p=1$.
+Conversely, if $n_p=1$, every conjugate $gPg^{-1}$
+is a Sylow subgroup and must equal $P$.
+This is exactly the definition of normality.
+
+Suppose these equivalent conditions hold.
+The Sylow containment theorem says that any
+$p$-subgroup $H$ lies in a conjugate of $P$.
+There is only one such conjugate, namely $P$,
+so $H\subseteq P$.
+
+If $x$ has order $p^j$, then
+$\langle x\rangle$ is a subgroup of
+order $p^j$, so it lies in $P$.
+In particular $x\in P$.
+This also covers $j=0$, the identity element.
 \end{proof}
 
 \begin{corollary}\label{cor:pk}
 If $p^k$ divides $|G|$, then $G$ has a subgroup of order $p^k$.
 \end{corollary}
 \begin{proof}
-By Theorem~\ref{thm:sylow1} it suffices to show that a group $P$ of order $p^a$ has a subgroup of each order $p^k$, $0\le k\le a$. Induction on $a$; the case $k=0$ is clear. For $k\ge1$, the centre $Z(P)$ is non-trivial (Corollary~\ref{cor:pgroup}), so by Cauchy's theorem it contains an element of order $p$, which generates a subgroup $C$ of order $p$, normal because central. $P/C$ has order $p^{a-1}$, so by induction it has a subgroup of order $p^{k-1}$, which is $K/C$ for some $C\le K\le P$ (Theorem~\ref{thm:iso23}(a)); then $|K|=p^k$.
+Write $|G|=p^am$ with $p\nmid m$ and $a\ge k$.
+Sylow's first theorem gives a subgroup $P$
+of order $p^a$. We will show by induction
+on $a$ that \emph{every} group of order $p^a$
+has subgroups of orders $1,p,\ldots,p^a$.
+
+The case $a=0$ is clear, since the trivial
+group contains its subgroup of order $1$.
+For $a\ge1$, the centre $Z(P)$ is non-trivial
+by Corollary~\ref{cor:pgroup}. Its order
+divides $p^a$, so it is itself divisible
+by $p$. By Cauchy's theorem it contains
+an element $z$ of order $p$.
+Let $C=\langle z\rangle$. Since $C$ is
+central, it is normal in $P$.
+
+The quotient $P/C$ has order $p^{a-1}$.
+For $1\le j\le a$, the induction hypothesis
+gives a subgroup $\bar K\le P/C$ of order
+$p^{j-1}$. The preimage $K$ of $\bar K$
+under the quotient map is a subgroup of $P$
+containing $C$. Its size is
+\[
+|K|=|C|\,|\bar K|=p\cdot p^{j-1}=p^j,
+\]
+because every fibre of the quotient map
+has exactly $|C|$ elements.
+For $j=0$, take $\{e\}$.
+This finishes the induction.
+
+Set $j=k$. The resulting subgroup of $P$
+is also a subgroup of $G$, with order $p^k$.
+This does not claim that every divisor of
+$|G|$ occurs as a subgroup order.
 \end{proof}
+
+The theorems restrict a Sylow count in two ways at once: it must divide an index and equal $1$ modulo the chosen prime. Even a small group rarely leaves many possibilities. Let us see what those arithmetic restrictions force.
 
 \section{Using Sylow}
 
@@ -90,7 +250,50 @@ The method: factor $|G|$, list for each $p$ the divisors of $m$ that are $\equiv
 No group of order $30$ is simple.
 \end{proposition}
 \begin{proof}
-$30=2\cdot3\cdot5$. $n_5$ divides $6$ and is $\equiv1\pmod5$: $n_5\in\{1,6\}$. $n_3$ divides $10$ and is $\equiv1\pmod3$: $n_3\in\{1,10\}$. If neither is $1$, there are $6$ subgroups of order $5$, which pairwise meet in $\{e\}$ (their intersection is a subgroup of a group of prime order), so they contain $6\cdot4=24$ elements of order $5$; likewise $10\cdot2=20$ elements of order $3$. That is $44>30$ elements. So $n_5=1$ or $n_3=1$, and that Sylow subgroup is a proper non-trivial normal subgroup (Corollary~\ref{cor:sylownormal}).
+Suppose $|G|=30=2\cdot3\cdot5$.
+Let $n_5$ and $n_3$ denote the numbers
+of Sylow $5$- and $3$-subgroups.
+Sylow's congruences and divisibility conditions give
+\[
+n_5\mid6,\quad n_5\equiv1\pmod5
+\qquad\Longrightarrow\qquad n_5\in\{1,6\},
+\]
+and
+\[
+n_3\mid10,\quad n_3\equiv1\pmod3
+\qquad\Longrightarrow\qquad n_3\in\{1,10\}.
+\]
+
+Assume neither number equals one. Then there
+are six different subgroups of order five.
+Two different such subgroups intersect only
+at the identity: their intersection is a
+subgroup of prime order five and cannot equal
+both. Each contributes four distinct
+elements of order five, so $G$ has
+\[
+6(5-1)=24
+\]
+different elements of order five.
+
+The same reasoning for the ten distinct
+subgroups of order three supplies
+\[
+10(3-1)=20
+\]
+different elements of order three.
+An element cannot have both orders,
+so these sets are disjoint.
+We have counted $24+20=44$ non-identity
+elements in a group with only $30$
+elements, an impossibility.
+
+Therefore $n_5=1$ or $n_3=1$.
+By Corollary~\ref{cor:sylownormal},
+the corresponding unique Sylow subgroup
+is normal. Its order is $5$ or $3$,
+so it is non-trivial and proper.
+Thus $G$ is not simple.
 \end{proof}
 
 \begin{theorem}[groups of order $pq$]\label{thm:pq}
@@ -102,13 +305,86 @@ Let $p<q$ be primes and $|G|=pq$.
 In particular every group of order $2q$ ($q$ an odd prime) is $\Z/2q\Z$ or the dihedral group $D_q$.
 \end{theorem}
 \begin{proof}
-$n_q$ divides $p$ and is $\equiv1\pmod q$; since $p<q$, $n_q=1$: the Sylow $q$-subgroup $Q=\langle a\rangle$ is normal. Let $P=\langle b\rangle$ be a Sylow $p$-subgroup. $P\cap Q=\{e\}$ (orders are coprime) and $|PQ|=|P||Q|/|P\cap Q|=pq$ (the products $xy$, $x\in P$, $y\in Q$, are distinct), so by Proposition~\ref{prop:semidirect}(b), $G\cong Q\rtimes P$ with $b$ acting by $bab^{-1}=a^u$ for some $u\in(\Z/q\Z)^*$ with $u^p=1$ (since $b^p=e$).
+Let $P$ and $Q$ be Sylow subgroups of orders
+$p$ and $q$ respectively. Because $q>p$,
+the number $n_q$ divides $p$ and satisfies
+$n_q\equiv1\pmod q$. Its only possible
+value is $1$: the alternative $p$ is too
+small to be congruent to $1$ modulo $q$.
+Thus $Q$ is normal in $G$.
 
-(a) $n_p$ divides $q$ and is $\equiv1\pmod p$; as $q\not\equiv1\pmod p$, $n_p=1$. Both $P$ and $Q$ are normal, so $G\cong P\times Q\cong\Z/p\Z\times\Z/q\Z\cong\Z/pq\Z$ (Proposition~\ref{prop:internal} and Theorem~\ref{thm:crt}).
+The groups $P$ and $Q$ have prime orders, hence
+are cyclic. Write $P=\langle b\rangle$ and
+$Q=\langle a\rangle$. Their intersection is
+trivial, because its order divides both
+distinct primes. The products $xy$ with
+$x\in Q$, $y\in P$ are all distinct:
+$xy=x'y'$ implies $x'^{-1}x=y'y^{-1}$
+lies in $Q\cap P=\{e\}$.
+There are $pq$ products, so $QP=G$.
 
-(b) If $u=1$, $G$ is abelian and cyclic as in (a). Otherwise $u$ has order $p$. The group $(\Z/q\Z)^*$ is cyclic of order $q-1$ (primitive roots, Volume~2), so it has exactly one subgroup of order $p$ (Theorem~\ref{thm:cyclic}), and the elements of order $p$ are $u,u^2,\dots,u^{p-1}$. Replacing the generator $b$ of $P$ by $b^k$ ($p\nmid k$) replaces $u$ by $u^k$. So whatever the element of order $p$, after choosing the right generator of $P$ the multiplication rule of $G$ in terms of $a$, $b$ is the same: all these groups are isomorphic. Such a group exists (Proposition~\ref{prop:semidirect}(a)) and is not abelian, since $bab^{-1}=a^u\ne a$.
+Proposition~\ref{prop:semidirect} therefore
+identifies $G$ with a semidirect product
+$Q\rtimes P$. Conjugation by $b$
+is an automorphism of the cyclic group $Q$,
+so it sends its generator $a$ to $a^u$,
+where $u$ is an invertible residue modulo $q$.
+Since $b^p=e$, applying this automorphism
+$p$ times gives
+\[
+u^p\equiv1\pmod q.
+\]
+The group $(\mathbb Z/q\mathbb Z)^*$ of such
+residues is cyclic of order $q-1$ (Volume~2).
 
-For $p=2$: $2$ divides $q-1$, and the only element of order $2$ in $(\Z/q\Z)^*$ is $-1$: $bab^{-1}=a^{-1}$, which is the rule of $D_q$ (rotation $a$, reflection $b$).
+\emph{(a) No non-trivial action when
+$p\nmid(q-1)$.}
+The order of $u$ divides both $p$ and
+$q-1$. If $p\nmid(q-1)$ it must be $1$,
+so $u=1$. Thus $b$ commutes with $a$,
+and consequently $P$ commutes with $Q$.
+The semidirect product is a direct product:
+\[
+G\cong\mathbb Z/q\mathbb Z\times
+\mathbb Z/p\mathbb Z.
+\]
+The factors have coprime orders, and the
+Chinese remainder theorem gives
+\[
+\boxed{G\cong\mathbb Z/pq\mathbb Z}.
+\]
+
+\emph{(b) Actions when $p\mid(q-1)$.}
+Now the cyclic group $(\mathbb Z/q\mathbb Z)^*$
+contains exactly one subgroup of order $p$.
+An element satisfying $u^p=1$ either
+is the identity or has order $p$.
+The first case gives the direct product as
+above. In the second case, choose $u$ of
+order $p$ and define the action
+\[
+b\,a\,b^{-1}=a^u.
+\]
+The resulting semidirect product exists
+by Proposition~\ref{prop:semidirect}(a).
+It is not abelian, because $a^u\ne a$.
+
+All non-trivial actions give isomorphic groups.
+Indeed, any two elements of order $p$
+in the cyclic automorphism group generate
+the same subgroup. They are of the form
+$u$ and $u^k$ with $\gcd(k,p)=1$.
+Replacing the generator $b$ of $P$
+by $b^k$ changes the displayed action
+to exponent $u^k$ without changing $G$.
+
+Hence exactly two isomorphism types occur
+when $p\mid q-1$: the cyclic group and
+the unique non-abelian semidirect product.
+For $p=2$, $u=-1$ is the only element
+of order two in $(\mathbb Z/q\mathbb Z)^*$,
+and the non-abelian case is the dihedral
+group $D_q$ of order $2q$.
 \end{proof}
 
 So a group of order $15$, $33$, $35$, $51$ or $65$ is cyclic, while order $21$ has exactly two groups, $\Z/21\Z$ and $\Z/7\Z\rtimes\Z/3\Z$ . Together with Exercise~\ref{ex:p2}, Exercise~\ref{ex:order8} and Exercise~\ref{ex:order12} below, this gives the complete list of groups of order at most $15$, in Figure~\ref{fig:small}.
@@ -123,6 +399,8 @@ So a group of order $15$, $33$, $35$, $51$ or $65$ is cyclic, while order $21$ h
 \begin{think}
 For $|G|=12$: list the possible values of $n_2$ and $n_3$. Which combinations can occur together? Which group has $n_3=4$?
 \end{think}
+
+Sylow's theorems tell us when certain prime-power pieces exist. Another question will soon be more important: can a group be broken repeatedly through normal subgroups until every remaining quotient is abelian? That is the notion of solvability used in Galois theory.
 
 \section{Solvable groups}
 
@@ -149,15 +427,104 @@ with $V$ the Klein group of Exercise~\ref{ex:v4} and quotients $V$, $A_4/V\cong\
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) Let $(G_i)$ be a chain as in the definition and $H\le G$. Put $H_i=H\cap G_i$. If $x\in H_i$, conjugation by $x$ preserves $H$ and $G_{i-1}$, so $H_{i-1}\trianglelefteq H_i$. The map $H_i\to G_i/G_{i-1}$, $x\mapsto xG_{i-1}$, is a homomorphism with kernel $H_i\cap G_{i-1}=H_{i-1}$, so $H_i/H_{i-1}$ is isomorphic to a subgroup of the abelian group $G_i/G_{i-1}$ (Theorem~\ref{thm:iso1}).
+A group is solvable if it has a chain
+\[
+\{e\}=G_0\trianglelefteq G_1
+\trianglelefteq\cdots\trianglelefteq G_r=G
+\]
+with every quotient $G_i/G_{i-1}$ abelian.
+We build the required chains using this definition.
 
-For $N\trianglelefteq G$ and $\pi:G\to G/N$, put $K_i=\pi(G_i)$. Since $G_{i-1}\trianglelefteq G_i$, $\pi(G_{i-1})\trianglelefteq\pi(G_i)$. The composite $G_i\to K_i\to K_i/K_{i-1}$ is onto, and $G_{i-1}$ lies in its kernel, so it induces a surjection $G_i/G_{i-1}\to K_i/K_{i-1}$; an image of an abelian group is abelian.
+\emph{(a) Subgroups and quotients.}
+Let $H\le G$ and set $H_i=H\cap G_i$.
+These groups form a chain from $\{e\}$ to $H$.
+Because $G_{i-1}\trianglelefteq G_i$,
+conjugation by any element of $H_i$
+preserves $H_{i-1}$, so
+$H_{i-1}\trianglelefteq H_i$.
+The homomorphism
+\[
+H_i\to G_i/G_{i-1},
+\qquad h\mapsto hG_{i-1},
+\]
+has kernel $H_{i-1}$. By the first
+isomorphism theorem, $H_i/H_{i-1}$
+is isomorphic to a subgroup of
+the abelian group $G_i/G_{i-1}$,
+hence is abelian. Thus $H$ is solvable.
 
-(b) Let $\{e\}=N_0\trianglelefteq\dots\trianglelefteq N_s=N$ and $\{e\}=K_0\trianglelefteq\dots\trianglelefteq K_r=G/N$ be chains with abelian quotients, and let $L_i=\pi^{-1}(K_i)$. Then $L_0=N$, $L_r=G$, $L_{i-1}\trianglelefteq L_i$ (the preimage of a normal subgroup under the surjection $L_i\to K_i$ is normal), and by the third isomorphism theorem $L_i/L_{i-1}\cong(L_i/N)/(L_{i-1}/N)=K_i/K_{i-1}$, abelian. The chain $N_0,\dots,N_s=L_0,L_1,\dots,L_r$ works for $G$.
+Now let $N\trianglelefteq G$ and let
+$\pi:G\to G/N$ be the quotient map.
+Set $K_i=\pi(G_i)$. The $K_i$ form a
+chain from $\{N\}$ to $G/N$.
+Normality of $G_{i-1}$ in $G_i$
+implies normality of $K_{i-1}$ in $K_i$.
+Moreover the surjective map
+$G_i\to K_i/K_{i-1}$ kills $G_{i-1}$,
+so $K_i/K_{i-1}$ is a homomorphic
+image of the abelian group $G_i/G_{i-1}$.
+It is therefore abelian. Thus $G/N$
+is solvable.
 
-(c) By induction on $|P|$: if $P\ne\{e\}$ is a $p$-group, its centre $Z$ is non-trivial and abelian, and $P/Z$ is a smaller $p$-group, solvable by induction; apply (b). For order $pq$, the normal Sylow $q$-subgroup $Q$ of the proof of Theorem~\ref{thm:pq} is cyclic, and $G/Q$ has order $p$: apply (b).
+\emph{(b) Solvable normal subgroup and quotient.}
+Assume $N\trianglelefteq G$, and both
+$N$ and $G/N$ are solvable. Choose a
+solvable chain
+\[
+\{e\}=N_0\trianglelefteq\cdots
+\trianglelefteq N_s=N
+\]
+inside $N$, and another
+\[
+\{N\}=K_0\trianglelefteq\cdots
+\trianglelefteq K_t=G/N.
+\]
+Write $L_i=\pi^{-1}(K_i)$.
+Then $L_0=N$, $L_t=G$, and
+$L_{i-1}\trianglelefteq L_i$.
+The quotient map identifies
+\[
+L_i/L_{i-1}\cong K_i/K_{i-1},
+\]
+which is abelian by hypothesis.
+Joining the two chains at $N=L_0$
+therefore gives a solvable chain for $G$.
 
-(d) Let $G$ be simple, non-abelian, with a chain as in the definition; delete repetitions, so that $G_{r-1}\ne G$. As $G_{r-1}\trianglelefteq G$ and $G$ is simple, $G_{r-1}=\{e\}$, so $G\cong G/G_{r-1}$ is abelian: a contradiction. So $A_n$ ($n\ge5$, Theorem~\ref{thm:an}) is not solvable, and neither is $\mathfrak S_n$, by (a).
+\emph{(c) The prime-power and $pq$ cases.}
+Induct on the order of a $p$-group $P$.
+The trivial group is solvable. A non-trivial
+$p$-group has non-trivial centre $Z(P)$
+by Corollary~\ref{cor:pgroup}.
+The centre is abelian, hence solvable,
+and $P/Z(P)$ is a smaller $p$-group,
+solvable by induction. Apply (b) to
+conclude that $P$ is solvable.
+
+For a group of order $pq$ with $p<q$,
+Theorem~\ref{thm:pq} supplies a normal
+cyclic subgroup $Q$ of order $q$.
+Its quotient has order $p$, so it is
+also cyclic. Both are abelian and hence
+solvable. Again use (b).
+
+\emph{(d) Simple groups.}
+Suppose $G$ is simple and non-abelian
+but admits a solvable chain. Remove
+any consecutive repeated terms.
+The penultimate group $G_{r-1}$ is
+a proper normal subgroup of $G$.
+Simplicity forces $G_{r-1}=\{e\}$.
+Then the final quotient
+$G/G_{r-1}\cong G$ is abelian,
+contrary to the assumption.
+
+Thus a non-abelian simple group
+cannot be solvable. In particular,
+$A_n$ is simple and non-abelian
+for $n\ge5$, so it is not solvable.
+As $A_n\le\mathfrak S_n$,
+part (a) also excludes solvability
+of $\mathfrak S_n$ for $n\ge5$.
 \end{proof}
 
 \begin{remark}
@@ -165,7 +532,7 @@ Two deep theorems extend (c). Burnside (1904): a group of order $p^\alpha q^\bet
 \end{remark}
 
 \begin{beauty}
-The quintic in one picture: the roots of $x^5-4x+2$ are permuted by a group isomorphic to $\mathfrak S_5$ (Chapter~10), and $\mathfrak S_5$ is not solvable because $A_5$ is simple. The cube's rotations ($\mathfrak S_4$) are solvable, and this is why the quartic has a formula. Sylow's theorems also run modern computation: the discrete logarithm in a group of order $n$ is only as hard as in its largest Sylow subgroup (Pohlig--Hellman), which is why cryptography uses groups of prime order.
+The quintic in one picture: the roots of $x^5-4x+2$ are permuted by a group isomorphic to $\mathfrak S_5$ (Chapter~10), and $\mathfrak S_5$ is not solvable because $A_5$ is simple. The cube's rotations ($\mathfrak S_4$) are solvable, and this is why the quartic has a formula. Sylow's theorems also run modern computation: for a finite \emph{cyclic} group whose order is known and factored, the Pohlig--Hellman algorithm reduces a discrete logarithm to discrete logarithms in prime-power-order subgroups. This is one reason cryptographic protocols favour groups with a large prime-order component.
 \end{beauty}
 
 \section{Exercises}
@@ -236,79 +603,315 @@ If $n_3=4$, let $G$ act on its four Sylow $3$-subgroups. If $n_3=1$, $G$ is a se
 \section{Solutions}
 
 \begin{solution}{ex:sylowS4}
-\idea Sylow subgroups of order $3$ are generated by elements of order $3$; for order $8$, find one and count its conjugates.
-\writeup $|\mathfrak S_4|=24=2^3\cdot3$. A Sylow $3$-subgroup is cyclic of order $3$, generated by a $3$-cycle and containing two of them; there are $8$ three-cycles, so $n_3=4$ (and indeed $4\equiv1\pmod3$, $4\mid8$). For $p=2$, $\mathfrak S_4$ acts transitively on the three splittings $P_1,P_2,P_3$ into pairs (Exercise~\ref{ex:v4}), so the stabiliser $S_i$ of $P_i$ has order $24/3=8$: it is a Sylow $2$-subgroup. These three subgroups are distinct, since $(1\,2)$ fixes $P_1=\{12|34\}$ but not $P_2$. So $n_2\ge3$, and $n_2$ divides $3$: $n_2=3$. Each $S_i$ is a dihedral group $D_4$: number the corners of a square so that the two pairs of $P_i$ are the diagonals; its $8$ symmetries preserve the pair of diagonals.
+\idea Factor $|\mathfrak S_4|$, and treat the two primes separately. Three-cycles determine the Sylow $3$-subgroups. For the Sylow $2$-subgroups, use the action on the three partitions into pairs from Exercise~\ref{ex:v4}.
+
+\writeup Since
+\[
+|\mathfrak S_4|=4!=24=2^3\cdot3,
+\]
+a Sylow $3$-subgroup has order $3$ and a Sylow $2$-subgroup has order $8$.
+
+\emph{Sylow $3$-subgroups.} Every subgroup of order $3$ is cyclic and consists of $e$, a $3$-cycle, and its inverse. There are
+\[
+\binom43\cdot(3-1)!=4\cdot2=8
+\]
+three-cycles in $\mathfrak S_4$. Each subgroup of order $3$ contains exactly two of them, and distinct such subgroups meet only in the identity. Consequently
+\[
+\boxed{n_3=8/2=4}.
+\]
+This satisfies Sylow III: $4\mid8$ and $4\equiv1\pmod3$.
+
+\emph{Sylow $2$-subgroups.} Let $\mathfrak S_4$ act on the three partitions $P_1,P_2,P_3$ of four letters into two unordered pairs, as in Exercise~\ref{ex:v4}. This action is transitive. Orbit--stabiliser gives, for each partition $P_i$,
+\[
+|\operatorname{Stab}(P_i)|=\frac{24}{3}=8.
+\]
+So each stabiliser is a Sylow $2$-subgroup.
+
+The three stabilisers are distinct. For example, $(1\,2)$ fixes the partition $\{\{1,2\},\{3,4\}\}$ but does not fix $\{\{1,3\},\{2,4\}\}$. Conjugation carries the stabiliser of one partition to that of another, so the three groups are conjugate. Sylow III also gives $n_2\mid3$; since there are at least three, there are exactly three:
+\[
+\boxed{n_2=3}.
+\]
+
+Each of these order-eight stabilisers is isomorphic to $D_4$, the symmetry group of a square. To see this geometrically, put the four letters at the vertices of a square so that the two pairs in $P_i$ form its two diagonals. A permutation preserving the set of diagonals is exactly a symmetry of that square. Thus its stabiliser has the eight dihedral symmetries, consisting of four rotations and four reflections.
+
+We have described all the Sylow subgroups: four cyclic groups of order $3$ and three dihedral groups of order $8$.
 \end{solution}
 
 \begin{solution}{ex:order45}
-\idea When all Sylow subgroups are normal, the group is their direct product.
-\writeup $45=3^2\cdot5$. $n_5$ divides $9$ and is $\equiv1\pmod5$: $n_5=1$. $n_3$ divides $5$ and is $\equiv1\pmod3$: $n_3=1$. So the Sylow subgroups $P_3$ (order $9$) and $P_5$ (order $5$) are normal, meet trivially, and $|P_3P_5|=45$; by Proposition~\ref{prop:internal}, $G\cong P_3\times P_5$. $P_3$ is abelian by Exercise~\ref{ex:p2}, $P_5$ is cyclic, so $G$ is abelian, isomorphic to $\Z/9\Z\times\Z/5\Z\cong\Z/45\Z$ or $\Z/3\Z\times\Z/3\Z\times\Z/5\Z\cong\Z/3\Z\times\Z/15\Z$ (Theorem~\ref{thm:crt}). These two are not isomorphic: only the first has an element of order $9$.
+\idea The divisibility and congruence conditions in Sylow III are unusually restrictive when the group order is $3^2\cdot5$. If both Sylow subgroups are unique, normality and their coprime orders let us reconstruct the whole group as a direct product.
+
+\writeup Let $|G|=45=9\cdot5$. If $n_5$ is the number of Sylow $5$-subgroups, then
+\[
+n_5\mid9,\qquad n_5\equiv1\pmod5.
+\]
+Of the divisors $1,3,9$ of $9$, only $1$ is $1$ modulo $5$. Thus $n_5=1$, and the Sylow $5$-subgroup $P_5$ is normal.
+
+Similarly,
+\[
+n_3\mid5,\qquad n_3\equiv1\pmod3.
+\]
+The divisors of $5$ are $1$ and $5$, and only $1$ is $1$ modulo $3$, so $n_3=1$. The Sylow $3$-subgroup $P_3$ of order $9$ is normal too.
+
+Their intersection is a subgroup of both, so its order divides both $9$ and $5$, forcing $P_3\cap P_5=\{e\}$. The product $P_3P_5$ has
+\[
+|P_3P_5|=\frac{|P_3||P_5|}{|P_3\cap P_5|}
+=9\cdot5=45
+\]
+elements and therefore equals $G$. Two normal subgroups with trivial intersection commute elementwise: for $x\in P_3$ and $y\in P_5$, the commutator $xyx^{-1}y^{-1}$ belongs to both $P_3$ and $P_5$, hence is $e$. The multiplication map
+\[
+P_3\times P_5\longrightarrow G,\quad(x,y)\mapsto xy
+\]
+is consequently an isomorphism.
+
+By Exercise~\ref{ex:p2}, every group of order $9$ is abelian and is isomorphic either to $\Z/9\Z$ or to $(\Z/3\Z)^2$. A group of order $5$ is cyclic. Hence there are exactly two possibilities:
+\[
+G\cong\Z/9\Z\times\Z/5\Z\cong\boxed{\Z/45\Z}
+\]
+or
+\[
+G\cong(\Z/3\Z)^2\times\Z/5\Z
+\cong\boxed{\Z/3\Z\times\Z/15\Z}.
+\]
+They are non-isomorphic: the cyclic group has an element of order $9$, whereas the other group has no element of order $9$. Both are abelian, proving the claim.
 \end{solution}
 
 \begin{solution}{ex:nosimple}
-\idea Count elements of prime order, or let the group act on a small set of Sylow subgroups to get a homomorphism into a small symmetric group.
-\writeup (a) $56=2^3\cdot7$, $n_7\in\{1,8\}$. If $n_7=8$, the eight subgroups of order $7$ meet pairwise trivially and contain $48$ elements of order $7$. The remaining $8$ elements must contain a Sylow $2$-subgroup (which has $8$ elements, none of order $7$), so they form it: $n_2=1$, and that subgroup is normal. Either way there is a proper non-trivial normal subgroup.
+\idea Sylow's theorems tell us how many subgroups of the largest prime-power orders are possible. A unique Sylow subgroup is normal. When uniqueness fails, count the elements it forces or let the group permute those subgroups.
 
-(b) $200=2^3\cdot5^2$. $n_5$ divides $8$ and is $\equiv1\pmod5$; among $1,2,4,8$ only $1$ works. The Sylow $5$-subgroup is normal.
+\writeup Recall that a simple group has no normal subgroups other than $\{e\}$ and itself. Every Sylow subgroup considered below has order strictly between $1$ and $|G|$, so finding a unique one will rule out simplicity.
 
-(c) $36=2^2\cdot3^2$, $n_3$ divides $4$ and is $\equiv1\pmod3$: $n_3\in\{1,4\}$. If $n_3=1$ we are done. If $n_3=4$, the conjugation action on the four Sylow $3$-subgroups is a homomorphism $\varphi:G\to\mathfrak S_4$. Its kernel is not $G$, since the action is transitive on $4$ points; and it is not $\{e\}$, since $|G|=36>24=|\mathfrak S_4|$. So $\ker\varphi$ is a proper non-trivial normal subgroup.
+\emph{(a) Order $56=2^3\cdot7$.} The number of Sylow $7$-subgroups must divide $8$ and be congruent to $1$ modulo $7$. Hence $n_7=1$ or $n_7=8$. The first case supplies a normal subgroup of order $7$.
+
+In the second case, two distinct subgroups of order $7$ intersect only at the identity, since their intersection has order dividing $7$. They therefore account for $8(7-1)=48$ distinct non-identity elements. Exactly eight elements of $G$ remain outside this set, including the identity. Any Sylow $2$-subgroup has eight elements, none of which has order $7$, so it is precisely the set of eight remaining elements. It is therefore the \emph{only} Sylow $2$-subgroup, hence normal.
+
+\emph{(b) Order $200=2^3\cdot5^2$.} A Sylow $5$-subgroup has order $25$. Its count divides $8$ and is $1$ modulo $5$. Of $1,2,4,8$, only $1$ has that property. The unique Sylow $5$-subgroup is normal and proper.
+
+\emph{(c) Order $36=2^2\cdot3^2$.} The number $n_3$ divides $4$ and is congruent to $1$ modulo $3$, hence is $1$ or $4$. Again $n_3=1$ gives a proper normal subgroup.
+
+Suppose $n_3=4$. Conjugation permutes the four Sylow $3$-subgroups, yielding a homomorphism
+\[
+\varphi:G\longrightarrow\mathfrak S_4.
+\]
+The action is transitive by Sylow II, so $\varphi$ is not trivial; thus its kernel is a proper normal subgroup. That kernel cannot be the identity, because an injective map would make a group of order $36$ a subgroup of $\mathfrak S_4$, which has only $24$ elements. Therefore the kernel is non-trivial as well. This also rules out simplicity.
+
+All three orders are impossible for a simple group, but note the distinction: cases (a) and (b) find normal Sylow subgroups; case (c) finds a normal \emph{kernel}.
 \end{solution}
 
 \begin{solution}{ex:S5sub}
-\idea A subgroup of small index $k$ yields a homomorphism to $\mathfrak S_k$ whose kernel is normal; but $\mathfrak S_5$ has very few normal subgroups.
-\writeup Let $H\le\mathfrak S_5$ have index $k$. The action on the $k$ left cosets gives $\varphi:\mathfrak S_5\to\mathfrak S_k$; its kernel $K$ fixes the coset $H$, so $K\subseteq H$, and $|K|\ge120/k!$ because $\mathfrak S_5/K$ embeds in $\mathfrak S_k$. By Exercise~\ref{ex:normalSn}, $K\in\{\{e\},A_5,\mathfrak S_5\}$.
+\idea Lagrange's theorem makes the three subgroup orders possible divisors, not guaranteed subgroup sizes. For orders $30$ and $40$, the action on a small number of cosets gives a homomorphism into a symmetric group too small to contain the image. For order $15$, use the internal structure of a group of order $3\cdot5$ and the possible cycle types in $\mathfrak S_5$.
 
-If $|H|=40$, $k=3$: $|K|\ge20$ and $|K|\le40$, but none of $1,60,120$ lies in $[20,40]$. If $|H|=30$, $k=4$: $|K|\ge5$ and $|K|\le30$; impossible again. If $|H|=15$: by Theorem~\ref{thm:pq} ($3\nmid4$), $H$ is cyclic, so $\mathfrak S_5$ would have an element of order $15$; but the largest order of an element of $\mathfrak S_5$ is $6$ (Exercise~\ref{ex:landau}: the seven partitions of $5$ give the orders $5,4,6,3,2,2,1$, never $15$).
+\writeup Let $G=\mathfrak S_5$, so $|G|=120$.
 
-(Subgroups of order $20$, $24$ and $60$ do exist: the normaliser of $\langle(1\,2\,3\,4\,5)\rangle$, the stabiliser of a point, and $A_5$.)
+\emph{No subgroup of order $40$.} If $H\le G$ had order $40$, its index would be $3$. The action of $G$ on the three left cosets $G/H$ would give
+\[
+\varphi:G\longrightarrow\mathfrak S_3.
+\]
+Its kernel $K$ is normal in $G$, and every element of $K$ fixes the coset $H$, hence $K\subseteq H$. By the first isomorphism theorem,
+\[
+|G/K|=|\varphi(G)|\le|\mathfrak S_3|=6,
+\]
+so $|K|\ge120/6=20$; yet $|K|\le40$. Exercise~\ref{ex:normalSn} tells us that a normal subgroup of $\mathfrak S_5$ has order only $1$, $60$ or $120$. None lies between $20$ and $40$, a contradiction.
+
+\emph{No subgroup of order $30$.} Such an $H$ would have index $4$. The same coset action would yield a kernel $K\trianglelefteq G$ contained in $H$ with
+\[
+|K|\ge120/|\mathfrak S_4|=120/24=5,\qquad |K|\le30.
+\]
+Again none of $1,60,120$ is possible.
+
+\emph{No subgroup of order $15$.} Suppose $H$ had order $15=3\cdot5$. Sylow III applied \emph{inside $H$} gives
+\[
+n_5\mid3,\ n_5\equiv1\pmod5
+\quad\Longrightarrow\quad n_5=1,
+\]
+and
+\[
+n_3\mid5,\ n_3\equiv1\pmod3
+\quad\Longrightarrow\quad n_3=1.
+\]
+So the subgroups $P_5$ and $P_3$ are both normal, have trivial intersection, and have product all of $H$. Their orders are prime, hence they are cyclic, and the internal direct product theorem gives
+\[
+H\cong\Z/5\Z\times\Z/3\Z\cong\Z/15\Z.
+\]
+This would give an element of order $15$ in $\mathfrak S_5$.
+
+But a permutation has order equal to the lcm of its disjoint cycle lengths. To have order divisible by $15=3\cdot5$, it must include a cycle length divisible by $5$ and one divisible by $3$. In five letters, a $5$-cycle uses all the letters and leaves no room for a $3$-cycle; no cycle length at most five is itself divisible by $15$. Therefore no permutation of five letters has order $15$, a contradiction.
+
+Thus $\mathfrak S_5$ has no subgroup of order $15$, $30$ or $40$. Lagrange's theorem only provides a \emph{necessary} divisibility condition for subgroup orders; it never asserted the converse.
 \end{solution}
 
 \begin{solution}{ex:normalizer}
-\idea Sylow's conjugacy theorem inside the smaller group $M$.
-\writeup Let $g\in N_G(M)$. Then $gPg^{-1}\subseteq gMg^{-1}=M$, and $gPg^{-1}$ has order $p^a$, so it is a Sylow $p$-subgroup of $M$. But $P\trianglelefteq M$, so $P$ is the only Sylow $p$-subgroup of $M$ (Corollary~\ref{cor:sylownormal}, applied to $M$). Hence $gPg^{-1}=P$, i.e.\ $g\in M$. So $N_G(M)\subseteq M$, and the reverse inclusion always holds.
+\idea The normaliser $M=N_G(P)$ is the largest subgroup of $G$ in which $P$ is normal. Any element normalising $M$ sends $P$ to another Sylow subgroup of $M$, but $M$ has only one of those.
+
+\writeup Let $P$ be a Sylow $p$-subgroup of $G$, of order $p^a$, and put
+\[
+M=N_G(P)=\{g\in G:gPg^{-1}=P\}.
+\]
+By definition, $P\trianglelefteq M$. It is still a Sylow $p$-subgroup when considered inside $M$: no $p$-subgroup of $M\subseteq G$ can have order greater than $p^a$.
+
+We now show $N_G(M)\subseteq M$. Take $g\in N_G(M)$. Thus $gMg^{-1}=M$. Since $P\subseteq M$, conjugation gives
+\[
+gPg^{-1}\subseteq gMg^{-1}=M.
+\]
+This conjugate has order $p^a$, so it is another Sylow $p$-subgroup of $M$.
+
+Because $P$ is normal in $M$, all its conjugates \emph{inside $M$} are equal to $P$. Sylow II says every Sylow $p$-subgroup of $M$ is one of those conjugates. Therefore $P$ is the unique Sylow $p$-subgroup of $M$, and in particular
+\[
+gPg^{-1}=P.
+\]
+That means $g\in N_G(P)=M$.
+
+Conversely, every subgroup is contained in its own normaliser: $mMm^{-1}=M$ for all $m\in M$. So $M\subseteq N_G(M)$, and combining the inclusions gives
+\[
+\boxed{N_G(N_G(P))=N_G(P)}.
+\]
+The statement relies on $P$ being Sylow. It is not generally true for the normaliser of an arbitrary subgroup.
 \end{solution}
 
 \begin{solution}{ex:derived}
-\idea The derived subgroup is the smallest normal subgroup with an abelian quotient, so the derived series descends as fast as any chain with abelian quotients can.
-\writeup (a) Each $G^{(i+1)}$ is normal in $G^{(i)}$ with abelian quotient (Exercise~\ref{ex:commutator}), so if $G^{(k)}=\{e\}$, the derived series read backwards is a chain as in the definition. Conversely, let $(G_i)$ be such a chain. We show $G^{(i)}\subseteq G_{r-i}$ by induction: true for $i=0$; if $G^{(i)}\subseteq G_{r-i}$, then $G^{(i+1)}=(G^{(i)})'\subseteq(G_{r-i})'\subseteq G_{r-i-1}$, the last inclusion because $G_{r-i}/G_{r-i-1}$ is abelian (Exercise~\ref{ex:commutator}). So $G^{(r)}\subseteq G_0=\{e\}$.
+\idea The derived subgroup $H'$ is the smallest normal subgroup of $H$ whose quotient is abelian. The derived series repeatedly removes everything obstructing commutativity. Compare it with a solvable chain and then calculate in $\mathfrak S_4$ and $\mathfrak S_5$.
 
-(b) $\mathfrak S_n/A_n$ is abelian, so $\mathfrak S_n'\subseteq A_n$. Conversely, $[(a\,b),(a\,c)]=\bigl((a\,b)(a\,c)\bigr)^2=(a\,c\,b)^2=(a\,b\,c)$, so $\mathfrak S_n'$ contains all $3$-cycles, hence $A_n$ (Proposition~\ref{prop:gens}). So $\mathfrak S_4'=A_4$ and $\mathfrak S_5'=A_5$.
+\writeup Write $G^{(0)}=G$ and $G^{(i+1)}=(G^{(i)})'$. By Exercise~\ref{ex:commutator}, each derived subgroup is normal in its predecessor, and
+\[
+G^{(i)}/G^{(i+1)}
+\]
+is abelian. Thus if $G^{(k)}=\{e\}$, the chain $G=G^{(0)}\supseteq\cdots\supseteq G^{(k)}=\{e\}$ satisfies the definition of solvability.
 
-$A_4/V\cong\Z/3\Z$ is abelian, so $A_4'\subseteq V$. $A_4'$ is normal in $A_4$ (Exercise~\ref{ex:commutator}) and not trivial ($A_4$ is not abelian). A subgroup of order $2$ of $V$ is not normal in $A_4$: $(1\,2\,3)(1\,2)(3\,4)(1\,2\,3)^{-1}=(2\,3)(1\,4)$. So $A_4'=V$, and $V'=\{e\}$. The derived series of $\mathfrak S_4$ is $\mathfrak S_4\supset A_4\supset V\supset\{e\}$.
+Conversely suppose $G$ admits a chain
+\[
+G=H_0\trianglerighteq H_1\trianglerighteq\cdots
+\trianglerighteq H_r=\{e\},
+\qquad H_i/H_{i+1}\text{ abelian}.
+\]
+We prove by induction that $G^{(i)}\subseteq H_i$. The assertion is clear for $i=0$. If it holds for $i$, every commutator of elements in $G^{(i)}$ lies in $H_i'$, so
+\[
+G^{(i+1)}=(G^{(i)})'\subseteq H_i'\subseteq H_{i+1};
+\]
+the last inclusion holds because $H_i/H_{i+1}$ is abelian. Thus $G^{(r)}\subseteq H_r=\{e\}$. This proves the equivalence.
 
-$A_5'$ is a non-trivial normal subgroup of the simple group $A_5$, so $A_5'=A_5$: the derived series of $\mathfrak S_5$ is $\mathfrak S_5\supset A_5=A_5=\cdots$, which never reaches $\{e\}$.
+For $\mathfrak S_n$ ($n\ge3$), the sign map has abelian image, so $\mathfrak S_n'\subseteq A_n$. Conversely, the commutator of two transpositions sharing one letter is a $3$-cycle, and all $3$-cycles are obtained by relabelling. Since $A_n$ is generated by $3$-cycles,
+\[
+\mathfrak S_n'=A_n.
+\]
+
+In $A_4$, the Klein subgroup $V_4$ is normal with abelian quotient $A_4/V_4\cong\Z/3\Z$, so $A_4'\subseteq V_4$. The subgroup $A_4'$ is non-trivial because $A_4$ is non-abelian. All three double transpositions are conjugate within $A_4$; a normal subgroup containing one must contain all three. Hence $A_4'=V_4$. As $V_4$ is abelian, $V_4'=\{e\}$. Therefore
+\[
+\boxed{\mathfrak S_4\trianglerighteq A_4
+\trianglerighteq V_4\trianglerighteq\{e\}}
+\]
+is its derived series and $\mathfrak S_4$ is solvable.
+
+In $A_5$, the derived subgroup is normal and non-trivial, since $A_5$ is non-abelian. Simplicity of $A_5$ forces $A_5'=A_5$. So
+\[
+\mathfrak S_5^{(0)}=\mathfrak S_5,\quad
+\mathfrak S_5^{(1)}=A_5,\quad
+\mathfrak S_5^{(i)}=A_5\quad(i\ge1).
+\]
+The series never reaches $\{e\}$, and $\mathfrak S_5$ is not solvable.
 \end{solution}
 
 \begin{solution}{ex:sylowGL2}
-\idea The group acts on the $p+1$ lines of the plane $(\Z/p\Z)^2$; each Sylow subgroup is the set of ``shears'' fixing one line pointwise.
-\writeup $|G|=(p^2-1)(p^2-p)=p(p-1)^2(p+1)$, whose $p$-part is $p$. The matrices $u_x=\begin{psmallmatrix}1&x\\0&1\end{psmallmatrix}$ satisfy $u_xu_y=u_{x+y}$, so $U\cong\Z/p\Z$ has order $p$: it is a Sylow $p$-subgroup.
+\idea The non-trivial matrices in $U$ are shears. Every shear fixes exactly one common line pointwise. Conjugation moves this line, so finding the normaliser is the same as finding its stabiliser.
 
-For $g=\begin{psmallmatrix}a&b\\0&d\end{psmallmatrix}\in B$, a direct computation gives $gu_xg^{-1}=u_{ax/d}\in U$, so $B\subseteq N_G(U)$. Conversely, $u_xv=v$ with $x\ne0$ means $xv_2=0$, so the vectors fixed by all of $U$ form the line $L=\langle e_1\rangle$. If $gUg^{-1}=U$, then for every $u\in U$, $u\,(ge_1)=g\,(g^{-1}ug)\,e_1=ge_1$ since $g^{-1}ug\in U$; so $ge_1$ is fixed by $U$, $ge_1\in L$, and $g$ is upper triangular. Hence $N_G(U)=B$, of order $(p-1)^2p$, and $n_p=[G:B]=\frac{p(p-1)^2(p+1)}{p(p-1)^2}=p+1$.
+\writeup Set $K=\mathbb F_p$ and
+\[
+U=\left\{u_x=\begin{pmatrix}1&x\\0&1\end{pmatrix}:x\in K\right\}.
+\]
+Multiplication gives $u_xu_y=u_{x+y}$ and $u_x^{-1}=u_{-x}$. Hence $U$ is a subgroup isomorphic to $(K,+)$, of order $p$. Since
+\[
+|GL_2(K)|=(p^2-1)(p^2-p)
+=p(p-1)^2(p+1)
+\]
+and neither $p-1$ nor $p+1$ is divisible by $p$, the highest $p$-power dividing $|G|$ is $p$. Thus $U$ is a Sylow $p$-subgroup.
 
-Geometrically, $G$ acts on the $p+1$ lines through the origin of $(\Z/p\Z)^2$ (each of the $p^2-1$ non-zero vectors spans a line containing $p-1$ of them). $B$ is the stabiliser of the line $L$, and the conjugate $gUg^{-1}$ is the group of shears fixing the line $gL$ pointwise. So the Sylow $p$-subgroups correspond to the lines: $p+1$ of them, $\equiv1\pmod p$ as Sylow predicts.
+Let $B$ denote the invertible upper triangular matrices. For
+\[
+g=\begin{pmatrix}a&b\\0&d\end{pmatrix}\in B
+\]
+with $a,d\ne0$, direct multiplication yields
+\[
+gu_xg^{-1}=u_{(a/d)x}\in U.
+\]
+Therefore $B\subseteq N_G(U)$.
+
+For the reverse inclusion, look at the vectors fixed by \emph{all} elements of $U$. If $v=(v_1,v_2)^{\mathsf T}$, then
+\[
+u_xv=(v_1+xv_2,v_2)^{\mathsf T}.
+\]
+This equals $v$ for every $x$ exactly when $v_2=0$. Thus the common fixed space is the line $L=Ke_1$.
+
+If $gUg^{-1}=U$, then $g$ sends the common fixed space of $U$ onto itself: for any $v$ fixed by $U$ and any $u\in U$,
+\[
+u(gv)=g(g^{-1}ug)v=gv.
+\]
+Hence $gL=L$, which means that $ge_1$ has second coordinate $0$. So $g$ is upper triangular and belongs to $B$. We conclude
+\[
+\boxed{N_G(U)=B}.
+\]
+
+The group $B$ has $(p-1)$ choices for each non-zero diagonal entry and $p$ choices for its upper-right entry, hence
+\[
+|B|=p(p-1)^2.
+\]
+Sylow II identifies the number of Sylow $p$-subgroups with the index of their normaliser:
+\[
+\boxed{n_p=[G:B]=p+1}.
+\]
+
+There are exactly $(p^2-1)/(p-1)=p+1$ lines through the origin in $K^2$. The conjugate $gUg^{-1}$ fixes the line $gL$ pointwise and consists of the shears directed along that line. The correspondence between Sylow subgroups and lines is bijective because the normaliser equals the line stabiliser.
 \end{solution}
 
 \begin{solution}{ex:order12}
-\idea Split according to $n_3$. If $n_3=4$, the action on Sylow $3$-subgroups embeds $G$ in $\mathfrak S_4$. If $n_3=1$, $G$ is a semidirect product, and the possible actions are few.
-\writeup $|G|=12=2^2\cdot3$, $n_3\in\{1,4\}$.
+\idea Sylow's theorem gives only two choices for the number of subgroups of order $3$. One choice makes $G$ act faithfully on four objects; the other leaves a normal subgroup of order $3$, and then we must decide how a group of order $4$ acts on it.
 
-\emph{Case $n_3=4$.} The four subgroups of order $3$ have pairwise trivial intersections and contain $8$ elements of order $3$. Conjugation gives $\varphi:G\to\mathfrak S_4$. Its kernel is $\bigcap_iN_G(P_i)$, and $N_G(P_i)$ has index $n_3=4$, so order $3$: $N_G(P_i)=P_i$, and the intersection of the distinct $P_i$ is trivial. So $\varphi$ is injective and $G$ is isomorphic to a subgroup $H$ of order $12$ of $\mathfrak S_4$. As in the proof of Proposition~\ref{prop:a4}, $H$ has index $2$, so $g^2\in H$ for all $g$, and every $3$-cycle $g=(g^2)^2$ lies in $H$. The $3$-cycles generate $A_4$ (Proposition~\ref{prop:gens}), so $H=A_4$.
-
-\emph{Case $n_3=1$.} Let $P=\langle a\rangle\trianglelefteq G$ have order $3$ and let $Q$ be a Sylow $2$-subgroup, of order $4$, so $Q\cong\Z/4\Z$ or $\Z/2\Z\times\Z/2\Z$ (Exercise~\ref{ex:order4}). As in Theorem~\ref{thm:pq}, $G\cong P\rtimes_\varphi Q$, where $\varphi:Q\to\operatorname{Aut}(P)=\{\mathrm{id},a\mapsto a^{-1}\}\cong\Z/2\Z$.
-\begin{itemize}
-\item $\varphi$ trivial: $G\cong\Z/3\Z\times Q$, that is $\Z/12\Z$ or $\Z/3\Z\times\Z/2\Z\times\Z/2\Z\cong\Z/2\Z\times\Z/6\Z$.
-\item $Q=\langle b\rangle\cong\Z/4\Z$, $\varphi$ non-trivial: $\varphi_b$ must be inversion, so there is one such group, $\Z/3\Z\rtimes\Z/4\Z$.
-\item $Q\cong\Z/2\Z\times\Z/2\Z$, $\varphi$ non-trivial: $\varphi$ is onto $\Z/2\Z$ with a kernel of order $2$, one of the three subgroups of order $2$ of $Q$. Every permutation of the three non-identity elements of $Q$ is an automorphism (the product of any two of them is the third), so for two such $\varphi,\varphi'$ there is $\alpha\in\operatorname{Aut}(Q)$ with $\varphi'=\varphi\circ\alpha$. Then $(n,h)\mapsto(n,\alpha^{-1}(h))$ is an isomorphism $P\rtimes_\varphi Q\to P\rtimes_{\varphi'}Q$: in $P\rtimes_{\varphi'}Q$,
+\writeup Let $|G|=12=3\cdot4$. Sylow III says that the number $n_3$ of Sylow $3$-subgroups divides $4$ and is congruent to $1$ modulo $3$. Hence
 \[
-\begin{aligned}
-{}&(n,\alpha^{-1}h)(n',\alpha^{-1}h')\\&\quad=\bigl(n\,\varphi'_{\alpha^{-1}h}(n'),\,\alpha^{-1}(hh')\bigr)\\
-&\quad=\bigl(n\,\varphi_h(n'),\,\alpha^{-1}(hh')\bigr).
-\end{aligned}
+\boxed{n_3=1\quad\text{or}\quad n_3=4.}
 \]
- So there is one group. $D_6$ is such a group: with $r$ the rotation of order $6$ and $s$ a reflection, $\langle r^2\rangle$ is normal of order $3$, $Q=\{e,r^3,s,r^3s\}\cong(\Z/2\Z)^2$, and $s$ inverts $r^2$.
+
+\emph{First case: four subgroups of order $3$.}
+Call them $P_1,\ldots,P_4$. Conjugation permutes these subgroups, giving a homomorphism
+\[
+\varphi:G\longrightarrow\mathfrak S_4.
+\]
+The normaliser of each $P_i$ has index $n_3=4$, so
+\[
+|N_G(P_i)|=12/4=3.
+\]
+Since $P_i\subseteq N_G(P_i)$ and both have order $3$, we have $N_G(P_i)=P_i$.
+An element in $\ker\varphi$ normalises every $P_i$, so belongs to their intersection. Distinct subgroups of order $3$ intersect only in the identity. Thus $\ker\varphi=\{e\}$.
+
+We have embedded $G$ as a subgroup $H$ of $\mathfrak S_4$ with $|H|=12$. Such a subgroup has index $2$, hence is normal. The quotient map $\mathfrak S_4\to\mathfrak S_4/H$ is a non-trivial homomorphism to a group of order $2$. Every transposition must have the same image, because transpositions are conjugate. They generate $\mathfrak S_4$, so their image cannot be trivial. Therefore this quotient map agrees with the sign map, and
+\[
+H=A_4,\qquad G\cong A_4.
+\]
+
+\emph{Second case: one subgroup of order $3$.}
+Write $P=\langle a\rangle$. It is normal, since every conjugate is another Sylow $3$-subgroup. Choose a Sylow $2$-subgroup $Q$; it has order $4$. The intersection $P\cap Q$ is trivial because its order divides both $3$ and $4$, and $PQ$ has $3\cdot4=12$ elements. Therefore
+\[
+G\cong P\rtimes_\varphi Q,
+\qquad
+\varphi:Q\longrightarrow\operatorname{Aut}(P)\cong\mathbb Z/2\mathbb Z.
+\]
+The classification of groups of order $4$ (Exercise~\ref{ex:order4}) leaves $Q\cong\mathbb Z/4\mathbb Z$ or $Q\cong(\mathbb Z/2\mathbb Z)^2$.
+
+There are three possibilities for the action.
+
+\begin{itemize}
+\item \emph{Trivial action.} The semidirect product is a direct product. If $Q$ is cyclic, we obtain $\mathbb Z/12\mathbb Z$. If $Q$ is the Klein four-group, we obtain $\mathbb Z/2\mathbb Z\times\mathbb Z/6\mathbb Z$.
+
+\item \emph{Non-trivial action with $Q$ cyclic.} A generator of $\mathbb Z/4\mathbb Z$ must send $a$ to $a^{-1}$, since inversion is the only non-identity automorphism of $P$. We obtain exactly one action and hence the group $\mathbb Z/3\mathbb Z\rtimes\mathbb Z/4\mathbb Z$ specified in the question.
+
+\item \emph{Non-trivial action with $Q$ the Klein four-group.} The homomorphism $\varphi$ has a kernel of order $2$. Every subgroup of order $2$ in $Q$ can be carried to any other by an automorphism of $Q$ (permute its three non-identity elements). Consequently all three non-trivial actions give isomorphic semidirect products: if $\varphi'=\varphi\circ\alpha$ then $(p,q)\mapsto(p,\alpha^{-1}(q))$ is an isomorphism between the corresponding products. One concrete model is $D_6=\langle r,s:r^6=s^2=e,\ srs=r^{-1}\rangle$: take $P=\langle r^2\rangle$ and $Q=\{e,r^3,s,r^3s\}$.
 \end{itemize}
 
-\emph{The five groups are different.} Only $\Z/12\Z$ has an element of order $12$; $\Z/2\Z\times\Z/6\Z$ is the other abelian one. Among the non-abelian ones, $A_4$ has $n_3=4$, while $D_6$ and $\Z/3\Z\rtimes\Z/4\Z$ have $n_3=1$; and the Sylow $2$-subgroups of $D_6$ are not cyclic, while $\Z/3\Z\rtimes\Z/4\Z$ has one isomorphic to $\Z/4\Z$ (and all are conjugate, hence isomorphic).
+That is one group in the first case and four in the second.
+
+\emph{Why these are five different groups.}
+The two direct products are abelian; only $\mathbb Z/12\mathbb Z$ has an element of order $12$. The remaining three are non-abelian. The group $A_4$ has four Sylow $3$-subgroups, while the other two have one. Finally, $D_6$ has a non-cyclic Sylow $2$-subgroup, whereas $\mathbb Z/3\mathbb Z\rtimes\mathbb Z/4\mathbb Z$ has a cyclic Sylow $2$-subgroup. Thus none of the five is isomorphic to another.
+
+\tools Sylow II and III; conjugation actions (Chapter~3); the sign map (Chapter~4); semidirect products (Chapter~2).
+
+\leads This classification is a good warning: even at order $12$, knowing the prime factorisation of $|G|$ is not enough. We also need to understand how the prime-power subgroups fit together.
 \end{solution}
 
 \section*{Sources and further reading}
@@ -320,5 +923,5 @@ Geometrically, $G$ acts on the $p+1$ lines through the origin of $(\Z/p\Z)^2$ (e
 \item H.~U.~Besche, B.~Eick and E.~A.~O'Brien, \emph{A millennium project: constructing small groups}, Internat.\ J.\ Algebra Comput.\ 12 (2002), 623--644. The groups of order up to $2000$, including the count for order $1024$.
 \item S.~C.~Pohlig and M.~E.~Hellman, \emph{An improved algorithm for computing logarithms over $GF(p)$ and its cryptographic significance}, IEEE Trans.\ Inform.\ Theory 24 (1978), 106--110. The discrete-logarithm algorithm.
 \item D.~S.~Dummit and R.~M.~Foote, \emph{Abstract Algebra}, 3rd ed., Wiley, 2004, Chapters~4 and~6. Sylow theory with many worked classifications.
-\item L.~Sylow, \emph{Th\'eor\`emes sur les groupes de substitutions}, Math.\ Ann.\ 5 (1872), 584--594; his life is in the MacTutor History of Mathematics archive, \url{https://mathshistory.st-andrews.ac.uk/Biographies/Sylow/}.
+\item \emph{Historical biography:} MacTutor History of Mathematics, \emph{Ludvig Sylow}, \url{https://mathshistory.st-andrews.ac.uk/Biographies/Sylow/}. The original 1872 paper is cited above.
 \end{itemize}

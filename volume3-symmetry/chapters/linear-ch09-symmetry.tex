@@ -6,29 +6,13 @@ and create order, beauty, and perfection.
 \upshape(Hermann Weyl, \emph{Symmetry}, 1952)
 \end{center}
 
-In the spring of 1896 Richard Dedekind, then sixty-four and living quietly in Brunswick, sent Georg Frobenius in Berlin a problem
-he had carried around for ten years. Take a finite group $G$, attach a variable $x_g$ to each element, and form the $|G|\times|G|$
-determinant $\det(x_{gh^{-1}})_{g,h\in G}$, the \emph{group determinant}. For abelian groups Dedekind knew the answer: the
-determinant splits completely into linear factors, one for each ``character'' of the group. For non-abelian groups it does not,
-and Dedekind had found, for the quaternion group of order $8$, irreducible factors of degree $2$ that he could not explain. He
-offered the problem to Frobenius, who solved it within months. To do so he invented the character theory of finite groups, one
-of the most useful tools of twentieth-century algebra, in a series of papers that started appearing the same year.
+Take a row of numbers, move its last entry to the front, and use the shifted row as the next row of a matrix. Repeat until you have a square matrix. The result is \emph{circulant}. Because every row is a shifted copy of the first, this matrix has an exact symmetry.
 
-This chapter is the abelian half of that story, seen through linear algebra. The guiding principle fits in one line:
-\emph{a matrix that commutes with a symmetry can be diagonalised by the symmetry}. When the symmetry group is abelian, its
-characters give an eigenbasis that does not depend on the matrix at all. We start with circulant matrices, where the group is
-cyclic and the eigenbasis is the discrete Fourier basis, then move to general finite abelian groups and their Cayley graphs.
-Two examples carry the applications: the Paley graphs, whose eigenvalues are quadratic Gauss sums, and the Hamming cube, whose
-symmetric matrices are governed by Krawtchouk polynomials. The chapter ends with Delsarte's linear programming bound, a
-remarkable way of proving that codes cannot be too large by finding a positive semidefinite matrix in disguise.
+The eigenvectors of a circulant matrix can be written down before we know its entries. They are the Fourier vectors made from roots of unity. Changing the entries changes the eigenvalues, but not this eigenvector basis. That is what it means for symmetry to diagonalise a whole family of matrices at once.
 
-The general (non-abelian) theory is Volume~3, Chapter~11; the fast algorithm for the discrete Fourier transform is Volume~5,
-Chapter~7; Gauss sums appear in Volume~2, Chapter~5 and Volume~6, Chapter~11.
+The same idea reappears in Cayley graphs and in the Hamming cube, where the right basis turns distances into simple sums. Once we have those sums, linear algebra yields bounds for codes and explains the factorisation of the group determinant.
 
-\begin{think}
-Compute $\det\begin{pmatrix}a&b&c\\c&a&b\\b&c&a\end{pmatrix}$. Can you see, before expanding, that $a+b+c$ divides it? What
-other linear factors could it have, if you allow complex coefficients?
-\end{think}
+Keep the main example close: whenever you see a matrix built from translates of one pattern, try a Fourier vector before looking for a characteristic polynomial.
 
 \section{Circulant matrices}
 
@@ -49,11 +33,51 @@ $v_a/\sqrt n$ form an orthonormal basis of $\C^n$, so every circulant is normal,
 \]
 \end{theorem}
 \begin{proof}
-$(Sv_a)_j=\omega^{a(j+1)}=\omega^a(v_a)_j$, so $Sv_a=\omega^av_a$ and $S^kv_a=\omega^{ak}v_a$; summing, $p(S)v_a=p(\omega^a)v_a$.
-For $a\ne b$, $\langle v_a,v_b\rangle=\sum_j\omega^{(a-b)j}=0$, the sum of a geometric progression of ratio $\omega^{a-b}\ne1$
-with $\omega^{(a-b)n}=1$; and $\|v_a\|^2=n$. So the unitary matrix $F$ with columns $v_a/\sqrt n$ satisfies $F^*CF=\operatorname
-{diag}(p(\omega^a))_a$, and the determinant is the product of the diagonal.
+We begin with the simplest circulant: the cyclic shift $S$. Fix $a\in\{0,\ldots,n-1\}$ and write
+\[
+v_a=(1,\omega^a,\omega^{2a},\ldots,\omega^{(n-1)a})^{\mathsf T}.
+\]
+Shifting the coordinates once gives
+\[
+(Sv_a)_j=(v_a)_{j+1}=\omega^{a(j+1)}
+=\omega^a(v_a)_j
+\]
+with indices taken modulo $n$; the last coordinate is consistent because $\omega^{an}=1$. Hence $Sv_a=\omega^av_a$. Repeated application gives $S^kv_a=\omega^{ak}v_a$.
+
+Every circulant is a polynomial $C=p(S)$ in that shift, so
+\[
+Cv_a=\left(\sum_{k=0}^{n-1}c_kS^k\right)v_a
+=\left(\sum_{k=0}^{n-1}c_k\omega^{ak}\right)v_a
+=p(\omega^a)v_a.
+\]
+Thus the eigenvalue depends only on the representer polynomial evaluated at an $n$-th root of unity.
+
+To show that we have \emph{all} the eigenvectors, calculate their inner products using the standard Hermitian product on $\C^n$. For $a\ne b$ modulo $n$,
+\[
+\langle v_a,v_b\rangle
+=\sum_{j=0}^{n-1}\omega^{(b-a)j}
+=\frac{1-(\omega^{b-a})^n}{1-\omega^{b-a}}=0.
+\]
+For $a=b$, every entry has modulus $1$, so $\|v_a\|^2=n$. Therefore the $n$ vectors $v_a/\sqrt n$ form an orthonormal basis.
+
+Let $U$ be the unitary matrix with these vectors as columns. The eigenvector identities say
+\[
+U^*CU=\operatorname{diag}\bigl(p(1),p(\omega),\ldots,p(\omega^{n-1})\bigr).
+\]
+A matrix unitarily diagonalised in this way is normal, and its determinant is the product of its eigenvalues:
+\[
+\det C=\prod_{a=0}^{n-1}p(\omega^a).
+\]
+This also explains why \emph{the same} Fourier basis diagonalises every circulant: the basis belongs to the shift $S$, not to the particular coefficients $c_k$.
 \end{proof}
+
+\paragraph{Why this works.}
+A circulant matrix does not care which position we call the first. If $S$ shifts coordinates once, then a circulant $C$ is a polynomial in $S$; it therefore preserves every eigenspace of $S$. Roots of unity provide the eigenvectors of that shift. For example,
+\[
+C=\begin{pmatrix}2&1&1\\1&2&1\\1&1&2\end{pmatrix}
+=I+J
+\]
+has eigenvalue $4$ on the constant vector $(1,1,1)$, and eigenvalue $1$ on the plane where coordinates sum to zero. The Fourier vectors choose a distinguished basis inside that plane. The general circulant theorem is this observation with all $n$ roots of unity written out.
 
 The matrix $F=\frac1{\sqrt n}(\omega^{jk})_{j,k}$ is the \emph{Fourier matrix}, and the theorem says that \emph{the discrete Fourier
 transform diagonalises every circulant at once}. Figure~\ref{linear:fig:circulant} shows the eigenvalues as the values of $p$ along the
@@ -93,8 +117,34 @@ Conversely, symmetry forces the shape:
 A matrix commutes with $S$ if and only if it is a circulant.
 \end{proposition}
 \begin{proof}
-Circulants are polynomials in $S$. Conversely, $MS=SM$ reads $M_{j,k-1}=M_{j+1,k}$ for all $j,k$ (compare the $(j,k)$ entries:
-$(MS)_{jk}=M_{j,k-1}$ and $(SM)_{jk}=M_{j+1,k}$). So $M_{jk}$ depends only on $k-j$.
+Index rows and columns by $\mathbb Z/n\mathbb Z$.
+By definition, a circulant matrix has the form
+$M_{jk}=c_{k-j}$ for a sequence $c_0,\ldots,c_{n-1}$.
+Equivalently $M$ is a polynomial in the cyclic
+shift $S$, so every circulant commutes with $S$.
+
+For the converse suppose $MS=SM$.
+Our shift convention is $(Sf)(j)=f(j+1)$,
+with indices taken modulo $n$.
+A direct multiplication of entries gives
+\[
+(MS)_{jk}=M_{j,k-1},
+\qquad (SM)_{jk}=M_{j+1,k}.
+\]
+Equality of the two products therefore means
+$M_{j,k-1}=M_{j+1,k}$. Replace $k$ by $k+1$
+to obtain
+\[
+M_{jk}=M_{j+1,k+1}.
+\]
+Repeating this identity around the cycle
+shows that the entry depends only on the
+difference $k-j\pmod n$. Indeed,
+$M_{jk}=M_{0,k-j}$ after $n-j$ simultaneous
+shifts. Set $c_t=M_{0t}$; then
+$M_{jk}=c_{k-j}$, which is the circulant form.
+Thus the whole commutant of $S$ consists
+precisely of circulant matrices.
 \end{proof}
 
 \section{Characters of finite abelian groups}
@@ -120,11 +170,38 @@ structure theorem for abelian groups and uses only linear algebra.
 A family of pairwise commuting diagonalisable operators on a finite-dimensional complex space has a common basis of eigenvectors.
 \end{lemma}
 \begin{proof}
-By induction on the dimension. If every operator in the family is a scalar, any basis works. Otherwise pick a non-scalar $T$
-and split the space into its eigenspaces $E_\lambda$, each of smaller dimension. If $U$ commutes with $T$ and $Tx=\lambda x$,
-then $TUx=UTx=\lambda Ux$, so every $E_\lambda$ is invariant under the whole family. The restriction of a diagonalisable $U$ to an
-invariant subspace is diagonalisable (its minimal polynomial divides that of $U$, which has simple roots). By induction each
-$E_\lambda$ has a common eigenbasis, and together they give one for the whole space.
+Induct on $d=\dim_{\mathbb C}V$. The case $d=0$
+is empty and the case $d=1$ is immediate.
+If every operator in the family is scalar,
+any basis is a common eigenbasis.
+Otherwise choose a non-scalar diagonalizable
+operator $T$ from the family. It has at least
+two distinct eigenvalues, so
+\[
+V=\bigoplus_{\lambda\in\operatorname{spec}T}
+E_\lambda(T)
+\]
+is a direct sum of non-zero proper subspaces.
+
+For every other operator $U$ in the family,
+commutativity with $T$ implies
+$T(Uv)=U(Tv)=\lambda Uv$ when $v\in E_\lambda(T)$.
+Thus each eigenspace of $T$ is $U$-invariant.
+The restricted operators still commute.
+They are also diagonalizable: the minimal
+polynomial of $U|_{E_\lambda(T)}$ divides
+that of $U$, and the latter is a product
+of distinct linear factors over $\mathbb C$.
+
+Each summand has dimension less than $d$,
+so the induction hypothesis gives a common
+eigenbasis for the restricted family on
+each $E_\lambda(T)$. Concatenating these
+bases gives a basis for $V$, and every
+vector in it is an eigenvector of $T$ and
+of every $U$. This also handles infinite
+commuting families: no enumeration or finite
+generating subset of the family was required.
 \end{proof}
 
 \begin{theorem}[characters of a finite abelian group]\label{linear:thm:characters}
@@ -136,19 +213,61 @@ Let $G$ be a finite abelian group.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(i) The function $\varphi=\chi\bar\psi$ is a character, non-trivial since $\chi\ne\psi$; pick $g$ with $\varphi(g)\ne1$. Shifting
-the summation variable, $\sum_x\varphi(x)=\sum_x\varphi(x+g)=\varphi(g)\sum_x\varphi(x)$, so $\sum_x\varphi(x)=0$; this is
-$\langle\chi,\psi\rangle$. And $\langle\chi,\chi\rangle=\sum_x|\chi(x)|^2=|G|$.
+\emph{(i) Orthogonality.}
+A character takes its values among roots of unity,
+because $\chi(g)^{|G|}=\chi(|G|g)=1$.
+In particular $|\chi(g)|=1$. If $\chi\ne\psi$,
+then $\varphi(g)=\chi(g)\overline{\psi(g)}$
+is a non-trivial character. Choose $h$ with
+$\varphi(h)\ne1$. Translating the index
+of the finite sum gives
+\[
+\sum_{g\in G}\varphi(g)
+=\sum_{g\in G}\varphi(g+h)
+=\varphi(h)\sum_{g\in G}\varphi(g),
+\]
+so the sum is zero. This is
+$\langle\chi,\psi\rangle=0$.
+When $\chi=\psi$ every summand equals one,
+hence $\langle\chi,\chi\rangle=|G|$.
 
-(iii) $(T_g\chi)(x)=\chi(x+g)=\chi(g)\chi(x)$. Conversely, let $f\ne0$ satisfy $T_gf=c(g)f$ for all $g$. Then $f(g)=(T_gf)(0)=
-c(g)f(0)$, so $f(0)\ne0$, and we may scale to $f(0)=1$. Then $f=c$, and $c(g+h)f=T_{g+h}f=T_gT_hf=c(g)c(h)f$ shows that $c$ is a
-character.
+\emph{(iii) Common eigenvectors.}
+For a character,
+\[
+(T_g\chi)(x)=\chi(x+g)=\chi(g)\chi(x).
+\]
+Conversely, suppose $f\ne0$ satisfies
+$T_gf=c(g)f$ for every $g\in G$.
+Evaluating at $x=0$ yields
+$f(g)=c(g)f(0)$. If $f(0)=0$,
+this would give $f=0$, so $f(0)\ne0$.
+Scale $f$ to have $f(0)=1$; then $f(g)=c(g)$.
+Because $T_{g+h}=T_gT_h$,
+\[
+c(g+h)f=T_{g+h}f=c(g)c(h)f,
+\]
+and $c(0)=1$. Thus $c$ is a character
+and $f$ is a non-zero multiple of it.
 
-(ii) Each $T_g$ satisfies $T_g^{|G|}=I$, so its minimal polynomial divides $z^{|G|}-1$, which has simple roots: $T_g$ is
-diagonalisable. By Lemma~\ref{linear:lem:commuting} the translations have a common eigenbasis $f_1,\dots,f_{|G|}$, and by (iii) each
-$f_i$ is a multiple of a character $\chi_i$. Two of them cannot be multiples of the same character, since they are linearly
-independent. So there are at least $|G|$ characters. By (i) the characters are pairwise orthogonal and non-zero, hence linearly
-independent in the $|G|$-dimensional space $\C^G$: there are at most $|G|$ of them.
+\emph{(ii) Completeness.}
+Each translation $T_g$ has finite order
+dividing $|G|$; its minimal polynomial
+divides $X^{|G|}-1$, whose roots over
+$\mathbb C$ are all distinct.
+Thus every $T_g$ is diagonalizable.
+The translations commute, so
+Lemma~\ref{linear:lem:commuting} supplies
+a common eigenbasis of the $|G|$-dimensional
+space $\mathbb C^G$. By (iii), each basis
+vector is a multiple of a character,
+and these characters are distinct because
+the vectors are independent. We have
+at least $|G|$ characters. By (i),
+distinct characters are non-zero and
+mutually orthogonal, so there can be
+at most $|G|$ in $\mathbb C^G$.
+Hence there are exactly $|G|$, and they
+form the desired orthogonal basis.
 \end{proof}
 
 Applying (ii) to $\widehat G$ in the other direction gives the \emph{dual orthogonality}: the matrix $(\chi(x))_{x,\chi}/\sqrt{|G|}$ is
@@ -170,8 +289,46 @@ M\chi=\hat m(\chi)\,\chi,\qquad\hat m(\chi)=\sum_{u\in G}m(u)\overline{\chi(u)}.
 In particular $\det M=\prod_{\chi\in\widehat G}\hat m(\chi)$.
 \end{theorem}
 \begin{proof}
-$(M\chi)(x)=\sum_ym(x-y)\chi(y)=\sum_um(u)\chi(x-u)=\chi(x)\sum_um(u)\overline{\chi(u)}$, substituting $u=x-y$ and using
-$\chi(x-u)=\chi(x)\overline{\chi(u)}$. By Theorem~\ref{linear:thm:characters} the characters form a basis, so $M$ is diagonal in it.
+Choose a character $\chi$ of $G$.
+By the translation-invariance hypothesis,
+\[
+(M\chi)(x)=\sum_{y\in G}m(x-y)\chi(y).
+\]
+Make the bijective substitution $u=x-y$.
+Since $\chi$ is multiplicative on the
+additive group,
+$\chi(x-u)=\chi(x)\chi(-u)$.
+Every character value has modulus one,
+so $\chi(-u)=\chi(u)^{-1}
+=\overline{\chi(u)}$. Therefore
+\[
+\begin{aligned}
+(M\chi)(x)
+ &=\sum_{u\in G}m(u)\chi(x-u)\\
+ &=\chi(x)\sum_{u\in G}m(u)
+          \overline{\chi(u)}
+ =\widehat m(\chi)\chi(x).
+\end{aligned}
+\]
+Thus $\chi$ is an eigenvector with
+the claimed eigenvalue. By
+Theorem~\ref{linear:thm:characters}, the
+$|G|$ characters form a basis of
+$\mathbb C^G$. In this common basis,
+the matrix of $M$ is diagonal,
+with diagonal entries
+$\widehat m(\chi)$ as $\chi$
+ranges over the character group.
+Its determinant is the product of
+those entries, proving
+\[
+\det M=\prod_{\chi\in\widehat G}
+\widehat m(\chi).
+\]
+The character basis is independent
+of the particular function $m$:
+that is why all translation-invariant
+matrices can be diagonalised together.
 \end{proof}
 
 For $G=\Z/n$ this is Theorem~\ref{linear:thm:circulant} again (with $m(u)=c_{-u}$). The striking feature is that the eigenvectors do not
@@ -217,30 +374,92 @@ each with multiplicity $\frac{p-1}2$. Consequently $P_p$ is strongly regular wit
 \frac{p-1}4\bigr)$.
 \end{theorem}
 \begin{proof}
-The character $\chi_a(x)=\zeta^{ax}$ has eigenvalue $\lambda_a=\sum_{s\in D}\zeta^{as}$. For $a=0$ this is $|D|=\frac{p-1}2$. For
-$a\ne0$, introduce the \emph{quadratic Gauss sum}
+Let $D$ be the set of non-zero quadratic residues
+modulo $p$, so the graph is the Cayley graph
+$\operatorname{Cay}(\mathbb Z/p,D)$.
+The additive characters $\chi_a(x)=\zeta^{ax}$
+diagonalise its adjacency matrix $A$, with
+eigenvalues
 \[
-g(a)=\sum_{x\in\Z/p}\zeta^{ax^2}.
+\lambda_a=\sum_{s\in D}\zeta^{as}.
 \]
-The term $x=0$ contributes $1$, and every $s\in D$ appears twice as $x^2$, so $g(a)=1+2\lambda_a$ and $\lambda_a=\frac{g(a)-1}2$.
-We compute $|g(a)|^2$ by setting $x=y+t$:
-\[
-|g(a)|^2=\sum_{x,y}\zeta^{a(x^2-y^2)}=\sum_t\zeta^{at^2}\sum_y\zeta^{2aty}=p,
-\]
-because the inner sum is $p$ for $t=0$ and $0$ otherwise ($2at$ is invertible modulo the odd prime $p$, so $y\mapsto2aty$ runs
-through $\Z/p$). Next, $g(a)$ is real: $\overline{g(a)}=\sum_x\zeta^{-ax^2}=\sum_x\zeta^{a(cx)^2}=g(a)$, where $c^2=-1$ and
-$x\mapsto cx$ is a bijection. So $g(a)=\pm\sqrt p$ and $\lambda_a=\frac{-1\pm\sqrt p}2$. Finally, the trace of the adjacency matrix
-is $0$: $\frac{p-1}2+\sum_{a\ne0}\frac{g(a)-1}2=0$ gives $\sum_{a\ne0}g(a)=0$, so the signs $+$ and $-$ occur equally often.
+For $a=0$ this is $|D|=(p-1)/2$.
 
-For strong regularity, let $\theta,\tau=\frac{-1\pm\sqrt p}2$ and $k=\frac{p-1}2$, so $\theta+\tau=-1$ and $\theta\tau=-\frac{p-1}4$.
-The matrix $(A-\theta I)(A-\tau I)=A^2+A-\frac{p-1}4I$ vanishes on every $\chi_a$, $a\ne0$, so it is a multiple $cJ$ of the
-all-ones matrix (it kills $\mathbf 1^\perp$ and is symmetric). Applying both sides to $\mathbf 1$ gives $cp=k^2+k-\frac{p-1}4=
-\frac{(p-1)p}4$, so $c=\frac{p-1}4$ and
+For $a\ne0$ consider the Gauss sum
+$g(a)=\sum_{x\in\mathbb F_p}\zeta^{ax^2}$.
+Each non-zero square has two square roots,
+while zero has one; hence
+$g(a)=1+2\lambda_a$.
+To find its absolute value, use the
+bijective change of variables $x=y+t$:
 \[
-A^2=\tfrac{p-1}4J-A+\tfrac{p-1}4I.
+\begin{aligned}
+|g(a)|^2
+ &=\sum_{x,y\in\mathbb F_p}
+          \zeta^{a(x^2-y^2)}\\
+ &=\sum_{t\in\mathbb F_p}\zeta^{at^2}
+       \sum_{y\in\mathbb F_p}\zeta^{2aty}=p.
+\end{aligned}
 \]
-Reading off the entries: two adjacent vertices have $\frac{p-1}4-1=\frac{p-5}4$ common neighbours, two non-adjacent ones have
-$\frac{p-1}4$, and the diagonal is $\frac{p-1}2=k$.
+Indeed, when $t=0$ the inner sum is $p$,
+and for $t\ne0$ it is the vanishing sum
+of a non-trivial additive character,
+since $2at\ne0$. As $p\equiv1\pmod4$,
+$-1$ is a quadratic residue. Choose
+$c$ with $c^2=-1$. Replacing $x$ by
+$cx$ proves
+\[
+\overline{g(a)}
+=\sum_x\zeta^{-ax^2}
+=\sum_x\zeta^{a(cx)^2}=g(a).
+\]
+The Gauss sum is real, and its square
+is $p$, so $g(a)=\pm\sqrt p$. Therefore
+\[
+\lambda_a=\frac{-1\pm\sqrt p}{2}
+\qquad(a\ne0).
+\]
+The diagonal of $A$ is zero, hence
+$\operatorname{tr}A=0$. Summing the
+eigenvalues and substituting
+$\lambda_a=(g(a)-1)/2$ gives
+$\sum_{a\ne0}g(a)=0$.
+All these sums equal $\sqrt p$
+or $-\sqrt p$; therefore each sign
+occurs exactly $(p-1)/2$ times.
+
+It remains to read the common-neighbour
+counts from the spectrum. Set
+$k=(p-1)/2$ and
+$\theta,\tau=(-1\pm\sqrt p)/2$.
+They satisfy $\theta+\tau=-1$ and
+$\theta\tau=-(p-1)/4$. Since $A$ is
+real symmetric, its character eigenbasis
+is orthogonal, and
+\[
+B=(A-\theta I)(A-\tau I)
+  =A^2+A-\frac{p-1}{4}I
+\]
+vanishes on $\mathbf1^\perp$.
+Thus $B=cJ$ for some scalar $c$.
+Evaluating on $\mathbf1$, where
+$A\mathbf1=k\mathbf1$, gives
+\[
+cp=k^2+k-\frac{p-1}{4}
+=\frac{p(p-1)}4,
+\qquad c=\frac{p-1}4.
+\]
+Consequently
+\[
+A^2=\frac{p-1}4J-A+\frac{p-1}4I.
+\]
+For distinct vertices, $(A^2)_{xy}$
+counts common neighbours: it equals
+$(p-5)/4$ when $x\sim y$, and
+$(p-1)/4$ otherwise. On the diagonal
+it equals $k$, as required. These are
+exactly the asserted strongly regular
+parameters.
 \end{proof}
 
 For $p=5$, $P_5$ is the pentagon, with eigenvalues $2$ and $\frac{-1\pm\sqrt5}2$: the golden ratio, once more. For $p=13$ we get
@@ -299,16 +518,63 @@ multiplicities $\binom nt$.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(i) By Theorem~\ref{linear:thm:invariant} with $m$ the indicator of the words of weight $k$ (and real characters), the eigenvalue on
-$\chi_T$ is $\sum_{|u|=k}\chi_T(u)=\sum_{|u|=k}(-1)^{|u\cap T|}$, identifying $u$ with its set of ones. A word of weight $k$ with
-$j$ ones inside $T$ is chosen in $\binom{|T|}j\binom{n-|T|}{k-j}$ ways, and contributes $(-1)^j$: the sum is $K_k(|T|)$.
+\emph{(i) Distance-matrix eigenvalues.}
+View the cube as the additive group
+$(\mathbb Z/2\mathbb Z)^n$.
+The matrix $D_k$ has entries
+$1_{\{|x-y|=k\}}$ and is therefore
+translation-invariant. By
+Theorem~\ref{linear:thm:invariant},
+the character $\chi_T(x)=(-1)^{|T\cap x|}$
+has eigenvalue
+\[
+\sum_{|u|=k}\chi_T(u)
+=\sum_{|u|=k}(-1)^{|T\cap u|}.
+\]
+Write $t=|T|$. A vector $u$ of weight
+$k$ whose support meets $T$ in $j$
+positions can be chosen in
+$\binom tj\binom{n-t}{k-j}$ ways.
+Its contribution is $(-1)^j$, so
+the eigenvalue equals
+\[
+\sum_j(-1)^j\binom tj\binom{n-t}{k-j}
+=K_k(t).
+\]
+Exactly $\binom nt$ characters have
+weight $t$, giving the multiplicities.
 
-(ii) The same count, with the roles exchanged: $\chi_T(z)=(-1)^{|T\cap z|}$, and choosing $T$ of size $k$ with $j$ elements inside
-the support of $z$ gives the same sum.
+\emph{(ii) Character sum by weight.}
+Fix $z$ of weight $t$ instead, and
+sum $\chi_T(z)=(-1)^{|T\cap z|}$
+over sets $T$ of size $k$.
+The same intersection count yields
+$\sum_{|T|=k}\chi_T(z)=K_k(t)$.
 
-(iii) Compute $\operatorname{tr}(D_kD_l)$ in two ways. Directly, it is $\sum_{x,y}(D_k)_{x,y}(D_l)_{y,x}$, the number of pairs at
-distance $k$ and at distance $l$: $2^n\binom nk$ if $k=l$, else $0$. Through the common eigenbasis of (i), it is
-$\sum_TK_k(|T|)K_l(|T|)=\sum_t\binom ntK_k(t)K_l(t)$.
+\emph{(iii) Orthogonality.}
+Calculate $\operatorname{tr}(D_kD_l)$
+first in the standard basis:
+\[
+\operatorname{tr}(D_kD_l)
+=\sum_{x,y}(D_k)_{xy}(D_l)_{yx}.
+\]
+The two entries are simultaneously
+one precisely when the same pair
+$(x,y)$ has distance both $k$ and
+$l$. For $k\ne l$ the sum is zero;
+for $k=l$, each of the $2^n$
+vertices has $\binom nk$ neighbours
+at distance $k$, so it is
+$2^n\binom nk$. On the other hand,
+the common character basis
+diagonalises both matrices, and
+the same trace is
+\[
+\sum_{T\subseteq[n]}K_k(|T|)K_l(|T|)
+=\sum_{t=0}^n\binom ntK_k(t)K_l(t).
+\]
+Equating the two expressions proves
+the stated orthogonality identity.
 \end{proof}
 
 So the $n+1$ matrices $D_0,\dots,D_n$ span a commutative algebra of symmetric matrices (the \emph{Bose--Mesner algebra} of the
@@ -338,11 +604,39 @@ For every code $C\subseteq\{0,1\}^n$ and every $k=0,1,\dots,n$,
 \]
 \end{theorem}
 \begin{proof}
-By Theorem~\ref{linear:thm:krawtchouk}(ii) and $\chi_T(x+y)=\chi_T(x)\chi_T(y)$,
+Recall that the distance distribution is
 \[
-\sum_iA_iK_k(i)=\frac1{|C|}\sum_{x,y\in C}K_k(|x+y|)=\frac1{|C|}\sum_{|T|=k}\sum_{x,y\in C}\chi_T(x)\chi_T(y)
-=\frac1{|C|}\sum_{|T|=k}\Bigl(\sum_{x\in C}\chi_T(x)\Bigr)^2\ge0.
+A_i=\frac1{|C|}
+  |\{(x,y)\in C^2:d(x,y)=i\}|.
 \]
+In the binary cube, subtraction is addition
+and $d(x,y)=|x+y|$. By
+Theorem~\ref{linear:thm:krawtchouk}(ii),
+\[
+K_k(|x+y|)
+=\sum_{|T|=k}\chi_T(x+y).
+\]
+Every cube character is real-valued
+($\chi_T=\pm1$) and multiplicative,
+so $\chi_T(x+y)=\chi_T(x)\chi_T(y)$.
+Substitute these identities and
+interchange finite sums:
+\[
+\begin{aligned}
+\sum_{i=0}^nA_iK_k(i)
+&=\frac1{|C|}\sum_{x,y\in C}K_k(|x+y|)\\
+&=\frac1{|C|}\sum_{|T|=k}
+   \sum_{x,y\in C}\chi_T(x)\chi_T(y)\\
+&=\frac1{|C|}\sum_{|T|=k}
+   \left(\sum_{x\in C}\chi_T(x)\right)^2.
+\end{aligned}
+\]
+Each square is a non-negative real
+number, and $|C|>0$. Therefore the
+sum is non-negative for every $k$.
+The inequality comes from a
+sum-of-squares identity, not from
+an estimate or an asymptotic argument.
 \end{proof}
 
 In matrix language: $K_k(d(x,y))$ is the matrix $E_k=\sum_{|T|=k}\chi_T\chi_T^{\mathsf T}$, a positive semidefinite matrix (a multiple of
@@ -356,7 +650,32 @@ $A(n,d)$ is at most the maximum of $1+\sum_{i=d}^na_i$ over all real $a_d,\dots,
 \]
 \end{corollary}
 \begin{proof}
-For a code of minimum distance $d$, the numbers $a_i=A_i$ are feasible ($K_k(0)=\binom nk$), and $|C|=\sum_iA_i=1+\sum_{i\ge d}A_i$.
+Take any binary code $C$ of length $n$
+and minimum distance at least $d$.
+Its distance distribution satisfies
+$A_0=1$, $A_i=0$ for $1\le i<d$,
+and $A_i\ge0$ for every $i$.
+Moreover, the Delsarte inequalities
+(Theorem~\ref{linear:thm:delsarte}) state
+\[
+\sum_{i=0}^n A_iK_k(i)\ge0
+\qquad (k=1,\ldots,n).
+\]
+Since $K_k(0)=\binom nk$, substituting
+$a_i=A_i$ for $i\ge d$ shows that the
+numbers arising from $C$ satisfy every
+constraint in the stated linear program.
+The sum of the distance-distribution
+coefficients is
+\[
+1+\sum_{i=d}^n a_i
+=\sum_{i=0}^nA_i=|C|.
+\]
+Thus the objective value of \emph{every}
+code is bounded by the maximum feasible
+objective value. Taking the largest
+possible code size gives the claimed
+upper bound on $A(n,d)$.
 \end{proof}
 
 This is a linear program, which a computer solves in an instant for $n$ in the hundreds.  But even a single
@@ -366,8 +685,33 @@ inequality can be strong. Here is the case $k=1$.
 If $2d>n$, every code of length $n$ and minimum distance $d$ has $|C|\le\frac{2d}{2d-n}$.
 \end{corollary}
 \begin{proof}
-With $K_1(i)=n-2i$, Delsarte's inequality for $k=1$ reads $n+\sum_{i\ge d}A_i(n-2i)\ge0$. For $i\ge d$, $n-2i\le n-2d<0$, so
-$n\ge(2d-n)\sum_{i\ge d}A_i=(2d-n)(|C|-1)$. Hence $|C|\le1+\frac n{2d-n}=\frac{2d}{2d-n}$.
+Let $C$ be a binary code of minimum
+distance $d$ and distance distribution
+$A_i$. The degree-one Krawtchouk
+polynomial is $K_1(i)=n-2i$.
+Delsarte's inequality for $k=1$ says
+\[
+0\le\sum_{i=0}^n A_i(n-2i)
+ =n+\sum_{i=d}^n A_i(n-2i),
+\]
+using $A_0=1$ and $A_i=0$ for
+$0<i<d$. Since $i\ge d>n/2$,
+each $n-2i$ is at most the
+strictly negative number $n-2d$.
+Therefore
+\[
+0\le n+\sum_{i=d}^n A_i(n-2i)
+ \le n-(2d-n)\sum_{i=d}^n A_i.
+\]
+The denominator $2d-n$ is positive,
+so we may rearrange without reversing
+the inequality:
+\[
+|C|-1=\sum_{i=d}^n A_i
+\le\frac{n}{2d-n},
+\qquad
+|C|\le\frac{2d}{2d-n}.
+\]
 \end{proof}
 
 \begin{example}[a perfect fit]\label{linear:exa:simplex}
@@ -399,9 +743,40 @@ Let $G$ be a finite abelian group and $(x_g)_{g\in G}$ independent variables. Th
 \]
 \end{theorem}
 \begin{proof}
-The matrix $M_{g,h}=x_{g-h}$ is translation-invariant with $m(u)=x_u$. By Theorem~\ref{linear:thm:invariant} its determinant is
-$\prod_\chi\sum_ux_u\overline{\chi(u)}$, an identity between polynomials since it holds for all complex values of the
-variables. As $\chi$ runs through $\widehat G$, so does $\bar\chi$, which gives the stated form.
+First assign arbitrary complex numbers to the
+variables $x_g$. The resulting numerical
+matrix $M_{g,h}=x_{g-h}$ is
+translation-invariant. Applying
+Theorem~\ref{linear:thm:invariant}
+to the function $m(u)=x_u$ gives
+\[
+\det M=
+\prod_{\chi\in\widehat G}
+\left(\sum_{u\in G}x_u\overline{\chi(u)}\right).
+\]
+This identity holds for \emph{every}
+complex assignment of the $x_g$.
+Both sides are polynomials in the
+finitely many variables $x_g$,
+so they are identical in
+$\mathbb C[(x_g)_{g\in G}]$.
+
+Finally, $\overline\chi$ is itself
+a character of $G$, since complex
+conjugation preserves multiplication
+of roots of unity. Conjugating twice
+returns $\chi$, so
+$\chi\mapsto\overline\chi$ permutes
+the finite character group.
+Reindex the product by this bijection:
+\[
+\det(x_{g-h})_{g,h\in G}
+=\prod_{\chi\in\widehat G}
+\left(\sum_{u\in G}\chi(u)x_u\right).
+\]
+No complex conjugation acts on the
+variables here; it merely relabels
+the factors indexed by characters.
 \end{proof}
 
 For $G=\Z/3$ this is Example~\ref{linear:exa:circ3}; for $G=(\Z/2)^2$ it says that
@@ -526,139 +901,478 @@ $k=1$ inequality. For the code, think of affine functions on $(\Z/2)^3$.
 \section{Solutions}
 
 \begin{solution}{linear:ex:circalg}
-\idea Proposition~\ref{linear:prop:commutant} turns ``circulant'' into ``polynomial in $S$'', and then everything is algebra in
-$\C[S]\cong\C[z]/(z^n-1)$.
-\writeup The circulants are the matrices $p(S)$ with $\deg p<n$; since $S^n=I$ they are closed under products, and they commute.
-The $n$ matrices $I,S,\dots,S^{n-1}$ are linearly independent (their supports are disjoint), so the dimension is $n$. The adjoint of
-$S$ is $S^{-1}=S^{n-1}$, so adjoints of circulants are circulants. If $C$ is invertible, its inverse commutes with $S$ (because $C$
-does), hence is a circulant by Proposition~\ref{linear:prop:commutant}. Finally, $(I-tS)\sum_{j=0}^{n-1}t^jS^j=I-t^nS^n=(1-t^n)I$, so for
-$t^n\ne1$,
+\idea A circulant is a polynomial in the cyclic shift $S$, where $S^n=I$. We may therefore add and multiply circulants like polynomials, reducing exponents modulo $n$. Invertibility and adjoints can be handled with the same shift.
+
+\writeup By Proposition~\ref{linear:prop:commutant}, every circulant has a unique expression
 \[
-(I-tS)^{-1}=\frac1{1-t^n}\sum_{j=0}^{n-1}t^jS^j,
+C=c_0I+c_1S+\cdots+c_{n-1}S^{n-1},
+\qquad S^n=I.
 \]
-a circulant with first row $\frac{(1,t,t^2,\dots,t^{n-1})}{1-t^n}$.
+The shift matrices $I,S,\ldots,S^{n-1}$ are linearly independent: in a fixed row their non-zero entries lie in different columns, so a linear combination can vanish only if every coefficient is zero. Hence the space of circulants has dimension $n$.
+
+Sums and scalar multiples clearly remain polynomials in $S$. Products do too, since $S^jS^k=S^{j+k}$ and powers can be reduced modulo $n$. Any two polynomials in the same matrix commute, so circulants form a commutative subalgebra of $M_n(\C)$.
+
+The shift matrix is a permutation matrix, hence unitary; its adjoint is $S^*=S^{-1}=S^{n-1}$. Consequently
+\[
+C^*=\sum_{j=0}^{n-1}\overline{c_j}(S^*)^j
+\]
+is a polynomial in $S$ and therefore another circulant.
+
+If $C$ is an invertible circulant, it commutes with $S$. Multiplying $CS=SC$ on both sides by $C^{-1}$ shows that $C^{-1}S=SC^{-1}$. Proposition~\ref{linear:prop:commutant} then says that $C^{-1}$ is circulant.
+
+For the requested example, use the finite geometric identity:
+\[
+(I-tS)(I+tS+\cdots+t^{n-1}S^{n-1})
+=I-t^nS^n=(1-t^n)I.
+\]
+If $t^n\ne1$, the scalar on the right is non-zero, so
+\[
+\boxed{(I-tS)^{-1}=\frac1{1-t^n}
+\sum_{j=0}^{n-1}t^jS^j}.
+\]
+This is an explicit circulant inverse, valid also for $t=0$.
 \end{solution}
 
 \begin{solution}{linear:ex:circ3}
-\idea The factorisation of Example~\ref{linear:exa:circ3} says $N=(a+b+c)\cdot Q$ with $Q=a^2+b^2+c^2-ab-bc-ca$. Choosing $a,b,c$
-consecutive or nearly so makes $Q$ equal to $1$ or $3$, which produces almost every $N$; reduction modulo $3$ and $9$ shows what is
-missed.
-\writeup For $(k+1,k,k)$, $a+b+c=3k+1$ and $Q=1$, so $N=3k+1$. For $(k+1,k+1,k)$, $N=3k+2$. For $(k+1,k,k-1)$, $a+b+c=3k$ and $Q=
-\frac12(1+1+4)=3$, so $N=9k$. Every integer is $\equiv1,2\pmod3$ or a multiple of $9$, unless it is $\equiv\pm3\pmod9$. Conversely, by
-Fermat $a^3\equiv a\pmod3$, and $a+b+c\equiv a^3+b^3+c^3\equiv N\pmod3$. If $3\mid N$, then $3\mid a+b+c$, and
-$Q=(a+b+c)^2-3(ab+bc+ca)$ is also divisible by $3$, so $9\mid N=(a+b+c)Q$. Hence $N\equiv\pm3\pmod9$ is impossible.
+\idea Factor the expression as a sum times a non-negative quadratic form. Three short choices of $(a,b,c)$ then realise every integer in the permitted congruence classes. Modulo $3$, the factorisation forces an extra factor of $3$ whenever the result is divisible by $3$.
+
+\writeup The classical identity is
+\[
+a^3+b^3+c^3-3abc
+=(a+b+c)(a^2+b^2+c^2-ab-bc-ca).
+\]
+Write the second factor as
+\[
+Q=\frac{(a-b)^2+(b-c)^2+(c-a)^2}{2}.
+\]
+For $(a,b,c)=(k+1,k,k)$, the sum is $3k+1$ and $Q=1$, giving $N=3k+1$. For $(k+1,k+1,k)$, the sum is $3k+2$ and again $Q=1$, giving $N=3k+2$. Finally, for $(k+1,k,k-1)$, the sum is $3k$ and the three squared differences are $1,1,4$, so $Q=3$ and $N=9k$. These identities work for every $k\in\Z$, including negative $k$.
+
+Thus all integers congruent to $1$ or $2$ modulo $3$, as well as all multiples of $9$, are represented. It remains to show that integers congruent to $3$ or $6$ modulo $9$ are impossible.
+
+Reduce the cubic identity modulo $3$. Fermat's congruence gives $x^3\equiv x\pmod3$, and $3abc\equiv0$, so
+\[
+N\equiv a+b+c\pmod3.
+\]
+If $3\mid N$, then $3\mid(a+b+c)$. But the quadratic factor can also be written
+\[
+Q=(a+b+c)^2-3(ab+bc+ca),
+\]
+which is divisible by $3$ whenever $a+b+c$ is. Hence $9\mid N=(a+b+c)Q$.
+
+We have proved the exact criterion
+\[
+\boxed{N=a^3+b^3+c^3-3abc\text{ for some }a,b,c\in\Z
+\iff N\not\equiv3,6\pmod9}.
+\]
+The excluded residues are exactly $\pm3$ modulo $9$.
 \end{solution}
 
 \begin{solution}{linear:ex:fourier}
-\idea Square the matrix and recognise a geometric sum.
-\writeup $(F^2)_{jk}=\frac1n\sum_l\omega^{jl}\omega^{lk}=\frac1n\sum_l\omega^{l(j+k)}$, which is $1$ if $j+k\equiv0$ and $0$ otherwise:
-$F^2=R$. Then $F^4=R^2=I$. If $Fv=\lambda v$ with $v\ne0$, then $\lambda^4v=F^4v=v$, so $\lambda^4=1$. (All four values occur as soon as
-$n\ge5$; their multiplicities, roughly $n/4$ each, follow from the trace $\operatorname{tr}F=\frac1{\sqrt n}\sum_j\omega^{j^2}$,
-a quadratic Gauss sum that Gauss evaluated in 1805; the exact multiplicities were worked out by McClellan and Parks in 1972.)
+\idea The Fourier matrix has entries made of roots of unity. Multiply it by itself and use the finite geometric sum: it vanishes unless the exponent is divisible by $n$.
+
+\writeup Number the rows and columns by residues $0,\ldots,n-1$, and write
+\[
+F_{jk}=\frac1{\sqrt n}\omega^{jk},
+\qquad \omega=e^{2\pi i/n}.
+\]
+The entry in row $j$, column $k$ of $F^2$ is
+\[
+\begin{aligned}
+(F^2)_{jk}
+&=\sum_{\ell=0}^{n-1}F_{j\ell}F_{\ell k}\\
+&=\frac1n\sum_{\ell=0}^{n-1}\omega^{j\ell}\omega^{\ell k}\\
+&=\frac1n\sum_{\ell=0}^{n-1}\omega^{\ell(j+k)}.
+\end{aligned}
+\]
+If $j+k\equiv0\pmod n$, every term is $1$, so the sum equals $n$. Otherwise the ratio $\omega^{j+k}$ is a non-trivial $n$-th root of unity, and the geometric sum is
+\[
+\frac{1-(\omega^{j+k})^n}{1-\omega^{j+k}}=0.
+\]
+Thus $(F^2)_{jk}$ is $1$ exactly when $k\equiv-j\pmod n$, and zero otherwise. This is the matrix $R$ that reverses indices:
+\[
+(Rx)_j=x_{-j},\qquad F^2=R.
+\]
+Reversing twice returns the original index, so $R^2=I$. Consequently
+\[
+F^4=(F^2)^2=R^2=I.
+\]
+If $v\ne0$ is an eigenvector of $F$ with eigenvalue $\lambda$, then
+\[
+v=F^4v=\lambda^4v.
+\]
+Hence $\lambda^4=1$, so every eigenvalue lies in
+\[
+\{1,-1,i,-i\}.
+\]
+The result says that these four values are \emph{possible}; it does not assert that all four occur for every $n$. The case $n=1$ already shows why that distinction matters.
 \end{solution}
 
 \begin{solution}{linear:ex:dualgroup}
-\idea A homomorphism out of a product is determined by its restrictions to the factors.
-\writeup Given $\chi\in\widehat G$ and $\psi\in\widehat H$, $(x,y)\mapsto\chi(x)\psi(y)$ is a character of $G\times H$, and the map is a
-homomorphism, injective because $\chi(x)\psi(0)=\chi(x)$ recovers $\chi$, and likewise $\psi$. Both sides have $|G||H|$ elements by
-Theorem~\ref{linear:thm:characters}, so it is an isomorphism. For $\Z/n$, $\chi\mapsto\chi(1)$ is an isomorphism onto the group of $n$-th roots of
-unity, which is cyclic of order $n$, generated by $\omega$.
+\idea A character of a product group can be restricted to each factor. Conversely, two characters can be multiplied to obtain a character on the product. Those two constructions should undo one another.
+
+\writeup Let $G,H$ be finite abelian groups, written additively, and let $\widehat G$ denote the group of complex characters of $G$ under pointwise multiplication. Given $\chi\in\widehat G$ and $\psi\in\widehat H$, define
+\[
+F_{\chi,\psi}:G\times H\to\C^*,
+\qquad
+F_{\chi,\psi}(x,y)=\chi(x)\psi(y).
+\]
+This is a character: for $(x,y),(x',y')\in G\times H$,
+\[
+\begin{aligned}
+F_{\chi,\psi}(x+x',y+y')
+&=\chi(x+x')\psi(y+y')\\
+&=\chi(x)\chi(x')\psi(y)\psi(y')\\
+&=F_{\chi,\psi}(x,y)F_{\chi,\psi}(x',y').
+\end{aligned}
+\]
+
+We obtain a homomorphism
+\[
+\Phi:\widehat G\times\widehat H\longrightarrow\widehat{G\times H},
+\quad(\chi,\psi)\mapsto F_{\chi,\psi}.
+\]
+It is injective: if $F_{\chi,\psi}=F_{\chi',\psi'}$, evaluate first at $(x,0)$, where every character takes the value $1$ at $0$. We get $\chi(x)=\chi'(x)$ for every $x$, so $\chi=\chi'$. Evaluation at $(0,y)$ similarly gives $\psi=\psi'$.
+
+It is also surjective, and we can prove this without counting. Let $F$ be \emph{any} character of $G\times H$. Define
+\[
+\chi(x)=F(x,0),\qquad \psi(y)=F(0,y).
+\]
+Both are characters of their respective groups. Since $(x,y)=(x,0)+(0,y)$,
+\[
+F(x,y)=F(x,0)F(0,y)=\chi(x)\psi(y)=F_{\chi,\psi}(x,y).
+\]
+Thus every character lies in the image, so
+\[
+\boxed{\widehat{G\times H}\cong\widehat G\times\widehat H}.
+\]
+
+For $G=\Z/n\Z$, a character is determined by $\chi([1])$, because $\chi([k])=\chi([1])^k$. The relation $n[1]=[0]$ requires
+\[
+\chi([1])^n=1.
+\]
+Conversely, every $n$-th root of unity $\omega^m=e^{2\pi im/n}$ defines a character $\chi_m([k])=\omega^{mk}$. Multiplication of characters corresponds to addition of exponents modulo $n$, hence
+\[
+\boxed{\widehat{\Z/n\Z}\cong\Z/n\Z}.
+\]
+This identifies the cyclic group with its dual abstractly; the particular identification depends on the chosen primitive root of unity.
 \end{solution}
 
 \begin{solution}{linear:ex:convolution}
-\idea Characters turn translations into multiplications, so they turn convolutions (sums of translates) into products.
-\writeup
+\idea A character turns addition in a finite abelian group into multiplication of complex numbers. Substituting a sum $x=y+u$ therefore splits the Fourier transform of a convolution into a product. Orthogonality gives the energy identity.
+
+\writeup Write the finite abelian group $G$ additively and use the \emph{unnormalised} Fourier transform
 \[
-\widehat{f*h}(\chi)=\sum_x\sum_yf(y)h(x-y)\overline{\chi(x)}=\sum_yf(y)\overline{\chi(y)}\sum_uh(u)\overline{\chi(u)}=\hat f(\chi)\hat h(\chi),
+\hat f(\chi)=\sum_{x\in G}f(x)\overline{\chi(x)}.
 \]
-with $u=x-y$ and $\chi(x)=\chi(y)\chi(u)$. For Plancherel, $f=\frac1{|G|}\sum_\chi\hat f(\chi)\chi$ and the orthogonality of characters
-give $\langle f,f\rangle=\frac1{|G|^2}\sum_\chi|\hat f(\chi)|^2\langle\chi,\chi\rangle=\frac1{|G|}\sum_\chi|\hat f(\chi)|^2$. Finally
-$(Mf)(x)=\sum_ym(x-y)f(y)=(m*f)(x)$.
+For convolution $(f*h)(x)=\sum_y f(y)h(x-y)$, substitute $u=x-y$:
+\[
+\begin{aligned}
+\widehat{f*h}(\chi)
+&=\sum_x\sum_y f(y)h(x-y)\overline{\chi(x)}\\
+&=\sum_y\sum_u f(y)h(u)\overline{\chi(y+u)}\\
+&=\left(\sum_y f(y)\overline{\chi(y)}\right)
+  \left(\sum_u h(u)\overline{\chi(u)}\right)\\
+&=\boxed{\hat f(\chi)\hat h(\chi)}.
+\end{aligned}
+\]
+
+Fourier inversion reads
+\[
+f(x)=\frac1{|G|}\sum_{\chi\in\widehat G}\hat f(\chi)\chi(x).
+\]
+Multiply by $\overline{f(x)}$, sum over $x$ and expand both terms. Orthogonality of characters gives
+\[
+\sum_{x\in G}\chi(x)\overline{\psi(x)}
+=\begin{cases}|G|,&\chi=\psi,\\0,&\chi\ne\psi.\end{cases}
+\]
+Only equal-character terms survive, producing
+\[
+\boxed{\sum_{x\in G}|f(x)|^2
+=\frac1{|G|}\sum_{\chi\in\widehat G}|\hat f(\chi)|^2}.
+\]
+The factor $1/|G|$ is essential for this unnormalised convention; a normalised transform uses a different coefficient.
+
+Finally a translation-invariant matrix has entries $M_{xy}=m(x-y)$. Its action is
+\[
+(Mf)(x)=\sum_{y\in G}m(x-y)f(y)=(m*f)(x).
+\]
+Thus convolution is exactly the matrix operation behind translation invariance, and the Fourier transform diagonalises it.
 \end{solution}
 
 \begin{solution}{linear:ex:walsh}
-\idea The character table of a product is the Kronecker product of the tables, and a Kronecker product with a $2\times2$ matrix
-is a ``butterfly'' step.
-\writeup Order the words with the first coordinate most significant, and the sets $T$ likewise ($1\in T$ or not first). For
-$x=(x_1,x')$ and $T=T_1\sqcup T'$ with $T_1\subseteq\{1\}$, $\chi_T(x)=(-1)^{x_1[1\in T]}\chi_{T'}(x')$, so $H_n$ is the block matrix
-$\bigl(\begin{smallmatrix}H_{n-1}&H_{n-1}\\H_{n-1}&-H_{n-1}\end{smallmatrix}\bigr)$. To compute $H_n\binom uv$ (halves $u,v$ of length
-$2^{n-1}$), compute $H_{n-1}u$ and $H_{n-1}v$, then return $\binom{H_{n-1}u+H_{n-1}v}{H_{n-1}u-H_{n-1}v}$: $2^n$ additions and subtractions
-on top of two half-size transforms. The cost $c_n=2c_{n-1}+2^n$ with $c_0=0$ gives $c_n=n2^n$.
+\idea A Walsh character factors across coordinates, so splitting a binary word by its first bit yields a block matrix. Computing the two half-transforms and then taking their sum and difference gives the fast Walsh--Hadamard algorithm.
+
+\writeup Let $x=(x_1,x')\in\mathbb F_2\times\mathbb F_2^{n-1}$ and similarly write $T=(t_1,T')$. The character is
+\[
+\chi_T(x)=(-1)^{t_1x_1}\chi_{T'}(x').
+\]
+Order rows and columns first by their first bit and then by the remaining $(n-1)$ bits. If either first bit equals $0$, the extra factor is $1$; if both equal $1$, it is $-1$. Therefore
+\[
+\boxed{H_n=
+\begin{pmatrix}
+H_{n-1}&H_{n-1}\\
+H_{n-1}&-H_{n-1}
+\end{pmatrix}
+=H_1\otimes H_{n-1}},
+\quad
+H_1=\begin{pmatrix}1&1\\1&-1\end{pmatrix}.
+\]
+
+For a vector $f=\binom uv$ split into two halves of size $2^{n-1}$, the block formula gives
+\[
+H_nf=
+\begin{pmatrix}H_{n-1}(u+v)\\H_{n-1}(u-v)\end{pmatrix}.
+\]
+This is equivalent to first computing the two smaller transforms and then adding and subtracting their outputs. At each of the $2^{n-1}$ paired positions, forming the sum and difference requires two operations: $2^n$ additions or subtractions in all.
+
+If $T(n)$ counts these scalar operations, then
+\[
+T(n)=2T(n-1)+2^n,\qquad T(0)=0.
+\]
+Divide by $2^n$:
+\[
+\frac{T(n)}{2^n}=\frac{T(n-1)}{2^{n-1}}+1.
+\]
+Induction gives $T(n)/2^n=n$, and hence
+\[
+\boxed{T(n)=n2^n}.
+\]
+The direct matrix multiplication would require on the order of $4^n$ operations, so the recursive factorisation is exponentially faster.
 \end{solution}
 
 \begin{solution}{linear:ex:krawgen}
-\idea A word of weight $k$ chooses $j$ positions among $t$ and $k-j$ among $n-t$: that is a product of two binomial expansions.
-\writeup Expanding,
+\idea Expand two binomial polynomials. The coefficient of $z^k$ counts a choice of $k$ positions with a sign depending on how many came from a distinguished set of size $t$. That is precisely the Krawtchouk polynomial.
+
+\writeup Recall
 \[
-(1-z)^t(1+z)^{n-t}=\sum_j\binom tj(-z)^j\sum_l\binom{n-t}lz^l,
+K_k(t)=\sum_{j=0}^k(-1)^j
+\binom tj\binom{n-t}{k-j},
 \]
-and the coefficient of $z^k$ collects the terms with $l=k-j$: it is $K_k(t)$.
-Replacing $t$ by $n-t$ gives $(1-z)^{n-t}(1+z)^t$, which is the same function of $-z$: so $K_k(n-t)=(-1)^kK_k(t)$. At $z=1$ the
-generating function is $0^t2^{n-t}$, which is $2^n$ if $t=0$ and $0$ otherwise.
+with binomial coefficients outside their usual range interpreted as $0$. The binomial theorem gives
+\[
+(1-z)^t=\sum_{j=0}^t(-1)^j\binom tjz^j,
+\qquad
+(1+z)^{n-t}=\sum_{\ell=0}^{n-t}\binom{n-t}{\ell}z^\ell.
+\]
+When the two sums are multiplied, the coefficient of $z^k$ collects terms with $j+\ell=k$, so it equals $K_k(t)$. Therefore
+\[
+\boxed{\sum_{k=0}^nK_k(t)z^k=(1-z)^t(1+z)^{n-t}}.
+\]
+
+Replace $t$ with $n-t$. The right-hand side becomes
+\[
+(1-z)^{n-t}(1+z)^t,
+\]
+which is the original right-hand side with $z$ replaced by $-z$. Comparing coefficients of $z^k$ yields
+\[
+\boxed{K_k(n-t)=(-1)^kK_k(t)}.
+\]
+
+Finally set $z=1$ in the generating function. If $t>0$, the factor $(1-z)^t$ becomes zero, so $\sum_kK_k(t)=0$. If $t=0$, the expression becomes $(1+1)^n=2^n$. Thus
+\[
+\boxed{\sum_{k=0}^nK_k(t)=2^n[t=0]},
+\]
+where $[t=0]$ equals $1$ if $t=0$ and $0$ otherwise. The case $t=0$ should be treated separately rather than assigning an ambiguous value to $0^0$.
 \end{solution}
 
 \begin{solution}{linear:ex:gausssign}
-\idea Multiplying $x$ by a constant multiplies $x^2$ by a square, so $g(a)$ depends only on the square class of $a$; there are two
-classes, and the trace computation already showed the two values are opposite.
-\writeup If $a=b^2a'$ with $b\ne0$, the substitution $x\mapsto bx$ (a bijection of $\Z/p$) gives $g(a')=\sum_x\zeta^{a'b^2x^2}=g(a)$. So
-$g(a)=g(1)$ for squares $a$, and $g(a)=g(c)$ for all non-squares, with $c$ a fixed non-square. There are $\frac{p-1}2$ of each, and
-$\sum_{a\ne0}g(a)=0$ (proof of Theorem~\ref{linear:thm:paley}) gives $g(c)=-g(1)$. So $g(a)=\bigl(\frac ap\bigr)g(1)$, and if $g(1)=+\sqrt p$
-the eigenvalue $\frac{g(a)-1}2$ equals $\frac{-1+\sqrt p}2$ exactly for squares $a$.
+\idea Scaling the variable in a quadratic Gauss sum by a non-zero square does not change its value. Thus the sum has one value on square parameters and another on non-squares. Their total is zero, so the two values are opposites.
+
+\writeup Let $p$ be an odd prime, $\zeta=e^{2\pi i/p}$, and
+\[
+g(a)=\sum_{x\in\mathbb F_p}\zeta^{a x^2},
+\qquad a\in\mathbb F_p^*.
+\]
+If $a=b^2a'$ with $b\ne0$, substitute $y=bx$. Multiplication by $b$ is a bijection of $\mathbb F_p$, so
+\[
+g(a)=\sum_x\zeta^{a'(bx)^2}=\sum_y\zeta^{a'y^2}=g(a').
+\]
+Therefore $g(a)$ depends only on the square class of $a$. It equals $g(1)$ when $a$ is a square and one constant $g(c)$ when $a$ is a non-square.
+
+To compare these values, sum over all non-zero $a$:
+\[
+\begin{aligned}
+\sum_{a\ne0}g(a)
+&=\sum_{x\in\mathbb F_p}\sum_{a\ne0}\zeta^{ax^2}\\
+&=(p-1)+\sum_{x\ne0}(-1)=0.
+\end{aligned}
+\]
+For $x=0$, the inner sum has $p-1$ ones. For each $x\ne0$, $a\mapsto ax^2$ permutes the non-zero residues, so the inner sum is $\sum_{u=1}^{p-1}\zeta^u=-1$.
+
+Exactly $(p-1)/2$ non-zero values of $a$ are squares, and the same number are non-squares. Hence
+\[
+0=\frac{p-1}2g(1)+\frac{p-1}2g(c),
+\]
+so $g(c)=-g(1)$. This is precisely
+\[
+\boxed{g(a)=\left(\frac ap\right)g(1)}.
+\]
+
+In the Paley graph $P_p$, the non-constant character $\chi_a$ has adjacency eigenvalue
+\[
+\theta_a=\frac{g(a)-1}{2}.
+\]
+If the positive sign of the Gauss sum is chosen, $g(1)=+\sqrt p$, then $\theta_a=(-1+\sqrt p)/2$ exactly when $(a/p)=1$, that is, when $a$ is a non-zero square. For non-squares the eigenvalue is $(-1-\sqrt p)/2$.
 \end{solution}
 
 \begin{solution}{linear:ex:paleyself}
-\idea Squares times a non-square are exactly the non-squares.
-\writeup The non-zero residues form a cyclic group of even order $p-1$, and the squares are its subgroup of index $2$; so $c\cdot s$ is
-a non-square for every non-zero square $s$, and vice versa. Hence for $x\ne y$, $cx-cy=c(x-y)$ is a square if and only if $x-y$
-is not: $x\mapsto cx$ is a bijection of $\Z/p$ sending edges to non-edges and non-edges to edges. Isomorphic graphs have the same
-spectrum; here this is visible directly, since the complement of $P_p$ has eigenvalues $p-1-k=k$ and $-1-\theta=\tau$, $-1-\tau=\theta$.
+\idea An edge of a Paley graph is a pair of vertices whose difference is a non-zero square. Multiplication by a non-square exchanges the square and non-square classes, so it reverses adjacency.
+
+\writeup Let $p\equiv1\pmod4$ be prime and let $c\in\mathbb F_p^*$ be a non-square. The subgroup $S$ of non-zero squares has index $2$ in $\mathbb F_p^*$, and its other coset is $cS$, the set of non-squares.
+
+The Paley graph $P_p$ has vertex set $\mathbb F_p$, and two distinct vertices $x,y$ are adjacent precisely when $x-y\in S$. Define
+\[
+\varphi:\mathbb F_p\to\mathbb F_p,\qquad\varphi(x)=cx.
+\]
+Since $c\ne0$, this map is a bijection. Moreover
+\[
+\varphi(x)-\varphi(y)=c(x-y).
+\]
+If $x-y$ is a non-zero square, its product with the non-square $c$ is a non-square; if $x-y$ is a non-square, its product with $c$ is a square. Consequently
+\[
+\{x,y\}\in E(P_p)
+\iff
+\{\varphi(x),\varphi(y)\}\notin E(P_p)
+\]
+for every $x\ne y$. Thus $\varphi$ is an isomorphism
+\[
+\boxed{P_p\cong\overline{P_p}}.
+\]
+The condition $p\equiv1\pmod4$ ensures $-1$ is a square and adjacency is symmetric.
+
+If $A$ is the adjacency matrix of $P_p$ and $P$ is the permutation matrix of $\varphi$, then the complement's adjacency matrix is $J-I-A$ and the graph isomorphism gives
+\[
+P^{-1}AP=J-I-A.
+\]
+Similar matrices have the same characteristic polynomial, so $P_p$ and its complement have exactly the same eigenvalues with multiplicities. This is a second proof of the spectral symmetry without recomputing the Gauss sums.
 \end{solution}
 
 \begin{solution}{linear:ex:paleyramsey}
-\idea Translations and multiplication by squares are automorphisms, so a clique can be moved to contain $0$ and $1$; then only the
-common neighbours of $0$ and $1$ matter, and there are only $\lambda=3$ of them.
-\writeup The squares modulo $17$ are $\pm1,\pm2,\pm4,\pm8$. Hoffman's bound applied to the complement (Exercise~\ref{linear:ex:paleyself})
-gives clique number at most $\lfloor\sqrt{17}\rfloor=4$; we show $4$ is impossible. Translations and multiplication by a non-zero
-square $s$ are automorphisms of $P_{17}$ (they preserve squareness of differences). Given an edge $\{x,y\}$ in a clique, the map
-$z\mapsto(z-x)/(y-x)$ is such an automorphism (as $y-x$ is a square), sending $x,y$ to $0,1$. The common neighbours of $0$ and $1$ are
-the $z$ with $z$ and $z-1$ both squares: from the list, $z\in\{2,9,16\}$. Among $2,9,16$, the differences are $7,14,7$ (up to sign),
-and $7$ and $14\equiv-3$ are not squares. So no two common neighbours of $0,1$ are adjacent: no clique of size $4$, while $\{0,1,2\}$ is a
-triangle. By self-complementarity the independence number is also $3$. So $P_{17}$ is a $2$-colouring of the edges of $K_{17}$ (edges
-and non-edges) with no monochromatic $K_4$, which means $R(4,4)>17$. (In fact $R(4,4)=18$, by Greenwood and Gleason, 1955, who used
-exactly this graph.)
+\idea Use the square residues modulo $17$. Translation and multiplication by non-zero squares preserve the graph, so we can move an arbitrary edge in a hypothetical four-clique to $\{0,1\}$. Then check the three common neighbours of these two vertices.
+
+\writeup The set of non-zero squares modulo $17$ is
+\[
+S=\{1,2,4,8,9,13,15,16\}=\{\pm1,\pm2,\pm4,\pm8\}.
+\]
+The Paley graph $P_{17}$ joins two distinct residues when their difference is in $S$.
+
+A translation $x\mapsto x+b$ preserves all differences. Scaling by a non-zero square also preserves squareness. Therefore, given any edge $\{x,y\}$, its difference $y-x$ is a square and the affine map
+\[
+z\longmapsto\frac{z-x}{y-x}
+\]
+is a graph automorphism sending that edge to $\{0,1\}$. If a four-clique existed, after such a transformation it would contain $0$ and $1$.
+
+A third vertex $z$ must be adjacent to both $0$ and $1$, so both $z$ and $z-1$ are in $S$. Inspecting the eight residues above gives exactly
+\[
+z\in\{2,9,16\}.
+\]
+None of these three vertices is joined to another: their pairwise differences, up to sign, are $7,14,7$, and neither $7$ nor $14$ belongs to $S$. Thus we cannot add \emph{two} of them to $\{0,1\}$. No four-clique exists.
+
+The three vertices $\{0,1,2\}$ do form a triangle because their non-zero differences are $\pm1$ or $\pm2$, all squares. Therefore
+\[
+\boxed{\omega(P_{17})=3}.
+\]
+By Exercise~\ref{linear:ex:paleyself}, the graph is isomorphic to its complement. Hence the complement also has clique number $3$, which means $P_{17}$ has no independent set of four vertices.
+
+Colour the edges of the complete graph on $17$ vertices red for Paley edges and blue for non-edges. Neither colour contains a $K_4$. By the definition of Ramsey number,
+\[
+\boxed{R(4,4)\ge18}.
+\]
+In fact $R(4,4)=18$, but the present construction proves the lower bound without needing the harder upper-bound argument.
 \end{solution}
 
 \begin{solution}{linear:ex:plotkinsharp}
-\idea Equality in a chain of inequalities forces every intermediate step to be an equality.
-\writeup In the proof of Corollary~\ref{linear:cor:plotkin}, equality $|C|=\frac{2d}{2d-n}$ requires both $n+\sum_{i\ge d}A_i(n-2i)=0$ and
-$\sum_{i\ge d}A_i(n-2i)=(n-2d)\sum_{i\ge d}A_i$, so $A_i=0$ for $i>d$: all non-zero distances equal $d$. The first equality says that the
-Delsarte sum for $k=1$ vanishes; by the proof of Theorem~\ref{linear:thm:delsarte} it is $\frac1{|C|}\sum_{|T|=1}\bigl(\sum_{x\in C}\chi_T(x)
-\bigr)^2$, so $\sum_{x\in C}(-1)^{x_i}=0$ for each coordinate $i$: each coordinate is $1$ on exactly half of the codewords.
+\idea Plotkin's inequality comes from two estimates of the total distance among all ordered pairs of codewords. If the final bound is attained, both estimates must be equalities. The first forces every pairwise distance to be the minimum distance; the second forces every coordinate to be balanced.
+
+\writeup Let $C\subseteq\{0,1\}^n$ have $M=|C|$ codewords and minimum distance $d$ with $2d>n$. Let
+\[
+D=\sum_{x,y\in C}d_H(x,y)
+\]
+be the total Hamming distance over \emph{ordered} pairs. For $x\ne y$, the distance is at least $d$, while $d_H(x,x)=0$. Thus
+\[
+D\ge M(M-1)d.
+\]
+Equality holds only if \emph{every} distinct pair has distance exactly $d$.
+
+For each coordinate $j$, let $w_j$ be the number of codewords with a $1$ in that coordinate. There are $w_j(M-w_j)$ unordered pairs disagreeing there, hence $2w_j(M-w_j)$ ordered pairs. Therefore
+\[
+D=2\sum_{j=1}^n w_j(M-w_j).
+\]
+The quadratic $w(M-w)$ is at most $M^2/4$, with equality only when $w=M/2$. Consequently
+\[
+D\le \frac{nM^2}{2}.
+\]
+Combining these bounds gives
+\[
+M(M-1)d\le \frac{nM^2}{2},
+\]
+and, because $2d>n$,
+\[
+M\le\frac{2d}{2d-n}.
+\]
+
+Now suppose the code attains this last bound exactly. The first and last expressions in the chain are equal, so both intermediate inequalities must be equalities. Thus every non-zero pairwise distance equals $d$, and for every coordinate
+\[
+w_j(M-w_j)=M^2/4,
+\]
+forcing $w_j=M/2$. Hence each coordinate contains a $1$ in exactly half the codewords. In particular $M$ must be even. These are necessary equality conditions; the exercise does not assert that they guarantee a code exists.
 \end{solution}
 
 \begin{solution}{linear:ex:lpthree}
-\idea A linear program is bounded by a non-negative combination of its constraints (this is LP duality); we look for weights that
-make every coefficient of $a_4,\dots,a_8$ at least $1$.
-\writeup For $n=8$, $K_1(i)=8-2i$ and $K_2(i)=\binom i2-i(8-i)+\binom{8-i}2$, which is $-4,-2,4,14,28$ for $i=4,5,6,7,8$. The two
-inequalities read
+\idea The basic Plotkin inequality only applies when $2d>n$, so it is silent at $n=8,d=4$. Delsarte's inequalities exploit more than the minimum distance: their first two Krawtchouk polynomials constrain the entire distance distribution. Combine those constraints with non-negative weights.
+
+\writeup Let $C\subseteq\{0,1\}^8$ have minimum distance at least $4$, and let $M=|C|$. Write $a_i$ for its average number of codewords at distance $i$ from a fixed codeword, averaged over all choices of that codeword. Then
 \[
-\begin{aligned}
-2a_5+4a_6+6a_7+8a_8&\le8&&(k=1),\\
-4a_4+2a_5&\le28+4a_6+14a_7+28a_8&&(k=2).
-\end{aligned}
+a_0=1,\qquad a_1=a_2=a_3=0,\qquad a_i\ge0.
 \]
-Adding the first to a quarter of the second gives $a_4+\frac52a_5+4a_6+6a_7+8a_8\le15+a_6+\frac72a_7+7a_8$, that is,
+Also $M=1+\sum_{i=4}^8a_i$.
+
+For length $8$, the first two Krawtchouk polynomials are
 \[
-a_4+\tfrac52a_5+3a_6+\tfrac52a_7+a_8\le15.
+K_1(i)=8-2i,\qquad
+K_2(i)=\binom i2-i(8-i)+\binom{8-i}2.
 \]
-Every coefficient is at least $1$, so $\sum_{i\ge4}a_i\le15$ and $|C|\le16$. The \emph{extended Hamming code} (or Reed--Muller code
-of order $1$) attains it: the $16$ sums of subsets of
+The Delsarte inequality $\sum_i a_iK_k(i)\ge0$ gives, at $k=1$,
 \[
-00001111,\quad 00110011,\quad 01010101,\quad 11111111.
+8-2a_5-4a_6-6a_7-8a_8\ge0,
 \]
-These are the truth tables of the affine functions on $(\Z/2)^3$; a non-constant affine function takes the value $1$ exactly four
-times, so every non-zero codeword except $11111111$ has weight $4$, and the code, being closed under addition, has minimum distance
-$4$. So $A(8,4)=16$, and the linear programming bound is sharp here.
+or
+\[
+2a_5+4a_6+6a_7+8a_8\le8. \tag{1}
+\]
+At $k=2$, the values for $i=0,4,5,6,7,8$ are $28,-4,-2,4,14,28$. Thus
+\[
+28-4a_4-2a_5+4a_6+14a_7+28a_8\ge0,
+\]
+which is
+\[
+4a_4+2a_5\le28+4a_6+14a_7+28a_8. \tag{2}
+\]
+
+Multiply (2) by $1/4$ and add it to (1). After moving all distance-distribution terms to the left, we obtain
+\[
+a_4+\frac52a_5+3a_6+\frac52a_7+a_8\le15.
+\]
+Every coefficient on the left is at least $1$, and every $a_i$ is non-negative. Therefore
+\[
+\sum_{i=4}^8a_i\le15,\qquad
+\boxed{M\le16}.
+\]
+
+To attain the bound, label eight coordinates by the eight points of $\mathbb F_2^3$. Consider the truth tables of all affine functions
+\[
+f(x_1,x_2,x_3)=a_0+a_1x_1+a_2x_2+a_3x_3
+\quad\text{with }a_i\in\mathbb F_2.
+\]
+There are $2^4=16$ distinct functions. The zero function gives the all-zero word; the constant-one function has weight $8$. Every non-constant affine function takes each value $0$ and $1$ exactly four times, because translation by a vector on which its linear part equals $1$ pairs zeros with ones. Thus every nonzero codeword has weight $4$ or $8$.
+
+The set of affine truth tables is closed under binary addition. Hence the Hamming distance between two distinct words equals the weight of their non-zero difference and is at least $4$. This is the binary first-order Reed--Muller code $RM(1,3)$, a length-$8$ code of size $16$ and minimum distance $4$.
+
+The construction and upper bound agree:
+\[
+\boxed{A(8,4)=16}.
+\]
+This is a case where the linear-programming method gives an exact answer that Plotkin's elementary bound cannot see.
 \end{solution}
 
 \section*{Sources and further reading}

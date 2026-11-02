@@ -5,25 +5,13 @@ It is my experience that proofs involving matrices can be shortened by 50\% if o
 \upshape(Emil Artin, \emph{Geometric Algebra}, 1957)
 \end{center}
 
-Imagine a small town, Oddtown, with $n$ inhabitants and a passion for clubs. The town council, fearing that clubs breed
-factions, passes two rules: every club must have an odd number of members, and any two clubs must share an even number of
-members. How many clubs can Oddtown have? With $n=3$ you can try by hand: $\{1\}$, $\{2\}$, $\{3\}$ is three clubs, and no fourth one
-fits. In general the singletons give $n$ clubs, and you can spend an afternoon looking for a cleverer arrangement with more.
-You will not find one. The proof that there is none, due to Elwyn Berlekamp in 1969, takes three lines, and none of them
-is about clubs: it is about vectors over the field with two elements.
+A town has $n$ inhabitants and a collection of clubs. Every club contains an odd number of people, while any two different clubs overlap in an even number of people. How many clubs can there be?
 
-This chapter is about such proofs. A combinatorial object (a family of sets, a set of points, a colouring) is turned into a
-collection of vectors, or of polynomials, and some combinatorial condition is turned into linear independence. Then the
-objects cannot be more numerous than the dimension of the space they live in, and dimension is something we know how
-to compute. Artin's advice, to throw the matrices out, is excellent for linear algebra; this chapter throws them back
-\emph{in}, into combinatorics, and it works astonishingly well. The method gives Fisher's inequality for experimental designs,
-bounds on sets of points with few distances, the first explicit graphs with no large clique or independent set, an additive
-theorem of Cauchy, and, in 2016, the solution of a famous problem about the card game SET that had resisted every other method.
+Give each club a vector in $\mathbb F_2^n$: write $1$ for a member and $0$ for a non-member. The dot product of a club's vector with itself is $1$, because the club has odd size. The dot product of two different clubs is $0$, because they overlap in an even number of places.
 
-\begin{think}
-Eventown has the same council, but the rules are now: every club has an \emph{even} number of members, and any two clubs share an
-even number. Find many clubs for $n=4$. Does the answer look like $n$, or like something much larger?
-\end{think}
+Suppose a linear combination of these club vectors were zero. Taking the dot product with any one vector shows that its coefficient must be zero. Every coefficient is zero, so the vectors are linearly independent. There can be no more than $n$ clubs.
+
+This proof uses a dimension bound where a direct counting argument would struggle. The rest of the appendix develops that trick with polynomials, intersection patterns and finite fields. We will keep asking the same question: what vector space is too small to hold all the objects we want?
 
 \section{Oddtown, Eventown, and Fisher}
 
@@ -38,9 +26,34 @@ which we may read in $\R$ or, reducing modulo a prime $p$, in the field $\mathbb
 Let $A_1,\dots,A_m\subseteq[n]$ be such that every $|A_i|$ is odd and every $|A_i\cap A_j|$, $i\ne j$, is even. Then $m\le n$.
 \end{theorem}
 \begin{proof}
-Work in $\mathbb F_2^n$ and write $v_i=v_{A_i}$. The hypotheses say $v_i\cdot v_j=1$ if $i=j$ and $0$ otherwise. If $\sum_ic_iv_i=0$ with $c_i\in\mathbb F_2$, taking
-the dot product with $v_j$ gives $c_j=0$. So $v_1,\dots,v_m$ are linearly independent in a space of dimension $n$, and $m\le n$.
+Turn each subset into a vector of zeros and ones. For $A_i\subseteq[n]$, let $v_i\in\mathbb F_2^n$ have a $1$ exactly at the positions belonging to $A_i$.
+
+The ordinary dot product counts intersections:
+\[
+v_i\cdot v_j=\sum_{k=1}^n(v_i)_k(v_j)_k
+            =|A_i\cap A_j|\pmod2.
+\]
+When $i\ne j$, the intersection size is even, so this dot product is $0$. When $i=j$, it is $|A_i|$, which is odd, so the dot product is $1$. We have proved
+\[
+v_i\cdot v_j=
+\begin{cases}1,&i=j,\\0,&i\ne j.\end{cases}
+\]
+
+Now suppose there is a linear relation
+\[
+c_1v_1+\cdots+c_mv_m=0,\qquad c_i\in\mathbb F_2.
+\]
+Take its dot product with $v_j$. Distributivity gives
+\[
+0=\sum_{i=1}^m c_i(v_i\cdot v_j)=c_j.
+\]
+Since this is true for every $j$, all the coefficients are zero. Thus $v_1,\ldots,v_m$ are linearly independent in the $n$-dimensional vector space $\mathbb F_2^n$. It follows that $m\le n$.
+
+The bound is sharp: choose the $n$ one-element sets $\{1\},\ldots,\{n\}$. Each size is odd, distinct sets have empty (hence even) intersection, and there are exactly $n$ of them.
 \end{proof}
+
+\paragraph{Why this works.}
+The parity requirements become an identity matrix. In the field $\mathbb F_2$, the row of club $A_i$ has dot product $1$ with itself and $0$ with every other club row. A linear relation among the rows would therefore give, after taking the dot product with row $j$, precisely its $j$-th coefficient. Every coefficient must be zero. We cannot have more than $n$ independent rows in $\mathbb F_2^n$. And the bound is attained: the $n$ one-person clubs have odd sizes and empty pairwise intersections.
 
 Eventown is different. Split the inhabitants into couples, $\{1,2\},\{3,4\},\dots$, and let the clubs be all unions of couples: every club and every
 intersection of two clubs is a union of couples, of even size, and there are $2^{\lfloor n/2\rfloor}$ clubs. Changing one word in the rules has
@@ -50,25 +63,69 @@ changed the answer from $n$ to an exponential. Linear algebra sees the differenc
 Let $F$ be a field and $W$ a subspace of $F^n$. Then $W^\perp=\{u\in F^n:u\cdot w=0\text{ for all }w\in W\}$ is a subspace of dimension $n-\dim W$.
 \end{lemma}
 \begin{proof}
-Let $w_1,\dots,w_d$ be a basis of $W$ and $M$ the $d\times n$ matrix with rows $w_i$. Then $W^\perp$ is the kernel of $u\mapsto Mu$. The rank of $M$ is $d$ (its rows are
-independent, and row rank equals column rank), so by the rank--nullity theorem its kernel has dimension $n-d$.
+Choose a basis $w_1,\ldots,w_d$ of $W$, and place its vectors
+as the rows of a $d\times n$ matrix $M$. The equations defining
+the perpendicular space are precisely
+\[
+u\cdot w_j=0\quad(1\le j\le d),
+\qquad\text{or equivalently}\qquad Mu=0.
+\]
+The rows of $M$ are independent because the $w_j$ form a basis,
+so $M$ has rank $d$. Rank--nullity for the linear map
+$F^n\to F^d$, $u\mapsto Mu$, gives
+\[
+\dim W^\perp=\dim\ker M=n-\operatorname{rank}M=n-d.
+\]
+This argument works over \emph{every} field, even when a non-zero
+vector has $u\cdot u=0$: no positivity assumption was used.
+For $W=\{0\}$ the empty matrix has rank zero and the same
+formula gives $W^\perp=F^n$.
 \end{proof}
 
-Over $\mathbb F_2$ (or $\mathbb C$, or any field other than $\R$) a non-zero vector can be orthogonal to itself, so $W$ and $W^\perp$ may intersect, and even
+Over $\mathbb F_2$ or $\mathbb C$, a non-zero vector can be orthogonal to itself; this depends on the field, not simply on whether it is $\R$. For example, over $\Q$ the standard dot product has $v\cdot v=0$ only when $v=0$. In $\mathbb F_2^n$, $W$ and $W^\perp$ may intersect, and even
 $W\subseteq W^\perp$ is possible: $(1,1)\cdot(1,1)=0$ in $\mathbb F_2^2$. The lemma still bounds how large such a $W$ can be.
 
 \begin{theorem}[Eventown, Berlekamp, 1969; Graver, 1975]\label{combinatorial:thm:eventown}
 Let $A_1,\dots,A_m\subseteq[n]$ be distinct sets, all of even size, with every $|A_i\cap A_j|$ even. Then $m\le2^{\lfloor n/2\rfloor}$.
 \end{theorem}
 \begin{proof}
-Let $W$ be the span of $v_{A_1},\dots,v_{A_m}$ in $\mathbb F_2^n$. All the products $v_{A_i}\cdot v_{A_j}$ vanish, including for $i=j$, so by bilinearity $w\cdot w'=0$ for
-all $w,w'\in W$: $W\subseteq W^\perp$. By Lemma~\ref{combinatorial:lem:perp}, $\dim W\le n-\dim W$, so $\dim W\le\lfloor n/2\rfloor$. The $m$ distinct vectors lie in $W$, which has
-$2^{\dim W}$ elements.
+Represent each set $A_i$ by its incidence vector
+$v_i\in\mathbb F_2^n$. The standard dot product
+encodes intersection parity:
+\[
+v_i\cdot v_j
+=\sum_{k=1}^n (v_i)_k(v_j)_k
+=|A_i\cap A_j|\pmod2.
+\]
+For $i\ne j$ this vanishes by hypothesis.
+For $i=j$ it equals $|A_i|\pmod2$, which
+also vanishes because every set has even size.
+Thus \emph{all} pairwise products
+$v_i\cdot v_j$ are zero, including diagonal
+products.
+
+Let $W=\operatorname{span}_{\mathbb F_2}
+\{v_1,\ldots,v_m\}$, and write $d=\dim W$.
+Bilinearity then gives $u\cdot v=0$
+for every $u,v\in W$, so $W\subseteq W^\perp$.
+The dimension formula in
+Lemma~\ref{combinatorial:lem:perp} yields
+\[
+d\le\dim W^\perp=n-d,
+\qquad\text{hence}\qquad d\le\lfloor n/2\rfloor.
+\]
+The incidence vectors are distinct because
+the sets are distinct. They all lie in the
+$d$-dimensional binary space $W$, which contains
+exactly $2^d$ vectors. Therefore
+$m\le2^d\le2^{\lfloor n/2\rfloor}$.
+The even-size hypothesis is crucial: it is
+what makes each vector orthogonal to itself.
 \end{proof}
 
 Both bounds are attained, by singletons and by couples, but not only by them: for $n=8$, the $14$ affine planes of $\mathbb F_2^3$, with $\varnothing$ and the whole space, form an Eventown family of $16=2^4$ clubs
-that contains no couple at all (Exercise~\ref{combinatorial:ex:eventown}). It is a famous code in disguise, the extended Hamming code, and the self-orthogonal spaces of Theorem~\ref{combinatorial:thm:eventown} are the
-\emph{self-dual codes} of coding theory.
+that contains no couple at all (Exercise~\ref{combinatorial:ex:eventown}). It is a famous code in disguise, the extended Hamming code, and the spaces in Theorem~\ref{combinatorial:thm:eventown} are examples of
+\emph{self-orthogonal codes}. Only when a code also satisfies $W=W^\perp$ (which forces $n$ even and $\dim W=n/2$) is it called \emph{self-dual}.
 
 Over the reals, the method gives one of the founding results of the design of experiments. Ronald Fisher spent fourteen years, from 1919 to 1933, designing field trials at the Rothamsted
 agricultural station. In 1940 he studied plans of the following kind: $v$ varieties of a crop are compared on a field split into blocks, each block can hold only some of the varieties, and for a fair comparison any two varieties
@@ -76,20 +133,44 @@ should appear together in the same number of blocks. Fisher proved that such a p
 the roles of varieties and blocks, by counting incidences), this is the following theorem.
 
 \begin{theorem}[Fisher's inequality, non-uniform form; Majumdar, 1953]\label{combinatorial:thm:fisher}
-Let $\lambda\ge1$, and let $A_1,\dots,A_m$ be distinct subsets of $[n]$ such that $|A_i\cap A_j|=\lambda$ for all $i\ne j$. Then $m\le n$.
+Let $n\ge1$ and $\lambda\ge1$, and let $A_1,\dots,A_m$ be distinct subsets of $[n]$ such that $|A_i\cap A_j|=\lambda$ for all $i\ne j$. Then $m\le n$.
 \end{theorem}
 \begin{proof}
-Let $M$ be the $m\times n$ real matrix with rows $v_{A_i}$. Its Gram matrix $G=MM^{\mathsf T}$ has entries $|A_i\cap A_j|$, so
+If $m=1$ the conclusion follows from $n\ge1$, so assume
+$m\ge2$. Write $v_i\in\mathbb R^n$ for the incidence vector
+of $A_i$, and let $M$ be the $m\times n$ matrix with rows $v_i$.
+Its Gram matrix has entries
 \[
-G=\lambda J+D,\qquad D=\mathrm{diag}(d_1,\dots,d_m),\quad d_i=|A_i|-\lambda,
+(MM^{\mathsf T})_{ij}=v_i\cdot v_j=|A_i\cap A_j|.
 \]
-where $J$ is the all-ones matrix. Each $d_i\ge0$, since $|A_i|\ge|A_i\cap A_j|=\lambda$ (if $m=1$ there is nothing to prove). At most one $d_i$ is zero: if $|A_i|=\lambda$
-then $A_i\subseteq A_j$ for every $j$, and two such sets would contain each other, hence be equal. For $x\in\R^m$,
+Consequently, with $J$ the all-ones matrix,
 \[
-x^{\mathsf T}Gx=\lambda\Bigl(\sum_ix_i\Bigr)^2+\sum_id_ix_i^2.
+G=MM^{\mathsf T}=\lambda J+
+\operatorname{diag}(d_1,\ldots,d_m),
+\qquad d_i=|A_i|-\lambda\ge0.
 \]
-If this vanishes, then $d_ix_i=0$ for all $i$, so $x$ is zero outside the at most one index $i_0$ with $d_{i_0}=0$, and then $\lambda x_{i_0}^2=0$ gives $x=0$. So $G$ is positive definite,
-hence invertible, and $m=\operatorname{rank}G\le\operatorname{rank}M\le n$.
+The non-negative diagonal corrections are the key. If $d_i=0$,
+then $|A_i|=\lambda=|A_i\cap A_j|$ for every $j\ne i$,
+so $A_i\subseteq A_j$ for every $j$. There cannot be two
+such indices: if both $d_i$ and $d_j$ vanished, distinctness
+would be contradicted by $A_i=A_j$.
+
+For $x=(x_1,\ldots,x_m)\in\mathbb R^m$,
+\[
+x^{\mathsf T}Gx
+=\lambda\Bigl(\sum_{i=1}^m x_i\Bigr)^2
+ +\sum_{i=1}^m d_ix_i^2.
+\]
+Both terms are non-negative. If their sum is zero,
+$x_i=0$ for every index with $d_i>0$. At most one
+coordinate remains, and $\lambda>0$ forces that coordinate
+to vanish as well. Thus $G$ is positive definite and has
+rank $m$. But $G=MM^{\mathsf T}$, so
+\[
+m=\operatorname{rank}G\le\operatorname{rank}M\le n.
+\]
+The positivity of $\lambda$ is essential: it prevents
+the exceptional zero-diagonal coordinate from surviving.
 \end{proof}
 
 \begin{think}
@@ -119,19 +200,47 @@ How large can a two-distance set in $\R^n$ be?
 A two-distance set in $\R^n$ has at most $\frac{(n+1)(n+4)}2$ points.
 \end{theorem}
 \begin{proof}
-Let $a_1,\dots,a_m$ have pairwise distances in $\{b,c\}$, with $b,c>0$. Define
+Take distinct points $a_1,\ldots,a_m\in\mathbb R^n$ whose
+mutual distances belong to $\{b,c\}$, with $b,c>0$.
+For each $i$ construct the polynomial
 \[
-f_i(x)=\bigl(|x-a_i|^2-b^2\bigr)\bigl(|x-a_i|^2-c^2\bigr),\qquad x\in\R^n.
+f_i(x)=\bigl(\lVert x-a_i\rVert^2-b^2\bigr)
+       \bigl(\lVert x-a_i\rVert^2-c^2\bigr).
 \]
-Then $f_i(a_j)=0$ for $j\ne i$ and $f_i(a_i)=b^2c^2\ne0$, so $f_1,\dots,f_m$ are linearly independent. Now $|x-a|^2=|x|^2-2a\cdot x+|a|^2$ is $|x|^2$ plus an affine function of $x$, so
+If $j\ne i$, one factor vanishes at $x=a_j$;
+on the diagonal $f_i(a_i)=b^2c^2\ne0$.
+Therefore the evaluation matrix
+$\bigl(f_i(a_j)\bigr)_{i,j}$ is a non-singular
+diagonal matrix. In particular the polynomials
+$f_1,\ldots,f_m$ are linearly independent.
+
+To count how many independent polynomials of this form
+can exist, expand
+$\lVert x-a_i\rVert^2=\lVert x\rVert^2+\ell_i(x)$,
+where $\ell_i(x)=-2a_i\cdot x+\lVert a_i\rVert^2$
+is affine-linear. Thus
 \[
-f_i(x)=\bigl(|x|^2+\ell_1(x)\bigr)\bigl(|x|^2+\ell_2(x)\bigr)=|x|^4+|x|^2\bigl(\ell_1(x)+\ell_2(x)\bigr)+\ell_1(x)\ell_2(x),
+\begin{aligned}
+f_i(x)
+&=\bigl(\lVert x\rVert^2+\ell_i(x)-b^2\bigr)
+  \bigl(\lVert x\rVert^2+\ell_i(x)-c^2\bigr)\\
+&=\lVert x\rVert^4
+ +\lVert x\rVert^2\bigl(2\ell_i(x)-b^2-c^2\bigr)
+ +\bigl(\ell_i(x)-b^2\bigr)\bigl(\ell_i(x)-c^2\bigr).
+\end{aligned}
 \]
-with $\ell_1,\ell_2$ affine. Every $f_i$ is therefore a linear combination of the functions
+Every $f_i$ belongs to the span of
 \[
-|x|^4,\quad |x|^2x_k\ (1\le k\le n),\quad x_kx_l\ (1\le k\le l\le n),\quad x_k\ (1\le k\le n),\quad 1,
+\lVert x\rVert^4,\quad
+\lVert x\rVert^2x_k\ (1\le k\le n),\quad
+x_kx_l\ (1\le k\le l\le n),\quad
+x_k\ (1\le k\le n),\quad 1.
 \]
-where we used that $|x|^2=\sum_kx_k^2$ is itself a combination of the $x_kx_l$. There are $1+n+\frac{n(n+1)}2+n+1=\frac{(n+1)(n+4)}2$ of them.
+Indeed, the omitted term $\lVert x\rVert^2$ is already
+$\sum_kx_k^2$. This spanning family has
+$1+n+n(n+1)/2+n+1=(n+1)(n+4)/2$ members.
+Since the $m$ polynomials are independent within its span,
+$m$ cannot exceed that number.
 \end{proof}
 
 The truth is not far: the midpoints of the edges of a regular simplex give $\frac{n(n+1)}2$ points (Exercise~\ref{combinatorial:ex:simplexdist}), so the maximum grows like $\frac{n^2}2$. Blokhuis (1984) improved the bound to
@@ -151,9 +260,39 @@ m\le\sum_{i=0}^s\binom ni.
 \]
 \end{theorem}
 \begin{proof}
-Over $\mathbb F_p$, let $f_i(x)=\prod_{l\in L}(v_{A_i}\cdot x-l)$, a polynomial of degree $s$ in $x\in\mathbb F_p^n$. At the vertex $v_{A_j}$ it takes the value $\prod_{l\in L}(|A_i\cap A_j|-l)$, which is $0$ for $j\ne i$ and non-zero for
-$j=i$. So the multilinear reductions $\tilde f_1,\dots,\tilde f_m$, which have the same values on the cube, are linearly independent, and they lie in the space spanned by the $\sum_{i\le s}\binom ni$
-multilinear monomials of degree at most $s$.
+Work over $\mathbb F_p$, and write $v_i\in\{0,1\}^n$
+for the incidence vector of $A_i$. For each $i$ let
+\[
+f_i(x_1,\ldots,x_n)
+=\prod_{\ell\in L}(v_i\cdot x-\ell).
+\]
+This has total degree at most $s$. Evaluation at a
+second incidence vector gives
+\[
+f_i(v_j)=\prod_{\ell\in L}(|A_i\cap A_j|-\ell)
+\quad\text{in }\mathbb F_p.
+\]
+When $j\ne i$ the intersection size has a residue in $L$,
+so the product is zero. When $j=i$ it is
+$\prod_{\ell\in L}(|A_i|-\ell)\ne0$, because
+the residue of $|A_i|$ is not in $L$. Hence the
+$m\times m$ evaluation matrix is diagonal with
+non-zero diagonal entries.
+
+On $\{0,1\}^n$, replacing any power $x_k^r$ with
+$r\ge1$ by $x_k$ does not change a polynomial's
+values. Apply this reduction to every monomial of
+$f_i$, obtaining a multilinear $\widetilde f_i$ of
+degree at most $s$. The evaluation matrix is unchanged,
+so $\widetilde f_1,\ldots,\widetilde f_m$ are
+linearly independent: evaluating a purported linear
+relation at $v_j$ forces its $j$-th coefficient to
+vanish. The multilinear polynomials of degree at most
+$s$ are spanned by the monomials
+$\prod_{k\in I}x_k$ with $|I|\le s$.
+There are $\sum_{j=0}^{s}\binom nj$ such monomials,
+and an independent family cannot be larger than a
+spanning family. This proves the inequality.
 \end{proof}
 
 Oddtown is the case $p=2$, $L=\{0\}$, with the bound $1+n$; a little more care gives back $n$. Without the prime, a weaker condition on the intersection sizes alone is enough, at the price of using a triangular
@@ -163,13 +302,42 @@ rather than a diagonal system.
 Let $L$ be a set of $s$ non-negative integers and $A_1,\dots,A_m\subseteq[n]$ distinct sets with $|A_i\cap A_j|\in L$ for all $i\ne j$. Then $m\le\sum_{i=0}^s\binom ni$.
 \end{theorem}
 \begin{proof}
-Number the sets so that $|A_1|\le|A_2|\le\dots\le|A_m|$, and over $\R$ let
+Arrange the distinct sets by non-decreasing size:
+$|A_1|\le\cdots\le|A_m|$. Let $v_i$ be the incidence
+vector of $A_i$, and work over $\mathbb R$. Define
 \[
-f_i(x)=\prod_{l\in L,\ l<|A_i|}\bigl(v_{A_i}\cdot x-l\bigr),
+f_i(x)=
+\prod_{\substack{\ell\in L\\\ell<|A_i|}}
+(v_i\cdot x-\ell),
 \]
-of degree at most $s$. Then $f_i(v_{A_i})=\prod_{l<|A_i|}(|A_i|-l)>0$. If $j<i$, then $|A_j|\le|A_i|$ and $A_j\ne A_i$, so $A_i\not\subseteq A_j$ and $|A_i\cap A_j|<|A_i|$; as this number is in $L$, one factor of
-$f_i(v_{A_j})$ vanishes. Suppose $\sum_ic_i\tilde f_i=0$ with not all $c_i$ zero, and let $i_0$ be the \emph{smallest} index with $c_{i_0}\ne0$. Evaluate at $v_{A_{i_0}}$: the terms $i<i_0$ have $c_i=0$, the terms $i>i_0$ have
-$\tilde f_i(v_{A_{i_0}})=0$, and what remains is $c_{i_0}f_{i_0}(v_{A_{i_0}})\ne0$, a contradiction. So the $\tilde f_i$ are independent, and we conclude as before.
+where an empty product equals $1$. Each $f_i$ has
+degree at most $s$. Its value at its own incidence
+vector is
+\[
+f_i(v_i)=
+\prod_{\substack{\ell\in L\\\ell<|A_i|}}
+(|A_i|-\ell)>0.
+\]
+Now take $j<i$. Because $|A_j|\le|A_i|$ and the sets
+are distinct, $A_i$ cannot be contained in $A_j$:
+otherwise the size inequality would force equality.
+Thus $|A_i\cap A_j|<|A_i|$. By hypothesis this
+intersection size belongs to $L$, so one factor
+of $f_i(v_j)$ is zero. Consequently the evaluation
+matrix $\bigl(f_i(v_j)\bigr)_{i,j}$ is upper triangular
+with non-zero diagonal and is invertible.
+
+Replace all powers $x_k^r$ ($r\ge1$) by $x_k$ to obtain
+multilinear polynomials $\widetilde f_i$. They still
+agree with $f_i$ at all $v_j\in\{0,1\}^n$, so their
+evaluation matrix is the same invertible one. They
+are therefore linearly independent in the span of
+the $\sum_{j=0}^s\binom nj$ multilinear monomials
+of degree at most $s$. Comparing the two dimensions
+gives the stated bound. This argument works even
+when some $|A_i|$ belong to $L$; the triangular
+evaluation, rather than a diagonal one, is the
+reason for choosing factors $\ell<|A_i|$.
 \end{proof}
 
 \subsection*{Explicit Ramsey graphs}
@@ -182,8 +350,45 @@ Let $p$ be a prime, and let $G_p$ be the graph whose vertices are the $(p^2-1)$-
 independent set with more than $t_p=\sum_{i=0}^{p-1}\binom{p^3}i$ vertices.
 \end{theorem}
 \begin{proof}
-A clique is a family of sets with $|A|=p^2-1\equiv-1$ and $|A\cap B|\bmod p\in L=\{0,1,\dots,p-2\}$, which has $p-1$ elements and avoids $-1$: Theorem~\ref{combinatorial:thm:fwmod} applies with $s=p-1$. In an independent set, all
-intersections satisfy $|A\cap B|\equiv-1\pmod p$ and $|A\cap B|<p^2-1$, so $|A\cap B|\in\{p-1,2p-1,\dots,p^2-p-1\}$, a set of $p-1$ integers: Theorem~\ref{combinatorial:thm:fw} applies with $s=p-1$.
+Each vertex has the same cardinality
+$p^2-1\equiv-1\pmod p$. We bound the sizes
+of the two kinds of homogeneous vertex families
+separately.
+
+In a clique, every two distinct vertices
+$A,B$ are adjacent, so
+$|A\cap B|\not\equiv-1\pmod p$.
+Their intersection residues therefore belong
+to $L=\{0,1,\ldots,p-2\}$, a set of
+$p-1$ residues. Since the common vertex size
+has residue $-1\notin L$, the modular
+Frankl--Wilson theorem
+(Theorem~\ref{combinatorial:thm:fwmod})
+applies with $n=p^3$ and $s=p-1$. It yields
+\[
+|\text{clique}|\le
+\sum_{i=0}^{p-1}\binom{p^3}{i}=t_p.
+\]
+
+In an independent set, two distinct vertices
+are not adjacent and hence
+$|A\cap B|\equiv-1\pmod p$.
+Their intersection is strictly smaller than
+$p^2-1$, since the two sets have the same
+size but are distinct. The possible
+non-negative intersection sizes are exactly
+among
+\[
+L'=\{p-1,\,2p-1,\,\ldots,\,p^2-p-1\},
+\]
+a set of $p-1$ integers. The non-uniform
+Frankl--Wilson theorem
+(Theorem~\ref{combinatorial:thm:fw})
+therefore gives the same bound
+$|\text{independent set}|\le t_p$.
+The two uses of Frankl--Wilson are different:
+one restricts residues and the other restricts
+the actual intersection sizes.
 \end{proof}
 
 For $p=3$ the graph has $\binom{27}8=2\,220\,075$ vertices and neither cliques nor independent sets with more than $1+27+351=379$ vertices. In general $t_p\le p\cdot p^{3(p-1)}\le p^{3p}$ while the number of vertices is
@@ -206,8 +411,33 @@ of startling power.
 Let $F$ be a field, $S_1,\dots,S_n\subseteq F$ finite, and $f\in F[x_1,\dots,x_n]$ with $\deg_{x_i}f<|S_i|$ for every $i$. If $f$ vanishes on $S_1\times\dots\times S_n$, then $f=0$.
 \end{lemma}
 \begin{proof}
-Induction on $n$; for $n=1$, a non-zero $f$ would have more roots than its degree. For $n>1$ write $f=\sum_{j<|S_n|}g_j(x_1,\dots,x_{n-1})\,x_n^j$. For fixed $(s_1,\dots,s_{n-1})\in S_1\times\dots\times S_{n-1}$,
-the one-variable polynomial $\sum_jg_j(s_1,\dots,s_{n-1})x_n^j$ vanishes on $S_n$ and has degree less than $|S_n|$, so all its coefficients vanish: each $g_j$ vanishes on $S_1\times\dots\times S_{n-1}$, and by induction $g_j=0$.
+We argue by induction on the number of variables.
+For one variable the claim is the usual root bound:
+a non-zero polynomial of degree less than $|S_1|$
+cannot vanish at every point of $S_1$.
+
+Suppose the statement has been proved for $n-1$
+variables. Expand in the last variable:
+\[
+f(x_1,\ldots,x_n)
+=\sum_{j=0}^{|S_n|-1}
+g_j(x_1,\ldots,x_{n-1})x_n^j.
+\]
+Every $g_j$ has degree in $x_i$ strictly below
+$|S_i|$ for $i<n$, since it comes from coefficients
+of $f$. Fix any $(s_1,\ldots,s_{n-1})$ in the
+first $n-1$ sets. The one-variable polynomial
+\[
+h(y)=\sum_{j=0}^{|S_n|-1}
+g_j(s_1,\ldots,s_{n-1})y^j
+\]
+vanishes at every $y\in S_n$. Its degree is below
+$|S_n|$, hence $h$ is identically zero and
+$g_j(s_1,\ldots,s_{n-1})=0$ for every $j$.
+Since the chosen point of the smaller grid was
+arbitrary, each $g_j$ vanishes on that entire grid.
+The induction hypothesis implies that every $g_j$
+is the zero polynomial, and so $f=0$.
 \end{proof}
 
 \begin{theorem}[Combinatorial Nullstellensatz, Alon, 1999]\label{combinatorial:thm:cn}
@@ -215,13 +445,53 @@ Let $F$ be a field and $f\in F[x_1,\dots,x_n]$. Suppose that $\deg f=t_1+\dots+t
 there is $s\in S_1\times\dots\times S_n$ with $f(s)\ne0$.
 \end{theorem}
 \begin{proof}
-Shrinking the $S_i$, we may assume $|S_i|=t_i+1$. Let $g_i(y)=\prod_{a\in S_i}(y-a)$, of degree $t_i+1$. For $e\ge0$, let $r_{i,e}(y)$ be the remainder of $y^e$ in the division by $g_i$: it has degree at most $t_i$, it
-equals $y^e$ if $e\le t_i$, it has degree less than $e$ if $e>t_i$, and $r_{i,e}(a)=a^e$ for $a\in S_i$, since $g_i(a)=0$. Replace each monomial $x_1^{e_1}\cdots x_n^{e_n}$ of $f$ by $r_{1,e_1}(x_1)\cdots r_{n,e_n}(x_n)$; this gives
-a polynomial $\bar f$ with $\deg_{x_i}\bar f\le t_i$ that agrees with $f$ on $S_1\times\dots\times S_n$.
+Select exactly $t_i+1$ elements from each
+$S_i$; proving non-vanishing on this smaller
+grid will suffice. Let
+\[
+g_i(y)=\prod_{a\in S_i}(y-a),
+\qquad \deg g_i=t_i+1.
+\]
+For every $e\ge0$, divide $y^e$ by the monic
+polynomial $g_i$ and denote the remainder by
+$r_{i,e}(y)$. Then
+$\deg r_{i,e}\le t_i$,
+$r_{i,e}=y^e$ if $e\le t_i$,
+and $r_{i,e}(a)=a^e$ for every $a\in S_i$.
+When $e>t_i$, the replacement strictly
+reduces the degree in that variable.
 
-Look at the coefficient of $x_1^{t_1}\cdots x_n^{t_n}$ in $\bar f$. The monomial itself is unchanged by the replacement. Any other monomial $m$ of $f$ either has all $e_i\le t_i$, and is unchanged and different, or has
-some $e_i>t_i$, and is replaced by a polynomial of degree less than $\deg m\le\deg f=t_1+\dots+t_n$, which cannot contain $x_1^{t_1}\cdots x_n^{t_n}$. So $\bar f$ keeps the non-zero coefficient, $\bar f\ne0$, and by
-Lemma~\ref{combinatorial:lem:grid}, $\bar f$, hence $f$, does not vanish everywhere on $S_1\times\dots\times S_n$.
+Replace each monomial $x^e=\prod_i x_i^{e_i}$
+of $f$ by $\prod_i r_{i,e_i}(x_i)$,
+retaining its coefficient, and call the sum
+$\overline f$. This polynomial agrees
+with $f$ at every point of the chosen
+grid and satisfies
+$\deg_{x_i}\overline f\le t_i$.
+
+We must show that $\overline f$ is not the
+zero polynomial. Put $t=\sum_i t_i=\deg f$
+and inspect the coefficient of
+$x_1^{t_1}\cdots x_n^{t_n}$.
+The specified monomial in $f$ is unchanged.
+Any \emph{other} monomial of $f$ whose
+exponents are all within the bounds $t_i$
+is unchanged as well and cannot contribute
+to that coefficient. Any monomial exceeding
+a bound in at least one coordinate has,
+after replacement, total degree strictly
+less than its original total degree, which
+was at most $t$. Therefore it cannot
+contribute to a monomial of total degree
+$t$. The target coefficient remains exactly
+the original non-zero coefficient.
+
+Thus $\overline f\ne0$. By the grid-vanishing
+Lemma~\ref{combinatorial:lem:grid}, a non-zero
+polynomial whose degree in $x_i$ is below
+$|S_i|=t_i+1$ cannot vanish everywhere
+on the grid. Hence $\overline f(s)\ne0$
+for some $s$, and then $f(s)=\overline f(s)\ne0$.
 \end{proof}
 
 The hypothesis that $\deg f$ equals $\sum t_i$ matters: it guarantees that the chosen monomial is of top degree, so lower-order terms cannot cancel it. Here is the first application, a theorem of 1813.
@@ -230,13 +500,45 @@ The hypothesis that $\deg f$ equals $\sum t_i$ matters: it guarantees that the c
 Let $p$ be a prime and $A,B$ non-empty subsets of $\Z/p\Z$. Then $|A+B|\ge\min(p,|A|+|B|-1)$, where $A+B=\{a+b:a\in A,b\in B\}$.
 \end{theorem}
 \begin{proof}
-If $|A|+|B|>p$, then for every $c$ the sets $A$ and $c-B$ have more than $p$ elements in total, so they meet: $c=a+b$, and $A+B=\Z/p\Z$. Suppose now $|A|+|B|\le p$ and, for a contradiction,
-$|A+B|\le|A|+|B|-2$. Choose $C\supseteq A+B$ with $|C|=|A|+|B|-2$ and let
+Write $a=|A|$ and $b=|B|$.
+First suppose $a+b>p$. For any $c\in\mathbb F_p$,
+the sets $A$ and $c-B=\{c-y:y\in B\}$ contain
+more than $p$ elements between them.
+They must intersect, so $c=x+y$ for some
+$x\in A$, $y\in B$. Hence $A+B=\mathbb F_p$,
+and the bound is proved.
+
+Now suppose $a+b\le p$. We need
+$|A+B|\ge a+b-1$. Assume instead that
+$|A+B|\le a+b-2$, and enlarge $A+B$
+to a set $C\subseteq\mathbb F_p$ of
+exactly $a+b-2$ elements. This is possible
+because $a+b-2<p$. Define
 \[
-f(x,y)=\prod_{c\in C}(x+y-c)\in\mathbb F_p[x,y],
+f(X,Y)=\prod_{c\in C}(X+Y-c)
+\quad\text{over }\mathbb F_p.
 \]
-of degree $|A|+|B|-2$. The coefficient of $x^{|A|-1}y^{|B|-1}$ in $f$ is that of the top part $(x+y)^{|A|+|B|-2}$, the binomial coefficient $\binom{|A|+|B|-2}{|A|-1}$, which is not divisible by $p$ because
-$|A|+|B|-2<p$. By Theorem~\ref{combinatorial:thm:cn} with $t_1=|A|-1$, $t_2=|B|-1$, there are $a\in A$, $b\in B$ with $f(a,b)\ne0$. But $a+b\in C$, so $f(a,b)=0$.
+Its total degree is $a+b-2$, and the
+homogeneous part of that degree is
+$(X+Y)^{a+b-2}$. The coefficient of
+$X^{a-1}Y^{b-1}$ is therefore
+\[
+\binom{a+b-2}{a-1}\ne0
+\quad\text{in }\mathbb F_p.
+\]
+Indeed, $(a+b-2)!$, $(a-1)!$ and $(b-1)!$
+are all products of non-zero elements
+of $\mathbb F_p$, because $a+b-2<p$.
+
+Combinatorial Nullstellensatz
+(Theorem~\ref{combinatorial:thm:cn}),
+with $t_1=a-1$, $t_2=b-1$, and the
+sets $A,B$, now supplies $(x,y)\in A\times B$
+with $f(x,y)\ne0$. But $x+y\in A+B\subseteq C$,
+so the factor indexed by $c=x+y$ vanishes:
+$f(x,y)=0$. This contradiction establishes
+$|A+B|\ge a+b-1$ in the remaining case,
+and both cases give the claimed minimum.
 \end{proof}
 
 The bound is sharp (arithmetic progressions with the same difference), and it fails for $\Z/n\Z$ with $n$ composite (Exercise~\ref{combinatorial:ex:cdsharp}): primes are needed so that $\Z/p\Z$ has no subgroups to hide in.
@@ -247,8 +549,24 @@ The bound is sharp (arithmetic progressions with the same difference), and it fa
 Let $p$ be a prime and $0\le e<p-1$. Then $\sum_{y\in\mathbb F_p}y^e=0$ in $\mathbb F_p$ (with the convention $0^0=1$).
 \end{lemma}
 \begin{proof}
-For $e=0$ the sum is $p\cdot1=0$. For $1\le e<p-1$, the polynomial $y^e-1$ has at most $e<p-1$ roots, so some $a\ne0$ has $a^e\ne1$. Multiplication by $a$ permutes $\mathbb F_p$, so
-$S=\sum_yy^e=\sum_y(ay)^e=a^eS$, and $(a^e-1)S=0$ forces $S=0$.
+Write $S_e=\sum_{y\in\mathbb F_p}y^e$.
+For $e=0$, the convention $0^0=1$ makes every
+summand equal to $1$. There are $p$ of them,
+and $S_0=p\cdot1=0$ in $\mathbb F_p$.
+
+Now let $1\le e<p-1$. A non-zero polynomial of
+degree $e$ has at most $e$ roots in a field.
+As the multiplicative group $\mathbb F_p^\times$
+contains $p-1>e$ elements, some $a\ne0$ satisfies
+$a^e\ne1$. Multiplication by $a$ permutes
+$\mathbb F_p$, including zero. Therefore
+\[
+S_e=\sum_{y\in\mathbb F_p}(ay)^e=a^eS_e.
+\]
+Subtracting gives $(a^e-1)S_e=0$. The factor
+$a^e-1$ is non-zero and hence invertible in the
+field, so $S_e=0$. This also covers the case
+$p=2$, for which only $e=0$ is allowed.
 \end{proof}
 
 \begin{theorem}[Chevalley and Warning, 1935]\label{combinatorial:thm:cw}
@@ -256,12 +574,49 @@ Let $p$ be a prime and $P_1,\dots,P_k\in\mathbb F_p[x_1,\dots,x_n]$ with $\deg P
 have the common zero $0$, they have another one.
 \end{theorem}
 \begin{proof}
-By Fermat's little theorem, $y^{p-1}=1$ for $y\ne0$ in $\mathbb F_p$. So $Q=\prod_{j=1}^k\bigl(1-P_j^{p-1}\bigr)$ takes the value $1$ at common zeros and $0$ elsewhere, and $N\equiv\sum_{x\in\mathbb F_p^n}Q(x)\pmod p$. Now
-$\deg Q\le(p-1)\sum_j\deg P_j<(p-1)n$, so every monomial $x_1^{e_1}\cdots x_n^{e_n}$ of $Q$ has some $e_i<p-1$, and
+We count zeros modulo $p$ by an indicator
+polynomial. For $u\in\mathbb F_p$,
+Fermat's little theorem gives
+$u^{p-1}=0$ if $u=0$ and $1$ otherwise.
+Thus
 \[
-\sum_{x\in\mathbb F_p^n}x_1^{e_1}\cdots x_n^{e_n}=\prod_{i=1}^n\Bigl(\sum_{y\in\mathbb F_p}y^{e_i}\Bigr)=0
+Q(x)=\prod_{j=1}^k\bigl(1-P_j(x)^{p-1}\bigr)
 \]
-by Lemma~\ref{combinatorial:lem:powersum}. Hence $N\equiv0\pmod p$; if $N\ge1$ then $N\ge p\ge2$.
+equals $1$ precisely at the common
+zeros and $0$ elsewhere. Consequently
+\[
+N\equiv\sum_{x\in\mathbb F_p^n}Q(x)\pmod p.
+\]
+The total-degree hypothesis implies
+\[
+\deg Q\le(p-1)\sum_{j=1}^k\deg P_j
+ <n(p-1).
+\]
+Consider any monomial
+$x_1^{e_1}\cdots x_n^{e_n}$ occurring in
+$Q$. Its total degree is less than
+$n(p-1)$, so at least one exponent
+$e_i$ is strictly below $p-1$.
+Summing this monomial over the entire
+grid factors into one-variable sums:
+\[
+\sum_{x\in\mathbb F_p^n}
+  x_1^{e_1}\cdots x_n^{e_n}
+=\prod_{i=1}^n
+  \left(\sum_{u\in\mathbb F_p}u^{e_i}\right).
+\]
+The factor corresponding to an exponent
+$e_i<p-1$ vanishes by
+Lemma~\ref{combinatorial:lem:powersum}.
+Therefore every monomial sum vanishes
+modulo $p$, and so does their linear
+combination $\sum_xQ(x)$. Hence
+$p\mid N$.
+
+If the origin is a common zero, then
+$N\ge1$. Since $N$ is a non-negative
+multiple of $p$, it must be at least
+$p\ge2$. Thus a second common zero exists.
 \end{proof}
 
 The theorem holds over every finite field, with the same proof. It is a statement about solving equations, proved without solving anything; here is a statement about sums of integers, proved by solving equations.
@@ -270,16 +625,58 @@ The theorem holds over every finite field, with the same proof. It is a statemen
 Among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
 \end{theorem}
 \begin{proof}
-First let $n=p$ be prime, and $a_1,\dots,a_{2p-1}$ the integers. Over $\mathbb F_p$, in $2p-1$ variables, consider
+We first prove the assertion when $n=p$
+is prime. Given $2p-1$ integers
+$a_1,\ldots,a_{2p-1}$, reduce them modulo
+$p$ and consider two polynomials in
+$2p-1$ variables over $\mathbb F_p$:
 \[
-P_1=\sum_{i=1}^{2p-1}a_ix_i^{p-1},\qquad P_2=\sum_{i=1}^{2p-1}x_i^{p-1}.
+P_1(x)=\sum_{i=1}^{2p-1}a_ix_i^{p-1},
+\qquad
+P_2(x)=\sum_{i=1}^{2p-1}x_i^{p-1}.
 \]
-Their degrees add up to $2p-2<2p-1$ and $0$ is a common zero, so by Theorem~\ref{combinatorial:thm:cw} there is a common zero $x\ne0$. Let $I=\{i:x_i\ne0\}$. By Fermat, $x_i^{p-1}$ is $1$ on $I$ and $0$ elsewhere, so
-$P_2(x)=|I|\equiv0\pmod p$ with $1\le|I|\le2p-1$, that is $|I|=p$; and $P_1(x)=\sum_{i\in I}a_i\equiv0\pmod p$.
+Their degrees sum to $2(p-1)<2p-1$,
+and the zero vector is a common zero.
+Chevalley--Warning
+(Theorem~\ref{combinatorial:thm:cw})
+gives a non-zero common zero $x$.
+Let $I=\{i:x_i\ne0\}$. Fermat's theorem
+shows that $P_2(x)=|I|\pmod p$ and
+$P_1(x)=\sum_{i\in I}a_i\pmod p$.
+Because $x\ne0$, we have
+$1\le|I|\le2p-1$. As $p\mid|I|$,
+necessarily $|I|=p$; and the second
+equation says that the sum of those
+$p$ selected integers is divisible
+by $p$. This proves the prime case.
 
-Next, if the theorem holds for $m$ and for $n$, it holds for $mn$. Given $2mn-1$ integers, as long as at least $2n-1$ remain, pick $n$ of them with sum divisible by $n$ and set them aside. After setting aside
-$k$ groups, $2mn-1-kn$ remain, which is at least $2n-1$ while $k\le2m-2$: so we obtain $2m-1$ disjoint groups, with sums $nb_1,\dots,nb_{2m-1}$. Among the $b_j$, choose $m$ with sum divisible by $m$; the
-$mn$ integers of the corresponding groups have a sum divisible by $mn$. Every $n\ge2$ is a product of primes, and $n=1$ is trivial.
+Next we show that validity for $m$ and
+for $n$ implies validity for $mn$.
+Start with $2mn-1$ integers. Apply
+the assertion for $n$ repeatedly,
+removing each chosen group of $n$
+numbers whose sum is divisible by $n$.
+Before choosing group number $k+1$,
+for $0\le k\le2m-2$, there are
+\[
+2mn-1-kn\ge2n-1
+\]
+numbers left, so the choice is always
+possible. After $2m-1$ such choices,
+write their sums as $nb_1,\ldots,nb_{2m-1}$.
+The assertion for $m$ selects $m$
+of the integers $b_j$ whose sum is
+divisible by $m$. The corresponding
+$m$ disjoint groups contain $mn$
+original integers, and their combined
+sum is $n$ times a multiple of $m$,
+hence divisible by $mn$.
+
+Every positive integer is $1$ or a
+product of primes. The case $n=1$
+is immediate, and successive applications
+of the multiplicative step finish
+the proof for every $n$.
 \end{proof}
 
 With $n-1$ zeros and $n-1$ ones, $2n-2$ integers are not enough (Exercise~\ref{combinatorial:ex:egzsharp}).
@@ -321,8 +718,21 @@ diagonal functions of three variables.
 A subspace $V\subseteq F^A$ of dimension $d$ contains a vector with at least $d$ non-zero coordinates.
 \end{lemma}
 \begin{proof}
-Put a basis of $V$ as the rows of a $d\times|A|$ matrix in reduced row echelon form (Gaussian elimination keeps the row space). Each row has a $1$ in its own pivot column and $0$ in the other pivot
-columns, so the sum of the rows, which is in $V$, has a $1$ in each of the $d$ pivot columns.
+Choose a basis $v_1,\ldots,v_d$ of $V$ and put
+these vectors in the rows of a $d\times|A|$ matrix.
+Elementary row operations preserve the row space,
+so we may replace that matrix by its reduced
+row-echelon form $R$. Because the row rank is $d$,
+$R$ has $d$ pivot columns, one for each non-zero row.
+In the pivot column belonging to row $i$, the entry
+of that row is $1$ and every other row has entry $0$.
+Consequently, the sum $v$ of all $d$ rows of $R$
+has entry $1$ in every pivot column. It belongs
+to the same row space $V$, and it has at least
+$d$ non-zero coordinates. No assumption on the
+size or characteristic of $F$ is needed: a pivot
+column contributes exactly one $1$, never a sum
+of several ones. For $d=0$, take $v=0$.
 \end{proof}
 
 \begin{lemma}[Tao, 2016]\label{combinatorial:lem:diag}
@@ -333,15 +743,54 @@ T(x,y,z)=\sum_{a\in A}c_a\,\delta_a(x)\delta_a(y)\delta_a(z),
 with all $c_a\ne0$, where $\delta_a(x)$ is $1$ if $x=a$ and $0$ otherwise. Then the slice rank of $T$ is $|A|$.
 \end{lemma}
 \begin{proof}
-It is at most $|A|$, by the formula. Suppose $T=\sum_{i=1}^rS_i$ with $r<|A|$ slices: $r_1$ of the form $f_i(x)g_i(y,z)$, $r_2$ of the form $f_i(y)g_i(x,z)$ and $r_3$ of the form $f_i(z)g_i(x,y)$. Let $V$ be the space of
-$h:A\to F$ with $\sum_xh(x)f_i(x)=0$ for the $r_1$ functions $f_i$ of the first kind. It is cut out by $r_1$ linear equations, so $\dim V\ge|A|-r_1$, and by Lemma~\ref{combinatorial:lem:support} it contains $h$ with
-$|\operatorname{supp}h|\ge|A|-r_1$. Contract $T$ with $h$ in the variable $x$:
+The displayed expansion of $T$ is already a sum
+of $|A|$ slices of the form
+$\delta_a(x)\,[c_a\delta_a(y)\delta_a(z)]$,
+so its slice rank is at most $|A|$.
+
+Suppose, to obtain a contradiction, that $T$
+has a decomposition into $r<|A|$ slices.
+After rearrangement let $r_1$ slices be of
+the form $f_i(x)g_i(y,z)$, let $r_2$ be of
+the form $f_i(y)g_i(x,z)$, and let $r_3$
+be of the form $f_i(z)g_i(x,y)$, with
+$r=r_1+r_2+r_3$. Consider
 \[
-U(y,z)=\sum_{x\in A}h(x)T(x,y,z)=\sum_{a\in A}c_ah(a)\,\delta_a(y)\delta_a(z).
+V=\left\{h\in F^A:
+ \sum_{x\in A}h(x)f_i(x)=0
+ \text{ for all }i\text{ of the first kind}\right\}.
 \]
-As a matrix indexed by $(y,z)$, $U$ is diagonal with $|\operatorname{supp}h|$ non-zero entries, so its rank is at least $|A|-r_1$. On the other side, contracting the slices: those of the first kind give
-$\bigl(\sum_xh(x)f_i(x)\bigr)g_i(y,z)=0$; those of the second kind give $f_i(y)\sum_xh(x)g_i(x,z)$, and those of the third kind $f_i(z)\sum_xh(x)g_i(x,y)$, which are matrices of rank at most $1$. So
-$\operatorname{rank}U\le r_2+r_3<|A|-r_1$, a contradiction.
+These are at most $r_1$ homogeneous linear
+conditions, hence $\dim V\ge|A|-r_1>0$.
+By Lemma~\ref{combinatorial:lem:support},
+choose $h\in V$ with
+$|\operatorname{supp}h|\ge|A|-r_1$.
+
+Contract the first variable of $T$ against $h$:
+\[
+U(y,z)=\sum_{x\in A}h(x)T(x,y,z)
+=\sum_{a\in A}c_ah(a)\delta_a(y)\delta_a(z).
+\]
+This is a diagonal $A\times A$ matrix; because
+every $c_a$ is non-zero, its rank is exactly
+$|\operatorname{supp}h|\ge|A|-r_1$.
+
+Compute the same contraction from the proposed
+slice decomposition. Each of the first $r_1$
+slices disappears by the definition of $V$.
+A slice of the second kind contracts to
+$f_i(y)\sum_xh(x)g_i(x,z)$, an outer product
+of a function of $y$ and a function of $z$;
+its matrix rank is at most one. The same is
+true of a slice of the third kind. By
+subadditivity of matrix rank,
+\[
+\operatorname{rank}U\le r_2+r_3
+=r-r_1<|A|-r_1,
+\]
+contradicting the diagonal rank computed above.
+Thus no decomposition with fewer than $|A|$
+slices exists, and the slice rank equals $|A|$.
 \end{proof}
 
 Let $M_n$ be the number of $a\in\{0,1,2\}^n$ with $a_1+\dots+a_n\le\frac{2n}3$.
@@ -350,27 +799,104 @@ Let $M_n$ be the number of $a\in\{0,1,2\}^n$ with $a_1+\dots+a_n\le\frac{2n}3$.
 Every cap set $A\subseteq\mathbb F_3^n$ has $|A|\le3M_n$.
 \end{theorem}
 \begin{proof}
-Over $F=\mathbb F_3$, let $T(x,y,z)=1$ if $x+y+z=0$ and $0$ otherwise, for $x,y,z\in A$. If $x+y+z=0$ with $x,y,z\in A$, then $x=y=z$: three distinct points would form a line, and if two of them are equal,
-say $x=y$, then $z=-2x=x$. So $T(x,y,z)=\sum_{a\in A}\delta_a(x)\delta_a(y)\delta_a(z)$, and by Lemma~\ref{combinatorial:lem:diag} its slice rank is $|A|$.
-
-Now bound the slice rank from above. For $t\in\mathbb F_3$, $1-t^2$ is $1$ if $t=0$ and $0$ otherwise. Hence
+Regard $A$ as a set of points in $\mathbb F_3^n$.
+On $A^3$ define the tensor
 \[
-T(x,y,z)=\prod_{i=1}^n\bigl(1-(x_i+y_i+z_i)^2\bigr).
+T(x,y,z)=
+\begin{cases}
+1,&x+y+z=0,\\
+0,&\text{otherwise}.
+\end{cases}
 \]
-Expanding the product gives a combination of monomials $x^ay^bz^c=\prod_ix_i^{a_i}y_i^{b_i}z_i^{c_i}$ with all exponents in $\{0,1,2\}$ and total degree $|a|+|b|+|c|\le2n$, where $|a|=\sum_ia_i$. In each
-monomial, one of $|a|,|b|,|c|$ is at most $\frac{2n}3$. Group the monomials with $|a|\le\frac{2n}3$ by their $x$-part: they contribute $\sum_ax^ag_a(y,z)$, a sum of at most $M_n$ slices of the first kind. Group the
-remaining monomials with $|b|\le\frac{2n}3$ by their $y$-part, and the rest (which have $|c|\le\frac{2n}3$) by their $z$-part. So the slice rank is at most $3M_n$.
+If $x+y+z=0$ and two of the three points
+coincide, then the third coincides as well:
+for example $x=y$ implies $z=-2x=x$
+in characteristic $3$. If the three are
+distinct, the equation says that they are
+three points on an affine line, forbidden
+by the cap-set hypothesis. Hence
+$T(x,y,z)$ is non-zero \emph{only} when
+$x=y=z$. In particular,
+\[
+T(x,y,z)=
+\sum_{a\in A}\delta_a(x)\delta_a(y)\delta_a(z).
+\]
+By the diagonal tensor lemma
+(Lemma~\ref{combinatorial:lem:diag}),
+its slice rank is exactly $|A|$.
+
+We now estimate the same slice rank from above.
+For $u\in\mathbb F_3$, $1-u^2$ equals $1$
+when $u=0$ and $0$ otherwise. Thus, even
+before restricting to $A^3$,
+\[
+T(x,y,z)=\prod_{j=1}^n
+  \left(1-(x_j+y_j+z_j)^2\right).
+\]
+Expand this product. Every monomial
+$x^ay^bz^c$ that appears has each exponent
+in $\{0,1,2\}$, and
+$|a|+|b|+|c|\le2n$, where
+$|a|=\sum_j a_j$, and similarly for $b,c$.
+At least one of the three degrees is
+therefore at most $2n/3$.
+
+Partition the monomials by the following
+priority rule, so none is counted twice.
+First take those with $|a|\le2n/3$ and
+collect terms with the same $x$-monomial.
+They form at most $M_n$ slices
+$x^a g_a(y,z)$. Of the remaining
+monomials, take those with $|b|\le2n/3$
+and collect by $y^b$, contributing at
+most another $M_n$ slices. Every monomial
+still remaining satisfies $|c|\le2n/3$;
+collecting by $z^c$ contributes at most
+$M_n$ slices of the third kind.
+Restricting this expression to $A^3$
+does not increase the number of slices.
+We have exhibited a decomposition of $T$
+into at most $3M_n$ slices. Since its
+slice rank was $|A|$, it follows that
+$|A|\le3M_n$.
 \end{proof}
 
 \begin{proposition}\label{combinatorial:prop:mn}
-$M_n\le\bigl(\frac{1+x+x^2}{x^{2/3}}\bigr)^n$ for every $0<x\le1$. With $x=0.6$, $M_n\le2.7552^n$, so every cap set in $\mathbb F_3^n$ has at most $3\cdot2.7552^n$ points.
+For every $0<x\le1$,
+\[
+M_n\le\left(\frac{1+x+x^2}{x^{2/3}}\right)^n.
+\]
+In particular, $M_n\le 2.7552^n$ and every cap set in
+$\mathbb F_3^n$ has at most $3\cdot2.7552^n$ points.
 \end{proposition}
 \begin{proof}
-For $0<x\le1$, each $a$ with $|a|\le\frac{2n}3$ has $x^{|a|-2n/3}\ge1$, so
+Recall that $M_n$ counts the vectors $a=(a_1,\ldots,a_n)$
+in $\{0,1,2\}^n$ with $|a|=\sum_i a_i\le 2n/3$.
+If $0<x\le1$ and $|a|\le2n/3$, then
+$x^{|a|-2n/3}\ge1$. Replace each indicator of this
+inequality by that upper bound, and then sum over
+\emph{all} ternary vectors:
 \[
-M_n\le\sum_{a\in\{0,1,2\}^n}x^{|a|-2n/3}=x^{-2n/3}\prod_{i=1}^n\sum_{a_i=0}^2x^{a_i}=\Bigl(\frac{1+x+x^2}{x^{2/3}}\Bigr)^n.
+\begin{aligned}
+M_n
+&\le\sum_{|a|\le2n/3}x^{|a|-2n/3}
+ \le x^{-2n/3}\sum_{a\in\{0,1,2\}^n}x^{|a|}\\
+&=x^{-2n/3}\prod_{i=1}^n(1+x+x^2)
+ =\left(\frac{1+x+x^2}{x^{2/3}}\right)^n.
+\end{aligned}
 \]
-At $x=0.6$, $\frac{1.96}{0.6^{2/3}}=\frac{1.96}{0.71138\ldots}=2.75521\ldots$
+This is a counting bound, not a probability approximation:
+the factorisation is exact because the coordinates vary
+independently. To obtain the advertised numerical constant,
+take $x=59/100$ (not $0.6$). Since
+\[
+\frac{(1+x+x^2)^3}{x^2}
+=\frac{(19381/10000)^3}{(59/100)^2}
+<\left(\frac{1722}{625}\right)^3,
+\]
+we have $(1+x+x^2)/x^{2/3}<1722/625=2.7552$.
+The cap-set bound now follows from
+Theorem~\ref{combinatorial:thm:capset}.
 \end{proof}
 
 This is the exponential trick behind Chernoff's bound (Volume~4, Chapter~4): the fraction $\frac{M_n}{3^n}$ is the probability that a sum of $n$ uniform digits in $\{0,1,2\}$ falls below $\frac23$ of its mean $n$,
@@ -470,71 +996,284 @@ of $t^{\deg f}$ is the top-degree part of $f$ evaluated at $d$.
 \section{Solutions}
 
 \begin{solution}{combinatorial:ex:eventown}
-\idea Unions of couples meet in unions of couples. For the planes, the intersection of two affine subspaces is empty or an affine subspace, whose size is a power of $2$.
-\writeup Two unions of couples intersect in a union of couples, of even size. For the second family: a $2$-dimensional subspace of $\mathbb F_2^3$ is the kernel of a non-zero linear form, and there are $7$ of them, each with
-$2$ cosets: $14$ planes of $4$ points. Two distinct planes are parallel (disjoint) or their directions differ, and then they meet in a translate of the intersection of the two directions, a line of $2$ points. With
-$\varnothing$ and the whole space, which meet everything in $0$, $4$ or $8$ points, all sizes and intersections are even, and there are $16=2^{8/2}$ clubs: the maximum allowed by Theorem~\ref{combinatorial:thm:eventown}. No club has $2$
-members, while the couples family contains the couples themselves.
+\idea In the couples construction, every club is a union of disjoint two-element pairs. For the second example, affine planes in $\mathbb F_2^3$ have four points and meet either in a line of two points or not at all. Both descriptions make every intersection even.
+
+\writeup First partition an eight-element ground set into four disjoint couples. Let each club be a union of any subset of these couples. The size of each club is even. If two clubs are unions of couples, their intersection is a union of the couples selected by both clubs, so every pairwise intersection also has even size. There are $2^4=16$ such clubs, achieving the Eventown bound $2^{8/2}=16$.
+
+Now use the eight points of $V=\mathbb F_2^3$ as the ground set. A two-dimensional linear subspace is the kernel of a non-zero linear functional $V\to\mathbb F_2$. There are $2^3-1=7$ non-zero linear functionals, and over $\mathbb F_2$ distinct non-zero functionals cannot differ by a non-trivial scalar, so their kernels are distinct. Each such subspace has index $2$, hence exactly two affine cosets. This gives $7\cdot2=14$ affine planes, each with four points.
+
+Let $\mathcal F$ consist of all these planes together with $\varnothing$ and $V$. It has $14+2=16$ distinct members. Every member has even size $0$, $4$, or $8$. Two planes with the same direction are equal or disjoint. Two planes with different directions intersect in an affine translate of the intersection of their two-dimensional direction subspaces. In a three-dimensional vector space, two distinct planes intersect in a one-dimensional subspace, because
+\[
+\dim(U\cap W)=\dim U+\dim W-\dim(U+W)=2+2-3=1.
+\]
+Their affine intersection is consequently a line with $2$ points; it cannot be empty here, since the two linear equations defining the planes are independent and the map $V\to\mathbb F_2^2$ is surjective. Intersections with $\varnothing$ and $V$ are obviously even.
+
+So $\mathcal F$ is an Eventown family of maximum size $16$. It is \emph{not} a couples construction: every non-empty proper club in $\mathcal F$ has four members, whereas the couples family contains four clubs of size two. More generally, permuting the eight inhabitants preserves club sizes, so no relabelling could turn one family into the other.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:nearpencil}
-\idea Count the common points pair by pair.
-\writeup $\{i,n\}\cap\{j,n\}=\{n\}$ for $i\ne j$, and $\{i,n\}\cap\{1,\dots,n-1\}=\{i\}$: every intersection has size $1$, and there are $n$ sets. In the Fano plane any two of the seven lines
-$124,135,236,167,257,347,456$ meet in exactly one point (two points determine their line, so two lines share at most one point, and the $21$ pairs can be checked one by one: $124\cap456=\{4\}$, $124\cap236=\{2\}$, $167\cap257=\{7\}$, and so on). So $m=n=7$. The incidence calculation shows
-that every projective plane attains the bound, and de Bruijn and Erd\H os (1948) proved that for $\lambda=1$ the near-pencils and the projective planes are the only families with $m=n$.
+\idea Fisher's inequality compares the number of sets with the size of their ground set. In each example, count both quantities and check that two distinct sets meet in exactly one point. For the Fano plane, using the line list also checks the intersections concretely.
+
+\writeup \emph{Near-pencil.} On the ground set $\{1,\ldots,n\}$, take
+\[
+B_i=\{i,n\}\quad(1\le i<n),\qquad
+B_n=\{1,\ldots,n-1\}.
+\]
+There are exactly $n$ blocks on $n$ points. If $i\ne j<n$, then $B_i\cap B_j=\{n\}$. Also, for each $i<n$, we have $B_i\cap B_n=\{i\}$. Thus every pair of distinct blocks meets in exactly one point, and the family attains Fisher's bound $m\le n$ with $m=n$.
+
+\emph{Fano plane.} One standard labelling of the seven lines on seven points is
+\[
+124,\quad135,\quad236,\quad167,\quad257,\quad347,\quad456,
+\]
+where $124$ means $\{1,2,4\}$, and similarly for the others. Each point occurs on exactly three of these lines. Every unordered pair of distinct points occurs on exactly one line: there are $7\binom32=21$ pairs listed by the seven lines, equal to the total $\binom72=21$, and inspection of the displayed triples shows that no pair repeats.
+
+This already implies that two lines meet in at most one point. In fact they always meet. One way to see this is through the vector-space model. Identify the labelled points with the non-zero vectors of $\mathbb F_2^3$ by $1=e_1$, $2=e_2$, $3=e_3$, $4=e_1+e_2$, $5=e_1+e_3$, $6=e_2+e_3$, $7=e_1+e_2+e_3$. The displayed triples are then exactly the sets $\{u,v,u+v\}$ for distinct non-zero $u,v$. Each line together with $0$ is a two-dimensional subspace. Two two-dimensional subspaces of a three-dimensional vector space have intersection of dimension at least $2+2-3=1$, and distinct such subspaces meet in dimension exactly $1$. Therefore their corresponding Fano lines share precisely one non-zero point.
+
+So this family also has $m=n=7$ with every two blocks meeting in $\lambda=1$ point. Fisher's inequality is attained in both examples, for quite different geometric reasons.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:simplexdist}
-\idea Points whose coordinates have a fixed sum live in a hyperplane; distances depend only on how many indices are shared.
-\writeup All the points satisfy $\sum_kx_k=2$, a hyperplane of dimension $n$, which is isometric to $\R^n$. For $\{i,j\}\ne\{k,l\}$, $|e_i+e_j-e_k-e_l|^2$ is $2$ if the pairs share an index and $4$ if not: two distances,
-$\binom{n+1}2$ points. For $n=3$ the six points $e_i+e_j$ of $\R^4$ form a regular octahedron: each point is at distance $\sqrt2$ from the four points sharing an index and at distance $2$ from the opposite one.
+\idea Every point $e_i+e_j$ has two coordinates equal to $1$, so all these points lie in the same affine hyperplane. To find the distances, observe that two distinct unordered pairs either share exactly one index or share none.
+
+\writeup In $\R^{n+1}$, let $e_1,\ldots,e_{n+1}$ be the standard orthonormal basis and put
+\[
+S=\{e_i+e_j:1\le i<j\le n+1\}.
+\]
+There are $\binom{n+1}{2}=\frac{n(n+1)}2$ elements in $S$, all distinct because their sets of non-zero coordinates are distinct.
+
+Every $x=e_i+e_j$ satisfies
+\[
+x_1+x_2+\cdots+x_{n+1}=2.
+\]
+Thus $S$ lies in the affine hyperplane
+\[
+H=\{x\in\R^{n+1}:\sum_{r=1}^{n+1}x_r=2\}.
+\]
+The hyperplane has dimension $n$; translation by a fixed point of $H$ identifies it with the $n$-dimensional linear subspace of vectors whose coordinate sum is $0$. With its inherited Euclidean metric, $H$ is isometric to $\R^n$.
+
+Take two distinct points $u=e_i+e_j$ and $v=e_k+e_l$. If the pairs $\{i,j\}$ and $\{k,l\}$ share exactly one index, say $i=k$, then
+\[
+u-v=e_j-e_l
+\quad\Longrightarrow\quad
+|u-v|^2=1+1=2.
+\]
+If the pairs are disjoint, the difference has four non-zero coordinates, two equal to $1$ and two equal to $-1$, so
+\[
+|u-v|^2=1+1+1+1=4.
+\]
+Therefore the only distances between distinct points are $\sqrt2$ and $2$, whenever both patterns of overlap occur. For $n\ge3$ both occur; for the small cases $n=1,2$ the construction degenerates to one or a few points and does not realise both distances. In any case it is a set with at most two distances and $\binom{n+1}{2}$ points in an $n$-dimensional Euclidean space.
+
+For $n=3$, we work in $\R^4$ and obtain six points, one for each pair of indices. Each point shares an index with four others, at distance $\sqrt2$, and has one complementary disjoint pair, at distance $2$. Those are exactly the vertex-distance relations of a regular octahedron: four adjacent vertices at the shorter distance and one opposite vertex at the longer distance. Hence the six points form a regular octahedron in the three-dimensional hyperplane $H$.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:sdistance}
-\idea Exactly as for two distances, with one factor per distance.
-\writeup Let $a_1,\dots,a_m$ have distances in $\{d_1,\dots,d_s\}$ and $f_i(x)=\prod_{k=1}^s(|x-a_i|^2-d_k^2)$. Then $f_i(a_j)=0$ for $j\ne i$ and $f_i(a_i)=\prod_kd_k^2\ne0$, so the $f_i$ are independent. They are
-polynomials of degree at most $2s$ in $n$ variables, and the monomials of degree at most $2s$ in $n$ variables are in bijection with the monomials of degree exactly $2s$ in $n+1$ variables (add a variable $x_0$
-to complete the degree), counted by stars and bars: $\binom{2s+n}{n}$. For $s=2$ this is $\binom{n+4}4$, much weaker than Theorem~\ref{combinatorial:thm:twodist}, which used the special shape of $|x-a|^2$.
+\idea Associate one polynomial to each point of the distance set. Its values vanish at every other point but not at its own point. Such polynomials are linearly independent, and there cannot be more of them than the dimension of the space of polynomials of a fixed degree.
+
+\writeup Let $A=\{a_1,\ldots,a_m\}\subseteq\R^n$ be an $s$-distance set consisting of distinct points. List the distinct positive distances that actually occur as $d_1,\ldots,d_r$, with $r\le s$.
+
+For each $i$ define
+\[
+f_i(x)=\prod_{k=1}^r\bigl(\|x-a_i\|^2-d_k^2\bigr).
+\]
+Each factor is a polynomial of degree at most $2$, so $f_i$ has total degree at most $2r\le2s$.
+
+If $j\ne i$, the distance $\|a_j-a_i\|$ is one of the $d_k$. One factor of $f_i(a_j)$ is therefore zero, so $f_i(a_j)=0$. At its own point,
+\[
+f_i(a_i)=\prod_{k=1}^r(-d_k^2)\ne0,
+\]
+because the pairwise distances are positive.
+
+Suppose $\sum_{i=1}^m c_if_i$ is the zero polynomial. Evaluate at $a_j$. All terms except the $j$-th vanish, giving $c_jf_j(a_j)=0$, hence $c_j=0$. This works for every $j$, so the polynomials $f_1,\ldots,f_m$ are linearly independent.
+
+The real vector space of polynomials in $n$ variables of total degree at most $2s$ has
+\[
+\binom{n+2s}{n}
+\]
+monomial basis elements: introduce a slack exponent to convert the inequality $\alpha_1+\cdots+\alpha_n\le2s$ into an equality and apply stars and bars. We have $m$ linearly independent elements of that space, so
+\[
+\boxed{m\le\binom{n+2s}{n}}.
+\]
+For $r=0$, the set has at most one point, and the bound is immediate. The argument holds for every $s\ge0$, although sharper results exploit the special structure of Euclidean distances.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:fwmodthree}
-\idea Exactly the shape of the modular Frankl--Wilson theorem.
-\writeup Take $p=3$ and $L=\{1,2\}$, so $s=2$. Sizes are $\equiv0\notin L$ and intersections are $\equiv1$ or $2$, in $L$. Theorem~\ref{combinatorial:thm:fwmod} gives $m\le\binom n0+\binom n1+\binom n2$.
+\idea Frankl--Wilson's modular intersection theorem applies when set sizes avoid a small set of residues but intersections lie inside that set. Here the field is $\mathbb F_3$, and the allowable intersection residues are $1$ and $2$.
+
+\writeup Suppose $A_1,\ldots,A_m\subseteq[n]$ satisfy
+\[
+|A_i|\equiv0\pmod3
+\quad\text{for every }i,
+\qquad
+|A_i\cap A_j|\not\equiv0\pmod3
+\quad(i\ne j).
+\]
+Work modulo the prime $p=3$ and let
+\[
+L=\{1,2\}\subset\mathbb F_3.
+\]
+This set has $s=2$ residues. By hypothesis each individual set size has residue $0\notin L$, whereas every pairwise intersection of distinct sets has residue either $1$ or $2$, hence lies in $L$.
+
+These are exactly the two conditions of Theorem~\ref{combinatorial:thm:fwmod}. It therefore gives
+\[
+m\le\sum_{k=0}^s\binom nk
+=\binom n0+\binom n1+\binom n2.
+\]
+Since $\binom n0=1$ and $\binom n1=n$,
+\[
+\boxed{m\le1+n+\binom n2}.
+\]
+
+The distinction between the size of a set and the size of an intersection is crucial. The theorem would not apply if we merely knew that all intersections, including $A_i\cap A_i$, avoided $0$: the proof needs a polynomial that is non-zero on each set's own incidence vector and zero on every other one.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:cdsharp}
-\idea Sums of two progressions with the same difference form a progression.
-\writeup With $A=\{a,a+d,\dots,a+(k-1)d\}$ and $B=\{b,\dots,b+(l-1)d\}$, $d\ne0$, $A+B=\{a+b+jd:0\le j\le k+l-2\}$, which has $k+l-1$ elements when $k+l-1\le p$, since the multiples $jd$, $0\le j<p$, are distinct. In
-$\Z/4\Z$, $A=B=\{0,2\}$ gives $A+B=\{0,2\}$, of size $2<\min(4,3)$: the subgroup $\{0,2\}$ is closed under addition, which cannot happen in $\Z/p\Z$.
+\idea When two arithmetic progressions have the same common difference, every sum is another term of a longer progression. In a prime cyclic group, a non-zero difference cannot repeat before $p$ steps. A composite modulus permits proper additive subgroups that block growth.
+
+\writeup Work in $\mathbb F_p=\Z/p\Z$. Let
+\[
+A=\{a+id:0\le i<k\},\qquad
+B=\{b+jd:0\le j<\ell\},
+\]
+with $d\ne0$ and $k,\ell\ge1$. Assume $k+\ell\le p+1$.
+
+Every sum of an element of $A$ and an element of $B$ is
+\[
+(a+id)+(b+jd)=a+b+(i+j)d.
+\]
+As $i$ ranges from $0$ to $k-1$ and $j$ from $0$ to $\ell-1$, their sum ranges over \emph{every} integer $t$ with $0\le t\le k+\ell-2$. Therefore
+\[
+A+B=\{a+b+td:0\le t\le k+\ell-2\}.
+\]
+The number of displayed terms is $k+\ell-1\le p$. Since $d$ is non-zero in $\mathbb F_p$, its additive order is $p$; no two multiples $td$ with $0\le t<p$ coincide. Consequently
+\[
+\boxed{|A+B|=k+\ell-1=|A|+|B|-1}.
+\]
+This attains the Cauchy--Davenport lower bound in the stated range.
+
+The prime hypothesis really matters. In the group $\Z/4\Z$, take
+\[
+A=B=\{0,2\}.
+\]
+Then $A+B=\{0+0,0+2,2+0,2+2\}=\{0,2\}$, so $|A+B|=2$. But the prime-style bound would demand
+\[
+|A+B|\ge\min(4,|A|+|B|-1)=\min(4,3)=3.
+\]
+It fails because $\{0,2\}$ is a non-trivial proper subgroup of $\Z/4\Z$ and is already closed under addition.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:egzsharp}
-\idea If all values are $0$ or $1$, a sum of $n$ of them is divisible by $n$ only when they are all equal.
-\writeup Take $n-1$ zeros and $n-1$ ones. A choice of $n$ of them contains $k$ ones with $1\le k\le n-1$ (there are not $n$ zeros or $n$ ones), and its sum $k$ is not divisible by $n$.
+\idea The Erd\H os--Ginzburg--Ziv theorem uses $2n-1$ integers. To show that one fewer does not suffice, choose only two residues and ensure that no selection of $n$ integers can use just one residue.
+
+\writeup Fix an integer $n\ge2$. Consider the list of $2n-2$ integers consisting of
+\[
+\underbrace{0,\ldots,0}_{n-1\text{ copies}},
+\qquad
+\underbrace{1,\ldots,1}_{n-1\text{ copies}}.
+\]
+Choose any $n$ entries from this list, remembering that equal entries at different positions count as separate choices. Let $k$ be the number of chosen ones. Because the entire list contains only $n-1$ zeros, we must choose at least one $1$, so $k\ge1$. Because it contains only $n-1$ ones, we cannot choose $n$ ones, so $k\le n-1$.
+
+The sum of the selected $n$ integers is exactly $k$, where
+\[
+1\le k\le n-1.
+\]
+No integer in this range is divisible by $n$. Thus the list has no selection of $n$ entries whose sum is $0$ modulo $n$, proving the sharpness:
+\[
+\boxed{2n-2\text{ integers need not contain an }n\text{-term zero sum modulo }n}.
+\]
+For $n=1$, the question of a list with zero entries is vacuous; the non-trivial sharpness statement begins at $n=2$.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:quadric}
-\idea One polynomial of degree $2$ in at least $3$ variables, vanishing at $0$: exactly Chevalley--Warning's setting.
-\writeup The form $Q$ has degree at most $2<3\le n$ and $Q(0)=0$, so by Theorem~\ref{combinatorial:thm:cw} it has a non-zero zero. For $Q=x^2+y^2+z^2$, take a zero $(x,y,z)\ne0$. If $z\ne0$, then $-1=(x/z)^2+(y/z)^2$. If $z=0$,
-then $x^2+y^2=0$ with, say, $x\ne0$, and $-1=(y/x)^2+0^2$. (For $p=2$, $-1=1=1^2+0^2$.) This is the starting point of Lagrange's four-square theorem (Volume~2, Chapter~7), which also underpins the
-Bruck--Ryser theorem.
+\idea A quadratic form is one polynomial of degree $2$ that vanishes at the zero vector. In three or more variables, its degree is smaller than the number of variables, so Chevalley--Warning guarantees that the number of zeros is divisible by $p$. There must therefore be a non-zero zero.
+
+\writeup Let
+\[
+Q(x_1,\ldots,x_n)=\sum_{1\le i\le j\le n}c_{ij}x_ix_j
+\]
+be a homogeneous quadratic form over $\mathbb F_p$, with $n\ge3$. Its degree is at most $2<n$. The zero vector is certainly a solution of $Q=0$.
+
+Chevalley--Warning (Theorem~\ref{combinatorial:thm:cw}) says that the total number $N$ of zeros of a polynomial whose degree is less than the number of variables is divisible by the characteristic prime $p$. Since $Q(0)=0$, we know $N\ge1$. A positive multiple of $p$ is at least $p$, and $p\ge2$, so $N\ge2$. At least one solution is therefore non-zero.
+
+To deduce the sum-of-two-squares assertion, apply this result in three variables to
+\[
+Q(x,y,z)=x^2+y^2+z^2.
+\]
+There is a non-zero triple $(x,y,z)$ with $x^2+y^2+z^2=0$ in $\mathbb F_p$.
+
+If $z\ne0$, divide the equation by $z^2$ to obtain
+\[
+-1=(x/z)^2+(y/z)^2.
+\]
+If $z=0$, then $(x,y)\ne(0,0)$. At least one of $x,y$ is non-zero; say $x\ne0$. The equation $x^2+y^2=0$ then yields
+\[
+-1=(y/x)^2+0^2.
+\]
+Thus in all cases
+\[
+\boxed{-1=a^2+b^2\quad\text{for some }a,b\in\mathbb F_p}.
+\]
+The argument includes $p=2$: in that field $-1=1=1^2+0^2$. This is a finite-field analogue of the first step in the four-squares theorem.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:capplane}
-\idea A cap meets each line in at most $2$ points; with $5$ points the lines through a cap point are all ``full'', and then a parity count on the lines through a point outside the cap fails.
-\writeup Suppose $A$ is a cap with $|A|=5$. The plane has $4$ directions, and through each point there is one line in each direction; the $4$ lines through a point partition the other $8$ points. Fix $P\in A$. Each line
-through $P$ contains at most one other point of $A$, and the four other points of $A$ lie on these four lines, so each line through $P$ contains exactly one other point of $A$. As $P$ was arbitrary, every line
-meeting $A$ meets it in exactly $2$ points. Now fix $Q\notin A$ (there are $4$ such points). The four lines through $Q$ partition $A$, and each meets $A$ in $0$ or $2$ points: so $|A|$ is even, a contradiction.
-A cap of size $4$ exists (Figure~\ref{combinatorial:fig:caps}).
+\idea An affine line in $\mathbb F_3^2$ has exactly three points. A cap has no three collinear points, so every line meets the cap in at most two. Suppose a cap has five points, then count how those points lie on the four lines through a point.
+
+\writeup The affine plane $\mathbb F_3^2$ has nine points. There are four directions, corresponding to the four one-dimensional subspaces of $\mathbb F_3^2$. Through each point there is exactly one line of each direction. The four lines through a fixed point $P$ contain that point and partition the other eight points into four disjoint pairs.
+
+Suppose for contradiction that a cap $A$ has at least five points. Any five-point subset is itself a cap, so it suffices to rule out $|A|=5$. Fix $P\in A$. Each of the four lines through $P$ may contain at most one other point of $A$, or else three collinear points would occur. But there are four other points of $A$. Therefore every line through $P$ contains \emph{exactly one} further cap point.
+
+As $P$ was arbitrary, any line that contains a point of $A$ must contain exactly two of its points. In particular, no line meets $A$ in exactly one point.
+
+Now choose a point $Q\notin A$, which exists because the plane has nine points and $A$ only five. The four lines through $Q$ partition all the points of $A$. Each such line meets $A$ in either $0$ or $2$ points, by the preceding paragraph (it cannot contain more than two by the cap condition). Therefore the number of points of $A$, a sum of four even numbers, would be even. But $|A|=5$ is odd, a contradiction.
+
+A four-point cap exists: the four corners
+\[
+\{(0,0),(1,0),(0,1),(1,1)\}
+\]
+contain no three collinear points in $\mathbb F_3^2$. Thus the maximum size is
+\[
+\boxed{4}.
+\]
 \end{solution}
 
 \begin{solution}{combinatorial:ex:dvir}
-\idea If $K$ is small, a low-degree polynomial vanishes on it. On each line of $K$ it vanishes at $q$ points, more than its degree, so it vanishes on the whole line, and its top part vanishes on every direction: too many zeros.
-\writeup Suppose $|K|<\binom{q+n-1}n$. The space of polynomials of degree at most $q-1$ in $n$ variables has dimension $\binom{q-1+n}n>|K|$, and vanishing on $K$ is $|K|$ linear conditions, so some non-zero $f$ with
-$\deg f=e\le q-1$ vanishes on $K$. If $e=0$, $f$ is a non-zero constant, which cannot vanish on $K\ne\varnothing$. So $e\ge1$; write $f_e$ for the homogeneous part of degree $e$. For a direction $d\ne0$, take $x$ with
-the line $x+td$ in $K$; then $g(t)=f(x+td)$ is a polynomial of degree at most $e\le q-1$ in $t$, vanishing at all $q$ values of $t$, so $g=0$. Its coefficient of $t^e$ is $f_e(d)$, so $f_e(d)=0$. Also $f_e(0)=0$ as
-$e\ge1$. So $f_e$ vanishes on $\mathbb F_q^n$, with $\deg_{x_i}f_e\le e<q=|\mathbb F_q|$, and Lemma~\ref{combinatorial:lem:grid} gives $f_e=0$, contradicting $\deg f=e$. Since $\binom{q+n-1}n\ge\frac{q^n}{n!}$, a Kakeya set contains a
-fixed fraction of the space. In 2008 this two-paragraph argument settled the finite field version of a famous problem of harmonic analysis, which was thought to be as hard as the real one.
+\idea If a Kakeya set had fewer points than the dimension of the space of polynomials of degree at most $q-1$, linear algebra would produce a non-zero polynomial vanishing on it. On a full line this polynomial has $q$ zeros, more than its degree, so the highest-degree part vanishes in every direction. The finite-grid lemma then gives a contradiction.
+
+\writeup Let $K\subseteq\mathbb F_q^n$ contain a complete affine line in every non-zero direction. Suppose toward a contradiction that
+\[
+|K|<\binom{q+n-1}{n}.
+\]
+The vector space $V$ of polynomials in $n$ variables over $\mathbb F_q$ with total degree at most $q-1$ has dimension
+\[
+\dim_{\mathbb F_q}V=\binom{q-1+n}{n}>|K|.
+\]
+Evaluation at every point of $K$ defines a linear map $V\to\mathbb F_q^{K}$. Its kernel is non-zero because the domain has larger dimension than the codomain. Thus there is a non-zero polynomial $f\in V$ vanishing at every point of $K$.
+
+Write $e=\deg f\le q-1$ and let $f_e$ be the non-zero homogeneous component of degree $e$. The case $e=0$ is impossible because a non-zero constant cannot vanish on the non-empty set $K$, so $1\le e<q$.
+
+Fix any non-zero direction $d\in\mathbb F_q^n$. By the Kakeya property, there is $x\in\mathbb F_q^n$ such that
+\[
+x+td\in K\quad\text{for every }t\in\mathbb F_q.
+\]
+The one-variable polynomial
+\[
+g(t)=f(x+td)
+\]
+has degree at most $e\le q-1$ but vanishes at all $q$ values of $t$. A non-zero polynomial of degree less than $q$ cannot have $q$ roots, so $g$ is the zero polynomial. Its coefficient of $t^e$ equals $f_e(d)$, hence $f_e(d)=0$.
+
+This holds for \emph{every} non-zero direction $d$. Because $f_e$ is homogeneous of positive degree, $f_e(0)=0$ too. Therefore $f_e$ vanishes on all of $\mathbb F_q^n$.
+
+For every variable, its degree in $f_e$ is at most $e<q$. The finite-grid vanishing lemma (Lemma~\ref{combinatorial:lem:grid}) says a polynomial with individual degrees less than $q$ that vanishes on the whole grid $\mathbb F_q^n$ must be the zero polynomial. This contradicts the definition of the non-zero top homogeneous part $f_e$.
+
+Our assumption was false, proving Dvir's finite-field Kakeya bound:
+\[
+\boxed{|K|\ge\binom{q+n-1}{n}}.
+\]
+The familiar lower bound $|K|\ge q^n/n!$ follows because
+\[
+\binom{q+n-1}{n}
+=\frac{q(q+1)\cdots(q+n-1)}{n!}\ge\frac{q^n}{n!}.
+\]
 \end{solution}
 
 \section*{Sources and further reading}

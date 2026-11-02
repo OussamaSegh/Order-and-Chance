@@ -5,12 +5,17 @@ A cube can be put back in its box in $24$ ways, and shuffling four cards can be 
 These are the same $24$, in a sense this chapter makes precise.
 \end{center}
 
-In 1974 Ern\H{o} Rubik, a Hungarian lecturer in design, built a wooden cube whose faces could twist, to show his students how parts can move
-independently. Its plastic descendant has $43\,252\,003\,274\,489\,856\,000$ positions, and in 2010 a team running a computation on donated
-machines proved that every one of them can be solved in at most $20$ moves. Nobody could check those numbers by twisting. Both come from the
-same source: the moves of the cube can be composed and undone, and that makes them a \emph{group}. This chapter is about what that word buys.
+We have already met groups without using the word. In Volume~2, the invertible residues modulo $m$ were closed under multiplication, and every invertible residue had a multiplicative inverse. Here we stop treating that as a special fact about integers. We ask which rules make the same reasoning work for rotations, permutations and matrices.
 
-A symmetry of an object is a transformation that leaves it looking the same. Two symmetries can be performed one after the other, and the result is again a symmetry; every symmetry can be undone. These two facts, and nothing else, are what a \emph{group} records. In this chapter we define groups, meet the examples that will run through the whole volume, and prove the first theorem of the subject: the size of a subgroup divides the size of the group.
+Put a square on the table and mark one corner. Turn it through a quarter-turn. The square still fills exactly the same space, but the mark has moved. Turn again, and the two turns together are equivalent to one half-turn. Four quarter-turns bring the mark home.
+
+Now allow reflections as well. The square has eight symmetries: four rotations and four reflections. They can be combined, but the order can matter. Reflect first and rotate second; you may get a different result from rotating first and then reflecting. The set of eight moves, with the rule for combining them, is the group $D_4$.
+
+This is a useful shift in viewpoint. A group does not need a shape. Integers under addition, non-zero real numbers under multiplication, and permutations under composition have the same basic rules: combine, leave unchanged, undo. The rules are what we will prove things from.
+
+A cube offers a first counting question. Choose the face that goes on top ($6$ choices), then rotate that face into position ($4$ choices). There are $24$ rotations. Later we will see why those $24$ rotations can be identified with the permutations of four long diagonals. Before we reach that result, we need to decide precisely what counts as a group, what its smaller groups look like, and why the size of a subgroup must divide the size of a finite group.
+
+The distinction between a rotation and its description matters. Two strings of moves can produce the same result; the group remembers the result, not the instructions used to make it. That observation will become the kernel of a homomorphism in Chapter~2.
 
 \section{Groups}
 
@@ -36,10 +41,44 @@ In a group $G$:
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) If $e,e'$ are identities, $e=ee'=e'$. If $b,b'$ are inverses of $a$, then $b=be=b(ab')=(ba)b'=eb'=b'$.
-(b) Multiply $ab=ac$ on the left by $a^{-1}$ and use associativity; the other side is the same on the right.
-(c) $(ab)(b^{-1}a^{-1})=a(bb^{-1})a^{-1}=aa^{-1}=e$, and similarly in the other order, so $b^{-1}a^{-1}$ is the inverse of $ab$ by (a). The element $a$ is an inverse of $a^{-1}$.
-(d) $x=a^{-1}b$ is a solution, and it is the only one by (b). The row of $a$ lists the products $ax$; each $b$ appears for exactly one $x$.
+We will use the group axioms one at a time. Associativity matters:
+it lets us change the parentheses, but it never lets us exchange the
+order of two factors.
+
+\emph{(a) Uniqueness.} If $e$ and $e'$ are both identities, then
+$e=ee'=e'$. If $b$ and $c$ are both inverses of $a$, then
+\[
+b=be=b(ac)=(ba)c=ec=c.
+\]
+So neither the identity nor an inverse involves a choice.
+
+\emph{(b) Cancellation.} From $ab=ac$, multiply on the left by
+$a^{-1}$:
+\[
+a^{-1}(ab)=a^{-1}(ac)\quad\Longrightarrow\quad b=c.
+\]
+For $ba=ca$, multiply on the right by $a^{-1}$ instead. We can
+cancel precisely because an inverse exists.
+
+\emph{(c) Reversing products.} Check both multiplication orders:
+\[
+(ab)(b^{-1}a^{-1})=a(bb^{-1})a^{-1}=e,
+\]
+and
+\[
+(b^{-1}a^{-1})(ab)=b^{-1}(a^{-1}a)b=e.
+\]
+By uniqueness, $(ab)^{-1}=b^{-1}a^{-1}$. The element $a$ is an
+inverse of $a^{-1}$, so $(a^{-1})^{-1}=a$ as well. Notice that
+the order of the factors has reversed.
+
+\emph{(d) Equations and tables.} The element $x=a^{-1}b$
+satisfies $ax=a(a^{-1}b)=b$. Conversely, if $ax=b$, left
+multiplication by $a^{-1}$ forces $x=a^{-1}b$. Thus each
+equation $ax=b$ has exactly one solution. The same reasoning
+on the right shows that $xa=b$ has exactly one solution
+$x=ba^{-1}$. In a finite group's multiplication table, each row
+and each column therefore lists every group element once.
 \end{proof}
 
 Powers are defined by $a^0=e$, $a^{n+1}=a^na$ and $a^{-n}=(a^{-1})^n$; by induction $a^ma^n=a^{m+n}$ and $(a^m)^n=a^{mn}$ for all $m,n\in\Z$.
@@ -47,9 +86,9 @@ Powers are defined by $a^0=e$, $a^{n+1}=a^na$ and $a^{-n}=(a^{-1})^n$; by induct
 \begin{example}[the examples of this volume]\label{ex:examples}
 \begin{enumerate}[label=(\arabic*)]
 \item $(\Z,+)$, $(\Q,+)$, $(\R,+)$, $(\C,+)$, and $(\Q^*,\times)$, $(\R^*,\times)$, $(\C^*,\times)$: abelian.
-\item $\Z/n\Z$ under addition, and $(\Z/n\Z)^*$, the invertible classes, under multiplication (Volume~2, Chapter~3). The group of $n$-th roots of unity $\mathbb U_n=\{z\in\C:z^n=1\}$ (Volume~1, Chapter~5).
+\item $\Z/n\Z$ under addition, and $(\Z/n\Z)^*$, the invertible classes, under multiplication (Volume~2, Chapter~3). The group of $n$-th roots of unity $\mathbb U_n=\{z\in\C:z^n=1\}$ (Volume~1, Chapter~6).
 \item The \emph{symmetric group} $\mathfrak S(X)$ of all bijections of a set $X$, under composition: $(\sigma\tau)(x)=\sigma(\tau(x))$. For $X=\{1,\dots,n\}$ it is written $\mathfrak S_n$, and $|\mathfrak S_n|=n!$. It is not abelian for $n\ge3$: $(1\,2)(2\,3)$ sends $3\mapsto1$, while $(2\,3)(1\,2)$ sends $3\mapsto2$.
-\item The \emph{general linear group} $GL_n(K)$ of invertible $n\times n$ matrices over a field $K$, and its subgroup $SL_n(K)$ of matrices of determinant $1$ (Volume~1, Chapter~7).
+\item The \emph{general linear group} $GL_n(K)$ of invertible $n\times n$ matrices over a field $K$, and its subgroup $SL_n(K)$ of matrices of determinant $1$ (Volume~1, Chapter~8).
 \item The \emph{dihedral group} $D_n$ ($n\ge3$): the isometries of the plane that map the set of vertices of a regular $n$-gon to itself.
 \end{enumerate}
 \end{example}
@@ -64,8 +103,61 @@ D_n=\{e,r,r^2,\dots,r^{n-1},\ s,sr,sr^2,\dots,sr^{n-1}\},
 these $2n$ elements are distinct, $r^n=s^2=e$, and $srs=r^{-1}$.
 \end{proposition}
 \begin{proof}
-First, an isometry $g$ of the plane with $g(0)=0$ is linear. It preserves norms ($|g(x)|=|g(x)-g(0)|=|x|$), hence scalar products, by $\langle x,y\rangle=\frac12\left(|x|^2+|y|^2-|x-y|^2\right)$. So $g(e_1),g(e_2)$ is an orthonormal basis, and the coordinates of $g(x)$ in it are $\langle g(x),g(e_i)\rangle=\langle x,e_i\rangle$: $g(x)=x_1g(e_1)+x_2g(e_2)$. Consequently every isometry $f$ is affine ($f-f(0)$ is linear), and affine maps preserve averages of points.
-Now let $f\in D_n$. It permutes the vertices, so it fixes their average, which is $0$ (the sum of the $n$-th roots of unity vanishes). So $f$ is linear, and it is determined by the images of $v_0=1$ and $v_1$, which form a basis of $\R^2$. Now $f(v_0)$ is some vertex $v_k$, and $f(v_1)$ is a vertex at the same distance from $v_k$ as $v_1$ from $v_0$, so $f(v_1)=v_{k+1}$ or $v_{k-1}$. That gives at most $2n$ possibilities. The $2n$ listed maps realise them: $r^k$ sends $(v_0,v_1)$ to $(v_k,v_{k+1})$, and $sr^{k}$ sends them to $(v_{-k},v_{-k-1})$, since $sr^k(z)=e^{-2ik\pi/n}\bar z$. They are distinct because they act differently on $(v_0,v_1)$. Finally $r^n=e$, $s^2=e$, and $srs(z)=\overline{e^{2i\pi/n}\bar z}=e^{-2i\pi/n}z=r^{-1}(z)$.
+Every symmetry of a regular polygon is either a rotation or a
+reflection. Rather than assume that classification, we count
+all possibilities and exhibit them.
+
+\emph{A symmetry fixes the centre.}
+A Euclidean isometry of the plane has the form
+$f(x)=Ax+b$ with $A$ orthogonal: subtract $f(0)$,
+use the identity
+\[
+2\langle x,y\rangle=|x|^2+|y|^2-|x-y|^2
+\]
+to see that the resulting map preserves scalar products,
+and compare its values on an orthonormal basis to obtain
+linearity. In particular an isometry preserves averages.
+
+Every polygon symmetry permutes its $n$ vertices.
+Their average is zero, because
+$\sum_{k=0}^{n-1}e^{2\pi ik/n}=0$ (Volume~1).
+So $f(0)=0$ and $f$ is linear orthogonal.
+
+\emph{Two adjacent vertices determine everything.}
+Assume $n\ge3$, as for a polygon. The vectors
+$v_0=1$ and $v_1=e^{2\pi i/n}$ are linearly
+independent over $\mathbb R$. A linear symmetry
+is therefore completely determined by their two images.
+
+There are $n$ possible images $v_j$ of $v_0$.
+Since an isometry preserves distance, the image of
+$v_1$ must be a vertex at distance $|v_1-v_0|$
+from $v_j$. Exactly two vertices have that distance:
+$v_{j+1}$ and $v_{j-1}$, with indices modulo $n$.
+Consequently there are at most $2n$ symmetries.
+
+For each $j$, the rotation $r^j$ maps $(v_0,v_1)$
+to $(v_j,v_{j+1})$. The map $r^js$ maps it to
+$(v_j,v_{j-1})$. These are the $2n$ distinct
+possibilities just counted. We may equally write
+the reflections as $sr^k$, since $r^js=sr^{-j}$.
+Thus the displayed list is complete.
+
+\emph{The defining relations.}
+Applying $r$ $n$ times turns through $2\pi$,
+so $r^n=e$. Reflecting twice gives $s^2=e$.
+Finally, for any complex $z$,
+\[
+srs(z)
+=\overline{e^{2\pi i/n}\bar z}
+=e^{-2\pi i/n}z
+=r^{-1}(z).
+\]
+Hence $srs=r^{-1}$.
+
+For the square, this gives four rotations and
+four reflections: the group has eight elements,
+not four.
 \end{proof}
 
 The relation $srs=r^{-1}$ lets us compute everything: $sr^k=r^{-k}s$, so any product of $r$'s and $s$'s can be pushed into the form $r^ks^\varepsilon$. The multiplication table of $D_4$ is drawn in Figure~\ref{fig:symmetries}.
@@ -78,7 +170,59 @@ Before reading on, guess how many rotations of space map a cube to itself (the i
 The rotations of $\R^3$ that map the cube $[-1,1]^3$ to itself form a group of order $24$. Apart from the identity, they are: rotations by $\pm90^\circ$ and $180^\circ$ about the $3$ axes through the centres of opposite faces ($9$ rotations), by $\pm120^\circ$ about the $4$ long diagonals ($8$), and by $180^\circ$ about the $6$ axes through the midpoints of opposite edges ($6$).
 \end{proposition}
 \begin{proof}
-A rotation $f$ is a linear map with orthogonal matrix of determinant $1$. If it preserves the cube, it permutes the $8$ vertices $(\pm1,\pm1,\pm1)$ (the points of the cube farthest from $0$). Since $e_1=\frac12\left((1,1,1)+(1,-1,-1)\right)$, the vector $f(e_1)$ is the midpoint of two vertices, so its coordinates lie in $\{-1,0,1\}$; and $|f(e_1)|=1$ since $f$ is orthogonal. So $f(e_1)=\pm e_i$ for some $i$, and likewise for $e_2,e_3$; as the $f(e_j)$ are orthogonal, the $i$'s are distinct. So the matrix of $f$ is a \emph{signed permutation matrix}: each row and each column has one non-zero entry, equal to $\pm1$. Conversely each of the $3!\cdot2^3=48$ signed permutation matrices preserves the cube, and exactly half of them have determinant $1$ (changing the sign of the first column is a bijection between determinant $1$ and determinant $-1$). So there are exactly $24$ rotations of the cube. The rotations listed in the statement do preserve the cube and are distinct, and $1+9+8+6=24$, so the list is complete.
+We turn the geometric question into a finite list of matrices.
+
+\emph{The coordinate axes must go to coordinate axes.}
+A rotation fixing the origin is represented by an
+orthogonal $3\times3$ matrix $A$ with $\det A=1$.
+If it preserves the cube, it permutes its eight
+vertices $(\pm1,\pm1,\pm1)$: these are exactly
+the points of the cube at the maximum distance
+$\sqrt3$ from the origin.
+
+Notice that
+\[
+e_1=\tfrac12\bigl((1,1,1)+(1,-1,-1)\bigr).
+\]
+Thus $Ae_1$ is the midpoint of two cube vertices,
+so each of its coordinates is $-1$, $0$, or $1$.
+It is also a unit vector, since $A$ is orthogonal.
+The only unit vectors with those coordinates are
+$\pm e_1,\pm e_2,\pm e_3$. The same argument,
+with appropriate pairs of vertices, applies to
+$Ae_2$ and $Ae_3$.
+
+The three vectors $Ae_1,Ae_2,Ae_3$ form an
+orthonormal basis, so they must point along
+\emph{different} coordinate axes. In other words,
+$A$ has precisely one non-zero entry in each
+row and each column, and that entry is $\pm1$:
+it is a signed permutation matrix.
+
+\emph{Count the allowed matrices.}
+There are $3!$ ways to permute the axes and
+$2^3$ ways to choose the signs, giving
+$3!\cdot2^3=48$ signed permutation matrices.
+They all preserve the cube. Changing the sign
+of the first column pairs each matrix of
+determinant $1$ with a matrix of determinant
+$-1$. Exactly half are rotations, so
+\[
+\boxed{|G|=24}.
+\]
+
+\emph{Identify the geometric types.}
+A rotation other than the identity fixes an axis.
+The axes through opposite face centres give
+three half-turns and six quarter-turns, for $9$.
+Each of the four body diagonals gives two
+non-identity rotations through $120^\circ$,
+for $8$. Each of the six lines through
+opposite edge midpoints gives one half-turn,
+for $6$. These $9+8+6=23$ non-identity
+rotations are visibly distinct, and all preserve
+the cube. Adding the identity gives $24$,
+the full number already proved.
 \end{proof}
 
 \begin{figure}[ht]
@@ -87,6 +231,8 @@ A rotation $f$ is a linear map with orthogonal matrix of determinant $1$. If it 
 \caption{Left: the multiplication table of $D_4$, the $8$ symmetries of a square ($r$ is the quarter turn, $s$ a reflection). Each row and each column contains every element once (Proposition~\ref{prop:rules}(d)). The four blocks show that rotation times rotation and reflection times reflection are rotations, while the mixed products are reflections. Right: the three kinds of rotation axes of the cube, with the number of non-trivial rotations of each kind.}
 \label{fig:symmetries}
 \end{figure}
+
+The cube and the square have many symmetries, but we often want to use only some of them. The rotations of a square, for example, are closed under composition even if we forget the reflections. We call such a smaller group a subgroup.
 
 \section{Subgroups and the order of an element}
 
@@ -101,8 +247,45 @@ A \emph{subgroup} of $G$ is a subset $H$ that contains $e$ and is stable under p
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-(a) A subgroup has the property. Conversely, take $a\in H$: then $e=aa^{-1}\in H$, $b^{-1}=eb^{-1}\in H$ for $b\in H$, and $ab=a(b^{-1})^{-1}\in H$.
-(b) The first claim is clear from the definition. The set $W$ of such products contains $S$, contains $e$, and is stable under products (concatenate) and inverses (by Proposition~\ref{prop:rules}(c), $(s_1^{\pm1}\cdots s_k^{\pm1})^{-1}=s_k^{\mp1}\cdots s_1^{\mp1}$). So $W$ is a subgroup containing $S$, and every subgroup containing $S$ contains $W$. Hence $W=\langle S\rangle$.
+\emph{(a) The one-step subgroup test.}
+If $H$ is a subgroup, it contains $ab^{-1}$ whenever $a,b\in H$.
+Conversely, suppose $H$ is non-empty and has that property.
+Choose $a\in H$; then $aa^{-1}=e\in H$. With $e\in H$, the
+test applied to $e$ and any $b\in H$ shows $b^{-1}\in H$.
+Finally, because $b^{-1}\in H$, the test applied to $a$
+and $b^{-1}$ gives $a(b^{-1})^{-1}=ab\in H$.
+We have recovered the identity, inverses, and multiplication.
+So $H$ is a subgroup.
+
+\emph{(b) Intersections and generators.}
+An arbitrary intersection of subgroups is a subgroup: every
+subgroup contains $e$, and if $a,b$ belong to every subgroup
+in the family, then so does $ab^{-1}$. There is at least one
+subgroup containing $S$, namely $G$, so the intersection
+defining $\langle S\rangle$ makes sense.
+
+Let $W$ be the set of all finite words
+\[
+s_1^{\varepsilon_1}s_2^{\varepsilon_2}\cdots
+s_k^{\varepsilon_k},
+\qquad s_i\in S,\quad\varepsilon_i\in\{-1,1\},
+\]
+including the empty word, whose value is $e$.
+Concatenating two words gives another word.
+Inverting a word reverses its letters and changes all
+exponents' signs, by Proposition~\ref{prop:rules}(c).
+Thus $W$ is a subgroup. It contains $S$, because a one-letter
+word is allowed.
+
+On the other hand, every subgroup containing $S$ must also
+contain every inverse and every finite product of elements of
+$S$, so it contains $W$. Hence $W$ is both a subgroup
+containing $S$ and a subset of every such subgroup.
+This proves $W=\langle S\rangle$.
+
+For example, in the additive group $\mathbb Z$, the subgroup
+generated by $4$ and $6$ is the set of all $4a+6b$ with
+$a,b\in\mathbb Z$, namely $2\mathbb Z$.
 \end{proof}
 
 For instance $D_n=\langle r,s\rangle$, the rotations form the subgroup $\langle r\rangle$ of order $n$, and $SL_n(K)\le GL_n(K)$.
@@ -116,13 +299,54 @@ Let $g\in G$. Either all the powers $g^k$, $k\in\Z$, are distinct, or there is a
 \end{enumerate}
 \end{proposition}
 \begin{proof}
-If two powers coincide, $g^k=g^l$ with $k>l$, then $g^{k-l}=e$ with $k-l\ge1$, and a least such exponent exists.
-(a) Divide: $k=qn+r$ with $0\le r<n$. Then $g^k=(g^n)^qg^r=g^r$, which is $e$ if and only if $r=0$ by minimality of $n$. Apply this to $k-l$ for the second claim.
-(b) By (a), the powers $g^k$ are the $g^r$ with $0\le r<n$, and these are distinct.
-(c) Let $d=\gcd(n,k)$. By (a), $(g^k)^m=e$ iff $n\mid km$ iff $\frac nd\mid\frac kdm$ iff $\frac nd\mid m$ (Gauss' lemma, Volume~2, since $\frac nd$ and $\frac kd$ are coprime). The least such $m\ge1$ is $\frac nd$.
+If all powers of $g$ are distinct, there is no positive $n$
+with $g^n=e$: otherwise $g^n=g^0$. Conversely, if
+$g^u=g^v$ for integers $u>v$, then multiplying by $g^{-v}$
+gives $g^{u-v}=e$. The positive exponents for which this
+happens therefore have a least member $n$.
+
+\emph{(a) Find exactly when a power is the identity.}
+Take any integer $k$, including a negative one. Euclidean
+division gives $k=qn+r$ with $0\le r<n$. Hence
+\[
+g^k=(g^n)^qg^r=g^r.
+\]
+If $g^k=e$ and $r>0$, this contradicts the minimality of $n$.
+Thus $r=0$, or $n\mid k$. The converse is immediate since
+$g^n=e$. Finally,
+\[
+g^k=g^\ell\iff g^{k-\ell}=e\iff n\mid(k-\ell),
+\]
+which is the asserted congruence condition.
+
+\emph{(b) Count the generated subgroup.}
+Every power is one of $g^0,g^1,\ldots,g^{n-1}$ by (a).
+These $n$ powers are distinct: equality of two exponents
+in that range would give a non-zero multiple of $n$ whose
+absolute value is less than $n$. Thus the list is exactly
+$\langle g\rangle$ and has $n$ elements.
+
+\emph{(c) Find the order of a power.}
+Write $d=\gcd(n,k)$, $n=dn_0$ and $k=dk_0$,
+so $\gcd(n_0,k_0)=1$. For an integer $m>0$,
+\[
+(g^k)^m=e
+\iff n\mid km
+\iff n_0\mid k_0m
+\iff n_0\mid m.
+\]
+The last equivalence is Gauss's lemma from Volume~2:
+a number coprime to $n_0$ can be cancelled in a divisibility
+statement. The least possible $m$ is therefore
+\[
+\boxed{o(g^k)=\frac{n}{\gcd(n,k)}}.
+\]
+When $k=0$, the formula gives $1$, as it should.
 \end{proof}
 
 In $D_n$, $o(r)=n$ and every $sr^k$ has order $2$ (by $srs=r^{-1}$, $(sr^k)^2=sr^ksr^k=r^{-k}r^k=e$). In $\mathfrak S_n$, a $k$-cycle has order $k$.
+
+A single element generates a cyclic subgroup, and its powers eventually return to the identity when the group is finite. The next counting argument explains why that return time must divide the size of the whole group.
 
 \section{Lagrange's theorem}
 
@@ -141,8 +365,20 @@ Let $G$ be a finite group and $H\le G$. The left cosets of $H$ partition $G$, an
 \]
 \end{theorem}
 \begin{proof}
-Every $g$ lies in its own coset $gH$, since $e\in H$. If two cosets meet, $g_1h_1=g_2h_2$, then $g_1=g_2h_2h_1^{-1}\in g_2H$, so $g_1H\subseteq g_2HH=g_2H$, and symmetrically $g_2H\subseteq g_1H$: two cosets are equal or disjoint. Finally $h\mapsto gh$ is a bijection $H\to gH$ (its inverse is $x\mapsto g^{-1}x$), so $|gH|=|H|$. Counting $G$ coset by coset gives $|G|=[G:H]\,|H|$.
+Fix an element $g\in G$. The map $h\mapsto gh$ from $H$ to the left coset $gH$ has an inverse: send $gh$ back to $g^{-1}(gh)=h$. Every left coset therefore contains exactly $|H|$ elements. We still have to show that we can count the cosets without counting any element twice.
+
+Suppose $gH$ and $kH$ share an element $x$. Then $x=gh_1=kh_2$ for some $h_1,h_2\in H$. Thus $g=kh_2h_1^{-1}=kh$ for an element $h\in H$. For any $u\in H$, we have $gu=k(hu)\in kH$. Hence $gH\subseteq kH$. Interchanging $g$ and $k$ proves the reverse inclusion. Two cosets that meet are equal.
+
+Every element $g$ belongs to $gH$, because $e\in H$. So the left cosets cover $G$, and distinct cosets are disjoint. If there are $[G:H]$ of them, each has $|H|$ elements. Counting the elements of $G$ gives
+\[
+|G|=\underbrace{|H|+\cdots+|H|}_{[G:H]\text{ cosets}}
+=[G:H]|H|.
+\]
+In particular $|H|$ divides $|G|$.
 \end{proof}
+
+\paragraph{Why this works.}
+A coset is not a new kind of subgroup; it is the same set of elements shifted by one group element. Shifting does not change how many elements there are. The only issue is whether two shifted copies might overlap without being equal. The proof rules that out, so the group breaks into equal-sized blocks. For example, the four rotations of a square form a subgroup of its eight symmetries. The other four symmetries form one more coset. This is why $4$ divides $8$. The theorem forbids a subgroup of order $3$ in that group, but it does \emph{not} promise a subgroup for every divisor: existence is a different question.
 
 \begin{corollary}\label{cor:lagrange}
 Let $G$ be finite of order $n$.
@@ -153,10 +389,41 @@ Let $G$ be finite of order $n$.
 \end{enumerate}
 \end{corollary}
 \begin{proof}
-(a) $o(g)=|\langle g\rangle|$ divides $n$ by Lagrange and Proposition~\ref{prop:order}(b); then $g^n=(g^{o(g)})^{n/o(g)}=e$. (b) Apply (a) to $(\Z/m\Z)^*$, of order $\varphi(m)$. (c) $o(g)$ divides the prime $n$ and is not $1$, so it is $n$, and $\langle g\rangle$ has $n$ elements: it is $G$.
+\emph{(a) Orders divide the size of the group.}
+For any $g\in G$, the powers of $g$ form the subgroup
+$\langle g\rangle$. Proposition~\ref{prop:order} shows
+that this subgroup has exactly $o(g)$ elements.
+Lagrange's theorem therefore gives $o(g)\mid n$.
+Write $n=o(g)m$. Then
+\[
+g^n=(g^{o(g)})^m=e^m=e.
+\]
+
+\emph{(b) Euler's theorem as a group statement.}
+Consider the group of invertible residue classes
+$(\mathbb Z/m\mathbb Z)^*$, where $m\ge2$.
+It has $\varphi(m)$ elements by the definition of
+Euler's totient function. If $\gcd(a,m)=1$, the
+class of $a$ belongs to this group. Apply (a):
+\[
+(a\bmod m)^{\varphi(m)}=1\bmod m,
+\]
+or $a^{\varphi(m)}\equiv1\pmod m$.
+This is the Euler--Fermat theorem already proved in Volume~2,
+now seen as a consequence of coset counting.
+
+\emph{(c) Prime-order groups.}
+Suppose $|G|=n$ is prime and $g\ne e$.
+The order $o(g)$ divides $n$ by (a) and is not $1$,
+because an element of order $1$ is the identity.
+The only remaining divisor is $n$.
+Thus $\langle g\rangle$ contains all $n$ elements of $G$,
+so $G=\langle g\rangle$.
 \end{proof}
 
 So the proof of Euler's theorem given in Volume~2, which multiplied all the invertible residues together, is a special case of a general fact about all finite groups. Lagrange's theorem has no converse: $A_4$, of order $12$, has no subgroup of order $6$ (Chapter~4).
+
+Lagrange tells us what sizes are possible. For a group generated by one element, we can say more: every element is a power of the generator, and the entire multiplication table is determined by its order.
 
 \section{Cyclic groups and isomorphisms}
 
@@ -177,12 +444,82 @@ Let $G=\langle g\rangle$ be cyclic.
 \end{enumerate}
 \end{theorem}
 \begin{proof}
-(a) The map is surjective by definition of $\langle g\rangle$ (Proposition~\ref{prop:subgroup}(b), with $S=\{g\}$, every product being a power of $g$), and it turns sums into products since $g^{k+l}=g^kg^l$. In the infinite case the powers are distinct (Proposition~\ref{prop:order}), so it is injective. In the finite case it is well defined and injective on classes mod $n$ by Proposition~\ref{prop:order}(a).
+\emph{(a) Describe the group using integer exponents.}
+Define $\Phi:\mathbb Z\to G$ by $\Phi(k)=g^k$.
+The exponent rule gives
+\[
+\Phi(k+\ell)=g^{k+\ell}=g^kg^\ell
+=\Phi(k)\Phi(\ell),
+\]
+so $\Phi$ is a homomorphism. It is onto by the
+definition of $\langle g\rangle$.
+If $G$ is infinite, its powers are all distinct by
+Proposition~\ref{prop:order}; hence $\Phi$ is injective.
+This proves $\mathbb Z\cong G$.
 
-(b) Let $H\le G$, $H\ne\{e\}$ (the trivial subgroup is $\langle e\rangle$). Let $m$ be the least $k\ge1$ with $g^k\in H$; it exists since $H$ contains some $g^k\ne e$ and then also $g^{-k}$. For $g^k\in H$, write $k=qm+r$ with $0\le r<m$: then $g^r=g^k(g^m)^{-q}\in H$, so $r=0$ by minimality. Hence $H=\langle g^m\rangle$. If $|G|=n$, then $g^n=e\in H$ gives $m\mid n$, and $|H|=o(g^m)=\frac nm$ by Proposition~\ref{prop:order}(c). So a subgroup of order $d$ must be $\langle g^{n/d}\rangle$, and this one has order $d$.
+If $G$ has finite order $n$, the same proposition
+shows that
+\[
+g^k=g^\ell\iff k\equiv\ell\pmod n.
+\]
+Thus the map $[k]\mapsto g^k$ on $\mathbb Z/n\mathbb Z$
+is well defined, one-to-one and onto. It also
+respects the operations, giving the claimed isomorphism.
 
-(c) By Proposition~\ref{prop:order}(c), $o(g^k)=\frac n{\gcd(n,k)}$, which equals $n$ iff $\gcd(n,k)=1$. An element of order $d$ generates a subgroup of order $d$, which is the unique one $C_d$ of (b), cyclic of order $d$; so the elements of order $d$ are the generators of $C_d$, and there are $\varphi(d)$ of them.
+\emph{(b) Every subgroup is cyclic.}
+Let $H\le G$. The trivial subgroup is $\langle e\rangle$,
+so suppose $H$ is not trivial. There is then a positive
+integer $m$ with $g^m\in H$: if $H$ contains a non-identity
+$g^k$ with negative exponent, take its inverse.
+Choose the \emph{least} such positive $m$.
+
+For any $g^k\in H$, divide the integer $k$ by $m$:
+\[
+k=qm+r,\qquad0\le r<m.
+\]
+Since $H$ contains $g^k$ and $g^m$, it contains
+$g^r=g^k(g^m)^{-q}$. The minimality of $m$
+forces $r=0$. Thus every element of $H$ is a power
+of $g^m$, and conversely all such powers lie in $H$.
+So $H=\langle g^m\rangle$.
+
+When $|G|=n$, the identity $g^n=e\in H$ gives
+$m\mid n$ by the same division argument. The order
+formula of Proposition~\ref{prop:order} gives
+\[
+|H|=o(g^m)=\frac{n}{m}.
+\]
+A subgroup of order $d$ must therefore have
+$m=n/d$ and is exactly $\langle g^{n/d}\rangle$.
+Conversely, if $d\mid n$, the subgroup generated
+by $g^{n/d}$ has order $d$. There is exactly
+one subgroup of each divisor order.
+
+\emph{(c) Count the generators.}
+Again by the order formula,
+\[
+o(g^k)=\frac{n}{\gcd(n,k)}.
+\]
+This equals $n$ precisely when $\gcd(n,k)=1$.
+Among the $n$ residue classes for $k$, there are
+$\varphi(n)$ such classes, so $G$ has exactly
+$\varphi(n)$ generators.
+
+For any $d\mid n$, every element of order $d$
+generates the unique subgroup of order $d$
+from (b), and every generator of that subgroup
+has order $d$. Applying the same reasoning to
+that cyclic subgroup gives exactly $\varphi(d)$
+elements of order $d$.
+
+For example, $\mathbb Z/12\mathbb Z$ has a unique
+subgroup of order $4$, generated by the class of $3$,
+but that subgroup has only $\varphi(4)=2$ generators:
+the classes of $3$ and $9$.
 \end{proof}
+
+\paragraph{Why this works.}
+The exponent map $k\mapsto g^k$ is the whole story. If the powers never repeat, its source is $\Z$. If they repeat after exactly $n$ steps, we can keep only the residue of the exponent modulo $n$. A subgroup amounts to choosing which exponents are allowed. The least positive allowed exponent divides every other one, exactly as for the integer subgroups $d\Z$ and the gcd arguments in Volume~2. For a cyclic group of order $12$, the unique subgroup of order $4$ is $\langle g^3\rangle$; it has two generators, $g^3$ and $g^9$, because $\varphi(4)=2$.
 
 Since every element of a group of order $n$ has an order dividing $n$, counting the elements of $\Z/n\Z$ by their order gives Gauss' identity $\sum_{d\mid n}\varphi(d)=n$, proved in Volume~2 by another route.
 
@@ -254,7 +591,7 @@ $n\ge1$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{pb:ruzsa}
-\emph{Ruzsa's inequalities.} Let $A,B,C$ be finite sets in an abelian group.
+\emph{Ruzsa's inequalities.} Let $A,B,C$ be finite sets in an abelian group, with $A\ne\varnothing$ for the covering statement in part (b).
 \begin{enumerate}[label=(\alph*)]
 \item (Triangle inequality.) Show that $|A|\,|B-C|\le|A-B|\,|A-C|$. Deduce that if $|A+A|\le K|A|$ then $|A-A|\le K^2|A|$.
 \item (Covering lemma.) Show that if $|A+B|\le K|A|$, then $B$ is covered by at most $K$ translates of $A-A$.
@@ -324,177 +661,569 @@ an average of translates of $p_t$, and the $\ell^2$ norm is convex. (c) Split $2
 \section{Solutions}
 
 \begin{solution}{ex:square}
-\idea Commutativity is the statement $xy=yx$, i.e.\ $(xy)^{-1}=\dots$. Inverses reverse the order of a product (Proposition~\ref{prop:rules}(c)), and here every element is its own inverse, so reversing changes nothing.
-\writeup For all $x$, $x^2=e$ gives $x^{-1}=x$. So for $x,y\in G$, $xy=(xy)^{-1}=y^{-1}x^{-1}=yx$.
+\idea To show that a group is abelian, we need $xy=yx$ for any $x,y$. The hypothesis applies not only to $x$ and $y$ separately, but also to their product $xy$. Combine it with the rule that taking the inverse reverses multiplication order.
+
+\writeup Let $x,y\in G$. The condition $x^2=e$ implies $x^{-1}=x$, and likewise $y^{-1}=y$. The condition also applies to the group element $xy$, giving
+\[
+(xy)^2=e\qquad\Longrightarrow\qquad(xy)^{-1}=xy.
+\]
+On the other hand, the inverse-of-a-product formula, valid in every group, gives
+\[
+(xy)^{-1}=y^{-1}x^{-1}=yx.
+\]
+Comparing the two expressions yields $xy=yx$. Because $x,y$ were arbitrary, every pair of elements commutes and $G$ is abelian.
+
+It is important that the hypothesis holds for \emph{every} group element, including products. Merely finding some elements that square to $e$ would not be enough: reflections of a regular polygon are involutions, but two reflections need not commute.
 \end{solution}
 
 \begin{solution}{ex:dihedralcentre}
-\idea All computations in $D_n$ reduce to the relation $sr^k=r^{-k}s$ (Proposition~\ref{prop:dihedral}). An element commutes with everything iff it commutes with the generators $r$ and $s$. So test the two kinds of elements, $r^k$ and $sr^k$, against $r$ and $s$.
-\writeup The rotations $\langle r\rangle$ form a subgroup of order $n$, hence of index $\frac{2n}n=2$ by Lagrange. An element commutes with all of $D_n=\langle r,s\rangle$ iff it commutes with $r$ and $s$.
-\begin{itemize}
-\item $r^k$ commutes with $r$, and $sr^k=r^{-k}s$, so $r^k$ commutes with $s$ iff $r^k=r^{-k}$, i.e.\ $r^{2k}=e$, i.e.\ $n\mid2k$.
-\item $sr^k$ never commutes with $r$: $(sr^k)r=sr^{k+1}$, while $r(sr^k)=sr^{-1}r^k=sr^{k-1}$, and these differ since $r^2\ne e$ for $n\ge3$.
-\end{itemize}
-So $Z(D_n)=\{e\}$ if $n$ is odd, and $Z(D_n)=\{e,r^{n/2}\}$ if $n$ is even ($r^{n/2}$ is the half-turn, which commutes with every symmetry).
+\idea Every element of $D_n$ is either a rotation $r^k$ or a reflection $sr^k$. A central element must commute with the two generators $r$ and $s$; there is no need to compare it with all $2n$ elements separately.
+
+\writeup Recall the presentation
+\[
+D_n=\langle r,s:r^n=s^2=e,\;srs=r^{-1}\rangle,\qquad n\ge3.
+\]
+The $n$ rotations $e,r,\ldots,r^{n-1}$ form the subgroup $\langle r\rangle$, and the $n$ reflections are the elements $sr^k$. Thus $|D_n|=2n$ and
+\[
+[D_n:\langle r\rangle]=\frac{2n}{n}=2.
+\]
+
+Let us now find the centre. The relation $sr=r^{-1}s$ implies, by induction, $sr^k=r^{-k}s$ for every integer $k$.
+
+A rotation $r^k$ automatically commutes with $r$. It commutes with $s$ exactly when
+\[
+sr^k=r^ks
+\quad\Longleftrightarrow\quad
+r^{-k}s=r^ks
+\quad\Longleftrightarrow\quad
+r^{2k}=e
+\quad\Longleftrightarrow\quad n\mid2k.
+\]
+If $n$ is odd, the only residue $k$ satisfying this is $k=0$. If $n$ is even, there are two, $k=0$ and $k=n/2$.
+
+Could a reflection be central? Take $sr^k$ and compare its products with $r$:
+\[
+(sr^k)r=sr^{k+1},
+\qquad
+r(sr^k)=sr^{k-1}.
+\]
+Equality would give $r^2=e$, impossible because $r$ has order $n\ge3$. No reflection is central.
+
+We have therefore exhausted the elements of $D_n$:
+\[
+\boxed{Z(D_n)=
+\begin{cases}
+\{e\},&n\text{ odd},\\
+\{e,r^{n/2}\},&n\text{ even}.
+\end{cases}}
+\]
+Geometrically, in an even-sided regular polygon the half-turn commutes with every symmetry; in an odd-sided one there is no non-trivial central rotation.
 \end{solution}
 
 \begin{solution}{ex:order4}
-\idea Lagrange restricts the orders of elements to divisors of $4$. If some element has order $4$ we are done. Otherwise every element is its own inverse, and the ``each element once per row'' rule forces the table.
-\writeup By Corollary~\ref{cor:lagrange}, orders are $1,2,4$. If some $g$ has order $4$, $G=\langle g\rangle$ is cyclic. Otherwise $G=\{e,a,b,c\}$ with $a^2=b^2=c^2=e$. Then $ab\notin\{e,a,b\}$: $ab=e$ would give $b=a^{-1}=a$, $ab=a$ would give $b=e$, $ab=b$ would give $a=e$. So $ab=c$, and in the same way the product of any two distinct non-identity elements is the third. The table is
+\idea Start with Lagrange: an element can have order $1$, $2$, or $4$. If nobody has order $4$, label the three non-identity elements $a,b,c$ and let cancellation determine every product. For the examples, look for geometric transformations that are their own inverses.
+
+\writeup Let $|G|=4$. If some $g\in G$ has order $4$, then $\langle g\rangle$ already has all four elements, and $G\cong\Z/4\Z$.
+
+Otherwise the order of each non-identity element is $2$, so write
 \[
-\begin{array}{c|cccc}&e&a&b&c\\\hline e&e&a&b&c\\a&a&e&c&b\\b&b&c&e&a\\c&c&b&a&e\end{array}
+G=\{e,a,b,c\},\qquad a^2=b^2=c^2=e.
 \]
-This is the \emph{Klein four-group}. Examples: the symmetries of a non-square rectangle (identity, two reflections, the half-turn), and $(\Z/8\Z)^*=\{1,3,5,7\}$, where every square is $1$.
+The product $ab$ cannot equal $e$: that would give $b=a^{-1}=a$. It cannot equal $a$ or $b$, because cancellation would make $b=e$ or $a=e$. The only remaining element is $c$, so $ab=c$. The same argument, with $a$ and $b$ interchanged, shows $ba=c$. Repeating it for the other pairs forces the entire table:
+\[
+\begin{array}{c|cccc}
+ &e&a&b&c\\\hline
+e&e&a&b&c\\
+a&a&e&c&b\\
+b&b&c&e&a\\
+c&c&b&a&e
+\end{array}.
+\]
+This group is the \emph{Klein four-group}, often written $V_4$ or $(\Z/2\Z)^2$. Every row can be checked directly from the identities above.
+
+Here are two \emph{geometric} copies. A non-square rectangle in the plane has exactly four symmetries: the identity, reflection in its horizontal midline, reflection in its vertical midline, and the half-turn. Each non-identity symmetry has order $2$. In three dimensions, the identity and the half-turns around the $x$-, $y$-, and $z$-axes form another $V_4$: composing the half-turns about two perpendicular coordinate axes gives the half-turn about the third. Both examples have precisely the displayed table.
 \end{solution}
 
 \begin{solution}{ex:union}
-\idea Suppose $G=H\cup K$ with neither contained in the other, and pick witnesses $h\in H\setminus K$, $k\in K\setminus H$. The product $hk$ must land in $H$ or in $K$, and either choice lets us solve for the other witness inside the wrong subgroup.
-\writeup Suppose $G=H\cup K$ with $H,K$ proper. If $H\subseteq K$ then $G=K$, a contradiction; so there are $h\in H\setminus K$ and, symmetrically, $k\in K\setminus H$. If $hk\in H$ then $k=h^{-1}(hk)\in H$, a contradiction; if $hk\in K$ then $h=(hk)k^{-1}\in K$, a contradiction. So $hk\notin H\cup K=G$, which is absurd.
-The Klein four-group $\{e,a,b,c\}$ of Exercise~\ref{ex:order4} is the union of its three subgroups $\{e,a\}$, $\{e,b\}$, $\{e,c\}$.
+\idea A union of two subgroups fails closure unless one subgroup contains the other. Choose an element from each subgroup that does not belong to the other, then look at their product.
+
+\writeup Suppose, toward a contradiction, that $G=H\cup K$ with $H$ and $K$ both proper subgroups.
+
+If $H\subseteq K$, then $G=K$, contradicting that $K$ is proper. The same argument excludes $K\subseteq H$. Consequently there exist
+\[
+h\in H\setminus K,\qquad k\in K\setminus H.
+\]
+Since $hk\in G=H\cup K$, either $hk\in H$ or $hk\in K$.
+
+If $hk\in H$, closure under multiplication and inverses gives
+\[
+k=h^{-1}(hk)\in H,
+\]
+contrary to our choice of $k$. If $hk\in K$, the analogous calculation
+\[
+h=(hk)k^{-1}\in K
+\]
+contradicts our choice of $h$. Neither case is possible. Therefore two proper subgroups never cover a group.
+
+Three proper subgroups \emph{can} cover one. Let $V_4=\{e,a,b,c\}$ be the Klein four-group of Exercise~\ref{ex:order4}, where every non-identity element has order $2$. Then
+\[
+H_a=\{e,a\},\qquad H_b=\{e,b\},\qquad H_c=\{e,c\}
+\]
+are each subgroups of order $2$, hence proper, and
+\[
+V_4=H_a\cup H_b\cup H_c.
+\]
+They overlap at the identity. This is precisely what allowed three subgroups to succeed where two could not.
 \end{solution}
 
 \begin{solution}{ex:gl2}
-\idea Counting invertible matrices means counting bases of $(\Z/p\Z)^2$ (the columns), chosen one vector at a time. For $SL_2$, the determinant splits $GL_2$ into $p-1$ classes, and multiplying the first column by a scalar moves between them bijectively.
-\writeup A $2\times2$ matrix over the field $\Z/p\Z$ is invertible iff its columns are linearly independent. The first column is any non-zero vector: $p^2-1$ choices. The second is any vector not a multiple of the first: $p^2-p$ choices. So $|GL_2(\Z/p\Z)|=(p^2-1)(p^2-p)$.
-For $\lambda\in(\Z/p\Z)^*$, multiplying the first column by $\lambda$ is a bijection from the matrices of determinant $1$ onto those of determinant $\lambda$ (its inverse multiplies by $\lambda^{-1}$). So the $p-1$ values of the determinant are taken equally often, and $|SL_2(\Z/p\Z)|=\frac{(p^2-1)(p^2-p)}{p-1}=p(p^2-1)$.
-For $p=2$: $3\cdot2=6$ elements, and $\begin{pmatrix}1&1\\0&1\end{pmatrix}\begin{pmatrix}1&0\\1&1\end{pmatrix}=\begin{pmatrix}0&1\\1&1\end{pmatrix}$ while the product in the other order is $\begin{pmatrix}1&1\\1&0\end{pmatrix}$.
+\idea A $2\times2$ matrix is invertible if and only if its two column vectors form a basis of the two-dimensional vector space over $\mathbb F_p$. Choose the first vector, then the second. For determinant $1$, use that all non-zero determinant values occur equally often.
+
+\writeup Put $K=\mathbb F_p=\Z/p\Z$. The first column of an invertible matrix can be any non-zero vector of $K^2$, so there are $p^2-1$ choices. Once a first column $v\ne0$ is chosen, the second column must lie outside the line $\langle v\rangle$, which has exactly $p$ vectors. Hence there are $p^2-p$ choices for the second column. Every choice gives a different invertible matrix, so
+\[
+\boxed{|GL_2(K)|=(p^2-1)(p^2-p)}.
+\]
+
+The determinant defines a surjective homomorphism
+\[
+\det:GL_2(K)\longrightarrow K^*.
+\]
+Surjectivity is explicit: $\operatorname{diag}(\lambda,1)$ has determinant $\lambda$ for every $\lambda\in K^*$. Its kernel is $SL_2(K)$. By the first isomorphism theorem, or simply by partitioning the matrices into the $p-1$ determinant fibres of equal size,
+\[
+|SL_2(K)|=\frac{|GL_2(K)|}{p-1}
+=\frac{(p^2-1)p(p-1)}{p-1}
+=\boxed{p(p^2-1)}.
+\]
+
+For $p=2$, the formula gives $(4-1)(4-2)=3\cdot2=6$ invertible matrices. This group is not abelian. Indeed, in $\mathbb F_2$ let
+\[
+A=\begin{pmatrix}1&1\\0&1\end{pmatrix},
+\qquad
+B=\begin{pmatrix}1&0\\1&1\end{pmatrix}.
+\]
+Both have determinant $1$, yet
+\[
+AB=\begin{pmatrix}0&1\\1&1\end{pmatrix},
+\qquad
+BA=\begin{pmatrix}1&1\\1&0\end{pmatrix}.
+\]
+These products differ, proving non-commutativity. We will later recognise this six-element group as another copy of $\mathfrak S_3$.
 \end{solution}
 
 \begin{solution}{ex:cubeS4}
-\idea A map between finite sets of the same size is bijective as soon as it is injective. Injectivity of a product-preserving map comes down to: only the identity goes to the identity permutation (if $\rho(f)=\rho(g)$ then $\rho(g^{-1}f)=\mathrm{id}$). So we must show that a rotation fixing each diagonal (as a line, possibly reversing it) is the identity. The matrix description makes this a small computation.
-\writeup For rotations $f,g$, the permutation $\rho(fg)$ of the diagonals is ``apply $g$, then $f$'', which is $\rho(f)\rho(g)$. If $\rho(f)=\rho(g)$ then $\rho(g^{-1}f)=\rho(g)^{-1}\rho(f)=\mathrm{id}$, so it suffices to show that a rotation $h$ with $\rho(h)=\mathrm{id}$ is the identity.
-Such an $h$ maps each diagonal to itself, so $h(v)=\pm v$ for each of the vertices $v=(1,1,1)$, $(1,1,-1)$, $(1,-1,1)$. By the proof of Proposition~\ref{prop:cube}, $h$ is a signed permutation matrix with determinant $1$. The coordinates of $h(1,1,1)$ are the non-zero entries of the rows of $h$; since $h(1,1,1)=\varepsilon(1,1,1)$, all these entries equal $\varepsilon$, and $h=\varepsilon P$ for a permutation matrix $P$ (sending $e_j$ to $e_{\sigma(j)}$). Then $P(1,1,-1)$ has its entry $-1$ in position $\sigma(3)$, and it must be $\pm(1,1,-1)$; since it has a single $-1$, it is $(1,1,-1)$ and $\sigma(3)=3$. In the same way $(1,-1,1)$ gives $\sigma(2)=2$, hence $\sigma=\mathrm{id}$ and $h=\varepsilon I_3$. Since $\det h=\varepsilon^3=1$, $h=I_3$.
-So $\rho$ is injective, and as $|C|=|\mathfrak S_4|=24$, it is bijective: an isomorphism.
+\idea An orientation-preserving symmetry of the cube permutes its four long diagonals. That gives a homomorphism to $\mathfrak S_4$. Both groups have $24$ elements, so it is enough to prove injectivity. For this, show that a rotation fixing every diagonal \emph{as a line} must be the identity.
+
+\writeup Centre the cube at the origin with vertices $(\pm1,\pm1,\pm1)$. Its four long diagonals join opposite vertices. A rotation carries opposite vertices to opposite vertices and hence permutes those four lines. Composition of rotations induces composition of line permutations, giving
+\[
+\rho:C\longrightarrow\mathfrak S_4.
+\]
+
+We know from Proposition~\ref{prop:cube} that $|C|=24$. Since $|\mathfrak S_4|=24$ too, it is enough to show that $\ker\rho=\{I\}$.
+
+Let $T\in\ker\rho$. Thus $T$ fixes each long diagonal as an unoriented line. By Proposition~\ref{prop:cube}, every cube rotation is a signed permutation matrix of determinant $+1$. Take the diagonal through $v=(1,1,1)$. Fixing it as a line means
+\[
+T(1,1,1)=\varepsilon(1,1,1)
+\]
+for some $\varepsilon=\pm1$. In a signed permutation matrix, $T(1,1,1)$ simply lists the three signs of its non-zero entries. Hence all three signs are $\varepsilon$, and
+\[
+T=\varepsilon P
+\]
+for an ordinary permutation matrix $P$.
+
+Next consider the diagonal through $w=(1,1,-1)$. The vector $Pw$ has exactly one negative coordinate. Because $T$ preserves the line of $w$, we have $Pw=\pm w$. But $-w=(-1,-1,1)$ has \emph{two} negative coordinates, so $Pw$ cannot equal $-w$. Therefore $Pw=w$ and $P$ leaves the third coordinate fixed. Apply the same argument to $(1,-1,1)$: $P$ leaves the second coordinate fixed. Hence it also fixes the first, and $P=I$.
+
+We have proved $T=\varepsilon I$. Because $T$ is a rotation,
+\[
+1=\det T=\varepsilon^3,
+\]
+forcing $\varepsilon=1$. Thus $T=I$, so the kernel is trivial.
+
+By the first isomorphism theorem, $\rho$ is injective. An injection between finite sets of the same size $24$ is bijective; hence
+\[
+\boxed{C\cong\mathfrak S_4}.
+\]
+The isomorphism is geometric: permuting four diagonals packages every spatial cube rotation into a permutation of just four objects.
 \end{solution}
 
 \begin{solution}{ex:prodorder}
-\idea Since $a,b$ commute, $(ab)^k=a^kb^k$, so $(ab)^{mn}=e$ and $o(ab)\mid mn$. For the converse, $(ab)^k=e$ makes $a^k=b^{-k}$ an element of both cyclic subgroups, whose orders are coprime, so it must be $e$.
-\writeup As $ab=ba$, $(ab)^k=a^kb^k$ for all $k$ (induction). Suppose $(ab)^k=e$. Then $x=a^k=b^{-k}$ lies in $\langle a\rangle\cap\langle b\rangle$, so $o(x)$ divides $m$ and $n$ (Lagrange in both cyclic groups), hence $o(x)=1$. So $a^k=e$ and $b^k=e$, i.e.\ $m\mid k$ and $n\mid k$, hence $mn\mid k$ since $\gcd(m,n)=1$. Conversely $(ab)^{mn}=(a^m)^n(b^n)^m=e$. So $o(ab)=mn$.
-In $\mathfrak S_3$, $a=(1\,2)$ has order $2$ and $b=(1\,2\,3)$ has order $3$, but $ab$ sends $1\mapsto 2\mapsto 1$, $2\mapsto3\mapsto3$, $3\mapsto1\mapsto2$: $ab=(2\,3)$ has order $2$, not $6$.
+\idea If $a$ and $b$ commute, powers of their product split as powers of the factors. If $(ab)^k=e$, then $a^k=b^{-k}$ is trapped in two cyclic subgroups whose orders are coprime. That common element can only be the identity.
+
+\writeup Suppose $ab=ba$, $o(a)=m$, $o(b)=n$, and $\gcd(m,n)=1$. The commutation relation implies, by induction on positive $k$,
+\[
+(ab)^k=a^kb^k.
+\]
+In particular,
+\[
+(ab)^{mn}=(a^m)^n(b^n)^m=e,
+\]
+so the order of $ab$ divides $mn$.
+
+For the reverse divisibility, let $k\ge1$ satisfy $(ab)^k=e$. Then
+\[
+a^k=b^{-k}.
+\]
+Call this common value $x$. It lies in both $\langle a\rangle$ and $\langle b\rangle$, so Lagrange's theorem applied to those subgroups says that $o(x)$ divides both $m$ and $n$. As the two integers are coprime, $o(x)=1$, hence $x=e$. Thus $a^k=b^k=e$, which is equivalent to
+\[
+m\mid k,\qquad n\mid k.
+\]
+Coprimality then implies $mn\mid k$. Taking $k=o(ab)$ proves $mn\mid o(ab)$, while the first paragraph gave the reverse divisibility. Therefore
+\[
+\boxed{o(ab)=mn}.
+\]
+
+The commuting hypothesis cannot be discarded. In $\mathfrak S_3$ put $a=(1\,2)$ of order $2$ and $b=(1\,2\,3)$ of order $3$. With composition from right to left,
+\[
+ab=(1\,2)(1\,2\,3)=(2\,3),
+\]
+which has order $2$, not $6$. Indeed $a$ and $b$ do not commute. Coprime orders alone tell us nothing about the order of the product without control over multiplication.
 \end{solution}
 
 \begin{solution}{ex:fieldcyclic}
-\idea We want an element of order $n$. Count elements by their order: $\psi(d)$ elements of order $d$, with $\sum_{d\mid n}\psi(d)=n$ (Lagrange). A field enters only through ``a polynomial of degree $d$ has at most $d$ roots'' (Volume~1, Chapter~6), which caps $\psi(d)$ by $\varphi(d)$. Since the $\varphi(d)$ also sum to $n$, every cap is reached, in particular $\psi(n)=\varphi(n)\ge1$.
-\writeup For $d\mid n$, let $\psi(d)$ be the number of elements of order $d$ in $G$. By Corollary~\ref{cor:lagrange}, every element has order dividing $n$, so $\sum_{d\mid n}\psi(d)=n$.
-Suppose $\psi(d)\ge1$, and let $x$ have order $d$. The $d$ distinct elements $1,x,\dots,x^{d-1}$ are roots of $X^d-1$, which has at most $d$ roots in the field $K$. So every element of order $d$, being a root of $X^d-1$, lies in $\langle x\rangle$, a cyclic group of order $d$, which has exactly $\varphi(d)$ elements of order $d$ (Theorem~\ref{thm:cyclic}(c)). Hence $\psi(d)\in\{0,\varphi(d)\}$ for every $d$, so $\psi(d)\le\varphi(d)$. Now
+\idea A field polynomial has no more distinct roots than its degree. That simple fact sharply restricts the number of group elements of each order. Count the elements of $G$ by their orders and compare with the familiar divisor-sum identity for Euler's totient.
+
+\writeup Let $G$ be a finite subgroup of $K^*$, with $|G|=n$. Since multiplication in a field is commutative, $G$ is abelian. For each divisor $d$ of $n$, let
 \[
-n=\sum_{d\mid n}\psi(d)\le\sum_{d\mid n}\varphi(d)=n,
+\psi(d)=|\{g\in G:o(g)=d\}|.
 \]
-so equality holds term by term. In particular $\psi(n)=\varphi(n)\ge1$: $G$ has an element of order $n$ and is cyclic.
+By Lagrange's theorem, every element has order dividing $n$, so the sets counted by $\psi(d)$ partition $G$:
+\[
+\sum_{d\mid n}\psi(d)=n.
+\]
+
+We claim that for each $d\mid n$, either $\psi(d)=0$ or $\psi(d)=\varphi(d)$. If no element has order $d$, the first alternative holds. Otherwise choose $g\in G$ of order $d$. The elements
+\[
+1,g,g^2,\ldots,g^{d-1}
+\]
+are $d$ \emph{distinct} roots of $X^d-1$. A polynomial of degree $d$ over a field has at most $d$ distinct roots, so these are \emph{all} the roots of $X^d-1$ in $K$. Any other element $h\in G$ of order $d$ satisfies $h^d=1$, so it lies in $\langle g\rangle$. In a cyclic group of order $d$, exactly $\varphi(d)$ elements have order $d$ (Theorem~\ref{thm:cyclic}). This proves the claim.
+
+Consequently $\psi(d)\le\varphi(d)$ for each divisor of $n$. Summing these inequalities gives
+\[
+n=\sum_{d\mid n}\psi(d)
+\le\sum_{d\mid n}\varphi(d)=n,
+\]
+where the last identity was proved in Volume~2. Since the two sums are equal and all terms are non-negative, \emph{every} individual inequality must be an equality:
+\[
+\psi(d)=\varphi(d)\quad(d\mid n).
+\]
+
+In particular, $\psi(n)=\varphi(n)\ge1$, so some $g\in G$ has order exactly $n$. Then $|\langle g\rangle|=n=|G|$, which forces
+\[
+\boxed{G=\langle g\rangle}.
+\]
+Thus every finite subgroup of the multiplicative group of a field is cyclic. For $K=\mathbb F_p$, this gives the existence of a primitive root modulo $p$.
 \end{solution}
 
 \begin{solution}{ex:wilson}
-\idea In the product of all elements, each element can be paired with its inverse, and each pair contributes $e$ (commutativity lets us reorder). Only the elements equal to their own inverse are unpaired: $e$ and the elements of order $2$. Then for (b), the set of these is a subgroup, and the product over a subgroup is easier to see by pairing once more.
-\writeup (a) Since $G$ is abelian the product $P=\prod_{g\in G}g$ does not depend on the order of the factors. The map $g\mapsto g^{-1}$ is a bijection of $G$ with itself; it pairs each $g$ with $g\ne g^{-1}$ to its inverse, and these pairs contribute $e$. The fixed points are the $g$ with $g^2=e$: $e$ and the elements of order $2$. So $P$ is the product of the elements of order $2$.
-(b) If $t$ is the only element of order $2$, then $P=t$. If there is none, $P=e$. (More generally, the set $T=\{g:g^2=e\}$ is a subgroup, since $(gh)^2=g^2h^2=e$.)
-(c) In $G=(\Z/p\Z)^*$ (abelian, of order $p-1$), $x^2=1$ means $p\mid(x-1)(x+1)$, so $x=\pm1$ by Euclid's lemma. For $p$ odd, $-1$ is the only element of order $2$, so the product of all classes $1,2,\dots,p-1$ is $-1$: $(p-1)!\equiv-1\pmod p$. For $p=2$, $1!=1\equiv-1\pmod 2$.
+\idea When a group is abelian, we may multiply its elements in any order. Pair each element $g$ with its inverse $g^{-1}$; pairs of distinct elements disappear. Only the self-inverse elements remain, and they have order $1$ or $2$.
+
+\writeup \emph{(a) Pairing inverse elements.} Since $G$ is finite and abelian, the product
+\[
+P=\prod_{g\in G}g
+\]
+does not depend on the order of its factors. The inverse map $g\mapsto g^{-1}$ is an involution of the finite set $G$. Its orbits have size $1$ or $2$. A two-element orbit $\{g,g^{-1}\}$ contributes $gg^{-1}=e$ to the product. The singleton orbits are precisely those satisfying $g=g^{-1}$, or $g^2=e$.
+
+Such elements are either $e$ (order $1$) or elements of order $2$. As $e$ does not affect the product, we have shown
+\[
+\boxed{P=\prod_{\substack{g\in G\\o(g)=2}}g},
+\]
+with an empty product interpreted as $e$.
+
+\emph{(b) Zero or one involution.} If $t$ is the unique element of order $2$, the remaining product has one factor and equals $t$. If no element has order $2$, all factors cancel in inverse pairs and $P=e$. More generally, the self-inverse elements form a subgroup $T=\{g:g^2=e\}$ because $G$ is abelian and $(gh)^2=g^2h^2=e$; the two special cases just describe $|T|=1$ or $2$.
+
+\emph{(c) Wilson's congruence.} Take the multiplicative group
+\[
+G=(\Z/p\Z)^*
+\]
+for a prime $p$. This is abelian, and its elements are the classes $1,2,\ldots,p-1$. The self-inverse elements satisfy
+\[
+x^2=1\quad\Longleftrightarrow\quad(x-1)(x+1)=0\quad\text{in }\mathbb F_p.
+\]
+Because a field has no zero divisors, $x=1$ or $x=-1$. If $p$ is odd, these are different and $-1$ is the unique element of order $2$. Part (b) therefore gives
+\[
+1\cdot2\cdots(p-1)=-1\quad\text{in }\mathbb F_p,
+\]
+that is,
+\[
+\boxed{(p-1)!\equiv-1\pmod p}.
+\]
+For $p=2$, the two classes $1$ and $-1$ coincide, but $1!=1\equiv-1\pmod2$, so the result still holds.
+
+The proof shows Wilson's theorem as a consequence of finite-group pairing, rather than as a special factorial trick.
 \end{solution}
 
 \begin{solution}{pb:matrices2}
-\idea Group the matrices by conjugacy: $GL_2(\mathbb F_p)$ acts on $M_2(\mathbb F_p)$ by conjugation, the class of a matrix is
-determined by its characteristic polynomial and whether it is scalar, and orbit--stabiliser gives the size of each class
-once the centraliser is known. For a non-scalar $C$, the centraliser is the invertible part of $\mathbb F_p[C]$, a ring with
-$p^2$ elements: $\mathbb F_p\times\mathbb F_p$, $\mathbb F_{p^2}$ or $\mathbb F_p[\varepsilon]/(\varepsilon^2)$.
+\idea Instead of listing all $p^4$ matrices, group them by conjugacy. A non-scalar $2\times2$ matrix is determined up to conjugacy by its characteristic polynomial. The size of each conjugacy class comes from its centraliser.
 
-\writeup Let $G=GL_2(\mathbb F_p)$, of order $(p^2-1)(p^2-p)=p(p-1)^2(p+1)$ (Volume~3, Chapter~1).
+\writeup Let $K=\mathbb F_p$ and $G=GL_2(K)$. Choosing two independent columns gives
+\[
+|G|=(p^2-1)(p^2-p)=p(p-1)^2(p+1).
+\]
 
-\emph{Centralisers.} Let $C$ be non-scalar. Some vector $v$ is not an eigenvector, so $(v,Cv)$ is a basis. If $AC=CA$,
-write $Av=\alpha v+\beta Cv$; then $B=A-\alpha I-\beta C$ commutes with $C$ and kills $v$, hence kills $Cv$ ($BCv=CBv=0$), so
-$B=0$. So the centraliser of $C$ in $M_2(\mathbb F_p)$ is $\mathbb F_p[C]=\{\alpha I+\beta C\}$, which has $p^2$ elements,
-and its centraliser in $G$ is the group of invertible elements of $\mathbb F_p[C]$.
+\emph{Why a non-scalar matrix has a simple centraliser.}
+Let $C\in M_2(K)$ be non-scalar. There is a vector $v$ for which $v,Cv$ are linearly independent: if every vector were an eigenvector, comparing the eigenvalues of independent $u,w$ and $u+w$ would force $C$ to be scalar. Thus $(v,Cv)$ is a basis. If $AC=CA$ and $Av=av+bCv$, then
+\[
+(A-aI-bC)v=0.
+\]
+The matrix $A-aI-bC$ commutes with $C$, so it also kills $Cv$ and hence both vectors of a basis. Therefore
+\[
+A=aI+bC.
+\]
+The full matrix centraliser is the two-dimensional algebra $K[C]$, and the centraliser in $G$ is its group of units. In the basis $(v,Cv)$, the matrix $C$ is the companion matrix of its characteristic polynomial. Thus two non-scalar matrices with the same characteristic polynomial are conjugate.
 
-\emph{The classes.} The $p$ scalar matrices are alone in their classes. A non-scalar $M$ with characteristic polynomial
-$\chi$ is conjugate to the companion matrix of $\chi$ (in the basis $(v,Mv)$ above), so the non-scalar matrices with a given
-$\chi$ form one class, of size $|G|/u(\chi)$, where $u(\chi)$ is the number of invertible elements of $\mathbb F_p[C]
-\cong\mathbb F_p[X]/(\chi)$.
-\begin{itemize}
-\item $\chi=(X-\lambda)(X-\mu)$, $\lambda\ne\mu$: $\mathbb F_p[X]/(\chi)\cong\mathbb F_p\times\mathbb F_p$ (Chinese remainders),
-$u=(p-1)^2$, class size $p(p+1)$. There are $\frac{p(p-1)}2$ such $\chi$: in all $\frac{p^2(p^2-1)}2$ matrices.
-\item $\chi$ irreducible: $\mathbb F_p[X]/(\chi)$ is a field with $p^2$ elements, $u=p^2-1$, class size $p(p-1)$. There are
-$\frac{p^2-p}2$ monic irreducible quadratics (Volume~3, Chapter~9): in all $\frac{p^2(p-1)^2}2$ matrices.
-\item $\chi=(X-\lambda)^2$, $M$ not scalar: $\mathbb F_p[X]/((X-\lambda)^2)$ has $p(p-1)$ invertible elements (those with
-non-zero value at $\lambda$), class size $p^2-1$, and $p$ choices of $\lambda$: in all $p(p^2-1)$ matrices.
-\end{itemize}
-As a check, $p+\frac{p^2(p^2-1)}2+\frac{p^2(p-1)^2}2+p^3-p=p^4$.
+\emph{Four disjoint kinds of matrices.}
+There are $p$ scalars $\lambda I$, one for each $\lambda\in K$.
 
-(b) $M$ is diagonalisable over $\mathbb F_p$ iff it is scalar or has two distinct eigenvalues in $\mathbb F_p$ (a non-scalar
-matrix with a double eigenvalue is not, since $M-\lambda I\ne0$ is nilpotent). So
-$P(\text{diagonalisable})=\frac{p+p^2(p^2-1)/2}{p^4}\to\frac12$ and $P(\chi\text{ irreducible})=\frac{(p-1)^2}{2p^2}\to\frac12$.
-\tools Volume~3, Chapter~3 (orbit--stabiliser), Chapter~6 (Chinese remainders in $K[X]$), Chapter~9 (counting irreducible
-polynomials); Volume~1, Chapter~7 (diagonalisation).
-\leads The two limits are the probabilities that a random permutation of the two roots is the identity or a transposition.
-This is no accident: Chapter~5 shows that the degrees of the factors of a random polynomial over $\mathbb F_q$ follow the cycle
-type of a random permutation, as $q\to\infty$.
+Suppose next that the characteristic polynomial has distinct roots $\lambda,\mu\in K$. There are $\binom p2=p(p-1)/2$ unordered choices of roots. By the Chinese remainder theorem,
+\[
+K[C]\cong K[X]/((X-\lambda)(X-\mu))\cong K\times K,
+\]
+which has $(p-1)^2$ units. Orbit--stabiliser says that each characteristic polynomial gives a conjugacy class of size
+\[
+\frac{|G|}{(p-1)^2}=p(p+1).
+\]
+So this case contains $\frac12p^2(p^2-1)$ matrices.
+
+For an irreducible quadratic characteristic polynomial, $K[C]$ is the field with $p^2$ elements and has $p^2-1$ non-zero units. The class size is $|G|/(p^2-1)=p(p-1)$. There are $(p^2-p)/2$ monic irreducible quadratics: subtract the $p(p+1)/2$ monic quadratics that split, with repetition allowed, from the $p^2$ monic quadratics. Hence this case contains $\frac12p^2(p-1)^2$ matrices.
+
+Finally, for a repeated root $\lambda$, a non-scalar matrix has characteristic polynomial $(X-\lambda)^2$ and
+\[
+K[C]\cong K[\varepsilon]/(\varepsilon^2).
+\]
+The units are $a+b\varepsilon$ with $a\ne0$, giving $p(p-1)$ of them. Its conjugacy class has size
+\[
+\frac{|G|}{p(p-1)}=p^2-1.
+\]
+With $p$ choices of $\lambda$, the number of non-scalar repeated-root matrices is $p(p^2-1)$.
+
+We obtain the requested count:
+\[
+\begin{array}{l|r}
+\text{matrix type}&\text{number}\\\hline
+\text{scalar}&p\\
+\text{two distinct eigenvalues in }K&\frac12p^2(p^2-1)\\
+\text{irreducible characteristic polynomial}&\frac12p^2(p-1)^2\\
+\text{non-scalar repeated eigenvalue}&p(p^2-1).
+\end{array}
+\]
+As a check, the four counts add up to $p^4$, the total number of $2\times2$ matrices over $K$.
+
+\emph{(b) The limiting probabilities.}
+A matrix is diagonalisable over $K$ precisely when it is scalar or has two distinct eigenvalues in $K$. A non-scalar matrix with a repeated eigenvalue cannot be diagonalisable, because a diagonalisable matrix with just that eigenvalue would equal $\lambda I$. Consequently
+\[
+\Pr(M\text{ diagonalisable over }K)
+=\frac{p+\frac12p^2(p^2-1)}{p^4}
+\longrightarrow\frac12.
+\]
+And
+\[
+\Pr(\chi_M\text{ irreducible})
+=\frac{\frac12p^2(p-1)^2}{p^4}
+=\frac{(p-1)^2}{2p^2}\longrightarrow\frac12.
+\]
+
+\tools Conjugation and orbit--stabiliser, the Chinese remainder theorem, and finite fields.
+
+\leads The limiting halves resemble the two cycle types of a permutation of two letters. More generally, fixed-degree polynomial factorisation statistics over growing finite fields approach the cycle-type statistics of random permutations.
 \end{solution}
 
 \begin{solution}{pb:fibdivides}
-\idea A recurrence whose step is invertible modulo $m$ is a permutation of a finite set, so it cycles back to its start; the start
-contains $F_0=0$.
+\idea The number $F_n$ alone does not tell us the next Fibonacci number. The pair $(F_n,F_{n+1})$ does. Modulo $m$ that pair has only finitely many states, and its update rule can be reversed, which forces a cycle from the very beginning.
 
-\writeup (a) Let $\phi(u,v)=(v,u+v)$ on $(\Z/m\Z)^2$; it is a bijection, with inverse $(u,v)\mapsto(v-u,u)$, and
-$\phi(F_n,F_{n+1})=(F_{n+1},F_{n+2})$. A bijection of a finite set has finite order, say $\phi^P=\mathrm{id}$ with $P\ge1$, so
-$(F_P,F_{P+1})\equiv(F_0,F_1)=(0,1)$ and $m\mid F_P$.
+\writeup \emph{(a) Return to the starting pair.}
+Fix $m\ge1$ and consider the map on $(\mathbb Z/m\mathbb Z)^2$,
+\[
+T(u,v)=(v,u+v).
+\]
+Given $(a,b)$ we can recover the previous state: it was $(b-a,a)$. Hence $T$ is bijective, with
+\[
+T^{-1}(a,b)=(b-a,a).
+\]
+Starting at $(F_0,F_1)=(0,1)$, successive applications of $T$ give exactly the consecutive Fibonacci pairs modulo $m$.
 
-(b) Let $z\ge1$ be the least index with $m\mid F_z$. Since $\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~1, Exercise~1.7), if $m\mid F_n$ then
-$m\mid\gcd(F_n,F_z)=F_{\gcd(n,z)}$, and $\gcd(n,z)\ge1$ (for $n\ge1$) forces $\gcd(n,z)=z$ by minimality: $z\mid n$. Conversely $F_z\mid F_{kz}$.
-For $n=0$ both statements hold trivially.
+A bijection of a finite set is a permutation. Every orbit of a permutation is a cycle, including its starting point; it cannot first wander through non-repeating states and then enter a different cycle. Therefore some $P\ge1$ satisfies
+\[
+(F_P,F_{P+1})\equiv(0,1)\pmod m.
+\]
+In particular $F_P\equiv0\pmod m$, proving that every positive integer divides some positive-index Fibonacci number. When $m=1$ this is immediate, and the state argument still applies.
 
-(c) $J_1=J_2=1$, and $J_{n+2}\equiv J_{n+1}\pmod2$, so all $J_n$ with $n\ge1$ are odd. The step $(u,v)\mapsto(v,v+2u)$ is not injective
-modulo $2$ (it sends $(0,0)$ and $(1,0)$ to the same pair), so the sequence of pairs is eventually periodic but need not return to
-$(0,1)$.
+\emph{(b) The first divisible index controls all the others.}
+Let $z=z(m)$ be the smallest positive index with $m\mid F_z$, which exists by (a). Volume~1 proved
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)}
+\qquad(a,b\ge0,\text{ not both zero}).
+\]
+Suppose $n\ge1$ and $m\mid F_n$. Since $m$ also divides $F_z$, it divides their greatest common divisor:
+\[
+m\mid F_{\gcd(n,z)}.
+\]
+The positive index $\gcd(n,z)$ is at most $z$, so the minimality of $z$ forces $\gcd(n,z)=z$, or $z\mid n$.
 
-\tools Volume~1, Exercise~1.7 ($\gcd$ of Fibonacci numbers); Volume~3, Chapter~1 (finite order of a permutation).
-\leads The least $z(m)$ is the \emph{rank of apparition}; it is known that $z(m)\le2m$, with equality for $m\ge2$ exactly when
-$m=6\cdot5^k$ (a direct computation verifies this below $2000$). For primes, Problem~\ref{pb:fibmodp} shows $z(p)\mid p-\bigl(\frac5p\bigr)$. The same argument shows that any integer recurrence
-whose last coefficient is $\pm1$ and which starts with $0$ hits every modulus.
+Conversely, if $z\mid n$, the same Fibonacci gcd identity yields
+\[
+\gcd(F_z,F_n)=F_z,
+\]
+which means $F_z\mid F_n$. Since $m\mid F_z$, also $m\mid F_n$. We have proved
+\[
+\boxed{m\mid F_n\iff z(m)\mid n.}
+\]
+The index $n=0$ satisfies both conditions too, because $F_0=0$ and every positive integer divides $0$.
+
+\emph{(c) Why reversibility mattered.}
+For $J_0=0$, $J_1=1$ and $J_{n+2}=J_{n+1}+2J_n$, reduction modulo $2$ gives
+\[
+J_{n+2}\equiv J_{n+1}\pmod2.
+\]
+As $J_1=1$ and $J_2=1$, induction shows $J_n\equiv1\pmod2$ for every $n\ge1$. In particular no positive-index term is divisible by $2$.
+
+The corresponding state update is
+\[
+S(u,v)=(v,v+2u).
+\]
+Modulo $2$ it reduces to $S(u,v)=(v,v)$, which is not injective: $S(0,0)=S(1,0)$. So $S$ is not a permutation of the finite state set. Its orbit may enter a cycle without ever returning to its initial pair. That is exactly the step in (a) that no longer works.
+
+\tools Fibonacci gcd and divisibility identities (Volume~1, Chapter~2); permutations and finite-state cycles.
+
+\leads Whenever a linear recurrence has an invertible state-transition matrix modulo $m$, its state sequence is periodic from the start. The rank of apparition $z(m)$ captures the resulting divisibility pattern for Fibonacci numbers.
 \end{solution}
 
 \begin{solution}{pb:ruzsa}
-\idea An injection proves an inequality between sizes. For the covering, a maximal packing of translates is automatically a
-covering by the doubled sets.
+\idea We want to compare three sets of differences. A well-chosen injection proves the inequality without estimating each set separately. For the covering statement, choose a maximal family of disjoint translates and see what maximality forces.
 
-\writeup (a) For each $x\in B-C$ choose $b(x)\in B$, $c(x)\in C$ with $x=b(x)-c(x)$, and define $\phi:A\times(B-C)\to(A-B)\times(A-C)$ by
-$\phi(a,x)=(a-b(x),a-c(x))$. From $\phi(a,x)=(u,v)$ we recover $x=v-u$ and then $a=u+b(x)$, so $\phi$ is injective. For the consequence, take
-$B=C=-A$: then $|A|\,|A-A|\le|A+A|^2\le K^2|A|^2$.
+\writeup \emph{(a) The triangle inequality.}
+If $B-C$ is empty, both sides of the claimed inequality are non-negative and the left side is zero, so there is nothing to prove. Otherwise, for each $x\in B-C$, choose once and for all one pair
+\[
+b_x\in B,\quad c_x\in C,\qquad x=b_x-c_x.
+\]
+Define
+\[
+\Phi:A\times(B-C)\longrightarrow(A-B)\times(A-C),
+\quad
+\Phi(a,x)=(a-b_x,\ a-c_x).
+\]
+The output belongs to the required product. We must prove that two distinct inputs never give the same output. If the output is $(u,v)$, subtract its coordinates:
+\[
+v-u=(a-c_x)-(a-b_x)=b_x-c_x=x.
+\]
+So the output determines $x$. Because our representation $(b_x,c_x)$ was fixed for each $x$, it then determines $a=u+b_x$. Hence $\Phi$ is injective, and counting its domain and codomain proves
+\[
+\boxed{|A|\,|B-C|\le|A-B|\,|A-C|.}
+\]
 
-(b) Let $X\subseteq B$ be maximal such that the translates $x+A$, $x\in X$, are pairwise disjoint. They lie in $A+B$, so $|X||A|\le|A+B|\le K|A|$ and
-$|X|\le K$. For $b\in B$, maximality gives $x\in X$ with $(b+A)\cap(x+A)\ne\varnothing$ (if $b\notin X$; if $b\in X$ take $x=b$), so $b\in x+A-A$.
+Suppose now that $A$ is non-empty and $|A+A|\le K|A|$. Apply the inequality with $B=C=-A$. We get
+\[
+|A|\,|A-A|\le|A+A|^2\le K^2|A|^2.
+\]
+Divide by the positive integer $|A|$:
+\[
+\boxed{|A-A|\le K^2|A|.}
+\]
+If $A$ is empty, the same inequality is simply $0\le0$. Thus no separate assumption is needed for this consequence.
 
-\tools Volume~3, Chapter~1 (abelian groups); Volume~1, Chapter~2 (injections).
-\leads These are the first two steps of additive combinatorics. With Plünnecke's inequality ($|nA-mA|\le K^{n+m}|A|$) they lead to
-Freiman's theorem: a set of integers with $|A+A|\le K|A|$ is contained in a generalised arithmetic progression of bounded dimension and
-size $O_K(|A|)$. Gowers used them in his proof of Szemerédi's theorem.
+\emph{(b) The covering lemma.}
+Assume $A\ne\varnothing$ and $|A+B|\le K|A|$. If $B$ is empty, the empty family of translates covers it. Otherwise choose a subset $X\subseteq B$ maximal with the property that the translates $x+A$, for $x\in X$, are pairwise disjoint. Such a maximal choice exists because $B$ is finite; for example, add translates one at a time until none can be added.
+
+Every $x+A$ lies in $A+B$, and each has $|A|$ elements. Disjointness yields
+\[
+|X|\,|A|\le|A+B|\le K|A|.
+\]
+Since $|A|>0$, this implies $|X|\le K$.
+
+Now take any $b\in B$. If $b+A$ were disjoint from every $x+A$ with $x\in X$, we could add $b$ to $X$, contradicting maximality. Thus there are $x\in X$ and $a_1,a_2\in A$ such that
+\[
+b+a_1=x+a_2.
+\]
+Rearranging in the abelian group gives
+\[
+b=x+(a_2-a_1)\in x+(A-A).
+\]
+This holds for every $b\in B$, so
+\[
+\boxed{B\subseteq X+(A-A),\qquad |X|\le K.}
+\]
+There are at most $K$ such translates, where $|X|$ is an integer even if the constant $K$ is not.
+
+\tools Finite injections, sumsets, and maximal disjoint collections.
+
+\leads A small sumset forces more than a numerical inequality: it lets us cover a second set by a small number of translates of a difference set. That is one way additive structure becomes visible.
 \end{solution}
 
 \begin{solution}{pb:returnbound}
-\idea Two halves of a walk of length $2t$ are independent copies of a walk of length $t$, and symmetry turns their meeting into a scalar
-product. Everything follows from Cauchy--Schwarz.
+\idea Split a walk of $2t$ steps into two independent walks of $t$ steps. Symmetry makes the chance of returning to the identity a sum of squares. The Cauchy--Schwarz inequality then explains why the identity is the most likely location after an even number of steps.
 
-\writeup (a) Write $X_{2t}=X_tW$ with $W=\xi_{t+1}\cdots\xi_{2t}$, which is independent of $X_t$ and has the law $p_t$. Since $\mu$ is symmetric,
-$X_t^{-1}=\xi_t^{-1}\cdots\xi_1^{-1}$ has the law of $X_t$, so $p_t(h^{-1})=p_t(h)$. Hence
+\writeup Let $\mu(g)$ denote the one-step distribution and assume $\mu(g)=\mu(g^{-1})$. Let $\xi_1,\ldots,\xi_t$ be independent increments with law $\mu$, and $X_t=\xi_1\cdots\xi_t$. Because the increments are independent and $\mu$ is symmetric, the reverse-inverse product
 \[
-p_{2t}(g)=\sum_hp_t(h)\,p_t(h^{-1}g)=\sum_hp_t(h)\,p_t(g^{-1}h).
+X_t^{-1}=\xi_t^{-1}\cdots\xi_1^{-1}
 \]
-For $g=e$ this is $\sum_hp_t(h)^2$. For general $g$, Cauchy--Schwarz gives
+has the same distribution as $X_t$. Hence $p_t(g^{-1})=p_t(g)$ for every $g$.
+
+\emph{(a) A return probability is a squared norm.}
+The first $t$ increments and the next $t$ increments are independent, and each block has distribution $p_t$. Conditioning on the first block gives
 \[
-p_{2t}(g)\le\Bigl(\sum_hp_t(h)^2\Bigr)^{1/2}\Bigl(\sum_hp_t(g^{-1}h)^2\Bigr)^{1/2}=p_{2t}(e),
+p_{2t}(g)=\sum_{h\in G}p_t(h)p_t(h^{-1}g).
 \]
-since $h\mapsto g^{-1}h$ is a bijection. Finally $1=(\sum_hp_t(h))^2\le|G|\sum_hp_t(h)^2$.
+For $g=e$, symmetry turns this into
+\[
+\boxed{p_{2t}(e)=\sum_h p_t(h)^2.}
+\]
+For arbitrary $g$, apply Cauchy--Schwarz:
+\[
+\begin{aligned}
+p_{2t}(g)
+&=\sum_h p_t(h)p_t(h^{-1}g)\\
+&\le\left(\sum_h p_t(h)^2\right)^{1/2}
+ \left(\sum_h p_t(h^{-1}g)^2\right)^{1/2}\\
+&=p_{2t}(e).
+\end{aligned}
+\]
+The second sum of squares equals the first because $h\mapsto h^{-1}g$ is a bijection. Finally, apply Cauchy--Schwarz to the constant function $1$ and the probability mass function $p_t$:
+\[
+1=\left(\sum_hp_t(h)\right)^2
+\le |G|\sum_hp_t(h)^2.
+\]
+Thus $\boxed{p_{2t}(e)\ge1/|G|}$.
 
-(b) Write $\|f\|=(\sum_hf(h)^2)^{1/2}$. Since $p_{t+1}(g)=\sum_s\mu(s)p_t(gs^{-1})$ and each translate $g\mapsto p_t(gs^{-1})$ has norm $\|p_t\|$, the triangle inequality gives
-$\|p_{t+1}\|\le\sum_s\mu(s)\|p_t\|=\|p_t\|$. By (a), $p_{2t+2}(e)=\|p_{t+1}\|^2\le\|p_t\|^2=p_{2t}(e)$.
+\emph{(b) Even-time returns cannot increase.}
+For a real function $f$ on $G$, write $\|f\|_2=(\sum_g f(g)^2)^{1/2}$. The one-step update is an average of translates:
+\[
+p_{t+1}(g)=\sum_{s\in G}\mu(s)p_t(gs^{-1}).
+\]
+Every translate has the same $\ell^2$ norm as $p_t$, so the triangle inequality gives
+\[
+\|p_{t+1}\|_2\le\sum_s\mu(s)\|p_t\|_2=\|p_t\|_2.
+\]
+Use (a) at times $t$ and $t+1$:
+\[
+\boxed{p_{2t+2}(e)=\|p_{t+1}\|_2^2
+\le\|p_t\|_2^2=p_{2t}(e).}
+\]
 
-(c) On $\Z/2\Z$ with $\mu$ the point mass at $1$ (which is symmetric), $p_{2t+1}(0)=0$. In general, as in (a),
-$p_{2t+1}(g)=\sum_hp_t(h)p_{t+1}(h^{-1}g)\le\|p_t\|\,\|p_{t+1}\|\le\|p_t\|^2=p_{2t}(e)$, by (b).
+\emph{(c) Odd times behave differently.}
+On $\mathbb Z/2\mathbb Z$, move by $1$ at each step. This step distribution is symmetric because $1=-1$ in this group, but at every odd time the walk is at $1$, so $p_{2t+1}(0)=0$.
 
-(d) The formula comes from Fourier analysis on $\Z/n\Z$ (Theorem~11.14): the step has transform $\cos\frac{2\pi k}n$. The term $k=0$ is $\frac1n$ and the
-others are non-negative, so $p_{2t}(0)\ge\frac1n$; each term decreases with $t$ since $\cos^2\le1$. More generally
-$p_{2t}(j)=\frac1n\sum_k\cos^{2t}\frac{2\pi k}n\cos\frac{2\pi kj}n\le p_{2t}(0)$ term by term.
+For any symmetric walk and any $g$, split $2t+1$ increments into blocks of lengths $t$ and $t+1$. The same convolution and Cauchy--Schwarz arguments give
+\[
+p_{2t+1}(g)\le\|p_t\|_2\|p_{t+1}\|_2
+\le\|p_t\|_2^2
+=\boxed{p_{2t}(e)}.
+\]
+Notice that the inequality compares an odd-time probability with the preceding even-time return probability; it does not assert monotonicity of odd-time returns.
 
-\tools{Chapter~1 (groups) and Theorem~11.14 (Fourier analysis on $\Z/n\Z$); Volume~4, Chapter~8; Cauchy--Schwarz (Volume~1).}
-\leads The same computation gives $\sum_g\bigl(p_t(g)-\frac1{|G|}\bigr)^2=p_{2t}(e)-\frac1{|G|}$: the $\ell^2$ distance to the uniform law is read off the
-probability of being back at the start. This identity is the entry point of the $\ell^2$ methods in Diaconis's book \emph{Group
-Representations in Probability and Statistics} (1988), and it powers Problem~\ref{pb:dodecaturns}.
+\emph{(d) A cycle walk.}
+On $\mathbb Z/n\mathbb Z$, the symmetric step $\pm1$ has Fourier eigenvalues
+$\lambda_k=\cos(2\pi k/n)$, for $0\le k<n$. Fourier inversion gives
+\[
+p_{2t}(0)=\frac1n\sum_{k=0}^{n-1}\lambda_k^{2t}.
+\]
+All terms are non-negative, and the $k=0$ term equals $1/n$, giving the lower bound of (a) directly. As $|\lambda_k|\le1$, each term $\lambda_k^{2t}$ is non-increasing in $t$, which proves (b) again. Also
+\[
+p_{2t}(j)=\frac1n\sum_k\lambda_k^{2t}\cos(2\pi kj/n)
+\le\frac1n\sum_k\lambda_k^{2t}=p_{2t}(0),
+\]
+which checks the remaining claim of (a). The formula works even when $n$ is even and the walk is periodic.
+
+\tools Convolution on a finite group, Cauchy--Schwarz, and finite Fourier analysis (Chapter~11).
+
+\leads The identity $p_{2t}(e)=\|p_t\|_2^2$ is a first connection between a random walk and a norm. It is the bridge from finite-group symmetry to quantitative mixing estimates in Volume~4.
 \end{solution}
 
 \section*{Sources and further reading}
