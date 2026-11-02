@@ -765,10 +765,28 @@ def check_binary_tetrahedral_group() -> None:
     assert [orders.count(k) for k in (1,2,3)] == [1,3,8]
 
 
+def check_cap_set_constant() -> None:
+    """The advertised cap-set base must be rounded upwards, not downwards."""
+    x = Fraction(59, 100)
+    claimed_base = Fraction(1722, 625)  # exactly 2.7552
+    assert (1 + x + x * x) ** 3 < claimed_base ** 3 * x ** 2
+    # Exhaustive independent counts for the first small dimensions.
+    for n in range(1, 9):
+        count = sum(
+            3 * sum(digits) <= 2 * n
+            for digits in itertools.product((0, 1, 2), repeat=n)
+        )
+        assert Fraction(count) <= claimed_base ** n
+        assert Fraction(count) ** 3 * x ** (2 * n) <= (
+            1 + x + x * x
+        ) ** (3 * n)
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     rewritten_count, pending_count = check_rewritten_exercise_ledger()
     theorem_rewrites, theorem_pending = check_theorem_rewrite_ledger()
+    check_cap_set_constant()
     check_necklaces()
     check_cube()
     check_quintic()
