@@ -674,44 +674,129 @@ So $N(\delta)=p$. If $\delta$ has integer coordinates, $p$ is a sum of four squa
 \end{solution}
 
 \begin{solution}{pb:sylvester}
-\idea For (a), something must decrease: here it is the numerator of the remainder. For (b), the recursion $s_{k+1}-1=
-s_k(s_k-1)$ turns $\frac1{s_k}$ into a difference, exactly as $\frac1{n(n+1)}=\frac1n-\frac1{n+1}$. For (c), a sequence that
-squares at each step is $E^{2^k}$ to first order; taking logarithms turns the small correction $\frac14$ into a convergent
-series.
+\idea The three parts share a theme: turn a sequence into something simpler. In the Egyptian-fraction algorithm an integer numerator strictly decreases. In Sylvester's sequence a reciprocal becomes a telescoping difference. In the final part, taking logarithms turns repeated squaring into an almost constant quantity.
 
-\writeup (a) Let $n=\lceil\frac ba\rceil\ge2$, so that $\frac1n\le\frac ab<\frac1{n-1}$. The remainder is
-$\frac ab-\frac1n=\frac{an-b}{bn}$, and $0\le an-b<a$ because $a(n-1)<b$. So the numerators (before reduction) decrease
-strictly and the process stops. The remainder is $<\frac1{n-1}-\frac1n=\frac1{n(n-1)}\le\frac1n$, so the next unit fraction
-is smaller than $\frac1n$: the fractions are distinct. For $\frac4{13}$: $n=4$, remainder $\frac3{52}$; then $n=18$,
-remainder $\frac3{52}-\frac1{18}=\frac1{468}$. So $\frac4{13}=\frac14+\frac1{18}+\frac1{468}$.
+\writeup (a) Let $0<a/b<1$ with $a,b$ positive integers. Choose the least integer $n$ such that $1/n\le a/b$, namely
+\[
+n=\left\lceil\frac ba\right\rceil\ge2.
+\]
+By the definition of the ceiling,
+\[
+\frac1n\le\frac ab<\frac1{n-1}.
+\]
+Subtract the unit fraction:
+\[
+\frac ab-\frac1n=\frac{an-b}{bn}.
+\]
+The new numerator satisfies $0\le an-b<a$; the strict upper bound follows from $a(n-1)<b$. If the numerator is zero, the process ends. Otherwise it is a positive integer strictly smaller than the old numerator, and the same procedure can be repeated. A strictly decreasing sequence of positive integers cannot continue forever, so the algorithm terminates.
 
-(b) Since $s_{k+1}-1=s_k^2-s_k=s_k(s_k-1)$, we get $\frac1{s_k-1}-\frac1{s_{k+1}-1}=\frac{s_k-1}{s_k(s_k-1)}=\frac1{s_k}$, and the
-sum telescopes: $\sum_{k=0}^N\frac1{s_k}=\frac1{s_0-1}-\frac1{s_{N+1}-1}=1-\frac1{s_{N+1}-1}$. Iterating the same identity,
-$s_{k+1}-1=s_ks_{k-1}\cdots s_0(s_0-1)=s_0s_1\cdots s_k$, so $s_{k+1}\equiv1\pmod{s_j}$ for every $j\le k$: the $s_k$ are
-pairwise coprime. (Their prime factors are therefore all distinct, which proves again that there are infinitely many primes,
-as the Fermat numbers do in Volume~2, Chapter~2.)
+The unit fractions are distinct. Indeed, the current remainder is less than
+\[
+\frac1{n-1}-\frac1n=\frac1{n(n-1)}\le\frac1n.
+\]
+Thus the next unit fraction chosen is strictly smaller than $1/n$, and the denominators strictly increase.
 
-(c) Let $u_k=s_k-\frac12$. Then $u_{k+1}=s_k^2-s_k+\frac12=u_k^2+\frac14$, and $u_0=\frac32$, so $(u_k)$ increases to infinity.
-Let $c_k=2^{-k}\log u_k$. Then
+For $4/13$, the first denominator is $n=\lceil13/4\rceil=4$, leaving
 \[
-c_{k+1}-c_k=2^{-k-1}\log\Bigl(1+\frac1{4u_k^2}\Bigr)\in\Bigl]0,\frac{2^{-k-1}}{4u_k^2}\Bigr],
+\frac4{13}-\frac14=\frac3{52}.
 \]
-a summable positive sequence; so $c_k$ increases to a limit $c$. Put $E=e^{c/2}$, so $E^{2^{k+1}}=e^{2^kc}$. Then
+Now $\lceil52/3\rceil=18$, and
 \[
-2^kc-\log u_k=2^k\sum_{j\ge k}(c_{j+1}-c_j)=\sum_{j\ge k}2^{k-j-1}\log\Bigl(1+\frac1{4u_j^2}\Bigr),
+\frac3{52}-\frac1{18}=\frac1{468}.
 \]
-which lies in $\bigl]0,\frac1{4u_k^2}\bigr]$, because $u_j\ge u_k$ and $\sum_{j\ge k}2^{k-j-1}=1$. Hence
-$u_k<E^{2^{k+1}}\le u_ke^{1/(4u_k^2)}$. Since $e^t-1\le te^t$ and $u_k\ge\frac32$,
+Therefore
 \[
-u_k\bigl(e^{1/(4u_k^2)}-1\bigr)\le\frac{e^{1/9}}{4u_k}\le\frac{1.12}6<\frac12.
+\boxed{\frac4{13}=\frac14+\frac1{18}+\frac1{468}}.
 \]
-So $s_k-\frac12<E^{2^{k+1}}<s_k$, that is $s_k<E^{2^{k+1}}+\frac12<s_k+\frac12$, and $s_k=\bigl\lfloor E^{2^{k+1}}+\frac12
-\bigr\rfloor$. Numerically $E=1.2640847353\ldots$
-\tools Volume~2, Chapters~1--2 (coprimality, infinitely many primes); Volume~1, Chapter~4 (monotone sequences, series);
-Volume~5, Chapter~13 (asymptotics of fast recursions).
-\leads Aho and Sloane (1973) studied such doubly exponential recursions. Erdős and Graham asked many questions on Egyptian
-fractions; one of them, that every $\frac4n$ is a sum of three unit fractions (Erdős--Straus, 1948), is still open.
-\end{solution}
+
+(b) Let $s_0=2$ and $s_{k+1}=s_k^2-s_k+1$. Rearranging gives
+\[
+s_{k+1}-1=s_k(s_k-1).
+\]
+Consequently
+\[
+\frac1{s_k-1}-\frac1{s_{k+1}-1}
+=\frac1{s_k-1}-\frac1{s_k(s_k-1)}
+=\frac1{s_k}.
+\]
+Sum from $k=0$ to $N$. The intermediate terms cancel:
+\[
+\sum_{k=0}^N\frac1{s_k}
+=\frac1{s_0-1}-\frac1{s_{N+1}-1}
+=\boxed{1-\frac1{s_{N+1}-1}}.
+\]
+Iterating the recurrence gives
+\[
+s_{k+1}-1=s_k(s_k-1)
+=s_ks_{k-1}\cdots s_0(s_0-1)
+=\prod_{j=0}^ks_j,
+\]
+because $s_0-1=1$. Hence $s_{k+1}\equiv1\pmod{s_j}$ for every $j\le k$. If a positive integer divided both $s_j$ and $s_{k+1}$, it would divide their difference $1$, so the gcd is $1$. The terms are pairwise coprime.
+
+(c) Write
+\[
+u_k=s_k-\frac12.
+\]
+Then the recurrence becomes
+\[
+u_{k+1}=u_k^2+\frac14,\qquad u_0=\frac32.
+\]
+In particular $u_k$ is positive and grows strictly to infinity. Put
+\[
+c_k=2^{-k}\log u_k.
+\]
+Taking logarithms of the recurrence yields
+\[
+\begin{aligned}
+c_{k+1}
+&=2^{-k-1}\log\left(u_k^2\left(1+\frac1{4u_k^2}\right)\right)\\
+&=c_k+2^{-k-1}\log\left(1+\frac1{4u_k^2}\right).
+\end{aligned}
+\]
+Thus $c_{k+1}>c_k$. Using $\log(1+x)\le x$ for $x\ge0$ and $u_k\ge3/2$ gives
+\[
+0<c_{k+1}-c_k\le\frac{2^{-k-1}}{4u_k^2}
+\le\frac{2^{-k-1}}9.
+\]
+The right-hand side is summable, so the increasing sequence $c_k$ has a finite limit $c>0$. Define
+\[
+E=e^{c/2}>1.
+\]
+Then $E^{2^{k+1}}=e^{2^kc}$.
+
+We need to show that this number is within one half of $s_k$. The telescoping tail identity is
+\[
+2^kc-\log u_k
+=\sum_{j=k}^{\infty}2^{k-j-1}
+\log\left(1+\frac1{4u_j^2}\right).
+\]
+The tail is strictly positive, so $u_k<e^{2^kc}$. Since $u_j\ge u_k$, its upper bound is
+\[
+2^kc-\log u_k
+\le\frac1{4u_k^2}\sum_{j=k}^\infty2^{k-j-1}
+=\frac1{4u_k^2}.
+\]
+Exponentiating,
+\[
+u_k<E^{2^{k+1}}\le u_ke^{1/(4u_k^2)}.
+\]
+For $u_k\ge3/2$, use $e^t-1\le te^t$ and $t=1/(4u_k^2)\le1/9$:
+\[
+u_k(e^t-1)\le\frac{e^{1/9}}{4u_k}
+\le\frac{e^{1/9}}6<\frac12.
+\]
+Therefore
+\[
+s_k-\frac12=u_k<E^{2^{k+1}}<u_k+\frac12=s_k.
+\]
+Adding $1/2$ places the power strictly between $s_k$ and $s_k+1/2$, so
+\[
+\boxed{s_k=\left\lfloor E^{2^{k+1}}+\frac12\right\rfloor}
+\]
+for every $k\ge0$. The constant is approximately $E=1.2640847353\ldots$; the argument proves existence without relying on the numerical approximation.
+
+\tools Volume~1 (monotone sequences and series); Volume~2 (Egyptian fractions and coprimality).
+\end{solution>
 
 \begin{solution}{pb:jensen}
 \idea Each quadratic factor is $|x-e^{i\varphi}|^2$, and the angles $\theta+\frac{2\pi k}n$ are the arguments of the $n$-th
