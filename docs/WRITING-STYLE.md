@@ -10,7 +10,7 @@ Audience: a serious beginner who wants to become strong — curious, willing to 
 - **Volume 2 — The Integers:** its only prerequisite is Volume 1. Each new idea needed for an argument (for example, residue rings, cosets or characters) must be defined, motivated and checked within Volume 2 before first use, or explicitly referred to an earlier explanation in Volume 1.
 - **No proof by forward reference on the foundations route.** A result established in a later chapter or volume is not available as a premise until the reader reaches that proof. A forward reference may be a clearly labelled preview, or a theorem whose proof is explicitly deferred and that is not used to prove an earlier result.
 - **Challenge bridges:** if an optional advanced exercise requires a later chapter or another volume, say so at the exercise itself and name the missing tool. The main path and ordinary first-reading exercises may not require these bridges. Keep the ambitious challenges, but do not silently add them to the entrance requirements.
-- **Review method:** inspect the first occurrence of every new technical noun and every non-elementary fact, including statements inside exercises, hints and solutions. Check the order in the current \`main.tex\`, not merely the filenames. Prefer a small worked example and proof to a glossary-only definition.
+- **Review method:** inspect the first occurrence of every new technical noun and every non-elementary fact, including statements inside exercises, hints and solutions. Check the order in the current `main.tex`, not merely the filenames. Prefer a small worked example and proof to a glossary-only definition.
 
 ## Voice
 
