@@ -998,35 +998,68 @@ for every odd prime $p$, as required.
 \end{solution}
 
 \begin{solution}{pb:moore}
-\idea The Frobenius $x\mapsto x^q$ is $\mathbb F_q$-linear. So the Moore matrix has dependent rows whenever the $x_i$ are
-dependent over $\mathbb F_q$, and this gives all the linear factors of the determinant.
+\idea The Moore determinant behaves like an ordinary Vandermonde determinant, except that dependence is measured over $\mathbb F_q$ rather than by equality of two entries. The Frobenius map $x\mapsto x^q$ turns a linear relation over $\mathbb F_q$ into a relation between complete rows.
 
-\writeup (a) Induction on $n$; for $n=1$, $\Delta=x_1$. Expanding along the last row, $\Delta(x_1,\dots,x_n)$ is a polynomial in
-$x_n$ of degree $q^{n-1}$ with leading coefficient $\Delta_{n-1}=\Delta(x_1,\dots,x_{n-1})$. For $c\in\mathbb F_q^{n-1}$, substitute
-$x_n=-\sum c_jx_j$: since $(\sum c_jx_j)^{q^k}=\sum c_jx_j^{q^k}$ (Frobenius is additive and fixes $\mathbb F_q$), the last row becomes
-$-\sum c_j(\text{row }j)$, and the determinant vanishes. So each $x_n+\sum c_jx_j$ divides $\Delta$ in
-$\mathbb F_q(x_1,\dots,x_{n-1})[x_n]$. These $q^{n-1}$ linear factors are pairwise distinct, so their product, of degree $q^{n-1}$ in
-$x_n$, divides $\Delta$, and comparing leading coefficients
+\writeup \emph{(a) Factor the determinant.}
+For $n=1$ the determinant is $\Delta(x_1)=x_1$, exactly as the claimed product says. Assume the formula is known for $n-1$. Regard
 \[
-\Delta(x_1,\dots,x_n)=\Delta_{n-1}\prod_{c\in\mathbb F_q^{n-1}}\Bigl(x_n+\sum_jc_jx_j\Bigr).
+D(X)=\Delta(x_1,\ldots,x_{n-1},X)
 \]
-The induction hypothesis on $\Delta_{n-1}$ finishes the proof (the identity holds in $\mathbb F_q[x_1,\dots,x_n]$ since both sides lie
-there).
+as a polynomial in $X$ with coefficients in the rational-function field $K=\mathbb F_q(x_1,\ldots,x_{n-1})$. Expanding the determinant along the last row shows that its highest power of $X$ is $X^{q^{n-1}}$, with coefficient $\Delta(x_1,\ldots,x_{n-1})$. This coefficient is non-zero by the induction hypothesis.
 
-(b) Evaluate (a) at $\alpha$: $\Delta(\alpha)=0$ if and only if $\alpha_i+\sum_{j<i}c_j\alpha_j=0$ for some $i$ and some
-$c\in\mathbb F_q^{i-1}$, that is, if and only if the $\alpha_i$ are linearly dependent over $\mathbb F_q$.
-
-(c) Let $\alpha_1,\dots,\alpha_n$ be a basis of $V$. By (a),
+For every $c=(c_1,\ldots,c_{n-1})\in\mathbb F_q^{n-1}$, substitute
 \[
-\Delta(\alpha_1,\dots,\alpha_n,X)=\Delta(\alpha)\prod_{v\in V}(X+v),
+X=-c_1x_1-\cdots-c_{n-1}x_{n-1}.
 \]
-and $\prod_{v\in V}(X+v)=\prod_{v\in V}(X-v)$ since $V=-V$. Expanding the determinant along its last row, $(X,X^q,\dots,X^{q^n})$,
-gives a combination of $X,X^q,\dots,X^{q^n}$. Divide by $\Delta(\alpha)\ne0$. Each $X^{q^k}$ is additive, so $P_V$ is too.
+Because $c_j^{q^t}=c_j$ and Frobenius respects addition,
+\[
+X^{q^t}=-\sum_{j=1}^{n-1}c_jx_j^{q^t}.
+\]
+The last row of the Moore matrix is now a linear combination of its earlier rows, so $D(X)=0$ at this value. The $q^{n-1}$ chosen values are distinct in $K$, because the $x_j$ are independent indeterminates. We have found as many distinct roots as the degree of $D$. Therefore
+\[
+D(X)=\Delta(x_1,\ldots,x_{n-1})
+\prod_{c\in\mathbb F_q^{n-1}}
+\left(X+\sum_{j=1}^{n-1}c_jx_j\right).
+\]
+The leading coefficient determines the constant factor exactly. Apply the induction hypothesis to the smaller determinant. Both sides are polynomials over $\mathbb F_q$, so the identity established in $K[X]$ is the desired polynomial identity.
 
-\tools Volume~3, Chapter~9 (Frobenius); Volume~1, Chapter~8 (determinants).
-\leads Moore's determinant is the $q$-analogue of the Vandermonde determinant. Linearised polynomials built this way give the
-Gabidulin codes used in network coding, and Dickson's invariants of $GL_n(\mathbb F_q)$, the coefficients of
-$\prod_{v\in\mathbb F_q^n}(X-v)$ written in the $x_i$.
+\emph{(b) Detect independence.}
+Substitute $\alpha_1,\ldots,\alpha_n\in\mathbb F_{q^m}$ into the product from (a). The determinant vanishes exactly when at least one factor
+\[
+\alpha_i+c_1\alpha_1+\cdots+c_{i-1}\alpha_{i-1}
+\]
+vanishes. Such an equation says that $\alpha_i$ belongs to the span of its predecessors. If the family is dependent, take the first index at which this happens. Conversely, an equation of that form is a dependence relation. Hence
+\[
+\boxed{\Delta(\alpha_1,\ldots,\alpha_n)\ne0
+\iff \alpha_1,\ldots,\alpha_n
+\text{ are linearly independent over }\mathbb F_q.}
+\]
+
+\emph{(c) Construct an additive polynomial.}
+Let $V\subseteq\mathbb F_{q^m}$ have dimension $d$ and choose a basis $\alpha_1,\ldots,\alpha_d$ (when $d=0$, simply take $P_V(X)=X$). By (b), $\Delta(\alpha_1,\ldots,\alpha_d)\ne0$. The factorisation in (a), with $X$ as the last entry, becomes
+\[
+\Delta(\alpha_1,\ldots,\alpha_d,X)
+=\Delta(\alpha_1,\ldots,\alpha_d)\prod_{v\in V}(X+v).
+\]
+Since $V=-V$, the product is $P_V(X)=\prod_{v\in V}(X-v)$. On the other hand, expanding this determinant along its last row expresses it as a linear combination of
+\[
+X,\ X^q,\ X^{q^2},\ldots,X^{q^d}.
+\]
+Dividing by the non-zero scalar $\Delta(\alpha_1,\ldots,\alpha_d)$ therefore gives
+\[
+P_V(X)=a_0X+a_1X^q+\cdots+a_dX^{q^d}.
+\]
+Each power $X^{q^j}$ is additive in characteristic $p$, so
+\[
+\boxed{P_V(x+y)=P_V(x)+P_V(y).}
+\]
+In fact $P_V(cx)=cP_V(x)$ for $c\in\mathbb F_q$ as well.
+
+For a small example, $V=\mathbb F_q$ has $P_V(X)=X^q-X$, already an additive polynomial.
+
+\tools Determinants (Volume~1), Frobenius (Chapter~9), and roots of polynomials over a field.
+
+\leads The determinant turns linear dependence into a polynomial equation. The same identity produces the linearised polynomials used in rank-metric coding.
 \end{solution}
 
 \begin{solution}{pb:mseq}
