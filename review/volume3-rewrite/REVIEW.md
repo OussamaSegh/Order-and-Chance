@@ -9,7 +9,7 @@
 
 ## Current verification ledger (latest head, 2 November 2026)
 
-- **139 of 163 graded exercise solutions recorded as full rewrites** with a finding strategy and mathematical argument; **24 inherited solutions remain to be rewritten and independently audited**. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
+- **163 of 163 graded exercise solutions have now received full editorial rewrites** with a finding strategy and complete mathematical write-up. **No graded exercise solution remains on the rewrite checklist.** These are authored and checked for structural completeness, but they have **not** all received independent, line-by-line mathematical sign-off. This count reflects the machine-readable ledger, not a certification that the arguments are all correct. Every exercise does have its inherited solution and hint. Machine-readable list: [REWRITTEN_EXERCISES.json](REWRITTEN_EXERCISES.json); the automated checker enforces these counts.
 - **17 complete theorem-proof rewrites** in the main chapters and appendices. The remaining inherited proofs have not all been independently reconstructed.
 - In this continuation, corrected a **substantive spectral error** in Chapter 11's odd-cycle non-lazy random walk. For odd $n$, the largest absolute non-trivial eigenvalue is $\cos(\pi/n)$ (attained by negative modes), not $\cos(2\pi/n)$. The previous decay estimate was therefore wrong. A numerical regression test now checks the corrected formula for all odd $n$ from $3$ through $69$ and the exact five-cycle distribution.
 - Corrected the written $D_4$ and $Q_8$ class equations from misleading $8=2+2+2+2$ to the actual class sizes $8=1+1+2+2+2$. Their groups' classes are listed explicitly.
@@ -199,3 +199,19 @@ Removed an incorrect Chapter 5 pointer from the random-matrix exercise in Chapte
 ## Eighth pass: splitting field of `X^4-2` (2 November 2026)
 
 Rewrote the complete `ex:x42check` solution rather than relying on the inherited fixed-field listing. Calculated explicit generators fixed by the five order-two subgroups of `D_4` and the three order-four subgroups; justified equality with each fixed field by extension degrees, including a complete integer-quadratic-factor check that `X^4+8` is irreducible. Identified exactly the six normal-subgroup fixed fields and exhibited the missing non-real root proving `Q(2^{1/4})/Q` is not normal. The exercise ledger is now **139 of 163 rewritten, 24 pending**. Final typesetting and full independent sign-off are still outstanding.
+
+
+## Ninth pass: complete solution rewrite milestone and XeLaTeX repair (2 November 2026)
+
+All remaining graded exercises across the included chapters have been rewritten in the canonical teaching voice. **The exercise ledger now records 163/163 complete editorial rewrites, with 0 remaining to rewrite.** The newest mathematical work includes:
+
+- **Groups and finite probability:** $2\times2$ matrix conjugacy classification (all four matrix types and limiting probabilities), Fibonacci divisibility via invertible state transitions, Ruzsa's triangle and covering inequalities, and the even-step return bound for symmetric random walks.
+- **Actions and counting:** complete cyclic-sieving derivation for Gaussian binomials, fixed colourings under point and palette symmetries, Landau's conjugacy-class bound, Fitting's canonical decomposition and the count $q^{n^2-n}$ of nilpotent matrices, flags and complements, and Touchard's congruence.
+- **Fields and number theory:** Chevalley–Warning in the one-polynomial case, Pascal parity and its $3^k$ count, the Moore determinant, Frobenius bounds on Fibonacci periods, maximal-length trace sequences, Kronecker's theorem, a full Lucas–Lehmer proof, and the heptagon cube-root identity.
+- **Galois and representation theory:** the cyclotomic discriminant and Zolotarev's permutation sign, all roots of unity in cyclotomic fields with rational-angle applications, the character table of $A_5$, integer-matrix finite subgroups, the Frobenius commutator formula, and the Frobenius–Schur indicator.
+
+The branch also corrects the **actual XeLaTeX runaway argument** caused by the missing display-math closing delimiter in the combinatorial cap-plane solution. We added a display-math check to detect this class of problem. The first version misidentified title-page line breaks of the form `\\[0.4em]` as display openings; that **false positive is corrected with a negative lookbehind** in the checker. The build must succeed at the final head before layout can be signed off.
+
+Source inspection on the current branch confirms 163 exercises, 163 hints, and 163 closed solutions across all 16 included chapter/appendix sources, with matching identifiers, required finding ideas/write-ups, balanced common environments, and balanced true display-math delimiters.
+
+**Remaining work is separate from the exercise rewrite count:** independently check all 163 solution proofs (no mechanical checker proves every implication), fully rewrite and verify inherited theorem exposition and non-exercise examples, audit external bibliographic claims and cross-volume continuity, and inspect the produced PDF/EPUB. The draft PR must not be merged as a mathematically certified final book until those sign-offs are complete.
