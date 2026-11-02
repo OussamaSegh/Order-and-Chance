@@ -691,6 +691,30 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
     return recorded, len(actual) - recorded
 
 
+def check_jordan_block_recovery() -> None:
+    """Independent small-case check of kernel-dimension recovery of block sizes."""
+    def partitions(n, top=None):
+        if n == 0:
+            yield ()
+            return
+        if top is None:
+            top = n
+        for first in range(min(n, top), 0, -1):
+            for rest in partitions(n-first, first):
+                yield (first,) + rest
+
+    for n in range(1, 8):
+        seen_profiles = set()
+        for parts in partitions(n):
+            h = [sum(min(k, e) for e in parts) for k in range(n+2)]
+            recovery = [2*h[k]-h[k-1]-h[k+1] for k in range(1, n+1)]
+            actual = [parts.count(k) for k in range(1, n+1)]
+            assert recovery == actual
+            profile = tuple(h[:n+1])
+            assert profile not in seen_profiles, (n, parts)
+            seen_profiles.add(profile)
+
+
 def check_binary_tetrahedral_group() -> None:
     """Exhaust the 24 Hurwitz units in integer-scaled coordinates.
 
@@ -770,6 +794,7 @@ def main() -> None:
     check_fano_plane_and_paley_four()
     check_odd_cycle_random_walk_spectrum()
     check_rewritten_smith_example()
+    check_jordan_block_recovery()
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
