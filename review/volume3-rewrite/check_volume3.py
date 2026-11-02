@@ -554,6 +554,29 @@ def check_rewritten_exercise_ledger() -> tuple[int, int]:
 
 
 
+def check_quaternion_character_table() -> None:
+    """Check all five rows and columns for the displayed Q8 class table."""
+    sizes = [1, 1, 2, 2, 2]  # 1, -1, +/-i, +/-j, +/-k
+    rows = [
+        (1, 1, 1, 1, 1),
+        (1, 1, 1, -1, -1),
+        (1, 1, -1, 1, -1),
+        (1, 1, -1, -1, 1),
+        (2, -2, 0, 0, 0),
+    ]
+    assert sum(row[0] ** 2 for row in rows) == 8
+    for i, a in enumerate(rows):
+        for j, b in enumerate(rows):
+            assert sum(w * x * y for w, x, y in zip(sizes, a, b)) == (
+                8 if i == j else 0
+            )
+    for i in range(5):
+        for j in range(5):
+            assert sum(row[i] * row[j] for row in rows) == (
+                8 // sizes[i] if i == j else 0
+            )
+
+
 def check_binary_tetrahedral_group() -> None:
     """Exhaust the 24 Hurwitz units in integer-scaled coordinates.
 
@@ -621,6 +644,7 @@ def main() -> None:
     check_fifteen_rectangle_generation()
     check_quaternion_norm()
     check_binary_tetrahedral_group()
+    check_quaternion_character_table()
     check_maximum_permutation_orders()
     check_cube_face_colourings()
     check_f2_irreducibles()
