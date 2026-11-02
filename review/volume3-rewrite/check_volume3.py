@@ -601,6 +601,41 @@ def check_conjugate_permutation_probabilities() -> None:
             assert observed == Fraction(1, 2)
 
 
+def check_a5_character_table_exact() -> None:
+    """Verify A5 row/column orthogonality in Q(sqrt(5)), not floats."""
+    def val(a, b=0):
+        return (Fraction(a), Fraction(b))
+    def add(x, y):
+        return (x[0] + y[0], x[1] + y[1])
+    def mul(x, y):
+        return (x[0]*y[0] + 5*x[1]*y[1],
+                x[0]*y[1] + x[1]*y[0])
+    phi = val(Fraction(1, 2), Fraction(1, 2))
+    psi = val(Fraction(1, 2), -Fraction(1, 2))
+    rows = [
+        [val(1)]*5,
+        [val(3),val(-1),val(0),phi,psi],
+        [val(3),val(-1),val(0),psi,phi],
+        [val(4),val(0),val(1),val(-1),val(-1)],
+        [val(5),val(1),val(-1),val(0),val(0)],
+    ]
+    weights = [1, 15, 20, 12, 12]
+    assert sum(row[0][0]**2 for row in rows) == 60
+    for i, row in enumerate(rows):
+        for j, other in enumerate(rows):
+            dot = val(0)
+            for w, a, b in zip(weights, row, other):
+                x = mul(a, b)
+                dot = add(dot, val(w*x[0], w*x[1]))
+            assert dot == val(60 if i == j else 0), (i, j, dot)
+    for i in range(5):
+        for j in range(5):
+            dot = val(0)
+            for row in rows:
+                dot = add(dot, mul(row[i], row[j]))
+            assert dot == val(60//weights[i] if i == j else 0)
+
+
 def check_quaternion_character_table() -> None:
     """Check all five rows and columns for the displayed Q8 class table."""
     sizes = [1, 1, 2, 2, 2]  # 1, -1, +/-i, +/-j, +/-k
@@ -692,6 +727,7 @@ def main() -> None:
     check_quaternion_norm()
     check_binary_tetrahedral_group()
     check_quaternion_character_table()
+    check_a5_character_table_exact()
     check_conjugate_permutation_probabilities()
     check_maximum_permutation_orders()
     check_cube_face_colourings()
