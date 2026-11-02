@@ -436,13 +436,88 @@ For $Q_8=\{\pm1,\pm i,\pm j,\pm k\}$: $Z=\{\pm1\}$, so $d^2\le4$. The five class
 \end{solution}
 
 \begin{solution}{ex:circulant}
-\idea Characters are the common eigenvectors of all translations, so they diagonalise everything that commutes with translations.
-\writeup (a) $n\,\widehat{f*g}(\chi)=\sum_k\sum_jf(j)g(k-j)\overline{\chi(k)}$; with $k=j+l$ and $\overline{\chi(j+l)}=\overline{\chi(j)}\,\overline{\chi(l)}$, this is $\sum_jf(j)\overline{\chi(j)}\sum_lg(l)\overline{\chi(l)}=n\hat f(\chi)\cdot n\hat g(\chi)$.
+\idea Convolution is the algebraic rule for adding independent positions on a cyclic group. Fourier characters turn convolution into scalar multiplication, which makes repeated steps easy to compute. For the convergence rate, compare \emph{absolute values} of the Fourier eigenvalues: the most negative one can decay more slowly than the first positive one.
 
-(b) $(C\chi_m)(k)=\sum_jc(k-j)\chi_m(j)=\sum_lc(l)\chi_m(k-l)=\Bigl(\sum_lc(l)\overline{\chi_m(l)}\Bigr)\chi_m(k)$. So the eigenvalue is $\sum_lc(l)e^{-2i\pi ml/n}=n\hat c(\chi_m)$, and the $n$ characters, orthogonal, diagonalise $C$.
+\writeup Write $\chi_m(k)=e^{2\pi i mk/n}$ for $m,k\in\Z/n\Z$, and use the normalised Fourier transform
+\[
+\hat f(\chi)=\frac1n\sum_{k\in\Z/n\Z}f(k)\overline{\chi(k)}.
+\]
 
-(c) One step has distribution $s=\frac12(\delta_1+\delta_{-1})$, with $n\hat s(\chi_m)=\frac12(e^{-2i\pi m/n}+e^{2i\pi m/n})=\cos\frac{2\pi m}n$. After $t$ steps the distribution is $s^{*t}$, and by (a) $n\widehat{s^{*t}}(\chi_m)=\cos^t\frac{2\pi m}n$. For $m\ne0$ and $n$ odd, $|\cos\frac{2\pi m}n|<1$ ($\frac{2\pi m}n$ is not a multiple of $\pi$), so these tend to $0$, and by Fourier inversion $s^{*t}(k)=\sum_m\widehat{s^{*t}}(\chi_m)\chi_m(k)\to\frac1n$, the uniform distribution. The slowest term, $\cos^t\frac{2\pi}n\approx e^{-2\pi^2t/n^2}$, shows that about $n^2$ steps are needed (Volume~4). For even $n$, $m=n/2$ gives $(-1)^t$: the walk alternates between even and odd points and never converges.
-\end{solution}
+\emph{(a) Transform of a convolution.} Starting from the definitions and substituting $\ell=k-j$, we get
+\[
+\begin{aligned}
+n\,\widehat{f*g}(\chi)
+&=\sum_k\sum_j f(j)g(k-j)\overline{\chi(k)}\\
+&=\sum_j\sum_\ell f(j)g(\ell)\overline{\chi(j+\ell)}\\
+&=\left(\sum_j f(j)\overline{\chi(j)}\right)
+  \left(\sum_\ell g(\ell)\overline{\chi(\ell)}\right)\\
+&=n^2\hat f(\chi)\hat g(\chi).
+\end{aligned}
+\]
+We used the character law $\chi(j+\ell)=\chi(j)\chi(\ell)$ in the third line. Dividing by $n$ proves
+\[
+\boxed{\widehat{f*g}(\chi)=n\,\hat f(\chi)\hat g(\chi)}.
+\]
+
+\emph{(b) Circulant eigenvectors.} Let $C_{kj}=c(k-j)$. Then
+\[
+\begin{aligned}
+(C\chi_m)(k)
+&=\sum_jc(k-j)\chi_m(j)\\
+&=\sum_\ell c(\ell)\chi_m(k-\ell)\\
+&=\chi_m(k)\sum_\ell c(\ell)\overline{\chi_m(\ell)}.
+\end{aligned}
+\]
+Thus $\chi_m$ is an eigenvector with eigenvalue
+\[
+\boxed{\lambda_m=n\hat c(\chi_m)
+=\sum_{\ell=0}^{n-1}c(\ell)e^{-2\pi i m\ell/n}}.
+\]
+The $n$ characters form an orthogonal basis, so this lists all the eigenvalues, with multiplicity.
+
+\emph{(c) The random walk.} A single step has law
+\[
+s=\tfrac12(\delta_1+\delta_{-1}).
+\]
+Starting from $0$, after $t$ independent steps the position law is the $t$-fold convolution $s^{*t}$. The transform of one step is
+\[
+n\hat s(\chi_m)=\tfrac12(e^{-2\pi im/n}+e^{2\pi im/n})
+=\cos\frac{2\pi m}{n}.
+\]
+Applying (a) repeatedly, including $t=0$, gives
+\[
+\boxed{\widehat{s^{*t}}(\chi_m)
+=\frac1n\left(\cos\frac{2\pi m}{n}\right)^t}.
+\]
+Fourier inversion consequently yields the exact probability
+\[
+s^{*t}(k)=\frac1n\sum_{m=0}^{n-1}
+\left(\cos\frac{2\pi m}{n}\right)^t
+e^{2\pi i mk/n}.
+\]
+
+The mode $m=0$ equals $1/n$, the uniform distribution. For odd $n\ge3$, none of the other angles $2\pi m/n$ is a multiple of $\pi$, hence
+\[
+\left|\cos\frac{2\pi m}{n}\right|<1
+\quad (m\ne0).
+\]
+Every non-constant mode therefore tends to zero, proving $s^{*t}(k)\to1/n$ for every $k$.
+
+\emph{Which mode is slowest?} The negative eigenvalues matter as much as the positive ones. For odd $n$,
+\[
+\max_{1\le m<n}\left|\cos\frac{2\pi m}{n}\right|
+=\cos\frac{\pi}{n}.
+\]
+The maximum occurs at $m=(n-1)/2$ and $m=(n+1)/2$, whose eigenvalues are $-\cos(\pi/n)$. Thus the slowest non-constant contribution is of magnitude
+\[
+\cos^t\frac{\pi}{n}
+=\exp\!\left(-\frac{\pi^2t}{2n^2}
++O\!\left(\frac{t}{n^4}\right)\right)
+\]
+for large odd $n$. The negative sign makes that mode alternate with $t$, but its magnitude decays. This is why the natural relaxation scale is of order $n^2$.
+
+For even $n$, the character $m=n/2$ has eigenvalue $\cos\pi=-1$. That component never decays: the walk alternates between the two parity classes, so it does not converge to the uniform law without an aperiodic modification such as a holding probability.
+\end{solution>
 
 \begin{solution}{ex:dirichlet8}
 \idea Decompose the group into cyclic factors and choose independently the values on generators.
