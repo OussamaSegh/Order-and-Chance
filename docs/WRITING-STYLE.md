@@ -4,6 +4,14 @@
 
 Audience: a serious beginner who wants to become strong — curious, willing to work, not assumed to know university jargon. Prefer plain English. Never talk down.
 
+## Prerequisite contract for the opening volumes
+
+- **Volume 1 — First Principles:** the only external mathematical prerequisite is high-school mathematics. The book may explicitly state its starting axioms, but must define new notation, structures and proof methods before relying on them. A first-time reader must not need a university course in proof, abstract algebra, calculus, linear algebra or probability.
+- **Volume 2 — The Integers:** its only prerequisite is Volume 1. Each new idea needed for an argument (for example, residue rings, cosets or characters) must be defined, motivated and checked within Volume 2 before first use, or explicitly referred to an earlier explanation in Volume 1.
+- **No proof by forward reference on the foundations route.** A result established in a later chapter or volume is not available as a premise until the reader reaches that proof. A forward reference may be a clearly labelled preview, or a theorem whose proof is explicitly deferred and that is not used to prove an earlier result.
+- **Challenge bridges:** if an optional advanced exercise requires a later chapter or another volume, say so at the exercise itself and name the missing tool. The main path and ordinary first-reading exercises may not require these bridges. Keep the ambitious challenges, but do not silently add them to the entrance requirements.
+- **Review method:** inspect the first occurrence of every new technical noun and every non-elementary fact, including statements inside exercises, hints and solutions. Check the order in the current `main.tex`, not merely the filenames. Prefer a small worked example and proof to a glossary-only definition.
+
 ## Voice
 
 - Warm, plain, concrete: a friend who loves mathematics, explaining the step. Not a lecture hall, not a blog, not a chatbot. The full test is [Sound human](#sound-human).
