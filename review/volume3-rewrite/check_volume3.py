@@ -554,6 +554,44 @@ def check_rewritten_exercise_ledger() -> tuple[int, int]:
 
 
 
+def check_conjugate_permutation_probabilities() -> None:
+    """Enumerate cycle types and check the Euler-product coefficients exactly."""
+    for n in range(0, 7):
+        types: dict[tuple[int, ...], int] = {}
+        for p in itertools.permutations(range(n)):
+            seen = set()
+            lengths = []
+            for start in range(n):
+                if start in seen:
+                    continue
+                x, count = start, 0
+                while x not in seen:
+                    seen.add(x)
+                    count += 1
+                    x = p[x]
+                lengths.append(count)
+            key = tuple(sorted(lengths))
+            types[key] = types.get(key, 0) + 1
+        denominator = math.factorial(n)
+        observed = sum((Fraction(count, denominator) ** 2
+                        for count in types.values()), Fraction(0))
+
+        coefficients = [Fraction(0)] * (n + 1)
+        coefficients[0] = Fraction(1)
+        for j in range(1, n + 1):
+            nxt = [Fraction(0)] * (n + 1)
+            for k in range(n + 1):
+                if coefficients[k] == 0:
+                    continue
+                for m in range((n - k) // j + 1):
+                    nxt[k + j * m] += coefficients[k] / (
+                        j ** (2 * m) * math.factorial(m) ** 2)
+            coefficients = nxt
+        assert observed == coefficients[n], (n, observed, coefficients[n])
+        if n == 2:
+            assert observed == Fraction(1, 2)
+
+
 def check_quaternion_character_table() -> None:
     """Check all five rows and columns for the displayed Q8 class table."""
     sizes = [1, 1, 2, 2, 2]  # 1, -1, +/-i, +/-j, +/-k
@@ -645,6 +683,7 @@ def main() -> None:
     check_quaternion_norm()
     check_binary_tetrahedral_group()
     check_quaternion_character_table()
+    check_conjugate_permutation_probabilities()
     check_maximum_permutation_orders()
     check_cube_face_colourings()
     check_f2_irreducibles()
