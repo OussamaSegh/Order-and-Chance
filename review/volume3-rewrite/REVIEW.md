@@ -242,3 +242,25 @@ Six additional theorem-proof rewrites have been committed in small, named change
 - **Wantzel's constructibility criterion (`thm:wantzel`)**: works in both directions, starting with a tower of quadratic field extensions and ending with the quadratic equations of line/circle intersections. Reiterates that a degree that is a power of two is necessary but not sufficient.
 
 The test suite also now checks uniqueness of Jordan partitions by their exact integer kernel-growth profiles for all partitions through size seven. The tracked theorem proof rewrite count is **26/155 (129 still pending)**. This is an editorial milestone, not independent formal mathematical certification.
+
+
+## Twelfth pass: complete the labelled theorem editorial rewrite ledger (2 November 2026)
+
+All **155/155 labelled theorems, propositions, lemmas and corollaries** in the twelve included chapters and four included appendices now have an editorially rewritten proof, as recorded in [THEOREM_REWRITES.json](THEOREM_REWRITES.json). This is a manuscript-rewrite milestone, **not a claim that all the arguments have passed an independent mathematical audit**. The independent_verified count remains **0** until individual proof sign-offs are actually performed and documented. The previous 26/155 tally above is a historical checkpoint.
+
+The 37 newly tracked rewrites in this continuation cover the whole remaining inventory:
+
+- **Positive matrices and Markov chains:** Perron's theorem (positive right and left vectors, spectral gap, algebraic simplicity); contraction and power-method convergence, including boundary vectors; Frobenius's peripheral eigenvalue classification; cyclic period classes; primitivity equivalences and convergence; Wielandt's exponent bound; and stationary distributions of aperiodic finite chains.
+- **Fourier analysis, graph spectra and codes:** simultaneous diagonalisation, the cyclic shift commutant, characters of finite abelian groups, translation-invariant matrices and Dedekind's group determinant; Paley graph spectra; Krawtchouk orthogonality; Delsarte's sum-of-squares bound; and the linear-programming and Plotkin bounds.
+- **Combinatorics:** orthogonal complements, Eventown, Fisher's inequality, two-distance polynomial bounds, Frankl--Wilson theorems and their Ramsey graph application; grid vanishing and Nullstellensatz, Cauchy--Davenport, finite-field power sums and Chevalley--Warning, Erdős--Ginzburg--Ziv; the support and diagonal tensor slice-rank lemmas; the cap-set theorem and exponential bound.
+- **Symmetry:** fifteen-puzzle reachability with explicit rectangle loops generating the full alternating group on fifteen tiles; finite subgroups of SO(3) via pole orbit counting, faithful permutation actions, normal subgroup constraints and Sylow theory.
+
+### Mathematical and production corrections
+
+The earlier cap-set proof chose x = 0.6 but claimed base 2.7552. That choice gives a **larger** base and did not prove the displayed constant. The revision takes x = 59/100 and proves the strict estimate with exact rational arithmetic. New regression checks exhaust small examples of the ternary weighting bound, positive-matrix contraction, a two-state Markov chain and Wielandt's exponent bound for small directed graphs, including a sharp four-vertex example.
+
+The first GitHub Actions run at the completed-rewrite milestone **failed** in the structural checker: 34 newly edited proof endings contained an invalid greater-than sign instead of the closing brace. Five narrowly scoped commits repaired these endings across Chapters 4 and 12 and three appendices. The subsequent source-level scan found zero malformed proof endings in those five files, with proof openings and closings balanced. The theorem ledger checker now matches LaTeX environment types as well as statement identifiers.
+
+**Final CI success must be confirmed at the final branch head.** Source scans and numerical regressions cannot certify the mathematics. Remaining editorial sign-off work comprises independent proof-by-proof verification of all 155 rewritten arguments, independent scrutiny of all 163 rewritten worked solutions, non-theorem exposition and bibliographic verification, and visual inspection of the final PDF/EPUB outputs.
+
+**Decision: keep PR #91 in DRAFT.** Both editorial rewrite checklists are complete; independent mathematical certification and production sign-offs are not.
