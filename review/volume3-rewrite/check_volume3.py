@@ -8,6 +8,7 @@ constitute a formal verification of every proof in the book.
 from __future__ import annotations
 
 import itertools
+import json
 import math
 import re
 from fractions import Fraction
@@ -514,8 +515,39 @@ def check_nilpotent_kernel_growth() -> None:
         differences = [row[0]] + [row[k]-row[k-1] for k in range(1,4)]
         assert differences == [sum(a>=k for a in p) for k in range(1,5)]
 
+
+def check_rewritten_exercise_ledger() -> tuple[int, int]:
+    """All 163 solutions exist; only listed solutions count as full rewrites."""
+    ledger_path = ROOT / "review/volume3-rewrite/REWRITTEN_EXERCISES.json"
+    ledger = json.loads(ledger_path.read_text(encoding="utf-8"))
+    rewritten = ledger["editorial_rewrites"]
+    main = (BOOK / "main.tex").read_text(encoding="utf-8")
+    included = [
+        path for path in re.findall(r"\\input\{chapters/([^}]+)\}", main)
+        if (BOOK / "chapters" / (path + ".tex")).is_file()
+    ]
+    all_exercises = set()
+    rewritten_ids = set()
+    for name in included:
+        source = (BOOK / "chapters" / (name + ".tex")).read_text(encoding="utf-8")
+        exercise_ids = set(re.findall(
+            r"\\begin\{exercise\}(?:\[[^\]]*\])?\s*\\label\{([^}]+)\}", source))
+        assert not (exercise_ids & all_exercises), f"Duplicate exercise across files {name}"
+        all_exercises.update(exercise_ids)
+        for item in rewritten.get(name, []):
+            assert item in exercise_ids, f"Ledger ID {item} absent in {name}"
+            assert item not in rewritten_ids, f"Ledger repeats {item}"
+            rewritten_ids.add(item)
+    assert not set(rewritten) - set(included), "Ledger references non-included chapters"
+    assert len(all_exercises) == ledger["total_graded_exercises"] == 163
+    assert len(rewritten_ids) == 43, f"Ledger count drift: {len(rewritten_ids)}"
+    assert len(all_exercises - rewritten_ids) == 120
+    return len(rewritten_ids), len(all_exercises - rewritten_ids)
+
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
+    rewritten_count, pending_count = check_rewritten_exercise_ledger()
     check_necklaces()
     check_cube()
     check_quintic()
@@ -539,7 +571,7 @@ def main() -> None:
     check_rewritten_smith_example()
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
-    print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
+    print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 
