@@ -837,34 +837,82 @@ There are at most $K$ such translates, where $|X|$ is an integer even if the con
 \end{solution}
 
 \begin{solution}{pb:returnbound}
-\idea Two halves of a walk of length $2t$ are independent copies of a walk of length $t$, and symmetry turns their meeting into a scalar
-product. Everything follows from Cauchy--Schwarz.
+\idea Split a walk of $2t$ steps into two independent walks of $t$ steps. Symmetry makes the chance of returning to the identity a sum of squares. The Cauchy--Schwarz inequality then explains why the identity is the most likely location after an even number of steps.
 
-\writeup (a) Write $X_{2t}=X_tW$ with $W=\xi_{t+1}\cdots\xi_{2t}$, which is independent of $X_t$ and has the law $p_t$. Since $\mu$ is symmetric,
-$X_t^{-1}=\xi_t^{-1}\cdots\xi_1^{-1}$ has the law of $X_t$, so $p_t(h^{-1})=p_t(h)$. Hence
+\writeup Let $\mu(g)$ denote the one-step distribution and assume $\mu(g)=\mu(g^{-1})$. Let $\xi_1,\ldots,\xi_t$ be independent increments with law $\mu$, and $X_t=\xi_1\cdots\xi_t$. Because the increments are independent and $\mu$ is symmetric, the reverse-inverse product
 \[
-p_{2t}(g)=\sum_hp_t(h)\,p_t(h^{-1}g)=\sum_hp_t(h)\,p_t(g^{-1}h).
+X_t^{-1}=\xi_t^{-1}\cdots\xi_1^{-1}
 \]
-For $g=e$ this is $\sum_hp_t(h)^2$. For general $g$, Cauchy--Schwarz gives
+has the same distribution as $X_t$. Hence $p_t(g^{-1})=p_t(g)$ for every $g$.
+
+\emph{(a) A return probability is a squared norm.}
+The first $t$ increments and the next $t$ increments are independent, and each block has distribution $p_t$. Conditioning on the first block gives
 \[
-p_{2t}(g)\le\Bigl(\sum_hp_t(h)^2\Bigr)^{1/2}\Bigl(\sum_hp_t(g^{-1}h)^2\Bigr)^{1/2}=p_{2t}(e),
+p_{2t}(g)=\sum_{h\in G}p_t(h)p_t(h^{-1}g).
 \]
-since $h\mapsto g^{-1}h$ is a bijection. Finally $1=(\sum_hp_t(h))^2\le|G|\sum_hp_t(h)^2$.
+For $g=e$, symmetry turns this into
+\[
+\boxed{p_{2t}(e)=\sum_h p_t(h)^2.}
+\]
+For arbitrary $g$, apply Cauchy--Schwarz:
+\[
+\begin{aligned}
+p_{2t}(g)
+&=\sum_h p_t(h)p_t(h^{-1}g)\\
+&\le\left(\sum_h p_t(h)^2\right)^{1/2}
+ \left(\sum_h p_t(h^{-1}g)^2\right)^{1/2}\\
+&=p_{2t}(e).
+\end{aligned}
+\]
+The second sum of squares equals the first because $h\mapsto h^{-1}g$ is a bijection. Finally, apply Cauchy--Schwarz to the constant function $1$ and the probability mass function $p_t$:
+\[
+1=\left(\sum_hp_t(h)\right)^2
+\le |G|\sum_hp_t(h)^2.
+\]
+Thus $\boxed{p_{2t}(e)\ge1/|G|}$.
 
-(b) Write $\|f\|=(\sum_hf(h)^2)^{1/2}$. Since $p_{t+1}(g)=\sum_s\mu(s)p_t(gs^{-1})$ and each translate $g\mapsto p_t(gs^{-1})$ has norm $\|p_t\|$, the triangle inequality gives
-$\|p_{t+1}\|\le\sum_s\mu(s)\|p_t\|=\|p_t\|$. By (a), $p_{2t+2}(e)=\|p_{t+1}\|^2\le\|p_t\|^2=p_{2t}(e)$.
+\emph{(b) Even-time returns cannot increase.}
+For a real function $f$ on $G$, write $\|f\|_2=(\sum_g f(g)^2)^{1/2}$. The one-step update is an average of translates:
+\[
+p_{t+1}(g)=\sum_{s\in G}\mu(s)p_t(gs^{-1}).
+\]
+Every translate has the same $\ell^2$ norm as $p_t$, so the triangle inequality gives
+\[
+\|p_{t+1}\|_2\le\sum_s\mu(s)\|p_t\|_2=\|p_t\|_2.
+\]
+Use (a) at times $t$ and $t+1$:
+\[
+\boxed{p_{2t+2}(e)=\|p_{t+1}\|_2^2
+\le\|p_t\|_2^2=p_{2t}(e).}
+\]
 
-(c) On $\Z/2\Z$ with $\mu$ the point mass at $1$ (which is symmetric), $p_{2t+1}(0)=0$. In general, as in (a),
-$p_{2t+1}(g)=\sum_hp_t(h)p_{t+1}(h^{-1}g)\le\|p_t\|\,\|p_{t+1}\|\le\|p_t\|^2=p_{2t}(e)$, by (b).
+\emph{(c) Odd times behave differently.}
+On $\mathbb Z/2\mathbb Z$, move by $1$ at each step. This step distribution is symmetric because $1=-1$ in this group, but at every odd time the walk is at $1$, so $p_{2t+1}(0)=0$.
 
-(d) The formula comes from Fourier analysis on $\Z/n\Z$ (Theorem~11.14): the step has transform $\cos\frac{2\pi k}n$. The term $k=0$ is $\frac1n$ and the
-others are non-negative, so $p_{2t}(0)\ge\frac1n$; each term decreases with $t$ since $\cos^2\le1$. More generally
-$p_{2t}(j)=\frac1n\sum_k\cos^{2t}\frac{2\pi k}n\cos\frac{2\pi kj}n\le p_{2t}(0)$ term by term.
+For any symmetric walk and any $g$, split $2t+1$ increments into blocks of lengths $t$ and $t+1$. The same convolution and Cauchy--Schwarz arguments give
+\[
+p_{2t+1}(g)\le\|p_t\|_2\|p_{t+1}\|_2
+\le\|p_t\|_2^2
+=\boxed{p_{2t}(e)}.
+\]
+Notice that the inequality compares an odd-time probability with the preceding even-time return probability; it does not assert monotonicity of odd-time returns.
 
-\tools{Chapter~1 (groups) and Theorem~11.14 (Fourier analysis on $\Z/n\Z$); Volume~4, Chapter~8; Cauchy--Schwarz (Volume~1).}
-\leads The same computation gives $\sum_g\bigl(p_t(g)-\frac1{|G|}\bigr)^2=p_{2t}(e)-\frac1{|G|}$: the $\ell^2$ distance to the uniform law is read off the
-probability of being back at the start. This identity is the entry point of the $\ell^2$ methods in Diaconis's book \emph{Group
-Representations in Probability and Statistics} (1988), and it powers Problem~\ref{pb:dodecaturns}.
+\emph{(d) A cycle walk.}
+On $\mathbb Z/n\mathbb Z$, the symmetric step $\pm1$ has Fourier eigenvalues
+$\lambda_k=\cos(2\pi k/n)$, for $0\le k<n$. Fourier inversion gives
+\[
+p_{2t}(0)=\frac1n\sum_{k=0}^{n-1}\lambda_k^{2t}.
+\]
+All terms are non-negative, and the $k=0$ term equals $1/n$, giving the lower bound of (a) directly. As $|\lambda_k|\le1$, each term $\lambda_k^{2t}$ is non-increasing in $t$, which proves (b) again. Also
+\[
+p_{2t}(j)=\frac1n\sum_k\lambda_k^{2t}\cos(2\pi kj/n)
+\le\frac1n\sum_k\lambda_k^{2t}=p_{2t}(0),
+\]
+which checks the remaining claim of (a). The formula works even when $n$ is even and the walk is periodic.
+
+\tools Convolution on a finite group, Cauchy--Schwarz, and finite Fourier analysis (Chapter~11).
+
+\leads The identity $p_{2t}(e)=\|p_t\|_2^2$ is a first connection between a random walk and a norm. It is the bridge from finite-group symmetry to quantitative mixing estimates in Volume~4.
 \end{solution}
 
 \section*{Sources and further reading}
