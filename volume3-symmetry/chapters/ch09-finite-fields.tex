@@ -1075,33 +1075,71 @@ For a small example, $V=\mathbb F_q$ has $P_V(X)=X^q-X$, already an additive pol
 \end{solution}
 
 \begin{solution}{pb:mseq}
-\idea $s_k$ is a fixed linear form evaluated at $\alpha^k$, and $\alpha^k$ runs over all of $\mathbb F_{2^n}^*$. Every statistic
-of the sequence becomes a statistic of a linear form on the whole field, which is perfectly balanced.
+\idea The generator $\alpha$ runs through every non-zero element of the finite field. The trace is a linear test taking values in $\mathbb F_2$. Our bit sequence simply applies that test to successive powers of $\alpha$, so field arithmetic describes the entire cycle of bit windows.
 
-\writeup (a) $\operatorname{Tr}$ is $\mathbb F_2$-linear (Frobenius is additive). From $f(\alpha)=0$, $\alpha^{k+n}=\sum_ic_i\alpha^{k+i}$,
-and applying $\operatorname{Tr}$ gives the recurrence (signs do not matter in characteristic $2$).
-
-(b) The trace is a polynomial of degree $2^{n-1}$, so it is not zero on all $2^n$ elements; it is a non-zero linear form onto
-$\mathbb F_2$. If $\operatorname{Tr}(\beta\alpha^i)=0$ for $0\le i<n$, then $\operatorname{Tr}(\beta\gamma)=0$ for all $\gamma$, since the
-$\alpha^i$ span $\mathbb F_{2^n}$ (it has degree $n$); if $\beta\ne0$, $\beta\gamma$ runs over the whole field, which is impossible.
-So the linear map is injective, hence bijective. The window at $k$ is the image of $\beta=\alpha^k$. As $k$ runs over
-$0,\dots,2^n-2$, $\alpha^k$ runs over the non-zero elements once each, so the windows are the non-zero $n$-bit blocks, once each.
-Distinct windows mean the period is exactly $2^n-1$ (a window determines all later terms by (a), and $\alpha^{2^n-1}=1$). A sequence
-satisfying (a) is determined by its first window; if that window is non-zero it equals the window of $(s_k)$ at some $k_0$, and then
-the sequence is $(s_{k+k_0})$.
-
-(c) The ones in a period are the non-zero $\beta$ with $\operatorname{Tr}\beta=1$; the kernel of $\operatorname{Tr}$ has $2^{n-1}$
-elements, so $2^{n-1}$ have trace $1$, and $2^{n-1}-1$ non-zero ones have trace $0$. For the correlation,
-$s_k+s_{k+t}=\operatorname{Tr}(\alpha^k(1+\alpha^t))$ with $1+\alpha^t\ne0$; as $k$ varies, $\alpha^k(1+\alpha^t)$ runs over the
-non-zero elements, and
+\writeup \emph{(a) Derive the recurrence.}
+The trace is additive because Frobenius is additive in characteristic $2$:
 \[
-\sum_{\beta\ne0}(-1)^{\operatorname{Tr}\beta}=\sum_\beta(-1)^{\operatorname{Tr}\beta}-1=0-1=-1.
+\operatorname{Tr}(x+y)
+=\sum_{j=0}^{n-1}(x+y)^{2^j}
+=\operatorname{Tr}(x)+\operatorname{Tr}(y).
+\]
+It is also $\mathbb F_2$-linear. The minimal polynomial satisfies
+\[
+f(\alpha)=\alpha^n+c_{n-1}\alpha^{n-1}+\cdots+c_0=0.
+\]
+Multiply by $\alpha^k$ and take traces. Because subtraction and addition agree in characteristic two,
+\[
+\boxed{s_{k+n}=c_{n-1}s_{k+n-1}+\cdots+c_0s_k.}
 \]
 
-\tools Volume~3, Chapter~9 (the cyclic group $\mathbb F_q^*$, the trace; Exercise~9.3 for primitive polynomials); Volume~1, Chapter~8.
-\leads These are Golomb's three randomness postulates (1967): balance, runs, two-valued autocorrelation. For $x^4+x+1$ the period is
-$000100110101111$. The sequence is useless for cryptography, since $2n$ bits reveal the recurrence (Berlekamp--Massey), but its
-flat correlation is what GPS satellites use: each one transmits a Gold code, the sum of two $m$-sequences of degree $10$.
+\emph{(b) Every non-zero window appears.}
+First, $\alpha$ has minimal polynomial of degree $n$. Indeed, if $\alpha$ lay in a proper subfield $\mathbb F_{2^d}$ of $\mathbb F_{2^n}$ with $d<n$, its multiplicative order would divide $2^d-1<2^n-1$, contradicting the assumption that it generates $\mathbb F_{2^n}^*$. Thus
+\[
+1,\alpha,\ldots,\alpha^{n-1}
+\]
+is a basis of the field over $\mathbb F_2$.
+
+The trace is not the zero linear functional: its defining polynomial
+\[
+X+X^2+\cdots+X^{2^{n-1}}
+\]
+is a non-zero polynomial of degree $2^{n-1}$, less than the $2^n$ elements of the field, so it cannot vanish everywhere.
+
+Consider the linear map
+\[
+T:\beta\longmapsto
+\bigl(\operatorname{Tr}(\beta),\operatorname{Tr}(\beta\alpha),
+\ldots,\operatorname{Tr}(\beta\alpha^{n-1})\bigr).
+\]
+If $T(\beta)=0$, linearity and the displayed basis imply $\operatorname{Tr}(\beta\gamma)=0$ for every $\gamma$ in the field. If $\beta\ne0$, the map $\gamma\mapsto\beta\gamma$ is a bijection, so this would make the trace vanish everywhere, a contradiction. Thus $T$ is injective; both source and target contain $2^n$ elements, so $T$ is bijective.
+
+The length-$n$ window at time $k$ is precisely $T(\alpha^k)$. As $k$ runs through $0,\ldots,2^n-2$, the powers $\alpha^k$ visit all non-zero field elements exactly once. Hence the windows visit all non-zero binary $n$-tuples exactly once.
+
+The powers repeat with period $2^n-1$, so the bits do too. No smaller positive period is possible: a smaller period would repeat a length-$n$ window, contradicting the bijection. Finally, any binary sequence satisfying the recurrence of (a) is determined by its first $n$ bits. If that block is non-zero, it matches exactly one window of $(s_k)$, and the recurrence forces the entire sequence to be that cyclic shift.
+
+\emph{(c) Balance and correlation.}
+A non-zero linear functional from an $n$-dimensional $\mathbb F_2$-space to $\mathbb F_2$ has a kernel of size $2^{n-1}$ and a fibre of the same size over $1$. Of the $2^n-1$ non-zero field elements, $2^{n-1}$ have trace $1$, while $2^{n-1}-1$ have trace $0$. These are the numbers of ones and zeros in a period.
+
+For $0<t<2^n-1$, the element $1+\alpha^t$ is non-zero. By linearity,
+\[
+s_k+s_{k+t}
+=\operatorname{Tr}\bigl(\alpha^k(1+\alpha^t)\bigr).
+\]
+Multiplication by the fixed non-zero factor $1+\alpha^t$ permutes all non-zero field elements. Therefore
+\[
+\begin{aligned}
+\sum_{k=0}^{2^n-2}(-1)^{s_k+s_{k+t}}
+&=\sum_{\beta\ne0}(-1)^{\operatorname{Tr}(\beta)}\\
+&=2^{n-1}-(2^{n-1}-1)\ \text{with the signs reversed}\\
+&=(2^{n-1}-1)-2^{n-1}=\boxed{-1}.
+\end{aligned}
+\]
+The last line counts $+1$ for trace zero and $-1$ for trace one.
+
+\tools Minimal polynomials, finite-field multiplicative groups, and traces (Chapter~9).
+
+\leads This construction produces a long deterministic cycle with precisely balanced linear statistics. Its predictability is the reason it is useful in coding and synchronisation but insufficient on its own for cryptographic secrecy.
 \end{solution}
 
 \section*{Sources and further reading}
