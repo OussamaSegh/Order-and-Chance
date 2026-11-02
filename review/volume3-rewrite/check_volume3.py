@@ -49,7 +49,7 @@ def check_labels_and_figures() -> tuple[int, int, int]:
             f"Unbalanced solution environments in {path}")
         # Count and order display-math delimiters. An unmatched \[ can swallow
         # a solution ending and stop XeLaTeX even when environments balance.
-        displays = re.findall(r"\\(?:\[|\])", source)
+        displays = re.findall(r"(?<!\\)\\(?:\[|\])", source)
         depth = 0
         for delimiter in displays:
             depth += 1 if delimiter == r"\[" else -1
