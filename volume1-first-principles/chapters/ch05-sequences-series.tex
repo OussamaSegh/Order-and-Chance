@@ -928,10 +928,20 @@ For $p=1$, $q=2$ this is the $\frac12\ln2$ of the opening.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{ex:stirling}
-\emph{Stirling, up to a constant.} Let $d_n=\ln n!-\left(n+\frac12\right)\ln n+n$.
+\emph{Sharpening Stirling's shape.} In Proposition~\ref{prop:stirlingshape} we proved that
+\[
+d_n=\ln n!-\left(n+\frac12\right)\ln n+n\longrightarrow d=\ln C.
+\]
+We also showed that $d_n-d_{n+1}=\frac1{12n^2}+O(\frac1{n^3})$.
 \begin{enumerate}[label=(\alph*)]
-\item Show that $d_n-d_{n+1}=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1=\frac1{12n^2}+O\left(\frac1{n^3}\right)$.
-\item Deduce that $(d_n)$ converges, and that $n!\sim C\sqrt n\left(\frac ne\right)^n$ for some $C>0$.
+\item Use sums from $n$ to infinity and integral comparison to show that
+$d_n-d=\frac1{12n}+O(\frac1{n^2})$.
+\item Deduce that
+\[
+n!=C\sqrt n\left(\frac ne\right)^n
+\left(1+\frac1{12n}+O\left(\frac1{n^2}\right)\right).
+\]
+The value $C=\sqrt{2\pi}$ is still waiting for Chapter~\ref{ch:calculus}.
 \end{enumerate}
 \end{exercise}
 
@@ -1077,8 +1087,7 @@ Count the admissible numbers with $k$ digits, and bound each of their reciprocal
 After $n$ blocks the partial sum is $\sum_{j\le pn}\frac1{2j-1}-\sum_{j\le qn}\frac1{2j}$. Write both with harmonic numbers. Then check the partial sums inside a block.
 \end{hint}
 \begin{hint}{ex:stirling}
-(a) $d_n-d_{n+1}$ simplifies because $\ln(n+1)!-\ln n!=\ln(n+1)$.
-Integrate $1/(1+t)=1-t+t^2-t^3/(1+t)$ from $0$ to $1/n$ and bound the remainder. (b) A series whose terms are $O\left(\frac1{n^2}\right)$ converges absolutely.
+(a) Write $d_n-d=\sum_{k=n}^\infty(d_k-d_{k+1})$ and compare $\sum_{k=n}^\infty k^{-2}$ with $\int_n^\infty x^{-2}\,\dd x$; the endpoint error is $O(n^{-2})$. (b) Exponentiate and use $e^u=1+u+O(u^2)$ as $u\to0$.
 \end{hint}
 \begin{hint}{ex:oresme}
 (a) The block $2^{j-1}<k\le2^j$ has $2^{j-1}$ terms, each at least $\frac1{2^j}$. (b) $\frac1{n^2}<\frac1{n-1}-\frac1n$ for $n\ge2$. (c) Solve $\ln n+\gamma\approx10$.
@@ -1182,22 +1191,32 @@ partial sums has the same limit.
 \end{solution}
 
 \begin{solution}{ex:stirling}
-\idea To show a sequence $d_n$ converges, show that $\sum(d_n-d_{n+1})$ converges absolutely. The differences are computable in closed form because $\ln(n+1)!-\ln n!=\ln(n+1)$; then integrating a finite geometric identity gives an expansion of $\ln(1+\frac1n)$ with an explicit error of order $1/n^4$, showing the differences are $O(\frac1{n^2})$. The term $\frac12\ln n$ in $d_n$ was chosen precisely to kill the $\frac1n$ term.
-\writeup (a)
-\[\begin{aligned}d_n-d_{n+1}&=-\ln(n+1)-\left(n+\frac12\right)\ln n\eqbr\quad+\left(n+\frac32\right)\ln(n+1)-1\\&=\left(n+\frac12\right)\ln\left(1+\frac1n\right)-1.\end{aligned}\]
-By Proposition~\ref{prop:early-ftc}, integrating the finite identity
-$1/(1+t)=1-t+t^2-t^3/(1+t)$ yields
+\idea The proof in the chapter already gave the difference of successive logarithmic errors. Add the differences from $n$ onwards to measure how far $d_n$ is from its limit; a convergent series has a tail that can be estimated.
+
+\writeup (a) As $d_N\to d$,
 \[
-\ln(1+x)=x-\frac{x^2}2+\frac{x^3}3+r(x),
-\qquad |r(x)|\le\frac{x^4}4\quad(0\le x\le1).
+d_n-d=\lim_{N\to\infty}\sum_{k=n}^{N-1}(d_k-d_{k+1})
+=\frac1{12}\sum_{k=n}^\infty\frac1{k^2}
++O\left(\sum_{k=n}^\infty\frac1{k^3}\right).
 \]
-Use this at $x=\frac1n$:
+The integral comparison for decreasing positive terms gives
 \[
-\begin{aligned}&\left(n+\frac12\right)\left(\frac1n-\frac1{2n^2}+\frac1{3n^3}+O\left(\frac1{n^4}\right)\right)-1\\
-&\quad=\left(\frac13-\frac14\right)\frac1{n^2}+O\left(\frac1{n^3}\right)\eqbr\quad=\frac1{12n^2}+O\left(\frac1{n^3}\right).\end{aligned}
+\frac1n=\int_n^\infty\frac{\dd x}{x^2}
+\le\sum_{k=n}^\infty\frac1{k^2}
+\le\frac1{n^2}+\int_n^\infty\frac{\dd x}{x^2}
+=\frac1n+\frac1{n^2}.
 \]
-(b) So $\sum(d_n-d_{n+1})$ converges absolutely by comparison with $\sum\frac1{n^2}$, and $d_n=d_1-\sum_{k<n}(d_k-d_{k+1})\to d\in\R$. Exponentiating,
-$\frac{n!}{\sqrt n\,(n/e)^n}=e^{d_n}\to e^d=C>0$.
+Also, for $n\ge2$, comparison with the integral from $n-1$ to infinity gives
+$\sum_{k=n}^\infty k^{-3}=O(n^{-2})$. Hence
+\[
+d_n-d=\frac1{12n}+O\left(\frac1{n^2}\right).
+\]
+(b) The ratio of the factorial to $C\sqrt n(n/e)^n$ is $e^{d_n-d}$. Since
+$u=d_n-d=O(1/n)$ and $e^u=1+u+O(u^2)$ near zero,
+\[
+e^{d_n-d}=1+\frac1{12n}+O\left(\frac1{n^2}\right).
+\]
+Multiplying by $C\sqrt n(n/e)^n$ gives the claimed correction.
 \end{solution}
 
 
