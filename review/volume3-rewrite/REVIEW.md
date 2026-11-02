@@ -144,3 +144,14 @@ The third pass was followed by **four full appendix solution rewrites**:
 Additional exact tests check the seven Fano triples, their unique intersections, their claimed vector coordinates, and the Gram matrix of the constructed Paley H4. The count is now **16 fully rewritten solutions of 163** across the whole included volume; the remaining **147** have a structural hint/solution check but not a full independent rewrite and proof audit.
 
 **Status:** the PR remains a draft. Neither the whole mathematical manuscript nor its sources, 147 remaining solutions, or final visual production outputs have been independently certified.
+
+
+## Fifth pass: appendix theorem proofs
+
+Three more main-body appendix proofs have been **rewritten completely** rather than annotated:
+
+- Oddtown (Berlekamp): parity becomes a Kronecker-delta dot-product matrix, linear independence follows coefficient by coefficient, and an explicit family shows the bound is attained.
+- Circulant eigenvalues: the cyclic-shift eigenvectors are calculated coordinate by coordinate, Fourier orthogonality is proved by a finite geometric sum, and normality and the determinant follow from unitary diagonalisation.
+- Paley II: checked the bordered character matrix, its $S^2=qI$ identity, all $\pm1$ entries, and both diagonal/off-diagonal blocks of the Hadamard Gram matrix.
+
+The cumulative count is **17 complete theorem-proof rewrites** and **16 complete worked-solution rewrites**, alongside the initial chapter-level rewriting and proof explanations. A draft is still appropriate: most inherited proofs and 147 exercise solutions have not undergone the same treatment. The exact LaTeX proof delimiters in the new appendix edits were corrected before build verification.
