@@ -451,6 +451,69 @@ def check_fano_plane_and_paley_four() -> None:
                for i,u in enumerate(h) for j,v in enumerate(h))
 
 
+
+
+def check_odd_cycle_random_walk_spectrum() -> None:
+    """Regression for the corrected absolute spectral radius.
+
+    The most slowly decaying mode on an odd n-cycle is -cos(pi/n),
+    NOT cos(2*pi/n): the near-bipartite mode matters.
+    """
+    for n in range(3, 70, 2):
+        nontrivial = [math.cos(2 * math.pi * m / n) for m in range(1, n)]
+        rho = max(abs(x) for x in nontrivial)
+        assert abs(rho - math.cos(math.pi / n)) < 1e-12
+        assert abs(min(nontrivial) + math.cos(math.pi / n)) < 1e-12
+        assert all(abs(x) < 1 for x in nontrivial)
+        # On an even cycle, the alternating character prevents convergence.
+    for n in range(4, 70, 2):
+        assert abs(math.cos(2 * math.pi * (n//2) / n) + 1) < 1e-12
+
+    # Independent exact probability recurrence, with Fourier inversion
+    # checked numerically at several time values.
+    n = 5
+    p = [Fraction(0)] * n
+    p[0] = Fraction(1)
+    for t in range(15):
+        for k in range(n):
+            fourier = sum(math.cos(2*math.pi*m/n)**t *
+                          math.cos(2*math.pi*m*k/n) for m in range(n)) / n
+            assert abs(float(p[k]) - fourier) < 1e-12, (t, k)
+        p = [(p[(k-1) % n] + p[(k+1) % n]) / 2 for k in range(n)]
+
+
+def check_rewritten_smith_example() -> None:
+    # Matrix [[4,6],[6,4]], determinant -20; gcd of entries 2.
+    assert math.gcd(4, 6) == 2
+    assert abs(4 * 4 - 6 * 6) == 20
+    mat = [[4, 6], [6, 4]]
+    mat[1] = [mat[1][i] - mat[0][i] for i in range(2)]
+    mat[0], mat[1] = mat[1], mat[0]
+    mat[1] = [mat[1][i] - 2*mat[0][i] for i in range(2)]
+    mat[0][1] += mat[0][0]
+    mat[1][1] += mat[1][0]
+    assert mat == [[2,0],[0,10]]
+
+
+def check_even_involutions_s6() -> None:
+    # Count the number of one/two/three disjoint transpositions in S6.
+    counts = [math.factorial(6) //
+              (2**k * math.factorial(k) * math.factorial(6-2*k))
+              for k in (1,2,3)]
+    assert counts == [15,45,15] and sum(counts) == 75
+    assert sum(v for k,v in enumerate(counts, 1) if k % 2 == 0) == 45
+
+
+def check_nilpotent_kernel_growth() -> None:
+    partitions = [(4,), (3,1), (2,2), (2,1,1), (1,1,1,1)]
+    rows = [[sum(min(a,k) for a in p) for k in range(1,5)]
+            for p in partitions]
+    assert rows == [[1,2,3,4], [2,3,4,4], [2,4,4,4],
+                    [3,4,4,4], [4,4,4,4]]
+    for p,row in zip(partitions,rows):
+        differences = [row[0]] + [row[k]-row[k-1] for k in range(1,4)]
+        assert differences == [sum(a>=k for a in p) for k in range(1,5)]
+
 def main() -> None:
     labels, refs, figures = check_labels_and_figures()
     check_necklaces()
@@ -472,6 +535,10 @@ def main() -> None:
     check_seven_cyclotomic_period()
     check_quaternion_rotation_matrix()
     check_fano_plane_and_paley_four()
+    check_odd_cycle_random_walk_spectrum()
+    check_rewritten_smith_example()
+    check_even_involutions_s6()
+    check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
