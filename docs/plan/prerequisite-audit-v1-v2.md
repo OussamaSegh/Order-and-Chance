@@ -49,6 +49,7 @@ The advanced bridge exercises and outlook remarks have a different purpose from 
 
 - **Volume 1, Stirling:** a full Stirling theorem previously carried a "proof" that cited a future theorem and an optional exercise. The asymptotic up to a constant is now established with a complete argument in the sequences chapter, and the finished formula is placed only after its proof in the calculus chapter. The three-star exercise now derives the next term of the asymptotic.
 - **Volume 2, Eisenstein splitting:** the classification proof previously required a quadratic-residue result supplied only in an earlier exercise. It now constructs a square root of $-3$ modulo each prime $p\equiv1\pmod3$ directly using the primitive-root theorem from the main text.
+- **Volume 1, Gaussian and Gamma integrals:** the proof of $\Gamma(1/2)=\sqrt\pi$ previously cited an exercise to evaluate the Gaussian integral. The main text now proves $\int_0^\infty e^{-x^2}\,dx=\sqrt\pi/2$ directly using two Wallis bounds, then applies that proposition to the Gamma function. The exercise now computes explicit numerical bounds rather than supplying a missing theorem.
 
 ## Review and future edit checklist
 
@@ -61,4 +62,4 @@ For every changed chapter, including its exercises, hints and solutions:
 - Read changed text in the canonical friendly step-by-step voice; verify hypotheses and algebra line by line.
 - Run the TeX build and manuscript tests before merging, and record failures instead of treating a source edit as proof of a successful published artifact.
 
-**Audit status:** the explicitly identified progression gaps above are repaired in this PR. The complete proof-by-proof mathematical verification of every chapter, exercise and solution and a fresh successful PDF/EPUB build are separate acceptance checks; they should not be claimed from an editorial dependency scan alone.
+**Audit status:** the explicitly identified progression gaps above have manuscript repairs in this PR. The first CI build of the initial edit batch completed successfully for both volumes; newer proof repairs trigger a separate build and must be checked independently. Automated structural scans of the edited branch found no unmatched common LaTeX environments, duplicate chapter labels, or unresolved local `\ref`/`\eqref` targets (Volume 1: 452 labels / 937 references; Volume 2: 266 labels / 227 references). These checks do not constitute a complete proof-by-proof mathematical verification of every theorem, exercise and solution, or proof that every optional bridge is independent of future-volume tools.
