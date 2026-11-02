@@ -47,6 +47,15 @@ def check_labels_and_figures() -> tuple[int, int, int]:
             f"Malformed TeX environment terminator in {path}")
         assert source.count(r"\begin{solution}") == source.count(r"\end{solution}"), (
             f"Unbalanced solution environments in {path}")
+        # Count and order display-math delimiters. An unmatched \[ can swallow
+        # a solution ending and stop XeLaTeX even when environments balance.
+        displays = re.findall(r"\\(?:\[|\])", source)
+        depth = 0
+        for delimiter in displays:
+            depth += 1 if delimiter == r"\[" else -1
+            assert depth in (0, 1), f"Unbalanced display math near {path}"
+        assert depth == 0, f"Unclosed display math in {path}"
+
         assert source.count(r"\begin{proof}") == source.count(r"\end{proof}"), f"Unbalanced proof in {path}"
         assert source.count(r"\begin{exercise}") == source.count(r"\end{exercise}"), f"Unbalanced exercise in {path}"
 
