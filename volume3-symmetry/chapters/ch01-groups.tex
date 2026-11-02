@@ -716,54 +716,63 @@ And
 \end{solution}
 
 \begin{solution}{pb:fibdivides}
-\idea Track consecutive Fibonacci values rather than one value. The pair recurrence is reversible modulo every $m$, so it is a permutation of a finite set and must eventually return to its starting pair $(0,1)$. For the divisibility indices, use the gcd identity already proved in Volume~1.
+\idea The number $F_n$ alone does not tell us the next Fibonacci number. The pair $(F_n,F_{n+1})$ does. Modulo $m$ that pair has only finitely many states, and its update rule can be reversed, which forces a cycle from the very beginning.
 
-\writeup \emph{(a) Periodic from the beginning.} Fix an integer $m\ge1$. Consider the map
+\writeup \emph{(a) Return to the starting pair.}
+Fix $m\ge1$ and consider the map on $(\mathbb Z/m\mathbb Z)^2$,
 \[
-T:(\Z/m\Z)^2\longrightarrow(\Z/m\Z)^2,
-\qquad T(u,v)=(v,u+v).
+T(u,v)=(v,u+v).
 \]
-It is a bijection: given $(x,y)$, its unique preimage is $(y-x,x)$. The recurrence $F_{n+2}=F_{n+1}+F_n$ says
+Given $(a,b)$ we can recover the previous state: it was $(b-a,a)$. Hence $T$ is bijective, with
 \[
-T(F_n,F_{n+1})=(F_{n+1},F_{n+2}).
+T^{-1}(a,b)=(b-a,a).
 \]
-Because $T$ permutes a finite set of $m^2$ pairs, its orbit starting at $(F_0,F_1)=(0,1)$ is a cycle, not a path with a non-periodic prelude. Thus there is $P\ge1$ with
+Starting at $(F_0,F_1)=(0,1)$, successive applications of $T$ give exactly the consecutive Fibonacci pairs modulo $m$.
+
+A bijection of a finite set is a permutation. Every orbit of a permutation is a cycle, including its starting point; it cannot first wander through non-repeating states and then enter a different cycle. Therefore some $P\ge1$ satisfies
 \[
 (F_P,F_{P+1})\equiv(0,1)\pmod m.
 \]
-In particular, $F_P\equiv0\pmod m$. We have proved that every positive integer $m$ divides a Fibonacci number with positive index. The case $m=1$ is immediate as well.
+In particular $F_P\equiv0\pmod m$, proving that every positive integer divides some positive-index Fibonacci number. When $m=1$ this is immediate, and the state argument still applies.
 
-\emph{(b) Exactly the multiples of the first index.} Let $z=z(m)$ be the least positive integer with $m\mid F_z$, whose existence is now proved. Let $n\ge1$ satisfy $m\mid F_n$. The Fibonacci gcd identity from Volume~1, Chapter~2 says
+\emph{(b) The first divisible index controls all the others.}
+Let $z=z(m)$ be the smallest positive index with $m\mid F_z$, which exists by (a). Volume~1 proved
 \[
-\gcd(F_n,F_z)=F_{\gcd(n,z)}.
+\gcd(F_a,F_b)=F_{\gcd(a,b)}
+\qquad(a,b\ge0,\text{ not both zero}).
 \]
-Since $m$ divides both $F_n$ and $F_z$, it also divides their gcd, so
+Suppose $n\ge1$ and $m\mid F_n$. Since $m$ also divides $F_z$, it divides their greatest common divisor:
 \[
 m\mid F_{\gcd(n,z)}.
 \]
-The integer $\gcd(n,z)$ is positive and no larger than $z$. By the minimality of $z$, it must equal $z$, which means $z\mid n$.
+The positive index $\gcd(n,z)$ is at most $z$, so the minimality of $z$ forces $\gcd(n,z)=z$, or $z\mid n$.
 
-Conversely, if $z\mid n$, the standard Fibonacci divisibility property $F_z\mid F_n$ implies $m\mid F_n$. Thus for positive $n$,
+Conversely, if $z\mid n$, the same Fibonacci gcd identity yields
 \[
-\boxed{m\mid F_n\iff z(m)\mid n}.
+\gcd(F_z,F_n)=F_z,
 \]
-The index $n=0$ also satisfies both sides, since $F_0=0$ and every positive integer divides $0$.
-
-\emph{(c) A recurrence without a reversible step.} Let $J_0=0$, $J_1=1$ and $J_{n+2}=J_{n+1}+2J_n$. We have $J_2=1$. Modulo $2$,
+which means $F_z\mid F_n$. Since $m\mid F_z$, also $m\mid F_n$. We have proved
 \[
-J_{n+2}\equiv J_{n+1}\pmod2,
+\boxed{m\mid F_n\iff z(m)\mid n.}
 \]
-so induction gives $J_n\equiv1\pmod2$ for every $n\ge1$. In particular, the positive-index terms never become divisible by $2$.
+The index $n=0$ satisfies both conditions too, because $F_0=0$ and every positive integer divides $0$.
 
-The associated pair map is
+\emph{(c) Why reversibility mattered.}
+For $J_0=0$, $J_1=1$ and $J_{n+2}=J_{n+1}+2J_n$, reduction modulo $2$ gives
+\[
+J_{n+2}\equiv J_{n+1}\pmod2.
+\]
+As $J_1=1$ and $J_2=1$, induction shows $J_n\equiv1\pmod2$ for every $n\ge1$. In particular no positive-index term is divisible by $2$.
+
+The corresponding state update is
 \[
 S(u,v)=(v,v+2u).
 \]
-Modulo $2$ this is $S(u,v)=(v,v)$; it is \emph{not} injective, since $S(0,0)=S(1,0)$. The orbit may enter a cycle without returning to its initial pair. This is the exact step where the proof of (a) breaks down.
+Modulo $2$ it reduces to $S(u,v)=(v,v)$, which is not injective: $S(0,0)=S(1,0)$. So $S$ is not a permutation of the finite state set. Its orbit may enter a cycle without ever returning to its initial pair. That is exactly the step in (a) that no longer works.
 
-\tools Volume~1, Chapter~2 (Fibonacci gcd and divisibility); finite permutations and orbit cycles.
+\tools Fibonacci gcd and divisibility identities (Volume~1, Chapter~2); permutations and finite-state cycles.
 
-\leads The least positive index $z(m)$ is called the \emph{rank of apparition} of $m$. Its arithmetic is explored further in Problem~\ref{pb:fibmodp}; the reversible-state argument works more generally for linear recurrences whose transition matrix is invertible modulo $m$.
+\leads Whenever a linear recurrence has an invertible state-transition matrix modulo $m$, its state sequence is periodic from the start. The rank of apparition $z(m)$ captures the resulting divisibility pattern for Fibonacci numbers.
 \end{solution}
 
 \begin{solution}{pb:ruzsa}
