@@ -807,31 +807,55 @@ Fermat's last theorem). Direct computation gives $\pi(p)$ for all $p<10^5$.
 \end{solution}
 
 \begin{solution}{pb:pascal2}
-\idea Row $n$ of Pascal's triangle is the polynomial $(1+x)^n$. Modulo $2$, squaring is additive (Frobenius), so
-$(1+x)^{2^k}=1+x^{2^k}$, and multiplying by it copies a row twice, shifted. That is the self-similar picture; the count follows
-by peeling off binary digits one at a time.
+\idea Read row $n$ of Pascal's triangle as the coefficient list of $(1+X)^n$. In characteristic $2$, raising a sum to a power of $2$ does not produce cross terms. This copies smaller triangles into larger ones, and the binary digits of $n$ tell us how many entries survive.
 
-\writeup (a) In $\mathbb F_2[x]$, $(u+v)^2=u^2+v^2$, so by induction $(1+x)^{2^k}=1+x^{2^k}$ (Volume~3, Chapter~9). Hence, for
-$0\le m<2^k$,
+\writeup (a) In $\mathbb F_2[X]$ we have $(u+v)^2=u^2+v^2$. Repeated squaring gives
 \[
-(1+x)^{2^k+m}=(1+x^{2^k})(1+x)^m=(1+x)^m+x^{2^k}(1+x)^m\quad\text{in }\mathbb F_2[x],
+(1+X)^{2^k}=1+X^{2^k}.
 \]
-and comparing the coefficients of $x^j$ gives the claim. As $(1+x)^m$ has degree $m<2^k$, the two copies do not overlap: row
-$2^k+m$ is row $m$, then a gap of zeros, then row $m$ again. This is the pattern of Figure~\ref{fig:pascal}: the triangle of
-rows $0$ to $2^{k+1}-1$ consists of three copies of the triangle of rows $0$ to $2^k-1$.
+For $0\le m<2^k$, multiply by $(1+X)^m$:
+\[
+(1+X)^{2^k+m}=(1+X^{2^k})(1+X)^m
+=(1+X)^m+X^{2^k}(1+X)^m.
+\]
+Compare coefficients of $X^j$:
+\[
+\boxed{\binom{2^k+m}j
+\equiv\binom mj+\binom m{j-2^k}\pmod2}.
+\]
+We interpret out-of-range binomial coefficients as zero. Since $\deg(1+X)^m=m<2^k$, the two copies have disjoint supports. This explains the self-similar empty triangular regions in Figure~\ref{fig:pascal}.
 
-(b) Let $N(n)$ be the number of odd entries of row $n$. By (a), $N(2^k+m)=2N(m)$ for $0\le m<2^k$, and $N(0)=1$. Removing the
-leading binary digit of $n$ halves $N$ and decreases $s$ by one, so $N(n)=2^{s(n)}$ by induction on $n$. (This is also
-Lucas's theorem, Volume~2, Chapter~3: $\binom nj$ is odd iff every binary digit of $j$ is at most the corresponding digit of
-$n$, which gives $2^{s(n)}$ choices of $j$.)
+(b) Let $N(n)$ count the odd binomial coefficients in row $n$. The disjoint-copy identity says
+\[
+N(2^k+m)=2N(m)\qquad(0\le m<2^k).
+\]
+Write the binary expansion as $n=\sum_{j=0}^r\varepsilon_j2^j$, with $\varepsilon_j\in\{0,1\}$. Removing the leading $1$ divides the count by $2$, and repeating removes each of the $s(n)=\sum_j\varepsilon_j$ one-bits. Since $N(0)=1$, induction gives
+\[
+\boxed{N(n)=2^{s(n)}}.
+\]
+Equivalently, Lucas's theorem says $\binom nj$ is odd exactly when each one-bit of $j$ is among the one-bits of $n$. There are two independent choices for each of those $s(n)$ positions, giving the same count.
 
-(c) Write $n<2^k$ with $k$ binary digits $n_0,\dots,n_{k-1}$. Then $2^{s(n)}=\prod_i2^{n_i}$, and summing over all digit
-choices gives $\sum_{n<2^k}2^{s(n)}=\prod_{i<k}(1+2)=3^k$. The rows $0$ to $2^k-1$ contain $\sum_{n<2^k}(n+1)=2^{k-1}(2^k+1)$
-entries, so the proportion of odd ones is $\frac{3^k}{2^{k-1}(2^k+1)}\le2\bigl(\frac34\bigr)^k\to0$.
-\tools Volume~3, Chapter~9 (Frobenius in characteristic $p$); Volume~2, Chapter~3 (Lucas's theorem); Volume~1, Chapter~2.
-\leads The limit shape of Figure~\ref{fig:pascal}, rescaled, is the Sierpiński triangle, of dimension $\frac{\log3}{\log2}$
-(Volume~7 defines the dimension). Modulo a prime $p$ the same argument gives $\prod(n_i+1)$ non-zero entries in row $n$ (Fine,
-1947).
+(c) Over $0\le n<2^k$, each of the $k$ binary digits is independently $0$ or $1$. Thus
+\[
+\sum_{n=0}^{2^k-1}N(n)
+=\sum_{\varepsilon_0,\ldots,\varepsilon_{k-1}\in\{0,1\}}
+\prod_{j=0}^{k-1}2^{\varepsilon_j}
+=\prod_{j=0}^{k-1}(1+2)
+=\boxed{3^k}.
+\]
+The total number of entries in those rows is
+\[
+\sum_{n=0}^{2^k-1}(n+1)
+=\frac{2^k(2^k+1)}2.
+\]
+Hence the proportion that are odd is
+\[
+\frac{3^k}{2^{k-1}(2^k+1)}
+\le 2\left(\frac34\right)^k\longrightarrow0.
+\]
+Even though the triangle contains infinitely many odd entries, they occupy an asymptotically vanishing proportion of the growing finite triangles.
+
+\tools Frobenius in characteristic $2$ and Lucas's theorem from Volume~2.
 \end{solution}
 
 \begin{solution}{pb:lucaslehmer}
