@@ -56,7 +56,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Apply the same signposting to deeper sections and high-star exercises wherever they have later prerequisites.
 - **Exit gate:** skipping marked extensions does not invalidate a proof or a regular exercise on the main route.
 
-### Step 4 — Perform a prerequisite and chapter-order audit [started]
+### Step 4 — Perform a prerequisite and chapter-order audit [completed]
 
 - In *printed* chapter order, record the first occurrence and proof location of each non-elementary term, theorem and tool: Bézout, unique factorisation, modular inverses, residue rings, field language, totients, Dirichlet convolution, multiplicative order, cyclic structure, Legendre/Jacobi symbols, descent, norms, characters, sieves and convergence facts.
 - For every forward reference, classify it as harmless preview, optional challenge, or a genuine dependency. Resolve all genuine forward dependencies by moving a proof, adding a self-contained lemma, or changing the first-route explanation.
@@ -202,3 +202,48 @@ This sign-off is **editorial route acceptance**, not the separate
 independent prerequisite/proof/solution audit (Steps 4--6). CI for the
 latest head, current PDF/EPUB/print visual proof and KDP Previewer
 remain separate gates. The PR stays draft and unmerged.
+
+## Step 4 acceptance checkpoint — 3 November 2026
+
+**First-use and order gate passed at source level.** The independent
+ledger docs/reviews/volume2-prerequisite-order-audit-2026-11-03.md
+records definitions and local proof sites for all core tools and
+theorem chains in the eleven *printed* chapters, not in file-stem order.
+It classifies all cross-chapter forward references as explicit
+outlooks, optional exercise returns or actual dependencies requiring
+repair.
+
+The review resolved the following prerequisite leaks:
+
+- Chapter 1's one-star valuation problem now explicitly obtains
+  independence by divisibility counting; the Chapter 3 CRT is mentioned
+  only as a later alternative.
+- Chapter 3's illustrative first-order calculation avoids using the
+  group-order theorem of Chapter 5. The optional Morley congruence
+  now identifies its Chapter 11 Fermat-quotient prerequisite.
+  Glaisher's challenge identifies both Volume 5 and Chapter 11 tools.
+- The Chapter 4 Euclid--Euler proof no longer cites an exercise not
+  yet presented, and the optional Euler-liar solution proves the
+  proper-subgroup size bound directly instead of borrowing Volume 3.
+- Chapter 6's optional Miller--Rabin count cites the Volume 2 cyclic
+  prime-power unit groups already proved in Chapter 5. The optional
+  square-count solution no longer invokes an unproved existence of
+  special nonresidue primes: its last claim now has a direct modular
+  obstruction, using an odd valuation or congruence modulo 4.
+
+**Evidence:** a source scan of all pre-exercise proof environments found
+**zero future local-label dependencies**; 41 one-star question/hint/
+required-solution chains have **zero dependencies on later chapter
+labels** and no same-chapter future-exercise dependencies. The full
+manuscript still has 144 matching exercise/hint/solution IDs, 266
+unique local labels and no missing local refs. Automatic regression
+tests now enforce the proof-order check, one-star boundary, the
+curated cross-chapter preview inventory and the Morley warning.
+Finite regression checks exercise the replacement modular-square
+argument for small positive and negative nonsquares.
+
+**Scope limit:** this is an editorial prerequisite-order sign-off,
+not an independent proof of every theorem, worked example or exercise
+solution. Step 5 and Step 6 remain essential; final-output build,
+visual inspection and KDP proof remain open. Any exact-head CI failures
+must be addressed separately. Keep PR #97 draft and unmerged.
