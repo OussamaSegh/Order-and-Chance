@@ -69,6 +69,7 @@ All eleven chapter sources were inspected in printed order. A separate source sc
 5. Chapter 4 pb:euler: replaced an apparent reliance on Volume 3 Lagrange with a direct finite-subgroup counting argument.
 6. Chapter 6 pb:rabin: relabelled Volume 3 cyclic group theory as outlook; Chapter 5's already-proved prime-power classification is the actual input.
 7. Chapter 6 pb:squaresmodpk: removed the unproved nonresidue-prime existence claim. If a nonsquare integer has an odd prime valuation, its residue fails to be a square modulo the next prime power; if it is the negative of a positive square, modulo four times that square gives a contradiction. Thus no analytic prime distribution or p-adic result is assumed.
+8. Chapter 4 pb:euler now states that its Jacobi-symbol modulus is an odd integer n≥3 rather than merely an unspecified odd integer; part (a) covers prime and composite moduli as asked. Chapter 5 thm:cyclicn now explicitly requires n≥1 before discussing the unit group modulo n.
 
 ### Audit evidence and open gates
 
