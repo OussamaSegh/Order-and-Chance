@@ -161,3 +161,7 @@ The printed-order pass did identify three inaccurate teaching-roadmap statements
 - Chapter 3 labelled Gauss's totient-sum identity as a counting identity for the *next chapter* and immediately described multiplicative orders. The transition now explains how the divisor sum prepares Chapter 4 and how orders use it subsequently in Chapter 5.
 
 A manuscript regression check guards these specific transitions against reversion. This is a continuity correction, **not** a certification of the still-open proof, exercise, latest-build visual or KDP gates.
+
+## Chapter 3 advanced-solution correction — 3 November 2026
+
+In the solution to the Kloosterman-sum fourth-moment exercise (`pb:kloosterman`), the assertion that the bound `1.19 p^(3/4)` improves on the trivial `p-1` bound for **every odd prime** was false at `p=3`: `1.19 * 3^(3/4) > 2`. The solution now explicitly isolates that counterexample and states the improvement for odd primes `p>=5`. The function `(p-1)/p^(3/4)` is increasing, so the comparison follows from its truth at `p=5`. A new arithmetic sanity regression independently counts additive/reciprocal-compatible ordered quadruples for primes 3, 5, 7 and 11 and checks the displayed exact fourth-moment formula `2p^3 - 3p^2 - 3p`, as well as the bound comparison. The computation is a finite cross-check, not a proof of the fourth-moment identity or any other advanced exercise.
