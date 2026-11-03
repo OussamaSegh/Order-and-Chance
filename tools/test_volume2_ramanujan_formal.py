@@ -58,7 +58,7 @@ class TestVolume2RamanujanFormal(unittest.TestCase):
         for j in range(-30, 31):
             exponent = j*(3*j-1)//2
             if 0 <= exponent <= top:
-                pentagonal[exponent] += (-1)**j
+                pentagonal[exponent] += 1 if j % 2 == 0 else -1
         self.assertEqual(e, pentagonal)
 
         cube = multiply(multiply(e, e, top), e, top)
