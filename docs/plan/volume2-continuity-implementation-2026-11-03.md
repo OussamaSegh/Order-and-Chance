@@ -63,7 +63,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Review hypotheses at their point of use, especially coprimality, finite/infinite counts, convergence, prime versus composite moduli, and assumptions in norm arguments.
 - **Exit gate:** no main-route theorem, worked example or one-star exercise requires an unproved later result.
 
-### Step 5 — Audit mathematics and examples [started]
+### Step 5 — Audit mathematics and examples [completed]
 
 - Check every theorem and proof end-to-end (not only syntax), with explicit edge cases and computations.
 - Verify prime-distribution estimates, the reciprocity sign and lifting conditions, complete Pell-solution arguments, sum-of-squares criteria, Euclidean norms in the two quadratic rings, and Euler-product convergence.
@@ -247,3 +247,58 @@ not an independent proof of every theorem, worked example or exercise
 solution. Step 5 and Step 6 remain essential; final-output build,
 visual inspection and KDP proof remain open. Any exact-head CI failures
 must be addressed separately. Keep PR #97 draft and unmerged.
+
+## Step 5 acceptance checkpoint — 3 November 2026
+
+**Source-level mathematics review completed.** The detailed
+review ledger is
+docs/reviews/volume2-mathematics-examples-audit-2026-11-03.md.
+In the eleven chapters, the pre-exercise manuscript contains
+**72** named results (theorems, propositions, lemmas and corollaries),
+**72** proof environments, and **99** worked example blocks. Their
+statement/proof chains, numerical assertions, hypotheses, and
+mathematical figure-caption claims have undergone an independent
+internal source pass in printed order.
+
+**Repairs made in the manuscript:**
+
+- Corrected the disc count **N(2)=13** (the four points on the circle
+  had been omitted) and the ten-term Möbius sum, including the signs
+  **μ(6)=+1, μ(7)=−1**.
+- Corrected the Eisenstein prime split:
+  **N(2−ω)=7, N(2+ω)=3,
+  7=(2−ω)(2−ω²)**.
+- Replaced false mod-4 deductions for
+  **y²=x²+x+1** with the exact classes
+  **1,3,3,1**; the equation has actual integer solutions.
+- Corrected two descriptions of Fermat's descent:
+  **n=2u²v²** is twice a square, not itself necessarily a square.
+  Clarified which Vieta jump grows and which descends. Fixed
+  the descent figure caption and historical numeric theorem
+  references.
+- Removed the unjustified inference from bounded Abel-weighted
+  prime sums to convergence of a signed sum of reciprocals;
+  the optional character discussion now uses the correct
+  non-negative sum/difference comparison.
+- Explicitly stated missing positive-modulus/real-asymptotic/
+  nonzero-square/gcd-domain hypotheses. Tightened the half-open
+  square geometric explanation, a π approximation and the
+  Eisenstein lattice caption. Made Bertrand's historical
+  attribution precise without choosing a disputed proof year.
+
+**Independent finite regression checks** now cover the corrected
+disc counts, Eisenstein norm and product, ten-term Möbius series,
+mod-4 obstructions, and Markov triples. The existing arithmetic
+suite already covers quadratic reciprocity, Hensel, two/four
+squares, prime roots, and selected difficult finite sums.
+Proof-reference scanning now also recognises titled proof
+environments. A fresh cross-chapter scan showed **144 aligned
+exercise/hint/solution IDs**, **266 unique labels**, no missing
+local references, and balanced checked LaTeX environments.
+
+**Strict boundary:** This is an *internal mathematical/editorial
+source review*, not proof-assistant certification or outside
+refereeing. It **does not** certify the individual 144 exercise
+solutions (Step 6), nor replace latest-head CI, actual rendered
+PDF/EPUB/print inspection or KDP's publisher-side/physical proof.
+Keep PR #97 draft and unmerged.
