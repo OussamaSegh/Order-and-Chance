@@ -23,10 +23,10 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 3 | `prop:units` | proposition | Bézout inverse iff gcd(a,n)=1, p prime field criterion, φ(n) units | Independent finite multiplication-permutation injection via Gauss plus nonunit gcd obstruction; 80 exhaustive moduli | VERIFIED_TWICE | DEP-024: defined φ(n) before use, special Z/1Z zero ring not field, φ(1)=1; actual finite permutation witnesses |
 | 3 | `thm:eulerthm` | Euler, Fermat | Product-of-all-units permutation and cancellation, φ(p)=p−1 | Independent cyclic subgroup orbit partition proves order divides φ(n); checked n≤400 | VERIFIED_TWICE | DEP-024: explicit n≥1 modulus hypothesis, n=1 congruence trivial, p=2 Fermat edge; no unproved Lagrange import |
 | 3 | `thm:wilson` | Wilson | Pairs inverse classes in F_p; only self-inverses ±1, p=2 checked | Independent polynomial X^(p−1)−1=∏(X−a) by Euler+Volume1 polynomial roots, compare constant; 31 polynomial probes | VERIFIED_TWICE | DEP-024: uses earlier Volume 1 prop:rootsfactor; p=2 sign coincidence and exact factorial tests |
-| 3 | `thm:crt` | Chinese remainder theorem | — | — | UNREVIEWED | — |
-| 3 | `prop:lincong` | linear congruences | — | — | UNREVIEWED | — |
-| 3 | `prop:phisum` | Gauss | — | — | UNREVIEWED | — |
-| 3 | `thm:hensel` | Hensel's lemma | — | — | UNREVIEWED | — |
+| 3 | `thm:crt` | Chinese remainder theorem | Well-defined quotient morphism, Gauss injection and n*m counting; explicit Bezout projections | Independent a+mt construction with inverse of m modn and uniqueness modulo mn; all m,n≥1 incl 1 | VERIFIED_TWICE | DEP-025: coprime two moduli, explicit sign a·nv+b·mu correct, trivial modulus 1 and noncoprime contrast; 20000+ pairs |
+| 3 | `prop:lincong` | linear congruences | Bézout image aZ+nZ=dZ; reduce d and explicitly enumerate d lifts | Independent gcd-fiber periodicity via a'=a/d,n'=n/d, class x0+j n' and converse d|b; includes a=0 | VERIFIED_TWICE | DEP-025: negative a,b, n=1, d=n if a=0, exactly d residue classes; >60000 exact cases |
+| 3 | `prop:phisum` | Gauss | Partition n rational numbers k/n by reduced denominator d|n, φ(d) choices | Independent gcd(k,n) fibers k=g·a with gcd(a,n/g)=1, reindex divisors | VERIFIED_TWICE | DEP-025: n=1 φ(1)=1, n=6 1+1+2+2=6, n≤1000 exhaustive fiber counts |
+| 3 | `thm:hensel` | Hensel's lemma | Integer-polynomial Taylor expansion to modulus p^(k+1), single linear digit congruence | Independent monomial binomial linearization plus uniqueness by difference of two digits and Gauss cancellation; finite simple-root probes | VERIFIED_TWICE | DEP-025: p=2, k≥1, arbitrary a, f' unit; singular root may have zero or p lifts; local formal derivative defined before use |
 | 4 | `prop:conv` | proposition | — | — | UNREVIEWED | — |
 | 4 | `thm:mobius` | M\"obius inversion | — | — | UNREVIEWED | — |
 | 4 | `thm:perfect` | Euclid--Euler | — | — | UNREVIEWED | — |
