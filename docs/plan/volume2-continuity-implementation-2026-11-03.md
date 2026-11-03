@@ -232,7 +232,7 @@ The review resolved the following prerequisite leaks:
   obstruction, using an odd valuation or congruence modulo 4.
 
 **Evidence:** a source scan of all pre-exercise proof environments found
-**zero future local-label dependencies**; 41 one-star question/hint/
+**zero future local-label dependencies**; 41 then-one-star question/hint/
 required-solution chains have **zero dependencies on later chapter
 labels** and no same-chapter future-exercise dependencies. The full
 manuscript still has 144 matching exercise/hint/solution IDs, 266
@@ -346,3 +346,4 @@ refereeing. The editorial/checker sign-off does not waive Step 7
 transitions, Step 8 rendered PDF/EPUB/print/wrap QA or Step 9
 publisher-side KDP and physical proof. Keep PR #97 draft and unmerged.
 
+**Historical grading note (Step 6, 3 November 2026):** This earlier Step 4 audit covered all 41 problems that were graded one-star at that checkpoint. Step 6 regraded four mathematically more demanding problems to two stars. The current first-route regression checks all **37** one-star problems; no problem statement, solution or prerequisite was deleted.
