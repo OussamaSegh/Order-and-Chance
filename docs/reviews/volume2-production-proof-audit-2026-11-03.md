@@ -2,8 +2,8 @@
 
 **Date:** 3 November 2026
 **PR:** [#97](https://github.com/OussamaSegh/Order-and-Chance/pull/97) (draft, unmerged)
-**Production source:** GitHub Actions [Build books #1429, run 41638786729](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41638786729), pull-request head commit \`4d46982b5f3db88774ac3170fcbbd43926c85044\`. This is the last manuscript/metadata content commit before the Step 8 *QA tooling and audit-documentation* commits.
-**Downloaded artifact:** \`books-volume2-integers\`, GitHub artifact ID **13232292637**, approximately 33.45 MB compressed, 104 included files. This report describes the exact generated files, not a speculative layout.
+**Production source:** GitHub Actions [Build books #1429, run 41638786729](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41638786729), pull-request head commit `4d46982b5f3db88774ac3170fcbbd43926c85044`. This is the last manuscript/metadata content commit before the Step 8 *QA tooling and audit-documentation* commits.
+**Downloaded artifact:** `books-volume2-integers`, GitHub artifact ID **13232292637**, approximately 33.45 MB compressed, 104 included files. This report describes the exact generated files, not a speculative layout.
 
 ## Independent inspection of the actual artifacts
 
@@ -19,11 +19,11 @@ The artifact was extracted and opened outside the CI worker. All three PDFs were
 | Cover structural preflight | Fonts embedded, lettering vector, artwork placement pixel-identical; one 600-ppi flattened illustration patch, no live transparency. Cover preflight has exact artwork source/press hashes. | **Pass** |
 | Pagination / reference placement | Volume 2 build reports **383 whole boxes**, maximum height 409.9 pt, **no overflow or unresolved references**; independent sample showed no clipping or stray text on chapter openings/contents/last pages | **Pass** |
 | Print/reading body parity | Compared matching reading and print raster pages (20 samples); mean RGB difference per channel below **0.02** on each, and changed-ink fraction below **0.0002**. This avoids confusing minor PDF text-extraction ligatures with visual loss. | **Pass** |
-| EPUB package | ZIP integrity and uncompressed \`mimetype\` correct; **5,754 OPF manifest items**, all present; eleven chapters in the correct EPUB navigation order | **Pass** |
+| EPUB package | ZIP integrity and uncompressed `mimetype` correct; **5,754 OPF manifest items**, all present; eleven chapters in the correct EPUB navigation order | **Pass** |
 | EPUB link and formula image audit | **12,929** local asset/anchor links traversed with **zero missing targets or fragments**; all **12,185 image uses** have an alt attribute. The production log records **12,143 math instances (5,724 unique)** and 39 figure plates | **Pass** |
 | EPUB exercise/solution preservation | **144 exercise, 144 hint, 144 solution** sections, matched chapter by chapter in 11 XHTML chapter files | **Pass** |
 | Online HTML reader | **11 chapter pages**, four part pages and the field guide; **3,167** local asset paths resolved, no missing internal resources; **144** exercise/hint/solution triplets | **Pass** |
-| Online collection homepage | The 20 per-page \`../../index.html\` links target the wider site-root index, assembled by the *subsequent site job* rather than copied into the per-volume artifact. Those are intentionally not treated as dead book-local links. Full site CI must pass separately. | **Await site aggregation CI** |
+| Online collection homepage | The 20 per-page `../../index.html` links target the wider site-root index, assembled by the *subsequent site job* rather than copied into the per-volume artifact. Those are intentionally not treated as dead book-local links. Full site CI must pass separately. | **Await site aggregation CI** |
 
 ### Page and cover visual notes
 
@@ -33,9 +33,9 @@ The paperback cover was visually reviewed as a full **back / spine / front** wra
 
 ### Production automation strengthened in the editorial PR
 
-Added \`review/volume2-continuity/check_volume2_outputs.py\` and a conditional \`QA the rendered Volume 2 PDF, EPUB, online reader and KDP wrap\` job step after \`./build.sh\` in \`.github/workflows/build.yml\`. Its results are placed in \`build/volume2-integers/production-output-qa.json\` and the JSON is included in the regular GitHub Actions artifact. This checker was first independently trialled against the extracted artifact and **passed** on the displayed 314 / 313 / 314 page counts and exact metadata, ISBN, EPUB link/asset and exercise invariants.
+Added `review/volume2-continuity/check_volume2_outputs.py` and a conditional `QA the rendered Volume 2 PDF, EPUB, online reader and KDP wrap` job step after `./build.sh` in `.github/workflows/build.yml`. Its results are placed in `build/volume2-integers/production-output-qa.json` and the JSON is included in the regular GitHub Actions artifact. This checker was first independently trialled against the extracted artifact and **passed** on the displayed 314 / 313 / 314 page counts and exact metadata, ISBN, EPUB link/asset and exercise invariants.
 
-The permanent gate independently checks (a) reading/print/KDP-counted pages and correct spine/bleed; (b) copyright and cover ISBN; (c) print 11-chapter order; (d) press cover fonts/vector/placement preflight; (e) EPUB ZIP, manifest, navigation, anchors, alt-bearing mathematical images, and 144 exercise/hint/solution sets; (f) online local assets and the same 144 sets. A broken resource or a silently changed paperback page count now fails the **Volume 2** build automatically. The original \`list\` job also runs the whole Python test suite before books build.
+The permanent gate independently checks (a) reading/print/KDP-counted pages and correct spine/bleed; (b) copyright and cover ISBN; (c) print 11-chapter order; (d) press cover fonts/vector/placement preflight; (e) EPUB ZIP, manifest, navigation, anchors, alt-bearing mathematical images, and 144 exercise/hint/solution sets; (f) online local assets and the same 144 sets. A broken resource or a silently changed paperback page count now fails the **Volume 2** build automatically. The original `list` job also runs the whole Python test suite before books build.
 
 **CI distinction:** the independently inspected production artifact was built and uploaded **successfully** on the last content-only SHA above. Newest commits that add production regression tooling and this ledger require their **own workflow result**. Do not describe the latest PR HEAD as green merely because the earlier artifact passed.
 
