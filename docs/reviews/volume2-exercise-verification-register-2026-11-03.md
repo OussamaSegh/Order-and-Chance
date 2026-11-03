@@ -4,7 +4,7 @@
 
 This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/13/16/17/8/8/8/8/19**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
 
-**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Four Chapter 1 exercises are now verified twice with methods recorded in the main ledger; the three previously corrected items still require both completed passes. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
+**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Seven exercises are now verified twice with methods recorded in the main ledger; the three previously corrected items still require both completed passes. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
 
 | Printed chapter | Key | Grade | Pass A | Pass B | Earlier-tool check | Status | Finding / source |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
@@ -51,7 +51,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 3 | `pb:aks` | ★★ | — | — | — | UNREVIEWED | — |
 | 3 | `pb:wolsten` | ★★ | — | — | — | UNREVIEWED | — |
 | 3 | `pb:jacobsthal` | ★★ | — | — | — | UNREVIEWED | — |
-| 3 | `pb:morley` | ★★ | — | — | — | CORRECTED_NEEDS_RECHECK | DEP-003: local binomial proof |
+| 3 | `pb:morley` | ★★ | Binomial/harmonic reconstruction | Adversarial modulus audit + primes ≤997 | PASS | VERIFIED_TWICE | DEP-003, no Chapter 11 input |
 | 3 | `pb:glaisher` | ★★★ | — | — | — | UNREVIEWED | — |
 | 3 | `pb:ramanujan5` | Journey | — | — | — | UNREVIEWED | — |
 | 3 | `pb:kloosterman` | ★★★ | — | — | — | UNREVIEWED | — |
@@ -82,8 +82,8 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 5 | `pb:lambert` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `pb:ramsum` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `pb:phipm1` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `pb:gcdmean` | Journey | — | — | — | CORRECTED_NEEDS_RECHECK | DEP-002: local density and ζ |
-| 5 | `pb:fibcoprime` | Journey | — | — | — | CORRECTED_NEEDS_RECHECK | DEP-001: moved after prerequisite |
+| 5 | `pb:gcdmean` | Journey | Four-part Möbius/harmonic proof | Abel alternate mean + weighted endpoint + numeric tests | PASS | VERIFIED_TWICE | DEP-002, W(M) uniform for M≥1 |
+| 5 | `pb:fibcoprime` | Journey | Fibonacci gcd/Binet solution | Exact bounded-log factor + independent counts | PASS | VERIFIED_TWICE | DEP-001, follows pb:gcdmean |
 | 6 | `ex:minus3` | ★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:onemod4` | ★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:minus2` | ★★ | — | — | — | UNREVIEWED | — |
