@@ -59,3 +59,52 @@ Keep PR #97 in draft. This source scan does not certify mathematical correctness
 ## Additional advanced-exercise dependency repair
 
 Five Chapter 4 prompts have been signposted without deleting exercises or changing their identifiers: the coprime-density exercise points to Volume 1's Basel proof; Eisenstein's trigonometric reciprocity proof and the Euler--Jacobi liar problem explicitly require the later reciprocity chapter; the largest-prime-factor problem names the quantitative prime-distribution tool from Volume 6; and the finite-field sum-of-squares exercise defines its quadratic-symbol notation and marks the later quadratic Gauss sum and Volume 4 total-variation tool. These repairs preserve the corpus but do not yet constitute a full solution audit.
+
+## Proof-focused review pass: concrete findings
+
+This pass examined the full displayed proofs and statements of Euclid's theorem,
+Chebyshev-type bounds and Bertrand's postulate, the basic modular and Hensel
+arguments, the four-square descent, the Pell existence-and-classification
+argument, the Euclidean-division estimate in three imaginary quadratic
+integer rings, the quadratic reciprocity construction, character
+orthogonality, Euler-product convergence and Legendre's finite sieve.
+
+- **Corrected a theorem boundary case in Chapter 11 (Legendre's sieve).**
+  The original printed statement assumed only $x\ge1$ and $z\ge\sqrt{x}$,
+  and asserted $\Phi(x,z)=1+\pi(x)-\pi(z)$. This is false whenever
+  $z>x$: for example, $x=4$, $z=10$ gives $\Phi(4,10)=1$ but the
+  old right-hand side is $1+\pi(4)-\pi(10)=-1$.
+  The corrected statement is
+  $\Phi(x,z)=1+\pi(x)-\pi(\min\{x,z\})$, for these hypotheses.
+  The proof now notes that the prime interval $(z,x]$ may be empty.
+  A regression test directly compares finite sifted counts with the
+  corrected formula for many small $x,z$, including $z>x$.
+- **Corrected a mistaken statement about Chapter 10's scope.**
+  A previous editorial change incorrectly said that Chapter 10 did not
+  treat $\mathbb{Z}[\sqrt{-2}]$. It actually develops norms, units and
+  Euclidean division in that ring alongside the Gaussian and Eisenstein
+  integers. The Diophantine passage now acknowledges that material while
+  correctly withholding a classification of $y^2=x^3-2$ that the chapter
+  does not prove.
+- **Caught a one-star challenge with future prerequisites.**
+  The Fibonacci-coprimality exercise in Chapter 1 used the later gcd
+  distribution and expected-value problem in Chapter 5. It is now
+  labelled a Journey/advanced return problem, with the missing tool named
+  directly in the prompt.
+- **Caught a high-level quadratic-residue challenge using final-chapter
+  machinery.** The two-$k$-th-powers problem now explicitly calls out
+  the character-orthogonality and Jacobi-sum tools from Chapter 11 as
+  prerequisites rather than leaving them hidden.
+- **Numerical and logical proof spot checks:** the displayed
+  four-square identity and descent reduce a positive multiplier;
+  the elementary Pell argument constructs a norm-one unit and reduces
+  any positive unit via the least fundamental unit; the Hensel proof
+  correctly invokes invertibility of the derivative modulo $p$;
+  the Euler product's nonvanishing follows from absolute convergence
+  for $s>1$; the sieve boundary above was the identified failed case.
+  These spot checks do not certify every claim or optional exercise.
+
+All source-local IDs and cross-references must be rechecked by the
+full CI suite after these edits. The remaining mathematical proof
+and exercise audit is substantial. Do not convert this partial audit
+into a proof-complete, CI-green or publication-ready sign-off.
