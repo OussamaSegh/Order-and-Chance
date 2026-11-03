@@ -10,7 +10,7 @@ Why can 5 be written as a sum of two squares while 7 cannot? Why do certain equa
 
 Across four parts and eleven chapters, you will explore divisibility and Euclid's algorithm, prime numbers, modular arithmetic and arithmetic functions. Discover primitive roots and quadratic reciprocity, investigate sums of squares and Diophantine equations, and use continued fractions to solve Pell's equation.
 
-The journey continues through Gaussian and Eisenstein integers to Dirichlet characters, Euler products and elementary sieves---revealing both the power of these methods and the questions that require deeper mathematics.
+The journey continues through Gaussian and Eisenstein integers to Dirichlet characters, Euler products and elementary sieves—revealing both the power of these methods and the questions that require deeper mathematics.
 
 **Learn mathematics by understanding its proofs**
 
