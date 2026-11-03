@@ -82,7 +82,7 @@ class TestRelocatedEisensteinEuler(unittest.TestCase):
         primes = [p for p in primes_to(47) if p > 2]
         for p in primes:
             H = range(1,(p+1)//2)
-            for q in range(1,2*p+1):
+            for q in range(-2*p,2*p+1):
                 if q % p == 0:
                     continue
                 product = math.prod(
