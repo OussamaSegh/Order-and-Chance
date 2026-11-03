@@ -317,6 +317,147 @@ class TestVolume2Manuscript(unittest.TestCase):
             "by the Chinese remainder theorem.", divisibility[start:end]
         )
 
+    def test_step4_first_route_proofs_have_no_future_result_dependencies(self):
+        """Every reference in a chapter proof must already have been introduced."""
+        sources = [
+            (CHAPTER_DIR / (name + ".tex")).read_text(encoding="utf-8")
+            for name in CHAPTERS
+        ]
+        definitions = {}
+        for chapter_index, source in enumerate(sources):
+            for label in LABEL.finditer(source):
+                self.assertNotIn(label.group(1), definitions)
+                definitions[label.group(1)] = (chapter_index, label.start())
+
+        proof = re.compile(r"\\begin\{proof\}([\s\S]*?)\\end\{proof\}")
+        refs = re.compile(r"\\(?:ref|eqref|autoref)\{([^}]+)\}")
+        for chapter_index, source in enumerate(sources):
+            main = source.split(r"\section{Exercises}", 1)[0]
+            for statement in proof.finditer(main):
+                for ref in refs.finditer(statement.group(1)):
+                    target = definitions.get(ref.group(1))
+                    self.assertIsNotNone(
+                        target,
+                        f"Unknown proof dependency in {CHAPTERS[chapter_index]}: "
+                        f"{ref.group(1)}",
+                    )
+                    self.assertLessEqual(
+                        target,
+                        (chapter_index, statement.start() + ref.start()),
+                        f"Proof cites an unproved later result: "
+                        f"{CHAPTERS[chapter_index]} -> {ref.group(1)}",
+                    )
+
+    def test_step4_one_star_problem_keys_have_no_later_prerequisite(self):
+        """Question, hint and required solution of every one-star problem stay local."""
+        sources = [
+            (CHAPTER_DIR / (name + ".tex")).read_text(encoding="utf-8")
+            for name in CHAPTERS
+        ]
+        owner = {}
+        for chapter_index, source in enumerate(sources):
+            for match in LABEL.finditer(source):
+                owner[match.group(1)] = chapter_index
+        exercise = re.compile(
+            r"\\begin\{exercise\}\[([^\]]+)\]"
+            r"\\label\{([^}]+)\}([\s\S]*?)\\end\{exercise\}"
+        )
+        hint = re.compile(
+            r"\\begin\{hint\}\{([^}]+)\}([\s\S]*?)\\end\{hint\}"
+        )
+        solution = re.compile(
+            r"\\begin\{solution\}\{([^}]+)\}([\s\S]*?)\\end\{solution\}"
+        )
+        reference = re.compile(r"\\(?:ref|eqref|autoref)\{([^}]+)\}")
+        reviewed = 0
+        for chapter_index, source in enumerate(sources):
+            hints = dict(hint.findall(source))
+            solutions = dict(solution.findall(source))
+            questions = exercise.findall(source)
+            indices = {item[1]: index for index, item in enumerate(questions)}
+            for grade, key, prompt in questions:
+                if grade != r"$\star$":
+                    continue
+                reviewed += 1
+                material = (
+                    prompt + hints[key] +
+                    solutions[key].split(r"\leads", 1)[0]
+                )
+                for match in reference.finditer(material):
+                    label = match.group(1)
+                    self.assertIn(label, owner)
+                    self.assertLessEqual(
+                        owner[label], chapter_index,
+                        f"First-route exercise {key} cites a later chapter: {label}",
+                    )
+                    if owner[label] == chapter_index and label in indices:
+                        self.assertLessEqual(
+                            indices[label], indices[key],
+                            f"First-route exercise {key} needs later exercise {label}",
+                        )
+                self.assertNotRegex(
+                    material, r"Volume~(?:3|4|5|6|7|8|13|14)\b",
+                    f"First-route exercise {key} requires a later volume",
+                )
+        self.assertEqual(reviewed, 41, "Keep all one-star exercise keys audited")
+
+    def test_step4_forward_exposition_references_are_curated_previews(self):
+        """Forward references in prose remain explicit teaching previews."""
+        allowed = {
+            "ch01-divisibility": {"ch:congruences", "ch:continued", "ch:gaussian"},
+            "ch02-primes": {"ch:characters"},
+            "ch03-congruences": {"ch:orders", "ch:characters"},
+            "ch04-arithmetic-functions": {"ch:orders", "ch:characters"},
+            "ch05-primitive-roots": {"ch:characters"},
+            "ch06-quadratic-reciprocity": set(),
+            "ch07-sums-of-squares": {"ch:gaussian"},
+            "ch09-diophantine": {"ch:gaussian", "ex:y2x3m2"},
+            "ch08-continued-fractions": set(),
+            "ch10-gaussian-eisenstein": {"ch:characters"},
+            "ch14-characters": set(),
+        }
+        sources = [
+            (CHAPTER_DIR / (name + ".tex")).read_text(encoding="utf-8")
+            for name in CHAPTERS
+        ]
+        owner = {}
+        for chapter_index, source in enumerate(sources):
+            for label in LABEL.findall(source):
+                owner[label] = chapter_index
+        for chapter_index, chapter in enumerate(CHAPTERS):
+            main = sources[chapter_index].split(r"\section{Exercises}", 1)[0]
+            forward = {
+                name for name in re.findall(
+                    r"\\(?:ref|eqref|autoref)\{([^}]+)\}", main
+                )
+                if owner.get(name, -1) > chapter_index
+            }
+            self.assertEqual(
+                forward, allowed[chapter],
+                f"New forward references in {chapter} require a prerequisite review",
+            )
+
+    def test_step4_morley_requires_later_fermat_quotient(self):
+        """Do not silently present a Chapter 11 dependency as Chapter 3 work."""
+        congruences = (CHAPTER_DIR / "ch03-congruences.tex").read_text(
+            encoding="utf-8"
+        )
+        problem = re.search(
+            r"\\begin\{exercise\}\[\$\\star\\star\$\]"
+            r"\\label\{pb:morley\}([\s\S]*?)\\end\{exercise\}",
+            congruences,
+        )
+        self.assertIsNotNone(problem)
+        self.assertIn(
+            r"Optional return after Chapter~\ref{ch:characters}",
+            problem.group(1),
+        )
+        self.assertIn(r"Problem~\ref{pb:fermatquot}", problem.group(1))
+        later = (CHAPTER_DIR / "ch14-characters.tex").read_text(
+            encoding="utf-8"
+        )
+        self.assertIn(r"\label{pb:fermatquot}", later)
+
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:
             with self.subTest(chapter=chapter):
