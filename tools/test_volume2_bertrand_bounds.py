@@ -99,7 +99,7 @@ class TestBertrandProof(unittest.TestCase):
                         text.index(r"\label{thm:bertrand}"))
         self.assertIn("n=630",text)
         self.assertIn("n=512",text)
-        self.assertIn("n=631",text)
+        self.assertIn(r"n\ge631",text)
         self.assertEqual(text.count(r"\section{Exercises}"),1)
         self.assertEqual(text.count(r"\section{Solutions}"),1)
 
