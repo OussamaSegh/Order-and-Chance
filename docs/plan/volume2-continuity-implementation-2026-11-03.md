@@ -396,3 +396,48 @@ and manually inspected PDF/EPUB/online/print and new page-count matched
 cover, and the publisher's KDP/Kindle Previewer and physical proof are
 still required by Steps 8–9. PR #97 remains draft and unmerged.
 
+## Step 8 production artifact checkpoint — 3 November 2026
+
+**The actual Volume 2 production files were downloaded, opened and reviewed.**
+See docs/reviews/volume2-production-proof-audit-2026-11-03.md
+for the exact artifact and independent visual/format tests.
+
+- The **Volume 2 build passed** and uploaded `books-volume2-integers`
+  (artifact 13232292637) on the last manuscript-content HEAD,
+  `4d46982b5f3db88774ac3170fcbbd43926c85044`.
+  The containing workflow was [run #1429](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41638786729).
+- Inspected the real **314-page reading PDF**, **313-page KDP interior**,
+  and the correct **314 KDP-counted pages** after odd-count rounding.
+  The current matching paperback spine is **0.737 inches**, with
+  a **14.987 × 10.25-inch** complete bleed wrap.
+- Verified the printed copyright ISBN **9798167208650**, the matching
+  paperback cover digits, and independently decoded all 95 modules of
+  the rasterised **EAN-13 barcode** to the same ISBN. The cover and
+  its subtitle, spine and 153-word blurb were visually reviewed.
+- Rendered and inspected **25 representative reading-PDF pages**:
+  copyright/front matter, TOC, the four-part route, all eleven
+  chapter starts, formula-heavy pages, the field guide, end-matter
+  and the Volume 3 handoff. Also compared **20** pairs of the reading
+  and KDP-print body at the pixel level. No text clipping or
+  noticeable mismatch was found in those samples. The build's
+  independent whole-box check reported no overflow or missing refs.
+- Opened the EPUB ZIP/XML, checked its **5,754 manifest entries** and
+  **12,929 local links/anchors** with zero broken targets, and
+  confirmed all 144 exercise/hint/solution blocks in exact chapter
+  order. The separate HTML reader has the same 144 triads,
+  eleven chapters and **3,167** intact local asset links; the
+  collection homepage is built in the later site job.
+- Added `review/volume2-continuity/check_volume2_outputs.py`,
+  validated its cross-format checks against the downloaded
+  production files, and integrated it as a Volume 2-only **required
+  post-build CI step**. Its JSON report is now included in the
+  artifact uploads on subsequent CI runs.
+
+**Gating precision:** These results establish the **independent
+artifact/render review** on the last source-content SHA, not the
+new integrated step's CI success. Step 8 stays `[started]` until
+the latest full GitHub workflow passes the new post-build check
+and site aggregation. Step 9 also requires Kindle Previewer,
+KDP's physical/Print Previewer and ISBN-account checks.
+Keep PR #97 draft, not release-ready, and do not merge yet.
+
