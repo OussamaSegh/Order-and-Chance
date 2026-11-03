@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and eight exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 136 exercises and all unnamed proof claims are not certified. An earlier print/EPUB build completed but the old spine QA rejected it; no passing final-head build or page-by-page visual proof has been recorded.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and nine exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 135 exercises and all unnamed proof claims are not certified. An earlier print/EPUB build completed but the old spine QA rejected it; no passing final-head build or page-by-page visual proof has been recorded.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -35,8 +35,8 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | P03 First-use dependency graph | IN_PROGRESS | Five concrete dependency repairs, including Glaisher and Ramanujan; later advanced challenges remain. |
 | P04 All theorem/proof second checks | IN_PROGRESS | Eight named results VERIFIED_TWICE; all other result and unnamed proof chains pending. |
 | P05 Every worked example and figure | IN_PROGRESS | Individually checked Euclid six-prime composite and 5!+1, plus arithmetic boundary probes; rest pending. |
-| P06 All exercises independent reconstruction | IN_PROGRESS | Eight solutions fully reconstructed, one new formal-series rewrite awaiting second pass, remaining keys pending. |
-| P07 All exercises independent adversarial second pass | IN_PROGRESS | Eight solutions VERIFIED_TWICE with prior-tool routes; 136 remaining, including Ramanujan pending second formal pass. |
+| P06 All exercises independent reconstruction | IN_PROGRESS | Nine solutions have a complete author-level proof reconstruction; the other 135 remain. |
+| P07 All exercises independent adversarial second pass | IN_PROGRESS | Nine solutions VERIFIED_TWICE, including the formal Ramanujan proof; 135 remaining. |
 | P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C02/C03/C05 math and voice repairs; no chapter signed off. |
 | P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
 | P10 Full-book voice/transition pass | IN_PROGRESS | Local Chapter 2 duplicate-paragraph removal only; full read-aloud pending. |
@@ -71,7 +71,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | DEP-003 | confirmed | C03 pb:morley | Essential Chapter 11 Fermat-quotient identity cited in Chapter 3 exercise solution | Local binomial/harmonic proof; adversarial algebra and independent prime checks | VERIFIED_TWICE |
 
 | DEP-004 | confirmed | C03 pb:glaisher | Original problem imported Bernoulli denominator theory from Volume 5 | Replaced *mathematical problem* with Fermat/Wilson power-sum congruence, explicitly documented | VERIFIED_TWICE (replacement) |
-| DEP-005 | confirmed | C03 pb:ramanujan5 | Original proof imported pentagonal theorem and holomorphic analysis | Preserved Ramanujan theorem, proved triple product/pentagonal/cubic identities locally using formal coefficients | CORRECTED_NEEDS_RECHECK |
+| DEP-005 | confirmed | C03 pb:ramanujan5 | Original proof imported pentagonal theorem and complex analysis | All needed identities derived coefficientwise, then independently checked line by line | VERIFIED_TWICE |
 
 ## Implementation checkpoint — first teaching-order repair (3 November 2026)
 
@@ -176,6 +176,22 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 
 **Next exact task:** check the newest GitHub Actions result on the PR head; independently reread the entire \`pb:ramanujan5\` formal proof; proceed with the remaining later-volume-dependent exercises (especially Chapter 4 and Chapter 6) and the Volume 1 prerequisite inventory. The release gates P00–P13 and complete 144-solution audit remain OPEN.
 
+## Follow-up checkpoint — Ramanujan second proof pass complete
+
+**DEP-005 is now VERIFIED_TWICE, superseding the earlier pending checkpoint.** Commits \`8d3be6e7\` and \`c09ac5d7\` clarify proof and regression arithmetic. Independent adversarial symbolic re-derivation checked each of the following, in addition to the original argument:
+
+- The coefficient of \(z^m\) in \(H(q,z)\) first appears at q-degree at least \(m^2\), since the least exponents of \(|m|\) necessary factors sum to \(1+3+\cdots+(2|m|-1)=m^2\). Substitution \(z\mapsto q^2z\) shifts that degree to at least \((m+1)^2-1\ge-1\), so the reindexed formal Laurent series remains bounded below and coefficientwise comparison is legitimate. The uncancelled factors yield exactly \(1/(qz)\), and the recurrence works for both signs of m.
+- At \(z=i\), the odd terms cancel in pairs; at \(z=-1,q\mapsto q^4\), the same theta series occurs. Its constant term is 1, so it is invertible. Checked the product split into exponent classes 2,4,6 mod 8, giving \(c_0(q)E(q^2)=c_0(q^4)E(q^8)\). The only formal power series with constant term 1 satisfying \(D(q)=D(q^4)\) is 1, by induction on degree. This proves the triple product without analytic continuation.
+- For Euler's identity, \(q=u^3,z=-u^{-1},x=u^2\) turns the three product families into all factors \(1-x^r\) exactly once. The sum exponents \(j(3j-1)/2\) are nonnegative integers, even for negative j.
+- For Jacobi's cubic identity, pair m=k with m=−k−1, cancel the common \(1-w^{-1}\) **in each finite Laurent-polynomial coefficient** and specialize \(w=1\). The quotient is \(w^{-k}(1+w+\cdots+w^{2k})\), whose value is \(2k+1\); no limit or undeveloped complex theorem appears.
+- The mod-5 square identity \(8e(j,k)\equiv(2k+1)^2+2(j+4)^2\) was re-expanded. The residue sets for squares and twice-squares mod 5 intersect negatively only at zero, so every term at exponent divisible by 5 carries a coefficient divisible by 5. The partition generating function follows by choosing multiplicities of each part; \(E(x^5)\) is invertible coefficientwise mod 5 and does not mix exponent residue classes. The vanishing class is precisely \(p(5m+4)\).
+
+**Independent finite corroboration:** 1,207 triple-product coefficient comparisons through q-degree 70; Euler pentagonal and Jacobi cubic expansions through degree 140; \(xE(x)^4\) coefficient checks at multiples of 5 through degree 140; and 51 separate partition counts for \(p(5m+4)\), m=0..50. All agreed. Finite evidence is not the proof; the symbolic derivation above is. These two passes were carried out in this work session; **independent external peer review, exact-head CI, full visual page inspection and publisher proof remain pending**.
+
+**Current count:** 8/72 named results and 9/144 exercise solutions VERIFIED_TWICE; 64 named results and 135 exercises, plus unnamed arguments, remain. No chapter is signed off.
+
+**Next:** check latest CI; inspect Chapter 4 and Chapter 6 advanced exercises for missing external theorems; complete Volume 1 prerequisite crosswalk and the rest of the theorem/exercise audits.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -192,4 +208,4 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** inspect newest exact-head CI, perform the second independent formal-series audit of pb:ramanujan5, then audit other advanced exercises for unearned later-volume tools and continue the remaining Volume 1 and Chapter 1/2 proof work. Keep all unresolved results explicit in the ledger and PR. 
+**Next exact task:** check latest-head CI; audit Chapter 4 and 6 advanced exercises for missing external theorems; finish the Volume 1 toolkit crosswalk and remaining Chapter 1/2 claims, then proceed across all 11 chapters. Do not merge before all release gates pass. 
