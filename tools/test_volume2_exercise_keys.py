@@ -247,6 +247,69 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
         m = 2**n - 1
         self.assertEqual(pow(2, m-1, m), 1)
 
+    def test_monier_strong_liar_count_on_odd_composites(self):
+        """Independently enumerate the advanced Miller--Rabin count and bound."""
+        solution = section(
+            content("ch06-quadratic-reciprocity"), "solution", "pb:rabin"
+        )
+        self.assertIn(r"\prod_ig_i", solution)
+        exceptions = []
+        for n in range(9, 400, 2):
+            if is_prime(n):
+                continue
+            factorisation = []
+            rem = n
+            for p in range(3, n + 1, 2):
+                if not is_prime(p) or rem % p:
+                    continue
+                exponent = 0
+                while rem % p == 0:
+                    exponent += 1
+                    rem //= p
+                factorisation.append((p, exponent))
+                if rem == 1:
+                    break
+            s = 0
+            d = n - 1
+            while d % 2 == 0:
+                s += 1
+                d //= 2
+            liars = 0
+            for a in range(1, n):
+                if math.gcd(a, n) > 1:
+                    continue
+                val = pow(a, d, n)
+                if val in (1, n-1):
+                    liars += 1
+                    continue
+                for _ in range(1, s):
+                    val = val * val % n
+                    if val == n - 1:
+                        liars += 1
+                        break
+            odd_parts = []
+            nus = []
+            phi = 1
+            for p, exponent in factorisation:
+                phi *= (p-1) * p**(exponent-1)
+                odd = p-1
+                nu = 0
+                while odd % 2 == 0:
+                    odd //= 2
+                    nu += 1
+                odd_parts.append(odd)
+                nus.append(nu)
+            count = math.prod(math.gcd(d, m) for m in odd_parts)
+            number_of_factors = len(nus)
+            nu = min(nus)
+            count *= 1 + (2**(number_of_factors*nu)-1) // (
+                2**number_of_factors-1
+            )
+            self.assertEqual(count, liars, f"Monier count for n={n}")
+            if 4*liars > phi:
+                exceptions.append(n)
+        self.assertEqual(exceptions, [9])
+
     def test_pell_calendar_powerful_and_gaussian_examples(self):
         self.assertEqual(13**2 + 0, 169)
         self.assertEqual(1766319049**2 - 61*226153980**2, 1)
