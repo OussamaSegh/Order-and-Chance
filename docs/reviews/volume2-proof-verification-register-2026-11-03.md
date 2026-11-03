@@ -13,9 +13,9 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 1 | `thm:bezout` | B\'ezout | Recorded in ledger | Recorded in ledger | VERIFIED_TWICE | 2 proof routes in main verification ledger |
 | 1 | `thm:gauss` | Gauss' lemma | Recorded in ledger | Recorded in ledger | VERIFIED_TWICE | 2 proof routes in main verification ledger |
 | 1 | `thm:fta` | fundamental theorem of arithmetic | Recorded in ledger | Recorded in ledger | VERIFIED_TWICE | Prime case and induction made explicit at b0273852 |
-| 1 | `thm:lame` | Lam\'e | — | — | UNREVIEWED | — |
-| 2 | `ch02-primes:theorem:1` | Euclid | — | — | UNREVIEWED | Unlabeled theorem; source line 37 |
-| 2 | `thm:euler` | Euler | — | — | UNREVIEWED | — |
+| 1 | `thm:lame` | Lam\'e | Recurrence induction logged | Independent Fibonacci-minimality audit + finite sweep | VERIFIED_TWICE | Proof ledger, 28,680 division pairs |
+| 2 | `thm:euclid-primes` | Euclid | Prime-product contradiction logged | Independent factorial-plus-one construction | VERIFIED_TWICE | Empty-list edge corrected, commit 514541c6 |
+| 2 | `thm:euler` | Euler | Euler product and harmonic inequality logged | Power-series log-tail audit + numeric check | VERIFIED_TWICE | Proof ledger; numeric range 2–15000 |
 | 2 | `lem:binom` | lemma | — | — | UNREVIEWED | — |
 | 2 | `thm:cheb` | Chebyshev-type bounds | — | — | UNREVIEWED | — |
 | 2 | `thm:bertrand` | Bertrand's postulate; Chebyshev's proof, and Erd\H{o}s's elementary proof (1932) | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- The five `VERIFIED_TWICE` rows are documented in full under "Proof audit — five individual Chapter 1 results" in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`. All other named results are genuinely UNREVIEWED under the new standard.
+- The eight `VERIFIED_TWICE` rows are documented in full under the two named proof-audit checkpoints in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`. All other named results remain UNREVIEWED under the new standard.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
