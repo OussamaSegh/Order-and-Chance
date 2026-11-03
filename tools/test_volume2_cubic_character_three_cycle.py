@@ -74,6 +74,38 @@ class TestCubicCharacterThreeCycle(unittest.TestCase):
             count += 1
         self.assertEqual(count, 22)
 
+    def test_independent_exponent_sum_and_unique_integer_norm(self):
+        # A second congruence route: omega^e = 1+e(omega-1) mod 3
+        # since (omega-1)^2 = -3 omega. Thus sum exponents
+        # e(u)+e(1-u) modulo 3 rather than group the u by 3-cycles.
+        count = 0
+        for p in primes_up_to(211):
+            if p % 3 != 1:
+                continue
+            g = primitive_root(p)
+            exponents = {pow(g, j, p): j % 3 for j in range(p - 1)}
+            total = sum(exponents[u] + exponents[(1-u) % p]
+                        for u in range(2, p))
+            self.assertEqual(total % 3, 0, p)
+            self.assertEqual((p - 2) % 3, 2, p)
+            # The coefficient of omega in the direct Jacobi sum.
+            weights = ((1, 0), (0, 1), (-1, -1))
+            a_coeff = b_coeff = 0
+            for u in range(2, p):
+                ca, cb = weights[exponents[(u * (1-u)) % p]]
+                a_coeff += ca
+                b_coeff += cb
+            actual_a = 2 * a_coeff - b_coeff
+            candidates = set()
+            for A in range(-2 * math.isqrt(p) - 2, 2 * math.isqrt(p) + 3):
+                for B in range(-math.isqrt((4*p)//27) - 1,
+                               math.isqrt((4*p)//27) + 2):
+                    if 4*p == A*A + 27*B*B and A % 3 == 1:
+                        candidates.add(A)
+            self.assertEqual(candidates, {actual_a}, p)
+            count += 1
+        self.assertEqual(count, 22)
+
     def test_character_problem_has_no_future_book_prerequisite(self):
         source = CH11.read_text(encoding="utf-8")
         exercise = source.split(r"\label{pb:fermatcubic}", 1)[1].split(
