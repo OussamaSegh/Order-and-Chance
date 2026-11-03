@@ -108,3 +108,27 @@ All source-local IDs and cross-references must be rechecked by the
 full CI suite after these edits. The remaining mathematical proof
 and exercise audit is substantial. Do not convert this partial audit
 into a proof-complete, CI-green or publication-ready sign-off.
+
+## Further exercise-domain and numerical checks
+
+- In Chapter 4's optional Eisenstein trigonometric reciprocity
+  exercise, part (a) now specifies that $q$ is a **positive** odd integer.
+  The original phrase "let $q$ be odd" included negative integers for
+  which the asserted product indexed from $1$ to $(q-1)/2$ was not the
+  formula proved in the solution.
+- In Chapter 1, the reduced-random-fraction problem now chooses $a,b$
+  independently and uniformly on $\{1,\ldots,N\}$ and explicitly takes
+  $N\to\infty$. Without a specified finite experiment or limiting
+  process, its statement "with probability $1/(p+1)$" was ambiguous.
+- Independently enumerated small integers as sanity checks, separate
+  from the source regression suite: Legendre's corrected sieve formula
+  passed **8,474** pairs of $x,z$ ($1\le x\le90$,
+  $\max(2,\lceil\sqrt x\rceil)\le z\le100$); the representation formula
+  $r_2(n)=4\sum_{d\mid n}\chi_4(d)$ and the two-square prime-exponent
+  criterion each passed **120** integers; quadratic reciprocity passed
+  **650** ordered pairs of distinct odd primes at most $103$.
+  Finite enumeration can find counterexamples but cannot certify a
+  theorem for all inputs.
+
+The test matrix is evidence for these specific formulas, **not** an
+audit of every chapter, every exercise solution, or every proof.
