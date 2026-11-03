@@ -4,7 +4,7 @@
 
 This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/13/16/17/8/8/8/8/19**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
 
-**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Nine exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys, the redesigned factorial sum and the Ramanujan Journey). Its second pass separately checked the formal substitutions, cancellation, signs and coefficient extraction; finite computations support but do not prove the general statements. Independent external review and final-head CI remain open. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
+**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Ten exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys, the redesigned factorial sum, Ramanujan Journey and the redesigned large-prime-factor exercise). Its second pass separately checked the formal substitutions, cancellation, signs and coefficient extraction; finite computations support but do not prove the general statements. Independent external review and final-head CI remain open. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
 
 | Printed chapter | Key | Grade | Pass A | Pass B | Earlier-tool check | Status | Finding / source |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
@@ -66,7 +66,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 4 | `ex:t1-mu12` | ★ | — | — | — | UNREVIEWED | — |
 | 4 | `pb:eisensine` | Journey | — | — | — | UNREVIEWED | — |
 | 4 | `pb:euler` | ★★ | — | — | — | UNREVIEWED | — |
-| 4 | `pb:nsq1` | ★★★ | — | — | — | UNREVIEWED | — |
+| 4 | `pb:nsq1` | ★★★ | Chebyshev/factorial prime-sum proof | Independent prime-power root, endpoint and asymptotic audit | PASS | VERIFIED_TWICE | Replaced P(x)>x by P(x)>x^(1−δ) for fixed δ>0; see main ledger |
 | 4 | `pb:sumsquares` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:findroots` | ★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:period` | ★ | — | — | — | UNREVIEWED | — |
