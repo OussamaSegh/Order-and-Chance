@@ -1,16 +1,28 @@
 # Description
 
-Why does Euclid's algorithm find more than a greatest common divisor? Why can a number be a square modulo one prime and not another? How can a good rational approximation produce an exact solution to an equation in integers?
+**The integers are simple to define. Their hidden patterns are anything but simple.**
 
-This is the second volume of *Order and Chance*. It takes the proof-making habits of Volume 1, *First Principles*, into the arithmetic of whole numbers. No abstract algebra course is assumed: new tools are defined and proved where they become useful.
+Why can 5 be written as a sum of two squares while 7 cannot? Why do certain equations have infinitely many integer solutions, while others have none? And how can something as elementary as division with a remainder reveal a deep mathematical law?
 
-In four parts and eleven chapters, the book moves from divisibility, prime factorisation, congruences and arithmetic functions to primitive roots and quadratic reciprocity. The questions then become more geometric: which numbers are sums of two squares, how can we describe all integer solutions of an equation, and why do continued fractions solve Pell's equation? In the Gaussian and Eisenstein integers, changing the ring changes what it means to factor a number. The closing chapter introduces Dirichlet characters, Euler products and an exact elementary sieve, while explaining what these tools do not yet prove about the distribution of primes.
+*The Integers: Primes, Patterns and Proofs* is Volume 2 of *Order and Chance: The Hidden Architecture of Mathematics*. Building on the proof-making foundations of Volume 1, it takes readers into the world of number theory, where familiar numbers reveal unexpected connections.
 
-The proofs are accompanied by worked calculations, mathematical diagrams and historical context. All 144 graded exercises have a hint and a full solution, including the reasoning that finds the key idea. The first-reading path is complete on its own; advanced and later-volume explorations are explicitly marked. An arithmetic field guide brings together the definitions, checks and strategies worth keeping.
+**A journey from simple calculations to deeper structure**
 
-The next volume, *Symmetry: Groups, Rings and Fields*, develops the common structure behind residue groups, the Gaussian integers and arithmetic characters. Deeper results about prime distribution, ideals and p-adic numbers belong to later volumes, not to the prerequisites here.
+Across four parts and eleven chapters, you will explore divisibility and Euclid's algorithm, prime numbers, modular arithmetic and arithmetic functions. Discover primitive roots and quadratic reciprocity, investigate sums of squares and Diophantine equations, and use continued fractions to solve Pell's equation.
 
-For readers who want not only to find patterns in numbers, but to understand why those patterns hold.
+The journey continues through Gaussian and Eisenstein integers to Dirichlet characters, Euler products and elementary sieves---revealing both the power of these methods and the questions that require deeper mathematics.
+
+**Learn mathematics by understanding its proofs**
+
+The book includes worked examples, diagrams, historical context and 144 graded exercises, each with a hint and a complete solution. Explanations show not only why results are true, but how the key ideas can be found.
+
+A clear foundational route lets you study the essential material before returning to optional advanced explorations. No abstract algebra course is assumed; Volume 1 provides the mathematical foundations for this journey.
+
+An *Arithmetic Field Guide* brings together essential definitions and strategies, while the final chapters prepare the transition to Volume 3.
+
+The next volume, *Symmetry: Groups, Rings and Fields*, develops the shared structure behind the number systems and mathematical operations encountered here. Deeper results about prime distribution, ideal theory and p-adic numbers belong to later volumes.
+
+Written for curious readers and independent learners who want to move beyond calculation and discover **why the patterns of mathematics hold**.
 
 # Keywords
 
