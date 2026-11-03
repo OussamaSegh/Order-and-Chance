@@ -20,7 +20,7 @@ CHAPTERS = [
     "ch09-diophantine", "ch08-continued-fractions",
     "ch10-gaussian-eisenstein", "ch14-characters",
 ]
-EXPECTED_COUNTS = [16, 11, 21, 13, 15, 17, 8, 8, 8, 8, 19]
+EXPECTED_COUNTS = [15, 11, 21, 13, 16, 17, 8, 8, 8, 8, 19]
 
 
 def content(chapter):
@@ -102,6 +102,67 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
             r"$\star\star\star$": 20,
             "Journey": 7,
         })
+
+    def test_fibonacci_gcd_journey_follows_its_proved_prerequisite(self):
+        """A solution cannot depend on a problem printed four chapters later."""
+        chapter1 = content("ch01-divisibility")
+        chapter5 = content("ch05-primitive-roots")
+        self.assertNotIn(r"\label{pb:fibcoprime}", chapter1)
+        self.assertLess(
+            chapter5.index(r"\label{pb:gcdmean}"),
+            chapter5.index(r"\label{pb:fibcoprime}"),
+        )
+        gcd_solution = section(chapter5, "solution", "pb:gcdmean")
+        fib_solution = section(chapter5, "solution", "pb:fibcoprime")
+        self.assertIn(
+            r"C(M)=\sum_{d\le M}\mu(d)\left\lfloor\frac Md\right\rfloor^2",
+            gcd_solution,
+        )
+        self.assertIn(r"\sum_{g>G}(\log g)/g^2", gcd_solution)
+        self.assertNotIn(r"\zeta'(2)", gcd_solution)
+        self.assertNotIn("later characters chapter",
+                         section(chapter5, "exercise", "pb:gcdmean"))
+        self.assertIn(r"Problem~\ref{pb:gcdmean}", fib_solution)
+
+        # A finite, independent sanity check is not a general proof.
+        fib = [0, 1]
+        for _ in range(60):
+            fib.append(fib[-1] + fib[-2])
+        for a in range(1, 24):
+            for b in range(1, 24):
+                g = math.gcd(a, b)
+                self.assertEqual(math.gcd(fib[a], fib[b]), fib[g])
+                self.assertEqual(
+                    math.gcd(fib[a], fib[b]) == 1, g in (1, 2)
+                )
+        for n in (5, 10, 30):
+            # Sum over all d|gcd(a,b) of mu(d) is 1 exactly when gcd=1.
+            # We verify the same count using a distinct inclusion-exclusion
+            # over the prime divisors of d.
+            def mobius(d):
+                primes = []
+                p = 2
+                left = d
+                while p * p <= left:
+                    if left % p == 0:
+                        left //= p
+                        if left % p == 0:
+                            return 0
+                        primes.append(p)
+                    p += 1
+                if left > 1:
+                    primes.append(left)
+                return (-1) ** len(primes)
+
+            count = sum(
+                math.gcd(a, b) == 1
+                for a in range(1, n + 1)
+                for b in range(1, n + 1)
+            )
+            self.assertEqual(
+                count,
+                sum(mobius(d) * (n // d) ** 2 for d in range(1, n + 1)),
+            )
 
     def test_imo_1988_vieta_jump_requires_a_positive_integer_root(self):
         text = section(content("ch09-diophantine"), "solution", "ex:imo88")
