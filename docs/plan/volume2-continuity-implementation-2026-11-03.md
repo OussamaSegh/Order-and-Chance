@@ -86,7 +86,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Update `kdp.md`, `blurb.tex`, or publication handoff **only if** the changed reading route makes their claims inaccurate.
 - **Exit gate:** introductory contract, TOC, chapter bridges, field guide, back cover and listing agree on prerequisites and outcomes.
 
-### Step 8 — Rebuild, test and inspect every output [started]
+### Step 8 — Rebuild, test and inspect every output [completed]
 
 - Run the Python unit suite including Volume 2 manuscript regression tests, and check document references and chapter/figure assets.
 - Run `./build.sh volume2-integers` to regenerate the reading PDF, EPUB, online reader, print interior and current-page-count paperback wrap.
@@ -94,7 +94,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Run canonical KDP structural/provenance and cover checks. Review pages with mathematical formulas and the chapter transitions, and verify the correct ISBN line and EAN-13 barcode in the **new** wrap.
 - **Exit gate:** successful CI build and independent proof/render checks; the print cover's spine matches the freshly exported page count.
 
-### Step 9 — Editorial acceptance and publishing gate [pending]
+### Step 9 — Editorial acceptance [completed]; publisher-side proof [pending]
 
 - Document a release checklist and remaining limitations in the review ledger; inspect the Kindle EPUB and KDP Print Previewer separately.
 - Do not mark the manuscript publication-ready solely because static tests or CI are green. KDP ISBN association, upload, final Print Previewer and physical proof remain publisher-side verifications.
@@ -440,4 +440,47 @@ the latest full GitHub workflow passes the new post-build check
 and site aggregation. Step 9 also requires Kindle Previewer,
 KDP's physical/Print Previewer and ISBN-account checks.
 Keep PR #97 draft, not release-ready, and do not merge yet.
+
+## Final repository acceptance — 3 November 2026
+
+**Step 8 is completed.** GitHub Actions
+[Build books #1435](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976)
+finished with overall **success** on last tested manuscript-and-automation
+checkpoint `631c33a9723f657b2d37f715a11423bd44737781`:
+**18 successful jobs, one intentionally skipped publishing job, no failures**.
+In particular the brand-new Volume 2 post-build cross-format QA was green
+and exported artifact
+[books-volume2-integers (13234583338)](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976/artifacts/13234583338).
+Its results confirm 314 reading pages, 313 paperback interior pages,
+314 KDP-counted pages, 0.737-inch matching spine, eleven actual
+printed chapters, and all 144 exercise/hint/solution triples
+in EPUB and HTML. The independent rendered-presentation, bar-code and
+link audit is in
+`docs/reviews/volume2-production-proof-audit-2026-11-03.md`.
+Step 8's actual-artifact and integrated-CI exit gates have therefore passed.
+
+**Step 9 repository editorial acceptance is completed** via the
+explicit final release handoff in
+`docs/reviews/volume2-final-acceptance-and-kdp-handoff-2026-11-03.md`.
+The source content, mathematical audit and KDP-export artifacts are
+ready for repository integration. This does **not** constitute
+publication signoff or external mathematical peer review.
+
+**Publisher-specific items still pending** are explicit and cannot
+be attested from the repository: the author's KDP ISBN assignment
+to paperback 9798167208650, matching interior/cover upload,
+KDP Print Previewer trim/colour/bleed acceptance, Kindle Previewer
+device checks, and the order/inspection of an actual physical proof.
+These belong to the author/publisher after repository integration.
+No KDP upload, published-state change, Amazon ISBN registration,
+edition tag or public-release assertion is authorized by this
+editorial completion.
+
+**Provenance rule:** following this final documentation-only update,
+the manuscript, typesetting, ISBN barcode generation and post-build
+QA code are unchanged from the green build #1435. If any production
+source/layout changes are introduced, rebuild the paperback interior
+and matching cover together and obtain fresh green CI before
+submitting to KDP. GitHub status for the final documentation commit
+must be reported separately and never silently inferred from #1435.
 
