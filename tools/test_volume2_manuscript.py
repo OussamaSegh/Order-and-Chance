@@ -106,6 +106,16 @@ class TestVolume2Manuscript(unittest.TestCase):
                 labels = LABEL.findall(source)
                 self.assertEqual(len(labels), len(set(labels)))
 
+    def test_early_chapter_roadmap_matches_printed_order(self):
+        """Orders are Chapter 5; characters are taught in Chapter 11, not Volume 3."""
+        primes = (CHAPTER_DIR / "ch02-primes.tex").read_text(encoding="utf-8")
+        congruences = (CHAPTER_DIR / "ch03-congruences.tex").read_text(encoding="utf-8")
+        self.assertIn(r"Chapter~\ref{ch:characters}", primes)
+        self.assertNotIn("characters, built in Volume~3", primes)
+        self.assertIn(r"\subsection*{A counting identity for divisor sums}", congruences)
+        self.assertIn(r"multiplicative order in Chapter~\ref{ch:orders}", congruences)
+        self.assertNotIn("order is defined as the least positive exponent in the next chapter", congruences)
+
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:
             with self.subTest(chapter=chapter):
