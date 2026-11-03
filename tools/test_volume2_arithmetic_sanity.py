@@ -111,6 +111,29 @@ class TestVolume2ArithmeticSanity(unittest.TestCase):
                 with self.subTest(p=p, q=q):
                     self.assertEqual(lhs, rhs)
 
+    def test_kloosterman_fourth_moment_and_small_prime_bound(self):
+        """The fourth-moment formula holds at 3; its bound improves only from 5."""
+        source = (CHAPTERS / "ch03-congruences.tex").read_text(encoding="utf-8")
+        solution = source.split(r"\begin{solution}{pb:kloosterman}", 1)[1].split(
+            r"\end{solution}", 1
+        )[0]
+        self.assertIn(r"For $p=3$", solution)
+        self.assertIn(r"p\ge5", solution)
+        for p in (3, 5, 7, 11):
+            pair_counts = {}
+            inverses = {x: pow(x, -1, p) for x in range(1, p)}
+            for x in range(1, p):
+                for y in range(1, p):
+                    key = ((x + y) % p, (inverses[x] + inverses[y]) % p)
+                    pair_counts[key] = pair_counts.get(key, 0) + 1
+            quadruples = sum(count * count for count in pair_counts.values())
+            numerator = p * p * quadruples - (p - 1) ** 4 - (p - 1)
+            self.assertEqual(numerator % (p - 1), 0)
+            moment = numerator // (p - 1)
+            with self.subTest(p=p):
+                self.assertEqual(moment, 2 * p ** 3 - 3 * p ** 2 - 3 * p)
+                self.assertEqual(1.19 * p ** .75 < p - 1, p >= 5)
+
     def test_primitive_pythagorean_parameters(self):
         for m in range(2, 16):
             for n in range(1, m):
