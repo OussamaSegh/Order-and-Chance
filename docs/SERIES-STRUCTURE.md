@@ -114,11 +114,11 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 ## Volume 2, The Integers (volume2-integers), formerly Volume 1: 41 problems
 
 - `ch03-congruences.tex` (9): pb:primepoly, pb:fpfunctions, pb:aks, pb:wolsten, pb:jacobsthal, pb:morley, pb:glaisher, pb:ramanujan5, pb:kloosterman
-- `ch05-primitive-roots.tex` (5): pb:smith, pb:lambert, pb:ramsum, pb:phipm1, pb:gcdmean
+- `ch05-primitive-roots.tex` (6): pb:smith, pb:lambert, pb:ramsum, pb:phipm1, pb:gcdmean, pb:fibcoprime
 - `ch06-quadratic-reciprocity.tex` (8): pb:primsum, pb:phimodp, pb:fermatnum, pb:carmichael, pb:pratt, pb:rabin, pb:waring, pb:squaresmodpk
 - `ch04-arithmetic-functions.tex` (4): pb:eisensine, pb:euler, pb:nsq1, pb:sumsquares
 - `ch14-characters.tex` (11): pb:pseudo, pb:pocklington, pb:fermatquot, pb:mullin, pb:artin, pb:fermatcubic, pb:euclidgame, pb:pascalthree, pb:powerful, pb:jacobi, pb:densities
-- `ch01-divisibility.tex` (4): pb:valuation, pb:parity, pb:fibcoprime, pb:orchard
+- `ch01-divisibility.tex` (3): pb:valuation, pb:parity, pb:orchard
 
 ## Volume 3, Symmetry (volume3-symmetry), formerly Volume 2: 31 problems
 
