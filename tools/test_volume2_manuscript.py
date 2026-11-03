@@ -117,6 +117,29 @@ class TestVolume2Manuscript(unittest.TestCase):
                         "Unbalanced LaTeX environment: " + env,
                     )
 
+    def test_sieve_theorem_counts_cutoffs_past_x(self):
+        """Legendre's sieve has a min(x,z) boundary, not pi(z) alone."""
+        source = (CHAPTER_DIR / "ch14-characters.tex").read_text(encoding="utf-8")
+        self.assertIn(r"\pi(\min\{x,z\})", source)
+
+        def prime(n):
+            return n >= 2 and all(n % d for d in range(2, int(n ** .5) + 1))
+
+        def pi(n):
+            return sum(prime(k) for k in range(2, int(n) + 1))
+
+        def sifted(x, z):
+            return sum(
+                all(n % p for p in range(2, z + 1) if prime(p))
+                for n in range(1, x + 1)
+            )
+
+        self.assertEqual(sifted(4, 10), 1)
+        for x in range(1, 31):
+            for z in range(max(2, int(x ** .5) + 1), 36):
+                with self.subTest(x=x, z=z):
+                    self.assertEqual(sifted(x, z), 1 + pi(x) - pi(min(x, z)))
+
     def test_new_tikz_plates_exist(self):
         for name in ("ch01-remainder-staircase.tex", "ch03-unit-classes.tex"):
             with self.subTest(plate=name):
