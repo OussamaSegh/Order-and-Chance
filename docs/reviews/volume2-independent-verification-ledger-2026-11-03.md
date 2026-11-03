@@ -4,14 +4,14 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. No theorem, hint or exercise has yet been recorded as independently verified twice in this ledger. No final build or page-by-page inspection has been executed for this PR.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Five named Chapter 1 results are now documented as VERIFIED_TWICE in the proof table below; no exercise solution has yet completed the full two-pass acceptance protocol. No final build or page-by-page inspection has been executed for this PR.
 
 ### Source discovery completed (inventory, not proof verification)
 
 - Read canonical house voice: docs/WRITING-STYLE.md; role brief: docs/agents/mathematician-writer.md; current editorial author instructions: AGENTS.md (opening section).
 - Read Volume 2 main.tex, preface, legacy continuity plan and prior exercise and prerequisite ledgers.
 - Printed chapters: ch01, ch02, ch03, ch04, ch05, ch06, ch07, ch09, ch08, ch10, ch14. Legacy stems ch09 and ch08 must **not** be confused with printed chapter numbers.
-- Independently fetched each of 11 current chapter files via GitHub and counted 144 exercise environments, 144 hint environments, 144 solution environments, and 144 writeup tags. Per printed chapter: **16, 11, 21, 13, 15, 17, 8, 8, 8, 8, 19**.
+- Independently fetched each of 11 current chapter files via GitHub and counted 144 exercise environments, 144 hint environments, 144 solution environments, and 144 writeup tags. *Starting baseline* per printed chapter: **16, 11, 21, 13, 15, 17, 8, 8, 8, 8, 19**; *current branch* after moving one prerequisite-dependent exercise: **15, 11, 21, 13, 16, 17, 8, 8, 8, 8, 19**.
 - Current style contract says one-star core exercises should be navigable with Volume 1 + earlier Volume 2. The new commission strengthens this to **every** full exercise solution, including optional advanced work.
 - No local clone is available from this execution environment: github.com DNS is not reachable from the local container. GitHub repository reads/writes work through the connected GitHub tools. Thus **no claim of local tests or LaTeX compilation** is made. CI must prove executable gates on the exact branch head.
 
@@ -30,17 +30,17 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | Gate | State | Actual evidence and remaining obligation |
 | --- | --- | --- |
 | P00 Exact baseline inventory and executable tests | IN_PROGRESS | GitHub source count and original main SHA captured. All source IDs, Volume 1 actual contents, runnable test results still pending. |
-| P01 Volume 1 prerequisite crosscheck | UNREVIEWED | Need exact proof locations. |
+| P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Confirmed well ordering, strong induction, Fibonacci gcd/Binet and Basel proof sites; rest pending. |
 | P02 Continuous story architecture | UNREVIEWED | Current four-part TOC is a baseline, not fixed. |
 | P03 First-use dependency graph | IN_PROGRESS | Repaired forward dependency pb:fibcoprime and later analytic dependency pb:gcdmean; rest pending. |
-| P04 All theorem/proof second checks | UNREVIEWED | No statement certified under this new standard. |
+| P04 All theorem/proof second checks | IN_PROGRESS | Five Chapter 1 named results VERIFIED_TWICE with explicit evidence; all others pending. |
 | P05 Every worked example and figure | UNREVIEWED | No example certified under this new standard. |
 | P06 All exercises independent reconstruction | IN_PROGRESS | Reworked pb:gcdmean and relocated pb:fibcoprime; 0 first-pass certified on full protocol. |
 | P07 All exercises independent adversarial second pass | IN_PROGRESS | Finite arithmetic cross-checks for repaired cases; 0 VERIFIED_TWICE. |
-| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | First targeted edits in C01/C05; full chapter rereads missing. |
+| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C03/C05 proof and prerequisite repairs; full chapter rereads missing. |
 | P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
 | P10 Full-book voice/transition pass | UNREVIEWED | Existing edited preface is baseline. |
-| P11 Tests and exact-head CI | UNREVIEWED | No branch-head CI checked yet. |
+| P11 Tests and exact-head CI | IN_PROGRESS | Early run failed stale pre-move counts; tests updated; exact-latest-head result pending. |
 | P12 Every actual PDF/EPUB/site page | UNREVIEWED | No current-branch artifacts inspected. |
 | P13 Final editorial sign-off (not KDP approval) | UNREVIEWED | Independent review and author KDP proof later. |
 
