@@ -4,7 +4,7 @@
 
 This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/13/16/17/8/8/8/8/19**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
 
-**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Eight exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys and the redesigned factorial sum). The substantially rewritten Ramanujan Journey remains CORRECTED_NEEDS_RECHECK pending its second full symbolic audit; numeric coefficient checks alone cannot certify it. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
+**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Nine exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys, the redesigned factorial sum and the Ramanujan Journey). Its second pass separately checked the formal substitutions, cancellation, signs and coefficient extraction; finite computations support but do not prove the general statements. Independent external review and final-head CI remain open. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
 
 | Printed chapter | Key | Grade | Pass A | Pass B | Earlier-tool check | Status | Finding / source |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
@@ -53,7 +53,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 3 | `pb:jacobsthal` | ★★ | — | — | — | UNREVIEWED | — |
 | 3 | `pb:morley` | ★★ | Binomial/harmonic reconstruction | Adversarial modulus audit + primes ≤997 | PASS | VERIFIED_TWICE | DEP-003, no Chapter 11 input |
 | 3 | `pb:glaisher` | ★★★ | Fermat/Wilson quotient product proof | Adversarial modulus check + 24 primes ≤97 | PASS | VERIFIED_TWICE | Replaced old Bernoulli question; documented in main ledger |
-| 3 | `pb:ramanujan5` | Journey | Internal formal Jacobi/Euler derivation | Finite 1,207 coefficient checks; second proof pending | NEEDS_RECHECK | CORRECTED_NEEDS_RECHECK | No Volume 5 input; proof audit still open |
+| 3 | `pb:ramanujan5` | Journey | Coefficientwise Jacobi/Euler derivation | Adversarial second symbolic audit + 1,207 independent coefficients | PASS | VERIFIED_TWICE | No Volume 5 dependency; details in main ledger |
 | 3 | `pb:kloosterman` | ★★★ | — | — | — | UNREVIEWED | — |
 | 4 | `ex:360` | ★ | — | — | — | UNREVIEWED | — |
 | 4 | `ex:muid` | ★ | — | — | — | UNREVIEWED | — |
