@@ -116,6 +116,79 @@ class TestVolume2Manuscript(unittest.TestCase):
         self.assertIn(r"multiplicative order in Chapter~\ref{ch:orders}", congruences)
         self.assertNotIn("order is defined as the least positive exponent in the next chapter", congruences)
 
+    def test_volume1_bridges_have_a_proved_source_and_a_concrete_payoff(self):
+        """Step 2: the referenced Volume 1 tools must be present in that volume."""
+        first = ROOT / "volume1-first-principles" / "chapters"
+        counting = (first / "ch02-counting.tex").read_text(encoding="utf-8")
+        complex_roots = (first / "ch02-complex-roots.tex").read_text(encoding="utf-8")
+        sums = (first / "ch01-sums.tex").read_text(encoding="utf-8")
+        self.assertIn(r"\begin{theorem}[inclusion--exclusion]", counting)
+        self.assertIn(r"\begin{proposition}[roots of unity]", complex_roots)
+        self.assertIn(r"\begin{theorem}[roots-of-unity filter]", complex_roots)
+        self.assertIn("[Brahmagupta's identity]", complex_roots)
+        self.assertIn(r"\begin{reminder}[well ordering]", sums)
+
+        expected = {
+            "ch04-arithmetic-functions": (
+                "From Volume 1: inclusion--exclusion",
+                r"\varphi(6)=6-3-2+1=2",
+            ),
+            "ch05-primitive-roots": (
+                "From Volume 1: roots of unity",
+                r"2^3\equiv3",
+            ),
+            "ch10-gaussian-eisenstein": (
+                "From Volume 1: complex numbers",
+                r"N(1+3i)=10",
+            ),
+            "ch14-characters": (
+                "From Volume 1 to Volume 3",
+                r"\mathbf 1_{n\equiv1\pmod4}",
+            ),
+            "ch02-primes": (
+                "First reading and deeper reading",
+                "proof by contradiction",
+            ),
+            "ch06-quadratic-reciprocity": (
+                "Three questions, in the right order",
+                "pair each nonzero class",
+            ),
+            "ch09-diophantine": (
+                "Choose a first route",
+                "well-ordering principle",
+            ),
+        }
+        for name, phrases in expected.items():
+            with self.subTest(chapter=name):
+                src = (CHAPTER_DIR / (name + ".tex")).read_text(encoding="utf-8")
+                for phrase in phrases:
+                    self.assertIn(phrase, src)
+        ch1 = (CHAPTER_DIR / "ch01-divisibility.tex").read_text(encoding="utf-8")
+        self.assertIn("Recall the first groups from Volume~1", ch1)
+        ch11 = (CHAPTER_DIR / "ch14-characters.tex").read_text(encoding="utf-8")
+        self.assertIn(
+            r"Volume~1 introduced group language; Chapter~\ref{ch:congruences}",
+            ch11,
+        )
+
+    def test_volume1_bridge_examples_are_mathematically_sound(self):
+        """Check the arithmetic displayed in the four principal bridges."""
+        from math import gcd
+
+        self.assertEqual([k for k in range(1, 7) if gcd(k, 6) == 1], [1, 5])
+        self.assertEqual(6 - 3 - 2 + 1, 2)
+        self.assertEqual([pow(2, k, 5) for k in range(5)], [1, 2, 4, 3, 1])
+        self.assertEqual((1 + 1j) * (2 + 1j), 1 + 3j)
+        self.assertEqual(1**2 + 3**2, (1**2 + 1**2) * (2**2 + 1**2))
+
+        for n in range(-20, 21):
+            chi4 = 0 if n % 2 == 0 else (1 if n % 4 == 1 else -1)
+            filtered = (int(n % 2 != 0) + chi4) // 2
+            self.assertEqual(filtered, int(n % 4 == 1))
+        for p in (3, 5, 7, 11, 13):
+            squares = {k * k % p for k in range(1, p)}
+            self.assertEqual(len(squares), (p - 1) // 2)
+
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:
             with self.subTest(chapter=chapter):
