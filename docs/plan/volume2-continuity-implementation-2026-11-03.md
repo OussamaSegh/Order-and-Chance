@@ -32,7 +32,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 
 ## Step-by-step implementation
 
-### Step 1 — Establish the baseline and chapter sequence [started]
+### Step 1 — Establish the baseline and chapter sequence [completed]
 
 - Inventory all eleven chapter inputs, the existing exercise/hint/solution corpus, and references. Save the approved TOC here.
 - Apply the approved `main.tex` part and chapter order and update the preface to match it.
@@ -63,7 +63,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Review hypotheses at their point of use, especially coprimality, finite/infinite counts, convergence, prime versus composite moduli, and assumptions in norm arguments.
 - **Exit gate:** no main-route theorem, worked example or one-star exercise requires an unproved later result.
 
-### Step 5 — Audit mathematics and examples [pending]
+### Step 5 — Audit mathematics and examples [started]
 
 - Check every theorem and proof end-to-end (not only syntax), with explicit edge cases and computations.
 - Verify prime-distribution estimates, the reciprocity sign and lifting conditions, complete Pell-solution arguments, sum-of-squares criteria, Euclidean norms in the two quadratic rings, and Euler-product convergence.
@@ -86,7 +86,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Update `kdp.md`, `blurb.tex`, or publication handoff **only if** the changed reading route makes their claims inaccurate.
 - **Exit gate:** introductory contract, TOC, chapter bridges, field guide, back cover and listing agree on prerequisites and outcomes.
 
-### Step 8 — Rebuild, test and inspect every output [pending]
+### Step 8 — Rebuild, test and inspect every output [started]
 
 - Run the Python unit suite including Volume 2 manuscript regression tests, and check document references and chapter/figure assets.
 - Run `./build.sh volume2-integers` to regenerate the reading PDF, EPUB, online reader, print interior and current-page-count paperback wrap.
@@ -113,3 +113,7 @@ The single draft PR is a work container: it can receive these batches as further
 ## Audit progress note — 3 November 2026
 
 The first PR CI run failed at the canonical part catalog check (before TeX). The catalog and cover-source SHA-256 have since been synchronized. A source-level reference scan found 266 distinct labels, no duplicate or unresolved local reference targets, and 144 matching exercise/hint/solution IDs. Obsolete printed chapter numbers and two misleading mathematical destination claims were corrected. Five arithmetic-functions challenges now explicitly identify their later prerequisites; the rest of the exercise corpus is **not yet independently mathematically audited**. See `docs/reviews/volume2-continuity-source-audit-2026-11-03.md`. The full production build and mathematics gates remain open.
+
+## Build and proof-audit checkpoint — 3 November 2026
+
+Run [41556183082](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41556183082) passed on its own SHA, including Volume 2 production export tests. Later commits on the branch repaired two mathematics boundary cases, completed both Hensel lifts, and improved advanced-prerequisite labels. Seven new finite arithmetic sanity checks were committed. **The earlier green CI result does not cover those later commits.** Full independent mathematics review, current-head build, and manual PDF, EPUB and KDP proof checks remain open. See docs/reviews/volume2-continuity-source-audit-2026-11-03.md.
