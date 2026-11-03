@@ -343,7 +343,7 @@ class TestVolume2Manuscript(unittest.TestCase):
                     )
                     self.assertLessEqual(
                         target,
-                        (chapter_index, statement.start() + ref.start()),
+                        (chapter_index, statement.start(1) + ref.start()),
                         f"Proof cites an unproved later result: "
                         f"{CHAPTERS[chapter_index]} -> {ref.group(1)}",
                     )
