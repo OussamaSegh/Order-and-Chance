@@ -2,9 +2,9 @@
 
 **Edition:** manuscript on draft PR #103, initial register created 3 November 2026. **Branch:** `editorial/volume2-independent-proof-and-reader-rewrite-20261103`. **Source snapshot:** branch head `654f869d8ec3e8b98fff5df5b1e7bb1d904212f3` before this file is added.
 
-This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/10/16/20/8/8/8/8/19**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
+This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/10/16/19/8/8/8/8/20**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
 
-**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Eleven exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys, the redesigned factorial sum, Ramanujan Journey and the redesigned large-prime-factor exercise, and the relocated sums-of-squares problem). The Ramanujan problem's second pass separately checked the formal substitutions, cancellation, signs and coefficient extraction; finite computations support but do not prove the general statements. Independent external review and final-head CI remain open. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
+**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Twelve exercises now have two recorded mathematical checks (four Chapter 1 keys, Morley, the gcd/Fibonacci journeys, the redesigned factorial sum, Ramanujan Journey and the redesigned large-prime-factor exercise, the relocated sums-of-squares problem, and the self-contained cyclotomic-factor-degree problem). The Ramanujan problem's second pass separately checked the formal substitutions, cancellation, signs and coefficient extraction; finite computations support but do not prove the general statements. Independent external review and final-head CI remain open. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
 
 | Printed chapter | Key | Grade | Pass A | Pass B | Earlier-tool check | Status | Finding / source |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
@@ -91,12 +91,11 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 6 | `ex:t1-residue-chance` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:t1-res11` | ★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:primsum` | ★★ | — | — | — | UNREVIEWED | — |
-| 6 | `pb:phimodp` | ★★ | — | — | — | UNREVIEWED | — |
+| 6 | `pb:phimodp` | ★★ | Quotient field from polynomial Bézout; multiplicative product and degree bound | Independent Frobenius-orbit polynomial proof; 275 finite-field factor pairs, 70 prime-power congruences, 40 trial-factor and 44 index checks | PASS | VERIFIED_TWICE | DEP-008: no Volume 3 extension theorem; n≥2, p∤n; p=2 and m=1 cases checked |
 | 6 | `pb:fermatnum` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:carmichael` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:pratt` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:rabin` | Journey | — | — | — | UNREVIEWED | — |
-| 6 | `pb:waring` | ★★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:squaresmodpk` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:eisensine` | Journey | — | — | PASS | UNREVIEWED | Relocated after Gauss lemma and quadratic reciprocity; mathematical double-check pending |
 | 6 | `pb:euler` | ★★ | — | — | PASS | UNREVIEWED | Relocated after Jacobi symbols, primitive roots and Carmichael test; mathematical double-check pending |
@@ -152,6 +151,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 11 | `pb:powerful` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `pb:jacobi` | Journey | — | — | — | UNREVIEWED | — |
 | 11 | `pb:densities` | Journey | — | — | — | UNREVIEWED | — |
+| 11 | `pb:waring` | ★★★ | — | — | PASS | UNREVIEWED | Moved after character orthogonality and pb:fermatcubic(a,b); needs two full checks |
 
 ## Update discipline
 
