@@ -115,7 +115,7 @@ Each problem kept its label, hint, solution and figures, and was appended to an 
 
 - `ch03-congruences.tex` (9): pb:primepoly, pb:fpfunctions, pb:aks, pb:wolsten, pb:jacobsthal, pb:morley, pb:glaisher, pb:ramanujan5, pb:kloosterman
 - `ch05-primitive-roots.tex` (6): pb:smith, pb:lambert, pb:ramsum, pb:phipm1, pb:gcdmean, pb:fibcoprime
-- `ch06-quadratic-reciprocity.tex` (11): pb:primsum, pb:phimodp, pb:fermatnum, pb:carmichael, pb:pratt, pb:rabin, pb:waring, pb:squaresmodpk, pb:eisensine, pb:euler, pb:sumsquares
+- `ch06-quadratic-reciprocity.tex` (10): pb:primsum, pb:phimodp, pb:fermatnum, pb:carmichael, pb:pratt, pb:rabin, pb:squaresmodpk, pb:eisensine, pb:euler, pb:sumsquares
 - `ch04-arithmetic-functions.tex` (1): pb:nsq1
 - `ch14-characters.tex` (11): pb:pseudo, pb:pocklington, pb:fermatquot, pb:mullin, pb:artin, pb:fermatcubic, pb:euclidgame, pb:pascalthree, pb:powerful, pb:jacobi, pb:densities
 - `ch01-divisibility.tex` (3): pb:valuation, pb:parity, pb:orchard
