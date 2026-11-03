@@ -148,3 +148,16 @@ The full run [41556183082](https://github.com/OussamaSegh/Order-and-Chance/actio
 **Expanded finite verification:** Added tools/test_volume2_arithmetic_sanity.py with seven finite tests covering quadratic reciprocity, two-squares representation and criterion, primitive roots, primitive Pythagorean parametrisations, four-square existence over a bounded range, Hensel lifting, and the odd-prime Fermat quotient. Finite checks do not prove general statements.
 
 **Open gates:** The new head must pass CI separately; every remaining proof and all 144 exercise solutions still require individual correctness review; current PDF/EPUB/print wrap need visual inspection; and publisher-side KDP Print Previewer/physical proof steps remain open.
+
+## Printed-order transition review — further pass, 3 November 2026
+
+The exact-head GitHub Actions build [41596025329](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41596025329) completed successfully on commit `4983ea2a281c4066bb21816922c424ca678df45a`. This is build evidence for that SHA, not for subsequent edits or a publisher proof.
+
+A targeted review covered the Chapter 1 and Chapter 2 theorem statements and the prompts, hints and full solutions of their **26 exercises** (15 and 11 respectively). No new counterexample was established in this pass; this does **not** complete the remaining 118-exercise audit or establish proof-complete sign-off.
+
+The printed-order pass did identify three inaccurate teaching-roadmap statements:
+- Chapter 2 had said Dirichlet characters are *built in Volume 3*, although Volume 2 Chapter 11 explicitly defines and uses them. The revised closing bridge distinguishes their Volume 2 introduction, Volume 3 structural generalisation and Volume 6 analytic application.
+- Chapter 3 called the definition of multiplicative order a topic of the *next chapter*. The next printed chapter is Arithmetic Functions; orders begin in Chapter 5. The example now points to the actual labelled chapter.
+- Chapter 3 labelled Gauss's totient-sum identity as a counting identity for the *next chapter* and immediately described multiplicative orders. The transition now explains how the divisor sum prepares Chapter 4 and how orders use it subsequently in Chapter 5.
+
+A manuscript regression check guards these specific transitions against reversion. This is a continuity correction, **not** a certification of the still-open proof, exercise, latest-build visual or KDP gates.
