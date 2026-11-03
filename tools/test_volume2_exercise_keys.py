@@ -20,7 +20,7 @@ CHAPTERS = [
     "ch09-diophantine", "ch08-continued-fractions",
     "ch10-gaussian-eisenstein", "ch14-characters",
 ]
-EXPECTED_COUNTS = [15, 11, 21, 13, 16, 17, 8, 8, 8, 8, 19]
+EXPECTED_COUNTS = [15, 11, 21, 10, 16, 20, 8, 8, 8, 8, 19]
 
 
 def content(chapter):
