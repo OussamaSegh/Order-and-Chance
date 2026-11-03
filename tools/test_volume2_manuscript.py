@@ -189,6 +189,134 @@ class TestVolume2Manuscript(unittest.TestCase):
             squares = {k * k % p for k in range(1, p)}
             self.assertEqual(len(squares), (p - 1) // 2)
 
+    def test_step3_core_workshops_precede_optional_extensions(self):
+        """Readers can reach the foundation exercise route without advanced sections."""
+        core_before_optional = {
+            "ch02-primes": (
+                r"\subsection*{Proof workshop: repair a false claim about Euclid's number}",
+                r"\section{Chebyshev's bounds}",
+                "Optional route: quantitative prime bounds",
+            ),
+            "ch03-congruences": (
+                r"\subsection*{Proof workshop: what cancellation actually requires}",
+                r"\section{Lifting modulo prime powers}",
+                "Optional route: lifting polynomial roots",
+            ),
+            "ch04-arithmetic-functions": (
+                r"\subsection*{Proof workshop: invert a small divisor sum}",
+                r"\section{Average orders}",
+                "Optional route: average orders",
+            ),
+            "ch07-sums-of-squares": (
+                r"\subsection*{Proof workshop: an obstruction is not a classification}",
+                r"\section{Lattice points in a disc}",
+                "Optional route: counting lattice points",
+            ),
+            "ch09-diophantine": (
+                r"\subsection*{Proof workshop: make a nonexistence argument complete}",
+                r"\section{Rational points on conics: the chord method}",
+                "Two routes through integer equations",
+            ),
+            "ch14-characters": (
+                r"\subsection*{Proof workshop: a small character as a detector}",
+                r"\section{One series at the boundary}",
+                "Optional route: the analytic boundary",
+            ),
+        }
+        for chapter, (workshop, extension, signpost) in core_before_optional.items():
+            with self.subTest(chapter=chapter):
+                source = (CHAPTER_DIR / (chapter + ".tex")).read_text(encoding="utf-8")
+                self.assertIn(workshop, source)
+                self.assertIn(extension, source)
+                self.assertIn(signpost, source)
+                self.assertLess(source.index(workshop), source.index(extension))
+                self.assertLess(source.index(signpost), source.index(extension))
+
+        diophantine = (CHAPTER_DIR / "ch09-diophantine.tex").read_text(
+            encoding="utf-8"
+        )
+        self.assertLess(
+            diophantine.index(r"\section{Infinite descent}"),
+            diophantine.index(r"\section{Rational points on conics: the chord method}"),
+        )
+        self.assertIn(
+            r"\section{Optional workshop: Vieta jumping and descent}",
+            diophantine,
+        )
+        self.assertLess(
+            diophantine.index(r"\section{Factoring with a sum of squares}"),
+            diophantine.index(r"\section{Vieta jumping}"),
+        )
+
+    def test_step3_optional_problems_label_their_extension(self):
+        """Never route a first-time reader silently into skipped material."""
+        optional = {
+            "ch02-primes": [
+                "ex:gaps", "ex:factorial", "ex:erdosdiv",
+                "ex:furstenberg", "ex:t1-prod11",
+            ],
+            "ch03-congruences": ["ex:hensel"],
+            "ch06-quadratic-reciprocity": ["pb:rabin", "pb:squaresmodpk"],
+            "ch07-sums-of-squares": ["ex:eureka"],
+            "ch09-diophantine": [
+                "ex:mordell5", "ex:eisentri",
+                "ex:markovcoprime", "ex:imo88",
+            ],
+            "ch14-characters": [
+                "ex:t1-char-series", "ex:t1-group3", "pb:powerful",
+            ],
+        }
+        for chapter, labels in optional.items():
+            source = (CHAPTER_DIR / (chapter + ".tex")).read_text(
+                encoding="utf-8"
+            )
+            exercises = dict(re.findall(
+                r"\\begin\{exercise\}(?:\[[^\]]*\])?"
+                r"\\label\{([^}]+)\}([\s\S]*?)\\end\{exercise\}",
+                source,
+            ))
+            for label in labels:
+                with self.subTest(chapter=chapter, label=label):
+                    self.assertIn(label, exercises)
+                    self.assertRegex(exercises[label], r"(?i)optional")
+
+    def test_step3_main_route_has_no_optional_theorem_dependency(self):
+        """Core exposition must not cite the theorems inside optional blocks."""
+        boundaries = {
+            "ch02-primes": (
+                r"\section{Chebyshev's bounds}",
+                ("thm:cheb", "thm:bertrand"),
+            ),
+            "ch03-congruences": (
+                r"\section{Lifting modulo prime powers}",
+                ("thm:hensel",),
+            ),
+            "ch09-diophantine": (
+                r"\section{Rational points on conics: the chord method}",
+                ("prop:chord", "thm:mordell7", "thm:markov"),
+            ),
+            "ch14-characters": (
+                r"\section{One series at the boundary}",
+                ("prop:t1-chi4series", "prop:t1-charbound"),
+            ),
+        }
+        for chapter, (section, forbidden) in boundaries.items():
+            with self.subTest(chapter=chapter):
+                src = (CHAPTER_DIR / (chapter + ".tex")).read_text(encoding="utf-8")
+                core = src[:src.index(section)]
+                for label in forbidden:
+                    self.assertNotIn(r"\ref{" + label + "}", core)
+
+        divisibility = (CHAPTER_DIR / "ch01-divisibility.tex").read_text(
+            encoding="utf-8"
+        )
+        start = divisibility.index(r"\begin{solution}{pb:valuation}")
+        end = divisibility.index(r"\end{solution}", start)
+        self.assertIn("divisibility by the product of those powers", divisibility[start:end])
+        self.assertNotIn(
+            "by the Chinese remainder theorem.", divisibility[start:end]
+        )
+
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:
             with self.subTest(chapter=chapter):
