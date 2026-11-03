@@ -95,7 +95,7 @@ class TestChapterOneNextThreeExercises(unittest.TestCase):
         lattice = text.split(
             r"\begin{solution}{ex:t1-divisibility-lattice}",1
         )[1].split(r"\end{solution}",1)[0]
-        self.assertIn(r"v_p", supercat)
+        self.assertIn(r"e_k\\ge0", supercat)
         self.assertIn(r"\gcd(n,p-1)", n2n)
         self.assertIn(r"\operatorname{lcm}(a,b)=ab/d", lattice)
 
