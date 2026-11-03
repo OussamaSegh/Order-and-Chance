@@ -134,6 +134,20 @@ class TestVolume2ArithmeticSanity(unittest.TestCase):
                 self.assertEqual(moment, 2 * p ** 3 - 3 * p ** 2 - 3 * p)
                 self.assertEqual(1.19 * p ** .75 < p - 1, p >= 5)
 
+    def test_schur_exercise_counts_only_nonzero_polynomial_values(self):
+        """Nonzero values avoid the trivial fact that every prime divides 0."""
+        source = (CHAPTERS / "ch03-congruences.tex").read_text(encoding="utf-8")
+        exercise = source.split(r"\label{pb:primepoly}", 1)[1].split(
+            r"\end{exercise}", 1
+        )[0]
+        solution = source.split(r"\begin{solution}{pb:primepoly}", 1)[1].split(
+            r"\end{solution}", 1
+        )[0]
+        self.assertIn(r"\emph{nonzero} value", exercise)
+        self.assertIn(r"c=P(a)\ne0", solution)
+        self.assertIn(r"M=|c|p_1\cdots p_r>0", solution)
+        self.assertNotIn("If $c=0$, every prime", solution)
+
     def test_primitive_pythagorean_parameters(self):
         for m in range(2, 16):
             for n in range(1, m):
