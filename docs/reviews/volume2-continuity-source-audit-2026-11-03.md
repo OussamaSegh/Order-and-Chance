@@ -312,3 +312,39 @@ confirmation for its latest commit. No claim is made that a complete
 mathematical proof audit (Step 5), 144-solution audit (Step 6) or
 publication acceptance (Steps 8--9) has occurred. Do not merge PR #97
 on this evidence.
+
+## Step 5 — independent mathematical source pass — 3 November 2026
+
+**Completed at source-review level.** See
+docs/reviews/volume2-mathematics-examples-audit-2026-11-03.md
+for the printed-order chapter-by-chapter proof matrix, corrected
+assertions, finite arithmetic certificates and review limits.
+
+- Reviewed the **72 named results**, with **72 proof environments**,
+  and the **99 worked example blocks** in the eleven chapters.
+- Corrected mathematical/numerical errors in Chapters 7, 8, 10 and
+  11: N(2) is 13; μ(6)=+1 and μ(7)=−1; N(2−ω)=7,
+  not N(2+ω); the modular equation y²=x²+x+1
+  excludes x≡1,2 (mod 4), not all odd x; the Fermat descent
+  gives n=2u²v², not n=b². Clarified the Markov Vieta
+  move and associated diagram caption.
+- Removed an invalid analytic leap from Abel-weighted signed
+  sums to the convergence of the unweighted χ4 prime series.
+  The optional analytical bridge now states the correct
+  sum/difference argument and keeps its remaining premise explicit.
+- Tightened the hypothesis domains of Bézout, linear congruence,
+  totient divisor sum, Euler's quadratic residue count and
+  the divisor average theorem. Corrected a conic/Hasse-principle
+  overstatement and other misleading mathematical captions.
+- Corrected a π approximation and made the Chebyshev/Erdős
+  historical attribution cautious; the large Pell(61)
+  solution was externally corroborated. Step 5 added finite
+  regressions for the new arithmetic corrections.
+- Fresh source scan: **11** printed chapters, **144** matching
+  exercise/hint/solution IDs, **266** source-local labels,
+  no dangling local refs, balanced checked LaTeX environments.
+
+**Still open:** exact-head CI, Step 6 exhaustive individual exercise
+correctness and difficulty review, Step 7 reader/metadata polish,
+Step 8 actual latest-head PDF/EPUB/print/KDP-wrap visual checks
+and Step 9 publisher/physical proof. The PR remains draft.
