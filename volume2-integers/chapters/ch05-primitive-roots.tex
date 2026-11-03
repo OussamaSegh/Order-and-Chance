@@ -506,18 +506,32 @@ c_q(n)=\mu\Bigl(\frac qg\Bigr)\frac{\varphi(q)}{\varphi(q/g)}.
 \end{enumerate}
 \end{exercise}
 
+The following problem uses one series notation. For real $s>1$, set
+\[
+\zeta(s)=\sum_{m=1}^{\infty}\frac1{m^s}.
+\]
+The sum converges by comparison with $\int_1^\infty x^{-s}\,dx$.
+In Volume~1 we found $\zeta(2)=\pi^2/6$. Nothing about characters
+or the prime distribution is needed here.
+
 \begin{exercise}[Journey]\label{pb:gcdmean}
-\emph{Advanced return problem.} The estimates use the coprime-pair
-density and M\"obius inversion of Chapter~\ref{ch:functions}.
-For parts (c)--(d), also use the convergent Dirichlet series and
-differentiation techniques from the later characters chapter,
-together with Volume~1's series and calculus.
-\emph{The law of the gcd.} Let $a,b$ be independent and uniform in $\{1,\dots,N\}$.
+\emph{The law of the gcd.} Use the M\"obius inversion proved in
+Chapter~\ref{ch:functions}, the elementary count of integer multiples,
+and the series above. Let $a,b$ be independent and uniform in $\{1,\dots,N\}$.
 \begin{enumerate}[label=(\alph*)]
 \item Show that $P(\gcd(a,b)=g)\to\frac6{\pi^2g^2}$ for every $g\ge1$.
 \item Show that $\mathbb E[\gcd(a,b)]=\frac6{\pi^2}\log N+O(1)$.
-\item Show that $\mathbb E[\log\gcd(a,b)]\to-\frac{\zeta'(2)}{\zeta(2)}=0.5699\ldots$
+\item Show that $\displaystyle\mathbb E[\log\gcd(a,b)]\longrightarrow
+\frac6{\pi^2}\sum_{g\ge1}\frac{\log g}{g^2}=0.5699\ldots$
 \item Show that $\mathbb E[\operatorname{lcm}(a,b)]\sim\frac{\zeta(3)}{4\zeta(2)}N^2=0.1827\ldots N^2$.
+\end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Journey]\label{pb:fibcoprime}
+\emph{Coprime Fibonacci numbers.} This problem uses the gcd distribution and mean just established in Problem~\ref{pb:gcdmean}. Let $a,b$ be uniform in $\{1,\dots,N\}$ and $F_n$ the Fibonacci numbers.
+\begin{enumerate}[label=(\alph*)]
+\item Show that $P(\gcd(F_a,F_b)=1)\to\frac{15}{2\pi^2}=0.7599\ldots$
+\item Show that $\mathbb E[\log\gcd(F_a,F_b)]=\frac{6\log\varphi}{\pi^2}\log N+O(1)$, where $\varphi$ is the golden ratio.
 \end{enumerate}
 \end{exercise}
 
@@ -577,6 +591,10 @@ for odd $m>1$, and $\Phi_{pm}(x)=\Phi_m(x^p)$ when $p\mid m$. (c) $\Phi_n(1)$ is
 
 \begin{hint}{pb:gcdmean}
 (b) $\gcd(a,b)=\sum_{d\mid a,\ d\mid b}\varphi(d)$. (d) Pull out the gcd and use Möbius for the coprime part.
+\end{hint}
+
+\begin{hint}{pb:fibcoprime}
+$\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~1, Exercise~1.7).
 \end{hint}
 
 \section{Solutions}
@@ -830,7 +848,20 @@ takes place in $\Z[\zeta]$. Isolate the factor with $a=1$. The product of all th
 \idea $\gcd(a,b)=g$ means $g\mid a$, $g\mid b$ and the quotients are coprime: probability $\frac1{g^2}\cdot\frac6{\pi^2}$. The tail
 $\sum\frac1{g^2}\cdot g$ diverges logarithmically, which is why the mean grows like $\log N$, while $\log g$ is still integrable.
 
-\writeup (a) For fixed $g\ge1$, the equality $\gcd(a,b)=g$ means that $a=ga'$, $b=gb'$ with $\gcd(a',b')=1$ and $a',b'\le N/g$. The estimate for coprime pairs gives
+\writeup (a) For fixed $g\ge1$, the equality $\gcd(a,b)=g$ means that $a=ga'$, $b=gb'$ with $\gcd(a',b')=1$ and $a',b'\le N/g$. Let $C(M)$ count coprime pairs $1\le u,v\le M$. Chapter~4's
+M\"obius identity $\sum_{d\mid n}\mu(d)=\mathbf1_{n=1}$ gives
+\[
+C(M)=\sum_{d\le M}\mu(d)\left\lfloor\frac Md\right\rfloor^2
+=\frac{M^2}{\zeta(2)}+O(M\log(2M)).
+\]
+For the last equality, replace each floor by $M/d+O(1)$.
+The resulting error is $O(M\sum_{d\le M}1/d)=O(M\log(2M))$;
+the tail $M^2\sum_{d>M}1/d^2$ is $O(M)$.
+Finally, $\sum_{d\ge1}\mu(d)/d^2=1/\zeta(2)$: multiply this
+absolutely convergent series by $\sum_{m\ge1}m^{-2}$, group by
+$n=dm$, and use $\sum_{d\mid n}\mu(d)=0$ unless $n=1$.
+
+This count of coprime pairs now gives
 \[
 P(\gcd(a,b)=g)
 =\frac1{N^2}\left(\frac6{\pi^2}\frac{N^2}{g^2}
@@ -882,11 +913,16 @@ Divide by $N^2$ to obtain the logarithmic mean.
 \mathbb E[\log\gcd(a,b)]
 =\sum_{g\le N}(\log g)\,P(\gcd(a,b)=g).
 \]
-The probabilities are at most $1/g^2$, since both $a,b$ must be multiples of $g$. The series $\sum_g(\log g)/g^2$ converges, so dominated convergence and (a) give the limit
+The probabilities are at most $1/g^2$, since both $a,b$ must be
+multiples of $g$. To pass to the limit, first sum over $g\le G$,
+where part (a) applies term by term. The omitted tail is at most
+$\sum_{g>G}(\log g)/g^2$, independently of $N$; that tail tends
+to zero by the integral test. Consequently
 \[
-\frac6{\pi^2}\sum_{g\ge1}\frac{\log g}{g^2}
-=-\frac{\zeta'(2)}{\zeta(2)}.
+\mathbb E[\log\gcd(a,b)]\longrightarrow
+\frac6{\pi^2}\sum_{g\ge1}\frac{\log g}{g^2}.
 \]
+We have not needed to differentiate an infinite series.
 
 (d) Since $\operatorname{lcm}(a,b)=ab/\gcd(a,b)$, group pairs by $g=\gcd(a,b)$ and define
 \[
@@ -903,8 +939,40 @@ $C(M)=M^4/(4\zeta(2))+O(M^3\log M)$. Hence
 \]
 The last sum tends to $\zeta(3)$. Divide by $N^2$ for the required mean.
 
-\tools Volume~2 (coprime pairs, M\"obius inversion, the totient divisor identity and finite summation by parts); Volume~1 (Basel sum and calculus). Volume~6 develops further average-order methods, but none is assumed here.
+\tools Volume~2 (the M\"obius identity, totient divisor sum and finite summation by parts); Volume~1 (Basel sum and elementary series comparison). All estimates used in this solution have been proved here.
 \leads Arithmetic gcds usually remain small, yet their average grows because rare large common factors contribute a long tail.
+\end{solution}
+
+\begin{solution}{pb:fibcoprime}
+\idea Fibonacci numbers inherit their gcds from their indices, and $F_g=1$ only for $g=1,2$.
+
+\writeup (a) The Fibonacci gcd identity from Volume~1 gives
+\[
+\gcd(F_a,F_b)=F_{\gcd(a,b)}.
+\]
+The only Fibonacci numbers equal to $1$ are $F_1$ and $F_2$. Therefore $F_a$ and $F_b$ are coprime exactly when $\gcd(a,b)$ equals $1$ or $2$. Problem~\ref{pb:gcdmean}(a) gives, for a fixed positive integer $g$, the limiting probability $6/(\pi^2g^2)$ that $\gcd(a,b)=g$. Adding the two disjoint cases yields
+\[
+\frac6{\pi^2}\left(1+\frac14\right)
+=\frac{15}{2\pi^2}.
+\]
+
+(b) Put $g=\gcd(a,b)$. Binet's formula reads
+\[
+F_g=\frac{\varphi^g-(-\varphi^{-1})^g}{\sqrt5}.
+\]
+The second term is uniformly small relative to the first. Taking logarithms therefore gives
+\[
+\log F_g=g\log\varphi-\log\sqrt5+O(1),
+\]
+with an error bounded independently of $g\ge1$. Consequently
+\[
+\mathbb E[\log F_{\gcd(a,b)}]
+=(\log\varphi)\,\mathbb E[\gcd(a,b)]+O(1).
+\]
+Insert the asymptotic expectation from Problem~\ref{pb:gcdmean}(b) to obtain the stated result. The $O(1)$ error remains bounded after averaging.
+
+\tools Volume~1 (the Fibonacci gcd identity and Binet's formula); Problem~\ref{pb:gcdmean}.
+\leads Strong divisibility sequences behave similarly. For example, $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$, whereas two random Fibonacci numbers are coprime with limiting probability $15/(2\pi^2)$, larger than the corresponding probability $6/\pi^2$ for two random positive integers.
 \end{solution}
 
 \section*{Sources and further reading}
