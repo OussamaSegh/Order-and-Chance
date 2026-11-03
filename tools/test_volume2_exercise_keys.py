@@ -55,6 +55,7 @@ def gcd_moment(n):
 class TestVolume2ExerciseKeys(unittest.TestCase):
     def test_every_chapter_retains_its_individual_exercise_inventory(self):
         total = 0
+        grade_counts = {}
         ids = set()
         for chapter, expected in zip(CHAPTERS, EXPECTED_COUNTS):
             with self.subTest(chapter=chapter):
@@ -71,6 +72,7 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
                 self.assertEqual([key for _, key in entries], hints)
                 self.assertEqual(hints, solutions)
                 for grade, key in entries:
+                    grade_counts[grade] = grade_counts.get(grade, 0) + 1
                     self.assertNotIn(key, ids)
                     ids.add(key)
                     self.assertIn(
@@ -94,6 +96,12 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
                         self.assertIn(r"\leads", solution)
                 total += len(entries)
         self.assertEqual(total, 144)
+        self.assertEqual(grade_counts, {
+            r"$\star$": 37,
+            r"$\star\star$": 80,
+            r"$\star\star\star$": 20,
+            "Journey": 7,
+        })
 
     def test_imo_1988_vieta_jump_requires_a_positive_integer_root(self):
         text = section(content("ch09-diophantine"), "solution", "ex:imo88")
