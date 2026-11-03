@@ -48,7 +48,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | --- | --- | --- |
 | 1 / ch01-divisibility.tex | IN_PROGRESS | Euclid, FTA, valuations, quantitative exercises |
 | 2 / ch02-primes.tex | UNREVIEWED | infinitude, Euler, sieve, Bertrand |
-| 3 / ch03-congruences.tex | UNREVIEWED | residue classes, CRT, prime powers, advanced congruences |
+| 3 / ch03-congruences.tex | IN_PROGRESS | residue classes, CRT, prime powers, advanced congruences |
 | 4 / ch04-arithmetic-functions.tex | UNREVIEWED | Möbius, convolution, perfect numbers, analytic extras |
 | 5 / ch05-primitive-roots.tex | IN_PROGRESS | group orders, cyclicity, lifts, mean gcd |
 | 6 / ch06-quadratic-reciprocity.tex | UNREVIEWED | Gauss lemma, signs, reciprocity, advanced tasks |
@@ -68,6 +68,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | RISK-003 | medium | Print/EPUB | Preexisting production QA is tied to old commits, not this branch | Previous final acceptance record | UNREVIEWED |
 | DEP-001 | confirmed | C01→C05 pb:fibcoprime | A required result was taught four chapters after first use | Moved exercise/hint/solution to after pb:gcdmean in C05 | CORRECTED_NEEDS_RECHECK |
 | DEP-002 | confirmed | C05 pb:gcdmean | Prompt borrowed Chapter 11 ζ-differentiation and part (a) cited an unproved asymptotic | Defined ζ locally; proved coprime estimate; changed part (c) to equivalent convergent series and justified truncation | CORRECTED_NEEDS_RECHECK |
+| DEP-003 | confirmed | C03 pb:morley | Essential Chapter 11 Fermat-quotient identity cited in Chapter 3 exercise solution | Replaced by a local derivation from binomial theorem and Fermat's congruence; test updated | CORRECTED_NEEDS_RECHECK |
 
 ## Implementation checkpoint — first teaching-order repair (3 November 2026)
 
@@ -88,6 +89,20 @@ PR #97 explicitly accepted the following optional challenges as using other book
 
 **Next exact tasks:** (1) run/inspect current-head tests and CI and fix any regressions; (2) finish P01 toolkit proof-site ledger; (3) independently re-derive gcd asymptotic with all error terms and the Fibonacci exercise without looking at the newly edited proof; (4) inspect Chapter 3 `pb:glaisher` and `pb:ramanujan5` as concrete later-volume dependencies, redesign rather than merely label as optional; (5) continue all proofs and exercises by actual printed order.
 
+## Implementation checkpoint — Chapter 3 Morley proof made self-contained
+
+**Committed:** `8f714eb063508f32aae77e940e27ea3b8a6ca70a` (chapter); `fe1aae657c1255eef3a89f167b7f5058f559f751` (regression).
+
+**Confirmed issue DEP-003, status CORRECTED_NEEDS_RECHECK.** `pb:morley` was previously printed in Chapter 3 yet required the *solution* of Chapter 11 `pb:fermatquot(b)` for an alternating harmonic congruence. The modified exercise, hint, idea and writeup now use only Chapter 1 binomial coefficients and Chapter 3 Fermat's congruence. For odd prime p, the proof uses
+
+`binom(p,j) ≡ (p/j)(-1)^(j-1) (mod p²)`, for 1 ≤ j < p,
+
+hence `2^p - 2 ≡ p Σ_{j=1}^{p-1}(-1)^(j-1)/j (mod p²)`. With `2^(p-1)=1+pt`, the alternating sum equals `2t (mod p)`. Pairing terms of the full harmonic sum shows `H_(p-1)/2 ≡ -2t (mod p)`. The product expansion of the required binomial coefficient and `(1+pt)² ≡ 1+2pt (mod p²)` finish the proof. Every division is by an integer prime to p. Unlike the earlier proof, there is **no forward reference** to Chapter 11. The regression test formerly enforcing that wrong pedagogy was replaced by a test that prohibits the dependency and checks all odd primes p=3,5,7,11,13,17,19,23,29,31. Their complete numerical congruences were independently checked and agreed.
+
+**CI evidence and limit:** The early `7f3250d3ece056cf4acc685aaebb19054ed51ea5` workflow failed only because the old hard-coded per-chapter count test still expected 16/15; its log reports 155 tests, 3 failures about stale counts, 27 skips. The source tests were updated in `7b0f61c52c172f1563ee8c8fcceffd19aac3fab9`. More recent intermediate workflows were cancelled when new commits arrived. A run for head `fe1aae657c1255eef3a89f167b7f5058f559f751` was in progress when inspected. **No latest-head CI success is asserted**.
+
+**State:** printed Chapter 3 IN_PROGRESS; problem `pb:morley` CORRECTED_NEEDS_RECHECK. A complete second symbolic audit, every other Chapter 3 exercise and final rendered outputs remain pending.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -104,4 +119,4 @@ PR #97 explicitly accepted the following optional challenges as using other book
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** check exact-head tests/CI after C01/C05 edits, complete Volume 1 first-use toolkit, independently recheck pb:gcdmean and pb:fibcoprime, then audit Chapter 3 Bernoulli/partition problems and continue C01 proofs. See the latest Implementation checkpoint and the PR comments. 
+**Next exact task:** inspect current CI at latest head, complete Volume 1 toolkit and independent second checks on pb:gcdmean/pb:fibcoprime/pb:morley, then redesign Chapter 3 pb:glaisher and pb:ramanujan5 rather than using Volume 5. Continue first-use/proof ledgers for all remaining claims. See latest checkpoint and PR comments. 
