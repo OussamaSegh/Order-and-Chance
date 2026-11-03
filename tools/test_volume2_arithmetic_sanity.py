@@ -187,6 +187,106 @@ class TestVolume2ArithmeticSanity(unittest.TestCase):
                     for x in range(modulus)
                 ))
 
+    def test_corrected_radius_two_disc_count(self):
+        """Radius two includes four axis points on its boundary."""
+        source = (CHAPTERS / "ch07-sums-of-squares.tex").read_text(
+            encoding="utf-8"
+        )
+        example = source.split(
+            r"\begin{examplex}[the disc of radius $2$]", 1
+        )[1].split(r"\end{examplex}", 1)[0]
+        self.assertIn(r"N(2)=1+4+4+4=13", example)
+        for radius, expected in ((2, 13), (6, 113), (10, 317)):
+            with self.subTest(radius=radius):
+                count = sum(
+                    x * x + y * y <= radius * radius
+                    for x in range(-radius, radius + 1)
+                    for y in range(-radius, radius + 1)
+                )
+                self.assertEqual(count, expected)
+
+    def test_eisenstein_norm_and_split_seven(self):
+        """The Eisenstein norm is a²-ab+b², not a²+ab+b²."""
+        source = (CHAPTERS / "ch10-gaussian-eisenstein.tex").read_text(
+            encoding="utf-8"
+        )
+        example = source.split(
+            r"\begin{examplex}[a split prime modulo $3$]", 1
+        )[1].split(r"\end{examplex}", 1)[0]
+        self.assertIn(r"N(2-\omega)", example)
+        self.assertIn(r"7=(2-\omega)(2-\omega^2)", example)
+
+        def eisenstein_norm(a, b):
+            return a * a - a * b + b * b
+
+        def eisenstein_multiply(u, v):
+            a, b = u
+            c, d = v
+            # omega^2 = -1-omega.
+            return (a * c - b * d, a * d + b * c - b * d)
+
+        self.assertEqual(eisenstein_norm(2, -1), 7)
+        self.assertEqual(eisenstein_norm(2, 1), 3)
+        self.assertEqual(eisenstein_multiply((2, -1), (3, 1)), (7, 0))
+        for a in range(-3, 4):
+            for b in range(-3, 4):
+                for c, d in ((1, 0), (0, 1), (2, -1), (1, 2)):
+                    x, y = eisenstein_multiply((a, b), (c, d))
+                    self.assertEqual(
+                        eisenstein_norm(x, y),
+                        eisenstein_norm(a, b) * eisenstein_norm(c, d),
+                    )
+
+    def test_mobius_series_first_ten_terms(self):
+        """Restore the positive n=6 and negative n=7 terms."""
+        source = (CHAPTERS / "ch14-characters.tex").read_text(
+            encoding="utf-8"
+        )
+        example = source.split(
+            r"\begin{examplex}[the series for $\mu$ at $s=2$]", 1
+        )[1].split(r"\end{examplex}", 1)[0]
+        self.assertIn(r"+\frac1{36}", example)
+        self.assertIn(r"-\frac1{49}", example)
+        self.assertIn(r"\approx0.6163", example)
+
+        def mobius(n):
+            result = 1
+            for p in primes_up_to(n):
+                if n % p:
+                    continue
+                result = -result
+                n //= p
+                if n % p == 0:
+                    return 0
+                while n % p == 0:
+                    n //= p
+            return result
+
+        terms = [mobius(n) for n in range(1, 11)]
+        self.assertEqual(terms, [1, -1, -1, 0, -1, 1, -1, 0, 0, 1])
+        partial = sum(terms[n - 1] / (n * n) for n in range(1, 11))
+        self.assertAlmostEqual(partial, 0.6162585, places=6)
+
+    def test_diophantine_mod_four_and_markov_examples(self):
+        source = (CHAPTERS / "ch09-diophantine.tex").read_text(
+            encoding="utf-8"
+        )
+        example = source.split(
+            r"\begin{examplex}[a modulus excludes half the inputs]", 1
+        )[1].split(r"\end{examplex}", 1)[0]
+        self.assertIn(r"$1,3,3,1$", example)
+        residues = [(x * x + x + 1) % 4 for x in range(4)]
+        self.assertEqual(residues, [1, 3, 3, 1])
+        self.assertEqual(0 * 0 + 0 + 1, 1)
+        self.assertEqual((-1) ** 2 - 1 + 1, 1)
+        self.assertIn(r"n=2u^2v^2", source)
+        self.assertIn(r"$(5,2,29)$", source)
+        for x, y, z in ((1, 1, 1), (2, 1, 1), (5, 2, 1), (5, 2, 29)):
+            with self.subTest(markov=(x, y, z)):
+                self.assertEqual(
+                    x * x + y * y + z * z, 3 * x * y * z
+                )
+
     def test_primitive_pythagorean_parameters(self):
         for m in range(2, 16):
             for n in range(1, m):
