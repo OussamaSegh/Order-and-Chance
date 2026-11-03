@@ -45,6 +45,18 @@ class TestChapterOneNextThreeExercises(unittest.TestCase):
                          *math.factorial(m+n))
                 with self.subTest(m=m, n=n):
                     self.assertEqual(numer % denom, 0)
+                    # A separate signed-binomial coefficient identity:
+                    # (-1)^n [x^(m+n)](1+x)^(2m)(1-x)^(2n).
+                    # Its symbolic proof uses Fourier coefficient
+                    # extraction and an elementary beta-integral
+                    # recurrence; here we check integer coefficients.
+                    t = m+n
+                    signed = sum(
+                        (-1)**(t-k)*math.comb(2*m, k)
+                        *math.comb(2*n, t-k)
+                        for k in range(max(0, t-2*n), min(2*m,t)+1)
+                    )
+                    self.assertEqual((-1)**n*signed, numer//denom)
 
     def test_2_to_n_minus_1_not_divisible_by_n(self):
         for n in range(2, 10001):
