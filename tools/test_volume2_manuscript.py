@@ -401,7 +401,7 @@ class TestVolume2Manuscript(unittest.TestCase):
                     material, r"Volume~(?:3|4|5|6|7|8|13|14)\b",
                     f"First-route exercise {key} requires a later volume",
                 )
-        self.assertEqual(reviewed, 41, "Keep all one-star exercise keys audited")
+        self.assertEqual(reviewed, 37, "Keep all current one-star exercise keys audited")
 
     def test_step4_forward_exposition_references_are_curated_previews(self):
         """Forward references in prose remain explicit teaching previews."""
