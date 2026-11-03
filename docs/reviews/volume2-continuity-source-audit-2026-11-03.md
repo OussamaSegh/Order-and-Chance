@@ -214,3 +214,53 @@ counts).
 tracked separately. Steps 4--6 still require a full first-use and
 end-to-end mathematical/144-solution audit; Step 8 still requires a fresh
 current-head render and proof. No release approval or merge is implied.
+
+## Step 3: foundation and optional routes — 3 November 2026
+
+**Editorial changes committed:** Chapter 2's Euclid-number workshop,
+Chapter 3's modular-cancellation workshop, Chapter 4's M"obius-inversion
+workshop, Chapter 7's two-square classification workshop, the
+Diophantine chapter's nonexistence workshop, and Chapter 11's finite
+character workshop were relocated before their respective optional
+sections. No source exercise, hint or solution was deleted.
+
+**First-route boundary contracts:**
+
+| Chapter | Keep for first reading | Optional section or challenge |
+| --- | --- | --- |
+| 2: Primes | Infinitude, reciprocal-prime divergence, Euclid proof workshop | Chebyshev/prime-count bounds; Bertrand; dependent gap/factorial/product checks; second proofs and topology |
+| 3: Congruences | Residue classes, invertible cancellation, CRT, congruence workshop | Simple-root Hensel lifting and its exercise |
+| 4: Arithmetic functions | Multiplicative functions, inversion, perfect numbers and inversion workshop | Analytic average orders and error terms |
+| 7: Sums of squares | Two-square criterion, four-square existence and obstruction workshop | Lattice-disc error estimate and challenge assuming the full three-square theorem |
+| 8: Diophantine equations | Modular obstructions, Pythagorean parametrisation, Fermat descent, nonexistence workshop | Conic parametrisation; specialised Mordell and Markov material; Vieta jumping; matching challenges |
+| 11: Characters | Character orthogonality, absolutely convergent Euler products, finite sieve, finite detector workshop | The $s=1$ analytic boundary, conditional prime-progression discussion, advanced series and powerful-number counting |
+
+The Chapter 6 Miller--Rabin and prime-power-square counting
+journeys have explicit optional wording. The Chapter 1 random
+valuation exercise was found to **appear to require the later CRT**
+in its discovery note, despite its full proof actually using
+elementary divisibility by products of coprime prime powers and
+finite inclusion--exclusion. Its discovery note and required-tools
+line were corrected, making this one-star problem self-contained.
+
+Advanced challenges involving later-volume machinery that were
+already flagged in earlier passes remain optional rather than being
+removed. The full mathematical validity of every claim and solution
+remains subject to Steps 4--6.
+
+**Independent source-level checks after edits:**
+11 source chapters were read with their preface and field guide;
+all 144 exercise labels still match 144 hint and solution labels
+in chapter order; 266 unique labels were found and no local
+`ref`, `eqref` or `autoref` targets were missing. Counts of
+major proof/figure/exercise/enumerate/reminder environments balanced.
+The six workshop-before-optional assertions passed. New repository
+regressions guard those same boundaries, selected advanced-theorem
+references, and optional exercise labels. **These are structural
+checks, not a complete TeX build or a proof of 144 solutions.**
+
+**CI gate:** the workflow on the final updated head must still
+finish successfully; prior successful workflows cover older SHAs
+only. The complete proof/exercise audit, publication visual
+inspection and publisher-side KDP proof remain open. The PR
+must remain draft.
