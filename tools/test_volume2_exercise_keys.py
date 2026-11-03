@@ -164,6 +164,38 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
                 sum(mobius(d) * (n // d) ** 2 for d in range(1, n + 1)),
             )
 
+    def test_factorial_power_sum_challenge_needs_no_later_volume(self):
+        """Exercise pb:glaisher uses only earlier Fermat/Wilson arithmetic."""
+        chapter3 = content("ch03-congruences")
+        question = section(chapter3, "exercise", "pb:glaisher")
+        hint = section(chapter3, "hint", "pb:glaisher")
+        proof = section(chapter3, "solution", "pb:glaisher")
+        required = question + hint + proof.split(r"\leads", 1)[0]
+        self.assertNotIn("Later-volume exploration", required)
+        self.assertNotIn(r"\ref{pb:fermatquot}", required)
+        self.assertNotIn("von Staudt", required)
+        self.assertIn(r"W_p", question)
+        self.assertIn(r"q_p(a)", question)
+        self.assertIn(r"\pmod{p^2}", proof)
+
+        # Separate exact numerical check, not a substitute for the proof.
+        for p in range(3, 102, 2):
+            if not is_prime(p):
+                continue
+            modulus = p*p
+            prod = 1
+            for a in range(1, p):
+                prod = (prod*a) % modulus
+            self.assertEqual((prod + 1) % p, 0)
+            wilson_q = ((prod + 1) // p) % p
+            fermat_sum = sum(
+                (pow(a, p-1, modulus) - 1) // p
+                for a in range(1, p)
+            )
+            self.assertEqual(fermat_sum % p, wilson_q)
+            powers = sum(pow(a, p-1, modulus) for a in range(1, p))
+            self.assertEqual(powers % modulus, (prod + p) % modulus)
+
     def test_imo_1988_vieta_jump_requires_a_positive_integer_root(self):
         text = section(content("ch09-diophantine"), "solution", "ex:imo88")
         for marker in (r"f(b)=(2-k)b^2-k<0", r"f(-1)",
