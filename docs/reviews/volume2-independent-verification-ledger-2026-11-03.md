@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and nine exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 135 exercises and all unnamed proof claims are not certified. An earlier print/EPUB build completed but the old spine QA rejected it; no passing final-head build or page-by-page visual proof has been recorded.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and ten exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 134 exercises and all unnamed proof claims are not certified. An earlier print/EPUB build completed but the old spine QA rejected it; no passing final-head build or page-by-page visual proof has been recorded.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -35,8 +35,8 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | P03 First-use dependency graph | IN_PROGRESS | Five concrete dependency repairs, including Glaisher and Ramanujan; later advanced challenges remain. |
 | P04 All theorem/proof second checks | IN_PROGRESS | Eight named results VERIFIED_TWICE; all other result and unnamed proof chains pending. |
 | P05 Every worked example and figure | IN_PROGRESS | Individually checked Euclid six-prime composite and 5!+1, plus arithmetic boundary probes; rest pending. |
-| P06 All exercises independent reconstruction | IN_PROGRESS | Nine solutions have a complete author-level proof reconstruction; the other 135 remain. |
-| P07 All exercises independent adversarial second pass | IN_PROGRESS | Nine solutions VERIFIED_TWICE, including the formal Ramanujan proof; 135 remaining. |
+| P06 All exercises independent reconstruction | IN_PROGRESS | Ten solutions have a complete author-level reconstruction; the other 134 remain. |
+| P07 All exercises independent adversarial second pass | IN_PROGRESS | Ten solutions VERIFIED_TWICE, including redesigned Chapter 4 prime-factor proof; 134 remaining. |
 | P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C02/C03/C05 math and voice repairs; no chapter signed off. |
 | P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
 | P10 Full-book voice/transition pass | IN_PROGRESS | Local Chapter 2 duplicate-paragraph removal only; full read-aloud pending. |
@@ -49,7 +49,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | 1 / ch01-divisibility.tex | IN_PROGRESS | Euclid, FTA, valuations, quantitative exercises |
 | 2 / ch02-primes.tex | IN_PROGRESS | Euclid and Euler twice checked; estimates, Bertrand and all exercises still pending |
 | 3 / ch03-congruences.tex | IN_PROGRESS | residue classes, CRT, prime powers, advanced congruences |
-| 4 / ch04-arithmetic-functions.tex | UNREVIEWED | Möbius, convolution, perfect numbers, analytic extras |
+| 4 / ch04-arithmetic-functions.tex | IN_PROGRESS | Replaced pb:nsq1 requiring Volume 6; other advanced chapters and all named proofs still pending |
 | 5 / ch05-primitive-roots.tex | IN_PROGRESS | group orders, cyclicity, lifts, mean gcd |
 | 6 / ch06-quadratic-reciprocity.tex | UNREVIEWED | Gauss lemma, signs, reciprocity, advanced tasks |
 | 7 / ch07-sums-of-squares.tex | UNREVIEWED | two/four-square proofs, descent |
@@ -72,6 +72,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 
 | DEP-004 | confirmed | C03 pb:glaisher | Original problem imported Bernoulli denominator theory from Volume 5 | Replaced *mathematical problem* with Fermat/Wilson power-sum congruence, explicitly documented | VERIFIED_TWICE (replacement) |
 | DEP-005 | confirmed | C03 pb:ramanujan5 | Original proof imported pentagonal theorem and complex analysis | All needed identities derived coefficientwise, then independently checked line by line | VERIFIED_TWICE |
+| DEP-006 | confirmed | C04 pb:nsq1 | Original P(x)>x proof required quantitative primes in progressions from Volume 6 | Explicitly replaced by near-linear P(x)>x^(1−δ), fixed 0<δ<1, proved using Chapter 2 Chebyshev | VERIFIED_TWICE (new statement) |
 
 ## Implementation checkpoint — first teaching-order repair (3 November 2026)
 
@@ -192,6 +193,16 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 
 **Next:** check latest CI; inspect Chapter 4 and Chapter 6 advanced exercises for missing external theorems; complete Volume 1 prerequisite crosswalk and the rest of the theorem/exercise audits.
 
+## Most recent checkpoint — elementary largest-prime-factor exercise (DEP-006)
+
+**3 November 2026.** Replaced the mathematical target of `pb:nsq1` in Chapter 4, which formerly asserted `P(x)>x` and invoked the quantitative prime-number theorem in progressions from Volume 6. Under the user's prerequisite contract, that was not acceptable. **The new exercise explicitly states the weaker but still substantial result: for every fixed `0<δ<1`, the largest prime factor of `Q(x)=∏_{1≤n≤x}(n²+1)` exceeds `x^(1−δ)` for all sufficiently large x.** The original `P(x)>x` claim is **not** asserted proved. Source commit `84151c18`, finite regression `35c8c1a1`, exercise register `e7e5a475`.
+
+**Independent symbolic Pass A:** Legendre's factorial valuation and the already-proved optional Chapter 2 Chebyshev count `π(m)=O(m/log m)` give `∑_{p≤y} log p/(p−1)=log y+O(1)` by comparing both sides with `log(m!)/m`. Two roots `a²≡b²≡−1 (mod p^k)` for odd p differ by a factor of `(a−b)(a+b)`; since p cannot divide both (it would divide `2a`), each root is ± the first. Thus at most two roots modulo `p^k`, and `v_p(Q(x))≤2x/(p−1)+O(log(x²+1)/log p)`. For p=2, every n²+1 has valuation at most 1. Assuming every prime factor ≤`y=x^(1−δ)`, summing logarithmic prime contributions gives `log Q(x)≤2(1−δ)x log x+O(x)` while `n²+1≥n²` gives `log Q(x)≥2x log x−O(x)`, impossible as x grows.
+
+**Adversarial symbolic Pass B:** Rechecked the geometric tail and floor errors in Legendre's estimate and their sum against Chebyshev; all domains p odd and invertible roots in the mod-`p^k` argument; the p=2 parity case; the uniform `O(π(y)log x)=O(x^(1−δ))` error and the fixed-δ condition. Finite independent enumeration found at most two solutions of `z²≡−1` for odd prime powers ≤15000 and no violations of the replacement inequality for x=25..400 and δ=0.2,0.5,0.8. These finite tests support the symbolic proof but cannot prove the asymptotic. The replacement solution is marked **VERIFIED_TWICE** subject to exact-head CI and external mathematical review.
+
+**Current totals:** 8/72 named results, 10/144 exercises VERIFIED_TWICE; **64 named results, 134 exercises, all unnamed arguments and full publishing/visual gates remain**. Chapter 4 remains IN_PROGRESS, not signed off. Next address `pb:sumsquares`: its statement borrows the total-variation definition from Volume 4 and its solution needs a Chapter 6 Gauss sum; define total variation here and move or re-prove the Gauss-sum prerequisite. Continue Volume 1 crosswalk and remaining exercises/proofs.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -208,4 +219,4 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** check latest-head CI; audit Chapter 4 and 6 advanced exercises for missing external theorems; finish the Volume 1 toolkit crosswalk and remaining Chapter 1/2 claims, then proceed across all 11 chapters. Do not merge before all release gates pass. 
+**Next exact task:** inspect exact-head CI for DEP-006; repair pb:sumsquares and subsequent advanced exercises' prerequisites; complete Volume 1 crosswalk, 64 remaining named proofs, 134 remaining exercises, unnamed arguments and visual/publisher gates. 
