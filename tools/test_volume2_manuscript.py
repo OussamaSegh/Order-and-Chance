@@ -439,26 +439,44 @@ class TestVolume2Manuscript(unittest.TestCase):
                 f"New forward references in {chapter} require a prerequisite review",
             )
 
-    def test_step4_morley_requires_later_fermat_quotient(self):
-        """Do not silently present a Chapter 11 dependency as Chapter 3 work."""
+    def test_morley_congruence_taught_with_earlier_chapter_tools(self):
+        """No later Fermat-quotient result is an input to Chapter 3."""
         congruences = (CHAPTER_DIR / "ch03-congruences.tex").read_text(
             encoding="utf-8"
         )
-        problem = re.search(
+        exercise = re.search(
             r"\\begin\{exercise\}\[\$\\star\\star\$\]"
             r"\\label\{pb:morley\}([\s\S]*?)\\end\{exercise\}",
             congruences,
         )
-        self.assertIsNotNone(problem)
-        self.assertIn(
-            r"Optional return after Chapter~\ref{ch:characters}",
-            problem.group(1),
+        hint = re.search(
+            r"\\begin\{hint\}\{pb:morley\}([\s\S]*?)\\end\{hint\}",
+            congruences,
         )
-        self.assertIn(r"Problem~\ref{pb:fermatquot}", problem.group(1))
-        later = (CHAPTER_DIR / "ch14-characters.tex").read_text(
-            encoding="utf-8"
+        solution = re.search(
+            r"\\begin\{solution\}\{pb:morley\}([\s\S]*?)\\end\{solution\}",
+            congruences,
         )
-        self.assertIn(r"\label{pb:fermatquot}", later)
+        self.assertIsNotNone(exercise)
+        self.assertIsNotNone(hint)
+        self.assertIsNotNone(solution)
+        full_route = exercise.group(1) + hint.group(1) + solution.group(1).split(
+            r"\leads", 1
+        )[0]
+        self.assertNotIn(r"\ref{pb:fermatquot}", full_route)
+        self.assertNotIn("later chapter", full_route)
+        self.assertIn(r"2^p-2=\sum_{j=1}^{p-1}\binom pj", solution.group(1))
+        self.assertIn(r"S\equiv2t\pmod p", solution.group(1))
+        self.assertIn(r"Fermat's little theorem", solution.group(1))
+
+        # Exact small-prime check, separate from the algebraic proof.
+        import math
+        for p in (3, 5, 7, 11, 13, 17, 19, 23, 29, 31):
+            k = (p - 1) // 2
+            self.assertEqual(
+                math.comb(p - 1, k) % (p * p),
+                ((-1) ** k * pow(4, p - 1, p * p)) % (p * p),
+            )
 
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:
