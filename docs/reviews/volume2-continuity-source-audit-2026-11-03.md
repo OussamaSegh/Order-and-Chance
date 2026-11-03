@@ -132,3 +132,19 @@ into a proof-complete, CI-green or publication-ready sign-off.
 
 The test matrix is evidence for these specific formulas, **not** an
 audit of every chapter, every exercise solution, or every proof.
+
+## CI success and deeper exercise review — 3 November 2026
+
+The full run [41556183082](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41556183082) passed for commit 178fe9affc5aad25099a46e101608cb0e24604a3, including the Volume 2 build, pagination checks, KDP print-export tests, and artifact upload. The generated Volume 2 GitHub Actions artifact has ID 13193869440 and size 33,179,497 bytes. This is a green **baseline**; later commits need their own checks, and human KDP preview/proof remain separate.
+
+**Fermat quotient boundary:** The Lerch congruence in Problem pb:fermatquot was previously stated for all primes. It fails for p=2: the sum of Fermat quotients is zero, but the Wilson quotient W_2 is 1 modulo 2. The problem's final part also uses the order of 2 modulo p, undefined at p=2. The problem and solution now explicitly require an odd prime. The Lerch congruence was independently checked for 21 odd primes up to 79.
+
+**Hensel completeness:** The solutions of x² ≡ -1 modulo 125 are exactly 57 and 68. The exercise now asks for all solutions, and the hint and solution lift both initial roots 2 and 3 modulo 5; uniqueness follows from Hensel's lemma.
+
+**Advanced prerequisites:** The Bernoulli-denominator and Ramanujan partition-congruence exercises in Chapter 3 now disclose prerequisites from Volume 5; the cubic character challenge in Chapter 11 labels its Volume 13 algebraic-integer step; the factorial perfect-power exercise labels the optional Bertrand theorem; and the analytic gcd problem is an advanced return challenge citing earlier coprime-density work and later Dirichlet series.
+
+**Hypotheses made explicit:** The modular-order proposition specifies coprimality and integer exponents. Euler's criterion, Gauss's lemma and the supplementary law for 2 explicitly assume an odd prime. Pell's theorem explicitly assumes a nonsquare integer d≥2, and the Pythagorean theorem explicitly specifies positive integers.
+
+**Expanded finite verification:** Added tools/test_volume2_arithmetic_sanity.py with seven finite tests covering quadratic reciprocity, two-squares representation and criterion, primitive roots, primitive Pythagorean parametrisations, four-square existence over a bounded range, Hensel lifting, and the odd-prime Fermat quotient. Finite checks do not prove general statements.
+
+**Open gates:** The new head must pass CI separately; every remaining proof and all 144 exercise solutions still require individual correctness review; current PDF/EPUB/print wrap need visual inspection; and publisher-side KDP Print Previewer/physical proof steps remain open.
