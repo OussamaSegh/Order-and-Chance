@@ -399,3 +399,49 @@ and Step 9 KDP/physical proof remain separate mandatory gates.
 PR #97 stays draft and unmerged.
 
 **Historical grading note (Step 6, 3 November 2026):** This earlier Step 4 audit covered all 41 problems that were graded one-star at that checkpoint. Step 6 regraded four mathematically more demanding problems to two stars. The current first-route regression checks all **37** one-star problems; no problem statement, solution or prerequisite was deleted.
+
+## Step 7 — adjacent chapter bridges and publishing-copy alignment — 3 November 2026
+
+**Completed at manuscript/source level.** Full 11-chapter route matrix and
+metadata checks:
+docs/reviews/volume2-reader-continuity-metadata-audit-2026-11-03.md.
+
+- Every printed chapter now ends its main reading material with a
+  mathematical **forward bridge**, before its exercises. Each of
+  Chapters 2–11 has a specific **backward bridge** in its introduction.
+  Both sides of each adjacent transition were checked against the
+  actual approved main.tex order. In particular, the actual
+  Diophantine → continued fractions → Gaussian/Eisenstein route no
+  longer assumes the former filenames describe printed order.
+- The end of the characters chapter and the end of the field guide
+  now provide a three-example handoff to **Volume 3, Symmetry**:
+  unit-group powers, Gaussian ring factorisation and the
+  character $\chi_4$ as a multiplicative map. The later analytical
+  Volume 6 and general algebraic/p-adic Volume 13 remain optional
+  longer-term destinations.
+- The field guide keeps its first-reading toolbox separate from a
+  later **optional Volume 13 notation preview**. The $p$-adic
+  convention $v_p(0)=+\infty$ moved there; elementary $v_p$ for
+  nonzero integers and rationals remains in the main notation list.
+- Rewrote kdp.md, which had inaccurately promised **fourteen
+  chapters**, post-characters content and proof of general ideals
+  and $p$-adic numbers. The new **1,922-character** listing accurately
+  describes **four parts and eleven chapters**, **144** exercises
+  with complete hints/solutions, the **Volume 1** prerequisite and
+  immediate **Volume 3** sequel. Its seven keyword phrases meet
+  KDP's length limits.
+- Revised the 153-word back-cover blurb to mention the preserved
+  solved-exercise count and Volume 3; the main ISBN 9798167208650,
+  canonical part catalog, cover/print generator and publishing
+  instructions were not altered. Harmonised the Bertrand
+  epigraph's historical wording with the Step 5 source audit.
+- Added tools/test_volume2_reader_route.py. A source-only scan verified
+  all 11 outgoing / 10 incoming bridges, unchanged **144**
+  exercise blocks and exact ordered chapter inputs.
+
+**Still open:** exact-head CI; Step 8 full rebuild and visual inspection
+of reading PDF, print PDF, EPUB, online reader and the *new*
+page-count-dependent paperback wrap with its ISBN barcode; Step 9
+KDP/Kindle Previewer, assignment check and physical proof. Source
+completion is not a production release. PR #97 stays draft.
+
