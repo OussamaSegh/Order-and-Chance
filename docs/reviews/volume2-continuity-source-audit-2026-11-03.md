@@ -165,3 +165,11 @@ A manuscript regression check guards these specific transitions against reversio
 ## Chapter 3 advanced-solution correction — 3 November 2026
 
 In the solution to the Kloosterman-sum fourth-moment exercise (`pb:kloosterman`), the assertion that the bound `1.19 p^(3/4)` improves on the trivial `p-1` bound for **every odd prime** was false at `p=3`: `1.19 * 3^(3/4) > 2`. The solution now explicitly isolates that counterexample and states the improvement for odd primes `p>=5`. The function `(p-1)/p^(3/4)` is increasing, so the comparison follows from its truth at `p=5`. A new arithmetic sanity regression independently counts additive/reciprocal-compatible ordered quadruples for primes 3, 5, 7 and 11 and checks the displayed exact fourth-moment formula `2p^3 - 3p^2 - 3p`, as well as the bound comparison. The computation is a finite cross-check, not a proof of the fourth-moment identity or any other advanced exercise.
+
+## Schur nonzero-value exercise correction — 3 November 2026
+
+The Chapter 3 exercise `pb:primepoly` previously asked for infinitely many primes dividing one of `P(0),P(1),...` without requiring the polynomial value to be nonzero. When `P(0)=0` (for example `P(X)=X`), the statement was vacuously satisfied because every prime divides zero. The accompanying proof treated that case as finished, hiding the intended theorem about **nonzero** polynomial values.
+
+The prompt now explicitly requests infinitely many **distinct prime divisors of nonzero values** of a nonconstant integer polynomial at nonnegative integers. The hint and proof choose `a>=0` with `c=P(a)!=0`, then use the positive arithmetic progression `a+Mt` where `M=|c| * product(primes in a purported finite list)`. The resulting nonconstant integral polynomial `H(t)` satisfies `H(t)=1 mod p_i` for every listed prime, and an arbitrarily large nonzero value produces a new prime divisor. This also handles `P(0)=0` without relying on zero's universal divisibility. A source regression guards the stronger prompt and correct shifted proof.
+
+The mathematical proof is self-contained once polynomial root finiteness and congruence preservation are available. It is one further audited exercise, not a full check of all 144 solutions or a KDP release sign-off.
