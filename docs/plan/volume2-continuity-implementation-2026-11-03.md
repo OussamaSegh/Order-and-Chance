@@ -48,7 +48,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Add smaller transitions in divisibility, primes, quadratic residues and integer equations as needed.
 - **Exit gate:** every bridge accurately identifies what Volume 1 actually proves and does not use an undefined Volume 2 result as a premise.
 
-### Step 3 — Separate foundation and exploration routes [pending]
+### Step 3 — Separate foundation and exploration routes [started]
 
 - Chapter 2: retain Chebyshev-type bounds and Bertrand's theorem as a guided deeper route after Euclid/Euler; do not require them for congruences.
 - Chapter 3: teach modular inverses and the CRT first; make Hensel lifting a marked extension.
@@ -78,7 +78,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Challenges involving later-volume ideas must identify those requirements at the exercise itself; the foundational sequence may not depend on them.
 - **Exit gate:** full exercise-key parity, no dangling references, and an audited record of any deliberately changed exercise.
 
-### Step 7 — Finish the reader-facing progression [pending]
+### Step 7 — Finish the reader-facing progression [started]
 
 - Reconcile each chapter opening and ending with its actual printed neighbours; update manuscript transitions that still assume the former sequence.
 - Separate Volume 13's ideal and p-adic notation from Volume 2's usable field guide; place it in a clearly labelled later-volume preview and remove unearned p-adic problem-solving instructions from the main toolbox.
