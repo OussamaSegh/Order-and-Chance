@@ -230,6 +230,8 @@ The required formulas for $c\ne0$, the exceptional counts $N_n(0)$, and total va
 
 **CI scope:** at head d2398e6 the manuscript build and site steps completed successfully, but that workflow was cancelled on later commits before terminal success. New exact-head CI is required; no latest-head green build is claimed. The register and structural test now expect 15/11/21/10/16/20/8/8/8/8/19 exercise counts. **Totals: 8/72 named results, 11/144 exercise solutions VERIFIED_TWICE; 64 named results and 133 exercises plus unnamed arguments, all-page PDF/EPUB and KDP gates still open.** No full chapter is signed off.
 
+**CI-detected source repair, exact SHA 981c4bf457efca89ac00fe707b08e2223342c619:** GitHub Actions run 41688684287 on earlier commit 043326ba failed the initial test job: the newly moved sums-of-squares question mistakenly closed with \end{exercise> rather than \end{exercise}. That also made the exercise key-matching test appear to count only 124 instead of 144, and failed the manuscript balanced-environments test (20 opens, 19 closes). The actual cause was the one-byte TeX typo, not a missing problem statement. Corrected and confirmed 20/20 exercise delimiters in Chapter 6. These failures are recorded, not hidden. A fresh workflow on the final head must confirm the full test suite and LaTeX build; previous workflow successes do not certify this head.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
