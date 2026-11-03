@@ -71,7 +71,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Keep a dated review ledger in `docs/reviews/` with each repaired statement, evidence and any open risk.
 - **Exit gate:** every first-route proof is independently justified using Volume 1 or earlier Volume 2 material; remaining outside-scope theorems are clearly identified as previews.
 
-### Step 6 — Audit all exercises, hints and solutions [started]
+### Step 6 — Audit all exercises, hints and solutions [completed]
 
 - Check the exact 144 existing exercise IDs, one matching hint and one full solution for each, and no duplicate IDs.
 - Verify mathematical correctness, difficulty stars, first-use definitions, solution prerequisites, edge cases and the separate discovery note/formal write-up.
@@ -302,3 +302,47 @@ refereeing. It **does not** certify the individual 144 exercise
 solutions (Step 6), nor replace latest-head CI, actual rendered
 PDF/EPUB/print inspection or KDP's publisher-side/physical proof.
 Keep PR #97 draft and unmerged.
+
+## Step 6 acceptance checkpoint — 3 November 2026
+
+**All 144 exercise keys have a documented source-level review record.**
+The per-key inventory, mathematical audit notes, difficulty adjustments,
+return-route classifications and independently computed finite checks live in
+docs/reviews/volume2-exercise-solution-audit-2026-11-03.md.
+
+- Verified the **16 + 11 + 21 + 13 + 15 + 17 + 8 + 8 + 8 + 8 + 19**
+  problem counts in actual printed order, **144 unique exercises**, and
+  one hint plus one full \idea/\writeup solution for each, with matching
+  keys and matching source order. The longer pb: problems also have
+  \tools and \leads sections.
+- Corrected the **IMO 1988 Vieta-jumping proof**, which previously did
+  not validly establish that the new integer root is positive.
+  The replacement shows f(-1)>0>f(b), forcing
+  1≤a'<b≤a for a hypothetical counterexample with nonsquare k.
+- Made the **mean-gcd problem's average-order derivation self-contained**:
+  A(t)=Σ_{d≤t}φ(d)/d=t/ζ(2)+O(log(2t)), followed by
+  Σ_{d≤N}φ(d)/d²=(log N)/ζ(2)+O(1). Previously an unstated
+  Volume 6 mean-value theorem was effectively assumed.
+- Regraded four multi-part or higher-prerequisite exercises from
+  **one star to two stars**: pb:valuation, pb:parity,
+  pb:fermatnum and pb:artin. Updated overall distribution:
+  **37 one-star, 80 two-star, 20 three-star, 7 Journey**;
+  no problem statement, hint or solution was removed.
+- Screened the exercise text for undisclosed later-chapter/volume
+  dependencies. The seven Journey problems and advanced return problems
+  retain their explicit optional/later-volume signposting.
+- Added tools/test_volume2_exercise_keys.py to lock exact per-chapter
+  problem counts, grades and key parity, and independently test
+  Vieta samples, gcd means, Diophantine and Markov examples,
+  quadratic symbols, Waring power sums, Fermat/pseudoprime/Proth
+  certificates, local four-square counts, powerful numbers and the
+  **exact Monier strong-liar count** on odd composites below 400.
+  These are finite tests supporting the full proofs, not substitutes.
+
+**Internal Step 6 manuscript source gate:** completed, subject to
+latest-head CI confirmation. The ledger records every one of 144 keys;
+this internal review is not proof-assistant verification or outside
+refereeing. The editorial/checker sign-off does not waive Step 7
+transitions, Step 8 rendered PDF/EPUB/print/wrap QA or Step 9
+publisher-side KDP and physical proof. Keep PR #97 draft and unmerged.
+
