@@ -488,3 +488,28 @@ step and site), Step 9 Kindle/KDP Previewer and physical proof,
 and the author's KDP association for ISBN 9798167208650.
 The PR stays draft and unmerged.
 
+## Final repository acceptance checkpoint — 3 November 2026
+
+The preceding checkpoints preserve their own historical status, but
+**Steps 1–8 are now completed at the internal editorial and production
+level**. The last source-content and production-QA code SHA
+`631c33a9723f657b2d37f715a11423bd44737781` passed
+[Build books #1435](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976)
+with **18 successful jobs, one intentionally skipped publish job, and
+no failures**. The Volume 2-specific post-build QA and complete site
+aggregation both passed. Its artifact is
+[books-volume2-integers 13234583338](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976/artifacts/13234583338).
+
+The **Step 9 editorial repository acceptance** and explicit remaining
+publisher tasks are documented in
+`docs/reviews/volume2-final-acceptance-and-kdp-handoff-2026-11-03.md`.
+This is permission for repository integration, not Amazon publication
+or academic peer-review certification.
+
+**Unfinished external release proof:** the author's KDP ISBN
+assignment check, Print Previewer, Kindle Previewer and physical
+paperback sample. They remain unchecked and **must not be reported
+as completed**. This final note supersedes the earlier
+“latest-head CI pending” remarks for the tested source and tooling
+SHA; subsequent documentation-only commits require their own
+distinct GitHub workflow result.
