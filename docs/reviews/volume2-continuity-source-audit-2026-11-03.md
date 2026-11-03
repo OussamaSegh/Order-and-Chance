@@ -445,3 +445,46 @@ page-count-dependent paperback wrap with its ISBN barcode; Step 9
 KDP/Kindle Previewer, assignment check and physical proof. Source
 completion is not a production release. PR #97 stays draft.
 
+## Step 8 — actual production proof and post-build regression — 3 November 2026
+
+**The real Volume 2 production artifact has been obtained and checked.**
+See docs/reviews/volume2-production-proof-audit-2026-11-03.md
+for evidence and publisher-side limitations.
+
+- The Volume 2 build job of GitHub workflow #1429 passed and
+  uploaded artifact `books-volume2-integers` (13232292637),
+  generated on final manuscript-content commit `4d46982b`.
+- Actual files: **314-page reading PDF**, **313-page KDP print PDF**
+  and **314 KDP-counted pages** after odd-page rounding. The generated
+  bleed wrap is **14.987 × 10.25 inches**, with an exact
+  **0.737-inch spine**. The interior has the standard 7 × 10 trim.
+- Verified embedded print fonts, KDP PDF 1.3 with no interactive
+  annotations, correct copyright and cover ISBN
+  **9798167208650**; independently decoded the printed EAN-13
+  **bars** to those thirteen digits, not just their displayed text.
+- Reviewed 25 rendered page samples including all eleven chapter
+  openers, both TOC pages, formula-heavy pages, end matter and
+  Volume 3 handoff; viewed full back/spine/front cover;
+  raster-compared 20 reading/print body page pairs. No sample
+  layout clipping or substantial visual mismatches observed.
+- Traversed all **5,754 EPUB manifest assets** and **12,929**
+  internal EPUB links/anchors; no missing EPUB targets. Verified
+  all **144** exercise/hint/solution triads in EPUB and the
+  separate HTML reader. Online reader has **11** chapter pages
+  and **3,167** intact book-local asset links.
+- Added a permanent post-build QA checker at
+  `review/volume2-continuity/check_volume2_outputs.py`, executed
+  successfully against the downloaded prior output, and wired
+  into the Volume 2 conditional build in
+  `.github/workflows/build.yml`. Future successful builds
+  include `production-output-qa.json` in the artifact.
+- **CI caveat:** The fully successful earlier source-content
+  artifact predates the new QA integration. Latest-head CI
+  remains a separate required acceptance check; the manuscript
+  is not publication-ready just because a per-book build passed.
+
+**Open:** latest full workflow green (including the new post-build
+step and site), Step 9 Kindle/KDP Previewer and physical proof,
+and the author's KDP association for ISBN 9798167208650.
+The PR stays draft and unmerged.
+
