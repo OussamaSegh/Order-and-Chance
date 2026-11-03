@@ -5,6 +5,7 @@ Run with: python -m unittest tools/test_volume2_manuscript.py
 """
 from pathlib import Path
 import re
+import json
 import unittest
 
 
@@ -69,6 +70,34 @@ class TestVolume2Manuscript(unittest.TestCase):
         ])
         self.assertEqual(chapters, list(CHAPTERS), "Source order must match the approved curriculum")
         self.assertEqual(len(chapters), len(set(chapters)), "Chapter appears more than once")
+
+    def test_series_catalog_matches_reader_facing_parts(self):
+        source = (ROOT / "volume2-integers" / "main.tex").read_text(encoding="utf-8")
+        book_parts = re.findall(r"\\part\{([^}]+)\}", source)
+        catalog = json.loads((ROOT / "common" / "series-catalog.json").read_text(encoding="utf-8"))
+        catalog_parts = [part["name"] for part in catalog["volumes"]["2"]["parts"]]
+        self.assertEqual(book_parts, catalog_parts, "Update the canonical catalog when part names change")
+
+    def test_every_local_reference_has_a_target(self):
+        manuscript = [CHAPTER_DIR / (name + ".tex") for name in CHAPTERS]
+        manuscript += [CHAPTER_DIR / "preface.tex", CHAPTER_DIR / "field-guide.tex"]
+        sources = [(path.name, path.read_text(encoding="utf-8")) for path in manuscript]
+        definitions = {}
+        duplicates = []
+        for filename, source in sources:
+            for label in LABEL.findall(source):
+                if label in definitions:
+                    duplicates.append((label, definitions[label], filename))
+                else:
+                    definitions[label] = filename
+        self.assertEqual(duplicates, [], "Duplicated labels across manuscript chapters")
+
+        missing = []
+        for filename, source in sources:
+            for label in re.findall(r"\\(?:ref|eqref|autoref)\{([^}]+)\}", source):
+                if label not in definitions:
+                    missing.append((filename, label))
+        self.assertEqual(missing, [], "Unresolved manuscript-local references")
 
     def test_chapter_labels_are_unique(self):
         for chapter in CHAPTERS:
