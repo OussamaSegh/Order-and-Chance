@@ -132,7 +132,7 @@ class TestRelocatedEisensteinEuler(unittest.TestCase):
         euler = text.split(r"\begin{solution}{pb:euler}",1)[1].split(
             r"\end{solution}",1)[0]
         self.assertIn("p(p-1)",euler)
-        self.assertIn("The two sets are disjoint",euler)
+        self.assertIn("the two sets are disjoint",euler)
 
 
 if __name__ == "__main__":
