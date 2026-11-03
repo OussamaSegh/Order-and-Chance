@@ -14,6 +14,12 @@ Now imagine two clocks ticking at once, one modulo $3$, one modulo $5$. A remain
 
 Congruences will also tell us about roots of equations modulo prime powers. A root modulo $p$ may continue to roots modulo $p^2,p^3,\ldots$, or it may not. Before trusting a large modular computation, we will learn which steps preserve solutions and what data are needed to lift one.
 
+\begin{reminder}[First reading and optional lifting]
+First master residue classes, the legal rules for cancellation, modular inverses, and the Chinese remainder theorem. These supply the main route to arithmetic functions and primitive roots. The final section on lifting roots modulo prime powers is a deeper extension: read it after the basic modular arguments feel familiar, or return to it later.
+\end{reminder}
+
+
+\noindent\emph{What carries forward.} In the primes chapter we learned that every integer has prime factors, but that knowing this rarely reveals the size of a huge power. Working modulo $m$ keeps only the remainder that matters. Invertibility and the Chinese remainder theorem will then let us reconstruct information prime power by prime power.
 
 \section{The ring \texorpdfstring{$\Z/n\Z$}{Z/nZ}}
 
@@ -124,7 +130,7 @@ One has $7+8=15\equiv 3$ and $7\cdot 8=56\equiv 8$ modulo $12$. The residue $5$ 
 \end{examplex}
 
 \begin{examplex}[the last two digits of $7^4$]
-Modulo $100$, $7^2=49$ and $7^4=49^2=2401\equiv 1$. So the order of $7$ modulo $100$ divides $4$ on this evidence, but Euler's theorem only promised exponent $\varphi(100)=40$. A direct power can be much smaller than the group order, which is why the order is defined as the least positive exponent in the next chapter.
+Modulo $100$, $7^2=49$ and $7^4=49^2=2401\equiv 1$. So multiplication by $7$ returns to $1$ after four steps, while Euler's theorem only promised exponent $\varphi(100)=40$. The least such return exponent is called the \emph{multiplicative order} in Chapter~\ref{ch:orders}; nothing about its general properties is needed for this computation. A direct power can be much smaller than the group order, which is why Chapter~\ref{ch:orders} defines the order as the least positive exponent.
 \end{examplex}
 
 \section{The Chinese remainder theorem}
@@ -161,6 +167,7 @@ Figure~\ref{fig:crt} shows the theorem as a walk: adding $1$ moves one step down
 Units correspond to pairs of units, so $\varphi(mn)=\varphi(m)\varphi(n)$ for coprime $m,n$. With $\varphi(p^k)=p^k-p^{k-1}$ (the non-multiples of $p$), this recovers $\varphi(n)=n\prod_{p\mid n}\left(1-\frac1p\right)$ from Volume~1.
 
 \begin{proposition}[linear congruences]\label{prop:lincong}
+For integers $a,b$ and a positive integer $n$, the congruence
 $ax\equiv b\pmod n$ has a solution if and only if $d=\gcd(a,n)$ divides $b$, and then it has exactly $d$ solutions modulo $n$.
 \end{proposition}
 \begin{proof}
@@ -178,12 +185,11 @@ Check both remainders: $17=3\cdot5+2=2\cdot7+3$. The two ingredients $-14$ and $
 
 Thus $x\equiv1\pmod6$, $x\equiv3\pmod8$ is compatible and gives $x\equiv19\pmod{24}$, whereas replacing the second remainder by $2$ makes it impossible: an integer cannot be both odd and even. The Chinese remainder theorem is powerful; it does not negotiate with parity.
 
-\subsection*{A counting identity for the next chapter}
-The following identity will let us count elements of each multiplicative order.
-It is a partition of a finite set, not an assumption about primitive roots.
+\subsection*{A counting identity for divisor sums}
+The next chapter studies sums over divisors. The following finite identity sorts fractions by reduced denominator, preparing that subject and the later count of elements of each multiplicative order in Chapter~\ref{ch:orders}. It is a partition of a finite set, not an assumption about primitive roots.
 
 \begin{proposition}[Gauss]\label{prop:phisum}
-$\displaystyle\sum_{d\mid n}\varphi(d)=n$.
+For every integer $n\ge1$, $\displaystyle\sum_{d\mid n}\varphi(d)=n$.
 \end{proposition}
 \begin{proof}
 Write each of the $n$ fractions $\frac kn$, $1\le k\le n$, in lowest terms $\frac ad$: then $d\mid n$, $1\le a\le d$ and $\gcd(a,d)=1$, and each such pair arises exactly once. So $n=\sum_{d\mid n}\varphi(d)$.
@@ -197,6 +203,48 @@ Solve $x\equiv 2\pmod 3$, $x\equiv 3\pmod 5$, $x\equiv 2\pmod 7$. First $x\equiv
 \begin{examplex}[when the moduli are not coprime]
 The system $x\equiv 1\pmod 4$ and $x\equiv 2\pmod 6$ has no solution. A solution would give $1\equiv 2\pmod{\gcd(4,6)}$, that is $1\equiv 2\pmod 2$, which is false. The Chinese remainder theorem needs coprime moduli precisely so that this compatibility condition is automatic. When it holds, as for $x\equiv 1\pmod 4$ and $x\equiv 3\pmod 6$ (since $1\equiv 3\pmod 2$), solutions exist; $x=9$ is one.
 \end{examplex}
+
+\subsection*{Proof workshop: what cancellation actually requires}
+
+Modulo $12$, solve $5x\equiv7$. Since
+$5\cdot5=25\equiv1\pmod{12}$, multiply both sides by $5$:
+\[
+x\equiv5\cdot7=35\equiv11\pmod{12}.
+\]
+Check by substitution: $5\cdot11=55\equiv7$. This is one
+solution class, not just the chosen representative $11$.
+
+Now change only the coefficient: $6x\equiv6\pmod{12}$.
+The solutions include $x\equiv1$ and $x\equiv3$, because
+$6$ times either is $6$ modulo $12$. Cancelling $6$ and
+claiming $x\equiv1$ would discard a valid solution. The
+general rule is not that cancellation sometimes feels unsafe:
+you may cancel a factor modulo $m$ precisely when that factor
+is a unit, equivalently when it is coprime to $m$.
+
+\begin{figure}[ht]
+\centering
+\fig{ch03-unit-classes}
+\caption{Every residue modulo $12$ has a position, but only
+$1,5,7,11$ have multiplicative inverses. A cancellation step
+requires a unit; the other classes cannot be divided out.}
+\label{fig:congruence-unit-classes}
+\end{figure}
+
+Figure~\ref{fig:congruence-unit-classes} shows the four coefficients you may cancel modulo $12$. The shape of a residue class is not what matters; the test is whether its gcd with $12$ is $1$.
+
+\begin{reminder}[Optional route: lifting polynomial roots]
+The first-reading route ends with modular inverses, the Chinese remainder
+theorem and the cancellation workshop immediately above. You may skip
+the section on lifting roots modulo prime powers and continue directly
+to the exercises: \ref{ex:last2}, \ref{ex:sunzi}, \ref{ex:digits},
+\ref{ex:sqrt1}, \ref{ex:wilsonconv}, \ref{ex:tower},
+\ref{ex:t1-toy-rsa}, \ref{ex:t1-two-power-roots} and
+\ref{ex:t1-sunzi23} do not use Hensel's lemma.
+For the optional lifting exercise \ref{ex:hensel}, read the next section
+and its simple-root hypothesis first. The later first-route chapters
+use the CRT and Euler's theorem, not the lifting theorem.
+\end{reminder}
 
 \section{Lifting modulo prime powers}
 
@@ -251,38 +299,11 @@ Modulo $5$, $X^2-5$ vanishes at $0$. Modulo $25$ the same congruence asks for a 
 \end{examplex}
 
 \begin{beauty}
-Where this leads. The Chinese remainder theorem is the exact sieve identity of Chapter~\ref{ch:characters} once it is written with the M\"obius function, and it is the gluing of local solutions in Volume~12. Hensel's lemma, kept here for congruences, is the construction of $\Z_p$ in Volume~13. Euler's theorem is the reason a character sum over a complete set of units can be evaluated in Volume~5.
+Where this leads. The Chinese remainder theorem assembles compatible residue conditions, while the M\"obius identity gives an exact finite sieve in Chapter~\ref{ch:characters}. These are related tools, not the same identity. The CRT is also a model for gluing local information in later mathematics. Hensel's lemma, kept here for congruences, is the construction of $\Z_p$ in Volume~13. Euler's theorem is the reason a character sum over a complete set of units can be evaluated in Volume~5.
 \end{beauty}
 
-\subsection*{Proof workshop: what cancellation actually requires}
-
-Modulo $12$, solve $5x\equiv7$. Since
-$5\cdot5=25\equiv1\pmod{12}$, multiply both sides by $5$:
-\[
-x\equiv5\cdot7=35\equiv11\pmod{12}.
-\]
-Check by substitution: $5\cdot11=55\equiv7$. This is one
-solution class, not just the chosen representative $11$.
-
-Now change only the coefficient: $6x\equiv6\pmod{12}$.
-The solutions include $x\equiv1$ and $x\equiv3$, because
-$6$ times either is $6$ modulo $12$. Cancelling $6$ and
-claiming $x\equiv1$ would discard a valid solution. The
-general rule is not that cancellation sometimes feels unsafe:
-you may cancel a factor modulo $m$ precisely when that factor
-is a unit, equivalently when it is coprime to $m$.
-
-\begin{figure}[ht]
-\centering
-\fig{ch03-unit-classes}
-\caption{Every residue modulo $12$ has a position, but only
-$1,5,7,11$ have multiplicative inverses. A cancellation step
-requires a unit; the other classes cannot be divided out.}
-\label{fig:congruence-unit-classes}
-\end{figure}
-
-Figure~\ref{fig:congruence-unit-classes} shows the four coefficients you may cancel modulo $12$. The shape of a residue class is not what matters; the test is whether its gcd with $12$ is $1$.
-
+\medskip
+\noindent\emph{The next question.} Residue classes answer not only individual congruences but counting questions: how many classes are invertible modulo $n$? We called that number $\varphi(n)$. The next chapter studies the arithmetic functions $\varphi$, the divisor-counting functions and the M\"obius function together, turning this one count into a general calculus of divisors.
 
 \section{Exercises}
 
@@ -310,7 +331,9 @@ Show that if $n>4$ is composite then $(n-1)!\equiv0\pmod n$. Deduce that $n>1$ i
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:hensel}
-Find $x\in\{0,\dots,124\}$ with $x^2\equiv-1\pmod{125}$, by lifting a solution modulo $5$.
+\emph{Optional after the Hensel-lifting section.}
+Find \emph{all} $x\in\{0,\dots,124\}$ with $x^2\equiv-1\pmod{125}$,
+by lifting both solutions modulo $5$.
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{ex:tower}
@@ -353,7 +376,7 @@ The Chinese remainder theorem says that arithmetic modulo $n$ is arithmetic modu
 Let $P\in\Z[X]$ be non-constant.
 \begin{enumerate}[label=(\alph*)]
 \item Show that there are infinitely many integers $n\ge0$ for which $|P(n)|$ is not a prime number.
-\item Show that infinitely many primes divide at least one of the numbers $P(0),P(1),P(2),\dots$
+\item Show that infinitely many distinct primes divide at least one \emph{nonzero} value $P(n)$ with $n\ge0$.
 \end{enumerate}
 \end{exercise}
 
@@ -390,6 +413,12 @@ Let $p$ be prime and $a\ge b\ge0$. Show that $\binom{ap}{bp}\equiv\binom ab\pmod
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{pb:morley}
+\emph{Optional return after Chapter~\ref{ch:characters}.}
+The solution below uses the Fermat-quotient identity proved in
+Problem~\ref{pb:fermatquot} of that later chapter. It is not a
+prerequisite for modular arithmetic or any subsequent first-route
+theorem. Alternatively, derive the alternating harmonic congruence
+independently before attempting the problem.
 Let $p$ be an odd prime. Show that
 \[
 \binom{p-1}{(p-1)/2}\equiv(-1)^{(p-1)/2}\,4^{p-1}\pmod{p^2}.
@@ -397,6 +426,12 @@ Let $p$ be an odd prime. Show that
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{pb:glaisher}
+\emph{Later-volume exploration: Volume~5.}
+The Bernoulli numbers, Faulhaber's formula, and the
+von Staudt--Clausen denominator theorem used in the solution are
+developed there. The proof also invokes Lerch's Fermat-quotient
+congruence from Problem~\ref{pb:fermatquot} in Chapter~\ref{ch:characters}.
+This exercise is not part of the Volume~2 first route.
 Let $p$ be an odd prime and $B_{p-1}$ the Bernoulli number. Show that $pB_{p-1}$ has no $p$ in its denominator and that
 \[
 (p-1)!\equiv pB_{p-1}-p\pmod{p^2}.
@@ -404,6 +439,10 @@ Let $p$ be an odd prime and $B_{p-1}$ the Bernoulli number. Show that $pB_{p-1}$
 \end{exercise}
 
 \begin{exercise}[Journey]\label{pb:ramanujan5}
+\emph{Later-volume exploration: Volume~5.}
+The proof uses Euler's pentagonal theorem and analytic or formal
+power-series manipulations not established on this volume's first
+route. Return after learning those tools.
 \emph{Ramanujan's congruence.} We prove that $p(5n+4)\equiv0\pmod5$ for every $n\ge0$. Fix $q$ with $0<|q|<1$ and let, for
 $z\in\C^*$,
 \[
@@ -455,7 +494,10 @@ Factor $x^2-1$ as $(x-1)(x+1)$. For an odd prime $p$, why can $p$ not divide bot
 For a composite $n=ab$, the factorial $(n-1)!$ often contains both $a$ and $b$ as separate factors. The only awkward case is $a=b$: look for the distinct factors $a$ and $2a$. Verify the inequality needed for $2a<n$, and check the smallest exceptional square separately.
 \end{hint}
 \begin{hint}{ex:hensel}
-Start from $x\equiv2\pmod5$ and apply the lifting step of Theorem~\ref{thm:hensel} twice, exactly as in the last thinking prompt.
+Start from both roots $x\equiv2$ and $x\equiv3\pmod5$.
+For each root apply Theorem~\ref{thm:hensel} twice, first modulo $25$
+and then modulo $125$. The theorem gives one lift per starting root,
+so check both residues and explain why the list is complete.
 \end{hint}
 \begin{hint}{ex:tower}
 Modulo $100$, a power of $3$ only depends on its exponent modulo $\varphi(100)=40$. So first find $3^{27}\bmod40$; note that $3^4=81$.
@@ -481,8 +523,7 @@ The first and third congruences together say $x\equiv 2\pmod{21}$. Then solve on
 \end{hint}
 
 \begin{hint}{pb:primepoly}
-(a) If $P(a)=\pm p$, look at $P(a+kp)$ modulo $p$. (b) Evaluate $P$ at a multiple of $P(0)$ times the product of the primes
-you already have.
+(a) If $P(a)=\pm p$, look at $P(a+kp)$ modulo $p$. (b) Choose $a\ge0$ with $P(a)\ne0$, then evaluate $P$ on a progression starting at $a$ whose step is a multiple of $P(a)$ and every prime on your hypothetical finite list.
 \end{hint}
 
 \begin{hint}{pb:fpfunctions}
@@ -570,7 +611,14 @@ f(x)\equiv5+20t\pmod{25}.
 The required equation is $1+4t\equiv0\pmod5$, so $t\equiv1$ and $x=7$.
 
 For the next lift write $x=7+25t$. Modulo $125$,
-$f(x)\equiv50+350t$. Dividing by $25$ yields $2+14t\equiv0\pmod5$, hence $t\equiv2$ and $x=57$. Direct verification gives $57^2+1=3250=26\cdot125$. This is the unique lift of the root $2$ modulo $5$; the other initial root $3$ lifts separately.
+$f(x)\equiv50+350t$. Dividing by $25$ yields $2+14t\equiv0\pmod5$, hence $t\equiv2$ and $x=57$. Direct verification gives $57^2+1=3250=26\cdot125$. This is the unique lift of the root $2$ modulo $5$.
+The other initial root, $3$ modulo $5$, lifts to $18$ modulo $25$:
+$f(3+5t)/5\equiv2+t\pmod5$, so $t=3$.
+Then $f(18+25t)/25\equiv13+36t\equiv3+t\pmod5$,
+so $t=2$ and $x=68$ modulo $125$.
+Indeed, $68^2+1=4625=37\cdot125$.
+Thus the complete answer is $\{57,68\}$ modulo $125$;
+Hensel uniqueness rules out further lifts of either root.
 \end{solution}
 
 \begin{solution}{ex:tower}
@@ -623,8 +671,7 @@ The smallest positive solution is $23$. It has remainders $2$, $3$ and $2$ on di
 \begin{solution}{pb:primepoly}
 \idea A polynomial with integer coefficients respects congruences: $P(a+kp)\equiv P(a)\pmod p$. So once $P(a)=\pm p$, all the
 values $P(a+kp)$ are multiples of $p$; if they were all prime they would all be $\pm p$, too many times for a non-constant
-polynomial. For (b), Euclid's trick: build a value of $P$ that is $\equiv P(0)$ modulo a big product, then divide out
-$P(0)$.
+polynomial. For (b), choose a nonzero value $c=P(a)$, then use Euclid's trick on values in a progression $a+Mt$. The argument must find new prime divisors of \emph{nonzero} values, even when $P(0)=0$.
 
 \writeup (a) Suppose a nonconstant polynomial $P\in\Z[X]$ took prime absolute values at every sufficiently large nonnegative integer. Choose one such input $a$ and set $p=|P(a)|$. Every integer $a+kp$ has the same residue as $a$ modulo $p$, so
 \[
@@ -632,11 +679,11 @@ P(a+kp)\equiv P(a)\equiv0\pmod p.
 \]
 The absolute value is assumed prime, hence must equal $p$. For infinitely many $k$, the polynomial value therefore belongs to the two-element set $\{p,-p\}$. One of the nonzero polynomials $P-p$ and $P+p$ would have infinitely many roots. That is impossible, so $P$ cannot take only prime absolute values eventually.
 
-(b) Write $P(X)=c+XR(X)$, where $c=P(0)$. If $c=0$, every prime $p$ divides $P(p)$ and there is nothing more to prove. Otherwise assume the only primes dividing nonzero values of $P$ are $p_1,\ldots,p_r$. Put $m=cp_1\cdots p_r$. Then
+(b) Since $P$ is nonconstant, it has only finitely many roots; choose a nonnegative integer $a$ with $c=P(a)\ne0$. Suppose every prime dividing a nonzero value $P(n)$, $n\ge0$, belongs to a finite list $p_1,\ldots,p_r$. Set $M=|c|p_1\cdots p_r>0$ and write $P(a+T)=c+TR(T)$, where $R\in\Z[T]$. Then for every nonnegative integer $t$,
 \[
-P(mt)=c\bigl(1+p_1\cdots p_r\,tR(mt)\bigr).
+P(a+Mt)=c\left(1+\frac{M}{c}tR(Mt)\right).
 \]
-The expression in parentheses is a nonconstant integer polynomial in $t$, and so has an absolute value greater than $1$ for some integer $t$. Let $q$ be one of its prime factors. It also divides $P(mt)$, so by assumption $q=p_i$ for some $i$. But the parenthesised factor is congruent to $1$ modulo every $p_i$. This contradiction proves that infinitely many primes divide values of $P$.
+The factor $H(t)=1+(M/c)tR(Mt)$ is a nonconstant polynomial with integer coefficients, since $M/c=\pm p_1\cdots p_r$ and $P$ is nonconstant. For some sufficiently large $t\ge0$, $|H(t)|>1$. In particular $P(a+Mt)\ne0$. Choose a prime $q\mid H(t)$. Then $q\mid P(a+Mt)$, so $q$ must be one of the $p_i$. But $H(t)\equiv1\pmod{p_i}$ for every $i$, a contradiction. Hence infinitely many distinct primes divide nonzero values of $P$ on nonnegative integers.
 
 \tools Volume~2 (primes and congruences); Volume~1 (nonzero polynomials have finitely many roots).
 \leads This is Schur's theorem. The distribution of primes dividing polynomial values is a later topic; whether $n^2+1$ itself is prime for infinitely many $n$ remains open.
@@ -977,7 +1024,7 @@ M=3p^2(p-2)-(p-1)^3-1
 \[
 |K(a)|<2^{1/4}p^{3/4}<1.19p^{3/4}.
 \]
-The trivial triangle inequality would give only $|K(a)|\le p-1$. The fourth-moment bound is already stronger for the stated prime range, and its advantage grows with $p$.
+The trivial triangle inequality gives $|K(a)|\le p-1$. For $p=3$, the fourth-moment bound $1.19p^{3/4}$ is \emph{weaker} than the trivial bound $2$. It is sharper for every odd prime $p\ge5$: the inequality holds at $p=5$, and $(p-1)/p^{3/4}$ increases with $p$. Its advantage then grows with $p$.
 
 \tools Volume~2 (finite-field inverses); Volume~1 (quadratic roots and finite sums).
 \leads Kloosterman introduced these sums in 1926. Their sharper bound of size $2\sqrt p$ follows from deeper algebraic geometry; the fourth moment is an accessible glimpse of cancellation without those tools.
