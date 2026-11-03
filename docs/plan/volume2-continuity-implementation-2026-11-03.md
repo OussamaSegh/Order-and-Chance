@@ -39,7 +39,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Add regression tests that lock the exact chapter order, part headings and the existing 144-exercise count.
 - **Exit gate:** source order matches this table; all eleven source chapters appear exactly once; no accidental deletion of exercises; tests run in CI.
 
-### Step 2 — Build the bridges from Volume 1 [started]
+### Step 2 — Build the bridges from Volume 1 [completed]
 
 - Explicitly connect inclusion–exclusion to divisor counting and Möbius inversion in Chapter 4.
 - Connect Volume 1's roots of unity and elementary cyclic groups to multiplicative orders in Chapter 5.
@@ -117,3 +117,36 @@ The first PR CI run failed at the canonical part catalog check (before TeX). The
 ## Build and proof-audit checkpoint — 3 November 2026
 
 Run [41556183082](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41556183082) passed on its own SHA, including Volume 2 production export tests. Later commits on the branch repaired two mathematics boundary cases, completed both Hensel lifts, and improved advanced-prerequisite labels. Seven new finite arithmetic sanity checks were committed. **The earlier green CI result does not cover those later commits.** Full independent mathematics review, current-head build, and manual PDF, EPUB and KDP proof checks remain open. See docs/reviews/volume2-continuity-source-audit-2026-11-03.md.
+
+## Step 2 acceptance checkpoint — 3 November 2026
+
+**Source-level gate passed.** The four primary bridges now demonstrate the
+specific mathematical operation carried forward from Volume 1 rather than
+merely announcing a theme:
+
+- Chapter 4: the finite inclusion--exclusion count $\varphi(6)=6-3-2+1=2$
+  becomes the divisor-sign identity for the M\"obius function, whose proof and
+  inversion theorem are then given in Chapter 4.
+- Chapter 5: the cyclic fourth roots of unity are compared explicitly with
+  the powers of $2$ modulo $5$; prime-field cyclicity is still proved afresh
+  in Chapter 5 instead of being assumed.
+- Chapter 10: a concrete complex product illustrates
+  $N(zw)=N(z)N(w)$; the new Euclidean-lattice division estimates and
+  factorisation theory remain to be established within Volume 2.
+- Chapter 11: the Volume 1 roots-of-unity filter is compared with an exact
+  $\chi_4$ residue-class filter, before the general Dirichlet-character
+  orthogonality theorem is proved in that chapter.
+
+The supporting routes in Chapters 1, 2, 6 and 8 now identify, respectively,
+the already introduced subgroup test, proof by contradiction/series,
+pairing and polynomial root bounds, and the well-ordering principle behind
+infinite descent. Chapter 3's existing totient bridge was checked.
+The underlying Volume 1 proofs were verified directly against the
+Volume 1 counting, complex-roots, and sums chapter source files. New source
+and small-arithmetic regression tests are in tools/test_volume2_manuscript.py.
+
+This acceptance concerns **only the Step 2 instructional bridges**.
+The independent first-use prerequisite audit (Step 4), theorem and example
+audit (Step 5), 144-solution review (Step 6), and end-to-end production
+acceptance (Steps 8--9) remain open. The new GitHub Actions head must complete
+its own CI run; an older successful run does not validate these commits.
