@@ -300,7 +300,7 @@ local-square obstruction on small positive and negative nonsquares.
 
 **Source gate:** all proof cross-references prior to exercise sections
 target existing earlier-local or earlier-printed-chapter labels;
-the **41 one-star problems** have no later-chapter references in
+the **41 then-one-star problems** have no later-chapter references in
 their prompts, hints or required solution portions. All exposition
 forward labels are in the curated preview list. The corpus still
 has 144 aligned exercise/hint/solution IDs, 266 unique local labels
@@ -397,3 +397,5 @@ Step 7 reading transitions and metadata, Step 8 rendered
 reading/print PDF, EPUB and page-count-matched paperback wrap,
 and Step 9 KDP/physical proof remain separate mandatory gates.
 PR #97 stays draft and unmerged.
+
+**Historical grading note (Step 6, 3 November 2026):** This earlier Step 4 audit covered all 41 problems that were graded one-star at that checkpoint. Step 6 regraded four mathematically more demanding problems to two stars. The current first-route regression checks all **37** one-star problems; no problem statement, solution or prerequisite was deleted.
