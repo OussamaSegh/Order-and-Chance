@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and seven exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 137 exercises and all unnamed proof claims are not certified. No final build or page-by-page inspection has been executed for this PR.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and eight exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 136 exercises and all unnamed proof claims are not certified. An earlier print/EPUB build completed but the old spine QA rejected it; no passing final-head build or page-by-page visual proof has been recorded.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -32,11 +32,11 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | P00 Exact baseline inventory and executable tests | IN_PROGRESS | 72 named results and 144 exercise keys independently indexed; Volume 1 crosswalk incomplete; current-head CI still pending. |
 | P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Confirmed well ordering, strong induction, Fibonacci gcd/Binet and Basel proof sites; rest pending. |
 | P02 Continuous story architecture | IN_PROGRESS | Chapter 2 redundant Euclid exposition condensed; whole-book story still pending. |
-| P03 First-use dependency graph | IN_PROGRESS | Repaired forward dependency pb:fibcoprime and later analytic dependency pb:gcdmean; rest pending. |
+| P03 First-use dependency graph | IN_PROGRESS | Five concrete dependency repairs, including Glaisher and Ramanujan; later advanced challenges remain. |
 | P04 All theorem/proof second checks | IN_PROGRESS | Eight named results VERIFIED_TWICE; all other result and unnamed proof chains pending. |
 | P05 Every worked example and figure | IN_PROGRESS | Individually checked Euclid six-prime composite and 5!+1, plus arithmetic boundary probes; rest pending. |
-| P06 All exercises independent reconstruction | IN_PROGRESS | Seven solutions passed first proof reconstruction; 137 remaining. |
-| P07 All exercises independent adversarial second pass | IN_PROGRESS | Seven solutions VERIFIED_TWICE, with exact earlier-tool route and separate second check; 137 remaining. |
+| P06 All exercises independent reconstruction | IN_PROGRESS | Eight solutions fully reconstructed, one new formal-series rewrite awaiting second pass, remaining keys pending. |
+| P07 All exercises independent adversarial second pass | IN_PROGRESS | Eight solutions VERIFIED_TWICE with prior-tool routes; 136 remaining, including Ramanujan pending second formal pass. |
 | P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C02/C03/C05 math and voice repairs; no chapter signed off. |
 | P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
 | P10 Full-book voice/transition pass | IN_PROGRESS | Local Chapter 2 duplicate-paragraph removal only; full read-aloud pending. |
@@ -47,7 +47,7 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | Printed chapter / file | Status | Target focus |
 | --- | --- | --- |
 | 1 / ch01-divisibility.tex | IN_PROGRESS | Euclid, FTA, valuations, quantitative exercises |
-| 2 / ch02-primes.tex | UNREVIEWED | infinitude, Euler, sieve, Bertrand |
+| 2 / ch02-primes.tex | IN_PROGRESS | Euclid and Euler twice checked; estimates, Bertrand and all exercises still pending |
 | 3 / ch03-congruences.tex | IN_PROGRESS | residue classes, CRT, prime powers, advanced congruences |
 | 4 / ch04-arithmetic-functions.tex | UNREVIEWED | Möbius, convolution, perfect numbers, analytic extras |
 | 5 / ch05-primitive-roots.tex | IN_PROGRESS | group orders, cyclicity, lifts, mean gcd |
@@ -69,6 +69,9 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | DEP-001 | confirmed | C01→C05 pb:fibcoprime | A required result was taught four chapters after first use | Moved exercise/hint/solution to after pb:gcdmean in C05; proved Binet error explicitly | VERIFIED_TWICE |
 | DEP-002 | confirmed | C05 pb:gcdmean | Prompt borrowed Chapter 11 ζ-differentiation and part (a) cited an unproved asymptotic | Local ζ, harmonic mean proof, uniform weighted endpoint and double check | VERIFIED_TWICE |
 | DEP-003 | confirmed | C03 pb:morley | Essential Chapter 11 Fermat-quotient identity cited in Chapter 3 exercise solution | Local binomial/harmonic proof; adversarial algebra and independent prime checks | VERIFIED_TWICE |
+
+| DEP-004 | confirmed | C03 pb:glaisher | Original problem imported Bernoulli denominator theory from Volume 5 | Replaced *mathematical problem* with Fermat/Wilson power-sum congruence, explicitly documented | VERIFIED_TWICE (replacement) |
+| DEP-005 | confirmed | C03 pb:ramanujan5 | Original proof imported pentagonal theorem and holomorphic analysis | Preserved Ramanujan theorem, proved triple product/pentagonal/cubic identities locally using formal coefficients | CORRECTED_NEEDS_RECHECK |
 
 ## Implementation checkpoint — first teaching-order repair (3 November 2026)
 
@@ -151,6 +154,28 @@ No chapter passes P08 yet: proof and exercise registers each list many more rows
 
 **Next exact task:** inspect exact-head CI for the new geometry and mathematical tests; triage \`pb:glaisher\`, \`pb:ramanujan5\` to self-contained, true Volume 2 alternatives; finish Volume 1 actual toolkit ledger; continue Chapter 1 remaining solution/proof audits and all Chapter 2 calculations before claiming any chapter signed off.
 
+## Session checkpoint — advanced Chapter 3 repairs (3 November 2026)
+
+### DEP-004 — Bernoulli exercise replaced, not silently certified
+
+The former \`pb:glaisher\` asked for \((p-1)!\equiv pB_{p-1}-p\pmod{p^2}\), depending on Faulhaber's formula, Bernoulli denominators and von Staudt–Clausen from **Volume 5**, plus a later Chapter 11 Fermat-quotient congruence. Those results were not earned by a Chapter 3 reader. The replacement preserves the stable key, hint/solution and ★★★ grade but **changes the mathematical target** to the related, accessible congruence \(\sum_{a=1}^{p-1}a^{p-1}\equiv(p-1)!+p\pmod{p^2}\) for odd prime p. The original Bernoulli theorem is **not** claimed proved by Volume 2. The new problem explicitly introduces \(q_p(a)=(a^{p-1}-1)/p\) and \(W_p=((p-1)!+1)/p\), integers by Fermat/Wilson, and requires proving \(\sum q_p(a)\equiv W_p\pmod p\).
+
+**Pass A:** write \(P=(p-1)!\). From \(\prod_{a=1}^{p-1}(1+pq_p(a))=P^{p-1}\), the left is congruent to \(1+p\sum q_p(a)\pmod{p^2}\). From \(P=-1+pW_p\) and even exponent p−1, the right is \(1-p(p-1)W_p\equiv1+pW_p\pmod{p^2}\). Cancellation of p changes the modulus to p; summing the exact equations \(a^{p-1}=1+pq_p(a)\) proves the required power-sum congruence. **Pass B:** explicitly checked invertibility, sign, p=3 boundary and the change of modulus; independently computed both quotient and power-sum congruences for **all 24 odd primes p≤97**, with no failures. The solution uses earlier Chapter 3 and Chapter 1 tools only. Source commit \`e4e65b69\`, test \`f87b0620\`. This new problem is **VERIFIED_TWICE**, subject to final exact-head CI and page proof.
+
+### DEP-005 — Ramanujan problem retained, self-contained formal proof needs a second audit
+
+The original \`pb:ramanujan5\` still asks for the full infinite congruence \(p(5n+4)\equiv0\pmod5\). Its previous proof relied on unintroduced holomorphic/Laurent expansions, analytic continuation, and Euler's pentagonal theorem. Replaced the question, hint and solution with a full *coefficientwise formal-power-series* route. A finite coefficient is defined by a finite convolution; each coefficient of an infinite product depends on only finitely many factors. This is taught at the exercise before any use.
+
+The current source derives \`H(q,q²z)=H(q,z)/(qz)\` and \(c_m=q^{m^2}c_0\); evaluates at \(z=i\), \(z=-1,q\mapsto q^4\), uses a formal series with constant 1 to deduce \(c_0(q)E(q^2)=1\), and hence proves the Jacobi triple product. A specialization \(q=u^3,z=-u^{-1},x=u^2\) now **proves Euler's pentagonal identity inside the solution** rather than quoting it. A different specialization and cancellation of \(1-w^{-1}\) derives Jacobi's cubic identity by a finite geometric sum in w; no analytic limit is imported. Modulo 5, the identity \(8e(j,k)\equiv(2k+1)^2+2(j+4)^2\) forces every coefficient of \(x^{5m}\) in \(xE(x)^4\) to be divisible by 5. A direct combinatorial count proves \(1/E(x)=\sum p(n)x^n\), and \(E(x)^5\equiv E(x^5)\pmod5\) gives Ramanujan's congruence by residue-class extraction. Source commit \`f081b967\`, regression test \`e436e2f4\`.
+
+**Independent finite checks:** 1,207 coefficients of the triple product through q-degree 70 agreed with the original finite products; all 51 values \(p(5n+4)\) for n=0,…,50 vanished mod5 in a separately implemented partition recurrence. The new test also checks Euler's and Jacobi's identities through degree 140. **Status remains CORRECTED_NEEDS_RECHECK:** these finite tests and the first symbolic derivation are not an independent second proof of the infinite identities. Revisit carefully the validity of formal substitution with temporary negative powers, factor cancellations, exponent signs and the final coefficient-class projection. No outside-volume theorem is now declared essential.
+
+### CI and route status
+
+Previous full build at head \`d6b20f0\` produced a **315-page interior**, with **316 KDP counted pages, 0.7417-inch spine and 14.9917-inch wrap width**, before a false 3-decimal spine validator failed. The QA now uses the canonical 4-decimal value; \`tools/test_volume2_output_geometry.py\` guards it. New maths regressions also cover first-chapter examples, Glaisher modular arithmetic and formal partition coefficients. **A passing current-head CI build is not yet evidenced**; do not infer one from earlier cancelled runs. No visual page-by-page proof or Kindle/KDP preview is certified.
+
+**Next exact task:** check the newest GitHub Actions result on the PR head; independently reread the entire \`pb:ramanujan5\` formal proof; proceed with the remaining later-volume-dependent exercises (especially Chapter 4 and Chapter 6) and the Volume 1 prerequisite inventory. The release gates P00–P13 and complete 144-solution audit remain OPEN.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -167,4 +192,4 @@ No chapter passes P08 yet: proof and exercise registers each list many more rows
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** inspect exact-final-head GitHub Actions run including the output QA and new tests; resolve any failure. Then continue Volume 1 toolkit and all unnamed-proof inventories, and redesign Chapter 3 pb:glaisher and pb:ramanujan5 so they need no Volume 5 prerequisite. Resume remaining C01 and C02 exercises/figures after that. See last checkpoint and PR comments. 
+**Next exact task:** inspect newest exact-head CI, perform the second independent formal-series audit of pb:ramanujan5, then audit other advanced exercises for unearned later-volume tools and continue the remaining Volume 1 and Chapter 1/2 proof work. Keep all unresolved results explicit in the ledger and PR. 
