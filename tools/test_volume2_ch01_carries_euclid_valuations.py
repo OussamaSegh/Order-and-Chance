@@ -149,6 +149,13 @@ class TestChapterOneCarriesEuclidAndValuations(unittest.TestCase):
             self.assertEqual(source.count(r"\label{" + key + "}"),1)
             self.assertEqual(source.count(r"\begin{hint}{" + key + "}"),1)
             self.assertEqual(source.count(r"\begin{solution}{" + key + "}"),1)
+        # Guard against a partial source-file suffix duplication after
+        # automated prose replacement (not merely duplicated labels).
+        self.assertEqual(source.count(r"\section{Hints}"),1)
+        self.assertEqual(source.count(r"\section{Solutions}"),1)
+        self.assertEqual(source.count(r"\begin{exercise}"),15)
+        self.assertEqual(source.count(r"\end{exercise}"),15)
+        self.assertTrue(source.rstrip().endswith(r"\end{itemize}"))
         before_exercises=source.split(r"\section{Exercises}",1)[0]
         self.assertIn(
             "a complete run for $899$ and $372$", before_exercises)
