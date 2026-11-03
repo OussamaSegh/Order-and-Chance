@@ -188,9 +188,10 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
         text = section(
             content("ch05-primitive-roots"), "solution", "pb:gcdmean"
         )
-        self.assertIn(r"A(t):=\sum_{d\le t}\frac{\varphi(d)}d", text)
-        self.assertIn(r"\frac{t}{\zeta(2)}+O(\log(2t))", text)
+        self.assertIn(r"H_{\lfloor N/h\rfloor}", text)
         self.assertIn(r"\frac{\log N}{\zeta(2)}+O(1)", text)
+        self.assertIn(r"\log(2M)", text)
+        self.assertNotIn("A(t):=", text)
         for n in (10, 30, 60):
             phi = [
                 sum(math.gcd(j, d) == 1 for j in range(1, d + 1))
@@ -201,6 +202,30 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
                 for d in range(1, n + 1)
             )
             self.assertEqual(gcd_moment(n), from_totients)
+
+        # A second finite check tests the *weighted* coprime-pair sum,
+        # including the boundary M=1 where log(M) would vanish.
+        def mobius(n):
+            sign = 1
+            p = 2
+            while p*p <= n:
+                if n % p == 0:
+                    n //= p
+                    if n % p == 0:
+                        return 0
+                    sign = -sign
+                p += 1
+            return -sign if n > 1 else sign
+
+        for n in (1, 2, 3, 5, 10, 25):
+            direct = sum(a*b for a in range(1, n+1)
+                         for b in range(1, n+1)
+                         if math.gcd(a, b) == 1)
+            via_mobius = sum(
+                mobius(d) * d*d * ((n//d) * (n//d+1)//2)**2
+                for d in range(1, n+1)
+            )
+            self.assertEqual(direct, via_mobius)
 
     def test_diophantine_integer_cases_and_markov_tree(self):
         text = content("ch09-diophantine")
