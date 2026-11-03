@@ -4,16 +4,16 @@
 
 This register is generated **from the actual 11 chapter sources in printed order**, not copied from an older proof ledger. It lists all 144 keyed exercises; the ordered exercise, hint and solution keys match independently in every chapter at this snapshot. The total is **144**, distributed by chapter **15/11/21/13/16/17/8/8/8/8/19**. Grade distribution: \star: 37; \star\star: 80; \star\star\star: 20; Journey: 7. The manuscript sources, not these static rows, define problem text and source position.
 
-**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. The three corrected items still require both completed passes. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
+**Meaning of columns:** Pass A = an independent solution without trusting the printed answer; Pass B = genuinely separate symbolic/adversarial reconstruction; earlier-tool check = every needed result proved before this exercise (including hint and full solution). Enter a checker, exact proof link, commit and boundary evidence before changing a status to `VERIFIED_TWICE`. Four Chapter 1 exercises are now verified twice with methods recorded in the main ledger; the three previously corrected items still require both completed passes. Use `IN_PROGRESS`, `BLOCKED`, `CORRECTED_NEEDS_RECHECK`, `UNREVIEWED`, `VERIFIED_TWICE` only.
 
 | Printed chapter | Key | Grade | Pass A | Pass B | Earlier-tool check | Status | Finding / source |
 | ---: | --- | --- | --- | --- | --- | --- | --- |
-| 1 | `ex:bez` | ★ | — | — | — | UNREVIEWED | — |
-| 1 | `ex:gcdn` | ★ | — | — | — | UNREVIEWED | — |
-| 1 | `ex:zeros` | ★ | — | — | — | UNREVIEWED | — |
+| 1 | `ex:bez` | ★ | Euclid/back-substitution | Mod-5 congruence + enumeration | PASS | VERIFIED_TWICE | Reader-level proof in ledger |
+| 1 | `ex:gcdn` | ★ | Integer-combination bound | Alternative resultant identity + 10,001 checks | PASS | VERIFIED_TWICE | n=0 and 5 residue classes |
+| 1 | `ex:zeros` | ★ | Count powers dividing factorial | Telescope exact-valuation classes + recompute | PASS | VERIFIED_TWICE | v2=994, v5=249 |
 | 1 | `ex:sqrt` | ★★ | — | — | — | UNREVIEWED | — |
 | 1 | `ex:mersgcd` | ★★ | — | — | — | UNREVIEWED | — |
-| 1 | `ex:lame5` | ★★ | — | — | — | UNREVIEWED | — |
+| 1 | `ex:lame5` | ★★ | Fibonacci–golden-ratio growth | Five-step Fibonacci growth + finite sweep | PASS | VERIFIED_TWICE | 28,680 Euclid pairs |
 | 1 | `ex:frob` | ★★ | — | — | — | UNREVIEWED | — |
 | 1 | `ex:supercat` | ★★★ | — | — | — | UNREVIEWED | — |
 | 1 | `ex:n2n` | ★★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript test checks matching keys and numeric cases, but **does not establish mathematical correctness**. All entries below initially remain unreviewed or corrected-needs-recheck, not implicitly passed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; four Chapter 1 rows now meet that standard, while the remaining rows do not.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
