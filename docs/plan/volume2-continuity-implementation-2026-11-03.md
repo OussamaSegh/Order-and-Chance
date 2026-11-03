@@ -48,7 +48,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Add smaller transitions in divisibility, primes, quadratic residues and integer equations as needed.
 - **Exit gate:** every bridge accurately identifies what Volume 1 actually proves and does not use an undefined Volume 2 result as a premise.
 
-### Step 3 — Separate foundation and exploration routes [started]
+### Step 3 — Separate foundation and exploration routes [completed]
 
 - Chapter 2: retain Chebyshev-type bounds and Bertrand's theorem as a guided deeper route after Euclid/Euler; do not require them for congruences.
 - Chapter 3: teach modular inverses and the CRT first; make Hensel lifting a marked extension.
@@ -150,3 +150,55 @@ The independent first-use prerequisite audit (Step 4), theorem and example
 audit (Step 5), 144-solution review (Step 6), and end-to-end production
 acceptance (Steps 8--9) remain open. The new GitHub Actions head must complete
 its own CI run; an older successful run does not validate these commits.
+
+## Step 3 acceptance checkpoint — 3 November 2026
+
+**Instructional route and source-level gate passed.** First-reading
+workshops now occur before optional sections in Chapters 2, 3, 4, 7, 8
+(Diophantine Equations, source ch09) and 11; the intervening optional
+sections carry explicit skip/resume guidance.
+
+- **Chapter 2:** Euclid's and Euler's proofs, plus the Euclid-number
+  workshop, form the main route. Chebyshev's quantitative bounds and
+  Bertrand's theorem are optional; their dependent exercises
+  `ex:gaps`, `ex:factorial` and `ex:t1-prod11` explicitly say so.
+  Optional alternative proofs and topology challenges are distinguished.
+- **Chapter 3:** units, cancellation, CRT and the cancellation workshop
+  precede optional Hensel lifting. The Hensel exercise remains optional.
+  All regular first-route exercises use only the earlier core results.
+- **Chapter 4:** convolution and M"obius inversion, perfect numbers and
+  the inversion workshop precede optional analytic average orders.
+- **Chapter 7:** two- and four-square results and the obstruction
+  workshop precede the optional lattice-disc estimate; the exercise
+  admitting the unproved three-square converse is labelled optional.
+- **Chapter 8:** modular obstructions, Pythagorean parametrisation,
+  infinite descent and a full nonexistence workshop come first.
+  Rational conics are a further route; specialised Mordell/Markov
+  equations, Vieta jumping and their dependent exercises are marked
+  optional. The next chapter's continued fractions and Pell arguments
+  do not require them.
+- **Chapter 11:** characters, orthogonality, absolutely convergent
+  Euler products, the finite sieve and the finite character workshop
+  come before an optional analytic boundary-series section. The
+  exercises requiring that section and the powerful-number analytics
+  are marked optional.
+- **Other boundaries:** the Chapter 1 one-star valuation/independence
+  solution no longer presents the later CRT as a prerequisite; its
+  fixed-divisibility argument is elementary. Advanced Miller--Rabin
+  and prime-power-square challenges in Chapter 6 now disclose their
+  optional status, and previously identified Volume 3/5/6/13
+  prerequisites remain labelled at their exercises.
+
+**Structural validation:** 11 original manuscript chapters, 144
+unchanged exercise IDs in matching exercise/hint/solution order, 266
+unique source-local labels, no missing local cross-references, and no
+unbalanced checked LaTeX environments. Step 3 tests in
+`tools/test_volume2_manuscript.py` guard the relative location of
+each foundational workshop, the opt-in labels of dependent exercises,
+and absence of citations to selected advanced theorems in the main
+section of Chapters 2, 3, 8 and 11.
+
+This sign-off is **editorial route acceptance**, not the separate
+independent prerequisite/proof/solution audit (Steps 4--6). CI for the
+latest head, current PDF/EPUB/print visual proof and KDP Previewer
+remain separate gates. The PR stays draft and unmerged.
