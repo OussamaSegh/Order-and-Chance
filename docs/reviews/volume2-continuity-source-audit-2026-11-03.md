@@ -173,3 +173,44 @@ The Chapter 3 exercise `pb:primepoly` previously asked for infinitely many prime
 The prompt now explicitly requests infinitely many **distinct prime divisors of nonzero values** of a nonconstant integer polynomial at nonnegative integers. The hint and proof choose `a>=0` with `c=P(a)!=0`, then use the positive arithmetic progression `a+Mt` where `M=|c| * product(primes in a purported finite list)`. The resulting nonconstant integral polynomial `H(t)` satisfies `H(t)=1 mod p_i` for every listed prime, and an arbitrarily large nonzero value produces a new prime divisor. This also handles `P(0)=0` without relying on zero's universal divisibility. A source regression guards the stronger prompt and correct shifted proof.
 
 The mathematical proof is self-contained once polynomial root finiteness and congruence preservation are available. It is one further audited exercise, not a full check of all 144 solutions or a KDP release sign-off.
+
+## Step 2 source-verified Volume 1 bridges — 3 November 2026
+
+The Step 2 instruction-level exit gate was checked against the actual first
+volume, not merely against the book outline. The following are **source
+observations**, not independent correctness endorsements for every theorem.
+
+| Volume 2 bridge | Verified Volume 1 source and proved fact | Added first-reading payoff |
+| --- | --- | --- |
+| Chapter 4: Arithmetic Functions | `volume1-first-principles/chapters/ch02-counting.tex`: the inclusion--exclusion theorem is proved by tracking the alternating contribution of each finite-set member. | `6-3-2+1=2` for $\varphi(6)$ introduces the divisor signs $\mu(1),\mu(2),\mu(3),\mu(6)$. The general coprimality identity and inversion are proved **after** their preview. |
+| Chapter 5: Primitive Roots | `volume1-first-principles/chapters/ch02-complex-roots.tex`: elementary groups, cyclic groups, element order and the $n$th-root-of-unity proposition are defined and proved. | Compare the cyclic four complex roots with $1,2,4,3$ modulo $5$. No inference of cyclicity at arbitrary prime moduli from complex multiplication; Volume 2's own Gauss theorem proves it. |
+| Chapter 10: Gaussian and Eisenstein Integers | Same Volume 1 complex chapter: conjugation, Brahmagupta's identity $|zw|=|z||w|$, and cube roots of unity. | $(1+i)(2+i)=1+3i$ and $10=2\cdot5$ demonstrate the integer-valued multiplicative norm. Ring Euclidean division and unique factorisation remain new proofs in Volume 2. |
+| Chapter 11: Characters | Same Volume 1 complex chapter: roots-of-unity orthogonality and the coefficient filter are formally proved. | The even/odd $\chi_4$ filter isolates $1\pmod4$; the chapter next defines characters and proves their orthogonality, without presuming Volume 3's representation theory. |
+
+**Additional transition coverage:** Chapter 1 already correctly recalls
+Volume 1's additive subgroup test; Chapter 2 now distinguishes Volume 1's
+proof-by-contradiction and series tools from new prime distribution
+conclusions; Chapter 6 derives the count of nonzero square classes by
+pairing $x$ and $-x$ and using the earlier field factorisation law; Chapter
+8 invokes the well-ordering result proved in Volume 1's sums/induction
+chapter to motivate descent. Chapter 3's earlier totient counting identity
+and Volume 1 exercise were also checked. In Chapter 11 the phrase suggesting
+that residue unit groups themselves had appeared in Volume 1 was corrected:
+Volume 1 introduced **group language**, while residue unit groups were
+developed in Volume 2's congruence chapter.
+
+**Dependency classification:** The four primary bridges contain either
+already-proved Volume 1 facts, arithmetic from earlier printed Volume 2
+chapters, or explicitly labelled previews followed by a local proof.
+No added bridge requires the reader to assume Gauss's primitive-root
+theorem, Dirichlet-character orthogonality, Euclidean division in a new
+ring, or general Volume 3 group theory before they are developed.
+The newly added manuscript regression test checks Volume 1 source
+anchors, bridge text and finite arithmetic examples (inclusion--exclusion,
+powers modulo $5$, complex norms, $\chi_4$ filtering and quadratic-square
+counts).
+
+**Step 2 editorial status: complete.** GitHub CI for the newest commit is
+tracked separately. Steps 4--6 still require a full first-use and
+end-to-end mathematical/144-solution audit; Step 8 still requires a fresh
+current-head render and proof. No release approval or merge is implied.
