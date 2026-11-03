@@ -50,3 +50,32 @@ Automated checks and selected-page visual inspection are not full human review o
 - order and inspect a physical printed proof before treating this edition as publication-ready.
 
 **Decision:** **Step 8 artifact and independent production-QA review passed**, conditional on the new integrated CI step passing at the latest HEAD and the full site aggregation workflow finishing green. This review **does not** authorize publication, tagging an edition or merging PR #97. Keep the PR draft and unmerged until the remaining gates are evidenced.
+
+
+## Final CI closure — 3 November 2026
+
+**The provisional CI condition above is now satisfied.** GitHub Actions
+[Build books #1435](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976)
+completed **successfully**, with **18 jobs successful, one publish job
+intentionally skipped, and no failed jobs**. The Volume 2 book build
+completed, the new **QA the rendered Volume 2 PDF, EPUB, online reader
+and KDP wrap** step succeeded, and the site aggregation job succeeded.
+
+The Volume 2 log reports:
+
+> Volume 2 cross-format QA PASS: 314 reading pages, 313 print pages,
+> 314 KDP-counted pages, spine 0.737 in; 11 chapters and 144
+> exercise/hint/solution triplets in EPUB and HTML
+
+The checked output is archived as [books-volume2-integers,
+artifact 13234583338](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976/artifacts/13234583338).
+No source, print-layout or build-checker changes have been made since
+this production validation; subsequent commits contain only acceptance
+documentation. **Step 8 is accepted for repository integration.**
+
+**Publishing remains distinct.** Amazon ISBN association, KDP and Kindle
+Previewer approval, and physical paperback proof are unchecked
+publisher-side tasks. See
+[final acceptance and author handoff](volume2-final-acceptance-and-kdp-handoff-2026-11-03.md).
+This later note supersedes the provisional “CI pending” decision above,
+but it does **not** authorize publication or a public edition tag.
