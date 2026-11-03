@@ -37,6 +37,24 @@ def pdftotext(path):
                                    text=True)
 
 
+def check_paper_geometry(meta, interior_pages):
+    """Independently validate KDP geometry without rounding away a spine mil."""
+    check(interior_pages == meta["interior_pages"],
+          "Print PDF and publishing metadata disagree on page count")
+    kdp_pages = interior_pages + interior_pages % 2
+    check(meta["kdp_pages"] == kdp_pages,
+          "KDP counted pages must include an even-count padding page")
+    expected_spine = round(kdp_pages * meta["spine_in_per_page"], 4)
+    check(meta["spine_in"] == expected_spine,
+          "Spine is inconsistent with the KDP page count and selected stock")
+    check(abs(meta["wrap_width_in"] -
+              (2 * meta["trim_width_in"] + 2 * meta["bleed_in"] +
+               expected_spine)) < 1e-8, "Wrap width disagrees with trim, bleed and spine")
+    check(abs(meta["wrap_height_in"] -
+              (meta["trim_height_in"] + 2 * meta["bleed_in"])) < 1e-8,
+          "Wrap height disagrees with trim and bleed")
+
+
 class LinkReader(HTMLParser):
     def __init__(self):
         super().__init__()
@@ -65,15 +83,7 @@ def run(root=ROOT):
     interior_pages = int(print_info["Pages"])
     check(read_pages == interior_pages + 1,
           "The reading PDF should add exactly one cover page")
-    check(interior_pages == meta["interior_pages"],
-          "Print PDF and publishing metadata disagree on page count")
-    check(meta["kdp_pages"] == interior_pages + interior_pages % 2,
-          "KDP counted pages must include an even-count padding page")
-    # The canonical print specification retains four decimal places (not three).
-    # A one-decimal-place mismatch in mils rejects a correct 315-page wrap.
-    check(meta["spine_in"] ==
-          round(meta["kdp_pages"] * meta["spine_in_per_page"], 4),
-          "Spine is inconsistent with the KDP page count and selected stock")
+    check_paper_geometry(meta, interior_pages)
     check(print_info["Page size"].startswith("504 x 720"),
           "Print interior must be 7 by 10 inches")
     check(int(cover_info["Pages"]) == 1, "Print wrap must be one PDF page")
