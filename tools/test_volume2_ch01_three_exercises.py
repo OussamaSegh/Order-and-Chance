@@ -119,7 +119,7 @@ class TestChapterOneThreeExercises(unittest.TestCase):
             r"\end{solution}", 1)[0]
         self.assertIn(r"\gcd(p,q)=1", sqrt_solution)
         self.assertIn(r"2^{\gcd(a,b)}-1", mers_solution)
-        self.assertIn("When $a=1$ or $b=1$", frob_solution)
+        self.assertIn("If $a=1$ or $b=1$", frob_solution)
 
 
 if __name__ == "__main__":
