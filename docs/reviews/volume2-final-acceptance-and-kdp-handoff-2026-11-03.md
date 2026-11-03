@@ -8,7 +8,7 @@
 
 The approved four-part, eleven-chapter reading sequence and all 144 original exercise/hint/solution triples have been preserved. The internal prerequisite, proof, mathematical example, exercise, continuity, listing and cross-format production review records are in the preceding Step 1–8 audit documents. These are internal editorial reviews, **not** independent academic mathematical refereeing.
 
-**Exact production validation:** [Build books #1435](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976) **completed successfully**, all **19 workflow jobs succeeded**, on commit `631c33a9723f657b2d37f715a11423bd44737781` (the Step 8 manuscript, production automation and QA documentation checkpoint). Crucially, the new **“QA the rendered Volume 2 PDF, EPUB, online reader and KDP wrap”** step succeeded. The job log reported:
+**Exact production validation:** [Build books #1435](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41643856976) **completed successfully** with **18 successful jobs and one intentionally skipped publish job**, on commit `631c33a9723f657b2d37f715a11423bd44737781` (the Step 8 manuscript, production automation and QA documentation checkpoint). Crucially, the new **“QA the rendered Volume 2 PDF, EPUB, online reader and KDP wrap”** step succeeded. The job log reported:
 
 > Volume 2 cross-format QA PASS: 314 reading pages, 313 print pages, 314 KDP-counted pages, spine 0.737 in; 11 chapters and 144 exercise/hint/solution triplets in EPUB and HTML
 
