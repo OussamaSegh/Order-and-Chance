@@ -329,7 +329,9 @@ class TestVolume2Manuscript(unittest.TestCase):
                 self.assertNotIn(label.group(1), definitions)
                 definitions[label.group(1)] = (chapter_index, label.start())
 
-        proof = re.compile(r"\\begin\{proof\}([\s\S]*?)\\end\{proof\}")
+        proof = re.compile(
+            r"\\begin\{proof\}(?:\[[^\]]*\])?([\s\S]*?)\\end\{proof\}"
+        )
         refs = re.compile(r"\\(?:ref|eqref|autoref)\{([^}]+)\}")
         for chapter_index, source in enumerate(sources):
             main = source.split(r"\section{Exercises}", 1)[0]
