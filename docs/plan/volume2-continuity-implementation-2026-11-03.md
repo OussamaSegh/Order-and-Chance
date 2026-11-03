@@ -56,7 +56,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Apply the same signposting to deeper sections and high-star exercises wherever they have later prerequisites.
 - **Exit gate:** skipping marked extensions does not invalidate a proof or a regular exercise on the main route.
 
-### Step 4 — Perform a prerequisite and chapter-order audit [pending]
+### Step 4 — Perform a prerequisite and chapter-order audit [started]
 
 - In *printed* chapter order, record the first occurrence and proof location of each non-elementary term, theorem and tool: Bézout, unique factorisation, modular inverses, residue rings, field language, totients, Dirichlet convolution, multiplicative order, cyclic structure, Legendre/Jacobi symbols, descent, norms, characters, sieves and convergence facts.
 - For every forward reference, classify it as harmless preview, optional challenge, or a genuine dependency. Resolve all genuine forward dependencies by moving a proof, adding a self-contained lemma, or changing the first-route explanation.
@@ -71,7 +71,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Keep a dated review ledger in `docs/reviews/` with each repaired statement, evidence and any open risk.
 - **Exit gate:** every first-route proof is independently justified using Volume 1 or earlier Volume 2 material; remaining outside-scope theorems are clearly identified as previews.
 
-### Step 6 — Audit all exercises, hints and solutions [pending]
+### Step 6 — Audit all exercises, hints and solutions [started]
 
 - Check the exact 144 existing exercise IDs, one matching hint and one full solution for each, and no duplicate IDs.
 - Verify mathematical correctness, difficulty stars, first-use definitions, solution prerequisites, edge cases and the separate discovery note/formal write-up.
@@ -109,3 +109,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 5. **Production:** reproducible build, PDF/EPUB/print proof and final editorial review.
 
 The single draft PR is a work container: it can receive these batches as further commits. Mark a step complete only after its stated exit gate is met. A green initial source check is **not** a mathematical or KDP release sign-off.
+
+## Audit progress note — 3 November 2026
+
+The first PR CI run failed at the canonical part catalog check (before TeX). The catalog and cover-source SHA-256 have since been synchronized. A source-level reference scan found 266 distinct labels, no duplicate or unresolved local reference targets, and 144 matching exercise/hint/solution IDs. Obsolete printed chapter numbers and two misleading mathematical destination claims were corrected. Five arithmetic-functions challenges now explicitly identify their later prerequisites; the rest of the exercise corpus is **not yet independently mathematically audited**. See `docs/reviews/volume2-continuity-source-audit-2026-11-03.md`. The full production build and mathematics gates remain open.
