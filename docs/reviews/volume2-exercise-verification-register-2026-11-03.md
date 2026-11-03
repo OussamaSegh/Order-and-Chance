@@ -145,7 +145,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 11 | `pb:fermatquot` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `pb:mullin` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `pb:artin` | ★★ | — | — | — | UNREVIEWED | — |
-| 11 | `pb:fermatcubic` | ★★★ | — | — | — | UNREVIEWED | — |
+| 11 | `pb:fermatcubic` | ★★★ | Three-cycle proof for (c), no Volume 13 ring of integers | Finite orbit/Jacobi counts over 22 primes | PASS | CORRECTED_NEEDS_RECHECK | DEP-009: c repaired; (a,b,d) and global uniqueness still need two whole-solution audits |
 | 11 | `pb:euclidgame` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `pb:pascalthree` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `pb:powerful` | ★★ | — | — | — | UNREVIEWED | — |
