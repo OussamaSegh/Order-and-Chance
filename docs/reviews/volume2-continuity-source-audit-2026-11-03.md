@@ -264,3 +264,51 @@ finish successfully; prior successful workflows cover older SHAs
 only. The complete proof/exercise audit, publication visual
 inspection and publisher-side KDP proof remain open. The PR
 must remain draft.
+
+## Step 4 — printed-order prerequisite audit — 3 November 2026
+
+The separate, detailed first-use ledger is
+docs/reviews/volume2-prerequisite-order-audit-2026-11-03.md.
+It follows the eleven chapters in the actual main.tex reading order,
+records the core definition/proof sites and the optional boundaries,
+and classifies every forward label reference as a prose preview,
+later-volume destination, optional exercise return or an issue repaired.
+
+**Concrete repairs:** The Chapter 1 valuation probability proof no
+longer presents the future CRT as a necessary tool. Chapter 3's
+multiplicative-order worked example now explains its calculation
+without citing Chapter 5's order theorem as an established premise.
+The two-star Morley exercise points openly to the Chapter 11 Fermat
+quotient identity used by its hint and solution; Glaisher's advanced
+prompt now names the same identity in addition to Volume 5.
+
+The Chapter 4 Euclid--Euler proof no longer cites a later exercise
+inside the proof itself. Its optional Euler-liar solution proves
+the half-size subgroup estimate from two disjoint cosets, removing
+an apparent dependency on Volume 3's Lagrange theorem.
+
+The Chapter 6 optional prime-power-square solution formerly asserted
+that a suitable nonresidue prime exists by a vague appeal to CRT and
+quadratic reciprocity; such an existence statement was not proved.
+It now supplies a **self-contained obstruction**: if a nonsquare
+integer has an odd prime valuation r, it is not square modulo
+p^(r+1); otherwise it is negative of a square -b², which is not
+square modulo 4b². The optional Miller--Rabin solution's required
+tools now cite the existing Volume 2 cyclic unit-group results rather
+than apparently relying on Volume 3. A finite regression checks the
+local-square obstruction on small positive and negative nonsquares.
+
+**Source gate:** all proof cross-references prior to exercise sections
+target existing earlier-local or earlier-printed-chapter labels;
+the **41 one-star problems** have no later-chapter references in
+their prompts, hints or required solution portions. All exposition
+forward labels are in the curated preview list. The corpus still
+has 144 aligned exercise/hint/solution IDs, 266 unique local labels
+and no dangling local references. These conditions now have
+regression tests.
+
+**Status: Step 4 editorial/source gate completed**, pending CI
+confirmation for its latest commit. No claim is made that a complete
+mathematical proof audit (Step 5), 144-solution audit (Step 6) or
+publication acceptance (Steps 8--9) has occurred. Do not merge PR #97
+on this evidence.
