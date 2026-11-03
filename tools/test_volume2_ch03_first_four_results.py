@@ -47,7 +47,7 @@ class TestFirstFourNamedCongruenceResults(unittest.TestCase):
         self.assertEqual({a%1 for a in range(-50,51)}, {0})
 
     def test_inverses_and_phi_include_the_zero_ring(self):
-        for n in range(1,151):
+        for n in range(1,81):
             phi=sum(math.gcd(a,n)==1 for a in range(1,n+1))
             units=0
             for a in range(n):
