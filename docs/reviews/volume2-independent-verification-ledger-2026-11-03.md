@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Five named Chapter 1 results are now documented as VERIFIED_TWICE in the proof table below; no exercise solution has yet completed the full two-pass acceptance protocol. No final build or page-by-page inspection has been executed for this PR.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. Eight named results (six from printed Chapter 1, two from Chapter 2) and seven exercise solutions have two documented mathematical passes in the registers and checkpoint below. The remaining 64 named results, 137 exercises and all unnamed proof claims are not certified. No final build or page-by-page inspection has been executed for this PR.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -29,18 +29,18 @@ PR #97 explicitly accepted the following optional challenges as using other book
 
 | Gate | State | Actual evidence and remaining obligation |
 | --- | --- | --- |
-| P00 Exact baseline inventory and executable tests | IN_PROGRESS | GitHub source count and original main SHA captured. All source IDs, Volume 1 actual contents, runnable test results still pending. |
+| P00 Exact baseline inventory and executable tests | IN_PROGRESS | 72 named results and 144 exercise keys independently indexed; Volume 1 crosswalk incomplete; current-head CI still pending. |
 | P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Confirmed well ordering, strong induction, Fibonacci gcd/Binet and Basel proof sites; rest pending. |
-| P02 Continuous story architecture | UNREVIEWED | Current four-part TOC is a baseline, not fixed. |
+| P02 Continuous story architecture | IN_PROGRESS | Chapter 2 redundant Euclid exposition condensed; whole-book story still pending. |
 | P03 First-use dependency graph | IN_PROGRESS | Repaired forward dependency pb:fibcoprime and later analytic dependency pb:gcdmean; rest pending. |
-| P04 All theorem/proof second checks | IN_PROGRESS | Five Chapter 1 named results VERIFIED_TWICE with explicit evidence; all others pending. |
-| P05 Every worked example and figure | UNREVIEWED | No example certified under this new standard. |
-| P06 All exercises independent reconstruction | IN_PROGRESS | Reworked pb:gcdmean and relocated pb:fibcoprime; 0 first-pass certified on full protocol. |
-| P07 All exercises independent adversarial second pass | IN_PROGRESS | Finite arithmetic cross-checks for repaired cases; 0 VERIFIED_TWICE. |
-| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C03/C05 proof and prerequisite repairs; full chapter rereads missing. |
+| P04 All theorem/proof second checks | IN_PROGRESS | Eight named results VERIFIED_TWICE; all other result and unnamed proof chains pending. |
+| P05 Every worked example and figure | IN_PROGRESS | Individually checked Euclid six-prime composite and 5!+1, plus arithmetic boundary probes; rest pending. |
+| P06 All exercises independent reconstruction | IN_PROGRESS | Seven solutions passed first proof reconstruction; 137 remaining. |
+| P07 All exercises independent adversarial second pass | IN_PROGRESS | Seven solutions VERIFIED_TWICE, with exact earlier-tool route and separate second check; 137 remaining. |
+| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C02/C03/C05 math and voice repairs; no chapter signed off. |
 | P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
-| P10 Full-book voice/transition pass | UNREVIEWED | Existing edited preface is baseline. |
-| P11 Tests and exact-head CI | IN_PROGRESS | Early run failed stale pre-move counts; tests updated; exact-latest-head result pending. |
+| P10 Full-book voice/transition pass | IN_PROGRESS | Local Chapter 2 duplicate-paragraph removal only; full read-aloud pending. |
+| P11 Tests and exact-head CI | IN_PROGRESS | Main tests passed at earlier head but print-output QA had wrong rounding; fixed and added new regression tests. New exact-head CI pending. |
 | P12 Every actual PDF/EPUB/site page | UNREVIEWED | No current-branch artifacts inspected. |
 | P13 Final editorial sign-off (not KDP approval) | UNREVIEWED | Independent review and author KDP proof later. |
 
@@ -66,9 +66,9 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | RISK-001 | critical contract | Optional challenges throughout book | Prior audit accepts outside-volume tools in some solutions, unlike new reader contract | Prior exercise ledger, “Other later-route challenges kept”; examine actual proofs before declaring individual defects | BLOCKED |
 | RISK-002 | high | All 11 chapters | Prior source-level reviews did not independently prove every step under current double-verification rule | Historical PR #97 descriptions | UNREVIEWED |
 | RISK-003 | medium | Print/EPUB | Preexisting production QA is tied to old commits, not this branch | Previous final acceptance record | UNREVIEWED |
-| DEP-001 | confirmed | C01→C05 pb:fibcoprime | A required result was taught four chapters after first use | Moved exercise/hint/solution to after pb:gcdmean in C05 | CORRECTED_NEEDS_RECHECK |
-| DEP-002 | confirmed | C05 pb:gcdmean | Prompt borrowed Chapter 11 ζ-differentiation and part (a) cited an unproved asymptotic | Defined ζ locally; proved coprime estimate; changed part (c) to equivalent convergent series and justified truncation | CORRECTED_NEEDS_RECHECK |
-| DEP-003 | confirmed | C03 pb:morley | Essential Chapter 11 Fermat-quotient identity cited in Chapter 3 exercise solution | Replaced by a local derivation from binomial theorem and Fermat's congruence; test updated | CORRECTED_NEEDS_RECHECK |
+| DEP-001 | confirmed | C01→C05 pb:fibcoprime | A required result was taught four chapters after first use | Moved exercise/hint/solution to after pb:gcdmean in C05; proved Binet error explicitly | VERIFIED_TWICE |
+| DEP-002 | confirmed | C05 pb:gcdmean | Prompt borrowed Chapter 11 ζ-differentiation and part (a) cited an unproved asymptotic | Local ζ, harmonic mean proof, uniform weighted endpoint and double check | VERIFIED_TWICE |
+| DEP-003 | confirmed | C03 pb:morley | Essential Chapter 11 Fermat-quotient identity cited in Chapter 3 exercise solution | Local binomial/harmonic proof; adversarial algebra and independent prime checks | VERIFIED_TWICE |
 
 ## Implementation checkpoint — first teaching-order repair (3 November 2026)
 
@@ -117,6 +117,40 @@ hence `2^p - 2 ≡ p Σ_{j=1}^{p-1}(-1)^(j-1)/j (mod p²)`. With `2^(p-1)=1+pt`,
 
 These are **five individual source claims**, not a sign-off on the rest of Chapter 1. Each has a mathematical proof and an adversarial second check; finite tests only support the edge handling. Any later changes to these premises must reopen dependent rows.
 
+## Session checkpoint — corrected build gate, two-pass proofs and exercises (3 November 2026)
+
+**Exact branch:** editorial/volume2-independent-proof-and-reader-rewrite-20261103. **Main unchanged since initial PR:** e3b60ca365c601e681c36632a5cd1a2b1d8e5aea. **Files changed:** Chapter 2 proof/voice, Chapter 5 gcd/Fibonacci writeups, KDP output QA, focused tests, per-result and per-exercise registers. The PR stays **draft**.
+
+### CI failure analysed and corrected, not yet certified green
+
+Run [41667990866](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41667990866), head \`d6b20f0ffa2ed8327f27eb51562a00b0c221b210\`, had a **successful list/unit gate** and a successful LaTeX/EPUB/print build. The print source produced **315 interior pages, 316 counted KDP pages, 0.7417-in spine, 14.9917-in wrap width, 10.25-in wrap height**. The build job then failed its cross-format script, not the TeX build: \`check_volume2_outputs.py\` compared the spine to the *three-decimal* \`round(316×0.002347,3)=0.742\`, while the canonical \`tools/print_layout.py\` generates *four decimals*, \`round(316×0.002347,4)=0.7417\`. Therefore the **checker was wrong; the generated cover was not resized by guesswork**.
+
+Commits \`ee2f4026\` and \`e88a6d96\` repaired the checker and added explicit trim/bleed/spine geometry checks; \`1480db8c\` added focused odd/even page-count and incorrect-cover regression tests. \`tools/test_volume2_foundation_review.py\` adds finite mathematical probes. All new tests **still require an exact-head CI run**; old failed/cancelled workflows do not establish their outcome. The actual PDF, EPUB and physical paperback proof remain uninspected under P12/P13.
+
+### Named result two-pass checks (new)
+
+1. **\`thm:lame\` (Chapter 1) — VERIFIED_TWICE.** Pass A: the last nonzero remainder satisfies \`r_n≥1=F_2\`; the previous one is at least \`2=F_3\`. Backward use of \`r_{k-1}=q_kr_k+r_{k+1}\`, with \`q_k≥1\`, gives \`r_k≥F_{n+2-k}\`. Thus \`b≥F_{n+1}\`, \`a≥F_{n+2}\`; check separately the one-division case. Pass B: construct the *smallest possible* remainder sequence backward from 1,2 under the same recurrence. Its entries are consecutive Fibonacci numbers, with equality for consecutive Fibonacci inputs (final quotient 2). Independent exhaustive arithmetic over **28,680** pairs \`2≤a≤240\`, \`1≤b<a\` reported zero violations, including \`b=1\`. These computations are a boundary check, not the proof.
+2. **\`thm:euclid-primes\` (Chapter 2) — VERIFIED_TWICE.** Pass A: finite list assumed *complete*, with \`k≥1\` because 2 is prime; a prime divisor of \`N=p_1···p_k+1>1\` cannot divide the product \`N−1\`. The empty-list oversight was closed in commit \`514541c6\`; theorem was given a stable label and repeated prose shortened in \`7fa1c2f4\`. Pass B: for each integer \`m≥2\`, any prime factor of \`m!+1\` must be **greater than m**, since all primes up to m divide m!; primes are unbounded. Checked \`2·3·5·7·11·13+1=59·509\` and \`5!+1=11²\`, which also demonstrate that the number constructed need not be prime.
+3. **\`thm:euler\` (Chapter 2) — VERIFIED_TWICE.** Pass A: for real \`x≥2\`, unique factorisation gives \`H_floor(x)≤∏_{p≤x}(1−1/p)^{−1}\`; integral comparison gives \`H_floor(x)≥log x\`. The manuscript bounds each logarithmic error by \`1/[p(p−1)]\`, whose sum over all integers \`p≥2\` telescopes to 1, so \`∑_{p≤x}1/p≥log log x−1\`. Pass B: independently derive \`−log(1−1/p)−1/p=∑_{j≥2}1/(j p^j)≤1/[p(p−1)]\` from the Volume 1 logarithmic series, avoiding the manuscript's integral estimate for the logarithmic error. Numerically checked all integer \`2≤x≤15000\` (14,999 cutoffs), no violation; the smallest observed excess over the bound was about **1.26176**. Numerical checks do not establish divergence.
+
+### Exercises with two substantive checks (new: 7 / 144)
+
+- **\`ex:bez\` (Chapter 1) — VERIFIED_TWICE.** Pass A: Euclid yields \`7=2·91−5·35\`; cancelling the gcd and using Gauss gives all \`(x,y)=(2+5t,−5−13t)\`, \`t∈Z\`. Pass B: directly reduce \`13x+5y=1\` modulo 5; \`3x≡1\` forces \`x≡2\` and uniquely determines y. Exhaustive x from −200 to 200 found 80 integral pairs, every one in the family, plus substitution for t from −80 to 80. Hint, discovery and writeup use prior Chapter 1 tools only.
+- **\`ex:gcdn\` (Chapter 1) — VERIFIED_TWICE.** Pass A: a common divisor of \`n²+1,(n+1)²+1\` divides \`2n+1\`, and \`4(n²+1)−(2n+1)(2n−1)=5\` forces it to divide 5. Pass B: set \`u=2n+1\` and compute \`4(n²+1)=u²−2u+5\`; use residues modulo 5 to show both inputs are divisible by 5 exactly for \`n≡2 mod5\`. Direct gcd enumeration for every \`0≤n≤10000\` found no exception. The boundary \`n=0\` gives gcd 1.
+- **\`ex:zeros\` (Chapter 1) — VERIFIED_TWICE.** Pass A: count multiples of each \`p^k\` inside n!, giving Legendre's formula. Pass B: let \`c_k=⌊n/p^k⌋−⌊n/p^{k+1}⌋\` count the integers with exact valuation k; the finite telescoping sum \`∑k c_k=∑⌊n/p^k⌋\` checks the first argument. Direct evaluation gives \`v_2(1000!)=994\`, \`v_5(1000!)=249\`; a trailing zero consumes one of each, so exactly **249**.
+- **\`ex:lame5\` (Chapter 1) — VERIFIED_TWICE.** Pass A: prove \`F_{k+1}≥φ^{k−1}\` by two-base-case induction; use \`φ⁵>10\` and \`b<10^d\` for d digits to deduce \`n≤5d\`. Pass B: *without golden-ratio estimates*, use \`F_{k+5}=8F_k+5F_{k−1}≥10F_k\` for k≥2 (since \`F_k≤2F_{k−1}\`). Iteration gives \`F_{5d+2}≥10^d\`; if n≥5d+1, Lamé contradicts \`b<10^d\`. Exhaustive 28,680 Euclidean input pairs independently satisfy the bound.
+- **\`pb:morley\` (Chapter 3) — VERIFIED_TWICE.** Pass A: from \`binom(p,j)=(p/j)binom(p−1,j−1)\` get \`2^p−2≡p∑(-1)^{j−1}/j (mod p²)\`. Fermat's theorem writes \`2^{p−1}=1+pt\`, so this alternating harmonic sum is 2t mod p. Pairing j and p−j makes the full harmonic sum 0 mod p, hence \`H_{(p−1)/2}≡−2t\`. Expand the central binomial product to order p and compare with \`4^{p−1}=(1+pt)²\`. Pass B: independently reconstructed and checked every cancellation denominator \`j<p\`, sign, modulus and edge \`p=3\`; exact binomial arithmetic for **all odd primes 3≤p≤997** found no counterexample. No Chapter 11 reference remains in the question, hint or required solution.
+- **\`pb:gcdmean\` (Chapter 5) — VERIFIED_TWICE.** Parts (a)–(d) checked against earlier tools: the coprime count \`C(M)=∑_{d≤M}μ(d)⌊M/d⌋²\` is \`M²/ζ(2)+O(Mlog(2M))\`; (b) has two separate general derivations of \`∑_{d≤N}φ(d)/d²=log N/ζ(2)+O(1)\`: original partial-summation derivation via \`A(t)=t/ζ(2)+O(log(2t))\`, and new, simpler finite Möbius regrouping \`∑_{h≤N}μ(h)H_{⌊N/h⌋}/h²\`, with the uniform bound \`H_{⌊N/h⌋}=log(N/h)+O(1)\`. Part (c) passes the limit by finite truncation and the uniform tail \`∑_{g>G}log g/g²\`, not by an unproved derivative of ζ. For (d), independently reconstructed the **weighted** sum \`W(M)=∑_{d≤M}μ(d)d²S(M/d)²\`, and its \`M⁴/(4ζ(2))+O(M³log(2M))\` error uniform to \`M=1\` (the old logarithm alone vanishes there). Rechecked the summed error \`O(N³log(2N))\` and the ζ(3) leading coefficient. Direct and weighted Möbius counts agree for \`M=1,2,3,5,10,25\`; direct gcd/lcm averages for \`N=30,100,300\` track the predicted limits. The latest correction is commit \`e7e1bc8c\`. No Chapter 11 differentiation or Volume 6 average order is imported.
+- **\`pb:fibcoprime\` (Chapter 5) — VERIFIED_TWICE.** Pass A: the actual Volume 1 Fibonacci identity gives \`gcd(F_a,F_b)=F_g\`, \`g=gcd(a,b)\`; \`F_g=1\` precisely for g=1 or2, so the limiting probability is \`6/π²(1+1/4)=15/(2π²)\`. Part (b) follows by taking the expectation of \`log F_g=glog φ−log√5+O(1)\` and applying the preceding gcd mean. Pass B: explicitly factor Binet \`F_g=φ^g/√5 (1−(−φ^{−2})^g)\`; the correction factor lies in a fixed positive interval, so **its logarithm is uniformly bounded for every g≥1**. Direct index-gcd/Fibonacci checks for indices 1..23 and the empirical probabilities for N=30,100,300 are consistent. The exercise/hint/solution are printed **after** \`pb:gcdmean\` and use its already available results.
+
+**Independent source regression:** \`tools/test_volume2_foundation_review.py\` guards first-chapter problem answers, prime counterexamples, numeric Euler inequality and Lamé bounds. \`tools/test_volume2_exercise_keys.py\` now guards the new elementary harmonic proof and the weighted M=1 endpoint. Both still require an exact-head CI test.
+
+### Reopen rules and remaining risks
+
+No chapter passes P08 yet: proof and exercise registers each list many more rows, and unnamed proofs/examples, references, illustrations, and publisher outputs are still unchecked. The latest corrections to \`pb:gcdmean\` reopen any exercise that uses it except \`pb:fibcoprime\`, which was rechecked above. The Bernoulli/Glaisher and partition/Ramanujan exercises in Chapter 3 still expressly borrow Volume 5 and remain **BLOCKED by the stricter contract**. Do not treat a later-volume label as a solution.
+
+**Next exact task:** inspect exact-head CI for the new geometry and mathematical tests; triage \`pb:glaisher\`, \`pb:ramanujan5\` to self-contained, true Volume 2 alternatives; finish Volume 1 actual toolkit ledger; continue Chapter 1 remaining solution/proof audits and all Chapter 2 calculations before claiming any chapter signed off.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -133,4 +167,4 @@ These are **five individual source claims**, not a sign-off on the rest of Chapt
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** inspect current CI at latest head, complete Volume 1 toolkit and independent second checks on pb:gcdmean/pb:fibcoprime/pb:morley, then redesign Chapter 3 pb:glaisher and pb:ramanujan5 rather than using Volume 5. Continue first-use/proof ledgers for all remaining claims. See latest checkpoint and PR comments. 
+**Next exact task:** inspect exact-final-head GitHub Actions run including the output QA and new tests; resolve any failure. Then continue Volume 1 toolkit and all unnamed-proof inventories, and redesign Chapter 3 pb:glaisher and pb:ramanujan5 so they need no Volume 5 prerequisite. Resume remaining C01 and C02 exercises/figures after that. See last checkpoint and PR comments. 
