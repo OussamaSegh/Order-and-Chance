@@ -55,3 +55,7 @@ Searches through subsequent main chapter bodies did not find Hensel lifting or C
 - Conduct author-side KDP title association, Print Previewer and physical proof reviews separately.
 
 Keep PR #97 in draft. This source scan does not certify mathematical correctness, KDP acceptance or readiness to merge.
+
+## Additional advanced-exercise dependency repair
+
+Five Chapter 4 prompts have been signposted without deleting exercises or changing their identifiers: the coprime-density exercise points to Volume 1's Basel proof; Eisenstein's trigonometric reciprocity proof and the Euler--Jacobi liar problem explicitly require the later reciprocity chapter; the largest-prime-factor problem names the quantitative prime-distribution tool from Volume 6; and the finite-field sum-of-squares exercise defines its quadratic-symbol notation and marks the later quadratic Gauss sum and Volume 4 total-variation tool. These repairs preserve the corpus but do not yet constitute a full solution audit.
