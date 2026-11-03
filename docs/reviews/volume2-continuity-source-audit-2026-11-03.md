@@ -348,3 +348,52 @@ assertions, finite arithmetic certificates and review limits.
 correctness and difficulty review, Step 7 reader/metadata polish,
 Step 8 actual latest-head PDF/EPUB/print/KDP-wrap visual checks
 and Step 9 publisher/physical proof. The PR remains draft.
+
+## Step 6 — all exercise, hint and solution keys — 3 November 2026
+
+**Completed at the source-level editorial gate; latest CI pending.**
+The full **144-entry keyed matrix** is
+docs/reviews/volume2-exercise-solution-audit-2026-11-03.md.
+The manuscripts retain all **144** exercises and their **144**
+matching hints and **144** matching full solutions, in the same
+printed-chapter and per-chapter order as the approved baseline.
+No labels were deleted or duplicated.
+
+**Two substantive solution repairs:**
+
+1. **ex:imo88:** The Vieta jumping proof did not justify
+   positivity of its second quadratic root. It now brackets that
+   integer root strictly between -1 and b using the signs of
+   f(-1) and f(b), excludes a'=0 under nonsquare k, and therefore
+   proves the required strictly smaller positive solution.
+2. **pb:gcdmean:** The logarithmic mean-gcd argument now proves
+   its own needed average order of φ(d)/d by Möbius inversion and
+   finite partial summation. No later Volume 6 theorem is silently
+   assumed.
+
+**Difficulty calibration:** Four exercises were regraded from
+one to two stars: pb:valuation and pb:parity (multi-part probability
+and independence), pb:fermatnum (Fermat factor order/641) and
+pb:artin (safe-prime primitive roots). The new distribution is
+**37 one-star, 80 two-star, 20 three-star, 7 Journey**.
+Every prompt, hint and full solution is retained; only these
+difficulty markers changed.
+
+The new regression suite tools/test_volume2_exercise_keys.py
+checks the eleven per-chapter counts, all key/order/grade
+invariants, the two repaired proof boundary markers and
+independent arithmetic checks of bounded test cases across the
+full curriculum. Extra mathematical spot-checks included
+**Monier's exact strong-liar formula on all odd composites below
+400**, with n=9 as its sole >1/4 case, and two-kth-power
+exceptions for k=3,4,8 through the claimed k=8 bound at
+prime 761. Advanced exercises are consistently identified as
+returns or later-volume explorations.
+
+**Limit:** Source-level editorial review and finite checks are
+not external mathematical refereeing or formal proof
+verification. The final latest-head CI run still needs confirmation.
+Step 7 reading transitions and metadata, Step 8 rendered
+reading/print PDF, EPUB and page-count-matched paperback wrap,
+and Step 9 KDP/physical proof remain separate mandatory gates.
+PR #97 stays draft and unmerged.
