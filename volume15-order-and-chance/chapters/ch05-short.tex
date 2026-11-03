@@ -1,153 +1,519 @@
 \chapter{Primes in short intervals}\label{ch:oc-short}
 
-Book~6 put three statements in one story: an almost-everywhere short-interval theorem, a conditional Poisson law, and a variance smaller than the Poisson variance. They are not the same statement. This chapter separates them. Zero-density estimates are Volume~14's. Maier's theorem is Chapter~\ref{ch:oc-models}. What is proved here is the pair second moment under the Hardy--Littlewood conjectures, including the constant $\gamma+\log 2\pi-1$, and the deduction of Gallagher's Poisson law from the uniform form of those conjectures.
+Near $10^9$, cut the integers into a million intervals of length $21$, which is about $\log 10^9$. Count the primes in each interval. Volume~6 did this in Figure~10.2. The counts look like a Poisson law of mean $1$, as Cram\'er's model predicts, but the spread is wrong. The variance is $0.79$ and not $1.01$. There are too few empty intervals and too few crowded ones. The primes are a little more orderly than coins.
 
-\section{The singular series of a pair}
+Three different statements hide in that picture. The first says that \emph{every} interval of a given length holds about the expected number of primes. Volume~14 proves it for intervals $]x,x+x^\theta]$ with $\theta>\frac34$ (Corollary~1.9), and nobody can prove it for intervals of length $(\log x)^2$. The second says that the count in a \emph{random} interval of length $\lambda\log x$ follows a Poisson law. The third says that the variance, on longer intervals, is smaller than the Poisson variance by a definite amount. This chapter keeps the three apart.
 
-For an even integer $h\ne0$ let
+It proves four things. The Hardy--Littlewood singular series is a product of local probabilities, and prime by prime its average is exactly $1$. The average of the pair series has a second term $-\frac12H\log H$ and a third term with the constant $1-\gamma-\log2\pi$, and we prove both (Theorem~\ref{thm:pairexpansion}). Under the Hardy--Littlewood conjecture for pairs and the Riemann hypothesis, those terms become the variance of $\psi(n+H)-\psi(n)$ (Theorem~\ref{thm:pairsecond}). Finally Gallagher's average for $k$-tuples is proved in full, and from it and the uniform Hardy--Littlewood conjecture comes the Poisson law (Theorem~\ref{thm:gallagherpoisson}). The hypotheses are named in the statements, and stay there.
+
+\section{The singular series as a probability}
+
+Fix distinct integers $h_1,\dots,h_k$ and ask how often $n+h_1,\dots,n+h_k$ are all prime. Cram\'er's model of Volume~6 treats the $k$ events as independent, each with probability about $1/\log n$. The primes cannot quite do that, because divisibility by a small prime is not independent across a pattern. The correction is a product over primes, and each factor is a probability you can compute by hand.
+
+Write $\mathbf h=(h_1,\dots,h_k)$. For a prime $p$, let $\nu_p(\mathbf h)$ be the number of distinct residues among $h_1,\dots,h_k$ modulo $p$. If $n$ is a random residue modulo $p$, the probability that none of $n+h_1,\dots,n+h_k$ is divisible by $p$ is $1-\nu_p(\mathbf h)/p$: exactly $\nu_p(\mathbf h)$ residues of $n$ are forbidden. Cram\'er's model, with $k$ independent events of probability $1-1/p$ each, would say $(1-1/p)^k$. Put
 \[
-\mathfrak S(h)=2C_2\prod_{\substack{p\mid h\\p>2}}\frac{p-1}{p-2},\qquad C_2=\prod_{p>2}\Bigl(1-\frac1{(p-1)^2}\Bigr),
+b_p(\mathbf h)=\frac{1-\nu_p(\mathbf h)/p}{(1-1/p)^k}.
 \]
-and let $\mathfrak S(h)=0$ when $h$ is odd. The product converges, and $C_2>0$. This is the Hardy--Littlewood singular series for two prime powers at distance $h$: the local factor at an odd prime $p$ is $p/(p-1)$ when $p\mid h$ and $p(p-2)/(p-1)^2$ when $p\nmid h$, and the factor at $2$ is $2$ or $0$ according as $h$ is even or odd.
 
-\begin{lemma}\label{lem:sram}
-For $h\ne0$,
+\begin{definition}[the singular series]\label{def:singular}
+For distinct integers $h_1,\dots,h_k$, the \emph{singular series} is
 \[
-\mathfrak S(h)=\sum_{q=1}^\infty\frac{\mu(q)^2}{\varphi(q)^2}\,c_q(h),
+\mathfrak S(\mathbf h)=\prod_p b_p(\mathbf h).
 \]
-where $c_q(h)=\sum_{d\mid\gcd(q,h)}\mu(q/d)\,d$ is Ramanujan's sum. The series converges absolutely.
+\end{definition}
+
+Lemma~\ref{lem:bp} shows that the product converges. For $k=1$ every factor is $1$, so $\mathfrak S(h_1)=1$. For a pair, write $\mathfrak S(h)=\mathfrak S(0,h)$ with $h\ne0$. If $p\nmid h$ the factor is $(1-2/p)(1-1/p)^{-2}=p(p-2)/(p-1)^2$. If $p\mid h$ it is $(1-1/p)^{-1}=p/(p-1)$. At $p=2$ it is $0$ for odd $h$ and $2$ for even $h$. So, with $C_2=\prod_{p>2}\bigl(1-(p-1)^{-2}\bigr)=0.6601\ldots$,
+\begin{equation}\label{eq:pairseries}
+\mathfrak S(h)=2C_2\prod_{\substack{p\mid h\\p>2}}\frac{p-1}{p-2}\quad(h\text{ even}),\qquad\mathfrak S(h)=0\quad(h\text{ odd}).
+\end{equation}
+This is the series $\mathfrak S(\{0,h\})$ of Volume~6, Chapter~10. Twins have $\mathfrak S(2)=2C_2=1.32$.
+
+\begin{lemma}[local factors]\label{lem:bp}
+Let $h_1,\dots,h_k$ be distinct, put $\Delta=\prod_{i<j}|h_i-h_j|$, and let $p\ge2k$.
+\begin{enumerate}[label=(\alph*)]
+\item If $p\nmid\Delta$, then $1-k^2/p^2\le b_p(\mathbf h)\le1$.
+\item If $p\mid\Delta$, then $1-k/p\le b_p(\mathbf h)\le1+4k/p$.
+\end{enumerate}
+So the product defining $\mathfrak S(\mathbf h)$ converges, and $\mathfrak S(\mathbf h)\ge0$, with equality exactly when some prime $p$ has $\nu_p(\mathbf h)=p$.
 \end{lemma}
 \begin{proof}
-Both sides are multiplicative in the modulus, and $\mu(q)^2$ kills non-squarefree $q$, so it is enough to match Euler factors. The factor of the series at a prime $p$ is $1+c_p(h)/(p-1)^2$. If $p\mid h$ then $c_p(h)=p-1$ and the factor is $1+1/(p-1)=p/(p-1)$. If $p\nmid h$ then $c_p(h)=-1$ and the factor is $1-1/(p-1)^2=p(p-2)/(p-1)^2$. At $p=2$ this is $2$ or $0$. These are the local factors of $\mathfrak S(h)$, including the constant $2C_2$ once the product over $p\nmid h$ is taken.
+(a) If $p\nmid\Delta$, the $h_i$ are distinct modulo $p$, so $\nu_p=k$. Bernoulli's inequality gives $(1-1/p)^k\ge1-k/p$, so $b_p\le1$. Also $(1-1/p)^{-1}\ge1+1/p$, so $(1-1/p)^{-k}\ge(1+1/p)^k\ge1+k/p$, and $b_p\ge(1-k/p)(1+k/p)=1-k^2/p^2$.
+
+(b) Now $1\le\nu_p\le k$. The lower bound is $b_p\ge(1-k/p)(1-1/p)^{-k}\ge1-k/p$. For the upper bound, put $x=1/(p-1)$. Then $b_p\le(1-1/p)^{-k}=(1+x)^k\le e^{kx}$, and $kx\le k/(2k-1)\le1$. On $[0,1]$ the convex function $e^t$ lies below its chord, so $e^t\le1+(e-1)t\le1+2t$. Hence $b_p\le1+2k/(p-1)\le1+4k/p$.
+
+Only finitely many primes divide $\Delta$, and $\sum_pk^2/p^2$ converges, so the product of the factors with $p\ge2k$ converges to a positive number. The finitely many factors with $p<2k$ are non-negative, and one of them is $0$ exactly when $\nu_p=p$.
 \end{proof}
 
-\begin{lemma}\label{lem:savg}
-For $H\ge2$, $\sum_{h\le H}\mathfrak S(h)=H+O(\log H)$.
-\end{lemma}
-\begin{proof}
-Write $\alpha(1)=1$ and, for odd squarefree $d=\prod p_i$, $\alpha(d)=\prod 1/(p_i-2)$, and $\alpha(d)=0$ otherwise. Then $\mathfrak S(2m)=2C_2\sum_{d\mid m}\alpha(d)$. Indeed the right side is multiplicative in $m$ and the local factor at an odd prime is $1+1/(p-2)=(p-1)/(p-2)$. Hence
-\[
-\sum_{m\le M}\mathfrak S(2m)=2C_2\sum_{d\le M}\alpha(d)\Bigl\lfloor\frac Md\Bigr\rfloor=2C_2M\sum_{d\le M}\frac{\alpha(d)}d-2C_2\sum_{d\le M}\alpha(d)\Bigl\{\frac Md\Bigr\}.
-\]
-The series $\sum_d\alpha(d)/d=\prod_{p>2}\bigl(1+1/(p(p-2))\bigr)$ converges, and $2C_2$ times the product equals $2$: each local factor of $C_2\cdot\bigl(1+1/(p(p-2))\bigr)$ is $1$. The tail satisfies $M\sum_{d>M}\alpha(d)/d=O(\log M)$, because $\sum_{d\le z}\alpha(d)\le\prod_{p\le z}(1+1/(p-2))=O(\log z)$ (the product is $\exp\sum_{p\le z}1/(p-2)$ and $\sum 1/(p-2)=\log\log z+O(1)$), and partial summation turns that bound into a tail $O((\log M)/M)$. The fractional-part sum is at most $\sum_{d\le M}\alpha(d)=O(\log M)$. Therefore $\sum_{m\le M}\mathfrak S(2m)=2M+O(\log M)$. Odd $h$ contribute $0$, and $H=2M$ or $2M+1$, so the sum up to $H$ is $H+O(\log H)$.
-\end{proof}
+The case $\nu_p(\mathbf h)=p$ is the one where the pattern always contains a multiple of $p$. The tuple $(0,2,4)$ is the example: one of $n$, $n+2$, $n+4$ is divisible by $3$, so $3,5,7$ is the only prime triple of that shape. A tuple with $\mathfrak S(\mathbf h)>0$ is called \emph{admissible}.
 
-\section{The pair second moment}
+Here is the first sign that Cram\'er's model is right on average. It is exact, and it takes one line.
 
-The Hardy--Littlewood conjecture for pairs, in the range we need, is the following hypothesis. It is not a theorem of Volumes~1--14.
-
-\begin{quote}
-\textbf{Hypothesis HL$(H)$.} For $X\ge3$ and $0<|h|\le H\le X^{1/2}$,
+\begin{lemma}[the local average is $1$]\label{lem:localavg}
+For every prime $p$ and every $k\ge1$,
 \[
-\sum_{X<n\le 2X}\Lambda(n)\Lambda(n+h)=\mathfrak S(h)\,X+O\Bigl(\frac X{(\log X)^2}\Bigr),
-\]
-uniformly in $h$, and $\sum_{X<n\le 2X}\Lambda(n)^2=X\log X+O(X)$.
-\end{quote}
-
-The diagonal asymptotic is a theorem: $\sum_{n\le Y}\Lambda(n)^2=Y\log Y+O(Y)$, by the prime number theorem of Volume~6. The hypothesis is the off-diagonal.
-
-\begin{theorem}\label{thm:pairsecond}
-Assume HL$(H)$. Then, for $3\le H\le X^{1/2}$,
-\[
-\frac1X\sum_{X<n\le 2X}\Biggl(\sum_{j=1}^H\bigl(\Lambda(n+j)-1\bigr)\Biggr)^2
-=H\log X+O(H\log H).
-\]
-If in addition $\sum_{h\le H}(\mathfrak S(h)-1)=-\frac12\log H+O(1)$, then the same quantity equals
-\[
-H\log\frac XH-(\gamma+\log 2\pi-1)H+O(H),
-\]
-and Lemma~\ref{lem:ssecondary} supplies that expansion. The constant $\gamma+\log 2\pi-1$ is about $1.415$.
-\end{theorem}
-
-\begin{proof}
-Write $R(n)=\sum_{j=1}^H(\Lambda(n+j)-1)$. Expanding and changing variables $h=j-k$,
-\[
-\sum_{X<n\le 2X}R(n)^2=\sum_{|h|<H}(H-|h|)\sum_{X<n\le 2X}\bigl(\Lambda(n+a_h)\Lambda(n+a_h+h)-\mathbf 1_{h\ne0}\bigr)+E_0,
-\]
-where $a_h$ is a shift of size at most $H$ coming from the range of $j$, and $E_0$ collects the difference between subtracting $1$ and subtracting the mean of $\Lambda$ on a shifted interval. By the prime number theorem of Volume~6, $\psi(Y+H)-\psi(Y)=H+O(Y\exp(-c\sqrt{\log Y}))$ uniformly for $Y\in[X,2X]$ and $H\le X^{1/2}$, so $E_0=O(XH\exp(-c\sqrt{\log X}))$, which is smaller than $XH\log\log H$.
-
-On the diagonal $h=0$ the inner sum is $X\log X+O(X+H\log X)$, and there are $H$ such terms, giving $HX\log X+O(HX)$. On $h\ne0$, HL$(H)$ and a shift of length $H$ (which costs $O(H\log^2 X)$ per $h$, and $\sum_h(H-|h|)$ of them is $O(H^2\log^2 X)=O(XH\log^2 X)$ since $H\le X^{1/2}$) give
-\[
-\sum_{0<|h|<H}(H-|h|)\mathfrak S(h)\,X+O\Bigl(\frac{XH^2}{(\log X)^2}\Bigr).
-\]
-The number of pairs $(j,k)$ is $H^2$, and $\sum_{0<|h|<H}(H-|h|)=H(H-1)$. Subtracting this count of $1$'s against the $-1$ in $R$ produces
-\[
-\frac1X\sum R(n)^2=H\log X+\sum_{0<|h|<H}(H-|h|)\bigl(\mathfrak S(h)-1\bigr)-H+O\Bigl(H+\frac{H^2}{(\log X)^2}\Bigr).
-\]
-It remains to evaluate the weighted singular series. By Lemma~\ref{lem:savg} and summation by parts, if $A(u)=\sum_{h\le u}(\mathfrak S(h)-1)$ then $A(u)=O(\log u)$, and
-\[
-\sum_{h=1}^{H-1}(H-h)(\mathfrak S(h)-1)=\sum_{u<H}A(u).
-\]
-Since $A(u)=O(\log u)$, the weighted sum is $O(H\log H)$. This is the first assertion. For the second, substitute Lemma~\ref{lem:ssecondary}: the weighted sum is $-H\log H+(2-\gamma-\log 2\pi)H+O(H)$, and
-\[
-H\log X-H\log H+(2-\gamma-\log 2\pi)H-H=H\log\frac XH-(\gamma+\log 2\pi-1)H,
-\]
-because $1-\gamma-\log 2\pi=-(\gamma+\log 2\pi-1)$.
-\end{proof}
-
-\begin{lemma}\label{lem:ssecondary}
-For $H\ge3$,
-\[
-\sum_{0<|h|<H}(H-|h|)\bigl(\mathfrak S(h)-1\bigr)=-H\log H+(2-\gamma-\log 2\pi)H+O(H).
+\frac1{p^k}\sum_{\mathbf h\in(\Z/p\Z)^k}b_p(\mathbf h)=1.
 \]
 \end{lemma}
 \begin{proof}
-Keep the notation of Lemma~\ref{lem:savg}: $\mathfrak S(2m)=2C_2\sum_{d\mid m}\alpha(d)$ and $\sum_{d\ge1}\alpha(d)/d=1/C_2$. The Dirichlet series $\sum\alpha(n)n^{-s}=\prod_{p>2}\bigl(1+p^{-s}/(p-2)\bigr)$ has a simple pole at $s=0$ of the same shape as $\zeta(s+1)$, because $1/(p-2)=p^{-1}(1+O(p^{-1}))$ and $\prod(1+p^{-1-s})=\zeta(s+1)/\zeta(2s+2)$. The residue computation gives
-\[
-\sum_{d\le M}\alpha(d)=\frac1{2C_2}\log M+O(1).
-\]
-(The factor $\tfrac12$ is the density of the odd integers in the Euler product, once the prime $2$ has been removed from $\mathfrak S$.) The fractional parts $\{M/d\}$ are equidistributed against this sparse set of $d$ at the scale of the proof of the prime number theorem's secondary term, so
-\[
-\sum_{d\le M}\alpha(d)\Bigl\{\frac Md\Bigr\}=\frac12\sum_{d\le M}\alpha(d)+O(1)=\frac1{4C_2}\log M+O(1).
-\]
-The tail $M\sum_{d>M}\alpha(d)/d$ is $O(1)$ by partial summation and the same logarithmic bound. Therefore
-\[
-\sum_{m\le M}\mathfrak S(2m)=2M-2C_2\cdot\frac1{4C_2}\log M+O(1)=2M-\frac12\log M+O(1).
-\]
-Odd $h\le H=2M$ contribute $0$ rather than $1$, which subtracts another $M$, and $\sum_{h\le H}1=H$, so
-\[
-\sum_{h\le H}(\mathfrak S(h)-1)=-\frac12\log(H/2)+O(1)=-\frac12\log H+O(1).
-\]
-Summation by parts, $\sum_{h<H}(H-h)a_h=\sum_{u<H}A(u)$ with $A(u)=-\frac12\log u+O(1)$, gives
-\[
-\sum_{0<h<H}(H-h)(\mathfrak S(h)-1)=-\frac12 H\log H+O(H).
-\]
-Both signs double the sum. The constant term in that $O(H)$, tracked through $\zeta(s)=1/(s-1)+\gamma+O(s-1)$ and through $\zeta'(0)=-\frac12\log(2\pi)$ (Volume~6), is $(2-\gamma-\log 2\pi)H$. This is the lemma.
+Count pairs $(\mathbf h,r)$ with $r$ a residue that occurs among the $h_i$. For each of the $p$ values of $r$, the tuples that miss $r$ number $(p-1)^k$, so $\sum_{\mathbf h}\nu_p(\mathbf h)=p\bigl(p^k-(p-1)^k\bigr)$. The average of $1-\nu_p/p$ is therefore $1-\bigl(1-(1-1/p)^k\bigr)=(1-1/p)^k$. Divide by $(1-1/p)^k$.
 \end{proof}
 
-\begin{examplex}[the constant]
-$\gamma+\log 2\pi-1\approx0.57721+1.83788-1=1.415$. For $H=X^{1/2}$ the variance is about $\tfrac12 H\log X-1.415\,H$, against the Cram\'er value $H\log X$. The ratio tends to $\tfrac12$.
+In words: pick the pattern at random modulo $p$, and the chance that $p$ misses the whole pattern is exactly the chance Cram\'er's model gives. The correction $b_p$ only moves probability from one pattern to another. Section~\ref{sec:gallagherk} turns this into Gallagher's theorem.
+
+\begin{examplex}[$k=2$, $p=3$]
+There are $9$ pairs modulo $3$. The $3$ pairs with $h_1\equiv h_2$ have $\nu_3=1$ and $b_3=\frac{2/3}{4/9}=\frac32$. The other $6$ have $\nu_3=2$ and $b_3=\frac{1/3}{4/9}=\frac34$. The average is $\frac{3\cdot\frac32+6\cdot\frac34}9=1$.
 \end{examplex}
 
-\section{Gallagher's conditional Poisson law}
+\section{The pair average to second order}
 
-Let $H=\lambda\log X$ with $\lambda>0$ fixed, and let $N(x)$ be the number of primes in $(x,x+H]$. The Cram\'er model predicts a Poisson law of mean $\lambda$. Gallagher's theorem says this follows from a uniform Hardy--Littlewood conjecture, and from nothing about zeros.
+Volume~6 proved Gallagher's estimate $\sum_{h\le H}\mathfrak S(h)=H+O(\sqrt H)$ (Theorem~10.7). It also noticed, by computer, that the error is really about $-\frac12\log H$, and that this small term explains the narrow histogram. To use that term we need it with its constant, and in the weighted form that a variance produces. Here is the statement.
 
-\begin{quote}
-\textbf{Hypothesis HL$^*$.} For each fixed $k\ge1$ and $A>0$,
+\begin{theorem}[the pair average to second order]\label{thm:pairexpansion}
+For every $\varepsilon>0$ and every integer $H\ge2$,
 \[
-\sum_{n\le X}\prod_{i=1}^k\Lambda(n+h_i)=\mathfrak S(h_1,\dots,h_k)\,X+O_k\Bigl(\frac X{(\log X)^A}\Bigr)
+\sum_{h=1}^H(H-h)\,\mathfrak S(h)=\frac12H^2-\frac12H\log H+\frac12\bigl(1-\gamma-\log2\pi\bigr)H+O_\varepsilon\bigl(H^{1/2+\varepsilon}\bigr).
 \]
-uniformly for distinct $h_i$ in $[0,H]$ with $H\le(\log X)^B$, where $\mathfrak S(h_1,\dots,h_k)$ is the singular series of the $k$-tuple, equal to $0$ when the tuple is inadmissible and asymptotic to $1$ on average.
-\end{quote}
-
-\begin{theorem}[Gallagher]\label{thm:gallagherpoisson}
-Assume HL$^*$. For each fixed integer $m\ge0$ and each fixed $\lambda>0$, the proportion of integers $x\in[X,2X]$ with $N(x)=m$ tends to $e^{-\lambda}\lambda^m/m!$.
 \end{theorem}
-\begin{proof}
-The factorial moments determine a Poisson law, and HL$^*$ computes them. Write $\theta(x,H)=\sum_{x<n\le x+H}\Lambda(n)$. Then $\theta(x,H)=N(x)\log X+O(H)$, since each prime in the interval has logarithm $\log X+O(1)$ and prime powers are $O(H^{1/2})$. It is enough to show that the factorial moment of $\theta(x,H)/\log X$ tends to $\lambda^k$.
 
-Expanding,
+The constant is $\frac12(1-\gamma-\log2\pi)=-0.7075\ldots$. The proof has three ingredients: two integrals of fractional parts, a Riemann sum along a hyperbola, and a comparison of $\mathfrak S$ with $\zeta$. We prove the integrals first.
+
+\begin{lemma}[two integrals]\label{lem:fracint}
 \[
-\frac1X\sum_{X<x\le 2X}\binom{\theta(x,H)}{k}(\log X)^{-k}
+\int_1^\infty\frac{\{t\}}{t^2}\,\dd t=1-\gamma,\qquad\int_1^\infty\frac{\{t\}^2}{t^2}\,\dd t=\log2\pi-1-\gamma.
 \]
-is a sum, over distinct $0\le h_1,\dots,h_k\le H$, of $\mathfrak S(h_1,\dots,h_k)/(\log X)^k$, up to the error in HL$^*$ and the diagonal coincidences, which are of lower order in $k$ fixed. The same averaging argument as Lemma~\ref{lem:savg}, applied to the $k$-tuple singular series (its Dirichlet series is $\zeta(s)^k$ times a holomorphic function equal to $1$ at $s=1$), gives
+Hence $I:=\int_1^\infty\frac{\{t\}(1-\{t\})}{t^2}\,\dd t=2-\log2\pi=0.1621\ldots$.
+\end{lemma}
+\begin{proof}
+Both integrands are at most $t^{-2}$, so it is enough to integrate over $[1,M]$ for an integer $M=N+1$ and let $N\to\infty$. On $[k,k+1]$ write $\{t\}=t-k$. We use $H_M=1+\frac12+\dots+\frac1M=\log M+\gamma+o(1)$ (Volume~6, Chapter~1) and Stirling's formula $\log M!=(M+\frac12)\log M-M+\frac12\log2\pi+o(1)$ (Volume~5, Theorem~11.8, applied to $\log\Gamma(M)=\log M!-\log M$).
+
+\emph{First integral.} $\int_k^{k+1}\frac{t-k}{t^2}\,\dd t=\log\frac{k+1}k-\frac1{k+1}$. Summing over $k\le N$ telescopes the logarithms: the total is $\log M-(H_M-1)\to1-\gamma$.
+
+\emph{Second integral.} $\int_k^{k+1}\frac{(t-k)^2}{t^2}\,\dd t=1-2k\log\frac{k+1}k+\frac k{k+1}$. Sum over $k\le N$. The first terms give $N$, and $\sum_{k\le N}\frac k{k+1}=N-(H_M-1)$. For the middle term,
 \[
-\sum_{\substack{0\le h_i\le H\\ \mathrm{distinct}}}\mathfrak S(h_1,\dots,h_k)=H^k+O_k(H^{k-1}\log H).
+\sum_{k=1}^Nk\bigl(\log(k+1)-\log k\bigr)=M\log M-\log M!.
 \]
-Dividing by $(\log X)^k$ and sending $X\to\infty$ with $H=\lambda\log X$ produces $\lambda^k$. The factorial moments of $N(x)$ therefore tend to those of a Poisson random variable of mean $\lambda$, which determines the law.
+(For $N=1$ both sides are $\log2$, and going from $N-1$ to $N$ adds $N\log(N+1)-N\log N$ to each side.) So the integral over $[1,M]$ is
+\[
+2N+1-H_M-2M\log M+2\log M!=2N+1-2M-H_M+\log M+\log2\pi+o(1),
+\]
+which is $-1-\gamma+\log2\pi+o(1)$, because $2N+1-2M=-1$ and $H_M-\log M\to\gamma$.
+
+Finally $\{t\}(1-\{t\})=\{t\}-\{t\}^2$, so $I=(1-\gamma)-(\log2\pi-1-\gamma)=2-\log2\pi$.
 \end{proof}
 
-Maier's theorem, already proved, is why one cannot delete the word conditional and why one cannot replace ``proportion of $x$'' by ``every $x$''. For $H=(\log X)^\lambda$ with $\lambda>1$ fixed, the pointwise ratio $(\pi(x+H)-\pi(x))/(H/\log X)$ has limsup strictly above $1$ and liminf strictly below $1$. The Poisson law is a statement about almost every starting point, in the scale $H=\lambda\log X$. Maier's matrix lives on a thin set of starting points, spaced by the primorial, and does not contradict Theorem~\ref{thm:gallagherpoisson}.
+The second ingredient is a Riemann sum along a hyperbola. Write $\beta(t)=\{t\}(1-\{t\})$. Its graph is a row of small arches of height $\frac14$, one over each unit interval.
 
-Volume~14's zero-density theorems give primes in almost every interval of length $x^\theta$ for an explicit $\theta$, and say nothing about intervals of length $(\log x)^\lambda$. Montgomery and Soundararajan's conjecture for the variance when $H$ lies between $(\log X)^C$ and $X^{1-\varepsilon}$ is Theorem~\ref{thm:pairsecond} at the second moment, and is open past it. The conjecture is not given a proof it does not have.
+\begin{lemma}[a hyperbolic Riemann sum]\label{lem:riemannsum}
+For real $y\ge1$,
+\[
+\sum_{1\le m\le y}\beta\Bigl(\frac ym\Bigr)=I\,y+O\bigl(\sqrt y\bigr),
+\]
+where the implied constant is at most $3$.
+\end{lemma}
+\begin{proof}
+Let $\phi(u)=\beta(y/u)$ for $0<u\le y$. The substitution $t=y/u$ gives $\int_0^y\phi(u)\,\dd u=y\int_1^\infty\beta(t)t^{-2}\,\dd t=Iy$. Compare the sum with this integral. Let $m_0=\lceil\sqrt y\,\rceil$ and $Y=\lfloor y\rfloor$. Then
+\[
+\sum_{m\le y}\phi(m)-\int_0^y\phi=\Bigl(\sum_{m\le m_0}\phi(m)-\int_0^{m_0}\phi\Bigr)+\sum_{m_0<m\le Y}\Bigl(\phi(m)-\int_{m-1}^m\phi\Bigr)-\int_Y^y\phi.
+\]
+Since $0\le\phi\le\frac14$, the first bracket is at most $m_0/4\le(\sqrt y+1)/4$ in size and the last integral at most $\frac14$. In the middle, $|\phi(m)-\int_{m-1}^m\phi|$ is at most the total variation of $\phi$ on $[m-1,m]$. These intervals lie in $[\sqrt y,y]$, and as $u$ runs over $[\sqrt y,y]$, $t=y/u$ runs over $[1,\sqrt y]$. On each unit interval $\beta$ climbs to $\frac14$ and falls back, so its variation there is $\frac12$, and $[1,\sqrt y]$ meets at most $\sqrt y+1$ unit intervals. The middle sum is at most $(\sqrt y+1)/2$. The total error is at most $\sqrt y+2\le3\sqrt y$.
+\end{proof}
+
+The third ingredient compares $\mathfrak S$ with the constant $1$. Following Volume~6, put $w(d)=\prod_{p\mid d}\frac p{p-2}$ for odd squarefree $d$, and $w(d)=0$ otherwise. Then, by~\eqref{eq:pairseries}, for $h=2m$,
+\begin{equation}\label{eq:sdivisor}
+\mathfrak S(2m)=2C_2\sum_{d\mid m}\frac{w(d)}d,
+\end{equation}
+because both sides are multiplicative in the odd part of $m$, and at an odd prime $p$ the factor on the right is $1+\frac1{p-2}=\frac{p-1}{p-2}$. Volume~6 writes $g(d)$ for $w(d)/d$ and proves $\sum_dw(d)/d^2=1/C_2$.
+
+Now compare $w$ with the constant function $1$. Define $\kappa$ by $w=1*\kappa$, that is, $\kappa(n)=\sum_{d\mid n}\mu(n/d)w(d)$. Since $w$ is multiplicative, so is $\kappa$, and its values at prime powers are $\kappa(p^e)=w(p^e)-w(p^{e-1})$:
+\[
+\kappa(2)=-1,\qquad\kappa(p)=\frac2{p-2},\qquad\kappa(p^2)=-\frac p{p-2}\quad(p>2),
+\]
+and $\kappa(p^e)=0$ in every other case with $e\ge1$. The function $\kappa$ is small. For $\sigma>\frac12$,
+\[
+M(\sigma):=\sum_n\frac{|\kappa(n)|}{n^\sigma}=\Bigl(1+\frac1{2^\sigma}\Bigr)\prod_{p>2}\Bigl(1+\frac2{(p-2)p^\sigma}+\frac{p^{1-2\sigma}}{p-2}\Bigr)<\infty,
+\]
+because $\frac p{p-2}\le3$ for $p\ge3$, so the extra terms are at most $\frac6{p^{1+\sigma}}+\frac3{p^{2\sigma}}$, and both series converge.
+
+\begin{lemma}[$\kappa$ is small]\label{lem:kappa}
+Let $0<\varepsilon\le\frac14$ and $y\ge1$, and put $M=M(\frac12+\varepsilon)$. Then
+\[
+\sum_{n\le y}|\kappa(n)|\le My^{\frac12+\varepsilon},\qquad\sum_{n\le y}\frac{|\kappa(n)|}{\sqrt n}\le My^\varepsilon,
+\]
+\[
+\sum_{n>y}\frac{|\kappa(n)|}n\le My^{-\frac12+\varepsilon},\qquad\sum_{n>y}\frac{|\kappa(n)|}{n^2}\le My^{-\frac32+\varepsilon},\qquad\sum_{n>y}\frac{|\kappa(n)|\log n}n\le\frac M\varepsilon y^{-\frac12+2\varepsilon}.
+\]
+Moreover
+\[
+c_0:=\sum_n\frac{\kappa(n)}n=\frac1{2C_2},\qquad c_1:=\sum_n\frac{\kappa(n)\log n}n=-\frac{\log2}{2C_2}.
+\]
+\end{lemma}
+\begin{proof}
+The five bounds are Rankin's trick, as in Volume~6: multiply each term by a factor at least $1$. For $n\le y$ we have $1\le(y/n)^{1/2+\varepsilon}$, so $\sum_{n\le y}|\kappa(n)|\le y^{1/2+\varepsilon}\sum_n|\kappa(n)|n^{-1/2-\varepsilon}$, and the factor $(y/n)^\varepsilon$ gives the second bound. For $n>y$ the factors $(n/y)^{1/2-\varepsilon}$ and $(n/y)^{3/2-\varepsilon}$ give the third and fourth bounds. For the fifth use also $\log n\le n^\varepsilon/\varepsilon$.
+
+All the series converge absolutely, so they may be computed as Euler products. The value $c_0$ is $\prod_p\sum_{e\ge0}\kappa(p^e)p^{-e}$. At $p=2$ the factor is $1-\frac12=\frac12$. At $p>2$ it is $1+\frac2{p(p-2)}-\frac1{p(p-2)}=\frac{(p-1)^2}{p(p-2)}$, the reciprocal of the factor of $C_2$. So $c_0=\frac1{2C_2}$.
+
+For $c_1$, write $\log n=\sum_{p^e\parallel n}e\log p$ and split $n=p^em$ with $p\nmid m$. Absolute convergence lets us regroup:
+\[
+c_1=\sum_p\Bigl(\sum_{e\ge1}\frac{e\log p\,\kappa(p^e)}{p^e}\Bigr)\sum_{p\nmid m}\frac{\kappa(m)}m=c_0\sum_p\frac{\sum_{e\ge1}e\log p\,\kappa(p^e)p^{-e}}{\sum_{e\ge0}\kappa(p^e)p^{-e}}.
+\]
+For $p>2$ the numerator is $\log p\bigl(\frac2{p(p-2)}-\frac{2p}{(p-2)p^2}\bigr)=0$. For $p=2$ it is $-\frac12\log2$, and the denominator is $\frac12$. So $c_1=-c_0\log2$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:pairexpansion}]
+Put $D=H/2$, and let $\varepsilon\in]0,\frac18]$.
+
+\emph{Step 1: a divisor sum.} Odd $h$ contribute nothing. For $h=2m$ use~\eqref{eq:sdivisor} and exchange the sums. The even $h\le H$ divisible by $2d$ are $h=2dk$ with $1\le k\le D/d$, so
+\[
+\sum_{h\le H}(H-h)\mathfrak S(h)=2C_2\sum_{d\le D}\frac{w(d)}d\sum_{1\le k\le D/d}(H-2dk).
+\]
+Put $t=D/d$ and $N=\lfloor t\rfloor=t-\{t\}$. The inner sum is $2d\sum_{k\le N}(t-k)=2d\bigl(Nt-\frac{N(N+1)}2\bigr)$, and substituting $N=t-\{t\}$ gives $2d\bigl(\frac{t^2}2-\frac t2+\frac{\beta(t)}2\bigr)$. Since $2dt=H$,
+\[
+\sum_{1\le k\le D/d}(H-2dk)=\frac{H^2}{4d}-\frac H2+d\,\beta\Bigl(\frac Dd\Bigr).
+\]
+Therefore
+\begin{equation}\label{eq:threesums}
+\sum_{h\le H}(H-h)\mathfrak S(h)=2C_2\Bigl(\frac{H^2}4B-\frac H2A+T\Bigr),
+\end{equation}
+with $A=\sum_{d\le D}\frac{w(d)}d$, $B=\sum_{d\le D}\frac{w(d)}{d^2}$ and $T=\sum_{d\le D}w(d)\beta(D/d)$.
+
+\emph{Step 2: the sum $A$.} Since $w=1*\kappa$,
+\[
+A=\sum_{n\le D}\frac{\kappa(n)}n\sum_{m\le D/n}\frac1m=\sum_{n\le D}\frac{\kappa(n)}n\Bigl(\log\frac Dn+\gamma+O\Bigl(\frac nD\Bigr)\Bigr),
+\]
+using $\sum_{m\le y}\frac1m=\log y+\gamma+O(1/y)$ for $y\ge1$ (Volume~6, Chapter~1). The error is $O(D^{-1}\sum_{n\le D}|\kappa(n)|)=O(D^{-1/2+\varepsilon})$. Completing the sums over $n$ with the tail bounds of Lemma~\ref{lem:kappa} costs $O_\varepsilon(D^{-1/2+2\varepsilon}\log D)$. So
+\[
+A=c_0(\log D+\gamma)-c_1+O_\varepsilon\bigl(D^{-\frac12+3\varepsilon}\bigr)=\frac1{2C_2}\bigl(\log H+\gamma\bigr)+O_\varepsilon\bigl(D^{-\frac12+3\varepsilon}\bigr),
+\]
+because $\log D+\log2=\log H$.
+
+\emph{Step 3: the sum $B$.} In the same way, with $\sum_{m\le y}m^{-2}=\zeta(2)-\frac1y+O(y^{-2})$ for $y\ge1$ (compare the tail $\sum_{m>y}m^{-2}$ with $\int_y^\infty t^{-2}\,\dd t$),
+\[
+B=\sum_{n\le D}\frac{\kappa(n)}{n^2}\Bigl(\zeta(2)-\frac nD+O\Bigl(\frac{n^2}{D^2}\Bigr)\Bigr)=\zeta(2)\sum_n\frac{\kappa(n)}{n^2}-\frac{c_0}D+O_\varepsilon\bigl(D^{-\frac32+\varepsilon}\bigr).
+\]
+Here $\zeta(2)\sum_n\kappa(n)n^{-2}=\sum_dw(d)d^{-2}=\frac1{C_2}$, the value from Volume~6. Since $D=H/2$, $B=\frac1{C_2}-\frac1{C_2H}+O_\varepsilon(D^{-3/2+\varepsilon})$.
+
+\emph{Step 4: the sum $T$.} Again $w=1*\kappa$, and Lemma~\ref{lem:riemannsum} with $y=D/n$ gives
+\[
+T=\sum_{n\le D}\kappa(n)\sum_{m\le D/n}\beta\Bigl(\frac{D/n}m\Bigr)=\sum_{n\le D}\kappa(n)\Bigl(\frac{ID}n+O\Bigl(\sqrt{\frac Dn}\Bigr)\Bigr)=c_0ID+O_\varepsilon\bigl(D^{\frac12+\varepsilon}\bigr).
+\]
+With $I=2-\log2\pi$ from Lemma~\ref{lem:fracint}, $T=\frac{H}{4C_2}(2-\log2\pi)+O_\varepsilon(D^{1/2+\varepsilon})$.
+
+\emph{Step 5: assemble.} Put the three values into~\eqref{eq:threesums}:
+\[
+2C_2\Bigl(\frac{H^2}{4C_2}-\frac H{4C_2}-\frac H{4C_2}(\log H+\gamma)+\frac H{4C_2}(2-\log2\pi)\Bigr)=\frac{H^2}2-\frac12H\log H+\frac12(1-\gamma-\log2\pi)H.
+\]
+The errors are $H^2D^{-3/2+\varepsilon}$, $HD^{-1/2+3\varepsilon}$ and $D^{1/2+\varepsilon}$, all $O_\varepsilon(H^{1/2+3\varepsilon})$. Rename $3\varepsilon$ as $\varepsilon$.
+\end{proof}
+
+\begin{examplex}[the constant, by computer]
+The table compares the left side of Theorem~\ref{thm:pairexpansion} with its three main terms.
+\begin{center}
+\begin{tabular}{rcc}
+$H$ & left side minus main terms & $\sqrt H$\\\hline
+$10^2$ & $1.8$ & $10$\\
+$10^3$ & $2.6$ & $32$\\
+$10^4$ & $9.2$ & $100$\\
+$10^5$ & $3.0$ & $316$
+\end{tabular}
+\end{center}
+At $H=10^5$ the left side is about $5\times10^9$, and the three terms account for it to within $3$. Without the third term the error would be $70\,750$.
+\end{examplex}
+
+The theorem says exactly how the pair series fails to be $1$. Its mean is $1$. The deficit $-\frac12H\log H$ comes from the odd $h$, where $\mathfrak S$ is $0$, not quite balanced by the even ones. That deficit is what makes the primes spread less than coins.
+
+\section{The variance of primes in short intervals}
+
+The question now is the size of $\psi(n+H)-\psi(n)-H$ for a typical $n$. Cram\'er's model has an answer. In that model each $m$ near $X$ is ``prime'' with probability $1/\log m$, independently, and weighting by $\log m$ gives each term mean $1$ and variance $\log m-1$. So the model predicts a variance of $H\log X+O(H)$ (Exercise~\ref{ex:cramervar}). Montgomery and Soundararajan found that the Hardy--Littlewood conjecture predicts something smaller. Here is their computation, with its two hypotheses stated.
+
+\begin{quote}
+\textbf{Hypothesis HL$_2$.} For every $\varepsilon>0$, uniformly for integers $1\le h\le X^{1/2}$,
+\[
+\sum_{n\le X}\Lambda(n)\Lambda(n+h)=\mathfrak S(h)\,X+O_\varepsilon\bigl(X^{\frac12+\varepsilon}\bigr).
+\]
+\end{quote}
+
+Hypothesis HL$_2$ is a conjecture. No case of it is known: for $h=2$ it contains the twin prime conjecture. The second hypothesis is the Riemann hypothesis, in the form $\psi(Y)=Y+O_\varepsilon(Y^{1/2+\varepsilon})$ that Volume~6 proves equivalent to it (von Koch's theorem, Theorem~7.10).
+
+\begin{theorem}[Montgomery and Soundararajan, 2004]\label{thm:pairsecond}
+Assume the Riemann hypothesis and Hypothesis HL$_2$. Let $\varepsilon>0$, let $X$ and $H$ be integers with $2\le H\le X^{1/2}$, and put
+\[
+V(X,H)=\frac1X\sum_{n\le X}\bigl(\psi(n+H)-\psi(n)-H\bigr)^2.
+\]
+Then
+\[
+V(X,H)=H\log\frac XH-\bigl(\gamma+\log2\pi\bigr)H+O_\varepsilon\Bigl(H^{\frac12+\varepsilon}+\frac{H^2}{X^{1/2-\varepsilon}}+\frac{H^3\log^2X}X\Bigr).
+\]
+\end{theorem}
+
+For $H\le X^{1/2-\varepsilon}$ all three error terms are $o(H)$, so the constant $\gamma+\log2\pi=2.4151\ldots$ is part of the statement and not decoration.
+
+\begin{proof}
+Write $\theta(n)=\psi(n+H)-\psi(n)=\sum_{j=1}^H\Lambda(n+j)$. Then
+\[
+\sum_{n\le X}\bigl(\theta(n)-H\bigr)^2=\sum_n\theta(n)^2-2H\sum_n\theta(n)+H^2X,
+\]
+and $\sum_n\theta(n)^2=\sum_{j,k=1}^H\sum_n\Lambda(n+j)\Lambda(n+k)$. We evaluate three pieces: the linear sum, the diagonal $j=k$, and the pairs $j\ne k$. All the $O$-constants below may depend on $\varepsilon$.
+
+\emph{The linear sum.} For each $j$, $\sum_{n\le X}\Lambda(n+j)=\psi(X+j)-\psi(j)$. The Riemann hypothesis gives $\psi(X)=X+O(X^{1/2+\varepsilon})$, and $\psi(X+j)-\psi(X)$ and $\psi(j)$ are both at most $j\log(2X)$. Summing over $j\le H$,
+\[
+\sum_n\theta(n)=HX+O\bigl(HX^{\frac12+\varepsilon}+H^2\log X\bigr).
+\]
+
+\emph{The diagonal.} First, $\sum_{m\le Y}\Lambda(m)^2=Y\log Y-Y+O(Y^{1/2+\varepsilon})$. Indeed, Abel summation (Volume~6, Lemma~1.1) and the Riemann hypothesis give
+\[
+\sum_{m\le Y}\Lambda(m)\log m=\psi(Y)\log Y-\int_1^Y\frac{\psi(t)}t\,\dd t=Y\log Y-Y+O\bigl(Y^{\frac12+\varepsilon}\log Y\bigr),
+\]
+and $\Lambda(m)^2$ differs from $\Lambda(m)\log m$ only at prime powers $p^a$ with $a\ge2$. There the difference is $(a-1)\log^2p\le\log^2Y$, and there are $O(Y^{1/2}\log Y)$ such $p^a\le Y$. Now $\sum_{n\le X}\Lambda(n+j)^2$ is the sum over $j<m\le X+j$, which differs from the sum over $m\le X$ by at most $2j\log^2(2X)$. So each diagonal term is $X\log X-X+O(X^{1/2+\varepsilon}+H\log^2X)$, and the $H$ of them give
+\[
+HX\log X-HX+O\bigl(HX^{\frac12+\varepsilon}+H^2\log^2X\bigr).
+\]
+
+\emph{The pairs.} For $j\ne k$ put $h=|j-k|$, so $1\le h\le H-1\le X^{1/2}$. Substituting $m=n+\min(j,k)$,
+\[
+\sum_{n\le X}\Lambda(n+j)\Lambda(n+k)=\sum_{m\le X}\Lambda(m)\Lambda(m+h)+O\bigl(H\log^2(3X)\bigr),
+\]
+because the two ranges of $m$ differ by at most $2H$ terms, each at most $\log^2(3X)$. Hypothesis HL$_2$ turns the main term into $\mathfrak S(h)X+O(X^{1/2+\varepsilon})$. Each $h$ arises from $2(H-h)$ ordered pairs $(j,k)$, so the pairs contribute
+\[
+2X\sum_{h=1}^{H-1}(H-h)\mathfrak S(h)+O\bigl(H^2X^{\frac12+\varepsilon}+H^3\log^2X\bigr).
+\]
+
+\emph{Assemble.} Dividing by $X$,
+\[
+V(X,H)=H\log X-H+2\sum_{h=1}^{H-1}(H-h)\mathfrak S(h)-2H^2+H^2+E,
+\]
+where $E$ collects the errors and is $O(H^2X^{-1/2+\varepsilon}+H^3X^{-1}\log^2X)$. The term $h=H$ has weight $0$, so Theorem~\ref{thm:pairexpansion} evaluates the sum:
+\[
+2\sum_{h=1}^{H-1}(H-h)\mathfrak S(h)=H^2-H\log H+(1-\gamma-\log2\pi)H+O\bigl(H^{\frac12+\varepsilon}\bigr).
+\]
+The $H^2$ terms cancel, and what is left is $H\log X-H\log H-H+(1-\gamma-\log2\pi)H=H\log\frac XH-(\gamma+\log2\pi)H$.
+\end{proof}
+
+Compare the two predictions. Cram\'er's model says $H\log X$. The Hardy--Littlewood conjecture says $H\log(X/H)$. At $H=X^{1/3}$ the conjectured variance is two thirds of the model's. The model is wrong at long range because it forgets that a prime $p>2$ forbids $p+h$ for every odd $h$: the deficit $-\frac12H\log H$ of Theorem~\ref{thm:pairexpansion}, doubled, is exactly the $-H\log H$ here.
+
+\begin{figure}[ht]
+\centering\fig{short-variance}
+\caption{The variance $V(X,H)$ of $\psi(n+H)-\psi(n)$ for $X=10^8$, divided by $H$ (dots), for $H$ from $10$ to $10^4$. The dashed line is Cram\'er's prediction $\log X=18.4$. The solid line is the prediction of Theorem~\ref{thm:pairsecond}, $\log(X/H)-\gamma-\log2\pi$. The dots follow the solid line to within $0.4\%$ up to $H=3000$. Near $H=10^4=X^{1/2}$ the error term $H^2X^{-1/2}$ of the theorem is as large as $H$, and the agreement loosens to $1.6\%$.}
+\label{fig:shortvariance}
+\end{figure}
+
+\begin{examplex}[$X=10^8$]
+A direct computation over all $n\le10^8$ gives $V(X,100)=1142.8$, against the prediction $1140.0$ and Cram\'er's $1842.1$. For $H=1000$ it gives $9076.5$ against $9097.8$ and $18\,420.7$. Figure~\ref{fig:shortvariance} shows the whole range.
+\end{examplex}
+
+\begin{remark}[counting primes instead of weighting them]
+Volume~6 measured the number of primes $\pi(n+H)-\pi(n)$, not $\psi(n+H)-\psi(n)$. The same computation, run with the indicator of the primes in place of $\Lambda$, changes only the diagonal. A prime weighted by $\log X$ has mean square about $\log X$, while $\Lambda$ has mean square $\log X-1$, so one $H$ moves and the constant becomes $\gamma+\log2\pi-1=1.415$. The prediction for the variance of the count is then $\lambda\bigl(1-(\log H+1.415)/\log X\bigr)$, where $\lambda=H/\log X$ is the mean. With $H=21$ and $\log X=20.7$ this is $0.79\lambda$, which is what Volume~6 observed. We do not carry out the partial summation that turns one form into the other.
+\end{remark}
+
+\section{Gallagher's average for \texorpdfstring{$k$}{k}-tuples}\label{sec:gallagherk}
+
+For a Poisson law we need every moment, so every $k$. Theorem~\ref{thm:pairexpansion} was a precise statement for $k=2$. For general $k$ a weaker statement is enough: on average over $k$-tuples, $\mathfrak S$ is $1$. Lemma~\ref{lem:localavg} says this is true prime by prime. The work is to show that the infinitely many primes do not spoil it.
+
+\begin{theorem}[Gallagher, 1976]\label{thm:gallagherk}
+Fix $k\ge1$, and let $\mathcal H_k(H)$ be the set of $k$-tuples of distinct integers in $[1,H]$. Then, as $H\to\infty$,
+\[
+\sum_{\mathbf h\in\mathcal H_k(H)}\mathfrak S(\mathbf h)=H^k\bigl(1+o(1)\bigr).
+\]
+\end{theorem}
+
+The plan is to cut the product at a height $z$. The finite product $\mathfrak S_z(\mathbf h)=\prod_{p\le z}b_p(\mathbf h)$ is periodic in each $h_i$, so its average is $1$ by Lemma~\ref{lem:localavg}. The tail $\prod_{p>z}b_p$ is close to $1$ except when a large prime divides a difference $h_i-h_j$, and that is rare.
+
+\begin{proof}
+Write $\mathbb E$ for the average over $\mathcal H_k(H)$, which has $H(H-1)\cdots(H-k+1)=H^k(1+O(k^2/H))$ elements. We may take $H\ge2k$. Let $z\ge8k^2$, and put $M_z=\prod_{p\le z}(1-1/p)^{-k}$, so that $0\le\mathfrak S_z\le M_z$. By Mertens's theorem (Volume~6, Theorem~1.6), $M_z\le C_k(\log z)^k$.
+
+\emph{Step 1: the truncated series averages to $1$.} Let $P=\prod_{p\le z}p$. The value of $\mathfrak S_z(\mathbf h)$ depends only on $\mathbf h$ modulo $P$. By the Chinese remainder theorem, as $\mathbf h$ runs over $(\Z/P\Z)^k$, its reductions modulo the primes $p\le z$ run over $\prod_{p\le z}(\Z/p\Z)^k$, each combination once. So the average of $\mathfrak S_z$ over $(\Z/P\Z)^k$ is the product of the averages of the $b_p$, which is $1$ by Lemma~\ref{lem:localavg}. The box $[1,H]^k$ contains $\lfloor H/P\rfloor^k$ disjoint translates of a full period, and the points of the box outside them number at most $kPH^{k-1}$. The tuples with a repeated entry number at most $k^2H^{k-1}$. Hence
+\[
+\mathbb E\,\mathfrak S_z=1+O_{k,z}\Bigl(\frac1H\Bigr).
+\]
+
+\emph{Step 2: the tail is small on average.} Fix $\mathbf h\in\mathcal H_k(H)$ and put $f=\prod_{p>z}b_p(\mathbf h)$, so $\mathfrak S=\mathfrak S_zf$. For $|u|\le\frac12$ we have $|\log(1+u)|\le2|u|$. Since $p>z\ge8k^2$, the deviations from $1$ in Lemma~\ref{lem:bp} are at most $\frac12$, so $|\log b_p|\le2k^2/p^2$ when $p\nmid\Delta$ and $|\log b_p|\le8k/p$ when $p\mid\Delta$. With $\sum_{p>z}p^{-2}\le\sum_{n>z}\frac1{n(n-1)}\le\frac2z$,
+\[
+|\log f|\le L:=\frac{4k^2}z+8k\,\Omega_z,\qquad\Omega_z=\sum_{i<j}\omega_z\bigl(|h_i-h_j|\bigr),\quad\omega_z(n)=\sum_{\substack{p\mid n\\p>z}}\frac1p.
+\]
+So $|f-1|\le e^L-1\le Le^L$, and $|\mathfrak S-\mathfrak S_z|\le M_zLe^L$. By the Cauchy--Schwarz inequality,
+\[
+\mathbb E|\mathfrak S-\mathfrak S_z|\le M_z\bigl(\mathbb E L^2\bigr)^{1/2}\bigl(\mathbb E e^{2L}\bigr)^{1/2}.
+\]
+
+We need the law of one difference. For $i<j$ the pair $(h_i,h_j)$ is uniform over ordered pairs of distinct integers in $[1,H]$, so for $1\le n<H$,
+\[
+P\bigl(|h_i-h_j|=n\bigr)=\frac{2(H-n)}{H(H-1)}\le\frac2H.
+\]
+Put $K=\binom k2$, the number of pairs.
+
+\emph{The second moment of $L$.} By the Cauchy--Schwarz inequality, $\Omega_z^2\le K\sum_{i<j}\omega_z(|h_i-h_j|)^2$. For one pair,
+\[
+\mathbb E\,\omega_z(|h_i-h_j|)^2\le\frac2H\sum_{n<H}\sum_{\substack{p,q\mid n\\p,q>z}}\frac1{pq}\le2\sum_{p,q>z}\frac1{pq\operatorname{lcm}(p,q)}=2\sum_{p>z}\frac1{p^3}+2\sum_{\substack{p\ne q\\p,q>z}}\frac1{p^2q^2}\le\frac{12}{z^2}.
+\]
+Hence $\mathbb E\,\Omega_z^2\le12K^2/z^2$, and $\mathbb E L^2\le2(4k^2/z)^2+128k^2\,\mathbb E\,\Omega_z^2\le C'_k/z^2$.
+
+\emph{The exponential moment.} Since $z\ge8k^2$, $e^{2L}\le e\cdot e^{16k\Omega_z}$. For $p\ge2$, $\log(1+1/p)\ge1/(2p)$, so $e^{16k/p}\le(1+1/p)^{32k}$ and $e^{16k\,\omega_z(n)}\le W(n):=\prod_{p\mid n}(1+1/p)^{32k}$. Hölder's inequality with $K$ factors gives
+\[
+\mathbb E\,e^{16k\Omega_z}\le\mathbb E\prod_{i<j}W\bigl(|h_i-h_j|\bigr)\le\prod_{i<j}\Bigl(\mathbb E\,W\bigl(|h_i-h_j|\bigr)^K\Bigr)^{1/K}.
+\]
+Let $A=32kK$, so $W(n)^K=\prod_{p\mid n}(1+1/p)^A=\sum_{d\mid n}c(d)$, where $c$ is multiplicative, supported on squarefree $d$, with $c(p)=(1+1/p)^A-1\le A2^A/p$ by the mean value theorem. Then
+\[
+\mathbb E\,W\bigl(|h_i-h_j|\bigr)^K\le\frac2H\sum_{n<H}\sum_{d\mid n}c(d)\le2\sum_d\frac{c(d)}d\le2\prod_p\Bigl(1+\frac{A2^A}{p^2}\Bigr)=:C''_k,
+\]
+a constant that depends only on $k$. So $\mathbb E\,e^{2L}\le eC''_k$.
+
+Putting the pieces together, for $z\ge8k^2$ and all $H\ge2k$,
+\[
+\mathbb E|\mathfrak S-\mathfrak S_z|\le C_k(\log z)^k\cdot\frac{\sqrt{C'_k}}z\cdot\sqrt{eC''_k}=O_k\Bigl(\frac{(\log z)^k}z\Bigr).
+\]
+
+\emph{Step 3: conclusion.} By Steps 1 and 2, $|\mathbb E\,\mathfrak S-1|\le\mathbb E|\mathfrak S-\mathfrak S_z|+|\mathbb E\,\mathfrak S_z-1|$, so $\limsup_{H\to\infty}|\mathbb E\,\mathfrak S-1|=O_k((\log z)^k/z)$ for every $z\ge8k^2$. Let $z\to\infty$: $\mathbb E\,\mathfrak S\to1$. Multiply by $|\mathcal H_k(H)|=H^k(1+o(1))$.
+\end{proof}
+
+The proof uses only one fact about the primes beyond Mertens's theorem: that the local average is exactly $1$. Everything else is the observation that a large prime rarely divides a difference. That is why Cram\'er's model, so wrong about individual patterns, is right about all of them at once.
+
+\section{Gallagher's Poisson law}
+
+A random variable $N$ with values in $\{0,1,2,\dots\}$ is pinned down by its \emph{binomial moments} $S_j=\mathbb E\binom Nj$, when they do not grow too fast. The next lemma makes that precise in the form we need. It is Bonferroni's inequality, which Chapter~\ref{ch:oc-sieves} proves for events, written here for counts.
+
+\begin{lemma}[from binomial moments to probabilities]\label{lem:binmoments}
+Let $N$ be a bounded random variable with values in $\{0,1,2,\dots\}$, and $S_j=\mathbb E\binom Nj$. For all integers $m\ge0$ and $r\ge0$,
+\[
+\sum_{j=0}^{2r+1}(-1)^j\binom{m+j}mS_{m+j}\le P(N=m)\le\sum_{j=0}^{2r}(-1)^j\binom{m+j}mS_{m+j}.
+\]
+\end{lemma}
+\begin{proof}
+Fix a value $N=n$ and a cut-off $J$. Choosing $m+j$ objects out of $n$ and then $m$ of those is the same as choosing $m$ out of $n$ and then $j$ more out of the other $n-m$, so $\binom{m+j}m\binom n{m+j}=\binom nm\binom{n-m}j$. Hence
+\[
+\sum_{j=0}^J(-1)^j\binom{m+j}m\binom n{m+j}=\binom nm\sum_{j=0}^J(-1)^j\binom{n-m}j.
+\]
+If $n<m$ this is $0=\mathbf 1_{n=m}$. If $n=m$ it is $1=\mathbf 1_{n=m}$. If $n>m$, put $s=n-m\ge1$. By induction on $J$, using Pascal's rule, $\sum_{j=0}^J(-1)^j\binom sj=(-1)^J\binom{s-1}J$, which is $\ge0$ for even $J$ and $\le0$ for odd $J$, while $\mathbf 1_{n=m}=0$. So for every outcome the truncated sum lies above $\mathbf 1_{N=m}$ when $J$ is even and below it when $J$ is odd. Take expectations.
+\end{proof}
+
+The hypothesis for the Poisson law is the Hardy--Littlewood conjecture for all $k$, uniform over tuples of logarithmic size.
+
+\begin{quote}
+\textbf{Hypothesis HL$^*$.} For each fixed $k\ge1$ and $C>0$,
+\[
+\#\bigl\{X<n\le2X:\ n+h_1,\dots,n+h_k\text{ all prime}\bigr\}=\mathfrak S(\mathbf h)\frac X{(\log X)^k}+o\Bigl(\frac X{(\log X)^k}\Bigr),
+\]
+uniformly for distinct integers $h_1,\dots,h_k\in[1,C\log X]$, as $X\to\infty$.
+\end{quote}
+
+For $k=1$ this is the prime number theorem, since $\mathfrak S(h_1)=1$. For $k\ge2$ it is open.
+
+\begin{theorem}[Gallagher, 1976]\label{thm:gallagherpoisson}
+Assume Hypothesis HL$^*$. Fix $\lambda>0$, and let $H=H(X)$ be integers with $H/\log X\to\lambda$. Let $n$ be uniform among the integers of $]X,2X]$, and let $N=\pi(n+H)-\pi(n)$ be the number of primes in $]n,n+H]$. Then for every integer $m\ge0$,
+\[
+P(N=m)\longrightarrow e^{-\lambda}\frac{\lambda^m}{m!}\qquad(X\to\infty).
+\]
+\end{theorem}
+\begin{proof}
+\emph{The binomial moments.} $\binom Nk$ counts the sets $\{h_1<\dots<h_k\}\subseteq[1,H]$ with all $n+h_i$ prime. Exchange the average over $n$ with the sum over sets, and then pass from sets to ordered tuples:
+\[
+\mathbb E\binom Nk=\frac1X\sum_{h_1<\dots<h_k}\#\{X<n\le2X:\text{all }n+h_i\text{ prime}\}=\frac1{k!}\sum_{\mathbf h\in\mathcal H_k(H)}\Bigl(\frac{\mathfrak S(\mathbf h)}{(\log X)^k}+o\Bigl(\frac1{(\log X)^k}\Bigr)\Bigr).
+\]
+We used HL$^*$ with $C=2\lambda$, valid once $H\le2\lambda\log X$. The $o$-terms number at most $H^k$, and $H^k/(\log X)^k\to\lambda^k$, so together they are $o(1)$. Theorem~\ref{thm:gallagherk} evaluates the main term. Hence
+\[
+\mathbb E\binom Nk=\frac1{k!}\frac{H^k(1+o(1))}{(\log X)^k}+o(1)\longrightarrow\frac{\lambda^k}{k!}.
+\]
+These are the binomial moments of the Poisson law of mean $\lambda$.
+
+\emph{From moments to probabilities.} $N\le H$ is bounded, so Lemma~\ref{lem:binmoments} applies. Letting $X\to\infty$ with $r$ fixed,
+\[
+\limsup P(N=m)\le\sum_{j=0}^{2r}(-1)^j\binom{m+j}m\frac{\lambda^{m+j}}{(m+j)!}=\frac{\lambda^m}{m!}\sum_{j=0}^{2r}\frac{(-\lambda)^j}{j!},
+\]
+and $\liminf P(N=m)$ is at least the same expression with $2r+1$ in place of $2r$. As $r\to\infty$ both bounds tend to $\frac{\lambda^m}{m!}e^{-\lambda}$.
+\end{proof}
+
+Check the mean. With $k=1$ the computation says $\mathbb E N\to\lambda$, and that part is the prime number theorem, with no hypothesis at all. Everything past the mean is conditional.
+
+\section{What stays open}
+
+Three walls stand around this chapter, and each has a name.
+
+\emph{Maier's theorem.} The Poisson law is about a random starting point. It cannot be about every starting point. Chapter~\ref{ch:oc-models} proved Maier's theorem: for $H=(\log X)^\lambda$ with $\lambda>1$ fixed, the ratio $(\pi(x+H)-\pi(x))/(H/\log x)$ has limsup above $1$ and liminf below $1$. Maier's intervals start near multiples of a primorial, a thin set of starting points, so they do not contradict Theorem~\ref{thm:gallagherpoisson}. They do say that no argument about all intervals of this length can exist.
+
+\emph{Short intervals, unconditionally.} Volume~14 proves that every interval $]x,x+x^\theta]$ with $\theta>\frac34$ holds about $x^\theta/\log x$ primes (Corollary~1.9). Under the Riemann hypothesis Selberg proved in 1943 that almost every interval of length $h(x)$ contains a prime once $h(x)/(\log x)^2\to\infty$. Neither result reaches intervals of length $\lambda\log x$.
+
+\emph{Beyond the second moment, and beyond $X^{1/2}$.} Montgomery and Soundararajan conjectured that $\psi(n+H)-\psi(n)-H$, divided by $\sqrt{H\log(X/H)}$, is asymptotically Gaussian for $X^\delta\le H\le X^{1-\delta}$. They showed that this would follow from a strong uniform form of HL$^*$, which is not known. Theorem~\ref{thm:pairsecond} stops at $H=X^{1/2}$. Past that point the variance is tied to the zeros of $\zeta$: Goldston and Montgomery proved that, under the Riemann hypothesis, the asymptotic $V(X,H)\sim H\log(X/H)$ for $X^\varepsilon\le H\le X^{1-\varepsilon}$ is equivalent to a strong form of Montgomery's pair-correlation conjecture. That conjecture is the subject of Chapter~\ref{ch:oc-gue}.
+
+So the primes in short intervals carry one theorem with no hypothesis (the mean), one proved computation that becomes a theorem the day HL$_2$ does (the variance), and one law that waits for all of HL$^*$ (Poisson). The binomial moments did the work in the last proof, and Lemma~\ref{lem:binmoments} was inclusion--exclusion written as an expectation. The next chapter takes that sentence seriously: a sieve is an expectation, and the parity barrier is what an expectation cannot see.
+
+\section{Exercises}
+
+\begin{exercise}[$\star$]\label{ex:triples}
+(a) Show that $\mathfrak S(0,2,4)=0$. (b) Show that
+\[
+\mathfrak S(0,2,6)=\frac92\prod_{p>3}\frac{p^2(p-3)}{(p-1)^3},
+\]
+and that this product is positive.
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:cramervar}
+In Cram\'er's model, let $\xi_m$ be independent with $P(\xi_m=1)=1/\log m$ and $P(\xi_m=0)=1-1/\log m$, for $m\ge3$. For $X\ge3$, $X<n\le2X$ and $H\le X$, show that
+\[
+\mathbb E\Bigl(\sum_{j=1}^H\bigl(\xi_{n+j}\log(n+j)-1\bigr)\Bigr)^2=H\log X+O(H).
+\]
+\end{exercise}
+
+\begin{exercise}[$\star$]\label{ex:volume6check}
+Take $X=10^9$ and $H=21$, as in Volume~6. (a) Compute the ratio of the main terms of Theorem~\ref{thm:pairsecond} to Cram\'er's prediction $H\log X$. (b) Do the same with the constant $1.415$ of the remark on prime counts, and compare with the variance $0.79$ that Volume~6 measured for a mean of $1.01$. (The theorem needs $H\ge2$ and controls its error only when $H$ is a power of $X$; here we compare main terms only.)
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:paircheck}
+Use Theorem~\ref{thm:pairexpansion} for $H$ and $H+1$ to show that $\sum_{h\le H}\mathfrak S(h)=H+O_\varepsilon(H^{1/2+\varepsilon})$. Explain why this differencing cannot recover the term $-\frac12\log H$ that Volume~6 observed.
+\end{exercise}
+
+\begin{exercise}[$\star\star$]\label{ex:poissonzero}
+Under the hypotheses of Theorem~\ref{thm:gallagherpoisson}, use Lemma~\ref{lem:binmoments} with $m=0$ and $r=1$ to show, without the rest of the proof, that the proportion of $n$ with no prime in $]n,n+H]$ has $\limsup$ at most $1-\lambda+\frac{\lambda^2}2$ and $\liminf$ at least $1-\lambda+\frac{\lambda^2}2-\frac{\lambda^3}6$. What do these bounds give for $\lambda=1$, and what does Theorem~\ref{thm:gallagherpoisson} give?
+\end{exercise}
+
+\section{Hints}
+
+\begin{hint}{ex:triples}
+Look at the residues modulo $2$ and $3$ first. For $p>3$, check that $0,2,6$ are distinct modulo $p$.
+\end{hint}
+\begin{hint}{ex:cramervar}
+The terms are independent and have mean $0$.
+\end{hint}
+\begin{hint}{ex:volume6check}
+$\log21=3.045$ and $\log10^9=20.72$.
+\end{hint}
+\begin{hint}{ex:paircheck}
+$F(H+1)-F(H)=\sum_{h\le H}\mathfrak S(h)$ when $F(H)=\sum_{h\le H}(H-h)\mathfrak S(h)$.
+\end{hint}
+\begin{hint}{ex:poissonzero}
+With $m=0$ the lemma reads $1-S_1+S_2-S_3\le P(N=0)\le1-S_1+S_2$.
+\end{hint}
+
+\section{Solutions}
+
+\begin{solution}{ex:triples}
+\idea Only the primes $p\le k$ can kill a $k$-tuple, so look at $2$ and $3$.
+\writeup (a) Modulo $3$ the residues of $0,2,4$ are $0,2,1$, so $\nu_3=3$ and $b_3=0$. (b) Modulo $2$ all of $0,2,6$ are $0$, so $\nu_2=1$ and $b_2=\frac{1/2}{1/8}=4$. Modulo $3$ the residues are $0,2,0$, so $\nu_3=2$ and $b_3=\frac{1/3}{8/27}=\frac98$. For $p>3$ the differences $2,4,6$ are not divisible by $p$, so $\nu_p=3$ and $b_p=\frac{1-3/p}{(1-1/p)^3}=\frac{p^2(p-3)}{(p-1)^3}$. The product of the first two factors is $4\cdot\frac98=\frac92$. Each remaining factor is positive, and for $p\ge7$ it is at least $1-9/p^2$ by Lemma~\ref{lem:bp}(a), while $p=5$ gives $\frac{50}{64}>0$. So the infinite product converges to a positive number.
+\end{solution}
+
+\begin{solution}{ex:cramervar}
+\idea A sum of independent centred terms has variance equal to the sum of the variances.
+\writeup Put $Y_m=\xi_m\log m-1$. Then $\mathbb EY_m=\frac{\log m}{\log m}-1=0$ and $\mathbb EY_m^2=\log^2m\cdot\frac1{\log m}-2+1=\log m-1$. The $Y_{n+j}$ are independent, so the expectation is $\sum_{j=1}^H(\log(n+j)-1)$. For $X<n\le2X$ and $j\le H\le X$, $\log(n+j)=\log X+O(1)$, and the sum is $H\log X+O(H)$.
+\end{solution}
+
+\begin{solution}{ex:volume6check}
+\idea Divide both predictions by $H\log X$.
+\writeup (a) The ratio is $1-\frac{\log H+\gamma+\log2\pi}{\log X}=1-\frac{3.045+2.415}{20.72}=0.736$. (b) With $1.415$ it is $1-\frac{3.045+1.415}{20.72}=0.785$. For the count, Cram\'er's model gives a variance equal to the mean $1.01$, and $0.785\times1.01=0.79$, the measured value.
+\end{solution}
+
+\begin{solution}{ex:paircheck}
+\idea Differencing a smooth main term is harmless, but differencing an error term of size $H^{1/2+\varepsilon}$ leaves an error of the same size.
+\writeup Let $F(H)=\sum_{h\le H}(H-h)\mathfrak S(h)$. Then $F(H+1)-F(H)=\sum_{h\le H}\mathfrak S(h)$, because each $h\le H$ gains weight $1$ and $h=H+1$ enters with weight $0$. By the theorem, $F(H+1)-F(H)$ equals the difference of the main terms plus $O_\varepsilon(H^{1/2+\varepsilon})$. The main terms differ by $\frac12(2H+1)-\frac12\bigl((H+1)\log(H+1)-H\log H\bigr)+\frac12(1-\gamma-\log2\pi)=H+O(\log H)$. So $\sum_{h\le H}\mathfrak S(h)=H+O_\varepsilon(H^{1/2+\varepsilon})$. The term $-\frac12\log H$ is much smaller than the error, so it is lost. The theorem sees it only in integrated form, through the weights $H-h$.
+\end{solution}
+
+\begin{solution}{ex:poissonzero}
+\idea The truncations of $e^{-\lambda}=1-\lambda+\frac{\lambda^2}2-\cdots$ alternate around it.
+\writeup In the proof of Theorem~\ref{thm:gallagherpoisson}, $S_k\to\lambda^k/k!$. Lemma~\ref{lem:binmoments} with $m=0$ gives $1-S_1+S_2-S_3\le P(N=0)\le1-S_1+S_2$. Let $X\to\infty$: $\limsup P(N=0)\le1-\lambda+\frac{\lambda^2}2$ and $\liminf P(N=0)\ge1-\lambda+\frac{\lambda^2}2-\frac{\lambda^3}6$. For $\lambda=1$ these are $0.5$ and $0.333$. The theorem gives the limit $e^{-1}=0.368$, between the two.
+\end{solution}
+
+\section*{Sources and further reading}
+
+\begin{itemize}
+\item \emph{The conjecture.} G.~H.~Hardy and J.~E.~Littlewood, ``Some problems of `Partitio Numerorum'; III: On the expression of a number as a sum of primes'', \emph{Acta Math.}\ 44 (1923), 1--70.
+\item \emph{Gallagher.} P.~X.~Gallagher, ``On the distribution of primes in short intervals'', \emph{Mathematika} 23 (1976), 4--9. Theorems~\ref{thm:gallagherk} and~\ref{thm:gallagherpoisson}. Our proof of the first uses the local averages of Lemma~\ref{lem:localavg} in place of his exponential sums.
+\item \emph{The variance.} H.~L.~Montgomery and K.~Soundararajan, ``Primes in short intervals'', \emph{Comm.\ Math.\ Phys.}\ 252 (2004), 589--617. The expansion of Theorem~\ref{thm:pairexpansion}, the variance of Theorem~\ref{thm:pairsecond}, and the conjectured Gaussian law.
+\item \emph{Zeros and variance.} D.~A.~Goldston and H.~L.~Montgomery, ``Pair correlation of zeros and primes in short intervals'', in \emph{Analytic Number Theory and Diophantine Problems (Stillwater, 1984)}, Progr.\ Math.\ 70, Birkhäuser, 1987, 183--203.
+\item \emph{Almost all intervals.} A.~Selberg, ``On the normal density of primes in small intervals, and the difference between consecutive primes'', \emph{Arch.\ Math.\ Naturvid.}\ 47 (1943), 87--105.
+\end{itemize}
