@@ -203,6 +203,33 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 
 **Current totals:** 8/72 named results, 10/144 exercises VERIFIED_TWICE; **64 named results, 134 exercises, all unnamed arguments and full publishing/visual gates remain**. Chapter 4 remains IN_PROGRESS, not signed off. Next address `pb:sumsquares`: its statement borrows the total-variation definition from Volume 4 and its solution needs a Chapter 6 Gauss sum; define total variation here and move or re-prove the Gauss-sum prerequisite. Continue Volume 1 crosswalk and remaining exercises/proofs.
 
+## DEP-007 — three advanced problems moved to Chapter 6; sums of squares proved without Gauss sums (3 November 2026)
+
+**Commits:** aa5675e3964df995deaaff532fd7df4ee41c1982 removed the complete exercise/hint/solution triplets for pb:eisensine, pb:euler, and pb:sumsquares from Chapter 4; c5375b2e487a289a6bfeb4684c2bf222db983c61 added them to Chapter 6 after the necessary theory. Stable labels are unchanged, and hint and solution order still matches exercise order. Chapter 4 count **13 to 10**, Chapter 6 count **17 to 20**; total **144**. The former Eisenstein and Euler--Jacobi solutions retain the same mathematics (with obsolete forward-reference wording removed from questions); their *proofs have not yet been independently verified twice*. Their earlier-tool checks now pass because the Chapter 5 primitive-root theorem, and the Chapter 6 Jacobi symbol and reciprocity theorem, precede them. The Chapter 6 introduction now presents all three as natural end-of-chapter connections.
+
+**Problem pb:sumsquares, Pass A — new elementary full solution.** Previously this exercise cited a later printed Gauss-sum exercise and Volume 4's definition of total variation. The new question explicitly defines the finite-space distance as one-half the sum of absolute differences from uniform; the solution imports no later result. Let $\chi(c)=(c/p)$ and $\epsilon=\chi(-1)$. Count the pairs satisfying $y^2=x^2-c$ by the invertible substitution $(u,v)=(x-y,x+y)$, giving $uv=c$. There are $p-1$ pairs when $c\ne0$ and $2p-1$ when $c=0$. Independently, there are $\sum_x(1+\chi(x^2-c))$ pairs. Hence
+\[
+N_2(c)=p+\epsilon(p\mathbf1_{\{c=0\}}-1).
+\]
+Convolution of the number of representations by $n$ squares with this two-square count gives
+\[
+N_{n+2}(c)=(p-\epsilon)p^n+\epsilon pN_n(c).
+\]
+After subtracting the main term, $D_n(c)=N_n(c)-p^{n-1}$ obeys $D_{n+2}(c)=\epsilon pD_n(c)$. With base cases $D_1(c)=\chi(c)$ and $D_2(c)=\epsilon(p\mathbf1_{\{c=0\}}-1)$, it follows that
+\[
+D_{2m+1}(c)=\epsilon^mp^m\chi(c),\qquad
+D_{2m}(c)=\epsilon^mp^{m-1}(p\mathbf1_{\{c=0\}}-1).
+\]
+The required formulas for $c\ne0$, the exceptional counts $N_n(0)$, and total variation for each parity follow immediately. Every division by 2 is justified because $p$ is odd; $n=1,2$ are explicit bases, and $\epsilon=\pm1$ is handled.
+
+**Pass B — independent Fourier/Gauss-sum proof.** Starting from the *previous* Chapter 4 solution, independently reconstructed the calculation rather than reusing the recurrence: for $G=\sum_u\chi(u)e(u)$, Chapter 6 has already established $G^2=\epsilon p$, and $\sum_xe(tx^2)=\chi(t)G$ for nonzero $t$. Root-of-unity orthogonality yields $N_n(c)=p^{n-1}+(G^n/p)\sum_{t\ne0}\chi(t)^ne(-tc)$. For even $n=2m$ the last sum is $p-1$ for $c=0$ and $-1$ for $c\ne0$, matching $D_{2m}$. For odd $n=2m+1$, the sum is $0$ at zero and $\chi(-c)G$ elsewhere. Multiplying $\chi(-c)=\epsilon\chi(c)$ by $G^{2m+2}/p=\epsilon^{m+1}p^m$ gives $\epsilon^mp^m\chi(c)$, explicitly rechecking the sign. This proof uses a different mathematical method from the new written solution. No stronger Gauss-sum sign evaluation was assumed.
+
+**Finite adversarial evidence (not a general proof):** for each of 14 odd primes 3 to 47, convolutional counting for $n=1,\ldots,8$ checked all **2,608 (p,n,c)** exact counts and rational total-variation values. Independent brute-force tuple enumeration for primes 3,5,7 and $n\le4$, plus separate two-square pair enumeration for 13 primes through 43, also agreed. The persistent test tools/test_volume2_sumsquares_recurrence.py checks arithmetic, independent direct counts, and real source position. **pb:sumsquares status VERIFIED_TWICE (internal only)**. External mathematical peer review and visual-page proofreading remain outstanding.
+
+**Next dependency blockers:** Chapter 6 pb:phimodp explicitly imports Volume 3 finite-field extensions to prove a cyclotomic factor-degree statement; replace with a locally taught quotient-field/Frobenius-orbit proof or openly redesign the claim. Chapter 6 pb:waring explicitly borrows Jacobi-sum bounds from the later Chapter 11 pb:fermatcubic; relocate its complete exercise/hint/solution after prerequisites or prove the bound locally. Neither has yet received two mathematical passes.
+
+**CI scope:** at head d2398e6 the manuscript build and site steps completed successfully, but that workflow was cancelled on later commits before terminal success. New exact-head CI is required; no latest-head green build is claimed. The register and structural test now expect 15/11/21/10/16/20/8/8/8/8/19 exercise counts. **Totals: 8/72 named results, 11/144 exercise solutions VERIFIED_TWICE; 64 named results and 133 exercises plus unnamed arguments, all-page PDF/EPUB and KDP gates still open.** No full chapter is signed off.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -219,4 +246,4 @@ Previous full build at head \`d6b20f0\` produced a **315-page interior**, with *
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Next exact task:** inspect exact-head CI for DEP-006; repair pb:sumsquares and subsequent advanced exercises' prerequisites; complete Volume 1 crosswalk, 64 remaining named proofs, 134 remaining exercises, unnamed arguments and visual/publisher gates. 
+**Next exact task:** inspect exact-head CI for DEP-007; give Chapter 6 pb:phimodp a self-contained finite-polynomial field construction and proof instead of importing Volume 3, then repair pb:waring's Chapter 11 Jacobi-sum dependency. Continue Volume 1 crosswalk, 64 named result proofs, 133 exercise solutions, unnamed arguments and publisher/visual gates. 
