@@ -47,7 +47,7 @@ All eleven chapter sources were inspected in printed order. A separate source sc
 | 5 | ch:characters | Character-count handoff after cyclicity is proved |
 | 6 | none | Reciprocity's actual proofs cite earlier tools |
 | 7 | ch:gaussian | Later representation-count formula and UFD context explicitly stated not to be used here |
-| 8 | ch:gaussian and ex:y2x3m2 | Eisenstein/cubic discussion and a labelled advanced later-chapter exercise; all after the optional-route marker |
+| 8 | ch:gaussian and ex:y2x3m2 | The basic Fermat discussion previews the later Eisenstein proof without using it; the later-chapter exercise appears only in the optional Mordell passage |
 | 9 | none | Continued fractions/Pell self-contained |
 | 10 | ch:characters | χ4 is defined here; the term Dirichlet character is a preview of the next chapter |
 | 11 | none | Final volume chapter |
