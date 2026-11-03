@@ -16,7 +16,7 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 1 | `thm:lame` | Lam\'e | Recurrence induction logged | Independent Fibonacci-minimality audit + finite sweep | VERIFIED_TWICE | Proof ledger, 28,680 division pairs |
 | 2 | `thm:euclid-primes` | Euclid | Prime-product contradiction logged | Independent factorial-plus-one construction | VERIFIED_TWICE | Empty-list edge corrected, commit 514541c6 |
 | 2 | `thm:euler` | Euler | Euler product and harmonic inequality logged | Power-series log-tail audit + numeric check | VERIFIED_TWICE | Proof ledger; numeric range 2–15000 |
-| 2 | `lem:binom` | lemma | — | — | UNREVIEWED | — |
+| 2 | `lem:binom` | central binomial lemma (three parts) | Pascal-row and Legendre valuation reconstruction, all low-n hypotheses | Independent induction for B_n, odd central recurrence and base-p carry proof; 7,197 exact (n,p) checks | VERIFIED_TWICE | DEP-019: n≥1, n≥5 restriction is essential (n=2,p=2 counterexample), p^a≤2n precisely stated; no later prerequisites |
 | 2 | `thm:cheb` | Chebyshev-type bounds | — | — | UNREVIEWED | — |
 | 2 | `thm:bertrand` | Bertrand's postulate; Chebyshev's proof, and Erd\H{o}s's elementary proof (1932) | — | — | UNREVIEWED | — |
 | 3 | `prop:ringZn` | proposition | — | — | UNREVIEWED | — |
