@@ -69,8 +69,10 @@ def run(root=ROOT):
           "Print PDF and publishing metadata disagree on page count")
     check(meta["kdp_pages"] == interior_pages + interior_pages % 2,
           "KDP counted pages must include an even-count padding page")
+    # The canonical print specification retains four decimal places (not three).
+    # A one-decimal-place mismatch in mils rejects a correct 315-page wrap.
     check(meta["spine_in"] ==
-          round(meta["kdp_pages"] * meta["spine_in_per_page"], 3),
+          round(meta["kdp_pages"] * meta["spine_in_per_page"], 4),
           "Spine is inconsistent with the KDP page count and selected stock")
     check(print_info["Page size"].startswith("504 x 720"),
           "Print interior must be 7 by 10 inches")
