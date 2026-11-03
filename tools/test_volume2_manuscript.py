@@ -17,8 +17,8 @@ CHAPTERS = (
     "ch05-primitive-roots",
     "ch06-quadratic-reciprocity",
     "ch07-sums-of-squares",
-    "ch08-continued-fractions",
     "ch09-diophantine",
+    "ch08-continued-fractions",
     "ch10-gaussian-eisenstein",
     "ch14-characters",
 )
@@ -53,7 +53,22 @@ class TestVolume2Manuscript(unittest.TestCase):
                     self.assertIn("\\idea", body, "Missing discovery note for " + label)
                     self.assertIn("\\writeup", body, "Missing formal proof for " + label)
                 total += len(exercises)
-        self.assertGreater(total, 100, "Unexpectedly small exercise corpus")
+        self.assertEqual(total, 144, "Preserve all 144 graded exercises and their hints/solutions")
+
+    def test_approved_four_part_reading_order(self):
+        source = (ROOT / "volume2-integers" / "main.tex").read_text(encoding="utf-8")
+        self.assertIn(r"\mainmatter", source)
+        body = source.split(r"\mainmatter", 1)[1].split(r"\backmatter", 1)[0]
+        parts = re.findall(r"\\part\{([^}]+)\}", body)
+        chapters = re.findall(r"\\input\{chapters/([^}]+)\}", body)
+        self.assertEqual(parts, [
+            "The Arithmetic of Integers",
+            "Patterns in Remainders",
+            "Equations in Integers",
+            "The Hidden Structure",
+        ])
+        self.assertEqual(chapters, list(CHAPTERS), "Source order must match the approved curriculum")
+        self.assertEqual(len(chapters), len(set(chapters)), "Chapter appears more than once")
 
     def test_chapter_labels_are_unique(self):
         for chapter in CHAPTERS:
