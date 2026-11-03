@@ -148,6 +148,45 @@ class TestVolume2ArithmeticSanity(unittest.TestCase):
         self.assertIn(r"M=|c|p_1\cdots p_r>0", solution)
         self.assertNotIn("If $c=0$, every prime", solution)
 
+    def test_integer_square_locality_uses_elementary_moduli(self):
+        """Step 4: a nonsquare integer has an elementary modular obstruction."""
+        source = (CHAPTERS / "ch06-quadratic-reciprocity.tex").read_text(
+            encoding="utf-8"
+        )
+        solution = source.split(
+            r"\begin{solution}{pb:squaresmodpk}", 1
+        )[1].split(r"\end{solution}", 1)[0]
+        self.assertIn(r"m=p^{r+1}", solution)
+        self.assertIn(r"m=4b^2", solution)
+        self.assertNotIn(
+            r"choose, by Chinese remainders and quadratic reciprocity, a prime",
+            solution,
+        )
+
+        for a in range(-35, 36):
+            if a >= 0 and math.isqrt(a) ** 2 == a:
+                continue
+            n = abs(a)
+            odd_exponent = None
+            for p in primes_up_to(n):
+                exponent = 0
+                while n % p == 0:
+                    n //= p
+                    exponent += 1
+                if exponent % 2 and odd_exponent is None:
+                    odd_exponent = (p, exponent)
+            if odd_exponent:
+                p, exponent = odd_exponent
+                modulus = p ** (exponent + 1)
+            else:
+                self.assertLess(a, 0)
+                modulus = 4 * abs(a)
+            with self.subTest(a=a, modulus=modulus):
+                self.assertFalse(any(
+                    (x * x - a) % modulus == 0
+                    for x in range(modulus)
+                ))
+
     def test_primitive_pythagorean_parameters(self):
         for m in range(2, 16):
             for n in range(1, m):
