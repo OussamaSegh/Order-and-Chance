@@ -78,7 +78,7 @@ File stems are deliberately **not renamed**. Their historical numbers do not def
 - Challenges involving later-volume ideas must identify those requirements at the exercise itself; the foundational sequence may not depend on them.
 - **Exit gate:** full exercise-key parity, no dangling references, and an audited record of any deliberately changed exercise.
 
-### Step 7 — Finish the reader-facing progression [started]
+### Step 7 — Finish the reader-facing progression [completed]
 
 - Reconcile each chapter opening and ending with its actual printed neighbours; update manuscript transitions that still assume the former sequence.
 - Separate Volume 13's ideal and p-adic notation from Volume 2's usable field guide; place it in a clearly labelled later-volume preview and remove unearned p-adic problem-solving instructions from the main toolbox.
@@ -347,3 +347,52 @@ transitions, Step 8 rendered PDF/EPUB/print/wrap QA or Step 9
 publisher-side KDP and physical proof. Keep PR #97 draft and unmerged.
 
 **Historical grading note (Step 6, 3 November 2026):** This earlier Step 4 audit covered all 41 problems that were graded one-star at that checkpoint. Step 6 regraded four mathematically more demanding problems to two stars. The current first-route regression checks all **37** one-star problems; no problem statement, solution or prerequisite was deleted.
+
+## Step 7 acceptance checkpoint — 3 November 2026
+
+**Reader-facing/source metadata gate completed.** The detailed matrix is
+docs/reviews/volume2-reader-continuity-metadata-audit-2026-11-03.md.
+
+- Added a mathematical **outgoing bridge** before exercises in each of
+  the **eleven printed chapters**, and an **incoming bridge** before the first
+  section in Chapters 2–11. The explicit printed route now follows:
+  divisibility → primes → congruences → arithmetic functions →
+  primitive roots → quadratic reciprocity → sums of squares →
+  Diophantine equations → continued fractions and Pell →
+  Gaussian/Eisenstein integers → characters and sieve.
+  Legacy source filenames are irrelevant to the reader's numbering.
+- The last character chapter now hands off directly to **Volume 3,
+  Symmetry: Groups, Rings and Fields** using the concrete unit group modulo
+  7, the ring $\Z[i]$ and the multiplicative character $\chi_4$.
+  Volume 6's prime distribution and Volume 13's ideals and $p$-adics
+  remain later destinations and explicitly do not become prerequisites.
+- Reordered the field-guide flow so ordinary valuations, inverses,
+  residues and proof checks form the main toolbox. The later Volume 13
+  notation ($v_p(0)$, general ideals, $N(I)$, $|x|_p$, $\Z_p$, $\Q_p$)
+  is confined to a labelled **optional later-volume preview**.
+  Ended the guide with a direct character-homomorphism check for Volume 3.
+- **Rewrote the obsolete KDP listing.** It no longer claims fourteen
+  chapters or a course in ideal theory/$p$-adic numbers. Its four-part,
+  eleven-chapter description (1,922 characters) correctly lists what
+  is proved here, the preserved **144** solved exercises, the Volume 1
+  prerequisite, and immediate Volume 3 sequel. Seven keyword phrases
+  fit KDP's 50-character limit.
+- The back-cover blurb is **153 words**, retains the approved mathematics,
+  and promises the correct exercises and sequel. The main manuscript
+  ISBN **9798167208650**, canonical four-part catalog, EPUB/print
+  metadata generators and publishing configuration remain unchanged.
+- Harmonised the Chebyshev/Erdős historical epigraph to avoid a disputed
+  exact year. The preface already accurately describes the approved
+  order, the first-reading prerequisites and optional advanced route.
+- Added tools/test_volume2_reader_route.py to lock all chapter
+  bridge and opening placements, the metadata contract, the isolation
+  of advanced notation, the back-cover text and the ISBN.
+  A separate source scan found the expected **11 chapters**, **144**
+  exercise blocks, all 10 incoming and 11 outgoing bridges.
+
+**Strict exit boundary:** This closes the *editorial source/metadata*
+work, not the production verification. Latest-head CI, fully rebuilt
+and manually inspected PDF/EPUB/online/print and new page-count matched
+cover, and the publisher's KDP/Kindle Previewer and physical proof are
+still required by Steps 8–9. PR #97 remains draft and unmerged.
+
