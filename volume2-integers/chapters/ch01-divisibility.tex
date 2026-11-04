@@ -1,8 +1,8 @@
 \chapter{Divisibility and the Euclidean Algorithm}\label{ch:divisibility}
 
 \begin{center}\itshape
-The oldest non-trivial algorithm still in daily use is Euclid's, from around 300 BC.\\
-Its worst case is governed by the Fibonacci numbers, as Lam\'e proved in 1844, in an early systematic analysis of an algorithm's complexity.
+Euclid described his gcd algorithm in the \emph{Elements}, around 300 BC.\\
+In 1844, Lam\'e bounded its number of divisions by following the Fibonacci numbers backwards.
 \end{center}
 
 
@@ -28,7 +28,7 @@ In the calculation above, why is the last nonzero remainder a \emph{greatest} co
 What can division do that subtraction cannot? If $a=bq+r$, the remainder $r$ is smaller than $b$ and keeps exactly the information we need about common divisors. We will prove that the remainder exists and is unique, including when $a$ is negative. Then we will collect all integer combinations $ax+by$ into one set. Its least positive element is the gcd, and writing it as a combination gives B\'ezout's identity. We can understand the whole argument using addition, subtraction and division of integers.
 
 \begin{reminder}[What is allowed in a remainder?]
-Here $\N=\{0,1,2,\ldots\}$ and $\N^*=\{1,2,\ldots\}$. We write $a\mid b$ if $b=ak$ for some integer $k$; thus every integer divides $0$, but $0$ divides only $0$. A prime is a positive integer greater than $1$ whose positive divisors are $1$ and itself. The number $1$ is a unit, not a prime: allowing it as a prime would give $6=2\cdot3=1\cdot2\cdot3=1^2\cdot2\cdot3$, and uniqueness would never get out of the starting gate.
+Here $\N=\{0,1,2,\ldots\}$ and $\N^*=\{1,2,\ldots\}$. We write $a\mid b$ if $b=ak$ for some integer $k$; thus every integer divides $0$, but $0$ divides only $0$. A prime is a positive integer greater than $1$ whose positive divisors are $1$ and itself. An integer is a \emph{unit} if it has an integer multiplicative inverse. The only units are $1$ and $-1$: if $ab=1$ with integers $a,b$, then $|a||b|=1$ forces $|a|=|b|=1$, and each of $\pm1$ is its own inverse. The number $1$ is a unit, not a prime: allowing it as a prime would give $6=2\cdot3=1\cdot2\cdot3=1^2\cdot2\cdot3$, and uniqueness would never get out of the starting gate.
 
 In Euclidean division the remainder is always non-negative, even for a negative dividend. Thus $-17=5(-4)+3$, rather than $5(-3)-2$. The quotient is $\lfloor a/b\rfloor$, the greatest integer at most $a/b$.
 \end{reminder}
@@ -118,7 +118,33 @@ Where did coprimality enter the proof? It gave the equation $au+bv=1$. Multiply 
 Every integer $n\ge2$ is a product of primes, uniquely up to the order of the factors.
 \end{theorem}
 \begin{proof}
-For existence, use strong induction on $n$. If $n$ is prime there is nothing to prove. Otherwise $n=ab$ with $2\le a,b<n$, so the induction hypothesis factors $a$ and $b$ into primes; multiplying the two lists factors $n$. The base case $n=2$ is prime. Uniqueness, by induction on $n$: if $p_1\cdots p_r=q_1\cdots q_s$, then $p_1$ divides the product of the $q_j$, so by Gauss' lemma (iterated) it divides some $q_j$, hence equals it. Cancel and apply the induction hypothesis.
+\emph{Existence.} Use strong induction on $n\ge2$.
+The integer $2$ is prime. For a larger $n$, there is nothing
+to do if $n$ is prime. Otherwise $n=ab$ for integers
+$2\le a,b<n$. Both factors are smaller than $n$, so the
+induction hypothesis writes each as a product of primes.
+Putting those two products together gives one for $n$.
+
+\emph{Uniqueness.} Again use strong induction on $n\ge2$.
+If $n$ itself is prime, its only prime factorisation is the
+single factor $n$: a product of two or more primes would
+make it composite. This includes the base case $n=2$.
+
+Now suppose $n$ is composite, and that uniqueness holds
+for every integer from $2$ to $n-1$. Take two prime
+factorisations:
+\[
+n=p_1p_2\cdots p_r=q_1q_2\cdots q_s.
+\]
+Since $p_1$ divides the product on the right, repeated use
+of Gauss' lemma shows that $p_1$ divides some $q_j$.
+Both numbers are prime, so $p_1=q_j$. Move that factor to
+the front of the second product and cancel it. The remaining
+products both equal $m=n/p_1$. Because $n$ was composite,
+$m\ge2$; and because $p_1\ge2$, we have $m<n$.
+The induction hypothesis therefore says that the remaining
+prime lists agree up to order. Adding back the same prime
+$p_1$ proves the claim for $n$.
 \end{proof}
 
 % t1-pass2 why
@@ -130,6 +156,12 @@ For a prime $p$ and $n\ne0$, the \emph{$p$-adic valuation} $v_p(n)$ is the expon
 \begin{gathered}\gcd(a,b)=\prod_pp^{\min(v_p(a),v_p(b))},\qq\operatorname{lcm}(a,b)=\prod_pp^{\max(v_p(a),v_p(b))},\\\gcd(a,b)\operatorname{lcm}(a,b)=|ab|\end{gathered}
 \]
 for $a,b\ne0$. Indeed, for positive $d,n$, uniqueness of factorisation gives $d\mid n$ iff $v_p(d)\le v_p(n)$ for every $p$ (if $n=dk$ then $v_p(n)=v_p(d)+v_p(k)$; conversely $k=\prod p^{v_p(n)-v_p(d)}$ works). Divisibility is unchanged by signs. So the positive common divisors of $a,b$ are the $d$ with $v_p(d)\le\min(v_p(a),v_p(b))$, and the greatest one, which every common divisor divides, is the stated product; likewise for common multiples. The last formula follows from $\min+\max=v_p(a)+v_p(b)$.
+
+We also use valuations of nonzero rational numbers. For integers $a,b\ne0$, define
+\[
+v_p(a/b)=v_p(a)-v_p(b).
+\]
+This does not depend on the fraction chosen: if $a/b=c/d$, then $ad=bc$, so additivity on integer products gives $v_p(a)+v_p(d)=v_p(b)+v_p(c)$. A rational number is an integer exactly when every prime valuation is nonnegative. In a reduced fraction, any prime in the denominator would otherwise give a negative valuation. For example, $v_2(12/25)=2$ and $v_5(12/25)=-2$.
 
 The positive divisors of a fixed $n$ are partially ordered by divisibility. For any two of them the greatest lower bound is their gcd and the least upper bound is their lcm, both of which again divide $n$. Figure~\ref{fig:divisor-lattice} draws the case $n=12$. The picture is the reason the formulas above are not two separate inventions: gcd and lcm are the meet and the join of one and the same order.
 
@@ -161,10 +193,6 @@ Indeed, write $a=ga'$, $b=gb'$ with $\gcd(a',b')=1$, divide the divisibility by 
 % t1-pass2 examples 7efe951b
 \begin{examplex}[division with a negative dividend]
 Divide $-17$ by $5$: the remainder must lie in $\{0,1,2,3,4\}$, so $-17=5\cdot(-4)+3$, not $5\cdot(-3)-2$. The quotient is $\lfloor -17/5\rfloor=-4$. Uniqueness fails if negative remainders are allowed, which is why the convention is fixed before any algorithm.
-\end{examplex}
-
-\begin{examplex}[the integer combinations of $4$ and $6$]
-The combinations $4x+6y$ are exactly the multiples of $2$, since $2=6-4$ and every combination is even. Thus $4\Z+6\Z=2\Z$, and $\gcd(4,6)=2$. The same conclusion from valuations: $\min(v_2(4),v_2(6))=1$ and every odd prime has minimum $0$.
 \end{examplex}
 
 \section{The Euclidean algorithm}
@@ -219,16 +247,18 @@ Find a pair $a>b$ with $b<100$ that makes Euclid's algorithm perform as many div
 \label{fig:euclid}
 \end{figure}
 
+Recall $F_0=0$, $F_1=1$ and $F_{k+2}=F_{k+1}+F_k$, the Fibonacci recurrence from Volume~1.
+
 \begin{theorem}[Lam\'e]\label{thm:lame}
-If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}$ and $a\ge F_{n+2}$, where $(F_k)$ is the Fibonacci sequence.
+If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}$ and $a\ge F_{n+2}$.
 \end{theorem}
 \begin{proof}
 The divisions produce $r_0=a>r_1=b>\dots>r_{n-1}>r_n\ge1$ and $r_{n+1}=0$. We show $r_k\ge F_{n+2-k}$ by descending induction on $k$. For $k=n$: $r_n\ge1=F_2$. For $k=n-1$: $r_{n-1}>r_n\ge1$ so $r_{n-1}\ge2=F_3$. Then each $q_k\ge1$, so $r_{k-1}=q_kr_k+r_{k+1}\ge r_k+r_{k+1}\ge F_{n+2-k}+F_{n+1-k}=F_{n+3-k}$.
 \end{proof}
 
-So the worst inputs are consecutive Fibonacci numbers, and since $F_{k}\approx\varphi^k/\sqrt5$, the number of steps is $O(\log b)$ (Exercise~\ref{ex:lame5}).
+Consecutive Fibonacci numbers attain these lower bounds. With $\varphi=(1+\sqrt5)/2$, Volume~1's formula $F_k=(\varphi^k-(-1/\varphi)^k)/\sqrt5$ shows their exponential growth. Thus the division count is $O(\log b)$: it is bounded by a constant times $\log b$ for all sufficiently large $b$. Exercise~\ref{ex:lame5} obtains an explicit decimal-digit bound using just the recurrence.
 
-\subsection*{How fast is ``fast''?}
+\subsection*{How fast is “fast”?}
 Why does Euclid's algorithm need so few divisions even for large inputs? Each new remainder is smaller than the previous divisor, but that alone gives only a crude estimate. The worst case occurs when the remainders shrink as slowly as possible, with quotients equal to $1$. Work backwards from the final remainders and you meet consecutive Fibonacci numbers. Lam\'e's argument turns that pattern into a bound on the number of division steps. It does not count every operation a modern computer uses to perform each division.
 
 For consecutive Fibonacci inputs the quotients are $1$ until the last quotient $2$; this gives equality in the lower bounds for $a$ and $b$ (with the usual $F_1=F_2=1$). Large quotients make remainders collapse quickly; a long chain of quotients $1$ keeps them alive. The algorithm's least cooperative customer is the golden ratio.
@@ -238,12 +268,18 @@ Why does replacing $(a,b)$ by $(b,a-qb)$ preserve \emph{all} integer combination
 \end{reminder}
 
 % t1-pass2 examples a7ecc398
-\begin{examplex}[a complete run for $1071$ and $462$]
-One has $1071=2\cdot 462+147$, $462=3\cdot 147+21$ and $147=7\cdot 21+0$. The gcd is $21$. Back-substitution gives $21=462-3\cdot 147=7\cdot 462-3\cdot 1071$. The check $7\cdot 462-3\cdot 1071=3234-3213=21$ catches a sign error.
+\begin{examplex}[a complete run for $899$ and $372$]
+One has $899=2\cdot372+155$, $372=2\cdot155+62$, $155=2\cdot62+31$, and $62=2\cdot31+0$. The gcd is $31$. Reading the equations backwards,
+\[
+31=155-2\cdot62
+=5\cdot155-2\cdot372
+=5\cdot899-12\cdot372.
+\]
+The check $4495-4464=31$ catches a sign error. The exercises will give you a new pair on which to try the method.
 \end{examplex}
 
 \begin{examplex}[all solutions, once one is known]
-From $1071\cdot(-3)+462\cdot 7=21$, the solutions of $1071x+462y=21$ are $x=-3+22t$ and $y=7-51t$, because $462/21=22$ and $1071/21=51$. The particular solution moves by the other coefficient. This is the line drawn for $3x+5y=1$ in Figure~\ref{fig:bezout-line}, with different numbers.
+From $899\cdot5+372\cdot(-12)=31$, the solutions of $899x+372y=31$ are $x=5+12t$ and $y=-12-29t$, because $372/31=12$ and $899/31=29$. The particular solution moves by the other coefficient. This is the line drawn for $3x+5y=1$ in Figure~\ref{fig:bezout-line}, with different numbers.
 \end{examplex}
 
 \begin{beauty}
@@ -344,7 +380,7 @@ v_p\binom{m+n}m=
 \left\lfloor\frac m{p^j}\right\rfloor-
 \left\lfloor\frac n{p^j}\right\rfloor\right).
 \]
-Explain why each summand is $0$ or $1$, and why it records whether adding $m$ and $n$ in base $p$ produces a carry across the position $p^j$. Check the conclusion on $\binom{10}4=210$ for $p=2$.
+Explain why each summand is $0$ or $1$, and why it records whether adding $m$ and $n$ in base $p$ produces a carry across the position $p^j$. Here ``base $p$'' means using digits $0,\ldots,p-1$ in the positions $1,p,p^2,\ldots$; repeated Euclidean division constructs those digits. Check the conclusion on $\binom{10}4=210$ for $p=2$.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{ex:t1-euclid1071}
@@ -352,14 +388,14 @@ Compute $\gcd(1071,462)$ by the Euclidean algorithm and find integers $u,v$ with
 \end{exercise}
 
 \begin{beauty}
-Every result of this chapter comes from one fact: the subgroups of $\Z$ are the $d\Z$. In Volume~3 this becomes ``$\Z$ is a principal ideal domain'', and the same argument works verbatim for polynomials over a field, Gaussian integers, and every Euclidean ring. B\'ezout's coefficients are how RSA computes private keys , and the coin problem with three or more coins, the \emph{Frobenius problem}, has no comparably simple two-coin formula; computing it when the number of coin types is part of the input is NP-hard.
+The equality $a\Z+b\Z=\gcd(a,b)\Z$ puts two tasks in one picture: determine the common divisor and construct it as a combination. The same proof will use degree for polynomials and norm for Gaussian integers in place of the size of an integer remainder. Chapter~\ref{ch:gaussian} carries out that change. B\'ezout's coefficients also compute the inverse in the toy RSA problem of Chapter~\ref{ch:congruences}. For three or more coin values, Exercise~\ref{ex:frob}'s single-parameter description no longer applies; finding the last gap needs a different argument.
 \end{beauty}
 
 \begin{exercise}[$\star\star$]\label{pb:valuation}
-\emph{How divisible is a random integer?} Let $p$ be prime and $n$ uniform in $\{1,\dots,N\}$.
+\emph{How divisible is a random integer?} Let $p$ be prime, $N\ge1$ an integer and $n$ uniform in $\{1,\dots,N\}$.
 \begin{enumerate}[label=(\alph*)]
 \item Show that $P(v_p(n)=k)\to(1-\frac1p)p^{-k}$ for every $k\ge0$, and that $\mathbb E[v_p(n)]\to\frac1{p-1}$.
-\item Show that for distinct primes $p_1,\dots,p_r$ the valuations $v_{p_1}(n),\dots,v_{p_r}(n)$ are asymptotically independent.
+\item Show that for distinct primes $p_1,\dots,p_r$ the valuations $v_{p_1}(n),\dots,v_{p_r}(n)$ are asymptotically independent: for fixed nonnegative integers $k_1,\dots,k_r$, the limiting joint probability factors as the product of the limits in part (a).
 \item Show that $\mathbb E\bigl[2^{v_2(n)}\bigr]=\frac12\log_2N+O(1)$, while $P\bigl(2^{v_2(n)}\le2\bigr)\to\frac34$. Explain the
 paradox.
 \end{enumerate}
@@ -373,18 +409,6 @@ All probabilities in this problem are limits as $N\to\infty$.
 \item For any fixed prime $p$, show that the limiting probability of $p\mid b'$ is $\frac1{p+1}$.
 \item Deduce that the three parity patterns odd/odd, odd/even, even/odd of $\frac{a'}{b'}$ are equally likely.
 \item Show that the events $p\mid b'$, for distinct primes $p$, are asymptotically independent.
-\end{enumerate}
-\end{exercise}
-
-\begin{exercise}[Journey]\label{pb:fibcoprime}
-\emph{Advanced return problem.} The limit computations require
-Problem~\ref{pb:gcdmean} in Chapter~\ref{ch:orders} on the distribution
-and expected size of integer gcds. Return after that chapter;
-the Fibonacci identities themselves come from Volume~1.
-\emph{Coprime Fibonacci numbers.} Let $a,b$ be uniform in $\{1,\dots,N\}$ and $F_n$ the Fibonacci numbers.
-\begin{enumerate}[label=(\alph*)]
-\item Show that $P(\gcd(F_a,F_b)=1)\to\frac{15}{2\pi^2}=0.7599\ldots$
-\item Show that $\mathbb E[\log\gcd(F_a,F_b)]=\frac{6\log\varphi}{\pi^2}\log N+O(1)$, where $\varphi$ is the golden ratio.
 \end{enumerate}
 \end{exercise}
 
@@ -402,10 +426,12 @@ the origin, and each trunk is a disc of radius $r$. You stand at the origin.
 \centering
 \fig{ch06-visible}
 \caption{The lattice points of the disc of radius $11$: visible from the origin (filled) or hidden behind a nearer point (rings).
-A proportion close to $\frac6{\pi^2}\approx61\%$ are visible. The rust sight line, towards $(11,4)$,
+Exactly $224$ of the $376$ nonzero lattice points are visible (about $59.6\%$), since their coordinates are coprime. The rust sight line, towards $(11,4)$,
 passes between the trees: in Pólya's orchard (Problem~\ref{pb:orchard}) it escapes when the trunks are thin enough.}
 \label{fig:visible}
 \end{figure}
+
+Why does the picture distinguish coprime coordinates? If $g=\gcd(|a|,|b|)>1$, the point $(a/g,b/g)$ lies on the same ray, nearer the origin, and hides $(a,b)$. Conversely, if $g=1$ and $(ta,tb)$ were another integer point on the ray with $0<t<1$, B\'ezout would give integers $u,v$ with $ua+vb=1$. Then $t=u(ta)+v(tb)$ would be an integer, which is impossible. So a nonzero lattice point is visible from the origin precisely when its coordinates are coprime. The counts in the caption come from the finite test $a^2+b^2\le121$.
 
 \section{Hints}
 
@@ -454,10 +480,6 @@ The remainders are $147$ and then $21$. Substitute backwards from the last nonze
 
 \begin{hint}{pb:parity}
 (a) $p\mid b'$ exactly when $v_p(b)>v_p(a)$.
-\end{hint}
-
-\begin{hint}{pb:fibcoprime}
-$\gcd(F_a,F_b)=F_{\gcd(a,b)}$ (Volume~1, Exercise~1.7).
 \end{hint}
 
 \begin{hint}{pb:orchard}
@@ -518,7 +540,7 @@ We first narrowed the answer to two possibilities, then checked exactly when the
 \[
 v_p(n!)=\sum_{m=1}^nv_p(m).
 \]
-Each factor divisible by $p$ contributes at least one, each factor divisible by $p^2$ contributes one more, and so on. Counting in those layers gives
+Each factor divisible by $p$ contributes at least one, each factor divisible by $p^2$ contributes one more, and so on. To write the count compactly, let $\mathbf1_E$ equal $1$ if a condition $E$ is true, and $0$ otherwise. Counting in these layers gives
 \[
 \begin{aligned}
 v_p(n!)
@@ -545,7 +567,7 @@ v_5(1000!)=\left\lfloor\frac{1000}5\right\rfloor
 \[
 v_\ell(n)=2v_\ell(p)-2v_\ell(q),
 \]
-which is even. Thus every prime exponent in $n$ is even, and $n$ is a perfect square. The converse is immediate.
+which is even. Thus every prime exponent in $n$ is even, and $n$ is a perfect square. The converse is immediate. For a small check, $\sqrt{12}$ cannot be rational: in $12=2^2\cdot3$, the exponent of $3$ is odd.
 
 For the general claim, let $x=p/q$ be a rational root in lowest terms, with $q\ge1$, of a monic polynomial
 \[
@@ -556,7 +578,7 @@ Multiply $P(p/q)=0$ by $q^d$:
 p^d=-q\bigl(c_{d-1}p^{d-1}
 +c_{d-2}p^{d-2}q+\cdots+c_0q^{d-1}\bigr).
 \]
-Hence $q\mid p^d$. But $\gcd(p,q)=1$, so every prime factor of $q$ would contradict coprimality. Therefore $q=1$ and $x\in\Z$. Taking $P(X)=X^2-n$ gives another proof of the square-root statement.
+Hence $q\mid p^d$. But $\gcd(p,q)=1$, so every prime factor of $q$ would contradict coprimality. Therefore $q=1$ and $x\in\Z$. Taking $P(X)=X^2-n$ gives another proof of the square-root statement. The word \emph{monic} matters: $2X-1$ has the rational root $1/2$, but its leading coefficient is $2$, not $1$.
 \end{solution}
 
 \begin{solution}{ex:mersgcd}
@@ -575,7 +597,7 @@ The exponents have undergone exactly one step of the subtractive Euclidean algor
 \gcd(2^d-1,2^0-1)
 =\gcd(2^d-1,0)=2^d-1.
 \]
-Thus $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$. The algorithm on exponents has solved the gcd problem for exponential numbers.
+Thus $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$. The algorithm on exponents has solved the gcd problem for exponential numbers. For instance, $\gcd(2^6-1,2^4-1)=\gcd(63,15)=3=2^{\gcd(6,4)}-1$.
 \end{solution}
 
 \begin{solution}{ex:lame5}
@@ -615,11 +637,11 @@ by=m-ax\ge m-a(b-1)>-b.
 \]
 Therefore $y>-1$, and since $y$ is an integer it is nonnegative. Every larger integer is representable.
 
-When $a=1$ or $b=1$, every nonnegative integer is representable and the formula yields $-1$ for the largest nonrepresentable integer, interpreted in the usual convention. Otherwise the largest nonrepresentable nonnegative integer is exactly $ab-a-b$.
+If $a=1$ or $b=1$, every nonnegative integer is representable, and no negative integer is: the largest integer not representable is therefore $-1$, exactly as the formula says. If $a,b>1$, the number $ab-a-b$ is nonnegative and is the largest failure. With coins of values $3$ and $5$, the positive gaps are $1,2,4,7$; then $8=3+5$, $9=3+3+3$ and $10=5+5$, and adding $3$ covers every larger integer. The largest gap is indeed $15-3-5=7$.
 \end{solution}
 
 \begin{solution}{ex:supercat}
-\idea (a) Floors of sums depend only on fractional parts, so reduce to $x,y\in[0,1[$, where each floor is $0$ or $1$ and only two cases remain. (b) To prove a fraction is an integer, show every $p$-adic valuation is $\ge0$; Legendre's formula writes it as a sum of exactly the expression of (a).
+\idea (a) Floors of sums depend only on fractional parts, so reduce to $x,y\in[0,1)$, where each floor is $0$ or $1$ and only two cases remain. (b) To prove a fraction is an integer, show every $p$-adic valuation is $\ge0$; Legendre's formula writes it as a sum of exactly the expression of (a).
 \writeup (a) Write $x=a+\alpha$ and $y=b+\beta$, where $a,b\in\Z$ and $0\le\alpha,\beta<1$. The integer parts contribute $2a+2b$ to both sides, so the proposed inequality reduces to
 \[
 \lfloor2\alpha\rfloor+\lfloor2\beta\rfloor
@@ -637,7 +659,7 @@ e_k={}&\left\lfloor\frac{2m}{p^k}\right\rfloor
 &-\left\lfloor\frac{m+n}{p^k}\right\rfloor.
 \end{aligned}
 \]
-Part (a), with $x=m/p^k$ and $y=n/p^k$, says every $e_k\ge0$. Thus every prime occurs with nonnegative valuation. A positive rational number with that property is an integer. This is an example of a floor inequality turning into divisibility.
+Part (a), with $x=m/p^k$ and $y=n/p^k$, says every $e_k\ge0$. Thus every prime occurs with nonnegative valuation. A positive rational number with that property is an integer. This is an example of a floor inequality turning into divisibility. As a small check, when $m=0$ the expression is $\binom{2n}{n}$, and when $m=n=1$ it is $2$.
 \end{solution}
 
 \begin{solution}{ex:n2n}
@@ -682,9 +704,9 @@ v_p\binom{m+n}{m}
 \left\lfloor\frac m{p^j}\right\rfloor-
 \left\lfloor\frac n{p^j}\right\rfloor\right).
 \]
-To interpret one summand, write $m=Ap^j+r$, $n=Bp^j+s$ with $0\le r,s<p^j$. All large multiples cancel, leaving $\lfloor(r+s)/p^j\rfloor$. This is $1$ when the sum of the lower $j$ base-$p$ digits crosses the boundary at $p^j$, and $0$ otherwise. It includes any carry already made inside those lower digits. Each summand therefore records one carry, and their sum counts all carries.
+To understand carries without assuming a new theorem, repeatedly divide each integer by $p$. The remainders, all between $0$ and $p-1$, are its base-$p$ digits, from right to left. Now write $m=Ap^j+r$, $n=Bp^j+s$ with $0\le r,s<p^j$. The remainders $r,s$ are exactly the values of the lower $j$ digits. All large multiples cancel, leaving $\lfloor(r+s)/p^j\rfloor$. This is $1$ when the sum of the lower $j$ base-$p$ digits crosses the boundary at $p^j$, and $0$ otherwise. It includes any carry already made inside those lower digits. Each summand therefore records one carry, and their sum counts all carries.
 
-For a check in base $2$, $4=100_2$ and $6=110_2$ add to $1010_2$ with one carry into the $2^3$ position. Accordingly $\binom{10}4=210$ has $v_2(210)=1$.
+For a check in base $2$, $4=100_2$ and $6=110_2$ add to $1010_2$ with one carry into the $2^3$ position. Accordingly $\binom{10}4=210$ has $v_2(210)=1$. A second check shows why the incoming carry matters: in base $3$, $8=22_3$, so $22_3+22_3=121_3$, with carries into the $3^1$ and $3^2$ positions. Indeed $\binom{16}8=12870=9\cdot1430$, and $3$ does not divide $1430$.
 \end{solution}
 
 \begin{solution}{ex:t1-euclid1071}
@@ -726,7 +748,7 @@ For the mean, use the tail-sum identity for nonnegative integer-valued variables
 =\sum_{k\ge1}P(v_p(n)\ge k)
 =\frac1N\sum_{k\ge1}\left\lfloor\frac N{p^k}\right\rfloor.
 \]
-Each floor differs from $N/p^k$ by less than $1$, and only $O(\log_p N)$ terms are nonzero. Their total error after division by $N$ tends to zero. The limiting expectation is the geometric sum $\sum_{k\ge1}p^{-k}=1/(p-1)$.
+Each floor differs from $N/p^k$ by less than $1$, and only $O(\log_p N)$ terms are nonzero. Their total error after division by $N$ tends to zero. With $K=\lfloor\log_p N\rfloor$, the remaining geometric tail is $\sum_{k>K}p^{-k}=p^{-K-1}/(1-1/p)<p/[N(p-1)]$, which also tends to zero. The limiting expectation is therefore $\sum_{k\ge1}p^{-k}=1/(p-1)$.
 
 (b) Fix distinct primes $p_1,\ldots,p_r$ and nonnegative exponents $k_1,\ldots,k_r$. The simultaneous conditions $v_{p_i}(n)\ge k_i$ say that the single integer $m=\prod_i p_i^{k_i}$ divides $n$. Their joint probability therefore tends to
 \[
@@ -746,10 +768,15 @@ Only $0\le k\le\lfloor\log_2N\rfloor$ occur. Multiplying each count by $2^k$ giv
 \sum_{n\le N}2^{v_2(n)}
 =\frac N2\bigl(\lfloor\log_2N\rfloor+1\bigr)+O(N),
 \]
-since $\sum_{k\le\log_2N}2^k\le2N$. Dividing by $N$ shows that the mean grows like $\frac12\log_2N$. The apparent paradox is instructive: each rare valuation level contributes roughly $1/2$ to the mean, and the number of available levels grows with $N$.
+since $\sum_{k\le\log_2N}2^k\le2N$. Dividing by $N$ shows that the mean is $\frac12\log_2N+O(1)$: the symbol $O(1)$ means a term that stays bounded as $N$ grows. The apparent paradox is instructive: each rare valuation level contributes roughly $1/2$ to the mean, and the number of available levels grows with $N$. For a small check at $N=8$, six of the eight integers have $2^{v_2(n)}\le2$, yet the mean of $2^{v_2(n)}$ is $\frac{1+2+1+4+1+2+1+8}{8}=\frac52$. The unusual large values matter to the average, even though most integers have small valuations.
 
 \tools Chapter~1 (valuations and divisibility); Volume~1 (finite counting, inclusion--exclusion and expectations).
-\leads The Chinese remainder theorem of Chapter~\ref{ch:congruences} gives an alternative way to describe independence for a finite set of primes, but it is not needed in the argument above. Part (b) is the finite-level shadow of Haar measure on $\Z_p$, developed in Volume~13. The variable $2^{v_2(n)}$ measures the largest power of $2$ dividing $n$; its average helps explain the behaviour of the binary gcd algorithm.
+\leads Why did different primes behave independently? A number divisible by
+several fixed prime powers is divisible by their product, so we can
+count those multiples directly. In Chapter~\ref{ch:congruences} this
+will become a method for solving several remainder conditions at once.
+Part (c) offers a different lesson: a mean can be driven by values
+so rare that a typical sample almost never sees them.
 \end{solution}
 
 \begin{solution}{pb:parity}
@@ -760,6 +787,7 @@ than $a$. The valuations of $a$ and $b$ are independent geometric variables.
 \[
 p\mid b'\quad\Longleftrightarrow\quad v_p(b)>v_p(a).
 \]
+For a small check, $12/18=2/3$. The numerator has more factors of $2$ than the denominator, so a $2$ stays upstairs; the denominator has more factors of $3$, so a $3$ stays downstairs.
 By the valuation distribution from Problem~\ref{pb:valuation}, the limiting probability of $v_p(a)=j$ is $(1-1/p)p^{-j}$, while the limiting probability of $v_p(b)\ge j+1$ is $p^{-j-1}$. Independence of the two independently chosen integers gives
 \[
 \begin{aligned}
@@ -781,44 +809,18 @@ P(p_i\mid b'\text{ for every }i)\longrightarrow
 \]
 
 \tools Problem~\ref{pb:valuation}; Volume~2, Chapter~1.
-\leads The three parity patterns correspond to the three points of $\mathbb P^1(\mathbb F_2)$, on which the modular group acts transitively. The product formula also tells us that the reduced denominator is divisible by a fixed squarefree integer $m$ with limiting probability $\prod_{p\mid m}1/(p+1)$.
-\end{solution}
-
-\begin{solution}{pb:fibcoprime}
-\idea Fibonacci numbers inherit their gcds from their indices, and $F_g=1$ only for $g=1,2$.
-
-\writeup (a) The Fibonacci gcd identity from Volume~1 gives
-\[
-\gcd(F_a,F_b)=F_{\gcd(a,b)}.
-\]
-The only Fibonacci numbers equal to $1$ are $F_1$ and $F_2$. Therefore $F_a$ and $F_b$ are coprime exactly when $\gcd(a,b)$ equals $1$ or $2$. Problem~\ref{pb:gcdmean}(a) gives, for a fixed positive integer $g$, the limiting probability $6/(\pi^2g^2)$ that $\gcd(a,b)=g$. Adding the two disjoint cases yields
-\[
-\frac6{\pi^2}\left(1+\frac14\right)
-=\frac{15}{2\pi^2}.
-\]
-
-(b) Put $g=\gcd(a,b)$. Binet's formula reads
-\[
-F_g=\frac{\varphi^g-(-\varphi^{-1})^g}{\sqrt5}.
-\]
-The second term is uniformly small relative to the first. Taking logarithms therefore gives
-\[
-\log F_g=g\log\varphi-\log\sqrt5+O(1),
-\]
-with an error bounded independently of $g\ge1$. Consequently
-\[
-\mathbb E[\log F_{\gcd(a,b)}]
-=(\log\varphi)\,\mathbb E[\gcd(a,b)]+O(1).
-\]
-Insert the asymptotic expectation from Problem~\ref{pb:gcdmean}(b) to obtain the stated result. The $O(1)$ error remains bounded after averaging.
-
-\tools Volume~1 (the Fibonacci gcd identity and Binet's formula); Problem~\ref{pb:gcdmean}.
-\leads Strong divisibility sequences behave similarly. For example, $\gcd(2^a-1,2^b-1)=2^{\gcd(a,b)}-1$, whereas two random Fibonacci numbers are coprime with limiting probability $15/(2\pi^2)$, larger than the corresponding probability $6/\pi^2$ for two random positive integers.
+\leads The three patterns are the only possibilities after
+cancelling every common factor of $2$ from a fraction. More generally,
+let $m$ be a positive \emph{squarefree} integer: no prime appears
+twice in its factorisation. Part (c) then says that the reduced
+denominator is divisible by $m$ with limiting probability
+$\prod_{p\mid m}1/(p+1)$. The same small counting argument works
+for any fixed list of distinct primes.
 \end{solution}
 
 \begin{solution}{pb:orchard}
 \idea If the trunks are thick, a thin rectangle around any line of sight has area at least $4$ and so contains a tree. If they are
-thin, a line of sight with an ``irrational-looking'' slope $\frac1R$ stays far from all lattice points.
+thin, the ray pointing towards $(R,1)$ slips between the trees: the only lattice points exactly on that line lie beyond the orchard.
 
 \writeup (a) Let $S$ be the given closed, centrally symmetric rectangle of area at least $4$, and put $K=\frac12S$. The area of $K$ is at least $1$. First suppose it is strictly greater than $1$.
 
@@ -832,6 +834,8 @@ also belongs to $S$. We have found the required lattice point.
 
 If $\operatorname{area}(K)=1$, enlarge $S$ slightly to $(1+1/m)S$. The strict-area argument supplies a nonzero lattice point in every enlarged rectangle. All such points lie in a fixed bounded region, say $2S$, so at least one lattice point $z\ne0$ occurs for infinitely many $m$. The enlarged rectangles converge to the original closed $S$, hence $z\in S$. This handles the boundary case.
 
+The word \emph{closed} matters when the area is exactly $4$: the open square $(-1,1)^2$ has area $4$ but no nonzero integer point. Its boundary contains the missing points $(1,0)$ and $(0,1)$.
+
 (b) If the trunk radius is $r\ge1$, one of the four nearest lattice trees in the coordinate directions blocks every ray: some axis makes an angle at most $\pi/4$ with the ray, so the perpendicular distance to the corresponding tree is at most $\sin(\pi/4)<1\le r$.
 
 Now assume $1/R\le r<1$. Fix a ray $D$ and introduce orthogonal coordinates $(u,v)$, with $u$ along that ray. Consider the centrally symmetric rectangle $|u|\le R$, $|v|\le r$, whose area is $4Rr\ge4$. Part (a) gives a nonzero lattice point $z$ in it. Replace $z$ by $-z$ if necessary to ensure $u\ge0$. In fact $u>0$: if $u=0$, then $|z|=|v|\le r<1$, impossible for a nonzero lattice point.
@@ -843,21 +847,21 @@ $|z|^2=u^2+v^2\le R^2+r^2<R^2+1$. Since $|z|^2$ is an integer, it follows that $
 \[
 \frac{|a-bR|}{\sqrt{R^2+1}}.
 \]
-If $a-bR\ne0$, the numerator is a nonzero integer, so the distance is at least $1/\sqrt{R^2+1}$. A trunk with smaller radius cannot meet the line, hence cannot meet the ray. If $a-bR=0$, then $(a,b)=b(R,1)$ with integer $b\ne0$ and
+If $a-bR\ne0$, the numerator is a nonzero integer, so the distance is at least $1/\sqrt{R^2+1}$. A trunk with smaller radius cannot meet the line, hence cannot meet the ray. This estimate is sharp for this chosen ray: the tree at $(R-1,1)$ lies within the orchard since $(R-1)^2+1\le R^2$, has positive projection along $(R,1)$, and is exactly $1/\sqrt{R^2+1}$ from the ray. At equality its trunk touches the ray; that is why the conclusion here uses a strict inequality. If $a-bR=0$, then $(a,b)=b(R,1)$ with integer $b\ne0$ and
 $|(a,b)|\ge\sqrt{R^2+1}>R$; no tree in the disc stands on that line. Thus the ray remains unobstructed whenever
 $r<1/\sqrt{R^2+1}$.
 
 \tools Volume~1 (convexity and determinants as areas); Volume~2, Chapter~1.
-\leads This is the planar case of Minkowski's geometry-of-numbers argument and is related to Pólya's orchard problem. The simple axis-aligned sight line through $(R,1)$ attains the natural lower obstruction scale; Volume~13 develops the lattice theorem in higher dimensions.
+\leads This is the planar case of Minkowski's geometry-of-numbers argument and is related to Pólya's orchard problem. The simple sight line through $(R,1)$ attains the natural lower obstruction scale; Volume~13 develops the lattice theorem in higher dimensions.
 \end{solution}
 
 \section*{Sources and further reading}
 
 \begin{itemize}
-\item G.~H.~Hardy and E.~M.~Wright, \emph{An Introduction to the Theory of Numbers}, 6th ed., revised by D.~R.~Heath-Brown and J.~H.~Silverman, Oxford University Press, 2008, Chapters~1--2 and~10. The classic, still a joy.
+\item G.~H.~Hardy and E.~M.~Wright, \emph{An Introduction to the Theory of Numbers}, 6th ed., revised by D.~R.~Heath-Brown and J.~H.~Silverman, Oxford University Press, 2008, Chapters~1--2, 10 and~12. Prime factorisation, Euclid's algorithm and continued fractions.
 \item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Graduate Texts in Mathematics~84, Springer, 1990, Chapter~1. Unique factorisation in $\Z$, $k[x]$ and other principal ideal domains.
 \item D.~E.~Knuth, \emph{The Art of Computer Programming}, Vol.~2: \emph{Seminumerical Algorithms}, 3rd ed., Addison-Wesley, 1997, Section~4.5.3. The full analysis of Euclid's algorithm, including its average number of steps.
 \item V.~Shoup, \emph{A Computational Introduction to Number Theory and Algebra}, 2nd ed., Cambridge University Press, 2009 (free online). Number theory with algorithms and their complexity.
-\item J.~L.~Ram\'irez Alfons\'in, \emph{The Diophantine Frobenius Problem}, Oxford University Press, 2005. Everything about the coin problem of Exercise~\ref{ex:frob}, including its NP-hardness.
+\item J.~L.~Ram\'irez Alfons\'in, \emph{The Diophantine Frobenius Problem}, Oxford University Press, 2005. Algorithms and bounds for the coin problem of Exercise~\ref{ex:frob} with more denominations.
 \item Euclid, \emph{Elements}, Book~VII, Propositions~1--2 (the algorithm), in T.~L.~Heath's translation, Dover, 1956.
 \end{itemize}

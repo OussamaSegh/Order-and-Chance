@@ -20,7 +20,7 @@ CHAPTERS = [
     "ch09-diophantine", "ch08-continued-fractions",
     "ch10-gaussian-eisenstein", "ch14-characters",
 ]
-EXPECTED_COUNTS = [16, 11, 21, 13, 15, 17, 8, 8, 8, 8, 19]
+EXPECTED_COUNTS = [15, 11, 21, 10, 16, 19, 8, 8, 8, 8, 20]
 
 
 def content(chapter):
@@ -103,6 +103,99 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
             "Journey": 7,
         })
 
+    def test_fibonacci_gcd_journey_follows_its_proved_prerequisite(self):
+        """A solution cannot depend on a problem printed four chapters later."""
+        chapter1 = content("ch01-divisibility")
+        chapter5 = content("ch05-primitive-roots")
+        self.assertNotIn(r"\label{pb:fibcoprime}", chapter1)
+        self.assertLess(
+            chapter5.index(r"\label{pb:gcdmean}"),
+            chapter5.index(r"\label{pb:fibcoprime}"),
+        )
+        gcd_solution = section(chapter5, "solution", "pb:gcdmean")
+        fib_solution = section(chapter5, "solution", "pb:fibcoprime")
+        self.assertIn(
+            r"C(M)=\sum_{d\le M}\mu(d)\left\lfloor\frac Md\right\rfloor^2",
+            gcd_solution,
+        )
+        self.assertIn(r"\sum_{g>G}(\log g)/g^2", gcd_solution)
+        self.assertNotIn(r"\zeta'(2)", gcd_solution)
+        self.assertNotIn("later characters chapter",
+                         section(chapter5, "exercise", "pb:gcdmean"))
+        self.assertIn(r"Problem~\ref{pb:gcdmean}", fib_solution)
+
+        # A finite, independent sanity check is not a general proof.
+        fib = [0, 1]
+        for _ in range(60):
+            fib.append(fib[-1] + fib[-2])
+        for a in range(1, 24):
+            for b in range(1, 24):
+                g = math.gcd(a, b)
+                self.assertEqual(math.gcd(fib[a], fib[b]), fib[g])
+                self.assertEqual(
+                    math.gcd(fib[a], fib[b]) == 1, g in (1, 2)
+                )
+        for n in (5, 10, 30):
+            # Sum over all d|gcd(a,b) of mu(d) is 1 exactly when gcd=1.
+            # We verify the same count using a distinct inclusion-exclusion
+            # over the prime divisors of d.
+            def mobius(d):
+                primes = []
+                p = 2
+                left = d
+                while p * p <= left:
+                    if left % p == 0:
+                        left //= p
+                        if left % p == 0:
+                            return 0
+                        primes.append(p)
+                    p += 1
+                if left > 1:
+                    primes.append(left)
+                return (-1) ** len(primes)
+
+            count = sum(
+                math.gcd(a, b) == 1
+                for a in range(1, n + 1)
+                for b in range(1, n + 1)
+            )
+            self.assertEqual(
+                count,
+                sum(mobius(d) * (n // d) ** 2 for d in range(1, n + 1)),
+            )
+
+    def test_factorial_power_sum_challenge_needs_no_later_volume(self):
+        """Exercise pb:glaisher uses only earlier Fermat/Wilson arithmetic."""
+        chapter3 = content("ch03-congruences")
+        question = section(chapter3, "exercise", "pb:glaisher")
+        hint = section(chapter3, "hint", "pb:glaisher")
+        proof = section(chapter3, "solution", "pb:glaisher")
+        required = question + hint + proof.split(r"\leads", 1)[0]
+        self.assertNotIn("Later-volume exploration", required)
+        self.assertNotIn(r"\ref{pb:fermatquot}", required)
+        self.assertNotIn("von Staudt", required)
+        self.assertIn(r"W_p", question)
+        self.assertIn(r"q_p(a)", question)
+        self.assertIn(r"\pmod{p^2}", proof)
+
+        # Separate exact numerical check, not a substitute for the proof.
+        for p in range(3, 102, 2):
+            if not is_prime(p):
+                continue
+            modulus = p*p
+            prod = 1
+            for a in range(1, p):
+                prod = (prod*a) % modulus
+            self.assertEqual((prod + 1) % p, 0)
+            wilson_q = ((prod + 1) // p) % p
+            fermat_sum = sum(
+                (pow(a, p-1, modulus) - 1) // p
+                for a in range(1, p)
+            )
+            self.assertEqual(fermat_sum % p, wilson_q)
+            powers = sum(pow(a, p-1, modulus) for a in range(1, p))
+            self.assertEqual(powers % modulus, (prod + p) % modulus)
+
     def test_imo_1988_vieta_jump_requires_a_positive_integer_root(self):
         text = section(content("ch09-diophantine"), "solution", "ex:imo88")
         for marker in (r"f(b)=(2-k)b^2-k<0", r"f(-1)",
@@ -127,9 +220,10 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
         text = section(
             content("ch05-primitive-roots"), "solution", "pb:gcdmean"
         )
-        self.assertIn(r"A(t):=\sum_{d\le t}\frac{\varphi(d)}d", text)
-        self.assertIn(r"\frac{t}{\zeta(2)}+O(\log(2t))", text)
+        self.assertIn(r"H_{\lfloor N/h\rfloor}", text)
         self.assertIn(r"\frac{\log N}{\zeta(2)}+O(1)", text)
+        self.assertIn(r"\log(2M)", text)
+        self.assertNotIn("A(t):=", text)
         for n in (10, 30, 60):
             phi = [
                 sum(math.gcd(j, d) == 1 for j in range(1, d + 1))
@@ -140,6 +234,30 @@ class TestVolume2ExerciseKeys(unittest.TestCase):
                 for d in range(1, n + 1)
             )
             self.assertEqual(gcd_moment(n), from_totients)
+
+        # A second finite check tests the *weighted* coprime-pair sum,
+        # including the boundary M=1 where log(M) would vanish.
+        def mobius(n):
+            sign = 1
+            p = 2
+            while p*p <= n:
+                if n % p == 0:
+                    n //= p
+                    if n % p == 0:
+                        return 0
+                    sign = -sign
+                p += 1
+            return -sign if n > 1 else sign
+
+        for n in (1, 2, 3, 5, 10, 25):
+            direct = sum(a*b for a in range(1, n+1)
+                         for b in range(1, n+1)
+                         if math.gcd(a, b) == 1)
+            via_mobius = sum(
+                mobius(d) * d*d * ((n//d) * (n//d+1)//2)**2
+                for d in range(1, n+1)
+            )
+            self.assertEqual(direct, via_mobius)
 
     def test_diophantine_integer_cases_and_markov_tree(self):
         text = content("ch09-diophantine")

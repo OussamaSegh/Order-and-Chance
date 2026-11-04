@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import unittest
+import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
@@ -144,6 +145,30 @@ class KindleEpub(unittest.TestCase):
 
 
 class FormulaPadding(unittest.TestCase):
+    def test_display_images_keep_natural_width_and_shrink_proportionally(self):
+        for width in (8.0, 29.5):
+            with self.subTest(width=width):
+                glyph = epub_math.Glyph(b"", width, 0.1, 1.2, True)
+                attrs = ET.fromstring(glyph.html("m.png", "a=b")).attrib
+                style = dict(item.split(":", 1) for item in attrs["style"].split(";"))
+                # A percentage width stretches long equations on a wide screen;
+                # a fixed height squashes them when max-width shrinks the image.
+                self.assertEqual(style["width"], f"{width:.4f}em")
+                self.assertEqual(style["height"], "auto")
+                self.assertEqual(style["max-width"], "100%")
+
+    def test_display_math_remains_valid_inside_a_paragraph(self):
+        tag = '<img class="oc-math-display" src="m.png" alt="x=1"/>'
+        result = epub_math.attach_punctuation('<p>Before ' + tag + ', after.</p>')
+        root = ET.fromstring(result)
+        # A div in p is invalid EPUB XHTML, even if a browser repairs it.
+        self.assertEqual(root.findall('.//div'), [])
+        wrapper = root.find('span')
+        self.assertIsNotNone(wrapper)
+        self.assertIn('display:block', wrapper.attrib['style'])
+        self.assertEqual(wrapper.find('img').tail, ',')
+        self.assertIn('after.', wrapper.tail)
+
     @unittest.skipUnless(HAVE, "xelatex, pdftocairo, pandoc, pngquant and oxipng are required")
     def test_transparent_right_columns_are_cropped(self):
         image = Image.new("RGBA", (40, 12), (0, 0, 0, 0))
@@ -168,7 +193,7 @@ class FormulaPadding(unittest.TestCase):
         self.assertIn('"/>.</span>', wrapped)
         self.assertNotRegex(wrapped, r'"/>\s+[.,]')
         display = epub_math.attach_punctuation(tag.replace("oc-math-inline", "oc-math-display") + ",")
-        self.assertIn('"/>,</div>', display)
+        self.assertIn('"/>,</span>', display)
         self.assertNotIn(" ,", display)
 
 

@@ -42,7 +42,7 @@ PREVIOUS_BRIDGE = (
     "sums-of-squares chapter",
     "Diophantine chapter",
     "continued-fractions chapter",
-    "Gaussian and Eisenstein chapters",
+    "Gaussian and Eisenstein chapter",
 )
 
 

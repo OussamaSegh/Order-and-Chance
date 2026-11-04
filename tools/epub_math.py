@@ -46,7 +46,6 @@ BORDER_PT = 0.4
 # 77 px per em, about 1.6 device pixels on each body pixel, and leaves headroom
 # under 50 MB. The CSS size stays the TeX em either way.
 DPI = 480
-WIDE_EM = 22.0
 CACHE_TAG = "v6"
 # HTML width/height are CSS pixels at the usual 16 px em. Moon+ uses those
 # attributes and ignores em widths, so a high-dpi PNG otherwise draws huge.
@@ -111,15 +110,11 @@ class Glyph:
         width_px = self._px(self.width_em)
         height_px = self._px(self.height_em)
         height = f"{self.height_em:.4f}"
-        if self.display and self.width_em >= WIDE_EM:
+        if self.display:
+            # Use the measured width even on wide screens. max-width can shrink
+            # a long equation; auto height preserves the PNG's aspect ratio.
             style = (
-                f"display:inline-block;width:100%;max-width:100%;height:auto;max-height:{height}em;"
-                f"vertical-align:middle"
-            )
-            kind = "oc-math-display"
-        elif self.display:
-            style = (
-                f"display:inline-block;width:{self.width_em:.4f}em;height:{height}em;"
+                f"display:inline-block;width:{self.width_em:.4f}em;height:auto;"
                 f"max-width:100%;max-height:{height}em;vertical-align:middle"
             )
             kind = "oc-math-display"
@@ -358,13 +353,15 @@ def attach_punctuation(text: str) -> str:
     closed the paragraph and the next ``. Now`` or ``, and`` started at the
     left margin. Inline images stay inline inside a nowrap span. Display
     images sit in a centred block with that punctuation inside the block.
+    The wrapper is a span styled as block: Pandoc can place display math
+    inside a paragraph or another span, where a div would be invalid XHTML.
     """
     def repl(match: re.Match) -> str:
         img, kind, spaces, punct = match.group(1), match.group(2), match.group(3) or "", match.group(4) or ""
         if kind == "display":
             return (
-                '<div class="oc-math-block" style="display:block;text-align:center;margin:0.6em 0">'
-                + img + punct + "</div>" + ("" if punct else spaces)
+                '<span class="oc-math-block" style="display:block;text-align:center;margin:0.6em 0">'
+                + img + punct + "</span>" + ("" if punct else spaces)
             )
         if punct:
             # No text node, newline or space between the image and its period.

@@ -193,7 +193,7 @@ class TestVolume2Manuscript(unittest.TestCase):
         """Readers can reach the foundation exercise route without advanced sections."""
         core_before_optional = {
             "ch02-primes": (
-                r"\subsection*{Proof workshop: repair a false claim about Euclid's number}",
+                r"\subsection*{What Euclid's argument does, and does not, say}",
                 r"\section{Chebyshev's bounds}",
                 "Optional route: quantitative prime bounds",
             ),
@@ -257,7 +257,6 @@ class TestVolume2Manuscript(unittest.TestCase):
             ],
             "ch03-congruences": ["ex:hensel"],
             "ch06-quadratic-reciprocity": ["pb:rabin", "pb:squaresmodpk"],
-            "ch07-sums-of-squares": ["ex:eureka"],
             "ch09-diophantine": [
                 "ex:mordell5", "ex:eisentri",
                 "ex:markovcoprime", "ex:imo88",
@@ -279,6 +278,16 @@ class TestVolume2Manuscript(unittest.TestCase):
                 with self.subTest(chapter=chapter, label=label):
                     self.assertIn(label, exercises)
                     self.assertRegex(exercises[label], r"(?i)optional")
+
+    def test_triangular_equivalence_needs_no_admitted_three_square_theorem(self):
+        source = (CHAPTER_DIR / "ch07-sums-of-squares.tex").read_text(encoding="utf-8")
+        problem = source.split(r"\label{ex:eureka}", 1)[1].split(r"\end{exercise}", 1)[0]
+        solution = dict(SOLUTION_BODY.findall(source))["ex:eureka"]
+        self.assertIn("if and only if", problem)
+        self.assertNotRegex(problem + solution, r"(?i)admitting|as granted|explicitly admitted")
+        self.assertNotIn("Every nonnegative integer is therefore", solution)
+        self.assertIn("Subtracting", solution)
+        self.assertIn("75=7^2+5^2+1^2", solution)
 
     def test_step3_main_route_has_no_optional_theorem_dependency(self):
         """Core exposition must not cite the theorems inside optional blocks."""
@@ -407,7 +416,9 @@ class TestVolume2Manuscript(unittest.TestCase):
         """Forward references in prose remain explicit teaching previews."""
         allowed = {
             "ch01-divisibility": {"ch:congruences", "ch:continued", "ch:gaussian"},
-            "ch02-primes": {"ch:characters"},
+            # The two-lane question is explicitly deferred until square roots
+            # of -1; no Chapter 2 argument uses the later exercise as a premise.
+            "ch02-primes": {"ch:characters", "ex:onemod4"},
             "ch03-congruences": {"ch:orders", "ch:characters"},
             "ch04-arithmetic-functions": {"ch:orders", "ch:characters"},
             "ch05-primitive-roots": {"ch:characters"},
@@ -439,26 +450,44 @@ class TestVolume2Manuscript(unittest.TestCase):
                 f"New forward references in {chapter} require a prerequisite review",
             )
 
-    def test_step4_morley_requires_later_fermat_quotient(self):
-        """Do not silently present a Chapter 11 dependency as Chapter 3 work."""
+    def test_morley_congruence_taught_with_earlier_chapter_tools(self):
+        """No later Fermat-quotient result is an input to Chapter 3."""
         congruences = (CHAPTER_DIR / "ch03-congruences.tex").read_text(
             encoding="utf-8"
         )
-        problem = re.search(
+        exercise = re.search(
             r"\\begin\{exercise\}\[\$\\star\\star\$\]"
             r"\\label\{pb:morley\}([\s\S]*?)\\end\{exercise\}",
             congruences,
         )
-        self.assertIsNotNone(problem)
-        self.assertIn(
-            r"Optional return after Chapter~\ref{ch:characters}",
-            problem.group(1),
+        hint = re.search(
+            r"\\begin\{hint\}\{pb:morley\}([\s\S]*?)\\end\{hint\}",
+            congruences,
         )
-        self.assertIn(r"Problem~\ref{pb:fermatquot}", problem.group(1))
-        later = (CHAPTER_DIR / "ch14-characters.tex").read_text(
-            encoding="utf-8"
+        solution = re.search(
+            r"\\begin\{solution\}\{pb:morley\}([\s\S]*?)\\end\{solution\}",
+            congruences,
         )
-        self.assertIn(r"\label{pb:fermatquot}", later)
+        self.assertIsNotNone(exercise)
+        self.assertIsNotNone(hint)
+        self.assertIsNotNone(solution)
+        full_route = exercise.group(1) + hint.group(1) + solution.group(1).split(
+            r"\leads", 1
+        )[0]
+        self.assertNotIn(r"\ref{pb:fermatquot}", full_route)
+        self.assertNotIn("later chapter", full_route)
+        self.assertIn(r"2^p-2=\sum_{j=1}^{p-1}\binom pj", solution.group(1))
+        self.assertIn(r"S\equiv2t\pmod p", solution.group(1))
+        self.assertIn(r"Fermat's little theorem", solution.group(1))
+
+        # Exact small-prime check, separate from the algebraic proof.
+        import math
+        for p in (3, 5, 7, 11, 13, 17, 19, 23, 29, 31):
+            k = (p - 1) // 2
+            self.assertEqual(
+                math.comb(p - 1, k) % (p * p),
+                ((-1) ** k * pow(4, p - 1, p * p)) % (p * p),
+            )
 
     def test_major_latex_environment_counts_balance(self):
         for chapter in CHAPTERS:

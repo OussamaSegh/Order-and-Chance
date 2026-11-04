@@ -1,3 +1,23 @@
+# Volume 2 Chapter 4 proof and teaching checkpoint — 4 November 2026
+
+PR #103, DEP-029, retains design 5e while making the perfect-number,
+hyperbola, primitive-word and coprimality arguments explicit. The hyperbola
+proof subtracts the full square of overlap; the harmonic reminder supplies
+Euler's constant and its quantitative remainder before use. Primitive-word
+uniqueness now follows from integer division, and the series product has a
+local absolute-tail justification. Covers and publishing geometry retain
+their approved sources.
+
+The full symbolic audits, actual Volume 1 prerequisites and verification
+boundaries are in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`
+(DEP-029). New mathematical/structural regression: 12 passing tests; full local
+suite: 296 tests, zero skips after installing pngquant and oxipng. Ten typeset
+pages covering the changed arguments were visually inspected. Final artifact
+and exact-head Actions evidence belongs in that ledger. The whole-book
+visual, external-review and publisher gates remain open.
+
+---
+
 # Chapter opener on the same page — 31 October 2026
 
 Numbered chapters open on the white page. There is no charcoal band. A small coral
@@ -963,3 +983,31 @@ review limits are recorded in review/volume1-reconstruction/. No other volume
 is edited, and no KDP upload or physical proof is claimed.
 
 The actual GitHub artifact exposed a Pandoc-version difference in portrait alternatives. A description wrapper in the digital converter/filter now preserves those alternatives across versions, with a regression that simulates an ignored graphics alt option. It does not change visible captions, figure numbers, PDF content, cover artwork or mathematical sources in other volumes.
+
+## Volume 2 source and figure proof continuation (4 November 2026)
+
+PR #103's whole-source review now reaches Chapter9 (DEP-069). Continued-fraction line labels use leaders to preserve exact positions while separating text; all four chapter plates were built and viewed. The immutable pre-C09 snapshot681b4b55 passed reading/print PDF, page-count-derived cover, EPUB and reader builds (329 print pages,0.7745-inch spine,19,184,756-byte EPUB). Four selected PDF pages covering revised Chapter6–8 material were inspected. Latest-source/all-page/external/publisher review remains open. Exact mathematical/source evidence and next work are in the independent ledger and whole-book review; PR remains draft/unmerged/unpublished.
+
+DEP-070 corrects the Eisenstein lattice's ramified vector to omega→1 (norm3), enlarges its labels, moves the Gaussian rounding label clear of its cell and reflows the prime-disc legend into three larger-font rows. All484 prime-disc points were independently trial-factor checked; all three revised standalone plates were built and viewed. Current-source/full-page/EPUB/reader approval remains pending; source inventory and detailed review track the exact changes.
+
+DEP-071 enlarges all four Chapter11 plates' labels, makes sieve cells readable and names the actual palette, adds the race's100 tick and moves cubic x labels outside the data band. All207 cubic points have independent direct-count/norm-form checks; all four standalone plates were rendered/viewed. Full local suite449 passes. Actions#1664 exposed a missing mpmath test dependency: explicit test requirements now drive the initial CI test job, verified in an isolated venv (22 tests). Runtime requirements/output fingerprints are unchanged; exact-new-head CI and final formats/all pages remain pending.
+
+DEP-072 completes the front/back source pass and source matching of the three active portrait derivatives. Reader credits omit the unused Minkowski asset and qualify Fermat/Chebyshev attribution. The cover colophon now distinguishes its pale1 marker from557 independently checked prime dots; all approved motifs, lettering and copyright credits remain byte-unchanged, with only generated colophon/gallery/hash metadata synchronized. Full local suite452 passes; exact final-source artifacts/every-page and external approval remain pending.
+
+DEP-073 adds the explicit Volume2 dependency/story ledger and a non-runtime review guard for all319 local references/85 forward contexts. Small source clarifications repair main-route definitions and caption/summary scopes without changing exercises or approved art. Suite455 and41 final-wording focused checks pass. An immutable current-source build and final all-page/history/external review remain pending.
+
+DEP-074 corrects bibliography/chronology without changing design or approved art. The immutablead8f7a9f all-format build passed structural/layout/media checks at333 print pages and0.7839-inch spine; it predates these citation corrections and has not received an all-page proof. Detailed source limits and next work remain in the independent ledger.
+
+DEP-075 reconciles62 bibliography metadata rows and23 historical groups, fixes sail-cone geometry wording and positive-cube taxicab scope, with456 passing tests. No design or approved cover changes. Exact-source formats/all-page and independent editorial/publisher acceptance remain pending.
+
+DEP-076 replaces Volume2 jacket/listing promotional wording with concrete method descriptions and sharpens preface/field-guide handoffs. Jacket157 words;10 route/metadata/dependency checks and cover-source freshness pass. No approved art/type/ISBN changes. Fresh page-count-derived wrap and all-page/format review are required for the new blurb and source.
+
+DEP-077 repairs digital run-in word spacing and invalid div display-math wrappers inside paragraphs/spans. Phrasing span wrappers retain block layout/punctuation; EPUB-only macros retain ordinary word separators. Full459 tests and32 focused EPUB checks pass; all370 actual reader labels rechecked. W3C EPUBCheck5.4.0 reports zero errors/warnings on the isolated605-wrapper whole-book repair; actual final generated EPUB/device and all-page approval remain required. All15 book output fingerprints invalidate automatically; PDF/print/art/fonts are untouched.
+
+DEP-078 fixes3 Volume2 heading/note quote strings with Unicode punctuation and replaces obsolete clock ink names with ring/dot roles. Actual-family quote and shared-palette plate previews were viewed;27 focused checks pass. First64 native paired PDF/print interior pages inspected with per-page evidence,269 remaining. Clean4c4e960b actual EPUB passes W3C EPUBCheck5.4.0; final quote/legend source needs renewed artifacts/page proof. No approved art/fonts/global typography changed.
+
+DEP-079 actual phone/desktop screenshots show narrow reader SVG plates keep print-point dimensions and labels too small. Reader SVG plates now fill the text column with their vector art/aspect intact; portraits/cover and PDF/print/EPUB typography are unaffected. All20 pages checked at390/1280px before/after in an isolated actual-reader copy: zero math/script/HTTP/body-overflow errors, all39 SVG plates fill the column. Full regenerated-source checks remain required.128 paired interior pages actually reviewed,205 pending; digital link audit passes all local book links and144 exercise triples, with20 library-index links explicitly pending site assembly.
+
+## EPUB display equation aspect —4November2026,DEP-082
+
+Actual Volume2 wide-screen EPUB inspection found57 stretched display occurrences: width100percent expanded PNGs while max-height capped their height. All display images now use their measured em width, max-width100percent and height:auto; they shrink proportionally and do not expand to fill a wider screen. Media guard rejects percentage widths/fixed heights. Inline baseline settings, fonts, formula PNGs,1800px plate treatment and PDF/print/reader design remain unchanged.35 focused EPUB tests pass after three before-failing regressions. Actual regenerated EPUB and native Kindle validation still required.

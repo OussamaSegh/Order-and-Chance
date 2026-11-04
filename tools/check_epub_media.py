@@ -16,6 +16,7 @@ import re
 import struct
 import sys
 import zipfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -123,8 +124,11 @@ def _math_errors(where: str, attrs: dict[str, str], inline: bool, pngs: dict[str
             errors.append(f"{where} width is not in em, so it will not follow the body font")
         if not EM_SHIFT.search(style):
             errors.append(f"{where} has no em vertical-align, so the baseline will not meet the text")
-    elif not (EM_WIDTH.search(style) or "width:100%" in style):
-        errors.append(f"{where} has neither an em width nor width:100%")
+    else:
+        if not EM_WIDTH.search(style):
+            errors.append(f"{where} needs its natural em width to avoid stretching on wide screens")
+        if "height:auto" not in style:
+            errors.append(f"{where} needs height:auto to preserve aspect ratio when constrained")
     src = attrs.get("src", "")
     height_attr = attrs.get("height", "")
     if src and re.fullmatch(r"\d+", height_attr):
@@ -157,6 +161,22 @@ def check(path: Path) -> list[str]:
             for name in names if name.endswith((".xhtml", ".html"))
         ]
     for name, text in pages:
+        try:
+            document = ET.fromstring(text)
+        except ET.ParseError as error:
+            errors.append(f"{name} has malformed XHTML: {error}")
+        else:
+            # XML parsing alone permits div in p; an HTML browser repairs it
+            # silently. EPUB XHTML forbids that flow/phrasing mismatch.
+            phrasing = {'p', 'span', 'em', 'strong', 'b', 'i', 'small', 'mark', 'sub', 'sup'}
+            for container in document.iter():
+                if container.tag.rsplit('}', 1)[-1] not in phrasing:
+                    continue
+                if any(node.tag.rsplit('}', 1)[-1] == 'div'
+                       and 'oc-math-block' in node.attrib.get('class', '').split()
+                       for node in container.iter()):
+                    errors.append(f"{name} has block mathematics inside phrasing content")
+                    break
         if "<math" in text or 'class="math inline"' in text or 'class="math display"' in text:
             errors.append(f"{name} still contains MathML or unrendered TeX; Kindle will mis-align it")
         for match in IMG_RE.finditer(text):

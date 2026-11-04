@@ -1,0 +1,195 @@
+# Volume 1 → Volume 2 actual prerequisite proof-site crosswalk
+
+**Status: IN_PROGRESS, not a Volume 1 certification.** First checked 3 November 2026 for PR #103 from repository source on branch `editorial/volume2-independent-proof-and-reader-rewrite-20261103`, anchored at pre-review head `8dfc174d86f52a46e9615fc876e4c6df959f191b`. This register names **actual proofs in Volume 1**, not inferred textbook coverage. Printed chapter order comes from `volume1-first-principles/main.tex`; headings and labels below were read in the specified files. Only the individual entries below have been checked for existence and usable hypotheses; the entire crosswalk is still open.
+
+The reader arrives in Volume 2 having read only Volume 1 and knowing high-school mathematics. A named result in Volume 1 is not a licence to import its unproved generalisation from a later volume. For each future import, check both the first use and the proof below.
+
+| Required tool | Verified actual Volume 1 source/proof | What is really available and boundary | Earliest relevant Volume 2 use | State |
+| --- | --- | --- | --- | --- |
+| Well ordering and strong induction | `volume1-first-principles/chapters/ch01-sums.tex`, `sec:induction`, `prop:induction` (near lines 193–225) | Well ordering is explicitly stated as an axiom, and the proposition **proves** its equivalence to weak and strong induction, with the empty-base case checked. No outside proof-course induction principle needed. | Chapter 1 `thm:div` (least nonnegative remainder), `thm:fta` (strong induction) | CONFIRMED |
+| Euclidean division of integers | Same file, `sec:divisibility`, unnumbered `propositionx` “division with remainder” (near lines 597–610) | Proof gives existence for negative as well as positive dividends and uniqueness for every positive divisor. Volume 2 re-proves it in `thm:div` rather than relying on a hidden tool. | Chapter 1 opening, `thm:div` | CONFIRMED |
+| Integer Bézout and coprime cancellation | Same file, `sec:divisibility`, unnumbered `propositionx` “Bézout’s identity” (near lines 619–628) and following cancellation proof (near 634–645) | Least positive integer combination equals gcd; coprimality yields a linear combination equal to 1, and hence integer coprime cancellation. Both claims are also reconstructed in Volume 2 before Chapter 1 exercises. | Chapter 1 `thm:bezout`, `thm:gauss`, `ex:frob` | CONFIRMED |
+| Prime factorisation | Same file `sec:induction` near line 229 (least counterexample), and `sec:divisibility` unnumbered “Euclid’s lemma and unique factorisation” near 634–650 | Prime-factor existence is proved by minimal counterexample and uniqueness by prime-cancellation, not merely stated. Volume 2 repeats both in `thm:fta`, from which all valuation parity arguments follow. | Chapter 1 `ex:sqrt`, `ex:zeros` | CONFIRMED |
+| Binomial theorem | `volume1-first-principles/chapters/ch01-sums.tex`, `sec:binom` (near 289–333), expansion proof and combinatorial coefficients | Finite binomial identity and coefficient meaning are earned. This does **not** provide formal infinite generating-function manipulations without fresh justification. | Chapter 1 `ex:t1-binomial-carry`; Chapter 3 formal identities | CONFIRMED |
+| Rational and real numbers | `volume1-first-principles/chapters/ch00-language.tex` opening, and `ch05-sequences-series.tex` `prop:sqrt2` (near 118–128) | `Q`, `R`, rational lowest terms and prime-factor parity are explicit. The irrationality of √2 is proved. The arbitrary-n square-root theorem remains the generalisation posed in Volume 2 `ex:sqrt`; it is proved there, not assumed in Volume 1. | Chapter 1 `ex:sqrt` | CONFIRMED for stated scope |
+| Rational-root theorem for polynomials | `volume1-first-principles/chapters/ch03-polynomials.tex`, `prop:ratroot` (near 301–306) | Complete proof: if coprime p/q is root of integral polynomial with leading coefficient a_n, then q|a_n; for monic, q=1. Thus Volume 2 `ex:sqrt` is a useful independent re-proof, not a new undeveloped university result. | Chapter 1 `ex:sqrt`; cyclotomic polynomial discussions | CONFIRMED |
+| Polynomial division and root bound | Same file, `prop:polydiv` (near 84–94), `prop:rootsfactor` (near 102–116) | Proof constructs quotient/remainder in polynomial ring **over a field** and proves a nonzero degree-d polynomial has at most d roots. Does not supply a finite-field-extension theorem, which Chapter 6 `pb:phimodp` therefore constructs locally. | Chapter 6 `pb:phimodp`; Chapter 11 polynomial arguments | CONFIRMED for stated scope |
+| Polynomial Bézout | Same file, `prop:polynomial-bezout` (near 127–135) | The proof uses the polynomial Euclidean algorithm and back-substitution for arbitrary field `K`. Chapter 6 can specialise to `F_p` but must itself establish field operations in a quotient by an irreducible polynomial; this is correctly taught locally. | Chapter 6 `pb:phimodp` | CONFIRMED for stated scope |
+| Elementary group language and roots of unity | `volume1-first-principles/chapters/ch02-complex-roots.tex`, `def:elementary-group` (near 347–360), `prop:roots` (near 371–397) | Actual definition of group, subgroup, cyclic group and element order, and proof that the n-th roots of unity form a cyclic group with order n/gcd(n,k). Not a proof that **every** finite unit group is cyclic; Volume 2 Chapter 5 establishes the arithmetic version later. | Chapter 1 additive subgroups, Chapter 5 cyclic unit groups, Chapter 11 character motivation | CONFIRMED |
+| Simple complex conjugation and norm multiplication | `volume1-first-principles/chapters/ch02-complex-roots.tex`, early complex-number arithmetic and conjugation (near 47–82) | Explicitly proves `conj(zw)=conj(z)conj(w)`; the norm law follows directly. **Unique factorisation in Z[i] or Z[ω] is not imported** and must be established in Volume 2 Chapter 10. | Chapter 10 Gaussian/Eisenstein norm; Chapter 11 cubic character | CONFIRMED for elementary norm |
+| Elementary integration by parts and trigonometric power integrals | `volume1-first-principles/chapters/ch06-integrals-taylor.tex`, `prop:inttools` (near lines 122–148) and `prop:wallis` (near lines 299–337) | The integration toolkit proves integration by parts under Volume 1's declared continuous-integral contract; Wallis proves the even-power integral W_{2m}=π(2m)!/[2·4^m(m!)²] and its recurrence. The independent coefficient proof of Volume 2 `ex:supercat` uses these proved statements, not later Beta/Gamma theory. | Chapter 1 `ex:supercat` independent Pass B; later Jacobi identities | CONFIRMED for stated scope |
+| Finite uniform probabilities and expectations | `volume1-first-principles/chapters/ch09-probability.tex`, first finite model near lines 35–43, `prop:proba` near lines 164–190 | Uniform probability is explicitly defined as a count divided by sample-space size; random variables, their expectation, law, finite indicator identities and linearity are all defined and **proved**. This fully supports the notation `P`, `\mathbb E`, and the finite tail decomposition in Volume 2 `pb:valuation`; it does **not** pre-prove that exercise's asymptotic distribution. | Chapter 1 `pb:valuation`, `pb:parity` | CONFIRMED for stated scope |
+| Finite mutual independence | `volume1-first-principles/chapters/ch09-probability.tex`, independence section near lines 68–105 | Specifies mutual independence for **every subset** of a fixed finite family, not just pairwise; explicitly proves finite-product independence for independent trials. Volume 2's independence *of valuations of one random n* needs a new proof and is supplied by counting the multiples of coprime prime powers locally. | Chapter 1 `pb:valuation` (b), `pb:parity` (c) | CONFIRMED for terminology, NOT for new arithmetic claim |
+| Finite inclusion–exclusion | `volume1-first-principles/chapters/ch02-counting.tex`, `thm:incexc` near lines 132–164 | Finite union/intersection formula is proved by counting each element and an alternate indicator expansion. It licenses passing from fixed joint valuation **tail events** to fixed joint **equality events**, but not interchanging unbounded infinite sums without an error bound. | Chapter 1 `pb:valuation` (b) | CONFIRMED |
+| Tail-sum identity for nonnegative integer random variables | `volume1-first-principles/chapters/ch09-probability.tex`, `sec:countable-probability`, lines 417–435, equation (*) | Actual proof from the finite identity for `min(T,M)`; for a nonnegative variable X, apply it to T=X+1 or use the same finite indicator decomposition. In `pb:valuation` N is finite and valuations are bounded, so even the elementary finite version suffices. | Chapter 1 `pb:valuation` (a), (c) | CONFIRMED |
+| Two-dimensional determinant as area, rotation and convex segments | `volume1-first-principles/chapters/ch07-linear-algebra.tex` near lines 135–165, including the fully worked 2×2 rotation/shear example and determinant-area discussion and diagrams | Chapter derives the rotation matrix, notes a shear preserves area, and identifies the absolute 2×2 determinant as a parallelogram area; combined with high-school rectangle areas, distance to a line, and the explicit Chapter 1 proof, this supports all inputs to `pb:orchard`. A theorem asserting a lattice point in every area-4 rectangle **does not come from Volume 1**; it is supplied and proved within `pb:orchard` (a). | Chapter 1 `pb:orchard` (all parts), `fig:visible` | CONFIRMED for elementary plane geometry; separate Minkowski proof required locally |
+| Natural logarithm, real-power derivatives and monotonicity | `volume1-first-principles/chapters/ch05-sequences-series.tex`, `prop:early-differentiation` (near lines 346–386), `thm:mvt` (near lines 479–504), `prop:early-ftc` (near lines 527–543), and the proved `prop:gamma` harmonic-integral estimate (near 682–706) | The logarithm and exponential are explicitly the admitted standard functions, with derivatives, chain rule, monotonicity via the **proved** mean value theorem and the continuous-integral contract. Therefore comparisons of log prime products, derivative of `x↦(ln 2)x/2−ln(4x)` and the real `x/ln x` estimates in `thm:cheb`/`thm:bertrand` need no later prime number theorem or analytic number theory. Their *particular* inequalities are proved locally, not imported. | Chapter 2 `thm:euler`, `thm:cheb`, `thm:bertrand` | CONFIRMED for elementary real calculus; number-theoretic estimates are local |
+| Polynomial factor/root count over a field for elementary modular proofs | `volume1-first-principles/chapters/ch03-polynomials.tex`, `prop:polydiv` and `prop:rootsfactor` (near lines 80–115); also `volume1-first-principles/chapters/ch05-sequences-series.tex` `thm:mvt` for elementary logarithm comparisons | Volume 1 proves any root a forces (X−a) to divide P and a degree-d nonzero polynomial has at most d roots over a field. Once Chapter 3 has explicitly defined F_p and proved Euler/Fermat, this supplies an **independent**, completely earlier-tool proof of Wilson via X^(p−1)−1=∏_(a≠0)(X−a), comparing constants; it is not an unintroduced future polynomial theorem. | Chapter 3 `thm:wilson` and later polynomial-function exercises | CONFIRMED for Wilson alternative; DEP073 global conceptual/forward-use review recorded, independent acceptance pending |
+| Four-ball volume, cubic character Gauss sums and prime-power local densities | **No Volume 1 proof has been located or claimed** | The needed special four-dimensional volume is now derived locally inside `pb:jacobi`; cubic-character and local-density arguments are taught in Volume 2 before being used. Do not silently refer to Volumes 4, 5, 6 or 13. | Chapter 11 advanced exercises | PROVED LOCALLY and internally rechecked; DEP010/011/055–060 and C11 whole-source review; independent acceptance pending |
+
+## Specific first-use reconciliation for DEP-029 — Chapter 4
+
+The following **actual source proofs** were read at incoming PR head
+`1718ff6524266b5404631801210d093e33cb81c6` on 4 November 2026:
+
+- **Harmonic error, not just convergence:**
+  `volume1-first-principles/chapters/ch05-sequences-series.tex`,
+  `prop:gamma` (near lines685–702), proves the adjacent bounds
+  H_m−ln(m+1)≤γ≤H_m−ln m by integrating1/t over successive unit intervals.
+  Their difference is ln(1+1/m)≤1/m. Thus the O(1/m) error used in
+  `thm:hyperbola` follows from the *proof*, although the Volume 1 statement
+  itself says only o(1). Volume 2 now recalls these bounds and defines γ
+  before the theorem. Logarithm comparison uses the actual earlier
+  `prop:early-ftc`/`thm:mvt` calculus contract, not later analytic number theory.
+- **Absolute series and changing order:** same Volume 1 file,
+  `prop:signedseries` (near lines610–656) proves absolute convergence and
+  Cauchy products; `prop:safe-sums` (near lines668–676) proves positive double
+  sums and absolutely convergent rearrangements. Grouping by the *product*
+  dm rather than the *sum* d+m is not the Cauchy-product statement alone.
+  Chapter 4 `ex:coprimeprob` now supplies its exact local justification:
+  absolute mass outside a K×K square is at most2Z/K, and dm≤T contains
+  that square once T≥K². The convergence/tail estimate for Z=Σ1/n² is
+  also proved there by the finite telescoping comparison1/n²≤1/[n(n−1)].
+- **Basel value with an actual complete solution:**
+  `volume1-first-principles/chapters/ch03-polynomials.tex`,
+  `ex:basel`, full solution near lines697–726. It derives the finite
+  cotangent polynomial from the imaginary part of (cotθ+i)^(2m+1),
+  identifies its m distinct roots cot²(kπ/(2m+1)), uses Viète for their
+  sum m(2m−1)/3, and squeezes partial reciprocal-square sums between
+  the cotangent bounds whose limits areπ²/6. This is more than an
+  exercise prompt or Euler's heuristic sine-product introduction.
+  The internal proof was followed through its algebra and limiting
+  squeeze; no claim of a complete Volume 1 audit follows from this.
+- **Primitive-word uniqueness:** the previous Chapter 4 solution invoked
+  subgroups of Z/nZ and asserted the minimal period divides n.
+  The revised solution needs only **integer division**, already taught
+  in Volume 1 and re-proved in Volume 2 Chapter 1: two-sided periods
+  are closed under differences, so the remainder on division by the
+  smallest positive period must vanish. Bézout in Chapter 1 supplies
+  the independent common-period check. No unproved cyclic-group
+  classification or later primitive-root theorem is imported.
+
+These entries support the specific DEP-029 items only. P01 and the global
+first-use graph remain **IN_PROGRESS**; no chapter or volume is signed off.
+
+## Specific first-use reconciliation for DEP-024
+
+- **`prop:ringZn`:** Chapter 3's text defines congruence, equivalence classes, rings, fields and units **before** stating the quotient-ring proposition, with elementary Euclidean division proved in printed Chapter 1. At n=1, ring 0=1 is allowed; no field conclusion is drawn.
+- **`prop:units`:** Earlier Chapter 1 Bézout and Gauss' lemma supply exact gcd inverses. Euler's totient `φ(n)` is now explicitly defined **before its first use**, including `φ(1)=1`. The chapter visibly distinguishes `Z/1Z` from fields because their definition requires 0≠1.
+- **`thm:eulerthm`:** Chapter 3 introduces multiplicative units and their finite group *before* permuting them in the proof. Quantifier n≥1 is now explicit and the modulo-1 endpoint is handled. Independent order/orbit proof locally derives, rather than assumes, group order divisibility.
+- **`thm:wilson`:** The printed inverse-pair proof uses only the earlier proved field criterion; the *independent* polynomial proof uses Volume 1 `prop:rootsfactor` above and this chapter's already-proved Euler/Fermat theorem. Finite polynomial factorization over F_p is logically earlier than Chapter 3 Wilson.
+- **Chapter 2 optional `ex:furstenberg`:** Now states the complete elementary topology axioms in its own problem. Its basis/intersection and clopen-complement proof needs only the earlier gcd/FTA/Euclid division results; it does not presuppose a later topology chapter.
+
+## Specific first-use reconciliation for DEP-020
+
+- **Chapter 2 `thm:cheb` (i):** the proof uses only Chapter 1's FTA, the previously double-verified Chapter 2 `lem:binom` (odd central binomial bound), a finite induction from Volume 1, and finite products; the jump from integer `N` to real `x` is explicitly justified by `N=floor(x)` and monotonicity of `4^x`, already available from Volume 1's exponential definition.
+- **Chapter 2 `thm:cheb` (ii):** the central-binomial factorisation and bound `p^{v_p(B)}≤2n` are proved **before this theorem**; taking natural logs, monotonicity and differentiation for real `x` are supported by the precise Volume 1 proof sites above. The theorem's real-argument prime-count extension and concrete `x≥16` lower constant are derived inside this chapter, not from the as-yet-unproved prime number theorem (Volume 6).
+- **Chapter 2 `thm:bertrand`:** depends on `lem:binom`, the completed local `thm:cheb`, elementary derivative rules and log comparisons. *It is not itself yet verified twice*; evaluate every finite prime list and derivative bound separately before sign-off.
+- **Boundary:** This is an evidence-specific prerequisite check for the two named Chapter 2 theorems; the rest of the first-use and external-dependency graph still awaits review. Keep P01 incomplete.
+
+## Specific first-use reconciliation for DEP-018
+
+- **`pb:orchard` (a):** Although Volume 1 has determinant-as-area and rotation coordinates, it does not teach Minkowski's lattice-point theorem. The exercise itself proves the needed planar rectangular case by folding half a symmetric area-four rectangle into the integer unit square, with the closed boundary case treated by shrinking enlargements. No higher-dimensional Minkowski theorem or Volume 13 geometry is assumed.
+- **`pb:orchard` (b):** All terminology needed for projections/distances of rays is elementary Euclidean geometry; Volume 1 covers the plane rotation matrix and signed areas at the recorded proof site. The construction uses only the freshly proved (a), finite lattice norms and the fact that a nonzero integer vector has squared norm a positive integer.
+- **`pb:orchard` (c):** The determinant formula `|a−bR|/sqrt(R²+1)` follows from a two-dimensional area and base-times-height argument, available from Volume 1. An integer of magnitude at least 1 yields the ray gap; the edge case of a tree centre collinear with `(R,1)` is treated by directly computing the full length of integer multiples. No continued fractions or Dirichlet approximation theorem is used.
+- **Boundary:** This verifies named prerequisite proof locations for this single exercise, **not** Volume 2's global first-use graph, the actual embedded graphic, or any P01 whole-phase sign-off.
+
+## Specific first-use reconciliation for DEP-015
+
+- **`ex:t1-binomial-carry`:** Base-p digits are now defined in the question as the remainders of successive Euclidean divisions, avoiding an unstated place-value prerequisite. Legendre's finite factorial valuation was fully taught in this same printed chapter as `ex:zeros`; the alternative digit-sum formula follows directly from its proved sum and does not rely on Kummer's theorem.
+- **`ex:t1-euclid1071`:** The actual Euclid example preceding exercises has been changed to `(899,372)`, so the exercise `(1071,462)` is no longer exactly solved before it is asked. Extended Euclid, integer linear combinations and parameterisation of all solutions were developed earlier in this very chapter.
+- **`pb:valuation`:** Uniform finite models, expectations, indicators, the finite tail-sum identity, mutually independent events and finite inclusion–exclusion were **actually taught and proved** in Volume 1 at the locations above. For the full joint valuation statement, the current Volume 2 answer separately counts multiples of products of prime powers; the alternative periodic-residue proof constructs the needed finite coprime-residue correspondence from Bézout rather than importing the Chapter 2 Chinese remainder theorem.
+- **Boundary:** This is still a **partial** Volume 1-to-Volume 2 crosswalk. Numerical checks and proof-site existence for these specific prerequisites do not establish the proof graph for other chapters; keep P01 open.
+
+## Specific first-use reconciliation for DEP-013
+
+- **`ex:sqrt`** asks a new general fact but uses tools already proved both in Volume 1 (integer unique factorisation, rational-root proposition) and earlier in Volume 2 Chapter 1 (integer unique factorisation and valuation). Its proof explains `n=0` separately and needs no unproved algebraic-integer lemma.
+- **`ex:mersgcd`** uses only gcd preservation under differences, Euclidean descent, integer powers and the convention `gcd(c,0)=|c|` introduced earlier in the printed Chapter 1. A second verification may use Bézout to form modular inverses of 2 modulo an odd common divisor; this is deducible from earlier Bézout, not from a later primitive-root or group-order theorem.
+- **`ex:frob`** uses integer Bézout and Gauss' lemma to parametrise `ax+by=m`, both earned before the exercise. The second residue-class proof uses gcd(a,b)=1 to permute residues. For `a=1` or `b=1`, the “largest integer not representable” is literally `−1`, since every nonnegative integer is attainable and no negative one is.
+- **Boundary:** the crosswalk still needs source-by-source audit of Fibonacci/Binet, probability, broader trigonometry and integral uses, Basel's identity, all infinite-series operations, and every later chapter import. The specific integration-by-parts/Wallis proof sites now confirmed do not close those wider gaps. Do not tick P01 complete.
+
+## Specific first-use reconciliation for DEP-035 — second reciprocity proof
+
+- `volume1-first-principles/chapters/ch02-complex-roots.tex`, `prop:orth` (near lines 416–423), **proves** the finite root-of-unity geometric sum, including zero unless the exponent is divisible by the root order. Its full `ex:gauss` solution (near line 873) proves `|G|²=p` by a finite double sum; it does not pre-prove the signed value `G²=p*` used here.
+- `volume1-first-principles/chapters/ch03-polynomials.tex`, `ex:eisen` **full solution** (near lines 678–685), proves irreducibility of the prime cyclotomic `Phi_p` over `Q` by translating `X` to `X+1` and applying the proved Eisenstein criterion. The Chapter 6 Gauss-sum exercise separately derives the integral basis and `qZ[ζ] ∩ Z=qZ`; neither is silently imported.
+- **Boundary:** These exact earlier proof sites support the optional second route to quadratic reciprocity, not the whole Volume 1 prerequisite graph or Chapter 6 signoff. The printed lattice proof of the theorem needs only the locally proved Euler/Gauss/Eisenstein results.
+
+## Next crosswalk tasks
+
+Read `ch02-counting.tex`, `ch05-sequences-series.tex` (including Fibonacci and convergence), `ch06-integrals-taylor.tex` (including Basel/areas), `ch09-probability.tex`, and the final Volume 1 field guide. Add exact proof labels and first-use sites; do not trust titles or a pre-existing audit. Check whether a result was only an **exercise prompt**, has an actual complete supplied solution, or has a proved main-text argument. Recheck the full new manuscript first-use graph after each structural change.
+
+
+## DEP-061 — additional actual source sites and local definitions
+
+- Read `ch02-complex-roots.tex`'s exponential definition and `prop:expform`
+  (near lines188–225): multiplication of exponentials is derived from the
+  sine/cosine addition formulas, and the modulus of a pure phase is proved1.
+  This supports the explicitly defined complex n^(-s) in `pb:powerful`;
+  no complex-analytic convergence theorem is imported.
+- Read `ch05-sequences-series.tex`'s reminder near lines178–192: it defines
+  O,o and~ for sequences and functions, including the sufficiently-large
+  quantifier. Chapter1 now also explains its O(log b) bound locally.
+- Read the full Binet remark near line770 of `ch01-sums.tex`: the two-root
+  formula is proved by the recurrence and initial values, rather than
+  asserted as a heuristic. Chapter1 now recalls F0=0,F1=1 before Lamé.
+- Read the subgroup subtraction test near line350 of
+  `ch02-complex-roots.tex` and `orders:def:poset` plus the divisor example
+  in `orders.tex`. The integer-combination and divisor-order claims are
+  independently proved in Volume2 as well.
+- Rational valuations and their nonnegative-integrality criterion are now
+  explicitly defined/proved in Chapter1 before `ex:supercat`; no Volume1
+  proof of that extension is assumed. Representation independence follows
+  by cross-multiplication and integer valuation additivity.
+
+These are checked source sites, not whole-volume or external approval.
+
+## DEP-063 — totient proof found, Carmichael attribution repaired
+
+- Read `volume1-first-principles/chapters/ch02-counting.tex`, `ex:phi`
+  near line439 and its complete solution near594. Finite inclusion–exclusion
+  over the distinct prime factors gives the exact product, explicitly
+  handling n1. This supports Chapter3's genuine earlier-volume attribution.
+- Checked `ch01-sums.tex` and searched actual Volume1 chapter sources for
+  Carmichael/561; the Chapter3 prompt's claimed sums-chapter example was
+  absent. Removed that attribution and defined squarefree and Carmichael
+  number in the problem itself, with the needed unit cancellation in its
+  solution. An earlier source label is not invented to fill the gap.
+- Added F_p=Z/pZ and the modular fraction convention before their first uses
+  in Chapter3, with representation independence proved by cross multiplication.
+  The F5 cubic bijection example now supplies its own inverse via Fermat,
+  avoiding an implicit later power-map criterion.
+
+These are internal source/dependency repairs, not final whole-book approval.
+
+## DEP-069: irrationality used in the continued-fraction comparisons
+
+Read the actual exercises and complete supplied proofs in
+`volume1-first-principles/chapters/ch06-integrals-taylor.tex`:
+`ex:eirr` (prompt near620, proof798–805) and `ex:niven` (prompt680,
+proof895–905). The factorial-tail argument assumes e=p/q, produces an
+integer q! times the positive tail, and bounds it strictly below1 by
+a geometric series, including q1. Niven's proof verifies integer endpoint
+derivatives of its polynomial, telescopes F''+F=f under integration by
+parts, and makes a positive integer integral tend to0 by factorial
+domination. The derivative/integral/series inputs were proved earlier
+in the actual Volume1 reading route. These are genuine proved imports for
+the Chapter9 comparisons with e and pi, not inferred from chapter titles
+or from numerical continued-fraction experiments. No transcendence theorem
+is imported; the later e/pi transcendence sentence remains historical
+outlook. The Liouville number's irrationality and transcendence are proved
+locally in the keyed exercise.
+
+### DEP-071: logarithmic remainder in the optional boundary preview
+
+Read the actual Volume1 `ch06-integrals-taylor.tex` inverse-derivative proof
+and logarithm check (near lines31–46), the stated elementary-function
+assumptions that follow it, and `prop:inttools`' pointer to the actual earlier `prop:early-ftc` proof
+in `ch05-sequences-series.tex` (near529–548), including both signs of the
+increment and the mean-value consequence.
+They give ln'(x)=1/x and the integral of a continuous derivative. The new
+local identity −log(1−t)−t=integral(0,t) u/(1−u) du therefore needs no
+unproved infinite logarithmic series or later analytic theorem. For real
+abs(t)≤1/3, direct integration of the absolute bound gives at most3t²/4.
+At t=chi4(p)p^(−s), p odd,s>1, this supplies a uniform finite error bound
+by the already proved p-series. The separate boundary-continuity/nonvanishing
+step is explicitly conditional and deferred, not silently certified.
