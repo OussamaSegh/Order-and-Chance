@@ -30,6 +30,20 @@ def tree_size(p):
 
 
 class CarmichaelPrattChecks(unittest.TestCase):
+    def test_square_unit_hint_distinguishes_small_two_powers(self):
+        # The square subgroup has indices1,2,4 at moduli2,4,8;
+        # index4 is valid only from the third power onward.
+        for k in range(1, 10):
+            n = 2**k
+            units = [a for a in range(n) if math.gcd(a, n) == 1]
+            square_units = {a*a % n for a in units}
+            self.assertEqual(len(units) // len(square_units), 2**min(k-1, 2))
+        source = (Path(__file__).resolve().parents[1] /
+                  'volume2-integers/chapters/ch06-quadratic-reciprocity.tex').read_text()
+        hint = source.split(r'\begin{hint}{pb:squaresmodpk}', 1)[1].split(r'\end{hint}', 1)[0]
+        self.assertIn('modulo $2$ and $4$', hint)
+        self.assertIn(r'\ell\ge3', hint)
+
     def test_strong_liar_count_and_bound(self):
         for n in range(9, 1001, 2):
             if prime(n):
