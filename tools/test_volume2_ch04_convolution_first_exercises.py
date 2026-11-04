@@ -32,12 +32,6 @@ def mobius(n):
     return sign
 
 
-def omega(n):
-    return sum(abs(mobius(d)) for d in divisors(n) if d > 1
-               and all(d % q for q in range(2, math.isqrt(d) + 1))
-               and d != 1)
-
-
 def convolve(f, g, n):
     return sum(f(d) * g(n // d) for d in divisors(n))
 
@@ -105,14 +99,14 @@ class TestChapterFourFundamentals(unittest.TestCase):
     def test_source_has_first_use_and_four_matched_items(self):
         s=SOURCE.read_text(encoding="utf-8")
         for key in ("prop:conv","thm:mobius","ex:360","ex:muid"):
-            self.assertEqual(s.count(r"\\label{"+key+"}"),1)
+            self.assertEqual(s.count(r"\label{"+key+"}"),1)
         for key in ("ex:360","ex:muid"):
-            self.assertEqual(s.count(r"\\begin{hint}{"+key+"}"),1)
-            self.assertEqual(s.count(r"\\begin{solution}{"+key+"}"),1)
-        self.assertLess(s.index(r"\\label{prop:conv}"),
-                        s.index(r"\\label{thm:mobius}"))
-        self.assertLess(s.index(r"\\label{thm:mobius}"),
-                        s.index(r"\\label{ex:360}"))
+            self.assertEqual(s.count(r"\begin{hint}{"+key+"}"),1)
+            self.assertEqual(s.count(r"\begin{solution}{"+key+"}"),1)
+        self.assertLess(s.index(r"\label{prop:conv}"),
+                        s.index(r"\label{thm:mobius}"))
+        self.assertLess(s.index(r"\label{thm:mobius}"),
+                        s.index(r"\label{ex:360}"))
 
 
 if __name__=="__main__":
