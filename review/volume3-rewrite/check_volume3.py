@@ -910,7 +910,7 @@ def main() -> None:
     check_even_involutions_s6()
     check_nilpotent_kernel_growth()
     print(f"Volume 3 checks PASS: {labels} labels, {refs} references, {figures} figure inputs; {rewritten_count} rewritten solutions, {pending_count} still needing rewrite")
-    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} pending editorial rewrite; independent sign-off is tracked separately")
+    print(f"Theorem proof inventory: {theorem_rewrites} editorial rewrites recorded, {theorem_pending} pending editorial rewrite; fresh internal mathematical review is tracked separately")
     print("PASS: necklaces; cube rotations; quintic; Reed-Solomon; walk; Sylow; A_n commutators; A5 classes; S4 characters; F4; fifteen-puzzle parity and loops; quaternion norms")
 
 

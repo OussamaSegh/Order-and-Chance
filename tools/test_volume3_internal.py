@@ -15,6 +15,7 @@ import check_chapter6
 import check_chapter7
 import check_chapter8
 import check_chapter9
+import check_chapter10
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -86,6 +87,12 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter9.check_codes()
         check_chapter9.check_recurrences_and_trace()
         check_chapter9.check_moore()
+
+    def test_galois_fixed_fields_periods_and_prerequisite_order(self):
+        check_chapter10.check_actual_lattice()
+        check_chapter10.check_periods_and_counts()
+        check_chapter10.check_quintic_plot()
+        check_chapter10.check_earned_order_and_local_cosine()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

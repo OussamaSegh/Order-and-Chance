@@ -345,3 +345,60 @@ Latest main fetch still7f87c2ab00fdb0c7791dc833423b98bef0870f01; no concurrent
 advancement seen. Inspected CI60da run41912600155: list/unit/config/math and
 Volume3 build/output jobs successful; site validation still running at observation.
 No terminal final-head acceptance; cache saves remain main-only. Continue C10.
+
+## V3-011: complete Galois/radicals route and exact field lattice
+
+Read all C10 main prose,13 named proofs,11 prompts/hints/full solutions and both
+figure sources. Fresh first reconstructions precede supplied-answer comparison,
+except the disclosed earlier ex:phin/pb:kronecker exposure. Explicit keyed A/B
+records accept13 named and11 exercises internally:98/155 and101/163 overall.
+Global unnamed/context/history closure is still pending; no inventory approval.
+
+Moved the complete ex:phin triple into the cyclotomic section before its general
+degree, polygon and later problem uses. Earned both directions of constructibility
+classification, every radical-envelope radicand and cyclic Kummer step, repeated-
+series cleanup/termination and degree≤4 consequence. Preserved the existing
+K⊆L⊆C contract, with an explicit inseparable splitting-field counterexample
+outside it. Corrected normality prose and distinct-root/nonzero-polynomial domains.
+No named theorem was weakened to avoid its proof. The Niven solution now uses a
+complete local recurrence instead of future algebraic-integer closure; Ramanujan's
+cosine cubic and later Gauss-period tower assertions are earned locally. Two-star
+q235 grade reflects field independence plus classification. All163 triples remain.
+
+Found a real gap in the quintic direct separability check: it checked only real
+zeros of a derivative with four complex zeros. Repaired for arbitrary complex
+common root, and retained the prior char0 irreducibility/separability argument.
+Also earned the stronger exclusion of an individual radical root via its normal
+solvable envelope. Prime-cycle plus transposition proof uses primality explicitly;
+exact composite-degree counterexample and every p2/3/5 transposition corroborate.
+
+Exact Q-algebra computations check all10 fixed fields, generated-field degrees,
+fixed-space dimensions and all15 inclusion edges in each lattice panel. Recompute
+all period table entries/cross-sums, multiquadratic field counts, quintic root
+markers and220 plotted values. Separate symbolic checks expand Cardano,
+discriminant, two Ramanujan eliminations and Sturm counts; support is recorded
+as computation, not proof certification. Actual V1 IVT/EVT/Rolle proof chain and
+C5 subgroup/solvability proofs were read. Primary Galois scans distinguish the
+1830 article,1831 printed preface,1832 letter and1846 memoir publication; no
+autograph or entire historical proof audit claimed. C9 historical copy clarified.
+
+477 full unit tests pass, zero skips52.185s (`/tmp/volume3-v011-final-tests.log`).
+Focused C1–10, historical checker, inventory/freshness and whitespace pass. Old
+cyclotomic placement fails the new prerequisite-order regression; current passes.
+Historical checker wording now describes fresh internal mathematical review,
+with assertions unchanged. Characteristic/first-use/history/global voice and
+remaining C11–12/all four appendices still need complete work.
+
+Immutable494a7fef272e15822fef6f9a119d79d79c6ce560 PDF-only build completed:
+482 reading/481 print pages, KDP482 pages,1.1313-inch spine and matched same-build
+wrap15.3813×10.25in. Actually opened print237/246/247 and read every item there;
+primitive distinction, decoding and complete AES certificate fit. Manifest gives
+identities and exact observations; only these pages count. It predates C10 and
+the C9 historical-copy edit. No final artifact/EPUB/reader approval transferred.
+
+Fetched main still actual PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
+CI494a run41916257153 has successful list/unit/config/math and debs jobs;
+V3 all-format build in progress at observation. Earlier PR runs auto-cancelled
+on pushes; no main/unrelated run cancelled. Main-only library cache rule remains.
+Continue C11, then C12 and all four appendices, then remaining global/production
+gates. This checkpoint is not completion or authorization to merge early.

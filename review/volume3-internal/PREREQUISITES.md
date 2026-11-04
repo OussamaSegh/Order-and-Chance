@@ -205,3 +205,40 @@ factorization theorem and a complete polynomial identity.
 Story: finite root fields answer C8's construction question, then polynomial
 root bounds earn error correction. C10 will generalize the observed finite
 symmetry/subfield pattern; its correspondence is mentioned here only as outlook.
+
+## V3-011 — Galois route, real-root tools and complete radical steps
+
+Read actual V1 ch05 `prop:seqcrit` peak/subsequence and adjacent-sequence proofs,
+elementary differentiation, IVT bisection, EVT subsequence and Fermat/Rolle/MVT
+proofs. These supply exactly the sign-change/root-count arguments in both
+quintics; no later analysis volume supplies a premise. The source was already
+hash guarded. Reopened actual C5 `cor:pk` full central-quotient induction and
+`prop:solv` full subgroup/quotient/extension proofs and S4 series for the group
+steps. Earlier C8 splitting-isomorphism extension proves each conjugate exists
+in the radical envelope; it is not inferred from the word normal.
+
+Moved the entire ex:phin prompt/hint/solution into the cyclotomic section before
+the general degree, full polygon converse and later problems. Stable keys and
+all three parts remain. Its Gauss/reduction/squarefree proof uses only C6–9;
+later work no longer treats an exercise prompt as a proved tool. A focused
+ordering regression fails on the old location and passes on the move.
+
+The correspondence is proved under the existing K⊆L⊆C contract. An explicit
+Fp(t^(1/p)) example shows why the same splitting-field equivalence would fail
+without separability outside that contract. Restriction maps are earned before
+quotient claims. Radical envelope ordering supplies every previous conjugate;
+successive Galois steps need not all be normal over the initial field. Empty
+towers, repeated group-series terms and termination are now explicit.
+
+Niven's full prompt/solution remains, with monic cosine recurrence/rational-root
+proof replacing future C11 algebraic-integer closure. Ramanujan's heptagon cubic
+is derived locally; a false claim that it was derived earlier in C10 is removed.
+Kronecker now explicitly earns eigenvalue multiplicities of companion powers
+through the actual C7 triangular/Jordan result. Main future Dedekind reduction
+comparison is a marked outlook after the complete local finite-field argument.
+
+Story: C10 answers which splitting fields admit radical towers, including the
+precise quintic obstruction, then asks how arbitrary groups act by matrices and
+what traces remember. This matches the actual C11 opening, which was read.
+Langlands/Shafarevich/current-open-status catalog is replaced by that earned
+transition plus a posed inverse-Galois further-reading question; no theorem lost.

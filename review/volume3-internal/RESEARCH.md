@@ -100,3 +100,22 @@ This read does not audit the full cipher implementation or its security.
 Both primary sources are added to the bibliography (105→107 entries). Accessed
 4November2026. Historical finite-field/Galois/Moore attributions remain pending
 their separate source review.
+
+## H-C09/10-GALOIS — dates distinguished from actual printed text
+
+Read Liouville's1846 collection at
+https://www.numdam.org/item/JMPA_1846_1_11__381_0.pdf : opening editorial
+pp381–384; finite-field article opening and argument pp398–402; Chevalier letter
+date p415; memoir preface p417 and end p433. Actually opened scans of pp398,
+415,417. The finite-field footnote identifies June1830, Bulletin XIII p428.
+The printed preface says16January1831; its editorial note says it was crossed
+out in the manuscript. Liouville records submission17January. The letter is
+dated29May1832; the memoir appears in November1846. These are distinct events.
+No autograph manuscript was inspected. C10 bibliography now identifies the
+preface's date precisely; C9 copy distinguishes publication histories. The
+separate Ehrhardt commentary PDF returned502 and is not claimed read.
+
+Local PDF: `/workspace/volume3-review-sources/Galois-1846-381-444.pdf`,2582693bytes,
+SHA256 `f351b61639757abebb5c0f98937822c22e40ccdf60762da130708ae26ba60319`.
+This checks attribution/context, not all original proofs or every historical
+priority claim. Other bibliography/history rows remain pending.

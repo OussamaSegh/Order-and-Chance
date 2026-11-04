@@ -56,20 +56,20 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-010
+## Active checkpoint V3-011
 
-Chapters1–9 have complete source-level mathematical reads and explicit A/B
-records:85/155 named results and90/163 exercise triples accepted internally.
-Their unlabelled reasoning has been read in context; keyed global exposition,
-conceptual edges and history closure remain separate pending gates. Next is
-Chapter10, including the relocated Kronecker problem, then Chapters11–12 and all
-four appendices. No mathematical status is inherited from an editorial rewrite.
+Chapters1–10 have complete mathematical source reads and explicit A/B records:
+98/155 named results and101/163 exercise triples accepted internally. Keyed
+unnamed exposition/concept edges/history closure is a separate pending gate,
+even where its full source was read. Next C11 representations/characters, C12
+quaternions/rotations and all four appendices. No editorial rewrite status was
+inherited. Named targets remain earned rather than weakened.
 
-User's curricular freedom has been applied to earned local proofs, a justified
-exercise relocation and a complete constructive primitive-element replacement,
-with old/new statements and losses disclosed. Intended major results remain.
-Final whole-book written voice/story pass, remaining primary-source checks,
-all-page/grayscale/facing-page/digital inspection, exact links/disclosures and
-final-head CI/artifact comparison remain open. Immutable preliminary packages
-have only their explicitly opened pages approved; none is the final candidate.
-Continue authorized work through the full job; this checkpoint is not completion.
+Curricular freedom has supplied local proofs, moved complete prerequisite
+problems before their invocations and replaced a duplicate exercise with a
+complete constructive/inseparable challenge. All moves/replacements and losses
+are disclosed. C10 now matches the actual C11 matrix/trace opening; the full
+whole-book written voice/story pass remains open. Final all-page, grayscale,
+facing/digital, link/disclosure and exact-head CI/artifact comparison also remain.
+Preliminary packages have only explicitly opened pages approved, with no transfer
+without pixel/file identity. Continue the whole authorized job; do not merge yet.
