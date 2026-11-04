@@ -35,8 +35,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 5 | `thm:cyclic` | Gauss | Exact-order classes saturate the polynomial root bound | Independent maximal-order/prime-power enlargement argument | VERIFIED_TWICE | DEP-030: p=2, all divisor classes; field root bound established locally |
 | 5 | `lem:lift` | lemma | Binomial induction with all higher terms divisible by p^(k+2) | Independent difference-of-pth-powers factor valuation | VERIFIED_TWICE | DEP-030: odd p including 3, k=1, negative g allowed |
 | 5 | `thm:cyclicn` | theorem | Primitive-root lifting and four-involutions obstruction | Independent order-factor/CRT and exhaustive prime-power-type partition | VERIFIED_TWICE | DEP-030: n=1,2,4; p odd; split into coprime factors made explicit |
-| 5 | `thm:twopower` | theorem | — | — | UNREVIEWED | — |
-| 5 | `cor:mod8squares` | corollary | — | — | UNREVIEWED | — |
+| 5 | `thm:twopower` | theorem | Inductive exact valuation of 5^(2^m)−1, order and distinct sign cosets | Independent repeated-factor valuation and direct kernel-of-reduction count | VERIFIED_TWICE | DEP-031: k=3 boundary; 5 powers all 1 mod4; unique representation |
+| 5 | `cor:mod8squares` | corollary | Even exponents in the unique (−1)^a5^b form | Independent root-lifting toggle from mod8 through every 2-power | VERIFIED_TWICE | DEP-031: k=3, arbitrary unit class; four square cosets |
 | 6 | `thm:eulercrit` | Euler's criterion | — | — | UNREVIEWED | — |
 | 6 | `thm:gausslemma` | Gauss' lemma | — | — | UNREVIEWED | — |
 | 6 | `cor:two` | corollary | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **27/72** rows are `VERIFIED_TWICE` at DEP-030; **45** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **29/72** rows are `VERIFIED_TWICE` at DEP-031; **43** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

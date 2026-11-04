@@ -69,8 +69,8 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 5 | `ex:period` | ★ | Long-division remainders and divisibility by 10^k−1 | Independent repetend block fraction and residue-transition argument | Chapter 5 order theorem, Chapter 2 modular arithmetic | VERIFIED_TWICE | DEP-030: 1/7 period6, 1/17 period16; p=2,5 excluded |
 | 5 | `ex:fermatfactor` | ★★ | Exact order of 2 is 2^(n+1) | Independent factorization of X^(2^n)+1 and order-divisor check | Chapter 5 order theorem | VERIFIED_TWICE | DEP-030: n=0, p=3; 641 divides F_5, no primality assumption |
 | 5 | `ex:powersum` | ★★ | Geometric sum over a primitive root | Independent scaling-permutation and polynomial-root witness | Chapter 5 cyclic prime theorem, field cancellation | VERIFIED_TWICE | DEP-030: k=0 and p=2 included; no division by zero |
-| 5 | `ex:kth` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:gausswilson` | ★★★ | — | — | — | UNREVIEWED | — |
+| 5 | `ex:kth` | ★★ | Discrete logarithm and linear congruence with d roots | Independent kernel/image count plus field polynomial root bound | Chapter 5 cyclic prime theorem and Chapter 2 linear congruences | VERIFIED_TWICE | DEP-031: p=2, d=1 or p−1, p∤a; iff criterion |
+| 5 | `ex:gausswilson` | ★★★ | Inverse pairing, four-element cosets of self-inverse subgroup | Independent global involution pairing with even pair count | Chapter 5 cyclic modulus theorem and locally introduced cosets; no Volume 1 vector-space basis | VERIFIED_TWICE | DEP-031: n>2, cyclic exactly two roots, noncyclic at least four; source proof simplified |
 | 5 | `ex:cyclotomic` | ★★★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:t1-units16` | ★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:t1-square-cosets` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-030, 71/144 are checked twice internally and 73 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-031, 73/144 are checked twice internally and 71 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

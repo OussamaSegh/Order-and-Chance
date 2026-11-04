@@ -61,6 +61,29 @@ class Chapter5OrderChecks(unittest.TestCase):
                 self.assertEqual(sum(pow(x, k, p) for x in range(1, p)) % p,
                                  expected % p)
 
+    def test_two_power_structure_and_squares(self):
+        for k in range(3, 11):
+            n = 2**k
+            forms = [(-1)**a * pow(5, b, n) % n
+                     for a in (0, 1) for b in range(2 ** (k - 2))]
+            self.assertEqual(len(set(forms)), 2 ** (k - 1))
+            self.assertEqual(set(forms), set(range(1, n, 2)))
+            squares = {x * x % n for x in range(1, n, 2)}
+            self.assertEqual(squares, set(range(1, n, 8)))
+
+    def test_kth_roots_and_unit_product(self):
+        for p in (2, 3, 5, 7, 11, 13, 17, 19):
+            for k in range(1, 2 * p):
+                d = math.gcd(k, p - 1)
+                for a in range(1, p):
+                    count = sum(pow(x, k, p) == a for x in range(1, p))
+                    self.assertEqual(count, d if pow(a, (p - 1) // d, p) == 1 else 0)
+        for n in range(3, 121):
+            units = [x for x in range(n) if math.gcd(x, n) == 1]
+            product = math.prod(units) % n
+            cyclic = any(order(a, n) == len(units) for a in units)
+            self.assertEqual(product, (-1 if cyclic else 1) % n)
+
 
 if __name__ == "__main__":
     unittest.main()
