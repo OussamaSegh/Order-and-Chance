@@ -12,6 +12,7 @@ import check_chapter3
 import check_chapter4
 import check_chapter5
 import check_chapter6
+import check_chapter7
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -66,6 +67,11 @@ class Volume3InternalReview(unittest.TestCase):
             lines=(volume3_inventory.ROOT/row["path"]).read_text().splitlines()
             actual="\n".join(lines[row["line"]-1:row["end_line"]])
             self.assertEqual(actual.count(r"\item"),1,row["id"])
+
+    def test_module_forms_tables_and_earned_problem_location(self):
+        check_chapter7.check_actual_smith_and_table()
+        check_chapter7.check_jordan_and_units()
+        check_chapter7.check_migration_and_zero_scope()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

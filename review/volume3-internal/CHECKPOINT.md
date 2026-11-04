@@ -1,4 +1,4 @@
-# Exact restart — V3-007
+# Exact restart — V3-008
 
 Repo /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104, draft PR104:
@@ -7,20 +7,27 @@ PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01, still current after fetch.
 User authorizes structural/content changes where justified, full solo internal
 review and final merge only when genuinely complete. No outside reviewer needed.
 
-Chapters1–6 complete mathematical source reads;50named/61exercise explicit A/B
-records accepted internally. Others pending: C7–12/all four appendices, global
+Chapters1–7 complete mathematical source reads;60named/69exercise explicit A/B
+records accepted internally. Others pending: C8–12/all four appendices, global
 conceptual edges/unnamed prose/history registers, whole-book voice/narrative,
 final all-page/digital/actual CI artifacts. Do not infer approval from inventory.
 The new bibliography item raises count104->105;155named163triples22examples22
 figures unchanged. Freshness guards protect source/proof/hint/solution/context and
 earlier-source hashes. Source edits reopen affected evidence. No formal/human claim.
 
-Next: read C7 actual full main route and prompts BEFORE supplied hints/solutions.
-No C7 source reading or reconstruction yet. General PID Smith termination and
-uniqueness, module/free/basis distinctions, rational/Jordan form hypotheses are
-priorities. Keep source chunks before Hints/Solutions when recording prompt-first.
-C6 exposure honestly recorded: first six solutions shown in a source chunk before
-permanent reconstruction; last two recorded prompt-first. CH06-REVIEW.md complete.
+Next: C8 full mathematical/source reading. Read only main/prose/prompts first:
+locate exact Hints/Solutions line numbers before sed chunks so they cannot cross
+that boundary. C7 source chunks crossed it; honest exposure report already made,
+not a blinded reconstruction. No C8 full reading/reconstruction yet. Only C8
+cyclotomic-keyword search and a few summary snippets previously encountered.
+
+C7 earned generalPIDSmith termination withoutEuclidean norm, torsion uniqueness,
+module/directsum/minimalpoly definitions and n0canonicalforms. Fullnamed/exercise
+records in CH07-REVIEW.md. Complete Kronecker triple moved C7->C10 afterex:phin;
+allparts/gradepreserved, cprooflocallyrepaired. Migrationmaprecordsallold/newIDs;
+historicalrewriteledgerlocationonlyupdated. MovedproblemstillpendingC8–10audit.
+ActualC10ex:phinprompt/fullsolutionread; notwholechapterapproval. C6exposure
+andolderC5/C4reports remainaccurate at their checkpoints.
 
 C5 complete in CH05-REVIEW.md/CH05-PROMPT-FIRST.md. Independent computations in
 check_chapter5.py. Corrected finite assumptions, early characteristic vocabulary,
@@ -30,8 +37,8 @@ V2 ch05 thm:cyclic proof. Primary-source check corrected outdated group1024 coun
 to49,487,367,289; RESEARCH.md documents attribution/access/enumeration limits.
 
 Activate source /workspace/volume3-tools/activate.sh (calls required activation).
-473 full unit tests passed zero skips (52.633s), log/tmp/volume3-v007-tests.log.
-Focused C1–6/source/freshness/inherited checks pass. --require-complete stillfails.
+474 full unit tests passed zero skips (50.980s), log/tmp/volume3-v008-tests.log.
+Focused C1–7/source/freshness/inherited checks pass. --require-complete stillfails.
 Inventory bibliography inclusive end coordinates repaired and before/after tested;
 sourcehash changes reopen evidence; attribution remains pending. Corry host/year
 corrected via actual article/institution record; RESEARCH.md gives access limits.

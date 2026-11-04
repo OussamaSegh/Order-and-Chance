@@ -229,3 +229,34 @@ corrected necklaceplate),111(label101,fullnewcyclotomicreminder),112(label102,
 exercise/hints). Record contains precise observations/hashes; allotherpages and
 reader/EPUBbrowserviews pending. No transfer to currentC5/C6 source orreadingPDF
 without identityevidence. Earlier8135pageevidence staysseparate. NoassignedISBN.
+
+## V3-008: module/canonical-form review and an earned challenge placement
+
+Full C7 mathematical source reading, ten named proofs and eight retained exercises
+have substantive A/B records; exposure limits are explicit (no documented blinded
+solution claim). Current manual mathematical coverage60/155named and69/163exercises.
+General Smith termination/uniqueness and PID module structure reconstructed by
+both factor-count and ascending-ideal routes, with intrinsic torsion filtrations
+for uniqueness. Prose that incorrectly said generalPID uses division/remainder
+was corrected; no Euclidean restriction substituted. Modulequotients, direct sums,
+polynomialactions and minimalpolynomial are now defined/earned before invocation.
+Zero-dimensional matrices haveemptyblocks,mu=chi1,Delta0=1; original undefined
+lastfactorformula is not certified forr0. Jordan/splitting/char assumptions checked.
+
+Used curricular freedom: complete pb:kronecker prompt/hint/solution moved intact
+C7->C10 immediately after ex:phin, because its original proof used that later
+cyclotomic irreducibility. Replaced its additional C11algebraic-integer premise
+with localGaussdivisibility/leading-coefficient contradiction. Allthreeparts,
+grade,163exacttriples preserved. Old/newIDs mapped explicitly; historicalrewrite
+ledger onlylocationupdated, not mathematicalapproval. The moved problem remains
+pending full C8–10 prerequisite review, despite a fresh reconstruction in C7report.
+
+Every actualSmithdiagram arrow/matrix and minors2,12,144 recomputed. Actual360
+classificationtable parsed/rechecked; Jordan kernel patterns forpartitionsn0..7
+computed by independenteliminationinchar2/3/5; all96units360giveexponent12 and
+powersof2unitgroupscheckedthrough2^13. ActualV1d'Alembertproofread, including
+closed-discsubsequence/globalminimum/localtermdescent, forcomplexsplitting.
+474 unit tests pass, zero skips (50.980s); inheritedV3/focusedC7/inventory/freshness
+and whitespace checks pass. No C7 or movedC10 final rendering evidence yet.
+Main still PR103merge atlastfetch; current fetch/main relationshipcheckedbeforepush.
+C8actualfullreading and remainingbook/appendix/production gates continue next.

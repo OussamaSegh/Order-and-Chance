@@ -1,7 +1,7 @@
 # Conceptual prerequisite and story ledger
 
-V3-006. This ledger is incremental. Chapters1–6 have complete mathematical
-readings recorded; Chapters7–12 and all appendix argument routes remain pending.
+V3-006. This ledger is incremental. Chapters1–7 have complete mathematical
+readings recorded; Chapters8–12 and all appendix argument routes remain pending.
 A backward-reference scan is not a conceptual audit.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
@@ -113,3 +113,33 @@ Story: C6 diagnoses the failedfactorizationof6, then ideals/quotients translate
 prime/maximal questions, then distinguishes ED/PID/UFD and earns polynomial
 factorisation. C7 can now ask what a matrix of relations over a PID can encode.
 Its actual full route is next; no C7 prerequisite approval inherited.
+
+## V3-008 additions and curricular migration
+
+- C7 now defines module subobjects/scalar quotients, finite direct sums and
+  polynomialP(A)action before invocation. Rank proof explicitly concerns finite
+  bases and extends actual inverse matrices to C6's proved fraction field.
+- Smith uses PIDBezout and finite irreducible-factor descent (or C6ascending-ideal
+  termination), not a general Euclidean norm. Minors' invariance covers arbitrary
+  invertible row combinations, including Bezout2rowchanges. Delta0/zerorank
+  and matrixdimension0 explicitly handled.
+- Torsionclosure and R/p scalar structure of layers are earned before uniqueness.
+  Presentation byXI-A precedes local annihilator-ideal/minimal-polynomial
+  definition, companion form and Cayley–Hamilton; no use in own proof. Jordan
+  notation is introduced before invocation. n0meansmu=chi1andemptyblocks/basis.
+- ActualV1 ch03 thm:dalembert global-minimum/first-nonconstant-term proof read
+  for complex splitting. Its closed-disc argument explicitly derives a convergent
+  subsequence in real and imaginary coordinates, rather than assuming a later
+  multivariable compactness theorem.
+- Kronecker triple pb:kronecker moves intact C7->C10 after ex:phin, whose actual
+  solution was read: prime raising via reduction/squarefreeX^n-1 forces all
+  primitive roots into the minimal polynomial. Full C8–10 dependency audit still
+  pending; this read is not whole-chapter approval. Partc now elementary C6Gauss
+  divisibility/leading coefficient, eliminating C11closure premise. All old/new
+  syntheticIDs mapped in V3-008-curricular-migration.json; no approval transferred.
+
+Story: C7 answers the two opening questions through integer/polynomial modules,
+then distinguishes rational form from Jordan's splitting requirement. C8 asks how
+to obtain fields in which irreducible polynomials gain roots. The moved Kronecker
+problem will join that later field route after cyclotomic irreducibility has
+actually been earned. No mathematical part was removed to avoid the dependency.
