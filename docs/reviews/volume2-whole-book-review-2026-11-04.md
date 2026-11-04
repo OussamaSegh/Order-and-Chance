@@ -21,7 +21,8 @@ review are separate obligations. All entries here are internal checks.
 | 7 | IN_PROGRESS: DEP-067 complete source and unnamed arguments | VERIFIED_TWICE internally for six examples and three datasets | IN_PROGRESS: withdrawn research claim removed; targeted sources checked; full history pending | All three standalone plates inspected; whole current-source chapter remains UNREVIEWED |
 | 8 | IN_PROGRESS: DEP-068 complete source and unnamed arguments | VERIFIED_TWICE internally for15 examples and three full datasets | IN_PROGRESS: targeted current/official sources checked; full bibliography pending | Three standalone plates rendered/inspected; current full-page placement pending |
 | 9 | IN_PROGRESS: DEP-069 full source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted original/revised sources checked; full bibliography pending | Four standalone plates inspected; latest full-page review pending |
-| 10–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 10 | IN_PROGRESS: DEP-070 complete source and unnamed arguments | VERIFIED_TWICE internally for eight examples and three full datasets | IN_PROGRESS: current moat/edition claims checked; original history pending | All three revised standalone plates inspected; full-page review pending |
+| 11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -857,3 +858,65 @@ and viewed: full-data liar plot, new85/four-square page, stacked chord/Markov
 plate and conic charts fit without observed clipping/overlap. This is a scoped
 sample covering Chapters1–8 edits, predating C09; it is not all-page approval.
 Build log:`/tmp/pr103-volume2-build-681b4b55.log`.
+
+
+## C10 — Gaussian and Eisenstein integers, DEP-070
+
+Read the complete746-line source before edits, all eight prompt/hint/idea/
+writeup groups and bibliography; all three figures' construction and every
+plotted coordinate were checked. Nine named/eight keyed results retain their
+separate entries. Whole-source coverage through Chapter10 is84/97 examples
+and35/39 datasets internally, without chapter or global acceptance.
+
+| ID | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C10-U01: rings, divisibility and first use | Each displayed quadratic relation reduces a product to two integer coordinates. Conjugation preserves those coordinates, and z·conj(z) gives the three positive integer norms. The complex subrings have no zero divisors, so cancellation holds independently of inverses. | Expand products in the coordinate basis and verify norm multiplication as an integer polynomial identity. The norm1 equations give4,6,2 units respectively. Added the ring meaning of divides; defined ramification at its first example, limited valuations to nonzero elements/associate classes and power extraction to integer k≥1 with nonzero inputs. Actual Volume1 conjugation/root-of-unity sites are in the crosswalk. | VERIFIED_TWICE internally |
+| C10-U02: rounding estimates and example chains | Coordinate rounding bounds each residual coefficient by1/2. Gaussian square norm≤1/2, Eisenstein quadratic≤3/4 (maximum at box corners), sqrt−2 norm≤3/4, all strictly below1. The remainder norm is norm(b) times this quantity. | Independently use covering rectangles/rhombi with physical coordinates; Eisenstein coefficient rounding need not be nearest-point rounding. For sqrt−5 the bound3/2 fails but does not alone disprove Euclideanity. Every Gaussian division in11+3i,1+8i was directly multiplied back; norms65→20→5→0. Exact triangular quotient(13+9omega)/7 gives q2+omega,remainderomega and Bezout certificate1. | VERIFIED_TWICE internally |
+| C10-U03: gcd/prime/power consequences | The least-norm nonzero combination divides all combinations because any nonzero remainder contradicts minimality. Bezout then proves irreducible⇒prime; induction on integer norm proves factor existence, and prime cancellation proves uniqueness. | Independently run remainder-chain extended Euclid and preserve both coefficient vectors. For the surrounding consequences, assign each irreducible's exponent in ab=unit·c^k; coprimality forces the entire exponent into one factor, so it is divisible by k. A coprime integer Bezout identity remains an identity in each larger ring. None uses unproved general ideal theory. Named proof has its separate entry. | VERIFIED_TWICE internally |
+| C10-U04: exact failure and new example | Norms4,9,6 and the absence of norms2/3 prove the four factors irreducible; unit norm1 rules out cross-side associates.2 divides the product6 but not either half-coordinate factor, so it is not prime. | New example: a common nonunit divisor of2,1+sqrt−5 would have norm2 (dividing4 and6), impossible. Yet2u+(1+sqrt−5)v1 has no solution: coefficients give2a+c−5d1 and2b+c+d0, contradictory modulo2. The full16-case parity truth table independently corroborates the symbolic obstruction. This replaces the duplicate6 example and its false nothing-to-divide-by explanation, while retaining the full theorem/exercise. Actual Volume13 prop:six proof uses the same combination set in its ideal construction. | VERIFIED_TWICE internally for the new obligation |
+| C10-U05: prime classification, symmetry and representation count | Norm of a Gaussian split factor is p; conjugates cannot be associates because their sum/difference would force p into both coordinates. Inert q would require impossible norm q. Every irreducible divides its ordinary norm, hence an ordinary prime and a listed factor. Eisenstein uses the primitive cube root mod p and the explicit norm−3 construction. | Independently determine every irreducible of norm≤225 by exact trial factors of norm≤sqrt(N)≤15, with coefficient bounds proved from the positive forms. Every point and ink matches classification; multiplying by all4/6 actual units gives exact rotational closure. Inert exponents must be even for a norm n; split exponents distribute in e+1 ways. Direct lattice counts give r2(15)0,r2(45)8,r2(65)16,r2(325)24, agreeing with the general exponent proof and the separate multiplicative divisor-sum argument. | VERIFIED_TWICE internally |
+| C10-U06: cubic descent explanations | Lambda²=−3omega has valuation2 at3; integer divisibility by lambda forces divisibility by3 by norms. The three factors of alpha³+beta³ have valuations3n−2,1,1, and no common prime away from lambda. Cubes prime to lambda are±1 modlambda^4. | Independently expand in the integer omega basis; the three-factor linear relation has both coefficients0. The unit check permits eta±1 only; both are cubes and the new coprime/nonzero family has positive integer exponent n−1. The explanatory checklist therefore identifies the actual closed family and decreasing measure, rather than decreasing element size. Named proof's two independent reconstructions are separately recorded. | VERIFIED_TWICE internally |
+| C10-U07: replacement workshop and previews | Fresh8+i=(2−i)(3+2i) has prime-norm5/13 factors; changing one conjugate gives4+7i with the same norm65. The four units cannot make these associates because their absolute coordinate pairs differ. | Direct products/norms and complete unit orbits independently verify this distinction: unique factorisation concerns an element, not its norm. Replaces repeated5/6 workshop proofs; earlier full proofs remain. Removed undefined ideal equations from the preview, explaining the combination-set idea instead. Removed overbroad cyclotomic/reciprocity history and corrected the alleged failure outside all three rings to the actual sqrt−5 example. Read Volume13's ideal product definitions/prop:six before retaining its future handoff. | VERIFIED_TWICE internally |
+
+### C10 examples, complete figure data and rendering
+
+| ID | Reconstruction and independent check | Status |
+| --- | --- | --- |
+| C10-E01: Gaussian norms |3+2i has norm13 prime;1+i has norm2 and−i(1+i)²2. Direct products and complete norm1-unit list agree. Ramification defined before further use. | VERIFIED_TWICE internally |
+| C10-E02: exact division |(7+i)/(2+i)=3−i; independent product(2+i)(3−i)=7+i leaves zero remainder. | VERIFIED_TWICE internally |
+| C10-E03: split5 |(1+2i)(1−2i)5; both norms5 and quotient(−3+4i)/5 not among the four units, so nonassociate. Independent unit orbit confirms. | VERIFIED_TWICE internally |
+| C10-E04: replacement coprimality | Norm-divisor and coefficient-parity proofs in U04 give the full new example. Independent quotient-coordinate obstruction and parity truth table confirm the failure. The old full six-factor proof remains in thm:six/ex:zsqrt5. | VERIFIED_TWICE internally for new obligation |
+| C10-E05:13 |(2+3i)(2−3i)13, both norms13; independent four-unit orbit excludes conjugate association. | VERIFIED_TWICE internally |
+| C10-E06: inert7 | Norm7 impossible by mod4; independent exact trial-factor search of the element7 finds no nonunit divisor of norm≤7. Divisor sum4(1−1)0 agrees. | VERIFIED_TWICE internally |
+| C10-E07:lambda |Norm(1−omega)3 and square−3omega by direct expansion. Independent squared geometric length3 agrees with the corrected figure. | VERIFIED_TWICE internally |
+| C10-E08: split7/inert5 |(2−omega)(2−omega²)7, norm7; the signed formula is4−2(−1)+1=7. For norm5,4N=(2a−b)²+3b² excludes residue2 mod3. Independent exact trial factor search agrees;2+omega has norm3. | VERIFIED_TWICE internally |
+| C10-F01: rounding | All nine actual grid dots, q1−i circle, exact quotient7/13−17i/13 and half-unit square agree with the divisions. Exact squared distance4/13<1; farthest cell-corner squared distance1/2. Moved q label out of the dashed cell edge. | VERIFIED_TWICE data; revised standalone inspected |
+| C10-F02: complete prime discs | All184 Gaussian points (168 charcoal,12 rust,4 ochre) and300 Eisenstein points (276 charcoal,18 rust,6 ochre) match exact trial-factor enumeration. No omissions/duplicates, every norm≤225, every rounded Cartesian ordinate within.000501, exact unit-orbit symmetry. Reflowed legend into three larger-font rows; preserved all484 points and colours. | VERIFIED_TWICE data; revised standalone inspected |
+| C10-F03: Eisenstein patch | All16 points are m+n·omega with m,n−1…2. Original dashed segment1→1+omega had squared length1, so could not represent lambda of norm3. Corrected to directed omega→1, vector1−omega of squared length3. Independent norm calculation and endpoint geometry agree. Shifted the unit triangle and enlarged labels to avoid overlap. | VERIFIED_TWICE data after correction; revised standalone inspected |
+
+All three real XeLaTeX standalone outputs were rendered/viewed after final
+changes: rounding168.94×158.58pt,prime discs309.23×212.45pt,
+Eisenstein161.05×87.71pt. The revised legend and labels fit without observed
+clipping/overlap. Final-source page placement, monochrome print and EPUB/reader
+scaling remain open. Six focused tests pass; full-suite result is recorded in
+the DEP-070 ledger. Inventory remains1361 items,97 examples,39 figures,
+three portraits. No chapter or external signoff is inferred.
+
+### C10 targeted sources and current-status correction
+
+- [Cox's author page](https://dacox.people.amherst.edu/primes.html) explicitly
+  confirms the2022 third edition with solutions, distinct from2013 second.
+  Springer publisher records corroborate [Ireland/Rosen1990 second edition](https://link.springer.com/book/10.1007/978-1-4757-2103-4),
+  Chapter9 cubic/biquadratic reciprocity, [Edwards1977](https://link.springer.com/book/9780387902302)
+  and [Lemmermeyer2000](https://link.springer.com/book/10.1007/978-3-662-12893-0).
+  Metadata is not certification of every cited section or historical priority.
+- The old still-open Gaussian-moat statement is outdated against
+  [MathWorld's30October2026 record](https://mathworld.wolfram.com/GaussianMoatProblem.html),
+  citing a26September2026 proof. Downloaded/read the primary preprint's first
+  two pages at fixed commit
+  [adc7f124](https://github.com/openai/math/blob/adc7f1241b42e322a6451854ab7e4b4c146bf78a/preprints/Bounded-Step-Walks-on-Gaussian-Primes-September-26-2026/paper.pdf):
+  it states a uniform finite-component theorem including axis primes. The
+  full29-page argument and reported formalisation have not been independently
+  checked here. Removed the unsupported current-open assertion; bibliography
+  now describes the1998 paper's historical question without adopting a new
+  unverified theorem. Full original-history/bibliography remains open.
