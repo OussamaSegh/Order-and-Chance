@@ -60,10 +60,10 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 9 | `thm:legendre` | Legendre | Best approximation and fractional triangle bound | Independent integer determinant/error bound | VERIFIED_TWICE | DEP-049: strict1/(2q²), unreduced p/q allowed, largest index if denominators tie |
 | 9 | `thm:periodic` | Euler, Lagrange | Period fixed-point quadratic; bounded transformed integer coefficients | Independent inverse Möbius substitution and binary-form discriminant/proximity bound | VERIFIED_TWICE | DEP-049: eventual rather than pure period, signed real quadratic roots, nonsquare discriminant |
 | 9 | `thm:pell` | Lagrange, 1768 | Bounded nonzero norms, repeated residues, minimal positive unit | Independent periodic matrix conjugation gives norm±1, then squaring | VERIFIED_TWICE | DEP-049: nonsquare d≥2, nonzero y, ±1 and negative powers, integer inverse closure |
-| 10 | `prop:quadunits` | proposition | — | — | UNREVIEWED | — |
-| 10 | `prop:eucl` | Euclidean division | — | — | UNREVIEWED | — |
-| 10 | `thm:ufd` | theorem | — | — | UNREVIEWED | — |
-| 10 | `thm:six` | theorem | — | — | UNREVIEWED | — |
+| 10 | `prop:quadunits` | proposition | Integer multiplicative norm and conjugate inverse, norm-one enumeration | Independent coordinate bounds and explicit inverse products | VERIFIED_TWICE | DEP-051: three rings, units4/6/2, prime norm gives irreducible not arbitrary converse |
+| 10 | `prop:eucl` | Euclidean division | Exact coefficient rounding, squared errors≤1/2 or3/4 | Independent rational numerator rounding and box maxima | VERIFIED_TWICE | DEP-051: b≠0, ties permitted, r=0, Eisenstein rounding need not nearest |
+| 10 | `thm:ufd` | theorem | Least-norm nonzero linear combination, Bézout cancellation, norm induction | Independent terminating Euclidean/back-substitution route and prime-factor matching | VERIFIED_TWICE | DEP-051: integral domain and all norm hypotheses; aR+bR defined at first use |
+| 10 | `thm:six` | theorem | Norms4,9,6 and absence of2/3, cross-side norm distinction | Independent unit±1 coefficient and irreducible-factor multiset check | VERIFIED_TWICE | DEP-051: Z[√−5] separately, nonunits, conjugates nonassociate checked in exercise |
 | 10 | `thm:gaussprimes` | theorem | — | — | UNREVIEWED | — |
 | 10 | `thm:r2` | Jacobi | — | — | UNREVIEWED | — |
 | 10 | `thm:eisprimes` | theorem | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **52/72** rows are `VERIFIED_TWICE` at DEP-049; **20** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **56/72** rows are `VERIFIED_TWICE` at DEP-051; **16** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

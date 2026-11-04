@@ -124,8 +124,8 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 9 | `ex:golden` | ★★ | Exact CF error, Fibonacci ratio limit, Legendre finiteness | Independent locally derived Binet formula and polynomial norm bound | Earlier CF/Pell-independent algebra and recurrence | VERIFIED_TWICE | DEP-050: c>√5, unreduced fractions handled explicitly, no Hurwitz theorem needed |
 | 9 | `ex:liouville` | ★★★ | Nonzero q^dP(p/q), MVT, geometric tail, irrationality before algebraic contradiction | Independent polynomial difference bound and nonperiodic-decimal irrationality | Actual Volume 1 polynomials/MVT; local geometric bound | VERIFIED_TWICE | DEP-050: all signs of p, q≥1, far fractions, minimal-degree irreducibility justified |
 | 9 | `ex:t1-pell3` | ★★ | Rationalized two-cycle, convergents1/1 then2/1 and exact norms | Independent y=1 minimality and fixed-point cycle | Earlier CF and Pell theorem | VERIFIED_TWICE | DEP-050: prior norm−2; fundamental(2,1) |
-| 10 | `ex:gaussfactor` | ★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:zsqrt5` | ★ | — | — | — | UNREVIEWED | — |
+| 10 | `ex:gaussfactor` | ★ | Rational prime splitting, explicit Gaussian factors and Euclidean gcd | Independent exact products and Bézout certificate for−1+2i | Earlier norm-prime irreducibility and UFD | VERIFIED_TWICE | DEP-051: unit−i retained for2026; gcd up to unit, not norm alone |
+| 10 | `ex:zsqrt5` | ★ | Norm obstruction, units±1, distinct irreducibles, nonprime2 | Independent coefficient-parity divisibility and factor-norm partitions | Local norm and domain definitions, earlier UFD contrast | VERIFIED_TWICE | DEP-051: all four pairwise nonassociate including conjugates; no ideal theory |
 | 10 | `ex:gaussgcd` | ★★ | — | — | — | UNREVIEWED | — |
 | 10 | `ex:euler1000009` | ★★ | — | — | — | UNREVIEWED | — |
 | 10 | `ex:x3y21` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-050, 120/144 are checked twice internally and 24 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-051, 122/144 are checked twice internally and 22 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
