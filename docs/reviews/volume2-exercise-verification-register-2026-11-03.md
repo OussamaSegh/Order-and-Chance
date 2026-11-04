@@ -132,8 +132,8 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 10 | `ex:xxyy` | ★★ | Eisenstein norm and rational-prime classification | Independent mod3 necessity and earlier x²+3y² construction | Earlier Eisenstein primes or Chapter7 weighted-square theorem | VERIFIED_TWICE | DEP-053: p=3 separately; ramified versus split terminology repaired |
 | 10 | `ex:y2x3m2` | ★★★ | Odd y, coprime factors in Z[√−2], cube coefficient b|1 | Independent common-prime norm audit and complete coefficient cases | Main-text Euclidean/UFD proof for Z[√−2], not a later volume | VERIFIED_TWICE | DEP-053: only(3,±5), x forced positive; UFD citation completed |
 | 10 | `ex:t1-split13` | ★ | Explicit Gaussian and Eisenstein norm products | Independent integer-coordinate multiplication | Earlier norm-prime irreducibility and prime classifications | VERIFIED_TWICE | DEP-053: Gaussian2±3i; Eisenstein3−ω and4+ω |
-| 11 | `ex:t1-char5` | ★ | — | — | — | UNREVIEWED | — |
-| 11 | `ex:t1-chi8check` | ★ | — | — | — | UNREVIEWED | — |
+| 11 | `ex:t1-char5` | ★ | Four generator images, Legendre row and explicit inner products | Independent exhaustive homomorphism assignments and square set | Earlier character count/orthogonality and modular units | VERIFIED_TWICE | DEP-054: nonunit n=5 contributes0, complex conjugation signs checked |
+| 11 | `ex:t1-chi8check` | ★ | Four mod8 classes exhaust all odd primes | Independent Euler powers for all requested primes and exponent parity | Earlier supplementary2 law | VERIFIED_TWICE | DEP-054: missing requested table3,5,7,11,13,17,19 supplied; all signs exact |
 | 11 | `ex:t1-sieve30` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `ex:t1-phi-ratio` | ★★ | — | — | — | UNREVIEWED | — |
 | 11 | `ex:t1-mu-floor` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-053, 128/144 are checked twice internally and 16 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-054, 130/144 are checked twice internally and 14 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

@@ -69,10 +69,10 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 10 | `thm:eisprimes` | theorem | Primitive cube root, split norm, inert norm mod3 and UFD | Independent gcd(p,u−ω) construction and residue quotient | VERIFIED_TWICE | DEP-052: inert2, ramified3, p≠3 conjugates, exactly3 residue classes modλ |
 | 10 | `lem:cube` | lemma | Three factors of θ³−1 and λ residue classes | Independent binomial λ-adic expansion; all81 classes modλ⁴ | VERIFIED_TWICE | DEP-052: λ∤θ, both signs, λ⁴ associated to9 |
 | 10 | `thm:flt3` | Euler; Gauss | Primitive integer reduction, generalized unit family, λ valuations3n−2,1,1 and descent | Independent cube expansion, prime-by-prime factor audit and complete unit check | VERIFIED_TWICE | DEP-052: all nonzero integer signs, n=1 excluded, new family remains coprime/nonzero; exponent decreases |
-| 11 | `prop:t1-charsum` | proposition | — | — | UNREVIEWED | — |
-| 11 | `prop:t1-unitproduct` | proposition | — | — | UNREVIEWED | — |
-| 11 | `thm:t1-charcount` | theorem | — | — | UNREVIEWED | — |
-| 11 | `thm:t1-ortho` | orthogonality | — | — | UNREVIEWED | — |
+| 11 | `prop:t1-charsum` | proposition | Nonprincipal unit multiplier permutes the sum | Independent explicit cyclic-coordinate geometric sums | VERIFIED_TWICE | DEP-054: m=1, nonunits0, principalφ(m) |
+| 11 | `prop:t1-unitproduct` | proposition | Iterated CRT and earlier prime-power unit structures | Independent CRT idempotents and explicit sign/5 exponent coordinates | VERIFIED_TWICE | DEP-054: m=1 empty product,2/4, noncyclic2^k, no later group structure theorem |
+| 11 | `thm:t1-charcount` | theorem | Images of cyclic generators and factorwise homomorphisms | Independent complete explicit root-of-unity coordinate parametrization | VERIFIED_TWICE | DEP-054: exactlyφ(m), separates every nonidentity unit, trivial factors |
+| 11 | `thm:t1-ortho` | orthogonality | Character quotient sum, dual permutation, unit inverse filter | Independent product of root sums for both row and column indices | VERIFIED_TWICE | DEP-054: all (i)–(iii), nonunit a/n, m=1, root-value modulus proved at first use |
 | 11 | `lem:t1-pseries` | lemma | — | — | UNREVIEWED | — |
 | 11 | `lem:t1-dseries` | lemma | — | — | UNREVIEWED | — |
 | 11 | `thm:t1-eulerprod` | Euler product | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **61/72** rows are `VERIFIED_TWICE` at DEP-052; **11** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **65/72** rows are `VERIFIED_TWICE` at DEP-054; **7** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
