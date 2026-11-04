@@ -16,6 +16,7 @@ import check_chapter7
 import check_chapter8
 import check_chapter9
 import check_chapter10
+import check_chapter11
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -93,6 +94,9 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter10.check_periods_and_counts()
         check_chapter10.check_quintic_plot()
         check_chapter10.check_earned_order_and_local_cosine()
+
+    def test_complex_representation_foundations_are_earned_locally(self):
+        check_chapter11.check_foundations()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

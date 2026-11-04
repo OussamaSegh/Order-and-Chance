@@ -56,13 +56,15 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-011
+## Active checkpoint V3-012a
 
 Chapters1–10 have complete mathematical source reads and explicit A/B records:
 98/155 named results and101/163 exercise triples accepted internally. Keyed
 unnamed exposition/concept edges/history closure is a separate pending gate,
-even where its full source was read. Next C11 representations/characters, C12
-quaternions/rotations and all four appendices. No editorial rewrite status was
+even where its full source was read. C11 main/prompts and first four supplied answers have now been read; coherent
+complex-foundation repairs are in CH11-FOUNDATIONS.md, with no C11 acceptance.
+Continue supplied solutions from ex:circulant, then all table/model/second checks;
+C12 quaternions/rotations and all four appendices follow. No editorial rewrite status was
 inherited. Named targets remain earned rather than weakened.
 
 Curricular freedom has supplied local proofs, moved complete prerequisite

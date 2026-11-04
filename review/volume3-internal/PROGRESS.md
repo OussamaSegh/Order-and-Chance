@@ -402,3 +402,36 @@ V3 all-format build in progress at observation. Earlier PR runs auto-cancelled
 on pushes; no main/unrelated run cancelled. Main-only library cache rule remains.
 Continue C11, then C12 and all four appendices, then remaining global/production
 gates. This checkpoint is not completion or authorization to merge early.
+
+## V3-012a: repair the complex representation foundations (chapter still open)
+
+Read all C11 main text and all11 prompts; recorded independent solutions before
+opening hints/answers. Subsequently read all hints and the first four complete
+answers through central/Q8. Remaining answers and full figure data are pending.
+CH11-FOUNDATIONS.md scopes this partial coherent source batch. No C11 named or
+exercise acceptance: totals remain98/155 and101/163. All remaining work continues.
+
+Actual V1 full Gram–Schmidt/spectral proofs are real, so the former title-only
+complex invocation was unavailable. Define/prove Hermitian geometry locally,
+including zero spaces, complements and finite-order unitary orthonormal bases.
+State finite G explicitly; allow dimension0 but require irreducibles nonzero.
+Earn decomposition termination, a modular counterexample and finite irreducible
+list before multiplicity proof. Use finite prime filters before analytic outlook;
+earn radix-two complexity and repair a stale quotient/hard-coded exercise link.
+Old-source prerequisite/contract gate fails, current passes; matrix/form probes
+support the general local proof.478 full tests pass, zero skips53.676s, log
+/tmp/volume3-v012-foundation-tests.log;15 focused tests pass, inherited checker,
+inventory/freshness and whitespace pass. Do not infer complete C11 review.
+
+The final exercise quotes an unproved Young reality theorem. First reconstruction
+records a finite signed-involution model that could earn the full original result
+and degree-sum conclusion; adversarial proof/computation and attribution remain
+before insertion. No weaker replacement or unproved premise approved.
+
+Immutable all-format2ee605fd snapshot completed484 reading/483 print pages,
+KDP484, spine1.1359in and same-build wrap. Actual EPUBCheck5.3.0 has zero messages;
+output checker passes.85 public files/reports hashed. Actually opened and read
+print278/279/280 (worked cyclotomic route),285 (complex-root repair),304 (Niven/
+heptagon derivation). Only those pages count; no grayscale/digital/reading or
+later-build transfer. This package predates C11 foundation changes. Source/cache
+provenance recorded separately from GitHub's main-only library cache policy.

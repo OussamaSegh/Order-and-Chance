@@ -1,4 +1,4 @@
-# Exact restart — V3-011
+# Exact restart — V3-012a
 
 Repository `/workspace/Order-and-Chance`, branch
 `editorial/volume3-complete-internal-review-20261104`, draft PR104:
@@ -9,8 +9,12 @@ content changes and final merge only after the entire available review genuinely
 passes. No Amazon/account action, no outside reviewer request or early completion.
 
 Chapters1–10 fully read:98/155 named and101/163 exercise A/B records accepted
-internally. Next C11 full source/prompts before hints/solutions (only its opening
-has been read), then C12 and all four advanced appendices. Global keyed unnamed/
+internally. C11 entire main and all11 prompts were read; first reconstructions are in
+CH11-PROMPT-FIRST.md before supplied hints/answers. All hints and first four full
+answers (pairs/onedim/A4/central-Q8) now read. Continue at the source label
+\begin{solution}{ex:circulant}, then remaining answers in order, entire actual
+figure data, complete adversarial/model checks. C11 has10 named results; none
+accepted yet. C12 and all four advanced appendices follow. Global keyed unnamed/
 concept/context/history closure and whole-book voice/story are still pending.
 Inventory155 named,163 exact triples,22 examples,22 figures,107 bibliography
 entries; generators never approve math. Source/proof/hint/solution/context and
@@ -28,15 +32,32 @@ All10 lattice fields/15 edges per panel exactly checked. Symbolic evidence is
 support, not formal verification. Galois actual primary scans/date distinctions
 in RESEARCH.md; C9 history copy clarified. Remaining history rows are pending.
 
+Current coherent C11 foundation batch: explicit finiteG, dimension0 with nonzero
+irreducibles, local Hermitian/complex Gram–Schmidt/complements and finite-order
+unitary eigenbasis; actual V1 proofs are real only. Multiplicity proof earns finite
+list first; finite prime filters precede analytic outlook; hard-coded reference
+fixed. CH11-FOUNDATIONS.md gives exact scope. All C11 math acceptance pending.
+Proposed signed involution model in CH11-PROMPT-FIRST.md could earn the quoted
+Young reality theorem and degree sum; still needs actual supplied-solution
+comparison, adversarial proof/computation and source attribution before insertion.
+No external reviewer or weaker target is needed.
+
 Activate `source /workspace/volume3-tools/activate.sh` (mandated system activation
-included).477 full tests pass zero skips52.185s, /tmp/volume3-v011-final-tests.log;
-focused C1–10, historical checker, source inventory/freshness and diff whitespace
-pass. Old cyclotomic location fails the new order gate; corrected one passes.
+included).478 full tests pass zero skips53.676s,
+/tmp/volume3-v012-foundation-tests.log;15 focused tests, inherited checker,
+source inventory/freshness and diff whitespace pass. Old cyclotomic location fails the new order gate; corrected one passes.
 No broad rerun needed without new changes/failures; final freeze still needs all
 required checks. Historical checker/output wording now says internal review and
 separate page/digital evidence, without weakening assertions.
 
-Latest PDF-only immutable `/workspace/volume3-pdf-494a7fef`, source
+Latest all-format immutable `/workspace/volume3-build-2ee605fd`, source2ee605fd:
+484 reading/483 print, KDP484, spine1.1359in,85 public files/report hashes;
+actual EPUBCheck5.3.0zero messages/outputchecker pass. Only actual opened
+print278/279/280/285/304 in its visual JSON. Predates C11 foundation edits.
+Formula cache checked renderer/common/font identity in same environment; no visual
+approval transfer. Older snapshots remain separately scoped below.
+
+PDF-only immutable `/workspace/volume3-pdf-494a7fef`, source
 494a7fef272e15822fef6f9a119d79d79c6ce560:482 reading/481 print pages, KDP482,
 spine1.1313in, same-build wrap15.3813×10.25in. Manifest records identities and
 only actual opened print237/246/247. Predates C10 and latest C9 history copy.
