@@ -117,13 +117,13 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 8 | `ex:imo88` | ★★★ | f(−1)>0>f(b), integer smaller Vieta root, minimal sum | Independent negative-root h identity and a'=(b²−k)/a bound | Earlier Vieta and well ordering | VERIFIED_TWICE | DEP-047: k positive nonsquare, zero mate forces k=b²; no unproved k bound |
 | 8 | `ex:t1-triple` | ★ | Parameter substitution and squared norms | Independent inverse half-sum recovery for all three triples | Earlier Pythagorean parametrization | VERIFIED_TWICE | DEP-047: (3,4,5),(15,8,17),(5,12,13), parity/gcd checked |
 | 9 | `ex:cf415` | ★ | Euclid digits, recurrent convergents and determinant Bézout | Independent nested fraction and Euclid back-substitution | Earlier integer division, Bézout and CF proposition | VERIFIED_TWICE | DEP-048:4/1,9/2,58/13,415/93; all integer solutions (13+93k,58+415k) |
-| 9 | `ex:cfunique` | ★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:calendar` | ★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:n21` | ★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:sqtri` | ★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:golden` | ★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:liouville` | ★★★ | — | — | — | UNREVIEWED | — |
-| 9 | `ex:t1-pell3` | ★★ | — | — | — | UNREVIEWED | — |
+| 9 | `ex:cfunique` | ★★ | Nested subsequences, correct tail-floor recovery, golden and sqrt3 fixed points | Independent rational separation and period-matrix polynomial | Earlier verified CF existence; elementary quadratic roots | VERIFIED_TWICE | DEP-050: tail-floor confusion repaired, irrationality and uniqueness explicit |
+| 9 | `ex:calendar` | ★★ | Exact decimal Euclid digits and rational leap-cycle errors | Independent integer divisions/cross-products and complete finite CF | Earlier CF recurrence and fractions | VERIFIED_TWICE | DEP-050: fixed24219/100000 model, idealized cycles, no long-span physical prediction |
+| 9 | `ex:n21` | ★★ | Rationalized repeating tail, square a norm−1 unit | Independent fixed-point quadratic and direct integer expansion | Earlier CF existence and Pell norm product | VERIFIED_TWICE | DEP-050: n≥1, no claim of fundamental solution required |
+| 9 | `ex:sqtri` | ★★ | Complete square to Pell, all powers and parity induction | Independent mod4 parity and inverse bijection | Earlier full Pell classification | VERIFIED_TWICE | DEP-050: zero included, first indices1,8,49,288; all positive powers |
+| 9 | `ex:golden` | ★★ | Exact CF error, Fibonacci ratio limit, Legendre finiteness | Independent locally derived Binet formula and polynomial norm bound | Earlier CF/Pell-independent algebra and recurrence | VERIFIED_TWICE | DEP-050: c>√5, unreduced fractions handled explicitly, no Hurwitz theorem needed |
+| 9 | `ex:liouville` | ★★★ | Nonzero q^dP(p/q), MVT, geometric tail, irrationality before algebraic contradiction | Independent polynomial difference bound and nonperiodic-decimal irrationality | Actual Volume 1 polynomials/MVT; local geometric bound | VERIFIED_TWICE | DEP-050: all signs of p, q≥1, far fractions, minimal-degree irreducibility justified |
+| 9 | `ex:t1-pell3` | ★★ | Rationalized two-cycle, convergents1/1 then2/1 and exact norms | Independent y=1 minimality and fixed-point cycle | Earlier CF and Pell theorem | VERIFIED_TWICE | DEP-050: prior norm−2; fundamental(2,1) |
 | 10 | `ex:gaussfactor` | ★ | — | — | — | UNREVIEWED | — |
 | 10 | `ex:zsqrt5` | ★ | — | — | — | UNREVIEWED | — |
 | 10 | `ex:gaussgcd` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-048, 113/144 are checked twice internally and 31 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-050, 120/144 are checked twice internally and 24 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
