@@ -27,8 +27,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 3 | `prop:lincong` | linear congruences | Bézout image aZ+nZ=dZ; reduce d and explicitly enumerate d lifts | Independent gcd-fiber periodicity via a'=a/d,n'=n/d, class x0+j n' and converse d|b; includes a=0 | VERIFIED_TWICE | DEP-025: negative a,b, n=1, d=n if a=0, exactly d residue classes; >60000 exact cases |
 | 3 | `prop:phisum` | Gauss | Partition n rational numbers k/n by reduced denominator d|n, φ(d) choices | Independent gcd(k,n) fibers k=g·a with gcd(a,n/g)=1, reindex divisors | VERIFIED_TWICE | DEP-025: n=1 φ(1)=1, n=6 1+1+2+2=6, n≤1000 exhaustive fiber counts |
 | 3 | `thm:hensel` | Hensel's lemma | Integer-polynomial Taylor expansion to modulus p^(k+1), single linear digit congruence | Independent monomial binomial linearization plus uniqueness by difference of two digits and Gauss cancellation; finite simple-root probes | VERIFIED_TWICE | DEP-025: p=2, k≥1, arbitrary a, f' unit; singular root may have zero or p lifts; local formal derivative defined before use |
-| 4 | `prop:conv` | proposition | — | — | UNREVIEWED | — |
-| 4 | `thm:mobius` | M\"obius inversion | — | — | UNREVIEWED | — |
+| 4 | `prop:conv` | proposition | Finite ordered-factor/triple convolution and coprime-divisor splitting | Independent prime-exponent finite coefficient convolution, local associativity/units/commutativity | VERIFIED_TWICE | DEP-028: f*g multiplicative only for f,g multiplicative, includes n=1; Chapter 4 finite-algebra regression |
+| 4 | `thm:mobius` | M\"obius inversion | μ*1=ε by prime-power check and convolution inverse | Independent squarefree-subset inclusion–exclusion and direct double-sum coefficient cancellation for arbitrary f,g | VERIFIED_TWICE | DEP-028: n=1, arbitrary nonmultiplicative f, no analytic series; finite inversion probes |
 | 4 | `thm:perfect` | Euclid--Euler | — | — | UNREVIEWED | — |
 | 4 | `thm:hyperbola` | Dirichlet | — | — | UNREVIEWED | — |
 | 5 | `prop:order` | proposition | — | — | UNREVIEWED | — |
