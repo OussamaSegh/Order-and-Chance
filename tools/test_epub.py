@@ -218,6 +218,21 @@ Text.
         root = ET.fromstring(result.stdout)
         self.assertEqual(root.find('.//{http://www.w3.org/1998/Math/MathML}mtext').text,'and')
 
+    def test_solution_runin_labels_separate_the_following_word(self):
+        # Use the real macros: Pandoc discards a text-mode \quad, and the
+        # whitespace after the invoking control word is consumed by TeX.
+        preamble = (TOOLS.parent / 'common/epub-preamble.tex').read_text()
+        source = (r'\documentclass{book}' + preamble +
+                  r'\begin{document}\idea Start here.\writeup Run Euclid.'
+                  r'\tools{Earlier arithmetic.}\leads Count primes.\end{document}')
+        result = subprocess.run(
+            ['pandoc', '-f', 'latex', '-t', 'html5', '--lua-filter', str(TOOLS / 'epub.lua')],
+            input=source, text=True, capture_output=True, check=True).stdout
+        text = visible_text(result)
+        for phrase in ['How to find it. Start here.', 'Write-up. Run Euclid.',
+                       'Tools used. Earlier arithmetic.', 'Where it leads. Count primes.']:
+            self.assertIn(phrase, text)
+
     def test_portrait_alternative(self):
         with tempfile.TemporaryDirectory() as directory:
             source = Path(directory) / "main.tex"

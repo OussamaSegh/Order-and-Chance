@@ -358,13 +358,15 @@ def attach_punctuation(text: str) -> str:
     closed the paragraph and the next ``. Now`` or ``, and`` started at the
     left margin. Inline images stay inline inside a nowrap span. Display
     images sit in a centred block with that punctuation inside the block.
+    The wrapper is a span styled as block: Pandoc can place display math
+    inside a paragraph or another span, where a div would be invalid XHTML.
     """
     def repl(match: re.Match) -> str:
         img, kind, spaces, punct = match.group(1), match.group(2), match.group(3) or "", match.group(4) or ""
         if kind == "display":
             return (
-                '<div class="oc-math-block" style="display:block;text-align:center;margin:0.6em 0">'
-                + img + punct + "</div>" + ("" if punct else spaces)
+                '<span class="oc-math-block" style="display:block;text-align:center;margin:0.6em 0">'
+                + img + punct + "</span>" + ("" if punct else spaces)
             )
         if punct:
             # No text node, newline or space between the image and its period.

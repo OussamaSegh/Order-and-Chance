@@ -16,6 +16,7 @@ import re
 import struct
 import sys
 import zipfile
+import xml.etree.ElementTree as ET
 from pathlib import Path
 from urllib.parse import unquote
 
@@ -157,6 +158,22 @@ def check(path: Path) -> list[str]:
             for name in names if name.endswith((".xhtml", ".html"))
         ]
     for name, text in pages:
+        try:
+            document = ET.fromstring(text)
+        except ET.ParseError as error:
+            errors.append(f"{name} has malformed XHTML: {error}")
+        else:
+            # XML parsing alone permits div in p; an HTML browser repairs it
+            # silently. EPUB XHTML forbids that flow/phrasing mismatch.
+            phrasing = {'p', 'span', 'em', 'strong', 'b', 'i', 'small', 'mark', 'sub', 'sup'}
+            for container in document.iter():
+                if container.tag.rsplit('}', 1)[-1] not in phrasing:
+                    continue
+                if any(node.tag.rsplit('}', 1)[-1] == 'div'
+                       and 'oc-math-block' in node.attrib.get('class', '').split()
+                       for node in container.iter()):
+                    errors.append(f"{name} has block mathematics inside phrasing content")
+                    break
         if "<math" in text or 'class="math inline"' in text or 'class="math display"' in text:
             errors.append(f"{name} still contains MathML or unrendered TeX; Kindle will mis-align it")
         for match in IMG_RE.finditer(text):

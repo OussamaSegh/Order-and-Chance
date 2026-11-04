@@ -8,6 +8,7 @@ import re
 import shutil
 import subprocess
 import unittest
+import xml.etree.ElementTree as ET
 import zipfile
 from pathlib import Path
 
@@ -144,6 +145,18 @@ class KindleEpub(unittest.TestCase):
 
 
 class FormulaPadding(unittest.TestCase):
+    def test_display_math_remains_valid_inside_a_paragraph(self):
+        tag = '<img class="oc-math-display" src="m.png" alt="x=1"/>'
+        result = epub_math.attach_punctuation('<p>Before ' + tag + ', after.</p>')
+        root = ET.fromstring(result)
+        # A div in p is invalid EPUB XHTML, even if a browser repairs it.
+        self.assertEqual(root.findall('.//div'), [])
+        wrapper = root.find('span')
+        self.assertIsNotNone(wrapper)
+        self.assertIn('display:block', wrapper.attrib['style'])
+        self.assertEqual(wrapper.find('img').tail, ',')
+        self.assertIn('after.', wrapper.tail)
+
     @unittest.skipUnless(HAVE, "xelatex, pdftocairo, pandoc, pngquant and oxipng are required")
     def test_transparent_right_columns_are_cropped(self):
         image = Image.new("RGBA", (40, 12), (0, 0, 0, 0))
@@ -168,7 +181,7 @@ class FormulaPadding(unittest.TestCase):
         self.assertIn('"/>.</span>', wrapped)
         self.assertNotRegex(wrapped, r'"/>\s+[.,]')
         display = epub_math.attach_punctuation(tag.replace("oc-math-inline", "oc-math-display") + ",")
-        self.assertIn('"/>,</div>', display)
+        self.assertIn('"/>,</span>', display)
         self.assertNotIn(" ,", display)
 
 

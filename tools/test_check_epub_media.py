@@ -65,6 +65,16 @@ class CheckEpubMedia(unittest.TestCase):
     def test_full_width_plate_and_baseline_math_pass(self):
         self.assertEqual(self._run(), [])
 
+    def test_block_math_cannot_be_nested_in_phrasing_content(self):
+        block = PAGE[PAGE.index('<div class="oc-math-block"'):PAGE.index('</div>') + 6]
+        for container in ('p', 'span', 'em'):
+            with self.subTest(container=container):
+                bad = PAGE.replace(block, f'<{container}>Before {block} after.</{container}>')
+                errors = self._run(page=bad)
+                self.assertTrue(any('phrasing' in error for error in errors), errors)
+                good = bad.replace('<div class="oc-math-block"', '<span class="oc-math-block"').replace('</div>', '</span>')
+                self.assertEqual(self._run(page=good), [])
+
     def test_fixed_pixel_width_fails(self):
         page = PAGE.replace(
             'style="width:100%;max-width:100%;height:auto"',
