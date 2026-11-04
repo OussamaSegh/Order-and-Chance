@@ -31,10 +31,10 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 4 | `thm:mobius` | M\"obius inversion | μ*1=ε by prime-power check and convolution inverse | Independent squarefree-subset inclusion–exclusion and direct double-sum coefficient cancellation for arbitrary f,g | VERIFIED_TWICE | DEP-028: n=1, arbitrary nonmultiplicative f, no analytic series; finite inversion probes |
 | 4 | `thm:perfect` | Euclid--Euler | Prime-power divisor sums, Gauss cancellation and the third-divisor contradiction | Independent reciprocal-divisor exhaustion, explicit prime-exponent and p=2 checks | VERIFIED_TWICE | DEP-029: all even positive n, integer p≥2; implicit cancellation now taught; 2^11−1=23·89 is not prime |
 | 4 | `thm:hyperbola` | Dirichlet | Exact real-x two-strip inclusion–exclusion; Volume 1 harmonic remainder and real logarithm floor estimate | Independent disjoint smaller-coordinate shells, quantitative integral remainder bound for every real x≥1 | VERIFIED_TWICE | DEP-029: whole m×m overlap, not just diagonal; γ defined before use; uniform |R(x)|≤6√x independently established; finite rational-x probes |
-| 5 | `prop:order` | proposition | — | — | UNREVIEWED | — |
-| 5 | `thm:cyclic` | Gauss | — | — | UNREVIEWED | — |
-| 5 | `lem:lift` | lemma | — | — | UNREVIEWED | — |
-| 5 | `thm:cyclicn` | theorem | — | — | UNREVIEWED | — |
+| 5 | `prop:order` | proposition | Integer-kernel subgroup and Gauss cancellation | Independent exponent division and Bézout divisibility argument | VERIFIED_TWICE | DEP-030: n=1, negative j,m, j=0; Euler supplies existence |
+| 5 | `thm:cyclic` | Gauss | Exact-order classes saturate the polynomial root bound | Independent maximal-order/prime-power enlargement argument | VERIFIED_TWICE | DEP-030: p=2, all divisor classes; field root bound established locally |
+| 5 | `lem:lift` | lemma | Binomial induction with all higher terms divisible by p^(k+2) | Independent difference-of-pth-powers factor valuation | VERIFIED_TWICE | DEP-030: odd p including 3, k=1, negative g allowed |
+| 5 | `thm:cyclicn` | theorem | Primitive-root lifting and four-involutions obstruction | Independent order-factor/CRT and exhaustive prime-power-type partition | VERIFIED_TWICE | DEP-030: n=1,2,4; p odd; split into coprime factors made explicit |
 | 5 | `thm:twopower` | theorem | — | — | UNREVIEWED | — |
 | 5 | `cor:mod8squares` | corollary | — | — | UNREVIEWED | — |
 | 6 | `thm:eulercrit` | Euler's criterion | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **23/72** rows are `VERIFIED_TWICE` at DEP-029; **49** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **27/72** rows are `VERIFIED_TWICE` at DEP-030; **45** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

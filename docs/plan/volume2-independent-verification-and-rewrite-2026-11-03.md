@@ -184,3 +184,5 @@ every rendered page, external review, physical KDP and **all P00–P13 exits rem
 OPEN**. Next: final-head CI triage, then Chapter 5 `prop:order`, `thm:cyclic`,
 `lem:lift`, `thm:cyclicn`, `ex:findroots` and `ex:period`, twice each. Keep PR #103
 **DRAFT, unmerged and unpublished**.
+
+**Current checkpoint (4 November 2026, DEP-030; supersedes the counts above):** 27/72 named results and 71/144 exercise solutions have two internal mathematical passes; 45 named results and 73 solutions remain. Chapter 5 `prop:order`, `thm:cyclic`, `lem:lift`, `thm:cyclicn`, `ex:findroots`, `ex:period`, `ex:fermatfactor` and `ex:powersum` were reconstructed by two general routes. The noncyclic-modulus proof now explains its coprime-factor partition. The focused Chapter 5 regression passes three tests. All unnamed arguments, remaining Chapter 5 work, narrative/first-use/visual/external/publisher gates and P00–P13 remain open. PR #103 stays DRAFT/unmerged/unpublished; next exact items are `thm:twopower`, `cor:mod8squares`, `ex:kth`, `ex:gausswilson`.

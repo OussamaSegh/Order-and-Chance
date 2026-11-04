@@ -65,10 +65,10 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 4 | `ex:coprimeprob` | ★★★ | Finite gcd indicator, locally bounded double-series tails and explicit (2H_N+1)/N error | Finite-prime CRT exclusion, union-bound tail and elementary finite Euler products | Actual Volume 1 prop:gamma, prop:safe-sums, full ex:basel solution; local grouping proof | VERIFIED_TWICE | DEP-029: all (a)–(c), N=1, no uniform random positive integer or Chapter 11 import; finite exact counts≤250 |
 | 4 | `ex:t1-mu12` | ★ | μ*1=ε gives1,0,0,0 | Independently enumerate divisor lists and every μ value | Earlier definition of μ and proved inversion, not a new theorem | VERIFIED_TWICE | DEP-029: n=1,6,12,30; square factors of12 give zeros |
 | 4 | `pb:nsq1` | ★★★ | Chebyshev/factorial prime-sum proof | Independent prime-power root, endpoint and asymptotic audit | PASS | VERIFIED_TWICE | Replaced P(x)>x by P(x)>x^(1−δ) for fixed δ>0; see main ledger |
-| 5 | `ex:findroots` | ★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:period` | ★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:fermatfactor` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:powersum` | ★★ | — | — | — | UNREVIEWED | — |
+| 5 | `ex:findroots` | ★ | Divisor-of-order test and coprime generator powers | Independent enumeration of unit orders for p=7,11,13 | Chapter 5 order theorem and cyclic prime theorem | VERIFIED_TWICE | DEP-030: 13 roots 2,6,7,11; exact order tests, not mere power samples |
+| 5 | `ex:period` | ★ | Long-division remainders and divisibility by 10^k−1 | Independent repetend block fraction and residue-transition argument | Chapter 5 order theorem, Chapter 2 modular arithmetic | VERIFIED_TWICE | DEP-030: 1/7 period6, 1/17 period16; p=2,5 excluded |
+| 5 | `ex:fermatfactor` | ★★ | Exact order of 2 is 2^(n+1) | Independent factorization of X^(2^n)+1 and order-divisor check | Chapter 5 order theorem | VERIFIED_TWICE | DEP-030: n=0, p=3; 641 divides F_5, no primality assumption |
+| 5 | `ex:powersum` | ★★ | Geometric sum over a primitive root | Independent scaling-permutation and polynomial-root witness | Chapter 5 cyclic prime theorem, field cancellation | VERIFIED_TWICE | DEP-030: k=0 and p=2 included; no division by zero |
 | 5 | `ex:kth` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:gausswilson` | ★★★ | — | — | — | UNREVIEWED | — |
 | 5 | `ex:cyclotomic` | ★★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; current totals are given above, with 77 exercise rows still unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-030, 71/144 are checked twice internally and 73 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
