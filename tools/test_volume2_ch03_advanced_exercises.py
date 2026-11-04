@@ -7,6 +7,7 @@ but cannot establish these universal identities.
 """
 import cmath
 import math
+import re
 import unittest
 from pathlib import Path
 
@@ -168,6 +169,16 @@ class TestAdvancedChapterThreeExercises(unittest.TestCase):
                 for b in (1,2,p-1):
                     self.assertAlmostEqual(K(a,b).real,K(a*b%p,1).real,
                                            delta=1e-9)
+
+    def test_math_delimiters_pair_within_paragraphs(self):
+        # LaTeX can defer a missing-$ error until the following blank line.
+        # Multiline inline formulas are allowed within the same paragraph.
+        text=CH3.read_text(encoding="utf-8")
+        for index, paragraph in enumerate(re.split(r"\\n\\s*\\n",text),1):
+            delimiters=re.findall(r"(?<!\\\\)\\$",paragraph)
+            self.assertEqual(len(delimiters)%2,0,
+                             f"Unclosed inline math in paragraph {index}: "
+                             f"{paragraph[:120]!r}")
 
     def test_character_notation_and_structure_first_use(self):
         text=CH3.read_text(encoding="utf-8")
