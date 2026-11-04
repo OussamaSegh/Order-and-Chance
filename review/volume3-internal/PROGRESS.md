@@ -82,3 +82,39 @@ pages and passes layout/print/cover preflight; formula rendering is still runnin
 It is an earlier checkpoint, not the current Chapter2 candidate or a final review.
 No actual pages have yet been visually approved. The detached worktree for later
 immutable builds is /workspace/volume3-review-build.
+
+## V3-004: Chapter 3 full pass and earlier-build evidence
+
+Read all Chapter3 source and independently reconstructed all14 exercises before
+opening their supplied hints/solutions. Seven named results and14 exercises have
+substantive A/B records. Added an earned order-six classification to Landau's
+solution, explicit quotient-vector-space operations/basis/correspondence, a supplied
+finite-field convention and GL0/nilpotency boundaries. Cyclic sieving now states
+its boundary conventions and computes removable values by finite polynomial
+algebra. Touchard's extra shift formula is proved on the Bell sequence with the
+operator scope made explicit. P-group convention now includes the trivial group;
+the center corollary explicitly concerns nontrivial groups, preserving its old
+asserted domain. Flags grade raised to two stars. No theorem/exercise weakened.
+
+The actual14 necklace drawings and their orbit labels were independently checked.
+Two rust circles now mark the reversal pair the solution previously said was
+marked, but was not. Cube colourings57, palette patterns15, graph counts11/3,
+Q8 class sizes and commuting pairs40, exact Gaussian-root evaluations, nilpotent
+matrix enumeration and Touchard boundaries all pass independent computations.
+Current manual mathematical evidence:23/155 named results,35/163 exercises.
+Unclassified prose/history/dependencies and all later chapters remain pending.
+
+468 unit tests pass, zero skips (49.355s). CI now also runs the new inventory,
+freshness and focused Chapter1–3 checks. Regression verifies that a changed proof
+cannot keep a statement's approval and changed dependency context cannot keep its
+classification. Inventory/reconciliation do not approve mathematics.
+
+Earlier8135d59b full build completed:472 reading/471 print pages,1.1078-inch spine,
+all required formats. Copied and hashed85 output files into the detached snapshot.
+Its flattened source was regenerated from8135 and matches exactly after replacing
+only absolute checkout paths. Actual EPUBCheck5.3.0 reports0fatals/0errors/0warnings.
+The inherited output checker passes and renders7samples, which are not approval.
+Actually opened/read only print35(label25),print40(label30) and the full wrap.
+No clipping observed in those samples. All other pages/digital views remain open.
+Volume3 has no assigned ISBN: source says to be assigned, no barcode generated.
+This earlier build does not approve current Chapter2/3 edits or publisher systems.

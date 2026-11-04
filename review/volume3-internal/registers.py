@@ -133,6 +133,24 @@ def check(data, require_complete=False):
     expected = {x['id'] for x in data['items'] if x['kind'] not in ('proof', 'hint', 'solution')}
     if expected != seen:
         raise ValueError(f'Exact register coverage differs: {expected ^ seen}')
+    actual_edges = initialize(data, write=False)['dependencies']
+    recorded_edges = json.loads((HERE/'dependencies.json').read_text())['entries']
+    identity_fields = ('id', 'path', 'line', 'target', 'destination', 'context_sha256')
+    identity = lambda row: {k: row[k] for k in identity_fields}
+    if [identity(r) for r in actual_edges] != [identity(r) for r in recorded_edges]:
+        raise ValueError('Reference/context classifications are stale; manually reopen affected uses')
+    order = {row['path']: i for i, row in enumerate(data['source_files'])}
+    for row in recorded_edges:
+        if row['status'] == 'pending':
+            if require_complete:
+                raise ValueError(f"Unreviewed dependency: {row['id']}")
+            continue
+        if not row.get('reason', '').strip() or row['role'] == 'unclassified':
+            raise ValueError(f"Dependency lacks substantive classification: {row['id']}")
+        destination = row['destination']
+        forward = (order[row['path']], row['line']) < (order[destination['path']], destination['line'])
+        if forward and row['role'] == 'premise':
+            raise ValueError(f"Forward premise is not earned: {row['id']}")
     import hashlib
     for source in json.loads((HERE/'prerequisite-sources.json').read_text())['sources']:
         if hashlib.sha256((HERE.parents[1]/source['path']).read_bytes()).hexdigest() != source['sha256']:
