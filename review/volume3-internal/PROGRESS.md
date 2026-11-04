@@ -118,3 +118,42 @@ Actually opened/read only print35(label25),print40(label30) and the full wrap.
 No clipping observed in those samples. All other pages/digital views remain open.
 Volume3 has no assigned ISBN: source says to be assigned, no barcode generated.
 This earlier build does not approve current Chapter2/3 edits or publisher systems.
+
+## V3-005: complete permutation proofs and Chapter 4 exercises
+
+Full Chapter4 mathematical reading accepts the corrected nine named statements
+and10 exercises, with prompt-first and separate adversarial reconstructions.
+Independently simulated every listed fifteen-puzzle rectangle using legal blank
+slides, checked its actual tile cycle and every enlargement triple through all15
+tiles. The converse is earned. Reconstructed all An simplicity cases and checked
+the commutator recipe on every nonidentity even permutation at n5..8.
+
+The old class-splitting lemma falsely included n1; only the corrected n>=2
+statement is accepted. Explained A3's simple abelian exception and A1/A2's trivial
+cases. Added local prime-cyclotomic field/automorphism proofs from actual earlier
+polynomial irreducibility and Bezout, eliminating a Chapter10 exercise premise.
+Replaced unearned monotone-convergence wording by finite positive-sum exhaustion,
+proved convergence/tails, and bounded the conjugacy probability constant by
+outward interval arithmetic:4.263401<C<4.263406. The full cube classification
+remains explicitly quoted outlook rather than an unproved sufficiency premise.
+
+Corrected edge-flip wording for arbitrary scrambled states: toggling four bits
+changes their integer sum by4-2r, always even. Independent facet rotations check
+all six face turns. Random-transposition outlook now includes holding moves;
+without them parity prevents mixing to uniform. Replaced two legacy rm formula
+controls after actual preliminary Pandoc warnings. Reassessed two star grades.
+470 tests pass, zero skips (49.731s); focused/inherited checks pass. Manual internal
+mathematical coverage is now32/155 named results and45/163 exercises. All remaining
+prose/history/dependency/final-production gates remain open.
+
+The f1cdd7d0 PDF-only checkpoint passed all PDF/cover checks at473 print pages
+(474 reading pages). Root dist now mixes those newer PDFs with the older8135 EPUB
+and reader; do not present it as a matched all-format package. The detached8135
+package remains the matched earlier85-file snapshot. Final builds must use their
+own immutable checkout and matching source identities.
+
+The user now explicitly permits changing the entire content if a better plan
+emerges. This authorizes substantial curricular/structural changes without another
+permission round. The review still must disclose old/new targets and lost coverage,
+and verify the actual final route. Advanced-exercise placement is being reassessed;
+no content has yet been removed under this freedom.

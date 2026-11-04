@@ -1,32 +1,42 @@
-# Restart checkpoint
+# Exact restart checkpoint: V3-005
 
-Baseline: 7f87c2ab00fdb0c7791dc833423b98bef0870f01 (PR103 actual merge).
-Branch: editorial/volume3-complete-internal-review-20261104. PR104 draft.
-Checkpoint V3-003: Chapter1/2 complete source reading and manual A/B mathematics
-of16 named results/21 exercises; all other gates pending. See the chapter reports.
-No target weakened. Source/hash inventories and registers are current; approvals
-are explicit manual records, not script-generated statuses.
+Repository /workspace/Order-and-Chance, branch
+editorial/volume3-complete-internal-review-20261104, draft PR104.
+Baseline/main last fetched:7f87c2ab00fdb0c7791dc833423b98bef0870f01 (actual PR103 merge).
+User assigns Codex to review everything itself and now grants full curricular/
+structural freedom. Do not ask for another reviewer or another permission round.
+Record changed targets/coverage honestly. No Amazon action authorized.
 
-Next: Chapter3. Entire main prose/proofs and all14 exercise prompts read; supplied
-solutions NOT opened yet. Record prompt-first solutions (including Cauchy/weighted
-Burnside, q-binomial root limit, Landau/Fitting/flags), compare all supplied
-solutions, then adversarial second checks. Known prerequisite concern: Fq is used
-before finite-field existence; quantify over a supplied finite field and define
-q=its size. Cycle decomposition should be explained before Polya. Check convention
-for trivial p-groups and n0/GL0 in advanced matrix problems.
+Completed current mathematical source reading: Chapters1–4,32 named results and45
+exercises with explicit internal A/B records. All current source keys/hashes match.
+No independent human/formal-verification claim. All other semantic/prose/history
+blocks, global dependency classifications and later material remain pending.
 
-Build session28653: preliminary full build started on8135d59b in primary checkout;
-all PDF and flattened EPUB source ingestion predated Chapter2 edits. It has471
-print pages, passes layout/export/cover preflight, and is rendering8475 unique
-formulas. It does NOT represent latest Chapter2 source. Logs:
-/tmp/volume3-preliminary-build.log. Detached worktree /workspace/volume3-review-build
-is at8135d59b for later immutable builds. No pages actually opened/approved yet.
+Next: Chapter5. Main prose/proofs and all8 exercise prompts read, but supplied
+hints/solutions NOT opened. Record prompt-first solutions before comparison.
+Immediate issues: p^a andm used before their finiteG/order hypotheses are defined;
+state those globally for Sylow and in theorem statements. prop:thirty's sentence
+calls an intersection a subgroup of prime orderfive, rather than saying its order
+dividesfive; repair. Radical-solvability outlook must state characteristic-zero/
+complex-subfield scope. Then verify all Sylow/solvable proofs and order12 exercise.
 
-Toolchain: source /workspace/volume3-tools/activate.sh (includes mandated workspace
-activation). EPUBCheck5.3.0 jar under /workspace/volume3-tools/epubcheck-5.3.0/.
-463 existing tests pass/zero skips; inheritedV3 and focusedCh1/2 checks pass.
+Chapter4 corrections: lem:split accepted only with n>=2 (old n1 assertion false);
+full fifteen-puzzle converse and An simplicity checked. Prime cyclotomic exercise
+now earns local field automorphisms, probability product/tail proof local, Rubik
+flip parity/scopes corrected, A3 exception and nonlazy shuffle periodicity fixed.
+No intended flagship result weakened. See CH04 reports for all details.
 
-Main unchanged at last fetch. Do not cancel main or unrelated CI runs. Do not
-inherit historical mathematical or visual approval. Bibliography/history,
-conceptual/forward contexts, remaining chapters/appendices, final artifacts,
-all-page/digital inspection and final-head terminal CI/merge remain outstanding.
+Toolchain: source /workspace/volume3-tools/activate.sh (calls required activation).
+470 unit tests pass/zero skips; inherited V3 and focusedCh1–4 checks pass. Run
+inventory.py --check and registers.py for evidence freshness; --require-complete
+must fail until the full review is actually done. CI includes those guards.
+
+Artifacts: /workspace/volume3-review-build is detached8135d59b with the copied
+matched earlier all-format package (472reading/471print/spine1.1078). Flattened
+source matches8135 after only checkout-path substitution. EPUBCheck5.3.0 zero
+messages. Only actual print35/40 and wrap opened; other pages/browser views not
+approved. See preliminary-8135 manifests. No assigned ISBN/barcode forVolume3.
+Root dist has newer f1cdd7d0 PDF-only build (474reading/473print) plus older EPUB/
+reader: MIXED CHECKPOINTS, not a matched candidate. Preserve the detached snapshot
+and use a fresh immutable checkout for next all-format build. No final CI/merge
+acceptance claimed. Do not cancel main or unrelated runs.

@@ -9,6 +9,7 @@ sys.path.insert(0, str(REVIEW))
 import check_chapter1
 import check_chapter2
 import check_chapter3
+import check_chapter4
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -35,6 +36,14 @@ class Volume3InternalReview(unittest.TestCase):
         proof['sha256'] = '0'*64
         with self.assertRaisesRegex(ValueError, 'Changed hint/solution|Stale'):
             volume3_registers.check(data)
+
+    def test_puzzle_attainability_and_permutation_boundaries(self):
+        check_chapter4.check_puzzle()
+        check_chapter4.check_edge_orientations()
+        check_chapter4.check_permutation_cases()
+
+    def test_conjugacy_probability_constant_has_bounded_tail(self):
+        check_chapter4.check_probability_constant()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

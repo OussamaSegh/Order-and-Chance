@@ -31,3 +31,33 @@ read; its own admitted later analysis is not permission for a missing V3 premise
 Source drift is guarded by the hashes in `prerequisite-sources.json`. A changed
 earlier file reopens the affected proof-site evidence; it does not inherit review
 from a title, citation, exercise prompt or prior audit.
+
+## V3-003–005 additions
+
+- C2 defines kernel/image and normality before quotient operations; quotient
+  representative independence precedes every isomorphism-theorem use. Aut(N) now
+  has a defined operation/group proof before semidirect products. Infinite cyclic
+  characteristic-subgroup argument uses generator images +/-1, not order counts.
+- C3 now proves finite cycle decomposition before weighted Burnside. Matrix
+  exercises quantify over a given finite field, not assumed existence at everyq.
+  Quotient vector operations, basis dimension and subspace correspondence are
+  proved locally. Fitting stabilization, GL0 and nilpotency-index bounds are earned.
+  Landau's small-case classification now proves the order-six case using Cauchy,
+  a normal index-two subgroup and conjugation; no later classification premise.
+- C4 uses the actual earlier V1 sign proof, C2 normal quotients and C3 orbit counts.
+  The fifteen-puzzle enlargement argument uses earlier A4/no-order6 and local
+  ordered-pair transitivity, not the later An theorem. The simplicity proof uses
+  only its earlier generation/conjugacy arguments and explicit commutators.
+- C4 prime cyclotomic field reminder uses actual V1 polynomial prop:gausspoly,
+  thm:eisenstein, ex:eisen(b) full solution and prop:polynomial-bezout proof. It
+  earns Q(zeta), inverses and sigma_a directly before the discriminant prompt.
+  V2 thm:eulercrit's actual generator/square/half-power proof was read for sign
+  checking; V1/V2 roots/finite-unit field arguments remain the earlier foundation.
+- C4 probability product needs only nonnegative real series and finite partitions;
+  finite-subsum exhaustion replaces any unproved later measure-theory theorem.
+  Explicit elementary exponential/logarithm bounds and finite geometric tails
+  control the decimal. The stronger asymptotic is outlook only.
+
+These rows do not close the still-pending exact forward-context register or
+later chapters. All qualifying changes in printed order must reopen relevant
+first-use/context evidence; reference distance alone cannot approve a premise.
