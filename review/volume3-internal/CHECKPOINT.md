@@ -1,71 +1,52 @@
-# Exact restart — V3-009
+# Exact restart — V3-010
 
-Repo /workspace/Order-and-Chance, branch
-editorial/volume3-complete-internal-review-20261104, draft PR104:
-https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Baseline/main actual
-PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01, still current after fetch.
-User authorizes structural/content changes where justified, full solo internal
-review and final merge only when genuinely complete. No outside reviewer needed.
+Repository `/workspace/Order-and-Chance`; branch
+`editorial/volume3-complete-internal-review-20261104`; draft
+https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Actual PR103 merge and
+current fetched main: `7f87c2ab00fdb0c7791dc833423b98bef0870f01`. No user changes
+were overwritten and no concurrent main advancement observed. Work is a solo
+internal AI review. User authorizes content changes and a final merge only when
+the complete available review and exact-head checks genuinely pass.
 
-Chapters1–8 complete mathematical source reads;74named/77exercise explicit A/B
-records accepted internally. Others pending: C9–12/all four appendices, global
-conceptual edges/unnamed prose/history registers, whole-book voice/narrative,
-final all-page/digital/actual CI artifacts. Do not infer approval from inventory.
-The new bibliography item raises count104->105;155named163triples22examples22
-figures unchanged. Freshness guards protect source/proof/hint/solution/context and
-earlier-source hashes. Source edits reopen affected evidence. No formal/human claim.
+Chapters1–9 fully read, with85 named/90 exercise A/B records accepted internally.
+Next: read C10 main and prompts, record independent answers before supplied
+hints/solutions where feasible. The moved pb:kronecker and ex:phin full solution
+were already read during the C7 migration; disclose that exposure. C10 remainder,
+C11–12, all four appendices, keyed global unnamed/dependency/history closure,
+whole-book written voice/story and final production remain pending. Inventory
+is155 named,163 exact triples,22 examples,22 figures,107 bibliography entries.
+Generated counts/hashes do not confer approval. Source edits reopen evidence.
 
-Next: C9fullsource/prompts first. Locate actualHints/Solutions boundaries before
-chunks; record independent solutions before openingthem. C8all8prompt-first
-recordedbefore supplied comparison. C9notread yet exceptkeywordsearches.
+Read CH09-REVIEW.md/CH09-PROMPT-FIRST.md for all C9 reconstructions, fixes and
+boundaries. Primitive meanings, relative Frobenius, RS parameters/locator
+nonuniqueness, Chevalley zero case, Moore grade/empty determinant and trace
+codomain earned. Actual nonzero trace proof uses degree, including Tr(1)=0 in
+even degrees. Lucas–Lehmer finite-ring converse retained. Both actual figures'
+data checked; small coordinate-rounding errors corrected with old-source
+before-failing/current-after-passing evidence. Denso/NIST full relevant text read;
+qualified claims and exact local AES irreducibility proof. RESEARCH.md limits apply.
 
-C8fullreportCH08-REVIEW.md/CH08-PROMPT-FIRST.md:14named8exercise acceptedinternal.
-Primitive namedtheorem fullyretained; duplicateexercise ex:primitive replaced
-withfinitecandidatebound,explicitrationalfamilyrecovery,andFp(S,T)/Fp(Sp,Tp)
-p²counterexamplewithfullsolution. ReplacementJSONold/new/disclosure/sourcehash.
-Characteristic/infinite-basis/countability/geometryprerequisites repairedlocally.
-C7Kroneckermigration remainsC7->C10afterex:phin; completeproblemstillpendingthe
-fullC10routeaudit. C10ex:phinprompt/fullsolutionwasread,notwholechapterapproval.
+Activate `source /workspace/volume3-tools/activate.sh`, which calls mandated
+system activation. Full476 unit tests passed, zero skips55.628s, log
+`/tmp/volume3-v010-tests.log`. Focused C1–9, inherited checker, inventory/freshness
+and diff whitespace pass. `--require-complete` must still fail. All assertions
+retained when output-checker language was corrected to avoid requiring a human
+reviewer. Add no automatic mathematical approval to inventory.
 
-C5 complete in CH05-REVIEW.md/CH05-PROMPT-FIRST.md. Independent computations in
-check_chapter5.py. Corrected finite assumptions, early characteristic vocabulary,
-intersection/order wording, missing product/conjugacy steps, pq equal-prime case,
-char0 radical outlook and explicit semidirect isomorphism direction. Read actual
-V2 ch05 thm:cyclic proof. Primary-source check corrected outdated group1024 count
-to49,487,367,289; RESEARCH.md documents attribution/access/enumeration limits.
+Latest immutable all-format checkpoint `/workspace/volume3-build-60da24ec`,
+commit60da24eca46820bab0617c7796c4c8b28f4d102c:482 reading/481 print pages,
+spine1.1313in,85 public hashes in preliminary-60da24ec-artifacts.json. Actual
+EPUBCheck5.3.0 zero messages and outputchecker pass. Opened print223/229/231/232
+only in this package; visual JSON records hashes and exact observations. Predates
+C9 changes. Cache provenance verifies renderer/font identity; no visual transfer.
+Earlier packages1b3c7b05/03fe2a03/8135d59b have separate manifests/limited actual
+opened-page evidence. Rootdist mixes checkpoints, never a matched candidate.
+No final all-page, grayscale, browser/device or actual CI-artifact approval.
 
-Activate source /workspace/volume3-tools/activate.sh (calls required activation).
-475 full unit tests passed zero skips (49.495s), log/tmp/volume3-v009-tests.log.
-Focused C1–8/source/freshness/inherited checks pass. --require-complete stillfails.
-Inventory bibliography inclusive end coordinates repaired and before/after tested;
-sourcehash changes reopen evidence; attribution remains pending. Corry host/year
-corrected via actual article/institution record; RESEARCH.md gives access limits.
-
-Immutable all-format build completed in /workspace/volume3-build-1b3c7b05 at
-1b3c7b05ae4078113f4dbf62ed36b176e5b6c6ad:476reading/475print,spine1.1172in.
-ActualEPUBCheck5.3.0zero messages/outputcheckerpass.85filehash manifest committed.
-Actually openedprint68/111/112 only; preliminary-1b3c7b05-visual.json. Earlier
-8135package onlyprint35/40/wrapopened, separate evidence. These builds predate
-currentC5/C6changes. Rootdistmixedcheckpoints, not matched. No final artifact
-approval; digital actualbrowser/deviceviews pending. NoassignedISBN/barcode.
-
-
-Latest observed CI41904629129 for1b3c7b05 in progress. Earlier PR runs automatically
-cancelled on pushes by actual workflow; do not cancel main/unrelated. Library
-caches saved only on main. Final source must freeze; matched immutable artifacts,
-all changed-page checks and terminal exact-final-head CI still required. No merge
-acceptance or publication/device/ISBN-ownership evidence claimed.
-
-NewPDF-onlysnapshot/worktree /workspace/volume3-pdf-03fe2a03, sourcecommit
-03fe2a034e31215cfa0be76ad1a9ab23a4878113, completed482reading/481print,matched
-print/wrap fromsamebuild. preliminary-03fe2a03-pdf.json recordsallfilehashesand
-actualopenedprint151/161/162; nootherpagesapproved,noEPUB/readerfromthisbuild.
-ItpredatesC8changes. CI03fe run41910003972 list/unit/config/mathjobssuccess,
-Volume3buildinprogress atobservation. No finalterminalCIclaim.
-
-Fornextimmutableall-formatbuild, localformulaimagecachefrom1b3c7b05couldbe
-reusedonlyafterverifyingrenderers/fontssourceidentityandsameenvironment.
-Inspectedepub_math.py: v6keyincludesTeX/display/DPI/border,butnotfonthashes,
-so source/fontidentitymustbeexplicitlychecked. Cachepathbuild/volume3-symmetry/
-epub-math-cache,PNG+txt pairs. This is not a reusablePRlibrarycacheclaim and
-transfers no visualapproval (olderformulaimageswerenotindividuallyapproved).
+CI60da run41912600155: list/unit/config/math and V3build/output jobs success;
+site validation in progress at observation. Library caches save only on main.
+PR pushes may auto-cancel older PR runs; never cancel main/unrelated. Final
+source freeze, matched final outputs, exact terminal CI/head/current-main checks
+and clean worktree required before ready/expected-head merge commit. No assigned
+V3ISBN/barcode, account ownership, KDP/Kindle/native/physical-proof evidence.
+No Amazon action. Do not stop at this checkpoint or request another reviewer.

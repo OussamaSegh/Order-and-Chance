@@ -176,3 +176,32 @@ Story: C8 constructs rootfields before discussing their symmetries, counts
 embeddings with the repeated-root limitation visible, and relates quadratic
 towers to actual geometry. C9 now asks what these constructions produce over
 finite fields; characteristicpbehaviour has an earned example and a boundary.
+
+## V3-010 — finite fields and local coding/trace tools
+
+Read actual V2 ch04 definition and multiplicativity of μ, `prop:conv` full
+finite-factor-pair/triple proof, and `thm:mobius` prime-power cancellation and
+convolution inversion. C9 count inversion therefore uses an actual proved tool.
+Read V2 ch06 `thm:gausslemma`, `cor:two`, `lem:eisenstein`, `thm:qr` including
+the signed-residue, factorial cancellation, parity and lattice-count arguments;
+the Euler-criterion proof was read earlier. These earn the precise Fibonacci
+and Lucas–Lehmer applications. Added the arithmetic-function source hash;
+reciprocity was already hash guarded. No exercise prompt or bibliography entry
+was treated as a proof.
+
+C9 distinguishes field-generating and multiplicatively primitive elements.
+Relative q-Frobenius and its degree/order/count are now explicit before use;
+the characteristic remains p. Finite-field existence precedes irreducible-count
+positivity, so those arguments are not circular. All n≥1 restrictions and the
+RS1≤k≤n≤q contract are stated; t=0 and fewer-than-t errors are earned.
+
+The Moore solution explains independent indeterminates and the fraction field
+of the C6 polynomial domain before using it. Empty determinant and zero subspace
+are handled. Binary trace values are proved to lie in F2 before being bits;
+the nonzero-polynomial proof works when Tr(1)=0. No future trace theorem supplies
+a premise. AES irreducibility is proved locally using the already earned
+factorization theorem and a complete polynomial identity.
+
+Story: finite root fields answer C8's construction question, then polynomial
+root bounds earn error correction. C10 will generalize the observed finite
+symmetry/subfield pattern; its correspondence is mentioned here only as outlook.

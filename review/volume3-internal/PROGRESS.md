@@ -298,3 +298,50 @@ transfer or EPUB/readerfor this PDF-onlybuild. It predates C8changes.
 CI03fe2a03 run41910003972 inspectedjobdetails: listjob/unit/config/mathchecks
 success; Volume3buildstillinprogress atobservation. No terminalCI acceptance or
 PRcachepromise. Newsource stillrequiresfreshaffectedrendering/CI.
+
+## V3-010: finite fields, error correction and trace
+
+Read the full Chapter9, then independently solved all13 prompts before opening
+their hints/solutions. Compared every supplied part and reconstructed each
+argument adversarially; CH09-REVIEW.md records11 named and13 exercise A/B sets.
+Totals are85/155 named and90/163 exercises, internal AI acceptance only. The
+remaining main chapters, all appendices, global conceptual/prose/history closure,
+whole-book voice and final production evidence remain open.
+
+Clarified the two meanings of primitive, relative Frobenius (characteristic p),
+positive degree/index domains, RS message parameters, nonunique error locators,
+zero-polynomial Chevalley case, Moore's formal rational-function argument and
+empty determinant, and binary trace's codomain. The trace nonzero proof correctly
+uses its polynomial degree even when Tr(1)=0. The Lucas–Lehmer converse retains
+its valid finite-ring unit proof; it never assumes a composite residue ring is a
+field. Moore regraded2→3. Full original mathematical targets and solutions remain.
+
+Recomputed F4/F9/F16 examples, every RS table entry and actual Gaussian solve,
+all15 circle labels,14 count dots,131 curve points and243 Pascal dots. Fixed small
+coordinate rounding inconsistencies; exact old-source checks fail, corrected
+sources pass without lowering tolerances. Added an AES irreducibility certificate,
+then separately trial-divided all possible small factors. Trace/window/balance/
+all-shift correlation checks cover n1…8, including even n and endpoints. Actual
+V2 Möbius and reciprocity proof chains read and hash guarded. Denso/NIST primary
+text supports qualified QR/CD/AES copy; two new bibliography items raise105→107.
+No application catalog or new research proof certified from a snippet.
+
+476 full unit tests passed, zero skips (55.628s), log/tmp/volume3-v010-tests.log.
+Focused checks, inherited checker, register freshness and whitespace pass. A
+subsequent output-checker wording change removes its unsupported demand for a
+human reviewer; all assertions remain unchanged. It now correctly says separate
+recorded mathematical/page evidence is required. Final output checks remain open.
+
+Immutable all-format60da24eca46820bab0617c7796c4c8b28f4d102c snapshot completed:
+482 reading/481 print pages,1.1313-inch spine, actual EPUBCheck5.3.0 zero messages,
+output checks pass. Manifest records85 public files and report hashes. Formula
+cache reused only after renderer/font byte identity and same-environment checks,
+with provenance recorded; no PR library-cache or visual-approval transfer claim.
+Actually opened print223/229/231/232, reading every paragraph/display there;
+new primitive exercise/recovery/positive-characteristic solution fits. All other
+pages and grayscale/digital evidence remain pending. This snapshot predates C9.
+
+Latest main fetch still7f87c2ab00fdb0c7791dc833423b98bef0870f01; no concurrent
+advancement seen. Inspected CI60da run41912600155: list/unit/config/math and
+Volume3 build/output jobs successful; site validation still running at observation.
+No terminal final-head acceptance; cache saves remain main-only. Continue C10.

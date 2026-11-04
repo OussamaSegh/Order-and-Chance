@@ -56,20 +56,20 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-009
+## Active checkpoint V3-010
 
-Chapters1–8 have complete source-level mathematical readings with explicit A/B
-records:74named/77exercise sets. Exposition/context/history registers remain
-pending even where their source is read; their exact closure is a separate whole-
-book pass, not an inventory inference. Next mathematical route isC9finitefields,
-C10Galois (including relocatedKronecker),C11characters,C12quaternions,then allfour
-advancedappendices. User's curricular freedom has been applied concretely:
-Kronecker triple moved intact afteritsproofprerequisite; duplicateprimitive
-exercise replacedbyearnedapplications/inseparabilityboundary,originalnamedtheorem
-retained. Everyaffectedresult must be rechecked at the finalsourcefreeze.
+Chapters1–9 have complete source-level mathematical reads and explicit A/B
+records:85/155 named results and90/163 exercise triples accepted internally.
+Their unlabelled reasoning has been read in context; keyed global exposition,
+conceptual edges and history closure remain separate pending gates. Next is
+Chapter10, including the relocated Kronecker problem, then Chapters11–12 and all
+four appendices. No mathematical status is inherited from an editorial rewrite.
 
-Preliminaryartifact snapshots are explicitly scoped, with onlyactualopenedpages
-recorded. None is the finalcandidate. Finalwhole-bookwrittenvoice/storypass,
-primary-source/historyclosure, all-page/grayscale/digitalactualrendering, EPUB
-links/disclosures/narrowwidebehaviour and exactfinal-headCI/artifactcomparison
-remain open. Continueauthorizedwork; do not treatthischeckpointas completion.
+User's curricular freedom has been applied to earned local proofs, a justified
+exercise relocation and a complete constructive primitive-element replacement,
+with old/new statements and losses disclosed. Intended major results remain.
+Final whole-book written voice/story pass, remaining primary-source checks,
+all-page/grayscale/facing-page/digital inspection, exact links/disclosures and
+final-head CI/artifact comparison remain open. Immutable preliminary packages
+have only their explicitly opened pages approved; none is the final candidate.
+Continue authorized work through the full job; this checkpoint is not completion.

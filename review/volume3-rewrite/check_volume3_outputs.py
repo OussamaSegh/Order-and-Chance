@@ -104,8 +104,8 @@ def main() -> None:
         "print_pdf_pages": print_pages, "epub": info,
         "representative_render_samples": renders,
         "limitations": ("Structural checks and seven sample renders only; "
-                        "a complete human visual review and mathematical "
-                        "proof-by-proof sign-off remain outstanding."),
+                        "complete page/digital inspection and mathematical "
+                        "proof-by-proof review require separate recorded evidence."),
     }
     REPORT.parent.mkdir(parents=True, exist_ok=True)
     REPORT.write_text(json.dumps(report, indent=2, ensure_ascii=False)+"\n",

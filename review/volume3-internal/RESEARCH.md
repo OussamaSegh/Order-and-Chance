@@ -75,3 +75,28 @@ Numdam actual1847 issue/item metadata read for Kummer's letter toLiouville p136
 and Lamé's memoir pp172–184. Gallica full text redirects were inaccessible through
 the web tool. These metadata reads do not count as reading those original texts
 or verifying the anecdote. The removed incidental formulation is not certified.
+
+## H-C09-QR/AES — actual application sources
+
+Read the full Denso Wave page *Error correction feature*,
+https://www.qrcode.com/en/about/error_correction.html , and opened its actual
+error-level table image (local `/tmp/volume3-qr-error-correction.png`). The text
+defines the percentages as fractions of total codewords, each eight bits; its
+worked example distinguishes data and redundancy and states two redundant
+codewords per unknown codeword error. The table gives L7%, M15%, Q25%, H30%.
+The page also describes use of the method in music CDs. This supports the
+qualified QR/CD statements; it does not promise restoration of an arbitrary30%
+of damaged image area or verify the former DVD/RAID/Voyager catalog. That
+incidental catalog was removed; no mathematical target changed.
+
+Read NIST FIPS197-upd1, *Advanced Encryption Standard (AES)*, actual title and
+Sections4.1–4.4, printed pp8–10 (PDF15–17), at
+https://nvlpubs.nist.gov/nistpubs/FIPS/NIST.FIPS.197-upd1.pdf . First issued2001,
+updated9May2023. It specifies byte polynomials, XOR addition, the modulus
+X8+X4+X3+X+1, multiplication/reduction, XTIMES and inversion by exponent254 or
+Euclid. Independently recomputed its example57·13=fe. The manuscript now supplies
+its own exact irreducibility certificate, independently checked by trial factors.
+This read does not audit the full cipher implementation or its security.
+Both primary sources are added to the bibliography (105→107 entries). Accessed
+4November2026. Historical finite-field/Galois/Moore attributions remain pending
+their separate source review.
