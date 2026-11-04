@@ -56,10 +56,10 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 9 | `prop:cfconv` | proposition | Tail induction, alternating determinant and Fibonacci bound | Independent 2×2 matrix product and fractional-linear composition | VERIFIED_TWICE | DEP-048: real positive tails; gcd only integer coefficients; n=0 determinant and a1=1 |
 | 9 | `thm:cfapprox` | theorem | Exact complete-quotient error and strict denominator bounds | Independent fractional-linear endpoint comparison | VERIFIED_TWICE | DEP-048: irrational x, signed a0, n=0, q0=q1 possible |
 | 9 | `lem:cfexistence` | An infinite expansion determines its number | Strict even/odd nesting, tail limits and floor recovery | Independent nested rational cylinders and rational-separation contradiction | VERIFIED_TWICE | DEP-048: arbitrary infinite positive digits, uniqueness, irrationality, all-one sequence |
-| 9 | `lem:best` | best approximation | — | — | UNREVIEWED | — |
-| 9 | `thm:legendre` | Legendre | — | — | UNREVIEWED | — |
-| 9 | `thm:periodic` | Euler, Lagrange | — | — | UNREVIEWED | — |
-| 9 | `thm:pell` | Lagrange, 1768 | — | — | UNREVIEWED | — |
+| 9 | `lem:best` | best approximation | Basis of adjacent n,n+1 convergents; opposing signs | Independent n,n−1 basis and complete-quotient inequality | VERIFIED_TWICE | DEP-049: n=0, duplicate denominator1, p arbitrary integer, q>0 |
+| 9 | `thm:legendre` | Legendre | Best approximation and fractional triangle bound | Independent integer determinant/error bound | VERIFIED_TWICE | DEP-049: strict1/(2q²), unreduced p/q allowed, largest index if denominators tie |
+| 9 | `thm:periodic` | Euler, Lagrange | Period fixed-point quadratic; bounded transformed integer coefficients | Independent inverse Möbius substitution and binary-form discriminant/proximity bound | VERIFIED_TWICE | DEP-049: eventual rather than pure period, signed real quadratic roots, nonsquare discriminant |
+| 9 | `thm:pell` | Lagrange, 1768 | Bounded nonzero norms, repeated residues, minimal positive unit | Independent periodic matrix conjugation gives norm±1, then squaring | VERIFIED_TWICE | DEP-049: nonsquare d≥2, nonzero y, ±1 and negative powers, integer inverse closure |
 | 10 | `prop:quadunits` | proposition | — | — | UNREVIEWED | — |
 | 10 | `prop:eucl` | Euclidean division | — | — | UNREVIEWED | — |
 | 10 | `thm:ufd` | theorem | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **48/72** rows are `VERIFIED_TWICE` at DEP-048; **24** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **52/72** rows are `VERIFIED_TWICE` at DEP-049; **20** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
