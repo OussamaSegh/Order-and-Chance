@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. At **DEP-064 (4 November 2026)**, **72/72 named results** and **144/144 exercise solutions** have two documented internal mathematical passes. The remaining **unnamed arguments and whole-book reviews**, comprehensive unnamed-proof inventory and whole-book teaching, first-use, visual and publisher gates are open. The latest previously confirmed successful Actions build is **#1637** at `8f96eceaa0740a5a1d953bcdd91fd92fa26c154c`; current edited heads require their own terminal successful run. Local full builds at source0a35237c and df6df9bf also succeeded, as recorded below. Subsequent source edits reopen format validation. No whole-book page-by-page visual proof or publisher proof is claimed.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. At **DEP-072 (4 November 2026)**, **72/72 named results**, **144/144 keyed solutions**, all11 complete chapter sources and the global front/back matter have documented internal mathematical passes. Whole-source records cover **97/97 example environments and39/39 mathematical figure datasets**. Three portrait derivatives have been matched to downloaded/viewed source originals with hashes/metrics, qualified attribution and limits. Global conceptual first-use/story/history reconciliation, final-source artifacts/every-page visual proof and independent editorial/author/publisher gates remain open. Full local suite **452 tests,zero skips** passes. Actions#1665's list/test stage succeeds after the mpmath dependency fix; its book builds were still running when inspected. No terminal exact-current-head success or whole-book format/publication approval is claimed. Historical full-build evidence below predates newer source edits.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -29,19 +29,19 @@ PR #97 explicitly accepted the following optional challenges as using other book
 
 | Gate | State | Actual evidence and remaining obligation |
 | --- | --- | --- |
-| P00 Exact baseline inventory and executable tests | IN_PROGRESS | Fresh complete content inventory at DEP-060:15 reader-facing files,1366 blocks/chunks,39 figure sources,3 portraits and local reference edges;376 tests pass. Supporting metadata hashes included; exact-head CI pending. |
+| P00 Exact baseline inventory and executable tests | IN_PROGRESS | Fresh complete inventory1361 items across15 reader-facing files,39 figure sources,3 portraits and319 local reference edges;452 tests pass. Exact current-head CI remains pending. |
 | P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Actual proof sites recorded for logic, counting, complex arithmetic, polynomials, real calculus, series, probability and geometric inputs; complete per-use release graph pending. |
-| P02 Continuous story architecture | IN_PROGRESS | Four-part route and concrete Volume1→2→3 handoffs retained; whole-book prose pass underway. |
-| P03 First-use dependency graph | IN_PROGRESS | Many local dependency repairs and complete reference-edge inventory; every unnamed import/definition still needs source review. |
-| P04 All theorem/proof second checks | IN_PROGRESS | All72 named results checked twice internally; unlabelled arguments and teaching assertions remain. |
-| P05 Every worked example and figure | IN_PROGRESS | Inventory98 examples,39 mathematical figures and3 historical portraits; full individual two-pass/visual/history audit pending. |
+| P02 Continuous story architecture | IN_PROGRESS | All11 chapter and front/back source bridges read; final global story/voice reconciliation remains pending. |
+| P03 First-use dependency graph | IN_PROGRESS | Chapterwise definitions/dependencies repaired and reference edges resolved; complete explicit conceptual/first-use graph and exceptions still pending. |
+| P04 All theorem/proof second checks | IN_PROGRESS | All72 named and chapterwise unnamed argument groups have two internal records; global per-use reconciliation and final acceptance remain open. |
+| P05 Every worked example and figure | IN_PROGRESS | All97 example blocks/39 complete figure datasets checked twice internally; portrait-source evidence added. Full history/bibliography and final visual acceptance remain open. |
 | P06 All exercises independent reconstruction | IN_PROGRESS | All144 keyed solutions reconstructed internally; final complete-route and artifact acceptance still open. |
 | P07 All exercises independent adversarial second pass | IN_PROGRESS | All144 keyed solutions have second internal checks; no independent external or final-format approval implied. |
-| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted mathematical/expository repairs throughout; complete source/narrative pass underway, no chapter signed off. |
-| P09 Interior illustration mathematical and format proof | IN_PROGRESS | Figure sources indexed/hashes captured;39 final-size mathematical/visual reviews remain. |
-| P10 Full-book voice/transition pass | IN_PROGRESS | Local rewrites and handoffs checked; full read-through, repetition and first-reader review underway. |
-| P11 Tests and exact-head CI | IN_PROGRESS | Complete suite398 tests,zero skips at DEP-064 source; latest exact-head successful Actions still required. |
-| P12 Every actual PDF/EPUB/site page | IN_PROGRESS | Full pre-editfb6afe06 build succeeded; current Chapter1–4 source needs renewed fixed-snapshot build and every-page/latest-artifact visual proof. |
+| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | All11 chapter and global front/back source passes recorded; global voice/dependency/history and final-source formats/external acceptance remain open. |
+| P09 Interior illustration mathematical and format proof | IN_PROGRESS | All39 mathematical datasets checked internally, with standalone and scoped PDF views recorded. All final-source figure/page/EPUB/reader/print sizes remain open. |
+| P10 Full-book voice/transition pass | IN_PROGRESS | All local chapter/front/back bridges read/repaired; final global voice/story and first-reader review still pending. |
+| P11 Tests and exact-head CI | IN_PROGRESS | 452 local tests,zero skips pass; missing mpmath CI dependency fixed and fresh-venv22-test reproduction passes. Actions#1665 list/test succeeds; terminal current-head CI pending. |
+| P12 Every actual PDF/EPUB/site page | IN_PROGRESS | Immutable681b4b55 all-format build passed (329 print pages), with scoped page views; Chapters9–11/front-back changes need exact final-source builds/every-page proof. |
 | P13 Final editorial sign-off (not KDP approval) | UNREVIEWED | Independent reviewer, author publisher/Kindle and physical proof remain separate required evidence. |
 
 | Printed chapter / file | Status | Current remaining source focus |
@@ -50,14 +50,14 @@ PR #97 explicitly accepted the following optional challenges as using other book
 | 2 / ch02-primes.tex | IN_PROGRESS | All5 named/11 keyed and whole-source math/example/3 figure datasets checked internally (DEP-062); full history/portrait provenance,visual and external approval remain. |
 | 3 / ch03-congruences.tex | IN_PROGRESS | All8 named/21 keyed plus whole-source math/examples/4 figure datasets checked internally (DEP-063); fresh Sunzi52 problem revalidated; history/visual/external acceptance remain. |
 | 4 / ch04-arithmetic-functions.tex | IN_PROGRESS | All4 named/10 keyed plus whole-source math/examples/3 figure datasets checked internally (DEP-064); complete history,visual and external acceptance remain. |
-| 5 / ch05-primitive-roots.tex | IN_PROGRESS | All6 named/16 keyed checked; unnamed order/classification explanations,examples,3 figures and narrative remain. |
-| 6 / ch06-quadratic-reciprocity.tex | IN_PROGRESS | All6 named/19 keyed checked; unnamed reciprocity/lifting explanations,examples,4 figures,portrait/history and narrative remain. |
-| 7 / ch07-sums-of-squares.tex | IN_PROGRESS | All5 named/8 keyed checked; unnamed claims,examples,3 figures,portrait/history and narrative remain. Redesigned eureka obligation recorded. |
-| 8 / ch09-diophantine.tex | IN_PROGRESS | All5 named/8 keyed checked; unnamed parametrisations/descent,examples,3 figures and narrative remain. |
-| 9 / ch08-continued-fractions.tex | IN_PROGRESS | All7 named/8 keyed checked; unnamed convergence/periodicity claims,examples,4 figures and narrative remain. |
-| 10 / ch10-gaussian-eisenstein.tex | IN_PROGRESS | All9 named/8 keyed checked; unnamed ring/norm/unit arguments,examples,3 figures and narrative remain. |
-| 11 / ch14-characters.tex | IN_PROGRESS | All11 named/20 keyed checked; unnamed analytic/character claims,examples,4 figures and narrative remain. |
-| Preface / field guide / jacket / cover note | IN_PROGRESS | Complete inventory includes these files; first-use,mathematics,seam,history and voice pass remains. |
+| 5 / ch05-primitive-roots.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-065); global history/first-use/voice,final formats and external acceptance remain open. |
+| 6 / ch06-quadratic-reciprocity.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-066); global history/first-use/voice,final formats and external acceptance remain open. |
+| 7 / ch07-sums-of-squares.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-067); global history/first-use/voice,final formats and external acceptance remain open. |
+| 8 / ch09-diophantine.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-068); global history/first-use/voice,final formats and external acceptance remain open. |
+| 9 / ch08-continued-fractions.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-069); global history/first-use/voice,final formats and external acceptance remain open. |
+| 10 / ch10-gaussian-eisenstein.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-070); global history/first-use/voice,final formats and external acceptance remain open. |
+| 11 / ch14-characters.tex | IN_PROGRESS | All named/keyed and whole-source math/examples/figure datasets checked internally (DEP-071); global history/first-use/voice,final formats and external acceptance remain open. |
+| Preface / field guide / jacket / cover note | IN_PROGRESS | DEP-072 full source/count/math/last-example and portrait/cover-data pass; complete global graph/history/voice and final artifacts remain open. |
 
 
 ## Finding log
@@ -1391,6 +1391,14 @@ All39 mathematical figure inputs are separately hashed. The three actually used 
 
 **Verification/CI.** Eight new checks and corrected reader-route guard pass; full suite449 tests,zero skips passes. Inventory1361 current. Exact a0cfaef3 Actions#1664 failed before book builds: list-job log shows missing mpmath in new high-precision tests. Pinned test requirements now include runtime helpers and mpmath; only test-list installation changes, preserving book-output fingerprints. Fresh isolated venv installed only that manifest and passed22 Chapter9–11 tests. New-head terminal CI is still required. Targeted publisher/author editions and Cole/Davie1969 attribution checked with explicit original-source limits. Next global field-guide/preface/jacket/cover-note/source credits, complete first-use/story/history/reference graph and final-source formats/all-page/CI/external/author work. PR stays draft/unmerged/unpublished.
 
+## DEP-072 — Complete front/back source, final example and actual portrait/cover evidence (4 November 2026)
+
+**Scope/math.** Read preface, full field guide, jacket, listing, main/catalogue and cover generator/colophon. Added G-E01/G-U01…U04/G-F01 in the whole-book review. Back substitution and independent residue reduction verify the final field-guide example; whole-source internal coverage is now97/97 examples and39/39 mathematical figures. Corrected overbroad cancellation advice, domains, the full-ring preview and the false future-first-use of homomorphism. Actual Volume13 prop:OK proof read for preview accuracy, without using it as a prerequisite. Reconciled Chapter11's clerical19 count to actual20 groups; all20 were read and no extra verification is counted. Updated stale current matrices while preserving historical logs.
+
+**Actual images/history.** Downloaded/viewed all three matching source portrait originals and local derivatives, compared resized RGB pixels and recorded hashes/dimensions/metrics in a new evidence JSON. Qualified Fermat's uncertain portrait date/disputed birth year, matched Gauss to the actual Jensen1840 file rather than a similarly named Biermann copy, and aligned Chebyshev's qualified date. Removed unused Minkowski from reader credits; retained its asset as unused. Commons attribution evidence is separate from independent publisher approval. Read/rendered/viewed the primary Gardner March1964 scan printed122, which supports the1963 account; publisher DOI/date independently checked. Updated only the cover colophon to explain the pale1 marker and avoid unsupported first-ever priority. All approved art/lettering and copyright credits are unchanged; generated note/hash metadata synchronized.
+
+**Verification/next.** Independent closed-form spiral coordinates plus Eratosthenes match all557 prime dots and the separate pale origin among5041 cells. Three new checks and full suite452 tests,zero skips pass; cover-generator freshness and inventory1361 checks pass. Actions#1665 list/test stage succeeds after the dependency fix; book jobs were still running, not terminal approval. Next complete explicit conceptual/first-use/reference and story/voice/history/bibliography reconciliation, then exact final-source builds/every-page/EPUB/reader/wrap/CI and independent editorial/author evidence. PR stays draft/unmerged/unpublished; all P00–P13 acceptance gates remain open.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -1407,4 +1415,4 @@ All39 mathematical figure inputs are separately hashed. The three actually used 
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Latest exact task (DEP-071 handoff; 4 November 2026):** Finish the global field-guide/preface/jacket/cover-note and illustration-credit pass, including the97th example. Reconcile complete prerequisites/first-use/story/history/reference graph, then build the exact final source and inspect every page/EPUB/reader/cover; require terminal exact-head CI, independent editorial and author/publisher evidence. All11 chapter source passes cover96/97 examples and39/39 figure datasets internally; suite449 passes, inventory1361 current. Actions#1664's missing-test-dependency failure is repaired and fresh-venv22-test reproduction passes, but new-head CI is unverified. PR remains draft/unmerged/unpublished; no P00–P13 approval inferred.
+**Latest exact task (DEP-072 handoff; 4 November 2026):** Build the explicit complete conceptual/first-use/reference dependency and story/voice reconciliation, then finish global history/bibliography/current-status review. All11 chapter and front/back source passes now cover97/97 examples and39/39 mathematical datasets internally; suite452 passes, inventory1361/319 reference edges current. Source portrait originals matched/viewed with evidence JSON; final publisher approval remains separate. Actions#1665 list/test succeeds; books were still building. Final-source all-format builds/every-page/CI and independent editorial/author/publisher gates remain required. Keep PR draft/unmerged/unpublished.

@@ -13,7 +13,7 @@ The cover draws the Collatz tree. Take each integer from 2 up to 8,000. An even 
 
 Cover illustration: the Ulam spiral of the primes up to the square of 71; see About the Cover.
 
-The integers from 1 to the square of 71 are written in a square spiral, and the primes that fall inside a disc are the dots. Stanislaw Ulam drew the first such spiral in 1963, doodling during a dull talk, and saw the primes gather along diagonals. Martin Gardner published the figure in Scientific American in 1964. Nothing on the cover explains those diagonals. That is why the spiral stands on this volume, facing the chapter Primes, where the primes stop being a list and become the subject. The drawing was computed by the book's own TikZ cover generator.
+The integers from 1 to the square of 71 are placed in a square spiral. Each prime inside the disc receives a coral dot. The pale central marker is 1, which is not prime. Stanislaw Ulam drew his prime spiral in 1963; Martin Gardner featured it in Scientific American in March 1964. Some diagonals carry many prime dots, while others carry few. The picture raises a question about those patterns rather than supplying a test for primality. It faces the chapter Primes, where divisibility, counting and proof turn a list of numbers into arithmetic questions. The drawing was computed by the book's own TikZ cover generator.
 
 ## Volume 3 — Symmetry
 

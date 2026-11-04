@@ -23,7 +23,7 @@ review are separate obligations. All entries here are internal checks.
 | 9 | IN_PROGRESS: DEP-069 full source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted original/revised sources checked; full bibliography pending | Four standalone plates inspected; latest full-page review pending |
 | 10 | IN_PROGRESS: DEP-070 complete source and unnamed arguments | VERIFIED_TWICE internally for eight examples and three full datasets | IN_PROGRESS: current moat/edition claims checked; original history pending | All three revised standalone plates inspected; full-page review pending |
 | 11 | IN_PROGRESS: DEP-071 complete source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted editions/attribution checked; global history pending | All four revised standalone plates inspected; whole final-source pages pending |
-| Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| Preface/field guide/jacket/cover note | IN_PROGRESS: DEP-072 complete source pass; global graph/voice still pending | Final field-guide example and cover dataset checked twice internally;97/97 example blocks total | Three actual portraits matched to originals; targeted cover history read; global bibliography pending | New final artifacts/pages pending |
 
 ## C01 — Divisibility, DEP-061
 
@@ -924,8 +924,8 @@ three portraits. No chapter or external signoff is inferred.
 
 ## C11 — Characters, Euler products and sieve, DEP-071
 
-Read all1694 original lines, including all19 prompt/hint/idea/writeup groups,
-bibliography and four figure constructions. Eleven named/19 keyed results
+Read all1694 original lines, including all20 prompt/hint/idea/writeup groups,
+bibliography and four figure constructions. Eleven named/20 keyed results
 retain separate two-pass records. The complete chapter source passes now
 cover96 of97 example environments (the last is in the field guide) and all39
 mathematical figure datasets internally; these counts are not final approval.
@@ -938,7 +938,7 @@ mathematical figure datasets internally; these counts are not final approval.
 | C11-U04: finite sieve and floor identity | The Mobius divisor sum is the coprimality indicator. Swapping finite sums counts each divisor's floor(x/d) multiples. For z≥sqrt(x), any surviving composite is impossible; z≥x leaves only1. | Independently expand the product of finite exclusion indicators. At30 the eight signed terms give8; at100 cutoff10 gives22 and pi100=25. The original claim P(z) is divisible by every integer≤x was false (squarefree P cannot contain4 or9). Corrected: for z≥x every squarefree d≤x divides P, nonsquarefree terms vanish by mu, larger divisors by floor. Fresh48→49 example proves the first surviving composite is49 and changes Phi13→14 while pi remains15. | VERIFIED_TWICE internally after correction |
 | C11-U05: boundary and logarithmic error | Grouped chi4 terms are positive and bounded uniformly by13/15, and ordinary sums differ by a vanishing term. Nonprincipal complete periods cancel and an incomplete period has at most phi(m) nonzero unit terms. | Independent summation-by-parts formula proves convergence with a telescoping absolute comparison, without asserting absolute convergence of the original series. Newly supplied real-log remainder identity integrates u/(1−u); for abs(t)≤1/3 its magnitude≤3t²/4. Actual Volume1 derivative/FTC proof sites were read and crosswalk updated. Applied first to finite products and then fixed-s absolutely convergent sums, it bounds the prime-log error independently of s>1. The separate s↓1 continuity/nonvanishing step remains explicitly conditional, not a theorem smuggled in from Volume6. | VERIFIED_TWICE internally |
 | C11-U06: reciprocal-prime implication and previews | Under the stated extra boundary bound, the Abel-weighted class difference is bounded. The positive total diverges by Euler's reciprocal-prime theorem; each class must diverge, and any finite unweighted class sum would bound its weighted sums, contradiction. | Independently use finite partial sums before taking s↓1: any prescribed large harmonic-prime subtotal persists near1, proving total divergence without exchanging signed limits. This says nothing about convergence of the signed unweighted prime series. Corrected the class-field overview's overbroad identification of all abelian-extension characters with ordinary Dirichlet characters; concrete Volume6/13 handoffs remain future topics. | VERIFIED_TWICE internally |
-| C11-U07: advanced numerical/route claims | All19 optional solutions and their earlier taught routes were reread, including cube-root zero convention, three-cycle congruence, Jacobi formal coefficients, dyadic lifting, power-map gcd and powerful-series regions. No newly imported theorem was used. | Recomputed the large four-square subtotal493480252693888 at10^7 using quotient-block divisor sums; ratio rounds1.00000007. Independently enumerated every prime below k^4 with cyclic bitset sumsets: cubic exception7; quartic5,13,17,29; eighth-power last761, matching the existing exhaustive numerical claim and the separately proved large-p bound. Earlier named/keyed records supply their full two reconstructions; finite probes do not prove their general theorems. | VERIFIED_TWICE internally for the displayed computations; keyed proofs retain separate status |
+| C11-U07: advanced numerical/route claims | All20 keyed solutions and their earlier taught routes were reread, including cube-root zero convention, three-cycle congruence, Jacobi formal coefficients, dyadic lifting, power-map gcd and powerful-series regions. No newly imported theorem was used. | Recomputed the large four-square subtotal493480252693888 at10^7 using quotient-block divisor sums; ratio rounds1.00000007. Independently enumerated every prime below k^4 with cyclic bitset sumsets: cubic exception7; quartic5,13,17,29; eighth-power last761, matching the existing exhaustive numerical claim and the separately proved large-p bound. Earlier named/keyed records supply their full two reconstructions; finite probes do not prove their general theorems. | VERIFIED_TWICE internally for the displayed computations; keyed proofs retain separate status |
 
 ### C11 examples and all four datasets
 
@@ -993,3 +993,70 @@ the correct singular chapter reference. Inventory1361 current.
   installed only that manifest and passed all22 new Chapter9–11 tests. The
   full activated local suite passes449 tests; terminal new-head CI remains
   required. Earlier success is not substituted for it.
+
+
+## Global front/back matter, field guide and source credits — DEP-072
+
+Read complete preface, field guide, jacket blurb, KDP description/keywords,
+main route/catalogue, cover note and generator, and actual illustration credits.
+These are distinct from the11 chapter passes. The field guide supplies the
+last example environment: **97/97 examples and39/39 mathematical figure
+datasets now have internal records**, without full format/history/external
+acceptance. Complete conceptual dependency/voice/history graphs remain open.
+
+| ID | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| G-E01: gcd→inverse example | Back substitution gives1=3·12−35, hence inverse−1≡11mod12;35·11=385=32·12+1. Every18x+12y is divisible by6 and cannot equal1. | Independently reduce35≡−1mod12, giving the complete class11; reduce18x≡0mod6, excluding an inverse. Exact enumeration includes negative representatives. This is the97th retained example, not a newly added block. | VERIFIED_TWICE internally |
+| G-U01: notation and cancellation | Ring cancellation in an equality requires a nonzero factor, not an inverse; modular cancellation without changing the modulus needs a unit. Corrected the overbroad before-cancelling-find-the-inverse advice to the modular gcd check. Added positive divisor-function and real sieve domains. | The exact6|2·3 counterexample and the Chapter3 reduced-modulus rule independently distinguish the cases. Read each field-guide definition against its earlier local source: nonzero rational valuations, order, symbols, convergent indexing, norms, character series and sieve match. Qualified completeness of a finite search by a proved finite reduction. | VERIFIED_TWICE internally |
+| G-U02: n²+1 investigation | Every odd prime factor gives a root of−1; the earlier Euler criterion forces1mod4. Conversely every prime1mod4 supplies a root, and shifting it by kp preserves the divisibility. The earlier ex:onemod4 solution proves infinitude using(2·product p)²+1. | Independently, the nonzero residue n has order4 when n²≡−1, hence4 divides p−1; direct sample factorisations10,26,50 agree. Checked n0/negative inputs and the excluded prime2. Infinite prime factors across values do not imply infinitely many prime values. The open-prime-value claim still participates in the global current-status/history pass. | VERIFIED_TWICE internally for the mathematics |
+| G-U03: later notation and handoff | Supplied the meanings of algebraic integer/number field within the explicitly optional preview. Limited the full-ring assertion to Q(i),Q(omega); it does not describe every quadratic field seen in Pell. | Read actual Volume13 ch11-algebraic prop:OK and proof: integral trace/norm force half-integer coordinates, and the mod4 condition gives d−1,−3 identifications; following paragraph states the exact three Volume2 rings. This is a checked future preview, not a premise. Corrected the claim that Volume3 will first name homomorphisms: Chapter11 already defined them. Powers3mod7 and chi4(3²) independently match the concrete next-book examples. | VERIFIED_TWICE internally for preview accuracy |
+| G-U04: preface/jacket/listing claims | Mod4 squares0,1 exclude7 as two squares;5=1²+2²,13=2²+3²,17=1²+4². Four parts/11 printed chapters, catalogue title/subtitle and144 keyed triples agree with the actual main route/inventory. All exercise routes were read separately; later books are described as future developments. | Independent source inventory gives per-chapter exercise counts15,11,21,10,16,19,8,8,8,8,20, sum144. This corrects DEP-071 prose's clerical19 for Chapter11: all20 groups were actually read; no extra verification is counted. Seven KDP keywords and description length pass existing listing guards. Preface/jacket make no claim of publication or independent refereeing. ISBN/account ownership and final generated listings remain separate checks. | VERIFIED_TWICE internally for stated source/count/math claims |
+| G-F01: approved cover's mathematical dataset | Generator draws1…71² in a square spiral, retaining prime coordinates inside radius35.5 and a separate pale origin. The new colophon explicitly says the pale centre is1, not prime. | An independent closed-form square-ring coordinate map covers exactly all5041 grid points; Eratosthenes independently determines all primes. Its557 retained prime positions exactly match the generator; the only extra dot is the pale origin. Cover art/lettering/credits are byte-unchanged; only the colophon and corresponding generated notes/hash entries change. | VERIFIED_TWICE data; approved art preserved; final wrap/page review pending |
+
+### Actual portrait-source matching and primary cover history
+
+Downloaded/viewed the exact source originals for all three active portraits,
+then viewed the local derivatives and compared after resizing the source to
+local dimensions with LANCZOS. Local bytes differ; no exact-byte claim is made.
+RGB mean absolute differences are Fermat1.0744,Gauss2.1780,Chebyshev1.2834
+on the0…255 scale. Source/local hashes, dimensions, methods and caveats are in
+[the portrait evidence](volume2-portrait-source-evidence-2026-11-04.json).
+
+- Fermat matches [Pierre de Fermat.jpg](https://commons.wikimedia.org/wiki/File:Pierre_de_Fermat.jpg),
+  artist unknown. The source permission note itself qualifies the original's
+  authenticity. Removed the unnecessarily definite17th-century description
+  and disputed1601 birth-year assertion from the caption; retain traditional
+  portrait/unknown artist. MAA's indexed historical note reports Barner's1607
+  dating, but opening its full page failed521; no new precise birth year is
+  asserted on that incomplete evidence.
+- Gauss matches [Carl Friedrich Gauss1840 by Jensen](https://commons.wikimedia.org/wiki/File:Carl_Friedrich_Gauss_1840_by_Jensen.jpg),
+  not the similarly named Carl Friedrich Gauss.jpg. The latter's description
+  identifies a Biermann1887 copy, and its pixel difference is much larger.
+  Matching source metadata credits Jensen1840. The earlier IMU original/
+  copy explanation supports the historical work; exact image identity was
+  separately checked here rather than inferred from a familiar name.
+- Chebyshev matches [Pafnuty Lvovich Chebyshev.jpg](https://commons.wikimedia.org/wiki/File:Pafnuty_Lvovich_Chebyshev.jpg),
+  unknown photographer,late1880s/early1890s; source cites the1964 Academy
+  history volume2,296–297. Caption/credits use that qualified date. The
+  original print and photographer have not independently been identified.
+- Removed the unused Minkowski portrait from reader-facing credits; retained
+  the asset as unused in the source record. Replaced the obsolete Volume0/
+  four-portrait provenance statement. Commons' public-domain labels are
+  documented as source evidence, not independent publisher/legal acceptance.
+- Read the actual March1964 Scientific American scan, printed page122
+  (physical124), including Ulam's last-fall account and original prime-grid
+  illustrations; rendered/viewed the page. This primary passage supports
+  autumn1963 and the1964 spiral feature. Its
+  [publisher record](https://www.scientificamerican.com/article/mathematical-games-1964-03/)
+  independently confirms Gardner,March1964,volume210(3),start120,
+  doi10.1038/scientificamerican0364-120. Scan source:
+  https://www.wkbpic.com/wkbx/SA/1964/1964-03-01.pdf .
+  New colophon avoids unsupported first-ever priority while retaining the
+  sourced dates and describes the actual finite cover dataset.
+
+Three new arithmetic/cover checks pass. Existing source/route/cover-generator
+checks pass; full suite **452 tests,zero skips** passes. All15 approved cover
+motifs and lettering, images and shared copyright-page credits remain
+unchanged. Inventory1361 is regenerated. Global conceptual/first-use/story/
+historical-bibliographic reconciliation, exact-current-source artifacts and
+every-page/external/author/publisher proof remain open.
