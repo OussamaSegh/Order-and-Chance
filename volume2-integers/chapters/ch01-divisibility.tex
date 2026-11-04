@@ -1,8 +1,8 @@
 \chapter{Divisibility and the Euclidean Algorithm}\label{ch:divisibility}
 
 \begin{center}\itshape
-The oldest non-trivial algorithm still in daily use is Euclid's, from around 300 BC.\\
-Its worst case is governed by the Fibonacci numbers, as Lam\'e proved in 1844, in an early systematic analysis of an algorithm's complexity.
+Euclid described his gcd algorithm in the \emph{Elements}, around 300 BC.\\
+In 1844, Lam\'e bounded its number of divisions by following the Fibonacci numbers backwards.
 \end{center}
 
 
@@ -157,6 +157,12 @@ For a prime $p$ and $n\ne0$, the \emph{$p$-adic valuation} $v_p(n)$ is the expon
 \]
 for $a,b\ne0$. Indeed, for positive $d,n$, uniqueness of factorisation gives $d\mid n$ iff $v_p(d)\le v_p(n)$ for every $p$ (if $n=dk$ then $v_p(n)=v_p(d)+v_p(k)$; conversely $k=\prod p^{v_p(n)-v_p(d)}$ works). Divisibility is unchanged by signs. So the positive common divisors of $a,b$ are the $d$ with $v_p(d)\le\min(v_p(a),v_p(b))$, and the greatest one, which every common divisor divides, is the stated product; likewise for common multiples. The last formula follows from $\min+\max=v_p(a)+v_p(b)$.
 
+We also use valuations of nonzero rational numbers. For integers $a,b\ne0$, define
+\[
+v_p(a/b)=v_p(a)-v_p(b).
+\]
+This does not depend on the fraction chosen: if $a/b=c/d$, then $ad=bc$, so additivity on integer products gives $v_p(a)+v_p(d)=v_p(b)+v_p(c)$. A rational number is an integer exactly when every prime valuation is nonnegative. In a reduced fraction, any prime in the denominator would otherwise give a negative valuation. For example, $v_2(12/25)=2$ and $v_5(12/25)=-2$.
+
 The positive divisors of a fixed $n$ are partially ordered by divisibility. For any two of them the greatest lower bound is their gcd and the least upper bound is their lcm, both of which again divide $n$. Figure~\ref{fig:divisor-lattice} draws the case $n=12$. The picture is the reason the formulas above are not two separate inventions: gcd and lcm are the meet and the join of one and the same order.
 
 \begin{figure}[ht]
@@ -187,10 +193,6 @@ Indeed, write $a=ga'$, $b=gb'$ with $\gcd(a',b')=1$, divide the divisibility by 
 % t1-pass2 examples 7efe951b
 \begin{examplex}[division with a negative dividend]
 Divide $-17$ by $5$: the remainder must lie in $\{0,1,2,3,4\}$, so $-17=5\cdot(-4)+3$, not $5\cdot(-3)-2$. The quotient is $\lfloor -17/5\rfloor=-4$. Uniqueness fails if negative remainders are allowed, which is why the convention is fixed before any algorithm.
-\end{examplex}
-
-\begin{examplex}[the integer combinations of $4$ and $6$]
-The combinations $4x+6y$ are exactly the multiples of $2$, since $2=6-4$ and every combination is even. Thus $4\Z+6\Z=2\Z$, and $\gcd(4,6)=2$. The same conclusion from valuations: $\min(v_2(4),v_2(6))=1$ and every odd prime has minimum $0$.
 \end{examplex}
 
 \section{The Euclidean algorithm}
@@ -245,14 +247,16 @@ Find a pair $a>b$ with $b<100$ that makes Euclid's algorithm perform as many div
 \label{fig:euclid}
 \end{figure}
 
+Recall $F_0=0$, $F_1=1$ and $F_{k+2}=F_{k+1}+F_k$, the Fibonacci recurrence from Volume~1.
+
 \begin{theorem}[Lam\'e]\label{thm:lame}
-If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}$ and $a\ge F_{n+2}$, where $(F_k)$ is the Fibonacci sequence.
+If the algorithm applied to $a>b\ge1$ performs $n$ divisions, then $b\ge F_{n+1}$ and $a\ge F_{n+2}$.
 \end{theorem}
 \begin{proof}
 The divisions produce $r_0=a>r_1=b>\dots>r_{n-1}>r_n\ge1$ and $r_{n+1}=0$. We show $r_k\ge F_{n+2-k}$ by descending induction on $k$. For $k=n$: $r_n\ge1=F_2$. For $k=n-1$: $r_{n-1}>r_n\ge1$ so $r_{n-1}\ge2=F_3$. Then each $q_k\ge1$, so $r_{k-1}=q_kr_k+r_{k+1}\ge r_k+r_{k+1}\ge F_{n+2-k}+F_{n+1-k}=F_{n+3-k}$.
 \end{proof}
 
-So the worst inputs are consecutive Fibonacci numbers, and since $F_{k}\approx\varphi^k/\sqrt5$, the number of steps is $O(\log b)$ (Exercise~\ref{ex:lame5}).
+Consecutive Fibonacci numbers attain these lower bounds. With $\varphi=(1+\sqrt5)/2$, Volume~1's formula $F_k=(\varphi^k-(-1/\varphi)^k)/\sqrt5$ shows their exponential growth. Thus the division count is $O(\log b)$: it is bounded by a constant times $\log b$ for all sufficiently large $b$. Exercise~\ref{ex:lame5} obtains an explicit decimal-digit bound using just the recurrence.
 
 \subsection*{How fast is ``fast''?}
 Why does Euclid's algorithm need so few divisions even for large inputs? Each new remainder is smaller than the previous divisor, but that alone gives only a crude estimate. The worst case occurs when the remainders shrink as slowly as possible, with quotients equal to $1$. Work backwards from the final remainders and you meet consecutive Fibonacci numbers. Lam\'e's argument turns that pattern into a bound on the number of division steps. It does not count every operation a modern computer uses to perform each division.
@@ -384,7 +388,7 @@ Compute $\gcd(1071,462)$ by the Euclidean algorithm and find integers $u,v$ with
 \end{exercise}
 
 \begin{beauty}
-Every result of this chapter comes from one fact: the subgroups of $\Z$ are the $d\Z$. In Volume~3 this becomes ``$\Z$ is a principal ideal domain'', and the same argument works verbatim for polynomials over a field, Gaussian integers, and every Euclidean ring. B\'ezout's coefficients are how RSA computes private keys , and the coin problem with three or more coins, the \emph{Frobenius problem}, has no comparably simple two-coin formula; computing it when the number of coin types is part of the input is NP-hard.
+The equality $a\Z+b\Z=\gcd(a,b)\Z$ puts two tasks in one picture: determine the common divisor and construct it as a combination. The same proof will use degree for polynomials and norm for Gaussian integers in place of the size of an integer remainder. Chapter~\ref{ch:gaussian} carries out that change. B\'ezout's coefficients also compute the inverse in the toy RSA problem of Chapter~\ref{ch:congruences}. For three or more coin values, Exercise~\ref{ex:frob}'s single-parameter description no longer applies; finding the last gap needs a different argument.
 \end{beauty}
 
 \begin{exercise}[$\star\star$]\label{pb:valuation}
@@ -744,7 +748,7 @@ For the mean, use the tail-sum identity for nonnegative integer-valued variables
 =\sum_{k\ge1}P(v_p(n)\ge k)
 =\frac1N\sum_{k\ge1}\left\lfloor\frac N{p^k}\right\rfloor.
 \]
-Each floor differs from $N/p^k$ by less than $1$, and only $O(\log_p N)$ terms are nonzero. Their total error after division by $N$ tends to zero. The limiting expectation is the geometric sum $\sum_{k\ge1}p^{-k}=1/(p-1)$.
+Each floor differs from $N/p^k$ by less than $1$, and only $O(\log_p N)$ terms are nonzero. Their total error after division by $N$ tends to zero. With $K=\lfloor\log_p N\rfloor$, the remaining geometric tail is $\sum_{k>K}p^{-k}=p^{-K-1}/(1-1/p)<p/[N(p-1)]$, which also tends to zero. The limiting expectation is therefore $\sum_{k\ge1}p^{-k}=1/(p-1)$.
 
 (b) Fix distinct primes $p_1,\ldots,p_r$ and nonnegative exponents $k_1,\ldots,k_r$. The simultaneous conditions $v_{p_i}(n)\ge k_i$ say that the single integer $m=\prod_i p_i^{k_i}$ divides $n$. Their joint probability therefore tends to
 \[
@@ -858,6 +862,6 @@ $r<1/\sqrt{R^2+1}$.
 \item K.~Ireland and M.~Rosen, \emph{A Classical Introduction to Modern Number Theory}, 2nd ed., Graduate Texts in Mathematics~84, Springer, 1990, Chapter~1. Unique factorisation in $\Z$, $k[x]$ and other principal ideal domains.
 \item D.~E.~Knuth, \emph{The Art of Computer Programming}, Vol.~2: \emph{Seminumerical Algorithms}, 3rd ed., Addison-Wesley, 1997, Section~4.5.3. The full analysis of Euclid's algorithm, including its average number of steps.
 \item V.~Shoup, \emph{A Computational Introduction to Number Theory and Algebra}, 2nd ed., Cambridge University Press, 2009 (free online). Number theory with algorithms and their complexity.
-\item J.~L.~Ram\'irez Alfons\'in, \emph{The Diophantine Frobenius Problem}, Oxford University Press, 2005. Everything about the coin problem of Exercise~\ref{ex:frob}, including its NP-hardness.
+\item J.~L.~Ram\'irez Alfons\'in, \emph{The Diophantine Frobenius Problem}, Oxford University Press, 2005. Algorithms and bounds for the coin problem of Exercise~\ref{ex:frob} with more denominations.
 \item Euclid, \emph{Elements}, Book~VII, Propositions~1--2 (the algorithm), in T.~L.~Heath's translation, Dover, 1956.
 \end{itemize}

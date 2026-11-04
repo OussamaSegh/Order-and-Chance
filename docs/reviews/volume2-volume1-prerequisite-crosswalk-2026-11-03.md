@@ -118,3 +118,27 @@ first-use graph remain **IN_PROGRESS**; no chapter or volume is signed off.
 
 Read `ch02-counting.tex`, `ch05-sequences-series.tex` (including Fibonacci and convergence), `ch06-integrals-taylor.tex` (including Basel/areas), `ch09-probability.tex`, and the final Volume 1 field guide. Add exact proof labels and first-use sites; do not trust titles or a pre-existing audit. Check whether a result was only an **exercise prompt**, has an actual complete supplied solution, or has a proved main-text argument. Recheck the full new manuscript first-use graph after each structural change.
 
+
+## DEP-061 — additional actual source sites and local definitions
+
+- Read `ch02-complex-roots.tex`'s exponential definition and `prop:expform`
+  (near lines188–225): multiplication of exponentials is derived from the
+  sine/cosine addition formulas, and the modulus of a pure phase is proved1.
+  This supports the explicitly defined complex n^(-s) in `pb:powerful`;
+  no complex-analytic convergence theorem is imported.
+- Read `ch05-sequences-series.tex`'s reminder near lines178–192: it defines
+  O,o and~ for sequences and functions, including the sufficiently-large
+  quantifier. Chapter1 now also explains its O(log b) bound locally.
+- Read the full Binet remark near line770 of `ch01-sums.tex`: the two-root
+  formula is proved by the recurrence and initial values, rather than
+  asserted as a heuristic. Chapter1 now recalls F0=0,F1=1 before Lamé.
+- Read the subgroup subtraction test near line350 of
+  `ch02-complex-roots.tex` and `orders:def:poset` plus the divisor example
+  in `orders.tex`. The integer-combination and divisor-order claims are
+  independently proved in Volume2 as well.
+- Rational valuations and their nonnegative-integrality criterion are now
+  explicitly defined/proved in Chapter1 before `ex:supercat`; no Volume1
+  proof of that extension is assumed. Representation independence follows
+  by cross-multiplication and integer valuation additivity.
+
+These are checked source sites, not whole-volume or external approval.
