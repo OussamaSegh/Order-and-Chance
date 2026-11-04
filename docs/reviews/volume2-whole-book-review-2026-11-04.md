@@ -17,7 +17,8 @@ review are separate obligations. All entries here are internal checks.
 | 3 | IN_PROGRESS: DEP-063 whole-source and unnamed-argument records | VERIFIED_TWICE internally for six examples and four figure datasets | IN_PROGRESS: targeted primary sources checked; complete bibliography pending | UNREVIEWED after DEP-063 edits |
 | 4 | IN_PROGRESS: DEP-064 whole-source and unnamed-argument records | VERIFIED_TWICE internally for nine examples and three figure datasets | IN_PROGRESS: targeted sources checked; complete bibliography pending | UNREVIEWED after DEP-064 edits |
 | 5 | IN_PROGRESS: DEP-065 full source and unnamed arguments | VERIFIED_TWICE internally for ten examples and three datasets | IN_PROGRESS: targeted primary records read; remaining bibliography pending | UNREVIEWED after DEP-065 edits |
-| 6–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 6 | IN_PROGRESS: DEP-066 complete source and unnamed arguments | VERIFIED_TWICE internally for eight retained examples and four complete datasets | IN_PROGRESS: targeted sources checked; remaining bibliography/history pending | New complete liar plot rendered; whole latest-source chapter remains UNREVIEWED |
+| 7–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -496,8 +497,111 @@ example blocks and18 of39 mathematical figure datasets internally.
   confirms the1875 arithmetical determinant paper, volume7,208–213. Both
   determinant identities here have separate local algebraic proofs.
 - Actual Chapter11 character-count sources and Volume3's thm:cyclicmult were
-  inspected for preview accuracy. The latter's proof uses the same root-count
-  argument over a finite field. Neither is a premise for this chapter.
+  inspected for preview accuracy. The latter's actual proof combines the classification of finite abelian
+  groups with the same polynomial root bound; it does not repeat this
+  chapter's exact-order counting proof. DEP-066 changes the source
+  preview to name that shared root bound precisely. Neither is a premise for this chapter.
 
 Complete bibliography/priority checking, every latest-source final-size page,
 all-format proof and independent editorial/author acceptance remain open.
+
+## Fixed-snapshot layout sample after DEP-065
+
+The detached f59c9ac5023efa272f4f6466e30b83bbd48e1a2f build completed
+successfully:327 print pages, spine0.7698in,18,932,252-byte EPUB,39 full-width
+plates and the HTML reader. Source worktree remained separate. The reading PDF
+has328 physical pages including its cover. Inspected actual rendered reading
+PDF pages19,26,65,98,110 (printed6,13,52,85,97) at1.5x. These cover rational
+valuation, Chapter1 exercise layout, modular fractions and cancellation,
+the Chapter4 orchard and the corrected finite-field preview. No clipping,
+overlap or lost mathematical signs observed in this sample. Images are in
+/tmp/pr103-layout-f59c9ac5. This is a five-page sample, not a whole-page proof,
+and the snapshot predates DEP-065 Chapter5 and DEP-066 Chapter6 edits.
+
+## C06 — Quadratic reciprocity, DEP-066
+
+Read all Chapter6, all19 prompt/hint/idea/writeup groups and its bibliography.
+The six named results and19 keyed proofs keep their separate records. This
+pass addresses surrounding arguments, eight retained examples and four full
+figure datasets. The strengthened sampling guarantee is independently derived
+below; no overall chapter approval is claimed.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C06-U01: roots, input pairs and square counts | For p odd, nonzero inputs x and−x are distinct and have the same square. Equal squares imply (x−y)(x+y)=0 in the field, hence y=±x. Every nonzero square has exactly two roots. | Independently, write each nonzero residue as g^j in the earlier primitive-root coordinate. Squares correspond exactly to even j, giving (p−1)/2 squares. Corrected wording that called the square values themselves pairs x,−x: at p7,1 is square and−1 is not. Zero is separate with one root. | VERIFIED_TWICE |
+| C06-U02: first character and cancellation | Defined chi(a)=(a/p) explicitly before the first abbreviation. Equal numbers of signs plus chi(0)=0 give complete sum0. | Independently choose a nonresidue b, whose existence follows from U01. Multiplication by b permutes all residue classes, and complete multiplicativity gives S=chi(b)S=−S, hence S0 over the integers. No independence assumption is used. | VERIFIED_TWICE |
+| C06-U03: signed permutation explanation | Reduce a,2a,…,((p−1)/2)a to symmetric representatives. Equal absolute values would force two indices equal or sum p, the latter impossible in the half-range. Cancelling the invertible half-factorial leaves (−1)^mu. | At (a,p)=(3,11),(2,11),(3,13), signed lists are3,−5,−2,1,4;2,4,−5,−3,−1;3,6,−4,−1,2,5. Direct square tests independently give signs+,−,+. Negative multipliers and the p3 endpoint retain the same distinctness proof. | VERIFIED_TWICE |
+| C06-U04: two-law and Eisenstein hypotheses | For doubling, the negative count is (p−1)/2−floor(p/4). Its four values at p=8m+1,3,5,7 have the stated parity. Subtracting the two residue-sum equations for odd a gives T(a,p)=mu mod2. | Independently classify the doubled half-range by the threshold p/2. At a2,p3 the floor sum is0 but the symbol is−1, so oddness cannot be removed. Added an explicit odd-prime p hypothesis to the lemma rather than relying on surrounding notation. Formal theorem proofs retain their prior separate checks. | VERIFIED_TWICE |
+| C06-U05: rectangle partition | Distinct primes prevent a point of the allowed positive rectangle from lying on qx=py. Below-line floor sums and above-line row sums partition all (p−1)(q−1)/4 points. | Independently subtract each below-line column count from the rectangle height and sum the complement; exchanging axes gives T(p,q). For7,11 direct enumeration gives8+7=15 and the two independently listed square sets give opposite signs. No numerical case is offered as a general proof. | VERIFIED_TWICE |
+| C06-U06: decision and root construction | Factor219=3·73. Reciprocity gives (3/383)=1, while (73/383)=(18/73)=(2/73)=1, hence symbol1. When p3 mod4, a^((p+1)/4) squares to a for a nonzero square, by Euler's criterion. | Independent repeated squaring gives residues86,119,373,100,42,232 and root169 at exponent96. Directly169²=383·74+219, and all383 square inputs yield exactly roots169,214. Trial division by every prime≤19 verifies383 is prime. Kept the full original decision and root construction while removing its later duplicate box. | VERIFIED_TWICE |
+| C06-U07: Jacobi definition and reduction algorithm | Multiplying Legendre symbols over the prime factors, with repetition, defines Jacobi and preserves complete multiplicativity. The mod4/mod8 exponent functions are additive mod2; factoring into prime pairs proves reciprocity for coprime odd denominators. | For the algorithm, the invariant is original symbol=s times the current symbol. Reduction preserves periodicity; stripping2 multiplies s by its supplementary sign; odd swaps multiply by the reciprocity sign. If the gcd is not1, both swapped symbols are0, so the same invariant holds. Denominators strictly decrease after swaps; stops at a0,n1 use the correct empty product. Direct factor-based evaluation checks the full1001/9907 chain,19/35,43/91 and83/101. | VERIFIED_TWICE |
+| C06-U08: finite-base primality probability | The repaired Rabin discussion samples bases independently and uniformly from1..n−1, rejecting nonunits. For n other than9, L≤phi(n)/4≤(n−1)/4. At9 there are2 liars out of8 bases, again1/4. Independence multiplies these per-trial bounds to4^(−k) for any fixed composite. | Independently count strong-liar exponent tuples at every odd prime-power component; Monier's formula gives the same L. At9 the unit-only sample instead has2/6=1/3, demonstrating why a sample-space qualification is necessary. Direct enumeration of every unit base for all511 odd composites<1500 checks both the unit exception and the all-base guarantee. This is a bound on accepting a fixed composite, not a posterior probability that an accepted input is prime. | VERIFIED_TWICE |
+| C06-U09: new Jacobi workshop | The old7/11 workshop repeated the opening, theorem picture and preceding explanation. Those arguments remain. New43/91 requires a negative first swap, a positive second swap, and (3/5)=−1, yielding+1. New83/101 reduces to(18/83)=(2/83)=−1. | Independently factor91=7·13 and101 prime and evaluate symbols by complete small square sets; both answers agree. The plus sign for a composite is explicitly distinguished from a root certificate; the earlier2/15 counterexample remains. No exercise changed. | VERIFIED_TWICE |
+
+### C06 examples and complete diagram data
+
+| ID | Independent reconstruction and separate check | Status |
+| --- | --- | --- |
+| C06-E01: residues11 | Squaring0..5 gives0,1,4,9,5,3; the two-root argument proves completeness. Independent Euler powers give the same five nonzero signs and their complement2,6,7,8,10. | VERIFIED_TWICE internally |
+| C06-E02: Euler13 | Exact3^6=729=13·56+1,4²=16=3 mod13;2^6=64=−1 mod13. Independent full square enumeration accepts3 and rejects2. | VERIFIED_TWICE internally |
+| C06-E03: Gauss3/13 | The six signed representatives3,6,−4,−1,2,5 give two negatives; independent root4 proves the plus sign. | VERIFIED_TWICE internally |
+| C06-E04: supplementary17/13 | Exponents36 and21 have even/odd parity respectively. Independent6²=2 mod17 and the full mod13 square set verify the two signs. | VERIFIED_TWICE internally |
+| C06-E05: decision219/383 | Retained the original complete example and the separate root construction, checked in U06. The later examplex repeated the same computation and was removed explicitly; its mathematical obligation remains in full. | VERIFIED_TWICE internally |
+| C06-E06: sign3/7 | Squares mod7 omit3, whereas7=1 mod3. Independent reciprocity exponent3 gives product−1. | VERIFIED_TWICE internally |
+| C06-E07: Jacobi2/15 | The mod3 and mod5 symbols are both−1, so their product is1. Independent direct squares mod15 omit2, demonstrating the lost information at a composite denominator. | VERIFIED_TWICE internally |
+| C06-E08: swap19/35 | Both are3 mod4, giving−(16/19)=−1;16 is a nonzero square. Independent factoring35=5·7 gives (19/5)=1,(19/7)=−1. | VERIFIED_TWICE internally |
+| C06-F01: residue strip | Every actual0/1 classification for all11 nodes equals its direct square-membership test. Shared palette maps ocTeal to dark grey, so changed the misleading raw-colour legend teal to shaded. Completeness independently follows from U01. | VERIFIED_TWICE data; current full-page visual pending |
+| C06-F02: reciprocity table | Every25 actual row/column sign matches direct square enumeration at3,5,7,11,13. Every six shaded off-diagonal cells corresponds precisely to two3mod4 primes. Independently reciprocal sign products give the theorem's parity and all diagonal entries are0. | VERIFIED_TWICE data; full-page visual pending |
+| C06-F03: Eisenstein rectangle | All15 actual plotted points are present; each colour agrees with7y<11x or its strict reverse. Direct counts8/7 agree independently with the two floor sums. The drawn endpoint3.5/5.5 has exact slope11/7. Shared palette applies charcoal/ochre. | VERIFIED_TWICE data; full-page visual pending |
+| C06-F04: liar plot | Previously352 Euler and321 strong markers omitted159 and190 low values respectively, despite the each-composite caption. New generator includes both series at all511 composites,1022 markers, six-decimal fractions and explicit pt-size hollow/filled marks. Tests independently enumerate every unit base and match the formulas and every actual coordinate within half a last decimal. | VERIFIED_TWICE data; standalone rendered at actual native width; whole-page visual pending |
+
+The generator counts Euler liars by primitive-root exponents at each odd
+prime power: a coordinate t has Jacobi sign(−1)^(e·t), and its Hth power
+matches global sign sigma precisely when Ht=sigma·phi(p^e)/2 mod phi(p^e).
+A two-state parity count over the CRT factors sums exactly the tuples with
+that global sign. This independently derives the same Euler count that the
+tests obtain by modular powers and a prime-factor square-membership definition
+of Jacobi. Strong counts use the separately reconstructed Monier formula.
+No plotting threshold remains. Regeneration is
+`python3 tools/volume2_liar_figure.py`; its `--check` validates freshness.
+
+Rendered the new figure through the real shared fonts/palette/TikZ wrapper
+with XeLaTeX. Native output is307.10×147.28pt, fitting the book's linewidth
+without enlargement; inspected /tmp/pr103-ch06-liars.png at3x. Hollow Euler
+rings and filled strong dots remain distinguishable at coincidence, and all
+points lie inside the axes. This verifies the standalone plate, not its
+latest-source full-page placement, EPUB downscaling or monochrome print.
+
+Eight focused regressions now cover the four datasets, the full root
+certificate, all Jacobi chains, first-use chi definition and the sampling
+exception. Full suite **413 tests,zero skips** passes after the source/data
+repairs; a subsequent bibliography-only edit adds the checked Bach reference.
+Inventory was regenerated after all source edits. One duplicate examplex was
+removed while its complete earlier example remains:97 examples now,144 keyed
+exercises unchanged. Whole-source work through Chapter6 covers43 example
+blocks and22 of39 mathematical figure datasets internally.
+
+### C06 historical/source checks and boundaries
+
+- Read [Bach's publisher-deposited Crossref record and abstract](https://api.crossref.org/works/10.1090/S0025-5718-1990-1023756-8):1990,volume55,355–380, and explicitly a witness at most2(logm)² under ERH. Direct AMS PDF access returned403. The
+  [Miller author publication record](https://www.cs.cmu.edu/~glmiller/Publications/b2hd-Mi76.html)
+  confirms1976 and the conditional deterministic test. Corrected the
+  misattribution of the explicit constant2, and added Bach to further reading.
+  Neither research proof is imported as a mathematical premise.
+- The university-hosted [English diary selection](https://tildesites.geneseo.edu/~johannes/gdiary.pdf)
+  was downloaded and its first scanned page inspected. The April8 entry uses
+  different wording from a direct statement of reciprocity. This does not by
+  itself certify the full Gray/diary attribution; the original Latin diary and
+  exact commentary remain part of the open global history pass. The general
+  April1796 chronology has supporting historical research, but no original
+  scan signoff is claimed.
+- Gauss portrait's caption names Jensen1840. Exact local-to-original portrait
+  provenance, the complete editions/chapter bibliography and other incidental
+  history (Euler/Fermat, Chernick, Eisenstein's sine proof) remain on the global
+  pass rather than being certified from this source read.
+
+Updated the odd-prime kernel qualification in the prime-power square-count
+idea, explicit integer domains and the prime hypothesis of Eisenstein's lemma.
+The Chapter5 finite-field teaser now names the shared polynomial root bound:
+actual Volume3 uses finite abelian classification plus that bound, rather than
+repeating the exact-order proof. No future theorem is used here.
