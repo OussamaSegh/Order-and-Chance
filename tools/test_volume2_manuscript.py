@@ -193,7 +193,7 @@ class TestVolume2Manuscript(unittest.TestCase):
         """Readers can reach the foundation exercise route without advanced sections."""
         core_before_optional = {
             "ch02-primes": (
-                r"\subsection*{Proof workshop: repair a false claim about Euclid's number}",
+                r"\subsection*{What Euclid's argument does, and does not, say}",
                 r"\section{Chebyshev's bounds}",
                 "Optional route: quantitative prime bounds",
             ),
@@ -416,7 +416,9 @@ class TestVolume2Manuscript(unittest.TestCase):
         """Forward references in prose remain explicit teaching previews."""
         allowed = {
             "ch01-divisibility": {"ch:congruences", "ch:continued", "ch:gaussian"},
-            "ch02-primes": {"ch:characters"},
+            # The two-lane question is explicitly deferred until square roots
+            # of -1; no Chapter 2 argument uses the later exercise as a premise.
+            "ch02-primes": {"ch:characters", "ex:onemod4"},
             "ch03-congruences": {"ch:orders", "ch:characters"},
             "ch04-arithmetic-functions": {"ch:orders", "ch:characters"},
             "ch05-primitive-roots": {"ch:characters"},

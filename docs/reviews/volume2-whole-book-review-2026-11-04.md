@@ -13,7 +13,8 @@ review are separate obligations. All entries here are internal checks.
 | Printed chapter | Whole-source/unnamed arguments | Example/figure data | History/bibliography | Latest final-size formats |
 | --- | --- | --- | --- | --- |
 | 1 | IN_PROGRESS: DEP-061 read/rewrite; individual mathematical entries below | VERIFIED_TWICE internally for four retained examples and five figure datasets | IN_PROGRESS: targeted facts sourced; complete bibliography pending | UNREVIEWED after DEP-061 edits |
-| 2–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 2 | IN_PROGRESS: DEP-062 read/rewrite and two-pass unnamed math | VERIFIED_TWICE internally for six examples and three figure datasets | IN_PROGRESS: original Erdős/Furstenberg sources checked; portrait provenance/full bibliography pending | UNREVIEWED after DEP-062 edits |
+| 3–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -106,3 +107,92 @@ Historical checks on4 November2026:
 Complete edition/section verification of every further-reading entry,
 latest-source page/figure visual inspection, a distinct editorial reader and
 the global dependency release pass remain open. Chapter1 is not signed off.
+
+## C02 — Primes, DEP-062
+
+Read the whole chapter, including all11 prompt/hint/idea/writeup groups and
+bibliography. Five named results retain their separate two-pass records;
+all numerical examples, three complete figure datasets and the following
+surrounding arguments were independently reviewed.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C02-U01: sieve stopping rule and trial division | Composite m=uv with1<u≤v has u≤√m; a prime factor of u is at most√N when m≤N, so the sieve removes every composite by that stage. | A composite with every prime factor>√N would have a product of at least two such factors>N, contradiction. Conversely only multiples larger than a retained prime are removed, so primes survive. Applies to N≥2;1 is not included in the sieve. | VERIFIED_TWICE |
+| C02-U02: testing versus complete factorisation and digit scale | A divisor certifies compositeness; absence of prime divisors through√N certifies primality by U01. Reapply to the quotient to factor completely. An s-digit integer can have square root comparable to10^(s/2), explaining the size of the trial range. | Direct trial division gives221=13·17 and223 prime after testing all six primes≤13. The size statement describes the range searched, without claiming the exact number or bit cost of divisions by primes. The source now names13 explicitly in the223 check. | VERIFIED_TWICE |
+| C02-U03: harmonic/product and logarithmic-tail explanations | Finite positive geometric products contain all1/n with n≤x by FTA. For a prime p the logarithmic remainder is at most1/[p(p−1)]; comparison with the telescoping integer sum gives total≤1. | The independent positive expansion−log(1−t)−t=sum_{k≥2}t^k/k≤t²/(1−t) gives the same uniform remainder bound, while finite truncation contains any prescribed harmonic partial sum. No identity at a divergent infinite Euler product is assumed. | VERIFIED_TWICE |
+| C02-U04: prime-count upper bound after Chebyshev | Each prime above√x contributes more than(log x)/2 toϑ(x), giving π(x)<√x+2log4·x/logx for x>1. Since logx≤√x eventually, a fixed multiple of x/logx follows. | Partition primes into those≤√x (at most√x integers) and those above it; multiply the latter primes to bound their count by the prime-product estimate. Taking logs independently reproduces the bound. Differentiating√x−logx shows its minimum at4 is positive, so the eventual comparison is valid. | VERIFIED_TWICE |
+| C02-U05: real lower-bound extension | For n=floor(x/2), use n≥x/2−1 and log(2n)≤logx once the numerator is positive. The remaining sufficient inequality(log2)x/2−log(4x)≥0 holds at16 and increases thereafter. | Reconstruct from π(x)logx≥π(2n)log(2n)≥nlog4−log(2n), avoiding the fraction-denominator comparison. The same floor and log bounds yield the printed numerator; at16 the gap is2log2 and derivative stays positive. | VERIFIED_TWICE |
+| C02-U06: second h inequality and finite prime chain | The printed substitution t=√(2n) gives h(n)/n=(2/3)log2−4(logt/t+logt/t²). Both subtracted functions decrease for t≥32, and h(512)>0. | The separate derivative bound h′>0.46−0.22−0.07>0 proves the same range. Trial primality and successor<2·predecessor independently validate the finite631 endpoint chain. Named Bertrand evidence is retained; this row covers its second unnamed explanation too. | VERIFIED_TWICE |
+| C02-U07: odd-prime tracks | Every prime other than2 is odd, hence has remainder1 or3 modulo4. The figure's two sets exactly partition odd primes≤60. | Direct small-factor exclusion gives the same complete list; the local congruence definition now precedes its notation. The formerly asserted infinitude of the1mod4 track is now an explicitly deferred question with a pointer to ex:onemod4, not a premise borrowed from Chapter6. | VERIFIED_TWICE for the classification; later question is a preview |
+| C02-U08: Fermat-number idea recheck | The old discovery note incorrectly said the difference of two Fermat numbers was a power of2; F2−F1=17−5=12 disproves that. The note now uses the earlier-product identity: a common divisor of Fm,Fn with m<n divides Fn and Fn−2, hence2. Oddness gives gcd1. | Independently Fn modulo Fm is(−1)^(2^(n−m))+1=2, so gcd divides2 and is1. The product identity follows directly by telescoping(X−1)product_{j<n}(X^(2^j)+1)=X^(2^n)−1 at X2. This revalidates the complete prompt/hint/idea/writeup at n0 and all m<n. | VERIFIED_TWICE after correction; ex:fermatnum count unchanged |
+| C02-U09: optional prompt first-use repair | Defined positive squarefree integers in ex:erdosdiv itself and restricted both finite counts to positive n≤N; the parity-of-exponents decomposition and union bound then have the stated finite sample. Defined closed as complement-open and positive integer progression steps in ex:furstenberg. | Reconstructed the squarefree choices by subsets of the first k primes and b≤√N, including n1. Reconstructed the topology from progression neighbourhoods; De Morgan makes finite unions of closed progressions closed, now explained explicitly. No separate topology course or optional Chapter1 solution is presumed. | VERIFIED_TWICE for the repaired uses; whole exercise proofs remain in their original records |
+
+### C02 examples and complete figure data
+
+All six example blocks have two independent checks:
+
+- C02-E01:5!+1=121=11², whose prime factor11 exceeds5; direct factorial
+  multiplication and trial factorisation agree.
+- C02-E02: the first four prime reciprocals sum to247/210=1.176190…;
+  independent exact fractions/decimal summation agree. At100 the complete
+  prime list gives1.802817…; loglog10−1=−0.165967… and
+  loglog100−1=0.527180… match the printed rounding.
+- C02-E03:2·3·5·7·11=2310,4^11=4194304; direct logarithms give
+  log2310=7.745002… and11log4=15.249238…. Replaced the unintroduced
+  theta symbol by the already defined vartheta.
+- C02-E04:12choose6=924 and4^6/12=341.333…, verified by factorials and
+  Pascal recurrence. The printed341.3 is a rounded illustrative value.
+- C02-E05: the displayed prime chain2,3,5,7,11,13,19,23 covers every
+  integer n1..20 by choosing a prime in(n,2n]. Independent full interval
+  enumeration checks every n, including the n1 upper-end equality.
+- C02-E06:20choose10=184756=2²·11·13·17·19; factorial valuation at7
+  is2−2=0 and at13 is1. Replaced a rhetorical false inequality/question
+  with this explicit complete factorisation and interval classification.
+
+| Figure | First reconstruction | Separate data check | State |
+| --- | --- | --- | --- |
+| C02-F01: sieve50 | Enumerate integers2..50 and remove them at their smallest prime factor among2,3,5,7. Expected prime survivors15. | Parse each actual node and following mark: even composites have crosses, remaining multiples3 have slashes,25/35 squares,49 a diamond. Compare every mark with independent trial primality. | VERIFIED_TWICE data; final-size visual pending |
+| C02-F02: prime-count plot | Reconstruct every staircase jump from the primes≤100. Compute the real comparison x/logx and Li(x)=integral_2^x dt/logt; the latter becomes a smooth integral exp(u)/u after t=exp(u). | Adaptive Simpson quadrature and independent trial-division prime counts recalculate every curve point, within half the source's last printed decimal. For the caption π(100000)=9592, first ratio1.1043198… and second0.996182… agree. Added the actual100000 endpoints to both ratio curves, which previously stopped at99000. | VERIFIED_TWICE data; final-size visual pending |
+| C02-F03: mod4 tracks | Trial-prime list≤60 splits into7 primes1mod4 and9 primes3mod4, with2 separate. | Independently compare both literal TikZ foreach sets with those residue classes; their union plus2 exhausts all17 primes≤60. Circle/square/dot geometry carries the stated distinction. | VERIFIED_TWICE data; final-size visual pending |
+
+The five new focused checks include the formerly false Fermat discovery note,
+local definitions and all actual plotted coordinates. The structural route
+guard now points to the retained early subsection that already explains
+Euclid's composite counterexample; a second, duplicate full workshop was
+removed. The explicit future1mod4 question is curated in the forward-preview
+guard after checking its actual later proof site. No theorem or exercise was
+removed. Ex:mersenne now explicitly specifies integer n≥1.
+
+### C02 history, source evidence and remaining work
+
+On4 November2026 read Erdős's original1932 paper at the
+[Rényi Institute](https://users.renyi.hu/~p_erdos/1932-01.pdf), with its
+[journal repository record](https://acta.bibl.u-szeged.hu/13396/).
+The original credits Chebyshev and uses the binomial method, with different
+cutoffs; the further-reading note now says that rather than claiming the
+chapter reproduces the original numerical proof verbatim. The year1932,
+volume5 and pages194–198 agree across the original and repository metadata.
+
+Read the full one-paragraph Furstenberg proof in the
+[university-hosted reprint](https://www.math.auckland.ac.nz/~gauld/750-05/inftlymanyprimes.pdf)
+and checked the author's
+[Hebrew University publication record](https://cris.huji.ac.il/en/publications/on-the-infinitude-of-primes/):
+Monthly62(1955),page353. The local exercise supplies its own topology checks;
+the reprint's unneeded normality/metrizability aside is not imported.
+
+Viewed the local Chebyshev image. The likely corresponding
+[Commons file record](https://commons.wikimedia.org/wiki/File:Pafnuty_Lvovich_Chebyshev.jpg)
+names him, dates the photograph to the late1880s/early1890s, lists unknown
+author and public-domain status, and gives its1964 printed source. This
+supports the circa1890 caption. A direct original-image download returned403,
+so an exact original-to-local pixel/provenance comparison is still pending;
+the local asset has not been replaced or edited. The full further-reading
+bibliography and broad PNT/Artin/Mertens historical previews are not signed off.
+
+Complete Volume1 congruence notation is actually defined near line595 of
+ch01-sums.tex; the present chapter's mod4 notation is also explained locally.
+Logarithm/integral and finite binomial tools have the actual earlier proof
+sites recorded in the prerequisite crosswalk. The main congruences route
+continues to require none of the optional Chebyshev/Bertrand material.
+Chapter2 remains open for final-size figures/pages, complete history/metadata,
+external review and the whole-book dependency release pass.
