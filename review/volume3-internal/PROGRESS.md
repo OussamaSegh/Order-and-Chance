@@ -189,3 +189,43 @@ page inspection still need terminal evidence. Current main remains the PR103 mer
 CI run41904629129 for1b3c7b05 is in progress; earlier PR runs were cancelled by the
 workflow concurrency policy after new pushes, not manually cancelled by reviewer.
 No main/unrelated run cancelled. No terminal final-head claim.
+
+## V3-007: ring boundaries, local fraction field and general PID termination
+
+Read the entire Chapter6 and actual figure, with ten named and eight exercise
+A/B records. Exposure is explicit: first six supplied solutions appeared in a
+source chunk before permanent reconstruction; last two were recorded prompt-first.
+No blinded claim for the first six. Current internal mathematical registers:
+50/155 named results and61/163 exercises. Other semantic/context/history gates
+remain pending. No intended major theorem replaced or weakened.
+
+Corrected product rings with a zero factor, allowed quotient by unit ideal so
+zero-target first-isomorphism case is earned, made zero-ring/domain conventions
+explicit, handled zero dividend in Gauss divisibility, and supplied fraction-field
+and content-scaling proofs. General PID factorisation termination explicitly uses
+ascending ideals/union generator, not a Euclidean norm. Repeated-factor exercise
+uses division/derivative instead of an unexplained Taylor premise. Two stale V1
+chapter pointers fixed; actual earlier proofs followed and read. 'All extensions'
+wording narrowed to the actual root-adjoining construction, without losing it.
+Corry reference had wrong host/year: real2017publication read and corrected;
+compressed incidental Kummer/ζ23/Lamé story replaced by supported trajectory.
+
+Independent computations recheck all21 actual latticepoints/five radii/colors,
+residue ideals/units/zero divisors, productzero-ring boundary, CRT, Hermite
+polynomial and three general X4+1factorisations with prime probes<=100. Source
+boundary regression before-fails/after-passes. Inventory bibliography inclusive
+end coordinates previously touched the next item's first line; trimmed trailing
+whitespace and added a regression, with old-source failure demonstrated. This
+reopens bibliography source hashes, never assigns attribution approval.
+473 unit tests pass/zero skips (52.633s); inherited V3, focused C6 and freshness
+checks pass. Later one-sentence root-adjoining wording correction reran affected
+source/freshness/math guards; no tool implementation changed after that test run.
+
+Immutable1b3c7b05all-format build completed:476reading/475print, spine1.1172in.
+Actual EPUBCheck5.3.0:0fatals/errors/warnings/infos. Actual outputchecker passes,
+26XHTMLdocuments; sevengeneratedsampleimages not visualapproval. Hashed85outputs
+in preliminary-1b3c7b05-artifacts.json. Actually opened/read print68(label58,
+corrected necklaceplate),111(label101,fullnewcyclotomicreminder),112(label102,
+exercise/hints). Record contains precise observations/hashes; allotherpages and
+reader/EPUBbrowserviews pending. No transfer to currentC5/C6 source orreadingPDF
+without identityevidence. Earlier8135pageevidence staysseparate. NoassignedISBN.

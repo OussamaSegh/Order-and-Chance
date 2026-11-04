@@ -85,6 +85,10 @@ def inventory():
                     r'\\item\s+([\s\S]*?)(?=\\item|\\end\{itemize\})', tail), 1):
                 a = bibliography.end()+match.start()
                 b = bibliography.end()+match.end()
+                # End coordinates are inclusive source lines: trailing whitespace
+                # must not make one item claim the next item's first line.
+                while b > a and source[b-1].isspace():
+                    b -= 1
                 normalized = ' '.join(source[a:b].split())
                 items.append({'id': f'{position}.bibliography.{number}', 'path': relative,
                               'line': line(a), 'end_line': line(b), 'kind': 'bibliography',

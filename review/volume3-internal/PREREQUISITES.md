@@ -1,7 +1,7 @@
 # Conceptual prerequisite and story ledger
 
-V3-006. This ledger is incremental. Chapters1–5 have complete mathematical
-readings recorded; Chapters6–12 and all appendix argument routes remain pending.
+V3-006. This ledger is incremental. Chapters1–6 have complete mathematical
+readings recorded; Chapters7–12 and all appendix argument routes remain pending.
 A backward-reference scan is not a conceptual audit.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
@@ -84,3 +84,32 @@ simplicity. C5 uses actions to force prime-power subgroups, then tests whether
 normal reductions reach abelian pieces. C6 changes the operation: congruences
 and polynomial remainders lead from quotient groups to quotient rings. The actual
 C6 opening/prerequisite route is the next reading; this bridge is provisional.
+
+## V3-007 additions
+
+- C6 ring/domain/field explicitly distinguishes the zero ring. Additive quotient
+  tools from C2 earn all-ideal quotient rings including the unit ideal; prime and
+  maximal tests still require proper ideals. Product-ring example has its needed
+  both-nonzero factors, with zero-factor isomorphism described.
+- C6 fraction field is constructed and verified locally: equivalence relation,
+  operations, representative independence, laws, inverses and injection of R.
+  Gcd prime-exponent/content scaling facts are proved before primitive rescaling;
+  no circular appeal to the product-content lemma. PID factorisation termination
+  uses ascending ideals and a union generator, never a Euclidean norm on allPIDs.
+- Actual V1 ch03 thm:lagrange construction/uniqueness, prop:gausspoly least-index/
+  denominator proof, thm:eisenstein least-index proof and prop:reduction leading
+  coefficient proof reread. Stale Chapter7 pointers corrected to3. General UFD
+  Eisenstein earned locally.
+- Actual V1 ch05 prop:early-differentiation product/linearity/chain proofs read;
+  C6 repeated-factor interpolation uses only polynomial division and derivative,
+  not an unstated Taylor theorem. V1 ch06 derivative rule source was followed to
+  its actual earlier proof, not accepted solely by its backreference.
+- Actual V2 ch10 prop:eucl rounding proof read forGaussian/Eisenstein/sqrt(-2)
+  rings; V2 ch06 thm:eulercrit multiplicativity proof reread for X4+1 reduction.
+  Given-field polynomial division and degree descent earnK[X]Euclidean; no new
+  future theorem. Pointwise all-function example avoids a continuity premise.
+
+Story: C6 diagnoses the failedfactorizationof6, then ideals/quotients translate
+prime/maximal questions, then distinguishes ED/PID/UFD and earns polynomial
+factorisation. C7 can now ask what a matrix of relations over a PID can encode.
+Its actual full route is next; no C7 prerequisite approval inherited.

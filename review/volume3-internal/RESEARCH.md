@@ -54,3 +54,24 @@ HH^T computation. They report all multiples4 below2000 known and2396 the smalles
 open order. Internal review has not checked those matrices or read their full
 research proof. Appendix claims must be dated/attributed; do not call an abstract
 or this source read an independent certification. Reconcile on reaching Paley.
+
+## H-C06-CORRY — wrong host/date corrected
+
+Read Corry's actual author-posted article title page, introduction and opening
+historical section (PDFpp1–3) at
+https://www.leocorry.com/_files/ugd/e6fef7_51820af31edc4cc081b1dd183eaea8b7.pdf .
+It is dated30May2017; the discussion contrasts Kummer's ideal numbers with
+Dedekind's sets and distinguishes Dedekind from Noether. The introduction calls
+the often-repeated Noether remark lore; it is not a documented transcript.
+Read the author institution's complete bibliographic record at
+https://cris.openu.ac.il/en/publications/steht-es-alles-wirklich-schon-bei-dedekind-ideals-and-factorizati/ :
+editors Scheel/Sonar/Ullrich, *In Memoriam Richard Dedekind (1831–1916)*,
+WTM-Verlag,Münster,2017,pp134–159. Corrected the book's wrong host
+*Ideals and Their Reception*,2000. No absent Noether quotation is promised.
+The specific compressed Kummer/ζ23/Lamé causal anecdote was replaced by the
+supported ideal-numbers-to-ideal-sets trajectory; no mathematical theorem lost.
+
+Numdam actual1847 issue/item metadata read for Kummer's letter toLiouville p136
+and Lamé's memoir pp172–184. Gallica full text redirects were inaccessible through
+the web tool. These metadata reads do not count as reading those original texts
+or verifying the anecdote. The removed incidental formulation is not certified.

@@ -11,6 +11,7 @@ import check_chapter2
 import check_chapter3
 import check_chapter4
 import check_chapter5
+import check_chapter6
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -50,6 +51,21 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter5.check_sylow_and_derived()
         check_chapter5.check_gl2()
         check_chapter5.check_order12_and_plate()
+
+    def test_ring_boundaries_polynomials_and_actual_lattice(self):
+        check_chapter6.check_zero_ring_source()
+        check_chapter6.check_residue_and_crt()
+        check_chapter6.check_polynomials()
+        check_chapter6.check_lattice()
+
+    def test_bibliography_coordinates_exclude_the_next_item(self):
+        data=volume3_inventory.inventory()
+        for row in data["items"]:
+            if row["kind"] != "bibliography":
+                continue
+            lines=(volume3_inventory.ROOT/row["path"]).read_text().splitlines()
+            actual="\n".join(lines[row["line"]-1:row["end_line"]])
+            self.assertEqual(actual.count(r"\item"),1,row["id"])
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())
