@@ -4,12 +4,14 @@
 dimensions and repository acceptance recorded for the earlier PR #97 edition.
 It does not approve Amazon upload, a release tag or publication.
 
-**Manuscript and publishing source:**
-`b67f700f0e14c62c961d9813a9ca1d48e3290c04`. Subsequent documentation-only
+**Last manuscript/publishing content change:**
+`b67f700f0e14c62c961d9813a9ca1d48e3290c04`. **Current candidate build:** exact CI source `a317b585d03c8ce5c44fc8ca8d91d034c35479d4`, artifact13348844783, successful Build books#1678 (18 successful jobs; publication skipped). Subsequent documentation-only
 commits require matching publishing-input fingerprints before using these
 artifacts. The [strict ledger](volume2-independent-verification-ledger-2026-11-03.md)
 and [plan](../plan/volume2-independent-verification-and-rewrite-2026-11-03.md)
 define the acceptance gates; this handoff does not close them automatically.
+
+**Assigned reviewer:** the user directed Codex to **“review everything”**. The [assigned final internal review](volume2-assigned-final-review-2026-11-04.md) accepts the revised manuscript and all artifacts available here, with explicit AI/screen/renderer limits. The task no longer waits for another mathematical/editorial reviewer.
 
 ## Evidence for the reviewer
 
@@ -68,16 +70,8 @@ verify a physical scan, account ownership or ISBN assignment. Keep the
 interior and cover together from this same build. The old 313-page interior
 and 0.737-inch cover belong to the previous edition evidence.
 
-## Required external evidence
+## Remaining system/author evidence
 
-- An independent mathematical/editorial reader must review the proof-heavy
-  chapters and advanced routes, using the keyed proof/exercise/whole-source
-  records and actual Volume 1 crosswalk. Record concrete objections and
-  their resolution against an exact source revision. Unresolved review
-  blocks merge under P13.
-- Complete the human read-aloud/first-reader pass required by P10: prose,
-  proofs, captions, exercise/solution commentary, preface, field guide and
-  back-cover copy. Record actual coverage; model text review is separate.
 - Run native Kindle Previewer and inspect the EPUB on the intended
   Paperwhite, including every diagram and formula at narrow/wide settings,
   baseline alignment, long displays and all exercise navigation. Chromium
@@ -89,13 +83,15 @@ and 0.737-inch cover belong to the previous edition evidence.
   including gutter, registration, contrast, binding and barcode scan.
   These account and physical acts remain unperformed and are not authorized
   by this handoff.
-- After all findings are resolved, record independent review and author
+- After all findings are resolved, record the assigned review and required author
   approval, exact-head successful CI and final artifact identities before
   considering repository acceptance or publication.
 
 Reviewer comments can arrive while repository checks continue. A new content,
 style or publishing change reopens affected evidence and requires rebuilt
 matched files. Internal counts and hashes never substitute for the missing
-external reviews.
+device/account/physical evidence.
 
 **Artifact evidence:** [matched file manifest](volume2-current-artifact-manifest-2026-11-04.json), [final PDF transfer](volume2-final-pdf-comparison-2026-11-04.json), [actual EPUB browser measurements](volume2-epub-browser-review-2026-11-04.json), [EPUB schema evidence](volume2-epub-schema-evidence-2026-11-04.json), [navigation](volume2-digital-navigation-review-2026-11-04.json), [real site assembly](volume2-site-navigation-review-2026-11-04.json), [raster barcode](volume2-barcode-raster-review-2026-11-04.json). Terminal exact-final-documentation-head CI remains pending at this committed checkpoint.
+
+**Actual CI candidate review:** [CI artifact comparison](volume2-ci-artifact-review-2026-11-04.json) verifies every333 PDF pair/cover against the viewed local candidate. All94 reader files match;22 EPUB XHTML documents preserve all content/13,139 math alts. All18 differing glyph pairs were viewed,measurement changes are at most0.0001em,and actual CI EPUB schema/browser/navigation checks pass. The current manifest now identifies these CI files while preserving local-review provenance.

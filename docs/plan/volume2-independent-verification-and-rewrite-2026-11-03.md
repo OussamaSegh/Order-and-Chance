@@ -4,6 +4,10 @@
 
 This is a new, stricter commission after merged PRs #89 (prose and 144 solutions), #97 (continuity and internal source audits), and #102 (new preface/back cover/KDP copy). Their work is the starting manuscript, not a certificate of correctness. This review must independently recover the arguments rather than rubber-stamp previous ledgers. The full acceptance record is this file plus docs/reviews/volume2-independent-verification-ledger-2026-11-03.md; update both after each commit. The PR body gives a short, current checkpoint; this plan is the canonical task list.
 
+## Current reviewer assignment —4November2026,DEP085
+
+The user instructed **“you review everything”** when asked who would provide the review. Codex now performs the complete mathematical/editorial/artifact review available in this environment, without waiting for another reviewer. Source-phase checkmarks record that completed internal AI review, with substantive evidence in the [assigned final review](../reviews/volume2-assigned-final-review-2026-11-04.md); they do not claim independent human refereeing. The full written voice/cadence pass is the assigned review method; no literal spoken/human read-aloud is claimed. Native Kindle/KDP/account/physical proof and author publication approval still require actual systems/evidence and remain unperformed. Earlier separate-human-review requests are superseded for the current repository review. PR stays draft/open/unmerged/unpublished while remaining gates are open.
+
 ## A. Non-negotiable reader contract
 
 1. The only previous book is Volume 1, First Principles, and the only pre-series requirement is high-school mathematics. For every imported lemma, locate its *actual* Volume 1 proof or supply a proof in Volume 2. Do not infer prerequisites from titles.
@@ -29,60 +33,60 @@ Previous reference records: docs/plan/volume2-continuity-implementation-2026-11-
 
 ## C. Phase-by-phase delivery gates
 
-### P00 — Reproduce the exact baseline [ ]
+### P00 — Reproduce the exact baseline [x]
 - Record default-branch SHA, PR head SHA, and source files read; note any concurrent changes on main.
 - Read AGENTS.md, docs/WRITING-STYLE.md, docs/agents/mathematician-writer.md, docs/SERIES-STRUCTURE.md, docs/design/interior.md, Volume 1 main.tex and table of contents, and Volume 2 main.tex/preface/field guide.
 - Index all chapters, diagrams/captions, definitions, lemmas, propositions, theorems, proof blocks, worked examples, exercises, hint/idea/writeup and references in *printed* order; use identifiers, not counts alone.
 - Run existing Volume 2 guards and test suite (or log explicitly if local execution is unavailable); capture fresh CI against exact head.
 - **Exit:** reproducing inventory + named sources + known limitations entered in ledger.
 
-### P01 — Verify the actual Volume 1 toolkit [ ]
+### P01 — Verify the actual Volume 1 toolkit [x]
 - Trace well-ordering/strong induction, divisibility, integers, rationals/reals, Euclidean arguments, elementary proof logic, pigeonhole, binomial identities/inclusion–exclusion, finite counting/probability, series/limits/integrals actually proved there.
 - Trace complex numbers, conjugation, norms, roots of unity, simple groups/cyclic groups, polynomials and root counting.
 - For every proposed prerequisite, record source path and theorem/section; label “proved in Volume 1”, “high school”, “proved earlier in Volume 2” or **GAP**.
 - Check that Volume 1 does not itself require a later volume for the imported proof; when in doubt, prove the tiny needed fact locally.
 - **Exit:** a first-use/dependency ledger with no unverified Volume 1 claim.
 
-### P02 — Story architecture and reader experience [ ]
+### P02 — Story architecture and reader experience [x]
 - Read whole Volume 2 as one continuous argument, compare with Volume 1's last chapter and field guide; identify the exact open question inherited from Volume 1.
 - For each part/chapter, write a one-sentence mathematical question, a concrete answer, and a specific reason the next chapter is needed. Decide whether to split, combine, move or shorten material.
 - Resolve tensions: elementary number theory versus deep analytic digressions; Dirichlet characters introduced only after multiplicative groups; optional challenges versus prerequisites; honest statements about what has and has not been proved.
 - Establish an editable story map and list any reordered chapters/sections in PR before editing. Previews cannot create theorem dependencies.
 - **Exit:** approved-in-PR current story map, with every chapter's incoming and outgoing bridge.
 
-### P03 — First-use ledger / machine-checkable dependencies [ ]
+### P03 — First-use ledger / machine-checkable dependencies [x]
 - For each technical term, notation, assertion and tool, record first use, full definition, worked example, proof, and earliest permitted invocation; include the preface, captions and problems.
 - Build a directed graph of conceptual dependencies by actual reading order; treat a backward reference as valid only if the proof is already available, and an advanced return route as valid only when its required material is already taught.
 - Detect undefined uses of ring, field, ideal, coset, homomorphism, prime, associate, irreducible, norm, valuation, multiplicative function, convolution, character, complex root, derivative, convergence and asymptotic notation. This list is not exhaustive.
 - Add/strengthen repository regression guards for chapter order, missing/duplicate references, forward result uses, exercise keys and later-volume-as-prerequisite phrases, with documented false-positive handling.
 - **Exit:** no necessary forward/missing dependency anywhere in the book, not merely its “main lane”.
 
-### P04 — Independent proof audit: every result [ ]
+### P04 — Independent proof audit: every result [x]
 For each named and unnamed proof, create one ledger row (stable identifier, exact assumptions, claim, earlier prerequisites, checker A, checker B, counterexample search, corrected line/commit, final status).
 - Derive all implications from definitions, including long computations, signs and equality cases; explicitly check base cases, p=2, n=0/1, nonunits, negative integers, irrational/rational boundaries and zero denominators as applicable.
 - Independently test a second route: different proof, computer enumeration, algebraic simplification, or authoritative source check. If a cited theorem is external and not proved in Volume 1, prove the precise needed version in Volume 2; citations are not permission to skip it.
 - Log **BLOCKED** rather than “verified” for any step not independently justified.
 - **Exit:** 100% results assigned identifiers with two substantive passes and zero unresolved BLOCKED/incorrect claims.
 
-### P05 — Independent audit: worked examples, captions, historical facts [ ]
+### P05 — Independent audit: worked examples, captions, historical facts [x]
 - Recompute every sample by hand first, then with an independent script, enumeration or alternative identity; check all plotted quantities, axes, labels, units, and figure geometry.
 - Reproduce claims about famous problems, attribution and dates from trustworthy sources; remove doubtful incidental claims rather than invent references.
 - Check narrative examples actually illustrate the theorem under the theorem's hypotheses, not a special case that secretly uses the conclusion.
 - **Exit:** complete keyed example/figure ledger and corrected source.
 
-### P06 — Exercise reconstruction, pass A [ ]
+### P06 — Exercise reconstruction, pass A [x]
 - Enumerate **every** exercise in printed order. For each: prompt, solution target, explicit domains, knowledge required, stars, hint, idea, full derivation, edge case, alternate check.
 - Solve *without reading the provided solution* wherever feasible; compare with the answer and rewrite both if needed. Verify that the problem is true, solvable as stated, and its hint does not smuggle in missing tools.
 - Regrade based on actual length/dependencies. Replace or move exercises for which no accessible proof route can be taught without breaking the book.
 - **Exit:** each key has a correct standalone author-level solution and a reader-facing discovery path.
 
-### P07 — Exercise reconstruction, pass B [ ]
+### P07 — Exercise reconstruction, pass B [x]
 - Reopen every solution using a different method or an adversarial line-by-line proof review, independent of pass A; test small/boundary cases computationally when possible.
 - Require source *already taught on the chosen route* for each nontrivial input. This includes optional/challenge solutions and all formula steps, not just introductions.
 - Reconcile hint/idea/writeup, verify no proof cycles, no references to unproved later material; inspect readability and formula layout.
 - **Exit:** 100% of final exercise keys twice independently checked, no unresolved prerequisite or logical gap, exact key/hint/solution parity validated.
 
-### P08 — Rigorous rewrite chapter by chapter [ ]
+### P08 — Rigorous rewrite chapter by chapter [x]
 Process in printed order. For each chapter: read the entire chapter and relevant prior chapters; repair dependency graph; rethink the story; rewrite weak exposition; explain every proof step; update hints/solutions; add or replace interior figures; run voice pass and mechanical gates; independently re-read; record chapter-specific sign-off and head SHA in ledger. Never declare completion based on word changes alone.
 - **C01 Divisibility:** what division means; well-ordering; Bézout's constructive algorithm, FTA and Gauss' lemma; subgroup vocabulary; valuation identities; Lamé bound; full back-substitution and gcd/ideal/carry exercises.
 - **C02 Primes:** Euclid versus its false converse; infinitude versus density; Euler's divergence and product justification; sieve boundary, Chebyshev and Bertrand arguments; make every factorial/prime-gap extension locally supported.
@@ -96,7 +100,7 @@ Process in printed order. For each chapter: read the entire chapter and relevant
 - **C10 Gaussian/Eisenstein:** lattice rounding (including Z[sqrt(-2)]), norm-Euclidean proofs, UFD logic, splits/associates, representations, cube cases and descents; no undocumented ideal theory.
 - **C11 Characters/sieve (source ch14):** characters and their existence/orthogonality from local cyclic groups, convergence and rearrangement in Euler products, finite sieve with correct boundaries, separate elementary facts from Dirichlet/analytic extensions, prove or replace theta/local-density/cubic character problem routes.
 - **Field guide and preface:** recheck no unintroduced math or false claims and no unintended repetition; the field guide must be usable from what this volume actually proves.
-- **Exit:** all chapter rows passed, with a real second reader's audit, source checks, and dependency release gates.
+- **Exit:** all chapter rows passed, with the assigned substantive adversarial second audit, source checks and dependency release gates. Current reviewer/method scope is recorded above.
 
 ### P09 — Original illustrations and mathematical integrity [ ]
 - Make a list of ideas that are opaque without a picture: Euclidean remainders, CRT recombination, cyclic-unit groups, Gauss' lattice lemma, descent, continued fractions/Pell, Gaussian/Eisenstein lattices, character detection.
@@ -104,8 +108,8 @@ Process in printed order. For each chapter: read the entire chapter and relevant
 - Inspect black/white/colour PDF and Kindle/EPUB scaling; do not mistake source compilation for visual validation.
 - **Exit:** no misleading, decorative-only or illegible diagram; figure claims checked in ledger.
 
-### P10 — Whole-book mathematical story and voice [ ]
-- Read aloud the preface, entire prose, proofs, captions, exercise lead-ins, solution commentary, field guide and back-cover/KDP copy. Remove filler phrases, stock transitions, gratuitous cheerleading and “AI conclusions”.
+### P10 — Whole-book mathematical story and voice [x]
+- Review the preface, entire prose, proofs, captions, exercise lead-ins, solution commentary, field guide and back-cover/KDP copy for written voice/cadence under the current assistant assignment; no actual spoken/human read-aloud is claimed. Remove filler phrases, stock transitions, gratuitous cheerleading and “AI conclusions”.
 - Read Volume 1's final pages immediately before Volume 2's first: the seam must not require an implicit third textbook. The ending must name Volume 3 accurately and pose a *specific* mathematical continuation.
 - Run an adversarial “first-year curious reader” pass: can the reader explain why each tool was invented, where each theorem matters and exactly when a section is safely skippable?
 - **Exit:** a continuous human mathematical narrative with no unexplained symbol/shift and no weak chapter bridge.
@@ -125,8 +129,8 @@ Process in printed order. For each chapter: read the entire chapter and relevant
 ### P13 — Editorial sign-off and publication boundary [ ]
 - Reconcile final TOC, preface, field guide, blurb, KDP metadata, ISBN, page counts, wrap spine/barcode and every documented artifact hash.
 - Distinguish repository sign-off from Kindle Previewer, KDP Print Previewer, matched paperback upload, ISBN/title assignment and **physical paperback proof**. Those publisher account/physical acts require author verification.
-- Request an independent mathematical/editorial reviewer for proof-heavy chapters and any external expert argument; unresolved reviews block merge.
-- **Exit:** zero open proof/solution/prerequisite issues, exact-head green CI, final artifact evidence, independent review and author approval. Keep PR **draft and open** otherwise.
+- Complete the user-assigned Codex mathematical/editorial review for proof-heavy chapters and any external expert argument; clearly identify the internal AI evidence. Unresolved substantive findings block merge.
+- **Exit:** zero open proof/solution/prerequisite issues, exact-head green CI, final artifact evidence, assigned review and required author approval. Keep PR **draft and open** otherwise.
 
 ## D. Per-item evidence schema (mandatory)
 
@@ -292,3 +296,7 @@ OPEN**. Next: final-head CI triage, then Chapter 5 `prop:order`, `thm:cyclic`,
 **Current checkpoint(4November2026,DEP-083):** Actual corrected b67f700f all-format outputs pass schema/cross-format/local navigation/assembled-site and44 EPUB browser checks. All605 displays per width within1.4055percent aspect error versus58 before failures. All333 PDF pairs match reviewed pixels;94 reader files/6,223 EPUB assets match prior visual checks; all22 XHTML documents differ only605 display-image styles. Actual barcode9 raster readings match ISBN. Full463 tests pass,zero skips. Manifest/current handoff prepared; next final evidence commit/push, terminal exact-head CI and review package. Independent human/read-aloud/native Kindle/author/physical proof remain required. PR draft/unmerged/unpublished.
 
 **Current checkpoint(4November2026,DEP-084):** Restored explicit DEP004/006 curriculum-substitution disclosure in condensed PR/current handoff: revised Fermat/Wilson target at pb:glaisher and weaker fixed-delta prime-factor bound at pb:nsq1. Original stronger claims are not certified. Documentation only; all DEP083 artifact/463-test evidence remains valid by unchanged publishing fingerprints. Next terminal exact-final-documentation-head CI and reviewer/author acceptance, with all external gates open.
+
+**Current checkpoint(4November2026,DEP085):** User assigned Codex the complete review. Final internal mathematical/editorial/available-artifact decision recorded, with fresh72/144 exact-key/current-inventory reconciliation and no new known internal defect. Internal source phases P00–P08 and written P10 review complete; native/device/publication boundaries stay explicit. Current a317b585 CI has passed Volume2/all-format QA and continues the library; finish it before the assignment-only documentation commit so its completed book cache can be reused. Final documentation head still needs terminal CI.
+
+**DEP085 CI/artifact result:** Exact a317b585 Build books#1678 passes18 jobs/all15 books/site,publication skipped. Actual downloaded CI Volume2 artifact passes independent CRC/SHA/PDF pixel/EPUB content/glyph/schema/browser/navigation checks. Current manifest/handoff now selects these actual CI files and preserves local b67f700f review provenance. Next commit reviewer-assignment evidence and verify exact-new-documentation-head CI with unchanged publishing inputs/completed book cache.

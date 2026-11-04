@@ -139,9 +139,10 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("dist", type=Path)
     parser.add_argument("--output", type=Path, required=True)
+    parser.add_argument("--source-commit", help="Verified provenance for an extracted CI artifact without Git metadata")
     args = parser.parse_args()
     root = args.dist.resolve()
-    revision = subprocess.check_output(
+    revision = args.source_commit or subprocess.check_output(
         ["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
     reader_root = root / "html" / "volume2-integers"
     files = {path.relative_to(root).as_posix(): path
