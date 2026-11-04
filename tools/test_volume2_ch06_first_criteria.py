@@ -118,6 +118,42 @@ class QuadraticCriteriaChecks(unittest.TestCase):
             self.assertEqual(pow(3, (fermat - 1) // 2, fermat) == fermat - 1,
                              is_prime)
 
+    def test_residue_chance_and_small_symbols(self):
+        for p in odd_primes(257):
+            squares = {x * x % p for x in range(1, p)}
+            values = [0 if a == 0 else (1 if a in squares else -1)
+                      for a in range(p)]
+            shifted = values[1:] + values[:1]
+            self.assertEqual(values.count(0), 1)
+            self.assertEqual(values.count(1), (p - 1) // 2)
+            self.assertEqual(values.count(-1), (p - 1) // 2)
+            self.assertEqual(sum(values), 0)
+            self.assertEqual(sum(shifted), 0)
+            self.assertEqual(sum(x * y for x, y in zip(values, shifted)), -1)
+        self.assertEqual({x * x % 11 for x in range(11)}, {0, 1, 3, 4, 5, 9})
+        self.assertNotIn(6, {x * x % 13 for x in range(13)})
+        self.assertNotIn(6, {x * x % 17 for x in range(17)})
+
+    def test_primitive_root_sums(self):
+        for p in odd_primes(101):
+            m = p - 1
+            generators = []
+            for a in range(1, p):
+                value, order = a, 1
+                while value != 1:
+                    value = value * a % p
+                    order += 1
+                if order == m:
+                    generators.append(a)
+            for k in range(0, 2 * m + 1):
+                field_sum = sum(pow(a, k, p) for a in generators) % p
+                ramanujan = sum(cmath.exp(2j * math.pi * a * k / m)
+                                for a in range(1, m + 1) if math.gcd(a, m) == 1)
+                self.assertAlmostEqual(ramanujan.imag, 0, places=7)
+                self.assertEqual(field_sum, round(ramanujan.real) % p)
+            if p > 3:
+                self.assertEqual(math.prod(generators) % p, 1)
+
 
 if __name__ == "__main__":
     unittest.main()
