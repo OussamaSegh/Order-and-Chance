@@ -116,7 +116,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 8 | `ex:markovcoprime` | ★★ | Common gcd invariant then pairwise prime obstruction; descending tree | Independent pairwise gcd invariance and direct quadratic enumeration≤200 | Earlier Markov theorem and integer gcd | VERIFIED_TWICE | DEP-047: nine triples up to permutation, completeness via strict maximum descent |
 | 8 | `ex:imo88` | ★★★ | f(−1)>0>f(b), integer smaller Vieta root, minimal sum | Independent negative-root h identity and a'=(b²−k)/a bound | Earlier Vieta and well ordering | VERIFIED_TWICE | DEP-047: k positive nonsquare, zero mate forces k=b²; no unproved k bound |
 | 8 | `ex:t1-triple` | ★ | Parameter substitution and squared norms | Independent inverse half-sum recovery for all three triples | Earlier Pythagorean parametrization | VERIFIED_TWICE | DEP-047: (3,4,5),(15,8,17),(5,12,13), parity/gcd checked |
-| 9 | `ex:cf415` | ★ | — | — | — | UNREVIEWED | — |
+| 9 | `ex:cf415` | ★ | Euclid digits, recurrent convergents and determinant Bézout | Independent nested fraction and Euclid back-substitution | Earlier integer division, Bézout and CF proposition | VERIFIED_TWICE | DEP-048:4/1,9/2,58/13,415/93; all integer solutions (13+93k,58+415k) |
 | 9 | `ex:cfunique` | ★★ | — | — | — | UNREVIEWED | — |
 | 9 | `ex:calendar` | ★★ | — | — | — | UNREVIEWED | — |
 | 9 | `ex:n21` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-047, 112/144 are checked twice internally and 32 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-048, 113/144 are checked twice internally and 31 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

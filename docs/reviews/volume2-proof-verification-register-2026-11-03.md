@@ -53,9 +53,9 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 8 | `prop:chord` | proposition | Restrict quadratic to rational line, factor known root, exclude line component | Independent affine-coordinate division and rational second-root analysis | VERIFIED_TWICE | DEP-047: degree drop, tangent, vertical and singular cases; no guaranteed distinct second point |
 | 8 | `thm:mordell7` | a Mordell equation | Even-x mod8, positive factor3mod4 forces forbidden divisor of y²+1 | Independent all-positive-divisor residue obstruction | VERIFIED_TWICE | DEP-047: all integer signs; explanatory odd-valuation claim removed as unnecessary |
 | 8 | `thm:markov` | Markov, 1879 | Positive integer Vieta mate and largest-coordinate descent | Independent z≥2/z=1 inequality split and root-case analysis | VERIFIED_TWICE | DEP-047: root1,1,1; exceptional2,1,1; involution and termination |
-| 9 | `prop:cfconv` | proposition | — | — | UNREVIEWED | — |
-| 9 | `thm:cfapprox` | theorem | — | — | UNREVIEWED | — |
-| 9 | `lem:cfexistence` | An infinite expansion determines its number | — | — | UNREVIEWED | — |
+| 9 | `prop:cfconv` | proposition | Tail induction, alternating determinant and Fibonacci bound | Independent 2×2 matrix product and fractional-linear composition | VERIFIED_TWICE | DEP-048: real positive tails; gcd only integer coefficients; n=0 determinant and a1=1 |
+| 9 | `thm:cfapprox` | theorem | Exact complete-quotient error and strict denominator bounds | Independent fractional-linear endpoint comparison | VERIFIED_TWICE | DEP-048: irrational x, signed a0, n=0, q0=q1 possible |
+| 9 | `lem:cfexistence` | An infinite expansion determines its number | Strict even/odd nesting, tail limits and floor recovery | Independent nested rational cylinders and rational-separation contradiction | VERIFIED_TWICE | DEP-048: arbitrary infinite positive digits, uniqueness, irrationality, all-one sequence |
 | 9 | `lem:best` | best approximation | — | — | UNREVIEWED | — |
 | 9 | `thm:legendre` | Legendre | — | — | UNREVIEWED | — |
 | 9 | `thm:periodic` | Euler, Lagrange | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **45/72** rows are `VERIFIED_TWICE` at DEP-047; **27** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **48/72** rows are `VERIFIED_TWICE` at DEP-048; **24** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
