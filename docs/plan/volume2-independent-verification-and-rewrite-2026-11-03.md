@@ -158,3 +158,29 @@ Use only statuses **UNREVIEWED**, **IN_PROGRESS**, **BLOCKED**, **CORRECTED_NEED
 
 
 **Current checkpoint (4 November 2026, DEP-028; supersedes DEP-027 and earlier counts):** Strict internal registers mark **21/72 named results and 60/144 exercise solutions VERIFIED_TWICE**, leaving **51 named results and 84 exercises** plus all unnumbered arguments, comprehensive prerequisite/reader-narrative checks, all figures, every rendered PDF/EPUB/print page, independent review, physical KDP proof and all P00–P13 exit gates OPEN. Newly audited Chapter 4 prop:conv and thm:mobius by finite-factor/triple sums versus independent prime-exponent algebra and inclusion–exclusion; ex:360 by local formula versus divisor enumeration and inclusion–exclusion; ex:muid by multiplicativity versus independently counting squarefree subsets. Regression: tools/test_volume2_ch04_convolution_first_exercises.py, with corrected TeX single-backslash matching. Also retained DEP-026 and DEP-027 as evidence of all 21 keyed Chapter 3 exercises checked internally. **Still require terminal successful Build books on the exact final PR head**; a successful earlier run does not transfer. Next inspect Actions for current head, then review Chapter 4 ex:sigmaodd, ex:coprimesum and thm:perfect, thm:hyperbola twice each, resolving any dependencies at first use. PR stays DRAFT/unmerged/unpublished.
+
+**Current checkpoint (4 November 2026, DEP-029; supersedes the counts above):**
+**23/72 named results and 67/144 exercise solutions VERIFIED_TWICE internally**;
+**49 named and 77 exercise solutions remain**. Every Chapter 4 named result and
+keyed solution now has documented mathematical Pass A/Pass B, but the full
+chapter is **not signed off**. Added: Euclid–Euler via divisor sums and a separate
+reciprocal-divisor exhaustion; real-x hyperbola estimate via strips and disjoint
+shells plus an independent all-real-x remainder bound; seven exercise solutions
+by distinct parity, Möbius, residue, word-period and finite-prime counting
+arguments. Repaired the unproved minimal-word-period assertion, missing explicit
+Gauss cancellation, misleading square/diagonal-overlap explanation and abbreviated
+infinite-product regrouping. Actual Volume 1 `prop:gamma`, `prop:safe-sums`,
+`prop:signedseries` and complete `ex:basel` solution were read; the crosswalk now
+records their precise usable content. New regression file
+`tools/test_volume2_ch04_perfect_periods_density.py`: 12 passing tests.
+Local full suite passes **296 tests with zero skips** after installing the EPUB
+compression tools; 189 Volume 2 tests also pass. Ten typeset pages covering the
+changed arguments were visually inspected; this is not a full-book format proof.
+The full local build is tracked in DEP-029's final verification record.
+Incoming-head Build books #1626 **completed successfully**
+at `1718ff6524266b5404631801210d093e33cb81c6`; final edited head requires its own
+terminal successful run. Comprehensive unnamed-argument/first-use/voice/figures,
+every rendered page, external review, physical KDP and **all P00–P13 exits remain
+OPEN**. Next: final-head CI triage, then Chapter 5 `prop:order`, `thm:cyclic`,
+`lem:lift`, `thm:cyclicn`, `ex:findroots` and `ex:period`, twice each. Keep PR #103
+**DRAFT, unmerged and unpublished**.

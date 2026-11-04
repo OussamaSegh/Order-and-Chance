@@ -29,8 +29,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 3 | `thm:hensel` | Hensel's lemma | Integer-polynomial Taylor expansion to modulus p^(k+1), single linear digit congruence | Independent monomial binomial linearization plus uniqueness by difference of two digits and Gauss cancellation; finite simple-root probes | VERIFIED_TWICE | DEP-025: p=2, k≥1, arbitrary a, f' unit; singular root may have zero or p lifts; local formal derivative defined before use |
 | 4 | `prop:conv` | proposition | Finite ordered-factor/triple convolution and coprime-divisor splitting | Independent prime-exponent finite coefficient convolution, local associativity/units/commutativity | VERIFIED_TWICE | DEP-028: f*g multiplicative only for f,g multiplicative, includes n=1; Chapter 4 finite-algebra regression |
 | 4 | `thm:mobius` | M\"obius inversion | μ*1=ε by prime-power check and convolution inverse | Independent squarefree-subset inclusion–exclusion and direct double-sum coefficient cancellation for arbitrary f,g | VERIFIED_TWICE | DEP-028: n=1, arbitrary nonmultiplicative f, no analytic series; finite inversion probes |
-| 4 | `thm:perfect` | Euclid--Euler | — | — | UNREVIEWED | — |
-| 4 | `thm:hyperbola` | Dirichlet | — | — | UNREVIEWED | — |
+| 4 | `thm:perfect` | Euclid--Euler | Prime-power divisor sums, Gauss cancellation and the third-divisor contradiction | Independent reciprocal-divisor exhaustion, explicit prime-exponent and p=2 checks | VERIFIED_TWICE | DEP-029: all even positive n, integer p≥2; implicit cancellation now taught; 2^11−1=23·89 is not prime |
+| 4 | `thm:hyperbola` | Dirichlet | Exact real-x two-strip inclusion–exclusion; Volume 1 harmonic remainder and real logarithm floor estimate | Independent disjoint smaller-coordinate shells, quantitative integral remainder bound for every real x≥1 | VERIFIED_TWICE | DEP-029: whole m×m overlap, not just diagonal; γ defined before use; uniform |R(x)|≤6√x independently established; finite rational-x probes |
 | 5 | `prop:order` | proposition | — | — | UNREVIEWED | — |
 | 5 | `thm:cyclic` | Gauss | — | — | UNREVIEWED | — |
 | 5 | `lem:lift` | lemma | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- The eight `VERIFIED_TWICE` rows are documented in full under the two named proof-audit checkpoints in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`. All other named results remain UNREVIEWED under the new standard.
+- **23/72** rows are `VERIFIED_TWICE` at DEP-029; **49** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

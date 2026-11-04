@@ -27,6 +27,51 @@ The reader arrives in Volume 2 having read only Volume 1 and knowing high-school
 | Polynomial factor/root count over a field for elementary modular proofs | `volume1-first-principles/chapters/ch03-polynomials.tex`, `prop:polydiv` and `prop:rootsfactor` (near lines 80–115); also `volume1-first-principles/chapters/ch05-sequences-series.tex` `thm:mvt` for elementary logarithm comparisons | Volume 1 proves any root a forces (X−a) to divide P and a degree-d nonzero polynomial has at most d roots over a field. Once Chapter 3 has explicitly defined F_p and proved Euler/Fermat, this supplies an **independent**, completely earlier-tool proof of Wilson via X^(p−1)−1=∏_(a≠0)(X−a), comparing constants; it is not an unintroduced future polynomial theorem. | Chapter 3 `thm:wilson` and later polynomial-function exercises | CONFIRMED for Wilson alternative, global later first-use graph remains OPEN |
 | Four-ball volume, cubic character Gauss sums and prime-power local densities | **No Volume 1 proof has been located or claimed** | The needed special four-dimensional volume is now derived locally inside `pb:jacobi`; cubic-character and local-density arguments are taught in Volume 2 before being used. Do not silently refer to Volumes 4, 5, 6 or 13. | Chapter 11 advanced exercises | LOCAL PROOF REQUIRED; see DEP-010/011 |
 
+## Specific first-use reconciliation for DEP-029 — Chapter 4
+
+The following **actual source proofs** were read at incoming PR head
+`1718ff6524266b5404631801210d093e33cb81c6` on 4 November 2026:
+
+- **Harmonic error, not just convergence:**
+  `volume1-first-principles/chapters/ch05-sequences-series.tex`,
+  `prop:gamma` (near lines685–702), proves the adjacent bounds
+  H_m−ln(m+1)≤γ≤H_m−ln m by integrating1/t over successive unit intervals.
+  Their difference is ln(1+1/m)≤1/m. Thus the O(1/m) error used in
+  `thm:hyperbola` follows from the *proof*, although the Volume 1 statement
+  itself says only o(1). Volume 2 now recalls these bounds and defines γ
+  before the theorem. Logarithm comparison uses the actual earlier
+  `prop:early-ftc`/`thm:mvt` calculus contract, not later analytic number theory.
+- **Absolute series and changing order:** same Volume 1 file,
+  `prop:signedseries` (near lines610–656) proves absolute convergence and
+  Cauchy products; `prop:safe-sums` (near lines668–676) proves positive double
+  sums and absolutely convergent rearrangements. Grouping by the *product*
+  dm rather than the *sum* d+m is not the Cauchy-product statement alone.
+  Chapter 4 `ex:coprimeprob` now supplies its exact local justification:
+  absolute mass outside a K×K square is at most2Z/K, and dm≤T contains
+  that square once T≥K². The convergence/tail estimate for Z=Σ1/n² is
+  also proved there by the finite telescoping comparison1/n²≤1/[n(n−1)].
+- **Basel value with an actual complete solution:**
+  `volume1-first-principles/chapters/ch03-polynomials.tex`,
+  `ex:basel`, full solution near lines697–726. It derives the finite
+  cotangent polynomial from the imaginary part of (cotθ+i)^(2m+1),
+  identifies its m distinct roots cot²(kπ/(2m+1)), uses Viète for their
+  sum m(2m−1)/3, and squeezes partial reciprocal-square sums between
+  the cotangent bounds whose limits areπ²/6. This is more than an
+  exercise prompt or Euler's heuristic sine-product introduction.
+  The internal proof was followed through its algebra and limiting
+  squeeze; no claim of a complete Volume 1 audit follows from this.
+- **Primitive-word uniqueness:** the previous Chapter 4 solution invoked
+  subgroups of Z/nZ and asserted the minimal period divides n.
+  The revised solution needs only **integer division**, already taught
+  in Volume 1 and re-proved in Volume 2 Chapter 1: two-sided periods
+  are closed under differences, so the remainder on division by the
+  smallest positive period must vanish. Bézout in Chapter 1 supplies
+  the independent common-period check. No unproved cyclic-group
+  classification or later primitive-root theorem is imported.
+
+These entries support the specific DEP-029 items only. P01 and the global
+first-use graph remain **IN_PROGRESS**; no chapter or volume is signed off.
+
 ## Specific first-use reconciliation for DEP-024
 
 - **`prop:ringZn`:** Chapter 3's text defines congruence, equivalence classes, rings, fields and units **before** stating the quotient-ring proposition, with elementary Euclidean division proved in printed Chapter 1. At n=1, ring 0=1 is allowed; no field conclusion is drawn.

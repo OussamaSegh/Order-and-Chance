@@ -282,11 +282,34 @@ Factor the first three perfect numbers $6$, $28$ and $496$. What shape do they s
 \end{think}
 
 \begin{theorem}[Euclid--Euler]\label{thm:perfect}
-An even number $n$ is perfect if and only if $n=2^{p-1}(2^p-1)$ with $2^p-1$ prime.
+An even positive integer $n$ is perfect if and only if
+$n=2^{p-1}(2^p-1)$ for an integer $p\ge2$ with $2^p-1$ prime.
 \end{theorem}
 \begin{proof}
-If $q=2^p-1$ is prime, $\sigma(n)=\sigma(2^{p-1})\sigma(q)=(2^p-1)\cdot2^p=2n$.
-Conversely, write $n=2^km$ with $k\ge1$, $m$ odd. Then $2^{k+1}m=\sigma(n)=(2^{k+1}-1)\sigma(m)$. So $2^{k+1}-1$ divides $m$: $m=(2^{k+1}-1)s$ and $\sigma(m)=2^{k+1}s=m+s$. But $m$ and $s$ are distinct divisors of $m$ if $s\ne m$, i.e.\ always (as $2^{k+1}-1>1$), so $\sigma(m)\ge m+s$ with equality only if $m$ has no other divisors: $s=1$ and $m$ is prime. So $m=2^{k+1}-1$ is prime, and $p=k+1$.
+First let $p\ge2$ be an integer such that $q=2^p-1$ is prime,
+and put $n=2^{p-1}q$. The factors are coprime because $q$ is odd, so
+\[
+\sigma(n)=\sigma(2^{p-1})\sigma(q)
+=(2^p-1)\cdot2^p=2n.
+\]
+
+Conversely, write an even perfect number as $n=2^km$, where $k\ge1$
+and $m$ is odd. Set $q=2^{k+1}-1$. Multiplicativity gives
+\[
+2^{k+1}m=q\sigma(m).
+\]
+Consecutive integers are coprime, so $\gcd(q,2^{k+1})=1$.
+Gauss' lemma therefore gives $q\mid m$. Write $m=qs$ with $s\ge1$;
+the displayed equation now says
+\[
+\sigma(m)=(q+1)s=m+s.
+\]
+Both $s$ and $m$ divide $m$, and $s<m$ because $q\ge3$.
+If $s>1$, the three distinct divisors $1,s,m$ would give
+$\sigma(m)\ge1+s+m$, a contradiction. Thus $s=1$ and
+$\sigma(m)=m+1$. Since $m\ge3$, this equality says that the only
+positive divisors of $m$ are $1$ and $m$: $m=q$ is prime.
+Putting $p=k+1$ gives the required form.
 This exponent $p$ must itself be prime: if $p=uv$ with $u,v>1$, then
 $2^u-1$ is a proper divisor of $(2^u)^v-1=2^p-1$, by the geometric-sum
 factorisation.
@@ -318,7 +341,8 @@ Equivalently $\sigma(28)=\sigma(4)\sigma(7)=7\cdot 8=56=2n$.
 
 \begin{examplex}[why $90$ is not perfect]
 Here $90=2\cdot 3^2\cdot 5$ and $\sigma(90)=(1+2)(1+3+9)(1+5)=3\cdot 13\cdot 6=234$, so $\sigma(90)/90=2.6$, not $2$.
-The odd part $45$ is not a Mersenne prime of the shape $2^{k+1}-1$ with the power of $2$ exactly one less than that prime. The classification rejects it at once.
+Here $k=1$, so the classification would require the odd part to be
+$2^{k+1}-1=3$. The actual odd part is $45$, which fails that condition.
 \end{examplex}
 
 \subsection*{Proof workshop: invert a small divisor sum}
@@ -372,21 +396,60 @@ $\sum_{n\le x}\tau(n)$ counts the pairs $(a,b)$ of positive integers with $ab\le
 \label{fig:hyperbola}
 \end{figure}
 
+The constant in the estimate comes from harmonic sums. Volume~1's
+Sequences and Series chapter proved that
+\[
+H_m=\sum_{a=1}^m\frac1a,\qquad
+H_m-\ln(m+1)\le\gamma\le H_m-\ln m,
+\]
+where $\gamma=\lim_{m\to\infty}(H_m-\ln m)$ is Euler's constant.
+The two bounds give the quantitative form we need:
+\[
+0\le H_m-\ln m-\gamma
+\le\ln\left(1+\frac1m\right)\le\frac1m.
+\]
+It is this $1/m$ error, rather than convergence alone, that will give
+an error of order $\sqrt x$ after multiplication by $x$.
+
 \begin{theorem}[Dirichlet]\label{thm:hyperbola}
 As the real number $x\to\infty$ (with $x\ge1$),
 $\displaystyle\sum_{n\le x}\tau(n)=x\ln x+(2\gamma-1)x+O(\sqrt x)$. So the average number of divisors among $1,\dots,\lfloor x\rfloor$ is asymptotic to $\ln x$ as $x\to\infty$.
 \end{theorem}
 \begin{proof}
-$\sum_{n\le x}\tau(n)$ counts the lattice points $(a,b)$ with $a,b\ge1$, $ab\le x$, under a hyperbola. By symmetry about the diagonal, with $y=\sqrt x$,
+$\sum_{n\le x}\tau(n)$ counts the lattice points $(a,b)$ with $a,b\ge1$, $ab\le x$. Put $m=\lfloor\sqrt x\rfloor$.
+Every such point has $a\le m$ or $b\le m$: otherwise
+$ab\ge(m+1)^2>x$. Conversely every point in the square
+$1\le a,b\le m$ satisfies $ab\le m^2\le x$.
+Count the two strips and subtract their square of overlap:
 \[
-\sum_{n\le x}\tau(n)=2\sum_{a\le y}\left\lfloor\frac xa\right\rfloor-\lfloor y\rfloor^2.
+\sum_{n\le x}\tau(n)=2\sum_{a=1}^m\left\lfloor\frac xa\right\rfloor-m^2.
 \]
-Replacing $\lfloor\frac xa\rfloor$ by $\frac xa$ costs $O(y)$ in total, and $\lfloor y\rfloor^2=x+O(y)$. From Volume~1, $\sum_{a\le y}\frac1a=\ln y+\gamma+O\left(\frac1y\right)$ (the adjacent sequences there give an error at most $\ln(1+\frac1n)\le\frac1n$). So the sum is $2x\left(\frac12\ln x+\gamma\right)-x+O(\sqrt x)$.
+Each floor differs from its argument by less than $1$, so
+the right side is $2xH_m-m^2+O(m)$.
+The harmonic bound above gives $H_m=\ln m+\gamma+O(1/m)$.
+Also, as $x\to\infty$,
+\[
+\begin{gathered}
+0\le\sqrt x-m<1,\qquad
+m^2=x+O(\sqrt x),\\
+\left|\ln m-\tfrac12\ln x\right|
+=\ln\left(\frac{\sqrt x}{m}\right)
+\le\frac{\sqrt x-m}{m}=O(1/\sqrt x).
+\end{gathered}
+\]
+Substitution yields
+\[
+\sum_{n\le x}\tau(n)
+=x\ln x+(2\gamma-1)x+O(\sqrt x).
+\]
+Finally $\lfloor x\rfloor/x\to1$, so dividing by the number
+$\lfloor x\rfloor$ of integers being averaged gives an average
+asymptotic to $\ln x$.
 \end{proof}
 
 % t1-pass2 why
 \paragraph{Why this works.}
-A divisor pair $ab=n$ is a lattice point. Summing $\tau(n)$ over $n\le x$ counts all positive integer pairs with $ab\le x$. The picture is symmetric about the diagonal, so count the portion with $a\le\sqrt x$, double it, and subtract the diagonal contribution counted twice. When you replace a floor by its real argument, the error from each term is less than $1$. There are only about $\sqrt x$ terms, which explains the first error estimate.
+A divisor pair $ab=n$ is a lattice point. Summing $\tau(n)$ over $n\le x$ counts all positive integer pairs with $ab\le x$. The picture is symmetric about the diagonal, so count the portion with $a\le\sqrt x$, double it, and subtract the whole $m\times m$ square counted twice. The overlap includes off-diagonal points such as $(1,2)$ and $(2,1)$; subtracting only the diagonal would be wrong. When you replace a floor by its real argument, the error from each term is less than $1$. There are only $m$ terms, which explains the first error estimate.
 
 \paragraph{What the error term promises.}
 Here $R(x)=O(\sqrt x)$ means that there are constants $C,x_0>0$ with
@@ -611,6 +674,9 @@ If $n$ has $r=\omega(n)$ distinct prime factors, multiplying these local answers
 For $p=2$, the first term is odd and every later term is even, so the sum is always odd. For an odd prime $p$, every summand is odd, and the parity of the sum is that of its number of terms, $a+1$. It is odd precisely when $a$ is even.
 
 Thus every \emph{odd} prime exponent in $n$ must be even, while the exponent of $2$ is unrestricted. Such integers have the form $n=2^bm^2$ with $m$ odd. If $b$ is even, $n$ is a square; if $b$ is odd, $n$ is twice a square. Conversely both shapes satisfy the parity condition. This proves the equivalence.
+For instance, $\sigma(18)=1+2+3+6+9+18=39$ is odd because
+$18=2\cdot3^2$, whereas $\sigma(12)=28$ is even. The endpoints
+$n=1$ and $n=2$ give $1$ and $3$, both odd, as the rule predicts.
 \end{solution}
 
 \begin{solution}{ex:coprimesum}
@@ -625,6 +691,9 @@ Therefore $2S=n\varphi(n)$, so
 S=\frac{n\varphi(n)}2.
 \]
 There is no need to assume each pair contains two different numbers: the permutation identity also handles any fixed point correctly.
+At $n=2$ the only allowed integer is $1$, and the formula gives $1$.
+At $n=1$ it would give $1/2$ instead of $1$; this is why the question
+requires $n\ge2$.
 \end{solution}
 
 \begin{solution}{ex:even}
@@ -659,10 +728,29 @@ But a perfect number requires $\sigma(n)/n=2$. Both possibilities contradict per
 \end{solution}
 
 \begin{solution}{ex:primitive}
-\idea M\"obius inversion needs a relation of the form $g(n)=\sum_{d\mid n}f(d)$. Here $g(n)=q^n$ counts all words, and the claim is that every word is uniquely a power of a primitive word whose length divides $n$. The cleanest way to see uniqueness is through the symmetry group of the word under cyclic rotation, a subgroup of $\Z/n\Z$.
-\writeup A word of length $n$ may repeat a shorter block. Let $u$ be such a word, and consider the cyclic shifts that leave it unchanged. These shifts form a subgroup of $\Z/n\Z$. Let $g\mid n$ be the least positive period. Then $u$ consists of $n/g$ repeats of its first $g$ letters, say $u=w^{n/g}$.
+\idea A word such as $ababab$ repeats $ab$, whereas $aaa$ repeats $a$.
+Find the shortest repeating block and prove it is unique before counting.
+Then all words can be sorted by the length of that block, giving the
+divisor sum that M\"obius inversion needs.
+\writeup Extend a word $u$ of length $n$ periodically in both directions:
+its letters $a_i$, indexed by integers, satisfy $a_{i+n}=a_i$.
+Call an integer $h$ a period when $a_{i+h}=a_i$ for every integer $i$.
+Sums, negatives and differences of periods are periods: for example,
+if $h$ and $k$ are periods, then
+$a_{i+h-k}=a_{i+h}=a_i$.
 
-The shorter word $w$ is primitive. If $w=v^k$ with $k\ge2$, shifting $u$ by $|v|<g$ would leave it unchanged, contradicting the minimality of $g$. Conversely, any decomposition of $u$ as a power of a primitive word must use that same least period. Thus the primitive root of a word is unique.
+Since $n$ is a positive period, there is a least positive period $g$.
+Divide any period $h$ by $g$: $h=tg+r$, with $0\le r<g$.
+The remainder $r=h-tg$ is a period too, so minimality forces $r=0$.
+Thus $g$ divides every period, in particular $n$.
+The word is therefore $n/g$ copies of its first $g$ letters, say
+$u=w^{n/g}$.
+
+This $w$ is primitive: a shorter repeating block would give a positive
+period smaller than $g$. If $u=v^{n/d}$ for another primitive word $v$
+of length $d\mid n$, then $d$ is a period and $g\mid d$.
+The first $d$ letters are $d/g$ copies of $w$, so primitivity forces
+$d=g$ and $v=w$. The primitive root is unique.
 
 Let $P(d)$ count primitive words of length $d$ over the $q$-letter alphabet. Every word of length $n$ has a unique primitive root whose length divides $n$, so
 \[
@@ -673,6 +761,10 @@ Apply M\"obius inversion to obtain
 P(n)=\sum_{d\mid n}\mu(d)\,q^{n/d}.
 \]
 The formula is an application of divisor inversion to periods, rather than a miraculous count.
+Words retain their starting letter: $ab$ and $ba$ are two different
+primitive words. For $q=2$ and $n=4$, the formula gives
+$2^4-2^2=12$. For $n=1$ it gives $q$; for a one-letter alphabet it
+gives $0$ when $n>1$, since then the sole word repeats its one letter.
 \end{solution}
 
 \begin{solution}{ex:coprimeprob}
@@ -687,14 +779,33 @@ Sum this identity over $1\le a,b\le N$ and interchange the finite sums. For a gi
 C(N)=\sum_{d\le N}\mu(d)\left\lfloor\frac Nd\right\rfloor^2.
 \]
 
-(b) Both $\sum_{n\ge1}n^{-2}$ and $\sum_{n\ge1}\mu(n)n^{-2}$ converge absolutely. Their product can therefore be rearranged by the product $n=dm$:
+(b) Put $Z=\sum_{n\ge1}n^{-2}$. This series converges because
+\[
+\sum_{n>K}\frac1{n^2}
+\le\sum_{n>K}\frac1{n(n-1)}=\frac1K
+\qquad(K\ge1).
+\]
+Since $|\mu(n)|\le1$, the series $\sum\mu(n)/n^2$ converges
+absolutely as well. We can group the product by $k=dm$, but check
+the infinite-sum step: outside the square $d,m\le K$, the total
+absolute contribution is at most
+\[
+\sum_{\substack{d,m\ge1\\d>K\ \text{or}\ m>K}}
+\frac1{d^2m^2}\le\frac{2Z}{K}.
+\]
+Every such square is contained in $dm\le T$ once $T\ge K^2$.
+Thus square partial products and sums grouped by $dm$ have the same
+limit; the omitted terms tend to zero in absolute value. Consequently
 \[
 \left(\sum_{n\ge1}\frac{\mu(n)}{n^2}\right)
 \left(\sum_{m\ge1}\frac1{m^2}\right)
 =\sum_{k\ge1}\frac1{k^2}\sum_{d\mid k}\mu(d)
 =1.
 \]
-The last equality uses $\sum_{d\mid k}\mu(d)=\varepsilon(k)$. Thus the first series equals $1/\zeta(2)$.
+The last equality uses $\sum_{d\mid k}\mu(d)=\varepsilon(k)$.
+Writing $\zeta(2)=Z$ for the sum just defined, the first series is
+$1/\zeta(2)$. No theorem about prime distribution or Euler products
+is needed here.
 
 (c) To compare the exact finite count with its limiting series, use
 \[

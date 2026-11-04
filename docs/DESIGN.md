@@ -1,3 +1,23 @@
+# Volume 2 Chapter 4 proof and teaching checkpoint — 4 November 2026
+
+PR #103, DEP-029, retains design 5e while making the perfect-number,
+hyperbola, primitive-word and coprimality arguments explicit. The hyperbola
+proof subtracts the full square of overlap; the harmonic reminder supplies
+Euler's constant and its quantitative remainder before use. Primitive-word
+uniqueness now follows from integer division, and the series product has a
+local absolute-tail justification. Covers and publishing geometry retain
+their approved sources.
+
+The full symbolic audits, actual Volume 1 prerequisites and verification
+boundaries are in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`
+(DEP-029). New mathematical/structural regression: 12 passing tests; full local
+suite: 296 tests, zero skips after installing pngquant and oxipng. Ten typeset
+pages covering the changed arguments were visually inspected. Final artifact
+and exact-head Actions evidence belongs in that ledger. The whole-book
+visual, external-review and publisher gates remain open.
+
+---
+
 # Chapter opener on the same page — 31 October 2026
 
 Numbered chapters open on the white page. There is no charcoal band. A small coral
