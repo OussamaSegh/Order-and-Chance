@@ -19,7 +19,8 @@ review are separate obligations. All entries here are internal checks.
 | 5 | IN_PROGRESS: DEP-065 full source and unnamed arguments | VERIFIED_TWICE internally for ten examples and three datasets | IN_PROGRESS: targeted primary records read; remaining bibliography pending | UNREVIEWED after DEP-065 edits |
 | 6 | IN_PROGRESS: DEP-066 complete source and unnamed arguments | VERIFIED_TWICE internally for eight retained examples and four complete datasets | IN_PROGRESS: targeted sources checked; remaining bibliography/history pending | New complete liar plot rendered; whole latest-source chapter remains UNREVIEWED |
 | 7 | IN_PROGRESS: DEP-067 complete source and unnamed arguments | VERIFIED_TWICE internally for six examples and three datasets | IN_PROGRESS: withdrawn research claim removed; targeted sources checked; full history pending | All three standalone plates inspected; whole current-source chapter remains UNREVIEWED |
-| 8–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 8 | IN_PROGRESS: DEP-068 complete source and unnamed arguments | VERIFIED_TWICE internally for15 examples and three full datasets | IN_PROGRESS: targeted current/official sources checked; full bibliography pending | Three standalone plates rendered/inspected; current full-page placement pending |
+| 9–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -686,3 +687,88 @@ internally. No future theorem is used as a proof premise here.
 
 Full bibliography/history, exact Fermat portrait provenance, final-page and
 all-format proof and independent editorial/author acceptance remain open.
+
+## C08 — Diophantine equations (source ch09), DEP-068
+
+Read all Chapter8, all eight prompt/hint/idea/writeup groups and bibliography.
+The five named results and eight keyed proofs keep their separate records,
+with the changed IMO explanation independently reopened here. This complete
+source pass checks15 example blocks and all three figure datasets. No chapter
+acceptance is claimed.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C08-U01: domains, obstructions and valuation identity | Squares mod4 omit3 as a two-square sum, and squares mod3 omit2, excluding the stated equations over every integer. For nonzero integer coefficients/variables in Ax^k=By^k, additivity of valuations gives the displayed k-divisibility constraint. | Independently use prime exponents after clearing rational denominators; C01's representation-independent rational valuation justifies the rational extension. At x²=12y² the3-exponents have opposite parity; x²=9y² factors into (x−3y)(x+3y)=0 and has exactly the two signed families. Added integer domains and qualified the epigraph's fourth-power impossibility to positive integers: (0,1,1) disproves an unrestricted claim. | VERIFIED_TWICE |
+| C08-U02: finite factor search | x²−y²=45 with integer x>y≥0 is equivalent to positive factor pairs u≤v of45 of the same parity. The three pairs give(23,22),(9,6),(7,2). The inverse formulas prove completeness. | Independently enumerate the finitely bounded divisor pairs and recover x,y, checking all three original equalities. For12 only the even pair2,6 works; for2 the sole positive pair1,2 has opposite parity. Coprimality is explicitly not inferred from the factorisation. | VERIFIED_TWICE |
+| C08-U03: Pythagorean parameters and restrictions | Removing the common gcd gives primitive positive triples; mod4 forces one even leg. The coprime positive half-sum factors of (y/2)² are squares, yielding m,n. The inverse gives their uniqueness with the odd leg selected. | Independently use rational unit-circle slopes and normalize a reduced pair m,n: opposite parity gives no factor2, and an odd common prime of m²±n² would divide both m,n. Cases m3,n1 and a common factor d show exactly how the restrictions fail. The five primitive triples with z<30 correspond to(2,1),(3,2),(4,1),(4,3),(5,2). Formal proof separately registered. | VERIFIED_TWICE |
+| C08-U04: inradius formula and scaling | Joining the incentre to vertices splits a triangle into three triangles of common height r, giving area=r·semiperimeter. For a right triangle r=xy/(x+y+z)=(x+y−z)/2 by Pythagoras; substituting gives n(m−n). | Independently place legs on the axes: an incircle of radius r has centre(r,r); its distance to line yX+xY=xy is r exactly when r(x+y+z)=xy. Overall scale k multiplies every length, including r. At3,4,5 both routes give1. Added the area decomposition before invoking the quotient. | VERIFIED_TWICE |
+| C08-U05: Fermat's stable family and hypotheses | Minimal positive z removes any common prime of x,y. Two Pythagorean parametrisations give n=2ab,m=a²+b² and (y/2)²=mab with pairwise coprime factors. Thus a=u²,b=v²,m=w² and n=2u²v², producing u^4+v^4=w² with w<z. | Independently trace each prime through the three coprime factors, so its exponent is even in the one factor it divides. All new u,v,w are positive, and w≤w²=m≤m²<z. Corrected a contradictory numerical-example sentence saying m and n would both be squares: n is twice a square. At(3,4,5),m2 already fails. The fourth-power RHS is excluded as a special square, not preserved by the descent itself. | VERIFIED_TWICE |
+| C08-U06: replacement complete7-descent | If x²+y²=7z² and z≠0, choose least positive abs(z). The mod7 square set0,1,2,4 can sum to0 only as0+0. Thus7 divides x,y; substitution forces7|z. Dividing all three by7 gives an integer solution with measure abs(z)/7, a contradiction. If z0, all entries are0. | Independently apply the proved two-square criterion to7z²>0: the exponent1+2v7(z) of the3mod4 prime7 is odd, impossible for a two-square sum. The new example replaces a repeated fourth-power special case and an overbroad statement that a Pythagorean parametrisation cannot descend. No exercise changed; the full earlier Fermat corollary remains. | VERIFIED_TWICE for the new obligation |
+| C08-U07: conic line restriction and unit-circle charts | For Q rational quadratic without a rational line factor, restriction to a rational line through a known root is a nonzero s(alpha·s+beta). A distinct second affine point, if present, has rational parameter; tangent/degree-drop and vertical cases are separate. | Independently divide Q as a polynomial in y by the monic rational line; zero restriction would force that line as a factor, excluding the degenerate counterexample xy0. On the unit circle, substitution gives both exact charts at−1 and+1. The latter has y=−2t/(1+t²), with fixed sign, not an unspecified sign convention. Added the factorisation, t2 point(3/5,−4/5), and retained starting/vertical exceptions. | VERIFIED_TWICE |
+| C08-U08: rational nonexistence and preview boundary | A rational point on x²+y²=3 clears denominators to a primitive nonzero X²+Y²=3Z². If Z is odd, mod4 is impossible; if Z is even, both X,Y are even, contradicting primitiveness. | Independently the exercise's mod3 argument forces all three divisible by3. The duplicated earlier assertion that cited the not-yet-proved exercise was removed; this full local example and later exercise remain. Removed its inaccurate later-chapter proof location and overbroad conic/cubic theorem summary. The chord-method limitation is explained by degree: one known cubic root leaves a quadratic, not automatically rational roots. | VERIFIED_TWICE |
+| C08-U09: Mordell shift and negative inputs | Even x makes x³+7 equal7 mod8. Odd x gives y²+1=(x+2)((x−1)²+3); the second factor is positive and3 mod4, so it has a prime q3mod4 dividing y²+1, impossible for a root of−1. | Independently use the earlier sum-of-two-squares divisibility fact: q dividing y²+1² must divide both coordinates, including1. No coprimality between the factors is needed; the positive quadratic factor exists even for negative x. Checked all four signed small examples. The separate y²=x³−2 classification remains explicitly a later exercise, not a premise. | VERIFIED_TWICE |
+| C08-U10: Markov jumps, exact examples and tree | Replacing a coordinate x by3yz−x preserves the quadratic relation and is a positive integer because xx'=y²+z². After sorting x≥y≥z, g(y)≤0 locates the mate below y; equality reduces to(2,1,1)→(1,1,1). Thus the sum strictly decreases and all moves reverse. | Independently expand the new equation and check norm difference x'^2−x²=3yz(x'−x). Every nonroot largest coordinate is unique (a tie would force the treated equality case), giving a unique smaller sorted parent. The actual nine tree nodes/edges match four full breadth levels. Exact jumps(1,2,5)↔(29,2,5) and(1,5,13)↔(1,13,34) show why replacing the smallest can grow. Corrected numbers-form-a-tree wording to triples with numbers as coordinates. | VERIFIED_TWICE |
+| C08-U11: IMO integer-root sign explanation | For fixed positive nonsquare k, k≥2. The exact Vieta mate is an integer; f(b)=(2−k)b²−k<0 and f(−1)=b²+1+k(b−1)>0 locate it in(−1,b), hence0≤a'<b. Zero would force k=b²; otherwise the positive sum decreases. | Independently, if an integer a'=−h≤−1, then f(−h)=h²+b²+k(bh−1)>0 for every positive k,b,h. Thus the existing second hint was valid without an upper bound on k. Removed the source's false description that this argument was invalid without such a bound; the correct root-location proof is retained and rechecked. | VERIFIED_TWICE after explanatory correction |
+
+### C08 examples and complete diagram data
+
+| ID | Independent reconstruction and separate check | Status |
+| --- | --- | --- |
+| C08-E01: partial modulus | x²+x+1 at0,1,2,3 mod4 is1,3,3,1, so exactly two x classes are excluded. Independently factor (2y−2x−1)(2y+2x+1)=3 for actual solutions; x0,−1 and y±1 meet the surviving classes. | VERIFIED_TWICE internally |
+| C08-E02: full modulus | Mod3 excludes y²=3x²+2 outright; independent valuation would require a square congruent to2, contradicted by the full residue set0,1. No assertion of sufficiency from surviving tests. | VERIFIED_TWICE internally |
+| C08-E03: two triples | Parameters2,1 and4,1 give3,4,5 and15,8,17. Direct norm equalities and gcd calculations independently verify both; inverse half-sums recover the parameter squares. | VERIFIED_TWICE internally |
+| C08-E04: rejected pair |3,1 gives8,6,10 with gcd2, whose primitive version is4,3,5. Independent parity inspection finds both parameters odd, exactly the excluded case. | VERIFIED_TWICE internally |
+| C08-E05: hypothetical first step | The complete formal Fermat argument in U05 proves its conditional claims, including n=2u²v² and a smaller positive square-RHS solution. Independent prime-exponent accounting verifies the factors, rather than searching for an impossible numerical input. | VERIFIED_TWICE internally |
+| C08-E06: replacement7-descent | The least-positive-abs(z) construction and the independent odd7-valuation contradiction are in U06. Every new coordinate is integral and the measure strictly decreases; the zero case is explicit. | VERIFIED_TWICE internally for the new obligation |
+| C08-E07: unit circle at−1 | Directly factor (x+1)((x−1)+t²(x+1)). The second root gives((1−t²)/(1+t²),2t/(1+t²)); its squared norm is1 and slope is exactly t. Conversely t=y/(x+1) recovers every point except the separately retained base. | VERIFIED_TWICE internally |
+| C08-E08: unit circle at+1 | Factor (x−1)((x+1)+t²(x−1)); the exact second point is((t²−1)/(t²+1),−2t/(t²+1)). Its norm and chosen slope are independently checked. At t2, coordinates are3/5,−4/5, yielding the3,4,5 side lengths after signs. | VERIFIED_TWICE internally after expansion |
+| C08-E09: no rational point | The mod4 primitive-denominator contradiction and the independent mod3 common-factor proof both exclude the rational circle, as in U08. It has real points, e.g.(√3,0). | VERIFIED_TWICE internally |
+| C08-E10: Mordell small x | x1,2,−1,−2 give8,15,6,−1 respectively, none an integer square. Independent exact shift identities yield the all-input obstruction in U09; the samples are not offered as its proof. | VERIFIED_TWICE internally |
+| C08-E11: shift | x=2k+1 gives x+2=2k+3 and x²−2x+4=4k²+3, a positive3mod4 factor. Independent modular expansion and the q|y²+1 impossibility agree. | VERIFIED_TWICE internally |
+| C08-E12: smallest Markov |1,1,1 has both sides3; t²−3t+2 has roots1,2, and2,1,1 has both sides6. Direct factorisation(t−1)(t−2) independently verifies the swap. | VERIFIED_TWICE internally |
+| C08-E13: growing versus shrinking |2,1,1 jumps in its largest entry to1,1,1. From5,2,1, the smallest entry instead becomes29, preserving sum of squares870=3·5·2·29. Independent Vieta root product and direct substitution agree. | VERIFIED_TWICE internally |
+| C08-E14: a noncounterexample |3,4,5 has parameters2,1 but does not have two square legs. The added exact qualification says m must be square and n twice square. Independent norm/prime exponents show m2 already fails, so this triple is not a Fermat-descent input. | VERIFIED_TWICE internally after correction |
+| C08-E15: smaller hypothetical solution | Reconstruct the second parametrisation n=2ab,m=a²+b² and the three coprime square factors; it yields u^4+v^4=w² with w<z. Independent reduction of the prime-exponent constraints gives the same family, not a fourth-power RHS. | VERIFIED_TWICE internally |
+| C08-F01: incircle | Actual centre1,1 and radius1 meet axes at1,0 and0,1. The third actual contact8/5,9/5 has squared displacement1, lies on3X+4Y=12, and its radius is perpendicular to direction−4,3. Triangle labels3,4,5, area6 and semiperimeter6 independently agree. | VERIFIED_TWICE data; standalone rendered/inspected; full-page pending |
+| C08-F02: descent flow | Both actual directed edges go top→parameters→new solution; labels retain positive original solution, m>n>0 and0<z1<z. Full symbolic reconstruction U05 verifies that the abbreviated flow has no false edge. Enlarged its labels to small. | VERIFIED_TWICE data/math; revised standalone inspected; full-page pending |
+| C08-F03: chord/Markov plate | All four exact t/point labels have squared norm1 and slope t; every rounded endpoint matches within0.00005. All nine Markov node triples satisfy the equation; all eight actual edges are reversible valid jumps to larger sums, including the chained root edges. Independent breadth generation through four levels gives exactly those nodes. | VERIFIED_TWICE data; revised standalone inspected; full-page pending |
+
+The former combined chord/Markov plate was458.29pt wide, requiring reduced
+labels in the reading PDF. Stacked its two scopes and increased label size;
+new standalone output is224.33×333.81pt, within the actual book linewidth.
+The source caption now says top/bottom and gives rational points explicitly
+before identifying the scaled integer triples. No dataset, node, edge or
+figure obligation was removed. The descent flow is205.38×133.28pt; the
+incircle is153.14×120.08pt. All were built with the real XeLaTeX wrapper and
+visually inspected. Whole-page float placement, EPUB/reader scaling and
+monochrome print remain pending.
+
+Seven focused geometry/source/numeric tests pass. Full suite **427 tests,
+zero skips** passes. Complete inventory/check mode is current:1361 items,
+97 examples,39 figure sources,3 portraits. Through Chapter8 the whole-source
+record covers64 examples and28 mathematical figure datasets internally.
+No full chapter acceptance or external review is claimed.
+
+### C08 historical/source checks and boundaries
+
+- The [actual official1988 problem paper](https://www.imo-official.org/assets/documents/problems/1988/1988_eng.pdf),
+  Problem6 on its second page, exactly matches the positive-integer quotient
+  challenge. The obsolete guessed/aspx PDF routes returned404; the live
+  official problems page supplies the actual asset link. The corrected
+  mathematical proof and hint have separate internal reconstructions.
+- [Annals141(1995),issue3](https://annals.math.princeton.edu/1995/141-3)
+  contains Wiles's paper and the Taylor–Wiles companion, supporting the
+  publication-year attribution. Full research-proof certification is neither
+  claimed nor used as a premise.
+- The current Markov status was checked against the2025
+  [Fisac publisher record](https://londmathsoc.onlinelibrary.wiley.com/doi/full/10.1112/blms.70178)
+  and [Tan/Zhang's31October2026 preprint record](https://arxiv.org/abs/2611.01007).
+  The former explicitly calls the general statement open; the latter reports
+  finite computational verification, not an unconditional proof for all
+  triples. The raw run and preprint proof are not certified or imported, and
+  their numerical record is not added to the book.
+
+Full bibliography editions, Markov1879/Frobenius1913 original attribution,
+Matiyasevich history, the exact whole-book future handoffs and final formats
+remain open for the global pass. The standard named proofs retain their
+separate earlier audit entries, not historical certification by association.
