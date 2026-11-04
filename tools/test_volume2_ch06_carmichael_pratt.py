@@ -1,5 +1,7 @@
 """Independent finite corroboration for the Carmichael and Pratt exercises."""
 
+from collections import defaultdict
+from pathlib import Path
 from functools import lru_cache
 import math
 import unittest
@@ -97,6 +99,23 @@ class CarmichaelPrattChecks(unittest.TestCase):
             for p in ps:
                 self.assertEqual((n - 1) % (p - 1), 0)
         self.assertEqual(min(examples), 1729)
+
+    def test_taxicab_claim_requires_positive_cubes(self):
+        # Every positive cube in a sum <=1729 has base <=12: 13^3>1729.
+        representations = defaultdict(list)
+        for b in range(1, 13):
+            for a in range(1, b + 1):
+                if a**3 + b**3 <= 1729:
+                    representations[a**3 + b**3].append((a, b))
+        repeated = {n: pairs for n, pairs in representations.items() if len(pairs) > 1}
+        self.assertEqual(repeated, {1729: [(9, 10), (1, 12)]})
+        # The unqualified integer-cube version is false even at91.
+        self.assertEqual(6**3 + (-5)**3, 4**3 + 3**3)
+        self.assertEqual(4**3 + 3**3, 91)
+        source = (Path(__file__).resolve().parents[1] /
+                  'volume2-integers/chapters/ch06-quadratic-reciprocity.tex').read_text()
+        taxicab_note = source.split("\\leads $1729", 1)[1].split('Chernick', 1)[0]
+        self.assertIn('positive cubes', taxicab_note)
 
     def test_pratt_criterion_and_tree_bound(self):
         for n in range(3, 251):

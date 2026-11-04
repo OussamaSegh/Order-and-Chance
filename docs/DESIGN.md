@@ -997,3 +997,5 @@ DEP-072 completes the front/back source pass and source matching of the three ac
 DEP-073 adds the explicit Volume2 dependency/story ledger and a non-runtime review guard for all319 local references/85 forward contexts. Small source clarifications repair main-route definitions and caption/summary scopes without changing exercises or approved art. Suite455 and41 final-wording focused checks pass. An immutable current-source build and final all-page/history/external review remain pending.
 
 DEP-074 corrects bibliography/chronology without changing design or approved art. The immutablead8f7a9f all-format build passed structural/layout/media checks at333 print pages and0.7839-inch spine; it predates these citation corrections and has not received an all-page proof. Detailed source limits and next work remain in the independent ledger.
+
+DEP-075 reconciles62 bibliography metadata rows and23 historical groups, fixes sail-cone geometry wording and positive-cube taxicab scope, with456 passing tests. No design or approved cover changes. Exact-source formats/all-page and independent editorial/publisher acceptance remain pending.
