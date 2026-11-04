@@ -1,28 +1,18 @@
 # Description
 
-**The integers are simple to define. Their hidden patterns are anything but simple.**
+**Five is a sum of two integer squares. Seven is not. What decides the difference?**
 
-Why can 5 be written as a sum of two squares while 7 cannot? Why do certain equations have infinitely many integer solutions, while others have none? And how can something as elementary as division with a remainder reveal a deep mathematical law?
+Every integer square leaves remainder 0 or 1 on division by 4. That rules out 7 as a sum of two squares. But why can every prime leaving remainder 1 be represented? An obstruction and a construction need different arguments.
 
-*The Integers: Primes, Patterns and Proofs* is Volume 2 of *Order and Chance: The Hidden Architecture of Mathematics*. Building on the proof-making foundations of Volume 1, it takes readers into the world of number theory, where familiar numbers reveal unexpected connections.
+*The Integers: Primes, Patterns and Proofs* is Volume 2 of *Order and Chance: The Hidden Architecture of Mathematics*. Its four parts and eleven chapters build number theory from Euclid's algorithm, unique prime factorisation, congruences and arithmetic functions.
 
-**A journey from simple calculations to deeper structure**
+Primitive roots describe cycles of remainders. Quadratic reciprocity compares square residues at different primes. Infinite descent rules out integer solutions, while continued fractions construct solutions of Pell's equation. Gaussian and Eisenstein integers supply new factorisations. Dirichlet characters, Euler products and elementary sieves connect prime factors with sums and counts, with the limits of those methods stated explicitly.
 
-Across four parts and eleven chapters, you will explore divisibility and Euclid's algorithm, prime numbers, modular arithmetic and arithmetic functions. Discover primitive roots and quadratic reciprocity, investigate sums of squares and Diophantine equations, and use continued fractions to solve Pell's equation.
+Worked examples and diagrams accompany 144 graded exercises, each with a hint and complete solution. The first-reading route identifies the foundations; optional advanced problems combine tools already taught on their reading route. An *Arithmetic Field Guide* gathers definitions and helps you choose a method.
 
-The journey continues through Gaussian and Eisenstein integers to Dirichlet characters, Euler products and elementary sieves—revealing both the power of these methods and the questions that require deeper mathematics.
+The prerequisite is Volume 1, *First Principles*. No abstract algebra course is assumed. New arithmetic concepts are defined before they are used in proofs.
 
-**Learn mathematics by understanding its proofs**
-
-The book includes worked examples, diagrams, historical context and 144 graded exercises, each with a hint and a complete solution. Explanations show not only why results are true, but how the key ideas can be found.
-
-A clear foundational route lets you study the essential material before returning to optional advanced explorations. No abstract algebra course is assumed; Volume 1 provides the mathematical foundations for this journey.
-
-An *Arithmetic Field Guide* brings together essential definitions and strategies, while the final chapters prepare the transition to Volume 3.
-
-The next volume, *Symmetry: Groups, Rings and Fields*, develops the shared structure behind the number systems and mathematical operations encountered here. Deeper results about prime distribution, ideal theory and p-adic numbers belong to later volumes.
-
-Written for curious readers and independent learners who want to move beyond calculation and discover **why the patterns of mathematics hold**.
+The next volume, *Symmetry: Groups, Rings and Fields*, studies the structures behind these examples. Deeper results about prime distribution, general ideal theory and p-adic numbers belong to later volumes.
 
 # Keywords
 

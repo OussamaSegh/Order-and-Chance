@@ -999,3 +999,5 @@ DEP-073 adds the explicit Volume2 dependency/story ledger and a non-runtime revi
 DEP-074 corrects bibliography/chronology without changing design or approved art. The immutablead8f7a9f all-format build passed structural/layout/media checks at333 print pages and0.7839-inch spine; it predates these citation corrections and has not received an all-page proof. Detailed source limits and next work remain in the independent ledger.
 
 DEP-075 reconciles62 bibliography metadata rows and23 historical groups, fixes sail-cone geometry wording and positive-cube taxicab scope, with456 passing tests. No design or approved cover changes. Exact-source formats/all-page and independent editorial/publisher acceptance remain pending.
+
+DEP-076 replaces Volume2 jacket/listing promotional wording with concrete method descriptions and sharpens preface/field-guide handoffs. Jacket157 words;10 route/metadata/dependency checks and cover-source freshness pass. No approved art/type/ISBN changes. Fresh page-count-derived wrap and all-page/format review are required for the new blurb and source.
