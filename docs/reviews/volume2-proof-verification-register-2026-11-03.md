@@ -37,9 +37,9 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 5 | `thm:cyclicn` | theorem | Primitive-root lifting and four-involutions obstruction | Independent order-factor/CRT and exhaustive prime-power-type partition | VERIFIED_TWICE | DEP-030: n=1,2,4; p odd; split into coprime factors made explicit |
 | 5 | `thm:twopower` | theorem | Inductive exact valuation of 5^(2^m)−1, order and distinct sign cosets | Independent repeated-factor valuation and direct kernel-of-reduction count | VERIFIED_TWICE | DEP-031: k=3 boundary; 5 powers all 1 mod4; unique representation |
 | 5 | `cor:mod8squares` | corollary | Even exponents in the unique (−1)^a5^b form | Independent root-lifting toggle from mod8 through every 2-power | VERIFIED_TWICE | DEP-031: k=3, arbitrary unit class; four square cosets |
-| 6 | `thm:eulercrit` | Euler's criterion | — | — | UNREVIEWED | — |
-| 6 | `thm:gausslemma` | Gauss' lemma | — | — | UNREVIEWED | — |
-| 6 | `cor:two` | corollary | — | — | UNREVIEWED | — |
+| 6 | `thm:eulercrit` | Euler's criterion | Primitive-root parity and half-order element −1 | Independent square-root count and degree-half polynomial saturation | VERIFIED_TWICE | DEP-034: p odd, a=0, ±1 distinct, complete multiplicativity |
+| 6 | `thm:gausslemma` | Gauss' lemma | Signed-representative permutation and invertible half-factorial | Independent quotient-by-sign pairing and product-cancellation reconstruction | VERIFIED_TWICE | DEP-034: all p odd, a unit, no 0 representative, negative count; p=3 |
+| 6 | `cor:two` | corollary | Negative doubled representatives counted by floor(p/4) | Independent threshold count and four residue-class parity check | VERIFIED_TWICE | DEP-034: p≡1,3,5,7 mod8 incl p=3; exact exponent parity |
 | 6 | `thm:qr` | quadratic reciprocity; Gauss, 1796 | — | — | UNREVIEWED | — |
 | 6 | `lem:eisenstein` | Eisenstein | — | — | UNREVIEWED | — |
 | 6 | `prop:jacobi` | proposition | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **29/72** rows are `VERIFIED_TWICE` at DEP-031; **43** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **32/72** rows are `VERIFIED_TWICE` at DEP-034; **40** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
