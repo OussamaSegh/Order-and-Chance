@@ -20,7 +20,8 @@ review are separate obligations. All entries here are internal checks.
 | 6 | IN_PROGRESS: DEP-066 complete source and unnamed arguments | VERIFIED_TWICE internally for eight retained examples and four complete datasets | IN_PROGRESS: targeted sources checked; remaining bibliography/history pending | New complete liar plot rendered; whole latest-source chapter remains UNREVIEWED |
 | 7 | IN_PROGRESS: DEP-067 complete source and unnamed arguments | VERIFIED_TWICE internally for six examples and three datasets | IN_PROGRESS: withdrawn research claim removed; targeted sources checked; full history pending | All three standalone plates inspected; whole current-source chapter remains UNREVIEWED |
 | 8 | IN_PROGRESS: DEP-068 complete source and unnamed arguments | VERIFIED_TWICE internally for15 examples and three full datasets | IN_PROGRESS: targeted current/official sources checked; full bibliography pending | Three standalone plates rendered/inspected; current full-page placement pending |
-| 9–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 9 | IN_PROGRESS: DEP-069 full source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted original/revised sources checked; full bibliography pending | Four standalone plates inspected; latest full-page review pending |
+| 10–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -772,3 +773,87 @@ Full bibliography editions, Markov1879/Frobenius1913 original attribution,
 Matiyasevich history, the exact whole-book future handoffs and final formats
 remain open for the global pass. The standard named proofs retain their
 separate earlier audit entries, not historical certification by association.
+
+
+## C09 — Continued fractions (source ch08), DEP-069
+
+Read the complete source, all eight prompt/hint/idea/writeup groups and
+bibliography; read and rendered all four figure sources. Seven named results
+and eight keyed proofs retain their separate records. This pass covers all12
+example environments, including both formal examples, without adding to the
+72/144 proof totals. Through Chapter9:76 of97 examples and32 of39 datasets
+have internal whole-source records; acceptance remains open.
+
+| ID | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C09-U01: canonical finite expansion and signs | Every inner canonical tail exceeds1 when the last entry is at least2. Floors and reciprocals recover each successive integer entry and the stopping point, proving uniqueness. | Matrix products [[a,1],[1,0]] have determinant−1; their columns give the exact numerator/denominator recurrences and coprimality. Negative initial entries use floor, not truncation. Fresh workshop −43/19=[−3;1,2,1,4] has final determinant1 and gap1/76; direct fractions independently recover it. Earlier positive worked examples remain. | VERIFIED_TWICE internally |
+| C09-U02: rationality and prior-volume proofs | Unequal a/b,p/q differ by at least1/(abs(b)q). Infinitely many distinct fractions with error below1/q² therefore imply irrationality; a finite decimal experiment does not. | Read the actual Volume1 factorial-tail proof of e and integer-derivative/integral proof of pi, with proof locations in the updated prerequisite crosswalk. Replaced the misleading numerical claim with these genuine proof sites. Both earlier arguments supply strict positive upper bounds tending to0 for a supposed positive integer. | VERIFIED_TWICE internally |
+| C09-U03: best approximation metric | The chapter's lemma compares abs(qx−p), not just abs(x−p/q). The nearest-integer search at each bounded denominator is complete. | Independently enumerate pi denominators through100:22/7 wins through7 (and10);311/99 improves absolute error through100 but has larger scaled miss. Its intermediate-convergent form (14·22+3)/(14·7+1) explains why the two metrics differ. The Legendre test for22/7 is sufficient, not necessary. | VERIFIED_TWICE internally |
+| C09-U04: two/three-convergent outlook | Put alpha=x[n+1]>1,beta=q[n−1]/q[n] in(0,1],a=floor(alpha),S=alpha+beta. Exact tail algebra gives the three consecutive scaled errors alpha·beta/S,1/S,(a+beta)(alpha−a)/S. For S>2 the middle is below1/2; otherwise alpha·beta≤S−1 with the needed strictness, giving a neighbouring error below1/2. | For S>sqrt5 the middle wins. For S≤sqrt5,a≥2 gives beta≤sqrt5−2<1/sqrt5, so the preceding wins. For a1 the minimum of alpha·beta and (alpha−1)(beta+1) is at most(S²−1)/4: the two products balance at alpha−beta1, and on either side the smaller decreases. Dividing by S gives at most1/sqrt5, with equality requiring irrational beta=(sqrt5−1)/2, impossible. Thus any three contain a strict winner. Blocks give infinitely many winners; the separately proved golden limit establishes optimality. This reconstructs the quoted mathematical outlook without importing it into Pell's proof. | VERIFIED_TWICE internally; historical original-proof certification separate |
+| C09-U05: periodic field argument | A quadratic irrational y generates a two-dimensional rational vector space closed under products; a nonzero inverse is its conjugate divided by a nonzero rational norm. A periodic tail satisfies a quadratic via a unimodular fractional transformation. | Independently transform the original quadratic and retain its discriminant; the approximation bound makes A[n] bounded, C[n]=A[n−1], hence B[n] bounded. Finitely many integer coefficient triples give finitely many complete quotients, and determinism gives periodicity. Initial denominator coincidences and nonzero leading coefficients were checked; this is not a finite-sample proof of Lagrange. Named proof has its separate entry. | VERIFIED_TWICE internally |
+| C09-U06: ring/units and full-ring counterexample | Defined Z[sqrt(d)], its multiplicative closure and unit before first use. Integer-valued multiplicative norms show a unit has norm±1; conversely conjugation supplies an inverse when norm±1. Norm1 positive units of this ring are the Pell powers. | In the larger d5 ring, phi solves a monic integer polynomial and phi inverse=phi−1. Phi²=(3+sqrt5)/2 still has half-integer coordinates, whereas phi^6=9+4sqrt5 is the least positive Pell solution (test y1,2,3,4). This disproves the old claim that the Pell generator is always the full-ring fundamental unit or its square. Actual Volume13 units chapter's d5 example and Pell61 sixth-power example corroborate the distinction. Source now states the exact smaller-ring conclusion. | VERIFIED_TWICE internally after correction |
+| C09-U07: complete Pell search | A positive solution has gcd(x,y)1 and 0<x/y−sqrt(d)=1/[y²(x/y+sqrt(d))]<1/(2y²). Legendre forces every solution to be a convergent. Denominators increase after the possible q0=q1=1 tie; the initial floor(sqrt(d))/1 has negative norm. Thus the first norm1 candidate is fundamental. | Independently generate exact integer continued fractions and the first three Pell powers for d2,3,5,7,61; every power occurs among the candidates. For d61 the period is11, norm−1 occurs at index10 (29718,3805), norm1 at index21 (1766319049,226153980). The general bound, not the samples, proves completeness; the existence theorem guarantees termination. Replaced unsupported finds-at-once rhetoric by first22 convergents. | VERIFIED_TWICE internally after filling the gap |
+| C09-U08: powers and minimum | Multiplicative norm and conjugate inverse preserve integral coordinates. Minimal positive y gives minimal unit epsilon>1, and epsilon^k≤u<epsilon^(k+1) forces u·epsilon^(−k)=1. | Independently express x=(u+1/u)/2,y=(u−1/u)/(2sqrt(d)); both are positive for u>1, and both increase with u. The well ordering is in positive integer y, not arbitrary real units. Signs/conjugation cover the remaining solutions. This reconstructs the surrounding claims without assuming periodicity proves existence. | VERIFIED_TWICE internally |
+| C09-U09: model, domains and limits | The fixed rational year fraction24219/100000 has finite CF [0;4,7,1,3,24,6,2,2]; first nonzero convergents are1/4,7/29,8/33,31/128,752/3105. Exact31/128 error is1/400000. | Independent Euclidean divisions/cross-products verify the finite model. Removed the epigraph's false historical causality about actual leap years. Integer n≥1 and triangular index m≥0 are now explicit. Golden-ratio solution points to the actual earlier ex:cfunique, not the preceding square-triangle exercise. No physical long-term astronomical prediction is claimed. | VERIFIED_TWICE internally |
+
+### C09 complete examples and figures
+
+| ID | Reconstruction and independent check | Status |
+| --- | --- | --- |
+| C09-E01:415/93 | Euclid quotients4,2,6,7 give convergents4/1,9/2,58/13,415/93; direct evaluation and both cross determinants agree. | VERIFIED_TWICE internally |
+| C09-E02: short fraction | [1;2,2]=7/5; recurrence gives1/1,3/2,7/5 and determinants−1,+1. Direct nested fractions independently agree. | VERIFIED_TWICE internally |
+| C09-E03: sqrt2 order | All five fractions meet the displayed order by cross multiplication; comparing numerator² with2·denominator² independently establishes the below/above signs. | VERIFIED_TWICE internally |
+| C09-E04:13/5 | Exact floor/reciprocal steps give[2;1,1,2]; reverse evaluation13/5 and integer Euclid independently agree. | VERIFIED_TWICE internally |
+| C09-E05: pi denominators | Nearest-integer enumeration for every q1…7 proves the absolute-error comparison; separate scaled misses distinguish the theorem's metric. | VERIFIED_TWICE internally |
+| C09-E06: Legendre on22/7 | Certified rational pi bounds put the error near.00126449, strictly below1/98; exact CF digits independently contain22/7. | VERIFIED_TWICE internally |
+| C09-E07: formal sqrt2 periodic | Rationalising the reciprocal gives1+sqrt2, so every subsequent digit2. Exact norm recurrence alternates±1 for the convergents. | VERIFIED_TWICE internally |
+| C09-E08: sqrt3 | Integer complete-quotient recursion gives period1,2 after initial1; exact convergents1/1,2/1,5/3,7/4,19/11 have the displayed norm at2/1. | VERIFIED_TWICE internally |
+| C09-E09: pure golden period | Phi=1+1/phi and positive root of X²−X−1 gives all ones. Independent Fibonacci recurrence gives its convergents and limit. Sqrt3's initial1 is separate from its repeating1,2. | VERIFIED_TWICE internally |
+| C09-E10: formal Pell61 | Exact period and indices are U07; independent squaring gives1766319049²−61·226153980²=1. The earlier norm−1 pair squares to this solution. | VERIFIED_TWICE internally |
+| C09-E11: Pell2 | y1 gives3 nonsquare,y2 gives9; direct multiplication (3+2sqrt2)²=17+12sqrt2 and both norms1 verify the first powers. | VERIFIED_TWICE internally |
+| C09-E12: negative norm | Norm(1+sqrt2)=−1; its square is3+2sqrt2 of norm1. Exact first two CF pairs agree, and the example explicitly excludes negative norm from Pell1. | VERIFIED_TWICE internally |
+| C09-F01: line | All five actual axis locations are exact expressions7/5,41/29,3/2,17/12,99/70; square comparisons independently certify fill/open signs. Preserved true positions while spreading text with leader lines; fixed overlapping labels and legend. | VERIFIED_TWICE data; revised standalone inspected |
+| C09-F02: lattice errors | Actual filled(1,1),(5,7),open(2,3),gray(4,5),line endpoint(6.3,8.9095) and distance arrow all match. Independently compare squared coordinates and exact abs(4sqrt2−5); arrow leaves.04 clear at each end. | VERIFIED_TWICE data; standalone inspected |
+| C09-F03: quality | Recomputed all40 plotted6-decimal values from fresh100-digit CF arithmetic. Separately certified them using exact rational enclosures: integer-square-root bounds for phi/sqrt2, factorial partial sum plus2/101! for e, Machin alternating arctangent80-term bounds for pi. Interval floor/reciprocal certifies all11 digits and every q²-error within5e−7. Phi's limit follows1/(phi+F[n]/F[n+1]); sqrt2's from1/(sqrt2+1+q[n−1]/q[n]); large next digit gives error<1/a[next]. | VERIFIED_TWICE data/math; standalone inspected |
+| C09-F04: Pell hyperbola | Actual(1,0),(3,2),(17,12) satisfy x²−2y²1; independent norm multiplication gives the latter two. Corrected caption to the plotted portion x≥1,y≥0, rather than the entire right branch. | VERIFIED_TWICE data; standalone inspected |
+
+All four actual XeLaTeX standalone plates were built and visually inspected.
+Revised line plate is257.55×126.67pt; lattice176.75×168.87pt;
+quality355.08×174.96pt; Pell149.03×101.75pt. The line's labels/legend are now
+separate and readable. Eight new tests pass; full suite435 tests,zero skips
+passed after mathematical/data changes. The final cattle bibliography-only
+correction was followed by regenerated inventory/focused checks, not an
+invented second full-suite run. Inventory remains1361 items/97 examples/39
+figures/3 portraits. Final-source formats, all-page visual proof and external
+review remain open.
+
+### C09 targeted historical checks
+
+- [Lenstra's revised MSRI2008 reprint](https://library.slmath.org/books/Book44/files/01lenstra.pdf),
+  bibliography, distinguishes Lagrange's1768 submission and1773 publication;
+  the older AMS2002 version had the earlier publication date. Retained1768
+  as the theorem's work date and made the distinction explicit in the source.
+- [Waldschmidt's2024 author presentation](https://webusers.imj-prg.fr/~michel.waldschmidt/articles/pdf/BrahmaguptaFermatPellEn.pdf),
+  pages2/10, gives Bhaskara II's Bijaganita1150 and the d61 solution. This is
+  supporting historical research, not a claim to have read the Sanskrit source.
+- Lenstra's revised account distinguishes Amthor's1880 solution, the1965
+  Williams/German/Zarnke calculation and Nelson's1980/81 full decimal printout.
+  Corrected the bibliography's false full-solution-first-printed-in1965 claim;
+  now names Nelson, Journal of Recreational Mathematics13,162–176 for the
+  full printout, without asserting a new unsupported priority.
+- Hurwitz1891 metadata is corroborated; the original article was not accessible.
+  The quoted sharper mathematics was reconstructed in U04. Full bibliography
+  editions, original priority documents and global handoffs remain open.
+
+### Immutable681b4b55 build and scoped page inspection
+
+The exact pre-C09 snapshot681b4b55d570c15f2fc06bb2bf4faee164b8c559 in
+`/workspace/Order-and-Chance-proof-dep068` completed all formats successfully:
+329 print pages,0.7745-inch actual-page-derived spine,19,184,756-byte EPUB,
+39 full-width1800-pixel plates and HTML reader. Layout/style/print/cover/EPUB/
+reader checks passed;384 boxes,max371.3pt,no overflow or unresolved references.
+Read-PDF physical pages167,194,217,218 (printed154,181,204,205) were rendered
+and viewed: full-data liar plot, new85/four-square page, stacked chord/Markov
+plate and conic charts fit without observed clipping/overlap. This is a scoped
+sample covering Chapters1–8 edits, predating C09; it is not all-page approval.
+Build log:`/tmp/pr103-volume2-build-681b4b55.log`.

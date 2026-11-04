@@ -983,3 +983,7 @@ review limits are recorded in review/volume1-reconstruction/. No other volume
 is edited, and no KDP upload or physical proof is claimed.
 
 The actual GitHub artifact exposed a Pandoc-version difference in portrait alternatives. A description wrapper in the digital converter/filter now preserves those alternatives across versions, with a regression that simulates an ignored graphics alt option. It does not change visible captions, figure numbers, PDF content, cover artwork or mathematical sources in other volumes.
+
+## Volume 2 source and figure proof continuation (4 November 2026)
+
+PR #103's whole-source review now reaches Chapter9 (DEP-069). Continued-fraction line labels use leaders to preserve exact positions while separating text; all four chapter plates were built and viewed. The immutable pre-C09 snapshot681b4b55 passed reading/print PDF, page-count-derived cover, EPUB and reader builds (329 print pages,0.7745-inch spine,19,184,756-byte EPUB). Four selected PDF pages covering revised Chapter6–8 material were inspected. Latest-source/all-page/external/publisher review remains open. Exact mathematical/source evidence and next work are in the independent ledger and whole-book review; PR remains draft/unmerged/unpublished.

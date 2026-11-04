@@ -160,3 +160,21 @@ These are checked source sites, not whole-volume or external approval.
   avoiding an implicit later power-map criterion.
 
 These are internal source/dependency repairs, not final whole-book approval.
+
+## DEP-069: irrationality used in the continued-fraction comparisons
+
+Read the actual exercises and complete supplied proofs in
+`volume1-first-principles/chapters/ch06-integrals-taylor.tex`:
+`ex:eirr` (prompt near620, proof798–805) and `ex:niven` (prompt680,
+proof895–905). The factorial-tail argument assumes e=p/q, produces an
+integer q! times the positive tail, and bounds it strictly below1 by
+a geometric series, including q1. Niven's proof verifies integer endpoint
+derivatives of its polynomial, telescopes F''+F=f under integration by
+parts, and makes a positive integer integral tend to0 by factorial
+domination. The derivative/integral/series inputs were proved earlier
+in the actual Volume1 reading route. These are genuine proved imports for
+the Chapter9 comparisons with e and pi, not inferred from chapter titles
+or from numerical continued-fraction experiments. No transcendence theorem
+is imported; the later e/pi transcendence sentence remains historical
+outlook. The Liouville number's irrationality and transcendence are proved
+locally in the keyed exercise.
