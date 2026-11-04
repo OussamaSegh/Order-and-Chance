@@ -1060,3 +1060,27 @@ motifs and lettering, images and shared copyright-page credits remain
 unchanged. Inventory1361 is regenerated. Global conceptual/first-use/story/
 historical-bibliographic reconciliation, exact-current-source artifacts and
 every-page/external/author/publisher proof remain open.
+
+## Global conceptual/story reconciliation — DEP-073
+
+The [dependency/story ledger](volume2-dependency-and-story-review-2026-11-04.md)
+now traces the printed route, critical meanings, actual earlier proof sites
+and optional routes. All319 references resolve and all85 forward occurrences
+have explicit individual explanations/context hashes in the checked register;
+none is accepted as a necessary forward premise. Structural guard tests do
+not replace manual proof checks or certify all mathematical semantics.
+
+New source clarifications define integer units at C1 first use and repeat
+squarefree on C4's main route, specify asymptotic independence's fixed joint
+limits, define indicator/name Jacobi sums before hints, define Markov triples
+in the explicit diagram preview, retain the full three-square exclusion and
+keep Pratt's digit base binary. Existing proofs/results/examples and their
+independent reconstructions remain; no new theorem/example is counted.
+Integer units±1 are justified by abs(a)abs(b)1 and independently by the
+integer-product lower bound when abs(a)≥2; prime-exponent characterization
+of squarefreeness independently matches the divisibility definition.
+
+Full suite455 tests,zero skips passed; final main-route squarefree wording
+followed by41 focused checks, refreshed inventory and forward-reference guard.
+Global original-history/bibliography, final-source artifacts/all pages and
+external/author/publisher acceptance remain open.
