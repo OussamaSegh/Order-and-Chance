@@ -22,7 +22,7 @@ review are separate obligations. All entries here are internal checks.
 | 8 | IN_PROGRESS: DEP-068 complete source and unnamed arguments | VERIFIED_TWICE internally for15 examples and three full datasets | IN_PROGRESS: targeted current/official sources checked; full bibliography pending | Three standalone plates rendered/inspected; current full-page placement pending |
 | 9 | IN_PROGRESS: DEP-069 full source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted original/revised sources checked; full bibliography pending | Four standalone plates inspected; latest full-page review pending |
 | 10 | IN_PROGRESS: DEP-070 complete source and unnamed arguments | VERIFIED_TWICE internally for eight examples and three full datasets | IN_PROGRESS: current moat/edition claims checked; original history pending | All three revised standalone plates inspected; full-page review pending |
-| 11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 11 | IN_PROGRESS: DEP-071 complete source and unnamed arguments | VERIFIED_TWICE internally for12 examples and four complete datasets | IN_PROGRESS: targeted editions/attribution checked; global history pending | All four revised standalone plates inspected; whole final-source pages pending |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -920,3 +920,76 @@ three portraits. No chapter or external signoff is inferred.
   checked here. Removed the unsupported current-open assertion; bibliography
   now describes the1998 paper's historical question without adopting a new
   unverified theorem. Full original-history/bibliography remains open.
+
+
+## C11 — Characters, Euler products and sieve, DEP-071
+
+Read all1694 original lines, including all19 prompt/hint/idea/writeup groups,
+bibliography and four figure constructions. Eleven named/19 keyed results
+retain separate two-pass records. The complete chapter source passes now
+cover96 of97 example environments (the last is in the field guide) and all39
+mathematical figure datasets internally; these counts are not final approval.
+
+| ID | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C11-U01: homomorphisms and character values | Identity/inverse laws follow by cancellation in C×. A unit product is a unit, and a product with a nonunit factor remains a nonunit modulo m, so extending a unit-group homomorphism by zero preserves multiplication. Euler's theorem forces every nonzero value to be a root of unity. | Independently use the proved cyclic-product coordinates: choose roots on each generator, extend by integer exponent addition and check all residue classes. Mod1 has one unit and constant1 character. Added integer m domain; replaced unexplained dual-group language in the modulo5 example by the explicit chi[j]²=chi[2j] calculation. Full orthogonality named proofs remain separately recorded. | VERIFIED_TWICE internally |
+| C11-U02: new modulo8 rows/detector | Rho=chi4 has period8, nonzero precisely on units, and remains completely multiplicative. The four distinct rows principal,rho,chi8,rho·chi8 exhaust phi8=4 characters; their values at5 are1,1,−1,−1. Orthogonality yields the displayed class5 detector. | Direct exhaustive evaluation on all eight residue classes, including every nonunit, gives numerator0,0,0,0,0,4,0,0. Replacing the principal term with constant1 falsely gives1/4 on evens. Independent multiplication tables prove the rows are characters and their inner product is0. These fresh examples/workshop replace repeated modulo5/chi4 calculations; full earlier table/cancellation proof remain. | VERIFIED_TWICE internally for new obligations |
+| C11-U03: series and Euler product limits | P-series integral bound controls every omitted integer above X. Finite geometric products enumerate smooth integers once by FTA. Their limits equal the absolutely convergent series, and the product of1+p^(−s) bounds reciprocal magnitudes away from0. | Independently bound finite rectangular tails in the Dirichlet convolution and compare product differences with the positive p-series tail, avoiding conditional rearrangement. At s1 the finite reciprocal product dominates the harmonic partial sum, so its reciprocal tends0; this does not assert an s1 series identity. The new principal-mod6 example removes the2/3 factors; direct inclusion–exclusion gives the same2/3 multiplier, hence pi²/9 at2. | VERIFIED_TWICE internally |
+| C11-U04: finite sieve and floor identity | The Mobius divisor sum is the coprimality indicator. Swapping finite sums counts each divisor's floor(x/d) multiples. For z≥sqrt(x), any surviving composite is impossible; z≥x leaves only1. | Independently expand the product of finite exclusion indicators. At30 the eight signed terms give8; at100 cutoff10 gives22 and pi100=25. The original claim P(z) is divisible by every integer≤x was false (squarefree P cannot contain4 or9). Corrected: for z≥x every squarefree d≤x divides P, nonsquarefree terms vanish by mu, larger divisors by floor. Fresh48→49 example proves the first surviving composite is49 and changes Phi13→14 while pi remains15. | VERIFIED_TWICE internally after correction |
+| C11-U05: boundary and logarithmic error | Grouped chi4 terms are positive and bounded uniformly by13/15, and ordinary sums differ by a vanishing term. Nonprincipal complete periods cancel and an incomplete period has at most phi(m) nonzero unit terms. | Independent summation-by-parts formula proves convergence with a telescoping absolute comparison, without asserting absolute convergence of the original series. Newly supplied real-log remainder identity integrates u/(1−u); for abs(t)≤1/3 its magnitude≤3t²/4. Actual Volume1 derivative/FTC proof sites were read and crosswalk updated. Applied first to finite products and then fixed-s absolutely convergent sums, it bounds the prime-log error independently of s>1. The separate s↓1 continuity/nonvanishing step remains explicitly conditional, not a theorem smuggled in from Volume6. | VERIFIED_TWICE internally |
+| C11-U06: reciprocal-prime implication and previews | Under the stated extra boundary bound, the Abel-weighted class difference is bounded. The positive total diverges by Euler's reciprocal-prime theorem; each class must diverge, and any finite unweighted class sum would bound its weighted sums, contradiction. | Independently use finite partial sums before taking s↓1: any prescribed large harmonic-prime subtotal persists near1, proving total divergence without exchanging signed limits. This says nothing about convergence of the signed unweighted prime series. Corrected the class-field overview's overbroad identification of all abelian-extension characters with ordinary Dirichlet characters; concrete Volume6/13 handoffs remain future topics. | VERIFIED_TWICE internally |
+| C11-U07: advanced numerical/route claims | All19 optional solutions and their earlier taught routes were reread, including cube-root zero convention, three-cycle congruence, Jacobi formal coefficients, dyadic lifting, power-map gcd and powerful-series regions. No newly imported theorem was used. | Recomputed the large four-square subtotal493480252693888 at10^7 using quotient-block divisor sums; ratio rounds1.00000007. Independently enumerated every prime below k^4 with cyclic bitset sumsets: cubic exception7; quartic5,13,17,29; eighth-power last761, matching the existing exhaustive numerical claim and the separately proved large-p bound. Earlier named/keyed records supply their full two reconstructions; finite probes do not prove their general theorems. | VERIFIED_TWICE internally for the displayed computations; keyed proofs retain separate status |
+
+### C11 examples and all four datasets
+
+| ID | Reconstruction and independent check | Status |
+| --- | --- | --- |
+| C11-E01: familiar characters | Principal is multiplicative because nonunits form the complement of units with the product property; chi4's two-unit table and chi8's full four-unit table establish multiplication. Legendre's proved criterion supplies the third family. | VERIFIED_TWICE internally |
+| C11-E02: full modulo5 table | Generator2 visits1,2,4,3; evaluating i^(jk) gives all four displayed rows in1,2,3,4 order. Independent square set1,4 identifies chi2; all row inner products checked. | VERIFIED_TWICE internally |
+| C11-E03: chi4 exponent | For every odd integer n, exponent(n−1)/2 has parity determined by n mod4; this gives the four displayed values. Independent residue table/complete period gives sum0, including negative inputs. | VERIFIED_TWICE internally |
+| C11-E04: replacement modulo8 rows | Rho row1,−1,1,−1 and chi8 row1,−1,−1,1 give inner product0 and distinct product row1,1,−1,−1. Independent64-product table and orthogonality agree, including zero on evens. | VERIFIED_TWICE internally for new obligation |
+| C11-E05: zeta2 finite product | Exact rational sum through30 lies(1.61215,1.61216); exact prime product through30 lies(1.63307,1.63308). Positive expansion contains the partial sum plus32,49,77 etc, so ordering is structural. Independent Basel limit and p-series tail agree. | VERIFIED_TWICE internally |
+| C11-E06: replacement removed factors | Finite Euler factors remove exactly primes2,3; direct inclusion–exclusion gives1−1/4−1/9+1/36=2/3. Hence the coprime6 reciprocal-square sum is pi²/9. Independent finite sum to10000 plus the proved1/10000 tail encloses the value. | VERIFIED_TWICE internally for new obligation |
+| C11-E07:mu at2 | Prime factor parity gives exact ten signed/zero terms and subtotal near.6163. Independent divisor-factor mu reconstruction verifies every term, especially6,+ and7,−; the absolute omitted tail is bounded by the p-series. | VERIFIED_TWICE internally |
+| C11-E08:30/100 counts | Eight exact divisor terms at30 give8 and the eight listed survivors. Sixteen at100 cutoff10 give22; prime enumeration independently gives25 primes and the formula22−1+4. | VERIFIED_TWICE internally |
+| C11-E09: replacement48/49 | No surviving composite can be below7². Direct gcd enumeration and independent signed-floor sums give Phi(48,5)13,Phi(49,5)14; prime count15 unchanged. Earlier complete30 example and all exercises remain. | VERIFIED_TWICE internally for new obligation |
+| C11-E10: floor at10 | Nonzero terms d1,2,3,5,6,7,10 give10−5−3−2+1−1+1=1. Independent finite divisor exchange leaves only integer1. Correct squarefree-primorial explanation is U04. | VERIFIED_TWICE internally after correction |
+| C11-E11: grouped three | Exact2/3+2/35+2/99=2578/3465≈.7440115; separate subtraction from1 gives887/3465>0 and added positive terms give strict lower2/3. | VERIFIED_TWICE internally |
+| C11-E12: partial sums | Direct four-residue cumulative table1,1,0,0 repeats. Independent period0 plus each prefix proves abs≤1 for every nonnegative cutoff, improving the generic phi4=2. | VERIFIED_TWICE internally |
+| C11-F01: chi8 clock | All eight actual values/inks agree with the supplementary law and complete64-product table; angular rule90−45k places residue0 at top clockwise. Larger labels/nodes retain all entries. | VERIFIED_TWICE data; revised standalone inspected |
+| C11-F02: sieve30 | All30 cell coordinates, eight survivor frames and six multiples-of5 dots match direct gcd/remainder tests. Independent inclusion–exclusion gives8. Enlarged tiny labels/cells; corrected actual palette legend from teal/olive to dark grey/ochre, in separate rows. | VERIFIED_TWICE data; revised standalone inspected |
+| C11-F03: race | Both10-point series exactly match fresh trial-prime counts at10…100; actual x coordinate maps to10+5x. All ticks/markers/styles match. At100 counts13 and11; at17 there is a tie3/3, so caption now limits its strict lead to the plotted cutoffs. Larger labels and final100 tick inspected. | VERIFIED_TWICE data; revised standalone inspected |
+| C11-F04: cubic | All207 actual points include exactly every prime1mod3 below3000, no omissions/duplicates. Fresh cube-root multiplicity convolution counts N directly. Separate exact search of4p=A²+27B²,A1mod3 gives unique A=N−(p−2) for each. Every normalized ordinate matches to.000050001 and has abs≤1. Actual85 samples have abs≥.8 and25 have abs≤.2; caption describes this finite sample, replacing an unproved limiting-density claim. Moved larger x labels below the band. | VERIFIED_TWICE data; revised standalone inspected |
+
+All four final standalone plates were built with the actual wrapper/fonts/
+palette and rendered/viewed:clock196.70×181.43pt,sieve321.15×75.46pt,
+race263.55×97.28pt,cubic338.54×161.95pt. No clipping/label overlap observed
+in these standalone views. Full final-source chapter/page/EPUB/reader and
+monochrome approval remain open. Eight new checks pass; full suite449 tests,
+zero skips passes. The earlier reader-route wording guard was aligned with
+the correct singular chapter reference. Inventory1361 current.
+
+### C11 targeted source checks and CI dependency correction
+
+- Actual Volume1 inverse derivative and early FTC proofs were read (see the
+  DEP-071 crosswalk entry); the new logarithmic estimate uses those precise
+  results instead of an unproved log series.
+- [Apostol's Springer record](https://link.springer.com/book/10.1007/978-1-4757-5579-4)
+  and [Caltech's author record](https://authors.library.caltech.edu/records/f4bx5-f6f64)
+  corroborate1976 and scope. [Davenport's publisher record](https://link.springer.com/book/9780387950976)
+  confirms third edition2000; Montgomery's revision credit is independently
+  corroborated by the [WorldCat edition](https://search.worldcat.org/title/Multiplicative-number-theory/oclc/44469053).
+  AMS's indexed Tenenbaum third-edition2015 copyright metadata was visible,
+  but opening the publisher PDF returned403; the full edition remains pending.
+- [Cole/Davie's actual publisher record](https://www.cambridge.org/core/journals/mathematical-gazette/article/abs/game-based-on-the-euclidean-algorithm-and-a-winning-strategy-for-it/99A7D31D926AF615AEB88F71CFAA9BB6)
+  confirms Mathematical Gazette53(386),December1969,354–357, not the guessed
+  recreational-journal citation. Full original-paper proof/history remains
+  distinct from the locally reconstructed game proof.
+- Exact a0cfaef3 Actions#1664 failed in list-job126656414125 because mpmath
+  was not installed for the new high-precision tests. Added explicit pinned
+  `tools/requirements-test.txt` (including build helpers), installed by the
+  list job. Build-only jobs retain their runtime requirements; no output
+  fingerprint is changed for a test-only dependency. A fresh isolated venv
+  installed only that manifest and passed all22 new Chapter9–11 tests. The
+  full activated local suite passes449 tests; terminal new-head CI remains
+  required. Earlier success is not substituted for it.

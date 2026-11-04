@@ -178,3 +178,18 @@ or from numerical continued-fraction experiments. No transcendence theorem
 is imported; the later e/pi transcendence sentence remains historical
 outlook. The Liouville number's irrationality and transcendence are proved
 locally in the keyed exercise.
+
+### DEP-071: logarithmic remainder in the optional boundary preview
+
+Read the actual Volume1 `ch06-integrals-taylor.tex` inverse-derivative proof
+and logarithm check (near lines31–46), the stated elementary-function
+assumptions that follow it, and `prop:inttools`' pointer to the actual earlier `prop:early-ftc` proof
+in `ch05-sequences-series.tex` (near529–548), including both signs of the
+increment and the mean-value consequence.
+They give ln'(x)=1/x and the integral of a continuous derivative. The new
+local identity −log(1−t)−t=integral(0,t) u/(1−u) du therefore needs no
+unproved infinite logarithmic series or later analytic theorem. For real
+abs(t)≤1/3, direct integration of the absolute bound gives at most3t²/4.
+At t=chi4(p)p^(−s), p odd,s>1, this supplies a uniform finite error bound
+by the already proved p-series. The separate boundary-continuity/nonvanishing
+step is explicitly conditional and deferred, not silently certified.
