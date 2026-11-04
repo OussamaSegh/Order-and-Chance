@@ -108,9 +108,9 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 7 | `ex:eureka` | ★★ | Triangular/odd-square bijection and eleven explicit examples | Independent inverse coordinate map and residue triple audit | Earlier congruences and elementary square expansion | VERIFIED_TWICE | DEP-044: REDESIGNED from admitted universal theorem to equivalence plus n=0…10; original theorem not claimed |
 | 7 | `ex:zagier` | ★★★ | Positive branch maps preserve norm, unique fixed point, parity of involutions | Independent branchwise inverse compositions and explicit boundary/fixed-point checks | Earlier finite pairing and integer algebra; no later group theorem | VERIFIED_TWICE | DEP-045: all (a)–(d), p≥5, map domain inequalities checked before composition |
 | 7 | `ex:t1-which20` | ★ | Two-square criterion and explicit equalities | Independent small-coordinate enumeration | Earlier Chapter 7 criterion | VERIFIED_TWICE | DEP-045: 15 excluded;18,45,50 represented, two forms for50 |
-| 8 | `ex:areaper` | ★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:x2y23z2` | ★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:catalan23` | ★ | — | — | — | UNREVIEWED | — |
+| 8 | `ex:areaper` | ★ | Substitute hypotenuse, (a−4)(b−4)=8 and all sign/positivity cases | Independent scaled primitive parameters and inradius2 factorization | Earlier Pythagorean theorem and elementary triangle area | VERIFIED_TWICE | DEP-046: only5-12-13 and6-8-10 up to leg exchange |
+| 8 | `ex:x2y23z2` | ★ | Mod3 primitive contradiction, clear rational denominators | Independent parity of v₃ of a two-square norm | Chapter 7 q≡3mod4 valuation, FTA, fractions | VERIFIED_TWICE | DEP-046: zero solution separated, all integer signs, rational denominator nonzero |
+| 8 | `ex:catalan23` | ★ | y=0 boundary, x even, difference-of-squares factors of3^y | Independent mod8 excludes x≥3 then exhaustive remaining exponent cases | Elementary congruences and FTA | VERIFIED_TWICE | DEP-046: N includes0; exactly(1,0),(2,1) |
 | 8 | `ex:mordell5` | ★★ | — | — | — | UNREVIEWED | — |
 | 8 | `ex:eisentri` | ★★ | — | — | — | UNREVIEWED | — |
 | 8 | `ex:markovcoprime` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-045, 104/144 are checked twice internally and 40 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-046, 107/144 are checked twice internally and 37 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

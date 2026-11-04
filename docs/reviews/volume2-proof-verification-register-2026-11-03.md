@@ -48,8 +48,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 7 | `thm:twosqn` | theorem | Remove q² for q≡3 mod4, multiply allowed factors | Independent min-coordinate valuation and norm product construction | VERIFIED_TWICE | DEP-043: n=1, zero coordinate, prime factors repeated |
 | 7 | `thm:foursq` | Lagrange, 1770 | Euler norm identity, residue-set seed and even/odd minimal-multiplier descent | Independent formal coefficient identity and complete descent/positivity reconstruction | VERIFIED_TWICE | DEP-045: n=1, p=2, odd m nearest residues, divide coordinates by m; zero extension immediate |
 | 7 | `thm:circle` | Gauss | Corner-square tiling, inner/outer discs, R∈[1,√2) separately | Independent centered-square tiling gives stronger √2πR+π/2 bound | VERIFIED_TWICE | DEP-045: real R≥1, half-open tiling, origin, N(10)=317 |
-| 8 | `thm:pyth` | theorem | — | — | UNREVIEWED | — |
-| 8 | `thm:fermat4` | Fermat | — | — | UNREVIEWED | — |
+| 8 | `thm:pyth` | theorem | Coprime half-sum factors are squares, both directions | Independent rational unit-circle slope and normalized parameter gcd | VERIFIED_TWICE | DEP-046: positive legs, y even, m>n≥1, opposite parity, no zero-leg omission |
+| 8 | `thm:fermat4` | Fermat | Minimal z, two primitive-triple parametrizations, pairwise coprime square factors | Independent early split m=u²,n=2v² then second triple descent | VERIFIED_TWICE | DEP-046: all new integers positive, new hypotenuse strictly smaller; positive domain essential |
 | 8 | `prop:chord` | proposition | — | — | UNREVIEWED | — |
 | 8 | `thm:mordell7` | a Mordell equation | — | — | UNREVIEWED | — |
 | 8 | `thm:markov` | Markov, 1879 | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **40/72** rows are `VERIFIED_TWICE` at DEP-045; **32** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **42/72** rows are `VERIFIED_TWICE` at DEP-046; **30** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
