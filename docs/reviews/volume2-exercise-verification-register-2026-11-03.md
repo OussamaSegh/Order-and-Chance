@@ -75,10 +75,10 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 5 | `ex:t1-units16` | ★ | Powers of 5 and their negatives, then square exponents | Independent eight-odd-residue enumeration and direct square table | Chapter 5 two-power theorem and square corollary | VERIFIED_TWICE | DEP-032: all eight forms unique; square set {1,9} |
 | 5 | `ex:t1-square-cosets` | ★★ | Square criterion and equal cardinality of four mod8 fibers | Independent kernel-of-reduction and coset equality argument | Chapter 5 square corollary and locally defined cosets | VERIFIED_TWICE | DEP-032: k=3 has four singleton cosets; index4 |
 | 5 | `ex:t1-gen7` | ★ | First-return powers and coprime generator exponents | Independent direct order table of six units | Chapter 5 order and cyclic prime theorems | VERIFIED_TWICE | DEP-032: 2 order3, 3 and5 order6; duplicate of earlier example retained as practice |
-| 5 | `pb:smith` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `pb:lambert` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `pb:ramsum` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `pb:phipm1` | ★★ | — | — | — | UNREVIEWED | — |
+| 5 | `pb:smith` | ★★ | Divisibility incidence factorization A D Aᵀ | Independent Möbius inverse conjugation and determinant; J₂ local factor | Volume 1 triangular determinants; Chapter 4 convolution and Gauss identity | VERIFIED_TWICE | DEP-033: all complex-valued f, n=1, f may vanish; gcd² n=4 gives 288 |
+| 5 | `pb:lambert` | ★★ | Absolute double-series bound, grouping by divisors | Independent finite-coefficient stabilization and uniform tail domination; prime-exponent square indicator | Volume 1 convergent series; Chapter 4 φ, μ; λ defined in prompt | VERIFIED_TWICE | DEP-033: complex x with |x|<1, polynomial growth, all (a)–(c), x=1/2 |
+| 5 | `pb:ramsum` | ★★ | Reduced-fraction grouping then Möbius; prime-power Hölder; Fourier orthogonality | Direct coprimality inclusion–exclusion and independent divisor-average local orthogonality | Volume 1 roots of unity; Chapter 4 inversion; local e(t) definition | VERIFIED_TWICE | DEP-033: q=1, n=0, prime-power valuation cases, q,r|N |
+| 5 | `pb:phipm1` | ★★ | Cyclotomic product, log-divisor inversion, root-index identities and norm product | Independent Möbius product limit, prime-exponent count and explicit polynomial inverse | Actual Volume 1 complex roots, Chapter 4 inversion, earlier ex:cyclotomic | VERIFIED_TWICE | DEP-033: Λ now defined at prompt; positivity and order-index step taught; n=2 excluded from (b); two prime factors in (c) |
 | 5 | `pb:gcdmean` | Journey | Four-part Möbius/harmonic proof | Abel alternate mean + weighted endpoint + numeric tests | PASS | VERIFIED_TWICE | DEP-002, W(M) uniform for M≥1 |
 | 5 | `pb:fibcoprime` | Journey | Fibonacci gcd/Binet solution | Exact bounded-log factor + independent counts | PASS | VERIFIED_TWICE | DEP-001, follows pb:gcdmean |
 | 6 | `ex:minus3` | ★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-032, 77/144 are checked twice internally and 67 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-033, 81/144 are checked twice internally and 63 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
