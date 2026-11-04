@@ -64,11 +64,11 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 10 | `prop:eucl` | Euclidean division | Exact coefficient rounding, squared errors≤1/2 or3/4 | Independent rational numerator rounding and box maxima | VERIFIED_TWICE | DEP-051: b≠0, ties permitted, r=0, Eisenstein rounding need not nearest |
 | 10 | `thm:ufd` | theorem | Least-norm nonzero linear combination, Bézout cancellation, norm induction | Independent terminating Euclidean/back-substitution route and prime-factor matching | VERIFIED_TWICE | DEP-051: integral domain and all norm hypotheses; aR+bR defined at first use |
 | 10 | `thm:six` | theorem | Norms4,9,6 and absence of2/3, cross-side norm distinction | Independent unit±1 coefficient and irreducible-factor multiset check | VERIFIED_TWICE | DEP-051: Z[√−5] separately, nonunits, conjugates nonassociate checked in exercise |
-| 10 | `thm:gaussprimes` | theorem | — | — | UNREVIEWED | — |
-| 10 | `thm:r2` | Jacobi | — | — | UNREVIEWED | — |
-| 10 | `thm:eisprimes` | theorem | — | — | UNREVIEWED | — |
-| 10 | `lem:cube` | lemma | — | — | UNREVIEWED | — |
-| 10 | `thm:flt3` | Euler; Gauss | — | — | UNREVIEWED | — |
+| 10 | `thm:gaussprimes` | theorem | Norm splitting/inert obstruction and UFD completeness | Independent quotient-field inertness and constructive Gaussian gcd | VERIFIED_TWICE | DEP-052: ramified2, nonassociate conjugates, no missing irreducible types |
+| 10 | `thm:r2` | Jacobi | Unique norm-factor allocations and divisor convolution | Independent local coordinate/divisibility recurrences | VERIFIED_TWICE | DEP-052: n≥1, axes/signs/order, four distinct units, χ4 multiplication explained |
+| 10 | `thm:eisprimes` | theorem | Primitive cube root, split norm, inert norm mod3 and UFD | Independent gcd(p,u−ω) construction and residue quotient | VERIFIED_TWICE | DEP-052: inert2, ramified3, p≠3 conjugates, exactly3 residue classes modλ |
+| 10 | `lem:cube` | lemma | Three factors of θ³−1 and λ residue classes | Independent binomial λ-adic expansion; all81 classes modλ⁴ | VERIFIED_TWICE | DEP-052: λ∤θ, both signs, λ⁴ associated to9 |
+| 10 | `thm:flt3` | Euler; Gauss | Primitive integer reduction, generalized unit family, λ valuations3n−2,1,1 and descent | Independent cube expansion, prime-by-prime factor audit and complete unit check | VERIFIED_TWICE | DEP-052: all nonzero integer signs, n=1 excluded, new family remains coprime/nonzero; exponent decreases |
 | 11 | `prop:t1-charsum` | proposition | — | — | UNREVIEWED | — |
 | 11 | `prop:t1-unitproduct` | proposition | — | — | UNREVIEWED | — |
 | 11 | `thm:t1-charcount` | theorem | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **56/72** rows are `VERIFIED_TWICE` at DEP-051; **16** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **61/72** rows are `VERIFIED_TWICE` at DEP-052; **11** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

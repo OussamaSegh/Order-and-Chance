@@ -126,12 +126,12 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 9 | `ex:t1-pell3` | ★★ | Rationalized two-cycle, convergents1/1 then2/1 and exact norms | Independent y=1 minimality and fixed-point cycle | Earlier CF and Pell theorem | VERIFIED_TWICE | DEP-050: prior norm−2; fundamental(2,1) |
 | 10 | `ex:gaussfactor` | ★ | Rational prime splitting, explicit Gaussian factors and Euclidean gcd | Independent exact products and Bézout certificate for−1+2i | Earlier norm-prime irreducibility and UFD | VERIFIED_TWICE | DEP-051: unit−i retained for2026; gcd up to unit, not norm alone |
 | 10 | `ex:zsqrt5` | ★ | Norm obstruction, units±1, distinct irreducibles, nonprime2 | Independent coefficient-parity divisibility and factor-norm partitions | Local norm and domain definitions, earlier UFD contrast | VERIFIED_TWICE | DEP-051: all four pairwise nonassociate including conjugates; no ideal theory |
-| 10 | `ex:gaussgcd` | ★★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:euler1000009` | ★★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:x3y21` | ★★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:xxyy` | ★★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:y2x3m2` | ★★★ | — | — | — | UNREVIEWED | — |
-| 10 | `ex:t1-split13` | ★ | — | — | — | UNREVIEWED | — |
+| 10 | `ex:gaussgcd` | ★★ | Bézout excludes unit gcd, coefficient test excludes p, norm forces p | Independent split-prime valuations and exact numerical certificate | Earlier Gaussian classification and Euclidean gcd | VERIFIED_TWICE | DEP-053: p odd1mod4, a=45,p=1013, gcd23−22i up to unit |
+| 10 | `ex:euler1000009` | ★★ | UFD uniqueness, distinct norm representations, Gaussian Euclid | Independent prime-divisibility matching and ordinary cross-product gcd | Earlier prime-norm irreducibility and Gaussian primes | VERIFIED_TWICE | DEP-053: all four divisions checked, factor293·3413, no unproved primality claim needed |
+| 10 | `ex:x3y21` | ★★ | Parity, coprime conjugate factors, absorb unit cube and compare coefficient | Independent generic quadratic cube expansion and exhaustive b|1 cases | Earlier Gaussian UFD and unit list | VERIFIED_TWICE | DEP-053: all integer signs, only(1,0), Gaussian cubing permutation now explained |
+| 10 | `ex:xxyy` | ★★ | Eisenstein norm and rational-prime classification | Independent mod3 necessity and earlier x²+3y² construction | Earlier Eisenstein primes or Chapter7 weighted-square theorem | VERIFIED_TWICE | DEP-053: p=3 separately; ramified versus split terminology repaired |
+| 10 | `ex:y2x3m2` | ★★★ | Odd y, coprime factors in Z[√−2], cube coefficient b|1 | Independent common-prime norm audit and complete coefficient cases | Main-text Euclidean/UFD proof for Z[√−2], not a later volume | VERIFIED_TWICE | DEP-053: only(3,±5), x forced positive; UFD citation completed |
+| 10 | `ex:t1-split13` | ★ | Explicit Gaussian and Eisenstein norm products | Independent integer-coordinate multiplication | Earlier norm-prime irreducibility and prime classifications | VERIFIED_TWICE | DEP-053: Gaussian2±3i; Eisenstein3−ω and4+ω |
 | 11 | `ex:t1-char5` | ★ | — | — | — | UNREVIEWED | — |
 | 11 | `ex:t1-chi8check` | ★ | — | — | — | UNREVIEWED | — |
 | 11 | `ex:t1-sieve30` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-051, 122/144 are checked twice internally and 22 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-053, 128/144 are checked twice internally and 16 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
