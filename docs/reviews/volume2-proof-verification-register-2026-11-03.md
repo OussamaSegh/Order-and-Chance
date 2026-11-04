@@ -46,8 +46,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 7 | `lem:thue` | Thue | Grid pigeonhole and nonzero differences | Independent shortest circular gap of multiples of a | VERIFIED_TWICE | DEP-043: p=2, strict sqrt bound, p∤a |
 | 7 | `thm:twosq` | Fermat, 1640; Euler, 1749 | Root of −1 plus Thue and positive multiple below2p | Independent minimal-multiple norm descent | VERIFIED_TWICE | DEP-043: odd prime, converse modulo4, no Gaussian UFD import |
 | 7 | `thm:twosqn` | theorem | Remove q² for q≡3 mod4, multiply allowed factors | Independent min-coordinate valuation and norm product construction | VERIFIED_TWICE | DEP-043: n=1, zero coordinate, prime factors repeated |
-| 7 | `thm:foursq` | Lagrange, 1770 | — | — | UNREVIEWED | — |
-| 7 | `thm:circle` | Gauss | — | — | UNREVIEWED | — |
+| 7 | `thm:foursq` | Lagrange, 1770 | Euler norm identity, residue-set seed and even/odd minimal-multiplier descent | Independent formal coefficient identity and complete descent/positivity reconstruction | VERIFIED_TWICE | DEP-045: n=1, p=2, odd m nearest residues, divide coordinates by m; zero extension immediate |
+| 7 | `thm:circle` | Gauss | Corner-square tiling, inner/outer discs, R∈[1,√2) separately | Independent centered-square tiling gives stronger √2πR+π/2 bound | VERIFIED_TWICE | DEP-045: real R≥1, half-open tiling, origin, N(10)=317 |
 | 8 | `thm:pyth` | theorem | — | — | UNREVIEWED | — |
 | 8 | `thm:fermat4` | Fermat | — | — | UNREVIEWED | — |
 | 8 | `prop:chord` | proposition | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **38/72** rows are `VERIFIED_TWICE` at DEP-043; **34** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **40/72** rows are `VERIFIED_TWICE` at DEP-045; **32** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

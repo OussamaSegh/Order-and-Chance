@@ -106,8 +106,8 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 7 | `ex:x2y2` | ★★ | Thue norm below3p and parity reduction of2p | Independent weighted-norm minimal-multiple descent | Earlier −2 law and Thue; elementary weighted norm identity | VERIFIED_TWICE | DEP-044: p=3, nonzero root, exact multiple cases |
 | 7 | `ex:x3y2` | ★★ | Thue norm below4p; exclude2p and reduce3p | Independent parity/residue case reconstruction and small-prime enumeration | Earlier −3 exercise and Thue | VERIFIED_TWICE | DEP-044: p≡1mod3 implies odd p>3; transformed coordinate integer |
 | 7 | `ex:eureka` | ★★ | Triangular/odd-square bijection and eleven explicit examples | Independent inverse coordinate map and residue triple audit | Earlier congruences and elementary square expansion | VERIFIED_TWICE | DEP-044: REDESIGNED from admitted universal theorem to equivalence plus n=0…10; original theorem not claimed |
-| 7 | `ex:zagier` | ★★★ | — | — | — | UNREVIEWED | — |
-| 7 | `ex:t1-which20` | ★ | — | — | — | UNREVIEWED | — |
+| 7 | `ex:zagier` | ★★★ | Positive branch maps preserve norm, unique fixed point, parity of involutions | Independent branchwise inverse compositions and explicit boundary/fixed-point checks | Earlier finite pairing and integer algebra; no later group theorem | VERIFIED_TWICE | DEP-045: all (a)–(d), p≥5, map domain inequalities checked before composition |
+| 7 | `ex:t1-which20` | ★ | Two-square criterion and explicit equalities | Independent small-coordinate enumeration | Earlier Chapter 7 criterion | VERIFIED_TWICE | DEP-045: 15 excluded;18,45,50 represented, two forms for50 |
 | 8 | `ex:areaper` | ★ | — | — | — | UNREVIEWED | — |
 | 8 | `ex:x2y23z2` | ★ | — | — | — | UNREVIEWED | — |
 | 8 | `ex:catalan23` | ★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-044, 102/144 are checked twice internally and 42 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-045, 104/144 are checked twice internally and 40 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

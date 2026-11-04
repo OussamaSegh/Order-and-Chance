@@ -1,6 +1,7 @@
 """Finite checks supporting the opening two-square proofs and exercises."""
 
 import math
+from collections import defaultdict
 import unittest
 
 
@@ -18,6 +19,60 @@ def factorization(n):
 
 
 class TwoSquareChecks(unittest.TestCase):
+    def test_euler_identity_formal_coefficients(self):
+        # Eight formal variables: a_1,...,a_4,b_1,...,b_4.
+        forms = [
+            [(1, 0, 4), (1, 1, 5), (1, 2, 6), (1, 3, 7)],
+            [(1, 0, 5), (-1, 1, 4), (1, 2, 7), (-1, 3, 6)],
+            [(1, 0, 6), (-1, 2, 4), (1, 3, 5), (-1, 1, 7)],
+            [(1, 0, 7), (-1, 3, 4), (1, 1, 6), (-1, 2, 5)],
+        ]
+        actual = defaultdict(int)
+        for form in forms:
+            for c, i, j in form:
+                for d, k, l in form:
+                    actual[tuple(sorted((i, j, k, l)))] += c*d
+        actual = {m: c for m, c in actual.items() if c}
+        expected = {tuple(sorted((i, i, j, j))): 1
+                    for i in range(4) for j in range(4, 8)}
+        self.assertEqual(actual, expected)
+
+    def test_zagier_involution(self):
+        for p in range(5, 1000, 4):
+            if factorization(p) != {p: 1}:
+                continue
+            S = set()
+            for x in range(1, math.isqrt(p) + 1):
+                if (p - x*x) % 4:
+                    continue
+                product = (p - x*x) // 4
+                for y in range(1, product + 1):
+                    if product % y == 0:
+                        S.add((x, y, product // y))
+            def f(point):
+                x, y, z = point
+                if x < y - z:
+                    return x + 2*z, z, y - x - z
+                if x < 2*y:
+                    return 2*y - x, y, x - y + z
+                return x - 2*y, x - y + z, y
+            self.assertEqual({s for s in S if f(s) == s}, {(1, 1, (p - 1) // 4)})
+            for s in S:
+                self.assertIn(f(s), S)
+                self.assertEqual(f(f(s)), s)
+            self.assertTrue(any(y == z for x, y, z in S))
+
+    def test_circle_bound(self):
+        for quarters in range(4, 401):
+            R = quarters / 4
+            bound = math.floor(R)
+            count = sum(x*x+y*y <= R*R for x in range(-bound, bound+1)
+                        for y in range(-bound, bound+1))
+            self.assertLessEqual(abs(count - math.pi*R*R),
+                                 math.sqrt(2)*math.pi*R + math.pi/2)
+        self.assertEqual(sum(x*x+y*y <= 100 for x in range(-10, 11)
+                             for y in range(-10, 11)), 317)
+
     def test_thue_small_primes(self):
         for p in range(2, 200):
             if len(factorization(p)) != 1 or factorization(p).get(p) != 1:
