@@ -14,7 +14,8 @@ review are separate obligations. All entries here are internal checks.
 | --- | --- | --- | --- | --- |
 | 1 | IN_PROGRESS: DEP-061 read/rewrite; individual mathematical entries below | VERIFIED_TWICE internally for four retained examples and five figure datasets | IN_PROGRESS: targeted facts sourced; complete bibliography pending | UNREVIEWED after DEP-061 edits |
 | 2 | IN_PROGRESS: DEP-062 read/rewrite and two-pass unnamed math | VERIFIED_TWICE internally for six examples and three figure datasets | IN_PROGRESS: original Erdős/Furstenberg sources checked; portrait provenance/full bibliography pending | UNREVIEWED after DEP-062 edits |
-| 3–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 3 | IN_PROGRESS: DEP-063 whole-source and unnamed-argument records | VERIFIED_TWICE internally for six examples and four figure datasets | IN_PROGRESS: targeted primary sources checked; complete bibliography pending | UNREVIEWED after DEP-063 edits |
+| 4–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -196,3 +197,129 @@ sites recorded in the prerequisite crosswalk. The main congruences route
 continues to require none of the optional Chebyshev/Bertrand material.
 Chapter2 remains open for final-size figures/pages, complete history/metadata,
 external review and the whole-book dependency release pass.
+
+## C03 — Congruences, DEP-063
+
+Read the whole chapter, including all21 prompt/hint/idea/writeup groups and
+bibliography. The eight named results keep their separate two-pass records;
+no named mathematical statement was removed. The following unnamed arguments
+and six example blocks supplement that register.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C03-U01: congruence classes/count | Divisibility of differences proves reflexivity, symmetry and transitivity; Euclidean division gives exactly one class representative0..n−1. | Two representatives in that range differing by a multiple of n have difference of magnitude<n and hence agree. Each integer is in its remainder class, including negative inputs and n1. | VERIFIED_TWICE |
+| C03-U02: units form a group, F_p and rational fractions | Products of units have inverse y^(-1)x^(-1); identity and inverses stay inside, with inherited associativity. Added F_p=Z/pZ before use. For a/b with nonzero unit denominator, reduce ad=bc and invert bd to prove representation independence. | Uniqueness of an inverse follows by multiplying xu=xv by x^(-1). Reducing a rational fraction removes a common unit factor, giving the same class. The one-element ring's sole class is a unit, but not a field because0=1; the explanatory field statement now explicitly restricts n≥2. | VERIFIED_TWICE |
+| C03-U03: cancellation iff unit | A unit cancels by its inverse. For g=gcd(c,n)>1, c(n/g)=c·0 modulo n but n/g is a nonzero class, so a nonunit fails cancellation. Added this converse explicitly. | Multiplication by c on n classes has a kernel of size g: the classes jn/g for0≤j<g. It is injective exactly when g1, independently recovering cancellation from the linear-congruence classification. Modulus1 has one unit and no exception. | VERIFIED_TWICE |
+| C03-U04: exponent reduction and repeated-squaring cost | Euler's a^phi=1 gives a period for unit bases;2^4=0 mod8 versus2^0=1 shows why nonunits fail it. Binary expansion computes s powers by s−1 squarings and multiplies at most s selected factors with at most s−1 further products. | Induct on the binary digits: squaring doubles the represented exponent; an optional multiplication by a adds1. Starting from the leading1 proves the same bounds. Explicitly justified the binary-factor count rather than only stating it.7^13 mod23 independently equals20. | VERIFIED_TWICE |
+| C03-U05: CRT unit count/totient product | The CRT isomorphism maps units exactly to pairs of units, hence phi(mn)=phi(m)phi(n) for coprime moduli. At p^k the excluded multiples count p^(k−1), giving p^k−p^(k−1); FTA completes the product. | Actual Volume1 ex:phi full solution counts prime-divisor exclusions by inclusion–exclusion, including n1. That independent proof confirms the source's earlier-volume attribution; it is not inferred from a title. Count phi100 directly as100−50−20+10=40 before the worked example uses it. | VERIFIED_TWICE |
+| C03-U06: noncoprime CRT | Set x=a+mt; the second condition becomes mt=b−a modn, soluble iff gcd(m,n) divides b−a. Its one t class modulo n/d gives one x class modulo mn/d. | Necessity follows by subtracting the two congruences modulo d. Bézout on m/d,n/d independently constructs t. Differences of two solutions are multiples of both m,n, exactly lcm(m,n). The17mod35 and19mod24 examples check; parity excludes1mod6/2mod8. | VERIFIED_TWICE |
+| C03-U07: formal derivative expansion and iteration | For integer coefficients, the binomial theorem separates constant/linear terms and leaves h² times an integer polynomial. With h=tp^k,2k≥k+1 kills the remainder; derivative invertibility gives exactly one digit. | Subtract any two lifts and reduce their difference to p^k(t−u)f′(a); unit cancellation modp forces t=u. Because polynomial f′ has the same residue at each child and parent, the hypothesis persists at every level; added this explicit iteration justification. | VERIFIED_TWICE |
+| C03-U08: singular branches and completeness | At x0 mod5, X² has five lifts5t mod25; X²−5 has none because25t²−5 is not0 mod25. Simple X²+1 roots2,3 produce7,18 then57,68. | Exhaustive square residues mod5/25/125 give the same roots and nonroots. Any putative X²=5 mod25 first reduces to0 mod5, so its square is0 mod25; the formerly abbreviated dying-root example now gives this complete obstruction. | VERIFIED_TWICE |
+| C03-U09: epigraph size | The integer has exponent3^27 at its base3. Since3^100>10^47, log10(3)>0.47, and0.47·3^27>3·10^12, its digit count exceeds3·10^12. | Independent logarithmic formula floor(3^27 log10(3))+1 gives the same inequality; modular periodic reductions in the tower exercise give final digits87 without building the number. The exact integer inequality is in regression. | VERIFIED_TWICE |
+
+### C03 repaired exercise obligations and complete rechecks
+
+- **C03-X01/ex:sunzi:** the old exercise repeated the historical worked
+  example's exact remainders2,3,2 and answer23. Kept that historical example,
+  but changed this practice prompt to remainders1,2,3 modulo3,5,7; it now
+  asks for fresh work using the same taught method. Hint and full solution
+  give x=7+15t,t=3mod7, hence **x=52+105k** for every integer k. Independent
+  CRT idempotents give70+2·21+3·15=157=52mod105. Direct residue enumeration
+  finds only52 in0..104, so both solutions are complete and handle negative
+  members. The grade and stable key remain. The separate ex:t1-sunzi23
+  practice with moduli4,9,11 still gives345mod396 and is unchanged. This is
+  an explicit problem redesign under requirement6, not a silent deletion.
+- **C03-X02/pb:wolsten:** the product was written as1+pe1+p²e2+O(p³).
+  Under the earlier defined real big-O notation that is not a valid bound:
+  the binomial product grows exponentially as p grows. Its actual intended
+  claim is a congruence modulo p³ with unit denominators. Replaced it by
+  that precise congruence. Expanding the finite product shows every omitted
+  term has at least three factors p; independent pairing/power sums make
+  pe1 and p²e2 vanish modulo p³. The earlier complete two symbolic checks
+  and exact regressions through p101 were rechecked; no real-error estimate
+  is claimed.
+- **C03-X03/pb:kloosterman:** part(d) asked for comparison with part(b), but
+  the source omitted that comparison. Added |K(a)|≤sqrt(p²−p) from the
+  second moment, larger than p−1 since their squared difference is p−1.
+  For p≥5,1.19p^(3/4)<p−1: verify at5 and differentiate
+  (p−1)p^(−3/4), whose derivative is(p+3)/(4p^(7/4))>0. At p3 the rounded
+  bound improves neither comparator; the exact fourth moment18 gives
+  18^(1/4)=2.059767… between2 andsqrt6. Independent finite sums at the
+  primes3..31 retain the earlier moment identities. All four requested
+  parts now have explicit source answers.
+- **C03-X04/pb:fpfunctions:** the F5 cubic example now proves its claimed
+  bijection using its explicit inverse, also x↦x³, because x^9=x for all
+  residues (Fermat for units and direct at0). It no longer presumes the
+  later power-map/order criterion. Independent interpolation gives X³,X²,X
+  for the three powers, as before.
+- **C03-X05/ex:korselt:** the prompt referred to Carmichael numbers in
+  Volume1's sums chapter, but a fresh search/read found neither that term
+  nor561 there. Removed that false attribution. Defined squarefree and
+  Carmichael number locally, then added the final unit cancellation showing
+  a^561=a implies a^560=1 for coprime a. Independent CRT/Fermat on3,11,17
+  checks all residues; the exact560 divisibilities by2,10,16 prove the
+  universal statement. No optional Chapter1/2 vocabulary is presumed.
+
+These changes reopen and revalidate their affected source items; the144-key
+count is unchanged. The other keyed proof records are preserved, not counted
+again. Further small repairs state integer a,b in the Jacobsthal prompt,
+remove the claim that every integer has a prime factor, correct the clock's
+caption from a colour absent in its source to the actual ring/dot shapes,
+and replace unsupported future claims that Hensel constructs Z_p and that a
+specific undeveloped schoolbook cost model promises a fourfold RSA speedup.
+The mathematically accurate connections to p-adic equation solving and CRT
+arithmetic remain. No theorem or exercise was dropped.
+
+### C03 examples and four complete figure datasets
+
+| ID | Independent reconstruction and separate check | State |
+| --- | --- | --- |
+| C03-E01: arithmetic mod12 |7+8=15=3mod12,7·8=56=8mod12;5²=25=1mod12 while4 has gcd4 and cannot give an odd residue. Direct residue enumeration agrees. | VERIFIED_TWICE internally |
+| C03-E02:7^4 |49²=2401=1mod100; earlier powers7,49,43 are not1, so the least return is4. Direct inclusion–exclusion gives phi100=40. | VERIFIED_TWICE internally |
+| C03-E03: historical Sunzi23 | Solving via the common2mod3/7 gives x=2mod21 and then k=1mod5, hence23mod105. Independent successive CRT via8mod15 also gives23mod105. | VERIFIED_TWICE internally |
+| C03-E04: noncoprime cases |1mod4/2mod6 has opposite parity, impossible;1mod4/3mod6 has exactly9mod12. Independent full residue enumeration agrees with gcd2 compatibility. | VERIFIED_TWICE internally |
+| C03-E05: simple lift |2+5t gives t1mod5 and7mod25; conjugate branch gives18mod25. Direct squares and exhaustive residues confirm exactly those two roots. | VERIFIED_TWICE internally |
+| C03-E06: dying singular root | Any square5mod25 would be0mod5 and therefore0mod25, contradiction. Independent complete square-residue enumeration verifies the obstruction. | VERIFIED_TWICE internally |
+| C03-F01: clock12 | The literal ring set1,5,7,11 is exactly the gcd1 set; filled others are its complement. Adding5 visits all12 classes because5 is a unit; adding4 visits0,4,8. The drawn arc's−150° moves five clockwise30° steps from0 to5. | VERIFIED_TWICE data; final-size visual pending |
+| C03-F02: CRT grids | Parse every actual cell coordinate and number. Left x0..11 occupies(row xmod3,col xmod4) exactly once; right x0..7 occupies only compatible parity cells, each twice. Every drawn nonwrapping arrow adds1 to both residues. | VERIFIED_TWICE data; final-size visual pending |
+| C03-F03: unit classes | All12 literal values occur once, at distinct3×4 grid positions. Circles1,5,7,11 are precisely the four invertible classes; the other eight boxes are nonunits. Independently solve inverses and compare the sets. | VERIFIED_TWICE data; final-size visual pending |
+| C03-F04: Hensel tree | Literal branches2→7→57 and3→18→68 preserve reduction; every node satisfies x²+1=0 at its labelled modulus and derivative nonzero mod5. Independent exhaustive roots at5,25,125 establish no missing child. | VERIFIED_TWICE data; final-size visual pending |
+
+Six new regressions read these actual source datasets and guard the new
+field/fraction conventions, precise modular product and second-moment answer.
+The existing Sunzi regression now checks both the retained historical case
+and the fresh exercise, including its signed family and independent explicit
+CRT construction. A final-size visual pass remains required.
+
+### C03 actual earlier sources and historical checks
+
+Read Volume1 `ch02-counting.tex` ex:phi prompt and complete solution near
+lines439/594: it proves the totient product by finite inclusion–exclusion,
+including the empty product n1. This verifies the genuine earlier attribution.
+The Carmichael/561 attribution had no such source and was replaced locally.
+Polynomial division/root count and finite polynomial multiplication are proved
+in Volume1 at the crosswalk sites; no later primitive-root, field-extension,
+Bernoulli or analytic product theorem is needed on these exercise routes.
+
+Historical/source checks on4 November2026:
+
+- [Gauss's Latin Section1, Article2](https://la.wikisource.org/wiki/Disquisitiones_arithmeticae/Sectio_prima)
+  explicitly introduces the congruence sign, with examples modulo5/11;
+  [the Humboldt library's1801 record](https://edoc.hu-berlin.de/items/4a65bbe3-c434-4581-8d40-2c3b426d3cf2)
+  supplies first-edition metadata. No claim to have read the entire book or
+  its1986 English translation is made.
+- [Japan's National Diet Library](https://www.ndl.go.jp/math/e/s1/c2.html)
+  quotes the actual Sunzi2/3/2 remainder problem and the minimal answer23.
+  The newly altered practice exercise is labelled as a new problem using
+  the method, avoiding historical misattribution of its new remainders.
+- The [Annals publisher record](https://annals.math.princeton.edu/1994/139-3)
+  confirms Alford/Granville/Pomerance's139(1994),703–722 reference and its
+  infinitude title. That research theorem is further reading, not a premise.
+- [The LMS publisher record](https://londmathsoc.onlinelibrary.wiley.com/doi/10.1112/plms/s2-25.1.143)
+  dates Kloosterman's quaternary-form paper to1926, supporting the teaser's
+  date. The book's fourth-moment proof is fully local; the2sqrt(p) bound
+  remains a clearly separate deeper result, never used in that proof.
+
+Complete edition/section checking of the remaining bibliography, the detailed
+future research previews, final-size formats and a distinct editorial reader
+remain open. Chapter3 is not signed off.

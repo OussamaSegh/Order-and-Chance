@@ -45,12 +45,24 @@ class TestChapterThreeTwelveExercises(unittest.TestCase):
                           if v%4==1 and v%25==24],[49])
 
     def test_sunzi_full_family_by_two_crt_routes(self):
+        # The historical worked example remains 23; the exercise now uses
+        # fresh remainders 1,2,3 so its answer has not already been supplied.
         self.assertEqual([x for x in range(105)
                           if x%3==2 and x%5==3 and x%7==2],[23])
         self.assertEqual(23%15,8)
         self.assertEqual(23%21,2)
         self.assertEqual([x for x in range(105) if
                           x%15==8 and x%7==2],[23])
+        self.assertEqual([x for x in range(105)
+                          if x%3==1 and x%5==2 and x%7==3], [52])
+        self.assertEqual([x for x in range(105) if x%15==7 and x%7==3], [52])
+        self.assertEqual((70+2*21+3*15)%105, 52)
+        for k in range(-100, 101):
+            x = 52+105*k
+            self.assertEqual((x%3, x%5, x%7), (1, 2, 3))
+        text = CH3.read_text(encoding="utf-8")
+        solution = text.split(r'\begin{solution}{ex:sunzi}', 1)[1].split(r'\end{solution}', 1)[0]
+        self.assertIn('x=52+105k', solution)
 
     def test_decimal_digit_rules_including_negative_and_zero(self):
         values=(0,1,9,10,12,99,101,1001,10001,918273645,

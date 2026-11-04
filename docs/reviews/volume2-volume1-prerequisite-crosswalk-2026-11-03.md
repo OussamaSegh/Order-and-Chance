@@ -142,3 +142,21 @@ Read `ch02-counting.tex`, `ch05-sequences-series.tex` (including Fibonacci and c
   by cross-multiplication and integer valuation additivity.
 
 These are checked source sites, not whole-volume or external approval.
+
+## DEP-063 — totient proof found, Carmichael attribution repaired
+
+- Read `volume1-first-principles/chapters/ch02-counting.tex`, `ex:phi`
+  near line439 and its complete solution near594. Finite inclusion–exclusion
+  over the distinct prime factors gives the exact product, explicitly
+  handling n1. This supports Chapter3's genuine earlier-volume attribution.
+- Checked `ch01-sums.tex` and searched actual Volume1 chapter sources for
+  Carmichael/561; the Chapter3 prompt's claimed sums-chapter example was
+  absent. Removed that attribution and defined squarefree and Carmichael
+  number in the problem itself, with the needed unit cancellation in its
+  solution. An earlier source label is not invented to fill the gap.
+- Added F_p=Z/pZ and the modular fraction convention before their first uses
+  in Chapter3, with representation independence proved by cross multiplication.
+  The F5 cubic bijection example now supplies its own inverse via Fermat,
+  avoiding an implicit later power-map criterion.
+
+These are internal source/dependency repairs, not final whole-book approval.
