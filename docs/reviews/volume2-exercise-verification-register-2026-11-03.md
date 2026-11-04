@@ -84,9 +84,9 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 6 | `ex:minus3` | ★ | Legendre multiplicativity and reciprocity cancel signs | Independent order-three root of X²+X+1 equivalence, taught in source | Chapter 5 cyclic prime theorem, Chapter 6 reciprocity | VERIFIED_TWICE | DEP-036: p>3, p=3 exceptional, p mod3 criterion |
 | 6 | `ex:onemod4` | ★ | Euler criterion for −1 and Euclid-style n²+1 | Independent exact order four for n mod p, new-prime factor argument | Chapter 5 order theorem or Chapter 6 Euler criterion; FTA | VERIFIED_TWICE | DEP-036: odd factors only, empty finite-list case, N odd >1 |
 | 6 | `ex:minus2` | ★★ | Multiply −1 and 2 Legendre laws; invert y mod p | Independent mod8 parity of x²+2y² and direct four-class sign check | Chapter 6 supplementary laws and field cancellation | VERIFIED_TWICE | DEP-036: p=2 separate, p∤y for odd p, no converse representation asserted |
-| 6 | `ex:mersfactor` | ★★ | — | — | — | UNREVIEWED | — |
-| 6 | `ex:consecutive` | ★★ | — | — | — | UNREVIEWED | — |
-| 6 | `ex:pepin` | ★★ | — | — | — | UNREVIEWED | — |
+| 6 | `ex:mersfactor` | ★★ | q≡7 mod8, supplementary 2-law and Euler criterion | Independent square-root/Fermat argument and proper-divisor checks | Chapter 6 supplementary law, Chapter 3 Fermat | VERIFIED_TWICE | DEP-037: p=3 boundary; q=23,47,503 prime and proper for listed examples |
+| 6 | `ex:consecutive` | ★★ | Inversion permutation for character sum; endpoint-safe pair indicators | Independent hyperbola count for y²=t²−1 and character expansion | Chapter 6 complete multiplicativity and square count | VERIFIED_TWICE | DEP-037: p=3, zero endpoints excluded, count (p−4−χ(−1))/4 |
+| 6 | `ex:pepin` | ★★ | QR/Euler gives prime direction; full order and φ count gives converse | Independent prime-divisor order contradiction and residue-class check | Chapter 5 order theorem, Chapter 6 QR and Euler | VERIFIED_TWICE | DEP-037: n≥1, 3 is a unit explicitly taught; F_5 composite; no probable-prime converse |
 | 6 | `ex:gausssum` | ★★★ | Character double sum, Frobenius, integral cyclotomic basis, Euler descent | Independent quadratic-sum norm, monic-polynomial integer descent and root-preimage count | Actual Volume 1 prop:orth, ex:eisen and ex:gauss supplied solutions; Chapter 6 Euler criterion | VERIFIED_TWICE | DEP-035: all (a)–(d), p,q distinct odd, no cancellation of g in quotient ring, sign not claimed |
 | 6 | `ex:t1-residue-chance` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:t1-res11` | ★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-036, 85/144 are checked twice internally and 59 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-037, 88/144 are checked twice internally and 56 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

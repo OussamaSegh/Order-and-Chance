@@ -100,6 +100,24 @@ class QuadraticCriteriaChecks(unittest.TestCase):
                 if value % p == 0:
                     self.assertEqual(p % 4, 1)
 
+    def test_next_three_exercises(self):
+        safe_primes = set(odd_primes(1009))
+        for p in odd_primes(503):
+            if p % 4 == 3 and 2 * p + 1 in safe_primes:
+                self.assertEqual(pow(2, p, 2 * p + 1), 1)
+        for p in odd_primes(257):
+            squares = {x * x % p for x in range(1, p)}
+            def chi(a):
+                return 0 if a % p == 0 else (1 if a % p in squares else -1)
+            self.assertEqual(sum(chi(a * (a + 1)) for a in range(1, p)), -1)
+            count = sum(a in squares and a + 1 in squares for a in range(1, p - 1))
+            self.assertEqual(count, (p - 4 - chi(-1)) // 4)
+        for n in range(1, 6):
+            fermat = 2 ** (2**n) + 1
+            is_prime = all(fermat % d for d in range(2, math.isqrt(fermat) + 1))
+            self.assertEqual(pow(3, (fermat - 1) // 2, fermat) == fermat - 1,
+                             is_prime)
+
 
 if __name__ == "__main__":
     unittest.main()
