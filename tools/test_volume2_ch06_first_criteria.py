@@ -154,6 +154,21 @@ class QuadraticCriteriaChecks(unittest.TestCase):
             if p > 3:
                 self.assertEqual(math.prod(generators) % p, 1)
 
+    def test_fermat_factors_and_coprimality(self):
+        fermat = [2 ** (2**n) + 1 for n in range(7)]
+        for n in range(1, len(fermat)):
+            self.assertEqual(math.prod(fermat[:n]), fermat[n] - 2)
+            for m in range(n):
+                self.assertEqual(math.gcd(fermat[m], fermat[n]), 1)
+        self.assertEqual(641, 5 * 2**7 + 1)
+        self.assertEqual(641, 5**4 + 2**4)
+        self.assertEqual(pow(2, 32, 641), 640)
+        for n, factors in ((2, (17,)), (3, (257,)), (4, (65537,)),
+                           (5, (641, 6700417)), (6, (274177, 67280421310721))):
+            self.assertEqual(math.prod(factors), fermat[n])
+            for factor in factors:
+                self.assertEqual(factor % (2 ** (n + 2)), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

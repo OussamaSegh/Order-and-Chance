@@ -92,7 +92,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 6 | `ex:t1-res11` | ★ | Direct mod11 squares, supplementary laws and QR for two 6 symbols | Independent Euler-power checks mod13 and17 and full small square tables | Earlier Chapter 6 criteria and QR | VERIFIED_TWICE | DEP-038: both (6/13) and (6/17) equal−1; 0 included mod11 |
 | 6 | `pb:primsum` | ★★ | Order-class partition and Möbius inversion to Ramanujan sum | Independent coprime-exponent inclusion–exclusion and exponent-pair product | Chapter 5 primitive roots and pb:ramsum; Chapter 4 μ | VERIFIED_TWICE | DEP-038: all (a)–(c), p=3 exception to product, k=0 included |
 | 6 | `pb:phimodp` | ★★ | Quotient field from polynomial Bézout; multiplicative product and degree bound | Independent Frobenius-orbit polynomial proof; 275 finite-field factor pairs, 70 prime-power congruences, 40 trial-factor and 44 index checks | PASS | VERIFIED_TWICE | DEP-008: no Volume 3 extension theorem; n≥2, p∤n; p=2 and m=1 cases checked |
-| 6 | `pb:fermatnum` | ★★ | — | — | — | UNREVIEWED | — |
+| 6 | `pb:fermatnum` | ★★ | Exact order plus supplementary 2-law; Euler's 641 identities; product telescoping | Independent square-subgroup order, repeated-squaring 641 check and F_n=2 mod F_m | Chapter 5 order and Chapter 6 2-law; elementary finite products | VERIFIED_TWICE | DEP-040: n≥2 essential for stronger progression; F_0/F_1 pairwise boundary, all (a)–(c) |
 | 6 | `pb:carmichael` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:pratt` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:rabin` | Journey | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-038, 91/144 are checked twice internally and 53 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-040, 92/144 are checked twice internally and 52 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
