@@ -185,6 +185,28 @@ Text.
         self.assertNotIn("\u25fb", result)
         self.assertRegex(result, r'<span class="oc-label">Reminder</span> <span\s+class="oc-note">groups</span>')
 
+    def test_runin_headings_keep_pdf_unnumbered_style(self):
+        for prefix in ('', r'\setcounter{chapter}{6}', r'\appendix'):
+            with self.subTest(prefix=prefix), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                source = (r'\documentclass{book}\begin{document}' + prefix +
+                          r'\chapter{Main}\section{Section}\subsection{Subsection}'
+                          r'\subsubsection{A short heading}Text.'
+                          r'\paragraph{Why this works.}Explanation.'
+                          r'\section{Next}\end{document}')
+                (root / 'main.tex').write_text(source)
+                epub_prep.main(str(root / 'main.tex'), str(root / 'epub.tex'), directory)
+                result = subprocess.run(
+                    ['pandoc', str(root / 'epub.tex'), '-f', 'latex', '-t', 'html5',
+                     '--number-sections', '--lua-filter', str(TOOLS / 'epub.lua')],
+                    capture_output=True, text=True, check=True).stdout
+                for level, title in [(4, 'A short heading'), (5, 'Why this works.')]:
+                    heading = re.search(rf'<h{level}\b[^>]*>(.*?)</h{level}>', result, re.S).group(1)
+                    self.assertEqual(visible_text(heading), title)
+                    self.assertNotIn('header-section-number', heading)
+                section = re.search(r'<h2\b[^>]*>(.*?)</h2>', result, re.S).group(1)
+                self.assertIn('header-section-number', section)
+
     def test_text_in_math_has_native_mathml(self):
         with tempfile.TemporaryDirectory() as directory:
             root=Path(directory)

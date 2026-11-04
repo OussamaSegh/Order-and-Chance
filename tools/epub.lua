@@ -46,6 +46,12 @@ end
 
 local function number_pass(doc)
   for i, b in ipairs(doc.blocks) do
+    -- Design 5e prints subsubsections and paragraphs as unnumbered run-in
+    -- headings. Pandoc's --number-sections otherwise adds deep numbers such
+    -- as 4.4.0.1, including in the manual chapter/appendix branch below.
+    if b.t == "Header" and b.level >= 4 and not b.classes:includes("unnumbered") then
+      b.classes:insert("unnumbered")
+    end
     if b.t == "Div" and b.classes:includes("ocappendices") then
       appendix = true
     elseif b.t == "Div" and b.classes:includes("occhaptercounter") then
