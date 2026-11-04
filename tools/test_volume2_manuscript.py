@@ -257,7 +257,6 @@ class TestVolume2Manuscript(unittest.TestCase):
             ],
             "ch03-congruences": ["ex:hensel"],
             "ch06-quadratic-reciprocity": ["pb:rabin", "pb:squaresmodpk"],
-            "ch07-sums-of-squares": ["ex:eureka"],
             "ch09-diophantine": [
                 "ex:mordell5", "ex:eisentri",
                 "ex:markovcoprime", "ex:imo88",
@@ -279,6 +278,16 @@ class TestVolume2Manuscript(unittest.TestCase):
                 with self.subTest(chapter=chapter, label=label):
                     self.assertIn(label, exercises)
                     self.assertRegex(exercises[label], r"(?i)optional")
+
+    def test_triangular_equivalence_needs_no_admitted_three_square_theorem(self):
+        source = (CHAPTER_DIR / "ch07-sums-of-squares.tex").read_text(encoding="utf-8")
+        problem = source.split(r"\label{ex:eureka}", 1)[1].split(r"\end{exercise}", 1)[0]
+        solution = dict(SOLUTION_BODY.findall(source))["ex:eureka"]
+        self.assertIn("if and only if", problem)
+        self.assertNotRegex(problem + solution, r"(?i)admitting|as granted|explicitly admitted")
+        self.assertNotIn("Every nonnegative integer is therefore", solution)
+        self.assertIn("Subtracting", solution)
+        self.assertIn("75=7^2+5^2+1^2", solution)
 
     def test_step3_main_route_has_no_optional_theorem_dependency(self):
         """Core exposition must not cite the theorems inside optional blocks."""

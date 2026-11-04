@@ -102,10 +102,10 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 6 | `pb:sumsquares` | ★★ | Hyperbola change of variables; recurrence N(n+2) from N(n) | Independently reconstructed earlier Gauss-sum route; 2,608 exact residue/count checks plus direct tuple checks | PASS | VERIFIED_TWICE | DEP-007: no Volume 4 definition or future Gauss sum; new elementary proof, prime p odd, n≥1, c=0 included |
 | 7 | `ex:three` | ★ | Mod8 obstruction and mod4 even-coordinate descent | Independent residue triple table and exact power-of-four removal | Earlier congruences and parity | VERIFIED_TWICE | DEP-043: a=0, b=0; obstruction only, no three-square converse |
 | 7 | `ex:2026` | ★ | Two-square criterion and complete factor list | Independent exhaustive coordinate check and all three explicit representations | Earlier Chapter 7 two-square results | VERIFIED_TWICE | DEP-043: range successes2025,2026,2029; primality not needed for2027 |
-| 7 | `ex:primitive2` | ★★ | — | — | — | UNREVIEWED | — |
-| 7 | `ex:x2y2` | ★★ | — | — | — | UNREVIEWED | — |
-| 7 | `ex:x3y2` | ★★ | — | — | — | UNREVIEWED | — |
-| 7 | `ex:eureka` | ★★ | — | — | — | UNREVIEWED | — |
+| 7 | `ex:primitive2` | ★★ | Mod4 parity and forbidden −1 square at q≡3 mod4 | Independent coordinate valuation with primitive minimum0 | Earlier Chapter 7 two-square necessity | VERIFIED_TWICE | DEP-044: gcd1, zero coordinates, necessity only |
+| 7 | `ex:x2y2` | ★★ | Thue norm below3p and parity reduction of2p | Independent weighted-norm minimal-multiple descent | Earlier −2 law and Thue; elementary weighted norm identity | VERIFIED_TWICE | DEP-044: p=3, nonzero root, exact multiple cases |
+| 7 | `ex:x3y2` | ★★ | Thue norm below4p; exclude2p and reduce3p | Independent parity/residue case reconstruction and small-prime enumeration | Earlier −3 exercise and Thue | VERIFIED_TWICE | DEP-044: p≡1mod3 implies odd p>3; transformed coordinate integer |
+| 7 | `ex:eureka` | ★★ | Triangular/odd-square bijection and eleven explicit examples | Independent inverse coordinate map and residue triple audit | Earlier congruences and elementary square expansion | VERIFIED_TWICE | DEP-044: REDESIGNED from admitted universal theorem to equivalence plus n=0…10; original theorem not claimed |
 | 7 | `ex:zagier` | ★★★ | — | — | — | UNREVIEWED | — |
 | 7 | `ex:t1-which20` | ★ | — | — | — | UNREVIEWED | — |
 | 8 | `ex:areaper` | ★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-043, 98/144 are checked twice internally and 46 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-044, 102/144 are checked twice internally and 42 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

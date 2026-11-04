@@ -44,6 +44,25 @@ class TwoSquareChecks(unittest.TestCase):
         self.assertEqual([(a, b, c) for a in (0, 1) for b in (0, 1)
                           for c in (0, 1) if (a+b+c) % 4 == 0], [(0, 0, 0)])
 
+    def test_primitive_and_weighted_representations(self):
+        for x in range(0, 51):
+            for y in range(0, 51):
+                if math.gcd(x, y) != 1:
+                    continue
+                n = x*x + y*y
+                self.assertNotEqual(n % 4, 0)
+                self.assertFalse(any(p % 4 == 3 for p in factorization(n)))
+        for p in range(3, 1000, 2):
+            fs = factorization(p)
+            if fs != {p: 1}:
+                continue
+            for coefficient, required in ((2, p % 8 in (1, 3)), (3, p % 3 == 1)):
+                if required:
+                    self.assertTrue(any(p - coefficient*y*y >= 0 and
+                        math.isqrt(p - coefficient*y*y)**2 == p - coefficient*y*y
+                        for y in range(math.isqrt(p // coefficient) + 1)),
+                        (p, coefficient))
+
 
 if __name__ == "__main__":
     unittest.main()
