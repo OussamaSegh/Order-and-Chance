@@ -4,7 +4,7 @@
 
 ## Honest current status
 
-**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. At **DEP-059 (4 November 2026)**, **72/72 named results** and **144/144 exercise solutions** have two documented internal mathematical passes. The remaining **unnamed arguments and whole-book reviews**, comprehensive unnamed-proof inventory and whole-book teaching, first-use, visual and publisher gates are open. The latest previously confirmed successful Actions build is **#1637** at `8f96eceaa0740a5a1d953bcdd91fd92fa26c154c`; current edited heads require their own terminal successful run. Local full builds at source0a35237c and df6df9bf also succeeded, as recorded below. Subsequent source edits reopen format validation. No whole-book page-by-page visual proof or publisher proof is claimed.
+**IN PROGRESS; NOT COMPLETE; NOT APPROVED FOR MERGE OR KDP PUBLICATION.** This is a fresh independent review after merged PRs #89, #97 and #102. Those PRs' audits are useful clues, not proof that the stricter new requirements pass. At **DEP-060 (4 November 2026)**, **72/72 named results** and **144/144 exercise solutions** have two documented internal mathematical passes. The remaining **unnamed arguments and whole-book reviews**, comprehensive unnamed-proof inventory and whole-book teaching, first-use, visual and publisher gates are open. The latest previously confirmed successful Actions build is **#1637** at `8f96eceaa0740a5a1d953bcdd91fd92fa26c154c`; current edited heads require their own terminal successful run. Local full builds at source0a35237c and df6df9bf also succeeded, as recorded below. Subsequent source edits reopen format validation. No whole-book page-by-page visual proof or publisher proof is claimed.
 
 ### Source discovery completed (inventory, not proof verification)
 
@@ -29,35 +29,36 @@ PR #97 explicitly accepted the following optional challenges as using other book
 
 | Gate | State | Actual evidence and remaining obligation |
 | --- | --- | --- |
-| P00 Exact baseline inventory and executable tests | IN_PROGRESS | 72 named results and 144 exercise keys independently indexed; Volume 1 crosswalk incomplete; current-head CI still pending. |
-| P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Confirmed well ordering, strong induction, Fibonacci gcd/Binet and Basel proof sites; rest pending. |
-| P02 Continuous story architecture | IN_PROGRESS | Chapter 2 redundant Euclid exposition condensed; whole-book story still pending. |
-| P03 First-use dependency graph | IN_PROGRESS | Five concrete dependency repairs, including Glaisher and Ramanujan; later advanced challenges remain. |
-| P04 All theorem/proof second checks | IN_PROGRESS | Eight named results VERIFIED_TWICE; all other result and unnamed proof chains pending. |
-| P05 Every worked example and figure | IN_PROGRESS | Individually checked Euclid six-prime composite and 5!+1, plus arithmetic boundary probes; rest pending. |
-| P06 All exercises independent reconstruction | IN_PROGRESS | Ten solutions have a complete author-level reconstruction; the other 134 remain. |
-| P07 All exercises independent adversarial second pass | IN_PROGRESS | Ten solutions VERIFIED_TWICE, including redesigned Chapter 4 prime-factor proof; 134 remaining. |
-| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted C01/C02/C03/C05 math and voice repairs; no chapter signed off. |
-| P09 Interior illustration mathematical and format proof | UNREVIEWED | No new figures inspected. |
-| P10 Full-book voice/transition pass | IN_PROGRESS | Local Chapter 2 duplicate-paragraph removal only; full read-aloud pending. |
-| P11 Tests and exact-head CI | IN_PROGRESS | Main tests passed at earlier head but print-output QA had wrong rounding; fixed and added new regression tests. New exact-head CI pending. |
-| P12 Every actual PDF/EPUB/site page | UNREVIEWED | No current-branch artifacts inspected. |
-| P13 Final editorial sign-off (not KDP approval) | UNREVIEWED | Independent review and author KDP proof later. |
+| P00 Exact baseline inventory and executable tests | IN_PROGRESS | Fresh complete content inventory at DEP-060:15 reader-facing files,1366 blocks/chunks,39 figure sources,3 portraits and local reference edges;376 tests pass. Supporting metadata hashes included; exact-head CI pending. |
+| P01 Volume 1 prerequisite crosscheck | IN_PROGRESS | Actual proof sites recorded for logic, counting, complex arithmetic, polynomials, real calculus, series, probability and geometric inputs; complete per-use release graph pending. |
+| P02 Continuous story architecture | IN_PROGRESS | Four-part route and concrete Volume1→2→3 handoffs retained; whole-book prose pass underway. |
+| P03 First-use dependency graph | IN_PROGRESS | Many local dependency repairs and complete reference-edge inventory; every unnamed import/definition still needs source review. |
+| P04 All theorem/proof second checks | IN_PROGRESS | All72 named results checked twice internally; unlabelled arguments and teaching assertions remain. |
+| P05 Every worked example and figure | IN_PROGRESS | Inventory99 examples,39 mathematical figures and3 historical portraits; full individual two-pass/visual/history audit pending. |
+| P06 All exercises independent reconstruction | IN_PROGRESS | All144 keyed solutions reconstructed internally; final complete-route and artifact acceptance still open. |
+| P07 All exercises independent adversarial second pass | IN_PROGRESS | All144 keyed solutions have second internal checks; no independent external or final-format approval implied. |
+| P08 11 chapter rewrites + field guide/preface | IN_PROGRESS | Targeted mathematical/expository repairs throughout; complete source/narrative pass underway, no chapter signed off. |
+| P09 Interior illustration mathematical and format proof | IN_PROGRESS | Figure sources indexed/hashes captured;39 final-size mathematical/visual reviews remain. |
+| P10 Full-book voice/transition pass | IN_PROGRESS | Local rewrites and handoffs checked; full read-through, repetition and first-reader review underway. |
+| P11 Tests and exact-head CI | IN_PROGRESS | Complete suite376 tests,zero skips at fb6afe06; latest exact-head successful Actions still required. |
+| P12 Every actual PDF/EPUB/site page | IN_PROGRESS | Earlier full builds and limited visual samples recorded; fb6afe06 renewed build running after EPUB heading correction. Every-page/latest-artifact proof remains open. |
+| P13 Final editorial sign-off (not KDP approval) | UNREVIEWED | Independent reviewer, author publisher/Kindle and physical proof remain separate required evidence. |
 
-| Printed chapter / file | Status | Target focus |
+| Printed chapter / file | Status | Current remaining source focus |
 | --- | --- | --- |
-| 1 / ch01-divisibility.tex | IN_PROGRESS | Euclid, FTA, valuations, quantitative exercises |
-| 2 / ch02-primes.tex | IN_PROGRESS | Euclid and Euler twice checked; estimates, Bertrand and all exercises still pending |
-| 3 / ch03-congruences.tex | IN_PROGRESS | residue classes, CRT, prime powers, advanced congruences |
-| 4 / ch04-arithmetic-functions.tex | IN_PROGRESS | Replaced pb:nsq1 requiring Volume 6; other advanced chapters and all named proofs still pending |
-| 5 / ch05-primitive-roots.tex | IN_PROGRESS | group orders, cyclicity, lifts, mean gcd |
-| 6 / ch06-quadratic-reciprocity.tex | UNREVIEWED | Gauss lemma, signs, reciprocity, advanced tasks |
-| 7 / ch07-sums-of-squares.tex | UNREVIEWED | two/four-square proofs, descent |
-| 8 / ch09-diophantine.tex | UNREVIEWED | equation domains, Mordell, Vieta/descent |
-| 9 / ch08-continued-fractions.tex | UNREVIEWED | approximation quantifiers, periodicity and Pell |
-| 10 / ch10-gaussian-eisenstein.tex | UNREVIEWED | Euclidean norms, UFD, Eisenstein cubic proof |
-| 11 / ch14-characters.tex | UNREVIEWED | character definitions, series and sieve, deeper exercises |
-| Field guide/preface/blurb/KDP description | UNREVIEWED | consistency with final book, no uncovered math |
+| 1 / ch01-divisibility.tex | IN_PROGRESS | All6 named/15 keyed checked; unnamed Euclid/valuation arguments, examples,5 figures, historical facts and narrative now in full pass. |
+| 2 / ch02-primes.tex | IN_PROGRESS | All5 named/11 keyed checked; unnamed estimates/examples,3 figures,portrait/history and prose remain. |
+| 3 / ch03-congruences.tex | IN_PROGRESS | All8 named/21 keyed checked; unnamed definitions/cancellation/lifts,examples,4 figures and narrative remain. |
+| 4 / ch04-arithmetic-functions.tex | IN_PROGRESS | All4 named/10 keyed checked; unnamed divisor/convolution arguments,examples,3 figures and narrative remain. |
+| 5 / ch05-primitive-roots.tex | IN_PROGRESS | All6 named/16 keyed checked; unnamed order/classification explanations,examples,3 figures and narrative remain. |
+| 6 / ch06-quadratic-reciprocity.tex | IN_PROGRESS | All6 named/19 keyed checked; unnamed reciprocity/lifting explanations,examples,4 figures,portrait/history and narrative remain. |
+| 7 / ch07-sums-of-squares.tex | IN_PROGRESS | All5 named/8 keyed checked; unnamed claims,examples,3 figures,portrait/history and narrative remain. Redesigned eureka obligation recorded. |
+| 8 / ch09-diophantine.tex | IN_PROGRESS | All5 named/8 keyed checked; unnamed parametrisations/descent,examples,3 figures and narrative remain. |
+| 9 / ch08-continued-fractions.tex | IN_PROGRESS | All7 named/8 keyed checked; unnamed convergence/periodicity claims,examples,4 figures and narrative remain. |
+| 10 / ch10-gaussian-eisenstein.tex | IN_PROGRESS | All9 named/8 keyed checked; unnamed ring/norm/unit arguments,examples,3 figures and narrative remain. |
+| 11 / ch14-characters.tex | IN_PROGRESS | All11 named/20 keyed checked; unnamed analytic/character claims,examples,4 figures and narrative remain. |
+| Preface / field guide / jacket / cover note | IN_PROGRESS | Complete inventory includes these files; first-use,mathematics,seam,history and voice pass remains. |
+
 
 ## Finding log
 
@@ -1260,6 +1261,16 @@ Pass B independently compare local power series: (1−z^6)/((1−z²)(1−z³))=
 
 **Boundary.** Mathematical totals remain72/72 named and144/144 keyed solutions checked twice internally. All unnamed/whole-book and independent external/publisher gates remain open. Next: full source inventory, stale-matrix reconciliation and chapterwise narrative/dependency review; PR stays draft.
 
+## DEP-060 — complete source review inventory and status reconciliation (4 November 2026)
+
+**Inventory, not certification.** `tools/volume2_review_inventory.py` follows the actual main.tex reading order and writes `docs/reviews/volume2-complete-source-inventory-2026-11-04.json`. It includes13 chapter/preface/field-guide files plus jacket blurb and generated About the Cover; source SHA256 and line bounds identify every semantic block and every nonempty prose gap outside them. There are **1366 items**, including72 named statements,72 proofs,5 formal definitions,99 examples,39 figures,3 remarks,23 reminders,40 think boxes,21 beauty boxes,144 each exercises/hints/solutions and560 other prose chunks. The whole original text remains represented by source spans, including definitions and displays written outside boxes; a chunk may contain several assertions and must be split in the manual review when needed. No status is generated or inherited from a count.
+
+All39 mathematical figure inputs are separately hashed. The three actually used portrait files/credits are indexed and hashed. Every local ref/eqref/autoref edge is resolved to its current target source location, without assuming that forward or backward order alone proves a valid dependency. Supporting main.tex,KDP metadata,cover-note and series-catalog hashes preserve context. `--check` rejects stale data after source/figure/metadata changes; regenerate and review affected spans. The command was run and repeated in check mode with identical results. This is a source inventory, not rendered-page coverage or historical verification.
+
+**Reconciliation.** The current phase/chapter matrices above still displayed early-session counts, despite later ledger entries. Replaced those stale current claims with the actual72/72 named,144/144 exercise milestone and precise remaining unnamed/whole-book obligations. Historical DEP entries retain their contemporary counts. Latest complete suite at fb6afe06: **376 tests,zero skips**. Renewed full build at that source is running and has passed typeset layout (382 whole boxes,no overflow/unresolved references),interior style and reading-PDF checks; print/EPUB/reader remain in progress. No full-format or chapter signoff follows.
+
+**Next.** Printed Chapter1 whole-source review, including rational valuation first use, all unnamed integer-combination/Euclid/visibility arguments, examples and five figure datasets; then continue printed order. External and publisher gates remain open; PR stays draft/unmerged/unpublished.
+
 ## Structured verification entries
 
 **Result/proof entry template:** ID; file:line or exact label; statement/hypotheses; use-site/prerequisites; reconstructed proof; independent second test/proof/reference; edge cases; fixes + commit; status. Add *one row per actual theorem/proof*, including unnamed arguments.
@@ -1276,4 +1287,4 @@ Pass B independently compare local power series: (1−z^6)/((1−z²)(1−z³))=
 4. Update PR description/comment with **what changed**, exact SHA and checked tests, **what is not checked**, and the **next exact task**.
 5. At session end include the next location and proof question. Leave draft, do not merge or publish before P13.
 
-**Latest exact task (DEP-058 handoff; 4 November 2026):** All72 named results and144 keyed exercises have two internal mathematical passes. Next: reconcile stale matrices and create a comprehensive printed-order inventory of unnamed arguments, examples, figures, definitions, history and dependencies; review all prose/first-use and final formats. Renew full tests/build/visual evidence. These counts do not close whole-book/external gates. Keep PR #103 draft/unmerged/unpublished.
+**Latest exact task (DEP-060 handoff; 4 November 2026):** All72 named results and144 keyed solutions checked twice internally. Complete source inventory now records1366 content items,39 figure sources,3 portrait files and resolved local reference edges, with no automatically assigned proof status. Continue Chapter1 unnamed/first-use/example/figure/history/narrative audit, then all later chapters. Renew current-source artifact/visual/CI evidence. Keep PR #103 draft/unmerged/unpublished.
