@@ -19,6 +19,31 @@ def is_prime(n):
     return n >= 2 and all(n % d for d in range(2, math.isqrt(n) + 1))
 
 
+def monic_quotient(numerator, divisor):
+    """Exact ascending-coefficient polynomial division by a monic factor."""
+    remainder = numerator[:]
+    quotient = [0] * (len(numerator) - len(divisor) + 1)
+    for shift in range(len(quotient) - 1, -1, -1):
+        coefficient = remainder[shift + len(divisor) - 1]
+        quotient[shift] = coefficient
+        for i, value in enumerate(divisor):
+            remainder[shift + i] -= coefficient * value
+    if any(remainder):
+        raise AssertionError("non-exact cyclotomic division")
+    return quotient
+
+
+def cyclotomic_polynomials(limit):
+    phi = {}
+    for n in range(1, limit + 1):
+        polynomial = [-1] + [0] * (n - 1) + [1]
+        for d in range(1, n):
+            if n % d == 0:
+                polynomial = monic_quotient(polynomial, phi[d])
+        phi[n] = polynomial
+    return phi
+
+
 class Chapter5OrderChecks(unittest.TestCase):
     def test_order_of_powers_and_returns(self):
         for n in range(1, 81):
@@ -83,6 +108,19 @@ class Chapter5OrderChecks(unittest.TestCase):
             product = math.prod(units) % n
             cyclic = any(order(a, n) == len(units) for a in units)
             self.assertEqual(product, (-1 if cyclic else 1) % n)
+
+    def test_cyclotomic_order_implication(self):
+        for n, coefficients in cyclotomic_polynomials(24).items():
+            self.assertEqual(coefficients[-1], 1)
+            if n > 1:
+                self.assertEqual(coefficients[0], 1)
+            for p in range(2, 98):
+                if not is_prime(p) or n % p == 0:
+                    continue
+                for a in range(p):
+                    value = sum(c * pow(a, j, p) for j, c in enumerate(coefficients)) % p
+                    if value == 0:
+                        self.assertEqual(order(a, p), n)
 
 
 if __name__ == "__main__":

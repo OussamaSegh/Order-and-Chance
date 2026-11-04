@@ -71,10 +71,10 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 5 | `ex:powersum` | ★★ | Geometric sum over a primitive root | Independent scaling-permutation and polynomial-root witness | Chapter 5 cyclic prime theorem, field cancellation | VERIFIED_TWICE | DEP-030: k=0 and p=2 included; no division by zero |
 | 5 | `ex:kth` | ★★ | Discrete logarithm and linear congruence with d roots | Independent kernel/image count plus field polynomial root bound | Chapter 5 cyclic prime theorem and Chapter 2 linear congruences | VERIFIED_TWICE | DEP-031: p=2, d=1 or p−1, p∤a; iff criterion |
 | 5 | `ex:gausswilson` | ★★★ | Inverse pairing, four-element cosets of self-inverse subgroup | Independent global involution pairing with even pair count | Chapter 5 cyclic modulus theorem and locally introduced cosets; no Volume 1 vector-space basis | VERIFIED_TWICE | DEP-031: n>2, cyclic exactly two roots, noncyclic at least four; source proof simplified |
-| 5 | `ex:cyclotomic` | ★★★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:t1-units16` | ★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:t1-square-cosets` | ★★ | — | — | — | UNREVIEWED | — |
-| 5 | `ex:t1-gen7` | ★ | — | — | — | UNREVIEWED | — |
+| 5 | `ex:cyclotomic` | ★★★ | Monic integer division, separable roots mod p, Euclid-style new factor | Independent root-factor multiplicity and modular-value contradiction with all exceptional cases | Volume 1 polynomial division, derivative, complex roots; Chapter 5 order theorem | VERIFIED_TWICE | DEP-032: n=1 separate, p∤n essential, a may be zero before root test, constant ±1 |
+| 5 | `ex:t1-units16` | ★ | Powers of 5 and their negatives, then square exponents | Independent eight-odd-residue enumeration and direct square table | Chapter 5 two-power theorem and square corollary | VERIFIED_TWICE | DEP-032: all eight forms unique; square set {1,9} |
+| 5 | `ex:t1-square-cosets` | ★★ | Square criterion and equal cardinality of four mod8 fibers | Independent kernel-of-reduction and coset equality argument | Chapter 5 square corollary and locally defined cosets | VERIFIED_TWICE | DEP-032: k=3 has four singleton cosets; index4 |
+| 5 | `ex:t1-gen7` | ★ | First-return powers and coprime generator exponents | Independent direct order table of six units | Chapter 5 order and cyclic prime theorems | VERIFIED_TWICE | DEP-032: 2 order3, 3 and5 order6; duplicate of earlier example retained as practice |
 | 5 | `pb:smith` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `pb:lambert` | ★★ | — | — | — | UNREVIEWED | — |
 | 5 | `pb:ramsum` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-031, 73/144 are checked twice internally and 71 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-032, 77/144 are checked twice internally and 67 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
