@@ -18,7 +18,8 @@ review are separate obligations. All entries here are internal checks.
 | 4 | IN_PROGRESS: DEP-064 whole-source and unnamed-argument records | VERIFIED_TWICE internally for nine examples and three figure datasets | IN_PROGRESS: targeted sources checked; complete bibliography pending | UNREVIEWED after DEP-064 edits |
 | 5 | IN_PROGRESS: DEP-065 full source and unnamed arguments | VERIFIED_TWICE internally for ten examples and three datasets | IN_PROGRESS: targeted primary records read; remaining bibliography pending | UNREVIEWED after DEP-065 edits |
 | 6 | IN_PROGRESS: DEP-066 complete source and unnamed arguments | VERIFIED_TWICE internally for eight retained examples and four complete datasets | IN_PROGRESS: targeted sources checked; remaining bibliography/history pending | New complete liar plot rendered; whole latest-source chapter remains UNREVIEWED |
-| 7–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 7 | IN_PROGRESS: DEP-067 complete source and unnamed arguments | VERIFIED_TWICE internally for six examples and three datasets | IN_PROGRESS: withdrawn research claim removed; targeted sources checked; full history pending | All three standalone plates inspected; whole current-source chapter remains UNREVIEWED |
+| 8–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -605,3 +606,83 @@ idea, explicit integer domains and the prime hypothesis of Eisenstein's lemma.
 The Chapter5 finite-field teaser now names the shared polynomial root bound:
 actual Volume3 uses finite abelian classification plus that bound, rather than
 repeating the exact-order proof. No future theorem is used here.
+
+## C07 — Sums of squares, DEP-067
+
+Read the complete chapter, all eight prompt/hint/idea/writeup groups and
+bibliography. Its five named results and eight keyed proofs retain their
+separate mathematical records. This pass checks the surrounding arguments,
+six examples and three complete figures. No chapter approval is claimed.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C07-U01: opening examples and exact criterion | Direct1²+45²=2026; squares mod4 are0,1, whose pair sums omit3, excluding2027. The full criterion examines the parity of exponents of primes3mod4. | Independently factor a represented integer: for q3mod4, a nonzero coordinate modq would give a root of−1; hence both coordinates are divisible by q and their sum has a factor q². Removing it repeatedly forces an even exponent. The epigraph now specifies that parity rather than suggesting prime congruence classes alone suffice.45 and75 have the same prime factors but different outcomes. | VERIFIED_TWICE |
+| C07-U02: two-square product and recipe | Expand (ac−bd)²+(ad+bc)²; the two cross terms cancel and the four remaining terms form (a²+b²)(c²+d²). This proves closure and constructs representations from prime factors. | Independently use complex multiplication and conjugation: N(zw)=zw·conj(z)conj(w)=N(z)N(w), with coefficients matching the displayed identity. At65 both sign choices give4²+7² and8²+1²; at85 the new box gives7²+6² and9²+2², independently checked by full finite enumeration. | VERIFIED_TWICE |
+| C07-U03: why small modular coordinates suffice | The Thue grid contains more pairs than residue classes. Collision differences have both absolute values≤floor√p<√p; a zero difference forces both zero, contradicting distinct pairs. A root of−1 then gives a positive multiple of p strictly below2p, forcing p itself. | Independently put0,a,…,ma on a residue circle, m=floor√p. These m+1 distinct residues have a positive circular gap≤p/(m+1)<√p; the corresponding difference of indices has absolute value in1..m and gives the same nonzero small congruence. Includes p2. The formal lemma/theorem have their separate prior entries; this checks the explanatory bridge. | VERIFIED_TWICE |
+| C07-U04: representation preview and uniqueness boundary | For positive n, define r2 by all signed ordered integer pairs. The divisor formula is explicitly a preview of Chapter10 and never a premise here. Direct enumeration gives12 pairs at25 and16 at65 without using it. | Read actual Chapter10 thm:r2 and its Gaussian factor-count proof, whose domain is n≥1. For a represented odd prime, its count8 plus nonzero unequal coordinates gives one representation up to signs/order; this is now explicitly deferred to that proof rather than asserted as established here. The new85 box replaces a repeated65 calculation, retaining the earlier complete65 construction and its figure. | VERIFIED_TWICE for preview accuracy; no future proof imported |
+| C07-U05: four-square identity and seed | In the displayed four bilinear forms, every mixed a_i a_j term cancels and every a_i² coefficient is sum b_j². Hence norm products are preserved. The two half-size residue sets x² and−1−y² have total size p+1, forcing a common class and a positive mp<p². | Independent formal monomial coefficient collection leaves exactly the16 terms a_i² b_j², each with coefficient1; no mixed term remains. Distinctness of each residue set follows from the already proved two-root count on the half-range. Cases p2,integer1 and zero are supplied explicitly in source. | VERIFIED_TWICE |
+| C07-U06: multiplier descent and numerical run | Choose least positive m<p with mp=sum x_i². Even m permits same-parity pairs and halves m. For odd m>1, nearest residues yield sum y_i²=mr with0<r<m. Each bilinear coordinate is divisible by m; dividing all four by m produces rp. | Independently trace norm sizes: (mp)(mr)/m²=pr, so the squared norm loses m², not m. If all nearest residues were0, m² would divide mp, forcing m|p contrary to1<m<p. At p7,m3, x=(4,2,1,0),y=(1,−1,1,0) give z=(3,−6,3,3) and root tuple(1,−2,1,1), norm7. Thus the example exhibits an actual strict descent. | VERIFIED_TWICE |
+| C07-U07: three-square obstruction and optional equivalence | Square residues0,1,4 cannot sum to7 mod8. If three squares sum to0 mod4, all three are even; remove factors4 until the forbidden remainder is exposed. The converse classification remains explicitly outside this chapter's proofs. | Direct finite triples through30 omit exactly7,15,23,28. The old question asking for their common remainder mod8 was misleading because28 is4 mod8. Revised it to remove every factor4 first, giving remainder7 for all four. The earlier ex:eureka equivalence uses8T_k+1=(2k+1)² and checks all odd squares; it does not claim universal existence. Actual Volume13 thm:threesq uses rational Hasse–Minkowski followed by the stated integer descent. | VERIFIED_TWICE |
+| C07-U08: disc sandwich and average | Half-open squares based at each counted point are disjoint and have total area N(R). Their union lies in radius R+√2 and covers radius max(0,R−√2) by taking floors. Expanding areas gives the stated absolute bound, with the negative lower bound automatic at1≤R<√2. | Independently centre a unit square at each lattice point; rounding coordinates bounds displacement by√2/2 and gives the stronger bound√2·pi·R+pi/2 for R≥1. The origin contributes1, so sum_{1≤n≤X}r2(n)=N(√X)−1=pi·X+O(√X); division by X proves the claimed mean, without pointwise monotonicity or a constant error sign. | VERIFIED_TWICE |
+| C07-U09: obstruction versus classification workshop | Two squares cannot sum to3 mod4, but21=3·7 is1 mod4 and still impossible by the proved prime-exponent criterion. The earlier45=3²·5 passes and75=3·5² fails. | Independent direct search for coordinates up to the relevant square roots gives the same decisions; product construction explicitly represents45. This shows a missing modular obstruction is not a sufficiency proof and requires no later representation formula. | VERIFIED_TWICE |
+| C07-U10: research benchmark and later interpretation | The elementary O(R) bound is local; sharper exponents are clearly outside its proof. Replaced the unsupported517/824 claim by Huxley's published2003 exponent131/208, approximately0.6298, as a historical benchmark. | The cited Bourgain/Watt arXiv record explicitly says withdrawn in July2023 and that the affected claims lose theorem status. Huxley's publisher abstract independently states131/208 with a logarithmic factor; absorbing any fixed log power into R^epsilon gives the displayed form for fixed positive epsilon. No research theorem is needed by this chapter. | VERIFIED_TWICE for source status and preview, not independent reconstruction of Huxley's deep theorem |
+
+### C07 examples and complete diagram data
+
+| ID | Independent reconstruction and separate check | Status |
+| --- | --- | --- |
+| C07-E01: integers through20 | Enumerate a²+b² with a,b≤4 for values≤20 to get1,2,4,5,8,9,10,13,16,17,18,20. Independently check prime-exponent parity;18=3²+3² and12 contains an odd3 exponent. | VERIFIED_TWICE internally |
+| C07-E02: new85 construction |5·17=(1²+2²)(1²+4²) gives (−7)²+6² or9²+2². Independent direct enumeration has unordered nonnegative pairs exactly(6,7),(2,9). The former65 box was a duplicate; its full earlier argument and four-point picture remain. | VERIFIED_TWICE internally for the new obligation |
+| C07-E03:7 needs four | The complete mod8 triple-residue set omits7. Independently a parity split gives either three odd squares summing3 mod8, one odd plus even squares summing1 or5, or an even sum. Direct2²+1+1+1 gives four. | VERIFIED_TWICE internally |
+| C07-E04: product15 |3=1²+1²+1²+0² and5=2²+1²+0²+0². The displayed identity gives coordinates(3,−1,−2,−1), a permutation/sign variant of the printed(3,2,1,1), whose norm15 is checked directly. | VERIFIED_TWICE internally |
+| C07-E05: disc2 | Origin plus four axis points of norm1, four diagonal points of norm2 and four axis points of norm4 gives13. Independent floor-column sum gives sum_{x=−2}^2(2floor√(4−x²)+1)=13;4pi≈12.57 and the stated coarse bound≈24.05. | VERIFIED_TWICE internally |
+| C07-E06: sticking-out square | Points near(3,1) in the square based at(2,0) have radius approaching√10>3 and lie outside radius2. Independently take(2.9,0.9), which is inside that half-open square and has squared radius9.22>9. Thus the larger covering disc is necessary for this corner convention. | VERIFIED_TWICE internally |
+| C07-F01: circle65 | Every actual marked coordinate and its text label matches the four positive solutions(1,8),(4,7),(7,4),(8,1). Their16 signed reflections exhaust the integer solutions; the arc radius8.062258 squares to65 within1e−5. | VERIFIED_TWICE data; standalone rendered/inspected; full-page pending |
+| C07-F02: representability30 | Parse all30 actual classification bits and compare with direct square sums; independently prime-exponent parity agrees. Actual rendered row-major positions were inspected. Enlarged cells from0.48/0.48cm to0.75/0.60cm and tiny labels to small for a more legible native-size plate. | VERIFIED_TWICE data; revised standalone rendered/inspected; full-page pending |
+| C07-F03: disc6 | Parse all113 unit-square anchors and all113 point centres; both sets equal every integer pair with norm≤36. Independent column counting gives113. All corners are within6+√2, grid probes of the inner disc land in included floor-squares, and all three drawn radii match6,6±√2 to drawing precision. | VERIFIED_TWICE data; standalone rendered/inspected; full-page pending |
+
+All three plates were built using the real XeLaTeX wrapper and shared palette
+and visually inspected. Revised representability plate is150.96×91.03pt,
+compared with105.65×74.49pt before; native label size increased, rather than
+relying on later scaling. Circle65 is163.39×165.25pt and disc6 is212.65×210.56pt.
+No clipping or mismatched labels observed in standalone renders. Full-page
+placement, monochrome print and actual EPUB/reader downscaling remain pending.
+
+Seven new source/data/numeric regressions pass; the complete suite has
+**420 tests,zero skips**. Later final prose-only refinements clarify the beauty
+preview and fixed positive epsilon; inventory is regenerated afterward.
+Example count remains97, exercises144, mathematical figures39. Through
+Chapter7 the whole-source record covers49 examples and25 figure datasets
+internally. No future theorem is used as a proof premise here.
+
+### C07 historical/source checks and boundaries
+
+- [The actual cited arXiv record](https://arxiv.org/abs/1709.04340)
+  states withdrawal on16July2023 and identifies faults in the propositions
+  underlying the theorems. Its status invalidates the manuscript's use of the
+  preprint as evidence for a proved bound; describing it as dated was
+  insufficient. Removed both that bound and its bibliography entry.
+- [Huxley's publisher abstract](https://academic.oup.com/plms/article-abstract/87/3/591/1452590)
+  confirms2003,volume87,591–609 and exponent131/208. The independent
+  [Cambridge journal record](https://www.cambridge.org/core/journals/proceedings-of-the-london-mathematical-society/article/abs/exponential-sums-and-lattice-points-iii/7B28024FEB1C199035C5C7D7F6783072)
+  corroborates it. This is explicitly a historical benchmark, not a new
+  current-record claim or a certification of the full research proof.
+- Read the actual one-sentence argument and metadata in
+  [Zagier's own hosted paper](https://people.mpim-bonn.mpg.de/zagier/files/doi/10.2307/2323918/fulltext.pdf):
+  Monthly97(1990),144. Its involution agrees with the chapter's expanded
+  proof, whose domain/boundaries/positivity are separately checked.
+- The [Euler Archive's E228 record](https://scholarlycommons.pacific.edu/euler-works/228/)
+  distinguishes written1749 from published1758. The historical research by
+  [Euler Archive researchers Klyve and Tou](https://digitalcommons.cwu.edu/math/61/)
+  explicitly supports the Fermat1640/Euler1749 chronology. These do not alone
+  certify the exact Christmas-day letter or every historical priority claim;
+  complete edition/original-document review remains open.
+- Actual included Volume13 thm:threesq and its proof were read: rational local
+  conditions are followed by an Aubry/Davenport–Cassels integer descent.
+  Corrected the overbroad claim about what methods the converse needs.
+  Actual Chapter10 thm:r2 and factor-count proof were read before retaining
+  its preview and deferring prime uniqueness. Preview accuracy does not
+  import either theorem as a prerequisite or certify another volume.
+
+Full bibliography/history, exact Fermat portrait provenance, final-page and
+all-format proof and independent editorial/author acceptance remain open.
