@@ -21,6 +21,18 @@ contexts are recorded. All 62 bibliography paragraphs and 23 historical
 groups have source records and explicit access/research-proof limits.
 These are internal model checks, not independent human refereeing.
 
+Two earlier curriculum substitutions remain part of the review scope. The
+144 stable exercise keys are retained; two mathematical targets changed:
+
+| Key | Earlier target | Current checked target |
+| --- | --- | --- |
+| `pb:glaisher` (Chapter 3) | Bernoulli-number congruence requiring later-volume denominator theory | For odd prime p, sum of a^(p−1), 1≤a<p, is congruent to (p−1)!+p modulo p², via locally introduced Fermat/Wilson quotients |
+| `pb:nsq1` (Chapter 4) | P(x)>x for the largest prime factor of the product of n²+1, 1≤n≤x | For every fixed 0<δ<1, P(x)>x^(1−δ) for all sufficiently large x, using earlier Chebyshev estimates and local root counts |
+
+The original stronger statements are not certified here. DEP-004/006 in the
+strict ledger records why these replacements were made; independent reader
+and author acceptance must consider the changed curriculum explicitly.
+
 All 333 paired print/reading pages were actually opened and read. Five
 corrected full pages were reopened on source `434d620b`; all 333 pairs from
 the later EPUB-only fix have matching native 144dpi RGB hashes in both PDFs.
