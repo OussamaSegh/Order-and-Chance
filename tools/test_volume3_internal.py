@@ -98,6 +98,18 @@ class Volume3InternalReview(unittest.TestCase):
     def test_complex_representation_foundations_are_earned_locally(self):
         check_chapter11.check_foundations()
 
+    def test_actual_character_tables_filters_and_periodic_walks(self):
+        check_chapter11.check_actual_character_figure()
+        check_chapter11.check_walks_and_filters()
+
+    def test_commutators_and_integer_matrix_group(self):
+        check_chapter11.check_commutators_and_integer_group()
+
+    def test_indicator_flip_and_signed_involution_model(self):
+        check_chapter11.check_indicator_matrix_identity()
+        check_chapter11.check_involution_model()
+        check_chapter11.check_local_indicator_prerequisites()
+
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())
         data['reference_edges'][0]['target'] = 'unreviewed-target'

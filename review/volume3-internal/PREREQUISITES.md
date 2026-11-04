@@ -242,3 +242,37 @@ precise quintic obstruction, then asks how arbitrary groups act by matrices and
 what traces remember. This matches the actual C11 opening, which was read.
 Langlands/Shafarevich/current-open-status catalog is replaced by that earned
 transition plus a posed inverse-Galois further-reading question; no theorem lost.
+
+## V3-012b — closure of the Chapter11 prerequisite repairs
+
+Read all remaining actual hints/answers and the full figure, then reconstructed
+the revised arguments twice; CH11-REVIEW.md records every key. The final problem
+now earns the full original Sn real-form and degree-sum claims with a signed
+involution representation and independent square-root cycle count. Locally
+define dual space/action and prove irreducibility by annihilators, construct the
+symmetric/skew matrix spaces, and prove the real-form criterion using an
+antilinear involution. No undefined tensor/Specht construction or quoted Young
+theorem supplies a premise. The complete original/new target disclosure is in
+V3-012b-frobenius-schur-augmentation.json; no mathematical conclusion is lost.
+
+Reopened V1 ch03 thm:dalembert's actual minimum/subsequence proof for complex
+eigenvalue existence in Schur, not just its title. Earlier whole-file hashes
+already guard it. C7 squarefree-annihilator diagonalization, C5 derived-subgroup
+proofs, C9 thm:cyclicmult and C10 worked ex:phin supply the remaining finite
+linear/group/cyclotomic tools. Read actual V1 ch06 Taylor proof and the integral
+toolkit: the latter explicitly names integration existence as a contract whose
+construction is in V7. Supply the required fourth-order log-cos estimate locally
+with four applications of earned Rolle, avoiding that future construction.
+
+The S4 cube character is checked from the actual edge/face/vertex rotation
+angles and permutations; A5's figure is an explicit preview of its fully worked
+exercise. Its degree5 character is an actual Maschke complement after both
+multiplicities are computed. Algebraic conjugate phi' is real; complex bar notation
+was misleading and is removed. GL2Z's finite O2 classification is proved locally,
+including one-reflection and Klein cases, before the C12 spatial classification.
+
+Actual V4 Chance main/opening and ch08-markov model/cutoff text, and V11 Randomness
+shuffling model/cutoff source, were read for the marked outlook. Both use two
+independent uniform positions with a holding step1/n. They supply no V3 premise.
+The revised ending motivates actual C12 rotations/quaternions. Whole-book first-use,
+unnamed/dependency occurrence and history registers still have a separate gate.

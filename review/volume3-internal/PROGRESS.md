@@ -1,5 +1,51 @@
 # Progress
 
+## V3-012b: complete Chapter11 mathematics and actual contrast finding
+
+Read every Chapter11 named proof, prompt/hint/solution, figure cell and intervening
+argument. CH11-PROMPT-FIRST.md predates every supplied answer; CH11-REVIEW.md
+records the separate adversarial reconstruction and boundary probes for all
+ten named results and eleven triples. Fresh accepted totals are108/155 named
+and112/163 exercises. Global keyed unnamed/dependency/history closure and the
+rest of the book remain pending, rather than inheriting historical approval.
+
+Preserve and earn every original Frobenius–Schur/Sn conclusion through a finite
+signed involution model, concrete matrix spaces, local dual/annihilator and
+antilinear real-form proofs. The explicit augmentation records old/new statements,
+hashes and no lost target. Primary Adin/Postnikov/Roichman relevant proofs read
+after the independent construction; no unproved Young/Specht premise or circular
+reality inference remains. All permutations through S7 agree with independent
+direct square-root counts; cocycle checked through S4, supporting the full proof.
+Other checks recompute all59 actual figure cells, A4/A5 indicators,3600 ordered
+A5 commutators, all finite filters/walk endpoints and the integer dihedral group.
+
+Repaired the A5 degree5 constituent's existence before norm test, algebraic vs
+complex conjugation, locally earned log-cos remainder and O2 classification,
+zero/singleton/periodicity endpoints, exact S4 geometry and the shuffle model.
+Read actual V4 Chance/V11 Randomness model text for outlook only. Removed an
+unsupported categorical research-status assertion; record access/proof limits.
+
+Actually opened old immutable2ee605fd print317 in colour and grayscale and found
+weak white labels on coral. Corrected27 foregrounds while preserving approved
+inks/geometry/type. Old source fails the new gate and corrected source passes;
+the corrected rendered page is still pending. The visual record logs a finding,
+not approval from source strings or cache/render generation.
+
+Validation:481 full unit tests pass, zero skips52.141s,
+/tmp/volume3-v012b-tests.log;18 focused tests pass2.613s. Inherited checker passes
+377 labels/375 references/163 triples; fresh inventory/freshness and whitespace
+pass. Inventory155 named,163 triples,22 examples/figures,108 bibliography entries;
+one new primary reference, no theorem/exercise removed. Latest fetched main is
+still7f87c2ab00fdb0c7791dc833423b98bef0870f01. Prior foundation head49736d98
+Build books run41921924626 is terminal success: list/debs/V3build/site pass,
+publish skipped. This is not final-head CI or evidence of reusable PR caches.
+
+Next immutable build must produce this source and reopen corrected/changed pages.
+Then continue C12 and all four appendices; whole-book/global evidence and final
+all-page/digital/CI-artifact/merge gates remain open. C12 main/prompts/hints and
+first supplied composition answer have now been read; that exposure must be
+disclosed in its first-solution record, without a blinded claim.
+
 ## V3-001: correct baseline and fresh review scope
 
 Verified merged PR #103 and fetched current main; created a clean editorial

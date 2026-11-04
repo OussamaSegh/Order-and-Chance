@@ -1,5 +1,43 @@
 # Primary-source and access evidence
 
+## V3-012b additional primary-text and outlook checks (access 2026-11-04)
+
+Read the relevant actual text of Adin, Postnikov and Roichman,
+*Combinatorial Gelfand Models*, arXiv:0709.3962v1, 25 September2007, 13pages,
+https://math.mit.edu/~apost/papers/GelfandModels.pdf : introduction, section2.1
+(p3, action/inversion cocycle) and sections3.1–3.2 (pp5–7, root counts and signed
+character proof). The action and cycle factors agree with the independent
+CH11-PROMPT-FIRST.md derivation, which was written before this source was opened.
+The paper first uses the known Sn real-form theorem to identify the degree sum;
+our argument instead proves that the root-count function is an actual character,
+uses nonnegative indicator multiplicities, and then earns real forms locally.
+This distinction prevents importing an unproved essential premise circularly.
+Hecke generalizations/later sections and original IRS1990 paper were not reviewed.
+New bibliography gives the actual arXiv version, without inventing journal data.
+
+Read Tao's actual 24 May2013 author article introduction/outline,
+https://terrytao.wordpress.com/2013/05/24/a-fourier-analytic-proof-of-frobeniuss-theorem/ .
+It describes a technically character-free Fourier/class-algebra proof while
+discussing the terminology. A categorical current claim that no character-free
+proof is known is therefore inappropriate without qualifications. Removed that
+incidental claim; the established normal-kernel theorem remains marked outlook.
+Search leads for 2020/2024 proposed proofs were not fully read or certified.
+
+Read Stanford's actual institutional record for Diaconis/Shahshahani,
+*Generating a Random Permutation with Random Transpositions*, report EFSNSF149,
+April1980, https://statistics.stanford.edu/technical-reports/generating-random-permutation-random-transpositions .
+Its linked https://purl.stanford.edu/dd428xb4629 was unavailable to the web reader;
+the original report PDF has not been read. The actual repository V4 ch08-markov
+and V11 chapters/shuffling.tex both explicitly use independent uniform positions
+with Q(e)=1/n and Q(transposition)=2/n², and the half n log n scale. That verifies
+the book's outlook model against its later proof source, not an audit of that
+later volume or original research proof. Distinct-position swaps are periodic
+by the already proved sign invariant; the source now states why holding matters.
+
+All other Chapter11 bibliography metadata and historical attributions remain
+pending the keyed global research pass. This entry does not confer approval
+from an abstract, snippet, citation or the fact a URL loads.
+
 Access date: 4 November 2026. This is source/attribution review by the internal
 AI reviewer. No claim to reproduce external large computations, referee new
 research or independently formalize a theorem. Search snippets are leads only.

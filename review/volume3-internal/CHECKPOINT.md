@@ -1,79 +1,60 @@
-# Exact restart — V3-012a
+# Exact restart — V3-012b
 
-Repository `/workspace/Order-and-Chance`, branch
-`editorial/volume3-complete-internal-review-20261104`, draft PR104:
-https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Actual PR103 merge and
-current fetched main `7f87c2ab00fdb0c7791dc833423b98bef0870f01`; no concurrent
-advancement or overwritten user changes. Solo internal AI review. User authorizes
-content changes and final merge only after the entire available review genuinely
-passes. No Amazon/account action, no outside reviewer request or early completion.
+Continue the entire authorized solo internal AI review, not a partial final answer.
+Repository /workspace/Order-and-Chance; branch
+editorial/volume3-complete-internal-review-20261104; draft PR104
+https://github.com/OussamaSegh/Order-and-Chance/pull/104.
+Baseline/current fetched main7f87c2ab00fdb0c7791dc833423b98bef0870f01 is actual
+merged Volume2 PR103. No concurrent main change observed; user changes preserved.
+User grants curricular freedom, no external reviewer or premature merge.
 
-Chapters1–10 fully read:98/155 named and101/163 exercise A/B records accepted
-internally. C11 entire main and all11 prompts were read; first reconstructions are in
-CH11-PROMPT-FIRST.md before supplied hints/answers. All hints and first four full
-answers (pairs/onedim/A4/central-Q8) now read. Continue at the source label
-\begin{solution}{ex:circulant}, then remaining answers in order, entire actual
-figure data, complete adversarial/model checks. C11 has10 named results; none
-accepted yet. C12 and all four advanced appendices follow. Global keyed unnamed/
-concept/context/history closure and whole-book voice/story are still pending.
-Inventory155 named,163 exact triples,22 examples,22 figures,107 bibliography
-entries; generators never approve math. Source/proof/hint/solution/context and
-actual earlier-source hashes guard drift. --require-complete must still fail.
+Chapter1–11 named/exercise mathematical closure:108/155 named and112/163 triples,
+220 accepted internally. Every C11 source/hint/answer/figure now read, first
+solutions recorded before answers, adversarial second reconstruction in
+CH11-REVIEW.md. Complex prerequisites earned locally; complete signed-involution
+proof earns original Sn real forms/degree sum, no weakened target or Young/Specht
+premise. Old/new augmentation and regression evidence are permanent. All global
+keyed unnamed/concept/dependency/history evidence remains a separate pending gate.
 
-CH10-REVIEW.md and CH10-PROMPT-FIRST.md record13 named/11 exercise reconstructions
-and the ex:phin/pb:kronecker prior-exposure exception. Full cyclotomic triple moved
-inside main section before general degree/polygon uses; stable keys/parts remain.
-V3-011-cyclotomic-migration.json discloses it and updates prior migration context.
-Quintic direct proof now checks arbitrary complex common roots, and excludes an
-individual radical root through the normal envelope. Full radical criterion/
-termination, precise characteristic-zero contract and inseparable counterexample,
-normality/restriction maps, Niven recurrence and local heptagon cubic are earned.
-All10 lattice fields/15 edges per panel exactly checked. Symbolic evidence is
-support, not formal verification. Galois actual primary scans/date distinctions
-in RESEARCH.md; C9 history copy clarified. Remaining history rows are pending.
+481 full tests pass zero skips52.141s (/tmp/volume3-v012b-tests.log),18 focused
+pass2.613s; inherited checker377 labels/375 references/163 triples passes,
+fresh inventory/freshness and whitespace pass. Inventory155 named,163 triples,
+22 examples/22 figure sources,108 bibliography entries. Scripts never autoapprove
+mathematics. Source changes reopen exact related proof/answer hashes.
 
-Current coherent C11 foundation batch: explicit finiteG, dimension0 with nonzero
-irreducibles, local Hermitian/complex Gram–Schmidt/complements and finite-order
-unitary eigenbasis; actual V1 proofs are real only. Multiplicity proof earns finite
-list first; finite prime filters precede analytic outlook; hard-coded reference
-fixed. CH11-FOUNDATIONS.md gives exact scope. All C11 math acceptance pending.
-Proposed signed involution model in CH11-PROMPT-FIRST.md could earn the quoted
-Young reality theorem and degree sum; still needs actual supplied-solution
-comparison, adversarial proof/computation and source attribution before insertion.
-No external reviewer or weaker target is needed.
+Next: immutable all-format build of the V3-012b producing commit (obtain current
+HEAD after checkpoint commit), actual EPUBCheck/outputchecker, reopen corrected
+C11 table in colour AND grayscale and long new solution/changed pagination.
+Current latest immutable all-format /workspace/volume3-build-2ee605fd:
+source2ee605fdcdd53f64dd3a73569b074e065eb3aaeb,484 reading/483 print,KDP484,
+spine1.1359in,85 public hashes, actual EPUBCheck5.3.0zero messages/outputpass.
+Only print278/279/280/285/304 actually opened with no defects. Also actual317
+opened colour/grayscale with weak white-on-coral labels; now fixed27 foregrounds
+in source but corrected rendering pending. Its visual JSON explicitly records
+a finding. This old package predates C11; no visual approval transferred.
+Other preliminary packages have separate manifests and limited opened-page records.
+Rootdist mixes checkpoints and is never a matched candidate.
 
-Activate `source /workspace/volume3-tools/activate.sh` (mandated system activation
-included).478 full tests pass zero skips53.676s,
-/tmp/volume3-v012-foundation-tests.log;15 focused tests, inherited checker,
-source inventory/freshness and diff whitespace pass. Old cyclotomic location fails the new order gate; corrected one passes.
-No broad rerun needed without new changes/failures; final freeze still needs all
-required checks. Historical checker/output wording now says internal review and
-separate page/digital evidence, without weakening assertions.
+C12 full main/prompts/hints and first composition answer plus Euler answer opening
+were read before a permanent first-solution record. Disclose exposure, reconstruct
+remaining problems before opening other supplied answers. Preliminary issues:
+SO(3) needs first-use definition; nonassociative classification assertion lacks
+norm hypotheses; plate-trick topology/continuous determinant argument is unearned;
+regular-solid attainability/conjugacy need proofs; advanced integral/Euler-product
+exercises need local prerequisites; random-icosahedron t0 formula is false and
+hardcoded theorem references stale. Preserve/earn intended mathematics. Then all
+four appendices in actual main order: linear-ch07-perron, linear-ch09-symmetry,
+combinatorial, paley; no optional exemptions. Whole-book story/voice/history and
+all-page/grayscale/facing/reader/EPUB/link/disclosure/CI-artifact review remain.
 
-Latest all-format immutable `/workspace/volume3-build-2ee605fd`, source2ee605fd:
-484 reading/483 print, KDP484, spine1.1359in,85 public files/report hashes;
-actual EPUBCheck5.3.0zero messages/outputchecker pass. Only actual opened
-print278/279/280/285/304 in its visual JSON. Predates C11 foundation edits.
-Formula cache checked renderer/common/font identity in same environment; no visual
-approval transfer. Older snapshots remain separately scoped below.
+Activate source /workspace/volume3-tools/activate.sh (mandated system activation
+included). EPUBCheck /workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar.
+For local formula cache reuse, compare actual tools/epub_math.py, epub_png.py and
+all common/font bytes and same environment first; cachev6 omits font hashes.
+Record provenance; no visual approval moves. GitHub library caches save only main.
+Prior foundation49736d98 run41921924626 terminal success list/debs/V3build/site,
+publish skipped; not final-head CI. Never cancel main/unrelated publication.
 
-PDF-only immutable `/workspace/volume3-pdf-494a7fef`, source
-494a7fef272e15822fef6f9a119d79d79c6ce560:482 reading/481 print pages, KDP482,
-spine1.1313in, same-build wrap15.3813×10.25in. Manifest records identities and
-only actual opened print237/246/247. Predates C10 and latest C9 history copy.
-All-format `/workspace/volume3-build-60da24ec`, source
-60da24eca46820bab0617c7796c4c8b28f4d102c:482 reading/481 print,85 public files,
-actual EPUBCheck5.3.0zero messages/outputchecker pass, only print223/229/231/232
-opened. Earlier packages have their own separate manifests/limited page evidence.
-Rootdist mixes checkpoints, never a matched candidate. No final all-page,
-grayscale/facing/browser/CI-artifact/native/publisher approval. No assignedV3ISBN.
-
-For a new immutable all-format build, local formula cache from60da may be reused
-only after checking renderer/common/font byte identity and same tool environment;
-keyv6 does not include font hashes. Record provenance; no visual approval moves.
-Actual local caches differ from GitHub library caches, which save only on main.
-Latest CI494a run41916257153 list/unit/config/math/debs success; V3build in progress
-at observation. PR pushes may auto-cancel older PR runs; never cancel main or
-unrelated. Final exact-source freeze, matched artifact review, terminal exact-head
-CI and current-main/clean-worktree checks precede ready/head-matched merge commit.
-No Kindle/KDP-account/ISBN-ownership/physical-proof evidence or Amazon action.
+Freeze final source, finish actual matched outputs and all gates before ready and
+head-matched merge commit; verify merge and resulting main. No assigned V3 ISBN,
+no native Kindle/KDP-account/ISBN-ownership/physical-proof evidence, no Amazon action.
