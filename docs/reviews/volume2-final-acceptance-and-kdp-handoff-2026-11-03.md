@@ -1,5 +1,7 @@
 # Volume 2 — Final repository acceptance and KDP handoff
 
+> **Historical PR #97 evidence, superseded for current PR #103.** The old page counts, spine, artifact and repository acceptance below do not approve the rewritten manuscript. Current evidence and open gates: [strict ledger](volume2-independent-verification-ledger-2026-11-03.md). PR #103 remains draft, unmerged and unpublished.
+
 **Date:** 3 November 2026  
 **Editorial PR:** [#97](https://github.com/OussamaSegh/Order-and-Chance/pull/97)  
 **Release state:** Manuscript/source and generated publishing files **accepted for the repository**. Amazon KDP / Kindle Previewer acceptance and a physical paperback proof are **not completed**. Do not claim the edition is on sale or approved by KDP.

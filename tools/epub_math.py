@@ -46,7 +46,6 @@ BORDER_PT = 0.4
 # 77 px per em, about 1.6 device pixels on each body pixel, and leaves headroom
 # under 50 MB. The CSS size stays the TeX em either way.
 DPI = 480
-WIDE_EM = 22.0
 CACHE_TAG = "v6"
 # HTML width/height are CSS pixels at the usual 16 px em. Moon+ uses those
 # attributes and ignores em widths, so a high-dpi PNG otherwise draws huge.
@@ -111,15 +110,11 @@ class Glyph:
         width_px = self._px(self.width_em)
         height_px = self._px(self.height_em)
         height = f"{self.height_em:.4f}"
-        if self.display and self.width_em >= WIDE_EM:
+        if self.display:
+            # Use the measured width even on wide screens. max-width can shrink
+            # a long equation; auto height preserves the PNG's aspect ratio.
             style = (
-                f"display:inline-block;width:100%;max-width:100%;height:auto;max-height:{height}em;"
-                f"vertical-align:middle"
-            )
-            kind = "oc-math-display"
-        elif self.display:
-            style = (
-                f"display:inline-block;width:{self.width_em:.4f}em;height:{height}em;"
+                f"display:inline-block;width:{self.width_em:.4f}em;height:auto;"
                 f"max-width:100%;max-height:{height}em;vertical-align:middle"
             )
             kind = "oc-math-display"

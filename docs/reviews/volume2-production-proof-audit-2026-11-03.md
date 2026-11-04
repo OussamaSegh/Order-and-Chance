@@ -1,5 +1,7 @@
 # Volume 2 — Step 8 PDF, EPUB, online reader and paperback-wrap proof
 
+> **Historical PR #97 evidence, superseded for current PR #103.** The old page counts, spine, artifact and repository acceptance below do not approve the rewritten manuscript. Current evidence and open gates: [strict ledger](volume2-independent-verification-ledger-2026-11-03.md). PR #103 remains draft, unmerged and unpublished.
+
 **Date:** 3 November 2026
 **PR:** [#97](https://github.com/OussamaSegh/Order-and-Chance/pull/97) (draft, unmerged)
 **Production source:** GitHub Actions [Build books #1429, run 41638786729](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41638786729), pull-request head commit `4d46982b5f3db88774ac3170fcbbd43926c85044`. This is the last manuscript/metadata content commit before the Step 8 *QA tooling and audit-documentation* commits.

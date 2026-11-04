@@ -124,8 +124,11 @@ def _math_errors(where: str, attrs: dict[str, str], inline: bool, pngs: dict[str
             errors.append(f"{where} width is not in em, so it will not follow the body font")
         if not EM_SHIFT.search(style):
             errors.append(f"{where} has no em vertical-align, so the baseline will not meet the text")
-    elif not (EM_WIDTH.search(style) or "width:100%" in style):
-        errors.append(f"{where} has neither an em width nor width:100%")
+    else:
+        if not EM_WIDTH.search(style):
+            errors.append(f"{where} needs its natural em width to avoid stretching on wide screens")
+        if "height:auto" not in style:
+            errors.append(f"{where} needs height:auto to preserve aspect ratio when constrained")
     src = attrs.get("src", "")
     height_attr = attrs.get("height", "")
     if src and re.fullmatch(r"\d+", height_attr):

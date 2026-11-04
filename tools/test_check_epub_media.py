@@ -36,7 +36,7 @@ PAGE = """<?xml version="1.0" encoding="utf-8"?>
 <img class="oc-plate" src="../media/plate.png" alt="Three number lines." style="width:100%;max-width:100%;height:auto"/>
 <figcaption>forces <span class="oc-math-keep" style="white-space:nowrap"><img class="oc-math-inline" src="../media/inline.png" alt="x &lt; y" width="20" height="14" style="display:inline;width:1.2500em;height:0.8500em;max-width:100%;max-height:0.8500em;vertical-align:-0.2200em"/></span> here</figcaption>
 </figure>
-<div class="oc-math-block"><img class="oc-math-display" src="../media/display.png" alt="y=-x" width="42" height="20" style="display:inline-block;width:2.6000em;height:1.2000em;max-width:100%;max-height:1.2000em;vertical-align:middle"/>.</div>
+<div class="oc-math-block"><img class="oc-math-display" src="../media/display.png" alt="y=-x" width="42" height="20" style="display:inline-block;width:2.6000em;height:auto;max-width:100%;max-height:1.2000em;vertical-align:middle"/>.</div>
 </body>
 </html>
 """
@@ -64,6 +64,16 @@ class CheckEpubMedia(unittest.TestCase):
 
     def test_full_width_plate_and_baseline_math_pass(self):
         self.assertEqual(self._run(), [])
+
+    def test_stretched_display_formula_fails(self):
+        page = PAGE.replace("width:2.6000em", "width:100%")
+        errors = self._run(page=page)
+        self.assertTrue(any("natural em width" in error for error in errors), errors)
+
+    def test_fixed_display_height_fails(self):
+        page = PAGE.replace("width:2.6000em;height:auto", "width:2.6000em;height:1.2000em")
+        errors = self._run(page=page)
+        self.assertTrue(any("height:auto" in error for error in errors), errors)
 
     def test_block_math_cannot_be_nested_in_phrasing_content(self):
         block = PAGE[PAGE.index('<div class="oc-math-block"'):PAGE.index('</div>') + 6]

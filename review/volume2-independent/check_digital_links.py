@@ -81,6 +81,8 @@ def audit(files, read, scope, documents=None):
                 continue
             local_links += 1
             dest = destination(name, url)
+            if dest not in files and f"{dest}/index.html" in files:
+                dest = f"{dest}/index.html"
             if dest not in files:
                 if scope == "reader" and dest == "index.html":
                     pending.append({"source": name, "target": target,
