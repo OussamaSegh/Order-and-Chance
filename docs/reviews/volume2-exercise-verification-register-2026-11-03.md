@@ -81,9 +81,9 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 5 | `pb:phipm1` | ★★ | Cyclotomic product, log-divisor inversion, root-index identities and norm product | Independent Möbius product limit, prime-exponent count and explicit polynomial inverse | Actual Volume 1 complex roots, Chapter 4 inversion, earlier ex:cyclotomic | VERIFIED_TWICE | DEP-033: Λ now defined at prompt; positivity and order-index step taught; n=2 excluded from (b); two prime factors in (c) |
 | 5 | `pb:gcdmean` | Journey | Four-part Möbius/harmonic proof | Abel alternate mean + weighted endpoint + numeric tests | PASS | VERIFIED_TWICE | DEP-002, W(M) uniform for M≥1 |
 | 5 | `pb:fibcoprime` | Journey | Fibonacci gcd/Binet solution | Exact bounded-log factor + independent counts | PASS | VERIFIED_TWICE | DEP-001, follows pb:gcdmean |
-| 6 | `ex:minus3` | ★ | — | — | — | UNREVIEWED | — |
-| 6 | `ex:onemod4` | ★ | — | — | — | UNREVIEWED | — |
-| 6 | `ex:minus2` | ★★ | — | — | — | UNREVIEWED | — |
+| 6 | `ex:minus3` | ★ | Legendre multiplicativity and reciprocity cancel signs | Independent order-three root of X²+X+1 equivalence, taught in source | Chapter 5 cyclic prime theorem, Chapter 6 reciprocity | VERIFIED_TWICE | DEP-036: p>3, p=3 exceptional, p mod3 criterion |
+| 6 | `ex:onemod4` | ★ | Euler criterion for −1 and Euclid-style n²+1 | Independent exact order four for n mod p, new-prime factor argument | Chapter 5 order theorem or Chapter 6 Euler criterion; FTA | VERIFIED_TWICE | DEP-036: odd factors only, empty finite-list case, N odd >1 |
+| 6 | `ex:minus2` | ★★ | Multiply −1 and 2 Legendre laws; invert y mod p | Independent mod8 parity of x²+2y² and direct four-class sign check | Chapter 6 supplementary laws and field cancellation | VERIFIED_TWICE | DEP-036: p=2 separate, p∤y for odd p, no converse representation asserted |
 | 6 | `ex:mersfactor` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:consecutive` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:pepin` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-035, 82/144 are checked twice internally and 62 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-036, 85/144 are checked twice internally and 59 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

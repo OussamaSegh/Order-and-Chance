@@ -10,6 +10,25 @@ def odd_primes(limit):
             if all(p % d for d in range(2, math.isqrt(p) + 1))]
 
 
+def jacobi_by_factors(a, n):
+    result = 1
+    d = 3
+    while d * d <= n:
+        while n % d == 0:
+            if a % d == 0:
+                return 0
+            squares = {x * x % d for x in range(1, d)}
+            result *= 1 if a % d in squares else -1
+            n //= d
+        d += 2
+    if n > 1:
+        if a % n == 0:
+            return 0
+        squares = {x * x % n for x in range(1, n)}
+        result *= 1 if a % n in squares else -1
+    return result
+
+
 class QuadraticCriteriaChecks(unittest.TestCase):
     def test_euler_and_gauss_against_direct_squares(self):
         for p in odd_primes(257):
@@ -60,6 +79,26 @@ class QuadraticCriteriaChecks(unittest.TestCase):
             self.assertAlmostEqual((g * g).real, p_star, places=8)
             self.assertAlmostEqual((g * g).imag, 0, places=8)
             self.assertAlmostEqual(abs(g - G), 0, places=8)
+
+    def test_jacobi_and_first_exercises(self):
+        for n in range(1, 102, 2):
+            self.assertEqual(jacobi_by_factors(-1, n), (-1) ** ((n - 1) // 2))
+            self.assertEqual(jacobi_by_factors(2, n), (-1) ** ((n * n - 1) // 8))
+            for m in range(1, 102, 2):
+                if math.gcd(m, n) == 1:
+                    expected = (-1) ** (((m - 1) // 2) * ((n - 1) // 2))
+                    self.assertEqual(jacobi_by_factors(m, n) * jacobi_by_factors(n, m),
+                                     expected)
+        for p in odd_primes(257):
+            squares = {x * x % p for x in range(1, p)}
+            if p > 3:
+                self.assertEqual((-3) % p in squares, p % 3 == 1)
+            self.assertEqual((-2) % p in squares, p % 8 in (1, 3))
+        for n in range(1, 101):
+            value = n * n + 1
+            for p in odd_primes(math.isqrt(value)):
+                if value % p == 0:
+                    self.assertEqual(p % 4, 1)
 
 
 if __name__ == "__main__":
