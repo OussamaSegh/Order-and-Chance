@@ -174,8 +174,8 @@ class TestAdvancedChapterThreeExercises(unittest.TestCase):
         # LaTeX can defer a missing-$ error until the following blank line.
         # Multiline inline formulas are allowed within the same paragraph.
         text=CH3.read_text(encoding="utf-8")
-        for index, paragraph in enumerate(re.split(r"\\n\\s*\\n",text),1):
-            delimiters=re.findall(r"(?<!\\\\)\\$",paragraph)
+        for index, paragraph in enumerate(re.split(r"\n\s*\n",text),1):
+            delimiters=re.findall(r"(?<!\\)\$",paragraph)
             self.assertEqual(len(delimiters)%2,0,
                              f"Unclosed inline math in paragraph {index}: "
                              f"{paragraph[:120]!r}")
