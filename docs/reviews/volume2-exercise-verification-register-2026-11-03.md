@@ -111,11 +111,11 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 8 | `ex:areaper` | ★ | Substitute hypotenuse, (a−4)(b−4)=8 and all sign/positivity cases | Independent scaled primitive parameters and inradius2 factorization | Earlier Pythagorean theorem and elementary triangle area | VERIFIED_TWICE | DEP-046: only5-12-13 and6-8-10 up to leg exchange |
 | 8 | `ex:x2y23z2` | ★ | Mod3 primitive contradiction, clear rational denominators | Independent parity of v₃ of a two-square norm | Chapter 7 q≡3mod4 valuation, FTA, fractions | VERIFIED_TWICE | DEP-046: zero solution separated, all integer signs, rational denominator nonzero |
 | 8 | `ex:catalan23` | ★ | y=0 boundary, x even, difference-of-squares factors of3^y | Independent mod8 excludes x≥3 then exhaustive remaining exponent cases | Elementary congruences and FTA | VERIFIED_TWICE | DEP-046: N includes0; exactly(1,0),(2,1) |
-| 8 | `ex:mordell5` | ★★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:eisentri` | ★★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:markovcoprime` | ★★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:imo88` | ★★★ | — | — | — | UNREVIEWED | — |
-| 8 | `ex:t1-triple` | ★ | — | — | — | UNREVIEWED | — |
+| 8 | `ex:mordell5` | ★★ | Mod4 cases and forbidden prime divisor of y²+4 | Independent divisor-class obstruction after stripping factor4 | Earlier −1 law and elementary factorization | VERIFIED_TWICE | DEP-047: signed x, positive quadratic factor, odd q cannot divide2 |
+| 8 | `ex:eisentri` | ★★ | Rational line formulas, vertical point, positive parameters and primitive scaling | Independent inverse t=y/(x+1), denominator positivity, rational-point enumeration | Earlier chord proposition, fractions, cosine rule | VERIFIED_TWICE | DEP-047: tangent t=−2, exceptional(−1,1), triangle inequalities now taught |
+| 8 | `ex:markovcoprime` | ★★ | Common gcd invariant then pairwise prime obstruction; descending tree | Independent pairwise gcd invariance and direct quadratic enumeration≤200 | Earlier Markov theorem and integer gcd | VERIFIED_TWICE | DEP-047: nine triples up to permutation, completeness via strict maximum descent |
+| 8 | `ex:imo88` | ★★★ | f(−1)>0>f(b), integer smaller Vieta root, minimal sum | Independent negative-root h identity and a'=(b²−k)/a bound | Earlier Vieta and well ordering | VERIFIED_TWICE | DEP-047: k positive nonsquare, zero mate forces k=b²; no unproved k bound |
+| 8 | `ex:t1-triple` | ★ | Parameter substitution and squared norms | Independent inverse half-sum recovery for all three triples | Earlier Pythagorean parametrization | VERIFIED_TWICE | DEP-047: (3,4,5),(15,8,17),(5,12,13), parity/gcd checked |
 | 9 | `ex:cf415` | ★ | — | — | — | UNREVIEWED | — |
 | 9 | `ex:cfunique` | ★★ | — | — | — | UNREVIEWED | — |
 | 9 | `ex:calendar` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-046, 107/144 are checked twice internally and 37 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-047, 112/144 are checked twice internally and 32 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.

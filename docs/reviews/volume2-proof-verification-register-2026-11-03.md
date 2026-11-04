@@ -50,9 +50,9 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 7 | `thm:circle` | Gauss | Corner-square tiling, inner/outer discs, R∈[1,√2) separately | Independent centered-square tiling gives stronger √2πR+π/2 bound | VERIFIED_TWICE | DEP-045: real R≥1, half-open tiling, origin, N(10)=317 |
 | 8 | `thm:pyth` | theorem | Coprime half-sum factors are squares, both directions | Independent rational unit-circle slope and normalized parameter gcd | VERIFIED_TWICE | DEP-046: positive legs, y even, m>n≥1, opposite parity, no zero-leg omission |
 | 8 | `thm:fermat4` | Fermat | Minimal z, two primitive-triple parametrizations, pairwise coprime square factors | Independent early split m=u²,n=2v² then second triple descent | VERIFIED_TWICE | DEP-046: all new integers positive, new hypotenuse strictly smaller; positive domain essential |
-| 8 | `prop:chord` | proposition | — | — | UNREVIEWED | — |
-| 8 | `thm:mordell7` | a Mordell equation | — | — | UNREVIEWED | — |
-| 8 | `thm:markov` | Markov, 1879 | — | — | UNREVIEWED | — |
+| 8 | `prop:chord` | proposition | Restrict quadratic to rational line, factor known root, exclude line component | Independent affine-coordinate division and rational second-root analysis | VERIFIED_TWICE | DEP-047: degree drop, tangent, vertical and singular cases; no guaranteed distinct second point |
+| 8 | `thm:mordell7` | a Mordell equation | Even-x mod8, positive factor3mod4 forces forbidden divisor of y²+1 | Independent all-positive-divisor residue obstruction | VERIFIED_TWICE | DEP-047: all integer signs; explanatory odd-valuation claim removed as unnecessary |
+| 8 | `thm:markov` | Markov, 1879 | Positive integer Vieta mate and largest-coordinate descent | Independent z≥2/z=1 inequality split and root-case analysis | VERIFIED_TWICE | DEP-047: root1,1,1; exceptional2,1,1; involution and termination |
 | 9 | `prop:cfconv` | proposition | — | — | UNREVIEWED | — |
 | 9 | `thm:cfapprox` | theorem | — | — | UNREVIEWED | — |
 | 9 | `lem:cfexistence` | An infinite expansion determines its number | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **42/72** rows are `VERIFIED_TWICE` at DEP-046; **30** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **45/72** rows are `VERIFIED_TWICE` at DEP-047; **27** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
