@@ -40,8 +40,8 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 6 | `thm:eulercrit` | Euler's criterion | Primitive-root parity and half-order element −1 | Independent square-root count and degree-half polynomial saturation | VERIFIED_TWICE | DEP-034: p odd, a=0, ±1 distinct, complete multiplicativity |
 | 6 | `thm:gausslemma` | Gauss' lemma | Signed-representative permutation and invertible half-factorial | Independent quotient-by-sign pairing and product-cancellation reconstruction | VERIFIED_TWICE | DEP-034: all p odd, a unit, no 0 representative, negative count; p=3 |
 | 6 | `cor:two` | corollary | Negative doubled representatives counted by floor(p/4) | Independent threshold count and four residue-class parity check | VERIFIED_TWICE | DEP-034: p≡1,3,5,7 mod8 incl p=3; exact exponent parity |
-| 6 | `thm:qr` | quadratic reciprocity; Gauss, 1796 | — | — | UNREVIEWED | — |
-| 6 | `lem:eisenstein` | Eisenstein | — | — | UNREVIEWED | — |
+| 6 | `thm:qr` | quadratic reciprocity; Gauss, 1796 | Eisenstein parity and two-sided lattice rectangle | Independent quadratic Gauss-sum/Frobenius proof with integer descent | VERIFIED_TWICE | DEP-035: p,q distinct odd primes; Volume 1 prime-cyclotomic irreducibility and root orthogonality actually proved |
+| 6 | `lem:eisenstein` | Eisenstein | Residue-sum equations and Gauss sign parity | Independent signed-representative parity identity | VERIFIED_TWICE | DEP-035: a odd even if negative, p∤a, a=2 counterexample recorded |
 | 6 | `prop:jacobi` | proposition | — | — | UNREVIEWED | — |
 | 7 | `lem:thue` | Thue | — | — | UNREVIEWED | — |
 | 7 | `thm:twosq` | Fermat, 1640; Euler, 1749 | — | — | UNREVIEWED | — |
@@ -83,6 +83,6 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 
 ## Complementary records
 
-- **32/72** rows are `VERIFIED_TWICE` at DEP-034; **40** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **34/72** rows are `VERIFIED_TWICE` at DEP-035; **38** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.

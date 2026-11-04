@@ -108,6 +108,12 @@ first-use graph remain **IN_PROGRESS**; no chapter or volume is signed off.
 - **`ex:frob`** uses integer Bézout and Gauss' lemma to parametrise `ax+by=m`, both earned before the exercise. The second residue-class proof uses gcd(a,b)=1 to permute residues. For `a=1` or `b=1`, the “largest integer not representable” is literally `−1`, since every nonnegative integer is attainable and no negative one is.
 - **Boundary:** the crosswalk still needs source-by-source audit of Fibonacci/Binet, probability, broader trigonometry and integral uses, Basel's identity, all infinite-series operations, and every later chapter import. The specific integration-by-parts/Wallis proof sites now confirmed do not close those wider gaps. Do not tick P01 complete.
 
+## Specific first-use reconciliation for DEP-035 — second reciprocity proof
+
+- `volume1-first-principles/chapters/ch02-complex-roots.tex`, `prop:orth` (near lines 416–423), **proves** the finite root-of-unity geometric sum, including zero unless the exponent is divisible by the root order. Its full `ex:gauss` solution (near line 873) proves `|G|²=p` by a finite double sum; it does not pre-prove the signed value `G²=p*` used here.
+- `volume1-first-principles/chapters/ch03-polynomials.tex`, `ex:eisen` **full solution** (near lines 678–685), proves irreducibility of the prime cyclotomic `Phi_p` over `Q` by translating `X` to `X+1` and applying the proved Eisenstein criterion. The Chapter 6 Gauss-sum exercise separately derives the integral basis and `qZ[ζ] ∩ Z=qZ`; neither is silently imported.
+- **Boundary:** These exact earlier proof sites support the optional second route to quadratic reciprocity, not the whole Volume 1 prerequisite graph or Chapter 6 signoff. The printed lattice proof of the theorem needs only the locally proved Euler/Gauss/Eisenstein results.
+
 ## Next crosswalk tasks
 
 Read `ch02-counting.tex`, `ch05-sequences-series.tex` (including Fibonacci and convergence), `ch06-integrals-taylor.tex` (including Basel/areas), `ch09-probability.tex`, and the final Volume 1 field guide. Add exact proof labels and first-use sites; do not trust titles or a pre-existing audit. Check whether a result was only an **exercise prompt**, has an actual complete supplied solution, or has a proved main-text argument. Recheck the full new manuscript first-use graph after each structural change.

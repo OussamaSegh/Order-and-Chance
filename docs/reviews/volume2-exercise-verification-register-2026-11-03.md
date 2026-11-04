@@ -87,7 +87,7 @@ This register is generated **from the actual 11 chapter sources in printed order
 | 6 | `ex:mersfactor` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:consecutive` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:pepin` | ★★ | — | — | — | UNREVIEWED | — |
-| 6 | `ex:gausssum` | ★★★ | — | — | — | UNREVIEWED | — |
+| 6 | `ex:gausssum` | ★★★ | Character double sum, Frobenius, integral cyclotomic basis, Euler descent | Independent quadratic-sum norm, monic-polynomial integer descent and root-preimage count | Actual Volume 1 prop:orth, ex:eisen and ex:gauss supplied solutions; Chapter 6 Euler criterion | VERIFIED_TWICE | DEP-035: all (a)–(d), p,q distinct odd, no cancellation of g in quotient ring, sign not claimed |
 | 6 | `ex:t1-residue-chance` | ★★ | — | — | — | UNREVIEWED | — |
 | 6 | `ex:t1-res11` | ★ | — | — | — | UNREVIEWED | — |
 | 6 | `pb:primsum` | ★★ | — | — | — | UNREVIEWED | — |
@@ -158,5 +158,5 @@ This register is generated **from the actual 11 chapter sources in printed order
 - Preserve the exact stable key. If a problem is redesigned or deleted, record the old and new mathematical obligation and justification in the main review ledger and PR comment.
 - Review the prompt, hint, idea, full derivation, notation, exceptional cases, chapter-order references and final display. A numerical sample cannot certify a general identity.
 - Keep all review claims tied to an exact source commit. Changing an exercise, prerequisite theorem or its hint reopens its affected verification status.
-- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-033, 81/144 are checked twice internally and 63 remain unreviewed.
+- The original manuscript tests check matching keys and numeric cases, but **do not establish mathematical correctness**. A row changes status only after the main ledger records both mathematical checks; at DEP-035, 82/144 are checked twice internally and 62 remain unreviewed.
 - See `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` for gates P06/P07; `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md` for current blockers and next exact task.
