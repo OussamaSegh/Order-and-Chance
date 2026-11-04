@@ -276,3 +276,41 @@ shuffling model/cutoff source, were read for the marked outlook. Both use two
 independent uniform positions with a holding step1/n. They supply no V3 premise.
 The revised ending motivates actual C12 rotations/quaternions. Whole-book first-use,
 unnamed/dependency occurrence and history registers still have a separate gate.
+
+## V3-013a — rotation core, with analysis workshop still pending
+
+All C12 source/hints/answers/figures are now read. CH12-PROMPT-FIRST.md discloses
+hint/first-answer exposure and one first-reconstruction event-count mistake;
+CH12-CORE.md closes four named results and first seven exercises. Actual V1
+linear algebra does not introduce cross products. Define their coordinates
+locally, prove scalar/triple/norm identities, and earn SO3 preservation before
+quaternion rotation arguments use them. Define SO3, quaternion length and left
+ideals at their first local use; distinguish division rings from fields.
+
+The kernel-two homomorphism is upgraded to an actual topological double cover
+by explicit positive-real trace/skew inverse charts and translations. Path and
+square-family lifting are constructed with a finite uniform grid. Actual V1
+ch05 prop:seqcrit and thm:heine proofs were read; their finite-coordinate square
+extension is supplied locally. S3 simple connectedness is proved by short-chord
+approximation, a puncture outside finitely many proper planes, stereographic
+coordinates and contraction; endpoint signs then earn pi1SO3=C2. No later topology
+or unproved connectedness supplies a premise. Original loop/plate conclusion
+is preserved, with an additional explicit based two-turn contraction.
+
+Earn regular-solid attainability using explicit tetrahedral12 and icosahedral
+60 rotations; checking an upper bound alone is insufficient. Exact vertex,
+supporting-plane and order5 computations support the general finite argument.
+Earn geometric conjugacy with actual C11 character tables/Schur and real
+intertwiner normalization, rather than invoking an unproved polar decomposition.
+D2/Klein, zero and antipodal cases are explicit. Reopen actual V2 ch07
+thm:foursq full pigeonhole/first-multiple proof for Hurwitz's prime step; its
+whole-file hash is now guarded. Correct noncommutative left/right coset and
+ideal wording. No named mathematical target removed or weakened.
+
+Eight C12 workshop problems still need full prerequisite/correction closure.
+In particular V1's integral existence contract does not prove their Riemann-sum
+limits, and a tool merely deferred to V6 cannot justify the abelian-group error
+term. Supply finite/local convergence and integral arguments next. The C4/C12
+smallest-simple claim also exposes an unproved finite-order assertion in C5;
+earn the finite proof during global closure. Those are pending findings, not
+approved outlook premises. Whole-book keyed occurrence/history/voice gates remain.

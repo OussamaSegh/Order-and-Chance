@@ -1,5 +1,55 @@
 # Progress
 
+## V3-013a: quaternion/rotation core and matched C11 output
+
+All C12 source,15 prompts/hints/solutions and both figure files read. Close
+four named results and first seven quaternion exercises in CH12-CORE.md;
+fresh totals112/155 named and119/163 triples,231 internal acceptances.
+The eight remaining workshop problems retain pending status until their
+analysis/domain repairs and second checks are complete. The first-record hint/
+answer exposure is disclosed. A first reconstruction overcounted fifth-turn
+rotations as24; comparison and independent class reasoning correct this to12,
+agreeing with the supplied answer. No false original statement is certified.
+
+Supply cross-product geometry, actual double-cover charts, finite path/homotopy
+lifting, S3 simple connectedness and pi1SO3=C2 locally. Earn rotation-group
+attainability with explicit vertices/matrices and geometric conjugacy through
+actual C11 tables/Schur. All named results and original quaternion exercise
+targets retained. Define SO3/left ideals/length, handle unit/zero/Klein/antipodal
+cases, repair left-coset and zero-ideal wording and show reversed quarter-turns
+remain different after the kernel quotient. Correct the nonassociative algebra
+outlook's missing norm hypotheses; remove an unearned incidental SL2F5 claim.
+
+Exact support checks all24 Hurwitz units/all576 products, actual Euclidean
+prime constructions for24 odd primes<101, all12 icosahedral vertices and20
+supporting faces/order5, all103 rotation-curve points and all50 solid vertices/
+90 edges with independently recovered projections and hidden-edge styles.
+No figure defect is inferred from a misleading projection or source counts.
+
+Immutable9aa217f3369cda639c882f27f99dca3418fc422a all-format build completed:
+490 reading/489 print,KDP490,1.15in spine,85 public files/report hashes.
+Actual EPUBCheck5.3.0zero messages and outputchecker pass. Actually opened print319
+colour/grayscale and342–346 colour, all visible content read; bottom345 also
+reopened at2x to resolve UI truncation. This corrects the actual prior weak
+character labels. Six distinct print pages/seven full images only; no other-page,
+reading/digital or later-source approval transfers. Package predates C12 repairs.
+
+New core checker is integrated into unit tests and actual CI. Inventory remains
+155 named/163 triples/22 examples/22 figures/108 bibliography entries; former
+plate remark becomes locally proved unnamed arguments, which have their own
+pending keyed global gate. C12 workshop, all four appendices, whole-book
+first-use/history/story/voice, final all-page/digital/CI-artifact review and
+head-matched merge remain open. Never infer completion from green tests.
+
+Validation at this core checkpoint:483 full unit tests pass, zero skips54.346s,
+/tmp/volume3-v013a-final-tests.log; inherited checker377 labels/378 references,
+fresh inventory/register guards and whitespace pass. Prior20 focused tests pass
+3.746s; the final full suite also exercises the subsequently added24-prime
+Euclidean check. Actual9aa217f3 CI run41927715945 jobs were terminal at23:09UTC:
+list/debs/V3build/site successful,publish skipped. This is prior-source CI,
+not the next core commit's terminal evidence. Latest main still equals PR103's
+merge7f87c2ab00fdb0c7791dc833423b98bef0870f01; no user changes overwritten.
+
 ## V3-012b: complete Chapter11 mathematics and actual contrast finding
 
 Read every Chapter11 named proof, prompt/hint/solution, figure cell and intervening

@@ -17,6 +17,7 @@ import check_chapter8
 import check_chapter9
 import check_chapter10
 import check_chapter11
+import check_chapter12
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -109,6 +110,15 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter11.check_indicator_matrix_identity()
         check_chapter11.check_involution_model()
         check_chapter11.check_local_indicator_prerequisites()
+
+    def test_quaternion_cover_and_hurwitz_exact_arithmetic(self):
+        check_chapter12.check_quaternion_and_cover_coordinates()
+        check_chapter12.check_hurwitz_units()
+
+    def test_icosahedral_attainability_and_actual_rotation_plates(self):
+        check_chapter12.check_icosahedral_existence()
+        check_chapter12.check_rotation_plate()
+        check_chapter12.check_actual_solid_plate()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

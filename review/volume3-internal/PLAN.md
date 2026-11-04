@@ -56,18 +56,18 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-012b
+## Active checkpoint V3-013a
 
-Chapters1–11 have complete mathematical source reads and explicit A/B records:
-108/155 named results and112/163 exercise triples accepted internally. Keyed
-unnamed exposition/concept edges/history closure is a separate pending gate,
-even where its full source was read. CH11-REVIEW.md closes all named/exercise
-mathematics, including a complete finite proof of the previously quoted Sn
-real-form/degree-sum conclusion. Rebuild immutable output and reopen the corrected
-character table in colour/grayscale; C12 quaternions/rotations and all four
-appendices follow. C12 main/prompts/hints and first supplied answer were read;
-disclose that exposure in its reconstruction record. No editorial rewrite status was
-inherited. Named targets remain earned rather than weakened.
+All twelve main chapters have been read fully. Chapters1–11 plus C12's four
+named results and first seven exercises have explicit A/B closure:112/155 named
+and119/163 triples accepted internally. C12's eight workshop problems remain
+pending local analysis/domain/correction closure. CH12-CORE.md earns quaternion,
+cover/topology, existence/conjugacy and the first seven answers, with source
+exposure limits disclosed. Keyed global unnamed/concept/history closure remains
+separate even where source was read. Immutable9aa217f3 outputs are built and
+the corrected character table/new C11 proof pages actually reopened; C12 changed
+output still pending. All four appendices follow, fully in scope. No historical
+editorial status is inherited and no named target is weakened.
 
 Curricular freedom has supplied local proofs, moved complete prerequisite
 problems before their invocations and replaced a duplicate exercise with a
