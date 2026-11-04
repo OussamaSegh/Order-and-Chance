@@ -1,7 +1,7 @@
 # Conceptual prerequisite and story ledger
 
-V3-006. This ledger is incremental. Chapters1–7 have complete mathematical
-readings recorded; Chapters8–12 and all appendix argument routes remain pending.
+V3-006. This ledger is incremental. Chapters1–8 have complete mathematical
+readings recorded; Chapters9–12 and all appendix argument routes remain pending.
 A backward-reference scan is not a conceptual audit.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
@@ -143,3 +143,36 @@ then distinguishes rational form from Jordan's splitting requirement. C8 asks ho
 to obtain fields in which irreducible polynomials gain roots. The moved Kronecker
 problem will join that later field route after cyclotomic irreducibility has
 actually been earned. No mathematical part was removed to avoid the dependency.
+
+## V3-009 — field route and constructive/inseparable boundaries
+
+- C8 finite tower proof first derives finite bases/spanning sets when M/Kfinite,
+  so it does not silently use arbitrary infinite-basis existence. The conditional
+  assertion for given bases remains valid. R/Qinfinite earned from arbitrarily
+  largeEisenstein degrees after simple extensions, not a cardinality premise.
+- Characteristic0/p and the rational/prime-field embeddings taught before first
+  general characteristic invocation. Formal derivative/productrule are local;
+  X^p-tirreducibility earned by C6generalUFD-Eisenstein, not a future theorem.
+- Splitting-field existence precedes extension lemma, which precedes counting/
+  uniqueness. Countstrictlysmallerthan degree ininseparablecase is explicitly
+  probed. Primitive theorem uses priorchar0distinctroots andbase-fieldBezoutgcd,
+  not general Galois correspondence. Degree1/emptygeneratorlist handled.
+- ActualV1 ch00 Cantor power-set challenge/fullanswer read. It proves no set
+  surjects onto its power set, but does not itself connect that result to reals.
+  C8supplies convergentternarysubsetencoding/injectivity and the diagonal
+  argument, plus explicitinteger-polynomialenumeration for countability.
+- Straightedge/compass rules explicitly require distinctpoints/isolated
+  intersections; perpendicular construction uses already known radii, no
+  circular large-distance assumption. Tower criterion covers tangency/parallel/
+  coincident cases and emptyquadratic towers. Prime polygons use actualV1
+  primecyclotomicshiftEisenstein, staleChapter7 pointer corrected3.
+- ex:primitive old duplicate theorem is retained as the complete named theorem;
+  new three-star exercise asks a finitecandidatebound, explicitrecovery and
+  positivecharcounterexample. Monomialbasis and an independentdoubleEisenstein
+  tower provep²degree; everyelement'sp-thpowerinK bounds simpledegree<=p. All
+  fractionfield/UFD/binomial/prime-unit tools already earned, no C9premise.
+
+Story: C8 constructs rootfields before discussing their symmetries, counts
+embeddings with the repeated-root limitation visible, and relates quadratic
+towers to actual geometry. C9 now asks what these constructions produce over
+finite fields; characteristicpbehaviour has an earned example and a boundary.

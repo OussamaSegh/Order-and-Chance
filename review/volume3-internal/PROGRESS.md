@@ -260,3 +260,41 @@ closed-discsubsequence/globalminimum/localtermdescent, forcomplexsplitting.
 and whitespace checks pass. No C7 or movedC10 final rendering evidence yet.
 Main still PR103merge atlastfetch; current fetch/main relationshipcheckedbeforepush.
 C8actualfullreading and remainingbook/appendix/production gates continue next.
+
+## V3-009: full extension/geometry pass and a constructive primitive challenge
+
+Complete C8 main/proofs plus eight prompt-first reconstructions, followed by
+supplied hint/idea/full-solution comparison and adversarial second pass. Fourteen
+named and eight exercise records accepted internally:74/155named,77/163exercises.
+Global unnamed/context/history/render gates remain pending. Countability now has
+actual local enumeration and real-number diagonal proof; the real connection was
+not in V1's actual power-set proof, which was read. InfiniteR/Q instead earned
+by arbitrarily largeEisenstein degrees after simple extensions. Finite tower proof
+now derives finite bases first, without assuming arbitrary infinite bases.
+Characteristic/prime field embeddings/formal derivative and Xp-tirreducibility are
+local. Splitting-field counting reconstructed with inseparability strictness.
+
+Geometry rules specify distinctpoints/isolatedintersections; perpendiculars use
+known radii rather than an unexplained large-distance choice. Wantzel bothways
+covers tangency/coincidence/emptytower and everydivision. StaleV1pointerfixed.
+Primitive theorem retains its complete original result/proof, with base-fieldgcd
+and degree1 justifications. Duplicate exercise replaced transparently, samekey:
+finitecoefficientsearchbound, explicitwholefamilyofgenerators and counterexample
+Fp(S,T)/Fp(Sp,Tp). Monomialbasis and independentdoubleEisenstein tower givep²,
+while everyelementgeneratesdegree<=p. Three-star fullsolution/hintprovided;
+old/newstatements/loss-of-duplicate-only disclosed in replacementrecord.
+
+Exactquotientalgebra checks degree6formula/minimalpolynomial/inverses and the
+newgeneratorrecovery. Actualpentagoncoordinates/arc/towerlabels recomputed;
+multivariateFrobenius probes support the general characteristicproof.475 unit
+tests pass/zero skips(49.495s); finalaffectedsource/freshness/C8mathchecks rerun
+after small proofclarifications, no tool implementation changed afterfullsuite.
+
+Immutable03fe2a03PDF-only checkpoint completed:482reading/481print pages, wrap
+produced fromsameinterior. Manifest records exactidentities/dimensions. Actually
+openedprint151(label141),161(label151),162(label152); newC6ring/fractionfield/
+contentpages fit, no clipping seen. Onlythesepages count; no grayscale/reading
+transfer or EPUB/readerfor this PDF-onlybuild. It predates C8changes.
+CI03fe2a03 run41910003972 inspectedjobdetails: listjob/unit/config/mathchecks
+success; Volume3buildstillinprogress atobservation. No terminalCI acceptance or
+PRcachepromise. Newsource stillrequiresfreshaffectedrendering/CI.

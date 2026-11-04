@@ -13,6 +13,7 @@ import check_chapter4
 import check_chapter5
 import check_chapter6
 import check_chapter7
+import check_chapter8
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -72,6 +73,11 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter7.check_actual_smith_and_table()
         check_chapter7.check_jordan_and_units()
         check_chapter7.check_migration_and_zero_scope()
+
+    def test_field_examples_diagram_and_inseparability_boundaries(self):
+        check_chapter8.check_exact_radicals()
+        check_chapter8.check_pentagon_plate()
+        check_chapter8.check_characteristic_probes()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

@@ -55,3 +55,21 @@ workflow. PR documentation commits can rebuild against an older main cache;
 do not claim a successful PR run creates reusable PR library caches. Never cancel
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
+
+## Active checkpoint V3-009
+
+Chapters1–8 have complete source-level mathematical readings with explicit A/B
+records:74named/77exercise sets. Exposition/context/history registers remain
+pending even where their source is read; their exact closure is a separate whole-
+book pass, not an inventory inference. Next mathematical route isC9finitefields,
+C10Galois (including relocatedKronecker),C11characters,C12quaternions,then allfour
+advancedappendices. User's curricular freedom has been applied concretely:
+Kronecker triple moved intact afteritsproofprerequisite; duplicateprimitive
+exercise replacedbyearnedapplications/inseparabilityboundary,originalnamedtheorem
+retained. Everyaffectedresult must be rechecked at the finalsourcefreeze.
+
+Preliminaryartifact snapshots are explicitly scoped, with onlyactualopenedpages
+recorded. None is the finalcandidate. Finalwhole-bookwrittenvoice/storypass,
+primary-source/historyclosure, all-page/grayscale/digitalactualrendering, EPUB
+links/disclosures/narrowwidebehaviour and exactfinal-headCI/artifactcomparison
+remain open. Continueauthorizedwork; do not treatthischeckpointas completion.
