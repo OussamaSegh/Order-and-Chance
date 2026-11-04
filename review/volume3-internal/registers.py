@@ -20,7 +20,7 @@ def basis(item):
     return {key: item[key] for key in ('id', 'path', 'line', 'end_line', 'kind', 'key', 'sha256')}
 
 
-def initialize(data):
+def initialize(data, write=True):
     groups = {'proofs': [], 'exercises': [], 'exposition': [], 'dependencies': []}
     for item in data['items']:
         row = basis(item)
@@ -62,12 +62,48 @@ def initialize(data):
             id=f"{edge['path']}::{edge['target']}::{occurrences[identity]}",
             context_sha256=hashlib.sha256(context.encode()).hexdigest(),
             role='unclassified', reason='', status='pending'))
+    if not write:
+        return groups
     for group, entries in groups.items():
         dest = HERE / f'{group}.json'
         if dest.exists():
             raise ValueError(f'Refusing to overwrite manual evidence: {dest}')
         dest.write_text(json.dumps({'scope': 'Pending internal AI review; generated inventory is not approval.',
                                     'entries': entries}, ensure_ascii=False, indent=2)+'\n')
+
+
+def reconcile(data):
+    """Preserve identical manual decisions; reopen changed evidence, never approve."""
+    updates = []
+    for group, fresh in initialize(data, write=False).items():
+        dest = HERE / f'{group}.json'
+        document = json.loads(dest.read_text())
+        old = {r['id']: r for r in document['entries']}
+        entries = []
+        for row in fresh:
+            prior = old.pop(row['id'], None)
+            # Coordinates may change while bytes stay identical. Proof and
+            # hint/solution hashes are part of the acceptance identity too.
+            identity = lambda r: (r.get('sha256'), r.get('context_sha256'),
+                                  [(x['id'], x['sha256']) for x in r.get('related', [])])
+            if prior is not None and identity(prior) == identity(row):
+                for key, value in prior.items():
+                    if key not in ('line', 'end_line', 'related', 'destination'):
+                        row[key] = value
+            elif prior is not None:
+                updates.append({'id': row['id'], 'reason': 'changed source; evidence reopened',
+                                'previous_status': prior['status']})
+            else:
+                updates.append({'id': row['id'], 'reason': 'new pending item'})
+            entries.append(row)
+        for prior in old.values():
+            updates.append({'id': prior['id'], 'reason': 'removed/rekeyed source; reconcile manually',
+                            'previous_status': prior['status']})
+            if prior['status'] != 'pending':
+                raise ValueError(f"Do not silently remove reviewed evidence: {prior['id']}")
+        document['entries'] = entries
+        dest.write_text(json.dumps(document, ensure_ascii=False, indent=2)+'\n')
+    print(json.dumps({'reconciliation_changes': updates}, indent=2))
 
 
 def check(data, require_complete=False):
@@ -97,6 +133,10 @@ def check(data, require_complete=False):
     expected = {x['id'] for x in data['items'] if x['kind'] not in ('proof', 'hint', 'solution')}
     if expected != seen:
         raise ValueError(f'Exact register coverage differs: {expected ^ seen}')
+    import hashlib
+    for source in json.loads((HERE/'prerequisite-sources.json').read_text())['sources']:
+        if hashlib.sha256((HERE.parents[1]/source['path']).read_bytes()).hexdigest() != source['sha256']:
+            raise ValueError(f"Earlier source drift; reread affected proof sites: {source['path']}")
     return dict(statuses)
 
 
@@ -104,8 +144,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--initialize', action='store_true')
     parser.add_argument('--require-complete', action='store_true')
+    parser.add_argument('--reconcile', action='store_true')
     args = parser.parse_args()
     data = inventory()
     if args.initialize:
         initialize(data)
+    if args.reconcile:
+        reconcile(data)
     print(json.dumps(check(data, args.require_complete), sort_keys=True))

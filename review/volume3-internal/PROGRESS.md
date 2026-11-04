@@ -56,3 +56,29 @@ Installed pngquant/libimagequant by local package extraction, oxipng9.1.5 and
 EPUBCheck5.3.0 outside the repository; activation is
 `source /workspace/volume3-tools/activate.sh`, which first uses the required
 workspace activation. No system credentials or approval policy was changed.
+
+## V3-003: Chapter 2 full mathematical pass
+
+Read the complete chapter, all eight named arguments and eight exercise sets,
+with prompt-first reconstructions and explicit exposure limits. Both internal
+checks are in CH02-REVIEW.md. Corrected a false proof step for infinite cyclic
+normal subgroups: equal subgroup order does not imply equality there; automorphisms
+take a generator to itself or its inverse. The full original conclusion is earned.
+Also repaired the infinite index-two coset justification, defined Aut(N) as a
+group before use, handled infinite-order coordinates in products, checked the
+quaternion matrix realization, and made the order-eight classification's generators
+and multiplication identifications explicit. No mathematical target weakened.
+
+All D4 subgroup nodes/normal markings/15 cover edges and all C12 cover edges were
+independently recomputed from concrete group operations. New finite semidirect
+checks and the inherited V3 checker pass. The infinite-case regression fails on
+the original source and passes after correction. Explicit manual registers now
+cover the mathematics of16 named results and21 exercises; other evidence remains
+pending. The rekeying log is a source-change record, never approval.
+
+A preliminary build started at8135d59b. All source ingestion into its typeset PDF
+and flattened digital source occurred before the Chapter2 edits. It has471 print
+pages and passes layout/print/cover preflight; formula rendering is still running.
+It is an earlier checkpoint, not the current Chapter2 candidate or a final review.
+No actual pages have yet been visually approved. The detached worktree for later
+immutable builds is /workspace/volume3-review-build.
