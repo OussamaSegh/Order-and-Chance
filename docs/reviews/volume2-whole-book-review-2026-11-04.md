@@ -15,7 +15,8 @@ review are separate obligations. All entries here are internal checks.
 | 1 | IN_PROGRESS: DEP-061 read/rewrite; individual mathematical entries below | VERIFIED_TWICE internally for four retained examples and five figure datasets | IN_PROGRESS: targeted facts sourced; complete bibliography pending | UNREVIEWED after DEP-061 edits |
 | 2 | IN_PROGRESS: DEP-062 read/rewrite and two-pass unnamed math | VERIFIED_TWICE internally for six examples and three figure datasets | IN_PROGRESS: original Erdős/Furstenberg sources checked; portrait provenance/full bibliography pending | UNREVIEWED after DEP-062 edits |
 | 3 | IN_PROGRESS: DEP-063 whole-source and unnamed-argument records | VERIFIED_TWICE internally for six examples and four figure datasets | IN_PROGRESS: targeted primary sources checked; complete bibliography pending | UNREVIEWED after DEP-063 edits |
-| 4–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
+| 4 | IN_PROGRESS: DEP-064 whole-source and unnamed-argument records | VERIFIED_TWICE internally for nine examples and three figure datasets | IN_PROGRESS: targeted sources checked; complete bibliography pending | UNREVIEWED after DEP-064 edits |
+| 5–11 | UNREVIEWED in this whole-source register; named/keyed evidence is separate | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 | Preface/field guide/jacket/cover note | IN_PROGRESS: inventoried and read, substantive follow-up remains | UNREVIEWED comprehensively | UNREVIEWED comprehensively | UNREVIEWED comprehensively |
 
 ## C01 — Divisibility, DEP-061
@@ -263,8 +264,8 @@ and six example blocks supplement that register.
 These changes reopen and revalidate their affected source items; the144-key
 count is unchanged. The other keyed proof records are preserved, not counted
 again. Further small repairs state integer a,b in the Jacobsthal prompt,
-remove the claim that every integer has a prime factor, correct the clock's
-caption from a colour absent in its source to the actual ring/dot shapes,
+remove the claim that every integer has a prime factor, make the clock's
+caption refer to its ring/dot shapes,
 and replace unsupported future claims that Hensel constructs Z_p and that a
 specific undeveloped schoolbook cost model promises a fourfold RSA speedup.
 The mathematically accurate connections to p-adic equation solving and CRT
@@ -323,3 +324,90 @@ Historical/source checks on4 November2026:
 Complete edition/section checking of the remaining bibliography, the detailed
 future research previews, final-size formats and a distinct editorial reader
 remain open. Chapter3 is not signed off.
+
+### Palette clarification after C03
+
+The Chapter3 clock's original “dark grey” caption was consistent with the
+shared palette: common/figure-palette.tex maps ocTeal to teal, then defines
+teal as dark grey. The raw TikZ name alone did not establish a colour error.
+The retained ring/dot wording is a shape-based clarification, not a correction
+of an incorrect rendered colour. This clarifies DEP-063's overly strong
+caption description; final-size contrast remains to be inspected.
+
+## C04 — Arithmetic functions, DEP-064
+
+Read the whole chapter, all10 prompt/hint/idea/writeup groups and bibliography.
+The four named results and10 keyed proofs keep their earlier separate records.
+This pass checks the surrounding claims, nine example blocks and three complete
+figure datasets; final chapter acceptance remains open.
+
+| ID and source | Pass A | Independent/adversarial pass B | Status |
+| --- | --- | --- | --- |
+| C04-U01: multiplicative functions and local formulas | FTA bijects divisors of coprime mn with pairs of divisors of m,n. Counting pairs gives tau multiplicativity; summing products gives sigma multiplicativity. The prime-power exponents give tau(p^a)=a+1 and the finite geometric sigma sum. | Independently expand the finite products of1+X+…+X^a at each distinct prime, keeping their exponents separate. The elementary functions1,id,epsilon and mu satisfy their product laws directly; phi uses the earlier CRT units bijection. All identities have empty product1 at n1. | VERIFIED_TWICE |
+| C04-U02: inversion as subset cancellation and numerical12 | Squarefree divisors correspond to prime subsets, with signs(−1)^size; the sum is(1−1)^r for r>0 and1 for r0. Applying the four nonzero coefficients at12 gives f12=g12−g6−g4+g2. | Expanding each g(d) into its divisor sum cancels every proper-divisor coefficient and leaves f12 once. Independently evaluate prime powers and use multiplicativity. Corrected wording that misleadingly called two numerical cases the whole prime-power proof. | VERIFIED_TWICE |
+| C04-U03: phi, tau and sigma convolution identities | Gauss's divisor sum gives phi=mu*id; tau=1*1 and sigma=id*1 follow directly by enumerating factor pairs. Finite prime-power evaluation gives their displayed products. | Count coprime residues by inclusion–exclusion for phi and directly enumerate divisor exponents for tau/sigma. At72 this gives tau12,sigma195,phi24 independently of convolution. Pointwise multiplication is explicitly distinguished from convolution. | VERIFIED_TWICE |
+| C04-U04: replacement inversion workshop | From sum_{d|n}f(d)=n², successive subtraction gives f1=1,f2=3,f3=8,f4=12,f6=24. Möbius inversion gives f12=144−36−16+4=96; summing all six recovered values returns144. | Independently count pairs(a,b) in1..n with gcd(a,b,n)=1. At12 inclusion–exclusion removes36 even-coordinate pairs and16 pairs divisible by3, restores4 divisible by6, yielding96. Partition all n² pairs by gcd(a,b,n); division by that gcd shows these counts have exactly the required divisor sum. This also proves existence and uniqueness for all positive n, with n1 included. | VERIFIED_TWICE |
+| C04-U05: perfect-number explanations | Sigma(n)=2n is equivalent to the sum of proper positive divisors equalling n. The even classification's converse uses sigma(m)=m+s; if s>1 the distinct divisors1,s,m make the sum too big. Composite Mersenne factors cannot satisfy that classification. | Direct multiplicative sigma evaluation checks6,28,496 and the failed90 example. Independently use the complete even-perfect theorem already proved to exclude2^10(2^11−1), whose odd factor23·89 is composite. The earlier odd-perfect exercise proof is local and uses no external nonexistence theorem. | VERIFIED_TWICE |
+| C04-U06: rough divisor average, hyperbola strips and errors | Ordered positive pairs ab≤x count sum tau(n). The long sum has floor error<x and harmonic main term xlogx+O(x). Short strips a≤m or b≤m, m=floor√x, cover every point; overlap is the complete m×m square. The doubled floor error is<2m and |m²−x|<2m+1. | Partition the complement: if a,b>m then ab≥(m+1)²>x, while all m² square points satisfy ab≤x. Independently apply the actual Volume1 harmonic bounds to get H_m=logm+gamma+O(1/m), with log(√x/m)≤1/m. Dividing by floorx yields a long average asymptotic to logx, without claiming pointwise smoothness or short-interval bounds. | VERIFIED_TWICE |
+| C04-U07: finite coprime model and convergence uses | Uniform independent choices1..N give probability C(N)/N². The local mu indicator gives exact floor-square count; the finite error and absolute tails give the limit reciprocal to the Basel sum. The epigraph now states that finite experiment and says coprime, replacing ambiguous random integers/no common factor. | Independently count visible pairs by primitive rays as in Chapter1; gcd classification gives the same indicator. The full series product is justified by a2Z/K double-tail bound with **positive integer K**, now explicitly specified; a noninteger K would not give the printed telescoping equality1/K. Actual Volume1 inclusion–exclusion, absolute rearrangement and Basel proofs are in the crosswalk. | VERIFIED_TWICE |
+| C04-U08: accurate later-series/finite-field previews | The future series statement now specifies absolute convergence; for real s>1 the mu series is1/zeta(s), with zeta defined. The already self-contained s2 proof is distinguished from that later general theorem. | Actual Volume3 main.tex includes ch09-finite-fields; its thm:countirr proof counts degrees to obtain sum dN_q(d)=q^n, then divides the inverted primitive-word expression by n. Added this missing division and the monic/degree qualifications to the teaser. Independent F2 polynomial enumeration through degree6 checks the factor. Neither future result is a proof premise here. | VERIFIED_TWICE for accuracy of the previews; full later theorem proofs are not imported |
+
+The workshop heading formerly introduced a third repetition of the same subset
+proof for sum mu(d). That proof remains in the theorem and its earlier
+inclusion–exclusion explanation. The replacement workshop instead performs an
+actual inversion on new data; no theorem or exercise was removed. Clarified
+positive integer domains, word-power concatenation, prime-square divisibility
+in the mu definition and the sample-size/cutoff domains. Replaced claims that
+three sample mu values were the whole definition or that step-function averages
+were smooth by the precise mathematical statements. Removed a repeated
+odd-perfect-number status sentence; the open question remains explicit in the
+section's introduction and further reading.
+
+### C04 examples and complete plotted data
+
+| ID | Independent reconstruction and separate check | Status |
+| --- | --- | --- |
+| C04-E01: multiplicative-function list | Verify1,id,epsilon,mu directly at coprime inputs, phi by CRT, tau/sigma by divisor bijections (U01/U03). The definition now explicitly excludes prime squares rather than ambiguously saying a square factor. | VERIFIED_TWICE internally |
+| C04-E02: tau/sigma12 | The six divisors1,2,3,4,6,12 sum to28. Independent exponent choices give3·2=6 divisors and(1+2+4)(1+3)=28; tau4=3 differs from tau2²=4. | VERIFIED_TWICE internally |
+| C04-E03: mu12/30/1 |12 has prime square4, giving0;30 has three distinct prime factors, giving−1; the empty product at1 gives1. Independent squarefree-subset definition agrees. | VERIFIED_TWICE internally |
+| C04-E04: convolution12 | Actual divisor mu values1,−1,−1,0,1,0 sum to0; at1 the sum is1. Independent subset cancellation matches, without pretending these two samples prove the identity. | VERIFIED_TWICE internally |
+| C04-E05: mu*tau | The actual12 calculation6−4−3+2=1 agrees with associativity(mu*1)*1=epsilon*1=1. Independent local factor(a+1)−a=1 gives the general multiplicative value. | VERIFIED_TWICE internally |
+| C04-E06: perfect28 | Proper divisors1,2,4,7,14 sum28; direct sigma4·sigma7=7·8=56 proves the same. | VERIFIED_TWICE internally |
+| C04-E07: failed90 | Divisor enumeration gives sigma90=234; the product3·13·6 independently agrees. Ratio234/90=2.6, and odd part45 differs from the required3. | VERIFIED_TWICE internally |
+| C04-E08: summatory tau10 | Values1,2,2,3,2,4,2,4,3,4 sum27; independent short-strip calculation2(10+5+3)−9=27 matches. | VERIFIED_TWICE internally |
+| C04-E09: average10 |27/10=2.7; log10+2gamma−1=2.457016… rounds to2.46. The theorem controls the asymptotic normalized error, without promising monotone improvement at every successive N. | VERIFIED_TWICE internally |
+| C04-F01: orchard12 square | Parse all91 filled centres and53 cross centres. Independent gcd computation classifies every one of the144 pairs. The dashed8.4/12.6 direction is2/3, hitting exactly(2,3),(4,6),(6,9),(8,12) inside the square; the nearest is primitive. | VERIFIED_TWICE data; final-size visual pending |
+| C04-F02: divisor72 grid | Every actual cell label equals2^i3^j at its column/row. The12 distinct labels exhaust the divisors, sum195 and yield the multiplicative count/product independently. | VERIFIED_TWICE data; final-size visual pending |
+| C04-F03: hyperbola30 | Every plotted point satisfies ab≤30 and every such positive pair appears. The square25 points are MidnightBlue, the43 upper-arm points ForestGreen and43 right-arm points Orange. The shared palette maps those to charcoal/ochre/coral, matching the caption. Counts give68 points in each strip and2·68−25=111. | VERIFIED_TWICE data; final-size visual pending |
+
+Six focused regressions recalculate all these coordinates/classifications,
+the replacement workshop and the missing degree divisor. The latter source
+guard fails on the former teaser, and independent monic-polynomial trial
+factorisation supplies its numerical counterexample: degree2 over F2 has one
+irreducible polynomial but two primitive words. New source inventory remains
+98 example blocks and144 exercises; source changes require renewed artifacts.
+
+### C04 historical/source checks and boundaries
+
+- The cited [Nielsen AMS paper](https://www.ams.org/mcom/2015-84-295/S0025-5718-2015-02941-X/S0025-5718-2015-02941-X.pdf)
+  metadata confirms84(2015),2549–2567. Its abstract and the
+  [author's own PDF](https://mathdept.byu.edu/~pace/BestBound_web.pdf)
+  explicitly give at least10 distinct prime factors. Read those specific
+  passages, not the entire computer-assisted research proof. The book's
+  exercise proves its weaker three-factor claim itself.
+- The [digitized Möbius record](https://www.digizeitschriften.de/download/pdf/243919689_0009/log12.pdf)
+  and [Encyclopedia of Mathematics bibliography](https://encyclopediaofmath.org/wiki/M%C3%B6bius_series)
+  corroborate1832,volume9,pages105–123 and DOI10.1515/crll.1832.9.105.
+  Direct scan/DOI access failed; original-page visual inspection is not
+  claimed. The inversion proof in the chapter is independently reconstructed.
+- The Pólya1918 reference has the separately checked original bibliography
+  and research-institution references recorded under C01. The book's square
+  orchard and probability calculation are established locally.
+- Actual Volume3 `thm:countirr` source was read to check the future count
+  formula, with its reading-order inclusion confirmed in main.tex. This is
+  a preview accuracy check, not a backward dependency or a certification of
+  Volume3.
+
+The complete remaining edition/chapter bibliography, historical priority,
+current-source final-size figures/pages, complete release dependency graph
+and independent external review remain open. Chapter4 is not signed off.
