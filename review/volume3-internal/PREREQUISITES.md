@@ -1,7 +1,7 @@
 # Conceptual prerequisite and story ledger
 
-V3-002. This ledger is incremental. Only Chapter 1 has its current complete
-mathematical reading; all other chapter/appendix argument routes remain pending.
+V3-006. This ledger is incremental. Chapters1–5 have complete mathematical
+readings recorded; Chapters6–12 and all appendix argument routes remain pending.
 A backward-reference scan is not a conceptual audit.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
@@ -61,3 +61,26 @@ from a title, citation, exercise prompt or prior audit.
 These rows do not close the still-pending exact forward-context register or
 later chapters. All qualifying changes in printed order must reopen relevant
 first-use/context evidence; reference distance alone cannot approve a premise.
+
+## V3-006 additions
+
+- C5 finite G, prime p, p-adic factorization and a0 case now precede the Sylow
+  definition. Mod-p polynomial arithmetic and characteristic are explained before
+  the binomial argument. Normalizer is earned as a conjugation stabilizer.
+- Existence is proved before containment/conjugacy, which precedes the congruence.
+  Applying conjugacy within a normalizer in the congruence proof uses the already
+  proved part(b), not the congruence itself. Cauchy/center come from actual C3.
+- C5 pq classification uses V2 ch05-primitive-roots thm:cyclic, whose actual proof
+  was reread: root counts N(d)=0 orphi(d), summed deficits force equality. This is
+  now hashed in prerequisite-sources.json. C1 subgroup-of-cyclic and C2 semidirect
+  construction earn action classification/existence/uniqueness.
+- Solvability is defined before closure proofs and derived-series exercise. A5
+  perfectness is defined only after A5'=A5. Simple abelian C3 is distinguished.
+  Characteristic-zero radical criterion and deep finite-group results are outlooks,
+  never premises. No future theorem used to obtain the order12 classification.
+
+Story: C4 asks which permutations admit normal reductions and proves alternating
+simplicity. C5 uses actions to force prime-power subgroups, then tests whether
+normal reductions reach abelian pieces. C6 changes the operation: congruences
+and polynomial remainders lead from quotient groups to quotient rings. The actual
+C6 opening/prerequisite route is the next reading; this bridge is provisional.

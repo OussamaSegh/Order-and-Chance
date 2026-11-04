@@ -157,3 +157,35 @@ emerges. This authorizes substantial curricular/structural changes without anoth
 permission round. The review still must disclose old/new targets and lost coverage,
 and verify the actual final route. Advanced-exercise placement is being reassessed;
 no content has yet been removed under this freedom.
+
+## V3-006: Sylow proofs and complete small-group classifications
+
+Read all Chapter5, reconstructing eight named statements and solving eight prompts
+before supplied hint/solution comparison. Full A/B records now accept40/155 named
+results and53/163 exercises internally. Other semantic/history/context records
+remain pending; this is not whole-book acceptance. Clarified finite Sylow scope,
+p^a/m and characteristic before use, k0, pq with equal primes, corrected an
+intersection sentence, and earned omitted product/conjugacy steps. Solvability
+outlook now has complex-subfield scope. Order12 completeness, all action cases and
+pairwise nonisomorphism reconstructed by two routes; no flagship claim weakened.
+
+Actual V2 primitive-root cyclicity proof reread and hashed. All15 figure rows and
+abelian/nonabelian types rechecked. Independent finite calculations check S4 Sylows/
+derived chain, GL2 normalizers/line bijections at p2,3,5,7 and five associative
+order12 models with distinct element-order multisets. These support general proofs.
+Source research found the published order1024 count superseded: read Burrell's
+actual thesis correction/explanation and maintainers' documentation. Caption now
+attributes49,487,367,289; added the2022 article with online2021 date. Bibliography
+count105 (one justified addition), named/exercise/example/figure counts unchanged.
+Count regression before-failed/after-passed; no claim to rerun external enumeration.
+RESEARCH.md records primary reads/access limits including pending Hadamard lead.
+
+Freshness/inventory/inherited V3/focused Chapter5 checks pass; 471 unit tests pass with zero skips (60.419s), including the new normalizer/
+classification/count regression. Immutable1b3c7b05 build remains a separate earlier
+source checkpoint, unaffected by Chapter5 edits in the primary worktree. Its
+EPUB formula rendering has reached8540unique formulas; outputs/EPUBCheck/actual
+page inspection still need terminal evidence. Current main remains the PR103 merge
+7f87c2ab00fdb0c7791dc833423b98bef0870f01; no concurrent main change observed.
+CI run41904629129 for1b3c7b05 is in progress; earlier PR runs were cancelled by the
+workflow concurrency policy after new pushes, not manually cancelled by reviewer.
+No main/unrelated run cancelled. No terminal final-head claim.

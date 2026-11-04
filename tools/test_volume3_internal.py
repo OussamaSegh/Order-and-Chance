@@ -10,6 +10,7 @@ import check_chapter1
 import check_chapter2
 import check_chapter3
 import check_chapter4
+import check_chapter5
 import inventory as volume3_inventory
 import registers as volume3_registers
 
@@ -44,6 +45,11 @@ class Volume3InternalReview(unittest.TestCase):
 
     def test_conjugacy_probability_constant_has_bounded_tail(self):
         check_chapter4.check_probability_constant()
+
+    def test_sylow_normalizers_classification_and_current_count(self):
+        check_chapter5.check_sylow_and_derived()
+        check_chapter5.check_gl2()
+        check_chapter5.check_order12_and_plate()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())
