@@ -73,16 +73,16 @@ This list enumerates **all 72 named theorem/proposition/lemma/corollary environm
 | 11 | `prop:t1-unitproduct` | proposition | Iterated CRT and earlier prime-power unit structures | Independent CRT idempotents and explicit sign/5 exponent coordinates | VERIFIED_TWICE | DEP-054: m=1 empty product,2/4, noncyclic2^k, no later group structure theorem |
 | 11 | `thm:t1-charcount` | theorem | Images of cyclic generators and factorwise homomorphisms | Independent complete explicit root-of-unity coordinate parametrization | VERIFIED_TWICE | DEP-054: exactlyφ(m), separates every nonidentity unit, trivial factors |
 | 11 | `thm:t1-ortho` | orthogonality | Character quotient sum, dual permutation, unit inverse filter | Independent product of root sums for both row and column indices | VERIFIED_TWICE | DEP-054: all (i)–(iii), nonunit a/n, m=1, root-value modulus proved at first use |
-| 11 | `lem:t1-pseries` | lemma | — | — | UNREVIEWED | — |
-| 11 | `lem:t1-dseries` | lemma | — | — | UNREVIEWED | — |
-| 11 | `thm:t1-eulerprod` | Euler product | — | — | UNREVIEWED | — |
-| 11 | `cor:t1-mu-zeta` | corollary | — | — | UNREVIEWED | — |
-| 11 | `thm:t1-sieve` | Legendre | — | — | UNREVIEWED | — |
-| 11 | `prop:t1-chi4series` | proposition | — | — | UNREVIEWED | — |
-| 11 | `prop:t1-charbound` | proposition | — | — | UNREVIEWED | — |
+| 11 | `lem:t1-pseries` | lemma | Decreasing-function integral tail from floor X | Independent dyadic convergence bound and finite cutoff integral | VERIFIED_TWICE | DEP-055: real s>1,X≥1, no integral through0 |
+| 11 | `lem:t1-dseries` | lemma | Absolute double product permits product-index grouping | Independent finite hyperbola/rectangle tail squeeze | VERIFIED_TWICE | DEP-055: arbitrary complex sequences, absolute hypotheses, RHS absolute convergence |
+| 11 | `thm:t1-eulerprod` | Euler product | Finite geometric products, smooth-number tails, uniform modulus lower bound | Independent finite inverse product and convolution μf*f=ε | VERIFIED_TWICE | DEP-055: f(1)=1, complete multiplicativity, complex values/zeros, nonzero limit |
+| 11 | `cor:t1-mu-zeta` | corollary | Absolute convolution μ*1=ε and nonzero reciprocal limit | Independent finite squarefree-subset product and tail | VERIFIED_TWICE | DEP-055: μ not treated as completely multiplicative; s>1 explicit |
+| 11 | `thm:t1-sieve` | Legendre | Möbius gcd indicator and prime-factor sqrt obstruction | Independent subset inclusion–exclusion | VERIFIED_TWICE | DEP-055: x≥0 real,z≥2, min(x,z) endpoint, sufficient condition not necessary |
+| 11 | `prop:t1-chi4series` | proposition | Positive grouped sums, uniform13/15 upper gap, unmatched term→0 | Independent finite geometric integral and vanishing tail bound | VERIFIED_TWICE | DEP-055: fixed strict-limit gap and ungrouped convergence; (2/3,1) now proved |
+| 11 | `prop:t1-charbound` | proposition | Zero complete periods and remainder ≤φ(m) unit values | Independent complementary-period bound ≤φ(m)/2 | VERIFIED_TWICE | DEP-055: real x≥0, m1 nonprincipal case vacuous, absolute unit values established |
 
 ## Complementary records
 
-- **65/72** rows are `VERIFIED_TWICE` at DEP-054; **7** named results remain `UNREVIEWED`. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
+- **72/72** rows are `VERIFIED_TWICE` at DEP-055; **0** named results remain `UNREVIEWED`. This does not cover unnamed proof passages or close any whole-book gate. The full two-pass mathematics is in `docs/reviews/volume2-independent-verification-ledger-2026-11-03.md`; source checks and finite tests cannot supply missing proof passes.
 - `docs/reviews/volume2-exercise-verification-register-2026-11-03.md` indexes all 144 problem and solution keys, not these 72 results.
 - The plan `docs/plan/volume2-independent-verification-and-rewrite-2026-11-03.md` requires **all** unnamed proof passages, equations and examples as well. This register is an accountability tool, **not** a mathematics certificate.
