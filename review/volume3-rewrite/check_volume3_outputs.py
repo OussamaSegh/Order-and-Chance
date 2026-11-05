@@ -44,7 +44,18 @@ def inspect_pdf(path: Path) -> tuple[int, str]:
         r"\b(?:theorem|lemma|figure|chapter|proposition|exercise|appendix)\s+\?\?",
         text, re.IGNORECASE)
     assert not unresolved, f"Unresolved cross-reference {unresolved.group()}: {path}"
+    check_reed_solomon_heading(text)
     return pages, text
+
+
+def check_reed_solomon_heading(text: str) -> None:
+    # The display/running-head faces do not apply TeX's -- ligature. This
+    # regression checks extracted actual PDF glyphs, not the source spelling.
+    normalized = " ".join(text.split())
+    assert "Correcting errors: Reed–Solomon codes" in normalized, (
+        "Reed–Solomon PDF section title missing or has literal double hyphen")
+    assert "Reed--Solomon" not in text and "REED--SOLOMON" not in text, (
+        "Literal double hyphen in a Reed–Solomon PDF heading")
 
 
 def inspect_epub(path: Path) -> dict[str, int]:

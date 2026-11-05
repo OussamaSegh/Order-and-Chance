@@ -2839,3 +2839,34 @@ Frozen manuscript/rendering inputs unchanged;only actual-review evidence/docs
 edited. Mathematical and earlier test/CI statuses retain their explicit source
 scopes. FinalheadterminalCI/artifactcomparison remains required after remaining
 543PDFpages and84digitalfigurecaptures/formula/themeappearance are inspected.
+
+
+## V3-049 — actual heading defect, bounded source correction and failing regression
+
+Actually inspected24morePDFpages through reading258/print257:516inspectedtotal,
+510accepted/retained,6with identified production defect;519unopened. F16Figure9.1
+all15binarylabels,arrow,countplot/logaxis andcaption inspectedbothmodes/editions.
+Actual Reed–Solomon Section9.6 title and running headers show literal doublehyphen:
+body font has TeX ligatures;display/running-head family definitions do not.
+The exact one-line source fix uses UnicodeU+2013 only in that section title.
+No shared-design change or mathematical statement/proof/solution change.
+
+New output regression checks actual extractedPDFglyphs;it fails on both olde531
+PDFs as expected. New matchedbuild,actualaftercheck,affected-pageviews/pagination,
+digitaltitle/fragment and exact-evidence-transfer checks required. Source-only
+checks previously missed this typography issue. e531is historical evidence,not
+finalacceptance of updatedsource. Actual6defectpages explicitlymarked inledger.
+
+One synthetic navigation-ID rekey mapped old/new with fresh manualA/B;all1660
+otherinventoryfragments identical,all120conceptanchors byte-identical. Reviewed
+bounded diff retains existing substantive math/concept decisions;newsourceguard
+6e3f67181a40fdf9a4f94a066912d9e9523ad761e9a809dc79321f87ce249941. Bothstrict
+completeness/freshness gates and sourcechecker pass. Details inV3-049-heading-
+correction.json. No weaker mathematical target or assertion introduced.
+
+Prunedonlyownedregenerable85MBformula cache from supersededd47checkout,with
+completefilehashmanifest;allpublicartifacts,reports,sources/worktree and actual
+visualevidence retained. Needed room for freshimmutablematchedbuild.
+
+V049actual fullunitrun:522tests/zero skips/60.643sPASS. Two affectedprintfacings
+explicitlyreopened:126accepted/128inspected. No new artifact pass claimed yet.

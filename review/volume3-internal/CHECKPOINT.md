@@ -1,4 +1,23 @@
-# Restart checkpoint — V3-048
+# Restart checkpoint — V3-049
+
+CURRENT ADVANCEMENT: new actual production defect found at e531R256/P255 title and
+R256–258/P255–257 running heads:literal Reed--Solomon. Source line590nowU+2013.
+New actual-output regression fails as expected on both oldPDFs. Mathematical
+content unchanged:1660identical items,120conceptanchors unchanged;one navigation
+fragment personally rereviewed/rekeyed,newguard
+6e3f67181a40fdf9a4f94a066912d9e9523ad761e9a809dc79321f87ce249941.
+Bothstrictgates/sourcecheckerPASS;fullunitrun /tmp/volume3-v049-tests.log PASS522/zero skips/60.643s.
+516actual/retainedphysicalpages inspected(473currentactual+43prior):510accepted,
+6withopenproductionfinding;519unopened. Readingthrough258/print257plus446.
+128printfacings inspected:126accepted,2withheadingdefect. Perpageobs:/tmp/volume3-v049-{reading,print}-c9a.json.
+DO NOT claim e531is finalcurrentoutput. Makeimmutable freshbuild at actualV049
+commit,useexplicitcwd and matchingtoolchain. Compare every accepted page/figure/
+cover/digitalrelevantfile/pixel beforetransfer;actuallyreopenchangedpages and
+pagination. ContinueoldPDFinspection onlyas source-identical futuretransfer
+evidence,not automatic currentacceptance. GenerateC9groups through282/P281ready.
+Supersededd47regenerable85MBformulacache prunedwithcompletehashmanifest
+V3-049-pruned-regenerable-cache.json;publicartifacts,reports,actualimages retained.
+The previous paragraphs below are historicalV048 context where overridden.
 
 Continue the entire authorized solo internal AI review through final actual
 acceptance and head-matched merge. Do not stop at this checkpoint. No agents,
@@ -11,7 +30,7 @@ rough estimate4–8morehours was given for remaining production work.
 Repository /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104; draft PR104
 https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Parent 194b82e19f2cd13fe5e9c73a045b131e87a5917c; read actual HEAD after this commit.
+Parent 11a64ff46d29200e3afafbc15eec6a65efa79aa0; read actual HEAD after this commit.
 Original correct PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
 Main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 was freshly fetched and integrated
 af1c3fe4; fetch again before final merge. Preserve unrelated user changes.
