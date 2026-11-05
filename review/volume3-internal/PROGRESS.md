@@ -1,5 +1,87 @@
 # Progress
 
+## V3-038: teach algebra terminology before invoking it
+
+Whole-concept continuation found two early uses of algebra terminology. C11's
+complete divisibility solution ends with a new explanation of its actual integer
+class-product relations, replacing undefined 'integer algebra'. C12 now defines
+real algebra (real vector space,identity,multiplication linear in each argument)
+and division algebra (nonzero,both side multiplications by every nonzero element
+bijective) before the Frobenius/Hurwitz outlook. Matrix bilinearity and the
+already earned quaternion inverse explicitly prove H is a division algebra.
+The classification statements/hypotheses are unchanged and still nonpremise
+outlooks; no octonion-classification proof is newly claimed. Existing B later
+complex matrix-algebra definition is not used to justify earlier terminology.
+
+Read the ENTIRE current ex:divides prompt,hint,findingidea,parts(a)-(c),tools and
+leads. Fresh full A/B in V3-038-fresh-divisibility-triple.json:dependent finite
+Z-generators require the correct A^T eigenvector convention;nonzero generator
+vector makes the integer characteristic polynomial vanish. Mixed-power spans
+earn closure and monic rational denominator gives integrality. Integer class
+pair counts earn scalar integrality;character orthogonality earns d divides|G|.
+Independent torsionfree-lattice/CH and regular integer classsum methods agree.
+No division by a character value;d>=1/trivialG/x0/dependent generators checked.
+Three stars retained with actual discovery route. Original prompt-first history
+preserved;this current reread is informed,not a new blind solve,human referee
+or formal verification. Complete reader-facing proof retained,no weaker target.
+
+Exact independent A5 computation:all60 elements,five actual classes/all25 class
+products,per-element coefficients constant integers;central scalar tuple
+(1,-5,0,2+2sqrt5,2-2sqrt5) satisfies every relation. Nonrational scalar obeys
+monicX²-4X-16. V3-038-class-scalar-probe.json records the support,not a replacement
+for the full general proof. The other39 entire named/proof pairs/full triples in
+C11/C12 are individually source-identical to1b98ad36 after reread,not approved
+from count/ordinal alone;V3-038-retained-identities.json.
+
+C12 former single identity/classification block becomes three,each with fresh
+explicit domain/claim/A/B:Euler identity,local real/division definition with two
+proof routes (inverse maps and norm-kernel-rank),unchanged bounded classification
+outlook. Actual earlier V2 four-square proof160-176 reread:full mixed-term
+expansion/prime reduction/strict descent means its optional future quaternion
+parenthesis is not an essential premise. Changed Euler reference context and
+literal V2 mention freshly reclassified. A newly explicit real/division-algebra
+outlook chain brings first-use register to120. Changed C-algebraic-integer full
+solution anchor gets fresh semantic decision;other25 coordinate shifts retain
+only exact fragment identity. Freshness guards caught the intermediate changed
+anchor/context;no stale evidence bypass or assertion weakened.
+
+**1176 item decisions=158 named+163 full triples+855 global,all393 label uses,
+all88 literal earlier contexts;every global record has completeCORE+role.**
+All120 first-use chains reviewed;all120 whole-volume later-use closures pending.
+Fresh inventory1660items/603prose/118bibliographygroups/22examples/22figures/
+9tabular/22sourcefiles. +2 items/prose are the split locally taught definition
+and separately identified outlook,not extra named theorem approvals. Original
+155 named plus locally earned PID/quartic/planar3 remain158.
+
+Final current-source **518 tests pass,zero skips,56.464s**,
+/tmp/volume3-v038-tests.log;required source/inventory/strictregister/global-ledger
+freshness and whitespace pass. Source/registers frozen during fullsuite;later
+writes descriptive reports. No new unit tests merely mirroring low-impact prose;
+actual complete fresh affected mathematical reconstructions provide evidence.
+No current build/pixel approval:latest all-format3b4e precedes C bibliography,
+D prose and current C11/C12 changes,so final affected pagination needs review.
+
+To make room for final outputs,removed only redundant regenerable formula caches
+in14 older owned snapshots with matching committed artifact manifests. Preserved
+all public dist artifacts,manuscript/git worktree state,build reports/provenance,
+actual visual evidence/CI comparisons and five selected recent caches. Exact
+logical sizes/paths in V3-038-cache-pruning.json;disk now~1.7GB free. This is not
+a GitHub PR-cache claim;library caches saveonlymain. No main/unrelated runs
+cancelled. Final terminal CI advancement belongs inPR,no CI-only commit loop.
+
+Next:120 explicit manual whole-volume concept closures,including unreferenced
+arguments/figures/captions/hints/answers and exact earlier proofs. Add strict
+substantive later-use evidence/source/figure/supplemental drift guard;flags or
+backward-reference scans alone cannot approve concepts. Then final committed
+source freeze/all-format matched build,actual every reading/printpage/gray/
+facing concern/all figures/tables/displays/openings/appendices/final matter;
+actual narrow/wide EPUB/reader mathloading/baseline/shape/aspect/clipping/overflow/
+nav/theme/menu/disclosures/all local links and163triple destinations;actualfinal
+CIartifactcomparison. Only then exactreviewedhead/clean/currentbase/no unresolved
+findings/terminalCI/ready/headmatchedmergecommit andGitHub/mainverification.
+NativeKindle,KDPaccount/PrintPreviewer,ISBNownership,physicalproof unavailable
+publicationfollowups. No another-reviewer request,inventedISBN or Amazonaction.
+
 ## V3-037: explicit domains/claims for every global record
 
 Completed277 previously missing explicit domain/claim pairs by individual stableID:

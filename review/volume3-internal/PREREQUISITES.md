@@ -1,9 +1,9 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-037: all twelve main chapters and four appendices have fresh core
-A/B evidence and853 global item decisions. All393 label occurrences and all88
-literal earlier contexts are classified. All119 first-use chains reviewed;
-all119 whole-volume later-use chains remain pending.All853 global rows now have explicit domain/claim and fullCORE fields;the strict
+Current V3-038: all twelve main chapters and four appendices have fresh core
+A/B evidence and855 global item decisions. All393 label occurrences and all88
+literal earlier contexts are classified. All120 first-use chains reviewed;
+all120 whole-volume later-use chains remain pending.All855 global rows now have explicit domain/claim and fullCORE fields;the strict
 accepted-evidence gate rejects missing substantive fields. The historical
 table below does not override current keyed source/evidence records.
 
