@@ -5,24 +5,25 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
-## Current acceptance checkpoint — V3-049
+## Current acceptance checkpoint — V3-053
 
 | Work | Current evidence |
 | --- | --- |
-| Internal source review | Complete at guarded heading-correction snapshot: 158 named results, 163 full triples, 856 global records, 120 concepts, 393 label uses and 88 earlier contexts. |
-| Matched build | e531ae06 historical: 518 reading / 517 print; supplied ISBN scan and prior EPUBCheck pass. New heading-only matched build/output/browser/identity review required. |
-| Actual PDF visuals | 516 pages inspected: 510 accepted/retained and 6 with identified title/running-header doublehyphen; 519 unopened, 128 facings inspected. Source corrected; actual replacement review pending. |
-| Digital measurements | Actual unmodified 52 EPUB and 48 reader narrow/wide instances pass. |
-| Reader behavior / destinations | 652 actual disclosure/backlink/close checks and 48 page/control checks pass. All 4674 reader and 21835 EPUB local HTML/XHTML destinations pass; exact 163 triples each. |
-| Digital visuals | First figure in both editions at both widths opened; other 84 generated figure captures and formula/theme appearance remain pending. |
-| CI comparison | e531 overall terminal success. Actual CI ZIP digest matched; all reading and wrap pixels match, one print page differs only slightly and was actually opened in both modes. Actual EPUB differences classified, nine glyph pairs retained by exact relevant prior bytes, footnote clicks and actual viewports checked. Later commits need their own terminal CI and relevant artifact comparison. |
-| Merge / publication | Draft; new heading build/regression,remaining visuals and final-head gates open. Native Kindle, KDP account/Previewer, ownership and physical proof remain publication follow-ups. |
+| Internal source review | Complete at frozen producing commit `15d32333`: 158 named results, 163 full triples, 857 global records, 120 concepts, 393 label uses and 88 earlier contexts. Internal AI review only. |
+| Matched build | Actual complete `15d32333` all-format build: 518 reading / 517 print; ISBN9798167514683, matched wrap and listing. Output checks and final EPUBCheck5.3 pass. |
+| Actual PDF visuals | 724/1035 accepted: 88 actual current openings and636 exact prior-pixel retentions; 311 unopened. 180 print facings. Complete C11 and C12 opening inspected. Both heading defects closed; all9 tabulars opened in both editions/color/gray. |
+| Digital measurements | Actual unmodified52 EPUB and48 reader narrow/wide instances pass; exact current relevant bytes retain prior evidence. |
+| Reader behavior / destinations | 652 disclosure/backlink/close checks and48 page/control checks pass. All4674 reader and21835 EPUB local destinations pass;163 exact triples each. |
+| Digital visuals | All88 actual figure views complete:22 figures × reader/EPUB ×390/1280. Further paragraph/formula baseline/shape and theme appearance work remains. |
+| CI comparison | Historical e531 overall terminal success and actual artifact comparison. Current002dcc77 run1739 is in progress; V3 build step active at actual job query. Final head terminal CI and relevant artifact comparison remain required. |
+| Merge / publication | Draft. Remaining visual and final-head gates open. Native Kindle, KDP account/Previewer, ISBN ownership and physical proof remain publication follow-ups. |
 
 Detailed evidence: [progress](PROGRESS.md), [restart](CHECKPOINT.md),
-[candidate artifacts](candidate-e531ae06-artifacts.json),
-[actual per-page record](candidate-e531ae06-visual.json),
-[digital gates](V3-044-digital-gates.json),
-[actual CI comparison](candidate-e531ae06-ci-comparison.json).
+[current acceptance](CURRENT-ACCEPTANCE.json),
+[selected matched artifacts](candidate-15d32333-artifacts.json),
+[actual per-page record](candidate-15d32333-visual.json),
+[all digital figures](V3-052-digital-visual.json),
+[exact relevant digital/cover identity](V3-052-digital-cover-identity.json).
 Historical checkpoints remain scoped to their producing sources.
 
 ## Baseline
