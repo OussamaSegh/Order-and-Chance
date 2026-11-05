@@ -350,3 +350,34 @@ with explicit loss disclosure, while every named/exercise target remains.
 
 All four appendices and global keyed unreferenced/concept/history/voice evidence
 still remain. This ledger distinguishes available proofs from inventory approval.
+
+
+## V3-014: actual finite analysis and spectral appendix contract
+
+Reopened actual V1 ch05 prop:seqcrit246–265 and thm:evt435–445, V1 ch03
+thm:dalembert151–166, V1 ch07 full thm:spectral378–403 and projection350–365,
+and C7 Jordan cyclic construction795–825. Earlier whole-file hashes remain
+identical. APPA-REVIEW records the actual argument, not availability inferred
+from a title. Supply coordinatewise finite Delta/K sequential compactness
+before the variational maximum; supply the finite-minimum continuity and
+triangle equality case. Jordan binomial powers and polynomial/geometric
+absorption are earned before rate claims. Zero blocks and empty non-Perron
+spectra are explicit. No Banach/Birkhoff sharp contraction premise is imported;
+prove the metric on positive rays and disclose removed incidental catalog.
+
+The full cyclic-level proposition is moved before its first Frobenius use.
+Closed walks decompose by strictly decreasing length into finitely many simple
+cycle lengths, earning Bezout; finite gcd selection also strictly decreases a
+positive integer. Define period only when a positive cycle exists. Handle [0]
+separately rather than certifying the original unqualified primitive equivalence.
+A positive power proves reachability before any use of irreducibility.
+
+PageRank's main1-norm contraction now precedes its numerical use, without
+borrowing the later exercise. The exercise adds arbitrary possiblyzero v and
+Cauchy existence/uniqueness. Leslie's main Euler–Lotka equation is derived from
+survival rows before the later full characteristic-polynomial exercise. Its
+last positive fertility block earns existence without Descartes or a future
+analysis theorem. Bipartite full spectrum uses the actual earlier *real*
+spectral theorem, all kernels/ranks/zeros supplied. Uniform shuffle conclusion
+requires the explicitly stated fixed random position-permutation model.
+Global keyed context/first-use/exposition closure still remains a separate gate.

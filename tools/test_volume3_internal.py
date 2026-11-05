@@ -18,11 +18,22 @@ import check_chapter9
 import check_chapter10
 import check_chapter11
 import check_chapter12
+import check_appendix_a
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_positive_matrix_periods_and_sharp_exponent(self):
+        check_appendix_a.check_periods_and_wielandt()
+
+    def test_positive_matrix_contraction_and_actual_rank_graphs(self):
+        check_appendix_a.check_oscillation_and_two_states()
+        check_appendix_a.check_actual_graphs_and_pagerank()
+
+    def test_positive_matrix_domains_and_earned_proof_order(self):
+        check_appendix_a.check_corrected_domains_and_prerequisites()
+
     def test_exact_matrix_and_noncommutative_walk_examples(self):
         check_chapter1.check_matrices()
         check_chapter1.check_walks()

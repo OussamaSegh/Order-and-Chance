@@ -1,5 +1,48 @@
 # Progress
 
+## V3-014: Positive Matrices appendix, full internal mathematics
+
+The entire first appendix and all twelve prompt/hint/idea/solution triples were
+read; first derivations were recorded before any supplied hint/answer. APPA-REVIEW
+reconstructs all8 named results twice and all unnamed argument groups. Manual
+register decisions now total120/155 named and139/163 exercises,259 accepted.
+The remaining35 named/24 exercises are in the other three appendices. Global804
+exposition/context/history/voice rows and dependency closure remain separate.
+
+Earn finite Delta/K compactness from actual earlier coordinate-subsequence
+proofs; move the full cyclic-level proposition before Frobenius uses it; separate
+irreducible[0], whose positive period is undefined and whose sole peripheral
+zero does not imply primitivity. Normalize power-method directions correctly,
+prove Jordan polynomial estimates and metric-on-rays facts locally. Complete
+bipartite full spectrum, including zero multiplicities; strengthen PageRank to
+full contraction/unique stationarity even for reducible matrices; earn Leslie
+existence in reducible cases and state the shuffle model. Keep all original
+named/graded targets, with explicit old/new domains, added tasks and lost
+incidental connections in V3-014-curricular-disclosure.json.
+
+Correct the false50-step/six-digit guarantee: the two-page identity-link example
+has actual coordinate error.85^50/2>1e-6; the proved general bound gives86 steps
+for absolute error<1e-6. Recompute all15 PageRank links/rational ranks/node sizes,
+both actual figures and149 nonzero irreducible Boolean supports through size3;
+verify sharp Wielandt exponents2..12 exactly. These finite probes are support,
+not general proofs.490 full unit tests pass, zero skips55.960s, plus focused,
+inventory/freshness, inherited source and whitespace checks. Before/after source
+and actual numerical counterexample evidence are separate in the regression record.
+
+Immutable447ac825 all-format snapshot completed496 reading/495 print pages,
+KDP496, spine1.1641in and same-build wrap;85 public hashes. Actual EPUBCheck5.3.0
+has zero messages; actual output checker passes. Actually opened print406 colour,
+read the entire example/graph/caption and found weak A/C dark-label contrast;
+current source makes those labels white, with corrected actual pixels pending.
+This snapshot predates appendix repairs and is not final all-page approval.
+The447 CI run41938406907 has successful terminal list/debs/V3-build/site jobs,
+publish skipped; final new source head needs its own run. No PR library cache
+is claimed reusable, and no main/unrelated run was cancelled.
+
+Next: fully read Spectra and Symmetry, first main/prompts before its answers,
+then the remaining two appendices. Complete global story/prerequisite/history/
+voice coverage and final frozen all-page/digital/CI-artifact review before merge.
+
 ## V3-013b: complete main-chapter named/exercise mathematics
 
 All twelve main chapters now have internal A/B records for every named result

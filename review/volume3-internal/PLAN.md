@@ -56,23 +56,20 @@ do not claim a successful PR run creates reusable PR library caches. Never cance
 main publication runs or unrelated work. Terminal CI belongs in the PR description
 without an endless sequence of commits recording their predecessors.
 
-## Active checkpoint V3-013b
+## Active checkpoint V3-014
 
-All twelve main chapters have been read fully and have named/exercise A/B
-closure:112/155 named and127/163 triples accepted internally. CH12-CORE.md and
-CH12-REVIEW.md earn the core and complete workshop; V3-013b-SMALL-SIMPLE.md earns
-the former minimum-order gap. All source exposure/domain/curricular losses are
-disclosed. Keyed global unnamed/concept/history closure remains separate even
-where source was read. Immutable9aa all-format and87 PDF-only snapshots retain
-only their explicitly opened pages; corrected C12 labels and new source require
-fresh artifacts. Next are all four appendices,43 named/36 exercises, fully in
-printed order and in scope. No historical status is inherited or named target weakened.
+All twelve main chapters and the complete Positive Matrices appendix have named/
+exercise A/B closure:120/155 named and139/163 triples. APPA-PROMPT-FIRST and
+APPA-REVIEW record actual exposure, both reconstructions, all full answers,
+source defects and explicit curricular/domain losses. The next three appendices
+contain35 named/24 exercises, fully in scope. Global804 exposition/history/
+concept/story/voice rows and dependency classifications remain separate pending
+gates. Current source corrections need new immutable artifacts and actual pixels.
 
-Curricular freedom has supplied local proofs, moved complete prerequisite
-problems before their invocations and replaced a duplicate exercise with a
-complete constructive/inseparable challenge. All moves/replacements and losses
-are disclosed. C10 now matches the actual C11 matrix/trace opening; the full
-whole-book written voice/story pass remains open. Final all-page, grayscale,
-facing/digital, link/disclosure and exact-head CI/artifact comparison also remain.
-Preliminary packages have only explicitly opened pages approved, with no transfer
-without pixel/file identity. Continue the whole authorized job; do not merge yet.
+Immutable447ac825 all-format snapshot has496 reading/495 print pages,KDP496,
+spine1.1641in,85 public hashes, actual EPUBCheck5.3.0zero and output pass. Only
+its print406 was opened so far, revealing two weak PageRank node labels now
+corrected in source. No visual approval transfers to changed pages. All earlier
+packages retain their own limited evidence. Final all-page/facing/grayscale,
+reader/EPUB narrow-wide/link/disclosure and CI-artifact comparison remain open.
+The complete authorized job continues; draft PR104 must not be merged yet.
