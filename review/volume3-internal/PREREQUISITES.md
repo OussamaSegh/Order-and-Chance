@@ -509,3 +509,27 @@ quartic proof uses finite generators/one-step extension/complexFTA only, so no
 forward primitive-element or Galois premise. All27 C8 labels/seven earlier mentions,
 three shifted C7 contexts and two preface mentions classified. Whole later-use
 closure still pending.
+
+## V3-027 — finite-fields global prerequisite pass
+
+All37 C9 label occurrences and6 literal V1/V2 mentions manually classified.
+Actual V2 arithmetic-functions mu/multiplicativity55–80, complete prop:conv
+101–145 and thm:mobius179–195 reread, rather than inferred from a title. Actual
+V2 reciprocity chapter Euler criterion (real label thm:eulercrit), Gauss lemma,
+supplementfor2, Eisenstein floor-sum lemma and full lattice reciprocity proof
+reread for Fibonacci and Lucas–Lehmer. Earlier CH09-REVIEW shorthand thm:euler
+is not the actual source label. Actual V1 binomial full proof299–319, Binet
+remark770–777 and determinant full proof177–204 reread; current C9 re-earns
+Binet's formula for its finite-field roots and zero/empty determinant cases.
+
+No general C10 Galois correspondence enters C9 field existence, subfield lattice,
+automorphism count or decoder. New local F16 proof precedes its caption. New
+inclusion iff divisibility/gcd/lcm proof earns the subfield picture directly.
+V1 Boolean-lattice/order language and bounds/intersections were read, but no
+abstract lattice theorem is imported: all needed operations are proved locally.
+New chains cover Frobenius, multiplicative primitive elements, divisor/subfield
+lattice, Hamming/evaluation code, finite-field trace, Moore/linearized polynomials
+and power sums. All later-use/whole-volume statuses remain pending. Trace first
+appears in m-sequence prompt; solution proves codomain and nonzero polynomial
+before using the bit map. Tr(1)=0 in even degree is explicitly not a zero-map
+argument. Computational support does not replace the full pairing proof.

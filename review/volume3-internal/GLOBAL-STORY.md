@@ -145,3 +145,22 @@ counterexample proof, uses explicit geometric coordinate constructions, and
 connects quotient arithmetic to conditional finite-field counts. C7 acknowledges
 V1's actual general Cayley–Hamilton proof and offers a second module derivation.
 Written first-reader/voice pass, not an actual human or spoken read-aloud session.
+
+## C9 story and complete written reader pass, V3-027
+
+Incoming question: which finite polynomial quotients are fields, and how unique
+are they? Start with four symbols and a message that must survive damage. Prime
+field and dimension constrain the alphabet size; root closure constructs every
+allowed size. Cyclic units and Frobenius explain arithmetic and subfields. The
+same root bound then counts irreducibles and protects encoded messages. The
+locator proof explains why an arbitrary linear-system solution is trustworthy;
+locally earned cubic cost answers how to find it. Explicit F16 and subfield
+arguments remove forward premises from the pictures and prose.
+
+The outgoing question is why subgroup index measures field degree beyond these
+finite fields. It leads directly to C10, without borrowing that correspondence.
+All thirteen full reader solutions remain; current grades reflect their actual
+dependencies. Removed loose analytic analogy and unsupported faster-cost aside;
+precise earned statements replace them. Whole written cadence/adversarial
+first-reader pass, not a human or spoken read-aloud session. Final pagination
+and reader/EPUB visual evidence remain separate.

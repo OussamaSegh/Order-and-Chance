@@ -173,6 +173,13 @@ def check_codes():
 def check_recurrences_and_trace():
     def prime(n):
         return n >= 2 and all(n % d for d in range(2, math.isqrt(n) + 1))
+    # The proof's small-factor inequality requires the least prime divisor.
+    # M_11 has a prime divisor 89 whose square is larger than M_11.
+    assert 2047 == 23 * 89 and 89**2 > 2047 and 23**2 <= 2047
+    for p in (11, 23, 29):
+        m = (1 << p) - 1
+        q = next(d for d in range(2, math.isqrt(m) + 1) if m % d == 0)
+        assert prime(q) and q*q <= m
     for p in (3, 5, 7, 11, 13, 17, 19, 23, 31):
         m = (1 << p) - 1; s = 4
         for _ in range(p - 2):

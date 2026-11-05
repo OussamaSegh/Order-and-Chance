@@ -1,5 +1,102 @@
 # Progress
 
+## V3-027: complete finite-fields global pass
+
+Solo internal AI review, not independent human refereeing or formal verification.
+The entire current Chapter 9 has been read, including eleven complete named
+proofs, thirteen exercise/hint/finding-idea/full-solution sets, both actual figure
+sources and twelve bibliography entries. Sixty global rows have individual A/B
+records in GLOBAL-CH09.md. The changed field-classification proof and complete
+Lucas–Lehmer set have fresh full reconstructions in V3-027-argument-recheck.md;
+ten unchanged statement/full-proof pairs and twelve complete exercise sets were
+individually compared by exact hashes. Original prompt-first exposure chronology
+remains CH09-PROMPT-FIRST.md; this pass is not described as a new blinded solve.
+
+Coverage is **806 accepted =157 named +163 exercises +486 global**. **360 global
+rows remain pending** in Chapters 10–12 and all four appendices. Global486 is the
+previous425 plus60 Chapter9 rows and one Chapter8 production-source row. Inventory
+is1649 items,594 prose blocks,118 bibliography entries,22 examples,22 figures,
+9 tabular environments and22 included sources. The +5 inventory change comprises
+four net prose blocks (including local Needspace) and the new Moore1896 source;
+mathematical result/exercise counts are unchanged. Label uses201/389 accepted;
+earlier-volume literal contexts60/85 accepted. Seven new manually reconstructed
+first-use chains give78 reviewed first chains and8 pending; **all86 whole-volume
+concept statuses remain pending** until later uses are closed. Counts and scripts
+never assign mathematical approval.
+
+The first F16 diagram previously asserted that its particular polynomial class
+has order15 before earning irreducibility and that order. A complete local proof
+now precedes the figure: exclude linear/quadratic factors, use the quotient basis,
+and exclude the proper divisors1,3,5. Subfield inclusion, intersection/gcd and
+joint generation/lcm now have complete local proofs; no later Galois correspondence
+supplies a premise. The Lucas–Lehmer reverse proof now explicitly chooses the
+smallest prime divisor before using q²<=M. A concrete counterprobe is2047=23*89:
+89²>M, whereas23²<=M. The entire equivalence is preserved and re-proved in both
+the actual finite-ring version and an independent all-prime-factor field version.
+
+Decoder complexity is now earned for the entire algorithm in unit-cost field
+operations: at most n pivot stages, n rows, n+1 entries, plus quadratic setup and
+monic division. The old unsupported bare fast O(n²) aside is removed; the full
+cubic decoder remains. The former loose Weil/Riemann-hypothesis comparison is
+replaced by the exact reparameterized bound already proved. These are disclosed
+changes to incidental comparisons, not a sign-off on an unproved stronger claim.
+All named mathematical targets, thirteen complete solutions and current grades
+remain. The closing narrative uses the earned fixed-field index example to ask
+Chapter10's question. Written whole-chapter cadence and adversarial first-reader
+pass, not a human review or spoken read-aloud session.
+
+All32 F4 table entries,24 RS table entries,15 F16 powers/bits/circle coordinates,
+14 count dots,131 comparison-curve points and243 Pascal dots were recalculated
+and independently checked. AES irreducibility has both the exact Bezout/squaring
+certificate and independent trial-factor check. Even-degree trace is nonzero by
+root bound, without inferring it from Tr(1). All existing exact checks pass,
+including characteristic2, n0/1, zero errors/free locators and correlation endpoints.
+
+Research now distinguishes Moore's1893 announcement from the1896 Congress
+account, adds his actual1896 determinant paper, and checks Gauss's irreducible
+count in the original posthumous WerkeII. Actual relevant scanned originals,
+Reed–Solomon's five pages, detailed patent text, publisher samples and Denso/NIST
+material were read as scoped in RESEARCH.md. Primary access limits for the1935
+papers and later textbook proofs remain explicit; catalogue metadata is not proof
+certification. Revised1994 Lidl date was checked in the image after OCR misread it.
+Original IEEE1994 Wicker edition is distinguished from1999 reprint. Bibliography
+now bounds Reed's original construction to binary fields and Welch's patent to
+its rational error-locator method rather than claiming identical Gaussian wording.
+
+507 full repository tests passed, zero skips,53.988s, after current mathematical
+source/checker/register edits and before these descriptive records. Log:
+/tmp/volume3-v027-full-tests.log. Source checker, inventory, register freshness,
+concept/context freshness, focused C9 exact checks and diff whitespace also pass.
+The expected stale conceptual coordinates after insertion were reconciled only
+when actual item hashes were identical. No source assertion was weakened for green.
+
+Latest completed immutable artifact set is producing commit
+779a95d54cfabe70d505bcf07c6eb998d5ec3821, BEFORE this batch. It has514 reading /
+513 print pages,KDP514,spine1.2064in and matched wrap15.4564x10.25in. All85 public
+files and5 reports are hashed in preliminary-779a95d5-artifacts.json. Actual
+EPUBCheck5.3.0 returned zero messages; actual output checker passed7 renders and
+26 EPUBXHTML. Sixty renderer/font/common files had been byte-compared before
+local formula-cache reuse; provenance remains in that immutable build.
+
+Actually opened four PDF pages (reading229/230,print228/229), each at2x in colour
+and grayscale. This found a stranded quartic proposition at the page foot and a
+following remark ending Chap- at another page foot. These pages are **not visually
+approved**. A local eight-baseline Needspace command is prepared; it changes no
+mathematical statement/full-proof/triple hash, all individually checked. The next
+immutable build must reopen corrected pages and all affected pagination. Whole-
+book all-page/gray/facing review, actual narrow/wide reader/EPUB behaviour and
+actual CI-artifact comparison remain open. Root dist is not a final artifact set.
+
+Exact prior26ea CI1707/run41976211862 terminal success was observed for list,
+debs,all15books/site; publishing skipped. Exact779 CI1709/run41980139086 was still
+in progress at the latest detailed observation. New source needs its own CI.
+Only main saves library caches. Fresh fetch finds concurrent main
+d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678, PR105 shared KDP bleed correction.
+Its instructions/workflow diff and permanent report were read. Commit this batch,
+then integrate it and rerun affected production/full checks. Old no-bleed artifacts
+are historical, not current production acceptance. DraftPR104 stays
+open until the remaining mathematical/global/production/CI gates genuinely pass.
+
 ## V3-026: complete field-extensions global pass and earned quartic boundary
 
 Solo internal AI review, not independent human refereeing or formal verification.

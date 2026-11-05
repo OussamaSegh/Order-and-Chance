@@ -638,3 +638,19 @@ whole-workflow terminal success inferred. New head needs its own CI. Main-only
 library-cache rule remains; no main/unrelated run cancelled. Continue C9–12/A–D
 global work, all concept later-use closure, then frozen-source final every-page/
 digital/link/CIartifact review and exact-head clean/terminal-CI merge gates.
+
+## V3-027 advancement
+
+Entire C9 global pass complete;806 accepted,360 global pending C10–12/A–D.
+157 named and163 exercises retain fresh A/B; changed full arguments rechecked.
+201/389 labels and60/85 earlier literal contexts classified;78/86 first chains
+reviewed, all86 whole-volume statuses pending. New immutable779 snapshot has
+514/513 pages and zero EPUBCheck messages, but actual four-page opening found
+a stranded proposition. Local spacing repair awaits next build/reopening; no
+whole-page or digital approval. Continue C10 now, then remaining routes and
+final production freeze/actual artifacts/final-head terminal CI/ready/merge.
+
+Fresh main d97c0bf4 (PR105) changes shared KDP bleed. Read its updated instructions,
+workflow and permanent report. Integrate after this batch, preserve review history
+and rerun bleed/full/build checks; old no-bleed artifacts do not certify the new
+print pipeline. No main/unrelated workflow cancellation.

@@ -646,3 +646,108 @@ Kronecker-1887-reprint.pdf: 5111307bytes SHA2563784f7e17b19cadce57dd0f5bf2684ce3
 Cantor-1874.pdf: 9037773bytes SHA2565e5ad2d9b48fef6c9a09b79c7952c71337d19e59548746b0bf822fcd4bb48567.
 
 Lindemann-1882.pdf: 1204827bytes SHA256124eed32c7fa13246b74b167bd8e9794736bf5126f9456c90e7fc5fa847c5854.
+
+## V3-027 — Chapter9 source and attribution pass (5 November2026)
+
+Internal AI source review, not independent human refereeing or certification of
+all external mathematical arguments. Search snippets were leads; actual relevant
+text, publisher records or scanned pages were read as stated below. Mathematical
+premises are supplied by the book's complete independently reconstructed proofs.
+
+- Galois: actual1846 collected reprint, printed398–402 finite-field article and
+  dated preface417 read previously;398–401 freshly reread. Footnote gives Bulletin
+  XIII428,June1830. Preface dated16January1831 is not publication in1831; memoir
+  publication1846 is distinct. No original autograph inspected, and original1830
+  issue endpoint435 is bibliographic corroboration rather than an opened original
+  last page. Retain the earlier versioned PDF hash below.
+- Moore1893: actual original Bulletin scanned volume and its OCR, printed73–75,
+  explicitly an abstract announcing every finite field is one of Galois's fields;
+  footnote promises full Congress account. Original download:
+  https://archive.org/download/bulletinnewyork01socigoog/bulletinnewyork01socigoog.pdf .
+  No date inferred from an OCR-misread August1898 line. Actual1896 Congress
+  section3, printed210–215 and217–218, read for abstract-field/characteristic/
+  basis and unit-order argument:
+  https://archive.org/download/mathematicalpape00inteiala/mathematicalpape00inteiala.pdf .
+  Not the entire35-page paper re-proved. Actual complete bibliography entries9,
+  16,18 read at https://celebratio.org/Moore_EH/article/98/ distinguish1893
+  Bulletin73–78,1896 Congress208–242 and the separate1896 determinant paper.
+- Moore determinant: actualApril1896 original issue, printed189–194 theoremIII,
+  normalized linear-factor product and proofA induction read; proofB beginning
+  gives direct product recurrence. Actual printed190/192/194 page images opened.
+  https://archive.org/download/sim_american-mathematical-society-bulletin_1896-04_2/sim_american-mathematical-society-bulletin_1896-04_2.pdf .
+  Original title and bibliography confirm BAMS2,no7,189–199. AMS PDF hosts403;
+  scanned issue supplied actual text. Not all three historical proofs certified.
+  Own full rational-function induction and independent UFD proof predate this
+  attribution check. New bibliography entry brings total117→118.
+- Gauss: actual original WerkeII title image says1863. Actual printed221/222
+  images opened, relevant Latin text212/216–222 and editorialnotes240–241 read.
+  §347 gives inclusion-exclusion irreducible count, including degree36 example.
+  https://archive.org/download/carlfriedrichgu00gausgoog/carlfriedrichgu00gausgoog.pdf .
+  This is posthumously published Analysis Residuorum material intended for an
+  eighth section; editorial note records changed plans. No claim it was published
+  with1801 Disquisitiones or that every original formal-series argument was
+  re-certified. The book instead earns its own splitting/root/Mobius proof.
+- Reed–Solomon: actual all five printed pages300–304 read, JSIAM8,no2,June1960;
+  received21January/revised26August1959. Original binary-field evaluation code,
+  Vandermonde/interpolation and majority decoder read. Historical example table
+  not independently re-certified, not reproduced in book. General finite-field
+  proof here is earned locally; original1960 decoder is distinguished from Welch.
+  https://sites.math.rutgers.edu/~zeilberg/akherim/ReedS1960.pdf .
+- Welch/Berlekamp: actual patent first page and detailed text beyond abstract read:
+  https://patentimages.storage.googleapis.com/18/a2/dc/e8b3cbff1865cb/US4633470.pdf ,
+  https://patents.google.com/patent/US4633470A/en . Dates30December1986 and filing
+  27September1983; rational numerator/error-locator denominator, decoding radius,
+  iterative polynomial method and F16 example. Do not claim the exact affine
+  Gaussian system is word-for-word patent text, or validate all device embodiments.
+- Chevalley/Warning: actual Springer metadata bodies read for DOIs
+ 10.1007/BF02940714 and10.1007/BF02940715,1935Hamburg11,73–75/76–83. Warning
+  publisher record incorrectly parses HerrnChevalley as a coauthor. Actual
+  Mathdoc reference lists read, not just snippets:
+  https://geodesic.mathdoc.fr/item/RM_2011_66_2_a5/ ,
+  https://geodesic.mathdoc.fr/item/SEMR_2017_14_a46/ . They confirm soleWarning
+  and full title. Requests to original Springer PDFs returned HTML, not papers;
+  no claim original full proofs read. Own complete positive-characteristic proof
+  and boundaries were reconstructed separately.
+- Lidl/Niederreiter: actual publisher sample title, copyright image and TOC read:
+  https://assets.cambridge.org/97805214/60941/sample/9780521460941ws.pdf . Revised
+  edition1994, reprints1997/2000; OCR misread1998, resolved by opening actual
+  page2 image. Chapters2–4fields/polys,6recurrences,8coding,9cryptology support
+  precise annotation. Not entire textbook proof certification.
+- Denso: actual full text freshly read and local downloaded four-level table
+  actually opened: https://www.qrcode.com/en/about/error_correction.html and
+  https://www.qrcode.com/en/img/errorCorrection/errorCorrectionTable.png .
+  L7%,M15%,Q25%,H30%; total eight-bit codewords, not damaged picture area.
+  CD usage in actual text. Existing4November access citation was an earlier
+  actual read; this is the fresh5November check.
+- NIST FIPS197-upd1: preserve earlier actual versioned primarytitle/sections4.1–4.4
+  reading and hash, not claim a new full cipher/security review. Modulus0x11b
+  and57*13=fe independently checked; local irreducibility has two exact checks.
+- Daemen/Rijmen: actual Springer publisher body copyright2002, firstedition,
+  authors and TOC read at https://link.springer.com/book/10.1007/978-3-662-04722-4 .
+  Mathematical preliminaries9–29/specification31–51 appropriate; full historical
+  book chapters/security arguments not accessed. NIST supplies actual arithmetic
+  text; recommendation is not a premise or an external proof certification.
+- Wicker/Bhargava: actual WorldCat body confirms IEEEPressPiscataway©1994:
+  https://search.worldcat.org/title/Reed-Solomon-codes-and-their-applications/oclc/29908766 .
+  Original edition distinct from1999 paperback. Actual publisher full TOC and
+  relevant excerpt sections5–6 applications/decoders read:
+  https://catalogimages.wiley.com/images/db/pdf/0780353919.toc.pdf ,
+  https://catalogimages.wiley.com/images/db/pdf/0780353919.excerpt.pdf . CD/storage,
+  space and communications descriptions support bounded annotation. Dated future
+  predictions and all external implementation/performance proofs not certified.
+
+Local version identities (downloaded files are evidence assets outside Git; hashes
+identify source versions, not certify every page or proof):
+
+| File | Bytes | SHA256 |
+|---|---:|---|
+| Galois-1846-381-444.pdf | 2582693 | f351b61639757abebb5c0f98937822c22e40ccdf60762da130708ae26ba60319 |
+| Moore-1893-original-volume.pdf | 8605598 | 68960827ce1bc2c5b7e44306b604f14d7d254e6721a64f7a970983462d719d34 |
+| Moore-1896-congress-volume.pdf | 20584545 | a30512c6614e2d27059c54b68bc788f1d75830257bc77a98f6e831779fa81905 |
+| Moore-1896-April-issue.pdf | 8628391 | 1f46d199dd31e323af162552d857c2a75623e277ad9d5247e93e0fde60d8a831 |
+| Gauss-Werke-II-1863-original.pdf | 13110133 | d9553daae71418bb7fda6a62b0377abb39c4082d521df89f914c4cef5a3c6b54 |
+| Reed-Solomon-1960.pdf | 495549 | ceef3285e6ed0ee400266712a8053b80029bde6d7a6af0680cf41879e4121b17 |
+| Welch-Berlekamp-1986.pdf | 1245632 | c925b5e721fd2d794027126badcd32836994553a84c0de1f24dfd2b260fb0267 |
+| Lidl-Niederreiter-revised-sample.pdf | 727955 | f6bf24afdafcbe8203dbc871d5c0f3e5bf35f0906ca3093c133452f05f645c89 |
+| Denso-QR-error-levels.png | 4603 | 2848ac6020b1ffdce58a76622352e089a9de7519fb28fd5c60dea0563e0bfcc5 |
+| Wicker-Bhargava-publisher-excerpt.pdf | 1746509 | 74984602427b2a4f18c71b004bff501b9fbfef2234bb3b7d9295d09a96de98d9 |
