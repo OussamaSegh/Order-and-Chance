@@ -450,3 +450,24 @@ first-use chains. Sylow/solvability priority chains closed throughC5 only; all62
 whole-volume statuses pending. New prime-power projection is proved from actual
 power-order and CRT results locally, not supplied by the future outlook. Full
 proof and solution source items are anchors where the definition lives there.
+
+## V3-024: C6 global conceptual continuation
+
+All17 actual local label occurrences and6 literal earlier mentions classified
+individually. GLOBAL-CH06 records precise full V1/V2 proof reads, including
+integer CRT, polynomial division/interpolation/Gauss/Eisenstein/reduction,
+Gaussian/Eisenstein rounding and multiplicative Legendre symbol. Unreferenced
+arguments also reconstructed: arbitrary generated ideals, monic evaluation
+kernels, associates/zero, I² identity, arbitrary PID ideal-chain termination,
+fractionfield equivalence/laws, scalar/content uniqueness, general Eisenstein,
+and bounded coefficient reconstruction. No backward-reference scan substitutes
+for this reading. Two priority ring/ideal first chains plus six new chains
+(PID/ED, prime/irreducible/UFD, fractionfield, content/Gauss, idealCRT/interpolation,
+local four-element field) have exact hashed anchors. Smith combined-chain global
+closure remains C7 work. All68 whole-volume conceptual statuses remain pending.
+
+S proof needs only already-known complex division and integer rounding; its
+four-element quotient's inverses are explicitly computed before the half-lattice
+case invokes them. Its arbitrary-ideal minimality and arbitrary-Euclidean-function
+obstruction are proved separately. The later abstract fractionfield, finite-field
+existence/classification and number-field ideal theorems supply no premise.

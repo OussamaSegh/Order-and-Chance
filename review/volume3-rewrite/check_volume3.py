@@ -660,7 +660,7 @@ def check_quaternion_character_table() -> None:
 
 
 def check_theorem_rewrite_ledger() -> tuple[int, int]:
-    """Check the 155 theorem/lemma/corollary inventory against included source."""
+    """Check the exact current named-result inventory against included source."""
     path = ROOT / "review/volume3-rewrite/THEOREM_REWRITES.json"
     ledger = json.loads(path.read_text(encoding="utf-8"))
     main = (BOOK / "main.tex").read_text(encoding="utf-8")
@@ -686,7 +686,8 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
             actual.add((name, ident, kind))
         assert src.count(r"\begin{proof}") == src.count(r"\end{proof}"), name
     assert seen == actual, f"Proof ledger mismatch: missing {actual-seen}, obsolete {seen-actual}"
-    assert len(actual) == ledger["total_statements"] == 155
+    # V3-024 earns the formerly quoted non-Euclidean PID with one new proof.
+    assert len(actual) == ledger["total_statements"] == 156
     assert recorded == ledger["rewrites_recorded"]
     verified = ledger["independent_verified"]
     assert isinstance(verified, int) and 0 <= verified <= recorded

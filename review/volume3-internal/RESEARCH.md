@@ -463,3 +463,53 @@ research proof, Coq compilation or human refereeing is claimed.
   about known Fermat primes or algorithms/security. Own book now earns the finite
   cyclic projection/CRT statement locally, allN1..100 exact probes support it.
   Efficient component work remains explicit outlook; no cryptosystem audit.
+
+## H-C06-GLOBAL — exact PID distinction and bibliography, V3-024
+
+The local S=Z[(1+sqrt(-19))/2] proof was reconstructed before reading comparison
+sources. Actual author Conrad PDF
+https://kconrad.math.uconn.edu/blurbs/ringtheory/euclideanrk.pdf printed11-13
+read:5.18 minimal nonunit gives quotient represented by zero/units;5.22 computes
+units/norm values and rules out quotient sizes2/3. Its PID argument is a sketch
+of two methods, not a supplied complete local proof. The manuscript instead
+proves complex rounding, the zero doubled-remainder exception using S/2S, and
+minimal norm in every ideal. Our non-Euclidean proof uses roots of the quadratic
+in F2/F3; the distinct norm/divisibility obstruction was also reconstructed.
+
+Actual Dummit/Foote third-edition book at university-hosted scan
+https://rksmvv.ac.in/wp-content/uploads/2021/04/David_S_Dummit_Richard_M_Foote_Abstract_Algeb_230928_225848.pdf :
+copyright2004 read, full printed276-277 non-Euclidean obstruction and281-282
+Dedekind-Hasse definition/criterion/PID example read. Its denominator/gcd proof
+splits c>=5 and c=2/3/4; compare as a substantive different derivation after our
+own construction. Correct exact locator: obstruction8.1, PID proof8.2. Downloading
+a complete37MB book does not mean its entire text was reviewed.
+
+Actual Artin second-edition scan
+https://www.cse.iitb.ac.in/~sohoni/CS782/ArtinAlgebra.pdf starts at contents, so
+no original copyright-page read. Actual TOC and printed387 Section13.3 opening/
+ideal proof read, with Pearson actual contents
+https://www.pearson.com/en-us/subject-catalog/p/Artin-Algebra-Classic-Version-2nd-Edition/P200000006078?view=educator .
+11rings/12factoring/13quadraticnumberfields, exact13.3ideals in Z[sqrt(-5)].
+Extend bibliography pointer11-12 to11-13; newer Classic format copyright dates
+are not original2011 edition dates. Earlier C1 actual Rutgers ISBN-specific
+course entry supports conventional2011 citation; no new first-release claim.
+
+Actual Edwards Springer page https://link.springer.com/book/9780387902302
+whole relevant overview/bibliographic section read:HaroldMEdwards,GTM50,
+originalhardcover18July1977,SpringerNewYork,XV+407. Overview describes historical
+Kummer ideal-factorization route; softcover2000 distinct. Not entire407pages read.
+Actual ModernComputerAlgebra author page
+https://cosec.bit.uni-bonn.de/science/mca/ and publisher actual TOC
+https://www.cambridge.org/core/books/modern-computer-algebra/DB3563D4013401734851CF683D2F03F0
+read:3rd,CUP2013,ISBN9781107039032,Ch5modular/interpolation97-140 andCh6gcd141-208.
+Advanced algorithm proofs not newly read/adopted. Local bounded-CRT uniqueness
+proof supplies the precise manuscript application; no UFD-alone algorithm claim.
+
+Motzkin original AMS1949 PDF403; ProjectEuclid iframe reaches service notice.
+Actual Conrad footnote8 supplies attribution of side-divisor obstruction; actual
+Cambridge published reference corroborates conventional BullAMS55(1949)1142-1146.
+A secondary Crossref display ends1147 and Conrad bibliography has volume38;
+do not silently import those inconsistent metadata. No original1949 paper-read
+claim or new attribution of our rounding proof. Existing actual Corry article
+opening/institution metadata evidence remains scoped as stated above, not a new
+whole-article certification. All essential mathematics is proved locally.

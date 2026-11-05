@@ -97,3 +97,24 @@ with a discovery grade adjusted for the now-earlier worked proofs. Perfectness
 and simplicity are separated by an earned product and trivial boundary. External
 history/research is sourced with exact access limits, not used as a premise.
 Final actual pagination/rendering and complete later-use closure remain pending.
+
+## C6 global story and written reader pass, V3-024
+
+Incoming question: which arithmetic rules survive when division and ordinary
+prime factorization fail? Concrete six-factorizations lead to ring operations,
+then ideal quotients and the domain/field tests, followed by factorization.
+The PID route now earns both distinctions: Euclidean implies PID implies UFD,
+while a fully proved PID with no Euclidean function and the complete Z[X]
+nonprincipal-ideal exercise separate the converses. The new counterexample
+preserves the original ring and depth. Its rounding exception is explained;
+showing a failed ordinary remainder is not confused with excluding every function.
+
+The local ideal identity now prepares the later arithmetic outlook without
+borrowing its theorem. General generated ideals and coefficient-ring monic
+remainders explain why quotient constructions work. Content then separates
+coefficient factors from primitive polynomials. The complete existing solutions
+retain discovery paths and grades. The outgoing question is classification of
+relations over a PID: C7 modules/Smith inherit principality, not an imaginary
+Euclidean algorithm. Whole written cadence/adversarial first-reader method,
+not a human or spoken read-aloud session. Actual final pagination and digital
+inspection remain separate pending work.

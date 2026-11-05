@@ -1,5 +1,13 @@
 # V3-007 — rings, zero cases and factorisation without a Euclidean norm
 
+
+> V3-024 supersession: this historical core review's “chapter pointer7->3”
+> remark confused a source basename with printed chapter numbering. Actual V1
+> `main.tex` makes polynomials Chapter6; the current book already uses Chapter6.
+> The formerly quoted non-Euclidean PID is now a fully proved additional named
+> proposition; its full current A/B evidence is in GLOBAL-CH06/proofs.json.
+> Original eight complete exercise solutions remain byte-identical.
+
 Read the full chapter, all eight prompts/hints/idea/writeups, its complete lattice
 source and bibliography. Exposure is recorded honestly in
 CH06-EXPOSURE-AND-RECONSTRUCTION.md: first six supplied solutions appeared in a

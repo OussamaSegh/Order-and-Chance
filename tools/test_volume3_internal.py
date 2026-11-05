@@ -30,6 +30,9 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_non_euclidean_pid_nonzero_rounding_and_small_quotients(self):
+        check_chapter6.check_non_euclidean_pid_rounding()
+
     def test_changed_figure_file_cannot_keep_caption_approval(self):
         data = copy.deepcopy(volume3_inventory.inventory())
         data['figure_inputs'][0]['sha256'] = '0'*64
