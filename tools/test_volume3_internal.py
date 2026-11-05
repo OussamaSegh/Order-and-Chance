@@ -22,11 +22,15 @@ import check_appendix_a
 import check_appendix_b
 import check_appendix_c
 import check_appendix_d
+import check_global_copy
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_afterword_finite_model_and_actual_cover_geometry(self):
+        check_global_copy.check_afterword_and_cover()
+
     def test_hadamard_sylvester_examples_and_domains(self):
         check_appendix_d.check_sylvester_and_source_examples()
         check_appendix_d.check_local_contract()

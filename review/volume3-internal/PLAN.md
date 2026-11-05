@@ -90,3 +90,12 @@ unnamed mathematics, conceptual order, historical/metadata and voice decisions
 remain pending with all dependency occurrences. Final artifacts/CI gates remain.
 APPD-REVIEW and prompt-first records distinguish already-valid proofs/solutions
 from true index/convention/local-tool corrections and dated research scope.
+
+## V3-018 advancement
+
+Actual V2/V3/V4 seams and publishing copy:31 keyed global fragments manually
+accepted,including full afterword A/B and exact cover geometry/history scope.
+Remaining788 exposition/unnamed/concept/history/voice and all occurrence edges
+are pending. Complete GLOBAL-STORY and SEAMS-COPY records distinguish source
+review, current immutable outputs, actual opened pixels and unavailable checks.
+Next global chapter1 printed-order pass, then all remaining chapters/appendices.

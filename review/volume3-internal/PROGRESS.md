@@ -1,5 +1,63 @@
 # Progress
 
+## V3-018: actual seams/publishing copy and first global fragment closure
+
+Read actual merged V2 ending immediately before revised V3 preface/C1 opening,
+and actual V3 afterword with V4 preface/counting opening/live title route.
+The earlier book already defines homomorphisms: correct the V3 novelty claim
+against the actual full V2 character definition/example, now hash guarded.
+Specify earned appendix entry points Aafter7/Bafter11/C-Dafter9. Give radicals
+their rational-start domain and state the actual60degree trisection obstruction.
+Reconcile listing promises with actual proved content; character tables do not
+determine most of a group. Distinguish developed proofs and marked research
+outlooks, remove unsupported incidental marketing, preserve every theorem target.
+
+Afterword now explicitly constructs finite independent moves,defines Xt before
+use,states integer time/empty-product t0 and all endpoints/absolute mode/sign
+oscillation. Reconstruct recurrence/induction and independent binomial parity
+formula, plus both eigenpairs. Repeated fair bit gives a correlated countermodel:
+each marginal move is fair but t2return certain, showing independence matters.
+Actual V1 finite product-model and geometric-limit proofs reopened in full.
+V3-018-SEAMS-COPY gives31 exact manual fragment decisions and corrections.
+349accepted=155named+163triples+31global;788 other exposition/unnamed/concept/
+history/voice and all dependency occurrences remain pending. Whole mathematical/
+editorial completion is not claimed. GLOBAL-STORY maps each earned incoming/
+outgoing question and tracks the still-open whole-book written pass.
+
+Correct eight V1 printed chapter locators against actual earlier main order.
+Two changed math rows explicitly reopened/reread/reaccepted with fresh hashes;
+entire old/new proof/solution differs only by the corrected locator. Actual
+roots/sign/determinant/interpolation/Gauss/Eisenstein/Fibonacci proofs reopened,
+not availability inferred from a title. Full80-occurrence conceptual/first-use
+closure and unreferenced reasoning remain global work.
+
+Cover math/history framing now describes actual12vertices/30edges/20faces and
+its axes/mirror circles,60rotation/A5 result and qualified Galois bridge. Read
+actual Euclid XIII16 translated construction. Exact Q(sqrt5) reflection/count
+checks agree with actual live generator. Earlier commentary guesses that its
+chapter title/generator were stale were disproved by actual source inspection;
+correct matching title and live TikZ credit retained, mistakes explicitly recorded.
+All15 approved motif/lettering files and other14 cover notes proved byte-identical
+during derived text/manifest regeneration. No art/font/trim change, no ISBN invented.
+
+499 full tests pass zero skips56.910s before final explicit correlated-probe
+addition;36 current focused pass7.118s including that probe. Inherited379labels/
+384refs/163triples, inventory/register freshness/whitespace pass. Actual immutable
+1fe85903 all-format snapshot completed504reading/503print,KDP504,spine1.1829in,
+same-build wrap,85 public+5 report hashes. Actual EPUBCheck5.3.0zero messages and
+output checker pass. Full print471/472colour1.65actuallyopened/read corrected
+CW/EGZ proofs/all displays and SET opening;fit/legibility good, next-page/facing/
+whole-book flow pending. Actually opened1b948eBook front transfers only by actual
+whole-JPEG byte identity to1fe. No other pixel/digital/device approval transferred.
+Snapshot predates D/global source; current copy requires a fresh immutable build.
+
+1fe PRrun41951128069: list/debs succeeded,build/site/publish cancelled by the
+workflow's PR concurrency rule after a later source commit. No manual cancellation,
+no main/unrelated cancellation, no false terminal-success/cache claim.328bdf14
+run41951980242 remains in progress at this checkpoint. New head requires own CI.
+Continue complete main/appendix global keyed voice/concept/history/unnamed pass,
+then source freeze/all-page/digital/CIartifact/final exact-head merge gates.
+
 ## V3-017: final Paley appendix, named/exercise A/B closure
 
 Entire original/revised D source, six named proofs, both prompts/hints/finding
