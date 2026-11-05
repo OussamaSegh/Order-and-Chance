@@ -2870,3 +2870,12 @@ visualevidence retained. Needed room for freshimmutablematchedbuild.
 
 V049actual fullunitrun:522tests/zero skips/60.643sPASS. Two affectedprintfacings
 explicitlyreopened:126accepted/128inspected. No new artifact pass claimed yet.
+
+
+## V3-050 — matched rebuild and complete Galois production inspection
+
+Actual immutable abc3d1cb build completed:518reading/517print(+46from original),85publicfiles,actualoutputchecker and EPUBCheck5.3zeroerrors/warnings PASS. New matched manifest candidate-abc3d1cb-artifacts.json. All1035whole2xRGBandgraypages compared against e531:onlyR256/258andP255/257changed. Allfour plus fouradjacent actualpages reopened;Reed–Solomon defect closed.81of85publicfiles identical;all9510EPUBmembers excepttwoUUID/time XML files identical,all relevant reader/site resources identical. Wholewrap2xRGB/grayidentical and eBookJPEGidentical;explicitbounded priorvisual/digitalretention inV3-050-digital-cover-identity.json. No unopenedpage/figure approved.
+
+Actually opened R259–322/P258–321 since V049,including all Galois proofs,complete11exercise solutions(including inline10.1),both figures and bibliography. Current644physicalpages inspected:640accepted,4withneworphan-headingfinding,391unopened.88actualabcopenings+556exactpriorpixelretentions.160printfacings inspected,159accepted/1affected. Actualnewfinding:PauseandThink label alone at R321/P320bottom withquestion nextpage. Correct locally,regenerate/recheckguard and immutablebuild;reopen allchangedpages/pagination beforeacceptance. Source mathematicaldecisions remain complete internally.
+
+ActualabcCIrun1736/42067740206:V3jobandstepssuccess;overallworkflowstillinprogressatquery. No ready/merge. Prunedonlyowned old d47 regeneratedsite aftercompletefilehashmanifest;dist/reports/source/actualscreens retained.

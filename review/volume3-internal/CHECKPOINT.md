@@ -1,23 +1,14 @@
-# Restart checkpoint — V3-049
+# Restart checkpoint — V3-050
 
-CURRENT ADVANCEMENT: new actual production defect found at e531R256/P255 title and
-R256–258/P255–257 running heads:literal Reed--Solomon. Source line590nowU+2013.
-New actual-output regression fails as expected on both oldPDFs. Mathematical
-content unchanged:1660identical items,120conceptanchors unchanged;one navigation
-fragment personally rereviewed/rekeyed,newguard
-6e3f67181a40fdf9a4f94a066912d9e9523ad761e9a809dc79321f87ce249941.
-Bothstrictgates/sourcecheckerPASS;fullunitrun /tmp/volume3-v049-tests.log PASS522/zero skips/60.643s.
-516actual/retainedphysicalpages inspected(473currentactual+43prior):510accepted,
-6withopenproductionfinding;519unopened. Readingthrough258/print257plus446.
-128printfacings inspected:126accepted,2withheadingdefect. Perpageobs:/tmp/volume3-v049-{reading,print}-c9a.json.
-DO NOT claim e531is finalcurrentoutput. Makeimmutable freshbuild at actualV049
-commit,useexplicitcwd and matchingtoolchain. Compare every accepted page/figure/
-cover/digitalrelevantfile/pixel beforetransfer;actuallyreopenchangedpages and
-pagination. ContinueoldPDFinspection onlyas source-identical futuretransfer
-evidence,not automatic currentacceptance. GenerateC9groups through282/P281ready.
-Supersededd47regenerable85MBformulacache prunedwithcompletehashmanifest
-V3-049-pruned-regenerable-cache.json;publicartifacts,reports,actualimages retained.
-The previous paragraphs below are historicalV048 context where overridden.
+CURRENT ADVANCEMENT: producingabc3d1cbd2cadcbfac6211058665e828d33518a2 immutableallformat build complete at/workspace/volume3-final-abc3d1cb. Actualoutputchecker518/517/7samples/26XHTML andEPUBCheck5.3zeroPASS. Manifestcandidate-abc3d1cb-artifacts.json. PDFidentityall1035whole2xRGB/gray;onlyR256/258P255/257changed frome531 andallfour+neighborsactualreopened. Reed–Solomon findingclosed. All actualreader/theme/mathresources exactbytes;9510EPUBmembers onlytwoUUID/timeXML differences;explicitbounded prioractualgeometry/link/behavior/4figure/footnote retention and coverpixel/JPEGidentity V3-050-digital-cover-identity.json.
+
+Newactualproductionfinding:PauseandThink headingalone atbottomR321/P320,wholequestion onR322/P321. Correct source locally withoutchangingapprovedseriesfonts/design. Needspace+PDF-onlyblock likely appropriate;inspectactualsourcefilename;regression againstactualPDFpage/text (oldfails),thennewimmutablebuild andallchangedpages/pagination reopens. Currentvisualledgercandidate-abc3d1cb-visual.json644inspected(88actualabc+556priorpixelretained),640accepted/4affected,391unopened.160printfacings159accepted/1affected. Readingthrough322/print321plus446. Complete C10actuallyopenedallproofs,11solutions,bothfigures,bibliography. NewC11pages321/322NOTaccepted.
+
+Sourceguard6e3f67181a40fdf9a4f94a066912d9e9523ad761e9a809dc79321f87ce249941 beforekeepamendment. Mathematicalsourcecomplete;freshnessledger must be refreshedbounded only ifnewsourcechange. Testsafterheadingchange522/zero skips/60.643sPASS. NewabcCIrun1736/42067740206actualV3jobandallstepssuccess;overallinprogressatquery. No terminalcurrentheadsuccessclaim.
+
+Renderhelpers/tmp/volume3-render-four-abc.py and/tmp/volume3-record-opened-flex-abc.py targetabc. ActualnewviewsR283–322/P282–321color/gray;notes/tmp/volume3-v050-{reading,print}-c10[a-i].json plusc10end-c11start. Generatedthrough322/P321only;nextpageviews neednewcandidateafterkeepfix. Disk~160MBfree afterpruningonlyold d47 regeneratedsitewithfullhashmanifest;no dist/source/reports/actualimagesdeleted. Preservework;no subagents.
+
+The following preserved context is historical when overridden above.
 
 Continue the entire authorized solo internal AI review through final actual
 acceptance and head-matched merge. Do not stop at this checkpoint. No agents,

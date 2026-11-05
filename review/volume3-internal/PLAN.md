@@ -1676,3 +1676,6 @@ finalmatter;actualnarrow/wideEPUBandreaderbaseline/shape/aspect/loading/clipping
 overflow/disclosures/nav/theme/menu/alllocallinks/163tripledestinations;actualfinal
 CIartifactcomparison/exactterminalCI/clean/currentbase/ready/headmatchedmerge.
 Nohuman/formal/spokenreviewclaim,another-reviewerrequest or Amazonaccountaction.
+
+
+CURRENT V3-050 advancement supersedes earlier next-build instructions: actualabc immutable matched518/517build passes output/EPUBCheck,Reed–Solomon fixedvisually,allrelevantdigitalcontent exactbytes retained.640accepted/644inspected/1035PDFpages;391unopened,4affected by newlyobserved orphanThinkheading. Next:localheadingkeep correction withactualbeforefailing regression,newguard/freshmatchedbuild,compare/reopenaffectedpages. Continue remaining C11/C12/A–D/endmatter and84digitalfigure/formula/themeviews. ThenactualfinalCIartifactcomparison/headmatchedCI/cleanbase/readymerge. No checkpoint stop.
