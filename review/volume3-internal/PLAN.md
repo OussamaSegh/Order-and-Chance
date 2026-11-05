@@ -5,13 +5,13 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
-## Current acceptance checkpoint — V3-047
+## Current acceptance checkpoint — V3-048
 
 | Work | Current evidence |
 | --- | --- |
 | Internal source review | Complete at guarded ISBN snapshot: 158 named results, 163 full triples, 856 global records, 120 concepts, 393 label uses and 88 earlier contexts. |
 | Matched build | e531ae06: 518 reading / 517 print; independently scanned supplied ISBN; actual EPUBCheck/output gates pass; 85 public identities and 18 reports. |
-| Actual PDF visuals | 428 of 1035 pages covered: 385 actual current openings plus 43 exact prior-pixel transfers; 106 print facings; 607 pages pending. Both editions through Chapter 7 and field-extension opening, plus actual print446 comparison. |
+| Actual PDF visuals | 492 of 1035 pages covered: 449 actual current openings plus 43 exact prior-pixel transfers; 122 print facings; 543 pages pending. Both editions through Chapter 8 and finite-field opening, plus actual print446 comparison. |
 | Digital measurements | Actual unmodified 52 EPUB and 48 reader narrow/wide instances pass. |
 | Reader behavior / destinations | 652 actual disclosure/backlink/close checks and 48 page/control checks pass. All 4674 reader and 21835 EPUB local HTML/XHTML destinations pass; exact 163 triples each. |
 | Digital visuals | First figure in both editions at both widths opened; other 84 generated figure captures and formula/theme appearance remain pending. |
