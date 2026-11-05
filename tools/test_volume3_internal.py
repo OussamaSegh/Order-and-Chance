@@ -65,6 +65,30 @@ class Volume3InternalReview(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'Stale conceptual anchor'):
             check_global_ledgers.check(data)
 
+    def test_conceptual_completion_flags_require_later_reconstruction(self):
+        concepts = __import__('json').loads((REVIEW/'concepts.json').read_text())
+        row = concepts['entries'][0]
+        row.update(status='accepted-internal', later_use_status='reviewed-internal')
+        for key in check_global_ledgers.LATER:
+            row.pop(key, None)
+        with self.assertRaisesRegex(ValueError, 'Incomplete substantive later-use'):
+            check_global_ledgers.check(documents={'concepts': concepts})
+
+    def test_conceptual_completion_rejects_later_source_drift(self):
+        concepts = __import__('json').loads((REVIEW/'concepts.json').read_text())
+        concepts['reviewed_snapshot'] = check_global_ledgers.conceptual_snapshot()
+        # Simulate a change beyond the first-use anchors, including a plate or
+        # an earlier proof. Flags and unchanged first-use paragraphs cannot
+        # transfer whole-book conceptual evidence to this different snapshot.
+        concepts['reviewed_snapshot']['sources'][-1]['sha256'] = '0'*64
+        row = concepts['entries'][0]
+        row.update(status='accepted-internal', later_use_status='reviewed-internal',
+                   reviewed_snapshot_sha256=concepts['reviewed_snapshot']['sha256'])
+        for key in check_global_ledgers.LATER:
+            row[key] = row.get(key) or 'Adversarial stale-snapshot test fixture.'
+        with self.assertRaisesRegex(ValueError, 'conceptual source/figure drift'):
+            check_global_ledgers.check(documents={'concepts': concepts})
+
     def test_earlier_source_context_cannot_keep_approval_after_change(self):
         earlier = __import__('json').loads((REVIEW/'earlier-references.json').read_text())
         earlier['entries'][0]['context_sha256'] = '0'*64

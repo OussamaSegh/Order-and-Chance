@@ -10,6 +10,26 @@ from inventory import ROOT, inventory, uncomment
 HERE = Path(__file__).resolve().parent
 CHAIN = ('first_appearance', 'definition', 'example', 'proof',
          'earliest_valid_invocation', 'earlier_tools_and_proof_sites')
+LATER = ('later_use_locations', 'later_use_reconstruction',
+         'adversarial_later_check', 'later_use_boundaries', 'whole_volume_scope')
+
+
+def conceptual_snapshot(data=None):
+    """Hash the actual review surface, without making any review decision."""
+    data = inventory() if data is None else data
+    paths = {row['path'] for key in ('source_files', 'figure_inputs',
+                                    'historical_images', 'supporting_sources')
+             for row in data[key]}
+    paths.update(str(p.relative_to(ROOT)) for p in (ROOT / 'common').glob('*.tex'))
+    paths.update(('common/volume-subtitles.json', 'common/print-layout.json'))
+    for name in ('prerequisite-sources', 'seam-sources'):
+        paths.update(row['path'] for row in
+                     json.loads((HERE / f'{name}.json').read_text())['sources'])
+    sources = [{'path': path,
+                'sha256': hashlib.sha256((ROOT / path).read_bytes()).hexdigest()}
+               for path in sorted(paths)]
+    encoded = json.dumps(sources, sort_keys=True, separators=(',', ':')).encode()
+    return {'sources': sources, 'sha256': hashlib.sha256(encoded).hexdigest()}
 
 
 def earlier_occurrences(data):
@@ -86,6 +106,16 @@ def check(data=None, require_complete=False, documents=None):
             if not actual or any(anchor[k] != actual[k] for k in
                                  ('path', 'line', 'end_line', 'sha256')):
                 raise ValueError(f"Stale conceptual anchor: {row['id']} / {anchor['id']}")
+        if (row['status'] == 'accepted-internal' or
+                row['later_use_status'] == 'reviewed-internal'):
+            if (row['first_use_status'] != 'reviewed-internal' or
+                    any(not isinstance(row.get(k), str) or not row[k].strip()
+                        for k in LATER)):
+                raise ValueError(f"Incomplete substantive later-use review: {row['id']}")
+            snapshot = concepts.get('reviewed_snapshot')
+            if (not snapshot or row.get('reviewed_snapshot_sha256') != snapshot['sha256']
+                    or snapshot != conceptual_snapshot(data)):
+                raise ValueError(f"Whole-volume conceptual source/figure drift: {row['id']}")
         if require_complete and (row['status'] != 'accepted-internal' or
                                  row['first_use_status'] != 'reviewed-internal' or
                                  row['later_use_status'] != 'reviewed-internal'):

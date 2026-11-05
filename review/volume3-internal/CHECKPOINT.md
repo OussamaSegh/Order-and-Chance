@@ -1,3 +1,51 @@
+# Restart checkpoint — V3-039
+
+Parent2db9eb9d7034703151ab02bdde8abcb68ac515e6;read actual HEAD after commit.
+Continue the entire authorized solo internal review,no partial final response.
+
+## V3-039: substantive whole-volume concept evidence (40 of 120)
+
+Closed the first40 keyed concepts individually against their actual later uses:
+group/composition/field/linear coordinates through kernel/image and automorphisms.
+V3-039-concept-decisions-part1/2.json preserve each exact location list, later
+reconstruction, adversarial reconstruction and boundary judgment. Existing complete
+item A/B records and actual earlier proof reads support this informed continuation;
+this is not approval by reference direction, keyword counts, flags or inherited
+rewrite status. All remaining80 concept closures stay pending.
+
+Fresh seam reread:actual V2 field-guide ending immediately before V3 preface;
+actual V3 afterword before V4 main/preface/first probability-space proofs.
+Canonical V4 subtitle is The Logic of Uncertainty in common/volume-subtitles.json
+and its generated TeX;the old fallback string in V4 main is not the canonical
+production title. V3's finite product-space bridge needs no future measure theory.
+Optional routes checked:A afterC7 needs V1 sequence compactness and elementary
+log laws,not C11 derivatives;B afterC11,C/D afterC9 have locally earned additions.
+
+Strengthened check_global_ledgers:every accepted later-use chain now requires five
+substantive fields and the exact whole-review snapshot. It hashes book source,
+plates/portraits,publishing/supporting source,shared TeX,canonical subtitle/layout,
+actual earlier proof sources and seam sources. Hash generation supplies identity
+only;manual judgments supply approval. Original first-anchor guard remains first.
+Executed actual old2db checker with120 completion flags and no later-use evidence:
+it incorrectly accepted all120. New guard rejects that same fixture. New focused
+regressions also reject drift beyond first-use anchors;no assertion weakened.
+
+**520 tests pass,zero skips,63.970s**, /tmp/volume3-v039-tests.log,with source and
+registers frozen at the first20 closures during suite. Subsequent second20 data-only
+manual decisions pass focused strict freshness. Required source checker,inventory,
+1176 item registers,393 reference uses,88 literal earlier contexts and whitespace
+checks pass. All120 first chains remain reviewed;40 whole chains accepted/80pending.
+No book source changed,so1660items/603prose/158named/163triples/855global retained.
+
+No new build or visual approval. Latest matched3b4e artifacts precede later book
+changes. Continue the other80 manual closures,then freeze/build and inspect every
+actual reading/print page and narrow/wide EPUB/reader/link behavior,compare final
+actual CI artifacts,and require clean exact-head terminal CI before ready/merge.
+Repository merge remains distinct from unavailable Kindle/KDP/ISBNownership/
+physical-proof publication follow-ups. No other-reviewer request or Amazonaction.
+
+## Prior detailed checkpoint (historical)
+
 # Restart checkpoint — V3-038
 
 Continue the ENTIRE authorized solo internal AI review through compactions;
