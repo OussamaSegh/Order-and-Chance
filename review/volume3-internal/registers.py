@@ -155,6 +155,8 @@ def check(data, require_complete=False):
     for source in json.loads((HERE/'prerequisite-sources.json').read_text())['sources']:
         if hashlib.sha256((HERE.parents[1]/source['path']).read_bytes()).hexdigest() != source['sha256']:
             raise ValueError(f"Earlier source drift; reread affected proof sites: {source['path']}")
+    from check_global_ledgers import check as check_global_ledgers
+    check_global_ledgers(data, require_complete)
     return dict(statuses)
 
 

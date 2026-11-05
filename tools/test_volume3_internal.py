@@ -23,11 +23,30 @@ import check_appendix_b
 import check_appendix_c
 import check_appendix_d
 import check_global_copy
+import check_global_chapter1
+import check_global_ledgers
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_conceptual_anchor_cannot_retain_changed_source_evidence(self):
+        data = copy.deepcopy(volume3_inventory.inventory())
+        concepts = __import__('json').loads((REVIEW/'concepts.json').read_text())
+        anchor = concepts['entries'][0]['anchors'][0]
+        next(r for r in data['items'] if r['id'] == anchor['id'])['sha256'] = '0'*64
+        with self.assertRaisesRegex(ValueError, 'Stale conceptual anchor'):
+            check_global_ledgers.check(data)
+
+    def test_earlier_source_context_cannot_keep_approval_after_change(self):
+        earlier = __import__('json').loads((REVIEW/'earlier-references.json').read_text())
+        earlier['entries'][0]['context_sha256'] = '0'*64
+        with self.assertRaisesRegex(ValueError, 'occurrence/context evidence is stale'):
+            check_global_ledgers.check(documents={'earlier-references': earlier})
+
+    def test_global_group_field_powers_and_actual_axes(self):
+        check_global_chapter1.check_field_power_and_actual_axes()
+
     def test_afterword_finite_model_and_actual_cover_geometry(self):
         check_global_copy.check_afterword_and_cover()
 

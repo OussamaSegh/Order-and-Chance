@@ -1,5 +1,50 @@
 # Progress
 
+## V3-019: complete Chapter1 global pass and explicit first-use records
+
+49 current C1 fragments manually reviewed in printed order: unnamed arguments,
+definitions, examples, discovery questions, actual figure/caption and all six
+bibliography entries. GLOBAL-CH01 records each A/B decision; changed dihedral
+proof and advanced matrix prompt/hint/solution were reopened and reconstructed
+with fresh hashes. All155named/163triples remain fresh. Total398accepted includes
+80global;740exposition/unnamed/history/voice rows and384label occurrences remain.
+1619items,578prose,3reminders; other mathematical/example/figure counts unchanged.
+
+Expand integer powers, finite word normalization, cyclic trivial-subgroup case,
+isomorphism transport and totient partition. Complete local field recap, with
+explicit clarification: actual V2 already gives all field axioms, so this is
+local teaching improvement, not missing-series-prerequisite repair. Add a local
+quadratic/eigen/trace/probability reminder. Preserve the complete matrix counting
+solution and add a different general entry-count proof p(p-1)+p*r_q. Grade3->2
+reflects that simpler route; all four original counts and general target kept.
+Original C1 solutions had already been encountered before the permanent record;
+no blinded first-solving claim. Higher-degree statistical assertion becomes an
+explicit outlook question; old/new/reason/loss in V3-019-curricular-disclosure.
+
+Concepts.json records17 manual first-use/definition/example/proof/earliest-use
+chains through C1;21 priority concepts and ALL later-use closure remain pending.
+Earlier-references inventories79 literal singular V1/V2 mentions (previous80;
+C1 revision net-1);19 C1 occurrences now manually classified from actual proof
+sites,60pending. Unreferenced/plural concepts also require the manual global pass.
+New guards reject stale conceptual anchors, occurrence contexts and seam-source
+hashes without assigning approval. Final --require-complete intentionally fails.
+
+502 full unit tests pass, zero skips54.768s, /tmp/volume3-v019-final-tests.log;
+39focused pass6.724s, source379labels/384refs/163triples, inventory/freshness and
+whitespace pass. Finite S3/table/cube/matrix probes support general manual proofs.
+Latest immutable ebae5c81 snapshot completed504reading/503print,KDP504,spine
+1.1829in,same-build wrap,85public+5reporthashes. Actual EPUBCheck5.3zero and output
+checker PASS. No pages/digital assets newly opened; manifest is not visual
+approval. This snapshot predates these C1 changes. No prior pixel approval
+transferred. Local cache exception for cover-notes JSON is explicitly supported
+by actual renderer dependency read and59otheridenticalprovenance inputs.
+
+Exact ebae5c81 CI41954187495 terminal successful: list,debs,all15bookbuilds and
+site succeeded; V3 output QA succeeded,publish skipped. Site library-cache save
+skipped, consistent with main-only saves. New head requires its own CI. No
+main/unrelated run cancelled. Continue C2–12/all four appendices global passes,
+full history/voice,sourcefreeze/every-page/digital/CIartifact/final merge gates.
+
 ## V3-018: actual seams/publishing copy and first global fragment closure
 
 Read actual merged V2 ending immediately before revised V3 preface/C1 opening,

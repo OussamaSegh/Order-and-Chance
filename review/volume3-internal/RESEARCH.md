@@ -200,3 +200,19 @@ original publication header and sections6–8, collected pp619–623, especially
 power-of-two sign orthogonality621–622; original Phil.Mag.34(1867),461–475.
 Matrix images not reliably represented in text; web screenshot attempts returned
 placeholders, not actual images seen. Those historical access limits are explicit.
+
+## H-C01 — bibliography metadata/content, 5November2026
+
+GLOBAL-CH01 gives six distinct manual decisions and access limits. Actual
+publisher/author/TOC pages read, not snippets alone:
+- Armstrong publisher bibliography and TOC: https://link.springer.com/book/10.1007/978-1-4757-4034-9 (1988).
+- Carter author page: https://nathancarter.github.io/vgt.html and linked whole three-page TOC (Cayley diagrams2.4,multiplication tables4.3). Publisher is Mathematical Association of America; do not adopt author-page Mathematics typo or2026sitefooter as bookdate.
+- Foote author page: https://site.uvm.edu/rfoote/ explicitly gives third edition,Wiley2004,932pages. Wiley-VCH table confirms group chapters; its June2003release is not automatically the citation/copyright year. USWiley403.
+- Artin actual Pearson second-edition TOC and book TOC, Rutgers specific ISBN9780132413770 course entry https://sites.math.rutgers.edu/~weibel/COURSES/451/451-F23.html and actual OpenLibrary edition record support conventional2011 citation. Actual MIT author course https://ocw.mit.edu/courses/18-701-algebra-i-fall-2010/pages/syllabus/ cites2010 with sameISBN. New Classic format dates differ. Original copyright page not seen; exact first-release chronology not claimed. LOC403,GoogleBooksAPI429(no retry),MSAlibrarylogin unavailable.
+- Burnside contemporary Nature1911review https://www.nature.com/articles/088170a0 preview read in original pass; re-open now fails inaccessible identity redirect. Actual catalog https://openlibrary.org/books/OL13538698M/Theory_of_groups_of_finite_order. edition notes and GAPmaintainer bibliography support1955 unabridged reprint of1911second edition. Original RochesterPDF inaccessible; no full original book read claimed.
+- Rokicki etal: prior actual SIAM DOI10.1137/120867366/authors cube20.org text, H-C04-CUBE20 above. No large search reproduced.
+
+Remove unsupported author-intention/total-coverage/first-great-book praise.
+These checks concern metadata and bounded content descriptions, not certification
+of external book proofs or new research from abstracts. All other chapters'
+history/bibliography fragments remain subject to their own global pass.
