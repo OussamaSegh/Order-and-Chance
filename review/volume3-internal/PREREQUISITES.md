@@ -620,3 +620,13 @@ The teaching pass changed Volume 1, and one sentence in the circulant solution c
 - Well ordering is a `definitionx` in `ch01-sums.tex`: every nonempty subset of \(\N\) has a least element. The induction proposition immediately after it still derives strong induction from that sentence. Inclusion–exclusion, the roots-of-unity proposition, the roots-of-unity filter and Brahmagupta’s identity are still the statements Volume 2’s bridge test looks up.
 - Volume 2 forward references were recomputed: 85 uses, same paths, lines, targets and context hashes as the classified register. No classification was changed.
 - Whole-file prerequisite hashes and the conceptual snapshot were refreshed only after the checks above. They guard drift. They do not certify the separate reading notes on Cesàro’s mis-application or the index-2 sentence for the trivial group.
+
+## Reader-fix reread, 5 November 2026
+
+Four manuscript passages changed. Each was reread against the argument around it before its hash was refreshed.
+
+- Volume 2, solution of `pb:squaresmodpk` (c). The product \(\prod_{p\le y}(p+1)/(2p)\) counted squares modulo 2 as \(3/4\). Both classes modulo 2 are squares, so the factor is \(1\). Checked \(S(30)=12\) and \(12/30=2/5\), against the old product \(3/10\). The odd-prime factor \((p+1)/(2p)\) is part (a) at \(k=1\). The empty product at \(y=2\) is \(1\). The rest of (c), that a square modulo every modulus is a square in \(\Z\), was left as it stood.
+- Volume 3, Gauss–Wantzel proof. Index 2 is now stated only for \(m\ge 1\), by the Chapter 5 corollary applied to order \(2^{m-1}\). The trivial group is written as a separate case with an empty chain. The polygon theorem is the same.
+- Volume 3, cube rotations. The new sentences use the polarization identity already proved for the polygon, expand in the orthonormal basis \(f(e_i)\), and compute two matrices: the quarter-turn \((x,y,z)\mapsto(-y,x,z)\) has determinant \(1\), and \((x,y,z)\mapsto(-x,y,z)\) has determinant \(-1\). No new Volume 1 citation was added, so later Volume 1 occurrence numbers in the chapter did not shift; only line numbers moved.
+- Volume 3, Landau solution. The classes of the order-6 group are computed from \(bab=a^{-1}\) and \(b^2=e\): identity; \(\{a,a^2\}\); and the three reflections \(b,ab,a^2b\). Cycle type is not used. Ruzsa’s exercise now defines \(A-B\) and \(A+B\) before the inequality. The solution’s bijection is unchanged.
+- Dependency rows that only moved because text was inserted above them kept their role and reason. The `cor:pk` use in the Gauss–Wantzel proof was reclassified in its reason to the \(m\ge 1\) reading. Volume 2 forward-reference edges were recomputed and still match.

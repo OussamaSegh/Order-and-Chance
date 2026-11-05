@@ -158,6 +158,9 @@ class TestVolume2ArithmeticSanity(unittest.TestCase):
         )[1].split(r"\end{solution}", 1)[0]
         self.assertIn(r"m=p^{r+1}", solution)
         self.assertIn(r"m=4b^2", solution)
+        self.assertIn(r"S(2)/2=1", solution)
+        self.assertNotIn(r"\prod_{p\le y}\frac{p+1}{2p}", solution)
+        self.assertEqual(len({pow(y, 2, 30) for y in range(30)}), 12)
         self.assertNotIn(
             r"choose, by Chinese remainders and quadratic reciprocity, a prime",
             solution,
