@@ -73,3 +73,11 @@ flow/facing and every other page remain pending; no approval transfers without
 relevant file/pixel identity. This predates B source repairs. Final all-page,
 actual reader/EPUB narrow-wide/link/disclosure/theme/formula-shape and actual
 CIartifact comparison remain open. Draft PR104 must not be merged yet.
+
+## V3-016 advancement
+
+C complete:149 named/161 triples manually accepted; remaining D6+2. Global819
+exposition and occurrence dependencies remain pending. Actual source order is
+now guarded; remaining80 earlier-volume occurrences require global correction.
+APPC-REVIEW/first-record/curricular/regressions and immutable1b94857e manifests
+contain exact checkpoint evidence, not final all-book or external approval.

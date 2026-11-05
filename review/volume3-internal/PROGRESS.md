@@ -1,5 +1,61 @@
 # Progress
 
+## V3-016: Linear Algebra Method, full internal mathematics
+
+Read all C main prose,18 named proofs,10 prompts/hints/finding ideas/full
+solutions and both figure sources. First solutions precede supplied answers.
+APPC-REVIEW contains two substantive reconstructions per target, additional
+Blokhuis/odd-characteristic/optimization arguments and exact earlier-site reads.
+Manual totals now149/155 named+161/163 triples,310 accepted. Only Paley's6 named
+and2 exercises remain mathematically pending. Global819 keyed exposition/history/
+concept/voice and all dependency occurrences remain separate pending gates.
+Inventory1618 items/578 prose: nine more local prose groups since B; named,
+exercise/example/figure/bibliography/tabular counts unchanged.
+
+Correct Chevalley–Warning's zero-polynomial convention with n>=1/nonnegative
+degree bounds, retaining empty systems. State exactly the characteristic-p
+finite-field divisibility the argument proves, without asserting q-divisibility
+false. State Kakeya n>=1 and earn K nonempty. Full stronger two-distance
+Blokhuis refinement, odd-prime-power progression tensor and algebraic optimum
+are now locally proved. Define polynomial degrees/F^A/delta/support/slice0
+before use. Supply field-general polynomial long division in C6 before quotient
+uses, with strict degree termination/uniqueness; reopen the actual C1 root-bound
+solution. General Eventown construction and all boundary cases have complete
+answers; original Fano/quadric/cap-plane answer proofs were already sound and
+are not misrepresented as repairs. All18 named/10 graded targets and stars
+remain. Explicit old/new/domain/loss JSON discloses removed unsupported exact
+small cap/two-distance classifications and incidental current research catalog.
+
+Actual earlier main.tex order exposes a locator error introduced in A: source
+basename ch05 is printed sequences Chapter3, not5. Correct exactly three A
+locators, reopen/reread affected arguments and reaccept only two affected math
+rows with fresh hashes. V3-016-SOURCE-ORDER records the admission, actual maps
+and remaining80-occurrence global scan. Actual proof-site availability is not
+inferred from titles. Earlier main.tex and counting-source hashes now guard
+printed order/stars-and-bars drift. No global locator closure is claimed yet.
+
+Exact finite support includes91 binary subspaces through dimension4, all small
+incidence families, affine/Fano data, polynomial coefficient functionals in four
+fields, quadratic zero counts, CD/EGZ multisets, complete prime-power Kakeya plane
+enumerations, cap subsets/counts/optimum and all actual figure data. Source guards
+fail on old source and pass current; actual counterexamples are separate. Scripts
+never assign approval. 496 full tests pass,zero skips53.563s;33 focused pass5.008s. Logs are
+/tmp/volume3-v016-tests-final.log and-focused.log. Inherited379labels/384refs/
+163triples, freshness and whitespace pass.
+
+Immutable1b94857e all-format snapshot is502 reading/501 print,KDP502,
+spine1.1782in,same-build wrap,85 public+5 report hashes. Actual EPUBCheck5.3.0
+zero messages and output checker pass. Actually opened/read full print442/443
+colour at1.65, including full nonabelian determinant proof; fit/legibility pass
+for these pages only. No grayscale/digital/all-page transfer; current C/A/C6
+repairs need a new immutable build.1b948 CI41944548778 terminal list/debs/V3build/
+site success,publish skipped; no reusable PR library-cache claim.
+
+Next: full Paley appendix, then all global conceptual/history/story/voice and
+printed-reference closure, freeze source, actual all-page/digital/CIartifact
+review and exact-head terminal merge gates. Draft remains open. No human or
+formal verification claim, unavailable reviewer request or Amazon action.
+
 ## V3-015: Symmetry Diagonalises, full internal mathematics
 
 Read the entire second appendix and all twelve complete triples, with all first

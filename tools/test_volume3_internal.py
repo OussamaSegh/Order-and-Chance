@@ -20,11 +20,26 @@ import check_chapter11
 import check_chapter12
 import check_appendix_a
 import check_appendix_b
+import check_appendix_c
 import inventory as volume3_inventory
 import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_combinatorial_incidence_and_polynomial_coefficients(self):
+        check_appendix_c.check_incidence_families_and_fano()
+        check_appendix_c.check_nullstellensatz_coefficients()
+
+    def test_combinatorial_additive_cap_and_prime_power_cases(self):
+        check_appendix_c.check_zero_counts_and_additive_bounds()
+        check_appendix_c.check_kakeya_prime_power_boundaries()
+        check_appendix_c.check_cap_counts_and_optimum()
+
+    def test_combinatorial_actual_figures_and_source_order(self):
+        check_appendix_c.check_actual_figures()
+        check_appendix_c.check_local_contract()
+        check_appendix_c.check_earlier_printed_order()
+
     def test_symmetry_appendix_fourier_cubic_and_actual_figures(self):
         check_appendix_b.check_circulants_and_cubic()
         check_appendix_b.check_paley_and_actual_figures()
