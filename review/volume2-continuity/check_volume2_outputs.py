@@ -84,8 +84,11 @@ def run(root=ROOT):
     check(read_pages == interior_pages + 1,
           "The reading PDF should add exactly one cover page")
     check_paper_geometry(meta, interior_pages)
-    check(print_info["Page size"].startswith("504 x 720"),
-          "Print interior must be 7 by 10 inches")
+    check(print_info["Page size"].startswith("513 x 738"),
+          "Print interior must be 7.125 by 10.25 inches with KDP bleed")
+    check(meta["interior_bleed"] is True and
+          (meta["interior_width_in"], meta["interior_height_in"]) == (7.125, 10.25),
+          "Print metadata must specify a bleed interior at 7 by 10 inch trim")
     check(int(cover_info["Pages"]) == 1, "Print wrap must be one PDF page")
     size = re.search(r"Page size:\s*([\d.]+) x ([\d.]+)",
                      subprocess.check_output(["pdfinfo", str(wrap)], text=True))

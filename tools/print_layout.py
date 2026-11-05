@@ -16,6 +16,19 @@ def check_sync():
     if (ROOT / 'common/print-layout.tex').read_text() != tex():
         raise ValueError('Run python3 tools/print_layout.py to sync paperback geometry')
 
+def interior_size(bleed=False):
+    """Page dimensions in PDF points; KDP has no bleed at the binding edge."""
+    extra = LAYOUT['bleed_in'] if bleed else 0
+    return ((LAYOUT['trim_width_in'] + extra) * 72,
+            (LAYOUT['trim_height_in'] + 2 * extra) * 72)
+
+def interior_trim(index):
+    """Physical PDF page index, independent of printed folios/page labels."""
+    bleed = LAYOUT['bleed_in'] * 72
+    left = bleed if index % 2 else 0
+    return (left, bleed, left + LAYOUT['trim_width_in'] * 72,
+            bleed + LAYOUT['trim_height_in'] * 72)
+
 def specification(pages, inner='0.9in'):
     pages = int(pages)
     if not 24 <= pages <= 828:
@@ -25,7 +38,8 @@ def specification(pages, inner='0.9in'):
     return dict(LAYOUT, interior_pages=pages, kdp_pages=kdp_pages, inner_margin=inner,
                 spine_in=spine, wrap_width_in=2*LAYOUT['trim_width_in']+2*LAYOUT['bleed_in']+spine,
                 wrap_height_in=LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'],
-                interior_bleed=False)
+                interior_width_in=interior_size(LAYOUT['interior_bleed'])[0] / 72,
+                interior_height_in=interior_size(LAYOUT['interior_bleed'])[1] / 72)
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)

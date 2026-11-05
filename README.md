@@ -9,7 +9,7 @@ Order and Chance is fifteen volumes on how structure and chance meet. Read them 
 - **Download page:** https://oussamasegh.github.io/Order-and-Chance/
 - **Direct links (latest build):**
 
-  | Volume | PDF with cover (7 × 10 in) | Print PDF (7 × 10 in) | EPUB |
+  | Volume | PDF with cover (7 × 10 in) | Print PDF (7 × 10 trim, with bleed) | EPUB |
   |---|---|---|---|
   | **Part I. Foundations** | | | |
   | 1. First Principles | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%201%20-%20First%20Principles.epub) |
@@ -33,7 +33,9 @@ Order and Chance is fifteen volumes on how structure and chance meet. Read them 
   | **Part VI. Synthesis** | | | |
   | 15. Order and Chance | [PDF with cover](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.pdf) | [Print PDF](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance%20-%20Print.pdf) | [EPUB](https://oussamasegh.github.io/Order-and-Chance/Volume%2015%20-%20Order%20and%20Chance.epub) |
 
-Each volume has **two distinct 7 × 10 inch PDFs and one reflowable EPUB**.
+Each volume has **a 7 × 10 inch reading PDF, a paperback print PDF with bleed,
+and one reflowable EPUB**. The print canvas is 7.125 × 10.25 inches for a
+7 × 10 finished book; select **Bleed (PDF only)** in KDP.
 The files are named `Volume N - Title`.
 The reading download includes the approved front cover. The print PDF starts with
 the half-title and is the paperback manuscript; its cover wrap is uploaded
@@ -188,7 +190,7 @@ manual workflow, as described above.
 
 Selection/assembly logic lives in `tools/build_plan.py`; its regression tests run
 before planning. Publishing-toolchain changes should bump the output fingerprint
-version (`book-output-v8`) so previously compiled books are regenerated.
+version (`book-output-v9`) so previously compiled books are regenerated.
 
 ## KDP export rules
 

@@ -3,7 +3,7 @@ import argparse
 import re
 import subprocess
 from pathlib import Path
-from print_layout import LAYOUT
+from print_layout import LAYOUT, interior_size
 from series_metadata import subtitle
 
 def check_cover(path, width, height):
@@ -58,7 +58,7 @@ def check_back_copy(path):
     if len(text.split())<60:
         raise ValueError(f'{path}: back-cover blurb is missing or incomplete')
 
-def check_interior(path):
+def check_interior(path, bleed=False):
     """Check every page, including title pages and inserted figures."""
     info = subprocess.check_output(['pdfinfo', str(path)], text=True)
     pages = int(re.search(r'Pages:\s+(\d+)', info)[1])
@@ -66,10 +66,12 @@ def check_interior(path):
     sizes = re.findall(r'Page\s+\d+ size:\s+([\d.]+) x ([\d.]+)', details)
     if len(sizes) != pages:
         raise ValueError(f'{path}: cannot verify every interior page')
+    expected_width, expected_height = interior_size(bleed)
     for number, (width, height) in enumerate(sizes, 1):
-        if (abs(float(width)-LAYOUT['trim_width_in']*72) > .12 or
-                abs(float(height)-LAYOUT['trim_height_in']*72) > .12):
-            raise ValueError(f'{path}: page {number} is not the approved paperback trim')
+        if (abs(float(width)-expected_width) > .12 or
+                abs(float(height)-expected_height) > .12):
+            raise ValueError(f'{path}: page {number} is not the approved paperback '
+                             + ('bleed size' if bleed else 'trim'))
     check_fonts(path)
     return pages
 
@@ -82,6 +84,7 @@ if __name__=='__main__':
     parser.add_argument('--title', help='Verify complete paperback front title/subtitle/slogan')
     parser.add_argument('--number', help='Volume identifier for subtitle lookup')
     parser.add_argument('--interior',action='store_true',help='Check every interior page size and embedded vector fonts')
+    parser.add_argument('--bleed',action='store_true',help='Check a KDP bleed interior rather than the trim-size reading source')
     parser.add_argument('--print-export',action='store_true',help='Identity is validated by press-export provenance/visual comparison')
     args=parser.parse_args()
     if args.log:check_cover_log(args.log)
@@ -89,7 +92,7 @@ if __name__=='__main__':
         if not args.log:parser.error('Supply a PDF or --log')
         raise SystemExit(0)
     if args.interior:
-        check_interior(args.pdf)
+        check_interior(args.pdf, bleed=args.bleed)
     else:
         check_cover(args.pdf,2*LAYOUT['trim_width_in']+2*LAYOUT['bleed_in']+args.spine if args.spine is not None else 6,
                     args.height or (LAYOUT['trim_height_in']+2*LAYOUT['bleed_in'] if args.spine is not None else 6*LAYOUT['trim_height_in']/LAYOUT['trim_width_in']))
