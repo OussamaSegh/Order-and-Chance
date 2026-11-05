@@ -3,9 +3,72 @@ import itertools
 import math
 from pathlib import Path
 import re
+from collections import Counter, deque
 
 ROOT = Path(__file__).resolve().parents[2]
 SOURCE = ROOT/'volume3-symmetry/chapters/ch04-symmetric.tex'
+
+
+def check_actual_plate_and_small_degrees():
+    """Recompute the data in the source plate, and probe two overbroad readings."""
+    plate = (ROOT/'volume3-symmetry/figures/ch04-fifteen.tex').read_text()
+    types = Counter()
+    for permutation in itertools.permutations(range(5)):
+        seen = set(); lengths = []
+        for x in range(5):
+            if x in seen:
+                continue
+            y = x; length = 0
+            while y not in seen:
+                seen.add(y); length += 1; y = permutation[y]
+            lengths.append(length)
+        types[tuple(sorted(lengths, reverse=True))] += 1
+    order = [(1,1,1,1,1),(2,1,1,1),(2,2,1),(3,1,1),(3,2),(4,1),(5,)]
+    values = [types[t] for t in order]
+    assert values == [1,10,15,20,20,30,24]
+    bars = re.findall(r'fill=(MidnightBlue!75|BurntOrange!60)\] '
+                      r'\(([\d.]+),0\) rectangle \(([\d.]+),([\d.]+)\);\s*'
+                      r'\\node\[font=\\scriptsize,above\].*?\{(\d+)\};', plate)
+    assert len(bars) == 7
+    for t, count, (ink,left,right,height,label) in zip(order,values,bars):
+        assert int(label) == count
+        assert abs(float(height)-count*3.4/30) <= .0051
+        assert .54 <= float(right)-float(left) <= .561
+        even = (5-len(t)) % 2 == 0
+        assert (ink == 'MidnightBlue!75') == even
+    tiles = re.findall(r'font=\\small\\bfseries,text=(black|BrickRed)\] '
+                       r'at \(([\d.]+),([\d.]+)\) \{(\d+)\};',plate)
+    assert len(tiles) == 15
+    for ink,x,y,value in tiles:
+        cell = 4*(3-int(float(y)/.9))+int(float(x)/.9)+1
+        assert int(value) == {14:15,15:14}.get(cell,cell)
+        assert (ink == 'BrickRed') == (cell in (14,15))
+
+    # In a one-row four-cell puzzle, the three numbered tiles never change
+    # their relative order. Only four states are reachable, not 4!/2.
+    initial = (1,2,3,0); reached = {initial}; queue = deque([initial])
+    while queue:
+        state = queue.popleft(); blank = state.index(0)
+        for neighbour in (blank-1,blank+1):
+            if 0 <= neighbour < 4:
+                result = list(state)
+                result[blank],result[neighbour] = result[neighbour],result[blank]
+                result = tuple(result)
+                if result not in reached:
+                    reached.add(result); queue.append(result)
+    assert len(reached) == 4 < math.factorial(4)//2
+    assert all(tuple(x for x in state if x) == (1,2,3) for state in reached)
+
+    compose = lambda a,b: tuple(a[b[i]] for i in range(len(a)))
+    even = lambda a: sum(a[i]>a[j] for i in range(len(a))
+                        for j in range(i+1,len(a))) % 2 == 0
+    alternating = [a for a in itertools.permutations(range(4)) if even(a)]
+    v = {(0,1,2,3),(1,0,3,2),(2,3,0,1),(3,2,1,0)}
+    assert len(alternating) == 12 and len(v) == 4
+    assert all(compose(a,b) in v for a in v for b in v)
+    for a in alternating:
+        inverse = tuple(a.index(i) for i in range(4))
+        assert {compose(compose(a,b),inverse) for b in v} == v
 
 
 def rectangle(corner):
@@ -137,6 +200,7 @@ def check_probability_constant():
 
 
 if __name__=='__main__':
+    check_actual_plate_and_small_degrees()
     check_puzzle()
     check_edge_orientations()
     check_permutation_cases()

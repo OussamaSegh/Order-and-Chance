@@ -1,95 +1,94 @@
-# Restart checkpoint — V3-021
+# Restart checkpoint — V3-022
 
-This is a solo internal AI review, not human refereeing or formal verification.
-Draft PR: https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Branch:
+Solo internal AI review, not human refereeing or formal verification. Draft PR:
+https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Branch:
 `editorial/volume3-complete-internal-review-20261104`. This batch follows
-`0b61bf09f777dbb7d9bfa14d460b5a69b39e915a`; read the actual current HEAD before
-pushing or checking CI. PR #103's actual merge and latest fetched main are still
-`7f87c2ab00fdb0c7791dc833423b98bef0870f01`. No unrelated user changes were found
-or overwritten. Activate `/workspace/volume3-tools/activate.sh`.
+`d501ee9058710950c5efe2366d612f42a65d0405`; read actual HEAD after committing.
+Actual PR103 merge/latest fetched main remain
+`7f87c2ab00fdb0c7791dc833423b98bef0870f01`. No unrelated user changes found or
+modified. Activate `/workspace/volume3-tools/activate.sh` for commands.
 
-All applicable instructions, the actual CI workflow and Volume 2's final assigned,
-prerequisite/story, artifact and handoff records have been read. The user grants
-curricular freedom and authorizes merger after every available final gate passes.
-Do not delegate the review or request another reviewer. No Amazon account action
-is authorized. Main library caches are saved only on main; never cancel main or
-unrelated work.
+All applicable instructions, actual CI and V2 final assigned/prerequisite/story/
+artifact/handoff records were read. User grants curricular freedom and authorizes
+merge only after all available gates pass. No delegation/other reviewer, Amazon
+upload or account action. Main library caches save only on main; PR success does
+not supply reusable PR caches. Never cancel main/unrelated work.
 
-## Exact source coverage
+## Exact current coverage
 
-All 155 named results and 163 exercise triples have fresh internal A/B records.
-The global written and prerequisite pass has accepted 167 fragments: 31 front/end,
-49 in C1, 44 in C2 and 43 in C3. Total register status is 485 accepted and **656
-pending**. All four appendices remain in the global continuation, despite their
-completed named/exercise passes. Never approve pending rows from counts or scans.
+All155 named results and163 full exercise triples have fresh internal A/B records.
+Global accepted215 =31front/end+49C1+44C2+43C3+48C4. Total533 accepted, **613
+global exposition/unnamed/history/voice items pending**, nextC5. Inventory1627
+items/580prose/114bibliography/22examples/22figures/9tabular,22source files and
+four full appendices. Five C4 bibliography entries added, no named/exercise count
+change.69 label uses accepted/316 pending (385 total);33 literal earlier mentions
+accepted/48 pending (81 total).43 first-use chains reviewed/15 pending; **all58
+whole-volume concept statuses pending**. Counts/scans never assign approval.
 
-The current inventory contains 1,622 items, 580 prose chunks, 109 bibliography
-items, 22 examples, 22 figure sources and 9 tabular environments. Fine/Herstein
-is the added bibliography item. There are 47 manually classified label uses and
-337 pending ones; 28 of 81 literal earlier-volume mentions are classified, leaving
-53 pending. Forty first-use chains are reviewed and 15 priority chains are pending.
-**All 55 whole-volume concept statuses remain pending.** Read unreferenced
-reasoning, hints and solutions as well as explicit references.
+C4 complete actual source read, nine named proofs unchanged, all ten triples and
+actual full figure read. Retain complete puzzle converse and full An proof. Add
+small An exceptions/main V4 proof; clarify class-union necessity, ambient
+commutator and liminf definition/epsilon proof. Recap Phi_p using actual earlier
+ex:eisen(b), no missing-earlier-proof fiction. Two changed triples Landau/
+conjugacy probability fully reconstructed again, targets/answers/grades retained.
+All22 C4 label uses and5 earlier references manually classified; three new concept
+chains/5 existing continuations anchored. GLOBAL-CH04/RESEARCH/disclosure contain
+specific A/B/history/access evidence, including original2012 paper's sum-index
+inconsistency; no external research proof certified from an abstract.
 
-C3 now earns the coset/colouring actions and finite-image replacement for infinite
-G, defines faithful/permutation representation/cycle types/graph terms/A-stability/
-shift-polynomial notation before use, and avoids a later conjugacy-class premise
-in the graph count. Five changed exercises were fully reread and reconstructed,
-with complete targets, solutions and grades retained. The primary historical reads
-and access limits are in GLOBAL-CH03 and RESEARCH. No external research proof was
-certified from an abstract.
+## Actual immutable outputs
 
-## Actual artifacts and open layout corrections
+`/workspace/volume3-build-d501ee90` exact d501 commit all-format build completed,
+BEFORE C4 changes.508reading/507print,KDP508,spine1.1923in,matched wrap
+15.4423x10.25in.85public output hashes/5report hashes in preliminary-d501ee90-
+artifacts.json. Actual EPUBCheck5.3.0 zero messages (both text/JSON reports), actual
+publication checker PASS (7renders/26EPUBXHTML). Verified60 renderer/font/common
+cache-provenance files before local reuse; no visual/math approval from cache.
 
-`/workspace/volume3-build-0b61bf09` is the completed immutable all-format snapshot
-of exact commit `0b61bf09f777dbb7d9bfa14d460b5a69b39e915a`, before C3 and the two
-latest production fixes. It has 508 reading pages and 507 print pages; KDP count
-508, spine 1.1923in, same-build wrap 15.4423 by 10.25in. The manifest hashes 85
-public files and 5 reports. Actual EPUBCheck 5.3 has zero messages; the actual
-output checker passes. Verified all 60 renderer/font/common provenance files
-before local cache reuse; cache identity transfers no mathematical/visual approval.
-
-Actually opened full reading pages 13, 45, 48 and print pages 12, 44, 47 at 2x;
-48/47 were also opened in grayscale. C1's opening stranded `ces.` after `matri-`;
-shorten only the question. C2's kernel arrows crossed stacked integer labels;
-move each triple to a horizontal row. Both source records and affected earlier
-mentions/figure dependencies were reopened and manually rechecked. **Both fixes
-still need actual rebuilt-page/plate inspection.** No page approval transferred.
-Only a previously seen complete eBook front JPEG transfers by proven whole-file
-byte identity. Facing pages and all remaining pages are pending. Generated but
-unopened renders do not count. Root `dist` mixes checkpoints.
+Actually reopened reading13/48 and print12/47 at2x colour AND grayscale. C1
+stranded suffix fixed; all nine C2 integer labels/arrows clear and correct. Actual
+extracted1800px EPUB kernel PNG opened in full, labels/edges legible. Only a
+previously seen whole eBook front JPEG transfers by proven whole-file byte
+identity. All final/facing/changed-pagination/all-page and narrow/wide viewport
+reviews remain pending. Earlier opened pages are individually scoped in earlier
+records; no unproved transfer. Rootdist mixes checkpoints. C4 new pages unreviewed.
 
 ## Validation and immediate continuation
 
-503 full unit tests passed with zero skips in 53.340s before the final two C1/
-figure production edits. All 40 current focused tests passed in 7.666s after them.
-Current source checker (379 labels, 384 references, 163 triples), inventory,
-register/concept freshness and whitespace checks pass. The complete-review gate
-intentionally fails first at C4. Exact 0b CI run 41960503696 is still in progress
-at the last observation: list/debs/Volume 3 and thirteen other book builds passed,
-Volume 8 remained running. This is not terminal CI success. Prior ebae CI run
-41954187495 was terminal successful. New HEAD needs its own final CI.
+504 full unit tests pass, zero skips,57.579s, log /tmp/volume3-v022-full-tests.log,
+after current manuscript/register/checker changes and before final descriptive
+progress documents. Current inherited source checker379labels/385refs/163triples,
+inventory/register/concept freshness and diffcheck passed. New actual S5 bars/
+tiles enumeration, V4 closure/normality,1x4 boundary probes pass. Full-review
+completion gate intentionally fails atC5. Final source freeze still required.
 
-Commit/push this coherent C3/first-page batch and update the PR. Build its exact
-immutable commit with verified cache provenance, then run actual EPUBCheck/output
-checks and hash outputs. Reopen the corrected C1 opener and C2 kernel figure first,
-and all changed pagination. Continue the complete C4 global pass, then C5–12 and
-A–D. C4 has not yet received this turn's global reread. Keep all accepted evidence
-fresh; changes reopen proofs, hints, solutions, included figures and contexts.
+Latest observed d501 CI1703/run41964102376 in progress; list/debs/Volume3 passed,
+other book jobs still running at last details. Earlier ebae run41954187495 terminal
+success; never claim d501 terminal success from its passed V3 job. Current next
+commit needs own CI. Latest fetched main remains actual PR103 merge above.
 
-After global closure, freeze source and run every required test/build. Inspect
-EVERY reading/print page, all figures/tables/displays/openings/appendices/final
-matter, grayscale and facing-page concerns. Inspect actual narrow/wide reader and
-EPUB assets, formula baseline/shape/aspect/clipping/loading/overflow, local links
-and fragments, exercise/hint/solution destinations, disclosures, navigation,
-theme/menu behaviour. Compare actual CI artifacts. Transfer evidence only on
-actual relevant file/pixel identity; reopen fixes and changed pagination.
+Commit/push coherent C4 batch and keep PR current. C5 global pass has read source
+**lines1–430** and CH05-REVIEW; no C5 edits/approvals yet. Continue line431 onward,
+all eight triples, actual15-row figure and bibliography. Useful editorial points
+to assess: distinguish action on subsets from stabilizer's free action on chosen
+subset; warn that distinct prime-power subgroups can overlap, whereas the order30
+argument uses prime orders. Remove vague Hold-on-to-definition language if useful.
+Recheck the corrected Burrell1024 count with actual evidence, not inherited status.
+Then completeC6–12/A–D global, all remaining references/concepts/history/voice.
 
-Before readiness/merge require a clean exact reviewed HEAD, current base, no
-unresolved internal findings and terminal successful exact-head CI. Use a
-head-matched merge commit, then verify GitHub's merge and resulting main. Preserve
-approved art/fonts/trim and shared EPUB wrapper/run-in/SVG/proportional scaling
-repairs. No V3 ISBN or barcode is assigned or invented. Native Kindle, KDP account/
-Previewer, ISBN ownership and a physical proof remain unavailable publication
-follow-ups, never false passes or a reason to request another reviewer. Continue
-through the authorized job; this checkpoint is not completion.
+After global closure freeze manuscript; run all required tests/build/checkers.
+Inspect EVERY reading/print page/figure/table/display/opening/appendix/final matter,
+grayscale/facing concerns, reopen corrections and changed pagination. Inspect
+actual narrow/wide reader and EPUB assets, formula baseline/shape/aspect/clipping/
+loading/overflow, all local links/fragments/triple destinations, disclosures/nav/
+theme/menu. Download/compare actual CI artifacts. Transfer evidence only by actual
+relevant byte/pixel identity. Keep same-build interior/page-derived wrap together.
+
+Before ready/merge require exact reviewed clean HEAD, current base, no unresolved
+internal findings, all required checks and terminal successful exact-head CI.
+Use head-matched merge commit, verify GitHub merger/resultingmain. Preserve series
+art/fonts/trim/shared EPUB wrapper/run-in/SVG/proportional formula fixes. No V3
+ISBN/barcode assignment exists or is invented. Native Kindle, KDP Previewer/account,
+ISBN ownership and physical proof are unavailable publication follow-ups, never
+false passes or a reason to seek another reviewer. Continue through the authorized
+job; this checkpoint is not completion. Avoid recording-only CI commit loops.

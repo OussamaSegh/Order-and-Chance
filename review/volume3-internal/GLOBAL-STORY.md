@@ -59,3 +59,21 @@ subtitle. The live common/frontmatter.tex65–76 branch uses build-provided
 VOLUMETITLE and canonical volumesubtitle{VOLUMENUM}, whose V4 value is The Logic
 of Uncertainty. This verifies the live title route; the legacy source assignment
 is not treated as the rendered subtitle or silently modified outside V3 scope.
+
+## C4 global story/cadence pass, V3-022
+
+Incoming question: which arrangements can legal puzzle moves reach? The route
+moves from explicit card swaps to disjoint cycles, conjugacy and generators;
+then it proves both directions of reachability, and asks which even subgroups
+admit nontrivial normal quotients. The main route now earns every small-degree
+exception as well as An for n>=5. The outgoing question is why Lagrange permits
+subgroup sizes it cannot promise; Sylow supplies existence/counting in C5.
+
+Complete written voice/adversarial first-reader pass read every line, not a spoken
+session. Replace the numerical history epigraph with the attainability question;
+replace two repeated proof recaps with useful logical distinctions/small cases;
+state the ambient commutator domain and define unfamiliar liminf before use.
+Separate the long beauty paragraph into the earned solvability destination and
+explicit external mixing/classification outlooks. No future theorem is a premise.
+Preserve all complete advanced solutions and grades. The new source must still
+receive actual final page/digital review; this written pass does not approve pixels.

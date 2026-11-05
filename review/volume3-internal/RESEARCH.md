@@ -292,3 +292,85 @@ certified. Ourfullgiven-fieldFitting/recurrenceproofandBsubtractionwerewritten
 beforethisreading. AddactualFine/Hersteinbibliography,108->109. Removeunqualified
 SteinbergtagfromimmediateGLtranslationcase; general1968algebraic-groupcount
 notearned/usedhere, AMSoriginal403. Fullmathematicaltargetretained.
+
+## V3-022: Chapter 4 historical and bibliography text reads
+
+Accessed 5 November2026 UTC. This is a solo internal AI source review, not
+independent human historical refereeing or certification of external research.
+
+- Archer actual original Monthly PDF:
+  https://mathsmartinthomas.wordpress.com/wp-content/uploads/2014/10/archer_15_puzzle.pdf .
+  Read original header793–799/1999, opening/history793–794, generation theorem
+  and graph discussion797–798. Actual Google Research author bibliography agrees:
+  https://research.google/pubs/a-modern-treatment-of-the-15-puzzle/ . The paper's
+  opening repeats the older Loyd attribution. It proves the4x4 puzzle by a
+  different route, then discusses graphs, not the unrestricted bibliography claim
+  about all rectangles. Independent1x4 reachable-state count4 vs12 exposes that
+  scope problem; no new all-rectangle theorem claimed.
+- Johnson/Story actual JSTOR journal metadata:
+  https://www.jstor.org/stable/2369492 and DOI10.2307/2369492. Authors Wm.Woolsey
+  Johnson/WilliamE.Story, AJM2(4),December1879,397–404. Original full1879 scan not
+  read here. Archer's actual original1999 history distinguishes necessity and
+  sufficiency in the two1879 notes. Do not call the JSTOR metadata a full-text read.
+- Slocum/Sonneveld actual author-foundation flyer:
+  https://w.slocumpuzzles.com/Home_Page/Puzzle%20Flyer.pdf ; actual relevant book
+  text in https://ru.djvu.online/file/JJDl4IJ1cpqPd , especially printed109–110,
+  Rewards and Wagers for Solutions. It separates December1879 manufacturing,
+  the1880 craze and Loyd's January1896 shared$1000 prize advertisement. Therefore
+  do not imply that no later Loyd prize offer existed. IU catalog confirms2006/
+  SlocumPuzzleFoundation: https://www.iucat.iu.edu/ius/6590370 . Underlying patent
+  records, original newspaper advertisements and entire144-page book not audited.
+- Perfect shuffles original author-hosted paper:
+  https://pages.uoregon.edu/kantor/PAPERS/PerfectShuffles.pdf . Actual first-page
+  title/authors/year175–196, even-deck main scope and Lemma1/order proof read;
+  order formulas match the local exercise. Section3 discusses odd sizes separately.
+  Narrow bibliography to the actual main even-deck theorem, not every unspecified
+  deck convention. Entire external classification proof not independently audited.
+- Random-transposition original1981 journal paper:
+  https://www.imo.universite-paris-saclay.fr/~pierre-loic.meliot/symmetric/texts/Diaconis%2C%20Shahshahani%20-%20Generating%20a%20random%20permutation%20with%20random%20transpositions.pdf .
+  Actual pp159–160 introduction, independent choices, holding probability1/n and
+  both main theorem statements read beyond abstract. Journal57(1981)159–179,
+  DOI10.1007/BF00535487; Stanford1980 report date is distinct. Full external
+  representation/mixing proof not certified. Actual V11 appendix shuffling.tex
+  law92–99/theorem157–162/corollary205–219 read only to check the outlook promise,
+  not as a prerequisite or a global review of Volume11.
+- Aschbacher2004 actual author-repository record:
+  https://authors.library.caltech.edu/records/5b4mm-frv50 , NoticesAMS51(7)736–740.
+  Original AMS PDF403; Caltech signed object inaccessible. Read actual participant
+  excerpt reproduced at https://mathshistory.st-andrews.ac.uk/Extras/Simple_groups_classification/ ,
+  beyond its introduction, describing the serious gap and its recent closure.
+  Actual AMS2004 quasithin publication metadata supports the narrower publication
+  statement. No claim to have read the original five-page scan or verified CFSG.
+  Actual specialist ATLAS Monster table:
+  https://brauer.maths.qmul.ac.uk/Atlas/v3/spor/M/ ; read exact decimal order and
+  prime factorization, independently multiply factors to the same54-digit integer,
+  hence8.08017...e53. This verifies table agreement/rounding, not a construction of
+  the Monster, its order proof or classification of all finite simple groups.
+- Nicolas actual survey intro/asymptotic statement and bibliography:
+  https://files01.core.ac.uk/download/pdf/52645761.pdf . Primary author exposition
+  gives logg(n)~sqrt(nlogn). Publisher-deposited metadata:
+  https://api.crossref.org/works/10.1007/978-1-4614-7258-2_14 confirms On Landau's
+  Functiong(n), Mathematics of PaulErdosI,2013,207–220. Original1903 paper not read;
+  remove that incidental precise date and retain the stronger result explicitly
+  as an external outlook, not the premise for g7/g10. No new survey proof certified.
+- Zolotareff actual original Numdam PDF:
+  https://www.numdam.org/item/NAM_1872_2_11__354_0.pdf . Header and TheoremI/proof
+  pp354–355 read: parity of multiplying nonzero residues equals Legendre symbol;
+  primitive-root proof matches the independently reconstructed local route.
+  Adding fixed0 leaves sign unchanged. Nouvellesannales2ndseries11(1872)354–362.
+  Not a claim to have reviewed the remaining reciprocity proof.
+- Blackburn/Britnell/Wildon actual primary arxiv1108.1784v2:
+  https://arxiv.org/pdf/1108.1784 ; actual introduction/Theorem1.5 and section9
+  lower-bound proof/upper-bound conclusion read, page5 image actually opened.
+  **Source inconsistency:** Theorem1.5 and section9 recall begin A's sum at1, but
+  section9 actual proofs sum from0; its quoted4.263403514152669 also includesP0.
+  Our own local product/lower bound already includes the empty partition. Preserve
+  that correct constant; do not inherit the erroneous start index. Published
+  metadata https://api.crossref.org/works/10.1112/jlms/jds022 confirms JLMS86,
+  December2012,755–778, all authors. Bristol mirror web text accessible, direct
+  request403; arxiv actual PDF downloaded. Matching asymptotic is an attributed
+  outlook, not an independent certificate of the entire34-page external proof.
+- Joyner, Dummit/Foote and Rokicki bibliography reuse actual metadata/TOC/primary
+  source reads specified in GLOBAL-CH01/02 and their access limits; own local
+  proofs were reconstructed independently. Do not imply unavailable textbook
+  chapters or the exhaustive cube diameter computation were newly reviewed.

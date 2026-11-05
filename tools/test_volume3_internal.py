@@ -125,6 +125,9 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter4.check_edge_orientations()
         check_chapter4.check_permutation_cases()
 
+    def test_actual_s5_plate_and_small_puzzle_group_boundaries(self):
+        check_chapter4.check_actual_plate_and_small_degrees()
+
     def test_conjugacy_probability_constant_has_bounded_tail(self):
         check_chapter4.check_probability_constant()
 

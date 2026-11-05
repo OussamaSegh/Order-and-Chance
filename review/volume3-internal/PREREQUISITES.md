@@ -418,3 +418,21 @@ Named/exercise status is separate from the810 remaining keyed global exposition/
 history/voice rows and occurrence/context classifications. Unsupported incidental
 research record/catalog claims are removed with explicit losses; surviving
 outlooks and attributions still need global primary-source closure.
+
+## V3-022: C4 complete conceptual/prerequisite continuation
+
+Read actual V1 sign164–173, polynomial division/Bezout127–132, Eisenstein327–338
+and **ex:eisen(b)**678–685; counting36–42/69–74; completeness85–87,seqcrit246–255,
+positive-series554–585,safe-sums668–675 and Taylor168–218/exp-series772–774.
+Read actual V2 primitive-root133–160,Euler55–117,supplementary2 at202–209.
+Exact paths/reconstructions are in GLOBAL-CH04 and earlier-references.json.
+The cyclotomic reminder constructs its particular field and exponent automorphisms
+before the challenge; no later extension/Galois theorem supplies a premise.
+All22 actual C4 label uses classified;5 singular earlier references classified,
+including hints/full solutions. Three new first-use chains (prime cyclotomic
+field, root discriminant, limit inferior) are source-anchored. Existing simplicity,
+commutator, sign, cycle and convergence chains have explicit C4 continuation.
+All58 whole-volume statuses remain pending. Actual V11 appendix law/theorem/
+corollary located and relevant text read solely to check an outlook promise;
+that result does not supply an essential premise in V3. Backward label counts do
+not substitute for the full unreferenced written/proof pass.

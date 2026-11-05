@@ -1,5 +1,55 @@
 # Progress
 
+## V3-022: complete Chapter 4 global pass; two page corrections reopened
+
+This remains a solo internal AI review, not human refereeing or formal verification.
+Read the entire current C4, all nine named proofs, ten full exercise/hint/solution
+sets, the actual puzzle/class-count figure and all twelve bibliography entries.
+48 individually keyed global decisions join the earlier167: **533 accepted =
+155 named +163 triples +215 global;613 global items remain pending**. All22 C4
+label uses and5 earlier-volume mentions classified:69/385 label uses and33/81
+literal earlier mentions accepted.43 first-use chains reviewed,15 pending;
+all58 whole-volume concept statuses remain pending. No counts imply approval.
+
+Retain the complete puzzle attainability proof and full An proof. Earn small
+A1/A2/A3/A4 exceptions in main prose; distinguish class-union necessity from
+subgroup sufficiency; restrict the commutator conjugator to its actual ambient
+group. Define limit inferior and prove its epsilon equivalence before the advanced
+prompt. Recap Phi_p's formula using the actual earlier ex:eisen(b), not a guessed
+label. Two changed triples (Landau/conjugacy probability) freshly reconstructed
+in full; all targets, complete answers and grades retained. Named proof bytes
+and the other eight triples unchanged. Twelve bibliography items checked with
+explicit access limits. Archer's all-rectangular description narrowed; a1x4
+counterexample has4 reachable states vs12 under the overbroad parity converse.
+Correct Loyd invention/craze/prize chronology; distinguish the actual1981 holding
+shuffle and explicit external classification from local premises. Primary2012
+conjugacy paper has a start-index inconsistency: its proofs/decimal includeP0;
+our own product/lower-bound proof does too. Five sourced bibliography entries
+added, inventory1627/580prose/114bibliography;155named/163triples/22examples/
+22figures/9tabular unchanged. Exact evidence:GLOBAL-CH04,RESEARCH,disclosure,
+registers and focused probes. No external research proof certified from abstract.
+
+Exact immutable d501ee90 all-format snapshot completed:508 reading/507 print,
+KDP508, spine1.1923in, matched wrap15.4423x10.25in;85 public files and5 reports
+hashed. Actual EPUBCheck5.3.0 zero messages and output checker PASS (7 renders,
+26 EPUB XHTML documents). Actually reopened reading13/48 and print12/47 at2x,
+colour and grayscale: C1 suffix widow gone, C2 arrows clear of all nine labels.
+Actual1800px EPUB kernel PNG opened, full labels/edges legible. Only the previously
+seen eBook JPEG transfers by proven whole-file byte identity. No final/facing/
+changed-pagination/all-page or narrow/wide viewport approval. Snapshot predates
+C4 changes; rootdist is not an immutable current package.
+
+504 full unit tests pass, zero skips,57.579s, /tmp/volume3-v022-full-tests.log.
+Current inherited source checker379labels/385refs/163triples passes, as do inventory,
+register/concept freshness and whitespace. New probes compare actual S5 plate
+counts/heights/inks and board labels with independent enumeration, and check V4
+closure/normality and the one-row boundary. Full-review gate intentionally remains
+incomplete. Latest fetched main still actual PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01;
+no unrelated changes found. d501 CI1703/41964102376 still in progress at last
+observation; V3/list/debs passed, not terminal all-success. Main-only library
+caches, no main/unrelated cancellation. Next complete C5–12/A–D global pass, then
+source freeze, all final output/CI/merge gates. No request for another reviewer.
+
 ## V3-021: complete Chapter3 global pass and actual first-page findings
 
 All43C3expositionfragments read/reconstructed, including unnamedaction/cycle/
