@@ -5,23 +5,25 @@ and production review, not independent human refereeing or formal verification.
 The user authorizes the complete review and an exact-head merge only after all
 available acceptance gates pass. No Amazon upload or account action is authorized.
 
-## Current acceptance checkpoint — V3-043
+## Current acceptance checkpoint — V3-044
 
 | Work | Current evidence |
 | --- | --- |
-| Internal mathematics/editorial/prerequisites/story | Complete at the guarded ISBN source snapshot: 158 named, 163 full triples, 856 global records, 120 concepts, 393 label uses and 88 earlier contexts. |
-| Current matched ISBN build | d47cd540: 518 reading / 517 print; correct scanned ISBN; actual EPUBCheck/output gates pass; 85 public identities. |
-| Actual PDF visuals | 43 of 1035 pages covered, including 21 exact prior-pixel transfers; 10 print facings; 992 pages pending. |
-| EPUB rendering measurements | Actual unmodified 52 narrow/wide instances pass; digital visual/behavior/link work remains. |
-| Reader rendering measurements | Provisional 48 instances pass with URI fix injected; new unmodified build and all behavior/link checks remain. |
-| Tests | Current 522 pass; strict internal completeness/freshness and whitespace pass. |
-| Final CI / merge | Open. Current candidate V3 job passed; final head still needs terminal overall CI and final artifact comparison. Keep draft. |
-| Publication follow-ups | Native Kindle, KDP account/Previewer, ownership and physical proof unavailable; no Amazon account action. |
+| Internal source review | Complete at guarded ISBN snapshot: 158 named results, 163 full triples, 856 global records, 120 concepts, 393 label uses and 88 earlier contexts. |
+| Matched build | e531ae06: 518 reading / 517 print; independently scanned supplied ISBN; actual EPUBCheck/output gates pass; 85 public identities and 15 reports. |
+| Actual PDF visuals | 110 of 1035 pages covered: 67 actual current openings plus 43 exact prior-pixel transfers; 21 print facings; 925 pages pending. Reading through Chapter 2, print through Chapter 1, plus actual print446 comparison. |
+| Digital measurements | Actual unmodified 52 EPUB and 48 reader narrow/wide instances pass. |
+| Reader behavior / destinations | 652 actual disclosure/backlink/close checks and 48 page/control checks pass. All 4674 reader and 21835 EPUB local HTML/XHTML destinations pass; exact 163 triples each. |
+| Digital visuals | First figure in both editions at both widths opened; other 84 generated figure captures and formula/theme appearance remain pending. |
+| CI comparison | e531 overall terminal success. Actual CI ZIP digest matched; all reading and wrap pixels match, one print page differs only slightly and was actually opened in both modes. EPUB glyph/footnote differences remain under review. Later commits need their own terminal CI. |
+| Merge / publication | Draft; remaining visual and final-head gates open. Native Kindle, KDP account/Previewer, ownership and physical proof remain publication follow-ups. |
 
 Detailed evidence: [progress](PROGRESS.md), [restart](CHECKPOINT.md),
-[candidate artifacts](candidate-d47cd540-artifacts.json),
-[actual per-page record](candidate-d47cd540-visual.json). Historical checkpoints
-below remain scoped to their producing sources, not current acceptance.
+[candidate artifacts](candidate-e531ae06-artifacts.json),
+[actual per-page record](candidate-e531ae06-visual.json),
+[digital gates](V3-044-digital-gates.json),
+[actual CI comparison](candidate-e531ae06-ci-comparison.json).
+Historical checkpoints remain scoped to their producing sources.
 
 ## Baseline
 

@@ -2666,3 +2666,61 @@ print278/279/280 (worked cyclotomic route),285 (complex-root repair),304 (Niven/
 heptagon derivation). Only those pages count; no grayscale/digital/reading or
 later-build transfer. This package predates C11 foundation changes. Source/cache
 provenance recorded separately from GitHub's main-only library cache policy.
+
+
+## V3-044 — unmodified digital gates, actual Chapter 1/2 pages and CI comparison
+
+Completed the immutable all-format build from e531ae061fed09bd689d04665374544e679820a7.
+It has 518 reading and 517 print pages, KDP normalized count518, spine1.2157in and
+matched wrap15.4657×10.25in. Actual EPUBCheck5.3.0 reports zero messages; the actual
+output checker passes. The supplied ISBN9798167514683 was decoded again from this
+actual exported wrap by independent ZXing3.1.1 at4×. The manifest records85 public
+files and15 actual reports, with exact producing commit and hashes.
+
+Actual unmodified EPUB52 and reader48 narrow/wide measurements pass, with no URI
+injection. New behavioral tooling actually clicked every hint/solution summary
+open, verified visible content, clicked its real prompt backlink, verified the
+exercise destination, then clicked it closed:652 checks across the two widths.
+Theme click/storage/reload and narrow menu/shade/navigation or wide-sidebar tests
+pass on every core page:48 page/control checks. Existing folded-content IDs were
+tested without inventing destinations. The checker’s executed bytes are archived;
+a harmless unused-locator cleanup during its run is disclosed in its provenance.
+The permanent helper now captures its own hash at startup.
+
+A separate actual-output audit checks all local href/src/poster/redirect targets,
+fragments and duplicate IDs:30 reader files/4674 destinations and26 EPUB XHTML
+files/21835 destinations, zero problems. Every output has exactly163 source-keyed
+exercise/hint/solution triples and real prompt backlinks. Hint/solution blocks
+have no fabricated deep-link IDs. A broken-fragment fixture was rejected and its
+corrected target accepted. EPUBCheck additionally checks package resources.
+
+Actual PDF coverage is110 of1035 physical pages:67 current openings plus43 retained
+only after full-media2× RGB and grayscale pixel equality to actual earlier views.
+Reading1–66 and print1–43 are covered, plus print446. All Chapter1 solutions and
+bibliography, Chapter2 reading pages, both quotient diagrams and full captions,
+and21 print facings were actually inspected in color/grayscale. Page-specific
+observations are keyed in the visual record. Remaining925 pages are pending.
+88 actual narrow/wide figure/caption screenshots were generated; only the first
+figure’s four reader/EPUB screenshots were opened and accepted at this checkpoint.
+Dense multiplication-table labels are small at390px; full-resolution detail is
+preserved. No native-device legibility is claimed.
+
+Actual e531 CI run1730/42051380146 finished overall success. All15 book jobs and
+actual Volume3 build/bleed/output/upload steps were inspected. Downloaded its
+40962313-byte Volume3 artifact13427628677; ZIP SHA256
+ e67946f5d521ac495a06cb496cb5f64af351b7cc00ac19b9cc7875655accdb55
+matches GitHub’s digest. Of85 public files,80 are byte-identical. All518 reading
+pages and the wrap match at2× RGB;516 of517 print pages match. Both local/CI
+print446 were actually opened in color and grayscale:1017 of1514376 pixels differ,
+mean absolute channel0.0037168,max29,with no observed lost/clipped math, graph,
+caption or layout change in the one600ppi flattened page. This does not approve
+unopened pages. Actual Paley HTML differs only in footnote section/aside tags;
+EPUB nine glyph pairs and footnote behavior remain to classify/check.
+
+522 unit tests passed in71.751s with zero skips; source checker and both strict
+complete internal ledgers pass. A later checker-only startup-hash improvement does
+not change pass criteria. No new manuscript or rendering-source change was made.
+The mathematical snapshot remains7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d06f5219e8510b6d0bd.
+Source review is complete internally; production/final-head acceptance is open.
+Continue the authorized full review; keep draft. Library caches still save only
+on main, and this successful PR build does not establish a reusable PR cache.
