@@ -1,5 +1,109 @@
 # Progress
 
+## V3-026: complete field-extensions global pass and earned quartic boundary
+
+Solo internal AI review, not independent human refereeing or formal verification.
+Entire current C8 read, including all fifteen full named proofs, eight complete
+exercise/hint/idea/write-up triples, the actual pentagon/tower figure and seven
+bibliography entries. All unreferenced reasoning reconstructed. Three changed
+original proofs, the new quartic proof and the changed algebraic-field exercise
+have fresh complete A/B records in V3-026-argument-recheck.md. Eleven unchanged
+named statement/full-proof pairs and seven whole triples were individually
+compared by actual content hashes; no historical rewrite approval inherited.
+Original CH08-PROMPT-FIRST exposure chronology remains, no new blind-solve claim.
+
+Current coverage: **745 accepted =157 named +163 triples +425 global**; **416
+global items remain pending** in C9–12/all four appendices. Global425 comprises
+31 front/end,49 C1,44 C2,43 C3,48 C4,48 C5,63 C6,50 C7,49 C8. Inventory now
+1644 items,590 prose,117 bibliography,22 examples,22 figures,9 tabular,22 source
+files. Relative to V3-025, one new named statement, one new proof and net one new
+prose item account for +3; counts are not quotas or approval. Named original155
+became156 with the earned non-Euclidean PID and157 with the earned quartic.
+164/389 actual label uses and54/85 literal earlier-volume mentions reviewed;
+all C8 references and both preface literal mentions classified.71 first-use
+chains reviewed,8 priority chains pending; all79 whole-volume concept statuses
+remain pending until later occurrences are manually closed.
+
+New Proposition prop:quartic-nonconstructible proves that EVERY complex root of
+X^4-X-1 has degree4 and is not constructible, with a real root in(1,2). This earns
+the formerly asserted failure of the power-of-two degree converse. Reduction
+modulo2 proves irreducibility. A finite quadratic-tower embedding argument using
+only the earlier one-step extension lemma and actual V1 complex FTA makes all
+conjugates constructible if one is; no later primitive-element/Galois theorem is
+used. Pairing roots then yields a constructible root of irreducible Y^3+4Y-1,
+contradicting Wantzel. Independent reconstruction expands all three symmetric
+resolvent identities and adversarially checks finite generation/embedding/basis
+transport. Exact four-variable coefficient expansion, all possible degree1/2
+factors overF2 and endpoint/rational-root probes support the general proof.
+X^4-2 is the constructible degree4 boundary countermodel. No original target or
+complete reader solution was removed or weakened. Legacy editorial checker now
+expects157 actual statements; its independent_verified count remains0.
+
+Other repairs supply generated-field existence by intersection inside a given
+ambient field, conditional p^d quotient cardinality, explicit coordinate equations
+for constructed real products/quotients and radius transfer, and all coefficients
+of the shifted prime cyclotomic Eisenstein proof. A stale multiline Volume1,
+Chapter3 pointer really meant printedChapter6. Algebraic-closure solution now
+says nonconstant polynomial and names actual earlier root existence. Caption
+shows three quadratic intermediate fields and explicitly defers completeness to
+C10. Quadratic towers, rather than degree alone, organize the closing narrative.
+Removed a duplicated opening epigraph with an unsupported blanket historical
+claim. All eight actual star grades1,1,2,2,2,2,2,3 retained after reassessment.
+
+Candid correction to our own V3-025 evidence: actual V1 already has the GENERAL
+Cayley–Hamilton proof477–508, by adjugate coefficient comparison and telescoping.
+It is not only a2x2 result. C7 now explicitly offers a second proof through modules;
+GLOBAL-CH07 and the conceptual record are corrected, all shifted V1 mention
+contexts reread. No mathematical gap in V1 is claimed. The C1 primer introduced
+by this review used characteristic2 before its formal local definition: sayp=2
+there; entire primer and its five conceptual anchors freshly rechecked. Old
+primitive-element proof14 becomes15 solely because the new proof is inserted;
+its full unchanged SHAe65fc909...821e8d individually matched before identity
+migration, not approved by ordinal/count. Guards initially reported the expected
+stale conceptual coordinates; these were reconciled by actual identity, and the
+changed primer anchors by fresh reconstruction. Final freshness gates pass.
+
+Historical/source evidence: actual Wantzel original all366–372 read; actual
+Cantor original all258–262 images opened/read (height enumeration/nested intervals,
+1873 writing versus1874 publication; not the later diagonal argument). Actual
+Gauss1801 SectionVII §365 printed662–663 opened/read, original diary first entry
+viewed via web, birth date independently read. March30 1796 precedes April30
+birthday, so age18; some institutional summaries say19, discrepancy recorded.
+Actual Kronecker reprint opening/§1–2 read; bibliography now describes polynomial
+congruences without pretending modern quotient notation verbatim. Actual
+Lindemann original first/last pages and metadata read; transcendence is a clearly
+quoted outlook, not a locally proved premise or a newly certified external proof.
+Actual Artin second-edition copyright/TOC/full Theorems8–10 and library colophon
+read, separating1942/1944/Dover1998. Actual Stewart fourth2015 frontmatter/TOC/
+relevant construction proof read; Chapters4–7 is an appropriate range, annotation
+made precise rather than falsely called a bad pointer. Access limits inRESEARCH.
+
+507 full repository tests pass, zero skips,53.708s, log
+/tmp/volume3-v026-full-tests.log after mathematical source/checker/register edits,
+before final descriptive report and anchor-location refinements. Required source,
+inventory/freshness, focused exact and whitespace gates rerun after records.
+Exact support checks are not substituted for general proof reconstruction.
+
+Newest completed immutable snapshot is producing commit26ea4401252f469af3411540af3aacf5ff08b650,
+BEFORE current C8/C1/C7 changes. All formats built:512 reading/511 print pages,
+KDP512, spine1.2017in, matched same-build wrap15.4517x10.25in.85 public files and
+five actual report hashes in preliminary-26ea4401-artifacts.json. Actual
+EPUBCheck5.3.0 has zero errors/warnings/infos after completion; output checker
+passes7renders/26EPUBXHTML. Actually opened reading174/208/209 and matching
+print173/207/208 at2x in colour AND grayscale, sixPDFpages/twelve renders. The
+first pair is an extra C6 ideal/unit solution page, not C7 scalar-law evidence;
+other pairs show full projection/diagonalization and cyclic/lattice continuation.
+Legible, unclipped, intact displays/headers on these pages only. Prior eBookfront
+observation transfers solely by actual whole-file byte identity. No whole-book,
+facing-spread, narrow/wide or later-source visual approval. Rootdist mixed.
+
+Exact26ea CI1707/run41976211862 last detailed observation: Volume3 and twelve
+other book jobs successful, V1/V8 still in progress, list/debs successful. No
+whole-workflow terminal success inferred. New head needs its own CI. Main-only
+library-cache rule remains; no main/unrelated run cancelled. Continue C9–12/A–D
+global work, all concept later-use closure, then frozen-source final every-page/
+digital/link/CIartifact review and exact-head clean/terminal-CI merge gates.
+
 ## V3-025: entire modules chapter global pass
 
 Solo internal AI review, not human refereeing or formal verification. Entire

@@ -85,8 +85,48 @@ def check_characteristic_probes():
     assert 'opposite of the $n$th listed subset' in source
 
 
+def check_quartic_obstruction():
+    """Exact supporting identities, not a replacement for the general proof."""
+    def remainder(a,b):
+        while a.bit_length()>=b.bit_length():
+            a ^= b << (a.bit_length()-b.bit_length())
+        return a
+    # Every monic possible factor of degree one or two, including reducibles.
+    assert all(remainder(0b10011,b) for b in range(2,8))
+    def add(*polys):
+        result={}
+        for p in polys:
+            for m,c in p.items():result[m]=result.get(m,0)+c
+        return {m:c for m,c in result.items() if c}
+    def scale(p,k):return {m:k*c for m,c in p.items() if k*c}
+    def mul(a,b):
+        result={}
+        for u,c in a.items():
+            for v,d in b.items():
+                m=tuple(x+y for x,y in zip(u,v))
+                result[m]=result.get(m,0)+c*d
+        return {m:c for m,c in result.items() if c}
+    roots=[{tuple(int(i==j) for i in range(4)):1} for j in range(4)]
+    def elementary(k):
+        terms=[]
+        for chosen in itertools.combinations(roots,k):
+            product={(0,0,0,0):1}
+            for r in chosen:product=mul(product,r)
+            terms.append(product)
+        return add(*terms)
+    e1,e2,e3,e4=[elementary(k) for k in range(1,5)]
+    a,b,c,d=roots
+    ys=[add(mul(a,b),mul(c,d)),add(mul(a,c),mul(b,d)),add(mul(a,d),mul(b,c))]
+    assert add(*ys)==e2
+    assert add(*(mul(u,v) for u,v in itertools.combinations(ys,2)))==add(mul(e1,e3),scale(e4,-4))
+    assert mul(mul(ys[0],ys[1]),ys[2])==add(mul(e3,e3),mul(e4,add(mul(e1,e1),scale(e2,-4))))
+    assert [y**3+4*y-1 for y in (1,-1)]==[4,-6]
+    assert [x**4-x-1 for x in (1,2)]==[-1,13]
+
+
 if __name__=='__main__':
     check_exact_radicals()
     check_pentagon_plate()
     check_characteristic_probes()
+    check_quartic_obstruction()
     print('PASS: exact degree6 equation/inverses/recovery; actual pentagon/tower; multivariate Frobenius; local prerequisite/geometry guards')

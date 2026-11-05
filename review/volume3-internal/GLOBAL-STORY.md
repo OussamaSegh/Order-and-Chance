@@ -3,9 +3,9 @@
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned mathematical route; the final keyed global
-voice/cadence/adversarial-first-reader pass is still in progress.167 fragments have current manual closure at V3-021 (31front/end,49C1,44C2,43C3);
-656 other exposition fragments, including unnamed reasoning, history and
-conceptual order, remain.
+voice/cadence/adversarial-first-reader pass is still in progress.425 global items
+have current manual closure atV3-026 (31front/end,49C1,44C2,43C3,48C4,48C5,63C6,
+50C7,49C8);416 global items inC9–12/all four appendices remain pending.
 A route map alone does not approve their prose or dependencies.
 
 | Source | Incoming question | Earned answer | Reason for the next source |
@@ -139,3 +139,9 @@ outlook with integral/mod2 distinction. Remove a pointer to an absent quotation.
 This is a whole written cadence/adversarial first-reader pass, not a human or
 spoken read-aloud session. The outgoing field-extension question asks what a
 polynomial quotient's vector-space coordinates tell us about adjoining numbers.
+
+V3-026: C8 now earns the power-of-two-degree boundary by a full quartic
+counterexample proof, uses explicit geometric coordinate constructions, and
+connects quotient arithmetic to conditional finite-field counts. C7 acknowledges
+V1's actual general Cayley–Hamilton proof and offers a second module derivation.
+Written first-reader/voice pass, not an actual human or spoken read-aloud session.

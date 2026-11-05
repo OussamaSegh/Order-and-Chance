@@ -172,6 +172,7 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter8.check_exact_radicals()
         check_chapter8.check_pentagon_plate()
         check_chapter8.check_characteristic_probes()
+        check_chapter8.check_quartic_obstruction()
 
     def test_finite_fields_codes_trace_and_actual_figures(self):
         check_chapter9.check_fields_and_aes()

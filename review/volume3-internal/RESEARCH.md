@@ -578,3 +578,71 @@ V1recurrence317-321 gives nfactoranddefersJordantoV3; no differential-equation
 chapter there. Actual V2characterrestriction54-65 and actual V4Markovopening/
 transitionmatrix35-59, V6Dirichletopening read to bound application locators;
 future results not premises of C7 mathematics.
+
+## V3-026: field-extension sources actually read
+
+Accessed5November2026. This is internal AI historical/source checking, not a new
+certification of every external proof. Downloaded sources remain outsideGit in
+/workspace/volume3-review-sources; hashes below identify the bytes actually read.
+
+- Wantzel original https://www.numdam.org/item/JMPA_1837_1_2__366_0.pdf : all
+  seven printed pages366–372 read, including quadratic chains, degree obstruction,
+  classical problems and quartic criterion. Digital cover adds one page. Modern
+  complete reader proof reconstructed separately; old broad historical epigraph
+  removed rather than certified from a general historical impression.
+- Gauss original SectionVII https://www.e-rara.ch/download/pdf/1706866.pdf :
+  title/1801 metadata from ETH original record, actual printed662–663 §365 opened
+  as page images and read: prime n with n-1 power2, explicit17-gon formula, Fermat
+  discussion. Two relevant pages, not whole75-page section proof certification.
+  Original diary first entry actually viewed via
+  https://commons.wikimedia.org/wiki/File:Gauss_Tagebuch_erster_Eintrag.png
+  (web original image; direct download403), giving March30 1796. BirthApril30
+  1777 actually read in https://webdoc.sub.gwdg.de/ebook/e/2005/gausscd/html/gauss_bio1.htm .
+  Thus18, not19, at discovery; institutional diary summaries and1956 French
+  introduction say19, a discrepancy we do not copy. Discovery1796/publication1801
+  distinct. No claim an autograph transcription beyond this entry was audited.
+- Kronecker primary collected reprint https://www.e-rara.ch/download/pdf/5763555.pdf :
+  actual title cites Jreine100,490–510; opening and§1–2 read. Program replaces
+  algebraic quantities by polynomial congruence systems and linear-factor
+  construction; bibliography bounded accordingly. Year1887 matched actual
+  scholarly Numdam bibliography https://archive.numdam.org/articles/10.24033/rhm.223/ .
+  Not all21original pages certified; collected reprint has33digitalpages.
+- Cantor actual original https://gdz.sub.uni-goettingen.de/download/PPN243919689_0077/PPN243919689_0077___LOG_0014.pdf :
+  all five printed258–262 page images opened/read; heightn-1+sumabsolute
+  coefficients enumerates REAL algebraics, nested intervals miss an arbitrary
+  sequence; enddatedBerlin23December1873, journal1874. Annotation now precise.
+  The book's complex enumeration and local ternary injection with later diagonal
+  argument are separately proved; no claim the1874paper used that later argument.
+- Lindemann actual original https://gdz.sub.uni-goettingen.de/download/PPN235181684_0020/PPN235181684_0020___LOG_0031.pdf :
+  metadata plus printed213and225 page images opened/read: title/byline, pi
+  transcendence/circle aim, final general statement andApril/June1882writingdate.
+  Intermediate proof pages not fully audited; quoted outlook, no new external
+  proof certification or use as an essential premise.
+- Artin actual second-edition title/copyright1942,1944/TOC and full Theorems8–10
+  extension-isomorphism/splitting-field proofs31–33 read via
+  https://studyres.com/doc/6154633/galois-theory . Actual library publication
+  record and transcribed title-verso colophon read at
+  https://opac.ramapo.edu/cgi-bin/koha/opac-detail.pl?biblionumber=110160 :
+  Dover1998 republishes corrected1944second edition, firstpublished1942.
+  Bibliography distinguishes all three dates, no wholebook certification.
+- Stewart actual fourth2015 frontmatter/copyright, fullTOC and relevant7.2
+  construction theorem/coordinateproof text read via
+  https://studylib.net/doc/28407995/galois-theory--4th-ed.----stewart--ian-nicholas .
+  Chapters4extensions,5simpleextensions,6degree,7rulercompass87: old4–7range
+  was appropriate. Annotation now names that progression instead of vague
+  many-pictures praise. OReilly fourth2015 record corroborates edition/date.
+  Not wholetext external mathematical sign-off.
+
+Actual earlier manuscript general Cayley–Hamilton proof was available allalong:
+our prior V3-025 availability record understated it. Source hashes did not drift;
+this is a correction to our reading/evidence, candidly retained in history.
+
+Wantzel-1837.pdf: 628375bytes SHA2566d21eef8a6a5d6131d12295d8f74dbd1b53ff71fbb7a9b5878873d089405d8ed.
+
+Gauss-1801-sectionVII.pdf: 19824265bytes SHA256b1f446d1f983f9433fc51f24f221d918f31b91d994eae3ab5cc3f4432455b2a7.
+
+Kronecker-1887-reprint.pdf: 5111307bytes SHA2563784f7e17b19cadce57dd0f5bf2684ce399d57568afd8a8caa20ce5144b44bdf.
+
+Cantor-1874.pdf: 9037773bytes SHA2565e5ad2d9b48fef6c9a09b79c7952c71337d19e59548746b0bf822fcd4bb48567.
+
+Lindemann-1882.pdf: 1204827bytes SHA256124eed32c7fa13246b74b167bd8e9794736bf5126f9456c90e7fc5fa847c5854.

@@ -492,3 +492,20 @@ The topology chain reviews its explicit external-outlook role and conditional
 algebra; it does not certify a locally proved geometric model or supply a premise.
 All73 whole-volume concept statuses remain pending later-use closure. Preface
 literal earlier mentions also remain pending despite earlier front/end prose pass.
+
+## V3-026: actual earlier proofs and repaired first uses
+
+Actual V1 linear algebra56–77 finite exchange/dimension and477–508 GENERAL
+Cayley–Hamilton proof reread; correct our earlier special2x2-only evidence. Actual
+V1 polynomial thm:dalembert156–174 full complex-root proof and ex:eisen(b)678–684
+full shifted cyclotomic proof read; printed polynomial chapter is6 despite file
+ch03. Actual V1 power-set full solution1156–1167 and geometric-series195–202/
+monotone convergence chain read; local ternary injection earns its application
+to real uncountability. Actual C5 binomial-characteristic proof and V2 Lucas/
+reciprocity full arguments earn characteristic-p binomial identity before C8.
+C1 primer nowp=2 until formal term is available. Generated fields exist locally
+by intersection; geometry arithmetic is proved by explicit line equations. New
+quartic proof uses finite generators/one-step extension/complexFTA only, so no
+forward primitive-element or Galois premise. All27 C8 labels/seven earlier mentions,
+three shifted C7 contexts and two preface mentions classified. Whole later-use
+closure still pending.
