@@ -1,4 +1,4 @@
-# Restart checkpoint — V3-055
+# Restart checkpoint — V3-056
 
 Continue the entire authorized SOLO internal AI review through final technicalacceptance and headmatchedmerge. No subagents,anotherreviewerrequest,human/spoken/formalclaim,orAmazonaction. Userfullcurricularfreedom,ISBN9798167514683includedandprioractualbarcode decoded. OriginaluntouchedpostPR103471print/472reading,current517/518(+46).
 
@@ -19,3 +19,5 @@ Activate/workspace/volume3-tools/activate.shforfitz/TeX/GS/Pandoc/tests/build. P
 Remaining:159unopenedPDFpages plus2findingpagesincludingallappendices/afterword/finalmatterandfacings;furtheractualnarrow/wideformulabaseline/shape/themeappearance;finalCIartifactcomparison/terminalheadCI/currentbase/cleantree/noidentifiedunresolvedfinding,readyandheadmatchedmergecommitverifyGitHub/main. NativeKindle/Paperwhite,KDPaccount/PrintPreviewer,ISBNownershipandphysicalproofunavailablepublicationfollowups;notmergeblockers. Nofinalatcheckpoint;continuework.
 
 V055 storage: exact-byte deduplication of1762owned superseded immutable publicdist files retains every original path/byte and SHA, saves333836288allocated bytes. Current15d bundle/source/reports/actualscreens excluded. FullV055dedupmanifest; olddist nowhardlinked and must stayimmutable. About501MBfree.
+
+V056 advancement: complete B including all12 solutions/bibliography, and C opening/Oddtown proof. Actual current R439–474/P438–473 opened full2x color/gray, manual per-page records.947 inspected/945 accepted/2 open finding/88 pending;312 current openings+635 prior exact retentions;236 facings/235 accepted. Explicit P446 reopening preserves prior evidence; helper handles explicit reopen and dynamic retained count. AllB figures now keyed both editions. Next UNSEEN R475/P474. Rendering C/end untilR506/P505 is generated only, not acceptance. Actual2784a569 run1742/42080800562 job query: list/debs pass, all15build steps active, no terminal pass. Main freshly fetched unchangedd97c0bf4. All remaining gates and existing spacing correction/rebuild plan above remain in force.
