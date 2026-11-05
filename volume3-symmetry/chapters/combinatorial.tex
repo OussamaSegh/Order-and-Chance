@@ -15,12 +15,15 @@ This proof uses a dimension bound where a direct counting argument would struggl
 
 \section{Oddtown, Eventown, and Fisher}
 
+Throughout, $n$ is a nonnegative integer unless a result requires $n\ge1$.
 For $A\subseteq[n]=\{1,\dots,n\}$ write $v_A\in\{0,1\}^n$ for its \emph{characteristic vector}, with a $1$ in position $i$ when $i\in A$. The key identity of the
 whole chapter is
 \[
 v_A\cdot v_B=\sum_{i=1}^n(v_A)_i(v_B)_i=|A\cap B|,
 \]
 which we may read in $\R$ or, reducing modulo a prime $p$, in the field $\mathbb F_p=\Z/p\Z$.
+This is a bilinear dot product without complex conjugation; it differs from
+the positive Hermitian product in the preceding appendix.
 
 \begin{theorem}[Oddtown, Berlekamp, 1969]\label{combinatorial:thm:oddtown}
 Let $A_1,\dots,A_m\subseteq[n]$ be such that every $|A_i|$ is odd and every $|A_i\cap A_j|$, $i\ne j$, is even. Then $m\le n$.
@@ -53,7 +56,13 @@ The bound is sharp: choose the $n$ one-element sets $\{1\},\ldots,\{n\}$. Each s
 \end{proof}
 
 \paragraph{Why this works.}
-The parity requirements become an identity matrix. In the field $\mathbb F_2$, the row of club $A_i$ has dot product $1$ with itself and $0$ with every other club row. A linear relation among the rows would therefore give, after taking the dot product with row $j$, precisely its $j$-th coefficient. Every coefficient must be zero. We cannot have more than $n$ independent rows in $\mathbb F_2^n$. And the bound is attained: the $n$ one-person clubs have odd sizes and empty pairwise intersections.
+With even clubs, independence can fail without breaking the intersection
+rule. On four inhabitants, the vectors for $\{1,2\}$, $\{3,4\}$ and
+$\{1,2,3,4\}$ satisfy $v_3=v_1+v_2$ over $\mathbb F_2$, while every
+pairwise intersection is even. Their span is still constrained: every vector
+in it is perpendicular to every other one. That suggests counting the
+vectors in a small subspace instead of demanding that the club vectors
+be independent.
 
 Eventown is different. Split the inhabitants into couples, $\{1,2\},\{3,4\},\dots$, and let the clubs be all unions of couples: every club and every
 intersection of two clubs is a union of couples, of even size, and there are $2^{\lfloor n/2\rfloor}$ clubs. Changing one word in the rules has
@@ -123,20 +132,41 @@ The even-size hypothesis is crucial: it is
 what makes each vector orthogonal to itself.
 \end{proof}
 
-Both bounds are attained, by singletons and by couples, but not only by them: for $n=8$, the $14$ affine planes of $\mathbb F_2^3$, with $\varnothing$ and the whole space, form an Eventown family of $16=2^4$ clubs
-that contains no couple at all (Exercise~\ref{combinatorial:ex:eventown}). It is a famous code in disguise, the extended Hamming code, and the spaces in Theorem~\ref{combinatorial:thm:eventown} are examples of
-\emph{self-orthogonal codes}. Only when a code also satisfies $W=W^\perp$ (which forces $n$ even and $\dim W=n/2$) is it called \emph{self-dual}.
+The couples construction is not the only equality case. Label eight inhabitants
+by $x\in\mathbb F_2^3$. For every nonzero $a\in\mathbb F_2^3$ and $b\in\mathbb F_2$,
+take the club $\{x:a\cdot x=b\}$, an affine plane of four points.
+There are fourteen distinct such clubs: seven nonzero functionals, each with
+two level sets. Distinct nonzero functionals over $\mathbb F_2$ are independent,
+so their two equations have rank two and exactly two simultaneous solutions;
+the two level sets of one functional are disjoint. With $\varnothing$ and the
+whole space these form sixteen clubs with all intersections even, attaining
+$2^{8/2}$. No relabelling makes it a couples family, since it has no two-person
+club. Exercise~\ref{combinatorial:ex:eventown} checks the construction in detail.
 
-Over the reals, the method gives one of the founding results of the design of experiments. Ronald Fisher spent fourteen years, from 1919 to 1933, designing field trials at the Rothamsted
-agricultural station. In 1940 he studied plans of the following kind: $v$ varieties of a crop are compared on a field split into blocks, each block can hold only some of the varieties, and for a fair comparison any two varieties
-should appear together in the same number of blocks. Fisher proved that such a plan needs at least as many blocks as varieties. In the language of sets (exchanging
-the roles of varieties and blocks, by counting incidences), this is the following theorem.
+Its incidence words are precisely the affine functions $1+b+a\cdot x$,
+together with the two constants: the same sixteen words constructed in
+Exercise~\ref{linear:ex:lpthree}. They form a four-dimensional binary linear
+code, with basis $1,x_1,x_2,x_3$ (evaluate at $0,e_1,e_2,e_3$ to check
+independence), commonly called the extended binary Hamming code.
+The span $W$ in Eventown is a \emph{self-orthogonal code}, meaning
+$W\subseteq W^\perp$. A code satisfying $W=W^\perp$ is \emph{self-dual};
+the dimension lemma then forces even length and dimension half that length.
+Our length-eight example has dimension four and is self-orthogonal, so it
+is self-dual as well.
+
+Over the reals, we can use the whole intersection size rather than its
+parity. Suppose $m$ crop varieties are assigned to $n$ experimental blocks.
+For variety $i$, let $A_i$ be the set of blocks containing it. If every pair
+of varieties occurs together in $\lambda\ge1$ blocks, then
+$|A_i\cap A_j|=\lambda$ for $i\ne j$. Suppose also that no two varieties
+have identical block-incidence sets. The next theorem says that at least
+$m$ blocks are needed. This is Fisher's inequality in the language of sets.
 
 \begin{theorem}[Fisher's inequality, non-uniform form; Majumdar, 1953]\label{combinatorial:thm:fisher}
 Let $n\ge1$ and $\lambda\ge1$, and let $A_1,\dots,A_m$ be distinct subsets of $[n]$ such that $|A_i\cap A_j|=\lambda$ for all $i\ne j$. Then $m\le n$.
 \end{theorem}
 \begin{proof}
-If $m=1$ the conclusion follows from $n\ge1$, so assume
+If $m\le1$ the conclusion follows from $n\ge1$, so assume
 $m\ge2$. Write $v_i\in\mathbb R^n$ for the incidence vector
 of $A_i$, and let $M$ be the $m\times n$ matrix with rows $v_i$.
 Its Gram matrix has entries
@@ -179,20 +209,35 @@ Where exactly did the proof use $\lambda\ge1$? Find a family with $\lambda=0$ an
 
 \section{Polynomials are vectors too}
 
+The \emph{total degree} of a monomial $x_1^{a_1}\cdots x_n^{a_n}$ is
+$\sum_i a_i$; the total degree of a nonzero polynomial is the largest such
+sum among its nonzero terms. Its degree in $x_i$ alone is the largest
+exponent $a_i$. Its \emph{homogeneous part of degree $d$} is the sum of all
+terms of total degree $d$. An \emph{affine-linear} polynomial is a constant
+plus a linear combination of the variables. For any degree upper bound
+below, the zero polynomial satisfies that bound.
+
 The second idea of the method is that functions form vector spaces. To bound the size of a set $\{a_1,\dots,a_m\}$, attach to each point $a_i$ a function $f_i$ that does not vanish at
 $a_i$ but vanishes at all the other points. Then $f_1,\dots,f_m$ are linearly independent: if $\sum_ic_if_i=0$, evaluating at $a_j$ leaves $c_jf_j(a_j)=0$. If all the $f_i$ lie in a
-space of polynomials of low degree, $m$ is at most its dimension. This is the polynomial version of a pairing argument, and it is remarkably flexible: it is enough that the matrix
-$\bigl(f_i(a_j)\bigr)$ be \emph{triangular} with non-zero diagonal.
+space of polynomials of low degree, $m$ is at most its dimension. It is also enough that the evaluation matrix
+$\bigl(f_i(a_j)\bigr)$ be \emph{triangular} with non-zero diagonal:
+its invertibility forces every coefficient in a linear relation to vanish.
 
 \subsection*{Few distances}
 
-A \emph{two-distance set} in $\R^n$ is a set of points whose pairwise distances take only two values. The vertices of a regular pentagon are a two-distance set in the plane (Figure~\ref{combinatorial:fig:pentagon}).
+A \emph{two-distance set} in $\R^n$ is a set whose distances between distinct
+points take at most two values. This convention includes empty and one-point
+sets. The vertices of a regular pentagon give an example in the plane (Figure~\ref{combinatorial:fig:pentagon}).
 How large can a two-distance set in $\R^n$ be?
 
 \begin{figure}[ht]
 \centering
 \fig{combinatorial-ch11-pentagon}
-\caption{The regular pentagon is a two-distance set: sides (charcoal) and diagonals (coral). In the plane no two-distance set has more than $5$ points (Kelly, 1947). Theorem~\ref{combinatorial:thm:twodist} gives $9$, Blokhuis' refinement $6$.}
+\caption{The regular pentagon has two distances: side lengths (charcoal)
+and diagonal lengths (coral). The first span count below gives $9$ points
+in the plane and the affine-function refinement gives $6$.
+Proposition~\ref{combinatorial:prop:planarmax} proves the sharp maximum $5$,
+attained by this drawing.}
 \label{combinatorial:fig:pentagon}
 \end{figure}
 
@@ -241,11 +286,99 @@ $\sum_kx_k^2$. This spanning family has
 $1+n+n(n+1)/2+n+1=(n+1)(n+4)/2$ members.
 Since the $m$ polynomials are independent within its span,
 $m$ cannot exceed that number.
+An infinite set would contain a finite subset exceeding the same bound,
+so the conclusion also excludes infinite two-distance sets.
 \end{proof}
 
-The truth is not far: the midpoints of the edges of a regular simplex give $\frac{n(n+1)}2$ points (Exercise~\ref{combinatorial:ex:simplexdist}), so the maximum grows like $\frac{n^2}2$. Blokhuis (1984) improved the bound to
-$\frac{(n+1)(n+2)}2$ by showing that the functions $f_i$ remain independent even after adding the $n+1$ functions $x_1,\dots,x_n,1$; in dimensions $2$ and $3$ the maxima are $5$ and $6$ (the regular octahedron).
-The same proof bounds $s$-distance sets (Exercise~\ref{combinatorial:ex:sdistance}).
+For $n\ge1$, Blokhuis's affine-function refinement sharpens this count.
+Suppose $\sum_i c_i f_i(x)+\ell(x)=0$, where $c_i\in\R$ and $\ell$ is
+affine-linear. The homogeneous part of degree $4$ gives $\sum_i c_i=0$.
+The part of degree $3$ is $-4\|x\|^2(\sum_i c_i a_i)\cdot x$, so
+$\sum_i c_i a_i=0$: the nonzero polynomial $\|x\|^2$ can be cancelled
+in the polynomial domain over $\R$. Evaluate the relation at $a_j$,
+multiply by $c_j$ and sum over $j$. The affine terms cancel because of
+these two identities, leaving
+\[
+b^2c^2\sum_j c_j^2=0.
+\]
+Since $b,c>0$ and the coefficients are real, every $c_j=0$, and then
+$\ell=0$. Thus the $f_i$ together with $1,x_1,\dots,x_n$ are independent
+in the same spanning space. Subtracting $n+1$ from its size gives the
+stronger bound $(n+1)(n+2)/2$. For $n=0$ there is only one possible point,
+which satisfies that stronger bound directly.
+
+\begin{proposition}[the planar maximum]\label{combinatorial:prop:planarmax}
+A two-distance set in $\R^2$ has at most five points. A regular pentagon
+attains this bound.
+\end{proposition}
+\begin{proof}
+Suppose there were six distinct points. Colour each pair by its distance,
+using two colours. At any chosen point, at least three of the other five
+points are joined to it in one colour. If any pair among those three has
+that colour, it forms a monochromatic triangle with the chosen point;
+otherwise those three form a triangle in the other colour. Thus our six
+points contain an equilateral triangle.
+
+We show that a two-distance set containing an equilateral triangle has
+at most four points. Scale its side to $1$ and put its vertices at
+\[
+ A=(-\tfrac12,0),\qquad B=(\tfrac12,0),\qquad
+ C=(0,h),\qquad h=\tfrac{\sqrt3}{2}.
+\]
+Call the other allowed distance $r>0$, with $r\ne1$. If only one distance
+occurs, choose any such $r$; every pair still has distance in $\{1,r\}$.
+Any further point $P$ has distances $1$ or
+$r$ to each vertex, so at least two of those distances are equal.
+There are three cases, allowing a permutation of $A,B,C$.
+
+If all three distances are equal, $P$ must be the circumcentre
+$O=(0,h/3)$: subtracting the squared distances to $A,B$ gives its first
+coordinate $0$, and then equality with the distance to $C$ gives its
+second coordinate $h/3$. Its squared distance to each vertex is $1/3$.
+Thus the common distance cannot be $1$; this case requires $r^2=1/3$
+and has just one candidate point.
+
+If $PA=PB=1$ and $PC=r$, the first coordinate of $P$ is $0$ and its
+second coordinate is $\pm h$. The choice $+h$ is the already occupied
+vertex $C$, so $P=(0,-h)$ and $r^2=3$. Permuting the vertices gives the
+three reflections of the opposite vertex across a side, with coordinates
+$(0,-h)$, $(1,h)$ and $(-1,h)$. Their squared pairwise distances are
+$4$ or $1+4h^2=4$, which is neither $1$ nor $3$.
+Hence at most one can belong to the set.
+
+If $PA=PB=r$ and $PC=1$, write $P=(0,y)$. Then
+$(y-h)^2=1$, so $y=h\pm1$ and
+\[
+ r^2=y^2+\tfrac14=2\pm\sqrt3.
+\]
+For a fixed $r$, its sign is fixed. The three candidate points obtained
+by permuting the vertices are rotations of one another by $120^\circ$
+about $O$. Their common distance from $O$ is $|h\pm1-h/3|$.
+Two vectors of length $s$ meeting at $120^\circ$ have squared difference
+$2s^2-2s^2\cos120^\circ=3s^2$. Thus the squared distance between any two
+candidates is
+\[
+ 3\bigl(2h/3\pm1\bigr)^2=4\pm2\sqrt3=2r^2.
+\]
+This is not $r^2$, since $r>0$. It is not $1$ either: the equality
+$2(2\pm\sqrt3)=1$ would imply $3=9/4$ after squaring.
+Again at most one candidate can belong to the set.
+
+The values $1/3$, $3$ and $2\pm\sqrt3$ are distinct, so one fixed $r$
+cannot mix candidates from different cases. Every further point has been
+accounted for, and at most one can be added to the triangle. This proves
+the four-point assertion and contradicts the proposed six-point set.
+Any larger or infinite set would contain six points, so the upper bound
+is five. The five vertices of a regular pentagon have only the side and
+diagonal lengths as distances; they attain the bound.
+\end{proof}
+
+The edge midpoints of a regular simplex give $n(n+1)/2$ points with at most
+two distances (Exercise~\ref{combinatorial:ex:simplexdist}). This lower bound
+and the general affine-function upper bound have the same leading term
+$n^2/2$, differing by $n+1$.
+The broader polynomial-space count also bounds $s$-distance sets
+(Exercise~\ref{combinatorial:ex:sdistance}).
 
 \subsection*{Intersections modulo a prime}
 
@@ -295,7 +428,10 @@ and an independent family cannot be larger than a
 spanning family. This proves the inequality.
 \end{proof}
 
-Oddtown is the case $p=2$, $L=\{0\}$, with the bound $1+n$; a little more care gives back $n$. Without the prime, a weaker condition on the intersection sizes alone is enough, at the price of using a triangular
+For $p=2$, $L=\{0\}$ the general bound is $1+n$, but the actual
+polynomials are $f_i(x)=v_i\cdot x$, with no constant term. They lie in
+the span of $x_1,\dots,x_n$, so the same independence argument recovers
+Oddtown's sharper $n$. Without the prime, a weaker condition on the intersection sizes alone is enough, at the price of using a triangular
 rather than a diagonal system.
 
 \begin{theorem}[Frankl and Wilson, 1981, non-uniform form]\label{combinatorial:thm:fw}
@@ -342,8 +478,15 @@ reason for choosing factors $\ell<|A_i|$.
 
 \subsection*{Explicit Ramsey graphs}
 
-In Volume~4, Chapter~12, Erd\H os' coin flips showed that some graph on $2^{t/2}$ vertices has no clique and no independent set of size $t$. Nobody knows how to \emph{write down} such a graph: Erd\H os offered
-\$100 for an explicit construction with $(1+\varepsilon)^t$ vertices, and the problem is still open. The first construction that beats every polynomial in $t$ came from Theorem~\ref{combinatorial:thm:fwmod}.
+Volume~1, Chapter~10's Erd\H os--Ramsey exercise used independent red/blue
+edge colours. For $t\ge3$ and $N=\lfloor2^{t/2}\rfloor$, the expected number
+of monochromatic $t$-cliques is
+$\binom{N}{t}2^{1-\binom t2}\le2^{1+t/2}/t!<1$.
+The last inequality holds at $t=3$, and each subsequent ratio is
+$\sqrt2/(t+1)<1$. A nonnegative integer count with expectation below $1$
+must be zero for some colouring. That proves existence, whereas the graph
+below is specified directly by sets and intersections. Its vertex count
+will exceed every fixed power of its homogeneous-set bound.
 
 \begin{theorem}[Frankl and Wilson, 1981]\label{combinatorial:thm:explicitramsey}
 Let $p$ be a prime, and let $G_p$ be the graph whose vertices are the $(p^2-1)$-element subsets of $[p^3]$, two of them $A,B$ being adjacent when $|A\cap B|\not\equiv-1\pmod p$. Then $G_p$ has no clique and no
@@ -392,26 +535,41 @@ the actual intersection sizes.
 \end{proof}
 
 For $p=3$ the graph has $\binom{27}8=2\,220\,075$ vertices and neither cliques nor independent sets with more than $1+27+351=379$ vertices. In general $t_p\le p\cdot p^{3(p-1)}\le p^{3p}$ while the number of vertices is
-$\binom{p^3}{p^2-1}\ge\bigl(\frac{p^3}{p^2-1}\bigr)^{p^2-1}\ge p^{p^2-1}$. Since $\frac{(p^2-1)\log p}{3p\log p}\to\infty$, the number of vertices eventually exceeds $t_p^c$ for every fixed $c$: the growth is like $t^{c\log t/\log\log t}$,
-superpolynomial, though far below $2^{t/2}$. Written in terms of the number $N$ of vertices, the largest clique or independent set of $G_p$ has size about $e^{c\sqrt{\log N\log\log N}}$, while for a random graph it is about $2\log_2N$. Explicit constructions
-improved slowly, through ideas from the theory of randomness extractors : Chattopadhyay and Zuckerman (2016) reached $e^{(\log\log N)^{C}}$, and Li (2023) a power of $\log N$.
+$\binom{p^3}{p^2-1}\ge\bigl(\frac{p^3}{p^2-1}\bigr)^{p^2-1}\ge p^{p^2-1}$. Since $\frac{(p^2-1)\log p}{3p\log p}\to\infty$, the vertex count
+eventually exceeds $t_p^c$ for every fixed $c$. This concerns the proved
+bound $t_p$, not a claim that a largest clique has that size.
+The binomial estimate follows by multiplying
+$(p^3-j)/(p^2-1-j)\ge p^3/(p^2-1)$ for $0\le j<p^2-1$.
 
-\begin{remark}[Borsuk's conjecture]
-In 1933 Karol Borsuk asked whether every bounded set in $\R^d$ can be cut into $d+1$ pieces of smaller diameter, as a ball can. Sixty years later Kahn and Kalai (1993) answered no, in dimension $1325$,
-with a set of $\pm1$-vectors built from Theorem~\ref{combinatorial:thm:fwmod}: pieces of smaller diameter correspond to families avoiding one intersection size, which are small, so many pieces are needed. Counterexamples are
-now known down to dimension $64$ (Jenrich and Brouwer, 2014); the conjecture is open between $4$ and $63$.
+\begin{remark}[Deciding an edge]
+Represent a vertex by its binary incidence string of length $p^3$, with
+$p^2-1$ ones. To decide whether two vertices are adjacent, count coordinates
+where both strings have a $1$, then reduce that count modulo $p$.
+This uses at most $p^3$ coordinate comparisons and additions. The rule specifies
+every edge without a random choice, while the polynomial argument bounds
+every homogeneous vertex family without listing those families.
 \end{remark}
 
 \section{The combinatorial Nullstellensatz}
 
-A non-zero polynomial of degree $d$ in one variable has at most $d$ roots, so it cannot vanish on a set of $d+1$ points. In 1999 Noga Alon turned the several-variable version of this triviality into a tool
-of startling power.
+A nonzero polynomial of degree $d$ in one variable has at most $d$ roots.
+In several variables, a total-degree bound alone is insufficient: $f(X,Y)=X$
+vanishes on $\{0\}\times S$ for arbitrarily large finite $S\subseteq\R$.
+We must account for each coordinate's allowed values. Alon's combinatorial
+Nullstellensatz uses a particular top-degree coefficient to do so.
 
 \begin{lemma}\label{combinatorial:lem:grid}
-Let $F$ be a field, $S_1,\dots,S_n\subseteq F$ finite, and $f\in F[x_1,\dots,x_n]$ with $\deg_{x_i}f<|S_i|$ for every $i$. If $f$ vanishes on $S_1\times\dots\times S_n$, then $f=0$.
+Let $F$ be a field, $S_1,\dots,S_n\subseteq F$ finite sets, and
+$f\in F[x_1,\dots,x_n]$ with $\deg_{x_i}f<|S_i|$ for every $i$.
+If $f$ vanishes on $S_1\times\dots\times S_n$, then $f=0$.
 \end{lemma}
 \begin{proof}
-We argue by induction on the number of variables.
+The zero polynomial satisfies the conclusion directly. If some $S_i$ is
+empty, no nonzero polynomial can satisfy $\deg_{x_i}f<|S_i|=0$, so that case
+is settled too. Assume henceforth all $S_i$ are nonempty.
+For $n=0$, the grid is the one-element set containing the empty tuple;
+a polynomial is a constant, so vanishing there means it is zero.
+For $n\ge1$, argue by induction on the number of variables.
 For one variable the claim is the usual root bound:
 a non-zero polynomial of degree less than $|S_1|$
 cannot vanish at every point of $S_1$.
@@ -441,13 +599,13 @@ is the zero polynomial, and so $f=0$.
 \end{proof}
 
 \begin{theorem}[Combinatorial Nullstellensatz, Alon, 1999]\label{combinatorial:thm:cn}
-Let $F$ be a field and $f\in F[x_1,\dots,x_n]$. Suppose that $\deg f=t_1+\dots+t_n$ and that the coefficient of $x_1^{t_1}\cdots x_n^{t_n}$ in $f$ is non-zero. If $S_1,\dots,S_n\subseteq F$ satisfy $|S_i|>t_i$, then
+Let $F$ be a field, let $t_1,\dots,t_n$ be nonnegative integers, and let
+$f\in F[x_1,\dots,x_n]$. Suppose that $\deg f=t_1+\dots+t_n$ and that the coefficient of $x_1^{t_1}\cdots x_n^{t_n}$ in $f$ is non-zero. If $S_1,\dots,S_n\subseteq F$ satisfy $|S_i|>t_i$, then
 there is $s\in S_1\times\dots\times S_n$ with $f(s)\ne0$.
 \end{theorem}
 \begin{proof}
-Select exactly $t_i+1$ elements from each
-$S_i$; proving non-vanishing on this smaller
-grid will suffice. Let
+Select exactly $t_i+1$ elements from each $S_i$ and call the selected finite
+sets $S_i$ again; proving non-vanishing on this smaller grid will suffice. Let
 \[
 g_i(y)=\prod_{a\in S_i}(y-a),
 \qquad \deg g_i=t_i+1.
@@ -501,6 +659,7 @@ Let $p$ be a prime and $A,B$ non-empty subsets of $\Z/p\Z$. Then $|A+B|\ge\min(p
 \end{theorem}
 \begin{proof}
 Write $a=|A|$ and $b=|B|$.
+If $a=b=1$, the sumset has one element and the assertion is immediate.
 First suppose $a+b>p$. For any $c\in\mathbb F_p$,
 the sets $A$ and $c-B=\{c-y:y\in B\}$ contain
 more than $p$ elements between them.
@@ -541,7 +700,7 @@ $|A+B|\ge a+b-1$ in the remaining case,
 and both cases give the claimed minimum.
 \end{proof}
 
-The bound is sharp (arithmetic progressions with the same difference), and it fails for $\Z/n\Z$ with $n$ composite (Exercise~\ref{combinatorial:ex:cdsharp}): primes are needed so that $\Z/p\Z$ has no subgroups to hide in.
+The bound is sharp (arithmetic progressions with the same nonzero difference), and it fails for $\Z/n\Z$ with $n$ composite (Exercise~\ref{combinatorial:ex:cdsharp}): a group of prime order has no nontrivial proper additive subgroup to obstruct growth.
 
 \subsection*{Counting zeros modulo $p$}
 
@@ -570,7 +729,10 @@ $p=2$, for which only $e=0$ is allowed.
 \end{proof}
 
 \begin{theorem}[Chevalley and Warning, 1935]\label{combinatorial:thm:cw}
-Let $p$ be a prime and $P_1,\dots,P_k\in\mathbb F_p[x_1,\dots,x_n]$ with $\deg P_1+\dots+\deg P_k<n$. Then the number $N$ of common zeros of $P_1,\dots,P_k$ in $\mathbb F_p^n$ is divisible by $p$. In particular, if they
+Let $p$ be a prime and $n\ge1$. Let $P_1,\dots,P_k\in\mathbb F_p[x_1,\dots,x_n]$
+have nonnegative degree bounds $d_j$ with $\sum_jd_j<n$; a zero polynomial
+is allowed with bound $0$, and an empty system is allowed.
+Then the number $N$ of common zeros in $\mathbb F_p^n$ is divisible by $p$. In particular, if they
 have the common zero $0$, they have another one.
 \end{theorem}
 \begin{proof}
@@ -589,7 +751,7 @@ N\equiv\sum_{x\in\mathbb F_p^n}Q(x)\pmod p.
 \]
 The total-degree hypothesis implies
 \[
-\deg Q\le(p-1)\sum_{j=1}^k\deg P_j
+\deg Q\le(p-1)\sum_{j=1}^k d_j
  <n(p-1).
 \]
 Consider any monomial
@@ -619,10 +781,24 @@ multiple of $p$, it must be at least
 $p\ge2$. Thus a second common zero exists.
 \end{proof}
 
-The theorem holds over every finite field, with the same proof. It is a statement about solving equations, proved without solving anything; here is a statement about sums of integers, proved by solving equations.
+If the system is empty, $Q=1$ and $N=p^n$, consistent with the same argument.
+The nonnegative bounds keep zero equations from masking the degrees of other
+equations: assigning them degree $-\infty$ and summing would give no useful
+bound on $Q$. For example,
+the equations $0=0$ and $X=0$ in one variable have exactly one common zero.
+
+Over $\mathbb F_q$ of characteristic $p$, the same calculation with exponent
+$q-1$ proves \emph{characteristic} divisibility $p\mid N$ when $\sum_jd_j<n$.
+For $0\le e<q-1$, the sum $\sum_{u\in\mathbb F_q}u^e$ vanishes by the
+same root-bound and scaling proof; at $e=0$ it is $q\cdot1=0$.
+Also $u^{q-1}=1$ for nonzero $u$ by Lagrange's theorem in the group
+$\mathbb F_q^\times$. Thus the indicator sum is $N\cdot1=0$ in that field,
+which means $p\mid N$. This calculation makes no stronger divisibility claim.
+
+The next theorem uses equations over a prime field to select a sum of integers.
 
 \begin{theorem}[Erd\H os, Ginzburg and Ziv, 1961]\label{combinatorial:thm:egz}
-Among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
+For every integer $n\ge1$, among any $2n-1$ integers there are $n$ whose sum is divisible by $n$.
 \end{theorem}
 \begin{proof}
 We first prove the assertion when $n=p$
@@ -635,7 +811,7 @@ P_1(x)=\sum_{i=1}^{2p-1}a_ix_i^{p-1},
 \qquad
 P_2(x)=\sum_{i=1}^{2p-1}x_i^{p-1}.
 \]
-Their degrees sum to $2(p-1)<2p-1$,
+Each has degree bound $p-1$, so the bounds sum to $2(p-1)<2p-1$,
 and the zero vector is a common zero.
 Chevalley--Warning
 (Theorem~\ref{combinatorial:thm:cw})
@@ -645,8 +821,7 @@ shows that $P_2(x)=|I|\pmod p$ and
 $P_1(x)=\sum_{i\in I}a_i\pmod p$.
 Because $x\ne0$, we have
 $1\le|I|\le2p-1$. As $p\mid|I|$,
-necessarily $|I|=p$; and the second
-equation says that the sum of those
+necessarily $|I|=p$; and $P_1(x)=0$ says that the sum of those
 $p$ selected integers is divisible
 by $p$. This proves the prime case.
 
@@ -683,8 +858,10 @@ With $n-1$ zeros and $n-1$ ones, $2n-2$ integers are not enough (Exercise~\ref{c
 
 \section{Cap sets and the card game SET}
 
-In the card game SET, invented in 1974 by the geneticist Marsha Falco while she was coding information about epileptic dogs, each of the $81$ cards shows one, two or three symbols, of one of three shapes,
-three colours and three shadings. Three cards form a \emph{set} when, for each of the four attributes, they are all the same or all different. Number the values of each attribute $0,1,2$: a card is a vector
+The card game SET grew out of Marsha Falco's animal-genetics work in 1974:
+she used symbols on file cards to record information about the animals.
+Each of the $81$ cards in a SET deck shows one, two or three symbols, of one of three shapes,
+three colours and three shadings. Three distinct cards form a \emph{set} when, for each of the four attributes, they are all the same or all different. Number the values of each attribute $0,1,2$: a card is a vector
 of $\mathbb F_3^4$, and three cards $x,y,z$ form a set exactly when $x+y+z=0$ in each coordinate (three equal values add to $0$, and $0+1+2=3=0$). Since $x+y+z=0$ means $z=-x-y$, two cards determine the
 third: the sets are the \emph{lines} of the affine space $\mathbb F_3^4$, each containing $3$ points.
 
@@ -692,11 +869,16 @@ third: the sets are the \emph{lines} of the affine space $\mathbb F_3^4$, each c
 A \emph{cap set} in $\mathbb F_3^n$ is a set of points containing no line, that is, no three distinct points $x,y,z$ with $x+y+z=0$.
 \end{definition}
 
-Players often wonder how many cards can be on the table without any set. The answer is $20$ (Pellegrino, 1971); in $\mathbb F_3^1,\dots,\mathbb F_3^6$ the maximal sizes are $2,4,9,20,45,112$, the last two found by
-heavy computation (Edel, Ferret, Landjev and Storme, 2002; Potechin, 2008). Figure~\ref{combinatorial:fig:caps} shows the case $n=2$, proved in Exercise~\ref{combinatorial:ex:capplane}. How do the maxima grow? Meshulam (1995) showed, by
-Fourier analysis, that they are at most of order $\frac{3^n}n$: a vanishing proportion. The best constructions give about $2.22^n$. For twenty years the question was whether the true growth is $3^{n-o(n)}$ or
-$c^n$ with $c<3$; many believed the former. In May 2016, Croot, Lev and Pach solved the analogous problem in $(\Z/4\Z)^n$ with polynomials, and within ten days Ellenberg and Gijswijt adapted the argument to
-$\mathbb F_3^n$. Their papers are three and five pages long. We follow Terence Tao's symmetric reformulation, which isolates a notion of rank for functions of three variables.
+The plane case already shows a constraint: its nine points contain no cap
+larger than four, as Exercise~\ref{combinatorial:ex:capplane} proves in full
+(Figure~\ref{combinatorial:fig:caps}). In every dimension, $\{0,1\}^n$ gives
+a cap of size $2^n$: in a zero-sum triple each coordinate must have either
+zero or three ones, forcing the three words equal. We will prove an upper
+bound of $3\cdot2.7552^n$, an exponentially shrinking fraction of the whole
+cube as $n$ grows. The argument uses the polynomial method of Croot, Lev and Pach and
+Ellenberg and Gijswijt, in Tao's symmetric formulation through the rank of
+a function of three variables. The research sources below give the
+historical development and further constructions.
 
 \begin{figure}[ht]
 \centering
@@ -706,13 +888,27 @@ size $4$, which meets every line in at most two points. No cap has $5$ points (E
 \label{combinatorial:fig:caps}
 \end{figure}
 
+For a finite set $A$ and a field $F$, write $F^A$ for the vector space of
+all functions $A\to F$, with pointwise operations. The function
+$\delta_a(x)$ is $1$ when $x=a$ and $0$ otherwise. These functions form
+a basis, since $h=\sum_{a\in A}h(a)\delta_a$, so $\dim F^A=|A|$.
+The \emph{support} of $h$ is $\operatorname{supp}h=\{a:h(a)\ne0\}$.
+For $A=\varnothing$, the empty basis gives the zero-dimensional function space.
+
 \begin{definition}\label{combinatorial:def:slicerank}
-Let $A$ be a finite set and $F$ a field. A function $T:A\times A\times A\to F$ is a \emph{slice} if it has one of the forms $f(x)g(y,z)$, $f(y)g(x,z)$ or $f(z)g(x,y)$. The \emph{slice rank} of $T$ is the least $r$ such
-that $T$ is a sum of $r$ slices.
+Let $A$ be a finite set and $F$ a field. A \emph{tensor} here is a function $T:A\times A\times A\to F$. It is a \emph{slice} if it has one of the forms $f(x)g(y,z)$, $f(y)g(x,z)$ or $f(z)g(x,y)$. The \emph{slice rank} of $T$ is the least $r$ such
+that $T$ is a sum of $r\ge0$ slices; the empty sum is the zero function.
+Every such $T$ has a decomposition $\sum_{a\in A}\delta_a(x)T(a,y,z)$,
+so a finite least $r$ exists, including rank $0$ for the zero function.
 \end{definition}
 
-For functions of two variables, the analogous notion (sums of products $f(x)g(y)$) is the rank of the matrix $(T(x,y))$. A diagonal matrix with non-zero diagonal has full rank; the key lemma says the same for
-diagonal functions of three variables.
+For two variables the analogous least number of products $f(x)g(y)$ is the
+matrix rank. Each such product has column space of dimension at most one,
+so $r$ products have rank at most $r$. Conversely, choose a basis of the
+column space of a rank-$r$ matrix and expand every column in it: the basis
+columns and coefficient rows give exactly $r$ such products.
+A diagonal matrix with nonzero diagonal has full rank; the next lemma proves
+the corresponding statement for three variables.
 
 \begin{lemma}\label{combinatorial:lem:support}
 A subspace $V\subseteq F^A$ of dimension $d$ contains a vector with at least $d$ non-zero coordinates.
@@ -888,7 +1084,7 @@ M_n
 This is a counting bound, not a probability approximation:
 the factorisation is exact because the coordinates vary
 independently. To obtain the advertised numerical constant,
-take $x=59/100$ (not $0.6$). Since
+take $x=59/100$. Since
 \[
 \frac{(1+x+x^2)^3}{x^2}
 =\frac{(19381/10000)^3}{(59/100)^2}
@@ -899,20 +1095,58 @@ The cap-set bound now follows from
 Theorem~\ref{combinatorial:thm:capset}.
 \end{proof}
 
-This is the exponential trick behind Chernoff's bound (Volume~4, Chapter~4): the fraction $\frac{M_n}{3^n}$ is the probability that a sum of $n$ uniform digits in $\{0,1,2\}$ falls below $\frac23$ of its mean $n$,
-which is exponentially small. The optimal $x=\frac{\sqrt{33}-1}8\approx0.5931$ gives $2.7551$, and the method cannot do much better: the same argument bounds the more general ``tri-coloured sum-free sets'', and for those Kleinberg, Sawin and Speyer (with Norin and Pebody) showed that
-$2.7551^n$ is the true growth, up to smaller factors.
-Whether the truth is near $2.22^n$, near $2.755^n$, or in between, nobody knows.
+There is also a probability reading using only finite uniform choices:
+$M_n/3^n$ is the probability that the sum of $n$ independent uniform digits
+in $\{0,1,2\}$ is at most $2n/3$. Its mean is $n$, and the proposition
+bounds this probability by $(574/625)^n$ using $x=59/100$.
+This is the finite exponential estimate developed further in Volume~4.
+
+The best choice in this particular estimate can be computed locally.
+Cube its positive base and write $F(x)=(1+x+x^2)^3/x^2$. Differentiation gives
+\[
+F'(x)=\frac{(1+x+x^2)^2}{x^3}(4x^2+x-2).
+\]
+For $0<x\le1$, the quadratic changes sign just once, at
+$r=(\sqrt{33}-1)/8$. The mean value theorem therefore makes $F$ decrease
+up to $r$ and increase after it. The minimum base is
+$c_*=(1+r+r^2)/r^{2/3}\approx2.755105$.
+The proposition's rational calculation supplies the rigorous rounded upper
+base $2.7552$.
+For cap sets the resulting proportion bound is
+$|A|/3^n\le3(574/625)^n$, tending to zero geometrically.
+
+\paragraph{Progression-free sets in odd characteristic.}
+Let $q$ be an odd prime power and let $A\subseteq\mathbb F_q^n$ have no three distinct
+points in arithmetic progression, that is, no distinct $x,y,z$ with
+$x-2y+z=0$. If two entries in such a zero-sum relation coincide, all three
+coincide, since $2$ is invertible. Thus on $A^3$ the function
+\[
+T(x,y,z)=\prod_{j=1}^n
+\bigl(1-(x_j-2y_j+z_j)^{q-1}\bigr)
+\]
+is again the diagonal indicator, of slice rank $|A|$. Its monomials have
+total degree at most $(q-1)n$ and each exponent at most $q-1$.
+Partition by the first variable group of degree at most $(q-1)n/3$, using
+the same priority rule as before. This proves
+\[
+|A|\le3\,\#\left\{a\in\{0,\ldots,q-1\}^n:
+                  \sum_j a_j\le\frac{(q-1)n}{3}\right\}.
+\]
+Every ingredient is already proved here: the finite-field indicator, the diagonal
+rank lemma and the finite monomial count.
 
 \begin{think}
-The proof never used that $A$ has no line except through the shape of $T$ on $A\times A\times A$. Which other problems ``no solution of $x+y+z=0$ with $x,y,z$ not all equal'' can it solve? Try sets with no
-three-term arithmetic progression in $\mathbb F_p^n$, for a prime $p\ge5$.
+Why was oddness needed in the preceding diagonal argument? In $\mathbb F_2$,
+find a triple with $x=z$ and $y\ne x$ satisfying $x-2y+z=0$.
+What happens to the tensor if $A=\mathbb F_2$?
 \end{think}
 
 \begin{beauty}
-Clubs, wheat fields, points in space, Ramsey colourings, sums modulo a prime and SET cards: in each case the objects were turned into vectors, the condition into independence, and the count into a dimension.
-The method never looks at the objects themselves, never searches, never estimates; it notices that they cannot all fit. Its greatest triumph came in 2016, when a few lines about polynomials of
-degree $2$ in each variable settled a problem that decades of Fourier analysis had only nibbled at.
+Oddtown bounds independent incidence vectors. The cap-set argument instead
+bounds the slices of one function by counting its monomials. In both cases
+we identify the finite space before counting the objects. The next appendix
+reverses the task: it constructs many orthogonal sign rows from a finite
+field, rather than using orthogonality only to limit a family.
 \end{beauty}
 
 \section{Exercises}
@@ -923,7 +1157,13 @@ together with $\varnothing$ and $\mathbb F_2^3$. Show that this is an Eventown f
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{combinatorial:ex:nearpencil}
-Check Fisher's inequality is attained with $\lambda=1$ by the \emph{near-pencil} $\{1,n\},\{2,n\},\dots,\{n-1,n\},\{1,\dots,n-1\}$, and by the seven lines of the Fano plane (Volume~9, Appendix~C) on $n=7$ points.
+For $n\ge3$, check Fisher's inequality is attained with $\lambda=1$ by the
+\emph{near-pencil} $\{1,n\},\{2,n\},\dots,\{n-1,n\},\{1,\dots,n-1\}$.
+Check the same formula's degenerate cases $n=1,2$ separately.
+For a second example, define the \emph{Fano plane} to have points
+$\mathbb F_2^3\setminus\{0\}$ and lines $\{u,v,u+v\}$ for distinct nonzero
+$u,v$. Show that it has seven lines and that these attain Fisher's bound
+on its seven points.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{combinatorial:ex:simplexdist}
@@ -931,7 +1171,7 @@ In $\R^{n+1}$, consider the points $e_i+e_j$, $1\le i<j\le n+1$. Show that they 
 \end{exercise}
 
 \begin{exercise}[$\star\star$]\label{combinatorial:ex:sdistance}
-An \emph{$s$-distance set} in $\R^n$ is a set whose pairwise distances take at most $s$ values. Show that it has at most $\binom{n+2s}{n}$ points.
+For an integer $s\ge0$, an \emph{$s$-distance set} in $\R^n$ is a set whose pairwise distances take at most $s$ values. Show that it has at most $\binom{n+2s}{n}$ points.
 \end{exercise}
 
 \begin{exercise}[$\star$]\label{combinatorial:ex:fwmodthree}
@@ -955,7 +1195,8 @@ Show that a cap set in $\mathbb F_3^2$ has at most $4$ points.
 \end{exercise}
 
 \begin{exercise}[$\star\star\star$]\label{combinatorial:ex:dvir}
-\emph{Dvir's Kakeya theorem.} A set $K\subseteq\mathbb F_q^n$ is a \emph{Kakeya set} if it contains a line in every direction: for every $d\ne0$ there is $x$ with $\{x+td:t\in\mathbb F_q\}\subseteq K$. Show that
+\emph{Dvir's Kakeya theorem.} Let $q$ be a prime power and $n\ge1$.
+A set $K\subseteq\mathbb F_q^n$ is a \emph{Kakeya set} if it contains a line in every direction: for every $d\ne0$ there is $x$ with $\{x+td:t\in\mathbb F_q\}\subseteq K$. Show that
 $|K|\ge\binom{q+n-1}n$. (Use a non-zero polynomial of degree at most $q-1$ vanishing on $K$, and look at its restriction to lines. Lemma~\ref{combinatorial:lem:grid} holds over any field.)
 \end{exercise}
 
@@ -998,7 +1239,13 @@ of $t^{\deg f}$ is the top-degree part of $f$ evaluated at $d$.
 \begin{solution}{combinatorial:ex:eventown}
 \idea In the couples construction, every club is a union of disjoint two-element pairs. For the second example, affine planes in $\mathbb F_2^3$ have four points and meet either in a line of two points or not at all. Both descriptions make every intersection even.
 
-\writeup First partition an eight-element ground set into four disjoint couples. Let each club be a union of any subset of these couples. The size of each club is even. If two clubs are unions of couples, their intersection is a union of the couples selected by both clubs, so every pairwise intersection also has even size. There are $2^4=16$ such clubs, achieving the Eventown bound $2^{8/2}=16$.
+\writeup For $n$ inhabitants choose $r=\lfloor n/2\rfloor$ disjoint
+couples, leaving one unused inhabitant if $n$ is odd. Let every club be a
+union of some of those couples. Every size is even, and the intersection
+of two clubs is the union of the couples selected by both, so all
+intersections are even. Distinct selections give distinct clubs, exactly
+$2^r$, attaining Eventown's bound. This includes $n=0,1$, when only the
+empty club occurs. For eight inhabitants, $r=4$ and there are sixteen clubs.
 
 Now use the eight points of $V=\mathbb F_2^3$ as the ground set. A two-dimensional linear subspace is the kernel of a non-zero linear functional $V\to\mathbb F_2$. There are $2^3-1=7$ non-zero linear functionals, and over $\mathbb F_2$ distinct non-zero functionals cannot differ by a non-trivial scalar, so their kernels are distinct. Each such subspace has index $2$, hence exactly two affine cosets. This gives $7\cdot2=14$ affine planes, each with four points.
 
@@ -1020,6 +1267,9 @@ B_i=\{i,n\}\quad(1\le i<n),\qquad
 B_n=\{1,\ldots,n-1\}.
 \]
 There are exactly $n$ blocks on $n$ points. If $i\ne j<n$, then $B_i\cap B_j=\{n\}$. Also, for each $i<n$, we have $B_i\cap B_n=\{i\}$. Thus every pair of distinct blocks meets in exactly one point, and the family attains Fisher's bound $m\le n$ with $m=n$.
+For $n=2$ the two blocks are $\{1,2\}$ and $\{1\}$, with intersection $\{1\}$.
+For $n=1$ there is just $B_1=\varnothing$: the pairwise-intersection
+condition is vacuous and the bound $m=n=1$ is still attained.
 
 \emph{Fano plane.} One standard labelling of the seven lines on seven points is
 \[
@@ -1093,7 +1343,10 @@ monomial basis elements: introduce a slack exponent to convert the inequality $\
 \[
 \boxed{m\le\binom{n+2s}{n}}.
 \]
-For $r=0$, the set has at most one point, and the bound is immediate. The argument holds for every $s\ge0$, although sharper results exploit the special structure of Euclidean distances.
+For $r=0$, the set has at most one point, and the bound is immediate.
+If the set were infinite, apply the finite argument to any
+$\binom{n+2s}{n}+1$ of its points to get a contradiction.
+The bound therefore holds for every such subset and every integer $s\ge0$.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:fwmodthree}
@@ -1180,11 +1433,12 @@ No integer in this range is divisible by $n$. Thus the list has no selection of 
 \[
 \boxed{2n-2\text{ integers need not contain an }n\text{-term zero sum modulo }n}.
 \]
-For $n=1$, the question of a list with zero entries is vacuous; the non-trivial sharpness statement begins at $n=2$.
+For $n=1$, the empty list has no one-term selection, so the sharpness
+statement also holds directly.
 \end{solution}
 
 \begin{solution}{combinatorial:ex:quadric}
-\idea A quadratic form is one polynomial of degree $2$ that vanishes at the zero vector. In three or more variables, its degree is smaller than the number of variables, so Chevalley--Warning guarantees that the number of zeros is divisible by $p$. There must therefore be a non-zero zero.
+\idea A quadratic form is one polynomial of degree at most $2$ that vanishes at the zero vector. In three or more variables, its degree is smaller than the number of variables, so Chevalley--Warning guarantees that the number of zeros is divisible by $p$. There must therefore be a non-zero zero.
 
 \writeup Let
 \[
@@ -1239,7 +1493,9 @@ contain no three collinear points in $\mathbb F_3^2$. Thus the maximum size is
 \begin{solution}{combinatorial:ex:dvir}
 \idea If a Kakeya set had fewer points than the dimension of the space of polynomials of degree at most $q-1$, linear algebra would produce a non-zero polynomial vanishing on it. On a full line this polynomial has $q$ zeros, more than its degree, so the highest-degree part vanishes in every direction. The finite-grid lemma then gives a contradiction.
 
-\writeup Let $K\subseteq\mathbb F_q^n$ contain a complete affine line in every non-zero direction. Suppose toward a contradiction that
+\writeup Let $n\ge1$ and let $K\subseteq\mathbb F_q^n$ contain a complete affine
+line in every nonzero direction. Such a direction exists, and its line has
+$q$ points, so $K$ is nonempty. Suppose toward a contradiction that
 \[
 |K|<\binom{q+n-1}{n}.
 \]
@@ -1279,25 +1535,29 @@ The familiar lower bound $|K|\ge q^n/n!$ follows because
 \section*{Sources and further reading}
 
 \begin{itemize}
-\item \emph{The stories.} The epigraph is from E.~Artin, \emph{Geometric Algebra}, Interscience, 1957, Chapter~I. Fisher's years at Rothamsted are told in J.~Fisher Box, \emph{R.~A.~Fisher, the Life of a
-Scientist}, Wiley, 1978. The planar two-distance bound is L.~M.~Kelly's solution of Erd\H os' problem E735, American Mathematical Monthly 54 (1947), 227. The origin of SET is told by its publisher, Set
-Enterprises, and in L.~McMahon, G.~Gordon, H.~Gordon and R.~Gordon, \emph{The Joy of SET}, Princeton University Press, 2016, which also covers caps and the Ellenberg--Gijswijt bound.
-\item L.~Babai and P.~Frankl, \emph{Linear Algebra Methods in Combinatorics}, preliminary version, University of Chicago, 1992 (2nd ed.\ 2020): the source of Oddtown and Eventown as named here, and of much of this
+\item \emph{The stories.} The epigraph is from E.~Artin, \emph{Geometric Algebra}, Interscience, 1957. For Fisher's biography, see J.~Fisher Box, \emph{R.~A.~Fisher, the Life of a
+Scientist}, Wiley, 1978. PlayMonster's publisher account of Marsha Falco describes
+the origin of SET. L.~McMahon, G.~Gordon, H.~Gordon and R.~Gordon,
+\emph{The Joy of SET}, Princeton University Press, 2017, explores the game's mathematics.
+\item L.~Babai and P.~Frankl, \emph{Linear Algebra Methods in Combinatorics}, preliminary version 2, University of Chicago, 1992: the source of Oddtown and Eventown as named here, and of much of this
 chapter; J.~Matou\v{s}ek, \emph{Thirty-three Miniatures}, AMS, 2010, short proofs in the same spirit; E.~R.~Berlekamp, \emph{On subsets with intersections of even cardinality}, Canadian Mathematical Bulletin 12
 (1969), 471--474.
 \item R.~A.~Fisher, \emph{An examination of the different possible solutions of a problem in incomplete blocks}, Annals of Eugenics 10 (1940), 52--75; R.~C.~Bose, \emph{A note on Fisher's inequality for balanced
 incomplete block designs}, Annals of Mathematical Statistics 20 (1949), 619--620; N.~G.~de Bruijn and P.~Erd\H os, \emph{On a combinatorial problem}, Indagationes Mathematicae 10 (1948), 421--423.
 \item D.~G.~Larman, C.~A.~Rogers and J.~J.~Seidel, \emph{On two-distance sets in Euclidean space}, Bulletin of the London Mathematical Society 9 (1977), 261--267; A.~Blokhuis, \emph{Few-distance sets}, CWI Tract
-7, 1984.
+7, 1984, Theorem~4.1.1 for the affine-function refinement. For the related
+classification of planar isosceles sets, Blokhuis, p.~49, cites L.~M.~Kelly,
+\emph{Isosceles n-points}, American Mathematical Monthly 54 (1947), 227--229.
 \item P.~Frankl and R.~M.~Wilson, \emph{Intersection theorems with geometric consequences}, Combinatorica 1 (1981), 357--368; J.~Kahn and G.~Kalai, \emph{A counterexample to Borsuk's conjecture}, Bulletin of the AMS 29
-(1993), 60--62, two pages; E.~Chattopadhyay and D.~Zuckerman, \emph{Explicit two-source extractors and resilient functions}, Annals of Mathematics 189 (2019), 653--705.
+(1993), 60--62; E.~Chattopadhyay and D.~Zuckerman, \emph{Explicit two-source extractors and resilient functions}, Annals of Mathematics 189 (2019), 653--705.
 \item N.~Alon, \emph{Combinatorial Nullstellensatz}, Combinatorics, Probability and Computing 8 (1999), 7--29, with many more applications; P.~Erd\H os, A.~Ginzburg and A.~Ziv, \emph{Theorem in the additive number
 theory}, Bulletin of the Research Council of Israel 10F (1961), 41--43; Z.~Dvir, \emph{On the size of Kakeya sets in finite fields}, Journal of the AMS 22 (2009), 1093--1097.
 \item \emph{Research papers to read after this chapter.} E.~Croot, V.~Lev and P.~P.~Pach, \emph{Progression-free sets in $\Z_4^n$ are exponentially small}, Annals of Mathematics 185 (2017), 331--337, and J.~S.~Ellenberg
-and D.~Gijswijt, \emph{On large subsets of $\mathbb F_q^n$ with no three-term arithmetic progression}, the same volume, 339--343. Read Ellenberg--Gijswijt first: its Lemma~1 is a version of our slice rank bound
-written with a matrix of polynomials (the ``polynomial method'' of Croot--Lev--Pach), and its main proof is our Theorem~\ref{combinatorial:thm:capset}, with $\mathbb F_q$ for $\mathbb F_3$ and the general count of monomials. Then
-T.~Tao, \emph{A symmetric formulation of the Croot--Lev--Pach--Ellenberg--Gijswijt capset bound}, blog post, 18 May 2016, which introduced slice rank, and R.~Kleinberg, W.~Sawin and D.~Speyer, \emph{The growth of
+and D.~Gijswijt, \emph{On large subsets of $\mathbb F_q^n$ with no three-term arithmetic progression}, the same volume, 339--343. Its Proposition~2 bounds the rank of a matrix by grouping low-degree monomials; Theorem~4 obtains the corresponding finite-field bound.
+Compare that matrix argument with the symmetric three-variable proof of
+Theorem~\ref{combinatorial:thm:capset} and its odd-characteristic extension here. Then read
+T.~Tao, \emph{A symmetric formulation of the Croot--Lev--Pach--Ellenberg--Gijswijt capset bound}, blog post, 18 May 2016, which introduced slice rank, and R.~Kleinberg, W.~Sawin and D.~Speyer, \emph{The growth rate of
 tri-colored sum-free sets}, Discrete Analysis 2018:12, on the limits of the method. For the history and the lower bounds: R.~Meshulam, \emph{On subsets of finite abelian groups with no 3-term arithmetic
 progressions}, Journal of Combinatorial Theory A 71 (1995), 168--172; Y.~Edel, S.~Ferret, I.~Landjev and L.~Storme, \emph{The classification of the largest caps in AG(5,3)}, Journal of Combinatorial Theory A 99
-(2002), 95--110; B.~Romera-Paredes et al., \emph{Mathematical discoveries from program search with large language models}, Nature 625 (2024), 468--475, which found the current lower bound $2.2202^n$.
+(2002), 95--110; B.~Romera-Paredes et al., \emph{Mathematical discoveries from program search with large language models}, Nature 625 (2024), 468--475, which reports computer-assisted cap-set constructions.
 \end{itemize}

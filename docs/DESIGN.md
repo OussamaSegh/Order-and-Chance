@@ -1038,3 +1038,13 @@ DEP-079 actual phone/desktop screenshots show narrow reader SVG plates keep prin
 ## EPUB display equation aspect —4November2026,DEP-082
 
 Actual Volume2 wide-screen EPUB inspection found57 stretched display occurrences: width100percent expanded PNGs while max-height capped their height. All display images now use their measured em width, max-width100percent and height:auto; they shrink proportionally and do not expand to fill a wider screen. Media guard rejects percentage widths/fixed heights. Inline baseline settings, fonts, formula PNGs,1800px plate treatment and PDF/print/reader design remain unchanged.35 focused EPUB tests pass after three before-failing regressions. Actual regenerated EPUB and native Kindle validation still required.
+
+## Volume 3 assigned internal review — 4 November 2026
+
+PR #104 starts at PR #103's actual merged main `7f87c2ab`. The current Chapter1/2
+mathematical corrections retain approved design5e, trim, fonts and cover art.
+The fresh source inventory, internal AI proof/exercise reconstructions and precise
+remaining gates are in `review/volume3-internal/`. No formal or human refereeing
+is claimed. The initial463 local tests pass without skips; focused finite checks
+support the written arguments. Current-source immutable formats and all-page/
+digital/CI evidence remain required. Earlier Volume2 statuses do not transfer.
