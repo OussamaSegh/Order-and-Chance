@@ -1,3 +1,88 @@
+# Restart checkpoint — V3-042
+
+Parente696a59550e9bc4b9f108f3bce08f6818a174ee9;readactualHEADaftercommit.
+Continueentireauthorizedjobthroughmerge,nopartialfinalstop.Noagents.
+
+## V3-042: author ISBN, real EPUB overflow repair and exact before/after counts
+
+Author supplied paperbackISBN **9798167514683**. Independent alternating1/3 sum
+and existing EANencoder agree on checkdigit3;95modules/guards checked. Canonical
+main.tex now renews bookisbnprint after the shared definition,so copyright and
+actual build's back-cover barcode use the same number. No separate eBookISBN
+invented. Listing generator previously omitted assignedISBNs;now reads/validates
+the canonical renewal and emits a paperback-only field. Actual old e696 output
+fails the expected ISBN-row assertion and wrongly accepts a bad checksum;new
+output passes/rejects respectively. Two focused unit tests cover valid/unassigned
+editions and invalid length/checksum/non-BooklandEAN. Accountownership was not
+inspected;this is the author's supplied assignment,not an agency/account audit.
+Actual new barcode/render/scan and matched counts await the next full build.
+
+This is a bounded metadata-only main diff:old initial synthetic block becomes
+two freshly reconstructed records. All1659 other existing item fragments,
+all158whole named proofs/163fulltriples/22figure sources and allotherbook/earlier/
+seam/sharedTeX sources are identical. All120 concepts' actual first anchors retain
+identical bytes;title coordinates shift2lines. Each chain's existing substantive
+laterA/B/boundaries is explicitly retained with old/new snapshot and exact bounded
+diff reason,not automatically approved by checksum/inventory. Old metadata record
+reopened before rekeying and preserved inV3-042-ISBN-REVIEW. New snapshot
+7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d06f5219e8510b6d0bd.
+Current inventory1661items/604prose,856global;1177itemdecisions/120completeconcepts,
+393labeluses/88literalearliercontexts. Named/exercise/figure targets unchanged.
+
+Complete actual pre-ISBN e696 build succeeded in allformats:518reading/517print,
+KDPnormalized518,spine1.2157in,matchedwrap15.4657x10.25in. ActualEPUBCheck5.3
+zero errors/warnings;outputcheck518/517,7generatedsamples/26XHTML;520frozen
+unit tests63.635s.85publichashes/nineactualreports inpre-isbn-e696a595-artifacts.
+20909mathuses/9534unique,22fullwidth1800pxplates. All60renderer/font/common
+bytes compared before cachecopy. An initial wrong-working-directory build was
+caught/stopped only locally;its partial outputs were not selected. Currentmain
+freshfetch remainsd97c0bf4;no main/unrelated run cancelled,PRcachesarenotreusable.
+
+Actual full2x pages opened individually in color/grayscale:reading1-12/print1-11
+(**23physicalpages/46renders**). Five actual trim-relative facing spreads
+print2-3,4-5,6-7,8-9,10-11 opened bothmodes. Exact per-page observations/hashes in
+pre-isbn-e696a595-visual;the remaining1012physicalpages staypending. Coverfamily,
+seriescatalogue,fulltitle,copyrightwiththen-unassignedISBN,preface/two displays,
+allcontentspages and firstcharcoaldivider legible;bleed/gutter/spread concerns
+checkedforonlythese pages. No thumbnail/hash/render-generation approval.
+These are PRE-ISBN pages;new copyright/barcode must be reopened,and other earlier
+evidence transfers only through actual relevant pixel/fileidentity.
+
+Fresh actual unmodified EPUB browser pass at390/1280px checked52page/viewport
+instances,loading/images/bounds/aspects. It caught2whole-page overflows,not tables:
+C6Conrad longURL makeswidth470 and C9Denso longURL width407 at390. ActualDOM
+inspection identifies a.uri as the cause. New EPUB-only a.uri wrapping rule keeps
+link text/targets and approved formula/plate styling intact. Focused real-browser
+before/injected-rule-after gives470->390 and407->390;allfourviewport screenshots
+actuallyopened and match the measurements,V3-042-url-wrap-regression. This is
+provisional modified-browser regression evidence,not approval of a rebuilt EPUB.
+The next unmodified all52instances and actual assets require fresh review.
+Buildvenv lacked Playwright;used existing defaultPython3.12Playwright/Chromium
+for actual browserwork,without skipping. NativeKindle remains unavailable.
+
+User clarifiedbefore/after meant the ENTIREreview. Rebuilt untouched actualPR103
+merge7f87c2ab in its own gitarchive:actual471print/472reading pages;currentpreISBN
+review517print/518reading,**+46pages**. ActualPDFhashes/buildlog in
+V3-042-original-page-count.json. Its old7x10printgeometry precedesPR105bleed,
+not the new policy;this is an exact body-count comparison,no oldbookapproval.
+User advised4-8morehours based on remaining actualpage/digitalcoverage;no guarantee.
+
+Current corrected source/code **522tests pass,zero skips,59.608s**,with book/
+registers frozen during suite. Requiredsource/inventory/bothstrictcompleteness/
+whitespace gates pass. No assertion weakened;no new mathematics from finite probes.
+E696CIrun1728actualall15bookjobs/V3stepssuccess,siteactive atlastquery;no overall
+terminalsuccessclaimed and newISBN/URLhead requiresitsownCI. KeepPRdraft.
+
+Next:immutable matched ISBN/URL build,actualnewcount/barcode/copyright/listing/
+EPUBCheck/outputchecks;reopen affected render evidence. Continue every remaining
+actualreading/printpage/facings/gray/allfigures/tables/displays/openings/appendices/
+finalmatter;actualnarrow/wideEPUBandreaderbaseline/shape/aspect/loading/clipping/
+overflow/disclosures/nav/theme/menu/alllocallinks/163tripledestinations;actualfinal
+CIartifactcomparison/exactterminalCI/clean/currentbase/ready/headmatchedmerge.
+Nohuman/formal/spokenreviewclaim,another-reviewerrequest or Amazonaccountaction.
+
+## Earlier detailed checkpoint (historical)
+
 # Restart checkpoint — V3-041
 
 Parent1a5f0d0eb3868af1d90cbd04f2314dd3861dd963;readactualHEADaftercommit.
