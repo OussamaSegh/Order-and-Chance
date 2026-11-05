@@ -53,8 +53,10 @@ def inspect_pdf(path: Path) -> tuple[int, str]:
 def check_sylvester_prompt_spacing(text: str) -> None:
     # Text-mode \dots consumed the following space in the actual PDFs,
     # producing “1807, …Show”. Check the rendered sentence boundary.
+    # In -layout extraction the following sum upper limit is interleaved
+    # between Show and that; it is not part of this punctuation regression.
     normalized = " ".join(text.split())
-    assert re.search(r"1807,\s*(?:…|\.\s*\.\s*\.)\.\s+Show that\b", normalized), (
+    assert re.search(r"1807,\s*(?:…|\.\s*\.\s*\.)\s*\.\s+Show\b", normalized), (
         "Sylvester sequence must end with an ellipsis, full stop and spaced Show")
 
 

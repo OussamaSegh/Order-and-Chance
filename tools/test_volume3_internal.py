@@ -30,6 +30,23 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_rendered_sylvester_sentence_boundary(self):
+        # Actual -layout output puts the following sum's upper limit between
+        # Show and that. This check concerns the preceding sentence boundary.
+        import importlib.util
+        path = REVIEW.parent/'volume3-rewrite/check_volume3_outputs.py'
+        spec = importlib.util.spec_from_file_location('v3_output_spacing', path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        for text in ('1807, …Show that', '1807, … Show that',
+                     '1807, ….Show that'):
+            with self.subTest(rejected=text), self.assertRaises(AssertionError):
+                module.check_sylvester_prompt_spacing(text)
+        for text in ('1807, …. Show\n N\n that',
+                     '1807, . . . . Show\n N\n that'):
+            with self.subTest(accepted=text):
+                module.check_sylvester_prompt_spacing(text)
+
     def test_accepted_global_record_requires_explicit_domain_and_claim(self):
         entries = __import__('json').loads((REVIEW/'exposition.json').read_text())['entries']
         record = next(row for row in entries if row['id'] == '1.reminder.1')
