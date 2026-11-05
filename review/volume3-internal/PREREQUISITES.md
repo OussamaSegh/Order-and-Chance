@@ -1,15 +1,12 @@
 # Conceptual prerequisite and story ledger
 
-Current V3-021: all twelve main chapters and all four appendices have fresh
-named/exercise A/B records. The separate global review has exact manual closure
-for front/end31+C1:49+C2:44+C3:43 fragments. Remaining656 exposition/unnamed/history/
-voice rows,337 label-reference classifications,53of81 literal earlier mentions
-and all later conceptual occurrence closure remain pending. A backward-reference
-scan is not a conceptual audit. `concepts.json` has40 manual first-use chains,
-15 priority pending chains; ALL55 whole-volume concept statuses remain pending.
-The initial table below is an incremental record, with later additions scoped
-to their dated checkpoints. Its initial pending rows do not override the fresh
-per-chapter/register evidence.
+Current V3-030: all12mainchapters/allfourappendices have fresh named/exercise
+A/B records; separate complete global closure through C12/front/end totals662
+manualrecords.191appendixglobalrows remainpending,82of392labeluses and7of88literal
+earliermentions pending.100concept firstchains reviewed/fourpending; all104whole-
+volumeconcept later-use statuses remainpending. A backward-reference scan is not
+a conceptual audit. The table below is an incremental historical record; fresh
+per-chapter/register evidence and dated additions define actual current coverage.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
 | --- | --- | --- | --- |
@@ -574,3 +571,16 @@ then defined and proved locally. All28 C11 label occurrences and five literal
 earlier contexts are manually classified. New conceptual chains are explicit;
 whole-volume/later-use closure remains pending. Earlier source file hashes guard
 drift, not approval of every theorem in those earlier volumes.
+
+## V3-030 actual C12 imports and local tools
+
+Actual V1 complex-roots437-456 pentagon derivation, ch05 sequences246-266 full
+BW/Cauchy/adjacent and453-463 full Heine proofs read. Coordinatewise compactness
+and local Frobenius norm bound earn square lifting. Actual V2 ch07-sums-of-squares
+160-176 full Euler identity, oddprime two-square pigeonhole and Lagrange descent
+read; C12 imports the pigeonhole fact, not quaternion factorization. C11 full
+ex:circulant now earns elementary derivatives/E/log; both C12 analytic tools lists
+explicitly cite it. C12 common-refinement proof earns proper Lipschitz integrals,
+then full Jensen earns log singularity limits. No later integration/topology/
+series-exchange theorem supplies a premise. Exact GLOBAL-CH12 domains/A/B,
+31labeluses,13earliercontexts and tenfirstchain decisions are recorded in JSON.

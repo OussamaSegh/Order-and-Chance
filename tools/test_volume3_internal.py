@@ -214,6 +214,9 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter12.check_rotation_plate()
         check_chapter12.check_actual_solid_plate()
 
+    def test_local_polyhedral_face_and_dual_argument_probes(self):
+        check_chapter12.check_polyhedral_local_arguments()
+
     def test_workshop_greedy_recurrences_dice_and_subset_characters(self):
         check_chapter12.check_sylvester_and_mersenne()
         check_chapter12.check_dice_and_subset_characters()

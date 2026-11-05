@@ -1,83 +1,96 @@
-# Restart checkpoint — V3-029
+# Restart checkpoint — V3-030
 
-Solo internal AI review, not human refereeing or formal verification. DraftPR104:
+Solo internal AI review, not human refereeing or formal verification. Draft PR104:
 https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Branch
 editorial/volume3-complete-internal-review-20261104. This batch follows
-**a0c09b53dd9439c2ef8c386efba3ed9012c473fa**; read actual HEAD after commit.
-Activate /workspace/volume3-tools/activate.sh. Entire solo review and head-matched
-merge authorized only after genuine final gates. No delegation/reviewer request,
-no Amazon/account action. Preserve user changes. Continue through compactions;
-do not stop at a partial checkpoint. Meaningful updates about once per minute.
+**a1d5192e2eadf585cc932d63f534849b00395816**; read actual HEAD after commit.
+Activate /workspace/volume3-tools/activate.sh. Full solo task and exact-head merge
+are authorized only after genuine final gates. No delegation/reviewer request,
+no Amazon/account action. Preserve user changes. Continue through compactions,
+not a partial-checkpoint final answer. Meaningful updates about once per minute.
 
-Baseline PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01. Current main remains
-**d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678**, fresh fetch this batch; PR105 bleed
-integration alreadyaf1c3fe4. Actual updated instructions/workflow read. Reading
-7x10, print7.125x10.25/top-bottom/mirroredoutside bleed, no binding bleed. Actual
-trim preserved, proven solid backgrounds extended as vectors after trim-size GS.
-Bleed(PDFonly) metadata. Cache schema9 saves libraries only on main; PR success
-is not a reusable PR-cache guarantee. Never cancel main/unrelated runs.
+Baseline PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01. Fresh fetchedmain
+**d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678**, PR105bleed, integratedaf1c3fe4.
+Full updated instructions/workflow read. Reading7x10, print7.125x10.25with9pt
+mirroredoutside/topbottombleed, no bindingbleed; trim-sizeGS thenvectoropaque
+proven-solidbackgroundextension. MetadataBleed(PDFonly). Schema9librarycache
+saved onlymain, no reusablePRcache guarantee. Never cancelmain/unrelatedwork.
 
-**914 accepted=157named+163fulltriples+594global;256global pending C12/A-D.**
-Entire C11 read, allten full proofs/eleven full triples/actual59-cell figure/
-nine source entries.55 manually keyed global records with explicit domains and
-claims. Ten named pairs/ten unchanged triples individually SHA-matched;
-V3-029-retained-identities. Changed walk triple has fresh full A/B in exercises.
-Original CH11-PROMPT-FIRST chronology retained; new analysis is not blind work.
-Sign-values equality fixed ({±1} is not all real units); cyclicn>=1; opening
-square/dimension wording repaired; explicit class-indicator basis. Walk now earns
-geometric trig derivatives and uniform-tail E derivative, positive range/inverse
-log, explicit fourth derivative/four-Rolle estimate. V1 admitted reminder/Taylor
-exercise not mislabeled earlier proofs. Actual earlier V1 realprojection/rules/
-ratio/Cauchyproduct/inverse and V2 Euler/character finite proofs reread.
-28 C11 labeluses/five earliercontexts accepted.279/389labeluses,68/88earliermentions.
-90firstchains reviewed/five pending; **all95whole-volume concept statuses pending**.
-Inventory1653/598prose/118bibliography/22examples/22figures/9tables/22sources.
-No inventory, count, finite computation or source-string test approves mathematics.
+**982accepted=157named+163fulltriples+662global;191globalpending A–D.**
+All12main chapters now have complete global written voice/cadence/adversarial
+first-reader passes, not human/spoken sessions. Allfourappendices already have
+fullcoreA/B; this does not approve their separate unnamed/history/global rows.
+C12entirecurrentchapter/fourfullnamedproofs/fifteenfulltriples/twoactualfigsources/
+sevenbibs read.68manual GLOBAL-CH12 rows with domain/claim/A/B. Four unchanged
+fullnamedpairs/thirteenfulltriples individually SHA matched; two changed tool-list
+triples(Sylvester/Jensen) fully reread/reconstructedA/B. Original prompt-first
+exposure chronology retained; no fresh blind-solve claim. No target weakened.
 
-C11 history actual original Dirichlet opening/46/47/70/last images: last81 is
-misnumbered71. Citation explicit, volumeFOR1837 not inferred printingyear. Actual
-Cooley297-298 images/full relevant algorithm text; James copyright/TOC images;
-Schur reprint opening/TOC, Maschke/Serre publisher bodies, DiaconisIMSTOC read.
-Actual Adin prior relevant proofs and later primary shuffle model evidence retained
-with scope. RESEARCH exact URLs/filehashes/access/full-external-proof limits.
+C12 new finite20facecompletenessproof: convex/supporting2Dface definition and
+on-planevertex rule, interior-origin/midpoint weights, opposite-side diagonal
+planes, then12*5/3. New dual24/60counts from face-centre dot/nearestneighbour
+bounds plus original rotations. Loop group laws explicit before signisomorphism.
+Quarterturns actually noncommute after kernel quotient; no coordinate-minimality
+claim. Normedalgebraoutlook excludes0Dzeroalgebra and is not a premise. C11local
+log/E proof correctly cited in workshopintro and bothanalytictools lists.
+ActualV1pentagon437-456,BW/Cauchy/adjacent246-266,Heine453-463 and V2ch07full
+Euler/pigeonhole/Lagrange160-176 read.31manual labeluses/13earliercontexts;
+310/392labels,81/88earliermentions accepted.100firstchainsreviewed/fourpending;
+all104whole-volumeconcept statuses pending later-useclosure. Inventory1656items/
+601prose/118bibliography/22examples/22figures/9tables/22sources.
 
-**513tests PASS0skips56.263s** after source/checker/register changes, before final
-reports, /tmp/volume3-v029-full-tests.log. Required source/inventory/freshness/diff
-checks pass. Original sign source actually fails before fix; original walk source
-fails new prerequisite gate. New exact derivative/tail-factor probes support but
-do not replace general proof. No assertion weakened.
+**514testsPASS0skips56.452s**, /tmp/volume3-v030-full-tests.log, aftersource/
+checker/manualregisterchangesbeforedescriptivereports. SourcecheckerPASS381labels/
+392references/22figinputs; inventory/freshness/diffchecks pass. New exactQuad
+midpoint/plane/dualprobes and proof-presenceguards; actual originalsource fails
+newguard, currentpasses. Guard/finitecomputation notproof. HelperQuadreciprocal
+typeerror corrected before successfulsuite; no assertionweakened. Chromium exists;
+Playwright installed for actual remainingdigital review, notbehaviorapproval.
 
-Immutable **/workspace/volume3-build-a0c09b53**, exacta0, BEFORE current C11 changes:
-allformats complete516reading/515print,KDP516,spine1.2111in,matchedwrap15.4611x10.25.
-85public/5report hashes preliminary-a0c09b53-artifacts. ActualEPUBCheck5.3.0zero,
-actualoutputcheckerPASS7renders26XHTML; checker renders not manual approval.
-All60font/renderer/commonbyteidentities before localformula9444cachereuse; actual
-provenance retained, noGithubcache inference.20737formulas/22plates1800. All515
-printcanvases/trim checked, fullsolidbackground11/153/243, page445onlyflattened600ppi.
-ACTUALLYOPENED reading281/283/293 and print280/282/292 at2x colorANDgray (12renders).
-C10opening/cycliccubic/classification+Frobenius page legible, no observed clipping /
-collision; grayrules/refs usable. preliminary-a0c09b53-visual. Primecertificate
-onprecedingpage NOTopened; opening ordinaryin- continuationfollowingpage unreviewed.
-No whole-book/facing/digital closure, no transferexceptactualpixel/fileidentity.
-Earlieraf1 quartic Needspace fix locally resolved on actual6pages; no-bleedolder
-snapshots historical only. Current C11 changes require new affected outputs.
+Historyactualaccess/limits inH-C12RESEARCH and GLOBAL-CH12: HamiltonTCDfirsttext,
+Hurwitz313/315/319/320actualimages, Shoemake245/248+3.3text, publisherTOCs,
+contemporaryKlein/IUCrreviews, Baezrelevantcanonicalstatements. Full externalbooks/
+originalclassificationproofsnotcertified. Dunton/Grimm339/347/348actualimages and
+seventhrule, Sylvestercollected440-444relevanttext/444image+JSTOR1880metadata.
+1202moderntranslationintro attribution distinguished from directmedieval dating.
+No broad originalresearchproofcertification. Filehashes/accessfailuresrecorded.
 
-Exactaf1 CI1713/run41984307424 terminalsuccess(all15books+site). Exacta0
-CI1714/run41992317151 stillinprogress lastchecked. Newcurrent C11headneedsownCI.
-Record terminal advancement in PR, no endless doccommit solely priorCI.
+Latestcompleteimmutable **/workspace/volume3-build-a1d5192e**, exacta1BEFOREthisC12:
+516reading/515print,KDP516,spine1.2111in,matchedwrap15.4611x10.25.85public/5reports
+preliminary-a1d5192e-artifacts. ActualEPUBCheck5.3.0zero /tmp/volume3-v030-a1-epubcheck;
+outputcheckerPASS7renders26XHTML /tmp/volume3-v030-a1-output.20770mathuses/9469unique,
+22plates1800px. Actual60font/renderer/commonbyteidentity before localcache reuse,
+provenance retained. No a1manualPDFpages opened this batch. FinalC12neednewoutputs.
 
-Continue C12 then allfourappendices entireglobal unreferencedprose/history/story/
-voice/concept pass; existing coreA/B allcomplete but doesnotapproveglobal. Reconcile
-all95concept lateruses, front/end/publishing/seams. **Open evidence-schema task:**
-older539global JSON rows lack explicit hypothesis_domain/claim columns (substance
-in A/B/tables); manually make exact domains/claims explicit and guard complete
-schema before final acceptance. C11 already has them. No approval by migration.
+Actualpriora0download/compare: zipartifact13400425196/run1714,40,848,096bytes,
+SHA4e4ac091ad3a325c8a73de32a91e965d5454078f6bda0da83bd35e00e0bafc60 matchesGitHub.
+V3-030-CI-COMPARISON and preliminary-a0c09b53-ci-comparison have85file hashes/
+all1031pagepixel comparisons.80/85publicfilesbyteidentical; reading516allpixels
+match, printonly445differs(meanabs0.0037023/max29at2x),wrappixels2xidentical.
+Earlieractualsixpagesamples transfer onlywithmatching2xpixels, notunopenedpages.
+Bothactual local/CIprint445colourANDgray opened, graph/text/caption/statementbox
+legible; proofnextpageunopened. Actual9differentEPUBglyphpairsopened,sameaspect/
+dimensions,noobservedclipping.139mathuses/52formulasdifferattrs,43samePNGsCSSrounding
+<=0.0001em. All18differenttextmembers classifiedUUID/time/manifestorder/9hashids/
+paths/CSSrounding; othercontent/structureidentical. HTMLPaleyfootnote sectionvsaside
+sameids/classes, behaviorpending. ActualCI EPUBCheckzero. No fullpage/facing/browser
+approvalinferred. a0runoverallautomaticallyCANCELLEDwhenPRsuperseded, V3jobSUCCESS.
 
-Final committed sourcefreeze, everyactualreading/printpage/fig/table/display/
-opening/appendix/finalmatter/gray/facing review stillrequired; reopenallchanged
-pagination. Actualnarrow/widereader+EPUBformula loading/baseline/shape/aspect/clip/
-overflow, links/fragments/everytripledestination, controls/disclosures/nav/theme/menu
-and actualCIartifactdownload/compare stillrequired. Device/KDPaccount/ISBNownership/
-physicalproof unavailablefollowups, not false passes or reason to seek reviewer.
-NoV3ISBNassignment invented/borrowed. Finalallgates,cleanworktree,currentmainbase,
-exactreviewedhead terminalCI,readyexpected-headmergecommitandverifyGitHubmain.
+Exacta1CI1715/run41995412100 **terminalSUCCESS**, all15books+site/list/debs;
+publishskipped. ActualV3build/bleed/QA/uploadsteps readsuccessful. Committedreports
+scopedtothischeckpoint; newC12headneedsownCI. Record terminal advancement inPR,
+not endlessdoccommitssolelypriorCI. Never cancelledmain/unrelatedruns.
+
+Continueallfourappendixentireglobalunreferenced/history/story/conceptpass. Open
+evidenceschematask: older539globalJSONrows lack explicitdomain/claim, though
+A/B/tablesholdsubstance; manually makeexact fields explicit andguardcomplete
+schema beforefinal. C11/C12explicit. No approvalbyinventorymigration.
+
+Finalsourcefreeze/everyactualreading+printpage/fig/table/display/opening/appendix/
+finalmatter/gray/facings stillrequired. Reopenallchangedpagination. Actualnarrow/
+widereader+EPUB loading/baseline/shape/aspect/clip/overflow/alllocal links/fragments/
+everyexercisehintsolutiondestination/nav/theme/menu/disclosures and actualfinal
+CIartifactcomparison required. NativeKindle/Paperwhite/KDPaccount/ISBNownership/
+physicalproof unavailablefollowups, nofakepasses/noreviewerrequest. NoV3ISBN
+invented/borrowed. Cleanworktree/currentmainbase/exactreviewedheadterminalCI,
+ready/headmatchedmergecommit andverifyGitHubmainremainrequired.

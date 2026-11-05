@@ -1,5 +1,81 @@
 # Progress
 
+## V3-030: complete quaternion/rotation global pass
+
+Solo internal AI review, not independent human refereeing or formal verification.
+Entire current C12, four full named proofs, fifteen full triples, both actual
+figure sources and seven bibliography entries read.68manual global domain/claim/
+A/B records in GLOBAL-CH12 include every unreferenced mathematical argument.
+The written voice/cadence/adversarial-first-reader method is not human/spoken work.
+Original CH12-PROMPT-FIRST exposure chronology retained. Four named proof pairs
+and thirteen unchanged full triples were individually source-hash matched;
+V3-030-retained-identities. Two full Sylvester/Jensen triples re-read/reconstructed
+A/B after correcting their tool lists to cite the actual C11 earned logarithm.
+No mathematical target or complete reader solution weakened.
+
+New local finite proof earns the completeness of all20icosahedral faces: define
+convex hull/supporting2Dface, prove the on-plane vertex intersection rule, show
+origin and opposite-neighbour midpoints interior, exclude all five diagonal
+triples by actual signed plane values, then count12*5/3. Dual octa/dodeca counts
+now earned from actual face-centre dot products/nearest neighbours and attained
+rotation bounds, rather than an assumed double-dual geometric assertion. Loop
+classes now have explicit equivalence, well-defined operation, associativity,
+identity and inverse arguments before the sign isomorphism. Positive quarterturns
+provide actual noncommuting spatial rotations after quotient; coordinate-minimality
+claim removed. Normed-algebra outlook excludes zero-dimensional algebra and stays
+explicitly outside the proof route. New exact Q(sqrt5) midpoint/plane/dual probes
+and provenance guards support the general finite argument; original source actually
+fails the new proof-presence guard, current passes. Guards are not formal proofs.
+
+Actual earlier V1 pentagon proof437-456, BW/Cauchy/adjacent246-266 and full
+Heine453-463 were reread; actual V2 ch07 full four-square identity/pigeonhole/
+descent160-176 read, not inferred from its title.31labeluses and13literal earlier
+contexts classified;310/392labels and81/88earliermentions accepted.100firstchains
+reviewed/fourpending; all104whole-volume statuses remain pending later-use closure.
+Nine added first chains cover local topology/geometry/arithmetic/functors/measure/
+positive products, plus the existing local-analysis chain was earned. Inventory
+1656items/601prose/118bibliography/22examples/22figures/9tables/22sources.
+**982accepted=157named+163fulltriples+662global;191globalpending in allfourappendices.**
+
+Actual historical text/scans and access limits in RESEARCH: Hamilton institutional
+transcription firstsections/editor notes, original Hurwitz313/315/319/320, original
+Shoemake245/248+Sec3.3text, publisherTOCs, contemporary Klein/IUCrreviews. Translator,
+reprint, pages and interpolation pointer corrected; no full external-book proof
+certification. Fibonacci's actual translated seventh rule and4/13 on347-348 opened;
+Dunton/Grimm introductory1202 attribution distinguished from manuscript dating.
+Actual Sylvester collected1880article/relevant recurrence/postscript read, original
+JSTOR issue metadata corroborated. Book's seven source entries retained.
+
+**514testsPASS,zero skips,56.452s**, /tmp/volume3-v030-full-tests.log, after source/
+checker/manual-register changes, before these reports. Required source checks,
+inventory/freshness and whitespace gates pass. New exact probe/helper type mismatch
+was fixed before successful suite; no assertion weakened. Browser runtime installed
+for the remaining actual digital inspection; installation is not behavior approval.
+
+Immutable producingcommita1d5192e, BEFORE this C12batch, completed allformats:
+516reading/515print,KDP516,spine1.2111in,matchedwrap15.4611x10.25in.85public/5report
+hashes in preliminary-a1d5192e-artifacts. ActualEPUBCheck5.3.0zero and outputchecker
+PASS7renders26XHTML.20770mathuses/9469unique,22full-width1800pxplates. Actual60
+font/renderer/commonbyteidentities before localcache reuse, provenance retained;
+no reusableGithubPRcache claim. No new a1manual PDF page was opened this batch.
+
+Actual priora0CIartifactdownload/hash and localcomparison completed with explicit
+scope in V3-030-CI-COMPARISON/JSON.80of85publicfiles byteidentical; all516reading
+pixels match, printonlypage445differs,2xwrappixelsmatch. All18differing EPUBtextmembers
+classified;9differentmathPNGs have sameaspect/dimensions. Actual9glyphpairs opened,
+and bothlocal/CIprint445 in colour/gray opened; no observed clipping/distortion in
+these samples. ActualCI EPUBCheckzero. No unopenedpage/browser/device approval.
+Exacta1CI1715/run41995412100 terminalSUCCESS, all15books+site. Priora0run cancelled
+automatically when superseded, itsV3jobSUCCESS, not overallgreen. Never cancelled
+main/unrelated runs. Fresh main/base relationship to be rechecked before commit.
+
+Continue allfourappendix completeglobal passes, explicit domain/claim strengthening
+of older global rows and104whole-volume conceptual closures. Final sourcefreeze,
+everyactualPDFpage/gray/facing,actualnarrow/wide EPUB/HTML/all links/destinations/
+controls/formula shape, finalheadCI and clean/headmatchedmerge still required.
+Unavailable Kindle/KDPaccount/ISBNownership/physicalproof remain publicationfollowups,
+no Volume3ISBNinvented/borrowed and no Amazon upload/account action.
+
 ## V3-029: complete representations/characters global pass
 
 Solo internal AI review, not independent human refereeing or formal verification.

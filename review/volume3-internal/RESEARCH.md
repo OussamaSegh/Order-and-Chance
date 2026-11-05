@@ -909,3 +909,92 @@ external proof verified. Images/text/read limits above are the actual evidence.
 - `Cooley-Tukey-1965.pdf`: 363726 bytes, SHA256 `b4fa04410bcbf324eca035ab9d94818f075cee2f2ae38e99ebb0e2348e64654a`.
 - `Dirichlet-1837-original.pdf`: 3095515 bytes, SHA256 `28e84740e81f6beeed5bad5553571dba9eeb86f95c82005a192b68278326f60f`.
 - `Dirichlet-Werke-reprint.pdf`: 4463137 bytes, SHA256 `3fa6b0caf705fdae18af16d3fdb6a4de9e1c705fe18e2b1614fc707c4e63baab`.
+
+## H-C12 — actual text, scans and bounded access (5November2026)
+
+Solo internal AI historical/metadata review, not external research-proof
+certification. GLOBAL-CH12 individually keys all seven entries and the classification
+outlooks; actual access below is narrower than whole external-book review.
+
+- Hamilton: actual TCD editor DavidRWilkins March2000 transcription/editor notes
+  https://www.maths.tcd.ie/pub/HistMath/People/Hamilton/OnQuat/OnQuat.pdf . Read
+  firstsections1-4, printed1-3/digital4-6: four real coordinates, multiplication
+  rulesA-C, bilinear productD and normE, not merely abstract. Actual institutional
+  introduction/instalment list distinguishes1843communication from1844publication.
+  Not an original print scan, not full92pages; publisher DOI14786444408644923
+  fullaccess403. Book retains1844volume25pages10-13, no unsupported month claim.
+- Klein: actual GDZ chapter-PDF metadata
+  https://gdz.sub.uni-goettingen.de/download/pdf/PPN516762672/LOG_0098.pdf
+  corroborates German author/title/TeubnerLeipzig1884; scanned chapter body not
+  opened. Actual contemporary Cambridge review product metadata/body header
+  https://www.cambridge.org/core/journals/mathematical-gazette/article/lectures-on-the-icosahedron-and-the-solution-of-equations-of-the-fifth-degree-by-felix-klein-translated-by-g-g-morrice-second-revised-edition-reprinted-pp-xvi289-185-1956-dover-publications/0FDF7998B1848A19C63CC209533DE3BE
+  gives translatorGGMorrice/Dover1956secondrevisedreprint, JLBritton review
+  MathGaz42no340May1958pp139-140. Online2016date not bookdate. Review fulltext
+  subscription unavailable; English https://lib.ysu.am/open_books/419594.pdf
+  returned503. Book annotation bounded to polyhedral symmetry/quintic, no claimed
+  external proof/method/plate inspection.
+- Hurwitz actual original28page scan
+  https://tetraon.dk/onewebmedia/References/Ueber%20die%20Zahlentheorie%20der%20Quaternionen,%20A%20Hurwitz%201896.pdf . Actually opened313/315/319/320 images;
+  actual relevant314webtext also read. Opening presentation19Dec1896; section3
+  half-unit basis, allinteger/alloddhalf coordinates, squarednorm and distinction
+  left/right division. Rendered other pages not counted opened. Not full original
+  28page proof review; local full Hurwitz exercise independent.
+- Stillwell actual publisher body/copyright/TOC
+  https://link.springer.com/book/10.1007/978-0-387-78214-0 :2008; geometry1-22,
+  groups23-47,generalizedrotations48-73,topology160-185,simplyconnectedgroups186-203.
+  Full subscription book unavailable; our explicit local topological arguments
+  stand independently.
+- Conway/Smith publisher pages failed403/521. Actual entire contemporary
+  HansGrimmer review body https://journals.iucr.org/a/issues/2003/04/00/ht5040/index.html
+  ActaCrystA59July2003p436 gives title/authors/AKPeters2003, discusses quaternion
+  finitegroups,Hurwitz/Lipschitzarithmetic and octonions. This is a secondary
+  review, not an original-book proof read.
+- Armstrong actual Springer body/TOC
+  https://link.springer.com/book/10.1007/978-1-4757-4034-9 :1988,Chapter19
+  FiniteRotationGroups104-112. Full chapter unavailable; precise pointer replaces
+  an unlocated pole-proof annotation.
+- Shoemake original10page author PDF actually downloaded successfully from
+  https://azrael.digipen.edu/MAT351/papers/Shoemake.pdf ; requests to CMU403,
+  but actual https://www.cs.cmu.edu/~kiranb/animation/p245-shoemake.pdf webtext
+  gave relevantSec3.3/3.4 and nearest-representative paragraph. Actual original
+  images245/248 opened; bylineKenShoemake, not OCRShoemaker.1985ComputerGraphics
+  19(3),245-254. Slerp sine weights and sign choice read beyond abstract. Its
+  matrix convention is transposed relative to our column-vector action; no
+  convention transfer claimed. Our normalized chord is smooth and never zero,
+  not claimed constantangularspeed. Full spline/code/research correctness not
+  certified from this bounded read.
+- Classification outlooks: actual relevant introductory text
+  https://math.ucr.edu/home/baez/octonions/node1.html and actual Section1 of
+  https://math.ucr.edu/home/baez/tenfold.pdf (21April2020) read. Frobenius needs
+  finite-dimensional associative real division algebras; Hurwitz here needs
+  nonzero finite-dimensional unital real algebras with positive multiplicative
+  squaredEuclidean norm. Nonzero now explicit to exclude0Dzeroalgebra. Neither
+  external classification is used as a premise; original1877/1898proofs not read.
+
+Exercise-history checks, not inherited from original prompt attributions:
+- Actual Dunton/Grimm1966 translation
+  https://www.fq.math.ca/Scanned/4-4/dunton.pdf : opening339 actually opened,
+  introduction attributes method to Leonardo1202 and identifies1857Boncompagni
+  text/manuscript microfilm basis. Actual347-348 images opened and seventh-rule
+  text read: greedy procedure and exactly4/13=1/4+1/18+1/468. This is a modern
+  translation and historical introductory dating, not a direct1202manuscript
+  inspection or claim to settle1202-versus1228textual history. Other thirteen
+  pages not all read/certified.
+- Actual Sylvester collected article
+  https://rcin.org.pl/Content/161767/PDF/WA35_189784_11371-3_art-47.pdf relevant
+  main text440-443/recurrence/telescope/coprimality and postscript444 read;
+  actual444image opened. Original issue metadata actually read at
+  https://www.jstor.org/stable/2369261 :AJM3no4Dec1880pp332-335; collected header
+  also includes postscript388-389. Sequence2,3,7,43,1807,3263443 appears in actual
+  postscript. No original-printing/postscript-year ambiguity inferred from search
+  snippets. Our all-k rounding proof independently reconstructed; not attributed
+  to this original article without evidence. No full external modular table
+  verification claimed. These two exercise dates are provenance labels, not
+  premises for the mathematical proofs.
+
+Downloaded PDF identities (actual files; rendering alone is not opened evidence):
+- Hamilton-OnQuat-Wilkins-2000.pdf: 472433bytes, SHA256 `4b20b592cff1ecc19a307f429ae251a249e038a37997d116df3a0615c7db6930`.
+- Hurwitz-1896-Quaternionen.pdf: 1094948bytes, SHA256 `8a9c34abd9d29608a15cdcfc28d96e82a54597627053739afd3e0295b0824ec3`.
+- Shoemake-1985.pdf: 8771287bytes, SHA256 `6b1d32f03380e402f2189141e4c32c30e3be3bf06407ab642fdc4d1461a69703`.
+- Dunton-Grimm-1966-Fibonacci.pdf: 2739667bytes, SHA256 `6afd152112bb524a602d304d3374b0c90dcad7d99feb39162fee1030ecbc55c2`.
+- Sylvester-1880-Vulgar-Fractions-collected.pdf: 2341507bytes, SHA256 `3c0ec85e2544e2d0157bffc4569fd8d98dab2f7099408a39aaac23fbfb09f6a0`.

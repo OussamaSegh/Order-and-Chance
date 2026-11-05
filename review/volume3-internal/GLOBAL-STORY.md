@@ -3,10 +3,13 @@
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned mathematical route; the final keyed global
-voice/cadence/adversarial-first-reader pass is still in progress.425 global items
-have current manual closure atV3-026 (31front/end,49C1,44C2,43C3,48C4,48C5,63C6,
-50C7,49C8);416 global items inC9–12/all four appendices remain pending.
-A route map alone does not approve their prose or dependencies.
+voice/cadence/adversarial-first-reader pass has manual closure through all12main
+chapters atV3-030:662globalrecords (31front/end+631main).191globalrows in the four
+appendices remainpending; all104whole-volumeconcept later-use statuses pending.
+The C12 question now starts with actual quarterturns, earns two-sheet topology
+and every loop-group law locally, then constructs/classifies finite rotations
+and finishes its complete arithmetic/counting workshop. A story map alone does
+not approve prose/dependencies; see keyed GLOBAL-CH01–12 and current registers.
 
 | Source | Incoming question | Earned answer | Reason for the next source |
 | --- | --- | --- | --- |

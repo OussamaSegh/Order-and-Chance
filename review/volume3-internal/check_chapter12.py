@@ -291,6 +291,40 @@ def check_rotation_plate():
     assert r'$-q$ gives the same rotation' in source
 
 
+def check_polyhedral_local_arguments(source=None):
+    """Exact probes for the new finite face/dual proof, plus provenance guards."""
+    phi, vertices = icosa_vertices()
+    v = (Quad(), Quad(1), phi)
+    a = (Quad(), Quad(-1), phi)
+    c, d = (Quad(1), phi, Quad()), (Quad(-1), phi, Quad())
+    midpoint = tuple((x-y)/2 for x, y in zip(v, a))
+    assert midpoint == (0, 1, 0)
+    assert tuple((x+y)/(2*phi) for x, y in zip(c, d)) == midpoint
+    # The omitted interior-point weight is strictly between zero and one.
+    assert (1-Quad(1)/phi).sign() > 0 and (Quad(1)/phi).sign() > 0
+    b0, e = (phi, Quad(), Quad(1)), (-phi, Quad(), Quad(1))
+    plane = lambda x: phi*x[0]+x[2]
+    assert all(plane(x) == phi for x in (v, a, c))
+    assert plane(b0) == phi+2 and plane(e) == -phi
+    normals = [tuple(map(Quad, x)) for x in product([-1, 1], repeat=3)]
+    for s, t in product([-1, 1], repeat=2):
+        x = (s*(phi-1), Quad(), t*phi)
+        normals.extend([x, x[1:]+x[:1], x[2:]+x[:2]])
+    assert len(set(normals)) == 20 and all(dot(x, x) == 3 for x in normals)
+    for x in normals:
+        values = [dot(x, y) for y in normals if x != y]
+        assert sum(y == 2*phi-1 for y in values) == 3
+        assert all((2*phi-1-y).sign() >= 0 for y in values)
+    text = SOURCE.read_text() if source is None else source
+    assert 'equality in the' in text and 'positive-weight vertex' in text
+    assert 'The midpoint of $v,-A$ is interior' in text
+    assert 'The remaining five pairs cannot give supporting planes' in text
+    assert "The dual counts can be checked" in text
+    assert 'Move both times linearly' in text
+    assert 'For nonzero finite-dimensional real algebras' in text
+    assert text.count('the logarithm earned in Exercise~\\ref{ex:circulant}') >= 1
+
+
 def graph_isomorphism(a, b):
     mapping = {}; used = set()
     def extend():
@@ -675,6 +709,7 @@ if __name__ == '__main__':
     check_icosahedral_existence()
     check_rotation_plate()
     check_actual_solid_plate()
+    check_polyhedral_local_arguments()
     check_sylvester_and_mersenne()
     check_dice_and_subset_characters()
     check_egz_and_systems()
