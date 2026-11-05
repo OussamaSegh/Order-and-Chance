@@ -1,8 +1,15 @@
 # Conceptual prerequisite and story ledger
 
-V3-006. This ledger is incremental. Chapters1–8 have complete mathematical
-readings recorded; Chapters9–12 and all appendix argument routes remain pending.
-A backward-reference scan is not a conceptual audit.
+Current V3-020: all twelve main chapters and all four appendices have fresh
+named/exercise A/B records. The separate global review has exact manual closure
+for front/end31+C1:49+C2:44 fragments. Remaining697 exposition/unnamed/history/
+voice rows,357 label-reference classifications,56of81 literal earlier mentions
+and all later conceptual occurrence closure remain pending. A backward-reference
+scan is not a conceptual audit. `concepts.json` has28 manual first-use chains,
+17 priority pending chains; ALL45 whole-volume concept statuses remain pending.
+The initial table below is an incremental record, with later additions scoped
+to their dated checkpoints. Its initial pending rows do not override the fresh
+per-chapter/register evidence.
 
 | Concept | Definition/example before invocation | Actual proof location read | First valid use / correction |
 | --- | --- | --- | --- |
@@ -17,7 +24,7 @@ A backward-reference scan is not a conceptual audit.
 | Cauchy-Schwarz/Euclidean norm | V1 inequalities thm:cs | Read the nonnegative quadratic/discriminant proof, zero list and equality cases | C1 sum-of-squares/translation contraction. Finite norms are defined in the solution. |
 | Fibonacci gcd | V1 sums ex:fibgcd complete solution | Read addition-identity induction, consecutive gcd descent, index gcd descent and n0 boundary | C1 pb:fibdivides may legitimately use this proved earlier exercise, not merely its prompt. |
 | Homomorphism / kernel | V3 C1 isomorphism definition now names operation-preserving maps first; C2 introduces kernel/image | C1 f(e), inverse and inverse-map checks read/reconstructed | C1 cube exercise proves equal-image injectivity directly; no undeclared kernel or later first isomorphism theorem. |
-| Sign, normal subgroups, quotients, actions and all later tools | Pending actual C2 onward audit | Do not infer availability from historical rewritten statuses | Later ledgers must read and earn each premise before acceptance. |
+| Sign, normality, quotient operations and later concepts | Actual V1 sign and full C2 local proofs read; first-use chains recorded in concepts.json | No availability inferred from historical rewrite status; every later occurrence remains subject to global continuation | C2 representative independence before iso1/23; actions and later concepts have full named/exercise readings, with global closure pending. |
 
 Story checkpoint: the merged V2 field guide ends with powers modulo7, Gaussian
 factorization and chi4's multiplication rule, then names V3's exact title/subtitle.

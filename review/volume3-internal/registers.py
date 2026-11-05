@@ -43,6 +43,11 @@ def initialize(data, write=True):
             row['related'] = related
             groups['exercises'].append(row)
         elif item['kind'] not in ('proof', 'hint', 'solution'):
+            if item['kind'] == 'figure':
+                row['included_sources'] = [
+                    {k: f[k] for k in ('key', 'path', 'sha256')}
+                    for f in data['figure_inputs'] if f['use_path'] == item['path']
+                    and item['line'] <= f['use_line'] <= item['end_line']]
             row.update({'role': 'unclassified', 'reconstruction_A': '',
                         'adversarial_check_B': '', 'boundary_probes': '',
                         'earlier_tools_and_proof_sites': '',
@@ -85,7 +90,8 @@ def reconcile(data):
             # Coordinates may change while bytes stay identical. Proof and
             # hint/solution hashes are part of the acceptance identity too.
             identity = lambda r: (r.get('sha256'), r.get('context_sha256'),
-                                  [(x['id'], x['sha256']) for x in r.get('related', [])])
+                                  [(x['id'], x['sha256']) for x in r.get('related', [])],
+                                  r.get('included_sources'))
             if prior is not None and identity(prior) == identity(row):
                 for key, value in prior.items():
                     if key not in ('line', 'end_line', 'related', 'destination'):
@@ -122,6 +128,13 @@ def check(data, require_complete=False):
                 actual = current.get(related['id'])
                 if not actual or actual['sha256'] != related['sha256']:
                     raise ValueError(f"Changed hint/solution: {related['id']}")
+            if item['kind'] == 'figure':
+                expected_sources = [{k: f[k] for k in ('key', 'path', 'sha256')}
+                                    for f in data['figure_inputs']
+                                    if f['use_path'] == item['path']
+                                    and item['line'] <= f['use_line'] <= item['end_line']]
+                if row.get('included_sources') != expected_sources:
+                    raise ValueError(f"Changed included figure source: {row['id']}")
             statuses[row['status']] += 1
             if row['status'] == 'accepted-internal':
                 needed = CORE if group in ('proofs', 'exercises') else (

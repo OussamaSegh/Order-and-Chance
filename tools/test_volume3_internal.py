@@ -30,6 +30,12 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_changed_figure_file_cannot_keep_caption_approval(self):
+        data = copy.deepcopy(volume3_inventory.inventory())
+        data['figure_inputs'][0]['sha256'] = '0'*64
+        with self.assertRaisesRegex(ValueError, 'Changed included figure source'):
+            volume3_registers.check(data)
+
     def test_conceptual_anchor_cannot_retain_changed_source_evidence(self):
         data = copy.deepcopy(volume3_inventory.inventory())
         concepts = __import__('json').loads((REVIEW/'concepts.json').read_text())

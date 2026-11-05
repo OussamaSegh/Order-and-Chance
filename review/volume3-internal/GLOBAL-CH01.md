@@ -155,3 +155,15 @@ C1 revision makes its local recap complete, not repairs an unavailable series
 prerequisite. The four-element model refutes treating only the abbreviated
 list as a full definition; it is not a counterexample to the originally intended
 genuine-field theorems. Keep this distinction in findings and publishing claims.
+
+## V3-020 first-use follow-up
+
+The C2concept pass caught terms inside previously mathematically checked C1
+solutions. Define group involution at first use in ex:square. Replace the
+function-involution/orbit wording in ex:wilson by the explicit twofold-inverse
+singleton/pair partition before C3actions. Both complete solutions actually
+reread/reconstructed twice and reaccepted with fresh hashes, preserving their
+full domains/targets/grades; exact reconstructions in GLOBAL-CH02. This follow-up
+shows why named/exercise mathematical closure was not whole conceptual closure.
+The49exposition-fragment decisions remain byte-fresh; their global first-use
+claims do not automatically certify later or nested exercise terminology.

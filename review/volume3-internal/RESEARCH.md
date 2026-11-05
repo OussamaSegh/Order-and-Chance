@@ -216,3 +216,25 @@ Remove unsupported author-intention/total-coverage/first-great-book praise.
 These checks concern metadata and bounded content descriptions, not certification
 of external book proofs or new research from abstracts. All other chapters'
 history/bibliography fragments remain subject to their own global pass.
+
+## H-C02 — actual bibliography text and access,5November2026
+
+Rotman actual publisher https://link.springer.com/book/10.1007/978-1-4612-4176-8
+and actual frontmatter PDF https://link.springer.com/content/pdf/bfm:978-1-4612-4176-8/1,
+TOCxi–xii, show Ch2isomorphism,4smallorders,7extensions/semidirect. Add missingCh4.
+Copyright/edition1995 and hardcoverrelease4November1994 are distinct metadata.
+Conrad actualauthorindex https://kconrad.math.uconn.edu/blurbs/ links actual
+https://kconrad.math.uconn.edu/blurbs/grouptheory/groupsp3.pdf : fullsection2pp1–2
+read, after our own original order8classification reconstruction. Actual title
+is Groups of orderp³; Groups of order8 is its sectiontitle. Correct bibliography
+to actuallocatable note. Also actual https://kconrad.math.uconn.edu/blurbs/grouptheory/semidirect-product.pdf
+introduction/direct-productrecognitionproofpp1–2read, notall29pages claimed.
+Joyner actual publisher https://press.jhu.edu/books/title/9554/adventures-group-theory
+metadata/entireTOCread: author/secondedition29December2008, illegal/legalcube
+chapters9/11. No full externalcubemoveproof audit claimed.
+Dummit/Foote actual Footeauthorentry and Wiley-VCH actualTOC
+https://www.wiley-vch.de/en/areas-interest/mathematics-statistics/mathematics-16ma/algebra-16ma1/abstract-algebra-978-0-471-43334-7
+supportquotientsCh3/directsemidirectCh5. Authorlinkedweb_pref.pdf502, notread.
+Artin exactsameeditionmetadata/actualTOC fromC1 supports boundedCh2description;
+no exactfirstreleaseday/copyrightpageseen claim. No researchproof certification
+fromabstracts/snippets; furtherreading supplies no essential book premise.

@@ -32,6 +32,27 @@ def earlier_occurrences(data):
     return rows
 
 
+def reconcile_earlier(data=None):
+    """Preserve identical manual contexts; new/changed mentions stay pending."""
+    data = inventory() if data is None else data
+    dest = HERE / 'earlier-references.json'
+    document = json.loads(dest.read_text())
+    old = {r['id']: r for r in document['entries']}
+    rows = []
+    for fresh in earlier_occurrences(data):
+        prior = old.pop(fresh['id'], None)
+        if prior and prior['context_sha256'] == fresh['context_sha256']:
+            rows.append({**prior, **fresh})
+        else:
+            rows.append({**fresh, 'role': 'unclassified',
+                         'actual_earlier_proof_sites': '',
+                         'reconstruction_and_availability': '', 'status': 'pending'})
+    if any(r['status'] != 'pending' for r in old.values()):
+        raise ValueError('Do not silently remove/rekey accepted earlier-source evidence')
+    document['entries'] = rows
+    dest.write_text(json.dumps(document, ensure_ascii=False, indent=2)+'\n')
+
+
 def check(data=None, require_complete=False, documents=None):
     data = inventory() if data is None else data
     documents = {} if documents is None else documents
@@ -83,5 +104,8 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--require-complete', action='store_true')
+    parser.add_argument('--reconcile-earlier', action='store_true')
     args = parser.parse_args()
+    if args.reconcile_earlier:
+        reconcile_earlier()
     print(json.dumps(check(require_complete=args.require_complete), sort_keys=True))

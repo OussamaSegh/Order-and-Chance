@@ -3,9 +3,9 @@
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned mathematical route; the final keyed global
-voice/cadence/adversarial-first-reader pass is still in progress.31 front/end/
-metadata fragments have current manual closure at V3-018;788 other exposition
-fragments, including unnamed reasoning, history and conceptual order, remain.
+voice/cadence/adversarial-first-reader pass is still in progress.124 fragments have current manual closure at V3-020 (31front/end,49C1,44C2);
+697 other exposition fragments, including unnamed reasoning, history and
+conceptual order, remain.
 A route map alone does not approve their prose or dependencies.
 
 | Source | Incoming question | Earned answer | Reason for the next source |
