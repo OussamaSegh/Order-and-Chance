@@ -3,13 +3,13 @@
 Internal AI review, not a human or spoken read-aloud session. Main route and all
 four appendix sources have been read completely during their A/B reviews. This
 map records the actual earned route. The final keyed global written cadence and
-adversarial first-reader pass has closure through all twelve main chapters,
-front/end matter and Appendices A/B/C at V3-035:837 global records.16 D rows and
-all116 whole-volume conceptual later-use chains remain pending. C moves from
-clubs/incidence vectors to separating polynomials, finite grids and the concrete
-SET question; the complete slice proof counts low-degree monomials. Its ending
-asks how to construct orthogonal sign rows, the actual question of the following
-Hadamard appendix. Every optional route remains in scope.
+adversarial first-reader pass has decisions through all twelve main chapters,
+front/end matter and all four Appendices A-D at V3-036:853 global records.
+Older explicit-domain/claim fields and all119 whole-volume conceptual later-use
+closures remain pending. D asks for orthogonal sign rows, earns positive-order
+necessity/Sylvester/both Paley branches, and offers two complete concrete exercises.
+Its research outlook is explicitly dated/attributed, not an essential premise.
+Every optional route remains in scope; final production review is still pending.
 A map alone does not approve prose or dependencies; see the keyed global reports.
 
 | Source | Incoming question | Earned answer | Reason for the next source |

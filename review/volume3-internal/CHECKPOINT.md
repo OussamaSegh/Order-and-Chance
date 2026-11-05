@@ -1,132 +1,112 @@
-# Restart checkpoint — V3-035
+# Restart checkpoint — V3-036
 
 Continue the entire authorized solo internal AI review through compactions.
-Do not final-end at this checkpoint or ask whether to proceed. No subagents,
-another-reviewer request,human/formal/spoken review claim or Amazon account action.
+Do not final-end at a checkpoint or ask whether to proceed. No subagents,
+another-reviewer request,human/spoken/formal review claim or Amazon account action.
 PR104:https://github.com/OussamaSegh/Order-and-Chance/pull/104
 Branch editorial/volume3-complete-internal-review-20261104; parent
-3b4e08e3b5b9fc0953853d012a42b370a9132895; read actual HEAD after commit.
+7cd5892f854e6750c95d7996018f93dde4da4257; read actual HEAD after commit.
 Activate /workspace/volume3-tools/activate.sh. Concise updates about once/minute.
-User latest asked duration: several hours estimate, no reliable finish time yet.
-All worktree changes currently belong to this review; preserve unrelated changes.
+User latest asks duration: several hours realistic, no reliable finish time.
+All current worktree changes are this review's own; preserve unrelated changes.
 
-Originalbaseline/actualPR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
-Currentfetchedmain d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 integratedaf1c3fe4.
-Full actual updated instructions/workflow read. Reading7x10; printall513x738pt,
-top/bottom/mirroredoutside9ptbleed,no bindingbleed; trimsizeGSthenopaqueproven
-solidbackground vectorunderlay. Bleed(PDFonly)metadata/schema9. Main-only library
-cache saves; never cancel main/unrelated work, no PR reusable-cache guarantee.
+OriginalPR103merge7f87c2ab00fdb0c7791dc833423b98bef0870f01. Lastfreshmain
+ d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 integratedaf1c3fe4. Actual updated
+instructions/workflow read. Reading7x10; printall513x738pt,topbottom/outside9ptbleed,
+no bindingbleed; trimsizeGSthenopaqueprovenbackgroundvectorunderlay; BleedPDFonly.
+Schema9librarycaches savedonlymain; no reusablePRcache guarantee. Never cancel
+main publication/unrelated work. Current source not finalfrozen.
 
-## V3-035: complete Appendix C global pass and matched new artifacts
+## V3-036: complete Hadamard appendix global pass
 
-The entire current Linear Algebra Method appendix was read:19 named proofs,
-10 complete exercise/hint/idea/answer triples, all unnamed arguments, both whole
-figure sources and seven bibliography groups/25 works. GLOBAL-APPC.md records65
-explicit manual domain/claim/A/B decisions. Original APPC-PROMPT-FIRST chronology
-is retained; this is an informed written cadence/adversarial first-reader pass,
-not a new blind solve, human refereeing, spoken session or formal verification.
-All19 full named/proof pairs and10 full triples are individually unchanged from
-3b4e08e3 after this reread; V3-035-retained-identities.json. No count/hash or old
-rewrite status supplies mathematical approval. All local exact C probes pass.
+Read the entire actual revised574-line Appendix D, all six full named proofs,
+both complete prompt/hint/idea/answer triples, every matrix and the research
+footnote. GLOBAL-APPD.md has16 explicit manual domain/claim/A/B decisions.
+Original APPD-PROMPT-FIRST exposure chronology retained; current informed
+written cadence/adversarial first-reader pass is not blind/human/spoken review
+or formal verification. All six entire named/proof pairs and two full triples
+remain individually source-identical to7cd5892f after rereading; V3-036-retained-
+identities.json. No approval inherited from counts or old rewritten statuses.
 
-Actual V1 finite-product98-106,expectation/linearity177-190 and full Ramsey
-solution812-821 were read. The C existence paragraph reconstructs the same finite
-argument; overlapping clique indicators need not be independent. The exact
-printed Chapter10 pointer is valid. All27 C reference occurrences now have manual
-premise/forward-application/illustration/bibliographic classifications; the last
-literal earlier-volume context is closed. Both previously pending C first-use
-chains now record degrees/grids/polynomial counting and finite function/slice
-rank, with actual local/earlier proof locations. All116 first chains reviewed;
-whole-book later-use closure remains pending for all116.
+Found a genuine sign error in the transition: 'same bordered matrix becomes
+symmetric' at q1mod4 was false with the preceding -j lower-left border. Both
+named theorems/proofs already have correct respective borders. The prose now
+explicitly replaces -j by+j before calling S symmetric and explaining doubled
+cross-term cancellation. Fresh full A/B in its global row; exactq5 counterprobe
+shows oldS not symmetric and newS symmetric/Gram5I. New scoped guard fails
+actual7cd source and passes corrected source. No theorem weakened/replaced.
 
-Actual published Ellenberg-Gijswijt339-342 has Proposition2 for the matrix-rank
-monomial argument and Theorem4 for the finite-field bound. The old itsLemma1
-pointer was wrong (it references CLP Lemma1); corrected and distinguished the
-matrix method from our symmetric3-variable proof. New scoped locator regression
-fails actual3b4e source and passes corrected source; it is a source-reference
-regression, not a proof of research mathematics. KSS title/rate and Babai1992
-edition corrections from V3-034 remain. Exact25-work/access decisions and primary
-file hashes are in H-APPC RESEARCH.md/V3-035-research-files.json.
+Reopened actual full C9 cyclic-units133-187 and field existence/uniqueness258-303
+proofs. All9 D label occurrences now have explicit prerequisite/forward-example
+classifications; no future theorem is an essential premise. Three explicit new
+first-use chains cover Hadamard matrices,Kronecker products and real quadratic-
+character/Jacobsthal matrices. Earlier B teaches its special blocks/family before
+using them; D generalizes with full local index/sum proofs. Now119 first-use
+chains reviewed,all119 whole-book later-use closures still pending.
 
-Actual Blokhuis printed26 Theorem4.1.1 and printed49 Kelly account were opened.
-Kelly's planar isosceles maximum6/unique centred pentagon DOES imply the two-
-distance maximum5 (the centred pentagon has three distances). The earlier exact-
-role uncertainty is resolved that far; the old attribution is not called false
-or unrelated. Restore a qualified related-classification reference via Blokhuis,
-with227-229 page range; original Kelly paper remains inaccessible. The new local
-complete5 proof remains, so no external classification is a premise.
+All14 odd prime-power exact field cases and actual Sylvester/Paley source matrices
+pass. A conic-count derivation independently checks correlation-1; tensor
+anticommutation independently checks PaleyII. These support complete general
+proofs, not finite-computation replacements. Positive orders,n1/2,empty-string
+order1,odd-field/real-sign arithmetic,nonprime9/25/27/49,all signs/dimensions
+and border orientations are explicit. No analysis or positive Gauss-sign premise.
 
-Actual Axler slide3 corroborates the Artin epigraph; original Artin page was not
-inspected. JoySET's2016 catalog/release is distinguished from2017 copyright in
-the publisher-deposited book record; use2017 bibliography convention, remove
-unverified EG-content annotation. Actual PlayMonster account supports only the
-bounded1974/genetics/filecard origin; conflicting1990/1991 commercial-release
-accounts are not inserted as settled history. Actual original EGZ/deBruijn first
-pages and Dvir whole Section3 were read. Actual open EuropePMC Nature main Cap
-sets section supports the bounded author-reported computer-assisted construction,
-not a present-best bound or independent certification of its code/supplement.
-Warning's publisher metadata mistakenly parses 'Herrn Chevalley' as coauthor;
-that metadata error is not copied. No external full book/new proof approved
-from an abstract, title, snippet or download success.
+Actual Paley1933 publisher body/references and exact Sylvester1867 publisher-
+deposited metadata read; full originals inaccessible,not claimed read. Actual
+Egan19Oct2026v1 introduction/Section3/table and delivered PDF relevant text read;
+no independent check of large research matrices/proof/code. Fresh3Novv2 abstract
+says85 open orders up to10000 while deliveredHTML/PDF says95; deliveredv1/v2
+extracted text differs only version stamp. File hashes/access/version limit in
+H-APPD-V036 RESEARCH.md/V3-036-research-files.json. Book asserts neither85/95 nor
+smallest-current-open order; its explicitv1 dated/attributed below2000 report
+matches all delivered bodies. Retain that bounded outlook; no new research
+certification or silent external premise. General conjecture remains outlook.
 
-Final current-source **516 tests pass,zero skips,60.043s**,
-/tmp/volume3-v035-tests.log. Source/inventory/register/global-ledger freshness,
-all C exact probes and whitespace checks pass. No assertion weakened. Source and
-mathematical registers were frozen during the full suite; subsequent writes are
-descriptive checkpoint/research/artifact reports.
+Final current-source **517 tests pass,zero skips,58.050s**,
+/tmp/volume3-v036-tests.log. Required source/inventory/freshness/global-ledger
+checks,D exact probes and whitespace pass. Source/registers frozen during full
+suite; subsequent report writes are descriptive. No assertion weakened.
 
-**1158 accepted=158 named+163 full triples+837 global;16 global pending D.**
-384/393 label occurrences and88/88 literal earlier contexts accepted. All116
-first-use chains reviewed,116 whole-volume later-use chains pending.277 older
-accepted global rows still need explicit domain/claim fields and a strict gate.
-Inventory stays1658items/601prose/118bibliographygroups/22examples/22figures/
-9tabular/22sources. Original155 named plus three newly earned local results.
+**1174 accepted=158 named+163 full triples+853 global;no pending item rows.**
+All393/393 label occurrences and88/88 literal earlier contexts accepted.
+Inventory unchanged1658items/601prose/118bibliographygroups/22examples/22figures/
+9tabular/22sources. This is not final internal completion:277 older global rows
+still lack explicit domain/claim fields,all119 whole-volume concept closures
+remain pending,then final freeze/all-page/digital/artifact/CI gates are needed.
 
-Exact immutable all-format build **3b4e08e3b5b9fc0953853d012a42b370a9132895**
-completed:518reading/517print,KDP-normalized518,spine1.2157in,matchedwrap
-15.4657x10.25in. Actual EPUBCheck5.3.0 zero errors/warnings; actual outputchecker
-passes.20903 math uses/9531 unique,22 full-width1800px PNG plates. Public85 files
-and6 actual report identities are in preliminary-3b4e08e3-artifacts.json. This
-snapshot PRECEDES current C bibliography changes. The local formula cache was
-copied only after comparing actual60 renderer/font/common file bytes; not a
-claim of reusable PR caches. Print bleed policy from integratedPR105 preserved.
+Latest complete all-format snapshot remains3b4e08e3 (before C bibliography and
+current D prose):518reading/517print,KDP518,spine1.2157in,matchedwrap15.4657x10.25.
+Actual EPUBCheckzero/outputPASS;85 public files/six reports and8actual pages/
+16color+gray2xrenders recorded in its manifests. No new pixel approval from this
+source batch; new final pagination must be reviewed. Exact3b4e/run1721 terminal
+SUCCESS already inspected and in PR.7cd/currentnewhead CI must be checked by
+exact head; librarycaches saveonlymain,no reusablePRcache guarantee. Never cancel
+main/unrelated work; final terminal advancement belongs in PR,no CI-only commits.
+Freshmainlastfetchd97c0bf4 already integratedaf1c3fe4; originalPR103merge7f87c2ab.
 
-Eight actual physical pages/sixteen2xcolor+gray renders were opened:reading372,
-479-481;print371,478-480. Complete new planar proof/transition readable; corrected
-C12 normal-versus-centre paragraph explicitly reopened and legible. Records in
-preliminary-3b4e08e3-visual.json name actual files/hashes. Following classification
-proof page and all-book/facing/digital behavior remain unapproved by this sample.
-Actual CI **3b4e/run1721/42018844333 terminal SUCCESS**, all15books/list/debs/site
-passed,publishskipped; actual V3 job/step details inspected and PR updated. New
-V3-035 head needs its own CI. No commit solely to record previous CI; final
-terminal advancement belongs in the PR. Fresh main remainsd97c0bf4, integrated
-already. Librarycaches saveonlymain; no main/unrelated runs cancelled.
-
-Continue entire D global pass,277 explicit fields/strict gate,116 conceptual
-later-use closures and any affected rereview. Then final source freeze/build,
+Continue older explicit fields and strictgate,all119 manual conceptual closures
+and affected source rereview,then final source freeze/immutable all-format build,
 actual every reading/print page/gray/facings/all figures/tables/math/openings/
-appendices/final matter; actual narrow/wide EPUB/reader formula shape/baseline/
-aspect/loading/clipping/overflow/theme/menu/nav/disclosures/all local links and
-163 triple destinations; final actual CI artifact comparison. Only then exact
-reviewed-head/clean/base/terminal-CI/ready/head-matched merge and GitHub/main
-verification. Native Kindle/KDPaccount/ISBNownership/physical proof remain
-unavailable publication follow-ups; no Amazon action or invented ISBN.
+appendices/final matter; actual narrow/wide EPUB/reader formula baseline/shape/
+aspect/loading/overflow/clipping/theme/menu/nav/disclosures/all local links and
+163triple destinations; actual final CI artifact comparison. Only then exact
+reviewedhead/cleanworktree/currentbase/no unresolved findings/terminalCI/ready/
+head-matched merge commit and GitHub/main verification. Native Kindle/KDPaccount/
+ISBNownership/physical proof remain unavailable publication follow-ups,not a
+request for another reviewer. No invented ISBN or Amazon action.
 
-Next actual source D paley.tex572lines,16global/9labeloccurrences pending;
-6named+2fulltriples already core A/B but reread entire actual text/answers/history.
-2026 Egan etal arXiv2610.27175v1 introduction/construction table previously read,
-not full research proof/matrices; exact current source dated/attributed author
-report. Original refs and all variants signs/dimensions/congruences in scope.
-After D,277 accepted global rows with absent explicitdomain/claim are C6:63,
-C7:50,C8:50,C9:60,C10:53,C1:1. Manually fill/reconstruct, enforce CORE-like global
-fields; no automatic migration approval. All116concepts later-use pending.
-C11 divides solution 'integer algebra' and C12 'real algebra' may need first-use
-clarification; B later matrix-algebra definition cannot retroactively define it.
-Source edits need fresh entire affected proof/triple/global decisions.
+NEXT:277 missing explicitdomain/claim global rows exactly C1 reminder.1(654-671),
+C6:63,C7:50,C8:50,C9:60,C10:53. Existing A/B remain but manually re-evaluate/fill
+per stableID,then strict global evidence gate+regression. Do not auto-approve
+from data migration. All119concept later-use closures pending; three new Dchains
+are C-HADAMARD,C-KRONECKER-PRODUCT,C-QUADRATIC-CHARACTER-MATRIX.
+Check C11 divides solution 'integer algebra'/C12 outlook 'real algebra' first-use;
+B's later matrix-algebra definition cannot retroactively define them. Any source
+change needs complete fresh affected triple/proof/global decisions and checks.
 
-Current scratch build/workspace disk~586MB free;19 older owned~300MB snapshots.
-Prune only demonstrably redundant owned builds; preserve actual manifests/manual
-visual files, latest3b4e, useful3bffe/a1/a0/af1 and actualCIa0comparison files.
 No actual narrow/wide browser behavior review yet; Chromium/Playwright available.
-Final all-page review after final source freeze; preliminary identity alone does
-not approve pixels. Actual a0CIcomparison in V3-030-CI-COMPARISON remains scoped.
+Final all-page review AFTERfinal source freeze,not a hash/thumbnail substitute.
+Workspace~580MB free; older owned~300MB snapshotdirs can be pruned only if
+redundant, preserving actual manifests/manual visual evidence/actualCIcomparison,
+latest3b4e and useful3bffe/a1/a0/af1 formula caches.3b4e is newest matched build.
+Actuala0CIcomparison data in V3-030-CI-COMPARISON remains scoped,not final head.

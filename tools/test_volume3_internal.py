@@ -72,6 +72,9 @@ class Volume3InternalReview(unittest.TestCase):
     def test_paley_prime_and_nonprime_power_constructions(self):
         check_appendix_d.check_prime_power_character_and_paley()
 
+    def test_paley_border_transition(self):
+        check_appendix_d.check_paley_border_transition()
+
     def test_combinatorial_incidence_and_polynomial_coefficients(self):
         check_appendix_c.check_incidence_families_and_fano()
         check_appendix_c.check_nullstellensatz_coefficients()

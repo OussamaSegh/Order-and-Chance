@@ -124,6 +124,26 @@ def check_prime_power_character_and_paley():
         assert len(H)%4==0
 
 
+def check_paley_border_transition(source=None):
+    """Check the actual sign change required by the q=1 mod4 branch."""
+    q = 5
+    squares = {x*x % q for x in range(1, q)}
+    chi = lambda x: 0 if x % q == 0 else 1 if x % q in squares else -1
+    matrix = [[chi(x-y) for y in range(q)] for x in range(q)]
+    old_border = [[0]+[1]*q]+[[-1]+row for row in matrix]
+    new_border = [[0]+[1]*q]+[[1]+row for row in matrix]
+    transpose = lambda a: [list(row) for row in zip(*a)]
+    assert matrix == transpose(matrix)
+    assert old_border != transpose(old_border)
+    assert new_border == transpose(new_border)
+    assert gram(new_border) == [[q*int(i == j) for j in range(q+1)] for i in range(q+1)]
+    source = SOURCE.read_text() if source is None else source
+    transition = source.split('For $q=3$, this construction', 1)[1].split(r'\begin{theorem}', 1)[0]
+    assert 'the same bordered matrix becomes symmetric' not in transition
+    assert r'Replace the lower-left border $-\mathbf j$ by' in transition
+    assert r'$+\mathbf j$ to make the bordered matrix $S$ symmetric' in transition
+
+
 def check_local_contract(source=None):
     source=SOURCE.read_text() if source is None else source
     assert 'For a positive integer $n$' in source
@@ -138,5 +158,6 @@ def check_local_contract(source=None):
 if __name__=='__main__':
     check_sylvester_and_source_examples()
     check_prime_power_character_and_paley()
+    check_paley_border_transition()
     check_local_contract()
     print('Exact Sylvester/Paley examples and14 odd prime-power fields pass; no approval generated.')

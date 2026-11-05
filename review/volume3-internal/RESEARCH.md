@@ -1335,3 +1335,56 @@ query results are /tmp/volume3-v034-crossref.json; twelve matches were read and
 the wrong deBruijn result rejected. Search results were leads, never original-
 text evidence. Failed web PDF fetches were followed by ordinary requests to the
 same public author URLs where successful, with actual content checks/hashes.
+
+## H-APPD-V036 — dated Hadamard outlook and classical attributions
+
+Access5November2026; solo internal AI review. Actual full D source, all six local
+proofs/two complete solutions and every displayed matrix read. Actual current
+C9 cyclic-units133–187 and field existence/uniqueness258–303 proofs reread.
+No field group result is inferred from a citation/title. All needed mathematics
+is proved locally or in the actual earlier book route; no new research premise.
+
+Actual Wiley body https://onlinelibrary.wiley.com/doi/10.1002/sapm1933121311
+confirms Paley,*On Orthogonal Matrices*,April1933,12,311–320. Its actual reference6
+identifies Sylvester's1867 inverse-orthogonal-matrices paper. Exact publisher-
+deposited Crossref10.1080/14786446708639914 gives J.J.Sylvester,December1867,
+34(232),461–475; raw body saved /tmp/volume3-v036-sylvester-crossref.json.
+Taylor full original returned403; original Paley PDF also inaccessible. Actual
+Egan survey classical theorem2/refs81,96 corroborate both general Paley branches
+and Sylvester attribution; this is attribution/metadata review, not reading or
+certifying both complete original research proofs. Online2009 is not1867.
+
+Actual https://arxiv.org/html/2610.27175v1 introduction and Section3/table1 read,
+and original https://arxiv.org/pdf/2610.27175v1 downloaded. Relevant actual PDF
+text read, including the twelve orders/table and structural discussion. The
+19October2026 report names RonanEgan,IliasS.Kotsireas,StephenLondon,PádraigÓCatháin;
+it attributes the August announcement to Alpöge/Voinov/Reynolds-Haertle and says
+the authors verified the matrices by exact HH^T computations. It reports all
+positive multiples4 below2000 covered, including668. Our book retains that
+explicitly dated, attributed report, never calls it this reviewer's independent
+verification or a certified new proof. Its local constructions stand alone.
+No author's large matrix file, supplementary code or new research proof audited.
+
+Fresh https://arxiv.org/abs/2610.27175 identifies a3Novemberv2 and says85 orders
+up to10000 remain, whereas deliveredv2 HTML/PDF still say95. Downloadedv1/v2
+PDF bytes differ (hashes below); their entire extracted text differs **only** in
+the version/date stamp. This establishes delivered-text identity apart from the
+stamp, not pixel identity or proof approval. It does not resolve the external
+85/95 count discrepancy. The book asserts neither count nor a smallest-current-
+open order, and all accessed bodies agree on its dated below2000 report. Keep
+v1/date attribution; no drift of an essential premise or unsupported broader
+current-record claim is introduced. The general conjecture is still described
+as conjectural in both delivered introductions. The research-source discrepancy
+is documented as an access/version limit outside the book's bounded claim.
+
+Files (downloads do not imply full19-page review):
+- v1,609117bytes,SHA2565fe12e9087e284cf3d0f9551e0ae3dd0566d0d60300eb0b1b0fdff185a295377.
+- v2,609237bytes,SHA2564b575c3055fcd8c2c2419d30f669b2c55d749351ecbbba50da8d6dedc5072322.
+
+The global pass found a local prose error independently of these sources:
+' same bordered matrix becomes symmetric' ignored the required -j to+j
+lower-left-border change at q1mod4. Both actual local named proofs already use
+the correct sign. Corrected the transition explicitly; full A/B in GLOBAL-APPD.
+Exactq5 matrices demonstrate the original border is not symmetric and the new
+one is symmetric with Gram5I. Focused guard fails actual7cd5892f source and passes
+corrected source; it supports the general entry/block proof, not formal verification.
