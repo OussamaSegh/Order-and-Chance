@@ -183,3 +183,13 @@ reader compute. Incoming question: which basis is fixed by translations?
 Answer: characters, then finite distance-count sums of squares. Outgoing
 question: can linear algebra count objects without a group action? No human
 or spoken read-aloud session is claimed.
+
+## V3-032: fresh boundary findings supersede earlier completeness claims
+
+The complete current reread found gaps in the earlier zero-length Walsh and
+empty-code coverage. V3-032-BOUNDARIES.md and V3-032-fresh-core.json give fresh
+full A/B checks of all six changed items; the other seventeen full pairs/triples
+are individually SHA-identical. The intended statements remain intact. Earlier
+V3-015 text above describes that historical checkpoint, not a claim that its
+boundary checks prevented all subsequent findings. All sixty-six global B rows,
+history and current output inspection remain pending at this boundary batch.

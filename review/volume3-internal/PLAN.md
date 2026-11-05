@@ -935,3 +935,47 @@ exercisehintsolutiondestination/navigation/theme/menu/disclosures, finalCIartifa
 comparison and exactreviewedhead clean/base/terminalCI/ready/headmatchedmerge.
 Kindle/KDPaccount/ISBNownership/physicalproof remain unavailable publicationfollowups;
 noV3ISBNinvented/borrowed, noAmazonaction, nootherreviewer request.
+
+## V3-032: repair and recheck Appendix B boundaries
+
+The entire current Appendix B and all eleven full named proofs/twelve complete
+exercise triples were reread. Two genuine gaps survived the earlier acceptance:
+the n=0 Walsh recursion used H_-1, and the last code solution averaged over a
+possibly empty code. Both are now handled explicitly, preserving the intended
+algorithms and bounds. The affine construction also earns sixteen distinct words.
+Circulant basis wording, invertible-only inverse closure, the prime-field prompt,
+a permutation convention and the positive Ramsey recurrence domain are clarified.
+V3-032-BOUNDARIES.md distinguishes actual defects from already valid clauses.
+
+Six changed complete items have fresh explicit A/B records in the core registers
+and V3-032-fresh-core.json. Seventeen unchanged complete pairs/triples were
+individually SHA-matched after the full reread. Original first-solve chronology
+is retained; the current pass is informed, not blind. Corrected a reviewer-record
+residue typo while retaining the already correct reader-facing answer.
+
+Both focused guards fail separately on the actual parent source and pass on the
+corrected source. Final current-source **514 tests pass, zero skips, 57.469s**,
+/tmp/volume3-v032-tests.log. Required source, inventory, register freshness, global
+ledger and whitespace gates pass; all Appendix B probes pass. These support the
+written proofs, not formal verification. No assertion was weakened.
+
+Coverage remains **1026 accepted=157 named+163 full triples+706 global**, with
+**147 global rows pending B66/C65/D16**. Dependencies328/392 and literal earlier
+contexts85/88;107 first chains reviewed, all110 whole-volume conceptual chains
+pending later-use closure.277 older accepted global rows need explicit domain/
+claim fields and a stricter gate. Inventory1656 items/22 figures/22 examples/9 tables.
+
+No new immutable artifact or pixel approval is claimed. Latest complete matched
+artifacts remain3bffe82f, before A/C12 clarifications and this B batch. Exact978
+CI run1717/42006183054 has a successful V3 build/bleed/output/upload job; its
+whole run was still active when inspected. The new head needs terminal CI.
+Exacta1 run1715 was terminal successful. No main/unrelated run was cancelled;
+library caches save only on main.
+
+Continue all66 B global/history/concept/dependency/figure decisions, then C/D,
+older explicit fields and whole-volume concepts. Final source freeze, every
+actual page/gray/facing review, narrow/wide reader/EPUB behavior and all local
+links/triple destinations, matched local/CI artifacts and final-head merge gates
+remain. Kindle/KDP/ISBN ownership/physical proof are unavailable publication
+follow-ups. This is continued work, not final delivery.
+

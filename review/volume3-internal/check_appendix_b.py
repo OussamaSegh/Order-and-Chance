@@ -196,6 +196,41 @@ def check_nonabelian_group_determinant():
         assert det(regular) == sum(x.values())*sum(x[g]*sign(g) for g in group)*det(block)**2
 
 
+def check_walsh_zero_length_contract(source=None):
+    """Scope the recursion hypothesis to its actual prompt and full answer."""
+    source = SOURCE.read_text() if source is None else source
+    prompt = source.split(r'\label{linear:ex:walsh}', 1)[1].split(r'\end{exercise}', 1)[0]
+    assert r'n\ge1' in prompt, 'Walsh recursion needs n>=1; H_-1 is undefined at n=0'
+    assert r'H_0=[1]' in prompt, 'The zero-length transform needs its scalar base case'
+    answer = source.split(r'\begin{solution}{linear:ex:walsh}', 1)[1].split(r'\end{solution}', 1)[0]
+    first_split = answer.index(r'\mathbb F_2^{n-1}')
+    assert 'For $n=0$' in answer[:first_split] and r'n\ge1' in answer[:first_split]
+
+    # Independent dense-character evaluation checks the recursive algorithm,
+    # including the formerly unqualified zero-bit case and exact operation cost.
+    def transform(values):
+        if len(values) == 1:
+            return values, 0
+        half = len(values)//2
+        u, a = transform(values[:half]); v, b = transform(values[half:])
+        return [x+y for x, y in zip(u, v)]+[x-y for x, y in zip(u, v)], a+b+len(values)
+    for n in range(7):
+        values = list(range(-3, 2**n-3))
+        actual, cost = transform(values)
+        expected = [sum((-1)**((j & k).bit_count())*values[k] for k in range(2**n))
+                    for j in range(2**n)]
+        assert actual == expected and cost == n*2**n
+
+
+def check_lp_empty_code_contract(source=None):
+    """An empty code must exit before its distance distribution is formed."""
+    source = SOURCE.read_text() if source is None else source
+    answer = source.split(r'\begin{solution}{linear:ex:lpthree}', 1)[1].split(r'\end{solution}', 1)[0]
+    before_distribution = answer.split('Write $a_i$', 1)[0]
+    assert re.search(r'empty code.*?16', before_distribution, re.S), 'Handle the empty code before averaging'
+    assert 'nonempty' in before_distribution, 'A distance distribution divides by the code size'
+
+
 def check_local_contract(source=None):
     source = SOURCE.read_text() if source is None else source
     assert 'not all equal' in source
@@ -206,6 +241,8 @@ def check_local_contract(source=None):
     assert 'For $n=0$' in source and 'If $n\\ge1$' in source
     assert 'generic determinant' in source
     assert 'found in Volume~8' not in source
+    check_walsh_zero_length_contract(source)
+    check_lp_empty_code_contract(source)
 
 
 if __name__ == '__main__':
