@@ -2724,3 +2724,43 @@ The mathematical snapshot remains7fb26f7ef266e56ec87b837f9aad10b5dc9a746ef5e67d0
 Source review is complete internally; production/final-head acceptance is open.
 Continue the authorized full review; keep draft. Library caches still save only
 on main, and this successful PR build does not establish a reusable PR cache.
+
+
+## V3-045 — Chapter 2–4 actual pages and bounded CI differences
+
+Actual PDF coverage advanced from110 to260of1035 physical pages:217current
+actual openings plus43exact priorpixelretentions,64print facings,775pending.
+Reading1–130 and print1–129 are covered, plus print446. Whole2× original pages
+were opened in color and grayscale. Four-page canvases place original2×pages
+on a2×2canvas without resizing; they are not thumbnail approval. Each page has
+a manual content/layout observation and exact opened-image hashes. Full Chapter3
+necklace figure and Chapter4 puzzle/conjugacy bars/captions were inspected in
+both editions; the long puzzle converse, simplicity proof, all solutions and
+bibliographies fit. No new source/layout defect identified in this batch.
+
+Actual e531CI EPUBs have9510members each;18changed asset names are9PNGpairs,
+with zero differing common PNG bytes. The20909mathuses include141changed
+mathattributes limited to verified numeric CSS differences below0.00011em and
+those asset names. All18different text XML members compare equal only under
+explicit bounded UUID/buildtime,mathID/manifestorder,verifiedrounding and exact
+samefootnote subtree section/aside normalization. All18current glyph files are
+byte-identical to corresponding actually opened prior comparison files; only
+glyph shape evidence transfers, not current paragraph/baseline approval. Actual
+CI EPUBCheck5.3.0 reports zero errors/warnings. Detailed classification and
+identity hashes are in V3-045-ci-epub-classification.json.
+
+Actually clicked the Paley footnote reference and return backlink in local/CI
+reader and EPUB at390/1280:8sequences pass. Four actual local note viewports
+were opened; corresponding actual CI viewport pixels are identical. Citation,
+diacritics,rule,wrapping,reader navigation and adjacent EPUB Paley matrices fit.
+A probe initially flagged a reference inline box at-0.1875CSSpx; actual reference
+ink was visible. A documented1px fractional-leading tolerance corrects that
+measurement assumption; no source/CSS/asset change or skipped destination.
+No nativeKindle behavior is claimed. Full details/screens:V3-045-footnote-behavior.json.
+
+No manuscript/rendering-source edits: frozen e531matched artifacts and guarded
+mathematical snapshot remain unchanged. Prior522tests/zero skips and complete
+source/ledger gates remain scoped toV044; strict gates rerun for this batch.
+Reviewhead fb761CI run1731/42058360319 was still inprogress when queried; do not
+substitute producinge531terminalsuccess for a laterhead. Production remains open,
+PR stays draft, and review continues through final actual acceptance/merge.

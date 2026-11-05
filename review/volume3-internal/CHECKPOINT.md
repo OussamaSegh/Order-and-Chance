@@ -1,4 +1,4 @@
-# Restart checkpoint — V3-044
+# Restart checkpoint — V3-045
 
 Continue the entire authorized solo internal AI review through final actual
 acceptance and head-matched merge. Do not stop at this checkpoint. No agents,
@@ -11,7 +11,7 @@ rough estimate4–8morehours was given for remaining production work.
 Repository /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104; draft PR104
 https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Parent e531ae061fed09bd689d04665374544e679820a7; read actual HEAD after this commit.
+Parent fb761f4ef3b37b268a382c03d0507b6d9fb99ab4; read actual HEAD after this commit.
 Original correct PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
 Main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 was freshly fetched and integrated
 af1c3fe4; fetch again before final merge. Preserve unrelated user changes.
@@ -44,33 +44,25 @@ Actual EPUBCheck zero; actual output checker passes. Reading7×10;print513×738p
 mirrored outside/top/bottom bleed, no binding bleed; preserve approved cover family,
 art, typography, fixed7TeXpt spine. Canonical author ISBN in copyright/wrap/listing,
 actual matched wrap4× independently decoded9798167514683. No ownership/KDP/physical
-proof claim. candidate-e531ae06-artifacts.json has85 public identities/15reports.
+proof claim. candidate-e531ae06-artifacts.json has85 public identities/18reports.
 Full build log /tmp/volume3-v043-immutable-build.log, testsV044522/71.751s. All
 running build/test/browser sessions from V044 completed; scratch CI comparison
 session48325 also completed its report. No source changes since e531, only review
 helpers/evidence; future artifact-source identity must still be proven.
 
-Actual page coverage110/1035: reading1–66,print1–43,plusprint446. 67actual current
-openings and43 exact prior RGB+gray2× transfers. 21 actual-or-identical print
-facings. 925pending. Authoritative candidate-e531ae06-visual.json. V3-044-pixel-
-retention.json proves only already-covered prior pages,never approves unopened
-ones. Original single/fullspread images remain under
-/workspace/volume3-final-visual-{d47cd540,e531ae06}. New images are whole2× pages,
-not thumbnails:reading spread2016×1440;print2052×1476. Nextprint44–65 (all generated,
-UNOPENED), nextreading67. Each actual page must be opened in color and grayscale
-before a manual observation/status. Print446 opened out of order solely to inspect
-actual CI difference;its facing/proof-page447 are still pending.
-Figures actually seen:fig:symmetries R19/P18 via prior actualidentity;fig:kernel-
-fibres R48;fig:lattices R53;linear:fig:paley P446. Use exact inventory IDs,never guesses.
-Chapter1 Klein table and random-matrix table also actually seen both editions.
-
-Scratch renderer /tmp/volume3-render-spreads.py TAG edition START END generates
-only. Current e531reading23–66/print22–65 generated; do not reinitialize registers.
-Manual additive helper /tmp/volume3-record-opened.py edition OBSERVATIONS.json
-requires pending rows and actual opened fullspreads; never feed unopened pages.
-Reading observations files V044 /tmp/volume3-v044-opened-reading[-c2].json;
-print22–43 /tmp/volume3-v044-opened-print.json. First build-init/record scripts
-can overwrite coverage:do not rerun them blindly.
+Actual page coverage260/1035:reading1–130,print1–129,plusprint446.217actualcurrent
+openings and43exactpriorpixelretentions;64printfacings;775pending. All actual
+openings contain whole2×originalpages in color/gray,eachmanuallydescribed. Four-page
+2×2canvases never resize original2×pages. Figures actuallyseen inboth editions:
+fig:symmetries,kernel-fibres,lattices,necklaces,fifteen;linear:fig:paley print446only.
+Authoritative candidate-e531ae06-visual.json. Nextreading131/print130.
+Scratch renderer /tmp/volume3-render-four.py edition START END;generationonly.
+Additive recorder /tmp/volume3-record-opened-flex.py edition OBSFILE;requirespending
+rows andmanualperpageobservation/opened_image_pages. Never feed unopenedpages.
+Actual V045observation files /tmp/volume3-v045-{reading,print}-{c3,c4start,c4a,c4b,c4end}.json;
+print44–65 /tmp/volume3-v045-opened-print-c2.json. Do not rerun init/overwritecoverage.
+Images /workspace/volume3-final-visual-e531ae06. Disk~500MBfree;only pruneowned
+regenerableduplicate caches/sites,neverpublicartifacts/reports/actualviews.
 
 Actual unmodified EPUB26XHTML×390/1280=52 measurements and reader24×2=48 pass,
 zero reported problems. Reader helper has HTTP guard; no injected URI rule.
@@ -108,18 +100,19 @@ all518reading2×RGBpages/wrapmatch;516/517printmatch. Onlyprint446differs1017of
 1514376pixels,meanabs.0037168224,max29;local+CI full2× color/grayactuallyopened,
 no observed lost/clipped math/graph/caption/layout. Files/screens in
 /workspace/volume3-ci-visual-e531ae06. These identities DO NOT approve unopened pages.
-Remaining5filediffs:3PDF(metadata+flattenedAA),EPUB,reader ch-paley.html.
-Actual HTML diff only footnote section→aside container, identicalID/classes/role/
-contents/links. Actual EPUB9510members each;18different names=9glyphpairs,18
-commontextmembers differ,0different commonPNGbytes. Need fresh exactmath/CSS/
-XMLclassification and actual9glyphpairs or provable relevant earlierfilepixel
-identity;testactualfootnote behavior local+CI and actualCI EPUBCheck. Previous a0
-comparison tools /tmp/volume3-v030-compare-{a0,rest}.py demonstrate method;use only
-methods,not old statuses. Current comparison initial tool
-/tmp/volume3-v044-ci-first-compare.py. Finish final CI comparison before final acceptance.
+Actual e531CI differences now internallyclassified:V3-045-ci-epub-classification.json.
+9510EPUBmembers,18differentnames=9PNGpairs,18differenttextXML,zero differentcommonPNG.
+20909mathuses/141verifiedroundingmathattrchanges;explicitboundedXML normalization.
+18currentglyphfiles byte-identical to actuallyopened priorA0pairs;onlyglyphshape
+retained,notcurrentparagraphbaseline. ActualCI EPUBCheck5.3zero.
+V3-045-footnote-behavior.json:8actuallocal/CI reader/EPUB reference/backlinkclick
+sequences390/1280pass. Fouractual localnoteframes OPENED;CIcorrespondingpixelsidentical.
+EPUB1280returnref boxy=-.1875px wasfalsepositivefractionalinlineleading;actualink
+visible,documented1pxroundingtolerance,noassetsourcefix. Currentfootnote8checksallpass.
+Reviewheadfb761CI1731/42058360319stillinprogressatquery;terminalfinalheadrequired.
 
-Next:inspectprint44–65;reading67onward;all925pendingpages,bothmodes/facings;
-84digitalfigurecaptures+formula/themeappearance;classify actualCI EPUB/footnote;
+Next:reading131/print130 onward;all775pendingpages,bothmodes/facings;
+84digitalfigurecaptures+formula/themeappearance;actualCI EPUB/footnoteclassificationdone;
 keepcoherentcommits/currentPR/docs. Preserve frozen source unless genuine defect;
 new source changes need affected math/render/CI review. Finalheadclean/currentmain,
 no unresolved findings/all required checks/terminalsuccessfulCIexacthead ->ready,
