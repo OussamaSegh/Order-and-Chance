@@ -2764,3 +2764,35 @@ source/ledger gates remain scoped toV044; strict gates rerun for this batch.
 Reviewhead fb761CI run1731/42058360319 was still inprogress when queried; do not
 substitute producinge531terminalsuccess for a laterhead. Production remains open,
 PR stays draft, and review continues through final actual acceptance/merge.
+
+
+## V3-046 — actual Chapter 5/6 pages and Part II print bleed
+
+Actual PDF coverage advanced260→364of1035physicalpages:321current actual
+openings plus43exactpriorpixelretentions;90printfacings,671pending. Reading1–182
+and print1–181 are covered,plusprint446. Each new page was actually opened
+in color/grayscale within full2×four-page canvases with no resizing,then given
+a manual page-specific content/layout observation and opened-image hashes.
+No generated/unopened page received acceptance.
+
+Both full chapters were inspected through their complete solutions and references.
+This includes SylowI/II/III,solvability and the least/unique order60 argument;
+all15rows of the small-group figure and9rows of the prime/order table;the
+PartII divider;ring/zero/domain/field/ideal quotient examples;the full non-
+Euclidean PID construction;Gauss/UFD proofs;all radical/lattice/interpolation
+and quartic displays. All labels/points/dashed circles and full lattice caption
+were actually seen in both editions. Grayscale strokes/box/row contrast remain
+readable. PartII print153has full charcoal top/bottom/outside bleed with no
+white padding;the facing white bibliography page has safe gutters. No new
+source/layout defect identified in this batch.
+
+Frozen producinge531manuscript and rendering sources unchanged. This batch edits
+only review evidence;prior522unit tests and V045strictgates retain their stated
+scopes,without needless broadtest repetition. cfc85b82CI1732/42062269748was
+inprogress at query. fb761run1731was automatically cancelled after PRsupersession
+while sitewasrunning;all15bookjobs had succeeded,but no overallterminalsuccess
+is claimed for it. Producinge531run1730remains terminalsuccess. Currenthead
+needs its own finalterminalCI and affectedartifactidentity/comparison.
+
+Continueall671PDFpages and84digitalfigurecaptures/formula/themeappearance;
+source review completeinternally,production remainsopen,PRstaysdraft.

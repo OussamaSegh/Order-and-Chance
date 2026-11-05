@@ -1,4 +1,4 @@
-# Restart checkpoint — V3-045
+# Restart checkpoint — V3-046
 
 Continue the entire authorized solo internal AI review through final actual
 acceptance and head-matched merge. Do not stop at this checkpoint. No agents,
@@ -11,7 +11,7 @@ rough estimate4–8morehours was given for remaining production work.
 Repository /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104; draft PR104
 https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Parent fb761f4ef3b37b268a382c03d0507b6d9fb99ab4; read actual HEAD after this commit.
+Parent cfc85b8293d3e427717eb8fd24cd6756f7d5a880; read actual HEAD after this commit.
 Original correct PR103 merge7f87c2ab00fdb0c7791dc833423b98bef0870f01.
 Main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678 was freshly fetched and integrated
 af1c3fe4; fetch again before final merge. Preserve unrelated user changes.
@@ -50,12 +50,13 @@ running build/test/browser sessions from V044 completed; scratch CI comparison
 session48325 also completed its report. No source changes since e531, only review
 helpers/evidence; future artifact-source identity must still be proven.
 
-Actual page coverage260/1035:reading1–130,print1–129,plusprint446.217actualcurrent
-openings and43exactpriorpixelretentions;64printfacings;775pending. All actual
+Actual page coverage364/1035:reading1–182,print1–181,plusprint446.321actualcurrent
+openings and43exactpriorpixelretentions;90printfacings;671pending. All actual
 openings contain whole2×originalpages in color/gray,eachmanuallydescribed. Four-page
 2×2canvases never resize original2×pages. Figures actuallyseen inboth editions:
-fig:symmetries,kernel-fibres,lattices,necklaces,fifteen;linear:fig:paley print446only.
-Authoritative candidate-e531ae06-visual.json. Nextreading131/print130.
+fig:symmetries,kernel-fibres,lattices,necklaces,fifteen,small,lattice;linear:fig:paley print446only.
+5.tabular.1R141/P140all9rowsalsoseen;PartII R154/P153actualfullbleed/grayscale.
+Authoritative candidate-e531ae06-visual.json. Nextreading183/print182. Generated UNOPENEDfourpagegroups183–194/P182–193alreadyready.
 Scratch renderer /tmp/volume3-render-four.py edition START END;generationonly.
 Additive recorder /tmp/volume3-record-opened-flex.py edition OBSFILE;requirespending
 rows andmanualperpageobservation/opened_image_pages. Never feed unopenedpages.
@@ -109,9 +110,11 @@ V3-045-footnote-behavior.json:8actuallocal/CI reader/EPUB reference/backlinkclic
 sequences390/1280pass. Fouractual localnoteframes OPENED;CIcorrespondingpixelsidentical.
 EPUB1280returnref boxy=-.1875px wasfalsepositivefractionalinlineleading;actualink
 visible,documented1pxroundingtolerance,noassetsourcefix. Currentfootnote8checksallpass.
-Reviewheadfb761CI1731/42058360319stillinprogressatquery;terminalfinalheadrequired.
+Reviewheadcfc85b82CI1732/42062269748inprogressatquery;terminalfinalheadrequired.
+Priorfb761CI1731automaticallycancelledafterPRsupersession;15bookjobssuccess,
+sitewascancelled,notoverallterminalsuccess. No main/unrelatedrunwascancelled.
 
-Next:reading131/print130 onward;all775pendingpages,bothmodes/facings;
+Next:reading183/print182 onward;all671pendingpages,bothmodes/facings;
 84digitalfigurecaptures+formula/themeappearance;actualCI EPUB/footnoteclassificationdone;
 keepcoherentcommits/currentPR/docs. Preserve frozen source unless genuine defect;
 new source changes need affected math/render/CI review. Finalheadclean/currentmain,
@@ -119,3 +122,6 @@ no unresolved findings/all required checks/terminalsuccessfulCIexacthead ->ready
 headmatchedmergecommit,verifyGitHubmerge/main. Finalreviewpackage+matchedartifact
 identities+PR/mergeSHA+honestlimits. NativeKindle/KDPaccountPreviewer/ISBNownership/
 physicalproof remainpublicationfollowups;no Amazonaccountaction.
+
+V046actual manualobservations:/tmp/volume3-v046-{reading,print}-{c5a,c5end-c6a,c6end}.json.
+Newevidenceonly,nomanuscript/renderchange. StrictgateslastV045PASS.
