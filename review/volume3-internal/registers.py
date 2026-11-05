@@ -112,6 +112,13 @@ def reconcile(data):
     print(json.dumps({'reconciliation_changes': updates}, indent=2))
 
 
+def check_substantive_evidence(row, group):
+    """Reject an incomplete manual decision; never create or approve one."""
+    needed = CORE if group in ('proofs', 'exercises') else CORE + ('role',)
+    if any(not row.get(key, '').strip() for key in needed):
+        raise ValueError(f"Incomplete substantive evidence: {row['id']}")
+
+
 def check(data, require_complete=False):
     current = {x['id']: x for x in data['items']}
     seen, statuses = set(), Counter()
@@ -137,10 +144,7 @@ def check(data, require_complete=False):
                     raise ValueError(f"Changed included figure source: {row['id']}")
             statuses[row['status']] += 1
             if row['status'] == 'accepted-internal':
-                needed = CORE if group in ('proofs', 'exercises') else (
-                    'role', 'reconstruction_A', 'adversarial_check_B', 'source_revision')
-                if any(not row.get(k, '').strip() for k in needed):
-                    raise ValueError(f"Incomplete substantive evidence: {row['id']}")
+                check_substantive_evidence(row, group)
             elif require_complete:
                 raise ValueError(f"Review incomplete: {row['id']} ({row['status']})")
     expected = {x['id'] for x in data['items'] if x['kind'] not in ('proof', 'hint', 'solution')}

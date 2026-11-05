@@ -58,3 +58,9 @@ Original CH08-PROMPT-FIRST exposure chronology remains.
 | 8.bibliography.5 | bibliography-history: Lindemann1882 MathAnn20,213-225. | ActualGDZ originalmetadata and first/lastprintedpages viewed: title/byline, transcendence aim and circleconsequence, datedApril/June1882. | Not all thirteenproofpages read/reproved; transcendence remains explicitly quoted outlook, not essential premise, no abstract-only researchcertification. |
 | 8.bibliography.6 | bibliography-history: Artin first1942, revised second1944, Dover1998. | Actual primarysecondeditiontitle/copyright1942,1944/TOC and full extensionisomorphism/splittingfieldTheorems8-10 proofs31-33 read. Libraryreprintcolophon records Dover1998 republishes corrected1944second edition. | Correct bibliography to distinguish firstpublication from actual reprintededition, not label Dover as reprint of unchanged1942first. No entirebook certification. |
 | 8.bibliography.7 | bibliography-history: Stewart fourth2015 CRC Chapters4-7. | Actual fourthfrontmattercopyright2015 andTOC read:4FieldExtensions,5SimpleExtensions,6Degree/Tower,7RulerCompass87; actual7.2Definition7.6/Theorem7.7 and coordinateproof text read. Publisher/OReilly2015edition corroboration. | Chapters4-7 actually appropriate span, so do not call it a bad pointer. Replace vague many-pictures annotation by accurate progression/chapter7destination; no fulltext independent certification. |
+
+V3-037 production classification update: the Needspace row's original proposed/
+not-yet-inspected state was superseded by actual af1 reading229-231/print228-230
+color/grayscale opens. Exact currentC8source and all six relevant3b4e pages are
+identical at2xRGB/grayscale; V3-037-C8-production-identity.json. Only that actual
+relevant visual evidence transfers;later finalsnapshot/pagination remains pending.

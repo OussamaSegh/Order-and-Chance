@@ -30,6 +30,18 @@ import registers as volume3_registers
 
 
 class Volume3InternalReview(unittest.TestCase):
+    def test_accepted_global_record_requires_explicit_domain_and_claim(self):
+        entries = __import__('json').loads((REVIEW/'exposition.json').read_text())['entries']
+        record = next(row for row in entries if row['id'] == '1.reminder.1')
+        volume3_registers.check_substantive_evidence(record, 'exposition')
+        # This was the actual older failure: full A/B text and accepted status
+        # existed, while neither the exact domain nor the claim was recorded.
+        for missing in ('hypotheses_domain', 'claim'):
+            incomplete = copy.deepcopy(record)
+            incomplete.pop(missing)
+            with self.assertRaisesRegex(ValueError, 'Incomplete substantive evidence'):
+                volume3_registers.check_substantive_evidence(incomplete, 'exposition')
+
     def test_walk_analysis_is_locally_earned_and_exact_derivative(self):
         check_chapter11.check_local_walk_analysis()
 
