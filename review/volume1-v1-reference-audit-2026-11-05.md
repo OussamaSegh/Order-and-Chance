@@ -5,7 +5,27 @@ Branch: `cursor/volume1-high-school-path-f51c`.
 Base at the time of the audit: `origin/main` `975672206d3123274289652962f104a170af2a8e` (merge of PR #104, the redone Volume 3). That commit is also the merge-base of this branch with `main`.
 This file is an editorial report. It is not part of any volume.
 
-The Volume 1 this branch delivers is the teaching manuscript from PR #106, merged with current `main`. Volume 1 chapter files were not changed on `main` between the previous base and `97567220`. The redone Volume 3 arrived entirely from that merge.
+## Current status
+
+Reading of the requested manuscripts is **finished**. This is a record of what was read and of the defects that survived a second look. It is not a guarantee that every argument is correct.
+
+Manuscript under review: `7047e1b56ab0bde76f8556ce1eadee28d0b8a872`. Report updates do not change that text. `origin/main` was fetched again before this section and was still `975672206d3123274289652962f104a170af2a8e`. No manuscript file was edited in the reading passes. The citation fixes already on the branch are unchanged.
+
+**Read, main arguments and solutions.** Volume 1 from the preface through the field guide. Volume 3 from the preface through the afterword: groups, quotients, actions, the symmetric group, Sylow, rings, modules, extensions, finite fields, Galois (including the radical tower and every solution), characters (including every solution), quaternions (including every solution), and the four appendices (Perron, symmetry, combinatorial, Paley). Nothing in those files is still unread. There is no next checkpoint.
+
+**Verdict.** Two definite false sentences, both local. One necessary missing bridge in Volume 1 (one-sided limits in the inverse-function proof) and two in Volume 3 (a rotation of the cube is declared to be a matrix in \(\mathrm{SO}(3)\); the class sizes of \(S_3\) are stated and not computed). Everything else checked either closes, or is an optional sentence a reader can supply from a definition or from an argument already on the page. Several items in the detailed section below were first written too strongly and are marked optional or withdrawn.
+
+**Carleman, corrected.** The manuscript does **not** say \((n!)^{1/n}\sim e/n\). At `ch04-inequalities.tex` line 599 it says the \(n\)th geometric mean is \(1/(n!)^{1/n}\sim e/n\). That is the right equivalent: Stirling gives \((n!)^{1/n}\sim n/e\), and the reciprocal is \(e/n\). An earlier draft of this report swapped the two. That was a report error, not a manuscript error. It is not a finding.
+
+**Strongest remaining items**
+
+1. V1-SEQ-01, definite. Grandi’s averages are called an application of Cesàro’s theorem to a sequence that does not converge. The theorem needs convergence. The correct even/odd count is already two paragraphs later.
+2. V3-GAL-01, definite, and immediately fenced. A group of order \(2^m\) is said to have a subgroup of index 2 for \(m=0\) as well. The next sentences already skip that case. The polygon theorem is not affected.
+3. V1-CAL-01, necessary bridge. Continuity of an inverse is argued from one-sided limits that are not constructed. The remedy is a supremum on a bounded subinterval of the domain, not over an unbounded ray.
+4. V3-GRP-01, necessary bridge. The cube count uses an identification with \(\mathrm{SO}(3)\) that the plane case derives and the space case does not.
+5. V3-ACT-01, necessary bridge. The classification uses the class sizes \(1,3,2\) of \(S_3\) without computing them. Cycle type is the next chapter.
+
+Sections below this one are the citation inventory and the reading notes. Where they still say “partial” or “unread”, that described an earlier pass. This section replaces them.
 
 ## What “checked” means
 
@@ -167,9 +187,9 @@ Not read: the bodies of chapters 2, 3, 5–10, 12, and the four appendices, exce
 
 `origin/main` was fetched again immediately before this report and was still `975672206d3123274289652962f104a170af2a8e`.
 
-## Readability review, continued (5 November 2026, second pass)
+## Readability notes
 
-Status: **partial**. The citation audit above is unchanged. This section is the chapter reading that the citation pass did not do.
+The status at the top replaces the “partial” wording this section used while characters, quaternions, and the appendices were still unread. Those files have now been read, including their solutions. Severities below were recalibrated: an omitted elementary line, a case split the indexing already states, and a limit that is the definition of an admitted derivative are not treated as defects.
 
 Audited manuscript commit, unchanged by this reading: `7047e1b56ab0bde76f8556ce1eadee28d0b8a872`. `origin/main` was fetched again at the start of this pass and was still `975672206d3123274289652962f104a170af2a8e`.
 
@@ -196,13 +216,15 @@ Source links below are to that commit. A finding is recorded only after the cite
 | V3 `ch01-groups.tex` through `ch06-rings.tex` | full | full | read |
 | V3 `ch07-modules.tex`, `ch08-extensions.tex`, `ch09-finite-fields.tex` | full | full | read |
 | V3 `ch10-galois.tex` | full, including the radical tower and Abel–Ruffini | full (`ex:q235`, `ex:x42check`, `ex:zeta7`, `ex:gauss17`, `ex:sp`, `ex:discr`, `ex:cardano`, `pb:kronecker`, `pb:rattan`, `pb:ramacube`) | read |
-| V3 `ch11-characters.tex` | not read, except the chain-rule sentence and the opening of the sine digression in the citation pass | not read | **next** |
-| V3 `ch12-quaternions.tex` | not read | not read | unread |
-| V3 `linear-ch07-perron.tex`, `linear-ch09-symmetry.tex`, `combinatorial.tex`, `paley.tex`, `afterword.tex` | not read | not read | unread |
+| V3 `ch11-characters.tex` | full, including the sine and exponential digression | full: `ex:pairs`, `ex:onedim`, `ex:a4`, `ex:centralchar`, `ex:circulant`, `ex:dirichlet8`, `ex:a5`, `ex:divides`, `pb:glnz`, `pb:commutators`, `pb:frobschur` | read, no confirmed finding |
+| V3 `ch12-quaternions.tex` | full | full: `ex:compose`, `ex:euler4`, `ex:rotmatrix`, `ex:conjS3`, `ex:2T`, `ex:2I`, `ex:hurwitz`, `pb:sylvester`, `pb:jensen`, `pb:mersennediv`, `pb:dice`, `pb:ksubsets`, `pb:egz`, `pb:abelian`, `pb:dodecaturns` | read, no confirmed finding |
+| V3 `linear-ch07-perron.tex` | full | full: `perron2`, `rowsum`, `minmaxcw`, `monotone`, `nonneg`, `cycleperiod`, `diagpos`, `twostate`, `pagerankrate`, `leslie`, `doublystoch`, `wielandtsharp` | read; one optional mis-name, V3-PER-01 |
+| V3 `linear-ch09-symmetry.tex` | full | full: `circalg`, `circ3`, `fourier`, `dualgroup`, `convolution`, `walsh`, `krawgen`, `gausssign`, `paleyself`, `paleyramsey`, `plotkinsharp`, `lpthree` | read, no confirmed finding |
+| V3 `combinatorial.tex` | full | full: `eventown`, `nearpencil`, `simplexdist`, `sdistance`, `fwmodthree`, `cdsharp`, `egzsharp`, `quadric`, `capplane`, `dvir` | read, no confirmed finding |
+| V3 `paley.tex` | full | full: `ex:paley-h4`, `ex:paley-f3` | read, no confirmed finding |
+| V3 `afterword.tex` | full | none | read |
 
-**Next unread checkpoint:** `volume3-symmetry/chapters/ch11-characters.tex`, line 1. After that file, `ch12-quaternions.tex`, then the four appendices and the afterword.
-
-This is not a complete review of Volume 3.
+No file in Volume 1 or Volume 3 remains unread. Earlier rows in this table that said “next” described the previous pass.
 
 ### Deferred items from the first Volume 1 pass
 
@@ -213,7 +235,7 @@ This is not a complete review of Volume 3.
 | Summation by parts marked as a second reading | Fixed | Sequences, the paragraph that tells a first reading to skip to the decimal for \(\ln 2\) |
 | Stirling shape expanded through \(1/(12n^2)\) | Fixed | Proof of the shape proposition |
 | Orders says it uses no limit | Fixed | Opening of `orders.tex`; the arguments stay inside that promise |
-| Lights Out without \(\mathbb F_2[x]/(x^n-1)\) | Fixed as a method; one counting step remains | V1-CAL-02 |
+| Lights Out without \(\mathbb F_2[x]/(x^n-1)\) | Fixed. The count \(2^n/4\) reuses the difference argument already stated; see the calibration of V1-CAL-02 | Calculus solution |
 | Improper integrals defined; \(e\) named in the calculus reminder | Fixed | Calculus chapter |
 | Covariance points at the next chapter for \(\mathbb E\) | Fixed | Inequalities, the sentence before probability |
 | Benford without density or \(\liminf\) | Not re-opened line by line. The polynomials pass did not find that wording | — |
@@ -230,97 +252,42 @@ Cesàro’s theorem, proved at lines 313–322, requires \(u_n\to\ell\). Grandi�
 
 Remedy: at line 230, point forward to that even/odd count, and do not name Cesàro as the reason.
 
-**V1-SEQ-02. Missing explanation.** [lines 194 and 569–577, used at 680 and 1256–1258](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L569)
-
-> Once the derivative of sine is in hand, the same language says \(\sin x\sim x\) as \(x\to 0\). That comparison is Proposition `prop:sincmp`.
-
-The proposition proves \(0<\sin x<x<\tan x\) on \((0,\pi/2)\). It does not prove \(\sin x/x\to 1\). The example then says \(\sin(1/n)\sim 1/n\), and concludes that \(\sum\sin(1/n)\) diverges. The inequality \(\sin(1/n)<1/n\) is an upper bound. Divergence needs a lower bound. The same missing limit is required by the solution of `ex:nested`, which writes \(\frac{\sin t}{t}\to 1\).
-
-The squeeze is one line from what is already proved: \(\cos x<\sin x/x<1\), and \(\cos x\to 1\).
-
-**V1-SEQ-03. Missing explanation.** [line 654](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L654)
-
-> The logarithm tends to infinity. If \(\alpha<1\), then \(1-\alpha>0\) and \(N^{1-\alpha}\) tends to infinity. If \(\alpha>1\), then \(N^{1-\alpha}\) tends to \(0\).
-
-The \(p\)-series test stands on these three limits, and none is proved. The ingredients are already in the chapter: the proof of the sequence for \(e\) shows that \(\exp\) is strictly increasing, and the preface says \(\exp\) matches the reals with the positive reals. From that, \(\ln 2>0\), so \(\ln(2^n)=n\ln 2\to\infty\), and \(N^\beta=\exp(\beta\ln N)\) follows. The reader is not shown those two lines. The same gap reappears when a solution uses \(\ln(n+1)\to\infty\).
-
-**V1-SEQ-04. Missing explanation.** [lines 1326–1330](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L1330), solution of `ex:eulerbasel`
-
-> \(\ln x\ln(1-x)\sim -x\ln x\to 0\).
-
-\(\ln(1-x)\sim -x\) is the mean value theorem. \(x\ln x\to 0\) as \(x\to 0^+\) is not proved anywhere earlier. The calculus chapter proves it later. The solution needs it to identify the constant in \(F\).
-
-Remedy: set \(t=-\ln x\) and get \(e^t\ge t^2/2\) from the mean value theorem, so \(|x\ln x|\le 2/t\).
-
-**V1-SEQ-05. Missing explanation.** [hint at 1118](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L1118), Exercise `ex:stirling`
-
-> Exponentiate and use \(e^u=1+u+O(u^2)\) as \(u\to 0\).
-
-The exercise does not say to wait for Taylor. The derivative gives \(e^u=1+u+o(u)\), and \(o(1/n)\) does not close the \(O(1/n^2)\) claim. The quadratic bound is a second application of the mean value theorem, and it is not written.
-
-**V1-ORD-01. Missing explanation.** [orders.tex, line 283](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/orders.tex#L283), Erdős–Ko–Rado
-
-> Every other arc that meets \(A\) either starts at \(i+1\) or ends at \(i\), for a unique \(i\) with \(1\le i\le k-1\).
-
-The pairs are proved disjoint, and an intersecting family takes at most one from each pair. The count “at most \(k\) arcs” also needs every eligible arc to sit in one of those pairs. That case split is not written. A missed arc would make the bound false.
-
-**V1-SUM-01. Missing explanation.** [ch01-sums.tex, lines 228–231](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch01-sums.tex#L228)
-
-> Suppose not, and let \(n\) be the least integer that is at least \(2\) and is not a product of primes. Then \(n\) itself is not prime, so \(n=ab\) with \(1<a<n\) and \(1<b<n\).
-
-A prime has no positive divisor except \(1\) and itself. “Not a product of primes” implies “not prime” only if a single prime counts as a product of one prime. The text never says so. If a product must have two or more factors, \(2\) is a counterexample to the next sentence. Uniqueness, later, speaks of one or more primes; that phrase is not available here. The reader also needs that a positive divisor of \(n\) lies between \(1\) and \(n\).
-
-**V1-CNT-01. Missing explanation.** [ch02-counting.tex, lines 296 and 300](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch02-counting.tex#L296)
-
-> The good paths to \((4,4)\), those that stay on or below \(y=x\), number \(\binom{8}{4}-\binom{8}{3}=70-56=14\).
-
-Both binomial coefficients are right, and \(14\) is the Catalan number. The word that presents the subtraction as the count is the reflection bijection. The caption draws one bad path. It does not show that every bad path arises once, or that every path to \((3,5)\) comes from a bad path. That bijection is Exercise `ex:catalan`, marked so a first reading may skip it. The main text uses the count first.
-
-Remedy: say the exercise proves the bijection, and that the picture is the case \(n=4\).
-
-**V1-CAL-01. Missing explanation.** [ch06-integrals-taylor.tex, lines 37–38](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch06-integrals-taylor.tex#L37)
+**V1-CAL-01. Necessary missing bridge.** [ch06-integrals-taylor.tex, lines 37–38](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch06-integrals-taylor.tex#L37)
 
 > Suppose it jumped at \(b\). A monotone function on an interval has one-sided limits. … some value strictly between the outer limits, other than \(g(b)\), is missed.
 
-The inverse-function proof uses one-sided limits of a monotone function, and it uses that a jump is exactly a gap between them. Neither fact is defined or proved. The reader has the least-upper-bound property. For increasing \(g\), set \(g(b^-)=\sup\{g(y):y<b\}\) and \(g(b^+)=\inf\{g(y):y>b\}\), and say what happens if they are not both \(g(b)\).
+The inverse-function argument treats one-sided limits of a monotone function as known, and it treats a jump as a gap between those limits. Neither fact has been proved. This is not the definition of the derivative, and it is not filled by an earlier case.
 
-**V1-CAL-02. Missing explanation.** [ch06-integrals-taylor.tex, lines 918–920](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch06-integrals-taylor.tex#L918), Lights Out
+Remedy, on a bounded piece of the domain. The point \(b\) in the proof is the value \(f(a)\) with \(a\) interior, so some \(h>0\) has \([b-h,b+h]\) inside the interval \(J\) on which \(g=f^{-1}\) is defined. For increasing \(g\), the set \(\{g(y):b-h\le y<b\}\) is nonempty and bounded above by \(g(b)\), so
+\[
+L_-=\sup\{g(y):b-h\le y<b\}
+\]
+is a real number, and likewise \(L_+=\inf\{g(y):b<y\le b+h\}\) is real and at least \(g(b)\). Shrinking \(h\) does not change them. If \(L_-=g(b)=L_+\), then \(g\) is continuous at \(b\). If not, a number strictly between \(L_-\) and \(L_+\) other than \(g(b)\) is missed on \([b-h,b+h]\), and monotonicity keeps it from being taken outside that segment. Do not write an unqualified supremum over every \(y<b\) in an unbounded domain: restrict to \(y\in J\) on a bounded subinterval, and use \(g(b)\) as the bound.
 
-> The all-off state is one of them, and we already know the press-patterns that do nothing are exactly the repeats of \(000\), \(011\), \(101\) and \(110\). There are four of them. Hence there are \(2^n/4\) reachable configurations.
+### Volume 1, optional or withdrawn
 
-The four patterns are listed, and the earlier case (when \(3\nmid n\)) does say that patterns with the same result differ by a do-nothing pattern. That sentence is not repeated when the do-nothing set has four elements. Without it, four patterns do not give the count \(2^n/4\). The parity half then says two collections of that size, one inside the other, are equal. The proportion \(\frac14\) rests on the missing pairing.
-
-**V1-PRB-01. Unsupported claim.** [ch09-probability.tex, line 791](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch09-probability.tex#L791)
-
-> A million independent, identically distributed continuous observations have the same record count in law as this uniform permutation, because ties have probability zero and the ranks are uniform.
-
-The exercise itself is a uniform random permutation, and that argument is finite and complete. This last sentence uses continuous independent observations. The chapter builds finite experiments, marks the countable extension, and leaves an unending sequence of trials to a later volume. Ties of probability zero are not constructed.
-
-Remedy: delete the sentence, or mark it as a fact for Volume 4.
-
-**V1-LA-01. Missing explanation.** [ch07-linear-algebra.tex, lines 419–421](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch07-linear-algebra.tex#L419)
-
-> if \(x\perp u\), then \(\langle Sx,u\rangle=\langle x,Su\rangle=\lambda\langle x,u\rangle=0\). The restriction of \(S\) to \(H\) is symmetric … so \(H\) has an orthonormal basis of eigenvectors.
-
-The reality of the eigenvalue is proved in full, from \(S^{\mathsf T}=S\). The identity \(\langle Sx,y\rangle=\langle x,Sy\rangle\) is not. It is used once, here, and it is the step that keeps the hyperplane invariant. The induction hypothesis is a theorem about matrices. The text applies it to an operator on \(u^\perp\) without naming the matrix of the restriction in an orthonormal basis of \(H\).
-
-**V1-PRE-01. Missing signpost, already noted and still open.** Preface, the “Along the way” paragraph. The list of subjects omits Orders, which is Chapter 4. Not a false theorem. One sentence.
-
-### Volume 1, optional
-
-These do not break an argument. They are recorded so a later pass does not treat them as unread.
-
-- Cesàro’s proof ends with a bound of \(2\varepsilon\) (line 321). The definition asked for \(\varepsilon\). One sentence, that \(\varepsilon\) was arbitrary, closes it. The same shape appears in the Stolz solution.
-- “Continuous” is used for a fixed point of \(u_{n+1}=f(u_n)\) at line 298, and defined at line 365.
-- Exercise `ex:sinn` uses Dirichlet’s test, and the exercise statement does not say that the test sits in the second-reading section.
-- Heron’s formula is the premise of an inequalities exercise and is not proved in this volume.
-- Carleman’s sharpness writes \((n!)^{1/n}\sim e/n\) from Stirling without \((2\pi n)^{1/(2n)}\to 1\).
+- **V1-SEQ-02, withdrawn as a gap.** [Line 194](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L194) points at the sine-and-tangent inequalities for \(\sin x\sim x\). Those inequalities are not the limit. The limit is the derivative: line 368 defines \(f'(a)\) as \(\lim(f(x)-f(a))/(x-a)\), line 379 admits \(\sin'=\cos\), and \(\sin 0=0\), \(\cos 0=1\) are in force before the series example at line 680. So \((\sin x)/x\to\sin'(0)=1\). The example’s phrase “by the reminder on equivalents” is a loose pointer. It is not a missing ingredient, and \(\sum\sin(1/n)\) may use it.
+- **V1-SEQ-03, optional.** [Line 654](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch05-sequences-series.tex#L654) uses \(\ln N\to\infty\) and the limits of \(N^{1-\alpha}\) without writing them. Strict increase of \(\exp\) is already proved, so \(\ln(2^n)=n\ln 2\) is a short line. A high-school reader who has been given \(\ln\) as a known function is not stopped.
+- **V1-SEQ-04, optional.** The Basel solution at line 1330 uses \(x\ln x\to 0\). The same limit is proved later in the calculus chapter. One mean-value estimate would put it here. The identity being proved does not depend on a false step.
+- **V1-SEQ-05, optional.** The Stirling hint at line 1118 asks for \(e^u=1+u+O(u^2)\). The first derivative gives only \(o(u)\). A second application of the mean value theorem supplies the quadratic bound. The exercise is marked hard.
+- **V1-ORD-01, withdrawn.** [orders.tex line 283](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/orders.tex#L283) says “Every other arc that meets \(A\) either starts at \(i+1\) or ends at \(i\), for a unique \(i\)”. The labels have just been rotated so that \(A=\{1,\dots,k\}\), and an arc is \(k\) consecutive seats. A non-wrapping arc other than \(A\) that meets \(A\) starts at one of \(2,\dots,k\). A wrapping arc that meets \(A\) ends at one of \(1,\dots,k-1\). That is the case split, and the next sentences check that the two arcs in each pair are disjoint. It does not need a further lemma.
+- **V1-SUM-01, optional.** [ch01-sums.tex lines 228–231](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch01-sums.tex#L228). “Not a product of primes, so not prime” uses a prime as a product of one prime. One clause would say so. The least-counterexample shape is otherwise the one the chapter has just taught.
+- **V1-CNT-01, optional.** The path caption and line 300 state the Catalan count \(70-56=14\) and name Exercise `ex:catalan` as the place the picture is used. The bijection is the exercise, not a false subtraction.
+- **V1-CAL-02, withdrawn as a defect.** [Lines 913 and 920](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch06-integrals-taylor.tex#L913). When \(3\nmid n\) the solution says that different patterns give different configurations because their difference would leave every lamp off. That reason does not use triviality of the kernel: same output means the difference does nothing. When \(3\mid n\) the same sentence, together with “exactly four” do-nothing patterns, gives fibres of size 4 and \(2^n/4\) reachable configurations. Repeating it would be a reminder, not a repair.
+- **V1-PRB-01, optional aside.** [Line 791](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch09-probability.tex#L791) adds a sentence about continuous samples and ties of probability zero. The finite permutation argument is already finished and does not use the sentence. Mark it for a later volume, or delete it.
+- **V1-LA-01, optional.** [Lines 419–421](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume1-first-principles/chapters/ch07-linear-algebra.tex#L419). The section is marked a second pass. \(\langle Sx,u\rangle=\langle x,Su\rangle\) is the transpose computation the eigenvalue half has just used, with \(S^{\mathsf T}=S\). Gram–Schmidt, already proved, gives an orthonormal basis of the hyperplane, and the matrix of the restriction in that basis is symmetric. One sentence names that matrix; the induction then applies.
+- **V1-PRE-01, optional signpost.** The preface list of subjects does not name Orders. The chapter itself says it uses no limit. Not a false theorem.
+- Cesàro’s proof ends with a bound of \(2\varepsilon\) (line 321). Since \(\varepsilon>0\) was arbitrary, the same argument with \(\varepsilon/2\) meets the definition. Same shape in the Stolz solution.
+- “Continuous” is used for a fixed point at line 298 and defined at line 365.
+- Exercise `ex:sinn` uses Dirichlet’s test from the second-reading section without saying so in the statement.
+- Heron’s formula is assumed in one inequalities exercise and is not proved in this volume.
+- **Carleman is not a defect.** Line 599 of `ch04-inequalities.tex` says the geometric mean is \(1/(n!)^{1/n}\sim e/n\). Stirling gives \((n!)^{1/n}\sim n/e\), so the reciprocal is \(e/n\). The manuscript has the reciprocal. A previous draft of this report quoted \((n!)^{1/n}\sim e/n\) and was wrong. The factor \((2\pi n)^{1/(2n)}\to 1\) is the usual line between Stirling and that equivalent; writing it would be optional, not a correction.
 
 No wrong equality turned up in the Wallis–Stirling–Gaussian chain. The constant \(\sqrt{2\pi}\) is named only after Wallis’s asymptotic is proved. The countable probability models are marked. Frullani’s identity and the rearrangement bound were checked and left.
 
 ### Volume 3 findings
 
-**V3-GRP-01. Missing explanation.** [ch01-groups.tex, lines 224–226](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch01-groups.tex#L224)
+**V3-GRP-01. Necessary missing bridge.** [ch01-groups.tex, lines 224–226](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch01-groups.tex#L224)
 
 > A rotation fixing the origin is represented by an orthogonal \(3\times 3\) matrix \(A\) with \(\det A=1\).
 
@@ -328,13 +295,7 @@ The polygon argument, just above, derives the corresponding fact in the plane fr
 
 Remedy: the same one-paragraph argument as in the plane. A cube rotation fixes the origin, preserves the inner product, and has determinant \(1\).
 
-**V3-GRP-02. Undefined notation.** [ch01-groups.tex, lines 694–696](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch01-groups.tex#L694), exercise `pb:ruzsa`
-
-> Show that \(|A|\,|B-C|\le|A-B|\,|A-C|\).
-
-\(A-B\) is not defined in Volumes 1–2 or earlier in this chapter, and it is not set difference. The solution writes \(x=b_x-c_x\), so the meaning is recoverable after the fact. The exercise itself does not say \(A-B=\{a-b:a\in A,\,b\in B\}\).
-
-**V3-ACT-01. Missing explanation.** [ch03-actions.tex, lines 1056–1059](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch03-actions.tex#L1056)
+**V3-ACT-01. Necessary missing bridge.** [ch03-actions.tex, lines 1056–1059](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch03-actions.tex#L1056)
 
 > The second choice has exactly the multiplication of the triangle’s rotations and reflections, hence gives \(D_3\cong\mathfrak S_3\). … That group has class sizes \(1,3,2\).
 
@@ -350,10 +311,10 @@ Remedy: restrict the index-\(2\) sentence to \(m\ge 1\).
 
 The rest of the Galois chapter, including the radical tower, the quintic, Cardano, and the solutions named in the coverage table, produced no further confirmed error. The Sylow counts, the \(15\)-puzzle cycles, the \(A_n\) commutators, and the non-Euclidean PID estimates in chapters 1–6 were checked against the displayed formulas and left.
 
-### Volume 3, not a finding
+**V3-GRP-02, optional.** [ch01-groups.tex lines 694–696](https://github.com/OussamaSegh/Order-and-Chance/blob/7047e1b56ab0bde76f8556ce1eadee28d0b8a872/volume3-symmetry/chapters/ch01-groups.tex#L694). The exercise writes \(|B-C|\) before defining it. The solution’s first lines set \(x=b_x-c_x\). A clause \(A-B=\{a-b\}\) in the exercise would save the reader from guessing; the argument does not depend on a wrong meaning.
 
-The characters chapter’s reconstruction of \(\sin'\) and of the exponential series was sampled in the citation pass and is still unread as a whole. It is not listed again.
+**V3-PER-01, optional mis-name.** In `linear-ch07-perron.tex`, the solution of the row-sum exercise (lines 1065–1066) and the solution of the monotonicity exercise (lines 1141–1142) invoke Perron’s theorem for an irreducible nonnegative matrix. Perron’s theorem in this appendix requires every entry positive. The fact used is Frobenius, Theorem `linear:thm:frobenius`: a nonnegative eigenvector of an irreducible nonnegative matrix is a positive multiple of the Perron vector, so an eigenvalue with a positive eigenvector equals \(\rho\). The conclusions are right. Cite Frobenius, or, in the row-sum converse, the comparison \(\min r_i\le\rho\le\max r_i\) already proved in that solution.
 
-### What this pass did not do
+Characters, quaternions, the symmetry appendix, the combinatorial appendix, Paley, and the afterword were read through their last lines, including every solution named in the coverage table. No definite false statement and no necessary missing bridge turned up in those files. The sine and exponential digression in the characters chapter closes with the steps written out.
 
-No manuscript file was edited. No volume was rebuilt. The citation table was not re-run. Volumes 2 and 4–15 were not reread except where a Volume 3 sentence forced a look at a Volume 1 statement already checked above.
+No manuscript file was edited. No volume was rebuilt. The citation inventory above was not re-run. Volumes 2 and 4–15 were not reread except where a Volume 3 sentence was checked against a Volume 1 statement already in that inventory.
