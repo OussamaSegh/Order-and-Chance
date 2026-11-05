@@ -45,7 +45,20 @@ def inspect_pdf(path: Path) -> tuple[int, str]:
         text, re.IGNORECASE)
     assert not unresolved, f"Unresolved cross-reference {unresolved.group()}: {path}"
     check_reed_solomon_heading(text)
+    check_think_heading_keeps(text)
     return pages, text
+
+
+def check_think_heading_keeps(text: str) -> None:
+    # A generated heading alone at the foot of a page passed older structural
+    # checks. Inspect actual extracted PDF pages, independently of source layout.
+    for page_number, page in enumerate(text.split("\f"), 1):
+        for match in re.finditer(r"PAUSE\s+AND\s+THINK", page):
+            following = page[match.end():].strip()
+            # A bottom folio is not question content.
+            following = re.sub(r"\s*\d+\s*$", "", following).strip()
+            assert re.search(r"[A-Za-z]", following), (
+                f"Orphaned Pause and Think heading on PDF page {page_number}")
 
 
 def check_reed_solomon_heading(text: str) -> None:

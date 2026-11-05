@@ -2879,3 +2879,8 @@ Actual immutable abc3d1cb build completed:518reading/517print(+46from original),
 Actually opened R259–322/P258–321 since V049,including all Galois proofs,complete11exercise solutions(including inline10.1),both figures and bibliography. Current644physicalpages inspected:640accepted,4withneworphan-headingfinding,391unopened.88actualabcopenings+556exactpriorpixelretentions.160printfacings inspected,159accepted/1affected. Actualnewfinding:PauseandThink label alone at R321/P320bottom withquestion nextpage. Correct locally,regenerate/recheckguard and immutablebuild;reopen allchangedpages/pagination beforeacceptance. Source mathematicaldecisions remain complete internally.
 
 ActualabcCIrun1736/42067740206:V3jobandstepssuccess;overallworkflowstillinprogressatquery. No ready/merge. Prunedonlyowned old d47 regeneratedsite aftercompletefilehashmanifest;dist/reports/source/actualscreens retained.
+
+
+## V3-051 — prevent the isolated C11 teaching heading
+
+Actual new PDF co-location regression fails before correction at reading321/print320. Added local Needspace5baselines before the initial C11thinkbox,with allapproved typography/boxstyle retained. Actual Pandoc fixture drops the layoutcommand without emittingimplementationtext. All1661previous inventoryfragments andall120conceptanchorhashes are byteidentical;one newnavigation-layout fragment personallyrereviewed A/B and keyed. Inventory1662/prose605;158named/163triples unchanged. Guard3a5d81092e58195b4f5283a739c8b54fd1b284af0f8bf84e93bd7e9eedaa9836. Bothstrictfreshness/completeness andsourcechecker PASS;fullunittestsrunning at checkpoint. No newmathdecision assignedautomatically. Freshimmutablebuild andactualregression/changedpagevisuals pending;abc remainshistoricalevidence.

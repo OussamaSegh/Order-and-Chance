@@ -1,4 +1,6 @@
-# Restart checkpoint — V3-050
+# Restart checkpoint — V3-051
+
+CURRENT ADVANCEMENT supersedes below:local Needspace5baselines in ch11-characters.tex beforeinitialthink added;actualPDFheading/questionregression fails correctlyonabcR321/P320. Newsourceguard3a5d81092e58195b4f5283a739c8b54fd1b284af0f8bf84e93bd7e9eedaa9836;1662items/1178manualdecisions(onlynewlayoutfragment),allprior1661fragmenthashes/120conceptanchorhashesunchanged. Bothstrictgates/sourcecheckerPASS. Fullunittestsactive /tmp/volume3-v051-tests.log. Neednewimmutableallformatbuild atactual051commit,notabc. Compare/reopenallaffectedpages/pagination,actualoutput/EPUBCheckbeforeclosingheadingfinding. Currentcandidateabc644inspected640accepted4affected391unopened,160facings159accepted1affected. NextactualunseenC11pagesR323/P322,howeveraffected321/322mustfirstreopennewbuild. No new math/sourcecontent changes beyond localpagekeep. No earlyfinal/checkpointstop.
 
 CURRENT ADVANCEMENT: producingabc3d1cbd2cadcbfac6211058665e828d33518a2 immutableallformat build complete at/workspace/volume3-final-abc3d1cb. Actualoutputchecker518/517/7samples/26XHTML andEPUBCheck5.3zeroPASS. Manifestcandidate-abc3d1cb-artifacts.json. PDFidentityall1035whole2xRGB/gray;onlyR256/258P255/257changed frome531 andallfour+neighborsactualreopened. Reed–Solomon findingclosed. All actualreader/theme/mathresources exactbytes;9510EPUBmembers onlytwoUUID/timeXML differences;explicitbounded prioractualgeometry/link/behavior/4figure/footnote retention and coverpixel/JPEGidentity V3-050-digital-cover-identity.json.
 
