@@ -1,4 +1,4 @@
-# Volume 3 internal review plan — current V3-059
+# Volume 3 internal review plan — current V3-060
 
 The assigned reviewer performs the entire review personally as internal AI evidence. No independent human refereeing, spoken session, blind re-solve or formal verification claim. History and exact corrections remain in PROGRESS.md and keyed registers.
 
@@ -11,10 +11,15 @@ Completed:
 5. Immutable7fc matched all-format build. All1035PDFpages/258print facings/22figures/9tabulars accepted in actual full2xcolor/grayscale evidence;16current reopens+1019exact prior both-mode pixel retentions. Every prior page was actually inspected in the recorded chain. All3identified PDF defects closed in actual outputs. 518reading/517print(+46fromoriginal), authorISBN9798167514683.
 6. Actual complete-build EPUBCheck5.3zero; output checkerPASS. Full523tests/zero skips/60.108s and strict/source/whitespace gatesPASS. Original extraction-check failure preserved and corrected with genuine fixtures.
 
-In progress / remaining:
+Final digital work completed:
 
-7. Actual reader/EPUB narrow390/wide1280 formula and paragraph baseline/shape/theme/menu appearance (48explicit contexts+5UIviews; bounded samples, no all-formula/native-device claim). Retain88prioractualfigureviews only with exact relevant bytes. Fresh affected/all digital link/parity/geometry/disclosure/navigation checks, resource classification and current matched cover/barcode/artifact identities.
-8. Commit coherent evidence batches/current PR. Keep source frozen7fc unless an actual finding requires change; every genuine source change reopens affected evidence. No CI-only commit loop.
+- Actual48formula/paragraphviews,5light/dark/menuviews,3horizontal-wheel/endpairs and8freshC12figureviews personallyopened.80otherfiguredecisions retained only by exact relevant resources;all88current.
+- Fresh48reader/52EPUBgeometry,alllocaldestinations/163triples,652actualdisclosures/48controls passwithzero problems.
+- All85publicfiles/currentQAmanifest,oneparagraphboundedEPUB/readerresourcechangeandmatchedwrap/JPEG/ISBNmetadataidentityrecorded. Assignedfinalinternalreviewreportcompleted.
+
+Remaining:
+
+8. Commit final available-review evidence/current PR. Keep source frozen7fc unless an actual finding requires change; every genuine source change reopens affected evidence. No CI-only commit loop.
 9. Download actual final reviewed-head CI artifacts and compare pixels/resources/behavior. Require terminal all-job success and inspect details, never infer reusable PR caches (library saves main only); never cancel main/unrelated runs.
 10. Exact reviewed head, clean worktree/currentmain ancestry/no identified unresolved internal findings -> readyPR104 -> headmatched merge commit -> verify GitHub and resultingmainSHA. Archive review package/matchedartifact hashes and report actual limits.
 
