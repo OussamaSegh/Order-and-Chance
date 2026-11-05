@@ -102,8 +102,57 @@ def check_order12_and_plate():
     assert r'49\,487\,367\,289' in source and r'49\,487\,365\,422' not in source
 
 
+def check_small_order_arguments():
+    source=(ROOT/'volume3-symmetry/chapters/ch05-sylow.tex').read_text()
+    table=source.split(r'\label{tool:smallest-simple}',1)[1].split(r'\end{tabular}',1)[0]
+    rows=re.findall(r'\$(\d+)\$ & \$([\d,]+)\$',table)
+    def factor(n):
+        out={};p=2
+        while p*p<=n:
+            while n%p==0:
+                out[p]=out.get(p,0)+1;n//=p
+            p+=1
+        if n>1:out[n]=out.get(n,0)+1
+        return out
+    def possibilities(n,p):
+        m=n//p**factor(n)[p]
+        return [d for d in range(1,m+1) if m%d==0 and d%p==1]
+    covered=set()
+    for p,orders in rows:
+        for n in map(int,orders.split(',')):
+            assert n not in covered and possibilities(n,int(p))==[1]
+            covered.add(n)
+    exceptions={12,24,30,36,48,56}
+    assert len(covered)==27
+    assert covered|exceptions=={n for n in range(2,60) if len(factor(n))>1}
+    assert not covered&exceptions
+    assert all(possibilities(n,3)==[1,4] for n in [12,24,36])
+    assert possibilities(48,3)==[1,4,16] and 48-16*2==16
+    assert possibilities(56,7)==[1,8] and 56-8*6==8
+    assert possibilities(30,5)==[1,6] and possibilities(30,3)==[1,10]
+    assert 6*4+10*2>29
+    assert [possibilities(60,p) for p in [2,3,5]]==[[1,3,5,15],[1,4,10],[1,6]]
+    assert 60>math.factorial(4)>math.factorial(3)
+    assert 60-1-6*4-10*2==15 and 15*2>15 and 15*3>15
+    assert [d for d in range(5,61) if 60%d==0 and d%4==0]==[12,20,60]
+    group=[g for g in itertools.permutations(range(5))
+           if sum(g[i]>g[j] for i in range(5) for j in range(i+1,5))%2==0]
+    identity=tuple(range(5))
+    cyclic={generated([g],identity,compose) for g in group}
+    assert len([h for h in cyclic if len(h)==5])==6
+    assert len([h for h in cyclic if len(h)==3])==10
+    involutions=[g for g in group if g!=identity and compose(g,g)==identity]
+    sylows={generated([a,b],identity,compose) for a,b in itertools.combinations(involutions,2)
+            if compose(a,b)==compose(b,a)}
+    assert len(involutions)==15 and len(sylows)==5 and {len(h) for h in sylows}=={4}
+    for a in involutions:
+        assert sum(a in h for h in sylows)==1
+        assert len([g for g in group if compose(g,a)==compose(a,g)])==4
+
+
 if __name__=='__main__':
     check_sylow_and_derived()
     check_gl2()
     check_order12_and_plate()
-    print('PASS: S4 Sylows/derived series; binomial boundaries; GL2 p2,3,5,7; five order12 models; actual plate/corrected count')
+    check_small_order_arguments()
+    print('PASS: S4 Sylows/derived; binomial boundaries; GL2 p2,3,5,7; order12 models/plate/count; all27 new table orders/six exceptions and exact A5 Sylows/centralizers')

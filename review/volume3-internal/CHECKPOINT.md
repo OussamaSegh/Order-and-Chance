@@ -1,89 +1,92 @@
-# Exact restart — V3-013a
+# Exact restart — V3-013b
 
-Continue the entire authorized solo internal AI review, never a partial final
-answer or request for another reviewer. Repo /workspace/Order-and-Chance, branch
+Continue the entire authorized solo internal AI review; no partial final answer,
+no external reviewer request. Repo /workspace/Order-and-Chance, branch
 editorial/volume3-complete-internal-review-20261104, draft PR104
 https://github.com/OussamaSegh/Order-and-Chance/pull/104.
-Baseline/current fetched main7f87c2ab00fdb0c7791dc833423b98bef0870f01 is actual
+Baseline/latest fetched main7f87c2ab00fdb0c7791dc833423b98bef0870f01 is the actual
 merged Volume2 PR103. No concurrent main/user change observed. User grants full
-curricular freedom and final head-matched merge only after every available gate.
+content freedom and final head-matched merge only after all available gates.
+Environment returned ready with branch/pending edits preserved. Current UTC date
+is now5 November2026; earlier primary-source access records retain their actual dates.
 
-All12 main chapters and all their solutions have been read. Mathematical closure
-is Chapters1–11 plus C12's four named results and first seven quaternion exercises:
-112/155 named and119/163 triples,231 internal acceptances. C12's eight workshop
-problems remain pending;43 named/36 exercises in four appendices also remain.
-Global keyed unnamed/concept/dependency/history/voice evidence remains separate.
-CH12-PROMPT-FIRST.md discloses all-hint/first-answer exposure; thirteen other
-first solutions predate supplied answers. Its first count24 fifth turns was a
-mistake: actual event±72 degrees has12, supplied coefficient1/5 is correct.
+All12 main chapters and all solutions fully read. Named/exercise A/B closure:
+112/155 named and127/163 triples,239 internal acceptances. All remaining43 named/
+36 exercises are in four appendices. Global keyed unnamed/concept/dependency/
+history/voice remains separate, even when complete source/proof groups were read.
+Current inventory1603 items,563 prose,9 tabular,108 bibliography,22 examples/figures,
+155 named/163 triples. Registries239 accepted and883 pending, plus dependency gate.
+Scripts never autoapprove. Related proof/answer/context hashes guard freshness.
 
-New C12 core earns cross/vector identities, SO3/left-ideal definitions, actual
-cover inverse charts, finite lifting and S3 simple connectedness/pi1SO3=C2,
-regular-solid attainability and geometric conjugacy. No named target weakened.
-CH12-CORE.md has full four-result/seven-answer A/B and new unnamed arguments.
-Exact support checks quaternion signs/composition after quotient, all24 Hurwitz
-units/products,24 odd-prime left-Euclidean constructions, icosahedral faces/order5,
-all103 rotation points and50 actual solid vertices/90 edges/projections/visibility.
+CH12-CORE.md closes quaternion/rotation core, CH12-REVIEW.md all eight workshop
+problems. CH12-PROMPT-FIRST.md discloses all hints/first answer exposure, with
+thirteen other first solutions before supplied answers. Initial fifth-turn
+count24 was reviewer error: original supplied12 was correct. Actual87 PDF shows
+old Theorem12.5 was correct too; labels replace hardcoded references for robustness.
 
-483 full tests pass zero skips54.346s (/tmp/volume3-v013a-final-tests.log), inherited
-checker377 labels/378 refs/163 triples, inventory/register guards and diff pass.
-20 focused earlier3.746s; full suite includes subsequent Euclidean prime probes.
-Core checker integrated in tools/test_volume3_internal.py and actual workflow.
-Latest source inventory155 named,163 triples,22 examples/figures,108 bibliography.
-Source changes reopen statement/related proof or answer/context hashes; scripts
-never autoapprove. New whole-file guard for actual V2 ch07 squares proof.
+New local Lipschitz tagged sums earn integral existence/operations/primitive rule;
+Jensen new partd earns unit-circle logarithmic singularities and full integer
+zero-mean classification. Positive-product/cofinal limits and dyadic tails earn
+abelian-group full sqrt(x) error without future V6. Adjacent log sequences give
+Sylvester rounding, independently checked by old tail proof/precise root bounds.
+EGZ uses nonnegative degree bounds/m>=1: old zero equation plusX in one variable
+passes degree-infinity sum but has1 zero, so original unqualified claim not certified.
+Full A5 walk probabilities retain18*0^t/3*0^t modes for every integer t>=0;
+original shorter forms are positive-time corollaries. No target domain weakened.
 
-NEXT: finish all eight C12 workshop answers and their local prerequisites before
-acceptance. CH12-PROMPT-FIRST.md has first constructions. Jensen needs a local
-Lipschitz Riemann-sum existence/refinement proof; current V1 integral existence
-is a contract whose construction is later. Can earn unit-circle log singularities
-locally via sin(theta) between theta/2 and theta, integral log(theta) tail, and
-I=int0..pi/2 logsin; doubling/substitution gives I=−pi log2/2, preserving the
-broader final remark. Fix literal Markdown ** in actual TeX. Abelian average needs
-finite/nonnegative convergence bounds for zeta/Euler products and a dyadic tail
-bound; remove future V6 partial-summation premise, retain full sqrt(x) result.
-Sylvester's supplied convergence/rounding argument is correct; reconstruct B
-and exact approximation. EGZ prompt now gives degree bounds/m>=1 but answer
-must match, handle zero polys/empty system and n1 sharpness. Complete all finite
-walk/filter/t0 calculations; return prompt now t>=1, general inversion t0 with
-zeroth matrix power convention. Use actual12 fifth turns, not24.
+New C5 subsection fully proves all orders<60 solvable and unique simple60=A5;
+C4 minimality is a future outlook until this actual proof, C12 invokes it earlier.
+27-order table/six exceptions and all generic actions/counts independently checked;
+no Burnside/odd-order premise. V3-013b-SMALL-SIMPLE.md has full A/B and proof sites.
+Curricular JSON stores actual old/new prompts, solution/source hashes, domain fixes,
+new Jensen part, star grades and all removed incidental connections. Homology/
+600-cell/SL2F5/special-function catalog removed; all named/graded targets/binary
+arithmetic remain. Category/functor examples are defined/proved locally.
 
-C4/C12 smallest-simple claim/C5 unproved remark also need earning. Proposed
-finite proof (not inserted/approved): for orders<60, Sylow forces a normal Sylow
-except12,24,30,36,48,56; order3 Sylow counts4 give actionS4/inductive solvability,
-48 count16 leaves unique Sylow2,56 count8 order7 leaves unique Sylow2,30 simultaneous
-n5=6/n3=10 is impossible by element count. All others normal-Sylow+induction.
-For simple60, n5=6,n3=10 (n3=4 would injectS4); n2=5 gives A5 action. Ifn2=15,
-C4 Sylows would require30 order4 elements after44 order3/5 already counted,
-so allV4.45 involution incidences among<=15 involutions force centralizer>4;
-centralizer20/60 impossible in simpleG,12 gives faithful index5 action, henceA5.
-Mark C4 minimality as preview of earned C5 result, not earlier premise. Full
-outlook/category/600-cell/history/closing voice remain to reconcile.
+487 full tests pass zero skips52.031s (/tmp/volume3-v013b-tests.log),24 focused
+4.231s, inherited checker379 labels/383 refs/163 triples, inventory/register and
+whitespace pass. Before/after log /tmp/volume3-v013b-before-after.log; source guards
+separate from mathematical counterexamples/proofs. Full source is frozen for this
+checkpoint commit, not final book review. New head still needs its own CI/build.
 
-Then all four appendices in actual main order: linear-ch07-perron,
-linear-ch09-symmetry, combinatorial, paley; no optional exemptions. Whole-book
-story/voice/history, all-page/grayscale/facing/reader/EPUB/link/disclosure and
-actual CI-artifact comparison remain. Preserve all meaningful mathematics.
+NEXT: read actual appendixA linear-ch07-perron.tex fully in printed order. First
+read main/prompts only and record first solutions before supplied answers where
+feasible; find boundaries by rg before sed to avoid accidental exposure. Then
+linear-ch09-symmetry, combinatorial, paley. All advanced proofs and all36 triples
+in scope, no optional exemptions. Reconstruct twice and fix local prerequisites.
+After appendices close global804 exposition items/dependency occurrences/history/
+story/voice. Actual afterword has a Z2 walk; explicitly recheck p0/1/half,t0 power
+convention, and match actual V4 Chance opening. Common cover-note3 has stale
+TikZ-generator/history wording; reconcile through common/cover-notes.json and
+regenerate about-cover, preserving approved art/fonts/trim. Current original
+preface/blurb/kdp/about-cover have no600-cell/Poincare/SL2F5 promises.
 
-Latest immutable all-format /workspace/volume3-build-9aa217f3, producing
-9aa217f3369cda639c882f27f99dca3418fc422a, predates C12.490 reading/489 print,
-KDP490,spine1.15in,85 public files/report hashes; actual EPUBCheck5.3.0zero
-messages and outputchecker pass. Actual print319 colour/grayscale and342–346
-colour opened/read, bottom345 additionally2x reopened: no clipping/contrast
-problem. Six distinct print pages/seven full images only. Previous2ee actual317
-contrast finding now corrected/reopened; transfer no other visual approval.
-Other snapshots retain separate scoped manifests. Rootdist mixes checkpoints.
-C12 changed outputs not locally built/opened yet; core source not final freeze.
+Build an immutable all-format snapshot of this checkpoint's producing HEAD next,
+using source /workspace/volume3-tools/activate.sh. Prior all-format cache9aa may
+be reused only after actual renderer/common/font byte identity and same tool env;
+cachev6 omits font hashes. All60 renderer/common files were identical earlier;
+current changes still do not touch them. Record provenance, no visual transfer.
+EPUBCheck /workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar. Run actual checker.
+New C12 rotation labels theta/output now charcoal after actual grayscale finding;
+reopen corrected pages/all changed pagination. No new shared EPUB wrapper/scaling edit.
 
-Activate source /workspace/volume3-tools/activate.sh, mandatorily includes system
-activation. EPUBCheck /workspace/volume3-tools/epubcheck-5.3.0/epubcheck.jar.
-Local formula cache reuse only after actual renderer/common/font bytes and tool
-environment identity; cachev6 omits font hashes.9aa verified60 files, provenance
-in its build directory. No visual approval transfer or GitHub cache claim.
+Latest all-format immutable /workspace/volume3-build-9aa217f3 source
+9aa217f3369cda639c882f27f99dca3418fc422a,490 reading/489 print,KDP490,spine1.15in,
+85 public files/report hashes,actual EPUBCheck5.3.0zero/outputpass. Opened print319
+colour/grayscale and342–346 colour, bottom345 additionally2x: six distinct pages.
+PDF-only /workspace/volume3-pdf-87bad3df source87bad3df790f4f584202f45f782191cbddae16e1,
+494 reading/493 print,KDP494,spine1.1594in,same-build wrap,6 hashes. Actually opened
+print354–364 colour plus354/358 grayscale (11 distinct/13 images). Small angle/
+output label contrast finding on354; new label source not rendered yet. New
+normalization/ending/workshop/minimum-order source is later than this snapshot.
+Raw/reading actual Unicode maps correct; press text extraction differs, do not
+mistake it for reading evidence. Rootdist mixes checkpoints, never matched candidate.
+All other pages/formats/facing/narrow-wide reader/EPUB/disclosures/links remain.
 
-Prior9aa217f3 run41927715945 actual jobs terminal23:09UTC: list/debs/V3build/site
-success,publish skipped. Next core head needs its own CI. Library caches save
-only main; never cancel main/unrelated runs. Freeze final source, complete actual
-matched outputs/all gates, then ready/head-matched merge commit and verify main.
-No assigned V3ISBN, native Kindle/KDP-account/ISBN-ownership/physical-proof access;
-these remain honest publication follow-ups. No Amazon action.
+Prior87 run41931636152 actual terminal jobs:list/debs/V3build/site success,publish
+skipped. Library caches save only main; PR builds do not establish reusable PR
+caches. Never cancel main/unrelated runs. Final source freeze, exact-head clean
+worktree/current main, all math/editorial/artifact gates and terminal successful
+CI precede ready/head-matched merge commit and verification of GitHub/main.
+No assigned V3ISBN, native Kindle/KDP-account/ISBN ownership/physical-proof access;
+these remain publication follow-ups. No Amazon/account action.

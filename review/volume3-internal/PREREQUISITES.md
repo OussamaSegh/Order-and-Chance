@@ -314,3 +314,39 @@ term. Supply finite/local convergence and integral arguments next. The C4/C12
 smallest-simple claim also exposes an unproved finite-order assertion in C5;
 earn the finite proof during global closure. Those are pending findings, not
 approved outlook premises. Whole-book keyed occurrence/history/voice gates remain.
+
+## V3-013b — main workshop and finite minimum-order closure
+
+CH12-REVIEW.md closes all eight workshop problems with final exact domains and
+separate A/B. Actual V1 thm:mvt and prop:seqcrit are reopened again; local Lipschitz
+tagged sums construct every needed proper integral, and explicit logarithmic
+tail estimates construct the unit-circle improper cases. New Jensen partd earns
+the previously unproved extension and all integer zero-mean factors. No later
+integral construction is a premise. Exact old/new statements and lost connections
+are in V3-013b-curricular-disclosure.json, with all original targets retained.
+
+Finite geometric/positive-family estimates earn Euler products and square-root
+average error without future partial summation. Reopen actual C7 cor:abelian
+full proof; source coefficient comparisons are finite factorizations, not an
+unproved Dirichlet-series uniqueness theorem. Sylvester uses actual adjacent
+sequences; an independent tail proof and high-precision bounds recheck rounding.
+Reopen C9 ex:powersums actual proof before the general systems argument. Correct
+zero-equation degree arithmetic by nonnegative bounds/m>=1, and n1 sharpness.
+
+The full central-walk formulas now retain all zero modes at t0, so the target
+is every nonnegative integer time; only shorter corollaries require positive
+time. Old zero-time failures and all60-state exact checks are permanent. The
+first24-vs12 event error belongs to the initial reviewer reconstruction, not
+the original supplied answer. Old printed Theorem12.5 was correct; stable-label
+changes are not a claimed numerical-reference defect.
+
+V3-013b-SMALL-SIMPLE.md reconstructs the complete new finite C5 proof twice,
+including all27 table orders/six exceptions and simple-order60 actions. It uses
+only the actual earlier S4 series, Sylow/count/coset and extension proofs. C4's
+minimum-order remark is a preview, C12's use is now earned earlier. Category/
+functor examples are defined/proved locally; normalization/interpolation earns
+its nonzero denominator. Unproved outward homology/polytope links are removed
+with explicit loss disclosure, while every named/exercise target remains.
+
+All four appendices and global keyed unreferenced/concept/history/voice evidence
+still remain. This ledger distinguishes available proofs from inventory approval.

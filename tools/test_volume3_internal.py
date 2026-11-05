@@ -58,6 +58,9 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter5.check_gl2()
         check_chapter5.check_order12_and_plate()
 
+    def test_minimal_simple_order_and_actual_sylow_table(self):
+        check_chapter5.check_small_order_arguments()
+
     def test_ring_boundaries_polynomials_and_actual_lattice(self):
         check_chapter6.check_zero_ring_source()
         check_chapter6.check_residue_and_crt()
@@ -119,6 +122,19 @@ class Volume3InternalReview(unittest.TestCase):
         check_chapter12.check_icosahedral_existence()
         check_chapter12.check_rotation_plate()
         check_chapter12.check_actual_solid_plate()
+
+    def test_workshop_greedy_recurrences_dice_and_subset_characters(self):
+        check_chapter12.check_sylvester_and_mersenne()
+        check_chapter12.check_dice_and_subset_characters()
+
+    def test_zero_sum_systems_and_finite_abelian_average(self):
+        check_chapter12.check_egz_and_systems()
+        check_chapter12.check_abelian_coefficient_counts_and_constant()
+
+    def test_local_integrals_and_icosahedral_walk_endpoints(self):
+        check_chapter12.check_jensen_finite_products_and_integrals()
+        check_chapter12.check_actual_icosahedral_walk()
+        check_chapter12.check_workshop_prerequisites()
 
     def test_changed_reference_context_cannot_keep_classification(self):
         data = copy.deepcopy(volume3_inventory.inventory())

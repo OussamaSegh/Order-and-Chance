@@ -1,5 +1,62 @@
 # Progress
 
+## V3-013b: complete main-chapter named/exercise mathematics
+
+All twelve main chapters now have internal A/B records for every named result
+and every full exercise triple:112/155 named and127/163 exercises,239 accepted.
+The remaining43 named/36 exercises are all in the four appendices, fully in
+scope next. Global keyed unnamed/concept/dependency/history/voice and actual
+final artifacts remain separate pending gates, not automatically approved.
+
+CH12-REVIEW.md closes the remaining eight problems. Construct Lipschitz integrals
+from tagged finite sums, including elementary operations and the needed primitive
+rule; earn unit-circle log singularities and integer zero-mean factors in new
+Jensen partd. Prove positive Euler-product convergence/rearrangement and retain
+the full abelian-group sqrt(x) error by finite dyadic bounds, without future V6.
+Simplify Sylvester rounding by adjacent logarithmic sequences. Correct EGZ's
+degree-infinity/zero-equation domain with nonnegative bounds, including empty
+systems,n1 and characteristic2. Full old/new domain/grade/loss disclosure is JSON.
+
+Keep both icosahedral probability targets for every integer t>=0: full formulas
+retain18*0^t/3*0^t modes; old shortcuts apply for positive times. All60 states
+t0..10 match exact convolution. Original supplied12 fifth-turn count was right;
+the first reconstruction's24 was wrong and is corrected. Opened PDF also confirms
+old Theorem12.5 was correct: stable labels are robustness, not a stale-number defect.
+
+New C5 subsection proves all orders<60 solvable and the unique simple60 group
+is A5, retaining both formerly unproved claims. All27 table orders and six
+exceptional cases independently recomputed; no Burnside/odd-order premise.
+C4 marks a minimum-order outlook until that proof; C12 uses the backward link.
+One added table, no named/exercise loss. Replace the unproved homology/600-cell/
+special-function catalog with actual traces and earned group minimality, and
+define/prove actual functor examples. Those outward connections are disclosed
+losses; every named/graded target and binary-group arithmetic remains. Normalize
+nonzero r bysqrt(N(r)), and prove interpolation squared length>=1/2 with antipodal
+sign choice. Approved cover/art and shared EPUB scaling/wrappers remain intact.
+
+Validation:487 full unit tests pass, zero skips52.031s,
+/tmp/volume3-v013b-tests.log;24 focused4.231s, inherited checker379 labels/
+383 references, fresh inventory/register guards and whitespace pass. Exact
+support includes finite coefficients, bounded constant2.2948 prefix, subset Gram,
+zero-sum boundaries, integral examples and all walk endpoints. Old-source guard
+fails/current passes; mathematical counterexamples separately recorded. Tests
+do not certify the general proofs. Inventory155 named/163 triples/22 examples/
+22 figures/108 bibliography, now9 tabular environments and563 prose groups.
+
+Immutable PDF-only87bad3df has494 reading/493 print,KDP494,spine1.1594in,
+same-build wrap and6 public file hashes. Actually opened print354–364 colour and
+354/358 grayscale:11 distinct pages/13 full images. Small C12 angle/output labels
+were light in grayscale; strengthen only their text to charcoal, new rendering
+pending. Current source and all changed pagination require fresh output. No
+digital/reading/cover transfer. Actual raw/reading math Unicode is preserved;
+press glyph extraction differs and is not used as reading-text evidence.
+
+Prior87bad3df CI run41931636152 is terminal: list/debs/V3build/site pass,publish
+skipped. New source needs its own CI/artifacts. Latest main remains
+7f87c2ab00fdb0c7791dc833423b98bef0870f01. Environment returned ready with the exact
+branch and pending work intact; no user change overwritten. Continue appendices,
+then global registers/story/history/voice and final all-page/digital/artifact gates.
+
 ## V3-013a: quaternion/rotation core and matched C11 output
 
 All C12 source,15 prompts/hints/solutions and both figure files read. Close
