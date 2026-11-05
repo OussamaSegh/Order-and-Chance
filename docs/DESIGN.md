@@ -1,3 +1,26 @@
+# KDP interior bleed correction — 5 November 2026
+
+KDP rejected Volume 1's trim-size interior for insufficient bleed at PDF page 13.
+The four charcoal part dividers reached the cut without any extra printable area.
+The author requested a shared fix for all fifteen volumes and workflow regression
+tests. This supersedes the historical no-interior-bleed setting below.
+
+Typesetting and reading PDFs remain 7 × 10 inches. `tools/kdp_bleed.py` expands
+each print page to **7.125 × 10.25 inches**, with 0.125-inch top/bottom/outside
+bleed and mirrored trim positions. Opaque full-page backgrounds extend as vectors;
+the text keeps its original trim-relative position and size. Unextendable
+edge-reaching artwork blocks export. Visual parity compares the finished trim
+to the original; the added divider ink is checked independently.
+
+KDP listings specify **Bleed (PDF only)** and print metadata records the actual
+canvas. The print report is schema 2; library/cache schema 9 forces every book to
+rebuild. CI exercises the rejected page-13 case, facing pages, wrong dimensions,
+white padding and the real Ghostscript export, then checks each built volume.
+Verification and artifact evidence are recorded in
+`docs/reviews/kdp-interior-bleed-2026-11-05.md`.
+
+---
+
 # Volume 2 Chapter 4 proof and teaching checkpoint — 4 November 2026
 
 PR #103, DEP-029, retains design 5e while making the perfect-number,

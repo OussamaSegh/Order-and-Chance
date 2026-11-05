@@ -21,6 +21,8 @@ class PaperbackTest(unittest.TestCase):
         self.assertEqual(odd['ink'], 'premium_color')
         self.assertEqual(odd['paper'], 'white')
         self.assertEqual(odd['wrap_height_in'], 10.25)
+        self.assertIs(odd['interior_bleed'], True)
+        self.assertEqual((odd['interior_width_in'], odd['interior_height_in']), (7.125, 10.25))
         for pages in (23, 829):
             with self.assertRaises(ValueError):
                 specification(pages)

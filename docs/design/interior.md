@@ -86,14 +86,16 @@ epigraph.
 **Bleed.**
 
 - The chapter page has no band, so there is no ink in the margin.
-- In a bleed build (`\def\OCBLEED{}` before `\input{main.tex}`), the paper grows by
-  `\PRINTBLEED` (0.125 in) on every side and the layout stays 7 × 10 in. The part
-  page's charcoal still runs to every bleed edge.
-- The default build, which is the KDP interior (`kdp_pdf.py` checks it as "no bleed"),
-  is trim-size. The part page's charcoal still meets the trim. That is the earlier
-  full-page behaviour, unchanged here; a hairline of trim variance can show on a part
-  page. Switching KDP to a bleed interior needs the KDP setting changed as well as
-  `\OCBLEED`; this has not been done.
+- Typesetting and reading PDFs use the 7 × 10 trim-size layout. The old optional
+  `OCBLEED` typesetting path is retired: it incorrectly added binding-edge bleed.
+- Every KDP print export uses a **7.125 × 10.25 in** canvas, adding 0.125 in at
+  top, bottom and the mirrored outside edge. `tools/kdp_bleed.py` extends the
+  part page's solid background as a vector underlay while preserving the body's
+  trim-relative positions. The finished book remains 7 × 10 in.
+- KDP must use **Bleed (PDF only)**. The export validates page/trim boxes,
+  divider ink in the bleed and visual parity after trimming. This shared correction
+  follows KDP's Volume 1 page-13 rejection on 5 November 2026; no-bleed exports
+  with edge-to-edge charcoal are no longer allowed.
 
 ## Parts
 

@@ -84,13 +84,27 @@ class PrintPreparationTest(unittest.TestCase):
                 writer.add_blank_page(width=504, height=720)
             writer.write(directory / 'book.pdf')
             source = directory / 'book.pdf'
+            # Reproduce KDP's cited physical PDF page 13, with vector lettering
+            # and a full-charcoal background at the cut in the raw manuscript.
+            with pymupdf.open(source) as book:
+                page = book[12]
+                page.draw_rect(page.rect, color=None, fill=(.082, .082, .086))
+                page.insert_font(fontname='part', fontfile=str(ROOT / 'common/fonts/EBGaramond-Regular.otf'))
+                page.insert_text((90, 350), 'The Language of Proof', fontname='part',
+                                 fontsize=24, color=(1, 1, 1))
+                book.save(directory / 'with-part.pdf')
+            source = directory / 'with-part.pdf'
             output, report = directory / 'print.pdf', directory / 'report.json'
             data = export(source, output, report)
             self.assertEqual(data['flattened_pages'], [2])
+            self.assertIs(data['interior_bleed'], True)
+            self.assertEqual([item['page'] for item in data['bleed_backgrounds']], [13])
             self.assertEqual(check(output, report), 24)
             with pymupdf.open(output) as printed:
                 self.assertIn('First page', printed[0].get_text())
                 self.assertEqual(printed[1].get_text().strip(), '')
+                self.assertEqual(tuple(printed[12].rect), (0, 0, 513, 738))
+                self.assertIn('The Language of Proof', printed[12].get_text())
             cover = PdfWriter()
             cover.add_blank_page(width=504, height=720)
             cover.write(directory / 'front.pdf')

@@ -17,9 +17,9 @@ from pypdf import PdfReader, PdfWriter
 from pypdf.generic import DictionaryObject, IndirectObject, NameObject, StreamObject
 
 from check_cover_pdf import check_interior
-from print_layout import LAYOUT
+from kdp_bleed import add_bleed, check_bleed, check_bleed_geometry, set_bleed_boxes
 
-SCHEMA = 1
+SCHEMA = 2
 RESOLUTION = 600
 CATALOG_REMOVE = ('/OpenAction', '/PageMode', '/PageLabels', '/Names', '/Outlines',
                   '/Metadata', '/AcroForm', '/OCProperties', '/AA')
@@ -150,7 +150,7 @@ def navigation(reader):
                             for page in reader.pages]}
 
 
-def compare_pages(source, output, offset=0, ignore_rectangles=None):
+def compare_pages(source, output, offset=0, ignore_rectangles=None, trim_bleed=False):
     """Check visible content with two-sided ink coverage and colour comparison.
 
     A one-pixel allowance (72 dpi, or 200 dpi for a flattened raster page) accommodates the different font antialiasing
@@ -162,6 +162,10 @@ def compare_pages(source, output, offset=0, ignore_rectangles=None):
             raise ValueError('PDF pair page counts disagree')
         for index, page in enumerate(printed):
             before = original[index + offset]
+            if trim_bleed:
+                # Compare the finished trim against the original manuscript at
+                # identical coordinates; validate the added bleed separately.
+                page.set_cropbox(page.trimbox)
             if before.rect != page.rect or before.rotation != page.rotation:
                 raise ValueError(f'PDF body differs in geometry on page {index + 1}')
             is_flat = bool(before.get_text().strip()) and not page.get_text().strip()
@@ -215,7 +219,8 @@ def check(path, report=None):
             raise ValueError(f'{path}: KDP interior contains unnormalised ASCIIHex streams')
         if obj.get('/S') in ('/JavaScript', '/Launch') or obj.get('/Type') == '/Annot':
             raise ValueError(f'{path}: KDP interior contains interactive objects')
-    pages = check_interior(path)
+    pages = check_interior(path, bleed=True)
+    check_bleed(path)
     if not 24 <= pages <= 828 or path.stat().st_size > 650_000_000:
         raise ValueError(f'{path}: KDP premium-colour page/file-size limits exceeded')
     table = subprocess.check_output(['pdfimages', '-list', str(path)], text=True)
@@ -225,8 +230,11 @@ def check(path, report=None):
             raise ValueError(f'{path}: KDP interior image below 300 ppi: {line.strip()}')
     if report is not None:
         data = json.loads(Path(report).read_text())
-        if data.get('schema') != SCHEMA or data.get('print_sha256') != sha(path) or data.get('pages') != pages:
+        if (data.get('schema') != SCHEMA or data.get('print_sha256') != sha(path)
+                or data.get('pages') != pages or data.get('interior_bleed') is not True
+                or not isinstance(data.get('bleed_backgrounds'), list)):
             raise ValueError(f'{path}: KDP preflight report does not match the PDF')
+        check_bleed(path, data['bleed_backgrounds'])
     return pages
 
 
@@ -252,27 +260,36 @@ def export(source, output, report):
     with tempfile.TemporaryDirectory(prefix='kdp-', dir=output.parent) as directory:
         directory = Path(directory)
         repairs = prepare(source, directory / 'clean.pdf')
+        backgrounds = add_bleed(directory / 'clean.pdf', directory / 'bleed.pdf')
         result = subprocess.run([
             'gs', '-q', '-dSAFER', '-dBATCH', '-dNOPAUSE', '-sDEVICE=pdfwrite',
             '-dCompatibilityLevel=1.3', f'-r{RESOLUTION}', '-dEmbedAllFonts=true', '-dSubsetFonts=true',
             '-dDownsampleColorImages=false', '-dDownsampleGrayImages=false', '-dDownsampleMonoImages=false',
             '-dAutoRotatePages=/None', '-dPreserveAnnots=false', '-sColorConversionStrategy=LeaveColorUnchanged',
-            '-sOutputFile=' + str(directory / 'press.pdf'), str(directory / 'clean.pdf')],
+            '-sOutputFile=' + str(directory / 'press.pdf'), str(directory / 'bleed.pdf')],
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=1200)
         if result.returncode or result.stdout.strip():
             raise ValueError('KDP PDF export failed or reported a repair: ' + result.stdout[-3000:])
+        # Ghostscript may round a 513 pt CropBox to 512.9999. Check its
+        # geometry before normalising those sub-point box roundoffs. Ink is
+        # checked afterwards, with exact boxes and no crop-edge antialiasing.
+        check_bleed_geometry(directory / 'press.pdf')
         writer = PdfWriter(clone_from=PdfReader(directory / 'press.pdf', strict=True))
         writer.metadata = None
         for key in CATALOG_REMOVE:
             writer.root_object.pop(key, None)
         writer.pdf_header = '%PDF-1.3'
+        for index, page in enumerate(writer.pages):
+            set_bleed_boxes(page, index)
         candidate = directory / 'final.pdf'
         writer.write(candidate)
         check(candidate)
-        comparison = compare_pages(source, candidate)
+        check_bleed(candidate, backgrounds)
+        comparison = compare_pages(source, candidate, trim_bleed=True)
         if set(comparison['flattened_pages']) - set(repairs['transparency_pages']):
             raise ValueError('KDP export rasterized pages without live transparency')
         data = {'schema': SCHEMA, 'pages': len(original.pages), 'pdf_version': '1.3',
+                'interior_bleed': True, 'bleed_backgrounds': backgrounds,
                 'flattening_ppi': RESOLUTION, 'source_sha256': sha(source),
                 'source_body_sha256': body_digest(original), 'source_navigation': navigation(original),
                 'print_sha256': sha(candidate), **repairs, **comparison}

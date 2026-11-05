@@ -17,7 +17,7 @@ from check_print_cover import check as check_print_cover
 from check_cover_template import check as check_cover_template
 from print_layout import specification
 
-SCHEMA = 8
+SCHEMA = 9
 NAME = re.compile(r"volume[A-Z]?\d+-[A-Za-z0-9-]+\Z")
 
 
@@ -32,7 +32,7 @@ def fingerprints(root):
         and not Path(f).name.startswith('test_'))]
 
     def digest(paths):
-        h = hashlib.sha256(b'book-output-v8\0')
+        h = hashlib.sha256(b'book-output-v9\0')
         for name in sorted(paths):
             h.update(name.encode() + b'\0' + (root / name).read_bytes() + b'\0')
         return h.hexdigest()
@@ -116,7 +116,7 @@ def snapshot(root, cache, data):
             raise ValueError(f'Incomplete output for {book}')
         download = root / 'dist' / filename(book, 'pdf', root)
         interior = root / 'dist/kdp' / filename(book, 'print', root)
-        pages = check_interior(interior)
+        pages = check_interior(interior, bleed=True)
         report = root / 'build' / book / 'kdp-preflight.json'
         check_kdp(interior, report)
         check_style(interior)

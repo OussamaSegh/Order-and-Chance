@@ -42,8 +42,8 @@ jobs:
         id: library
         with:
           path: .book-cache
-          key: library-v8-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
-          restore-keys: library-v8-
+          key: library-v9-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: library-v9-
       - id: plan
         env:
           FORCE_ALL: ${{ inputs.rebuild_all || false }}
@@ -119,10 +119,26 @@ jobs:
         run: python3 -m unittest discover -s tools -p test_book_layout.py
       - name: Test the KDP print export
         run: |
+          python3 -m unittest discover -s tools -p test_kdp_bleed.py
           python3 -m unittest discover -s tools -p test_kdp_pdf.py
           python3 -m unittest discover -s tools -p test_kdp_cover.py
       - name: Build 7 x 10 reading PDF with cover, print PDF, EPUB and publishing assets
         run: ./build.sh ${{ matrix.volume }}
+      - name: Check every exported print page for KDP bleed
+        run: |
+          python3 - "${{ matrix.volume }}" <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'tools')
+          from kdp_bleed import check_bleed
+          from kdp_pdf import check
+          from public_names import filename
+          volume = sys.argv[1]
+          interior = Path('dist/kdp') / filename(volume, 'print')
+          pages = check(interior, Path('build') / volume / 'kdp-preflight.json')
+          check_bleed(interior)
+          print(f'{volume}: {pages} bleed-sized pages, mirrored trim and extended backgrounds verified')
+          PY
       - name: QA the rendered Volume 3 PDF and EPUB outputs
         if: matrix.volume == 'volume3-symmetry'
         run: python3 review/volume3-rewrite/check_volume3_outputs.py
@@ -185,7 +201,7 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && needs.list.outputs.snapshot_changed == 'true'
         with:
           path: .book-cache
-          key: library-v8-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          key: library-v9-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
       - uses: actions/upload-pages-artifact@v3
         if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
         with:

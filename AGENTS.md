@@ -9,6 +9,29 @@ in the books use the title-page numbers. The map is
 
 Read `docs/DESIGN.md` before changing design or publishing templates.
 
+## KDP interior bleed — 5 November 2026
+
+The author reported KDP's insufficient-bleed rejection at Volume 1 PDF page 13
+and requested the correction for **all fifteen volumes**, with workflow tests.
+This supersedes every older no-interior-bleed instruction below. Preserve the
+full-charcoal part pages, typography, finished 7 × 10 trim and page counts.
+
+- Typeset once at 7 × 10 for the reading PDF; its original body/navigation remains intact.
+- The print exporter adds 0.125 in at top, bottom and the mirrored outside edge:
+  **every print PDF page is 7.125 × 10.25 in (513 × 738 pt)**. There is no extra
+  binding-edge bleed. Use physical PDF parity, independent of printed folios.
+- Extend proven opaque full-page solid backgrounds as vector underlays. Reject
+  other edge-reaching artwork that has no authored bleed. Keep the body at its
+  original trim-relative coordinates and compare the trimmed print against it.
+- KDP must use **Bleed (PDF only)**. Listings and print metadata must agree.
+- Keep all existing format, font, resolution, navigation and cover checks. Verify
+  every page's boxes and actual divider bleed; white padding is insufficient.
+- Cache schema 9 invalidates all fifteen books. CI runs the page-13/facing-page
+  regressions and checks each freshly exported manuscript before publication.
+
+See `docs/KDP-EXPORT.md` and `tools/kdp_bleed.py`. Acceptance of the replacement
+file remains a KDP vendor check.
+
 ## EPUB figures and mathematics — 31 October 2026
 
 The author reads the EPUB on a Kindle Paperwhite. Plates and formulas are fixed in the EPUB pipeline only. Do not change the print or reading PDF for this.

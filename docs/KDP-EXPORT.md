@@ -28,16 +28,20 @@ Do not add A4, fixed Kindle, phone or extra public PDF editions.
      layers, attachments and document metadata from the print export.
    - Prune unused opacity and XObject resources. Unused global PGF alpha can
      otherwise rasterize almost an entire book, even when only five pages use it.
+   - Expand every print page to 7.125 × 10.25 in, with top/bottom and mirrored
+     outside bleed. Keep body coordinates relative to the 7 × 10 finished trim.
+     Extend opaque full-page solid backgrounds as vectors. Other edge-reaching
+     artwork without authored bleed must block export.
    - Normalize through Ghostscript to PDF 1.3. Flatten actual transparent pages
      at **600 ppi**, with no image downsampling. Keep vector text elsewhere.
    - Reject unencrypted-format regressions, live alpha, malformed/unnormalized
      streams, interactions, crop/rotation changes, unembedded/bitmap fonts,
      images below 300 physical ppi, invalid page counts and oversized files.
-4. Compare every page against the original body: geometry, visible colours and
+4. Compare every page's finished trim against the original body: geometry, visible colours and
    two-sided ink coverage. Unexpected rasterization is an error. Do not weaken
    the comparison to make a failing book publish; investigate the affected page.
 5. Retain `build/<book>/kdp-preflight.json`: source/output hashes, original
-   navigation/body digest, repaired streams, transparent/flattened pages,
+   navigation/body digest, extended background pages/colours, repaired streams, transparent/flattened pages,
    resolution and comparison measurements. The report is required by CI/cache.
 
 Ghostscript can rewrite font Unicode maps. That is why the cleaned print PDF must
@@ -80,7 +84,9 @@ this print-only path. The author explicitly chose the latest pulled artwork.
 ## Geometry and KDP settings
 
 - Paperback; **7 × 10 inches**; **premium colour / white paper**.
-- Interior: **no bleed**, every page exactly 504 × 720 PDF points.
+- Interior: **Bleed (PDF only)**, every page exactly **513 × 738 PDF points**
+  (7.125 × 10.25 in). TrimBox is `(0,9,504,729)` on physical odd pages and
+  `(9,9,513,729)` on physical even pages. Reading/source pages remain 504 × 720 pt.
 - Cover: 0.125-inch outside bleed, total height 10.25 inches.
 - Read actual exported print pages; round up to an even count for the spine.
 - Spine = even-rounded pages × **0.002347 inches**, rounded as specified by
@@ -89,7 +95,7 @@ this print-only path. The author explicitly chose the latest pulled artwork.
 - Never reuse the initial 241-page Volume-0 specimen or its 0.568-inch spine for
   a revised manuscript. The pulled Volume 0 has ten chapters; rebuild/count it.
 - Upload `*-print.pdf` under Manuscript and `*-cover-wrap.pdf` under Cover.
-  The interior's “No bleed” selection does not remove the required cover bleed.
+  Choose **Bleed (PDF only)** for the manuscript. Cover bleed remains separate.
 
 ## Dependencies, CI and future-agent checks
 
@@ -107,7 +113,8 @@ python3 tools/check_print_cover.py "dist/kdp/Volume 1 - First Principles - Paper
   --number 1 --press-report build/volume1-first-principles/cover-preflight.json
 ```
 
-Schema/fingerprint **7** and `library-v7-` force every book to regenerate. Both
+Schema/fingerprint **9** and `library-v9-` force every book to regenerate. The
+interior export report is schema **2**. Both
 export reports are required in each artifact/cache entry. Snapshot assembly checks
 the final files and hashes again, verifies reading navigation/body provenance and
 visual parity, and validates page-derived cover geometry before publication.
@@ -120,6 +127,24 @@ as proof that KDP accepted an upload; report actual author feedback separately.
 
 Official preparation guidance:
 https://kdp.amazon.com/en_US/help/topic/G201857950
+
+Bleed dimensions and the requirement to size the entire file for bleed:
+https://kdp.amazon.com/en_US/help/topic/GVBQ3CMEQW3W2VL6
+
+## KDP rejection regression — 5 November 2026
+
+The author supplied KDP's rejection citing insufficient interior bleed at Volume 1
+PDF page 13. The published file was 447 trim-size pages with edge-to-edge charcoal
+on PDF pages 13, 55, 129 and 355. The previous preflight passed that file because it
+checked trim-size geometry without the missing bleed requirement. This is actual
+vendor rejection feedback, not an inferred upload outcome.
+
+All fifteen volumes now share the bleed export. CI runs `test_kdp_bleed.py` and a
+real Ghostscript page-13 regression in `test_kdp_pdf.py`, then checks every produced
+manuscript with `kdp_bleed.check_bleed` and the complete export report. Wrong-size
+pages, wrong facing-page trims, white padding and unsupported edge artwork are
+rejected. Existing reading navigation and final cover checks remain required.
+Current verification is in `docs/reviews/kdp-interior-bleed-2026-11-05.md`.
 
 ## Implementation verification
 
