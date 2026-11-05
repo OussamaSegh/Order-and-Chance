@@ -609,3 +609,14 @@ nonabelian determinant/irreducibility proof were reconstructed in both direction
 where available. Six new explicit chains plus the completed Paley first chain
 retain pending whole-volume status. Earlier source hashes guard drift, including
 main/include order. Unreferenced arguments are in all66 GLOBAL-APPB decisions.
+
+## V3 citation reread, 5 November 2026
+
+The teaching pass changed Volume 1, and one sentence in the circulant solution changed. Those files are the drifted prerequisite and anchor hashes. This note is the reread of the sites the gates name, not a new approval of every earlier theorem.
+
+- `11.solution.ex:circulant` differs by one sentence. It now says the product, quotient and chain rules were proved in Volume 1, Chapter 3. Reread `prop:early-differentiation` in `ch05-sequences-series.tex`, lines 381–415: the product rule, the quotient rule and the chain rule are proved there, after the derivative has been defined. Chapter 5 of the current Volume 1 is complex numbers, so the old citation was the wrong chapter. The geometric construction of sine and cosine in that solution is unchanged. Five concept anchors and the exercise’s related-solution hash now use the new solution bytes. Their written reconstructions were left in place.
+- The earlier-reference row `ch11-characters.tex::V1::2` already named that same proposition. Its context hash was updated to the corrected sentence, and the line range in the note is now 381–415.
+- Volume 2’s group reminder in `ch01-divisibility.tex` now says Volume 1, Chapter 5. Reread the complex-numbers chapter: \((\Z,+)\) is introduced there as a group, with identity 0 and inverse \(-a\). Chapter 5 is the right pointer. The Basel tools line in `ch05-primitive-roots.tex` now names Exercise 6.7, which is where \(\pi^2/6\) is proved.
+- Well ordering is a `definitionx` in `ch01-sums.tex`: every nonempty subset of \(\N\) has a least element. The induction proposition immediately after it still derives strong induction from that sentence. Inclusion–exclusion, the roots-of-unity proposition, the roots-of-unity filter and Brahmagupta’s identity are still the statements Volume 2’s bridge test looks up.
+- Volume 2 forward references were recomputed: 85 uses, same paths, lines, targets and context hashes as the classified register. No classification was changed.
+- Whole-file prerequisite hashes and the conceptual snapshot were refreshed only after the checks above. They guard drift. They do not certify the separate reading notes on Cesàro’s mis-application or the index-2 sentence for the trivial group.

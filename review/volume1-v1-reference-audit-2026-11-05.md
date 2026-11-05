@@ -17,6 +17,8 @@ Manuscript under review: `7047e1b56ab0bde76f8556ce1eadee28d0b8a872`. Report upda
 
 **Carleman, corrected.** The manuscript does **not** say \((n!)^{1/n}\sim e/n\). At `ch04-inequalities.tex` line 599 it says the \(n\)th geometric mean is \(1/(n!)^{1/n}\sim e/n\). That is the right equivalent: Stirling gives \((n!)^{1/n}\sim n/e\), and the reciprocal is \(e/n\). An earlier draft of this report swapped the two. That was a report error, not a manuscript error. It is not a finding.
 
+**Gate reread, 5 November 2026.** The publishing tests failed because Volume 1’s teaching edits and one Volume 3 citation changed hashed sources. The sites those gates name were reread and the evidence updated; the checks were not weakened. Detail is in `review/volume3-internal/PREREQUISITES.md` under “V3 citation reread, 5 November 2026”. The two definite false sentences above were not patched.
+
 **Strongest remaining items**
 
 1. V1-SEQ-01, definite. Grandi’s averages are called an application of Cesàro’s theorem to a sequence that does not converge. The theorem needs convergence. The correct even/odd count is already two paragraphs later.
