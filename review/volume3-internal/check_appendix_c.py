@@ -318,6 +318,74 @@ def check_local_contract(source=None):
     assert 'odd prime power' in source
 
 
+def check_planar_maximum(source=None):
+    """Exact support for the newly supplied general geometric proof."""
+    source = SOURCE.read_text() if source is None else source
+    assert r'\label{combinatorial:prop:planarmax}' in source, (
+        'The original five-point planar maximum needs a local proof')
+
+    # A different finite check of the six-vertex colouring argument: every
+    # one of the 2^15 edge colourings contains a monochromatic triangle.
+    edges = list(combinations(range(6), 2))
+    index = {e: i for i, e in enumerate(edges)}
+    triangles = [sum(1 << index[e] for e in combinations(v, 2))
+                 for v in combinations(range(6), 3)]
+    assert all(any(mask & t in (0, t) for t in triangles)
+               for mask in range(1 << len(edges)))
+
+    def det3(a):
+        return (a[0][0]*(a[1][1]*a[2][2]-a[1][2]*a[2][1])
+                - a[0][1]*(a[1][0]*a[2][2]-a[1][2]*a[2][0])
+                + a[0][2]*(a[1][0]*a[2][1]-a[1][1]*a[2][0]))
+
+    # Gram determinants are polynomials of degree at most two in t=r^2.
+    # Their coefficients are determined by these three exact evaluations.
+    for pattern in product((0, 1), repeat=3):
+        for t in map(Q, (0, 1, 2)):
+            x, y, z = (t if bit else Q(1) for bit in pattern)
+            gram = [[Q(1), Q(1, 2), (1+x-y)/2],
+                    [Q(1, 2), Q(1), (1+x-z)/2],
+                    [(1+x-y)/2, (1+x-z)/2, x]]
+            expected = (Q(1, 2), t*(3-t)/4,
+                        (-t*t+4*t-1)/4, (3*t-1)/4)[sum(pattern)]
+            assert det3(gram) == expected
+
+    # Exact coordinates in Q(sqrt(3)), using pairs a+b*sqrt(3).
+    def add(a, b):
+        return a[0]+b[0], a[1]+b[1]
+    def scale(c, a):
+        return c*a[0], c*a[1]
+    def sub(a, b):
+        return add(a, scale(-1, b))
+    def mul(a, b):
+        return a[0]*b[0]+3*a[1]*b[1], a[0]*b[1]+a[1]*b[0]
+    zero, one, h = (Q(0), Q(0)), (Q(1), Q(0)), (Q(0), Q(1, 2))
+    vertices = [(scale(-Q(1, 2), one), zero),
+                (scale(Q(1, 2), one), zero), (zero, h)]
+    centre = zero, scale(Q(1, 3), h)
+    def squared(a, b):
+        d = [sub(x, y) for x, y in zip(a, b)]
+        return add(mul(d[0], d[0]), mul(d[1], d[1]))
+    def rotate(a):
+        x, y = [sub(u, v) for u, v in zip(a, centre)]
+        return (add(centre[0], sub(scale(-Q(1, 2), x), mul(h, y))),
+                add(centre[1], add(mul(h, x), scale(-Q(1, 2), y))))
+    assert all(squared(centre, v) == (Q(1, 3), Q(0)) for v in vertices)
+    candidates = [((zero, scale(-1, h)), (Q(3), Q(0)), (Q(4), Q(0)))]
+    for sign in (-1, 1):
+        t = Q(2), Q(sign)
+        candidates.append(((zero, add(h, scale(sign, one))), t, scale(2, t)))
+    for p, t, separation in candidates:
+        orbit = [p, rotate(p), rotate(rotate(p))]
+        assert rotate(orbit[-1]) == p and len(set(orbit)) == 3
+        for q in orbit:
+            values = [squared(q, v) for v in vertices]
+            assert all(x in (one, t) for x in values)
+            assert sum(x == t for x in values) == (1 if t == (Q(3), Q(0)) else 2)
+        assert all(squared(a, b) == separation for a, b in combinations(orbit, 2))
+        assert separation not in (one, t)
+
+
 def check_earlier_printed_order(perron_source=None):
     def chapter_map(volume):
         source = (ROOT/volume/'main.tex').read_text()
@@ -355,5 +423,6 @@ if __name__ == '__main__':
     check_cap_counts_and_optimum()
     check_actual_figures()
     check_local_contract()
+    check_planar_maximum()
     check_earlier_printed_order()
     print('Combinatorial appendix: exact incidence/polynomial/field/count/figure probes pass; no approval generated.')

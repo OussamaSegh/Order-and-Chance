@@ -210,3 +210,15 @@ repetitive proof summary and stock never-estimates/greatest-triumph closing
 with actual objects and spaces; the next question is constructing orthogonal
 sign rows from fields. No human/spoken read-aloud claimed. Artin quotation, attribution metadata and remaining historical claims still need primary-source
 closure in the global pass; bibliography read is not metadata verification.
+
+## V3-034: restore and earn the original planar maximum
+
+The original caption's five-point planar assertion was removed in V3-016 because
+it was not proved; the earlier general6 bound remained. A new complete local
+proposition now restores and proves5, with full coordinate A and adversarial
+Gram/candidate B records in V3-034-planar-maximum.json. No Kelly classification
+is assumed. C now has19 named results; the original18 remain individually
+unchanged, as do9 of10 full triples. The changed quadric idea gets a fresh full
+triple check; its existing zero-denominator/characteristic2 solution was sound.
+V3-034-PLANAR-MAXIMUM and planar-disclosure give actual old/new scope, tests and
+limits. The seven-group global/history/dependency/voice pass remains pending.

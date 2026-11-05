@@ -1,5 +1,70 @@
 # Progress
 
+## V3-034: earn the original planar five-point maximum
+
+The actual original caption asserted a planar maximum5 without proving it;
+V3-016 had removed that unsupported claim and retained the proved6 bound. A new
+complete local proposition now restores and earns5. Its proof combines a fully
+proved six-vertex coloring fact with a complete equilateral-triangle extension
+classification. The adversarial second reconstruction uses Gram determinants
+and exact candidate coordinates. The regular pentagon attains5. No external
+Kelly classification or future Ramsey theorem is imported, and the original
+general bounds remain. V3-034-PLANAR-MAXIMUM and planar-disclosure record every
+old/interim/new statement, boundary, attribution limit and affected reference.
+
+The entire current C text,18 existing full named proofs,ten complete triples,
+both whole figure sources and seven bibliography groups were reread. The new
+proof brings C to19 named and the book to158: original155 plus the locally earned
+non-Euclidean PID, quartic and planar propositions/theorems. The quadric finding
+idea now allows degree at most2; its whole changed triple gets fresh A/B. Its
+existing zero-denominator/characteristic2 answer was already correct. Eighteen
+other named pairs/nine triples are individually byte-identical after rereading.
+The new insertion shifts13 anonymous proof IDs; explicit old/new mapping uses
+stable named labels and full paired hashes, never ordinal/count approval.
+
+The finite three-variable tensor meaning, zero-polynomial degree upper bounds,
+exact general n+1 gap and proper additive-subgroup obstruction are explicit.
+SET's incidental origin detail is bounded to its publisher's animal-genetics/
+file-card account. The unsupported Babai–Frankl2020-edition detail is corrected
+to1992 preliminary version2; the tri-colored paper's title regains rate.
+An uninspected Artin ChapterI pointer and the unverified exact Kelly attribution
+are removed without declaring the quotation/result false. Axler's actual slide3
+corroborates the Artin words/year/book; Wiley metadata distinguishes dates.
+These bounded corrections do not finish the remaining C bibliography research.
+
+Final current-source **515 tests pass,zero skips,57.240s**, /tmp/volume3-v034-tests.log,
+after all source/checker changes. Required source,inventory,register/global-ledger
+freshness,C probes and whitespace gates pass. The new source-presence guard fails
+on the actual original7f87 caption source, then passes with the local proof;
+all32768 K6 colorings, exact Gram polynomial identities and Q(sqrt3) candidate
+checks support the general written proof. No assertion weakened; exact inventory
+check now requires158 and the new stable label. Editorial independent_verified
+stays0; fresh mathematical decisions are in the separate internal registers.
+Source was frozen during tests; later reports are descriptive.
+
+**1093 accepted=158 named+163 full triples+772 global;81 global rows pending C65/D16.**
+Inventory1658 items/601prose/118bibliography/22examples/22figures/9tables/22sources.
+357/393 label occurrences and87/88 literal earlier contexts accepted.114/116 first
+chains reviewed; all116 whole-volume chains pending.277 older accepted global
+rows still need explicit domain/claim fields and a strict gate. The seven C
+bibliography groups now retain24 works after removal of one incidental pointer;
+external full-paper/book reading is never inferred from a source-entry count.
+
+No current immutable artifact or pixel approval claimed. Latest complete matched
+outputs remain3bffe82f, before A/C12/B/C changes. New producing snapshot/build and
+actual affected pages are needed. New head requires its own terminal CI; the
+last fully successful inspected run remains a1/run1715. Main-only cache policy
+unchanged; no main or unrelated runs cancelled.
+
+Continue C global history/dependency/voice/first-use decisions, then D, older
+fields and conceptual closure. Freeze final source, build all formats, run actual
+EPUBCheck/output checks, inspect every actual reading/print page/gray/facings and
+narrow/wide digital behavior/all links/triple destinations, compare final CI
+artifacts, then exact reviewed-head clean/base/terminal-CI/ready/head-matched
+merge and GitHub/main verification. Native Kindle/KDPaccount/ISBN ownership/
+physical proof remain unavailable publication follow-ups. No Amazon action or
+invented ISBN. This is continued work, not final delivery.
+
 ## V3-033: complete Appendix B global pass
 
 The entire current Symmetry Diagonalises appendix was read, including all eleven

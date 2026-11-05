@@ -686,8 +686,10 @@ def check_theorem_rewrite_ledger() -> tuple[int, int]:
             actual.add((name, ident, kind))
         assert src.count(r"\begin{proof}") == src.count(r"\end{proof}"), name
     assert seen == actual, f"Proof ledger mismatch: missing {actual-seen}, obsolete {seen-actual}"
-    # V3-024 earns the formerly quoted non-Euclidean PID with one new proof.
-    assert len(actual) == ledger["total_statements"] == 157
+    # Three new local proofs earn previously quoted tools/claims: the
+    # non-Euclidean PID, the nonconstructible quartic and the planar maximum.
+    assert len(actual) == ledger["total_statements"] == 158
+    assert ("combinatorial", "combinatorial:prop:planarmax", "proposition") in actual
     assert recorded == ledger["rewrites_recorded"]
     verified = ledger["independent_verified"]
     assert isinstance(verified, int) and 0 <= verified <= recorded

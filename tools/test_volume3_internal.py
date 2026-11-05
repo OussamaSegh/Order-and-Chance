@@ -86,6 +86,9 @@ class Volume3InternalReview(unittest.TestCase):
         check_appendix_c.check_local_contract()
         check_appendix_c.check_earlier_printed_order()
 
+    def test_combinatorial_planar_maximum(self):
+        check_appendix_c.check_planar_maximum()
+
     def test_symmetry_appendix_fourier_cubic_and_actual_figures(self):
         check_appendix_b.check_circulants_and_cubic()
         check_appendix_b.check_paley_and_actual_figures()
