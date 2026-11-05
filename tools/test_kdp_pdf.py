@@ -103,6 +103,12 @@ class PrintPreparationTest(unittest.TestCase):
             with pymupdf.open(output) as printed:
                 self.assertIn('First page', printed[0].get_text())
                 self.assertEqual(printed[1].get_text().strip(), '')
+                # Keep the approved 7x10 raster's original samples. Expanding
+                # before GS produces a larger page image and changes reader
+                # downsampling (the real Volume 12 p60 regression).
+                image = printed[1].get_image_info()[0]
+                self.assertEqual((image['width'], image['height']), (4200, 6000))
+                self.assertEqual(tuple(image['bbox']), (9, 9, 513, 729))
                 self.assertEqual(tuple(printed[12].rect), (0, 0, 513, 738))
                 self.assertIn('The Language of Proof', printed[12].get_text())
             cover = PdfWriter()

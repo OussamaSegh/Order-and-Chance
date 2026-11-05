@@ -11,6 +11,10 @@ bleed and mirrored trim positions. Opaque full-page backgrounds extend as vector
 the text keeps its original trim-relative position and size. Unextendable
 edge-reaching artwork blocks export. Visual parity compares the finished trim
 to the original; the added divider ink is checked independently.
+The print canvas expands after the existing trim-size Ghostscript conversion,
+preserving 600 ppi raster samples and dimensions; expanding before conversion
+changed reader downsampling on Volume 12 PDF page 60. The regression checks
+the flattened image's original 4200 × 6000 samples and mirrored placement.
 
 KDP listings specify **Bleed (PDF only)** and print metadata records the actual
 canvas. The print report is schema 2; library/cache schema 9 forces every book to

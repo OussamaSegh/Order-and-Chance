@@ -20,6 +20,9 @@ KDP's cited page and the author's confirmed filename.
 - Every print page is **513 × 738 pt (7.125 × 10.25 in)**, for the same 7 × 10 trim.
   The 9 pt outside extension mirrors by physical PDF page parity. Top/bottom
   extensions are 9 pt each; binding edges have no added bleed.
+- Add this canvas after the approved trim-size Ghostscript conversion, so
+  transparent pages keep their original 4200 × 6000 samples at 600 ppi. This
+  preserves how readers downsample those images while moving them to the trim.
 - `kdp_bleed.py` preserves the body's trim-relative coordinates and extends
   proven opaque full-page rectangular backgrounds with a vector underlay.
   It recognises both native PDF rectangles and the actual four-line TikZ path.
@@ -49,9 +52,18 @@ backgrounds at **13, 55, 129 and 355**. Only the same five transparency pages
 (106, 247, 337, 368, 408) are flattened at 600 ppi. The all-page visual comparison
 passes with maximum unmatched ink fraction **0.00239**, retaining the existing
 thresholds. The local corrected print SHA-256 is
-`9228c135af5f63cb5f426f850a438333a2cde9a61fcfa4df36584abd3286b249`.
+`eb0d114066bbba6a77ea814ee6366641cfa9f12cf553d7934079a9df13f3fb3a`.
 Typesetting reports 412 whole boxes with no overflow or unresolved references;
 the reading-source navigation/body and final interior font/colour checks pass.
+
+The first all-volume CI run [41979870276](https://github.com/OussamaSegh/Order-and-Chance/actions/runs/41979870276)
+identified a comparison failure on Volume 12 PDF page 60 when the canvas was
+expanded before Ghostscript. Its 600 ppi page image grew with the canvas, changing
+reader downsampling. The corrected ordering keeps the original image samples and
+passes the unchanged comparison: the real 185-page Volume 12 interior has only
+page 60 flattened, maximum mean pixel difference **2.34372** and maximum unmatched
+ink **0.02357**. The integration regression asserts the original raster dimensions
+and mirrored trim placement. No comparison threshold was raised.
 
 The build workflow runs the new bleed regressions with Ghostscript installed,
 then validates each produced volume's complete export report, page boxes and

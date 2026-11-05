@@ -17,7 +17,7 @@ from pypdf import PdfReader, PdfWriter
 from pypdf.generic import DictionaryObject, IndirectObject, NameObject, StreamObject
 
 from check_cover_pdf import check_interior
-from kdp_bleed import add_bleed, check_bleed, check_bleed_geometry, set_bleed_boxes
+from kdp_bleed import add_bleed, check_bleed
 
 SCHEMA = 2
 RESOLUTION = 600
@@ -260,27 +260,24 @@ def export(source, output, report):
     with tempfile.TemporaryDirectory(prefix='kdp-', dir=output.parent) as directory:
         directory = Path(directory)
         repairs = prepare(source, directory / 'clean.pdf')
-        backgrounds = add_bleed(directory / 'clean.pdf', directory / 'bleed.pdf')
         result = subprocess.run([
             'gs', '-q', '-dSAFER', '-dBATCH', '-dNOPAUSE', '-sDEVICE=pdfwrite',
             '-dCompatibilityLevel=1.3', f'-r{RESOLUTION}', '-dEmbedAllFonts=true', '-dSubsetFonts=true',
             '-dDownsampleColorImages=false', '-dDownsampleGrayImages=false', '-dDownsampleMonoImages=false',
             '-dAutoRotatePages=/None', '-dPreserveAnnots=false', '-sColorConversionStrategy=LeaveColorUnchanged',
-            '-sOutputFile=' + str(directory / 'press.pdf'), str(directory / 'bleed.pdf')],
+            '-sOutputFile=' + str(directory / 'press.pdf'), str(directory / 'clean.pdf')],
             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, timeout=1200)
         if result.returncode or result.stdout.strip():
             raise ValueError('KDP PDF export failed or reported a repair: ' + result.stdout[-3000:])
-        # Ghostscript may round a 513 pt CropBox to 512.9999. Check its
-        # geometry before normalising those sub-point box roundoffs. Ink is
-        # checked afterwards, with exact boxes and no crop-edge antialiasing.
-        check_bleed_geometry(directory / 'press.pdf')
-        writer = PdfWriter(clone_from=PdfReader(directory / 'press.pdf', strict=True))
+        # Keep the approved trim-size transparency conversion first. Enlarging
+        # its canvas changes how PDF readers downsample whole-page rasters
+        # (Volume 12 p60). Add bleed afterwards without resampling those images.
+        backgrounds = add_bleed(directory / 'press.pdf', directory / 'bleed.pdf')
+        writer = PdfWriter(clone_from=PdfReader(directory / 'bleed.pdf', strict=True))
         writer.metadata = None
         for key in CATALOG_REMOVE:
             writer.root_object.pop(key, None)
         writer.pdf_header = '%PDF-1.3'
-        for index, page in enumerate(writer.pages):
-            set_bleed_boxes(page, index)
         candidate = directory / 'final.pdf'
         writer.write(candidate)
         check(candidate)

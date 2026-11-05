@@ -28,12 +28,15 @@ Do not add A4, fixed Kindle, phone or extra public PDF editions.
      layers, attachments and document metadata from the print export.
    - Prune unused opacity and XObject resources. Unused global PGF alpha can
      otherwise rasterize almost an entire book, even when only five pages use it.
-   - Expand every print page to 7.125 × 10.25 in, with top/bottom and mirrored
-     outside bleed. Keep body coordinates relative to the 7 × 10 finished trim.
-     Extend opaque full-page solid backgrounds as vectors. Other edge-reaching
-     artwork without authored bleed must block export.
    - Normalize through Ghostscript to PDF 1.3. Flatten actual transparent pages
      at **600 ppi**, with no image downsampling. Keep vector text elsewhere.
+   - After conversion, expand every print page to 7.125 × 10.25 in, with
+     top/bottom and mirrored outside bleed. Keep body coordinates relative to
+     the 7 × 10 finished trim and preserve converted raster samples/dimensions.
+     Extending the canvas before flattening changes reader downsampling of
+     whole-page images (reproduced on Volume 12 page 60).
+     Extend opaque full-page solid backgrounds as vectors. Other edge-reaching
+     artwork without authored bleed must block export.
    - Reject unencrypted-format regressions, live alpha, malformed/unnormalized
      streams, interactions, crop/rotation changes, unembedded/bitmap fonts,
      images below 300 physical ppi, invalid page counts and oversized files.
