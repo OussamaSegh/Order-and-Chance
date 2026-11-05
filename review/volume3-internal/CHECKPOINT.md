@@ -1,99 +1,112 @@
-# Restart checkpoint — V3-027
+# Restart checkpoint — V3-028
 
-Solo internal AI review, not human refereeing or formal verification. Draft PR104:
+Solo internal AI review, not human refereeing or formal verification. DraftPR104:
 https://github.com/OussamaSegh/Order-and-Chance/pull/104 . Branch
-editorial/volume3-complete-internal-review-20261104. This batch follows
-779a95d54cfabe70d505bcf07c6eb998d5ec3821; read actual HEAD after commit.
-Activate /workspace/volume3-tools/activate.sh. Use fail-fast gates, preserve user
-changes. User authorizes complete solo review and head-matched merge only after
-all real gates pass. No delegation/reviewer request, no Amazon/account action.
-Continue through compactions; never end as a partial checkpoint.
+editorial/volume3-complete-internal-review-20261104. Current batch follows
+**af1c3fe4c05c0d6e73530edbbfc9847b7a9c10a0**; read actual HEAD after committing.
+Activate /workspace/volume3-tools/activate.sh. User authorizes the entire solo
+review and expected-head merge only after actual gates pass. No delegation or
+reviewer request; no Amazon/account action. Preserve user changes. Continue
+through compactions and do not end as a partial checkpoint. Updates about once
+per minute. Full curricular freedom, mathematical depth/complete solutions earned.
 
-## Concurrent main advancement — integrate next
+## Baseline and concurrent main
 
-PR103 actual merge/original baseline7f87c2ab00fdb0c7791dc833423b98bef0870f01.
-Fresh fetch now finds main d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678, merge of
-PR105, commits0d3d4d02/2b3866e7. This changes shared KDP interior bleed for all
-fifteen volumes. Actual entire diff read, including new AGENTS/DESIGN/interior/
-KDP-export/PUBLISHING instructions, build changes, complete workflow diff and
-actual permanent correction report. Commit this C9 batch, merge current main
-without rewriting review history, inspect tool changes/full current workflow,
-run affected regressions/full suite and rebuild. Reading stays7x10; print now
-7.125x10.25 with mirrored outside/top/bottom bleed, original trim coordinates,
-vector solid-background extension AFTER trim-size Ghostscript flattening.
-No binding-edge bleed. Metadata/listing Bleed(PDFonly), cache schema9; saves
-still only main. Do not cancel main/unrelated runs. Old no-bleed artifacts remain
-scoped historical evidence and do not establish current production acceptance.
+PR103 actual merge/originalbaseline7f87c2ab00fdb0c7791dc833423b98bef0870f01.
+Fresh main now **d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678**, PR105 bleed correction,
+merged without conflicts/history rewriting ataf1 after C9 e26d3b9d. All new AGENTS/
+DESIGN/interior/KDP/PUBLISHING instructions, full current workflow, implementation/
+regressions and permanent bleed report read. Latestfetchbeforethisbatch stilld97.
+Reading/source7x10. Print7.125x10.25, top/bottom/mirroredoutside bleed, no binding
+bleed; preserve original trim coordinates, extend proven fullsolid backgrounds
+asvectors AFTERtrim-size Ghostscript conversion. Metadata/listingBleed(PDFonly).
+Schema9 library caches saveonlymain; no PRcacheguarantee. Never cancelmain or
+unrelatedruns. Previous no-bleedartifacts historical, not current acceptance.
 
-## Current review
+## Mathematical/global coverage
 
-806 accepted=157 named+163 full exercise triples+486 global.360 global pending
-C10–12/all four appendices. Entire C9 read with eleven full named proofs,
-thirteen full triples, both actual figure sources and twelve source entries.
-Sixty manual global rows,37 label uses and6 earlier contexts reviewed. Complete
-changed thm:fq proof and Lucas-Lehmer triple freshly A/B; ten other named pairs
-and twelve triples individually exact-hash matched. Original prompt-first
-chronology retained, no new blind-solve claim. C8 mathematical identities all
-individually unchanged after local Needspace. Inventory1649 items/594 prose/
-118 bibliography/22 examples/22 figures/9 tables/22 sources.201/389 label uses,
-60/85 earlier literal contexts accepted.78 first chains reviewed,8 pending;
-all86 whole-volume concept statuses pending until later uses manually closed.
+**859 accepted =157named +163fulltriples +539global;311 global pending C11–12/A–D.**
+EntireC10read:13fullnamedproofs,11wholetriples, bothactualfigures,7sourceentries /
+8works.53manualglobalA/Brows,50labeluses,3earliercontexts reviewed. All13named
+statement/proofpairs and11triples individually identical byactual hashes after
+edits, V3-028-retained-identities. OriginalCH10-PROMPT-FIRST chronology includes
+priorphin/Kroneckerexposure; preserved, no newblindsolveclaim. No historical
+editorial approval inherited. Inventory1653items/598prose/118bibliography/
+22sources/22examples/22figures/9tables.251/389labeluses,63/85literalearliermentions
+accepted.84firstchainsreviewed,7pending; **all91whole-volume/later-use statuses
+pending**. Inventoryscripts/reconciliation never approve mathematics.
 
-Repairs: F16 irreducibility/order15 full proof before diagram; subfield inclusion,
-gcd meet/lcm generated field full proofs; explicit LEAST prime factor for Lucas
-small-factor inequality, independent all-factor field proof as B. Complete cubic
-field-operation decoder cost earned; loose RH/Weil analogy and unproved fast
-quadratic aside replaced by earned statements, disclosed curricular record.
-All named/exercise targets and full reader-facing solutions preserved. All tables,
-actual F16/Pascal source coordinates, AES two certificates, recurrence/trace/
-Moore endpoints recomputed. New seven conceptual chains do not close later uses.
+C10repairs earn motivating cycliccubic locally (tripleangle/allroots/minpoly/
+actualC8splittingcount), constant-polynomial splittingK/trivialgroup convention,
+and65537primeexample byorder32/leastfactor/progressionremainders. Fullnormal /
+radicalcorrespondence andeveryindividualroot quinticobstruction retained, explicit
+charzero contract; no laterpositivechar/complexmodpoutlook used as premise.
+Fullcyclotomic workedtriple beforeallgeneraldegree uses. AlltenD4fields/15edges,
+allperiod/table/count/220graphsamples/rootcoordinates/branch/emptycases rechecked.
+Wholewrittenreader/voicepass, nothumanor spoken. No named/exercisetargetweakened.
 
-Actual relevant Moore1893/1896 Congress/1896 determinant and Gauss1863 scanned
-originals read with exact limits; Reed1960 all five pages, detailed Welch patent,
-Lidl actual1994 copyright image, Denso local table, NIST earlier actual arithmetic,
-Wicker publisher applications/decoder excerpt and original1994 catalogue checked.
-RESEARCH records URLs/local version hashes/access limits; original1935 papers
-unavailable (publisher metadata and actual scholarly reference lists checked).
-No full external proof or security certification from abstracts/metadata.
+ActualearlierV1 differentiation346on/IVT392on/EVT434on/Rolle479on fullproofs read;
+onlypolynomialderivative needed, no admittedexp/logrule. ActualV2primitive-root
+countproof133on read, no existencebytitle. Earlierproofsites/hashes guarded.
+Newfirstchains: generalGalois, normalGaloisfields, generalcyclotomicdegrees,
+radicalenvelope,functionindependence/resolvents,boundedmonicroots. Laterusesopen.
 
-507 full tests PASS, zero skips,53.988s after current mathematical source/checker/
-registers, before final descriptive records. /tmp/volume3-v027-full-tests.log.
-Source/inventory/freshness/focused/diff gates pass and should be rerun after final
-records. Merge of main requires its own affected/full checks. Previous26ea CI1707
-terminal success list/debs/all15books/site,publishskipped. Exact779 CI1709/
-run41980139086 last jobs:14books includingV3 success,V8 inprogress,list/debssuccess;
-whole-workflow terminal success not yet claimed. Record terminal advancement in
-PR, avoid commit solely to record predecessor CI. Current newhead needs CI.
+Historical corrections actualAbeloriginalGerman title scanned65/84, notFrench
+collectedtitlewithGermanjournalpages. ActualrelevantLagrangereprint212–216
+paragraphs/rootweightedresolvent read; volumelabel1770/1771notprintingdates.
+EmilArtin1942/1944/Dover1998 distinguished, actualrelevantproofsread withlimits;
+localMichaelArtinAlgebraPDFnotconfusedwithEmilGalois. ActualStewartTOC15/20,
+Dummitactual572–577fullFTGT/biquadratic/X8−2examples, Neumannpublisherbody/TOC,
+Volkleinfrontimages/prefaceSummary checked. OriginalGalois reprint/date evidence
+retained, noautograph. RESEARCH actualURLs/filehashes/externalproofaccesslimits.
+Primarybibliography metadata is not externalresearchproofcertification.
 
-## Actual artifact evidence
+512fulltestsPASS0skips56.095s afterC10source/checker/manualregisters, before final
+reports (/tmp/volume3-v028-content-full-tests.log). Earlier postintegration512/
+0skips57.341s. Requiredsource/inventory/freshness/focused/diff gatesrerunafter
+records. Newcontentheadneeds its ownCI. Exact integratedaf1 **CI1713/run41984307424
+terminalsuccess** list/debs/all15books/site,publishskipped; actualV3build/bleed /
+QA/upload steps allsuccessful. This is before currentC10commit; no falseheadmatch.
+Recordlaterterminaladvancement inPR, no doccommit solely torecordprecedingCI.
 
-/workspace/volume3-build-779a95d5 exact producing779, BEFORE currentC9/Needspace.
-514 reading/513 print,KDP514,spine1.2064in,matched wrap15.4564x10.25.85 public
-files/5 reports hashed preliminary-779a95d5-artifacts. Actual EPUBCheck5.3.0 zero
-messages, actual outputcheckerPASS7renders/26XHTML. Sixty actual renderer/font/
-common files matched before prior local formula-cache copy; provenance inbuild.
-This snapshot uses the older NO-interior-bleed pipeline and is superseded for
-final production by concurrent mainPR105. Rootdist mixed, never final evidence.
+## Actual current production snapshot
 
-Actually opened reading229/230 and print228/229 at2x colourANDgray, four physical
-pages/eight renders. Stranded quartic proposition at foot, proof next page; remark
-ends Chap- at another foot. Finding V3-LAYOUT-QUARTIC-START remains OPEN, pages
-not visually approved. Current eight-baseline Needspace is proposed source fix;
-new immutable build must reopen corrected pages and ALL changed pagination.
-No other pages/spreads/digital approval inferred. Final all-page/fig/table/display/
-chapter/appendix/endmatter/gray/facing inspection, actual narrow/wide reader/EPUB
-shape/baseline/aspect/clipping/controls/local-links/triple destinations and actual
-CI-artifact download comparison all still required.
+**/workspace/volume3-build-af1c3fe4**, exactaf1, BEFOREcurrentC10edits. Fullybuilt
+allformats,514reading/513print,KDP514,spine1.2064in, matchedsame-buildwrap
+15.4564x10.25.85public/5reporthashes preliminary-af1c3fe4-artifacts.json. Actual
+EPUBCheck5.3.0zero messages (/tmp/volume3-v028-epubcheck.log), actualoutputchecker
+PASS7renders26EPUBXHTML (/tmp/volume3-v028-output-check.log). Bleedpipelinechecks
+all513canvases/trim/extendedbackgrounds11,153,243; onlypage444flattened600ppi.
+Allformat/font/resolution/navigation/unchanged-thresholdtrimcomparisons pass.
+Actual58common/font/rendererbytematches before localformulacachereuse; twochanged
+booklayoutsources explicitlyexcludedbecauseactualunchangedrendererdoesnotreadthem.
+Provenanceinbuild; sameactivatedenv, noGitHubcacheinference. Allbuild/checksessions
+terminal. Rootdistmixed, notfinalevidence.
 
-## Continue
+ACTUALLYOPENED reading229/230/231 and print228/229/230, sixphysicalpages, at2x
+colourANDgray (12renders). Reopenedprint230 singlybecausebatchUIcroppeddisplay.
+Fullquarticproposition+proofnowtogether(reading230/print229), followingremark
+startsnextpage, no page-footChap- split. LocalfindingV3-LAYOUT-QUARTIC-START
+resolved ontheseactualpages. Headers/displays/rules/referenceslegible,no clipping /
+collision. Individualodd/evenmargins seen, notwhole-facingapproval. Visualrecord
+preliminary-af1c3fe4-visual.json. ALLotherchangedpagination remainsunreviewed;
+no evidence transferexceptactualrelevantpixel/fileidentity.
 
-Commit/push current C9 batch/update PR, integrate mainPR105, inspect full new
-workflow/tooling and run new bleed tests/full suite. Build new immutable producing
-commit and actually reopen correction while doing C10 global read. Continue
-C10–12/all four appendices unreferenced reasoning/history/story/voice and every
-concept later-use closure. Final freeze precedes final artifact review; reopen
-source changes/affected pagination. Final head clean/currentbase/no unresolved
-findings/allrequiredtests/terminalheadCI, ready then expected-head merge commit,
-verify GitHub resulting main. Native Kindle/KDP account Previewer/ISBNownership/
-physical proof unavailable publication followups, not passes or new reviewer
-requirements. No V3 ISBN assigned or barcode ownership invented.
+## Continue without stopping
+
+Commit/push C10batch/updatePRexacthead, buildnewimmutable snapshotwhileC11global.
+C11globalNOTSTARTEDthisbatch; earliercoreA/Bdone, no globalclosure inherited.
+ReadentireC11,C12,allfourappendices unreferenced reasoning/history/story/voice/
+actualsources. Close allconceptlateruses after theiractualsource read. Reconcile
+front/end/publishingclaims andactualV2/V3/V4seams previouslyread againstfinalbook.
+Finalfreeze before everyactualreading/printpage,allfig/table/display/opening /
+appendix/endmatter/gray/facingreview. Reopenchanges/allchangedpagination.
+Actualnarrow/widereader/EPUBformula loading/baseline/shape/aspect/clip/overflow,
+links/fragments/tripledestinations/disclosures/nav/theme/menu andactualCIartifact
+comparison stillrequired. No blanketvisualapproval fromthumbnails orhashes.
+
+FinalexactreviewedHEADclean/currentmainrelationship/no unresolvedfindings/all
+requiredtests/terminalheadCI; readythenexpected-headmergecommitandverifyGitHubmain.
+NativeKindle,KDPaccountPreviewer,ISBNownership,physicalproofunavailablefollowups,
+notfalsepasses/notanotherreviewerrequirements. NoV3ISBNassignmentinvented/borrowed,
+noAmazonaccountaction. Repositorymergedistinctfromvendorapproval.

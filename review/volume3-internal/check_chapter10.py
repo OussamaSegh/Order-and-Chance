@@ -111,6 +111,13 @@ def check_actual_lattice():
 
 
 def check_periods_and_counts():
+    # Independent trial division supports the local order-32 primality proof.
+    prime = lambda n: n >= 2 and all(n % d for d in range(2, math.isqrt(n) + 1))
+    assert all(prime(n) for n in (3, 5, 17, 257, 65537))
+    candidates = [32*j + 1 for j in range(1, 8)]
+    assert candidates == [33, 65, 97, 129, 161, 193, 225]
+    assert [q for q in candidates if prime(q)] == [97, 193]
+    assert [65537 % q for q in (97, 193)] == [62, 110]
     a, b = {1, 2, 4}, {3, 5, 6}
     table = [[(x+y) % 7 for y in sorted(b)] for x in sorted(a)]
     assert table == [[4, 6, 0], [5, 0, 1], [0, 2, 3]]

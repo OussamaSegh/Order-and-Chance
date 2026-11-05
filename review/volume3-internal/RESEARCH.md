@@ -751,3 +751,99 @@ identify source versions, not certify every page or proof):
 | Lidl-Niederreiter-revised-sample.pdf | 727955 | f6bf24afdafcbe8203dbc871d5c0f3e5bf35f0906ca3093c133452f05f645c89 |
 | Denso-QR-error-levels.png | 4603 | 2848ac6020b1ffdce58a76622352e089a9de7519fb28fd5c60dea0563e0bfcc5 |
 | Wicker-Bhargava-publisher-excerpt.pdf | 1746509 | 74984602427b2a4f18c71b004bff501b9fbfef2234bb3b7d9295d09a96de98d9 |
+
+## V3-028 — Galois chapter attribution and source limits (5 November2026)
+
+Internal AI source review, not independent human refereeing or certification of
+all external proofs. Own full characteristic-zero correspondence/radical proofs
+and exact examples were reconstructed before these bibliographic comparisons.
+
+Galois: retain H-C09/10-GALOIS actual primary1846 reprint reading and image
+identity. Dated16January1831 preface and November1846 publication remain distinct;
+no autograph inspected. Actual EMS Press publisher body and contents read at
+https://ems.press/books/hem/102 and /contents : Peter M. Neumann, published
+20October2011, corrected second printing September2013; French transcription,
+English translation and commentary, First Memoir105–168. Subscription fullbook
+unavailable. Metadata/description do not certify the entire translation.
+
+Abel: found a real bibliographic mismatch. The book combined the French title
+from the collected works with the original German journal citation. Actual GDZ
+IIIF manifest PPN243919689_0001, logical articleLOG_0012, gives original1826,
+German title and pages65–84. Downloaded actual article at
+https://gdz.sub.uni-goettingen.de/download/pdf/PPN243919689_0001/LOG_0012.pdf .
+Actually opened/read printed65 and84 original images: German title/byline,
+opening root-operation definition and final quintic/general higher-degree
+impossibility conclusion. Correct bibliography to original German title. The
+French collected-title catalogue was read at Syllogismos, not represented as the
+original German issue. Middle18 proof pages not independently certified. The
+AI-draft ReadTheMasters site was only a lead to the original GDZ scan; none of
+its AI transcription/translation supplies mathematical or historical approval.
+
+Lagrange: actual OeuvresIII reprint opening/editorial footnotes read at
+https://fr.wikisource.org/wiki/Page:Joseph_Louis_de_Lagrange_-_%C5%92uvres,_Tome_3.djvu/206 .
+Memoir read1771; first two sections in volume labelled1770, later ones in1771.
+Bibliography now says volumes FOR those years, avoiding an implied printing date.
+Actual relevant reprint paragraphs at page URLs212–216 read: branch-paired cube
+roots, reduced sixth-degree equation, reconstruction of a root extraction as
+(a+alpha*b+beta*c)/3, and permutations of a,b,c. This checks the concrete
+resolvent annotation against relevant primary text. It is not a claim to have
+read every page of those volumes or opened original Berlin issue images.
+Direct requests/Wikisource whole-article access failed; actual web page text
+was accessible. Unsupported joint-discovery sentence was replaced by the precise
+proof task: construct a nonzero weighted conjugate sum. The locally proved
+Kummer proposition and all mathematical targets remain.
+
+Artin: actual Emil Artin second-edition title/copyright1942,1944/TOC and full
+Theorems8–10 read in V3-026. Fresh actual Theorems12/13 and fixed-field closure
+read at https://studyres.com/doc/6154633/galois-theory , printed35–38: functional
+independence and degree lower bound. Dover1998 corrected1944 colophon was read
+in the earlier library record, and source annotation now distinguishes these
+edition dates. Not entire external book certification. The local file named
+Artin-Algebra-second-edition.pdf is Michael Artin's different book and was NOT
+used as evidence for Emil Artin's Galois lectures.
+
+Stewart: actual fourth-edition2015 copyright and full TOC freshly read at
+https://studylib.net/doc/28407995/galois-theory--4th-ed.----stewart--ian-nicholas .
+Chapter15 radicals171/insoluble quintic176; Chapter20 regular polygons227,
+20.5 drawing a17-gon235. Earlier actual7.2 proof read remains scoped to that
+construction theorem. Annotation now gives precise destinations, without falsely
+claiming that the earlier general17-gon recommendation was wrong. No whole-book
+external mathematical sign-off.
+
+Dummit/Foote: actual stored third-edition text, TOC and full Theorems13/14,
+printed572–576, read for normality/fundamental theorem. Worked biquadratic and
+X^8-2 splitting-field examples following the theorem, printed577, read. Replace
+the unlocated specific X^4-2 annotation with the actual biquadratic/eighth-root
+examples. Do not conflate their degree16 eighth-root extension with this book's
+degree8 fourth-root example. Original edition metadata already checked in C7;
+current own ten fixed fields/all diagram edges independently recalculated.
+
+Volklein: actual publisher frontmatter PDF at
+https://assets.cambridge.org/97805215/62805/frontmatter/9780521562805_frontmatter.pdf .
+Actually opened local images of PDF pages3(title),4(copyright: first1996,
+digitalprinting2004),8(TOCix). Hidden text layer is only watermark: it was not
+mistaken for reading the scanned content. Actual publisher preface Summary
+body read at
+https://www.cambridge.org/core/books/abs/groups-as-galois-groups/preface/897F28FAF11824ED8C0FD4A4808D953E :
+prescribed rational Galois groups, rigidity and topology/complex-analysis route.
+This is a summary excerpt, not full preface/book/research-proof certification;
+the reference remains further reading, never a premise.
+
+Current incidental Fermat status: actual full PrimePages Fermat-number glossary
+body read, https://t5k.org/glossary/page.php?sort=fermatNumber . It reports only
+3,5,17,257,65537 known; record the5November2026 access without endorsing every
+dated factoring/history aside on that page. Primality of the listed examples is
+now earned locally, including an order32/leastfactor certificate for65537 and
+independent exhaustive trial division. Actual V2 ex:pepin full solution819–845
+was read, but no65537 numerical certificate was inferred from that prompt or
+from the title of a primality criterion.
+
+Local external version identities (not approval of every page/proof):
+
+| File | Bytes | SHA256 |
+|---|---:|---|
+| Abel-1826-original.pdf | 2286114 | 6e471d82c8687b5075ec18685cf5feee0a0df7f320c63e748b2998c784b97d12 |
+| Abel-1826-page65.jpg | 401224 | 9d50fdaf90158b6c0aad6f16eb1fd9be857933a1bfbffcafc53438d6f7cf5fc9 |
+| Abel-1826-page84.jpg | 415175 | f94fdbf7bfc35d257a905b2df1ab19968e899cc8787b42c60a99d8da937f9c44 |
+| Volklein-1996-frontmatter.pdf | 646342 | fa94164a7dd9b32b872b1f7ab484019252b87ab4077a04627efe6bb4eca61949 |
+| Dummit-Foote-third.pdf | 37002369 | 3367d9ea25c6d6ce658fbabf4e425e2b5b66374ecfcf88c39202b56193e1e526 |

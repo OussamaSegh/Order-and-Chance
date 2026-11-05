@@ -533,3 +533,25 @@ and power sums. All later-use/whole-volume statuses remain pending. Trace first
 appears in m-sequence prompt; solution proves codomain and nonzero polynomial
 before using the bit map. Tr(1)=0 in even degree is explicitly not a zero-map
 argument. Computational support does not replace the full pairing proof.
+
+## V3-028 — entire Galois chapter prerequisite pass
+
+All50 C10 label occurrences and3 literal earlier contexts classified individually.
+Actual V1 ch05-sequences-series full elementary differentiation346–382, IVT392–408,
+extreme-values434–449 and Fermat/Rolle/MVT479–506 reread. Polynomial derivatives
+follow by constant/identity difference quotients, product induction and linearity;
+no admitted exponential/logarithm derivative is needed for the quintic. IVT roots
+and derivative/Rolle upper count therefore have actual earlier proofs. Actual V2
+ch05-primitive-roots thm:cyclic133 onward full N(d)/phi(d) deficit proof reread,
+including rootbound proof andp2. Actual earlier V1 prime-cyclotomic Eisenstein
+solution and earlier V3 C2/C4/C5/C6/C7/C8/C9 proofs remain hash-guarded.
+
+The motivating cubic's existence/count is now earned locally using C8; later
+ex:discr is an alternative. Constant-polynomial convention explicit. General
+cyclotomic degree/irreducibility is earned in its full worked triple BEFORE polygon
+converse/Kronecker/rational-trig uses. Normal/Galois equivalence stays under explicit
+finite characteristic-zero contract; inseparable splitting counterexample supplied.
+Both radical directions check actual roots of unity/radicands/normality before
+invocation. Current reduction-mod-prime comparison to complex roots remains an
+explicit V13 outlook, never a premise. General Galois and five further first chains
+reviewed; all91 whole-volume/later-use statuses remain pending.

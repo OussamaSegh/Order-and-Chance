@@ -654,3 +654,17 @@ Fresh main d97c0bf4 (PR105) changes shared KDP bleed. Read its updated instructi
 workflow and permanent report. Integrate after this batch, preserve review history
 and rerun bleed/full/build checks; old no-bleed artifacts do not certify the new
 print pipeline. No main/unrelated workflow cancellation.
+
+## V3-028 advancement
+
+C10 global pass complete,859 accepted/311 global pending C11–12/A–D.251/389
+label occurrences and63/85 literal earlier contexts reviewed;84 first chains,
+7 pending, all91 whole-volume concept statuses pending. Integrated mainPR105
+without conflicts ataf1c3fe4; full current workflow/new instructions read and512
+post-integration tests passed. Fresh C10 source/register suite512/0skips56.095s.
+Immutable af1 all-formats build/actual EPUBCheck/output checker pass under bleed;
+six actual PDFpages colour/gray reopen resolves local quartic layout finding.
+All final all-page/digital/actual-CI-artifact gates remain. Exactaf1CI1713 terminal
+success all15books/site, publication skipped, before next C10 content commit.
+Continue C11 now, then C12/all four appendices global and full conceptual closure;
+freeze final source for complete production review, final-head CI/ready/merge.

@@ -1,5 +1,114 @@
 # Progress
 
+## V3-028: complete Galois-theory global pass and current-main integration
+
+Solo internal AI review, not independent human refereeing or formal verification.
+Read the entire current Chapter10,13 complete named proofs,11 complete exercise /
+hint / finding-idea / full-solution sets, both actual figure sources and7 source
+entries covering8 works. All unreferenced reasoning reconstructed.53 individually
+keyed global rows in GLOBAL-CH10.md;50 label occurrences and3 literal earlier-
+volume contexts classified. All13 statement/full-proof pairs and11 full exercise
+sets individually compared by actual hashes after edits; their complete previous
+fresh internal A/B evidence remains applicable. No historical rewrite status is
+inherited. Original exposure chronology stays CH10-PROMPT-FIRST, including its
+explicit prior phin/Kronecker exposure; no new blind-solve claim.
+
+Coverage: **859 accepted =157 named +163 full exercises +539 global**. **311 global
+rows remain pending** in C11–12 and all four appendices. Inventory1653 items,
+598 prose blocks,118 bibliography entries,22 examples,22 figures,9 tables and22
+included sources. Four net added prose blocks explain +4 inventory: locally
+proved Fermat example and three paragraph divisions in polygon classification.
+Counts are not quotas or approval.251/389 labels and63/85 earlier literal contexts
+accepted. General Galois first chain now reconstructed, plus five additional
+chains: normal/Galois fields, all cyclotomic degrees, radical envelope, functional
+independence/resolvents and bounded monic roots.84 first chains reviewed,7 pending;
+**all91 whole-volume concept statuses remain pending later-use closure**.
+
+Concrete root-extraction question now leads the opening, removing repeated degree
+catalogue and stock numerical-method filler. The motivating cyclic cubic is earned
+locally: triple-angle identity, all three roots in Q(u), rational-root irreducibility
+and actual earlier C8 splitting-field count give exactly three cyclic maps before
+any later criterion/discriminant exercise. Nonzero constants now explicitly have
+empty root sets, splitting field K and trivial group, consistent with the radical
+criterion's constant case. A local certificate earns65537's primality: any prime
+factor has2 of order32, hence is1mod32; a least prime factor of a composite would
+be<=256. Only97/193 survive the seven progression candidates, and remainders62/
+110 exclude both. Independent exhaustive trial division supports this proof and
+the four smaller Fermat examples. No primality is inferred from an exercise prompt
+or from a website. The full polygon converse/classification has readable separate
+paragraphs; every mathematical implication is retained.
+
+All13 named mathematical targets and11 complete solutions/grades remain. The full
+characteristic-zero contract is explicit: no inseparable splitting/Galois equivalence
+is asserted. General cyclotomic irreducibility is fully worked before use. Root-
+of-unity hypotheses and ordered conjugates earn both radical criterion directions;
+the specific quintic argument rules out every individual root. Prime cycle endpoint
+alignment is essential. C10 full reread reconfirmed all these implications, allten
+D4 fixed fields, both15-edge diagrams, the seven-plus-seven multiquadratic counts,
+period tables, all220 graph samples/three marked roots, branches, empty cases and
+complete Kronecker/rational-trigonometry/Ramanujan derivations. The written voice /
+cadence and adversarial first-reader pass is not a human or spoken read-aloud.
+
+Historical corrections: actual Abel1826 first/last scanned pages confirm German
+journal title; old French collected-title/original-pagination mixture corrected.
+Actual Lagrange reprint relevant cubic/resolvent text read; volume labels1770/1771
+are distinguished from printing dates. Artin first1942/second1944/Dover1998 now
+consistent across chapters. Actual Stewart TOC gives precise15/20 pointers;
+Dummit annotation names actual read biquadratic/X8-2 examples. Neumann/Volklein
+publisher text and front images checked with subscription/full-proof limits.
+Galois dated1831 preface and1846 publication remain distinct; no autograph claimed.
+RESEARCH records primary URLs/download hashes and exact access/read limitations.
+Unsupported joint-discovery aside was replaced by the actual proof task, preserving
+Kummer's full proposition. Current incidental Fermat status checked against actual
+PrimePages body, without certifying every other statement on that site.
+
+Concurrent main had advanced from original PR103 baseline7f87c2ab to
+**d97c0bf4e9f5b2d5fd543f0550db62e7eac5a678** (PR105 KDP bleed). Integrated without
+conflicts or history rewriting in **af1c3fe4c05c0d6e73530edbbfc9847b7a9c10a0**,
+after C9 commit e26d3b9d. Actual new AGENTS/DESIGN/interior/KDP/PUBLISHING instructions,
+permanent bleed report, full current workflow and implementation/regressions read.
+Reading/source stays7x10; print is7.125x10.25 with top/bottom/mirrored-outside bleed,
+original trim coordinates, no binding-edge bleed, vector solid backgrounds extended
+AFTER the trim-size Ghostscript conversion. Metadata/listings specify Bleed(PDFonly).
+Cache schema9, library cache saves only main. Old no-bleed artifacts are historical,
+not current production acceptance. Fresh fetch before this batch still finds d97.
+No main/unrelated run cancelled.
+
+Post-integration suite512 tests passed, zero skips,57.341s. After C10 source/checker/
+manual-register changes, **512 full tests passed, zero skips,56.095s**, log
+/tmp/volume3-v028-content-full-tests.log, before these descriptive reports. Required
+source/inventory/freshness/focused/whitespace gates rerun after final records. No
+assertion weakened to get green. Full prior proof/solution identities are recorded
+in V3-028-retained-identities.json, independently of source-string/numeric tests.
+
+New immutable snapshot **af1c3fe4**, BEFORE current C10 edits, fully built all required
+formats under the updated bleed pipeline:514 reading /513 print pages, KDP514,
+spine1.2064in and same-build wrap15.4564x10.25in.85 public files/5 report hashes in
+preliminary-af1c3fe4-artifacts.json. Actual EPUBCheck5.3.0 zero messages and output
+checker PASS7 renders/26EPUBXHTML after build. All513 print boxes/mirrored trim and
+extended divider backgrounds11/153/243 checked by actual pipeline; only page444
+flattened600ppi. Font/navigation/format/resolution/unchanged-threshold trim comparisons
+pass. Local formula cache reused only after58 actual font/renderer/common byte
+matches and explicit inspection of two changed non-formula book-layout sources;
+actual unchanged renderer does not read those two files. Exclusions/provenance
+recorded, no GitHub cache claim or mathematical/pixel approval from cache.
+
+Actually opened reading229/230/231 and matching print228/229/230, six physicalpages,
+at2x in colour AND grayscale. Reopened the print continuation singly to avoid tool-
+UI cropping. Proposition8.19 and its entire proof now share one page; the following
+remark starts next page and no longer ends Chap- at a page foot. The local finding
+V3-LAYOUT-QUARTIC-START is resolved on these actual pages, with legible rules/refs/
+displays and no clipping/collision. That does not approve other changed pagination,
+whole-book facing spreads or digital behaviour. Source command row accepted in C9
+now has actual corrected-page evidence. Whole final all-page/narrow-wide/links/
+formula-shape/control review and actual CI-artifact comparison remain open.
+
+Exact integrated af1 CI1713/run41984307424 is **terminal successful**: list/debs,
+all15 book jobs and site success; publish skipped. Actual V3 job details confirm
+its full build, new every-print-page bleed check, output QA and artifact upload
+all succeeded. This CI belongs to af1, not the following C10 content commit. New
+source needs its own head-matched CI. Work continues at C11, not a final checkpoint.
+
 ## V3-027: complete finite-fields global pass
 
 Solo internal AI review, not independent human refereeing or formal verification.

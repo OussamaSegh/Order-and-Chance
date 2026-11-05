@@ -164,3 +164,22 @@ dependencies. Removed loose analytic analogy and unsupported faster-cost aside;
 precise earned statements replace them. Whole written cadence/adversarial
 first-reader pass, not a human or spoken read-aloud session. Final pagination
 and reader/EPUB visual evidence remain separate.
+
+## C10 story and complete written reader pass, V3-028
+
+Incoming question: does the finite fixed-field pattern survive over Q, and can
+successive root extractions produce a quintic root? Start with X5-4X+2 and a
+concrete root-permutation question. A locally earned cyclic cubic shows why roots
+cannot move arbitrarily. Automorphism count/orbit polynomials establish the
+correspondence before the full D4 example. Worked general cyclotomic irreducibility
+comes before polygon degrees; a short numerical certificate earns the65537 example.
+The converse/classification now has separate readable paragraphs.
+
+Root extraction then leads to the real obstruction: roots of unity and ordered
+conjugates create a normal solvable envelope. The prime5cycle and conjugation
+transposition force S5, excluding each root individually. Function independence
+makes the converse resolvent nonzero and earns the complete criterion. The next
+question asks what matrix actions and traces reveal about arbitrary groups; it
+matches actual C11. Full source and every solution read for written cadence /
+adversarial first-reader method, not a human or spoken session. No named target
+or complete solution lost; final typography/digital review is separate.
